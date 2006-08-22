@@ -1,0 +1,238 @@
+For a detailed account of past and current development activities,
+see http://wiki.ontoworld.org/index.php/Semantic_MediaWiki_development_activities
+
+== Semantic MediaWiki 0.5 ==
+
+* Customised datatypes for unit conversion: it is now possible to create customised
+  linear unit conversions by appropriate statements on type articles. This also 
+  enables full localisation of all units of measurement.
+* Customized display of units: every attribute can now decide which units to display
+  in factbox and query results. Internally, values are still normalised, but users
+  can adjust the view to the most common description of some attribute.
+* Support for importing vocabularies from external ontologies. For instance, elements
+  of the wiki can now be mapped to the FOAF ontology during export. The import is
+  controlled by whitelist-like message articles.
+* New attribute datatypes for URLs and URIs, some of which can be exported in RDF as 
+  ObjectProperties. A blacklist is used to prevent technically problematic URIs from 
+  being used there (e.g. most don't want to use OWL language elements as data).
+* New attribute datatype for temperature, since this cannot be defined by a linear 
+  custom unit conversion.
+* Improved Special:Relations and Special:Attributes, including a quicklink to searching
+  occurrences of some annotation.
+* Unit support for inline queries. Desired output unit can be adjusted through query.
+* Improved code layout, using object-orientation features of PHP5.
+* Many bugfixes.
+
+== Semantic MediaWiki 0.4.3.2 ==
+
+This fixes another small bug that prevented the limit parameter in queries to work
+properly.
+
+== Semantic MediaWiki 0.4.3.1 ==
+
+This fixes a small but critical bug that prevented queries for non-numeric attribute
+values to work properly.
+
+== Semantic MediaWiki 0.4.3 ==
+
+Semantic MediaWiki 0.4.3 is an intermediate release that greatly improves the
+performance and features of inline queries. It also includes some major code
+cleanups and various bugfixes.
+
+An updated documentation of the current inline queries is (soon) to be found at
+http://wiki.ontoworld.org/index.php/Help:Inline_queries
+
+== Semantic MediaWiki 0.4 ==
+
+Semantic MediaWiki 0.4 includes the following new features:
+
+* Support for inline queries: it is now possible to <ask> queries in
+  articles, the answers of which are included into the displayed page.
+  Conjunctions and nesting of queries is supported. Datatype queries
+  for values above or below some threshold are possible. Outputs can be
+  displayed in many different formats, including bulleted and numbered 
+  lists, tables with intercative (JScript) sorting (credits go to 
+  Stuart Langridge for www.kryogenix.org/code/browser/sorttable/), and 
+  plain text. See http://wiki.ontoworld.org/index.php/Help:Inline_queries 
+  for documentation.
+* Improved output for Special:Relations and Special:Attributes: usage of
+  relations and attributes is now counted
+* Improved ontology import feature, allowing to import ontologies and to
+  update existing pages with new ontological information
+* Experimental suport for date/time datatype
+* More datypes with units: mass and time duration
+* Support for EXP-notation with numbers, as e.g. 2.345e13. Improved number
+  formating in infobox.
+* Configurable infobox: infobox can be hidden if empty, or switched off
+  completely. This also works around a bug with MediaWiki galeries.
+* Prototype version of Special:Types, showing all available datatypes with 
+  their names in the current language setting.
+* "[[:located in::Paris]]" will now be rendered as "located in [[Paris]]"
+* More efficient storage: changed database layout, indexes for fast search
+* Code cleaned up, new style guidelines
+* Bugfixes, bugfixes, and some more bugfixes
+
+Semantic MediaWiki 0.4 has not been tested on MediaWiki below 1.6.1 and might
+fail to operate correctly in this case. Some functions explicitly use code 
+that was introduced in 1.6.
+
+== Semantic MediaWiki 0.3 ==
+
+Changes by mak (0.3, 06 Apr 2006):
+
+* Compatibility updates for MediaWiki 1.6
+
+Changes by denny/mak (0.3, 25 Mar 2006):
+
+* Internal: improved management of special properties
+* RDF export: OWL conformant export of all available content data, including category information
+* RDF export: recursive export, "streaming"
+* UI: further internationalization, internationalized float number format (decimal separator)
+* UI: new infobox section for recognized special properties
+* new Specials to show all relations/attibutes
+* new experimental Special to import data from existing OWL/RDF ontologies
+* new special property "equivalent URI" that allows to map wiki concepts to URIs in other ontologies
+
+Changes by kai/mak (0.3preview, 15 Mar 2006):
+
+* Internal: new internal storage management; cleaner, more flexible, and more efficient
+* Internal: new internal type registration API
+* Internal: new internal management for special properties (e.g. 'has type')
+* Internationalization: almost complete; namespaces, special properties (e.g. 'has type'), datatype labels
+* RDF export: support for multiple mimetypes (rdf+xml and xml); needed for Piggybank
+* RDF export: support for bulk export
+* RDF export: XSD datatypes and correct instance classification (rdf:type)
+* UI: extended Special:SMWAdmin to convert data from old internal datatable to new format
+* UI: duplicate attribute values eliminated in infobox
+* UI: types can switch off quicksearch links
+* UI: more human-oriented error mesages ;-)
+* UI: service links for infobox and search
+* new datatype for geographic coordinates, accepting many kinds of coordinate inputs, and providing links to standard mapsources
+* Simple semantic search supports imprecise search again
+
+Changes by mak (0.2c, 9 Mar 2006):
+
+* added basic language support functionality
+* improved installation process (SMW_LocalSettings.php, simpler patching for Setup.php)
+
+Changes by mak (0.2c, 1 Mar 2006):
+
+* RDF Export enabled
+* more CSS and an icon to show RDF download link on pages
+
+Changes by kai/mak (0.2c, Feb 2006):
+
+* Added new custom stylesheet and JScript (kai/mak)
+* New JScript tooltips (kai)
+* New style for infobox search items (mak)
+
+Changes by mak (0.2c, Feb 2006):
+
+* Added new Special:SMWAdmin that allows relatively painless upgrade
+  from versions <=0.2 where no namespaces were used.
+* Added support for moving pages with its stored triples.
+* BUGFIX: triples in articles with SQL-hostile symbols (e.g. ') are
+  now working.
+
+== Semantic MediaWiki 0.2b ==
+
+Changes by mak (0.2b, Jan 2006):
+* Changed directory structure for more clarity, easier installation
+  and upgrade.
+* Now using custom namespaces for Relations, Attributes, and Types,
+  and their talks.
+* Semantic features can be switched on or off for each namespace 
+  individually.
+* Registered extension for MediaWiki's "Special:Version".
+* BUGFIX: Configuration now takes fixed servername to use in storing
+  URIs. Before, different access methods (e.g. direct IP vs. servername)
+  generated different URIs.
+* BUGFIX: Attributes that could not be parsed now do not generate 
+  triples with empty object in our database.
+
+Changes by mak (0.2a, 4 Dec 2005):
+* Attribute values are now correctly stored and retrieved.
+* Special SearchTriple greatly enhanced, such that queries for
+  attributes become possible (including unit conversion).
+* Links from attributes in infobox to the new search form.
+* Major code cleanup: SMW_AttributeStore.php now is called
+  SMW_SemanticData.php and managemes all types of semantic
+  data, including printout and storage. SMW_Hooks.php was freed
+  of all code with similar purpose. Look-up of attribute types
+  was moved from SemanticData to Datatype. 
+
+Changes by mak (0.1b, 1 Dec 2005):
+* Reworked internal data representation. All information now is
+  properly encoded in URIs and decoded for display. This is an
+  important prerequisite for storing attributes and auxilliary
+  triples, which otherwise could not be distinguished from the
+  relational information.
+* New Special SearchTriple to replace the current SearchSemantic,
+  which is currently only half functional since it believes that
+  the database contains only simple names for articles, but not
+  full URIs.
+* Minor adjustments in handling of namespaces: namespaced aritcles
+  now properly work as subjects and are displayed with namespace in
+  in the infobox.
+
+Changes by mak (0.1b, 19 Nov 2005):
+
+* New type management; attributes can now be declared by creating 
+  relations of type "has type" inside their articles (Attribute:X).
+  Possible targets are the builtin types (Type:String, Type:Geographic
+  length, etc.).
+* New internal method SMWGetTriples for directly retrieving triples 
+  from the storage. Accepts subject, predicate, object pairs, where
+  any two can be left out.
+* Improved layout for infoboxes.
+
+Changes by mak (0.1b, 13 Nov 2005):
+
+* added support for separator "," in data numbers,
+* added tooltips for unit conversion.
+
+Changes by mak (0.1b, 17 Oct 2005):
+
+* added attribute support [[attribute name:=value|alternative text]];
+  currently, parsing these within the article works, including an 
+  info box at the bottom; however, assignment from attributes to 
+  datatypes is still hardcoded and attribute-annotations are neither
+  stored as triples nor are they supported in search,
+* added basic type support for STRING, INTEGER, and FLOAT,
+* added framework for unit conversion and first unit support: unit
+  conversion is achieved by callback functions, so that adding types
+  for new units boils down to writing a single unit conversion function,
+* code split into several files for easier colaboration of developers,
+* new naming convention "SMW"-prefix for all top level code elements of 
+  the extension,
+* moved main storage methods to SMW_Storage.php, this should simplify
+  the conversion to another storage backend (triplestore),
+* moved stripping of semantic relations to SMW_Stripsemantics.php;
+  if this feature is desired, this file needs to be updated slightly
+  (also to include semantic attributes) and its methods connected to
+  their appropriate hooks as done in 0.1
+
+Changes by mak (0.1a, 4 Oct 2005):
+
+* moved parsing process to ParserAfterStrip to support <nowiki>; it 
+  has to be done even later to support template inclusion properly,
+* changed process of storing/retrieving: no more stripping of semantic
+  relations before saving -- the annotations now appear exactly where
+  the user has put them, keeping them easier to read and maintain,
+* parse only once: saving is based on the relations that were retrieved
+  during the earlier call of parse(); for this to work, saving needs to
+  be deferred -- it is currently done at ArticleSaveComplete [should
+  there be a dedicated hook for deferred saving?],
+* enabled removal of semantic links on article deletion,
+* changed layout of semantic links factsheet, including some neat grouping 
+  feature.
+
+== Semantic MediaWiki 0.1 ==
+
+This is a pre-alpha version of the Semantic MediaWiki extensions. 
+It includes:
+
+* support for typed links [[link type::link target|link label]],
+* rendering of fact sheet on semantic relations at article bottom,
+* Special:SearchSemantic (alpha), featuring autocompletion for 
+  link types.

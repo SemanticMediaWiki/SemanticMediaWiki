@@ -1,0 +1,224 @@
+[[Semantic MediaWiki 0.5]]
+
+Contents:
+* Disclaimer
+* Requirements
+* Installation
+* Notes on Upgrading
+* FAQ
+* Contact
+
+== Disclaimer ==
+
+Semantic MediaWiki can be used for production wikis, but please note
+that the software is still under development. In general, the extension 
+can be installed into a working wiki without making any irreversible 
+changes to the source code or database, so you can try out the software 
+without much risk (though no dedicated uninstall mechanism is provided).
+Every serious wiki should be subject to regular database backups. If you 
+have any specific questions, please contact the authors.
+
+For a proper legal disclaimer, see the LICENSE.
+
+== Requirements ==
+
+- MediaWiki 1.7.* or greater (tested up to 1.7.1)
+- PHP 5.x or greater
+- MySQL >= 4.0.14
+- For the ontology import feature (only!), you need RAP, 
+  a free RDF API for PHP, see
+     http://www.wiwiss.fu-berlin.de/suhl/bizer/rdfapi/
+
+  You can copy/install additional components such as RAP
+  into the "libs" directory of your Semantic MediaWiki
+  installation.
+
+== Installation ==
+
+If you upgrade an existing installation of Semantic MediaWiki, also read the
+remarks in the section "Notes on upgrading" below!
+
+(1) Extract the archive or check out the current files from CVS to obtain the
+    directory "SemanticMediaWiki" that contains all relevant files. Copy this
+    directory to "[wikipath]/extensions/" (or extract/download it to this place).
+    We abbreviate "[wikipath]/extensions/SemanticMediaWiki" as "[SMW_path]" below.
+(2) Copy the file "[SMW_path]/includes/SMW_LocalSettingsTemplate.php" to a file
+    "[SMW_path]/includes/SMW_LocalSettings.php". Edit this new file to adjust
+    various basic settings. Some of these settings might be crucial for properly
+    running the wiki, so be sure not to skip this step.
+(3) Insert the following line at the end (just before "?>") of the file
+    "[wikipath]/LocalSettings.php":
+    "include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');"
+(4) In your wiki, log in as a user with admin status and go to the page
+    "Special:SMWAdmin" to do the final setup steps.
+
+This finishes the basic installation. There are some additional highly recommended 
+features that need to be enabled individually if you want them. Read on.
+
+'''Remark:'''  Semantic MediaWiki uses six additional custom namespaces (see
+http://meta.wikimedia.org/wiki/Help:Custom_namespaces). If you have your own
+custom namespaces, then you already specified this in step (2) above. If you
+add more namespaces later on, then you have to assign them to higher numbers
+than those used by Semantic MediaWiki in file "SMW_Settings.php".
+
+=== Enabling support for templates, <nowiki>, ... ===
+
+It can be helpful to have semantic annotations build into templates, in
+particular if filler variables for them are provided dynamically on each
+use. This feature can easily be enabled by hooking the processing of semantic
+links to a later point during parsing. This is not done by default yet,
+since it requires a patch against the MediaWiki code. To get this function,
+do the following two steps:
+
+(1) Edit the file [wikipath]/includes/Parser.php. Insert the line
+    "wfRunHooks( 'InternalParseBeforeLinks', array( &$this, &$text, null ) );"
+    in the method "internalParse" right after the line
+    "$text = $this->replaceVariables( $text, $args );"
+(2) Edit the file [SMW_path]/includes/SMW_LocalSettings.php to set the option
+    $smwgEnableTemplateSupport to true.
+
+Unless you changed the default setting, annotations in template articles will
+be ignored automatically. Otherwise you have to use <noinclude> and <includeonly>
+tags.
+
+=== Enabling CSS, tooltips, etc. in MediaWiki < 1.7 ===
+
+Deprecated. MediaWiki 1.6 is not officially supported any longer. You can try it 
+without much risk, but we might use code and features that were not available in 1.6.
+
+Extensions in MediaWiki < 1.7 could not add CSS or JavaScript to every
+wiki page without some code changes to MediaWiki:
+
+Open the file [wikipath]/includes/OutputPage.php, and insert the line
+"smwfAddHTMLHeader($this);" between "wfProfileIn( 'Output-skin' );" and
+"$sk->outputPage( $this );" (in function "output()").
+
+If you have several installations running on the same MediaWiki installation,
+and not all of them use the Semantic MediaWiki extensions, you may instead
+choose to add the following three lines:
+if( $_SERVER["HTTP_HOST"] == 'domainwith.smwenabled.org' ) {
+       smwfAddHTMLHeader($this);
+}
+
+=== Enabling tooltips in MediaWiki <= 1.5.8 ===
+
+Deprecated. MediaWiki 1.5 is not officially supported any longer. You can try it, 
+but we probably use code and features that were not available in 1.5.
+
+We make use of some JavaScript to display tooltips for attributes that provide
+value conversions for different units. Up to MediaWiki 1.5.5, this is prevented
+by bug http://bugzilla.wikimedia.org/show_bug.cgi?id=3603. To fix this, edit
+the file [wikipath]/skins/MonoBook.php and insert the line
+
+ <?php $this->html('headscripts') ?>
+
+right before "</head>" (around line 72). This should not be required in future
+versions of MediaWiki. To check whether tooltips work, try the preview mode of
+some article first (since this should always work). Tooltips might fail on some
+other occassions -- check out the workaround in "Known issues".
+
+If you prefer to use HTML-only tooltips, you can achieve this by commenting
+out the line containing "ParserAfterTidy" within the file
+[SMW_path]/includes/SMW_Settings.php.
+
+== Notes on upgrading ==
+
+The below instructions describe how to upgrade from one minor version to the next, e.g.
+from 0.2 (or 0.2b) to 0.3. If you missed one of the updates (e.g. if you want to jump
+from 0.1 to 0.3, then it is wise to proceed stepwise: install all intermediate versions
+subsequently and follow the given update instructions. For example, first upgrade from 0.1
+to 0.2 before upgrtading further from 0.2 to 0.3. Also, do not forget to backup your
+database before any upgrade.
+
+'''Upgrading from 0.4.x:'''
+
+Upgrading does not require any special changes. However, you have to upgrade MediaWiki to 1.7
+and SMW to 0.5. This should not be a problem, and in fact you need one patch less. Please
+recreate your SMW_LocalSettings.php, since it might have changed.
+
+Moreover, the type "Geographic area" and "Geographic length" are no longer built in. But you 
+can easily create them by yourself with the new type customisation features. See the docu at
+ontoworld.org for details.
+
+== FAQ ==
+
+- Problem: I installed Semantic MediaWiki and all went fine. What should I do
+  with it now?
+
+  Semantic MediaWiki is there to help you to structure your data, so that you
+  can browse and search it easier. Typically, you should add semantic markup
+  to articles that cover a subject that is typical for your wiki. A single 
+  article, semantic or not, will not improve your search capabilities. 
+
+  Start with a kind of article that occurs often in your wiki, possibly with 
+  some type of articles that is already collected in some category, such as
+  cities, persons, or software projects. For these articles, introduce a small
+  amount of relations and attributes, and annotate many of the articles in 
+  this way. As with categories, less often is more in semantic annotation: do
+  not use overly specific relations or attributes. A relation that is not 
+  applicable in at least twenty articles is hardly useful.
+
+  Templates can greatly simplify initial annotation. Create a flashy template
+  for your users to play with, and hide the semantic annotations in the code
+  of the template. Use the ParserFunctions extension to implement optional
+  parameters, so that your users can leave fields in the template unspecified 
+  without creating faulty annotations.
+
+  Develop suitable inline queries (<ask> ... </ask>) along with any new 
+  annotation. If you don't know how to use some annotation for searching, or 
+  if you are not interested in searching for the annotated information anyway,
+  then you should probably not take the effort in the first place. Annotate
+  in a goal-directed way! Not all information can be extracted from the 
+  annotations in your wiki. E.g. one can currently not search for articles that
+  are *not* in a given category. Think about what you want to ask for before
+  editing half of your wiki with new semantics ...
+
+  If in doubt, choose simple annotations and learn to combine them into more
+  complex information. For example, you do not need to have a category for
+  "European cities" -- just combine "is located in::Europe" and "Category:City."
+  In any case, if some annotation is not sufficient, you can still add more
+  information. Cleaning too specific and possibly contradictory annotations
+  can be more problematic.
+
+- Problem: Previewing or storing articles with semantic relations causes
+  database errors.
+
+  Your database was not initialized properly. Go to Special:SMWAdmin for
+  instructions.
+
+- Problem: Semantic relations that are included via templates or excluded
+  via <includeonly> statements are not processed properly.
+- Problem: "&nbsp;" appears in the Factbox, comments and <nowiki> do not
+  seem to disable annotations properly.
+
+  Enable template support. The required manual patch is described above.
+
+- Problem: After installing SMW, some or all pages are not displayed at all.
+
+  This is due to the restrictive memory default settings on some sites, and 
+  is not directly caused by SMW (any additional extension code might cause this).
+  Uncomment the line "ini_set( 'memory_limit', '20M' );" in LocalSettings.php
+  and possibly adjust the value to your needs.
+
+- Problem: Semantic search does not work for as expected.
+
+  The current search special "Simple Semantic Search" (Special:SearchTriple) 
+  is mostly intended to let you explore the database, and is not very user-
+  friendly yet. If you get wrong results it might also be due to upgrades 
+  from earlier versions of Semantic MediaWiki. Such issues can often be fixed by
+  saving the problematic article again. A robot that does this automatically
+  might be provided in future versions. Consider writting one for yourself
+  (and send it to us ;-).
+
+- Problem: I have a problem that is not in this list.
+
+  General bugs are reported at http://sourceforge.net/projects/semediawiki/
+  and there you can also find out whether your problem is known. Alternatively,
+  you can also send an email to semediawiki-user@lists.sourceforge.net.
+
+== Contact ==
+
+If you have remarks or questions, please send them to
+ semediawiki-user@lists.sourceforge.net
+Bugs can easily be reported at
+ http://sourceforge.net/projects/semediawiki/

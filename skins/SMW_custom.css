@@ -1,0 +1,131 @@
+/* tables for inline queries */
+
+table.smwtable th {
+	background-color: #EEF;
+}
+
+table.smwtable td {
+	background-color: #FFF;
+	padding: 1px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+table.smwtable {
+	background-color: #EEF;
+}
+
+/* factbox */
+
+span.smwfactboxhead {
+	font-size: 110%;
+	font-weight: bold;
+}
+
+div.smwfact {
+	clear: both;
+	background-color: #F9F9F9;
+	padding: 5px;
+	margin-top: 1em;
+	border: 1px solid #AAA;
+	font-size: 95%;
+}
+
+div.smwfact td, div.smwfact tr, div.smwfact table{
+	background-color: #F9F9F9;
+}
+
+div.smwfact td.smwrelname, div.smwfact td.smwattname, div.smwfact td.smwspecname{
+	text-align: right;
+	vertical-align: top;
+	padding-right: 1em;
+}
+
+div.smwfact td.smwrels, div.smwfact td.smwatts, div.smwfact td.smwspecs{
+	vertical-align: top;
+}
+
+div.smwfact th.relhead, div.smwfact th.atthead, div.smwfact th.spechead{
+	text-align: left;
+	border-top: 1px dotted #AAA;
+}
+
+/* warning messages */
+
+span.smwwarning{
+	color: #888;
+	font-style: italic;
+	font-size: 90%;
+}
+
+/* search icons */
+
+span.smwsearchicon {
+	padding-right: 16px;
+	margin-right: 2px;
+	color: #888;
+	background: url(searchgray_iconsmall.png) center right no-repeat;
+}
+
+#bodyContent span.smwsearch a{
+	padding-right: 16px;
+	margin-right: 2px;
+	color: #888;
+	background: url(searchgray_iconsmall.png) center right no-repeat;
+}
+
+#bodyContent span.smwsearch a:hover{
+	text-decoration: none;
+	color: #00F;
+	padding-right: 18px;
+	margin-right: 0px;
+	background: url(search_icon.png) center right no-repeat;
+}
+
+#bodyContent span.smwmap a{
+	padding-right: 20px;
+	color: #888;
+	background: url(world.png) center right no-repeat;
+}
+
+#bodyContent span.smwmap a:hover{
+	padding-right: 20px;
+	color: #00F;
+	background: url(world.png) center right no-repeat;
+}
+
+/* RDF icons */
+
+#bodyContent span.rdflink a{
+	padding-right: 20px;
+	color: #888;
+	background: url(rdf_flyer.18.gif) center right no-repeat;
+}
+
+#bodyContent span.rdflink a:hover{
+	text-decoration: none;
+	color: #00F;
+	padding-right: 20px;
+	margin-right: 0px;
+	background: url(rdf_flyer.18.gif) center right no-repeat;
+}
+
+/* attribute tooltips */
+
+div.smwtt {
+	font-size: 10pt;
+	position: absolute;
+	visibility: hidden;
+	z-index: 20;
+	top: 0px;
+	left: 0px;
+	padding: 3px 10px;
+	background-color: #FFFFCC;
+	border: 1px solid #AAA;
+}
+
+a.smwatr, a.smwatr:hover, a.smwatr:active, a.smwatr:visited {
+    color: #B70;
+	text-decoration: none;
+	cursor: help;
+}
