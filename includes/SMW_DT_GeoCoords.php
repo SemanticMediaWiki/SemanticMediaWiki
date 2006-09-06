@@ -127,12 +127,12 @@ class SMWGeographicLocationTypeHandler implements SMWTypeHandler {
 		$datavalue->addQuicksearchLink();
 		
 		// the map links are hardcoded and can be changed/extended manually
-		if ($long['dir']==wfMsgForContent('smw_abb_west') ) {
-			$signlong= '-';
-		} $signlong= '';
-		if ($lat['dir']==wfMsgForContent('smw_abb_south') ) {
-			$signlat= '-';
-		} else $signlat= '';
+		if ($long['dir'] == wfMsgForContent('smw_abb_west') ) {
+			$signlong = '-';
+		} else $signlong = '';
+		if ($lat['dir'] == wfMsgForContent('smw_abb_south') ) {
+			$signlat = '-';
+		} else $signlat = '';
 		// MediaWiki map extension
 		$maplink = 'http://kvaleberg.com/extensions/mapsources/?params=' .
 		       $lat['deg'] . '_' . $lat['min'] . '_' . $lat['sec']  . '_' . $lat['dir'] . '_' .
@@ -143,7 +143,7 @@ class SMWGeographicLocationTypeHandler implements SMWTypeHandler {
 		$maplink = 'http://maps.google.com/maps?ll=' . $signlat . $declat . ',' . $signlong . $declong . '&spn=0.1,0.1&t=k';
 		$datavalue->addInfolink(new SMWInfolink($maplink,'Google&nbsp;Maps','smwmap'));
 		// Mapquest
-		$maplink = 'http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=' . $signlat . $lat['deg'] . '&latmin=' . $lat['min'] . '&latsec=' . $lat['sec'] . '&longdeg=' . $signlong . $long['deg'] . '&longmin=' . $long['min'] . '&longsec=' . $long['sec'] . '&zoom=6';
+		$maplink = 'http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=' . $signlat . $lat['deg'] . '&latmin=' . $lat['min'] . '&latsec=' . round($lat['sec']) . '&longdeg=' . $signlong . $long['deg'] . '&longmin=' . $long['min'] . '&longsec=' . round($long['sec']) . '&zoom=6';
 		$datavalue->addInfolink(new SMWInfolink($maplink,'Mapquest','smwmap'));
 
 		return;
