@@ -251,7 +251,7 @@ class SMWDataValue {
 	 * SMWDataValue->others.
 	 */
 	function setPrintoutString($string, $key = '') {
-		$this->others["K$key"] = $string; // use "K" to work around PHP casting string "1" to a numericla index, even when passed with strval($key)
+		$this->others["K$key"] = $string; // use "K" to work around PHP casting string "1" to a numerical index, even when passed with strval($key)
 	}
 
 	/**
