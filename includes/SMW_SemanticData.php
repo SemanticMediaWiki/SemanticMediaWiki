@@ -229,7 +229,9 @@ class SMWSemanticData {
 
 		// print the input (this property is not stored, see SMW_Storage.php)
 		$datavalue = SMWDataValue::newTypedValue($sth,SMWSemanticData::$skin,"[$onto_uri$onto_section $value]");
-		if ('' != $onto_name) $datavalue->setPrintoutString($onto_name, 'onto_name');
+		// TODO: Unfortunatelly, the following line can break the tooltip code if $onto_name has markup. -- mak
+		// if ('' != $onto_name) $datavalue->setPrintoutString($onto_name, 'onto_name');
+		if ('' != $onto_name) $datavalue->setPrintoutString("[$onto_uri$onto_section $value] ($onto_name)");
 		SMWSemanticData::$specaArray[SMW_SP_IMPORTED_FROM] = array($datavalue);
 		return $datavalue;
 	}
