@@ -9,20 +9,18 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-require_once($smwgIP . '/includes/SMW_Storage.php');
+//require_once($smwgIP . '/includes/SMW_Storage.php');
 require_once( "$IP/includes/SpecialPage.php" );
 
 $wgExtensionFunctions[] = "wfExportRDFExtension";
 
-function wfExportRDFExtension()
-{
+function wfExportRDFExtension() {
 	smwfInitMessages(); // initialize messages, always called before anything else on this page
 	SpecialPage::addPage( new SpecialPage('ExportRDF','',true,'doSpecialExportRDF',false) );
 }
 
 
-function doSpecialExportRDF($page = '')
-{
+function doSpecialExportRDF($page = '') {
 	global $wgOut, $wgRequest, $wgUser, $smwgAllowRecursiveExport, $smwgExportBacklinks;
 	
 	$recursive = 0;  //default, no recursion
@@ -93,14 +91,134 @@ function doSpecialExportRDF($page = '')
 }
 
 
+/**
+ * Data class for holding all (special) data needed to export an articles 
+ * subject. Keeps data needed to generate type and URIs, as well as other
+ * special property values.
+ */
+class SMWExportTitle {
+	//@TODO: some of those members can be made local
 
+	// Values for special properties, see SMW_Settings.php for documentation.
+	// Each value may be missing if not set or not relevant
+	public $has_type = false;
+	public $has_uri = false;
+	public $ext_nsid = false;
+	public $ext_section = false;
+	// relevant title values, mandatory
+	public $title_text;
+	public $title_namespace;
+	public $title_id;
+	public $title_fragment;
+	public $title_prefurl;
+	public $title_dbkey;
+	// details about URIs for export
+	public $ns_uri = false;
+	public $short_uri;
+	public $long_uri;
+	public $label;
+	// key for hashing
+	public $hashkey;
+	// flags for controlling export
+	public $is_individual;
+	public $exists;
 
+	/**
+	 * Initialise the data for a given article title object, using the
+	 * provided DB handler.
+	 */
+	public function SMWExportTitle($title, $export, $modifier = '') {
+		$this->title_text = $title->getText();
+		$this->title_id = $title->getArticleID();
+		$this->title_namespace = $title->getNamespace();
+		$this->title_fragment = $title->getFragment();
+		$this->title_prefurl = $title->getPrefixedURL();
+		$this->title_dbkey = $title->getDBKey();
+		$this->hashkey = $this->title_prefurl . ' ' . $modifier; // must agree with keys generated elsewhere in this code!
+		if ($modifier != '') $modifier = '#' . $modifier;
 
-class ExportRDF
-{
+		$this->is_individual = ( ($this->title_namespace !== SMW_NS_RELATION) && ($this->title_namespace !== SMW_NS_ATTRIBUTE) && ($this->title_namespace !== NS_CATEGORY) );
+		$this->exists = $title->exists();
+
+		if ($this->exists) {
+			$res = $export->db->select($export->db->tableName('smw_specialprops'),
+									'property_id, value_string',
+									'subject_id =' . $export->db->addQuotes($this->title_id),
+									'SMWExportTitle::newFromID');
+			while($row = $export->db->fetchObject($res)) { // read out relevant special props
+				switch ($row->property_id) {
+					case SMW_SP_HAS_TYPE:
+						$this->has_type = $row->value_string;
+						break;
+					case SMW_SP_HAS_URI:
+						$this->has_uri = $row->value_string;
+						break;
+					case SMW_SP_EXT_BASEURI:
+						$this->ns_uri = $row->value_string;
+						break;
+					case SMW_SP_EXT_NSID:
+						$this->ext_nsid = $row->value_string;
+						break;
+					case SMW_SP_EXT_SECTION:
+						$this->ext_section = $row->value_string;
+						break;
+				}
+			}
+			$export->db->freeResult($res);
+		}
+
+		// Calculate URIs and label
+		global $wgContLang;
+		$ns_text = $wgContLang->getNsText($this->title_namespace);
+		if ($ns_text!='') {
+			$ns_text .= ':';
+		}
+
+		if ($this->ns_uri === false) { //no external URI
+			$this->ns_uri = ExportRDF::makeXMLExportId(urlencode(str_replace(' ', '_', $ns_text)));
+			$baseXML = ExportRDF::makeXMLExportId(urlencode(str_replace(' ', '_', $this->title_text . $modifier)));
+			switch ($this->title_namespace) {
+				case SMW_NS_RELATION:
+					$xmlprefix = 'relation:';
+					$xmlent = '&relation;';
+					break;
+				case SMW_NS_ATTRIBUTE:
+					$xmlprefix = 'attribute:';
+					$xmlent = '&attribute;';
+					break;
+				default:
+					$xmlprefix = 'thing:';
+					$xmlent = '&thing;';
+					$baseXML = $this->ns_uri . $baseXML;
+					$this->ns_uri = '';
+					break;
+			}
+			$this->long_uri = $xmlent . $baseXML;
+			if (mb_substr($baseXML,0,1)=='-') { // illegal as first char in XML
+				$this->short_uri = 'wiki:_' . $this->ns_uri . $baseXML;
+			} else {
+				$this->short_uri = $xmlprefix . $baseXML;
+			}
+		} else { // external URI known
+			$this->long_uri = $this->ns_uri . $this->ext_section;
+			$this->short_uri = $this->ext_nsid . ':' . $this->ext_section;
+			$export->addExtraNamespace($this->ext_nsid, $this->ns_uri);
+		}
+		$this->label = str_replace('&','&amp;',$ns_text . $this->title_text); //@TODO this is not cool; use a global funcion for making XML-content-safe; probably just use urlencode of PHP
+	}
+}
+
+/**
+ * Class for encapsulating the methods for RDF export.
+ */
+class ExportRDF {
 	/**#@+
 	 * @access private
 	 */
+	 
+	const MAX_CACHE_SIZE = 5000; // do not let cache arrays get larger than this
+	const CACHE_BACKJUMP = 500;  // kill this many cached entries if limit is reached, 
+	                             // avoids too much array copying; <= MAX_CACHE_SIZE!
 
 	/**
 	 * The basic namespace for acrticles in this wiki (computed on creation).
@@ -119,6 +237,11 @@ class ExportRDF
 	 * write auxilliary definitions.
 	 */
 	var $element_queue;
+
+	/**
+	 * An array that keeps track of the elements which have been exported already
+	 */
+	var $element_done;
 
 	/**
 	 * URL of this special page
@@ -178,7 +301,7 @@ class ExportRDF
 	 */
 	var $delay_flush;
 
-	function ExportRDF()
+	public function ExportRDF()
 	{
 		global $smwgServer; // server address for URIs (without http://)
 		global $wgServer;   // actual server address (with http://)
@@ -190,7 +313,8 @@ class ExportRDF
 		$title = Title::makeTitle( NS_SPECIAL, 'ExportRDF' );
 		$this->special_url = '&wikiurl;' . $title->getPrefixedURL();
 
-		$this->element_queue = Array();
+		$this->element_queue = array();
+		$this->element_done = array();
 	}
 
 	/**
@@ -203,85 +327,172 @@ class ExportRDF
 	 * The parameter $backlinks determines whether or not subjects of incoming 
 	 * properties are exported as well. Enables "browsable RDF."
 	 */
-	function printPages($pages,$recursion=1,$backlinks=true) {
+	public function printPages($pages, $recursion = 1, $backlinks = true) {
 		$this->db = & wfGetDB( DB_MASTER );
 		$this->pre_ns_buffer = '';
 		$this->post_ns_buffer = '';
 		$this->first_flush = true;
 		$this->delay_flush = 10; //flush only after (fully) printing 11 objects
 		$this->extra_namespaces = array();
-		// $this->global_namespaces = array(); -> initialised when printing header
-		$this->printHeader();
+		$this->printHeader(); // also inits global namespaces
 
-		while (count($pages)>0) {
+		// transform pages into queued export titles
+		$cur_queue = array();
+		foreach ($pages as $page) {
+			$title = Title::newFromText($page);
+			if (NULL === $title) continue; //invalid title name given
+			$et = new SMWExportTitle($title, $this);
+			$cur_queue[$title->getPrefixedURL() . ' '] = $et; // " " is the modifier separator
+		}
+
+		while (count($cur_queue) > 0) {
 			// first, print all selected pages
-			foreach ( $pages as $page) {
-				$title = Title::newFromText($page);
-				if (NULL === $title) continue; //invalid title name given
-				$this->printTriples($title);
-				// add backlinks to element queue
-				if ($backlinks===true) {
-					extract($this->db->tableNames( 'smw_attributes','smw_relations','smw_specialprops' ));
+			foreach ( $cur_queue as $et) {
+				$this->printTriples($et);
+				$this->markAsDone($et);
+
+				// prepare array for next iteration
+				$cur_queue = array();
+				if (1 == $recursion) {
+					$cur_queue = $this->element_queue + $cur_queue; // make sure the array is *dublicated* instead of copying its ref
+					$this->element_queue = array();
+				}
+				// possibly add backlinks
+				if ($backlinks === true) {
 					$res = $this->db->query(
-					    "SELECT DISTINCT subject_id FROM $smw_relations 
-					     WHERE object_title=" . $this->db->addQuotes($title->getDBKey()), 
-					     'SMW::printPages');
-					if($this->db->numRows( $res ) > 0) {
-						$row = $this->db->fetchObject($res);
-						while($row) {
-							$subject_title = Title::newfromID($row->subject_id);
-							if (NULL!==$subject_title) {
-								$suris = $this->getURIsFromTitle($subject_title);
-								if ((!array_key_exists($suris[2],$this->element_queue))||
-								    ($this->element_queue[$suris[2]]!=false)) {
-									//$this->element_queue[$suris[2]] = true;
-									//if ($this->element_queue[$suris[2]]!=false)
-										$this->printTriples($subject_title);
-								}
-							}
-							$row = $this->db->fetchObject($res);
+					    'SELECT DISTINCT subject_id FROM ' . $this->db->tableName('smw_relations') .
+					     ' WHERE object_title=' . $this->db->addQuotes($et->title_dbkey) .
+					     ' AND object_namespace=' . $this->db->addQuotes($et->title_namespace),
+					     'SMWExportRDF::printPages');
+					while($row = $this->db->fetchObject($res)) {
+						$st = $this->getExportTitleFromID($row->subject_id);
+						if (!array_key_exists($st->hashkey, $this->element_done)) {
+							$cur_queue[] = $st;
 						}
 					}
+					if ( NS_CATEGORY === $et->title_namespace ) { // also print elements of categories
+						$res = $this->db->query(
+						    'SELECT cl_from FROM ' . $this->db->tableName('categorylinks') .
+						     ' WHERE cl_to=' . $this->db->addQuotes($et->title_dbkey),
+						     'SMWExportRDF::printPages');
+						while($row = $this->db->fetchObject($res)) {
+							$st = $this->getExportTitleFromID($row->cl_from);
+							if (!array_key_exists($st->hashkey, $this->element_done)) {
+								$cur_queue[] = $st;
+							}
+						}
+					}
+					if ( 0 == $recursion ) $backlinks = false; // do not recurse through backlinks either
 				}
 				if ($this->delay_flush > 0) $this->delay_flush--;
 			}
-			// then look for related pages that were encountered
-			$pages = array();
-			if (1 == $recursion) {
-				foreach ( $this->element_queue as $page => $open ) {
-					if ($open) {
-						$pages[] = $page;
-						$this->element_queue[$page] = false; // prevent loops even if this code is buggy
-					}
-				}
-			}
 		}
 
-		// if pages are not processed recursively, at least print the declarations
-		// of related pages
-		if (0 == $recursion) {
+		// if pages are not processed recursively, print mentioned declarations
+		if (count($this->element_queue) > 0) {
 			if ( '' != $this->pre_ns_buffer ) {
 				$this->post_ns_buffer .= "\t<!-- auxilliary definitions -->\n";
 			} else {
 				print "\t<!-- auxilliary definitions -->\n"; // just print this comment, so that later outputs still find the empty pre_ns_buffer!
 			}
-			foreach ( $this->element_queue as $page => $open ) {
-				if ($open) {
-					$title = Title::newFromText($page);	
-					$this->printTriples($title,false);
-				}
+			foreach ( $this->element_queue as $et ) {
+				$this->printTriples($et,false);
 			}
 		}
 
 		$this->printFooter();
 		$this->flushBuffers(true);
 	}
-	
+
+	/**
+	 * This function prints RDF for *all* pages within the wiki, and for all
+	 * elements that are referred to in the exported RDF.
+	 */
+	public function printAll($outfile, $ns_restriction = false) {
+		global $smwgNamespacesWithSemanticLinks;
+
+		$this->db = & wfGetDB( DB_MASTER );
+		$this->pre_ns_buffer = '';
+		$this->post_ns_buffer = '';
+		$this->first_flush = true;
+		if ( $outfile === false ) {
+			//$this->delay_flush = 10000; //flush only after (fully) printing 10001 objects,
+			$this->delay_flush = -1; // do not flush buffer at all
+		} else {
+			$file = fopen($outfile, 'w');
+			if (!$file) {
+				print "\nCannot open \"$outfile\" for writing.\n";
+				return false;
+			}
+			print "\nWriting RDF dump to file \"$outfile\" ...\n";
+			$this->delay_flush = -1; // never flush, we flush in another way
+		}
+		$this->extra_namespaces = array();
+		$this->printHeader(); // also inits global namespaces
+
+		$start = 1;
+		$end = $this->db->selectField( 'page', 'max(page_id)', false, $fname );
+
+		$a_count = 0; $d_count = 0; //DEBUG
+
+		for ($id = $start; $id <= $end; $id++) {
+			$title = Title::newFromID($id);
+			if ( ($title === NULL) || !smwfIsSemanticsProcessed($title->getNamespace()) ) continue;
+			if ( !ExportRDF::fitsNsRestriction($ns_restriction, $title->getNamespace()) ) continue;
+			$cur_queue = array(new SMWExportTitle($title, $this));
+			$a_count++; //DEBUG
+			while (count($cur_queue) > 0) {
+				foreach ( $cur_queue as $et) {
+					$this->printTriples($et);
+					$this->markAsDone($et);
+				}
+				// resolve dependencies that will otherwise not be printed
+				$cur_queue = array();
+				foreach ($this->element_queue as $etq) {
+					if ( (!$etq->exists) || !smwfIsSemanticsProcessed($etq->title_namespace) ||
+					      !ExportRDF::fitsNsRestriction($ns_restriction, $etq->title_namespace) ) {
+					// Note: we do not need to check the cache to guess if an element was already
+					// printed. If so, it would not be included in the queue in the first place.
+						$cur_queue[] = $etq;
+						//$this->post_ns_buffer .= "<!-- Adding dependency '" . $etq->label . "' -->"; //DEBUG
+						$d_count++; //DEBUG
+					}
+				}
+			}
+			if ($outfile !== false) { // flush buffer
+				fwrite($file, $this->post_ns_buffer);
+				$this->post_ns_buffer = '';
+			}
+		}
+		//DEBUG:
+		$this->post_ns_buffer .= "<!-- Processed $a_count regular articles. -->\n";
+		$this->post_ns_buffer .= "<!-- Processed $d_count added dependencies. -->\n";
+		$this->post_ns_buffer .= "<!-- Final cache size was " . sizeof($this->element_done) . ". -->\n";
+
+		$this->printFooter();
+		
+		if ($outfile === false) {
+			$this->flushBuffers(true);
+		} else { // prepend headers to file, there is no really efficient solution (`cat(1)`) for this it seems
+			// print head:
+			fclose($file);
+			foreach ($this->extra_namespaces as $nsshort => $nsuri) {
+				 $this->pre_ns_buffer .= "\n\txmlns:$nsshort=\"$nsuri\"";
+			}
+			$full_export = file_get_contents($outfile);
+			$full_export = $this->pre_ns_buffer . $full_export . $this->post_ns_buffer;
+			$file = fopen($outfile, 'w');
+			fwrite($file, $full_export);
+			fclose($file);
+		}
+	}
+
+
 	/* Functions for exporting RDF */
 
 	function printHeader() {
 		global $wgContLang;
-		
+
 		$this->pre_ns_buffer .=
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" .
 			"<!DOCTYPE rdf:RDF[\n" .
@@ -326,56 +537,30 @@ class ExportRDF
 	function printFooter() {
 		$this->post_ns_buffer .= '</rdf:RDF>';
 	}
-	
-	function printTriples($title, $fullexport=true) {
-		if ($title === NULL) { return; } //this should not happen ...
-		
-		//// == normalize title text ==
-		// This deserves some explanation: we process the given page name via
-		// a title object since this eliminates acceptable discrepancies in 
-		// the user input. However, we have to recover the fragment part as
-		// well since we use fragments to encode units for attributes, which
-		// is required especially when calling this method recursively. For the
-		// recursive case, the normlization step is not required, since it was 
-		// already performed in getURIs. However, we need the title for our
-		// database access anyway, and thus we do not loose much. It might be
-		// questionable whether the normalization of the fragement part is 
-		// actually desirable, since it is normally different from the unit string
-		// that the datatype object returns for storing in the internal database.
-		// Maybe we should do a title-normalization of the internal unit strings
-		// when storing them.
-		
-		$pageURIs = $this->getURIsFromTitle($title);
-		$pageID = $title->getArticleID();
-		
-		$subrel_rel = false;
+
+	function printTriples($et, $fullexport=true) {
 		$datatype_rel = false;
-		$subatt_rel = false;
 		$category_rel = false;
 		$equality_rel = false;
-		
-		switch ($title->getNamespace()) {
+
+		// Set parameters for export
+		switch ($et->title_namespace) {
 			case SMW_NS_RELATION:
 				$type = 'owl:ObjectProperty';
 				$equality_rel = "owl:equivalentProperty";
-				$subrel_rel = "rdfs:subPropertyOf";
 				break;
 			case SMW_NS_ATTRIBUTE:
-				$datatypes = smwfGetSpecialProperties($title,SMW_SP_HAS_TYPE,NULL);
-				if (0 == count($datatypes)) return; //Attribute without type not exportable
-				$datatype_handler = SMWTypeHandlerFactory::getTypeHandlerByLabel($datatypes[0][2]);
-				if (count($datatypes) != 0) {
-					if ( ('annouri' == $datatype_handler->getID()) || ('annostring' == $datatype_handler->getID()) ) {
-						$type = 'owl:AnnotationProperty'; // cannot be a subproperty, etc.
-					} else {
-						if ('' != $datatype_handler->getXSDType()) {
-							$type = 'owl:DatatypeProperty';
-						} else { // no xsd-type -> treat as object property
-							$type = 'owl:ObjectProperty';
-						}
-						$equality_rel = "owl:equivalentProperty";
-						$subatt_rel = "rdfs:subPropertyOf";
+				if ( $et->has_type === false ) return; //attributes w/o type not exportable
+				$datatype_handler = SMWTypeHandlerFactory::getTypeHandlerByLabel($et->has_type);
+				if ( ('annouri' == $datatype_handler->getID()) || ('annostring' == $datatype_handler->getID()) ) {
+					$type = 'owl:AnnotationProperty'; // cannot be a subproperty, etc.
+				} else {
+					if ('' != $datatype_handler->getXSDType()) {
+						$type = 'owl:DatatypeProperty';
+					} else { // no xsd-type -> treat as object property
+						$type = 'owl:ObjectProperty';
 					}
+					$equality_rel = "owl:equivalentProperty";
 				}
 				break;
 			case NS_CATEGORY:
@@ -390,98 +575,99 @@ class ExportRDF
 				break;
 		}
 
+		// Write export
 		if ('' == $this->pre_ns_buffer) { // start new ns block
-			$this->pre_ns_buffer .= "\t<$type rdf:about=\"" . $pageURIs[0] . "\"";
+			$this->pre_ns_buffer .= "\t<$type rdf:about=\"" . $et->long_uri . "\"";
 		} else {
-			$this->post_ns_buffer .= "\t<$type rdf:about=\"" . $pageURIs[0] . "\"";
+			$this->post_ns_buffer .= "\t<$type rdf:about=\"" . $et->long_uri . "\"";
 		}
 		$this->post_ns_buffer .= ">\n" .
-		      "\t\t<rdfs:label>" . str_replace('&','&amp;',$pageURIs[2]) . "</rdfs:label>\n" .
+		      "\t\t<rdfs:label>" . $et->label . "</rdfs:label>\n" .
 		      "\t\t<smw:hasArticle rdf:resource=\"&wikiurl;" .
-		              $title->getPrefixedURL() . "\"/>\n" .
+		              $et->title_prefurl . "\"/>\n" .
 		      "\t\t<rdfs:isDefinedBy rdf:resource=\"" .
-		              $this->special_url . '/' . $title->getPrefixedURL() . "\"/>\n";
+		              $this->special_url . '/' . $et->title_prefurl . "\"/>\n";
 
-		if ($fullexport) {
-			$this->element_queue[$pageURIs[2]] = false; //do not process this element again
-			
+		if ( ($fullexport) && ($et->exists) ) {
 			// add statements about categories
 			if ($category_rel) {
-				$dbr =& wfGetDB( DB_MASTER );
-				$res = $dbr->query( "SELECT cl_to FROM " . $dbr->tableName('categorylinks') . " WHERE cl_from=$pageID", "SMW::ExportRDF");
-				
-				if($dbr->numRows( $res ) > 0) {
-					$row = $dbr->fetchObject($res);
-					while($row) {
-						//foreach ($catlinks as $catlink) {
-						$catURIs = $this->getURIs($row->cl_to, NS_CATEGORY);
+				$res = $this->db->query( 'SELECT cl_to FROM ' . $this->db->tableName('categorylinks') . ' WHERE cl_from=' . $et->title_id, 'SMWExportRDF::printTriples');
+				while($row = $this->db->fetchObject($res)) {
+					$ct = $this->getExportTitle($row->cl_to, NS_CATEGORY);
+					$this->post_ns_buffer .= "\t\t<" . $category_rel . ' rdf:resource="' . $ct->long_uri .  "\"/>\n";
+				}
+				$this->db->freeResult($res);
+			}
 
-						$this->post_ns_buffer .= "\t\t<" . $category_rel . ' rdf:resource="' . $catURIs[0] .  "\"/>\n";
-						
-						if (!array_key_exists($catURIs[2], $this->element_queue)) {
-							$this->element_queue[$catURIs[2]] = true;
-						}
-						$row = $dbr->fetchObject($res);
-					}
-				}
-			}
-			
-			// add statements about equivalence to (external) URIs
-			if ($equality_rel) {
-				$equalities = smwfGetSpecialProperties($title,SMW_SP_HAS_URI,NULL);
-				$fragment = $title->getFragment();
-				if( '' != $fragment ) {
-					$fragment = '#' . $fragment;
-				}
-				foreach ($equalities as $equality) {
-					$this->post_ns_buffer .= "\t\t<" . $equality_rel . ' rdf:resource="' . $equality[2] . $fragment .  "\"/>\n";
-				}
-			}
-			
-			// add rdf:type statements
+			// TODO: this is not convincing, esp. now that we have custom types
 			if (isset($datatype_handler)) {
 				$this->post_ns_buffer .= "\t\t<smw:hasType " . 'rdf:resource="&smwdt;' . $datatype_handler->getID() . "\"/>\n";
 			}
-			
+
+			// add statements about equivalence to (external) URIs
+			// FIXME: temporarily disabled
+// 			if ($equality_rel) {
+// 				$equalities = smwfGetSpecialProperties($title,SMW_SP_HAS_URI,NULL);
+// 				$fragment = $title->getFragment();
+// 				if( '' != $fragment ) {
+// 					$fragment = '#' . $fragment;
+// 				}
+// 				foreach ($equalities as $equality) {
+// 					$this->post_ns_buffer .= "\t\t<" . $equality_rel . ' rdf:resource="' . $equality[2] . $fragment .  "\"/>\n";
+// 				}
+// 			}			
+
 			// add rdfs:subPropertyOf statements
-			if ($subrel_rel) {
-				$relations = smwfGetSpecialProperties($title,SMW_SP_IS_SUBRELATION_OF,NULL);
-				foreach ($relations as $relation) {
-					$relURIs = $this->getURIs($relation[2],0);
-					//@TODO: do type checks here or on saving ...
-					$this->post_ns_buffer .= "\t\t<$subrel_rel rdf:resource=\"$relURIs[0]\"/>\n";
-					if (!array_key_exists($relURIs[2], $this->element_queue)) {
-							$this->element_queue[$relURIs[2]] = true;
+			// FIXME: temporarily disabled
+// 			if ($subrel_rel) {
+// 				$relations = smwfGetSpecialProperties($title,SMW_SP_IS_SUBRELATION_OF,NULL);
+// 				foreach ($relations as $relation) {
+// 					$relURIs = $this->getURIs($relation[2],0);
+// 					//@TODO: do type checks here or on saving ...
+// 					$this->post_ns_buffer .= "\t\t<$subrel_rel rdf:resource=\"$relURIs[0]\"/>\n";
+// 					if (!array_key_exists($relURIs[2], $this->element_queue)) {
+// 							$this->element_queue[$relURIs[2]] = true;
+// 					}
+// 				}
+// 			}
+// 			if ($subatt_rel) {
+// 				$attributes = smwfGetSpecialProperties($title,SMW_SP_IS_SUBRELATION_OF,NULL);
+// 				foreach ($attributes as $attribute) {
+// 					$attURIs = $this->getURIs($attribute[2],0);
+// 					//@TODO: do type checks here or on saving ...
+// 					$this->post_ns_buffer .= "\t\t<$subatt_rel rdf:resource=\"$attURIs[0]\"/>\n";
+// 					if (!array_key_exists($attURIs[2], $this->element_queue)) {
+// 							$this->element_queue[$attURIs[2]] = true;
+// 					}
+// 				}
+// 			}
+
+			if ($et->is_individual) { // do not print relations for schema elements, stay in OWL DL
+				// print all relations
+				$res = $this->db->query( 'SELECT relation_title, object_namespace, object_title FROM ' . $this->db->tableName('smw_relations') . ' WHERE subject_id=' . $et->title_id, 'SMWExportRDF::printTriples');
+				while($row = $this->db->fetchObject($res)) {
+					$pt = $this->getExportTitle($row->relation_title, SMW_NS_RELATION);
+					$ot = $this->getExportTitle($row->object_title, $row->object_namespace);
+					if ($ot->is_individual) { // no OWL Full
+						$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:resource="' . $ot->long_uri .  "\"/>\n";
 					}
 				}
-			}
-			if ($subatt_rel) {
-				$attributes = smwfGetSpecialProperties($title,SMW_SP_IS_SUBRELATION_OF,NULL);
-				foreach ($attributes as $attribute) {
-					$attURIs = $this->getURIs($attribute[2],0);
-					//@TODO: do type checks here or on saving ...
-					$this->post_ns_buffer .= "\t\t<$subatt_rel rdf:resource=\"$attURIs[0]\"/>\n";
-					if (!array_key_exists($attURIs[2], $this->element_queue)) {
-							$this->element_queue[$attURIs[2]] = true;
+				// print all attributes
+				$res = $this->db->query( 'SELECT attribute_title, value_unit, value_datatype, value_xsd FROM ' . $this->db->tableName('smw_attributes') . ' WHERE subject_id=' . $et->title_id, 'SMWExportRDF::printTriples');
+				while($row = $this->db->fetchObject($res)) {
+					$pt = $this->getExportTitle($row->attribute_title, SMW_NS_ATTRIBUTE, $row->value_unit);
+					$xsdtype = SMWTypeHandlerFactory::getXSDTypeByID($row->value_datatype);
+					if ( ($xsdtype !== '') && ($xsdtype !== NULL) ) {
+						$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:datatype="' . $xsdtype .  '">' . $row->value_xsd . '</' . $pt->short_uri . ">\n";
+					} elseif ($xsdtype === '') { // no xsd-type -> export as object property
+						$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:resource="' . $row->value_xsd .  "\"/>\n";
+					} else {
+						$this->post_ns_buffer .= "<!-- Sorry, type '$row->value_datatype' of attribute '$pt->label' could not be resolved to XSD. Probably an upgrade issue. Try saving the respective article again. -->";
 					}
-				}
-			}
-			
-			//print all relations and attributes
-			$as=smwfGetRelations($title,NULL,NULL);
-			if ($as!==false && count($as)>0) {
-				foreach($as as $a) {
-					$this->processRelation($a);
-				}
-			}
-			$as=smwfGetAttributes($title,NULL,NULL,NULL,NULL);
-			if ($as!==false && count($as)>0) {
-				foreach($as as $a) {
-					$this->processAttribute($a);
 				}
 			}
 		}
-		
+
 		$this->post_ns_buffer .= "\t</" . $type . ">\n";
 		$this->flushBuffers();
 	}
@@ -492,7 +678,7 @@ class ExportRDF
 	 *
 	 * @param force if true, the flush cannot be delayed any longer
 	 */
-	function flushBuffers($force = false) {
+	public function flushBuffers($force = false) {
 		if ( '' == $this->post_ns_buffer ) return; // nothing to flush (every non-empty pre_ns_buffer also requires a non-empty post_ns_buffer)
 		if ( (0 != $this->delay_flush) && !$force ) return; // wait a little longer
 
@@ -509,7 +695,7 @@ class ExportRDF
 		print $this->post_ns_buffer;
 		$this->post_ns_buffer = '';
 		// Ship data in small chunks (even though browsers often do not display anything
-		// before the file is complete -- this might be due to sysntax highlighting features
+		// before the file is complete -- this might be due to syntax highlighting features
 		// for app/xml). You may want to sleep(1) here for debugging this.
 		ob_flush();
 		flush();
@@ -521,145 +707,93 @@ class ExportRDF
 	 * checks whether the required namespace is available globally and adds
 	 * it to the list of extra_namesapce otherwise.
 	 */
-	function addExtraNamespace($nsshort,$nsuri) {
+	public function addExtraNamespace($nsshort,$nsuri) {
 		if (!array_key_exists($nsshort,$this->global_namespaces)) {
 			$this->extra_namespaces[$nsshort] = $nsuri;
 		}
 	}
 
-	/**
-	 * Print the RDF for some object property (relation) statement, 
-	 * given as an array.
-	 */
-	function processRelation($rel) {
-		$relURIs = $this->getURIs($rel[1],SMW_NS_RELATION);
-		$objURIs = $this->getURIs($rel[3],$rel[2]);
-
-		$this->post_ns_buffer .= "\t\t<" . $relURIs[1] . ' rdf:resource="' . $objURIs[0] .  "\"/>\n";
-
-		if (!array_key_exists($relURIs[2], $this->element_queue)) {
-			$this->element_queue[$relURIs[2]] = true;
-		}
-		if (!array_key_exists($objURIs[2], $this->element_queue)) {
-			$this->element_queue[$objURIs[2]] = true;
-		}
-		return;
-	}
-
-	/**
-	 * Print the RDF for some data property (attribute) statement,
-	 * given as an array.
-	 */
-	function processAttribute($att) {
-		if ( $att[2] != '' ) {
-			$attlabel = $att[1] . '#' . $att[2];
-		} else {
-			$attlabel = $att[1];
-		}
-		$attURIs = $this->getURIs($attlabel,SMW_NS_ATTRIBUTE);
-
-		$xsdtype = SMWTypeHandlerFactory::getXSDTypeByID($att[3]);
-		if ( ($xsdtype !== '') && ($xsdtype !== NULL) ) {
-			$this->post_ns_buffer .= "\t\t<" . $attURIs[1] . ' rdf:datatype="' . $xsdtype .  '">' . $att[4] . '</' . $attURIs[1] . ">\n";
-		} elseif ($xsdtype === '') { // no xsd-type -> export as object property
-			$this->post_ns_buffer .= "\t\t<" . $attURIs[1] . ' rdf:resource="' . $att[4] .  "\"/>\n";
-		} else {
-			$this->post_ns_buffer .= "<!-- Sorry, type '$att[3]' of attribute '$attlabel' could not be resolved to XSD. Probably an upgrade issue. Try saving the respective article again. -->";
-		}
-
-		$attname = $attURIs[2];
-		if (!array_key_exists($attURIs[2], $this->element_queue)) {
-			$this->element_queue[$attURIs[2]] = true;
-		}
-		return;
-	}
-
-	/** Create full and abbreviated URIs for XML export. The inputs are
+	/** Fetch SMWExportTitle for a given article. The inputs are
 	 * $text -- standard text form of the main part of the article name 
 	 *          (no namespace, no urlencode)
 	 * $namespace -- the namespace constant
-	 * 
-	 * Returns an array with three entries: the full (0) and the abbreviated
-	 * (1) XML URI, and the human readable prefixed text version (2)
 	 */
-	function getURIs($text, $namespace) {
+	private function getExportTitle($text, $namespace, $modifier = '') {
 		$title = Title::newFromText($text, $namespace);
 		if ($title === NULL) {
-			$this->post_ns_buffer .= "<!-- Error: \"$nstext$text\" is not a valid article. -->\n";
-			return array("","",""); // returning this to an unprepared caller is not elegant, but better than crashing; the situation only can occur when the semantic tables are inconsistent with the wiki
+			$this->post_ns_buffer .= "<!-- Error: \"NS$namespace:$text\" is not a valid article. -->\n";
+			return NULL; // FIXME: return something that does not crash the export
+			// returning this to an unprepared caller is not elegant, but better than crashing; the situation only can occur when the semantic tables are inconsistent with the wiki
 		}
-		
-		return $this->getURIsFromTitle($title);
+		return $this->getExportTitleFromTitle($title, $modifier);
+	}
+
+	/** 
+	 * Fetch SMWExportTitle for a given article that is identified by its
+	 * article id.
+	 */
+	private function getExportTitleFromID($id, $modifier = '') {
+		$title = Title::newFromID($id);
+		if ($title === NULL) {
+			$this->post_ns_buffer .= "<!-- Error: there is no valid article with ID $id. -->\n";
+			return NULL; // FIXME: return something that does not crash the export
+			// returning this to an unprepared caller is not elegant, but better than crashing; the situation only can occur when the semantic tables are inconsistent with the wiki
+		}
+		return $this->getExportTitleFromTitle($title, $modifier);
+	}
+
+
+	/** 
+	 * Fetch SMWExportTitle for a given article. Caches are used to
+	 * makes this process more efficient. The title-object is needed to
+	 * have a normalised key for looking up the caches, and to create
+	 * new SMWExportTitles.
+	 */
+	private function getExportTitleFromTitle($title, $modifier = '') {
+		$key = $title->getPrefixedURL() . ' ' . $modifier;
+		if (array_key_exists($key, $this->element_done)) {
+			return $this->element_done[$key];
+		} elseif (array_key_exists($key, $this->element_queue)) {
+			return $this->element_queue[$key];
+		} else {
+			$et = new SMWExportTitle($title, $this, $modifier);
+			$this->element_queue[$key] = $et; // queue element
+			return $et;
+		}
 	}
 
 	/**
-	 * Like getURIs, but with different input. Expects a non-NULL title.
+	 * Mark an article as done while making sure that the cache used for this
+	 * stays reasonably small. Input is given as an SMWExportArticle object.
 	 */
-	function getURIsFromTitle($title) {
-		global $wgContLang;
-		$result = Array();
-
-		$ns_text = $wgContLang->getNsText($title->getNamespace());
-		if ($ns_text!='') {
-			$ns_text .= ':';
-			$ns_uri = $this->makeXMLExportId(urlencode(str_replace(' ', '_', $ns_text)));
-		} else {
-			$ns_uri = '';
+	private function markAsDone($et) {
+		if ( count($this->element_done) >= ExportRDF::MAX_CACHE_SIZE ) {
+			$this->element_done = array_slice( $this->element_done, 
+										ExportRDF::CACHE_BACKJUMP,
+										ExportRDF::MAX_CACHE_SIZE - ExportRDF::CACHE_BACKJUMP,
+										true );
 		}
-
-		$text = $title->getText(); //normalize title text
-		$fragment = $title->getFragment();
-		if( '' != $fragment ) {
-			$text .= '#' . $fragment;
-		}
-
-		$uris = smwfGetSpecialProperties($title,SMW_SP_EXT_BASEURI,NULL);
-		if (count($uris)>0) {
-			$nsuri = $uris[0][2];
-			$uris = smwfGetSpecialProperties($title,SMW_SP_EXT_NSID,NULL);
-			$nsshort = $uris[0][2];
-			$uris = smwfGetSpecialProperties($title,SMW_SP_EXT_SECTION,NULL);
-			$result[0] = $nsuri . $uris[0][2];
-			$result[1] = $nsshort . ':' . $uris[0][2];
-			$this->addExtraNamespace($nsshort,$nsuri);
-		} else {
-			$baseXML = $this->makeXMLExportId(urlencode(str_replace(' ', '_', $text)));
-
-			switch ($title->getNamespace()) {
-				case SMW_NS_RELATION:
-					$xmlprefix = 'relation:';
-					$xmlent = '&relation;';
-					break;
-				case SMW_NS_ATTRIBUTE:
-					$xmlprefix = 'attribute:';
-					$xmlent = '&attribute;';
-					break;
-				default:
-					$xmlprefix = 'thing:';
-					$xmlent = '&thing;';
-					$baseXML = $ns_uri . $baseXML;
-					$ns_uri = '';
-					break;
-			}
-
-			//$result[] = $this->wiki_xmlns_xml . '_' . $ns_uri . $baseXML;
-			$result[0] = $xmlent . $baseXML;
-			if (mb_substr($baseXML,0,1)=='-') {
-				$result[1] = 'wiki:_' . $ns_uri . $baseXML;
-			} else {
-				$result[1] = $xmlprefix . $baseXML;
-			}
-		}
-
-		$result[2] = $ns_text . $text;
-
-		return $result;
+		$this->element_done[$et->hashkey] = $et; //mark title as done
+		unset($this->element_queue[$et->hashkey]); //make sure it is not in the queue
 	}
-	
+
+	/**
+	 * This function checks whether some article fits into a given namespace restriction.
+	 * FALSE means "no restriction," non-negative restictions require to check whether
+	 * the given number equals the given namespace. A restriction of -1 requires the 
+	 * namespace to be different from Category:, Relation:, Attribute:, and Type:.
+	 */
+	static function fitsNsRestriction($res, $ns) {
+		if ($res === false) return true;
+		if ($res >= 0) return ( $res == $ns );
+		return ( ($res != NS_CATEGORY) && ($res != SMW_NS_RELATION) 
+		         && ($res != SMW_NS_ATTRIBUTE) && ($res != SMW_NS_TYPE) );
+	}
+
 	/** This function transforms a valid url-encoded URI into a string
 	 *  that can be used as an XML-ID. The mapping should be injective.
 	 */
-	function makeXMLExportId($uri) {
+	static function makeXMLExportId($uri) {
 		$uri = str_replace( '-', '-2D', $uri);
 		//$uri = str_replace( ':', '-3A', $uri); //already done by PHP
 		//$uri = str_replace( '_', '-5F', $uri); //not necessary
@@ -669,4 +803,5 @@ class ExportRDF
 		return $uri;
 	}
 }
+
 ?>
