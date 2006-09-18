@@ -165,14 +165,8 @@
 		                    $sql, $fname);
 		
 		$result = array();
-		if($db->numRows( $res ) > 0)
-		{
-			$row = $db->fetchObject($res);
-			while($row)
-			{
-				$result[]=array($row->subject_id,$row->relation_title,$row->object_namespace,$row->object_title);
-				$row = $db->fetchObject($res);
-			}
+		while($row = $db->fetchObject($res)) {
+			$result[]=array($row->subject_id,$row->relation_title,$row->object_namespace,$row->object_title);
 		}
 		$db->freeResult($res);
 		

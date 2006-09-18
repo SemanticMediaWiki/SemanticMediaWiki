@@ -267,5 +267,14 @@ $wgExtensionCredits['parserhook'][]= array('name'=>'Semantic MediaWiki', 'versio
 		$smwgMessagesInPlace = true;
 	}
 
+	/**
+	 * Return true if semantic data should be processed and displayed for this page.
+	 * @return bool
+	 */
+	function smwfIsSemanticsProcessed($namespace) {
+		global $smwgNamespacesWithSemanticLinks;
+		return !empty($smwgNamespacesWithSemanticLinks[$namespace]);
+	}
+
 
 ?>

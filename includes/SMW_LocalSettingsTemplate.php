@@ -84,29 +84,33 @@ smwfInitNamespaces(100);
 # can be given but are silently ignored. This is useful since, 
 # e.g., talk pages usually do not have attributes and the like. In 
 # fact, is is not obvious what a meaningful attribute of a talk 
-# page could be.
-# The "false" entries are irrelevant, but included for convenience.
+# page could be. Pages without annotations will also be ignored 
+# during full RDF export, unless they are referred to from another
+# article.
 ##
 $smwgNamespacesWithSemanticLinks = array(
-	          NS_MAIN => true,
-	          NS_TALK => false,
-	          NS_USER => true,
-	     NS_USER_TALK => false,
-	       NS_PROJECT => true,
-	  NS_PROJECT_TALK => false,
-	         NS_IMAGE => true,
-	    NS_IMAGE_TALK => false,
-	     NS_MEDIAWIKI => true,
-	NS_MEDIAWIKI_TALK => false,
-	      NS_TEMPLATE => false,
-	 NS_TEMPLATE_TALK => false,
-	          NS_HELP => true,
-	     NS_HELP_TALK => false,
-	      NS_CATEGORY => true,
-	 NS_CATEGORY_TALK => false,
-	  SMW_NS_RELATION => true,
-	 SMW_NS_ATTRIBUTE => true,
-	      SMW_NS_TYPE => true
+	              NS_MAIN => true,
+	              NS_TALK => false,
+	              NS_USER => true,
+	         NS_USER_TALK => false,
+	           NS_PROJECT => true,
+	      NS_PROJECT_TALK => false,
+	             NS_IMAGE => true,
+	        NS_IMAGE_TALK => false,
+	         NS_MEDIAWIKI => false,
+	    NS_MEDIAWIKI_TALK => false,
+	          NS_TEMPLATE => false,
+	     NS_TEMPLATE_TALK => false,
+	              NS_HELP => true,
+	         NS_HELP_TALK => false,
+	          NS_CATEGORY => true,
+	     NS_CATEGORY_TALK => false,
+	      SMW_NS_RELATION => true,
+	 SMW_NS_RELATION_TALK => false,
+	     SMW_NS_ATTRIBUTE => true,
+	SMW_NS_ATTRIBUTE_TALK => false,
+	          SMW_NS_TYPE => true,
+	     SMW_NS_TYPE_TALK => false
 );
 ##
 

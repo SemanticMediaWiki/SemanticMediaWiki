@@ -39,7 +39,7 @@
 
 		// print the results if enabled (we have to parse them in any case, in order to
 		// clean the wiki source for further processing)
-		if ( isSemanticsProcessed($parser->mTitle) ) {
+		if ( smwfIsSemanticsProcessed($parser->mTitle->getNamespace()) ) {
 			SMWSemanticData::printFactbox($text);
 		}
 
@@ -78,7 +78,7 @@
 	function smwfSaveHook(&$article, &$user, &$text)
 	{
 		$title=$article->getTitle();
-		return SMWSemanticData::storeData($title, isSemanticsProcessed($title));
+		return SMWSemanticData::storeData($title, smwfIsSemanticsProcessed($title->getNamespace()));
 	}
 
 	/**
@@ -201,19 +201,6 @@
 		$result .= '<a class="smwatr" onmouseover="showToolTip(\''.$id.'\')" onmouseout="hideToolTip()">'.$semanticLink[2].'</a></span>'; //no CamelCase for onmouse... -> W3C Validator
 
 		return $result;
-	}
-
-	/*********************************************************************/
-	/* Helpers                                                           */
-	/*********************************************************************/
-
-	/**
-	 * Return true if semantic data should be processed and displayed on this page.
-	 * @return bool
-	 */
-	function isSemanticsProcessed(&$title) {
-		global $smwgNamespacesWithSemanticLinks;
-		return !empty($smwgNamespacesWithSemanticLinks[$title->getNamespace()]);
 	}
 
 ?>
