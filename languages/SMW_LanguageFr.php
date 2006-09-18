@@ -85,6 +85,7 @@ class SMW_LanguageFr {
 	/*Messages for Attributes Special*/
 	'attributes' => 'Attributs',
 	'smw_attributes_docu' => 'Sur ce wiki, existent les attributs suivants:',
+	'smw_attr_type_join' => ' avec $1',
 	/*Messages for Unused Relations Special*/
 	'unusedrelations' => 'Relations orphelines',
 	'smw_unusedrelations_docu' => 'Des pages pour les relations suivantes existent, mais elles ne sont pas utilisées.',
@@ -101,7 +102,9 @@ class SMW_LanguageFr {
 	'smw_ontologyimport_return' => 'Revenir à <a href="$1">Importer l\'ontologie</a>.',	//Différence avec la version anglaise
 	/*Messages for (data)Types Special*/
 	'types' => 'Types de données',
-	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a son propre article, dans lequel peuvent figurer des informations plus précises.'
+	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a son propre article, dans lequel peuvent figurer des informations plus précises.',
+	'smw_types_units' => 'Standard unit: $1; supported units: $2',
+	'smw_types_builtin' => 'Built-in types'
 );
 
 /* private */ var $smwDatatypeLabels = array(
