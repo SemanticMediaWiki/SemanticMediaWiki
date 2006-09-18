@@ -30,9 +30,9 @@ class SMW_LanguageDe {
 	'smw_unknowntype' => '[Ups! Dem Attribut wurde der unbekannte Datentyp "$1" zugewiesen]',
 	'smw_noattribspecial' => '[Ups! Die spezielle Eigenschaft "$1" ist kein Attribut (verwende "::" anstelle von ":=")]',
 	'smw_notype' => '[Ups! Dem Attribut wurde kein Datentyp zugewiesen]',
-	'smw_nomanytypes' => '[Ups! Dem Attribut wurden mehrere Datentypen zugewiesen]',
+	'smw_manytypes' => '[Ups! Dem Attribut wurden mehrere Datentypen zugewiesen]',
 	'smw_emptystring' => '[Ups! Leere Zeichenfolgen werden nicht akzeptiert]',
-	'smw_maxstring' => '[Sorry, ist Zeichenkettedarstellung $1 für diesen Website zu lang]',  // TODO: Better translation bitte.
+	'smw_maxstring' => '[Sorry, die Zeichenkette $1 ist für diese Website zu lang]',
 	'smw_nointeger' => '[Ups! "$1" ist keine ganze Zahl]',
 	'smw_nofloat' => '[Ups! "$1" ist keine Dezimalzahl]',
 	'smw_infinite' => '[Sorry, die Zahl $1 ist zu lang.]',
