@@ -441,11 +441,13 @@ class ExportRDF {
 			if ( !ExportRDF::fitsNsRestriction($ns_restriction, $title->getNamespace()) ) continue;
 			$cur_queue = array(new SMWExportTitle($title, $this));
 			$a_count++; //DEBUG
+			$full_export = true;
 			while (count($cur_queue) > 0) {
 				foreach ( $cur_queue as $et) {
-					$this->printTriples($et);
+					$this->printTriples($et, $full_export);
 					$this->markAsDone($et);
 				}
+				$full_export = false; // make sure added dependencies do not pull more than needed
 				// resolve dependencies that will otherwise not be printed
 				$cur_queue = array();
 				foreach ($this->element_queue as $etq) {
@@ -525,7 +527,7 @@ class ExportRDF {
 			"\t<owl:AnnotationProperty rdf:about=\"&smw;hasArticle\">\n" .
 			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
 			"\t</owl:AnnotationProperty>\n" .
-			"\t<owl:AnnotationProperty rdf:about=\"&smw;hastype\">\n" .
+			"\t<owl:AnnotationProperty rdf:about=\"&smw;hasType\">\n" .
 			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
 			"\t</owl:AnnotationProperty>\n" .
 			"\t<owl:Class rdf:about=\"&smw;Thing\">\n" .
