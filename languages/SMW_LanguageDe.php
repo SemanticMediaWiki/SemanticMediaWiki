@@ -63,7 +63,7 @@ class SMW_LanguageDe {
 	'smw_devel_warning' => 'Diese Funktion befindet sich zur Zeit in Entwicklung und ist eventuell noch nicht voll einsatzfähig. Eventuell ist es ratsam, den Inhalt des Wikis vor der Benutzung dieser Funktion zu sichern.',
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Artikel als RDF exportieren', //name of this special
-	'smw_exportrdf_docu' => '<p>Auf dieser Seite können Teile des Inhalts von Artikeln im RDF-Format exportiert werden. Bitte geben Sie die Namen der gewünschten <i>zeilenweise</i> Seiten ein.<p/>',
+	'smw_exportrdf_docu' => '<p>Auf dieser Seite können Teile des Inhalts von Artikeln im RDF-Format exportiert werden. Bitte geben Sie die Namen der gewünschten <i>zeilenweise</i> Seiten ein.</p>',
 	'smw_exportrdf_recursive' => 'Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr großen Ergebnissen führen!',
 	'smw_exportrdf_backlinks' => 'Exportiere auch alle Seiten, die auf exportierte Seiten verweisen. Erzeugt RDF, das leichter durchsucht werden kann.',
 	/*Messages for Search Triple Special*/
