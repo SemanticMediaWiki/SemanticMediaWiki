@@ -373,7 +373,7 @@ class SMWLinearTypeHandler extends SMWFloatTypeHandler {
 	 * values stored in the database (where the typeid is used).
 	 */
 	function SMWLinearTypeHandler($typeid, $conversions = NULL) {
-		$this->typeid = $typeid;
+		$this->typeid = str_replace(' ', '_', $typeid);
 		if ($conversions !== NULL) {
 			$this->parseConversionFactors($conversions);
 		}
