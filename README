@@ -2,7 +2,7 @@
 
 Semantic MediaWiki is a project for extending MediaWiki with "semantic"
 functions that enable machine-reading of wiki-content. For details and
-further links, see http://wiki.ontoworld.org
+further links, see http://ontoworld.org/wiki/SMW
 
 Notes on installing Semantic MediaWiki are found in the file INSTALL.
 
@@ -20,9 +20,11 @@ Notes on installing Semantic MediaWiki are found in the file INSTALL.
 * The sorttable java script function was developed by Stuart Langridge,
   and taken from http://www.kryogenix.org/code/browser/sorttable/
 
+* Translation to French has been contributed by Pierre Matringe.
+
 * Many people have contributed to the project by providing helpful comments and
   suggestions. Among them are the members of the Semantic Wiki Interest Group
-  (swikig@aifb.uni-karlsruhe.de; see wiki.ontoworld.org), the people at the project
+  (swikig@aifb.uni-karlsruhe.de; see ontoworld.org), the people at the project
   mailing lists, and, of course, a number of anonymous reviewers. Thanks a lot!
 
 === Contact ===
