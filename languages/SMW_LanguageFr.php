@@ -110,7 +110,7 @@ class SMW_LanguageFr {
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Chaîne de caractères',  // name of the string type
 	'smw_int' => 'Nombre entier',  // name of the int type
-	'smw_float' => 'Nombre à virgule flottange',  // name of the floating point type
+	'smw_float' => 'Nombre décimal',  // name of the floating point type
 	'smw_length' => 'Longueur',  // name of the length type
 	'smw_area' => 'Étendue',  // name of the area type
 	'smw_geolength' => 'Longitude',  // OBSOLETE name of the geolength type
@@ -128,12 +128,11 @@ class SMW_LanguageFr {
 
 /* private */ var $smwSpecialProperties = array(
 	//always start upper-case
-	SMW_SP_HAS_TYPE  => 'A le type de données',
+	SMW_SP_HAS_TYPE  => 'A le type',
 	SMW_SP_HAS_URI   => 'URI équivalente',
 	SMW_SP_IS_SUBRELATION_OF => 'Est une sous-relation de',
 	SMW_SP_IS_SUBATTRIBUTE_OF => 'Est un sous-attribut de',
 	SMW_SP_MAIN_DISPLAY_UNIT => 'Unité de mesure principale pour l\'affichage',
-	// SMW_SP_MAIN_DISPLAY_UNIT => 'Primärmaßeinheit für Schirmanzeige', // Great! We really should keep this wonderful translation here! Still, I am not fully certain about my versions either. -- mak
 	SMW_SP_DISPLAY_UNIT => 'Unité de mesure',
 	SMW_SP_IMPORTED_FROM => 'Importé de',
 	SMW_SP_CONVERSION_FACTOR => 'Correspond à'
@@ -148,8 +147,8 @@ class SMW_LanguageFr {
 			SMW_NS_RELATION_TALK  => "Discussion_relation",
 			SMW_NS_ATTRIBUTE      => "Attribut",
 			SMW_NS_ATTRIBUTE_TALK => "Discussion_attribut",
-			SMW_NS_TYPE           => "Type_de_données",
-			SMW_NS_TYPE_TALK      => "Discussion_Types_de_données"
+			SMW_NS_TYPE           => "Type",
+			SMW_NS_TYPE_TALK      => "Discussion_type"
 		);
 	}
 	
