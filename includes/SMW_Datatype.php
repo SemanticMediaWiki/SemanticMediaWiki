@@ -94,6 +94,18 @@ class SMWTypeHandlerFactory {
 	}
 
 	/**
+	 * This method returns a typehandler label
+	 * for the type of the given id, or NULL if id is not
+	 * known.
+	 */
+	static function getTypeLabelByID($typeid) {
+		if (array_key_exists($typeid,SMWTypeHandlerFactory::$typeLabelsByID)) {
+			return SMWTypeHandlerFactory::$typeLabelsByID[$typeid];
+		}
+		return NULL;
+	}
+
+	/**
 	 * This method returns an array of the labels of built-in types (those
 	 * announced in code rather than user-defined types with custom units).
 	 * Needed since typeHandlersByLabel is private.
