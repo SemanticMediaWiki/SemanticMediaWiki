@@ -468,7 +468,7 @@ class SMWStringTypeHandler implements SMWTypeHandler {
 
 	function processValue($value,&$datavalue) {
 		if ($value!='') { //do not accept empty strings
-			$xsdvalue = str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$value);
+			$xsdvalue = smwfXMLContentEncode($value);
 			// 255 below matches smw_attributes.value_xsd definition in smwfMakeSemanticTables()
 			// Note that depending on database encoding and UTF-8 settings, longer or
 			// shorter strings than this with int'l characters may exceed database field.

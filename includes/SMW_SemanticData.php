@@ -76,7 +76,7 @@ class SMWSemanticData {
 	static function addAttribute($attribute, $value) {
 		// See if this attribute is a special one like e.g. "Has type"
 		global $smwgContLang;
-		$attribute = ucfirst($attribute); //slightly normalize label
+		$attribute = smwfNormalTitleText($attribute); //slightly normalize label
 		$specprops = $smwgContLang->getSpecialPropertiesArray();
 		$special = array_search($attribute, $specprops);
 
@@ -100,13 +100,12 @@ class SMWSemanticData {
 		}
 	}
 
-
 	/**
 	 * This method adds a new relation with the given target to the storage.
 	 */
 	static function addRelation($relation, $target) {
 		global $smwgContLang;
-		$relation = ucfirst($relation);
+		$relation = smwfNormalTitleText($relation);
 		$srels = $smwgContLang->getSpecialPropertiesArray();
 		$special = array_search($relation, $srels);
 

@@ -214,7 +214,7 @@ class SMWInlineQuery {
 			$this->mLimit = min($smwgIQMaxLimit, max(1,$param['limit'] + 0)); //integer between 1 and $smwgMaxLimit
 		}
 		if (array_key_exists('sort', $param)) {
-			$this->mSort = $this->normalizeTitle($param['sort']);
+			$this->mSort = smwfNormalTitleDBKey($param['sort']);
 		}
 		if (array_key_exists('order', $param)) {
 			if (('descending'==$param['order'])||('reverse'==$param['order'])||('desc'==$param['order'])) {
@@ -424,14 +424,14 @@ class SMWInlineQuery {
 						if ('' == $label) $label = $wgContLang->getNSText(NS_CATEGORY);
 						$result->mPrint['C'] = array($label,SMW_IQ_PRINT_CATS);
 					} elseif ( '::' == $op ) {
-						$result->mPrint['R:' . $qparts[0]] = array($label,SMW_IQ_PRINT_RELS,$this->normalizeTitle($qparts[0]));
+						$result->mPrint['R:' . $qparts[0]] = array($label,SMW_IQ_PRINT_RELS,smwfNormalTitleDBKey($qparts[0]));
 					} elseif ( ':=' == $op ) {
 						$av = SMWDataValue::newAttributeValue($qparts[0]);
 						$unit = mb_substr($qparts[2],1);
 						if ($unit != '') { // desired unit selected:
 							$av->setDesiredUnits(array($unit));
 						}
-						$result->mPrint['A:' . $qparts[0]] = array($label,SMW_IQ_PRINT_ATTS,$this->normalizeTitle($qparts[0]),$av);
+						$result->mPrint['A:' . $qparts[0]] = array($label,SMW_IQ_PRINT_ATTS,smwfNormalTitleDBKey($qparts[0]),$av);
 					} // else: operators like :=> are not supported for printing and are silently ignored
 					$this->mPrintoutCount++;
 				}
@@ -466,14 +466,14 @@ class SMWInlineQuery {
 					$condition = "$pagetable.page_id=$curtable.cl_from";
 					// TODO: make subcat-inclusion more efficient
 					foreach ($values as $idx => $v) {
-						$values[$idx] = $this->normalizeTitle($v);
+						$values[$idx] = smwfNormalTitleDBKey($v);
 					}
 					$this->includeSubcategories($values,$smwgIQSubcategoryInclusions);
 					foreach ($values as $v) {
 						$or_conditions[] = "$curtable.cl_to=" . $this->dbr->addQuotes($v);
 					}
 				} elseif ('::' == $op ) { // condition on relations
-					$relation = $this->normalizeTitle($qparts[0]);
+					$relation = smwfNormalTitleDBKey($qparts[0]);
 					$result->mTables .= ',' . $this->dbr->tableName('smw_relations') . " AS $curtable";
 					$condition = "$pagetable.page_id=$curtable.subject_id AND $curtable.relation_title=" . $this->dbr->addQuotes($relation);
 					if ('' != $sq_title) { // objects supplied by subquery
@@ -485,7 +485,7 @@ class SMWInlineQuery {
 						//  Also, redirects are not taken into account for sub-queries
 						//  anymore now.
 						foreach ($values as $idx => $v) {
-							$values[$idx] = $this->normalizeTitle($v);
+							$values[$idx] = smwfNormalTitleDBKey($v);
 						}
 						$value = $this->normalizeRedirects($values);
 						// search for values
@@ -506,7 +506,7 @@ class SMWInlineQuery {
 						//Note: I do not think we have to include redirects here. Redirects should not 
 						//      have annotations, so one can just write up the query correctly! -- mak	
 						foreach ($values as $v) {
-							$v = $this->normalizeTitle($v);
+							$v = smwfNormalTitleDBKey($v);
 							if (':' == mb_substr($v,0,1)) $v = mb_substr($v,1); // remove initial ':'
 							// TODO: should this be done when normalizing the title???
 							$ns_idx = $wgContLang->getNsIndex(mb_substr($v,0,-2)); // assume format "Namespace:+"
@@ -519,7 +519,7 @@ class SMWInlineQuery {
 						}
 					}
 				} else { // some attribute operator
-					$attribute = $this->normalizeTitle($qparts[0]);
+					$attribute = smwfNormalTitleDBKey($qparts[0]);
 					$av = SMWDataValue::newAttributeValue($attribute);
 					switch ($op) {
 						case ':=>': $comparator = '>='; break;
@@ -680,22 +680,6 @@ class SMWInlineQuery {
 			$checkcategories = array_diff($newcategories, array());
 		}
 		return $categories;
-	}
-
-	/**
-	 * Takes a text and turns it safely into its DBKey.
-	 * If it fails to do so, the text is returned unchanged.
-	 *
-	 * FIXME: should be (1) a global function that (2) directly
-	 * creates the DB key (currently a simple ucfirst + str_replace) 
-	 * for higher efficiency.
-	 */
-	function normalizeTitle( $text ) {
-		$t = Title::newFromText( $text );
-		if ($t != NULL) {
-			return $t->getDBkey();
-		}
-		return $text;
 	}
 
 	/*********************************************************************/
