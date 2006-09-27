@@ -112,6 +112,7 @@ class SMWExportTitle {
 	public $title_fragment;
 	public $title_prefurl;
 	public $title_dbkey;
+	public $modifier = '';
 	// details about URIs for export
 	public $ns_uri = false;
 	public $short_uri;
@@ -135,6 +136,7 @@ class SMWExportTitle {
 		$this->title_prefurl = $title->getPrefixedURL();
 		$this->title_dbkey = $title->getDBKey();
 		$this->hashkey = $this->title_prefurl . ' ' . $modifier; // must agree with keys generated elsewhere in this code!
+		$this->modifier = $modifier;
 		if ($modifier != '') $modifier = '#' . $modifier;
 
 		$this->is_individual = ( ($this->title_namespace !== SMW_NS_RELATION) && ($this->title_namespace !== SMW_NS_ATTRIBUTE) && ($this->title_namespace !== NS_CATEGORY) );
@@ -204,7 +206,9 @@ class SMWExportTitle {
 			$this->short_uri = $this->ext_nsid . ':' . $this->ext_section;
 			$export->addExtraNamespace($this->ext_nsid, $this->ns_uri);
 		}
-		$this->label = str_replace('&','&amp;',$ns_text . $this->title_text); //@TODO this is not cool; use a global funcion for making XML-content-safe; probably just use urlencode of PHP
+		$this->label = $ns_text . $this->title_text;
+		if ($this->modifier != '') $this->label .= " ($this->modifier)";
+		$this->label = smwfXMLContentEncode($this->label);
 	}
 }
 
@@ -452,7 +456,8 @@ class ExportRDF {
 				$cur_queue = array();
 				foreach ($this->element_queue as $etq) {
 					if ( (!$etq->exists) || !smwfIsSemanticsProcessed($etq->title_namespace) ||
-					      !ExportRDF::fitsNsRestriction($ns_restriction, $etq->title_namespace) ) {
+					      !ExportRDF::fitsNsRestriction($ns_restriction, $etq->title_namespace) ||
+					      $etq->modifier !== '') {
 					// Note: we do not need to check the cache to guess if an element was already
 					// printed. If so, it would not be included in the queue in the first place.
 						$cur_queue[] = $etq;
@@ -658,6 +663,10 @@ class ExportRDF {
 				$res = $this->db->query( 'SELECT attribute_title, value_unit, value_datatype, value_xsd FROM ' . $this->db->tableName('smw_attributes') . ' WHERE subject_id=' . $et->title_id, 'SMWExportRDF::printTriples');
 				while($row = $this->db->fetchObject($res)) {
 					$pt = $this->getExportTitle($row->attribute_title, SMW_NS_ATTRIBUTE, $row->value_unit);
+					// check whether attribute type has changed since data was stored:
+					if ( ($pt->has_type !== false) &&
+					   ($row->value_datatype !== SMWTypeHandlerFactory::getTypeHandlerByLabel($pt->has_type)->getID() ) )
+						continue;
 					$xsdtype = SMWTypeHandlerFactory::getXSDTypeByID($row->value_datatype);
 					if ( ($xsdtype !== '') && ($xsdtype !== NULL) ) {
 						$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:datatype="' . $xsdtype .  '">' . $row->value_xsd . '</' . $pt->short_uri . ">\n";
