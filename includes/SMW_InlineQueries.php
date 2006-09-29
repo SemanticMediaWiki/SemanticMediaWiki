@@ -665,7 +665,7 @@ class SMWInlineQuery {
 						if ( array_key_exists( 'page_title' , $row) ) {
 							$new_category = $row[ 'page_title' ];
 							if (!in_array($new_category, $categories)) {
-								$newcategories[] = $this->NormalizeTitle($new_category);
+								$newcategories[] = smwfNormalTitleDBKey($new_category);
 							}
 						}
 					}
