@@ -32,7 +32,7 @@ class SMW_LanguageFr {
 	'smw_notype' => '[Oups ! Aucun type de donné n\'a été assigné à l\'attribut]',
 	'smw_manytypes' => '[Oups ! Plusieurs types de données ont été assignés à l\'attribut]',
 	'smw_emptystring' => '[Oups ! Les chaînes vides ne sont pas acceptées]',
-	'smw_maxstring' => '[Sorry, string representation $1 is too long for this site.]',
+	'smw_maxstring' => '[Sorry, string representation $1 is too long for this site.]', //TODO: translate
 	'smw_nointeger' => '[Oups ! "$1" n\'est pas un nombre entier]',
 	'smw_nofloat' => '[Oups ! "$1" n\'est pas un nombre à virgule flottante]',
 	'smw_infinite' => '[Désolé, le nombre $1 est trop long.]',
@@ -143,7 +143,7 @@ class SMW_LanguageFr {
 	 */
 	function getNamespaceArray() {
 		return array(
-			SMW_NS_RELATION       => "Relation",	//
+			SMW_NS_RELATION       => "Relation",
 			SMW_NS_RELATION_TALK  => "Discussion_relation",
 			SMW_NS_ATTRIBUTE      => "Attribut",
 			SMW_NS_ATTRIBUTE_TALK => "Discussion_attribut",
