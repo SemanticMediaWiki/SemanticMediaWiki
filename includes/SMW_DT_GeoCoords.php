@@ -133,19 +133,22 @@ class SMWGeographicLocationTypeHandler implements SMWTypeHandler {
 		if ($lat['dir'] == wfMsgForContent('smw_abb_south') ) {
 			$signlat = '-';
 		} else $signlat = '';
-		// MediaWiki map extension
-		$maplink = 'http://kvaleberg.com/extensions/mapsources/?params=' .
-		       $lat['deg'] . '_' . $lat['min'] . '_' . $lat['sec']  . '_' . $lat['dir'] . '_' .
-		       $long['deg'] . '_' . $long['min'] . '_' . $long['sec']  . '_' . $long['dir'] .
-		       '_region:EN_type:city';
-		$datavalue->addInfolink(new SMWInfolink($maplink,wfMsgForContent('smw_findmaps'),'smwmap'));
-		// Google Maps
-		$maplink = 'http://maps.google.com/maps?ll=' . $signlat . $declat . ',' . $signlong . $declong . '&spn=0.1,0.1&t=k';
-		$datavalue->addInfolink(new SMWInfolink($maplink,'Google&nbsp;Maps','smwmap'));
-		// Mapquest
-		$maplink = 'http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=' . $signlat . $lat['deg'] . '&latmin=' . $lat['min'] . '&latsec=' . round($lat['sec']) . '&longdeg=' . $signlong . $long['deg'] . '&longmin=' . $long['min'] . '&longsec=' . round($long['sec']) . '&zoom=6';
-		$datavalue->addInfolink(new SMWInfolink($maplink,'Mapquest','smwmap'));
+		// Create links to mapping services based ona wiki-editable message. The parameters available
+		// in the messages are:
+		// $1: latitude integer degrees, $2: longitude integer degrees
+		// $3: latitude integer minutes, $4: longitude integer minutes
+		// $5: latitude integer seconds, $6: longitude integer seconds,
+		// $7: latitude direction string (N or S), $8: longitude direction string (W or E)
+		// $9: latitude in decimal degrees, $10: longitude in decimal degrees
+		// $11: sign (- if south) for latitude, $12: sign (- if west) for longitude
 
+		$datavalue->addServiceLinks( $lat['deg'], $long['deg'],
+		                             $lat['min'], $long['min'],
+		                             round($lat['sec']), round($long['sec']),
+		                             $lat['dir'], $long['dir'],
+		                             $declat, $declong,
+		                             $signlat, $signlong
+		                           );
 		return;
 	}
 
@@ -331,11 +334,11 @@ class SMWGeographicLocationTypeHandler implements SMWTypeHandler {
 
 	/**
 	* @param $input Any supported string representing a geographic location
-	* @return A 2-value-array with keys 'lat' and 'long. Both values are given
+	* @return A 2-value-array with keys 'lat' and 'long'. Both values are given
 	* by a 4-value-array with keys 'deg', 'min', 'sec' and 'dir' with values for
-	* an angle representation of a geographic loction. Values for degree and
-	* minute part are given as integers, the second part could be given as a
-	* float. If the given string could not be parsed, the function returns an error message.
+	* an angle representation of a geographic location. Values for degree and
+	* minute part are given as integers, the seconds could be given as a float. 
+	* If the given string could not be parsed, the function returns an error message.
 	*/
 	function ParseGeoLocationString($input) {
 		$pDirection  = '('.$this->pSpace.'[' . wfMsgForContent('smw_abb_north') . '|'

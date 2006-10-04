@@ -92,6 +92,7 @@ class SMWURITypeHandler implements SMWTypeHandler {
 			$datavalue->setProcessedValues($user, $value);
 			$datavalue->setPrintoutString($user);
 			$datavalue->addQuicksearchLink();
+			$datavalue->addServiceLinks(urlencode($value)); //even URLs can be parameters to other URLs, e.g. for Wayback Machine
 		} else {
 			$datavalue->setError(wfMsgForContent('smw_emptystring'));
 		}

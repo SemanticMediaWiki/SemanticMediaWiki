@@ -94,7 +94,15 @@ class SMWSemanticData {
 				if(!array_key_exists($special,SMWSemanticData::$specaArray)) {
 					SMWSemanticData::$specaArray[$special] = Array();
 				}
-				$result = SMWDataValue::newSpecialValue($special,SMWSemanticData::$skin,$value);
+				if ( $special === SMW_SP_SERVICE_LINK ) { // do some custom formatting in this case
+					$v = str_replace(' ', '_', $value); //normalize slightly since messages distinguish '_' and ' '
+					$result = SMWDataValue::newSpecialValue($special,SMWSemanticData::$skin,$v);
+					$v = $result->getXSDValue(); //possibly further sanitized, so let's be cautious
+					$result->setProcessedValues($value,$v); //set user value back to the input version
+					$result->setPrintoutString('[[MediaWiki:smw_service_' . $v . "|$value]]");
+				} else { // standard processing
+					$result = SMWDataValue::newSpecialValue($special,SMWSemanticData::$skin,$value);
+				}
 				SMWSemanticData::$specaArray[$special][$result->getHash()] = $result;
 				return $result;
 		}

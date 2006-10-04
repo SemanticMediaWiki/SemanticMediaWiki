@@ -141,6 +141,7 @@ class SMWFloatTypeHandler implements SMWTypeHandler{
 			}
 			$datavalue->setPrintoutString($this->appendUnit(smwfNumberFormat($numIn), $unitIn) . $errStr);
 			$datavalue->addQuicksearchLink();
+			$datavalue->addServiceLinks($numIn);
 			return;
 		}
 
@@ -154,11 +155,13 @@ class SMWFloatTypeHandler implements SMWTypeHandler{
 				$datavalue->setProcessedValues($v, $numIn, $numIn, $unitIn);
 				$datavalue->setPrintoutString($this->appendUnit(smwfNumberFormat($numIn), $unitIn) . ' <span class="smwwarning">(' . $errStr . ')</span>');
 				$datavalue->addQuicksearchLink();
+				$datavalue->addServiceLinks($numIn);
 				return;
 			} elseif (is_infinite($primaryNum)) {
 				$datavalue->setProcessedValues($v, $numIn, $numIn, $unitIn);
 				$datavalue->setPrintoutString($this->appendUnit(smwfNumberFormat($numIn), $unitIn) . ' <span class="smwwarning">(' . wfMsgForContent('smw_infinite_unit', $this->primaryUnit) . ')</span>');
 				$datavalue->addQuicksearchLink();
+				$datavalue->addServiceLinks($numIn);
 				return;
 			}
 		}
@@ -204,6 +207,7 @@ class SMWFloatTypeHandler implements SMWTypeHandler{
 		}
 
 		$datavalue->addQuicksearchLink();
+		$datavalue->addServiceLinks($primaryNum);
 		return;
 	}
 

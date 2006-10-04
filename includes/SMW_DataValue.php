@@ -88,6 +88,14 @@ class SMWDataValue {
 	 * array() if unset.
 	 */
 	var $desiredUnits;
+	/**
+	 * Array of links (or rather of message ids that contain link templates). 
+	 * Some datatypes will look for added links and instantiate them with their
+	 * processed values to point to helpful online resources. The strings in this
+	 * array point to messages which contain the actual link strings, so those
+	 * need to be resolved first.
+	 */
+	var $serviceLinks;
 	// the following can be generated automatically, and are cached afterwards
 	var $description;  //the user string printed e.g. in the factbox
 	var $tooltip; //tooltip for the value in the article, possibly empty.
@@ -112,6 +120,7 @@ class SMWDataValue {
 		$this->skin = NULL;
 		$this->attribute = false;
 		$this->desiredUnits = $desiredUnits;
+		$this->serviceLinks = array();
 	}
 
 	/*********************************************************************/
@@ -130,6 +139,7 @@ class SMWDataValue {
 		$result->setSkin($skin);
 		$result->attribute = $attribute;
 		$result->desiredUnits = SMWTypeHandlerFactory::getUnitsList($attribute);
+		$result->serviceLinks = SMWTypeHandlerFactory::getServiceLinks($attribute);
 		if ($value !== false)  $result->setUserValue($value);
 		return $result;
 	}
@@ -155,7 +165,7 @@ class SMWDataValue {
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
 	 */
-	/* static */ function newTypedValue($type, $skin=NULL, $value=false, $desiredUnits=NULL) {
+	/* static */ function newTypedValue($type, $skin=NULL, $value=false, $desiredUnits=array()) {
 		$result = new SMWDataValue($type);
 		$result->setSkin($skin);
 		$result->desiredUnits = $desiredUnits;
@@ -247,6 +257,31 @@ class SMWDataValue {
 	}
 
 	/**
+	 * Add further servicelinks found in the messages encoded in the
+	 * serviceLinks array. This function is usually called with one
+	 * or more paramters that specify the strings that are to be 
+	 * inserted into the link templates that are retrieved from the
+	 * message texts. The number and content of the parameters is
+	 * depending on the datatype, and the service link message is 
+	 * usually crafted with a particular datatype in mind.
+	 */
+	function addServiceLinks() {
+		$args = func_get_args();
+		array_unshift($args, ''); // add a 0 element as placeholder
+
+		foreach ($this->serviceLinks as $sid) {
+			$args[0] = "smw_service_$sid";
+			$text = call_user_func_array('wfMsgForContent', $args);
+			$links = preg_split("([\n][\s]?)", $text);
+			foreach ($links as $link) {
+				$linkdat = explode('|',$link,2);
+				if (count($linkdat) == 2)
+					$this->addInfolink(new SMWInfolink($linkdat[1],$linkdat[0]));
+			}
+		}
+	}
+
+	/**
 	 * Set some other representation for this value. See documentation for 
 	 * SMWDataValue->others.
 	 */
@@ -281,6 +316,13 @@ class SMWDataValue {
 	 */
 	function setDesiredUnits($desiredUnits) {
 		$this->desiredUnits = $desiredUnits;
+	}
+
+	/**
+	 * Specify an array of service links. See SMWDatavalue::serviceLinks for details.
+	 */
+	function setServiceLinks($serviceLinks) {
+		$this->serviceLinks = $serviceLinks;
 	}
 
 	/**

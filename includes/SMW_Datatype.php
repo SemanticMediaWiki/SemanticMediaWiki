@@ -33,6 +33,7 @@ class SMWTypeHandlerFactory {
 	static private $typeHandlersByAttribute = Array();	
 	static private $typeLabelsByID = Array();
 	static private $desiredUnitsByAttribute = Array();
+	static private $serviceLinksByAttribute = Array();
 
 	/**
 	 * This method registers a typehandler under a certain
@@ -124,7 +125,7 @@ class SMWTypeHandlerFactory {
 		switch ($special) {
 			case SMW_SP_HAS_URI:
 				return new SMWURITypeHandler(SMW_URI_MODE_URI);
-			case SMW_SP_MAIN_DISPLAY_UNIT: case SMW_SP_DISPLAY_UNIT:
+			case SMW_SP_MAIN_DISPLAY_UNIT: case SMW_SP_DISPLAY_UNIT: case SMW_SP_SERVICE_LINK:
 				return new SMWStringTypeHandler();
 			case SMW_SP_CONVERSION_FACTOR:
 				return new SMWStringTypeHandler();
@@ -250,6 +251,29 @@ class SMWTypeHandlerFactory {
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * This method retrieves additional service links, if any, for a 
+	 * given type as an array of id strings. The ids are the back part
+	 * of a MediaWiki message article constructed by prepending the
+	 * string "MediaWiki:smw_service_" to the id. It is expected that
+	 * the messages are resolved lazyliy if needed (at all), so they 
+	 * are not decomposed to strings at this stage.
+	 */
+	static function &getServiceLinks($attribute) {
+		if(!array_key_exists($attribute, SMWTypeHandlerFactory::$serviceLinksByAttribute)) {
+			global $wgContLang;
+			SMWTypeHandlerFactory::$serviceLinksByAttribute[$attribute] = Array();
+			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
+			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
+				$auprops = &smwfGetSpecialProperties($atitle, SMW_SP_SERVICE_LINK, NULL);
+				if (count($auprops) > 0) { // ignore any further main units if given
+					SMWTypeHandlerFactory::$serviceLinksByAttribute[$attribute][] = $auprops[0][2];
+				}
+			}
+		}
+		return SMWTypeHandlerFactory::$serviceLinksByAttribute[$attribute];
 	}
 
 } // SMWTypeHandlerFactory
@@ -478,6 +502,7 @@ class SMWStringTypeHandler implements SMWTypeHandler {
 				$datavalue->setProcessedValues($value, $xsdvalue);
 				$datavalue->setPrintoutString($value);
 				$datavalue->addQuicksearchLink();
+				$datavalue->addServiceLinks(urlencode($value));
 			}
 		} else {
 			$datavalue->setError(wfMsgForContent('smw_emptystring'));

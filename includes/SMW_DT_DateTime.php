@@ -65,6 +65,7 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 		// do not show the seconds since 1970; showing a date in multiple calendar systems could be a future output enhancement (Roman, Gregorian, whatever calendar), if the date is "historical" enough
 
 		$datavalue->addQuicksearchLink();
+		$datavalue->addServiceLinks($str_val); //possibly provide single alues (year, month, ...) in the future
 		return;
 	}
 

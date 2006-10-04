@@ -34,6 +34,7 @@ class SMWIntegerTypeHandler implements SMWTypeHandler {
 			$datavalue->setProcessedValues($v, $arr[1], $arr[1]);
 			$datavalue->setPrintoutString(smwfNumberFormat($arr[1],0));
 			$datavalue->addQuicksearchLink();
+			$datavalue->addServiceLinks($arr[1]);
 		} else {
 			$datavalue->setError(wfMsgForContent('smw_nointeger',$v));
 		}
