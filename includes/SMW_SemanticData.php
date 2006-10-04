@@ -95,11 +95,12 @@ class SMWSemanticData {
 					SMWSemanticData::$specaArray[$special] = Array();
 				}
 				if ( $special === SMW_SP_SERVICE_LINK ) { // do some custom formatting in this case
+					global $wgContLang;
 					$v = str_replace(' ', '_', $value); //normalize slightly since messages distinguish '_' and ' '
 					$result = SMWDataValue::newSpecialValue($special,SMWSemanticData::$skin,$v);
 					$v = $result->getXSDValue(); //possibly further sanitized, so let's be cautious
 					$result->setProcessedValues($value,$v); //set user value back to the input version
-					$result->setPrintoutString('[[MediaWiki:smw_service_' . $v . "|$value]]");
+					$result->setPrintoutString('[[' . $wgContLang->getNsText(NS_MEDIAWIKI) . ':smw_service_' . $v . "|$value]]");
 				} else { // standard processing
 					$result = SMWDataValue::newSpecialValue($special,SMWSemanticData::$skin,$value);
 				}
