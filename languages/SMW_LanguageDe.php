@@ -50,11 +50,12 @@ class SMW_LanguageDe {
 	/* additionals ... */
 	'smw_label_latitude' => 'Geographische Breite:',
 	'smw_label_longitude' => 'Geographische Länge:',
-	'smw_findmaps' => 'Landkarten',
 	'smw_abb_north' => 'N',
 	'smw_abb_east' => 'O',
 	'smw_abb_south' => 'S',
 	'smw_abb_west' => 'W',
+	/* some links for online maps; can be translated to different language versions of services, but need not*/
+	'smw_service_online_maps' => " Landkarten|http://kvaleberg.com/extensions/mapsources/?params=\$1_\$3_\$5_\$7_\$2_\$4_\$6_\$8_region:EN_type:city\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	/*Messages for datetime parsing */
 	'smw_nodatetime' => '[Ups! Das Datum "$1" wurde nicht verstanden. Die Unterstützung von Kalenderdaten ist zur Zeit noch experimentell.]'
 );
@@ -136,7 +137,8 @@ class SMW_LanguageDe {
 	// SMW_SP_MAIN_DISPLAY_UNIT => 'Primärmaßeinheit für Schirmanzeige', // Great! We really should keep this wonderful translation here! Still, I am not fully certain about my versions either. -- mak
 	SMW_SP_DISPLAY_UNIT => 'Ausgabeeinheit',
 	SMW_SP_IMPORTED_FROM => 'Importiert aus',
-	SMW_SP_CONVERSION_FACTOR => 'Entspricht bis'
+	SMW_SP_CONVERSION_FACTOR => 'Entspricht bis',
+	SMW_SP_SERVICE_LINK => 'Bietet Service'
 );
 
 	/**
