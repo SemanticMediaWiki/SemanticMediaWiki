@@ -66,7 +66,7 @@ function wfSMWAttributes()
 				// The value_datatype is a type ID.
 				// Get this ID's localized label and turn it into a Type: page.
 				$typelabel = SMWTypeHandlerFactory::getTypeLabelByID($result->title);
-				if ($typelabel != NULL) {
+				if ($typelabel !== NULL) {
 					$typetitle = Title::makeTitle( SMW_NS_TYPE, $typelabel);
 				} else {
 					$typetitle = NULL;
