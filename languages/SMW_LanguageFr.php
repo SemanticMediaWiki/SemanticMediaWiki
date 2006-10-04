@@ -137,7 +137,7 @@ class SMW_LanguageFr {
 	SMW_SP_DISPLAY_UNIT => 'Unité de mesure',
 	SMW_SP_IMPORTED_FROM => 'Importé de',
 	SMW_SP_CONVERSION_FACTOR => 'Correspond à',
-	SMW_SP_SERVICE_LINK => 'Provides service'
+	SMW_SP_SERVICE_LINK => 'Provides service' //TODO: translate
 );
 
 	/**
