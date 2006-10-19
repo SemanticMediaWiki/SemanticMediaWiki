@@ -510,10 +510,10 @@ class SMWInlineQuery {
 						//      have annotations, so one can just write up the query correctly! -- mak	
 						foreach ($values as $v) {
 							$v = smwfNormalTitleDBKey($v);
-							if (':' == mb_substr($v,0,1)) $v = mb_substr($v,1); // remove initial ':'
+							if ((mb_strlen($v)>2) && (':' == mb_substr($v,0,1))) $v = mb_substr($v,1); // remove initial ':'
 							// TODO: should this be done when normalizing the title???
 							$ns_idx = $wgContLang->getNsIndex(mb_substr($v,0,-2)); // assume format "Namespace:+"
-							if ((false === $ns_idx)||(mb_substr($v,-1,1) !== '+')) {
+							if ((false === $ns_idx)||(mb_substr($v,-2,2) !== ':+')) {
 								$vtitle = Title::newFromText($v);
 								if (NULL != $vtitle) {
 									$or_conditions[] = "$pagetable.page_title=" . $this->dbr->addQuotes($vtitle->getDBKey()) . " AND $pagetable.page_namespace=" . $vtitle->getNamespace();
