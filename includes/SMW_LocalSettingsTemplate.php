@@ -11,10 +11,10 @@
 
 
 ###
-# Set the following to the name of your server. This can 
-# be something like "en.wikipedia.org" but also an IP-address. 
-# The name need not be an existing domain, since it is only 
-# used to generate identifiers in the RDF export. Yet a real 
+# Set the following to the name of your server. This can
+# be something like "en.wikipedia.org" but also an IP-address.
+# The name need not be an existing domain, since it is only
+# used to generate identifiers in the RDF export. Yet a real
 # address is to be preferred.
 ##
 $smwgServer="examplewiki.ontoworld.org";
@@ -24,7 +24,7 @@ $smwgServer="examplewiki.ontoworld.org";
 # Set the following value to "true" if you want to enable support
 # for semantic annotations within templates. For the moment, this
 # will only work after a minor change in your MediaWiki files --
-# see INSTALL for details.
+# see INSTALL for details. Enabling this is strongly recommended.
 ##
 $smwgEnableTemplateSupport = false;
 ##
@@ -34,8 +34,8 @@ $smwgEnableTemplateSupport = false;
 # appear below an article. The default setting is "SMW_FACTBOX_NONEMPTY"
 # which shows only those factboxes that have some content. Other options:
 ##
-//$smwgShowFactbox = SMW_FACTBOX_HIDDEN; # hide always
-//$smwgShowFactbox = SMW_FACTBOX_SHOWN; # show always
+// $smwgShowFactbox = SMW_FACTBOX_HIDDEN; # hide always
+// $smwgShowFactbox = SMW_FACTBOX_SHOWN; # show always
 ##
 
 ###
@@ -46,36 +46,26 @@ $smwgExportBacklinks = true; // should backlinks be included by default?
 ##
 
 ###
+# If you already have custom namespaces, change the following
+# number to match the smallest even namespace number that is 
+# not in use yet. However, it must not be smaller than 100.
+##
+smwfInitNamespaces(100);
+##
+
+###
 # There are also many settings to customize inline queries, especially depending
 # on how much performance you can spare for these queries. Below, you can set any
 # of the variables as documented (and preset) in SMW_InlineQueries.php.
 # Large sites should definitely do this to prevent overly high loads!
 ##
 // $smwgIQEnabled = true;
+$smwgIQSearchNamespaces = array(NS_MAIN, NS_IMAGE);
+// $smwgIQRedirectNormalization = false;
 // $smwgIQDefaultLinking = 'all';
 // $smwgIQMaxConditions = 50;
 // $smwgIQMaxTables = 10;
 // ...
-##
-
-###
-# If you want to import ontologies, you need to install RAP,
-# a free RDF API for PHP, see 
-#     http://www.wiwiss.fu-berlin.de/suhl/bizer/rdfapi/
-# The following is the path to your installation of RAP 
-# (the directory where you extracted the files to) as seen 
-# from your local filesystem.
-##
-$smwgRAPPath = $smwgIP . '/libs/rdfapi-php';
-//$smwgRAPPath = '/another/example/path/rdfapi-php';
-##
-
-###
-# If you already have custom namespaces, change the following
-# number to match the smallest even namespace number that is 
-# not in use yet. However, it must not be smaller than 100.
-##
-smwfInitNamespaces(100);
 ##
 
 ###
@@ -112,6 +102,22 @@ $smwgNamespacesWithSemanticLinks = array(
 	          SMW_NS_TYPE => true,
 	     SMW_NS_TYPE_TALK => false
 );
+##
+
+###
+# If you want to import ontologies, you need to install RAP,
+# a free RDF API for PHP, see 
+#     http://www.wiwiss.fu-berlin.de/suhl/bizer/rdfapi/
+# The following is the path to your installation of RAP 
+# (the directory where you extracted the files to) as seen 
+# from your local filesystem.
+#
+# Note that the built-in ontology import is very simple and
+# still experimental. More elaborate custom solutions might
+# be preferable; see ontoworld.org/wiki/Help:Ontology_import.
+##
+$smwgRAPPath = $smwgIP . '/libs/rdfapi-php';
+//$smwgRAPPath = '/another/example/path/rdfapi-php';
 ##
 
 ?>

@@ -42,6 +42,8 @@ require_once( "$IP/includes/Title.php" );
 /* Configure default behaviour of inline queries */
 	// Default linking behaviour. Can be one of "none", "subject", "all"
 	$smwgIQDefaultLinking = 'subject';
+	// Which namespaces should be searched by default?
+	$smwgIQSearchNamespaces = NULL; //can be defined as an array of NS_IDs in LocalSettings
 /* Configure power/performance trade-off for inline queries */
 	// Switches on or off all queries.
 	$smwgIQEnabled = true;
@@ -399,6 +401,7 @@ class SMWInlineQuery {
 
 		$result = new SMWSQLQuery();
 		$cat_sep = $wgContLang->getNsText(NS_CATEGORY) . ":";
+		$has_namespace_conditions = false; //flag for deciding on including default namespace restrictions
 
 		$pagetable = 't' . $this->mRename++;
 		$result->mSelect = array($pagetable . '.page_id', $pagetable . '.page_title' , $pagetable . '.page_namespace'); // always select subject
@@ -448,7 +451,7 @@ class SMWInlineQuery {
 							$sq_title = $sq->mSelect[1];
 							$sq_namespace = $sq->mSelect[2];
 						} else {
-							$values = array(); // ignore sub-query and make a wild-card search
+							$values = array(); // ignore sub-query and make a wildcard search
 						}
 					}
 					$values = array();
@@ -518,6 +521,7 @@ class SMWInlineQuery {
 								}
 							} else {
 								$or_conditions[] = "$pagetable.page_namespace=$ns_idx";
+								$has_namespace_conditions = true;
 							}
 						}
 					}
@@ -568,6 +572,25 @@ class SMWInlineQuery {
 					$this->mTableCount++;
 					$result->mConditions .= $condition;
 				}
+			}
+		}
+
+		if (!$has_namespace_conditions) { // restrict namespaces to default setting
+			global $smwgIQSearchNamespaces;
+			if ($smwgIQSearchNamespaces !== NULL) {
+				$condition = '';
+				foreach ($smwgIQSearchNamespaces as $nsid) {
+					if ($condition == '') {
+						$condition .= '((';
+					} else {
+						$condition .= ') OR (';
+					}
+					$condition .= "$pagetable.page_namespace=$nsid";
+					$this->mConditionCount++; // we do not check whether this exceeds the max, since it is somehow crucial and controlled by the site admins anyway
+				}
+				if ($condition != '') $condition .= '))';
+				if ('' != $result->mConditions) $result->mConditions .= ' AND ';
+				$result->mConditions .= $condition;
 			}
 		}
 
