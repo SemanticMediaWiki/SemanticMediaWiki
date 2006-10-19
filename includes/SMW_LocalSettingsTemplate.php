@@ -60,6 +60,7 @@ smwfInitNamespaces(100);
 # Large sites should definitely do this to prevent overly high loads!
 ##
 // $smwgIQEnabled = true;
+# Default namespaces to search; to search in all namespaces, comment this out (//...)
 $smwgIQSearchNamespaces = array(NS_MAIN, NS_IMAGE);
 // $smwgIQRedirectNormalization = false;
 // $smwgIQDefaultLinking = 'all';
