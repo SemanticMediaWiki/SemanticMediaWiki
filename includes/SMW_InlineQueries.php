@@ -487,7 +487,7 @@ class SMWInlineQuery {
 						foreach ($values as $idx => $v) {
 							$values[$idx] = smwfNormalTitleDBKey($v);
 						}
-						$value = $this->normalizeRedirects($values);
+						$values = $this->normalizeRedirects($values);
 						// search for values
 						foreach ($values as $v) {
 							$vtitle = Title::newFromText($v);
@@ -510,9 +510,12 @@ class SMWInlineQuery {
 							if (':' == mb_substr($v,0,1)) $v = mb_substr($v,1); // remove initial ':'
 							// TODO: should this be done when normalizing the title???
 							$ns_idx = $wgContLang->getNsIndex(mb_substr($v,0,-2)); // assume format "Namespace:+"
-							if (false === $ns_idx) {
-								$or_conditions[] = "$pagetable.page_title=" . $this->dbr->addQuotes($v);
-								$result->mFixedSubject = true; // by default, only this case is a realy "fixed" subject (even though it could still be combined with others); TODO: find a better way for deciding whether to show the first column or not
+							if ((false === $ns_idx)||(mb_substr($v,-1,1) !== '+')) {
+								$vtitle = Title::newFromText($v);
+								if (NULL != $vtitle) {
+									$or_conditions[] = "$pagetable.page_title=" . $this->dbr->addQuotes($vtitle->getDBKey()) . " AND $pagetable.page_namespace=" . $vtitle->getNamespace();
+									$result->mFixedSubject = true; // by default, only this case is a really "fixed" subject (even though it could still be combined with others); TODO: find a better way for deciding whether to show the first column or not
+								}
 							} else {
 								$or_conditions[] = "$pagetable.page_namespace=$ns_idx";
 							}
