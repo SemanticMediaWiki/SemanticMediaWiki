@@ -18,9 +18,15 @@ Notes on installing Semantic MediaWiki are found in the file INSTALL.
   icon theme for KDE, which was created by Everaldo (everaldo.com).
 
 * The sorttable java script function was developed by Stuart Langridge,
-  and taken from http://www.kryogenix.org/code/browser/sorttable/
+  and taken from http://www.kryogenix.org/code/browser/sorttable
 
-* Translation to French has been contributed by Pierre Matringe.
+* The Jurispedia project (www.jurispedia.org) has initiated and supported
+  some of the translations:
+
+** Translation to French has been contributed by Pierre Matringe.
+
+** Translation to Spanish has been contributed by Javier Calzada Prado and
+   Carmen Jorge García-Reyes of Universidad Carlos III de Madrid.
 
 * Many people have contributed to the project by providing helpful comments and
   suggestions. Among them are the members of the Semantic Wiki Interest Group
