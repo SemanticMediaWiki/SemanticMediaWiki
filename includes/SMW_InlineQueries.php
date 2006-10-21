@@ -390,7 +390,7 @@ class SMWInlineQuery {
 	 * Basic function for extracting a query from a user-supplied string.
 	 * The result is an object of type SMQSQLQuery.
 	 */
-	function parseQuery($querytext) {
+	private function parseQuery($querytext) {
 		global $wgContLang, $smwgIQDisjunctiveQueriesEnabled, $smwgIQSubcategoryInclusions, $smwgIQMaxConditions, $smwgIQMaxTables, $smwgIQMaxPrintout;
 
 		// Extract subqueries:
@@ -421,20 +421,21 @@ class SMWInlineQuery {
 						$label = htmlspecialchars(mb_substr($qparts[2],$altpos+1));
 						$qparts[2] = mb_substr($qparts[2],0,$altpos);
 					} else {
-						$label = $qparts[0];
+						$label = ucfirst($qparts[0]);
 					}
 					if ($cat_sep == $op) { // eventually print all categories for the selected subjects
 						if ('' == $label) $label = $wgContLang->getNSText(NS_CATEGORY);
 						$result->mPrint['C'] = array($label,SMW_IQ_PRINT_CATS);
 					} elseif ( '::' == $op ) {
-						$result->mPrint['R:' . $qparts[0]] = array($label,SMW_IQ_PRINT_RELS,smwfNormalTitleDBKey($qparts[0]));
+						$result->mPrint['R:' . $qparts[0]] = array($this->makeTitleString($wgContLang->getNsText(SMW_NS_RELATION) . ':' . $qparts[0],true,$label),
+						SMW_IQ_PRINT_RELS,smwfNormalTitleDBKey($qparts[0]));
 					} elseif ( ':=' == $op ) {
 						$av = SMWDataValue::newAttributeValue($qparts[0]);
 						$unit = mb_substr($qparts[2],1);
 						if ($unit != '') { // desired unit selected:
 							$av->setDesiredUnits(array($unit));
 						}
-						$result->mPrint['A:' . $qparts[0]] = array($label,SMW_IQ_PRINT_ATTS,smwfNormalTitleDBKey($qparts[0]),$av);
+						$result->mPrint['A:' . $qparts[0]] = array($this->makeTitleString($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $qparts[0],true,$label),SMW_IQ_PRINT_ATTS,smwfNormalTitleDBKey($qparts[0]),$av);
 					} // else: operators like :=> are not supported for printing and are silently ignored
 					$this->mPrintoutCount++;
 				}
@@ -609,7 +610,7 @@ class SMWInlineQuery {
 	 * plugable SQL-query to compute one-step back-and-forth redirects without any 
 	 * materialisation.
 	 */
-	function normalizeRedirects(&$articles) {
+	private function normalizeRedirects(&$articles) {
 		global $smwgIQRedirectNormalization;
 		if (!$smwgIQRedirectNormalization) {
 			return $articles;
@@ -672,7 +673,7 @@ class SMWInlineQuery {
 	 *
 	 * FIXME: store intermediate result in a temporary DB table on the heap; much faster!
 	 */
-	function includeSubcategories( &$categories, $levels ) {
+	private function includeSubcategories( &$categories, $levels ) {
 		if (0 == $levels) return $categories;
 
 		$checkcategories = array_diff($categories, array()); // Copies the array
@@ -729,7 +730,7 @@ class SMWInlineQuery {
 	 * The parameter $print contains an array of things to be printed in the format returned
 	 * when parsing a query.
 	 */
-	function initOutputStrings(&$print) {
+	private function initOutputStrings(&$print) {
 		$this->mSeparators = array();
 		switch ($this->mFormat) {
 		case 'table':
@@ -743,9 +744,8 @@ class SMWInlineQuery {
 			// create header cells and determine separators
 			$first = true;
 			foreach ($print as $column_id => $print_data) {
-				if ('' == $print_data[0]) $print_data[0] = '&nbsp;'; // we need something to click on
+				//if ('' == $print_data[0]) $print_data[0] = '&nbsp;'; // we need something to click on
 				if ($this->mShowHeaders) $this->mHeaderText .= "\t\t\t<th>" . $print_data[0] . "</th>\n";
-				// FIXME: just not printing headers does not work with the JScript tables nicely
 				if ($first) {
 					$first = false;
 					$this->mSeparators[$column_id] = '';
@@ -803,7 +803,7 @@ class SMWInlineQuery {
 	/**
 	 * Build and return the output string for one row.
 	 */
-	function makeRow(&$row, &$print) {
+	private function makeRow(&$row, &$print) {
 		global $wgContLang, $smwgIQSortingEnabled;
 
 		$result = '';
@@ -887,8 +887,9 @@ class SMWInlineQuery {
 	 *
 	 * $subject states whether the given title is the subject (to which special
 	 * settings for linking apply).
+	 * If $label is NULL the standard label of the given article will be used.
 	 */
-	function makeTitleString($text,$subject) {
+	private function makeTitleString($text,$subject,$label=NULL) {
 		$title = Title::newFromText( $text );
 		if ($title == NULL) {
 			return $text; // TODO maybe report an error here?
@@ -899,7 +900,8 @@ class SMWInlineQuery {
 			} else {
 				$classnew = 'class="new" ';
 			}
-			return '<a href="'. $title->getLocalURL() .'" '. $classnew .'title="'. $title->getText() .'">'. $title->getText() .'</a>';
+			if ($label === NULL) $label = $title->getText();
+			return '<a href="'. $title->getLocalURL() .'" '. $classnew .'title="'. $title->getText() .'">'. $label .'</a>';
 		} else {
 			return $title->getText();
 		}

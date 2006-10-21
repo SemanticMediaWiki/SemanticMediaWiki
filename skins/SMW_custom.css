@@ -2,6 +2,7 @@
 
 table.smwtable th {
 	background-color: #EEF;
+	text-align: left;
 }
 
 table.smwtable td {
@@ -13,6 +14,20 @@ table.smwtable td {
 
 table.smwtable {
 	background-color: #EEF;
+}
+
+/* buttons for sort-arrows */
+
+span.sortarrow {
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-bottom: 1px;
+	border: 2px solid #FFF;
+	border-color: #FFF #888 #888 #FFF;
+}
+
+a.sortheader:hover{
+	text-decoration: none;
 }
 
 /* factbox */
