@@ -219,12 +219,12 @@ class SMWInlineQuery {
 			$this->mSort = smwfNormalTitleDBKey($param['sort']);
 		}
 		if (array_key_exists('order', $param)) {
-			if (('descending'==$param['order'])||('reverse'==$param['order'])||('desc'==$param['order'])) {
+			if (('descending'==strtolower($param['order']))||('reverse'==strtolower($param['order']))||('desc'==strtolower($param['order']))) {
 				$this->mOrder = "DESC";
 			}
 		}
 		if (array_key_exists('format', $param)) {
-			$this->mFormat = $param['format'];
+			$this->mFormat = strtolower($param['format']);
 			if (($this->mFormat != 'ul') && ($this->mFormat != 'ol') && ($this->mFormat != 'list') && ($this->mFormat != 'table'))
 				$this->mFormat = 'auto'; // If it is an unknown format, default to list again
 		}
@@ -235,7 +235,7 @@ class SMWInlineQuery {
 			$this->mIntro = htmlspecialchars($param['intro']);
 		}
 		if (array_key_exists('link', $param)) {
-			switch ($param['link']) {
+			switch (strtolower($param['link'])) {
 			case 'head': case 'subject':
 				$this->mLinkSubj = true;
 				$this->mLinkObj  = false;
@@ -254,7 +254,7 @@ class SMWInlineQuery {
 			$this->mDefault = htmlspecialchars($param['default']);
 		}
 		if (array_key_exists('headers', $param)) {
-			if ( 'hide' == $param['headers']) {
+			if ( 'hide' == strtolower($param['headers'])) {
 				$this->mShowHeaders = false;
 			} else {
 				$this->mShowHeaders = true;
