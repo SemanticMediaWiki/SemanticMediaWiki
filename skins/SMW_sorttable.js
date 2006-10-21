@@ -6,7 +6,7 @@ addEvent(window, "load", sortables_init);
 var SORT_COLUMN_INDEX;
 
 function sortables_init() {
-    // Find all tables with class sortable and make them sortable
+    // Find all tables with class smwtable and make them sortable
     if (!document.getElementsByTagName) return;
     tbls = document.getElementsByTagName("table");
     for (ti=0;ti<tbls.length;ti++) {
@@ -23,8 +23,9 @@ function ts_makeSortable(table) {
         var firstRow = table.rows[0];
     }
     if (!firstRow) return;
+    if ( (firstRow.cells.length==0)||(firstRow.cells[0].tagName != 'TH') ) return;
 
-    // We have a first row: assume it's the header, and make its contents clickable links
+    // We have a first row that is a header; make its contents clickable links:
     for (var i=0;i<firstRow.cells.length;i++) {
         var cell = firstRow.cells[i];
         var txt = ts_getInnerText(cell);
