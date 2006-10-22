@@ -24,7 +24,9 @@
 		if (!$smwgHeadersInPlace) {
 			$toolTipScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
 			$out->addScript($toolTipScript);
-			$sortTableScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
+			$sortTableScript = '<script type="text/javascript" id="SMW_sorttable_script_inclusion" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
+			// The above id is essential for the JavaScript to find out the $smwgScriptPath to
+			// include images. Changes in the above must always be coordinated with the script!
 			$out->addScript($sortTableScript);
 
 			// Also we add a custom CSS file for our needs

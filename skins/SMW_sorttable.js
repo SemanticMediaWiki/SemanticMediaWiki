@@ -4,9 +4,19 @@
 addEvent(window, "load", sortables_init);
 
 var SORT_COLUMN_INDEX;
+var SMW_PATH;
 
 function sortables_init() {
+	// The following is a hack to find out the path to our skin directory
+	// I am happy to change this into anything else if there is another way ...
+	if (!document.getElementById) return;
+	st = document.getElementById("SMW_sorttable_script_inclusion");
+	SMW_PATH = st.src.substring(0, st.src.length-17);
+	// Preload images
 	preload_images();
+	// Now find the tables
+	if (!document.getElementsByName) return;
+	tbls = document.getElementsByTagName("SMW_headscript_sorttable");
     // Find all tables with class smwtable and make them sortable
     if (!document.getElementsByTagName) return;
     tbls = document.getElementsByTagName("table");
@@ -23,11 +33,11 @@ function preload_images() {
 	// preload icons needed by SMW
 	if (document.images) {
 		pic1= new Image(12,14);
-		pic1.src="extensions/SemanticMediaWiki/skins/sort_up.gif";
+		pic1.src = SMW_PATH + "/sort_up.gif";
 		pic2= new Image(12,14);
-		pic2.src="extensions/SemanticMediaWiki/skins/sort_down.gif";
+		pic2.src = SMW_PATH + "/sort_down.gif";
 		pic3= new Image(16,16); 
-		pic3.src="extensions/SemanticMediaWiki/skins/search_icon.png"; 
+		pic3.src = SMW_PATH + "/search_icon.png"; 
 	}
 }
 
@@ -44,7 +54,7 @@ function ts_makeSortable(table) {
         //var txt = ts_getInnerText(cell); // unused -- we preserve the inner html
         cell.innerHTML = '<a href="#" class="sortheader" '+
         'onclick="ts_resortTable(this, '+i+');return false;">' +
-        '<span class="sortarrow"><img alt="[&lt;&gt;]" src="extensions/SemanticMediaWiki/skins/sort_none.gif"/></span></a>&nbsp;<span style="margin-left: 0.3em; margin-right: 1em;">' + cell.innerHTML + '</span>'; // the &nbsp; is for Opera ...
+        '<span class="sortarrow"><img alt="[&lt;&gt;]" src="' + SMW_PATH + '/sort_none.gif"/></span></a>&nbsp;<span style="margin-left: 0.3em; margin-right: 1em;">' + cell.innerHTML + '</span>'; // the &nbsp; is for Opera ...
     }
 }
 
@@ -98,11 +108,11 @@ function ts_resortTable(lnk,clid) {
 
     var ARROW;
     if (span.getAttribute("sortdir") == 'down') {
-        ARROW = '<img alt="[&gt;]" src="extensions/SemanticMediaWiki/skins/sort_up.gif"/>';
+        ARROW = '<img alt="[&gt;]" src="' + SMW_PATH + '/sort_up.gif"/>';
         newRows.reverse();
         span.setAttribute('sortdir','up');
     } else {
-        ARROW = '<img alt="[&lt;]" src="extensions/SemanticMediaWiki/skins/sort_down.gif"/>';
+        ARROW = '<img alt="[&lt;]" src="' + SMW_PATH + '/sort_down.gif"/>';
         span.setAttribute('sortdir','down');
     }
 
@@ -117,7 +127,7 @@ function ts_resortTable(lnk,clid) {
     for (var ci=0;ci<allspans.length;ci++) {
         if (allspans[ci].className == 'sortarrow') {
             if (getParent(allspans[ci],"table") == getParent(lnk,"table")) { // in the same table as us?
-                allspans[ci].innerHTML = '<img alt="[&lt;&gt;]" src="extensions/SemanticMediaWiki/skins/sort_none.gif"/>';
+                allspans[ci].innerHTML = '<img alt="[&lt;&gt;]" src="' + SMW_PATH + '/sort_none.gif"/>';
             }
         }
     }
