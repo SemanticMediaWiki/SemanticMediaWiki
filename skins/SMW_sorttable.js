@@ -6,6 +6,7 @@ addEvent(window, "load", sortables_init);
 var SORT_COLUMN_INDEX;
 
 function sortables_init() {
+	preload_images();
     // Find all tables with class smwtable and make them sortable
     if (!document.getElementsByTagName) return;
     tbls = document.getElementsByTagName("table");
@@ -18,20 +19,32 @@ function sortables_init() {
     }
 }
 
+function preload_images() {
+	// preload icons needed by SMW
+	if (document.images) {
+		pic1= new Image(12,14);
+		pic1.src="extensions/SemanticMediaWiki/skins/sort_up.gif";
+		pic2= new Image(12,14);
+		pic2.src="extensions/SemanticMediaWiki/skins/sort_down.gif";
+		pic3= new Image(16,16); 
+		pic3.src="extensions/SemanticMediaWiki/skins/search_icon.png"; 
+	}
+}
+
 function ts_makeSortable(table) {
     if (table.rows && table.rows.length > 0) {
         var firstRow = table.rows[0];
     }
     if (!firstRow) return;
-    if ( (firstRow.cells.length==0)||(firstRow.cells[0].tagName != 'TH') ) return;
+    if ( (firstRow.cells.length==0)||(firstRow.cells[0].tagName.toLowerCase() != 'th') ) return;
 
     // We have a first row that is a header; make its contents clickable links:
     for (var i=0;i<firstRow.cells.length;i++) {
         var cell = firstRow.cells[i];
-        var txt = ts_getInnerText(cell);
+        //var txt = ts_getInnerText(cell); // unused -- we preserve the inner html
         cell.innerHTML = '<a href="#" class="sortheader" '+
         'onclick="ts_resortTable(this, '+i+');return false;">' +
-        '<span class="sortarrow">&ensp;</span></a><span style="margin-left: 0.3em; margin-right: 1em;">' + cell.innerHTML + '</span>';
+        '<span class="sortarrow"><img alt="[&lt;&gt;]" src="extensions/SemanticMediaWiki/skins/sort_none.gif"/></span></a>&nbsp;<span style="margin-left: 0.3em; margin-right: 1em;">' + cell.innerHTML + '</span>'; // the &nbsp; is for Opera ...
     }
 }
 
@@ -83,12 +96,13 @@ function ts_resortTable(lnk,clid) {
 
     newRows.sort(sortfn);
 
+    var ARROW;
     if (span.getAttribute("sortdir") == 'down') {
-        ARROW = '&uarr;';
+        ARROW = '<img alt="[&gt;]" src="extensions/SemanticMediaWiki/skins/sort_up.gif"/>';
         newRows.reverse();
         span.setAttribute('sortdir','up');
     } else {
-        ARROW = '&darr;';
+        ARROW = '<img alt="[&lt;]" src="extensions/SemanticMediaWiki/skins/sort_down.gif"/>';
         span.setAttribute('sortdir','down');
     }
 
@@ -103,7 +117,7 @@ function ts_resortTable(lnk,clid) {
     for (var ci=0;ci<allspans.length;ci++) {
         if (allspans[ci].className == 'sortarrow') {
             if (getParent(allspans[ci],"table") == getParent(lnk,"table")) { // in the same table as us?
-                allspans[ci].innerHTML = '&ensp;';
+                allspans[ci].innerHTML = '<img alt="[&lt;&gt;]" src="extensions/SemanticMediaWiki/skins/sort_none.gif"/>';
             }
         }
     }
