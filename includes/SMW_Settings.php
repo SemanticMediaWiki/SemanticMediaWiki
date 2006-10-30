@@ -47,10 +47,10 @@ $smwgIP = $IP . '/extensions/SemanticMediaWiki';
 //$pathfix = $IP . $smwgScriptPath;
 
 // load global functions
-require_once($smwgIP . '/includes/SMW_GlobalFunctions.php');
+require_once('SMW_GlobalFunctions.php');
 
 // load (default) settings for inline queries first
-require_once($smwgIP . '/includes/SMW_InlineQueries.php');
+require_once('SMW_InlineQueries.php');
 
 // get local configuration ...
 require("SMW_LocalSettings.php");
