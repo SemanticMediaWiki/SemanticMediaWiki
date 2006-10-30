@@ -95,7 +95,7 @@ class SMW_LanguageEn {
 	'smw_unusedattributes_docu' => 'The following attribute pages exist although no other page makes use of them.',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Click here to refresh all queries and templates on this page',
-	'purge' => 'refresh',
+	'purge' => 'Refresh',
 	/*Messages for Import Ontology Special*/
 	'ontologyimport' => 'Import ontology',
 	'smw_oi_docu' => 'This special page allows to import ontologies. The ontologies have to follow a certain format, specified at the <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">ontology import help page</a>.',
