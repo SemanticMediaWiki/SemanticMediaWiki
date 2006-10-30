@@ -15,5 +15,6 @@ function smwfAddRefreshTab($obj, $content_actions) {
 			'href' => $obj->mTitle->getLocalUrl( 'action=purge' )
 		);
 	}
+	return true; // always return true, in order not to stop MW's hook processing!
 }
 ?>
