@@ -1,19 +1,19 @@
 /* tables for inline queries */
 
 table.smwtable th {
-	background-color: #EEF;
+	background-color: #EEEEFF; /* Note: here and below, we use six digits, since some users had problems with the three digit short forms */
 	text-align: left;
 }
 
 table.smwtable td {
-	background-color: #FFF;
+	background-color: #FFFFFF;
 	padding: 1px;
 	padding-left: 5px;
 	padding-right: 5px;
 }
 
 table.smwtable {
-	background-color: #EEF;
+	background-color: #EEEEFF;
 }
 
 /* buttons for sort-arrows */
@@ -34,7 +34,7 @@ div.smwfact {
 	background-color: #F9F9F9;
 	padding: 5px;
 	margin-top: 1em;
-	border: 1px solid #AAA;
+	border: 1px solid #AAAAAA;
 	font-size: 95%;
 }
 
@@ -54,13 +54,13 @@ div.smwfact td.smwrels, div.smwfact td.smwatts, div.smwfact td.smwspecs{
 
 div.smwfact th.relhead, div.smwfact th.atthead, div.smwfact th.spechead{
 	text-align: left;
-	border-top: 1px dotted #AAA;
+	border-top: 1px dotted #AAAAAA;
 }
 
 /* warning messages */
 
 span.smwwarning{
-	color: #888;
+	color: #888888;
 	font-style: italic;
 	font-size: 90%;
 }
@@ -70,20 +70,20 @@ span.smwwarning{
 span.smwsearchicon {
 	padding-right: 16px;
 	margin-right: 2px;
-	color: #888;
+	color: #888888;
 	background: url(searchgray_iconsmall.png) center right no-repeat;
 }
 
 #bodyContent span.smwsearch a{
 	padding-right: 16px;
 	margin-right: 2px;
-	color: #888;
+	color: #888888;
 	background: url(searchgray_iconsmall.png) center right no-repeat;
 }
 
 #bodyContent span.smwsearch a:hover{
 	text-decoration: none;
-	color: #00F;
+	color: #0000FF;
 	padding-right: 18px;
 	margin-right: 0px;
 	background: url(search_icon.png) center right no-repeat;
@@ -91,13 +91,13 @@ span.smwsearchicon {
 
 #bodyContent span.smwmap a{
 	padding-right: 20px;
-	color: #888;
+	color: #888888;
 	background: url(world.png) center right no-repeat;
 }
 
 #bodyContent span.smwmap a:hover{
 	padding-right: 20px;
-	color: #00F;
+	color: #0000FF;
 	background: url(world.png) center right no-repeat;
 }
 
@@ -105,13 +105,13 @@ span.smwsearchicon {
 
 #bodyContent span.rdflink a{
 	padding-right: 20px;
-	color: #888;
+	color: #888888;
 	background: url(rdf_flyer.18.gif) center right no-repeat;
 }
 
 #bodyContent span.rdflink a:hover{
 	text-decoration: none;
-	color: #00F;
+	color: #0000FF;
 	padding-right: 20px;
 	margin-right: 0px;
 	background: url(rdf_flyer.18.gif) center right no-repeat;
@@ -128,11 +128,11 @@ div.smwtt {
 	left: 0px;
 	padding: 3px 10px;
 	background-color: #FFFFCC;
-	border: 1px solid #AAA;
+	border: 1px solid #AAAAAA;
 }
 
 a.smwatr, a.smwatr:hover, a.smwatr:active, a.smwatr:visited {
-    color: #B70;
+    color: #BB7700;
 	text-decoration: none;
 	cursor: help;
 }
