@@ -43,7 +43,7 @@
 			SMWSemanticData::printFactbox($text);
 		}
 
-		return true;
+		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
 
@@ -66,7 +66,7 @@
 					}x',
 					'smwfParseAttributesAfterTidyCallback', $text);
 
-		return true;
+		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
 	/**
@@ -78,7 +78,8 @@
 	function smwfSaveHook(&$article, &$user, &$text)
 	{
 		$title=$article->getTitle();
-		return SMWSemanticData::storeData($title, smwfIsSemanticsProcessed($title->getNamespace()));
+		SMWSemanticData::storeData($title, smwfIsSemanticsProcessed($title->getNamespace()));
+		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
 	/**
@@ -91,7 +92,7 @@
 		smwfDeleteRelations($title);
 		smwfDeleteAttributes($title);
 		smwfDeleteSpecialProperties($title);
-		return true;
+		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
 	/**
@@ -101,7 +102,7 @@
 	function smwfMoveHook(&$old_title, &$new_title, &$user, $pageid, $redirid)
 	{
 		smwfMoveAnnotations($old_title, $new_title);
-		return true;
+		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
 	/*********************************************************************/

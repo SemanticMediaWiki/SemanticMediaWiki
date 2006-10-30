@@ -428,7 +428,6 @@ class SMWSemanticData {
 			SMWSemanticData::storeRelations($title);
 			SMWSemanticData::storeSpecialProperties($title);
 		}
-		return true;
 	}
 
 	/**
