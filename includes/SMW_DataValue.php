@@ -36,7 +36,7 @@ class SMWDataValue {
 	var $vxsd;
 	/**
 	 * Float for representing scalar value of $vxsd. Required for all data-types 
-	 * whose values are naturally sortable in a linear way; FALSE 
+	 * whose values are naturally sortable in a linear way; NULL 
 	 * otherwise.
 	 */
 	var $vnum;
@@ -215,7 +215,7 @@ class SMWDataValue {
 	 * @param num - see $vnum
 	 * @param unit - see $unit
 	 */
-	function setProcessedValues($user, $xsd, $num=false, $unit='') {
+	function setProcessedValues($user, $xsd, $num=NULL, $unit='') {
 		$this->vuser = $user;
 		$this->vxsd = $xsd;
 		$this->vnum = $num;
@@ -331,7 +331,7 @@ class SMWDataValue {
 	function clear() {
 		$this->vuser = '';
 		$this->vxsd = false;
-		$this->vnum = false;
+		$this->vnum = NULL;
 		$this->unit = '';
 		$this->input = 'K';
 		$this->others = array();
@@ -389,7 +389,7 @@ class SMWDataValue {
 	}
 
 	/**
-	 * Return the numeric representation of the value, or FALSE
+	 * Return the numeric representation of the value, or NULL
 	 * is none is available. This representation is used to 
 	 * compare values of scalar types more efficiently, especially
 	 * for sorting queries. If the datatype has units, then this
