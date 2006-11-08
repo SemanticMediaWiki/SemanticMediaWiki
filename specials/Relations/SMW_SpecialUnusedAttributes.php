@@ -60,15 +60,10 @@ function wfSMWUnusedAttributes()
 			return false;
 		}
 	
-		function formatResult( $result, $old = null ) {
-			if($old) { // pre-1.9
-				$skin = $result;
-				$result = $old;
-			}
+		function formatResult( $skin, $result ) {
 			global $wgLang;
 			$title = Title::makeTitle( SMW_NS_ATTRIBUTE, $result->title );
-			return $old ? $skin->makeLinkObj( $title, $title->getText() )
-				: Linker::makeLinkObj( $title, $title->getText() );
+			return $skin->makeLinkObj( $title, $title->getText() );
 		}
 	}
 	

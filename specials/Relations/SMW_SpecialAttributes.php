@@ -53,16 +53,11 @@ function wfSMWAttributes()
 			return false;
 		}
 	
-		function formatResult( $result, $old = null ) {
-			if($old) { // pre-1.9
-				$skin = $result;
-				$result = $old;
-			}
+		function formatResult( $skin, $result ) {
 			global $wgLang, $wgExtraNamespaces;
 			// The attribute title is in value, see getSQL().
 			$attrtitle = Title::makeTitle( SMW_NS_ATTRIBUTE, $result->value );
-			$attrlink = $old ? $skin->makeLinkObj( $attrtitle, $attrtitle->getText() )
-				: Linker::makeLinkObj( $attrtitle, $attrtitle->getText() );
+			$attrlink = $skin->makeLinkObj( $attrtitle, $attrtitle->getText() );
 			// The value_datatype is in title, see getSQL().
 			if (strncmp($result->title, $wgExtraNamespaces[SMW_NS_TYPE], count($wgExtraNamespaces[SMW_NS_TYPE])) == 0) {
 				// The value_datatype is a Type: page name.
@@ -77,10 +72,10 @@ function wfSMWAttributes()
 					$typetitle = NULL;
 				}
 			}
-			$typelink = $old ? $skin->makeLinkObj( $typetitle ) : Linker::makeLinkObj( $typetitle );
+			$typelink = $skin->makeLinkObj( $typetitle);
 			// Note: It doesn't seem possible to reuse this infolink object.
 			$searchlink = new SMWInfolink(
-			    SMWInfolink::makeAttributeSearchURL($attrtitle->getText(),''),
+			    SMWInfolink::makeAttributeSearchURL($attrtitle->getText(),'',$skin),
 			    '+','smwsearch');
 
 			return "$attrlink ($result->count)" . wfMsg('smw_attr_type_join', $typelink) . ' ' . $searchlink->getHTML();

@@ -87,9 +87,9 @@ function wfSMWTypes()
 		/**
 		 * Returns the info about a type as HTML
 		 */
-		function getTypeInfo ($label, $skin = null) { // if $skin is left null, we better be in MW1.9+
+		function getTypeInfo ($label, $skin) {
 			$title = Title::makeTitle( SMW_NS_TYPE, $label );
-			$link = $skin ? $skin->makeLinkObj( $title, $title->getText() ) : Linker::makeLinkObj( $title, $title->getText() );
+			$link = $skin->makeLinkObj( $title, $title->getText() );
 
 			// Unlike Attributes and Relations, we don't have a count and there's no URL to search by type.
 			$text = $link;
@@ -117,13 +117,8 @@ function wfSMWTypes()
 			
 		}
 	
-		function formatResult( $result, $old = null ) {
-			if($old) { // pre-1.9
-				$skin = $result;
-				$result = $old;
-				return $this->getTypeInfo($result->title, $skin);
-			}
-			return $this->getTypeInfo($result->title);
+		function formatResult( $skin, $result ) {
+			return $this->getTypeInfo($result->title, $skin);
 		}
 
 	}

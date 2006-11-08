@@ -324,9 +324,9 @@ class SMWInfolink {
 	 * @access public
 	 * @static
 	 */
-	static function makeAttributeSearchURL($attribute,$value) {
+	static function makeAttributeSearchURL($attribute,$value,$skin) {
 		global $wgServer;
-		return $wgServer . Skin::makeSpecialUrl('SearchTriple','attribute=' . urlencode($attribute) . '&value=' . urlencode($value) . '&do=' . urlencode('Search Attributes'));
+		return $wgServer . $skin->makeSpecialUrl('SearchTriple','attribute=' . urlencode($attribute) . '&value=' . urlencode($value) . '&do=' . urlencode('Search Attributes'));
 	}
 
 	/**
@@ -334,9 +334,9 @@ class SMWInfolink {
 	 * @access public
 	 * @static
 	 */
-	static function makeRelationSearchURL($relation,$object) {
+	static function makeRelationSearchURL($relation,$object,$skin) {
 		global $wgServer;
-		return $wgServer . Skin::makeSpecialUrl('SearchTriple','relation=' . urlencode($relation) . '&object=' . urlencode($object) . '&do=' . urlencode('Search Relations'));
+		return $wgServer . $skin->makeSpecialUrl('SearchTriple','relation=' . urlencode($relation) . '&object=' . urlencode($object) . '&do=' . urlencode('Search Relations'));
 	}
 
 	/**
