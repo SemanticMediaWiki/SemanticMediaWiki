@@ -61,10 +61,15 @@ function wfSMWUnusedRelations()
 			return false;
 		}
 	
-		function formatResult( $skin, $result ) {
+		function formatResult( $result, $old = null ) {
+			if($old) { // pre-1.9
+				$skin = $result;
+				$result = $old;
+			}
 			global $wgLang;
 			$title = Title::makeTitle( SMW_NS_RELATION, $result->title );
-			return $skin->makeLinkObj( $title, $title->getText() );
+			return $old ? $skin->makeLinkObj( $title, $title->getText() )
+				: Linker::makeLinkObj( $title, $title->getText() );
 		}
 	}	
 	
