@@ -8,7 +8,7 @@ class SMW_LanguageEn {
 /* private */ var $smwContentMessages = array(
 	'smw_edithelp' => 'Editing help on relations and attributes',
 	'smw_helppage' => 'Relation',
-	'smw_viewasrdf' => 'View as RDF',
+	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => ', and', //used in "A, B, and C"
 	'smw_factbox_head' => 'Facts about $1 &mdash; Click <span class="smwsearchicon">+</span> to find similar pages.',
 	'smw_att_head' => 'Attribute values',
