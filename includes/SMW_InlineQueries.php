@@ -488,16 +488,22 @@ class SMWInlineQuery {
 						//  using a simple SQL query instead)
 						//  Also, redirects are not taken into account for sub-queries
 						//  anymore now.
-						foreach ($values as $idx => $v) {
-							$values[$idx] = smwfNormalTitleDBKey($v);
-						}
-						$values = $this->normalizeRedirects($values);
-						// search for values
+						$vtitles = array();
 						foreach ($values as $v) {
 							$vtitle = Title::newFromText($v);
-							if (NULL != $vtitle) {
-								$or_conditions[] = "$curtable.object_title=" . $this->dbr->addQuotes($vtitle->getDBKey()) . " AND $curtable.object_namespace=" . $vtitle->getNamespace();
+							if (NULL != $vtitle) { 
+								$id = $vtitle->getArticleID(); // create index for title
+								if (0 == $id) $id = $vtitle->getPrefixedText();
+								$vtitles[$vtitle->getArticleID()] = $vtitle; //convert values to titles
 							}
+						}
+						$vtitles = $this->normalizeRedirects($vtitles);
+						
+						// search for values
+						foreach ($vtitles as $vtitle) {
+							//if (NULL != $vtitle) {
+								$or_conditions[] = "$curtable.object_title=" . $this->dbr->addQuotes($vtitle->getDBKey()) . " AND $curtable.object_namespace=" . $vtitle->getNamespace();
+							//}
 						}
 					}
 					if ($relation == $this->mSort) {
@@ -601,7 +607,7 @@ class SMWInlineQuery {
 	}
 
 	/**
-	 * Turns an array of articles into an array of all these articles and
+	 * Turns an array of article titles into an array of all these articles and
 	 * the transitive closure of all redirects from and to this articles.
 	 * Or, simply said: it gets all aliases of what you put in.
 	 *
@@ -610,61 +616,77 @@ class SMWInlineQuery {
 	 * plugable SQL-query to compute one-step back-and-forth redirects without any 
 	 * materialisation.
 	 */
-	private function normalizeRedirects(&$articles) {
+	private function normalizeRedirects(&$titles) {
 		global $smwgIQRedirectNormalization;
 		if (!$smwgIQRedirectNormalization) {
-			return $articles;
+			return $titles;
 		}
-		$stable = FALSE;
-		$check_articles = array_diff( $articles , array() ); // Copies the array
-		while (!$stable) {
-			$new_articles = array();
-			foreach ( $check_articles as $article ) {
+		
+		print "STARTING NORMALIZATION FOR:<br />\n";
+			foreach ($titles as $title) print "+ " . $title->getPrefixedText();
+			print "<br />\n";
+
+		$stable = 0;
+		$check_titles = array_diff( $titles , array() ); // Copies the array
+		while ($stable<30) { // emergency stop after 30 iterations
+			$stable++;
+			$new_titles = array();
+			foreach ( $check_titles as $title ) {
 				// there...
-				$res = $this->dbr->select(
-					array( 'page' , 'pagelinks' ),
-					array( 'pl_title' ),
-					array(  'page_title = ' . $this->dbr->addQuotes( $article ),
+				
+				print "1 ";
+				if ( 0 != $title->getArticleID() ) {
+					$res = $this->dbr->select(
+						array( 'page' , 'pagelinks' ),
+						array( 'pl_title', 'pl_namespace'),
+						array( 'page_id = ' . $title->getArticleID(),
 							'page_is_redirect = 1',
 							'page_id = pl_from' ) ,
 							"SMW::NormalizeRedirects" );
-				if ( $res ) {
 					while ( $res && $row = $this->dbr->fetchRow( $res )) {
-						if ( array_key_exists( 'pl_title', $row) ) {
-							$new_article = $row[ 'pl_title' ];
-							if (!in_array( $new_article , $articles)) {
-								$new_articles[] = $new_article;
+						$new_title = Title::newFromText($row['pl_title'], $row['pl_namespace']);
+						if (NULL != $new_title) {
+							$id = $new_title->getArticleID();
+							if (0 == $id) $id = $new_title->getPrefixedText();
+							if (!array_key_exists( $id , $titles)) {
+								$titles[$id] = $new_title;
+								$new_titles[] = $new_title;
+								print "+ " . $new_title->getPrefixedText() . "(" . $new_title->getArticleID() . ") ";
 							}
 						}
 					}
+					$this->dbr->freeResult( $res );
 				}
-				$this->dbr->freeResult( $res );
-	
+
+				print "<br />\n";
+				print "2 "; 
 				// ... and back again
 				$res = $this->dbr->select(
 					array( 'page' , 'pagelinks' ),
-					array( 'page_title' ),
-					array(  'pl_title = '. $this->dbr->addQuotes( $article ),
-							'page_is_redirect = 1',
-							'page_id = pl_from' ) ,
-							"SMW::NormalizeRedirects" );
-				if ( $res ) {
-					while ( $res && $row = $this->dbr->fetchRow( $res )) {
-						if ( array_key_exists( 'page_title', $row) ) {
-							$new_article = $row[ 'page_title' ];
-							if (!in_array( $new_article , $articles)) {
-								$new_articles[] = $new_article;
-							}
-						}
+					array( 'page_id' ),
+					array( 'pl_title = ' . $this->dbr->addQuotes( $title->getDBkey() ),
+					       'pl_namespace = ' . $this->dbr->addQuotes( $title->getNamespace() ), 
+					       'page_is_redirect = 1',
+					       'page_id = pl_from' ) ,
+					       "SMW::NormalizeRedirects" );
+				while ( $res && $row = $this->dbr->fetchRow( $res )) {
+					$new_title = Title::newFromID( $row['page_id'] );
+					if (!array_key_exists( $row['page_id'] , $titles)) {
+						$titles[$row['page_id']] = $new_title;
+						$new_titles[] = $new_title;
+						print "+ " . $new_title->getPrefixedText() . "(" . $new_title->getArticleID() . ") ";
 					}
 				}
 				$this->dbr->freeResult( $res );
 			}
-			$stable = (count($new_articles)==0);
-			$articles = array_merge( $articles, $new_articles );
-			$check_articles = array_diff( $new_articles , array() );
+			if (count($new_titles)==0)
+				$stable= 500; // stop
+			else
+				$check_titles = array_diff( $new_titles , array() );
+// 			foreach ($new_titles as $title) print "+ " . $title->getPrefixedText();
+			print "<br />\n";
 		}
-		return $articles;
+		return $titles;
 	}
 	
 	/**
