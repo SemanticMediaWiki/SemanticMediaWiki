@@ -30,6 +30,9 @@ function doSpecialExportRDF($page = '') {
 	
 	if ($page=='') { //try to get GET parameter; simple way of calling the export
 		$page = $wgRequest->getVal( 'page' );
+	} else {
+		//FIXME: this might be needed with MediaWiki 1.9 final, but it would be wrong in 1.8
+		//$page = urldecode($page); 
 	}
 
 	if ($page=='') { //try to get POST list; some settings are only available via POST
@@ -196,7 +199,7 @@ class SMWExportTitle {
 					break;
 			}
 			$this->long_uri = $xmlent . $baseXML;
-			if (mb_substr($baseXML,0,1)=='-') { // illegal as first char in XML
+			if (in_array(mb_substr($baseXML,0,1), array('-','0','1','2','3','4','5','6','7','8','9'))) { // illegal as first char in XML
 				$this->short_uri = 'wiki:_' . $this->ns_uri . $baseXML;
 			} else {
 				$this->short_uri = $xmlprefix . $baseXML;
