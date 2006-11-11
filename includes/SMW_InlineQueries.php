@@ -621,10 +621,6 @@ class SMWInlineQuery {
 		if (!$smwgIQRedirectNormalization) {
 			return $titles;
 		}
-		
-		print "STARTING NORMALIZATION FOR:<br />\n";
-			foreach ($titles as $title) print "+ " . $title->getPrefixedText();
-			print "<br />\n";
 
 		$stable = 0;
 		$check_titles = array_diff( $titles , array() ); // Copies the array
@@ -633,8 +629,6 @@ class SMWInlineQuery {
 			$new_titles = array();
 			foreach ( $check_titles as $title ) {
 				// there...
-				
-				print "1 ";
 				if ( 0 != $title->getArticleID() ) {
 					$res = $this->dbr->select(
 						array( 'page' , 'pagelinks' ),
@@ -651,15 +645,12 @@ class SMWInlineQuery {
 							if (!array_key_exists( $id , $titles)) {
 								$titles[$id] = $new_title;
 								$new_titles[] = $new_title;
-								print "+ " . $new_title->getPrefixedText() . "(" . $new_title->getArticleID() . ") ";
 							}
 						}
 					}
 					$this->dbr->freeResult( $res );
 				}
 
-				print "<br />\n";
-				print "2 "; 
 				// ... and back again
 				$res = $this->dbr->select(
 					array( 'page' , 'pagelinks' ),
@@ -674,7 +665,6 @@ class SMWInlineQuery {
 					if (!array_key_exists( $row['page_id'] , $titles)) {
 						$titles[$row['page_id']] = $new_title;
 						$new_titles[] = $new_title;
-						print "+ " . $new_title->getPrefixedText() . "(" . $new_title->getArticleID() . ") ";
 					}
 				}
 				$this->dbr->freeResult( $res );
@@ -683,8 +673,6 @@ class SMWInlineQuery {
 				$stable= 500; // stop
 			else
 				$check_titles = array_diff( $new_titles , array() );
-// 			foreach ($new_titles as $title) print "+ " . $title->getPrefixedText();
-			print "<br />\n";
 		}
 		return $titles;
 	}
