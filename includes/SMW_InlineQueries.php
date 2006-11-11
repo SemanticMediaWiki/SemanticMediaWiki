@@ -636,7 +636,7 @@ class SMWInlineQuery {
 						array( 'page_id = ' . $title->getArticleID(),
 							'page_is_redirect = 1',
 							'page_id = pl_from' ) ,
-							"SMW::NormalizeRedirects" );
+							'SMW::InlineQuery::NormalizeRedirects', array('LIMIT' => '1') );
 					while ( $res && $row = $this->dbr->fetchRow( $res )) {
 						$new_title = Title::newFromText($row['pl_title'], $row['pl_namespace']);
 						if (NULL != $new_title) {
@@ -659,7 +659,7 @@ class SMWInlineQuery {
 					       'pl_namespace = ' . $this->dbr->addQuotes( $title->getNamespace() ), 
 					       'page_is_redirect = 1',
 					       'page_id = pl_from' ) ,
-					       "SMW::NormalizeRedirects" );
+					       'SMW::InlineQuery::NormalizeRedirects', array('LIMIT' => '1'));
 				while ( $res && $row = $this->dbr->fetchRow( $res )) {
 					$new_title = Title::newFromID( $row['page_id'] );
 					if (!array_key_exists( $row['page_id'] , $titles)) {
