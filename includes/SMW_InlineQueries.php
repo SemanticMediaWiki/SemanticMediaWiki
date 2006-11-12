@@ -277,20 +277,13 @@ class SMWInlineQuery {
 			$smwgIQRunningNumber = 0;
 		} else { $smwgIQRunningNumber++; }
 
-		// this should also replace template parameters -- but it does not, and
-		// I don't have the slightes clue why. The code afterwards was for testing. Don't
-		// delete it until the template / extension - interplay problem is fixed. (denny)
-		global $wgParser;
-		//FIXME I think it is really really bad to use wgParser here, since we don't know
-		//      in which context the inline query was called. $wgParser might even be NULL. -- mak
-		$text = $wgParser->replaceVariables($text);
-		//	$tempOutputType = $wgParser->mOutputType;
-		//	$wgParser->mOutputType = OT_HTML;
-		//	$text = $wgParser->replaceVariables($text, end( $wgParser->mArgStack ), false);
-		//	$wgParser->mOutputType = $tempOutputType;
-		//	$text = $wgParser->replaceVariables($text, end( $wgParser->mArgStack ));
-		//	$result .= $text;
-		//	return $result;
+		// This should be the proper way of substituting templates in a safe and comprehensive way	
+		global $wgTitle;
+		$parser = new Parser();
+		$parserOptions = new ParserOptions();
+		//$parserOptions->setInterfaceMessage( true );
+		$parser->startExternalParse( $wgTitle, $parserOptions, OT_MSG );
+		$text = $parser->transformMsg( $text, $parserOptions );
 
 		$this->dbr =& wfGetDB( DB_SLAVE ); // Note: if this fails, there were worse errors before; don't check it
 		$this->mRename = 0;
