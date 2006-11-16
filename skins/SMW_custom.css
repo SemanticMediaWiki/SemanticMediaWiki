@@ -11,6 +11,7 @@ table.smwtable td {
 	padding-left: 5px;
 	padding-right: 5px;
 	text-align: left;
+	vertical-align: top;
 }
 
 table.smwtable {
