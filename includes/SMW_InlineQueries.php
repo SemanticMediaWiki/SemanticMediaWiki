@@ -60,8 +60,10 @@ require_once( "$IP/includes/Title.php" );
 	$smwgIQMaxPrintout = 10;
 	// Switches on or off all subqueries.
 	$smwgIQSubQueriesEnabled = true;
-	// Default number of rows returned in a query.
-	$smwgIQMaxLimit = 400;
+	// Maximum number of rows returned in any query.
+	$smwgIQMaxLimit = 10000; //practically no limit
+	// Maximum number of rows printed in an inline query.
+	$smwgIQMaxInlineLimit = 500;
 	// Default number of rows returned in a query.
 	$smwgIQDefaultLimit = 50;
 	// If true, disjunctive queries are enabled. May cost performance.
@@ -93,11 +95,12 @@ function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
  * $text is the query in the query format described elsewhere
  * $param is an array which might contain values for the following keys
  * (all optional):
- * format  -- Either 'list' (seperated by sep), 'ul' (for unordered bullet list),
- *            'ol' (ordered and numbered list), 'table', or 'auto' (default).
- * sep     -- Customized separator string for use with format 'list'.
- * limit   -- Maximal number of answers. It will be capped by $smwgIQMaxLimit anyway.
+ * limit   -- Maximal number of answers. It will be capped by $smwgIQMaxInlineLimit anyway.
  *            Defaults to $smwgIQDefaultLimit.
+ * offset  -- Number of first result to be displayed. Parameter not available for inline queries.
+ * format  -- Either 'list' (seperated by sep), 'ul' (for unordered bullet list),
+ *            'ol' (ordered and numbered list), 'table', 'broadtable', or 'auto' (default).
+ * sep     -- Customized separator string for use with format 'list'.
  * link    -- Either none, subject or all. Makes links out of the results.
  *            Defaults to $smwgIQDefaultLinking.
  * default -- If no result is found, this string will be returned.
@@ -156,8 +159,11 @@ class SMWSQLQuery {
 
 class SMWInlineQuery {
 
+	private $mInline; // is this really an inline query, i.e. are results used in an article or not? (bool)
+
 	// parameters:
 	private $mLimit; // max number of answers, also used when printing values of one particular subject
+	private $mOffset; // number of first returned answer
 	private $mSort;  // name of the row by which to sort
 	private $mOrder; // string that identifies sort order, 'ASC' (default) or 'DESC'
 	private $mFormat;  // a string identifier describing a valid format
@@ -188,10 +194,13 @@ class SMWInlineQuery {
 	private $mSeparators; // array of separator strings to be printed *before* each column content, format 'column_id' => 'separator_string'
 	private $mValueSep; // string between two values for one property
 
-	function SMWInlineQuery($param = array()) {
+	function SMWInlineQuery($param = array(), $inline = true) {
 		global $smwgIQDefaultLimit, $smwgIQDefaultLinking;
 
+		$this->mInline = $inline;
+
 		$this->mLimit = $smwgIQDefaultLimit;
+		$this->mOffset = 0;
 		$this->mSort = NULL;
 		$this->mOrder = 'ASC';
 		$this->mFormat = 'auto';
@@ -211,9 +220,17 @@ class SMWInlineQuery {
 	 * Set the internal settings according to an array of parameter values.
 	 */
 	function setParameters($param) {
-		global $smwgIQMaxLimit;
+		global $smwgIQMaxLimit, $smwgIQMaxInlineLimit;
+		if ($this->mInline) 
+			$maxlimit = $smwgIQMaxInlineLimit;
+		else $maxlimit = $smwgIQMaxLimit;
+
+		if ( !$this->mInline && (array_key_exists('offset',$param)) && (is_int($param['offset'] + 0)) ) {
+			$this->mOffset = min($maxlimit - 1, max(0,$param['offset'] + 0)); //select integer between 0 and maximal limit -1
+		}
+		// set limit small enough to stay in range with chosen offset
 		if ( (array_key_exists('limit',$param)) && (is_int($param['limit'] + 0)) ) {
-			$this->mLimit = min($smwgIQMaxLimit, max(1,$param['limit'] + 0)); //integer between 1 and $smwgMaxLimit
+			$this->mLimit = min($maxlimit - $this->mOffset, max(1,$param['limit'] + 0));
 		}
 		if (array_key_exists('sort', $param)) {
 			$this->mSort = smwfNormalTitleDBKey($param['sort']);
@@ -225,7 +242,7 @@ class SMWInlineQuery {
 		}
 		if (array_key_exists('format', $param)) {
 			$this->mFormat = strtolower($param['format']);
-			if (($this->mFormat != 'ul') && ($this->mFormat != 'ol') && ($this->mFormat != 'list') && ($this->mFormat != 'table'))
+			if (($this->mFormat != 'ul') && ($this->mFormat != 'ol') && ($this->mFormat != 'list') && ($this->mFormat != 'table') && ($this->mFormat != 'broadtable'))
 				$this->mFormat = 'auto'; // If it is an unknown format, default to list again
 		}
 		if (array_key_exists('sep', $param)) {
@@ -298,7 +315,7 @@ class SMWInlineQuery {
 		$sq->mSelect[1] .= ' AS page_title';
 		$sq->mSelect[2] .= ' AS page_namespace';
 
-		$sql_options = array('LIMIT' => $this->mLimit); // additional options (order by, limit)
+		$sql_options = array('LIMIT' => $this->mLimit, 'OFFSET' => $this->mOffset); // additional options (order by, limit)
 		if ( $smwgIQSortingEnabled ) {
 			if ( NULL == $sq->mOrderBy ) {
 				$sql_options['ORDER BY'] = "page_title $this->mOrder "; // default
@@ -518,6 +535,7 @@ class SMWInlineQuery {
 								if (NULL != $vtitle) {
 									$or_conditions[] = "$pagetable.page_title=" . $this->dbr->addQuotes($vtitle->getDBKey()) . " AND $pagetable.page_namespace=" . $vtitle->getNamespace();
 									$result->mFixedSubject = true; // by default, only this case is a really "fixed" subject (even though it could still be combined with others); TODO: find a better way for deciding whether to show the first column or not
+									$has_namespace_conditions = true; // fixed subjects might have namespaces, so we must discard any overall namespace restrictions to retrieve results
 								}
 							} else {
 								$or_conditions[] = "$pagetable.page_namespace=$ns_idx";
@@ -736,9 +754,11 @@ class SMWInlineQuery {
 	private function initOutputStrings(&$print) {
 		$this->mSeparators = array();
 		switch ($this->mFormat) {
-		case 'table':
+		case 'table': case 'broadtable':
 			global $smwgIQRunningNumber;
-			$this->mHeaderText = $this->mIntro . "<table class=\"smwtable\" id=\"querytable" . $smwgIQRunningNumber . "\">\n\t\t<tr>\n";
+			if ('broadtable' == $this->mFormat) $widthpara = ' width="100%"'; 
+				else $widthpara = '';
+			$this->mHeaderText = $this->mIntro . "<table class=\"smwtable\"$widthpara id=\"querytable" . $smwgIQRunningNumber . "\">\n\t\t<tr>\n";
 			$this->mFooterText = "</td>\n\t\t</tr>\n\t</table>";
 			$this->mRowSep = "</td>\n\t\t</tr>\n\t\t<tr>\n";
 			$this->mLastRowSep = "</td>\n\t\t</tr>\n\t\t<tr>\n";
