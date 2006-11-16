@@ -99,9 +99,6 @@ function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
  * limit   -- Maximal number of answers. It will be capped by $smwgIQMaxInlineLimit anyway.
  *            Defaults to $smwgIQDefaultLimit.
  * offset  -- Number of first result to be displayed. Parameter not available for inline queries.
- * format  -- Either 'list' (seperated by sep), 'ul' (for unordered bullet list),
- *            'ol' (ordered and numbered list), 'table', 'broadtable', or 'auto' (default).
- * sep     -- Customized separator string for use with format 'list'.
  * link    -- Either none, subject or all. Makes links out of the results.
  *            Defaults to $smwgIQDefaultLinking.
  * default -- If no result is found, this string will be returned.
@@ -112,6 +109,10 @@ function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
  *            (default) and 'hide'. Maybe 'link' will follow in the future.
  * mainlabel -- Label to use for the column that shows the main subjects. Also used to indicate that
  *              the subject should be displayed in cases where it would normally be hidden.
+ * format  -- Either 'list' (seperated by sep), 'ul' (for unordered bullet list),
+ *            'ol' (ordered and numbered list), 'table', 'broadtable', or 'auto' (default).
+ * Some formats have additional parameters:
+ *   sep (list only) -- Customized separator string.
  */
 function smwfProcessInlineQueries( $text, $param ) {
 	global $smwgIQEnabled;
@@ -163,12 +164,12 @@ class SMWInlineQuery {
 	private $mInline; // is this really an inline query, i.e. are results used in an article or not? (bool)
 
 	// parameters:
+	private $mParameters; // full parameter list for later reference
 	private $mLimit; // max number of answers, also used when printing values of one particular subject
 	private $mOffset; // number of first returned answer
 	private $mSort;  // name of the row by which to sort
 	private $mOrder; // string that identifies sort order, 'ASC' (default) or 'DESC'
 	private $mFormat;  // a string identifier describing a valid format
-	private $mListSep; // for format 'list' this can be a custom separator
 	private $mIntro; // text to print before the output in case it is *not* empty
 	private $mLinkSubj; // should article names of the (unique) subjects be linked?
 	private $mLinkObj; // should article names of the objects be linked?
@@ -187,20 +188,12 @@ class SMWInlineQuery {
 	private $mPrintoutCount; // count the number of fields selected for separate printout so far
 	private $mFurtherResults=false; // true if not all results to the query were shown
 	private $mDisplayCount=0; // number of results that were displayed
+	private $mQueryResult; // retrieved query result
 
-	// fields used for output formatting:
-	private $mHeaderText; // text to be printed before the output of the results
-	private $mFooterText; // text to be printed after the output of the results
-	private $mRowSep; // string between two rows
-	private $mLastRowSep; // string between the last but one and last row
-	// Note: the strings before the first and after the last row are printed with the header and footer
-	private $mSeparators; // array of separator strings to be printed *before* each column content, format 'column_id' => 'separator_string'
-	private $mValueSep; // string between two values for one property
-	
 	// other stuff
 	private $mLinker; // we make our own linker for creating the links -- TODO: is this bad?
 
-	function SMWInlineQuery($param = array(), $inline = true) {
+	public function SMWInlineQuery($param = array(), $inline = true) {
 		global $smwgIQDefaultLimit, $smwgIQDefaultLinking;
 
 		$this->mInline = $inline;
@@ -210,7 +203,6 @@ class SMWInlineQuery {
 		$this->mSort = NULL;
 		$this->mOrder = 'ASC';
 		$this->mFormat = 'auto';
-		$this->mListSep = NULL; //use default list
 		$this->mIntro = '';
 		$this->mLinkSubj = ($smwgIQDefaultLinking != 'none');
 		$this->mLinkObj = ($smwgIQDefaultLinking == 'all');
@@ -227,8 +219,10 @@ class SMWInlineQuery {
 	/**
 	 * Set the internal settings according to an array of parameter values.
 	 */
-	function setParameters($param) {
+	private function setParameters($param) {
 		global $smwgIQMaxLimit, $smwgIQMaxInlineLimit;
+		$this->mParameters = $param;
+		
 		if ($this->mInline) 
 			$maxlimit = $smwgIQMaxInlineLimit;
 		else $maxlimit = $smwgIQMaxLimit;
@@ -252,9 +246,6 @@ class SMWInlineQuery {
 			$this->mFormat = strtolower($param['format']);
 			if (($this->mFormat != 'ul') && ($this->mFormat != 'ol') && ($this->mFormat != 'list') && ($this->mFormat != 'table') && ($this->mFormat != 'broadtable'))
 				$this->mFormat = 'auto'; // If it is an unknown format, default to list again
-		}
-		if (array_key_exists('sep', $param)) {
-			$this->mListSep = htmlspecialchars($param['sep']);
 		}
 		if (array_key_exists('intro', $param)) {
 			$this->mIntro = htmlspecialchars($param['intro']);
@@ -297,7 +288,7 @@ class SMWInlineQuery {
 	 * Returns true if a query was executed and the chosen limit did not
 	 * allow all results to be displayed
 	 */
-	function hasFurtherResults() {
+	public function hasFurtherResults() {
 		return $this->mFurtherResults;
 	}
 
@@ -305,14 +296,111 @@ class SMWInlineQuery {
 	 * After a query was executed, this function returns the number of results that have been
 	 * displayed (which is different from the overall number of results that exist).
 	 */
-	function getDisplayCount() {
+	public function getDisplayCount() {
 		return $this->mDisplayCount;
+	}
+
+	/**
+	 * Returns all parameters in their original array form. Useful for printer objects that
+	 * want to introduce their own parameters.
+	 */
+	public function getParameters() {
+		return $this->mParameters;
+	}
+
+	/**
+	 * Return the name of the format that is to be used for printing the query.
+	 */
+	public function getFormat() {
+		return $this->mFormat;
+	}
+	
+	/**
+	 * Return the introduction string for printing the query.
+	 */
+	public function getIntro() {
+		return $this->mIntro;
+	}
+
+	/**
+	 * Return the default string for printing of the query returns no results.
+	 */
+	public function getDefault() {
+		return $this->mDefault;
+	}
+
+	/**
+	 * Returns a boolean stating whether or not headers should be displayed
+	 */
+	public function showHeaders() {
+		return $this->mShowHeaders;
+	}
+
+	/**
+	 * During execution of a query, this method is used to fetch result rows one by
+	 * one. FALSE will be returned if no more rows that should be printed remain.
+	 */
+	public function getNextRow() {
+		$this->mDisplayCount++;
+		$row = $this->dbr->fetchRow( $this->mQueryResult );
+		if ( (!$row) || ($this->mDisplayCount > $this->mLimit) ) {
+			if ($row) $this->mFurtherResults = true; // there are more result than displayed
+			return false;
+		} else return $row;
+	}
+
+	/**
+	 * During execution of a query, this method is used create an appropriate iterator
+	 * object that encapsulates the values that are to be printed in a certain row and
+	 * column.
+	 */
+	public function getIterator($print_data, $row, $linked) {
+		global $smwgIQSortingEnabled;
+		$sql_params = array('LIMIT' => $this->mLimit);
+
+		switch ($print_data[1]) {
+			case SMW_IQ_PRINT_CATS:
+				if ($smwgIQSortingEnabled)
+					$sql_params['ORDER BY'] = "cl_to $this->mOrder";
+				$res = $this->dbr->select( $this->dbr->tableName('categorylinks'),
+							'DISTINCT cl_to',
+							'cl_from=' . $row['page_id'],
+							'SMW::InlineQuery::Print' , $sql_params);
+				return new SMWCategoryIterator($this,$this->dbr,$res,$linked);
+			case SMW_IQ_PRINT_RELS:
+				if ($smwgIQSortingEnabled)
+					$sql_params['ORDER BY'] = "object_title $this->mOrder";
+				$res = $this->dbr->select( $this->dbr->tableName('smw_relations'),
+							'DISTINCT object_title,object_namespace',
+							'subject_id=' . $row['page_id'] . ' AND relation_title=' . $this->dbr->addQuotes($print_data[2]),
+							'SMW::InlineQuery::Print' , $sql_params); 
+				return new SMWRelationIterator($this,$this->dbr,$res,$linked);
+			case SMW_IQ_PRINT_ATTS:
+				if ($smwgIQSortingEnabled) {
+					if ($print_data[3]->isNumeric()) {
+						$sql_params['ORDER BY'] = "value_num $this->mOrder";
+					} else {
+						$sql_params['ORDER BY'] = "value_xsd $this->mOrder";
+					}
+				}
+				$res = $this->dbr->select( $this->dbr->tableName('smw_attributes'),
+							'DISTINCT value_unit,value_xsd',
+							'subject_id=' . $row['page_id'] . ' AND attribute_title=' . $this->dbr->addQuotes($print_data[2]),
+							'SMW::InlineQuery::Print' , $sql_params);
+				return new SMWAttributeIterator($this->dbr, $res, $print_data[3]);
+			case SMW_IQ_PRINT_RSEL:
+				global $wgContLang;
+				return new SMWFixedIterator($this->makeTitleString($wgContLang->getNsText($row[$print_data[2] . 'namespace']) . ':' . $row[$print_data[2] . 'title'],$linked));
+				//FIXME: the above uses $linked in a wrong way
+			case SMW_IQ_PRINT_ASEL: // TODO: allow selection of attribute conditionals, and print them here
+				return new SMWFixedIterator('---');
+		}
 	}
 
 	/**
 	 * Main entry point for parsing, executing, and printing a given query text.
 	 */
-	function getHTMLResult( $text ) {
+	public function getHTMLResult( $text ) {
 		global $smwgIQSortingEnabled, $smwgIQRunningNumber;
 		if (!isset($smwgIQRunningNumber)) {
 			$smwgIQRunningNumber = 0;
@@ -353,7 +441,7 @@ class SMWInlineQuery {
 		}
 
 		//*** Execute the query ***//
-		$res = $this->dbr->select( 
+		$this->mQueryResult = $this->dbr->select( 
 		         $sq->mTables,
 		         'DISTINCT ' . implode(',', $sq->mSelect),
 		         $sq->mConditions,
@@ -362,8 +450,8 @@ class SMWInlineQuery {
 
 		//*** Create the output ***//
 
-		//No results
-		if ( (!$res) || (0 == $this->dbr->numRows( $res )) ) return $this->mDefault;
+		//No results, TODO: is there a better way than calling numRows (which counts all results)?
+		if ( (!$this->mQueryResult) || (0 == $this->dbr->numRows( $this->mQueryResult )) ) return $this->mDefault;
 
 		// Cases in which to print the subject:
 		if ((!$sq->mFixedSubject) || (0 == count($sq->mPrint)) || (NULL != $this->mMainLabel)) { 
@@ -381,30 +469,18 @@ class SMWInlineQuery {
 			else $this->mFormat = 'list';
 		}
 
-		$this->initOutputStrings($sq->mPrint);
-		$result = $this->mHeaderText;
-
-		// Print main content (if any results were returned)
-		$row = $this->dbr->fetchRow( $res );
-		$this->mDisplayCount = 0;
-		while ( $row && ( $this->mDisplayCount < $this->mLimit ) ) {
-				$nextrow = $this->dbr->fetchRow( $res ); // look ahead
-				$this->mDisplayCount++;
-				if ($this->mDisplayCount > 1) {
-					if ($nextrow && $this->mDisplayCount < $this->mLimit)
-						$result .= $this->mRowSep;
-					else $result .= $this->mLastRowSep;
-				}
-				$result .= $this->makeRow($row, $sq->mPrint);
-				$row = $nextrow;
+		switch ($this->mFormat) {
+			case 'table': case 'broadtable':
+				$printer = new SMWTablePrinter($this,$sq);
+				break;
+			case 'ul': case 'ol': case 'list':
+				$printer = new SMWListPrinter($this,$sq);
+				break;
+			default: $printer = new SMWListPrinter($this,$sq);
 		}
-		if ($row) { // there are more results
-			$this->mFurtherResults = true;
-		}
+		$result = $printer->printResult();
+		$this->dbr->freeResult($this->mQueryResult); // Things that should be free: #42 "Possibly large query results"
 
-		$this->dbr->freeResult($res); // Things that should be free: #42 "Possibly large query results"
-
-		$result .= $this->mFooterText;
 		return $result;
 	}
 
@@ -758,180 +834,6 @@ class SMWInlineQuery {
 		return $categories;
 	}
 
-	/*********************************************************************/
-	/* Output helper methods                                             */
-	/*********************************************************************/	
-
-	/**
-	 * This method initialises all kinds of strings used to format the output.
-	 * Since many conditions are involved in computing the output format, it is
-	 * most efficient to do this once and to reuse the intitialised values for
-	 * actually printing the output later on.
-	 *
-	 * Basically all text generated by a query is defined in this method. The
-	 * final output format is composed of individual strings as follows:
-	 * mHeaderText . ROW . mRowSep . ROW  . mRowSep . ... . ROW . mLastRowSep  ROW . mFooterText
-	 * where ROW has the form
-	 * mSeperators['col_id1'] . valuetext_col_1 . mSeperators['col_id2'] . ... . valuetext_col_n
-	 * and valuetext_col_i is composed of the output strings for all values in this field,
-	 * separated by the string mValueSep.
-	 *
-	 * The parameter $print contains an array of things to be printed in the format returned
-	 * when parsing a query.
-	 */
-	private function initOutputStrings(&$print) {
-		$this->mSeparators = array();
-		switch ($this->mFormat) {
-		case 'table': case 'broadtable':
-			global $smwgIQRunningNumber;
-			if ('broadtable' == $this->mFormat) $widthpara = ' width="100%"'; 
-				else $widthpara = '';
-			$this->mHeaderText = $this->mIntro . "<table class=\"smwtable\"$widthpara id=\"querytable" . $smwgIQRunningNumber . "\">\n\t\t<tr>\n";
-			$this->mFooterText = "</td>\n\t\t</tr>\n\t</table>";
-			$this->mRowSep = "</td>\n\t\t</tr>\n\t\t<tr>\n";
-			$this->mLastRowSep = "</td>\n\t\t</tr>\n\t\t<tr>\n";
-			$this->mValueSep = '<br/>';
-
-			// create header cells and determine separators
-			$first = true;
-			foreach ($print as $column_id => $print_data) {
-				//if ('' == $print_data[0]) $print_data[0] = '&nbsp;'; // we need something to click on
-				if ($this->mShowHeaders) $this->mHeaderText .= "\t\t\t<th>" . $print_data[0] . "</th>\n";
-				if ($first) {
-					$first = false;
-					$this->mSeparators[$column_id] = '';
-				} else {
-					$this->mSeparators[$column_id] = "</td>\n";
-				}
-				if ( (SMW_IQ_PRINT_ATTS == $print_data[1]) && ($print_data[3]->isNumeric()) ) {
-					$this->mSeparators[$column_id] .= "\t\t\t<td valign=\"top\" align=\"right\">";
-				} else {
-					$this->mSeparators[$column_id] .= "\t\t\t<td valign=\"top\">";
-				}
-			}
-			if ($this->mShowHeaders) $this->mHeaderText .= "\t\t</tr>\n\t\t<tr>\n"; // start first row
-			return;
-		case 'ul': case 'ol': default:
-			$this->mHeaderText = $this->mIntro;
-			$this->mFooterText = '';
-			if ( ('ul' == $this->mFormat) || ('ol' == $this->mFormat) ) {
-				$this->mHeaderText .= "<$this->mFormat>\n\t\t<li>";
-				$this->mFooterText = "</li>\n\t</$this->mFormat>\n";
-				$this->mRowSep = "</li>\n\t\t<li>";
-				$this->mLastRowSep = "</li>\n\t\t<li>";
-			} elseif ( NULL == $this->mListSep ) {
-				$this->mRowSep = ', ';
-				$this->mLastRowSep = wfMsgForContent('smw_finallistconjunct') . ' ';
-			} else {
-				$this->mRowSep = $this->mListSep;
-				$this->mLastRowSep = $this->mListSep;
-			}
-			$this->mValueSep = ', ';
-
-			// determine separators
-			$i = 0;
-			$has_subject = array_key_exists('', $print); // is subject printed?
-			foreach ($print as $column_id => $print_data) {
-				if ( 0 == $i ) { // no separator at start
-					$this->mSeparators[$column_id] = '';
-				} elseif ( (1 == $i) && $has_subject ) { //enclose additional values in ( )
-					$this->mSeparators[$column_id] = ' (';
-					$this->mRowSep = ')' . $this->mRowSep; // add closing ) to the end of each row
-					$this->mLastRowSep = ')' . $this->mLastRowSep;
-					$this->mFooterText = ')' . $this->mFooterText;
-				} else { //if ( $i < count($print)-1 ) { // standard separator within each row
-					$this->mSeparators[$column_id] = ', ';
-				}
-				if ( $this->mShowHeaders && ('' != $print_data[0]) ) {
-					$this->mSeparators[$column_id] .= $print_data[0] . ' ';
-				}
-				$i++;
-			}
-			return;
-		}
-	}
-
-	/**
-	 * Build and return the output string for one row.
-	 */
-	private function makeRow(&$row, &$print) {
-		global $wgContLang, $smwgIQSortingEnabled;
-
-		$result = '';
-		$firstcol = true;
-		//Print values for all columns
-		foreach ($print as $column_id => $print_data) {	
-			$sql_params = array('LIMIT' => $this->mLimit);
-			$result .= $this->mSeparators[$column_id];
-
-			switch ($print_data[1]) {
-				case SMW_IQ_PRINT_CATS:
-					if ($smwgIQSortingEnabled)
-						$sql_params['ORDER BY'] = "cl_to $this->mOrder";
-					$res = $this->dbr->select( $this->dbr->tableName('categorylinks'),
-					          'DISTINCT cl_to',
-			 		          'cl_from=' . $row['page_id'],
-					          'SMW::InlineQuery::Print' , $sql_params);
-					if ( ($res) && ($this->dbr->numRows( $res ) > 0) ) {
-						$first = true;
-						while ( $subrow = $this->dbr->fetchRow($res) ) {
-							if ($first) $first = false; else $result .= $this->mValueSep;
-							$result .= $this->makeTitleString($wgContLang->getNsText(NS_CATEGORY) . ':' . $subrow['cl_to'],$firstcol);
-						}
-					}
-					$this->dbr->freeResult($res);
-					break;
-				case SMW_IQ_PRINT_RELS:
-					if ($smwgIQSortingEnabled)
-						$sql_params['ORDER BY'] = "object_title $this->mOrder";
-					$res = $this->dbr->select( $this->dbr->tableName('smw_relations'),
-					          'DISTINCT object_title,object_namespace',
-			 		          'subject_id=' . $row['page_id'] . ' AND relation_title=' . $this->dbr->addQuotes($print_data[2]),
-					          'SMW::InlineQuery::Print' , $sql_params); 
-					if ( ($res) && ($this->dbr->numRows( $res ) > 0) ) {
-						$first = true;
-						while ( $subrow = $this->dbr->fetchRow($res) ) {
-							if ($first) $first = false; else $result .= $this->mValueSep;
-							$result .= $this->makeTitleString($wgContLang->getNsText($subrow['object_namespace']) . ':' . $subrow['object_title'],$firstcol);
-						}
-					}
-					$this->dbr->freeResult($res);
-					break;
-				case SMW_IQ_PRINT_ATTS:
-					if ($smwgIQSortingEnabled) {
-						if ($print_data[3]->isNumeric()) {
-							$sql_params['ORDER BY'] = "value_num $this->mOrder";
-						} else {
-							$sql_params['ORDER BY'] = "value_xsd $this->mOrder";
-						}
-					}
-					$res = $this->dbr->select( $this->dbr->tableName('smw_attributes'),
-					          'DISTINCT value_unit,value_xsd',
-			 		          'subject_id=' . $row['page_id'] . ' AND attribute_title=' . $this->dbr->addQuotes($print_data[2]),
-					          'SMW::InlineQuery::Print' , $sql_params);
-					if ( ($res) && ($this->dbr->numRows( $res ) > 0) ) {
-						$first = true;
-						while ( $subrow = $this->dbr->fetchRow($res) ) {
-							if ($first) $first = false; else $result .= $this->mValueSep;
-							$print_data[3]->setXSDValue($subrow['value_xsd'],$subrow['value_unit']);
-							$result .= $print_data[3]->getStringValue(); //For debugging: . ' (' . $subrow['value_xsd'] . ') ';
-							
-						}
-					}
-					$this->dbr->freeResult($res);
-					break;
-				case SMW_IQ_PRINT_RSEL:
-					$result .= $this->makeTitleString($wgContLang->getNsText($row[$print_data[2] . 'namespace']) . ':' . $row[$print_data[2] . 'title'],$firstcol);
-					break;
-				case SMW_IQ_PRINT_ASEL: // TODO: allow selection of attribute conditionals, and print them here
-					$result .= '---';
-					break;
-			}
-			$firstcol = false;
-		}
-		return $result;
-	}
-
 	/**
 	 * Create output string for an article title (possibly including namespace)
 	 * as given by $text. The main task of this method is to link the article
@@ -940,8 +842,14 @@ class SMWInlineQuery {
 	 * $subject states whether the given title is the subject (to which special
 	 * settings for linking apply).
 	 * If $label is NULL the standard label of the given article will be used.
+	 * 
+	 * FIXME: the parameter $subject is used to determine whether the link goal
+	 * must exist, but also whether it is linked at all under standard settings.
+	 * Many callers use it without both meanings intended! Use two explicit
+	 * parameters such as "hyperlink" and "exists" and figure their right settings
+	 * before calling. Or make another method to wrap this process.
 	 */
-	private function makeTitleString($text,$subject,$label='') {
+	public function makeTitleString($text,$subject,$label='') {
 		$title = Title::newFromText( $text );
 		if ($title == NULL) {
 			return $text; // TODO maybe report an error here?
@@ -954,6 +862,268 @@ class SMWInlineQuery {
 		}
 	}
 
+}
+
+/*********************************************************************/
+/* Iterators for hiding SQL details from printers                    */
+/*********************************************************************/
+
+/**
+ * "Empty" iterator. Used as return value in case of errors.
+ */
+class SMWEmptyIterator {
+	public function getNext() {
+		return false;
+	}
+}
+
+/**
+ * Iterator for category article titles returned as SQL result.
+ */
+class SMWCategoryIterator {
+	private $mRes;
+	private $mDB;
+	private $mIQ;
+	private $mLinked;
+
+	public function SMWCategoryIterator($iq, $db, $res, $linked) {
+		$this->mIQ = $iq;
+		$this->mDB = $db;
+		$this->mRes = $res;
+		$this->mLinked = $linked;
+	}
+
+	public function getNext() {
+		global $wgContLang;
+		$row = $this->mDB->fetchRow($this->mRes);
+		if ($row) 
+			return $this->mIQ->makeTitleString($wgContLang->getNsText(NS_CATEGORY) . ':' . $row['cl_to'],$this->mLinked);
+			//FIXME: the above uses $linked in the wrong way -- this is normally "subject"
+		else return false;
+	}
+}
+
+/**
+ * Iterator for attribute values, returned by some SQL query.
+ */
+class SMWAttributeIterator {
+	private $mRes;
+	private $mDB;
+	private $mDatavalue;
+
+	public function SMWAttributeIterator($db, $res, $datavalue) {
+		$this->mDB = $db;
+		$this->mRes = $res;
+		$this->mDatavalue = $datavalue;
+	}
+
+	public function getNext() {
+		$row = $this->mDB->fetchRow($this->mRes);
+		if ($row) {
+			$this->mDatavalue->setXSDValue($row['value_xsd'],$row['value_unit']);
+			return $this->mDatavalue->getStringValue();
+		} else return false;
+	}
+}
+
+/**
+ * Iterator for relation objects, returned by some SQL query.
+ */
+class SMWRelationIterator {
+	private $mRes;
+	private $mDB;
+	private $mIQ;
+	private $mLinked;
+
+	public function SMWRelationIterator($iq, $db, $res, $linked) {
+		$this->mIQ = $iq;
+		$this->mDB = $db;
+		$this->mRes = $res;
+		$this->mLinked = $linked;
+	}
+
+	public function getNext() {
+		global $wgContLang;
+		$row = $this->mDB->fetchRow($this->mRes);
+		if ($row) {
+			return $this->mIQ->makeTitleString($wgContLang->getNsText($row['object_namespace']) . ':' . $row['object_title'],$this->mLinked);
+			// FIXME: the above uses "linked" in a wrong way
+		} else return false;
+	}
+}
+
+/**
+ * Iterator wrapping a single string
+ */
+class SMWFixedIterator {
+	private $mValue;
+	private $mHasNext=true;
+
+	public function SMWFixedIterator($value) {
+		$this->mValue = $value;
+	}
+
+	public function getNext() {
+		if ($this->mHasNext) {
+			$this->mHasNext = false;
+			return $this->mValue;
+		} else return false;
+	}
+}
+
+
+/*********************************************************************/
+/* Printers                                                          */
+/*********************************************************************/
+
+/**
+ * Interface (abstract class) that must be implemented by all printers for inline
+ * query results.
+ */
+interface SMWQueryPrinter {
+	/**
+	 * Print all results and return an output string. This method needs to call back to
+	 * the query object for fetching data.
+	 */
+	public function printResult();
+}
+
+/**
+ * Printer for tabular data.
+ */
+class SMWTablePrinter implements SMWQueryPrinter {
+	private $mIQ; // the querying object that called the printer
+	private $mQuery; // the query that was executed and whose results are to be printed
+
+	public function SMWTablePrinter($iq, $query) {
+		$this->mIQ = $iq;
+		$this->mQuery = $query;
+	}
+	
+	public function printResult() {
+		global $smwgIQRunningNumber;
+
+		// print header
+		if ('broadtable' == $this->mIQ->getFormat()) 
+			$widthpara = ' width="100%"'; 
+		else $widthpara = '';
+		$result = $this->mIQ->getIntro() . "<table class=\"smwtable\"$widthpara id=\"querytable" . $smwgIQRunningNumber . "\">\n";
+		if ($this->mIQ->showHeaders()) {
+			$result .= "\n\t\t<tr>";
+			foreach ($this->mQuery->mPrint as $print_data) {
+				$result .= "\t\t\t<th>" . $print_data[0] . "</th>\n";
+			}
+			$result .= "\n\t\t</tr>";
+		}
+
+		// print all result rows
+		while ( $row = $this->mIQ->getNextRow() ) {
+			$result .= "\t\t<tr>\n";
+			$firstcol = true;
+			foreach ($this->mQuery->mPrint as $print_data) {
+				$iterator = $this->mIQ->getIterator($print_data,$row,$firstcol);
+				$result .= "<td>";
+				$first = true;
+				while ($cur = $iterator->getNext()) {
+					if ($first) $first = false; else $result .= '<br />';
+					$result .= $cur;
+				}
+				$result .= "</td>";
+				$firstcol = false;
+			}
+			$result .= "\n\t\t</tr>\n";
+		}
+
+		// print footer
+		$result .= "\t</table>";
+
+		return $result;
+	}
+}
+
+/**
+ * Printer for list data. Somewhat confusing code, since one has to iterate through lists,
+ * inserting texts in between their elements depending on whether the element is the first
+ * that is printed, the first that is printed in parentheses, or the last that will be printed.
+ * Maybe one could further simplify this.
+ */
+class SMWListPrinter implements SMWQueryPrinter {
+	private $mIQ; // the querying object that called the printer
+	private $mQuery; // the query that was executed and whose results are to be printed
+
+	public function SMWListPrinter($iq, $query) {
+		$this->mIQ = $iq;
+		$this->mQuery = $query;
+	}
+	
+	public function printResult() {
+		// print header
+		$result = $this->mIQ->getIntro();
+		if ( ('ul' == $this->mIQ->getFormat()) || ('ol' == $this->mIQ->getFormat()) ) {
+			$result .= '<' . $this->mIQ->getFormat() . '>';
+			$footer = '</' . $this->mIQ->getFormat() . '>';
+			$rowstart = "\n\t<li>";
+			$rowend = '</li>';
+			$plainlist = false;
+		} else {
+			$params = $this->mIQ->getParameters();
+			if (array_key_exists('sep', $params)) {
+				$listsep = htmlspecialchars($params['sep']);
+				$finallistsep = htmlspecialchars($params['sep']);
+			} else {  // default list ", , , and, "
+				$listsep = ', ';
+				$finallistsep = wfMsgForContent('smw_finallistconjunct') . ' ';
+			}
+			$footer = '';
+			$rowstart = '';
+			$rowend = '';
+			$plainlist = true;
+		}
+
+		// print all result rows
+		$first_row = true;
+		$row = $this->mIQ->getNextRow();
+		while ( $row ) {
+			$nextrow = $this->mIQ->getNextRow(); // look ahead
+			if ( !$first_row && $plainlist )  {
+				if ($nextrow) $result .= $listsep; // the comma between "rows" other than the last one
+				else $result .= $finallistsep;
+			} else $result .= $rowstart;
+
+			$first_col = true;
+			$found_values = false; // has anything but the first coolumn been printed?
+			foreach ($this->mQuery->mPrint as $print_data) {
+				$iterator = $this->mIQ->getIterator($print_data,$row,$first_col);
+				$first_value = true;
+				while ($cur = $iterator->getNext()) {
+					if (!$first_col && !$found_values) { // first values after first column
+						$result .= ' (';
+						$found_values = true;
+					} elseif ($found_values || !$first_value) { 
+					  // any value after '(' or non-first values on first column
+						$result .= ', ';
+					}
+					if ($first_value) { // first value in any column, print header
+						$first_value = false;
+						if ( $this->mIQ->showHeaders() && ('' != $print_data[0]) ) {
+							$result .= $print_data[0] . ' ';
+						}
+					}
+					$result .= $cur; // actual output value
+				}
+				$first_col = false;
+			}
+			if ($found_values) $result .= ')';
+			$result .= $rowend;
+			$first_row = false;
+			$row = $nextrow;
+		}
+
+		// print footer
+		$result .= $footer;
+
+		return $result;
+	}
 }
 
 ?>
