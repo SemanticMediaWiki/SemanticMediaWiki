@@ -35,6 +35,7 @@
  */
 
 require_once( "$IP/includes/Title.php" );
+require_once( "$IP/includes/Linker.php" );
 
 /* The variables below define the default settings. Changes can be made by
    setting new values in SMW_LocalSettings.php */
@@ -195,6 +196,9 @@ class SMWInlineQuery {
 	// Note: the strings before the first and after the last row are printed with the header and footer
 	private $mSeparators; // array of separator strings to be printed *before* each column content, format 'column_id' => 'separator_string'
 	private $mValueSep; // string between two values for one property
+	
+	// other stuff
+	private $mLinker; // we make our own linker for creating the links -- TODO: is this bad?
 
 	function SMWInlineQuery($param = array(), $inline = true) {
 		global $smwgIQDefaultLimit, $smwgIQDefaultLinking;
@@ -214,6 +218,8 @@ class SMWInlineQuery {
 		$this->mShowHeaders = true;
 		$this->mMainLabel = NULL;
 		$this->mShowDebug = false;
+
+		$this->mLinker = new Linker();
 
 		$this->setParameters($param);
 	}
@@ -392,8 +398,9 @@ class SMWInlineQuery {
 				$result .= $this->makeRow($row, $sq->mPrint);
 				$row = $nextrow;
 		}
-		if ($row) // there are more results
+		if ($row) { // there are more results
 			$this->mFurtherResults = true;
+		}
 
 		$this->dbr->freeResult($res); // Things that should be free: #42 "Possibly large query results"
 
@@ -934,21 +941,16 @@ class SMWInlineQuery {
 	 * settings for linking apply).
 	 * If $label is NULL the standard label of the given article will be used.
 	 */
-	private function makeTitleString($text,$subject,$label=NULL) {
+	private function makeTitleString($text,$subject,$label='') {
 		$title = Title::newFromText( $text );
 		if ($title == NULL) {
 			return $text; // TODO maybe report an error here?
 		} elseif ( ($this->mLinkObj) || (($this->mLinkSubj) && ($subject)) ) {
-			// TODO links should be created by the skin-object, not manually
-			if ($title->exists()) {
-				$classnew = '';
-			} else {
-				$classnew = 'class="new" ';
-			}
-			if ($label === NULL) $label = $title->getText();
-			return '<a href="'. $title->getLocalURL() .'" '. $classnew .'title="'. $title->getText() .'">'. $label .'</a>';
+			if ($subject)
+				return $this->mLinker->makeKnownLinkObj($title, $label); //subjects must exist, don't check
+			else return $this->mLinker->makeLinkObj($title, $label);
 		} else {
-			return $title->getText();
+			return $title->getText(); // TODO: shouldn't this default to $label?
 		}
 	}
 
