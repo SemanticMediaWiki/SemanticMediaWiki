@@ -93,6 +93,14 @@ class SMW_LanguageEs {
 	/*Messages for Unused Attributes Special*/
 	'unusedattributes' => 'Atributos huérfanos',
 	'smw_unusedattributes_docu' => 'Existen páginas para los atributos siguientes, pero no son utilizadas.',
+	/*Messages for ask Special*/
+	'ask' => 'Semantic search',  //TODO: translate
+	'smw_ask_docu' => '<p>Search the wiki by entering an inline query into the search field below. Further information is given on the <a href="$1">help page for semantic search</a>.</p>',  //TODO: translate
+	'smw_ask_doculink' => 'Semantic search',  //TODO: translate
+	'smw_ask_prev' => 'Previous',  //TODO: translate
+	'smw_ask_next' => 'Next',  //TODO: translate
+	'smw_ask_results' => 'Results',  //TODO: translate
+	'smw_ask_noresults' => 'Sorry, no results.',  //TODO: translate
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Volver a actualizar todas las búsquedas y borradores de esta página.',
 	'purge' => 'Volver a actualizar',

@@ -93,6 +93,14 @@ class SMW_LanguageEn {
 	/*Messages for Unused Attributes Special*/
 	'unusedattributes' => 'Unused attributes',
 	'smw_unusedattributes_docu' => 'The following attribute pages exist although no other page makes use of them.',
+	/*Messages for ask Special*/
+	'ask' => 'Semantic search',
+	'smw_ask_docu' => '<p>Search the wiki by entering an inline query into the search field below. Further information is given on the <a href="$1">help page for semantic search</a>.</p>',
+	'smw_ask_doculink' => 'Semantic search',
+	'smw_ask_prev' => 'Previous',
+	'smw_ask_next' => 'Next',
+	'smw_ask_results' => 'Results',
+	'smw_ask_noresults' => 'Sorry, no results.',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Click here to refresh all queries and templates on this page',
 	'purge' => 'Refresh',

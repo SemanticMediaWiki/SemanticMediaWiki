@@ -93,6 +93,14 @@ class SMW_LanguageDe {
 	/*Messages for Unused Attributes Special*/
 	'unusedattributes' => 'Verwaiste Attribute',
 	'smw_unusedattributes_docu' => 'Die folgenden Attributseiten existieren, obwohl sie nicht verwendet werden.',
+	/*Messages for ask Special*/
+	'ask' => 'Semantische Sucher',
+	'smw_ask_docu' => '<p>Bitte geben Sie eine Suchanfrage ein. Weitere Informationen sind auf der <a href="$1">Hilfeseite für die semantische Suche</a> zu finden.</p>',
+	'smw_ask_doculink' => 'Semantische Suche',
+	'smw_ask_prev' => 'Zurück',
+	'smw_ask_next' => 'Vorwärts',
+	'smw_ask_results' => 'Ergebnisse',
+	'smw_ask_noresults' => 'Keine Ergebnisse gefunden.',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Alle Anfrageergebnisse und Vorlagen auf dieser Seite auf den neuesten Stand bringen.',
 	'purge' => 'aktualisieren',
