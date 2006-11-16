@@ -184,6 +184,8 @@ class SMWInlineQuery {
 	private $mConditionCount; // count the number of conditions used so far
 	private $mTableCount; // count the number of tables joined so far
 	private $mPrintoutCount; // count the number of fields selected for separate printout so far
+	private $mFurtherResults=false; // true if not all results to the query were shown
+	private $mDisplayCount=0; // number of results that were displayed
 
 	// fields used for output formatting:
 	private $mHeaderText; // text to be printed before the output of the results
@@ -286,6 +288,22 @@ class SMWInlineQuery {
 	}
 
 	/**
+	 * Returns true if a query was executed and the chosen limit did not
+	 * allow all results to be displayed
+	 */
+	function hasFurtherResults() {
+		return $this->mFurtherResults;
+	}
+
+	/**
+	 * After a query was executed, this function returns the number of results that have been
+	 * displayed (which is different from the overall number of results that exist).
+	 */
+	function getDisplayCount() {
+		return $this->mDisplayCount;
+	}
+
+	/**
 	 * Main entry point for parsing, executing, and printing a given query text.
 	 */
 	function getHTMLResult( $text ) {
@@ -315,7 +333,7 @@ class SMWInlineQuery {
 		$sq->mSelect[1] .= ' AS page_title';
 		$sq->mSelect[2] .= ' AS page_namespace';
 
-		$sql_options = array('LIMIT' => $this->mLimit, 'OFFSET' => $this->mOffset); // additional options (order by, limit)
+		$sql_options = array('LIMIT' => $this->mLimit + 1, 'OFFSET' => $this->mOffset); // additional options (order by, limit)
 		if ( $smwgIQSortingEnabled ) {
 			if ( NULL == $sq->mOrderBy ) {
 				$sql_options['ORDER BY'] = "page_title $this->mOrder "; // default
@@ -361,19 +379,22 @@ class SMWInlineQuery {
 		$result = $this->mHeaderText;
 
 		// Print main content (if any results were returned)
-		$firstrow = true;
 		$row = $this->dbr->fetchRow( $res );
-		while ( $row ) {
+		$this->mDisplayCount = 0;
+		while ( $row && ( $this->mDisplayCount < $this->mLimit ) ) {
 				$nextrow = $this->dbr->fetchRow( $res ); // look ahead
-				if (!$firstrow) {
-					if ($nextrow)
+				$this->mDisplayCount++;
+				if ($this->mDisplayCount > 1) {
+					if ($nextrow && $this->mDisplayCount < $this->mLimit)
 						$result .= $this->mRowSep;
 					else $result .= $this->mLastRowSep;
 				}
 				$result .= $this->makeRow($row, $sq->mPrint);
 				$row = $nextrow;
-				$firstrow = false;
 		}
+		if ($row) // there are more results
+			$this->mFurtherResults = true;
+
 		$this->dbr->freeResult($res); // Things that should be free: #42 "Possibly large query results"
 
 		$result .= $this->mFooterText;
@@ -899,6 +920,7 @@ class SMWInlineQuery {
 					$result .= '---';
 					break;
 			}
+			$firstcol = false;
 		}
 		return $result;
 	}
