@@ -10,6 +10,7 @@ table.smwtable td {
 	padding: 1px;
 	padding-left: 5px;
 	padding-right: 5px;
+	text-align: left;
 }
 
 table.smwtable {
