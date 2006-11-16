@@ -42,7 +42,7 @@ class SMW_AskPage {
 		$docutitle = Title::newFromText(wfMsg('smw_ask_doculink'), NS_HELP);
 		$html = wfMsg('smw_ask_docu', $docutitle->getFullURL()) . "\n" .
 				'<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="GET">' . "\n";
-		$html .= '<textarea name="query" cols="40" rows="10">' . $query . '</textarea><br />' . "\n";
+		$html .= '<textarea name="query" cols="40" rows="6">' . $query . '</textarea><br />' . "\n";
 		$html .= "<br /><input type=\"submit\"/>\n</form>";
 		
 		// print results if any
@@ -55,7 +55,7 @@ class SMW_AskPage {
 				$navigation = '<a href="' . $skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&query=' . urlencode($query)) . '">' . wfMsg('smw_ask_prev') . '</a>';
 			else $navigation = wfMsg('smw_ask_prev');
 
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_ask_results') . " $offset &ndash; " . ($offset + $iq->getDisplayCount() - 1) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_ask_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $iq->getDisplayCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 			if ($iq->hasFurtherResults()) 
 				$navigation .= ' <a href="' . $skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . '&query=' . urlencode($query)) . '">' . wfMsg('smw_ask_next') . '</a>';
