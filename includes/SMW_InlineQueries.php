@@ -91,6 +91,7 @@ $wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries';
 function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
 	global $wgParser;
 	$wgParser->setHook( 'ask', 'smwfProcessInlineQueries' );
+	return true; // always return true, in order not to stop MW's hook processing!
 }
 
 /**
