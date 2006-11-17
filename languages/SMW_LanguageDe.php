@@ -19,6 +19,7 @@ class SMW_LanguageDe {
 	'smw_baduri' => 'URIs aus dem Bereich "$1" sind an dieser Stelle leider nicht verfügbar.',
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "<span class='smwwarning'>Anfragen in Artikeln sind in diesem Wiki leider nicht erlaubt.</span>",
+	'smw_iq_moreresults' => '&hellip; weitere Ergebnisse',
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => '[Für den Namensraum "$1" sind leider keine Importfunktionen verfügbar.]',
 	'smw_nonright_importtype' => '[Das Element "$1" kann nur für Artikel im Namensraum "$2" verwendet werden.]',

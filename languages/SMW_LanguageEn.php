@@ -19,6 +19,7 @@ class SMW_LanguageEn {
 	'smw_baduri' => 'Sorry, URIs from the range "$1" are not available in this place.',
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "<span class='smwwarning'>Sorry. Inline queries have been disabled for this wiki.</span>",
+	'smw_iq_moreresults' => '&hellip; further results',
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => '[Sorry, import functions are not avalable for namespace "$1".]',
 	'smw_nonright_importtype' => '[Sorry, $1 can only be used for articles with namespace "$2"]',

@@ -61,6 +61,16 @@ class SMWTablePrinter implements SMWQueryPrinter {
 			$result .= "\n\t\t</tr>\n";
 		}
 
+		if ($this->mIQ->isInline() && $this->mIQ->hasFurtherResults()) {
+			$label = $this->mIQ->getSearchLabel();
+			if ($label === NULL) { //apply default
+				$label = wfMsgForContent('smw_iq_moreresults');
+			}
+			if ($label != '') {
+				$result .= "\n\t\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . count($this->mQuery->mPrint) . '\"> <a href="' . $this->mIQ->getQueryURL() . '">' . $label . '</a></td></tr>';
+			}
+		}
+
 		// print footer
 		$result .= "\t</table>";
 
@@ -95,8 +105,8 @@ class SMWListPrinter implements SMWQueryPrinter {
 		} else {
 			$params = $this->mIQ->getParameters();
 			if (array_key_exists('sep', $params)) {
-				$listsep = htmlspecialchars($params['sep']);
-				$finallistsep = htmlspecialchars($params['sep']);
+				$listsep = htmlspecialchars(str_replace('_', ' ', $params['sep']));
+				$finallistsep = $listsep;
 			} else {  // default list ", , , and, "
 				$listsep = ', ';
 				$finallistsep = wfMsgForContent('smw_finallistconjunct') . ' ';
@@ -144,6 +154,17 @@ class SMWListPrinter implements SMWQueryPrinter {
 			$result .= $rowend;
 			$first_row = false;
 			$row = $nextrow;
+		}
+		
+		if ($this->mIQ->isInline() && $this->mIQ->hasFurtherResults()) {
+			$label = $this->mIQ->getSearchLabel();
+			if ($label === NULL) { //apply defaults
+				if ('ol' == $this->mIQ->getFormat()) $label = '';
+				else $label = wfMsgForContent('smw_iq_moreresults');
+			}
+			if ($label != '') {
+				$result .= $rowstart . ' <a href="' . $this->mIQ->getQueryURL() . '">' . $label . '</a>' . $rowend;
+			}
 		}
 
 		// print footer

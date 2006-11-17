@@ -157,6 +157,7 @@ class SMWSQLQuery {
  *            Defaults to $smwgIQDefaultLinking.
  * default -- If no result is found, this string will be returned.
  * intro   -- Plain text that is to be displayed before the query, but only if any results are obtained.
+ * searchlabel -- text to use for link to search forfurther results, or empty if this link should not be shown
  * sort    -- Name of the row by which to sort.
  * order   -- Either 'ascending' (equal to 'asc', default) or 'descending' (equal to 'desc' or 'reverse')
  * headers -- How to display the header properties of columns, can be one of 'show' 
@@ -180,6 +181,7 @@ class SMWInlineQuery {
 	private $mOrder; // string that identifies sort order, 'ASC' (default) or 'DESC'
 	private $mFormat;  // a string identifier describing a valid format
 	private $mIntro; // text to print before the output in case it is *not* empty
+	private $mSearchlabel; // text to use for link to further results, or empty if link should not be shown
 	private $mLinkSubj; // should article names of the (unique) subjects be linked?
 	private $mLinkObj; // should article names of the objects be linked?
 	private $mDefault; // default return value for empty queries
@@ -188,6 +190,7 @@ class SMWInlineQuery {
 	private $mShowDebug; // should debug output be generated?
 
 	// fields used during query processing:
+	private $mQueryText; // the original query text for future reference
 	private $dbr; // pointer to the database used throughout exectution of the query
 	private $mRename; // integer counter to rename tables in SQL joins
 	private $mSubQueries; // array of subqueries, indexed by placeholder indices
@@ -213,6 +216,7 @@ class SMWInlineQuery {
 		$this->mOrder = 'ASC';
 		$this->mFormat = 'auto';
 		$this->mIntro = '';
+		$this->mSearchlabel = NULL; //indicates that printer default should be used
 		$this->mLinkSubj = ($smwgIQDefaultLinking != 'none');
 		$this->mLinkObj = ($smwgIQDefaultLinking == 'all');
 		$this->mDefault = '';
@@ -257,7 +261,10 @@ class SMWInlineQuery {
 				$this->mFormat = 'auto'; // If it is an unknown format, default to list again
 		}
 		if (array_key_exists('intro', $param)) {
-			$this->mIntro = htmlspecialchars($param['intro']);
+			$this->mIntro = htmlspecialchars(str_replace('_', ' ', $param['intro']));
+		}
+		if (array_key_exists('searchlabel', $param)) {
+			$this->mSearchlabel = htmlspecialchars($param['searchlabel']);
 		}
 		if (array_key_exists('link', $param)) {
 			switch (strtolower($param['link'])) {
@@ -276,7 +283,7 @@ class SMWInlineQuery {
 			}
 		}
 		if (array_key_exists('default', $param)) {
-			$this->mDefault = htmlspecialchars($param['default']);
+			$this->mDefault = htmlspecialchars(str_replace('_', ' ', $param['default']));
 		}
 		if (array_key_exists('headers', $param)) {
 			if ( 'hide' == strtolower($param['headers'])) {
@@ -339,10 +346,35 @@ class SMWInlineQuery {
 	}
 
 	/**
+	 * Return the label that should be used for the link to the search for
+	 * more results. If '' (empty string) is returned, the link should not be
+	 * shown. If NULL is returned, the default of the printer should apply.
+	 */
+	public function getSearchlabel() {
+		return $this->mSearchlabel;
+	}	
+
+	/**
 	 * Returns a boolean stating whether or not headers should be displayed
 	 */
 	public function showHeaders() {
 		return $this->mShowHeaders;
+	}
+
+	/**
+	 * Returns a boolean stating whether the query was executed inline.
+	 */
+	public function isInline() {
+		return $this->mInline;
+	}
+
+	/**
+	 * Returns the URL of the ask special page, with parameters corresponding to the
+	 * current query.
+	 */
+	public function getQueryURL() {
+		$title = Title::makeTitle(NS_SPECIAL, 'ask');
+		return $title->getLocalURL('query=' . urlencode($this->mQueryText));
 	}
 
 	/**
@@ -410,13 +442,14 @@ class SMWInlineQuery {
 	 * Main entry point for parsing, executing, and printing a given query text.
 	 */
 	public function getHTMLResult( $text ) {
-		global $smwgIQSortingEnabled, $smwgIQRunningNumber;
+		global $smwgIQSortingEnabled, $smwgIQRunningNumber,$wgTitle;
+		$this->mQueryText = $text;
+
 		if (!isset($smwgIQRunningNumber)) {
 			$smwgIQRunningNumber = 0;
 		} else { $smwgIQRunningNumber++; }
 
 		// This should be the proper way of substituting templates in a safe and comprehensive way	
-		global $wgTitle;
 		$parser = new Parser();
 		$parserOptions = new ParserOptions();
 		//$parserOptions->setInterfaceMessage( true );

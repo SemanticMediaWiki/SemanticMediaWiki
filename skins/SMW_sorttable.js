@@ -101,8 +101,13 @@ function ts_resortTable(lnk,clid) {
     SORT_COLUMN_INDEX = column;
     var firstRow = new Array();
     var newRows = new Array();
+    var footers = new Array();
     for (i=0;i<table.rows[0].length;i++) { firstRow[i] = table.rows[0][i]; }
-    for (j=1;j<table.rows.length;j++) { newRows[j-1] = table.rows[j]; }
+    // class "sortbottom" makes rows sort below all others, but they are still sorted
+    // class "smwfooter" excludes rows from sorting and appends them below in unchanged order
+    for (j=1;j<table.rows.length;j++) {
+       if ((!table.rows[j].className || table.rows[j].className.indexOf('smwfooter') == -1)) { newRows.push(table.rows[j]); } else { footers.push(table.rows[j]); }
+    }
 
     newRows.sort(sortfn);
 
@@ -121,6 +126,7 @@ function ts_resortTable(lnk,clid) {
     for (i=0;i<newRows.length;i++) { if (!newRows[i].className || (newRows[i].className && (newRows[i].className.indexOf('sortbottom') == -1))) table.tBodies[0].appendChild(newRows[i]);}
     // do sortbottom rows only
     for (i=0;i<newRows.length;i++) { if (newRows[i].className && (newRows[i].className.indexOf('sortbottom') != -1)) table.tBodies[0].appendChild(newRows[i]);}
+    for (i=0;i<footers.length;i++) { table.tBodies[0].appendChild(footers[i]);}
 
     // Delete any other arrows there may be showing
     var allspans = document.getElementsByTagName("span");
