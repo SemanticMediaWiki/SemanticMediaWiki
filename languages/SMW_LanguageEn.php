@@ -102,6 +102,10 @@ class SMW_LanguageEn {
 	'smw_ask_next' => 'Next',
 	'smw_ask_results' => 'Results',
 	'smw_ask_noresults' => 'Sorry, no results.',
+	'smw_ask_sortby' => 'Sort by column',
+	'smw_ask_ascorder' => 'Ascending',
+	'smw_ask_descorder' => 'Descending',
+	'smw_ask_submit' => 'Find results',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Click here to refresh all queries and templates on this page',
 	'purge' => 'Refresh',

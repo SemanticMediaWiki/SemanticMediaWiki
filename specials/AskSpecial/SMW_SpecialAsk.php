@@ -32,6 +32,8 @@ class SMW_AskPage {
 		$skin = $wgUser->getSkin();
 
 		$query = $wgRequest->getVal( 'query' );
+		$sort = $wgRequest->getVal( 'sort' );
+		$order = $wgRequest->getVal( 'order' );
 		$limit = $wgRequest->getVal( 'limit' );
 		if ('' == $limit) $limit =  20; //$smwgIQDefaultLimit;
 		$offset = $wgRequest->getVal( 'offset' );
@@ -42,12 +44,19 @@ class SMW_AskPage {
 		$docutitle = Title::newFromText(wfMsg('smw_ask_doculink'), NS_HELP);
 		$html = wfMsg('smw_ask_docu', $docutitle->getFullURL()) . "\n" .
 				'<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="GET">' . "\n";
-		$html .= '<textarea name="query" cols="40" rows="6">' . $query . '</textarea><br />' . "\n";
-		$html .= "<br /><input type=\"submit\"/>\n</form>";
+		$html .= '<textarea name="query" cols="40" rows="6">' . htmlspecialchars($query) . '</textarea><br />' . "\n";
+		$html .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort" value="' .
+		          htmlspecialchars($sort) . '"/> <select name="order"><option ';
+		if ($order == 'ASC') $html .= 'selected ';
+		$html .=  'value="ASC">' . wfMsg('smw_ask_ascorder') . '</option><option ';
+		if ($order == 'DESC') $html .= 'selected ';
+		$html .=  'value="DESC">' . wfMsg('smw_ask_descorder') .
+		          '</option></select> <br /><br /><input type="submit" value="' . wfMsg('smw_ask_submit') . 
+		          "\"/>\n</form>";
 		
 		// print results if any
 		if ($smwgIQEnabled && ('' != $query) ) {
-			$iq = new SMWInlineQuery(array('offset' => $offset, 'limit' => $limit, 'format' => 'broadtable', 'mainlabel' => ' ', 'link' => 'all', 'default' => wfMsg('smw_ask_noresults') ), false);
+			$iq = new SMWInlineQuery(array('offset' => $offset, 'limit' => $limit, 'format' => 'broadtable', 'mainlabel' => ' ', 'link' => 'all', 'default' => wfMsg('smw_ask_noresults'), 'sort' => $sort, 'order' => $order), false);
 			$result = $iq->getHTMLResult($query);
 
 			// prepare navigation bar

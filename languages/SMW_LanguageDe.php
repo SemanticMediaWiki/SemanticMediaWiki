@@ -102,6 +102,10 @@ class SMW_LanguageDe {
 	'smw_ask_next' => 'Vorwärts',
 	'smw_ask_results' => 'Ergebnisse',
 	'smw_ask_noresults' => 'Keine Ergebnisse gefunden.',
+	'smw_ask_sortby' => 'Sortiere nach Spalte',
+	'smw_ask_ascorder' => 'Aufsteigend',
+	'smw_ask_descorder' => 'Absteigend',
+	'smw_ask_submit' => 'Finde Ergebnisse',	
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Alle Anfrageergebnisse und Vorlagen auf dieser Seite auf den neuesten Stand bringen.',
 	'purge' => 'aktualisieren',

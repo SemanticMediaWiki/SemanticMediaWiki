@@ -102,6 +102,10 @@ class SMW_LanguageFr {
 	'smw_ask_next' => 'Next',  //TODO: translate
 	'smw_ask_results' => 'Results',  //TODO: translate
 	'smw_ask_noresults' => 'Sorry, no results.',  //TODO: translate
+	'smw_ask_sortby' => 'Sort by column', //TODO: translate
+	'smw_ask_ascorder' => 'Ascending', //TODO: translate
+	'smw_ask_descorder' => 'Descending', //TODO: translate
+	'smw_ask_submit' => 'Find results', //TODO: translate
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Réactualiser toutes les recherches et tous les brouillons de cette page.',
 	'purge' => 'Réactualiser',
