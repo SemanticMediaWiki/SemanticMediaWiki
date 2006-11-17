@@ -65,6 +65,7 @@ require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchTriple.php');
 require_once($smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php'); // coming soon
 require_once($smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php');
 require_once($smwgIP . '/specials/OntologyImport/SMW_SpecialOntologyImport.php');
+require_once($smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php');
 
 require_once($smwgIP . '/specials/Relations/SMW_SpecialRelations.php');
 require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedRelations.php');
