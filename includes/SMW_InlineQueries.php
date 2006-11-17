@@ -2,8 +2,9 @@
 /**
  * This feature implements inline queries, i.e. it offers the possibility
  * to query against MediaWiki's own semantic knowledgebase by putting questions
- * inside articles. In the rendereda article, those questions are replaced with 
- * the respective answers.
+ * inside articles. In the rendered article, those questions are replaced with 
+ * the respective answers. Moreover, queries might also be executed in special
+ * pages, thus displaying results directly without need of editing an article.
  *
  * Scalability is the major challenge for inline queries, so their complexity
  * can be restricted through various parameters. For example, one can adjust
@@ -36,6 +37,7 @@
 
 require_once( "$IP/includes/Title.php" );
 require_once( "$IP/includes/Linker.php" );
+require_once('SMW_QueryPrinters.php');
 
 /* The variables below define the default settings. Changes can be made by
    setting new values in SMW_LocalSettings.php */
@@ -94,25 +96,8 @@ function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
 /**
  * Everything that is between <ask> and </ask> gets processed here
  * $text is the query in the query format described elsewhere
- * $param is an array which might contain values for the following keys
- * (all optional):
- * limit   -- Maximal number of answers. It will be capped by $smwgIQMaxInlineLimit anyway.
- *            Defaults to $smwgIQDefaultLimit.
- * offset  -- Number of first result to be displayed. Parameter not available for inline queries.
- * link    -- Either none, subject or all. Makes links out of the results.
- *            Defaults to $smwgIQDefaultLinking.
- * default -- If no result is found, this string will be returned.
- * intro   -- Plain text that is to be displayed before the query, but only if any results are obtained.
- * sort    -- Name of the row by which to sort.
- * order   -- Either 'ascending' (equal to 'asc', default) or 'descending' (equal to 'desc' or 'reverse')
- * headers -- How to display the header properties of columns, can be one of 'show' 
- *            (default) and 'hide'. Maybe 'link' will follow in the future.
- * mainlabel -- Label to use for the column that shows the main subjects. Also used to indicate that
- *              the subject should be displayed in cases where it would normally be hidden.
- * format  -- Either 'list' (seperated by sep), 'ul' (for unordered bullet list),
- *            'ol' (ordered and numbered list), 'table', 'broadtable', or 'auto' (default).
- * Some formats have additional parameters:
- *   sep (list only) -- Customized separator string.
+ * $param is an array which might contain values for various parameters
+ * (see SMWInlineQuery).
  */
 function smwfProcessInlineQueries( $text, $param ) {
 	global $smwgIQEnabled;
@@ -159,6 +144,30 @@ class SMWSQLQuery {
 }
 
 
+/**
+ * The main class for processing semantic queries. Its main entry point is 
+ * getHTMLResult, which transforms a textual query into a HTML-formatted output
+ * text of results. The formatting is controlled through the parameters with which
+ * the query object was initialised. It is an array of option => value pairs, 
+ * which may contain the following optional keys:
+ * limit   -- Maximal number of answers. It will be capped by $smwgIQMaxInlineLimit anyway.
+ *            Defaults to $smwgIQDefaultLimit.
+ * offset  -- Number of first result to be displayed. Parameter not available for inline queries.
+ * link    -- Either none, subject or all. Makes links out of the results.
+ *            Defaults to $smwgIQDefaultLinking.
+ * default -- If no result is found, this string will be returned.
+ * intro   -- Plain text that is to be displayed before the query, but only if any results are obtained.
+ * sort    -- Name of the row by which to sort.
+ * order   -- Either 'ascending' (equal to 'asc', default) or 'descending' (equal to 'desc' or 'reverse')
+ * headers -- How to display the header properties of columns, can be one of 'show' 
+ *            (default) and 'hide'. Maybe 'link' will follow in the future.
+ * mainlabel -- Label to use for the column that shows the main subjects. Also used to indicate that
+ *              the subject should be displayed in cases where it would normally be hidden.
+ * format  -- Either 'list', 'ul' (for unordered bullet list), 'ol' (ordered and numbered list), 
+ *            'table', 'broadtable', or 'auto' (default).
+ * Some formats have additional parameters:
+ *   sep (list only) -- Customized separator string.
+ */
 class SMWInlineQuery {
 
 	private $mInline; // is this really an inline query, i.e. are results used in an article or not? (bool)
@@ -354,9 +363,10 @@ class SMWInlineQuery {
 	 * object that encapsulates the values that are to be printed in a certain row and
 	 * column.
 	 */
-	public function getIterator($print_data, $row, $linked) {
+	public function getIterator($print_data, $row, $subject) {
 		global $smwgIQSortingEnabled;
 		$sql_params = array('LIMIT' => $this->mLimit);
+		$linked = ( ($this->mLinkObj) || (($this->mLinkSubj) && ($subject)) );
 
 		switch ($print_data[1]) {
 			case SMW_IQ_PRINT_CATS:
@@ -390,8 +400,7 @@ class SMWInlineQuery {
 				return new SMWAttributeIterator($this->dbr, $res, $print_data[3]);
 			case SMW_IQ_PRINT_RSEL:
 				global $wgContLang;
-				return new SMWFixedIterator($this->makeTitleString($wgContLang->getNsText($row[$print_data[2] . 'namespace']) . ':' . $row[$print_data[2] . 'title'],$linked));
-				//FIXME: the above uses $linked in a wrong way
+				return new SMWFixedIterator($this->makeTitleString($wgContLang->getNsText($row[$print_data[2] . 'namespace']) . ':' . $row[$print_data[2] . 'title'],'',$linked,$subject));
 			case SMW_IQ_PRINT_ASEL: // TODO: allow selection of attribute conditionals, and print them here
 				return new SMWFixedIterator('---');
 		}
@@ -502,7 +511,7 @@ class SMWInlineQuery {
 
 	/**
 	 * Basic function for extracting a query from a user-supplied string.
-	 * The result is an object of type SMQSQLQuery.
+	 * The result is an object of type SMWSQLQuery.
 	 */
 	private function parseQuery($querytext) {
 		global $wgContLang, $smwgIQDisjunctiveQueriesEnabled, $smwgIQSubcategoryInclusions, $smwgIQMaxConditions, $smwgIQMaxTables, $smwgIQMaxPrintout;
@@ -541,7 +550,7 @@ class SMWInlineQuery {
 						if ('' == $label) $label = $wgContLang->getNSText(NS_CATEGORY);
 						$result->mPrint['C'] = array($label,SMW_IQ_PRINT_CATS);
 					} elseif ( '::' == $op ) {
-						$result->mPrint['R:' . $qparts[0]] = array($this->makeTitleString($wgContLang->getNsText(SMW_NS_RELATION) . ':' . $qparts[0],true,$label),
+						$result->mPrint['R:' . $qparts[0]] = array($this->makeTitleString($wgContLang->getNsText(SMW_NS_RELATION) . ':' . $qparts[0],$label,true),
 						SMW_IQ_PRINT_RELS,smwfNormalTitleDBKey($qparts[0]));
 					} elseif ( ':=' == $op ) {
 						$av = SMWDataValue::newAttributeValue($qparts[0]);
@@ -549,7 +558,7 @@ class SMWInlineQuery {
 						if ($unit != '') { // desired unit selected:
 							$av->setDesiredUnits(array($unit));
 						}
-						$result->mPrint['A:' . $qparts[0]] = array($this->makeTitleString($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $qparts[0],true,$label),SMW_IQ_PRINT_ATTS,smwfNormalTitleDBKey($qparts[0]),$av);
+						$result->mPrint['A:' . $qparts[0]] = array($this->makeTitleString($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $qparts[0],$label,true),SMW_IQ_PRINT_ATTS,smwfNormalTitleDBKey($qparts[0]),$av);
 					} // else: operators like :=> are not supported for printing and are silently ignored
 					$this->mPrintoutCount++;
 				}
@@ -836,26 +845,22 @@ class SMWInlineQuery {
 
 	/**
 	 * Create output string for an article title (possibly including namespace)
-	 * as given by $text. The main task of this method is to link the article
-	 * depending on the query parameters.
+	 * as given by $text. 
 	 *
 	 * $subject states whether the given title is the subject (to which special
 	 * settings for linking apply).
-	 * If $label is NULL the standard label of the given article will be used.
-	 * 
-	 * FIXME: the parameter $subject is used to determine whether the link goal
-	 * must exist, but also whether it is linked at all under standard settings.
-	 * Many callers use it without both meanings intended! Use two explicit
-	 * parameters such as "hyperlink" and "exists" and figure their right settings
-	 * before calling. Or make another method to wrap this process.
+	 * If $label is empty the standard label of the given article will be used.
+	 * $linked states whether the result should be a hyperlink
+	 * $exists states whether $text is known to be anexisting article, in which 
+	 *     case we can save a DB lookup when creating links.
 	 */
-	public function makeTitleString($text,$subject,$label='') {
+	public function makeTitleString($text,$label='',$linked,$exists=false) {
 		$title = Title::newFromText( $text );
 		if ($title == NULL) {
 			return $text; // TODO maybe report an error here?
-		} elseif ( ($this->mLinkObj) || (($this->mLinkSubj) && ($subject)) ) {
-			if ($subject)
-				return $this->mLinker->makeKnownLinkObj($title, $label); //subjects must exist, don't check
+		} elseif ( $linked ) {
+			if ($exists)
+				return $this->mLinker->makeKnownLinkObj($title, $label);
 			else return $this->mLinker->makeLinkObj($title, $label);
 		} else {
 			return $title->getText(); // TODO: shouldn't this default to $label?
@@ -897,8 +902,7 @@ class SMWCategoryIterator {
 		global $wgContLang;
 		$row = $this->mDB->fetchRow($this->mRes);
 		if ($row) 
-			return $this->mIQ->makeTitleString($wgContLang->getNsText(NS_CATEGORY) . ':' . $row['cl_to'],$this->mLinked);
-			//FIXME: the above uses $linked in the wrong way -- this is normally "subject"
+			return $this->mIQ->makeTitleString($wgContLang->getNsText(NS_CATEGORY) . ':' . $row['cl_to'],'',$this->mLinked);
 		else return false;
 	}
 }
@@ -946,8 +950,7 @@ class SMWRelationIterator {
 		global $wgContLang;
 		$row = $this->mDB->fetchRow($this->mRes);
 		if ($row) {
-			return $this->mIQ->makeTitleString($wgContLang->getNsText($row['object_namespace']) . ':' . $row['object_title'],$this->mLinked);
-			// FIXME: the above uses "linked" in a wrong way
+			return $this->mIQ->makeTitleString($wgContLang->getNsText($row['object_namespace']) . ':' . $row['object_title'],'',$this->mLinked);
 		} else return false;
 	}
 }
@@ -968,161 +971,6 @@ class SMWFixedIterator {
 			$this->mHasNext = false;
 			return $this->mValue;
 		} else return false;
-	}
-}
-
-
-/*********************************************************************/
-/* Printers                                                          */
-/*********************************************************************/
-
-/**
- * Interface (abstract class) that must be implemented by all printers for inline
- * query results.
- */
-interface SMWQueryPrinter {
-	/**
-	 * Print all results and return an output string. This method needs to call back to
-	 * the query object for fetching data.
-	 */
-	public function printResult();
-}
-
-/**
- * Printer for tabular data.
- */
-class SMWTablePrinter implements SMWQueryPrinter {
-	private $mIQ; // the querying object that called the printer
-	private $mQuery; // the query that was executed and whose results are to be printed
-
-	public function SMWTablePrinter($iq, $query) {
-		$this->mIQ = $iq;
-		$this->mQuery = $query;
-	}
-	
-	public function printResult() {
-		global $smwgIQRunningNumber;
-
-		// print header
-		if ('broadtable' == $this->mIQ->getFormat()) 
-			$widthpara = ' width="100%"'; 
-		else $widthpara = '';
-		$result = $this->mIQ->getIntro() . "<table class=\"smwtable\"$widthpara id=\"querytable" . $smwgIQRunningNumber . "\">\n";
-		if ($this->mIQ->showHeaders()) {
-			$result .= "\n\t\t<tr>";
-			foreach ($this->mQuery->mPrint as $print_data) {
-				$result .= "\t\t\t<th>" . $print_data[0] . "</th>\n";
-			}
-			$result .= "\n\t\t</tr>";
-		}
-
-		// print all result rows
-		while ( $row = $this->mIQ->getNextRow() ) {
-			$result .= "\t\t<tr>\n";
-			$firstcol = true;
-			foreach ($this->mQuery->mPrint as $print_data) {
-				$iterator = $this->mIQ->getIterator($print_data,$row,$firstcol);
-				$result .= "<td>";
-				$first = true;
-				while ($cur = $iterator->getNext()) {
-					if ($first) $first = false; else $result .= '<br />';
-					$result .= $cur;
-				}
-				$result .= "</td>";
-				$firstcol = false;
-			}
-			$result .= "\n\t\t</tr>\n";
-		}
-
-		// print footer
-		$result .= "\t</table>";
-
-		return $result;
-	}
-}
-
-/**
- * Printer for list data. Somewhat confusing code, since one has to iterate through lists,
- * inserting texts in between their elements depending on whether the element is the first
- * that is printed, the first that is printed in parentheses, or the last that will be printed.
- * Maybe one could further simplify this.
- */
-class SMWListPrinter implements SMWQueryPrinter {
-	private $mIQ; // the querying object that called the printer
-	private $mQuery; // the query that was executed and whose results are to be printed
-
-	public function SMWListPrinter($iq, $query) {
-		$this->mIQ = $iq;
-		$this->mQuery = $query;
-	}
-	
-	public function printResult() {
-		// print header
-		$result = $this->mIQ->getIntro();
-		if ( ('ul' == $this->mIQ->getFormat()) || ('ol' == $this->mIQ->getFormat()) ) {
-			$result .= '<' . $this->mIQ->getFormat() . '>';
-			$footer = '</' . $this->mIQ->getFormat() . '>';
-			$rowstart = "\n\t<li>";
-			$rowend = '</li>';
-			$plainlist = false;
-		} else {
-			$params = $this->mIQ->getParameters();
-			if (array_key_exists('sep', $params)) {
-				$listsep = htmlspecialchars($params['sep']);
-				$finallistsep = htmlspecialchars($params['sep']);
-			} else {  // default list ", , , and, "
-				$listsep = ', ';
-				$finallistsep = wfMsgForContent('smw_finallistconjunct') . ' ';
-			}
-			$footer = '';
-			$rowstart = '';
-			$rowend = '';
-			$plainlist = true;
-		}
-
-		// print all result rows
-		$first_row = true;
-		$row = $this->mIQ->getNextRow();
-		while ( $row ) {
-			$nextrow = $this->mIQ->getNextRow(); // look ahead
-			if ( !$first_row && $plainlist )  {
-				if ($nextrow) $result .= $listsep; // the comma between "rows" other than the last one
-				else $result .= $finallistsep;
-			} else $result .= $rowstart;
-
-			$first_col = true;
-			$found_values = false; // has anything but the first coolumn been printed?
-			foreach ($this->mQuery->mPrint as $print_data) {
-				$iterator = $this->mIQ->getIterator($print_data,$row,$first_col);
-				$first_value = true;
-				while ($cur = $iterator->getNext()) {
-					if (!$first_col && !$found_values) { // first values after first column
-						$result .= ' (';
-						$found_values = true;
-					} elseif ($found_values || !$first_value) { 
-					  // any value after '(' or non-first values on first column
-						$result .= ', ';
-					}
-					if ($first_value) { // first value in any column, print header
-						$first_value = false;
-						if ( $this->mIQ->showHeaders() && ('' != $print_data[0]) ) {
-							$result .= $print_data[0] . ' ';
-						}
-					}
-					$result .= $cur; // actual output value
-				}
-				$first_col = false;
-			}
-			if ($found_values) $result .= ')';
-			$result .= $rowend;
-			$first_row = false;
-			$row = $nextrow;
-		}
-
-		// print footer
-		$result .= $footer;
-
-		return $result;
 	}
 }
 
