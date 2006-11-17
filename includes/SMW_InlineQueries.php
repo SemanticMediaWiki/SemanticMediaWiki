@@ -177,7 +177,8 @@ class SMWInlineQuery {
 	private $mParameters; // full parameter list for later reference
 	private $mLimit; // max number of answers, also used when printing values of one particular subject
 	private $mOffset; // number of first returned answer
-	private $mSort;  // name of the row by which to sort
+	private $mSort;  // supplied name of the row by which to sort
+	private $mSortkey;  // db key version of the row name by which to sort
 	private $mOrder; // string that identifies sort order, 'ASC' (default) or 'DESC'
 	private $mFormat;  // a string identifier describing a valid format
 	private $mIntro; // text to print before the output in case it is *not* empty
@@ -213,6 +214,7 @@ class SMWInlineQuery {
 		$this->mLimit = $smwgIQDefaultLimit;
 		$this->mOffset = 0;
 		$this->mSort = NULL;
+		$this->mSortkey = NULL;
 		$this->mOrder = 'ASC';
 		$this->mFormat = 'auto';
 		$this->mIntro = '';
@@ -248,7 +250,8 @@ class SMWInlineQuery {
 			$this->mLimit = min($maxlimit - $this->mOffset, max(1,$param['limit'] + 0));
 		}
 		if (array_key_exists('sort', $param)) {
-			$this->mSort = smwfNormalTitleDBKey($param['sort']);
+			$this->mSort = $param['sort'];
+			$this->mSortkey = smwfNormalTitleDBKey($param['sort']);
 		}
 		if (array_key_exists('order', $param)) {
 			if (('descending'==strtolower($param['order']))||('reverse'==strtolower($param['order']))||('desc'==strtolower($param['order']))) {
@@ -374,7 +377,7 @@ class SMWInlineQuery {
 	 */
 	public function getQueryURL() {
 		$title = Title::makeTitle(NS_SPECIAL, 'ask');
-		return $title->getLocalURL('query=' . urlencode($this->mQueryText));
+		return $title->getLocalURL('query=' . urlencode($this->mQueryText) . '&sort=' . urlencode($this->mSort) . '&order=' . urlencode($this->mOrder));
 	}
 
 	/**
@@ -662,7 +665,7 @@ class SMWInlineQuery {
 							//}
 						}
 					}
-					if ($relation == $this->mSort) {
+					if ($relation == $this->mSortkey) {
 						$result->mOrderBy = "$curtable.object_title";
 					}
 				} elseif ('' == $op) { // fixed subject, possibly namespace restriction
@@ -709,7 +712,7 @@ class SMWInlineQuery {
 					}
 					$result->mTables .= ',' . $this->dbr->tableName('smw_attributes') . " AS $curtable";
 					$condition = "$pagetable.page_id=$curtable.subject_id AND $curtable.attribute_title=" . $this->dbr->addQuotes($attribute);
-					if ($attribute == $this->mSort) {
+					if ($attribute == $this->mSortkey) {
 						if ($av->isNumeric()) $result->mOrderBy = $curtable . '.value_num';
 						  else $result->mOrderBy = $curtable . '.value_xsd';
 					}
