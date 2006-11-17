@@ -28,7 +28,7 @@ function wfAskExtension() {
 class SMW_AskPage {
 
 	static function execute() {
-		global $wgRequest, $wgOut, $smwgIQEnabled, $smwgIQMaxLimit, $wgUser;
+		global $wgRequest, $wgOut, $smwgIQEnabled, $smwgIQMaxLimit, $wgUser, $smwgIQSortingEnabled;
 		$skin = $wgUser->getSkin();
 
 		$query = $wgRequest->getVal( 'query' );
@@ -45,14 +45,17 @@ class SMW_AskPage {
 		$html = wfMsg('smw_ask_docu', $docutitle->getFullURL()) . "\n" .
 				'<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="GET">' . "\n";
 		$html .= '<textarea name="query" cols="40" rows="6">' . htmlspecialchars($query) . '</textarea><br />' . "\n";
-		$html .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort" value="' .
-		          htmlspecialchars($sort) . '"/> <select name="order"><option ';
-		if ($order == 'ASC') $html .= 'selected ';
-		$html .=  'value="ASC">' . wfMsg('smw_ask_ascorder') . '</option><option ';
-		if ($order == 'DESC') $html .= 'selected ';
-		$html .=  'value="DESC">' . wfMsg('smw_ask_descorder') .
-		          '</option></select> <br /><br /><input type="submit" value="' . wfMsg('smw_ask_submit') . 
-		          "\"/>\n</form>";
+		
+		if ($smwgIQSortingEnabled) {
+			$html .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort" value="' .
+					htmlspecialchars($sort) . '"/> <select name="order"><option ';
+			// TODO: don't show sort widgets if sorting is not enabled
+			if ($order == 'ASC') $html .= 'selected ';
+			$html .=  'value="ASC">' . wfMsg('smw_ask_ascorder') . '</option><option ';
+			if ($order == 'DESC') $html .= 'selected ';
+			$html .=  'value="DESC">' . wfMsg('smw_ask_descorder') . '</option></select> <br />';
+		}
+		$html .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . "\"/>\n</form>";
 		
 		// print results if any
 		if ($smwgIQEnabled && ('' != $query) ) {
@@ -61,13 +64,13 @@ class SMW_AskPage {
 
 			// prepare navigation bar
 			if ($offset > 0) 
-				$navigation = '<a href="' . $skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&query=' . urlencode($query)) . '">' . wfMsg('smw_ask_prev') . '</a>';
+				$navigation = '<a href="' . $skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order)) . '">' . wfMsg('smw_ask_prev') . '</a>';
 			else $navigation = wfMsg('smw_ask_prev');
 
 			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_ask_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $iq->getDisplayCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 			if ($iq->hasFurtherResults()) 
-				$navigation .= ' <a href="' . $skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . '&query=' . urlencode($query)) . '">' . wfMsg('smw_ask_next') . '</a>';
+				$navigation .= ' <a href="' . $skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order)) . '">' . wfMsg('smw_ask_next') . '</a>';
 			else $navigation .= wfMsg('smw_ask_next');
 
 			$max = false; $first=true;
@@ -82,7 +85,7 @@ class SMW_AskPage {
 					$max = true;
 				}
 				if ( $limit != $l ) {
-					$navigation .= '<a href="' . $skin->makeSpecialUrl('Ask','offset=' . $offset . '&limit=' . $l . '&query=' . urlencode($query)) . '">' . $l . '</a>';
+					$navigation .= '<a href="' . $skin->makeSpecialUrl('Ask','offset=' . $offset . '&limit=' . $l . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order)) . '">' . $l . '</a>';
 				} else {
 					$navigation .= '<b>' . $l . '</b>';
 				}
