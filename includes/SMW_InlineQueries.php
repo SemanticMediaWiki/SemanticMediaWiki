@@ -246,8 +246,9 @@ class SMWInlineQuery {
 			$this->mOffset = min($maxlimit - 1, max(0,$param['offset'] + 0)); //select integer between 0 and maximal limit -1
 		}
 		// set limit small enough to stay in range with chosen offset
+		// it makes sense to have limit=0 in order to only show the link to the search special
 		if ( (array_key_exists('limit',$param)) && (is_int($param['limit'] + 0)) ) {
-			$this->mLimit = min($maxlimit - $this->mOffset, max(1,$param['limit'] + 0));
+			$this->mLimit = min($maxlimit - $this->mOffset, max(0,$param['limit'] + 0));
 		}
 		if (array_key_exists('sort', $param)) {
 			$this->mSort = $param['sort'];
@@ -509,7 +510,7 @@ class SMWInlineQuery {
 
 		//Determine format if 'auto', also for backwards compatibility
 		if ( 'auto' == $this->mFormat ) {
-			if (count($sq->mPrint)>1)
+			if ( (count($sq->mPrint)>1) && ($this->mLimit > 0) )
 				$this->mFormat = 'table';
 			else $this->mFormat = 'list';
 		}

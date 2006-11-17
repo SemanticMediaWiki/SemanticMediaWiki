@@ -162,8 +162,9 @@ class SMWListPrinter implements SMWQueryPrinter {
 				if ('ol' == $this->mIQ->getFormat()) $label = '';
 				else $label = wfMsgForContent('smw_iq_moreresults');
 			}
+			if (!$first_row) $result .= ' '; // relevant for list, unproblematic for ul/ol
 			if ($label != '') {
-				$result .= $rowstart . ' <a href="' . $this->mIQ->getQueryURL() . '">' . $label . '</a>' . $rowend;
+				$result .= $rowstart . '<a href="' . $this->mIQ->getQueryURL() . '">' . $label . '</a>' . $rowend;
 			}
 		}
 
