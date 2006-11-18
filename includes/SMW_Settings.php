@@ -1,6 +1,6 @@
 <?php
 
-$smwgVersion = '0.5e';
+$smwgVersion = '0.6';
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -97,6 +97,6 @@ $wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeader';
 /**********************************************/
 
 global $wgExtensionCredits;
-$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic MediaWiki', 'version'=>$smwgVersion, 'author'=>'Klaus Lassleben, Markus Kr&ouml;tzsch, Kai H&uuml;ner, Denny Vrandecic, S Page', 'url'=>'http://sourceforge.net/projects/semediawiki/', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines and humans');
+$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic MediaWiki', 'version'=>$smwgVersion, 'author'=>'Klaus Lassleben, Markus Kr&ouml;tzsch, Kai H&uuml;ner, Denny Vrandecic, S Page. Maintained by AIFB Karlsruhe.', 'url'=>'http://sourceforge.net/projects/semediawiki/', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines and humans');
 
 ?>
