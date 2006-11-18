@@ -35,6 +35,27 @@ a.sortheader:hover{
 	text-decoration: none;
 }
 
+/* "semantic" span classes for Timeline */
+
+div.smwtimeline {
+	border: 1px solid #AAAAAA;
+	background-color: #F9F9F9;
+	/*text-align: center;*/
+	/* After hours of debugging and frustration I now can savely say: IE sucks.
+	   You can support Semantic MediaWiki developent by not using Internet Explorer. Thanks.
+	   (IE centers the Timeline elements, which messes up the whole layout) */
+}
+
+span.smwtlevent, span.smwtlband, span.smwtlsize, span.smwtlposition {
+	display: none;
+	speak: none;
+}
+
+span.smwtlcomment {
+	font-style: italic;
+	padding: 5px;
+}
+
 /* factbox */
 
 span.smwfactboxhead {

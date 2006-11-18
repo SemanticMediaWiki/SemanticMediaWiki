@@ -15,8 +15,8 @@ function sortables_init() {
 	// Preload images
 	preload_images();
 	// Now find the tables
-	if (!document.getElementsByName) return;
-	tbls = document.getElementsByTagName("SMW_headscript_sorttable");
+	//if (!document.getElementsByTagName) return;
+	//tbls = document.getElementsByTagName("SMW_headscript_sorttable");
     // Find all tables with class smwtable and make them sortable
     if (!document.getElementsByTagName) return;
     tbls = document.getElementsByTagName("table");
