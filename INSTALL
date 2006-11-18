@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 0.5]]
+[[Semantic MediaWiki 0.6]]
 
 Contents:
 * Disclaimer
@@ -130,6 +130,10 @@ subsequently and follow the given update instructions. For example, first upgrad
 to 0.2 before upgrtading further from 0.2 to 0.3. Also, do not forget to backup your
 database before any upgrade.
 
+'''Upgrading from 0.5:'''
+
+Please recreate your SMW_LocalSettings.php, since they have changed slightly.
+
 '''Upgrading from 0.4.x:'''
 
 Upgrading does not require any special changes. However, you have to upgrade MediaWiki to 1.7
@@ -194,21 +198,13 @@ ontoworld.org for details.
   Enable template support. The required manual patch is described above.
 
 - Problem: After installing SMW, some or all pages are not displayed at all.
+- Problem: In some cases, pages are displayed incompletely, with some parts
+  vanishing.
 
   This is due to the restrictive memory default settings on some sites, and 
   is not directly caused by SMW (any additional extension code might cause this).
   Uncomment the line "ini_set( 'memory_limit', '20M' );" in LocalSettings.php
   and possibly adjust the value to your needs.
-
-- Problem: Semantic search does not work for as expected.
-
-  The current search special "Simple Semantic Search" (Special:SearchTriple) 
-  is mostly intended to let you explore the database, and is not very user-
-  friendly yet. If you get wrong results it might also be due to upgrades 
-  from earlier versions of Semantic MediaWiki. Such issues can often be fixed by
-  saving the problematic article again. A robot that does this automatically
-  might be provided in future versions. Consider writting one for yourself
-  (and send it to us ;-).
 
 - Problem: I have a problem that is not in this list.
 
@@ -221,4 +217,4 @@ ontoworld.org for details.
 If you have remarks or questions, please send them to
  semediawiki-user@lists.sourceforge.net
 Bugs can easily be reported at
- http://sourceforge.net/projects/semediawiki/
+ http://bugzilla.wikimedia.org/

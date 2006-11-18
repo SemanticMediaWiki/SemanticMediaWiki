@@ -1,3 +1,11 @@
+The license text below "----" applies to all files within this distribution, other
+than those that are in a directory which contains files named "LICENSE" or
+"COPYING", or a subdirectory thereof. For those files, the license text contained in
+said file overrides any license information contained in directories of smaller depth.
+Alternative licenses are typically used for software that is provided by external
+parties, and merely packaged with the Semantic MediaWiki release for convenience.
+----
+
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 2, June 1991
 

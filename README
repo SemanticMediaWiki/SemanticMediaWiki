@@ -20,6 +20,11 @@ Notes on installing Semantic MediaWiki are found in the file INSTALL.
 * The sorttable java script function was developed by Stuart Langridge,
   and taken from http://www.kryogenix.org/code/browser/sorttable
 
+* The JavaScript upon which the Timeline format of inline queries is based is
+  provided by Simile (http://simile.mit.edu). Note that it is distributed with 
+  a BSD-style license, and not under the GPL that applies to most parts of 
+  Semantic MediaWiki.
+
 * The Jurispedia project (www.jurispedia.org) has initiated and supported
   some of the translations:
 
