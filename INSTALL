@@ -22,7 +22,7 @@ For a proper legal disclaimer, see the LICENSE.
 
 == Requirements ==
 
-- MediaWiki 1.7.* or greater (tested up to 1.7.1)
+- MediaWiki 1.8.* or greater (tested up to 1.8.2)
 - PHP 5.x or greater
 - MySQL >= 4.0.14
 - For the ontology import feature (only!), you need RAP, 

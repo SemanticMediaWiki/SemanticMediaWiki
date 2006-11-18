@@ -31,8 +31,8 @@ function doSpecialExportRDF($page = '') {
 	if ($page=='') { //try to get GET parameter; simple way of calling the export
 		$page = $wgRequest->getVal( 'page' );
 	} else {
-		//FIXME: this might be needed with MediaWiki 1.9 final, but it would be wrong in 1.8
-		//$page = urldecode($page); 
+		//this is needed since MediaWiki 1.8, but it is wrong for 1.7
+		$page = urldecode($page); 
 	}
 
 	if ($page=='') { //try to get POST list; some settings are only available via POST
