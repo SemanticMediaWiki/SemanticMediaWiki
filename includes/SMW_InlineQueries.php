@@ -437,7 +437,7 @@ class SMWInlineQuery {
 				return new SMWAttributeIterator($this->dbr, $res, $print_data[3]);
 			case SMW_IQ_PRINT_RSEL:
 				global $wgContLang;
-				return new SMWFixedIterator($this->makeTitleString($wgContLang->getNsText($row[$print_data[2] . 'namespace']) . ':' . $row[$print_data[2] . 'title'],'',$linked,$subject));
+				return new SMWFixedIterator($this->makeTitleString($wgContLang->getNsText($row[$print_data[2] . 'namespace']) . ':' . $row[$print_data[2] . 'title'],NULL,$linked,$subject));
 			case SMW_IQ_PRINT_ASEL: // TODO: allow selection of attribute conditionals, and print them here
 				return new SMWFixedIterator('---');
 		}
@@ -586,9 +586,10 @@ class SMWInlineQuery {
 						$qparts[2] = mb_substr($qparts[2],0,$altpos);
 					} else {
 						$label = ucfirst($qparts[0]);
+						if ( '' === $label) $label = NULL;
 					}
 					if ($cat_sep == $op) { // eventually print all categories for the selected subjects
-						if ('' == $label) $label = $wgContLang->getNSText(NS_CATEGORY);
+						if (NULL === $label) $label = $wgContLang->getNSText(NS_CATEGORY);
 						$result->mPrint['C'] = array($label,SMW_IQ_PRINT_CATS);
 					} elseif ( '::' == $op ) {
 						$result->mPrint['R:' . $qparts[0]] = array($this->makeTitleString($wgContLang->getNsText(SMW_NS_RELATION) . ':' . $qparts[0],$label,true),
@@ -890,16 +891,19 @@ class SMWInlineQuery {
 	 *
 	 * $subject states whether the given title is the subject (to which special
 	 * settings for linking apply).
-	 * If $label is empty the standard label of the given article will be used.
+	 * If $label is null the standard label of the given article will be used.
+	 * If $label is the empty string, an empty string is returned.
 	 * $linked states whether the result should be a hyperlink
 	 * $exists states whether $text is known to be anexisting article, in which 
 	 *     case we can save a DB lookup when creating links.
 	 */
-	public function makeTitleString($text,$label='',$linked,$exists=false) {
+	public function makeTitleString($text,$label,$linked,$exists=false) {
+		if ( '' === $label) return ''; // no link desired
 		$title = Title::newFromText( $text );
-		if ($title == NULL) {
+		if ($title === NULL) {
 			return $text; // TODO maybe report an error here?
 		} elseif ( $linked ) {
+			if ( NULL === $label ) $label = $title->getText();
 			if ($exists)
 				return $this->mLinker->makeKnownLinkObj($title, $label);
 			else return $this->mLinker->makeLinkObj($title, $label);
@@ -943,7 +947,7 @@ class SMWCategoryIterator {
 		global $wgContLang;
 		$row = $this->mDB->fetchRow($this->mRes);
 		if ($row) 
-			return array($this->mIQ->makeTitleString($wgContLang->getNsText(NS_CATEGORY) . ':' . $row['cl_to'],'',$this->mLinked));
+			return array($this->mIQ->makeTitleString($wgContLang->getNsText(NS_CATEGORY) . ':' . $row['cl_to'],NULL,$this->mLinked));
 		else return false;
 	}
 }
@@ -991,7 +995,7 @@ class SMWRelationIterator {
 		global $wgContLang;
 		$row = $this->mDB->fetchRow($this->mRes);
 		if ($row) {
-			return array($this->mIQ->makeTitleString($wgContLang->getNsText($row['object_namespace']) . ':' . $row['object_title'],'',$this->mLinked));
+			return array($this->mIQ->makeTitleString($wgContLang->getNsText($row['object_namespace']) . ':' . $row['object_title'],NULL,$this->mLinked));
 		} else return false;
 	}
 }
