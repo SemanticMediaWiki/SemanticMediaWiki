@@ -20,6 +20,7 @@ class SMW_LanguageEs {
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "<span class='smwwarning'>Lo sentimos. Las búsquedas en los artículos de este wiki no están autorizadas</span>",
 	'smw_iq_moreresults' => '&hellip; further results', // TODO: translate
+	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.', // TODO: translate
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => '[Lo sentimos. Ninguna función de importación está disponible para el espacio de nombres "$1".]',
 	'smw_nonright_importtype' => '[El elemento "$1" no puede ser empleado más que para los artículos del espacio de nombres "$2".]',

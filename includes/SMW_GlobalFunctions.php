@@ -29,6 +29,12 @@
 			// include images. Changes in the above must always be coordinated with the script!
 			$out->addScript($sortTableScript);
 
+			// TODO: we should rather have a script that only pulls the whole Timeline on demand, if possible
+			$TimelineScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SimileTimeline/timeline-api.js"></script>';
+			$SMWTimelineScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_timeline.js"></script>';
+			$out->addScript($TimelineScript);
+			$out->addScript($SMWTimelineScript);
+
 			// Also we add a custom CSS file for our needs
 			$customCssUrl = $smwgScriptPath . '/skins/SMW_custom.css';
 			$out->addLink(array(

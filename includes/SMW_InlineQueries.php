@@ -262,7 +262,7 @@ class SMWInlineQuery {
 		}
 		if (array_key_exists('format', $param)) {
 			$this->mFormat = strtolower($param['format']);
-			if (($this->mFormat != 'ul') && ($this->mFormat != 'ol') && ($this->mFormat != 'list') && ($this->mFormat != 'table') && ($this->mFormat != 'broadtable'))
+			if (($this->mFormat != 'ul') && ($this->mFormat != 'ol') && ($this->mFormat != 'list') && ($this->mFormat != 'table') && ($this->mFormat != 'broadtable') && ($this->mFormat != 'timeline'))
 				$this->mFormat = 'auto'; // If it is an unknown format, default to list again
 		}
 		if (array_key_exists('intro', $param)) {
@@ -522,6 +522,9 @@ class SMWInlineQuery {
 				break;
 			case 'ul': case 'ol': case 'list':
 				$printer = new SMWListPrinter($this,$sq);
+				break;
+			case 'timeline':
+				$printer = new SMWTimelinePrinter($this,$sq);
 				break;
 			default: $printer = new SMWListPrinter($this,$sq);
 		}
@@ -940,7 +943,7 @@ class SMWCategoryIterator {
 		global $wgContLang;
 		$row = $this->mDB->fetchRow($this->mRes);
 		if ($row) 
-			return $this->mIQ->makeTitleString($wgContLang->getNsText(NS_CATEGORY) . ':' . $row['cl_to'],'',$this->mLinked);
+			return array($this->mIQ->makeTitleString($wgContLang->getNsText(NS_CATEGORY) . ':' . $row['cl_to'],'',$this->mLinked));
 		else return false;
 	}
 }
@@ -963,7 +966,7 @@ class SMWAttributeIterator {
 		$row = $this->mDB->fetchRow($this->mRes);
 		if ($row) {
 			$this->mDatavalue->setXSDValue($row['value_xsd'],$row['value_unit']);
-			return $this->mDatavalue->getStringValue();
+			return array($this->mDatavalue->getStringValue(), $this->mDatavalue);
 		} else return false;
 	}
 }
@@ -988,7 +991,7 @@ class SMWRelationIterator {
 		global $wgContLang;
 		$row = $this->mDB->fetchRow($this->mRes);
 		if ($row) {
-			return $this->mIQ->makeTitleString($wgContLang->getNsText($row['object_namespace']) . ':' . $row['object_title'],'',$this->mLinked);
+			return array($this->mIQ->makeTitleString($wgContLang->getNsText($row['object_namespace']) . ':' . $row['object_title'],'',$this->mLinked));
 		} else return false;
 	}
 }
@@ -1007,7 +1010,7 @@ class SMWFixedIterator {
 	public function getNext() {
 		if ($this->mHasNext) {
 			$this->mHasNext = false;
-			return $this->mValue;
+			return array($this->mValue);
 		} else return false;
 	}
 }

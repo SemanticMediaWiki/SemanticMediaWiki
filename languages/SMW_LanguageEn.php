@@ -20,6 +20,7 @@ class SMW_LanguageEn {
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "<span class='smwwarning'>Sorry. Inline queries have been disabled for this wiki.</span>",
 	'smw_iq_moreresults' => '&hellip; further results',
+	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.',
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => '[Sorry, import functions are not avalable for namespace "$1".]',
 	'smw_nonright_importtype' => '[Sorry, $1 can only be used for articles with namespace "$2"]',

@@ -53,7 +53,7 @@ class SMWTablePrinter implements SMWQueryPrinter {
 				$first = true;
 				while ($cur = $iterator->getNext()) {
 					if ($first) $first = false; else $result .= '<br />';
-					$result .= $cur;
+					$result .= $cur[0];
 				}
 				$result .= "</td>";
 				$firstcol = false;
@@ -146,7 +146,7 @@ class SMWListPrinter implements SMWQueryPrinter {
 							$result .= $print_data[0] . ' ';
 						}
 					}
-					$result .= $cur; // actual output value
+					$result .= $cur[0]; // actual output value
 				}
 				$first_col = false;
 			}
@@ -170,6 +170,138 @@ class SMWListPrinter implements SMWQueryPrinter {
 
 		// print footer
 		$result .= $footer;
+
+		return $result;
+	}
+}
+
+/**
+ * Printer for timeline data.
+ */
+class SMWTimelinePrinter implements SMWQueryPrinter {
+	private $mIQ; // the querying object that called the printer
+	private $mQuery; // the query that was executed and whose results are to be printed
+
+	public function SMWTimelinePrinter($iq, $query) {
+		$this->mIQ = $iq;
+		$this->mQuery = $query;
+	}
+	
+	public function printResult() {
+		global $smwgIQRunningNumber;
+		
+		$params = $this->mIQ->getParameters();
+		if (array_key_exists('timelinestart', $params)) {
+			$startdate = smwfNormalTitleDBKey($params['timelinestart']);
+		} else $startdate = '';
+		if (array_key_exists('timelineend', $params)) {
+			$enddate = smwfNormalTitleDBKey($params['timelineend']);
+		} else $enddate = '';
+
+		if ( ($startdate == '') ) { // seek defaults
+			foreach ($this->mQuery->mPrint as $print_data) {
+				if ( ($print_data[1] == SMW_IQ_PRINT_ATTS) && ($print_data[3]->getTypeID() == 'datetime' ) ) {
+					if ( ($enddate == '') && ($startdate != '') && ($startdate != $print_data[2]) )
+						$enddate = $print_data[2];
+					if ( ($startdate == '') && ($enddate != $print_data[2]) )
+						$startdate = $print_data[2];
+				}
+			}
+		}
+
+		if (array_key_exists('timelinesize', $params)) {
+			$size = htmlspecialchars(str_replace(';', ' ', $params['timelinesize'])); // str_replace makes sure this is only one value, not mutliple CSS fields (prevent CSS attacks)
+		} else $size = "300px";
+
+		// print header
+		$result = "<div class=\"smwtimeline\" id=\"smwtimeline$smwgIQRunningNumber\" style=\"height: $size\">";
+		$result .= '<span class="smwtlcomment">' . wfMsgForContent('smw_iq_nojs',$this->mIQ->getQueryURL()) . '</span>'; // note for people without JavaScript
+
+		if (array_key_exists('timelinebands', $params)) { //check for band parameter, should look like "DAY,MONTH,YEAR"
+			$bands = preg_split('/[,][\s]?/',$params['timelinebands']);
+			foreach ($bands as $band) {
+				$result .= '<span class="smwtlband">' . htmlspecialchars($band) . '</span>'; 
+				 //just print any "band" given, the JavaScript will figure out what to make of it
+			}
+		}
+
+		// print all result rows
+		$positions = array(); // possible positions, collected to select one for centering
+		if ($startdate != '') {
+			$output = false; // true if output was given on current line
+			while ( $row = $this->mIQ->getNextRow() ) {
+				$hastime = false; // true as soon as some startdate value was found
+				$curdata = '<span class="smwtlevent">';
+				$first_col = true;
+				foreach ($this->mQuery->mPrint as $print_data) {
+					$iterator = $this->mIQ->getIterator($print_data,$row,$first_col);
+					$first_value = true;
+					while ($cur = $iterator->getNext()) {
+						if ($first_value) {
+							$first_value = false;
+							if ( ($print_data[1] == SMW_IQ_PRINT_ATTS) && ($print_data[2] == $startdate) ) {
+								//FIXME: Timeline scripts should support XSD format explicitly. They
+								//currently seem to implement iso8601 which deviates from XSD in cases.
+								$curdata .= '<span class="smwtlstart">' . $cur[1]->getXSDValue() . '</span>';
+								$positions[$cur[1]->getNumericValue()] = $cur[1]->getXSDValue();
+								$hastime = true;
+							}
+							if ( ($print_data[1] == SMW_IQ_PRINT_ATTS) && ($print_data[2] == $enddate) ) {
+								//FIXME: Timeline scripts should support XSD format explicitly. They
+								//currently seem to implement iso8601 which deviates from XSD in cases.
+								$curdata .= '<span class="smwtlend">' . $cur[1]->getXSDValue() . '</span>';
+							}
+							if ( $this->mIQ->showHeaders() && ('' != $print_data[0]) ) {
+								$curdata .= $print_data[0] . ' ';
+							}
+							if ( $first_col ) {
+								$curdata .= '<span class="smwtlurl">' . $cur[0] . '</span>';
+							}
+						} else $curdata .= ', ';
+						if (!$first_col) {
+							$curdata .= $cur[0];
+							$output = true;
+						}
+					}
+					if ($output) $curdata .= "<br />";
+					$output = false;
+					$first_col = false;
+				}
+				if ( $hastime )
+					$result .= $curdata . "</span>";
+			}
+			// find display position:
+			if (array_key_exists('timelineposition', $params)) {
+				$pos = $params['timelineposition'];
+			} else $pos = 'middle';
+			ksort($positions);
+			$positions = array_values($positions);
+			switch ($pos) {
+				case 'start':
+					$result .= '<span class="smwtlposition">' . $positions[0] . '</span>';
+					break;
+				case 'end':
+					$result .= '<span class="smwtlposition">' . $positions[count($positions)-1] . '</span>';
+					break;
+				case 'today': break; // default
+				case 'middle': default:
+					$result .= '<span class="smwtlposition">' . $positions[ceil(count($positions)/2)-1] . '</span>';
+					break;
+			}
+		}
+
+// 		if ($this->mIQ->isInline() && $this->mIQ->hasFurtherResults()) {
+// 			$label = $this->mIQ->getSearchLabel();
+// 			if ($label === NULL) { //apply default
+// 				$label = wfMsgForContent('smw_iq_moreresults');
+// 			}
+// 			if ($label != '') {
+// 				$result .= "\n\t\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . count($this->mQuery->mPrint) . '\"> <a href="' . $this->mIQ->getQueryURL() . '">' . $label . '</a></td></tr>';
+// 			}
+// 		}
+
+		// print footer
+		$result .= "</div>";
 
 		return $result;
 	}
