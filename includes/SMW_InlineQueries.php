@@ -201,7 +201,8 @@ class SMWInlineQuery {
 	private $mTableCount; // count the number of tables joined so far
 	private $mPrintoutCount; // count the number of fields selected for separate printout so far
 	private $mFurtherResults=false; // true if not all results to the query were shown
-	private $mDisplayCount=0; // number of results that were displayed
+	private $mDisplayCount=0; // number of results that are displayed
+	private $mCurDisplayCount=0; // number of results that were already displayed, used for the iteration
 	private $mQueryResult; // retrieved query result
 
 	// other stuff
@@ -262,7 +263,7 @@ class SMWInlineQuery {
 		}
 		if (array_key_exists('format', $param)) {
 			$this->mFormat = strtolower($param['format']);
-			if (($this->mFormat != 'ul') && ($this->mFormat != 'ol') && ($this->mFormat != 'list') && ($this->mFormat != 'table') && ($this->mFormat != 'broadtable') && ($this->mFormat != 'timeline'))
+			if (($this->mFormat != 'ul') && ($this->mFormat != 'ol') && ($this->mFormat != 'list') && ($this->mFormat != 'table') && ($this->mFormat != 'broadtable') && ($this->mFormat != 'timeline') && ($this->mFormat != 'eventline'))
 				$this->mFormat = 'auto'; // If it is an unknown format, default to list again
 		}
 		if (array_key_exists('intro', $param)) {
@@ -387,9 +388,9 @@ class SMWInlineQuery {
 	 * one. FALSE will be returned if no more rows that should be printed remain.
 	 */
 	public function getNextRow() {
-		$this->mDisplayCount++;
+		$this->mCurDisplayCount++;
 		$row = $this->dbr->fetchRow( $this->mQueryResult );
-		if ( (!$row) || ($this->mDisplayCount > $this->mLimit) ) {
+		if ( (!$row) || ($this->mCurDisplayCount > $this->mLimit) ) {
 			if ($row) $this->mFurtherResults = true; // there are more result than displayed
 			return false;
 		} else return $row;
@@ -437,7 +438,7 @@ class SMWInlineQuery {
 				return new SMWAttributeIterator($this->dbr, $res, $print_data[3]);
 			case SMW_IQ_PRINT_RSEL:
 				global $wgContLang;
-				return new SMWFixedIterator($this->makeTitleString($wgContLang->getNsText($row[$print_data[2] . 'namespace']) . ':' . $row[$print_data[2] . 'title'],NULL,$linked,$subject));
+				return new SMWSingleArticleIterator($this, $wgContLang->getNsText($row[$print_data[2] . 'namespace']), $row[$print_data[2] . 'title'],$linked,$subject);
 			case SMW_IQ_PRINT_ASEL: // TODO: allow selection of attribute conditionals, and print them here
 				return new SMWFixedIterator('---');
 		}
@@ -500,6 +501,8 @@ class SMWInlineQuery {
 		//No results, TODO: is there a better way than calling numRows (which counts all results)?
 		if ( (!$this->mQueryResult) || (0 == $this->dbr->numRows( $this->mQueryResult )) ) return $this->mDefault;
 
+		$this->mDisplayCount = min($this->mLimit, $this->dbr->numRows( $this->mQueryResult ));
+
 		// Cases in which to print the subject:
 		if ((!$sq->mFixedSubject) || (0 == count($sq->mPrint)) || (NULL != $this->mMainLabel)) { 
 			if (NULL == $this->mMainLabel) {
@@ -523,7 +526,7 @@ class SMWInlineQuery {
 			case 'ul': case 'ol': case 'list':
 				$printer = new SMWListPrinter($this,$sq);
 				break;
-			case 'timeline':
+			case 'timeline': case 'eventline':
 				$printer = new SMWTimelinePrinter($this,$sq);
 				break;
 			default: $printer = new SMWListPrinter($this,$sq);
@@ -995,26 +998,35 @@ class SMWRelationIterator {
 		global $wgContLang;
 		$row = $this->mDB->fetchRow($this->mRes);
 		if ($row) {
-			return array($this->mIQ->makeTitleString($wgContLang->getNsText($row['object_namespace']) . ':' . $row['object_title'],NULL,$this->mLinked));
+			$namespace = $wgContLang->getNsText($row['object_namespace']);
+			return array($this->mIQ->makeTitleString($namespace . ':' . $row['object_title'],NULL,$this->mLinked), $namespace, $row['object_title']);
 		} else return false;
 	}
 }
 
 /**
- * Iterator wrapping a single string
+ * Iterator wrapping a single article
  */
-class SMWFixedIterator {
-	private $mValue;
+class SMWSingleArticleIterator {
+	private $mTitle;
+	private $mNamespace;
 	private $mHasNext=true;
+	private $mIQ;
+	private $mLinked;
+	private $mSubject;
 
-	public function SMWFixedIterator($value) {
-		$this->mValue = $value;
+	public function SMWSingleArticleIterator($iq, $namespace, $title, $linked, $subject=false) {
+		$this->mIQ = $iq;
+		$this->mTitle = $title;
+		$this->mNamespace = $namespace;
+		$this->mLinked = $linked;
+		$this->mSubject = $subject;
 	}
 
 	public function getNext() {
 		if ($this->mHasNext) {
 			$this->mHasNext = false;
-			return array($this->mValue);
+			return array($this->mIQ->makeTitleString($this->mNamespace . ':' . $this->mTitle,NULL,$this->mLinked,$this->mSubject),$this->mNamespace,$this->mTitle);
 		} else return false;
 	}
 }

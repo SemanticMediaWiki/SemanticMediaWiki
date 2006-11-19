@@ -153,6 +153,7 @@ function smw_add_event(evspan,evs) {
 	var desc = "";
 	var ttl = "";
 	var linkurl = "";
+	var icon = Timeline.urlPrefix + "images/dull-blue-circle.png";
 
 	var childs = evspan.childNodes;
 	for (var i = 0; i < childs.length; /* manual increment below */ ) {
@@ -183,6 +184,33 @@ function smw_add_event(evspan,evs) {
 					}
 					evspan.removeChild(childs[i]);
 				break;
+				case "smwtlcoloricon": 
+					if (childs[i].firstChild.nodeType == 3) {
+						switch ( childs[i].firstChild.data ) {
+							case "0": icon =Timeline.urlPrefix + "images/dull-blue-circle.png";
+							break;
+							case "1": icon =Timeline.urlPrefix + "images/dull-red-circle.png";
+							break;
+							case "2": icon =Timeline.urlPrefix + "images/dull-green-circle.png";
+							break;
+							case "3": icon =Timeline.urlPrefix + "images/gray-circle.png";
+							break;
+							case "4": icon =Timeline.urlPrefix + "images/dark-blue-circle.png";
+							break;
+							case "5": icon =Timeline.urlPrefix + "images/dark-red-circle.png";
+							break;
+							case "6": icon =Timeline.urlPrefix + "images/dark-green-circle.png";
+							break;
+							case "7": icon =Timeline.urlPrefix + "images/blue-circle.png";
+							break;
+							case "8": icon =Timeline.urlPrefix + "images/red-circle.png";
+							break;
+							case "9": icon =Timeline.urlPrefix + "images/green-circle.png";
+							break;
+						}
+					}
+					evspan.removeChild(childs[i]);
+				break;
  				default: //proceed
 					i++;
 			}
@@ -201,7 +229,7 @@ function smw_add_event(evspan,evs) {
 		desc,
 		"", //no image
 		linkurl,
-		"", //no icon
+		icon,
 		"",
 		""
 	);

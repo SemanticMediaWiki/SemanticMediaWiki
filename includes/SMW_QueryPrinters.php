@@ -189,16 +189,20 @@ class SMWTimelinePrinter implements SMWQueryPrinter {
 	
 	public function printResult() {
 		global $smwgIQRunningNumber;
-		
+
+		$eventline =  ('eventline' == $this->mIQ->getFormat());
 		$params = $this->mIQ->getParameters();
+		
+		$startdate = '';
+		
 		if (array_key_exists('timelinestart', $params)) {
 			$startdate = smwfNormalTitleDBKey($params['timelinestart']);
-		} else $startdate = '';
+		}
 		if (array_key_exists('timelineend', $params)) {
 			$enddate = smwfNormalTitleDBKey($params['timelineend']);
 		} else $enddate = '';
 
-		if ( ($startdate == '') ) { // seek defaults
+		if ( !$eventline && ($startdate == '') ) { // seek defaults
 			foreach ($this->mQuery->mPrint as $print_data) {
 				if ( ($print_data[1] == SMW_IQ_PRINT_ATTS) && ($print_data[3]->getTypeID() == 'datetime' ) ) {
 					if ( ($enddate == '') && ($startdate != '') && ($startdate != $print_data[2]) )
@@ -227,48 +231,67 @@ class SMWTimelinePrinter implements SMWQueryPrinter {
 
 		// print all result rows
 		$positions = array(); // possible positions, collected to select one for centering
-		if ($startdate != '') {
-			$output = false; // true if output was given on current line
+		$curcolor = 0; // color cycling is used for eventline
+		if ( ($startdate != '') || $eventline ) {
+			$output = false; // true if output for the popup was given on current line
+			if ($eventline) $events = array(); // array of events that are to be printed
 			while ( $row = $this->mIQ->getNextRow() ) {
 				$hastime = false; // true as soon as some startdate value was found
-				$curdata = '<span class="smwtlevent">';
+				$hastitle = false; // true as soon as some title value was found
+				$curdata = ''; // current *inner* print data (within some event span)
+				$curmeta = ''; // current event meta data
 				$first_col = true;
 				foreach ($this->mQuery->mPrint as $print_data) {
 					$iterator = $this->mIQ->getIterator($print_data,$row,$first_col);
 					$first_value = true;
 					while ($cur = $iterator->getNext()) {
+						$header = '';
 						if ($first_value) {
-							$first_value = false;
+							if ( $this->mIQ->showHeaders() && ('' != $print_data[0]) ) {
+								$header = $print_data[0] . ' ';
+							}
 							if ( ($print_data[1] == SMW_IQ_PRINT_ATTS) && ($print_data[2] == $startdate) ) {
 								//FIXME: Timeline scripts should support XSD format explicitly. They
 								//currently seem to implement iso8601 which deviates from XSD in cases.
-								$curdata .= '<span class="smwtlstart">' . $cur[1]->getXSDValue() . '</span>';
+								$curmeta .= '<span class="smwtlstart">' . $cur[1]->getXSDValue() . '</span>';
 								$positions[$cur[1]->getNumericValue()] = $cur[1]->getXSDValue();
 								$hastime = true;
 							}
 							if ( ($print_data[1] == SMW_IQ_PRINT_ATTS) && ($print_data[2] == $enddate) ) {
-								//FIXME: Timeline scripts should support XSD format explicitly. They
-								//currently seem to implement iso8601 which deviates from XSD in cases.
-								$curdata .= '<span class="smwtlend">' . $cur[1]->getXSDValue() . '</span>';
+								$curmeta .= '<span class="smwtlend">' . $cur[1]->getXSDValue() . '</span>';
 							}
-							if ( $this->mIQ->showHeaders() && ('' != $print_data[0]) ) {
-								$curdata .= $print_data[0] . ' ';
+							if ( !$hastitle ) {
+								if ( mb_substr($cur[0],0,3) == '<a ') // treat hyperlinks differently
+									$curmeta .= '<span class="smwtlurl">' . $cur[0] . '</span>';
+								else $curmeta .= '<span class="smwtltitle">' . $cur[0] . '</span>';
+								$hastitle = true;
 							}
-							if ( $first_col ) {
-								$curdata .= '<span class="smwtlurl">' . $cur[0] . '</span>';
-							}
-						} else $curdata .= ', ';
-						if (!$first_col) {
-							$curdata .= $cur[0];
+						} elseif ($output) $curdata .= ', '; //it *can* happen that output is false here, if the subject was not printed (fixed subbjct query) and mutliple items appear in the first row
+						if (!$first_col || !$first_value || $eventline) {
+							$curdata .= $header . $cur[0];
 							$output = true;
 						}
+						if ($eventline && ($print_data[1] == SMW_IQ_PRINT_ATTS) && ($print_data[3]->getTypeID() == 'datetime') && ('' != $print_data[0]) && ($print_data[2] != $startdate) && ($print_data[2] != $enddate) ) {
+							$events[] = array($cur[1]->getXSDValue(), $print_data[0], $cur[1]->getNumericValue());
+						}
+						$first_value = false;
 					}
 					if ($output) $curdata .= "<br />";
 					$output = false;
 					$first_col = false;
 				}
-				if ( $hastime )
-					$result .= $curdata . "</span>";
+
+				if ( $hastime ) {
+					$result .= '<span class="smwtlevent">' . $curmeta . '<span class="smwtlcoloricon">' . $curcolor . '</span>' . $curdata . '</span>';
+				}
+				if ( $eventline ) {
+					foreach ($events as $event) {
+						$result .= '<span class="smwtlevent"><span class="smwtlstart">' . $event[0] . '</span><span class="smwtlurl">' . $event[1] . '</span><span class="smwtlcoloricon">' . $curcolor . '</span>' . $curdata . '</span>';
+						$positions[$event[2]] = $event[0];
+					}
+					$events = array();
+					$curcolor = ($curcolor + 1) % 10;
+				}
 			}
 			// find display position:
 			if (array_key_exists('timelineposition', $params)) {
