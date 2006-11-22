@@ -19,8 +19,8 @@ class SMW_LanguageFr {
 	'smw_baduri' => 'Désolé. Les URIs du domaine $1 ne sont pas disponible à cet emplacement',
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "<span class='smwwarning'>Désolé. Les recherches dans les articles de ce wiki ne sont pas autorisées</span>",
-	'smw_iq_moreresults' => '&hellip; further results', // TODO: translate
-	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.', // TODO: translate
+	'smw_iq_moreresults' => '&hellip; autres résultats',
+	'smw_iq_nojs' => 'Utilisez un navigateur avec JavaScript pour voir cet élément, ou <a href="$1">consultez la liste des résultats</a> directement.',
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => '[Désolé. Aucune fonction d\'import n\'est disponible pour l\'espace de nommage "$1".]',
 	'smw_nonright_importtype' => '[L\'élément "$1" ne peut être employé que pour des articles de l\'espace de nommage "$2".]',
@@ -34,7 +34,7 @@ class SMW_LanguageFr {
 	'smw_notype' => '[Oups ! Aucun type de donné n\'a été assigné à l\'attribut]',
 	'smw_manytypes' => '[Oups ! Plusieurs types de données ont été assignés à l\'attribut]',
 	'smw_emptystring' => '[Oups ! Les chaînes vides ne sont pas acceptées]',
-	'smw_maxstring' => '[Sorry, string representation $1 is too long for this site.]', //TODO: translate
+	'smw_maxstring' => '[Désolé, la chaîne de représentation $1 est trop grande pour ce site.]',
 	'smw_nointeger' => '[Oups ! "$1" n\'est pas un nombre entier]',
 	'smw_nofloat' => '[Oups ! "$1" n\'est pas un nombre à virgule flottante]',
 	'smw_infinite' => '[Désolé, le nombre $1 est trop long.]',
@@ -76,11 +76,11 @@ class SMW_LanguageFr {
 	'smw_searchtriple_subject' => 'Nom de l\'article (sujet):',
 	'smw_searchtriple_relation' => 'Nom de la relation:',
 	'smw_searchtriple_attribute' => 'Nom des attributs:',
-	'smw_searchtriple_object' => 'Nom de l\'article (objet) (Objekt):',
-	'smw_searchtriple_attvalue' => 'Valeur des attributs:',
-	'smw_searchtriple_searchrel' => 'Recherche par Relation',
+	'smw_searchtriple_object' => 'Nom de l\'article (objet) :',
+	'smw_searchtriple_attvalue' => 'Valeur des attributs :',
+	'smw_searchtriple_searchrel' => 'Recherche par relation',
 	'smw_searchtriple_searchatt' => 'Recherche par attribut',
-	'smw_searchtriple_resultrel' => 'Résultats de la recherche (Relations)',
+	'smw_searchtriple_resultrel' => 'Résultats de la recherche (relations)',
 	'smw_searchtriple_resultatt' => 'Résultats de la recherche (attributs)',
 	/*Messages for Relation Special*/
 	'relations' => 'Relations',
@@ -96,30 +96,30 @@ class SMW_LanguageFr {
 	'unusedattributes' => 'Attributs orphelins',
 	'smw_unusedattributes_docu' => 'Des pages pour les attribut suivants existent, mais ils ne sont pas utilisés.',
 	/*Messages for ask Special*/
-	'ask' => 'Semantic search',  //TODO: translate
-	'smw_ask_docu' => '<p>Search the wiki by entering an inline query into the search field below. Further information is given on the <a href="$1">help page for semantic search</a>.</p>',  //TODO: translate
-	'smw_ask_doculink' => 'Semantic search',  //TODO: translate
-	'smw_ask_prev' => 'Previous',  //TODO: translate
-	'smw_ask_next' => 'Next',  //TODO: translate
-	'smw_ask_results' => 'Results',  //TODO: translate
-	'smw_ask_noresults' => 'Sorry, no results.',  //TODO: translate
-	'smw_ask_sortby' => 'Sort by column', //TODO: translate
-	'smw_ask_ascorder' => 'Ascending', //TODO: translate
-	'smw_ask_descorder' => 'Descending', //TODO: translate
-	'smw_ask_submit' => 'Find results', //TODO: translate
+	'ask' => 'Recherche sémantique',
+	'smw_ask_docu' => '<p>Cherchez dans le wiki en entrant une requête intégrée dans le champ de recherche ci-dessous. Des informations plus complètes sont disponibles sur la <a href="$1">page d\'aide à la recherche sémantique</a>.</p>',
+	'smw_ask_doculink' => 'Recherche sémantique',
+	'smw_ask_prev' => 'Précédent',
+	'smw_ask_next' => 'Suivant',
+	'smw_ask_results' => 'Résultats',
+	'smw_ask_noresults' => 'Désolé, aucun résultat.',
+	'smw_ask_sortby' => 'Trier par colonnes',
+	'smw_ask_ascorder' => 'Croissant',
+	'smw_ask_descorder' => 'Décroissant',
+	'smw_ask_submit' => 'Trouver des résultats',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Réactualiser toutes les recherches et tous les brouillons de cette page.',
 	'purge' => 'Réactualiser',
 	/*Messages for Import Ontology Special*/
-	'ontologyimport' => 'Importer l\'ontologie',
+	'ontologyimport' => 'Importer une ontologie',
 	'smw_ontologyimport_docu' => 'Cette page spéciale permet d\'importer des informations d\'une ontologie externe. Cette ontologie doit être dans un format RDF simplifié. Des informations supplémentaires sont disponibles dans la <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">Documentation relative à l\'import d\'ontologie</a> en langues anglaise.',
 	'smw_ontologyimport_action' => 'Importer',
 	'smw_ontologyimport_return' => 'Revenir à <a href="$1">Importer l\'ontologie</a>.',	//Différence avec la version anglaise
 	/*Messages for (data)Types Special*/
 	'types' => 'Types de données',
 	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a son propre article, dans lequel peuvent figurer des informations plus précises.',
-	'smw_types_units' => 'Standard unit: $1; supported units: $2',
-	'smw_types_builtin' => 'Built-in types'
+	'smw_types_units' => 'Unité standard : $1 ; Unités supportées : $2',
+	'smw_types_builtin' => 'Types intégrés'
 );
 
 /* private */ var $smwDatatypeLabels = array(
@@ -151,7 +151,7 @@ class SMW_LanguageFr {
 	SMW_SP_DISPLAY_UNIT => 'Unité de mesure',
 	SMW_SP_IMPORTED_FROM => 'Importé de',
 	SMW_SP_CONVERSION_FACTOR => 'Correspond à',
-	SMW_SP_SERVICE_LINK => 'Provides service' //TODO: translate
+	SMW_SP_SERVICE_LINK => 'Fournit le service'
 );
 
 	/**
