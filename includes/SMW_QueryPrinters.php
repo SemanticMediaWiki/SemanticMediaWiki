@@ -192,9 +192,9 @@ class SMWTimelinePrinter implements SMWQueryPrinter {
 
 		$eventline =  ('eventline' == $this->mIQ->getFormat());
 		$params = $this->mIQ->getParameters();
-		
+
 		$startdate = '';
-		
+
 		if (array_key_exists('timelinestart', $params)) {
 			$startdate = smwfNormalTitleDBKey($params['timelinestart']);
 		}
@@ -237,9 +237,10 @@ class SMWTimelinePrinter implements SMWQueryPrinter {
 			if ($eventline) $events = array(); // array of events that are to be printed
 			while ( $row = $this->mIQ->getNextRow() ) {
 				$hastime = false; // true as soon as some startdate value was found
-				$hastitle = false; // true as soon as some title value was found
+				$hastitle = false; // true as soon as some label for the event was found
 				$curdata = ''; // current *inner* print data (within some event span)
 				$curmeta = ''; // current event meta data
+				$curarticle = ''; // label of current article, if it was found
 				$first_col = true;
 				foreach ($this->mQuery->mPrint as $print_data) {
 					$iterator = $this->mIQ->getIterator($print_data,$row,$first_col);
@@ -247,9 +248,11 @@ class SMWTimelinePrinter implements SMWQueryPrinter {
 					while ($cur = $iterator->getNext()) {
 						$header = '';
 						if ($first_value) {
+							// find header for current value:
 							if ( $this->mIQ->showHeaders() && ('' != $print_data[0]) ) {
 								$header = $print_data[0] . ' ';
 							}
+							// is this a start date?
 							if ( ($print_data[1] == SMW_IQ_PRINT_ATTS) && ($print_data[2] == $startdate) ) {
 								//FIXME: Timeline scripts should support XSD format explicitly. They
 								//currently seem to implement iso8601 which deviates from XSD in cases.
@@ -257,13 +260,18 @@ class SMWTimelinePrinter implements SMWQueryPrinter {
 								$positions[$cur[1]->getNumericValue()] = $cur[1]->getXSDValue();
 								$hastime = true;
 							}
+							// is this the end date?
 							if ( ($print_data[1] == SMW_IQ_PRINT_ATTS) && ($print_data[2] == $enddate) ) {
 								$curmeta .= '<span class="smwtlend">' . $cur[1]->getXSDValue() . '</span>';
 							}
+							// find title for displaying event
 							if ( !$hastitle ) {
 								if ( mb_substr($cur[0],0,3) == '<a ') // treat hyperlinks differently
 									$curmeta .= '<span class="smwtlurl">' . $cur[0] . '</span>';
 								else $curmeta .= '<span class="smwtltitle">' . $cur[0] . '</span>';
+								if ( ($print_data[1] == SMW_IQ_PRINT_RSEL) ) { // $cur describes an article title
+									$curarticle = $cur[2];
+								}
 								$hastitle = true;
 							}
 						} elseif ($output) $curdata .= ', '; //it *can* happen that output is false here, if the subject was not printed (fixed subbjct query) and mutliple items appear in the first row
@@ -286,7 +294,9 @@ class SMWTimelinePrinter implements SMWQueryPrinter {
 				}
 				if ( $eventline ) {
 					foreach ($events as $event) {
-						$result .= '<span class="smwtlevent"><span class="smwtlstart">' . $event[0] . '</span><span class="smwtlurl">' . $event[1] . '</span><span class="smwtlcoloricon">' . $curcolor . '</span>' . $curdata . '</span>';
+						$result .= '<span class="smwtlevent"><span class="smwtlstart">' . $event[0] . '</span><span class="smwtlurl">' . $event[1] . '</span><span class="smwtlcoloricon">' . $curcolor . '</span>';
+						if ( $curarticle != '' ) $result .= '<span class="smwtlprefix">' . $curarticle . ' </span>';
+						$result .=  $curdata . '</span>';
 						$positions[$event[2]] = $event[0];
 					}
 					$events = array();

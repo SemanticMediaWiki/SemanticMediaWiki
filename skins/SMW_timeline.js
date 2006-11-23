@@ -153,6 +153,8 @@ function smw_add_event(evspan,evs) {
 	var desc = "";
 	var ttl = "";
 	var linkurl = "";
+	var prefix = "";
+	var postfix = "";
 	var icon = Timeline.urlPrefix + "images/dull-blue-circle.png";
 
 	var childs = evspan.childNodes;
@@ -172,6 +174,16 @@ function smw_add_event(evspan,evs) {
 				case "smwtltitle": 
 					if (childs[i].firstChild.nodeType == 3)
 						ttl = childs[i].firstChild.data;
+					evspan.removeChild(childs[i]);
+				break;
+				case "smwtlprefix": 
+					if (childs[i].firstChild.nodeType == 3)
+						prefix = childs[i].firstChild.data;
+					evspan.removeChild(childs[i]);
+				break;
+				case "smwtlpostfix": 
+					if (childs[i].firstChild.nodeType == 3)
+						postfix = childs[i].firstChild.data;
 					evspan.removeChild(childs[i]);
 				break;
 				case "smwtlurl": // accept both plain text and <a>, use text of <a> for title
@@ -225,7 +237,7 @@ function smw_add_event(evspan,evs) {
 		parseDateTimeFunction(null),
 		parseDateTimeFunction(null),
 		true, //( enddate == null ), // FIXME: timeline currently fails if there are only durations and mutliple bands
-		ttl,
+		prefix + ttl + postfix,
 		desc,
 		"", //no image
 		linkurl,
