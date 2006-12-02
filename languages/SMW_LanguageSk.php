@@ -1,4 +1,4 @@
-+<?php
+<?php
 /**
  * @author helix84
  */
