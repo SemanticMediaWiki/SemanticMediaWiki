@@ -560,7 +560,7 @@ class ExportRDF {
 				$equality_rel = "owl:equivalentProperty";
 				break;
 			case SMW_NS_ATTRIBUTE:
-				if ( $et->has_type === false ) return; //attributes w/o type not exportable
+				if ( $et->has_type === false ) return; //attributes w/o type not exportable, TODO: is this what we want?
 				$datatype_handler = SMWTypeHandlerFactory::getTypeHandlerByLabel($et->has_type);
 				if ( ('annouri' == $datatype_handler->getID()) || ('annostring' == $datatype_handler->getID()) ) {
 					$type = 'owl:AnnotationProperty'; // cannot be a subproperty, etc.
