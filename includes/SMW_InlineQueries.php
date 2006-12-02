@@ -166,7 +166,7 @@ class SMWSQLQuery {
  * mainlabel -- Label to use for the column that shows the main subjects. Also used to indicate that
  *              the subject should be displayed in cases where it would normally be hidden.
  * format  -- Either 'list', 'ul' (for unordered bullet list), 'ol' (ordered and numbered list), 
- *            'table', 'broadtable', or 'auto' (default).
+ *            'table', 'broadtable', 'timeline', 'eventline', 'embedded', or 'auto' (default).
  * Some formats have additional parameters:
  *   sep (list only) -- Customized separator string.
  */
@@ -263,7 +263,7 @@ class SMWInlineQuery {
 		}
 		if (array_key_exists('format', $param)) {
 			$this->mFormat = strtolower($param['format']);
-			if (($this->mFormat != 'ul') && ($this->mFormat != 'ol') && ($this->mFormat != 'list') && ($this->mFormat != 'table') && ($this->mFormat != 'broadtable') && ($this->mFormat != 'timeline') && ($this->mFormat != 'eventline'))
+			if (($this->mFormat != 'ul') && ($this->mFormat != 'ol') && ($this->mFormat != 'list') && ($this->mFormat != 'table') && ($this->mFormat != 'broadtable') && ($this->mFormat != 'timeline') && ($this->mFormat != 'eventline') && ($this->mFormat != 'embedded'))
 				$this->mFormat = 'auto'; // If it is an unknown format, default to list again
 		}
 		if (array_key_exists('intro', $param)) {
@@ -528,6 +528,9 @@ class SMWInlineQuery {
 				break;
 			case 'timeline': case 'eventline':
 				$printer = new SMWTimelinePrinter($this,$sq);
+				break;
+			case 'embedded':
+				$printer = new SMWEmbeddedPrinter($this,$sq);
 				break;
 			default: $printer = new SMWListPrinter($this,$sq);
 		}

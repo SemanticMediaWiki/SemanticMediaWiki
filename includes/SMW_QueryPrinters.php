@@ -340,4 +340,150 @@ class SMWTimelinePrinter implements SMWQueryPrinter {
 	}
 }
 
+/**
+ * Printer for embedded data.
+ * Embeds in the page output the contents of the pages in the query result set.
+ * Only the first column of the query is considered. If it is a page reference then that page's contents is embedded.
+ * The optional "titlestyle" formatting parameter can be used to apply a format to the headings for the page titles.
+ * If "titlestyle" is not specified, a <h1> tag is used.
+ * In the pages, a special marking can be used to prevent portions from being embedded:
+ * <span class="do_not_embed"> (anything between these tags won't be embedded) </span>
+ * There must be no HTML comment or other "span" tags between these tags.
+ * @author Fernando Correia
+ */
+class SMWEmbeddedPrinter implements SMWQueryPrinter {
+	private $mIQ; // the querying object that called the printer
+	private $mQuery; // the query that was executed and whose results are to be printed
+
+	public function SMWEmbeddedPrinter($iq, $query) {
+		$this->mIQ = $iq;
+		$this->mQuery = $query;
+	}
+
+	/**
+	 * Prepares article text for embedding by removing portions that should not be embedded.
+	 * Removes text between tags:
+	 * <span class="do_not_embed"> (anything between these tags won't be embedded) </span>
+	 * If there is a HTML comment between the tags the text is returned unchanged to prevent attacks.
+	 * Nested "span" tags are not supported.
+	 * Returns the prepared text.
+	 */
+	public function prepareEmbedding($article_text) {
+		$open_tag = '<span class="do_not_embed">';
+		$close_tag = '</span>';
+		$comment_tag = '<!--';
+		$prepared_text = $article_text;
+		do {
+			$replaced = false;
+			$span_open = stripos($prepared_text, $open_tag);
+			if ($span_open !== false) {  // has opening tag
+				$span_close = stripos($prepared_text, $close_tag, $span_open);
+				if ($span_close !== false) {  // has closing tag
+					$comment_pos = stripos($prepared_text, $comment_tag, $span_open);
+					if (($comment_pos === false) or ($comment_pos > $span_close)) {  // no comment between tags
+						$length = $span_close - $span_open + strlen($close_tag);
+						$prepared_text = substr_replace($prepared_text, "<!-- portion omitted -->", $span_open, $length);
+						$replaced = true;
+					}
+				}
+			}
+		} while ($replaced);
+		return $prepared_text;
+	}
+
+	public function printResult() {
+		// handle factbox
+		global $smwgShowFactbox;
+		$user_smwgShowFactbox = $smwgShowFactbox;  // save $smwgShowFactbox option
+		$smwgShowFactbox = SMW_FACTBOX_HIDDEN;  // don't show the factbox for embedded articles
+
+		// print header
+		$result = $this->mIQ->getIntro();
+
+		// use titlestyle parameter if specified
+		// sanitise it first to prevent attacks
+		$params = $this->mIQ->getParameters();
+		// The following still allows XSS attacks, e.g. by embedding URLs for 
+		// background images. We cannot allow users to specify lists of CSS 
+		// properties directly. Sorry.
+// 		if (array_key_exists('titlestyle', $params)) {
+// 			$titlestyle = htmlspecialchars(str_replace('_', ' ', $params['titlestyle']));
+// 			$title_open_tag = '<div style="' . $titlestyle . '">';
+// 			$title_close_tag = "</div>\n";
+// 		} else {
+// 			$title_open_tag = '<h1>';
+// 			$title_close_tag = "</h1>\n";
+// 		}
+		if (array_key_exists('titleformat', $params)) {
+			switch ($params['titleformat']) {
+				case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
+					$footer = '';
+					$rowstart = '<' . $params['titleformat'] . '>';
+					$headsep = '</' . $params['titleformat'] . ">\n";
+					$rowend = '';
+				break;
+				case 'ul':
+					$result .= '<ul>';
+					$footer = '</ul>';
+					$rowstart = '<li>';
+					$rowend = "</li>\n";
+					$headsep = "<br />\n";
+				break;
+			}
+		} else {
+			$footer = '';
+			$rowstart = '<h1>';
+			$headsep = "</h1>\n";
+			$rowend = '';
+		}
+
+		// print all result rows
+		$parser_options = new ParserOptions();
+		$parser_options->setEditSection(false);  // embedded sections should not have edit links
+		$parser = new Parser();
+
+		while ( $row = $this->mIQ->getNextRow() ) {
+			$first_col = true;
+			$result .= $rowstart;
+			foreach ($this->mQuery->mPrint as $print_data) {
+				$iterator = $this->mIQ->getIterator($print_data,$row,$first_col);
+				while ($cur = $iterator->getNext()) {
+					$result .= $cur[0] . $headsep;
+					$article_namespace = $cur[1];
+					$article_title = $cur[2]; // TODO: ouch .. we need to check whether this exists
+					if ((NULL != $article_title) and ($article_title != '')) {
+						$title_text = $article_namespace;
+						if ($title_text != '') $title_text .= ':';
+						$title_text .= $article_title;
+						$title = Title::newFromText($title_text); // TODO: is this actually the right title to use for parsing?
+						if (NULL != $title) {
+							$parserOutput = $parser->parse('{{' . $article_namespace . ':' . $article_title . '}}', $title, $parser_options);
+							$result .= $parserOutput->getText();
+						}
+					}
+					break;  // only use first value
+				}
+				break;  // only use first column
+			}
+			$result .= $rowend;
+		}
+		$result .= $footer;
+
+		// show link to more results
+		if ($this->mIQ->isInline() && $this->mIQ->hasFurtherResults()) {
+			$label = $this->mIQ->getSearchLabel();
+			if ($label === NULL) { //apply defaults
+				$label = wfMsgForContent('smw_iq_moreresults');
+			}
+			if ($label != '') {
+				$result .= '<a href="' . $this->mIQ->getQueryURL() . '">' . $label . '</a>';
+			}
+		}
+
+		// return
+		$smwgShowFactbox = $user_smwgShowFactbox;  // restore $smwgShowFactbox option
+		return $result;
+	}
+}
+
 ?>
