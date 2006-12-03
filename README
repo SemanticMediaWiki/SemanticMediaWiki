@@ -6,39 +6,66 @@ further links, see http://ontoworld.org/wiki/SMW
 
 Notes on installing Semantic MediaWiki are found in the file INSTALL.
 
-== Credits ==
+== Contact ==
 
-* After installation, a list of past and current developers is accessible
-  via MediaWiki's Special:Version.
+If you have remarks, questions, or suggestions, please please send them
+to semediawiki-users@lists.sourceforge.net. Bugs should be filed at 
+MediaZilla, http://bugzilla.wikimedia.org/.
+
+Specific inquiries (e.g. for contributions or press releases) should go to 
+Markus Krötzsch, mak@aifb.uni-karlsruhe.de. Do not contact Markus directly 
+for free technical support!
+
+== Current developers ==
+
+The current development team of Semantic MediaWiki consists of Markus Krötzsch, 
+S Page, and Denny Vrandecic. Development is coordinated by Markus Krötzsch.
+
+Semantic MediaWiki development is funded by Institute AIFB of Universität Karlsruhe,
+Germany; see http://aifb.uni-karlsruhe.de.
+
+After installation, a list of past and current developers is accessible via 
+MediaWiki's Special:Version.
+
+== Contributors ==
 
 * The German company Doccheck (doccheck.com) helped to get the implementation
   going at the early stages of the project, and set up the first testing wiki.
+  The first implementation has been done by Klaus Lassleben.
+
+* Further code has been contributed by (in no particular order) Kai Hüner, 
+  Fernando Correia, Yaron Koren, and Nick Grandy.
+
+== Translations ==
+
+Translations to various languages are provided and maintained by many people.
+In general, current maintainers should also be found in the language files.
+
+* The Jurispedia project (www.jurispedia.org) has initiated and supported
+  some of the translations:
+** Translation to French has been contributed by Pierre Matringe.
+
+** Translation to Spanish has been contributed by Javier Calzada Prado and
+   Carmen Jorge García-Reyes of Universidad Carlos III de Madrid.
+
+* Slovak translation has been provided by user helix84.
+
+== Credits to other projects ==
 
 * Some icons used by Semantic MediaWiki are derived from the "Crystal Clear"
   icon theme for KDE, which was created by Everaldo (everaldo.com).
 
 * The sorttable java script function was developed by Stuart Langridge,
-  and taken from http://www.kryogenix.org/code/browser/sorttable
+  and taken from http://www.kryogenix.org/code/browser/sorttable. The current
+  code for sorting tables is derived from this original code.
 
 * The JavaScript upon which the Timeline format of inline queries is based is
   provided by Simile (http://simile.mit.edu). Note that it is distributed with 
   a BSD-style license, and not under the GPL that applies to most parts of 
   Semantic MediaWiki.
 
-* The Jurispedia project (www.jurispedia.org) has initiated and supported
-  some of the translations:
-
-** Translation to French has been contributed by Pierre Matringe.
-
-** Translation to Spanish has been contributed by Javier Calzada Prado and
-   Carmen Jorge García-Reyes of Universidad Carlos III de Madrid.
-
 * Many people have contributed to the project by providing helpful comments and
   suggestions. Among them are the members of the Semantic Wiki Interest Group
   (swikig@aifb.uni-karlsruhe.de; see ontoworld.org), the people at the project
   mailing lists, and, of course, a number of anonymous reviewers. Thanks a lot!
 
-=== Contact ===
-
-If you have remarks, questions, or bug reports, please please send them
-to semediawiki-users@lists.sourceforge.net
