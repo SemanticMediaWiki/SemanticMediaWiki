@@ -360,37 +360,6 @@ class SMWEmbeddedPrinter implements SMWQueryPrinter {
 		$this->mQuery = $query;
 	}
 
-	/**
-	 * Prepares article text for embedding by removing portions that should not be embedded.
-	 * Removes text between tags:
-	 * <span class="do_not_embed"> (anything between these tags won't be embedded) </span>
-	 * If there is a HTML comment between the tags the text is returned unchanged to prevent attacks.
-	 * Nested "span" tags are not supported.
-	 * Returns the prepared text.
-	 */
-	public function prepareEmbedding($article_text) {
-		$open_tag = '<span class="do_not_embed">';
-		$close_tag = '</span>';
-		$comment_tag = '<!--';
-		$prepared_text = $article_text;
-		do {
-			$replaced = false;
-			$span_open = stripos($prepared_text, $open_tag);
-			if ($span_open !== false) {  // has opening tag
-				$span_close = stripos($prepared_text, $close_tag, $span_open);
-				if ($span_close !== false) {  // has closing tag
-					$comment_pos = stripos($prepared_text, $comment_tag, $span_open);
-					if (($comment_pos === false) or ($comment_pos > $span_close)) {  // no comment between tags
-						$length = $span_close - $span_open + strlen($close_tag);
-						$prepared_text = substr_replace($prepared_text, "<!-- portion omitted -->", $span_open, $length);
-						$replaced = true;
-					}
-				}
-			}
-		} while ($replaced);
-		return $prepared_text;
-	}
-
 	public function printResult() {
 		// handle factbox
 		global $smwgShowFactbox;
@@ -400,20 +369,8 @@ class SMWEmbeddedPrinter implements SMWQueryPrinter {
 		// print header
 		$result = $this->mIQ->getIntro();
 
-		// use titlestyle parameter if specified
-		// sanitise it first to prevent attacks
+		// use titleformat parameter if specified
 		$params = $this->mIQ->getParameters();
-		// The following still allows XSS attacks, e.g. by embedding URLs for 
-		// background images. We cannot allow users to specify lists of CSS 
-		// properties directly. Sorry.
-// 		if (array_key_exists('titlestyle', $params)) {
-// 			$titlestyle = htmlspecialchars(str_replace('_', ' ', $params['titlestyle']));
-// 			$title_open_tag = '<div style="' . $titlestyle . '">';
-// 			$title_close_tag = "</div>\n";
-// 		} else {
-// 			$title_open_tag = '<h1>';
-// 			$title_close_tag = "</h1>\n";
-// 		}
 		if (array_key_exists('titleformat', $params)) {
 			switch ($params['titleformat']) {
 				case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
@@ -422,9 +379,9 @@ class SMWEmbeddedPrinter implements SMWQueryPrinter {
 					$headsep = '</' . $params['titleformat'] . ">\n";
 					$rowend = '';
 				break;
-				case 'ul':
-					$result .= '<ul>';
-					$footer = '</ul>';
+				case 'ul': case 'ol':
+					$result .= '<' . $params['titleformat'] . '>';
+					$footer = '</' . $params['titleformat'] . '>';
 					$rowstart = '<li>';
 					$rowend = "</li>\n";
 					$headsep = "<br />\n";
