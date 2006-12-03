@@ -3,7 +3,7 @@
  * @author helix84
  */
 
-class SMW_LanguageEn {
+class SMW_LanguageSk {
 
 /* private */ var $smwContentMessages = array(
 	'smw_edithelp' => 'Pomoc pri upravovaní vzťahov a atribútov',
