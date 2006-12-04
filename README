@@ -29,6 +29,9 @@ MediaWiki's Special:Version.
 
 == Contributors ==
 
+* Heiko Haller and Max Völkel contributed to the initial design and basic 
+  architectural decisions.
+
 * The German company Doccheck (doccheck.com) helped to get the implementation
   going at the early stages of the project, and set up the first testing wiki.
   The first implementation has been done by Klaus Lassleben.
