@@ -166,7 +166,6 @@ class SMWTypeHandlerFactory {
 			SMWTypeHandlerFactory::$typeHandlersByLabel[$typelabel] = $instance;
 			return SMWTypeHandlerFactory::$typeHandlersByLabel[$typelabel];
 		}
-		// if (count($conversionFactors) == 0) print "DEBUG: in getTypeHandlerByLabel(), tried and failed to find conversionFactors for $typelabel, this shouldn't happen!!?'\n<br />";
 		
 		return new SMWErrorTypeHandler(wfMsgForContent('smw_unknowntype',$typelabel));
 	}
@@ -187,7 +186,6 @@ class SMWTypeHandlerFactory {
 			if (count($typearray)==1) {
 				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] = 
 				     SMWTypeHandlerFactory::getTypeHandlerByLabel($typearray[0]);
-				// print "DEBUG: getTypeHandler() found value $typearray[0] with new smwfGetSpecialPropertyValues\n<br />";
 			} elseif (count($typearray)==0) {
 				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] = 
 				     new SMWErrorTypeHandler(wfMsgForContent('smw_notype'));
@@ -248,7 +246,6 @@ class SMWTypeHandlerFactory {
 		if ( ($ttitle !== NULL) && ($ttitle->exists()) ) {
 			$result = smwfGetSpecialPropertyValues($ttitle, SMW_SP_CONVERSION_FACTOR);
 			if (count($result) == 0) {
-				// print "DEBUG: getConversionFactors() for $type found nothing!<br />\n";
 				$result = array();
 			}
 		}
@@ -281,7 +278,10 @@ class SMWTypeHandlerFactory {
 } // SMWTypeHandlerFactory
 
 //*** Make other typehandlers known that are shipped with SMW ***//
-
+/**
+ * If you add a typehandler in a separate file from this one (SMW_Datatype.php) 
+ * then you must add it to this list!
+ */
 // Integer
 SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_int'),'int','Integer','SMWIntegerTypeHandler');
 // URLs etc.
@@ -546,6 +546,7 @@ class SMWBooleanTypeHandler implements SMWTypeHandler {
 		$xsdvalue = -1;	// initialize to failure
 		// See http://en.wikipedia.org/wiki/Boolean_datatype
 		// TODO: To save code, trim values before they get to processValue().
+
 		$vlc = strtolower(trim($value));
 		if ($vlc!='') { //do not accept empty strings
 			// Look for universal true/false and 1/0,
@@ -564,10 +565,23 @@ class SMWBooleanTypeHandler implements SMWTypeHandler {
 		} else {
 			$datavalue->setError(wfMsgForContent('smw_emptystring'));
 		}
+
 		if ($xsdvalue === 'true' || $xsdvalue === 'false') {
 			// Store numeric 1 or 0 as number.
 			$datavalue->setProcessedValues($value, $xsdvalue, $xsdvalue === 'true' ? 1 : 0);
-			$datavalue->setPrintoutString($xsdvalue);
+			// For a boolean, "units" is really a format from an inline query
+			// rather than the units of a float. 
+			$desiredUnits = $datavalue->getDesiredUnits();
+			// Determine the user-visible string.		
+			if (count($desiredUnits) ==0) {
+				$datavalue->setPrintoutString($xsdvalue);
+			} else {
+				// The units is a string for 'true', a comma, and a string for 'false'.
+				foreach ($desiredUnits as $wantedFormat) {
+					list($true_text, $false_text) = explode(',', $wantedFormat, 2);
+					$datavalue->setPrintoutString($xsdvalue === 'true' ? $true_text : $false_text);
+				}
+			}
 			$datavalue->addQuicksearchLink();
 		}
 		return true;
