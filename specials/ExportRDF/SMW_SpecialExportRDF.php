@@ -617,22 +617,22 @@ class ExportRDF {
 			// add statements about equivalence to (external) URIs
 			// FIXME: temporarily disabled
 // 			if ($equality_rel) {
-// 				$equalities = smwfGetSpecialProperties($title,SMW_SP_HAS_URI,NULL);
+// 				$equalities = smwfGetSpecialPropertyValues($title,SMW_SP_HAS_URI);
 // 				$fragment = $title->getFragment();
 // 				if( '' != $fragment ) {
 // 					$fragment = '#' . $fragment;
 // 				}
 // 				foreach ($equalities as $equality) {
-// 					$this->post_ns_buffer .= "\t\t<" . $equality_rel . ' rdf:resource="' . $equality[2] . $fragment .  "\"/>\n";
+// 					$this->post_ns_buffer .= "\t\t<" . $equality_rel . ' rdf:resource="' . $equality . $fragment .  "\"/>\n";
 // 				}
 // 			}			
 
 			// add rdfs:subPropertyOf statements
 			// FIXME: temporarily disabled
 // 			if ($subrel_rel) {
-// 				$relations = smwfGetSpecialProperties($title,SMW_SP_IS_SUBRELATION_OF,NULL);
+// 				$relations = smwfGetSpecialPropertyValues($title,SMW_SP_IS_SUBRELATION_OF);
 // 				foreach ($relations as $relation) {
-// 					$relURIs = $this->getURIs($relation[2],0);
+// 					$relURIs = $this->getURIs($relation,0);
 // 					//@TODO: do type checks here or on saving ...
 // 					$this->post_ns_buffer .= "\t\t<$subrel_rel rdf:resource=\"$relURIs[0]\"/>\n";
 // 					if (!array_key_exists($relURIs[2], $this->element_queue)) {
@@ -641,9 +641,9 @@ class ExportRDF {
 // 				}
 // 			}
 // 			if ($subatt_rel) {
-// 				$attributes = smwfGetSpecialProperties($title,SMW_SP_IS_SUBRELATION_OF,NULL);
+// 				$attributes = smwfGetSpecialPropertyValues($title,SMW_SP_IS_SUBRELATION_OF);
 // 				foreach ($attributes as $attribute) {
-// 					$attURIs = $this->getURIs($attribute[2],0);
+// 					$attURIs = $this->getURIs($attribute[2]);
 // 					//@TODO: do type checks here or on saving ...
 // 					$this->post_ns_buffer .= "\t\t<$subatt_rel rdf:resource=\"$attURIs[0]\"/>\n";
 // 					if (!array_key_exists($attURIs[2], $this->element_queue)) {

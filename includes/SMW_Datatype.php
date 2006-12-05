@@ -97,7 +97,7 @@ class SMWTypeHandlerFactory {
 	/**
 	 * This method returns a typehandler label
 	 * for the type of the given id, or NULL if id is not
-	 * known.
+	 * known.  This is lighter-weight than creating a type handler.
 	 */
 	static function getTypeLabelByID($typeid) {
 		if (array_key_exists($typeid,SMWTypeHandlerFactory::$typeLabelsByID)) {
@@ -166,6 +166,8 @@ class SMWTypeHandlerFactory {
 			SMWTypeHandlerFactory::$typeHandlersByLabel[$typelabel] = $instance;
 			return SMWTypeHandlerFactory::$typeHandlersByLabel[$typelabel];
 		}
+		// if (count($conversionFactors) == 0) print "DEBUG: in getTypeHandlerByLabel(), tried and failed to find conversionFactors for $typelabel, this shouldn't happen!!?'\n<br />";
+		
 		return new SMWErrorTypeHandler(wfMsgForContent('smw_unknowntype',$typelabel));
 	}
 
@@ -179,12 +181,13 @@ class SMWTypeHandlerFactory {
 			global $wgContLang;
 			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
 			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
-				$typearray = &smwfGetSpecialProperties($atitle,SMW_SP_HAS_TYPE,NULL);
+				$typearray = &smwfGetSpecialPropertyValues($atitle,SMW_SP_HAS_TYPE);
 			} else { $typearray = Array(); }
 
 			if (count($typearray)==1) {
 				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] = 
-				     SMWTypeHandlerFactory::getTypeHandlerByLabel($typearray[0][2]);
+				     SMWTypeHandlerFactory::getTypeHandlerByLabel($typearray[0]);
+				// print "DEBUG: getTypeHandler() found value $typearray[0] with new smwfGetSpecialPropertyValues\n<br />";
 			} elseif (count($typearray)==0) {
 				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] = 
 				     new SMWErrorTypeHandler(wfMsgForContent('smw_notype'));
@@ -214,14 +217,14 @@ class SMWTypeHandlerFactory {
 			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
 			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
 				// get main display unit:
-				$auprops = &smwfGetSpecialProperties($atitle, SMW_SP_MAIN_DISPLAY_UNIT, NULL);
+				$auprops = &smwfGetSpecialPropertyValues($atitle, SMW_SP_MAIN_DISPLAY_UNIT);
 				if (count($auprops) > 0) { // ignore any further main units if given
-					SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute][] = $auprops[0][2];
+					SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute][] = $auprops[0];
 				}
 				// get further units:
-				$auprops = smwfGetSpecialProperties($atitle, SMW_SP_DISPLAY_UNIT, NULL);
-				foreach ($auprops as $uprops) {
-					SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute][] = $uprops[2];
+				$auprops = smwfGetSpecialPropertyValues($atitle, SMW_SP_DISPLAY_UNIT);
+				foreach ($auprops as $uprop) {
+					SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute][] = $uprop;
 				}
 			}
 		}
@@ -241,13 +244,12 @@ class SMWTypeHandlerFactory {
 	static function &getConversionFactors($type) {
 		global $wgContLang;
 
-		$result = array();
 		$ttitle = Title::newFromText($wgContLang->getNsText(SMW_NS_TYPE) . ':' . $type);
 		if ( ($ttitle !== NULL) && ($ttitle->exists()) ) {
-			$tprops = &smwfGetSpecialProperties($ttitle, SMW_SP_CONVERSION_FACTOR, NULL);
-			foreach ($tprops as $uprops) {
-				// uprops[2] has the value_string we want, append to array.
-				$result[] = $uprops[2];
+			$result = smwfGetSpecialPropertyValues($ttitle, SMW_SP_CONVERSION_FACTOR);
+			if (count($result) == 0) {
+				// print "DEBUG: getConversionFactors() for $type found nothing!<br />\n";
+				$result = array();
 			}
 		}
 		return $result;
@@ -267,9 +269,9 @@ class SMWTypeHandlerFactory {
 			SMWTypeHandlerFactory::$serviceLinksByAttribute[$attribute] = Array();
 			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
 			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
-				$auprops = &smwfGetSpecialProperties($atitle, SMW_SP_SERVICE_LINK, NULL);
+				$auprops = &smwfGetSpecialPropertyValues($atitle, SMW_SP_SERVICE_LINK);
 				if (count($auprops) > 0) { // ignore any further main units if given
-					SMWTypeHandlerFactory::$serviceLinksByAttribute[$attribute][] = $auprops[0][2];
+					SMWTypeHandlerFactory::$serviceLinksByAttribute[$attribute][] = $auprops[0];
 				}
 			}
 		}

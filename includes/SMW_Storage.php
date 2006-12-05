@@ -3,7 +3,7 @@
  * This file encapsulates methods used for accessing
  * and storing semantic data.
  *
- * @author Markus Krötzsch
+ * @author Markus Krï¿½tzsch
  * @author Klaus Lassleben
  */
 
@@ -242,8 +242,7 @@
 	*  layout of the database table for special properties. Note that property
 	*  is an integer index.
 	*
-	* TODO: Performance (medium): I think all callers of smwfGetSpecialProperties(), so 
-	* only use the value_string in element[2], so replace it with new smwfGetSpecialPropertyValues(). (S)
+	* @see smwfGetSpecialPropertyValues if you only need the values
 	*/
 	function smwfGetSpecialProperties($subject_title,$property,$value)
 	{
@@ -285,8 +284,55 @@
 		
 		return $result;
 	}
-	
-	
+
+
+	/**
+	*  This method returns property values for a specified subject and/or property.
+	*  The result is an array of values.
+	*  Note that property is an integer index.
+	*
+	* @see smwfGetSpecialProperties
+	*/
+	function smwfGetSpecialPropertyValues($subject_title,$property)
+	{
+		$fname = 'SMW::GetSpecialPropertyValues';
+		$db =& wfGetDB( DB_MASTER );
+		
+		$sql='';
+		if ($subject_title !== NULL) {
+			$sql.='subject_id=' . $db->addQuotes($subject_title->getArticleID());
+		}
+		if ($property !== NULL) {
+			if ($sql!='') {$sql.=' AND ';}
+			$sql.='property_id=' . $db->addQuotes($property);
+		}
+		
+		if ($sql=='') {
+			return false; //do not execute queries for Everything
+		}
+		
+		$res = $db->select( $db->tableName('smw_specialprops'), 
+		                    'value_string',
+		                    $sql, $fname);
+
+		$result = array();
+		if($db->numRows( $res ) > 0)
+		{
+			$row = $db->fetchObject($res);
+			while($row)
+			{
+				$result[] = $row->value_string;
+				print "in smwGetSpecialPropertyValues(), got value " . $row->value_string . "... ";
+				$row = $db->fetchObject($res);
+			}
+			print "DEBUG \n<br />";
+		}
+		$db->freeResult($res);
+
+		return $result;
+	}
+
+
 	/**
 	 * This method changes the subject of all data with a specified
 	 * subject. It is required for moving annotations together with their
