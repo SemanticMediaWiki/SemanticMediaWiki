@@ -42,7 +42,6 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 		// For a DateTime, "units" is really a format from an inline query
 		// rather than the units of a float. 
 		$desiredUnits = $datavalue->getDesiredUnits();
-		echo "in DateTimeHandler->processValue(), desiredUnits="; echo implode('|',$desiredUnits); echo "<br />\n";
 		$str_val = trim($v);
 		$time = strtotime($str_val);
 		if ($time == -1 || $time === false) {
