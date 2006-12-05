@@ -39,6 +39,10 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 	 * @access public
 	 */
 	function processValue($v,&$datavalue) {
+		// For a DateTime, "units" is really a format from an inline query
+		// rather than the units of a float. 
+		$desiredUnits = $datavalue->getDesiredUnits();
+		echo "in DateTimeHandler->processValue(), desiredUnits="; echo implode('|',$desiredUnits); echo "<br />\n";
 		$str_val = trim($v);
 		$time = strtotime($str_val);
 		if ($time == -1 || $time === false) {
@@ -50,22 +54,33 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 		// so reformat back to ISO8601. Unfortunatelly, ISO in
 		// general is not compatible with XSD; but it should work
 		// for the restricted interval we currently support.
-		$str_val = strftime("%Y-%m-%d", $time);
-		$user_val = $str_val;
-		// See if there is a significant time component.
-		// TODO: what about TimeZone?!
-		if ( abs($time - strtotime($str_val)) > 0.5) {
-			$user_val .= strftime(" %H:%M:%S", $time);
-		}
-		$str_val .= strftime("T%H:%M:%S", $time); // always show time in XSD
-
+		$date_part = strftime("%Y-%m-%d", $time);
+		$str_val = $date_part . strftime("T%H:%M:%S", $time); // always show time in XSD
 		$datavalue->setProcessedValues($v, $str_val, $time);
-		$datavalue->setPrintoutString($user_val);
+
+		// Determine the user-visible string.		
+		if (count($desiredUnits) ==0) {
+			// The default user-visible string shows date, plus 
+			// time of day separated by space if it's significant.
+			$user_val = $date_part;
+			// See if there is a significant time component.
+			// TODO: what about TimeZone?!
+			if ( abs($time - strtotime($str_val)) > 0.5) {
+				$user_val .= strftime(" %H:%M:%S", $time);
+			}
+			$datavalue->setPrintoutString($user_val);
+		} else {
+			// Print the date in all wanted formats (even if some of them would be equivalent -- we obey the user's wish)
+			foreach ($desiredUnits as $wantedFormat) {
+				$datavalue->setPrintoutString(strftime($wantedFormat, $time));
+			}
+		}
+
 		//smwfNumberFormat($time) . ' seconds since 1970' ;
 		// do not show the seconds since 1970; showing a date in multiple calendar systems could be a future output enhancement (Roman, Gregorian, whatever calendar), if the date is "historical" enough
 
 		$datavalue->addQuicksearchLink();
-		$datavalue->addServiceLinks($str_val); //possibly provide single alues (year, month, ...) in the future
+		$datavalue->addServiceLinks($str_val); //possibly provide single values (year, month, ...) in the future
 		return;
 	}
 
