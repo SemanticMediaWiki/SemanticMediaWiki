@@ -35,6 +35,9 @@ class SMW_LanguageFr {
 	'smw_manytypes' => '[Oups ! Plusieurs types de données ont été assignés à l\'attribut]',
 	'smw_emptystring' => '[Oups ! Les chaînes vides ne sont pas acceptées]',
 	'smw_maxstring' => '[Désolé, la chaîne de représentation $1 est trop grande pour ce site.]',
+	'smw_noboolean' => '[Oops! "$1" is not recognized as a boolean (true/false) value]',
+	'smw_true_words' => 't,yes,y',	// comma-separated synonyms for boolean TRUE besides 'true' and '1' TODO: Translate
+	'smw_false_words' => 'f,no,n',	// comma-separated synonyms for boolean FALSE besides 'false' and '0' TODO: Translate
 	'smw_nointeger' => '[Oups ! "$1" n\'est pas un nombre entier]',
 	'smw_nofloat' => '[Oups ! "$1" n\'est pas un nombre à virgule flottante]',
 	'smw_infinite' => '[Désolé, le nombre $1 est trop long.]',
@@ -124,6 +127,7 @@ class SMW_LanguageFr {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Chaîne de caractères',  // name of the string type
+	'smw_bool' => 'Boolean',  // name of the boolean type TODO: translate
 	'smw_int' => 'Nombre entier',  // name of the int type
 	'smw_float' => 'Nombre décimal',  // name of the floating point type
 	'smw_length' => 'Longueur',  // name of the length type

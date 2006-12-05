@@ -35,6 +35,9 @@ class SMW_LanguageEn {
 	'smw_manytypes' => '[Oops! More than one type defined for attribute]',
 	'smw_emptystring' => '[Oops! Empty strings are not accepted]',
 	'smw_maxstring' => '[Sorry, string representation $1 is too long for this site.]',
+	'smw_noboolean' => '[Oops! "$1" is not recognized as a boolean (true/false) value]',
+	'smw_true_words' => 't,yes,y',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
+	'smw_false_words' => 'f,no,n',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
 	'smw_nointeger' => '[Oops! "$1" is no integer number]',
 	'smw_nofloat' => '[Oops! "$1" is no floating point number]',
 	'smw_infinite' => '[Sorry, numbers as long as $1 are not supported on this site.]',
@@ -134,6 +137,7 @@ class SMW_LanguageEn {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'String',  // name of the string type
+	'smw_bool' => 'Boolean',  // name of the boolean type
 	'smw_int' => 'Integer',  // name of the int type
 	'smw_float' => 'Float',  // name of the floating point type
 	'smw_length' => 'Length',  // name of the length type

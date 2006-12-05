@@ -35,6 +35,9 @@ class SMW_LanguageEs {
 	'smw_nomanytypes' => '[Ups ! Demasiados tipos de datos han sido asignados al atributo]',
 	'smw_emptystring' => '[Ups ! No se aceptan cadenas vacías]',
 	'smw_maxstring' => '[Sorry, string representation $1 is too long for this site.]', //TODO: translate
+	'smw_noboolean' => '[Oops! "$1" is not recognized as a boolean (true/false) value]',
+	'smw_true_words' => 't,yes,y',	// comma-separated synonyms for boolean TRUE besides 'true' and '1' TODO: translate
+	'smw_false_words' => 'f,no,n',	// comma-separated synonyms for boolean FALSE besides 'false' and '0' TODO: translate
 	'smw_nointeger' => '[Ups ! "$1" no es un número entero]',
 	'smw_nofloat' => '[Ups ! "$1" no es un número con coma flotante]',
 	'smw_infinite' => '[Lo sentimos, el número $1 es demasiado largo.]',
@@ -124,6 +127,7 @@ class SMW_LanguageEs {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Cadena de caracteres',  // name of the string type
+	'smw_bool' => 'Boolean',  // name of the boolean type TODO: translate
 	'smw_int' => 'Número entero',  // name of the int type
 	'smw_float' => 'Número con coma',  // name of the floating point type
 	'smw_length' => 'Largo',  // name of the length type

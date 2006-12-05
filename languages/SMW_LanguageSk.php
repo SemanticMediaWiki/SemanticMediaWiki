@@ -35,6 +35,9 @@ class SMW_LanguageSk {
 	'smw_manytypes' => '[Ops! Pre atribút bol definovaný viac ako jeden typ]',
 	'smw_emptystring' => '[Ops! Prázdne reťazcie nie sú akceptované]',
 	'smw_maxstring' => '[Prepáčte, reprezentácia reťazca $1 je pre túro stránku príliš dlhá.]',
+	'smw_noboolean' => '[Oops! "$1" is not recognized as a boolean (true/false) value]', // TODO: Translate
+	'smw_true_words' => 'yes',	// comma-separated synonyms for boolean TRUE besides 'true' and '1' TODO: Translate
+	'smw_false_words' => 'no',	// comma-separated synonyms for boolean FALSE besides 'false' and '0' TODO: Translate
 	'smw_nointeger' => '[Ops! "$1" nie je celé číslo (integer)]',
 	'smw_nofloat' => '[Ops! "$1" nie je číslo s plávajúcou desatinnou čiarkou]',
 	'smw_infinite' => '[Prepáčte, čísla také dlhé ako $1 nie sú na tejto stránke podporované.]',
@@ -134,6 +137,7 @@ class SMW_LanguageSk {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Reťazec',  // name of the string type
+	'smw_bool' => 'Boolean',  // name of the boolean type TODO: translate
 	'smw_int' => 'Celé číslo',  // name of the int type
 	'smw_float' => 'Desatinné číslo',  // name of the floating point type
 	'smw_length' => 'Dĺžka',  // name of the length type
