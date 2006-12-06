@@ -67,7 +67,7 @@ class SMWTablePrinter implements SMWQueryPrinter {
 				$label = wfMsgForContent('smw_iq_moreresults');
 			}
 			if ($label != '') {
-				$result .= "\n\t\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . count($this->mQuery->mPrint) . '\"> <a href="' . $this->mIQ->getQueryURL() . '">' . $label . '</a></td></tr>';
+				$result .= "\n\t\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . count($this->mQuery->mPrint) . '"> <a href="' . $this->mIQ->getQueryURL() . '">' . $label . '</a></td></tr>';
 			}
 		}
 
