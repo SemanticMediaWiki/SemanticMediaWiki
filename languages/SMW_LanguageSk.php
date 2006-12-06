@@ -35,9 +35,9 @@ class SMW_LanguageSk {
 	'smw_manytypes' => '[Ops! Pre atribút bol definovaný viac ako jeden typ]',
 	'smw_emptystring' => '[Ops! Prázdne reťazcie nie sú akceptované]',
 	'smw_maxstring' => '[Prepáčte, reprezentácia reťazca $1 je pre túro stránku príliš dlhá.]',
-	'smw_noboolean' => '[Oops! "$1" is not recognized as a boolean (true/false) value]', // TODO: Translate
-	'smw_true_words' => 'yes',	// comma-separated synonyms for boolean TRUE besides 'true' and '1' TODO: Translate
-	'smw_false_words' => 'no',	// comma-separated synonyms for boolean FALSE besides 'false' and '0' TODO: Translate
+	'smw_noboolean' => '[Ops! "$1" nebolo rozpoznané ako platná hodnota typy boolean (áno/nie)]',
+	'smw_true_words' => 'áno',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
+	'smw_false_words' => 'nie',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
 	'smw_nointeger' => '[Ops! "$1" nie je celé číslo (integer)]',
 	'smw_nofloat' => '[Ops! "$1" nie je číslo s plávajúcou desatinnou čiarkou]',
 	'smw_infinite' => '[Prepáčte, čísla také dlhé ako $1 nie sú na tejto stránke podporované.]',
