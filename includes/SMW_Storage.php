@@ -322,10 +322,8 @@
 			while($row)
 			{
 				$result[] = $row->value_string;
-				print "in smwGetSpecialPropertyValues(), got value " . $row->value_string . "... ";
 				$row = $db->fetchObject($res);
 			}
-			print "DEBUG \n<br />";
 		}
 		$db->freeResult($res);
 
