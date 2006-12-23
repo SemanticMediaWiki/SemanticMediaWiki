@@ -56,12 +56,22 @@ class SMWSemanticData {
 	 * Initialisation method. Must be called before anything else happens.
 	 */
 	static function initStorage($title, $skin) {
-		SMWSemanticData::$attribArray = Array();
-		SMWSemanticData::$relArray = Array();
-		SMWSemanticData::$specaArray = Array();
-		SMWSemanticData::$specrArray = Array();
+		SMWSemanticData::clearStorage();
 		SMWSemanticData::$title = $title;
 		SMWSemanticData::$skin = $skin;
+	}
+
+	/**
+	 * Clear all stored data
+	 */
+	static function clearStorage() {
+		global $smwgStoreActive;
+		if ($smwgStoreActive) {
+			SMWSemanticData::$attribArray = Array();
+			SMWSemanticData::$relArray = Array();
+			SMWSemanticData::$specaArray = Array();
+			SMWSemanticData::$specrArray = Array();
+		}
 	}
 
 	/*********************************************************************/
@@ -75,25 +85,24 @@ class SMWSemanticData {
 	 */
 	static function addAttribute($attribute, $value) {
 		// See if this attribute is a special one like e.g. "Has type"
-		global $smwgContLang;
+		global $smwgContLang, $smwgStoreActive;
 		$attribute = smwfNormalTitleText($attribute); //slightly normalize label
 		$specprops = $smwgContLang->getSpecialPropertiesArray();
 		$special = array_search($attribute, $specprops);
 
 		switch ($special) {
 			case NULL: // normal attribute
-				if(!array_key_exists($attribute,SMWSemanticData::$attribArray)) {
-					SMWSemanticData::$attribArray[$attribute] = Array();
-				}
 				$result = SMWDataValue::newAttributeValue($attribute,SMWSemanticData::$skin,$value);
-				SMWSemanticData::$attribArray[$attribute][$result->getHash()] = $result;
+				if ($smwgStoreActive) {
+					if(!array_key_exists($attribute,SMWSemanticData::$attribArray)) {
+						SMWSemanticData::$attribArray[$attribute] = Array();
+					}
+					SMWSemanticData::$attribArray[$attribute][$result->getHash()] = $result;
+				}
 				return $result;
 			case SMW_SP_IMPORTED_FROM: // this requires special handling
 				return SMWSemanticData::addImportedDefinition($value);
 			default: // generic special attribute
-				if(!array_key_exists($special,SMWSemanticData::$specaArray)) {
-					SMWSemanticData::$specaArray[$special] = Array();
-				}
 				if ( $special === SMW_SP_SERVICE_LINK ) { // do some custom formatting in this case
 					global $wgContLang;
 					$v = str_replace(' ', '_', $value); //normalize slightly since messages distinguish '_' and ' '
@@ -104,7 +113,12 @@ class SMWSemanticData {
 				} else { // standard processing
 					$result = SMWDataValue::newSpecialValue($special,SMWSemanticData::$skin,$value);
 				}
-				SMWSemanticData::$specaArray[$special][$result->getHash()] = $result;
+				if ($smwgStoreActive) {
+					if(!array_key_exists($special,SMWSemanticData::$specaArray)) {
+						SMWSemanticData::$specaArray[$special] = Array();
+					}
+					SMWSemanticData::$specaArray[$special][$result->getHash()] = $result;
+				}
 				return $result;
 		}
 	}
@@ -113,7 +127,9 @@ class SMWSemanticData {
 	 * This method adds a new relation with the given target to the storage.
 	 */
 	static function addRelation($relation, $target) {
-		global $smwgContLang;
+		global $smwgContLang, $smwgStoreActive;;
+		if (!$smwgStoreActive) return; // no action required
+
 		$relation = smwfNormalTitleText($relation);
 		$srels = $smwgContLang->getSpecialPropertiesArray();
 		$special = array_search($relation, $srels);
@@ -124,7 +140,7 @@ class SMWSemanticData {
 				//Note that this still changes the behaviour, since the [[ ]]
 				//are not removed! A cleaner solution would be to print a
 				//helpful message into the factbox, based on a new "print value as
-				//error" datatype handler.
+				//error" datatype handler. FIXME
 				SMWSemanticData::addAttribute($relation, $target);
 			} else {
 				// Create a new array for this specific semantic relation
@@ -159,14 +175,16 @@ class SMWSemanticData {
 	 * could not be specified directly).
 	 */
 	static private function addImportedDefinition($value) {
-		global $wgContLang;
+		global $wgContLang, $smwgStoreActive;;
 
 		list($onto_ns,$onto_section) = explode(':',$value,2);
 		$msglines = preg_split("([\n][\s]?)",wfMsgForContent("smw_import_$onto_ns")); // get the definition for "$namespace:$section"
 
 		if ( count($msglines) < 2 ) { //error: no elements for this namespace
 			$datavalue = SMWDataValue::newTypedValue(new SMWErrorTypeHandler(wfMsgForContent('smw_unknown_importns',$onto_ns)),SMWSemanticData::$skin,$value);
-			SMWSemanticData::$specaArray[SMW_SP_IMPORTED_FROM] = array($datavalue);
+			if (!$smwgStoreActive) {
+				SMWSemanticData::$specaArray[SMW_SP_IMPORTED_FROM] = array($datavalue);
+			}
 			return $datavalue;
 		}
 
@@ -219,7 +237,9 @@ class SMWSemanticData {
 
 		if (NULL != $error) {
 			$datavalue = SMWDataValue::newTypedValue(new SMWErrorTypeHandler($error),SMWSemanticData::$skin,$value);
-			SMWSemanticData::$specaArray[SMW_SP_IMPORTED_FROM] = array ($datavalue);
+			if (!$smwgStoreActive) {
+				SMWSemanticData::$specaArray[SMW_SP_IMPORTED_FROM] = array ($datavalue);
+			}
 			return $datavalue;
 		}
 
@@ -227,20 +247,25 @@ class SMWSemanticData {
 		// special properties, since they can only have one value anyway; this 
 		// might hide errors -- should we care?
 		$sth = new SMWStringTypeHandler(); // making one is enough ...
-		$datavalue = SMWDataValue::newTypedValue($sth,SMWSemanticData::$skin,$onto_uri);
-		SMWSemanticData::$specaArray[SMW_SP_EXT_BASEURI] = array ($datavalue);
-		$datavalue = SMWDataValue::newTypedValue($sth,SMWSemanticData::$skin,$onto_ns);
-		SMWSemanticData::$specaArray[SMW_SP_EXT_NSID] = array ($datavalue);
-		$datavalue = SMWDataValue::newTypedValue($sth,SMWSemanticData::$skin,$onto_section);
-		SMWSemanticData::$specaArray[SMW_SP_EXT_SECTION] = array ($datavalue);
-		if (NULL != $datatype) SMWSemanticData::$specrArray[SMW_SP_HAS_TYPE][] = $datatype;
+
+		if (!$smwgStoreActive) {
+			$datavalue = SMWDataValue::newTypedValue($sth,SMWSemanticData::$skin,$onto_uri);
+			SMWSemanticData::$specaArray[SMW_SP_EXT_BASEURI] = array ($datavalue);
+			$datavalue = SMWDataValue::newTypedValue($sth,SMWSemanticData::$skin,$onto_ns);
+			SMWSemanticData::$specaArray[SMW_SP_EXT_NSID] = array ($datavalue);
+			$datavalue = SMWDataValue::newTypedValue($sth,SMWSemanticData::$skin,$onto_section);
+			SMWSemanticData::$specaArray[SMW_SP_EXT_SECTION] = array ($datavalue);
+			if (NULL != $datatype) SMWSemanticData::$specrArray[SMW_SP_HAS_TYPE][] = $datatype;
+		}
 
 		// print the input (this property is not stored, see SMW_Storage.php)
 		$datavalue = SMWDataValue::newTypedValue($sth,SMWSemanticData::$skin,"[$onto_uri$onto_section $value]");
 		// TODO: Unfortunatelly, the following line can break the tooltip code if $onto_name has markup. -- mak
 		// if ('' != $onto_name) $datavalue->setPrintoutString($onto_name, 'onto_name');
 		if ('' != $onto_name) $datavalue->setPrintoutString("[$onto_uri$onto_section $value] ($onto_name)");
-		SMWSemanticData::$specaArray[SMW_SP_IMPORTED_FROM] = array($datavalue);
+		if (!$smwgStoreActive) {
+			SMWSemanticData::$specaArray[SMW_SP_IMPORTED_FROM] = array($datavalue);
+		}
 		return $datavalue;
 	}
 
@@ -253,7 +278,8 @@ class SMWSemanticData {
 	 * @access public
 	 */
 	static function printFactbox(&$text) {
-		global $wgContLang, $wgServer, $smwgShowFactbox;
+		global $wgContLang, $wgServer, $smwgShowFactbox, $smwgStoreActive;
+		if (!$smwgStoreActive) return true;
 		switch ($smwgShowFactbox) {
 		case SMW_FACTBOX_HIDDEN: return true;
 		case SMW_FACTBOX_NONEMPTY:

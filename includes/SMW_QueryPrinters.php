@@ -1,6 +1,7 @@
 <?php
 /**
- * This file provides various classes that print query results. 
+ * This file provides various classes that print query results.
+ * @author Markus Krötzsch
  */
 
 /**
@@ -346,10 +347,8 @@ class SMWTimelinePrinter implements SMWQueryPrinter {
  * Only the first column of the query is considered. If it is a page reference then that page's contents is embedded.
  * The optional "titlestyle" formatting parameter can be used to apply a format to the headings for the page titles.
  * If "titlestyle" is not specified, a <h1> tag is used.
- * In the pages, a special marking can be used to prevent portions from being embedded:
- * <span class="do_not_embed"> (anything between these tags won't be embedded) </span>
- * There must be no HTML comment or other "span" tags between these tags.
  * @author Fernando Correia
+ * @author Markus Krötzsch
  */
 class SMWEmbeddedPrinter implements SMWQueryPrinter {
 	private $mIQ; // the querying object that called the printer
@@ -362,36 +361,45 @@ class SMWEmbeddedPrinter implements SMWQueryPrinter {
 
 	public function printResult() {
 		// handle factbox
-		global $smwgShowFactbox;
-		$user_smwgShowFactbox = $smwgShowFactbox;  // save $smwgShowFactbox option
-		$smwgShowFactbox = SMW_FACTBOX_HIDDEN;  // don't show the factbox for embedded articles
+		global $smwgStoreActive;
+		$old_smwgStoreActive = $smwgStoreActive;
+		$smwgStoreActive = false; // no annotations stored, no factbox printed
 
 		// print header
 		$result = $this->mIQ->getIntro();
 
 		// use titleformat parameter if specified
 		$params = $this->mIQ->getParameters();
-		if (array_key_exists('titleformat', $params)) {
-			switch ($params['titleformat']) {
+		if (array_key_exists('embedonly', $params)) {
+			$showhead = false;
+		} else {
+			$showhead = true;
+		}
+		
+		if (array_key_exists('embedformat', $params)) {
+			switch ($params['embedformat']) {
 				case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
 					$footer = '';
-					$rowstart = '<' . $params['titleformat'] . '>';
-					$headsep = '</' . $params['titleformat'] . ">\n";
-					$rowend = '';
+					$embstart = '';
+					$headstart = '<' . $params['embedformat'] . '>';
+					$headend = '</' . $params['embedformat'] . ">\n";
+					$embend = '';
 				break;
 				case 'ul': case 'ol':
-					$result .= '<' . $params['titleformat'] . '>';
-					$footer = '</' . $params['titleformat'] . '>';
-					$rowstart = '<li>';
-					$rowend = "</li>\n";
-					$headsep = "<br />\n";
+					$result .= '<' . $params['embedformat'] . '>';
+					$footer = '</' . $params['embedformat'] . '>';
+					$embstart = '<li>';
+					$headstart = '';
+					$headend = "<br />\n";
+					$embend = "</li>\n";
 				break;
 			}
 		} else {
 			$footer = '';
-			$rowstart = '<h1>';
-			$headsep = "</h1>\n";
-			$rowend = '';
+			$embstart = '';
+			$headstart = '<h1>';
+			$headend = "</h1>\n";
+			$embend = '';
 		}
 
 		// print all result rows
@@ -401,30 +409,32 @@ class SMWEmbeddedPrinter implements SMWQueryPrinter {
 
 		while ( $row = $this->mIQ->getNextRow() ) {
 			$first_col = true;
-			$result .= $rowstart;
 			foreach ($this->mQuery->mPrint as $print_data) {
 				$iterator = $this->mIQ->getIterator($print_data,$row,$first_col);
-				while ($cur = $iterator->getNext()) {
-					$result .= $cur[0] . $headsep;
-					$article_namespace = $cur[1];
-					$article_title = $cur[2]; // TODO: ouch .. we need to check whether this exists
-					if ((NULL != $article_title) and ($article_title != '')) {
-						$title_text = $article_namespace;
-						if ($title_text != '') $title_text .= ':';
-						$title_text .= $article_title;
-						$title = Title::newFromText($title_text); // TODO: is this actually the right title to use for parsing?
-						if (NULL != $title) {
-							$parserOutput = $parser->parse('{{' . $article_namespace . ':' . $article_title . '}}', $title, $parser_options);
-							$result .= $parserOutput->getText();
+				if ( ($print_data[1] == SMW_IQ_PRINT_RELS) || ($print_data[1] == SMW_IQ_PRINT_RSEL) ) {
+					while ($cur = $iterator->getNext()) {
+						$result .= $embstart;
+						if ($showhead) {
+							$result .= $headstart . $cur[0] . $headend;
 						}
+						$article_namespace = $cur[1];
+						$article_title = $cur[2]; // TODO: ouch .. we need to check whether this exists
+						if ((NULL != $article_title) and ($article_title != '')) {
+							$title_text = $article_namespace;
+							if ($title_text != '') $title_text .= ':';
+							$title_text .= $article_title;
+							$title = Title::newFromText($title_text); // TODO: is this actually the right title to use for parsing?
+							if (NULL != $title) {
+								$parserOutput = $parser->parse('{{' . $article_namespace . ':' . $article_title . '}}', $title, $parser_options);
+								$result .= $parserOutput->getText();
+							}
+						}
+						$result .= $embend;
 					}
-					break;  // only use first value
 				}
-				break;  // only use first column
+				break;  // only use first column for now
 			}
-			$result .= $rowend;
 		}
-		$result .= $footer;
 
 		// show link to more results
 		if ($this->mIQ->isInline() && $this->mIQ->hasFurtherResults()) {
@@ -433,12 +443,12 @@ class SMWEmbeddedPrinter implements SMWQueryPrinter {
 				$label = wfMsgForContent('smw_iq_moreresults');
 			}
 			if ($label != '') {
-				$result .= '<a href="' . $this->mIQ->getQueryURL() . '">' . $label . '</a>';
+				$result .= $embstart . '<a href="' . $this->mIQ->getQueryURL() . '">' . $label . '</a>' . $embend ;
 			}
 		}
-
-		// return
-		$smwgShowFactbox = $user_smwgShowFactbox;  // restore $smwgShowFactbox option
+		$result .= $footer;
+		
+		$smwgStoreActive = $old_smwgStoreActive;
 		return $result;
 	}
 }

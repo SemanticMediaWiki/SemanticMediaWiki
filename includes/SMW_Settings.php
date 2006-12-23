@@ -42,9 +42,19 @@ $smwgScriptPath = $wgScriptPath . '/extensions/SemanticMediaWiki';
 $smwgIP = $IP . '/extensions/SemanticMediaWiki';
 ##
 
-
-// PHP fails to find relative includes at some level of inclusion:
-//$pathfix = $IP . $smwgScriptPath;
+/**
+* Setting this to false prevents any new data from being stored in
+* the static SMWSemanticData store, and disables printing of the
+* factbox, and clearing of the existing data.
+* This is a hack to enable parsing of included articles in a save
+* way without importing their annotations. Unfortunatelly, there
+* appears to be no way for finding out whether the current parse
+* is the "main" parse, or whether some intro, docu, or whatever
+* text is parsed. Using the hook mechanism, we have to rely on
+* globals/static fields -- so we cannot somehow differentiate this
+* store between parsers.
+*/
+$smwgStoreActive = true;
 
 // load global functions
 require_once('SMW_GlobalFunctions.php');

@@ -172,6 +172,13 @@ class SMWSQLQuery {
  */
 class SMWInlineQuery {
 
+	/**
+	 * Array of enabled formats for inline queries. Can be redefined in the settings to disallow certain
+	 * formats. The formats 'table' and 'list' are defaults that cannot be disabled. The format 'broadtable'
+	 * should not be disabled either in order not to break Special:ask.
+	 */
+	static $formats = array('table','list','ol','ul','broadtable','embedded','timeline','eventline');
+
 	private $mInline; // is this really an inline query, i.e. are results used in an article or not? (bool)
 
 	// parameters:
@@ -263,7 +270,7 @@ class SMWInlineQuery {
 		}
 		if (array_key_exists('format', $param)) {
 			$this->mFormat = strtolower($param['format']);
-			if (($this->mFormat != 'ul') && ($this->mFormat != 'ol') && ($this->mFormat != 'list') && ($this->mFormat != 'table') && ($this->mFormat != 'broadtable') && ($this->mFormat != 'timeline') && ($this->mFormat != 'eventline') && ($this->mFormat != 'embedded'))
+			if ( !in_array($this->mFormat,SMWInlineQuery::$formats) ) 
 				$this->mFormat = 'auto'; // If it is an unknown format, default to list again
 		}
 		if (array_key_exists('intro', $param)) {

@@ -41,7 +41,7 @@
 		// clean the wiki source for further processing)
 		if ( smwfIsSemanticsProcessed($parser->mTitle->getNamespace()) ) {
 			SMWSemanticData::printFactbox($text);
-		}
+		} else SMWSemanticData::clearStorage();
 
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
