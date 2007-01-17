@@ -25,7 +25,7 @@
 		smwfInitMessages(); // make sure that the messages are available
 
 		// Init global storage for semantic data of this article.
-		SMWSemanticData::initStorage($parser->mTitle,$parser->mOptions->getSkin());
+		SMWSemanticData::initStorage($parser->getTitle(),$parser->getOptions()->getSkin());
 
 		// In the regexp matches below, leading ':' escapes the markup, as
 		// known for Categories.
@@ -39,7 +39,7 @@
 
 		// print the results if enabled (we have to parse them in any case, in order to
 		// clean the wiki source for further processing)
-		if ( smwfIsSemanticsProcessed($parser->mTitle->getNamespace()) ) {
+		if ( smwfIsSemanticsProcessed($parser->getTitle()->getNamespace()) ) {
 			SMWSemanticData::printFactbox($text);
 		} else SMWSemanticData::clearStorage();
 
