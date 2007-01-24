@@ -581,7 +581,6 @@ class SMWEnumTypeHandler implements SMWTypeHandler {
 				// TODO: I just need the sequence.
 				// Maybe keys should be possible values and values should be offset?
 				$offset = array_search($value, $possible_values);
-				echo "in SMWEnumTypeHandler->processValue, offset for value $value in possible values is $offset<br />\n";
 				if ($offset === false) {
 					$datavalue->setError(wfMsgForContent('smw_notinenum', $value, implode(', ', $possible_values)));
 				} else {
