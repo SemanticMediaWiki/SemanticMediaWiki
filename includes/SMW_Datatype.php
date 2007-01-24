@@ -1,6 +1,6 @@
 <?php
 /**
- * This file contains the datatype management systemsm, some basic
+ * This file contains the datatype management system, some basic
  * classes for process data values given to attributes, and core
  * formatting functions. In order to create new datatypes, copy
  * the simple string or integer type classes below into a separate
@@ -12,20 +12,18 @@
  * @author Kai Hüner
  */
 
-/*********************************************************************/
-/* Code for registering datatype handlers                            */
-/*********************************************************************/
 
 require_once('SMW_Storage.php');
 
-/**@ TODO: Performance: Note that the code for every type handler is pulled
- *         in, even though most pages do not use all types. 
- *         Better to only load datatype PHP files as needed!?
+/**@ TODO: Performance: Do we still need to always pull in DT_Float.php,
+ *         or can we announce for Float/Linear/Temperature, but only load
+ *         as needed like other datatypes?
  */
 require_once('SMW_DT_Float.php');
 
 /**
- * Static class for registerig and retrieving typehandlers.
+ * Static class for registering and retrieving typehandlers.
+ * It also caches information about attributes found during page parsing.
  */
 class SMWTypeHandlerFactory {
 
