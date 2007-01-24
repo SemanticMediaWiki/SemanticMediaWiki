@@ -36,6 +36,8 @@ class SMW_LanguageDe {
 	'smw_manytypes' => '[Ups! Dem Attribut wurden mehrere Datentypen zugewiesen]',
 	'smw_emptystring' => '[Ups! Leere Zeichenfolgen werden nicht akzeptiert]',
 	'smw_maxstring' => '[Sorry, die Zeichenkette $1 ist für diese Website zu lang]',
+	'smw_nopossiblevalues' => '[Oops! possible values for this attribute are not enumerated]',	//TODO translate
+	'smw_notinenum' => '[Oops! "$1" is not in the list of possible values ($2) for this attribute]',	//TODO translate
 	'smw_noboolean' => '[Ups! "$1" ist keine ganze Boolescher Wert (wahr/falsch)]', // TODO: Check translation
 	'smw_true_words' => 'wahr,ja',	// comma-separated synonyms for boolean TRUE besides 'true' and '1' TODO: Check translation
 	'smw_false_words' => 'falsch,nein',	// comma-separated synonyms for boolean FALSE besides 'false' and '0' TODO: Check translation
@@ -128,6 +130,7 @@ class SMW_LanguageDe {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Zeichenkette',  // name of the string type
+	'smw_enum' => 'Enumeration',  // name of the enum type TODO: translate
 	'smw_bool' => 'Wahrheitswert',  // name of the boolean type TODO: Check translation
 	'smw_int' => 'Ganze Zahl',  // name of the int type
 	'smw_float' => 'Dezimalzahl',  // name of the floating point type
@@ -157,7 +160,8 @@ class SMW_LanguageDe {
 	SMW_SP_DISPLAY_UNIT => 'Ausgabeeinheit',
 	SMW_SP_IMPORTED_FROM => 'Importiert aus',
 	SMW_SP_CONVERSION_FACTOR => 'Entspricht bis',
-	SMW_SP_SERVICE_LINK => 'Bietet Service'
+	SMW_SP_SERVICE_LINK => 'Bietet Service',
+	SMW_SP_POSSIBLE_VALUES => 'Possible values'	//TODO translate
 );
 
 	/**

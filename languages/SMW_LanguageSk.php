@@ -35,6 +35,8 @@ class SMW_LanguageSk {
 	'smw_manytypes' => '[Ops! Pre atribút bol definovaný viac ako jeden typ]',
 	'smw_emptystring' => '[Ops! Prázdne reťazcie nie sú akceptované]',
 	'smw_maxstring' => '[Prepáčte, reprezentácia reťazca $1 je pre túro stránku príliš dlhá.]',
+	'smw_nopossiblevalues' => '[Oops! possible values for this attribute are not enumerated]',	//TODO translate
+	'smw_notinenum' => '[Oops! "$1" is not in the list of possible values ($2) for this attribute]',	//TODO translate
 	'smw_noboolean' => '[Ops! "$1" nebolo rozpoznané ako platná hodnota typy boolean (áno/nie)]',
 	'smw_true_words' => 'áno',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'nie',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
@@ -137,6 +139,7 @@ class SMW_LanguageSk {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Reťazec',  // name of the string type
+	'smw_enum' => 'Enumeration',  // name of the enum type TODO: translate
 	'smw_bool' => 'Boolean',  // name of the boolean type TODO: translate
 	'smw_int' => 'Celé číslo',  // name of the int type
 	'smw_float' => 'Desatinné číslo',  // name of the floating point type
@@ -165,7 +168,8 @@ class SMW_LanguageSk {
 	SMW_SP_DISPLAY_UNIT => 'Zobrazovacia jednotka',
 	SMW_SP_IMPORTED_FROM => 'Importovaný z',
 	SMW_SP_CONVERSION_FACTOR => 'Zodpovedá',
-	SMW_SP_SERVICE_LINK => 'Poskytuje službu'
+	SMW_SP_SERVICE_LINK => 'Poskytuje službu',
+	SMW_SP_POSSIBLE_VALUES => 'Possible values'	//TODO translate
 );
 
 

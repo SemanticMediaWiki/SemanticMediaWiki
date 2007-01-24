@@ -35,6 +35,8 @@ class SMW_LanguageFr {
 	'smw_manytypes' => '[Oups ! Plusieurs types de données ont été assignés à l\'attribut]',
 	'smw_emptystring' => '[Oups ! Les chaînes vides ne sont pas acceptées]',
 	'smw_maxstring' => '[Désolé, la chaîne de représentation $1 est trop grande pour ce site.]',
+	'smw_nopossiblevalues' => '[Oops! possible values for this attribute are not enumerated]',	//TODO translate
+	'smw_notinenum' => '[Oops! "$1" is not in the list of possible values ($2) for this attribute]',	//TODO translate
 	'smw_noboolean' => '[Oops! "$1" is not recognized as a boolean (true/false) value]', // TODO: Translate
 	'smw_true_words' => 't,oui',	// comma-separated synonyms for boolean TRUE besides 'true' and '1' TODO: Translate
 	'smw_false_words' => 'f,non',	// comma-separated synonyms for boolean FALSE besides 'false' and '0' TODO: Translate
@@ -127,6 +129,7 @@ class SMW_LanguageFr {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Chaîne de caractères',  // name of the string type
+	'smw_enum' => 'Enumeration',  // name of the enum type TODO: translate
 	'smw_bool' => 'Boolean',  // name of the boolean type TODO: translate
 	'smw_int' => 'Nombre entier',  // name of the int type
 	'smw_float' => 'Nombre décimal',  // name of the floating point type
@@ -155,7 +158,8 @@ class SMW_LanguageFr {
 	SMW_SP_DISPLAY_UNIT => 'Unité de mesure',
 	SMW_SP_IMPORTED_FROM => 'Importé de',
 	SMW_SP_CONVERSION_FACTOR => 'Correspond à',
-	SMW_SP_SERVICE_LINK => 'Fournit le service'
+	SMW_SP_SERVICE_LINK => 'Fournit le service',
+	SMW_SP_POSSIBLE_VALUES => 'Possible values'	//TODO translate
 );
 
 	/**
