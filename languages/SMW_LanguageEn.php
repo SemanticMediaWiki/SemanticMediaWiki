@@ -35,6 +35,8 @@ class SMW_LanguageEn {
 	'smw_manytypes' => '[Oops! More than one type defined for attribute]',
 	'smw_emptystring' => '[Oops! Empty strings are not accepted]',
 	'smw_maxstring' => '[Sorry, string representation $1 is too long for this site.]',
+	'smw_nopossiblevalues' => '[Oops! possible values for this attribute are not enumerated]',
+	'smw_notinenum' => '[Oops! "$1" is not in the list of possible values ($2) for this attribute]',
 	'smw_noboolean' => '[Oops! "$1" is not recognized as a boolean (true/false) value]',
 	'smw_true_words' => 't,yes,y',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,no,n',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
@@ -137,6 +139,7 @@ class SMW_LanguageEn {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'String',  // name of the string type
+	'smw_enum' => 'Enumeration',  // name of the enum type
 	'smw_bool' => 'Boolean',  // name of the boolean type
 	'smw_int' => 'Integer',  // name of the int type
 	'smw_float' => 'Float',  // name of the floating point type
@@ -165,7 +168,8 @@ class SMW_LanguageEn {
 	SMW_SP_DISPLAY_UNIT => 'Display unit',
 	SMW_SP_IMPORTED_FROM => 'Imported from',
 	SMW_SP_CONVERSION_FACTOR => 'Corresponds to',
-	SMW_SP_SERVICE_LINK => 'Provides service'
+	SMW_SP_SERVICE_LINK => 'Provides service',
+	SMW_SP_POSSIBLE_VALUES => 'Possible values'
 );
 
 

@@ -43,14 +43,54 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 		// rather than the units of a float. 
 		$desiredUnits = $datavalue->getDesiredUnits();
 		$str_val = trim($v);
+
+		$no_date_yet = true;
+		$year_offset = 0;		
+		// First we need to call in to float support to handle dates like
+		// 7,600,000.03 mya "million years ago"
+		// and bypass strtotime().
+		// Also handle BC/BCE and AD/CE dates. Have to pick a cutoff date
+		// where we don't bother with adding 1970 years to numeric value'
+		// Or (?), do this as a separate class, as in Geologic time;
+		// any reason to force "years ago" into a 1776-07-04 datetime class?
+
+		// Then, *IF* we had PHP >= 5.2, we could date_create(), it works for 
+		// all dates from 0000 to 9999 AD.
+
+		// *OTHERWISE* since strtotime handles all kinds of dates, but only in a limited range.
+		// If date doesn't seem to have month and day, just
+		// subtract date from 1970 and multiply by seconds in year.
+		// ? How do we tell such dates apart from 20061206 ?
+
+		// If date has day and month part, one strategy is to 
+		// move dates into the range 1920-2020 and then 
+		// add (offset_years * secs_in_year) to $time.
+		// We need to check for ISO 8601 dates outside the 32-bit supported
+		// range (before 1912 and after 2038).
+		if ($no_date_yet) {
+			// Look for +/-, digits, and a -.
+			if (preg_match('^[+-]?(\d{4})-', $str_val, $matches, PREG_OFFSET_CAPTURE) ) {
+				$year = $matches[0][0];
+				if ($year <= 1912 || $year > 2038) {
+					$year_offset = $year - 1920;
+					// Replace year in str_val with adjusted year.
+				}
+			}	
+		}
+			
+		// Then we need to do simplistic parsing of dates outside this range like
+		// "Boston Massacre on March 5, 1770" 
+		// in both cases remember start and end pos.
+		// If year out of range we need to offset it to years before or after 1920
+
 		$time = strtotime($str_val);
 		if ($time == -1 || $time === false) {
 			$datavalue->setError('<span class="smwwarning">' . wfMsgForContent('smw_nodatetime',$v) . '</span>');
 			return;
 		}
 
-		// strtotime accepts non-ISO8601 times like 02/01/70,
-		// so reformat back to ISO8601. Unfortunatelly, ISO in
+		// strtotime accepts non-ISO8601 times like 02/01/70 and even "yesterday",
+		// so reformat back to ISO8601. Unfortunately, ISO in
 		// general is not compatible with XSD; but it should work
 		// for the restricted interval we currently support.
 		$date_part = strftime("%Y-%m-%d", $time);

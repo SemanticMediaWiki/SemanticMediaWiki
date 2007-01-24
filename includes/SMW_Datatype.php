@@ -33,6 +33,7 @@ class SMWTypeHandlerFactory {
 	static private $typeHandlersByAttribute = Array();	
 	static private $typeLabelsByID = Array();
 	static private $desiredUnitsByAttribute = Array();
+	static private $possibleValuesByAttribute = Array();
 	static private $serviceLinksByAttribute = Array();
 
 	/**
@@ -127,7 +128,7 @@ class SMWTypeHandlerFactory {
 				return new SMWURITypeHandler(SMW_URI_MODE_URI);
 			case SMW_SP_MAIN_DISPLAY_UNIT: case SMW_SP_DISPLAY_UNIT: case SMW_SP_SERVICE_LINK:
 				return new SMWStringTypeHandler();
-			case SMW_SP_CONVERSION_FACTOR:
+			case SMW_SP_CONVERSION_FACTOR: case SMW_SP_POSSIBLE_VALUES:
 				return new SMWStringTypeHandler();
 			default:
 				global $smwgContLang;
@@ -229,6 +230,31 @@ class SMWTypeHandlerFactory {
 		return SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute];
 	}
 
+
+	/**
+	 * This method retrieves the possible values, if any,
+	 * for a given attribute as an array.
+	 * 
+	 * @param $attribute should be in text form without preceding namespace.
+	 */
+	static function &getPossibleValues($attribute) {
+		if(!array_key_exists($attribute, SMWTypeHandlerFactory::$possibleValuesByAttribute)) {
+			global $wgContLang;
+
+			SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute] = Array();
+			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
+			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
+				// get special property for possible values.  Assume only one such property per attribute.
+				$apvprops = &smwfGetSpecialPropertyValues($atitle, SMW_SP_POSSIBLE_VALUES);
+				if (count($apvprops) > 0) {
+					// Possible values are separated by commas. TODO: maybe trim() whitespace from each one.
+					SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute] = explode(',', $apvprops[0]);
+				}
+			}
+		}
+		return SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute];
+	}
+
 	/**
 	 * This method retrieves the conversion factors, if any, for a 
 	 * given type as an array of strings. It gets them from a special 
@@ -251,6 +277,7 @@ class SMWTypeHandlerFactory {
 		}
 		return $result;
 	}
+
 
 	/**
 	 * This method retrieves additional service links, if any, for a 
@@ -523,6 +550,68 @@ class SMWStringTypeHandler implements SMWTypeHandler {
 
 SMWTypeHandlerFactory::registerTypeHandler($smwgContLang->getDatatypeLabel('smw_string'),
                        new SMWStringTypeHandler());
+
+
+/**
+ * Class for managing enum types. Pretty simple,
+ * just strings with check against possible values.
+ */
+class SMWEnumTypeHandler implements SMWTypeHandler {
+
+	function getID() {
+		return 'enum';
+	}
+
+	// Can't represent any better way than as a string
+	function getXSDType() {
+		return 'http://www.w3.org/2001/XMLSchema#string';
+	}
+
+	function getUnits() { //no units for enums
+		return array('STDUNIT'=>false, 'ALLUNITS'=>array());
+	}
+
+	function processValue($value,&$datavalue) {
+		if ($value!='') { //do not accept empty strings
+			$xsdvalue = smwfXMLContentEncode($value);
+			// See if string is one of the possible values.
+			$desiredUnits = $datavalue->getDesiredUnits();
+			$possible_values = $datavalue->getPossibleValues();
+			if (count($possible_values) < 1) {
+				$datavalue->setError(wfMsgForContent('smw_nopossiblevalues'));
+			} else {
+				// TODO: I just need the sequence.
+				// Maybe keys should be possible values and values should be offset?
+				$offset = array_search($value, $possible_values);
+				echo "in SMWEnumTypeHandler->processValue, offset for value $value in possible values is $offset<br />\n";
+				if ($offset === false) {
+					$datavalue->setError(wfMsgForContent('smw_notinenum', $value, implode(', ', $possible_values)));
+				} else {
+					// We use a 1-based offset.
+					$offset++;
+					$datavalue->setProcessedValues($value, $xsdvalue, $offset);
+					$datavalue->setPrintoutString($value);
+					$datavalue->addQuicksearchLink();
+					$datavalue->addServiceLinks(urlencode($value));
+				}
+			}
+		} else {
+			$datavalue->setError(wfMsgForContent('smw_emptystring'));
+		}
+		return true;
+	}
+
+	function processXSDValue($value,$unit,&$datavalue) {
+		return $this->processValue($value,$datavalue);
+	}
+
+	function isNumeric() {
+		return true;
+	}
+}
+
+SMWTypeHandlerFactory::registerTypeHandler($smwgContLang->getDatatypeLabel('smw_enum'),
+                       new SMWEnumTypeHandler());
 
 
 /**

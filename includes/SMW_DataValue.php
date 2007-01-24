@@ -89,6 +89,10 @@ class SMWDataValue {
 	 */
 	var $desiredUnits;
 	/**
+	 * Array of possible values.
+	 */
+	var $possibleValues;
+	/**
 	 * Array of links (or rather of message ids that contain link templates). 
 	 * Some datatypes will look for added links and instantiate them with their
 	 * processed values to point to helpful online resources. The strings in this
@@ -120,6 +124,7 @@ class SMWDataValue {
 		$this->skin = NULL;
 		$this->attribute = false;
 		$this->desiredUnits = $desiredUnits;
+		$this->possibleValues = array();
 		$this->serviceLinks = array();
 	}
 
@@ -139,6 +144,8 @@ class SMWDataValue {
 		$result->setSkin($skin);
 		$result->attribute = $attribute;
 		$result->desiredUnits = SMWTypeHandlerFactory::getUnitsList($attribute);
+		// TODO: Maybe only get this for attributes types that can support it, or only get if requested?
+		$result->possibleValues = SMWTypeHandlerFactory::getPossibleValues($attribute);
 		$result->serviceLinks = SMWTypeHandlerFactory::getServiceLinks($attribute);
 		if ($value !== false)  $result->setUserValue($value);
 		return $result;
@@ -494,6 +501,13 @@ class SMWDataValue {
 	 */
 	function getDesiredUnits() {
 		return $this->desiredUnits;
+	}
+
+	/**
+	 * Return the possible values (possibly empty if not given).
+	 */
+	function getPossibleValues() {
+		return $this->possibleValues;
 	}
 
 	/**
