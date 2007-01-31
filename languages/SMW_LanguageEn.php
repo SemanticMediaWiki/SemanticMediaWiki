@@ -44,7 +44,8 @@ class SMW_LanguageEn {
 	'smw_nofloat' => '[Oops! "$1" is no floating point number]',
 	'smw_infinite' => '[Sorry, numbers as long as $1 are not supported on this site.]',
 	'smw_infinite_unit' => '[Sorry, conversion into unit $1 resulted in a number that is too long for this site.]',
-	'smw_unexpectedunit' => 'this attribute supports no unit conversion',
+	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this attribute supports no unit conversion',
+	'smw_unsupportedprefix' => 'prefixes ("$1") are not currently supported',
 	'smw_unsupportedunit' => 'unit conversion for unit "$1" not supported',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Values for latitude (N, S) must be within 0 and 90. "$1" does not fulfill this condition!',

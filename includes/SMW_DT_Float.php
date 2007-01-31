@@ -242,10 +242,11 @@ class SMWFloatTypeHandler implements SMWTypeHandler{
 	 */
 	function getUnitID($prefixIn, $unitIn) {
 		$errStr = '';
-		if ($prefixIn !== '' || $unitIn !== '') {
-			$errStr = wfMsgForContent('smw_unexpectedunit');
+		// It's OK to have a trailing unit, Type:float just stores it.
+		if ($prefixIn !== '') {
+			// Could concatenate the prefix and the unit?
+			$errStr = wfMsgForContent('smw_unsupportedprefix', $prefixIn);
 		}
-		// TODO: Maybe concatenate the prefix and the unit?
 		return array($unitIn, $errStr);
 	}
 
