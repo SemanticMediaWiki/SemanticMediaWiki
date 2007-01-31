@@ -15,9 +15,9 @@
 
 require_once('SMW_Storage.php');
 
-/**@ TODO: Performance: Do we still need to always pull in DT_Float.php,
- *         or can we announce for Float/Linear/Temperature, but only load
- *         as needed like other datatypes?
+/**@ We need to always pull in DT_Float.php because SMW treats missing types
+ *   as custom units (class SMWLinear).
+ * TODO: revisit this dependency and announce Float/Linear/Temperature like other datatypes?
  */
 require_once('SMW_DT_Float.php');
 
@@ -529,6 +529,7 @@ class SMWStringTypeHandler implements SMWTypeHandler {
 				$datavalue->setProcessedValues($value, $xsdvalue);
 				$datavalue->setPrintoutString($value);
 				$datavalue->addQuicksearchLink();
+				// TODO: Performance: this causes a SpecialProperties database query and some callers don't use it.
 				$datavalue->addServiceLinks(urlencode($value));
 			}
 		} else {
