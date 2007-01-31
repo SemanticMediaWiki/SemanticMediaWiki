@@ -44,7 +44,8 @@ class SMW_LanguageSk {
 	'smw_nofloat' => '[Ops! "$1" nie je číslo s plávajúcou desatinnou čiarkou]',
 	'smw_infinite' => '[Prepáčte, čísla také dlhé ako $1 nie sú na tejto stránke podporované.]',
 	'smw_infinite_unit' => '[Prepáčte, konverzia na jednotky $1 dala ako výsledok číslo, ktoré je pre túto stránku príliš dlhé.]',
-	'smw_unexpectedunit' => 'tento atribút nepodporuje konverziu jednotiek',
+	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'tento atribút nepodporuje konverziu jednotiek',
+	'smw_unsupportedprefix' => 'prefixes ("$1") are not currently supported',	 // TODO: translate
 	'smw_unsupportedunit' => 'konverzia jednotiek "$1" nie je podporované',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Hodnoty zemepisnej šírky (S, J) musia byť v rozmedzí 0 a 90. "$1" nespĺňa túto podmienku!',

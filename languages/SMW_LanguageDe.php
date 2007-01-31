@@ -45,7 +45,8 @@ class SMW_LanguageDe {
 	'smw_nofloat' => '[Ups! "$1" ist keine Dezimalzahl]',
 	'smw_infinite' => '[Sorry, die Zahl $1 ist zu lang.]',
 	'smw_infinite_unit' => '[Sorry, die Umrechnung in Einheit $1 ist nicht möglich: die Zahl ist zu lang.]',
-	'smw_unexpectedunit' => 'dieses Attribut unterstützt keine Umrechnung von Einheiten',
+	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'dieses Attribut unterstützt keine Umrechnung von Einheiten',
+	'smw_unsupportedprefix' => 'prefixes ("$1") are not currently supported',	 // TODO: translate
 	'smw_unsupportedunit' => 'Umrechnung der Einheit "$1" nicht unterstützt',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Angaben zur Geographischen Breite (N, S) müssen zwischen 0 und 90 liegen. "$1" liegt nicht in diesem Bereich!',

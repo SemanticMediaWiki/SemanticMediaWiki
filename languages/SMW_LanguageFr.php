@@ -44,7 +44,8 @@ class SMW_LanguageFr {
 	'smw_nofloat' => '[Oups ! "$1" n\'est pas un nombre à virgule flottante]',
 	'smw_infinite' => '[Désolé, le nombre $1 est trop long.]',
 	'smw_infinite_unit' => '[Désolé, la conversion dans l\'unité $1 est impossible : le nombre est trop long.]',
-	'smw_unexpectedunit' => 'Cet attribut ne supporte aucune conversion d\'unité',
+	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'Cet attribut ne supporte aucune conversion d\'unité',
+	'smw_unsupportedprefix' => 'prefixes ("$1") are not currently supported',	 // TODO: translate
 	'smw_unsupportedunit' => 'La conversion de l\'unité "$1" n\'est pas supportée',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Les indications sur la latitude (N, S) doivent être comprises entre 0 et 90. "$1" ne se trouve pas à l\'intérieur de ces limites !',

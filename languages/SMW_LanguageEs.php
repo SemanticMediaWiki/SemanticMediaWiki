@@ -44,7 +44,8 @@ class SMW_LanguageEs {
 	'smw_nofloat' => '[Ups ! "$1" no es un número con coma flotante]',
 	'smw_infinite' => '[Lo sentimos, el número $1 es demasiado largo.]',
 	'smw_infinite_unit' => '[Lo sentimos, la conversion en la unidad $1 es imposible : el número es demasiado largo.]',
-	'smw_unexpectedunit' => 'Este atributo no soporta ninguna conversión de unidad',
+	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'Este atributo no soporta ninguna conversión de unidad',
+	'smw_unsupportedprefix' => 'prefixes ("$1") are not currently supported',	 // TODO: translate
 	'smw_unsupportedunit' => 'La conversion de la unidad "$1" no está soportada',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Las indicaciones de latitud (N, S) deben estar comprendidas entre 0 et 90. "$1" no se encuentra dentro de estos límites !',
