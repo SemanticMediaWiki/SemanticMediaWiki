@@ -9,7 +9,7 @@ see http://wiki.ontoworld.org/index.php/Semantic_MediaWiki_development_activitie
   of end date attribute, if any), tiemlinesize (CSS-encoded height), timelinebands
   (comma-seperated list of bands such as DAY, WEEK, MONTH, YEAR, ...), and
   timelineposition (one of start, end, today, middle).
-* Complete RDF export is now possible with a maintenance script, whic can e.g. be
+* Complete RDF export is now possible with a maintenance script, which can e.g. be
   run periodically on a server to create RDF files.
 * New "service links" feature: any attribute can provide configurable links to
   online services. As a special case, the map-services of geo-coordinates are now
