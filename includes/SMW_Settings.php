@@ -1,6 +1,6 @@
 <?php
 
-$smwgVersion = '0.6';
+$smwgVersion = '0.6a';
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
