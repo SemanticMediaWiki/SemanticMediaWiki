@@ -295,8 +295,8 @@ class SMWSemanticData {
 		// factbox in another way, similar to the way that categories are printed 
 		// now. However, this would require more patching of MediaWiki code ...
 		$text .= "\n" . '<div class="smwfact">' .
-		         '<span class="smwfactboxhead" style="float:left">' . wfMsgForContent('smw_factbox_head', SMWSemanticData::$title->getText()) . '</span>' .
-		         '<span class="smwrdflink" style="float:right">' . $rdflink->getWikiText() . '</span>' .
+		         '<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', SMWSemanticData::$title->getText()) . '</span>' .
+		         '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
 		         '<table style="clear: both; width: 100%">' . "\n";
 		SMWSemanticData::printRelations($text);
 		SMWSemanticData::printAttributes($text);

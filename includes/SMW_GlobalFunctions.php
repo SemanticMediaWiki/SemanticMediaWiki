@@ -43,6 +43,19 @@
 				'media' => 'screen, projection',
 				'href'  => $customCssUrl
 			));
+
+			//BEGIN RTL PATCH
+			global $wgContLang;
+			if ($wgContLang->isRTL()) {
+				$customCssUrl = $smwgScriptPath . '/skins/SMW_custom_rtl.css';
+				$out->addLink(array(
+					'rel'   => 'stylesheet',
+					'type'  => 'text/css',
+					'media' => 'screen, projection',
+					'href'  => $customCssUrl
+				));
+			}
+			//END RTL PATCH
 			$smwgHeadersInPlace = true;
 		}
 

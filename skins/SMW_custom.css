@@ -61,6 +61,7 @@ span.smwtlcomment {
 span.smwfactboxhead {
 	font-size: 110%;
 	font-weight: bold;
+	float: left;
 }
 
 div.smwfact {
@@ -137,10 +138,15 @@ span.smwsearchicon {
 
 /* RDF icons */
 
+#bodyContent span.rdflink{
+	float: right;
+}
+
 #bodyContent span.rdflink a{
 	padding-right: 20px;
 	color: #888888;
 	background: url(rdf_flyer.18.gif) center right no-repeat;
+	
 }
 
 #bodyContent span.rdflink a:hover{

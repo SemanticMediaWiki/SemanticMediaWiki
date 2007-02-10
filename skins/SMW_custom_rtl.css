@@ -1,0 +1,83 @@
+/* tables for inline queries */
+
+table.smwtable th {
+	text-align: right;
+}
+
+table.smwtable td {
+	text-align: right;
+}
+
+table.smwtable tr.smwfooter td {
+	text-align: left;
+}
+
+span.smwfactboxhead {
+	float:right;
+}
+
+span.smwfactboxhead {
+	float:right;
+}
+
+span.smwrdflink {
+	float:left;
+}
+
+
+div.smwfact td.smwrelname, div.smwfact td.smwattname, div.smwfact td.smwspecname{
+	text-align: left;
+}
+
+div.smwfact th.relhead, div.smwfact th.atthead, div.smwfact th.spechead{
+	text-align: right;
+}
+
+span.smwsearchicon {
+	padding-right: 0;
+	margin-right: 0;
+	padding-left: 16px;
+	margin-left: 2px;
+}
+
+#bodyContent span.smwsearch a{
+	padding-right: 0;
+	margin-right: 0;
+	padding-left: 16px;
+	margin-left: 2px;
+}
+
+#bodyContent span.smwsearch a:hover{
+	padding-right: 0;
+	margin-right: 0;
+	padding-left: 18px;
+	margin-left: 0px;
+}
+
+#bodyContent span.smwmap a{
+	padding-right: 0;
+	padding-left: 20px;
+	background: url(world.png) center left no-repeat;
+}
+
+#bodyContent span.smwmap a:hover{
+	padding-right: 0;
+	padding-left: 20px;
+}
+
+/* RDF icons */
+
+#bodyContent span.rdflink a{
+	padding-right: 20px;
+	padding-left: 0;
+	background: url(rdf_flyer.18.gif) center left no-repeat;
+}
+
+#bodyContent span.rdflink a:hover{
+	padding-right: 0;
+	margin-right: 0;
+	padding-left: 20px;
+	margin-left: 0px;
+	background: url(rdf_flyer.18.gif) center left no-repeat;
+}
+
