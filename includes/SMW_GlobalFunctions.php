@@ -3,6 +3,103 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
+define('SMW_VERSION','0.6a');
+
+// constants for special properties, used for datatype assignment and storage
+define('SMW_SP_HAS_TYPE',1);
+define('SMW_SP_HAS_URI',2);
+define('SMW_SP_HAS_CATEGORY',4); 
+define('SMW_SP_IS_SUBRELATION_OF',3);
+define('SMW_SP_IS_SUBATTRIBUTE_OF',5);
+define('SMW_SP_MAIN_DISPLAY_UNIT', 6);
+define('SMW_SP_DISPLAY_UNIT', 7);
+define('SMW_SP_IMPORTED_FROM',8);
+define('SMW_SP_EXT_BASEURI',9);
+define('SMW_SP_EXT_NSID',10);
+define('SMW_SP_EXT_SECTION',11);
+define('SMW_SP_CONVERSION_FACTOR', 12);
+define('SMW_SP_SERVICE_LINK', 13);
+define('SMW_SP_POSSIBLE_VALUES', 14);
+
+// constants for displaying the factbox
+define('SMW_FACTBOX_HIDDEN', 1);
+define('SMW_FACTBOX_NONEMPTY',  3);
+define('SMW_FACTBOX_SHOWN',  5);
+
+/**
+ * Switch on Semantic MediaWiki. This function must be called in LocalSettings.php
+ * after incldung this file. It is used to ensure that required parameters for SMW
+ * are really provided, without requiring the existence of a dedicated file 
+ * SMW_LocalSettings.php. For readability, this is the only global function that
+ * does not adhere to the naming conventions.
+ */
+function enableSemantics($server) {
+	global $smwgVersion, $smwgServer, $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport;
+
+	if ( $server == "" ) {
+		print "Semantic MediaWiki: please supply the name of your server to enable semantics.";
+		return false;
+	}
+	$smwgServer = $server;
+
+	/**
+	* Setting this to false prevents any new data from being stored in
+	* the static SMWSemanticData store, and disables printing of the
+	* factbox, and clearing of the existing data.
+	* This is a hack to enable parsing of included articles in a save
+	* way without importing their annotations. Unfortunatelly, there
+	* appears to be no way for finding out whether the current parse
+	* is the "main" parse, or whether some intro, docu, or whatever
+	* text is parsed. Using the hook mechanism, we have to rely on
+	* globals/static fields -- so we cannot somehow differentiate this
+	* store between parsers.
+	*/
+	$smwgStoreActive = true;
+
+	/**********************************************/
+	/***** register specials                  *****/
+	/**********************************************/
+
+	//require_once($smwgIP . '/specials/SearchSemantic/SMW_SpecialSearchSemantic.php'); //really not longer functional!
+	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchTriple.php');
+	require_once($smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php'); // coming soon
+	require_once($smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php');
+	require_once($smwgIP . '/specials/OntologyImport/SMW_SpecialOntologyImport.php');
+	require_once($smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php');
+	
+	require_once($smwgIP . '/specials/Relations/SMW_SpecialRelations.php');
+	require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedRelations.php');
+	require_once($smwgIP . '/specials/Relations/SMW_SpecialAttributes.php');
+	require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedAttributes.php');
+	require_once($smwgIP . '/specials/Relations/SMW_SpecialTypes.php');
+	
+	/**********************************************/
+	/***** register hooks                     *****/
+	/**********************************************/
+
+	require_once($smwgIP . '/includes/SMW_Hooks.php');
+	require_once($smwgIP . '/includes/SMW_RefreshTab.php');
+
+	if ($smwgEnableTemplateSupport===true) {
+		$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; //patch required;
+	} else {
+		$wgHooks['ParserAfterStrip'][] = 'smwfParserHook'; //default setting
+	}
+
+	$wgHooks['ParserAfterTidy'][] = 'smwfParserAfterTidyHook';
+	$wgHooks['ArticleSaveComplete'][] = 'smwfSaveHook';
+	$wgHooks['ArticleDelete'][] = 'smwfDeleteHook';
+	$wgHooks['TitleMoveComplete'][]='smwfMoveHook';
+	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeader';
+
+	/**********************************************/
+	/***** credits (see "Special:Version")    *****/
+	/**********************************************/
+	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic MediaWiki', 'version'=>SMW_VERSION, 'author'=>'Klaus&nbsp;Lassleben, Markus&nbsp;Kr&ouml;tzsch, Denny&nbsp;Vrandecic, S&nbsp;Page. Maintained by AIFB Karlsruhe.', 'url'=>'http://sourceforge.net/projects/semediawiki/', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines and humans');
+
+	return true;
+}
+
 /**********************************************/
 /***** Header modifications               *****/
 /**********************************************/
@@ -86,24 +183,25 @@
 	 * parameter denotes the least unused even namespace ID that is
 	 * greater or equal to 100.
 	 */
-	function smwfInitNamespaces($base_idx) {
-		global $wgExtraNamespaces, $wgNamespacesWithSubpages, $wgLanguageCode, $smwgContLang;
+	function smwfInitNamespaces() {
+		global $smwgNamespaceIndex, $wgExtraNamespaces, $wgNamespacesWithSubpages, $wgLanguageCode, $smwgContLang;
+
+		if (!isset($smwgNamespaceIndex)) {
+			$smwgNamespaceIndex = 100;
+		}
 
 		smwfInitContentLanguage($wgLanguageCode);
 
-		$namespaceIndex=$base_idx;
-
-		define('SMW_NS_RELATION',       $namespaceIndex);
-		define('SMW_NS_RELATION_TALK',  $namespaceIndex+1);
-		define('SMW_NS_ATTRIBUTE',      $namespaceIndex+2);
-		define('SMW_NS_ATTRIBUTE_TALK', $namespaceIndex+3);
-		define('SMW_NS_TYPE',           $namespaceIndex+4);
-		define('SMW_NS_TYPE_TALK',      $namespaceIndex+5);
+		define('SMW_NS_RELATION',       $smwgNamespaceIndex);
+		define('SMW_NS_RELATION_TALK',  $smwgNamespaceIndex+1);
+		define('SMW_NS_ATTRIBUTE',      $smwgNamespaceIndex+2);
+		define('SMW_NS_ATTRIBUTE_TALK', $smwgNamespaceIndex+3);
+		define('SMW_NS_TYPE',           $smwgNamespaceIndex+4);
+		define('SMW_NS_TYPE_TALK',      $smwgNamespaceIndex+5);
 
 		// Register namespace identifiers
 		if (!is_array($wgExtraNamespaces)) { $wgExtraNamespaces=array(); }
-		$wgExtraNamespaces = $wgExtraNamespaces +
-							 $smwgContLang->getNamespaceArray();
+		$wgExtraNamespaces = $wgExtraNamespaces + $smwgContLang->getNamespaceArray();
 
 		// Support subpages only for talk pages by default
 		$wgNamespacesWithSubpages = $wgNamespacesWithSubpages + array(

@@ -38,88 +38,65 @@ For a proper legal disclaimer, see the file "COPYING".
 If you upgrade an existing installation of Semantic MediaWiki, also read the
 remarks in the section "Notes on upgrading" below!
 
-(1) Extract the archive or check out the current files from CVS to obtain the
+(1) Extract the archive or check out the current files from SVN to obtain the
     directory "SemanticMediaWiki" that contains all relevant files. Copy this
     directory to "[wikipath]/extensions/" (or extract/download it to this place).
     We abbreviate "[wikipath]/extensions/SemanticMediaWiki" as "[SMW_path]" below.
-(2) Copy the file "[SMW_path]/includes/SMW_LocalSettingsTemplate.php" to a file
-    "[SMW_path]/includes/SMW_LocalSettings.php". Edit this new file to adjust
-    various basic settings. Some of these settings might be crucial for properly
-    running the wiki, so be sure not to skip this step.
-(3) Insert the following line at the end (just before "?>") of the file
+(2) Edit the file [wikipath]/includes/Parser.php of your MediaWiki installation.
+    Insert the line
+     "wfRunHooks( 'InternalParseBeforeLinks', array( &$this, &$text, null ) );"
+    in the method "internalParse" right after the line
+     "$text = $this->replaceVariables( $text, $args );"
+    This does not impair the wiki if SMW is not used, so it can be done even on
+    wiki farms.
+(3) Insert the following lines at the end (just before "?>") of the file
     "[wikipath]/LocalSettings.php":
-    "include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');"
+     include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');
+     enableSemantics('\example.org\');
+    where \example.org\ should be replaced by your server's name (or IP address).
+    If you have custom namespaces (e.g. "Portal"), read the note below.
 (4) In your wiki, log in as a user with admin status and go to the page
     "Special:SMWAdmin" to do the final setup steps.
 
-This finishes the basic installation. There are some additional highly recommended 
-features that need to be enabled individually if you want them. Read on.
-
 '''Remark:'''  Semantic MediaWiki uses six additional custom namespaces (see
 http://meta.wikimedia.org/wiki/Help:Custom_namespaces). If you have your own
-custom namespaces, then you already specified this in step (2) above. If you
-add more namespaces later on, then you have to assign them to higher numbers
-than those used by Semantic MediaWiki in file "SMW_Settings.php".
+custom namespaces, you have to set the parameter $smwgNamespaceIndex  before
+including SMW_Settings.php. See the documentation within SMW_Settings.php for
+details. If you add more namespaces later on, then you have to assign them to 
+higher numbers than those used by Semantic MediaWiki.
 
-=== Enabling support for templates, <nowiki>, ... ===
+=== Customising Semantic MediaWiki ===
 
-It can be helpful to have semantic annotations build into templates, in
-particular if filler variables for them are provided dynamically on each
-use. This feature can easily be enabled by hooking the processing of semantic
-links to a later point during parsing. This is not done by default yet,
-since it requires a patch against the MediaWiki code. To get this function,
-do the following two steps:
+Semantic MediaWiki can be customised by a number of settings. To do so, you 
+can assignemts to respective parameters directly after the line 
+"include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');"
+in your LocalSetting.php. For example, one can write
 
-(1) Edit the file [wikipath]/includes/Parser.php. Insert the line
-    "wfRunHooks( 'InternalParseBeforeLinks', array( &$this, &$text, null ) );"
-    in the method "internalParse" right after the line
-    "$text = $this->replaceVariables( $text, $args );"
-(2) Edit the file [SMW_path]/includes/SMW_LocalSettings.php to set the option
-    $smwgEnableTemplateSupport to true.
+include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');
+$smwgIQDefaultLinking = 'all';
+enableSemantics(example.org);
+
+to enable links on all results returned by inline queries. The parameters that
+are available are documented in the files SMW_Settings.php (general) and
+SMW_InlineQueries.php (related to queries).
+
+=== Support for templates, <nowiki>, ... ===
+
+The patch of [wikipath]/includes/Parser.php above was needed to make SMW work
+with templates, <nowiki>, <!-- -->, etc. This change is not done by default yet,
+since it requires a patch against the MediaWiki code.
 
 Unless you changed the default setting, annotations in template articles will
 be ignored automatically. Otherwise you have to use <noinclude> and <includeonly>
 tags.
 
-=== Enabling CSS, tooltips, etc. in MediaWiki < 1.7 ===
+=== Running SMW on older versions of MediaWiki ===
 
-Deprecated. MediaWiki 1.6 is not officially supported any longer. You can try it 
-without much risk, but we might use code and features that were not available in 1.6.
-
-Extensions in MediaWiki < 1.7 could not add CSS or JavaScript to every
-wiki page without some code changes to MediaWiki:
-
-Open the file [wikipath]/includes/OutputPage.php, and insert the line
-"smwfAddHTMLHeader($this);" between "wfProfileIn( 'Output-skin' );" and
-"$sk->outputPage( $this );" (in function "output()").
-
-If you have several installations running on the same MediaWiki installation,
-and not all of them use the Semantic MediaWiki extensions, you may instead
-choose to add the following three lines:
-if( $_SERVER["HTTP_HOST"] == 'domainwith.smwenabled.org' ) {
-       smwfAddHTMLHeader($this);
-}
-
-=== Enabling tooltips in MediaWiki <= 1.5.8 ===
-
-Deprecated. MediaWiki 1.5 is not officially supported any longer. You can try it, 
-but we probably use code and features that were not available in 1.5.
-
-We make use of some JavaScript to display tooltips for attributes that provide
-value conversions for different units. Up to MediaWiki 1.5.5, this is prevented
-by bug http://bugzilla.wikimedia.org/show_bug.cgi?id=3603. To fix this, edit
-the file [wikipath]/skins/MonoBook.php and insert the line
-
- <?php $this->html('headscripts') ?>
-
-right before "</head>" (around line 72). This should not be required in future
-versions of MediaWiki. To check whether tooltips work, try the preview mode of
-some article first (since this should always work). Tooltips might fail on some
-other occassions -- check out the workaround in "Known issues".
-
-If you prefer to use HTML-only tooltips, you can achieve this by commenting
-out the line containing "ParserAfterTidy" within the file
-[SMW_path]/includes/SMW_Settings.php.
+If your site is still running on PHP4, SMW is not supported. It would be possible
+to backport the code to the old PHP version, but this needs some work. If you have
+PHP5 but an older MediaWiki version, additional patches/modifications might be 
+needed. Download an older release of SMW and have a look at the included INSTALL
+instructions to find out whether other changes are recommended therein.
 
 == Notes on upgrading ==
 
@@ -130,18 +107,19 @@ subsequently and follow the given update instructions. For example, first upgrad
 to 0.2 before upgrtading further from 0.2 to 0.3. Also, do not forget to backup your
 database before any upgrade.
 
-'''Upgrading from 0.5:'''
+'''Upgrading from vesions prior to 0.6:'''
 
-Please recreate your SMW_LocalSettings.php, since they have changed slightly.
+The file SMW_LocalSettings.php is now obsolete. Modify your LocalSettings.php as described
+above, and import your changes in SMW_LocalSettings.php, if any, into LocalSettings.php as
+well.
 
 '''Upgrading from 0.4.x:'''
 
-Upgrading does not require any special changes. However, you have to upgrade MediaWiki to 1.7
-and SMW to 0.5. This should not be a problem, and in fact you need one patch less. Please
-recreate your SMW_LocalSettings.php, since it might have changed.
+Upgrading does not require any special changes. However, you have to upgrade MediaWiki
+and SMW. This should not be a problem, and in fact you need one patch less.
 
-Moreover, the type "Geographic area" and "Geographic length" are no longer built in. But you 
-can easily create them by yourself with the new type customisation features. See the docu at
+The type "Geographic area" and "Geographic length" are no longer built in. But you can 
+easily create them by yourself with the new type customisation features. See the docu at
 ontoworld.org for details.
 
 == FAQ ==
@@ -190,12 +168,16 @@ ontoworld.org for details.
   Your database was not initialized properly. Go to Special:SMWAdmin for
   instructions.
 
+- Problem: Semantic annotations are not processed at all, but appear as
+  links within the text.
 - Problem: Semantic relations that are included via templates or excluded
   via <includeonly> statements are not processed properly.
 - Problem: "&nbsp;" appears in the Factbox, comments and <nowiki> do not
   seem to disable annotations properly.
 
-  Enable template support. The required manual patch is described above.
+  Enable template support by the patch described in the installation above.
+  Check that your page Special:Version shows SMW and lists the additional hook
+  "InternalParseBeforeLinks".
 
 - Problem: After installing SMW, some or all pages are not displayed at all.
 - Problem: In some cases, pages are displayed incompletely, with some parts

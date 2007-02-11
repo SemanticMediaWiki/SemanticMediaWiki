@@ -45,8 +45,9 @@ require_once('SMW_QueryPrinters.php');
 /* Configure default behaviour of inline queries */
 	// Default linking behaviour. Can be one of "none", "subject", "all"
 	$smwgIQDefaultLinking = 'subject';
-	// Which namespaces should be searched by default?
-	$smwgIQSearchNamespaces = NULL; //can be defined as an array of NS_IDs in LocalSettings
+	// Which namespaces should be searched by default? Setting this to NULL will
+	// switch off such default restrictions on searching (possibly increasing performance)
+	$smwgIQSearchNamespaces = array(NS_MAIN, NS_IMAGE);
 /* Configure power/performance trade-off for inline queries */
 	// Switches on or off all queries.
 	$smwgIQEnabled = true;
