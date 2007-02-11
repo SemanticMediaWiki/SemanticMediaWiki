@@ -123,7 +123,7 @@ define('SMW_IQ_PRINT_ASEL', 4);  // print certain attribute values selected by t
 
 /**
  * A simple data container for storing the essential components of SQL queries.
- * Used to have a struct as convenient reutrn value to functions that construct queries.
+ * Used to have a struct as convenient return value to functions that construct queries.
  */
 class SMWSQLQuery {
 	public $mConditions; // SQL conditions as a string
@@ -132,9 +132,9 @@ class SMWSQLQuery {
 	public $mOrderBy; // NULL or name of a single field by which the result should be ordered
 	public $mFixedSubject; // true if the subject of the query has been given explicitly
 	public $mPrint; // array of things to print; format: id=>array(label,mode[,namestring[,datavalue]])
-	
+
 	public $mDebug; // some field for debugging //DEBUG
-	
+
 	function SMWSQLQuery() {
 		$this->mConditions = '';
 		$this->mTables = '';
@@ -167,7 +167,7 @@ class SMWSQLQuery {
  * mainlabel -- Label to use for the column that shows the main subjects. Also used to indicate that
  *              the subject should be displayed in cases where it would normally be hidden.
  * format  -- Either 'list', 'ul' (for unordered bullet list), 'ol' (ordered and numbered list), 
- *            'table', 'broadtable', 'timeline', 'eventline', 'embedded', or 'auto' (default).
+ *            'table', 'broadtable', 'timeline', 'eventline', 'embedded', 'template' or 'auto' (default).
  * Some formats have additional parameters:
  *   sep (list only) -- Customized separator string.
  */
@@ -178,7 +178,7 @@ class SMWInlineQuery {
 	 * formats. The formats 'table' and 'list' are defaults that cannot be disabled. The format 'broadtable'
 	 * should not be disabled either in order not to break Special:ask.
 	 */
-	static $formats = array('table','list','ol','ul','broadtable','embedded','timeline','eventline');
+	static $formats = array('table','list','ol','ul','broadtable','embedded','timeline','eventline','template');
 
 	private $mInline; // is this really an inline query, i.e. are results used in an article or not? (bool)
 
@@ -214,6 +214,7 @@ class SMWInlineQuery {
 	private $mQueryResult; // retrieved query result
 
 	// other stuff
+	private $mHTMLPrinter; // is the current printer expecting HTML (true) or wikitext (false) for labels?
 	private $mLinker; // we make our own linker for creating the links -- TODO: is this bad?
 
 	public function SMWInlineQuery($param = array(), $inline = true) {
@@ -273,6 +274,15 @@ class SMWInlineQuery {
 			$this->mFormat = strtolower($param['format']);
 			if ( !in_array($this->mFormat,SMWInlineQuery::$formats) ) 
 				$this->mFormat = 'auto'; // If it is an unknown format, default to list again
+		}
+		// TODO: of course the printer should specify the following, but links are currently
+		// created during query parsing, while printers might be selected only after this.
+		// This will be fixed by cleaning up the query parsing code to not create full links
+		// at a later stage.
+		if ($this->mFormat == 'template') {
+			$this->mHTMLPrinter = false;
+		} else {
+			$this->mHTMLPrinter = true;
 		}
 		if (array_key_exists('intro', $param)) {
 			$this->mIntro = htmlspecialchars(str_replace('_', ' ', $param['intro']));
@@ -539,6 +549,9 @@ class SMWInlineQuery {
 				break;
 			case 'embedded':
 				$printer = new SMWEmbeddedPrinter($this,$sq);
+				break;
+			case 'template':
+				$printer = new SMWTemplatePrinter($this,$sq);
 				break;
 			default: $printer = new SMWListPrinter($this,$sq);
 		}
@@ -901,14 +914,14 @@ class SMWInlineQuery {
 
 	/**
 	 * Create output string for an article title (possibly including namespace)
-	 * as given by $text. 
+	 * as given by $text.
 	 *
 	 * $subject states whether the given title is the subject (to which special
 	 * settings for linking apply).
 	 * If $label is null the standard label of the given article will be used.
 	 * If $label is the empty string, an empty string is returned.
 	 * $linked states whether the result should be a hyperlink
-	 * $exists states whether $text is known to be anexisting article, in which 
+	 * $exists states whether $text is known to be an existing article, in which 
 	 *     case we can save a DB lookup when creating links.
 	 */
 	public function makeTitleString($text,$label,$linked,$exists=false) {
@@ -918,9 +931,13 @@ class SMWInlineQuery {
 			return $text; // TODO maybe report an error here?
 		} elseif ( $linked ) {
 			if ( NULL === $label ) $label = $title->getText();
-			if ($exists)
-				return $this->mLinker->makeKnownLinkObj($title, $label);
-			else return $this->mLinker->makeLinkObj($title, $label);
+			if ($this->mHTMLPrinter) {
+				if ($exists)
+					return $this->mLinker->makeKnownLinkObj($title, $label);
+				else return $this->mLinker->makeLinkObj($title, $label);
+			} else {
+				return '[[' . $title->getPrefixedText() . '|' . $label . ']]';
+			}
 		} else {
 			return $title->getText(); // TODO: shouldn't this default to $label?
 		}

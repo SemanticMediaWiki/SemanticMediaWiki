@@ -419,7 +419,7 @@ class SMWEmbeddedPrinter implements SMWQueryPrinter {
 						}
 						$article_namespace = $cur[1];
 						$article_title = $cur[2]; // TODO: ouch .. we need to check whether this exists
-						if ((NULL != $article_title) and ($article_title != '')) {
+						if ( (NULL != $article_title) and ('' != $article_title) ) {
 							$title_text = $article_namespace;
 							if ($title_text != '') $title_text .= ':';
 							$title_text .= $article_title;
@@ -448,6 +448,69 @@ class SMWEmbeddedPrinter implements SMWQueryPrinter {
 		}
 		$result .= $footer;
 		
+		$smwgStoreActive = $old_smwgStoreActive;
+		return $result;
+	}
+}
+
+/**
+ * Printer for template data. Passes a result a result row as anonymous parameters to 
+ * a given template (which might ignore them or not) and prints the result. Values 
+ */
+class SMWTemplatePrinter implements SMWQueryPrinter {
+	private $mIQ; // the querying object that called the printer
+	private $mQuery; // the query that was executed and whose results are to be printed
+
+	public function SMWTemplatePrinter($iq, $query) {
+		$this->mIQ = $iq;
+		$this->mQuery = $query;
+	}
+
+	public function printResult() {
+		// handle factbox
+		global $smwgStoreActive, $wgTitle;
+		$old_smwgStoreActive = $smwgStoreActive;
+		$smwgStoreActive = false; // no annotations stored, no factbox printed
+
+		// print all result rows
+		$result = $this->mIQ->getIntro();
+		$params = $this->mIQ->getParameters();
+		if (array_key_exists('template', $params)) {
+			$templatename = $params['template'];
+		} else {
+			return 'Please set parameter "template" for <ask> to work.'; // TODO: internationalise
+		}
+
+		$parser_options = new ParserOptions();
+		$parser_options->setEditSection(false);  // embedded sections should not have edit links
+		$parser = new Parser();
+		while ( $row = $this->mIQ->getNextRow() ) {
+			$wikitext = '';
+			$firstcol = true;
+			foreach ($this->mQuery->mPrint as $print_data) {
+				$iterator = $this->mIQ->getIterator($print_data,$row,$firstcol);
+				$wikitext .= "|";
+				$first = true;
+				while ($cur = $iterator->getNext()) {
+					if ($first) $first = false; else $wikitext .= ', ';
+					$wikitext .= $cur[0];
+				}
+				$firstcol = false;
+			}
+			$parserOutput = $parser->parse('{{' . $templatename . $wikitext . '}}', $wgTitle, $parser_options);
+			$result .= $parserOutput->getText();
+		}
+		// show link to more results
+		if ($this->mIQ->isInline() && $this->mIQ->hasFurtherResults()) {
+			$label = $this->mIQ->getSearchLabel();
+			if ($label === NULL) { //apply defaults
+				$label = wfMsgForContent('smw_iq_moreresults');
+			}
+			if ($label != '') {
+				$result .= '<a href="' . $this->mIQ->getQueryURL() . '">' . $label . '</a>';
+			}
+		}
+
 		$smwgStoreActive = $old_smwgStoreActive;
 		return $result;
 	}
