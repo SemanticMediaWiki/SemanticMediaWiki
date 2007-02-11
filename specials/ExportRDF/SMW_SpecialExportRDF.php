@@ -10,6 +10,7 @@
 if (!defined('MEDIAWIKI')) die();
 
 //require_once($smwgIP . '/includes/SMW_Storage.php');
+global $IP;
 require_once( "$IP/includes/SpecialPage.php" );
 
 $wgExtensionFunctions[] = "wfExportRDFExtension";
