@@ -85,8 +85,8 @@ require_once('SMW_QueryPrinters.php');
 	$smwgIQSortingEnabled = true;
 
 // first, we register a hook that will register a hook in the parser
-global $wgHooks;
-$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries';
+// global $wgHooks;
+// $wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries';
 
 // This hook registers a hook in the parser
 function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
@@ -467,7 +467,7 @@ class SMWInlineQuery {
 		$parser = new Parser();
 		$parserOptions = new ParserOptions();
 		//$parserOptions->setInterfaceMessage( true );
-		$parser->startExternalParse( $wgTitle, $parserOptions, OT_MSG );
+		$parser->startExternalParse( $wgTitle, $parserOptions, OT_HTML );
 		$text = $parser->transformMsg( $text, $parserOptions );
 
 		$this->dbr =& wfGetDB( DB_SLAVE ); // Note: if this fails, there were worse errors before; don't check it

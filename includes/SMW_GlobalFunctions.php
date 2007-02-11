@@ -91,6 +91,7 @@ function enableSemantics($server) {
 	$wgHooks['ArticleDelete'][] = 'smwfDeleteHook';
 	$wgHooks['TitleMoveComplete'][]='smwfMoveHook';
 	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeader';
+	$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries'; // a hook for registering the <ask> parser hook
 
 	/**********************************************/
 	/***** credits (see "Special:Version")    *****/
