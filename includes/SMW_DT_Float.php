@@ -3,6 +3,8 @@
  * This file contains the basic float type and unit conversion methods.
  */
 
+global $smwgContLang;
+
 /**
  * Class for managing floating point types. Parses floating point
  * number strings, supports unit conversion in subclasses, and
@@ -348,7 +350,6 @@ class SMWFloatTypeHandler implements SMWTypeHandler{
 	}
 
 } // End SMWFloatTypeHandler}
-
 
 SMWTypeHandlerFactory::registerTypeHandler($smwgContLang->getDatatypeLabel('smw_float'),
                         new SMWFloatTypeHandler());
