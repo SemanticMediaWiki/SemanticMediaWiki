@@ -167,7 +167,8 @@ class SMWSQLQuery {
  * mainlabel -- Label to use for the column that shows the main subjects. Also used to indicate that
  *              the subject should be displayed in cases where it would normally be hidden.
  * format  -- Either 'list', 'ul' (for unordered bullet list), 'ol' (ordered and numbered list), 
- *            'table', 'broadtable', 'timeline', 'eventline', 'embedded', 'template' or 'auto' (default).
+ *            'table', 'broadtable', 'timeline', 'eventline', 'embedded', 'template', 'count', 
+ *            'debug', or 'auto' (default).
  * Some formats have additional parameters:
  *   sep (list only) -- Customized separator string.
  */
@@ -178,7 +179,7 @@ class SMWInlineQuery {
 	 * formats. The formats 'table' and 'list' are defaults that cannot be disabled. The format 'broadtable'
 	 * should not be disabled either in order not to break Special:ask.
 	 */
-	static $formats = array('table','list','ol','ul','broadtable','embedded','timeline','eventline','template');
+	static $formats = array('table', 'list', 'ol', 'ul', 'broadtable', 'embedded', 'timeline', 'eventline', 'template', 'count', 'debug');
 
 	private $mInline; // is this really an inline query, i.e. are results used in an article or not? (bool)
 
@@ -197,7 +198,6 @@ class SMWInlineQuery {
 	private $mDefault; // default return value for empty queries
 	private $mShowHeaders; // should the headers (property names) be printed?
 	private $mMainLabel; // label used for displaying the subject, or NULL if none was given
-	private $mShowDebug; // should debug output be generated?
 
 	// fields used during query processing:
 	private $mQueryText; // the original query text for future reference
@@ -235,7 +235,6 @@ class SMWInlineQuery {
 		$this->mDefault = '';
 		$this->mShowHeaders = true;
 		$this->mMainLabel = NULL;
-		$this->mShowDebug = false;
 
 		$this->mLinker = new Linker();
 
@@ -318,9 +317,6 @@ class SMWInlineQuery {
 		}
 		if (array_key_exists('mainlabel', $param)) {
 			$this->mMainLabel = htmlspecialchars($param['mainlabel']);
-		}
-		if (array_key_exists('debug', $param)) {
-			$this->mShowDebug = true;
 		}
 	}
 
@@ -489,20 +485,26 @@ class SMWInlineQuery {
 		$this->mPrintoutCount = 0;
 		$sq = $this->parseQuery($text);
 
-		$sq->mSelect[0] .= ' AS page_id';
-		$sq->mSelect[1] .= ' AS page_title';
-		$sq->mSelect[2] .= ' AS page_namespace';
-
-		$sql_options = array('LIMIT' => $this->mLimit + 1, 'OFFSET' => $this->mOffset); // additional options (order by, limit)
-		if ( $smwgIQSortingEnabled ) {
-			if ( NULL == $sq->mOrderBy ) {
-				$sql_options['ORDER BY'] = "page_title $this->mOrder "; // default
-			} else {
-				$sql_options['ORDER BY'] = "$sq->mOrderBy $this->mOrder ";
+		$sql_options = array();
+		if ($this->mFormat == 'count') {
+			$sq->mSelect = array('COUNT(' . $sq->mSelect[0] . ') AS count'); // just count
+		} else {
+			$sq->mSelect[0] .= ' AS page_id';
+			$sq->mSelect[1] .= ' AS page_title';
+			$sq->mSelect[2] .= ' AS page_namespace';
+	
+			$sql_options['LIMIT'] = $this->mLimit + 1;
+			$sql_options['OFFSET'] = $this->mOffset;
+			if ( $smwgIQSortingEnabled ) {
+				if ( NULL == $sq->mOrderBy ) {
+					$sql_options['ORDER BY'] = "page_title $this->mOrder "; // default
+				} else {
+					$sql_options['ORDER BY'] = "$sq->mOrderBy $this->mOrder ";
+				}
 			}
 		}
 
-		if ($this->mShowDebug) {
+		if ($this->mFormat == 'debug') {
 			return $sq->mDebug; // DEBUG
 		}
 
@@ -519,6 +521,16 @@ class SMWInlineQuery {
 		//No results, TODO: is there a better way than calling numRows (which counts all results)?
 		if ( (!$this->mQueryResult) || (0 == $this->dbr->numRows( $this->mQueryResult )) ) return $this->mDefault;
 
+		if ($this->mFormat == 'count') {
+			$row = $this->dbr->fetchRow( $this->mQueryResult );
+			if ($row['count'] !== '0') {
+				return $this->mIntro . $row['count'];
+			} else {
+				if ($this->mDefault === '') $this->mDefault = '0';
+				return $this->mDefault;
+			}
+		}
+
 		$this->mDisplayCount = min($this->mLimit, $this->dbr->numRows( $this->mQueryResult ));
 
 		// Cases in which to print the subject:
@@ -530,7 +542,7 @@ class SMWInlineQuery {
 			}
 		}
 
-		//Determine format if 'auto', also for backwards compatibility
+		// Guess suitable format if 'auto' is selected
 		if ( 'auto' == $this->mFormat ) {
 			if ( (count($sq->mPrint)>1) && ($this->mLimit > 0) )
 				$this->mFormat = 'table';
