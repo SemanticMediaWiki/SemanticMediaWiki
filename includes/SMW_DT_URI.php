@@ -58,7 +58,7 @@ class SMWURITypeHandler implements SMWTypeHandler {
 	function getXSDType() {
 		switch ($this->mMode) {
 			case SMW_URI_MODE_EMAIL:
-				// if this had mailto: in front in ExportRDF then it could be #anyURI
+				// Bug 8956 if this had mailto: in front in ExportRDF then it could be #anyURI
 				return 'http://www.w3.org/2001/XMLSchema#string';
 			case SMW_URI_MODE_URL:
 				return 'http://www.w3.org/2001/XMLSchema#anyURI';
