@@ -6,7 +6,7 @@
  */
 
 if (!defined('MEDIAWIKI')) die();
-
+global $wgExtensionFunctions;
 $wgExtensionFunctions[] = "wfSMWRelations";
 
 function wfSMWRelations()

@@ -8,7 +8,7 @@
  */
 
 if (!defined('MEDIAWIKI')) die();
-
+global $wgExtensionFunctions;
 $wgExtensionFunctions[] = "wfSMWAdminExtension";
 
 function wfSMWAdminExtension()

@@ -9,7 +9,7 @@
  */
 
 if (!defined('MEDIAWIKI')) die();
-
+global $wgExtensionFunctions;
 $wgExtensionFunctions[] = "wfSearchTripleExtension";
 
 function wfSearchTripleExtension()

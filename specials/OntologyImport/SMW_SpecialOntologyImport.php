@@ -10,7 +10,7 @@
  */
 
 if (!defined('MEDIAWIKI')) die();
-
+global $wgExtensionFunctions;
 $wgExtensionFunctions[] = "wfOntologyImportExtension";
 
 global $IP;

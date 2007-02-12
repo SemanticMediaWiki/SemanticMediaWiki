@@ -12,7 +12,7 @@
 
 
 if (!defined('MEDIAWIKI')) die();
-
+global $wgExtensionFunctions;
 $wgExtensionFunctions[] = "wfSMWTypes";
 
 function wfSMWTypes()

@@ -7,7 +7,7 @@
  */
 
 if (!defined('MEDIAWIKI')) die();
-
+global $wgExtensionFunctions;
 $wgExtensionFunctions[] = "wfSMWUnusedRelations";
 
 function wfSMWUnusedRelations()
