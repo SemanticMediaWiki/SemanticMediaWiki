@@ -123,18 +123,17 @@ class SMWGeographicLocationTypeHandler implements SMWTypeHandler {
 		          str_replace(' ','&nbsp;',$values['longDecimal']),
 		          'long');
 
-		// infoliks for factbox
+		// infolinks for factbox
 		$datavalue->addQuicksearchLink();
 		
-		// the map links are hardcoded and can be changed/extended manually
 		if ($long['dir'] == wfMsgForContent('smw_abb_west') ) {
 			$signlong = '-';
 		} else $signlong = '';
 		if ($lat['dir'] == wfMsgForContent('smw_abb_south') ) {
 			$signlat = '-';
 		} else $signlat = '';
-		// Create links to mapping services based ona wiki-editable message. The parameters available
-		// in the messages are:
+		// Create links to mapping services based on a wiki-editable message. The parameters 
+		// available to the message are:
 		// $1: latitude integer degrees, $2: longitude integer degrees
 		// $3: latitude integer minutes, $4: longitude integer minutes
 		// $5: latitude integer seconds, $6: longitude integer seconds,
