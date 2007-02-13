@@ -487,7 +487,7 @@ class SMWInlineQuery {
 
 		$sql_options = array();
 		if ($this->mFormat == 'count') {
-			$sq->mSelect = array('COUNT(' . $sq->mSelect[0] . ') AS count'); // just count
+			$sq->mSelect = array('COUNT(DISTINCT ' . $sq->mSelect[0] . ') AS count'); // just count
 		} else {
 			$sq->mSelect[0] .= ' AS page_id';
 			$sq->mSelect[1] .= ' AS page_title';
