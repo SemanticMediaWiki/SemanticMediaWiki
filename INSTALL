@@ -36,7 +36,7 @@ For a proper legal disclaimer, see the file "COPYING".
 == Installation ==
 
 If you upgrade an existing installation of Semantic MediaWiki, also read the
-remarks in the section "Notes on upgrading" below!
+remarks in the section "Notes on Upgrading" below!
 
 (1) Extract the archive or check out the current files from SVN to obtain the
     directory "SemanticMediaWiki" that contains all relevant files. Copy this
@@ -72,9 +72,9 @@ can assignemts to respective parameters directly after the line
 "include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');"
 in your LocalSetting.php. For example, one can write
 
-include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');
-$smwgIQDefaultLinking = 'all';
-enableSemantics(example.org);
+ include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');
+ $smwgIQDefaultLinking = 'all';
+ enableSemantics(example.org);
 
 to enable links on all results returned by inline queries. The parameters that
 are available are documented in the files SMW_Settings.php (general) and
@@ -98,7 +98,7 @@ PHP5 but an older MediaWiki version, additional patches/modifications might be
 needed. Download an older release of SMW and have a look at the included INSTALL
 instructions to find out whether other changes are recommended therein.
 
-== Notes on upgrading ==
+== Notes on Upgrading ==
 
 The below instructions describe how to upgrade from one minor version to the next, e.g.
 from 0.2 (or 0.2b) to 0.3. If you missed one of the updates (e.g. if you want to jump
@@ -122,10 +122,29 @@ The type "Geographic area" and "Geographic length" are no longer built in. But y
 easily create them by yourself with the new type customisation features. See the docu at
 ontoworld.org for details.
 
+
+== Verifying your Installation ==
+
+Go to the Special:Version page and you should see Semantic MediaWiki (version nn) 
+listed as a Parser Hook and several wfSMWXxxx functions listed as 
+Extension Functions.
+
+Create a regular wiki page named "TestSMW", and in it enter the wiki text
+  Relation test:  [[testrelation::Dummypage]]
+  Attribute test: [[testattribute:=dummyvalue]]
+
+when you preview and save the page, the SMW "fact box" should appear showing the 
+relation Testrelation to Dummypage and the attribute Testattribute with a warning 
+(since you haven't given it a type).
+
+If you don't get these results, check the steps in the Installation section, consult 
+the FAQ section, then contact the developers (see the Contact section). 
+
+
 == FAQ ==
 
 - Problem: I installed Semantic MediaWiki and all went fine. What should I do
-  with it now?
+	with it now?
 
   Semantic MediaWiki is there to help you to structure your data, so that you
   can browse and search it easier. Typically, you should add semantic markup
@@ -162,8 +181,12 @@ ontoworld.org for details.
   information. Cleaning too specific and possibly contradictory annotations
   can be more problematic.
 
+  Regularly review users' use of categories, relations, attributes, and types
+  using the Special pages for each.
+  
+
 - Problem: Previewing or storing articles with semantic relations causes
-  database errors.
+	database errors.
 
   Your database was not initialized properly. Go to Special:SMWAdmin for
   instructions.
