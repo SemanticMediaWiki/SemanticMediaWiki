@@ -81,23 +81,34 @@ class SMWDataValue {
 	var $others;
 
 	/**
-	 * Array of desired units.
+	 * Array of desired units, used by attributes of Type:Linear
+	 * and also for formatting of attributes of Type:DateTime.
 	 * The first item in the array is the main value, 
 	 * the rest appear in parentheses in factbox.
 	 * Optional, overrides the Datatype's getUnits().
 	 * array() if unset.
+	 * 
+	 * FALSE at initialization.
+	 * see getDesiredUnits()
+
 	 */
 	var $desiredUnits;
 	/**
-	 * Array of possible values.
+	 * Array of possible values, used by attributes of Type:Enumeration.
+	 * 
+	 * FALSE at initialization if not set
+	 * @see getPossibleValues() 
 	 */
 	var $possibleValues;
 	/**
-	 * Array of links (or rather of message ids that contain link templates). 
+	 * Array of links (or rather of message IDs that contain link templates). 
 	 * Some datatypes will look for added links and instantiate them with their
 	 * processed values to point to helpful online resources. The strings in this
 	 * array point to messages which contain the actual link strings, so those
 	 * need to be resolved first.
+	 * 
+	 * FALSE at initialization.
+	 * @see getServiceLinks()
 	 */
 	var $serviceLinks;
 	// the following can be generated automatically, and are cached afterwards
@@ -117,15 +128,15 @@ class SMWDataValue {
 	 * static methods provided below.
 	 * @access private
 	 */
-	function SMWDataValue($type = NULL, $desiredUnits = array()) {
+	function SMWDataValue($type = NULL, $desiredUnits = false) {
 		$this->clear();
 
 		$this->type_handler = $type;
 		$this->skin = NULL;
 		$this->attribute = false;
 		$this->desiredUnits = $desiredUnits;
-		$this->possibleValues = array();
-		$this->serviceLinks = array();
+		$this->possibleValues = false;
+		$this->serviceLinks = false;
 	}
 
 	/*********************************************************************/
@@ -143,11 +154,9 @@ class SMWDataValue {
 		$result = new SMWDataValue($type);
 		$result->setSkin($skin);
 		$result->attribute = $attribute;
-		$result->desiredUnits = SMWTypeHandlerFactory::getUnitsList($attribute);
 		// TODO: Maybe only get this for attributes types that can support it, or only get if requested?
-		$result->possibleValues = SMWTypeHandlerFactory::getPossibleValues($attribute);
-		$result->serviceLinks = SMWTypeHandlerFactory::getServiceLinks($attribute);
-		if ($value !== false)  $result->setUserValue($value);
+		if ($value !== false)
+			$result->setUserValue($value);
 		return $result;
 	}
 
@@ -162,7 +171,8 @@ class SMWDataValue {
 		$type = SMWTypeHandlerFactory::getSpecialTypeHandler($specialprop);
 		$result = new SMWDataValue($type);
 		$result->setSkin($skin);
-		if ($value !== false)  $result->setUserValue($value);
+		if ($value !== false)
+		  $result->setUserValue($value);
 		return $result;
 	}
 
@@ -275,8 +285,9 @@ class SMWDataValue {
 	function addServiceLinks() {
 		$args = func_get_args();
 		array_unshift($args, ''); // add a 0 element as placeholder
+		$serviceLinks = $this->getServiceLinks();
 
-		foreach ($this->serviceLinks as $sid) {
+		foreach ($serviceLinks as $sid) {
 			$args[0] = "smw_service_$sid";
 			$text = call_user_func_array('wfMsgForContent', $args);
 			$links = preg_split("([\n][\s]?)", $text);
@@ -325,8 +336,9 @@ class SMWDataValue {
 		$this->desiredUnits = $desiredUnits;
 	}
 
+
 	/**
-	 * Specify an array of service links. See SMWDatavalue::serviceLinks for details.
+	 * Specify an array of service links. See SMWDataValue::serviceLinks for details.
 	 */
 	function setServiceLinks($serviceLinks) {
 		$this->serviceLinks = $serviceLinks;
@@ -500,14 +512,45 @@ class SMWDataValue {
 	 * Return the array of desired units (possibly empty if not given).
 	 */
 	function getDesiredUnits() {
-		return $this->desiredUnits;
+		// If we don't have a value for this, get it from the attribute.
+		if ($this->desiredUnits === false && $this->attribute != false) {
+			$this->desiredUnits = SMWTypeHandlerFactory::getUnitsList($this->attribute);
+		}
+		if ($this->desiredUnits === false) {
+			return Array();
+		} else {
+			return $this->desiredUnits;
+		}
 	}
 
 	/**
-	 * Return the possible values (possibly empty if not given).
+	 * Return the array of service links (possibly empty if not given).
+	 */
+	function getServiceLinks() {
+		// If we don't have a value for this, get it from the attribute.
+		if ($this->serviceLinks === false && $this->attribute != false) {
+			$this->serviceLinks = SMWTypeHandlerFactory::getServiceLinks($this->attribute);
+		}
+		if ($this->serviceLinks === false) {
+			return Array();
+		} else {
+			return $this->serviceLinks;
+		}
+	}
+
+	/**
+	 * Return the array of possible values (possibly empty if not given).
 	 */
 	function getPossibleValues() {
-		return $this->possibleValues;
+		// If we don't have a value for this, get it from the attribute.
+		if ($this->possibleValues === false && $this->attribute != false) {
+			$this->possibleValues = SMWTypeHandlerFactory::getPossibleValues($this->attribute);
+		}
+		if ($this->possibleValues === false) {
+			return Array();
+		} else {
+			return $this->possibleValues;
+		}
 	}
 
 	/**
