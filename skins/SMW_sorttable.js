@@ -1,7 +1,8 @@
 // Developed by Stuart Langridge, shared under the MIT license
 // from http://www.kryogenix.org/code/browser/sorttable/
 
-addEvent(window, "load", sortables_init);
+//addEvent(window, "load", sortables_init);
+addOnLoadHook(sortables_init);
 
 var SORT_COLUMN_INDEX;
 var SMW_PATH;
