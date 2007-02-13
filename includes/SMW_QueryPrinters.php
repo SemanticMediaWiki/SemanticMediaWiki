@@ -484,6 +484,7 @@ class SMWTemplatePrinter implements SMWQueryPrinter {
 		$parser_options = new ParserOptions();
 		$parser_options->setEditSection(false);  // embedded sections should not have edit links
 		$parser = new Parser();
+		$parserinput = "";
 		while ( $row = $this->mIQ->getNextRow() ) {
 			$wikitext = '';
 			$firstcol = true;
@@ -497,9 +498,10 @@ class SMWTemplatePrinter implements SMWQueryPrinter {
 				}
 				$firstcol = false;
 			}
-			$parserOutput = $parser->parse('{{' . $templatename . $wikitext . '}}', $wgTitle, $parser_options);
-			$result .= $parserOutput->getText();
+			$parserinput .= '{{' . $templatename . $wikitext . '}}';
 		}
+		$parserOutput = $parser->parse($parserinput, $wgTitle, $parser_options);
+		$result .= $parserOutput->getText();
 		// show link to more results
 		if ($this->mIQ->isInline() && $this->mIQ->hasFurtherResults()) {
 			$label = $this->mIQ->getSearchLabel();
