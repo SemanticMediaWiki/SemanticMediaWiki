@@ -1,20 +1,22 @@
 // Developed by Stuart Langridge, shared under the MIT license
 // from http://www.kryogenix.org/code/browser/sorttable/
+// Modified for SMW (in fact, we might rewrite the code since we
+// usually have very special tables to sort)
 
-//addEvent(window, "load", sortables_init);
-addOnLoadHook(sortables_init);
+addEvent(window, "load", smw_sortables_init);
+//addOnLoadHook(sortables_init);
 
 var SORT_COLUMN_INDEX;
 var SMW_PATH;
 
-function sortables_init() {
+function smw_sortables_init() {
 	// The following is a hack to find out the path to our skin directory
 	// I am happy to change this into anything else if there is another way ...
 	if (!document.getElementById) return;
 	st = document.getElementById("SMW_sorttable_script_inclusion");
 	SMW_PATH = st.src.substring(0, st.src.length-17);
 	// Preload images
-	preload_images();
+	smw_preload_images();
 	// Now find the tables
 	//if (!document.getElementsByTagName) return;
 	//tbls = document.getElementsByTagName("SMW_headscript_sorttable");
@@ -25,12 +27,12 @@ function sortables_init() {
         thisTbl = tbls[ti];
         if (((' '+thisTbl.className+' ').indexOf("smwtable") != -1) && (thisTbl.id)) {
             //initTable(thisTbl.id);
-            ts_makeSortable(thisTbl);
+            smw_makeSortable(thisTbl);
         }
     }
 }
 
-function preload_images() {
+function smw_preload_images() {
 	// preload icons needed by SMW
 	if (document.images) {
 		pic1= new Image(12,14);
@@ -42,7 +44,7 @@ function preload_images() {
 	}
 }
 
-function ts_makeSortable(table) {
+function smw_makeSortable(table) {
     if (table.rows && table.rows.length > 0) {
         var firstRow = table.rows[0];
     }
@@ -52,14 +54,14 @@ function ts_makeSortable(table) {
     // We have a first row that is a header; make its contents clickable links:
     for (var i=0;i<firstRow.cells.length;i++) {
         var cell = firstRow.cells[i];
-        //var txt = ts_getInnerText(cell); // unused -- we preserve the inner html
+        //var txt = smw_getInnerText(cell); // unused -- we preserve the inner html
         cell.innerHTML = '<a href="#" class="sortheader" '+
-        'onclick="ts_resortTable(this, '+i+');return false;">' +
+        'onclick="smw_resortTable(this, '+i+');return false;">' +
         '<span class="sortarrow"><img alt="[&lt;&gt;]" src="' + SMW_PATH + '/sort_none.gif"/></span></a>&nbsp;<span style="margin-left: 0.3em; margin-right: 1em;">' + cell.innerHTML + '</span>'; // the &nbsp; is for Opera ...
     }
 }
 
-function ts_getInnerText(el) {
+function smw_getInnerText(el) {
 	if (typeof el == "string") return el;
 	if (typeof el == "undefined") { return el };
 	if (el.innerText) return el.innerText;	//Not needed but it is faster
@@ -70,7 +72,7 @@ function ts_getInnerText(el) {
 	for (var i = 0; i < l; i++) {
 		switch (cs[i].nodeType) {
 			case 1: //ELEMENT_NODE
-				str += ts_getInnerText(cs[i]);
+				str += smw_getInnerText(cs[i]);
 				break;
 			case 3:	//TEXT_NODE
 				str += cs[i].nodeValue;
@@ -80,25 +82,25 @@ function ts_getInnerText(el) {
 	return str;
 }
 
-function ts_resortTable(lnk,clid) {
+function smw_resortTable(lnk,clid) {
     // get the span
     var span;
     for (var ci=0;ci<lnk.childNodes.length;ci++) {
         if (lnk.childNodes[ci].tagName && lnk.childNodes[ci].tagName.toLowerCase() == 'span') span = lnk.childNodes[ci];
     }
-    var spantext = ts_getInnerText(span);
+    var spantext = smw_getInnerText(span);
     var td = lnk.parentNode;
     var column = clid || td.cellIndex;
-    var table = getParent(td,'TABLE');
+    var table = smw_getParent(td,'TABLE');
 
     // Work out a type for the column
     if (table.rows.length <= 1) return;
-    var itm = ts_getInnerText(table.rows[1].cells[column]);
-    sortfn = ts_sort_caseinsensitive;
-    if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d\d\d$/)) sortfn = ts_sort_date;
-    if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d$/)) sortfn = ts_sort_date;
-    if (itm.match(/^[£$]/)) sortfn = ts_sort_currency;
-    if (itm.match(/^[\d\.]+$/)) sortfn = ts_sort_numeric;
+    var itm = smw_getInnerText(table.rows[1].cells[column]);
+    sortfn = smw_sort_caseinsensitive;
+    if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d\d\d$/)) sortfn = smw_sort_date;
+    if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d$/)) sortfn = smw_sort_date;
+    if (itm.match(/^[£$]/)) sortfn = smw_sort_currency;
+    if (itm.match(/^[\d\.]+$/)) sortfn = smw_sort_numeric;
     SORT_COLUMN_INDEX = column;
     var firstRow = new Array();
     var newRows = new Array();
@@ -133,7 +135,7 @@ function ts_resortTable(lnk,clid) {
     var allspans = document.getElementsByTagName("span");
     for (var ci=0;ci<allspans.length;ci++) {
         if (allspans[ci].className == 'sortarrow') {
-            if (getParent(allspans[ci],"table") == getParent(lnk,"table")) { // in the same table as us?
+            if (smw_getParent(allspans[ci],"table") == smw_getParent(lnk,"table")) { // in the same table as us?
                 allspans[ci].innerHTML = '<img alt="[&lt;&gt;]" src="' + SMW_PATH + '/sort_none.gif"/>';
             }
         }
@@ -142,17 +144,17 @@ function ts_resortTable(lnk,clid) {
     span.innerHTML = ARROW;
 }
 
-function getParent(el, pTagName) {
+function smw_getParent(el, pTagName) {
 	if (el == null) return null;
 	else if (el.nodeType == 1 && el.tagName.toLowerCase() == pTagName.toLowerCase())	// Gecko bug, supposed to be uppercase
 		return el;
 	else
-		return getParent(el.parentNode, pTagName);
+		return smw_getParent(el.parentNode, pTagName);
 }
-function ts_sort_date(a,b) {
+function smw_sort_date(a,b) {
     // y2k notes: two digit years less than 50 are treated as 20XX, greater than 50 are treated as 19XX
-    aa = ts_getInnerText(a.cells[SORT_COLUMN_INDEX]);
-    bb = ts_getInnerText(b.cells[SORT_COLUMN_INDEX]);
+    aa = smw_getInnerText(a.cells[SORT_COLUMN_INDEX]);
+    bb = smw_getInnerText(b.cells[SORT_COLUMN_INDEX]);
     if (aa.length == 10) {
         dt1 = aa.substr(6,4)+aa.substr(3,2)+aa.substr(0,2);
     } else {
@@ -172,31 +174,31 @@ function ts_sort_date(a,b) {
     return 1;
 }
 
-function ts_sort_currency(a,b) {
-    aa = ts_getInnerText(a.cells[SORT_COLUMN_INDEX]).replace(/[^0-9.]/g,'');
-    bb = ts_getInnerText(b.cells[SORT_COLUMN_INDEX]).replace(/[^0-9.]/g,'');
+function smw_sort_currency(a,b) {
+    aa = smw_getInnerText(a.cells[SORT_COLUMN_INDEX]).replace(/[^0-9.]/g,'');
+    bb = smw_getInnerText(b.cells[SORT_COLUMN_INDEX]).replace(/[^0-9.]/g,'');
     return parseFloat(aa) - parseFloat(bb);
 }
 
-function ts_sort_numeric(a,b) {
-    aa = parseFloat(ts_getInnerText(a.cells[SORT_COLUMN_INDEX]));
+function smw_sort_numeric(a,b) {
+    aa = parseFloat(smw_getInnerText(a.cells[SORT_COLUMN_INDEX]));
     if (isNaN(aa)) aa = 0;
-    bb = parseFloat(ts_getInnerText(b.cells[SORT_COLUMN_INDEX]));
+    bb = parseFloat(smw_getInnerText(b.cells[SORT_COLUMN_INDEX]));
     if (isNaN(bb)) bb = 0;
     return aa-bb;
 }
 
-function ts_sort_caseinsensitive(a,b) {
-    aa = ts_getInnerText(a.cells[SORT_COLUMN_INDEX]).toLowerCase();
-    bb = ts_getInnerText(b.cells[SORT_COLUMN_INDEX]).toLowerCase();
+function smw_sort_caseinsensitive(a,b) {
+    aa = smw_getInnerText(a.cells[SORT_COLUMN_INDEX]).toLowerCase();
+    bb = smw_getInnerText(b.cells[SORT_COLUMN_INDEX]).toLowerCase();
     if (aa==bb) return 0;
     if (aa<bb) return -1;
     return 1;
 }
 
-function ts_sort_default(a,b) {
-    aa = ts_getInnerText(a.cells[SORT_COLUMN_INDEX]);
-    bb = ts_getInnerText(b.cells[SORT_COLUMN_INDEX]);
+function smw_sort_default(a,b) {
+    aa = smw_getInnerText(a.cells[SORT_COLUMN_INDEX]);
+    bb = smw_getInnerText(b.cells[SORT_COLUMN_INDEX]);
     if (aa==bb) return 0;
     if (aa<bb) return -1;
     return 1;

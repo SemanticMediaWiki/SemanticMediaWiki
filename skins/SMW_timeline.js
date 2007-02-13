@@ -8,6 +8,8 @@ addEvent(window, "resize", onResize);
 
 var tl;
 
+//addOnLoadHook(smw_timeline_init);
+
 function smw_timeline_init() {
 	if (!document.getElementsByName) return;
 	tbls = document.getElementsByTagName("div");
