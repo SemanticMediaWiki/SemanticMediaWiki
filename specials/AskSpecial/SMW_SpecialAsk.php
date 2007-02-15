@@ -65,13 +65,13 @@ class SMW_AskPage {
 
 			// prepare navigation bar
 			if ($offset > 0) 
-				$navigation = '<a href="' . $skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&amp;limit=' . $limit . '&amp;query=' . urlencode($query) . '&amp;sort=' . urlencode($sort) .'&amp;order=' . urlencode($order)) . '">' . wfMsg('smw_ask_prev') . '</a>';
+				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '">' . wfMsg('smw_ask_prev') . '</a>';
 			else $navigation = wfMsg('smw_ask_prev');
 
 			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_ask_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $iq->getDisplayCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 			if ($iq->hasFurtherResults()) 
-				$navigation .= ' <a href="' . $skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&amp;limit=' . $limit . '&amp;query=' . urlencode($query) . '&amp;sort=' . urlencode($sort) .'&amp;order=' . urlencode($order)) . '">' . wfMsg('smw_ask_next') . '</a>';
+				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '">' . wfMsg('smw_ask_next') . '</a>';
 			else $navigation .= wfMsg('smw_ask_next');
 
 			$max = false; $first=true;
@@ -86,7 +86,7 @@ class SMW_AskPage {
 					$max = true;
 				}
 				if ( $limit != $l ) {
-					$navigation .= '<a href="' . $skin->makeSpecialUrl('Ask','offset=' . $offset . '&amp;limit=' . $l . '&amp;query=' . urlencode($query) . '&amp;sort=' . urlencode($sort) .'&amp;order=' . urlencode($order)) . '">' . $l . '</a>';
+					$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . $offset . '&limit=' . $l . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '">' . $l . '</a>';
 				} else {
 					$navigation .= '<b>' . $l . '</b>';
 				}
