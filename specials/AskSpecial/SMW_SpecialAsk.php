@@ -43,8 +43,9 @@ class SMW_AskPage {
 		// display query form
 		$spectitle = Title::makeTitle( NS_SPECIAL, 'Ask' );		
 		$docutitle = Title::newFromText(wfMsg('smw_ask_doculink'), NS_HELP);
-		$html = wfMsg('smw_ask_docu', $docutitle->getFullURL()) . "\n" .
-				'<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n";
+		$html = wfMsg('smw_ask_docu', $docutitle->getFullURL()) . "\n";
+		$html .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
+		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
 		$html .= '<textarea name="query" cols="40" rows="6">' . htmlspecialchars($query) . '</textarea><br />' . "\n";
 		
 		if ($smwgIQSortingEnabled) {
