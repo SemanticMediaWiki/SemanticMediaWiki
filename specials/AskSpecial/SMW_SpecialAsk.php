@@ -44,16 +44,16 @@ class SMW_AskPage {
 		$spectitle = Title::makeTitle( NS_SPECIAL, 'Ask' );		
 		$docutitle = Title::newFromText(wfMsg('smw_ask_doculink'), NS_HELP);
 		$html = wfMsg('smw_ask_docu', $docutitle->getFullURL()) . "\n" .
-				'<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="GET">' . "\n";
+				'<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n";
 		$html .= '<textarea name="query" cols="40" rows="6">' . htmlspecialchars($query) . '</textarea><br />' . "\n";
 		
 		if ($smwgIQSortingEnabled) {
 			$html .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort" value="' .
 					htmlspecialchars($sort) . '"/> <select name="order"><option ';
 			// TODO: don't show sort widgets if sorting is not enabled
-			if ($order == 'ASC') $html .= 'selected ';
+			if ($order == 'ASC') $html .= 'selected="selected" ';
 			$html .=  'value="ASC">' . wfMsg('smw_ask_ascorder') . '</option><option ';
-			if ($order == 'DESC') $html .= 'selected ';
+			if ($order == 'DESC') $html .= 'selected="selected" ';
 			$html .=  'value="DESC">' . wfMsg('smw_ask_descorder') . '</option></select> <br />';
 		}
 		$html .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . "\"/>\n</form>";

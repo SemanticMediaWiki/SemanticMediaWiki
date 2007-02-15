@@ -65,7 +65,7 @@ class SMWSpecialSearchTriple
 		
 		$title = Title::makeTitle( NS_SPECIAL, 'SearchTriple' );
 
-		$form .= '<form name="tripleSearch" action="' . $title->escapeLocalURL() . '" method="GET"><input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>';
+		$form .= '<form name="tripleSearch" action="' . $title->escapeLocalURL() . '" method="get"><input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>';
 		$form .= wfMsg('smw_searchtriple_docu') . "\n\n";
 // 			$form .= 
 // 			'<input id="rel" type="radio" name="searchtype" value="relation" checked="checked" /><label for="rel">Relation</label>'.
