@@ -54,18 +54,18 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 		// general is not compatible with XSD; but it should work
 		// for the restricted interval we currently support.
 		$date_part = strftime("%Y-%m-%d", $time);
-		$str_val = $date_part . strftime("T%H:%M:%S", $time); // always show time in XSD
+		$time_part = strftime("%H:%M:%S", $time);
+		$str_val = $date_part . 'T' .$time_part; // always show time in XSD.  TODO: Should I use PHP date('c') format for ISO8601?
 		$datavalue->setProcessedValues($v, $str_val, $time);
 
 		// Determine the user-visible string.		
 		if (count($desiredUnits) ==0) {
-			// The default user-visible string shows date, plus 
-			// time of day separated by space if it's significant.
+			// The default user-visible string shows date...
 			$user_val = $date_part;
-			// See if there is a significant time component.
-			// TODO: what about TimeZone?!
-			if ( abs($time - strtotime($str_val)) > 0.5) {
-				$user_val .= strftime(" %H:%M:%S", $time);
+			// ... followed by a space and the time if there is a significant time component.
+			// TODO: should I indicate the timezone in user-visible string?
+			if ( abs($time - strtotime($date_part)) > 0.5) {
+				$user_val .= ' ' . $time_part;
 			}
 			$datavalue->setPrintoutString($user_val);
 		} else {
