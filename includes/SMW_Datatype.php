@@ -5,7 +5,7 @@
  * formatting functions. In order to create new datatypes, copy
  * the simple string or integer type classes below into a separate
  * file, modify as appropriate, add a call to the registration
- * function (SMWTypeHandlerFactory::registerTypeHandler), and include 
+ * function (SMWTypeHandlerFactory::registerTypeHandler), and include
  * your file here or in LocalSettings.php after SMW was registered.
  *
  * @author Markus Krötzsch
@@ -21,6 +21,12 @@ require_once('SMW_Storage.php');
  */
 require_once('SMW_DT_Float.php');
 
+/**@ We need to always pull in DT_URI because it is the unit of the special
+ *   property Equivalent URI.
+ * TODO: remove this dependency. The special property needs to be checked for that
+ */
+require_once('SMW_DT_URI.php');
+
 /**
  * Static class for registering and retrieving typehandlers.
  * It also caches information about attributes found during page parsing.
@@ -28,7 +34,7 @@ require_once('SMW_DT_Float.php');
 class SMWTypeHandlerFactory {
 
 	static private $typeHandlersByLabel = Array();
-	static private $typeHandlersByAttribute = Array();	
+	static private $typeHandlersByAttribute = Array();
 	static private $typeLabelsByID = Array();
 	static private $desiredUnitsByAttribute = Array();
 	static private $possibleValuesByAttribute = Array();
@@ -46,8 +52,8 @@ class SMWTypeHandlerFactory {
 
 	/**
 	 * This method announces the existence of a typehandler under
-	 * a certain label and with a certain id. The label is the name 
-	 * used by the user to denote this type, without any namespace 
+	 * a certain label and with a certain id. The label is the name
+	 * used by the user to denote this type, without any namespace
 	 * prefixes.
 	 */
 	static function announceTypeHandler($label, $id, $filepart, $class, $param = NULL) {
@@ -165,7 +171,7 @@ class SMWTypeHandlerFactory {
 			SMWTypeHandlerFactory::$typeHandlersByLabel[$typelabel] = $instance;
 			return SMWTypeHandlerFactory::$typeHandlersByLabel[$typelabel];
 		}
-		
+
 		return new SMWErrorTypeHandler(wfMsgForContent('smw_unknowntype',$typelabel));
 	}
 
@@ -183,13 +189,13 @@ class SMWTypeHandlerFactory {
 			} else { $typearray = Array(); }
 
 			if (count($typearray)==1) {
-				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] = 
+				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] =
 				     SMWTypeHandlerFactory::getTypeHandlerByLabel($typearray[0]);
 			} elseif (count($typearray)==0) {
-				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] = 
+				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] =
 				     new SMWErrorTypeHandler(wfMsgForContent('smw_notype'));
 			} else {
-				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] = 
+				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] =
 				     new SMWErrorTypeHandler(wfMsgForContent('smw_manytypes'));
 			}
 		}
@@ -200,7 +206,7 @@ class SMWTypeHandlerFactory {
 	 * This method retrieves the desired display units list, if any,
 	 * for a given attribute as an array. It gets them from two
 	 * special properties.
-	 * 
+	 *
 	 * TODO: Performance (minor?): maybe combine the two database queries
 	 *       for special properties into one special smwfGetDisplayUnitsTitles() query for both.
 	 *
@@ -232,7 +238,7 @@ class SMWTypeHandlerFactory {
 	/**
 	 * This method retrieves the possible values, if any,
 	 * for a given attribute as an array.
-	 * 
+	 *
 	 * @param $attribute should be in text form without preceding namespace.
 	 */
 	static function &getPossibleValues($attribute) {
@@ -254,10 +260,10 @@ class SMWTypeHandlerFactory {
 	}
 
 	/**
-	 * This method retrieves the conversion factors, if any, for a 
-	 * given type as an array of strings. It gets them from a special 
+	 * This method retrieves the conversion factors, if any, for a
+	 * given type as an array of strings. It gets them from a special
 	 * property, e.g. if Attribute:Max_speed HasType Type:Velocity, then
-	 * Type:Velocity page has the ConversionFactors that we have to 
+	 * Type:Velocity page has the ConversionFactors that we have to
 	 * pass to an SMWLinearTypeHandler instance.
 	 *
 	 * @return (possibly empty) array of conversion factors, each a string
@@ -278,11 +284,11 @@ class SMWTypeHandlerFactory {
 
 
 	/**
-	 * This method retrieves additional service links, if any, for a 
+	 * This method retrieves additional service links, if any, for a
 	 * given type as an array of id strings. The ids are the back part
 	 * of a MediaWiki message article constructed by prepending the
 	 * string "MediaWiki:smw_service_" to the id. It is expected that
-	 * the messages are resolved lazyliy if needed (at all), so they 
+	 * the messages are resolved lazyliy if needed (at all), so they
 	 * are not decomposed to strings at this stage.
 	 */
 	static function &getServiceLinks($attribute) {
@@ -304,7 +310,7 @@ class SMWTypeHandlerFactory {
 
 //*** Make other typehandlers known that are shipped with SMW ***//
 /**
- * If you add a typehandler in a separate file from this one (SMW_Datatype.php) 
+ * If you add a typehandler in a separate file from this one (SMW_Datatype.php)
  * then you must add it to this list!
  */
 // Integer
@@ -326,7 +332,7 @@ SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_
 /*********************************************************************/
 
 /**
- * This class mainly is a container to store URLs for the factbox in a 
+ * This class mainly is a container to store URLs for the factbox in a
  * clean way. The class provides methods for creating source code for
  * realising them in wiki or html contexts.
  */
@@ -336,16 +342,16 @@ class SMWInfolink {
 	 */
 	private $URL;     // the actual link target
 	private $caption; // the label for the link
-	private $style;   // CSS class of a span to embedd the link into, or 
+	private $style;   // CSS class of a span to embedd the link into, or
 	                  // FALSE if no extra style is required
 	/**#@-*/
-	
+
 	function SMWInfolink($linkURL, $linkCaption, $linkStyle=false) {
 		$this->URL = $linkURL;
 		$this->caption = $linkCaption;
 		$this->style = $linkStyle;
 	}
-	
+
 	/**
 	 * Static function to construct attribute search URLs
 	 * @access public
@@ -377,7 +383,7 @@ class SMWInfolink {
 			return "<a href=\"$this->URL\">$this->caption</a>";
 		}
 	}
-	
+
 	/**
 	 * Return hyperlink for this infolink in wiki format.
 	 * @access public
@@ -390,19 +396,19 @@ class SMWInfolink {
 		}
 	}
 }
-	
+
 /*********************************************************************/
 /* Basic typehandler classes                                         */
 /*********************************************************************/
 
 /**
- * Interface (abstract class) that must be implemented by all type 
+ * Interface (abstract class) that must be implemented by all type
  * handlers.
  *
- * Typehandlers are used for the intitialisation of datavalues. 
- * Their main methods are processValue and processXSDValue which 
- * intitialise a given SMWDataValue. These methods should typically 
- * set the user, string, and XSD representation of the value, and 
+ * Typehandlers are used for the intitialisation of datavalues.
+ * Their main methods are processValue and processXSDValue which
+ * intitialise a given SMWDataValue. These methods should typically
+ * set the user, string, and XSD representation of the value, and
  * possibly other fields if applicable. See SMWDataValue for details.
  */
 interface SMWTypeHandler {
@@ -416,40 +422,40 @@ interface SMWTypeHandler {
 
 	/**
 	 * Return the full URI of the XSD type that is to be used when
-	 * exporting values of this type. If '' (empty string) is 
+	 * exporting values of this type. If '' (empty string) is
 	 * returned, then values will be stored as object properties.
 	 */
 	public function getXSDType();
-	
+
 	/**
 	 * Somewhat deprecated way of retrieving a sample of possible
-	 * units that are supported. 
+	 * units that are supported.
 	 * TODO: find some better way of doing this.
 	 */
 	public function getUnits();
-	
+
     /**
-	 * Main method for type handlers. It transforms the user-provided 
+	 * Main method for type handlers. It transforms the user-provided
 	 * value of an attribute into several output strings (one for XML,
 	 * one for printout, etc.) and initialises the given SMWDataValue
 	 * accordingly. Parsing errors are reported as well.
 	 */
 	public function processValue($value,&$datavalue);
-	
+
     /**
-	 * Second main method for type handlers. It transforms the 
-	 * XSD-conformant value of an attribute into several output 
-	 * strings (one for XML, one for printout, etc.) and initialises 
-	 * the given SMWDataValue accordingly. Parsing errors are reported 
+	 * Second main method for type handlers. It transforms the
+	 * XSD-conformant value of an attribute into several output
+	 * strings (one for XML, one for printout, etc.) and initialises
+	 * the given SMWDataValue accordingly. Parsing errors are reported
 	 * as well.
 	 */
 	public function processXSDValue($value,$unit,&$datavalue);
-	
+
 	/**
 	 * Returns a boolean to indicate whether values of the given type
 	 * can be ordered linearly in a natural way other than sorting their
 	 * XSD versions lexicographically. If TRUE, the type handler must
-	 * also supply a corresponding numerical version of the value during 
+	 * also supply a corresponding numerical version of the value during
 	 * parsing.
 	 */
 	public function isNumeric();
@@ -494,7 +500,7 @@ class SMWErrorTypeHandler implements SMWTypeHandler {
 	function processXSDValue($value,$unit,&$datavalue) {
 		return $this->processValue($value,$datavalue);
 	}
-	
+
 	function isNumeric() {
 		return FALSE;
 	}
@@ -657,9 +663,9 @@ class SMWBooleanTypeHandler implements SMWTypeHandler {
 			// Store numeric 1 or 0 as number.
 			$datavalue->setProcessedValues($value, $xsdvalue, $xsdvalue === 'true' ? 1 : 0);
 			// For a boolean, "units" is really a format from an inline query
-			// rather than the units of a float. 
+			// rather than the units of a float.
 			$desiredUnits = $datavalue->getDesiredUnits();
-			// Determine the user-visible string.		
+			// Determine the user-visible string.
 			if (count($desiredUnits) ==0) {
 				$datavalue->setPrintoutString($xsdvalue);
 			} else {
@@ -689,27 +695,27 @@ SMWTypeHandlerFactory::registerTypeHandler($smwgContLang->getDatatypeLabel('smw_
 
 
 /**
- * This method formats a float number value according to the given 
- * language and precision settings, with some intelligence to 
- * produce readable output. Use it whenever you get a number that 
+ * This method formats a float number value according to the given
+ * language and precision settings, with some intelligence to
+ * produce readable output. Use it whenever you get a number that
  * was not hand-formatted by a user.
  * TODO: separate formatters for Integer and Float, maybe each should have a method.
  *
- * @param $decplaces optional positive integer, controls how many 
- *                   digits after the decimal point (but not in 
+ * @param $decplaces optional positive integer, controls how many
+ *                   digits after the decimal point (but not in
  *                   scientific notation)
  */
 function smwfNumberFormat($value, $decplaces=3) {
 	$decseparator = wfMsgForContent('smw_decseparator');
 	$kiloseparator = wfMsgForContent('smw_kiloseparator');
-	
-	// If number is a trillion or more, then switch to scientific 
+
+	// If number is a trillion or more, then switch to scientific
 	// notation. If number is less than 0.0000001 (i.e. twice decplaces),
-	// then switch to scientific notation. Otherwise print number 
-	// using number_format. This may lead to 1.200, so then use trim to 
+	// then switch to scientific notation. Otherwise print number
+	// using number_format. This may lead to 1.200, so then use trim to
 	// remove trailing zeroes.
 	$doScientific = false;
-	//@TODO: Don't do all this magic for integers, since the formatting does not fit there 
+	//@TODO: Don't do all this magic for integers, since the formatting does not fit there
 	//       correctly. E.g. one would have integers formatted as 1234e6, not as 1.234e9, right?
 	//The "$value!=0" is relevant: we want to scientify numbers that are close to 0, but never 0!
 	if ( ($decplaces > 0) && ($value != 0) ) {
@@ -734,7 +740,7 @@ function smwfNumberFormat($value, $decplaces=3) {
 		$value = sprintf("%1.6e", $value);
 		// Make it more readable by removing trailing zeroes from n.n00e7.
 		$value = preg_replace('/(\\.\\d+?)0*e/', '${1}e', $value, 1);
-		//NOTE: do not use the optional $count parameter with preg_replace. We need to 
+		//NOTE: do not use the optional $count parameter with preg_replace. We need to
 		//      remain compatible with PHP 4.something.
 		if ($decseparator !== '.') {
 			$value = str_replace('.', $decseparator, $value);
