@@ -3,7 +3,7 @@
  * This file encapsulates methods used for accessing
  * and storing semantic data.
  *
- * @author Markus Kr�tzsch
+ * @author Markus Krötzsch
  * @author Klaus Lassleben
  */
 
