@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','0.6b');
+define('SMW_VERSION','0.6c');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -34,7 +34,7 @@ define('SMW_FACTBOX_SHOWN',  5);
  * does not adhere to the naming conventions.
  */
 function enableSemantics($server) {
-	global $smwgVersion, $smwgServer, $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport;
+	global $smwgVersion, $smwgServer, $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore;
 
 	if ( $server == "" ) {
 		print "Semantic MediaWiki: please supply the name of your server to enable semantics.";
@@ -55,6 +55,11 @@ function enableSemantics($server) {
 	* store between parsers.
 	*/
 	$smwgStoreActive = true;
+
+	// initialise main storage (there is no other storage implementation at the moment)
+	// Note: do never access this global variable directly! Use smwfGetStore() instead!
+	require_once($smwgIP . '/includes/storage/SMW_SQLStore.php');
+	$smwgMasterStore = new SMWSQLStore();
 
 	/**********************************************/
 	/***** register specials                  *****/
@@ -345,5 +350,16 @@ function enableSemantics($server) {
 	 */
 	function smwfXMLContentEncode($text) {
 		return str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$text);
-	}	
+	}
+
+	/**
+	 * Get a semantic storage object. Currently, it just returns one globally defined
+	 * object, but the infrastructure allows to set up load balancing and task-dependent
+	 * use of stores (e.g. using other stores for fast querying than for storing new facts),
+	 * similar to MediaWiki's DB implementation.
+	 */
+	function &smwfGetStore() {
+		global $smwgMasterStore;
+		return $smwgMasterStore;
+	}
 ?>
