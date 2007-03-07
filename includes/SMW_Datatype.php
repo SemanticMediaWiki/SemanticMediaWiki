@@ -120,7 +120,7 @@ class SMWTypeHandlerFactory {
 	 * should be reasonably light-weight.
 	 */
 	static function getTypeHandlerByID($typeid) {
-		$label = getTypeLabelByID($typeid);
+		$label = SMWTypeHandlerFactory::getTypeLabelByID($typeid);
 		if ( $label !== NULL ) {
 			$th = SMWTypeHandlerFactory::getTypeHandlerByLabel($label);
 			return $th;
