@@ -16,6 +16,7 @@ require_once( "$smwgIP/includes/SMW_DataValue.php" );
  */
 class SMWSQLStore extends SMWStore {
 
+///// Reading methods /////
 
 	function getSpecialValues(Title $subject, $specialprop, $limit = -1, $offset = 0) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
@@ -157,6 +158,23 @@ class SMWSQLStore extends SMWStore {
 
 		return $result;
 	}
+
+///// Writing methods /////
+
+	function deleteSubject(Title $subject) {
+		$db =& wfGetDB( DB_MASTER );
+		$db->delete($db->tableName('smw_relations'), 
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::Relations');
+		$db->delete($db->tableName('smw_attributes'), 
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::Attributes');
+		$db->delete($db->tableName('smw_specialprops'), 
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::Specialprops');
+	}
+
+///// Private methods /////
 
 	/**
 	 * Transform input parameters into a suitable array of SQL options.

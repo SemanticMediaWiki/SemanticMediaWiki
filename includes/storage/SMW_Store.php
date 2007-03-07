@@ -58,6 +58,16 @@ abstract class SMWStore {
 	 */
 	abstract function getInRelations(Title $object, $limit = -1, $offset = 0);
 
+///// Writing methods /////
+
+	/**
+	 * Delete all semantic properties that the given subject has. This
+	 * includes relations, attributes, and special properties. This does not
+	 * delete the respective text from the wiki, but only clears the stored 
+	 * data.
+	 */
+	abstract function deleteSubject(Title $subject);
+
 }
 
  

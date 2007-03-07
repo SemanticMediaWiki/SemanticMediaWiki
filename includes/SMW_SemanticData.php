@@ -461,9 +461,7 @@ class SMWSemanticData {
 	 * @access private
 	 */
 	static private function clearData($s_title) {
-		smwfDeleteRelations($s_title);
-		smwfDeleteAttributes($s_title);
-		smwfDeleteSpecialProperties($s_title);
+		smwfGetStore()->deleteSubject($s_title);
 	}
 
 	/**
