@@ -98,7 +98,7 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getRelationSubjects(Title $object, Title $relation, $limit = -1, $offset = 0) {
+	function getRelationSubjects(Title $relation, Title $object, $limit = -1, $offset = 0) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) . 
 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .

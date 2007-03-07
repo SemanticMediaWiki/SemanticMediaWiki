@@ -44,7 +44,7 @@ abstract class SMWStore {
 	 * Get an array of all subjects that are related to a given object via the given relation. The
 	 * result is an array of Title objects.
 	 */
-	abstract function getRelationSubjects(Title $object, Title $relation, $limit = -1, $offset = 0);
+	abstract function getRelationSubjects(Title $relation, Title $object, $limit = -1, $offset = 0);
 
 	/**
 	 * Get an array of all relations via which the given subject relates to some object. The result is an
