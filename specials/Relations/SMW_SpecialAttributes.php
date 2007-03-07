@@ -46,7 +46,7 @@ function wfSMWAttributes()
 						attribute_title as value,
 						COUNT(*) as count
 						FROM $attributes
-						GROUP BY attribute_title";
+						GROUP BY attribute_title, value_datatype";
 		}
 		
 		function sortDescending() {
@@ -59,19 +59,12 @@ function wfSMWAttributes()
 			$attrtitle = Title::makeTitle( SMW_NS_ATTRIBUTE, $result->value );
 			$attrlink = $skin->makeLinkObj( $attrtitle, $attrtitle->getText() );
 			// The value_datatype is in title, see getSQL().
-			if (strncmp($result->title, $wgExtraNamespaces[SMW_NS_TYPE], count($wgExtraNamespaces[SMW_NS_TYPE])) == 0) {
-				// The value_datatype is a Type: page name.
-				$typetitle = Title::newFromText($result->title);
-			} else {
-				// The value_datatype is a type ID.
-				// Get this ID's localized label and turn it into a Type: page.
-				$typelabel = SMWTypeHandlerFactory::getTypeLabelByID($result->title);
-				if ($typelabel !== NULL) {
-					$typetitle = Title::makeTitle( SMW_NS_TYPE, $typelabel);
-				} else {
-					$typetitle = NULL;
-				}
+			
+			$typelabel = SMWTypeHandlerFactory::getTypeLabelByID($result->title);
+			if ( $typelabel === NULL ) { // type unknown, maybe some upgrade problem
+				$typelabel = $result->title;
 			}
+			$typetitle = Title::makeTitle( SMW_NS_TYPE, $typelabel );
 			$typelink = $skin->makeLinkObj( $typetitle);
 			// Note: It doesn't seem possible to reuse this infolink object.
 			$searchlink = new SMWInfolink(
