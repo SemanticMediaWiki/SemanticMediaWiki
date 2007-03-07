@@ -30,6 +30,32 @@ require_once('SMW_DT_URI.php');
 /**
  * Static class for registering and retrieving typehandlers.
  * It also caches information about attributes found during page parsing.
+ *
+ * Currently, types are identified in three different ways within the
+ * storage and wiki. In the wiki, users always use the full name of some
+ * page in the namespace "Type:" (or whatever its localised version is
+ * called like). The annotation is stored internally without the namespace
+ * prefix but still using the (possibly also localised) name of the page.
+ * This abbreviated name is the "label" of the type. When storing attribute 
+ * values, types are identified via an "id". This is an language-independent
+ * identifier for that type. For instance, English "Type:Integer" has the 
+ * label "Integer" and the ID "int".
+ *
+ * For custom types, IDs must depend on the label of the type, and (to distinguish
+ * IDs from those of builtin types) is always prefixed with "Type:" (ignoring any
+ * localisation for the label of the type namespace). For example, a German custom 
+ * type "Datentyp:Länge" has the label "Länge" and the ID "Type:Länge".
+ *
+ * Originally, the distinction of labels and ids was introduced to make the storage
+ * contents less dependent on the wikis text content and language. After the
+ * extension of the type system with custom types, this design should be revised.
+ * The issue is that built-in types need a internationalisation lookup for 
+ * identifying them from their labels. Avoiding this was the intention of the IDs,
+ * but the implementation does not really achieve this at the moment (type labels
+ * are not part of the message system yet, and they are registered by their labels
+ * anyway suc that no second lookup is necessary).
+ *
+ * TODO: This is a mess. Completely revise the type registration and identification system.
  */
 class SMWTypeHandlerFactory {
 
@@ -76,7 +102,10 @@ class SMWTypeHandlerFactory {
 		// maybe a custom type?
 		if ( (mb_substr($typeid,0,5) == 'Type:') ||
 			('geoarea' == $typeid) || ('geolength' == $typeid) ) { // compatibility with <0.5 DB entries
+			    //TODO: when restructuring the type system, provide an update method that "fixes" those old types
 			// Reuse existing float type handler:
+			//FIXME: This is bad, since be create a cache entry with the wrong type. It is a good shortcut
+			// for the given purpose, but not for other purposes where the same cache entry will be used!
 			SMWTypeHandlerFactory::$typeLabelsByID[$typeid] = SMWTypeHandlerFactory::$typeLabelsByID['float'];
 			$th = SMWTypeHandlerFactory::getTypeHandlerByLabel(SMWTypeHandlerFactory::$typeLabelsByID['float'], false);
 			return $th->getXSDType();
@@ -91,12 +120,13 @@ class SMWTypeHandlerFactory {
 	 * should be reasonably light-weight.
 	 */
 	static function getTypeHandlerByID($typeid) {
-		if (array_key_exists($typeid,SMWTypeHandlerFactory::$typeLabelsByID)) {
-			$label = SMWTypeHandlerFactory::$typeLabelsByID[$typeid];
+		$label = getTypeLabelByID($typeid);
+		if ( $label !== NULL ) {
 			$th = SMWTypeHandlerFactory::getTypeHandlerByLabel($label);
 			return $th;
+		} else {
+			return NULL;
 		}
-		return NULL;
 	}
 
 	/**
@@ -107,6 +137,15 @@ class SMWTypeHandlerFactory {
 	static function getTypeLabelByID($typeid) {
 		if (array_key_exists($typeid,SMWTypeHandlerFactory::$typeLabelsByID)) {
 			return SMWTypeHandlerFactory::$typeLabelsByID[$typeid];
+		}
+		// maybe a custom type? The label then is the string without the prefix "Type:"
+		if (mb_substr($typeid,0,5) == 'Type:') {
+			SMWTypeHandlerFactory::$typeLabelsByID[$typeid] = mb_substr($typeid,5);
+			return mb_substr($typeid,5);
+		} elseif ( ('geoarea' == $typeid) || ('geolength' == $typeid) ) { // compatibility with <0.5 DB entries
+			    //TODO: when restructuring the type system, provide an update method that "fixes" those old types
+			SMWTypeHandlerFactory::$typeLabelsByID[$typeid] = SMWTypeHandlerFactory::$typeLabelsByID['float']; // the best we can do
+			return SMWTypeHandlerFactory::$typeLabelsByID['float'];
 		}
 		return NULL;
 	}
