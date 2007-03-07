@@ -103,7 +103,7 @@ class SMW_LanguageDe {
 	'unusedattributes' => 'Verwaiste Attribute',
 	'smw_unusedattributes_docu' => 'Die folgenden Attributseiten existieren, obwohl sie nicht verwendet werden.',
 	/*Messages for ask Special*/
-	'ask' => 'Semantische Sucher',
+	'ask' => 'Semantische Suche',
 	'smw_ask_docu' => '<p>Bitte geben Sie eine Suchanfrage ein. Weitere Informationen sind auf der <a href="$1">Hilfeseite für die semantische Suche</a> zu finden.</p>',
 	'smw_ask_doculink' => 'Semantische Suche',
 	'smw_ask_prev' => 'Zurück',
