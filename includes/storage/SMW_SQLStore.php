@@ -271,6 +271,72 @@ class SMWSQLStore extends SMWStore {
 		$db->update($db->tableName('smw_specialprops'), $val_array, $cond_array, 'SMW::changeTitle');
 	}
 
+///// Setup store /////
+
+	function setup() {
+		global $wgDBname;
+
+		$fname = 'SMW::setupDatabase';
+		$db =& wfGetDB( DB_MASTER );
+		
+		extract( $db->tableNames('smw_relations','smw_attributes','smw_specialprops') );
+
+		// create relation table
+		if ($db->tableExists('smw_relations') === false) {
+			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_relations . '
+					( subject_id         INT(8) UNSIGNED NOT NULL,
+					subject_namespace  INT(11) NOT NULL,
+					subject_title      VARCHAR(255) NOT NULL,
+					relation_title     VARCHAR(255) NOT NULL,
+					object_namespace   INT(11) NOT NULL,
+					object_title       VARCHAR(255) NOT NULL
+					) TYPE=innodb';
+			$res = $db->query( $sql, $fname );
+		}
+
+		$this->setupIndex($smw_relations, 'subject_id');
+		$this->setupIndex($smw_relations, 'relation_title');
+		$this->setupIndex($smw_relations, 'object_title');
+
+		// create attribute table
+		if ($db->tableExists('smw_attributes') === false) {
+			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_attributes . '
+					( subject_id INT(8) UNSIGNED NOT NULL,
+					subject_namespace  INT(11) NOT NULL,
+					subject_title      VARCHAR(255) NOT NULL,
+					attribute_title    VARCHAR(255) NOT NULL,
+					value_unit         VARCHAR(63),
+					value_datatype     VARCHAR(31) NOT NULL,
+					value_xsd          VARCHAR(255) NOT NULL,
+					value_num          DOUBLE
+					) TYPE=innodb';
+			$res = $db->query( $sql, $fname );
+		}
+
+		$this->setupIndex($smw_attributes, 'subject_id');
+		$this->setupIndex($smw_attributes, 'attribute_title');
+		$this->setupIndex($smw_attributes, 'value_num');
+		$this->setupIndex($smw_attributes, 'value_xsd');
+
+		// create table for special properties
+		if ($db->tableExists('smw_specialprops') === false) {
+			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_specialprops . '
+					( subject_id         INT(8) UNSIGNED NOT NULL,
+					subject_namespace  INT(11) NOT NULL,
+					subject_title      VARCHAR(255) NOT NULL,
+					property_id        SMALLINT NOT NULL,
+					value_string       VARCHAR(255) NOT NULL
+					) TYPE=innodb';
+			$res = $db->query( $sql, $fname );
+		}
+
+		$this->setupIndex($smw_specialprops, 'subject_id');
+		$this->setupIndex($smw_specialprops, 'property_id');
+
+		return true;
+	}
+
+
 ///// Private methods /////
 
 	/**
@@ -286,76 +352,20 @@ class SMWSQLStore extends SMWStore {
 		}
 		return $sql_options;
 	}
-	
-///// Setup store /////
 
-	function setup() {
-		global $wgDBname;
-
-		$fname = 'SMW::setupDatabase';
-		$db =& wfGetDB( DB_MASTER );
-		
-		extract( $db->tableNames('smw_relations','smw_attributes','smw_specialprops') );
-
-		// create relation table
-		$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_relations . '
-				( subject_id         INT(8) UNSIGNED NOT NULL,
-				  subject_namespace  INT(11) NOT NULL,
-				  subject_title      VARCHAR(255) NOT NULL,
-				  relation_title     VARCHAR(255) NOT NULL,
-				  object_namespace   INT(11) NOT NULL,
-				  object_title       VARCHAR(255) NOT NULL
-				) TYPE=innodb';
-		$res = $db->query( $sql, $fname );
-
-		$sql = "ALTER TABLE $smw_relations ADD INDEX ( `subject_id` )";
-		$db->query( $sql, $fname );
-		$sql = "ALTER TABLE $smw_relations ADD INDEX ( `relation_title` )";
-		$db->query( $sql, $fname );
-		$sql = "ALTER TABLE $smw_relations ADD INDEX ( `object_title` )";
-		$db->query( $sql, $fname );
-
-		// create attribute table
-		$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_attributes . '
-				( subject_id INT(8) UNSIGNED NOT NULL,
-				  subject_namespace  INT(11) NOT NULL,
-				  subject_title      VARCHAR(255) NOT NULL,
-				  attribute_title    VARCHAR(255) NOT NULL,
-				  value_unit         VARCHAR(63),
-				  value_datatype     VARCHAR(31) NOT NULL,
-				  value_xsd          VARCHAR(255) NOT NULL,
-				  value_num          DOUBLE
-				) TYPE=innodb';
-		$res = $db->query( $sql, $fname );
-
-		$sql = "ALTER TABLE $smw_attributes ADD INDEX ( `subject_id` )";
-		$db->query( $sql, $fname );
-		$sql = "ALTER TABLE $smw_attributes ADD INDEX ( `attribute_title` )";
-		$db->query( $sql, $fname );
-		$sql = "ALTER TABLE $smw_attributes ADD INDEX ( `value_num` )";
-		$db->query( $sql, $fname );
-		$sql = "ALTER TABLE $smw_attributes ADD INDEX ( `value_xsd` )";
-		$db->query( $sql, $fname );
-
-		// create table for special properties
-		$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_specialprops . '
-				( subject_id         INT(8) UNSIGNED NOT NULL,
-				  subject_namespace  INT(11) NOT NULL,
-				  subject_title      VARCHAR(255) NOT NULL,
-				  property_id        SMALLINT NOT NULL,
-				  value_string       VARCHAR(255) NOT NULL
-				) TYPE=innodb';
-		$res = $db->query( $sql, $fname );
-
-		$sql = "ALTER TABLE $smw_specialprops ADD INDEX ( `subject_id` )";
-		$db->query( $sql, $fname );
-		$sql = "ALTER TABLE $smw_specialprops ADD INDEX ( `property_id` )";
-		$db->query( $sql, $fname );
-
-		return true;
+	/**
+	 * Make sure that the given index in the given DB table exists and is unique,
+	 * and add it if needed.
+	 */
+	protected function setupIndex($table, $index, $db) {
+		if ($db->indexExists($table, $index)) {
+			//TODO: check uniqueness
+			return;
+		} else {
+			$db->query( "ALTER TABLE $table ADD INDEX ( `$index` )", 'SMW::SetupIndex' );
+		}
 	}
 
 }
 
- 
 ?>
