@@ -5,12 +5,10 @@
  * @author Kai Hüner
  */
 
-	require_once('SMW_Storage.php');
-	require_once('SMW_SemanticData.php');
+	require_once('SMW_Factbox.php');
+	require_once('SMW_Storage.php'); // only needed for moving articles now, remove soon
 
-	/*********************************************************************/
-	/* Hooks                                                             */
-	/*********************************************************************/	
+//// Parsing annotations
 
 	/**
 	*  This method will be called before an article is displayed or previewed.
@@ -20,12 +18,11 @@
 	*  TODO: $strip_state is not used (and must not be used, since it is
 	*        not relevant when moving the hook to internalParse()).
 	*/
-	function smwfParserHook(&$parser, &$text, &$strip_state)
-	{
+	function smwfParserHook(&$parser, &$text, &$strip_state) {
 		smwfInitMessages(); // make sure that the messages are available
 
 		// Init global storage for semantic data of this article.
-		SMWSemanticData::initStorage($parser->getTitle(),$parser->getOptions()->getSkin());
+		SMWFactbox::initStorage($parser->getTitle(),$parser->getOptions()->getSkin());
 
 		// In the regexp matches below, leading ':' escapes the markup, as
 		// known for Categories.
@@ -40,73 +37,15 @@
 		// print the results if enabled (we have to parse them in any case, in order to
 		// clean the wiki source for further processing)
 		if ( smwfIsSemanticsProcessed($parser->getTitle()->getNamespace()) ) {
-			SMWSemanticData::printFactbox($text);
-		} else SMWSemanticData::clearStorage();
+			SMWFactbox::printFactbox($text);
+		} else SMWFactbox::clearStorage();
 
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
-
-
-	/**
-	 * This hook is triggered later during parsing.  It inserts HTML code that
-	 * would otherwise be escaped by the MediaWiki parser. Currently it is
-	 * used to build the JavaScript tooltips.
-	 */
-	function smwfParserAfterTidyHook(&$parser, &$text)
-	{
-		// Parse span tags around semantic links containing tooltip info.
-		// Note this must match the exact HTML smwfParseAttributesCallback() adds.
-		$text = preg_replace_callback(
-					'{
-						<span\s*id="SMWtt"\s*title="	# look for HTML of attribute span tag with a title
-						([^"]*)			# capture title up to closing quote
-						"[^>]*>				# ignore everything to end of opening span tag
-						(.*?)			# capture everything up to closing span tag with a minimal match
-						</span>
-					}x',
-					'smwfParseAttributesAfterTidyCallback', $text);
-
-		return true; // always return true, in order not to stop MW's hook processing!
-	}
-
-	/**
-	*  This method will be called after an article is saved
-	*  and stores the semantic relations in the database. One
-	*  could consider creating an object for deferred saving
-	*  as used in other places of MediaWiki.
-	*/
-	function smwfSaveHook(&$article, &$user, &$text) {
-		$title=$article->getTitle();
-		SMWSemanticData::storeData($title, smwfIsSemanticsProcessed($title->getNamespace()));
-		return true; // always return true, in order not to stop MW's hook processing!
-	}
-
-	/**
-	*  This method will be called whenever an article is deleted so that
-	*  semantic relations are cleared appropriately.
-	*/
-	function smwfDeleteHook(&$article, &$user, &$reason) {
-		smwfGetStore()->deleteSubject($article->getTitle());
-		return true; // always return true, in order not to stop MW's hook processing!
-	}
-
-	/**
-	*  This method will be called whenever an article is moved so that
-	*  semantic relations are moved accordingly.
-	*/
-	function smwfMoveHook(&$old_title, &$new_title, &$user, $pageid, $redirid)
-	{
-		smwfMoveAnnotations($old_title, $new_title);
-		return true; // always return true, in order not to stop MW's hook processing!
-	}
-
-	/*********************************************************************/
-	/* Callbacks                                                         */
-	/*********************************************************************/	
 
 	/**
 	* This callback function strips out the semantic relation from a 
-	* wiki link. Retrieved data is stored in the static SMWSemanticData.
+	* wiki link. Retrieved data is stored in the static SMWFactbox.
 	*/
 	function smwfParseRelationsCallback($semanticLink) {
 		if (array_key_exists(2,$semanticLink)) {
@@ -127,7 +66,7 @@
 		//extract annotations
 		$relations = explode('::', $relation);
 		foreach($relations as $singleRelation) {
-			SMWSemanticData::addRelation($singleRelation,$linkTarget);
+			SMWFactbox::addRelation($singleRelation,$linkTarget);
 		}
 
 		//pass it back as a normal link
@@ -138,8 +77,7 @@
 	* This callback function strips out the semantic attributes from a wiki 
 	* link.
 	*/
-	function smwfParseAttributesCallback($semanticLink)
-	{
+	function smwfParseAttributesCallback($semanticLink) {
 		if (array_key_exists(2,$semanticLink)) {
 			$attribute = $semanticLink[2];
 		} else { $attribute = ''; }
@@ -153,7 +91,7 @@
 		//extract annotations and create tooltip
 		$attributes = explode(':=', $attribute);
 		foreach($attributes as $singleAttribute) {
-			$attr = SMWSemanticData::addAttribute($singleAttribute,$value);
+			$attr = SMWFactbox::addAttribute($singleAttribute,$value);
 		}
 
 		//set text for result
@@ -172,14 +110,36 @@
 	}
 
 
+//// Creating tooltips
+
+	/**
+	 * This hook is triggered later during parsing.  It inserts HTML code that
+	 * would otherwise be escaped by the MediaWiki parser. Currently it is
+	 * used to build the JavaScript tooltips.
+	 */
+	function smwfParserAfterTidyHook(&$parser, &$text) {
+		// Parse span tags around semantic links containing tooltip info.
+		// Note this must match the exact HTML smwfParseAttributesCallback() adds.
+		$text = preg_replace_callback(
+					'{
+						<span\s*id="SMWtt"\s*title="	# look for HTML of attribute span tag with a title
+						([^"]*)			# capture title up to closing quote
+						"[^>]*>				# ignore everything to end of opening span tag
+						(.*?)			# capture everything up to closing span tag with a minimal match
+						</span>
+					}x',
+					'smwfParseAttributesAfterTidyCallback', $text);
+
+		return true; // always return true, in order not to stop MW's hook processing!
+	}
+
 	/**
 	 * This callback creates a tooltip based on JavaScript. The creation of
 	 * the respective tags has to be performed after "TidyParse" in order to
 	 * push the required HTML Tags (a, script) to the code. These would be
 	 * escaped when inserted at an earlier stage.
 	 */
-	function smwfParseAttributesAfterTidyCallback($semanticLink)
-	{
+	function smwfParseAttributesAfterTidyCallback($semanticLink) {
 		// Here we read the data hosted in the "span"-container. A toolTip
 		// is created to show the attribute values. To invoke the tooltip,
 		// we have to use a javaScript function (createToolTip) which writes
@@ -197,6 +157,39 @@
 		$result .= '<a class="smwatr" onmouseover="showToolTip(\''.$id.'\')" onmouseout="hideToolTip()">'.$semanticLink[2].'</a></span>'; //no CamelCase for onmouse... -> W3C Validator
 
 		return $result;
+	}
+
+
+//// Saving, deleting, and moving articles
+
+	/**
+	*  This method will be called after an article is saved
+	*  and stores the semantic relations in the database. One
+	*  could consider creating an object for deferred saving
+	*  as used in other places of MediaWiki.
+	*/
+	function smwfSaveHook(&$article, &$user, &$text) {
+		$title=$article->getTitle();
+		SMWFactbox::storeData($title, smwfIsSemanticsProcessed($title->getNamespace()));
+		return true; // always return true, in order not to stop MW's hook processing!
+	}
+
+	/**
+	*  This method will be called whenever an article is deleted so that
+	*  semantic relations are cleared appropriately.
+	*/
+	function smwfDeleteHook(&$article, &$user, &$reason) {
+		smwfGetStore()->deleteSubject($article->getTitle());
+		return true; // always return true, in order not to stop MW's hook processing!
+	}
+
+	/**
+	*  This method will be called whenever an article is moved so that
+	*  semantic relations are moved accordingly.
+	*/
+	function smwfMoveHook(&$old_title, &$new_title, &$user, $pageid, $redirid) {
+		smwfMoveAnnotations($old_title, $new_title);
+		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
 ?>
