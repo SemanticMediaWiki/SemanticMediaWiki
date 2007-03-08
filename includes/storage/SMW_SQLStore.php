@@ -373,7 +373,7 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		if (!$exists) {
-			$db->query( "ALTER TABLE $table ADD INDEX ( `$column` )", 'SMW::SetupIndex' );
+			$db->query( "ALTER TABLE $table ADD INDEX ( `$column` )", $fname );
 		}
 		return true;
 	}
