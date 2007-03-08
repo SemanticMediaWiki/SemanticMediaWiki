@@ -11,37 +11,206 @@ require_once('SMW_DataValue.php');
 require_once('SMW_Storage.php');
 
 /**
+ * Class for representing junks of semantic data for one given 
+ * article (subject), similar what is typically displayed in the factbox.
+ * This is a light-weight data container.
+ */
+class SMWSemData {
+	protected $relobjs = Array(); // text keys and arrays of title objects
+	protected $reltitles = Array(); // text keys and title objects
+	protected $attribvals = Array(); // text keys and arrays of datavalue objects
+	protected $attribtitles = Array(); // text keys and title objects
+	protected $specprops = Array(); // integer keys and mixed subarrays
+	
+	protected $subject;
+
+	public function SMWSemData(Title $subject) {
+		$this->subject = $subject;
+	}
+
+	/**
+	 * Return subject to which the stored semantic annotation refer to.
+	 */
+	public function getSubject() {
+		return $this->subject;
+	}
+
+	/**
+	 * Delete all data other than the subject.
+	 */
+	public function clear() {
+		$relobjs = Array();
+		$reltitles = Array();
+		$attribvals = Array();
+		$attribtitles = Array();
+		$specprops = Array();
+	}
+
+//// Attributes
+
+	/**
+	 * Get the array of all attributes that have stored values.
+	 */
+	public function getAttributes() {
+		return $this->attribtitles;
+	}
+
+	/**
+	 * Get the array of all stored values for some attribute.
+	 */
+	public function getAttributeValues(Title $attribute) {
+		if (array_key_exists($attribute->getText(), $this->attribvals)) {
+			return $this->attribvals[$attribute->getText()];
+		} else {
+			return Array();
+		}
+	}
+
+	/**
+	 * Return true if there are any attributes.
+	 */
+	public function hasAttributes() {
+		return (count($this->attribtitles) != 0);
+	}
+
+	/**
+	 * Store a value for an attribute identified by its title object. Duplicate 
+	 * value entries are ignored.
+	 */
+	public function addAttributeValue(Title $attribute, SMWDataValue $value) {
+		if (!array_key_exists($attribute->getText(), $this->attribvals)) {
+			$this->attribvals[$attribute->getText()] = Array();
+			$this->attribtitles[$attribute->getText()] = $attribute;
+		}
+		$this->attribvals[$attribute->getText()][$value->getHash()] = $value;
+	}
+
+	/**
+	 * Store a value for a given attribute identified by its text label (without
+	 * namespace prefix). Duplicate value entries are ignored.
+	 */
+	public function addAttributeTextValue($attributetext, SMWDataValue $value) {
+		if (array_key_exists($attributetext, $this->attribtitles)) {
+			$attribute = $this->attribtitles[$attributetext];
+		} else {
+			$attribute = Title::newFromText($attributetext, SMW_NS_ATTRIBUTE);
+		}
+		$this->addAttributeValue($attribute, $value);
+	}
+
+//// Relations
+
+	/**
+	 * Get the array of all relations that have stored values.
+	 */
+	public function getRelations() {
+		return $this->reltitles;
+	}
+
+	/**
+	 * Get the array of all stored objects for some relation.
+	 */
+	public function getRelationObjects(Title $relation) {
+		if (array_key_exists($relation->getText(), $this->relobjs)) {
+			return $this->relobjs[$relation->getText()];
+		} else {
+			return Array();
+		}
+	}
+
+	/**
+	 * Return true if there are any relations.
+	 */
+	public function hasRelations() {
+		return (count($this->reltitles) != 0);
+	}
+
+	/**
+	 * Store an object for a relation identified by its title. Duplicate 
+	 * object entries are ignored.
+	 */
+	public function addRelationObject(Title $relation, Title $object) {
+		if (!array_key_exists($relation->getText(), $this->relobjs)) {
+			$this->relobjs[$relation->getText()] = Array();
+			$this->reltitles[$relation->getText()] = $relation;
+		}
+		$this->relobjs[$relation->getText()][$object->getPrefixedText()] = $object;
+	}
+
+	/**
+	 * Store an object for a given relation identified by its text label (without
+	 * namespace prefix). Duplicate value entries are ignored.
+	 */
+	public function addRelationTextObject($relationtext, Title $object) {
+		if (array_key_exists($relationtext, $this->reltitles)) {
+			$relation = $this->reltitles[$relationtext];
+		} else {
+			$relation = Title::newFromText($relationtext, SMW_NS_RELATION);
+		}
+		$this->addRelationObject($relation, $object);
+	}
+
+//// Special properties
+
+	/**
+	 * Get the array of all special properties (encoded as integer constants) that 
+	 * have stored values.
+	 */
+	public function getSpecialProperties() {
+		return array_keys($this->specprops);
+	}
+
+	/**
+	 * Get the array of all stored values for some special property (identified
+	 * by its integer constant).
+	 */
+	public function getSpecialValues($special) {
+		if (array_key_exists($special, $this->specprops)) {
+			return $this->specprops[$special];
+		} else {
+			return Array();
+		}
+	}
+
+	/**
+	 * Return true if there are any special properties.
+	 */
+	public function hasSpecialProperties() {
+		return (count($this->specprops) != 0);
+	}
+
+	/**
+	 * Store a value for a special property identified by an integer contant. Duplicate 
+	 * value entries are ignored. Values are not type checked, since different special
+	 * properties may take different values (Titles, strings, Datavalues).
+	 */
+	public function addSpecialValue($special, $value) {
+		if (!array_key_exists($special, $this->specprops)) {
+			$this->specprops[$special] = Array();
+		}
+		if ($value instanceof SMWDataValue) {
+			$this->specprops[$special][$value->getHash()] = $value;
+		} elseif ($value instanceof Title) {
+			$this->specprops[$special][$value->getPrefixedText()] = $value;
+		} else {
+			$this->specprops[$special][$value] = $value;
+		}
+	}
+
+}
+
+/**
  * Static class for representing semantic data, which accepts user 
  * inputs and provides methods for printing and storing its contents.
  * Its main purpose is to provide a persistent storage to keep semantic 
  * data between hooks for parsing and storing.
  */
 class SMWSemanticData {
-	/**#@+
-	 * @access private
-	 */
+
 	/**
-	 * Attribute store, elements are arrays indexed by attribute
-	 * names. Each entry in these arrays is another array that contains 
-	 * information for specified values, each given as an SMWDataValue.
+	 * The actual contained for the semantic annotations.
 	 */
-	static private $attribArray = Array();
-	/**
-	 * Relation store, elements are arrays indexed by relation
-	 * names. Each entry in these arrays contains just another
-	 * array of object stings that were used with this relation.
-	 */
-	static private $relArray = Array();
-	/**
-	 * Like $attribArray, but for special property attributes,
-	 * indexed by property identifier constants (see SMW_Settings.php).
-	 */
-	static private $specaArray = Array();
-	/**
-	 * Like $relArray, but for special property attributes,
-	 * indexed by property identifier constants (see SMW_Settings.php).
-	 */
-	static private $specrArray = Array();
+	static protected $semdata; 
 	/**
 	 * The skin that is to be used for output functions.
 	 */
@@ -56,6 +225,8 @@ class SMWSemanticData {
 	 * Initialisation method. Must be called before anything else happens.
 	 */
 	static function initStorage($title, $skin) {
+		SMWSemanticData::$semdata = new SMWSemData($title);
+
 		SMWSemanticData::clearStorage();
 		SMWSemanticData::$title = $title;
 		SMWSemanticData::$skin = $skin;
@@ -67,10 +238,7 @@ class SMWSemanticData {
 	static function clearStorage() {
 		global $smwgStoreActive;
 		if ($smwgStoreActive) {
-			SMWSemanticData::$attribArray = Array();
-			SMWSemanticData::$relArray = Array();
-			SMWSemanticData::$specaArray = Array();
-			SMWSemanticData::$specrArray = Array();
+			SMWSemanticData::$semdata->clear();
 		}
 	}
 
@@ -94,10 +262,7 @@ class SMWSemanticData {
 			case NULL: // normal attribute
 				$result = SMWDataValue::newAttributeValue($attribute,SMWSemanticData::$skin,$value);
 				if ($smwgStoreActive) {
-					if(!array_key_exists($attribute,SMWSemanticData::$attribArray)) {
-						SMWSemanticData::$attribArray[$attribute] = Array();
-					}
-					SMWSemanticData::$attribArray[$attribute][$result->getHash()] = $result;
+					SMWSemanticData::$semdata->addAttributeTextValue($attribute,$result);
 				}
 				return $result;
 			case SMW_SP_IMPORTED_FROM: // this requires special handling
@@ -114,10 +279,7 @@ class SMWSemanticData {
 					$result = SMWDataValue::newSpecialValue($special,SMWSemanticData::$skin,$value);
 				}
 				if ($smwgStoreActive) {
-					if(!array_key_exists($special,SMWSemanticData::$specaArray)) {
-						SMWSemanticData::$specaArray[$special] = Array();
-					}
-					SMWSemanticData::$specaArray[$special][$result->getHash()] = $result;
+					SMWSemanticData::$semdata->addSpecialValue($special,$result);
 				}
 				return $result;
 		}
@@ -133,6 +295,8 @@ class SMWSemanticData {
 		$relation = smwfNormalTitleText($relation);
 		$srels = $smwgContLang->getSpecialPropertiesArray();
 		$special = array_search($relation, $srels);
+		
+		$object = Title::newFromText($target);
 
 		if ($special!=NULL) { //requires PHP >=4.2.0
 			$type = SMWTypeHandlerFactory::getSpecialTypeHandler($special);
@@ -143,24 +307,10 @@ class SMWSemanticData {
 				//error" datatype handler. FIXME
 				SMWSemanticData::addAttribute($relation, $target);
 			} else {
-				// Create a new array for this specific semantic relation
-				if(!array_key_exists($special,SMWSemanticData::$specrArray)) {
-					SMWSemanticData::$specrArray[$special] = Array();
-				}
-				// Store relation and target, if it does not exist yet
-				if(!in_array($target, SMWSemanticData::$specrArray[$special])) {
-					SMWSemanticData::$specrArray[$special][] = $target;
-				}
+				SMWSemanticData::$semdata->addSpecialValue($special, $object);
 			}
 		} else {
-			// Create a new array for this specific semantic relation
-			if(!array_key_exists($relation,SMWSemanticData::$relArray)) {
-				SMWSemanticData::$relArray[$relation] = Array();
-			}
-			// Store relation and target, if it does not exist yet
-			if(!in_array($target, SMWSemanticData::$relArray[$relation])) {
-				SMWSemanticData::$relArray[$relation][] = $target;
-			}
+			SMWSemanticData::$semdata->addRelationTextObject($relation, $object);
 		}
 		return;
 	}
@@ -182,8 +332,8 @@ class SMWSemanticData {
 
 		if ( count($msglines) < 2 ) { //error: no elements for this namespace
 			$datavalue = SMWDataValue::newTypedValue(new SMWErrorTypeHandler(wfMsgForContent('smw_unknown_importns',$onto_ns)),SMWSemanticData::$skin,$value);
-			if (!$smwgStoreActive) {
-				SMWSemanticData::$specaArray[SMW_SP_IMPORTED_FROM] = array($datavalue);
+			if (!$smwgStoreActive) { //FIXME: is this "!" correct (also below)
+				SMWSemanticData::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM,$datavalue);
 			}
 			return $datavalue;
 		}
@@ -218,7 +368,7 @@ class SMWSemanticData {
 		}
 
 		// check whether element of correct type was found
-		$this_ns = SMWSemanticData::$title->getNamespace();
+		$this_ns = SMWSemanticData::$semdata->getSubject()->getNamespace();
 		$error = NULL;
 		switch ($elemtype) {
 			case SMW_NS_ATTRIBUTE: case SMW_NS_RELATION: case NS_CATEGORY:
@@ -238,7 +388,7 @@ class SMWSemanticData {
 		if (NULL != $error) {
 			$datavalue = SMWDataValue::newTypedValue(new SMWErrorTypeHandler($error),SMWSemanticData::$skin,$value);
 			if (!$smwgStoreActive) {
-				SMWSemanticData::$specaArray[SMW_SP_IMPORTED_FROM] = array ($datavalue);
+				SMWSemanticData::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM,$result);
 			}
 			return $datavalue;
 		}
@@ -250,12 +400,14 @@ class SMWSemanticData {
 
 		if (!$smwgStoreActive) {
 			$datavalue = SMWDataValue::newTypedValue($sth,SMWSemanticData::$skin,$onto_uri);
-			SMWSemanticData::$specaArray[SMW_SP_EXT_BASEURI] = array ($datavalue);
+			SMWSemanticData::$semdata->addSpecialValue(SMW_SP_EXT_BASEURI,$datavalue);
 			$datavalue = SMWDataValue::newTypedValue($sth,SMWSemanticData::$skin,$onto_ns);
-			SMWSemanticData::$specaArray[SMW_SP_EXT_NSID] = array ($datavalue);
+			SMWSemanticData::$semdata->addSpecialValue(SMW_SP_EXT_NSID,$datavalue);
 			$datavalue = SMWDataValue::newTypedValue($sth,SMWSemanticData::$skin,$onto_section);
-			SMWSemanticData::$specaArray[SMW_SP_EXT_SECTION] = array ($datavalue);
-			if (NULL != $datatype) SMWSemanticData::$specrArray[SMW_SP_HAS_TYPE][] = $datatype;
+			SMWSemanticData::$semdata->addSpecialValue(SMW_SP_EXT_SECTION,$datavalue);
+			if (NULL != $datatype) {
+				SMWSemanticData::$semdata->addSpecialValue(SMW_SP_HAS_TYPE,$datatype);
+			}
 		}
 
 		// print the input (this property is not stored, see SMW_Storage.php)
@@ -264,7 +416,7 @@ class SMWSemanticData {
 		// if ('' != $onto_name) $datavalue->setPrintoutString($onto_name, 'onto_name');
 		if ('' != $onto_name) $datavalue->setPrintoutString("[$onto_uri$onto_section $value] ($onto_name)");
 		if (!$smwgStoreActive) {
-			SMWSemanticData::$specaArray[SMW_SP_IMPORTED_FROM] = array($datavalue);
+			SMWSemanticData::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
 		}
 		return $datavalue;
 	}
@@ -283,19 +435,18 @@ class SMWSemanticData {
 		switch ($smwgShowFactbox) {
 		case SMW_FACTBOX_HIDDEN: return true;
 		case SMW_FACTBOX_NONEMPTY:
-			$boxSize = count(SMWSemanticData::$attribArray) + count(SMWSemanticData::$relArray) + count(SMWSemanticData::$specaArray) + count(SMWSemanticData::$specrArray);
-			if ($boxSize == 0) return true;
+			if ( (!SMWSemanticData::$semdata->hasRelations()) && (!SMWSemanticData::$semdata->hasAttributes()) && (!SMWSemanticData::$semdata->hasSpecialProperties()) ) return true;
 		}
 
 		$rdflink = new SMWInfolink(
-		   $wgServer . SMWSemanticData::$skin->makeSpecialUrl('ExportRDF') . '/' . str_replace('%2F', '/', urlencode(SMWSemanticData::$title->getPrefixedText())),
+		   $wgServer . SMWSemanticData::$skin->makeSpecialUrl('ExportRDF') . '/' . str_replace('%2F', '/', urlencode(SMWSemanticData::$semdata->getSubject()->getPrefixedText())),
 		   wfMsgForContent('smw_viewasrdf'),'rdflink');
 		// The "\n" is to ensure that lists on the end of articles are terminated
 		// before the div starts. It would of course be much cleaner to print the
 		// factbox in another way, similar to the way that categories are printed 
 		// now. However, this would require more patching of MediaWiki code ...
 		$text .= "\n" . '<div class="smwfact">' .
-		         '<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', SMWSemanticData::$title->getText()) . '</span>' .
+		         '<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', SMWSemanticData::$semdata->getSubject()->getText()) . '</span>' .
 		         '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
 		         '<table style="clear: both; width: 100%">' . "\n";
 		SMWSemanticData::printRelations($text);
@@ -311,21 +462,21 @@ class SMWSemanticData {
 	 * @access private
 	 */
 	static private function printAttributes(&$text) {
-		if(count(SMWSemanticData::$attribArray) <= 0) { return true; }
+		if (!SMWSemanticData::$semdata->hasAttributes()) {
+			return true; 
+		}
 
-		global $wgContLang;
 		$text .= ' <tr><th class="relhead"></th><th class="atthead">' . wfMsgForContent('smw_att_head') . "</th></tr>\n";
 
-		foreach(SMWSemanticData::$attribArray as $attribute => $attributeValueArray)
-		{
+		foreach(SMWSemanticData::$semdata->getAttributes() as $attribute) {
+			$attributeValueArray = SMWSemanticData::$semdata->getAttributeValues($attribute);
 			$text .= '<tr><td class="smwattname">';
-			$text .= '   [[' . $wgContLang->getNsText(SMW_NS_ATTRIBUTE). ':' . $attribute . '|' . preg_replace('/[\s]/','&nbsp;',$attribute,2) . ']] </td><td class="smwatts">';
-			// TODO: the preg_replace is a kind of hack to ensure that the left column does ont get too narrow; maybe we can find something nicer later
+			$text .= '   [[' . $attribute->getPrefixedText() . '|' . preg_replace('/[\s]/','&nbsp;',$attribute->getText(),2) . ']] </td><td class="smwatts">';
+			// TODO: the preg_replace is a kind of hack to ensure that the left column does not get too narrow; maybe we can find something nicer later
 
 			$l = count($attributeValueArray);
 			$i=0;
-			foreach ($attributeValueArray as $attributeValue)
-			{
+			foreach ($attributeValueArray as $attributeValue) {
 				if ($i!=0) {
 					if ($i>$l-2) {
 						$text .= wfMsgForContent('smw_finallistconjunct') . ' ';
@@ -345,8 +496,6 @@ class SMWSemanticData {
 			}
 			$text .= '</td></tr>';
 		}
-
-		return true;
 	}
 
 	/**
@@ -356,38 +505,37 @@ class SMWSemanticData {
 	static private function printRelations(&$text) {
 		//@ TODO: Performance: remember $NS_RELATION value once, 
 		//  outside this loop; also in other print loops.
-		if(count(SMWSemanticData::$relArray) <= 0) { return true; }
+		if(!SMWSemanticData::$semdata->hasRelations()) { return true; }
 
 		global $wgContLang;
 		$text .= ' <tr><th class="relhead"></th><th class="relhead">' . wfMsgForContent('smw_rel_head') . "</th></tr>\n";
-
-		foreach(SMWSemanticData::$relArray as $relation => $relationObjectArray) {
-			//$text .= '   ' . SMWSemanticData::$title->getPrefixedText() . '&nbsp;';
-			$text .= '<tr><td class="smwrelname">[[' . $wgContLang->getNsText(SMW_NS_RELATION). ':' . $relation . '|' . preg_replace('/[\s]/','&nbsp;',$relation,2) . ']]</td><td class="smwrels">';
+		
+		foreach(SMWSemanticData::$semdata->getRelations() as $relation) {
+			$relationObjectArray = SMWSemanticData::$semdata->getRelationObjects($relation);
+			//$text .= '   ' . SMWSemanticData::$semdata->getSubject()->getPrefixedText() . '&nbsp;';
+			$text .= '<tr><td class="smwrelname">[[' . $relation->getPrefixedText() . '|' . preg_replace('/[\s]/','&nbsp;',$relation->getText(),2) . ']]</td><td class="smwrels">';
 			// TODO: the preg_replace is a kind of hack to ensure that the left column does ont get too narrow; maybe we can find something nicer later
 
 			$l = count($relationObjectArray);
-			for ($i=0; $i<$l; $i++) {
+			$i=0;
+			foreach ($relationObjectArray as $relationObject) {
 				if ($i!=0) {
 					if ($i>$l-2) {
 						$text .= wfMsgForContent('smw_finallistconjunct') . ' ';
-					} else { 
+					} else {
 						$text .= ', ';
 					}
 				}
+				$i+=1;
 
-				$relationObject = $relationObjectArray[$i];
-				$text .= '[[:' . $relationObject . ']]';
+				$text .= '[[:' . $relationObject->getPrefixedText() . ']]';
 				$searchlink = new SMWInfolink(
-				         SMWInfolink::makeRelationSearchURL($relation, $relationObject, SMWSemanticData::$skin),
+				         SMWInfolink::makeRelationSearchURL($relation->getText(), $relationObject->getPrefixedText(), SMWSemanticData::$skin),
 				         '+','smwsearch');
 				$text .= '&nbsp;&nbsp;' . $searchlink->getWikiText();
 			}
 			$text .= "</td></tr>\n";
 		}
-		//$text .= " </p><hr/>\n";
-
-		return true;
 	}
 
 
@@ -398,36 +546,28 @@ class SMWSemanticData {
 	static private function printSpecialProperties(&$text) {
 		global $wgContLang, $smwgContLang;
 
-		if ((count(SMWSemanticData::$specaArray) > 0)||(count(SMWSemanticData::$specrArray) > 0)) {
+		if (SMWSemanticData::$semdata->hasSpecialProperties()) {
 			$text .= ' <tr><th class="spechead"></th><th class="spechead">' . wfMsgForContent('smw_spec_head') . "</th></tr>\n";
 		} else { return true; }
 
 		$specprops = $smwgContLang->getSpecialPropertiesArray();
-		$titletext = SMWSemanticData::$title->getPrefixedText();
-
-		if(count(SMWSemanticData::$specaArray) > 0) {
-			foreach(SMWSemanticData::$specaArray as $specialProperty => $valueArray) {
-				if (array_key_exists($specialProperty,$specprops)) { // only print specprops with an official name
-					$specialPropertyName = $specprops[$specialProperty];
-					foreach ($valueArray as $value) {
-						$text .= '<tr><td class="smwspecname">[[' . $wgContLang->getNsText(SMW_NS_ATTRIBUTE). ':' . $specialPropertyName . '|' . $specialPropertyName . ']]</td><td class="smwspecs">';
-						$text .= $value->getValueDescription();
-						$text .= "</td></tr>\n";
-					}
-				}
-			}
-		}
-
-		if(count(SMWSemanticData::$specrArray) > 0) {
-			foreach(SMWSemanticData::$specrArray as $specialProperty => $valueArray)
-			{
+		foreach(SMWSemanticData::$semdata->getSpecialProperties() as $specialProperty) {
+			$valueArray = SMWSemanticData::$semdata->getSpecialValues($specialProperty);
+			if (array_key_exists($specialProperty,$specprops)) { // only print specprops with an official name
 				$specialPropertyName = $specprops[$specialProperty];
 				foreach ($valueArray as $value) {
-					$text .= '<tr><td class="smwspecname">[[' . $wgContLang->getNsText(SMW_NS_RELATION). ':' . $specialPropertyName . '|' . $specialPropertyName . ']]</td><td class="smwspecs">';
-					$text .= '[[' . $value . ']]';
-					$text .= "</td></tr>\n";
+					if ($value instanceof SMWDataValue) {
+						$vt = $value->getValueDescription();
+						$vn = $wgContLang->getNsText(SMW_NS_ATTRIBUTE);
+					} elseif ($value instanceof Title) {
+						$vt = '[[' . $value->getPrefixedText() . ']]';
+						$vn = $wgContLang->getNsText(SMW_NS_RELATION);
+					} else {
+						$vt = $value;
+						$vn = $wgContLang->getNsText(SMW_NS_ATTRIBUTE);
+					}
+					$text .= '<tr><td class="smwspecname">[[' . $vn. ':' . $specialPropertyName . '|' . $specialPropertyName . ']]</td><td class="smwspecs">' . $vt . "</td></tr>\n";
 				}
-
 			}
 		}
 
@@ -445,9 +585,10 @@ class SMWSemanticData {
 	 *
 	 * @TODO: is $title still needed, since we now have SMWSemanticData::$title? Could they differ significantly?
 	 */
-	static function storeData(&$title, $processSemantics) {
+	static function storeData(&$t, $processSemantics) {
 		// clear data even if semantics are not processed for this namespace
 		// (this setting might have been changed, so that data still exists)
+		$title = SMWSemanticData::$semdata->getSubject();
 		SMWSemanticData::clearData($title);
 		if ($processSemantics) {
 			SMWSemanticData::storeAttributes($title);
@@ -469,18 +610,16 @@ class SMWSemanticData {
 	 * @access private
 	 */
 	static private function storeAttributes($s_title) {
-		if(count(SMWSemanticData::$attribArray) <= 0) {
+		if( !SMWSemanticData::$semdata->hasAttributes() ) {
 			return true;
 		}
 
-		foreach(SMWSemanticData::$attribArray as $attribute => $attributeValueArray) {
-			$a_title = Title::newFromText($attribute,SMW_NS_ATTRIBUTE);
-			if ($a_title !== NULL) {
-				foreach($attributeValueArray as $value) {
-					// DEBUG echo "in storeAttributes, considering $value, getXSDValue=" . $value->getXSDValue() . "<br />\n" ;
-					if ($value->getXSDValue()!==false) {
-						smwfStoreAttribute($s_title, $a_title, $value->getUnit(), $value->getTypeID(), $value->getXSDValue(), $value->getNumericValue());
-					}
+		foreach(SMWSemanticData::$semdata->getAttributes() as $attribute) {
+			$attributeValueArray = SMWSemanticData::$semdata->getAttributeValues($attribute);
+			foreach($attributeValueArray as $value) {
+				// DEBUG echo "in storeAttributes, considering $value, getXSDValue=" . $value->getXSDValue() . "<br />\n" ;
+				if ($value->getXSDValue()!==false) {
+					smwfStoreAttribute($s_title, $attribute, $value->getUnit(), $value->getTypeID(), $value->getXSDValue(), $value->getNumericValue());
 				}
 			}
 		}
@@ -492,22 +631,14 @@ class SMWSemanticData {
 	 * @access private
 	 */
 	static private function storeRelations($s_title) {
-		if(count(SMWSemanticData::$relArray) <= 0) {
+		if(!SMWSemanticData::$semdata->hasRelations()) {
 			return true;
 		}
 
-		foreach(SMWSemanticData::$relArray as $semanticRelation => $relationObjectArray)
-		{
-			$r_title = Title::newFromText($semanticRelation,SMW_NS_RELATION);
-			if ($r_title !== NULL) {
-				foreach($relationObjectArray as $linkTarget)
-				{
-					$o_title = Title::newFromText($linkTarget);
-					if ( $o_title !== NULL ) {
-						smwfStoreRelation($s_title, $r_title, $o_title);
-					}
+		foreach(SMWSemanticData::$semdata->getRelations() as $relation) {
+				foreach(SMWSemanticData::$semdata->getRelationObjects($relation) as $object) {
+						smwfStoreRelation($s_title, $relation, $object);
 				}
-			}
 		}
 		return true;
 	}
@@ -517,21 +648,18 @@ class SMWSemanticData {
 	 * @access private
 	 */
 	static private function storeSpecialProperties($s_title) {
-		if (count(SMWSemanticData::$specrArray) > 0) {
-			foreach(SMWSemanticData::$specrArray as $specialProperty => $valueArray)
-			{
-				foreach($valueArray as $value)
-				{
-					smwfStoreSpecialProperty($s_title, $specialProperty, $value);
-				}
-			}
-		}
-
-		if (count(SMWSemanticData::$specaArray) > 0) {
-			foreach(SMWSemanticData::$specaArray as $specialProperty => $valueArray) {
+		if (SMWSemanticData::$semdata->hasSpecialProperties()) {
+			foreach (SMWSemanticData::$semdata->getSpecialProperties() as $special) {
+				$valueArray = SMWSemanticData::$semdata->getSpecialValues($special);
 				foreach($valueArray as $value) {
-					if ($value->getXSDValue()!==false) {
-						smwfStoreSpecialProperty($s_title, $specialProperty, $value->getXSDValue());
+					if ($value instanceof SMWDataValue) {
+						if ($value->getXSDValue() !== false) {
+							smwfStoreSpecialProperty($s_title, $special, $value->getXSDValue());
+						}
+					} elseif ($value instanceof Title) {
+						smwfStoreSpecialProperty($s_title, $special, $value->getPrefixedText());
+					} else {
+						smwfStoreSpecialProperty($s_title, $special, $value);
 					}
 				}
 			}
