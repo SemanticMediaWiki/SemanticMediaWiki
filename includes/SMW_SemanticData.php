@@ -215,20 +215,12 @@ class SMWSemanticData {
 	 * The skin that is to be used for output functions.
 	 */
 	static private $skin;
-	/**
-	 * The title object of the article that is processed.
-	 */
-	static private $title;
-	/**#@-*/
 
 	/**
 	 * Initialisation method. Must be called before anything else happens.
 	 */
 	static function initStorage($title, $skin) {
 		SMWSemanticData::$semdata = new SMWSemData($title);
-
-		SMWSemanticData::clearStorage();
-		SMWSemanticData::$title = $title;
 		SMWSemanticData::$skin = $skin;
 	}
 
@@ -242,9 +234,7 @@ class SMWSemanticData {
 		}
 	}
 
-	/*********************************************************************/
-	/* Methods for adding data to the object                             */
-	/*********************************************************************/
+//// Methods for adding data to the object
 
 	/**
 	 * This method adds a new attribute with the given value to the storage.
@@ -252,14 +242,14 @@ class SMWSemanticData {
 	 * various formats.
 	 */
 	static function addAttribute($attribute, $value) {
-		// See if this attribute is a special one like e.g. "Has type"
 		global $smwgContLang, $smwgStoreActive;
+		// See if this attribute is a special one like e.g. "Has unit"
 		$attribute = smwfNormalTitleText($attribute); //slightly normalize label
 		$specprops = $smwgContLang->getSpecialPropertiesArray();
 		$special = array_search($attribute, $specprops);
 
 		switch ($special) {
-			case NULL: // normal attribute
+			case false: // normal attribute
 				$result = SMWDataValue::newAttributeValue($attribute,SMWSemanticData::$skin,$value);
 				if ($smwgStoreActive) {
 					SMWSemanticData::$semdata->addAttributeTextValue($attribute,$result);
@@ -289,16 +279,15 @@ class SMWSemanticData {
 	 * This method adds a new relation with the given target to the storage.
 	 */
 	static function addRelation($relation, $target) {
-		global $smwgContLang, $smwgStoreActive;;
+		global $smwgContLang, $smwgStoreActive;
 		if (!$smwgStoreActive) return; // no action required
-
+		// See if this relation is a special one like e.g. "Has type"
 		$relation = smwfNormalTitleText($relation);
 		$srels = $smwgContLang->getSpecialPropertiesArray();
 		$special = array_search($relation, $srels);
-		
 		$object = Title::newFromText($target);
 
-		if ($special!=NULL) { //requires PHP >=4.2.0
+		if ($special !== false) {
 			$type = SMWTypeHandlerFactory::getSpecialTypeHandler($special);
 			if ($type->getID() !=  'error') { //Oops! This is not a relation!
 				//Note that this still changes the behaviour, since the [[ ]]
@@ -312,9 +301,8 @@ class SMWSemanticData {
 		} else {
 			SMWSemanticData::$semdata->addRelationTextObject($relation, $object);
 		}
-		return;
 	}
-	
+
 	/**
 	 * This method adds multiple special properties needed to use the given 
 	 * article for representing an element from a whitelisted external 
@@ -421,13 +409,10 @@ class SMWSemanticData {
 		return $datavalue;
 	}
 
-	/*********************************************************************/
-	/* Methods for printing the content of this object into an factbox   */
-	/*********************************************************************/
+//// Methods for printing the content of this object into an factbox   */
 
 	/**
 	 * This method prints semantic data at the bottom of an article.
-	 * @access public
 	 */
 	static function printFactbox(&$text) {
 		global $wgContLang, $wgServer, $smwgShowFactbox, $smwgStoreActive;
@@ -453,17 +438,14 @@ class SMWSemanticData {
 		SMWSemanticData::printAttributes($text);
 		SMWSemanticData::printSpecialProperties($text);
 		$text .= '</table></div>';
-
-		return true;
 	}
 
 	/**
 	 * This method prints attribute values at the bottom of an article.
-	 * @access private
 	 */
-	static private function printAttributes(&$text) {
+	static protected function printAttributes(&$text) {
 		if (!SMWSemanticData::$semdata->hasAttributes()) {
-			return true; 
+			return;
 		}
 
 		$text .= ' <tr><th class="relhead"></th><th class="atthead">' . wfMsgForContent('smw_att_head') . "</th></tr>\n";
@@ -500,14 +482,10 @@ class SMWSemanticData {
 
 	/**
 	 * This method prints semantic relations at the bottom of an article.
-	 * @access private
 	 */
-	static private function printRelations(&$text) {
-		//@ TODO: Performance: remember $NS_RELATION value once, 
-		//  outside this loop; also in other print loops.
+	static protected function printRelations(&$text) {
 		if(!SMWSemanticData::$semdata->hasRelations()) { return true; }
 
-		global $wgContLang;
 		$text .= ' <tr><th class="relhead"></th><th class="relhead">' . wfMsgForContent('smw_rel_head') . "</th></tr>\n";
 		
 		foreach(SMWSemanticData::$semdata->getRelations() as $relation) {
@@ -541,15 +519,15 @@ class SMWSemanticData {
 
 	/**
 	 * This method prints special properties at the bottom of an article.
-	 * @access private
 	 */
-	static private function printSpecialProperties(&$text) {
-		global $wgContLang, $smwgContLang;
-
+	static protected function printSpecialProperties(&$text) {
 		if (SMWSemanticData::$semdata->hasSpecialProperties()) {
 			$text .= ' <tr><th class="spechead"></th><th class="spechead">' . wfMsgForContent('smw_spec_head') . "</th></tr>\n";
-		} else { return true; }
+		} else {
+			return true; 
+		}
 
+		global $smwgContLang;
 		$specprops = $smwgContLang->getSpecialPropertiesArray();
 		foreach(SMWSemanticData::$semdata->getSpecialProperties() as $specialProperty) {
 			$valueArray = SMWSemanticData::$semdata->getSpecialValues($specialProperty);
@@ -570,19 +548,13 @@ class SMWSemanticData {
 				}
 			}
 		}
-
-		return true;
 	}
 
-	/*********************************************************************/
-	/* Methods for storing the content of this object                    */
-	/*********************************************************************/
+//// Methods for storing the content of this object
 
 	/**
 	 * This method stores the semantic data, and clears any outdated entries
 	 * for the current article.
-	 * @access public
-	 *
 	 * @TODO: is $title still needed, since we now have SMWSemanticData::$title? Could they differ significantly?
 	 */
 	static function storeData(&$t, $processSemantics) {
