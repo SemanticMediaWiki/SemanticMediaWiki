@@ -363,7 +363,7 @@ class SMWSQLStore extends SMWStore {
 			return false;
 		}
 		$exists = false;
-		while ( $row = $this->fetchObject( $res ) ) {
+		while ( $row = $db->fetchObject( $res ) ) {
 			if ( $row->Column_name == $column ) {
 				if ($exists) { // duplicate index, fix this
 					$db->query( 'DROP INDEX ' . $row->Key_name . ' ON ' . $table);
