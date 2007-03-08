@@ -6,7 +6,6 @@
  */
 
 	require_once('SMW_Factbox.php');
-	require_once('SMW_Storage.php'); // only needed for moving articles now, remove soon
 
 //// Parsing annotations
 
@@ -188,7 +187,7 @@
 	*  semantic relations are moved accordingly.
 	*/
 	function smwfMoveHook(&$old_title, &$new_title, &$user, $pageid, $redirid) {
-		smwfMoveAnnotations($old_title, $new_title);
+		smwfGetStore()->changeTitle($old_title, $new_title);
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
 

@@ -243,6 +243,34 @@ class SMWSQLStore extends SMWStore {
 		}
 	}
 
+	function changeTitle(Title $oldtitle, Title $newtitle, $keepid = true) {
+		$db =& wfGetDB( DB_MASTER );
+
+		$cond_array = array( 'subject_title' => $oldtitle->getDBkey(),
+		                     'subject_namespace' => $oldtitle->getNamespace() );
+		$val_array  = array( 'subject_title' => $newtitle->getDBkey(),
+		                     'subject_namespace' => $newtitle->getNamespace() );
+
+		// don't do this by default, since the ids you get when moving articles
+		// are not the ones from the old article and the new one (in reality, the
+		// $old_title refers to the newly generated redirect article, which does 
+		// not have the old id that was stored in the database):
+		if (!$keepid) {
+			$old_id = $old_title->getArticleID();
+			$new_id = $new_title->getArticleID();
+			if ($old_id != 0) {
+				$cond_array['subject_id'] = $old_id;
+			}
+			if ($new_id != 0) {
+				$val_array['subject_id'] = $new_id;
+			}
+		}
+
+		$db->update($db->tableName('smw_relations'), $val_array, $cond_array, 'SMW::changeTitle');
+		$db->update($db->tableName('smw_attributes'), $val_array, $cond_array, 'SMW::changeTitle');
+		$db->update($db->tableName('smw_specialprops'), $val_array, $cond_array, 'SMW::changeTitle');
+	}
+
 ///// Private methods /////
 
 	/**

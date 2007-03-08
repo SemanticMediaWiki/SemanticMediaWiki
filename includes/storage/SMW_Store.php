@@ -78,6 +78,15 @@ abstract class SMWStore {
 	 */
 	abstract function updateData(SMWSemData $data);
 
+	/**
+	 * Update the store to reflect a renaming of some article. The old and new title objects
+	 * are given. Since this is typically triggered when moving articles, the ID of the title
+	 * objects is normally not affected by the change, which is reflected by the value of $keepid.
+	 * If $keepid is true, the old and new id of the title is the id of $newtitle, and not the
+	 * id of $oldtitle.
+	 */
+	abstract function changeTitle(Title $oldtitle, Title $newtitle, $keepid = true);
+
 }
 
  
