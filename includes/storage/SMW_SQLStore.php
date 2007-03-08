@@ -294,9 +294,9 @@ class SMWSQLStore extends SMWStore {
 			$res = $db->query( $sql, $fname );
 		}
 
-		$this->setupIndex($smw_relations, 'subject_id');
-		$this->setupIndex($smw_relations, 'relation_title');
-		$this->setupIndex($smw_relations, 'object_title');
+		$this->setupIndex($smw_relations, 'subject_id', $db);
+		$this->setupIndex($smw_relations, 'relation_title', $db);
+		$this->setupIndex($smw_relations, 'object_title', $db);
 
 		// create attribute table
 		if ($db->tableExists('smw_attributes') === false) {
@@ -313,10 +313,10 @@ class SMWSQLStore extends SMWStore {
 			$res = $db->query( $sql, $fname );
 		}
 
-		$this->setupIndex($smw_attributes, 'subject_id');
-		$this->setupIndex($smw_attributes, 'attribute_title');
-		$this->setupIndex($smw_attributes, 'value_num');
-		$this->setupIndex($smw_attributes, 'value_xsd');
+		$this->setupIndex($smw_attributes, 'subject_id', $db);
+		$this->setupIndex($smw_attributes, 'attribute_title', $db);
+		$this->setupIndex($smw_attributes, 'value_num', $db);
+		$this->setupIndex($smw_attributes, 'value_xsd', $db);
 
 		// create table for special properties
 		if ($db->tableExists('smw_specialprops') === false) {
@@ -330,8 +330,8 @@ class SMWSQLStore extends SMWStore {
 			$res = $db->query( $sql, $fname );
 		}
 
-		$this->setupIndex($smw_specialprops, 'subject_id');
-		$this->setupIndex($smw_specialprops, 'property_id');
+		$this->setupIndex($smw_specialprops, 'subject_id', $db);
+		$this->setupIndex($smw_specialprops, 'property_id', $db);
 
 		return true;
 	}
@@ -354,16 +354,28 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	/**
-	 * Make sure that the given index in the given DB table exists and is unique,
-	 * and add it if needed.
+	 * Make sure that the given column in the given DB table is indexed by *one* index.
 	 */
-	protected function setupIndex($table, $index, $db) {
-		if ($db->indexExists($table, $index)) {
-			//TODO: check uniqueness
-			return;
-		} else {
-			$db->query( "ALTER TABLE $table ADD INDEX ( `$index` )", 'SMW::SetupIndex' );
+	protected function setupIndex($table, $column, $db) {
+		$fname = 'SMW::SetupIndex';
+		$res = $db->query( 'SHOW INDEX FROM ' . $table , $fname);
+		if ( !$res ) {
+			return false;
 		}
+		$exists = false;
+		while ( $row = $this->fetchObject( $res ) ) {
+			if ( $row->Column_name == $column ) {
+				if ($exists) { // duplicate index, fix this
+					$db->query( 'DROP INDEX ' . $row->Key_name . ' ON ' . $table);
+				}
+				$exists = true;
+			}
+		}
+
+		if (!$exists) {
+			$db->query( "ALTER TABLE $table ADD INDEX ( `$column` )", 'SMW::SetupIndex' );
+		}
+		return true;
 	}
 
 }
