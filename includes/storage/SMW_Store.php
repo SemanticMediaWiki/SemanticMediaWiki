@@ -87,7 +87,16 @@ abstract class SMWStore {
 	 */
 	abstract function changeTitle(Title $oldtitle, Title $newtitle, $keepid = true);
 
+///// Setup store /////
+
+	/**
+	 * Setup all storage structures properly for using the store. This function performs tasks like
+	 * creation of database tables. It is called upon installation as well as on upgrade: hence it
+	 * must be able to upgrade existing storage structures if needed. It should return "true" if 
+	 * successful and return a meaningful string error message otherwise.
+	 */
+	abstract function setup();
+
 }
 
- 
 ?>
