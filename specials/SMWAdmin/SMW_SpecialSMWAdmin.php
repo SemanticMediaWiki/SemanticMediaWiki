@@ -258,10 +258,10 @@ function smwfRestoreTableTitles() {
  * A function for updating tables from 0.3 to post 0.3
  */
 function smwfAdminUpdateTables() {
-	$dbr =& wfGetDB( DB_SLAVE );
+	$dbr =& wfGetDB( DB_MASTER );
 
 	if ($dbr->tableExists('smw_relations') === false) {
-		smwfMakeSemanticTables();
+		smwfGetStore()->setup();
 		return 'The database has been initialised successfully.';
 	}
 
