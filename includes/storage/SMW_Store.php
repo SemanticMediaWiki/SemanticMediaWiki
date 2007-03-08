@@ -5,6 +5,9 @@
  * @author Markus Krötzsch
  */
 
+global $smwgIP;
+require_once($smwgIP . '/includes/SMW_SemanticData.php');
+
 /**
  * The abstract base class for all classes that implement access to some
  * semantic store. Besides the relevant interface, this class provides default
@@ -67,6 +70,13 @@ abstract class SMWStore {
 	 * data.
 	 */
 	abstract function deleteSubject(Title $subject);
+
+	/**
+	 * Update the semantic data stored for some individual. The data is given
+	 * as a SMWSemData object, which contains all semantic data for one particular
+	 * subject.
+	 */
+	abstract function updateData(SMWSemData $data);
 
 }
 

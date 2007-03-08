@@ -174,6 +174,75 @@ class SMWSQLStore extends SMWStore {
 		            'SMW::deleteSubject::Specialprops');
 	}
 
+	function updateData(SMWSemData $data) {
+		$db =& wfGetDB( DB_MASTER );
+		$subject = $data->getSubject();
+		$this->deleteSubject($subject);
+		// relations
+		foreach(SMWSemanticData::$semdata->getRelations() as $relation) {
+			foreach(SMWSemanticData::$semdata->getRelationObjects($relation) as $object) {
+				$db->insert( $db->tableName('smw_relations'),
+				             array( 'subject_id' => $subject->getArticleID(),
+				            'subject_namespace' => $subject->getNamespace(),
+				            'subject_title' => $subject->getDBkey(),
+				            'relation_title' => $relation->getDBkey(),
+				            'object_namespace' => $object->getNamespace(),
+				            'object_title' => $object->getDBkey()),
+				            'SMW::updateRelData');
+			}
+		}
+
+		//attributes
+		foreach(SMWSemanticData::$semdata->getAttributes() as $attribute) {
+			$attributeValueArray = SMWSemanticData::$semdata->getAttributeValues($attribute);
+			foreach($attributeValueArray as $value) {
+				// DEBUG echo "in storeAttributes, considering $value, getXSDValue=" . $value->getXSDValue() . "<br />\n" ;
+				if ($value->getXSDValue()!==false) {
+					$db->insert( $db->tableName('smw_attributes'),
+					             array( 'subject_id' => $subject->getArticleID(),
+					             'subject_namespace' => $subject->getNamespace(),
+					             'subject_title' => $subject->getDBkey(),
+					             'attribute_title' => $attribute->getDBkey(),
+					             'value_unit' => $value->getUnit(),
+					             'value_datatype' => $value->getTypeID(),
+					             'value_xsd' => $value->getXSDValue(),
+					             'value_num' => $value->getNumericValue()),
+					             'SMW::updateAttData');
+				}
+			}
+		}
+
+		//special properties
+		foreach (SMWSemanticData::$semdata->getSpecialProperties() as $special) {
+			if ($special == SMW_SP_IMPORTED_FROM) { // don't store this, just used for display; TODO: filtering it here is bad
+				continue;
+			}
+			$valueArray = SMWSemanticData::$semdata->getSpecialValues($special);
+			foreach($valueArray as $value) {
+				if ($value instanceof SMWDataValue) {
+					if ($value->getXSDValue() !== false) { // filters out error-values etc.
+						$stringvalue = $value->getXSDValue();
+					}
+				} elseif ($value instanceof Title) {
+					if ( $special == SMW_SP_HAS_TYPE ) { // special handling, TODO: change this to use type ids
+						$stringvalue = $value->getText();
+					} else {
+						$stringvalue = $value->getPrefixedText();
+					}
+				} else {
+					$stringvalue = $value;
+				}
+				$db->insert( $db->tableName('smw_specialprops'),
+				             array('subject_id' => $subject->getArticleID(),
+				                   'subject_namespace' => $subject->getNamespace(),
+				                   'subject_title' => $subject->getDBkey(),
+				                   'property_id' => $special,
+				                   'value_string' => $stringvalue), 
+				             'SMW::updateSpecData');
+			}
+		}
+	}
+
 ///// Private methods /////
 
 	/**

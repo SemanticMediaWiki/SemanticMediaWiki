@@ -75,8 +75,7 @@
 	*  could consider creating an object for deferred saving
 	*  as used in other places of MediaWiki.
 	*/
-	function smwfSaveHook(&$article, &$user, &$text)
-	{
+	function smwfSaveHook(&$article, &$user, &$text) {
 		$title=$article->getTitle();
 		SMWSemanticData::storeData($title, smwfIsSemanticsProcessed($title->getNamespace()));
 		return true; // always return true, in order not to stop MW's hook processing!
@@ -86,12 +85,8 @@
 	*  This method will be called whenever an article is deleted so that
 	*  semantic relations are cleared appropriately.
 	*/
-	function smwfDeleteHook(&$article, &$user, &$reason)
-	{
-		$title=$article->getTitle();
-		smwfDeleteRelations($title);
-		smwfDeleteAttributes($title);
-		smwfDeleteSpecialProperties($title);
+	function smwfDeleteHook(&$article, &$user, &$reason) {
+		smwfGetStore()->deleteSubject($article->getTitle());
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
 

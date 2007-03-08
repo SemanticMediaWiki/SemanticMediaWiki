@@ -208,13 +208,14 @@ class SMWSemData {
 class SMWSemanticData {
 
 	/**
-	 * The actual contained for the semantic annotations.
+	 * The actual contained for the semantic annotations. Public, since
+	 * it is ref-passed to othes for further processing.
 	 */
-	static protected $semdata; 
+	static $semdata; 
 	/**
 	 * The skin that is to be used for output functions.
 	 */
-	static private $skin;
+	static protected $skin;
 
 	/**
 	 * Initialisation method. Must be called before anything else happens.
@@ -527,7 +528,7 @@ class SMWSemanticData {
 			return true; 
 		}
 
-		global $smwgContLang;
+		global $smwgContLang, $wgContLang;
 		$specprops = $smwgContLang->getSpecialPropertiesArray();
 		foreach(SMWSemanticData::$semdata->getSpecialProperties() as $specialProperty) {
 			$valueArray = SMWSemanticData::$semdata->getSpecialValues($specialProperty);
@@ -550,7 +551,7 @@ class SMWSemanticData {
 		}
 	}
 
-//// Methods for storing the content of this object
+//// Methods for writing the content of this object
 
 	/**
 	 * This method stores the semantic data, and clears any outdated entries
@@ -561,82 +562,18 @@ class SMWSemanticData {
 		// clear data even if semantics are not processed for this namespace
 		// (this setting might have been changed, so that data still exists)
 		$title = SMWSemanticData::$semdata->getSubject();
-		SMWSemanticData::clearData($title);
 		if ($processSemantics) {
-			SMWSemanticData::storeAttributes($title);
-			SMWSemanticData::storeRelations($title);
-			SMWSemanticData::storeSpecialProperties($title);
+			smwfGetStore()->updateData(SMWSemanticData::$semdata);
+		} else {
+			smwfGetStore()->deleteSubject($title);
 		}
 	}
 
 	/**
 	 * Delete semantic data currently associated with some article.
-	 * @access private
 	 */
-	static private function clearData($s_title) {
+	static function clearData($s_title) {
 		smwfGetStore()->deleteSubject($s_title);
-	}
-
-	/**
-	 * Method for storing attributes.
-	 * @access private
-	 */
-	static private function storeAttributes($s_title) {
-		if( !SMWSemanticData::$semdata->hasAttributes() ) {
-			return true;
-		}
-
-		foreach(SMWSemanticData::$semdata->getAttributes() as $attribute) {
-			$attributeValueArray = SMWSemanticData::$semdata->getAttributeValues($attribute);
-			foreach($attributeValueArray as $value) {
-				// DEBUG echo "in storeAttributes, considering $value, getXSDValue=" . $value->getXSDValue() . "<br />\n" ;
-				if ($value->getXSDValue()!==false) {
-					smwfStoreAttribute($s_title, $attribute, $value->getUnit(), $value->getTypeID(), $value->getXSDValue(), $value->getNumericValue());
-				}
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Method for storing semantic relations.
-	 * @access private
-	 */
-	static private function storeRelations($s_title) {
-		if(!SMWSemanticData::$semdata->hasRelations()) {
-			return true;
-		}
-
-		foreach(SMWSemanticData::$semdata->getRelations() as $relation) {
-				foreach(SMWSemanticData::$semdata->getRelationObjects($relation) as $object) {
-						smwfStoreRelation($s_title, $relation, $object);
-				}
-		}
-		return true;
-	}
-
-	/**
-	 * Method for storing special properties.
-	 * @access private
-	 */
-	static private function storeSpecialProperties($s_title) {
-		if (SMWSemanticData::$semdata->hasSpecialProperties()) {
-			foreach (SMWSemanticData::$semdata->getSpecialProperties() as $special) {
-				$valueArray = SMWSemanticData::$semdata->getSpecialValues($special);
-				foreach($valueArray as $value) {
-					if ($value instanceof SMWDataValue) {
-						if ($value->getXSDValue() !== false) {
-							smwfStoreSpecialProperty($s_title, $special, $value->getXSDValue());
-						}
-					} elseif ($value instanceof Title) {
-						smwfStoreSpecialProperty($s_title, $special, $value->getPrefixedText());
-					} else {
-						smwfStoreSpecialProperty($s_title, $special, $value);
-					}
-				}
-			}
-		}
-		return true;
 	}
 
 }
