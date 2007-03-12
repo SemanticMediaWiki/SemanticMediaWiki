@@ -89,7 +89,7 @@ function doSpecialSMWAdmin($par = null) {
 	           <li> If you experience problems with your installation, start by checking the guidelines in the <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL file</a>.</li>
 	           <li>The complete user documentation to Semantic MediaWiki is at <a href="http://ontoworld.org/wiki/Help:Semantics">ontoworld.org</a>.</li>
 	           <li>Bugs can be reported to <a href="http://bugzilla.wikimedia.org/">MediaZilla</a>.</li>
-	           <li>If you have further questions or suggestions, join the discussion on <a href="malito:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.</li>
+	           <li>If you have further questions or suggestions, join the discussion on <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.</li>
 	           <ul/>' . "\n";
 	$html .= '</form>';
 	
