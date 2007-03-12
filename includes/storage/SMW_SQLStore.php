@@ -20,19 +20,35 @@ class SMWSQLStore extends SMWStore {
 
 	function getSpecialValues(Title $subject, $specialprop, $limit = -1, $offset = 0) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
-		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-		       'AND property_id=' . $db->addQuotes($specialprop);
-		$res = $db->select( $db->tableName('smw_specialprops'), 
-		                    'value_string',
-		                    $sql, 'SMW::getSpecialValues', $this->getSQLOptions($limit, $offset) );
-		// rewrite result as array
+
 		$result = array();
-		if($db->numRows( $res ) > 0) {
-			while($row = $db->fetchObject($res)) {
-				$result[] = $row->value_string;
+		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
+			$sql = 'cl_from=' . $db->addQuotes($subject->getArticleID());
+			$res = $db->select( $db->tableName('categorylinks'), 
+								'DISTINCT cl_to',
+								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($limit, $offset) );
+			// rewrite result as array
+			if($db->numRows( $res ) > 0) {
+				while($row = $db->fetchObject($res)) {
+					$result[] = Title::newFromText($row->cl_to, NS_CATEGORY);
+				}
 			}
+			$db->freeResult($res);
+		} else { // "normal" special property
+			$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+				'AND property_id=' . $db->addQuotes($specialprop);
+			$res = $db->select( $db->tableName('smw_specialprops'), 
+								'value_string',
+								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($limit, $offset) );
+			// rewrite result as array
+			///TODO: this should not be an array of strings unless it was saved as such, do specialprop typechecks
+			if($db->numRows( $res ) > 0) {
+				while($row = $db->fetchObject($res)) {
+					$result[] = $row->value_string;
+				}
+			}
+			$db->freeResult($res);
 		}
-		$db->freeResult($res);
 		return $result;
 	}
 
@@ -269,6 +285,44 @@ class SMWSQLStore extends SMWStore {
 		$db->update($db->tableName('smw_relations'), $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update($db->tableName('smw_attributes'), $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update($db->tableName('smw_specialprops'), $val_array, $cond_array, 'SMW::changeTitle');
+	}
+
+///// Query answering /////
+
+	function getQueryResult(SMWQuery $query) {
+		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deepder levels
+
+		// Here, the actual SQL query building and execution must happen. Loads of work.
+		// For testing purposes, we assume that the outcome is the following array of titles
+		// (the eventual query result format is quite certainly different)
+		$qr = array(Title::newFromText('Angola'), Title::newFromText('Namibia'));
+
+		// create result by executing print statements for everything that was fetched
+		///TODO: use limit and offset values
+		$result = new SMWQueryResult($prs);
+		foreach ($qr as $qt) {
+			$row = array();
+			foreach ($prs as $pr) {
+				switch ($pr->getMode()) {
+					case SMW_PRINT_THIS:
+						$row[] = new SMWResultArray(array($qt), $pr);
+						break;
+					case SMW_PRINT_RELS:
+						$row[] = new SMWResultArray($this->getRelationObjects($qt,$pr->getTitle()), $pr);
+						break;
+					case SMW_PRINT_CATS:
+						$row[] = new SMWResultArray($this->getSpecialValues($qt,SMW_SP_HAS_CATEGORY), $pr);
+						break;
+					case SMW_PRINT_ATTS:
+						///TODO: respect given datavalue (desired unit), needs extension of getAttributeValues()
+						$row[] = new SMWResultArray($this->getAttributeValues($qt,$pr->getTitle()), $pr);
+						break;
+				}
+			}
+			$result->addRow($row);
+		}
+
+		return $result;
 	}
 
 ///// Setup store /////

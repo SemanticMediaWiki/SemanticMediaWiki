@@ -7,6 +7,8 @@
 
 global $smwgIP;
 require_once($smwgIP . '/includes/SMW_SemanticData.php');
+require_once($smwgIP . '/includes/storage/SMW_Query.php');
+require_once($smwgIP . '/includes/storage/SMW_QueryResult.php');
 
 /**
  * The abstract base class for all classes that implement access to some
@@ -86,6 +88,13 @@ abstract class SMWStore {
 	 * id of $oldtitle.
 	 */
 	abstract function changeTitle(Title $oldtitle, Title $newtitle, $keepid = true);
+
+///// Query answering /////
+
+	/**
+	 * Execute the provided query and return the result as an SMWQueryResult.
+	 */
+	abstract function getQueryResult(SMWQuery $query);
 
 ///// Setup store /////
 
