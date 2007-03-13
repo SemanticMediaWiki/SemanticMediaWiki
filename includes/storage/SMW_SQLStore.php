@@ -195,8 +195,8 @@ class SMWSQLStore extends SMWStore {
 		$subject = $data->getSubject();
 		$this->deleteSubject($subject);
 		// relations
-		foreach(SMWSemanticData::$semdata->getRelations() as $relation) {
-			foreach(SMWSemanticData::$semdata->getRelationObjects($relation) as $object) {
+		foreach($data->getRelations() as $relation) {
+			foreach($data->getRelationObjects($relation) as $object) {
 				$db->insert( $db->tableName('smw_relations'),
 				             array( 'subject_id' => $subject->getArticleID(),
 				            'subject_namespace' => $subject->getNamespace(),
@@ -209,8 +209,8 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		//attributes
-		foreach(SMWSemanticData::$semdata->getAttributes() as $attribute) {
-			$attributeValueArray = SMWSemanticData::$semdata->getAttributeValues($attribute);
+		foreach($data->getAttributes() as $attribute) {
+			$attributeValueArray = $data->getAttributeValues($attribute);
 			foreach($attributeValueArray as $value) {
 				// DEBUG echo "in storeAttributes, considering $value, getXSDValue=" . $value->getXSDValue() . "<br />\n" ;
 				if ($value->getXSDValue()!==false) {
@@ -229,11 +229,11 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		//special properties
-		foreach (SMWSemanticData::$semdata->getSpecialProperties() as $special) {
+		foreach ($data->getSpecialProperties() as $special) {
 			if ($special == SMW_SP_IMPORTED_FROM) { // don't store this, just used for display; TODO: filtering it here is bad
 				continue;
 			}
-			$valueArray = SMWSemanticData::$semdata->getSpecialValues($special);
+			$valueArray = $data->getSpecialValues($special);
 			foreach($valueArray as $value) {
 				if ($value instanceof SMWDataValue) {
 					if ($value->getXSDValue() !== false) { // filters out error-values etc.
