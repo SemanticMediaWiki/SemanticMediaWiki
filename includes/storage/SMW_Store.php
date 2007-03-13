@@ -78,7 +78,7 @@ abstract class SMWStore {
 	 * as a SMWSemData object, which contains all semantic data for one particular
 	 * subject.
 	 */
-	abstract function updateData(SMWSemData $data);
+	abstract function updateData(SMWSemanticData $data);
 
 	/**
 	 * Update the store to reflect a renaming of some article. The old and new title objects

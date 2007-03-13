@@ -190,7 +190,7 @@ class SMWSQLStore extends SMWStore {
 		            'SMW::deleteSubject::Specialprops');
 	}
 
-	function updateData(SMWSemData $data) {
+	function updateData(SMWSemanticData $data) {
 		$db =& wfGetDB( DB_MASTER );
 		$subject = $data->getSubject();
 		$this->deleteSubject($subject);
