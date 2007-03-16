@@ -4,9 +4,9 @@
  */
 
 addEvent(window, "load", smw_timeline_init);
-addEvent(window, "resize", onResize);
+//addEvent(window, "resize", onResize);
 
-var tl;
+var smwtl;
 
 //addOnLoadHook(smw_timeline_init);
 
@@ -119,7 +119,7 @@ function smw_make_timeline(div) {
 		})
 	}
 
-	tl = Timeline.create(div, bandInfos);
+	smwtl = Timeline.create(div, bandInfos);
 }
 
 function smw_get_bandwidth(number,count) {
@@ -254,12 +254,13 @@ function smw_add_event(evspan,evs) {
 	evs._events.add(evt);
 }
 
+//FIXME: Not used at the moment. Is this needed?
 var resizeTimerID = null;
 function onResize() {
     if (resizeTimerID == null) {
         resizeTimerID = window.setTimeout(function() {
             resizeTimerID = null;
-            tl.layout();
+            smwtl.layout();
         }, 500);
     }
 }
