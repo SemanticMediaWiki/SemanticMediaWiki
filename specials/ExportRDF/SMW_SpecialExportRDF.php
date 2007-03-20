@@ -437,6 +437,7 @@ class ExportRDF {
 		}
 		$this->extra_namespaces = array();
 		$this->printHeader(); // also inits global namespaces
+		$linkCache =& LinkCache::singleton();
 
 		$start = 1;
 		$end = $this->db->selectField( 'page', 'max(page_id)', false, $fname );
@@ -477,6 +478,7 @@ class ExportRDF {
 				fwrite($file, $this->post_ns_buffer);
 				$this->post_ns_buffer = '';
 			}
+			$linkCache->clear();
 		}
 		//DEBUG:
 		$this->post_ns_buffer .= "<!-- Processed $a_count regular articles. -->\n";
