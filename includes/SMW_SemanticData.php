@@ -93,6 +93,9 @@ class SMWSemanticData {
 			$attribute = $this->attribtitles[$attributetext];
 		} else {
 			$attribute = Title::newFromText($attributetext, SMW_NS_ATTRIBUTE);
+			if ($attribute === NULL) { // error, maybe illegal title text
+				return;
+			}
 		}
 		$this->addAttributeValue($attribute, $value);
 	}
@@ -145,6 +148,9 @@ class SMWSemanticData {
 			$relation = $this->reltitles[$relationtext];
 		} else {
 			$relation = Title::newFromText($relationtext, SMW_NS_RELATION);
+			if ($relation === NULL) { // error, maybe illegal title text
+				return;
+			}
 		}
 		$this->addRelationObject($relation, $object);
 	}
