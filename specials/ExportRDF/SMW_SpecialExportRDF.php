@@ -458,7 +458,7 @@ class ExportRDF {
 				$full_export = false; // make sure added dependencies do not pull more than needed
 				// resolve dependencies that will otherwise not be printed
 				$cur_queue = array();
-				foreach ($this->element_queue as $etq) {
+				foreach ($this->element_queue as $key => $etq) {
 					if ( (!$etq->exists) || !smwfIsSemanticsProcessed($etq->title_namespace) ||
 					      !ExportRDF::fitsNsRestriction($ns_restriction, $etq->title_namespace) ||
 					      $etq->modifier !== '') {
@@ -467,6 +467,9 @@ class ExportRDF {
 						$cur_queue[] = $etq;
 						//$this->post_ns_buffer .= "<!-- Adding dependency '" . $etq->label . "' -->"; //DEBUG
 						$d_count++; //DEBUG
+					} else {
+						unset($this->element_queue[$key]); // carrying around the values we do not 
+						                                   // want to export now is a potential memory leak
 					}
 				}
 			}
