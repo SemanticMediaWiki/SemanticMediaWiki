@@ -11,6 +11,47 @@ require_once($smwgIP . '/includes/storage/SMW_Query.php');
 require_once($smwgIP . '/includes/storage/SMW_QueryResult.php');
 
 /**
+ * Container object for various options that can be used when retrieving
+ * data from the store. These options are mostly relevant for simple,
+ * direct requests -- inline queries may require more complex options due
+ * to their more complex structure.
+ * Options that should not be used or where default values should be used
+ * can be left as initialised.
+ */
+class SMWRequestOptions {
+	/**
+	 * The maximum number of results that should be returned.
+	 */
+	public $limit = -1;
+	/**
+	 * A numerical offset. The first $offset results are skipped.
+	 * Note that this does not imply a defined order of results 
+	 * (see SMWRequestOptions->$sort below).
+	 */
+	public $offset = 0;
+	/**
+	 * Should the result be ordered? The employed order is defined
+	 * by the type of result that are requested: Title objects and
+	 * strings are ordered alphabetically, whereas SMWDataValue
+	 * objects can provide different custom orders if they are scalar.
+	 * Usually, the order should be fairly "natural".
+	 */
+	public $sort = false;
+	/**
+	 * If SMWRequestOptions->$sort is true, this parameter defines whether
+	 * the results are ordered in ascending or descending order.
+	 */
+	public $ascending = true;
+	/**
+	 * If set, only results that match this pattern should be returned.
+	 * TODO: The language of the pattern still needs to be specified. Anybody
+	 * needing regexps, or can we live with initial and/or final wildcards?
+	 */
+	public $pattern = NULL;
+}
+
+
+/**
  * The abstract base class for all classes that implement access to some
  * semantic store. Besides the relevant interface, this class provides default
  * implementations for some optional methods, which inform the caller that 
@@ -25,43 +66,43 @@ abstract class SMWStore {
 	 * (identified as usual by an integer constant). The result is an array which may contain
 	 * different kinds of contents depending on the special property that was requested.
 	 */
-	abstract function getSpecialValues(Title $subject, $specialprop, $limit = -1, $offset = 0);
+	abstract function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL);
 
 	/**
 	 * Get an array of all attribute values stored for the given subject and atttribute. The result 
 	 * is an array of SMWDataValue objects.
 	 */
-	abstract function getAttributeValues(Title $subject, Title $attribute, $limit = -1, $offset = 0);
+	abstract function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL);
 	
 	/**
 	 * Get an array of all attributes for which the given subject has some value. The result is an
 	 * array of Title objects.
 	 */
-	abstract function getAttributes(Title $subject, $limit = -1, $offset = 0);
+	abstract function getAttributes(Title $subject, $requestoptions = NULL);
 
 	/**
 	 * Get an array of all objects that a given subject relates to via the given relation. The
 	 * result is an array of Title objects.
 	 */
-	abstract function getRelationObjects(Title $subject, Title $relation, $limit = -1, $offset = 0);
+	abstract function getRelationObjects(Title $subject, Title $relation, $requestoptions = NULL);
 
 	/**
 	 * Get an array of all subjects that are related to a given object via the given relation. The
 	 * result is an array of Title objects.
 	 */
-	abstract function getRelationSubjects(Title $relation, Title $object, $limit = -1, $offset = 0);
+	abstract function getRelationSubjects(Title $relation, Title $object, $requestoptions = NULL);
 
 	/**
 	 * Get an array of all relations via which the given subject relates to some object. The result is an
 	 * array of Title objects.
 	 */
-	abstract function getOutRelations(Title $subject, $limit = -1, $offset = 0);
+	abstract function getOutRelations(Title $subject, $requestoptions = NULL);
 
 	/**
 	 * Get an array of all relations for which there is some subject that relates to the given object. 
 	 * The result is an array of Title objects.
 	 */
-	abstract function getInRelations(Title $object, $limit = -1, $offset = 0);
+	abstract function getInRelations(Title $object, $requestoptions = NULL);
 
 ///// Writing methods /////
 

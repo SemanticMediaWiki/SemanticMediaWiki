@@ -18,7 +18,7 @@ class SMWSQLStore extends SMWStore {
 
 ///// Reading methods /////
 
-	function getSpecialValues(Title $subject, $specialprop, $limit = -1, $offset = 0) {
+	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 
 		$result = array();
@@ -26,7 +26,7 @@ class SMWSQLStore extends SMWStore {
 			$sql = 'cl_from=' . $db->addQuotes($subject->getArticleID());
 			$res = $db->select( $db->tableName('categorylinks'), 
 								'DISTINCT cl_to',
-								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($limit, $offset) );
+								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
 			// rewrite result as array
 			if($db->numRows( $res ) > 0) {
 				while($row = $db->fetchObject($res)) {
@@ -39,7 +39,7 @@ class SMWSQLStore extends SMWStore {
 				'AND property_id=' . $db->addQuotes($specialprop);
 			$res = $db->select( $db->tableName('smw_specialprops'), 
 								'value_string',
-								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($limit, $offset) );
+								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
 			// rewrite result as array
 			///TODO: this should not be an array of strings unless it was saved as such, do specialprop typechecks
 			if($db->numRows( $res ) > 0) {
@@ -53,14 +53,14 @@ class SMWSQLStore extends SMWStore {
 	}
 
 
-	function getAttributeValues(Title $subject, Title $attribute, $limit = -1, $offset = 0) {
+	function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 		       ' AND attribute_title=' . $db->addQuotes($attribute->getDBkey());
 
 		$res = $db->select( $db->tableName('smw_attributes'), 
 		                    'value_unit, value_datatype, value_xsd',
-		                    $sql, 'SMW::getAttributeValues', $this->getSQLOptions($limit, $offset) );
+		                    $sql, 'SMW::getAttributeValues', $this->getSQLOptions($requestoptions) );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
@@ -76,13 +76,13 @@ class SMWSQLStore extends SMWStore {
 	}
 
 
-	function getAttributes(Title $subject, $limit = -1, $offset = 0) {
+	function getAttributes(Title $subject, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID());
 
 		$res = $db->select( $db->tableName('smw_attributes'), 
 		                    'DISTINCT attribute_title',
-		                    $sql, 'SMW::getAttributes', $this->getSQLOptions($limit, $offset) );
+		                    $sql, 'SMW::getAttributes', $this->getSQLOptions($requestoptions) );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
@@ -95,14 +95,14 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getRelationObjects(Title $subject, Title $relation, $limit = -1, $offset = 0) {
+	function getRelationObjects(Title $subject, Title $relation, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey());
 
 		$res = $db->select( $db->tableName('smw_relations'), 
 		                    'object_title, object_namespace',
-		                    $sql, 'SMW::getRelationObjects', $this->getSQLOptions($limit, $offset) );
+		                    $sql, 'SMW::getRelationObjects', $this->getSQLOptions($requestoptions) );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
@@ -115,7 +115,7 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getRelationSubjects(Title $relation, Title $object, $limit = -1, $offset = 0) {
+	function getRelationSubjects(Title $relation, Title $object, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) . 
 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
@@ -123,7 +123,7 @@ class SMWSQLStore extends SMWStore {
 
 		$res = $db->select( $db->tableName('smw_relations'), 
 		                    'DISTINCT subject_id',
-		                    $sql, 'SMW::getRelationSubjects', $this->getSQLOptions($limit, $offset) );
+		                    $sql, 'SMW::getRelationSubjects', $this->getSQLOptions($requestoptions) );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
@@ -136,13 +136,13 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getOutRelations(Title $subject, $limit = -1, $offset = 0) {
+	function getOutRelations(Title $subject, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID());
 
 		$res = $db->select( $db->tableName('smw_relations'), 
 		                    'DISTINCT relation_title',
-		                    $sql, 'SMW::getOutRelations', $this->getSQLOptions($limit, $offset) );
+		                    $sql, 'SMW::getOutRelations', $this->getSQLOptions($requestoptions) );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
@@ -155,14 +155,14 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getInRelations(Title $object, $limit = -1, $offset = 0) {
+	function getInRelations(Title $object, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) . 
 		       ' AND object_title=' . $db->addQuotes($object->getDBKey());
 
 		$res = $db->select( $db->tableName('smw_relations'), 
 		                    'DISTINCT relation_title',
-		                    $sql, 'SMW::getInRelations', $this->getSQLOptions($limit, $offset) );
+		                    $sql, 'SMW::getInRelations', $this->getSQLOptions($requestoptions) );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
@@ -396,13 +396,15 @@ class SMWSQLStore extends SMWStore {
 	/**
 	 * Transform input parameters into a suitable array of SQL options.
 	 */
-	protected function getSQLOptions($limit, $offset) {
+	protected function getSQLOptions($requestoptions) {
 		$sql_options = array();
-		if ($limit >= 0) {
-			$sql_options['LIMIT'] = $limit;
-		}
-		if ($offset > 0) {
-			$sql_options['OFFSET'] = $offset;
+		if ($requestoptions !== NULL) {
+			if ($requestoptions->limit >= 0) {
+				$sql_options['LIMIT'] = $limit;
+			}
+			if ($requestoptions->offset > 0) {
+				$sql_options['OFFSET'] = $offset;
+			}
 		}
 		return $sql_options;
 	}
