@@ -400,10 +400,10 @@ class SMWSQLStore extends SMWStore {
 		$sql_options = array();
 		if ($requestoptions !== NULL) {
 			if ($requestoptions->limit >= 0) {
-				$sql_options['LIMIT'] = $limit;
+				$sql_options['LIMIT'] = $requestoptions->limit;
 			}
 			if ($requestoptions->offset > 0) {
-				$sql_options['OFFSET'] = $offset;
+				$sql_options['OFFSET'] = $requestoptions->offset;
 			}
 		}
 		return $sql_options;
