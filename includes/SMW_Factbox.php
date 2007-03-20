@@ -96,6 +96,9 @@ class SMWFactbox {
 		$srels = $smwgContLang->getSpecialPropertiesArray();
 		$special = array_search($relation, $srels);
 		$object = Title::newFromText($target);
+		if ($object === NULL) { // not possible to make a Title, maybe illegal name, give up
+			return;
+		}
 
 		if ($special !== false) {
 			$type = SMWTypeHandlerFactory::getSpecialTypeHandler($special);
