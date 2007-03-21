@@ -36,20 +36,20 @@ require_once('SMW_DT_URI.php');
  * page in the namespace "Type:" (or whatever its localised version is
  * called like). The annotation is stored internally without the namespace
  * prefix but still using the (possibly also localised) name of the page.
- * This abbreviated name is the "label" of the type. When storing attribute 
+ * This abbreviated name is the "label" of the type. When storing attribute
  * values, types are identified via an "id". This is an language-independent
- * identifier for that type. For instance, English "Type:Integer" has the 
+ * identifier for that type. For instance, English "Type:Integer" has the
  * label "Integer" and the ID "int".
  *
  * For custom types, IDs must depend on the label of the type, and (to distinguish
  * IDs from those of builtin types) is always prefixed with "Type:" (ignoring any
- * localisation for the label of the type namespace). For example, a German custom 
+ * localisation for the label of the type namespace). For example, a German custom
  * type "Datentyp:Länge" has the label "Länge" and the ID "Type:Länge".
  *
  * Originally, the distinction of labels and ids was introduced to make the storage
  * contents less dependent on the wikis text content and language. After the
  * extension of the type system with custom types, this design should be revised.
- * The issue is that built-in types need a internationalisation lookup for 
+ * The issue is that built-in types need a internationalisation lookup for
  * identifying them from their labels. Avoiding this was the intention of the IDs,
  * but the implementation does not really achieve this at the moment (type labels
  * are not part of the message system yet, and they are registered by their labels
@@ -379,16 +379,23 @@ class SMWInfolink {
 	/**#@+
 	 * @access private
 	 */
-	private $URL;     // the actual link target
-	private $caption; // the label for the link
-	private $style;   // CSS class of a span to embedd the link into, or
-	                  // FALSE if no extra style is required
+	private $URL;           // the actual link target
+	private $caption;       // the label for the link
+	private $style;         // CSS class of a span to embedd the link into, or
+	                        // FALSE if no extra style is required
+	private $internal;      // FALSE if external, otherwise "SearchByValue" or "TypedBacklinks"
+	private $property;      // name of the property
+	private $value;         // value to search for
 	/**#@-*/
 
-	function SMWInfolink($linkURL, $linkCaption, $linkStyle=false) {
+	function SMWInfolink($linkURL, $linkCaption, $linkStyle=false, $internal=false, $property=false, $value=false) {
 		$this->URL = $linkURL;
 		$this->caption = $linkCaption;
 		$this->style = $linkStyle;
+		if (($property != false) && ($value != false))
+			$this->internal = $internal;
+		$this->property = $property;
+		$this->value = $value;
 	}
 
 	/**
@@ -428,10 +435,23 @@ class SMWInfolink {
 	 * @access public
 	 */
 	function getWikiText() {
-		if ($this->style !== FALSE) {
-			return "<span class=\"$this->style\">[$this->URL $this->caption]</span>";
+		if ($this->internal != false) {
+			$conj = "";
+			if ("SearchByValue" == $this->internal)
+				$conj = ":=";
+			if ("TypedBacklinks" == $this->internal)
+				$conj = "::";
+			if ($this->style !== false) {
+				return "<span class=\"$this->style\">[[Special:$this->internal/$this->property$conj$this->value|$this->caption]]</span>";
+			} else {
+				return "[[Special:$this->internal/$this->property$conj$this->value|$this->caption]]";
+			}
 		} else {
-			return "[$this->URL $this->caption]";
+			if ($this->style !== false) {
+				return "<span class=\"$this->style\">[$this->URL $this->caption]</span>";
+			} else {
+				return "[$this->URL $this->caption]";
+			}
 		}
 	}
 }

@@ -9,9 +9,9 @@
 require_once('SMW_SemanticData.php');
 
 /**
- * Static class for representing semantic data, which accepts user 
+ * Static class for representing semantic data, which accepts user
  * inputs and provides methods for printing and storing its contents.
- * Its main purpose is to provide a persistent storage to keep semantic 
+ * Its main purpose is to provide a persistent storage to keep semantic
  * data between hooks for parsing and storing.
  */
 class SMWFactbox {
@@ -20,7 +20,7 @@ class SMWFactbox {
 	 * The actual contained for the semantic annotations. Public, since
 	 * it is ref-passed to othes for further processing.
 	 */
-	static $semdata; 
+	static $semdata;
 	/**
 	 * The skin that is to be used for output functions.
 	 */
@@ -48,7 +48,7 @@ class SMWFactbox {
 
 	/**
 	 * This method adds a new attribute with the given value to the storage.
-	 * It returns an array which contains the result of the operation in 
+	 * It returns an array which contains the result of the operation in
 	 * various formats.
 	 */
 	static function addAttribute($attribute, $value) {
@@ -117,12 +117,12 @@ class SMWFactbox {
 	}
 
 	/**
-	 * This method adds multiple special properties needed to use the given 
-	 * article for representing an element from a whitelisted external 
-	 * ontology element. It does various feasibility checks (typing etc.) 
-	 * and returns a "virtual" value object that can be used for printing 
-	 * in text. Although many attributes are added, not all are printed in 
-	 * the factbox, since some do not have a translated name (and thus also 
+	 * This method adds multiple special properties needed to use the given
+	 * article for representing an element from a whitelisted external
+	 * ontology element. It does various feasibility checks (typing etc.)
+	 * and returns a "virtual" value object that can be used for printing
+	 * in text. Although many attributes are added, not all are printed in
+	 * the factbox, since some do not have a translated name (and thus also
 	 * could not be specified directly).
 	 */
 	static private function addImportedDefinition($value) {
@@ -195,7 +195,7 @@ class SMWFactbox {
 		}
 
 		// Note: the following just overwrites any existing values for the given
-		// special properties, since they can only have one value anyway; this 
+		// special properties, since they can only have one value anyway; this
 		// might hide errors -- should we care?
 		$sth = new SMWStringTypeHandler(); // making one is enough ...
 
@@ -243,11 +243,12 @@ class SMWFactbox {
 		   wfMsgForContent('smw_viewasrdf'),'rdflink');
 		// The "\n" is to ensure that lists on the end of articles are terminated
 		// before the div starts. It would of course be much cleaner to print the
-		// factbox in another way, similar to the way that categories are printed 
+		// factbox in another way, similar to the way that categories are printed
 		// now. However, this would require more patching of MediaWiki code ...
 		$text .= "\n" . '<div class="smwfact">' .
 		         '<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', SMWFactbox::$semdata->getSubject()->getText()) . '</span>' .
-		         '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
+		         //'<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
+		         '<span class="smwrdflink"><span class="rdflink">[[Special:ExportRDF/' . SMWFactbox::$semdata->getSubject()->getPrefixedText() . '|' . wfMsg('smw_viewasrdf') . ']]</span></span>' .
 		         '<table style="clear: both; width: 100%">' . "\n";
 		SMWFactbox::printRelations($text);
 		SMWFactbox::printAttributes($text);
@@ -302,7 +303,7 @@ class SMWFactbox {
 		if(!SMWFactbox::$semdata->hasRelations()) { return true; }
 
 		$text .= ' <tr><th class="relhead"></th><th class="relhead">' . wfMsgForContent('smw_rel_head') . "</th></tr>\n";
-		
+
 		foreach(SMWFactbox::$semdata->getRelations() as $relation) {
 			$relationObjectArray = SMWFactbox::$semdata->getRelationObjects($relation);
 			//$text .= '   ' . SMWFactbox::$semdata->getSubject()->getPrefixedText() . '&nbsp;';
@@ -324,7 +325,7 @@ class SMWFactbox {
 				$text .= '[[:' . $relationObject->getPrefixedText() . ']]';
 				$searchlink = new SMWInfolink(
 				         SMWInfolink::makeRelationSearchURL($relation->getText(), $relationObject->getPrefixedText(), SMWFactbox::$skin),
-				         '+','smwsearch');
+				         '+','smwsearch','TypedBacklinks',$relation->mTextform,$relationObject->getPrefixedText());
 				$text .= '&nbsp;&nbsp;' . $searchlink->getWikiText();
 			}
 			$text .= "</td></tr>\n";
@@ -339,7 +340,7 @@ class SMWFactbox {
 		if (SMWFactbox::$semdata->hasSpecialProperties()) {
 			$text .= ' <tr><th class="spechead"></th><th class="spechead">' . wfMsgForContent('smw_spec_head') . "</th></tr>\n";
 		} else {
-			return true; 
+			return true;
 		}
 
 		global $smwgContLang, $wgContLang;

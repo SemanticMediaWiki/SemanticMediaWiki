@@ -8,7 +8,7 @@ define('SMW_VERSION','0.6c');
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
 define('SMW_SP_HAS_URI',2);
-define('SMW_SP_HAS_CATEGORY',4); 
+define('SMW_SP_HAS_CATEGORY',4);
 define('SMW_SP_IS_SUBRELATION_OF',3);
 define('SMW_SP_IS_SUBATTRIBUTE_OF',5);
 define('SMW_SP_MAIN_DISPLAY_UNIT', 6);
@@ -29,18 +29,18 @@ define('SMW_FACTBOX_SHOWN',  5);
 /**
  * Switch on Semantic MediaWiki. This function must be called in LocalSettings.php
  * after incldung this file. It is used to ensure that required parameters for SMW
- * are really provided, without requiring the existence of a dedicated file 
+ * are really provided, without requiring the existence of a dedicated file
  * SMW_LocalSettings.php. For readability, this is the only global function that
  * does not adhere to the naming conventions.
  */
-function enableSemantics($server) {
-	global $smwgVersion, $smwgServer, $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore;
+function enableSemantics($namespace = "", $complete = false) {
+	global $smwgVersion, $smwgNamespace, $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $wgArticlePath, $wgScriptPath, $wgServer;
 
-	if ( $server == "" ) {
-		print "Semantic MediaWiki: please supply the name of your server to enable semantics.";
-		return false;
-	}
-	$smwgServer = $server;
+	$smwgNamespace = $namespace;
+	if (!$complete && !($smwgNamespace=='')) $smwgNamespace = ".$smwgNamespace";
+	// The dot tells that the domain is not complete. It will be completed
+	// in the Export (because it is not possible to create Title-objects
+	// yet, and we need one to create the complete namespace)
 
 	/**
 	* Setting this to false prevents any new data from being stored in
@@ -71,13 +71,13 @@ function enableSemantics($server) {
 	require_once($smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php');
 	require_once($smwgIP . '/specials/OntologyImport/SMW_SpecialOntologyImport.php');
 	require_once($smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php');
-	
+
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialRelations.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedRelations.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialAttributes.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedAttributes.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialTypes.php');
-	
+
 	/**********************************************/
 	/***** register hooks                     *****/
 	/**********************************************/
@@ -299,7 +299,7 @@ function enableSemantics($server) {
 
 		$smwgMessagesInPlace = true;
 	}
-	
+
 /**********************************************/
 /***** other global helpers               *****/
 /**********************************************/
@@ -312,7 +312,7 @@ function enableSemantics($server) {
 		global $smwgNamespacesWithSemanticLinks;
 		return !empty($smwgNamespacesWithSemanticLinks[$namespace]);
 	}
-	
+
 
 	/**
 	 * Takes a title text and turns it safely into its DBKey.
