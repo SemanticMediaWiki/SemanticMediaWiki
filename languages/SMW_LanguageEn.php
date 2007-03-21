@@ -14,19 +14,19 @@ class SMW_LanguageEn {
 	'smw_att_head' => 'Attribute values',
 	'smw_rel_head' => 'Relations to other articles',
 	'smw_spec_head' => 'Special properties',
-	/*URIs that should not be used in objects in cases where users can provide URIs */
+	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Sorry, URIs from the range "$1" are not available in this place.',
-	/*Messages and strings for inline queries*/
+	// Messages and strings for inline queries
 	'smw_iq_disabled' => "<span class='smwwarning'>Sorry. Inline queries have been disabled for this wiki.</span>",
 	'smw_iq_moreresults' => '&hellip; further results',
 	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.',
-	/*Messages and strings for ontology resued (import) */
+	// Messages and strings for ontology resued (import)
 	'smw_unknown_importns' => '[Sorry, import functions are not avalable for namespace "$1".]',
 	'smw_nonright_importtype' => '[Sorry, $1 can only be used for articles with namespace "$2"]',
 	'smw_wrong_importtype' => '[Sorry, $1 can not be used for articles in the namespace "$2"]',
 	'smw_no_importelement' => '[Sorry, element "$1" not available for import.]',
-	/*Messages and strings for basic datatype processing*/
+	// Messages and strings for basic datatype processing
 	'smw_decseparator' => '.',
 	'smw_kiloseparator' => ',',
 	'smw_unknowntype' => '[Oops! Unsupported type "$1" defined for attribute]',
@@ -47,7 +47,7 @@ class SMW_LanguageEn {
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this attribute supports no unit conversion',
 	'smw_unsupportedprefix' => 'prefixes ("$1") are not currently supported',
 	'smw_unsupportedunit' => 'unit conversion for unit "$1" not supported',
-	/*Messages for geo coordinates parsing*/
+	// Messages for geo coordinates parsing
 	'smw_err_latitude' => 'Values for latitude (N, S) must be within 0 and 90. "$1" does not fulfill this condition!',
 	'smw_err_longitude' => 'Values for longitude (E, W) must be within 0 and 180. "$1" does not fulfill this condition!',
 	'smw_err_noDirection' => '[Oops! Something is wrong with the given value "$1"]',
@@ -55,28 +55,28 @@ class SMW_LanguageEn {
 	'smw_err_wrongSyntax' => '[Oops! Something is wrong with the given value "$1". We expect a value like "1°2′3.4′′ W, 5°6′7.8′′ N" at this place!]',
 	'smw_err_sepSyntax' => 'The given value "$1" seems to be right, but values for latitude and longitude should be seperated by "," or ";".',
 	'smw_err_notBothGiven' => 'You have to specify a valid value for both longitude (E, W) AND latitude (N, S)! At least one is missing!',
-	/* additionals ... */
+	// additionals ...
 	'smw_label_latitude' => 'Latitude:',
 	'smw_label_longitude' => 'Longitude:',
 	'smw_abb_north' => 'N',
 	'smw_abb_east' => 'E',
 	'smw_abb_south' => 'S',
 	'smw_abb_west' => 'W',
-	/* some links for online maps; can be translated to different language versions of services, but need not*/
+	// some links for online maps; can be translated to different language versions of services, but need not
 	'smw_service_online_maps' => " find&nbsp;maps|http://kvaleberg.com/extensions/mapsources/?params=\$1_\$3_\$5_\$7_\$2_\$4_\$6_\$8_region:EN_type:city\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
-	/*Messages for datetime parsing */
+	// Messages for datetime parsing
 	'smw_nodatetime' => '[Oops! The date "$1" was not understood. However, support for dates is still experimental.]'
 );
 
 
 /* private */ var $smwUserMessages = array(
 	'smw_devel_warning' => 'This feature is currently under development, and might not be fully functional. Backup your data before using it.',
-	/*Messages for Export RDF Special*/
+	// Messages for Export RDF Special
 	'exportrdf' => 'Export pages to RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>This page allows you to export parts of an article in RDF format. To export article pages, enter the titles in the text box below, one title per line.</p>',
 	'smw_exportrdf_recursive' => 'Recursively export all related pages. Note that the result could be large!',
 	'smw_exportrdf_backlinks' => 'Also export all pages that refer to the exported pages. Generates browsable RDF.',
-	/*Messages for Search Triple Special*/
+	// Messages for Search Triple Special
 	'searchtriple' => 'Simple semantic search', //name of this special
 	'smw_searchtriple_docu' => "<p>Fill in either the upper or lower row of the input form to search for relations or attributes, respectively. Some of the fields can be left empty to obtain more results. However, if an attribute value is given, the attribute name must be specified as well. As usual, attribute values can be entered with a unit of measurement.</p>\n\n<p>Be aware that you must press the right button to obtain results. Just pressing <i>Return</i> might not trigger the search you wanted.</p>",
 	'smw_searchtriple_subject' => 'Subject article:',
@@ -88,20 +88,23 @@ class SMW_LanguageEn {
 	'smw_searchtriple_searchatt' => 'Search Attributes',
 	'smw_searchtriple_resultrel' => 'Search results (relations)',
 	'smw_searchtriple_resultatt' => 'Search results (attributes)',
-	/*Messages for Relations Special*/
+	// Messages for Relations Special
 	'relations' => 'Relations',
 	'smw_relations_docu' => 'The following relations exist in the wiki.',
-	/*Messages for Attributes Special*/
+	// Messages for RelationsWithoutPage Special
+	'relationswithoutpage' => 'Relations without a page',
+	'smw_relations_withoutpage' => 'The following relations do not have an explanatory page. Just click on the relation to create a page for it.:',
+	// Messages for Attributes Special
 	'attributes' => 'Attributes',
 	'smw_attributes_docu' => 'The following attributes exist in the wiki.',
 	'smw_attr_type_join' => ' with $1',
-	/*Messages for Unused Relations Special*/
+	// Messages for Unused Relations Special
 	'unusedrelations' => 'Unused relations',
 	'smw_unusedrelations_docu' => 'The following relation pages exist although no other page makes use of them.',
-	/*Messages for Unused Attributes Special*/
+	// Messages for Unused Attributes Special
 	'unusedattributes' => 'Unused attributes',
 	'smw_unusedattributes_docu' => 'The following attribute pages exist although no other page makes use of them.',
-	/*Messages for ask Special*/
+	// Messages for ask Special
 	'ask' => 'Semantic search',
 	'smw_ask_docu' => '<p>Search the wiki by entering an inline query into the search field below. Further information is given on the <a href="$1">help page for semantic search</a>.</p>',
 	'smw_ask_doculink' => 'Semantic search',
@@ -113,10 +116,10 @@ class SMW_LanguageEn {
 	'smw_ask_ascorder' => 'Ascending',
 	'smw_ask_descorder' => 'Descending',
 	'smw_ask_submit' => 'Find results',
-	/* Messages for the refresh button */
+	// Messages for the refresh button
 	'tooltip-purge' => 'Click here to refresh all queries and templates on this page',
 	'purge' => 'Refresh',
-	/*Messages for Import Ontology Special*/
+	// Messages for Import Ontology Special
 	'ontologyimport' => 'Import ontology',
 	'smw_oi_docu' => 'This special page allows to import ontologies. The ontologies have to follow a certain format, specified at the <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">ontology import help page</a>.',
 	'smw_oi_action' => 'Import',
@@ -131,11 +134,60 @@ class SMW_LanguageEn {
 	'smw_oi_thisissubcategoryof' => 'A subcategory of',
 	'smw_oi_thishascategory' => 'Is part of',
 	'smw_oi_importedfromontology' => 'Import from ontology',
-	/*Messages for (data)Types Special*/
+	// Messages for (data)Types Special
 	'types' => 'Types',
 	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to attributes. Each datatype has an article where additional information can be provided.',
 	'smw_types_units' => 'Standard unit: $1; supported units: $2',
-	'smw_types_builtin' => 'Built-in types'
+	'smw_types_builtin' => 'Built-in types',
+	/*Messages for ExtendedStatistics Special*/
+	'extendedstatistics' => 'Extended Statistics',
+	'smw_extstats_general' => 'General Statistics:',
+	'smw_extstats_totalp' => 'Total number of pages:',
+	'smw_extstats_totalv' => 'Total number of views:',
+	'smw_extstats_totalpe' => 'Total number of page edits:',
+	'smw_extstats_totali' => 'Total number of images:',
+	'smw_extstats_totalu' => 'Total number of users:',
+	'smw_extstats_totalr' => 'Total number of relations:',
+	'smw_extstats_totalri' => 'Total number of relation instances:',
+	'smw_extstats_totalra' => 'Average number of instances per relation:',
+	'smw_extstats_totalpr' => 'Total number of pages about relations:',
+	'smw_extstats_totala' => 'Total number of attributes:',
+	'smw_extstats_totalai' => 'Total number of attribute instances:',
+	'smw_extstats_totalaa' => 'Average number of instances per attribute:',
+	/*Messages for Flawed Attributes Special*/
+	'flawedattributes' => 'Flawed Attributes',
+	'smw_fattributes' => 'The pages listed below have an incorrectly defined attribute. The number of incorrect attributes is given in the brackets.',
+	// Name of the URI Resolver Special (no content)
+	'uriresolver' => 'URI Resolver',
+	'smw_uri_doc' => '<p>The URI resolver takes care of implementing the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>',
+	// Messages for typed backlink Special
+	'typedbacklinks' => 'Typed backlinks',
+	'smw_tb_docu' => '<p>Search the wiki for any article that has a link of a certain link type to a given link target.</p>',
+	'smw_tb_notype' => '<p>No link type was provided. Please provide one in the form, or <a href="$2">click here to see all incoming links for $1</a></p>',
+	'smw_tb_notarget' => '<p>No target page was provided for the backlinks. Please provide one in the form, or view all links of the type $1</p>',
+	'smw_tb_doculink' => 'Typed backlinks',
+	'smw_tb_displayresult' => 'A list of all articles that have the relation $1 $2.',
+	'smw_tb_linktype' => 'Link type:',
+	'smw_tb_linktarget' => 'Link target:',
+	'smw_tb_prev' => 'Previous',
+	'smw_tb_next' => 'Next',
+	'smw_tb_results' => 'Results',
+	'smw_tb_noresults' => 'Sorry, no results.',
+	'smw_tb_submit' => 'Find results',
+	// Messages for the search by value special
+	'searchbyvalue' => 'Search by attribute value',
+	'smw_sbv_docu' => '<p>Search the wiki for any article that has an attribute with a certain value.</p>',
+	'smw_sbv_noattribute' => '<p>No attribute was provided. Please provide one in the form.</p>',
+	'smw_sbv_novalue' => '<p>No value was provided. Please provide one in the form, or view all attributes of the type $1</p>',
+	'smw_sbv_doculink' => 'Search by value',
+	'smw_sbv_displayresult' => 'A list of all articles that have the attribute $1 $2.',
+	'smw_sbv_attribute' => 'Attribute:',
+	'smw_sbv_value' => 'Value:',
+	'smw_sbv_prev' => 'Previous',
+	'smw_sbv_next' => 'Next',
+	'smw_sbv_results' => 'Results',
+	'smw_sbv_noresults' => 'Sorry, no results.',
+	'smw_sbv_submit' => 'Find results'
 );
 
 /* private */ var $smwDatatypeLabels = array(

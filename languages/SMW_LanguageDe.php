@@ -26,9 +26,9 @@ class SMW_LanguageDe {
 	'smw_unknown_importns' => '[Für den Namensraum "$1" sind leider keine Importfunktionen verfügbar.]',
 	'smw_nonright_importtype' => '[Das Element "$1" kann nur für Artikel im Namensraum "$2" verwendet werden.]',
 	'smw_wrong_importtype' => '[Das Element "$1" kann nicht für Artikel im Namensraum "$2" verwendet werden.]',
-	'smw_no_importelement' => '[Das Element "$1" steht leider nicht zum Importieren zur Verfügung.]',	
+	'smw_no_importelement' => '[Das Element "$1" steht leider nicht zum Importieren zur Verfügung.]',
 	/*Messages and strings for basic datatype processing*/
-	'smw_decseparator' => ',', 
+	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_unknowntype' => '[Ups! Dem Attribut wurde der unbekannte Datentyp "$1" zugewiesen]',
 	'smw_noattribspecial' => '[Ups! Die spezielle Eigenschaft "$1" ist kein Attribut (verwende "::" anstelle von ":=")]',
@@ -92,6 +92,9 @@ class SMW_LanguageDe {
 	/*Messages for Relation Special*/
 	'relations' => 'Relationen',
 	'smw_relations_docu' => 'In diesem Wiki gibt es die folgenden Relationen:',
+	/*Messages for RelationsWithoutPage*/
+	'relationwithout' => 'Relationen ohne erläuternde Seite',
+	'smw_relations_withoutpage' => 'In diesem Wiki haben folgende Relationen keine erläuterende Seite:',
 	/*Messages for Attributes Special*/
 	'attributes' => 'Attribute',
 	'smw_attributes_docu' => 'In diesem Wiki gibt es die folgenden Attribute:',
@@ -113,7 +116,7 @@ class SMW_LanguageDe {
 	'smw_ask_sortby' => 'Sortiere nach Spalte',
 	'smw_ask_ascorder' => 'Aufsteigend',
 	'smw_ask_descorder' => 'Absteigend',
-	'smw_ask_submit' => 'Finde Ergebnisse',	
+	'smw_ask_submit' => 'Finde Ergebnisse',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Alle Anfrageergebnisse und Vorlagen auf dieser Seite auf den neuesten Stand bringen.',
 	'purge' => 'aktualisieren',
@@ -127,6 +130,24 @@ class SMW_LanguageDe {
 	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden. Jeder Datentyp hat einen eigenen Artikel, auf dem genauere Informationen eingetragen werden können.',
 	'smw_types_units' => 'Standardumrechnung: $1; gestützte Umrechnungen: $2',
 	'smw_types_builtin' => 'Eingebaute datatypen'
+	/*Messages for ExtendedStatistics Special*/
+	'extendedstatistics' => 'Erweiterte Statistiken',
+	'smw_extstats_general' => 'Allgemeine Statistiken:',
+	'smw_extstats_totalp' => 'Anzahl der Seiten:',
+	'smw_extstats_totalv' => 'Anzahl der Besuche:',
+	'smw_extstats_totalpe' => 'Anzahl der Seiteneditierungen:',
+	'smw_extstats_totali' => 'Anzahl der Bilder:',
+	'smw_extstats_totalu' => 'Anzahl der Benutzer:',
+	'smw_extstats_totalr' => 'Anzahl der Relationen:',
+	'smw_extstats_totalri' => 'Anzahl der Instanzen von Relationen:',
+	'smw_extstats_totalra' => 'Durchschnittliche Anzahl der Instanzen pro Relation:',
+	'smw_extstats_totalpr' => 'Anzahl der Relationsseiten:',
+	'smw_extstats_totala' => 'Anzahl der Attribute:',
+	'smw_extstats_totalai' => 'Anzahl der Instanzen von Attributen:',
+	'smw_extstats_totalaa' => 'Average number of instances per attribute',
+	/*Messages for Flawed Attributes Special*/
+	'flawedattributes' => 'Fehlerhafte Attribute',
+	'smw_fattributes' => 'Die unten aufgeführten Seiten enthalten fehlerhafte Attribute. Die Anzahl der fehlerhaften Attribute ist in den Klammern angegeben.'
 );
 
 /* private */ var $smwDatatypeLabels = array(
@@ -143,7 +164,7 @@ class SMW_LanguageDe {
 	'smw_mass' => 'Masse',  // name of the mass type
 	'smw_time' => 'Zeit',  // name of the time type
 	'smw_temperature' => 'Temperatur',  // name of the temperature type
-	'smw_datetime' => 'Datum',  // name of the datetime (calendar) type	
+	'smw_datetime' => 'Datum',  // name of the datetime (calendar) type
 	'smw_email' => 'Email',  // name of the email (URI) type
 	'smw_url' => 'URL',  // name of the URL type (string datatype property)
 	'smw_uri' => 'URI',  // name of the URI type (object property)
@@ -178,37 +199,37 @@ class SMW_LanguageDe {
 			SMW_NS_TYPE_TALK      => "Datentyp_Diskussion"
 		);
 	}
-	
+
 	/**
 	 * Function that returns the localized label for a datatype.
 	 */
 	function getDatatypeLabel($msgid) {
 		return $this->smwDatatypeLabels[$msgid];
 	}
-	
+
 	/**
 	 * Function that returns the labels for the special relations and attributes.
 	 */
 	function getSpecialPropertiesArray() {
 		return $this->smwSpecialProperties;
 	}
-	
+
 	/**
-	 * Function that returns all content messages (those that are stored 
+	 * Function that returns all content messages (those that are stored
 	 * in some article, and can thus not be translated to individual users).
 	 */
 	function getContentMsgArray() {
 		return $this->smwContentMessages;
 	}
-	
+
 	/**
-	 * Function that returns all user messages (those that are given only to 
+	 * Function that returns all user messages (those that are given only to
 	 * the current user, and can thus be given in the individual user language).
 	 */
 	function getUserMsgArray() {
 		return $this->smwUserMessages;
 	}
-		
+
 }
- 
+
 ?>
