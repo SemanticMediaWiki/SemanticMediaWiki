@@ -67,10 +67,15 @@ function enableSemantics($namespace = "", $complete = false) {
 
 	//require_once($smwgIP . '/specials/SearchSemantic/SMW_SpecialSearchSemantic.php'); //really not longer functional!
 	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchTriple.php');
+	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByValue.php');
+	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialTypedBacklinks.php');
+
+	require_once($smwgIP . '/specials/URIResolver/SMW_SpecialURIResolver.php');
 	require_once($smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php'); // coming soon
 	require_once($smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php');
 	require_once($smwgIP . '/specials/OntologyImport/SMW_SpecialOntologyImport.php');
 	require_once($smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php');
+	require_once($smwgIP . '/specials/ExtendedStatistics/SMW_SpecialExtendedStatistics.php');
 
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialRelations.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedRelations.php');
@@ -79,10 +84,6 @@ function enableSemantics($namespace = "", $complete = false) {
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedAttributes.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialTypes.php');
 
-	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByValue.php');
-	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialTypedBacklinks.php');
-	require_once($smwgIP . '/specials/URIResolver/SMW_SpecialURIResolver.php');
-	
 	/**********************************************/
 	/***** register hooks                     *****/
 	/**********************************************/

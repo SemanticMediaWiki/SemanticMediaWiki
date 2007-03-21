@@ -9,14 +9,16 @@
  */
 
 if (!defined('MEDIAWIKI')) die();
+
+global $IP, $smwgIP, $wgExtensionFunctions;
+
 require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
-global $wgExtensionFunctions;
 $wgExtensionFunctions[] = "wfSearchByValueExtension";
 
 function wfSearchByValueExtension()
 {
-	global $IP, $smwgIP, $wgMessageCache, $wgOut;
+	global $wgMessageCache, $wgOut;
 	smwfInitMessages(); // initialize messages, always called before anything else on this page
 
 	function doSpecialSearchByValue($query = '') {
