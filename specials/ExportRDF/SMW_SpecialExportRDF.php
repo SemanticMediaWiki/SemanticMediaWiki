@@ -23,17 +23,17 @@ function wfExportRDFExtension() {
 
 function doSpecialExportRDF($page = '') {
 	global $wgOut, $wgRequest, $wgUser, $smwgAllowRecursiveExport, $smwgExportBacklinks;
-	
+
 	$recursive = 0;  //default, no recursion
 	$backlinks = $smwgExportBacklinks; //default
-	
+
 	// check whether we already know what to export //
-	
+
 	if ($page=='') { //try to get GET parameter; simple way of calling the export
 		$page = $wgRequest->getVal( 'page' );
 	} else {
 		//this is needed since MediaWiki 1.8, but it is wrong for 1.7
-		$page = urldecode($page); 
+		$page = urldecode($page);
 	}
 
 	if ($page=='') { //try to get POST list; some settings are only available via POST
@@ -44,14 +44,14 @@ function doSpecialExportRDF($page = '') {
 	} else {
 		$pages = array($page);
 	}
-	
+
 	if( isset($pages) ) {  // export to RDF
 		$wgOut->disable();
 		ob_start();
 
 		// Only use rdf+xml mimetype if explicitly requested
 		// TODO: should the see also links in the exported RDF then have this parameter as well?
-		if ( $wgRequest->getVal( 'xmlmime' )=='rdf' ) { 
+		if ( $wgRequest->getVal( 'xmlmime' )=='rdf' ) {
 			header( "Content-type: application/rdf+xml; charset=UTF-8" );
 		} else {
 			header( "Content-type: application/xml; charset=UTF-8" );
@@ -96,7 +96,7 @@ function doSpecialExportRDF($page = '') {
 
 
 /**
- * Data class for holding all (special) data needed to export an articles 
+ * Data class for holding all (special) data needed to export an articles
  * subject. Keeps data needed to generate type and URIs, as well as other
  * special property values.
  */
@@ -210,7 +210,8 @@ class SMWExportTitle {
 			$this->short_uri = $this->ext_nsid . ':' . $this->ext_section;
 			$export->addExtraNamespace($this->ext_nsid, $this->ns_uri);
 		}
-		$this->label = $ns_text . $this->title_text;
+// why? $this->label = $ns_text . $this->title_text;
+		$this->label = $this->title_text;
 		if ($this->modifier != '') $this->label .= " ($this->modifier)";
 		$this->label = smwfXMLContentEncode($this->label);
 	}
@@ -223,9 +224,9 @@ class ExportRDF {
 	/**#@+
 	 * @access private
 	 */
-	 
+
 	const MAX_CACHE_SIZE = 5000; // do not let cache arrays get larger than this
-	const CACHE_BACKJUMP = 500;  // kill this many cached entries if limit is reached, 
+	const CACHE_BACKJUMP = 500;  // kill this many cached entries if limit is reached,
 	                             // avoids too much array copying; <= MAX_CACHE_SIZE!
 
 	/**
@@ -274,16 +275,16 @@ class ExportRDF {
 
 	/**
 	 * Array of namespaces that have been declared globally already. Contains
-	 * entries of format 'namespace abbreviation' => true, assuming that the 
+	 * entries of format 'namespace abbreviation' => true, assuming that the
 	 * same abbreviation always refers to the same URI (i.e. you cannot import
-	 * something as rdf:bla if you do not want rdf to be the standard 
+	 * something as rdf:bla if you do not want rdf to be the standard
 	 * namespace that is already given in every RDF export).
 	 */
 	var $global_namespaces;
 
 	/**
 	 * Unprinted XML is composed from the strings $pre_ns_buffer and $post_ns_buffer.
-	 * The split between the two is such that one can append additional namespace 
+	 * The split between the two is such that one can append additional namespace
 	 * declarations to $pre_ns_buffer so that they affect all current elements. The
 	 * buffers are flushed during output in order to achieve "streaming" RDF export
 	 * for larger files.
@@ -302,7 +303,7 @@ class ExportRDF {
 	var $first_flush;
 
 	/**
-	 * Integer that counts down the number of objects we still process before 
+	 * Integer that counts down the number of objects we still process before
 	 * doing the first flush. Aggregating some output before flushing is useful
 	 * to get more namespaces global. Flushing will only happen if $delay_flush
 	 * is 0.
@@ -311,12 +312,23 @@ class ExportRDF {
 
 	public function ExportRDF()
 	{
-		global $smwgServer; // server address for URIs (without http://)
+		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http:/)
+		// if not completed yet, it wll be prefixed with a dot. Check for that and complete
 		global $wgServer;   // actual server address (with http://)
 		global $wgScript;   // "/subdirectory/of/wiki/index.php"
-		//@TODO: generate this properly, using $wgArticlePath
-		$this->wiki_xmlns_url = $wgServer . $wgScript . '/';
-		$this->wiki_xmlns_xml = 'http://' . $this->makeXMLExportId($smwgServer . $wgScript) . '/';
+		global $wgArticlePath;
+		//@TODO: generate this properly, using $wgArticlePath DONE, please check
+		//$this->wiki_xmlns_url = $wgServer . $wgScript . '/';
+		$this->wiki_xmlns_url = $wgServer . str_replace('$1', '', $wgArticlePath);
+		if (''==$smwgNamespace) {
+			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
+			$smwgNamespace = $resolver->getFullURL() . '/';
+		}
+		if ($smwgNamespace[0] == '.') {
+			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
+			$smwgNamespace = "http://" . mb_substr($smwgNamespace, 1) . '/' . $resolver->getPrefixedURL() . '/';
+		}
+		$this->wiki_xmlns_xml = $smwgNamespace;
 
 		$title = Title::makeTitle( NS_SPECIAL, 'ExportRDF' );
 		$this->special_url = '&wikiurl;' . $title->getPrefixedURL();
@@ -329,10 +341,10 @@ class ExportRDF {
 	 * This function prints all selected pages. The parameter $recursion determines
 	 * how referenced ressources are treated:
 	 * '0' : add brief declarations for each
-	 * '1' : add full descriptions for each, thus beginning real recursion (and 
+	 * '1' : add full descriptions for each, thus beginning real recursion (and
 	 *       probably retrieving the whole wiki ...)
 	 * else: ignore them, though -1 might become a synonym for "export *all*" in the future
-	 * The parameter $backlinks determines whether or not subjects of incoming 
+	 * The parameter $backlinks determines whether or not subjects of incoming
 	 * properties are exported as well. Enables "browsable RDF."
 	 */
 	public function printPages($pages, $recursion = 1, $backlinks = true) {
@@ -343,6 +355,7 @@ class ExportRDF {
 		$this->delay_flush = 10; //flush only after (fully) printing 11 objects
 		$this->extra_namespaces = array();
 		$this->printHeader(); // also inits global namespaces
+		$linkCache =& LinkCache::singleton();
 
 		// transform pages into queued export titles
 		$cur_queue = array();
@@ -437,7 +450,6 @@ class ExportRDF {
 		}
 		$this->extra_namespaces = array();
 		$this->printHeader(); // also inits global namespaces
-		$linkCache =& LinkCache::singleton();
 
 		$start = 1;
 		$end = $this->db->selectField( 'page', 'max(page_id)', false, $fname );
@@ -469,7 +481,7 @@ class ExportRDF {
 						//$this->post_ns_buffer .= "<!-- Adding dependency '" . $etq->label . "' -->"; //DEBUG
 						$d_count++; //DEBUG
 					} else {
-						unset($this->element_queue[$key]); // carrying around the values we do not 
+						unset($this->element_queue[$key]); // carrying around the values we do not
 						                                   // want to export now is a potential memory leak
 					}
 				}
@@ -486,7 +498,7 @@ class ExportRDF {
 		$this->post_ns_buffer .= "<!-- Final cache size was " . sizeof($this->element_done) . ". -->\n";
 
 		$this->printFooter();
-		
+
 		if ($outfile === false) {
 			$this->flushBuffers(true);
 		} else { // prepend headers to file, there is no really efficient solution (`cat(1)`) for this it seems
@@ -517,12 +529,14 @@ class ExportRDF {
 			"\t<!ENTITY owl 'http://www.w3.org/2002/07/owl#'>\n" .
 			"\t<!ENTITY smw 'http://smw.ontoware.org/2005/smw#'>\n" .
 			"\t<!ENTITY smwdt 'http://smw.ontoware.org/2005/smw-datatype#'>\n" .
-			"\t<!ENTITY wiki '" . $this->wiki_xmlns_xml .  "'>\n" .
-			"\t<!ENTITY thing '" . $this->wiki_xmlns_xml . '_' .  "'>\n" .
-			"\t<!ENTITY relation '" . $this->wiki_xmlns_xml . '_' .
-			$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_RELATION) . ':'))) .  "'>\n" .
-			"\t<!ENTITY attribute '" . $this->wiki_xmlns_xml . '_' . 
-			$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':'))) .  "'>\n" .
+// why?		"\t<!ENTITY wiki '" . $this->wiki_xmlns_xml .  "'>\n" . I think this is never used
+			"\t<!ENTITY thing '" . $this->wiki_xmlns_xml .  "'>\n" .
+			"\t<!ENTITY relation '" . $this->wiki_xmlns_xml .
+// why?		$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_RELATION) . ':'))) .  "'>\n" .
+			str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_RELATION) . ':') .  "'>\n" .
+			"\t<!ENTITY attribute '" . $this->wiki_xmlns_xml .
+// why?		$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':'))) .  "'>\n" .
+			str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':') .  "'>\n" .
 			"\t<!ENTITY wikiurl '" . $this->wiki_xmlns_url .  "'>\n" .
 			"]>\n\n" .
 			"<rdf:RDF\n" .
@@ -530,7 +544,7 @@ class ExportRDF {
 			"\txmlns:rdfs=\"&rdfs;\"\n" .
 			"\txmlns:owl =\"&owl;\"\n" .
 			"\txmlns:smw=\"&smw;\"\n" .
-			"\txmlns:wiki=\"&wiki;\"\n" .
+//			"\txmlns:wiki=\"&wiki;\"\n" .
 			"\txmlns:thing=\"&thing;\"\n" .
 			"\txmlns:relation=\"&relation;\"\n" .
 			"\txmlns:attribute=\"&attribute;\"";
@@ -631,7 +645,7 @@ class ExportRDF {
 // 				foreach ($equalities as $equality) {
 // 					$this->post_ns_buffer .= "\t\t<" . $equality_rel . ' rdf:resource="' . $equality . $fragment .  "\"/>\n";
 // 				}
-// 			}			
+// 			}
 
 			// add rdfs:subPropertyOf statements
 			// FIXME: temporarily disabled
@@ -734,7 +748,7 @@ class ExportRDF {
 	}
 
 	/** Fetch SMWExportTitle for a given article. The inputs are
-	 * $text -- standard text form of the main part of the article name 
+	 * $text -- standard text form of the main part of the article name
 	 *          (no namespace, no urlencode)
 	 * $namespace -- the namespace constant
 	 */
@@ -748,7 +762,7 @@ class ExportRDF {
 		return $this->getExportTitleFromTitle($title, $modifier);
 	}
 
-	/** 
+	/**
 	 * Fetch SMWExportTitle for a given article that is identified by its
 	 * article id.
 	 */
@@ -763,7 +777,7 @@ class ExportRDF {
 	}
 
 
-	/** 
+	/**
 	 * Fetch SMWExportTitle for a given article. Caches are used to
 	 * makes this process more efficient. The title-object is needed to
 	 * have a normalised key for looking up the caches, and to create
@@ -788,7 +802,7 @@ class ExportRDF {
 	 */
 	private function markAsDone($et) {
 		if ( count($this->element_done) >= ExportRDF::MAX_CACHE_SIZE ) {
-			$this->element_done = array_slice( $this->element_done, 
+			$this->element_done = array_slice( $this->element_done,
 										ExportRDF::CACHE_BACKJUMP,
 										ExportRDF::MAX_CACHE_SIZE - ExportRDF::CACHE_BACKJUMP,
 										true );
@@ -800,13 +814,13 @@ class ExportRDF {
 	/**
 	 * This function checks whether some article fits into a given namespace restriction.
 	 * FALSE means "no restriction," non-negative restictions require to check whether
-	 * the given number equals the given namespace. A restriction of -1 requires the 
+	 * the given number equals the given namespace. A restriction of -1 requires the
 	 * namespace to be different from Category:, Relation:, Attribute:, and Type:.
 	 */
 	static function fitsNsRestriction($res, $ns) {
 		if ($res === false) return true;
 		if ($res >= 0) return ( $res == $ns );
-		return ( ($res != NS_CATEGORY) && ($res != SMW_NS_RELATION) 
+		return ( ($res != NS_CATEGORY) && ($res != SMW_NS_RELATION)
 		         && ($res != SMW_NS_ATTRIBUTE) && ($res != SMW_NS_TYPE) );
 	}
 
@@ -817,10 +831,21 @@ class ExportRDF {
 		$uri = str_replace( '-', '-2D', $uri);
 		//$uri = str_replace( ':', '-3A', $uri); //already done by PHP
 		//$uri = str_replace( '_', '-5F', $uri); //not necessary
-		$uri = str_replace( array('"','#','&',"'",'+','%'), 
-		                    array('-22','-23','-26','-27','-2B','-'), 
+		$uri = str_replace( array('"','#','&',"'",'+','%'),
+		                    array('-22','-23','-26','-27','-2B','-'),
 		                    $uri);
 		return $uri;
+	}
+
+	/** This function transforms an XML-ID string into a valid
+	 *  url-encoded URI. This is the inverse to makeXMLExportID.
+	 */
+	static function makeURIfromXMLExportId($id) {
+		$id = str_replace( array('-22','-23','-26','-27','-2B','-'),
+		                   array('"','#','&',"'",'+','%'),
+		                   $id);
+		$id = str_replace( '-2D', '-', $id);
+		return $id;
 	}
 }
 
