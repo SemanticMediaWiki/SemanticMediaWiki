@@ -17,7 +17,7 @@
 	*  TODO: $strip_state is not used (and must not be used, since it is
 	*        not relevant when moving the hook to internalParse()).
 	*/
-	function smwfParserHook(&$parser, &$text, &$strip_state) {
+	function smwfParserHook(&$parser, &$text, &$strip_state = null) {
 		smwfInitMessages(); // make sure that the messages are available
 
 		// Init global storage for semantic data of this article.
@@ -43,17 +43,17 @@
 	}
 
 	/**
-	* This callback function strips out the semantic relation from a 
+	* This callback function strips out the semantic relation from a
 	* wiki link. Retrieved data is stored in the static SMWFactbox.
 	*/
 	function smwfParseRelationsCallback($semanticLink) {
 		if (array_key_exists(2,$semanticLink)) {
 			$relation = $semanticLink[2];
 		} else { $relation = ''; }
-		if (array_key_exists(3,$semanticLink)) { 
+		if (array_key_exists(3,$semanticLink)) {
 			$linkTarget = $semanticLink[3];
 		} else { $linkTarget = ''; }
-		if (array_key_exists(4,$semanticLink)) { 
+		if (array_key_exists(4,$semanticLink)) {
 			$linkCaption = $semanticLink[4];
 			// answer to bug #1479616
 			// removes the extra : that comes in from the automatic | expansion in links
@@ -73,7 +73,7 @@
 	}
 
 	/**
-	* This callback function strips out the semantic attributes from a wiki 
+	* This callback function strips out the semantic attributes from a wiki
 	* link.
 	*/
 	function smwfParseAttributesCallback($semanticLink) {
@@ -100,7 +100,7 @@
 			$result = mb_substr( $valueCaption, 1 ); // remove initial '|'
 		}
 
-		// Set tooltip for result. smwfParserAfterTidyHook() matches this 
+		// Set tooltip for result. smwfParserAfterTidyHook() matches this
 		// HTML to add JavaScript to the final article.
 		if ($attr->getTooltip() != '') {
 			$result = '<span id="SMWtt" title="' . $attr->getTooltip() . '" style="color:#B70">' . $result . '</span>';
