@@ -10,25 +10,25 @@ $wgExtensionFunctions[] = "wfExtendedStatistics";
 
 
 function wfExtendedStatistics() {
-	
+
 	global $wgMessageCache;
-	smwfInitMessages(); 
+	smwfInitMessages();
 	global $IP, $smwgIP;
-	
+
 	require_once( "$IP/includes/SpecialPage.php" );
 	require_once( "$IP/includes/Title.php" );
-		
+
 	class ExtendedStatistics extends SpecialPage {
-			
+
 		function ExtendedStatistics() {
 			SpecialPage::SpecialPage( 'ExtendedStatistics' );
 			$this->includable( true );
 		}
-		
+
 		function getName() {
 			return "extendedstatistics";
 		}
-		
+
 		function execute( $par = null ) {
 			global $wgOut, $wgLang;
 
@@ -39,19 +39,19 @@ function wfExtendedStatistics() {
 			$good = SiteStats::articles();
 			$images = SiteStats::images();
 			$users = SiteStats::users();
-			
-			
-			$relations_table = $dbr->tableName( 'smw_relations' );			
+
+
+			$relations_table = $dbr->tableName( 'smw_relations' );
 			$attributes_table = $dbr->tableName( 'smw_attributes' );
-			$page_table = $dbr->tableName( 'page' );		
-			
-			
+			$page_table = $dbr->tableName( 'page' );
+
+
 			$sql = "SELECT Count(DISTINCT relation_title) AS count FROM $relations_table";
 			$res = $dbr->query( $sql );
 			$row = $dbr->fetchObject( $res );
-			$relations = $wgLang->formatNum($row->count);		
+			$relations = $wgLang->formatNum($row->count);
 			$dbr->freeResult( $res );
-			
+
 			$sql = "SELECT Count(*) AS count FROM $relations_table";
 			$res = $dbr->query( $sql );
 			$row = $dbr->fetchObject( $res );
@@ -66,21 +66,21 @@ function wfExtendedStatistics() {
 			$row = $dbr->fetchObject( $res );
 			$relation_pages = $wgLang->formatNum($row->count);
 			$dbr->freeResult( $res );
-			
+
 			$sql = "SELECT Count(DISTINCT attribute_title) AS count FROM $attributes_table";
 			$res = $dbr->query( $sql );
 			$row = $dbr->fetchObject( $res );
 			$attributes = $wgLang->formatNum($row->count);
 			$dbr->freeResult( $res );
-			
+
 			$sql = "SELECT Count(*) AS count FROM $attributes_table";
 			$res = $dbr->query( $sql );
 			$row = $dbr->fetchObject( $res );
 			$attribute_instance = $wgLang->formatNum($row->count);
 			$dbr->freeResult( $res );
-			
-			
-			
+
+
+
 			$out = "<table >
 					<tr>
 						<td><h2>" . wfMsg('smw_extstats_general') ."</h2></td>
@@ -120,11 +120,11 @@ function wfExtendedStatistics() {
 						<tr>
 							 <td>" . wfMsg('smw_extstats_totalri') ."</td>
 							 <td>".$relation_instance."</td>
-						</tr>						
+						</tr>
 						<tr>
 							 <td>" . wfMsg('smw_extstats_totalra') ."</td>
 							 <td>".$wgLang->formatNum( sprintf( '%0.2f', $relation_instance!=0 ? $relation_instance / $relations : 0 ) ) ."</td>
-						</td>
+						</tr>
 
 						<tr>
 							 <td>" . wfMsg('smw_extstats_totalpr') ."</td>
@@ -141,7 +141,7 @@ function wfExtendedStatistics() {
 						<tr>
 							 <td>" . wfMsg('smw_extstats_totalaa') ."</td>
 							 <td>".$wgLang->formatNum( sprintf( '%0.2f', $attribute_instance!=0 ? $attribute_instance / $attributes : 0 ) ) ." </td>
-						</td>				
+						</tr>
 					</table>";
 
 			$wgOut->addHTML( $out );
