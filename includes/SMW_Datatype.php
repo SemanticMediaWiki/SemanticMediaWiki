@@ -379,13 +379,12 @@ class SMWInfolink {
 	private $target;           // the actual link target
 	private $caption;       // the label for the link
 	private $style;         // CSS class of a span to embedd the link into, or
-	                        // FALSE if no extra style is required
-	private $internal;      // FALSE if external, otherwise "SearchByValue" or "TypedBacklinks"
-// 	private $property;      // name of the property
-// 	private $value;         // value to search for
+	                        // false if no extra style is required
+	private $internal;      // indicates whether $target is a page name (true) or URL (false)
 
 	/**
-	 * Create a new link to an internal page $target.
+	 * Create a new link to an internal page $target. All parameters are mere strings
+	 * as used by wiki users
 	 */
 	static function newInternalLink($caption, $target, $style=false) {
 		return new SMWInfolink(true,$caption,$target,$style);
@@ -424,36 +423,6 @@ class SMWInfolink {
 		$this->caption = $caption;
 		$this->target = $target;
 		$this->style = $style;
-	}
-
-// 	function SMWInfolink($linkURL, $linkCaption, $linkStyle=false, $internal=false, $property=false, $value=false) {
-// 		$this->URL = $linkURL;
-// 		$this->caption = $linkCaption;
-// 		$this->style = $linkStyle;
-// 		if (($property != false) && ($value != false))
-// 			$this->internal = $internal;
-// 		$this->property = $property;
-// 		$this->value = $value;
-// 	}
-
-	/**
-	 * Static function to construct attribute search URLs
-	 * @access public
-	 * @static
-	 */
-	static function makeAttributeSearchURL($attribute,$value,$skin) {
-		global $wgServer;
-		return $wgServer . $skin->makeSpecialUrl('SearchTriple','attribute=' . urlencode($attribute) . '&value=' . urlencode($value) . '&do=' . urlencode('Search Attributes'));
-	}
-
-	/**
-	 * Static function to construct relation search URLs
-	 * @access public
-	 * @static
-	 */
-	static function makeRelationSearchURL($relation,$object,$skin) {
-		global $wgServer;
-		return $wgServer . $skin->makeSpecialUrl('SearchTriple','relation=' . urlencode($relation) . '&object=' . urlencode($object) . '&do=' . urlencode('Search Relations'));
 	}
 
 	/**
