@@ -326,7 +326,7 @@ class ExportRDF {
 		}
 		if ($smwgNamespace[0] == '.') {
 			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
-			$smwgNamespace = "http://" . mb_substr($smwgNamespace, 1) . '/' . $resolver->getPrefixedURL() . '/';
+			$smwgNamespace = "http://" . mb_substr($smwgNamespace, 1) . $resolver->getLocalURL() . '/';
 		}
 		$this->wiki_xmlns_xml = $smwgNamespace;
 
