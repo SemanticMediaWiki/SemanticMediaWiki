@@ -69,8 +69,11 @@ class SMW_TypedBacklinks {
 		} elseif ('' == $target) { // no object given
 			$html .= wfMSG('smw_tb_notarget', $skin->makeLinkObj($relation, $relation->mTextform));
 		} else { // everything is given
+			$options = new SMWRequestOptions();
+			$options->limit = $limit+1;
+			$options->offset = $offset;
 			// get results (get one more, to see if we have to add a link to more)
-			$results = &smwfGetStore()->getRelationSubjects($relation, $object, $limit+1, $offset);
+			$results = &smwfGetStore()->getRelationSubjects($relation, $object, $options);
 
 			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_tb_displayresult', $skin->makeLinkObj($relation, $relation->mTextform), $skin->makeLinkObj($object)) . "<br />\n";
 
