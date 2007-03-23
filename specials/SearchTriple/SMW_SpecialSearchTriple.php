@@ -245,13 +245,13 @@ class SMWSpecialSearchTriple
 				$r = $attdata[1];
 			}
 			
-			$parsed_value = SMWDataValue::newAttributeValue($attdata[1],$sk);
+			$parsed_value = SMWDataValue::newAttributeValue($attdata[1]);
 			$parsed_value->setXSDValue($attdata[4],$attdata[2]);
 			if ($parsed_value->isValid()) {
 				$o = $parsed_value->getValueDescription();
 				//$o = $parsed_value->getStringValue(); //shorter
 				foreach ($parsed_value->getInfolinks() as $link) {
-						$o .= ' &nbsp;&nbsp;' . $link->getHTML();
+						$o .= ' &nbsp;&nbsp;' . $link->getHTML($sk);
 				}
 			} else {
 				$o = $attdata[4] . $attdata[2];

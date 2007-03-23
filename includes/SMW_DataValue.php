@@ -117,7 +117,6 @@ class SMWDataValue {
 
 	// additional information about the value and the context in which it was given
 	var $type_handler; //type handler for this object
-	var $skin; //the current skin object, needed to build internal URLs
 	var $infolinks; // an array of additional links provided in long descriptions of the value
 	var $attribute; // wiki name (without namespace) of the attribute that this value was
 	                // assigned to, or FALSE if no attribute was given.
@@ -132,7 +131,6 @@ class SMWDataValue {
 		$this->clear();
 
 		$this->type_handler = $type;
-		$this->skin = NULL;
 		$this->attribute = false;
 		$this->desiredUnits = $desiredUnits;
 		$this->possibleValues = false;
@@ -145,14 +143,12 @@ class SMWDataValue {
 
 	/**
 	 * Create a value from a string supplied by a user for a given attribute.
-	 * The skin is needed to create some of the internal links automatically.
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
 	 */
-	/* static */ function newAttributeValue($attribute, $skin=NULL, $value=false) {
+	static function newAttributeValue($attribute, $value=false) {
 		$type = SMWTypeHandlerFactory::getTypeHandler($attribute);
 		$result = new SMWDataValue($type);
-		$result->setSkin($skin);
 		$result->attribute = $attribute;
 		// TODO: Maybe only get this for attributes types that can support it, or only get if requested?
 		if ($value !== false)
@@ -162,15 +158,13 @@ class SMWDataValue {
 
 	/**
 	 * Create a value from a string supplied by a user for a given special
-	 * property, encoded as a numeric constant. The skin is needed to create
-	 * some of the internal links automatically.
+	 * property, encoded as a numeric constant. 
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
 	 */
-	/* static */ function newSpecialValue($specialprop, $skin=NULL, $value=false) {
+	static function newSpecialValue($specialprop, $value=false) {
 		$type = SMWTypeHandlerFactory::getSpecialTypeHandler($specialprop);
 		$result = new SMWDataValue($type);
-		$result->setSkin($skin);
 		if ($value !== false)
 		  $result->setUserValue($value);
 		return $result;
@@ -178,13 +172,11 @@ class SMWDataValue {
 
 	/**
 	 * Create a value from a user-supplied string for which a type handler is known
-	 * The skin is needed to create some of the internal links automatically.
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
 	 */
-	/* static */ function newTypedValue($type, $skin=NULL, $value=false, $desiredUnits=array()) {
+	static function newTypedValue($type, $value=false, $desiredUnits=array()) {
 		$result = new SMWDataValue($type);
-		$result->setSkin($skin);
 		$result->desiredUnits = $desiredUnits;
 		if ($value !== false)  $result->setUserValue($value);
 		return $result;
@@ -240,15 +232,6 @@ class SMWDataValue {
 	}
 
 	/**
-	 * Set the skin for this object. Needed to generate some of the
-	 * internal URLs. SMWDatavalues can be used without setting a skin
-	 * but then cannot generate all URLs properly.
-	 */
-	function setSkin($skin) {
-		$this->skin = $skin;
-	}
-
-	/**
 	 * Add a new infolink object to the links provided with this value.
 	 */
 	function addInfolink($link) {
@@ -266,9 +249,7 @@ class SMWDataValue {
 	 *   E.g. it is not very user-friendly. -- mak
 	 */
 	function addQuicksearchLink() {
-		if ($this->skin !== NULL) {
-			$this->infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->attribute, $this->vuser);
-		}
+		$this->infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->attribute, $this->vuser);
 	}
 
 	/**
@@ -343,7 +324,7 @@ class SMWDataValue {
 	}
 
 	/**
-	 * Reset the object to contain no value at all, but keep the existing type/skin/attribute.
+	 * Reset the object to contain no value at all, but keep the existing type/attribute.
 	 */
 	function clear() {
 		$this->vuser = '';

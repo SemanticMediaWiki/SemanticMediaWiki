@@ -71,7 +71,7 @@ class SMW_SearchByValue {
 			$type = NULL;
 			$value = NULL;
 			// set unit and (XSD) value
-			$datavalue = SMWDataValue::newAttributeValue($attribute, $skin);
+			$datavalue = SMWDataValue::newAttributeValue($attribute);
 			if ( $datavalue->getTypeID() != 'error') {
 				// TODO: Performance (medium): setUserValue() calls the data type's processValue() which does a lot of conversion and tooltip work that's unused here.
 				$datavalue->setUserValue($valuestring);
