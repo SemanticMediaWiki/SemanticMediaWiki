@@ -376,27 +376,65 @@ SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_
  * realising them in wiki or html contexts.
  */
 class SMWInfolink {
-	/**#@+
-	 * @access private
-	 */
-	private $URL;           // the actual link target
+	private $target;           // the actual link target
 	private $caption;       // the label for the link
 	private $style;         // CSS class of a span to embedd the link into, or
 	                        // FALSE if no extra style is required
 	private $internal;      // FALSE if external, otherwise "SearchByValue" or "TypedBacklinks"
-	private $property;      // name of the property
-	private $value;         // value to search for
-	/**#@-*/
+// 	private $property;      // name of the property
+// 	private $value;         // value to search for
 
-	function SMWInfolink($linkURL, $linkCaption, $linkStyle=false, $internal=false, $property=false, $value=false) {
-		$this->URL = $linkURL;
-		$this->caption = $linkCaption;
-		$this->style = $linkStyle;
-		if (($property != false) && ($value != false))
-			$this->internal = $internal;
-		$this->property = $property;
-		$this->value = $value;
+	/**
+	 * Create a new link to an internal page $target.
+	 */
+	static function newInternalLink($caption, $target, $style=false) {
+		return new SMWInfolink(true,$caption,$target,$style);
 	}
+
+	/**
+	 * Create a new link to an external location $url.
+	 */
+	static function newExternalLink($caption, $url, $style=false) {
+		return new SMWInfolink(false,$caption,$url,$style);
+	}
+
+	/**
+	 * Static function to construct links to attribute searches.
+	 * TODO: for empty values, the link should point to another special
+	 */
+	static function newAttributeSearchLink($caption,$attribute,$value,$style = 'smwsearch') {
+		global $wgContLang;
+		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByValue/' . $attribute . ':=' . $value, $style);
+	}
+
+	/**
+	 * Static function to construct links to relation searches.
+	 * TODO: for empty objects, the link should point to another special
+	 */
+	static function newRelationSearchLink($caption,$relation,$object,$style = 'smwsearch') {
+		global $wgContLang;
+		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':TypedBacklinks/' . $relation . '::' . $object, $style);
+	}
+
+	/**
+	 * Create a new link to some internal page or to some external URL.
+	 */
+	function SMWInfolink($internal, $caption, $target, $style=false) {
+		$this->internal = $internal;
+		$this->caption = $caption;
+		$this->target = $target;
+		$this->style = $style;
+	}
+
+// 	function SMWInfolink($linkURL, $linkCaption, $linkStyle=false, $internal=false, $property=false, $value=false) {
+// 		$this->URL = $linkURL;
+// 		$this->caption = $linkCaption;
+// 		$this->style = $linkStyle;
+// 		if (($property != false) && ($value != false))
+// 			$this->internal = $internal;
+// 		$this->property = $property;
+// 		$this->value = $value;
+// 	}
 
 	/**
 	 * Static function to construct attribute search URLs
@@ -422,11 +460,18 @@ class SMWInfolink {
 	 * Return hyperlink for this infolink in HTML format.
 	 * @access public
 	 */
-	function getHTML() {
-		if ($this->style !== FALSE) {
-			return "<span class=\"$this->style\"><a href=\"$this->URL\">$this->caption</a></span>";
+	function getHTML($skin) {
+		if ($this->style !== false) {
+			$start = "<span class=\"$this->style\">"; 
+			$end = '</span>';
 		} else {
-			return "<a href=\"$this->URL\">$this->caption</a>";
+			$start = '';
+			$end = '';
+		}
+		if ($this->internal) {
+			return $start . $skin->makeKnownLinkObj(Title::newFromText($this->target), $this->caption) . $end;
+		} else {
+			return $start . "<a href=\"$this->target\">$this->caption</a>" . $end;
 		}
 	}
 
@@ -435,23 +480,17 @@ class SMWInfolink {
 	 * @access public
 	 */
 	function getWikiText() {
-		if ($this->internal != false) {
-			$conj = "";
-			if ("SearchByValue" == $this->internal)
-				$conj = ":=";
-			if ("TypedBacklinks" == $this->internal)
-				$conj = "::";
-			if ($this->style !== false) {
-				return "<span class=\"$this->style\">[[Special:$this->internal/$this->property$conj$this->value|$this->caption]]</span>";
-			} else {
-				return "[[Special:$this->internal/$this->property$conj$this->value|$this->caption]]";
-			}
+		if ($this->style !== false) {
+			$start = "<span class=\"$this->style\">"; 
+			$end = '</span>';
 		} else {
-			if ($this->style !== false) {
-				return "<span class=\"$this->style\">[$this->URL $this->caption]</span>";
-			} else {
-				return "[$this->URL $this->caption]";
-			}
+			$start = '';
+			$end = '';
+		}
+		if ($this->internal) {
+			return $start . "[[$this->target|$this->caption]]" . $end;
+		} else {
+			return $start . "[$this->target $this->caption]" . $end;
 		}
 	}
 }

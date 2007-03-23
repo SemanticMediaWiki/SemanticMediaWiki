@@ -57,12 +57,8 @@ function wfSMWRelations()
 			global $wgLang;
 			$title = Title::makeTitle( SMW_NS_RELATION, $result->title );
 			$rlink = $skin->makeLinkObj( $title, $title->getText() );
-			// Note: It doesn't seem possible to reuse this infolink object.
-			$searchlink = new SMWInfolink(
-			    SMWInfolink::makeRelationSearchURL($title->getText(),'',$skin),
-			    '+','smwsearch');
-
-			return "$rlink ($result->count) " . $searchlink->getHTML();
+			$searchlink = SMWInfolink::newRelationSearchLink('+', $title->getText(), null);
+			return "$rlink ($result->count) " . $searchlink->getHTML($skin);
 		}
 	}
 	

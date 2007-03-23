@@ -267,9 +267,7 @@ class SMWDataValue {
 	 */
 	function addQuicksearchLink() {
 		if ($this->skin !== NULL) {
-			$this->infolinks[] = new SMWInfolink(
-			    SMWInfolink::makeAttributeSearchURL($this->attribute,$this->vuser,$this->skin),
-			    '+','smwsearch','SearchByValue',$this->attribute,$this->vuser);
+			$this->infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->attribute, $this->vuser);
 		}
 	}
 
@@ -294,7 +292,7 @@ class SMWDataValue {
 			foreach ($links as $link) {
 				$linkdat = explode('|',$link,2);
 				if (count($linkdat) == 2)
-					$this->addInfolink(new SMWInfolink($linkdat[1],$linkdat[0]));
+					$this->addInfolink(SMWInfolink::newExternalLink($linkdat[0],$linkdat[1]));
 			}
 		}
 	}

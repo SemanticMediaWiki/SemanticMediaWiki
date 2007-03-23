@@ -238,9 +238,10 @@ class SMWFactbox {
 			}
 		}
 
-		$rdflink = new SMWInfolink(
-		   $wgServer . SMWFactbox::$skin->makeSpecialUrl('ExportRDF') . '/' . str_replace('%2F', '/', urlencode(SMWFactbox::$semdata->getSubject()->getPrefixedText())),
-		   wfMsgForContent('smw_viewasrdf'),'rdflink');
+		//TODO: this is of course an internal link
+		$rdflink = SMWInfolink::newExternalLink(wfMsgForContent('smw_viewasrdf'),
+		   $wgServer . SMWFactbox::$skin->makeSpecialUrl('ExportRDF') . '/' . str_replace('%2F', '/', urlencode(SMWFactbox::$semdata->getSubject()->getPrefixedText())),'rdflink'
+		);
 		// The "\n" is to ensure that lists on the end of articles are terminated
 		// before the div starts. It would of course be much cleaner to print the
 		// factbox in another way, similar to the way that categories are printed
@@ -323,9 +324,7 @@ class SMWFactbox {
 				$i+=1;
 
 				$text .= '[[:' . $relationObject->getPrefixedText() . ']]';
-				$searchlink = new SMWInfolink(
-				         SMWInfolink::makeRelationSearchURL($relation->getText(), $relationObject->getPrefixedText(), SMWFactbox::$skin),
-				         '+','smwsearch','TypedBacklinks',$relation->mTextform,$relationObject->getPrefixedText());
+				$searchlink = SMWInfolink::newRelationSearchLink('+',$relation->getText(),$relationObject->getPrefixedText());
 				$text .= '&nbsp;&nbsp;' . $searchlink->getWikiText();
 			}
 			$text .= "</td></tr>\n";

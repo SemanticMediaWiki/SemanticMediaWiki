@@ -66,12 +66,9 @@ function wfSMWAttributes()
 			}
 			$typetitle = Title::makeTitle( SMW_NS_TYPE, $typelabel );
 			$typelink = $skin->makeLinkObj( $typetitle);
-			// Note: It doesn't seem possible to reuse this infolink object.
-			$searchlink = new SMWInfolink(
-			    SMWInfolink::makeAttributeSearchURL($attrtitle->getText(),'',$skin),
-			    '+','smwsearch');
+			$searchlink = SMWInfolink::newAttributeSearchLink('+',$attrtitle->getText(),null);
 
-			return "$attrlink ($result->count)" . wfMsg('smw_attr_type_join', $typelink) . ' ' . $searchlink->getHTML();
+			return "$attrlink ($result->count)" . wfMsg('smw_attr_type_join', $typelink) . ' ' . $searchlink->getHTML($skin);
 		}
 	}
 	
