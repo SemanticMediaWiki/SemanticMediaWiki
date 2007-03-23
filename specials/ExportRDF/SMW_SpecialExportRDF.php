@@ -208,7 +208,6 @@ class SMWExportTitle {
 		} else { // external URI known
 			$this->long_uri = $this->ns_uri . $this->ext_section;
 			$this->short_uri = $this->ext_nsid . ':' . $this->ext_section;
-			$export->addExtraNamespace($this->ext_nsid, $this->ns_uri);
 		}
 // why? $this->label = $ns_text . $this->title_text;
 		$this->label = $this->title_text;
@@ -786,14 +785,18 @@ class ExportRDF {
 	private function getExportTitleFromTitle($title, $modifier = '') {
 		$key = $title->getPrefixedURL() . ' ' . $modifier;
 		if (array_key_exists($key, $this->element_done)) {
-			return $this->element_done[$key];
+			$result = $this->element_done[$key];
 		} elseif (array_key_exists($key, $this->element_queue)) {
-			return $this->element_queue[$key];
+			$result = $this->element_queue[$key];
 		} else {
-			$et = new SMWExportTitle($title, $this, $modifier);
-			$this->element_queue[$key] = $et; // queue element
-			return $et;
+			$result = new SMWExportTitle($title, $this, $modifier);
+			$this->element_queue[$key] = $result; // queue element
 		}
+		// make sure that extra namespace is added in the current flush, if needed:
+		if ($result->ext_nsid !== false) {
+			$this->addExtraNamespace($result->ext_nsid, $result->ns_uri);
+		}
+		return $result;
 	}
 
 	/**
