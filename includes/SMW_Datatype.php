@@ -403,7 +403,7 @@ class SMWInfolink {
 	 */
 	static function newAttributeSearchLink($caption,$attribute,$value,$style = 'smwsearch') {
 		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByValue/' . $attribute . ':=' . $value, $style);
+		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByValue/' .  $attribute . ':=' . $value, $style);
 	}
 
 	/**
@@ -457,6 +457,10 @@ class SMWInfolink {
 			$end = '';
 		}
 		if ($this->internal) {
+			if (preg_match('/(.*)(\[|\]|<|>|&gt;|&lt;)(.*)/', $this->target) != 0 ) {
+				return ''; // give up if illegal characters occur, 
+				           // TODO: we would need a skin to provide an ext URL in this case
+			}
 			return $start . "[[$this->target|$this->caption]]" . $end;
 		} else {
 			return $start . "[$this->target $this->caption]" . $end;
