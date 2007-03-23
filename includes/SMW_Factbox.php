@@ -238,18 +238,15 @@ class SMWFactbox {
 			}
 		}
 
-		//TODO: this is of course an internal link
-		$rdflink = SMWInfolink::newExternalLink(wfMsgForContent('smw_viewasrdf'),
-		   $wgServer . SMWFactbox::$skin->makeSpecialUrl('ExportRDF') . '/' . str_replace('%2F', '/', urlencode(SMWFactbox::$semdata->getSubject()->getPrefixedText())),'rdflink'
-		);
+		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . str_replace('%2F', '/', urlencode(SMWFactbox::$semdata->getSubject()->getPrefixedText())), 'rdflink');
+
 		// The "\n" is to ensure that lists on the end of articles are terminated
 		// before the div starts. It would of course be much cleaner to print the
 		// factbox in another way, similar to the way that categories are printed
 		// now. However, this would require more patching of MediaWiki code ...
 		$text .= "\n" . '<div class="smwfact">' .
 		         '<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', SMWFactbox::$semdata->getSubject()->getText()) . '</span>' .
-		         //'<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
-		         '<span class="smwrdflink"><span class="rdflink">[[Special:ExportRDF/' . SMWFactbox::$semdata->getSubject()->getPrefixedText() . '|' . wfMsg('smw_viewasrdf') . ']]</span></span>' .
+		         '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
 		         '<table style="clear: both; width: 100%">' . "\n";
 		SMWFactbox::printRelations($text);
 		SMWFactbox::printAttributes($text);
