@@ -129,7 +129,7 @@ class SMW_LanguageDe {
 	'types' => 'Datentypen',
 	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden. Jeder Datentyp hat einen eigenen Artikel, auf dem genauere Informationen eingetragen werden können.',
 	'smw_types_units' => 'Standardumrechnung: $1; gestützte Umrechnungen: $2',
-	'smw_types_builtin' => 'Eingebaute datatypen'
+	'smw_types_builtin' => 'Eingebaute datatypen',
 	/*Messages for ExtendedStatistics Special*/
 	'extendedstatistics' => 'Erweiterte Statistiken',
 	'smw_extstats_general' => 'Allgemeine Statistiken:',
