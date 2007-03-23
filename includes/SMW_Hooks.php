@@ -30,7 +30,7 @@
 		$text = preg_replace_callback($semanticLinkPattern, 'smwfParseRelationsCallback', $text);
 
 		// Parse links to extract attribute values
-		$semanticLinkPattern = '(\[\[(([^:][^]]*):=)+([^\|\]]*)(\|([^]]*))?\]\])';
+		$semanticLinkPattern = '(\[\[(([^:][^]]*):=)+((?:[^|\[\]]|\[\[[^]]*\]\])*)(\|([^]]*))?\]\])';
 		$text = preg_replace_callback($semanticLinkPattern, 'smwfParseAttributesCallback', $text);
 
 		// print the results if enabled (we have to parse them in any case, in order to
