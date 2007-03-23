@@ -450,7 +450,7 @@ class SMWInfolink {
 	 */
 	function getWikiText() {
 		if ($this->style !== false) {
-			$start = "<span class=\"$this->style\">"; 
+			$start = "<span class=\"$this->style\">";
 			$end = '</span>';
 		} else {
 			$start = '';
