@@ -506,7 +506,8 @@ class SMWInlineQuery {
 		}
 
 		if ($this->mFormat == 'debug') { // DEBUG
-			$result = $sq->mDebug . " \n <b>Query</b>\n  SELECT DISTINCT " . implode(',', $sq->mSelect) . " FROM " . $sq->mTables . " WHERE " . $sq->mConditions . "; \n";
+			list( $startOpts, $useIndex, $tailOpts ) = $this->dbr->makeSelectOptions( $sql_options );
+			$result = $sq->mDebug . " \n <b>Query</b>\n  SELECT DISTINCT " . implode(',', $sq->mSelect) . " FROM " . $sq->mTables . " WHERE " . $sq->mConditions . $tailOpts . "; \n <b>Query options</b>\n";
 			foreach ($sql_options as $key => $value) {
 				$result .= "  $key=$value";
 			}
