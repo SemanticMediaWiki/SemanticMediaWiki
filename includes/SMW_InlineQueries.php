@@ -506,7 +506,7 @@ class SMWInlineQuery {
 		}
 
 		if ($this->mFormat == 'debug') { // DEBUG
-			$result = $sq->mDebug . " \n <b>Query</b>\n  SELECT DISTINCT " . implode(',', $sq->mSelect) . " WHERE " . $sq->mConditions . " \n";
+			$result = $sq->mDebug . " \n <b>Query</b>\n  SELECT DISTINCT " . implode(',', $sq->mSelect) . " FROM " . $sq->mTables . " WHERE " . $sq->mConditions . "; \n";
 			foreach ($sql_options as $key => $value) {
 				$result .= "  $key=$value";
 			}
