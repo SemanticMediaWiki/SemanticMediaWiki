@@ -271,8 +271,9 @@ class SMWInlineQuery {
 		}
 		if (array_key_exists('format', $param)) {
 			$this->mFormat = strtolower($param['format']);
-			if ( !in_array($this->mFormat,SMWInlineQuery::$formats) ) 
+			if ( !in_array($this->mFormat,SMWInlineQuery::$formats) ) {
 				$this->mFormat = 'auto'; // If it is an unknown format, default to list again
+			}
 		}
 		// TODO: of course the printer should specify the following, but links are currently
 		// created during query parsing, while printers might be selected only after this.
@@ -504,8 +505,12 @@ class SMWInlineQuery {
 			}
 		}
 
-		if ($this->mFormat == 'debug') {
-			return $sq->mDebug; // DEBUG
+		if ($this->mFormat == 'debug') { // DEBUG
+			$result = $sq->mDebug . " \n <b>Query</b>\n  SELECT DISTINCT " . implode(',', $sq->mSelect) . " WHERE " . $sq->mConditions . " \n";
+			foreach ($sql_options as $key => $value) {
+				$result .= "  $key=$value";
+			}
+			return $result;
 		}
 
 		//*** Execute the query ***//
@@ -806,7 +811,7 @@ class SMWInlineQuery {
 			}
 		}
 
-		$result->mDebug = "\n SELECT " . implode(',',$result->mSelect) . "\n FROM $result->mTables\n WHERE $result->mConditions" . " \n Conds:$this->mConditionCount Tables:$this->mTableCount Printout:$this->mPrintoutCount"; //DEBUG
+		$result->mDebug = "\n <b>Statistics</b> \n  Condiditions: $this->mConditionCount Tables: $this->mTableCount Printouts: $this->mPrintoutCount"; //DEBUG
 
 		return $result;
 	}
