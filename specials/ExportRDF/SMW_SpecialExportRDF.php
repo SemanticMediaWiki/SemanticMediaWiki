@@ -406,6 +406,7 @@ class ExportRDF {
 				}
 				if ($this->delay_flush > 0) $this->delay_flush--;
 			}
+			$linkCache->clear();
 		}
 
 		// if pages are not processed recursively, print mentioned declarations
@@ -430,6 +431,7 @@ class ExportRDF {
 	 */
 	public function printAll($outfile, $ns_restriction = false) {
 		global $smwgNamespacesWithSemanticLinks;
+		$linkCache =& LinkCache::singleton();
 
 		$this->db = & wfGetDB( DB_MASTER );
 		$this->pre_ns_buffer = '';
