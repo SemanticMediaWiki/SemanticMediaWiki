@@ -135,7 +135,56 @@ class SMW_LanguageSk {
 	'types' => 'Typy',
 	'smw_types_docu' => 'Nasleduje zoznam všetkých údajových typov, ktoré je možné priradiť atribútom. Každý údajový typ má stránku, kde je možné poskytnúť dodatočné informácie.',
 	'smw_types_units' => 'Štandardné jednotky: $1; podporované jednotky: $2',
-	'smw_types_builtin' => 'Vstavané typy'
+	'smw_types_builtin' => 'Vstavané typy',
+	/*Messages for ExtendedStatistics Special*/
+	'extendedstatistics' => 'Rozšírená štatistika',
+	'smw_extstats_general' => 'Všeobecná štatistika:',
+	'smw_extstats_totalp' => 'Celkový počet stránok:',
+	'smw_extstats_totalv' => 'Celkový počet prehliadnutí:',
+	'smw_extstats_totalpe' => 'Celkový počet úprav stránok:',
+	'smw_extstats_totali' => 'Celkový počet obrázkov:',
+	'smw_extstats_totalu' => 'Celkový počet používateľov:',
+	'smw_extstats_totalr' => 'Celkový počet vzťahov:',
+	'smw_extstats_totalri' => 'Celkový počet inštancií vzťahov:',
+	'smw_extstats_totalra' => 'Average number inštancií na vzťah:',
+	'smw_extstats_totalpr' => 'Celkový počet stránok o vzťahoch:',
+	'smw_extstats_totala' => 'Celkový počet atribútov:',
+	'smw_extstats_totalai' => 'Celkový počet inštancií atribútov:',
+	'smw_extstats_totalaa' => 'Average number inštancií na atribút:',
+	/*Messages for Flawed Attributes Special*/
+	'flawedattributes' => 'Chybných atribútov',
+	'smw_fattributes' => 'Nižšie uvedené stránky majú nesprávne definovaný atribút. Počet nesprávnych atribútov udáva číslo v zátvorkách.',
+	// Name of the URI Resolver Special (no content)
+	'uriresolver' => 'URI Resolver',
+	'smw_uri_doc' => '<p>URI resolver sa stará o implementáciu <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG hľadanie na httpRange-14</a>. Stará sa o to, aby sa ľudia nestali webstránkami.</p>',
+	// Messages for typed backlink Special
+	'typedbacklinks' => 'Typové spätné odkazy',
+	'smw_tb_docu' => '<p>Vyhľadávať na wiki akýkoľvek článok s istým typom odkazu na zadaný cieľ.</p>',
+	'smw_tb_notype' => '<p>Nebol poskytnutý typ odkazu. Prosím, poskytnite ho vo formulári alebo <a href="$2">kliknite sem pre zobrazenie všetkých odkazov na $1</a></p>',
+	'smw_tb_notarget' => '<p>Nebola poskytnutá cieľová stránka pre spätné odkazy. Prosím, poskytnite ju vo formulári alebo zobrazte všetky odkazy typu $1</p>',
+	'smw_tb_doculink' => 'Typové odkazy',
+	'smw_tb_displayresult' => 'Zoznam všetkých článkov, ktoré majú vzťah $1 $2.',
+	'smw_tb_linktype' => 'Typ odkazu:',
+	'smw_tb_linktarget' => 'Cieľ odkazu:',
+	'smw_tb_prev' => 'Predchádzajúci',
+	'smw_tb_next' => 'Nasledovný',
+	'smw_tb_results' => 'Výsledky',
+	'smw_tb_noresults' => 'Prepáčte, žiadne výsledky.',
+	'smw_tb_submit' => 'Hľadať výsledky',
+	// Messages for the search by value special
+	'searchbyvalue' => 'Hľadať podľa hodnoty atribútu',
+	'smw_sbv_docu' => '<p>Hľadať na wiki článok, ktorý má atribút s istou hodnotou.</p>',
+	'smw_sbv_noattribute' => '<p>Nebol poskytnutý atribút. Prosím, poskytnite ho vo formulári.</p>',
+	'smw_sbv_novalue' => '<p>Nebola poskytnutá hodnota. Prosím, poskytnite ju vo formulári alebo zobrazte všetky atribúty typu $1</p>',
+	'smw_sbv_doculink' => 'Hľadať podľa hodnoty',
+	'smw_sbv_displayresult' => 'Zoznam všetkých článkov, ktoré majú atribút $1 $2.',
+	'smw_sbv_attribute' => 'Atribút:',
+	'smw_sbv_value' => 'Hodnota:',
+	'smw_sbv_prev' => 'Predchádzajúci',
+	'smw_sbv_next' => 'Nasledovný',
+	'smw_sbv_results' => 'Výsledky',
+	'smw_sbv_noresults' => 'Prepáčte, žiadne výsledky.',
+	'smw_sbv_submit' => 'Hľadať výsledky'
 );
 
 /* private */ var $smwDatatypeLabels = array(
