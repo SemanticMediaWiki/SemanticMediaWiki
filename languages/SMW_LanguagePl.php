@@ -104,6 +104,9 @@ class SMW_LanguagePl {
 	/*Messages for Relations Special*/
 	'relations' => 'Relacje',
 	'smw_relations_docu' => 'W wiki istnieją następujące relacje.',
+	// Messages for RelationsWithoutPage Special
+	'relationswithoutpage' => 'Wanted relations', //TODO: translate
+	'smw_relations_withoutpage' => 'The following relations do not have an explanatory page yet, though they are already used to describe other pages.', //TODO: translate
 	/*Messages for Attributes Special*/
 	'attributes' => 'Atrybuty',
 	'smw_attributes_docu' => 'W wiki istnieją następujące atrybuty.',

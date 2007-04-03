@@ -93,8 +93,8 @@ class SMW_LanguageDe {
 	'relations' => 'Relationen',
 	'smw_relations_docu' => 'In diesem Wiki gibt es die folgenden Relationen:',
 	/*Messages for RelationsWithoutPage*/
-	'relationwithout' => 'Relationen ohne erläuternde Seite',
-	'smw_relations_withoutpage' => 'In diesem Wiki haben folgende Relationen keine erläuterende Seite:',
+	'relationwithout' => 'Gewünschte Relationen',
+	'smw_relations_withoutpage' => 'Folgende Relationen haben bisher keine erläuterende Seite, obwohl sie bereits für die Beschreibung anderer Seiten verwendet werden.',
 	/*Messages for Attributes Special*/
 	'attributes' => 'Attribute',
 	'smw_attributes_docu' => 'In diesem Wiki gibt es die folgenden Attribute:',

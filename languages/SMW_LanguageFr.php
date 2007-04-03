@@ -91,6 +91,9 @@ class SMW_LanguageFr {
 	/*Messages for Relation Special*/
 	'relations' => 'Relations',
 	'smw_relations_docu' => 'Sur ce wiki, existent les relations suivantes:',
+	// Messages for RelationsWithoutPage Special
+	'relationswithoutpage' => 'Wanted relations', //TODO: translate
+	'smw_relations_withoutpage' => 'The following relations do not have an explanatory page yet, though they are already used to describe other pages.', //TODO: translate
 	/*Messages for Attributes Special*/
 	'attributes' => 'Attributs',
 	'smw_attributes_docu' => 'Sur ce wiki, existent les attributs suivants:',
