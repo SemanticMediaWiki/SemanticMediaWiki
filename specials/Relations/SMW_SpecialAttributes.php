@@ -66,9 +66,8 @@ function wfSMWAttributes()
 			}
 			$typetitle = Title::makeTitle( SMW_NS_TYPE, $typelabel );
 			$typelink = $skin->makeLinkObj( $typetitle);
-			$searchlink = SMWInfolink::newAttributeSearchLink('+',$attrtitle->getText(),null);
 
-			return "$attrlink ($result->count)" . wfMsg('smw_attr_type_join', $typelink) . ' ' . $searchlink->getHTML($skin);
+			return "$attrlink ($result->count)" . wfMsg('smw_attr_type_join', $typelink);
 		}
 	}
 	
