@@ -34,13 +34,23 @@ define('SMW_FACTBOX_SHOWN',  5);
  * does not adhere to the naming conventions.
  */
 function enableSemantics($namespace = "", $complete = false) {
-	global $smwgVersion, $smwgNamespace, $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $wgArticlePath, $wgScriptPath, $wgServer;
-
+	global $smwgNamespace, $wgExtensionFunctions;
 	$smwgNamespace = $namespace;
-	if (!$complete && !($smwgNamespace=='')) $smwgNamespace = ".$smwgNamespace";
+
 	// The dot tells that the domain is not complete. It will be completed
-	// in the Export (because it is not possible to create Title-objects
-	// yet, and we need one to create the complete namespace)
+	// in the Export since we do not want to create a title object here when
+	// it is not needed in many cases.
+	if (!$complete && !($smwgNamespace === '')) $smwgNamespace = ".$smwgNamespace";
+	$wgExtensionFunctions[] = 'smwgSetupExtension';
+	return true;
+}
+
+/**
+ *  Do the actual intialisation of the extension. This is just a delayed init that makes sure
+ *  MediaWiki is set up properly before we add our stuff.
+ */
+function smwgSetupExtension() {
+	global $smwgVersion, $smwgNamespace, $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $wgArticlePath, $wgScriptPath, $wgServer;
 
 	/**
 	* Setting this to false prevents any new data from being stored in
