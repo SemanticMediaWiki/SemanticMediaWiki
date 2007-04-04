@@ -403,7 +403,7 @@ class SMWInfolink {
 	 */
 	static function newAttributeSearchLink($caption,$attribute,$value,$style = 'smwsearch') {
 		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByValue/' .  $attribute . ':=' . $value, $style);
+		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByAttribute/' .  $attribute . ':=' . $value, $style);
 	}
 
 	/**
@@ -412,7 +412,7 @@ class SMWInfolink {
 	 */
 	static function newRelationSearchLink($caption,$relation,$object,$style = 'smwsearch') {
 		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':TypedBacklinks/' . $relation . '::' . $object, $style);
+		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByRelation/' . $relation . '::' . $object, $style);
 	}
 
 	/**

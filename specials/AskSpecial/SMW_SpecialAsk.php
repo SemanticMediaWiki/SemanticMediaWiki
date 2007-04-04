@@ -61,19 +61,19 @@ class SMW_AskPage {
 		
 		// print results if any
 		if ($smwgIQEnabled && ('' != $query) ) {
-			$iq = new SMWInlineQuery(array('offset' => $offset, 'limit' => $limit, 'format' => 'broadtable', 'mainlabel' => ' ', 'link' => 'all', 'default' => wfMsg('smw_ask_noresults'), 'sort' => $sort, 'order' => $order), false);
+			$iq = new SMWInlineQuery(array('offset' => $offset, 'limit' => $limit, 'format' => 'broadtable', 'mainlabel' => ' ', 'link' => 'all', 'default' => wfMsg('smw_result_noresults'), 'sort' => $sort, 'order' => $order), false);
 			$result = $iq->getHTMLResult($query);
 
 			// prepare navigation bar
 			if ($offset > 0) 
-				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '">' . wfMsg('smw_ask_prev') . '</a>';
-			else $navigation = wfMsg('smw_ask_prev');
+				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '">' . wfMsg('smw_result_prev') . '</a>';
+			else $navigation = wfMsg('smw_result_prev');
 
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_ask_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $iq->getDisplayCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $iq->getDisplayCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 			if ($iq->hasFurtherResults()) 
-				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '">' . wfMsg('smw_ask_next') . '</a>';
-			else $navigation .= wfMsg('smw_ask_next');
+				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '">' . wfMsg('smw_result_next') . '</a>';
+			else $navigation .= wfMsg('smw_result_next');
 
 			$max = false; $first=true;
 			foreach (array(20,50,100,250,500) as $l) {

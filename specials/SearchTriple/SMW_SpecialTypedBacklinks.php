@@ -12,21 +12,21 @@ if (!defined('MEDIAWIKI')) die();
 require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
 global $wgExtensionFunctions;
-$wgExtensionFunctions[] = "wfTypedBacklinksExtension";
+$wgExtensionFunctions[] = "wfSearchByRelationExtension";
 
-function wfTypedBacklinksExtension()
+function wfSearchByRelationExtension()
 {
 	global $IP, $smwgIP, $wgMessageCache, $wgOut;
 	smwfInitMessages(); // initialize messages, always called before anything else on this page
 
-	function doSpecialTypedBacklinks($query = '') {
-		SMW_TypedBacklinks::execute($query);
+	function doSpecialSearchByRelation($query = '') {
+		SMW_SearchByRelation::execute($query);
 	}
 
-	SpecialPage::addPage( new SpecialPage('TypedBacklinks','',true,'doSpecialTypedBacklinks',false) );
+	SpecialPage::addPage( new SpecialPage('SearchByRelation','',true,'doSpecialSearchByRelation',false) );
 }
 
-class SMW_TypedBacklinks {
+class SMW_SearchByRelation {
 
 	static function execute($query = '') {
 		global $wgRequest, $wgOut, $wgUser, $smwgIQMaxLimit;
@@ -51,10 +51,10 @@ class SMW_TypedBacklinks {
 		$offset = $wgRequest->getVal( 'offset' );
 		if ('' == $offset) $offset = 0;
 		$html = '';
-		$spectitle = Title::makeTitle( NS_SPECIAL, 'TypedBacklinks' );
+		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByRelation' );
 
 		// display query form
-		$html .= '<form name="typedbacklinks" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
+		$html .= '<form name="searchbyrelation" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
 		$html .= wfMsg('smw_tb_linktype') . ' <input type="text" name="type" value="' . htmlspecialchars($type) . '" />' . "\n";
 		$html .= wfMsg('smw_tb_linktarget') . ' <input type="text" name="target" value="' . htmlspecialchars($target) . '" />' . "\n";
@@ -79,16 +79,16 @@ class SMW_TypedBacklinks {
 
 			// prepare navigation bar
 			if ($offset > 0)
-				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('TypedBacklinks','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&type=' . urlencode($type) .'&target=' . urlencode($target))) . '">' . wfMsg('smw_tb_prev') . '</a>';
+				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByRelation','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&type=' . urlencode($type) .'&target=' . urlencode($target))) . '">' . wfMsg('smw_result_prev') . '</a>';
 			else
-				$navigation = wfMsg('smw_tb_prev');
+				$navigation = wfMsg('smw_result_prev');
 
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_tb_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($results), 20)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($results), 20)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 			if (count($results)==($limit+1))
-				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('TypedBacklinks', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&type=' . urlencode($type) . '&target=' . urlencode($target)))  . '">' . wfMsg('smw_tb_next') . '</a>';
+				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByRelation', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&type=' . urlencode($type) . '&target=' . urlencode($target)))  . '">' . wfMsg('smw_result_next') . '</a>';
 			else
-				$navigation .= wfMsg('smw_tb_next');
+				$navigation .= wfMsg('smw_result_next');
 
 			$max = false; $first=true;
 			foreach (array(20,50,100,250,500) as $l) {
@@ -103,7 +103,7 @@ class SMW_TypedBacklinks {
 					$max = true;
 				}
 				if ( $limit != $l ) {
-					$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('TypedBacklinks','offset=' . $offset . '&limit=' . $l . '&type=' . urlencode($type) . '&target=' . urlencode($target))) . '">' . $l . '</a>';
+					$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByRelation','offset=' . $offset . '&limit=' . $l . '&type=' . urlencode($type) . '&target=' . urlencode($target))) . '">' . $l . '</a>';
 				} else {
 					$navigation .= '<b>' . $l . '</b>';
 				}
@@ -114,7 +114,7 @@ class SMW_TypedBacklinks {
 			if (($offset>0) || (count($results)>$limit))
 				$html .= '<br />' . $navigation;
 			if (count($results) == 0)
-				$html .= wfMsg( 'smw_tb_noresults' );
+				$html .= wfMsg( 'smw_result_noresults' );
 			else {
 				$html .= "<ul>\n";
 				foreach ($results as $result) {

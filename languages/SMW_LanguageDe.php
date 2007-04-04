@@ -105,18 +105,6 @@ class SMW_LanguageDe {
 	/*Messages for Unused Attributes Special*/
 	'unusedattributes' => 'Verwaiste Attribute',
 	'smw_unusedattributes_docu' => 'Die folgenden Attributseiten existieren, obwohl sie nicht verwendet werden.',
-	/*Messages for ask Special*/
-	'ask' => 'Semantische Suche',
-	'smw_ask_docu' => '<p>Bitte geben Sie eine Suchanfrage ein. Weitere Informationen sind auf der <a href="$1">Hilfeseite für die semantische Suche</a> zu finden.</p>',
-	'smw_ask_doculink' => 'Semantische Suche',
-	'smw_ask_prev' => 'Zurück',
-	'smw_ask_next' => 'Vorwärts',
-	'smw_ask_results' => 'Ergebnisse',
-	'smw_ask_noresults' => 'Keine Ergebnisse gefunden.',
-	'smw_ask_sortby' => 'Sortiere nach Spalte',
-	'smw_ask_ascorder' => 'Aufsteigend',
-	'smw_ask_descorder' => 'Absteigend',
-	'smw_ask_submit' => 'Finde Ergebnisse',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Alle Anfrageergebnisse und Vorlagen auf dieser Seite auf den neuesten Stand bringen.',
 	'purge' => 'aktualisieren',
@@ -132,7 +120,7 @@ class SMW_LanguageDe {
 	'smw_types_builtin' => 'Eingebaute datatypen',
 	/*Messages for ExtendedStatistics Special*/
 	'extendedstatistics' => 'Erweiterte Statistiken',
-	'smw_extstats_general' => 'Allgemeine Statistiken:',
+	'smw_extstats_general' => 'Allgemeine Statistiken',
 	'smw_extstats_totalp' => 'Anzahl der Seiten:',
 	'smw_extstats_totalv' => 'Anzahl der Besuche:',
 	'smw_extstats_totalpe' => 'Anzahl der Seiteneditierungen:',
@@ -144,10 +132,45 @@ class SMW_LanguageDe {
 	'smw_extstats_totalpr' => 'Anzahl der Relationsseiten:',
 	'smw_extstats_totala' => 'Anzahl der Attribute:',
 	'smw_extstats_totalai' => 'Anzahl der Instanzen von Attributen:',
-	'smw_extstats_totalaa' => 'Average number of instances per attribute',
-	/*Messages for Flawed Attributes Special*/
+	'smw_extstats_totalaa' => 'Durchschnittliche Anzahl der Instanzen pro Attribut:',
+	/*Messages for Flawed Attributes Special --disabled--*/
 	'flawedattributes' => 'Fehlerhafte Attribute',
-	'smw_fattributes' => 'Die unten aufgeführten Seiten enthalten fehlerhafte Attribute. Die Anzahl der fehlerhaften Attribute ist in den Klammern angegeben.'
+	'smw_fattributes' => 'Die unten aufgeführten Seiten enthalten fehlerhafte Attribute. Die Anzahl der fehlerhaften Attribute ist in den Klammern angegeben.',
+	// Name of the URI Resolver Special (no content)
+	'uriresolver' => 'URI-Auflöser',
+	'smw_uri_doc' => '<p>Der URI-Auflöser setzt die Empfehlungen »<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>« um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.</p>',
+	/*Messages for ask Special*/
+	'ask' => 'Semantische Suche',
+	'smw_ask_docu' => '<p>Bitte geben Sie eine Suchanfrage ein. Weitere Informationen sind auf der <a href="$1">Hilfeseite für die semantische Suche</a> zu finden.</p>',
+	'smw_ask_doculink' => 'Semantische Suche',
+	'smw_ask_sortby' => 'Sortiere nach Spalte',
+	'smw_ask_ascorder' => 'Aufsteigend',
+	'smw_ask_descorder' => 'Absteigend',
+	'smw_ask_submit' => 'Finde Ergebnisse',
+	// Messages for search by relation Special
+	'searchbyrelation' => 'Suche mittels Relation',
+	'smw_tb_docu' => '<p>Diese Spezialseite findet alle Seiten, die eine bestimmte Relation zur angegebenen Zielseite haben.</p>',
+	'smw_tb_notype' => '<p>Bitte den Namen einer Relation eingeben oder <a href="$2">alle Links zur Seite $1 ansehen.</a></p>',
+	'smw_tb_notarget' => '<p>Bitte den Namen der Zeilseite eingeben oder alle Verwendungen der Relation $1 ansehen.</p>',
+	'smw_tb_displayresult' => 'Eine Liste aller Seiten mit der Relation $1 zur Seite $2.',
+	'smw_tb_linktype' => 'Relation',
+	'smw_tb_linktarget' => 'Zu',
+	'smw_tb_submit' => 'Finde Ergebnisse',
+	// Messages for the search by attribute special
+	'searchbyattribute' => 'Suche mittels Attribut',
+	'smw_sbv_docu' => '<p>Diese Spezialseite findet alle Seiten, die einen bestimmten Wert für das angegebene Attribut haben.</p>',
+	'smw_sbv_noattribute' => '<p>Bitte den Namen eines Attributs eingeben</p>',
+	'smw_sbv_novalue' => '<p>Bitte den gewünschten Wert eingeben oder alle Werte für das Attribut $1 ansehen.</p>',
+	'smw_sbv_displayresult' => 'Eine Liste aller Seiten, die ein Attribut $1 mit dem Wert $2 haben.',
+	'smw_sbv_attribute' => 'Attribut',
+	'smw_sbv_value' => 'Wert',
+	'smw_sbv_submit' => 'Finde Ergebnisse',
+	// Generic messages for result navigation in all kinds of search pages
+	'smw_result_prev' => 'Zurück',
+	'smw_result_next' => 'Vorwärts',
+	'smw_result_results' => 'Ergebnisse',
+	'smw_result_noresults' => 'Keine Ergebnisse gefunden.'
+	
 );
 
 /* private */ var $smwDatatypeLabels = array(

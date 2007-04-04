@@ -104,18 +104,6 @@ class SMW_LanguageEn {
 	// Messages for Unused Attributes Special
 	'unusedattributes' => 'Unused attributes',
 	'smw_unusedattributes_docu' => 'The following attribute pages exist although no other page makes use of them.',
-	// Messages for ask Special
-	'ask' => 'Semantic search',
-	'smw_ask_docu' => '<p>Search the wiki by entering an inline query into the search field below. Further information is given on the <a href="$1">help page for semantic search</a>.</p>',
-	'smw_ask_doculink' => 'Semantic search',
-	'smw_ask_prev' => 'Previous',
-	'smw_ask_next' => 'Next',
-	'smw_ask_results' => 'Results',
-	'smw_ask_noresults' => 'Sorry, no results.',
-	'smw_ask_sortby' => 'Sort by column',
-	'smw_ask_ascorder' => 'Ascending',
-	'smw_ask_descorder' => 'Descending',
-	'smw_ask_submit' => 'Find results',
 	// Messages for the refresh button
 	'tooltip-purge' => 'Click here to refresh all queries and templates on this page',
 	'purge' => 'Refresh',
@@ -141,7 +129,7 @@ class SMW_LanguageEn {
 	'smw_types_builtin' => 'Built-in types',
 	/*Messages for ExtendedStatistics Special*/
 	'extendedstatistics' => 'Extended Statistics',
-	'smw_extstats_general' => 'General Statistics:',
+	'smw_extstats_general' => 'General Statistics',
 	'smw_extstats_totalp' => 'Total number of pages:',
 	'smw_extstats_totalv' => 'Total number of views:',
 	'smw_extstats_totalpe' => 'Total number of page edits:',
@@ -154,40 +142,43 @@ class SMW_LanguageEn {
 	'smw_extstats_totala' => 'Total number of attributes:',
 	'smw_extstats_totalai' => 'Total number of attribute instances:',
 	'smw_extstats_totalaa' => 'Average number of instances per attribute:',
-	/*Messages for Flawed Attributes Special*/
+	/*Messages for Flawed Attributes Special --disabled--*/
 	'flawedattributes' => 'Flawed Attributes',
 	'smw_fattributes' => 'The pages listed below have an incorrectly defined attribute. The number of incorrect attributes is given in the brackets.',
 	// Name of the URI Resolver Special (no content)
 	'uriresolver' => 'URI Resolver',
-	'smw_uri_doc' => '<p>The URI resolver takes care of implementing the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>',
-	// Messages for typed backlink Special
-	'typedbacklinks' => 'Typed backlinks',
-	'smw_tb_docu' => '<p>Search the wiki for any article that has a link of a certain link type to a given link target.</p>',
-	'smw_tb_notype' => '<p>No link type was provided. Please provide one in the form, or <a href="$2">view all links to $1</a></p>',
-	'smw_tb_notarget' => '<p>No target page was provided for the backlinks. Please provide one in the form, or view all links of the type $1</p>',
-	'smw_tb_doculink' => 'Typed backlinks',
-	'smw_tb_displayresult' => 'A list of all articles that have the relation $1 $2.',
+	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>',
+	// Messages for ask Special
+	'ask' => 'Semantic search',
+	'smw_ask_docu' => '<p>Search by entering a query into the search field below. Further information is given on the <a href="$1">help page for semantic search</a>.</p>',
+	'smw_ask_doculink' => 'Semantic search',
+	'smw_ask_sortby' => 'Sort by column',
+	'smw_ask_ascorder' => 'Ascending',
+	'smw_ask_descorder' => 'Descending',
+	'smw_ask_submit' => 'Find results',
+	// Messages for search by relation Special
+	'searchbyrelation' => 'Search by relation',
+	'smw_tb_docu' => '<p>Search for all pages that have a certain relation to the given target page.</p>',
+	'smw_tb_notype' => '<p>Please enter a relation, or <a href="$2">view all links to $1.</a></p>',
+	'smw_tb_notarget' => '<p>Please enter a target page, or view all $1 relations.</p>',
+	'smw_tb_displayresult' => 'A list of all pages that have a relation $1 to the page $2.',
 	'smw_tb_linktype' => 'Relation',
-	'smw_tb_linktarget' => 'Link target',
-	'smw_tb_prev' => 'Previous',
-	'smw_tb_next' => 'Next',
-	'smw_tb_results' => 'Results',
-	'smw_tb_noresults' => 'Sorry, no results.',
+	'smw_tb_linktarget' => 'To',
 	'smw_tb_submit' => 'Find results',
-	// Messages for the search by value special
-	'searchbyvalue' => 'Search by attribute value',
-	'smw_sbv_docu' => '<p>Search the wiki for any article that has an attribute with a certain value.</p>',
-	'smw_sbv_noattribute' => '<p>No attribute was provided. Please provide one in the form.</p>',
-	'smw_sbv_novalue' => '<p>No value was provided. Please provide one in the form, or view all attributes of the type $1</p>',
-	'smw_sbv_doculink' => 'Search by value',
-	'smw_sbv_displayresult' => 'A list of all articles that have the attribute $1 $2.',
+	// Messages for the search by attribute special
+	'searchbyattribute' => 'Search by attribute',
+	'smw_sbv_docu' => '<p>Search for all pages that have a given attribute and value.</p>',
+	'smw_sbv_noattribute' => '<p>Please enter an attribute.</p>',
+	'smw_sbv_novalue' => '<p>Please enter a value, or view all attributes values for $1.</p>',
+	'smw_sbv_displayresult' => 'A list of all pages that have an attribute $1 with value $2.',
 	'smw_sbv_attribute' => 'Attribute',
 	'smw_sbv_value' => 'Value',
-	'smw_sbv_prev' => 'Previous',
-	'smw_sbv_next' => 'Next',
-	'smw_sbv_results' => 'Results',
-	'smw_sbv_noresults' => 'Sorry, no results.',
-	'smw_sbv_submit' => 'Find results'
+	'smw_sbv_submit' => 'Find results',
+	// Generic messages for result navigation in all kinds of search pages
+	'smw_result_prev' => 'Previous',
+	'smw_result_next' => 'Next',
+	'smw_result_results' => 'Results',
+	'smw_result_noresults' => 'Sorry, no results.'
 );
 
 /* private */ var $smwDatatypeLabels = array(

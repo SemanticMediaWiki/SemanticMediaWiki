@@ -14,21 +14,21 @@ global $IP, $smwgIP, $wgExtensionFunctions;
 
 require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
-$wgExtensionFunctions[] = "wfSearchByValueExtension";
+$wgExtensionFunctions[] = "wfSearchByAttributeExtension";
 
-function wfSearchByValueExtension()
+function wfSearchByAttributeExtension()
 {
 	global $wgMessageCache, $wgOut;
 	smwfInitMessages(); // initialize messages, always called before anything else on this page
 
-	function doSpecialSearchByValue($query = '') {
-		SMW_SearchByValue::execute($query);
+	function doSpecialSearchByAttribute($query = '') {
+		SMW_SearchByAttribute::execute($query);
 	}
 
-	SpecialPage::addPage( new SpecialPage('SearchByValue','',true,'doSpecialSearchByValue',false) );
+	SpecialPage::addPage( new SpecialPage('SearchByAttribute','',true,'doSpecialSearchByAttribute',false) );
 }
 
-class SMW_SearchByValue {
+class SMW_SearchByAttribute {
 
 	static function execute($query = '') {
 		global $wgRequest, $wgOut, $wgUser, $smwgIQMaxLimit;
@@ -53,10 +53,10 @@ class SMW_SearchByValue {
 		$offset = $wgRequest->getVal( 'offset' );
 		if ('' == $offset) $offset = 0;
 		$html = '';
-		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByValue' );
+		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByAttribute' );
 
 		// display query form
-		$html .= '<form name="searchbyvalue" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
+		$html .= '<form name="searchbyattribute" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
 		$html .= wfMsg('smw_sbv_attribute') . ' <input type="text" name="attribute" value="' . htmlspecialchars($attribute) . '" />' . "\n";
 		$html .= wfMsg('smw_sbv_value') . ' <input type="text" name="value" value="' . htmlspecialchars($valuestring) . '" />' . "\n";
@@ -95,16 +95,16 @@ class SMW_SearchByValue {
 
 			// prepare navigation bar
 			if ($offset > 0)
-				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByValue','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute) .'&value=' . urlencode($valuestring))) . '">' . wfMsg('smw_sbv_prev') . '</a>';
+				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute) .'&value=' . urlencode($valuestring))) . '">' . wfMsg('smw_result_prev') . '</a>';
 			else
-				$navigation = wfMsg('smw_sbv_prev');
+				$navigation = wfMsg('smw_result_prev');
 
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_sbv_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min($count, 20)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min($count, 20)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 			if ($count>$limit)
-				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByValue', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute) . '&value=' . urlencode($valuestring)))  . '">' . wfMsg('smw_sbv_next') . '</a>';
+				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute) . '&value=' . urlencode($valuestring)))  . '">' . wfMsg('smw_result_next') . '</a>';
 			else
-				$navigation .= wfMsg('smw_sbv_next');
+				$navigation .= wfMsg('smw_result_next');
 
 			$max = false; $first=true;
 			foreach (array(20,50,100,250,500) as $l) {
@@ -119,7 +119,7 @@ class SMW_SearchByValue {
 					$max = true;
 				}
 				if ( $limit != $l ) {
-					$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByValue','offset=' . $offset . '&limit=' . $l . '&attribute=' . urlencode($attribute) . '&value=' . urlencode($valuestring))) . '">' . $l . '</a>';
+					$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute','offset=' . $offset . '&limit=' . $l . '&attribute=' . urlencode($attribute) . '&value=' . urlencode($valuestring))) . '">' . $l . '</a>';
 				} else {
 					$navigation .= '<b>' . $l . '</b>';
 				}
@@ -133,7 +133,7 @@ class SMW_SearchByValue {
 			///if (($offset>0) || ($count>$limit))
 				///$html .= '<br />' . $navigation;
 			if ($count == 0)
-				$html .= wfMsg( 'smw_sbv_noresults' );
+				$html .= wfMsg( 'smw_result_noresults' );
 			else {
 				$html .= "<ul>\n";
 				foreach ($res as $line) {

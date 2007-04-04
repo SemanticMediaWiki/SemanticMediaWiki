@@ -117,18 +117,6 @@ class SMW_LanguagePl {
 	/*Messages for Unused Attributes Special*/
 	'unusedattributes' => 'Nieużywane atrybuty',
 	'smw_unusedattributes_docu' => 'Następujące atrybuty posiadają własne strony, choć żadna inna strona z nich nie korzysta.',
-	/*Messages for ask Special*/
-	'ask' => 'Szukanie semantyczne',
-	'smw_ask_docu' => '<p>Szukaj w wiki wpisując zapytanie w poniższe pole. Dalsze informacje znajdują się na <a href="$1">stronie pomocy poświęconej szukaniu semantycznemu</a>.</p>',
-	'smw_ask_doculink' => 'Szukanie semantyczne',
-	'smw_ask_prev' => 'Poprzednie',
-	'smw_ask_next' => 'Następne',
-	'smw_ask_results' => 'Wyniki',
-	'smw_ask_noresults' => 'Niestety, brak wyników.',
-	'smw_ask_sortby' => 'Sortuj po kolumnie',
-	'smw_ask_ascorder' => 'Rosnąco',
-	'smw_ask_descorder' => 'Malejąco',
-	'smw_ask_submit' => 'Szukaj wyników',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Kliknij tutaj, aby odświeżyć wszystkie zapytania i szablony na tej stronie',
 	'purge' => 'Odśwież',
@@ -151,7 +139,60 @@ class SMW_LanguagePl {
 	'types' => 'Typy',
 	'smw_types_docu' => 'Poniżej znajduje się lista wszystkich typów które mogą być przypisane atrybutom.  Każdy typ posiada artykuł, w którym mogą znajdować się dodatkowe informacje.',
 	'smw_types_units' => 'Standardowa jednostka: $1; obsługiwane jednostki: $2',
-	'smw_types_builtin' => 'Wbudowane typy'
+	'smw_types_builtin' => 'Wbudowane typy',
+	/*Messages for ExtendedStatistics Special*/
+	'extendedstatistics' => 'Extended Statistics', //TODO:translate
+	'smw_extstats_general' => 'General Statistics', //TODO:translate
+	'smw_extstats_totalp' => 'Total number of pages:', //TODO:translate
+	'smw_extstats_totalv' => 'Total number of views:', //TODO:translate
+	'smw_extstats_totalpe' => 'Total number of page edits:', //TODO:translate
+	'smw_extstats_totali' => 'Total number of images:', //TODO:translate
+	'smw_extstats_totalu' => 'Total number of users:', //TODO:translate
+	'smw_extstats_totalr' => 'Total number of relations:', //TODO:translate
+	'smw_extstats_totalri' => 'Total number of relation instances:', //TODO:translate
+	'smw_extstats_totalra' => 'Average number of instances per relation:', //TODO:translate
+	'smw_extstats_totalpr' => 'Total number of pages about relations:', //TODO:translate
+	'smw_extstats_totala' => 'Total number of attributes:', //TODO:translate
+	'smw_extstats_totalai' => 'Total number of attribute instances:', //TODO:translate
+	'smw_extstats_totalaa' => 'Average number of instances per attribute:', //TODO:translate
+	/*Messages for Flawed Attributes Special --disabled--*/
+	'flawedattributes' => 'Flawed Attributes',
+	'smw_fattributes' => 'The pages listed below have an incorrectly defined attribute. The number of incorrect attributes is given in the brackets.',
+	// Name of the URI Resolver Special (no content)
+	'uriresolver' => 'URI Resolver', //TODO: translate
+	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>', //TODO: translate
+	/*Messages for ask Special*/
+	/*Messages for ask Special*/
+	'ask' => 'Szukanie semantyczne',
+	'smw_ask_docu' => '<p>Szukaj w wiki wpisując zapytanie w poniższe pole. Dalsze informacje znajdują się na <a href="$1">stronie pomocy poświęconej szukaniu semantycznemu</a>.</p>',
+	'smw_ask_doculink' => 'Szukanie semantyczne',
+	'smw_ask_sortby' => 'Sortuj po kolumnie',
+	'smw_ask_ascorder' => 'Rosnąco',
+	'smw_ask_descorder' => 'Malejąco',
+	'smw_ask_submit' => 'Szukaj wyników',
+	// Messages for search by relation Special
+	'searchbyrelation' => 'Search by relation',  //TODO: translate
+	'smw_tb_docu' => '<p>Search for all pages that have a certain relation to the given target page.</p>', //TODO: translate
+	'smw_tb_notype' => '<p>Please enter a relation, or <a href="$2">view all links to $1.</a></p>', //TODO: translate
+	'smw_tb_notarget' => '<p>Please enter a target page, or view all $1 relations.</p>', //TODO: translate
+	'smw_tb_displayresult' => 'A list of all pages that have a relation $1 to the page $2.', //TODO: translate
+	'smw_tb_linktype' => 'Relation', //TODO: translate
+	'smw_tb_linktarget' => 'To', //TODO: translate
+	'smw_tb_submit' => 'Find results', //TODO: translate
+	// Messages for the search by attribute special
+	'searchbyattribute' => 'Search by attribute', //TODO: translate
+	'smw_sbv_docu' => '<p>Search for all pages that have a given attribute and value.</p>', //TODO: translate
+	'smw_sbv_noattribute' => '<p>Please enter an attribute.</p>', //TODO: translate
+	'smw_sbv_novalue' => '<p>Please enter a value, or view all attributes values for $1.</p>', //TODO: translate
+	'smw_sbv_displayresult' => 'A list of all pages that have an attribute $1 with value $2.', //TODO: translate
+	'smw_sbv_attribute' => 'Attribute', //TODO: translate
+	'smw_sbv_value' => 'Value', //TODO: translate
+	'smw_sbv_submit' => 'Find results', //TODO: translate
+	// Generic messages for result navigation in all kinds of search pages
+	'smw_result_prev' => 'Poprzednie',
+	'smw_result_next' => 'Następne',
+	'smw_result_results' => 'Wyniki',
+	'smw_result_noresults' => 'Niestety, brak wyników.'	
 );
 
 /* private */ var $smwDatatypeLabels = array(

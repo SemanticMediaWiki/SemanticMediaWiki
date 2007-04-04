@@ -103,18 +103,6 @@ class SMW_LanguageHe {
 	/*Messages for Unused Attributes Special*/
 	'unusedattributes' => 'תכונות שאינן בשימוש',
 	'smw_unusedattributes_docu' => 'התכונות הבאות מוגדרים במערכת אך לא נעשה בהם שימוש.',
-	/*Messages for ask Special*/
-	'ask' => 'חיפוש סמנטי',
-	'smw_ask_docu' => '<p>Search the wiki by entering an inline query into the search field below. Further information is given on the <a href="$1">help page for semantic search</a>.</p>',
-	'smw_ask_doculink' => 'חיפוש סמנטי',
-	'smw_ask_prev' => 'הקודם',
-	'smw_ask_next' => 'הבא',
-	'smw_ask_results' => 'תוצאות',
-	'smw_ask_noresults' => 'מצטערת, אין תוצאות',
-	'smw_ask_sortby' => 'מיין לפי טור',
-	'smw_ask_ascorder' => 'בסדר עולה',
-	'smw_ask_descorder' => 'בסדר יורד',
-	'smw_ask_submit' => 'חפש תוצאות',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'לחץ כאן הכדי לרענן את כל התבניות והשאילתות בדף זה',
 	'purge' => 'רענן תבניות ושאילתות',
@@ -137,7 +125,59 @@ class SMW_LanguageHe {
 	'types' => 'טיפוסים',
 	'smw_types_docu' => 'ברשימה זו מופיעים כל טיפוסי המידע שתכונות יכולות להשתמש בהם . לכל טיפוס מידע יש דף המסביר על אודותיו.',
 	'smw_types_units' => 'יחיסה סטנדרטית: $1; תומכת ביחידות: $2',
-	'smw_types_builtin' => 'טיפוסים מובנים'
+	'smw_types_builtin' => 'טיפוסים מובנים',
+	/*Messages for ExtendedStatistics Special*/
+	'extendedstatistics' => 'Extended Statistics', //TODO:translate
+	'smw_extstats_general' => 'General Statistics', //TODO:translate
+	'smw_extstats_totalp' => 'Total number of pages:', //TODO:translate
+	'smw_extstats_totalv' => 'Total number of views:', //TODO:translate
+	'smw_extstats_totalpe' => 'Total number of page edits:', //TODO:translate
+	'smw_extstats_totali' => 'Total number of images:', //TODO:translate
+	'smw_extstats_totalu' => 'Total number of users:', //TODO:translate
+	'smw_extstats_totalr' => 'Total number of relations:', //TODO:translate
+	'smw_extstats_totalri' => 'Total number of relation instances:', //TODO:translate
+	'smw_extstats_totalra' => 'Average number of instances per relation:', //TODO:translate
+	'smw_extstats_totalpr' => 'Total number of pages about relations:', //TODO:translate
+	'smw_extstats_totala' => 'Total number of attributes:', //TODO:translate
+	'smw_extstats_totalai' => 'Total number of attribute instances:', //TODO:translate
+	'smw_extstats_totalaa' => 'Average number of instances per attribute:', //TODO:translate
+	/*Messages for Flawed Attributes Special --disabled--*/
+	'flawedattributes' => 'Flawed Attributes',
+	'smw_fattributes' => 'The pages listed below have an incorrectly defined attribute. The number of incorrect attributes is given in the brackets.',
+	// Name of the URI Resolver Special (no content)
+	'uriresolver' => 'URI Resolver', //TODO: translate
+	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>', //TODO: translate
+	/*Messages for ask Special*/
+	'ask' => 'חיפוש סמנטי',
+	'smw_ask_docu' => '<p>Search pages by entering a query into the search field below. Further information is given on the <a href="$1">help page for semantic search</a>.</p>',
+	'smw_ask_doculink' => 'חיפוש סמנטי',
+	'smw_ask_sortby' => 'מיין לפי טור',
+	'smw_ask_ascorder' => 'בסדר עולה',
+	'smw_ask_descorder' => 'בסדר יורד',
+	'smw_ask_submit' => 'חפש תוצאות',	
+	// Messages for search by relation Special
+	'searchbyrelation' => 'Search by relation',  //TODO: translate
+	'smw_tb_docu' => '<p>Search for all pages that have a certain relation to the given target page.</p>', //TODO: translate
+	'smw_tb_notype' => '<p>Please enter a relation, or <a href="$2">view all links to $1.</a></p>', //TODO: translate
+	'smw_tb_notarget' => '<p>Please enter a target page, or view all $1 relations.</p>', //TODO: translate
+	'smw_tb_displayresult' => 'A list of all pages that have a relation $1 to the page $2.', //TODO: translate
+	'smw_tb_linktype' => 'Relation', //TODO: translate
+	'smw_tb_linktarget' => 'To', //TODO: translate
+	'smw_tb_submit' => 'Find results', //TODO: translate
+	// Messages for the search by attribute special
+	'searchbyattribute' => 'Search by attribute', //TODO: translate
+	'smw_sbv_docu' => '<p>Search for all pages that have a given attribute and value.</p>', //TODO: translate
+	'smw_sbv_noattribute' => '<p>Please enter an attribute.</p>', //TODO: translate
+	'smw_sbv_novalue' => '<p>Please enter a value, or view all attributes values for $1.</p>', //TODO: translate
+	'smw_sbv_displayresult' => 'A list of all pages that have an attribute $1 with value $2.', //TODO: translate
+	'smw_sbv_attribute' => 'Attribute', //TODO: translate
+	'smw_sbv_value' => 'Value', //TODO: translate
+	'smw_sbv_submit' => 'Find results', //TODO: translate
+	// Generic messages for result navigation in all kinds of search pages
+	'smw_result_prev' => 'הקודם',
+	'smw_result_next' => 'הבא',
+	'smw_result_results' => 'תוצאות',
+	'smw_result_noresults' => 'מצטערת, אין תוצאות'	
 );
 
 /* private */ var $smwDatatypeLabels = array(
