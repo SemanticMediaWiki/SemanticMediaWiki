@@ -8,6 +8,7 @@
  */
 
 if (!defined('MEDIAWIKI')) die();
+global $IP;
 require_once( "$IP/includes/SpecialPage.php" );
 global $wgExtensionFunctions;
 $wgExtensionFunctions[] = "wfURIResolverExtension";
