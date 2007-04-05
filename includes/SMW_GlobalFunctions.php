@@ -77,8 +77,8 @@ function smwgSetupExtension() {
 
 	//require_once($smwgIP . '/specials/SearchSemantic/SMW_SpecialSearchSemantic.php'); //really not longer functional!
 	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchTriple.php');
-	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByValue.php');
-	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialTypedBacklinks.php');
+	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByAttribute.php');
+	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByRelation.php');
 
 	require_once($smwgIP . '/specials/URIResolver/SMW_SpecialURIResolver.php');
 	require_once($smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php'); // coming soon
