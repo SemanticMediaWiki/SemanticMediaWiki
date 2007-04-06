@@ -35,17 +35,17 @@ class SMW_LanguageFr {
 	'smw_manytypes' => '[Oups ! Plusieurs types de données ont été assignés à l\'attribut]',
 	'smw_emptystring' => '[Oups ! Les chaînes vides ne sont pas acceptées]',
 	'smw_maxstring' => '[Désolé, la chaîne de représentation $1 est trop grande pour ce site.]',
-	'smw_nopossiblevalues' => '[Oops! possible values for this attribute are not enumerated]',	//TODO translate
-	'smw_notinenum' => '[Oops! "$1" is not in the list of possible values ($2) for this attribute]',	//TODO translate
-	'smw_noboolean' => '[Oops! "$1" is not recognized as a boolean (true/false) value]', // TODO: Translate
-	'smw_true_words' => 't,oui',	// comma-separated synonyms for boolean TRUE besides 'true' and '1' TODO: Translate
-	'smw_false_words' => 'f,non',	// comma-separated synonyms for boolean FALSE besides 'false' and '0' TODO: Translate
+	'smw_nopossiblevalues' => '[Oups! Les valeurs possibles pour cet attribut ne sont pas énumérées]',
+	'smw_notinenum' => '[Oups! "$1" ne fait pas partie des valeurs possibles ($2) pour cet attribut'],
+	'smw_noboolean' => '[Oups! "$1" n\'est pas reconnu comme une valeur boléenne (vrai/faux)'],
+	'smw_true_words' => 'v,oui',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
+	'smw_false_words' => 'f,non',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
 	'smw_nointeger' => '[Oups ! "$1" n\'est pas un nombre entier]',
 	'smw_nofloat' => '[Oups ! "$1" n\'est pas un nombre à virgule flottante]',
 	'smw_infinite' => '[Désolé, le nombre $1 est trop long.]',
 	'smw_infinite_unit' => '[Désolé, la conversion dans l\'unité $1 est impossible : le nombre est trop long.]',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'Cet attribut ne supporte aucune conversion d\'unité',
-	'smw_unsupportedprefix' => 'prefixes ("$1") are not currently supported',	 // TODO: translate
+	'smw_unsupportedprefix' => 'Les préfixes ($1") ne sont pas supportés actuellement'],
 	'smw_unsupportedunit' => 'La conversion de l\'unité "$1" n\'est pas supportée',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Les indications sur la latitude (N, S) doivent être comprises entre 0 et 90. "$1" ne se trouve pas à l\'intérieur de ces limites !',
@@ -92,8 +92,8 @@ class SMW_LanguageFr {
 	'relations' => 'Relations',
 	'smw_relations_docu' => 'Sur ce wiki, existent les relations suivantes:',
 	// Messages for RelationsWithoutPage Special
-	'relationswithoutpage' => 'Wanted relations', //TODO: translate
-	'smw_relations_withoutpage' => 'The following relations do not have an explanatory page yet, though they are already used to describe other pages.', //TODO: translate
+	'relationswithoutpage' => 'Relations demandées',
+	'smw_relations_withoutpage' => 'Les relations suivantes n\'ont pas encore de page d\'explication, mais elles sont déjà utilisées pour décrire d\'autrees pages'
 	/*Messages for Attributes Special*/
 	'attributes' => 'Attributs',
 	'smw_attributes_docu' => 'Sur ce wiki, existent les attributs suivants:',
@@ -118,26 +118,26 @@ class SMW_LanguageFr {
 	'smw_types_units' => 'Unité standard : $1 ; Unités supportées : $2',
 	'smw_types_builtin' => 'Types intégrés',
 	/*Messages for ExtendedStatistics Special*/
-	'extendedstatistics' => 'Extended Statistics', //TODO:translate
-	'smw_extstats_general' => 'General Statistics', //TODO:translate
-	'smw_extstats_totalp' => 'Total number of pages:', //TODO:translate
-	'smw_extstats_totalv' => 'Total number of views:', //TODO:translate
-	'smw_extstats_totalpe' => 'Total number of page edits:', //TODO:translate
-	'smw_extstats_totali' => 'Total number of images:', //TODO:translate
-	'smw_extstats_totalu' => 'Total number of users:', //TODO:translate
-	'smw_extstats_totalr' => 'Total number of relations:', //TODO:translate
-	'smw_extstats_totalri' => 'Total number of relation instances:', //TODO:translate
-	'smw_extstats_totalra' => 'Average number of instances per relation:', //TODO:translate
-	'smw_extstats_totalpr' => 'Total number of pages about relations:', //TODO:translate
-	'smw_extstats_totala' => 'Total number of attributes:', //TODO:translate
-	'smw_extstats_totalai' => 'Total number of attribute instances:', //TODO:translate
-	'smw_extstats_totalaa' => 'Average number of instances per attribute:', //TODO:translate
+	'extendedstatistics' => 'Statistiques détaillées',
+	'smw_extstats_general' => 'Statistiques globales',
+	'smw_extstats_totalp' => 'Nombre total de pages :',
+	'smw_extstats_totalv' => 'Nombre total de pages vues:',
+	'smw_extstats_totalpe' => 'Nombre total d\'éditions :',
+	'smw_extstats_totali' => 'Nombre total d\'images :',
+	'smw_extstats_totalu' => 'Nombre total d\'utilisateurs :',
+	'smw_extstats_totalr' => 'Nombre total de relations :',
+	'smw_extstats_totalri' => 'Nombre total d\'instances de la relation :',
+	'smw_extstats_totalra' => 'Nombre moyen d\'instances par relation :',
+	'smw_extstats_totalpr' => 'Nombre total de pages sur des relations :',
+	'smw_extstats_totala' => 'Nombre total d\'attributs :',
+	'smw_extstats_totalai' => 'Nombre total d\instances de l\'attribt :',
+	'smw_extstats_totalaa' => 'Nombre moyen d\instances par attribut :',
 	/*Messages for Flawed Attributes Special --disabled--*/
-	'flawedattributes' => 'Flawed Attributes',
-	'smw_fattributes' => 'The pages listed below have an incorrectly defined attribute. The number of incorrect attributes is given in the brackets.',
+	'flawedattributes' => 'Attributs défectueux',
+	'smw_fattributes' => 'Les pages ci-dessous ont un attribut qui n\'est pas défini correctement. Le nombre d\'attributs incorrects est donné entre les parenthèses.',
 	// Name of the URI Resolver Special (no content)
-	'uriresolver' => 'URI Resolver', //TODO: translate
-	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>', //TODO: translate
+	'uriresolver' => 'Résolveur d\'URI',
+	'smw_uri_doc' => '<p>Le résolveur d\'URI implémente la <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">Conclusion du TAG du W3C à propos du httpRange-14</a>. Il peut garde à ce que les humaines ne deviennent pas des sites web.',
 	/*Messages for ask Special*/
 	/*Messages for ask Special*/
 	'ask' => 'Recherche sémantique',
@@ -148,23 +148,23 @@ class SMW_LanguageFr {
 	'smw_ask_descorder' => 'Décroissant',
 	'smw_ask_submit' => 'Trouver des résultats',
 	// Messages for search by relation Special
-	'searchbyrelation' => 'Search by relation',  //TODO: translate
-	'smw_tb_docu' => '<p>Search for all pages that have a certain relation to the given target page.</p>', //TODO: translate
-	'smw_tb_notype' => '<p>Please enter a relation, or <a href="$2">view all links to $1.</a></p>', //TODO: translate
-	'smw_tb_notarget' => '<p>Please enter a target page, or view all $1 relations.</p>', //TODO: translate
-	'smw_tb_displayresult' => 'A list of all pages that have a relation $1 to the page $2.', //TODO: translate
-	'smw_tb_linktype' => 'Relation', //TODO: translate
-	'smw_tb_linktarget' => 'To', //TODO: translate
-	'smw_tb_submit' => 'Find results', //TODO: translate
+	'searchbyrelation' => 'Rechercher par relation',
+	'smw_tb_docu' => '<p>Rechercher toutes les pages qui ont une certaine relation à la page cible.</p>',
+	'smw_tb_notype' => '<p>Veuillez entrer une relation, ou <a href="$2">voir tous les liens vers $1.</a></p>',
+	'smw_tb_notarget' => '<p>Veuillez entrer une page cible, ou voir toutes les relations à $1.</p>',
+	'smw_tb_displayresult' => 'Liste de toutes les pages qui ont une relation $1 à la page $2.',
+	'smw_tb_linktype' => 'Relation',
+	'smw_tb_linktarget' => 'À',
+	'smw_tb_submit' => 'Trouver des résultats',
 	// Messages for the search by attribute special
-	'searchbyattribute' => 'Search by attribute', //TODO: translate
-	'smw_sbv_docu' => '<p>Search for all pages that have a given attribute and value.</p>', //TODO: translate
-	'smw_sbv_noattribute' => '<p>Please enter an attribute.</p>', //TODO: translate
-	'smw_sbv_novalue' => '<p>Please enter a value, or view all attributes values for $1.</p>', //TODO: translate
-	'smw_sbv_displayresult' => 'A list of all pages that have an attribute $1 with value $2.', //TODO: translate
-	'smw_sbv_attribute' => 'Attribute', //TODO: translate
-	'smw_sbv_value' => 'Value', //TODO: translate
-	'smw_sbv_submit' => 'Find results', //TODO: translate
+	'searchbyattribute' => 'Rechercher par attribut',
+	'smw_sbv_docu' => '<p>Rechercher toutes les pages qui ont un attribut donné avec un certaine valeur.</p>',
+	'smw_sbv_noattribute' => '<p>Veuillez entrer un attribut.</p>',
+	'smw_sbv_novalue' => '<p>Veuillez entrer une valeur ou consulter toutes les valeurs des attributs pour $1.</p>',
+	'smw_sbv_displayresult' => 'Liste de toutes les pages qui ont un attribut $1 avec la valeur $2.',
+	'smw_sbv_attribute' => 'Attribut',
+	'smw_sbv_value' => 'Valeur',
+	'smw_sbv_submit' => 'Trouver des résultats',
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Précédent',
 	'smw_result_next' => 'Suivant',
@@ -174,8 +174,8 @@ class SMW_LanguageFr {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Chaîne de caractères',  // name of the string type
-	'smw_enum' => 'Enumeration',  // name of the enum type TODO: translate
-	'smw_bool' => 'Boolean',  // name of the boolean type TODO: translate
+	'smw_enum' => 'Énumeration',  // name of the enum type
+	'smw_bool' => 'Booléen',  // name of the boolean type
 	'smw_int' => 'Nombre entier',  // name of the int type
 	'smw_float' => 'Nombre décimal',  // name of the floating point type
 	'smw_length' => 'Longueur',  // name of the length type
@@ -204,7 +204,7 @@ class SMW_LanguageFr {
 	SMW_SP_IMPORTED_FROM => 'Importé de',
 	SMW_SP_CONVERSION_FACTOR => 'Correspond à',
 	SMW_SP_SERVICE_LINK => 'Fournit le service',
-	SMW_SP_POSSIBLE_VALUES => 'Possible values'	//TODO translate
+	SMW_SP_POSSIBLE_VALUES => 'Valeurs possible'
 );
 
 	/**
