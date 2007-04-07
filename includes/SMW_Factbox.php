@@ -262,7 +262,7 @@ class SMWFactbox {
 			return;
 		}
 
-		$text .= ' <tr><th class="relhead"></th><th class="atthead">' . wfMsgForContent('smw_att_head') . "</th></tr>\n";
+		$text .= ' <tr><th class="atthead"></th><th class="atthead">' . wfMsgForContent('smw_att_head') . "</th></tr>\n";
 
 		foreach(SMWFactbox::$semdata->getAttributes() as $attribute) {
 			$attributeValueArray = SMWFactbox::$semdata->getAttributeValues($attribute);
@@ -284,7 +284,7 @@ class SMWFactbox {
 
 				$text .= $attributeValue->getValueDescription();
 
-				$sep = '<!-- -->&nbsp;&nbsp;'; // the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps! This only works with template support enabled.
+				$sep = '<!-- -->&nbsp;&nbsp;'; // the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
 				foreach ($attributeValue->getInfolinks() as $link) {
 					$text .= $sep . $link->getWikiText();
 					$sep = ' &nbsp;&nbsp;'; // allow breaking for longer lists of infolinks
