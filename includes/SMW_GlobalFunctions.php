@@ -71,6 +71,8 @@ function smwgSetupExtension() {
 	require_once($smwgIP . '/includes/storage/SMW_SQLStore.php');
 	$smwgMasterStore = new SMWSQLStore();
 
+	smwfInitMessages();
+
 	/**********************************************/
 	/***** register specials                  *****/
 	/**********************************************/
