@@ -43,6 +43,17 @@ class SMWRequestOptions {
 	 */
 	public $ascending = true;
 	/**
+	 * Specifies a lower or upper bound for the values returned by the query.
+	 * Whether it is lower or upper is specified by the parameter "ascending"
+	 * (true->lower, false->upper).
+	 */
+	public $boundary = NULL;
+	/**
+	 * Specifies whether or not the requested boundary should be returned 
+	 * as a result, or not.
+	 */
+	public $include_boundary = true;
+	/**
 	 * If set, only results that match this pattern should be returned.
 	 * TODO: The language of the pattern still needs to be specified. Anybody
 	 * needing regexps, or can we live with initial and/or final wildcards?
@@ -69,11 +80,30 @@ abstract class SMWStore {
 	abstract function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL);
 
 	/**
+	 * Get an array of all pages that have a certain special value for a given special property
+	 * (identified as usual by an integer constant). The result is an array of titles. The tpye of
+	 * the input value depends on the kind of special property that was requested
+	 */
+	abstract function getSpecialSubjects($specialprop, $value, $requestoptions = NULL);
+
+	/**
 	 * Get an array of all attribute values stored for the given subject and atttribute. The result 
 	 * is an array of SMWDataValue objects.
 	 */
 	abstract function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL);
 	
+	/**
+	 * Get an array of all subjects that have the given value for the given attribute. The
+	 * result is an array of Title objects.
+	 */
+	abstract function getAttributeSubjects(Title $relation, SMWDataValue $value, $requestoptions = NULL);
+
+	/**
+	 * Get an array of all subjects that have some value for the given attribute. The
+	 * result is an array of Title objects.
+	 */
+	abstract function getAllAttributeSubjects(Title $attribute, $requestoptions = NULL);
+
 	/**
 	 * Get an array of all attributes for which the given subject has some value. The result is an
 	 * array of Title objects.
@@ -91,6 +121,12 @@ abstract class SMWStore {
 	 * result is an array of Title objects.
 	 */
 	abstract function getRelationSubjects(Title $relation, Title $object, $requestoptions = NULL);
+	
+	/**
+	 * Get an array of all subjects that relate to some object via the given relation. The
+	 * result is an array of Title objects.
+	 */
+	abstract function getAllRelationSubjects(Title $relation, $requestoptions = NULL);
 
 	/**
 	 * Get an array of all relations via which the given subject relates to some object. The result is an

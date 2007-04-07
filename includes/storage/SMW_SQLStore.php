@@ -21,6 +21,8 @@ class SMWSQLStore extends SMWStore {
 	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 
+		// TODO: this method currently supports no ordering or boundary. This is probably best anyway ...
+
 		$result = array();
 		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
 			$sql = 'cl_from=' . $db->addQuotes($subject->getArticleID());
@@ -51,21 +53,61 @@ class SMWSQLStore extends SMWStore {
 		}
 		return $result;
 	}
+	
+	function getSpecialSubjects($specialprop, $value, $requestoptions = NULL) {
+		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		if ($value instanceof SMWDataValue) {
+			if ($value->getXSDValue() !== false) { // filters out error-values etc.
+				$stringvalue = $value->getXSDValue();
+			}
+		} elseif ($value instanceof Title) {
+			if ( $specialprop == SMW_SP_HAS_TYPE ) { // special handling, TODO: change this to use type ids
+				$stringvalue = $value->getText();
+			} else {
+				$stringvalue = $value->getPrefixedText();
+			}
+		} else {
+			$stringvalue = $value;
+		}
+
+		$sql = 'property_id=' . $db->addQuotes($specialprop) .
+		       ' AND value_string=' . $db->addQuotes($stringvalue);
+
+		$res = $db->select( $db->tableName('smw_specialprops'),
+		                    'DISTINCT subject_id',
+		                    $sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
+		// rewrite result as array
+		$result = array();
+		if($db->numRows( $res ) > 0) {
+			while($row = $db->fetchObject($res)) {
+				$result[] = Title::newFromID($row->subject_id);
+			}
+		}
+		$db->freeResult($res);
+
+		return $result;
+	}
 
 
 	function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$value_column = 'value_xsd';
+		if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) && ($requestoptions->boundary->isNumeric()) ) {
+			$value_column = 'value_num';
+		}
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-		       ' AND attribute_title=' . $db->addQuotes($attribute->getDBkey());
+		       ' AND attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
+		       $this->getSQLConditions($requestoptions,$value_column);
 
 		$res = $db->select( $db->tableName('smw_attributes'), 
 		                    'value_unit, value_datatype, value_xsd',
-		                    $sql, 'SMW::getAttributeValues', $this->getSQLOptions($requestoptions) );
+		                    $sql, 'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,$value_column) );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
 				$dv = SMWDataValue::newTypedValue(SMWTypeHandlerFactory::getTypeHandlerByID($row->value_datatype));
+				$dv->setAttribute($attribute->getText());
 				$dv->setXSDValue($row->value_xsd, $row->value_unit);
 				$result[] = $dv;
 			}
@@ -75,14 +117,37 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
+	function getAttributeSubjects(Title $relation, SMWDataValue $value, $requestoptions = NULL) {
+		// TODO
+	}
+
+	function getAllAttributeSubjects(Title $attribute, $requestoptions = NULL) {
+		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$sql = 'attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
+		       $this->getSQLConditions($requestoptions,'subject_title');
+
+		$res = $db->select( $db->tableName('smw_attributes'), 
+		                    'DISTINCT subject_id',
+		                    $sql, 'SMW::getAllAttributeSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
+		// rewrite result as array
+		$result = array();
+		if($db->numRows( $res ) > 0) {
+			while($row = $db->fetchObject($res)) {
+				$result[] = Title::newFromId($row->subject_id);
+			}
+		}
+		$db->freeResult($res);
+
+		return $result;
+	}
 
 	function getAttributes(Title $subject, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
-		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID());
+		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) . $this->getSQLConditions($requestoptions,'attribute_title');
 
 		$res = $db->select( $db->tableName('smw_attributes'), 
 		                    'DISTINCT attribute_title',
-		                    $sql, 'SMW::getAttributes', $this->getSQLOptions($requestoptions) );
+		                    $sql, 'SMW::getAttributes', $this->getSQLOptions($requestoptions,'attribute_title') );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
@@ -98,11 +163,12 @@ class SMWSQLStore extends SMWStore {
 	function getRelationObjects(Title $subject, Title $relation, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey());
+		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
+		       $this->getSQLConditions($requestoptions,'object_title');
 
 		$res = $db->select( $db->tableName('smw_relations'), 
 		                    'object_title, object_namespace',
-		                    $sql, 'SMW::getRelationObjects', $this->getSQLOptions($requestoptions) );
+		                    $sql, 'SMW::getRelationObjects', $this->getSQLOptions($requestoptions,'object_title') );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
@@ -117,13 +183,14 @@ class SMWSQLStore extends SMWStore {
 
 	function getRelationSubjects(Title $relation, Title $object, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
-		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) . 
+		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
-		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey());
+		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
+		       $this->getSQLConditions($requestoptions,'subject_title');
 
-		$res = $db->select( $db->tableName('smw_relations'), 
+		$res = $db->select( $db->tableName('smw_relations'),
 		                    'DISTINCT subject_id',
-		                    $sql, 'SMW::getRelationSubjects', $this->getSQLOptions($requestoptions) );
+		                    $sql, 'SMW::getRelationSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
@@ -136,13 +203,34 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
+	function getAllRelationSubjects(Title $relation, $requestoptions = NULL) {
+		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$sql = 'relation_title=' . $db->addQuotes($relation->getDBkey()) .
+		       $this->getSQLConditions($requestoptions,'subject_title');
+
+		$res = $db->select( $db->tableName('smw_relations'), 
+		                    'DISTINCT subject_id',
+		                    $sql, 'SMW::getAllRelationSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
+		// rewrite result as array
+		$result = array();
+		if($db->numRows( $res ) > 0) {
+			while($row = $db->fetchObject($res)) {
+				$result[] = Title::newFromId($row->subject_id);
+			}
+		}
+		$db->freeResult($res);
+
+		return $result;
+	}
+
 	function getOutRelations(Title $subject, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
-		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID());
+		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+		       $this->getSQLConditions($requestoptions,'relation_title');
 
 		$res = $db->select( $db->tableName('smw_relations'), 
 		                    'DISTINCT relation_title',
-		                    $sql, 'SMW::getOutRelations', $this->getSQLOptions($requestoptions) );
+		                    $sql, 'SMW::getOutRelations', $this->getSQLOptions($requestoptions,'relation_title') );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
@@ -157,12 +245,13 @@ class SMWSQLStore extends SMWStore {
 
 	function getInRelations(Title $object, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
-		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) . 
-		       ' AND object_title=' . $db->addQuotes($object->getDBKey());
+		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
+		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
+		       $this->getSQLConditions($requestoptions,'relation_title');
 
 		$res = $db->select( $db->tableName('smw_relations'), 
 		                    'DISTINCT relation_title',
-		                    $sql, 'SMW::getInRelations', $this->getSQLOptions($requestoptions) );
+		                    $sql, 'SMW::getInRelations', $this->getSQLOptions($requestoptions,'relation_title') );
 		// rewrite result as array
 		$result = array();
 		if($db->numRows( $res ) > 0) {
@@ -395,8 +484,10 @@ class SMWSQLStore extends SMWStore {
 
 	/**
 	 * Transform input parameters into a suitable array of SQL options.
+	 * The parameter $valuecol defines the string name of the column to which
+	 * sorting requests etc. are to be applied.
 	 */
-	protected function getSQLOptions($requestoptions) {
+	protected function getSQLOptions($requestoptions, $valuecol = NULL) {
 		$sql_options = array();
 		if ($requestoptions !== NULL) {
 			if ($requestoptions->limit >= 0) {
@@ -405,8 +496,38 @@ class SMWSQLStore extends SMWStore {
 			if ($requestoptions->offset > 0) {
 				$sql_options['OFFSET'] = $requestoptions->offset;
 			}
+			if ( ($valuecol !== NULL) && ($requestoptions->sort) ) {
+				$sql_options['ORDER BY'] = $requestoptions->ascending ? $valuecol : $valuecol . ' DESC';
+			}
 		}
 		return $sql_options;
+	}
+
+	/**
+	 * Transform input parameters into a suitable string of additional SQL conditions.
+	 * The parameter $valuecol defines the string name of the column to which
+	 * value restrictions etc. are to be applied.
+	 */
+	protected function getSQLConditions($requestoptions, $valuecol) {
+		$sql_conds = '';
+		if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) ) {
+			$db =& wfGetDB( DB_MASTER );
+			if ($requestoptions->ascending) {
+				if ($requestoptions->include_boundary) {
+					$op = ' >= ';
+				} else {
+					$op = ' > ';
+				}
+			} else {
+				if ($requestoptions->include_boundary) {
+					$op = ' <= ';
+				} else {
+					$op = ' < ';
+				}
+			}
+			$sql_conds .= ' AND ' . $valuecol . $op . $db->addQuotes($requestoptions->boundary);
+		}
+		return $sql_conds;
 	}
 
 	/**
