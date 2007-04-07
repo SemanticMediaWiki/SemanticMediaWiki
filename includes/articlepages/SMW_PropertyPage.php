@@ -100,13 +100,16 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$r = '<table style="width: 100%; ">';
 		$prevchar = 'None';
 		for ($index = $start; $index < $ac; $index++ ) {
+			// Header for index letters
 			if ($this->articles_start_char[$index] != $prevchar) {
-				$r .= '<tr><th style="text-align: right; padding-right: 1em; "><h3>' . htmlspecialchars( $this->articles_start_char[$index] ) . "</h3></th><th></th></tr>\n";
+				$r .= '<tr><th class="smwattname"><h3>' . htmlspecialchars( $this->articles_start_char[$index] ) . "</h3></th><th></th></tr>\n";
 				$prevchar = $this->articles_start_char[$index];
 			}
+			// Attribute/relation name
 			$r .= '<tr><td class="smwattname">' . $this->getSkin()->makeKnownLinkObj( $this->articles[$index], 
 			  $wgContLang->convert( $this->articles[$index]->getPrefixedText() ) ) .
 			  '</td><td class="smwatts">';
+			// Attribute/relation values
 			if ($this->mTitle->getNamespace() == SMW_NS_RELATION) {
 				$objects = $store->getRelationObjects($this->articles[$index], $this->mTitle);
 				$l = count($objects);

@@ -304,17 +304,15 @@ function smwgSetupExtension() {
 	 */
 	function smwfInitMessages() {
 		global $smwgMessagesInPlace; // record whether the function was already called
-
 		if ($smwgMessagesInPlace) { return; }
 
-		global $wgMessageCache, $smwgContLang, $smwgLang;
-		global $wgContLanguageCode, $wgLanguageCode;
+		global $wgMessageCache, $smwgContLang, $smwgLang, $wgContLang, $wgLang;
 		// make sure that language objects exist
-		smwfInitContentLanguage($wgContLanguageCode);
-		smwfInitUserLanguage($wgLanguageCode);
+		smwfInitContentLanguage($wgContLang->getCode());
+		smwfInitUserLanguage($wgLang->getCode());
 
-		$wgMessageCache->addMessages($smwgContLang->getContentMsgArray());
-		$wgMessageCache->addMessages($smwgLang->getUserMsgArray());
+		$wgMessageCache->addMessages($smwgContLang->getContentMsgArray(), $wgContLang->getCode());
+		$wgMessageCache->addMessages($smwgLang->getUserMsgArray(), $wgLang->getCode());
 
 		$smwgMessagesInPlace = true;
 	}
