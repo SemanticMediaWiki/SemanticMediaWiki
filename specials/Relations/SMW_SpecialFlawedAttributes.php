@@ -13,85 +13,78 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-$wgExtensionFunctions[] = "wfSMWFlawedAttributes";
+global $IP, $smwgIP;
 
-function wfSMWFlawedAttributes()
-{
-	global $wgMessageCache;
-	smwfInitMessages();
-	global $IP, $smwgIP;
+require_once( "$IP/includes/SpecialPage.php" );
+require_once( "$IP/includes/Title.php" );
+require_once("$IP/includes/QueryPage.php");
 
-	require_once( "$IP/includes/SpecialPage.php" );
-	require_once( "$IP/includes/Title.php" );
-	require_once("$IP/includes/QueryPage.php");
-
-	class FlawedAttributes extends QueryPage {
-
-		function getName() {
-			return "Flawed Attributes";
-		}
-
-		function isExpensive() {
-			return false;
-		}
-
-		function isSyndicated() { return false; }
-
-		function getPageHeader() {
-			return '<p>' . wfMsg('smw_fattributes') . "</p><br />\n";
-		}
-
-		function getSQL() {
-			$dbr =& wfGetDB( DB_SLAVE );
-			$page = $dbr->tableName( 'page');
-			$pagelinks = $dbr->tableName( 'pagelinks');
-			$smw_attributes = $dbr->tableName( 'smw_attributes' );
-			$NSmain = NS_MAIN;
-			$NSatt = SMW_NS_ATTRIBUTE; /*\"102\"*/
-
-			return
-					"SELECT 'FlawedAttributes' as type,
-					{$NSmain} as namespace,
-					page_title as title,
-					page_title as value,
-					COUNT(*) as count
-					FROM $page
-					INNER JOIN $pagelinks
-					ON $page.page_id = $pagelinks.pl_from
-					WHERE
-						pl_namespace = {$NSatt}
-						AND
-						(page_id, pl_title) NOT IN
-						(SELECT subject_id, attribute_title
-						 from $smw_attributes)
-					GROUP BY page_id
-					";
-
-
-
-		}
-
-		function sortDescending() {
-			return false;
-		}
-
-		function formatResult( $skin, $result ) {
-			global $wgLang;
-			$title = Title::makeTitle( NS_MAIN, $result->title );
-			$link = $skin->makeLinkObj( $title, $title->getText() );
-			return "$link ($result->count)";
-		}
-	}
-
-
-	function doSpecialFlawedAttributes($par = null)
-	{
-		list( $limit, $offset ) = wfCheckLimits();
-		$rep = new FlawedAttributes();
-		return $rep->doQuery( $offset, $limit );
-	}
-
-	SpecialPage::addPage( new SpecialPage('FlawedAttributes','',true,'doSpecialFlawedAttributes',false) );
+function doSpecialFlawedAttributes($par = null) {
+	list( $limit, $offset ) = wfCheckLimits();
+	$rep = new FlawedAttributes();
+	return $rep->doQuery( $offset, $limit );
 }
+
+SpecialPage::addPage( new SpecialPage('FlawedAttributes','',true,'doSpecialFlawedAttributes',false) );
+
+
+class FlawedAttributes extends QueryPage {
+
+	function getName() {
+		return "Flawed Attributes";
+	}
+
+	function isExpensive() {
+		return false;
+	}
+
+	function isSyndicated() { return false; }
+
+	function getPageHeader() {
+		return '<p>' . wfMsg('smw_fattributes') . "</p><br />\n";
+	}
+
+	function getSQL() {
+		$dbr =& wfGetDB( DB_SLAVE );
+		$page = $dbr->tableName( 'page');
+		$pagelinks = $dbr->tableName( 'pagelinks');
+		$smw_attributes = $dbr->tableName( 'smw_attributes' );
+		$NSmain = NS_MAIN;
+		$NSatt = SMW_NS_ATTRIBUTE; /*\"102\"*/
+
+		return
+				"SELECT 'FlawedAttributes' as type,
+				{$NSmain} as namespace,
+				page_title as title,
+				page_title as value,
+				COUNT(*) as count
+				FROM $page
+				INNER JOIN $pagelinks
+				ON $page.page_id = $pagelinks.pl_from
+				WHERE
+					pl_namespace = {$NSatt}
+					AND
+					(page_id, pl_title) NOT IN
+					(SELECT subject_id, attribute_title
+						from $smw_attributes)
+				GROUP BY page_id
+				";
+
+
+
+	}
+
+	function sortDescending() {
+		return false;
+	}
+
+	function formatResult( $skin, $result ) {
+		global $wgLang;
+		$title = Title::makeTitle( NS_MAIN, $result->title );
+		$link = $skin->makeLinkObj( $title, $title->getText() );
+		return "$link ($result->count)";
+	}
+}
+
 
 ?>

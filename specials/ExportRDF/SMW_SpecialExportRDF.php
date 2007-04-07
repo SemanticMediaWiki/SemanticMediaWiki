@@ -12,13 +12,8 @@ if (!defined('MEDIAWIKI')) die();
 //require_once($smwgIP . '/includes/SMW_Storage.php');
 global $IP;
 require_once( "$IP/includes/SpecialPage.php" );
-global $wgExtensionFunctions;
-$wgExtensionFunctions[] = "wfExportRDFExtension";
 
-function wfExportRDFExtension() {
-	smwfInitMessages(); // initialize messages, always called before anything else on this page
-	SpecialPage::addPage( new SpecialPage('ExportRDF','',true,'doSpecialExportRDF',false) );
-}
+SpecialPage::addPage( new SpecialPage('ExportRDF','',true,'doSpecialExportRDF',false) );
 
 
 function doSpecialExportRDF($page = '') {

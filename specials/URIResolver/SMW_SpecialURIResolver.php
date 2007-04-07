@@ -8,22 +8,17 @@
  */
 
 if (!defined('MEDIAWIKI')) die();
+
 global $IP;
 require_once( "$IP/includes/SpecialPage.php" );
-global $wgExtensionFunctions;
-$wgExtensionFunctions[] = "wfURIResolverExtension";
 
-function wfURIResolverExtension()
-{
-	global $IP, $smwgIP, $wgMessageCache, $wgOut;
-	smwfInitMessages(); // initialize messages, always called before anything else on this page
 
-	function doSpecialURIResolver($name = '') {
-		SMW_URIResolver::execute($name);
-	}
-
-	SpecialPage::addPage( new SpecialPage('URIResolver','',false,'doSpecialURIResolver',false) );
+function doSpecialURIResolver($name = '') {
+	SMW_URIResolver::execute($name);
 }
+
+SpecialPage::addPage( new SpecialPage('URIResolver','',false,'doSpecialURIResolver',false) );
+
 
 class SMW_URIResolver {
 

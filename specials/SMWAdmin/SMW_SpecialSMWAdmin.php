@@ -8,16 +8,12 @@
  */
 
 if (!defined('MEDIAWIKI')) die();
-global $wgExtensionFunctions;
-$wgExtensionFunctions[] = "wfSMWAdminExtension";
 
-function wfSMWAdminExtension()
-{
-	global $wgMessageCache;
-	$wgMessageCache->addMessages(array('smwadmin' => 'Admin functions for Semantic MediaWiki'));
+// TODO: should these be messages?
+global $wgMessageCache;
+$wgMessageCache->addMessages(array('smwadmin' => 'Admin functions for Semantic MediaWiki'));
 
-	SpecialPage::addPage( new SpecialPage('SMWAdmin','delete',true,'doSpecialSMWAdmin',false) );
-}
+SpecialPage::addPage( new SpecialPage('SMWAdmin','delete',true,'doSpecialSMWAdmin',false) );
 
 
 function doSpecialSMWAdmin($par = null) {

@@ -11,19 +11,12 @@ if (!defined('MEDIAWIKI')) die();
 //require_once($smwgIP . '/includes/SMW_Storage.php');
 global $IP;
 require_once( "$IP/includes/SpecialPage.php" );
-global $wgExtensionFunctions;
-$wgExtensionFunctions[] = "wfAskExtension";
 
-// standard functions for creating a new special
-function wfAskExtension() {
-	smwfInitMessages(); // initialize messages, always called before anything else on this page
-	
-	function doSpecialAsk() {
-		SMW_AskPage::execute();
-	}
-	
-	SpecialPage::addPage( new SpecialPage('Ask','',true,'doSpecialAsk',false) );
+function doSpecialAsk() {
+	SMW_AskPage::execute();
 }
+
+SpecialPage::addPage( new SpecialPage('Ask','',true,'doSpecialAsk',false) );
 
 
 class SMW_AskPage {

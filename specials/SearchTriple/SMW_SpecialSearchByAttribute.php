@@ -10,23 +10,17 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $IP, $smwgIP, $wgExtensionFunctions;
+global $IP, $smwgIP;
 
 require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
-$wgExtensionFunctions[] = "wfSearchByAttributeExtension";
 
-function wfSearchByAttributeExtension()
-{
-	global $wgMessageCache, $wgOut;
-	smwfInitMessages(); // initialize messages, always called before anything else on this page
-
-	function doSpecialSearchByAttribute($query = '') {
-		SMW_SearchByAttribute::execute($query);
-	}
-
-	SpecialPage::addPage( new SpecialPage('SearchByAttribute','',true,'doSpecialSearchByAttribute',false) );
+function doSpecialSearchByAttribute($query = '') {
+	SMW_SearchByAttribute::execute($query);
 }
+
+SpecialPage::addPage( new SpecialPage('SearchByAttribute','',true,'doSpecialSearchByAttribute',false) );
+
 
 class SMW_SearchByAttribute {
 

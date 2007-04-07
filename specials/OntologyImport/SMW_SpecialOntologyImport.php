@@ -10,24 +10,14 @@
  */
 
 if (!defined('MEDIAWIKI')) die();
-global $wgExtensionFunctions;
-$wgExtensionFunctions[] = "wfOntologyImportExtension";
 
 global $IP;
 require_once( "$IP/includes/SpecialPage.php" );
 
-function wfOntologyImportExtension()
-{
-	global $wgMessageCache;
-
-	smwfInitMessages(); // initialize messages, always called before anything else on this page;
-
-	SpecialPage::addPage( new SpecialPage('OntologyImport','delete',true,'doSpecialImportOntology',false) );
-}
+SpecialPage::addPage( new SpecialPage('OntologyImport','delete',true,'doSpecialImportOntology',false) );
 
 
-function doSpecialImportOntology($par = NULL)
-{
+function doSpecialImportOntology($par = NULL) {
 	global $IP, $smwgIP;
 	require_once($smwgIP . '/includes/SMW_Storage.php');
 	require_once($IP . '/includes/Title.php' );
@@ -87,8 +77,7 @@ function doSpecialImportOntology($par = NULL)
 
 
 /** static class to encapsulate import functions */
-class SMWOntologyImport
-{
+class SMWOntologyImport {
 	/**
 	 * Creates the label -- and thus the page title to be used -- for an entity.
 	 */
