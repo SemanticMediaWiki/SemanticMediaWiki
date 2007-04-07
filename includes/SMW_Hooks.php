@@ -191,4 +191,22 @@
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
+// Special display for certain types of pages
+
+/**
+ * Register special classes for displaying semantic content on Relation/Attribute/Type pages
+ */
+function smwfShowListPage (&$title, &$article){
+	global $smwgIP;
+	if ($title->getNamespace() == SMW_NS_TYPE){
+		require_once($smwgIP . '/includes/articlepages/SMW_TypePage.php');
+		$article = new SMWTypePage($title);
+	} elseif ( ($title->getNamespace() == SMW_NS_RELATION) || ($title->getNamespace() == SMW_NS_ATTRIBUTE) ) {
+		require_once($smwgIP . '/includes/articlepages/SMW_PropertyPage.php');
+		$article = new SMWPropertyPage($title);
+	}
+	return true;
+}
+
+
 ?>

@@ -113,6 +113,7 @@ function smwgSetupExtension() {
 	$wgHooks['TitleMoveComplete'][]='smwfMoveHook';
 	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeader';
 	$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries'; // a hook for registering the <ask> parser hook
+	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage';
 
 	/**********************************************/
 	/***** credits (see "Special:Version")    *****/
