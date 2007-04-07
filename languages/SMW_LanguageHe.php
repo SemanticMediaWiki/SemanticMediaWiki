@@ -70,6 +70,13 @@ class SMW_LanguageHe {
 
 /* private */ var $smwUserMessages = array(
 	'smw_devel_warning' => 'This feature is currently under development, and might not be fully functional. Backup your data before using it.',
+	// Messages for article pages of types, relations, and attributes
+	'smw_type_header' => 'Attributes of type “$1”', // TODO translate
+	'smw_typearticlecount' => 'Showing $1 attributes using this type.', // TODO translate
+	'smw_attribute_header' => 'Pages using the attribute “$1”', // TODO translate
+	'smw_attributearticlecount' => '<p>Showing $1 pages using this attribute.</p>', // TODO translate
+	'smw_relation_header' => 'Pages using the relation “$1”', // TODO translate
+	'smw_relationarticlecount' => '<p>Showing $1 pages using this relation.</p>', // TODO translate
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Export pages to RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>This page allows you to export parts of an article in RDF format. To export article pages, enter the titles in the text box below, one title per line.</p>',

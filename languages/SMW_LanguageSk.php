@@ -71,6 +71,13 @@ class SMW_LanguageSk {
 
 /* private */ var $smwUserMessages = array(
 	'smw_devel_warning' => 'Táto vlastnosť je momentálne vo vývoji a nemusí byť celkom funkčná. Predtým, než ju použijete si zálohujte dáta.',
+	// Messages for article pages of types, relations, and attributes
+	'smw_type_header' => 'Attributes of type “$1”', // TODO translate
+	'smw_typearticlecount' => 'Showing $1 attributes using this type.', // TODO translate
+	'smw_attribute_header' => 'Pages using the attribute “$1”', // TODO translate
+	'smw_attributearticlecount' => '<p>Showing $1 pages using this attribute.</p>', // TODO translate
+	'smw_relation_header' => 'Pages using the relation “$1”', // TODO translate
+	'smw_relationarticlecount' => '<p>Showing $1 pages using this relation.</p>', // TODO translate
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Exportovať stránky do RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>Táto stránka vám umožňuje exportovať časti stránok do formátu RDF. Po zadaní názvov stránok do spodného textového poľa, jeden názov na riadok, môžete exportovať stránky.</p>',

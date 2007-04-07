@@ -54,9 +54,9 @@ class SMWTypePage extends SMWOrderedListPage {
 		$ti = htmlspecialchars( $this->mTitle->getText() );
 		$nav = $this->getNavigationLinks();
 		$r = $nav . "<div id=\"mw-pages\">\n";
-		// TODO: use wfMsg
-		$r .= '<h2>' . 'Attributes with the type "'. $ti . "\"</h2>\n";
-		$r .= '<p>' . 'Showing '. min($this->limit, count($this->articles)) . " attributes using type ". $ti . ".</p>\n";
+
+		$r .= '<h2>' . wfMsg('smw_type_header',$ti) . "</h2>\n";
+		$r .= wfMsg('smw_typearticlecount', min($this->limit, count($this->articles))) . "\n";
 
 		$r .= $this->formatList( $this->articles, $this->articles_start_char );
 		$r .= "\n</div>" . $nav;

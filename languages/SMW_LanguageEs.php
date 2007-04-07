@@ -70,6 +70,13 @@ class SMW_LanguageEs {
 
 /* private */ var $smwUserMessages = array(
 	'smw_devel_warning' => 'Esta función está aún en desarrollo y quizá aun no sea operativa. Es quizá recomendable hacer una copia de seguridad del wiki antes de utilizar esta función.',
+	// Messages for article pages of types, relations, and attributes
+	'smw_type_header' => 'Attributes of type “$1”', // TODO translate
+	'smw_typearticlecount' => 'Showing $1 attributes using this type.', // TODO translate
+	'smw_attribute_header' => 'Pages using the attribute “$1”', // TODO translate
+	'smw_attributearticlecount' => '<p>Showing $1 pages using this attribute.</p>', // TODO translate
+	'smw_relation_header' => 'Pages using the relation “$1”', // TODO translate
+	'smw_relationarticlecount' => '<p>Showing $1 pages using this relation.</p>', // TODO translate
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Exportar el artículo como RDF', //name of this special
 	'smw_exportrdf_docu' => '<p> En esta página, las partes de contenido de un artículo pueden ser exportadas a formato RDF. Introduzca el nombre de las páginas deseadas en el cuadro de texto que se encuentra debajo, <i>un nombre por línea </i>.<p/>',

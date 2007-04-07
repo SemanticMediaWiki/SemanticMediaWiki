@@ -63,14 +63,12 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$r = $nav . "<div id=\"mw-pages\">\n";
 		switch ( $this->mTitle->getNamespace() ) {
 			case SMW_NS_RELATION:
-				//TODO: use wfMsg
-				$r .= '<h2>' . 'The following pages have a relation "'. $ti. "\"</h2>\n";
-				$r .= '<p>' . 'Showing '. min($this->limit, count($this->articles)) . " pages using this relation.</p>\n";
+				$r .= '<h2>' . wfMsg('smw_relation_header',$ti) . "</h2>\n";
+				$r .= wfMsg('smw_relationarticlecount', min($this->limit, count($this->articles))) . "\n";
 				break;
 			case SMW_NS_ATTRIBUTE:
-				//TODO: use wfMsg
-				$r .= '<h2>' . 'The following pages use the attribute "'.$ti. "\"</h2>\n";
-				$r .= '<p>' . 'Showing '. min($this->limit, count($this->articles)) . " pages using this attribute.</p>\n";
+				$r .= '<h2>' . wfMsg('smw_relation_header',$ti) . "</h2>\n";
+				$r .= wfMsg('smw_relationarticlecount', min($this->limit, count($this->articles))) . "\n";
 				break;
 		}
 		$r .= $this->shortList( $this->articles, $this->articles_start_char ) . "\n</div>" . $nav;

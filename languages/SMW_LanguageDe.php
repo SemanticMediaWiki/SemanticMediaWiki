@@ -71,6 +71,13 @@ class SMW_LanguageDe {
 
 /* private */ var $smwUserMessages = array(
 	'smw_devel_warning' => 'Diese Funktion befindet sich zur Zeit in Entwicklung und ist eventuell noch nicht voll einsatzfähig. Eventuell ist es ratsam, den Inhalt des Wikis vor der Benutzung dieser Funktion zu sichern.',
+	// Messages for article pages of types, relations, and attributes
+	'smw_type_header' => 'Attribute mit dem Datentyp „$1“',
+	'smw_typearticlecount' => 'Es werden $1 Attribute mit diesem Datentyp angezeigt.',
+	'smw_attribute_header' => 'Seiten mit dem Attribut „$1“',
+	'smw_attributearticlecount' => '<p>Es werden $1 Seiten angezeigt, die dieses Attribut verwenden.</p>',
+	'smw_relation_header' => 'Seiten mit der Relation „$1“',
+	'smw_relationarticlecount' => '<p>Es werden $1 Seiten angezeigt, die diese Relation verwenden.</p>',
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Artikel als RDF exportieren', //name of this special
 	'smw_exportrdf_docu' => '<p>Auf dieser Seite können Teile des Inhalts von Artikeln im RDF-Format exportiert werden. Bitte geben Sie die Namen der gewünschten <i>zeilenweise</i> Seiten ein.</p>',

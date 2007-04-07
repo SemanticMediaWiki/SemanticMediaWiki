@@ -21,17 +21,18 @@ require_once( "$IP/includes/Article.php" );
  */
 abstract class SMWOrderedListPage extends Article {
 
-	public $limit; // limit for results per page
-	public $from; // start string: print $limit results from here
-	public $until; // end string: print $limit results strictly before this article
-	public $articles; // array of articles for which information is printed (primary ordering method)
-	public $articles_start_char; // array of first characters of printed articles, used for making subheaders
-	public $skin; // cache for the current skin, obtained from $wgUser
+	protected $limit; // limit for results per page
+	protected $from; // start string: print $limit results from here
+	protected $until; // end string: print $limit results strictly before this article
+	protected $articles; // array of articles for which information is printed (primary ordering method)
+	protected $articles_start_char; // array of first characters of printed articles, used for making subheaders
+	protected $skin; // cache for the current skin, obtained from $wgUser
+
 
 	/**
 	 * Overwrite view() from Article.php to add additional html to the output.
 	 */
-	public function view(){
+	public function view() {
 		Article::view();
 		$this->showList();
 	}
@@ -102,7 +103,9 @@ abstract class SMWOrderedListPage extends Article {
 			} else {
 				$last = '';
 			}
-		} else return '';
+		} else {
+			return '';
+		}
 
 		$prevLink = htmlspecialchars( wfMsg( 'prevn', $limitText ) );
 		if( $first != '' ) {
