@@ -25,7 +25,7 @@ span.smwrdflink {
 }
 
 
-td.smwrelname, td.smwattname, td.smwspecname{
+td.smwrelname, td.smwattname, td.smwspecname, th.smwrelname, th.smwattname, th.smwspecname{
 	text-align: left;
 }
 
