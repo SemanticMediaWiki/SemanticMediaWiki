@@ -77,17 +77,18 @@ div.smwfact td, div.smwfact tr, div.smwfact table{
 	background-color: #F9F9F9;
 }
 
-div.smwfact td.smwrelname, div.smwfact td.smwattname, div.smwfact td.smwspecname{
+td.smwrelname, td.smwattname, td.smwspecname{
 	text-align: right;
 	vertical-align: top;
 	padding-right: 1em;
 }
 
-div.smwfact td.smwrels, div.smwfact td.smwatts, div.smwfact td.smwspecs{
+td.smwrels, td.smwatts, td.smwspecs{
 	vertical-align: top;
+	width: 80%;
 }
 
-div.smwfact th.relhead, div.smwfact th.atthead, div.smwfact th.spechead{
+th.relhead, th.atthead, th.spechead{
 	text-align: left;
 	border-top: 1px dotted #AAAAAA;
 }

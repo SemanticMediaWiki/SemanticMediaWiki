@@ -25,11 +25,11 @@ span.smwrdflink {
 }
 
 
-div.smwfact td.smwrelname, div.smwfact td.smwattname, div.smwfact td.smwspecname{
+td.smwrelname, td.smwattname, td.smwspecname{
 	text-align: left;
 }
 
-div.smwfact th.relhead, div.smwfact th.atthead, div.smwfact th.spechead{
+th.relhead, th.atthead, th.spechead{
 	text-align: right;
 }
 
