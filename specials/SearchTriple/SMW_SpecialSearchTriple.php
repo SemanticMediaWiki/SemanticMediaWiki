@@ -6,59 +6,54 @@
  * This special page for MediaWiki implements a simple triple search.
  * It only supports full matching but can also be useful to introspect
  * the database.
+ *
+ * TODO: This function is obsolete and will be removed in some future 
+ * (included for backwards compatibility now).
  */
 
 if (!defined('MEDIAWIKI')) die();
-global $wgExtensionFunctions;
-$wgExtensionFunctions[] = "wfSearchTripleExtension";
 
-function wfSearchTripleExtension()
-{
-	global $IP, $smwgIP, $wgMessageCache, $wgOut;
-	require_once($smwgIP . '/includes/SMW_Datatype.php');
-	require_once( "$IP/includes/SpecialPage.php" );
 
-	smwfInitMessages(); // initialize messages, always called before anything else on this page
+global $IP, $smwgIP;
+require_once($smwgIP . '/includes/SMW_Datatype.php');
+require_once( "$IP/includes/SpecialPage.php" );
 
-	function doSpecialSearchTriple($par = null)
-	{
-		global $wgOut, $wgRequest;
+function doSpecialSearchTriple($par = null)	{
+	global $wgOut, $wgRequest;
 
-		$out = '';
-		$searchtype = $wgRequest->getVal('do');
-		$subject = $wgRequest->getVal('subject');
-		$relation = $wgRequest->getVal('relation');
-		$object = $wgRequest->getVal('object');
-		$attribute = $wgRequest->getVal('attribute');
-		$value = $wgRequest->getVal('value');
-		
-		$relation = ucfirst($relation);
-		$attribute = ucfirst($attribute);
-
-		$out .= SMWSpecialSearchTriple::getSearchForm($subject, $relation, $object, $attribute, $value, $searchtype);
-		// find out what the user wants:
-		if ( ($searchtype==wfMsg('smw_searchtriple_searchatt')) || ($searchtype=='Search Attributes')) {
-			// Search for attributes
-			$out .= SMWSpecialSearchTriple::searchAttributes($subject, $attribute, $value);
-		} elseif ( ($searchtype==wfMsg('smw_searchtriple_searchrel')) || ($searchtype=='Search Relations') ) { 
-			// Search for relations
-			$out .= SMWSpecialSearchTriple::searchRelations($subject, $relation, $object);
-		} // else: just don't do anything
-		
-		$wgOut->setPageTitle(wfMsg('searchtriple'));
-		$wgOut->addHTML($out);
-	}
+	$out = '';
+	$searchtype = $wgRequest->getVal('do');
+	$subject = $wgRequest->getVal('subject');
+	$relation = $wgRequest->getVal('relation');
+	$object = $wgRequest->getVal('object');
+	$attribute = $wgRequest->getVal('attribute');
+	$value = $wgRequest->getVal('value');
 	
-	SpecialPage::addPage( new SpecialPage('SearchTriple','',true,'doSpecialSearchTriple',false));
+	$relation = ucfirst($relation);
+	$attribute = ucfirst($attribute);
+
+	$out .= SMWSpecialSearchTriple::getSearchForm($subject, $relation, $object, $attribute, $value, $searchtype);
+	// find out what the user wants:
+	if ( ($searchtype==wfMsg('smw_searchtriple_searchatt')) || ($searchtype=='Search Attributes')) {
+		// Search for attributes
+		$out .= SMWSpecialSearchTriple::searchAttributes($subject, $attribute, $value);
+	} elseif ( ($searchtype==wfMsg('smw_searchtriple_searchrel')) || ($searchtype=='Search Relations') ) { 
+		// Search for relations
+		$out .= SMWSpecialSearchTriple::searchRelations($subject, $relation, $object);
+	} // else: just don't do anything
+	
+	$wgOut->setPageTitle(wfMsg('searchtriple'));
+	$wgOut->addHTML($out);
 }
+
+SpecialPage::addPage( new SpecialPage('SearchTriple','',false,'doSpecialSearchTriple',false));
+
 
 
 // static class to encapsulate some functions
-class SMWSpecialSearchTriple
-{
-	
-	function getSearchForm($subject, $relation, $object, $attribute, $value)
-	{
+class SMWSpecialSearchTriple {
+
+	function getSearchForm($subject, $relation, $object, $attribute, $value) {
 		global $wgOut;
 		
 		$form = '';
