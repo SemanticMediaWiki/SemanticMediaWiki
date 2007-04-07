@@ -295,6 +295,14 @@ class SMWDataValue {
 	}
 
 	/**
+	 * Set the attribute to which this value refers. Used to generate search links.
+	 * The atriubte is given as a simple wiki text title, without namespace prefix.
+	 */
+	function setAttribute($attribute) {
+		$this->attribute = $attribute;
+	}
+
+	/**
 	 * Set an error message for the current datavalue. The message should be plain
 	 * text, possibly with light wiki/html markup. Global styling, especially spans
 	 * enclosing the whole message, are not needed.
