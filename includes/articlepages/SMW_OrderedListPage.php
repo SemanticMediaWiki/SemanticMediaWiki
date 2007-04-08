@@ -28,7 +28,6 @@ abstract class SMWOrderedListPage extends Article {
 	protected $articles_start_char; // array of first characters of printed articles, used for making subheaders
 	protected $skin; // cache for the current skin, obtained from $wgUser
 
-
 	/**
 	 * Overwrite view() from Article.php to add additional html to the output.
 	 */
@@ -44,9 +43,8 @@ abstract class SMWOrderedListPage extends Article {
 		global $wgOut, $wgRequest;
 		$this->from = $wgRequest->getVal( 'from' );
 		$this->until = $wgRequest->getVal( 'until' );
-		$this->limit = 50;
+		$this->limit = 20;
 		$wgOut->addHTML( $this->getHTML() );
-		
 	}
 
 	/**

@@ -18,6 +18,10 @@ require_once( "$smwgIP/includes/articlepages/SMW_OrderedListPage.php");
 
 class SMWTypePage extends SMWOrderedListPage {
 
+// 	public function SMWTypePage() {
+// 		
+// 	}
+
 	/**
 	 * Fill the internal arrays with the set of articles to be displayed (possibly plus one additional
 	 * article that indicates further results).
@@ -58,7 +62,7 @@ class SMWTypePage extends SMWOrderedListPage {
 		$r .= '<h2>' . wfMsg('smw_type_header',$ti) . "</h2>\n";
 		$r .= wfMsg('smw_typearticlecount', min($this->limit, count($this->articles))) . "\n";
 
-		$r .= $this->formatList( $this->articles, $this->articles_start_char );
+		$r .= $this->formatList();
 		$r .= "\n</div>" . $nav;
 		return $r;
 	}
@@ -72,7 +76,7 @@ class SMWTypePage extends SMWOrderedListPage {
 	 * @param int   $cutoff
 	 * @return string
 	 */
-	private function formatList( $articles, $articles_start_char, $cutoff = 6 ) {
+	private function formatList( $cutoff = 6 ) {
 		$end = count($this->articles);
 		if ($end > $this->limit) {
 			if ($this->until != '') {
@@ -85,9 +89,9 @@ class SMWTypePage extends SMWOrderedListPage {
 			$start = 0;
 		}
 
-		if ( count ( $articles ) > $cutoff ) {
+		if ( count ( $this->articles ) > $cutoff ) {
 			return $this->columnList( $start, $end );
-		} elseif ( count($articles) > 0) {
+		} elseif ( count($this->articles) > 0) {
 			// for short lists of articles
 			return $this->shortList( $start, $end );
 		}
@@ -150,7 +154,7 @@ class SMWTypePage extends SMWOrderedListPage {
 		$r = '<h3>' . htmlspecialchars( $this->articles_start_char[$start] ) . "</h3>\n";
 		$r .= '<ul><li>'. $this->getArticleLink($this->articles[$start]) . '</li>';
 		for ($index = $start+1; $index < $end; $index++ ) {
-			if ($articles_start_char[$index] != $this->articles_start_char[$index - 1]) {
+			if ($this->articles_start_char[$index] != $this->articles_start_char[$index - 1]) {
 				$r .= "</ul><h3>" . htmlspecialchars( $this->articles_start_char[$index] ) . "</h3>\n<ul>";
 			}
 			$r .= '<li>' . $this->getArticleLink( $this->articles[$index] ) . '</li>';

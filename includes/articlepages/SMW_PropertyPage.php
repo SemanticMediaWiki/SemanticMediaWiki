@@ -18,6 +18,10 @@ require_once( "$smwgIP/includes/articlepages/SMW_OrderedListPage.php");
  */
 class SMWPropertyPage extends SMWOrderedListPage {
 
+	public function SMWPropertyPage() {
+		$this->limit = 25;
+	}
+
 	/**
 	 * Fill the internal arrays with the set of articles to be displayed (possibly plus one additional
 	 * article that indicates further results).

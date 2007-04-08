@@ -71,7 +71,8 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		$sql = 'property_id=' . $db->addQuotes($specialprop) .
-		       ' AND value_string=' . $db->addQuotes($stringvalue);
+		       ' AND value_string=' . $db->addQuotes($stringvalue) .
+		       $this->getSQLConditions($requestoptions,'subject_title');
 
 		$res = $db->select( $db->tableName('smw_specialprops'),
 		                    'DISTINCT subject_id',
