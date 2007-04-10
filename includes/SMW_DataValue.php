@@ -94,13 +94,6 @@ class SMWDataValue {
 	 */
 	var $desiredUnits;
 	/**
-	 * Array of possible values, used by attributes of Type:Enumeration.
-	 *
-	 * FALSE at initialization if not set
-	 * @see getPossibleValues()
-	 */
-	var $possibleValues;
-	/**
 	 * Array of links (or rather of message IDs that contain link templates).
 	 * Some datatypes will look for added links and instantiate them with their
 	 * processed values to point to helpful online resources. The strings in this
@@ -133,7 +126,6 @@ class SMWDataValue {
 		$this->type_handler = $type;
 		$this->attribute = false;
 		$this->desiredUnits = $desiredUnits;
-		$this->possibleValues = false;
 		$this->serviceLinks = false;
 	}
 
@@ -527,16 +519,14 @@ class SMWDataValue {
 
 	/**
 	 * Return the array of possible values (possibly empty if not given).
+	 * Do not cache the result, as it is cached in the TypeHandlerFactory already.
 	 */
 	function getPossibleValues() {
 		// If we don't have a value for this, get it from the attribute.
-		if ($this->possibleValues === false && $this->attribute != false) {
-			$this->possibleValues = SMWTypeHandlerFactory::getPossibleValues($this->attribute);
-		}
-		if ($this->possibleValues === false) {
-			return Array();
+		if ( $this->attribute != false) {
+			return SMWTypeHandlerFactory::getPossibleValues($this->attribute);
 		} else {
-			return $this->possibleValues;
+			return Array();
 		}
 	}
 

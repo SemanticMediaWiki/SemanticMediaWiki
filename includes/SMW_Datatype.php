@@ -13,8 +13,6 @@
  */
 
 
-require_once('SMW_Storage.php');
-
 /**@ We need to always pull in DT_Float.php because SMW treats missing types
  *   as custom units (class SMWLinear).
  * TODO: revisit this dependency and announce Float/Linear/Temperature like other datatypes?
@@ -224,7 +222,7 @@ class SMWTypeHandlerFactory {
 			global $wgContLang;
 			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
 			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
-				$typearray = &smwfGetSpecialPropertyValues($atitle,SMW_SP_HAS_TYPE);
+				$typearray = smwfGetStore()->getSpecialValues($atitle,SMW_SP_HAS_TYPE);
 			} else { $typearray = Array(); }
 
 			if (count($typearray)==1) {
@@ -254,17 +252,18 @@ class SMWTypeHandlerFactory {
 	static function &getUnitsList($attribute) {
 		if(!array_key_exists($attribute, SMWTypeHandlerFactory::$desiredUnitsByAttribute)) {
 			global $wgContLang;
+			$store = smwfGetStore();
 
 			SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute] = Array();
 			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
 			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
 				// get main display unit:
-				$auprops = &smwfGetSpecialPropertyValues($atitle, SMW_SP_MAIN_DISPLAY_UNIT);
+				$auprops = $store->getSpecialValues($atitle, SMW_SP_MAIN_DISPLAY_UNIT);
 				if (count($auprops) > 0) { // ignore any further main units if given
 					SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute][] = $auprops[0];
 				}
 				// get further units:
-				$auprops = smwfGetSpecialPropertyValues($atitle, SMW_SP_DISPLAY_UNIT);
+				$auprops = $store->getSpecialValues($atitle, SMW_SP_DISPLAY_UNIT);
 				foreach ($auprops as $uprop) {
 					SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute][] = $uprop;
 				}
@@ -288,10 +287,10 @@ class SMWTypeHandlerFactory {
 			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
 			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
 				// get special property for possible values.  Assume only one such property per attribute.
-				$apvprops = &smwfGetSpecialPropertyValues($atitle, SMW_SP_POSSIBLE_VALUES);
+				$apvprops = smwfGetStore()->getSpecialValues($atitle, SMW_SP_POSSIBLE_VALUES);
 				if (count($apvprops) > 0) {
-					// Possible values are separated by commas. TODO: maybe trim() whitespace from each one.
-					SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute] = explode(',', $apvprops[0]);
+					// Possible values are separated by commas.
+					SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute] = preg_split('/[,][\s]*/',$apvprops[0]);
 				}
 			}
 		}
@@ -313,7 +312,7 @@ class SMWTypeHandlerFactory {
 
 		$ttitle = Title::newFromText($wgContLang->getNsText(SMW_NS_TYPE) . ':' . $type);
 		if ( ($ttitle !== NULL) && ($ttitle->exists()) ) {
-			$result = smwfGetSpecialPropertyValues($ttitle, SMW_SP_CONVERSION_FACTOR);
+			$result = smwfGetStore()->getSpecialValues($ttitle, SMW_SP_CONVERSION_FACTOR);
 			if (count($result) == 0) {
 				$result = array();
 			}
@@ -336,8 +335,8 @@ class SMWTypeHandlerFactory {
 			SMWTypeHandlerFactory::$serviceLinksByAttribute[$attribute] = Array();
 			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
 			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
-				$auprops = &smwfGetSpecialPropertyValues($atitle, SMW_SP_SERVICE_LINK);
-				if (count($auprops) > 0) { // ignore any further main units if given
+				$auprops = smwfGetStore()->getSpecialValues($atitle, SMW_SP_SERVICE_LINK);
+				if (count($auprops) > 0) { // ignore any further service link annotations if given
 					SMWTypeHandlerFactory::$serviceLinksByAttribute[$attribute][] = $auprops[0];
 				}
 			}
@@ -363,6 +362,11 @@ SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_
 SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_datetime'),'datetime','DateTime','SMWDateTimeTypeHandler');
 // Geographic coordinates
 SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_geocoordinate'),'geocoords','GeoCoords','SMWGeographicLocationTypeHandler');
+// Enums
+SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_enum'),'enum','Enum','SMWEnumTypeHandler');
+// Bools
+// Booleans can (and more problematic: will) be modelled by two-valued enums; too much choice yields confusion (note that Categories are also addressing a simliar modelling problem already -- let's not introduce three ways of encoding this)
+//SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_bool'),'bool','Boolean','SMWBooleanTypeHandler');
 
 
 
@@ -457,7 +461,7 @@ class SMWInfolink {
 			$end = '';
 		}
 		if ($this->internal) {
-			if (preg_match('/(.*)(\[|\]|<|>|&gt;|&lt;)(.*)/', $this->target) != 0 ) {
+			if (preg_match('/(.*)(\[|\]|<|>|&gt;|&lt;|{|})(.*)/', $this->target) != 0 ) {
 				return ''; // give up if illegal characters occur, 
 				           // TODO: we would need a skin to provide an ext URL in this case
 			}
@@ -596,7 +600,7 @@ class SMWStringTypeHandler implements SMWTypeHandler {
 
 	function processValue($value,&$datavalue) {
 		if ($value!='') { //do not accept empty strings
-			$xsdvalue = smwfXMLContentEncode($value);
+			$xsdvalue = $value; // encoding is already done by MediaWiki, don't do it twice
 			// 255 below matches smw_attributes.value_xsd definition in smwfMakeSemanticTables()
 			// Note that depending on database encoding and UTF-8 settings, longer or
 			// shorter strings than this with int'l characters may exceed database field.
@@ -626,144 +630,6 @@ class SMWStringTypeHandler implements SMWTypeHandler {
 
 SMWTypeHandlerFactory::registerTypeHandler($smwgContLang->getDatatypeLabel('smw_string'),
                        new SMWStringTypeHandler());
-
-
-/**
- * Class for managing enum types. Pretty simple,
- * just strings with check against possible values.
- */
-class SMWEnumTypeHandler implements SMWTypeHandler {
-
-	function getID() {
-		return 'enum';
-	}
-
-	// Can't represent any better way than as a string
-	function getXSDType() {
-		return 'http://www.w3.org/2001/XMLSchema#string';
-	}
-
-	function getUnits() { //no units for enums
-		return array('STDUNIT'=>false, 'ALLUNITS'=>array());
-	}
-
-	function processValue($value,&$datavalue) {
-		if ($value!='') { //do not accept empty strings
-			$xsdvalue = smwfXMLContentEncode($value);
-			// See if string is one of the possible values.
-			$desiredUnits = $datavalue->getDesiredUnits();
-			$possible_values = $datavalue->getPossibleValues();
-			if (count($possible_values) < 1) {
-				$datavalue->setError(wfMsgForContent('smw_nopossiblevalues'));
-			} else {
-				// TODO: I just need the sequence.
-				// Maybe keys should be possible values and values should be offset?
-				$offset = array_search($value, $possible_values);
-				if ($offset === false) {
-					$datavalue->setError(wfMsgForContent('smw_notinenum', $value, implode(', ', $possible_values)));
-				} else {
-					// We use a 1-based offset.
-					$offset++;
-					$datavalue->setProcessedValues($value, $xsdvalue, $offset);
-					$datavalue->setPrintoutString($value);
-					$datavalue->addQuicksearchLink();
-					$datavalue->addServiceLinks(urlencode($value));
-				}
-			}
-		} else {
-			$datavalue->setError(wfMsgForContent('smw_emptystring'));
-		}
-		return true;
-	}
-
-	function processXSDValue($value,$unit,&$datavalue) {
-		return $this->processValue($value,$datavalue);
-	}
-
-	function isNumeric() {
-		return true;
-	}
-}
-
-SMWTypeHandlerFactory::registerTypeHandler($smwgContLang->getDatatypeLabel('smw_enum'),
-                       new SMWEnumTypeHandler());
-
-
-/**
- * Class for managing boolean types. Pretty simple, the only trick is localizing true/false.
- */
-class SMWBooleanTypeHandler implements SMWTypeHandler {
-
-	function getID() {
-		return 'boolean';
-	}
-
-	function getXSDType() {
-		return 'http://www.w3.org/2001/XMLSchema#boolean';
-	}
-
-	function getUnits() { //no units for booleans
-		return array('STDUNIT'=>false, 'ALLUNITS'=>array());
-	}
-
-	function processValue($value, &$datavalue) {
-		$xsdvalue = -1;	// initialize to failure
-		// See http://en.wikipedia.org/wiki/Boolean_datatype
-		// TODO: To save code, trim values before they get to processValue().
-
-		$vlc = strtolower(trim($value));
-		if ($vlc!='') { //do not accept empty strings
-			// Look for universal true/false and 1/0,
-			// then allow language-specific names.
-			if (in_array($vlc, array('true', '1'), TRUE)) {
-				$xsdvalue = 'true';
-			} elseif (in_array($vlc, array('false', '0'), TRUE)) {
-				$xsdvalue = 'false';
-			} elseif (in_array($vlc, explode(',', wfMsgForContent('smw_true_words')), TRUE)) {
-				$xsdvalue = 'true';
-			} elseif (in_array($vlc, explode(',', wfMsgForContent('smw_false_words')), TRUE)) {
-				$xsdvalue = 'false';
-			} else {
-				$datavalue->setError(wfMsgForContent('smw_noboolean', $value));
-			}
-		} else {
-			$datavalue->setError(wfMsgForContent('smw_emptystring'));
-		}
-
-		if ($xsdvalue === 'true' || $xsdvalue === 'false') {
-			// Store numeric 1 or 0 as number.
-			$datavalue->setProcessedValues($value, $xsdvalue, $xsdvalue === 'true' ? 1 : 0);
-			// For a boolean, "units" is really a format from an inline query
-			// rather than the units of a float.
-			$desiredUnits = $datavalue->getDesiredUnits();
-			// Determine the user-visible string.
-			if (count($desiredUnits) ==0) {
-				$datavalue->setPrintoutString($xsdvalue);
-			} else {
-				// The units is a string for 'true', a comma, and a string for 'false'.
-				foreach ($desiredUnits as $wantedFormat) {
-					list($true_text, $false_text) = explode(',', $wantedFormat, 2);
-					$datavalue->setPrintoutString($xsdvalue === 'true' ? $true_text : $false_text);
-				}
-			}
-			$datavalue->addQuicksearchLink();
-		}
-		return true;
-	}
-
-	function processXSDValue($value,$unit,&$datavalue) {
-		return $this->processValue($value,$datavalue);
-	}
-
-	// true/false can be sorted
-	function isNumeric() {
-		return true;
-	}
-}
-
-SMWTypeHandlerFactory::registerTypeHandler($smwgContLang->getDatatypeLabel('smw_bool'),
-                       new SMWBooleanTypeHandler());
-
 
 /**
  * This method formats a float number value according to the given
