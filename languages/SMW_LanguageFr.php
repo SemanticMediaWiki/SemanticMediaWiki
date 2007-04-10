@@ -36,8 +36,8 @@ class SMW_LanguageFr {
 	'smw_emptystring' => '[Oups ! Les chaînes vides ne sont pas acceptées]',
 	'smw_maxstring' => '[Désolé, la chaîne de représentation $1 est trop grande pour ce site.]',
 	'smw_nopossiblevalues' => '[Oups! Les valeurs possibles pour cet attribut ne sont pas énumérées]',
-	'smw_notinenum' => '[Oups! "$1" ne fait pas partie des valeurs possibles ($2) pour cet attribut'],
-	'smw_noboolean' => '[Oups! "$1" n\'est pas reconnu comme une valeur boléenne (vrai/faux)'],
+	'smw_notinenum' => '[Oups! "$1" ne fait pas partie des valeurs possibles ($2) pour cet attribut]',
+	'smw_noboolean' => '[Oups! "$1" n\'est pas reconnu comme une valeur boléenne (vrai/faux)]',
 	'smw_true_words' => 'v,oui',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,non',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
 	'smw_nointeger' => '[Oups ! "$1" n\'est pas un nombre entier]',
@@ -45,7 +45,7 @@ class SMW_LanguageFr {
 	'smw_infinite' => '[Désolé, le nombre $1 est trop long.]',
 	'smw_infinite_unit' => '[Désolé, la conversion dans l\'unité $1 est impossible : le nombre est trop long.]',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'Cet attribut ne supporte aucune conversion d\'unité',
-	'smw_unsupportedprefix' => 'Les préfixes ($1") ne sont pas supportés actuellement'],
+	'smw_unsupportedprefix' => 'Les préfixes ($1") ne sont pas supportés actuellement]',
 	'smw_unsupportedunit' => 'La conversion de l\'unité "$1" n\'est pas supportée',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Les indications sur la latitude (N, S) doivent être comprises entre 0 et 90. "$1" ne se trouve pas à l\'intérieur de ces limites !',
@@ -100,7 +100,7 @@ class SMW_LanguageFr {
 	'smw_relations_docu' => 'Sur ce wiki, existent les relations suivantes:',
 	// Messages for RelationsWithoutPage Special
 	'relationswithoutpage' => 'Relations demandées',
-	'smw_relations_withoutpage' => 'Les relations suivantes n\'ont pas encore de page d\'explication, mais elles sont déjà utilisées pour décrire d\'autrees pages'
+	'smw_relations_withoutpage' => 'Les relations suivantes n\'ont pas encore de page d\'explication, mais elles sont déjà utilisées pour décrire d\'autrees pages',
 	/*Messages for Attributes Special*/
 	'attributes' => 'Attributs',
 	'smw_attributes_docu' => 'Sur ce wiki, existent les attributs suivants:',
