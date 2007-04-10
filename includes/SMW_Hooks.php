@@ -18,8 +18,6 @@
 	*        not relevant when moving the hook to internalParse()).
 	*/
 	function smwfParserHook(&$parser, &$text, &$strip_state = null) {
-		smwfInitMessages(); // make sure that the messages are available
-
 		// Init global storage for semantic data of this article.
 		SMWFactbox::initStorage($parser->getTitle(),$parser->getOptions()->getSkin());
 
