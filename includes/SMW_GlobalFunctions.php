@@ -85,7 +85,7 @@ function smwgSetupExtension() {
 	require_once($smwgIP . '/specials/URIResolver/SMW_SpecialURIResolver.php');
 	require_once($smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php'); // coming soon
 	require_once($smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php');
-	require_once($smwgIP . '/specials/OntologyImport/SMW_SpecialOntologyImport.php');
+	//require_once($smwgIP . '/specials/OntologyImport/SMW_SpecialOntologyImport.php'); // broken, TODO: fix or delete
 	require_once($smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php');
 	require_once($smwgIP . '/specials/ExtendedStatistics/SMW_SpecialExtendedStatistics.php');
 
