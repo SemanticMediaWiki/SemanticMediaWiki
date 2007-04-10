@@ -35,7 +35,7 @@ class SMW_LanguageEn {
 	'smw_manytypes' => '[Oops! More than one type defined for attribute]',
 	'smw_emptystring' => '[Oops! Empty strings are not accepted]',
 	'smw_maxstring' => '[Sorry, string representation $1 is too long for this site.]',
-	'smw_nopossiblevalues' => '[Oops! possible values for this attribute are not enumerated]',
+	'smw_nopossiblevalues' => '[Oops! Possible values for this attribute are not enumerated]',
 	'smw_notinenum' => '[Oops! "$1" is not in the list of possible values ($2) for this attribute]',
 	'smw_noboolean' => '[Oops! "$1" is not recognized as a boolean (true/false) value]',
 	'smw_true_words' => 't,yes,y',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'

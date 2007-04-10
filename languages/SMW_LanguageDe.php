@@ -182,8 +182,8 @@ class SMW_LanguageDe {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Zeichenkette',  // name of the string type
-	'smw_enum' => 'Enumeration',  // name of the enum type TODO: translate
-	'smw_bool' => 'Wahrheitswert',  // name of the boolean type TODO: Check translation
+	'smw_enum' => 'Enumeration',  // name of the enum type //TODO: translate
+	'smw_bool' => 'Wahrheitswert',  // name of the boolean type
 	'smw_int' => 'Ganze Zahl',  // name of the int type
 	'smw_float' => 'Dezimalzahl',  // name of the floating point type
 	'smw_length' => 'Länge',  // name of the length type
