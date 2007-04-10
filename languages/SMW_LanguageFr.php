@@ -45,7 +45,7 @@ class SMW_LanguageFr {
 	'smw_infinite' => '[Désolé, le nombre $1 est trop long.]',
 	'smw_infinite_unit' => '[Désolé, la conversion dans l\'unité $1 est impossible : le nombre est trop long.]',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'Cet attribut ne supporte aucune conversion d\'unité',
-	'smw_unsupportedprefix' => 'Les préfixes ($1") ne sont pas supportés actuellement]',
+	'smw_unsupportedprefix' => 'Des préfixes ("$1") ne sont pas supportés actuellement',
 	'smw_unsupportedunit' => 'La conversion de l\'unité "$1" n\'est pas supportée',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Les indications sur la latitude (N, S) doivent être comprises entre 0 et 90. "$1" ne se trouve pas à l\'intérieur de ces limites !',
