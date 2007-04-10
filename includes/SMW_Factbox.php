@@ -211,7 +211,7 @@ class SMWFactbox {
 			}
 		}
 
-		// print the input (this property is not stored, see SMW_Storage.php)
+		// print the input (this property is usually not stored, see SMW_SQLStore.php)
 		$datavalue = SMWDataValue::newTypedValue($sth,"[$onto_uri$onto_section $value]");
 		// TODO: Unfortunatelly, the following line can break the tooltip code if $onto_name has markup. -- mak
 		// if ('' != $onto_name) $datavalue->setPrintoutString($onto_name, 'onto_name');
