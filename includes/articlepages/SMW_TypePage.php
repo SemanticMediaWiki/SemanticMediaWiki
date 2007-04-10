@@ -7,20 +7,26 @@
  * @author: Markus Krötzsch
  */
 
-
-if( !defined( 'MEDIAWIKI' ) ) {
-	die( 1 );
-}
+if( !defined( 'MEDIAWIKI' ) )   die( 1 );
 
 global $smwgIP;
 require_once( "$smwgIP/includes/articlepages/SMW_OrderedListPage.php");
 
 
+/**
+ * Implementation of MediaWiki's Article that shows additional information on
+ * Type: pages. Very simliar to CategoryPage.
+ */
 class SMWTypePage extends SMWOrderedListPage {
 
-// 	public function SMWTypePage() {
-// 		
-// 	}
+	/**
+	 * Use higher limit. This operation is very similar to showing members of cateogies.
+	 */
+	protected function initParameters() {
+		global $smwgTypePagingLimit;
+		$this->limit = $smwgTypePagingLimit;
+		return true;
+	}
 
 	/**
 	 * Fill the internal arrays with the set of articles to be displayed (possibly plus one additional
@@ -49,7 +55,7 @@ class SMWTypePage extends SMWOrderedListPage {
 			$this->articles_start_char[] = $wgContLang->convert( $wgContLang->firstChar( $title->getText() ) );
 		}
 	}
-	
+
 	/**
 	 * Generates the headline for the page list and the HTML encoded list of pages which 
 	 * shall be shown.
@@ -57,7 +63,7 @@ class SMWTypePage extends SMWOrderedListPage {
 	protected function getPages() {
 		$ti = htmlspecialchars( $this->mTitle->getText() );
 		$nav = $this->getNavigationLinks();
-		$r = $nav . "<div id=\"mw-pages\">\n";
+		$r = '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
 
 		$r .= '<h2>' . wfMsg('smw_type_header',$ti) . "</h2>\n";
 		$r .= wfMsg('smw_typearticlecount', min($this->limit, count($this->articles))) . "\n";
@@ -71,8 +77,6 @@ class SMWTypePage extends SMWOrderedListPage {
 	 * Format a list of articles chunked by letter, either as a
 	 * bullet list or a columnar format, depending on the length.
 	 *
-	 * @param array $articles
-	 * @param array $articles_start_char
 	 * @param int   $cutoff
 	 * @return string
 	 */

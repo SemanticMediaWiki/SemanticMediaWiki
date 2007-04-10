@@ -40,7 +40,15 @@ if (!isset($smwgNamespaceIndex)) {
 ##
 $smwgShowFactbox = SMW_FACTBOX_NONEMPTY;
 //$smwgShowFactbox = SMW_FACTBOX_HIDDEN; # hide always
-//$smwgShowFactbox = SMW_FACTBOX_SHOWN; # show always
+//$smwgShowFactbox = SMW_FACTBOX_SHOWN; # show always, buggy and not recommended
+##
+
+###
+# Number results shown in the listings on pages of properties (attributes or
+# relations) and types.
+##
+$smwgTypePagingLimit = 200; // same as for categories
+$smwgPropertyPagingLimit = 25; // use smaller value since property lists are much longer
 ##
 
 ###

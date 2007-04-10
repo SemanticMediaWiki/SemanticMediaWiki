@@ -3,20 +3,38 @@
  * Special handling for relation/attribute description pages.
  * Some code based on CategoryPage.php
  *
- * @package MediaWiki
  * @author: Markus Krötzsch
  */
 
-if( !defined( 'MEDIAWIKI' ) ) {
-	die( 1 );
-}
+if( !defined( 'MEDIAWIKI' ) )   die( 1 );
 
 global $smwgIP;
 require_once( "$smwgIP/includes/articlepages/SMW_OrderedListPage.php");
 
 /**
+ * Implementation of MediaWiki's Article that shows additional information on
+ * property pages (Relation: and Attribute:). Very simliar to CategoryPage, but
+ * with different printout that also displays values for each subject with the
+ * given property.
  */
 class SMWPropertyPage extends SMWOrderedListPage {
+
+	/**
+	 * Use small $limit (property pages might become large)
+	 */
+	protected function initParameters() {
+		global $smwgContLang, $smwgPropertyPagingLimit;
+		$this->limit = $smwgPropertyPagingLimit;
+		// Do not attempt listings for special properties:
+		// they behave differently, have dedicated search UIs, and
+		// might even be unsearchable by design
+		$srels = $smwgContLang->getSpecialPropertiesArray();
+		$special = array_search($this->mTitle->getText(), $srels);
+		if ($special !== false) {
+			return false;
+		}
+		return true;
+	}
 
 	/**
 	 * Fill the internal arrays with the set of articles to be displayed (possibly plus one additional
@@ -54,13 +72,13 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Generates the headline for the page list and the HTML encoded list of pages which 
+	 * Generates the headline for the page list and the HTML encoded list of pages which
 	 * shall be shown.
 	 */
 	protected function getPages() {
 		$ti = htmlspecialchars( $this->mTitle->getText() );
 		$nav = $this->getNavigationLinks();
-		$r = $nav . "<div id=\"mw-pages\">\n";
+		$r = '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
 		switch ( $this->mTitle->getNamespace() ) {
 			case SMW_NS_RELATION:
 				$r .= '<h2>' . wfMsg('smw_relation_header',$ti) . "</h2>\n";
@@ -76,10 +94,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Format a list of articles chunked by letter in a bullet list.
-	 * @param array $articles
-	 * @param array $articles_start_char
-	 * @return string
+	 * Format a list of articles chunked by letter in a table that shows subject articles in
+	 * one column and object articles/values in the other one.
 	 */
 	private function shortList() {
 		global $wgContLang;

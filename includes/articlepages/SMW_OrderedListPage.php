@@ -9,15 +9,18 @@
  * @author Markus Krötzsch 
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 1 );
-}
+if ( !defined( 'MEDIAWIKI' ) )  die( 1 );
 
 global $IP;
 require_once( "$IP/includes/Article.php" );
 
 /**
+ * Abstract subclass of MediaWiki's Article that handles the common tasks of
+ * article pages for Types and Properties. Mostly, it implements general processing
+ * and the generation of suitable navigation links from results sets and HTTP
+ * parameters.
  *
+ * Some code adapted from CategoryPage.php
  */
 abstract class SMWOrderedListPage extends Article {
 
@@ -32,6 +35,15 @@ abstract class SMWOrderedListPage extends Article {
 	 * Overwrite view() from Article.php to add additional html to the output.
 	 */
 	public function view() {
+		global $wgRequest, $wgUser;
+
+		// copied from CategoryPage ...
+		$diff = $wgRequest->getVal( 'diff' );
+		$diffOnly = $wgRequest->getBool( 'diffonly', $wgUser->getOption( 'diffonly' ) );
+		if ( isset( $diff ) && $diffOnly ) {
+			return Article::view();
+		}
+
 		Article::view();
 		$this->showList();
 	}
@@ -43,8 +55,20 @@ abstract class SMWOrderedListPage extends Article {
 		global $wgOut, $wgRequest;
 		$this->from = $wgRequest->getVal( 'from' );
 		$this->until = $wgRequest->getVal( 'until' );
+		if ($this->initParameters()) {
+			$wgOut->addHTML( $this->getHTML() );
+		}
+	}
+
+	/**
+	 * Initialise some parameters that might be changed by subclasses
+	 * (e.g. $limit). Method can be overwritten in this case.
+	 * If the method returns false, nothing will be printed besides 
+	 * the original article.
+	 */
+	protected function initParameters() {
 		$this->limit = 20;
-		$wgOut->addHTML( $this->getHTML() );
+		return true;
 	}
 
 	/**
@@ -106,6 +130,7 @@ abstract class SMWOrderedListPage extends Article {
 		}
 
 		$prevLink = htmlspecialchars( wfMsg( 'prevn', $limitText ) );
+		$this->mTitle->setFragment('#SMWResults'); // make navigation point to the result list
 		if( $first != '' ) {
 			$prevLink = $sk->makeLinkObj( $this->mTitle, $prevLink,
 				wfArrayToCGI( $query + array( 'until' => $first ) ) );
