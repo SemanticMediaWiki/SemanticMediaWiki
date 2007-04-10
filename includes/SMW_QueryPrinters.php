@@ -95,6 +95,7 @@ class SMWListPrinter implements SMWQueryPrinter {
 	}
 	
 	public function printResult() {
+		global $wgTitle,$smwgStoreActive;
 		// print header
 		$result = $this->mIQ->getIntro();
 		if ( ('ul' == $this->mIQ->getFormat()) || ('ol' == $this->mIQ->getFormat()) ) {
@@ -117,6 +118,16 @@ class SMWListPrinter implements SMWQueryPrinter {
 			$rowend = '';
 			$plainlist = true;
 		}
+		
+		if (array_key_exists('template', $params)) {
+			$templatename = $params['template'];
+			$parser_options = new ParserOptions();
+			$parser_options->setEditSection(false);  // embedded sections should not have edit links
+			$parser = new Parser();
+			$usetemplate = true;
+		} else {
+			$usetemplate = false;
+		}
 
 		// print all result rows
 		$first_row = true;
@@ -129,32 +140,56 @@ class SMWListPrinter implements SMWQueryPrinter {
 			} else $result .= $rowstart;
 
 			$first_col = true;
-			$found_values = false; // has anything but the first coolumn been printed?
-			foreach ($this->mQuery->mPrint as $print_data) {
-				$iterator = $this->mIQ->getIterator($print_data,$row,$first_col);
-				$first_value = true;
-				while ($cur = $iterator->getNext()) {
-					if (!$first_col && !$found_values) { // first values after first column
-						$result .= ' (';
-						$found_values = true;
-					} elseif ($found_values || !$first_value) { 
-					  // any value after '(' or non-first values on first column
-						$result .= ', ';
+			if ($usetemplate) { // build template code
+				$wikitext = '';
+				foreach ($this->mQuery->mPrint as $print_data) {
+					$iterator = $this->mIQ->getIterator($print_data,$row,$first_col);
+					$wikitext .= "|";
+					$first_value = true;
+					while ($cur = $iterator->getNext()) {
+						if ($first_value) $first_value = false; else $wikitext .= ', ';
+						$wikitext .= $cur[0];
 					}
-					if ($first_value) { // first value in any column, print header
-						$first_value = false;
-						if ( $this->mIQ->showHeaders() && ('' != $print_data[0]) ) {
-							$result .= $print_data[0] . ' ';
-						}
-					}
-					$result .= $cur[0]; // actual output value
+					$first_col = false;
 				}
-				$first_col = false;
+				$result .= '{{' . $templatename . str_replace('=','&#x007C;', $wikitext) . '}}'; // encode '=' for use in templates (templates fail otherwise)
+			} else {  // build simple list
+				$first_col = true;
+				$found_values = false; // has anything but the first column been printed?
+				foreach ($this->mQuery->mPrint as $print_data) {
+					$iterator = $this->mIQ->getIterator($print_data,$row,$first_col);
+					$first_value = true;
+					while ($cur = $iterator->getNext()) {
+						if (!$first_col && !$found_values) { // first values after first column
+							$result .= ' (';
+							$found_values = true;
+						} elseif ($found_values || !$first_value) { 
+						// any value after '(' or non-first values on first column
+							$result .= ', ';
+						}
+						if ($first_value) { // first value in any column, print header
+							$first_value = false;
+							if ( $this->mIQ->showHeaders() && ('' != $print_data[0]) ) {
+								$result .= $print_data[0] . ' ';
+							}
+						}
+						$result .= $cur[0]; // actual output value
+					}
+					$first_col = false;
+				}
+				if ($found_values) $result .= ')';
 			}
-			if ($found_values) $result .= ')';
 			$result .= $rowend;
 			$first_row = false;
 			$row = $nextrow;
+		}
+		
+		if ($usetemplate) {
+			$old_smwgStoreActive = $smwgStoreActive;
+			$smwgStoreActive = false; // no annotations stored, no factbox printed
+			$parserOutput = $parser->parse($result, $wgTitle, $parser_options);
+			$result = $parserOutput->getText();
+			$smwgStoreActive = $old_smwgStoreActive;
 		}
 		
 		if ($this->mIQ->isInline() && $this->mIQ->hasFurtherResults()) {
@@ -473,7 +508,7 @@ class SMWTemplatePrinter implements SMWQueryPrinter {
 		$smwgStoreActive = false; // no annotations stored, no factbox printed
 
 		// print all result rows
-		$result = $this->mIQ->getIntro();
+		$parserinput = $this->mIQ->getIntro();
 		$params = $this->mIQ->getParameters();
 		if (array_key_exists('template', $params)) {
 			$templatename = $params['template'];
@@ -484,7 +519,6 @@ class SMWTemplatePrinter implements SMWQueryPrinter {
 		$parser_options = new ParserOptions();
 		$parser_options->setEditSection(false);  // embedded sections should not have edit links
 		$parser = new Parser();
-		$parserinput = "";
 		while ( $row = $this->mIQ->getNextRow() ) {
 			$wikitext = '';
 			$firstcol = true;
@@ -498,10 +532,10 @@ class SMWTemplatePrinter implements SMWQueryPrinter {
 				}
 				$firstcol = false;
 			}
-			$parserinput .= '{{' . $templatename . $wikitext . '}}';
+			$parserinput .= '{{' . $templatename . str_replace('=','&#x007C;', $wikitext) . '}}'; // encode '=' for use in templates (templates fail otherwise)
 		}
 		$parserOutput = $parser->parse($parserinput, $wgTitle, $parser_options);
-		$result .= $parserOutput->getText();
+		$result = $parserOutput->getText();
 		// show link to more results
 		if ($this->mIQ->isInline() && $this->mIQ->hasFurtherResults()) {
 			$label = $this->mIQ->getSearchLabel();

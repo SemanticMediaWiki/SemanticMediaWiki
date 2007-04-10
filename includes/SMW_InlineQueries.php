@@ -279,7 +279,7 @@ class SMWInlineQuery {
 		// created during query parsing, while printers might be selected only after this.
 		// This will be fixed by cleaning up the query parsing code to not create full links
 		// at a later stage.
-		if ($this->mFormat == 'template') {
+		if (array_key_exists('template', $param)) {
 			$this->mHTMLPrinter = false;
 		} else {
 			$this->mHTMLPrinter = true;
