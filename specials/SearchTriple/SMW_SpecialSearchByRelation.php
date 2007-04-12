@@ -64,7 +64,7 @@ class SMW_SearchByRelation {
 			$wlhlink = htmlspecialchars($skin->makeSpecialUrl('Whatlinkshere/' . $object->getPrefixedURL()));
 			$html .= wfMsg('smw_tb_notype', $object->getPrefixedText(), $wlhlink);
 		} elseif ('' == $target) { // no object given
-			$html .= wfMSG('smw_tb_notarget', $skin->makeLinkObj($relation, $relation->mTextform));
+			$html .= wfMSG('smw_tb_notarget', $skin->makeLinkObj($relation, $relation->getText()));
 		} else { // everything is given
 			$options = new SMWRequestOptions();
 			$options->limit = $limit+1;
@@ -72,7 +72,7 @@ class SMW_SearchByRelation {
 			// get results (get one more, to see if we have to add a link to more)
 			$results = &smwfGetStore()->getRelationSubjects($relation, $object, $options);
 
-			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_tb_displayresult', $skin->makeLinkObj($relation, $relation->mTextform), $skin->makeLinkObj($object)) . "<br />\n";
+			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_tb_displayresult', $skin->makeLinkObj($relation, $relation->getText()), $skin->makeLinkObj($object)) . "<br />\n";
 
 			// prepare navigation bar
 			if ($offset > 0)
@@ -80,7 +80,7 @@ class SMW_SearchByRelation {
 			else
 				$navigation = wfMsg('smw_result_prev');
 
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($results), 20)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($results), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 			if (count($results)==($limit+1))
 				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByRelation', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&type=' . urlencode($type) . '&target=' . urlencode($target)))  . '">' . wfMsg('smw_result_next') . '</a>';

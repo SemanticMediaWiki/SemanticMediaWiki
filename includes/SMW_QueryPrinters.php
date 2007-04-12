@@ -27,7 +27,7 @@ class SMWTablePrinter implements SMWQueryPrinter {
 		$this->mIQ = $iq;
 		$this->mQuery = $query;
 	}
-	
+
 	public function printResult() {
 		global $smwgIQRunningNumber;
 
@@ -93,11 +93,12 @@ class SMWListPrinter implements SMWQueryPrinter {
 		$this->mIQ = $iq;
 		$this->mQuery = $query;
 	}
-	
+
 	public function printResult() {
 		global $wgTitle,$smwgStoreActive;
 		// print header
 		$result = $this->mIQ->getIntro();
+		$params = $this->mIQ->getParameters();
 		if ( ('ul' == $this->mIQ->getFormat()) || ('ol' == $this->mIQ->getFormat()) ) {
 			$result .= '<' . $this->mIQ->getFormat() . '>';
 			$footer = '</' . $this->mIQ->getFormat() . '>';
@@ -105,7 +106,6 @@ class SMWListPrinter implements SMWQueryPrinter {
 			$rowend = '</li>';
 			$plainlist = false;
 		} else {
-			$params = $this->mIQ->getParameters();
 			if (array_key_exists('sep', $params)) {
 				$listsep = htmlspecialchars(str_replace('_', ' ', $params['sep']));
 				$finallistsep = $listsep;
@@ -118,7 +118,7 @@ class SMWListPrinter implements SMWQueryPrinter {
 			$rowend = '';
 			$plainlist = true;
 		}
-		
+
 		if (array_key_exists('template', $params)) {
 			$templatename = $params['template'];
 			$parser_options = new ParserOptions();
@@ -163,7 +163,7 @@ class SMWListPrinter implements SMWQueryPrinter {
 						if (!$first_col && !$found_values) { // first values after first column
 							$result .= ' (';
 							$found_values = true;
-						} elseif ($found_values || !$first_value) { 
+						} elseif ($found_values || !$first_value) {
 						// any value after '(' or non-first values on first column
 							$result .= ', ';
 						}
@@ -183,7 +183,7 @@ class SMWListPrinter implements SMWQueryPrinter {
 			$first_row = false;
 			$row = $nextrow;
 		}
-		
+
 		if ($usetemplate) {
 			$old_smwgStoreActive = $smwgStoreActive;
 			$smwgStoreActive = false; // no annotations stored, no factbox printed
@@ -191,7 +191,7 @@ class SMWListPrinter implements SMWQueryPrinter {
 			$result = $parserOutput->getText();
 			$smwgStoreActive = $old_smwgStoreActive;
 		}
-		
+
 		if ($this->mIQ->isInline() && $this->mIQ->hasFurtherResults()) {
 			$label = $this->mIQ->getSearchLabel();
 			if ($label === NULL) { //apply defaults
@@ -222,7 +222,7 @@ class SMWTimelinePrinter implements SMWQueryPrinter {
 		$this->mIQ = $iq;
 		$this->mQuery = $query;
 	}
-	
+
 	public function printResult() {
 		global $smwgIQRunningNumber;
 
@@ -260,7 +260,7 @@ class SMWTimelinePrinter implements SMWQueryPrinter {
 		if (array_key_exists('timelinebands', $params)) { //check for band parameter, should look like "DAY,MONTH,YEAR"
 			$bands = preg_split('/[,][\s]?/',$params['timelinebands']);
 			foreach ($bands as $band) {
-				$result .= '<span class="smwtlband">' . htmlspecialchars($band) . '</span>'; 
+				$result .= '<span class="smwtlband">' . htmlspecialchars($band) . '</span>';
 				 //just print any "band" given, the JavaScript will figure out what to make of it
 			}
 		}
@@ -410,7 +410,7 @@ class SMWEmbeddedPrinter implements SMWQueryPrinter {
 		} else {
 			$showhead = true;
 		}
-		
+
 		if (array_key_exists('embedformat', $params)) {
 			switch ($params['embedformat']) {
 				case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
@@ -482,15 +482,15 @@ class SMWEmbeddedPrinter implements SMWQueryPrinter {
 			}
 		}
 		$result .= $footer;
-		
+
 		$smwgStoreActive = $old_smwgStoreActive;
 		return $result;
 	}
 }
 
 /**
- * Printer for template data. Passes a result a result row as anonymous parameters to 
- * a given template (which might ignore them or not) and prints the result. Values 
+ * Printer for template data. Passes a result a result row as anonymous parameters to
+ * a given template (which might ignore them or not) and prints the result. Values
  */
 class SMWTemplatePrinter implements SMWQueryPrinter {
 	private $mIQ; // the querying object that called the printer

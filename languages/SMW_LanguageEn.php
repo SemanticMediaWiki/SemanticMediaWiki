@@ -181,6 +181,17 @@ class SMW_LanguageEn {
 	'smw_sbv_attribute' => 'Attribute',
 	'smw_sbv_value' => 'Value',
 	'smw_sbv_submit' => 'Find results',
+	// Messages for the browsing system
+	'smwbrowse' => 'Browse article',
+	'smw_browse_article' => 'Enter the name of the article to start browsing from.',
+	'smw_browse_in' => 'Incoming',
+	'smw_browse_out' => 'Outgoing',
+	'smw_browse_docu' => '<p>Search for all properties of the given article.</p>',
+	'smw_browse_displayresult' => 'All incoming properties for the article $1. Click <span class="smwsearchicon">+</span> to explore connecting articles.',
+	'smw_browse_displayout' => 'All outgoing properties of the article $1. Click <span class="smwsearchicon">+</span> to explore connecting articles.',
+	'smw_browse_noout' => 'No outgoing properties found. Try the <a href="$1">incoming properties</a> instead.',
+	'smw_browse_noin' => 'No incoming properties found. Try the <a href="$1">outgoing properties</a> instead.',
+	'smw_browse_more' => '&#0133;',
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Previous',
 	'smw_result_next' => 'Next',

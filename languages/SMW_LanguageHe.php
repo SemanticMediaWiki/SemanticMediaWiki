@@ -161,7 +161,7 @@ class SMW_LanguageHe {
 	'smw_ask_sortby' => 'מיין לפי טור',
 	'smw_ask_ascorder' => 'בסדר עולה',
 	'smw_ask_descorder' => 'בסדר יורד',
-	'smw_ask_submit' => 'חפש תוצאות',	
+	'smw_ask_submit' => 'חפש תוצאות',
 	// Messages for search by relation Special
 	'searchbyrelation' => 'Search by relation',  //TODO: translate
 	'smw_tb_docu' => '<p>Search for all pages that have a certain relation to the given target page.</p>', //TODO: translate
@@ -180,11 +180,22 @@ class SMW_LanguageHe {
 	'smw_sbv_attribute' => 'Attribute', //TODO: translate
 	'smw_sbv_value' => 'Value', //TODO: translate
 	'smw_sbv_submit' => 'Find results', //TODO: translate
+	// Messages for the browsing system
+	'smwbrowse' => 'Browse article', //TODO: translate
+	'smw_browse_article' => 'Enter the name of the article to start browsing from.', //TODO: translate
+	'smw_browse_in' => 'Incoming', //TODO: translate
+	'smw_browse_out' => 'Outgoing', //TODO: translate
+	'smw_browse_docu' => '<p>Search for all properties of the given article.</p>', //TODO: translate
+	'smw_browse_displayresult' => 'All incoming properties for the article $1. Click <span class="smwsearchicon">+</span> to explore connecting articles.', //TODO: translate
+	'smw_browse_displayout' => 'All outgoing properties of the article $1. Click <span class="smwsearchicon">+</span> to explore connecting articles.', //TODO: translate
+	'smw_browse_noout' => 'No outgoing properties found. Try the <a href="$1">incoming properties</a> instead.', //TODO: translate
+	'smw_browse_noin' => 'No incoming properties found. Try the <a href="$1">outgoing properties</a> instead.', //TODO: translate
+	'smw_browse_more' => '&#0133;', //TODO: translate
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'הקודם',
 	'smw_result_next' => 'הבא',
 	'smw_result_results' => 'תוצאות',
-	'smw_result_noresults' => 'מצטערת, אין תוצאות'	
+	'smw_result_noresults' => 'מצטערת, אין תוצאות'
 );
 
 /* private */ var $smwDatatypeLabels = array(

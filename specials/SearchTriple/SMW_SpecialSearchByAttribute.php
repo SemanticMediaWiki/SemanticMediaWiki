@@ -59,7 +59,7 @@ class SMW_SearchByAttribute {
 		if ('' == $attribute) { // empty page. If no attribute given the value does not matter
 			$html .= wfMsg('smw_sbv_docu') . "\n";
 		} elseif ('' == $valuestring) { // no value given
-			$html .= wfMSG('smw_sbv_novalue', $skin->makeLinkObj($attributetitle, $attributetitle->mTextform));
+			$html .= wfMSG('smw_sbv_novalue', $skin->makeLinkObj($attributetitle, $attributetitle->getText()));
 		} else { // everything is given
 			$unit = NULL;
 			$type = NULL;
@@ -85,7 +85,7 @@ class SMW_SearchByAttribute {
 			$count = count($res);
 
 
-			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_sbv_displayresult', $skin->makeLinkObj($attributetitle, $attributetitle->mTextform), $valuestring) . "<br />\n";
+			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_sbv_displayresult', $skin->makeLinkObj($attributetitle, $attributetitle->getText()), $valuestring) . "<br />\n";
 
 			// prepare navigation bar
 			if ($offset > 0)
@@ -93,7 +93,7 @@ class SMW_SearchByAttribute {
 			else
 				$navigation = wfMsg('smw_result_prev');
 
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min($count, 20)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min($count, $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 			if ($count>$limit)
 				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute) . '&value=' . urlencode($valuestring)))  . '">' . wfMsg('smw_result_next') . '</a>';

@@ -27,7 +27,7 @@ class SMW_LanguageFr {
 	'smw_wrong_importtype' => '[L\'élément "$1" ne peut être employé pour des articles de l\'espace de nommage domaine "$2".]',
 	'smw_no_importelement' => '[Désolé. L\'élément "$1" n\'est pas disponible pour l\'importation.]',
 	/*Messages and strings for basic datatype processing*/
-	'smw_decseparator' => ',', 
+	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_unknowntype' => '[Oups ! Le type de données "$1" non supporté a été retourné à l\'attribut]',
 	'smw_noattribspecial' => '[Oups ! La propriété spéciale "$1" n\'est pas un attribut (utilisez "::" au lieu de ":=")]',
@@ -172,6 +172,17 @@ class SMW_LanguageFr {
 	'smw_sbv_attribute' => 'Attribut',
 	'smw_sbv_value' => 'Valeur',
 	'smw_sbv_submit' => 'Trouver des résultats',
+	// Messages for the browsing system
+	'smwbrowse' => 'Browse article', //TODO: translate
+	'smw_browse_article' => 'Enter the name of the article to start browsing from.', //TODO: translate
+	'smw_browse_in' => 'Incoming', //TODO: translate
+	'smw_browse_out' => 'Outgoing', //TODO: translate
+	'smw_browse_docu' => '<p>Search for all properties of the given article.</p>', //TODO: translate
+	'smw_browse_displayresult' => 'All incoming properties for the article $1. Click <span class="smwsearchicon">+</span> to explore connecting articles.', //TODO: translate
+	'smw_browse_displayout' => 'All outgoing properties of the article $1. Click <span class="smwsearchicon">+</span> to explore connecting articles.', //TODO: translate
+	'smw_browse_noout' => 'No outgoing properties found. Try the <a href="$1">incoming properties</a> instead.', //TODO: translate
+	'smw_browse_noin' => 'No incoming properties found. Try the <a href="$1">outgoing properties</a> instead.', //TODO: translate
+	'smw_browse_more' => '&#0133;', //TODO: translate
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Précédent',
 	'smw_result_next' => 'Suivant',
@@ -193,7 +204,7 @@ class SMW_LanguageFr {
 	'smw_mass' => 'Masse',  // name of the mass type
 	'smw_time' => 'Durée',  // name of the time type
 	'smw_temperature' => 'Température',  // name of the temperature type
-	'smw_datetime' => 'Date',  // name of the datetime (calendar) type	
+	'smw_datetime' => 'Date',  // name of the datetime (calendar) type
 	'smw_email' => 'Adresse électronique',  // name of the email (URI) type
 	'smw_url' => 'URL',  // name of the URL type (string datatype property)
 	'smw_uri' => 'URI',  // name of the URI type (object property)
@@ -227,37 +238,37 @@ class SMW_LanguageFr {
 			SMW_NS_TYPE_TALK      => "Discussion_type"
 		);
 	}
-	
+
 	/**
 	 * Function that returns the localized label for a datatype.
 	 */
 	function getDatatypeLabel($msgid) {
 		return $this->smwDatatypeLabels[$msgid];
 	}
-	
+
 	/**
 	 * Function that returns the labels for the special relations and attributes.
 	 */
 	function getSpecialPropertiesArray() {
 		return $this->smwSpecialProperties;
 	}
-	
+
 	/**
-	 * Function that returns all content messages (those that are stored 
+	 * Function that returns all content messages (those that are stored
 	 * in some article, and can thus not be translated to individual users).
 	 */
 	function getContentMsgArray() {
 		return $this->smwContentMessages;
 	}
-	
+
 	/**
-	 * Function that returns all user messages (those that are given only to 
+	 * Function that returns all user messages (those that are given only to
 	 * the current user, and can thus be given in the individual user language).
 	 */
 	function getUserMsgArray() {
 		return $this->smwUserMessages;
 	}
-		
+
 }
- 
+
 ?>

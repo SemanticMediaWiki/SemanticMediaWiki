@@ -172,12 +172,23 @@ class SMW_LanguageDe {
 	'smw_sbv_attribute' => 'Attribut',
 	'smw_sbv_value' => 'Wert',
 	'smw_sbv_submit' => 'Finde Ergebnisse',
+	// Messages for the browsing system
+	'smwbrowse' => 'Browse Artikel',
+	'smw_browse_article' => 'Bitte den Namen des Artikels eintragen, von dem aus gebrowset werden soll.',
+	'smw_browse_in' => 'Eingehend',
+	'smw_browse_out' => 'Ausgehend',
+	'smw_browse_docu' => '<p>Sucht nach allen Relationen eines Artikels.</p>',
+	'smw_browse_displayresult' => 'Alle hereinkommenden Relationen des Artikels $1. Mit <span class="smwsearchicon">+</span> gelangt man zu den verbundenen Artikeln.',
+	'smw_browse_displayout' => 'Alle herausgehenden Relationen des Artikels $1. Mit <span class="smwsearchicon">+</span> gelangt man zu den verbundenen Artikeln.',
+	'smw_browse_noout' => 'Es wurden keine herausgehenden Relationen gefunden. Versuchen Sie stattdessen die <a href="$1">hereinkommenden</a>.',
+	'smw_browse_noin' => 'Es wurden keine hereinkommenden Relationen gefunden. Versuchen Sie stattdessen die <a href="$1">herausgehenden</a>.',
+	'smw_browse_more' => '&#0133;',
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Zurück',
 	'smw_result_next' => 'Vorwärts',
 	'smw_result_results' => 'Ergebnisse',
 	'smw_result_noresults' => 'Keine Ergebnisse gefunden.'
-	
+
 );
 
 /* private */ var $smwDatatypeLabels = array(

@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Javier Calzada Prado, Carmen Jorge García-Reyes, Universidad Carlos III de Madrid 
+ * @author Javier Calzada Prado, Carmen Jorge García-Reyes, Universidad Carlos III de Madrid
  */
 
 class SMW_LanguageEs {
@@ -27,7 +27,7 @@ class SMW_LanguageEs {
 	'smw_wrong_importtype' => '[El elemento "$1" no puede ser utilizado para los artículos del espacio de nombres dominio "$2".]',
 	'smw_no_importelement' => '[Lo sentimos. El elemento "$1" no está disponible para la importación.]',
 	/*Messages and strings for basic datatype processing*/
-	'smw_decseparator' => ',', 
+	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_unknowntype' => '[Ups ! El tipo de datos "$1" no soportado ha sido devuelto al atributo]',
 	'smw_noattribspecial' => '[Ups ! La propiedad especial "$1" no es un atributo (utilice "::" en lugar de ":=")]',
@@ -171,6 +171,17 @@ class SMW_LanguageEs {
 	'smw_sbv_attribute' => 'Attribute', //TODO: translate
 	'smw_sbv_value' => 'Value', //TODO: translate
 	'smw_sbv_submit' => 'Find results', //TODO: translate
+	// Messages for the browsing system
+	'smwbrowse' => 'Browse article', //TODO: translate
+	'smw_browse_article' => 'Enter the name of the article to start browsing from.', //TODO: translate
+	'smw_browse_in' => 'Incoming', //TODO: translate
+	'smw_browse_out' => 'Outgoing', //TODO: translate
+	'smw_browse_docu' => '<p>Search for all properties of the given article.</p>', //TODO: translate
+	'smw_browse_displayresult' => 'All incoming properties for the article $1. Click <span class="smwsearchicon">+</span> to explore connecting articles.', //TODO: translate
+	'smw_browse_displayout' => 'All outgoing properties of the article $1. Click <span class="smwsearchicon">+</span> to explore connecting articles.', //TODO: translate
+	'smw_browse_noout' => 'No outgoing properties found. Try the <a href="$1">incoming properties</a> instead.', //TODO: translate
+	'smw_browse_noin' => 'No incoming properties found. Try the <a href="$1">outgoing properties</a> instead.', //TODO: translate
+	'smw_browse_more' => '&#0133;', //TODO: translate
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Previous', //TODO: translate
 	'smw_result_next' => 'Next', //TODO: translate
@@ -192,7 +203,7 @@ class SMW_LanguageEs {
 	'smw_mass' => 'Masa',  // name of the mass type
 	'smw_time' => 'Duración',  // name of the time type
 	'smw_temperature' => 'Temperatura',  // name of the temperature type
-	'smw_datetime' => 'Fecha',  // name of the datetime (calendar) type	
+	'smw_datetime' => 'Fecha',  // name of the datetime (calendar) type
 	'smw_email' => 'Dirección electrónica',  // name of the email (URI) type
 	'smw_url' => 'URL',  // name of the URL type (string datatype property)
 	'smw_uri' => 'URI',  // name of the URI type (object property)
@@ -242,7 +253,7 @@ class SMW_LanguageEs {
 	}
 
 	/**
-	 * Function that returns all content messages (those that are stored 
+	 * Function that returns all content messages (those that are stored
 	 * in some article, and can thus not be translated to individual users).
 	 */
 	function getContentMsgArray() {
@@ -250,7 +261,7 @@ class SMW_LanguageEs {
 	}
 
 	/**
-	 * Function that returns all user messages (those that are given only to 
+	 * Function that returns all user messages (those that are given only to
 	 * the current user, and can thus be given in the individual user language).
 	 */
 	function getUserMsgArray() {
