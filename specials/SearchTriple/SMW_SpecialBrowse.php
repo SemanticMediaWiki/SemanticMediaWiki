@@ -40,7 +40,7 @@ class SMW_SpecialBrowse	 {
 		$offset = $wgRequest->getVal( 'offset' );
 		if ('' == $offset) $offset = 0;
 		$mode = $wgRequest->getVal( 'mode' );
-		if (('' == $mode) || ('in' == $mode) || (wfMsg('smw_browse_in') == $mode)) { $mode = 'in'; } else { $mode = 'out'; }
+		if (('' == $mode) || ('out' == $mode)) { $mode = 'out'; } else { $mode = 'in'; }
 		$html = '';
 		$spectitle = Title::makeTitle( NS_SPECIAL, 'SMWBrowse' );
 
@@ -48,9 +48,8 @@ class SMW_SpecialBrowse	 {
 		$html .= '<form name="smwbrowse" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n";
 		$html .= '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
 		$html .= wfMsg('smw_browse_article') . "<br />\n";
-		$html .= '<input type="submit" name="mode" value="' . wfMsg('smw_browse_in') .'"/>'."\n";
 		$html .= '<input type="text" name="article" value="' . htmlspecialchars($articletext) . '" />' . "\n";
-		$html .= '<input type="submit" name="mode" value="' . wfMsg('smw_browse_out') . "\"/>\n</form>\n";
+		$html .= '<input type="submit" value="' . wfMsg('smw_browse_go') . "\"/>\n</form>\n";
 
 		if ('' == $articletext) { // empty, no article name given
 			$html .= wfMsg('smw_browse_docu') . "\n";
@@ -65,61 +64,45 @@ class SMW_SpecialBrowse	 {
 
 			// prepare navigation bar
 			if ($offset > 0)
-				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SMWBrowse','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&article=' . urlencode($articletext) )) . '">' . wfMsg('smw_result_prev') . '</a>';
+				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SMWBrowse','offset=' . max(0,$offset-$limit) . '&article=' . urlencode($articletext) )) . '&mode=in">' . wfMsg('smw_result_prev') . '</a>';
 			else
 				$navigation = wfMsg('smw_result_prev');
 
 			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($results), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 			if (count($results)==($limit+1))
-				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SMWBrowse', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&article=' . urlencode($articletext) ))  . '">' . wfMsg('smw_result_next') . '</a>';
+				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SMWBrowse', 'offset=' . ($offset+$limit) . '&article=' . urlencode($articletext) ))  . '&mode=in">' . wfMsg('smw_result_next') . '</a>';
 			else
 				$navigation .= wfMsg('smw_result_next');
 
-			$max = false; $first=true;
-			foreach (array(10,20,50,100,200) as $l) {
-				if ($max) continue;
-				if ($first) {
-					$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
-					$first = false;
-				} else
-					$navigation .= ' | ';
-				if ($l > $smwgIQMaxLimit) {
-					$l = $smwgIQMaxLimit;
-					$max = true;
-				}
-				if ( $limit != $l ) {
-					$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SMWBrowse','offset=' . $offset . '&limit=' . $l . '&article=' . urlencode($articletext) )) . '">' . $l . '</a>';
-				} else {
-					$navigation .= '<b>' . $l . '</b>';
-				}
-			}
-			$navigation .= ')';
-
-			// no need to show the navigation bars when there is not enough to navigate
-			if (($offset>0) || (count($results)>$limit))
-				$html .= '<br />' . $navigation;
 			if (count($results) == 0) {
 				$html .= wfMsg( 'smw_browse_noin', $skin->makeSpecialUrl('SMWBrowse', 'article=' . urlencode($articletext) . '&mode=out' ));
 			} else {
-				$html .= '<table style="width: 100%; ">' . "\n";
+				$html .= 'See all <a href="' . $skin->makeSpecialUrl('SMWBrowse', 'mode=out&article=' . urlencode($articletext)) . '">outgoing links of ' . $article->getText() .  "</a><br /><br />\n"; // TODO
+				// no need to show the navigation bars when there is not enough to navigate
+				if (($offset>0) || (count($results)>$limit))
+					$html .= $navigation;
+				$html .= '<table style="width: 100%; "><tr><td colspan="2"><hr /></td></tr>' . "\n";
 				foreach ($results as $result) {
 					$innerlimit = 6;
 					$subjectoptions = new SMWRequestOptions();
 					$subjectoptions->limit = $innerlimit;
-					$html .= '<tr><td class="smwattname">' . "\n";
+					$html .= '<tr><td class="smwsubjects">' . "\n";
 					$subjects = &smwfGetStore()->getRelationSubjects($result, $article, $subjectoptions);
-					$more = (count($subjects) == $innerlimit);
+					$subjectcount = count($subjects);
+					$more = ($subjectcount == $innerlimit);
 					$innercount = 0;
 					foreach ($subjects as $subject) {
 						$innercount += 1;
 						if (($innercount < $innerlimit) || !$more) {
-							$html .= $skin->makeKnownLinkObj($subject) . ' <span class="smwsearch"><a href="' . $skin->makeSpecialUrl('SMWBrowse', 'article=' . urlencode($subject->getText())) . '">+</a></span>' . "<br />\n";
+							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getText(), FALSE);
+							$html .= $skin->makeKnownLinkObj($subject) . '&nbsp;' . $subjectlink->getHTML($skin);
+							if ($innercount<$subjectcount) $html .= ", \n";
 						} else {
 							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByRelation', 'type=' . urlencode($result->getText()) . '&target=' . urlencode($article->getText())) . '">' . wfMsg("smw_browse_more") . "</a><br />\n";
 						}
 					}
-					$html .= '</td><td class="smwatts">' . $skin->makeLinkObj($result, $result->getText()) . " " . $skin->makeLinkObj($article) . "</td></tr>\n";
+					$html .= '</td><td class="smwrelright">' . $skin->makeLinkObj($result, $result->getText()) . " " . $article->getText() . '</td></tr><tr><td colspan="2"><hr /></td></tr>' . "\n";
 				}
 				$html .= "</table>\n";
 			}
@@ -127,52 +110,14 @@ class SMW_SpecialBrowse	 {
 				$html .= $navigation;
 		} else { // outgoing links
 			$options = new SMWRequestOptions();
-			$options->limit = $limit+1;
-			$options->offset = $offset;
-			// get results (get one more, to see if we have to add a link to more)
 			$results = &smwfGetStore()->getOutRelations($article, $options);
 
 			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_browse_displayout', $skin->makeLinkObj($article)) . "<br />\n";
 
-			// prepare navigation bar
-			if ($offset > 0)
-				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SMWBrowse','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&article=' . urlencode($articletext) )) . '">' . wfMsg('smw_result_prev') . '</a>';
-			else
-				$navigation = wfMsg('smw_result_prev');
-
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($results), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
-
-			if (count($results)==($limit+1))
-				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SMWBrowse', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&article=' . urlencode($articletext) ))  . '">' . wfMsg('smw_result_next') . '</a>';
-			else
-				$navigation .= wfMsg('smw_result_next');
-
-			$max = false; $first=true;
-			foreach (array(10,20,50,100,200) as $l) {
-				if ($max) continue;
-				if ($first) {
-					$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
-					$first = false;
-				} else
-					$navigation .= ' | ';
-				if ($l > $smwgIQMaxLimit) {
-					$l = $smwgIQMaxLimit;
-					$max = true;
-				}
-				if ( $limit != $l ) {
-					$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SMWBrowse','offset=' . $offset . '&limit=' . $l . '&article=' . urlencode($articletext) )) . '">' . $l . '</a>';
-				} else {
-					$navigation .= '<b>' . $l . '</b>';
-				}
-			}
-			$navigation .= ')';
-
-			// no need to show the navigation bars when there is not enough to navigate
-			if (($offset>0) || (count($results)>$limit))
-				$html .= '<br />' . $navigation;
 			if (count($results) == 0) {
 				$html .= wfMsg( 'smw_browse_noout', $skin->makeSpecialUrl('SMWBrowse', 'article=' . urlencode($articletext) . '&mode=in' ));
 			} else {
+				$html .= 'See all <a href="' . $skin->makeSpecialUrl('SMWBrowse', 'mode=in&article=' . urlencode($articletext)) . '">incoming links of ' . $article->getText() .  "</a><br /><br />\n"; // TODO
 				$html .= '<table style="width: 100%; ">' . "\n";
 				foreach ($results as $result) {
 					$objectoptions = new SMWRequestOptions();
@@ -181,14 +126,13 @@ class SMW_SpecialBrowse	 {
 					$html .= '</td><td class="smwatts">' . "\n";
 					$objects = &smwfGetStore()->getRelationObjects($article, $result, $objectoptions);
 					foreach ($objects as $object) {
-						$html .= $skin->makeLinkObj($object) . ' <span class="smwsearch"><a href="' . $skin->makeSpecialUrl('SMWBrowse', 'article=' . urlencode($object->getText()) . '&mode=out') . '">+</a></span>' . "<br />\n";
+						$searchlink = SMWInfolink::newBrowsingLink('+',$object->getText());
+						$html .= $skin->makeLinkObj($object) . $searchlink->getHTML($skin) . "<br />\n";
 					}
 					$html .= "</td></tr>\n";
 				}
 				$html .= "</table>\n";
 			}
-			if (($offset>0) || (count($results)>$limit))
-				$html .= $navigation;
 		}
 
 		$wgOut->addHTML($html);

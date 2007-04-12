@@ -184,6 +184,7 @@ class SMW_LanguageEn {
 	// Messages for the browsing system
 	'smwbrowse' => 'Browse article',
 	'smw_browse_article' => 'Enter the name of the article to start browsing from.',
+	'smw_browse_go' => 'Go',
 	'smw_browse_in' => 'Incoming',
 	'smw_browse_out' => 'Outgoing',
 	'smw_browse_docu' => '<p>Search for all properties of the given article.</p>',

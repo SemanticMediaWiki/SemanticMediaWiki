@@ -83,6 +83,17 @@ td.smwrelname, td.smwattname, td.smwspecname, th.smwrelname, th.smwattname, th.s
 	padding-right: 1em;
 }
 
+td.smwsubjects{
+	text-align: right;
+	vertical-align: top;
+	padding-right: 1em;
+	width: 65%;
+}
+
+td.swmrelright{
+	vertical-align: middle;
+}
+
 td.smwrels, td.smwatts, td.smwspecs{
 	vertical-align: top;
 	width: 75%;
@@ -154,7 +165,7 @@ span.smwsearchicon {
 	padding-right: 20px;
 	color: #888888;
 	background: url(rdf_flyer.18.gif) center right no-repeat;
-	
+
 }
 
 #bodyContent span.rdflink a:hover{
