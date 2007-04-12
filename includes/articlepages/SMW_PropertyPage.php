@@ -122,8 +122,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$prevchar = $this->articles_start_char[$index];
 			}
 			// Attribute/relation name
+			$searchlink = SMWInfolink::newBrowsingLink('+',$this->articles[$index]->getPrefixedText());
 			$r .= '<tr><td class="smwattname">' . $this->getSkin()->makeKnownLinkObj( $this->articles[$index], 
-			  $wgContLang->convert( $this->articles[$index]->getPrefixedText() ) ) .
+			  $wgContLang->convert( $this->articles[$index]->getPrefixedText() ) ) . 
+			  '&nbsp;&nbsp;' . $searchlink->getHTML($this->getSkin()) .
 			  '</td><td class="smwatts">';
 			// Attribute/relation values
 			if ($this->mTitle->getNamespace() == SMW_NS_RELATION) {

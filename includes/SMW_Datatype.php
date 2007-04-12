@@ -403,7 +403,6 @@ class SMWInfolink {
 
 	/**
 	 * Static function to construct links to attribute searches.
-	 * TODO: for empty values, the link should point to another special
 	 */
 	static function newAttributeSearchLink($caption,$attribute,$value,$style = 'smwsearch') {
 		global $wgContLang;
@@ -412,11 +411,18 @@ class SMWInfolink {
 
 	/**
 	 * Static function to construct links to relation searches.
-	 * TODO: for empty objects, the link should point to another special
 	 */
 	static function newRelationSearchLink($caption,$relation,$object,$style = 'smwsearch') {
 		global $wgContLang;
 		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByRelation/' . $relation . '::' . $object, $style);
+	}
+
+	/**
+	 * Static function to construct links to the browsing special.
+	 */
+	static function newBrowsingLink($caption,$titletext,$style = 'smwsearch') {
+		global $wgContLang;
+		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SMWBrowse/' .  $titletext, $style);
 	}
 
 	/**
