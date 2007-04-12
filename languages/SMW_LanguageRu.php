@@ -162,6 +162,17 @@ class SMW_LanguageRu {
 	'smw_sbv_attribute' => 'Атрибут',
 	'smw_sbv_value' => 'значение',
 	'smw_sbv_submit' => 'Найти',
+	// Messages for the browsing system
+	'smwbrowse' => 'Browse article', //TODO: translate
+	'smw_browse_article' => 'Enter the name of the article to start browsing from.', //TODO: translate
+	'smw_browse_in' => 'Incoming', //TODO: translate
+	'smw_browse_out' => 'Outgoing', //TODO: translate
+	'smw_browse_docu' => '<p>Search for all properties of the given article.</p>', //TODO: translate
+	'smw_browse_displayresult' => 'All incoming properties for the article $1. Click <span class="smwsearchicon">+</span> to explore connecting articles.', //TODO: translate
+	'smw_browse_displayout' => 'All outgoing properties of the article $1. Click <span class="smwsearchicon">+</span> to explore connecting articles.', //TODO: translate
+	'smw_browse_noout' => 'No outgoing properties found. Try the <a href="$1">incoming properties</a> instead.', //TODO: translate
+	'smw_browse_noin' => 'No incoming properties found. Try the <a href="$1">outgoing properties</a> instead.', //TODO: translate
+	'smw_browse_more' => '&#0133;', //TODO: translate
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Предыдущая',
 	'smw_result_next' => 'Следующая',
