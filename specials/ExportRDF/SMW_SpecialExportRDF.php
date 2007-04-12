@@ -525,14 +525,13 @@ class ExportRDF {
 			"\t<!ENTITY owl 'http://www.w3.org/2002/07/owl#'>\n" .
 			"\t<!ENTITY smw 'http://smw.ontoware.org/2005/smw#'>\n" .
 			"\t<!ENTITY smwdt 'http://smw.ontoware.org/2005/smw-datatype#'>\n" .
-// why?		"\t<!ENTITY wiki '" . $this->wiki_xmlns_xml .  "'>\n" . I think this is never used
+			// A note on "wiki": this namespace is crucial as a fallback when it would be illegal to start e.g. with a number. In this case, one can always use wiki:... followed by "_" and possibly some namespace, since _ is legal as a first character.
+			"\t<!ENTITY wiki '" . $this->wiki_xmlns_xml .  "'>\n" .
 			"\t<!ENTITY thing '" . $this->wiki_xmlns_xml .  "'>\n" .
 			"\t<!ENTITY relation '" . $this->wiki_xmlns_xml .
-// why?		$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_RELATION) . ':'))) .  "'>\n" .
-			str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_RELATION) . ':') .  "'>\n" .
+			$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_RELATION) . ':'))) .  "'>\n" .
 			"\t<!ENTITY attribute '" . $this->wiki_xmlns_xml .
-// why?		$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':'))) .  "'>\n" .
-			str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':') .  "'>\n" .
+			$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':'))) .  "'>\n" .
 			"\t<!ENTITY wikiurl '" . $this->wiki_xmlns_url .  "'>\n" .
 			"]>\n\n" .
 			"<rdf:RDF\n" .
@@ -540,7 +539,7 @@ class ExportRDF {
 			"\txmlns:rdfs=\"&rdfs;\"\n" .
 			"\txmlns:owl =\"&owl;\"\n" .
 			"\txmlns:smw=\"&smw;\"\n" .
-//			"\txmlns:wiki=\"&wiki;\"\n" .
+			"\txmlns:wiki=\"&wiki;\"\n" .
 			"\txmlns:thing=\"&thing;\"\n" .
 			"\txmlns:relation=\"&relation;\"\n" .
 			"\txmlns:attribute=\"&attribute;\"";
