@@ -125,6 +125,13 @@ span.smwsearchicon {
 	background: url(search_icon.png) center right no-repeat;
 }
 
+#bodyContent span.smwbrowse a{
+	padding-right: 16px;
+	margin-right: 2px;
+	color: #888888;
+	background: url(browse_iconsmall.png) center right no-repeat;
+}
+
 #bodyContent span.smwmap a{
 	padding-right: 20px;
 	color: #888888;

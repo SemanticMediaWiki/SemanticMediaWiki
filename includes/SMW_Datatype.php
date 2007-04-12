@@ -422,7 +422,7 @@ class SMWInfolink {
 	 * @param $inlinks if true, directly show incoming links; if false, directyl show outgoing links; 
 	 * if undefined, show default (preferred for links within wiki articles).
 	 */
-	static function newBrowsingLink($caption,$titletext,$inlinks=NULL,$style = 'smwsearch') {
+	static function newBrowsingLink($caption,$titletext,$inlinks=NULL,$style = 'smwbrowse') {
 		global $wgContLang;
 		if ($inlinks === NULL) {
 			return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SMWBrowse/' .  $titletext, $style);
