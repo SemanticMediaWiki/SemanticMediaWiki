@@ -104,6 +104,11 @@ th.relhead, th.atthead, th.spechead{
 	border-top: 1px dotted #AAAAAA;
 }
 
+div.smwhr hr{
+	background-color: #DDDDDD;
+	color: #DDDDDD;
+}
+
 /* warning messages */
 
 span.smwwarning{
