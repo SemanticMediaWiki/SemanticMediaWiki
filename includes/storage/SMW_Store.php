@@ -10,6 +10,33 @@ require_once($smwgIP . '/includes/SMW_SemanticData.php');
 require_once($smwgIP . '/includes/storage/SMW_Query.php');
 require_once($smwgIP . '/includes/storage/SMW_QueryResult.php');
 
+define('SMW_STRCOND_PRE',0);
+define('SMW_STRCOND_POST',1);
+define('SMW_STRCOND_MID',2);
+
+/**
+ * Small data container class for describing filtering conditions on the string
+ * label of some entity. States that a given string should either be prefix, postfix, 
+ * or some arbitrary part of labels.
+ */
+class SMWStringCondition {
+	/**
+	 * String to match.
+	 */
+	public $string;
+	/**
+	 * Condition. One of SMW_STRCOND_PRE (string matches prefix),
+	 * SMW_STRCOND_POST (string matches postfix), SMW_STRCOND_MID
+	 * (string matches to some inner part).
+	 */	
+	public $condition;
+
+	public function SMWStringCondition($string, $condition) {
+		$this->string = $string;
+		$this->condition = $condition;
+	}
+}
+
 /**
  * Container object for various options that can be used when retrieving
  * data from the store. These options are mostly relevant for simple,
@@ -50,15 +77,30 @@ class SMWRequestOptions {
 	public $boundary = NULL;
 	/**
 	 * Specifies whether or not the requested boundary should be returned 
-	 * as a result, or not.
+	 * as a result.
 	 */
 	public $include_boundary = true;
 	/**
-	 * If set, only results that match this pattern should be returned.
-	 * TODO: The language of the pattern still needs to be specified. Anybody
-	 * needing regexps, or can we live with initial and/or final wildcards?
+	 * An array of string conditions that are applied if the result has a string
+	 * label that can be subject to those patterns.
 	 */
-	public $pattern = NULL;
+	private $stringcond = Array();
+
+	/**
+	 * Set a new string condition applied to labels of results (if available).
+	 * @param $string the string to match
+	 * @param $condition type of condition, one of SMW_STRCOND_PRE, SMW_STRCOND_POST, SMW_STRCOND_MID
+	 */
+	public function addStringCondition($string, $condition) {
+		$this->stringcond[] = new SMWStringCondition($string, $condition);
+	}
+
+	/**
+	 * Return the specified array of SMWStringCondition objects.
+	 */
+	public function getStringConditions() {
+		return $this->stringcond;
+	}
 }
 
 

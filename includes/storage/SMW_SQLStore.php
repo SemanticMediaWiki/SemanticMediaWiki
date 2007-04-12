@@ -72,7 +72,7 @@ class SMWSQLStore extends SMWStore {
 
 		$sql = 'property_id=' . $db->addQuotes($specialprop) .
 		       ' AND value_string=' . $db->addQuotes($stringvalue) .
-		       $this->getSQLConditions($requestoptions,'subject_title');
+		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
 		$res = $db->select( $db->tableName('smw_specialprops'),
 		                    'DISTINCT subject_id',
@@ -98,7 +98,7 @@ class SMWSQLStore extends SMWStore {
 		}
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 		       ' AND attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
-		       $this->getSQLConditions($requestoptions,$value_column);
+		       $this->getSQLConditions($requestoptions,$value_column,'value_xsd');
 
 		$res = $db->select( $db->tableName('smw_attributes'), 
 		                    'value_unit, value_datatype, value_xsd',
@@ -125,7 +125,7 @@ class SMWSQLStore extends SMWStore {
 	function getAllAttributeSubjects(Title $attribute, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
-		       $this->getSQLConditions($requestoptions,'subject_title');
+		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
 		$res = $db->select( $db->tableName('smw_attributes'), 
 		                    'DISTINCT subject_id',
@@ -144,7 +144,7 @@ class SMWSQLStore extends SMWStore {
 
 	function getAttributes(Title $subject, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
-		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) . $this->getSQLConditions($requestoptions,'attribute_title');
+		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) . $this->getSQLConditions($requestoptions,'attribute_title','attribute_title');
 
 		$res = $db->select( $db->tableName('smw_attributes'), 
 		                    'DISTINCT attribute_title',
@@ -165,7 +165,7 @@ class SMWSQLStore extends SMWStore {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
-		       $this->getSQLConditions($requestoptions,'object_title');
+		       $this->getSQLConditions($requestoptions,'object_title','object_title');
 
 		$res = $db->select( $db->tableName('smw_relations'), 
 		                    'object_title, object_namespace',
@@ -187,7 +187,7 @@ class SMWSQLStore extends SMWStore {
 		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
 		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
-		       $this->getSQLConditions($requestoptions,'subject_title');
+		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
 		$res = $db->select( $db->tableName('smw_relations'),
 		                    'DISTINCT subject_id',
@@ -207,7 +207,7 @@ class SMWSQLStore extends SMWStore {
 	function getAllRelationSubjects(Title $relation, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'relation_title=' . $db->addQuotes($relation->getDBkey()) .
-		       $this->getSQLConditions($requestoptions,'subject_title');
+		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
 		$res = $db->select( $db->tableName('smw_relations'), 
 		                    'DISTINCT subject_id',
@@ -227,7 +227,7 @@ class SMWSQLStore extends SMWStore {
 	function getOutRelations(Title $subject, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-		       $this->getSQLConditions($requestoptions,'relation_title');
+		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
 
 		$res = $db->select( $db->tableName('smw_relations'), 
 		                    'DISTINCT relation_title',
@@ -248,7 +248,7 @@ class SMWSQLStore extends SMWStore {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
-		       $this->getSQLConditions($requestoptions,'relation_title');
+		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
 
 		$res = $db->select( $db->tableName('smw_relations'), 
 		                    'DISTINCT relation_title',
@@ -508,25 +508,47 @@ class SMWSQLStore extends SMWStore {
 	 * Transform input parameters into a suitable string of additional SQL conditions.
 	 * The parameter $valuecol defines the string name of the column to which
 	 * value restrictions etc. are to be applied.
+	 * @param $requestoptions object with options
+	 * @param $valuecol name of SQL column to which conditions apply
+	 * @param $labelcol name of SQL column to which string conditions apply, if any
 	 */
-	protected function getSQLConditions($requestoptions, $valuecol) {
+	protected function getSQLConditions($requestoptions, $valuecol, $labelcol = NULL) {
 		$sql_conds = '';
-		if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) ) {
-			$db =& wfGetDB( DB_MASTER );
-			if ($requestoptions->ascending) {
-				if ($requestoptions->include_boundary) {
-					$op = ' >= ';
+		if ($requestoptions !== NULL) {
+			$db =& wfGetDB( DB_MASTER ); // TODO: use slave?
+			if ($requestoptions->boundary !== NULL) { // apply value boundary
+				if ($requestoptions->ascending) {
+					if ($requestoptions->include_boundary) {
+						$op = ' >= ';
+					} else {
+						$op = ' > ';
+					}
 				} else {
-					$op = ' > ';
+					if ($requestoptions->include_boundary) {
+						$op = ' <= ';
+					} else {
+						$op = ' < ';
+					}
 				}
-			} else {
-				if ($requestoptions->include_boundary) {
-					$op = ' <= ';
-				} else {
-					$op = ' < ';
+				$sql_conds .= ' AND ' . $valuecol . $op . $db->addQuotes($requestoptions->boundary);
+			}
+			if ($labelcol !== NULL) { // apply string conditions
+				foreach ($requestoptions->getStringConditions() as $strcond) {
+					$string = str_replace(array('_', ' '), array('\_', '\_'), $strcond->string);
+					switch ($strcond->condition) {
+						case SMW_STRCOND_PRE:
+							$string .= '%';
+							break;
+						case SMW_STRCOND_POST:
+							$string = '%' . $string;
+							break;
+						case SMW_STRCOND_MID:
+							$string = '%' . $string . '%';
+							break;
+					}
+					$sql_conds .= ' AND ' . $labelcol . ' LIKE ' . $db->addQuotes($string);
 				}
 			}
-			$sql_conds .= ' AND ' . $valuecol . $op . $db->addQuotes($requestoptions->boundary);
 		}
 		return $sql_conds;
 	}
