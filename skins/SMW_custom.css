@@ -143,6 +143,14 @@ span.smwsearchicon {
 	background: url(browse_iconsmall.png) center right no-repeat;
 }
 
+#bodyContent span.smwbrowse a:hover{
+	text-decoration: none;
+	color: #0000FF;
+	padding-right: 18px;
+	margin-right: 0px;
+	background: url(browse_icon.png) center right no-repeat;
+}
+
 #bodyContent span.smwmap a{
 	padding-right: 20px;
 	color: #888888;
