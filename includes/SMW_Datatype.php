@@ -418,6 +418,22 @@ class SMWInfolink {
 	}
 
 	/**
+	 * Static function to construct links to inverse relation searches.
+	 */
+	static function newInverseRelationSearchLink($caption,$subject,$relation,$style = 'smwsearch') {
+		$specialtitle = Title::newFromText('ask', NS_SPECIAL);
+		return new SMWInfolink(false,$caption,$specialtitle->escapeLocalURL('query=' . urlencode('[[' . $subject . ']] [[' . $relation . '::*]]')), $style);
+	}
+
+	/**
+	 * Static function to construct links to inverse attribute searches.
+	 */
+	static function newInverseAttributeSearchLink($caption,$subject,$attribute,$style = 'smwsearch') {
+		$specialtitle = Title::newFromText('ask', NS_SPECIAL);
+		return new SMWInfolink(false,$caption,$specialtitle->escapeLocalURL('query=' . urlencode('[[' . $subject . ']] [[' . $attribute . ':=*]]')), $style);
+	}
+
+	/**
 	 * Static function to construct links to the browsing special.
 	 */
 	static function newBrowsingLink($caption,$titletext,$style = 'smwbrowse') {
