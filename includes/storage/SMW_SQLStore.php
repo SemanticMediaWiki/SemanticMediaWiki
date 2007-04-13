@@ -59,6 +59,8 @@ class SMWSQLStore extends SMWStore {
 		if ($value instanceof SMWDataValue) {
 			if ($value->getXSDValue() !== false) { // filters out error-values etc.
 				$stringvalue = $value->getXSDValue();
+			} else {
+				return array();
 			}
 		} elseif ($value instanceof Title) {
 			if ( $specialprop == SMW_SP_HAS_TYPE ) { // special handling, TODO: change this to use type ids
@@ -118,8 +120,30 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getAttributeSubjects(Title $relation, SMWDataValue $value, $requestoptions = NULL) {
-		// TODO
+	function getAttributeSubjects(Title $attribute, SMWDataValue $value, $requestoptions = NULL) {
+		if ( !$value->isValid() ) {
+			return array();
+		}
+
+		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$sql = 'value_xsd=' . $db->addQuotes($value->getXSDValue()) .
+		       ' AND value_unit=' . $db->addQuotes($value->getUnit()) .
+		       ' AND attribute_title=' . $db->addQuotes($attribute->getDBKey()) .
+		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
+
+		$res = $db->select( $db->tableName('smw_attributes'),
+		                    'DISTINCT subject_id',
+		                    $sql, 'SMW::getAttributeSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
+		// rewrite result as array
+		$result = array();
+		if($db->numRows( $res ) > 0) {
+			while($row = $db->fetchObject($res)) {
+				$result[] = Title::newFromID($row->subject_id);
+			}
+		}
+		$db->freeResult($res);
+
+		return $result;
 	}
 
 	function getAllAttributeSubjects(Title $attribute, $requestoptions = NULL) {
@@ -302,7 +326,6 @@ class SMWSQLStore extends SMWStore {
 		foreach($data->getAttributes() as $attribute) {
 			$attributeValueArray = $data->getAttributeValues($attribute);
 			foreach($attributeValueArray as $value) {
-				// DEBUG echo "in storeAttributes, considering $value, getXSDValue=" . $value->getXSDValue() . "<br />\n" ;
 				if ($value->getXSDValue()!==false) {
 					$db->insert( $db->tableName('smw_attributes'),
 					             array( 'subject_id' => $subject->getArticleID(),
