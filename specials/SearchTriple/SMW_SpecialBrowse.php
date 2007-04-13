@@ -132,7 +132,8 @@ class SMW_SpecialBrowse	 {
 					foreach ($objects as $object) {
 						$count += 1;
 						if ($count == 4) {
-							$html .= wfMsg("smw_browse_more");
+							$querylink = SMWInfolink::newInverseRelationSearchLink( wfMsg("smw_browse_more"), $article->getPrefixedText(), $result->getText() );
+							$html .= $querylink->getHTML($skin);
 						} else {
 							$searchlink = SMWInfolink::newBrowsingLink('+',$object->getFullText());
 							$html .= $skin->makeLinkObj($object, smwfT($object)) . '&nbsp;' . $searchlink->getHTML($skin);
