@@ -125,43 +125,45 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$searchlink = SMWInfolink::newBrowsingLink('+',$this->articles[$index]->getPrefixedText());
 			$r .= '<tr><td class="smwattname">' . $this->getSkin()->makeKnownLinkObj( $this->articles[$index], 
 			  $wgContLang->convert( $this->articles[$index]->getPrefixedText() ) ) . 
-			  '&nbsp;&nbsp;' . $searchlink->getHTML($this->getSkin()) .
+			  '&nbsp;' . $searchlink->getHTML($this->getSkin()) .
 			  '</td><td class="smwatts">';
 			// Attribute/relation values
+			$ropts = new SMWRequestOptions();
+			$ropts->limit = 4;
 			if ($this->mTitle->getNamespace() == SMW_NS_RELATION) {
-				$objects = $store->getRelationObjects($this->articles[$index], $this->mTitle);
-				$l = count($objects);
+				$objects = $store->getRelationObjects($this->articles[$index], $this->mTitle,$ropts);
 				$i=0;
 				foreach ($objects as $object) {
 					if ($i != 0) {
-						if ($i > $l-2) {
-							$r .= wfMsgForContent('smw_finallistconjunct') . ' ';
-						} else {
-							$r .= ', ';
-						}
+						$r .= ', ';
 					}
 					$i++;
-					$searchlink = SMWInfolink::newRelationSearchLink('+',$this->mTitle->getText(),$object->getPrefixedText());
-					$r .= $this->getSkin()->makeLinkObj($object, $wgContLang->convert( $object->getText() )) . '&nbsp;&nbsp;' . $searchlink->getHTML($this->getSkin());
+					if ($i < 4) {
+						$searchlink = SMWInfolink::newRelationSearchLink('+',$this->mTitle->getText(),$object->getPrefixedText());
+						$r .= $this->getSkin()->makeLinkObj($object, $wgContLang->convert( $object->getText() )) . '&nbsp;&nbsp;' . $searchlink->getHTML($this->getSkin());
+					} else {
+						$searchlink = SMWInfolink::newInverseRelationSearchLink('&hellip;', $this->articles[$index]->getPrefixedText(), $this->mTitle->getText());
+						$r .= $searchlink->getHTML($this->getSkin());
+					}
 				}
 			} elseif ($this->mTitle->getNamespace() == SMW_NS_ATTRIBUTE) {
-				$values = $store->getAttributeValues($this->articles[$index], $this->mTitle);
-				$l = count($values);
+				$values = $store->getAttributeValues($this->articles[$index], $this->mTitle, $ropts);
 				$i=0;
 				foreach ($values as $value) {
 					if ($i != 0) {
-						if ($i > $l-2) {
-							$r .= wfMsgForContent('smw_finallistconjunct') . ' ';
-						} else {
-							$r .= ', ';
-						}
+						$r .= ', ';
 					}
 					$i++;
-					$r .= $value->getValueDescription(); 
-					$sep = '&nbsp;&nbsp;';
-					foreach ($value->getInfolinks() as $link) {
-						$r .= $sep . $link->getHTML($this->getSkin());
-						$sep = ' &nbsp;&nbsp;'; // allow breaking for longer lists of infolinks
+					if ($i < 4) {
+						$r .= $value->getValueDescription();
+						$sep = '&nbsp;&nbsp;';
+						foreach ($value->getInfolinks() as $link) {
+							$r .= $sep . $link->getHTML($this->getSkin());
+							$sep = ' &nbsp;&nbsp;'; // allow breaking for longer lists of infolinks
+						}
+					} else {
+						$searchlink = SMWInfolink::newInverseAttributeSearchLink('&hellip;', $this->articles[$index]->getPrefixedText(), $this->mTitle->getText());
+						$r .= $searchlink->getHTML($this->getSkin());
 					}
 				}
 			}
