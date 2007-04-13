@@ -10,7 +10,7 @@ class SMW_LanguageDe {
 	'smw_helppage' => 'Relationen und Attribute',
 	'smw_viewasrdf' => 'Als RDF ansehen',
 	'smw_finallistconjunct' => ' und', //used in "A, B, and C"
-	'smw_factbox_head' => 'Fakten zu $1 &mdash; Suche mit <span class="smwsearchicon">+</span> nach ähnlichen Seiten.',
+	'smw_factbox_head' => 'Fakten zu $1',
 	'smw_att_head' => 'Attribute',
 	'smw_rel_head' => 'Relationen zu anderen Artikeln',
 	'smw_spec_head' => 'Spezielle Eigenschaften',
