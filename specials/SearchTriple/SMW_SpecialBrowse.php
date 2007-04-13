@@ -61,6 +61,7 @@ class SMW_SpecialBrowse	 {
 			$atts = &smwfGetStore()->getAttributes($article, $options);
 			$options->limit = $limit+1;
 			$options->offset = $offset;
+			$options->sort = TRUE;
 			// get results (get one more, to see if we have to add a link to more)
 			$inrel = &smwfGetStore()->getInRelations($article, $options);
 
@@ -101,13 +102,17 @@ class SMW_SpecialBrowse	 {
 						$innercount += 1;
 						if (($innercount < $innerlimit) || !$more) {
 							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getFullText());
-							$html .= $skin->makeKnownLinkObj($subject, smwfT($subject)) . '&nbsp;&nbsp;' . $subjectlink->getHTML($skin);
+							$html .= $skin->makeKnownLinkObj($subject, smwfT($subject)) . '&nbsp;' . $subjectlink->getHTML($skin);
 							if ($innercount<$subjectcount) $html .= ", \n";
 						} else {
 							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByRelation', 'type=' . urlencode($result->getFullText()) . '&target=' . urlencode($article->getFullText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
 						}
 					}
-					$html .= ' <strong>' . $skin->makeLinkObj($result, smwfT($result)) . '</strong>' . $vsep . "\n";
+					// replace the last two whitespaces in the relation name with
+					// non-breaking spaces. Since there seems to be no PHP-replacer
+					// for the last two, a strrev ist done twice to turn it around.
+					// That's why nbsp is written backward.
+					$html .= ' &nbsp;<strong>' . $skin->makeLinkObj($result, strrev(preg_replace('/[\s]/', ';psbn&', strrev(smwfT($result)), 2) )) . '</strong>' . $vsep . "\n";
 				}
 			}
 			if (($offset>0) || (count($inrel)>$limit))
@@ -122,7 +127,7 @@ class SMW_SpecialBrowse	 {
 				foreach ($outrel as $result) {
 					$objectoptions = new SMWRequestOptions();
 					$objectoptions->limit = $innerlimit;
-					$html .=  '<strong>' . $skin->makeLinkObj($result, smwfT($result)) . "</strong>\n";
+					$html .=  '<strong>' . $skin->makeLinkObj($result, preg_replace('/[\s]/', '&nbsp;', smwfT($result), 2)) . "</strong>&nbsp; \n";
 					$objects = &smwfGetStore()->getRelationObjects($article, $result, $objectoptions);
 					$objectcount = count($objects);
 					$count = 0;
@@ -132,7 +137,7 @@ class SMW_SpecialBrowse	 {
 							$html .= wfMsg("smw_browse_more");
 						} else {
 							$searchlink = SMWInfolink::newBrowsingLink('+',$object->getFullText());
-							$html .= $skin->makeLinkObj($object, smwfT($object)) . '&nbsp;&nbsp;' . $searchlink->getHTML($skin);
+							$html .= $skin->makeLinkObj($object, smwfT($object)) . '&nbsp;' . $searchlink->getHTML($skin);
 						}
 						if ($count<$objectcount) $html .= ", ";
 					}
@@ -140,7 +145,7 @@ class SMW_SpecialBrowse	 {
 				}
 				foreach ($atts as $att) {
 					$objectoptions = new SMWRequestOptions();
-					$html .=  '<strong>' . $skin->makeKnownLinkObj($att, $att->getText()) . "</strong>\n";
+					$html .=  '<strong>' . $skin->makeKnownLinkObj($att, preg_replace('/[\s]/', '&nbsp;', smwfT($att), 2)) . "</strong>\n";
 					$objects = &smwfGetStore()->getAttributeValues($article, $att, $objectoptions);
 					$objectcount = count($objects);
 					$count = 0;
