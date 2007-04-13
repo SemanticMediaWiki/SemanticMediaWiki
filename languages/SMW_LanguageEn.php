@@ -182,8 +182,7 @@ class SMW_LanguageEn {
 	'smw_sbv_value' => 'Value',
 	'smw_sbv_submit' => 'Find results',
 	// Messages for the browsing system
-	'smwbrowse' => 'Browse article',
-	'focus' => 'Focus article',
+	'browse' => 'Browse articles',
 	'smw_browse_article' => 'Enter the name of the article to start browsing from.',
 	'smw_browse_go' => 'Go',
 	'smw_browse_in' => 'Incoming',

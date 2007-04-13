@@ -208,22 +208,6 @@ abstract class SMWStore {
 	 */
 	abstract function changeTitle(Title $oldtitle, Title $newtitle, $keepid = true);
 
-///// Name translation /////
-
-	/***
-	 * Returns a string with the translated name of the title, if known to the store, in
-	 * the language defined by the language key. If not known, the untranslated name is
-	 * returned. The returned string is without the namespace.
-	 */
-	abstract function translateTitle(Title $title, Language $language );
-
-	/***
-	 * Returns a string with the translated name of the title, if known to the store, in
-	 * the language defined by the language key. If not known, the untranslated name is
-	 * returned. The namespace is preserved.
-	 */
-	abstract function translateTitleWithNS(Title $title, Language $language );
-
 ///// Query answering /////
 
 	/**
@@ -241,22 +225,6 @@ abstract class SMWStore {
 	 */
 	abstract function setup();
 
-}
-
-/**
- * Global shortcut function for Store::translateTitle
- */
-function smwfT(Title $title) {
-	global $wgLang;
-	return smwfGetStore()->translateTitle($title, $wgLang);
-}
-
-/**
- * Global shortcut function for Store::translateTitleWithNS
- */
-function smwfTNS(Title $title) {
-	global $wgLang;
-	return smwfGetStore()->translateTitleWithNS($title, $wgLang);
 }
 
 ?>

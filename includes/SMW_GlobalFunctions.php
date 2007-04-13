@@ -82,7 +82,6 @@ function smwgSetupExtension() {
 	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByAttribute.php');
 	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByRelation.php');
 	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialBrowse.php');
-	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialFocus.php');
 
 	require_once($smwgIP . '/specials/URIResolver/SMW_SpecialURIResolver.php');
 	require_once($smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php'); // coming soon

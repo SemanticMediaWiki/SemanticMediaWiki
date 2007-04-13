@@ -419,28 +419,10 @@ class SMWInfolink {
 
 	/**
 	 * Static function to construct links to the browsing special.
-	 * @param $inlinks if true, directly show incoming links; if false, directyl show outgoing links;
-	 * if undefined, show default (preferred for links within wiki articles).
 	 */
-	static function newBrowsingLink($caption,$titletext,$inlinks=NULL,$style = 'smwbrowse') {
+	static function newBrowsingLink($caption,$titletext,$style = 'smwbrowse') {
 		global $wgContLang;
-		if ($inlinks === NULL) {
-			return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SMWBrowse/' .  $titletext, $style);
-		} elseif ($inlinks === false)  {
-			$specialtitle = Title::newFromText('SMWBrowse', NS_SPECIAL);
-			return new SMWInfolink(false,$caption,$specialtitle->escapeLocalURL('article=' . $titletext . '&mode=in'), $style);
-		} else {
-			$specialtitle = Title::newFromText('SMWBrowse', NS_SPECIAL);
-			return new SMWInfolink(false,$caption,$specialtitle->escapeLocalURL('article=' . $titletext . '&mode=in'), $style);
-		}
-	}
-
-	/**
-	 * Static function to construct links to the focus special.
-	 */
-	static function newFocusLink($caption,$titletext,$style = 'smwbrowse') {
-		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':Focus/' .  $titletext, $style);
+		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':Browse/' .  $titletext, $style);
 	}
 
 	/**

@@ -14,11 +14,11 @@ require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
 
 
-function doSpecialSMWBrowse($query = '') {
+function doSpecialBrowse($query = '') {
 	SMW_SpecialBrowse::execute($query);
 }
 
-SpecialPage::addPage( new SpecialPage('SMWBrowse','',true,'doSpecialSMWBrowse',false) );
+SpecialPage::addPage( new SpecialPage('Browse','',true,'doSpecialBrowse',false) );
 
 
 
@@ -42,7 +42,7 @@ class SMW_SpecialBrowse	 {
 		$mode = $wgRequest->getVal( 'mode' );
 		if (('' == $mode) || ('out' == $mode)) { $mode = 'out'; } else { $mode = 'in'; }
 		$html = '';
-		$spectitle = Title::makeTitle( NS_SPECIAL, 'SMWBrowse' );
+		$spectitle = Title::makeTitle( NS_SPECIAL, 'Browse' );
 
 		// display query form
 		$html .= '<form name="smwbrowse" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n";
@@ -54,43 +54,46 @@ class SMW_SpecialBrowse	 {
 
 		$vsep = '<tr><td colspan="2"><div class="smwhr"><hr /></div></td></tr>';
 
-		if (('' == $articletext) || (NULL == $article)) { // empty, no article name given
+		if ((NULL == $article) || ('' == $articletext)) { // empty, no article name given
 			$html .= wfMsg('smw_browse_docu') . "\n";
-		} elseif ('in' == $mode) { // incoming links
+		} else { // incoming links
 			$options = new SMWRequestOptions();
+			// get results (get one more, to see if we have to add a link to more)
+			$outrel = &smwfGetStore()->getOutRelations($article, $options);
+			$atts = &smwfGetStore()->getAttributes($article, $options);
 			$options->limit = $limit+1;
 			$options->offset = $offset;
-			// get results (get one more, to see if we have to add a link to more)
-			$results = &smwfGetStore()->getInRelations($article, $options);
+			$inrel = &smwfGetStore()->getInRelations($article, $options);
 
 			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_browse_displayresult', $skin->makeLinkObj($article)) . "<br />\n";
 
+			$html .= '<table><tr><td style="vertical-align=middle;">';
+
 			// prepare navigation bar
 			if ($offset > 0)
-				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SMWBrowse','offset=' . max(0,$offset-$limit) . '&article=' . urlencode($articletext) )) . '&mode=in">' . wfMsg('smw_result_prev') . '</a>';
+				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse','offset=' . max(0,$offset-$limit) . '&article=' . urlencode($articletext) )) . '&mode=in">' . wfMsg('smw_result_prev') . '</a>';
 			else
 				$navigation = wfMsg('smw_result_prev');
 
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($results), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($inrel), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
-			if (count($results)==($limit+1))
-				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SMWBrowse', 'offset=' . ($offset+$limit) . '&article=' . urlencode($articletext) ))  . '&mode=in">' . wfMsg('smw_result_next') . '</a>';
+			if (count($inrel)==($limit+1))
+				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse', 'offset=' . ($offset+$limit) . '&article=' . urlencode($articletext) ))  . '&mode=in">' . wfMsg('smw_result_next') . '</a>';
 			else
 				$navigation .= wfMsg('smw_result_next');
 
-			if (count($results) == 0) {
-				$html .= wfMsg( 'smw_browse_noin', $skin->makeSpecialUrl('SMWBrowse', 'article=' . urlencode($articletext) . '&mode=out' ));
+			if (count($inrel) == 0) {
+				$html .= '&nbsp;';
 			} else {
-				$html .= 'See all <a href="' . $skin->makeSpecialUrl('SMWBrowse', 'mode=out&article=' . urlencode($articletext)) . '">outgoing links of ' . $article->getText() .  "</a><br /><br />\n"; // TODO
 				// no need to show the navigation bars when there is not enough to navigate
-				if (($offset>0) || (count($results)>$limit))
+				if (($offset>0) || (count($inrel)>$limit))
 					$html .= $navigation;
-				$html .= '<table style="width: 100%; ">' . $vsep . "\n";
-				foreach ($results as $result) {
+				$html .= '<table>' . $vsep . "\n";
+				foreach ($inrel as $result) {
 					$innerlimit = 6;
 					$subjectoptions = new SMWRequestOptions();
 					$subjectoptions->limit = $innerlimit;
-					$html .= '<tr><td class="smwsubjects">' . "\n";
+					$html .= '<tr><td style="text-align:right;">' . "\n";
 					$subjects = &smwfGetStore()->getRelationSubjects($result, $article, $subjectoptions);
 					$subjectcount = count($subjects);
 					$more = ($subjectcount == $innerlimit);
@@ -98,52 +101,47 @@ class SMW_SpecialBrowse	 {
 					foreach ($subjects as $subject) {
 						$innercount += 1;
 						if (($innercount < $innerlimit) || !$more) {
-							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getFullText(), FALSE);
-							$html .= $skin->makeKnownLinkObj($subject) . '&nbsp;&nbsp;' . $subjectlink->getHTML($skin);
+							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getFullText());
+							$html .= $skin->makeKnownLinkObj($subject, smwfT($subject)) . '&nbsp;&nbsp;' . $subjectlink->getHTML($skin);
 							if ($innercount<$subjectcount) $html .= ", \n";
 						} else {
 							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByRelation', 'type=' . urlencode($result->getFullText()) . '&target=' . urlencode($article->getFullText())) . '">' . wfMsg("smw_browse_more") . "</a><br />\n";
 						}
 					}
-					$html .= '</td><td class="smwrelright">' . $skin->makeLinkObj($result, $result->getText()) . " " . $article->getFullText() . '</td></tr>' . $vsep . "\n";
+					$html .= '</td><td class="smwrelright">' . $skin->makeLinkObj($result, smwfT($result)) . '</td></tr>' . $vsep . "\n";
 				}
 				$html .= "</table>\n";
 			}
-			if (($offset>0) || (count($results)>$limit))
+			if (($offset>0) || (count($inrel)>$limit))
 				$html .= $navigation;
-		} else { // outgoing links
-			$options = new SMWRequestOptions();
-			$results = &smwfGetStore()->getOutRelations($article, $options);
-			$atts = &smwfGetStore()->getAttributes($article, $options);
 
-			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_browse_displayout', $skin->makeLinkObj($article)) . "<br />\n";
+			$html .= '</td><td style="vertical-align:middle; text-align:center;">' . $skin->makeLinkObj($article, smwfT($article)) . '</td><td style="vertical-align:middle;">';
 
-			if ((count($results) == 0) && (count($atts) == 0)) {
-				$html .= wfMsg( 'smw_browse_noout', $skin->makeSpecialUrl('SMWBrowse', 'article=' . urlencode($articletext) . '&mode=in' ));
+			if ((count($outrel) == 0) && (count($atts) == 0)) {
+				$html .= '&nbsp;';
 			} else {
-				$html .= 'See all <a href="' . $skin->makeSpecialUrl('SMWBrowse', 'mode=in&article=' . urlencode($articletext)) . '">incoming links of ' . $article->getFullText() .  "</a><br /><br />\n"; // TODO
-				$html .= '<table style="width: 100%; ">'. $vsep . "\n";
-				foreach ($results as $result) {
+				$html .= '<table>'. $vsep . "\n";
+				foreach ($outrel as $result) {
 					$objectoptions = new SMWRequestOptions();
-					$html .= '<tr><td class="smwattname">' . "\n";
-					$html .=  $skin->makeLinkObj($result, $result->getText()) . "\n";
-					$html .= '</td><td class="smwatts">' . "\n";
+					$html .= '<tr><td style="text-align:right;">' . "\n";
+					$html .=  $skin->makeLinkObj($result, smwfT($result)) . "\n";
+					$html .= '</td><td>' . "\n";
 					$objects = &smwfGetStore()->getRelationObjects($article, $result, $objectoptions);
 					$objectcount = count($objects);
 					$count = 0;
 					foreach ($objects as $object) {
 						$count += 1;
 						$searchlink = SMWInfolink::newBrowsingLink('+',$object->getFullText());
-						$html .= $skin->makeLinkObj($object) . '&nbsp;&nbsp;' . $searchlink->getHTML($skin);
+						$html .= $skin->makeLinkObj($object, smwfT($object)) . '&nbsp;&nbsp;' . $searchlink->getHTML($skin);
 						if ($count<$objectcount) $html .= ", ";
 					}
 					$html .= '</td></tr>'.$vsep."\n";
 				}
 				foreach ($atts as $att) {
 					$objectoptions = new SMWRequestOptions();
-					$html .= '<tr><td class="smwattname">' . "\n";
+					$html .= '<tr><td style="text-align:right;">' . "\n";
 					$html .=  $skin->makeKnownLinkObj($att, $att->getText()) . "\n";
-					$html .= '</td><td class="smwatts">' . "\n";
+					$html .= '</td><td>' . "\n";
 					$objects = &smwfGetStore()->getAttributeValues($article, $att, $objectoptions);
 					$objectcount = count($objects);
 					$count = 0;
@@ -156,10 +154,39 @@ class SMW_SpecialBrowse	 {
 				}
 				$html .= "</table>\n";
 			}
+			$html .= "</td></tr></table>";
 		}
 
 		$wgOut->addHTML($html);
 	}
-
 }
+
+///// Translation functions /////
+
+/**
+ * Global shortcut function for Store::translateTitle
+ */
+function smwfT(Title $title) {
+	global $wgLang;
+	return translateTitle($title, $wgLang);
+}
+
+function translateTitle(Title $title, Language $language ) {
+	$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+	$sql = 'll_from=' . $db->addQuotes($title->getArticleID()) .
+	       ' AND ll_lang=' . $db->addQuotes($language->mCode);
+	$res = $db->select( $db->tableName('langlinks'),
+	                    'll_title',
+	                    $sql, 'SMW::translateTitle' );
+	// return result as string (only the first -- there should be only one, anyway)
+	if($db->numRows( $res ) > 0) {
+		$row = $db->fetchObject($res);
+		$db->freeResult($res);
+		return $row->ll_title; // TODO need to get rid of NS in other language
+	} else {
+		$db->freeResult($res);
+		return $title->getText();
+	}
+}
+
 ?>

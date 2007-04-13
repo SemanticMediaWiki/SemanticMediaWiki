@@ -377,46 +377,6 @@ class SMWSQLStore extends SMWStore {
 		$db->update($db->tableName('smw_specialprops'), $val_array, $cond_array, 'SMW::changeTitle');
 	}
 
-///// Translation functions /////
-
-	function translateTitle(Title $title, Language $language ) {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
-		$sql = 'll_from=' . $db->addQuotes($title->getArticleID()) .
-		       ' AND ll_lang=' . $db->addQuotes($language->mCode);
-
-		$res = $db->select( $db->tableName('langlinks'),
-		                    'll_title',
-		                    $sql, 'SMW::translateTitle' );
-		// return result as string (only the first -- there should be only one, anyway)
-		if($db->numRows( $res ) > 0) {
-			$row = $db->fetchObject($res);
-			$db->freeResult($res);
-			return $row->ll_title; // TODO need to get rid of NS in other language
-		} else {
-			$db->freeResult($res);
-			return $title->getText();
-		}
-	}
-
-	function translateTitleWithNS(Title $title, Language $language ) {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
-		$sql = 'll_from=' . $db->addQuotes($title->getArticleID()) .
-		       ' AND ll_lang=' . $db->addQuotes($language->mCode);
-
-		$res = $db->select( $db->tableName('langlinks'),
-		                    'll_title',
-		                    $sql, 'SMW::translateTitle' );
-		// return result as string (only the first -- there should be only one, anyway)
-		if($db->numRows( $res ) > 0) {
-			$row = $db->fetchObject($res);
-			$db->freeResult($res);
-			return $row->ll_title;
-		} else {
-			$db->freeResult($res);
-			return $title->getFullText();
-		}
-	}
-
 ///// Query answering /////
 
 	function getQueryResult(SMWQuery $query) {
