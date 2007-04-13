@@ -48,12 +48,13 @@ class SMW_SpecialBrowse	 {
 		$html .= '<form name="smwbrowse" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n";
 		$html .= '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
 		$html .= wfMsg('smw_browse_article') . "<br />\n";
-		$html .= '<input type="text" name="article" value="' . htmlspecialchars($articletext) . '" />' . "\n";
+		if (NULL == $article) {	$boxtext = $articletext; } else { $boxtext = $article->getFullText(); }
+		$html .= '<input type="text" name="article" value="' . htmlspecialchars($boxtext) . '" />' . "\n";
 		$html .= '<input type="submit" value="' . wfMsg('smw_browse_go') . "\"/>\n</form>\n";
 
 		$vsep = '<tr><td colspan="2"><div class="smwhr"><hr /></div></td></tr>';
 
-		if ('' == $articletext) { // empty, no article name given
+		if (('' == $articletext) || (NULL == $article)) { // empty, no article name given
 			$html .= wfMsg('smw_browse_docu') . "\n";
 		} elseif ('in' == $mode) { // incoming links
 			$options = new SMWRequestOptions();
@@ -97,14 +98,14 @@ class SMW_SpecialBrowse	 {
 					foreach ($subjects as $subject) {
 						$innercount += 1;
 						if (($innercount < $innerlimit) || !$more) {
-							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getText(), FALSE);
+							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getFullText(), FALSE);
 							$html .= $skin->makeKnownLinkObj($subject) . '&nbsp;&nbsp;' . $subjectlink->getHTML($skin);
 							if ($innercount<$subjectcount) $html .= ", \n";
 						} else {
-							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByRelation', 'type=' . urlencode($result->getText()) . '&target=' . urlencode($article->getText())) . '">' . wfMsg("smw_browse_more") . "</a><br />\n";
+							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByRelation', 'type=' . urlencode($result->getFullText()) . '&target=' . urlencode($article->getFullText())) . '">' . wfMsg("smw_browse_more") . "</a><br />\n";
 						}
 					}
-					$html .= '</td><td class="smwrelright">' . $skin->makeLinkObj($result, $result->getText()) . " " . $article->getText() . '</td></tr>' . $vsep . "\n";
+					$html .= '</td><td class="smwrelright">' . $skin->makeLinkObj($result, $result->getText()) . " " . $article->getFullText() . '</td></tr>' . $vsep . "\n";
 				}
 				$html .= "</table>\n";
 			}
@@ -113,13 +114,14 @@ class SMW_SpecialBrowse	 {
 		} else { // outgoing links
 			$options = new SMWRequestOptions();
 			$results = &smwfGetStore()->getOutRelations($article, $options);
+			$atts = &smwfGetStore()->getAttributes($article, $options);
 
 			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_browse_displayout', $skin->makeLinkObj($article)) . "<br />\n";
 
-			if (count($results) == 0) {
+			if ((count($results) == 0) && (count($atts) == 0)) {
 				$html .= wfMsg( 'smw_browse_noout', $skin->makeSpecialUrl('SMWBrowse', 'article=' . urlencode($articletext) . '&mode=in' ));
 			} else {
-				$html .= 'See all <a href="' . $skin->makeSpecialUrl('SMWBrowse', 'mode=in&article=' . urlencode($articletext)) . '">incoming links of ' . $article->getText() .  "</a><br /><br />\n"; // TODO
+				$html .= 'See all <a href="' . $skin->makeSpecialUrl('SMWBrowse', 'mode=in&article=' . urlencode($articletext)) . '">incoming links of ' . $article->getFullText() .  "</a><br /><br />\n"; // TODO
 				$html .= '<table style="width: 100%; ">'. $vsep . "\n";
 				foreach ($results as $result) {
 					$objectoptions = new SMWRequestOptions();
@@ -131,8 +133,23 @@ class SMW_SpecialBrowse	 {
 					$count = 0;
 					foreach ($objects as $object) {
 						$count += 1;
-						$searchlink = SMWInfolink::newBrowsingLink('+',$object->getText());
+						$searchlink = SMWInfolink::newBrowsingLink('+',$object->getFullText());
 						$html .= $skin->makeLinkObj($object) . '&nbsp;&nbsp;' . $searchlink->getHTML($skin);
+						if ($count<$objectcount) $html .= ", ";
+					}
+					$html .= '</td></tr>'.$vsep."\n";
+				}
+				foreach ($atts as $att) {
+					$objectoptions = new SMWRequestOptions();
+					$html .= '<tr><td class="smwattname">' . "\n";
+					$html .=  $skin->makeKnownLinkObj($att, $att->getText()) . "\n";
+					$html .= '</td><td class="smwatts">' . "\n";
+					$objects = &smwfGetStore()->getAttributeValues($article, $att, $objectoptions);
+					$objectcount = count($objects);
+					$count = 0;
+					foreach ($objects as $object) {
+						$count += 1;
+						$html .= $object->getValueDescription();
 						if ($count<$objectcount) $html .= ", ";
 					}
 					$html .= '</td></tr>'.$vsep."\n";

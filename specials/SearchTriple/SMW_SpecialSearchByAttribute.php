@@ -80,12 +80,17 @@ class SMW_SearchByAttribute {
 			}
 
 			$res = smwfGetAttributes(NULL, $attributetitle, $unit, NULL, $value, false); // do not care about the typeid here
+			$options = new SMWRequestOptions();
+			$options->limit = $limit+1;
+			$options->offset = $offset;
+			$options->boundary = "M";
 			// TODO change to new SMW_Store asap
-			//$results = &smwfGetStore()->getRelationSubjects($relation, $object, $limit+1, $offset);
+//			$res = &smwfGetStore()->getAttributeSubjects( $attributetitle, $datavalue, $options );
+//			$res = &smwfGetStore()->getAllAttributeSubjects( $attributetitle, $options );
 			$count = count($res);
 
 
-			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_sbv_displayresult', $skin->makeLinkObj($attributetitle, $attributetitle->getText()), $valuestring) . "<br />\n";
+			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_sbv_displayresult', $skin->makeLinkObj($attributetitle, $attributetitle->getText()), $datavalue->getStringValue()) . "<br />\n";
 
 			// prepare navigation bar
 			if ($offset > 0)
@@ -131,7 +136,9 @@ class SMW_SearchByAttribute {
 			else {
 				$html .= "<ul>\n";
 				foreach ($res as $line) {
-					$t = Title::newFromID($line[0]);
+					$t =  Title::newFromID($line[0]);
+					//$values = &smwfGetStore()->getAttributeValues( $t, $attributetitle );
+					//$html .= "<li>" . $values[0]->getStringValue() . "</li>\n";
 					$html .= "<li>" . $skin->makeKnownLink($t->getPrefixedText()) . "</li>\n";
 				}
 				$html .= "</ul>\n";

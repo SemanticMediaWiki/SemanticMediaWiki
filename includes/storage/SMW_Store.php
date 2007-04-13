@@ -16,7 +16,7 @@ define('SMW_STRCOND_MID',2);
 
 /**
  * Small data container class for describing filtering conditions on the string
- * label of some entity. States that a given string should either be prefix, postfix, 
+ * label of some entity. States that a given string should either be prefix, postfix,
  * or some arbitrary part of labels.
  */
 class SMWStringCondition {
@@ -28,7 +28,7 @@ class SMWStringCondition {
 	 * Condition. One of SMW_STRCOND_PRE (string matches prefix),
 	 * SMW_STRCOND_POST (string matches postfix), SMW_STRCOND_MID
 	 * (string matches to some inner part).
-	 */	
+	 */
 	public $condition;
 
 	public function SMWStringCondition($string, $condition) {
@@ -52,7 +52,7 @@ class SMWRequestOptions {
 	public $limit = -1;
 	/**
 	 * A numerical offset. The first $offset results are skipped.
-	 * Note that this does not imply a defined order of results 
+	 * Note that this does not imply a defined order of results
 	 * (see SMWRequestOptions->$sort below).
 	 */
 	public $offset = 0;
@@ -76,7 +76,7 @@ class SMWRequestOptions {
 	 */
 	public $boundary = NULL;
 	/**
-	 * Specifies whether or not the requested boundary should be returned 
+	 * Specifies whether or not the requested boundary should be returned
 	 * as a result.
 	 */
 	public $include_boundary = true;
@@ -107,7 +107,7 @@ class SMWRequestOptions {
 /**
  * The abstract base class for all classes that implement access to some
  * semantic store. Besides the relevant interface, this class provides default
- * implementations for some optional methods, which inform the caller that 
+ * implementations for some optional methods, which inform the caller that
  * these methods are not implemented.
  */
 abstract class SMWStore {
@@ -129,11 +129,11 @@ abstract class SMWStore {
 	abstract function getSpecialSubjects($specialprop, $value, $requestoptions = NULL);
 
 	/**
-	 * Get an array of all attribute values stored for the given subject and atttribute. The result 
+	 * Get an array of all attribute values stored for the given subject and atttribute. The result
 	 * is an array of SMWDataValue objects.
 	 */
 	abstract function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL);
-	
+
 	/**
 	 * Get an array of all subjects that have the given value for the given attribute. The
 	 * result is an array of Title objects.
@@ -163,7 +163,7 @@ abstract class SMWStore {
 	 * result is an array of Title objects.
 	 */
 	abstract function getRelationSubjects(Title $relation, Title $object, $requestoptions = NULL);
-	
+
 	/**
 	 * Get an array of all subjects that relate to some object via the given relation. The
 	 * result is an array of Title objects.
@@ -177,7 +177,7 @@ abstract class SMWStore {
 	abstract function getOutRelations(Title $subject, $requestoptions = NULL);
 
 	/**
-	 * Get an array of all relations for which there is some subject that relates to the given object. 
+	 * Get an array of all relations for which there is some subject that relates to the given object.
 	 * The result is an array of Title objects.
 	 */
 	abstract function getInRelations(Title $object, $requestoptions = NULL);
@@ -187,7 +187,7 @@ abstract class SMWStore {
 	/**
 	 * Delete all semantic properties that the given subject has. This
 	 * includes relations, attributes, and special properties. This does not
-	 * delete the respective text from the wiki, but only clears the stored 
+	 * delete the respective text from the wiki, but only clears the stored
 	 * data.
 	 */
 	abstract function deleteSubject(Title $subject);
@@ -208,6 +208,22 @@ abstract class SMWStore {
 	 */
 	abstract function changeTitle(Title $oldtitle, Title $newtitle, $keepid = true);
 
+///// Name translation /////
+
+	/***
+	 * Returns a string with the translated name of the title, if known to the store, in
+	 * the language defined by the language key. If not known, the untranslated name is
+	 * returned. The returned string is without the namespace.
+	 */
+	abstract function translateTitle(Title $title, Language $language );
+
+	/***
+	 * Returns a string with the translated name of the title, if known to the store, in
+	 * the language defined by the language key. If not known, the untranslated name is
+	 * returned. The namespace is preserved.
+	 */
+	abstract function translateTitleWithNS(Title $title, Language $language );
+
 ///// Query answering /////
 
 	/**
@@ -220,11 +236,27 @@ abstract class SMWStore {
 	/**
 	 * Setup all storage structures properly for using the store. This function performs tasks like
 	 * creation of database tables. It is called upon installation as well as on upgrade: hence it
-	 * must be able to upgrade existing storage structures if needed. It should return "true" if 
+	 * must be able to upgrade existing storage structures if needed. It should return "true" if
 	 * successful and return a meaningful string error message otherwise.
 	 */
 	abstract function setup();
 
+}
+
+/**
+ * Global shortcut function for Store::translateTitle
+ */
+function smwfT(Title $title) {
+	global $wgLang;
+	return smwfGetStore()->translateTitle($title, $wgLang);
+}
+
+/**
+ * Global shortcut function for Store::translateTitleWithNS
+ */
+function smwfTNS(Title $title) {
+	global $wgLang;
+	return smwfGetStore()->translateTitleWithNS($title, $wgLang);
 }
 
 ?>

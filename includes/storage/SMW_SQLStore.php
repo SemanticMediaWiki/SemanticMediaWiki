@@ -26,7 +26,7 @@ class SMWSQLStore extends SMWStore {
 		$result = array();
 		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
 			$sql = 'cl_from=' . $db->addQuotes($subject->getArticleID());
-			$res = $db->select( $db->tableName('categorylinks'), 
+			$res = $db->select( $db->tableName('categorylinks'),
 								'DISTINCT cl_to',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
 			// rewrite result as array
@@ -39,7 +39,7 @@ class SMWSQLStore extends SMWStore {
 		} else { // "normal" special property
 			$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 				'AND property_id=' . $db->addQuotes($specialprop);
-			$res = $db->select( $db->tableName('smw_specialprops'), 
+			$res = $db->select( $db->tableName('smw_specialprops'),
 								'value_string',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
 			// rewrite result as array
@@ -53,7 +53,7 @@ class SMWSQLStore extends SMWStore {
 		}
 		return $result;
 	}
-	
+
 	function getSpecialSubjects($specialprop, $value, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		if ($value instanceof SMWDataValue) {
@@ -100,7 +100,7 @@ class SMWSQLStore extends SMWStore {
 		       ' AND attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
 		       $this->getSQLConditions($requestoptions,$value_column,'value_xsd');
 
-		$res = $db->select( $db->tableName('smw_attributes'), 
+		$res = $db->select( $db->tableName('smw_attributes'),
 		                    'value_unit, value_datatype, value_xsd',
 		                    $sql, 'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,$value_column) );
 		// rewrite result as array
@@ -127,7 +127,7 @@ class SMWSQLStore extends SMWStore {
 		$sql = 'attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
-		$res = $db->select( $db->tableName('smw_attributes'), 
+		$res = $db->select( $db->tableName('smw_attributes'),
 		                    'DISTINCT subject_id',
 		                    $sql, 'SMW::getAllAttributeSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
 		// rewrite result as array
@@ -146,7 +146,7 @@ class SMWSQLStore extends SMWStore {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) . $this->getSQLConditions($requestoptions,'attribute_title','attribute_title');
 
-		$res = $db->select( $db->tableName('smw_attributes'), 
+		$res = $db->select( $db->tableName('smw_attributes'),
 		                    'DISTINCT attribute_title',
 		                    $sql, 'SMW::getAttributes', $this->getSQLOptions($requestoptions,'attribute_title') );
 		// rewrite result as array
@@ -167,7 +167,7 @@ class SMWSQLStore extends SMWStore {
 		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
 		       $this->getSQLConditions($requestoptions,'object_title','object_title');
 
-		$res = $db->select( $db->tableName('smw_relations'), 
+		$res = $db->select( $db->tableName('smw_relations'),
 		                    'object_title, object_namespace',
 		                    $sql, 'SMW::getRelationObjects', $this->getSQLOptions($requestoptions,'object_title') );
 		// rewrite result as array
@@ -209,7 +209,7 @@ class SMWSQLStore extends SMWStore {
 		$sql = 'relation_title=' . $db->addQuotes($relation->getDBkey()) .
 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
-		$res = $db->select( $db->tableName('smw_relations'), 
+		$res = $db->select( $db->tableName('smw_relations'),
 		                    'DISTINCT subject_id',
 		                    $sql, 'SMW::getAllRelationSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
 		// rewrite result as array
@@ -229,7 +229,7 @@ class SMWSQLStore extends SMWStore {
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
 
-		$res = $db->select( $db->tableName('smw_relations'), 
+		$res = $db->select( $db->tableName('smw_relations'),
 		                    'DISTINCT relation_title',
 		                    $sql, 'SMW::getOutRelations', $this->getSQLOptions($requestoptions,'relation_title') );
 		// rewrite result as array
@@ -250,7 +250,7 @@ class SMWSQLStore extends SMWStore {
 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
 		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
 
-		$res = $db->select( $db->tableName('smw_relations'), 
+		$res = $db->select( $db->tableName('smw_relations'),
 		                    'DISTINCT relation_title',
 		                    $sql, 'SMW::getInRelations', $this->getSQLOptions($requestoptions,'relation_title') );
 		// rewrite result as array
@@ -269,13 +269,13 @@ class SMWSQLStore extends SMWStore {
 
 	function deleteSubject(Title $subject) {
 		$db =& wfGetDB( DB_MASTER );
-		$db->delete($db->tableName('smw_relations'), 
+		$db->delete($db->tableName('smw_relations'),
 		            array('subject_id' => $subject->getArticleID()),
 		            'SMW::deleteSubject::Relations');
-		$db->delete($db->tableName('smw_attributes'), 
+		$db->delete($db->tableName('smw_attributes'),
 		            array('subject_id' => $subject->getArticleID()),
 		            'SMW::deleteSubject::Attributes');
-		$db->delete($db->tableName('smw_specialprops'), 
+		$db->delete($db->tableName('smw_specialprops'),
 		            array('subject_id' => $subject->getArticleID()),
 		            'SMW::deleteSubject::Specialprops');
 	}
@@ -343,7 +343,7 @@ class SMWSQLStore extends SMWStore {
 				                   'subject_namespace' => $subject->getNamespace(),
 				                   'subject_title' => $subject->getDBkey(),
 				                   'property_id' => $special,
-				                   'value_string' => $stringvalue), 
+				                   'value_string' => $stringvalue),
 				             'SMW::updateSpecData');
 			}
 		}
@@ -359,7 +359,7 @@ class SMWSQLStore extends SMWStore {
 
 		// don't do this by default, since the ids you get when moving articles
 		// are not the ones from the old article and the new one (in reality, the
-		// $old_title refers to the newly generated redirect article, which does 
+		// $old_title refers to the newly generated redirect article, which does
 		// not have the old id that was stored in the database):
 		if (!$keepid) {
 			$old_id = $old_title->getArticleID();
@@ -375,6 +375,46 @@ class SMWSQLStore extends SMWStore {
 		$db->update($db->tableName('smw_relations'), $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update($db->tableName('smw_attributes'), $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update($db->tableName('smw_specialprops'), $val_array, $cond_array, 'SMW::changeTitle');
+	}
+
+///// Translation functions /////
+
+	function translateTitle(Title $title, Language $language ) {
+		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$sql = 'll_from=' . $db->addQuotes($title->getArticleID()) .
+		       ' AND ll_lang=' . $db->addQuotes($language->mCode);
+
+		$res = $db->select( $db->tableName('langlinks'),
+		                    'll_title',
+		                    $sql, 'SMW::translateTitle' );
+		// return result as string (only the first -- there should be only one, anyway)
+		if($db->numRows( $res ) > 0) {
+			$row = $db->fetchObject($res);
+			$db->freeResult($res);
+			return $row->ll_title; // TODO need to get rid of NS in other language
+		} else {
+			$db->freeResult($res);
+			return $title->getText();
+		}
+	}
+
+	function translateTitleWithNS(Title $title, Language $language ) {
+		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$sql = 'll_from=' . $db->addQuotes($title->getArticleID()) .
+		       ' AND ll_lang=' . $db->addQuotes($language->mCode);
+
+		$res = $db->select( $db->tableName('langlinks'),
+		                    'll_title',
+		                    $sql, 'SMW::translateTitle' );
+		// return result as string (only the first -- there should be only one, anyway)
+		if($db->numRows( $res ) > 0) {
+			$row = $db->fetchObject($res);
+			$db->freeResult($res);
+			return $row->ll_title;
+		} else {
+			$db->freeResult($res);
+			return $title->getFullText();
+		}
 	}
 
 ///// Query answering /////
@@ -422,7 +462,7 @@ class SMWSQLStore extends SMWStore {
 
 		$fname = 'SMW::setupDatabase';
 		$db =& wfGetDB( DB_MASTER );
-		
+
 		extract( $db->tableNames('smw_relations','smw_attributes','smw_specialprops') );
 
 		// create relation table

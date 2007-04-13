@@ -42,7 +42,9 @@ class SMW_SearchByRelation {
 			}
 		}
 		$relation = Title::newFromText( $type, SMW_NS_RELATION );
+		if (NULL != $relation) { $type = $relation->getText(); }
 		$object = Title::newFromText( $target );
+		if (NULL != $object) { $target = $object->getText(); }
 		$limit = $wgRequest->getVal( 'limit' );
 		if ('' == $limit) $limit =  20;
 		$offset = $wgRequest->getVal( 'offset' );
@@ -115,7 +117,8 @@ class SMW_SearchByRelation {
 			else {
 				$html .= "<ul>\n";
 				foreach ($results as $result) {
-					$html .= '<li>' . $skin->makeKnownLinkObj($result) . "</li>\n";
+					$browselink = SMWInfolink::newBrowsingLink('+',$result->getText());
+					$html .= '<li>' . $skin->makeKnownLinkObj($result) . '&nbsp;&nbsp;' . $browselink->getHTML($skin) . "</li> \n";
 				}
 				$html .= "</ul>\n";
 			}
