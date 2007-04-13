@@ -139,7 +139,8 @@ class SMW_SearchByAttribute {
 					$t =  Title::newFromID($line[0]);
 					//$values = &smwfGetStore()->getAttributeValues( $t, $attributetitle );
 					//$html .= "<li>" . $values[0]->getStringValue() . "</li>\n";
-					$html .= "<li>" . $skin->makeKnownLink($t->getPrefixedText()) . "</li>\n";
+					$browselink = SMWInfolink::newBrowsingLink('+',$t->getPrefixedText());
+					$html .= '<li>' . $skin->makeKnownLinkObj($t) . '&nbsp;&nbsp;' . $browselink->getHTML($skin) . "</li> \n";
 				}
 				$html .= "</ul>\n";
 			}

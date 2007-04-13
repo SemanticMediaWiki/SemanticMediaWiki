@@ -240,12 +240,13 @@ class SMWFactbox {
 
 		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . str_replace('%2F', '/', urlencode(SMWFactbox::$semdata->getSubject()->getPrefixedText())), 'rdflink');
 
+		$browselink = SMWInfolink::newBrowsingLink(SMWFactbox::$semdata->getSubject()->getText(), SMWFactbox::$semdata->getSubject()->getPrefixedText());
 		// The "\n" is to ensure that lists on the end of articles are terminated
 		// before the div starts. It would of course be much cleaner to print the
 		// factbox in another way, similar to the way that categories are printed
 		// now. However, this would require more patching of MediaWiki code ...
 		$text .= "\n" . '<div class="smwfact">' .
-		         '<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', SMWFactbox::$semdata->getSubject()->getText()) . '</span>' .
+		         '<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
 		         '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
 		         '<table style="clear: both; width: 100%">' . "\n";
 		SMWFactbox::printRelations($text);

@@ -117,7 +117,7 @@ class SMW_SearchByRelation {
 			else {
 				$html .= "<ul>\n";
 				foreach ($results as $result) {
-					$browselink = SMWInfolink::newBrowsingLink('+',$result->getText());
+					$browselink = SMWInfolink::newBrowsingLink('+',$result->getPrefixedText());
 					$html .= '<li>' . $skin->makeKnownLinkObj($result) . '&nbsp;&nbsp;' . $browselink->getHTML($skin) . "</li> \n";
 				}
 				$html .= "</ul>\n";
