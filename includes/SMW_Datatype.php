@@ -420,7 +420,7 @@ class SMWInfolink {
 	/**
 	 * Static function to construct links to inverse relation searches.
 	 */
-	static function newInverseRelationSearchLink($caption,$subject,$relation,$style = 'smwsearch') {
+	static function newInverseRelationSearchLink($caption,$subject,$relation,$style = false) {
 		$specialtitle = Title::newFromText('ask', NS_SPECIAL);
 		return new SMWInfolink(false,$caption,$specialtitle->escapeLocalURL('query=' . urlencode('[[:' . $subject . ']] [[' . $relation . '::*]]')), $style);
 	}
@@ -428,7 +428,7 @@ class SMWInfolink {
 	/**
 	 * Static function to construct links to inverse attribute searches.
 	 */
-	static function newInverseAttributeSearchLink($caption,$subject,$attribute,$style = 'smwsearch') {
+	static function newInverseAttributeSearchLink($caption,$subject,$attribute,$style = false) {
 		$specialtitle = Title::newFromText('ask', NS_SPECIAL);
 		return new SMWInfolink(false,$caption,$specialtitle->escapeLocalURL('query=' . urlencode('[[:' . $subject . ']] [[' . $attribute . ':=*]]')), $style);
 	}
