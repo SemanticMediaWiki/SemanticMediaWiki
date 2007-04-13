@@ -37,8 +37,6 @@ class SMW_SpecialBrowse	 {
 		if ('' == $limit) $limit =  10;
 		$offset = $wgRequest->getVal( 'offset' );
 		if ('' == $offset) $offset = 0;
-		$mode = $wgRequest->getVal( 'mode' );
-		if (('' == $mode) || ('out' == $mode)) { $mode = 'out'; } else { $mode = 'in'; }
 		$spectitle = Title::makeTitle( NS_SPECIAL, 'Browse' );
 		$innerlimit = 4; // magic variable: how many linked articles should be shown?
 		$html = '';
@@ -73,14 +71,14 @@ class SMW_SpecialBrowse	 {
 
 			// prepare navigation bar
 			if ($offset > 0)
-				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse','offset=' . max(0,$offset-$limit) . '&article=' . urlencode($articletext) )) . '&mode=in">' . wfMsg('smw_result_prev') . '</a>';
+				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse','offset=' . max(0,$offset-$limit) . '&article=' . urlencode($articletext) )) . '">' . wfMsg('smw_result_prev') . '</a>';
 			else
 				$navigation = wfMsg('smw_result_prev');
 
 			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($inrel), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 			if (count($inrel)==($limit+1))
-				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse', 'offset=' . ($offset+$limit) . '&article=' . urlencode($articletext) ))  . '&mode=in">' . wfMsg('smw_result_next') . '</a>';
+				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse', 'offset=' . ($offset+$limit) . '&article=' . urlencode($articletext) ))  . '">' . wfMsg('smw_result_next') . '</a>';
 			else
 				$navigation .= wfMsg('smw_result_next');
 
