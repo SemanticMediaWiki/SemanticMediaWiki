@@ -248,7 +248,7 @@ class SMWFactbox {
 		$text .= "\n" . '<div class="smwfact">' .
 		         '<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
 		         '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
-		         '<table style="clear: both; width: 100%">' . "\n";
+		         '<table class="smwfacttable">' . "\n";
 		SMWFactbox::printRelations($text);
 		SMWFactbox::printAttributes($text);
 		SMWFactbox::printSpecialProperties($text);
@@ -263,7 +263,7 @@ class SMWFactbox {
 			return;
 		}
 
-		$text .= ' <tr><th class="atthead"></th><th class="atthead">' . wfMsgForContent('smw_att_head') . "</th></tr>\n";
+		//$text .= ' <tr><th class="atthead"></th><th class="atthead">' . wfMsgForContent('smw_att_head') . "</th></tr>\n";
 
 		foreach(SMWFactbox::$semdata->getAttributes() as $attribute) {
 			$attributeValueArray = SMWFactbox::$semdata->getAttributeValues($attribute);
@@ -301,7 +301,7 @@ class SMWFactbox {
 	static protected function printRelations(&$text) {
 		if(!SMWFactbox::$semdata->hasRelations()) { return true; }
 
-		$text .= ' <tr><th class="relhead"></th><th class="relhead">' . wfMsgForContent('smw_rel_head') . "</th></tr>\n";
+		//$text .= ' <tr><th class="relhead"></th><th class="relhead">' . wfMsgForContent('smw_rel_head') . "</th></tr>\n";
 
 		foreach(SMWFactbox::$semdata->getRelations() as $relation) {
 			$relationObjectArray = SMWFactbox::$semdata->getRelationObjects($relation);

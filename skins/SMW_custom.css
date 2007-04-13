@@ -77,6 +77,12 @@ div.smwfact td, div.smwfact tr, div.smwfact table{
 	background-color: #F9F9F9;
 }
 
+table.smwfacttable{
+	border-top: 1px dotted #AAAAAA;
+	width: 100%;
+	clear: both;
+}
+
 td.smwrelname, td.smwattname, td.smwspecname, th.smwrelname, th.smwattname, th.smwspecname{
 	text-align: right;
 	vertical-align: top;
