@@ -422,7 +422,7 @@ class SMWInfolink {
 	 */
 	static function newInverseRelationSearchLink($caption,$subject,$relation,$style = 'smwsearch') {
 		$specialtitle = Title::newFromText('ask', NS_SPECIAL);
-		return new SMWInfolink(false,$caption,$specialtitle->escapeLocalURL('query=' . urlencode('[[' . $subject . ']] [[' . $relation . '::*]]')), $style);
+		return new SMWInfolink(false,$caption,$specialtitle->escapeLocalURL('query=' . urlencode('[[:' . $subject . ']] [[' . $relation . '::*]]')), $style);
 	}
 
 	/**
@@ -430,7 +430,7 @@ class SMWInfolink {
 	 */
 	static function newInverseAttributeSearchLink($caption,$subject,$attribute,$style = 'smwsearch') {
 		$specialtitle = Title::newFromText('ask', NS_SPECIAL);
-		return new SMWInfolink(false,$caption,$specialtitle->escapeLocalURL('query=' . urlencode('[[' . $subject . ']] [[' . $attribute . ':=*]]')), $style);
+		return new SMWInfolink(false,$caption,$specialtitle->escapeLocalURL('query=' . urlencode('[[:' . $subject . ']] [[' . $attribute . ':=*]]')), $style);
 	}
 
 	/**
