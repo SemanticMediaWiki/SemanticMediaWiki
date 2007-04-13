@@ -185,13 +185,8 @@ class SMW_LanguageEn {
 	'browse' => 'Browse articles',
 	'smw_browse_article' => 'Enter the name of the article to start browsing from.',
 	'smw_browse_go' => 'Go',
-	'smw_browse_in' => 'Incoming',
-	'smw_browse_out' => 'Outgoing',
 	'smw_browse_docu' => '<p>Search for all properties of the given article.</p>',
 	'smw_browse_displayresult' => 'Facts about the article &quot;$1&quot;. Click <span class="smwbrowseicon">+</span> to explore related articles.',
-	'smw_browse_displayout' => 'Facts related to the article &quot;$1&quot;. Click <span class="smwbrowseicon">+</span> to explore related articles.',
-	'smw_browse_noout' => 'No outgoing properties found. Try the <a href="$1">incoming properties</a> instead.',
-	'smw_browse_noin' => 'No incoming properties found. Try the <a href="$1">outgoing properties</a> instead.',
 	'smw_browse_more' => '&hellip;',
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Previous',
