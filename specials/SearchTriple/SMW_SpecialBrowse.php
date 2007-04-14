@@ -20,12 +20,14 @@ function doSpecialBrowse($query = '') {
 
 SpecialPage::addPage( new SpecialPage('Browse','',true,'doSpecialBrowse',false) );
 
-
-
+/***
+ * A class to encapsulate the special page that allows browsing through
+ * the knowledge structure of a Semantic MediaWiki.
+ */
 class SMW_SpecialBrowse	 {
 
 	static function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser, $smwgIQMaxLimit;
+		global $wgRequest, $wgOut, $wgUser,$wgContLang, $smwgIQMaxLimit;
 		$skin = $wgUser->getSkin();
 
 		// get the GET parameters
@@ -49,6 +51,11 @@ class SMW_SpecialBrowse	 {
 			$options = new SMWRequestOptions();
 			$outrel = &smwfGetStore()->getOutRelations($article, $options);
 			$atts = &smwfGetStore()->getAttributes($article, $options);
+			$cats = &smwfGetStore()->getSpecialValues($article, SMW_SP_HAS_CATEGORY, $options);
+			$redout = &smwfGetStore()->getSpecialValues($article, SMW_SP_REDIRECTS_TO, $options);
+			$redin = &smwfGetStore()->getSpecialSubjects(SMW_SP_REDIRECTS_TO, $article, $options);
+			$options->limit = $innerlimit;
+			$instances = &smwfGetStore()->getSpecialSubjects(SMW_SP_HAS_CATEGORY, $article, $options);
 			$options->limit = $limit+1;
 			$options->offset = $offset;
 			$options->sort = TRUE;
@@ -68,20 +75,47 @@ class SMW_SpecialBrowse	 {
 			else
 				$navigation = wfMsg('smw_result_prev');
 
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($inrel), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;'; // The following shows the numbers of the result.
+			// Is this better, or not? TODO
+			// <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($inrel), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 			if (count($inrel)==($limit+1))
 				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse', 'offset=' . ($offset+$limit) . '&article=' . urlencode($articletext) ))  . '">' . wfMsg('smw_result_next') . '</a>';
 			else
 				$navigation .= wfMsg('smw_result_next');
 
-			if (count($inrel) == 0) {
+			if ((count($inrel) == 0) && (count($instances) == 0) && (count($redin)==0)) {
 				$html .= '&nbsp;';
 			} else {
 				// no need to show the navigation bars when there is not enough to navigate
-				if (($offset>0) || (count($inrel)>$limit))
-					$html .= $navigation;
+				if (($offset>0) || (count($inrel)>$limit)) $html .= $navigation;
 				$html .= $vsep . "\n";
+				if ((0==$offset) && (count($instances) > 0)) {
+					$count = 0;
+					foreach ($instances as $instance) {
+						$count += 1;
+						if ($count < $innerlimit) {
+							$browselink = SMWInfolink::newBrowsinglink('+', $instance->getFulltext());
+							$html .= $skin->makeKnownLinkObj( $instance ) . '&nbsp;' . $browselink->getHTML($skin);
+							if ($count < count( $instances )) $html .= ', ';
+						} else {
+							$html .= $skin->makeKnownLinkObj( $article, wfMsg('smw_browse_more') );
+						}
+					}
+					$html .= ' &nbsp;<strong>' . $skin->specialLink( 'Categories' ) . '</strong>';
+					$html .= $vsep . "\n";
+				}
+				$count = count($redin);
+				if ((0==$offset) && ($count > 0)) {
+					foreach ($redin as $red) {
+						$count -= 1;
+						$browselink = SMWInfolink::newBrowsinglink('+', $red->getFulltext());
+						$html .= $skin->makeKnownLinkObj( $red ) . '&nbsp;' . $browselink->getHTML($skin);
+						if ($count > 0) $html .= ', ';
+					}
+					$html .= ' &nbsp;<strong>' . $skin->specialLink( 'Listredirects', 'isredirect' ) . '</strong>';
+					$html .= $vsep . "\n";
+				}
 				foreach ($inrel as $result) {
 					$subjectoptions = new SMWRequestOptions();
 					$subjectoptions->limit = $innerlimit;
@@ -93,7 +127,7 @@ class SMW_SpecialBrowse	 {
 						$innercount += 1;
 						if (($innercount < $innerlimit) || !$more) {
 							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getFullText());
-							$html .= $skin->makeKnownLinkObj($subject, smwfT($subject)) . '&nbsp;' . $subjectlink->getHTML($skin);
+							$html .= $skin->makeKnownLinkObj($subject, smwfT($subject, TRUE)) . '&nbsp;' . $subjectlink->getHTML($skin);
 							if ($innercount<$subjectcount) $html .= ", \n";
 						} else {
 							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByRelation', 'type=' . urlencode($result->getFullText()) . '&target=' . urlencode($article->getFullText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
@@ -103,22 +137,21 @@ class SMW_SpecialBrowse	 {
 					// non-breaking spaces. Since there seems to be no PHP-replacer
 					// for the last two, a strrev ist done twice to turn it around.
 					// That's why nbsp is written backward.
-					$html .= ' &nbsp;<strong>' . $skin->makeLinkObj($result, strrev(preg_replace('/[\s]/', ';psbn&', strrev(smwfT($result)), 2) )) . '</strong>' . $vsep . "\n";
+					$html .= ' &nbsp;<strong>' . $skin->makeKnownLinkObj($result, strrev(preg_replace('/[\s]/', ';psbn&', strrev(smwfT($result)), 2) )) . '</strong>' . $vsep . "\n"; // TODO makeLinkObj or makeKnownLinkObj?
 				}
+				if (($offset>0) || (count($inrel)>$limit)) $html .= $navigation;
 			}
-			if (($offset>0) || (count($inrel)>$limit))
-				$html .= $navigation;
 
-			$html .= '</td><td style="vertical-align:middle; text-align:center;" width="18%">' . $skin->makeLinkObj($article, smwfT($article)) . '</td><td style="vertical-align:middle; text-align:left;" width="40%">';
+			$html .= '</td><td style="vertical-align:middle; text-align:center;" width="18%">' . $skin->makeLinkObj($article, smwfT($article, TRUE)) . '</td><td style="vertical-align:middle; text-align:left;" width="40%">';
 
-			if ((count($outrel) == 0) && (count($atts) == 0)) {
+			if ((count($outrel) == 0) && (count($atts) == 0) && (count($cats) == 0) && (count($redout) == 0)) {
 				$html .= '&nbsp;';
 			} else {
 				$html .= $vsep . "\n";
 				foreach ($outrel as $result) {
 					$objectoptions = new SMWRequestOptions();
 					$objectoptions->limit = $innerlimit;
-					$html .=  '<strong>' . $skin->makeLinkObj($result, preg_replace('/[\s]/', '&nbsp;', smwfT($result), 2)) . "</strong>&nbsp; \n";
+					$html .=  '<strong>' . $skin->makeKnownLinkObj($result, preg_replace('/[\s]/', '&nbsp;', smwfT($result), 2)) . "</strong>&nbsp; \n";// TODO makeLinkObj or makeKnownLinkObj?
 					$objects = &smwfGetStore()->getRelationObjects($article, $result, $objectoptions);
 					$objectcount = count($objects);
 					$count = 0;
@@ -129,7 +162,7 @@ class SMW_SpecialBrowse	 {
 							$html .= $querylink->getHTML($skin);
 						} else {
 							$searchlink = SMWInfolink::newBrowsingLink('+',$object->getFullText());
-							$html .= $skin->makeLinkObj($object, smwfT($object)) . '&nbsp;' . $searchlink->getHTML($skin);
+							$html .= $skin->makeLinkObj($object, smwfT($object, TRUE)) . '&nbsp;' . $searchlink->getHTML($skin);
 						}
 						if ($count<$objectcount) $html .= ", ";
 					}
@@ -137,7 +170,7 @@ class SMW_SpecialBrowse	 {
 				}
 				foreach ($atts as $att) {
 					$objectoptions = new SMWRequestOptions();
-					$html .=  '<strong>' . $skin->makeKnownLinkObj($att, preg_replace('/[\s]/', '&nbsp;', smwfT($att), 2)) . "</strong>\n";
+					$html .=  '<strong>' . $skin->makeKnownLinkObj($att, preg_replace('/[\s]/', '&nbsp;', smwfT($att), 2)) . "</strong>&nbsp; \n";
 					$objects = &smwfGetStore()->getAttributeValues($article, $att, $objectoptions);
 					$objectcount = count($objects);
 					$count = 0;
@@ -145,6 +178,29 @@ class SMW_SpecialBrowse	 {
 						$count += 1;
 						$html .= $object->getValueDescription();
 						if ($count<$objectcount) $html .= ", ";
+					}
+					$html .= $vsep."\n";
+				}
+				$count = count($redout);
+				if ($count>0) {
+					$html .= '<strong>' . $skin->specialLink( 'Listredirects', 'isredirect' ) . '</strong>&nbsp; ';
+					foreach ($redout as $red) {
+						$count -= 1;
+						$browselink = SMWInfolink::newBrowsingLink('+', $red->getFullText());
+						$html .= $skin->makeLinkObj($red, smwfT($red)) . '&nbsp;' . $browselink->getHTML($skin);
+						if ($count > 0) $html .= ", ";
+					}
+					$html .= $vsep."\n";
+				}
+				$count = count($cats);
+				if ($count>0) {
+					$html .= '<strong>' . $skin->specialLink( 'Categories' ) . '</strong>&nbsp; ';
+					$count = count($cats);
+					foreach ($cats as $cat) {
+						$count -= 1;
+						$browselink = SMWInfolink::newBrowsingLink('+', $cat->getFullText());
+						$html .= $skin->makeLinkObj($cat, smwfT($cat)) . '&nbsp;' . $browselink->getHTML($skin);
+						if ($count > 0) $html .= ", ";
 					}
 					$html .= $vsep."\n";
 				}
@@ -170,17 +226,17 @@ class SMW_SpecialBrowse	 {
 /**
  * Global shortcut function for Store::translateTitle
  */
-function smwfT(Title $title) {
+function smwfT(Title $title, $namespace = FALSE ) {
 	global $wgLang;
-	return translateTitle($title, $wgLang);
+	return translateTitle($title, $wgLang, $namespace);
 }
 
 /**
  * Translate a title into another language, based on the langlinks-table.
  * This is just a first try, needs to be reworked into a proper translation
- * mechanism.
+ * mechanism. Returns the Nameaspace.
  */
-function translateTitle(Title $title, Language $language ) {
+function translateTitle(Title $title, Language $language, $namespace = FALSE ) {
 	$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 	$sql = 'll_from=' . $db->addQuotes($title->getArticleID()) .
 	       ' AND ll_lang=' . $db->addQuotes($language->mCode);
@@ -194,7 +250,7 @@ function translateTitle(Title $title, Language $language ) {
 		return $row->ll_title; // TODO need to get rid of NS in other language
 	} else {
 		$db->freeResult($res);
-		return $title->getText();
+		if ( $namespace ) return $title->getFullText(); else return $title->getText();
 	}
 }
 

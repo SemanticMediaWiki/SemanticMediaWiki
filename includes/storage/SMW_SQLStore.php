@@ -25,6 +25,7 @@ class SMWSQLStore extends SMWStore {
 
 		$result = array();
 		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
+
 			$sql = 'cl_from=' . $db->addQuotes($subject->getArticleID());
 			$res = $db->select( $db->tableName('categorylinks'),
 								'DISTINCT cl_to',
@@ -36,7 +37,24 @@ class SMWSQLStore extends SMWStore {
 				}
 			}
 			$db->freeResult($res);
+
+		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
+		
+			$sql = 'rd_from=' . $db->addQuotes($subject->getArticleID());
+			$res = $db->select( $db->tableName('redirect'),
+								'rd_namespace,rd_title',
+								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
+								
+			// reqrite results as array
+			if($db->numRows( $res ) > 0) {
+				while($row = $db->fetchObject($res)) {
+					$result[] = Title::makeTitle($row->rd_namespace, $row->rd_title);
+				}
+			}
+			$db->freeResult($res);
+		
 		} else { // "normal" special property
+
 			$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 				'AND property_id=' . $db->addQuotes($specialprop);
 			$res = $db->select( $db->tableName('smw_specialprops'),
@@ -56,37 +74,74 @@ class SMWSQLStore extends SMWStore {
 
 	function getSpecialSubjects($specialprop, $value, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
-		if ($value instanceof SMWDataValue) {
-			if ($value->getXSDValue() !== false) { // filters out error-values etc.
-				$stringvalue = $value->getXSDValue();
-			} else {
-				return array();
-			}
-		} elseif ($value instanceof Title) {
-			if ( $specialprop == SMW_SP_HAS_TYPE ) { // special handling, TODO: change this to use type ids
-				$stringvalue = $value->getText();
-			} else {
-				$stringvalue = $value->getPrefixedText();
-			}
-		} else {
-			$stringvalue = $value;
-		}
-
-		$sql = 'property_id=' . $db->addQuotes($specialprop) .
-		       ' AND value_string=' . $db->addQuotes($stringvalue) .
-		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
-
-		$res = $db->select( $db->tableName('smw_specialprops'),
-		                    'DISTINCT subject_id',
-		                    $sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
-		// rewrite result as array
+		
 		$result = array();
-		if($db->numRows( $res ) > 0) {
-			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromID($row->subject_id);
+		
+		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
+		
+			$sql = 'cl_to=' . $db->addQuotes($value->getDBKey());
+			$res = $db->select( $db->tableName('categorylinks'),
+								'DISTINCT cl_from',
+								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
+								
+			// rewrite result as array
+			if($db->numRows( $res ) > 0) {
+				while($row = $db->fetchObject($res)) {
+					$result[] = Title::newFromID($row->cl_from);
+				}
 			}
+			$db->freeResult($res);
+			
+		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
+		
+			$sql = 'rd_title=' . $db->addQuotes($value->getDBKey())
+					. ' AND rd_namespace=' . $db->addQuotes($value->getNamespace());
+			$res = $db->select( $db->tableName('redirect'),
+								'rd_from',
+								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
+								
+			// reqrite results as array
+			if($db->numRows( $res ) > 0) {
+				while($row = $db->fetchObject($res)) {
+					$result[] = Title::newFromID($row->rd_from);
+				}
+			}
+			$db->freeResult($res);
+		
+		} else {
+		
+			if ($value instanceof SMWDataValue) {
+				if ($value->getXSDValue() !== false) { // filters out error-values etc.
+					$stringvalue = $value->getXSDValue();
+				} else {
+					return array();
+				}
+			} elseif ($value instanceof Title) {
+				if ( $specialprop == SMW_SP_HAS_TYPE ) { // special handling, TODO: change this to use type ids
+					$stringvalue = $value->getText();
+				} else {
+					$stringvalue = $value->getPrefixedText();
+				}
+			} else {
+				$stringvalue = $value;
+			}
+
+			$sql = 'property_id=' . $db->addQuotes($specialprop) .
+			       ' AND value_string=' . $db->addQuotes($stringvalue) .
+		    	   $this->getSQLConditions($requestoptions,'subject_title','subject_title');
+
+			$res = $db->select( $db->tableName('smw_specialprops'),
+			                    'DISTINCT subject_id',
+			                    $sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
+
+			// rewrite result as array
+			if($db->numRows( $res ) > 0) {
+				while($row = $db->fetchObject($res)) {
+					$result[] = Title::newFromID($row->subject_id);
+				}
+			}
+			$db->freeResult($res);
 		}
-		$db->freeResult($res);
 
 		return $result;
 	}
