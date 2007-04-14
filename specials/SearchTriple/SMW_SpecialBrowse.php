@@ -41,18 +41,10 @@ class SMW_SpecialBrowse	 {
 		$innerlimit = 4; // magic variable: how many linked articles should be shown?
 		$html = '';
 
-		// display query form
-		$html .= '<form name="smwbrowse" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n";
-		$html .= '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
-		$html .= wfMsg('smw_browse_article') . "<br />\n";
-		if (NULL == $article) {	$boxtext = $articletext; } else { $boxtext = $article->getFullText(); }
-		$html .= '<input type="text" name="article" value="' . htmlspecialchars($boxtext) . '" />' . "\n";
-		$html .= '<input type="submit" value="' . wfMsg('smw_browse_go') . "\"/>\n</form>\n";
-
 		$vsep = '<div class="smwhr"><hr /></div>';
 
 		if ((NULL == $article) || ('' == $articletext)) { // empty, no article name given
-			$html .= wfMsg('smw_browse_docu') . "\n";
+			//$html .= wfMsg('smw_browse_docu') . "\n";
 		} else {
 			$options = new SMWRequestOptions();
 			$outrel = &smwfGetStore()->getOutRelations($article, $options);
@@ -63,7 +55,8 @@ class SMW_SpecialBrowse	 {
 			// get results (get one more, to see if we have to add a link to more)
 			$inrel = &smwfGetStore()->getInRelations($article, $options);
 
-			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_browse_displayresult', $skin->makeLinkObj($article)) . "<br />\n";
+			//$html .= wfMsg('smw_browse_displayresult', $skin->makeLinkObj($article)) . "<br />\n";
+			$wgOut->setPagetitle($article->getFullText());
 
 			$html .= '<table width="100%"><tr>';
 			// left column (incoming links)
@@ -157,7 +150,16 @@ class SMW_SpecialBrowse	 {
 				}
 			}
 			$html .= "</td></tr></table>";
+			$html .= "<p>&nbsp;</p>";
 		}
+
+		// display query form
+		$html .= '<form name="smwbrowse" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n";
+		$html .= '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
+		$html .= wfMsg('smw_browse_article') . "<br />\n";
+		if (NULL == $article) {	$boxtext = $articletext; } else { $boxtext = $article->getFullText(); }
+		$html .= '<input type="text" name="article" value="' . htmlspecialchars($boxtext) . '" />' . "\n";
+		$html .= '<input type="submit" value="' . wfMsg('smw_browse_go') . "\"/>\n</form>\n";
 
 		$wgOut->addHTML($html);
 	}

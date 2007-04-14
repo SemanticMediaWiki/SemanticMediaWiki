@@ -28,7 +28,7 @@ class SMW_SearchByRelation {
 	static function execute($query = '') {
 		global $wgRequest, $wgOut, $wgUser, $smwgIQMaxLimit;
 		$skin = $wgUser->getSkin();
-
+		
 		// get the GET parameters
 		$type = $wgRequest->getVal( 'type' );
 		$target = $wgRequest->getVal( 'target' );
@@ -42,22 +42,15 @@ class SMW_SearchByRelation {
 			}
 		}
 		$relation = Title::newFromText( $type, SMW_NS_RELATION );
-		if (NULL != $relation) { $type = $relation->getText(); }
+		if (NULL != $relation) { $type = $relation->getText(); } else { $type = ''; }
 		$object = Title::newFromText( $target );
-		if (NULL != $object) { $target = $object->getText(); }
+		if (NULL != $object) { $target = $object->getText(); } else { $target = ''; }
 		$limit = $wgRequest->getVal( 'limit' );
 		if ('' == $limit) $limit =  20;
 		$offset = $wgRequest->getVal( 'offset' );
 		if ('' == $offset) $offset = 0;
 		$html = '';
 		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByRelation' );
-
-		// display query form
-		$html .= '<form name="searchbyrelation" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
-		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
-		$html .= wfMsg('smw_tb_linktype') . ' <input type="text" name="type" value="' . htmlspecialchars($type) . '" />' . "\n";
-		$html .= wfMsg('smw_tb_linktarget') . ' <input type="text" name="target" value="' . htmlspecialchars($target) . '" />' . "\n";
-		$html .= '<input type="submit" value="' . wfMsg('smw_tb_submit') . "\"/>\n</form>\n";
 
 		if (('' == $type) && ('' == $target)) { // empty page. No relation and no object given.
 			$html .= wfMsg('smw_tb_docu') . "\n";
@@ -68,13 +61,14 @@ class SMW_SearchByRelation {
 		} elseif ('' == $target) { // no object given
 			$html .= wfMSG('smw_tb_notarget', $skin->makeLinkObj($relation, $relation->getText()));
 		} else { // everything is given
+			$wgOut->setPagetitle($relation->getText() . ' ' . $object->getFullText());
 			$options = new SMWRequestOptions();
 			$options->limit = $limit+1;
 			$options->offset = $offset;
 			// get results (get one more, to see if we have to add a link to more)
 			$results = &smwfGetStore()->getRelationSubjects($relation, $object, $options);
 
-			$html .= "<p>&nbsp;</p>\n" . wfMsg('smw_tb_displayresult', $skin->makeLinkObj($relation, $relation->getText()), $skin->makeLinkObj($object)) . "<br />\n";
+			$html .= wfMsg('smw_tb_displayresult', $skin->makeLinkObj($relation, $relation->getText()), $skin->makeLinkObj($object)) . "<br />\n";
 
 			// prepare navigation bar
 			if ($offset > 0)
@@ -125,6 +119,14 @@ class SMW_SearchByRelation {
 			if (($offset>0) || (count($results)>$limit))
 				$html .= $navigation;
 		}
+
+		// display query form
+		$html .= '<p>&nbsp;</p>';
+		$html .= '<form name="searchbyrelation" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
+		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
+		$html .= wfMsg('smw_tb_linktype') . ' <input type="text" name="type" value="' . htmlspecialchars($type) . '" />' . "&nbsp;&nbsp;&nbsp;\n";
+		$html .= wfMsg('smw_tb_linktarget') . ' <input type="text" name="target" value="' . htmlspecialchars($target) . '" />' . "\n";
+		$html .= '<input type="submit" value="' . wfMsg('smw_tb_submit') . "\"/>\n</form>\n";
 
 		$wgOut->addHTML($html);
 	}

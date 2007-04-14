@@ -12,7 +12,7 @@ class SMW_LanguageEn {
 	'smw_finallistconjunct' => ', and', //used in "A, B, and C"
 	'smw_factbox_head' => 'Facts about $1',
 	'smw_att_head' => 'Attribute values',
-	'smw_rel_head' => 'Relations to other articles',
+	'smw_rel_head' => 'Relations to other pages',
 	'smw_spec_head' => 'Special properties',
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
@@ -23,8 +23,8 @@ class SMW_LanguageEn {
 	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.',
 	// Messages and strings for ontology resued (import)
 	'smw_unknown_importns' => '[Sorry, import functions are not avalable for namespace "$1".]',
-	'smw_nonright_importtype' => '[Sorry, $1 can only be used for articles with namespace "$2"]',
-	'smw_wrong_importtype' => '[Sorry, $1 can not be used for articles in the namespace "$2"]',
+	'smw_nonright_importtype' => '[Sorry, $1 can only be used for pages with namespace "$2"]',
+	'smw_wrong_importtype' => '[Sorry, $1 can not be used for pages in the namespace "$2"]',
 	'smw_no_importelement' => '[Sorry, element "$1" not available for import.]',
 	// Messages and strings for basic datatype processing
 	'smw_decseparator' => '.',
@@ -71,7 +71,7 @@ class SMW_LanguageEn {
 
 /* private */ var $smwUserMessages = array(
 	'smw_devel_warning' => 'This feature is currently under development, and might not be fully functional. Backup your data before using it.',
-	// Messages for article pages of types, relations, and attributes
+	// Messages for pages of types, relations, and attributes
 	'smw_type_header' => 'Attributes of type “$1”',
 	'smw_typearticlecount' => 'Showing $1 attributes using this type.',
 	'smw_attribute_header' => 'Pages using the attribute “$1”',
@@ -131,7 +131,7 @@ class SMW_LanguageEn {
 	'smw_oi_importedfromontology' => 'Import from ontology',
 	// Messages for (data)Types Special
 	'types' => 'Types',
-	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to attributes. Each datatype has an article where additional information can be provided.',
+	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to attributes. Each datatype has a page where additional information can be provided.',
 	'smw_types_units' => 'Standard unit: $1; supported units: $2',
 	'smw_types_builtin' => 'Built-in types',
 	/*Messages for ExtendedStatistics Special*/
@@ -176,7 +176,7 @@ class SMW_LanguageEn {
 	'searchbyattribute' => 'Search by attribute',
 	'smw_sbv_docu' => '<p>Search for all pages that have a given attribute and value.</p>',
 	'smw_sbv_noattribute' => '<p>Please enter an attribute.</p>',
-	'smw_sbv_novalue' => '<p>Please enter a value, or view all attributes values for “$1.”</p>',
+	'smw_sbv_novalue' => '<p>Please enter a valid value for the attribute, or view all attributes values for “$1.”</p>',
 	'smw_sbv_displayresult' => 'A list of all pages that have an attribute “$1” with value “$2”',
 	'smw_sbv_attribute' => 'Attribute',
 	'smw_sbv_value' => 'Value',
