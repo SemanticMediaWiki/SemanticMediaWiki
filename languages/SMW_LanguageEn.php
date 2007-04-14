@@ -181,13 +181,19 @@ class SMW_LanguageEn {
 	'smw_sbv_attribute' => 'Attribute',
 	'smw_sbv_value' => 'Value',
 	'smw_sbv_submit' => 'Find results',
-	// Messages for the browsing system
+	// Messages for the browsing special
 	'browse' => 'Browse articles',
 	'smw_browse_article' => 'Enter the name of the page to start browsing from.',
 	'smw_browse_go' => 'Go',
 	'smw_browse_docu' => '<p>Search for all properties of the given page.</p>',
 	'smw_browse_displayresult' => 'Facts about the page “$1”',
 	'smw_browse_more' => '&hellip;',
+	// Messages for the page property special
+	'pageproperty' => 'Page property search',
+	'smw_pp_docu' => 'Search for all the fillers of a property on a given page. Please enter both a page and a property.',
+	'smw_pp_from' => 'From page',
+	'smw_pp_type' => 'Property',
+	'smw_pp_submit' => 'Find results',
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Previous',
 	'smw_result_next' => 'Next',
