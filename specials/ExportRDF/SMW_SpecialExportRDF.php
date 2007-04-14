@@ -188,8 +188,8 @@ class SMWExportTitle {
 					$xmlent = '&attribute;';
 					break;
 				default:
-					$xmlprefix = 'thing:';
-					$xmlent = '&thing;';
+					$xmlprefix = 'wiki:';
+					$xmlent = '&wiki;';
 					$baseXML = $this->ns_uri . $baseXML;
 					$this->ns_uri = '';
 					break;
@@ -527,7 +527,6 @@ class ExportRDF {
 			"\t<!ENTITY smwdt 'http://smw.ontoware.org/2005/smw-datatype#'>\n" .
 			// A note on "wiki": this namespace is crucial as a fallback when it would be illegal to start e.g. with a number. In this case, one can always use wiki:... followed by "_" and possibly some namespace, since _ is legal as a first character.
 			"\t<!ENTITY wiki '" . $this->wiki_xmlns_xml .  "'>\n" .
-			"\t<!ENTITY thing '" . $this->wiki_xmlns_xml .  "'>\n" .
 			"\t<!ENTITY relation '" . $this->wiki_xmlns_xml .
 			$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_RELATION) . ':'))) .  "'>\n" .
 			"\t<!ENTITY attribute '" . $this->wiki_xmlns_xml .
@@ -540,10 +539,9 @@ class ExportRDF {
 			"\txmlns:owl =\"&owl;\"\n" .
 			"\txmlns:smw=\"&smw;\"\n" .
 			"\txmlns:wiki=\"&wiki;\"\n" .
-			"\txmlns:thing=\"&thing;\"\n" .
 			"\txmlns:relation=\"&relation;\"\n" .
 			"\txmlns:attribute=\"&attribute;\"";
-		$this->global_namespaces = array('rdf'=>true, 'rdfs'=>true, 'owl'=>true, 'smw'=>true, 'wiki'=>true, 'thing'=>true, 'relation'=>true, 'attribute'=>true);
+		$this->global_namespaces = array('rdf'=>true, 'rdfs'=>true, 'owl'=>true, 'smw'=>true, 'wiki'=>true, 'relation'=>true, 'attribute'=>true);
 
 		$this->post_ns_buffer .=
 			">\n\t<!-- reference to the Semantic MediaWiki schema -->\n" .
