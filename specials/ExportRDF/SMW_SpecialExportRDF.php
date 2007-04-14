@@ -196,7 +196,7 @@ class SMWExportTitle {
 			}
 			$this->long_uri = $xmlent . $baseXML;
 			if (in_array(mb_substr($baseXML,0,1), array('-','0','1','2','3','4','5','6','7','8','9'))) { // illegal as first char in XML
-				$this->short_uri = 'wiki:_' . $this->ns_uri . $baseXML;
+				$this->short_uri = 'wiki:' . $this->ns_uri . $baseXML;
 			} else {
 				$this->short_uri = $xmlprefix . $baseXML;
 			}
