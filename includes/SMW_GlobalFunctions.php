@@ -94,7 +94,7 @@ function smwgSetupExtension() {
 
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialRelations.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedRelations.php');
-	//require_once($smwgIP . '/specials/Relations/SMW_SpecialRelationsWithoutPage.php'); // not complete yet
+	require_once($smwgIP . '/specials/Relations/SMW_SpecialWantedRelations.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialAttributes.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedAttributes.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialTypes.php');

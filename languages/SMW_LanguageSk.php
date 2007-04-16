@@ -105,9 +105,9 @@ class SMW_LanguageSk {
 	/*Messages for Unused Relations Special*/
 	'unusedrelations' => 'Nepoužité vzťahy',
 	'smw_unusedrelations_docu' => 'Nasledujúce stránky vzťahov existujú, hoci žiadne iné stránky ich nevyužvajú.',
-	// Messages for RelationsWithoutPage Special
-	'relationswithoutpage' => 'Wanted relations', //TODO: translate
-	'smw_relations_withoutpage' => 'The following relations do not have an explanatory page yet, though they are already used to describe other pages.', //TODO: translate
+	// Messages for WantedRelations Special
+	'wantedrelations' => 'Wanted relations', //TODO: translate
+	'smw_wanted_relations' => 'The following relations do not have an explanatory page yet, though they are already used to describe other pages.', //TODO: translate
 	/*Messages for Unused Attributes Special*/
 	'unusedattributes' => 'Nepoužité atribúty',
 	'smw_unusedattributes_docu' => 'Nasledujúce stránky atribútov existujú, hoci žiadne iné stránky ich nevyužvajú.',

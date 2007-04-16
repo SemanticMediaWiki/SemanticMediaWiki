@@ -13,20 +13,20 @@ require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$IP/includes/Title.php" );
 require_once("$IP/includes/QueryPage.php");
 
-function doSpecialRelationsWithoutPage($par = null) {
+function doSpecialWantedRelations($par = null) {
 	list( $limit, $offset ) = wfCheckLimits();
-	$rep = new RelationsWithoutPage();
+	$rep = new SMWWantedRelationsPage();
 	return $rep->doQuery( $offset, $limit );
 }
 
-SpecialPage::addPage( new SpecialPage('RelationsWithoutPage','',true,'doSpecialRelationsWithoutPage',false) );
+SpecialPage::addPage( new SpecialPage('WantedRelations','',true,'doSpecialWantedRelations',false) );
 
 
 
-class RelationsWithoutPage extends QueryPage {
+class SMWWantedRelationsPage extends QueryPage {
 
 	function getName() {
-		return "relation_without";
+		return "wanted_relations";
 	}
 
 	function isExpensive() {
@@ -36,7 +36,7 @@ class RelationsWithoutPage extends QueryPage {
 	function isSyndicated() { return false; }
 
 	function getPageHeader() {
-		return '<p>' . wfMsg('smw_relations_withoutpage') . "</p><br />\n";
+		return '<p>' . wfMsg('smw_wanted_relations') . "</p><br />\n";
 	}
 
 	function getSQL() {
@@ -46,7 +46,7 @@ class RelationsWithoutPage extends QueryPage {
 		$NSrel = SMW_NS_RELATION;
 
 		return
-				"SELECT 'RelationsWithoutPage' as type,
+				"SELECT 'WantedRelations' as type,
 				{$NSrel} as namespace,
 				relation_title as title,
 				COUNT(*) as value

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * @author Dmitry Khoroshev
  */
@@ -98,9 +98,9 @@ class SMW_LanguageRu {
 	// Messages for Relations Special
 	'relations' => 'Отношения',
 	'smw_relations_docu' => 'Существуют следующие отношения.',
-	// Messages for RelationsWithoutPage Special
-	'relationswithoutpage' => 'Отношения без страниц',
-	'smw_relations_withoutpage' => 'Следующие отношения не имеют страниц с описанием, хотя и используются для описания других страниц.',
+	// Messages for WantedRelations Special
+	'wantedrelations' => 'Отношения без страниц',
+	'smw_wanted_relations' => 'Следующие отношения не имеют страниц с описанием, хотя и используются для описания других страниц.',
 	// Messages for Attributes Special
 	'attributes' => 'Атрибуты',
 	'smw_attributes_docu' => 'Существуют следующие атрибуты.',

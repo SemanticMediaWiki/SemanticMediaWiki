@@ -98,9 +98,9 @@ class SMW_LanguageEn {
 	// Messages for Relations Special
 	'relations' => 'Relations',
 	'smw_relations_docu' => 'The following relations exist in the wiki.',
-	// Messages for RelationsWithoutPage Special
-	'relationswithoutpage' => 'Wanted relations',
-	'smw_relations_withoutpage' => 'The following relations do not have an explanatory page yet, though they are already used to describe other pages.',
+	// Messages for WantedRelations Special
+	'wantedrelations' => 'Wanted relations',
+	'smw_wanted_relations' => 'The following relations do not have an explanatory page yet, though they are already used to describe other pages.',
 	// Messages for Attributes Special
 	'attributes' => 'Attributes',
 	'smw_attributes_docu' => 'The following attributes exist in the wiki.',
