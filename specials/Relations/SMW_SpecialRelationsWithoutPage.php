@@ -30,7 +30,7 @@ class RelationsWithoutPage extends QueryPage {
 	}
 
 	function isExpensive() {
-		return false;
+		return true;
 	}
 
 	function isSyndicated() { return false; }
@@ -49,27 +49,26 @@ class RelationsWithoutPage extends QueryPage {
 				"SELECT 'RelationsWithoutPage' as type,
 				{$NSrel} as namespace,
 				relation_title as title,
-				relation_title as value,
-				COUNT(*) as count
+				COUNT(*) as value
 				FROM $relations
 				WHERE relation_title
-				NOT IN
-				(SELECT DISTINCT page_title
-				FROM $page)
-				GROUP BY relation_title";
+					NOT IN
+					(SELECT DISTINCT page_title	FROM $page)
+				GROUP BY relation_title
+				";
 	}
 
 	function sortDescending() {
-		return false;
+		return true;
 	}
 
 	function formatResult( $skin, $result ) {
 		global $wgLang;
 		$title = Title::makeTitle( SMW_NS_RELATION, $result->title );
 		$rlink = $skin->makeLinkObj( $title, $title->getText() );
-		// Note: It doesn't seem possible to reuse this infolink object.
+		
 		$searchlink = SMWInfolink::newRelationSearchLink('+', $title->getText(), null);
-		return "$rlink ($result->count) " . $searchlink->getHTML($skin);
+		return "$rlink ($result->value) " . $searchlink->getHTML($skin);
 	}
 }
 
