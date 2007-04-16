@@ -51,6 +51,7 @@ class SMWSemanticData {
 	 * Get the array of all attributes that have stored values.
 	 */
 	public function getAttributes() {
+		ksort($this->attribtitles,SORT_STRING);
 		return $this->attribtitles;
 	}
 
@@ -106,6 +107,7 @@ class SMWSemanticData {
 	 * Get the array of all relations that have stored values.
 	 */
 	public function getRelations() {
+		ksort($this->reltitles,SORT_STRING);
 		return $this->reltitles;
 	}
 
