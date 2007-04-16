@@ -169,7 +169,7 @@ class SMWTypeHandlerFactory {
 				return new SMWURITypeHandler(SMW_URI_MODE_URI);
 			case SMW_SP_MAIN_DISPLAY_UNIT: case SMW_SP_DISPLAY_UNIT: case SMW_SP_SERVICE_LINK:
 				return new SMWStringTypeHandler();
-			case SMW_SP_CONVERSION_FACTOR: case SMW_SP_POSSIBLE_VALUES:
+			case SMW_SP_CONVERSION_FACTOR: case SMW_SP_POSSIBLE_VALUE:
 				return new SMWStringTypeHandler();
 			default:
 				global $smwgContLang;
@@ -287,10 +287,11 @@ class SMWTypeHandlerFactory {
 			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
 			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
 				// get special property for possible values.  Assume only one such property per attribute.
-				$apvprops = smwfGetStore()->getSpecialValues($atitle, SMW_SP_POSSIBLE_VALUES);
-				if (count($apvprops) > 0) {
-					// Possible values are separated by commas.
-					SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute] = preg_split('/[,][\s]*/',$apvprops[0]);
+				$apvprops = smwfGetStore()->getSpecialValues($atitle, SMW_SP_POSSIBLE_VALUE);
+				// OBSOLETE: Possible values are separated by commas.
+				// SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute] = preg_split('/[,][\s]*/',$apvprops[0]);
+				foreach ($apvprops as $prop ) {
+					SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute][] = $prop;
 				}
 			}
 		}

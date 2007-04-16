@@ -19,7 +19,7 @@ define('SMW_SP_EXT_NSID',10);
 define('SMW_SP_EXT_SECTION',11);
 define('SMW_SP_CONVERSION_FACTOR', 12);
 define('SMW_SP_SERVICE_LINK', 13);
-define('SMW_SP_POSSIBLE_VALUES', 14);
+define('SMW_SP_POSSIBLE_VALUE', 14);
 define('SMW_SP_REDIRECTS_TO', 15);
 
 // constants for displaying the factbox

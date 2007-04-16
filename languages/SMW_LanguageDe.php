@@ -218,9 +218,9 @@ class SMW_LanguageDe {
 	// SMW_SP_MAIN_DISPLAY_UNIT => 'Primärmaßeinheit für Schirmanzeige', // Great! We really should keep this wonderful translation here! Still, I am not fully certain about my versions either. -- mak
 	SMW_SP_DISPLAY_UNIT => 'Ausgabeeinheit',
 	SMW_SP_IMPORTED_FROM => 'Importiert aus',
-	SMW_SP_CONVERSION_FACTOR => 'Entspricht bis',
+	SMW_SP_CONVERSION_FACTOR => 'Entspricht',
 	SMW_SP_SERVICE_LINK => 'Bietet Service',
-	SMW_SP_POSSIBLE_VALUES => 'Possible values'	//TODO translate
+	SMW_SP_POSSIBLE_VALUE => 'Erlaubt Wert'
 );
 
 	/**

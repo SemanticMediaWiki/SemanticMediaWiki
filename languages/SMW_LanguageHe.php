@@ -226,7 +226,7 @@ class SMW_LanguageHe {
 	SMW_SP_IMPORTED_FROM => 'יובא מ',
 	SMW_SP_CONVERSION_FACTOR => 'מתורגם ל',
 	SMW_SP_SERVICE_LINK => 'מספק שירות',
-	SMW_SP_POSSIBLE_VALUES => 'ערכים אפשריים'
+	SMW_SP_POSSIBLE_VALUE => 'ערכים אפשריים' //   TODO: check translation, should be singular value//
 );
 
 

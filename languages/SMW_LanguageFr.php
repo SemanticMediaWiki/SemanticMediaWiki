@@ -218,7 +218,7 @@ class SMW_LanguageFr {
 	SMW_SP_IMPORTED_FROM => 'Importé de',
 	SMW_SP_CONVERSION_FACTOR => 'Correspond à',
 	SMW_SP_SERVICE_LINK => 'Fournit le service',
-	SMW_SP_POSSIBLE_VALUES => 'Valeurs possible'
+	SMW_SP_POSSIBLE_VALUE => 'Valeur possible'
 );
 
 	/**

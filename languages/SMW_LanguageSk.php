@@ -227,7 +227,7 @@ class SMW_LanguageSk {
 	SMW_SP_IMPORTED_FROM => 'Importovaný z',
 	SMW_SP_CONVERSION_FACTOR => 'Zodpovedá',
 	SMW_SP_SERVICE_LINK => 'Poskytuje službu',
-	SMW_SP_POSSIBLE_VALUES => 'Possible values'	//TODO translate
+	SMW_SP_POSSIBLE_VALUE => 'Allowed value'	//TODO translate
 );
 
 

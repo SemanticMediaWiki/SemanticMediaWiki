@@ -208,7 +208,7 @@ class SMW_LanguageRu {
 	SMW_SP_IMPORTED_FROM => 'Импортировано из',
 	SMW_SP_CONVERSION_FACTOR => 'Относится к',
 	SMW_SP_SERVICE_LINK => 'Предоставляет сервис',
-	SMW_SP_POSSIBLE_VALUES => 'Возможные значения'
+	SMW_SP_POSSIBLE_VALUE => 'Возможные значения' // TODO: check translation, should be "Allowed value" (singular)
 );
 
 

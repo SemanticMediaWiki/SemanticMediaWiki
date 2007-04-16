@@ -217,7 +217,7 @@ class SMW_LanguageEs {
 	SMW_SP_IMPORTED_FROM => 'Importado de',
 	SMW_SP_CONVERSION_FACTOR => 'Corresponde a',
 	SMW_SP_SERVICE_LINK => 'Provides service', //TODO: translate
-	SMW_SP_POSSIBLE_VALUES => 'Possible values'	//TODO translate
+	SMW_SP_POSSIBLE_VALUE => 'Allows value' //TODO translate
 );
 
 	/**
