@@ -111,7 +111,7 @@ td.smwrels, td.smwatts, td.smwspecs{
 
 th.relhead, th.atthead, th.spechead{
 	text-align: left;
-	border-top: 1px dotted #AAAAAA;
+/* 	border-top: 1px dotted #AAAAAA; */
 }
 
 div.smwhr hr{
