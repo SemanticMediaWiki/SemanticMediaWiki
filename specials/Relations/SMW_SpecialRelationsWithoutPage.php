@@ -7,7 +7,7 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $IP, $smwgIP;
+global $IP;
 
 require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$IP/includes/Title.php" );
