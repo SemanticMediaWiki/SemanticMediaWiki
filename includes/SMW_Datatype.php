@@ -465,7 +465,12 @@ class SMWInfolink {
 			$end = '';
 		}
 		if ($this->internal) {
-			return $start . $skin->makeKnownLinkObj(Title::newFromText($this->target), $this->caption) . $end;
+			$title = Title::newFromText($this->target);
+			if ($title !== NULL) {
+				return $start . $skin->makeKnownLinkObj(Title::newFromText($this->target), $this->caption) . $end;
+			} else {
+				return '';
+			}
 		} else {
 			return $start . "<a href=\"$this->target\">$this->caption</a>" . $end;
 		}
