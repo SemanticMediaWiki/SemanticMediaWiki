@@ -78,7 +78,9 @@ class SMWSQLStore extends SMWStore {
 		$result = array();
 		
 		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
-		
+			if ( !($value instanceof Title) || ($value->getNamespace() != NS_CATEGORY) ) {
+				return array();
+			}
 			$sql = 'cl_to=' . $db->addQuotes($value->getDBKey());
 			$res = $db->select( $db->tableName('categorylinks'),
 								'DISTINCT cl_from',
