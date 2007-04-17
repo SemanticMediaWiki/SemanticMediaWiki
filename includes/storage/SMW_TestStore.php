@@ -65,10 +65,38 @@ class SMWTestStore extends SMWStore {
 		}
 	}
 
-
 	function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL) {
-		// TODO
-		return array();
+		$type = $this->getSpecialValues($attribute,SMW_SP_HAS_TYPE);
+		$th = SMWTypeHandlerFactory::getTypeHandlerByLabel($type[0]);
+		$valarray = array();
+		switch ($th->getID()) {
+			case 'int':
+				$valarray = array('10', '5000000000000','0','-1234','12','17','42');
+			break;
+			case 'float':
+				$valarray = array('1.23', '5.234e+30','-0.000001','4','12.1','17.1','42.1');
+			break;
+			case 'datetime':
+				$valarray = array('2007-04-01', '2007-12-31T18:25:21');
+			break;
+			case 'enum':
+				$valarray = array('enum_val1', 'enum_val3', 'enum_val2');
+			break;
+			case 'geocoords':
+				$valarray = array('38&#176;1&#8242;12&#8243; N, 122&#176;1&#8242;1.2&#8243; W');
+			break;
+			case 'string':
+				$valarray = array('Test', 'Some longer string','Üničode','Some [[markup]]','&lt;b&gt;Bug if bold!&lt;/b&gt;');
+			break;
+		}
+		$result = Array();
+		foreach ($valarray as $val) {
+			$dv = SMWDataValue::newTypedValue($th);
+			$dv->setAttribute($attribute->getText());
+			$dv->setXSDValue($val,'');
+			$result[] = $dv;
+		}
+		return $result;
 	}
 
 	function getAttributeSubjects(Title $attribute, SMWDataValue $value, $requestoptions = NULL) {
@@ -175,20 +203,32 @@ class SMWTestStore extends SMWStore {
 	 * but adhere to the given options (limit, sorting)
 	 */
 	private function getTestTitles($requestoptions, $namespace = -1) {
-		$result = array();
+		$result = Array();
+		$initarray = Array();
+		if ($namespace == SMW_NS_ATTRIBUTE) {
+			$initarray = array( 'Teststring','Testint','Testfloat','Testcoords','Testdate','Testenum');
+		}
 		for ($i=0; $i<300; $i++) {
 			global $wgContLang;
-			$firstchar = chr(65+($i*17)%25);
 			if ($namespace < 0) {
 				$ns = (($i%5)*2);
 			} else {
 				$ns = $namespace;
 			}
-			if ($ns == 0) {
-				$result[$firstchar . $i] = Title::newFromText($firstchar . $i . '_(Test)', $ns);
+
+			if ($i < count($initarray)) {
+				$text = $initarray[$i];
+				$key = $initarray[$i];
 			} else {
-				$result[$firstchar . $i] = Title::newFromText($firstchar . $i . '_(Test' . $wgContLang->getNsText($ns) . ')', $ns);
+				$firstchar = chr(65+($i*17)%25);
+				$key = $firstchar . $i;
+				if ($ns == 0) {
+					$text = $firstchar . $i . '_(Test)';
+				} else {
+					$text = $firstchar . $i . '_(Test' . $wgContLang->getNsText($ns) . ')';
+				}
 			}
+			$result[$key] = Title::newFromText($text, $ns);
 		}
 		// the order of applying the following is crucial:
 		if ($requestoptions !== NULL) {
