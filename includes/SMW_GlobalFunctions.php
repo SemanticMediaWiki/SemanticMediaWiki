@@ -367,7 +367,7 @@ function smwgSetupExtension() {
 	function smwfXMLContentEncode($text) {
 		global $IP;
 		include_once($IP . '/includes/Sanitizer.php');
-		return Sanitizer::normalizeCharReferences($text);
+		return str_replace(array('&','<','>'), array('&amp;','&lt;','&gt;'), Sanitizer::decodeCharReferences($text));
 	}
 
 	/**
