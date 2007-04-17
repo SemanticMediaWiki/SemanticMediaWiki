@@ -362,10 +362,12 @@ function smwgSetupExtension() {
 
 	/**
 	 * Escapes text in a way that allows it to be used as XML
-	 * content (e.g. as an string value for some property).
+	 * content (e.g. as a string value for some property).
 	 */
 	function smwfXMLContentEncode($text) {
-		return str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$text);
+		global $IP;
+		include_once($IP . '/includes/Sanitizer.php');
+		return Sanitizer::normalizeCharReferences($text);
 	}
 
 	/**
