@@ -204,8 +204,9 @@ class SMWExportTitle {
 			$this->long_uri = $this->ns_uri . $this->ext_section;
 			$this->short_uri = $this->ext_nsid . ':' . $this->ext_section;
 		}
-// why? $this->label = $ns_text . $this->title_text;
-		$this->label = $this->title_text;
+		$this->label = $ns_text . $this->title_text;
+		//$this->label = $this->title_text; // we show the namespace prefixes in most specials in our wiki, so this should also be done by external (re)users (mak)
+		//TODO: should we make an exception for schema elements (Category, Attriubte, ...) where the prefix is clear from the context? At least namespaces like User: seem to be essential for understanding.
 		if ($this->modifier != '') $this->label .= " ($this->modifier)";
 		$this->label = smwfXMLContentEncode($this->label);
 	}
