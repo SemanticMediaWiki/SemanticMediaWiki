@@ -221,7 +221,7 @@ class SMWTypeHandlerFactory {
 		if(!array_key_exists($attribute,SMWTypeHandlerFactory::$typeHandlersByAttribute)) {
 			global $wgContLang;
 			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
-			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
+			if ($atitle !== NULL) {
 				$typearray = smwfGetStore()->getSpecialValues($atitle,SMW_SP_HAS_TYPE);
 			} else { $typearray = Array(); }
 
@@ -285,7 +285,7 @@ class SMWTypeHandlerFactory {
 
 			SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute] = Array();
 			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
-			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
+			if ($atitle !== NULL) {
 				// get special property for possible values.  Assume only one such property per attribute.
 				$apvprops = smwfGetStore()->getSpecialValues($atitle, SMW_SP_POSSIBLE_VALUE);
 				// OBSOLETE: Possible values are separated by commas.

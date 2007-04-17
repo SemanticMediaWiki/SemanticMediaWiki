@@ -21,11 +21,30 @@ class SMWTestStore extends SMWStore {
 	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
 		// TODO
 		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
-			return array();
+			if ( ($requestoptions->limit == -1) || $requestoptions->limit > 8) {
+				$requestoptions->limit = 5;
+			}
+			return $this->getTestTitles($requestoptions, NS_CATEGORY);
 		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) {
 			return array(); // TODO: any better idea?
 		} elseif ($specialprop === SMW_SP_HAS_TYPE) {
-			return array();
+			global $smwgContLang;
+			$name = mb_strtoupper($subject->getText());
+			if ( mb_substr_count($name,'INT') > 0 ) {
+				return array($smwgContLang->getDatatypeLabel('smw_int'));
+			} elseif ( mb_substr_count($name,'FLOAT') > 0 ) {
+				return array($smwgContLang->getDatatypeLabel('smw_float'));
+			} elseif ( mb_substr_count($name,'DATE') > 0 ) {
+				return array($smwgContLang->getDatatypeLabel('smw_datetime'));
+			} elseif ( mb_substr_count($name,'COORD') > 0 ) {
+				return array($smwgContLang->getDatatypeLabel('smw_geocoordinate'));
+			} elseif ( mb_substr_count($name,'ENUM') > 0 ) {
+				return array($smwgContLang->getDatatypeLabel('smw_enum'));
+			} else {
+				return array($smwgContLang->getDatatypeLabel('smw_string'));
+			}
+		} elseif ($specialprop === SMW_SP_POSSIBLE_VALUE) {
+			return array('enum_val1', 'enum_val5', 'enum_val3', 'enum_val2', 'enum_val4');
 		} else {
 			return array();
 		}
