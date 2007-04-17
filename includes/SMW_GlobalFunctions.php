@@ -67,11 +67,7 @@ function smwgSetupExtension() {
 	*/
 	$smwgStoreActive = true;
 
-	// initialise main storage (there is no other storage implementation at the moment)
-	// Note: do never access this global variable directly! Use smwfGetStore() instead!
-	require_once($smwgIP . '/includes/storage/SMW_SQLStore.php');
-	$smwgMasterStore = new SMWSQLStore();
-
+	smwfInitStore();
 	smwfInitMessages();
 
 	/**********************************************/
@@ -370,6 +366,25 @@ function smwgSetupExtension() {
 	 */
 	function smwfXMLContentEncode($text) {
 		return str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$text);
+	}
+
+	/**
+	 * Initialise storage objects based on user settings. Called once during init.
+	 */
+	function smwfInitStore() {
+		global $smwgDefaultStore, $smwgMasterStore, $smwgIP;
+		// initialise main storage (there is no other storage implementation at the moment)
+		// Note: do never access this global variable directly! Use smwfGetStore() instead!
+		switch ($smwgDefaultStore) {
+			case (SMW_STORE_TESTING):
+				require_once($smwgIP . '/includes/storage/SMW_TestStore.php');
+				$smwgMasterStore = new SMWTestStore();
+			break;
+			case (SMW_STORE_MWDB): default:
+				require_once($smwgIP . '/includes/storage/SMW_SQLStore.php');
+				$smwgMasterStore = new SMWSQLStore();
+			break;
+		}
 	}
 
 	/**
