@@ -66,9 +66,8 @@ class SMWWantedRelationsPage extends QueryPage {
 		global $wgLang;
 		$title = Title::makeTitle( SMW_NS_RELATION, $result->title );
 		$rlink = $skin->makeLinkObj( $title, $title->getText() );
-		
-		$searchlink = SMWInfolink::newRelationSearchLink('+', $title->getText(), null);
-		return "$rlink ($result->value) " . $searchlink->getHTML($skin);
+
+		return "$rlink ($result->value) ";
 	}
 }
 
