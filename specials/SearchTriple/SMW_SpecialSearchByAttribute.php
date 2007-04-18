@@ -40,7 +40,7 @@ class SMW_SearchByAttribute {
 			}
 		}
 		$attribute = Title::newFromText( $attributestring, SMW_NS_ATTRIBUTE );
-		if (NULL == $attribute) $attributestring = '';
+		if (NULL == $attribute) { $attributestring = ''; } else { $attributestring = $attribute->getText(); }
 
 		$limit = $wgRequest->getVal( 'limit' );
 		if ('' == $limit) $limit =  20;
@@ -63,7 +63,7 @@ class SMW_SearchByAttribute {
 				$options = new SMWRequestOptions();
 				$options->limit = $limit+1;
 				$options->offset = $offset;
-				
+
 				$res = &smwfGetStore()->getAttributeSubjects( $attribute, $value, $options, 'gt' );
 				$count = count($res);
 
@@ -126,7 +126,7 @@ class SMW_SearchByAttribute {
 
 				if ($count == 0) {
 					$html .= wfMsg( 'smw_result_noresults' );
-				} else { // if there are plenty of results anyway				
+				} else { // if there are plenty of results anyway
 					// no need to show the navigation bars when there is not enough to navigate
 					if (($offset>0) || ($count>$limit)) $html .= '<br />' . $navigation;
 					$html .= "<ul>\n";
