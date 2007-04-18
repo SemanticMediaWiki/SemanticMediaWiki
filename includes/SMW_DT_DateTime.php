@@ -21,6 +21,12 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 	}
 
 	function getXSDType() {
+		// TODO: Actually, if there's no time part, should be #date;
+		//       if there's no month or day, can use #gYear, #gYearMonth, etc.
+		//       But callers (ExportRDF and ? any other?) assume that one XMW 
+		//		 datatype maps to a single XSD type,
+		//		 because they get type from SMWTypeHandlerFactory::getTypeHandlerByLabel()
+		//		 without creating a datavalue.        
 		return 'http://www.w3.org/2001/XMLSchema#dateTime';
 	}
 
@@ -39,6 +45,7 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 	 * @access public
 	 */
 	function processValue($v,&$datavalue) {
+		global $wgContLang;
 		// For a DateTime, "units" is really a format from an inline query
 		// rather than the units of a float. 
 		$desiredUnits = $datavalue->getDesiredUnits();
@@ -49,7 +56,7 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 			return;
 		}
 
-		// strtotime accepts non-ISO8601 times like 02/01/70,
+		// strtotime accepts non-ISO8601 times like 02/01/70 and even "yesterday",
 		// so reformat back to ISO8601. Unfortunatelly, ISO in
 		// general is not compatible with XSD; but it should work
 		// for the restricted interval we currently support.
@@ -64,12 +71,23 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 			$user_val = $date_part;
 			// ... followed by a space and the time if there is a significant time component.
 			// TODO: should I indicate the timezone in user-visible string?
+			
+			// Use MediaWiki routines to format the date or date&time (bug 9620);
+			// these respect the user's Date and time format preference.
+			// They require a datetime string in a particular fixed format,
+			// in MediaWiki 1.9 this restricts date processing to 4-digit years.
+			// TODO: Should I offset times by user's timezone?
+			$mwDateTime = date('YmdHis', $time);
 			if ( abs($time - strtotime($date_part)) > 0.5) {
-				$user_val .= ' ' . $time_part;
+				$user_val = $wgContLang->timeanddate($mwDateTime);
+			} else {
+				$user_val = $wgContLang->date($mwDateTime);
 			}
 			$datavalue->setPrintoutString($user_val);
 		} else {
 			// Print the date in all wanted formats (even if some of them would be equivalent -- we obey the user's wish)
+			// TODO: Maybe use MediaWiki's date formatting characters, 
+			// which are like PHP date(), instead of strftime() format string.
 			foreach ($desiredUnits as $wantedFormat) {
 				$datavalue->setPrintoutString(strftime($wantedFormat, $time));
 			}
