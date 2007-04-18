@@ -171,6 +171,8 @@ class SMWTypeHandlerFactory {
 				return new SMWStringTypeHandler();
 			case SMW_SP_CONVERSION_FACTOR: case SMW_SP_POSSIBLE_VALUE:
 				return new SMWStringTypeHandler();
+			case SMW_SP_CONVERSION_FACTOR_SI:
+				return new SMWStringTypeHandler(); // TODO: change this into an appropriate handler
 			default:
 				global $smwgContLang;
 				$specprops = $smwgContLang->getSpecialPropertiesArray();

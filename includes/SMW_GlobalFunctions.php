@@ -21,6 +21,7 @@ define('SMW_SP_CONVERSION_FACTOR', 12);
 define('SMW_SP_SERVICE_LINK', 13);
 define('SMW_SP_POSSIBLE_VALUE', 14);
 define('SMW_SP_REDIRECTS_TO', 15);
+define('SMW_SP_CONVERSION_FACTOR_SI', 16);
 
 // constants for displaying the factbox
 define('SMW_FACTBOX_HIDDEN', 1);
