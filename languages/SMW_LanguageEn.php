@@ -80,16 +80,16 @@ class SMW_LanguageEn {
 	'smw_relationarticlecount' => '<p>Showing $1 pages using this relation.</p>',
 	// Messages for Export RDF Special
 	'exportrdf' => 'Export pages to RDF', //name of this special
-	'smw_exportrdf_docu' => '<p>This page allows you to export parts of an article in RDF format. To export article pages, enter the titles in the text box below, one title per line.</p>',
+	'smw_exportrdf_docu' => '<p>This page allows you to obtain data from a page in RDF format. To export pages, enter the titles in the text box below, one title per line.</p>',
 	'smw_exportrdf_recursive' => 'Recursively export all related pages. Note that the result could be large!',
 	'smw_exportrdf_backlinks' => 'Also export all pages that refer to the exported pages. Generates browsable RDF.',
 	// Messages for Search Triple Special
 	'searchtriple' => 'Simple semantic search', //name of this special
 	'smw_searchtriple_docu' => "<p>Fill in either the upper or lower row of the input form to search for relations or attributes, respectively. Some of the fields can be left empty to obtain more results. However, if an attribute value is given, the attribute name must be specified as well. As usual, attribute values can be entered with a unit of measurement.</p>\n\n<p>Be aware that you must press the right button to obtain results. Just pressing <i>Return</i> might not trigger the search you wanted.</p>",
-	'smw_searchtriple_subject' => 'Subject article:',
+	'smw_searchtriple_subject' => 'Subject page:',
 	'smw_searchtriple_relation' => 'Relation name:',
 	'smw_searchtriple_attribute' => 'Attribute name:',
-	'smw_searchtriple_object' => 'Object article:',
+	'smw_searchtriple_object' => 'Object page:',
 	'smw_searchtriple_attvalue' => 'Attribute value:',
 	'smw_searchtriple_searchrel' => 'Search Relations',
 	'smw_searchtriple_searchatt' => 'Search Attributes',
@@ -182,11 +182,9 @@ class SMW_LanguageEn {
 	'smw_sbv_value' => 'Value',
 	'smw_sbv_submit' => 'Find results',
 	// Messages for the browsing special
-	'browse' => 'Browse articles',
+	'browse' => 'Browse wiki',
 	'smw_browse_article' => 'Enter the name of the page to start browsing from.',
 	'smw_browse_go' => 'Go',
-	'smw_browse_docu' => '<p>Search for all properties of the given page.</p>',
-	'smw_browse_displayresult' => 'Facts about the page “$1”',
 	'smw_browse_more' => '&hellip;',
 	// Messages for the page property special
 	'pageproperty' => 'Page property search',

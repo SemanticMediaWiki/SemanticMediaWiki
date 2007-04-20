@@ -18,13 +18,13 @@ class SMW_LanguageHe {
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Sorry, URIs from the range "$1" are not available in this place.',
 	/*Messages and strings for inline queries*/
-	'smw_iq_disabled' => "<span class='smwwarning'>Sorry. Inline queries have been disabled for this wiki.</span>",
+	'smw_iq_disabled' => "<span class='smwwarning'>Sorry. Inline queries have been disabled for this wiki.</span>", // TODO: translate
 	'smw_iq_moreresults' => '&hellip; תוצאות נוספות',
-	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.',
+	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.', //TODO: translate
 	/*Messages and strings for ontology resued (import) */
-	'smw_unknown_importns' => '[Sorry, import functions are not avalable for namespace "$1".]',
-	'smw_nonright_importtype' => '[Sorry, $1 can only be used for articles with namespace "$2"]',
-	'smw_wrong_importtype' => '[Sorry, $1 can not be used for articles in the namespace "$2"]',
+	'smw_unknown_importns' => '[Sorry, import functions are not avalable for namespace "$1".]', // TODO: translate
+	'smw_nonright_importtype' => '[Sorry, $1 can only be used for pages with namespace "$2"]',
+	'smw_wrong_importtype' => '[Sorry, $1 can not be used for pages in the namespace "$2"]',
 	'smw_no_importelement' => '[Sorry, element "$1" not available for import.]',
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => '.',
@@ -77,9 +77,9 @@ class SMW_LanguageHe {
 	'smw_attributearticlecount' => '<p>Showing $1 pages using this attribute.</p>', // TODO translate
 	'smw_relation_header' => 'Pages using the relation “$1”', // TODO translate
 	'smw_relationarticlecount' => '<p>Showing $1 pages using this relation.</p>', // TODO translate
-	/*Messages for Export RDF Special*/
+	/*Messages for Export RDF Special*/ // TODO: translate
 	'exportrdf' => 'Export pages to RDF', //name of this special
-	'smw_exportrdf_docu' => '<p>This page allows you to export parts of an article in RDF format. To export article pages, enter the titles in the text box below, one title per line.</p>',
+	'smw_exportrdf_docu' => '<p>This page allows you to obtain data from a page in RDF format. To export pages, enter the titles in the text box below, one title per line.</p>',
 	'smw_exportrdf_recursive' => 'Recursively export all related pages. Note that the result could be large!',
 	'smw_exportrdf_backlinks' => 'Also export all pages that refer to the exported pages. Generates browsable RDF.',
 	/*Messages for Search Triple Special*/
@@ -181,11 +181,9 @@ class SMW_LanguageHe {
 	'smw_sbv_value' => 'Value', //TODO: translate
 	'smw_sbv_submit' => 'Find results', //TODO: translate
 	// Messages for the browsing system
-	'browse' => 'Browse articles', //TODO: translate
-	'smw_browse_article' => 'Enter the name of the article to start browsing from.', //TODO: translate
+	'browse' => 'Browse wiki', //TODO: translate
+	'smw_browse_article' => 'Enter the name of the page to start browsing from.', //TODO: translate
 	'smw_browse_go' => 'Go', //TODO: translate
-	'smw_browse_docu' => '<p>Search for all properties of the given article.</p>', //TODO: translate
-	'smw_browse_displayresult' => 'Facts about the article &quot;$1&quot;. Click <span class="smwbrowseicon">+</span> to explore related articles.', //TODO: translate
 	'smw_browse_more' => '&hellip;', //TODO: translate
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'הקודם',

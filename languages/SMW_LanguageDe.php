@@ -12,20 +12,20 @@ class SMW_LanguageDe {
 	'smw_finallistconjunct' => ' und', //used in "A, B, and C"
 	'smw_factbox_head' => 'Fakten zu $1',
 	'smw_att_head' => 'Attribute',
-	'smw_rel_head' => 'Relationen zu anderen Artikeln',
+	'smw_rel_head' => 'Relationen zu anderen Seiten',
 	'smw_spec_head' => 'Spezielle Eigenschaften',
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'URIs aus dem Bereich "$1" sind an dieser Stelle leider nicht verfügbar.',
 	/*Messages and strings for inline queries*/
-	'smw_iq_disabled' => "<span class='smwwarning'>Anfragen in Artikeln sind in diesem Wiki leider nicht erlaubt.</span>",
+	'smw_iq_disabled' => "<span class='smwwarning'>Anfragen innerhalb einzelner Seiten sind in diesem Wiki leider nicht erlaubt.</span>",
 	'smw_iq_moreresults' => '&hellip; weitere Ergebnisse',
 	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung oder als
 	<a href="$1">Liste einzelner Suchergebnisse</a> betrachtet werden.', // TODO: translate
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => '[Für den Namensraum "$1" sind leider keine Importfunktionen verfügbar.]',
-	'smw_nonright_importtype' => '[Das Element "$1" kann nur für Artikel im Namensraum "$2" verwendet werden.]',
-	'smw_wrong_importtype' => '[Das Element "$1" kann nicht für Artikel im Namensraum "$2" verwendet werden.]',
+	'smw_nonright_importtype' => '[Das Element "$1" kann nur für Seiten im Namensraum "$2" verwendet werden.]',
+	'smw_wrong_importtype' => '[Das Element "$1" kann nicht für Seiten im Namensraum "$2" verwendet werden.]',
 	'smw_no_importelement' => '[Das Element "$1" steht leider nicht zum Importieren zur Verfügung.]',
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => ',',
@@ -79,18 +79,18 @@ class SMW_LanguageDe {
 	'smw_relation_header' => 'Seiten mit der Relation „$1“',
 	'smw_relationarticlecount' => '<p>Es werden $1 Seiten angezeigt, die diese Relation verwenden.</p>',
 	/*Messages for Export RDF Special*/
-	'exportrdf' => 'Artikel als RDF exportieren', //name of this special
-	'smw_exportrdf_docu' => '<p>Auf dieser Seite können Teile des Inhalts von Artikeln im RDF-Format exportiert werden. Bitte geben Sie die Namen der gewünschten <i>zeilenweise</i> Seiten ein.</p>',
+	'exportrdf' => 'Seite als RDF exportieren', //name of this special
+	'smw_exportrdf_docu' => '<p>Auf dieser Seite können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte geben Sie die Namen der gewünschten Seiten <i>zeilenweise</i> ein.</p>',
 	'smw_exportrdf_recursive' => 'Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr großen Ergebnissen führen!',
 	'smw_exportrdf_backlinks' => 'Exportiere auch alle Seiten, die auf exportierte Seiten verweisen. Erzeugt RDF, das leichter durchsucht werden kann.',
 	/*Messages for Search Triple Special*/
 	'searchtriple' => 'Einfache semantische Suche', //name of this special
 	'smw_searchtriple_header' => '<h1>Suche nach Relationen und Attributen</h1>',
-	'smw_searchtriple_docu' => "<p>Benutzen Sie die Eingabemaske um nach Artikeln mit bestimmten Eigenschaften zu suchen. Die obere Zeile dient der Suche nach Relationen, die untere der Suche nach Attributen. Sie können beliebige Felder leer lassen, um nach allen möglichen Belegungen zu suchen. Lediglich bei der Eingabe von Attributwerten (mit den entsprechenden Maßeinheiten) verlangt die Angabe des gewünschten Attributes.</p>\n\n<p>Beachten Sie, dass es zwei Suchknöpfe gibt. Bei Druck der Eingabetaste wird vielleicht nicht die gewünschte Suche durchgeführt.</p>",
-	'smw_searchtriple_subject' => 'Artikelname (Subjekt):',
+	'smw_searchtriple_docu' => "<p>Benutzen Sie die Eingabemaske um nach Seiten mit bestimmten Eigenschaften zu suchen. Die obere Zeile dient der Suche nach Relationen, die untere der Suche nach Attributen. Sie können beliebige Felder leer lassen, um nach allen möglichen Belegungen zu suchen. Lediglich bei der Eingabe von Attributwerten (mit den entsprechenden Maßeinheiten) verlangt die Angabe des gewünschten Attributes.</p>\n\n<p>Beachten Sie, dass es zwei Suchknöpfe gibt. Bei Druck der Eingabetaste wird vielleicht nicht die gewünschte Suche durchgeführt.</p>",
+	'smw_searchtriple_subject' => 'Seitenname (Subjekt):',
 	'smw_searchtriple_relation' => 'Name der Relation:',
 	'smw_searchtriple_attribute' => 'Name des Attributs:',
-	'smw_searchtriple_object' => 'Artikelname (Objekt):',
+	'smw_searchtriple_object' => 'Seintenname (Objekt):',
 	'smw_searchtriple_attvalue' => 'Wert des Attributs:',
 	'smw_searchtriple_searchrel' => 'Suche nach Relationen',
 	'smw_searchtriple_searchatt' => 'Suche nach Attributen',
@@ -122,7 +122,7 @@ class SMW_LanguageDe {
 	'smw_ontologyimport_return' => 'Zurück zum <a href="$1">Ontologieimport</a>.',
 	/*Messages for (data)Types Special*/
 	'types' => 'Datentypen',
-	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden. Jeder Datentyp hat einen eigenen Artikel, auf dem genauere Informationen eingetragen werden können.',
+	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden. Jeder Datentyp hat eine eigene Seite, auf der genauere Informationen eingetragen werden können.',
 	'smw_types_units' => 'Standardumrechnung: $1; gestützte Umrechnungen: $2',
 	'smw_types_builtin' => 'Eingebaute datatypen',
 	/*Messages for ExtendedStatistics Special*/
@@ -173,11 +173,9 @@ class SMW_LanguageDe {
 	'smw_sbv_value' => 'Wert',
 	'smw_sbv_submit' => 'Finde Ergebnisse',
 	// Messages for the browsing system
-	'browse' => 'Browse Artikel',
-	'smw_browse_article' => 'Bitte geben Sie einen Artikel ein.',
+	'browse' => 'Wiki browsen',
+	'smw_browse_article' => 'Bitte geben Sie eine Seite ein.',
 	'smw_browse_go' => 'Los',
-	'smw_browse_docu' => '<p>Suche nach allen Eigenschaften eines Artikels.</p>',
-	'smw_browse_displayresult' => 'Fakten des Artikels &quot;$1&quot;. Klicke <span class="smwbrowseicon">+</span>, um die verbundenen Artikel anzusehen.',
 	'smw_browse_more' => '&hellip;',
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Zurück',

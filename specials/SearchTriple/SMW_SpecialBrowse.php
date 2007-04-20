@@ -45,9 +45,7 @@ class SMW_SpecialBrowse	 {
 
 		$vsep = '<div class="smwhr"><hr /></div>';
 
-		if ((NULL == $article) || ('' == $articletext)) { // empty, no article name given
-			//$html .= wfMsg('smw_browse_docu') . "\n";
-		} else {
+		if ((NULL !== $article) && ('' !== $articletext)) { // legal article given
 			$options = new SMWRequestOptions();
 			$outrel = &smwfGetStore()->getOutRelations($article, $options);
 			$atts = &smwfGetStore()->getAttributes($article, $options);
@@ -62,7 +60,6 @@ class SMW_SpecialBrowse	 {
 			// get results (get one more, to see if we have to add a link to more)
 			$inrel = &smwfGetStore()->getInRelations($article, $options);
 
-			//$html .= wfMsg('smw_browse_displayresult', $skin->makeLinkObj($article)) . "<br />\n";
 			$wgOut->setPagetitle($article->getFullText());
 
 			$html .= '<table width="100%"><tr>';

@@ -173,10 +173,8 @@ class SMW_LanguageEs {
 	'smw_sbv_submit' => 'Find results', //TODO: translate
 	// Messages for the browsing system
 	'browse' => 'Browse articles', //TODO: translate
-	'smw_browse_article' => 'Enter the name of the article to start browsing from.', //TODO: translate
+	'smw_browse_article' => 'Enter the name of the page to start browsing from.', //TODO: translate
 	'smw_browse_go' => 'Go', //TODO: translate
-	'smw_browse_docu' => '<p>Search for all properties of the given article.</p>', //TODO: translate
-	'smw_browse_displayresult' => 'Facts about the article &quot;$1&quot;. Click <span class="smwbrowseicon">+</span> to explore related articles.', //TODO: translate
 	'smw_browse_more' => '&hellip;', //TODO: translate
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Previous', //TODO: translate
