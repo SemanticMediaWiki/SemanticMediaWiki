@@ -174,7 +174,7 @@ class SMW_LanguageDe {
 	'smw_sbv_submit' => 'Finde Ergebnisse',
 	// Messages for the browsing system
 	'browse' => 'Wiki browsen',
-	'smw_browse_article' => 'Bitte geben Sie eine Seite ein.',
+	'smw_browse_article' => 'Bitte geben Sie den Titel einer Seite ein.',
 	'smw_browse_go' => 'Los',
 	'smw_browse_more' => '&hellip;',
 	// Generic messages for result navigation in all kinds of search pages
