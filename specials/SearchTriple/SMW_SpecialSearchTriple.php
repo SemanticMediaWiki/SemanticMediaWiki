@@ -19,7 +19,7 @@ require_once($smwgIP . '/includes/SMW_Datatype.php');
 require_once( "$IP/includes/SpecialPage.php" );
 
 function doSpecialSearchTriple($par = null)	{
-	global $wgOut, $wgRequest;
+	global $wgOut, $wgRequest, $wgUser;
 
 	$out = '';
 	$searchtype = $wgRequest->getVal('do');
@@ -32,6 +32,15 @@ function doSpecialSearchTriple($par = null)	{
 	$relation = ucfirst($relation);
 	$attribute = ucfirst($attribute);
 
+
+	$sk =& $wgUser->getSkin();
+	$out .= '<h2>' . wfMsg('redirectpagesub') . '</h2>';
+	$out .= '<ul><li>' . $sk->makeKnownLinkObj(Title::newFromText('Browse',NS_SPECIAL), wfMsg('browse') )  . '</li>';
+	$out .= '<li>' . $sk->makeKnownLinkObj(Title::newFromText('SearchByRelation',NS_SPECIAL), wfMsg('searchbyrelation') )  . '</li>';
+	$out .= '<li>' . $sk->makeKnownLinkObj(Title::newFromText('SearchByAttribute',NS_SPECIAL), wfMsg('searchbyattribute') )  . '</li>';
+	$out .= '<li>' . $sk->makeKnownLinkObj(Title::newFromText('Ask',NS_SPECIAL), wfMsg('ask') ) . '</li></ul>';
+	$out .= '<br /><br /><div style="border: 1px solid grey; padding: 20px; background: #DDD; ">';
+	
 	$out .= SMWSpecialSearchTriple::getSearchForm($subject, $relation, $object, $attribute, $value, $searchtype);
 	// find out what the user wants:
 	if ( ($searchtype==wfMsg('smw_searchtriple_searchatt')) || ($searchtype=='Search Attributes')) {
@@ -43,6 +52,7 @@ function doSpecialSearchTriple($par = null)	{
 	} // else: just don't do anything
 	
 	$wgOut->setPageTitle(wfMsg('searchtriple'));
+	$out .= '</div>';
 	$wgOut->addHTML($out);
 }
 
@@ -66,7 +76,7 @@ class SMWSpecialSearchTriple {
 // 			'<input id="rel" type="radio" name="searchtype" value="relation" checked="checked" /><label for="rel">Relation</label>'.
 // 			'<input id="att" type="radio" name="searchtype" value="attribute" checked="checked" /><label for="att">Attribute</label>';
 		
-		$form .= '<table summary="layout table" style="padding: 4px 5px; border:0px; border-collapse:collapse;">' . "\n";
+		$form .= '<table summary="layout table" style="padding: 4px 5px; border:0px; border-collapse:collapse; background: none; ">' . "\n";
 		//line 1 and 2: search for relations
 		$form .= '<tr>' . "\n";
 		$form .= '<td>' . wfMsg('smw_searchtriple_subject') . '</td>' . "\n";
@@ -75,10 +85,10 @@ class SMWSpecialSearchTriple {
 		$form .= '<td></td>' . "\n";
 		$form .= '</tr>' . "\n";			
 		$form .= '<tr>' . "\n";
-		$form .= '<td><input type="text" name="subject" value="' . htmlspecialchars($subject) . '"/></td>' . "\n";
-		$form .= '<td><input type="text" name="relation" value="' . htmlspecialchars($relation) . '"/></td>' . "\n";
-		$form .= '<td><input type="text" name="object" value="' . htmlspecialchars($object) . '"/></td>' . "\n";
-		$form .= '<td><input type="submit" name="do" value="' . wfMsg('smw_searchtriple_searchrel') . '"/></td>' . "\n";
+		$form .= '<td><input disabled="disabled" type="text" name="subject" value="' . htmlspecialchars($subject) . '"/></td>' . "\n";
+		$form .= '<td><input disabled="disabled" type="text" name="relation" value="' . htmlspecialchars($relation) . '"/></td>' . "\n";
+		$form .= '<td><input disabled="disabled" type="text" name="object" value="' . htmlspecialchars($object) . '"/></td>' . "\n";
+		$form .= '<td><input disabled="disabled" type="submit" name="do" value="' . wfMsg('smw_searchtriple_searchrel') . '"/></td>' . "\n";
 		$form .= '</tr>' . "\n";
 		//line 3 and 4: search for attributes
 		$form .= '<tr>' . "\n";
@@ -89,9 +99,9 @@ class SMWSpecialSearchTriple {
 		$form .= '</tr>' . "\n";			
 		$form .= '<tr>' . "\n";
 		$form .= '<td></td>' . "\n";
-		$form .= '<td><input type="text" name="attribute" value="' . htmlspecialchars($attribute) . '"/></td>' . "\n";
-		$form .= '<td><input type="text" name="value" value="' . htmlspecialchars($value) . '"/></td>' . "\n";
-		$form .= '<td><input type="submit" name="do" value="' . wfMsg('smw_searchtriple_searchatt') . '"/></td>' . "\n";
+		$form .= '<td><input disabled="disabled" type="text" name="attribute" value="' . htmlspecialchars($attribute) . '"/></td>' . "\n";
+		$form .= '<td><input disabled="disabled" type="text" name="value" value="' . htmlspecialchars($value) . '"/></td>' . "\n";
+		$form .= '<td><input disabled="disabled" type="submit" name="do" value="' . wfMsg('smw_searchtriple_searchatt') . '"/></td>' . "\n";
 		$form .= '</tr>' . "\n";
 		$form .= "</table> \n </form> \n <br/><hr/> \n";
 		
