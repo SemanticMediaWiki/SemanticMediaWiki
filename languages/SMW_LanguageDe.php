@@ -8,7 +8,7 @@ class SMW_LanguageDe {
 /* private */ var $smwContentMessages = array(
 	'smw_edithelp' => 'Bearbeitungshilfe für Relationen und Attribute',
 	'smw_helppage' => 'Relationen und Attribute',
-	'smw_viewasrdf' => 'Als RDF ansehen',
+	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und', //used in "A, B, and C"
 	'smw_factbox_head' => 'Fakten zu $1',
 	'smw_att_head' => 'Attribute',
@@ -80,7 +80,7 @@ class SMW_LanguageDe {
 	'smw_relationarticlecount' => '<p>Es werden $1 Seiten angezeigt, die diese Relation verwenden.</p>',
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Seite als RDF exportieren', //name of this special
-	'smw_exportrdf_docu' => '<p>Auf dieser Seite können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte geben Sie die Namen der gewünschten Seiten <i>zeilenweise</i> ein.</p>',
+	'smw_exportrdf_docu' => '<p>Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte geben Sie die Namen der gewünschten Seiten <i>zeilenweise</i> ein.</p>',
 	'smw_exportrdf_recursive' => 'Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr großen Ergebnissen führen!',
 	'smw_exportrdf_backlinks' => 'Exportiere auch alle Seiten, die auf exportierte Seiten verweisen. Erzeugt RDF, das leichter durchsucht werden kann.',
 	/*Messages for Search Triple Special*/
