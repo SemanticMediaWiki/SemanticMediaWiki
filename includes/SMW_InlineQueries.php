@@ -826,6 +826,8 @@ class SMWInlineQuery {
 	 * FIXME: include an option to ignore multiple redirects, or, even better, make a 
 	 * plugable SQL-query to compute one-step back-and-forth redirects without any 
 	 * materialisation.
+	 * FIXME: Actually, we should not support mutliple redirects, since they are discouraged
+	 * by MediaWiki anyway. 
 	 */
 	private function normalizeRedirects(&$titles) {
 		global $smwgIQRedirectNormalization;
@@ -834,7 +836,13 @@ class SMWInlineQuery {
 		}
 
 		$stable = 0;
-		$check_titles = array_diff( $titles , array() ); // Copies the array
+		//$check_titles = array_diff( $titles , array() ); // Copies the array
+		$check_titles = array();
+		$title_keys = array();
+		foreach ($titles as $title) {
+			$check_titles[] = $title;
+			$title_keys[$title->getPrefixedText()] = true;
+		}
 		while ($stable<30) { // emergency stop after 30 iterations
 			$stable++;
 			$new_titles = array();
@@ -851,10 +859,10 @@ class SMWInlineQuery {
 					while ( $res && $row = $this->dbr->fetchRow( $res )) {
 						$new_title = Title::newFromText($row['pl_title'], $row['pl_namespace']);
 						if (NULL != $new_title) {
-							$id = $new_title->getArticleID();
-							if (0 == $id) $id = $new_title->getPrefixedText();
-							if (!array_key_exists( $id , $titles)) {
-								$titles[$id] = $new_title;
+							$id = $new_title->getPrefixedText();
+							if (!array_key_exists( $id , $title_keys)) {
+								$title_keys[$id] = true;
+								$titles[] = $new_title;
 								$new_titles[] = $new_title;
 							}
 						}
@@ -865,25 +873,31 @@ class SMWInlineQuery {
 				// ... and back again
 				$res = $this->dbr->select(
 					array( 'page' , 'pagelinks' ),
-					array( 'page_id' ),
+					array( 'page_title', 'page_namespace' ),
 					array( 'pl_title = ' . $this->dbr->addQuotes( $title->getDBkey() ),
 					       'pl_namespace = ' . $this->dbr->addQuotes( $title->getNamespace() ), 
 					       'page_is_redirect = 1',
 					       'page_id = pl_from' ) ,
 					       'SMW::InlineQuery::NormalizeRedirects', array('LIMIT' => '1'));
 				while ( $res && $row = $this->dbr->fetchRow( $res )) {
-					$new_title = Title::newFromID( $row['page_id'] );
-					if (!array_key_exists( $row['page_id'] , $titles)) {
-						$titles[$row['page_id']] = $new_title;
+					$new_title = Title::newFromText( $row['page_title'], $row['page_namespace'] );
+					$id = $new_title->getPrefixedText();
+					if (!array_key_exists( $id , $title_keys)) {
+						$title_keys[$id] = true;
+						$titles[] = $new_title;
 						$new_titles[] = $new_title;
 					}
 				}
 				$this->dbr->freeResult( $res );
 			}
-			if (count($new_titles)==0)
+			if (count($new_titles) == 0) {
 				$stable= 500; // stop
-			else
-				$check_titles = array_diff( $new_titles , array() );
+			} else {
+				$check_titles = array();
+				foreach ($new_titles as $title) { // careful copy (do not accidently copy array by ref)
+					$check_titles[] = $title;
+				}
+			}
 		}
 		return $titles;
 	}
