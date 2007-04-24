@@ -151,7 +151,7 @@ class SMWFactbox {
 				switch ($namespace) {
 					case $wgContLang->getNsText(SMW_NS_TYPE):
 						$elemtype = SMW_NS_ATTRIBUTE;
-						$datatype = $typestring;
+						$datatype = Title::newFromText($typestring, SMW_NS_TYPE);
 						break;
 					case $wgContLang->getNsText(SMW_NS_ATTRIBUTE): // wrong: we need a datatype
 						break;
