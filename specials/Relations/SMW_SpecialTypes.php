@@ -13,8 +13,7 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $IP, $smwgIP;
-require_once($smwgIP . '/includes/SMW_Storage.php');
+global $IP;
 require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$IP/includes/Title.php" );
 require_once("$IP/includes/QueryPage.php");
