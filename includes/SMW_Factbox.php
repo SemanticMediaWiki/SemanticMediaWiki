@@ -126,14 +126,14 @@ class SMWFactbox {
 	 * could not be specified directly).
 	 */
 	static private function addImportedDefinition($value) {
-		global $wgContLang, $smwgStoreActive;;
+		global $wgContLang, $smwgStoreActive;
 
 		list($onto_ns,$onto_section) = explode(':',$value,2);
 		$msglines = preg_split("([\n][\s]?)",wfMsgForContent("smw_import_$onto_ns")); // get the definition for "$namespace:$section"
 
 		if ( count($msglines) < 2 ) { //error: no elements for this namespace
 			$datavalue = SMWDataValue::newTypedValue(new SMWErrorTypeHandler(wfMsgForContent('smw_unknown_importns',$onto_ns)),$value);
-			if (!$smwgStoreActive) { //FIXME: is this "!" correct (also below)
+			if ($smwgStoreActive) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM,$datavalue);
 			}
 			return $datavalue;
@@ -199,14 +199,14 @@ class SMWFactbox {
 		// might hide errors -- should we care?
 		$sth = new SMWStringTypeHandler(); // making one is enough ...
 
-		if (!$smwgStoreActive) {
+		if ($smwgStoreActive) {
 			$datavalue = SMWDataValue::newTypedValue($sth,$onto_uri);
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_BASEURI,$datavalue);
 			$datavalue = SMWDataValue::newTypedValue($sth,$onto_ns);
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_NSID,$datavalue);
 			$datavalue = SMWDataValue::newTypedValue($sth,$onto_section);
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_SECTION,$datavalue);
-			if (NULL != $datatype) {
+			if (NULL !== $datatype) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_HAS_TYPE,$datatype);
 			}
 		}
@@ -216,7 +216,7 @@ class SMWFactbox {
 		// TODO: Unfortunatelly, the following line can break the tooltip code if $onto_name has markup. -- mak
 		// if ('' != $onto_name) $datavalue->setPrintoutString($onto_name, 'onto_name');
 		if ('' != $onto_name) $datavalue->setPrintoutString("[$onto_uri$onto_section $value] ($onto_name)");
-		if (!$smwgStoreActive) {
+		if ($smwgStoreActive) {
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
 		}
 		return $datavalue;
