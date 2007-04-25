@@ -23,8 +23,8 @@ require_once('SMW_GlobalFunctions.php');
 # If you already have custom namespaces on your site, insert
 # $smwgNamespaceIndex = ???;
 # into your LocalSettings.php *before* including this file.
-# The number ??? must be the smallest even namespace number 
-# that is not in use yet. However, it must not be smaller 
+# The number ??? must be the smallest even namespace number
+# that is not in use yet. However, it must not be smaller
 # than 100.
 ##
 if (!isset($smwgNamespaceIndex)) {
@@ -59,12 +59,12 @@ $smwgExportBacklinks = true; // should backlinks be included by default?
 ##
 
 ###
-# Overwriting the following array, you can define for which namespaces 
-# the semantic links and annotations are to be evaluated. On other 
-# pages, annotations can be given but are silently ignored. This is 
-# useful since, e.g., talk pages usually do not have attributes and 
-# the like. In fact, is is not obvious what a meaningful attribute of 
-# a talk page could be. Pages without annotations will also be ignored 
+# Overwriting the following array, you can define for which namespaces
+# the semantic links and annotations are to be evaluated. On other
+# pages, annotations can be given but are silently ignored. This is
+# useful since, e.g., talk pages usually do not have attributes and
+# the like. In fact, is is not obvious what a meaningful attribute of
+# a talk page could be. Pages without annotations will also be ignored
 # during full RDF export, unless they are referred to from another
 # article.
 ##
@@ -118,11 +118,17 @@ $smwgEnableTemplateSupport = true;
 ##
 
 ###
+# Setting this to true allows to translate all the labels within
+# the browser GIVEN that they have interwiki links.
+##
+$smwgTranslate = false;
+
+###
 # If you want to import ontologies, you need to install RAP,
-# a free RDF API for PHP, see 
+# a free RDF API for PHP, see
 #     http://www.wiwiss.fu-berlin.de/suhl/bizer/rdfapi/
-# The following is the path to your installation of RAP 
-# (the directory where you extracted the files to) as seen 
+# The following is the path to your installation of RAP
+# (the directory where you extracted the files to) as seen
 # from your local filesystem. Note that ontology import is
 # highly experimental at the moment, and may not do what you
 # extect.

@@ -13,7 +13,6 @@ global $IP, $smwgIP;
 require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
 
-
 function doSpecialBrowse($query = '') {
 	SMW_SpecialBrowse::execute($query);
 }
@@ -221,11 +220,11 @@ class SMW_SpecialBrowse	 {
 ///// Translation functions /////
 
 /**
- * Global shortcut function for Store::translateTitle
+ * Shortcut to translateTitle with global language
  */
 function smwfT(Title $title, $namespace = FALSE ) {
 	global $wgLang;
-	return translateTitle($title, $wgLang, $namespace);
+	return smwfTranslateTitle($title, $wgLang, $namespace);
 }
 
 /**
@@ -233,7 +232,11 @@ function smwfT(Title $title, $namespace = FALSE ) {
  * This is just a first try, needs to be reworked into a proper translation
  * mechanism. Returns the Nameaspace.
  */
-function translateTitle(Title $title, Language $language, $namespace = FALSE ) {
+function smwfTranslateTitle(Title $title, Language $language, $namespace = FALSE ) {
+	global $smwgTranslate;
+	if ( !$smwgTranslate ) {
+		if ( $namespace ) return $title->getFullText(); else return $title->getText();
+	}
 	$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 	$sql = 'll_from=' . $db->addQuotes($title->getArticleID()) .
 	       ' AND ll_lang=' . $db->addQuotes($language->mCode);
