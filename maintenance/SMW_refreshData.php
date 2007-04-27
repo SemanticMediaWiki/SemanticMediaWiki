@@ -20,6 +20,9 @@ $optionsWithArgs = array( 'd' ); // -d <delay>
 
 require_once( 'commandLine.inc' );
 
+global $smwgIP;
+require_once($smwgIP . '/includes/SMW_Factbox.php');
+
 if ( !empty( $options['d'] ) ) {
 	$delay = intval($options['d']) * 100000; // sleep 100 times the given time, but do so only each 100 pages
 } else {

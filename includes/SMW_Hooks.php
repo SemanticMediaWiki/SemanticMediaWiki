@@ -5,7 +5,8 @@
  * @author Kai Hüner
  */
 
-	require_once('SMW_Factbox.php');
+global $smwgIP;
+require_once($smwgIP . '/includes/SMW_Factbox.php');
 
 //// Parsing annotations
 
