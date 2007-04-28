@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','0.6f (0.7quasialpha)');
+define('SMW_VERSION','0.7');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -120,7 +120,7 @@ function smwgSetupExtension() {
 	/**********************************************/
 	/***** credits (see "Special:Version")    *****/
 	/**********************************************/
-	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic MediaWiki', 'version'=>SMW_VERSION, 'author'=>'Klaus&nbsp;Lassleben, Markus&nbsp;Kr&ouml;tzsch, Denny&nbsp;Vrandecic, S&nbsp;Page, and others. Maintained by AIFB Karlsruhe.', 'url'=>'http://sourceforge.net/projects/semediawiki/', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines and humans');
+	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, Markus&nbsp;Kr&ouml;tzsch, Denny&nbsp;Vrandecic, S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://ontoworld.org/wiki/Semantic_MediaWiki', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://ontoworld.org/wiki/Help:Semantics View online documentation.]');
 
 	return true;
 }
@@ -182,7 +182,6 @@ function smwgSetupExtension() {
 		}
 
 		if ((!$smwgArticleHeadersInPlace) && ($out->mIsarticle) && ($out->mPagetitle!='')) {
-			//print_r('Article ADDHTML... "'. $out->mPagetitle .'"');
 			global $wgContLang, $wgServer, $wgScript;
 
 			$out->addLink(array(
