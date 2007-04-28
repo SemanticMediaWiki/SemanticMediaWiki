@@ -22,16 +22,9 @@ For a proper legal disclaimer, see the file "COPYING".
 
 == Requirements ==
 
-- MediaWiki 1.10.* or greater
+- MediaWiki 1.9.* or 1.10 (versions >=1.7 might still work)
 - PHP 5.x or greater installed and working
-- MySQL >= 4.0.14
-- For the ontology import feature (only!), you need RAP,
-  a free RDF API for PHP, see
-     http://www.wiwiss.fu-berlin.de/suhl/bizer/rdfapi/
-
-  You can copy/install additional components such as RAP
-  into the "libs" directory of your Semantic MediaWiki
-  installation.
+- MySQL >= 4.0.14 (required by MediaWiki)
 
 == Installation ==
 
@@ -42,13 +35,21 @@ remarks in the section "Notes on Upgrading" below!
     directory "SemanticMediaWiki" that contains all relevant files. Copy this
     directory to "[wikipath]/extensions/" (or extract/download it to this place).
     We abbreviate "[wikipath]/extensions/SemanticMediaWiki" as "[SMW_path]" below.
-(2) Insert the following lines at the end (just before "?>") of the file
-    "[wikipath]/LocalSettings.php":
+(2) If you use MediaWiki 1.9 or smaller, you *must* manually change the file
+    "[wikipath]/includes/Parser.php". Open the file in some text editor and find
+    the first line "$text = $this->replaceVariables( $text, $args );" located
+    around line 1000 in the function "internalParse". Right after this line, insert 
+    the new line:
+
+      wfRunHooks( 'InternalParseBeforeLinks', array( &$this, &$text ) );
+
+    Users of MediaWiki 1.10 or greater do not have to do this.
+(3) Insert the following lines into the file "[wikipath]/LocalSettings.php":
      include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');
      enableSemantics('example.org');
     where example.org should be replaced by your server's name (or IP address).
     If you have custom namespaces (e.g. "Portal"), read the note below.
-(3) In your wiki, log in as a user with admin status and go to the page
+(4) In your wiki, log in as a user with admin status and go to the page
     "Special:SMWAdmin" to do the final setup steps.
 
 '''Remark:'''  Semantic MediaWiki uses six additional custom namespaces (see
@@ -61,7 +62,7 @@ higher numbers than those used by Semantic MediaWiki.
 === Customising Semantic MediaWiki ===
 
 Semantic MediaWiki can be customised by a number of settings. To do so, you
-can assignemts to respective parameters somewhere below the line
+can set respective parameters somewhere below the line
 "include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');"
 in your LocalSetting.php. For example, one can write
 
@@ -77,7 +78,7 @@ SMW_InlineQueries.php (related to queries).
 
 If your site is still running on PHP4, SMW is not supported. It would hardly be 
 possible to backport the code to the old PHP version. If you have PHP5 but an 
-older MediaWiki version, additional patches/modifications might be needed. 
+older MediaWiki version, additional patches/modifications might be needed.
 Download an older release of SMW and have a look at the included INSTALL
 instructions to find out whether other changes are recommended therein.
 
@@ -85,17 +86,15 @@ instructions to find out whether other changes are recommended therein.
 
 The below instructions describe how to upgrade from one minor version to the next, e.g.
 from 0.2 (or 0.2b) to 0.3. If you missed one of the updates (e.g. if you want to jump
-from 0.1 to 0.3, then it is wise to proceed stepwise: install all intermediate versions
+from 0.1 to 0.3) then it is wise to proceed stepwise: install all intermediate versions
 subsequently and follow the given update instructions. For example, first upgrade from 0.1
 to 0.2 before upgrading further from 0.2 to 0.3. Also, do not forget to backup your
 database before any upgrade.
 
-'''Upgrading from version 0.6:'''
+'''Upgrading from version 0.6 or 0.5'''
 
-Go to Special:SMWAdmin and press the setup button there. Also, any patch in MediaWiki is
+Go to Special:SMWAdmin and press the setup button there. From  any patch in MediaWiki is
 now obsolete (but your changes should have vanished when MediaWiki 1.10 anyway).
-
-'''Upgrading from versions prior to 0.6:'''
 
 The file SMW_LocalSettings.php is now obsolete. Modify your LocalSettings.php as described
 above, and import your changes in SMW_LocalSettings.php, if any, into LocalSettings.php as
@@ -137,17 +136,17 @@ the FAQ section, then contact the user support list (see the Contact section).
   with it now?
 
   Semantic MediaWiki is there to help you to structure your data, so that you
-  can browse and search it easier. Typically, you should add semantic markup
-  to articles that cover a subject that is typical for your wiki. A single
+  can browse and search it easier. Typically, you should first add semantic 
+  markup to articles that cover a topic that is typical for your wiki. A single
   article, semantic or not, will not improve your search capabilities.
 
   Start with a kind of article that occurs often in your wiki, possibly with
   some type of articles that is already collected in some category, such as
   cities, persons, or software projects. For these articles, introduce a small
   amount of relations and attributes, and annotate many of the articles in
-  this way. As with categories, less often is more in semantic annotation: do
+  this way. As with categories, less is often more in semantic annotation: do
   not use overly specific relations or attributes. A relation that is not
-  applicable in at least twenty articles is hardly useful.
+  applicable in at least ten or twenty articles is hardly useful.
 
   Templates can greatly simplify initial annotation. Create a flashy template
   for your users to play with, and hide the semantic annotations in the code
@@ -166,7 +165,7 @@ the FAQ section, then contact the user support list (see the Contact section).
 
   If in doubt, choose simple annotations and learn to combine them into more
   complex information. For example, you do not need to have a category for
-  "European cities" -- just combine "is located in::Europe" and "Category:City."
+  "European cities" -- just combine "located in::Europe" and "Category:City."
   In any case, if some annotation is not sufficient, you can still add more
   information. Cleaning too specific and possibly contradictory annotations
   can be more problematic.
@@ -174,12 +173,18 @@ the FAQ section, then contact the user support list (see the Contact section).
   Regularly review users' use of categories, relations, attributes, and types
   using the Special pages for each.
 
-
 - Problem: Previewing or storing articles with semantic relations causes
   database errors.
 
   Your database was not initialized properly. Go to Special:SMWAdmin for
   instructions.
+
+- Problem: When using annotations like [[located in::Europe]], the semantic
+  data is not extracted, and a link to an article called "located in::Europe"
+  appears.
+
+  You probably use a version of MediaWiki that is smaller or equal to 1.9.*
+  and you did not make the required changes in Parser.php as described above.
 
 - Problem: After installing SMW, some or all pages are not displayed at all.
 - Problem: In some cases, pages are displayed incompletely, with some parts
@@ -193,7 +198,7 @@ the FAQ section, then contact the user support list (see the Contact section).
 - Problem: I have a problem that is not in this list.
 
   Report general bugs at http://bugzilla.wikimedia.org/
-  and there you can also find out whether your problem is known.
+  where you can also find out whether your problem is known.
   You can also send an email to semediawiki-user@lists.sourceforge.net.
 
 == Contact ==
@@ -202,3 +207,7 @@ If you have remarks or questions, please send them to
  semediawiki-user@lists.sourceforge.net
 You can join this mailing list at http://sourceforge.net/mail/?group_id=147937
 
+Please report bugs to MediaZilla, http://bugzilla.wikimedia.org
+
+Technical support questions or feature requests that are mailed directly to 
+the developers will usually not be answered. Please use the mailing list.
