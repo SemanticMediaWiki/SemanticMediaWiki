@@ -85,7 +85,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$r .= wfMsg('smw_relationarticlecount', min($this->limit, count($this->articles))) . "\n";
 				break;
 			case SMW_NS_ATTRIBUTE:
-				$r .= '<h2>' . wfMsg('smw_relation_header',$ti) . "</h2>\n";
+				$r .= '<h2>' . wfMsg('smw_attribute_header',$ti) . "</h2>\n";
 				$r .= wfMsg('smw_relationarticlecount', min($this->limit, count($this->articles))) . "\n";
 				break;
 		}
