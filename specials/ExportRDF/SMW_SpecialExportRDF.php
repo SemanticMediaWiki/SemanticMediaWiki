@@ -104,6 +104,7 @@ class SMWExportTitle {
 	public $ext_nsid = false;
 	public $ext_section = false;
 	// relevant title values, mandatory
+	public $title;
 	public $title_text;
 	public $title_namespace;
 	public $title_id;
@@ -127,6 +128,7 @@ class SMWExportTitle {
 	 * provided DB handler.
 	 */
 	public function SMWExportTitle($title, $export, $modifier = '') {
+		$this->title = $title;
 		$this->title_text = $title->getText();
 		$this->title_id = $title->getArticleID();
 		$this->title_namespace = $title->getNamespace();
@@ -551,6 +553,9 @@ class ExportRDF {
 			"\t<owl:AnnotationProperty rdf:about=\"&smw;hasType\">\n" .
 			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
 			"\t</owl:AnnotationProperty>\n" .
+			"\t<owl:AnnotationProperty rdf:about=\"&smw;subPropertyOf\">\n" .
+			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
+			"\t</owl:AnnotationProperty>\n" .
 			"\t<owl:Class rdf:about=\"&smw;Thing\">\n" .
 			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
 			"\t</owl:Class>\n" .
@@ -565,12 +570,20 @@ class ExportRDF {
 		$datatype_rel = false;
 		$category_rel = false;
 		$equality_rel = false;
+		$subrel_rel = false;
+		$subatt_rel = false;
 
 		// Set parameters for export
 		switch ($et->title_namespace) {
 			case SMW_NS_RELATION:
 				$type = 'owl:ObjectProperty';
 				$equality_rel = "owl:equivalentProperty";
+				global $smwgExportSemanticRelationHierarchy;
+				if ($smwgExportSemanticRelationHierarchy) {
+					$subrel_rel = "rdfs:subPropertyOf";
+				} else {
+					$subrel_rel = "smw:subPropertyOf";
+				}
 				break;
 			case SMW_NS_ATTRIBUTE:
 				if ( $et->has_type === false ) return; //attributes w/o type not exportable, TODO: is this what we want?
@@ -584,6 +597,12 @@ class ExportRDF {
 						$type = 'owl:ObjectProperty';
 					}
 					$equality_rel = "owl:equivalentProperty";
+				}
+				global $smwgExportSemanticRelationHierarchy;
+				if ($smwgExportSemanticRelationHierarchy) {
+					$subatt_rel = "rdfs:subPropertyOf";
+				} else {
+					$subatt_rel = "smw:subPropertyOf";
 				}
 				break;
 			case NS_CATEGORY:
@@ -641,29 +660,33 @@ class ExportRDF {
 // 			}
 
 			// add rdfs:subPropertyOf statements
-			// FIXME: temporarily disabled
-// 			if ($subrel_rel) {
-// 				$relations = smwfGetSpecialPropertyValues($title,SMW_SP_IS_SUBRELATION_OF);
-// 				foreach ($relations as $relation) {
-// 					$relURIs = $this->getURIs($relation,0);
-// 					//@TODO: do type checks here or on saving ...
-// 					$this->post_ns_buffer .= "\t\t<$subrel_rel rdf:resource=\"$relURIs[0]\"/>\n";
-// 					if (!array_key_exists($relURIs[2], $this->element_queue)) {
-// 							$this->element_queue[$relURIs[2]] = true;
-// 					}
-// 				}
-// 			}
-// 			if ($subatt_rel) {
-// 				$attributes = smwfGetSpecialPropertyValues($title,SMW_SP_IS_SUBRELATION_OF);
-// 				foreach ($attributes as $attribute) {
-// 					$attURIs = $this->getURIs($attribute[2]);
-// 					//@TODO: do type checks here or on saving ...
-// 					$this->post_ns_buffer .= "\t\t<$subatt_rel rdf:resource=\"$attURIs[0]\"/>\n";
-// 					if (!array_key_exists($attURIs[2], $this->element_queue)) {
-// 							$this->element_queue[$attURIs[2]] = true;
-// 					}
-// 				}
-// 			}
+ 			if ($subrel_rel) {
+				$relations = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_IS_SUBRELATION_OF); 
+ 				foreach ($relations as $relation) {
+ 					// TODO in future, check type safety relations <-> attributes
+ 					// TODO check also the type of what I am pointing to (is it a relation or sth else?)
+ 					$suprel = $this->getExportTitle($relation, SMW_NS_RELATION);
+ 					$this->post_ns_buffer .= "\t\t<$subrel_rel rdf:resource=\"" . $suprel->long_uri . "\"/>\n";
+ 					if (!array_key_exists($suprel->hashkey, $this->element_queue)) {
+ 							$this->element_queue[$suprel->hashkey] = $suprel;
+ 					}
+ 				}
+ 			}
+ 			if ($subatt_rel) {
+				$attributes = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_IS_SUBATTRIBUTE_OF); 
+ 				foreach ($attributes as $attribute) {
+ 					// TODO in future, check type safety relations <-> attributes
+ 					// TODO check also the type of what I am pointing to (is it an atrribute or sth else?)
+ 					// TODO check the type of the attribute pointed to, does it match?
+ 					// Could lead to inconsistencies in the output -- and in the wiki? But this will
+ 					// need to be dealt with as soon as people add subattribute semantics to the wiki
+ 					$supatt = $this->getExportTitle($attribute, SMW_NS_ATTRIBUTE);
+ 					$this->post_ns_buffer .= "\t\t<$subatt_rel rdf:resource=\"" . $supatt->long_uri . "\"/>\n";
+ 					if (!array_key_exists($supatt->hashkey, $this->element_queue)) {
+ 							$this->element_queue[$supatt->hashkey] = $supatt;
+ 					}
+ 				}
+ 			}
 
 			if ($et->is_individual) { // do not print relations for schema elements, stay in OWL DL
 				// print all relations

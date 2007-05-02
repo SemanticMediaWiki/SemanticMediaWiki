@@ -56,6 +56,9 @@ $smwgPropertyPagingLimit = 25; // use smaller value since property lists are muc
 ##
 $smwgAllowRecursiveExport = false; // can normal users request recursive export?
 $smwgExportBacklinks = true; // should backlinks be included by default?
+$smwgExportSemanticRelationHierarchy = false; // should subrelations be exported with or wo semantics?
+// as long as the underlying implementation does not support the semantics the export
+// should reflect the same.
 ##
 
 ###
