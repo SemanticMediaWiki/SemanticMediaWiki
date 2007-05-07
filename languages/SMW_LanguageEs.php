@@ -185,6 +185,7 @@ class SMW_LanguageEs {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Cadena de caracteres',  // name of the string type
+	'smw_text' => 'Text',  // name of the text type (very long strings) //TODO: translate
 	'smw_enum' => 'Enumeration',  // name of the enum type TODO: translate
 	'smw_bool' => 'Boolean',  // name of the boolean type TODO: translate
 	'smw_int' => 'Número entero',  // name of the int type

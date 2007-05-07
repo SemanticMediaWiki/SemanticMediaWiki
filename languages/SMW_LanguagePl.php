@@ -222,6 +222,7 @@ class SMW_LanguagePl {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Łańcuch znaków',  // name of the string type
+	'smw_text' => 'Text',  // name of the text type (very long strings) //TODO: translate
 	'smw_enum' => 'Wyliczenie',  // name of the enum type
 	'smw_bool' => 'Wartość logiczna',  // name of the boolean type
 	'smw_int' => 'Liczba całkowita',  // name of the int type

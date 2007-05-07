@@ -196,6 +196,7 @@ class SMW_LanguageSk {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Reťazec',  // name of the string type
+	'smw_text' => 'Text',  // name of the text type (very long strings) //TODO: translate
 	'smw_enum' => 'Enumeration',  // name of the enum type TODO: translate
 	'smw_bool' => 'Boolean',  // name of the boolean type TODO: translate
 	'smw_int' => 'Celé číslo',  // name of the int type

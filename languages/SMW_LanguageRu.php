@@ -176,6 +176,7 @@ class SMW_LanguageRu {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Строка',  // name of the string type
+	'smw_text' => 'Text',  // name of the text type (very long strings) //TODO: translate
 	'smw_enum' => 'Перечисление',  // name of the enum type
 	'smw_bool' => 'Булево',  // name of the boolean type
 	'smw_int' => 'Целое',  // name of the int type

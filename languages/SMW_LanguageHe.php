@@ -194,6 +194,7 @@ class SMW_LanguageHe {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'מחרוזת',  // name of the string type
+	'smw_text' => 'Text',  // name of the text type (very long strings) //TODO: translate
 	'smw_enum' => 'Enumeration',  // name of the enum type
 	'smw_bool' => 'נכוןלאנכון',  // name of the boolean type
 	'smw_int' => 'שלם',  // name of the int type
