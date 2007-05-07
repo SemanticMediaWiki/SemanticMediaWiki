@@ -367,6 +367,8 @@ SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_
 SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_geocoordinate'),'geocoords','GeoCoords','SMWGeographicLocationTypeHandler');
 // Enums
 SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_enum'),'enum','Enum','SMWEnumTypeHandler');
+// Text
+SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_text'),'text','Text','SMWTextTypeHandler');
 // Bools
 // Booleans can (and more problematic: will) be modelled by two-valued enums; too much choice yields confusion (note that Categories are also addressing a simliar modelling problem already -- let's not introduce three ways of encoding this)
 //SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_bool'),'bool','Boolean','SMWBooleanTypeHandler');

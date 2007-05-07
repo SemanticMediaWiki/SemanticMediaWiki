@@ -201,6 +201,7 @@ class SMW_LanguageEn {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'String',  // name of the string type
+	'smw_text' => 'Text',  // name of the text type
 	'smw_enum' => 'Enumeration',  // name of the enum type
 	'smw_bool' => 'Boolean',  // name of the boolean type
 	'smw_int' => 'Integer',  // name of the int type

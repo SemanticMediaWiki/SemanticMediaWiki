@@ -151,6 +151,9 @@ class SMWSQLStore extends SMWStore {
 
 	function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$result = array();
+
+		// take care of "normal" attributes first
 		$value_column = 'value_xsd';
 		if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) && ($requestoptions->boundary->isNumeric()) ) {
 			$value_column = 'value_num';
@@ -158,17 +161,30 @@ class SMWSQLStore extends SMWStore {
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 		       ' AND attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
 		       $this->getSQLConditions($requestoptions,$value_column,'value_xsd');
-
 		$res = $db->select( $db->tableName('smw_attributes'),
 		                    'value_unit, value_datatype, value_xsd',
 		                    $sql, 'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,$value_column) );
-		// rewrite result as array
-		$result = array();
 		if($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
 				$dv = SMWDataValue::newTypedValue(SMWTypeHandlerFactory::getTypeHandlerByID($row->value_datatype));
 				$dv->setAttribute($attribute->getText());
 				$dv->setXSDValue($row->value_xsd, $row->value_unit);
+				$result[] = $dv;
+			}
+		}
+		$db->freeResult($res);
+
+		// finally, look for long strings
+		$res = $db->select( $db->tableName('smw_longstrings'),
+		                    'value_blob',
+		                    'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+		                    ' AND attribute_title=' . $db->addQuotes($attribute->getDBkey()),
+		                    'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,$value_column) );
+		if($db->numRows( $res ) > 0) {
+			while($row = $db->fetchObject($res)) {
+				$dv = SMWDataValue::newTypedValue(SMWTypeHandlerFactory::getTypeHandlerByID('text'));
+				$dv->setAttribute($attribute->getText());
+				$dv->setXSDValue($row->value_blob, '');
 				$result[] = $dv;
 			}
 		}
@@ -188,17 +204,17 @@ class SMWSQLStore extends SMWStore {
 		       ' AND attribute_title=' . $db->addQuotes($attribute->getDBKey()) .
 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
+		$result = array();
 		$res = $db->select( $db->tableName('smw_attributes'),
 		                    'DISTINCT subject_id',
 		                    $sql, 'SMW::getAttributeSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
-		// rewrite result as array
-		$result = array();
 		if($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::newFromID($row->subject_id);
 			}
 		}
 		$db->freeResult($res);
+		// long strings not supported for this operation
 
 		return $result;
 	}
@@ -208,11 +224,19 @@ class SMWSQLStore extends SMWStore {
 		$sql = 'attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
+		$result = array();
 		$res = $db->select( $db->tableName('smw_attributes'),
 		                    'DISTINCT subject_id',
 		                    $sql, 'SMW::getAllAttributeSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
-		// rewrite result as array
-		$result = array();
+		if($db->numRows( $res ) > 0) {
+			while($row = $db->fetchObject($res)) {
+				$result[] = Title::newFromId($row->subject_id);
+			}
+		}
+		$db->freeResult($res);
+		$res = $db->select( $db->tableName('smw_longstrings'),
+		                    'DISTINCT subject_id',
+		                    $sql, 'SMW::getAllAttributeSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
 		if($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::newFromId($row->subject_id);
@@ -227,12 +251,20 @@ class SMWSQLStore extends SMWStore {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) . $this->getSQLConditions($requestoptions,'attribute_title','attribute_title');
 
+		$result = array();
 		$res = $db->select( $db->tableName('smw_attributes'),
 		                    'DISTINCT attribute_title',
 		                    $sql, 'SMW::getAttributes', $this->getSQLOptions($requestoptions,'attribute_title') );
-		// rewrite result as array
-		$result = array();
-		if($db->numRows( $res ) > 0) {
+		if ($db->numRows( $res ) > 0) {
+			while($row = $db->fetchObject($res)) {
+				$result[] = Title::newFromText($row->attribute_title, SMW_NS_ATTRIBUTE);
+			}
+		}
+		$db->freeResult($res);
+		$res = $db->select( $db->tableName('smw_longstrings'),
+		                    'DISTINCT attribute_title',
+		                    $sql, 'SMW::getAttributes', $this->getSQLOptions($requestoptions,'attribute_title') );
+		if ($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::newFromText($row->attribute_title, SMW_NS_ATTRIBUTE);
 			}
@@ -356,6 +388,9 @@ class SMWSQLStore extends SMWStore {
 		$db->delete($db->tableName('smw_attributes'),
 		            array('subject_id' => $subject->getArticleID()),
 		            'SMW::deleteSubject::Attributes');
+		$db->delete($db->tableName('smw_longstrings'),
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::Longstrings');
 		$db->delete($db->tableName('smw_specialprops'),
 		            array('subject_id' => $subject->getArticleID()),
 		            'SMW::deleteSubject::Specialprops');
@@ -384,16 +419,26 @@ class SMWSQLStore extends SMWStore {
 			$attributeValueArray = $data->getAttributeValues($attribute);
 			foreach($attributeValueArray as $value) {
 				if ($value->getXSDValue()!==false) {
-					$db->insert( $db->tableName('smw_attributes'),
-					             array( 'subject_id' => $subject->getArticleID(),
-					             'subject_namespace' => $subject->getNamespace(),
-					             'subject_title' => $subject->getDBkey(),
-					             'attribute_title' => $attribute->getDBkey(),
-					             'value_unit' => $value->getUnit(),
-					             'value_datatype' => $value->getTypeID(),
-					             'value_xsd' => $value->getXSDValue(),
-					             'value_num' => $value->getNumericValue()),
-					             'SMW::updateAttData');
+					if ($value->getTypeID() !== 'text') {
+						$db->insert( $db->tableName('smw_attributes'),
+						             array( 'subject_id' => $subject->getArticleID(),
+						             'subject_namespace' => $subject->getNamespace(),
+						             'subject_title' => $subject->getDBkey(),
+						             'attribute_title' => $attribute->getDBkey(),
+						             'value_unit' => $value->getUnit(),
+						             'value_datatype' => $value->getTypeID(),
+						             'value_xsd' => $value->getXSDValue(),
+						             'value_num' => $value->getNumericValue()),
+						             'SMW::updateAttData');
+					} else {
+						$db->insert( $db->tableName('smw_longstrings'),
+						             array( 'subject_id' => $subject->getArticleID(),
+						             'subject_namespace' => $subject->getNamespace(),
+						             'subject_title' => $subject->getDBkey(),
+						             'attribute_title' => $attribute->getDBkey(),
+						             'value_blob' => $value->getXSDValue()),
+						             'SMW::updateAttDataLongString');
+					}
 				}
 			}
 		}
@@ -454,6 +499,7 @@ class SMWSQLStore extends SMWStore {
 
 		$db->update($db->tableName('smw_relations'), $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update($db->tableName('smw_attributes'), $val_array, $cond_array, 'SMW::changeTitle');
+		$db->update($db->tableName('smw_longstrings'), $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update($db->tableName('smw_specialprops'), $val_array, $cond_array, 'SMW::changeTitle');
 	}
 
@@ -503,7 +549,7 @@ class SMWSQLStore extends SMWStore {
 		$fname = 'SMW::setupDatabase';
 		$db =& wfGetDB( DB_MASTER );
 
-		extract( $db->tableNames('smw_relations','smw_attributes','smw_specialprops') );
+		extract( $db->tableNames('smw_relations','smw_attributes','smw_longstrings','smw_specialprops') );
 
 		// create relation table
 		if ($db->tableExists('smw_relations') === false) {
@@ -541,6 +587,21 @@ class SMWSQLStore extends SMWStore {
 		$this->setupIndex($smw_attributes, 'attribute_title', $db);
 		$this->setupIndex($smw_attributes, 'value_num', $db);
 		$this->setupIndex($smw_attributes, 'value_xsd', $db);
+
+		// create table for long string attributes
+		if ($db->tableExists('smw_longstrings') === false) {
+			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_longstrings . '
+					( subject_id INT(8) UNSIGNED NOT NULL,
+					subject_namespace  INT(11) NOT NULL,
+					subject_title      VARCHAR(255) NOT NULL,
+					attribute_title    VARCHAR(255) NOT NULL,
+					value_blob         MEDIUMBLOB
+					) TYPE=innodb';
+			$res = $db->query( $sql, $fname );
+		}
+
+		$this->setupIndex($smw_longstrings, 'subject_id', $db);
+		$this->setupIndex($smw_longstrings, 'attribute_title', $db);
 
 		// create table for special properties
 		if ($db->tableExists('smw_specialprops') === false) {

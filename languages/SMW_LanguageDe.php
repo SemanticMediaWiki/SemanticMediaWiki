@@ -187,6 +187,7 @@ class SMW_LanguageDe {
 
 /* private */ var $smwDatatypeLabels = array(
 	'smw_string' => 'Zeichenkette',  // name of the string type
+	'smw_text' => 'Text',  // name of the text type
 	'smw_enum' => 'Aufzählung',  // name of the enum type
 	'smw_bool' => 'Wahrheitswert',  // name of the boolean type
 	'smw_int' => 'Ganze Zahl',  // name of the int type
