@@ -186,6 +186,17 @@ the FAQ section, then contact the user support list (see the Contact section).
   You probably use a version of MediaWiki that is smaller or equal to 1.9.*
   and you did not make the required changes in Parser.php as described above.
 
+ - Problem: In my non-English installation, attributes and relations don't
+   work even when I follow the examples.
+
+  You must use the localized names for special properties and namespaces.
+  Although MediaWiki has some support for canonical (English) names such as
+  Category and Special:Allpages, the SMW extension requires localized names.
+  Thus in a German wiki, instead of creating a page Attribute:abc with
+  [[Has type::Type:String]], you must create page Attribut:abc with
+  [[Hat Datentyp::Datentyp:Zeichenkette]]
+  The translated strings for each language are in the languages subdirectory.
+
 - Problem: After installing SMW, some or all pages are not displayed at all.
 - Problem: In some cases, pages are displayed incompletely, with some parts
   vanishing.
