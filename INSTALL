@@ -208,9 +208,16 @@ the FAQ section, then contact the user support list (see the Contact section).
 
 - Problem: I have a problem that is not in this list.
 
+ Turn on debugging in MediaWiki (try 
+ http://meta.wikimedia.org/wiki/How_to_debug_MediaWiki ) and you should see 
+ something in the log file.
+
   Report general bugs at http://bugzilla.wikimedia.org/
   where you can also find out whether your problem is known.
   You can also send an email to semediawiki-user@lists.sourceforge.net.
+  Provide the versions of PHP and MediaWiki and SMW that you are using, and
+  any other extensions (all this information is on the MediaWiki
+  Special:Version page).
 
 == Contact ==
 
