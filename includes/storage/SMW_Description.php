@@ -160,6 +160,7 @@ class SMWValueDescription extends SMWDescription {
 
 	public function SMWValueDescription(SMWDataValue $datavalue, $comparator = SMW_CMP_EQUAL) {
 		$this->m_datavalue = $datavalue;
+		$this->m_comparator = $comparator;
 	}
 
 	public function getDataValue() {
