@@ -765,7 +765,7 @@ class SMWSQLStore extends SMWStore {
 		} elseif ($description instanceof SMWValueDescription) {
 			if ($jointable != '') {
 				switch ($description->getComparator()) {
-					case SMW_CMP_EQUAL: $op = '='; break;
+					case SMW_CMP_EQ: $op = '='; break;
 					case SMW_CMP_LEQ: $op = '<='; break;
 					case SMW_CMP_GEQ: $op = '>='; break;
 					case SMW_CMP_NEQ: $op = '!='; break;
@@ -779,6 +779,7 @@ class SMWSQLStore extends SMWStore {
 						$valuefiled = 'value_xsd';
 						$value = $description->getDatavalue()->getXSDValue();
 					}
+					//TODO: implement check for unit
 					$newconds .= $jointable . '.' .  $valuefiled . $op . $db->addQuotes($value);
 				}
 			} // else: not possible
@@ -798,7 +799,7 @@ class SMWSQLStore extends SMWStore {
 		} elseif ($description instanceof SMWDisjunction) {
 			$id = NULL;
 			//TODO
-// 			foreach ($description->getDescriptions() as $subdesc) {
+			foreach ($description->getDescriptions() as $subdesc) {
 // 				$subtablepref = $tablepref . $tablecount++ . 't';
 // 				$newid = $this->createSQLQuery($subdesc, $newtables, $newconds, $db, $subtablepref);
 // 				if ($newid !== NULL) { // catches e.g. the case that owl:Thing is used in conjunctions (no id)
@@ -807,7 +808,7 @@ class SMWSQLStore extends SMWStore {
 // 					}
 // 					$id = $newid;
 // 				}
-// 			}
+			}
 			$result = $id; //NULL if only non-sensical conditions were included
 		} elseif ($description instanceof SMWSomeRelation) {
 			$reltable = $tablepref . $tablecount++;

@@ -7,7 +7,7 @@
  */
 
 // comparators for datavalues:
-define('SMW_CMP_EQUAL',1); // matches only datavalues that are equal to the given value
+define('SMW_CMP_EQ',1); // matches only datavalues that are equal to the given value
 define('SMW_CMP_LEQ',2); // matches only datavalues that are less or equal than the given value
 define('SMW_CMP_GEQ',3); // matches only datavalues that are greater or equal to the given value
 define('SMW_CMP_NEQ',4); // matches only datavalues that are unequal to the given value
