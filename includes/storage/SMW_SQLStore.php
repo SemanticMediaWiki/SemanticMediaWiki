@@ -506,12 +506,38 @@ class SMWSQLStore extends SMWStore {
 ///// Query answering /////
 
 	function getQueryResult(SMWQuery $query) {
+		$db =& wfGetDB( DB_SLAVE );
 		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deepder levels
 
 		// Here, the actual SQL query building and execution must happen. Loads of work.
 		// For testing purposes, we assume that the outcome is the following array of titles
 		// (the eventual query result format is quite certainly different)
-		$qr = array(Title::newFromText('Angola'), Title::newFromText('Namibia'));
+		$tables = '';
+		$conds = '';
+		$id = $this->createSQLQuery($query->getDescription(), $tables, $conds, $db);
+		if ($tables != '') {
+			$tables .= ', ';
+		}
+		$tables .= 'page';
+		if ($conds != '') {
+			$conds .= ' AND ';
+		}
+		$conds .= 'page.page_id=' . $id;
+		print $tables . "<br />\n" . $conds . "<br />\n"; //DEBUG
+
+		$sql_options = array('LIMIT' => '5');
+		$res = $db->select($tables,
+		       'DISTINCT page.page_title as title, page.page_namespace as namespace',
+		        $conds,
+		        'SMW::getQueryResult',
+		        $sql_options );
+		$qr = array();
+		while ($row = $db->fetchObject($res)) {
+			$qr[] = Title::newFromText($row->title, $row->namespace);
+		}
+		$db->freeResult($res);
+	
+		//$qr = array(Title::newFromText('Angola'), Title::newFromText('Namibia'));
 
 		// create result by executing print statements for everything that was fetched
 		///TODO: use limit and offset values
@@ -692,6 +718,133 @@ class SMWSQLStore extends SMWStore {
 			}
 		}
 		return $sql_conds;
+	}
+
+	/**
+	 * Create an SQL query for a given description. The query is defined by call-by-ref
+	 * parameters for conditions (WHERE) and tables (FROM). Further condistions are not
+	 * encoded in the description. If the parameter $jointable is given, the function will
+	 * insert conditions for joining its conditions with the given table. It is assumed 
+	 * that the $jointable has an appropriate signature. If no $jointable is given, the 
+	 * function returns the name of a table field that contains the *title ids* for the
+	 * possible result values, if this is meaningful (i.e. if no datavalues are selected).
+	 * In all other cases the return value is undefined.
+	 * 
+	 * @param $description The SMWDescription to be processed.
+	 * @param &$tables The string of computed FROM statements (with aliases for tables), appended to supplied string.
+	 * @param &$conds The string of computed WHERE conditions, appended to supplied string.
+	 * @param $db The database object
+	 * @param $tablepref The base name of table aliases that may be created. Used as a prefix to all such aliases.
+	 * @param $jointable The name of the table with which the results should be joined or none if the join is performed by the caller. 
+	 */
+	protected function createSQLQuery(SMWDescription $description, &$tables, &$conds, &$db, $tablepref = 't', $jointable = '') {
+		$tablecount = 0;
+		$newtables = '';
+		$newconds = '';
+		$result = NULL;
+		if ($description instanceof SMWThingDescription) {
+			// no condition (and no possible return id value)
+		} elseif ($description instanceof SMWClassDescription) {
+			$cattable = $tablepref . $tablecount++;
+			$newtables .= $db->tableName('categorylinks') . ' as ' . $cattable;
+			$newconds .= $cattable . '.cl_to=' . $db->addQuotes($description->getCategory()->getText());
+			$result = $cattable . '.cl_from';
+		} elseif ($description instanceof SMWNominalDescription) {
+			if ($jointable != '') {
+				$newconds .= $jointable . '.object_title=' . 
+				             $db->addQuotes($description->getIndividual()->getText()) . ' AND ' .
+				             $jointable . '.object_namespace=' . $description->getIndividual()->getNamespace();
+			} else {
+				$pagetable = $tablepref . $tablecount++;
+				$newtables .= $db->tableName('page') . ' as ' . $pagetable;
+				$newconds .= $pagetable . '.page_title=' . 
+				             $db->addQuotes($description->getIndividual()->getText()) . ' AND ' .
+				             $pagetable . '.page_namespace=' . $description->getIndividual()->getNamespace();
+				$result = $pagetable . '.page_id';
+			}
+		} elseif ($description instanceof SMWValueDescription) {
+			if ($jointable != '') {
+				switch ($description->getComparator()) {
+					case SMW_CMP_EQUAL: $op = '='; break;
+					case SMW_CMP_LEQ: $op = '<='; break;
+					case SMW_CMP_GEQ: $op = '>='; break;
+					case SMW_CMP_NEQ: $op = '!='; break;
+					case SMW_CMP_ANY: default: $op = NULL; break;
+				}
+				if ($op !== NULL) {
+					if ($description->getDatavalue()->isNumeric()) {
+						$valuefiled = 'value_num';
+						$value = $description->getDatavalue()->getNumericValue();
+					} else {
+						$valuefiled = 'value_xsd';
+						$value = $description->getDatavalue()->getXSDValue();
+					}
+					$newconds .= $jointable . '.' .  $valuefiled . $op . $db->addQuotes($value);
+				}
+			} // else: not possible
+		} elseif ($description instanceof SMWConjunction) {
+			$id = NULL;
+			foreach ($description->getDescriptions() as $subdesc) {
+				$subtablepref = $tablepref . $tablecount++ . 't';
+				$newid = $this->createSQLQuery($subdesc, $newtables, $newconds, $db, $subtablepref);
+				if ($newid !== NULL) { // catches e.g. the case that owl:Thing is used in conjunctions (no id)
+					if ($id !== NULL) {
+						$newconds .= ' AND ' . $id . '=' . $newid;
+					}
+					$id = $newid;
+				}
+			}
+			$result = $id; //NULL if only non-sensical conditions were included
+		} elseif ($description instanceof SMWDisjunction) {
+			$id = NULL;
+			//TODO
+// 			foreach ($description->getDescriptions() as $subdesc) {
+// 				$subtablepref = $tablepref . $tablecount++ . 't';
+// 				$newid = $this->createSQLQuery($subdesc, $newtables, $newconds, $db, $subtablepref);
+// 				if ($newid !== NULL) { // catches e.g. the case that owl:Thing is used in conjunctions (no id)
+// 					if ($id !== NULL) {
+// 						$newconds .= ' AND ' . $id . '=' . $newid;
+// 					}
+// 					$id = $newid;
+// 				}
+// 			}
+			$result = $id; //NULL if only non-sensical conditions were included
+		} elseif ($description instanceof SMWSomeRelation) {
+			$reltable = $tablepref . $tablecount++;
+			$newtables .= $db->tableName('smw_relations') . ' as ' . $reltable;
+			$newconds .= $reltable . '.relation_title=' . $db->addQuotes($description->getRelation()->getDBKey());
+			$this->createSQLQuery($description->getDescription(), $newtables, $newconds, $db, $reltable . 't', $reltable);
+			$result = $reltable . '.subject_id';
+		} elseif ($description instanceof SMWSomeAttribute) {
+			$atttable = $tablepref . $tablecount++;
+			$newtables .= $db->tableName('smw_attributes') . ' as ' . $atttable;
+			$newconds .= $atttable . '.attribute_title=' . $db->addQuotes($description->getAttribute()->getDBKey());
+			$this->createSQLQuery($description->getDescription(), $newtables, $newconds, $db, $atttable . 't', $atttable);
+			$result = $atttable . '.subject_id';
+		}
+
+		// add standard join clauses if applicable
+		if ( ($jointable != '') && ($result !== NULL) ) {
+			$pagetable = $tablepref . $tablecount++;
+			if ($newtables != '') {	
+				$newtables .= ', ';
+			}
+			$newtables .= $db->tableName('page') . ' as ' . $pagetable;
+			$newconds .= $result . '=' . $pagetable . '.page_id AND ' .
+			             $jointable . '.object_title=' . $pagetable . '.page_title' . ' AND ' .
+			             $jointable . '.object_namespace=' . $pagetable . '.page_namespace';
+		}
+
+		if ( ($tables != '') && ($newtables != '') ) {
+			$tables .= ', ';
+		}
+		$tables .= $newtables;
+		if ( ($conds != '') && ($newconds != '') ) {
+			$conds .= ' AND (';
+			$newconds .= ')';
+		}
+		$conds .= $newconds;
+		return $result;
 	}
 
 	/**
