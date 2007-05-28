@@ -188,8 +188,8 @@ class SMWFactbox {
 
 		if (NULL != $error) {
 			$datavalue = SMWDataValue::newTypedValue(new SMWErrorTypeHandler($error),$value);
-			if (!$smwgStoreActive) {
-				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM,$result);
+			if ($smwgStoreActive) {
+				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
 			}
 			return $datavalue;
 		}
