@@ -16,6 +16,25 @@ require_once( "$smwgIP/includes/SMW_DataValue.php" );
  */
 class SMWSQLStore extends SMWStore {
 
+	/**
+	 * The (normalised) name of the property by which results during query
+	 * processing should be ordered, if any. False otherwise (default from
+	 * SMWQuery). Needed during query processing (where this key is searched
+	 * while building the query conditions).
+	 */
+	protected $m_sortkey;
+	/**
+	 * The database field name by which results during query processing should 
+	 * be ordered, if any. False if no $m_sortkey was specified or if the key
+	 * did not match any condition.
+	 */
+	protected $m_sortfield;
+	
+	/**
+	 * Global counter to prevent clashes between table aliases.
+	 */
+	protected $m_tablenum;
+
 ///// Reading methods /////
 
 	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
@@ -505,43 +524,75 @@ class SMWSQLStore extends SMWStore {
 
 ///// Query answering /////
 
+	/**
+	 * The SQL store's implementation of query answering.
+	 *
+	 * TODO: decide who respects which global query settings: the query parser or the query execution?
+	 * Probably the query parser (e.g. it can distinguish subqueries from other nested constructs that
+	 * are not "subqueries" from a user perspective, it also has a good insight in the query structure for
+	 * applying structural limits)
+	 * TODO: implement namespace restrictions
+	 * TODO: do we support category wildcards? -> No, they have no useful semantics in OWL
+	 * TODO: we now have sorting even for subquery conditions. Does this work? Is it slow/problematic?
+	 */
 	function getQueryResult(SMWQuery $query) {
+		global $smwgIQSortingEnabled;
+		
 		$db =& wfGetDB( DB_SLAVE );
-		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deepder levels
+		$this->m_tablenum = 0;
+		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deeper levels
 
-		// Here, the actual SQL query building and execution must happen. Loads of work.
-		// For testing purposes, we assume that the outcome is the following array of titles
-		// (the eventual query result format is quite certainly different)
-		$tables = '';
-		$conds = '';
-		$id = $this->createSQLQuery($query->getDescription(), $tables, $conds, $db);
-		if ($tables != '') {
-			$tables .= ', ';
-		}
-		$tables .= 'page';
-		if ($conds != '') {
-			$conds .= ' AND ';
-		}
-		$conds .= 'page.page_id=' . $id;
-		print $tables . "<br />\n" . $conds . "<br />\n"; //DEBUG
+		// Build main query
+		$this->m_sortkey = $query->sortkey;
+		$this->m_sortfield = false;
+		
+		$from = $db->tableName('page');
+		$where = '';
+		$curtables = array('PAGE' => $from);
+		$this->createSQLQuery($query->getDescription(), $from, $where, $db, $curtables);
 
-		$sql_options = array('LIMIT' => '5');
-		$res = $db->select($tables,
+		// Prepare SQL options
+		$sql_options = array();
+		if ($query->limit >= 0) {
+			$sql_options['LIMIT'] = $query->limit + 1;
+		}
+		$sql_options['OFFSET'] = $query->offset;
+		if ( $smwgIQSortingEnabled ) {
+			$order = $query->ascending ? 'ASC' : 'DESC';
+			if ( ($this->m_sortfield == false) && ($this->m_sortkey == false) ) {
+				$sql_options['ORDER BY'] = "page.page_title $order "; // default
+			} elseif ($this->m_sortfield != false) {
+				$sql_options['ORDER BY'] = $this->m_sortfield . " $order ";
+			} // else: sortkey given but not found: do not sort
+		}
+
+		print $from . "<br />\n" . $where . "<br />\n"; //DEBUG
+		foreach ($sql_options as $key => $val) { //DEBUG
+			print "$key => $val, "; 
+		}
+		print "<br />\n";
+		print $this->m_sortkey . " --> " . $this->m_sortfield . "<br />\n"; //DEBUG
+
+		// Execute query and format result as array
+		$res = $db->select($from,
 		       'DISTINCT page.page_title as title, page.page_namespace as namespace',
-		        $conds,
+		        $where,
 		        'SMW::getQueryResult',
 		        $sql_options );
 		$qr = array();
-		while ($row = $db->fetchObject($res)) {
+		$count = 0;
+		while ( ( ($count<$query->limit) || ($query->limit < 0) ) && ($row = $db->fetchObject($res)) ) {
+			$count++;
 			$qr[] = Title::newFromText($row->title, $row->namespace);
 		}
+		if ($db->fetchObject($res)) {
+			$count++;
+		}
 		$db->freeResult($res);
-	
-		//$qr = array(Title::newFromText('Angola'), Title::newFromText('Namibia'));
 
-		// create result by executing print statements for everything that was fetched
-		///TODO: use limit and offset values
-		$result = new SMWQueryResult($prs);
+		// Create result by executing print statements for everything that was fetched
+		///TODO: use limit (and offset?) values
+		$result = new SMWQueryResult($prs, ( ($count > $query->limit) && ($query->limit >= 0) ) );
 		foreach ($qr as $qt) {
 			$row = array();
 			foreach ($prs as $pr) {
@@ -721,49 +772,97 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	/**
-	 * Create an SQL query for a given description. The query is defined by call-by-ref
-	 * parameters for conditions (WHERE) and tables (FROM). Further condistions are not
-	 * encoded in the description. If the parameter $jointable is given, the function will
-	 * insert conditions for joining its conditions with the given table. It is assumed 
-	 * that the $jointable has an appropriate signature. If no $jointable is given, the 
-	 * function returns the name of a table field that contains the *title ids* for the
-	 * possible result values, if this is meaningful (i.e. if no datavalues are selected).
-	 * In all other cases the return value is undefined.
-	 * 
-	 * @param $description The SMWDescription to be processed.
-	 * @param &$tables The string of computed FROM statements (with aliases for tables), appended to supplied string.
-	 * @param &$conds The string of computed WHERE conditions, appended to supplied string.
-	 * @param $db The database object
-	 * @param $tablepref The base name of table aliases that may be created. Used as a prefix to all such aliases.
-	 * @param $jointable The name of the table with which the results should be joined or none if the join is performed by the caller. 
+	 * Add the table $tablename to the $from condition via an inner join,
+	 * using the tables that are already available in $curtables (and extending 
+	 * $curtables with the new table). Return true if successful or false if it
+	 * wasn't possible to make a suitable inner join.
 	 */
-	protected function createSQLQuery(SMWDescription $description, &$tables, &$conds, &$db, $tablepref = 't', $jointable = '') {
-		$tablecount = 0;
-		$newtables = '';
-		$newconds = '';
-		$result = NULL;
+	protected function addInnerJoin($tablename, &$from, &$db, &$curtables) {
+		if (array_key_exists($tablename, $curtables)) { // table already present
+			return true;
+		}
+		if ($tablename == 'PAGE') {
+			if (array_key_exists('PREVREL', $curtables)) { // PREVREL cannot be added if not present
+				$curtables['PAGE'] = 'p' . $this->m_tablenum++;
+				$from .= ' INNER JOIN ' . $db->tableName('page') . ' AS ' . $curtables['PAGE'] . ' ON (' .
+				           $curtables['PAGE'] . '.page_title=' . $curtables['PREVREL'] . '.object_title AND ' .
+				           $curtables['PAGE'] . '.page_namespace=' . $curtables['PREVREL'] . '.object_namespace)';
+				return true;
+			}
+		} elseif ($tablename == 'CATS') {
+			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+				$curtables['CATS'] = 'cl' . $this->m_tablenum++;
+				$from .= ' INNER JOIN ' . $db->tableName('categorylinks') . ' AS ' . $curtables['CATS'] . ' ON ' . $curtables['CATS'] . '.cl_from=' . $curtables['PAGE'] . '.page_id';
+				return true;
+			}
+		} elseif ($tablename == 'RELS') {
+			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+				$curtables['RELS'] = 'rel' . $this->m_tablenum++;
+				$from .= ' INNER JOIN ' . $db->tableName('smw_relations') . ' AS ' . $curtables['RELS'] . ' ON ' . $curtables['RELS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
+				return true;
+			}
+		} elseif ($tablename == 'ATTS') {
+			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+				$curtables['ATTS'] = 'att' . $this->m_tablenum++;
+				$from .= ' INNER JOIN ' . $db->tableName('smw_attributes') . ' AS ' . $curtables['ATTS'] . ' ON ' . $curtables['ATTS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Create an SQL query for a given description. The query is defined by call-by-ref
+	 * parameters for conditions (WHERE) and tables (FROM). Further conditions are not
+	 * encoded in the description. Additional conditions refer to tables that are already
+	 * used in the query, whose aliases are given in $curtables. It may also happen that
+	 * inner joins with existing tables ($curtables) are added to formulate the new condition.
+	 * In any case, $curtables should never be completely empty (or otherwise nothing will 
+	 * be computed).
+	 *
+	 * Some notes on sorting: sorting is applied only to fields that appear in the query 
+	 * by verifying conditions and the sorting conditions thus operate on the values that
+	 * satisfy the given conditions. This may have side effects in cases where one porperty
+	 * that shall be sorted has multiple values. If no condition other than existence applies
+	 * to such a property, the value that is relevant for sorting is not really dertermined and
+	 * the behaviour of SQL is not clear (I think). If the condition preselects larger or smaller
+	 * values, however, then these would probably be used for sorting. Overall this should not
+	 * be a problem, since it only occurs in cases where the sort order is not fully specified anyway.
+	 *
+	 * Also, sorting may impair performance, since SQL needs to keep track of additional values.
+	 *
+	 * @param $description The SMWDescription to be processed.
+	 * @param &$from The string of computed FROM statements (with aliases for tables), appended to supplied string.
+	 * @param &$where The string of computed WHERE conditions, appended to supplied string.
+	 * @param $db The database object
+	 * @param $curtables Array with names of aliases of tables refering to the 'current' element (the one to which the description basically applies).
+	 * @param $sort True if the subcondition should be used for sorting. This is only meaningful for queries that are below some relation or attribute statement.
+	 *
+	 * @TODO: The extra table for long string attributes should be supported for checking existence of such an attribute (but not for comparing values, which is not needed for blobs).
+	 * @TODO: Maybe there need to be optimisations in certain cases (atomic implementation for common nestings of descriptions?)
+	 */
+	protected function createSQLQuery(SMWDescription $description, &$from, &$where, &$db, &$curtables, $sort = false) {
+		$subwhere = '';
 		if ($description instanceof SMWThingDescription) {
-			// no condition (and no possible return id value)
+			// nothin to check
 		} elseif ($description instanceof SMWClassDescription) {
-			$cattable = $tablepref . $tablecount++;
-			$newtables .= $db->tableName('categorylinks') . ' as ' . $cattable;
-			$newconds .= $cattable . '.cl_to=' . $db->addQuotes($description->getCategory()->getText());
-			$result = $cattable . '.cl_from';
+			if ($this->addInnerJoin('CATS', $from, $db, $curtables)) {
+				$where .=  $curtables['CATS'] . '.cl_to=' . $db->addQuotes($description->getCategory()->getText());
+			}
 		} elseif ($description instanceof SMWNominalDescription) {
-			if ($jointable != '') {
-				$newconds .= $jointable . '.object_title=' . 
-				             $db->addQuotes($description->getIndividual()->getText()) . ' AND ' .
-				             $jointable . '.object_namespace=' . $description->getIndividual()->getNamespace();
-			} else {
-				$pagetable = $tablepref . $tablecount++;
-				$newtables .= $db->tableName('page') . ' as ' . $pagetable;
-				$newconds .= $pagetable . '.page_title=' . 
-				             $db->addQuotes($description->getIndividual()->getText()) . ' AND ' .
-				             $pagetable . '.page_namespace=' . $description->getIndividual()->getNamespace();
-				$result = $pagetable . '.page_id';
+			if (array_key_exists('PREVREL', $curtables)) {
+				$where .= $curtables['PREVREL'] . '.object_title=' . 
+				          $db->addQuotes($description->getIndividual()->getText()) . ' AND ' .
+				          $curtables['PREVREL'] . '.object_namespace=' .
+				          $description->getIndividual()->getNamespace();
+			} elseif ($this->addInnerJoin('PAGE', $from, $db, $curtables)) {
+				$where .= $curtables['PAGE'] . '.page_title=' .
+				          $db->addQuotes($description->getIndividual()->getText()) . ' AND ' .
+				          $curtables['PAGE'] . '.page_namespace=' .
+				          $description->getIndividual()->getNamespace();
 			}
 		} elseif ($description instanceof SMWValueDescription) {
-			if ($jointable != '') {
+			if ( $this->addInnerJoin('ATTS', $from, $db, $curtables) ) {
 				switch ($description->getComparator()) {
 					case SMW_CMP_EQ: $op = '='; break;
 					case SMW_CMP_LEQ: $op = '<='; break;
@@ -773,33 +872,175 @@ class SMWSQLStore extends SMWStore {
 				}
 				if ($op !== NULL) {
 					if ($description->getDatavalue()->isNumeric()) {
-						$valuefiled = 'value_num';
+						$valuefield = 'value_num';
 						$value = $description->getDatavalue()->getNumericValue();
 					} else {
-						$valuefiled = 'value_xsd';
+						$valuefield = 'value_xsd';
 						$value = $description->getDatavalue()->getXSDValue();
 					}
-					//TODO: implement check for unit
-					$newconds .= $jointable . '.' .  $valuefiled . $op . $db->addQuotes($value);
-				}
-			} // else: not possible
-		} elseif ($description instanceof SMWConjunction) {
-			$id = NULL;
-			foreach ($description->getDescriptions() as $subdesc) {
-				$subtablepref = $tablepref . $tablecount++ . 't';
-				$newid = $this->createSQLQuery($subdesc, $newtables, $newconds, $db, $subtablepref);
-				if ($newid !== NULL) { // catches e.g. the case that owl:Thing is used in conjunctions (no id)
-					if ($id !== NULL) {
-						$newconds .= ' AND ' . $id . '=' . $newid;
+					///TODO: implement check for unit
+					$where .= $curtables['ATTS'] . '.' .  $valuefield . $op . $db->addQuotes($value);
+					if ($sort != '') {
+						$this->m_sortfield = $curtables['ATTS'] . '.' . $valuefield;
 					}
-					$id = $newid;
 				}
 			}
-			$result = $id; //NULL if only non-sensical conditions were included
-		} elseif ($description instanceof SMWDisjunction) {
-			$id = NULL;
-			//TODO
+		} elseif ($description instanceof SMWConjunction) {
 			foreach ($description->getDescriptions() as $subdesc) {
+				/// TODO: this is not optimal -- we drop more table aliases than needed, but its hard to find out what is feasible in recursive calls ...
+				$nexttables = array();
+				if (array_key_exists('PAGE',$curtables)) {
+					$nexttables['PAGE'] = $curtables['PAGE'];
+				}
+				if (array_key_exists('PREVREL',$curtables)) {
+					$nexttables['PREVREL'] = $curtables['PREVREL'];
+				}
+				$this->createSQLQuery($subdesc, $from, $subwhere, $db, $nexttables);
+				if ($subwhere != '') {
+					if ($where != '') {
+						$where .= ' AND ';
+					}
+					$where .= '(' . $subwhere . ')';
+					$subwhere = '';
+				}
+			}
+		} elseif ($description instanceof SMWDisjunction) {
+			foreach ($description->getDescriptions() as $subdesc) {
+				$this->createSQLQuery($subdesc, $from, $subwhere, $db, $curtables);
+				if ($subwhere != '') {
+					if ($where != '') {
+						$where .= ' OR ';
+					}
+					$where .= '(' . $subwhere . ')';
+					$subwhere = '';
+				}
+			}
+		} elseif ($description instanceof SMWSomeRelation) {
+			if ($this->addInnerJoin('RELS', $from, $db, $curtables)) {
+				$where .= $curtables['RELS'] . '.relation_title=' . 
+				          $db->addQuotes($description->getRelation()->getDBKey());
+				$nexttables = array( 'PREVREL' => $curtables['RELS'] );
+				$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $nexttables, ($this->m_sortkey == $description->getRelation()->getDBKey()) );
+				if ( $subwhere != '') {
+					$where .= ' AND (' . $subwhere . ')';
+				}
+			}
+		} elseif ($description instanceof SMWSomeAttribute) {
+			if ($this->addInnerJoin('ATTS', $from, $db, $curtables)) {
+				$where .= $curtables['ATTS'] . '.attribute_title=' . 
+				          $db->addQuotes($description->getAttribute()->getDBKey());
+				$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $curtables, ($this->m_sortkey == $description->getAttribute()->getDBKey()) );
+				if ( $subwhere != '') {
+					$where .= ' AND (' . $subwhere . ')';
+				}
+			}
+		}
+
+		if ($sort && (!$description instanceof SMWValueDescription) ) {
+			if (array_key_exists('PREVREL', $curtables)) {
+				$this->m_sortfield = $curtables['PREVREL'] . '.object_title';
+			}
+		}
+	}
+
+	/**
+	 * Create an SQL query for a given description. The query is defined by call-by-ref
+	 * parameters for conditions (WHERE) and tables (FROM). Further condistions are not
+	 * encoded in the description. If the parameter $jointable is given, the function will
+	 * insert conditions for joining its conditions with the given table. It is assumed 
+	 * that the $jointable has an appropriate signature. If no $jointable is given, the 
+	 * function returns the name of a table field that contains the *title ids* for the
+	 * possible result values, if this is meaningful (i.e. if no datavalues are selected).
+	 * In all other cases the return value is undefined.
+	 *
+	 * Some notes on sorting: sorting is applied only to fields that appear in the query 
+	 * by verifying conditions and the sorting conditions thus operate on the values that
+	 * satisfy the given conditions. This may have side effects in cases where one porperty
+	 * that shall be sorted has multiple values. If no condition other than existence applies
+	 * to such a property, the value that is relevant for sorting is not really dertermined and
+	 * the behaviour of SQL is not clear (I think). If the condition preselects larger or smaller
+	 * values, however, then these would probably be used for sorting. Overall this should not
+	 * be a problem, since it only occurs in cases where the sort order is not fully specified anyway.
+	 *
+	 * Also, sorting may (1) impair performance, since SQL needs to keep track of additional values,
+	 * (2) impair performance, since additional joins may be needed to incorporate into the query the
+	 * page names by which something should be sorted (while otherwise IDs suffice for treating many
+	 * cases).
+	 *
+	 * @param $description The SMWDescription to be processed.
+	 * @param &$tables The string of computed FROM statements (with aliases for tables), appended to supplied string.
+	 * @param &$conds The string of computed WHERE conditions, appended to supplied string.
+	 * @param $db The database object
+	 * @param $tablepref The base name of table aliases that may be created. Used as a prefix to all such aliases.
+	 * @param $jointable The name of the table with which the results should be joined or none if the join is performed by the caller. 
+	 * @param $sort True if the subcondition should be used for sorting. This is only meaningful for queries that are below some relation or attribute statement.
+	 * 
+	 * @TODO: there are still design problems with sorting, since sorting always needs unique article title fields that some descriptions just do not yield. One problem is SMWThingDescription: if not joined, it just cannot provide a (set of) ids that could be used to join the page table for obtaining the title texts. Maybe one should handle all relation-sort cases in the condition root (when handling SMWSomeRelation)? This woul simplify matters but then $sort is only relevant in one case, which is strange design too. But anyway this appears to be preferrable.
+	 * @TODO: the case of disjunction is not implemented yet. Somewhat unclear.
+	 * @TODO: Maybe there need to be optimisations in certain cases (atomic implementation for common nestings of descriptions?)
+	 */
+// 	protected function oldcreateSQLQuery(SMWDescription $description, &$tables, &$conds, &$db, $tablepref = 't', $jointable = '', $sort = false) {
+// 		$tablecount = 0;
+// 		$newtables = '';
+// 		$newconds = '';
+// 		$result = NULL;
+// 		if ($description instanceof SMWThingDescription) {
+// 			// no condition (and no possible return id value)
+// 			if ( ($sort) && ($jointable != '') ) {
+// 				$this->m_sortfield = $jointable . '.object_title';
+// 			}
+// 		} elseif ($description instanceof SMWClassDescription) {
+// 			$cattable = $tablepref . $tablecount++;
+// 			$newtables .= $db->tableName('categorylinks') . ' as ' . $cattable;
+// 			$newconds .= $cattable . '.cl_to=' . $db->addQuotes($description->getCategory()->getText());
+// 			$result = $cattable . '.cl_from';
+// 		} elseif ($description instanceof SMWNominalDescription) {
+// 			if ($jointable != '') {
+// 				$newconds .= $jointable . '.object_title=' . 
+// 				             $db->addQuotes($description->getIndividual()->getText()) . ' AND ' .
+// 				             $jointable . '.object_namespace=' . $description->getIndividual()->getNamespace();
+// 				if ($sort) {
+// 					$this->m_sortfield = $jointable . '.object_title';
+// 				}
+// 			} else {
+// 				$pagetable = $tablepref . $tablecount++;
+// 				$newtables .= $db->tableName('page') . ' as ' . $pagetable;
+// 				$newconds .= $pagetable . '.page_title=' . 
+// 				             $db->addQuotes($description->getIndividual()->getText()) . ' AND ' .
+// 				             $pagetable . '.page_namespace=' . $description->getIndividual()->getNamespace();
+// 				$result = $pagetable . '.page_id';
+// 				if ($sort) {
+// 					$this->m_sortfield = $pagetable . '.page_title';
+// 					$sort = false; // (prevents standard handling of sorting below)
+// 				}
+// 			}
+// 		} elseif ($description instanceof SMWValueDescription) {
+// 			if ($jointable != '') {
+// 				switch ($description->getComparator()) {
+// 					case SMW_CMP_EQ: $op = '='; break;
+// 					case SMW_CMP_LEQ: $op = '<='; break;
+// 					case SMW_CMP_GEQ: $op = '>='; break;
+// 					case SMW_CMP_NEQ: $op = '!='; break;
+// 					case SMW_CMP_ANY: default: $op = NULL; break;
+// 				}
+// 				if ($op !== NULL) {
+// 					if ($description->getDatavalue()->isNumeric()) {
+// 						$valuefield = 'value_num';
+// 						$value = $description->getDatavalue()->getNumericValue();
+// 					} else {
+// 						$valuefield = 'value_xsd';
+// 						$value = $description->getDatavalue()->getXSDValue();
+// 					}
+// 					//TODO: implement check for unit
+// 					$newconds .= $jointable . '.' .  $valuefield . $op . $db->addQuotes($value);
+// 					if ($sort != '') {
+// 						$this->m_sortfield = $jointable . '.' . $valuefield;
+// 					}
+// 				}
+// 			} // else: not possible
+// 		} elseif ($description instanceof SMWConjunction) {
+// 			$id = NULL;
+// 			foreach ($description->getDescriptions() as $subdesc) {
 // 				$subtablepref = $tablepref . $tablecount++ . 't';
 // 				$newid = $this->createSQLQuery($subdesc, $newtables, $newconds, $db, $subtablepref);
 // 				if ($newid !== NULL) { // catches e.g. the case that owl:Thing is used in conjunctions (no id)
@@ -808,45 +1049,64 @@ class SMWSQLStore extends SMWStore {
 // 					}
 // 					$id = $newid;
 // 				}
-			}
-			$result = $id; //NULL if only non-sensical conditions were included
-		} elseif ($description instanceof SMWSomeRelation) {
-			$reltable = $tablepref . $tablecount++;
-			$newtables .= $db->tableName('smw_relations') . ' as ' . $reltable;
-			$newconds .= $reltable . '.relation_title=' . $db->addQuotes($description->getRelation()->getDBKey());
-			$this->createSQLQuery($description->getDescription(), $newtables, $newconds, $db, $reltable . 't', $reltable);
-			$result = $reltable . '.subject_id';
-		} elseif ($description instanceof SMWSomeAttribute) {
-			$atttable = $tablepref . $tablecount++;
-			$newtables .= $db->tableName('smw_attributes') . ' as ' . $atttable;
-			$newconds .= $atttable . '.attribute_title=' . $db->addQuotes($description->getAttribute()->getDBKey());
-			$this->createSQLQuery($description->getDescription(), $newtables, $newconds, $db, $atttable . 't', $atttable);
-			$result = $atttable . '.subject_id';
-		}
-
-		// add standard join clauses if applicable
-		if ( ($jointable != '') && ($result !== NULL) ) {
-			$pagetable = $tablepref . $tablecount++;
-			if ($newtables != '') {	
-				$newtables .= ', ';
-			}
-			$newtables .= $db->tableName('page') . ' as ' . $pagetable;
-			$newconds .= $result . '=' . $pagetable . '.page_id AND ' .
-			             $jointable . '.object_title=' . $pagetable . '.page_title' . ' AND ' .
-			             $jointable . '.object_namespace=' . $pagetable . '.page_namespace';
-		}
-
-		if ( ($tables != '') && ($newtables != '') ) {
-			$tables .= ', ';
-		}
-		$tables .= $newtables;
-		if ( ($conds != '') && ($newconds != '') ) {
-			$conds .= ' AND (';
-			$newconds .= ')';
-		}
-		$conds .= $newconds;
-		return $result;
-	}
+// 			}
+// 			$result = $id; //NULL if only non-sensical conditions were included
+// 		} elseif ($description instanceof SMWDisjunction) {
+// 			$id = NULL;
+// 			///TODO: complete
+// 			foreach ($description->getDescriptions() as $subdesc) {
+// // 				$subtablepref = $tablepref . $tablecount++ . 't';
+// // 				$newid = $this->createSQLQuery($subdesc, $newtables, $newconds, $db, $subtablepref);
+// // 				if ($newid !== NULL) { // catches e.g. the case that owl:Thing is used in conjunctions (no id)
+// // 					if ($id !== NULL) {
+// // 						$newconds .= ' AND ' . $id . '=' . $newid;
+// // 					}
+// // 					$id = $newid;
+// // 				}
+// 			}
+// 			$result = $id; //NULL if only non-sensical conditions were included
+// 		} elseif ($description instanceof SMWSomeRelation) {
+// 			$reltable = $tablepref . $tablecount++;
+// 			$newtables .= $db->tableName('smw_relations') . ' as ' . $reltable;
+// 			$newconds .= $reltable . '.relation_title=' . $db->addQuotes($description->getRelation()->getDBKey());
+// 			$this->createSQLQuery($description->getDescription(), $newtables, $newconds, $db, $reltable . 't', $reltable, ($this->m_sortkey == $description->getRelation()->getDBKey()) );
+// 			$result = $reltable . '.subject_id';
+// 		} elseif ($description instanceof SMWSomeAttribute) {
+// 			$atttable = $tablepref . $tablecount++;
+// 			$newtables .= $db->tableName('smw_attributes') . ' as ' . $atttable;
+// 			$newconds .= $atttable . '.attribute_title=' . $db->addQuotes($description->getAttribute()->getDBKey());
+// 			$this->createSQLQuery($description->getDescription(), $newtables, $newconds, $db, $atttable . 't', $atttable, ($this->m_sortkey == $description->getAttribute()->getDBKey()) );
+// 			$result = $atttable . '.subject_id';
+// 		}
+// 
+// 		// add standard join and sort clauses if applicable
+// 		if ( ( ($jointable != '') || ($sort) ) && ($result !== NULL) ) {
+// 			$pagetable = $tablepref . $tablecount++;
+// 			if ($newtables != '') {	
+// 				$newtables .= ', ';
+// 			}
+// 			$newtables .= $db->tableName('page') . ' as ' . $pagetable;
+// 			$newconds .= $result . '=' . $pagetable . '.page_id';
+// 			if ($jointable != '') {
+// 			$newconds .= ' AND ' . $jointable . '.object_title=' . $pagetable . '.page_title' . ' AND ' .
+// 			             $jointable . '.object_namespace=' . $pagetable . '.page_namespace';
+// 			} 
+// 			if ($sort != '') {
+// 				$this->m_sortfield = $pagetable . '.page_title';
+// 			}
+// 		}
+// 
+// 		if ( ($tables != '') && ($newtables != '') ) {
+// 			$tables .= ', ';
+// 		}
+// 		$tables .= $newtables;
+// 		if ( ($conds != '') && ($newconds != '') ) {
+// 			$conds .= ' AND (';
+// 			$newconds .= ')';
+// 		}
+// 		$conds .= $newconds;
+// 		return $result;
+// 	}
 
 	/**
 	 * Make sure that the given column in the given DB table is indexed by *one* index.

@@ -26,9 +26,10 @@ class SMWQueryResult {
 	 * Initialise the object with an array of SMWPrintRequest objects, which
 	 * define the structure of the result "table" (one for each column).
 	 */
-	public function SMWQueryResult($printrequests) {
+	public function SMWQueryResult($printrequests, $furtherres=false) {
 		$this->content = array();
 		$this->printrequests = $printrequests;
+		$this->furtherres = $furtherres;
 	}
 
 	/**
