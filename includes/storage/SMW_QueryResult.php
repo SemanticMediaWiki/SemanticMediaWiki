@@ -81,11 +81,36 @@ class SMWQueryResult {
 	}
 
 	/**
+	 * Return the number of columns of result values that each row 
+	 * in this result set contains.
+	 */
+	public function getColumnCount() {
+		return count($this->printrequests);
+	}
+
+	/**
+	 * Return array of print requests (needed for printout since they contain 
+	 * property labels).
+	 */
+	public function getPrintRequests() {
+		return $this->printrequests;
+	}
+
+	/**
 	 * Would there be more query results that were 
 	 * not shown due to a limit?
 	 */
 	public function hasFurtherResults() {
 		return $this->furtherres;
+	}
+
+	/**
+	 * Return URL of a page that displays those search results
+	 * (and enables browsing results, and is accessible even without
+	 * JavaScript enabled browsers).
+	 */
+	public function getQueryURL() {
+		/// TODO implement (requires some way of generating/maintaining this URL as part of the query, and setting it when creating this result)
 	}
 }
 
@@ -101,6 +126,7 @@ class SMWResultArray {
 
 	public function SMWResultArray($content, SMWPrintRequest $printrequest, $furtherres = false) {
 		$this->content = $content;
+		reset($this->content);
 		$this->printrequest = $printrequest;
 		$this->furtherres = $furtherres;
 	}
@@ -111,6 +137,35 @@ class SMWResultArray {
 	 */
 	public function getContent() {
 		return $this->content;
+	}
+
+	/**
+	 * Return the next result object (Title or SMWDataValue).
+	 */
+	public function getNextObject() {
+		$result = current($this->content);
+		next($this->content);
+		return $result;
+	}
+
+	/**
+	 * Return the main text representation of the next result object 
+	 * (Title or SMWDataValue). Convenience method that would not be
+	 * required if Titles would be but special SMWDataValues.
+	 */
+	public function getNextText() {
+		$object = current($this->content);
+		next($this->content);
+		if ($object instanceof SMWDataValue) { //print data values
+			return $object->getStringValue();
+		} elseif ($object instanceof Title) { // print Title objects
+			return $object->getPrefixedText(); ///TODO: support optional linking of titles
+			/// As long as SMWDataValue is not re-implemented to support linking and optional HTML,
+			/// all solutions here can only be hacks, returning complete HTML links based on some
+			/// Boolean parameter.
+		} else {
+			return false;
+		}
 	}
 
 	/**

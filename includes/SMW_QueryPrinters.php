@@ -5,6 +5,205 @@
  */
 
 /**
+ * Abstract base class for SMW's novel query printing mechanism. It implements
+ * part of the former functionality of SMWInlineQuery (everything related to
+ * output formatting and the correspoding parameters) and is subclassed by concrete
+ * printers that provide the main formatting functionality.
+ */
+abstract class SMWResultPrinter {
+
+	// parameters:
+	protected $mFormat;  // a string identifier describing a valid format
+	protected $mIntro = ''; // text to print before the output in case it is *not* empty
+	protected $mSearchlabel = NULL; // text to use for link to further results, or empty if link should not be shown
+	protected $mLinkSubj; // should article names of the (unique) subjects be linked?
+	protected $mLinkObj; // should article names of the objects be linked?
+	protected $mDefault = ''; // default return value for empty queries
+	protected $mShowHeaders = true; // should the headers (property names) be printed?
+	protected $mMainLabel = NULL; // label used for displaying the subject, or NULL if none was given
+	protected $mInline; // is this query result "inline" in some page (only then a link to unshown results is created, error handling may also be affected)
+
+	/**
+	 * Constructor. The parameter $format is a format string
+	 * that may influence the processing details.
+	 */
+	public function SMWResultPrinter($format, $inline) {
+		global $smwgIQDefaultLinking;
+		$this->mFormat = $format;
+		$this->mInline = $inline;
+		$this->mLinkSubj = ($smwgIQDefaultLinking != 'none');
+		$this->mLinkObj = ($smwgIQDefaultLinking == 'all');
+	}
+
+	/**
+	 * Main entry point: takes an SMWQueryResult and parameters
+	 * given as key-value-pairs in an array and returns the 
+	 * serialised version of the results, formatted as inline HTML
+	 * or (for special printers) as RDF or XML or whatever. Normally
+	 * not overwritten by subclasses.
+	 */
+	public function getResultHTML($results, $params) {
+		$this->readParameters($params);
+		return $this->getHTML($results);
+	}
+
+	/**
+	 * Read an array of parameter values given as key-value-pairs and
+	 * initialise internal member fields accordingly. Possibly overwritten
+	 * (extended) by subclasses.
+	 */
+	protected function readParameters($params) {
+		if (array_key_exists('intro', $params)) {
+			$this->mIntro = htmlspecialchars(str_replace('_', ' ', $params['intro']));
+		}
+		if (array_key_exists('searchlabel', $params)) {
+			$this->mSearchlabel = htmlspecialchars($params['searchlabel']);
+		}
+		if (array_key_exists('link', $params)) {
+			switch (strtolower($params['link'])) {
+			case 'head': case 'subject':
+				$this->mLinkSubj = true;
+				$this->mLinkObj  = false;
+				break;
+			case 'all':
+				$this->mLinkSubj = true;
+				$this->mLinkObj  = true;
+				break;
+			case 'none':
+				$this->mLinkSubj = false;
+				$this->mLinkObj  = false;
+				break;
+			}
+		}
+		if (array_key_exists('default', $params)) {
+			$this->mDefault = htmlspecialchars(str_replace('_', ' ', $params['default']));
+		}
+		if (array_key_exists('headers', $params)) {
+			if ( 'hide' == strtolower($params['headers'])) {
+				$this->mShowHeaders = false;
+			} else {
+				$this->mShowHeaders = true;
+			}
+		}
+		if (array_key_exists('mainlabel', $params)) {
+			$this->mMainLabel = htmlspecialchars($params['mainlabel']);
+		}
+	}
+
+	/**
+	 * Return HTML version of serialised results.
+	 * Implemented by subclasses.
+	 */
+	abstract protected function getHTML($res);
+
+}
+
+/**
+ * New implementation of SMW's printer for result tables.
+ */
+class SMWTableResultPrinter extends SMWResultPrinter {
+
+	protected function getHTML($res) {
+		global $smwgIQRunningNumber;
+
+		// print header
+		if ('broadtable' == $this->mFormat)
+			$widthpara = ' width="100%"';
+		else $widthpara = '';
+		$result = $this->mIntro .
+		          "<table class=\"smwtable\"$widthpara id=\"querytable" . $smwgIQRunningNumber . "\">\n";
+		if ($this->mShowHeaders) { // building headers
+			$result .= "\n\t\t<tr>";
+			foreach ($res->getPrintRequests() as $pr) {
+				$result .= "\t\t\t<th>" . $pr->getLabel() . "</th>\n";
+			}
+			$result .= "\n\t\t</tr>";
+		}
+
+		// print all result rows
+		while ( $row = $res->getNext() ) {
+			$result .= "\t\t<tr>\n";
+			$firstcol = true;
+			foreach ($row as $field) {
+				$result .= "<td>";
+				$first = true;
+				while ( ($text = $field->getNextText()) !== false) {
+					if ($first) $first = false; else $result .= '<br />';
+					$result .= $text;
+				}
+				$result .= "</td>";
+				$firstcol = false;
+			}
+			$result .= "\n\t\t</tr>\n";
+		}
+
+		// print further results footer
+		if ($this->mInline && $res->hasFurtherResults()) {
+			$label = $this->mSearchlabel;
+			if ($label === NULL) { //apply default
+				$label = wfMsgForContent('smw_iq_moreresults');
+			}
+			if ($label != '') {
+				$result .= "\n\t\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . $res->getColumnCount() . '"> <a href="' . $res->getQueryURL() . '">' . $label . '</a></td></tr>';
+			}
+		}
+		$result .= "\t</table>"; // print footer
+		return $result;
+	}
+}
+
+/**
+ * New implementation of SMW's printer for results in lists.
+ *
+ * Somewhat confusing code, since one has to iterate through lists, inserting texts 
+ * in between their elements depending on whether the element is the first that is 
+ * printed, the first that is printed in parentheses, or the last that will be printed.
+ * Maybe one could further simplify this.
+ */
+class SMWListResultPrinter extends SMWResultPrinter {
+
+	protected function getHTML($res) {
+		///TODO implement
+		
+		// DEBUG
+		$result =  "Test: " . $res->getCount() . " <br/>";
+		while ($row = $res->getNext()) {
+			$result .= "Row: ";
+			foreach ($row as $field) {
+				$result .= " (" . $field->getPrintRequest()->getLabel() . ': ';
+				if ($field->getPrintRequest()->getMode() === SMW_PRINT_ATTS) { //print data values
+					foreach ($field->getContent() as $value) {
+						$result .= $value->getUserValue() . " /";
+					}
+				} else { // print Title objects
+					foreach ($field->getContent() as $title) {
+						$result .= $title->getPrefixedText() . " /";
+					}
+				}
+				$result .= ")";
+			}
+			print "<br/>\n";
+		}
+		if ($res->hasFurtherResults()) {
+			$result .= "(more results ...)<br/>\n";
+		}
+		return $result;
+	}
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////// Old (still active) implementations of query printers ////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+/**
  * Interface (abstract class) that must be implemented by all printers for inline
  * query results.
  */
