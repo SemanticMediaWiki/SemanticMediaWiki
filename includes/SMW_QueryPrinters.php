@@ -16,12 +16,13 @@ abstract class SMWResultPrinter {
 	protected $mFormat;  // a string identifier describing a valid format
 	protected $mIntro = ''; // text to print before the output in case it is *not* empty
 	protected $mSearchlabel = NULL; // text to use for link to further results, or empty if link should not be shown
-	protected $mLinkSubj; // should article names of the (unique) subjects be linked?
-	protected $mLinkObj; // should article names of the objects be linked?
+	protected $mLinkFirst; // should article names of the first column be linked?
+	protected $mLinkOthers; // should article names of other columns (besides the first) be linked?
 	protected $mDefault = ''; // default return value for empty queries
 	protected $mShowHeaders = true; // should the headers (property names) be printed?
 	protected $mMainLabel = NULL; // label used for displaying the subject, or NULL if none was given
 	protected $mInline; // is this query result "inline" in some page (only then a link to unshown results is created, error handling may also be affected)
+	protected $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
 
 	/**
 	 * Constructor. The parameter $format is a format string
@@ -31,8 +32,9 @@ abstract class SMWResultPrinter {
 		global $smwgIQDefaultLinking;
 		$this->mFormat = $format;
 		$this->mInline = $inline;
-		$this->mLinkSubj = ($smwgIQDefaultLinking != 'none');
-		$this->mLinkObj = ($smwgIQDefaultLinking == 'all');
+		$this->mLinkFirst = ($smwgIQDefaultLinking != 'none');
+		$this->mLinkOthers = ($smwgIQDefaultLinking == 'all');
+		$this->mLinker = new Linker(); ///TODO: how can we get the default or user skin here (depending on context)?
 	}
 
 	/**
@@ -62,16 +64,16 @@ abstract class SMWResultPrinter {
 		if (array_key_exists('link', $params)) {
 			switch (strtolower($params['link'])) {
 			case 'head': case 'subject':
-				$this->mLinkSubj = true;
-				$this->mLinkObj  = false;
+				$this->mLinkFirst = true;
+				$this->mLinkOthers  = false;
 				break;
 			case 'all':
-				$this->mLinkSubj = true;
-				$this->mLinkObj  = true;
+				$this->mLinkFirst = true;
+				$this->mLinkOthers  = true;
 				break;
 			case 'none':
-				$this->mLinkSubj = false;
-				$this->mLinkObj  = false;
+				$this->mLinkFirst = false;
+				$this->mLinkOthers  = false;
 				break;
 			}
 		}
@@ -95,6 +97,20 @@ abstract class SMWResultPrinter {
 	 * Implemented by subclasses.
 	 */
 	abstract protected function getHTML($res);
+
+	/**
+	 * Depending on current linking settings, returns a linker object
+	 * for making hyperlinks or NULL if no links should be created.
+	 *
+	 * @param $firstrow True of this is the first result row (having special linkage settings).
+	 */
+	protected function getLinker($firstcol = false) {
+		if ( ($firstcol && $this->mLinkFirst) || (!$firstcol && $this->mLinkOthers) ) {
+			return $this->mLinker;
+		} else {
+			return NULL;
+		}
+	}
 
 }
 
@@ -127,7 +143,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			foreach ($row as $field) {
 				$result .= "<td>";
 				$first = true;
-				while ( ($text = $field->getNextText()) !== false) {
+				while ( ($text = $field->getNextHTMLText($this->getLinker($firstcol))) !== false) {
 					if ($first) $first = false; else $result .= '<br />';
 					$result .= $text;
 				}

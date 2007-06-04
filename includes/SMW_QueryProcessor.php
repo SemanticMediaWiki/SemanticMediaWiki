@@ -51,6 +51,7 @@ class SMWQueryProcessor {
 			$desc2->addPrintRequest($pr1);
 			$pr2 = new SMWPrintrequest(SMW_PRINT_RELS, 'Borders', Title::newFromText('Relation:Borders'));
 			$desc->addPrintRequest($pr2);
+			$desc2->addPrintRequest($pr2);
 			$pr3 = new SMWPrintrequest(SMW_PRINT_ATTS, 'Population', Title::newFromText('Attribute:Population'));
 			$desc->addPrintRequest($pr3);
 			$desc2->addPrintRequest($pr3);

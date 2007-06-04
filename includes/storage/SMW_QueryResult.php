@@ -150,19 +150,28 @@ class SMWResultArray {
 
 	/**
 	 * Return the main text representation of the next result object 
-	 * (Title or SMWDataValue). Convenience method that would not be
-	 * required if Titles would be but special SMWDataValues.
+	 * (Title or SMWDataValue) as HTML. Convenience method that would 
+	 * not be required if Titles would be but special SMWDataValues.
+	 *
+	 * The parameter $linker controls linking of title values and should
+	 * be some Linker object (or NULL for no linking). At some stage its 
+	 * interpretation should be part of the generalised SMWDataValue.
 	 */
-	public function getNextText() {
+	public function getNextHTMLText($linker = NULL) {
 		$object = current($this->content);
 		next($this->content);
 		if ($object instanceof SMWDataValue) { //print data values
-			return $object->getStringValue();
+			return htmlspecialchars($object->getStringValue()); ///TODO: escaping will be done in SMWDataValue
 		} elseif ($object instanceof Title) { // print Title objects
-			return $object->getPrefixedText(); ///TODO: support optional linking of titles
-			/// As long as SMWDataValue is not re-implemented to support linking and optional HTML,
-			/// all solutions here can only be hacks, returning complete HTML links based on some
-			/// Boolean parameter.
+			if ($linker === NULL) {
+				return htmlspecialchars($object->getPrefixedText());
+			} else {
+				if ($this->printrequest->getMode() == SMW_PRINT_THIS) { // "this" results must exist
+					return $linker->makeKnownLinkObj($object);
+				} else {
+					return $linker->makeLinkObj($object);
+				}
+			}
 		} else {
 			return false;
 		}
