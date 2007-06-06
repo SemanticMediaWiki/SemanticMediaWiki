@@ -131,7 +131,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		if ($this->mShowHeaders) { // building headers
 			$result .= "\n\t\t<tr>";
 			foreach ($res->getPrintRequests() as $pr) {
-				$result .= "\t\t\t<th>" . $pr->getLabel() . "</th>\n";
+				$result .= "\t\t\t<th>" . $pr->getHTMLText($this->mLinker) . "</th>\n";
 			}
 			$result .= "\n\t\t</tr>";
 		}
@@ -264,7 +264,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 						if ($first_value) { // first value in any column, print header
 							$first_value = false;
 							if ( $this->mShowHeaders && ('' != $field->getPrintRequest()->getLabel()) ) {
-								$result .= $field->getPrintRequest()->getLabel() . ' ';
+								$result .= $field->getPrintRequest()->getHTMLText($this->mLinker) . ' ';
 							}
 						}
 						$result .= $text; // actual output value

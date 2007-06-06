@@ -52,6 +52,31 @@ class SMWPrintRequest {
 		return $this->m_label;
 	}
 
+	/**
+	 * Obtain an HTML-formatted representation of the label.
+	 * The $linker is a Linker object used for generating hyperlinks.
+	 * If it is NULL, no links will be created.
+	 */
+	public function getHTMLText($linker = NULL) {
+		if ( ($linker === NULL) || ($this->m_label == '') ) {
+			return htmlspecialchars($this->m_label);
+		}
+		switch ($this->m_mode) {
+			case SMW_PRINT_CATS: return htmlspecialchars($this->m_label);
+			case SMW_PRINT_RELS: return $linker->makeLinkObj($this->m_title, $this->m_label);
+			case SMW_PRINT_ATTS: return $linker->makeKnownLinkObj($this->m_title, $this->m_label);
+			case SMW_PRINT_THIS: default: return htmlspecialchars($this->m_label);
+		}
+		
+	}
+
+	/**
+	 * Obtain a Wiki-formatted representation of the label.
+	 */
+	public function getWikiText() {
+		return $this->m_label;
+	}
+
 	public function getTitle() {
 		return $this->m_title;
 	}
