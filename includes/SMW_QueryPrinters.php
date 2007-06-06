@@ -143,7 +143,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			foreach ($row as $field) {
 				$result .= "<td>";
 				$first = true;
-				while ( ($text = $field->getNextHTMLText($this->getLinker($firstcol))) !== false) {
+				while ( ($text = $field->getNextHTMLText($this->getLinker($firstcol))) !== false ) {
 					if ($first) $first = false; else $result .= '<br />';
 					$result .= $text;
 				}
@@ -178,31 +178,129 @@ class SMWTableResultPrinter extends SMWResultPrinter {
  */
 class SMWListResultPrinter extends SMWResultPrinter {
 
+	protected $mSep = '';
+	protected $mTemplate = '';
+
+	protected function readParameters($params) {
+		SMWResultPrinter::readParameters($params);
+
+		if (array_key_exists('sep', $params)) {
+			$this->mSep = htmlspecialchars($params['sep']);
+		}
+		if (array_key_exists('template', $params)) {
+			$this->mSep = $params['template'];
+		}
+	}
+
 	protected function getHTML($res) {
-		///TODO implement
-		
-		// DEBUG
-		$result =  "Test: " . $res->getCount() . " <br/>";
-		while ($row = $res->getNext()) {
-			$result .= "Row: ";
-			foreach ($row as $field) {
-				$result .= " (" . $field->getPrintRequest()->getLabel() . ': ';
-				if ($field->getPrintRequest()->getMode() === SMW_PRINT_ATTS) { //print data values
-					foreach ($field->getContent() as $value) {
-						$result .= $value->getUserValue() . " /";
-					}
-				} else { // print Title objects
-					foreach ($field->getContent() as $title) {
-						$result .= $title->getPrefixedText() . " /";
-					}
-				}
-				$result .= ")";
+		global $wgTitle,$smwgStoreActive;
+		// print header
+		$result = $this->mIntro;
+		if ( ('ul' == $this->mFormat) || ('ol' == $this->mFormat) ) {
+			$result .= '<' . $this->mFormat . '>';
+			$footer = '</' . $this->mFormat . '>';
+			$rowstart = "\n\t<li>";
+			$rowend = '</li>';
+			$plainlist = false;
+		} else {
+			if ($this->mSep != '') {
+				$listsep = $this->mSep;
+				$finallistsep = $listsep;
+			} else {  // default list ", , , and, "
+				$listsep = ', ';
+				$finallistsep = wfMsgForContent('smw_finallistconjunct') . ' ';
 			}
-			print "<br/>\n";
+			$footer = '';
+			$rowstart = '';
+			$rowend = '';
+			$plainlist = true;
 		}
-		if ($res->hasFurtherResults()) {
-			$result .= "(more results ...)<br/>\n";
+
+		if ($this->mTemplate != '') {
+			$parser_options = new ParserOptions();
+			$parser_options->setEditSection(false);  // embedded sections should not have edit links
+			$parser = new Parser();
+			$usetemplate = true;
+		} else {
+			$usetemplate = false;
 		}
+
+		// print all result rows
+		$first_row = true;
+		$row = $res->getNext();
+		while ( $row !== false ) {
+			$nextrow = $res->getNext(); // look ahead
+			if ( !$first_row && $plainlist )  {
+				if ($nextrow !== false) $result .= $listsep; // the comma between "rows" other than the last one
+				else $result .= $finallistsep;
+			} else $result .= $rowstart;
+
+			$first_col = true;
+			if ($usetemplate) { // build template code
+				$wikitext = '';
+				foreach ($row as $field) {
+					$wikitext .= "|";
+					$first_value = true;
+					while ( ($text = $field->getNextWikiText($this->getLinker($first_col))) !== false ) {
+						if ($first_value) $first_value = false; else $wikitext .= ', ';
+						$wikitext .= $text;
+					}
+					$first_col = false;
+				}
+				$result .= '{{' . $this->mTemplate . str_replace('=','&#x007C;', $wikitext) . '}}'; // encode '=' for use in templates (templates fail otherwise)
+			} else {  // build simple list
+				$first_col = true;
+				$found_values = false; // has anything but the first column been printed?
+				foreach ($row as $field) {
+					$first_value = true;
+					while ( ($text = $field->getNextHTMLText($this->getLinker($first_col))) !== false ) {
+						if (!$first_col && !$found_values) { // first values after first column
+							$result .= ' (';
+							$found_values = true;
+						} elseif ($found_values || !$first_value) {
+						// any value after '(' or non-first values on first column
+							$result .= ', ';
+						}
+						if ($first_value) { // first value in any column, print header
+							$first_value = false;
+							if ( $this->mShowHeaders && ('' != $field->getPrintRequest()->getLabel()) ) {
+								$result .= $field->getPrintRequest()->getLabel() . ' ';
+							}
+						}
+						$result .= $text; // actual output value
+					}
+					$first_col = false;
+				}
+				if ($found_values) $result .= ')';
+			}
+			$result .= $rowend;
+			$first_row = false;
+			$row = $nextrow;
+		}
+
+		if ($usetemplate) {
+			$old_smwgStoreActive = $smwgStoreActive;
+			$smwgStoreActive = false; // no annotations stored, no factbox printed
+			$parserOutput = $parser->parse($result, $wgTitle, $parser_options);
+			$result = $parserOutput->getText();
+			$smwgStoreActive = $old_smwgStoreActive;
+		}
+
+		if ($this->mInline && $res->hasFurtherResults()) {
+			$label = $this->mSearchlabel;
+			if ($label === NULL) { //apply defaults
+				if ('ol' == $this->mFormat) $label = '';
+				else $label = wfMsgForContent('smw_iq_moreresults');
+			}
+			if (!$first_row) $result .= ' '; // relevant for list, unproblematic for ul/ol
+			if ($label != '') {
+				$result .= $rowstart . '<a href="' . $res->getQueryURL() . '">' . $label . '</a>' . $rowend;
+			}
+		}
+
+		// print footer
+		$result .= $footer;
+
 		return $result;
 	}
 }

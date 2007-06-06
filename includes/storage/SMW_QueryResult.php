@@ -151,7 +151,7 @@ class SMWResultArray {
 	/**
 	 * Return the main text representation of the next result object 
 	 * (Title or SMWDataValue) as HTML. Convenience method that would 
-	 * not be required if Titles would be but special SMWDataValues.
+	 * be simpler if Titles would be but special SMWDataValues.
 	 *
 	 * The parameter $linker controls linking of title values and should
 	 * be some Linker object (or NULL for no linking). At some stage its 
@@ -176,6 +176,31 @@ class SMWResultArray {
 			return false;
 		}
 	}
+
+	/**
+	 * Return the main text representation of the next result object 
+	 * (Title or SMWDataValue) as Wikitext. Convenience method that would 
+	 * be simpler if Titles would be but special SMWDataValues.
+	 *
+	 * The parameter $linked controls linking of title values and should
+	 * be non-NULL and non-false if this is desired.
+	 */
+	public function getNextWikiText($linked = NULL) {
+		$object = current($this->content);
+		next($this->content);
+		if ($object instanceof SMWDataValue) { //print data values
+			return $object->getStringValue();
+		} elseif ($object instanceof Title) { // print Title objects
+			if ( ($linked === NULL) || ($linked === false) ) {
+				return $object->getPrefixedText();
+			} else {
+				return '[[' . $object->getPrefixedText() . '|' . $object->getText() . ']]';
+			}
+		} else {
+			return false;
+		}
+	}
+
 
 	/**
 	 * Would there be more query results that were 
