@@ -24,7 +24,15 @@ For a proper legal disclaimer, see the file "COPYING".
 
 - MediaWiki 1.9.* or 1.10 (versions >=1.7 might still work)
 - PHP 5.x or greater installed and working
-- MySQL >= 4.0.14 (required by MediaWiki)
+- MySQL >= 4.0.14 (version required by MediaWiki)
+
+=== Requirements notes ===
+
+* SMW is (currently) incompatible with PostgreSQL 
+
+* SMW uses the PHP mb_*() multibyte functions such as mb_strpos in the
+php_mbstring.dll extension.  This is standard but not enabled by default.
+See http://php.net/manual/en/ref.mbstring.php#mbstring.installation
 
 == Installation ==
 
