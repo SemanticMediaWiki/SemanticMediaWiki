@@ -20,7 +20,12 @@ class SMWDataValueFactory {
 	/**
 	 * Cache for type labels, indexed by attribute name (both without namespace prefix).
 	 */
-	static private $m_attributelabels = array();
+	static private $m_attributelabels = array('testnary' => 'String;Integer;Wikipage;Date'); ///DEBUG
+
+	/**
+	 * Was code for handling n-ary properties already included?
+	 */
+	static private $m_naryincluded = false;
 
 	/**
 	 * Create a value from a string supplied by a user for a given attribute.
@@ -87,13 +92,24 @@ class SMWDataValueFactory {
 			}
 			return new $dv[2]($dv[3]);
 		} else {
-			///TODO
-			$type = SMWTypeHandlerFactory::getTypeHandlerByLabel($typestring);
-			$result = new SMWOldDataValue($type);
-			if ($value !== false) {
-				$result->setUserValue($value);
+			// check for n-ary types
+			$types = explode($typestring, ';');
+			if (count($types)>1) {
+				if (SMWDataValueFactory::$m_naryincluded == false) {
+					global $smwgIP;
+					include_once($smwgIP . '/includes/SMW_DV_NAry.php');
+					SMWDataValueFactory::$m_naryincluded = true;
+				}
+				return new SMWNAryValue($types, $value);
+			} else {
+				///TODO
+				$type = SMWTypeHandlerFactory::getTypeHandlerByLabel($typestring);
+				$result = new SMWOldDataValue($type);
+				if ($value !== false) {
+					$result->setUserValue($value);
+				}
+				return $result;
 			}
-			return $result;
 		}
 	}
 

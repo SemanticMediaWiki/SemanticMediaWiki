@@ -60,7 +60,7 @@ class SMWFactbox {
 
 		switch ($special) {
 			case false: // normal attribute
-				$result = SMWDataValue::newAttributeValue($attribute,$value);
+				$result = SMWDataValueFactory::newAttributeValue($attribute,$value);
 				if ($smwgStoreActive) {
 					SMWFactbox::$semdata->addAttributeTextValue($attribute,$result);
 				}
@@ -71,12 +71,12 @@ class SMWFactbox {
 				if ( $special === SMW_SP_SERVICE_LINK ) { // do some custom formatting in this case
 					global $wgContLang;
 					$v = str_replace(' ', '_', $value); //normalize slightly since messages distinguish '_' and ' '
-					$result = SMWDataValue::newSpecialValue($special,$v);
+					$result = SMWDataValueFactory::newSpecialValue($special,$v);
 					$v = $result->getXSDValue(); //possibly further sanitized, so let's be cautious
 					$result->setProcessedValues($value,$v); //set user value back to the input version
 					$result->setPrintoutString('[[' . $wgContLang->getNsText(NS_MEDIAWIKI) . ':smw_service_' . $v . "|$value]]");
 				} else { // standard processing
-					$result = SMWDataValue::newSpecialValue($special,$value);
+					$result = SMWDataValueFactory::newSpecialValue($special,$value);
 				}
 				if ($smwgStoreActive) {
 					SMWFactbox::$semdata->addSpecialValue($special,$result);
@@ -132,7 +132,7 @@ class SMWFactbox {
 		$msglines = preg_split("([\n][\s]?)",wfMsgForContent("smw_import_$onto_ns")); // get the definition for "$namespace:$section"
 
 		if ( count($msglines) < 2 ) { //error: no elements for this namespace
-			$datavalue = SMWDataValue::newTypedValue(new SMWErrorTypeHandler(wfMsgForContent('smw_unknown_importns',$onto_ns)),$value);
+			$datavalue = SMWDataValueFactory::newTypeHandlerValue(new SMWErrorTypeHandler(wfMsgForContent('smw_unknown_importns',$onto_ns)),$value);
 			if ($smwgStoreActive) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM,$datavalue);
 			}
@@ -187,7 +187,7 @@ class SMWFactbox {
 		}
 
 		if (NULL != $error) {
-			$datavalue = SMWDataValue::newTypedValue(new SMWErrorTypeHandler($error),$value);
+			$datavalue = SMWDataValueFactory::newTypeHandlerValue(new SMWErrorTypeHandler($error),$value);
 			if ($smwgStoreActive) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
 			}
@@ -200,11 +200,11 @@ class SMWFactbox {
 		$sth = new SMWStringTypeHandler(); // making one is enough ...
 
 		if ($smwgStoreActive) {
-			$datavalue = SMWDataValue::newTypedValue($sth,$onto_uri);
+			$datavalue = SMWDataValueFactory::newTypeHandlerValue($sth,$onto_uri);
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_BASEURI,$datavalue);
-			$datavalue = SMWDataValue::newTypedValue($sth,$onto_ns);
+			$datavalue = SMWDataValueFactory::newTypeHandlerValue($sth,$onto_ns);
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_NSID,$datavalue);
-			$datavalue = SMWDataValue::newTypedValue($sth,$onto_section);
+			$datavalue = SMWDataValueFactory::newTypeHandlerValue($sth,$onto_section);
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_SECTION,$datavalue);
 			if (NULL !== $datatype) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_HAS_TYPE,$datatype);
@@ -212,7 +212,7 @@ class SMWFactbox {
 		}
 
 		// print the input (this property is usually not stored, see SMW_SQLStore.php)
-		$datavalue = SMWDataValue::newTypedValue($sth,"[$onto_uri$onto_section $value]");
+		$datavalue = SMWDataValueFactory::newTypeHandlerValue($sth,"[$onto_uri$onto_section $value]");
 		// TODO: Unfortunatelly, the following line can break the tooltip code if $onto_name has markup. -- mak
 		// if ('' != $onto_name) $datavalue->setPrintoutString($onto_name, 'onto_name');
 		if ('' != $onto_name) $datavalue->setPrintoutString("[$onto_uri$onto_section $value] ($onto_name)");
