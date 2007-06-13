@@ -60,8 +60,29 @@ class SMWDataValueFactory {
 	 */
 	static public function newSpecialValue($specialprop, $value=false) {
 		///TODO
-		$type = SMWTypeHandlerFactory::getSpecialTypeHandler($specialprop);
-		$result = new SMWOldDataValue($type);
+		switch ($specialprop) {
+			case SMW_SP_HAS_TYPE:
+				global $smwgIP;
+				include_once($smwgIP . '/includes/SMW_DV_Types.php');
+				$result = new SMWTypesValue();
+				break;
+			///TODO:
+			case SMW_SP_HAS_URI:
+				//return new SMWURITypeHandler(SMW_URI_MODE_URI);
+			case SMW_SP_MAIN_DISPLAY_UNIT: case SMW_SP_DISPLAY_UNIT: case SMW_SP_SERVICE_LINK:
+				//return new SMWStringTypeHandler();
+			case SMW_SP_CONVERSION_FACTOR: case SMW_SP_POSSIBLE_VALUE:
+				//return new SMWStringTypeHandler();
+			case SMW_SP_CONVERSION_FACTOR_SI:
+				//return new SMWStringTypeHandler(); // TODO: change this into an appropriate handler
+			default:
+				//global $smwgContLang;
+				//$specprops = $smwgContLang->getSpecialPropertiesArray();
+				//return new SMWErrorTypeHandler(wfMsgForContent('smw_noattribspecial',$specprops[$special]));
+				$type = SMWTypeHandlerFactory::getSpecialTypeHandler($specialprop);
+				$result = new SMWOldDataValue($type);
+		}
+
 		if ($value !== false) {
 			$result->setUserValue($value);
 		}

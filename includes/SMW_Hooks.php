@@ -94,7 +94,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 
 		//set text for result
 		if ('' == $valueCaption) {
-			$result = $attr->getUserValue();
+			$result = $attr->getShortWikitext(true);
 		} else {
 			$result = mb_substr( $valueCaption, 1 ); // remove initial '|'
 		}

@@ -46,6 +46,31 @@ abstract class SMWDataValue {
 	static function newTypedValue(SMWTypeHandler $type, $value=false) {
 		return SMWDataValueFactory::newTypeHandlerValue($type, $value);
 	}
+	
+	/*********************************************************************/
+	/* Legacy methods for compatiblity                                   */
+	/*********************************************************************/
+
+	/**
+	 * @DEPRECATED
+	 */
+	public function getUserValue() {
+		return $this->getShortWikiText();
+	}
+	
+	/**
+	 * @DEPRECATED
+	 */
+	public function getValueDescription() {
+		return $this->getLongWikiText();
+	}
+	
+	/**
+	 * @DEPRECATED
+	 */
+	public function getTooltip() {
+		return '';
+	}
 
 	/*********************************************************************/
 	/* Set methods                                                       */
@@ -63,18 +88,6 @@ abstract class SMWDataValue {
 	 * implementations should support round-tripping).
 	 */
 	abstract public function setXSDValue($value, $unit);
-
-	/**
-	 * Set some other representation for this value. See documentation for
-	 * SMWDataValue->others.
-	 */
-	abstract public function setPrintoutString($string, $key = '');
-
-	/**
-	 * Select the input value among the given representations. See documentation
-	 * for SMWDataValue->others.
-	 */
-	abstract public function setInput($key);
 
 	/**
 	 * Set the attribute to which this value refers. Used to generate search links.
@@ -155,7 +168,7 @@ abstract class SMWDataValue {
 	abstract public function getUnit();
 
 	/**
-	 * Return error string or false if no error occured.
+	 * Return error string or an empty string if no error occured.
 	 */
 	abstract public function getError();
 

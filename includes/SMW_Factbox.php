@@ -102,7 +102,7 @@ class SMWFactbox {
 
 		if ($special !== false) {
 			$type = SMWTypeHandlerFactory::getSpecialTypeHandler($special);
-			if ($type->getID() !=  'error') { //Oops! This is not a relation!
+			if ( ($type->getID() != 'error') && ($special != SMW_SP_HAS_TYPE) ) { //Oops! This is not a relation!
 				//Note that this still changes the behaviour, since the [[ ]]
 				//are not removed! A cleaner solution would be to print a
 				//helpful message into the factbox, based on a new "print value as
@@ -283,7 +283,7 @@ class SMWFactbox {
 				}
 				$i+=1;
 
-				$text .= $attributeValue->getValueDescription();
+				$text .= $attributeValue->getLongWikiText(true);
 
 				$sep = '<!-- -->&nbsp;&nbsp;'; // the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
 				foreach ($attributeValue->getInfolinks() as $link) {
@@ -348,8 +348,12 @@ class SMWFactbox {
 				$specialPropertyName = $specprops[$specialProperty];
 				foreach ($valueArray as $value) {
 					if ($value instanceof SMWDataValue) {
-						$vt = $value->getValueDescription();
-						$vn = $wgContLang->getNsText(SMW_NS_ATTRIBUTE);
+						$vt = $value->getLongWikiText(true);
+						if ($specialProperty != SMW_SP_HAS_TYPE) {
+							$vn = $wgContLang->getNsText(SMW_NS_ATTRIBUTE);
+						} else {
+							$vn = $wgContLang->getNsText(SMW_NS_RELATION); //HACK
+						}
 					} elseif ($value instanceof Title) {
 						$vt = '[[' . $value->getPrefixedText() . ']]';
 						$vn = $wgContLang->getNsText(SMW_NS_RELATION);
