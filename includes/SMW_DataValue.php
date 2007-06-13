@@ -21,6 +21,7 @@ abstract class SMWDataValue {
 	 * @DEPRECATED
 	 */
 	static function newAttributeValue($attribute, $value=false) {
+		trigger_error("The function SMWDataValue::newAttributeValue() is deprecated.", E_USER_NOTICE);
 		return SMWDataValueFactory::newAttributeValue($attribute, $value);
 	}
 
@@ -33,6 +34,7 @@ abstract class SMWDataValue {
 	 * @DEPRECATED
 	 */
 	static function newSpecialValue($specialprop, $value=false) {
+		trigger_error("The function SMWDataValue::newSpecialValue() is deprecated.", E_USER_NOTICE);
 		return SMWDataValueFactory::newSpecialValue($specialprop, $value);
 	}
 
@@ -44,6 +46,7 @@ abstract class SMWDataValue {
 	 * @DEPRECATED
 	 */
 	static function newTypedValue(SMWTypeHandler $type, $value=false) {
+		trigger_error("The function SMWDataValue::newTypedValue() is deprecated.", E_USER_NOTICE);
 		return SMWDataValueFactory::newTypeHandlerValue($type, $value);
 	}
 	
@@ -55,6 +58,7 @@ abstract class SMWDataValue {
 	 * @DEPRECATED
 	 */
 	public function getUserValue() {
+		trigger_error("The function SMWDataValue::getUserValue() is deprecated.", E_USER_NOTICE);
 		return $this->getShortWikiText();
 	}
 	
@@ -62,6 +66,7 @@ abstract class SMWDataValue {
 	 * @DEPRECATED
 	 */
 	public function getValueDescription() {
+		trigger_error("The function SMWDataValue::getValueDescription() is deprecated.", E_USER_NOTICE);
 		return $this->getLongWikiText();
 	}
 	
@@ -69,6 +74,7 @@ abstract class SMWDataValue {
 	 * @DEPRECATED
 	 */
 	public function getTooltip() {
+		//trigger_error("The function SMWDataValue::getTooltip() is deprecated.", E_USER_NOTICE);
 		return '';
 	}
 

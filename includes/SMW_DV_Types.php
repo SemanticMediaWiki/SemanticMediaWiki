@@ -58,6 +58,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText($linker = NULL) {
+		///TODO Support linking
 		return implode(', ', $this->m_typevalues);
 	}
 

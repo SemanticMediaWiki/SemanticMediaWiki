@@ -185,7 +185,7 @@ class SMWSQLStore extends SMWStore {
 		                    $sql, 'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,$value_column) );
 		if($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
-				$dv = SMWDataValue::newTypedValue(SMWTypeHandlerFactory::getTypeHandlerByID($row->value_datatype));
+				$dv = SMWDataValueFactory::newTypehandlerValue(SMWTypeHandlerFactory::getTypeHandlerByID($row->value_datatype));
 				$dv->setAttribute($attribute->getText());
 				$dv->setXSDValue($row->value_xsd, $row->value_unit);
 				$result[] = $dv;
@@ -201,7 +201,7 @@ class SMWSQLStore extends SMWStore {
 		                    'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,$value_column) );
 		if($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
-				$dv = SMWDataValue::newTypedValue(SMWTypeHandlerFactory::getTypeHandlerByID('text'));
+				$dv = SMWDataValueFactory::newTypehandlerValue(SMWTypeHandlerFactory::getTypeHandlerByID('text'));
 				$dv->setAttribute($attribute->getText());
 				$dv->setXSDValue($row->value_blob, '');
 				$result[] = $dv;

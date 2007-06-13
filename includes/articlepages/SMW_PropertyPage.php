@@ -155,7 +155,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 					}
 					$i++;
 					if ($i < 4) {
-						$r .= $value->getValueDescription();
+						$r .= $value->getLongHTMLText($this->getSkin());
 						$sep = '&nbsp;&nbsp;';
 						foreach ($value->getInfolinks() as $link) {
 							$r .= $sep . $link->getHTML($this->getSkin());

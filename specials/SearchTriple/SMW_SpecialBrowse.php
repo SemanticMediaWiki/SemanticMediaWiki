@@ -172,7 +172,7 @@ class SMW_SpecialBrowse	 {
 					$count = 0;
 					foreach ($objects as $object) {
 						$count += 1;
-						$html .= $object->getValueDescription();
+						$html .= $object->getLongHTMLText($skin);
 						if ($count<$objectcount) $html .= ", ";
 					}
 					$html .= $vsep."\n";

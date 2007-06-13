@@ -302,19 +302,32 @@ class SMWOldDataValue extends SMWDataValue {
 	/*********************************************************************/
 	
 	public function getShortWikiText($linked = NULL) {
-		return $this->getUserValue();
+		return $this->vuser;
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		return $this->getUserValue();
+		return $this->getShortWikiText();
 	}
 
 	public function getLongWikiText($linked = NULL) {
-		return $this->getValueDescription();
+		// copied from deprecated getValueDescription
+		if ($this->description === false) {
+			if ($this->error === false) {
+				if (count($this->others)>0) {
+					$sep = '';
+					foreach ($this->others as $other) {
+						$this->description .= $sep . $other;
+						if ('' == $sep) $sep = ' (';  else $sep = ', ';
+					}
+					if (' (' != $sep) $this->description .= ')';
+				}
+			} else { $this->description = '<span class="smwwarning">' . $this->error  . '</span>'; }
+		}
+		return $this->description;
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		return $this->getValueDescription();
+		return $this->getLongWikiText();
 	}
 
 	/**
@@ -329,8 +342,11 @@ class SMWOldDataValue extends SMWDataValue {
 	 * This method might return FALSE if the data value was
 	 * initialised not from a user value string and parsing the
 	 * given value failed.
+	 *
+	 * @DEPRECATED
 	 */
 	function getUserValue() {
+		trigger_error("The function getUserValue() is deprecated. Use getShortWikiText() or getShortHTMLText(),", E_USER_NOTICE);
 		return $this->vuser;
 	}
 
@@ -338,8 +354,11 @@ class SMWOldDataValue extends SMWDataValue {
 	 * Return a single value string, obtained by parsing the
 	 * supplied user or XSD value. Canonical representation
 	 * that includes a unit. Wikitext.
+	 * 
+	 * @DEPRECATED
 	 */
 	function getStringValue() {
+		trigger_error("The function getUserValue() is deprecated. Use getShortWikiText() or getShortHTMLText(),", E_USER_NOTICE);
 		if ( count($this->others) > 0 ) {
 			reset($this->others);
 			return current($this->others); // return first element
@@ -409,8 +428,11 @@ class SMWOldDataValue extends SMWDataValue {
 	 * Return the long description of the value, as printed for
 	 * example in the factbox. If errors occurred, return the error message
 	 * The result always is a wiki-source string.
+	 * 
+	 * @DEPRECATED
 	 */
 	function getValueDescription() {
+		trigger_error("The function getValueDescription() is deprecated. Use getLongWikiText() or getLongHTMLText().", E_USER_NOTICE);
 		if ($this->description === false) {
 			if ($this->error === false) {
 				if (count($this->others)>0) {
@@ -454,7 +476,7 @@ class SMWOldDataValue extends SMWDataValue {
 	 * be used to compare different value objects.
 	 */
 	function getHash() {
-		return $this->getValueDescription() . $this->vxsd . $this->unit;
+		return $this->getLongWikiText() . $this->vxsd . $this->unit;
 		// (user_out is needed here to distinguish error messages, which
 		//  usually have no XSD and no unit)
 	}
