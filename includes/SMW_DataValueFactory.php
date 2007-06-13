@@ -20,7 +20,7 @@ class SMWDataValueFactory {
 	/**
 	 * Cache for type labels, indexed by attribute name (both without namespace prefix).
 	 */
-	static private $m_attributelabels = array('testnary' => 'String;Integer;Wikipage;Date'); ///DEBUG
+	static private $m_attributelabels = array('Testnary' => 'String;Integer;Wikipage;Date'); ///DEBUG
 
 	/**
 	 * Was code for handling n-ary properties already included?
@@ -49,7 +49,6 @@ class SMWDataValueFactory {
 				return new SMWOldDataValue(new SMWErrorTypeHandler(wfMsgForContent('smw_manytypes')));
 			}
 		}
-
 		return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_attributelabels[$attstring], $value);
 	}
 
@@ -93,7 +92,7 @@ class SMWDataValueFactory {
 			return new $dv[2]($dv[3]);
 		} else {
 			// check for n-ary types
-			$types = explode($typestring, ';');
+			$types = explode(';', $typestring);
 			if (count($types)>1) {
 				if (SMWDataValueFactory::$m_naryincluded == false) {
 					global $smwgIP;
