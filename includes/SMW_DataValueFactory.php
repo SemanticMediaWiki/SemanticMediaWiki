@@ -110,7 +110,7 @@ class SMWDataValueFactory {
 				}
 				$vc[0] = true;
 			}
-			return new $dv[2]($dv[3]);
+			$result = new $vc[2]($vc[3]);
 		} else {
 			// check for n-ary types
 			$types = explode(';', $typestring);
@@ -125,12 +125,12 @@ class SMWDataValueFactory {
 				///TODO
 				$type = SMWTypeHandlerFactory::getTypeHandlerByLabel($typestring);
 				$result = new SMWOldDataValue($type);
-				if ($value !== false) {
-					$result->setUserValue($value);
-				}
-				return $result;
 			}
 		}
+		if ($value !== false) {
+			$result->setUserValue($value);
+		}
+		return $result;
 	}
 
 	/**
