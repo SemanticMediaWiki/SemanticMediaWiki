@@ -161,7 +161,7 @@ class SMWResultArray {
 		$object = current($this->content);
 		next($this->content);
 		if ($object instanceof SMWDataValue) { //print data values
-			return htmlspecialchars($object->getStringValue()); ///TODO: escaping will be done in SMWDataValue
+			return $object->getShortHTMLText($linker);
 		} elseif ($object instanceof Title) { // print Title objects
 			if ($linker === NULL) {
 				return htmlspecialchars($object->getPrefixedText());
@@ -189,7 +189,7 @@ class SMWResultArray {
 		$object = current($this->content);
 		next($this->content);
 		if ($object instanceof SMWDataValue) { //print data values
-			return $object->getStringValue();
+			return $object->getShortWikiText($linker);
 		} elseif ($object instanceof Title) { // print Title objects
 			if ( ($linked === NULL) || ($linked === false) ) {
 				return $object->getPrefixedText();
