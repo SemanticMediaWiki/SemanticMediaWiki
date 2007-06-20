@@ -21,6 +21,8 @@ function AddSemanticToolbarTab ($content_actions) {
 	   'href' => 'javascript:smw_togglemenuvisibility()'  //show/hide semantic tool bar
 	);
 	$content_actions = array_merge( $content_actions, $main_action);   //add a new action
+	
+	return true;
 }
 
 ?>
