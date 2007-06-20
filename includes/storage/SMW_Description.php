@@ -121,6 +121,11 @@ abstract class SMWDescription {
 	public function addPrintRequest(SMWPrintRequest $printrequest) {
 		return $this->m_printreqs[$printrequest->getHash()] = $printrequest;
 	}
+	
+	/**
+	 * Return a string expressing this query.
+	 */
+	abstract public function getQueryString();
 }
 
 /**
@@ -131,6 +136,9 @@ abstract class SMWDescription {
  * SMWValueDescription objects.
  */
 class SMWThingDescription extends SMWDescription {
+	public function getQueryString() {
+		return '+';
+	}
 }
 
 /**
@@ -146,6 +154,14 @@ class SMWClassDescription extends SMWDescription {
 
 	public function getCategory() {
 		return $this->m_title;
+	}
+
+	public function getQueryString() {
+		if ($this->m_title !== NULL) {
+			return '[[' . $this->m_title->getPrefixedText() . ']]';
+		} else {
+			return '';
+		}
 	}
 }
 
@@ -166,6 +182,15 @@ class SMWNominalDescription extends SMWDescription {
 	public function getIndividual() {
 		return $this->m_title;
 	}
+
+	public function getQueryString() {
+		if ($this->m_title !== NULL) {
+			return '[[:' . $this->m_title->getPrefixedText() . ']]';
+		} else {
+			return '';
+		}
+	}
+	
 }
 
 /**
@@ -195,6 +220,30 @@ class SMWValueDescription extends SMWDescription {
 	public function getComparator() {
 		return $this->m_comparator;
 	}
+
+	public function getQueryString() {
+		if ($this->m_datavalue !== NULL) {
+			switch ($m_comparator) {
+				case SMW_CMP_EQ:
+					$comparator = '';
+				break;
+				case SMW_CMP_LEQ:
+					$comparator = '<';
+				break;
+				case SMW_CMP_GEQ:
+					$comparator = '>';
+				break;
+				case SMW_CMP_NEQ: 
+					$comparator = '!'; // not supported yet?
+				break;
+				case SMW_CMP_ANY: default:
+					return '+';
+			}
+			return $comparator . $datavalue->getShortWikiText(); // TODO: this fails if tooltips are used
+		} else {
+			return '+';
+		}
+	}
 }
 
 /**
@@ -217,6 +266,14 @@ class SMWConjunction extends SMWDescription {
 	public function addDescription(SMWDescription $description) {
 		$this->m_descriptions[] = $description;
 	}
+
+	public function getQueryString() {
+		$result = '';
+		foreach ($this->m_descriptions as $desc) {
+			$result .= $desc->getQueryString() . ' ';
+		}
+		return $result;
+	}
 }
 
 /**
@@ -238,6 +295,20 @@ class SMWDisjunction extends SMWDescription {
 
 	public function addDescription(SMWDescription $description) {
 		$this->m_descriptions[] = $description;
+	}
+
+	public function getQueryString() {
+		$result = '';
+		// TODO: this is not quite correct ... (many disjunctions have || abbreviations)
+		foreach ($this->m_descriptions as $desc) {
+			if ($first) {
+				$first = false;
+			} else {
+				$result .= ' OR ';
+			}
+			$result .= $desc->getQueryString();
+		}
+		return $result;
 	}
 }
 
@@ -265,6 +336,10 @@ class SMWSomeRelation extends SMWDescription {
 	public function getDescription() {
 		return $this->m_description;
 	}
+
+	public function getQueryString() {
+		return '[[' . $this->m_relation->getText() . '::' . $this->m_description->getQueryString() . ']]';
+	}
 }
 
 /**
@@ -290,6 +365,10 @@ class SMWSomeAttribute extends SMWDescription {
 
 	public function getDescription() {
 		return $this->m_description;
+	}
+
+	public function getQueryString() {
+		return '[[' . $this->m_attribute->getText() . '::' . $this->m_description->getQueryString() . ']]';
 	}
 }
 
