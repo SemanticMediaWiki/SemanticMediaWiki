@@ -299,7 +299,8 @@ class SMWDisjunction extends SMWDescription {
 
 	public function getQueryString() {
 		$result = '';
-		// TODO: this is not quite correct ... (many disjunctions have || abbreviations)
+		// TODO: this is not correct ... (many disjunctions have || abbreviations, OR does not work yet)
+		$first = true;
 		foreach ($this->m_descriptions as $desc) {
 			if ($first) {
 				$first = false;
@@ -308,7 +309,7 @@ class SMWDisjunction extends SMWDescription {
 			}
 			$result .= $desc->getQueryString();
 		}
-		return $result;
+		return '(' . $result . ')';
 	}
 }
 
