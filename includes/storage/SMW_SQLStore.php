@@ -852,12 +852,12 @@ class SMWSQLStore extends SMWStore {
 		} elseif ($description instanceof SMWNominalDescription) {
 			if (array_key_exists('PREVREL', $curtables)) {
 				$where .= $curtables['PREVREL'] . '.object_title=' . 
-				          $db->addQuotes($description->getIndividual()->getText()) . ' AND ' .
+				          $db->addQuotes($description->getIndividual()->getDBKey()) . ' AND ' .
 				          $curtables['PREVREL'] . '.object_namespace=' .
 				          $description->getIndividual()->getNamespace();
 			} elseif ($this->addInnerJoin('PAGE', $from, $db, $curtables)) {
 				$where .= $curtables['PAGE'] . '.page_title=' .
-				          $db->addQuotes($description->getIndividual()->getText()) . ' AND ' .
+				          $db->addQuotes($description->getIndividual()->getDBKey()) . ' AND ' .
 				          $curtables['PAGE'] . '.page_namespace=' .
 				          $description->getIndividual()->getNamespace();
 			}

@@ -119,9 +119,17 @@ abstract class SMWDescription {
 	}
 
 	public function addPrintRequest(SMWPrintRequest $printrequest) {
-		return $this->m_printreqs[$printrequest->getHash()] = $printrequest;
+		$this->m_printreqs[$printrequest->getHash()] = $printrequest;
 	}
-	
+
+	/**
+	 * Add a new print request, but at the beginning of the list of requests
+	 * (thus it will be printed first).
+	 */
+	public function prependPrintRequest(SMWPrintRequest $printrequest) {
+		$this->m_printreqs = array_merge(array($printrequest->getHash() => $printrequest), $this->m_printreqs);
+	}
+
 	/**
 	 * Return a string expressing this query.
 	 */
@@ -268,11 +276,11 @@ class SMWConjunction extends SMWDescription {
 	}
 
 	public function getQueryString() {
-		$result = '';
+		$result = '<q>';
 		foreach ($this->m_descriptions as $desc) {
 			$result .= $desc->getQueryString() . ' ';
 		}
-		return $result;
+		return $result . '</q>';
 	}
 }
 
@@ -339,7 +347,7 @@ class SMWSomeRelation extends SMWDescription {
 	}
 
 	public function getQueryString() {
-		return '[[' . $this->m_relation->getText() . '::' . $this->m_description->getQueryString() . ']]';
+		return '[[' . $this->m_relation->getText() . '::<q>' . $this->m_description->getQueryString() . '<q/>]]';
 	}
 }
 
