@@ -2,13 +2,14 @@
 /**
  * This file contains a static class for accessing functions to generate and execute
  * semantic queries and to serialise their results.
- * 
+ *
  * @author Markus Krötzsch
  */
- 
+
 global $smwgIP;
 require_once($smwgIP . '/includes/storage/SMW_Store.php');
 require_once($smwgIP . '/includes/SMW_QueryPrinters.php');
+
 
 /**
  * This hook registers a parser-hook to the current parser.
@@ -56,6 +57,13 @@ class SMWQueryProcessor {
 	 * as a string. Otherwise an object of type SMWQuery is returned.
 	 */
 	static public function createQuery($querystring, $params, $inline = true) {
+		// This should be the proper way of substituting templates in a safe and comprehensive way:
+		global $wgTitle;
+		$parser = new Parser();
+		$parserOptions = new ParserOptions();
+		$parser->startExternalParse( $wgTitle, $parserOptions, OT_HTML );
+		$querystring = $parser->transformMsg( $querystring, $parserOptions );
+
 		// parse query:
 		$qp = new SMWQueryParser();
 		$desc = $qp->getQueryDescription($querystring);
@@ -383,6 +391,13 @@ class SMWQueryParser {
 					}
 				}
 				// note that at this point, we already read one more chunk behind the value
+				$list = preg_split('/^\*/',$value,2);
+				if (count($list) == 2) { //hit
+					$value = '*';
+					$printmodifier = $list[1];
+				} else {
+					$printmodifier = '';
+				}
 				switch ($value) {
 					case '*': // print statement
 						/// TODO: no support for selecting output unit yet
@@ -398,8 +413,7 @@ class SMWQueryParser {
 							$label = $att->getText();
 						}
 						if ($chunk == ']]') {
-							$dv = SMWDataValueFactory::newAttributeValue($att->getText());
-							return new SMWPrintRequest(SMW_PRINT_ATTS, $label, $att, $dv);
+							return new SMWPrintRequest(SMW_PRINT_ATTS, $label, $att, $printmodifier);
 						} else {
 							$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
 							return NULL;
