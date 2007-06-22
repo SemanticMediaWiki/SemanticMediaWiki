@@ -101,6 +101,16 @@ abstract class SMWDataValue {
 	 */
 	abstract public function setAttribute($attribute);
 
+	/**
+	 * Define a particular output format. Output formats are user-supplied strings
+	 * that the datavalue may (or may not) use to customise its return value. For
+	 * example, quantities with units of measurement may interpret the string as 
+	 * a desired output unit. In other cases, the output format might be built-in 
+	 * and subject to internationalisation (which the datavalue has to implement).
+	 * In any case, an empty string resets the output format to the default.
+	 */
+	abstract public function setOutputFormat($formatstring);
+
 	/*********************************************************************/
 	/* Get methods                                                       */
 	/*********************************************************************/

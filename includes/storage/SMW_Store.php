@@ -130,9 +130,11 @@ abstract class SMWStore {
 
 	/**
 	 * Get an array of all attribute values stored for the given subject and atttribute. The result
-	 * is an array of SMWDataValue objects.
+	 * is an array of SMWDataValue objects. The provided outputformat is a string identifier that
+	 * may be used by the datavalues to modify their output behaviour, e.g. when interpreted as a 
+	 * desierd unit to convert the output to.
 	 */
-	abstract function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL);
+	abstract function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL, $outputformat = '');
 
 	/**
 	 * Get an array of all subjects that have the given value for the given attribute. The

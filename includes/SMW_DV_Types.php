@@ -33,6 +33,10 @@ class SMWTypesValue extends SMWDataValue {
 	public function setAttribute($attribute) { // ignore
 	}
 
+	public function setOutputFormat($formatstring) {
+		// no output formats supported, ignore
+	}
+
 	/*********************************************************************/
 	/* Get methods                                                       */
 	/*********************************************************************/

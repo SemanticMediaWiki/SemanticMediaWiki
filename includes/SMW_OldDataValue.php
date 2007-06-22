@@ -115,6 +115,8 @@ class SMWOldDataValue extends SMWDataValue {
 	var $attribute; // wiki name (without namespace) of the attribute that this value was
 	                // assigned to, or FALSE if no attribute was given.
 	/**#@-*/
+	
+	private $byxsd = false; // hack hack hack (temporary to ease DV transition)
 
 	/**
 	 * Just initialise variables. To create value objects, use one of the
@@ -139,6 +141,7 @@ class SMWOldDataValue extends SMWDataValue {
 	 */
 	function setUserValue($value) {
 		$this->clear();
+		$this->byxsd = false; // DV transition hack to distinguish this case and to use others[0] for XSD-values
 		$this->vuser = $value;
 		//this is needed since typehandlers are not strictly required to
 		//set the user value, especially if errors are reported.
@@ -154,6 +157,7 @@ class SMWOldDataValue extends SMWDataValue {
 	 * Set the xsd value (and compute other representations if possible)
 	 */
 	function setXSDValue($value, $unit) {
+		$this->byxsd = true; // DV transition hack to distinguish this case and to use others[0] for XSD-values
 		$this->vxsd = $value;
 		if ($this->type_handler === NULL) {
 			return false;
@@ -173,7 +177,7 @@ class SMWOldDataValue extends SMWDataValue {
 	 * @param unit - see $unit
 	 */
 	function setProcessedValues($user, $xsd, $num=NULL, $unit='') {
-		$this->vuser = $user;
+		$this->vuser = $user; 
 		$this->vxsd = $xsd;
 		$this->vnum = $num;
 		$this->unit = $unit;
@@ -296,13 +300,29 @@ class SMWOldDataValue extends SMWDataValue {
 		$this->infolinks = array();
 	}
 
+	public function setOutputFormat($formatstring) {
+		// interpret new output format as the desired unit for united quantities
+		$this->setDesiredUnits(array($formatstring));
+	}
+
 
 	/*********************************************************************/
 	/* Get methods                                                       */
 	/*********************************************************************/
 	
 	public function getShortWikiText($linked = NULL) {
-		return $this->vuser;
+		// behave like old getUserValue if DV was initialised from user value,
+		// else behave like old getStringValue. Transition hack.
+		if ($this->byxsd) {
+			if ( count($this->others) > 0 ) {
+				reset($this->others);
+				return current($this->others); // return first element
+			} else {
+				return $this->vuser;
+			}
+		} else {
+			return $this->vuser;
+		}
 	}
 
 	public function getShortHTMLText($linker = NULL) {

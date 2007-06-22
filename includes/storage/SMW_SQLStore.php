@@ -168,7 +168,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 
-	function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL) {
+	function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL, $outputformat = '') {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$result = array();
 
@@ -187,6 +187,7 @@ class SMWSQLStore extends SMWStore {
 			while($row = $db->fetchObject($res)) {
 				$dv = SMWDataValueFactory::newTypehandlerValue(SMWTypeHandlerFactory::getTypeHandlerByID($row->value_datatype));
 				$dv->setAttribute($attribute->getText());
+				$dv->setOutputFormat($outputformat);
 				$dv->setXSDValue($row->value_xsd, $row->value_unit);
 				$result[] = $dv;
 			}
@@ -203,6 +204,7 @@ class SMWSQLStore extends SMWStore {
 			while($row = $db->fetchObject($res)) {
 				$dv = SMWDataValueFactory::newTypehandlerValue(SMWTypeHandlerFactory::getTypeHandlerByID('text'));
 				$dv->setAttribute($attribute->getText());
+				$dv->setOutputFormat($outputformat);
 				$dv->setXSDValue($row->value_blob, '');
 				$result[] = $dv;
 			}
@@ -607,8 +609,7 @@ class SMWSQLStore extends SMWStore {
 						$row[] = new SMWResultArray($this->getSpecialValues($qt,SMW_SP_HAS_CATEGORY), $pr);
 						break;
 					case SMW_PRINT_ATTS:
-						///TODO: respect given datavalue (desired unit), needs extension of getAttributeValues()
-						$row[] = new SMWResultArray($this->getAttributeValues($qt,$pr->getTitle()), $pr);
+						$row[] = new SMWResultArray($this->getAttributeValues($qt,$pr->getTitle(), NULL, $pr->getOutputFormat()), $pr);
 						break;
 				}
 			}

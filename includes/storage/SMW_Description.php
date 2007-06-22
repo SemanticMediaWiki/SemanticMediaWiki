@@ -25,10 +25,11 @@ define('SMW_PRINT_THIS', 3);  // print the current element
  * obtain additional information for the retrieved results.
  */
 class SMWPrintRequest {
-	protected $m_mode;
-	protected $m_label;
-	protected $m_title;
-	protected $m_datavalue;
+	protected $m_mode; // type of print request
+	protected $m_label; // string for labelling results, contains no markup
+	protected $m_title; // title object to which print request refers (if any)
+	protected $m_typeid = false; // id of the datatype of the printed objects, if applicable
+	protected $m_outputformat; // output format string for formatting results, if applicable
 
 	/**
 	 * Create a print request.
@@ -37,11 +38,11 @@ class SMWPrintRequest {
 	 * @param $title optional Title object that specifies the request (usually a relation or attribute)
 	 * @param $datavalue optional SMWDataValue container that sets parameters for printing data values (e.g. the unit)
 	 */
-	public function SMWPrintRequest($mode, $label, Title $title = NULL, $datavalue = NULL) {
+	public function SMWPrintRequest($mode, $label, Title $title = NULL, $outputformat = '') {
 		$this->m_mode = $mode;
 		$this->m_label = $label;
 		$this->m_title = $title;
-		$this->m_datavalue = $datavalue;
+		$this->m_outputformat = $outputformat;
 	}
 	
 	public function getMode() {
@@ -91,8 +92,16 @@ class SMWPrintRequest {
 		return $this->m_title;
 	}
 
-	public function getDatavalue() {
-		return $this->m_datavalue;
+	public function getOutputFormat() {
+		return $this->m_outputformat;
+	}
+
+	public function getTypeID() {
+		if ($this->m_typeid === false) {
+			$dv = SMWDataValueFactory::newAttributeValue($this->m_title->getText());
+			$this->m_typeid = $dv->getTypeID();
+		}
+		return $this->m_typeid;
 	}
 
 	/**
@@ -104,11 +113,7 @@ class SMWPrintRequest {
 		if ($this->m_title !== NULL) {
 			$hash .= $this->m_title->getPrefixedText() . ':';
 		}
-		if ($this->m_datavalue !== NULL) {
-			foreach ($this->m_datavalue->getDesiredUnits() as $unit) {
-				$hash .= $unit . ':';
-			}
-		}
+		$hash .= $this->m_outputformat . ':';
 		return $hash;
 	}
 }
