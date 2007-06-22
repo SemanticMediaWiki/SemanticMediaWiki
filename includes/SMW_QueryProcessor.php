@@ -483,14 +483,21 @@ class SMWQueryParser {
 							$result = $this->addDescription($result, $this->getSubqueryDescription(), false);
 						break;
 						default:
-							$list = preg_split('/:/', $chunk, 3);
-							if ($list[0] == '') {
-								$list = array_slice($list, 2);
+							$list = preg_split('/:/', $chunk, 3); // ":Category:Foo" "User:bar"  ":baz" ":+"
+							if ( ($list[0] == '') && (count($list)==3) ) {
+								$list = array_slice($list, 1);
 							}
-							if ( (count($list) == 3) && ($list[2] == '+') ) { // namespace restriction
-								// TODO
+							if ( (count($list) == 2) && ($list[1] == '+') ) { // try namespace restriction
+								global $wgContLang;
+								$idx = $wgContLang->getNsIndex($list[0]);
+								if ($idx !== false) {
+									$result = $this->addDescription($result, new SMWNamespaceDescription($idx), false);
+								}
 							} else {
-								$result = $this->addDescription($result, new SMWNominalDescription(Title::newFromText($chunk)), false);
+								$title = Title::newFromText($chunk);
+								if ($title !== NULL) {
+									$result = $this->addDescription($result, new SMWNominalDescription($title), false);
+								}
 							}
 					}
 
@@ -558,7 +565,7 @@ class SMWQueryParser {
 	 */
 	protected function readChunk($stoppattern = '') {
 		if ($stoppattern == '') {
-			$stoppattern = '\[\[|\]\]|::|:=|<q>|<\/q>|' . $this->m_categoryprefix . '|\|\||\|';
+			$stoppattern = '\[\[|\]\]|::|:=|<q>|<\/q>|^' . $this->m_categoryprefix . '|\|\||\|';
 		}
 		$chunks = preg_split('/[\s]*(' . $stoppattern . ')[\s]*/', $this->m_curstring, 2, PREG_SPLIT_DELIM_CAPTURE);
 		if (count($chunks) == 1) { // no matches anymore, strip spaces and finish

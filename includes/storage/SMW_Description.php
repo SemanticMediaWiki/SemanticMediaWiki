@@ -189,6 +189,34 @@ class SMWClassDescription extends SMWDescription {
 }
 
 /**
+ * Description of all pages within a given wiki namespace,
+ * given by a numerical constant.
+ * Corresponds to a class restriction with a special class
+ * that characterises the given namespace (or at least that
+ * is how one could map this to OWL etc.).
+ */
+class SMWNamespaceDescription extends SMWDescription {
+	protected $m_namespace;
+
+	public function SMWNamespaceDescription($namespace) {
+		$this->m_namespace = $namespace;
+	}
+
+	public function getNamespace() {
+		return $this->m_namespace;
+	}
+
+	public function getQueryString() {
+		global $wgContlang;
+		if ($this->m_title !== NULL) {
+			return '[[' . $wgContLang->getNSText($this->m_namespace) . ']]';
+		} else {
+			return '';
+		}
+	}
+}
+
+/**
  * Description of a class that contains exactly one explicitly given 
  * object.
  *

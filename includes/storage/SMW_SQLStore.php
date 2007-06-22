@@ -866,6 +866,10 @@ class SMWSQLStore extends SMWStore {
 			if ($this->addInnerJoin('CATS', $from, $db, $curtables)) {
 				$where .=  $curtables['CATS'] . '.cl_to=' . $db->addQuotes($description->getCategory()->getDBKey());
 			}
+		} elseif ($description instanceof SMWNamespaceDescription) {
+			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) {
+				$where .=  $curtables['PAGE'] . '.page_namespace=' . $db->addQuotes($description->getNamespace());
+			}
 		} elseif ($description instanceof SMWNominalDescription) {
 			if (array_key_exists('PREVREL', $curtables)) {
 				$where .= $curtables['PREVREL'] . '.object_title=' . 
