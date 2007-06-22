@@ -10,6 +10,8 @@ if (!defined('MEDIAWIKI')) die();
 
 global $IP;
 require_once( "$IP/includes/SpecialPage.php" );
+global $smwgIP;
+require_once( "$smwgIP/includes/SMW_QueryProcessor.php" );
 
 function doSpecialAsk() {
 	SMW_AskPage::execute();
@@ -53,17 +55,20 @@ class SMW_AskPage {
 		
 		// print results if any
 		if ($smwgIQEnabled && ('' != $query) ) {
-			$iq = new SMWInlineQuery(array('offset' => $offset, 'limit' => $limit, 'format' => 'broadtable', 'mainlabel' => ' ', 'link' => 'all', 'default' => wfMsg('smw_result_noresults'), 'sort' => $sort, 'order' => $order), false);
-			$result = $iq->getHTMLResult($query);
+			$params = array('offset' => $offset, 'limit' => $limit, 'format' => 'broadtable', 'mainlabel' => ' ', 'link' => 'all', 'default' => wfMsg('smw_result_noresults'), 'sort' => $sort, 'order' => $order);
+			$queryobj = SMWQueryProcessor::createQuery($query, $params, false);
+			$res = smwfGetStore()->getQueryResult($queryobj);
+			$printer = new SMWTableResultPrinter('broadtable',false);
+			$result = $printer->getResultHTML($res, $params);
 
 			// prepare navigation bar
 			if ($offset > 0) 
 				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '">' . wfMsg('smw_result_prev') . '</a>';
 			else $navigation = wfMsg('smw_result_prev');
 
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $iq->getDisplayCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $res->getCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
-			if ($iq->hasFurtherResults()) 
+			if ($res->hasFurtherResults()) 
 				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '">' . wfMsg('smw_result_next') . '</a>';
 			else $navigation .= wfMsg('smw_result_next');
 
