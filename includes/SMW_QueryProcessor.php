@@ -11,6 +11,29 @@ require_once($smwgIP . '/includes/storage/SMW_Store.php');
 require_once($smwgIP . '/includes/SMW_QueryPrinters.php');
 
 /**
+ * This hook registers a parser-hook to the current parser.
+ * Note that parser hooks are something different than MW hooks
+ * in general, which explains the two-level registration.
+ */
+function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
+	global $wgParser;
+	$wgParser->setHook( 'ask', 'smwfProcessInlineQuery' );
+	return true; // always return true, in order not to stop MW's hook processing!
+}
+
+/**
+ * The <ask> parser hook processing part.
+ */
+function smwfProcessInlineQuery($text, $param) {
+	global $smwgIQEnabled;
+	if ($smwgIQEnabled) {
+		return SMWQueryProcessor::getResultHTML($text,$param);
+	} else {
+		return wfMsgForContent('smw_iq_disabled');
+	}
+}
+
+/**
  * Static class for accessing functions to generate and execute semantic queries 
  * and to serialise their results.
  */
@@ -36,14 +59,21 @@ class SMWQueryProcessor {
 		// parse query:
 		$qp = new SMWQueryParser();
 		$desc = $qp->getQueryDescription($querystring);
-		/// TODO check for errors
+		if ($desc === NULL) { //abort with failure
+			return $qp->getError();
+		}
 
-		///TODO do this only when wanted, use given label:
-		$desc->addPrintRequest(new SMWPrintrequest(SMW_PRINT_THIS, 'Mainlabel')); 
+		if (array_key_exists('mainlabel', $params)) {
+			$mainlabel = $params['mainlabel'] . $qp->getLabel();
+		} else {
+			$mainlabel = $qp->getLabel();
+		}
+		///TODO do this only when wanted:
+		$desc->prependPrintRequest(new SMWPrintRequest(SMW_PRINT_THIS, $mainlabel)); 
 
 		$query = new SMWQuery($desc);
 
-		print '### Query:' . $desc->getQueryString() . ' ###';
+		//print '### Query:' . htmlspecialchars($desc->getQueryString()) . ' ###'; // DEBUG
 
 		// set query parameters:
 		global $smwgIQMaxLimit, $smwgIQMaxInlineLimit;
@@ -87,7 +117,7 @@ class SMWQueryProcessor {
 			$printer = SMWQueryProcessor::getResultPrinter($format, $inline, $res);
 			return $printer->getResultHTML($res, $params);
 		} else { // error string: return escaped version
-			return htmlspecialchars($query);
+			return htmlspecialchars($query); ///TODO: improve error reporting format ...
 		}
 	}
 
@@ -95,6 +125,7 @@ class SMWQueryProcessor {
 	 * Determine format label from parameters.
 	 */
 	static protected function getResultFormat($params) {
+		$format = 'auto';
 		if (array_key_exists('format', $params)) {
 			$format = strtolower($params['format']);
 			if ( !in_array($format,SMWQueryProcessor::$formats) ) {
@@ -119,11 +150,11 @@ class SMWQueryProcessor {
 			case 'ul': case 'ol': case 'list':
 				return new SMWListResultPrinter($format,$inline);
 			case 'timeline': case 'eventline':
-				return new SMWListResultPrinter($format,$inline); //TODO
+				return new SMWTimelineResultPrinter($format,$inline);
 			case 'embedded':
-				return new SMWListResultPrinter($format,$inline); //TODO
+				return new SMWEmbeddedResultPrinter($format,$inline);
 			case 'template':
-				return new SMWListResultPrinter($format,$inline); //TODO
+				return new SMWTemplateResultPrinter($format,$inline);
 			default: return new SMWListResultPrinter($format,$inline);
 		}
 	}
@@ -141,6 +172,7 @@ class SMWQueryParser {
 	protected $m_sepstack; // list of open blocks ("parentheses") that need closing at current step
 	protected $m_curstring; // remaining string to be parsed (parsing eats query string from the front)
 	protected $m_error; // false if all went right, string otherwise
+	protected $m_label; //label of the main query result
 	
 	protected $m_categoryprefix; // cache label of category namespace . ':'
 	
@@ -154,71 +186,78 @@ class SMWQueryParser {
 	 * false if there were errors.
 	 */
 	public function getQueryDescription($querystring) {
+		$this->m_error = false;
+		$this->m_label = '';
 		$this->m_curstring = $querystring;
 		$this->m_sepstack = array();
 		return $this->getSubqueryDescription();
 	}
 
 	/**
+	 * Return error message or false if no error occurred.
+	 */
+	public function getError() {
+		return $this->m_error;
+	}
+
+	/**
+	 * Return label for the results of this query (which
+	 * might be empty if no such information was passed).
+	 */
+	public function getLabel() {
+		return $this->m_label;
+	}
+
+
+	/**
 	 * Compute an SMWDescription for current part of a query, which should
 	 * be a standalone query (the main query or a subquery enclosed within
-	 * "<q>...</q>". Recursively calls similar methods and returns false upon error.
+	 * "<q>...</q>". Recursively calls similar methods and returns NULL upon error.
 	 */
 	protected function getSubqueryDescription() {
 		$result = NULL;
-		while (($chunk = $this->readChunk()) != '') {
+		$printrequests = array();
+		$continue = ($chunk = $this->readChunk()) != '';
+		while ($continue) {
 			switch ($chunk) {
 				case '[[': // start new link block
-					$this->pushDelimiter(']]'); // expected termination symbol
-					$result = $this->addDescription($result,$this->getLinkDescription());
+					$ld = $this->getLinkDescription($printrequests);
+					if ($ld === NULL) {
+						return NULL;
+					} elseif ($ld instanceof SMWPrintRequest) {
+						$printrequests[] = $ld;
+					} else {
+						$result = $this->addDescription($result,$ld);
+					}
 				break;
 				case '</q>': // exit current subquery
 					if ($this->popDelimiter('</q>')) {
-						//TODO: return computed  description
+						$continue = false; // leave the loop
 					} else {
 						$this->m_error = 'There appear to be too many occurences of \'' . $chunk . '\' in the query.';
-						return false;
+						return NULL;
 					}
 				break;
 				default: // error: unexpected $chunk
 					$this->m_error = 'The part \'' . $chunk . '\' in the query was not understood. Results might not be as expected.'; // TODO: internationalise
-					return false;
+					return NULL;
+			}
+			$continue = ($continue) && ( ($chunk = $this->readChunk()) != '' );
+		}
+
+		if ($result !== NULL) {
+			foreach ($printrequests as $pr) {
+				$result->addPrintRequest($pr);
 			}
 		}
 		return $result;
-
-		/// TODO implement
-		// DEBUG:
-// 			$o_desc = new SMWNominalDescription(Title::newFromText("Africa"));
-// 			$value = SMWDataValueFactory::newAttributeValue('Population','5853000');
-// 			$t_desc = new SMWThingDescription();
-// 			$v_desc = new SMWValueDescription($value, SMW_CMP_GEQ);
-// 			$a_desc = new SMWSomeAttribute(Title::newFromText('Attribute:Population'), $v_desc);
-// 			$r_desc = new SMWSomeRelation(Title::newFromText("Relation:located in"), $o_desc);
-// 			$r_desc2 = new SMWSomeRelation(Title::newFromText("Relation:borders"), $r_desc);
-// 			$r_desc3 = new SMWSomeRelation(Title::newFromText("Relation:located in"), $t_desc);
-// 			$c_desc = new SMWClassDescription(Title::newFromText("Category:Country"));
-// 			$desc = new SMWConjunction(array($c_desc, $r_desc));
-// 			$desc2 = new SMWConjunction(array($c_desc, $a_desc, $r_desc2, $r_desc));
-// 			$pr1 = new SMWPrintrequest(SMW_PRINT_THIS, 'Country');
-// 			$desc->addPrintRequest($pr1);
-// 			$desc2->addPrintRequest($pr1);
-// 			$pr2 = new SMWPrintrequest(SMW_PRINT_RELS, 'Borders', Title::newFromText('Relation:Borders'));
-// 			$desc->addPrintRequest($pr2);
-// 			$desc2->addPrintRequest($pr2);
-// 			$pr3 = new SMWPrintrequest(SMW_PRINT_ATTS, 'Population', Title::newFromText('Attribute:Population'));
-// 			$desc->addPrintRequest($pr3);
-// 			$desc2->addPrintRequest($pr3);
-// 			$pr4 = new SMWPrintrequest(SMW_PRINT_CATS, 'Categories');
-// 			$desc->addPrintRequest($pr4);
-// 			
-// 			return $desc2;
 	}
-	
+
 	/**
 	 * Compute an SMWDescription for current part of a query, which should
-	 * be the content of "[[ ... ]]". Recursively calls similar methods and 
-	 * returns false upon error.
+	 * be the content of "[[ ... ]]". Alternatively, if the current syntax
+	 * specifies a print request, return the print request object.
+	 * Returns NULL upon error.
 	 */
 	protected function getLinkDescription() {
 		$result = NULL;
@@ -233,9 +272,28 @@ class SMWQueryParser {
 			while ($continue) {
 				$chunk = $this->readChunk();
 				switch ($chunk) {
-					case '+': //wildcard
-					break;
 					case '*': //print statement
+						$chunk = $this->readChunk('\]\]|\|');
+						if ($chunk == '|') {
+							$label = $this->readChunk('\]\]');
+							if ($label != ']]') {
+								$chunk = $this->readChunk('\]\]');
+							} else {
+								$label = '';
+								$chunk = ']]';
+							}
+						} else {
+							global $wgContLang;
+							$label = $wgContLang->getNSText(NS_CATEGORY);
+						}
+						if ($chunk == ']]') {
+							return new SMWPrintRequest(SMW_PRINT_CATS, $label);
+						} else {
+							$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
+							return NULL;
+						}
+					break;
+					case '+': //wildcard, ignore for categories (semantically meaningless)
 					break;
 					default: //assume category title
 						$cat = Title::newFromText($chunk, NS_CATEGORY);
@@ -250,23 +308,186 @@ class SMWQueryParser {
 					$continue = false;
 				}
 			}
-		} else { // fixed subject, property query, or subquery
-			
+		} else { // fixed subject, namespace restriction, property query, or subquery
+			$sep = $this->readChunk();
+			if ($sep == '::') { // relation statement
+				$rel = Title::newFromText($chunk, SMW_NS_RELATION);
+				$continue = true;
+				$innerdesc = NULL;
+				while ($continue) {
+					$chunk = $this->readChunk();
+					switch ($chunk) {
+						case '*': // print statement, abort processing
+							$chunk = $this->readChunk('\]\]|\|');
+							if ($chunk == '|') {
+								$label = $this->readChunk('\]\]');
+								if ($label != ']]') {
+									$chunk = $this->readChunk('\]\]');
+								} else {
+									$label = '';
+									$chunk = ']]';
+								}
+							} else {
+								$label = $rel->getText();
+							}
+							if ($chunk == ']]') {
+								return new SMWPrintRequest(SMW_PRINT_RELS, $label, $rel);
+							} else {
+								$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
+								return NULL;
+							}
+						break;
+						case '+': // wildcard
+							$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
+						break;
+						case '<q>': // subquery
+							$this->pushDelimiter('</q>');
+							$innerdesc = $this->addDescription($innerdesc, $this->getSubqueryDescription(), false);
+						break;
+						default: //normal object value
+							$obj = Title::newFromText($chunk);
+							if ($obj !== NULL) {
+								$innerdesc = $this->addDescription($innerdesc, new SMWNominalDescription($obj), false);
+							}
+					}
+					$chunk = $this->readChunk();
+					$continue = ($chunk == '||');
+				}
+				if ($innerdesc !== NULL) {
+					$result = new SMWSomeRelation($rel,$innerdesc);
+				}
+			} elseif ($sep == ':=') { // attribute statement
+				$att = Title::newFromText($chunk, SMW_NS_ATTRIBUTE);
+				///TODO: currently no support for disjunctions in data values (needs extension of query processor)
+
+				// get values, including values with internal [[...]]
+				$open = 1;
+				$value = '';
+				while ( ($open > 0) && ($chunk != '') ) {
+					$chunk = $this->readChunk('\[\[|\]\]|\|');
+					switch ($chunk) {
+						case '[[': // open new [[ ]]
+							$open++;
+						break;
+						case ']]': // close [[ ]]
+							$open--;
+						break;
+						case '|': // terminates only outermost [[ ]]
+							if ($open == 1) {
+								$open = 0;
+							}
+						break;
+					}
+					if ($open != 0) {
+						$value .= $chunk;
+					}
+				}
+				// note that at this point, we already read one more chunk behind the value
+				switch ($value) {
+					case '*': // print statement
+						/// TODO: no support for selecting output unit yet
+						if ($chunk == '|') {
+							$label = $this->readChunk('\]\]');
+							if ($label != ']]') {
+								$chunk = $this->readChunk('\]\]');
+							} else {
+								$label = '';
+								$chunk = ']]';
+							}
+						} else {
+							$label = $att->getText();
+						}
+						if ($chunk == ']]') {
+							$dv = SMWDataValueFactory::newAttributeValue($att->getText());
+							return new SMWPrintRequest(SMW_PRINT_ATTS, $label, $att, $dv);
+						} else {
+							$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
+							return NULL;
+						}
+					break;
+					case '+': // wildcard
+						$vd = new SMWValueDescription(NULL, SMW_CMP_ANY);
+					break;
+					default: // fixed value, possibly with comparator addons
+						// for now, treat comparators only if placed before whole value:
+						$list = preg_split('/^(<|>)/',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
+						$comparator = SMW_CMP_EQ;
+						if (count($list) == 3) { // initial comparator found ($list[1] should be empty)
+							switch ($list[1]) {
+								case '<':
+									$comparator = SMW_CMP_LEQ;
+									$value = $list[2];
+								break;
+								case '>':
+									$comparator = SMW_CMP_GEQ;
+									$value = $list[2];
+								break;
+								//default: not possible
+							}
+						}
+						// TODO: needs extension for n-ary values
+						$dv = SMWDataValueFactory::newAttributeValue($att->getText(), $value);
+						if (!$dv->isValid()) {
+							$this->m_error = $dv->getError();
+							$vd = new SMWValueDescription(NULL, SMW_CMP_ANY);
+						} else {
+							$vd = new SMWValueDescription($dv, $comparator);
+						}
+				}
+				$result = new SMWSomeAttribute($att, $vd);
+			} else { // Fixed article/namespace restriction. $sep should be ]] or ||
+				$continue = true;
+				//$innerdesc = NULL;
+				while ($continue) {
+					switch ($chunk) {
+						case '<q>': // subquery
+							$this->pushDelimiter('</q>');
+							$result = $this->addDescription($result, $this->getSubqueryDescription(), false);
+						break;
+						default:
+							$list = preg_split('/:/', $chunk, 3);
+							if ($list[0] == '') {
+								$list = array_slice($list, 2);
+							}
+							if ( (count($list) == 3) && ($list[2] == '+') ) { // namespace restriction
+								// TODO
+							} else {
+								$result = $this->addDescription($result, new SMWNominalDescription(Title::newFromText($chunk)), false);
+							}
+					}
+
+					if ($sep !== false) { // resuse prefetched sep
+						$chunk = $sep;
+						$sep = false;
+					} else {
+						$chunk = $this->readChunk();
+					}
+					if ($chunk == '||') {
+						$chunk = $this->readChunk();
+						$continue = true;
+					} else {
+						$continue = false;
+					}
+				}
+			}
+		}
+
+		if ($result === NULL) { // no useful information or concrete error found
+			$this->m_error = 'Syntax error in query.'; //TODO internationalise
+			return NULL;
 		}
 
 		// terminate link (assuming that next chunk was read already)
 		if ($chunk == '|') { // label, TODO
-			$chunk = $this->readChunk();
-			$label = '';
-			///TODO: rather have a mode for readChunk that stops only on ']]'
-			/// (otherwise we kill spaces in the label)
-			while ( ($chunk != ']]') && ($chunk !== '') ) {
-				$label .= $chunk;
-				$chunk = $this->readChunk();
+			$label = $this->readChunk('\]\]');
+			if ($label != ']]') {
+				$chunk = $this->readChunk('\]\]');
+			} else {
+				$label = '';
+				$chunk = ']]';
 			}
 		}
 		if ($chunk == ']]') { // expected termination
-			$this->popDelimiter(']]');
 			return $result;
 		} else {
 			// What happended? We found some chunk that could not be processed as
@@ -277,7 +498,7 @@ class SMWQueryParser {
 			} else {
 				$this->m_error = 'Some use of \'[[\' in your query was not closed by a matching \']]\'.';
 			}
-			return false;
+			return NULL;
 		}
 
 		return $result;
@@ -293,10 +514,16 @@ class SMWQueryParser {
 	 * consisting only of spaces are not returned.
 	 * If there is no more qurey string left to process, the empty string is
 	 * returned (and in no other case).
+	 * 
+	 * The stoppattern can be used to customise the matching, especially in order to 
+	 * overread certain special symbols.
 	 */
-	protected function readChunk() {
-		$chunks = preg_split('/[\s]*(\[\[|\]\]|::|:=|<q>|<\/q>|' . $this->m_categoryprefix . '|\|\||\|)[\s]*/', $this->m_curstring, 2, PREG_SPLIT_DELIM_CAPTURE);
-		if (count($chunks) == 1) { // no mathces anymore, strip spaces and finish
+	protected function readChunk($stoppattern = '') {
+		if ($stoppattern == '') {
+			$stoppattern = '\[\[|\]\]|::|:=|<q>|<\/q>|' . $this->m_categoryprefix . '|\|\||\|';
+		}
+		$chunks = preg_split('/[\s]*(' . $stoppattern . ')[\s]*/', $this->m_curstring, 2, PREG_SPLIT_DELIM_CAPTURE);
+		if (count($chunks) == 1) { // no matches anymore, strip spaces and finish
 			$this->m_curstring = '';
 			return trim($chunks[0]);
 		} elseif (count($chunks) == 3) { // this chould generally happen if count is not 1
@@ -347,6 +574,7 @@ class SMWQueryParser {
 			if ( (($conjunction)  && ($curdesc instanceof SMWConjunction)) ||
 			     ((!$conjunction) && ($curdesc instanceof SMWDisjunction)) ) { // use existing container
 				$curdesc->addDescription($newdesc);
+				return $curdesc;
 			} elseif ($conjunction) { // make new conjunction
 				return new SMWConjunction(array($curdesc,$newdesc));
 			} else { // make new disjunction
