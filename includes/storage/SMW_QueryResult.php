@@ -189,7 +189,7 @@ class SMWResultArray {
 		$object = current($this->content);
 		next($this->content);
 		if ($object instanceof SMWDataValue) { //print data values
-			return $object->getShortWikiText($linker);
+			return $object->getShortWikiText($linked);
 		} elseif ($object instanceof Title) { // print Title objects
 			if ( ($linked === NULL) || ($linked === false) ) {
 				return $object->getPrefixedText();

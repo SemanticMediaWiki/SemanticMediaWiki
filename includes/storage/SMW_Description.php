@@ -62,9 +62,9 @@ class SMWPrintRequest {
 			return htmlspecialchars($this->m_label);
 		}
 		switch ($this->m_mode) {
-			case SMW_PRINT_CATS: return htmlspecialchars($this->m_label);
-			case SMW_PRINT_RELS: return $linker->makeLinkObj($this->m_title, $this->m_label);
-			case SMW_PRINT_ATTS: return $linker->makeKnownLinkObj($this->m_title, $this->m_label);
+			case SMW_PRINT_CATS: return htmlspecialchars($this->m_label); // TODO: link to Special:Categories
+			case SMW_PRINT_RELS: return $linker->makeLinkObj($this->m_title, htmlspecialchars($this->m_label));
+			case SMW_PRINT_ATTS: return $linker->makeKnownLinkObj($this->m_title, htmlspecialchars($this->m_label));
 			case SMW_PRINT_THIS: default: return htmlspecialchars($this->m_label);
 		}
 		
@@ -73,8 +73,18 @@ class SMWPrintRequest {
 	/**
 	 * Obtain a Wiki-formatted representation of the label.
 	 */
-	public function getWikiText() {
-		return $this->m_label;
+	public function getWikiText($linked = false) {
+		if ( ($linked === NULL) || ($linked === false) || ($this->m_label == '') ) {
+			return $this->m_label;
+		} else {
+			switch ($this->m_mode) {
+				case SMW_PRINT_CATS: return $this->m_label; // TODO: link to Special:Categories
+				case SMW_PRINT_RELS: case SMW_PRINT_ATTS: 
+					return '[[' . $this->m_title->getPrefixedText() . '|' . $this->m_label . ']]';
+				case SMW_PRINT_THIS: default: return $this->m_label;
+			}
+		}
+		
 	}
 
 	public function getTitle() {
@@ -216,8 +226,8 @@ class SMWValueDescription extends SMWDescription {
 	protected $m_datavalue;
 	protected $m_comparator;
 
-	public function SMWValueDescription(SMWDataValue $datavalue, $comparator = SMW_CMP_EQUAL) {
-		$this->m_datavalue = $datavalue;
+	public function SMWValueDescription($datavalue, $comparator = SMW_CMP_EQ) {
+		$this->m_datavalue = $datavalue; // might be NULL for SMW_CMP_ANY
 		$this->m_comparator = $comparator;
 	}
 
@@ -231,7 +241,7 @@ class SMWValueDescription extends SMWDescription {
 
 	public function getQueryString() {
 		if ($this->m_datavalue !== NULL) {
-			switch ($m_comparator) {
+			switch ($this->m_comparator) {
 				case SMW_CMP_EQ:
 					$comparator = '';
 				break;
@@ -247,7 +257,7 @@ class SMWValueDescription extends SMWDescription {
 				case SMW_CMP_ANY: default:
 					return '+';
 			}
-			return $comparator . $datavalue->getShortWikiText(); // TODO: this fails if tooltips are used
+			return $comparator . $this->m_datavalue->getWikiValue();
 		} else {
 			return '+';
 		}
@@ -317,7 +327,7 @@ class SMWDisjunction extends SMWDescription {
 			}
 			$result .= $desc->getQueryString();
 		}
-		return '(' . $result . ')';
+		return '<q>' . $result . '</q>';
 	}
 }
 
@@ -347,7 +357,7 @@ class SMWSomeRelation extends SMWDescription {
 	}
 
 	public function getQueryString() {
-		return '[[' . $this->m_relation->getText() . '::<q>' . $this->m_description->getQueryString() . '<q/>]]';
+		return '[[' . $this->m_relation->getText() . '::<q>' . $this->m_description->getQueryString() . '</q>]]';
 	}
 }
 
@@ -377,7 +387,7 @@ class SMWSomeAttribute extends SMWDescription {
 	}
 
 	public function getQueryString() {
-		return '[[' . $this->m_attribute->getText() . '::' . $this->m_description->getQueryString() . ']]';
+		return '[[' . $this->m_attribute->getText() . ':=' . $this->m_description->getQueryString() . ']]';
 	}
 }
 

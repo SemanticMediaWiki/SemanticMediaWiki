@@ -566,12 +566,12 @@ class SMWSQLStore extends SMWStore {
 			} // else: sortkey given but not found: do not sort
 		}
 
-		print $from . "<br />\n" . $where . "<br />\n"; //DEBUG
-		foreach ($sql_options as $key => $val) { //DEBUG
-			print "$key => $val, "; 
-		}
-		print "<br />\n";
-		print $this->m_sortkey . " --> " . $this->m_sortfield . "<br />\n"; //DEBUG
+// 		print $from . "<br />\n" . $where . "<br />\n"; //DEBUG
+// 		foreach ($sql_options as $key => $val) { //DEBUG
+// 			print "$key => $val, "; 
+// 		}
+// 		print "<br />\n";
+// 		print $this->m_sortkey . " --> " . $this->m_sortfield . "<br />\n"; //DEBUG
 
 		// Execute query and format result as array
 		$res = $db->select($from,
