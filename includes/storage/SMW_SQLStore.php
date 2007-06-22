@@ -548,7 +548,8 @@ class SMWSQLStore extends SMWStore {
 		$this->m_sortkey = $query->sortkey;
 		$this->m_sortfield = false;
 		
-		$from = $db->tableName('page');
+		$pagetable = $db->tableName('page');
+		$from = $pagetable;
 		$where = '';
 		$curtables = array('PAGE' => $from);
 		$this->createSQLQuery($query->getDescription(), $from, $where, $db, $curtables);
@@ -562,7 +563,7 @@ class SMWSQLStore extends SMWStore {
 		if ( $smwgIQSortingEnabled ) {
 			$order = $query->ascending ? 'ASC' : 'DESC';
 			if ( ($this->m_sortfield == false) && ($this->m_sortkey == false) ) {
-				$sql_options['ORDER BY'] = "page.page_title $order "; // default
+				$sql_options['ORDER BY'] = "$pagetable.page_title $order "; // default
 			} elseif ($this->m_sortfield != false) {
 				$sql_options['ORDER BY'] = $this->m_sortfield . " $order ";
 			} // else: sortkey given but not found: do not sort
@@ -571,7 +572,7 @@ class SMWSQLStore extends SMWStore {
 		// Execute query and format result as array
 		if ($query->querymode == SMWQuery::MODE_COUNT) {
 			$res = $db->select($from,
-			       'COUNT(DISTINCT page.page_id) AS count',
+			       "COUNT(DISTINCT $pagetable.page_id) AS count",
 			        $where,
 			        'SMW::getQueryResult',
 			        $sql_options );
@@ -581,7 +582,7 @@ class SMWSQLStore extends SMWStore {
 			list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sql_options );
 			$result = '<div style="border: 1px dotted black; background: #A1FB00; padding: 20px; ">' .
 			          '<b>SQL-Query</b><br />' .
-			          'SELECT DISTINCT page.page_title as title, page.page_namespace as namespace' .
+			          "SELECT DISTINCT $pagetable.page_title as title, $pagetable.page_namespace as namespace" .
 			          ' FROM ' . $from . ' WHERE ' . $where . $tailOpts . '<br />' .
 			          '<b>SQL-Query options</b><br />';
 			foreach ($sql_options as $key => $value) {
@@ -592,7 +593,7 @@ class SMWSQLStore extends SMWStore {
 		} // else: continue
 
 		$res = $db->select($from,
-		       'DISTINCT page.page_title as title, page.page_namespace as namespace',
+		       "DISTINCT $pagetable.page_title as title, $pagetable.page_namespace as namespace",
 		        $where,
 		        'SMW::getQueryResult',
 		        $sql_options );
