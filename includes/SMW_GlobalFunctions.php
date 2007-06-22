@@ -89,6 +89,8 @@ function smwgSetupExtension() {
 	require_once($smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php');
 	require_once($smwgIP . '/specials/ExtendedStatistics/SMW_SpecialExtendedStatistics.php');
 
+	include_once($smwgIP . '/includes/SMW_QueryProcessor.php');
+
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialRelations.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedRelations.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialWantedRelations.php');
@@ -115,6 +117,7 @@ function smwgSetupExtension() {
 	$wgHooks['TitleMoveComplete'][]='smwfMoveHook';
 	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeader';
 	$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries'; // a hook for registering the <ask> parser hook
+	
 	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage';
 
 	/**********************************************/

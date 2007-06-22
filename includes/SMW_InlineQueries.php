@@ -39,57 +39,8 @@ require_once( "$IP/includes/Title.php" );
 require_once( "$IP/includes/Linker.php" );
 require_once('SMW_QueryPrinters.php');
 
-/* The variables below define the default settings. Changes can be made by
-   setting new values in SMW_LocalSettings.php */
-
-/* Configure default behaviour of inline queries */
-	// Default linking behaviour. Can be one of "none", "subject", "all"
-	$smwgIQDefaultLinking = 'subject';
-	// Which namespaces should be searched by default? Setting this to NULL will
-	// switch off such default restrictions on searching (possibly increasing performance)
-	$smwgIQSearchNamespaces = array(NS_MAIN, NS_IMAGE);
-/* Configure power/performance trade-off for inline queries */
-	// Switches on or off all queries.
-	$smwgIQEnabled = true;
-	// Maximum number of conditions *overall*. Each value restriction is counted as
-	// one, i.e. a disjunction || counts for each of its disjuncts. Note that subcategories
-	// and resolved redirects currently extend the number of conditions as well!
-	$smwgIQMaxConditions = 50;
-	// Maximum number of tables to be joined *overall*. Note that the combination of DISTINCT
-	// and restricted SELECT statements ensures that further joins do not multiply the number
-	// of results. Still it is desirable to restrict this number below $smwgIQMaxConditions.
-	$smwgIQMaxTables = 10;
-	// Maximum number of additional fields that can be displayed using statements with '*'.
-	// This implicitly also limits the number of rows in output tables.
-	$smwgIQMaxPrintout = 10;
-	// Switches on or off all subqueries.
-	$smwgIQSubQueriesEnabled = true;
-	// Maximum number of rows returned in any query.
-	$smwgIQMaxLimit = 10000; //practically no limit
-	// Maximum number of rows printed in an inline query.
-	$smwgIQMaxInlineLimit = 500;
-	// Default number of rows returned in a query.
-	$smwgIQDefaultLimit = 50;
-	// If true, disjunctive queries are enabled. May cost performance.
-	$smwgIQDisjunctiveQueriesEnabled = true;
-	// Sets the level of inclusions by subCategory-relations. For example, if Student
-	// is a Subcategory of Person, Students will only be returned if querying for Persons
-	// if this is set at least to 1 (as it is a direct Subcategory).
-	// Disjunctive queries must be enabled for this feature to work. May cost performance.
-	$smwgIQSubcategoryInclusions = 10;
-	// Normalizes the redirects, basically implements the sameAs semantics
-	// as defined by the mapping of redirects to sameAs.
-	// Disjunctive queries must be enabled for this feature to work. May cost performance.
-	$smwgIQRedirectNormalization = true;
-	// If true, sorting is enabled. May cost performance.
-	$smwgIQSortingEnabled = true;
-
-// first, we register a hook that will register a hook in the parser
-// global $wgHooks;
-// $wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries';
-
 // This hook registers a hook in the parser
-function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
+function smwfOldRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
 	global $wgParser;
 	$wgParser->setHook( 'ask', 'smwfProcessInlineQueries' );
 	return true; // always return true, in order not to stop MW's hook processing!

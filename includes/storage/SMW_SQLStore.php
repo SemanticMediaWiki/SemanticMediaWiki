@@ -864,7 +864,7 @@ class SMWSQLStore extends SMWStore {
 			// nothin to check
 		} elseif ($description instanceof SMWClassDescription) {
 			if ($this->addInnerJoin('CATS', $from, $db, $curtables)) {
-				$where .=  $curtables['CATS'] . '.cl_to=' . $db->addQuotes($description->getCategory()->getText());
+				$where .=  $curtables['CATS'] . '.cl_to=' . $db->addQuotes($description->getCategory()->getDBKey());
 			}
 		} elseif ($description instanceof SMWNominalDescription) {
 			if (array_key_exists('PREVREL', $curtables)) {

@@ -52,6 +52,28 @@ $smwgPropertyPagingLimit = 25; // use smaller value since property lists are muc
 ##
 
 ###
+# Settings for inline queries (<ask>) and for semantic queries in general.
+# Especially meant to prevent overly high server-load by complex queries.
+##
+$smwgIQEnabled = true; // (De)activates all query related features
+$smwgIQDefaultLinking = 'subject'; // Default linking behaviour. Can be one of "none", "subject", "all"
+$smwgIQSearchNamespaces = array(NS_MAIN, NS_IMAGE); // Which namespaces should be searched by default? 
+ // Value NULL switches off default restrictions on searching (faster)
+$smwgIQMaxConditions = 50; // Max number of "conditions" (e.g. value or category conditions in a query)
+$smwgIQMaxTables = 10;     // Max number of "joins" in a query. Restricts nesting depth of queries.
+$smwgIQMaxPrintout = 10;   // Max number of supported printouts (added columns in result table, * statements)
+$smwgIQSubQueriesEnabled = true; //(De)activates subqueries (<q>-Syntax), use $smwgIQMaxTables for limiting them
+$smwgIQMaxLimit = 10000;     // Max number of results ever retrieved, even when using special query pages.
+$smwgIQMaxInlineLimit = 500; // Max number of rows printed in an inline query on a single page.
+$smwgIQDefaultLimit = 50;    // Default number of rows returned in a query. Can be increased with <ask limit="num">...
+$smwgIQDisjunctiveQueriesEnabled = true; // Support disjunctions in queries (||)?
+$smwgIQSubcategoryInclusions = 10; // Restrict level of sub-category inclusion (steps within category hierarchy)
+ // Use 0 to disable hierarchy-inferencing in queries
+$smwgIQRedirectNormalization = true; // Should redirects be interpreted as equivalence between page names?
+$smwgIQSortingEnabled = true; // (De)activate sorting of results.
+##
+
+###
 # Settings for RDF export
 ##
 $smwgAllowRecursiveExport = false; // can normal users request recursive export?
@@ -127,6 +149,7 @@ $smwgEnableTemplateSupport = true;
 $smwgTranslate = false;
 
 ###
+# -- FEATURE IS DISABLED --
 # If you want to import ontologies, you need to install RAP,
 # a free RDF API for PHP, see
 #     http://www.wiwiss.fu-berlin.de/suhl/bizer/rdfapi/
@@ -136,14 +159,8 @@ $smwgTranslate = false;
 # highly experimental at the moment, and may not do what you
 # extect.
 ##
-$smwgRAPPath = $smwgIP . '/libs/rdfapi-php';
+//$smwgRAPPath = $smwgIP . '/libs/rdfapi-php';
 //$smwgRAPPath = '/another/example/path/rdfapi-php';
 ##
-
-// load (default) settings for inline queries
-require_once('SMW_InlineQueries.php');
-
-// get local configuration ...
-//require("SMW_LocalSettings.php");
 
 ?>
