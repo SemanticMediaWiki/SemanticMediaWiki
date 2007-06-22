@@ -78,6 +78,10 @@ class SMWTypesValue extends SMWDataValue {
 		}
 	}
 
+	public function getWikiValue() {
+		return implode('; ', $this->m_typevalues);
+	}
+
 	public function getNumericValue() {
 		return NULL;
 	}
@@ -88,6 +92,10 @@ class SMWTypesValue extends SMWDataValue {
 
 	public function getError() {
 		return $this->m_error;
+	}
+
+	public function getTypeID() {
+		return 'types';
 	}
 
 	public function getInfolinks() {

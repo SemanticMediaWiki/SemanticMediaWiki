@@ -158,6 +158,15 @@ abstract class SMWDataValue {
 	abstract public function getXSDValue();
 
 	/**
+	 * Return the plain wiki version of the value, or
+	 * FALSE if no such version is available. The returned
+	 * string suffices to reobtain the same DataValue 
+	 * when passing it as an input string to setUserValue().
+	 * Thus it also includes units, if any.
+	 */
+	abstract public function getWikiValue();
+
+	/**
 	 * Return the numeric representation of the value, or NULL
 	 * is none is available. This representation is used to
 	 * compare values of scalar types more efficiently, especially
@@ -177,6 +186,13 @@ abstract class SMWDataValue {
 	 * Return error string or an empty string if no error occured.
 	 */
 	abstract public function getError();
+
+	/**
+	 * Return a short string that unambiguously specify the type of this value.
+	 * This value will globally be used to identify the type of a value (in spite
+	 * of the class it actually belongs to, which can still implement various types).
+	 */
+	abstract public function getTypeID();
 
 	/**
 	 * Return an array of SMWLink objects that provide additional resources

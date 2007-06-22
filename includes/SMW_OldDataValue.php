@@ -377,6 +377,10 @@ class SMWOldDataValue extends SMWDataValue {
 		return $this->vxsd;
 	}
 
+	public function getWikiValue() {
+		return $this->vuser;
+	}
+
 	/**
 	 * Return the numeric representation of the value, or NULL
 	 * is none is available. This representation is used to
