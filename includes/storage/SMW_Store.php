@@ -213,7 +213,10 @@ abstract class SMWStore {
 ///// Query answering /////
 
 	/**
-	 * Execute the provided query and return the result as an SMWQueryResult.
+	 * Execute the provided query and return the result as an SMWQueryResult if the query
+	 * was a usual instance retrieval query. In the case that the query asked for a plain
+	 * string (querymode MODE_COUNT or MODE_DEBUG) a plain wiki and HTML-compatible string
+	 * is returned.
 	 */
 	abstract function getQueryResult(SMWQuery $query);
 

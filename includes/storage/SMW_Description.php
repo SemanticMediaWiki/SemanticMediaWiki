@@ -14,7 +14,7 @@ define('SMW_CMP_NEQ',4); // matches only datavalues that are unequal to the give
 define('SMW_CMP_ANY',5); // matches every datavalue of the given datatype and, if set, desired unit
 
 // print request
-define('SMW_PRINT_CATS', 0);  // print all direct categories of the current element
+define('SMW_PRINT_CATS', 0);  // print all direct cateories of the current element
 define('SMW_PRINT_RELS', 1);  // print all relations objects of a certain relation of the current element
 define('SMW_PRINT_ATTS', 2);  // print all attribute values of a certain attribute of the current element
 define('SMW_PRINT_THIS', 3);  // print the current element

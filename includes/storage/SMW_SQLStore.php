@@ -534,8 +534,8 @@ class SMWSQLStore extends SMWStore {
 	 * are not "subqueries" from a user perspective, it also has a good insight in the query structure for
 	 * applying structural limits)
 	 * TODO: implement namespace restrictions
-	 * TODO: do we support category wildcards? -> No, they have no useful semantics in OWL
 	 * TODO: we now have sorting even for subquery conditions. Does this work? Is it slow/problematic?
+	 * NOTE: we do not support category wildcards, as they have no useful semantics in OWL/RDFS/LP/whatever
 	 */
 	function getQueryResult(SMWQuery $query) {
 		global $smwgIQSortingEnabled;
@@ -576,11 +576,34 @@ class SMWSQLStore extends SMWStore {
 // 		print $this->m_sortkey . " --> " . $this->m_sortfield . "<br />\n"; //DEBUG
 
 		// Execute query and format result as array
+		if ($query->querymode == SMWQuery::MODE_COUNT) {
+			$res = $db->select($from,
+			       'COUNT(DISTINCT page.page_id) AS count',
+			        $where,
+			        'SMW::getQueryResult',
+			        $sql_options );
+			$row = $db->fetchObject($res);
+			return $row->count;
+		} elseif ($query->querymode == SMWQuery::MODE_DEBUG) {
+			list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sql_options );
+			$result = '<div style="border: 1px dotted black; background: #A1FB00; padding: 20px; ">' .
+			          '<b>SQL-Query</b><br />' .
+			          'SELECT DISTINCT page.page_title as title, page.page_namespace as namespace' .
+			          ' FROM ' . $from . ' WHERE ' . $where . $tailOpts . '<br />' .
+			          '<b>SQL-Query options</b><br />';
+			foreach ($sql_options as $key => $value) {
+				$result .= "  $key=$value";
+			}
+			$result .= '</div>';
+			return $result;
+		} // else: continue
+
 		$res = $db->select($from,
 		       'DISTINCT page.page_title as title, page.page_namespace as namespace',
 		        $where,
 		        'SMW::getQueryResult',
 		        $sql_options );
+
 		$qr = array();
 		$count = 0;
 		while ( ( ($count<$query->limit) || ($query->limit < 0) ) && ($row = $db->fetchObject($res)) ) {
@@ -593,7 +616,7 @@ class SMWSQLStore extends SMWStore {
 		$db->freeResult($res);
 
 		// Create result by executing print statements for everything that was fetched
-		///TODO: use limit (and offset?) values
+		///TODO: use limit (and offset?) values for printouts?
 		$result = new SMWQueryResult($prs, ( ($count > $query->limit) && ($query->limit >= 0) ) );
 		foreach ($qr as $qt) {
 			$row = array();

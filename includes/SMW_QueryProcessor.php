@@ -55,8 +55,12 @@ class SMWQueryProcessor {
 	 *
 	 * If an error occurs during parsing, an error-message is returned 
 	 * as a string. Otherwise an object of type SMWQuery is returned.
+	 *
+	 * The format string is used to specify the output format if already
+	 * known. Otherwise it will be determined from the parameters when 
+	 * needed. This parameter is just for optimisation in a common case.
 	 */
-	static public function createQuery($querystring, $params, $inline = true) {
+	static public function createQuery($querystring, $params, $inline = true, $format = '') {
 		// This should be the proper way of substituting templates in a safe and comprehensive way:
 		global $wgTitle;
 		$parser = new Parser();
@@ -80,6 +84,18 @@ class SMWQueryProcessor {
 		$desc->prependPrintRequest(new SMWPrintRequest(SMW_PRINT_THIS, $mainlabel)); 
 
 		$query = new SMWQuery($desc);
+		if ($format == '') {
+			$format = SMWQueryProcessor::getResultFormat($params);
+		}
+		switch ($format) {
+			case 'count': 
+				$query->querymode = SMWQuery::MODE_COUNT;
+			break;
+			case 'debug': 
+				$query->querymode = SMWQuery::MODE_DEBUG;
+			break;
+			default: break;
+		}
 
 		//print '### Query:' . htmlspecialchars($desc->getQueryString()) . ' ###'; // DEBUG
 
@@ -92,10 +108,16 @@ class SMWQueryProcessor {
 		if ( !$inline && (array_key_exists('offset',$params)) && (is_int($params['offset'] + 0)) ) {
 			$query->offset = min($maxlimit - 1, max(0,$params['offset'] + 0)); //select integer between 0 and maximal limit -1
 		}
-		// set limit small enough to stay in range with chosen offset
-		// it makes sense to have limit=0 in order to only show the link to the search special
-		if ( (array_key_exists('limit',$params)) && (is_int($params['limit'] + 0)) ) {
-			$query->limit = min($maxlimit - $query->offset, max(0,$params['limit'] + 0));
+		if ($query->querymode != SMWQuery::MODE_COUNT) {
+			// set limit small enough to stay in range with chosen offset
+			// it makes sense to have limit=0 in order to only show the link to the search special
+			if ( (array_key_exists('limit',$params)) && (is_int($params['limit'] + 0)) ) {
+				$query->limit = min($maxlimit - $query->offset, max(0,$params['limit'] + 0));
+			} else {
+				$query->limit = $maxlimit;
+			}
+		} else { // largest possible limit for "count"
+			$query->limit = $smwgIQMaxLimit;
 		}
 		if (array_key_exists('sort', $params)) {
 			$query->sort = true;
@@ -117,13 +139,16 @@ class SMWQueryProcessor {
 	 * being part of some special search page.
 	 */
 	static public function getResultHTML($querystring, $params, $inline = true) {
-		$query = SMWQueryProcessor::createQuery($querystring, $params, $inline);
+		$format = SMWQueryProcessor::getResultFormat($params);
+		$query = SMWQueryProcessor::createQuery($querystring, $params, $inline, $format);
 		if ($query instanceof SMWQuery) { // query parsing successful
-			$format = SMWQueryProcessor::getResultFormat($params);
-			/// TODO: incorporate the case $format=='debug' and $format=='count' into the following
 			$res = smwfGetStore()->getQueryResult($query);
-			$printer = SMWQueryProcessor::getResultPrinter($format, $inline, $res);
-			return $printer->getResultHTML($res, $params);
+			if ($query->querymode == SMWQuery::MODE_INSTANCES) {
+				$printer = SMWQueryProcessor::getResultPrinter($format, $inline, $res);
+				return $printer->getResultHTML($res, $params);
+			} else { // result for counting or debugging is just a string
+				return $res;
+			}
 		} else { // error string: return escaped version
 			return htmlspecialchars($query); ///TODO: improve error reporting format ...
 		}
@@ -400,7 +425,6 @@ class SMWQueryParser {
 				}
 				switch ($value) {
 					case '*': // print statement
-						/// TODO: no support for selecting output unit yet
 						if ($chunk == '|') {
 							$label = $this->readChunk('\]\]');
 							if ($label != ']]') {

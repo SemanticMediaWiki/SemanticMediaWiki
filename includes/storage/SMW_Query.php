@@ -19,12 +19,19 @@ require_once($smwgIP . '/includes/storage/SMW_Description.php');
  * additional settings).
  */
 class SMWQuery {
-	protected $m_description;
+
+	const MODE_INSTANCES = 1;
+	const MODE_COUNT = 2;
+	const MODE_DEBUG = 3;
+
 	public $limit = -1;
 	public $offset = 0;
 	public $sort = false;
 	public $ascending = true;
 	public $sortkey = false;
+	public $querymode = SMWQuery::MODE_INSTANCES;
+
+	protected $m_description;
 
 	public function SMWQuery($description = NULL) {
 		$this->m_description = $description;
