@@ -80,8 +80,9 @@ class SMWQueryProcessor {
 		} else {
 			$mainlabel = $qp->getLabel();
 		}
-		///TODO do this only when wanted:
-		$desc->prependPrintRequest(new SMWPrintRequest(SMW_PRINT_THIS, $mainlabel)); 
+		if ( !$desc->isSingleton() || (count($desc->getPrintRequests()) == 0) ) {
+			$desc->prependPrintRequest(new SMWPrintRequest(SMW_PRINT_THIS, $mainlabel)); 
+		}
 
 		$query = new SMWQuery($desc);
 		if ($format == '') {
@@ -254,7 +255,7 @@ class SMWQueryParser {
 		while ($continue) {
 			switch ($chunk) {
 				case '[[': // start new link block
-					$ld = $this->getLinkDescription($printrequests);
+					$ld = $this->getLinkDescription();
 					if ($ld === NULL) {
 						return NULL;
 					} elseif ($ld instanceof SMWPrintRequest) {
@@ -262,6 +263,10 @@ class SMWQueryParser {
 					} else {
 						$result = $this->addDescription($result,$ld);
 					}
+				break;
+				case '<q>': // enter new subquery, currently irrelevant but possible
+					$this->pushDelimiter('</q>');
+					$result = $this->addDescription($result, $this->getSubqueryDescription());
 				break;
 				case '</q>': // exit current subquery
 					if ($this->popDelimiter('</q>')) {

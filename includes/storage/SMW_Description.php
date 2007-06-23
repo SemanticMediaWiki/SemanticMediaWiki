@@ -149,6 +149,13 @@ abstract class SMWDescription {
 	 * Return a string expressing this query.
 	 */
 	abstract public function getQueryString();
+
+	/**
+	 * Return true if the description is required to encompass at most a single
+	 * result, independently of the knowledge base.
+	 */
+	abstract public function isSingleton();
+
 }
 
 /**
@@ -161,6 +168,10 @@ abstract class SMWDescription {
 class SMWThingDescription extends SMWDescription {
 	public function getQueryString() {
 		return '+';
+	}
+
+	public function isSingleton() {
+		return false;
 	}
 }
 
@@ -185,6 +196,10 @@ class SMWClassDescription extends SMWDescription {
 		} else {
 			return '';
 		}
+	}
+
+	public function isSingleton() {
+		return false;
 	}
 }
 
@@ -214,6 +229,10 @@ class SMWNamespaceDescription extends SMWDescription {
 			return '';
 		}
 	}
+
+	public function isSingleton() {
+		return false;
+	}
 }
 
 /**
@@ -241,7 +260,10 @@ class SMWNominalDescription extends SMWDescription {
 			return '';
 		}
 	}
-	
+
+	public function isSingleton() {
+		return true;
+	}
 }
 
 /**
@@ -295,6 +317,10 @@ class SMWValueDescription extends SMWDescription {
 			return '+';
 		}
 	}
+
+	public function isSingleton() {
+		return false;
+	}
 }
 
 /**
@@ -324,6 +350,15 @@ class SMWConjunction extends SMWDescription {
 			$result .= $desc->getQueryString() . ' ';
 		}
 		return $result . '</q>';
+	}
+
+	public function isSingleton() {
+		foreach ($this->m_descriptions as $d) {
+			if ($d->isSingleton()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
 
@@ -362,6 +397,16 @@ class SMWDisjunction extends SMWDescription {
 		}
 		return '<q>' . $result . '</q>';
 	}
+
+	public function isSingleton() {
+		// NOTE: this neglects the case where several disjuncts describe the same object.
+		// I think I cannot really make myself care about this issue ... -- mak
+		if (count($this->m_descriptions) != 1) {
+			return false;
+		} else {
+			return $this->m_descriptions[0]->isSingleton();
+		}
+	}
 }
 
 /**
@@ -392,6 +437,10 @@ class SMWSomeRelation extends SMWDescription {
 	public function getQueryString() {
 		return '[[' . $this->m_relation->getText() . '::<q>' . $this->m_description->getQueryString() . '</q>]]';
 	}
+
+	public function isSingleton() {
+		return false;
+	}
 }
 
 /**
@@ -421,6 +470,10 @@ class SMWSomeAttribute extends SMWDescription {
 
 	public function getQueryString() {
 		return '[[' . $this->m_attribute->getText() . ':=' . $this->m_description->getQueryString() . ']]';
+	}
+
+	public function isSingleton() {
+		return false;
 	}
 }
 
