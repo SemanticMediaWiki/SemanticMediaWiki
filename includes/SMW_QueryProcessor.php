@@ -574,36 +574,25 @@ class SMWQueryParser {
 				//$innerdesc = NULL;
 				while ($continue) {
 					$hasNamespaces = true; // enforced for all cases
-					/// NOTE: this general enforcing is suboptimal for things like 
-					/// "<ask>[[<q>[[Category:A]]</q>]] [[Category:B]]</ask>"
-					/// where one should have a single outer restriction and not enforce NS in the subquery.
-					/// But this only works if all "fixed subjects" have no NS already. It would be a problem
-					/// in cases like "<ask>[[<q>[[Category:A]]</q>||User:C]] [[Category:B]]</ask>". Since we
-					/// cannot go back to get the NS-restriciton into the subquery here, we ignore the first
-					/// case even though it is quite possible (think of many disjuncted subqueries).
-					switch ($chunk) {
-						case '<q>': // subquery
-							$this->pushDelimiter('</q>');
-							$setsubNS = true;
-							$result = $this->addDescription($result, $this->getSubqueryDescription($setsubNS), false);
-						break;
-						default:
-							$list = preg_split('/:/', $chunk, 3); // ":Category:Foo" "User:bar"  ":baz" ":+"
-							if ( ($list[0] == '') && (count($list)==3) ) {
-								$list = array_slice($list, 1);
-							}
-							if ( (count($list) == 2) && ($list[1] == '+') ) { // try namespace restriction
-								global $wgContLang;
-								$idx = $wgContLang->getNsIndex($list[0]);
-								if ($idx !== false) {
-									$result = $this->addDescription($result, new SMWNamespaceDescription($idx), false);
-								}
-							} else {
-								$title = Title::newFromText($chunk);
-								if ($title !== NULL) {
-									$result = $this->addDescription($result, new SMWNominalDescription($title), false);
-								}
-							}
+					if ($chunk == '<q>') { // no subqueries of the form [[<q>...</q>]] (not needed)
+						$this->m_error = 'Subqueries not allowed here.'; //TODO
+						return NULL;
+					}
+					$list = preg_split('/:/', $chunk, 3); // ":Category:Foo" "User:bar"  ":baz" ":+"
+					if ( ($list[0] == '') && (count($list)==3) ) {
+						$list = array_slice($list, 1);
+					}
+					if ( (count($list) == 2) && ($list[1] == '+') ) { // try namespace restriction
+						global $wgContLang;
+						$idx = $wgContLang->getNsIndex($list[0]);
+						if ($idx !== false) {
+							$result = $this->addDescription($result, new SMWNamespaceDescription($idx), false);
+						}
+					} else {
+						$title = Title::newFromText($chunk);
+						if ($title !== NULL) {
+							$result = $this->addDescription($result, new SMWNominalDescription($title), false);
+						}
 					}
 
 					$chunk = $this->readChunk();
