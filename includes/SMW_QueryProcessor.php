@@ -62,7 +62,7 @@ class SMWQueryProcessor {
 	 */
 	static public function createQuery($querystring, $params, $inline = true, $format = '') {
 		// This should be the proper way of substituting templates in a safe and comprehensive way:
-		global $wgTitle;
+		global $wgTitle, $smwgIQSearchNamespaces;
 		$parser = new Parser();
 		$parserOptions = new ParserOptions();
 		$parser->startExternalParse( $wgTitle, $parserOptions, OT_HTML );
@@ -70,6 +70,7 @@ class SMWQueryProcessor {
 
 		// parse query:
 		$qp = new SMWQueryParser();
+		$qp->setDefaultNamespaces($smwgIQSearchNamespaces);
 		$desc = $qp->getQueryDescription($querystring);
 		if ($desc === NULL) { //abort with failure
 			return $qp->getError();
@@ -207,12 +208,27 @@ class SMWQueryParser {
 	protected $m_curstring; // remaining string to be parsed (parsing eats query string from the front)
 	protected $m_error; // false if all went right, string otherwise
 	protected $m_label; //label of the main query result
+	protected $m_defaultns; //description of the default namespace restriction, or NULL if not used
 	
 	protected $m_categoryprefix; // cache label of category namespace . ':'
 	
 	public function SMWQueryParser() {
 		global $wgContLang;
 		$this->m_categoryprefix = $wgContLang->getNsText(NS_CATEGORY) . ':';
+		$this->m_defaultns = NULL;
+	}
+
+	/**
+	 * Provide an array of namespace constants that are used as default restrictions.
+	 * If NULL is given, no such default restrictions will be added (faster).
+	 */
+	public function setDefaultNamespaces($nsarray) {
+		$this->m_defaultns = NULL;
+		if ($nsarray !== NULL) {
+			foreach ($nsarray as $ns) {
+				$this->m_defaultns = $this->addDescription($this->m_defaultns, new SMWNamespaceDescription($ns), false);
+			}
+		}
 	}
 
 	/**
@@ -224,7 +240,8 @@ class SMWQueryParser {
 		$this->m_label = '';
 		$this->m_curstring = $querystring;
 		$this->m_sepstack = array();
-		return $this->getSubqueryDescription();
+		$setNS = true;
+		return $this->getSubqueryDescription($setNS);
 	}
 
 	/**
@@ -247,46 +264,111 @@ class SMWQueryParser {
 	 * Compute an SMWDescription for current part of a query, which should
 	 * be a standalone query (the main query or a subquery enclosed within
 	 * "<q>...</q>". Recursively calls similar methods and returns NULL upon error.
+	 * 
+	 * The call-by-ref parameter $setNS is a boolean. Its input specifies whether
+	 * the query should set the current default namespace if no namespace restricitons
+	 * were given. If false, the super-query is happy to set the required NS-restrictions
+	 * by itself if needed. Otherwise the subquery itslef has to impose the defaults.
+	 * This is so, since outermost queries and subqueries of disjunctions will have to set
+	 * their own default restrictions.
+	 * 
+	 * The return value of $setNS specifies whether or not the subquery has a namespace
+	 * specification in place. This might happen automatically if the query string imposes
+	 * such restrictions. The return value is important for those callers that otherwise
+	 * set up their own restrictions.
+	 * 
+	 * Note that $setNS is no means to switch on or off default namespaces in general,
+	 * but just controls query generation. For general effect, the default namespaces 
+	 * should be set to NULL.
 	 */
-	protected function getSubqueryDescription() {
-		$result = NULL;
-		$printrequests = array();
-		$continue = ($chunk = $this->readChunk()) != '';
+	protected function getSubqueryDescription(&$setNS) {
+		$conjunction = NULL;      // used for the current inner conjunction
+		$disjuncts = array();     // (disjunctive) array of subquery conjunctions
+		$printrequests = array(); // the printrequests found for this query level
+		$hasNamespaces = false;   // does the current $conjnuction have its own namespace restrictions?
+		$mustSetNS = $setNS;      // must ns restrictions be set? (may become true even if $setNS is false)
+
+		$continue = ($chunk = $this->readChunk()) != ''; // skip empty subquery completely, thorwing an error
 		while ($continue) {
+			$setsubNS = false;
 			switch ($chunk) {
 				case '[[': // start new link block
-					$ld = $this->getLinkDescription();
+					$ld = $this->getLinkDescription($setsubNS);
 					if ($ld === NULL) {
 						return NULL;
 					} elseif ($ld instanceof SMWPrintRequest) {
 						$printrequests[] = $ld;
 					} else {
-						$result = $this->addDescription($result,$ld);
+						$conjunction = $this->addDescription($conjunction,$ld);
 					}
 				break;
 				case '<q>': // enter new subquery, currently irrelevant but possible
 					$this->pushDelimiter('</q>');
-					$result = $this->addDescription($result, $this->getSubqueryDescription());
+					$conjunction = $this->addDescription($conjunction, $this->getSubqueryDescription($setsubNS));
 				break;
-				case '</q>': // exit current subquery
-					if ($this->popDelimiter('</q>')) {
-						$continue = false; // leave the loop
-					} else {
-						$this->m_error = 'There appear to be too many occurences of \'' . $chunk . '\' in the query.';
-						return NULL;
+				case '||': case '': case '</q>': // finish disjunction and maybe subquery
+					if ($this->m_defaultns !== NULL) { // possibly add namespace restrictions
+						if ( $hasNamespaces && !$mustSetNS) {
+							// add ns restrictions to all earlier conjunctions (all of which did not have them yet)
+							$mustSetNS = true; // enforce NS restrictions from now on
+							$newdisjuncts = array();
+							foreach ($disjuncts as $conj) {
+								$newdisjuncts[] = $this->addDescription($conj, $this->m_defaultns);
+							}
+							$disjuncts = $newdisjuncts;
+						} elseif ( !$hasNamespaces && $mustSetNS) { 
+							// add ns restriction to current result
+							$conjunction = $this->addDescription($conjunction, $this->m_defaultns);
+						}
+					}
+					$disjuncts[] = $conjunction;
+					// start anew
+					$conjunction = NULL;
+					$hasNamespaces = false;
+					// finish subquery?
+					if ($chunk == '</q>') {
+						if ($this->popDelimiter('</q>')) {
+							$continue = false; // leave the loop
+						} else {
+							$this->m_error = 'There appear to be too many occurences of \'' . $chunk . '\' in the query.';
+							return NULL;
+						}
+					} elseif ($chunk == '') {
+						$continue = false;
 					}
 				break;
 				default: // error: unexpected $chunk
 					$this->m_error = 'The part \'' . $chunk . '\' in the query was not understood. Results might not be as expected.'; // TODO: internationalise
 					return NULL;
 			}
-			$continue = ($continue) && ( ($chunk = $this->readChunk()) != '' );
+			if ($setsubNS) { // namespace restrictions encountered in current conjunct
+				$hasNamespaces = true;
+			}
+			if ($continue) { // read on only if $continue remained true
+				$chunk = $this->readChunk();
+			}
 		}
 
-		if ($result !== NULL) {
-			foreach ($printrequests as $pr) {
-				$result->addPrintRequest($pr);
+		if (count($disjuncts) > 0) { // make disjunctive result
+			$result = NULL;
+			foreach ($disjuncts as $d) {
+				if ($d === NULL) {
+					$this->m_error = 'No condition in subquery.';
+					$setNS = false;
+					return NULL;
+				} else {
+					$result = $this->addDescription($result, $d, false);
+				}
 			}
+		} else {
+			$this->m_error = 'No condition in subquery.';
+			$setNS = false;
+			return NULL;
+		}
+		$setNS = $mustSetNS; // NOTE: also false if namespaces were given but no default NS descs are available
+
+		foreach ($printrequests as $pr) { // add printrequests
+			$result->addPrintRequest($pr);
 		}
 		return $result;
 	}
@@ -296,13 +378,18 @@ class SMWQueryParser {
 	 * be the content of "[[ ... ]]". Alternatively, if the current syntax
 	 * specifies a print request, return the print request object.
 	 * Returns NULL upon error.
+	 *
+	 * The call-by-ref parameter $setNS is a boolean used to state whether
+	 * the namespace defaults must be added, and returns whether any have been
+	 * added. Similar usage as in getSubqueryDescription().
 	 */
-	protected function getLinkDescription() {
+	protected function getLinkDescription(&$setNS) {
 		$result = NULL;
 		// This method is called when we encountered an opening '[['. The following
 		// block could be a Category-statement, fixed object, relation or attribute
 		// statements, or according print statements.
 		$chunk = $this->readChunk();
+		$hasNamespaces = false;
 
 		if ($chunk == $this->m_categoryprefix) { // category statement
 			// note: no subqueries allowed here, inline disjunction allowed, wildcards allowed
@@ -347,8 +434,9 @@ class SMWQueryParser {
 				}
 			}
 		} else { // fixed subject, namespace restriction, property query, or subquery
-			$sep = $this->readChunk();
+			$sep = $this->readChunk('',false); //do not consume hit, "look ahead"
 			if ($sep == '::') { // relation statement
+				$this->readChunk(); // consume $sep
 				$rel = Title::newFromText($chunk, SMW_NS_RELATION);
 				$continue = true;
 				$innerdesc = NULL;
@@ -376,13 +464,15 @@ class SMWQueryParser {
 							}
 						break;
 						case '+': // wildcard
+							/// TODO enforce default namespace!
 							$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
 						break;
-						case '<q>': // subquery
+						case '<q>': // subquery, set default namespaces
 							$this->pushDelimiter('</q>');
-							$innerdesc = $this->addDescription($innerdesc, $this->getSubqueryDescription(), false);
+							$setsubNS = true;
+							$innerdesc = $this->addDescription($innerdesc, $this->getSubqueryDescription($setsubNS), false);
 						break;
-						default: //normal object value
+						default: //normal object value, brings its own namespace
 							$obj = Title::newFromText($chunk);
 							if ($obj !== NULL) {
 								$innerdesc = $this->addDescription($innerdesc, new SMWNominalDescription($obj), false);
@@ -395,6 +485,7 @@ class SMWQueryParser {
 					$result = new SMWSomeRelation($rel,$innerdesc);
 				}
 			} elseif ($sep == ':=') { // attribute statement
+				$this->readChunk(); // consume $sep
 				$att = Title::newFromText($chunk, SMW_NS_ATTRIBUTE);
 				///TODO: currently no support for disjunctions in data values (needs extension of query processor)
 
@@ -482,10 +573,19 @@ class SMWQueryParser {
 				$continue = true;
 				//$innerdesc = NULL;
 				while ($continue) {
+					$hasNamespaces = true; // enforced for all cases
+					/// NOTE: this general enforcing is suboptimal for things like 
+					/// "<ask>[[<q>[[Category:A]]</q>]] [[Category:B]]</ask>"
+					/// where one should have a single outer restriction and not enforce NS in the subquery.
+					/// But this only works if all "fixed subjects" have no NS already. It would be a problem
+					/// in cases like "<ask>[[<q>[[Category:A]]</q>||User:C]] [[Category:B]]</ask>". Since we
+					/// cannot go back to get the NS-restriciton into the subquery here, we ignore the first
+					/// case even though it is quite possible (think of many disjuncted subqueries).
 					switch ($chunk) {
 						case '<q>': // subquery
 							$this->pushDelimiter('</q>');
-							$result = $this->addDescription($result, $this->getSubqueryDescription(), false);
+							$setsubNS = true;
+							$result = $this->addDescription($result, $this->getSubqueryDescription($setsubNS), false);
 						break;
 						default:
 							$list = preg_split('/:/', $chunk, 3); // ":Category:Foo" "User:bar"  ":baz" ":+"
@@ -506,12 +606,7 @@ class SMWQueryParser {
 							}
 					}
 
-					if ($sep !== false) { // resuse prefetched sep
-						$chunk = $sep;
-						$sep = false;
-					} else {
-						$chunk = $this->readChunk();
-					}
+					$chunk = $this->readChunk();
 					if ($chunk == '||') {
 						$chunk = $this->readChunk();
 						$continue = true;
@@ -523,9 +618,15 @@ class SMWQueryParser {
 		}
 
 		if ($result === NULL) { // no useful information or concrete error found
-			$this->m_error = 'Syntax error in query.'; //TODO internationalise
+			$this->m_error = 'Syntax error in part of query.'; //TODO internationalise
 			return NULL;
 		}
+
+		if (!$hasNamespaces && $setNS && ($this->m_defaultns !== NULL) ) {
+			$result = $this->addDescription($result, $this->m_defaultns);
+			$hasNamespaces = true;
+		}
+		$setNS = $hasNamespaces;
 
 		// terminate link (assuming that next chunk was read already)
 		if ($chunk == '|') { // label, TODO
@@ -567,21 +668,30 @@ class SMWQueryParser {
 	 * 
 	 * The stoppattern can be used to customise the matching, especially in order to 
 	 * overread certain special symbols.
+	 * 
+	 * $consume specifies whether the returned chunk should be removed from the
+	 * query string.
 	 */
-	protected function readChunk($stoppattern = '') {
+	protected function readChunk($stoppattern = '', $consume=true) {
 		if ($stoppattern == '') {
 			$stoppattern = '\[\[|\]\]|::|:=|<q>|<\/q>|^' . $this->m_categoryprefix . '|\|\||\|';
 		}
 		$chunks = preg_split('/[\s]*(' . $stoppattern . ')[\s]*/', $this->m_curstring, 2, PREG_SPLIT_DELIM_CAPTURE);
 		if (count($chunks) == 1) { // no matches anymore, strip spaces and finish
-			$this->m_curstring = '';
+			if ($consume) {
+				$this->m_curstring = '';
+			}
 			return trim($chunks[0]);
 		} elseif (count($chunks) == 3) { // this chould generally happen if count is not 1
 			if ($chunks[0] == '') { // string started with delimiter
-				$this->m_curstring = $chunks[2];
+				if ($consume) {
+					$this->m_curstring = $chunks[2];
+				}
 				return $chunks[1]; // spaces stripped already
 			} else {
-				$this->m_curstring = $chunks[1] . $chunks[2];
+				if ($consume) {
+					$this->m_curstring = $chunks[1] . $chunks[2];
+				}
 				return $chunks[0]; // spaces stripped already
 			}
 		} else { return false; }  //should never happen

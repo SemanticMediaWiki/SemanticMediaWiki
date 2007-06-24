@@ -581,6 +581,8 @@ class SMWSQLStore extends SMWStore {
 		} elseif ($query->querymode == SMWQuery::MODE_DEBUG) {
 			list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sql_options );
 			$result = '<div style="border: 1px dotted black; background: #A1FB00; padding: 20px; ">' .
+			          '<b>Generated Wiki Query</b><br />' .
+			          htmlspecialchars($query->getDescription()->getQueryString()) . '<br />' .
 			          '<b>SQL-Query</b><br />' .
 			          "SELECT DISTINCT $pagetable.page_title as title, $pagetable.page_namespace as namespace" .
 			          ' FROM ' . $from . ' WHERE ' . $where . $tailOpts . '<br />' .

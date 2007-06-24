@@ -222,12 +222,8 @@ class SMWNamespaceDescription extends SMWDescription {
 	}
 
 	public function getQueryString() {
-		global $wgContlang;
-		if ($this->m_title !== NULL) {
-			return '[[' . $wgContLang->getNSText($this->m_namespace) . ']]';
-		} else {
-			return '';
-		}
+		global $wgContLang;
+		return '[[' . $wgContLang->getNSText($this->m_namespace) . ':+]]';
 	}
 
 	public function isSingleton() {
@@ -345,11 +341,11 @@ class SMWConjunction extends SMWDescription {
 	}
 
 	public function getQueryString() {
-		$result = '<q>';
+		$result = '';
 		foreach ($this->m_descriptions as $desc) {
 			$result .= $desc->getQueryString() . ' ';
 		}
-		return $result . '</q>';
+		return $result;
 	}
 
 	public function isSingleton() {
@@ -385,13 +381,13 @@ class SMWDisjunction extends SMWDescription {
 
 	public function getQueryString() {
 		$result = '';
-		// TODO: this is not correct ... (many disjunctions have || abbreviations, OR does not work yet)
+		// TODO: many disjunctions have more suitable || abbreviations
 		$first = true;
 		foreach ($this->m_descriptions as $desc) {
 			if ($first) {
 				$first = false;
 			} else {
-				$result .= ' OR ';
+				$result .= ' || ';
 			}
 			$result .= $desc->getQueryString();
 		}
