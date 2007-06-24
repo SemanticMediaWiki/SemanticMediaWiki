@@ -18,9 +18,14 @@ class SMWDataValueFactory {
 	static private $m_valueclasses = array();
 	
 	/**
-	 * Cache for type labels, indexed by attribute name (both without namespace prefix).
+	 * Cache for type specifications (right now strings), indexed by attribute name (both without namespace prefix).
 	 */
-	static private $m_attributelabels = array('Testnary' => 'String;Integer;Wikipage;Date'); ///DEBUG
+	static private $m_typelabels = array('Testnary' => 'String;Integer;Wikipage;Date'); ///DEBUG
+
+	/**
+	 * Cache for type ids, indexed by attribute name (without namespace prefix).
+	 */
+	static private $m_typeids = array();
 
 	/**
 	 * Was code for handling n-ary properties already included?
@@ -33,14 +38,31 @@ class SMWDataValueFactory {
 	 * can be set later on.
 	 */
 	static public function newAttributeValue($attstring, $value=false) {
-		if(!array_key_exists($attstring,SMWDataValueFactory::$m_attributelabels)) {
+		if(!array_key_exists($attstring,SMWDataValueFactory::$m_typelabels)) {
 			$atitle = Title::newFromText($attstring, SMW_NS_ATTRIBUTE);
 			if ($atitle !== NULL) {
-				$typearray = smwfGetStore()->getSpecialValues($atitle,SMW_SP_HAS_TYPE);
-			} else { $typearray = Array(); }
+				return SMWDataValueFactory::newAttributeObjectValue($atitle,$value);
+			} else {
+				return new SMWOldDataValue(new SMWErrorTypeHandler(wfMsgForContent('smw_notype')));
+			}
+		}
+		return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value);
+	}
 
+	/**
+	 * Create a value from a string supplied by a user for a given attribute title.
+	 * If no value is given, an empty container is created, the value of which
+	 * can be set later on.
+	 */
+	static public function newAttributeObjectValue(Title $att, $value=false) {
+		$attstring = $att->getText();
+		if(!array_key_exists($attstring,SMWDataValueFactory::$m_typelabels)) {
+			$typearray = smwfGetStore()->getSpecialValues($att,SMW_SP_HAS_TYPE);
 			if (count($typearray)==1) {
-				SMWDataValueFactory::$m_attributelabels[$attstring] = $typearray[0];
+				SMWDataValueFactory::$m_typelabels[$attstring] = $typearray[0];
+				$result = SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value);
+				SMWDataValueFactory::$m_typeids[$attstring] = $result->getTypeID(); // also cache typeid
+				return $result;
 			} elseif (count($typearray)==0) {
 				///TODO
 				return new SMWOldDataValue(new SMWErrorTypeHandler(wfMsgForContent('smw_notype')));
@@ -49,7 +71,7 @@ class SMWDataValueFactory {
 				return new SMWOldDataValue(new SMWErrorTypeHandler(wfMsgForContent('smw_manytypes')));
 			}
 		}
-		return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_attributelabels[$attstring], $value);
+		return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value);
 	}
 
 	/**
@@ -131,6 +153,18 @@ class SMWDataValueFactory {
 			$result->setUserValue($value);
 		}
 		return $result;
+	}
+
+	/**
+	 * Quickly get the type id of some attribute without necessarily making another datavalue.
+	 */
+	static public function getAttributeObjectTypeID(Title $att) {
+		$attstring = $att->getText();
+		if (array_key_exists($attstring, SMWDataValueFactory::$m_typeids)) {
+			return SMWDataValueFactory::$m_typeids[$attstring];
+		} else {
+			return SMWDataValueFactory::newAttributeObjectValue($att)->getTypeID(); // this also triggers caching
+		}
 	}
 
 	/**

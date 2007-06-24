@@ -172,45 +172,47 @@ class SMWSQLStore extends SMWStore {
 		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
 		$result = array();
 
-		// take care of "normal" attributes first
-		$value_column = 'value_xsd';
-		if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) && ($requestoptions->boundary->isNumeric()) ) {
-			$value_column = 'value_num';
+		$id = SMWDataValueFactory::getAttributeObjectTypeID($attribute);
+		switch ($id) {
+			case 'text': // long text attribute
+				$res = $db->select( $db->tableName('smw_longstrings'),
+									'value_blob',
+									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+									' AND attribute_title=' . $db->addQuotes($attribute->getDBkey()),
+									'SMW::getAttributeValues', $this->getSQLOptions($requestoptions) );
+				if($db->numRows( $res ) > 0) {
+					while($row = $db->fetchObject($res)) {
+						$dv = SMWDataValueFactory::newAttributeObjectValue($attribute);
+						$dv->setOutputFormat($outputformat);
+						$dv->setXSDValue($row->value_blob, '');
+						$result[] = $dv;
+					}
+				}
+				$db->freeResult($res);
+			break;
+			default: // all others
+				if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) &&
+				     ($requestoptions->boundary->isNumeric()) ) {
+					$value_column = 'value_num';
+				} else {
+					$value_column = 'value_xsd';
+				}
+				$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+					' AND attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
+					$this->getSQLConditions($requestoptions,$value_column,'value_xsd');
+				$res = $db->select( $db->tableName('smw_attributes'),
+									'value_unit, value_xsd',
+									$sql, 'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,$value_column) );
+				if($db->numRows( $res ) > 0) {
+					while($row = $db->fetchObject($res)) {
+						$dv = SMWDataValueFactory::newAttributeObjectValue($attribute);
+						$dv->setOutputFormat($outputformat);
+						$dv->setXSDValue($row->value_xsd, $row->value_unit);
+						$result[] = $dv;
+					}
+				}
+				$db->freeResult($res);
 		}
-		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-		       ' AND attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
-		       $this->getSQLConditions($requestoptions,$value_column,'value_xsd');
-		$res = $db->select( $db->tableName('smw_attributes'),
-		                    'value_unit, value_datatype, value_xsd',
-		                    $sql, 'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,$value_column) );
-		if($db->numRows( $res ) > 0) {
-			while($row = $db->fetchObject($res)) {
-				$dv = SMWDataValueFactory::newTypehandlerValue(SMWTypeHandlerFactory::getTypeHandlerByID($row->value_datatype));
-				$dv->setAttribute($attribute->getText());
-				$dv->setOutputFormat($outputformat);
-				$dv->setXSDValue($row->value_xsd, $row->value_unit);
-				$result[] = $dv;
-			}
-		}
-		$db->freeResult($res);
-
-		// finally, look for long strings
-		$res = $db->select( $db->tableName('smw_longstrings'),
-		                    'value_blob',
-		                    'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-		                    ' AND attribute_title=' . $db->addQuotes($attribute->getDBkey()),
-		                    'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,$value_column) );
-		if($db->numRows( $res ) > 0) {
-			while($row = $db->fetchObject($res)) {
-				$dv = SMWDataValueFactory::newTypehandlerValue(SMWTypeHandlerFactory::getTypeHandlerByID('text'));
-				$dv->setAttribute($attribute->getText());
-				$dv->setOutputFormat($outputformat);
-				$dv->setXSDValue($row->value_blob, '');
-				$result[] = $dv;
-			}
-		}
-		$db->freeResult($res);
-
 		return $result;
 	}
 
@@ -246,25 +248,32 @@ class SMWSQLStore extends SMWStore {
 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
 		$result = array();
-		$res = $db->select( $db->tableName('smw_attributes'),
-		                    'DISTINCT subject_id',
-		                    $sql, 'SMW::getAllAttributeSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
-		if($db->numRows( $res ) > 0) {
-			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromId($row->subject_id);
-			}
+		$id = SMWDataValueFactory::getAttributeObjectTypeID($attribute);
+		switch ($id) {
+			case 'text':
+				$res = $db->select( $db->tableName('smw_longstrings'),
+				                    'DISTINCT subject_id',
+				                    $sql, 'SMW::getAllAttributeSubjects', 
+				                    $this->getSQLOptions($requestoptions,'subject_title') );
+				if($db->numRows( $res ) > 0) {
+					while($row = $db->fetchObject($res)) {
+						$result[] = Title::newFromId($row->subject_id);
+					}
+				}
+				$db->freeResult($res);
+			break;
+			default:
+				$res = $db->select( $db->tableName('smw_attributes'),
+				                    'DISTINCT subject_id',
+				                    $sql, 'SMW::getAllAttributeSubjects', 
+				                    $this->getSQLOptions($requestoptions,'subject_title') );
+				if($db->numRows( $res ) > 0) {
+					while($row = $db->fetchObject($res)) {
+						$result[] = Title::newFromId($row->subject_id);
+					}
+				}
+				$db->freeResult($res);
 		}
-		$db->freeResult($res);
-		$res = $db->select( $db->tableName('smw_longstrings'),
-		                    'DISTINCT subject_id',
-		                    $sql, 'SMW::getAllAttributeSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
-		if($db->numRows( $res ) > 0) {
-			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromId($row->subject_id);
-			}
-		}
-		$db->freeResult($res);
-
 		return $result;
 	}
 
@@ -533,7 +542,6 @@ class SMWSQLStore extends SMWStore {
 	 * Probably the query parser (e.g. it can distinguish subqueries from other nested constructs that
 	 * are not "subqueries" from a user perspective, it also has a good insight in the query structure for
 	 * applying structural limits)
-	 * TODO: implement namespace restrictions
 	 * TODO: we now have sorting even for subquery conditions. Does this work? Is it slow/problematic?
 	 * NOTE: we do not support category wildcards, as they have no useful semantics in OWL/RDFS/LP/whatever
 	 */
@@ -676,7 +684,7 @@ class SMWSQLStore extends SMWStore {
 					value_datatype     VARCHAR(31) NOT NULL,
 					value_xsd          VARCHAR(255) NOT NULL,
 					value_num          DOUBLE
-					) TYPE=innodb';
+					) TYPE=innodb';  /// TODO: remove value_datatype column completely
 			$res = $db->query( $sql, $fname );
 		}
 
@@ -827,6 +835,12 @@ class SMWSQLStore extends SMWStore {
 				$from .= ' INNER JOIN ' . $db->tableName('smw_attributes') . ' AS ' . $curtables['ATTS'] . ' ON ' . $curtables['ATTS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
 				return true;
 			}
+		} elseif ($tablename == 'TEXT') {
+			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+				$curtables['TEXT'] = 'txt' . $this->m_tablenum++;
+				$from .= ' INNER JOIN ' . $db->tableName('smw_longstrings') . ' AS ' . $curtables['TEXT'] . ' ON ' . $curtables['TEXT'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
+				return true;
+			}
 		}
 		return false;
 	}
@@ -886,28 +900,33 @@ class SMWSQLStore extends SMWStore {
 				          $description->getIndividual()->getNamespace();
 			}
 		} elseif ($description instanceof SMWValueDescription) {
-			if ( $this->addInnerJoin('ATTS', $from, $db, $curtables) ) {
-				switch ($description->getComparator()) {
-					case SMW_CMP_EQ: $op = '='; break;
-					case SMW_CMP_LEQ: $op = '<='; break;
-					case SMW_CMP_GEQ: $op = '>='; break;
-					case SMW_CMP_NEQ: $op = '!='; break;
-					case SMW_CMP_ANY: default: $op = NULL; break;
-				}
-				if ($op !== NULL) {
-					if ($description->getDatavalue()->isNumeric()) {
-						$valuefield = 'value_num';
-						$value = $description->getDatavalue()->getNumericValue();
-					} else {
-						$valuefield = 'value_xsd';
-						$value = $description->getDatavalue()->getXSDValue();
+			switch ($description->getDatavalue()->getTypeID()) {
+				case 'text': // actually this should not happen; we cannot do anything here 
+				break;
+				default:
+					if ( $this->addInnerJoin('ATTS', $from, $db, $curtables) ) {
+						switch ($description->getComparator()) {
+							case SMW_CMP_EQ: $op = '='; break;
+							case SMW_CMP_LEQ: $op = '<='; break;
+							case SMW_CMP_GEQ: $op = '>='; break;
+							case SMW_CMP_NEQ: $op = '!='; break;
+							case SMW_CMP_ANY: default: $op = NULL; break;
+						}
+						if ($op !== NULL) {
+							if ($description->getDatavalue()->isNumeric()) {
+								$valuefield = 'value_num';
+								$value = $description->getDatavalue()->getNumericValue();
+							} else {
+								$valuefield = 'value_xsd';
+								$value = $description->getDatavalue()->getXSDValue();
+							}
+							///TODO: implement check for unit
+							$where .= $curtables['ATTS'] . '.' .  $valuefield . $op . $db->addQuotes($value);
+							if ($sort != '') {
+								$this->m_sortfield = $curtables['ATTS'] . '.' . $valuefield;
+							}
+						}
 					}
-					///TODO: implement check for unit
-					$where .= $curtables['ATTS'] . '.' .  $valuefield . $op . $db->addQuotes($value);
-					if ($sort != '') {
-						$this->m_sortfield = $curtables['ATTS'] . '.' . $valuefield;
-					}
-				}
 			}
 		} elseif ($description instanceof SMWConjunction) {
 			foreach ($description->getDescriptions() as $subdesc) {
@@ -950,13 +969,24 @@ class SMWSQLStore extends SMWStore {
 				}
 			}
 		} elseif ($description instanceof SMWSomeAttribute) {
-			if ($this->addInnerJoin('ATTS', $from, $db, $curtables)) {
-				$where .= $curtables['ATTS'] . '.attribute_title=' . 
-				          $db->addQuotes($description->getAttribute()->getDBKey());
-				$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $curtables, ($this->m_sortkey == $description->getAttribute()->getDBKey()) );
-				if ( $subwhere != '') {
-					$where .= ' AND (' . $subwhere . ')';
-				}
+			$id = SMWDataValueFactory::getAttributeObjectTypeID($description->getAttribute());
+			switch ($id) {
+				case 'text':
+					if ($this->addInnerJoin('TEXT', $from, $db, $curtables)) {
+						$where .= $curtables['TEXT'] . '.attribute_title=' . 
+								$db->addQuotes($description->getAttribute()->getDBKey());
+						// no recursion: we do not support further conditions on text-type values
+					}
+				break;
+				default:
+					if ($this->addInnerJoin('ATTS', $from, $db, $curtables)) {
+						$where .= $curtables['ATTS'] . '.attribute_title=' . 
+								$db->addQuotes($description->getAttribute()->getDBKey());
+						$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $curtables, ($this->m_sortkey == $description->getAttribute()->getDBKey()) );
+						if ( $subwhere != '') {
+							$where .= ' AND (' . $subwhere . ')';
+						}
+					}
 			}
 		}
 

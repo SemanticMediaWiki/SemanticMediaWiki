@@ -581,7 +581,7 @@ class SMWQueryParser {
 				}
 			break;
 			case '+': // wildcard
-				$vd = new SMWValueDescription(NULL, SMW_CMP_ANY);
+				$vd = new SMWValueDescription(SMWDataValueFactory::newAttributeObjectValue($att), SMW_CMP_ANY);
 			break;
 			default: // fixed value, possibly with comparator addons
 				// for now, treat comparators only if placed before whole value:
@@ -601,7 +601,7 @@ class SMWQueryParser {
 					}
 				}
 				// TODO: needs extension for n-ary values
-				$dv = SMWDataValueFactory::newAttributeValue($att->getText(), $value);
+				$dv = SMWDataValueFactory::newAttributeObjectValue($att, $value);
 				if (!$dv->isValid()) {
 					$this->m_error = $dv->getError();
 					$vd = new SMWValueDescription(NULL, SMW_CMP_ANY);

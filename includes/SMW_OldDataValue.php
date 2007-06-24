@@ -302,7 +302,11 @@ class SMWOldDataValue extends SMWDataValue {
 
 	public function setOutputFormat($formatstring) {
 		// interpret new output format as the desired unit for united quantities
-		$this->setDesiredUnits(array($formatstring));
+		if ($formatstring != '') {
+			$this->setDesiredUnits(array($formatstring));
+		} else {
+			$this->setDesiredUnits(array());
+		}
 	}
 
 

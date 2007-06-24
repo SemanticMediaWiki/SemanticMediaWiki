@@ -98,7 +98,7 @@ class SMWPrintRequest {
 
 	public function getTypeID() {
 		if ($this->m_typeid === false) {
-			$dv = SMWDataValueFactory::newAttributeValue($this->m_title->getText());
+			$dv = SMWDataValueFactory::newAttributeObjectValue($this->m_title);
 			$this->m_typeid = $dv->getTypeID();
 		}
 		return $this->m_typeid;
@@ -277,7 +277,7 @@ class SMWValueDescription extends SMWDescription {
 	protected $m_datavalue;
 	protected $m_comparator;
 
-	public function SMWValueDescription($datavalue, $comparator = SMW_CMP_EQ) {
+	public function SMWValueDescription(SMWDataValue $datavalue, $comparator = SMW_CMP_EQ) {
 		$this->m_datavalue = $datavalue; // might be NULL for SMW_CMP_ANY
 		$this->m_comparator = $comparator;
 	}
