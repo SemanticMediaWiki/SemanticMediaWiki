@@ -241,7 +241,7 @@ class SMWQueryParser {
 		$this->m_curstring = $querystring;
 		$this->m_sepstack = array();
 		$setNS = true;
-		return $this->getSubqueryDescription($setNS);
+		return $this->getSubqueryDescription($setNS, $this->m_label);
 	}
 
 	/**
@@ -267,8 +267,8 @@ class SMWQueryParser {
 	 * 
 	 * The call-by-ref parameter $setNS is a boolean. Its input specifies whether
 	 * the query should set the current default namespace if no namespace restricitons
-	 * were given. If false, the super-query is happy to set the required NS-restrictions
-	 * by itself if needed. Otherwise the subquery itslef has to impose the defaults.
+	 * were given. If false, the calling super-query is happy to set the required 
+	 * NS-restrictions by itself if needed. Otherwise the subquery has to impose the defaults.
 	 * This is so, since outermost queries and subqueries of disjunctions will have to set
 	 * their own default restrictions.
 	 * 
@@ -280,8 +280,10 @@ class SMWQueryParser {
 	 * Note that $setNS is no means to switch on or off default namespaces in general,
 	 * but just controls query generation. For general effect, the default namespaces 
 	 * should be set to NULL.
+	 *
+	 * The call-by-ref parameter $label is used to append any label strings found.
 	 */
-	protected function getSubqueryDescription(&$setNS) {
+	protected function getSubqueryDescription(&$setNS, &$label) {
 		$conjunction = NULL;      // used for the current inner conjunction
 		$disjuncts = array();     // (disjunctive) array of subquery conjunctions
 		$printrequests = array(); // the printrequests found for this query level
@@ -293,7 +295,7 @@ class SMWQueryParser {
 			$setsubNS = false;
 			switch ($chunk) {
 				case '[[': // start new link block
-					$ld = $this->getLinkDescription($setsubNS);
+					$ld = $this->getLinkDescription($setsubNS, $label);
 					if ($ld === NULL) {
 						return NULL;
 					} elseif ($ld instanceof SMWPrintRequest) {
@@ -304,7 +306,8 @@ class SMWQueryParser {
 				break;
 				case '<q>': // enter new subquery, currently irrelevant but possible
 					$this->pushDelimiter('</q>');
-					$conjunction = $this->addDescription($conjunction, $this->getSubqueryDescription($setsubNS));
+					$conjunction = $this->addDescription($conjunction, $this->getSubqueryDescription($setsubNS, $label));
+					/// TODO: print requests from subqueries currently are ignored, should be moved down
 				break;
 				case '||': case '': case '</q>': // finish disjunction and maybe subquery
 					if ($this->m_defaultns !== NULL) { // possibly add namespace restrictions
@@ -379,233 +382,285 @@ class SMWQueryParser {
 	 * specifies a print request, return the print request object.
 	 * Returns NULL upon error.
 	 *
-	 * The call-by-ref parameter $setNS is a boolean used to state whether
-	 * the namespace defaults must be added, and returns whether any have been
-	 * added. Similar usage as in getSubqueryDescription().
+	 * Parameters $setNS and $label have the same use as in getSubqueryDescription().
 	 */
-	protected function getLinkDescription(&$setNS) {
-		$result = NULL;
+	protected function getLinkDescription(&$setNS, &$label) {
 		// This method is called when we encountered an opening '[['. The following
 		// block could be a Category-statement, fixed object, relation or attribute
 		// statements, or according print statements.
 		$chunk = $this->readChunk();
-		$hasNamespaces = false;
-
 		if ($chunk == $this->m_categoryprefix) { // category statement
-			// note: no subqueries allowed here, inline disjunction allowed, wildcards allowed
-			$continue = true;
-			while ($continue) {
-				$chunk = $this->readChunk();
-				switch ($chunk) {
-					case '*': //print statement
-						$chunk = $this->readChunk('\]\]|\|');
-						if ($chunk == '|') {
-							$label = $this->readChunk('\]\]');
-							if ($label != ']]') {
-								$chunk = $this->readChunk('\]\]');
-							} else {
-								$label = '';
-								$chunk = ']]';
-							}
-						} else {
-							global $wgContLang;
-							$label = $wgContLang->getNSText(NS_CATEGORY);
-						}
-						if ($chunk == ']]') {
-							return new SMWPrintRequest(SMW_PRINT_CATS, $label);
-						} else {
-							$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
-							return NULL;
-						}
-					break;
-					case '+': //wildcard, ignore for categories (semantically meaningless)
-					break;
-					default: //assume category title
-						$cat = Title::newFromText($chunk, NS_CATEGORY);
-						if ($cat !== NULL) {
-							$result = $this->addDescription($result, new SMWClassDescription($cat), false);
-						}
-				}
-				$chunk = $this->readChunk();
-				if ($chunk == '||') {
-					$continue = true;
-				} else {
-					$continue = false;
-				}
-			}
+			return $this->getCategoryDescription($setNS, $label);
 		} else { // fixed subject, namespace restriction, property query, or subquery
 			$sep = $this->readChunk('',false); //do not consume hit, "look ahead"
 			if ($sep == '::') { // relation statement
-				$this->readChunk(); // consume $sep
-				$rel = Title::newFromText($chunk, SMW_NS_RELATION);
-				$continue = true;
-				$innerdesc = NULL;
-				while ($continue) {
-					$chunk = $this->readChunk();
-					switch ($chunk) {
-						case '*': // print statement, abort processing
-							$chunk = $this->readChunk('\]\]|\|');
-							if ($chunk == '|') {
-								$label = $this->readChunk('\]\]');
-								if ($label != ']]') {
-									$chunk = $this->readChunk('\]\]');
-								} else {
-									$label = '';
-									$chunk = ']]';
-								}
-							} else {
-								$label = $rel->getText();
-							}
-							if ($chunk == ']]') {
-								return new SMWPrintRequest(SMW_PRINT_RELS, $label, $rel);
-							} else {
-								$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
-								return NULL;
-							}
-						break;
-						case '+': // wildcard
-							/// TODO enforce default namespace!
-							$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
-						break;
-						case '<q>': // subquery, set default namespaces
-							$this->pushDelimiter('</q>');
-							$setsubNS = true;
-							$innerdesc = $this->addDescription($innerdesc, $this->getSubqueryDescription($setsubNS), false);
-						break;
-						default: //normal object value, brings its own namespace
-							$obj = Title::newFromText($chunk);
-							if ($obj !== NULL) {
-								$innerdesc = $this->addDescription($innerdesc, new SMWNominalDescription($obj), false);
-							}
-					}
-					$chunk = $this->readChunk();
-					$continue = ($chunk == '||');
-				}
-				if ($innerdesc !== NULL) {
-					$result = new SMWSomeRelation($rel,$innerdesc);
-				}
+				return $this->getRelationDescription($chunk, $setNS, $label);
 			} elseif ($sep == ':=') { // attribute statement
-				$this->readChunk(); // consume $sep
-				$att = Title::newFromText($chunk, SMW_NS_ATTRIBUTE);
-				///TODO: currently no support for disjunctions in data values (needs extension of query processor)
-
-				// get values, including values with internal [[...]]
-				$open = 1;
-				$value = '';
-				while ( ($open > 0) && ($chunk != '') ) {
-					$chunk = $this->readChunk('\[\[|\]\]|\|');
-					switch ($chunk) {
-						case '[[': // open new [[ ]]
-							$open++;
-						break;
-						case ']]': // close [[ ]]
-							$open--;
-						break;
-						case '|': // terminates only outermost [[ ]]
-							if ($open == 1) {
-								$open = 0;
-							}
-						break;
-					}
-					if ($open != 0) {
-						$value .= $chunk;
-					}
-				}
-				// note that at this point, we already read one more chunk behind the value
-				$list = preg_split('/^\*/',$value,2);
-				if (count($list) == 2) { //hit
-					$value = '*';
-					$printmodifier = $list[1];
-				} else {
-					$printmodifier = '';
-				}
-				switch ($value) {
-					case '*': // print statement
-						if ($chunk == '|') {
-							$label = $this->readChunk('\]\]');
-							if ($label != ']]') {
-								$chunk = $this->readChunk('\]\]');
-							} else {
-								$label = '';
-								$chunk = ']]';
-							}
-						} else {
-							$label = $att->getText();
-						}
-						if ($chunk == ']]') {
-							return new SMWPrintRequest(SMW_PRINT_ATTS, $label, $att, $printmodifier);
-						} else {
-							$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
-							return NULL;
-						}
-					break;
-					case '+': // wildcard
-						$vd = new SMWValueDescription(NULL, SMW_CMP_ANY);
-					break;
-					default: // fixed value, possibly with comparator addons
-						// for now, treat comparators only if placed before whole value:
-						$list = preg_split('/^(<|>)/',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
-						$comparator = SMW_CMP_EQ;
-						if (count($list) == 3) { // initial comparator found ($list[1] should be empty)
-							switch ($list[1]) {
-								case '<':
-									$comparator = SMW_CMP_LEQ;
-									$value = $list[2];
-								break;
-								case '>':
-									$comparator = SMW_CMP_GEQ;
-									$value = $list[2];
-								break;
-								//default: not possible
-							}
-						}
-						// TODO: needs extension for n-ary values
-						$dv = SMWDataValueFactory::newAttributeValue($att->getText(), $value);
-						if (!$dv->isValid()) {
-							$this->m_error = $dv->getError();
-							$vd = new SMWValueDescription(NULL, SMW_CMP_ANY);
-						} else {
-							$vd = new SMWValueDescription($dv, $comparator);
-						}
-				}
-				$result = new SMWSomeAttribute($att, $vd);
+				return $this->getAttributeDescription($chunk, $setNS, $label);
 			} else { // Fixed article/namespace restriction. $sep should be ]] or ||
-				$continue = true;
-				//$innerdesc = NULL;
-				while ($continue) {
-					$hasNamespaces = true; // enforced for all cases
-					if ($chunk == '<q>') { // no subqueries of the form [[<q>...</q>]] (not needed)
-						$this->m_error = 'Subqueries not allowed here.'; //TODO
+				return $this->getArticleDescription($chunk, $setNS, $label);
+			}
+		}
+	}
+
+	/**
+	 * Parse a category description (the part of an inline query that
+	 * is in between "[[Category:" and the closing "]]" and create a
+	 * suitable description.
+	 */
+	protected function getCategoryDescription(&$setNS, &$label) {
+		// note: no subqueries allowed here, inline disjunction allowed, wildcards allowed
+		$result = NULL;
+		$continue = true;
+		while ($continue) {
+			$chunk = $this->readChunk();
+			switch ($chunk) {
+				case '*': //print statement
+					$chunk = $this->readChunk('\]\]|\|');
+					if ($chunk == '|') {
+						$label = $this->readChunk('\]\]');
+						if ($label != ']]') {
+							$chunk = $this->readChunk('\]\]');
+						} else {
+							$label = '';
+							$chunk = ']]';
+						}
+					} else {
+						global $wgContLang;
+						$label = $wgContLang->getNSText(NS_CATEGORY);
+					}
+					if ($chunk == ']]') {
+						return new SMWPrintRequest(SMW_PRINT_CATS, $label);
+					} else {
+						$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
 						return NULL;
 					}
-					$list = preg_split('/:/', $chunk, 3); // ":Category:Foo" "User:bar"  ":baz" ":+"
-					if ( ($list[0] == '') && (count($list)==3) ) {
-						$list = array_slice($list, 1);
+				break;
+				case '+': //wildcard, ignore for categories (semantically meaningless)
+				break;
+				default: //assume category title
+					$cat = Title::newFromText($chunk, NS_CATEGORY);
+					if ($cat !== NULL) {
+						$result = $this->addDescription($result, new SMWClassDescription($cat), false);
 					}
-					if ( (count($list) == 2) && ($list[1] == '+') ) { // try namespace restriction
-						global $wgContLang;
-						$idx = $wgContLang->getNsIndex($list[0]);
-						if ($idx !== false) {
-							$result = $this->addDescription($result, new SMWNamespaceDescription($idx), false);
-						}
-					} else {
-						$title = Title::newFromText($chunk);
-						if ($title !== NULL) {
-							$result = $this->addDescription($result, new SMWNominalDescription($title), false);
-						}
-					}
+			}
+			$chunk = $this->readChunk();
+			$continue = ($chunk == '||');
+		}
 
-					$chunk = $this->readChunk();
-					if ($chunk == '||') {
-						$chunk = $this->readChunk();
-						$continue = true;
+		return $this->finishLinkDescription($chunk, false, $result, $setNS, $label);
+	}
+
+	/**
+	 * Parse a relation description (the part of an inline query that
+	 * is in between "[[Some Relation::" and the closing "]]" and create a
+	 * suitable description. The "::" is the first chunk on the current
+	 * string.
+	 */
+	protected function getRelationDescription($relname, &$setNS, &$label) {
+		$innerdesc = NULL;
+		$rel = Title::newFromText($relname, SMW_NS_RELATION);
+
+		$this->readChunk(); // consume seperator "::"
+		$continue = true;
+		while ($continue) {
+			$chunk = $this->readChunk();
+			switch ($chunk) {
+				case '*': // print statement, abort processing
+					$chunk = $this->readChunk('\]\]|\|');
+					if ($chunk == '|') {
+						$label = $this->readChunk('\]\]');
+						if ($label != ']]') {
+							$chunk = $this->readChunk('\]\]');
+						} else {
+							$label = '';
+							$chunk = ']]';
+						}
 					} else {
-						$continue = false;
+						$label = $rel->getText();
+					}
+					if ($chunk == ']]') {
+						return new SMWPrintRequest(SMW_PRINT_RELS, $label, $rel);
+					} else {
+						$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
+						return NULL;
+					}
+				break;
+				case '+': // wildcard
+					if ($this->m_defaultns !== NULL) {
+						$innerdesc = $this->addDescription($innerdesc, $this->m_defaultns, false);
+					} else {
+						$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
+					}
+				break;
+				case '<q>': // subquery, set default namespaces
+					$this->pushDelimiter('</q>');
+					$setsubNS = true;
+					$sublabel = '';
+					$innerdesc = $this->addDescription($innerdesc, $this->getSubqueryDescription($setsubNS, $sublabel), false);
+				break;
+				default: //normal object value, brings its own namespace
+					$obj = Title::newFromText($chunk);
+					if ($obj !== NULL) {
+						$innerdesc = $this->addDescription($innerdesc, new SMWNominalDescription($obj), false);
+					}
+			}
+			$chunk = $this->readChunk();
+			$continue = ($chunk == '||');
+		}
+
+		if ($innerdesc !== NULL) {
+			$result = new SMWSomeRelation($rel,$innerdesc);
+		} else {
+			$result = NULL;
+		}
+
+		return $this->finishLinkDescription($chunk, false, $result, $setNS, $label);
+	}
+		
+	/**
+	 * Parse an attribute description (the part of an inline query that
+	 * is in between "[[Some Attribute:=" and the closing "]]" and create a
+	 * suitable description. The ":=" is the first chunk on the current
+	 * string.
+	 */
+	protected function getAttributeDescription($attname, &$setNS, &$label) {
+		$this->readChunk(); // consume seperator ":="
+		$att = Title::newFromText($attname, SMW_NS_ATTRIBUTE);
+		///TODO: currently no support for disjunctions in data values (needs extension of query processor)
+
+		// get values, including values with internal [[...]]
+		$open = 1;
+		$value = '';
+		$chunk = 'NONEMPTY';
+		while ( ($open > 0) && ($chunk != '') ) {
+			$chunk = $this->readChunk('\[\[|\]\]|\|');
+			switch ($chunk) {
+				case '[[': // open new [[ ]]
+					$open++;
+				break;
+				case ']]': // close [[ ]]
+					$open--;
+				break;
+				case '|': // terminates only outermost [[ ]]
+					if ($open == 1) {
+						$open = 0;
+					}
+				break;
+			}
+			if ($open != 0) {
+				$value .= $chunk;
+			}
+		}
+		// note that at this point, we already read one more chunk behind the value
+		$list = preg_split('/^\*/',$value,2);
+		if (count($list) == 2) { //hit
+			$value = '*';
+			$printmodifier = $list[1];
+		} else {
+			$printmodifier = '';
+		}
+		switch ($value) {
+			case '*': // print statement
+				if ($chunk == '|') {
+					$label = $this->readChunk('\]\]');
+					if ($label != ']]') {
+						$chunk = $this->readChunk('\]\]');
+					} else {
+						$label = '';
+						$chunk = ']]';
+					}
+				} else {
+					$label = $att->getText();
+				}
+				if ($chunk == ']]') {
+					return new SMWPrintRequest(SMW_PRINT_ATTS, $label, $att, $printmodifier);
+				} else {
+					$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
+					return NULL;
+				}
+			break;
+			case '+': // wildcard
+				$vd = new SMWValueDescription(NULL, SMW_CMP_ANY);
+			break;
+			default: // fixed value, possibly with comparator addons
+				// for now, treat comparators only if placed before whole value:
+				$list = preg_split('/^(<|>)/',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
+				$comparator = SMW_CMP_EQ;
+				if (count($list) == 3) { // initial comparator found ($list[1] should be empty)
+					switch ($list[1]) {
+						case '<':
+							$comparator = SMW_CMP_LEQ;
+							$value = $list[2];
+						break;
+						case '>':
+							$comparator = SMW_CMP_GEQ;
+							$value = $list[2];
+						break;
+						//default: not possible
 					}
 				}
+				// TODO: needs extension for n-ary values
+				$dv = SMWDataValueFactory::newAttributeValue($att->getText(), $value);
+				if (!$dv->isValid()) {
+					$this->m_error = $dv->getError();
+					$vd = new SMWValueDescription(NULL, SMW_CMP_ANY);
+				} else {
+					$vd = new SMWValueDescription($dv, $comparator);
+				}
+		}
+
+		return $this->finishLinkDescription($chunk, false, new SMWSomeAttribute($att, $vd), $setNS, $label);
+	}
+	
+	/**
+	 * Parse an article description (the part of an inline query that
+	 * is in between "[[" and the closing "]]" if it is not specifying
+	 * a category, relation, or attribute) and create a suitable 
+	 * description.
+	 * The first chunk behind the "[[" has already been read and is
+	 * passed as a parameter.
+	 */
+	protected function getArticleDescription($firstchunk, &$setNS, &$label) {
+		$chunk = $firstchunk;
+		$result = NULL;
+		$continue = true;
+		//$innerdesc = NULL;
+		while ($continue) {
+			if ($chunk == '<q>') { // no subqueries of the form [[<q>...</q>]] (not needed)
+				$this->m_error = 'Subqueries not allowed here.'; //TODO
+				return NULL;
+			}
+			$list = preg_split('/:/', $chunk, 3); // ":Category:Foo" "User:bar"  ":baz" ":+"
+			if ( ($list[0] == '') && (count($list)==3) ) {
+				$list = array_slice($list, 1);
+			}
+			if ( (count($list) == 2) && ($list[1] == '+') ) { // try namespace restriction
+				global $wgContLang;
+				$idx = $wgContLang->getNsIndex($list[0]);
+				if ($idx !== false) {
+					$result = $this->addDescription($result, new SMWNamespaceDescription($idx), false);
+				}
+			} else {
+				$title = Title::newFromText($chunk);
+				if ($title !== NULL) {
+					$result = $this->addDescription($result, new SMWNominalDescription($title), false);
+				}
+			}
+
+			$chunk = $this->readChunk();
+			if ($chunk == '||') {
+				$chunk = $this->readChunk();
+				$continue = true;
+			} else {
+				$continue = false;
 			}
 		}
 
+		return $this->finishLinkDescription($chunk, true, $result, $setNS, $label);
+	}
+	
+	protected function finishLinkDescription($chunk, $hasNamespaces, $result, &$setNS, &$label) {
 		if ($result === NULL) { // no useful information or concrete error found
 			$this->m_error = 'Syntax error in part of query.'; //TODO internationalise
 			return NULL;
@@ -619,11 +674,12 @@ class SMWQueryParser {
 
 		// terminate link (assuming that next chunk was read already)
 		if ($chunk == '|') { // label, TODO
-			$label = $this->readChunk('\]\]');
-			if ($label != ']]') {
+			$chunk = $this->readChunk('\]\]');
+			if ($chunk != ']]') {
+				$label .= $chunk;
 				$chunk = $this->readChunk('\]\]');
 			} else {
-				$label = '';
+				// empty label does not add to overall label
 				$chunk = ']]';
 			}
 		}
@@ -640,8 +696,6 @@ class SMWQueryParser {
 			}
 			return NULL;
 		}
-
-		return $result;
 	}
 	
 	/**
