@@ -18,18 +18,26 @@
  * returned by this object has the same number of elements (columns).
  */
 class SMWQueryResult {
-	protected $content; //an array (table) of arrays (rows) of arrays (fields, SMWResultArray)
-	protected $printrequests; //an array of SMWPrintRequest objects, indexed by their natural hash keys
-	protected $furtherres;
+	protected $m_content; //an array (table) of arrays (rows) of arrays (fields, SMWResultArray)
+	protected $m_printrequests; //an array of SMWPrintRequest objects, indexed by their natural hash keys
+	protected $m_furtherres;
+	protected $m_errors; // error array (simple string messages, possibly empty)
+	protected $m_querystring; // string (inline query) version of query
+	protected $m_ascending; // order ascending?
+	protected $m_sortkey; // by which property to sort (false: do not sort)
 
 	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
 	 * define the structure of the result "table" (one for each column).
 	 */
-	public function SMWQueryResult($printrequests, $furtherres=false) {
-		$this->content = array();
-		$this->printrequests = $printrequests;
-		$this->furtherres = $furtherres;
+	public function SMWQueryResult($printrequests, $query, $furtherres=false) {
+		$this->m_content = array();
+		$this->m_printrequests = $printrequests;
+		$this->m_furtherres = $furtherres;
+		$this->m_errors = $query->getErrors();
+		$this->m_querystring = $query->getQueryString();
+		$this->m_ascending = $query->ascending;
+		$this->m_sortkey = $query->sortkey;
 	}
 
 	/**
@@ -39,8 +47,8 @@ class SMWQueryResult {
 	 */
 	public function addRow($row) {
 		reset($row);
-		reset($this->printrequests);
-		$pr = current($this->printrequests);
+		reset($this->m_printrequests);
+		$pr = current($this->m_printrequests);
 		$ra = current($row);
 
 		while ( $pr !== false ) {
@@ -51,14 +59,14 @@ class SMWQueryResult {
 			if ($pr->getHash() !== $ra->getPrintRequest()->getHash()) {
 				return false;
 			}
-			$pr = next($this->printrequests);
+			$pr = next($this->m_printrequests);
 			$ra = next($row);
 		}
 		if ($ra !== false) {
 			return false;
 		}
-		$this->content[] = $row;
-		reset($this->content);
+		$this->m_content[] = $row;
+		reset($this->m_content);
 		return true;
 	}
 
@@ -68,8 +76,8 @@ class SMWQueryResult {
 	 * SMWResultArray objects.
 	 */
 	public function getNext() {
-		$result = current($this->content);
-		next($this->content);
+		$result = current($this->m_content);
+		next($this->m_content);
 		return $result;
 	}
 
@@ -77,7 +85,7 @@ class SMWQueryResult {
 	 * Return number of available results.
 	 */
 	public function getCount() {
-		return count($this->content);
+		return count($this->m_content);
 	}
 
 	/**
@@ -85,7 +93,7 @@ class SMWQueryResult {
 	 * in this result set contains.
 	 */
 	public function getColumnCount() {
-		return count($this->printrequests);
+		return count($this->m_printrequests);
 	}
 
 	/**
@@ -93,7 +101,7 @@ class SMWQueryResult {
 	 * property labels).
 	 */
 	public function getPrintRequests() {
-		return $this->printrequests;
+		return $this->m_printrequests;
 	}
 
 	/**
@@ -101,7 +109,14 @@ class SMWQueryResult {
 	 * not shown due to a limit?
 	 */
 	public function hasFurtherResults() {
-		return $this->furtherres;
+		return $this->m_furtherres;
+	}
+
+	/**
+	 * Return error array, possibly empty.
+	 */
+	public function getErrors() {
+		return $this->m_errors;
 	}
 
 	/**
@@ -111,6 +126,17 @@ class SMWQueryResult {
 	 */
 	public function getQueryURL() {
 		/// TODO implement (requires some way of generating/maintaining this URL as part of the query, and setting it when creating this result)
+		$title = Title::makeTitle(NS_SPECIAL, 'ask');
+		$params = 'query=' . urlencode($this->m_querystring);
+		if ($this->m_sortkey != false) {
+			$params .= '&sort=' . urlencode($this->m_sortkey);
+			if ($this->m_ascending) {
+				$params .= '&order=ASC';
+			} else {
+				$params .= '&order=DESC';
+			}
+		}
+		return $title->getLocalURL($params);
 	}
 }
 

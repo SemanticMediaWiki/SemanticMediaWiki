@@ -38,7 +38,7 @@ class SMWSQLStore extends SMWStore {
 ///// Reading methods /////
 
 	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$db =& wfGetDB( DB_SLAVE ); // TODO: Is '=&' needed in PHP5?
 
 		// TODO: this method currently supports no ordering or boundary. This is probably best anyway ...
 
@@ -92,7 +92,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	function getSpecialSubjects($specialprop, $value, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$db =& wfGetDB( DB_SLAVE );
 		
 		$result = array();
 		
@@ -169,7 +169,7 @@ class SMWSQLStore extends SMWStore {
 
 
 	function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL, $outputformat = '') {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
 
 		$id = SMWDataValueFactory::getAttributeObjectTypeID($attribute);
@@ -221,7 +221,7 @@ class SMWSQLStore extends SMWStore {
 			return array();
 		}
 
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$db =& wfGetDB( DB_SLAVE );
 		$sql = 'value_xsd=' . $db->addQuotes($value->getXSDValue()) .
 		       ' AND value_unit=' . $db->addQuotes($value->getUnit()) .
 		       ' AND attribute_title=' . $db->addQuotes($attribute->getDBKey()) .
@@ -243,7 +243,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	function getAllAttributeSubjects(Title $attribute, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$db =& wfGetDB( DB_SLAVE );
 		$sql = 'attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
@@ -278,7 +278,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	function getAttributes(Title $subject, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$db =& wfGetDB( DB_SLAVE );
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) . $this->getSQLConditions($requestoptions,'attribute_title','attribute_title');
 
 		$result = array();
@@ -305,7 +305,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	function getRelationObjects(Title $subject, Title $relation, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$db =& wfGetDB( DB_SLAVE );
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
 		       $this->getSQLConditions($requestoptions,'object_title','object_title');
@@ -326,7 +326,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	function getRelationSubjects(Title $relation, Title $object, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$db =& wfGetDB( DB_SLAVE );
 		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
 		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
@@ -348,7 +348,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	function getAllRelationSubjects(Title $relation, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$db =& wfGetDB( DB_SLAVE );
 		$sql = 'relation_title=' . $db->addQuotes($relation->getDBkey()) .
 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
@@ -368,7 +368,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	function getOutRelations(Title $subject, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$db =& wfGetDB( DB_SLAVE );
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
 
@@ -388,7 +388,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	function getInRelations(Title $object, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
+		$db =& wfGetDB( DB_SLAVE );
 		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
 		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
@@ -555,7 +555,7 @@ class SMWSQLStore extends SMWStore {
 		// Build main query
 		$this->m_sortkey = $query->sortkey;
 		$this->m_sortfield = false;
-		
+
 		$pagetable = $db->tableName('page');
 		$from = $pagetable;
 		$where = '';
@@ -586,6 +586,7 @@ class SMWSQLStore extends SMWStore {
 			        $sql_options );
 			$row = $db->fetchObject($res);
 			return $row->count;
+			// TODO: report query errors?
 		} elseif ($query->querymode == SMWQuery::MODE_DEBUG) {
 			list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sql_options );
 			$result = '<div style="border: 1px dotted black; background: #A1FB00; padding: 20px; ">' .
@@ -599,6 +600,7 @@ class SMWSQLStore extends SMWStore {
 				$result .= "  $key=$value";
 			}
 			$result .= '</div>';
+			/// TODO: report query errors!
 			return $result;
 		} // else: continue
 
@@ -621,7 +623,7 @@ class SMWSQLStore extends SMWStore {
 
 		// Create result by executing print statements for everything that was fetched
 		///TODO: use limit (and offset?) values for printouts?
-		$result = new SMWQueryResult($prs, ( ($count > $query->limit) && ($query->limit >= 0) ) );
+		$result = new SMWQueryResult($prs, $query, ( ($count > $query->limit) && ($query->limit >= 0) ) );
 		foreach ($qr as $qt) {
 			$row = array();
 			foreach ($prs as $pr) {
@@ -761,7 +763,7 @@ class SMWSQLStore extends SMWStore {
 	protected function getSQLConditions($requestoptions, $valuecol, $labelcol = NULL) {
 		$sql_conds = '';
 		if ($requestoptions !== NULL) {
-			$db =& wfGetDB( DB_MASTER ); // TODO: use slave?
+			$db =& wfGetDB( DB_SLAVE );
 			if ($requestoptions->boundary !== NULL) { // apply value boundary
 				if ($requestoptions->ascending) {
 					if ($requestoptions->include_boundary) {

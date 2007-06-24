@@ -32,9 +32,12 @@ class SMWQuery {
 	public $querymode = SMWQuery::MODE_INSTANCES;
 
 	protected $m_description;
+	protected $m_errors; // keep any errors that occurred so far
+	protected $m_querystring = false; // string (inline query) version (if fixed and known)
 
 	public function SMWQuery($description = NULL) {
 		$this->m_description = $description;
+		$this->m_errors = array();
 	}
 
 	public function setDescription(SMWDescription $description) {
@@ -44,6 +47,29 @@ class SMWQuery {
 	public function getDescription() {
 		return $this->m_description;
 	}
+
+	public function getErrors() {
+		return $this->m_errors;
+	}
+
+	public function addErrors($errors) {
+		$this->m_errors = array_merge($this->m_errors, $errors);
+	}
+
+	public function setQueryString($querystring) {
+		$this->m_querystring = $querystring;
+	}
+
+	public function getQueryString() {
+		if ($this->m_querystring !== false) {
+			return $this->m_querystring;
+		} elseif ($this->m_description !== NULL) {
+			return $this->m_description->getQueryString();
+		} else {
+			return '';
+		}
+	}
+
 }
 
 ?>

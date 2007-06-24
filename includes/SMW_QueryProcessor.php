@@ -73,7 +73,7 @@ class SMWQueryProcessor {
 		$qp->setDefaultNamespaces($smwgIQSearchNamespaces);
 		$desc = $qp->getQueryDescription($querystring);
 		if ($desc === NULL) { //abort with failure
-			return $qp->getError();
+			return $gp->getErrorString();
 		}
 
 		if (array_key_exists('mainlabel', $params)) {
@@ -86,6 +86,8 @@ class SMWQueryProcessor {
 		}
 
 		$query = new SMWQuery($desc);
+		$query->setQueryString($querystring);
+		$query->addErrors($qp->getErrors()); // keep parsing errors for later output
 		if ($format == '') {
 			$format = SMWQueryProcessor::getResultFormat($params);
 		}
@@ -151,8 +153,8 @@ class SMWQueryProcessor {
 			} else { // result for counting or debugging is just a string
 				return $res;
 			}
-		} else { // error string: return escaped version
-			return htmlspecialchars($query); ///TODO: improve error reporting format ...
+		} else { // error string (should be HTML-safe)
+			return $query; ///TODO: improve error reporting format ...
 		}
 	}
 
@@ -206,7 +208,7 @@ class SMWQueryParser {
 
 	protected $m_sepstack; // list of open blocks ("parentheses") that need closing at current step
 	protected $m_curstring; // remaining string to be parsed (parsing eats query string from the front)
-	protected $m_error; // false if all went right, string otherwise
+	protected $m_errors; // empty array if all went right, array of strings otherwise
 	protected $m_label; //label of the main query result
 	protected $m_defaultns; //description of the default namespace restriction, or NULL if not used
 	
@@ -236,7 +238,7 @@ class SMWQueryParser {
 	 * false if there were errors.
 	 */
 	public function getQueryDescription($querystring) {
-		$this->m_error = false;
+		$this->m_errors = array();
 		$this->m_label = '';
 		$this->m_curstring = $querystring;
 		$this->m_sepstack = array();
@@ -245,10 +247,27 @@ class SMWQueryParser {
 	}
 
 	/**
-	 * Return error message or false if no error occurred.
+	 * Return array of error messages (possibly empty).
 	 */
-	public function getError() {
-		return $this->m_error;
+	public function getErrors() {
+		return $this->m_errors;
+	}
+
+	/**
+	 * Return error message or empty string if no error occurred.
+	 */
+	public function getErrorString() {
+		$result = '';
+		$first = true;
+		foreach ($qp->getError() as $e) {
+			if ($first) {
+				$first = false;
+			} else {
+				$result .= ', ';
+			}
+			$result .= '<span class="smwwarning">' . htmlspecialchars($e) . '</span>';
+		}
+		return $result;
 	}
 
 	/**
@@ -333,7 +352,7 @@ class SMWQueryParser {
 						if ($this->popDelimiter('</q>')) {
 							$continue = false; // leave the loop
 						} else {
-							$this->m_error = 'There appear to be too many occurences of \'' . $chunk . '\' in the query.';
+							$this->m_errors[] = 'There appear to be too many occurences of \'' . $chunk . '\' in the query.';
 							return NULL;
 						}
 					} elseif ($chunk == '') {
@@ -341,7 +360,7 @@ class SMWQueryParser {
 					}
 				break;
 				default: // error: unexpected $chunk
-					$this->m_error = 'The part \'' . $chunk . '\' in the query was not understood. Results might not be as expected.'; // TODO: internationalise
+					$this->m_errors[] = 'The part \'' . $chunk . '\' in the query was not understood. Results might not be as expected.'; // TODO: internationalise
 					return NULL;
 			}
 			if ($setsubNS) { // namespace restrictions encountered in current conjunct
@@ -356,7 +375,7 @@ class SMWQueryParser {
 			$result = NULL;
 			foreach ($disjuncts as $d) {
 				if ($d === NULL) {
-					$this->m_error = 'No condition in subquery.';
+					$this->m_errors[] = 'No condition in subquery.';
 					$setNS = false;
 					return NULL;
 				} else {
@@ -364,7 +383,7 @@ class SMWQueryParser {
 				}
 			}
 		} else {
-			$this->m_error = 'No condition in subquery.';
+			$this->m_errors[] = 'No condition in subquery.';
 			$setNS = false;
 			return NULL;
 		}
@@ -432,7 +451,7 @@ class SMWQueryParser {
 					if ($chunk == ']]') {
 						return new SMWPrintRequest(SMW_PRINT_CATS, $label);
 					} else {
-						$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
+						$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
 						return NULL;
 					}
 				break;
@@ -482,7 +501,7 @@ class SMWQueryParser {
 					if ($chunk == ']]') {
 						return new SMWPrintRequest(SMW_PRINT_RELS, $label, $rel);
 					} else {
-						$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
+						$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
 						return NULL;
 					}
 				break;
@@ -532,8 +551,8 @@ class SMWQueryParser {
 		// get values, including values with internal [[...]]
 		$open = 1;
 		$value = '';
-		$chunk = 'NONEMPTY';
-		while ( ($open > 0) && ($chunk != '') ) {
+		$continue = true;
+		while ( ($open > 0) && ($continue) ) {
 			$chunk = $this->readChunk('\[\[|\]\]|\|');
 			switch ($chunk) {
 				case '[[': // open new [[ ]]
@@ -547,12 +566,15 @@ class SMWQueryParser {
 						$open = 0;
 					}
 				break;
+				case '': // this is not good ... TODO:report error
+					$continue = false;
+				break;
 			}
 			if ($open != 0) {
 				$value .= $chunk;
 			}
 		}
-		// note that at this point, we already read one more chunk behind the value
+		// note that at this point, we normally already read one more chunk behind the value
 		$list = preg_split('/^\*/',$value,2);
 		if (count($list) == 2) { //hit
 			$value = '*';
@@ -576,7 +598,7 @@ class SMWQueryParser {
 				if ($chunk == ']]') {
 					return new SMWPrintRequest(SMW_PRINT_ATTS, $label, $att, $printmodifier);
 				} else {
-					$this->m_error = 'Misshaped print statement.'; //TODO: internationalise
+					$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
 					return NULL;
 				}
 			break;
@@ -603,8 +625,8 @@ class SMWQueryParser {
 				// TODO: needs extension for n-ary values
 				$dv = SMWDataValueFactory::newAttributeObjectValue($att, $value);
 				if (!$dv->isValid()) {
-					$this->m_error = $dv->getError();
-					$vd = new SMWValueDescription(NULL, SMW_CMP_ANY);
+					$this->m_errors[] = $dv->getError();
+					$vd = new SMWValueDescription($dv, SMW_CMP_ANY);
 				} else {
 					$vd = new SMWValueDescription($dv, $comparator);
 				}
@@ -628,7 +650,7 @@ class SMWQueryParser {
 		//$innerdesc = NULL;
 		while ($continue) {
 			if ($chunk == '<q>') { // no subqueries of the form [[<q>...</q>]] (not needed)
-				$this->m_error = 'Subqueries not allowed here.'; //TODO
+				$this->m_errors[] = 'Subqueries not allowed here.'; //TODO
 				return NULL;
 			}
 			$list = preg_split('/:/', $chunk, 3); // ":Category:Foo" "User:bar"  ":baz" ":+"
@@ -662,7 +684,7 @@ class SMWQueryParser {
 	
 	protected function finishLinkDescription($chunk, $hasNamespaces, $result, &$setNS, &$label) {
 		if ($result === NULL) { // no useful information or concrete error found
-			$this->m_error = 'Syntax error in part of query.'; //TODO internationalise
+			$this->m_errors[] = 'Syntax error in part of query.'; //TODO internationalise
 			return NULL;
 		}
 
@@ -690,9 +712,9 @@ class SMWQueryParser {
 			// link content (as in [[Category:Test<q>]]) and there was no label to 
 			// eat it. Or the closing ]] are just missing entirely.
 			if ($chunk != '') { //TODO: internationalise errors
-				$this->m_error = 'The symbol \'' . $chunk . '\' was used in a place where it is not useful.'; 
+				$this->m_errors[] = 'The symbol \'' . $chunk . '\' was used in a place where it is not useful.'; 
 			} else {
-				$this->m_error = 'Some use of \'[[\' in your query was not closed by a matching \']]\'.';
+				$this->m_errors[] = 'Some use of \'[[\' in your query was not closed by a matching \']]\'.';
 			}
 			return NULL;
 		}
