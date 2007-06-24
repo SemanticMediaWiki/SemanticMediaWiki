@@ -108,6 +108,31 @@ abstract class SMWResultPrinter {
 		}
 	}
 
+	/**
+	 * Provides a simple formatted string of all the error messages that occurred.
+	 * Can be used if not specific error formatting is desired. Compatible with HTML
+	 * and Wiki.
+	 * 
+	 * TODO: use joined code for this and the similar method in SMWQueryParser?
+	 */
+	protected function getErrorString($res) {
+		$result = '';
+		$first = true;
+		foreach ($res->getErrors() as $e) {
+			if ($first) {
+				$first = false;
+			} else {
+				$result .= ', ';
+			}
+			$result .= '<span class="smwwarning">' . $e . '</span>';
+		}
+		if ($result != '') {
+			$result = '(' . $result . ')';
+		}
+		return $result;
+	}
+
+
 }
 
 /**
@@ -160,6 +185,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			}
 		}
 		$result .= "\t</table>"; // print footer
+		$result .= $this->getErrorString($res); // just append error messages
 		return $result;
 	}
 }
@@ -296,6 +322,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 
 		// print footer
 		$result .= $footer;
+		$result .= $this->getErrorString($res); // just append error messages
 
 		return $result;
 	}
@@ -485,6 +512,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 
 		// print footer
 		$result .= "</div>";
+		$result .= $this->getErrorString($res); // just append error messages
 		return $result;
 	}
 }
@@ -557,6 +585,7 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 		}
 
 		$smwgStoreActive = $old_smwgStoreActive;
+		$result .= $this->getErrorString($res); // just append error messages
 		return $result;
 	}
 }
@@ -668,6 +697,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 			}
 		}
 		$result .= $footer;
+		$result .= $this->getErrorString($res); // just append error messages
 
 		$smwgStoreActive = $old_smwgStoreActive;
 		return $result;

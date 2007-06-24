@@ -587,10 +587,10 @@ class SMWSQLStore extends SMWStore {
 			$row = $db->fetchObject($res);
 			return $row->count;
 			// TODO: report query errors?
-		} elseif ($query->querymode == SMWQuery::MODE_DEBUG) {
+		} elseif ($query->querymode == SMWQuery::MODE_DEBUG) { /// TODO: internationalise
 			list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sql_options );
 			$result = '<div style="border: 1px dotted black; background: #A1FB00; padding: 20px; ">' .
-			          '<b>Generated Wiki Query</b><br />' .
+			          '<b>Generated Wiki-Query</b><br />' .
 			          htmlspecialchars($query->getDescription()->getQueryString()) . '<br />' .
 			          '<b>SQL-Query</b><br />' .
 			          "SELECT DISTINCT $pagetable.page_title as title, $pagetable.page_namespace as namespace" .
@@ -598,6 +598,10 @@ class SMWSQLStore extends SMWStore {
 			          '<b>SQL-Query options</b><br />';
 			foreach ($sql_options as $key => $value) {
 				$result .= "  $key=$value";
+			}
+			$result .= '<br /><b>Errors and Warnings</b><br />';
+			foreach ($query->getErrors() as $error) {
+				$result .= $error . '<br />';
 			}
 			$result .= '</div>';
 			/// TODO: report query errors!

@@ -73,7 +73,7 @@ class SMWQueryProcessor {
 		$qp->setDefaultNamespaces($smwgIQSearchNamespaces);
 		$desc = $qp->getQueryDescription($querystring);
 		if ($desc === NULL) { //abort with failure
-			return $gp->getErrorString();
+			return $qp->getErrorString();
 		}
 
 		if (array_key_exists('mainlabel', $params)) {
@@ -259,13 +259,13 @@ class SMWQueryParser {
 	public function getErrorString() {
 		$result = '';
 		$first = true;
-		foreach ($qp->getError() as $e) {
+		foreach ($this->m_errors as $e) {
 			if ($first) {
 				$first = false;
 			} else {
 				$result .= ', ';
 			}
-			$result .= '<span class="smwwarning">' . htmlspecialchars($e) . '</span>';
+			$result .= '<span class="smwwarning">' . $e . '</span>';
 		}
 		return $result;
 	}
@@ -315,11 +315,9 @@ class SMWQueryParser {
 			switch ($chunk) {
 				case '[[': // start new link block
 					$ld = $this->getLinkDescription($setsubNS, $label);
-					if ($ld === NULL) {
-						return NULL;
-					} elseif ($ld instanceof SMWPrintRequest) {
+					if ($ld instanceof SMWPrintRequest) {
 						$printrequests[] = $ld;
-					} else {
+					} elseif ($ld instanceof SMWDescription) {
 						$conjunction = $this->addDescription($conjunction,$ld);
 					}
 				break;
@@ -479,6 +477,10 @@ class SMWQueryParser {
 	protected function getRelationDescription($relname, &$setNS, &$label) {
 		$innerdesc = NULL;
 		$rel = Title::newFromText($relname, SMW_NS_RELATION);
+		if ($rel === NULL) {
+			$this->m_errors[] .= 'Sorry, but ' . htmlspecialchars($relname) . ' is no valid page title.'; // TODO internationalise
+			return NULL;///TODO: read some more chunks and try to finish [[ ]]
+		}
 
 		$this->readChunk(); // consume seperator "::"
 		$continue = true;
@@ -528,11 +530,15 @@ class SMWQueryParser {
 			$continue = ($chunk == '||');
 		}
 
-		if ($innerdesc !== NULL) {
-			$result = new SMWSomeRelation($rel,$innerdesc);
-		} else {
-			$result = NULL;
+		if ($innerdesc === NULL) { // make a wildcard search
+			if ($this->m_defaultns !== NULL) {
+				$innerdesc = $this->addDescription($innerdesc, $this->m_defaultns, false);
+			} else {
+				$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
+			}
+			$this->m_errors[] = 'Value of relation ' . $rel->getText() . ' was not understood.'; // TODO internationalise
 		}
+		$result = new SMWSomeRelation($rel,$innerdesc);
 
 		return $this->finishLinkDescription($chunk, false, $result, $setNS, $label);
 	}
@@ -546,6 +552,10 @@ class SMWQueryParser {
 	protected function getAttributeDescription($attname, &$setNS, &$label) {
 		$this->readChunk(); // consume seperator ":="
 		$att = Title::newFromText($attname, SMW_NS_ATTRIBUTE);
+		if ($att === NULL) {
+			$this->m_errors[] .= 'Sorry, but ' . htmlspecialchars($attname) . ' is no valid page title.'; // TODO internationalise
+			return NULL; ///TODO: read some more chunks and try to finish [[ ]]
+		}
 		///TODO: currently no support for disjunctions in data values (needs extension of query processor)
 
 		// get values, including values with internal [[...]]
@@ -684,40 +694,41 @@ class SMWQueryParser {
 	
 	protected function finishLinkDescription($chunk, $hasNamespaces, $result, &$setNS, &$label) {
 		if ($result === NULL) { // no useful information or concrete error found
-			$this->m_errors[] = 'Syntax error in part of query.'; //TODO internationalise
-			return NULL;
-		}
-
-		if (!$hasNamespaces && $setNS && ($this->m_defaultns !== NULL) ) {
+			$this->m_errors[] = 'Some part [#x005B;&hellip]] of the query was not understood.'; 
+			//TODO internationalise
+		} elseif (!$hasNamespaces && $setNS && ($this->m_defaultns !== NULL) ) {
 			$result = $this->addDescription($result, $this->m_defaultns);
 			$hasNamespaces = true;
 		}
 		$setNS = $hasNamespaces;
 
 		// terminate link (assuming that next chunk was read already)
-		if ($chunk == '|') { // label, TODO
+		if ($chunk == '|') {
 			$chunk = $this->readChunk('\]\]');
 			if ($chunk != ']]') {
 				$label .= $chunk;
 				$chunk = $this->readChunk('\]\]');
-			} else {
-				// empty label does not add to overall label
+			} else { // empty label does not add to overall label
 				$chunk = ']]';
 			}
 		}
-		if ($chunk == ']]') { // expected termination
-			return $result;
-		} else {
+		if ($chunk != ']]') {
 			// What happended? We found some chunk that could not be processed as
 			// link content (as in [[Category:Test<q>]]) and there was no label to 
 			// eat it. Or the closing ]] are just missing entirely.
-			if ($chunk != '') { //TODO: internationalise errors
-				$this->m_errors[] = 'The symbol \'' . $chunk . '\' was used in a place where it is not useful.'; 
-			} else {
-				$this->m_errors[] = 'Some use of \'[[\' in your query was not closed by a matching \']]\'.';
+			if ($chunk != '') {
+				$this->m_errors[] = 'The symbol \'' . htmlspecialchars($chunk) . '\' was used in a place where it is not useful.';
+				// try to find a later closing ]] to finish this misshaped subpart
+				$chunk = $this->readChunk('\]\]');
+				if ($chunk != ']]') {
+					$chunk = $this->readChunk('\]\]');
+				}
 			}
-			return NULL;
+			if ($chunk == '') {
+				$this->m_errors[] = 'Some use of \'[&#x005B;\' in your query was not closed by a matching \']]\'.';
+			}
 		}
+		return $result;
 	}
 	
 	/**
