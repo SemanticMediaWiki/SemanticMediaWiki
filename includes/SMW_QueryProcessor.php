@@ -617,7 +617,7 @@ class SMWQueryParser {
 			break;
 			default: // fixed value, possibly with comparator addons
 				// for now, treat comparators only if placed before whole value:
-				$list = preg_split('/^(<|>)/',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
+				$list = preg_split('/^(<|>|!)/',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
 				$comparator = SMW_CMP_EQ;
 				if (count($list) == 3) { // initial comparator found ($list[1] should be empty)
 					switch ($list[1]) {
@@ -627,6 +627,10 @@ class SMWQueryParser {
 						break;
 						case '>':
 							$comparator = SMW_CMP_GEQ;
+							$value = $list[2];
+						break;
+						case '!':
+							$comparator = SMW_CMP_NEQ;
 							$value = $list[2];
 						break;
 						//default: not possible
