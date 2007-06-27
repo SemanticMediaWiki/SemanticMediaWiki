@@ -18,9 +18,9 @@ class SMWDataValueFactory {
 	static private $m_valueclasses = array();
 	
 	/**
-	 * Cache for type specifications (right now strings), indexed by attribute name (both without namespace prefix).
+	 * Cache for type specifications (type datavalues), indexed by attribute name (both without namespace prefix).
 	 */
-	static private $m_typelabels = array('Testnary' => 'String;Integer;Wikipage;Date'); ///DEBUG
+	static private $m_typelabels = array();
 
 	/**
 	 * Cache for type ids, indexed by attribute name (without namespace prefix).
@@ -56,6 +56,7 @@ class SMWDataValueFactory {
 	 */
 	static public function newAttributeObjectValue(Title $att, $value=false) {
 		$attstring = $att->getText();
+		SMWDataValueFactory::$m_typelabels['Testnary'] = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE, 'String;Integer;Wikipage;Date'); /// DEBUG
 		if(!array_key_exists($attstring,SMWDataValueFactory::$m_typelabels)) {
 			$typearray = smwfGetStore()->getSpecialValues($att,SMW_SP_HAS_TYPE);
 			if (count($typearray)==1) {
@@ -112,14 +113,13 @@ class SMWDataValueFactory {
 	}
 
 	/**
-	 * Create a value from a user-supplied string for which only a type is known
-	 * (given as a string name without namespace prefix).
-	 * If no value is given, an empty container is created, the value of which
+	 * Create a value from a type value (basically containing strings).
+	 * If no $value is given, an empty container is created, the value of which
 	 * can be set later on.
 	 */
-	static public function newTypedValue($typestring, $value=false) {
-		if (array_key_exists($typestring, SMWDataValueFactory::$m_valueclasses)) {
-			$vc = SMWDataValueFactory::$m_valueclasses[$typestring];
+	static public function newTypedValue(SMWDataValue $typevalue, $value=false) {
+		if (array_key_exists($typevalue->getWikiValue(), SMWDataValueFactory::$m_valueclasses)) {
+			$vc = SMWDataValueFactory::$m_valueclasses[$typevalue->getWikiValue()];
 			// check if class file was already included for this class
 			if ($vc[0] == false) {
 				global $smwgIP;
@@ -135,20 +135,20 @@ class SMWDataValueFactory {
 			$result = new $vc[2]($vc[3]);
 		} else {
 			// check for n-ary types
-			$types = explode(';', $typestring);
-			if (count($types)>1) {
+			if (count($typevalue->getTypeLabels())>1) {
 				if (SMWDataValueFactory::$m_naryincluded == false) {
 					global $smwgIP;
 					include_once($smwgIP . '/includes/SMW_DV_NAry.php');
 					SMWDataValueFactory::$m_naryincluded = true;
 				}
-				return new SMWNAryValue($types, $value);
+				return new SMWNAryValue($typevalue, $value);
 			} else {
-				///TODO
-				$type = SMWTypeHandlerFactory::getTypeHandlerByLabel($typestring);
+				///TODO migrate to new system
+				$type = SMWTypeHandlerFactory::getTypeHandlerByLabel($typevalue->getWikiValue());
 				$result = new SMWOldDataValue($type);
 			}
 		}
+
 		if ($value !== false) {
 			$result->setUserValue($value);
 		}

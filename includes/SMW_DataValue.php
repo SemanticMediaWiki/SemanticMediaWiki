@@ -177,7 +177,7 @@ abstract class SMWDataValue {
 	abstract public function getWikiValue();
 
 	/**
-	 * Return the numeric representation of the value, or NULL
+	 * Return the numeric representation of the value, or FALSE
 	 * is none is available. This representation is used to
 	 * compare values of scalar types more efficiently, especially
 	 * for sorting queries. If the datatype has units, then this

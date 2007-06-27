@@ -44,7 +44,6 @@ class SMWSQLStore extends SMWStore {
 
 		$result = array();
 		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
-
 			$sql = 'cl_from=' . $db->addQuotes($subject->getArticleID());
 			$res = $db->select( $db->tableName('categorylinks'),
 								'DISTINCT cl_to',
@@ -56,9 +55,7 @@ class SMWSQLStore extends SMWStore {
 				}
 			}
 			$db->freeResult($res);
-
 		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
-		
 			$sql = 'rd_from=' . $db->addQuotes($subject->getArticleID());
 			$res = $db->select( $db->tableName('redirect'),
 								'rd_namespace,rd_title',
@@ -71,17 +68,21 @@ class SMWSQLStore extends SMWStore {
 				}
 			}
 			$db->freeResult($res);
-		
 		} else { // "normal" special property
-
 			$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 				'AND property_id=' . $db->addQuotes($specialprop);
 			$res = $db->select( $db->tableName('smw_specialprops'),
 								'value_string',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
 			// rewrite result as array
-			///TODO: this should not be an array of strings unless it was saved as such, do specialprop typechecks
-			if($db->numRows( $res ) > 0) {
+			switch ($specialprop) {
+			case SMW_SP_HAS_TYPE: // type values
+				while($row = $db->fetchObject($res)) {
+					$result[] = SMWDataValueFactory::newSpecialValue($specialprop,$row->value_string);
+				}
+			break;
+			default: // plain strings
+			///TODO: this should also be handled by the appropriate special handlers
 				while($row = $db->fetchObject($res)) {
 					$result[] = $row->value_string;
 				}

@@ -3,31 +3,34 @@
 /**
  * This datavalue implements special processing suitable for defining
  * types of properties (n-ary or binary).
+ * Two main use-cases exist for this class:
+ * - to parse and format a use-provided string in a rather tolerant way
+ * - to efficiently be generated from XSD values and to provide according 
+ *   wiki values, in order to support speedy creation of datavalues in
+ *   SMWDataValueFactory.
  */
 class SMWTypesValue extends SMWDataValue {
 
-	private $m_typevalues = array();
+	private $m_typelabels = false;
 	private $m_error = '';
-
-	/*********************************************************************/
-	/* Set methods                                                       */
-	/*********************************************************************/
+	private $m_xsdvalue = false;
 
 	public function setUserValue($value) {
-		$this->m_typevalues = array();
+		// no use for being lazy here: plain user values are never useful
+		$this->m_typelabels = array();
 		$types = explode(';', $value);
 		foreach ($types as $type) {
 			$type = ltrim($type, ' [');
 			$type = rtrim($type, ' ]');
 			$ttype = Title::newFromText($type,SMW_NS_TYPE);
 			if ($ttype->getNamespace() == SMW_NS_TYPE) {
-				$this->m_typevalues[] = $ttype->getText();
+				$this->m_typelabels[] = $ttype->getText();
 			} // else: wrong namespace given -- what now? TODO
 		}
 	}
 
 	public function setXSDValue($value, $unit) {
-		$this->setUserValue($value); // no units, compatible syntax
+		$this->m_xsdvalue = $value; // lazy parsing
 	}
 
 	public function setAttribute($attribute) { // ignore
@@ -37,19 +40,15 @@ class SMWTypesValue extends SMWDataValue {
 		// no output formats supported, ignore
 	}
 
-	/*********************************************************************/
-	/* Get methods                                                       */
-	/*********************************************************************/
-
 	public function getShortWikiText($linked = NULL) {
 		if ( ($linked === NULL) || ($linked === false) ) {
-			return implode(', ', $this->m_typevalues);
+			return str_replace('_',' ',implode(', ', $this->getTypeLabels()));
 		} else {
 			global $wgContLang;
 			$result = '';
 			$typenamespace = $wgContLang->getNsText(SMW_NS_TYPE);
 			$first = true;
-			foreach ($this->m_typevalues as $type) {
+			foreach ($this->getTypeLabels() as $type) {
 				if ($first) {
 					$first = false;
 				} else {
@@ -63,7 +62,7 @@ class SMWTypesValue extends SMWDataValue {
 
 	public function getShortHTMLText($linker = NULL) {
 		///TODO Support linking
-		return implode(', ', $this->m_typevalues);
+		return implode(', ', $this->m_typelabels);
 	}
 
 	public function getLongWikiText($linked = NULL) {
@@ -76,18 +75,21 @@ class SMWTypesValue extends SMWDataValue {
 
 	public function getXSDValue() {
 		if ($this->isValid()) {
-			return str_replace(' ','_',implode(', ', $this->m_typevalues));
+			if ($this->m_xsdvalue === false) {
+				$this->m_xsdvalue = str_replace(' ','_',implode('; ', $this->m_typelabels));
+			}
+			return $this->m_xsdvalue;
 		} else {
 			return false;
 		}
 	}
 
 	public function getWikiValue() {
-		return implode('; ', $this->m_typevalues);
+		return str_replace( '_', ' ', $this->getXSDValue() );
 	}
 
 	public function getNumericValue() {
-		return NULL;
+		return false;
 	}
 
 	public function getUnit() {
@@ -107,17 +109,38 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getHash() {
-		return implode('[]', $this->m_typevalues);
+		return implode('[]', $this->getTypeLabels());
 	}
 
 	public function isValid() {
-		return ( ($this->m_error == '') && (count($this->m_typevalues)>0) );
+		return ( ($this->m_error == '') && 
+		         ( ($this->m_typelabels !== false) || ($this->m_xsdvalue !== false) ) );
 	}
 
 	public function isNumeric() {
 		return false;
 	}
 
+	/**
+	 * Retrieve type labels if needed. Can be done lazily.
+	 */
+	public function getTypeLabels() {
+		if ( ($this->m_typelabels === false) && ($this->m_xsdvalue !== false) ) {
+			$this->m_typelabels = explode('; ', $this->m_xsdvalue);
+		}
+		return $this->m_typelabels; // false only if nothing set yet
+	}
+
+	/**
+	 * Retrieve type values.
+	 */
+	public function getTypeValues() {
+		$result = array();
+		foreach ($this->getTypeLabels() as $tl) {
+			$result[] = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE, $tl);
+		}
+		return $result;
+	}
 
 }
 
