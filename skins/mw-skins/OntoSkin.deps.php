@@ -9,4 +9,4 @@ if ( ! defined( 'MEDIAWIKI' ) )
 	die( 1 );
 
 require_once('includes/SkinTemplate.php');
-?>
+

@@ -163,4 +163,4 @@ $smwgTranslate = false;
 //$smwgRAPPath = '/another/example/path/rdfapi-php';
 ##
 
-?>
+

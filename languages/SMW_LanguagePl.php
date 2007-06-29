@@ -303,4 +303,4 @@ class SMW_LanguagePl {
 	}
 }
 
-?>
+

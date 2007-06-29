@@ -824,4 +824,3 @@ class SMWQueryParser {
 	}
 }
  
-?>

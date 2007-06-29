@@ -504,4 +504,3 @@ function smwfInCategory($article, $category) {
 	return FALSE;
 }
 
-?>

@@ -70,4 +70,3 @@ class UnusedAttributesPage extends QueryPage {
 	}
 }
 
-?>

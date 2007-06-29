@@ -119,4 +119,4 @@ class SMW_PageProperty {
 	}
 
 }
-?>
+

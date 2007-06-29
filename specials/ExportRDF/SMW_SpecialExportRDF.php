@@ -869,4 +869,4 @@ class ExportRDF {
 	}
 }
 
-?>
+

@@ -1031,4 +1031,4 @@ class SMWSQLStore extends SMWStore {
 
 }
 
-?>
+

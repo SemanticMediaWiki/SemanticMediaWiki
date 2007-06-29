@@ -157,4 +157,4 @@ class TypesPage extends QueryPage {
 		// Could also query smw_specialprops for HAS_TYPE and value_string has Type.
 */
 
-?>
+

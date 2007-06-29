@@ -61,4 +61,3 @@ class SMWEnumTypeHandler implements SMWTypeHandler {
 	}
 }
 
-?>

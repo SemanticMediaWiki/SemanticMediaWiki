@@ -402,4 +402,4 @@ function smwgSetupExtension() {
 		global $smwgMasterStore;
 		return $smwgMasterStore;
 	}
-?>
+

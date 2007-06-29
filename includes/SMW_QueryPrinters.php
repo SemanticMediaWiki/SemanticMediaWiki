@@ -1270,4 +1270,4 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 // 	}
 // }
 
-?>
+

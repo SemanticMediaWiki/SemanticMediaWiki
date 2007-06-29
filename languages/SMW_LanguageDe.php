@@ -269,4 +269,4 @@ class SMW_LanguageDe {
 
 }
 
-?>
+

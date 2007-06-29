@@ -474,4 +474,3 @@ class SMWSomeAttribute extends SMWDescription {
 }
 
 
-?>

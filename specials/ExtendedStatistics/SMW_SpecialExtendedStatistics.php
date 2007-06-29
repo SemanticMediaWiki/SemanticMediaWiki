@@ -146,4 +146,4 @@ class ExtendedStatistics extends SpecialPage {
 	}
 }
 
-?>
+

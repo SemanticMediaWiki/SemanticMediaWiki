@@ -254,4 +254,4 @@ function smwfTranslateTitle(Title $title, Language $language, $namespace = FALSE
 	}
 }
 
-?>
+

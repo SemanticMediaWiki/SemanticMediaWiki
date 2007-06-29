@@ -598,4 +598,4 @@ class SMWTemperatureTypeHandler extends SMWFloatTypeHandler {
 SMWTypeHandlerFactory::registerTypeHandler($smwgContLang->getDatatypeLabel('smw_temperature'),
                        new SMWTemperatureTypeHandler());
 
-?>
+

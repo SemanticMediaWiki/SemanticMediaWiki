@@ -275,4 +275,4 @@ class SMW_LanguageHe {
 	}
 }
 
-?>
+

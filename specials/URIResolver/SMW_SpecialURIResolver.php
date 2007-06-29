@@ -47,4 +47,3 @@ class SMW_URIResolver {
 		}
 	}
 }
-?>

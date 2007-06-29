@@ -73,4 +73,3 @@ class AttributesPage extends QueryPage {
 	}
 }
 
-?>

@@ -133,4 +133,4 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 //SMWTypeHandlerFactory::registerTypeHandler($smwgContLang->getDatatypeLabel('smw_datetime'),
 //                       new SMWDateTimeTypeHandler());
 
-?>
+

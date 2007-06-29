@@ -231,4 +231,4 @@ abstract class SMWDataValue {
 
 }
 
-?>
+

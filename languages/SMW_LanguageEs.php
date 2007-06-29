@@ -266,4 +266,4 @@ class SMW_LanguageEs {
 
 }
 
-?>
+

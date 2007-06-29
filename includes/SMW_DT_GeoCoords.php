@@ -409,4 +409,4 @@ class SMWGeographicLocationTypeHandler implements SMWTypeHandler {
 	}
 }
 
-?>
+

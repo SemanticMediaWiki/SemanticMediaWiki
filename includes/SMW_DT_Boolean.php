@@ -77,4 +77,3 @@ class SMWBooleanTypeHandler implements SMWTypeHandler {
 	}
 }
 
-?>

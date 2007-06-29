@@ -307,4 +307,4 @@ class SMWTestStore extends SMWStore {
 
 }
 
-?>
+

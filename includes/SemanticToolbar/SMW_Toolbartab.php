@@ -25,4 +25,3 @@ function AddSemanticToolbarTab ($content_actions) {
 	return true;
 }
 
-?>

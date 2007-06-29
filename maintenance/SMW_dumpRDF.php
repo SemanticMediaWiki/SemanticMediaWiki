@@ -41,4 +41,3 @@ if ( $options['categories'] ) {
 $exRDF = new ExportRDF();
 $exRDF->printAll($outfile, $export_ns);
 
-?>

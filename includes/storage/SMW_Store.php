@@ -232,4 +232,4 @@ abstract class SMWStore {
 
 }
 
-?>
+

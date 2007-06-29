@@ -277,4 +277,4 @@ class SMW_LanguageSk {
 	}
 }
 
-?>
+

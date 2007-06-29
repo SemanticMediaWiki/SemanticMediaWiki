@@ -144,4 +144,3 @@ class SMWTypesValue extends SMWDataValue {
 
 }
 
-?>

@@ -571,4 +571,4 @@ class SMWOldDataValue extends SMWDataValue {
 
 }
 
-?>
+

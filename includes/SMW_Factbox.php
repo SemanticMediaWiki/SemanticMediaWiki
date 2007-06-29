@@ -394,4 +394,4 @@ class SMWFactbox {
 
 }
 
-?>
+

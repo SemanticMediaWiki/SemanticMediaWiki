@@ -62,4 +62,3 @@ class RelationsPage extends QueryPage {
 }
 
 
-?>

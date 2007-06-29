@@ -71,4 +71,4 @@ class SMWWantedRelationsPage extends QueryPage {
 	}
 }
 
-?>
+

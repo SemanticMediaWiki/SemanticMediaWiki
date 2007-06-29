@@ -734,4 +734,4 @@ function smwfNumberFormat($value, $decplaces=3) {
 	return $value;
 }
 
-?>
+

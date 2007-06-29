@@ -267,4 +267,4 @@ class SMW_LanguageFr {
 
 }
 
-?>
+

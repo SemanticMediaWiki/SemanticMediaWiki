@@ -233,7 +233,7 @@ class OntoSkinTemplate extends QuickTemplate {
 		}
 
 		wfRunHooks( 'OntoSkinTemplateToolboxEnd', array( &$this ) );
-?>
+
 			</ul>
 		</div>
 	</div>
@@ -263,7 +263,7 @@ class OntoSkinTemplate extends QuickTemplate {
 <?php	}
 
 		// Generate additional footer links
-?>
+
 			<ul id="f-list">
 <?php
 		$footerlinks = array(
@@ -275,7 +275,7 @@ class OntoSkinTemplate extends QuickTemplate {
 ?>				<li id="<?php echo$aLink?>"><?php $this->html($aLink) ?></li>
 <?php 		}
 		}
-?>
+
 			</ul>
 		</div>
 	<!-- <script src="OntoSkin.js" type="text/javascript"></script> -->
@@ -294,4 +294,4 @@ class OntoSkinTemplate extends QuickTemplate {
 	wfRestoreWarnings();
 	} // end of execute() method
 } // end of class
-?>
+

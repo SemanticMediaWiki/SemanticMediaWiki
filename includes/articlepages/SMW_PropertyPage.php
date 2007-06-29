@@ -175,4 +175,4 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 }
 
-?>
+

@@ -282,4 +282,4 @@ class SMW_LanguageEn {
 	}
 }
 
-?>
+

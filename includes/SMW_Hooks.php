@@ -208,4 +208,4 @@ function smwfShowListPage (&$title, &$article){
 }
 
 
-?>
+

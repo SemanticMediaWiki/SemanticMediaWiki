@@ -71,4 +71,3 @@ class UnusedRelationsPage extends QueryPage {
 	}
 }
 
-?>

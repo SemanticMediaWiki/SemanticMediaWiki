@@ -60,4 +60,3 @@ class SMWIntegerTypeHandler implements SMWTypeHandler {
 	}
 }
 
-?>

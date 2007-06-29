@@ -257,4 +257,4 @@ class SMW_LanguageRu {
 	}
 }
 
-?>
+

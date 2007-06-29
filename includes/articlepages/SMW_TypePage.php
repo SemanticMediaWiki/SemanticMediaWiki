@@ -174,4 +174,3 @@ class SMWTypePage extends SMWOrderedListPage {
 
 }
 
-?>

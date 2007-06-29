@@ -152,4 +152,4 @@ class SMW_SearchByAttribute {
 	}
 
 }
-?>
+

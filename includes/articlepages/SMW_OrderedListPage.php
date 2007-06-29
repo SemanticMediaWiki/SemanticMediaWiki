@@ -156,4 +156,4 @@ abstract class SMWOrderedListPage extends Article {
 }
 
 
-?>
+

@@ -75,4 +75,4 @@ for ($id = $start; $id <= $end; $id++) {
 
 print "$num_files pages refreshed.\n";
 
-?>
+

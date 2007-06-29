@@ -112,4 +112,3 @@ class SMWURITypeHandler implements SMWTypeHandler {
 	}
 }
 
-?>

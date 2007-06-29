@@ -429,4 +429,4 @@ function doSpecialSMWAdmin($par = null) {
 // 	return "The database has been updated successfully.";
 // }
 
-?>
+
