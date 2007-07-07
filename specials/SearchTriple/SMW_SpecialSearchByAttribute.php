@@ -53,35 +53,36 @@ class SMW_SearchByAttribute {
 			$html .= wfMsg('smw_sbv_docu') . "\n";
 		} else {
 			// Now that we have an attribute, let's figure out the datavalue
-			$value = SMWDataValue::newAttributeValue( $attribute->getText(), $valuestring );
+			$value = SMWDataValueFactory::newAttributeObjectValue( $attribute, $valuestring );
 			if ( $value->isValid() == FALSE ) { // no value understood
 				$html .= wfMSG('smw_sbv_novalue', $skin->makeLinkObj($attribute, $attribute->getText()));
 				$valuestring = '';
 			} else { // everything is given
-				$wgOut->setPagetitle( $attribute->getText() . ' ' . $value->getUserValue() );
+				$wgOut->setPagetitle( $attribute->getText() . ' ' . $value->getXSDValue() ); //TODO: use escaped wiki value instead?
 
 				$options = new SMWRequestOptions();
 				$options->limit = $limit+1;
 				$options->offset = $offset;
 
-				$res = &smwfGetStore()->getAttributeSubjects( $attribute, $value, $options, 'gt' );
+				$res = &smwfGetStore()->getAttributeSubjects( $attribute, $value, $options );
 				$count = count($res);
 
 
-				$html .= wfMsg('smw_sbv_displayresult', $skin->makeLinkObj($attribute, $attribute->getText()), $value->getUserValue()) . "<br />\n";
+				$html .= wfMsg('smw_sbv_displayresult', $skin->makeLinkObj($attribute, $attribute->getText()), $value->getShortHTMLText($skin)) . "<br />\n";
 
 				// prepare navigation bar
 				if ($offset > 0)
-					$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute->getText()) .'&value=' . urlencode($value->getUserValue()))) . '">' . wfMsg('smw_result_prev') . '</a>';
+					$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute->getText()) .'&value=' . urlencode($value->getWikiValue()))) . '">' . wfMsg('smw_result_prev') . '</a>';
 				else
 					$navigation = wfMsg('smw_result_prev');
 
 				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min($count, $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
-				if ($count>$limit)
-					$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getUserValue())))  . '">' . wfMsg('smw_result_next') . '</a>';
-				else
+				if ($count>$limit) {
+					$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue())))  . '">' . wfMsg('smw_result_next') . '</a>';
+				} else {
 					$navigation .= wfMsg('smw_result_next');
+				}
 
 				$max = false; $first=true;
 				foreach (array(20,50,100,250,500) as $l) {
@@ -96,7 +97,7 @@ class SMW_SearchByAttribute {
 						$max = true;
 					}
 					if ( $limit != $l ) {
-						$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute','offset=' . $offset . '&limit=' . $l . '&attribute=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getUserValue()))) . '">' . $l . '</a>';
+						$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute','offset=' . $offset . '&limit=' . $l . '&attribute=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue()))) . '">' . $l . '</a>';
 					} else {
 						$navigation .= '<b>' . $l . '</b>';
 					}
