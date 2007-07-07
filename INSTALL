@@ -31,7 +31,8 @@ For a proper legal disclaimer, see the file "COPYING".
 * SMW is (currently) incompatible with PostgreSQL 
 
 * SMW uses the PHP mb_*() multibyte functions such as mb_strpos in the
-php_mbstring.dll extension.  This is standard but not enabled by default.
+php_mbstring.dll extension. This is standard but not enabled by default
+on some distributions of PHP.
 See http://php.net/manual/en/ref.mbstring.php#mbstring.installation
 
 == Installation ==
@@ -79,8 +80,7 @@ in your LocalSetting.php. For example, one can write
  enableSemantics('example.org');
 
 to enable links on all results returned by inline queries. The parameters that
-are available are documented in the files SMW_Settings.php (general) and
-SMW_InlineQueries.php (related to queries).
+are available are documented in the file SMW_Settings.php.
 
 === Running SMW on older versions of MediaWiki ===
 
@@ -194,8 +194,8 @@ the FAQ section, then contact the user support list (see the Contact section).
   You probably use a version of MediaWiki that is smaller or equal to 1.9.*
   and you did not make the required changes in Parser.php as described above.
 
- - Problem: In my non-English installation, attributes and relations don't
-   work even when I follow the examples.
+- Problem: In my non-English installation, attributes and relations don't
+  work even when I follow the examples.
 
   You must use the localized names for special properties and namespaces.
   Although MediaWiki has some support for canonical (English) names such as
@@ -216,9 +216,9 @@ the FAQ section, then contact the user support list (see the Contact section).
 
 - Problem: I have a problem that is not in this list.
 
- Turn on debugging in MediaWiki (try 
- http://meta.wikimedia.org/wiki/How_to_debug_MediaWiki ) and you should see 
- something in the log file.
+  Turn on debugging in MediaWiki (try 
+  http://meta.wikimedia.org/wiki/How_to_debug_MediaWiki ) and you should see
+  something in the log file.
 
   Report general bugs at http://bugzilla.wikimedia.org/
   where you can also find out whether your problem is known.

@@ -22,7 +22,8 @@ support -- you will get no answer.
 == Current developers ==
 
 Development is coordinated by Markus Krötzsch and Denny Vrandecic. The current
-core development team further consists of S Page, Daniel Herzig, and Nikolas Iwan.
+core development team further consists of S Page, Daniel Herzig, Nikolas Iwan, and
+Tobias Matzner.
 
 Semantic MediaWiki development is funded by Institut AIFB of Universität Karlsruhe,
 Germany; see http://aifb.uni-karlsruhe.de.
@@ -77,7 +78,7 @@ In general, current maintainers should also be found in the language files.
 
 * The JavaScript upon which the Timeline format of inline queries is based is
   provided by Simile (http://simile.mit.edu). Note that it is distributed with 
-  a BSD-style license, and not under the GPL that applies to most parts of 
+  a BSD-style license, and not under the GPL that applies to most parts of
   Semantic MediaWiki.
 
 * Many people have contributed to the project by providing helpful comments and
