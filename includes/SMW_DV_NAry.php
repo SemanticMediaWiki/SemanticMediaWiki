@@ -85,10 +85,6 @@ class SMWNAryValue extends SMWDataValue {
 		}
 	}
 
-	public function setAttribute($attribute) {
-		/// TODO
-	}
-
 	public function setOutputFormat($formatstring) {
 		/// TODO
 	}
@@ -217,10 +213,6 @@ class SMWNAryValue extends SMWDataValue {
 	public function getDVs() {
 		return $this->isValid() ? $this->m_values : null;
 	}
-
-
-
-
 
 }
 

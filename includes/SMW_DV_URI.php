@@ -14,17 +14,12 @@ define('SMW_URI_MODE_ANNOURI',3);
  
 class SMWURIValue extends SMWDataValue {
 
-	private $m_attribute = null;
 	private $m_error = '';
 	private $m_value = '';
 	private $m_xsdvalue = '';
 	private $m_infolinks = Array();
 	private $m_mode = '';
 
-	/*********************************************************************/
-	/* Set methods                                                       */
-	/*********************************************************************/
-	
 	function SMWURIValue($mode) {
 		switch ($mode) {
 		default: case 'url':
@@ -71,16 +66,9 @@ class SMWURIValue extends SMWDataValue {
 		$this-> setUserValue($value);
 	}
 
-	public function setAttribute($attribute) { 
-		$this->m_attribute = $attribute;
+	public function setOutputFormat($formatstring){
+		//TODO
 	}
-
-	 public function setOutputFormat($formatstring){
-	 	//TODO
-	 }
-	/*********************************************************************/
-	/* Get methods                                                       */
-	/*********************************************************************/
 
 	public function getShortWikiText($linked = NULL) {		
 		//TODO: Support linking
@@ -150,4 +138,3 @@ class SMWURIValue extends SMWDataValue {
 	}
 }
 
-?>

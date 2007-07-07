@@ -7,7 +7,6 @@
  */
 class SMWErrorValue extends SMWDataValue {
 
-	private $m_attribute = null;
 	private $m_error;
 	private $m_value;
 	private $m_infolinks = Array();
@@ -16,10 +15,6 @@ class SMWErrorValue extends SMWDataValue {
 		$this->m_error = $errormsg;
 		$this->m_value = $uservalue;
 	}
-
-	/*********************************************************************/
-	/* Set methods                                                       */
-	/*********************************************************************/
 
 	public function setUserValue($value) {
 		$this->m_value = $value;
@@ -30,20 +25,12 @@ class SMWErrorValue extends SMWDataValue {
 		$this->setUserValue($value); // no units, compatible syntax
 	}
 
-	public function setAttribute($attribute) { 
-		$this->m_attribute = $attribute;
-	}
-	
 	public function setOutputFormat($formatstring){
 		//do nothing
 	}
 	public function setError($errormsg){
 		$this->m_error = $errormsg;
 	}
-	
-	/*********************************************************************/
-	/* Get methods                                                       */
-	/*********************************************************************/
 
 	public function getShortWikiText($linked = NULL) {
 		//TODO: support linking
@@ -104,5 +91,3 @@ class SMWErrorValue extends SMWDataValue {
 		return false;
 	}
 }
-
-?>

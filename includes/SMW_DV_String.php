@@ -8,15 +8,10 @@
  */
 class SMWStringValue extends SMWDataValue {
 
-	private $m_attribute = null;
 	private $m_error = '';
 	private $m_value = '';
 	private $m_xsdvalue = '';
 	private $m_infolinks = Array();
-
-	/*********************************************************************/
-	/* Set methods                                                       */
-	/*********************************************************************/
 
 	public function setUserValue($value) {
 		if ($value!='') {
@@ -39,17 +34,9 @@ class SMWStringValue extends SMWDataValue {
 		$this->setUserValue($value); // no units, XML compatible syntax
 	}
 
-	public function setAttribute($attribute) {
-		$this->m_attribute = $attribute;
-	}
-
 	public function setOutputFormat($formatstring){
 		//ToDo
 	}
-
-	/*********************************************************************/
-	/* Get methods                                                       */
-	/*********************************************************************/
 
 	public function getShortWikiText($linked = NULL) {
 		//TODO: Support linking
@@ -114,5 +101,3 @@ class SMWStringValue extends SMWDataValue {
 
 
 }
-
-?>

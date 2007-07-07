@@ -9,6 +9,8 @@ require_once('SMW_DataValueFactory.php');
  */
 abstract class SMWDataValue {
 
+	protected $m_attribute = false;
+
 	/*********************************************************************/
 	/* Static methods for initialisation                                 */
 	/*********************************************************************/
@@ -96,10 +98,13 @@ abstract class SMWDataValue {
 	abstract public function setXSDValue($value, $unit);
 
 	/**
-	 * Set the attribute to which this value refers. Used to generate search links.
-	 * The atriubte is given as a simple wiki text title, without namespace prefix.
+	 * Set the attribute to which this value refers. Used to generate search links and
+	 * to find custom settings that relate to the attribute.
+	 * The attribute is given as a simple wiki text title, without namespace prefix.
 	 */
-	abstract public function setAttribute($attribute);
+	public function setAttribute($attstring) {
+		$this->m_attribute = $attstring;
+	}
 
 	/**
 	 * Define a particular output format. Output formats are user-supplied strings

@@ -33,9 +33,6 @@ class SMWTypesValue extends SMWDataValue {
 		$this->m_xsdvalue = $value; // lazy parsing
 	}
 
-	public function setAttribute($attribute) { // ignore
-	}
-
 	public function setOutputFormat($formatstring) {
 		// no output formats supported, ignore
 	}
