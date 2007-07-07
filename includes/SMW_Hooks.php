@@ -150,10 +150,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 		} else {
 			$tip = $semanticLink[1];
 		}
-		$id      = uniqid('SMW_'); // parameter needed up to PHP4
-		$result  = '<span><script type="text/javascript">/*<![CDATA[*/ createToolTip(\''.$id.'\', \''.$tip.'\');/*]]>*/</script>';
-		$result .= '<a class="smwatr" onmouseover="showToolTip(\''.$id.'\')" onmouseout="hideToolTip()">'.$semanticLink[2].'</a></span>'; //no CamelCase for onmouse... -> W3C Validator
-
+		$result  = '<span class="smwttinline">' . $semanticLink[2] . '<span class="smwttcontent">' . $tip . '</span></span>';
 		return $result;
 	}
 
