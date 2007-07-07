@@ -1,7 +1,9 @@
 <?php
 
-require_once('SMW_DataValue.php');
-require_once('SMW_OldDataValue.php');
+global $smwgIP;
+require_once($smwgIP . '/includes/SMW_DV_Error.php');
+require_once($smwgIP . '/includes/SMW_DataValue.php');
+require_once($smwgIP . '/includes/SMW_OldDataValue.php');
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or attributes
@@ -65,11 +67,9 @@ class SMWDataValueFactory {
 				SMWDataValueFactory::$m_typeids[$attstring] = $result->getTypeID(); // also cache typeid
 				return $result;
 			} elseif (count($typearray)==0) {
-				///TODO
-				return new SMWOldDataValue(new SMWErrorTypeHandler(wfMsgForContent('smw_notype')));
+				return new SMWErrorValue(wfMsgForContent('smw_notype'), $value);
 			} else {
-				///TODO
-				return new SMWOldDataValue(new SMWErrorTypeHandler(wfMsgForContent('smw_manytypes')));
+				return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value);
 			}
 		}
 		return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value);
@@ -192,3 +192,6 @@ class SMWDataValueFactory {
 
 }
 
+SMWDataValueFactory::registerDataValueClass('String','String','SMWStringValue');
+SMWDataValueFactory::registerDataValueClass('URI','URI','SMWURIValue', 'uri');
+//SMWDataValueFactory::registerDataValueClass('WikiPage','WikiPage','SMWWikiPageValue');
