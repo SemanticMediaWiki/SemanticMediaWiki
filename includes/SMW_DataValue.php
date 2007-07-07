@@ -193,7 +193,7 @@ abstract class SMWDataValue {
 	/**
 	 * Return the unit in which the returned value is to be interpreted.
 	 * This string is a plain UTF-8 string without wiki or html markup.
-	 * Returns FALSE if no unit is given for the value.
+	 * Returns the empty string if no unit is given for the value.
 	 */
 	abstract public function getUnit();
 

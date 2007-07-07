@@ -90,7 +90,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getUnit() {
-		return false;
+		return ''; // empty unit
 	}
 
 	public function getError() {

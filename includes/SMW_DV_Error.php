@@ -64,7 +64,7 @@ class SMWErrorValue extends SMWDataValue {
 	}
 
 	public function getUnit() {
-		return array('STDUNIT'=>false, 'ALLUNITS'=>array());
+		return ''; // empty unit
 	}
 
 	public function getError() {
