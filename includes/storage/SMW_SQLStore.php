@@ -431,17 +431,23 @@ class SMWSQLStore extends SMWStore {
 		$db =& wfGetDB( DB_MASTER );
 		$subject = $data->getSubject();
 		$this->deleteSubject($subject);
+
+		// do bulk updates:
+		$up_relations = array();
+		$up_attributes = array();
+		$up_longstrings = array();
+		$up_specials = array();
+
 		// relations
 		foreach($data->getRelations() as $relation) {
 			foreach($data->getRelationObjects($relation) as $object) {
-				$db->insert( $db->tableName('smw_relations'),
-				             array( 'subject_id' => $subject->getArticleID(),
+				$up_relations[] =
+				     array( 'subject_id' => $subject->getArticleID(),
 				            'subject_namespace' => $subject->getNamespace(),
 				            'subject_title' => $subject->getDBkey(),
 				            'relation_title' => $relation->getDBkey(),
 				            'object_namespace' => $object->getNamespace(),
-				            'object_title' => $object->getDBkey()),
-				            'SMW::updateRelData');
+				            'object_title' => $object->getDBkey() );
 			}
 		}
 
@@ -451,24 +457,22 @@ class SMWSQLStore extends SMWStore {
 			foreach($attributeValueArray as $value) {
 				if ($value->getXSDValue()!==false) {
 					if ($value->getTypeID() !== 'text') {
-						$db->insert( $db->tableName('smw_attributes'),
-						             array( 'subject_id' => $subject->getArticleID(),
+						$up_attributes[] =
+						      array( 'subject_id' => $subject->getArticleID(),
 						             'subject_namespace' => $subject->getNamespace(),
 						             'subject_title' => $subject->getDBkey(),
 						             'attribute_title' => $attribute->getDBkey(),
 						             'value_unit' => $value->getUnit(),
 						             'value_datatype' => $value->getTypeID(),
 						             'value_xsd' => $value->getXSDValue(),
-						             'value_num' => $value->getNumericValue()),
-						             'SMW::updateAttData');
+						             'value_num' => $value->getNumericValue() );
 					} else {
-						$db->insert( $db->tableName('smw_longstrings'),
-						             array( 'subject_id' => $subject->getArticleID(),
+						$up_longstrings[] =
+						      array( 'subject_id' => $subject->getArticleID(),
 						             'subject_namespace' => $subject->getNamespace(),
 						             'subject_title' => $subject->getDBkey(),
 						             'attribute_title' => $attribute->getDBkey(),
-						             'value_blob' => $value->getXSDValue()),
-						             'SMW::updateAttDataLongString');
+						             'value_blob' => $value->getXSDValue() );
 					}
 				}
 			}
@@ -494,14 +498,27 @@ class SMWSQLStore extends SMWStore {
 				} else {
 					$stringvalue = $value;
 				}
-				$db->insert( $db->tableName('smw_specialprops'),
-				             array('subject_id' => $subject->getArticleID(),
-				                   'subject_namespace' => $subject->getNamespace(),
-				                   'subject_title' => $subject->getDBkey(),
-				                   'property_id' => $special,
-				                   'value_string' => $stringvalue),
-				             'SMW::updateSpecData');
+				$up_specials[] =
+				      array('subject_id' => $subject->getArticleID(),
+				            'subject_namespace' => $subject->getNamespace(),
+				            'subject_title' => $subject->getDBkey(),
+				            'property_id' => $special,
+				            'value_string' => $stringvalue);
 			}
+		}
+
+		// write to DB:
+		if (count($up_relations) > 0) {
+			$db->insert( $db->tableName('smw_relations'), $up_relations, 'SMW::updateRelData');
+		}
+		if (count($up_attributes) > 0) {
+			$db->insert( $db->tableName('smw_attributes'), $up_attributes, 'SMW::updateAttData');
+		}
+		if (count($up_longstrings) > 0) {
+			$db->insert( $db->tableName('smw_longstrings'), $up_longstrings, 'SMW::updateLongData');
+		}
+		if (count($up_specials) > 0) {
+			$db->insert( $db->tableName('smw_specialprops'), $up_specials, 'SMW::updateSpecData');
 		}
 	}
 
