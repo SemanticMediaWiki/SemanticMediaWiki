@@ -40,15 +40,16 @@ class SMWDataValueFactory {
 	 * can be set later on.
 	 */
 	static public function newAttributeValue($attstring, $value=false) {
-		if(!array_key_exists($attstring,SMWDataValueFactory::$m_typelabels)) {
-			$atitle = Title::newFromText($attstring, SMW_NS_ATTRIBUTE);
-			if ($atitle !== NULL) {
-				return SMWDataValueFactory::newAttributeObjectValue($atitle,$value);
-			} else {
-				return new SMWOldDataValue(new SMWErrorTypeHandler(wfMsgForContent('smw_notype')));
-			}
+		if(array_key_exists($attstring,SMWDataValueFactory::$m_typelabels)) { // use cache
+			return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $attstring);
+		} // else: find type for attribute:
+
+		$atitle = Title::newFromText($attstring, SMW_NS_ATTRIBUTE);
+		if ($atitle !== NULL) {
+			return SMWDataValueFactory::newAttributeObjectValue($atitle,$value);
+		} else {
+			return new SMWErrorValue(wfMsgForContent('smw_notype'), $value);
 		}
-		return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value);
 	}
 
 	/**
@@ -57,22 +58,23 @@ class SMWDataValueFactory {
 	 * can be set later on.
 	 */
 	static public function newAttributeObjectValue(Title $att, $value=false) {
+			SMWDataValueFactory::$m_typelabels['Testnary'] = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE, 'String;Integer;Wikipage;Date'); /// DEBUG
 		$attstring = $att->getText();
-		SMWDataValueFactory::$m_typelabels['Testnary'] = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE, 'String;Integer;Wikipage;Date'); /// DEBUG
-		if(!array_key_exists($attstring,SMWDataValueFactory::$m_typelabels)) {
-			$typearray = smwfGetStore()->getSpecialValues($att,SMW_SP_HAS_TYPE);
-			if (count($typearray)==1) {
-				SMWDataValueFactory::$m_typelabels[$attstring] = $typearray[0];
-				$result = SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value);
-				SMWDataValueFactory::$m_typeids[$attstring] = $result->getTypeID(); // also cache typeid
-				return $result;
-			} elseif (count($typearray)==0) {
-				return new SMWErrorValue(wfMsgForContent('smw_notype'), $value);
-			} else {
-				return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value);
-			}
+		if(array_key_exists($attstring,SMWDataValueFactory::$m_typelabels)) { // use cache
+			return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $attstring);
+		} // else: find type for attribute:
+
+		$typearray = smwfGetStore()->getSpecialValues($att,SMW_SP_HAS_TYPE);
+		if (count($typearray)==1) {
+			SMWDataValueFactory::$m_typelabels[$attstring] = $typearray[0];
+			$result = SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $attstring);
+			SMWDataValueFactory::$m_typeids[$attstring] = $result->getTypeID(); // also cache typeid
+			return $result;
+		} elseif (count($typearray)==0) {
+			return new SMWErrorValue(wfMsgForContent('smw_notype'), $value);
+		} else {
+			return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value);
 		}
-		return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value);
 	}
 
 	/**
@@ -116,8 +118,11 @@ class SMWDataValueFactory {
 	 * Create a value from a type value (basically containing strings).
 	 * If no $value is given, an empty container is created, the value of which
 	 * can be set later on.
+	 * @param $typevalue datavalue representing the type of the object
+	 * @param $value user value string, or false if unknown
+	 * @param $attstring text name of according attribute, or false (may be relevant for getting further parameters)
 	 */
-	static public function newTypedValue(SMWDataValue $typevalue, $value=false) {
+	static public function newTypedValue(SMWDataValue $typevalue, $value=false, $attstring=false) {
 		if (array_key_exists($typevalue->getWikiValue(), SMWDataValueFactory::$m_valueclasses)) {
 			$vc = SMWDataValueFactory::$m_valueclasses[$typevalue->getWikiValue()];
 			// check if class file was already included for this class
@@ -149,6 +154,9 @@ class SMWDataValueFactory {
 			}
 		}
 
+		if ($attstring != false) {
+			$result->setAttribute($attstring);
+		}
 		if ($value !== false) {
 			$result->setUserValue($value);
 		}
