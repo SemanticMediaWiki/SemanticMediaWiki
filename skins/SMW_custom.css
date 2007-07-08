@@ -245,7 +245,9 @@ div.smwtt { /* style for content of the bubble */
 }
 
 span.smwttpersist span.smwttcontent{ /* show persistent tooltips for non-JavaScript clients */
-	color: #000000;
+	color: #888888;
+	font-style: italic;
+	font-size: 90%;
 }
 
 span.smwttinline span.smwttcontent{ /* hide inline tooltips for non-JavaScript clients */
@@ -263,4 +265,9 @@ span.smwttpersist { /* colored anchors? */
 span.smwttinline { /* colored anchors */
 	color: #BB7700;
 	text-decoration: none;
+}
+
+img.smwttimg { /* images for tooltip icons */
+	padding-right: 5px;
+	padding-left: 5px;
 }

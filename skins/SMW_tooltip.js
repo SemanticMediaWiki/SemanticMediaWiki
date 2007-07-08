@@ -40,7 +40,7 @@ function smw_makePersistentTooltip(a) {
 		if(spans[i].className=="smwtticon"){
 			img=document.createElement("img");
 			img.setAttribute("src",imagePath+spans[i].innerHTML);
-			img.setAttribute("style","padding-right: 5px; padding-left: 5px;"); // setting a CSS class here fails
+			img.className="smwttimg";
 			a.replaceChild(img, a.firstChild);
 		}
 		//make content invisible
