@@ -822,6 +822,26 @@ class SMWSQLStore extends SMWStore {
 		}
 		return $sql_conds;
 	}
+	
+	/**
+	 * Find out if the given page is a redirect and determine its target.
+	 * Return the target or the page itself if it is not redirect.
+	 */
+	protected function getRedirectTarget($page, &$db) {
+		$options = array('LIMIT' => '1');
+		$id = $page->getArticleID();
+		if ($id == 0) { // page not existing, return
+			return $page;
+		}
+		$res = $db->select($db->tableName('redirect'), 'rd_namespace, rd_title', 'rd_from=' . $id, 'SMW::getRedirectTarget', $options);
+		if ($row = $db->fetchObject($res)) {
+			$result = Title::newFromText($row->rd_title, $row->rd_namespace);
+			if ($result !== NULL) {
+				return $result;
+			}
+		}
+		return $page;
+	}
 
 	/**
 	 * Add the table $tablename to the $from condition via an inner join,
@@ -863,6 +883,12 @@ class SMWSQLStore extends SMWStore {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['TEXT'] = 'txt' . $this->m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('smw_longstrings') . ' AS ' . $curtables['TEXT'] . ' ON ' . $curtables['TEXT'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
+				return true;
+			}
+		} elseif ($tablename == 'REDIRECT') { 
+			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+				$curtables['REDIRECT'] = 'rd' . $this->m_tablenum++;
+				$from .= ' INNER JOIN ' . $db->tableName('redirect') . ' AS ' . $curtables['REDIRECT'] . ' ON ' . $curtables['REDIRECT'] . '.rd_from=' . $curtables['PAGE'] . '.page_id';
 				return true;
 			}
 		}
@@ -912,16 +938,34 @@ class SMWSQLStore extends SMWStore {
 				$where .=  $curtables['PAGE'] . '.page_namespace=' . $db->addQuotes($description->getNamespace());
 			}
 		} elseif ($description instanceof SMWNominalDescription) {
+			global $smwgIQRedirectNormalization;
+			if ($smwgIQRedirectNormalization) {
+				$page = $this->getRedirectTarget($description->getIndividual(), $db);
+			} else {
+				$page = $description->getIndividual();
+			}
 			if (array_key_exists('PREVREL', $curtables)) {
-				$where .= $curtables['PREVREL'] . '.object_title=' . 
-				          $db->addQuotes($description->getIndividual()->getDBKey()) . ' AND ' .
-				          $curtables['PREVREL'] . '.object_namespace=' .
-				          $description->getIndividual()->getNamespace();
+				$cond = $curtables['PREVREL'] . '.object_title=' .
+				        $db->addQuotes($page->getDBKey()) . ' AND ' .
+				        $curtables['PREVREL'] . '.object_namespace=' .
+				        $page->getNamespace();
+				if ( $smwgIQRedirectNormalization && ($this->addInnerJoin('PAGE', $from, $db, $curtables)) ) {
+					$rdtable = 'rd' . $this->m_tablenum++;
+					$from .= ' INNER JOIN ' . $db->tableName('redirect') . ' AS ' . $rdtable;
+					$cond = '(' . $cond . ') OR (' . 
+					        $rdtable . '.rd_from=' .
+					        $curtables['PAGE'] . '.page_id AND ' .
+					        $rdtable . '.rd_title=' .
+					        $db->addQuotes($page->getDBKey()) . ' AND ' .
+					        $rdtable . '.rd_namespace=' .
+					        $page->getNamespace() . ')';
+				}
+				$where .= $cond;
 			} elseif ($this->addInnerJoin('PAGE', $from, $db, $curtables)) {
 				$where .= $curtables['PAGE'] . '.page_title=' .
-				          $db->addQuotes($description->getIndividual()->getDBKey()) . ' AND ' .
+				          $db->addQuotes($page->getDBKey()) . ' AND ' .
 				          $curtables['PAGE'] . '.page_namespace=' .
-				          $description->getIndividual()->getNamespace();
+				          $page->getNamespace();
 			}
 		} elseif ($description instanceof SMWValueDescription) {
 			switch ($description->getDatavalue()->getTypeID()) {
