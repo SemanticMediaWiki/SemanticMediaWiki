@@ -435,19 +435,19 @@ class SMWQueryParser {
 				case '*': //print statement
 					$chunk = $this->readChunk('\]\]|\|');
 					if ($chunk == '|') {
-						$label = $this->readChunk('\]\]');
-						if ($label != ']]') {
+						$printlabel = $this->readChunk('\]\]');
+						if ($printlabel != ']]') {
 							$chunk = $this->readChunk('\]\]');
 						} else {
-							$label = '';
+							$printlabel = '';
 							$chunk = ']]';
 						}
 					} else {
 						global $wgContLang;
-						$label = $wgContLang->getNSText(NS_CATEGORY);
+						$printlabel = $wgContLang->getNSText(NS_CATEGORY);
 					}
 					if ($chunk == ']]') {
-						return new SMWPrintRequest(SMW_PRINT_CATS, $label);
+						return new SMWPrintRequest(SMW_PRINT_CATS, $printlabel);
 					} else {
 						$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
 						return NULL;
@@ -490,18 +490,18 @@ class SMWQueryParser {
 				case '*': // print statement, abort processing
 					$chunk = $this->readChunk('\]\]|\|');
 					if ($chunk == '|') {
-						$label = $this->readChunk('\]\]');
-						if ($label != ']]') {
+						$printlabel = $this->readChunk('\]\]');
+						if ($printlabel != ']]') {
 							$chunk = $this->readChunk('\]\]');
 						} else {
-							$label = '';
+							$printlabel = '';
 							$chunk = ']]';
 						}
 					} else {
-						$label = $rel->getText();
+						$printlabel = $rel->getText();
 					}
 					if ($chunk == ']]') {
-						return new SMWPrintRequest(SMW_PRINT_RELS, $label, $rel);
+						return new SMWPrintRequest(SMW_PRINT_RELS, $printlabel, $rel);
 					} else {
 						$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
 						return NULL;
@@ -595,18 +595,18 @@ class SMWQueryParser {
 		switch ($value) {
 			case '*': // print statement
 				if ($chunk == '|') {
-					$label = $this->readChunk('\]\]');
-					if ($label != ']]') {
+					$printlabel = $this->readChunk('\]\]');
+					if ($printlabel != ']]') {
 						$chunk = $this->readChunk('\]\]');
 					} else {
-						$label = '';
+						$printlabel = '';
 						$chunk = ']]';
 					}
 				} else {
-					$label = $att->getText();
+					$printlabel = $att->getText();
 				}
 				if ($chunk == ']]') {
-					return new SMWPrintRequest(SMW_PRINT_ATTS, $label, $att, $printmodifier);
+					return new SMWPrintRequest(SMW_PRINT_ATTS, $printlabel, $att, $printmodifier);
 				} else {
 					$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
 					return NULL;
