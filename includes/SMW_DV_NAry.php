@@ -26,8 +26,10 @@ class SMWNAryValue extends SMWDataValue {
 	/**
 	 * constructor to create n-ary data value types and set their initial
 	 * value appropriately.
+	 *
+	 * TODO: move all setup of values to parseUserValue and only call setUserValue here.
 	 */
-	function SMWNAryValue($type, $value) {
+	function SMWNAryValue($type, $value,$caption=false) {
 		$this->m_type = $type;
 
 		$types = $type->getTypeValues();
@@ -51,7 +53,7 @@ class SMWNAryValue extends SMWDataValue {
 	// Methods derived from abstract class
 	//
 
-	public function setUserValue($value) {
+	protected function parseUserValue($value) {
 		// get DVtypes
 		$types = $this->m_type->getTypeValues();
 		// get values supplied by user
@@ -67,7 +69,7 @@ class SMWNAryValue extends SMWDataValue {
 		}
 	}
 
-	public function setXSDValue($value, $unit) {
+	protected function parseXSDValue($value, $unit) {
 		// get DVtypes
 		$types = $this->m_type->getTypeValues();
 		// get values supplied by user

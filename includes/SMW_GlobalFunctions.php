@@ -111,7 +111,6 @@ function smwgSetupExtension() {
 		$wgHooks['ParserAfterStrip'][] = 'smwfParserHook'; //default setting
 	}
 
-	$wgHooks['ParserAfterTidy'][] = 'smwfParserAfterTidyHook';
 	$wgHooks['ArticleSaveComplete'][] = 'smwfSaveHook';
 	$wgHooks['ArticleDelete'][] = 'smwfDeleteHook';
 	$wgHooks['TitleMoveComplete'][]='smwfMoveHook';

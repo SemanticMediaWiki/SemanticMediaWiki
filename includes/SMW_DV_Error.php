@@ -11,52 +11,54 @@ class SMWErrorValue extends SMWDataValue {
 	private $m_value;
 	private $m_infolinks = Array();
 	
-	public function SMWErrorValue($errormsg = '', $uservalue = '') {
+	public function SMWErrorValue($errormsg = '', $uservalue = '', $caption = false) {
 		$this->m_error = $errormsg;
-		$this->m_value = $uservalue;
+		$this->setUserValue($uservalue, $caption);
 	}
 
-	public function setUserValue($value) {
+	protected function parseUserValue($value) {
+		if ($this->m_caption === false) {
+			$this->m_caption = $value;
+		}
 		$this->m_value = $value;
 		return true;
 	}
 
-	public function setXSDValue($value, $unit) {
+	protected function parseXSDValue($value, $unit) {
 		$this->setUserValue($value); // no units, compatible syntax
 	}
 
 	public function setOutputFormat($formatstring){
-		//do nothing
+		// no output formats
 	}
 	public function setError($errormsg){
 		$this->m_error = $errormsg;
 	}
 
 	public function getShortWikiText($linked = NULL) {
-		//TODO: support linking
-		return $this->m_value;
+		//TODO: support linking?
+		return $this->m_caption;
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		return $this->getShortWikiText($linker);
+		return htmlspecialchars($this->getShortWikiText($linker));
 	}
 
 	public function getLongWikiText($linked = NULL) {
-		//TODO: support linking
+		//TODO: support linking?
 		return '<span class="smwwarning">'.$this->m_error.'</span>';
-		
 	}
 
-	public function getLongHTMLText($linker = NULL) {		
+	public function getLongHTMLText($linker = NULL) {
 		return $this->getLongWikiText($linker);
 	}
 
 	public function getXSDValue() {
-		return $this->getShortWikiText(false);
+		return $this->getShortWikiText(); ///TODO: really? (errors are not meant to be saved, or are they?)
 	}
 	
 	public function getWikiValue(){
-		return $this->getShortWikiText(false);
+		return $this->getShortWikiText(); /// FIXME: wikivalue must not be influenced by the caption
 	}
 	
 	public function getNumericValue() {

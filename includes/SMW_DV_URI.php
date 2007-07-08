@@ -11,7 +11,12 @@
 define('SMW_URI_MODE_URL',1);
 define('SMW_URI_MODE_URI',2);
 define('SMW_URI_MODE_ANNOURI',3);
- 
+
+
+/**
+ * FIXME: correctly support caption ($this->m_caption).
+ * FIXME: correctly create safe HTML and Wiki text.
+ */
 class SMWURIValue extends SMWDataValue {
 
 	private $m_error = '';
@@ -34,7 +39,10 @@ class SMWURIValue extends SMWDataValue {
 		}
 	}
 	
-	public function setUserValue($value) {
+	protected function parseUserValue($value) {
+		if ($this->m_caption === false) {
+			$this->m_caption = $value;
+		}
 		if ($value!='') { //do not accept empty strings
 			switch ($this->m_mode) {
 				case SMW_URI_MODE_URL: 
@@ -57,22 +65,21 @@ class SMWURIValue extends SMWDataValue {
 		} else {
 			$this->m_error = (wfMsgForContent('smw_emptystring'));
 		}
-		
 		return true;
 
 	}
 
-	public function setXSDValue($value, $unit) {
-		$this-> setUserValue($value);
+	protected function parseXSDValue($value, $unit) {
+		$this->setUserValue($value);
 	}
 
 	public function setOutputFormat($formatstring){
 		//TODO
 	}
 
-	public function getShortWikiText($linked = NULL) {		
+	public function getShortWikiText($linked = NULL) {
 		//TODO: Support linking
-		wfDebug("\r\n getShortWikiText:  ".$this->m_value);
+		wfDebug("\r\n getShortWikiText:  ".$this->m_caption);
 		return $this->m_value;
 	}
 
@@ -80,24 +87,24 @@ class SMWURIValue extends SMWDataValue {
 		return $this->getShortWikiText($linker);
 	}
 
-	public function getLongWikiText($linked = NULL) {				
+	public function getLongWikiText($linked = NULL) {
 			if (! ($this->m_error === '')){
-				return ('<span class="smwwarning">' . $this->m_error  . '</span>');			
-			}else {
+				return ('<span class="smwwarning">' . $this->m_error  . '</span>');
+			} else {
 				return $this->getShortWikiText($linked);	
-			}		
+			}
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		return '<span class="external free">'.$this->m_value.'</span>';
+		return '<span class="external free">'.$this->m_caption.'</span>';
 	}
 
 	public function getXSDValue() {
-		return $this->getShortWikiText(false);
+		return $this->getShortWikiText(false); ///FIXME
 	}
 
 	public function getWikiValue(){
-		return $this->getShortWikiText(false);
+		return $this->getShortWikiText(false); /// FIXME (wikivalue must not be influenced by the caption)
 	}
 	
 	public function getNumericValue() {
@@ -117,7 +124,7 @@ class SMWURIValue extends SMWDataValue {
 			case SMW_URI_MODE_URL: return 'url';
 			case SMW_URI_MODE_URI: return 'uri';
 			case SMW_URI_MODE_ANNOURI: return 'annouri';
-		}		
+		}
 		return 'uri';
 	}
 

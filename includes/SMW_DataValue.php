@@ -9,93 +9,32 @@ require_once('SMW_DataValueFactory.php');
  */
 abstract class SMWDataValue {
 
-	protected $m_attribute = false;
+	protected $m_attribute = false; /// The text label of the respective attribute or false if none given
+	protected $m_caption = false;   /// The text label to be used for output or false if none given
 
-	/*********************************************************************/
-	/* Static methods for initialisation                                 */
-	/*********************************************************************/
-
-	/**
-	 * Create a value from a string supplied by a user for a given attribute.
-	 * If no value is given, an empty container is created, the value of which
-	 * can be set later on.
-	 * 
-	 * @DEPRECATED
-	 */
-	static function newAttributeValue($attribute, $value=false) {
-		trigger_error("The function SMWDataValue::newAttributeValue() is deprecated.", E_USER_NOTICE);
-		return SMWDataValueFactory::newAttributeValue($attribute, $value);
-	}
-
-	/**
-	 * Create a value from a string supplied by a user for a given special
-	 * property, encoded as a numeric constant. 
-	 * If no value is given, an empty container is created, the value of which
-	 * can be set later on.
-	 *
-	 * @DEPRECATED
-	 */
-	static function newSpecialValue($specialprop, $value=false) {
-		trigger_error("The function SMWDataValue::newSpecialValue() is deprecated.", E_USER_NOTICE);
-		return SMWDataValueFactory::newSpecialValue($specialprop, $value);
-	}
-
-	/**
-	 * Create a value from a user-supplied string for which a type handler is known
-	 * If no value is given, an empty container is created, the value of which
-	 * can be set later on.
-	 * 
-	 * @DEPRECATED
-	 */
-	static function newTypedValue(SMWTypeHandler $type, $value=false) {
-		trigger_error("The function SMWDataValue::newTypedValue() is deprecated.", E_USER_NOTICE);
-		return SMWDataValueFactory::newTypeHandlerValue($type, $value);
-	}
-	
-	/*********************************************************************/
-	/* Legacy methods for compatiblity                                   */
-	/*********************************************************************/
-
-	/**
-	 * @DEPRECATED
-	 */
-	public function getUserValue() {
-		trigger_error("The function SMWDataValue::getUserValue() is deprecated.", E_USER_NOTICE);
-		return $this->getShortWikiText();
-	}
-	
-	/**
-	 * @DEPRECATED
-	 */
-	public function getValueDescription() {
-		trigger_error("The function SMWDataValue::getValueDescription() is deprecated.", E_USER_NOTICE);
-		return $this->getLongWikiText();
-	}
-	
-	/**
-	 * @DEPRECATED
-	 */
-	public function getTooltip() {
-		//trigger_error("The function SMWDataValue::getTooltip() is deprecated.", E_USER_NOTICE);
-		return '';
-	}
-
-	/*********************************************************************/
-	/* Set methods                                                       */
-	/*********************************************************************/
+///// Set methods /////
 
 	/**
 	 * Set the user value (and compute other representations if possible).
-	 * The given value is a string as supplied by some user.
+	 * The given value is a string as supplied by some user. An alternative
+	 * label for printout might also be specified.
 	 */
-	abstract public function setUserValue($value);
+	public function setUserValue($value, $caption = false) {
+		if ($caption !== false) {
+			$this->m_caption = $caption;
+		}
+		$this->parseUserValue($value); // may set caption if not set yet, depending on datavalue
+	}
 
 	/**
 	 * Set the xsd value (and compute other representations if possible).
 	 * The given value is a string that was provided by getXSDValue() (all
 	 * implementations should support round-tripping).
 	 */
-	abstract public function setXSDValue($value, $unit);
+	public function setXSDValue($value, $unit) {
+		$this->m_caption = false;
+		$this->parseXSDValue($value, $unit);
+	}
 
 	/**
 	 * Set the attribute to which this value refers. Used to generate search links and
@@ -116,9 +55,23 @@ abstract class SMWDataValue {
 	 */
 	abstract public function setOutputFormat($formatstring);
 
-	/*********************************************************************/
-	/* Get methods                                                       */
-	/*********************************************************************/
+///// Abstract processing methods /////
+
+	/**
+	 * Initialise the datavalue from the given value string.
+	 * The format of this strings might be any acceptable user input
+	 * and especially includes the output of getWikiValue().
+	 */
+	abstract protected function parseUserValue($value);
+
+	/**
+	 * Initialise the datavalue from the given value string and unit.
+	 * The format of both strings strictly corresponds to the output 
+	 * of this implementation for getXSDValue() and getUnit().
+	 */
+	abstract protected function parseXSDValue($value, $unit);
+
+///// Get methods /////
 
 	/**
 	 * Returns a short textual representation for this data value. If the value
@@ -233,6 +186,77 @@ abstract class SMWDataValue {
 	 * Return TRUE if values of the given type generally have a numeric version.
 	 */
 	abstract public function isNumeric();
+
+
+
+	/*********************************************************************/
+	/* Static methods for initialisation                                 */
+	/*********************************************************************/
+
+	/**
+	 * Create a value from a string supplied by a user for a given attribute.
+	 * If no value is given, an empty container is created, the value of which
+	 * can be set later on.
+	 * 
+	 * @DEPRECATED
+	 */
+	static function newAttributeValue($attribute, $value=false) {
+		trigger_error("The function SMWDataValue::newAttributeValue() is deprecated.", E_USER_NOTICE);
+		return SMWDataValueFactory::newAttributeValue($attribute, $value);
+	}
+
+	/**
+	 * Create a value from a string supplied by a user for a given special
+	 * property, encoded as a numeric constant. 
+	 * If no value is given, an empty container is created, the value of which
+	 * can be set later on.
+	 *
+	 * @DEPRECATED
+	 */
+	static function newSpecialValue($specialprop, $value=false) {
+		trigger_error("The function SMWDataValue::newSpecialValue() is deprecated.", E_USER_NOTICE);
+		return SMWDataValueFactory::newSpecialValue($specialprop, $value);
+	}
+
+	/**
+	 * Create a value from a user-supplied string for which a type handler is known
+	 * If no value is given, an empty container is created, the value of which
+	 * can be set later on.
+	 * 
+	 * @DEPRECATED
+	 */
+	static function newTypedValue(SMWTypeHandler $type, $value=false) {
+		trigger_error("The function SMWDataValue::newTypedValue() is deprecated.", E_USER_NOTICE);
+		return SMWDataValueFactory::newTypeHandlerValue($type, $value);
+	}
+	
+	/*********************************************************************/
+	/* Legacy methods for compatiblity                                   */
+	/*********************************************************************/
+
+	/**
+	 * @DEPRECATED
+	 */
+	public function getUserValue() {
+		trigger_error("The function SMWDataValue::getUserValue() is deprecated.", E_USER_NOTICE);
+		return $this->getShortWikiText();
+	}
+	
+	/**
+	 * @DEPRECATED
+	 */
+	public function getValueDescription() {
+		trigger_error("The function SMWDataValue::getValueDescription() is deprecated.", E_USER_NOTICE);
+		return $this->getLongWikiText();
+	}
+	
+	/**
+	 * @DEPRECATED
+	 */
+	public function getTooltip() {
+		trigger_error("The function SMWDataValue::getTooltip() is deprecated.", E_USER_NOTICE);
+		return '';
+	}
 
 }
 

@@ -51,7 +51,7 @@ class SMWFactbox {
 	 * It returns an array which contains the result of the operation in
 	 * various formats.
 	 */
-	static function addAttribute($attribute, $value) {
+	static function addAttribute($attribute, $value, $caption) {
 		global $smwgContLang, $smwgStoreActive;
 		// See if this attribute is a special one like e.g. "Has unit"
 		$attribute = smwfNormalTitleText($attribute); //slightly normalize label
@@ -60,23 +60,23 @@ class SMWFactbox {
 
 		switch ($special) {
 			case false: // normal attribute
-				$result = SMWDataValueFactory::newAttributeValue($attribute,$value);
+				$result = SMWDataValueFactory::newAttributeValue($attribute,$value,$caption);
 				if ($smwgStoreActive) {
 					SMWFactbox::$semdata->addAttributeTextValue($attribute,$result);
 				}
 				return $result;
 			case SMW_SP_IMPORTED_FROM: // this requires special handling
-				return SMWFactbox::addImportedDefinition($value);
+				return SMWFactbox::addImportedDefinition($value,$caption);
 			default: // generic special attribute
 				if ( $special === SMW_SP_SERVICE_LINK ) { // do some custom formatting in this case
 					global $wgContLang;
 					$v = str_replace(' ', '_', $value); //normalize slightly since messages distinguish '_' and ' '
-					$result = SMWDataValueFactory::newSpecialValue($special,$v);
+					$result = SMWDataValueFactory::newSpecialValue($special,$v,$caption);
 					$v = $result->getXSDValue(); //possibly further sanitized, so let's be cautious
 					$result->setProcessedValues($value,$v); //set user value back to the input version
 					$result->setPrintoutString('[[' . $wgContLang->getNsText(NS_MEDIAWIKI) . ':smw_service_' . $v . "|$value]]");
 				} else { // standard processing
-					$result = SMWDataValueFactory::newSpecialValue($special,$value);
+					$result = SMWDataValueFactory::newSpecialValue($special,$value,$caption);
 				}
 				if ($smwgStoreActive) {
 					SMWFactbox::$semdata->addSpecialValue($special,$result);
@@ -125,14 +125,15 @@ class SMWFactbox {
 	 * the factbox, since some do not have a translated name (and thus also
 	 * could not be specified directly).
 	 */
-	static private function addImportedDefinition($value) {
+	static private function addImportedDefinition($value,$caption) {
 		global $wgContLang, $smwgStoreActive;
 
 		list($onto_ns,$onto_section) = explode(':',$value,2);
 		$msglines = preg_split("([\n][\s]?)",wfMsgForContent("smw_import_$onto_ns")); // get the definition for "$namespace:$section"
 
 		if ( count($msglines) < 2 ) { //error: no elements for this namespace
-			$datavalue = SMWDataValueFactory::newTypeHandlerValue(new SMWErrorTypeHandler(wfMsgForContent('smw_unknown_importns',$onto_ns)),$value);
+			/// TODO: use new Error DV
+			$datavalue = SMWDataValueFactory::newTypeHandlerValue(new SMWErrorTypeHandler(wfMsgForContent('smw_unknown_importns',$onto_ns)),$value,$caption);
 			if ($smwgStoreActive) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM,$datavalue);
 			}
@@ -187,12 +188,16 @@ class SMWFactbox {
 		}
 
 		if (NULL != $error) {
-			$datavalue = SMWDataValueFactory::newTypeHandlerValue(new SMWErrorTypeHandler($error),$value);
+			/// TODO: use new Error DV
+			$datavalue = SMWDataValueFactory::newTypeHandlerValue(new SMWErrorTypeHandler($error),$value,$caption);
 			if ($smwgStoreActive) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
 			}
 			return $datavalue;
 		}
+
+
+		///TODO: use new DVs
 
 		// Note: the following just overwrites any existing values for the given
 		// special properties, since they can only have one value anyway; this
@@ -212,7 +217,7 @@ class SMWFactbox {
 		}
 
 		// print the input (this property is usually not stored, see SMW_SQLStore.php)
-		$datavalue = SMWDataValueFactory::newTypeHandlerValue($sth,"[$onto_uri$onto_section $value]");
+		$datavalue = SMWDataValueFactory::newTypeHandlerValue($sth,"[$onto_uri$onto_section $value]",$caption);
 		// TODO: Unfortunatelly, the following line can break the tooltip code if $onto_name has markup. -- mak
 		// if ('' != $onto_name) $datavalue->setPrintoutString($onto_name, 'onto_name');
 		if ('' != $onto_name) $datavalue->setPrintoutString("[$onto_uri$onto_section $value] ($onto_name)");

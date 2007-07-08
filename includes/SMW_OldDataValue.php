@@ -115,8 +115,6 @@ class SMWOldDataValue extends SMWDataValue {
 	var $attribute; // wiki name (without namespace) of the attribute that this value was
 	                // assigned to, or FALSE if no attribute was given.
 	/**#@-*/
-	
-	private $byxsd = false; // hack hack hack (temporary to ease DV transition)
 
 	/**
 	 * Just initialise variables. To create value objects, use one of the
@@ -139,9 +137,11 @@ class SMWOldDataValue extends SMWDataValue {
 	/**
 	 * Set the user value (and compute other representations if possible)
 	 */
-	function setUserValue($value) {
+	protected function parseUserValue($value) {
+		if ($this->m_caption === false) {
+			$this->m_caption = $value;
+		}
 		$this->clear();
-		$this->byxsd = false; // DV transition hack to distinguish this case and to use others[0] for XSD-values
 		$this->vuser = $value;
 		//this is needed since typehandlers are not strictly required to
 		//set the user value, especially if errors are reported.
@@ -156,8 +156,7 @@ class SMWOldDataValue extends SMWDataValue {
 	/**
 	 * Set the xsd value (and compute other representations if possible)
 	 */
-	function setXSDValue($value, $unit) {
-		$this->byxsd = true; // DV transition hack to distinguish this case and to use others[0] for XSD-values
+	protected function parseXSDValue($value, $unit) {
 		$this->vxsd = $value;
 		if ($this->type_handler === NULL) {
 			return false;
@@ -315,18 +314,21 @@ class SMWOldDataValue extends SMWDataValue {
 	/*********************************************************************/
 	
 	public function getShortWikiText($linked = NULL) {
-		// behave like old getUserValue if DV was initialised from user value,
-		// else behave like old getStringValue. Transition hack.
-		if ($this->byxsd) {
+		if ($this->m_caption === false) {
 			if ( count($this->others) > 0 ) {
 				reset($this->others);
-				return current($this->others); // return first element
+				$result = current($this->others); // return first element
 			} else {
-				return $this->vuser;
+				$result = $this->vuser;
 			}
 		} else {
-			return $this->vuser;
+			$result = $this->m_caption;
 		}
+		// add tooltip (only if "linking" is enabled)
+		if ( ($linked !== NULL) && ($linked !==false) && ($this->getTooltip() != '') ) {
+			$result = '<span class="smwttinline">' . $result . '<span class="smwttcontent">' . $this->getTooltip() . '</span></span>';
+		}
+		return $result;
 	}
 
 	public function getShortHTMLText($linker = NULL) {
@@ -491,7 +493,7 @@ class SMWOldDataValue extends SMWDataValue {
 				foreach ($this->others as $id => $other) {
 					if ( $id !== $this->input ) {
 						$this->tooltip .= $sep . $other;
-						$sep = ' = ';
+						$sep = ' <br /> ';
 					}
 				}
 			} else { $this->tooltip = ''; } // TODO: returning $this->error; does not fully work with the JScript pre-parsing right now

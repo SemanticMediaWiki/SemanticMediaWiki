@@ -39,16 +39,16 @@ class SMWDataValueFactory {
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
 	 */
-	static public function newAttributeValue($attstring, $value=false) {
+	static public function newAttributeValue($attstring, $value=false, $caption=false) {
 		if(array_key_exists($attstring,SMWDataValueFactory::$m_typelabels)) { // use cache
-			return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $attstring);
+			return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $caption, $attstring);
 		} // else: find type for attribute:
 
 		$atitle = Title::newFromText($attstring, SMW_NS_ATTRIBUTE);
 		if ($atitle !== NULL) {
-			return SMWDataValueFactory::newAttributeObjectValue($atitle,$value);
+			return SMWDataValueFactory::newAttributeObjectValue($atitle,$value,$caption);
 		} else {
-			return new SMWErrorValue(wfMsgForContent('smw_notype'), $value);
+			return new SMWErrorValue(wfMsgForContent('smw_notype'),$value,$caption);
 		}
 	}
 
@@ -57,23 +57,23 @@ class SMWDataValueFactory {
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
 	 */
-	static public function newAttributeObjectValue(Title $att, $value=false) {
+	static public function newAttributeObjectValue(Title $att, $value=false, $caption=false) {
 			SMWDataValueFactory::$m_typelabels['Testnary'] = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE, 'String;Integer;Wikipage;Date'); /// DEBUG
 		$attstring = $att->getText();
 		if(array_key_exists($attstring,SMWDataValueFactory::$m_typelabels)) { // use cache
-			return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $attstring);
+			return SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $caption, $attstring);
 		} // else: find type for attribute:
 
 		$typearray = smwfGetStore()->getSpecialValues($att,SMW_SP_HAS_TYPE);
 		if (count($typearray)==1) {
 			SMWDataValueFactory::$m_typelabels[$attstring] = $typearray[0];
-			$result = SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $attstring);
+			$result = SMWDataValueFactory::newTypedValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $caption, $attstring);
 			SMWDataValueFactory::$m_typeids[$attstring] = $result->getTypeID(); // also cache typeid
 			return $result;
 		} elseif (count($typearray)==0) {
-			return new SMWErrorValue(wfMsgForContent('smw_notype'), $value);
+			return new SMWErrorValue(wfMsgForContent('smw_notype'), $value, $caption);
 		} else {
-			return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value);
+			return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value, $caption);
 		}
 	}
 
@@ -83,7 +83,7 @@ class SMWDataValueFactory {
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
 	 */
-	static public function newSpecialValue($specialprop, $value=false) {
+	static public function newSpecialValue($specialprop, $value=false, $caption=false) {
 		///TODO
 		switch ($specialprop) {
 			case SMW_SP_HAS_TYPE:
@@ -109,7 +109,7 @@ class SMWDataValueFactory {
 		}
 
 		if ($value !== false) {
-			$result->setUserValue($value);
+			$result->setUserValue($value,$caption);
 		}
 		return $result;
 	}
@@ -120,9 +120,10 @@ class SMWDataValueFactory {
 	 * can be set later on.
 	 * @param $typevalue datavalue representing the type of the object
 	 * @param $value user value string, or false if unknown
+	 * @param $caption user-defined caption or false if none given
 	 * @param $attstring text name of according attribute, or false (may be relevant for getting further parameters)
 	 */
-	static public function newTypedValue(SMWDataValue $typevalue, $value=false, $attstring=false) {
+	static public function newTypedValue(SMWDataValue $typevalue, $value=false, $caption=false, $attstring=false) {
 		if (array_key_exists($typevalue->getWikiValue(), SMWDataValueFactory::$m_valueclasses)) {
 			$vc = SMWDataValueFactory::$m_valueclasses[$typevalue->getWikiValue()];
 			// check if class file was already included for this class
@@ -146,7 +147,7 @@ class SMWDataValueFactory {
 					include_once($smwgIP . '/includes/SMW_DV_NAry.php');
 					SMWDataValueFactory::$m_naryincluded = true;
 				}
-				return new SMWNAryValue($typevalue, $value);
+				return new SMWNAryValue($typevalue, $value, $caption);
 			} else {
 				///TODO migrate to new system
 				$type = SMWTypeHandlerFactory::getTypeHandlerByLabel($typevalue->getWikiValue());
@@ -158,7 +159,7 @@ class SMWDataValueFactory {
 			$result->setAttribute($attstring);
 		}
 		if ($value !== false) {
-			$result->setUserValue($value);
+			$result->setUserValue($value,$caption);
 		}
 		return $result;
 	}

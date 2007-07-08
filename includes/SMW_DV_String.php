@@ -13,13 +13,16 @@ class SMWStringValue extends SMWDataValue {
 	private $m_xsdvalue = '';
 	private $m_infolinks = Array();
 
-	public function setUserValue($value) {
+	protected function parseUserValue($value) {
+		if ($this->m_caption === false) {
+			$this->m_caption = $value;
+		}
 		if ($value!='') {
 			$this->m_xsdvalue = smwfXMLContentEncode($value);
 			// 255 below matches smw_attributes.value_xsd definition in smwfMakeSemanticTables()
 			if (strlen($this->m_xsdvalue) > 255) {
 				$this->m_error = wfMsgForContent('smw_maxstring', $this->m_xsdvalue);
-				$this->m_value = $this->m_xsdvalue;			
+				$this->m_value = $this->m_xsdvalue;
 			} else {
 				$this->m_value = $this->m_xsdvalue;
 				$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $this->m_value);
@@ -30,41 +33,46 @@ class SMWStringValue extends SMWDataValue {
 		return true;
 	}
 
-	public function setXSDValue($value, $unit) {
-		$this->setUserValue($value); // no units, XML compatible syntax
+	protected function parseXSDValue($value, $unit) {
+		$this->parseUserValue($value); // no units, XML compatible syntax
+		$this->m_caption = $this->m_value; // this is our output text
 	}
 
-	public function setOutputFormat($formatstring){
-		//ToDo
+	public function setOutputFormat($formatstring) {
+		// no output formats
 	}
 
 	public function getShortWikiText($linked = NULL) {
-		//TODO: Support linking
-		return $this->m_value;
+		//TODO: Support linking?
+		return $this->m_caption;
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		return $this->getShortWikiText($linker);
+		return htmlspecialchars($this->getShortWikiText($linker));
 	}
 
 	public function getLongWikiText($linked = NULL) {
 		if (! ($this->m_error === '')){
 			return ('<span class="smwwarning">' . $this->m_error  . '</span>');
-		}else {
+		} else {
 			return $this->getShortWikiText($linked);
 		}
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		return $this->getLongWikiText($linker);
+		if (! ($this->m_error === '')){
+			return ('<span class="smwwarning">' . $this->m_error  . '</span>');
+		} else {
+			return $this->getShortHTMLText($linked);
+		}
 	}
 
 	public function getXSDValue() {
-		return $this->getShortWikiText();
+		return $this->getShortWikiText(); /// FIXME: not correct for special symbols like "Ü" and "&"?
 	}
 	
 	public function getWikiValue(){
-		return $this->getShortWikiText(false);	
+		return $this->getShortWikiText();  /// FIXME: wikivalue must not be influenced by the caption
 	}
 	
 	public function getNumericValue() {

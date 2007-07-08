@@ -15,7 +15,7 @@ class SMWTypesValue extends SMWDataValue {
 	private $m_error = '';
 	private $m_xsdvalue = false;
 
-	public function setUserValue($value) {
+	protected function parseUserValue($value) {
 		// no use for being lazy here: plain user values are never useful
 		$this->m_typelabels = array();
 		$types = explode(';', $value);
@@ -29,7 +29,7 @@ class SMWTypesValue extends SMWDataValue {
 		}
 	}
 
-	public function setXSDValue($value, $unit) {
+	protected function parseXSDValue($value, $unit) {
 		$this->m_xsdvalue = $value; // lazy parsing
 	}
 
@@ -39,8 +39,15 @@ class SMWTypesValue extends SMWDataValue {
 
 	public function getShortWikiText($linked = NULL) {
 		if ( ($linked === NULL) || ($linked === false) ) {
-			return str_replace('_',' ',implode(', ', $this->getTypeLabels()));
+			if ($this->m_caption === false) {
+				return str_replace('_',' ',implode(', ', $this->getTypeLabels()));
+			} else {
+				return $this->m_caption;
+			}
 		} else {
+			if ($this->m_caption !== false) { ///TODO: how can we support linking for nary texts?
+				return $this->m_caption;
+			}
 			global $wgContLang;
 			$result = '';
 			$typenamespace = $wgContLang->getNsText(SMW_NS_TYPE);
