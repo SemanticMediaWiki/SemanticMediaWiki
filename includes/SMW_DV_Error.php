@@ -7,13 +7,12 @@
  */
 class SMWErrorValue extends SMWDataValue {
 
-	private $m_error;
 	private $m_value;
 	private $m_infolinks = Array();
 	
 	public function SMWErrorValue($errormsg = '', $uservalue = '', $caption = false) {
-		$this->m_error = $errormsg;
 		$this->setUserValue($uservalue, $caption);
+		$this->addError($errormsg);
 	}
 
 	protected function parseUserValue($value) {
@@ -31,9 +30,6 @@ class SMWErrorValue extends SMWDataValue {
 	public function setOutputFormat($formatstring){
 		// no output formats
 	}
-	public function setError($errormsg){
-		$this->m_error = $errormsg;
-	}
 
 	public function getShortWikiText($linked = NULL) {
 		//TODO: support linking?
@@ -46,11 +42,11 @@ class SMWErrorValue extends SMWDataValue {
 
 	public function getLongWikiText($linked = NULL) {
 		//TODO: support linking?
-		return '<span class="smwwarning">'.$this->m_error.'</span>';
+		return $this->getErrorText() . '&nbsp;'; // &nbsp; is a hack to get non-empty table rows for better img placement in FF (any maybe elsewhere too); should not hurt
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		return $this->getLongWikiText($linker);
+		return $this->getErrorText() . '&nbsp;'; // &nbsp; is a hack to get non-empty table rows for better img placement in FF (any maybe elsewhere too); should not hurt
 	}
 
 	public function getXSDValue() {
@@ -69,10 +65,6 @@ class SMWErrorValue extends SMWDataValue {
 		return ''; // empty unit
 	}
 
-	public function getError() {
-		return $this->m_error;
-	}
-
 	public function getTypeID(){
 		return 'error';
 	}
@@ -82,11 +74,7 @@ class SMWErrorValue extends SMWDataValue {
 	}
 
 	public function getHash() {
-		return $this->getLongWikiText() . $this->m_value;
-	}
-
-	public function isValid() {
-		return (($this->m_error == '') && ($this->m_value !== '') );
+		return $this->getLongWikiText(); // use only error for hash so as not to display the same error twice
 	}
 
 	public function isNumeric() {

@@ -8,7 +8,6 @@
  */
 class SMWStringValue extends SMWDataValue {
 
-	private $m_error = '';
 	private $m_value = '';
 	private $m_xsdvalue = '';
 	private $m_infolinks = Array();
@@ -21,14 +20,14 @@ class SMWStringValue extends SMWDataValue {
 			$this->m_xsdvalue = smwfXMLContentEncode($value);
 			// 255 below matches smw_attributes.value_xsd definition in smwfMakeSemanticTables()
 			if (strlen($this->m_xsdvalue) > 255) {
-				$this->m_error = wfMsgForContent('smw_maxstring', $this->m_xsdvalue);
+				$this->addError(wfMsgForContent('smw_maxstring', $this->m_xsdvalue));
 				$this->m_value = $this->m_xsdvalue;
 			} else {
 				$this->m_value = $this->m_xsdvalue;
 				$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $this->m_value);
 			}
 		} else {
-			$this->m_error = wfMsgForContent('smw_emptystring');
+			$this->addError(wfMsgForContent('smw_emptystring'));
 		}
 		return true;
 	}
@@ -52,16 +51,16 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getLongWikiText($linked = NULL) {
-		if (! ($this->m_error === '')){
-			return ('<span class="smwwarning">' . $this->m_error  . '</span>');
+		if (!$this->isValid()) {
+			return $this->getErrorText();
 		} else {
 			return $this->m_value;
 		}
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		if (! ($this->m_error === '')){
-			return ('<span class="smwwarning">' . $this->m_error  . '</span>');
+		if (!$this->isValid()) {
+			return $this->getErrorText();
 		} else {
 			return htmlspecialchars($this->m_value);
 		}
@@ -82,10 +81,6 @@ class SMWStringValue extends SMWDataValue {
 	public function getUnit() {
 		return ''; // empty unit
 	}
-
-	public function getError() {
-		return $this->m_error;
-	}
 	
 	public function getTypeID(){
 		return 'string';
@@ -97,10 +92,6 @@ class SMWStringValue extends SMWDataValue {
 
 	public function getHash() {
 		return $this->getLongWikiText(false) . $this->m_xsdvalue ;
-	}
-
-	public function isValid() {
-		return (($this->m_error == '') && ($this->m_value !== '') );
 	}
 
 	public function isNumeric() {

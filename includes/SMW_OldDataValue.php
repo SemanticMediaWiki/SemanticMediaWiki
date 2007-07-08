@@ -53,10 +53,6 @@ class SMWOldDataValue extends SMWDataValue {
 	 * in a strict sense.
 	 */
 	var $unit;
-	/**
-	 * Error message, if value could not be intitialised. FALSE otherwise.
-	 */
-	var $error;
 
 	/**
 	 * String identifier that describes which of the returned
@@ -262,7 +258,7 @@ class SMWOldDataValue extends SMWDataValue {
 	 * make a value invalid, preventing it, e.g., from being stored in the database.
 	 */
 	function setError($message) {
-		$this->error = $message;
+		$this->addError($message);
 		$this->description = false;
 		$this->tooltip = false;
 	}
@@ -292,7 +288,6 @@ class SMWOldDataValue extends SMWDataValue {
 		$this->unit = '';
 		$this->input = 'K';
 		$this->others = array();
-		$this->error = false;
 
 		$this->tooltip = false;
 		$this->description = false;
@@ -338,7 +333,7 @@ class SMWOldDataValue extends SMWDataValue {
 	public function getLongWikiText($linked = NULL) {
 		// copied from deprecated getValueDescription
 		if ($this->description === false) {
-			if ($this->error === false) {
+			if ($this->isValid()) {
 				if (count($this->others)>0) {
 					$sep = '';
 					foreach ($this->others as $other) {
@@ -347,7 +342,9 @@ class SMWOldDataValue extends SMWDataValue {
 					}
 					if (' (' != $sep) $this->description .= ')';
 				}
-			} else { $this->description = '<span class="smwwarning">' . $this->error  . '</span>'; }
+			} else {
+				$this->description = $this->getErrorText();
+			}
 		}
 		return $this->description;
 	}
@@ -429,13 +426,6 @@ class SMWOldDataValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return error string or false if no error occured.
-	 */
-	function getError() {
-		return $this->error;
-	}
-
-	/**
 	 * Return the type id for this value, or FALSE if no type was given.
 	 */
 	function getTypeID() {
@@ -464,7 +454,7 @@ class SMWOldDataValue extends SMWDataValue {
 	function getValueDescription() {
 		trigger_error("The function getValueDescription() is deprecated. Use getLongWikiText() or getLongHTMLText().", E_USER_NOTICE);
 		if ($this->description === false) {
-			if ($this->error === false) {
+			if ($this->isValid()) {
 				if (count($this->others)>0) {
 					$sep = '';
 					foreach ($this->others as $other) {
@@ -473,7 +463,7 @@ class SMWOldDataValue extends SMWDataValue {
 					}
 					if (' (' != $sep) $this->description .= ')';
 				}
-			} else { $this->description = '<span class="smwwarning">' . $this->error  . '</span>'; }
+			} else { $this->description = $this->getErrorText(); }
 		}
 		return $this->description;
 	}
@@ -487,7 +477,7 @@ class SMWOldDataValue extends SMWDataValue {
 	 */
 	function getTooltip() {
 		if ($this->tooltip === false) {
-			if ($this->error === false) {
+			if ($this->isValid()) {
 				$this->tooltip = '';
 				$sep = '';
 				foreach ($this->others as $id => $other) {
@@ -552,14 +542,6 @@ class SMWOldDataValue extends SMWDataValue {
 		} else {
 			return Array();
 		}
-	}
-
-	/**
-	 * Return TRUE if a value was defined and understood by the given type,
-	 * and false if parsing errors occured or no value was given.
-	 */
-	function isValid() {
-		return ( ($this->error === false) && ($this->vuser !== false) );
 	}
 
 	/**

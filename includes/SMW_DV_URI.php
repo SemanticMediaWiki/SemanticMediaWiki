@@ -19,7 +19,6 @@ define('SMW_URI_MODE_ANNOURI',3);
  */
 class SMWURIValue extends SMWDataValue {
 
-	private $m_error = '';
 	private $m_value = '';
 	private $m_xsdvalue = '';
 	private $m_infolinks = Array();
@@ -53,7 +52,7 @@ class SMWURIValue extends SMWDataValue {
 					foreach ($uri_blacklist as $uri) {
 						if (' ' == $uri[0]) $uri = mb_substr($uri,1); //tolerate beautification space
 						if ($uri == mb_substr($value,0,mb_strlen($uri))) { //disallowed URI!
-							$this->m_error = wfMsgForContent('smw_baduri', $uri);
+							$this->addError(wfMsgForContent('smw_baduri', $uri));
 							return true;
 						}
 					}
@@ -63,7 +62,7 @@ class SMWURIValue extends SMWDataValue {
 			$this->m_value = str_replace(array('&','<',' '),array('&amp;','&lt;','_'),$value); // TODO: spaces are just not allowed and should lead to an error
 			$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $this->m_value);		
 		} else {
-			$this->m_error = (wfMsgForContent('smw_emptystring'));
+			$this->addError(wfMsgForContent('smw_emptystring'));
 		}
 		return true;
 
@@ -78,9 +77,8 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText($linked = NULL) {
-		//TODO: Support linking
 		wfDebug("\r\n getShortWikiText:  ".$this->m_caption);
-		return $this->m_caption;
+		return $this->m_caption; // TODO: support linking with caption as alternative text, depending on type of DV
 	}
 
 	public function getShortHTMLText($linker = NULL) {
@@ -88,15 +86,19 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getLongWikiText($linked = NULL) {
-			if (! ($this->m_error === '')){
-				return ('<span class="smwwarning">' . $this->m_error  . '</span>');
-			} else {
-				return $this->m_value;
-			}
+		if ($this->isValid()){
+			return $this->getErrorText();
+		} else {
+			return $this->m_value;
+		}
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		return '<span class="external free">' . htmlspecialchars($this->m_value) . '</span>'; /// TODO support linking
+		if ($this->isValid()){
+			return $this->getErrorText();
+		} else {
+			return '<span class="external free">' . htmlspecialchars($this->m_value) . '</span>'; /// TODO support linking
+		}
 	}
 
 	public function getXSDValue() {
@@ -115,10 +117,6 @@ class SMWURIValue extends SMWDataValue {
 		return ''; // empty unit
 	}
 
-	public function getError() {
-		return $this->m_error;
-	}
-
 	public function getTypeID(){
 		switch ($this->m_mode) {
 			case SMW_URI_MODE_URL: return 'url';
@@ -134,10 +132,6 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getHash() {
 		return $this->getShortWikiText(false);
-	}
-
-	public function isValid() {
-		return (($this->m_error == '') && ($this->m_value !== '') );
 	}
 
 	public function isNumeric() {

@@ -11,6 +11,8 @@ abstract class SMWDataValue {
 
 	protected $m_attribute = false; /// The text label of the respective attribute or false if none given
 	protected $m_caption = false;   /// The text label to be used for output or false if none given
+	protected $m_errors = array();  /// Array of error text messages
+	protected $m_isset = false;     /// True if a value was set.
 
 ///// Set methods /////
 
@@ -20,10 +22,12 @@ abstract class SMWDataValue {
 	 * label for printout might also be specified.
 	 */
 	public function setUserValue($value, $caption = false) {
+		$this->m_errors = array(); // clear errors
 		if ($caption !== false) {
 			$this->m_caption = $caption;
 		}
 		$this->parseUserValue($value); // may set caption if not set yet, depending on datavalue
+		$this->m_isset = true;
 	}
 
 	/**
@@ -32,8 +36,10 @@ abstract class SMWDataValue {
 	 * implementations should support round-tripping).
 	 */
 	public function setXSDValue($value, $unit) {
+		$this->m_errors = array(); // clear errors
 		$this->m_caption = false;
 		$this->parseXSDValue($value, $unit);
+		$this->m_isset = true;
 	}
 
 	/**
@@ -54,6 +60,14 @@ abstract class SMWDataValue {
 	 * In any case, an empty string resets the output format to the default.
 	 */
 	abstract public function setOutputFormat($formatstring);
+
+	/**
+	 * Add a new error string to the error list. All error string must be wiki and
+	 * html-safe! No further escaping will happen!
+	 */
+	protected function addError($errorstring) {
+		$this->m_errors[] = $errorstring;
+	}
 
 ///// Abstract processing methods /////
 
@@ -152,8 +166,9 @@ abstract class SMWDataValue {
 
 	/**
 	 * Return error string or an empty string if no error occured.
+	 * @DEPRECATED
 	 */
-	abstract public function getError();
+	public function getError() {}
 
 	/**
 	 * Return a short string that unambiguously specify the type of this value.
@@ -177,17 +192,38 @@ abstract class SMWDataValue {
 	abstract public function getHash();
 
 	/**
-	 * Return TRUE if a value was defined and understood by the given type,
-	 * and false if parsing errors occured or no value was given.
-	 */
-	abstract public function isValid();
-
-	/**
 	 * Return TRUE if values of the given type generally have a numeric version.
 	 */
 	abstract public function isNumeric();
 
+	/**
+	 * Return TRUE if a value was defined and understood by the given type,
+	 * and false if parsing errors occured or no value was given.
+	 */
+	public function isValid() {
+		return ( (count($this->m_errors) == 0) && $this->m_isset );
+	}
 
+	/**
+	 * Return a string that displays all error messages as a tooltip, or
+	 * an empty string if no errors happened.
+	 */
+	public function getErrorText() {
+		if (count($this->m_errors) > 0) {
+			$errors = implode(', ', $this->m_errors);
+			return '<span class="smwttpersist"><span class="smwtticon">warning.png</span><span class="smwttcontent">' . $errors . '</span></span>';
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * Return an array of error messages, or an empty array
+	 * if no errors occurred.
+	 */
+	public function getErrors() {
+		return $this->m_errors;
+	}
 
 	/*********************************************************************/
 	/* Static methods for initialisation                                 */

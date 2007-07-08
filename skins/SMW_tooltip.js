@@ -40,10 +40,12 @@ function smw_makePersistentTooltip(a) {
 		if(spans[i].className=="smwtticon"){
 			img=document.createElement("img");
 			img.setAttribute("src",imagePath+spans[i].innerHTML);
+			img.setAttribute("style","padding-right: 5px; padding-left: 5px;"); // setting a CSS class here fails
 			a.replaceChild(img, a.firstChild);
 		}
 		//make content invisible
 		//done here and not in the css so that non-js clients can see it
+		//TODO: why not delete this span completely?
 		if(spans[i].className=="smwttcontent"){
 			spans[i].style.display="none";
 		}

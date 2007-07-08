@@ -14,11 +14,6 @@ class SMWNAryValue extends SMWDataValue {
 	private $m_values = array();
 
 	/**
-	 * variable for representing error messages
-	 */
-	private $m_error;
-
-	/**
 	 * types as we received them when datafactory called us
 	 */
 	private $m_type = array();
@@ -180,10 +175,6 @@ class SMWNAryValue extends SMWDataValue {
 
 	public function getUnit() {
 		return ''; // empty unit
-	}
-
-	public function getError() {
-		return $this->m_error;
 	}
 
 	public function getTypeID() {

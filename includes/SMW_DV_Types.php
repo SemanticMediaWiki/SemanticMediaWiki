@@ -12,7 +12,6 @@
 class SMWTypesValue extends SMWDataValue {
 
 	private $m_typelabels = false;
-	private $m_error = '';
 	private $m_xsdvalue = false;
 
 	protected function parseUserValue($value) {
@@ -38,16 +37,23 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText($linked = NULL) {
+		if ($this->m_caption !== false) {
+			return $this->m_caption;
+		}
+		return $this->getLongWikiText($linked);
+	}
+
+	public function getShortHTMLText($linker = NULL) {
+		if ($this->m_caption !== false) {
+			return htmlspecialchars($this->m_caption);
+		}
+		return $this->getLongHTMLText($linker);
+	}
+
+	public function getLongWikiText($linked = NULL) {
 		if ( ($linked === NULL) || ($linked === false) ) {
-			if ($this->m_caption === false) {
-				return str_replace('_',' ',implode(', ', $this->getTypeLabels()));
-			} else {
-				return $this->m_caption;
-			}
+			return str_replace('_',' ',implode(', ', $this->getTypeLabels()));
 		} else {
-			if ($this->m_caption !== false) { ///TODO: how can we support linking for nary texts?
-				return $this->m_caption;
-			}
 			global $wgContLang;
 			$result = '';
 			$typenamespace = $wgContLang->getNsText(SMW_NS_TYPE);
@@ -64,17 +70,9 @@ class SMWTypesValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortHTMLText($linker = NULL) {
-		///TODO Support linking
-		return implode(', ', $this->m_typelabels);
-	}
-
-	public function getLongWikiText($linked = NULL) {
-		return $this->getShortWikiText($linked);
-	}
-
 	public function getLongHTMLText($linker = NULL) {
-		return $this->getShortHTMLText($linker);
+		/// TODO: support linking
+		return implode(', ', $this->m_typelabels);
 	}
 
 	public function getXSDValue() {
@@ -100,10 +98,6 @@ class SMWTypesValue extends SMWDataValue {
 		return ''; // empty unit
 	}
 
-	public function getError() {
-		return $this->m_error;
-	}
-
 	public function getTypeID() {
 		return 'types';
 	}
@@ -114,11 +108,6 @@ class SMWTypesValue extends SMWDataValue {
 
 	public function getHash() {
 		return implode('[]', $this->getTypeLabels());
-	}
-
-	public function isValid() {
-		return ( ($this->m_error == '') && 
-		         ( ($this->m_typelabels !== false) || ($this->m_xsdvalue !== false) ) );
 	}
 
 	public function isNumeric() {
