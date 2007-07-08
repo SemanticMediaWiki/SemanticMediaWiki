@@ -885,10 +885,10 @@ class SMWSQLStore extends SMWStore {
 				$from .= ' INNER JOIN ' . $db->tableName('smw_longstrings') . ' AS ' . $curtables['TEXT'] . ' ON ' . $curtables['TEXT'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
 				return true;
 			}
-		} elseif ($tablename == 'REDIRECT') { 
+		} elseif ($tablename == 'REDIRECT') {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['REDIRECT'] = 'rd' . $this->m_tablenum++;
-				$from .= ' INNER JOIN ' . $db->tableName('redirect') . ' AS ' . $curtables['REDIRECT'] . ' ON ' . $curtables['REDIRECT'] . '.rd_from=' . $curtables['PAGE'] . '.page_id';
+				$from .= ' INNER JOIN ' . $db->tableName('redirect') . ' AS ' . $curtables['REDIRECT'];
 				return true;
 			}
 		}
@@ -949,15 +949,13 @@ class SMWSQLStore extends SMWStore {
 				        $db->addQuotes($page->getDBKey()) . ' AND ' .
 				        $curtables['PREVREL'] . '.object_namespace=' .
 				        $page->getNamespace();
-				if ( $smwgIQRedirectNormalization && ($this->addInnerJoin('PAGE', $from, $db, $curtables)) ) {
-					$rdtable = 'rd' . $this->m_tablenum++;
-					$from .= ' INNER JOIN ' . $db->tableName('redirect') . ' AS ' . $rdtable;
+				if ( $smwgIQRedirectNormalization && ($this->addInnerJoin('REDIRECT', $from, $db, $curtables)) ) {
 					$cond = '(' . $cond . ') OR (' . 
-					        $rdtable . '.rd_from=' .
+					        $curtables['REDIRECT'] . '.rd_from=' .
 					        $curtables['PAGE'] . '.page_id AND ' .
-					        $rdtable . '.rd_title=' .
+					        $curtables['REDIRECT'] . '.rd_title=' .
 					        $db->addQuotes($page->getDBKey()) . ' AND ' .
-					        $rdtable . '.rd_namespace=' .
+					        $curtables['REDIRECT'] . '.rd_namespace=' .
 					        $page->getNamespace() . ')';
 				}
 				$where .= $cond;
