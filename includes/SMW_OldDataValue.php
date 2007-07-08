@@ -327,7 +327,7 @@ class SMWOldDataValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		return $this->getShortWikiText();
+		return $this->getShortWikiText($linker);
 	}
 
 	public function getLongWikiText($linked = NULL) {
