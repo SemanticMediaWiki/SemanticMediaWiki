@@ -55,7 +55,7 @@ class SMWStringValue extends SMWDataValue {
 		if (! ($this->m_error === '')){
 			return ('<span class="smwwarning">' . $this->m_error  . '</span>');
 		} else {
-			return $this->getShortWikiText($linked);
+			return $this->m_value;
 		}
 	}
 
@@ -63,7 +63,7 @@ class SMWStringValue extends SMWDataValue {
 		if (! ($this->m_error === '')){
 			return ('<span class="smwwarning">' . $this->m_error  . '</span>');
 		} else {
-			return $this->getShortHTMLText($linked);
+			return htmlspecialchars($this->m_value);
 		}
 	}
 

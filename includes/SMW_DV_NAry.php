@@ -27,7 +27,7 @@ class SMWNAryValue extends SMWDataValue {
 	 * constructor to create n-ary data value types and set their initial
 	 * value appropriately.
 	 *
-	 * TODO: move all setup of values to parseUserValue and only call setUserValue here.
+	 * FIXME: move all setup of values to parseUserValue and only call setUserValue here.
 	 */
 	function SMWNAryValue($type, $value,$caption=false) {
 		$this->m_type = $type;
@@ -92,6 +92,10 @@ class SMWNAryValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText($linked = NULL) {
+		if ($this->m_caption !== false) {
+			return $this->m_caption;
+		}
+		/// TODO: beautify with (...) like LongText
 		$result = '';
 		$first = true;
 		foreach ($this->m_values as $value) {
@@ -106,7 +110,10 @@ class SMWNAryValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		/// TODO: beautify with (...) like WikiText
+		if ($this->m_caption !== false) {
+			return $this->m_caption;
+		}
+		/// TODO: beautify with (...) like LongText
 		$result = '';
 		$first = true;
 		foreach ($this->m_values as $value) {

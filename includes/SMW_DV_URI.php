@@ -80,23 +80,23 @@ class SMWURIValue extends SMWDataValue {
 	public function getShortWikiText($linked = NULL) {
 		//TODO: Support linking
 		wfDebug("\r\n getShortWikiText:  ".$this->m_caption);
-		return $this->m_value;
+		return $this->m_caption;
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		return $this->getShortWikiText($linker);
+		return htmlspecialchars($this->getShortWikiText($linker)); /// TODO: support linking
 	}
 
 	public function getLongWikiText($linked = NULL) {
 			if (! ($this->m_error === '')){
 				return ('<span class="smwwarning">' . $this->m_error  . '</span>');
 			} else {
-				return $this->getShortWikiText($linked);	
+				return $this->m_value;
 			}
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		return '<span class="external free">'.$this->m_caption.'</span>';
+		return '<span class="external free">' . htmlspecialchars($this->m_value) . '</span>'; /// TODO support linking
 	}
 
 	public function getXSDValue() {
