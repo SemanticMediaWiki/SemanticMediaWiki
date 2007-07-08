@@ -116,20 +116,7 @@ abstract class SMWResultPrinter {
 	 * TODO: use joined code for this and the similar method in SMWQueryParser?
 	 */
 	protected function getErrorString($res) {
-		$result = '';
-		$first = true;
-		foreach ($res->getErrors() as $e) {
-			if ($first) {
-				$first = false;
-			} else {
-				$result .= ', ';
-			}
-			$result .= '<span class="smwwarning">' . $e . '</span>';
-		}
-		if ($result != '') {
-			$result = '(' . $result . ')';
-		}
-		return $result;
+		return smwfEncodeMessages($res->getErrors());
 	}
 
 

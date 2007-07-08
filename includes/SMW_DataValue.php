@@ -209,12 +209,7 @@ abstract class SMWDataValue {
 	 * an empty string if no errors happened.
 	 */
 	public function getErrorText() {
-		if (count($this->m_errors) > 0) {
-			$errors = implode(', ', $this->m_errors);
-			return '<span class="smwttpersist"><span class="smwtticon">warning.png</span><span class="smwttcontent">' . $errors . '</span></span>';
-		} else {
-			return '';
-		}
+		return smwfEncodeMessages($this->m_errors);
 	}
 
 	/**

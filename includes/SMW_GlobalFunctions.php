@@ -373,6 +373,18 @@ function smwgSetupExtension() {
 	}
 
 	/**
+	 * Formats an array of message strings so that it appears as a tooltip.
+	 */
+	function smwfEncodeMessages($msgarray) {
+		if (count($msgarray) > 0) {
+			$msgs = implode(', ', $msgarray);
+			return '<span class="smwttpersist"><span class="smwtticon">warning.png</span><span class="smwttcontent">' . $msgs . '</span></span>';
+		} else {
+			return '';
+		}
+	}
+
+	/**
 	 * Initialise storage objects based on user settings. Called once during init.
 	 */
 	function smwfInitStore() {

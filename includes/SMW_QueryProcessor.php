@@ -257,17 +257,7 @@ class SMWQueryParser {
 	 * Return error message or empty string if no error occurred.
 	 */
 	public function getErrorString() {
-		$result = '';
-		$first = true;
-		foreach ($this->m_errors as $e) {
-			if ($first) {
-				$first = false;
-			} else {
-				$result .= ', ';
-			}
-			$result .= '<span class="smwwarning">' . $e . '</span>';
-		}
-		return $result;
+		return smwfEncodeMessages($this->m_errors);
 	}
 
 	/**
@@ -639,7 +629,7 @@ class SMWQueryParser {
 				// TODO: needs extension for n-ary values
 				$dv = SMWDataValueFactory::newAttributeObjectValue($att, $value);
 				if (!$dv->isValid()) {
-					$this->m_errors[] = $dv->getError();
+					$this->m_errors = $this->m_errors + $dv->getErrors();
 					$vd = new SMWValueDescription($dv, SMW_CMP_ANY);
 				} else {
 					$vd = new SMWValueDescription($dv, $comparator);
