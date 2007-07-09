@@ -29,11 +29,16 @@ class SMWSQLStore extends SMWStore {
 	 * did not match any condition.
 	 */
 	protected $m_sortfield;
-	
 	/**
 	 * Global counter to prevent clashes between table aliases.
 	 */
-	protected $m_tablenum;
+	static protected $m_tablenum = 0;
+	/**
+	 * Array of names of virtual tables that hold the upper closure of certain 
+	 * categories wrt. hierarchy.
+	 */
+	static protected $m_categorytables = array();
+
 
 ///// Reading methods /////
 
@@ -455,7 +460,7 @@ class SMWSQLStore extends SMWStore {
 		foreach($data->getAttributes() as $attribute) {
 			$attributeValueArray = $data->getAttributeValues($attribute);
 			foreach($attributeValueArray as $value) {
-				if ($value->getXSDValue()!==false) {
+				if ($value->isValid()) {
 					if ($value->getTypeID() !== 'text') {
 						$up_attributes[] =
 						      array( 'subject_id' => $subject->getArticleID(),
@@ -565,9 +570,8 @@ class SMWSQLStore extends SMWStore {
 	 */
 	function getQueryResult(SMWQuery $query) {
 		global $smwgIQSortingEnabled;
-		
+
 		$db =& wfGetDB( DB_SLAVE );
-		$this->m_tablenum = 0;
 		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deeper levels
 
 		// Build main query
@@ -837,6 +841,65 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	/**
+	 * Make a (temporary) table that contains the upper closure of the given category
+	 * wrt. the category table.
+	 */
+	protected function getCategoryTable($catname, &$db) {
+		if (array_key_exists($catname, SMWSQLStore::$m_categorytables)) {
+			return SMWSQLStore::$m_categorytables[$catname];
+		}
+
+		global $wgDBname, $smwgIQSubcategoryInclusions;
+
+		// Create multiple temporary tables for recursive computation
+		$tablename = 'cats' . SMWSQLStore::$m_tablenum++;
+		$db->query( 'CREATE TEMPORARY TABLE ' . $wgDBname . '.' . $tablename .
+		            '( cat_name VARCHAR(255) NOT NULL )
+		             TYPE=MEMORY', 'SMW::getCategoryTable' );
+		$db->query( 'CREATE TEMPORARY TABLE smw_newcats
+		             ( cat_name VARCHAR(255) NOT NULL )
+		             TYPE=MEMORY', 'SMW::getCategoryTable' );
+		$db->query( 'CREATE TEMPORARY TABLE smw_rescats
+		             ( cat_name VARCHAR(255) NOT NULL )
+		             TYPE=MEMORY', 'SMW::getCategoryTable' );
+
+		$pagetable = $db->tableName('page');
+		$cltable = $db->tableName('categorylinks');
+		$db->insert($tablename, array('cat_name' => $catname), 'SMW::getCategoryTable');
+		$db->insert('smw_newcats', array('cat_name' => $catname), 'SMW::getCategoryTable');
+		$tmpnew='smw_newcats';
+		$tmpres='smw_rescats';
+
+		/// TODO: check for empty $tmpnew to abort early
+		/// TODO: avoid duplicate results
+		for ($i=0; $i<$smwgIQSubcategoryInclusions; $i++) {
+			$db->insertSelect($tmpres,
+			                  array($cltable,$pagetable,$tmpnew),
+			                  array('cat_name' => 'page_title'),
+			                  array(
+			                  "$cltable.cl_to=$tmpnew.cat_name AND
+			                   $pagetable.page_namespace=" . NS_CATEGORY . " AND 
+			                   $pagetable.page_id=$cltable.cl_from"), 'SMW::getCategoryTable');
+			$db->insertSelect($tablename, array($tmpnew), array('cat_name' => 'cat_name'),
+			                  '*', 'SMW::getCategoryTable');
+			$db->insertSelect($tablename, array($tmpnew), array('cat_name' => 'cat_name'),
+			                  '*', 'SMW::getCategoryTable');
+			$db->query('DROP TABLE ' . $tmpnew, 'SMW::getCategoryTable'); // empty "new" table
+			$db->query( 'CREATE TEMPORARY TABLE ' . $tmpnew . '
+			             ( cat_name VARCHAR(255) NOT NULL )
+			             TYPE=MEMORY', 'SMW::getCategoryTable' );
+			$tmpname = $tmpnew;
+			$tmpnew = $tmpres;
+			$tmpres = $tmpname;
+		}
+
+		SMWSQLStore::$m_categorytables[$catname] = $tablename;
+		$db->query('DROP TABLE smw_newcats', 'SMW::getCategoryTable');
+		$db->query('DROP TABLE smw_rescats', 'SMW::getCategoryTable');
+		return $tablename;
+	}
+
+	/**
 	 * Add the table $tablename to the $from condition via an inner join,
 	 * using the tables that are already available in $curtables (and extending 
 	 * $curtables with the new table). Return true if successful or false if it
@@ -849,7 +912,7 @@ class SMWSQLStore extends SMWStore {
 		}
 		if ($tablename == 'PAGE') {
 			if (array_key_exists('PREVREL', $curtables)) { // PREVREL cannot be added if not present
-				$curtables['PAGE'] = 'p' . $this->m_tablenum++;
+				$curtables['PAGE'] = 'p' . SMWSQLStore::$m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('page') . ' AS ' . $curtables['PAGE'] . ' ON (' .
 				           $curtables['PAGE'] . '.page_title=' . $curtables['PREVREL'] . '.object_title AND ' .
 				           $curtables['PAGE'] . '.page_namespace=' . $curtables['PREVREL'] . '.object_namespace)';
@@ -857,7 +920,7 @@ class SMWSQLStore extends SMWStore {
 			}
 		} elseif ($tablename == 'CATS') {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
-				$curtables['CATS'] = 'cl' . $this->m_tablenum++;
+				$curtables['CATS'] = 'cl' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['CATS'] . '.cl_from=' . $curtables['PAGE'] . '.page_id';
 // 				if ($smwgIQRedirectNormalization) {
 // 					$this->addInnerJoin('REDIPAGE', $from, $db, $curtables);
@@ -872,7 +935,7 @@ class SMWSQLStore extends SMWStore {
 			}
 		} elseif ($tablename == 'RELS') {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
-				$curtables['RELS'] = 'rel' . $this->m_tablenum++;
+				$curtables['RELS'] = 'rel' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['RELS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
 // 				if ($smwgIQRedirectNormalization) {
 // 					$this->addInnerJoin('REDIRECT', $from, $db, $curtables);
@@ -886,25 +949,25 @@ class SMWSQLStore extends SMWStore {
 			}
 		} elseif ($tablename == 'ATTS') {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
-				$curtables['ATTS'] = 'att' . $this->m_tablenum++;
+				$curtables['ATTS'] = 'att' . SMWSQLStore::$m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('smw_attributes') . ' AS ' . $curtables['ATTS'] . ' ON ' . $curtables['ATTS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
 				return true;
 			}
 		} elseif ($tablename == 'TEXT') {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
-				$curtables['TEXT'] = 'txt' . $this->m_tablenum++;
+				$curtables['TEXT'] = 'txt' . SMWSQLStore::$m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('smw_longstrings') . ' AS ' . $curtables['TEXT'] . ' ON ' . $curtables['TEXT'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
 				return true;
 			}
 		} elseif ($tablename == 'REDIRECT') {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
-				$curtables['REDIRECT'] = 'rd' . $this->m_tablenum++;
+				$curtables['REDIRECT'] = 'rd' . SMWSQLStore::$m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('redirect') . ' AS ' . $curtables['REDIRECT'];
 				return true;
 			}
 		} elseif ($tablename == 'REDIPAGE') { // add another copy of page for getting ids of redirect targets
 			if ($this->addInnerJoin('REDIRECT', $from, $db, $curtables)) { 
-				$curtables['REDIPAGE'] = 'rp' . $this->m_tablenum++;
+				$curtables['REDIPAGE'] = 'rp' . SMWSQLStore::$m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('page') . ' AS ' . $curtables['REDIPAGE'];
 				return true;
 			}
@@ -948,7 +1011,14 @@ class SMWSQLStore extends SMWStore {
 			// nothin to check
 		} elseif ($description instanceof SMWClassDescription) {
 			if ($this->addInnerJoin('CATS', $from, $db, $curtables)) {
-				$where .=  $curtables['CATS'] . '.cl_to=' . $db->addQuotes($description->getCategory()->getDBKey());
+				global $smwgIQSubcategoryInclusions;
+				if ($smwgIQSubcategoryInclusions > 0) {
+					$ct = $this->getCategoryTable($description->getCategory()->getDBKey(), $db);
+					$ctalias = 'cl' . SMWSQLStore::$m_tablenum++;
+					$from .= " INNER JOIN $ct AS $ctalias ON $ctalias.cat_name=" . $curtables['CATS'] . '.cl_to';
+				} else {
+					$where .=  $curtables['CATS'] . '.cl_to=' . $db->addQuotes($description->getCategory()->getDBKey());
+				}
 			}
 		} elseif ($description instanceof SMWNamespaceDescription) {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) {
