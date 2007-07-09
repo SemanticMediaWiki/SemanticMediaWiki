@@ -22,37 +22,37 @@ class SMW_LanguageRu {
 	'smw_iq_moreresults' => '&hellip; следующие результаты',
 	'smw_iq_nojs' => 'Используйте браузер с поддержкой JavaScript для просмотра этого элемента, или <a href="$1">просмотрите результат в виде списка</a>.',
 	// Messages and strings for ontology resued (import)
-	'smw_unknown_importns' => '[Извините, но функции импорта не доступны для пространства имен "$1".]',
-	'smw_nonright_importtype' => '[Извините, но $1 может быть использован только для статей с пространством имен "$2"]',
-	'smw_wrong_importtype' => '[Извините, но $1 не может быть использован для статей с пространством имен "$2"]',
-	'smw_no_importelement' => '[Извините, но элемент "$1" не доступен для импорта.]',
+	'smw_unknown_importns' => 'Но функции импорта не доступны для пространства имен "$1".',
+	'smw_nonright_importtype' => 'Но $1 может быть использован только для статей с пространством имен "$2".',
+	'smw_wrong_importtype' => 'Но $1 не может быть использован для статей с пространством имен "$2".',
+	'smw_no_importelement' => 'Но элемент "$1" не доступен для импорта.',
 	// Messages and strings for basic datatype processing
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => ' ',
-	'smw_unknowntype' => '[Упс! Тип атрибута "$1" не поддерживается ]',
-	'smw_noattribspecial' => '[Упс! Специальное свойство "$1" не является атрибутом (используйте "::" вместо ":=")]',
-	'smw_notype' => '[Упс! Атрибуту не задан тип]',
-	'smw_manytypes' => '[Упс! Более одного типа определено для атрибута]',
-	'smw_emptystring' => '[Упс! Пустые строки не принимаются]',
-	'smw_maxstring' => '[Извините, но строчное представление числа $1 слишком длинное для этого сайта.]',
-	'smw_nopossiblevalues' => '[Упс! возможные значения для этого перечисления не заданы]',
-	'smw_notinenum' => '[Упс! "$1" не входит в список допустимых значений ($2) для этого атрибута]',
-	'smw_noboolean' => '[Упс! "$1" не является булевым значением (да/нет)]',
+	'smw_unknowntype' => 'Тип атрибута "$1" не поддерживается.',
+	'smw_noattribspecial' => 'Специальное свойство "$1" не является атрибутом (используйте "::" вместо ":=").',
+	'smw_notype' => 'Атрибуту не задан тип.',
+	'smw_manytypes' => 'Более одного типа определено для атрибута.',
+	'smw_emptystring' => 'Пустые строки не принимаются.',
+	'smw_maxstring' => 'Но строчное представление числа $1 слишком длинное для этого сайта.',
+	'smw_nopossiblevalues' => 'Возможные значения для этого перечисления не заданы.',
+	'smw_notinenum' => '"$1" не входит в список допустимых значений ($2) для этого атрибута.',
+	'smw_noboolean' => '"$1" не является булевым значением (да/нет).',
 	'smw_true_words' => 't,yes,да,д,истина,и',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,no,n,нет,н,ложь,л',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '[Упс! "$1" не является целым числом]',
-	'smw_nofloat' => '[Упс! "$1" не является десятичным числом]',
-	'smw_infinite' => '[Извините, но такие длинные числа как $1 не поддерживаются этим сайтом.]',
-	'smw_infinite_unit' => '[Извините, но конвертация значения в $1 привело к слишком длинному числу для этого сайта.]',
+	'smw_nointeger' => '"$1" не является целым числом.',
+	'smw_nofloat' => '"$1" не является десятичным числом.',
+	'smw_infinite' => 'Но такие длинные числа как $1 не поддерживаются этим сайтом.',
+	'smw_infinite_unit' => 'Но конвертация значения в $1 привело к слишком длинному числу для этого сайта.',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this attribute supports no unit conversion',
-	'smw_unsupportedprefix' => 'префиксы ("$1") не поддерживаются в настоящее время',
-	'smw_unsupportedunit' => 'конвертация единиц измерения для "$1" не поддерживается',
+	'smw_unsupportedprefix' => 'Префиксы ("$1") не поддерживаются в настоящее время.',
+	'smw_unsupportedunit' => 'Конвертация единиц измерения для "$1" не поддерживается.',
 	// Messages for geo coordinates parsing
 	'smw_err_latitude' => 'Значения для широты (N, S) должны находится в диапазоне от 0 до 90. "$1" не удовлетворяет этому условию!',
 	'smw_err_longitude' => 'Значения для долготы (E, W) должны находится в диапазоне от 0 до 180. "$1" не удовлетворяет этому условию!',
-	'smw_err_noDirection' => '[Упс! Что-то не так со значением "$1"]',
-	'smw_err_parsingLatLong' => '[Упс! Что-то не так со значением "$1". Здесь ожидается значение вида "1°2?3.4?? W"!]',
-	'smw_err_wrongSyntax' => '[Упс! Что-то не так со значением "$1". Здесь ожидается значение вида "1°2?3.4?? W, 5°6?7.8?? N"!]',
+	'smw_err_noDirection' => 'Что-то не так со значением "$1".',
+	'smw_err_parsingLatLong' => 'Что-то не так со значением "$1". Здесь ожидается значение вида "1°2?3.4?? W"!',
+	'smw_err_wrongSyntax' => 'Что-то не так со значением "$1". Здесь ожидается значение вида "1°2?3.4?? W, 5°6?7.8?? N"!',
 	'smw_err_sepSyntax' => 'Значение "$1" похоже на правильное, но широта и долгота должна быть разделена символом "," или ";".',
 	'smw_err_notBothGiven' => 'Вам следует указать правильное значение как для широты (E, W) так и для долготы (N, S)! Одного не хватает!',
 	// additionals ...
@@ -65,7 +65,7 @@ class SMW_LanguageRu {
 	// some links for online maps; can be translated to different language versions of services, but need not
 	'smw_service_online_maps' => " найти&nbsp;на&nbsp;карте|http://tools.wikimedia.de/~magnus/geo/geohack.php?language=ru&params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	// Messages for datetime parsing
-	'smw_nodatetime' => '[Упс! Дата "$1" не распознана. Как бы то ни было, в настоящее время поддержка дат находится в разработке.]'
+	'smw_nodatetime' => 'Дата "$1" не распознана. Как бы то ни было, в настоящее время поддержка дат находится в разработке.'
 );
 
 

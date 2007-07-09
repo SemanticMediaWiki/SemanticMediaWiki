@@ -23,37 +23,37 @@ class SMW_LanguageDe {
 	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung oder als
 	<a href="$1">Liste einzelner Suchergebnisse</a> betrachtet werden.',
 	/*Messages and strings for ontology resued (import) */
-	'smw_unknown_importns' => '[Für den Namensraum „$1“ sind leider keine Importfunktionen verfügbar.]',
-	'smw_nonright_importtype' => '[Das Element „$1“ kann nur für Seiten im Namensraum „$2“ verwendet werden.]',
-	'smw_wrong_importtype' => '[Das Element „$1“ kann nicht für Seiten im Namensraum „$2“ verwendet werden.]',
-	'smw_no_importelement' => '[Das Element „$1“ steht leider nicht zum Importieren zur Verfügung.]',
+	'smw_unknown_importns' => 'Für den Namensraum „$1“ sind leider keine Importfunktionen verfügbar.',
+	'smw_nonright_importtype' => 'Das Element „$1“ kann nur für Seiten im Namensraum „$2“ verwendet werden.',
+	'smw_wrong_importtype' => 'Das Element „$1“ kann nicht für Seiten im Namensraum „$2“ verwendet werden.',
+	'smw_no_importelement' => 'Das Element „$1“ steht leider nicht zum Importieren zur Verfügung.',
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
-	'smw_unknowntype' => '[Ups! Dem Attribut wurde der unbekannte Datentyp „$1“ zugewiesen.]',
-	'smw_noattribspecial' => '[Ups! Die spezielle Eigenschaft „$1“ ist kein Attribut (bitte „::“ anstelle von „:=“ verwenden).]',
-	'smw_notype' => '[Ups! Dem Attribut wurde kein Datentyp zugewiesen.]',
-	'smw_manytypes' => '[Ups! Dem Attribut wurden mehrere Datentypen zugewiesen.]',
-	'smw_emptystring' => '[Ups! Leere Zeichenfolgen werden nicht akzeptiert.]',
-	'smw_maxstring' => '[Sorry, die Zeichenkette „$1“ ist für diese Website zu lang.]',
-	'smw_nopossiblevalues' => '[Ups! Für dieses Attribut wurden keine möglichen Werte angegeben.]',
-	'smw_notinenum' => '[Ups! „$1“ gehört nicht zu den möglichen Werten dieses Attributs ($2).]',
-	'smw_noboolean' => '[Ups! „$1“ ist kein Boolescher Wert (wahr/falsch).]',
+	'smw_unknowntype' => 'Dem Attribut wurde der unbekannte Datentyp „$1“ zugewiesen.',
+	'smw_noattribspecial' => 'Die spezielle Eigenschaft „$1“ ist kein Attribut (bitte „::“ anstelle von „:=“ verwenden).',
+	'smw_notype' => 'Dem Attribut wurde kein Datentyp zugewiesen.',
+	'smw_manytypes' => 'Dem Attribut wurden mehrere Datentypen zugewiesen.',
+	'smw_emptystring' => 'Leere Zeichenfolgen werden nicht akzeptiert.',
+	'smw_maxstring' => 'Die Zeichenkette „$1“ ist für diese Website zu lang.',
+	'smw_nopossiblevalues' => 'Für dieses Attribut wurden keine möglichen Werte angegeben.',
+	'smw_notinenum' => '„$1“ gehört nicht zu den möglichen Werten dieses Attributs ($2).',
+	'smw_noboolean' => '„$1“ ist kein Boolescher Wert (wahr/falsch).',
 	'smw_true_words' => 'wahr,ja',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'falsch,nein',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '[Ups! „$1“ ist keine ganze Zahl.]',
-	'smw_nofloat' => '[Ups! „$1“ ist keine Dezimalzahl.]',
-	'smw_infinite' => '[Sorry, die Zahl $1 ist zu lang.]',
-	'smw_infinite_unit' => '[Sorry, die Umrechnung in Einheit $1 ist nicht möglich: die Zahl ist zu lang.]',
+	'smw_nointeger' => '„$1“ ist keine ganze Zahl.',
+	'smw_nofloat' => '„$1“ ist keine Dezimalzahl.',
+	'smw_infinite' => 'Die Zahl $1 ist zu lang.',
+	'smw_infinite_unit' => 'Die Umrechnung in Einheit $1 ist nicht möglich: die Zahl ist zu lang.',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'dieses Attribut unterstützt keine Umrechnung von Einheiten',
 	'smw_unsupportedprefix' => 'Vorangestellte Zeichen bei Dezimalzahlen („$1“) werden nicht unterstützt.',
 	'smw_unsupportedunit' => 'Umrechnung der Einheit „$1“ nicht unterstützt.',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Angaben zur Geographischen Breite (N, S) müssen zwischen 0 und 90 liegen. „$1“ liegt nicht in diesem Bereich!',
 	'smw_err_longitude' => 'Angaben zur Geographischen Länge (O, W) müssen zwischen 0 und 180 liegen. „$1“ liegt nicht in diesem Bereich!',
-	'smw_err_noDirection' => '[Ups! Irgendwas stimmt nicht mit dem angegebenen Wert „$1“.]',
-	'smw_err_parsingLatLong' => '[Ups! Irgendwas stimmt nicht mit dem angegebenen Wert „$1“. Ein Beispiel für eine gültige Angabe ist „1°2′3.4′′ W“.]',
-	'smw_err_wrongSyntax' => '[Ups! Irgendwas stimmt nicht mit dem angegebenen Wert „$1“. Ein Beispiel für eine gültige Angabe ist „1°2′3.4′′ W, 5°6′7.8′′ N“.]',
+	'smw_err_noDirection' => 'Irgendwas stimmt nicht mit dem angegebenen Wert „$1“. Ein Beispiel für eine gültige Angabe ist „1°2′3.4′′ W“.',
+	'smw_err_parsingLatLong' => 'Irgendwas stimmt nicht mit dem angegebenen Wert „$1“. Ein Beispiel für eine gültige Angabe ist „1°2′3.4′′ W“.',
+	'smw_err_wrongSyntax' => 'Irgendwas stimmt nicht mit dem angegebenen Wert „$1“. Ein Beispiel für eine gültige Angabe ist „1°2′3.4′′ W, 5°6′7.8′′ N“.',
 	'smw_err_sepSyntax' => 'Die Werte für geographische Breite und Länge sollten durch Komma oder Semikolon getrennt werden.',
 	'smw_err_notBothGiven' => 'Es muss ein Wert für die geographische Breite (N, S) <i>und</i> die geographische Länge (O, W) angegeben werden.',
 	/* additionals ... */
@@ -66,7 +66,7 @@ class SMW_LanguageDe {
 	/* some links for online maps; can be translated to different language versions of services, but need not*/
 	'smw_service_online_maps' => " Landkarten|http://tools.wikimedia.de/~magnus/geo/geohack.php?language=de&params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	/*Messages for datetime parsing */
-	'smw_nodatetime' => '[Ups! Das Datum „$1“ wurde nicht verstanden. Die Unterstützung von Kalenderdaten ist zur Zeit noch experimentell.]'
+	'smw_nodatetime' => 'Das Datum „$1“ wurde nicht verstanden. Die Unterstützung von Kalenderdaten ist zur Zeit noch experimentell.'
 );
 
 /* private */ var $smwUserMessages = array(

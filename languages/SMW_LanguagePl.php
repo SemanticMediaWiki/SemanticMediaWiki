@@ -41,37 +41,37 @@ class SMW_LanguagePl {
 	'smw_iq_moreresults' => '&hellip; dalsze wyniki',
 	'smw_iq_nojs' => 'Aby obejrzeć ten element, włącz w przeglądarce obsługę JavaScript, lub <a href="$1">przeglądaj listę wyników</a> bezpośrednio.',
 	/*Messages and strings for ontology resued (import) */
-	'smw_unknown_importns' => '[Niestety, nie ma możliwości importu z przestrzeni nazw "$1".]',
-	'smw_nonright_importtype' => '[Niestety, $1 może być użyte tylko dla artykułów z przestrzeni nazw "$2"]',
-	'smw_wrong_importtype' => '[Niestety, $1 nie może być użyte dla artykułów z przestrzeni nazw "$2"]',
-	'smw_no_importelement' => '[Niestety, nie można zaimportować elementu "$1".]',
+	'smw_unknown_importns' => 'Nie ma możliwości importu z przestrzeni nazw "$1".',
+	'smw_nonright_importtype' => '$1 może być użyte tylko dla artykułów z przestrzeni nazw "$2".',
+	'smw_wrong_importtype' => '$1 nie może być użyte dla artykułów z przestrzeni nazw "$2".',
+	'smw_no_importelement' => 'Nie można zaimportować elementu "$1".',
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
-	'smw_unknowntype' => '[Ojej! "$1" jako typ atrybutu nie jest wspierany]',
-	'smw_noattribspecial' => '[Ojej! Własność specjalna "$1" nie jest atrybutem (użyj "::" zamiast ":=")]',
-	'smw_notype' => '[Ojej! Nie zdefiniowano typu dla atrybutu]',
-	'smw_manytypes' => '[Ojej! Zdefiniowano więcej niż jeden typ dla atrybutu]',
-	'smw_emptystring' => '[Ojej! Puste łańcuchy znakowe są niedozwolone]',
-	'smw_maxstring' => '[Niestety, reprezentacja znakowa $1 jest za długa jak na to miejsce.]',
-	'smw_nopossiblevalues' => '[Ojej! Dozwolone wartości dla tego atrybutu nie zostały wyliczone]',
-	'smw_notinenum' => '[Ojej! “$1” nie jest na liście dozwolonych wartości ($2) dla tego atrybutu]',
-	'smw_noboolean' => '[Ojej! “$1” nie zostało rozpoznane jako wartość logiczna (prawda/fałsz)]',
+	'smw_unknowntype' => '"$1" jako typ atrybutu nie jest wspierany.',
+	'smw_noattribspecial' => 'Własność specjalna "$1" nie jest atrybutem (użyj "::" zamiast ":=").',
+	'smw_notype' => 'Nie zdefiniowano typu dla atrybutu.',
+	'smw_manytypes' => 'Zdefiniowano więcej niż jeden typ dla atrybutu.',
+	'smw_emptystring' => 'Puste łańcuchy znakowe są niedozwolone.',
+	'smw_maxstring' => 'Reprezentacja znakowa $1 jest za długa jak na to miejsce.',
+	'smw_nopossiblevalues' => 'Dozwolone wartości dla tego atrybutu nie zostały wyliczone.',
+	'smw_notinenum' => '“$1” nie jest na liście dozwolonych wartości ($2) dla tego atrybutu.',
+	'smw_noboolean' => '“$1” nie zostało rozpoznane jako wartość logiczna (prawda/fałsz).',
 	'smw_true_words' => 't,yes,y,tak,prawda',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,no,n,nie,fałsz',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '[Ojej! "$1" nie jest liczbą całkowitą]',
-	'smw_nofloat' => '[Ojej! "$1" nie jest liczbą zmiennoprzecinkową]',
-	'smw_infinite' => '[Niestety, liczby tak duże jak $1 nie są w tym miejscu wspierane.]',
-	'smw_infinite_unit' => '[Niestety, konwersja do jednostki $1 zwróciła liczbę, która jest za duża jak na to miejsce.]',
+	'smw_nointeger' => '"$1" nie jest liczbą całkowitą.',
+	'smw_nofloat' => '"$1" nie jest liczbą zmiennoprzecinkową.',
+	'smw_infinite' => 'Liczby tak duże jak $1 nie są w tym miejscu wspierane.',
+	'smw_infinite_unit' => 'Konwersja do jednostki $1 zwróciła liczbę, która jest za duża jak na to miejsce.',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'ten atrybut nie wspiera konwersji jednostek',
-	'smw_unsupportedprefix' => '[Niestety, przedrostki dla liczb (“$1”) nie są obecnie wspierane}',
-	'smw_unsupportedunit' => 'konwersja dla jednostki "$1" nie jest wspierana',
+	'smw_unsupportedprefix' => 'Przedrostki dla liczb (“$1”) nie są obecnie wspierane.',
+	'smw_unsupportedunit' => 'Konwersja dla jednostki "$1" nie jest wspierana.',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Wartości dla szerokości geograficznej (N, S) muszą być w zakresie od 0 do 90. "$1" nie spełnia tego warunku!',
 	'smw_err_longitude' => 'Wartości dla długości geograficznej (E, W) muszą być w zakresie od 0 do 180. "$1" nie spełnia tego warunku!',
-	'smw_err_noDirection' => '[Ojej! Coś jest nie tak z podaną wartością "$1"]',
-	'smw_err_parsingLatLong' => '[Ojej! Coś jest nie tak z podaną wartością "$1". W tym miejscu oczekujemy wartości w rodzaju "1°2′3.4′′ W"!]',
-	'smw_err_wrongSyntax' => '[Ojej! Coś jest nie tak z podaną wartością "$1". W tym miejscu oczekujemy wartości w rodzaju "1°2′3.4′′ W, 5°6′7.8′′ N"!]',
+	'smw_err_noDirection' => 'Coś jest nie tak z podaną wartością "$1".',
+	'smw_err_parsingLatLong' => 'Coś jest nie tak z podaną wartością "$1". W tym miejscu oczekujemy wartości w rodzaju "1°2′3.4′′ W"!',
+	'smw_err_wrongSyntax' => 'Coś jest nie tak z podaną wartością "$1". W tym miejscu oczekujemy wartości w rodzaju "1°2′3.4′′ W, 5°6′7.8′′ N"!',
 	'smw_err_sepSyntax' => 'Podana wartość "$1" wydaje się być poprawna, ale wartości dla długości i szerokości geograficznej powinny być oddzielone przy pomocy "," lub ";".',
 	'smw_err_notBothGiven' => 'Musisz podać prawidłowe wartości zarówno dla długości (E, W) jak i szerokości (N, S)! Brakuje co najmniej jednej z nich!',
 	/* additionals ... */
@@ -85,7 +85,7 @@ class SMW_LanguagePl {
 	// TODO: translate "find maps" below (translation of "maps" would also do)
 	'smw_service_online_maps' => " find&nbsp;maps|http://tools.wikimedia.de/~magnus/geo/geohack.php?language=pl&params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	/*Messages for datetime parsing */
-	'smw_nodatetime' => '[Ojej! Data "$1" nie została zrozumiana. Wsparcie dla dat jest jednak wciąż w fazie eksperymentalnej.]'
+	'smw_nodatetime' => 'Data "$1" nie została zrozumiana. Wsparcie dla dat jest jednak wciąż w fazie eksperymentalnej.'
 );
 
 

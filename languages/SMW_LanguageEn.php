@@ -22,39 +22,39 @@ class SMW_LanguageEn {
 	'smw_iq_moreresults' => '&hellip; further results',
 	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.',
 	// Messages and strings for ontology resued (import)
-	'smw_unknown_importns' => '[Sorry, import functions are not avalable for namespace “$1”]',
-	'smw_nonright_importtype' => '[Sorry, $1 can only be used for pages with namespace “$2”]',
-	'smw_wrong_importtype' => '[Sorry, $1 can not be used for pages in the namespace “$2”]',
-	'smw_no_importelement' => '[Sorry, element “$1” not available for import.]',
+	'smw_unknown_importns' => 'Import functions are not avalable for namespace “$1”.',
+	'smw_nonright_importtype' => '$1 can only be used for pages with namespace “$2”.',
+	'smw_wrong_importtype' => '$1 can not be used for pages in the namespace “$2”.',
+	'smw_no_importelement' => 'Element “$1” not available for import.',
 	// Messages and strings for basic datatype processing
 	'smw_decseparator' => '.',
 	'smw_kiloseparator' => ',',
-	'smw_unknowntype' => '[Oops! Unsupported type “$1” defined for attribute]',
-	'smw_noattribspecial' => '[Oops! Special property “$1” is not an attribute (use “::” instead of “:=”)]',
-	'smw_notype' => '[Oops! No type defined for attribute]',
-	'smw_manytypes' => '[Oops! More than one type defined for attribute]',
-	'smw_emptystring' => '[Oops! Empty strings are not accepted]',
-	'smw_maxstring' => '[Sorry, string representation $1 is too long for this site.]',
-	'smw_nopossiblevalues' => '[Oops! Possible values for this attribute are not enumerated]',
-	'smw_notinenum' => '[Oops! “$1” is not in the list of possible values ($2) for this attribute]',
-	'smw_noboolean' => '[Oops! “$1” is not recognized as a boolean (true/false) value]',
+	'smw_unknowntype' => 'Unsupported type “$1” defined for attribute.',
+	'smw_noattribspecial' => 'Special property “$1” is not an attribute (use “::” instead of “:=”).',
+	'smw_notype' => 'No type defined for attribute.',
+	'smw_manytypes' => 'More than one type defined for attribute.',
+	'smw_emptystring' => 'Empty strings are not accepted.',
+	'smw_maxstring' => 'String representation $1 is too long for this site.',
+	'smw_nopossiblevalues' => 'Possible values for this attribute are not enumerated.',
+	'smw_notinenum' => '“$1” is not in the list of possible values ($2) for this attribute.',
+	'smw_noboolean' => '“$1” is not recognized as a boolean (true/false) value.',
 	'smw_true_words' => 't,yes,y',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,no,n',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '[Oops! “$1” is no integer number]',
-	'smw_nofloat' => '[Oops! “$1” is no floating point number]',
-	'smw_infinite' => '[Sorry, numbers as long as “$1” are not supported on this site]',
-	'smw_infinite_unit' => '[Sorry, conversion into unit “$1” resulted in a number that is too long for this site]',
+	'smw_nointeger' => '“$1” is no integer number.',
+	'smw_nofloat' => '“$1” is no floating point number.',
+	'smw_infinite' => 'Numbers as long as “$1” are not supported on this site.',
+	'smw_infinite_unit' => 'Conversion into unit “$1” resulted in a number that is too long for this site.',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this attribute supports no unit conversion',
-	'smw_unsupportedprefix' => '[Sorry, prefixes for numbers (“$1”) are not currently supported}',
-	'smw_unsupportedunit' => '[Sorry, unit conversion for unit “$1” not supported]',
+	'smw_unsupportedprefix' => 'Prefixes for numbers (“$1”) are not supported.',
+	'smw_unsupportedunit' => 'Unit conversion for unit “$1” not supported.',
 	// Messages for geo coordinates parsing
-	'smw_err_latitude' => '[Values for latitude (N, S) must be within 0 and 90. “$1” does not fulfill this condition.]',
-	'smw_err_longitude' => '[Values for longitude (E, W) must be within 0 and 180. “$1” does not fulfill this condition.]',
-	'smw_err_noDirection' => '[Oops! Something is wrong with the given value “$1”]',
-	'smw_err_parsingLatLong' => '[Oops! Something is wrong with the given value “$1.” We expect a value like “1°2′3.4′′ W” at this place!]',
-	'smw_err_wrongSyntax' => '[Oops! Something is wrong with the given value “$1.” We expect a value like “1°2′3.4′′ W, 5°6′7.8′′ N” at this place!]',
+	'smw_err_latitude' => 'Values for latitude (N, S) must be within 0 and 90, and “$1” does not fulfill this condition.',
+	'smw_err_longitude' => 'Values for longitude (E, W) must be within 0 and 180, and “$1” does not fulfill this condition.',
+	'smw_err_noDirection' => 'Something is wrong with the given value “$1”.',
+	'smw_err_parsingLatLong' => 'Something is wrong with the given value “$1” &ndash; we expect a value like “1°2′3.4′′ W” at this place.',
+	'smw_err_wrongSyntax' => 'Something is wrong with the given value “$1” &ndash; we expect a value like “1°2′3.4′′ W, 5°6′7.8′′ N” at this place.',
 	'smw_err_sepSyntax' => 'The given value “$1” seems to be right, but values for latitude and longitude should be seperated by “,” or “;”.',
-	'smw_err_notBothGiven' => '[Please specify a valid value for both longitude (E, W) <it>and</it> latitude (N, S). At least one is missing.]',
+	'smw_err_notBothGiven' => 'Please specify a valid value for both longitude (E, W) <it>and</it> latitude (N, S) &ndash; at least one is missing.',
 	// additionals ...
 	'smw_label_latitude' => 'Latitude:',
 	'smw_label_longitude' => 'Longitude:',
@@ -65,7 +65,7 @@ class SMW_LanguageEn {
 	// some links for online maps; can be translated to different language versions of services, but need not
 	'smw_service_online_maps' => " find&nbsp;maps|http://tools.wikimedia.de/~magnus/geo/geohack.php?params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	// Messages for datetime parsing
-	'smw_nodatetime' => '[Oops! The date “$1” was not understood. Support for dates is still experimental.]'
+	'smw_nodatetime' => 'The date “$1” was not understood (support for dates is still experimental).'
 );
 
 

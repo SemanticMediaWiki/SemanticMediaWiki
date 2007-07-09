@@ -22,37 +22,37 @@ class SMW_LanguageSk {
 	'smw_iq_morevýsledky' => '&hellip; ďalšie výsledky',
 	'smw_iq_nojs' => 'Tento prvok zobrazíte použitím prehliadača podporujúcim JavaScript alebo priamo <a href="$1">prehliadajte zoznam výsledkov</a>.',
 	/*Messages and strings for ontology resued (import) */
-	'smw_unknown_importns' => '[prepáčte, funkcie importu nie sú dostupné pre menný priestor "$1".]',
-	'smw_nonright_importtype' => '[Prepáčte, $1 je možné použiť iba pre stránky z menného priestoru "$2"]',
-	'smw_wrong_importtype' => '[Prepáčte, $1 nie je možné použiť pre stránky z menného priestoru "$2"]',
-	'smw_no_importelement' => '[Prepáčte, prvok "$1" nie je dostupný na import.]',
+	'smw_unknown_importns' => 'Funkcie importu nie sú dostupné pre menný priestor "$1".',
+	'smw_nonright_importtype' => '$1 je možné použiť iba pre stránky z menného priestoru "$2".',
+	'smw_wrong_importtype' => '$1 nie je možné použiť pre stránky z menného priestoru "$2".',
+	'smw_no_importelement' => 'Prvok "$1" nie je dostupný na import.',
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => '.',
 	'smw_kiloseparator' => ',',
-	'smw_unknowntype' => '[Ops! Pre atribút je definovaný nepodporovaný typ "$1"]',
-	'smw_noattribspecial' => '[Ops! Zvláštna vlastnosť "$1" nie je atribút (použite "::" namiesto ":=")]',
-	'smw_notype' => '[Ops! Pre atribút nebol definovaný typ]',
-	'smw_manytypes' => '[Ops! Pre atribút bol definovaný viac ako jeden typ]',
-	'smw_emptystring' => '[Ops! Prázdne reťazcie nie sú akceptované]',
-	'smw_maxstring' => '[Prepáčte, reprezentácia reťazca $1 je pre túro stránku príliš dlhá.]',
-	'smw_nopossiblevalues' => '[Oops! possible values for this attribute are not enumerated]',	//TODO translate
-	'smw_notinenum' => '[Oops! "$1" is not in the list of possible values ($2) for this attribute]',	//TODO translate
-	'smw_noboolean' => '[Ops! "$1" nebolo rozpoznané ako platná hodnota typy boolean (áno/nie)]',
+	'smw_unknowntype' => 'Pre atribút je definovaný nepodporovaný typ "$1".',
+	'smw_noattribspecial' => 'Zvláštna vlastnosť "$1" nie je atribút (použite "::" namiesto ":=").',
+	'smw_notype' => 'Pre atribút nebol definovaný typ.',
+	'smw_manytypes' => 'Pre atribút bol definovaný viac ako jeden typ.',
+	'smw_emptystring' => 'Prázdne reťazcie nie sú akceptované.',
+	'smw_maxstring' => 'Reprezentácia reťazca $1 je pre túro stránku príliš dlhá.',
+	'smw_nopossiblevalues' => 'Possible values for this attribute are not enumerated.',	//TODO translate
+	'smw_notinenum' => '"$1" is not in the list of possible values ($2) for this attribute.',	//TODO translate
+	'smw_noboolean' => '"$1" nebolo rozpoznané ako platná hodnota typy boolean (áno/nie).',
 	'smw_true_words' => 'áno',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'nie',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '[Ops! "$1" nie je celé číslo (integer)]',
-	'smw_nofloat' => '[Ops! "$1" nie je číslo s plávajúcou desatinnou čiarkou]',
-	'smw_infinite' => '[Prepáčte, čísla také dlhé ako $1 nie sú na tejto stránke podporované.]',
-	'smw_infinite_unit' => '[Prepáčte, konverzia na jednotky $1 dala ako výsledok číslo, ktoré je pre túto stránku príliš dlhé.]',
+	'smw_nointeger' => '"$1" nie je celé číslo (integer).',
+	'smw_nofloat' => '"$1" nie je číslo s plávajúcou desatinnou čiarkou.',
+	'smw_infinite' => 'Čísla také dlhé ako $1 nie sú na tejto stránke podporované.',
+	'smw_infinite_unit' => 'Konverzia na jednotky $1 dala ako výsledok číslo, ktoré je pre túto stránku príliš dlhé.',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'tento atribút nepodporuje konverziu jednotiek',
 	'smw_unsupportedprefix' => 'prefixes ("$1") are not currently supported',	 // TODO: translate
 	'smw_unsupportedunit' => 'konverzia jednotiek "$1" nie je podporované',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Hodnoty zemepisnej šírky (S, J) musia byť v rozmedzí 0 a 90. "$1" nespĺňa túto podmienku!',
 	'smw_err_longitude' => 'Hodnoty zemepisnej dĺžky (V, Z) musia byť v rozmedzí 0 a 180. "$1" nespĺňa túto podmienku!',
-	'smw_err_noDirection' => '[Ops! Niečo je zle na danej hodnote "$1"]',
-	'smw_err_parsingLatLong' => '[Ops! Niečo je zle na danej hodnote "$1". Na tomto mieste očakávame hodnotu ako "1°2′3.4′′ Z"!]',
-	'smw_err_wrongSyntax' => '[Ops! Niečo je zle na danej hodnote  "$1". Na tomto mieste očakávame hodnotu ako "1°2′3.4′′ Z, 5°6′7.8′′ S"!]',
+	'smw_err_noDirection' => 'Niečo je zle na danej hodnote "$1".',
+	'smw_err_parsingLatLong' => 'Niečo je zle na danej hodnote "$1". Na tomto mieste očakávame hodnotu ako "1°2′3.4′′ Z"!',
+	'smw_err_wrongSyntax' => 'Niečo je zle na danej hodnote  "$1". Na tomto mieste očakávame hodnotu ako "1°2′3.4′′ Z, 5°6′7.8′′ S"!',
 	'smw_err_sepSyntax' => 'Daná hodnota "$1" vyzerá byť v poriadku, akehodnoty zemepisnej šírky a dĺžky by mali byť oddelené "," alebo ";".',
 	'smw_err_notBothGiven' => 'Musíte uviesť platnú hodnotu pre zemepisnú šírku (V, Z) AJ dĺžku (S, J)! Aspoň jedna z nich chýba!',
 	/* additionals ... */
@@ -66,7 +66,7 @@ class SMW_LanguageSk {
 	// TODO: translate "find maps" below, translation of word "maps" would also do.
 	'smw_service_online_maps' => " find&nbsp;maps|http://tools.wikimedia.de/~magnus/geo/geohack.php?language=sk&params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	/*Messages for datetime parsing */
-	'smw_nodatetime' => '[Ops! Nevedel som interpretovať dátum "$1". Ale podpora dátumov je stále v experimentálno štádiu.]'
+	'smw_nodatetime' => 'Nevedel som interpretovať dátum "$1". Ale podpora dátumov je stále v experimentálno štádiu.'
 );
 
 

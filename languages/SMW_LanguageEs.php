@@ -22,37 +22,37 @@ class SMW_LanguageEs {
 	'smw_iq_moreresults' => '&hellip; siguientes resultados',
 	'smw_iq_nojs' => 'Use un navegador con JavaScript habilitado para ver este elemento, o directamente <a href="$1">vea la lista de resultados</a>.',
 	/*Messages and strings for ontology resued (import) */
-	'smw_unknown_importns' => '[Lo sentimos. Ninguna función de importación está disponible para el espacio de nombres "$1".]',
-	'smw_nonright_importtype' => '[El elemento "$1" no puede ser empleado más que para los artículos del espacio de nombres "$2".]',
-	'smw_wrong_importtype' => '[El elemento "$1" no puede ser utilizado para los artículos del espacio de nombres dominio "$2".]',
-	'smw_no_importelement' => '[Lo sentimos. El elemento "$1" no está disponible para la importación.]',
+	'smw_unknown_importns' => 'Ninguna función de importación está disponible para el espacio de nombres "$1".',
+	'smw_nonright_importtype' => 'El elemento "$1" no puede ser empleado más que para los artículos del espacio de nombres "$2".',
+	'smw_wrong_importtype' => 'El elemento "$1" no puede ser utilizado para los artículos del espacio de nombres dominio "$2".',
+	'smw_no_importelement' => 'El elemento "$1" no está disponible para la importación.',
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
-	'smw_unknowntype' => '[Ups ! El tipo de datos "$1" no soportado ha sido devuelto al atributo]',
-	'smw_noattribspecial' => '[Ups ! La propiedad especial "$1" no es un atributo (utilice "::" en lugar de ":=")]',
-	'smw_notype' => '[Ups ! Ningún tipo de datos ha sido asignado al atributo]',
-	'smw_nomanytypes' => '[Ups ! Demasiados tipos de datos han sido asignados al atributo]',
-	'smw_emptystring' => '[Ups ! No se aceptan cadenas vacías]',
-	'smw_maxstring' => '[Lo siento, la representación de la cadena $1 es demasiado grande para este sitio.]',
-	'smw_nopossiblevalues' => '[Ups ! los posibles valores para este atributo no están enumerados]',
-	'smw_notinenum' => '[Ups ! "$1" no esta en la lista de posibles valores ($2) para este atributo]',
-	'smw_noboolean' => '[Ups ! "$1" no es reconocido como un valor booleano (verdadero/falso)]',
+	'smw_unknowntype' => 'El tipo de datos "$1" no soportado ha sido devuelto al atributo.',
+	'smw_noattribspecial' => 'La propiedad especial "$1" no es un atributo (utilice "::" en lugar de ":=").',
+	'smw_notype' => 'Ningún tipo de datos ha sido asignado al atributo.',
+	'smw_nomanytypes' => 'Demasiados tipos de datos han sido asignados al atributo.',
+	'smw_emptystring' => 'No se aceptan cadenas vacías.',
+	'smw_maxstring' => 'La representación de la cadena $1 es demasiado grande para este sitio.',
+	'smw_nopossiblevalues' => 'Los posibles valores para este atributo no están enumerados',
+	'smw_notinenum' => '"$1" no esta en la lista de posibles valores ($2) para este atributo.',
+	'smw_noboolean' => '"$1" no es reconocido como un valor booleano (verdadero/falso).',
 	'smw_true_words' => 't,si,s',
 	'smw_false_words' => 'f,no,n',
-	'smw_nointeger' => '[Ups ! "$1" no es un número entero]',
-	'smw_nofloat' => '[Ups ! "$1" no es un número con coma flotante]',
-	'smw_infinite' => '[Lo sentimos, el número $1 es demasiado largo.]',
-	'smw_infinite_unit' => '[Lo sentimos, la conversión en la unidad $1 es imposible : el número es demasiado largo.]',
+	'smw_nointeger' => '"$1" no es un número entero.',
+	'smw_nofloat' => '"$1" no es un número con coma flotante.',
+	'smw_infinite' => 'El número $1 es demasiado largo.',
+	'smw_infinite_unit' => 'La conversión en la unidad $1 es imposible : el número es demasiado largo.',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'Este atributo no soporta ninguna conversión de unidad',
 	'smw_unsupportedprefix' => 'prefijos ("$1") no esta soportados actualmente',
 	'smw_unsupportedunit' => 'La conversión de la unidad "$1" no está soportada',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'Las indicaciones de latitud (N, S) deben estar comprendidas entre 0 et 90. "$1" no se encuentra dentro de estos límites !',
 	'smw_err_longitude' => 'Las indicaciones de longitud (E, O) deben estar comprendidas entre 0 y 180. "$1" no se encuentra dentro de estos límites !',
-	'smw_err_noDirection' => '[Ups ! Algo no funciona con la indicación "$1"]',
-	'smw_err_parsingLatLong' => '[Ups ! Algo no funciona con la indicación "$1". Se espera algo con la forma "1°2′3.4′′O" o como mínimo algo parecido !]',
-	'smw_err_wrongSyntax' => '[Ups ! Algo no funciona con la indicación "$1". Se espera algo con la forma "1°2′3.4′′ O, 5°6′7.8′ N" o como mínimo algo parecido !]',
+	'smw_err_noDirection' => 'Algo no funciona con la indicación "$1".',
+	'smw_err_parsingLatLong' => 'Algo no funciona con la indicación "$1". Se espera algo con la forma "1°2′3.4′′O" o como mínimo algo parecido !',
+	'smw_err_wrongSyntax' => 'Algo no funciona con la indicación "$1". Se espera algo con la forma "1°2′3.4′′ O, 5°6′7.8′ N" o como mínimo algo parecido !',
 	'smw_err_sepSyntax' => 'La expresión "$1" parece ser correcta, pero los valores de la latitud y de la longitud deben ser separados por signos como "," o ";".',
 	'smw_err_notBothGiven' => 'Se debe dar un valor para la latitud (N, S) <i>y</i> la longitud (E, O).',
 	/* additionals ... */
@@ -65,7 +65,7 @@ class SMW_LanguageEs {
 	/* some links for online maps; can be translated to different language versions of services, but need not*/
 	'smw_service_online_maps' => " Mapas&nbsp;geográficos|http://tools.wikimedia.de/~magnus/geo/geohack.php?language=es&params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	/*Messages for datetime parsing */
-	'smw_nodatetime' => '[Ups ! La fecha "$1" no ha sido comprendida. El soporte de datos de calendario son todavía experimentales.]'
+	'smw_nodatetime' => 'La fecha "$1" no ha sido comprendida. El soporte de datos de calendario son todavía experimentales.'
 );
 
 /* private */ var $smwUserMessages = array(
