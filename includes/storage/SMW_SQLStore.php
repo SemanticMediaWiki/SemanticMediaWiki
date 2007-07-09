@@ -693,9 +693,7 @@ class SMWSQLStore extends SMWStore {
 			$res = $db->query( $sql, $fname );
 		}
 
-		$this->setupIndex($smw_relations, 'subject_id', $db);
-		$this->setupIndex($smw_relations, 'relation_title', $db);
-		$this->setupIndex($smw_relations, 'object_title', $db);
+		$this->setupIndex($smw_relations, array('subject_id','relation_title','object_title,object_namespace'), $db);
 
 		// create attribute table
 		if ($db->tableExists('smw_attributes') === false) {
@@ -712,10 +710,7 @@ class SMWSQLStore extends SMWStore {
 			$res = $db->query( $sql, $fname );
 		}
 
-		$this->setupIndex($smw_attributes, 'subject_id', $db);
-		$this->setupIndex($smw_attributes, 'attribute_title', $db);
-		$this->setupIndex($smw_attributes, 'value_num', $db);
-		$this->setupIndex($smw_attributes, 'value_xsd', $db);
+		$this->setupIndex($smw_attributes, array('subject_id','attribute_title','value_num','value_xsd'), $db);
 
 		// create table for long string attributes
 		if ($db->tableExists('smw_longstrings') === false) {
@@ -729,23 +724,21 @@ class SMWSQLStore extends SMWStore {
 			$res = $db->query( $sql, $fname );
 		}
 
-		$this->setupIndex($smw_longstrings, 'subject_id', $db);
-		$this->setupIndex($smw_longstrings, 'attribute_title', $db);
+		$this->setupIndex($smw_longstrings, array('subject_id','attribute_title'), $db);
 
 		// create table for special properties
 		if ($db->tableExists('smw_specialprops') === false) {
 			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_specialprops . '
-					( subject_id         INT(8) UNSIGNED NOT NULL,
+					( subject_id       INT(8) UNSIGNED NOT NULL,
 					subject_namespace  INT(11) NOT NULL,
 					subject_title      VARCHAR(255) NOT NULL,
 					property_id        SMALLINT NOT NULL,
 					value_string       VARCHAR(255) NOT NULL
-					) TYPE=innodb';
+					) TYPE=innodb'; /// TODO: remove subject_namespace and subject_title columns completely
 			$res = $db->query( $sql, $fname );
 		}
 
-		$this->setupIndex($smw_specialprops, 'subject_id', $db);
-		$this->setupIndex($smw_specialprops, 'property_id', $db);
+		$this->setupIndex($smw_specialprops, array('subject_id', 'property_id'), $db);
 
 		return true;
 	}
@@ -850,6 +843,7 @@ class SMWSQLStore extends SMWStore {
 	 * wasn't possible to make a suitable inner join.
 	 */
 	protected function addInnerJoin($tablename, &$from, &$db, &$curtables) {
+		global $smwgIQRedirectNormalization;
 		if (array_key_exists($tablename, $curtables)) { // table already present
 			return true;
 		}
@@ -864,13 +858,30 @@ class SMWSQLStore extends SMWStore {
 		} elseif ($tablename == 'CATS') {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['CATS'] = 'cl' . $this->m_tablenum++;
-				$from .= ' INNER JOIN ' . $db->tableName('categorylinks') . ' AS ' . $curtables['CATS'] . ' ON ' . $curtables['CATS'] . '.cl_from=' . $curtables['PAGE'] . '.page_id';
+				$cond = $curtables['CATS'] . '.cl_from=' . $curtables['PAGE'] . '.page_id';
+// 				if ($smwgIQRedirectNormalization) {
+// 					$this->addInnerJoin('REDIPAGE', $from, $db, $curtables);
+// 					$cond = '((' . $cond . ') OR (' .
+// 					  $curtables['PAGE'] . '.page_id=' . $curtables['REDIRECT'] . '.rd_from AND ' .
+// 					  $curtables['REDIRECT'] . '.rd_title=' . $curtables['REDIPAGE'] . '.page_title AND ' .
+// 					  $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['REDIPAGE'] . '.page_namespace AND ' .
+// 					  $curtables['REDIPAGE'] . '.page_id=' . $curtables['CATS'] . '.cl_from))';
+// 				}
+				$from .= ' INNER JOIN ' . $db->tableName('categorylinks') . ' AS ' . $curtables['CATS'] . ' ON ' . $cond;
 				return true;
 			}
 		} elseif ($tablename == 'RELS') {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['RELS'] = 'rel' . $this->m_tablenum++;
-				$from .= ' INNER JOIN ' . $db->tableName('smw_relations') . ' AS ' . $curtables['RELS'] . ' ON ' . $curtables['RELS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
+				$cond = $curtables['RELS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
+// 				if ($smwgIQRedirectNormalization) {
+// 					$this->addInnerJoin('REDIRECT', $from, $db, $curtables);
+// 					$cond = '((' . $cond . ') OR (' .
+// 					  $curtables['PAGE'] . '.page_id=' . $curtables['REDIRECT'] . '.rd_from AND ' .
+// 					  $curtables['REDIRECT'] . '.rd_title=' . $curtables['RELS'] . '.subject_title AND ' .
+// 					  $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['RELS'] . '.subject_namespace))';
+// 				}
+				$from .= ' INNER JOIN ' . $db->tableName('smw_relations') . ' AS ' . $curtables['RELS'] . ' ON ' . $cond;
 				return true;
 			}
 		} elseif ($tablename == 'ATTS') {
@@ -889,6 +900,12 @@ class SMWSQLStore extends SMWStore {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['REDIRECT'] = 'rd' . $this->m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('redirect') . ' AS ' . $curtables['REDIRECT'];
+				return true;
+			}
+		} elseif ($tablename == 'REDIPAGE') { // add another copy of page for getting ids of redirect targets
+			if ($this->addInnerJoin('REDIRECT', $from, $db, $curtables)) { 
+				$curtables['REDIPAGE'] = 'rp' . $this->m_tablenum++;
+				$from .= ' INNER JOIN ' . $db->tableName('page') . ' AS ' . $curtables['REDIPAGE'];
 				return true;
 			}
 		}
@@ -1064,26 +1081,35 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	/**
-	 * Make sure that the given column in the given DB table is indexed by *one* index.
+	 * Make sure that each of the column descriptions in the given array is indexed by *one* index
+	 * in the given DB table.
 	 */
-	protected function setupIndex($table, $column, $db) {
+	protected function setupIndex($table, $columns, $db) {
 		$fname = 'SMW::SetupIndex';
 		$res = $db->query( 'SHOW INDEX FROM ' . $table , $fname);
 		if ( !$res ) {
 			return false;
 		}
-		$exists = false;
+		$indexes = array();
 		while ( $row = $db->fetchObject( $res ) ) {
-			if ( $row->Column_name == $column ) {
-				if ($exists) { // duplicate index, fix this
-					$db->query( 'DROP INDEX ' . $row->Key_name . ' ON ' . $table);
-				}
-				$exists = true;
+			if (!array_key_exists($row->Key_name, $indexes)) {
+				$indexes[$row->Key_name] = array();
+			}
+			$indexes[$row->Key_name][$row->Seq_in_index] = $row->Column_name;
+		}
+		foreach ($indexes as $key => $index) { // clean up existing indexes
+			$id = array_search(implode(',', $index), $columns );
+			if ( $id !== false ) {
+				$columns[$id] = false;
+			} else { // duplicate or unrequired index
+				$db->query( 'DROP INDEX ' . $key . ' ON ' . $table);
 			}
 		}
 
-		if (!$exists) {
-			$db->query( "ALTER TABLE $table ADD INDEX ( `$column` )", $fname );
+		foreach ($columns as $column) { // add remaining indexes
+			if ($column != false) {
+				$db->query( "ALTER TABLE $table ADD INDEX ( $column )", $fname );
+			}
 		}
 		return true;
 	}
