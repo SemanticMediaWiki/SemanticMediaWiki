@@ -36,11 +36,11 @@ function smw_preload_images() {
 	// preload icons needed by SMW
 	if (document.images) {
 		pic1= new Image(12,14);
-		pic1.src = SMW_PATH + "/sort_up.gif";
+		pic1.src = SMW_PATH + "/images/sort_up.gif";
 		pic2= new Image(12,14);
-		pic2.src = SMW_PATH + "/sort_down.gif";
+		pic2.src = SMW_PATH + "/images/sort_down.gif";
 		pic3= new Image(16,16); 
-		pic3.src = SMW_PATH + "/search_icon.png"; 
+		pic3.src = SMW_PATH + "/images/search_icon.png"; // TODO: move this preload to somewhere else?
 	}
 }
 
@@ -57,7 +57,7 @@ function smw_makeSortable(table) {
         //var txt = smw_getInnerText(cell); // unused -- we preserve the inner html
         cell.innerHTML = '<a href="#" class="sortheader" '+
         'onclick="smw_resortTable(this, '+i+');return false;">' +
-        '<span class="sortarrow"><img alt="[&lt;&gt;]" src="' + SMW_PATH + '/sort_none.gif"/></span></a>&nbsp;<span style="margin-left: 0.3em; margin-right: 1em;">' + cell.innerHTML + '</span>'; // the &nbsp; is for Opera ...
+        '<span class="sortarrow"><img alt="[&lt;&gt;]" src="' + SMW_PATH + '/images/sort_none.gif"/></span></a>&nbsp;<span style="margin-left: 0.3em; margin-right: 1em;">' + cell.innerHTML + '</span>'; // the &nbsp; is for Opera ...
     }
 }
 
@@ -99,7 +99,7 @@ function smw_resortTable(lnk,clid) {
     sortfn = smw_sort_caseinsensitive;
     if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d\d\d$/)) sortfn = smw_sort_date;
     if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d$/)) sortfn = smw_sort_date;
-    if (itm.match(/^[£$]/)) sortfn = smw_sort_currency;
+    if (itm.match(/^[ï¿½$]/)) sortfn = smw_sort_currency;
     if (itm.match(/^[\d\.]+$/)) sortfn = smw_sort_numeric;
     SORT_COLUMN_INDEX = column;
     var firstRow = new Array();
@@ -116,11 +116,11 @@ function smw_resortTable(lnk,clid) {
 
     var ARROW;
     if (span.getAttribute("sortdir") == 'down') {
-        ARROW = '<img alt="[&gt;]" src="' + SMW_PATH + '/sort_up.gif"/>';
+        ARROW = '<img alt="[&gt;]" src="' + SMW_PATH + '/images/sort_up.gif"/>';
         newRows.reverse();
         span.setAttribute('sortdir','up');
     } else {
-        ARROW = '<img alt="[&lt;]" src="' + SMW_PATH + '/sort_down.gif"/>';
+        ARROW = '<img alt="[&lt;]" src="' + SMW_PATH + '/images/sort_down.gif"/>';
         span.setAttribute('sortdir','down');
     }
 
@@ -136,7 +136,7 @@ function smw_resortTable(lnk,clid) {
     for (var ci=0;ci<allspans.length;ci++) {
         if (allspans[ci].className == 'sortarrow') {
             if (smw_getParent(allspans[ci],"table") == smw_getParent(lnk,"table")) { // in the same table as us?
-                allspans[ci].innerHTML = '<img alt="[&lt;&gt;]" src="' + SMW_PATH + '/sort_none.gif"/>';
+                allspans[ci].innerHTML = '<img alt="[&lt;&gt;]" src="' + SMW_PATH + '/images/sort_none.gif"/>';
             }
         }
     }
