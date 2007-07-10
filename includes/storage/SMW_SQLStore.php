@@ -845,17 +845,19 @@ class SMWSQLStore extends SMWStore {
 	 * wrt. the category table.
 	 */
 	protected function getCategoryTable($catname, &$db) {
-		if (array_key_exists($catname, SMWSQLStore::$m_categorytables)) {
-			return SMWSQLStore::$m_categorytables[$catname];
-		}
-
 		global $wgDBname, $smwgIQSubcategoryInclusions;
 
-		// Create multiple temporary tables for recursive computation
 		$tablename = 'cats' . SMWSQLStore::$m_tablenum++;
 		$db->query( 'CREATE TEMPORARY TABLE ' . $wgDBname . '.' . $tablename .
 		            '( cat_name VARCHAR(255) NOT NULL )
 		             TYPE=MEMORY', 'SMW::getCategoryTable' );
+		if (array_key_exists($catname, SMWSQLStore::$m_categorytables)) { // just copy known result
+			$db->insertSelect($tablename, array(SMWSQLStore::$m_categorytables[$catname]), 
+			                  array('cat_name' => 'cat_name'),'*', 'SMW::getCategoryTable');
+			return $tablename;
+		}
+
+		// Create multiple temporary tables for recursive computation
 		$db->query( 'CREATE TEMPORARY TABLE smw_newcats
 		             ( cat_name VARCHAR(255) NOT NULL )
 		             TYPE=MEMORY', 'SMW::getCategoryTable' );
@@ -1011,8 +1013,7 @@ class SMWSQLStore extends SMWStore {
 				global $smwgIQSubcategoryInclusions;
 				if ($smwgIQSubcategoryInclusions > 0) {
 					$ct = $this->getCategoryTable($description->getCategory()->getDBKey(), $db);
-					$ctalias = 'cl' . SMWSQLStore::$m_tablenum++;
-					$from .= " INNER JOIN $ct AS $ctalias ON $ctalias.cat_name=" . $curtables['CATS'] . '.cl_to';
+					$from .= " INNER JOIN $ct ON $ct.cat_name=" . $curtables['CATS'] . '.cl_to';
 				} else {
 					$where .=  $curtables['CATS'] . '.cl_to=' . $db->addQuotes($description->getCategory()->getDBKey());
 				}
@@ -1082,7 +1083,9 @@ class SMWSQLStore extends SMWStore {
 			foreach ($description->getDescriptions() as $subdesc) {
 				/// TODO: this is not optimal -- we drop more table aliases than needed, but its hard to find out what is feasible in recursive calls ...
 				$nexttables = array();
-				if (array_key_exists('PAGE',$curtables)) {
+				// pull in page to prevent every child description pulling it seperately!
+				/// TODO: willl be obsolete when PREVREL provides page indices
+				if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) {
 					$nexttables['PAGE'] = $curtables['PAGE'];
 				}
 				if (array_key_exists('PREVREL',$curtables)) {
