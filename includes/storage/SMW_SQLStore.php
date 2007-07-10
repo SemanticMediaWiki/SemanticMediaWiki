@@ -876,8 +876,10 @@ class SMWSQLStore extends SMWStore {
 		            '( cat_name VARCHAR(255) NOT NULL )
 		             TYPE=MEMORY', 'SMW::getCategoryTable' );
 		if (array_key_exists($catname, SMWSQLStore::$m_categorytables)) { // just copy known result
-			$db->insertSelect($tablename, array(SMWSQLStore::$m_categorytables[$catname]), 
-			                  array('cat_name' => 'cat_name'),'*', 'SMW::getCategoryTable');
+			$db->query("INSERT INTO $tablename (cat_name) SELECT " . 
+			            SMWSQLStore::$m_categorytables[$catname] . 
+			            '.cat_name FROM ' . SMWSQLStore::$m_categorytables[$catname], 
+			           'SMW::getCategoryTable');
 			return $tablename;
 		}
 
