@@ -628,7 +628,7 @@ class SMWSQLStore extends SMWStore {
 			$result .= '<br /><b>Auxilliary tables used (possibly in multiple copies)</b><br />';
 			foreach (SMWSQLStore::$m_categorytables as $tablename) {
 				$result .= $tablename . ': ';
-				$res = $db->select( $tablename, 'cat_name', '', 'SMW::getQueryResult:DEBUG');
+				$res = $db->query( "SELECT cat_name FROM $tablename", 'SMW::getQueryResult:DEBUG');
 				while ( $row = $db->fetchObject($res) ) {
 					$result .= $row->cat_name . ', ';
 				}
