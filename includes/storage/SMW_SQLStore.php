@@ -1051,7 +1051,8 @@ class SMWSQLStore extends SMWStore {
 				global $smwgIQSubcategoryInclusions;
 				if ($smwgIQSubcategoryInclusions > 0) {
 					$ct = $this->getCategoryTable($description->getCategory()->getDBKey(), $db);
-					$from .= " INNER JOIN $ct ON $ct.cat_name=" . $curtables['CATS'] . '.cl_to';
+					$from = '`' . $ct . '`, ' . $from;
+					$where = "$ct.cat_name=" . $curtables['CATS'] . '.cl_to';
 				} else {
 					$where .=  $curtables['CATS'] . '.cl_to=' . $db->addQuotes($description->getCategory()->getDBKey());
 				}
