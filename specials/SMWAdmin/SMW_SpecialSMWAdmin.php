@@ -32,31 +32,32 @@ function doSpecialSMWAdmin($par = null) {
 		return;
 	}
 
+	$wgOut->setPageTitle(wfMsg('smwadmin'));
+
 	/**** Execute actions if any ****/
 
 	$action = $wgRequest->getText( 'action' );
-	$message='';
 	if ( $action=='updatetables' ) {
 		$sure = $wgRequest->getText( 'udsure' );
 		if ($sure == 'yes') {
-			$message = smwfGetStore()->setup();
-			if ($message === true) {
-				$message  = 'The database was set up successfully.';
+			$wgOut->disable(); // raw output
+			ob_start();
+			print "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"  \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\" dir=\"ltr\">\n<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><title>Setting up Storage for Semantic MediaWiki</title></head><body><p style=\"font-family: courier, fixed, monospace; \">";
+			header( "Content-type: application/rdf+xml; charset=UTF-8" );
+			$result = smwfGetStore()->setup();
+			print '</p>';
+			if ($result === true) {
+				print '<p><b>The storage engine was set up successfully.</b></p>';
 			}
+			print '<p> Return to <a href="' . $wgServer . $wgScript . '/Special:SMWAdmin">Special:SMWAdmin</a></p>';
+			print '</body></html>';
+			ob_flush();
+			flush();
+			return;
 		}
 	}
 
-	/**** Output ****/
-
-	$wgOut->setPageTitle(wfMsg('smwadmin'));
-
-	// only report success/failure after an action
-	if ( $message!='' ) {
-		$html = $message;
-		$html .= '<p> Return to <a href="' . $wgServer . $wgScript . '/Special:SMWAdmin">Special:SMWAdmin</p>';
-		$wgOut->addHTML($html);
-		return true;
-	}
+	/**** Normal output ****/
 
 	$html = '<p>This special page helps you during installation and upgrade of 
 				Semantic MediaWiki. Remember to backup valuable data before 

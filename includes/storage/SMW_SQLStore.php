@@ -625,6 +625,15 @@ class SMWSQLStore extends SMWStore {
 			foreach ($query->getErrors() as $error) {
 				$result .= $error . '<br />';
 			}
+			$result .= '<br /><b>Auxilliary tables used (possibly in multiple copies)</b><br />';
+			foreach (SMWSQLStore::$m_categorytables as $tablename) {
+				$result .= $tablename . ': ';
+				$res = $db->select( $tablename, 'cat_name', '', 'SMW::getQueryResult:DEBUG');
+				while ( $row = $db->fetchObject($res) ) {
+					$result .= $row->cat_name . ', ';
+				}
+				$result .= '<br />';
+			}
 			$result .= '</div>';
 			/// TODO: report query errors!
 			return $result;
@@ -676,18 +685,27 @@ class SMWSQLStore extends SMWStore {
 
 ///// Setup store /////
 
-	function setup() {
+	function setup($verbose = true) {
 		global $wgDBname;
+		$this->reportProgress('Setting up standard database configuration for SMW ...<br /><br />',$verbose);
 
 		$fname = 'SMW::setupDatabase';
 		$db =& wfGetDB( DB_MASTER );
 
 		extract( $db->tableNames('smw_relations','smw_attributes','smw_longstrings','smw_specialprops') );
 
+/// DEBUG
+// 		$this->setupTable('smw_test', 
+// 		      array('subject_id' => 'INT(8) UNSIGNED NOT NULL',
+// 					'subject_namespace' => 'INT(11) NOT NULL',
+// 					'subject_title' => 'VARCHAR(255) NOT NULL',
+// 					'nullvalue' => 'VARCHAR(255)',
+// 					'value_unit' => 'VARCHAR(63)'), $db, $verbose);
+
 		// create relation table
-		if ($db->tableExists('smw_relations') === false) {
+		if ($db->tableExists($smw_relations) === false) {
 			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_relations . '
-					( subject_id         INT(8) UNSIGNED NOT NULL,
+					( subject_id       INT(8) UNSIGNED NOT NULL,
 					subject_namespace  INT(11) NOT NULL,
 					subject_title      VARCHAR(255) NOT NULL,
 					relation_title     VARCHAR(255) NOT NULL,
@@ -695,12 +713,15 @@ class SMWSQLStore extends SMWStore {
 					object_title       VARCHAR(255) NOT NULL
 					) TYPE=innodb';
 			$res = $db->query( $sql, $fname );
+		} else {
+			
 		}
 
 		$this->setupIndex($smw_relations, array('subject_id','relation_title','object_title,object_namespace'), $db);
+		$this->reportProgress('Relation table set up successfully.<br />',$verbose);
 
 		// create attribute table
-		if ($db->tableExists('smw_attributes') === false) {
+		if ($db->tableExists($smw_attributes) === false) {
 			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_attributes . '
 					( subject_id INT(8) UNSIGNED NOT NULL,
 					subject_namespace  INT(11) NOT NULL,
@@ -715,9 +736,10 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		$this->setupIndex($smw_attributes, array('subject_id','attribute_title','value_num','value_xsd'), $db);
+		$this->reportProgress('Attribute table set up successfully.<br />',$verbose);
 
 		// create table for long string attributes
-		if ($db->tableExists('smw_longstrings') === false) {
+		if ($db->tableExists($smw_longstrings) === false) {
 			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_longstrings . '
 					( subject_id INT(8) UNSIGNED NOT NULL,
 					subject_namespace  INT(11) NOT NULL,
@@ -729,9 +751,10 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		$this->setupIndex($smw_longstrings, array('subject_id','attribute_title'), $db);
+		$this->reportProgress('Table for long string values (Type:Text) set up successfully.<br />',$verbose);
 
 		// create table for special properties
-		if ($db->tableExists('smw_specialprops') === false) {
+		if ($db->tableExists($smw_specialprops) === false) {
 			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_specialprops . '
 					( subject_id       INT(8) UNSIGNED NOT NULL,
 					subject_namespace  INT(11) NOT NULL,
@@ -741,9 +764,10 @@ class SMWSQLStore extends SMWStore {
 					) TYPE=innodb'; /// TODO: remove subject_namespace and subject_title columns completely
 			$res = $db->query( $sql, $fname );
 		}
-
 		$this->setupIndex($smw_specialprops, array('subject_id', 'property_id'), $db);
-
+		$this->reportProgress('Table for special properties set up successfully.<br />',$verbose);
+		
+		$this->reportProgress('Database initialised successfully.<br />',$verbose);
 		return true;
 	}
 
@@ -921,14 +945,13 @@ class SMWSQLStore extends SMWStore {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['CATS'] = 'cl' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['CATS'] . '.cl_from=' . $curtables['PAGE'] . '.page_id';
-// 				if ($smwgIQRedirectNormalization) {
-// 					$this->addInnerJoin('REDIPAGE', $from, $db, $curtables);
-// 					$cond = '((' . $cond . ') OR (' .
-// 					  $curtables['PAGE'] . '.page_id=' . $curtables['REDIRECT'] . '.rd_from AND ' .
-// 					  $curtables['REDIRECT'] . '.rd_title=' . $curtables['REDIPAGE'] . '.page_title AND ' .
-// 					  $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['REDIPAGE'] . '.page_namespace AND ' .
-// 					  $curtables['REDIPAGE'] . '.page_id=' . $curtables['CATS'] . '.cl_from))';
-// 				}
+				/// TODO: slow, introduce another parameter to activate this
+				if ($smwgIQRedirectNormalization && (array_key_exists('PREVREL', $curtables))) {
+					// only do this at inner queries (PREVREL set)
+					$this->addInnerJoin('REDIPAGE', $from, $db, $curtables);
+					$cond = '((' . $cond . ') OR (' .
+					  $curtables['REDIPAGE'] . '.page_id=' . $curtables['CATS'] . '.cl_from))';
+				}
 				$from .= ' INNER JOIN ' . $db->tableName('categorylinks') . ' AS ' . $curtables['CATS'] . ' ON ' . $cond;
 				return true;
 			}
@@ -936,20 +959,32 @@ class SMWSQLStore extends SMWStore {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['RELS'] = 'rel' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['RELS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
-// 				if ($smwgIQRedirectNormalization) {
-// 					$this->addInnerJoin('REDIRECT', $from, $db, $curtables);
-// 					$cond = '((' . $cond . ') OR (' .
-// 					  $curtables['PAGE'] . '.page_id=' . $curtables['REDIRECT'] . '.rd_from AND ' .
-// 					  $curtables['REDIRECT'] . '.rd_title=' . $curtables['RELS'] . '.subject_title AND ' .
-// 					  $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['RELS'] . '.subject_namespace))';
-// 				}
+				/// TODO: slow, introduce another parameter to activate this
+				if ($smwgIQRedirectNormalization && (array_key_exists('PREVREL', $curtables))) {
+					// only do this at inner queries (PREVREL set)
+					$this->addInnerJoin('REDIRECT', $from, $db, $curtables);
+					$cond = '((' . $cond . ') OR (' .
+					  //$curtables['PAGE'] . '.page_id=' . $curtables['REDIRECT'] . '.rd_from AND ' .
+					  $curtables['REDIRECT'] . '.rd_title=' . $curtables['RELS'] . '.subject_title AND ' .
+					  $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['RELS'] . '.subject_namespace))';
+				}
 				$from .= ' INNER JOIN ' . $db->tableName('smw_relations') . ' AS ' . $curtables['RELS'] . ' ON ' . $cond;
 				return true;
 			}
 		} elseif ($tablename == 'ATTS') {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['ATTS'] = 'att' . SMWSQLStore::$m_tablenum++;
-				$from .= ' INNER JOIN ' . $db->tableName('smw_attributes') . ' AS ' . $curtables['ATTS'] . ' ON ' . $curtables['ATTS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
+				$cond = $curtables['ATTS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
+				/// TODO: slow, introduce another parameter to activate this
+				if ($smwgIQRedirectNormalization && (array_key_exists('PREVREL', $curtables))) {
+					// only do this at inner queries (PREVREL set)
+					$this->addInnerJoin('REDIRECT', $from, $db, $curtables);
+					$cond = '((' . $cond . ') OR (' .
+					  //$curtables['PAGE'] . '.page_id=' . $curtables['REDIRECT'] . '.rd_from AND ' .
+					  $curtables['REDIRECT'] . '.rd_title=' . $curtables['ATTS'] . '.subject_title AND ' .
+					  $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['ATTS'] . '.subject_namespace))';
+				}
+				$from .= ' INNER JOIN ' . $db->tableName('smw_attributes') . ' AS ' . $curtables['ATTS'] . ' ON ' . $cond;
 				return true;
 			}
 		} elseif ($tablename == 'TEXT') {
@@ -961,13 +996,16 @@ class SMWSQLStore extends SMWStore {
 		} elseif ($tablename == 'REDIRECT') {
 			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['REDIRECT'] = 'rd' . SMWSQLStore::$m_tablenum++;
-				$from .= ' INNER JOIN ' . $db->tableName('redirect') . ' AS ' . $curtables['REDIRECT'];
+				$from .= ' LEFT JOIN ' . $db->tableName('redirect') . ' AS ' . $curtables['REDIRECT'] . ' ON ' . $curtables['REDIRECT'] . '.rd_from=' . $curtables['PAGE'] . '.page_id';
 				return true;
 			}
 		} elseif ($tablename == 'REDIPAGE') { // add another copy of page for getting ids of redirect targets
 			if ($this->addInnerJoin('REDIRECT', $from, $db, $curtables)) { 
 				$curtables['REDIPAGE'] = 'rp' . SMWSQLStore::$m_tablenum++;
-				$from .= ' INNER JOIN ' . $db->tableName('page') . ' AS ' . $curtables['REDIPAGE'];
+				$from .= ' INNER JOIN ' . $db->tableName('page') . ' AS ' . $curtables['REDIPAGE'] . ' ON (' .
+				         $curtables['REDIRECT'] . '.rd_title=' . $curtables['REDIPAGE'] . '.page_title AND ' .
+					     $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['REDIPAGE'] . '.page_namespace)';
+				
 				return true;
 			}
 		}
@@ -1036,8 +1074,8 @@ class SMWSQLStore extends SMWStore {
 				        $page->getNamespace();
 				if ( $smwgIQRedirectNormalization && ($this->addInnerJoin('REDIRECT', $from, $db, $curtables)) ) {
 					$cond = '(' . $cond . ') OR (' . 
-					        $curtables['REDIRECT'] . '.rd_from=' .
-					        $curtables['PAGE'] . '.page_id AND ' .
+// 					        $curtables['REDIRECT'] . '.rd_from=' .
+// 					        $curtables['PAGE'] . '.page_id AND ' .
 					        $curtables['REDIRECT'] . '.rd_title=' .
 					        $db->addQuotes($page->getDBKey()) . ' AND ' .
 					        $curtables['REDIRECT'] . '.rd_namespace=' .
@@ -1149,6 +1187,48 @@ class SMWSQLStore extends SMWStore {
 			}
 		}
 	}
+	
+	/**
+	 * Make sure the table of the given name has the given fields, provided
+	 * as an array with entries fieldname => typeparams. typeparams should be
+	 * in a normalised form and order to match to existing values.
+	 */
+	protected function setupTable($table, $fields, $db, $verbose) {
+		global $wgDBname;
+		if ($db->tableExists($table) === false) { // create new table
+			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $table . ' (';
+			$first = true;
+			foreach ($fields as $name => $type) {
+				if ($first) {
+					$first = false;
+				} else {
+					$sql .= ',';
+				}
+				$sql .= $name . '  ' . $type;
+			}
+			$sql .= ') TYPE=innodb';
+			$db->query( $sql, 'SMWSQLStore::setupTable' );
+		} else { // check table signature
+			$res = $db->query( 'DESCRIBE ' . $table, 'SMWSQLStore::setupTable' );
+			$curfields = array();
+			while ($row = $db->fetchObject($res)) {
+				$type = strtoupper($row->Type);
+				if ($row->Null != 'YES') {
+					$type .= ' NOT NULL';
+				}
+				$curfields[$row->Field] = $type;
+			}
+			foreach ($fields as $name => $type) {
+				if ( !array_key_exists($name,$curfields) ) {
+					$this->reportProgress("Field $name not existing yet.<br />",$verbose);
+				} elseif ($curfields[$name] != $type) {
+					$this->reportProgress("Field $name has wrong type (should be '$type', but is '$curfields[$name]').<br />",$verbose);
+				} else {
+					$this->reportProgress("Field $name is fine.<br />",$verbose);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Make sure that each of the column descriptions in the given array is indexed by *one* index
@@ -1182,6 +1262,19 @@ class SMWSQLStore extends SMWStore {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Print some output to indicate progress. The output message is given by
+	 * $msg, while $verbose indicates whether or not output is desired at all.
+	 */
+	protected function reportProgress($msg, $verbose) {
+		if (!$verbose) {
+			return;
+		}
+		print $msg;
+		ob_flush();
+		flush();
 	}
 
 }

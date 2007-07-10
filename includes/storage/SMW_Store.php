@@ -227,8 +227,13 @@ abstract class SMWStore {
 	 * creation of database tables. It is called upon installation as well as on upgrade: hence it
 	 * must be able to upgrade existing storage structures if needed. It should return "true" if
 	 * successful and return a meaningful string error message otherwise.
+	 *
+	 * The parameter $verbose determines whether the procedure is allowed to report on its progress.
+	 * This is doen by just using print and possibly ob_flush/flush. This is also relevant for preventing
+	 * timeouts during long operations. All output must be valid XHTML, but should preferrably be plain
+	 * text, possibly with some linebreaks and weak markup.
 	 */
-	abstract function setup();
+	abstract function setup($verbose = true);
 
 }
 
