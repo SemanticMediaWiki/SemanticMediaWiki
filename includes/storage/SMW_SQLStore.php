@@ -870,8 +870,7 @@ class SMWSQLStore extends SMWStore {
 		$tmpnew='smw_newcats';
 		$tmpres='smw_rescats';
 
-		/// TODO: check for empty $tmpnew to abort early
-		/// TODO: avoid duplicate results
+		/// TODO: avoid duplicate results?
 		for ($i=0; $i<$smwgIQSubcategoryInclusions; $i++) {
 			$db->insertSelect($tmpres,
 			                  array($cltable,$pagetable,$tmpnew),
@@ -880,14 +879,12 @@ class SMWSQLStore extends SMWStore {
 			                  "$cltable.cl_to=$tmpnew.cat_name AND
 			                   $pagetable.page_namespace=" . NS_CATEGORY . " AND 
 			                   $pagetable.page_id=$cltable.cl_from"), 'SMW::getCategoryTable');
-			$db->insertSelect($tablename, array($tmpnew), array('cat_name' => 'cat_name'),
+			if ($db->affectedRows() == 0) { // no change, exit loop
+				continue;
+			}
+			$db->insertSelect($tablename, array($tmpres), array('cat_name' => 'cat_name'),
 			                  '*', 'SMW::getCategoryTable');
-			$db->insertSelect($tablename, array($tmpnew), array('cat_name' => 'cat_name'),
-			                  '*', 'SMW::getCategoryTable');
-			$db->query('DROP TABLE ' . $tmpnew, 'SMW::getCategoryTable'); // empty "new" table
-			$db->query( 'CREATE TEMPORARY TABLE ' . $tmpnew . '
-			             ( cat_name VARCHAR(255) NOT NULL )
-			             TYPE=MEMORY', 'SMW::getCategoryTable' );
+			$db->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::getCategoryTable'); // empty "new" table
 			$tmpname = $tmpnew;
 			$tmpnew = $tmpres;
 			$tmpres = $tmpname;
