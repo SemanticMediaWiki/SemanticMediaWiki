@@ -687,7 +687,7 @@ class SMWSQLStore extends SMWStore {
 
 	function setup($verbose = true) {
 		global $wgDBname;
-		$this->reportProgress('Setting up standard database configuration for SMW ...<br /><br />',$verbose);
+		$this->reportProgress("Setting up standard database configuration for SMW ...\n\n",$verbose);
 
 		$fname = 'SMW::setupDatabase';
 		$db =& wfGetDB( DB_MASTER );
@@ -718,7 +718,7 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		$this->setupIndex($smw_relations, array('subject_id','relation_title','object_title,object_namespace'), $db);
-		$this->reportProgress('Relation table set up successfully.<br />',$verbose);
+		$this->reportProgress("Relation table set up successfully.\n",$verbose);
 
 		// create attribute table
 		if ($db->tableExists($smw_attributes) === false) {
@@ -736,7 +736,7 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		$this->setupIndex($smw_attributes, array('subject_id','attribute_title','value_num','value_xsd'), $db);
-		$this->reportProgress('Attribute table set up successfully.<br />',$verbose);
+		$this->reportProgress("Attribute table set up successfully.\n",$verbose);
 
 		// create table for long string attributes
 		if ($db->tableExists($smw_longstrings) === false) {
@@ -751,7 +751,7 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		$this->setupIndex($smw_longstrings, array('subject_id','attribute_title'), $db);
-		$this->reportProgress('Table for long string values (Type:Text) set up successfully.<br />',$verbose);
+		$this->reportProgress("Table for long string values (Type:Text) set up successfully.\n",$verbose);
 
 		// create table for special properties
 		if ($db->tableExists($smw_specialprops) === false) {
@@ -765,9 +765,9 @@ class SMWSQLStore extends SMWStore {
 			$res = $db->query( $sql, $fname );
 		}
 		$this->setupIndex($smw_specialprops, array('subject_id', 'property_id'), $db);
-		$this->reportProgress('Table for special properties set up successfully.<br />',$verbose);
+		$this->reportProgress("Table for special properties set up successfully.\n",$verbose);
 		
-		$this->reportProgress('Database initialised successfully.<br />',$verbose);
+		$this->reportProgress("Database initialised successfully.\n",$verbose);
 		return true;
 	}
 
