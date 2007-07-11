@@ -695,78 +695,54 @@ class SMWSQLStore extends SMWStore {
 		extract( $db->tableNames('smw_relations','smw_attributes','smw_longstrings','smw_specialprops') );
 
 /// DEBUG
-// 		$this->setupTable('smw_test', 
+// 		$this->setupTable('smw_test2',
 // 		      array('subject_id' => 'INT(8) UNSIGNED NOT NULL',
 // 					'subject_namespace' => 'INT(11) NOT NULL',
-// 					'subject_title' => 'VARCHAR(255) NOT NULL',
-// 					'nullvalue' => 'VARCHAR(255)',
-// 					'value_unit' => 'VARCHAR(63)'), $db, $verbose);
+// 					'subject_title' => 'VARCHAR(245) NOT NULL',
+// 					//'nullvalue' => 'VARCHAR(255)',
+// 					'value_unit2' => 'VARCHAR(64)',
+// 					'value_unit' => 'VARCHAR(61) NOT NULL'), $db, $verbose);
 
 		// create relation table
-		if ($db->tableExists($smw_relations) === false) {
-			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_relations . '
-					( subject_id       INT(8) UNSIGNED NOT NULL,
-					subject_namespace  INT(11) NOT NULL,
-					subject_title      VARCHAR(255) NOT NULL,
-					relation_title     VARCHAR(255) NOT NULL,
-					object_namespace   INT(11) NOT NULL,
-					object_title       VARCHAR(255) NOT NULL
-					) TYPE=innodb';
-			$res = $db->query( $sql, $fname );
-		} else {
-			
-		}
-
+		$this->setupTable($smw_relations,
+		              array('subject_id'        => 'INT(8) UNSIGNED NOT NULL',
+					        'subject_namespace' => 'INT(11) NOT NULL',
+					        'subject_title'     => 'VARCHAR(255) NOT NULL',
+					        'relation_title'    => 'VARCHAR(255) NOT NULL',
+					        'object_namespace'  => 'INT(11) NOT NULL',
+					        'object_title'      => 'VARCHAR(255) NOT NULL'), $db, $verbose);
 		$this->setupIndex($smw_relations, array('subject_id','relation_title','object_title,object_namespace'), $db);
-		$this->reportProgress("Relation table set up successfully.\n",$verbose);
 
 		// create attribute table
-		if ($db->tableExists($smw_attributes) === false) {
-			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_attributes . '
-					( subject_id INT(8) UNSIGNED NOT NULL,
-					subject_namespace  INT(11) NOT NULL,
-					subject_title      VARCHAR(255) NOT NULL,
-					attribute_title    VARCHAR(255) NOT NULL,
-					value_unit         VARCHAR(63),
-					value_datatype     VARCHAR(31) NOT NULL,
-					value_xsd          VARCHAR(255) NOT NULL,
-					value_num          DOUBLE
-					) TYPE=innodb';  /// TODO: remove value_datatype column completely
-			$res = $db->query( $sql, $fname );
-		}
-
+		$this->setupTable($smw_attributes,
+		              array('subject_id'        => 'INT(8) UNSIGNED NOT NULL',
+					        'subject_namespace' => 'INT(11) NOT NULL',
+					        'subject_title'     => 'VARCHAR(255) NOT NULL',
+					        'attribute_title'   => 'VARCHAR(255) NOT NULL',
+					        'value_unit'        => 'VARCHAR(63)',
+					        'value_datatype'    => 'VARCHAR(31) NOT NULL', /// TODO: remove value_datatype column
+					        'value_xsd'         => 'VARCHAR(255) NOT NULL',
+					        'value_num'         => 'DOUBLE'), $db, $verbose);
 		$this->setupIndex($smw_attributes, array('subject_id','attribute_title','value_num','value_xsd'), $db);
-		$this->reportProgress("Attribute table set up successfully.\n",$verbose);
 
 		// create table for long string attributes
-		if ($db->tableExists($smw_longstrings) === false) {
-			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_longstrings . '
-					( subject_id INT(8) UNSIGNED NOT NULL,
-					subject_namespace  INT(11) NOT NULL,
-					subject_title      VARCHAR(255) NOT NULL,
-					attribute_title    VARCHAR(255) NOT NULL,
-					value_blob         MEDIUMBLOB
-					) TYPE=innodb';
-			$res = $db->query( $sql, $fname );
-		}
-
+		$this->setupTable($smw_longstrings,
+		              array('subject_id'        => 'INT(8) UNSIGNED NOT NULL',
+					        'subject_namespace' => 'INT(11) NOT NULL',
+					        'subject_title'     => 'VARCHAR(255) NOT NULL',
+					        'attribute_title'   => 'VARCHAR(255) NOT NULL',
+					        'value_blob'        => 'MEDIUMBLOB'), $db, $verbose);
 		$this->setupIndex($smw_longstrings, array('subject_id','attribute_title'), $db);
-		$this->reportProgress("Table for long string values (Type:Text) set up successfully.\n",$verbose);
 
 		// create table for special properties
-		if ($db->tableExists($smw_specialprops) === false) {
-			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $smw_specialprops . '
-					( subject_id       INT(8) UNSIGNED NOT NULL,
-					subject_namespace  INT(11) NOT NULL,
-					subject_title      VARCHAR(255) NOT NULL,
-					property_id        SMALLINT NOT NULL,
-					value_string       VARCHAR(255) NOT NULL
-					) TYPE=innodb'; /// TODO: remove subject_namespace and subject_title columns completely
-			$res = $db->query( $sql, $fname );
-		}
+		$this->setupTable($smw_specialprops,
+		              array('subject_id'        => 'INT(8) UNSIGNED NOT NULL',
+					        'subject_namespace' => 'INT(11) NOT NULL',
+					        'subject_title'     => 'VARCHAR(255) NOT NULL',
+					        'property_id'       => 'SMALLINT(6) NOT NULL',
+					        'value_string'      => 'VARCHAR(255) NOT NULL'), $db, $verbose);
 		$this->setupIndex($smw_specialprops, array('subject_id', 'property_id'), $db);
-		$this->reportProgress("Table for special properties set up successfully.\n",$verbose);
-		
+
 		$this->reportProgress("Database initialised successfully.\n",$verbose);
 		return true;
 	}
@@ -1045,7 +1021,7 @@ class SMWSQLStore extends SMWStore {
 	protected function createSQLQuery(SMWDescription $description, &$from, &$where, &$db, &$curtables, $sort = false) {
 		$subwhere = '';
 		if ($description instanceof SMWThingDescription) {
-			// nothin to check
+			// nothing to check
 		} elseif ($description instanceof SMWClassDescription) {
 			if ($this->addInnerJoin('CATS', $from, $db, $curtables)) {
 				global $smwgIQSubcategoryInclusions;
@@ -1075,8 +1051,6 @@ class SMWSQLStore extends SMWStore {
 				        $page->getNamespace();
 				if ( $smwgIQRedirectNormalization && ($this->addInnerJoin('REDIRECT', $from, $db, $curtables)) ) {
 					$cond = '(' . $cond . ') OR (' . 
-// 					        $curtables['REDIRECT'] . '.rd_from=' .
-// 					        $curtables['PAGE'] . '.page_id AND ' .
 					        $curtables['REDIRECT'] . '.rd_title=' .
 					        $db->addQuotes($page->getDBKey()) . ' AND ' .
 					        $curtables['REDIRECT'] . '.rd_namespace=' .
@@ -1123,7 +1097,7 @@ class SMWSQLStore extends SMWStore {
 				/// TODO: this is not optimal -- we drop more table aliases than needed, but its hard to find out what is feasible in recursive calls ...
 				$nexttables = array();
 				// pull in page to prevent every child description pulling it seperately!
-				/// TODO: willl be obsolete when PREVREL provides page indices
+				/// TODO: will be obsolete when PREVREL provides page indices
 				if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) {
 					$nexttables['PAGE'] = $curtables['PAGE'];
 				}
@@ -1193,9 +1167,19 @@ class SMWSQLStore extends SMWStore {
 	 * Make sure the table of the given name has the given fields, provided
 	 * as an array with entries fieldname => typeparams. typeparams should be
 	 * in a normalised form and order to match to existing values.
+	 *
+	 * The function returns an array that includes all columns that have been
+	 * changed. For each such column, the array contains an entry 
+	 * columnname => action, where action is one of 'up', 'new', or 'del'
+	 * If the table was already fine or was created completely anew, an empty 
+	 * array is returned (assuming that both cases require no action).
+	 *
+	 * NOTE: the function partly ignores the order in which fields are set up.
+	 * Only if the type of some field changes will its order be adjusted explicitly.
 	 */
 	protected function setupTable($table, $fields, $db, $verbose) {
 		global $wgDBname;
+		$this->reportProgress("Setting up table $table ...\n",$verbose);
 		if ($db->tableExists($table) === false) { // create new table
 			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $table . ' (';
 			$first = true;
@@ -1209,9 +1193,13 @@ class SMWSQLStore extends SMWStore {
 			}
 			$sql .= ') TYPE=innodb';
 			$db->query( $sql, 'SMWSQLStore::setupTable' );
+			$this->reportProgress("   ... new table created\n",$verbose);
+			return array();
 		} else { // check table signature
+			$this->reportProgress("   ... table exists already, checking structure ...\n",$verbose);
 			$res = $db->query( 'DESCRIBE ' . $table, 'SMWSQLStore::setupTable' );
 			$curfields = array();
+			$result = array();
 			while ($row = $db->fetchObject($res)) {
 				$type = strtoupper($row->Type);
 				if ($row->Null != 'YES') {
@@ -1219,15 +1207,35 @@ class SMWSQLStore extends SMWStore {
 				}
 				$curfields[$row->Field] = $type;
 			}
+			$position = 'FIRST';
 			foreach ($fields as $name => $type) {
 				if ( !array_key_exists($name,$curfields) ) {
-					$this->reportProgress("Field $name not existing yet.<br />",$verbose);
+					$this->reportProgress("   ... creating column $name ... ",$verbose);
+					$db->query("ALTER TABLE $table ADD `$name` $type $position", 'SMWSQLStore::setupTable');
+					$result[$name] = 'new';
+					$this->reportProgress("done \n",$verbose);
 				} elseif ($curfields[$name] != $type) {
-					$this->reportProgress("Field $name has wrong type (should be '$type', but is '$curfields[$name]').<br />",$verbose);
+					$this->reportProgress("   ... changing type of column $name from '$curfields[$name]' to '$type' ... ",$verbose);
+					$db->query("ALTER TABLE $table CHANGE `$name` `$name` $type $position", 'SMWSQLStore::setupTable');
+					$result[$name] = 'up';
+					$curfields[$name] = false;
+					$this->reportProgress("done.\n",$verbose);
 				} else {
-					$this->reportProgress("Field $name is fine.<br />",$verbose);
+					$this->reportProgress("   ... column $name is fine\n",$verbose);
+					$curfields[$name] = false;
+				}
+				$position = "AFTER $name";
+			}
+			foreach ($curfields as $name => $value) {
+				if ($value !== false) { // not encountered yet --> delete
+					$this->reportProgress("   ... deleting obsolete column $name ... ",$verbose);
+					$db->query("ALTER TABLE $table DROP COLUMN `$name`", 'SMWSQLStore::setupTable');
+					$result[$name] = 'del';
+					$this->reportProgress("done.\n",$verbose);
 				}
 			}
+			$this->reportProgress("   ... table $table set up successfully.\n",$verbose);
+			return $result;
 		}
 	}
 
