@@ -67,11 +67,11 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getXSDValue() {
-		return $this->getShortWikiText(); /// FIXME: not correct for special symbols like "Ü" and "&"?
+		return $this->m_xsdvalue;
 	}
 	
 	public function getWikiValue(){
-		return $this->getShortWikiText();  /// FIXME: wikivalue must not be influenced by the caption
+		return $this->m_value;
 	}
 	
 	public function getNumericValue() {
