@@ -21,6 +21,6 @@ require_once($smwgIP . '/includes/SMW_GlobalFunctions.php');
 
 smwfGetStore()->setup();
 
-print "\n\nDone.";
+print "\n\nDone.\n";
 
 
