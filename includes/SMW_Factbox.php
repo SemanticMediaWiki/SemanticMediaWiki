@@ -107,7 +107,7 @@ class SMWFactbox {
 				//are not removed! A cleaner solution would be to print a
 				//helpful message into the factbox, based on a new "print value as
 				//error" datatype handler. FIXME
-				SMWFactbox::addAttribute($relation, $target);
+				SMWFactbox::addAttribute($relation, $target, false);
 			} else {
 				SMWFactbox::$semdata->addSpecialValue($special, $object);
 			}
