@@ -200,8 +200,7 @@ class SMW_LanguageRu {
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Имеет тип',
 	SMW_SP_HAS_URI   => 'Эквивалентный URI',
-	SMW_SP_IS_SUBRELATION_OF   => 'Является подчиненным отношением для',
-	SMW_SP_IS_SUBATTRIBUTE_OF   => 'Является подчиненным атрибутом для',
+	SMW_SP_SUBPROPERTY_OF => 'Subproperty of', // TODO: translate
 	SMW_SP_MAIN_DISPLAY_UNIT => 'Основная отображаемая единица',
 	SMW_SP_DISPLAY_UNIT => 'Отображаемая единица',
 	SMW_SP_IMPORTED_FROM => 'Импортировано из',

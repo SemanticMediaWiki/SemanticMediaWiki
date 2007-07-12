@@ -220,8 +220,7 @@ class SMW_LanguageSk {
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Má typ',
 	SMW_SP_HAS_URI   => 'Ekvivalent URI',
-	SMW_SP_IS_SUBRELATION_OF   => 'Je podvvzťahom',
-	SMW_SP_IS_SUBATTRIBUTE_OF   => 'Je podatribútom',
+	SMW_SP_SUBPROPERTY_OF => 'Subproperty of', // TODO: translate
 	SMW_SP_MAIN_DISPLAY_UNIT => 'Hlavná zobrazovacia jednotka',
 	SMW_SP_DISPLAY_UNIT => 'Zobrazovacia jednotka',
 	SMW_SP_IMPORTED_FROM => 'Importovaný z',

@@ -218,8 +218,7 @@ class SMW_LanguageHe {
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'מטיפוס',
 	SMW_SP_HAS_URI   => 'מזהה יחודי תואם',
-	SMW_SP_IS_SUBRELATION_OF   => 'זהו תת-יחס של',
-	SMW_SP_IS_SUBATTRIBUTE_OF   => 'זוהי תכונה בת של',
+	SMW_SP_SUBPROPERTY_OF => 'Subproperty of', // TODO: translate
 	SMW_SP_MAIN_DISPLAY_UNIT => 'יחידת הצגה ראשית',
 	SMW_SP_DISPLAY_UNIT => 'יחידת הצגה',
 	SMW_SP_IMPORTED_FROM => 'יובא מ',

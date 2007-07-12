@@ -209,8 +209,7 @@ class SMW_LanguageEs {
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Tiene tipo de datos',
 	SMW_SP_HAS_URI   => 'URI equivalente',
-	SMW_SP_IS_SUBRELATION_OF => 'Es una subrelación de',
-	SMW_SP_IS_SUBATTRIBUTE_OF => 'Es un subatributo de',
+	SMW_SP_SUBPROPERTY_OF => 'Subproperty of', // TODO: translate
 	SMW_SP_MAIN_DISPLAY_UNIT => 'Unidad de medida principal para la visualización',
 	SMW_SP_DISPLAY_UNIT => 'Unidad de medida',
 	SMW_SP_IMPORTED_FROM => 'Importado de',

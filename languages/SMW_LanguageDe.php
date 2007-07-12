@@ -211,8 +211,7 @@ class SMW_LanguageDe {
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Hat Datentyp',
 	SMW_SP_HAS_URI   => 'Gleichwertige URI',
-	SMW_SP_IS_SUBRELATION_OF => 'Ist Unterrelation von',
-	SMW_SP_IS_SUBATTRIBUTE_OF => 'Ist Unterattribut von',
+	SMW_SP_SUBPROPERTY_OF => 'Untereigenschaft von',
 	SMW_SP_MAIN_DISPLAY_UNIT => 'Erste Ausgabeeinheit',
 	// SMW_SP_MAIN_DISPLAY_UNIT => 'Primärmaßeinheit für Schirmanzeige', // Great! We really should keep this wonderful translation here! Still, I am not fully certain about my versions either. -- mak
 	SMW_SP_DISPLAY_UNIT => 'Ausgabeeinheit',

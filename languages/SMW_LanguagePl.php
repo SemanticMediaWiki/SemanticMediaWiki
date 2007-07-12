@@ -246,8 +246,7 @@ class SMW_LanguagePl {
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Ma typ',
 	SMW_SP_HAS_URI   => 'Równoważne URI',
-	SMW_SP_IS_SUBRELATION_OF   => 'Jest podrelacją',
-	SMW_SP_IS_SUBATTRIBUTE_OF   => 'Jest podatrybutem',
+	SMW_SP_SUBPROPERTY_OF => 'Subproperty of', // TODO: translate
 	SMW_SP_MAIN_DISPLAY_UNIT => 'Główna wyświetlana jednostka',
 	SMW_SP_DISPLAY_UNIT => 'Wyświetlana jednostka',
 	SMW_SP_IMPORTED_FROM => 'Zaimportowane z',

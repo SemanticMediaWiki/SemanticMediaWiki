@@ -210,8 +210,7 @@ class SMW_LanguageFr {
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'A le type',
 	SMW_SP_HAS_URI   => 'URI équivalente',
-	SMW_SP_IS_SUBRELATION_OF => 'Est une sous-relation de',
-	SMW_SP_IS_SUBATTRIBUTE_OF => 'Est un sous-attribut de',
+	SMW_SP_SUBPROPERTY_OF => 'Subproperty of', // TODO: translate
 	SMW_SP_MAIN_DISPLAY_UNIT => 'Unité de mesure principale pour l\'affichage',
 	SMW_SP_DISPLAY_UNIT => 'Unité de mesure',
 	SMW_SP_IMPORTED_FROM => 'Importé de',

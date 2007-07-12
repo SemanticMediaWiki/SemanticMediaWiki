@@ -661,7 +661,7 @@ class ExportRDF {
 
 			// add rdfs:subPropertyOf statements
  			if ($subrel_rel) {
-				$relations = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_IS_SUBRELATION_OF); 
+				$relations = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_SUBPROPERTY_OF); 
  				foreach ($relations as $relation) {
  					// TODO in future, check type safety relations <-> attributes
  					// TODO check also the type of what I am pointing to (is it a relation or sth else?)
@@ -673,7 +673,7 @@ class ExportRDF {
  				}
  			}
  			if ($subatt_rel) {
-				$attributes = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_IS_SUBATTRIBUTE_OF); 
+				$attributes = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_SUBPROPERTY_OF); 
  				foreach ($attributes as $attribute) {
  					// TODO in future, check type safety relations <-> attributes
  					// TODO check also the type of what I am pointing to (is it an atrribute or sth else?)

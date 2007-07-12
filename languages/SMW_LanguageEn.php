@@ -225,8 +225,7 @@ class SMW_LanguageEn {
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Has type',
 	SMW_SP_HAS_URI   => 'Equivalent URI',
-	SMW_SP_IS_SUBRELATION_OF   => 'Is subrelation of',
-	SMW_SP_IS_SUBATTRIBUTE_OF   => 'Is subattribute of',
+	SMW_SP_SUBPROPERTY_OF => 'Subproperty of',
 	SMW_SP_MAIN_DISPLAY_UNIT => 'Main display unit',
 	SMW_SP_DISPLAY_UNIT => 'Display unit',
 	SMW_SP_IMPORTED_FROM => 'Imported from',
