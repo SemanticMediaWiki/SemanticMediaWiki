@@ -23,13 +23,13 @@ require_once( 'commandLine.inc' );
 global $smwgIP;
 require_once($smwgIP . '/includes/SMW_Factbox.php');
 
-if ( !empty( $options['d'] ) ) {
+if ( array_key_exists( 'd', $options ) ) {
 	$delay = intval($options['d']) * 100000; // sleep 100 times the given time, but do so only each 100 pages
 } else {
 	$delay = false;
 }
 
-if ( $options['v'] ) {
+if (  array_key_exists( 'v', $options ) ) {
 	$verbose = true;
 } else {
 	$verbose = false;
