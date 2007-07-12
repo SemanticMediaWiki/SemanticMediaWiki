@@ -55,6 +55,12 @@ $smwgPropertyPagingLimit = 25; // use smaller value since property lists are muc
 # Settings for inline queries (<ask>) and for semantic queries in general.
 # Especially meant to prevent overly high server-load by complex queries.
 ##
+$smwgQSubcategoryDepth = 10; // Restrict level of sub-category inclusion (steps within category hierarchy)
+$smwgQSubpropertyDepth = 10; // Restrict level of sub-property inclusion (steps within category hierarchy)
+// (Use 0 to disable hierarchy-inferencing in queries)
+$smwgQEqualitySupport = true; // Should #redirects be evaluated as equality between page names?
+
+## older query parameters below, some of those might be ignored
 $smwgIQEnabled = true; // (De)activates all query related features
 $smwgIQDefaultLinking = 'subject'; // Default linking behaviour. Can be one of "none", "subject", "all"
 $smwgIQSearchNamespaces = array(NS_MAIN, NS_IMAGE); // Which namespaces should be searched by default? 
@@ -67,9 +73,7 @@ $smwgIQMaxLimit = 10000;     // Max number of results ever retrieved, even when 
 $smwgIQMaxInlineLimit = 500; // Max number of rows printed in an inline query on a single page.
 $smwgIQDefaultLimit = 50;    // Default number of rows returned in a query. Can be increased with <ask limit="num">...
 $smwgIQDisjunctiveQueriesEnabled = true; // Support disjunctions in queries (||)?
-$smwgIQSubcategoryInclusions = 10; // Restrict level of sub-category inclusion (steps within category hierarchy)
- // Use 0 to disable hierarchy-inferencing in queries
-$smwgIQRedirectNormalization = true; // Should redirects be interpreted as equivalence between page names?
+//$smwgIQRedirectNormalization = true; // Should redirects be interpreted as equivalence between page names?
 $smwgIQSortingEnabled = true; // (De)activate sorting of results.
 ##
 

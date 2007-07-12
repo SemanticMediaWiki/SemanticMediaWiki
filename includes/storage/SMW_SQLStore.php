@@ -7,8 +7,7 @@
 
 global $smwgIP;
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
-require_once( "$smwgIP/includes/SMW_Datatype.php" );
-require_once( "$smwgIP/includes/SMW_DataValue.php" );
+require_once( "$smwgIP/includes/SMW_DataValueFactory.php" );
 
 /**
  * Storage access class for using the standard MediaWiki SQL database
@@ -34,10 +33,19 @@ class SMWSQLStore extends SMWStore {
 	 */
 	static protected $m_tablenum = 0;
 	/**
-	 * Array of names of virtual tables that hold the upper closure of certain 
+	 * Array of names of virtual tables that hold the lower closure of certain 
 	 * categories wrt. hierarchy.
 	 */
 	static protected $m_categorytables = array();
+	/**
+	 * Array of names of virtual tables that hold the lower closure of certain 
+	 * categories wrt. hierarchy.
+	 */
+	static protected $m_propertytables = array();
+	/**
+	 * Record all virtual tables used for a single operation (especially query) to produce debug output.
+	 */
+	protected $m_usedtables;
 
 
 ///// Reading methods /////
@@ -618,6 +626,7 @@ class SMWSQLStore extends SMWStore {
 		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deeper levels
 
 		// Build main query
+		$this->m_usedtables = array();
 		$this->m_sortkey = $query->sortkey;
 		$this->m_sortfield = false;
 
@@ -668,12 +677,12 @@ class SMWSQLStore extends SMWStore {
 			foreach ($query->getErrors() as $error) {
 				$result .= $error . '<br />';
 			}
-			$result .= '<br /><b>Auxilliary tables used (possibly in multiple copies)</b><br />';
-			foreach (SMWSQLStore::$m_categorytables as $tablename) {
+			$result .= '<br /><b>Auxilliary tables used</b><br />';
+			foreach ($this->m_usedtables as $tablename) {
 				$result .= $tablename . ': ';
-				$res = $db->query( "SELECT cat_name FROM $tablename", 'SMW::getQueryResult:DEBUG');
+				$res = $db->query( "SELECT title FROM $tablename", 'SMW::getQueryResult:DEBUG');
 				while ( $row = $db->fetchObject($res) ) {
-					$result .= $row->cat_name . ', ';
+					$result .= $row->title . ', ';
 				}
 				$result .= '<br />';
 			}
@@ -880,50 +889,51 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	/**
-	 * Make a (temporary) table that contains the upper closure of the given category
+	 * Make a (temporary) table that contains the lower closure of the given category
 	 * wrt. the category table.
 	 */
 	protected function getCategoryTable($catname, &$db) {
-		global $wgDBname, $smwgIQSubcategoryInclusions;
+		global $wgDBname, $smwgQSubcategoryDepth;
 
 		$tablename = 'cats' . SMWSQLStore::$m_tablenum++;
+		$this->m_usedtables[] = $tablename;
 		$db->query( 'CREATE TEMPORARY TABLE ' . $tablename .
-		            '( cat_name VARCHAR(255) NOT NULL )
+		            '( title VARCHAR(255) NOT NULL )
 		             TYPE=MEMORY', 'SMW::getCategoryTable' );
 		if (array_key_exists($catname, SMWSQLStore::$m_categorytables)) { // just copy known result
-			$db->query("INSERT INTO $tablename (cat_name) SELECT " . 
+			$db->query("INSERT INTO $tablename (title) SELECT " . 
 			            SMWSQLStore::$m_categorytables[$catname] . 
-			            '.cat_name FROM ' . SMWSQLStore::$m_categorytables[$catname], 
+			            '.title FROM ' . SMWSQLStore::$m_categorytables[$catname], 
 			           'SMW::getCategoryTable');
 			return $tablename;
 		}
 
 		// Create multiple temporary tables for recursive computation
 		$db->query( 'CREATE TEMPORARY TABLE smw_newcats
-		             ( cat_name VARCHAR(255) NOT NULL )
+		             ( title VARCHAR(255) NOT NULL )
 		             TYPE=MEMORY', 'SMW::getCategoryTable' );
 		$db->query( 'CREATE TEMPORARY TABLE smw_rescats
-		             ( cat_name VARCHAR(255) NOT NULL )
+		             ( title VARCHAR(255) NOT NULL )
 		             TYPE=MEMORY', 'SMW::getCategoryTable' );
 		$tmpnew = 'smw_newcats';
 		$tmpres = 'smw_rescats';
 
 		$pagetable = $db->tableName('page');
 		$cltable = $db->tableName('categorylinks');
-		$db->query("INSERT INTO $tablename (cat_name) VALUES ('$catname')", 'SMW::getCategoryTable');
-		$db->query("INSERT INTO smw_newcats (cat_name) VALUES ('$catname')", 'SMW::getCategoryTable');
+		$db->query("INSERT INTO $tablename (title) VALUES ('$catname')", 'SMW::getCategoryTable');
+		$db->query("INSERT INTO $tmpnew (title) VALUES ('$catname')", 'SMW::getCategoryTable');
 
 		/// TODO: avoid duplicate results?
-		for ($i=0; $i<$smwgIQSubcategoryInclusions; $i++) {
-			$db->query("INSERT INTO $tmpres (cat_name) SELECT $pagetable.page_title 
+		for ($i=0; $i<$smwgQSubcategoryDepth; $i++) {
+			$db->query("INSERT INTO $tmpres (title) SELECT $pagetable.page_title 
 			            FROM $cltable,$pagetable,$tmpnew WHERE 
-			            $cltable.cl_to=$tmpnew.cat_name AND
+			            $cltable.cl_to=$tmpnew.title AND
 			            $pagetable.page_namespace=" . NS_CATEGORY . " AND 
 			            $pagetable.page_id=$cltable.cl_from", 'SMW::getCategoryTable');
 			if ($db->affectedRows() == 0) { // no change, exit loop
 				continue;
 			}
-			$db->query("INSERT INTO $tablename (cat_name) SELECT $tmpres.cat_name
+			$db->query("INSERT INTO $tablename (title) SELECT $tmpres.title
 			            FROM $tmpres", 'SMW::getCategoryTable');
 			$db->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::getCategoryTable'); // empty "new" table
 			$tmpname = $tmpnew;
@@ -938,13 +948,68 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	/**
+	 * Make a (temporary) table that contains the lower closure of the given property
+	 * wrt. the subproperty relation.
+	 */
+	protected function getPropertyTable($propname, &$db) {
+		global $wgDBname, $smwgQSubpropertyDepth;
+
+		$tablename = 'prop' . SMWSQLStore::$m_tablenum++;
+		$db->query( 'CREATE TEMPORARY TABLE ' . $tablename .
+		            '( title VARCHAR(255) NOT NULL )
+		             TYPE=MEMORY', 'SMW::getPropertyTable' );
+		if (array_key_exists($propname, SMWSQLStore::$m_propertytables)) { // just copy known result
+			$db->query("INSERT INTO $tablename (title) SELECT " . 
+			            SMWSQLStore::$m_propertytables[$propname] . 
+			            '.title FROM ' . SMWSQLStore::$m_propertytables[$propname], 
+			           'SMW::getPropertyTable');
+			return $tablename;
+		}
+
+		// Create multiple temporary tables for recursive computation
+		$db->query( 'CREATE TEMPORARY TABLE smw_new
+		             ( title VARCHAR(255) NOT NULL )
+		             TYPE=MEMORY', 'SMW::getPropertyTable' );
+		$db->query( 'CREATE TEMPORARY TABLE smw_res
+		             ( title VARCHAR(255) NOT NULL )
+		             TYPE=MEMORY', 'SMW::getPropertyTable' );
+		$tmpnew = 'smw_new';
+		$tmpres = 'smw_res';
+
+		$sptable = $db->tableName('smw_subprops');
+		$db->query("INSERT INTO $tablename (title) VALUES ('$propname')", 'SMW::getPropertyTable');
+		$db->query("INSERT INTO $tmpnew (title) VALUES ('$propname')", 'SMW::getPropertyTable');
+
+		/// TODO: avoid duplicate results?
+		for ($i=0; $i<$smwgQSubpropertyDepth; $i++) {
+			$db->query("INSERT INTO $tmpres (title) SELECT $sptable.subject_title
+			            FROM $sptable,$tmpnew WHERE 
+			            $sptable.object_title=$tmpnew.title", 'SMW::getPropertyTable');
+			if ($db->affectedRows() == 0) { // no change, exit loop
+				continue;
+			}
+			$db->query("INSERT INTO $tablename (title) SELECT $tmpres.title
+			            FROM $tmpres", 'SMW::getCategoryTable');
+			$db->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::getPropertyTable'); // empty "new" table
+			$tmpname = $tmpnew;
+			$tmpnew = $tmpres;
+			$tmpres = $tmpname;
+		}
+
+		SMWSQLStore::$m_propertytables[$propname] = $tablename;
+		$db->query('DROP TABLE smw_new', 'SMW::getPropertyTable');
+		$db->query('DROP TABLE smw_res', 'SMW::getPropertyTable');
+		return $tablename;
+	}
+
+	/**
 	 * Add the table $tablename to the $from condition via an inner join,
 	 * using the tables that are already available in $curtables (and extending 
 	 * $curtables with the new table). Return true if successful or false if it
 	 * wasn't possible to make a suitable inner join.
 	 */
-	protected function addInnerJoin($tablename, &$from, &$db, &$curtables) {
-		global $smwgIQRedirectNormalization;
+	protected function addJoin($tablename, &$from, &$db, &$curtables) {
+		global $smwgQEqualitySupport;
 		if (array_key_exists($tablename, $curtables)) { // table already present
 			return true;
 		}
@@ -957,13 +1022,13 @@ class SMWSQLStore extends SMWStore {
 				return true;
 			}
 		} elseif ($tablename == 'CATS') {
-			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+			if ($this->addJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['CATS'] = 'cl' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['CATS'] . '.cl_from=' . $curtables['PAGE'] . '.page_id';
 				/// TODO: slow, introduce another parameter to activate this
-				if ($smwgIQRedirectNormalization && (array_key_exists('PREVREL', $curtables))) {
+				if ($smwgQEqualitySupport && (array_key_exists('PREVREL', $curtables))) {
 					// only do this at inner queries (PREVREL set)
-					$this->addInnerJoin('REDIPAGE', $from, $db, $curtables);
+					$this->addJoin('REDIPAGE', $from, $db, $curtables);
 					$cond = '((' . $cond . ') OR (' .
 					  $curtables['REDIPAGE'] . '.page_id=' . $curtables['CATS'] . '.cl_from))';
 				}
@@ -971,13 +1036,13 @@ class SMWSQLStore extends SMWStore {
 				return true;
 			}
 		} elseif ($tablename == 'RELS') {
-			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+			if ($this->addJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['RELS'] = 'rel' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['RELS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
 				/// TODO: slow, introduce another parameter to activate this
-				if ($smwgIQRedirectNormalization && (array_key_exists('PREVREL', $curtables))) {
+				if ($smwgQEqualitySupport && (array_key_exists('PREVREL', $curtables))) {
 					// only do this at inner queries (PREVREL set)
-					$this->addInnerJoin('REDIRECT', $from, $db, $curtables);
+					$this->addJoin('REDIRECT', $from, $db, $curtables);
 					$cond = '((' . $cond . ') OR (' .
 					  //$curtables['PAGE'] . '.page_id=' . $curtables['REDIRECT'] . '.rd_from AND ' .
 					  $curtables['REDIRECT'] . '.rd_title=' . $curtables['RELS'] . '.subject_title AND ' .
@@ -987,13 +1052,13 @@ class SMWSQLStore extends SMWStore {
 				return true;
 			}
 		} elseif ($tablename == 'ATTS') {
-			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+			if ($this->addJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['ATTS'] = 'att' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['ATTS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
 				/// TODO: slow, introduce another parameter to activate this
-				if ($smwgIQRedirectNormalization && (array_key_exists('PREVREL', $curtables))) {
+				if ($smwgQEqualitySupport && (array_key_exists('PREVREL', $curtables))) {
 					// only do this at inner queries (PREVREL set)
-					$this->addInnerJoin('REDIRECT', $from, $db, $curtables);
+					$this->addJoin('REDIRECT', $from, $db, $curtables);
 					$cond = '((' . $cond . ') OR (' .
 					  //$curtables['PAGE'] . '.page_id=' . $curtables['REDIRECT'] . '.rd_from AND ' .
 					  $curtables['REDIRECT'] . '.rd_title=' . $curtables['ATTS'] . '.subject_title AND ' .
@@ -1003,19 +1068,19 @@ class SMWSQLStore extends SMWStore {
 				return true;
 			}
 		} elseif ($tablename == 'TEXT') {
-			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+			if ($this->addJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['TEXT'] = 'txt' . SMWSQLStore::$m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('smw_longstrings') . ' AS ' . $curtables['TEXT'] . ' ON ' . $curtables['TEXT'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
 				return true;
 			}
 		} elseif ($tablename == 'REDIRECT') {
-			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+			if ($this->addJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
 				$curtables['REDIRECT'] = 'rd' . SMWSQLStore::$m_tablenum++;
 				$from .= ' LEFT JOIN ' . $db->tableName('redirect') . ' AS ' . $curtables['REDIRECT'] . ' ON ' . $curtables['REDIRECT'] . '.rd_from=' . $curtables['PAGE'] . '.page_id';
 				return true;
 			}
 		} elseif ($tablename == 'REDIPAGE') { // add another copy of page for getting ids of redirect targets
-			if ($this->addInnerJoin('REDIRECT', $from, $db, $curtables)) { 
+			if ($this->addJoin('REDIRECT', $from, $db, $curtables)) { 
 				$curtables['REDIPAGE'] = 'rp' . SMWSQLStore::$m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('page') . ' AS ' . $curtables['REDIPAGE'] . ' ON (' .
 				         $curtables['REDIRECT'] . '.rd_title=' . $curtables['REDIPAGE'] . '.page_title AND ' .
@@ -1062,23 +1127,23 @@ class SMWSQLStore extends SMWStore {
 		if ($description instanceof SMWThingDescription) {
 			// nothing to check
 		} elseif ($description instanceof SMWClassDescription) {
-			if ($this->addInnerJoin('CATS', $from, $db, $curtables)) {
-				global $smwgIQSubcategoryInclusions;
-				if ($smwgIQSubcategoryInclusions > 0) {
+			if ($this->addJoin('CATS', $from, $db, $curtables)) {
+				global $smwgQSubcategoryDepth;
+				if ($smwgQSubcategoryDepth > 0) {
 					$ct = $this->getCategoryTable($description->getCategory()->getDBKey(), $db);
 					$from = '`' . $ct . '`, ' . $from;
-					$where = "$ct.cat_name=" . $curtables['CATS'] . '.cl_to';
+					$where = "$ct.title=" . $curtables['CATS'] . '.cl_to';
 				} else {
 					$where .=  $curtables['CATS'] . '.cl_to=' . $db->addQuotes($description->getCategory()->getDBKey());
 				}
 			}
 		} elseif ($description instanceof SMWNamespaceDescription) {
-			if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) {
+			if ($this->addJoin('PAGE', $from, $db, $curtables)) {
 				$where .=  $curtables['PAGE'] . '.page_namespace=' . $db->addQuotes($description->getNamespace());
 			}
 		} elseif ($description instanceof SMWNominalDescription) {
-			global $smwgIQRedirectNormalization;
-			if ($smwgIQRedirectNormalization) {
+			global $smwgQEqualitySupport;
+			if ($smwgQEqualitySupport) {
 				$page = $this->getRedirectTarget($description->getIndividual(), $db);
 			} else {
 				$page = $description->getIndividual();
@@ -1088,7 +1153,7 @@ class SMWSQLStore extends SMWStore {
 				        $db->addQuotes($page->getDBKey()) . ' AND ' .
 				        $curtables['PREVREL'] . '.object_namespace=' .
 				        $page->getNamespace();
-				if ( $smwgIQRedirectNormalization && ($this->addInnerJoin('REDIRECT', $from, $db, $curtables)) ) {
+				if ( $smwgQEqualitySupport && ($this->addJoin('REDIRECT', $from, $db, $curtables)) ) {
 					$cond = '(' . $cond . ') OR (' . 
 					        $curtables['REDIRECT'] . '.rd_title=' .
 					        $db->addQuotes($page->getDBKey()) . ' AND ' .
@@ -1096,7 +1161,7 @@ class SMWSQLStore extends SMWStore {
 					        $page->getNamespace() . ')';
 				}
 				$where .= $cond;
-			} elseif ($this->addInnerJoin('PAGE', $from, $db, $curtables)) {
+			} elseif ($this->addJoin('PAGE', $from, $db, $curtables)) {
 				$where .= $curtables['PAGE'] . '.page_title=' .
 				          $db->addQuotes($page->getDBKey()) . ' AND ' .
 				          $curtables['PAGE'] . '.page_namespace=' .
@@ -1107,7 +1172,7 @@ class SMWSQLStore extends SMWStore {
 				case 'text': // actually this should not happen; we cannot do anything here 
 				break;
 				default:
-					if ( $this->addInnerJoin('ATTS', $from, $db, $curtables) ) {
+					if ( $this->addJoin('ATTS', $from, $db, $curtables) ) {
 						switch ($description->getComparator()) {
 							case SMW_CMP_EQ: $op = '='; break;
 							case SMW_CMP_LEQ: $op = '<='; break;
@@ -1137,7 +1202,7 @@ class SMWSQLStore extends SMWStore {
 				$nexttables = array();
 				// pull in page to prevent every child description pulling it seperately!
 				/// TODO: will be obsolete when PREVREL provides page indices
-				if ($this->addInnerJoin('PAGE', $from, $db, $curtables)) {
+				if ($this->addJoin('PAGE', $from, $db, $curtables)) {
 					$nexttables['PAGE'] = $curtables['PAGE'];
 				}
 				if (array_key_exists('PREVREL',$curtables)) {
@@ -1164,9 +1229,16 @@ class SMWSQLStore extends SMWStore {
 				}
 			}
 		} elseif ($description instanceof SMWSomeRelation) {
-			if ($this->addInnerJoin('RELS', $from, $db, $curtables)) {
-				$where .= $curtables['RELS'] . '.relation_title=' . 
-				          $db->addQuotes($description->getRelation()->getDBKey());
+			if ($this->addJoin('RELS', $from, $db, $curtables)) {
+				global $smwgQSubpropertyDepth;
+				if ($smwgQSubpropertyDepth > 0) {
+					$pt = $this->getPropertyTable($description->getRelation()->getDBKey(), $db);
+					$from = '`' . $pt . '`, ' . $from;
+					$where = "$pt.title=" . $curtables['RELS'] . '.relation_title';
+				} else {
+					$where .= $curtables['RELS'] . '.relation_title=' . 
+					          $db->addQuotes($description->getRelation()->getDBKey());
+				}
 				$nexttables = array( 'PREVREL' => $curtables['RELS'] );
 				$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $nexttables, ($this->m_sortkey == $description->getRelation()->getDBKey()) );
 				if ( $subwhere != '') {
@@ -1177,21 +1249,29 @@ class SMWSQLStore extends SMWStore {
 			$id = SMWDataValueFactory::getAttributeObjectTypeID($description->getAttribute());
 			switch ($id) {
 				case 'text':
-					if ($this->addInnerJoin('TEXT', $from, $db, $curtables)) {
-						$where .= $curtables['TEXT'] . '.attribute_title=' . 
-								$db->addQuotes($description->getAttribute()->getDBKey());
-						// no recursion: we do not support further conditions on text-type values
-					}
+					$table = 'TEXT';
+					$sub = false; //no recursion: we do not support further conditions on text-type values
 				break;
 				default:
-					if ($this->addInnerJoin('ATTS', $from, $db, $curtables)) {
-						$where .= $curtables['ATTS'] . '.attribute_title=' . 
-								$db->addQuotes($description->getAttribute()->getDBKey());
-						$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $curtables, ($this->m_sortkey == $description->getAttribute()->getDBKey()) );
-						if ( $subwhere != '') {
-							$where .= ' AND (' . $subwhere . ')';
-						}
+					$table = 'ATTS';
+					$sub = true;
+			}
+			if ($this->addJoin($table, $from, $db, $curtables)) {
+				global $smwgQSubpropertyDepth;
+				if ($smwgQSubpropertyDepth > 0) {
+					$pt = $this->getPropertyTable($description->getAttribute()->getDBKey(), $db);
+					$from = '`' . $pt . '`, ' . $from;
+					$where = "$pt.title=" . $curtables[$table] . '.attribute_title';
+				} else {
+					$where .= $curtables[$table] . '.attribute_title=' .
+					          $db->addQuotes($description->getAttribute()->getDBKey());
+				}
+				if ($sub) {
+					$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $curtables, ($this->m_sortkey == $description->getAttribute()->getDBKey()) );
+					if ( $subwhere != '') {
+						$where .= ' AND (' . $subwhere . ')';
 					}
+				}
 			}
 		}
 
