@@ -694,15 +694,6 @@ class SMWSQLStore extends SMWStore {
 
 		extract( $db->tableNames('smw_relations','smw_attributes','smw_longstrings','smw_specialprops') );
 
-/// DEBUG
-// 		$this->setupTable('smw_test2',
-// 		      array('subject_id' => 'INT(8) UNSIGNED NOT NULL',
-// 					'subject_namespace' => 'INT(11) NOT NULL',
-// 					'subject_title' => 'VARCHAR(245) NOT NULL',
-// 					//'nullvalue' => 'VARCHAR(255)',
-// 					'value_unit2' => 'VARCHAR(64)',
-// 					'value_unit' => 'VARCHAR(61) NOT NULL'), $db, $verbose);
-
 		// create relation table
 		$this->setupTable($smw_relations,
 		              array('subject_id'        => 'INT(8) UNSIGNED NOT NULL',
@@ -1280,6 +1271,9 @@ class SMWSQLStore extends SMWStore {
 	protected function reportProgress($msg, $verbose) {
 		if (!$verbose) {
 			return;
+		}
+		if (ob_get_level() == 0) { // be sure to have some buffer, otherwise some PHPs complain
+			ob_start();
 		}
 		print $msg;
 		ob_flush();
