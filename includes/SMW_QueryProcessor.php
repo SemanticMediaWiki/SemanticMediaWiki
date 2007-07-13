@@ -283,6 +283,7 @@ class SMWQueryParser {
 	 * The call-by-ref parameter $label is used to append any label strings found.
 	 */
 	protected function getSubqueryDescription(&$setNS, &$label) {
+		global $smwgQPrintoutLimit;
 		$conjunction = NULL;      // used for the current inner conjunction
 		$disjuncts = array();     // (disjunctive) array of subquery conjunctions
 		$printrequests = array(); // the printrequests found for this query level
@@ -369,8 +370,15 @@ class SMWQueryParser {
 		}
 		$setNS = $mustSetNS; // NOTE: also false if namespaces were given but no default NS descs are available
 
+		$prcount = 0;
 		foreach ($printrequests as $pr) { // add printrequests
-			$result->addPrintRequest($pr);
+			if ($prcount < $smwgQPrintoutLimit) {
+				$result->addPrintRequest($pr);
+				$prcount++;
+			} else {
+				$this->m_errors[] = 'Too many printout requests.';
+				break;
+			}
 		}
 		return $result;
 	}
@@ -800,7 +808,13 @@ class SMWQueryParser {
 			} elseif ($conjunction) { // make new conjunction
 				return new SMWConjunction(array($curdesc,$newdesc));
 			} else { // make new disjunction
-				return new SMWDisjunction(array($curdesc,$newdesc));
+				global $smwgQDisjunctionSupport;
+				if ($smwgQDisjunctionSupport) {
+					return new SMWDisjunction(array($curdesc,$newdesc));
+				} else {
+					$this->m_errors[] = 'Disjunctions in queries not supported in this wiki, dropped part of query (' . $newdesc->getQueryString() . ').';
+					return $curdesc;
+				}
 			}
 		}
 	}

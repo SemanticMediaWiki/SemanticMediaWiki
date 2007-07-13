@@ -612,15 +612,11 @@ class SMWSQLStore extends SMWStore {
 	/**
 	 * The SQL store's implementation of query answering.
 	 *
-	 * TODO: decide who respects which global query settings: the query parser or the query execution?
-	 * Probably the query parser (e.g. it can distinguish subqueries from other nested constructs that
-	 * are not "subqueries" from a user perspective, it also has a good insight in the query structure for
-	 * applying structural limits)
 	 * TODO: we now have sorting even for subquery conditions. Does this work? Is it slow/problematic?
 	 * NOTE: we do not support category wildcards, as they have no useful semantics in OWL/RDFS/LP/whatever
 	 */
 	function getQueryResult(SMWQuery $query) {
-		global $smwgIQSortingEnabled;
+		global $smwgQSortingSupport;
 
 		$db =& wfGetDB( DB_SLAVE );
 		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deeper levels
@@ -640,7 +636,7 @@ class SMWSQLStore extends SMWStore {
 		$sql_options = array();
 		$sql_options['LIMIT'] = $query->getLimit() + 1;
 		$sql_options['OFFSET'] = $query->getOffset();
-		if ( $smwgIQSortingEnabled ) {
+		if ( $smwgQSortingSupport ) {
 			$order = $query->ascending ? 'ASC' : 'DESC';
 			if ( ($this->m_sortfield == false) && ($this->m_sortkey == false) ) {
 				$sql_options['ORDER BY'] = "$pagetable.page_title $order "; // default
@@ -955,6 +951,7 @@ class SMWSQLStore extends SMWStore {
 		global $wgDBname, $smwgQSubpropertyDepth;
 
 		$tablename = 'prop' . SMWSQLStore::$m_tablenum++;
+		$this->m_usedtables[] = $tablename;
 		$db->query( 'CREATE TEMPORARY TABLE ' . $tablename .
 		            '( title VARCHAR(255) NOT NULL )
 		             TYPE=MEMORY', 'SMW::getPropertyTable' );

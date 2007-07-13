@@ -62,27 +62,24 @@ $smwgQSubcategoryDepth = 10;  // Restrict level of sub-category inclusion (steps
 $smwgQSubpropertyDepth = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)
                               // (Use 0 to disable hierarchy-inferencing in queries)
 $smwgQEqualitySupport = true; // Should #redirects be evaluated as equality between page names?
+$smwgQSortingSupport  = true; // (De)activate sorting of results.
 $smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE); // Which namespaces should be searched by default?
                               // (value NULL switches off default restrictions on searching -- this is faster)
 $smwgQMaxLimit = 10000;       // Max number of results ever retrieved, even when using special query pages.
-
+$smwgQDisjunctionSupport = true; // Support disjunctions in queries (||)? 
+                             // (Note: things like namespace defaults and property/category hierarchies
+                             //        can also cause disjunctions!)
 
 ### Settings about printout of (especially inline) queries:
 $smwgQDefaultLimit = 50;    // Default number of rows returned in a query. Can be increased with <ask limit="num">...
 $smwgQMaxInlineLimit = 500; // Max number of rows ever printed in a single inline query on a single page.
-
-$smwgIQMaxPrintout = 10;   // Max number of supported printouts (added columns in result table, * statements)
+$smwgQPrintoutLimit = 10;   // Max number of supported printouts (added columns in result table, * statements)
 
 ### Formatting settings
-$smwgIQDefaultLinking = 'subject'; // Default linking behaviour. Can be one of "none", "subject", "all"
+$smwgQDefaultLinking = 'subject'; // Default linking behaviour. Can be one of "none", "subject", "all"
 
 ## older query parameters below, some of those might be ignored
-//$smwgIQMaxConditions = 50; // Max number of "conditions" (e.g. value or category conditions in a query)
-//$smwgIQMaxTables = 10;     // Max number of "joins" in a query. Restricts nesting depth of queries.
-//$smwgIQSubQueriesEnabled = true; //(De)activates subqueries (<q>-Syntax), use $smwgIQMaxTables for limiting them
-$smwgIQDisjunctiveQueriesEnabled = true; // Support disjunctions in queries (||)?
-//$smwgIQRedirectNormalization = true; // Should redirects be interpreted as equivalence between page names?
-$smwgIQSortingEnabled = true; // (De)activate sorting of results.
+//$smwgIQDisjunctiveQueriesEnabled = true; // Support disjunctions in queries (||)?
 ##
 
 ###

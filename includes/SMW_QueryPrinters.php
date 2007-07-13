@@ -28,11 +28,11 @@ abstract class SMWResultPrinter {
 	 * that may influence the processing details.
 	 */
 	public function SMWResultPrinter($format, $inline) {
-		global $smwgIQDefaultLinking;
+		global $smwgQDefaultLinking;
 		$this->mFormat = $format;
 		$this->mInline = $inline;
-		$this->mLinkFirst = ($smwgIQDefaultLinking != 'none');
-		$this->mLinkOthers = ($smwgIQDefaultLinking == 'all');
+		$this->mLinkFirst = ($smwgQDefaultLinking != 'none');
+		$this->mLinkOthers = ($smwgQDefaultLinking == 'all');
 		$this->mLinker = new Linker(); ///TODO: how can we get the default or user skin here (depending on context)?
 	}
 
