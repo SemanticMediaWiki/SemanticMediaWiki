@@ -75,7 +75,7 @@ function smw_showTooltipPersist(e) {
 	//As we need a reference to it to get the tooltip content we need to go up the dom-tree.
 	while(!(origin.className=="smwttpersist")){origin=origin.parentNode};
 
-	tt = BubbleTT.createBubbleForPoint(true,origin,x,y,200,50);
+	tt = BubbleTT.createBubbleForPoint(true,origin,x,y,200,80);
 	BubbleTT.fillBubble(tt, origin);
 
 	//unregister handler to open bubble 
