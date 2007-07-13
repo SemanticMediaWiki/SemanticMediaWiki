@@ -26,11 +26,11 @@ function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
  * The <ask> parser hook processing part.
  */
 function smwfProcessInlineQuery($text, $param) {
-	global $smwgIQEnabled;
-	if ($smwgIQEnabled) {
+	global $smwgQEnabled;
+	if ($smwgQEnabled) {
 		return SMWQueryProcessor::getResultHTML($text,$param);
 	} else {
-		return wfMsgForContent('smw_iq_disabled');
+		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 	}
 }
 
@@ -62,7 +62,7 @@ class SMWQueryProcessor {
 	 */
 	static public function createQuery($querystring, $params, $inline = true, $format = '') {
 		// This should be the proper way of substituting templates in a safe and comprehensive way:
-		global $wgTitle, $smwgIQSearchNamespaces;
+		global $wgTitle, $smwgQDefaultNamespaces;
 		$parser = new Parser();
 		$parserOptions = new ParserOptions();
 		$parser->startExternalParse( $wgTitle, $parserOptions, OT_HTML );
@@ -70,7 +70,7 @@ class SMWQueryProcessor {
 
 		// parse query:
 		$qp = new SMWQueryParser();
-		$qp->setDefaultNamespaces($smwgIQSearchNamespaces);
+		$qp->setDefaultNamespaces($smwgQDefaultNamespaces);
 		$desc = $qp->getQueryDescription($querystring);
 		if ($desc === NULL) { //abort with failure
 			return $qp->getErrorString();
@@ -82,46 +82,36 @@ class SMWQueryProcessor {
 			$mainlabel = $qp->getLabel();
 		}
 		if ( !$desc->isSingleton() || (count($desc->getPrintRequests()) == 0) ) {
-			$desc->prependPrintRequest(new SMWPrintRequest(SMW_PRINT_THIS, $mainlabel)); 
+			$desc->prependPrintRequest(new SMWPrintRequest(SMW_PRINT_THIS, $mainlabel));
 		}
 
-		$query = new SMWQuery($desc);
+		$query = new SMWQuery($desc, $inline);
 		$query->setQueryString($querystring);
 		$query->addErrors($qp->getErrors()); // keep parsing errors for later output
+
+		// set query parameters:
 		if ($format == '') {
 			$format = SMWQueryProcessor::getResultFormat($params);
 		}
-		switch ($format) {
-			case 'count': 
-				$query->querymode = SMWQuery::MODE_COUNT;
-			break;
-			case 'debug': 
-				$query->querymode = SMWQuery::MODE_DEBUG;
-			break;
-			default: break;
+		if ($format == 'count') {
+			$query->querymode = SMWQuery::MODE_COUNT;
+		} elseif ($format == 'debug') {
+			$query->querymode = SMWQuery::MODE_DEBUG;
 		}
-
-		//print '### Query:' . htmlspecialchars($desc->getQueryString()) . ' ###'; // DEBUG
-
-		// set query parameters:
-		global $smwgIQMaxLimit, $smwgIQMaxInlineLimit;
-		if ($inline)
-			$maxlimit = $smwgIQMaxInlineLimit;
-		else $maxlimit = $smwgIQMaxLimit;
-
-		if ( !$inline && (array_key_exists('offset',$params)) && (is_int($params['offset'] + 0)) ) {
-			$query->offset = min($maxlimit - 1, max(0,$params['offset'] + 0)); //select integer between 0 and maximal limit -1
+		if ( (array_key_exists('offset',$params)) && (is_int($params['offset'] + 0)) ) {
+			$query->setOffset(max(0,$params['offset'] + 0));
 		}
 		if ($query->querymode != SMWQuery::MODE_COUNT) {
-			// set limit small enough to stay in range with chosen offset
-			// it makes sense to have limit=0 in order to only show the link to the search special
 			if ( (array_key_exists('limit',$params)) && (is_int($params['limit'] + 0)) ) {
-				$query->limit = min($maxlimit - $query->offset, max(0,$params['limit'] + 0));
+				$query->setLimit(max(0,$params['limit'] + 0));
 			} else {
-				$query->limit = $maxlimit;
+				global $smwgQDefaultLimit;
+				$query->setLimit($smwgQDefaultLimit);
 			}
-		} else { // largest possible limit for "count"
-			$query->limit = $smwgIQMaxLimit;
+		} else { // largest possible limit for "count", even inline
+			global $smwgQMaxLimit;
+			$query->setOffset(0);
+			$query->setLimit($smwgQMaxLimit, false);
 		}
 		if (array_key_exists('sort', $params)) {
 			$query->sort = true;
@@ -346,6 +336,8 @@ class SMWQueryParser {
 					} elseif ($chunk == '') {
 						$continue = false;
 					}
+				break;
+				case '+': // "... AND true" (ignore)
 				break;
 				default: // error: unexpected $chunk
 					$this->m_errors[] = 'The part \'' . $chunk . '\' in the query was not understood. Results might not be as expected.'; // TODO: internationalise

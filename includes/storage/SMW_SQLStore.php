@@ -638,10 +638,8 @@ class SMWSQLStore extends SMWStore {
 
 		// Prepare SQL options
 		$sql_options = array();
-		if ($query->limit >= 0) {
-			$sql_options['LIMIT'] = $query->limit + 1;
-		}
-		$sql_options['OFFSET'] = $query->offset;
+		$sql_options['LIMIT'] = $query->getLimit() + 1;
+		$sql_options['OFFSET'] = $query->getOffset();
 		if ( $smwgIQSortingEnabled ) {
 			$order = $query->ascending ? 'ASC' : 'DESC';
 			if ( ($this->m_sortfield == false) && ($this->m_sortkey == false) ) {
@@ -665,7 +663,9 @@ class SMWSQLStore extends SMWStore {
 			list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sql_options );
 			$result = '<div style="border: 1px dotted black; background: #A1FB00; padding: 20px; ">' .
 			          '<b>Generated Wiki-Query</b><br />' .
-			          htmlspecialchars($query->getDescription()->getQueryString()) . '<br />' .
+			          $query->getDescription()->getQueryString() . '<br />' .
+			          '<b>Query-Size: </b>' . $query->getDescription()->getSize() . '<br />' .
+			          '<b>Query-Depth: </b>' . $query->getDescription()->getDepth() . '<br />' .
 			          '<b>SQL-Query</b><br />' .
 			          "SELECT DISTINCT $pagetable.page_title as title, $pagetable.page_namespace as namespace" .
 			          ' FROM ' . $from . ' WHERE ' . $where . $tailOpts . '<br />' .
@@ -699,7 +699,7 @@ class SMWSQLStore extends SMWStore {
 
 		$qr = array();
 		$count = 0;
-		while ( ( ($count<$query->limit) || ($query->limit < 0) ) && ($row = $db->fetchObject($res)) ) {
+		while ( ($count<$query->getLimit()) && ($row = $db->fetchObject($res)) ) {
 			$count++;
 			$qr[] = Title::newFromText($row->title, $row->namespace);
 		}
@@ -710,7 +710,7 @@ class SMWSQLStore extends SMWStore {
 
 		// Create result by executing print statements for everything that was fetched
 		///TODO: use limit (and offset?) values for printouts?
-		$result = new SMWQueryResult($prs, $query, ( ($count > $query->limit) && ($query->limit >= 0) ) );
+		$result = new SMWQueryResult($prs, $query, ($count > $query->getLimit()) );
 		foreach ($qr as $qt) {
 			$row = array();
 			foreach ($prs as $pr) {

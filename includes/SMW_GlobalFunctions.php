@@ -378,7 +378,7 @@ function smwgSetupExtension() {
 	 */
 	function smwfEncodeMessages($msgarray) {
 		if (count($msgarray) > 0) {
-			$msgs = implode(', ', $msgarray);
+			$msgs = implode(' ', $msgarray);
 			return '<span class="smwttpersist"><span class="smwtticon">warning.png</span><span class="smwttcontent">' . $msgs . '</span></span>';
 		} else {
 			return '';

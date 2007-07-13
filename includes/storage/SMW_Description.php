@@ -133,6 +133,13 @@ abstract class SMWDescription {
 		return $this->m_printreqs;
 	}
 
+	/**
+	 * Set the array of print requests completely.
+	 */
+	public function setPrintRequests($printrequests) {
+		$this->m_printreqs = $printrequests;
+	}
+
 	public function addPrintRequest(SMWPrintRequest $printrequest) {
 		$this->m_printreqs[$printrequest->getHash()] = $printrequest;
 	}
@@ -156,6 +163,42 @@ abstract class SMWDescription {
 	 */
 	abstract public function isSingleton();
 
+	/**
+	 * Compute the size of the decription. Default is 1.
+	 */
+	public function getSize() {
+		return 1;
+	}
+
+	/**
+	 * Compute the depth of the decription. Default is 0.
+	 */
+	public function getDepth() {
+		return 0;
+	}
+
+	/**
+	 * Recursively restrict query to a maximal size and depth as given.
+	 * Returns a possibly changed description that should be used as a replacement.
+	 * Reduce values of parameters to account for the returned descriptions size.
+	 * Default implementation for non-nested descriptions of size 1.
+	 * The parameter $log contains a list of all pruned conditions, updated when some
+	 * description was reduced.
+	 * NOTE: objects must not do changes on $this during pruning, since $this can be
+	 * reused in multiple places of one or many queries. Make new objects to reflect
+	 * changes.
+	 */
+	public function prune(&$maxsize, &$maxdepth, &$log) {
+		if ( ($maxsize < $this->getSize()) || ($maxdepth < $this->getDepth()) ) {
+			$log[] = $this->getQueryString();
+			return new SMWThingDescription();
+		} else {
+			$maxsize = $maxsize - $this->getSize();
+			$maxdepth = $maxdepth - $this->getDepth();
+			return $this;
+		}
+	}
+
 }
 
 /**
@@ -172,6 +215,14 @@ class SMWThingDescription extends SMWDescription {
 
 	public function isSingleton() {
 		return false;
+	}
+
+	public function getSize() {
+		return 0; // no real condition, no size or depth
+	}
+
+	public function prune(&$maxsize, &$maxdepth, &$log) {
+		return $this;
 	}
 }
 
@@ -201,6 +252,7 @@ class SMWClassDescription extends SMWDescription {
 	public function isSingleton() {
 		return false;
 	}
+
 }
 
 /**
@@ -229,6 +281,7 @@ class SMWNamespaceDescription extends SMWDescription {
 	public function isSingleton() {
 		return false;
 	}
+
 }
 
 /**
@@ -317,6 +370,15 @@ class SMWValueDescription extends SMWDescription {
 	public function isSingleton() {
 		return false;
 	}
+	
+	public function getSize() {
+		if ($this->m_comparator == SMW_CMP_ANY) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
 }
 
 /**
@@ -337,7 +399,9 @@ class SMWConjunction extends SMWDescription {
 	}
 
 	public function addDescription(SMWDescription $description) {
-		$this->m_descriptions[] = $description;
+		if (! ($description instanceof SMWThingDescription) ) {
+			$this->m_descriptions[] = $description;
+		}
 	}
 
 	public function getQueryString() {
@@ -345,7 +409,11 @@ class SMWConjunction extends SMWDescription {
 		foreach ($this->m_descriptions as $desc) {
 			$result .= $desc->getQueryString() . ' ';
 		}
-		return $result;
+		if ($result == '') {
+			return '+';
+		} else {
+			return ' &lt;q&gt;' . $result . '&lt;/q&gt;';
+		}
 	}
 
 	public function isSingleton() {
@@ -355,6 +423,46 @@ class SMWConjunction extends SMWDescription {
 			}
 		}
 		return false;
+	}
+
+	public function getSize() {
+		$size = 0;
+		foreach ($this->m_descriptions as $desc) {
+			$size += $desc->getSize();
+		}
+		return $size;
+	}
+
+	public function getDepth() {
+		$depth = 0;
+		foreach ($this->m_descriptions as $desc) {
+			$depth = max($depth, $desc->getDepth());
+		}
+		return $depth;
+	}
+
+	public function prune(&$maxsize, &$maxdepth, &$log) {
+		if ($maxsize <= 0) {
+			$log[] = $this->getQueryString();
+			return new SMWThingDescription();
+		}
+		$prunelog = array();
+		$newdepth = $maxdepth;
+		$result = new SMWConjunction();
+		$result->setPrintRequests($this->getPrintRequests());
+		foreach ($this->m_descriptions as $desc) {
+			$restdepth = $maxdepth;
+			$result->addDescription($desc->prune($maxsize, $restdepth, $prunelog));
+			$newdepth = min($newdepth, $restdepth);
+		}
+		if (count($result->getDescriptions()) > 0) {
+			$log = array_merge($log, $prunelog);
+			$maxdepth = $newdepth;
+			return $result;
+		} else {
+			$log[] = $this->getQueryString();
+			return new SMWThingDescription();
+		}
 	}
 }
 
@@ -366,9 +474,12 @@ class SMWConjunction extends SMWDescription {
  */
 class SMWDisjunction extends SMWDescription {
 	protected $m_descriptions;
+	protected $m_true = false; // used if disjunction is trivially true already
 
 	public function SMWDisjunction($descriptions = array()) {
-		$this->m_descriptions = $descriptions;
+		foreach ($descriptions as $desc) {
+			$this->addDescription($desc);
+		}
 	}
 
 	public function getDescriptions() {
@@ -376,10 +487,19 @@ class SMWDisjunction extends SMWDescription {
 	}
 
 	public function addDescription(SMWDescription $description) {
-		$this->m_descriptions[] = $description;
+		if ($description instanceof SMWThingDescription) {
+			$this->m_true = true;
+			$this->m_descriptions = array(); // no conditions any more
+		}
+		if (!$this->m_true) {
+			$this->m_descriptions[] = $description;
+		}
 	}
 
 	public function getQueryString() {
+		if ($this->m_true) {
+			return '+';
+		}
 		$result = '';
 		// TODO: many disjunctions have more suitable || abbreviations
 		$first = true;
@@ -391,7 +511,7 @@ class SMWDisjunction extends SMWDescription {
 			}
 			$result .= $desc->getQueryString();
 		}
-		return '<q>' . $result . '</q>';
+		return ' &lt;q&gt;' . $result . '&lt;/q&gt;';
 	}
 
 	public function isSingleton() {
@@ -401,6 +521,46 @@ class SMWDisjunction extends SMWDescription {
 			return false;
 		} else {
 			return $this->m_descriptions[0]->isSingleton();
+		}
+	}
+
+	public function getSize() {
+		$size = 0;
+		foreach ($this->m_descriptions as $desc) {
+			$size += $desc->getSize();
+		}
+		return $size;
+	}
+
+	public function getDepth() {
+		$depth = 0;
+		foreach ($this->m_descriptions as $desc) {
+			$depth = max($depth, $desc->getDepth());
+		}
+		return $depth;
+	}
+
+	public function prune(&$maxsize, &$maxdepth, &$log) {
+		if ($maxsize <= 0) {
+			$log[] = $this->getQueryString();
+			return new SMWThingDescription();
+		}
+		$prunelog = array();
+		$newdepth = $maxdepth;
+		$result = new SMWDisjunction();
+		$result->setPrintRequests($this->getPrintRequests());
+		foreach ($this->m_descriptions as $desc) {
+			$restdepth = $maxdepth;
+			$result->addDescription($desc->prune($maxsize, $restdepth, $prunelog));
+			$newdepth = min($newdepth, $restdepth);
+		}
+		if (count($result->getDescriptions()) > 0) {
+			$log = array_merge($log, $prunelog);
+			$maxdepth = $newdepth;
+			return $result;
+		} else {
+			$log[] = $this->getQueryString();
+			return new SMWThingDescription();
 		}
 	}
 }
@@ -431,11 +591,35 @@ class SMWSomeRelation extends SMWDescription {
 	}
 
 	public function getQueryString() {
-		return '[[' . $this->m_relation->getText() . '::<q>' . $this->m_description->getQueryString() . '</q>]]';
+		if ($this->m_description instanceof SMWThingDescription) {
+			return '[[' . $this->m_relation->getText() . '::+]]';
+		} else {
+			return '[[' . $this->m_relation->getText() . ':: &lt;q&gt;' . $this->m_description->getQueryString() . '&lt;/q&gt;]]';
+		}
 	}
 
 	public function isSingleton() {
 		return false;
+	}
+
+	public function getSize() {
+		return 1+$this->getDescription()->getSize();
+	}
+
+	public function getDepth() {
+		return 1+$this->getDescription()->getDepth();
+	}
+
+	public function prune(&$maxsize, &$maxdepth, &$log) {
+		if (($maxsize <= 0)||($maxdepth <= 0)) {
+			$log[] = $this->getQueryString();
+			return new SMWThingDescription();
+		}
+		$maxsize--;
+		$maxdepth--;
+		$result = new SMWSomeRelation($this->getRelation(), $this->m_description->prune($maxsize,$maxdepth,$log));
+		$result->setPrintRequests($this->getPrintRequests());
+		return $result;
 	}
 }
 
@@ -470,6 +654,26 @@ class SMWSomeAttribute extends SMWDescription {
 
 	public function isSingleton() {
 		return false;
+	}
+
+	public function getSize() {
+		return 1+$this->getDescription()->getSize();
+	}
+
+	public function getDepth() {
+		return 1+$this->getDescription()->getDepth();
+	}
+
+	public function prune(&$maxsize, &$maxdepth, &$log) {
+		if (($maxsize <= 0)||($maxdepth <= 0)) {
+			$log[] = $this->getQueryString();
+			return new SMWThingDescription();
+		}
+		$maxsize--;
+		$maxdepth--;
+		$result = new SMWSomeAttribute($this->getAttribute(), $this->m_description->prune($maxsize,$maxdepth,$log));
+		$result->setPrintRequests($this->getPrintRequests());
+		return $result;
 	}
 }
 

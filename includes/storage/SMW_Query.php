@@ -24,24 +24,33 @@ class SMWQuery {
 	const MODE_COUNT = 2;
 	const MODE_DEBUG = 3;
 
-	public $limit = -1;
-	public $offset = 0;
 	public $sort = false;
 	public $ascending = true;
 	public $sortkey = false;
 	public $querymode = SMWQuery::MODE_INSTANCES;
 
+	protected $m_limit;
+	protected $m_offset = 0;
 	protected $m_description;
-	protected $m_errors; // keep any errors that occurred so far
+	protected $m_errors = array(); // keep any errors that occurred so far
 	protected $m_querystring = false; // string (inline query) version (if fixed and known)
+	protected $m_inline; // query used inline? (required for finding right default parameters)
 
-	public function SMWQuery($description = NULL) {
+	public function SMWQuery($description = NULL, $inline = false) {
+		global $smwgQMaxLimit, $smwgQMaxInlineLimit;
+		if ($inline) {
+			$this->limit = $smwgQMaxInlineLimit;
+		} else {
+			$this->limit = $smwgQMaxLimit;
+		}
+		$this->m_inline = $inline;
 		$this->m_description = $description;
-		$this->m_errors = array();
+		$this->applyRestrictions();
 	}
 
 	public function setDescription(SMWDescription $description) {
 		$this->m_description = $description;
+		$this->applyRestrictions();
 	}
 
 	public function getDescription() {
@@ -69,6 +78,60 @@ class SMWQuery {
 			return '';
 		}
 	}
+
+	public function getOffset() {
+		return $this->m_offset;
+	}
+
+	/**
+	 * Set an offset for the returned query results. The current limit is taken into
+	 * account such that the offset cannot be so large that no results are can ever 
+	 * be returned at all.
+	 * The function returns the chosen offset.
+	 */
+	public function setOffset($offset) {
+		$this->m_offset = min($this->m_limit - 1, $offset); //select integer between 0 and current limit -1;
+		return $this->m_offset;
+	}
+
+	public function getLimit() {
+		return $this->m_limit;
+	}
+
+	/**
+	 * Set a limit for number of query results. The set limit might be restricted by the
+	 * current offset so as to ensure that the number of the last considered result does not
+	 * exceed the maximum amount of supported results.
+	 * The function returns the chosen limit.
+	 * NOTE: it makes sense to have limit==0 e.g. to only show a link to the search special
+	 */
+	public function setLimit($limit, $restrictinline = true) {
+		global $smwgQMaxLimit, $smwgQMaxInlineLimit;
+		if ($this->m_inline && $restrictinline) {
+			$maxlimit = $smwgQMaxInlineLimit;
+		} else {
+			$maxlimit = $smwgQMaxLimit;
+		}
+		$this->m_limit = min($maxlimit - $this->m_offset, $limit);
+		return $this->m_limit;
+	}
+
+	/**
+	 * Apply structural restrictions to the current description.
+	 */
+	public function applyRestrictions() {
+		global $smwgQMaxSize, $smwgQMaxDepth;
+		if ($this->m_description !== NULL) {
+			$maxsize = $smwgQMaxSize;
+			$maxdepth = $smwgQMaxDepth;
+			$log = array();
+			$this->m_description = $this->m_description->prune($maxsize, $maxdepth, $log);
+			if (count($log) > 0) {
+				$this->m_errors[] = 'The following query conditions could not be considered due to restrictions in query size or depth: ' . implode(', ' , $log) . '.';
+			}
+		}
+	}
+
 
 }
 

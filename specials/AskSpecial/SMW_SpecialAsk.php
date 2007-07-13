@@ -23,11 +23,12 @@ SpecialPage::addPage( new SpecialPage('Ask','',true,'doSpecialAsk',false) );
 class SMW_AskPage {
 
 	static function execute() {
-		global $wgRequest, $wgOut, $smwgIQEnabled, $smwgIQMaxLimit, $wgUser, $smwgIQSortingEnabled;
+		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgIQSortingEnabled;
+
 		$skin = $wgUser->getSkin();
 
 		$query = $wgRequest->getVal( 'query' );
-		$sort = $wgRequest->getVal( 'sort' );
+		$sort  = $wgRequest->getVal( 'sort' );
 		$order = $wgRequest->getVal( 'order' );
 		$limit = $wgRequest->getVal( 'limit' );
 		if ('' == $limit) $limit =  20; //$smwgIQDefaultLimit;
@@ -54,7 +55,7 @@ class SMW_AskPage {
 		$html .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . "\"/>\n</form>";
 		
 		// print results if any
-		if ($smwgIQEnabled && ('' != $query) ) {
+		if ($smwgQEnabled && ('' != $query) ) {
 			$params = array('offset' => $offset, 'limit' => $limit, 'format' => 'broadtable', 'mainlabel' => ' ', 'link' => 'all', 'default' => wfMsg('smw_result_noresults'), 'sort' => $sort, 'order' => $order);
 			$queryobj = SMWQueryProcessor::createQuery($query, $params, false);
 			$res = smwfGetStore()->getQueryResult($queryobj);
@@ -79,8 +80,8 @@ class SMW_AskPage {
 					$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
 					$first = false;
 				} else $navigation .= ' | ';
-				if ($l > $smwgIQMaxLimit) {
-					$l = $smwgIQMaxLimit;
+				if ($l > $smwgQMaxLimit) {
+					$l = $smwgQMaxLimit;
 					$max = true;
 				}
 				if ( $limit != $l ) {
@@ -94,7 +95,7 @@ class SMW_AskPage {
 			$html .= '<br /><div style="text-align: center;">' . $navigation;
 			$html .= '<br />' . $result;
 			$html .= '<br />' . $navigation . '</div>';
-		} elseif (!$smwgIQEnabled) {
+		} elseif (!$smwgQEnabled) {
 			$html .= '<br />' . wfMsgForContent('smw_iq_disabled');
 		}
 		$wgOut->addHTML($html);

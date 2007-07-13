@@ -55,23 +55,31 @@ $smwgPropertyPagingLimit = 25; // use smaller value since property lists are muc
 # Settings for inline queries (<ask>) and for semantic queries in general.
 # Especially meant to prevent overly high server-load by complex queries.
 ##
-$smwgQSubcategoryDepth = 10; // Restrict level of sub-category inclusion (steps within category hierarchy)
-$smwgQSubpropertyDepth = 10; // Restrict level of sub-property inclusion (steps within category hierarchy)
-// (Use 0 to disable hierarchy-inferencing in queries)
+$smwgQEnabled = true;         // (De)activates all query related features and interfaces
+$smwgQMaxSize = 12;           // Maximal number of conditions in queries, use format="debug" for example sizes
+$smwgQMaxDepth = 4;           // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
+$smwgQSubcategoryDepth = 10;  // Restrict level of sub-category inclusion (steps within category hierarchy)
+$smwgQSubpropertyDepth = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)
+                              // (Use 0 to disable hierarchy-inferencing in queries)
 $smwgQEqualitySupport = true; // Should #redirects be evaluated as equality between page names?
+$smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE); // Which namespaces should be searched by default?
+                              // (value NULL switches off default restrictions on searching -- this is faster)
+$smwgQMaxLimit = 10000;       // Max number of results ever retrieved, even when using special query pages.
+
+
+### Settings about printout of (especially inline) queries:
+$smwgQDefaultLimit = 50;    // Default number of rows returned in a query. Can be increased with <ask limit="num">...
+$smwgQMaxInlineLimit = 500; // Max number of rows ever printed in a single inline query on a single page.
+
+$smwgIQMaxPrintout = 10;   // Max number of supported printouts (added columns in result table, * statements)
+
+### Formatting settings
+$smwgIQDefaultLinking = 'subject'; // Default linking behaviour. Can be one of "none", "subject", "all"
 
 ## older query parameters below, some of those might be ignored
-$smwgIQEnabled = true; // (De)activates all query related features
-$smwgIQDefaultLinking = 'subject'; // Default linking behaviour. Can be one of "none", "subject", "all"
-$smwgIQSearchNamespaces = array(NS_MAIN, NS_IMAGE); // Which namespaces should be searched by default? 
- // Value NULL switches off default restrictions on searching (faster)
-$smwgIQMaxConditions = 50; // Max number of "conditions" (e.g. value or category conditions in a query)
-$smwgIQMaxTables = 10;     // Max number of "joins" in a query. Restricts nesting depth of queries.
-$smwgIQMaxPrintout = 10;   // Max number of supported printouts (added columns in result table, * statements)
-$smwgIQSubQueriesEnabled = true; //(De)activates subqueries (<q>-Syntax), use $smwgIQMaxTables for limiting them
-$smwgIQMaxLimit = 10000;     // Max number of results ever retrieved, even when using special query pages.
-$smwgIQMaxInlineLimit = 500; // Max number of rows printed in an inline query on a single page.
-$smwgIQDefaultLimit = 50;    // Default number of rows returned in a query. Can be increased with <ask limit="num">...
+//$smwgIQMaxConditions = 50; // Max number of "conditions" (e.g. value or category conditions in a query)
+//$smwgIQMaxTables = 10;     // Max number of "joins" in a query. Restricts nesting depth of queries.
+//$smwgIQSubQueriesEnabled = true; //(De)activates subqueries (<q>-Syntax), use $smwgIQMaxTables for limiting them
 $smwgIQDisjunctiveQueriesEnabled = true; // Support disjunctions in queries (||)?
 //$smwgIQRedirectNormalization = true; // Should redirects be interpreted as equivalence between page names?
 $smwgIQSortingEnabled = true; // (De)activate sorting of results.
