@@ -23,7 +23,7 @@ SpecialPage::addPage( new SpecialPage('Ask','',true,'doSpecialAsk',false) );
 class SMW_AskPage {
 
 	static function execute() {
-		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgIQSortingEnabled;
+		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgQSortingSupport;
 
 		$skin = $wgUser->getSkin();
 
@@ -31,7 +31,7 @@ class SMW_AskPage {
 		$sort  = $wgRequest->getVal( 'sort' );
 		$order = $wgRequest->getVal( 'order' );
 		$limit = $wgRequest->getVal( 'limit' );
-		if ('' == $limit) $limit =  20; //$smwgIQDefaultLimit;
+		if ('' == $limit) $limit =  20;
 		$offset = $wgRequest->getVal( 'offset' );
 		if ('' == $offset) $offset = 0;
 
@@ -43,7 +43,7 @@ class SMW_AskPage {
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
 		$html .= '<textarea name="query" cols="40" rows="6">' . htmlspecialchars($query) . '</textarea><br />' . "\n";
 		
-		if ($smwgIQSortingEnabled) {
+		if ($smwgQSortingSupport) {
 			$html .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort" value="' .
 					htmlspecialchars($sort) . '"/> <select name="order"><option ';
 			// TODO: don't show sort widgets if sorting is not enabled
