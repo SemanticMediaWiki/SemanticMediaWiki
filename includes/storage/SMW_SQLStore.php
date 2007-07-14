@@ -97,7 +97,9 @@ class SMWSQLStore extends SMWStore {
 			switch ($specialprop) {
 			case SMW_SP_HAS_TYPE: // type values
 				while($row = $db->fetchObject($res)) {
-					$result[] = SMWDataValueFactory::newSpecialValue($specialprop,$row->value_string);
+					$v = SMWDataValueFactory::newSpecialValue($specialprop);
+					$v->setXSDValue($row->value_string);
+					$result[] = $v;
 				}
 			break;
 			default: // plain strings
@@ -491,6 +493,14 @@ class SMWSQLStore extends SMWStore {
 						             'value_datatype' => $value->getTypeID(),
 						             'value_xsd' => $value->getXSDValue(),
 						             'value_num' => $value->getNumericValue() );
+					} elseif ($value->getTypeID() !== 'text') { // f.k.a. "Relation"
+					$up_relations[] =
+					     array( 'subject_id' => $subject->getArticleID(),
+					            'subject_namespace' => $subject->getNamespace(),
+					            'subject_title' => $subject->getDBkey(),
+					            'relation_title' => $attribute->getDBkey(),
+					            'object_namespace' => $value->getNamespace(),
+					            'object_title' => $value->getDBkey() );
 					} else {
 						$up_longstrings[] =
 						      array( 'subject_id' => $subject->getArticleID(),
@@ -542,11 +552,11 @@ class SMWSQLStore extends SMWStore {
 							$stringvalue = $value;
 						}
 						$up_specials[] =
-					      array('subject_id' => $subject->getArticleID(),
-					            'subject_namespace' => $subject->getNamespace(),
-					            'subject_title' => $subject->getDBkey(),
-					            'property_id' => $special,
-					            'value_string' => $stringvalue);
+						  array('subject_id' => $subject->getArticleID(),
+						        'subject_namespace' => $subject->getNamespace(),
+						        'subject_title' => $subject->getDBkey(),
+						        'property_id' => $special,
+						        'value_string' => $stringvalue);
 					}
 				break;
 			}

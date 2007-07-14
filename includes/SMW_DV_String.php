@@ -81,10 +81,6 @@ class SMWStringValue extends SMWDataValue {
 	public function getUnit() {
 		return ''; // empty unit
 	}
-	
-	public function getTypeID(){
-		return 'string';
-	}
 
 	public function getInfolinks() {
 		return $this->m_infolinks;

@@ -475,7 +475,7 @@ class SMWOldDataValue extends SMWDataValue {
 	 * interpreted by the function that insertst the JScript into the
 	 * article.
 	 */
-	function getTooltip() {
+	protected function getTooltip() {
 		if ($this->tooltip === false) {
 			if ($this->isValid()) {
 				$this->tooltip = '';

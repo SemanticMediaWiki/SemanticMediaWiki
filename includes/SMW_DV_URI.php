@@ -24,16 +24,18 @@ class SMWURIValue extends SMWDataValue {
 	private $m_infolinks = Array();
 	private $m_mode = '';
 
-	function SMWURIValue($mode) {
+	public function SMWURIValue($typeid) {
+		SMWDataValue::__construct($typeid);
 		switch ($mode) {
-		default: case 'url':
-			$this->m_mode = SMW_URI_MODE_URL; 
-			break;
-		case 'uri':
+		/// TODO: support email type
+		case '_uri':
 			$this->m_mode = SMW_URI_MODE_URI; 
 			break;
-		case 'annouri':
+		case '_anu':
 			$this->m_mode = SMW_URI_MODE_ANNOURI;
+			break;
+		case '_url': default:
+			$this->m_mode = SMW_URI_MODE_URL; 
 			break;
 		}
 	}
@@ -115,15 +117,6 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getUnit() {
 		return ''; // empty unit
-	}
-
-	public function getTypeID(){
-		switch ($this->m_mode) {
-			case SMW_URI_MODE_URL: return 'url';
-			case SMW_URI_MODE_URI: return 'uri';
-			case SMW_URI_MODE_ANNOURI: return 'annouri';
-		}
-		return 'uri';
 	}
 
 	public function getInfolinks() {

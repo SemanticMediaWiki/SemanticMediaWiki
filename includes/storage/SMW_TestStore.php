@@ -13,6 +13,8 @@ require_once( "$smwgIP/includes/SMW_DataValue.php" );
 /**
  * Storage access class for testing purposes. No persitent storage is implemented, but
  * all methods return non-empty result sets that can be used for testing purposes.
+ * 
+ * FIXME: this implementation requires updates for testing new storage capabilities.
  */
 class SMWTestStore extends SMWStore {
 
@@ -31,17 +33,17 @@ class SMWTestStore extends SMWStore {
 			global $smwgContLang;
 			$name = mb_strtoupper($subject->getText());
 			if ( mb_substr_count($name,'INT') > 0 ) {
-				return array($smwgContLang->getDatatypeLabel('smw_int'));
+				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'Integer'));
 			} elseif ( mb_substr_count($name,'FLOAT') > 0 ) {
-				return array($smwgContLang->getDatatypeLabel('smw_float'));
+				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'Float'));
 			} elseif ( mb_substr_count($name,'DATE') > 0 ) {
-				return array($smwgContLang->getDatatypeLabel('smw_datetime'));
+				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'Date'));
 			} elseif ( mb_substr_count($name,'COORD') > 0 ) {
-				return array($smwgContLang->getDatatypeLabel('smw_geocoordinate'));
+				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'Geographic coordinate'));
 			} elseif ( mb_substr_count($name,'ENUM') > 0 ) {
-				return array($smwgContLang->getDatatypeLabel('smw_enum'));
+				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'Enumeration'));
 			} else {
-				return array($smwgContLang->getDatatypeLabel('smw_string'));
+				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'String'));
 			}
 		} elseif ($specialprop === SMW_SP_POSSIBLE_VALUE) {
 			return array('enum_val1', 'enum_val5', 'enum_val3', 'enum_val2', 'enum_val4');
@@ -67,7 +69,7 @@ class SMWTestStore extends SMWStore {
 
 	function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL) {
 		$type = $this->getSpecialValues($attribute,SMW_SP_HAS_TYPE);
-		$th = SMWTypeHandlerFactory::getTypeHandlerByLabel($type[0]);
+		$type = $type[0];
 		$valarray = array();
 		switch ($th->getID()) {
 			case 'int':
@@ -91,7 +93,7 @@ class SMWTestStore extends SMWStore {
 		}
 		$result = Array();
 		foreach ($valarray as $val) {
-			$dv = SMWDataValue::newTypedValue($th);
+			$dv = SMWDataValueFactory::newTypeObjectValue($type);
 			$dv->setAttribute($attribute->getText());
 			$dv->setXSDValue($val,'');
 			$result[] = $dv;

@@ -11,57 +11,70 @@ class SMWNAryValue extends SMWDataValue {
 	/**
 	 * The array of the data values within this container value
 	 */
-	private $m_values = array();
+	private $m_values = Array();
+
+	/**
+	 * This variable represents the content returned when asking vor getInfolinks()
+	 */
+	private $m_infolinks = Array();
+
+	/**
+	 * Is this n-ary datavalue valid?
+	 */
+	private $isValid;
 
 	/**
 	 * types as we received them when datafactory called us
 	 */
-	private $m_type = array();
+	private $m_type = Array();
 
 	/**
-	 * constructor to create n-ary data value types and set their initial
-	 * value appropriately.
-	 *
-	 * FIXME: move all setup of values to parseUserValue and only call setUserValue here.
+	 * Set type array. Must be done before setting any values.
 	 */
-	function SMWNAryValue($type, $value,$caption=false) {
+	function setType($type) {
 		$this->m_type = $type;
-
-		$types = $type->getTypeValues();
-		$values = $this->parseValues($value);
-		if (sizeof($values) < sizeof($types)) {
-			///TODO - use default values for types that were not explicitly specified?
-
-		} else {
-			// everything specified and passed correctly
-			for ($i = 0; $i < sizeof($types); $i++) {
-				$this->m_values[$i] = SMWDataValueFactory::newTypedValue($types[$i], $values[$i]);
-			}
-		}
 	}
 
 	private function parseValues($commaValues) {
 		return preg_split('/[\s]*;[\s]*/', $commaValues, sizeof($this->m_type->getTypeLabels()));
 	}
 
-	//
-	// Methods derived from abstract class
-	//
-
 	protected function parseUserValue($value) {
-		// get DVtypes
 		$types = $this->m_type->getTypeValues();
-		// get values supplied by user
-		$values = $this->parseValues($value);
-		// create user specified DVs
-		if (sizeof($values) < sizeof($types)) {
-			/// TODO: Actually handle this case!
+		if ($value!='') {
+			$values = $this->parseValues($value);
+			// check if all values were specified
+			if (sizeof($values) < sizeof($types)) {
+				$valueindex = 0;
+				// less values specified -> test for closest matchings
+				for ($i = 0; $i < sizeof($types); $i++) {
+					// check if enough slots available -> if not set isValid to false...
+					if ((sizeof($values)-$valueindex) > ((sizeof($types)-$i))) {
+						$this->isValid = false;
+						$this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], false);
+					} else {
+						$this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], $values[$valueindex]);
+						if ($this->m_values[$i]->isValid()) {
+							$valueindex++;
+						} else {
+							/// TODO: Remove previously set (user)value from container!!!
+						}
+					}
+				}
+			} else {
+			// 	everything specified and passed correctly
+				for ($i = 0; $i < sizeof($types); $i++) {
+					$this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], $values[$i]);
+				}
+				$this->isValid = true;
+			}
 		} else {
-			// everything specified and passed correctly - build DV containers.
+			// no values specified -> create empty DVs
 			for ($i = 0; $i < sizeof($types); $i++) {
-				$this->m_values[$i] = SMWDataValueFactory::newTypedValue($types[$i], $values[$i]);
+				$this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], false);
 			}
 		}
+		$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $value);
 	}
 
 	protected function parseXSDValue($value, $unit) {
@@ -73,7 +86,24 @@ class SMWNAryValue extends SMWDataValue {
 
 		// create user specified DVs
 		if (sizeof($values) < sizeof($types)) {
-			/// TODO: Actually handle this case!
+			$valueindex = 0;
+			// less values specified -> test for closest matchings
+			for ($i = 0; $i < sizeof($types); $i++) {
+				// check if enough slots available -> if not set isValid to false...
+				if ((sizeof($values)-$valueindex) > ((sizeof($types)-$i))) {
+					$this->isValid = false;
+				} else {
+					// is value valid?
+					if ($this->m_values[$i]) {
+						$this->m_values[$i]->setXSDValue($values[$i], (is_array($unit)? $units[$valueindex] : null));
+						if ($this->m_values[$i]->isValid()) {
+							$valueindex++;
+						} else {
+							/// TODO!
+						}
+					}
+				}
+			}
 		} else {
 			// everything specified and passed correctly - set XSDValue of DV containers.
 			for ($i = 0; $i < sizeof($types); $i++) {
@@ -94,12 +124,14 @@ class SMWNAryValue extends SMWDataValue {
 		$result = '';
 		$first = true;
 		foreach ($this->m_values as $value) {
-			if ($first) {
-				$first = false;
-			} else {
-				$result .= ", ";
+			if ($value->getShortWikiText($linked)) {
+				if ($first) {
+					$first = false;
+				} else {
+					$result .= ", ";
+				}
+				$result .= $value->getShortWikiText($linked);
 			}
-			$result .= $value->getShortWikiText($linked);
 		}
 		return $result;
 	}
@@ -112,12 +144,14 @@ class SMWNAryValue extends SMWDataValue {
 		$result = '';
 		$first = true;
 		foreach ($this->m_values as $value) {
-			if ($first) {
-				$first = false;
-			} else {
-				$result .= ", ";
+			if ($value->getShortHTMLText($linker)) {
+				if ($first) {
+					$first = false;
+				} else {
+					$result .= ", ";
+				}
+				$result .= $value->getShortHTMLText($linker);
 			}
-			$result .= $value->getShortHTMLText($linker);
 		}
 		return $result;
 	}
@@ -151,13 +185,13 @@ class SMWNAryValue extends SMWDataValue {
 			} else {
 				$result .= ", ";
 			}
-			$result .= $type->getLongHTMLText($linker);
+			$result .= $value->getLongHTMLText($linker);
 		}
 		return $result;
 	}
 
 	public function getXSDValue() {
-		$xsdvals = array();
+		$xsdvals = Array();
 		for ($i = 0; $i < sizeof($this->m_type->getTypeLabels()); $i++) {
 			$xsdvals[$i] = $this->m_values[$i]->getXSDValue();
 		}
@@ -165,8 +199,17 @@ class SMWNAryValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-		///TODO
-		return 'TODO';
+		$result = '';
+		$first = true;
+		foreach ($this->m_values as $value) {
+			if ($first) {
+				$first = false;
+			} else {
+				$result .= ";";
+			}
+			$result .= $value->getWikiValue();
+		}
+		return $result;
 	}
 
 	public function getNumericValue() {
@@ -174,15 +217,15 @@ class SMWNAryValue extends SMWDataValue {
 	}
 
 	public function getUnit() {
-		return ''; // empty unit
-	}
-
-	public function getTypeID() {
-		return 'nary';
+		$units = Array();
+		for ($i = 0; $i < sizeof($this->m_type->getTypeLabels()); $i++) {
+			$units[$i] = $this->m_values[$i]->getUnit();
+		}
+		return implode(';', $units);
 	}
 
 	public function getInfolinks() {
-		return array();
+		return $this->m_infolinks;
 	}
 
 	public function getHash() {
@@ -195,7 +238,7 @@ class SMWNAryValue extends SMWDataValue {
 	}
 
 	public function isValid() {
-		return (count($this->m_values) > 0);
+		return $this->isValid;
 	}
 
 	public function isNumeric() {

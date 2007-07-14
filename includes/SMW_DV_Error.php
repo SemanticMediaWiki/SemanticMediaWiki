@@ -65,10 +65,6 @@ class SMWErrorValue extends SMWDataValue {
 		return ''; // empty unit
 	}
 
-	public function getTypeID(){
-		return 'error';
-	}
-
 	public function getInfolinks() {
 		return $this->m_infolinks;
 	}

@@ -13,6 +13,11 @@ abstract class SMWDataValue {
 	protected $m_caption = false;   /// The text label to be used for output or false if none given
 	protected $m_errors = array();  /// Array of error text messages
 	protected $m_isset = false;     /// True if a value was set.
+	protected $m_typeid;            /// The type id for this value object
+
+	public function SMWDataValue($typeid) {
+		$this->m_typeid = $typeid;
+	}
 
 ///// Set methods /////
 
@@ -35,7 +40,7 @@ abstract class SMWDataValue {
 	 * The given value is a string that was provided by getXSDValue() (all
 	 * implementations should support round-tripping).
 	 */
-	public function setXSDValue($value, $unit) {
+	public function setXSDValue($value, $unit = '') {
 		$this->m_errors = array(); // clear errors
 		$this->m_caption = false;
 		$this->parseXSDValue($value, $unit);
@@ -165,17 +170,13 @@ abstract class SMWDataValue {
 	abstract public function getUnit();
 
 	/**
-	 * Return error string or an empty string if no error occured.
-	 * @DEPRECATED
-	 */
-	public function getError() {}
-
-	/**
 	 * Return a short string that unambiguously specify the type of this value.
 	 * This value will globally be used to identify the type of a value (in spite
 	 * of the class it actually belongs to, which can still implement various types).
 	 */
-	abstract public function getTypeID();
+	public function getTypeID() {
+		return $this->m_typeid;
+	}
 
 	/**
 	 * Return an array of SMWLink objects that provide additional resources
@@ -272,7 +273,7 @@ abstract class SMWDataValue {
 		trigger_error("The function SMWDataValue::getUserValue() is deprecated.", E_USER_NOTICE);
 		return $this->getShortWikiText();
 	}
-	
+
 	/**
 	 * @DEPRECATED
 	 */
@@ -280,13 +281,13 @@ abstract class SMWDataValue {
 		trigger_error("The function SMWDataValue::getValueDescription() is deprecated.", E_USER_NOTICE);
 		return $this->getLongWikiText();
 	}
-	
+
 	/**
+	 * Return error string or an empty string if no error occured.
 	 * @DEPRECATED
 	 */
-	public function getTooltip() {
-		trigger_error("The function SMWDataValue::getTooltip() is deprecated.", E_USER_NOTICE);
-		return '';
+	public function getError() {
+		trigger_error("getError is no longer available. Use getErrorText or getErrors.", E_USER_NOTICE);
 	}
 
 }
