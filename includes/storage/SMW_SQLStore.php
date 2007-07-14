@@ -154,7 +154,6 @@ class SMWSQLStore extends SMWStore {
 			}
 			$db->freeResult($res);
 		} else {
-		
 			if ($value instanceof SMWDataValue) {
 				if ($value->getXSDValue() !== false) { // filters out error-values etc.
 					$stringvalue = $value->getXSDValue();
@@ -196,7 +195,7 @@ class SMWSQLStore extends SMWStore {
 
 		$id = SMWDataValueFactory::getAttributeObjectTypeID($attribute);
 		switch ($id) {
-			case 'text': // long text attribute
+			case '_txt': // long text attribute
 				$res = $db->select( $db->tableName('smw_longstrings'),
 									'value_blob',
 									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
@@ -272,7 +271,7 @@ class SMWSQLStore extends SMWStore {
 		$result = array();
 		$id = SMWDataValueFactory::getAttributeObjectTypeID($attribute);
 		switch ($id) {
-			case 'text':
+			case '_txt':
 				$res = $db->select( $db->tableName('smw_longstrings'),
 				                    'DISTINCT subject_id',
 				                    $sql, 'SMW::getAllAttributeSubjects', 
@@ -483,7 +482,7 @@ class SMWSQLStore extends SMWStore {
 			$attributeValueArray = $data->getAttributeValues($attribute);
 			foreach($attributeValueArray as $value) {
 				if ($value->isValid()) {
-					if ($value->getTypeID() !== 'text') {
+					if ($value->getTypeID() !== '_txt') {
 						$up_attributes[] =
 						      array( 'subject_id' => $subject->getArticleID(),
 						             'subject_namespace' => $subject->getNamespace(),
@@ -493,7 +492,7 @@ class SMWSQLStore extends SMWStore {
 						             'value_datatype' => $value->getTypeID(),
 						             'value_xsd' => $value->getXSDValue(),
 						             'value_num' => $value->getNumericValue() );
-					} elseif ($value->getTypeID() !== 'text') { // f.k.a. "Relation"
+					} elseif ($value->getTypeID() !== '_wpg') { // f.k.a. "Relation"
 					$up_relations[] =
 					     array( 'subject_id' => $subject->getArticleID(),
 					            'subject_namespace' => $subject->getNamespace(),
@@ -1176,7 +1175,7 @@ class SMWSQLStore extends SMWStore {
 			}
 		} elseif ($description instanceof SMWValueDescription) {
 			switch ($description->getDatavalue()->getTypeID()) {
-				case 'text': // actually this should not happen; we cannot do anything here 
+				case '_txt': // actually this should not happen; we cannot do anything here 
 				break;
 				default:
 					if ( $this->addJoin('ATTS', $from, $db, $curtables) ) {
@@ -1255,7 +1254,7 @@ class SMWSQLStore extends SMWStore {
 		} elseif ($description instanceof SMWSomeAttribute) {
 			$id = SMWDataValueFactory::getAttributeObjectTypeID($description->getAttribute());
 			switch ($id) {
-				case 'text':
+				case '_txt':
 					$table = 'TEXT';
 					$sub = false; //no recursion: we do not support further conditions on text-type values
 				break;
