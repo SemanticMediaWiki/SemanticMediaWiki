@@ -3,9 +3,12 @@
  * @author Markus Krötzsch
  */
 
-class SMW_LanguageDe {
+global $smwgIP;
+include_once($smwgIP . '/languages/SMW_Language.php');
 
-/* private */ var $smwContentMessages = array(
+class SMW_LanguageDe extends SMW_Language {
+
+protected $smwContentMessages = array(
 	'smw_edithelp' => 'Bearbeitungshilfe für Relationen und Attribute',
 	'smw_helppage' => 'Relationen und Attribute',
 	'smw_viewasrdf' => 'RDF-Feed',
@@ -69,7 +72,7 @@ class SMW_LanguageDe {
 	'smw_nodatetime' => 'Das Datum „$1“ wurde nicht verstanden. Die Unterstützung von Kalenderdaten ist zur Zeit noch experimentell.'
 );
 
-/* private */ var $smwUserMessages = array(
+protected $smwUserMessages = array(
 	'smw_devel_warning' => 'Diese Funktion befindet sich zur Zeit in Entwicklung und ist eventuell noch nicht voll einsatzfähig. Eventuell ist es ratsam, den Inhalt des Wikis vor der Benutzung dieser Funktion zu sichern.',
 	// Messages for article pages of types, relations, and attributes
 	'smw_type_header' => 'Attribute mit dem Datentyp „$1“',
@@ -185,7 +188,8 @@ class SMW_LanguageDe {
 
 );
 
-/* private */ var $smwDatatypeLabels = array(
+protected $smwDatatypeLabels = array(
+	'smw_wikipage' => 'Seite', // name of page datatype
 	'smw_string' => 'Zeichenkette',  // name of the string type
 	'smw_text' => 'Text',  // name of the text type
 	'smw_enum' => 'Aufzählung',  // name of the enum type
@@ -207,7 +211,7 @@ class SMW_LanguageDe {
 	'smw_annouri' => 'URI-Annotation'  // name of the annotation URI type (annotation property)
 );
 
-/* private */ var $smwSpecialProperties = array(
+protected $smwSpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Hat Datentyp',
 	SMW_SP_HAS_URI   => 'Gleichwertige URI',
@@ -225,7 +229,7 @@ class SMW_LanguageDe {
 	/**
 	 * Function that returns the namespace identifiers.
 	 */
-	function getNamespaceArray() {
+	public function getNamespaceArray() {
 		return array(
 			SMW_NS_RELATION       => "Relation",
 			SMW_NS_RELATION_TALK  => "Relation_Diskussion",
@@ -234,36 +238,6 @@ class SMW_LanguageDe {
 			SMW_NS_TYPE           => "Datentyp",
 			SMW_NS_TYPE_TALK      => "Datentyp_Diskussion"
 		);
-	}
-
-	/**
-	 * Function that returns the localized label for a datatype.
-	 */
-	function getDatatypeLabel($msgid) {
-		return $this->smwDatatypeLabels[$msgid];
-	}
-
-	/**
-	 * Function that returns the labels for the special relations and attributes.
-	 */
-	function getSpecialPropertiesArray() {
-		return $this->smwSpecialProperties;
-	}
-
-	/**
-	 * Function that returns all content messages (those that are stored
-	 * in some article, and can thus not be translated to individual users).
-	 */
-	function getContentMsgArray() {
-		return $this->smwContentMessages;
-	}
-
-	/**
-	 * Function that returns all user messages (those that are given only to
-	 * the current user, and can thus be given in the individual user language).
-	 */
-	function getUserMsgArray() {
-		return $this->smwUserMessages;
 	}
 
 }

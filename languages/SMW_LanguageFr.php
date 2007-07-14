@@ -3,9 +3,12 @@
  * @author Pierre Matringe
  */
 
-class SMW_LanguageFr {
+global $smwgIP;
+include_once($smwgIP . '/languages/SMW_Language.php');
 
-/* private */ var $smwContentMessages = array(
+class SMW_LanguageFr extends SMW_Language {
+
+protected $smwContentMessages = array(
 	'smw_edithelp' => 'Aide à la rédaction de relations et d\'attributs',
 	'smw_helppage' => 'Relations et attributs',
 	'smw_viewasrdf' => 'Voir comme RDF',
@@ -68,7 +71,7 @@ class SMW_LanguageFr {
 	'smw_nodatetime' => 'La date "$1" n\'a pas été comprise. Le support des données calendaires est encore expérimental.'
 );
 
-/* private */ var $smwUserMessages = array(
+protected $smwUserMessages = array(
 	'smw_devel_warning' => 'Cette fonction est encore en développement et n\'est peut-être pas encore opérationnelle. Il est peut-être judicieux de faire une sauvegarde du contenu du wiki avant toute utilisation de cette fonction.',
 	// Messages for article pages of types, relations, and attributes
 	'smw_type_header' => 'Attributes of type “$1”', // TODO translate
@@ -184,7 +187,8 @@ class SMW_LanguageFr {
 	'smw_result_noresults' => 'Désolé, aucun résultat.',
 );
 
-/* private */ var $smwDatatypeLabels = array(
+protected $smwDatatypeLabels = array(
+	'smw_wikipage' => 'Page', // name of page datatype  //TODO translate
 	'smw_string' => 'Chaîne de caractères',  // name of the string type
 	'smw_text' => 'Text',  // name of the text type (very long strings) //TODO: translate
 	'smw_enum' => 'Énumeration',  // name of the enum type
@@ -206,7 +210,7 @@ class SMW_LanguageFr {
 	'smw_annouri' => 'Annotation-URI'  // name of the annotation URI type (annotation property)
 );
 
-/* private */ var $smwSpecialProperties = array(
+protected $smwSpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'A le type',
 	SMW_SP_HAS_URI   => 'URI équivalente',
@@ -223,7 +227,7 @@ class SMW_LanguageFr {
 	/**
 	 * Function that returns the namespace identifiers.
 	 */
-	function getNamespaceArray() {
+	public function getNamespaceArray() {
 		return array(
 			SMW_NS_RELATION       => "Relation",
 			SMW_NS_RELATION_TALK  => "Discussion_relation",
@@ -233,37 +237,6 @@ class SMW_LanguageFr {
 			SMW_NS_TYPE_TALK      => "Discussion_type"
 		);
 	}
-
-	/**
-	 * Function that returns the localized label for a datatype.
-	 */
-	function getDatatypeLabel($msgid) {
-		return $this->smwDatatypeLabels[$msgid];
-	}
-
-	/**
-	 * Function that returns the labels for the special relations and attributes.
-	 */
-	function getSpecialPropertiesArray() {
-		return $this->smwSpecialProperties;
-	}
-
-	/**
-	 * Function that returns all content messages (those that are stored
-	 * in some article, and can thus not be translated to individual users).
-	 */
-	function getContentMsgArray() {
-		return $this->smwContentMessages;
-	}
-
-	/**
-	 * Function that returns all user messages (those that are given only to
-	 * the current user, and can thus be given in the individual user language).
-	 */
-	function getUserMsgArray() {
-		return $this->smwUserMessages;
-	}
-
 }
 
 

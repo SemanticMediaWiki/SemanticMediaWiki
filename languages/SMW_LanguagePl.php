@@ -22,9 +22,12 @@
  *   on this site = w tym miejscu
  */
 
-class SMW_LanguagePl {
+global $smwgIP;
+include_once($smwgIP . '/languages/SMW_Language.php');
 
-/* private */ var $smwContentMessages = array(
+class SMW_LanguagePl extends SMW_Language {
+
+protected $smwContentMessages = array(
 	'smw_edithelp' => 'Pomoc edycyjna odnośnie relacji i atrybutów',
 	'smw_helppage' => 'Relacja',
 	'smw_viewasrdf' => 'RDF feed', //TODO: translate?
@@ -89,7 +92,7 @@ class SMW_LanguagePl {
 );
 
 
-/* private */ var $smwUserMessages = array(
+protected $smwUserMessages = array(
 	'smw_devel_warning' => 'Ta opcja jest obecnie w fazie rozwoju, może nie być w pełni funkcjonalna. Przed użyciem zabezpiecz swoje dane.',
 	// Messages for article pages of types, relations, and attributes
 	'smw_type_header' => 'Atrybuty typu “$1”',
@@ -220,7 +223,8 @@ class SMW_LanguagePl {
 	'smw_result_noresults' => 'Niestety, brak wyników.'
 );
 
-/* private */ var $smwDatatypeLabels = array(
+protected $smwDatatypeLabels = array(
+	'smw_wikipage' => 'Page', // name of page datatype  //TODO translate
 	'smw_string' => 'Łańcuch znaków',  // name of the string type
 	'smw_text' => 'Text',  // name of the text type (very long strings) //TODO: translate
 	'smw_enum' => 'Wyliczenie',  // name of the enum type
@@ -242,7 +246,7 @@ class SMW_LanguagePl {
 	'smw_annouri' => 'Annotation URI'  // name of the annotation URI type (annotation property) //TODO: translate
 );
 
-/* private */ var $smwSpecialProperties = array(
+protected $smwSpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Ma typ',
 	SMW_SP_HAS_URI   => 'Równoważne URI',
@@ -260,7 +264,7 @@ class SMW_LanguagePl {
 	/**
 	 * Function that returns the namespace identifiers.
 	 */
-	function getNamespaceArray() {
+	public function getNamespaceArray() {
 		return array(
 			SMW_NS_RELATION       => 'Relacja',
 			SMW_NS_RELATION_TALK  => 'Dyskusja_relacji',
@@ -269,36 +273,6 @@ class SMW_LanguagePl {
 			SMW_NS_TYPE           => 'Typ',
 			SMW_NS_TYPE_TALK      => 'Dyskusja_typu'
 		);
-	}
-
-	/**
-	 * Function that returns the localized label for a datatype.
-	 */
-	function getDatatypeLabel($msgid) {
-		return $this->smwDatatypeLabels[$msgid];
-	}
-
-	/**
-	 * Function that returns the labels for the special relations and attributes.
-	 */
-	function getSpecialPropertiesArray() {
-		return $this->smwSpecialProperties;
-	}
-
-	/**
-	 * Function that returns all content messages (those that are stored
-	 * in some article, and can thus not be translated to individual users).
-	 */
-	function getContentMsgArray() {
-		return $this->smwContentMessages;
-	}
-
-	/**
-	 * Function that returns all user messages (those that are given only to
-	 * the current user, and can thus be given in the individual user language).
-	 */
-	function getUserMsgArray() {
-		return $this->smwUserMessages;
 	}
 }
 

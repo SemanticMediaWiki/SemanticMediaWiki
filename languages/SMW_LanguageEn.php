@@ -3,9 +3,12 @@
  * @author Markus Krötzsch
  */
 
-class SMW_LanguageEn {
+global $smwgIP;
+include_once($smwgIP . '/languages/SMW_Language.php');
 
-/* private */ var $smwContentMessages = array(
+class SMW_LanguageEn extends SMW_Language {
+
+protected $smwContentMessages = array(
 	'smw_edithelp' => 'Editing help on relations and attributes',
 	'smw_helppage' => 'Relation',
 	'smw_viewasrdf' => 'RDF feed',
@@ -69,7 +72,7 @@ class SMW_LanguageEn {
 );
 
 
-/* private */ var $smwUserMessages = array(
+protected $smwUserMessages = array(
 	'smw_devel_warning' => 'This feature is currently under development, and might not be fully functional. Backup your data before using it.',
 	// Messages for pages of types, relations, and attributes
 	'smw_type_header' => 'Attributes of type “$1”',
@@ -199,7 +202,8 @@ class SMW_LanguageEn {
 	'smw_result_noresults' => 'Sorry, no results.'
 );
 
-/* private */ var $smwDatatypeLabels = array(
+protected $smwDatatypeLabels = array(
+	'smw_wikipage' => 'Page', // name of page datatype
 	'smw_string' => 'String',  // name of the string type
 	'smw_text' => 'Text',  // name of the text type
 	'smw_enum' => 'Enumeration',  // name of the enum type
@@ -221,7 +225,7 @@ class SMW_LanguageEn {
 	'smw_annouri' => 'Annotation URI'  // name of the annotation URI type (annotation property)
 );
 
-/* private */ var $smwSpecialProperties = array(
+protected $smwSpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Has type',
 	SMW_SP_HAS_URI   => 'Equivalent URI',
@@ -235,11 +239,10 @@ class SMW_LanguageEn {
 	SMW_SP_POSSIBLE_VALUE => 'Allows value'
 );
 
-
 	/**
 	 * Function that returns the namespace identifiers.
 	 */
-	function getNamespaceArray() {
+	public function getNamespaceArray() {
 		return array(
 			SMW_NS_RELATION       => 'Relation',
 			SMW_NS_RELATION_TALK  => 'Relation_talk',
@@ -248,36 +251,6 @@ class SMW_LanguageEn {
 			SMW_NS_TYPE           => 'Type',
 			SMW_NS_TYPE_TALK      => 'Type_talk'
 		);
-	}
-
-	/**
-	 * Function that returns the localized label for a datatype.
-	 */
-	function getDatatypeLabel($msgid) {
-		return $this->smwDatatypeLabels[$msgid];
-	}
-
-	/**
-	 * Function that returns the labels for the special relations and attributes.
-	 */
-	function getSpecialPropertiesArray() {
-		return $this->smwSpecialProperties;
-	}
-
-	/**
-	 * Function that returns all content messages (those that are stored
-	 * in some article, and can thus not be translated to individual users).
-	 */
-	function getContentMsgArray() {
-		return $this->smwContentMessages;
-	}
-
-	/**
-	 * Function that returns all user messages (those that are given only to
-	 * the current user, and can thus be given in the individual user language).
-	 */
-	function getUserMsgArray() {
-		return $this->smwUserMessages;
 	}
 }
 
