@@ -95,10 +95,7 @@ class SMWFactbox {
 		$relation = smwfNormalTitleText($relation);
 		$srels = $smwgContLang->getSpecialPropertiesArray();
 		$special = array_search($relation, $srels);
-		$object = Title::newFromText($target);
-		if ($object === NULL) { // not possible to make a Title, maybe illegal name, give up
-			return;
-		}
+		$value = SMWDataValueFactory::newTypeIDValue('_wpg',$target, false, $relation);
 
 		if ($special !== false) {
 			$type = SMWTypeHandlerFactory::getSpecialTypeHandler($special);
@@ -109,10 +106,10 @@ class SMWFactbox {
 				//error" datatype handler. FIXME
 				SMWFactbox::addAttribute($relation, $target, false);
 			} else {
-				SMWFactbox::$semdata->addSpecialValue($special, $object);
+				SMWFactbox::$semdata->addSpecialValue($special, $value);
 			}
 		} else {
-			SMWFactbox::$semdata->addRelationTextObject($relation, $object);
+			SMWFactbox::$semdata->addRelationTextValue($relation, $value);
 		}
 	}
 
@@ -307,7 +304,36 @@ class SMWFactbox {
 		if(!SMWFactbox::$semdata->hasRelations()) { return true; }
 
 		//$text .= ' <tr><th class="relhead"></th><th class="relhead">' . wfMsgForContent('smw_rel_head') . "</th></tr>\n";
+		
+		foreach(SMWFactbox::$semdata->getRelations() as $relation) {
+			$relValueArray = SMWFactbox::$semdata->getRelationValues($relation);
+			$text .= '<tr><td class="smwattname">';
+			$text .= '   [[' . $relation->getPrefixedText() . '|' . preg_replace('/[\s]/','&nbsp;',$relation->getText(),2) . ']] </td><td class="smwatts">';
+			// TODO: the preg_replace is a kind of hack to ensure that the left column does not get too narrow; maybe we can find something nicer later
 
+			$l = count($relValueArray);
+			$i=0;
+			foreach ($relValueArray as $relValue) {
+				if ($i!=0) {
+					if ($i>$l-2) {
+						$text .= wfMsgForContent('smw_finallistconjunct') . ' ';
+					} else {
+						$text .= ', ';
+					}
+				}
+				$i+=1;
+
+				$text .= $relValue->getLongWikiText(true);
+
+				$sep = '<!-- -->&nbsp;&nbsp;'; // the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
+				foreach ($relValue->getInfolinks() as $link) {
+					$text .= $sep . $link->getWikiText();
+					$sep = ' &nbsp;&nbsp;'; // allow breaking for longer lists of infolinks
+				}
+			}
+			$text .= '</td></tr>';
+		}
+/*
 		foreach(SMWFactbox::$semdata->getRelations() as $relation) {
 			$relationObjectArray = SMWFactbox::$semdata->getRelationObjects($relation);
 			//$text .= '   ' . SMWFactbox::$semdata->getSubject()->getPrefixedText() . '&nbsp;';
@@ -331,7 +357,7 @@ class SMWFactbox {
 				$text .= '&nbsp;&nbsp;' . $searchlink->getWikiText();
 			}
 			$text .= "</td></tr>\n";
-		}
+		}*/
 	}
 
 

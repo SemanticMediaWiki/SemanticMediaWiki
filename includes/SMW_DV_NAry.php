@@ -14,11 +14,6 @@ class SMWNAryValue extends SMWDataValue {
 	private $m_values = Array();
 
 	/**
-	 * This variable represents the content returned when asking vor getInfolinks()
-	 */
-	private $m_infolinks = Array();
-
-	/**
 	 * Is this n-ary datavalue valid?
 	 */
 	private $isValid;
@@ -74,7 +69,7 @@ class SMWNAryValue extends SMWDataValue {
 				$this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], false);
 			}
 		}
-		$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $value);
+		//$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $value);
 	}
 
 	protected function parseXSDValue($value, $unit) {
@@ -222,10 +217,6 @@ class SMWNAryValue extends SMWDataValue {
 			$units[$i] = $this->m_values[$i]->getUnit();
 		}
 		return implode(';', $units);
-	}
-
-	public function getInfolinks() {
-		return $this->m_infolinks;
 	}
 
 	public function getHash() {

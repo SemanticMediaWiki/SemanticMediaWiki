@@ -16,7 +16,7 @@ require_once('SMW_DataValue.php');
  */
 class SMWSemanticData {
 	protected $relobjs = Array(); // text keys and arrays of title objects
-	protected $reltitles = Array(); // text keys and title objects
+	protected $reltitles = Array(); // text keys and wikipage values, TODO: join with attributes when namespaces were merged
 	protected $attribvals = Array(); // text keys and arrays of datavalue objects
 	protected $attribtitles = Array(); // text keys and title objects
 	protected $specprops = Array(); // integer keys and mixed subarrays
@@ -114,11 +114,11 @@ class SMWSemanticData {
 	/**
 	 * Get the array of all stored objects for some relation.
 	 */
-	public function getRelationObjects(Title $relation) {
+	public function getRelationValues(Title $relation) {
 		if (array_key_exists($relation->getText(), $this->relobjs)) {
 			return $this->relobjs[$relation->getText()];
 		} else {
-			return Array();
+			return array();
 		}
 	}
 
@@ -128,6 +128,35 @@ class SMWSemanticData {
 	public function hasRelations() {
 		return (count($this->reltitles) != 0);
 	}
+
+	/**
+	 * Store a value for a relation identified by its title. Duplicate 
+	 * object entries are ignored.
+	 */
+	public function addRelationValue(Title $relation, SMWDataValue $value) {
+		if (!array_key_exists($relation->getText(), $this->relobjs)) {
+			$this->relobjs[$relation->getText()] = Array();
+			$this->reltitles[$relation->getText()] = $relation;
+		}
+		$this->relobjs[$relation->getText()][$value->getHash()] = $value;
+	}
+
+	/**
+	 * Store a value for a given relation identified by its text label (without
+	 * namespace prefix). Duplicate value entries are ignored.
+	 */
+	public function addRelationTextvalue($relationtext, SMWDataValue $value) {
+		if (array_key_exists($relationtext, $this->reltitles)) {
+			$relation = $this->reltitles[$relationtext];
+		} else {
+			$relation = Title::newFromText($relationtext, SMW_NS_RELATION);
+			if ($relation === NULL) { // error, maybe illegal title text
+				return;
+			}
+		}
+		$this->addRelationValue($relation, $value);
+	}
+
 
 	/**
 	 * Store an object for a relation identified by its title. Duplicate 

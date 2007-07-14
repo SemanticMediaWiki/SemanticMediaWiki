@@ -10,7 +10,6 @@ class SMWStringValue extends SMWDataValue {
 
 	private $m_value = '';
 	private $m_xsdvalue = '';
-	private $m_infolinks = Array();
 
 	protected function parseUserValue($value) {
 		if ($this->m_caption === false) {
@@ -24,7 +23,7 @@ class SMWStringValue extends SMWDataValue {
 				$this->m_value = $this->m_xsdvalue;
 			} else {
 				$this->m_value = $this->m_xsdvalue;
-				$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $this->m_value);
+				//$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $this->m_value);
 			}
 		} else {
 			$this->addError(wfMsgForContent('smw_emptystring'));
@@ -80,10 +79,6 @@ class SMWStringValue extends SMWDataValue {
 
 	public function getUnit() {
 		return ''; // empty unit
-	}
-
-	public function getInfolinks() {
-		return $this->m_infolinks;
 	}
 
 	public function getHash() {

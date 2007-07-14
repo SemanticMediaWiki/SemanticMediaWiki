@@ -8,7 +8,6 @@
 class SMWErrorValue extends SMWDataValue {
 
 	private $m_value;
-	private $m_infolinks = Array();
 	
 	public function SMWErrorValue($errormsg = '', $uservalue = '', $caption = false) {
 		$this->setUserValue($uservalue, $caption);
@@ -63,10 +62,6 @@ class SMWErrorValue extends SMWDataValue {
 
 	public function getUnit() {
 		return ''; // empty unit
-	}
-
-	public function getInfolinks() {
-		return $this->m_infolinks;
 	}
 
 	public function getHash() {

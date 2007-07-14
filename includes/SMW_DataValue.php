@@ -14,6 +14,9 @@ abstract class SMWDataValue {
 	protected $m_errors = array();  /// Array of error text messages
 	protected $m_isset = false;     /// True if a value was set.
 	protected $m_typeid;            /// The type id for this value object
+	protected $m_infolinks = array(); /// Array of infolink objects
+
+	private $m_hasssearchlink;    /// used to control the addition of the standard search link
 
 	public function SMWDataValue($typeid) {
 		$this->m_typeid = $typeid;
@@ -28,6 +31,8 @@ abstract class SMWDataValue {
 	 */
 	public function setUserValue($value, $caption = false) {
 		$this->m_errors = array(); // clear errors
+		$this->m_infolinks = array(); // clear links
+		$this->m_hasssearchlink = false;
 		if ($caption !== false) {
 			$this->m_caption = $caption;
 		}
@@ -42,6 +47,8 @@ abstract class SMWDataValue {
 	 */
 	public function setXSDValue($value, $unit = '') {
 		$this->m_errors = array(); // clear errors
+		$this->m_infolinks = array(); // clear links
+		$this->m_hasssearchlink = false;
 		$this->m_caption = false;
 		$this->parseXSDValue($value, $unit);
 		$this->m_isset = true;
@@ -54,6 +61,10 @@ abstract class SMWDataValue {
 	 */
 	public function setAttribute($attstring) {
 		$this->m_attribute = $attstring;
+	}
+
+	public function addInfoLink(SMWInfoLink $link) {
+		$this->m_infolinks[] = $link;
 	}
 
 	/**
@@ -184,7 +195,13 @@ abstract class SMWDataValue {
 	 * Captions can contain some HTML markup which is admissible for wiki
 	 * text, but no more. Result might have no entries but is always an array.
 	 */
-	abstract public function getInfolinks();
+	public function getInfolinks() {
+		if (!$this->m_hasssearchlink && $this->isValid() && $this->m_attribute) {
+			$this->m_hasssearchlink = true;
+			$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $this->getWikiValue());
+		}
+		return $this->m_infolinks;
+	}
 
 	/**
 	 * Return a string that identifies the value of the object, and that can
