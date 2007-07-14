@@ -211,6 +211,23 @@ class SMWSQLStore extends SMWStore {
 				}
 				$db->freeResult($res);
 			break;
+			case '_wpg': // wiki page
+				$res = $db->select( $db->tableName('smw_relations'),
+									'object_title, object_namespace',
+									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+									' AND relation_title=' . $db->addQuotes($attribute->getDBkey()) .
+									$this->getSQLConditions($requestoptions,'object_title','object_title'),
+									'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,'object_title') );
+				if($db->numRows( $res ) > 0) {
+					while($row = $db->fetchObject($res)) {
+						$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+						$dv->setOutputFormat($outputformat);
+						$dv->setValues($row->object_title, $row->object_namespace);
+						$result[] = $dv;
+					}
+				}
+				$db->freeResult($res);
+			break;
 			default: // all others
 				if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) &&
 				     ($requestoptions->boundary->isNumeric()) ) {

@@ -47,7 +47,10 @@ class SMWDataValueFactory {
 		if ($atitle !== NULL) {
 			return SMWDataValueFactory::newAttributeObjectValue($atitle,$value,$caption);
 		} else {
-			return new SMWErrorValue(wfMsgForContent('smw_notype'),$value,$caption);
+			$type = SMWDataValueFactory::newTypeIDValue('__typ');
+			$type->setXSDValue('_wpg');
+			SMWDataValueFactory::$m_typelabels[$attstring] = $type;
+			return SMWDataValueFactory::newTypeIDValue('_wpg',$value,$caption,$attstring);
 		}
 	}
 
@@ -68,7 +71,10 @@ class SMWDataValueFactory {
 			$result = SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $caption, $attstring);
 			return $result;
 		} elseif (count($typearray)==0) {
-			return new SMWErrorValue(wfMsgForContent('smw_notype'), $value, $caption);
+			$type = SMWDataValueFactory::newTypeIDValue('__typ');
+			$type->setXSDValue('_wpg');
+			SMWDataValueFactory::$m_typelabels[$attstring] = $type;
+			return SMWDataValueFactory::newTypeIDValue('_wpg',$value,$caption,$attstring);
 		} else {
 			return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value, $caption);
 		}
