@@ -480,19 +480,21 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 					$curcolor = ($curcolor + 1) % 10;
 				}
 			}
-			ksort($positions);
-			$positions = array_values($positions);
-			switch ($this->m_tlpos) {
-				case 'start':
-					$result .= '<span class="smwtlposition">' . $positions[0] . '</span>';
-					break;
-				case 'end':
-					$result .= '<span class="smwtlposition">' . $positions[count($positions)-1] . '</span>';
-					break;
-				case 'today': break; // default
-				case 'middle': default:
-					$result .= '<span class="smwtlposition">' . $positions[ceil(count($positions)/2)-1] . '</span>';
-					break;
+			if (count($positions) > 0) {
+				ksort($positions);
+				$positions = array_values($positions);
+				switch ($this->m_tlpos) {
+					case 'start':
+						$result .= '<span class="smwtlposition">' . $positions[0] . '</span>';
+						break;
+					case 'end':
+						$result .= '<span class="smwtlposition">' . $positions[count($positions)-1] . '</span>';
+						break;
+					case 'today': break; // default
+					case 'middle': default:
+						$result .= '<span class="smwtlposition">' . $positions[ceil(count($positions)/2)-1] . '</span>';
+						break;
+				}
 			}
 		}
 		//no further results displayed ...
