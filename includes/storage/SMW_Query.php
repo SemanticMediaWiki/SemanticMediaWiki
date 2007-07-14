@@ -39,9 +39,9 @@ class SMWQuery {
 	public function SMWQuery($description = NULL, $inline = false) {
 		global $smwgQMaxLimit, $smwgQMaxInlineLimit;
 		if ($inline) {
-			$this->limit = $smwgQMaxInlineLimit;
+			$this->m_limit = $smwgQMaxInlineLimit;
 		} else {
-			$this->limit = $smwgQMaxLimit;
+			$this->m_limit = $smwgQMaxLimit;
 		}
 		$this->m_inline = $inline;
 		$this->m_description = $description;
