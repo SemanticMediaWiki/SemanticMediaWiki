@@ -58,7 +58,7 @@ class SMW_SearchByAttribute {
 				$html .= wfMSG('smw_sbv_novalue', $skin->makeLinkObj($attribute, $attribute->getText()));
 				$valuestring = '';
 			} else { // everything is given
-				$wgOut->setPagetitle( $attribute->getText() . ' ' . $value->getXSDValue() ); //TODO: use escaped wiki value instead?
+				$wgOut->setPagetitle( $attribute->getText() . ' ' . $value->getShortHTMLText(NULL) );
 
 				$options = new SMWRequestOptions();
 				$options->limit = $limit+1;
