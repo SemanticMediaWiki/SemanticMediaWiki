@@ -26,7 +26,7 @@ SpecialPage::addPage( new SpecialPage('Browse','',true,'doSpecialBrowse','defaul
 class SMW_SpecialBrowse	 {
 
 	static function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser,$wgContLang, $smwgIQMaxLimit;
+		global $wgRequest, $wgOut, $wgUser,$wgContLang;
 		$skin = $wgUser->getSkin();
 
 		// get the GET parameters

@@ -26,7 +26,7 @@ SpecialPage::addPage( new SpecialPage('PageProperty','',FALSE,'doSpecialPageProp
 class SMW_PageProperty {
 
 	static function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser, $smwgIQMaxLimit;
+		global $wgRequest, $wgOut, $wgUser;
 		$skin = $wgUser->getSkin();
 
 		// get the GET parameters
@@ -54,7 +54,7 @@ class SMW_PageProperty {
 		} else {
 			$type = '';
 		}
-		
+
 		$limit = $wgRequest->getVal( 'limit' );
 		if ('' == $limit) $limit =  20;
 		$offset = $wgRequest->getVal( 'offset' );

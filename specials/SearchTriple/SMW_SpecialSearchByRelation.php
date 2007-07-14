@@ -26,9 +26,9 @@ SpecialPage::addPage( new SpecialPage('SearchByRelation','',true,'doSpecialSearc
 class SMW_SearchByRelation {
 
 	static function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser, $smwgIQMaxLimit;
+		global $wgRequest, $wgOut, $wgUser, $smwgQMaxLimit;
 		$skin = $wgUser->getSkin();
-		
+
 		// get the GET parameters
 		$type = $wgRequest->getVal( 'type' );
 		$target = $wgRequest->getVal( 'target' );
@@ -91,8 +91,8 @@ class SMW_SearchByRelation {
 					$first = false;
 				} else
 					$navigation .= ' | ';
-				if ($l > $smwgIQMaxLimit) {
-					$l = $smwgIQMaxLimit;
+				if ($l > $smwgQMaxLimit) {
+					$l = $smwgQMaxLimit;
 					$max = true;
 				}
 				if ( $limit != $l ) {
