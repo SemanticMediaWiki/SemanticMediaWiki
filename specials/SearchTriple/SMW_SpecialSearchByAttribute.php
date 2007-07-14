@@ -24,7 +24,7 @@ SpecialPage::addPage( new SpecialPage('SearchByAttribute','',true,'doSpecialSear
 class SMW_SearchByAttribute {
 
 	static function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser, $smwgQMaxLimit;
+		global $wgRequest, $wgOut, $wgUser, $smwgQMaxInlineLimit;
 		$skin = $wgUser->getSkin();
 
 		// get the GET parameters
@@ -92,8 +92,8 @@ class SMW_SearchByAttribute {
 						$first = false;
 					} else
 						$navigation .= ' | ';
-					if ($l > $smwgQMaxLimit) {
-						$l = $smwgQMaxLimit;
+					if ($l > $smwgQMaxInlineLimit) {
+						$l = $smwgQMaxInlineLimit;
 						$max = true;
 					}
 					if ( $limit != $l ) {
