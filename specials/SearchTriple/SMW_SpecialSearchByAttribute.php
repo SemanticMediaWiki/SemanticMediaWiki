@@ -59,6 +59,7 @@ class SMW_SearchByAttribute {
 				$valuestring = '';
 			} else { // everything is given
 				$wgOut->setPagetitle( $attribute->getText() . ' ' . $value->getShortHTMLText(NULL) );
+				$valuestring = $value->getWikiValue();
 
 				$options = new SMWRequestOptions();
 				$options->limit = $limit+1;
