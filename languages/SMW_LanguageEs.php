@@ -156,22 +156,13 @@ protected $smwUserMessages = array(
 	'smw_ask_ascorder' => 'Ascendente',
 	'smw_ask_descorder' => 'Descendente',
 	'smw_ask_submit' => 'Buscar resultados',
-	// Messages for search by relation Special
-	'searchbyrelation' => 'Buscar por relacion',
-	'smw_tb_docu' => '<p>Buscar para todas las páginas que tenga una cierta relación con la página objetivo dada.</p>',
-	'smw_tb_notype' => '<p>Por favor introduzca una relación, o <a href="$2">ver todos los enlaces a $1.</a></p>',
-	'smw_tb_notarget' => '<p>Por favor introduzca una página objetivo, o ver todas las $1 relaciones.</p>',
-	'smw_tb_displayresult' => 'Un listado de páginas que tienen una relación $1 a la página $2.',
-	'smw_tb_linktype' => 'Relación',
-	'smw_tb_linktarget' => 'A',
-	'smw_tb_submit' => 'Buscar resultados',
-	// Messages for the search by attribute special
-	'searchbyattribute' => 'Buscar por atributo',
+	// Messages for the search by property special
+	'searchbyproperty' => 'Buscar por atributo',
 	'smw_sbv_docu' => '<p>Buscar por todas las páginas que tiene un atributo y valor dado.</p>',
-	'smw_sbv_noattribute' => '<p>Por favor introduzca un atributo.</p>',
+	'smw_sbv_noproperty' => '<p>Por favor introduzca un atributo.</p>',
 	'smw_sbv_novalue' => '<p>Por favor introduzca un valor, o ver todos los valores de atributo para $1.</p>',
 	'smw_sbv_displayresult' => 'Una lista de todas las páginas que tienen un atributo $1 con el valor $2.',
-	'smw_sbv_attribute' => 'Atributo',
+	'smw_sbv_property' => 'Atributo',
 	'smw_sbv_value' => 'Valor',
 	'smw_sbv_submit' => 'Buscar resultados',
 	// Messages for the browsing system

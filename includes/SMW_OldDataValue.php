@@ -108,8 +108,6 @@ class SMWOldDataValue extends SMWDataValue {
 	// additional information about the value and the context in which it was given
 	var $type_handler; //type handler for this object
 	var $infolinks; // an array of additional links provided in long descriptions of the value
-	var $attribute; // wiki name (without namespace) of the attribute that this value was
-	                // assigned to, or FALSE if no attribute was given.
 	/**#@-*/
 
 	/**
@@ -121,7 +119,6 @@ class SMWOldDataValue extends SMWDataValue {
 		$this->clear();
 
 		$this->type_handler = $type;
-		$this->attribute = false;
 		$this->desiredUnits = $desiredUnits;
 		$this->serviceLinks = false;
 	}
@@ -196,7 +193,7 @@ class SMWOldDataValue extends SMWDataValue {
 	 *   E.g. it is not very user-friendly. -- mak
 	 */
 	function addQuicksearchLink() {
-		$this->infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->attribute, $this->vuser);
+		$this->infolinks[] = SMWInfolink::newPropertySearchLink('+', $this->m_property, $this->vuser);
 	}
 
 	/**
@@ -239,14 +236,6 @@ class SMWOldDataValue extends SMWDataValue {
 	 */
 	function setInput($key) {
 		$this->input = "K$key"; // add "K" as in setPrintoutString
-	}
-
-	/**
-	 * Set the attribute to which this value refers. Used to generate search links.
-	 * The atriubte is given as a simple wiki text title, without namespace prefix.
-	 */
-	function setAttribute($attribute) {
-		$this->attribute = $attribute;
 	}
 
 	/**
@@ -506,8 +495,8 @@ class SMWOldDataValue extends SMWDataValue {
 	 */
 	function getDesiredUnits() {
 		// If we don't have a value for this, get it from the attribute.
-		if ($this->desiredUnits === false && $this->attribute != false) {
-			$this->desiredUnits = SMWTypeHandlerFactory::getUnitsList($this->attribute);
+		if ($this->desiredUnits === false && $this->m_property != false) {
+			$this->desiredUnits = SMWTypeHandlerFactory::getUnitsList($this->m_property);
 		}
 		if ($this->desiredUnits === false) {
 			return Array();
@@ -521,8 +510,8 @@ class SMWOldDataValue extends SMWDataValue {
 	 */
 	function getServiceLinks() {
 		// If we don't have a value for this, get it from the attribute.
-		if ($this->serviceLinks === false && $this->attribute != false) {
-			$this->serviceLinks = SMWTypeHandlerFactory::getServiceLinks($this->attribute);
+		if ($this->serviceLinks === false && $this->m_property != false) {
+			$this->serviceLinks = SMWTypeHandlerFactory::getServiceLinks($this->m_property);
 		}
 		if ($this->serviceLinks === false) {
 			return Array();
@@ -537,8 +526,8 @@ class SMWOldDataValue extends SMWDataValue {
 	 */
 	function getPossibleValues() {
 		// If we don't have a value for this, get it from the attribute.
-		if ( $this->attribute != false) {
-			return SMWTypeHandlerFactory::getPossibleValues($this->attribute);
+		if ( $this->m_property != false) {
+			return SMWTypeHandlerFactory::getPossibleValues($this->m_property);
 		} else {
 			return Array();
 		}

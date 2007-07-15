@@ -23,7 +23,6 @@ class SMWStringValue extends SMWDataValue {
 				$this->m_value = $this->m_xsdvalue;
 			} else {
 				$this->m_value = $this->m_xsdvalue;
-				//$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $this->m_value);
 			}
 		} else {
 			$this->addError(wfMsgForContent('smw_emptystring'));

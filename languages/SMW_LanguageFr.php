@@ -157,22 +157,13 @@ protected $smwUserMessages = array(
 	'smw_ask_ascorder' => 'Croissant',
 	'smw_ask_descorder' => 'Décroissant',
 	'smw_ask_submit' => 'Trouver des résultats',
-	// Messages for search by relation Special
-	'searchbyrelation' => 'Rechercher par relation',
-	'smw_tb_docu' => '<p>Rechercher toutes les pages qui ont une certaine relation à la page cible.</p>',
-	'smw_tb_notype' => '<p>Veuillez entrer une relation, ou <a href="$2">voir tous les liens vers $1.</a></p>',
-	'smw_tb_notarget' => '<p>Veuillez entrer une page cible, ou voir toutes les relations à $1.</p>',
-	'smw_tb_displayresult' => 'Liste de toutes les pages qui ont une relation $1 à la page $2.',
-	'smw_tb_linktype' => 'Relation',
-	'smw_tb_linktarget' => 'À',
-	'smw_tb_submit' => 'Trouver des résultats',
-	// Messages for the search by attribute special
-	'searchbyattribute' => 'Rechercher par attribut',
+	// Messages for the search by property special
+	'searchbyproperty' => 'Rechercher par attribut',
 	'smw_sbv_docu' => '<p>Rechercher toutes les pages qui ont un attribut donné avec un certaine valeur.</p>',
-	'smw_sbv_noattribute' => '<p>Veuillez entrer un attribut.</p>',
+	'smw_sbv_noproperty' => '<p>Veuillez entrer un attribut.</p>',
 	'smw_sbv_novalue' => '<p>Veuillez entrer une valeur ou consulter toutes les valeurs des attributs pour $1.</p>',
 	'smw_sbv_displayresult' => 'Liste de toutes les pages qui ont un attribut $1 avec la valeur $2.',
-	'smw_sbv_attribute' => 'Attribut',
+	'smw_sbv_property' => 'Attribut',
 	'smw_sbv_value' => 'Valeur',
 	'smw_sbv_submit' => 'Trouver des résultats',
 	// Messages for the browsing system

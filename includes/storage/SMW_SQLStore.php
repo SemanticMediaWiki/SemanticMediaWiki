@@ -172,13 +172,10 @@ class SMWSQLStore extends SMWStore {
 
 			$sql = 'property_id=' . $db->addQuotes($specialprop) .
 			       ' AND value_string=' . $db->addQuotes($stringvalue) .
-		    	   $this->getSQLConditions($requestoptions,'subject_title','subject_title');
-
+			       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 			$res = $db->select( 'smw_specialprops',
 			                    'DISTINCT subject_id',
 			                    $sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
-
-			// rewrite result as array
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::newFromID($row->subject_id);
 			}
@@ -189,25 +186,23 @@ class SMWSQLStore extends SMWStore {
 	}
 
 
-	function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL, $outputformat = '') {
+	function getPropertyValues(Title $subject, Title $property, $requestoptions = NULL, $outputformat = '') {
 		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
 
-		$id = SMWDataValueFactory::getAttributeObjectTypeID($attribute);
+		$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
 		switch ($id) {
 			case '_txt': // long text attribute
 				$res = $db->select( $db->tableName('smw_longstrings'),
 									'value_blob',
 									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-									' AND attribute_title=' . $db->addQuotes($attribute->getDBkey()),
-									'SMW::getAttributeValues', $this->getSQLOptions($requestoptions) );
-				if($db->numRows( $res ) > 0) {
-					while($row = $db->fetchObject($res)) {
-						$dv = SMWDataValueFactory::newAttributeObjectValue($attribute);
-						$dv->setOutputFormat($outputformat);
-						$dv->setXSDValue($row->value_blob, '');
-						$result[] = $dv;
-					}
+									' AND attribute_title=' . $db->addQuotes($property->getDBkey()),
+									'SMW::getPropertyValues', $this->getSQLOptions($requestoptions) );
+				while($row = $db->fetchObject($res)) {
+					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+					$dv->setOutputFormat($outputformat);
+					$dv->setXSDValue($row->value_blob, '');
+					$result[] = $dv;
 				}
 				$db->freeResult($res);
 			break;
@@ -215,16 +210,14 @@ class SMWSQLStore extends SMWStore {
 				$res = $db->select( $db->tableName('smw_relations'),
 									'object_title, object_namespace',
 									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-									' AND relation_title=' . $db->addQuotes($attribute->getDBkey()) .
+									' AND relation_title=' . $db->addQuotes($property->getDBkey()) .
 									$this->getSQLConditions($requestoptions,'object_title','object_title'),
-									'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,'object_title') );
-				if($db->numRows( $res ) > 0) {
-					while($row = $db->fetchObject($res)) {
-						$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-						$dv->setOutputFormat($outputformat);
-						$dv->setValues($row->object_title, $row->object_namespace);
-						$result[] = $dv;
-					}
+									'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,'object_title') );
+				while($row = $db->fetchObject($res)) {
+					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+					$dv->setOutputFormat($outputformat);
+					$dv->setValues($row->object_title, $row->object_namespace);
+					$result[] = $dv;
 				}
 				$db->freeResult($res);
 			break;
@@ -236,57 +229,72 @@ class SMWSQLStore extends SMWStore {
 					$value_column = 'value_xsd';
 				}
 				$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-					' AND attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
+					' AND attribute_title=' . $db->addQuotes($property->getDBkey()) .
 					$this->getSQLConditions($requestoptions,$value_column,'value_xsd');
 				$res = $db->select( $db->tableName('smw_attributes'),
 									'value_unit, value_xsd',
-									$sql, 'SMW::getAttributeValues', $this->getSQLOptions($requestoptions,$value_column) );
-				if($db->numRows( $res ) > 0) {
-					while($row = $db->fetchObject($res)) {
-						$dv = SMWDataValueFactory::newAttributeObjectValue($attribute);
-						$dv->setOutputFormat($outputformat);
-						$dv->setXSDValue($row->value_xsd, $row->value_unit);
-						$result[] = $dv;
-					}
+									$sql, 'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,$value_column) );
+				while($row = $db->fetchObject($res)) {
+					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+					$dv->setOutputFormat($outputformat);
+					$dv->setXSDValue($row->value_xsd, $row->value_unit);
+					$result[] = $dv;
 				}
 				$db->freeResult($res);
 		}
 		return $result;
 	}
 
-	function getAttributeSubjects(Title $attribute, SMWDataValue $value, $requestoptions = NULL) {
+	function getPropertySubjects(Title $property, SMWDataValue $value, $requestoptions = NULL) {
 		if ( !$value->isValid() ) {
 			return array();
 		}
-
-		$db =& wfGetDB( DB_SLAVE );
-		$sql = 'value_xsd=' . $db->addQuotes($value->getXSDValue()) .
-		       ' AND value_unit=' . $db->addQuotes($value->getUnit()) .
-		       ' AND attribute_title=' . $db->addQuotes($attribute->getDBKey()) .
-		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
-
 		$result = array();
-		$res = $db->select( $db->tableName('smw_attributes'),
-		                    'DISTINCT subject_id',
-		                    $sql, 'SMW::getAttributeSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
-		if($db->numRows( $res ) > 0) {
+		$db =& wfGetDB( DB_SLAVE );
+
+		switch ($value->getTypeID()) {
+		case '_txt': // not supported
+		break;
+		case '_wpg': // wikipage
+			$sql = 'object_namespace=' . $db->addQuotes($value->getNamespace()) .
+			       ' AND object_title=' . $db->addQuotes($value->getDBKey()) .
+			       ' AND relation_title=' . $db->addQuotes($property->getDBKey()) .
+			       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
+
+			$res = $db->select( $db->tableName('smw_relations'),
+			                    'DISTINCT subject_id',
+			                    $sql, 'SMW::getPropertySubjects',
+			                    $this->getSQLOptions($requestoptions,'subject_title') );
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::newFromID($row->subject_id);
 			}
+			$db->freeResult($res);
+		break;
+		default:
+			$sql = 'value_xsd=' . $db->addQuotes($value->getXSDValue()) .
+			       ' AND value_unit=' . $db->addQuotes($value->getUnit()) .
+			       ' AND attribute_title=' . $db->addQuotes($property->getDBKey()) .
+			       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
+			$res = $db->select( $db->tableName('smw_attributes'),
+		                    'DISTINCT subject_id',
+		                    $sql, 'SMW::getPropertySubjects',
+		                    $this->getSQLOptions($requestoptions,'subject_title') );
+			while($row = $db->fetchObject($res)) {
+				$result[] = Title::newFromID($row->subject_id);
+			}
+			$db->freeResult($res);
+		break;
 		}
-		$db->freeResult($res);
-		// long strings not supported for this operation
-
 		return $result;
 	}
 
-	function getAllAttributeSubjects(Title $attribute, $requestoptions = NULL) {
+	function getAllPropertySubjects(Title $property, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_SLAVE );
-		$sql = 'attribute_title=' . $db->addQuotes($attribute->getDBkey()) .
+		$sql = 'attribute_title=' . $db->addQuotes($property->getDBkey()) .
 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
 		$result = array();
-		$id = SMWDataValueFactory::getAttributeObjectTypeID($attribute);
+		$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
 		switch ($id) {
 			case '_txt':
 				$res = $db->select( $db->tableName('smw_longstrings'),
@@ -300,10 +308,22 @@ class SMWSQLStore extends SMWStore {
 				}
 				$db->freeResult($res);
 			break;
+			case '_wpg':
+				$sql = 'relation_title=' . $db->addQuotes($property->getDBkey()) .
+				       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
+				$res = $db->select( $db->tableName('smw_relations'),
+				                    'DISTINCT subject_id',
+				                    $sql, 'SMW::getAllAttributeSubjects',
+				                    $this->getSQLOptions($requestoptions,'subject_title') );
+				while($row = $db->fetchObject($res)) {
+					$result[] = Title::newFromId($row->subject_id);
+				}
+				$db->freeResult($res);
+			break;
 			default:
 				$res = $db->select( $db->tableName('smw_attributes'),
 				                    'DISTINCT subject_id',
-				                    $sql, 'SMW::getAllAttributeSubjects', 
+				                    $sql, 'SMW::getAllAttributeSubjects',
 				                    $this->getSQLOptions($requestoptions,'subject_title') );
 				if($db->numRows( $res ) > 0) {
 					while($row = $db->fetchObject($res)) {
@@ -315,14 +335,14 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getAttributes(Title $subject, $requestoptions = NULL) {
+	function getProperties(Title $subject, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_SLAVE );
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) . $this->getSQLConditions($requestoptions,'attribute_title','attribute_title');
 
 		$result = array();
 		$res = $db->select( $db->tableName('smw_attributes'),
 		                    'DISTINCT attribute_title',
-		                    $sql, 'SMW::getAttributes', $this->getSQLOptions($requestoptions,'attribute_title') );
+		                    $sql, 'SMW::getProperties', $this->getSQLOptions($requestoptions,'attribute_title') );
 		if ($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::newFromText($row->attribute_title, SMW_NS_ATTRIBUTE);
@@ -331,7 +351,7 @@ class SMWSQLStore extends SMWStore {
 		$db->freeResult($res);
 		$res = $db->select( $db->tableName('smw_longstrings'),
 		                    'DISTINCT attribute_title',
-		                    $sql, 'SMW::getAttributes', $this->getSQLOptions($requestoptions,'attribute_title') );
+		                    $sql, 'SMW::getProperties', $this->getSQLOptions($requestoptions,'attribute_title') );
 		if ($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::newFromText($row->attribute_title, SMW_NS_ATTRIBUTE);
@@ -339,85 +359,14 @@ class SMWSQLStore extends SMWStore {
 		}
 		$db->freeResult($res);
 
-		return $result;
-	}
-
-	function getRelationObjects(Title $subject, Title $relation, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_SLAVE );
-		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
-		       $this->getSQLConditions($requestoptions,'object_title','object_title');
-
-		$res = $db->select( $db->tableName('smw_relations'),
-		                    'object_title, object_namespace',
-		                    $sql, 'SMW::getRelationObjects', $this->getSQLOptions($requestoptions,'object_title') );
-		// rewrite result as array
-		$result = array();
-		if($db->numRows( $res ) > 0) {
-			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->object_title, $row->object_namespace);
-			}
-		}
-		$db->freeResult($res);
-
-		return $result;
-	}
-
-	function getRelationSubjects(Title $relation, Title $object, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_SLAVE );
-		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
-		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
-		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
-		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
-
-		$res = $db->select( $db->tableName('smw_relations'),
-		                    'DISTINCT subject_id',
-		                    $sql, 'SMW::getRelationSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
-		// rewrite result as array
-		$result = array();
-		if($db->numRows( $res ) > 0) {
-			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromID($row->subject_id);
-			}
-		}
-		$db->freeResult($res);
-
-		return $result;
-	}
-
-	function getAllRelationSubjects(Title $relation, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_SLAVE );
-		$sql = 'relation_title=' . $db->addQuotes($relation->getDBkey()) .
-		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
-
-		$res = $db->select( $db->tableName('smw_relations'),
-		                    'DISTINCT subject_id',
-		                    $sql, 'SMW::getAllRelationSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
-		// rewrite result as array
-		$result = array();
-		if($db->numRows( $res ) > 0) {
-			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromId($row->subject_id);
-			}
-		}
-		$db->freeResult($res);
-
-		return $result;
-	}
-
-	function getOutRelations(Title $subject, $requestoptions = NULL) {
-		$db =& wfGetDB( DB_SLAVE );
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
 		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
-
 		$res = $db->select( $db->tableName('smw_relations'),
 		                    'DISTINCT relation_title',
 		                    $sql, 'SMW::getOutRelations', $this->getSQLOptions($requestoptions,'relation_title') );
-		// rewrite result as array
-		$result = array();
 		if($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->relation_title, SMW_NS_RELATION);
+				$result[] = Title::newFromText($row->relation_title, SMW_NS_ATTRIBUTE);
 			}
 		}
 		$db->freeResult($res);
@@ -425,26 +374,128 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getInRelations(Title $object, $requestoptions = NULL) {
+	function getInProperties(SMWDataValue $value, $requestoptions = NULL) {
 		$db =& wfGetDB( DB_SLAVE );
-		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
-		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
-		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
-
-		$res = $db->select( $db->tableName('smw_relations'),
-		                    'DISTINCT relation_title',
-		                    $sql, 'SMW::getInRelations', $this->getSQLOptions($requestoptions,'relation_title') );
-		// rewrite result as array
 		$result = array();
-		if($db->numRows( $res ) > 0) {
+		if ($value->getTypeID() == '_wpg') {
+			$sql = 'object_namespace=' . $db->addQuotes($value->getNamespace()) .
+				' AND object_title=' . $db->addQuotes($value->getDBKey()) .
+				$this->getSQLConditions($requestoptions,'relation_title','relation_title');
+	
+			$res = $db->select( $db->tableName('smw_relations'),
+								'DISTINCT relation_title',
+								$sql, 'SMW::getInRelations', $this->getSQLOptions($requestoptions,'relation_title') );
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::newFromText($row->relation_title, SMW_NS_RELATION);
 			}
+			$db->freeResult($res);
 		}
-		$db->freeResult($res);
-
 		return $result;
 	}
+
+// 	function getRelationObjects(Title $subject, Title $relation, $requestoptions = NULL) {
+// 		$db =& wfGetDB( DB_SLAVE );
+// 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+// 		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
+// 		       $this->getSQLConditions($requestoptions,'object_title','object_title');
+// 
+// 		$res = $db->select( $db->tableName('smw_relations'),
+// 		                    'object_title, object_namespace',
+// 		                    $sql, 'SMW::getRelationObjects', $this->getSQLOptions($requestoptions,'object_title') );
+// 		// rewrite result as array
+// 		$result = array();
+// 		if($db->numRows( $res ) > 0) {
+// 			while($row = $db->fetchObject($res)) {
+// 				$result[] = Title::newFromText($row->object_title, $row->object_namespace);
+// 			}
+// 		}
+// 		$db->freeResult($res);
+// 
+// 		return $result;
+// 	}
+
+// 	function getRelationSubjects(Title $relation, Title $object, $requestoptions = NULL) {
+// 		$db =& wfGetDB( DB_SLAVE );
+// 		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
+// 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
+// 		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
+// 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
+// 
+// 		$res = $db->select( $db->tableName('smw_relations'),
+// 		                    'DISTINCT subject_id',
+// 		                    $sql, 'SMW::getRelationSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
+// 		// rewrite result as array
+// 		$result = array();
+// 		if($db->numRows( $res ) > 0) {
+// 			while($row = $db->fetchObject($res)) {
+// 				$result[] = Title::newFromID($row->subject_id);
+// 			}
+// 		}
+// 		$db->freeResult($res);
+// 
+// 		return $result;
+// 	}
+
+// 	function getAllRelationSubjects(Title $relation, $requestoptions = NULL) {
+// 		$db =& wfGetDB( DB_SLAVE );
+// 		$sql = 'relation_title=' . $db->addQuotes($relation->getDBkey()) .
+// 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
+// 
+// 		$res = $db->select( $db->tableName('smw_relations'),
+// 		                    'DISTINCT subject_id',
+// 		                    $sql, 'SMW::getAllRelationSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
+// 		// rewrite result as array
+// 		$result = array();
+// 		if($db->numRows( $res ) > 0) {
+// 			while($row = $db->fetchObject($res)) {
+// 				$result[] = Title::newFromId($row->subject_id);
+// 			}
+// 		}
+// 		$db->freeResult($res);
+// 
+// 		return $result;
+// 	}
+
+// 	function getOutRelations(Title $subject, $requestoptions = NULL) {
+// 		$db =& wfGetDB( DB_SLAVE );
+// 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+// 		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
+// 
+// 		$res = $db->select( $db->tableName('smw_relations'),
+// 		                    'DISTINCT relation_title',
+// 		                    $sql, 'SMW::getOutRelations', $this->getSQLOptions($requestoptions,'relation_title') );
+// 		// rewrite result as array
+// 		$result = array();
+// 		if($db->numRows( $res ) > 0) {
+// 			while($row = $db->fetchObject($res)) {
+// 				$result[] = Title::newFromText($row->relation_title, SMW_NS_RELATION);
+// 			}
+// 		}
+// 		$db->freeResult($res);
+//
+// 		return $result;
+// 	}
+
+// 	function getInRelations(Title $object, $requestoptions = NULL) {
+// 		$db =& wfGetDB( DB_SLAVE );
+// 		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
+// 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
+// 		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
+// 
+// 		$res = $db->select( $db->tableName('smw_relations'),
+// 		                    'DISTINCT relation_title',
+// 		                    $sql, 'SMW::getInRelations', $this->getSQLOptions($requestoptions,'relation_title') );
+// 		// rewrite result as array
+// 		$result = array();
+// 		if($db->numRows( $res ) > 0) {
+// 			while($row = $db->fetchObject($res)) {
+// 				$result[] = Title::newFromText($row->relation_title, SMW_NS_RELATION);
+// 			}
+// 		}
+// 		$db->freeResult($res);
+// 
+// 		return $result;
+// 	}
 
 ///// Writing methods /////
 
@@ -481,49 +532,36 @@ class SMWSQLStore extends SMWStore {
 		$up_specials = array();
 		$up_subprops = array();
 
-		// relations
-		foreach($data->getRelations() as $relation) {
-			foreach($data->getRelationObjects($relation) as $object) {
-				$up_relations[] =
-				     array( 'subject_id' => $subject->getArticleID(),
-				            'subject_namespace' => $subject->getNamespace(),
-				            'subject_title' => $subject->getDBkey(),
-				            'relation_title' => $relation->getDBkey(),
-				            'object_namespace' => $object->getNamespace(),
-				            'object_title' => $object->getDBkey() );
-			}
-		}
-
-		//attributes
-		foreach($data->getAttributes() as $attribute) {
-			$attributeValueArray = $data->getAttributeValues($attribute);
-			foreach($attributeValueArray as $value) {
+		//properties
+		foreach($data->getProperties() as $property) {
+			$propertyValueArray = $data->getPropertyValues($property);
+			foreach($propertyValueArray as $value) {
 				if ($value->isValid()) {
-					if ($value->getTypeID() !== '_txt') {
-						$up_attributes[] =
-						      array( 'subject_id' => $subject->getArticleID(),
-						             'subject_namespace' => $subject->getNamespace(),
-						             'subject_title' => $subject->getDBkey(),
-						             'attribute_title' => $attribute->getDBkey(),
-						             'value_unit' => $value->getUnit(),
-						             'value_datatype' => $value->getTypeID(),
-						             'value_xsd' => $value->getXSDValue(),
-						             'value_num' => $value->getNumericValue() );
-					} elseif ($value->getTypeID() !== '_wpg') { // f.k.a. "Relation"
-					$up_relations[] =
-					     array( 'subject_id' => $subject->getArticleID(),
-					            'subject_namespace' => $subject->getNamespace(),
-					            'subject_title' => $subject->getDBkey(),
-					            'relation_title' => $attribute->getDBkey(),
-					            'object_namespace' => $value->getNamespace(),
-					            'object_title' => $value->getDBkey() );
-					} else {
+					if ($value->getTypeID() == '_txt') {
 						$up_longstrings[] =
 						      array( 'subject_id' => $subject->getArticleID(),
 						             'subject_namespace' => $subject->getNamespace(),
 						             'subject_title' => $subject->getDBkey(),
-						             'attribute_title' => $attribute->getDBkey(),
+						             'attribute_title' => $property->getDBkey(),
 						             'value_blob' => $value->getXSDValue() );
+					} elseif ($value->getTypeID() == '_wpg') { // f.k.a. "Relation"
+						$up_relations[] =
+						     array( 'subject_id' => $subject->getArticleID(),
+						            'subject_namespace' => $subject->getNamespace(),
+						            'subject_title' => $subject->getDBkey(),
+						            'relation_title' => $property->getDBkey(),
+						            'object_namespace' => $value->getNamespace(),
+						            'object_title' => $value->getDBkey() );
+					} else {
+						$up_attributes[] =
+						      array( 'subject_id' => $subject->getArticleID(),
+						             'subject_namespace' => $subject->getNamespace(),
+						             'subject_title' => $subject->getDBkey(),
+						             'attribute_title' => $property->getDBkey(),
+						             'value_unit' => $value->getUnit(),
+						             'value_datatype' => $value->getTypeID(),
+						             'value_xsd' => $value->getXSDValue(),
+						             'value_num' => $value->getNumericValue() );
 					}
 				}
 			}
@@ -747,7 +785,7 @@ class SMWSQLStore extends SMWStore {
 						$row[] = new SMWResultArray($this->getSpecialValues($qt,SMW_SP_HAS_CATEGORY), $pr);
 						break;
 					case SMW_PRINT_ATTS:
-						$row[] = new SMWResultArray($this->getAttributeValues($qt,$pr->getTitle(), NULL, $pr->getOutputFormat()), $pr);
+						$row[] = new SMWResultArray($this->getPropertyValues($qt,$pr->getTitle(), NULL, $pr->getOutputFormat()), $pr);
 						break;
 				}
 			}
@@ -1269,7 +1307,7 @@ class SMWSQLStore extends SMWStore {
 				}
 			}
 		} elseif ($description instanceof SMWSomeAttribute) {
-			$id = SMWDataValueFactory::getAttributeObjectTypeID($description->getAttribute());
+			$id = SMWDataValueFactory::getPropertyObjectTypeID($description->getAttribute());
 			switch ($id) {
 				case '_txt':
 					$table = 'TEXT';

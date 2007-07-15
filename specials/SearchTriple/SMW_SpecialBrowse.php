@@ -23,7 +23,7 @@ SpecialPage::addPage( new SpecialPage('Browse','',true,'doSpecialBrowse','defaul
  * A class to encapsulate the special page that allows browsing through
  * the knowledge structure of a Semantic MediaWiki.
  */
-class SMW_SpecialBrowse	 {
+class SMW_SpecialBrowse {
 
 	static function execute($query = '') {
 		global $wgRequest, $wgOut, $wgUser,$wgContLang;
@@ -33,7 +33,7 @@ class SMW_SpecialBrowse	 {
 		$articletext = $wgRequest->getVal( 'article' );
 		// no GET parameters? Then try the URL
 		if ('' == $articletext) { $articletext = $query; }
-		$article = Title::newFromText( $articletext );
+		$article = SMWDataValueFactory::newTypeIDValue('_wpg', $articletext);
 		$limit = $wgRequest->getVal( 'limit' );
 		if ('' == $limit) $limit =  10;
 		$offset = $wgRequest->getVal( 'offset' );
@@ -44,22 +44,21 @@ class SMW_SpecialBrowse	 {
 
 		$vsep = '<div class="smwhr"><hr /></div>';
 
-		if ((NULL !== $article) && ('' !== $articletext)) { // legal article given
+		if (($article->isValid()) && ('' !== $articletext)) { // legal article given
 			$options = new SMWRequestOptions();
-			$outrel = &smwfGetStore()->getOutRelations($article, $options);
-			$atts = &smwfGetStore()->getAttributes($article, $options);
-			$cats = &smwfGetStore()->getSpecialValues($article, SMW_SP_HAS_CATEGORY, $options);
-			$redout = &smwfGetStore()->getSpecialValues($article, SMW_SP_REDIRECTS_TO, $options);
-			$redin = &smwfGetStore()->getSpecialSubjects(SMW_SP_REDIRECTS_TO, $article, $options);
+			$atts = &smwfGetStore()->getProperties($article->getTitle(), $options);
+			$cats = &smwfGetStore()->getSpecialValues($article->getTitle(), SMW_SP_HAS_CATEGORY, $options);
+			$redout = &smwfGetStore()->getSpecialValues($article->getTitle(), SMW_SP_REDIRECTS_TO, $options);
+			$redin = &smwfGetStore()->getSpecialSubjects(SMW_SP_REDIRECTS_TO, $article->getTitle(), $options);
 			$options->limit = $innerlimit;
-			$instances = &smwfGetStore()->getSpecialSubjects(SMW_SP_HAS_CATEGORY, $article, $options);
+			$instances = &smwfGetStore()->getSpecialSubjects(SMW_SP_HAS_CATEGORY, $article->getTitle(), $options);
 			$options->limit = $limit+1;
 			$options->offset = $offset;
 			$options->sort = TRUE;
 			// get results (get one more, to see if we have to add a link to more)
-			$inrel = &smwfGetStore()->getInRelations($article, $options);
+			$inprop = &smwfGetStore()->getInProperties($article, $options);
 
-			$wgOut->setPagetitle($article->getFullText());
+			$wgOut->setPagetitle($article->getLongHTMLText(NULL));
 
 			$html .= '<table width="100%"><tr>';
 			// left column (incoming links)
@@ -73,18 +72,18 @@ class SMW_SpecialBrowse	 {
 
 			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;'; // The following shows the numbers of the result.
 			// Is this better, or not? TODO
-			// <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($inrel), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+			// <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($inprop), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
-			if (count($inrel)==($limit+1))
+			if (count($inprop)==($limit+1))
 				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse', 'offset=' . ($offset+$limit) . '&article=' . urlencode($articletext) ))  . '">' . wfMsg('smw_result_next') . '</a>';
 			else
 				$navigation .= wfMsg('smw_result_next');
 
-			if ((count($inrel) == 0) && (count($instances) == 0) && (count($redin)==0)) {
+			if ((count($inprop) == 0) && (count($instances) == 0) && (count($redin)==0)) {
 				$html .= '&nbsp;';
 			} else {
 				// no need to show the navigation bars when there is not enough to navigate
-				if (($offset>0) || (count($inrel)>$limit)) $html .= $navigation;
+				if (($offset>0) || (count($inprop)>$limit)) $html .= $navigation;
 				$html .= $vsep . "\n";
 				if ((0==$offset) && (count($instances) > 0)) {
 					$count = 0;
@@ -95,7 +94,7 @@ class SMW_SpecialBrowse	 {
 							$html .= $skin->makeKnownLinkObj( $instance ) . '&nbsp;' . $browselink->getHTML($skin);
 							if ($count < count( $instances )) $html .= ', ';
 						} else {
-							$html .= $skin->makeKnownLinkObj( $article, wfMsg('smw_browse_more') );
+							$html .= $skin->makeKnownLinkObj( $article->getTitle(), wfMsg('smw_browse_more') );
 						}
 					}
 					$html .= ' &nbsp;<strong>' . $skin->specialLink( 'Categories' ) . '</strong>';
@@ -112,21 +111,21 @@ class SMW_SpecialBrowse	 {
 					$html .= ' &nbsp;<strong>' . $skin->specialLink( 'Listredirects', 'isredirect' ) . '</strong>';
 					$html .= $vsep . "\n";
 				}
-				foreach ($inrel as $result) {
+				foreach ($inprop as $result) {
 					$subjectoptions = new SMWRequestOptions();
 					$subjectoptions->limit = $innerlimit;
-					$subjects = &smwfGetStore()->getRelationSubjects($result, $article, $subjectoptions);
+					$subjects = &smwfGetStore()->getPropertySubjects($result, $article, $subjectoptions);
 					$subjectcount = count($subjects);
 					$more = ($subjectcount == $innerlimit);
 					$innercount = 0;
 					foreach ($subjects as $subject) {
 						$innercount += 1;
 						if (($innercount < $innerlimit) || !$more) {
-							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getFullText());
+							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getPrefixedText());
 							$html .= $skin->makeKnownLinkObj($subject, smwfT($subject, TRUE)) . '&nbsp;' . $subjectlink->getHTML($skin);
 							if ($innercount<$subjectcount) $html .= ", \n";
 						} else {
-							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByRelation', 'type=' . urlencode($result->getFullText()) . '&target=' . urlencode($article->getFullText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
+							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByRelation', 'type=' . urlencode($result->getPrefixedText()) . '&target=' . urlencode($article->getPrefixedText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
 						}
 					}
 					// replace the last two whitespaces in the relation name with
@@ -135,44 +134,48 @@ class SMW_SpecialBrowse	 {
 					// That's why nbsp is written backward.
 					$html .= ' &nbsp;<strong>' . $skin->makeKnownLinkObj($result, strrev(preg_replace('/[\s]/', ';psbn&', strrev(smwfT($result)), 2) )) . '</strong>' . $vsep . "\n"; // TODO makeLinkObj or makeKnownLinkObj?
 				}
-				if (($offset>0) || (count($inrel)>$limit)) $html .= $navigation;
+				if (($offset>0) || (count($inprop)>$limit)) $html .= $navigation;
 			}
 
-			$html .= '</td><td style="vertical-align:middle; text-align:center;" width="18%">' . $skin->makeLinkObj($article, smwfT($article, TRUE)) . '</td><td style="vertical-align:middle; text-align:left;" width="40%">';
+			$html .= '</td><td style="vertical-align:middle; text-align:center;" width="18%">' . $skin->makeLinkObj($article->getTitle(), smwfT($article->getTitle(), TRUE)) . '</td><td style="vertical-align:middle; text-align:left;" width="40%">';
 
-			if ((count($outrel) == 0) && (count($atts) == 0) && (count($cats) == 0) && (count($redout) == 0)) {
+			if ((count($atts) == 0) && (count($cats) == 0) && (count($redout) == 0)) {
 				$html .= '&nbsp;';
 			} else {
 				$html .= $vsep . "\n";
-				foreach ($outrel as $result) {
-					$objectoptions = new SMWRequestOptions();
-					$objectoptions->limit = $innerlimit;
-					$html .=  '<strong>' . $skin->makeKnownLinkObj($result, preg_replace('/[\s]/', '&nbsp;', smwfT($result), 2)) . "</strong>&nbsp; \n";// TODO makeLinkObj or makeKnownLinkObj?
-					$objects = &smwfGetStore()->getRelationObjects($article, $result, $objectoptions);
-					$objectcount = count($objects);
-					$count = 0;
-					foreach ($objects as $object) {
-						$count += 1;
-						if ($count == 4) {
-							$querylink = SMWInfolink::newInverseRelationSearchLink( wfMsg("smw_browse_more"), $article->getPrefixedText(), $result->getText() );
-							$html .= $querylink->getHTML($skin);
-						} else {
-							$searchlink = SMWInfolink::newBrowsingLink('+',$object->getFullText());
-							$html .= $skin->makeLinkObj($object, smwfT($object, TRUE)) . '&nbsp;' . $searchlink->getHTML($skin);
-						}
-						if ($count<$objectcount) $html .= ", ";
-					}
-					$html .= $vsep."\n";
-				}
+// 				foreach ($outrel as $result) {
+// 					$objectoptions = new SMWRequestOptions();
+// 					$objectoptions->limit = $innerlimit;
+// 					$html .=  '<strong>' . $skin->makeKnownLinkObj($result, preg_replace('/[\s]/', '&nbsp;', smwfT($result), 2)) . "</strong>&nbsp; \n";// TODO makeLinkObj or makeKnownLinkObj?
+// 					$objects = &smwfGetStore()->getRelationObjects($article, $result, $objectoptions);
+// 					$objectcount = count($objects);
+// 					$count = 0;
+// 					foreach ($objects as $object) {
+// 						$count += 1;
+// 						if ($count == 4) {
+// 							$querylink = SMWInfolink::newInverseRelationSearchLink( wfMsg("smw_browse_more"), $article->getPrefixedText(), $result->getText() );
+// 							$html .= $querylink->getHTML($skin);
+// 						} else {
+// 							$searchlink = SMWInfolink::newBrowsingLink('+',$object->getFullText());
+// 							$html .= $skin->makeLinkObj($object, smwfT($object, TRUE)) . '&nbsp;' . $searchlink->getHTML($skin);
+// 						}
+// 						if ($count<$objectcount) $html .= ", ";
+// 					}
+// 					$html .= $vsep."\n";
+// 				}
 				foreach ($atts as $att) {
 					$objectoptions = new SMWRequestOptions();
 					$html .=  '<strong>' . $skin->makeKnownLinkObj($att, preg_replace('/[\s]/', '&nbsp;', smwfT($att), 2)) . "</strong>&nbsp; \n";
-					$objects = &smwfGetStore()->getAttributeValues($article, $att, $objectoptions);
+					$objects = &smwfGetStore()->getPropertyValues($article->getTitle(), $att, $objectoptions);
 					$objectcount = count($objects);
 					$count = 0;
 					foreach ($objects as $object) {
 						$count += 1;
 						$html .= $object->getLongHTMLText($skin);
+						if ($object->getTypeID() == '_wpg') {
+							$searchlink = SMWInfolink::newBrowsingLink('+',$object->getPrefixedText());
+							$html .= '&nbsp;' . $searchlink->getHTML($skin);
+						}
 						if ($count<$objectcount) $html .= ", ";
 					}
 					$html .= $vsep."\n";
@@ -209,7 +212,7 @@ class SMW_SpecialBrowse	 {
 		$html .= '<form name="smwbrowse" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n";
 		$html .= '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
 		$html .= wfMsg('smw_browse_article') . "<br />\n";
-		if (NULL == $article) {	$boxtext = $articletext; } else { $boxtext = $article->getFullText(); }
+		if (!$article->isValid()) {	$boxtext = $articletext; } else { $boxtext = $article->getWikiValue(); }
 		$html .= '<input type="text" name="article" value="' . htmlspecialchars($boxtext) . '" />' . "\n";
 		$html .= '<input type="submit" value="' . wfMsg('smw_browse_go') . "\"/>\n</form>\n";
 

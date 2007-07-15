@@ -147,22 +147,13 @@ protected $smwUserMessages = array(
 	'smw_ask_ascorder' => 'По возрастанию',
 	'smw_ask_descorder' => 'По убыванию',
 	'smw_ask_submit' => 'Найти',
-	// Messages for search by relation Special
-	'searchbyrelation' => 'Искать по отношению',
-	'smw_tb_docu' => '<p>Искать все страницы, которые содержат указанное отношение к заданной странице.</p>',
-	'smw_tb_notype' => '<p>Укажите отношение или <a href="$2">просмотрите все ссылки на $1.</a></p>',
-	'smw_tb_notarget' => '<p>Укажите страницу или просмотрите все отношения $1.</p>',
-	'smw_tb_displayresult' => 'Список всех страниц, которые содержат отношение $1 к странице $2.',
-	'smw_tb_linktype' => 'Отношение',
-	'smw_tb_linktarget' => 'к',
-	'smw_tb_submit' => 'Найти',
-	// Messages for the search by attribute special
-	'searchbyattribute' => 'Искать по атрибуту',
+	// Messages for the search by property special
+	'searchbyproperty' => 'Искать по атрибуту',
 	'smw_sbv_docu' => '<p>Искать все страницы, которые содержат указанный атрибут и значение.</p>',
-	'smw_sbv_noattribute' => '<p>Укажите атрибут.</p>',
+	'smw_sbv_noproperty' => '<p>Укажите атрибут.</p>',
 	'smw_sbv_novalue' => '<p>Укажите значение или просмотрите все значения атрибута $1.</p>',
 	'smw_sbv_displayresult' => 'Список всех страниц, которые содержат атрибут $1 со значением $2.',
-	'smw_sbv_attribute' => 'Атрибут',
+	'smw_sbv_property' => 'Атрибут',
 	'smw_sbv_value' => 'значение',
 	'smw_sbv_submit' => 'Найти',
 	// Messages for the browsing system

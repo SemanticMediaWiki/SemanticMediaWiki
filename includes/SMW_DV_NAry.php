@@ -69,7 +69,6 @@ class SMWNAryValue extends SMWDataValue {
 				$this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], false);
 			}
 		}
-		//$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $value);
 	}
 
 	protected function parseXSDValue($value, $unit) {
@@ -102,6 +101,7 @@ class SMWNAryValue extends SMWDataValue {
 		} else {
 			// everything specified and passed correctly - set XSDValue of DV containers.
 			for ($i = 0; $i < sizeof($types); $i++) {
+				$this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i]);
 				$this->m_values[$i]->setXSDValue($values[$i], (is_array($unit)? $units[$i] : null));
 			}
 		}
@@ -226,10 +226,6 @@ class SMWNAryValue extends SMWDataValue {
 			/// FIXME: this is wrong (different value combinations yield same hash)
 		}
 		return $hash;
-	}
-
-	public function isValid() {
-		return $this->isValid;
 	}
 
 	public function isNumeric() {

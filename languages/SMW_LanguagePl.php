@@ -187,22 +187,13 @@ protected $smwUserMessages = array(
 	'smw_ask_ascorder' => 'Rosnąco',
 	'smw_ask_descorder' => 'Malejąco',
 	'smw_ask_submit' => 'Szukaj wyników',
-	// Messages for search by relation Special
-	'searchbyrelation' => 'Szukaj po relacji',
-	'smw_tb_docu' => '<p>Szukanie wszystkich stron, które są w pewnej relacji do danej strony docelowej.</p>',
-	'smw_tb_notype' => '<p>Wpisz relację, lub <a href="$2">zobacz wszystkie linki do $1.</a></p>',
-	'smw_tb_notarget' => '<p>Wpisz stronę docelową, lub zobacz wszystkie relacje $1.</p>',
-	'smw_tb_displayresult' => 'Lista wszystkich stron, które są w relacji $1 do strony $2.',
-	'smw_tb_linktype' => 'Relacja',
-	'smw_tb_linktarget' => 'Do',
-	'smw_tb_submit' => 'Znajdź wyniki',
-	// Messages for the search by attribute special
-	'searchbyattribute' => 'Szukaj po atrybucie',
+	// Messages for the search by property special
+	'searchbyproperty' => 'Szukaj po atrybucie',
 	'smw_sbv_docu' => '<p>Szukanie wszystkich stron, które mają dany atrybut i wartość.</p>',
-	'smw_sbv_noattribute' => '<p>Wpisz atrybut.</p>',
+	'smw_sbv_noproperty' => '<p>Wpisz atrybut.</p>',
 	'smw_sbv_novalue' => '<p>Wpisz wartość, lub zobacz wszystkie wartości atrybutów dla $1.</p>',
 	'smw_sbv_displayresult' => 'Lista wszystkich stron, które mają atrybut $1 z wartością $2.',
-	'smw_sbv_attribute' => 'Atrybut',
+	'smw_sbv_property' => 'Atrybut',
 	'smw_sbv_value' => 'Wartość',
 	'smw_sbv_submit' => 'Znajdź wyniki',
 	// Messages for the browsing system

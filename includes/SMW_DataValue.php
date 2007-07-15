@@ -9,7 +9,7 @@ require_once('SMW_DataValueFactory.php');
  */
 abstract class SMWDataValue {
 
-	protected $m_attribute = false; /// The text label of the respective attribute or false if none given
+	protected $m_property = false; /// The text label of the respective property or false if none given
 	protected $m_caption = false;   /// The text label to be used for output or false if none given
 	protected $m_errors = array();  /// Array of error text messages
 	protected $m_isset = false;     /// True if a value was set.
@@ -55,12 +55,12 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Set the attribute to which this value refers. Used to generate search links and
-	 * to find custom settings that relate to the attribute.
-	 * The attribute is given as a simple wiki text title, without namespace prefix.
+	 * Set the property to which this value refers. Used to generate search links and
+	 * to find custom settings that relate to the property.
+	 * The property is given as a simple wiki text title, without namespace prefix.
 	 */
-	public function setAttribute($attstring) {
-		$this->m_attribute = $attstring;
+	public function setProperty($propertyname) {
+		$this->m_property = $propertyname;
 	}
 
 	public function addInfoLink(SMWInfoLink $link) {
@@ -196,9 +196,9 @@ abstract class SMWDataValue {
 	 * text, but no more. Result might have no entries but is always an array.
 	 */
 	public function getInfolinks() {
-		if (!$this->m_hasssearchlink && $this->isValid() && $this->m_attribute) {
+		if (!$this->m_hasssearchlink && $this->isValid() && $this->m_property) {
 			$this->m_hasssearchlink = true;
-			$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $this->getWikiValue());
+			$this->m_infolinks[] = SMWInfolink::newPropertySearchLink('+', $this->m_property, $this->getWikiValue());
 		}
 		return $this->m_infolinks;
 	}

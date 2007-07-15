@@ -6,16 +6,16 @@ require_once($smwgIP . '/includes/SMW_DV_Error.php');
 require_once($smwgIP . '/includes/SMW_OldDataValue.php');
 
 /**
- * Factory class for creating SMWDataValue objects for supplied types or attributes
+ * Factory class for creating SMWDataValue objects for supplied types or properties
  * and data values.
  *
  * The class has two main entry points:
  * - newTypeObjectValue
  * - newTypeIDValue
- * These create new DV objects, possibly with preset user values, captions and attribute names.
- * Further methods are used to conveniently create DVs for attributes and special properties:
- * - newAttributeValue
- * - newAttributeObjectValue
+ * These create new DV objects, possibly with preset user values, captions and property names.
+ * Further methods are used to conveniently create DVs for properties and special properties:
+ * - newPropertyValue
+ * - newPropertyObjectValue
  * - newSpecialValue
  */
 class SMWDataValueFactory {
@@ -29,52 +29,52 @@ class SMWDataValueFactory {
 	static private $m_valueclasses = array();
 
 	/**
-	 * Cache for type specifications (type datavalues), indexed by attribute name (both without namespace prefix).
+	 * Cache for type specifications (type datavalues), indexed by property name (both without namespace prefix).
 	 */
 	static private $m_typelabels = array();
 
 	/**
-	 * Create a value from a string supplied by a user for a given attribute.
+	 * Create a value from a string supplied by a user for a given property.
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
 	 */
-	static public function newAttributeValue($attstring, $value=false, $caption=false) {
-		if(array_key_exists($attstring,SMWDataValueFactory::$m_typelabels)) { // use cache
-			return SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $caption, $attstring);
-		} // else: find type for attribute:
+	static public function newPropertyValue($propertyname, $value=false, $caption=false) {
+		if(array_key_exists($propertyname,SMWDataValueFactory::$m_typelabels)) { // use cache
+			return SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typelabels[$propertyname], $value, $caption, $propertyname);
+		} // else: find type for property:
 
-		$atitle = Title::newFromText($attstring, SMW_NS_ATTRIBUTE);
-		if ($atitle !== NULL) {
-			return SMWDataValueFactory::newAttributeObjectValue($atitle,$value,$caption);
+		$ptitle = Title::newFromText($propertyname, SMW_NS_PROPERTY);
+		if ($ptitle !== NULL) {
+			return SMWDataValueFactory::newPropertyObjectValue($ptitle,$value,$caption);
 		} else {
 			$type = SMWDataValueFactory::newTypeIDValue('__typ');
 			$type->setXSDValue('_wpg');
-			SMWDataValueFactory::$m_typelabels[$attstring] = $type;
-			return SMWDataValueFactory::newTypeIDValue('_wpg',$value,$caption,$attstring);
+			SMWDataValueFactory::$m_typelabels[$propertyname] = $type;
+			return SMWDataValueFactory::newTypeIDValue('_wpg',$value,$caption,$propertyname);
 		}
 	}
 
 	/**
-	 * Create a value from a string supplied by a user for a given attribute title.
+	 * Create a value from a string supplied by a user for a given property title.
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
 	 */
-	static public function newAttributeObjectValue(Title $att, $value=false, $caption=false) {
-		$attstring = $att->getText();
-		if(array_key_exists($attstring,SMWDataValueFactory::$m_typelabels)) { // use cache
-			return SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $caption, $attstring);
-		} // else: find type for attribute:
+	static public function newPropertyObjectValue(Title $property, $value=false, $caption=false) {
+		$propertyname = $property->getText();
+		if(array_key_exists($propertyname,SMWDataValueFactory::$m_typelabels)) { // use cache
+			return SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typelabels[$propertyname], $value, $caption, $propertyname);
+		} // else: find type for property:
 
-		$typearray = smwfGetStore()->getSpecialValues($att,SMW_SP_HAS_TYPE);
+		$typearray = smwfGetStore()->getSpecialValues($property,SMW_SP_HAS_TYPE);
 		if (count($typearray)==1) {
-			SMWDataValueFactory::$m_typelabels[$attstring] = $typearray[0];
-			$result = SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typelabels[$attstring], $value, $caption, $attstring);
+			SMWDataValueFactory::$m_typelabels[$propertyname] = $typearray[0];
+			$result = SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typelabels[$propertyname], $value, $caption, $propertyname);
 			return $result;
 		} elseif (count($typearray)==0) {
 			$type = SMWDataValueFactory::newTypeIDValue('__typ');
 			$type->setXSDValue('_wpg');
-			SMWDataValueFactory::$m_typelabels[$attstring] = $type;
-			return SMWDataValueFactory::newTypeIDValue('_wpg',$value,$caption,$attstring);
+			SMWDataValueFactory::$m_typelabels[$propertyname] = $type;
+			return SMWDataValueFactory::newTypeIDValue('_wpg',$value,$caption,$propertyname);
 		} else {
 			return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value, $caption);
 		}
@@ -118,11 +118,11 @@ class SMWDataValueFactory {
 	 * @param $typevalue datavalue representing the type of the object
 	 * @param $value user value string, or false if unknown
 	 * @param $caption user-defined caption or false if none given
-	 * @param $attstring text name of according attribute, or false (may be relevant for getting further parameters)
+	 * @param $propertyname text name of according property, or false (may be relevant for getting further parameters)
 	 */
-	static public function newTypeObjectValue(SMWDataValue $typevalue, $value=false, $caption=false, $attstring=false) {
+	static public function newTypeObjectValue(SMWDataValue $typevalue, $value=false, $caption=false, $propertyname=false) {
 		if (array_key_exists($typevalue->getXSDValue(), SMWDataValueFactory::$m_valueclasses)) {
-			return SMWDataValueFactory::newTypeIDValue($typevalue->getXSDValue(), $value, $caption, $attstring);
+			return SMWDataValueFactory::newTypeIDValue($typevalue->getXSDValue(), $value, $caption, $propertyname);
 		} else {
 			if (!$typevalue->isUnary()) { // n-ary type?
 				$result = SMWDataValueFactory::newTypeIDValue('__nry');
@@ -133,8 +133,8 @@ class SMWDataValueFactory {
 			}
 		}
 
-		if ($attstring != false) {
-			$result->setAttribute($attstring);
+		if ($propertyname != false) {
+			$result->setProperty($propertyname);
 		}
 		if ($value !== false) {
 			$result->setUserValue($value,$caption);
@@ -149,9 +149,9 @@ class SMWDataValueFactory {
 	 * @param $typeid id string for the given type
 	 * @param $value user value string, or false if unknown
 	 * @param $caption user-defined caption or false if none given
-	 * @param $attstring text name of according attribute, or false (may be relevant for getting further parameters)
+	 * @param $propertyname text name of according property, or false (may be relevant for getting further parameters)
 	 */
-	static public function newTypeIDValue($typeid, $value=false, $caption=false, $attstring=false) {
+	static public function newTypeIDValue($typeid, $value=false, $caption=false, $propertyname=false) {
 		if (array_key_exists($typeid, SMWDataValueFactory::$m_valueclasses)) {
 			$vc = SMWDataValueFactory::$m_valueclasses[$typeid];
 			// check if class file was already included for this class
@@ -168,11 +168,11 @@ class SMWDataValueFactory {
 		} else {
 			$typevalue = SMWDataValueFactory::newTypeIDValue('__typ');
 			$typevalue->setXSDValue($typeid);
-			return SMWDataValueFactory::newTypeObjectValue($typevalue, $value, $caption, $attstring);
+			return SMWDataValueFactory::newTypeObjectValue($typevalue, $value, $caption, $propertyname);
 		}
 
-		if ($attstring != false) {
-			$result->setAttribute($attstring);
+		if ($propertyname != false) {
+			$result->setProperty($propertyname);
 		}
 		if ($value !== false) {
 			$result->setUserValue($value,$caption);
@@ -181,14 +181,14 @@ class SMWDataValueFactory {
 	}
 
 	/**
-	 * Quickly get the type id of some attribute without necessarily making another datavalue.
+	 * Quickly get the type id of some property without necessarily making another datavalue.
 	 */
-	static public function getAttributeObjectTypeID(Title $att) {
-		$attstring = $att->getText();
-		if (array_key_exists($attstring, SMWDataValueFactory::$m_typelabels)) {
-			return SMWDataValueFactory::$m_typelabels[$attstring]->getXSDValue();
+	static public function getPropertyObjectTypeID(Title $property) {
+		$propertyname = $property->getText();
+		if (array_key_exists($propertyname, SMWDataValueFactory::$m_typelabels)) {
+			return SMWDataValueFactory::$m_typelabels[$propertyname]->getXSDValue();
 		} else {
-			return SMWDataValueFactory::newAttributeObjectValue($att)->getTypeID(); // this also triggers caching
+			return SMWDataValueFactory::newPropertyObjectValue($property)->getTypeID(); // this also triggers caching
 		}
 	}
 
@@ -205,6 +205,22 @@ class SMWDataValueFactory {
 			$result->setUserValue($value);
 		}
 		return $result;
+	}
+
+	/**
+	 * @DEPRECATED
+	 */
+	static public function newAttributeValue($property, $value=false, $caption=false) {
+		trigger_error("Function newAttributeValue is deprecated. Use new property methods.", E_USER_NOTICE);
+		return SMWDataValueFactory::newPropertyValue($property, $value, $caption);
+	}
+
+	/**
+	 * @DEPRECATED
+	 */
+	static public function newAttributeObjectValue(Title $property, $value=false, $caption=false) {
+		trigger_error("Function newAttributeObjectValue is deprecated. Use new property methods.", E_USER_NOTICE);
+		return SMWDataValueFactory::newPropertyObjectValue($property, $value, $caption);
 	}
 
 	/**

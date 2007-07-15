@@ -13,7 +13,7 @@
 class SMWTextTypeHandler implements SMWTypeHandler {
 
 	function getID() {
-		return 'text';
+		return '_txt';
 	}
 
 	function getXSDType() {

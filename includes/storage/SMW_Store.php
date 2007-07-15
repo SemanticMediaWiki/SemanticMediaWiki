@@ -129,60 +129,144 @@ abstract class SMWStore {
 	abstract function getSpecialSubjects($specialprop, $value, $requestoptions = NULL);
 
 	/**
+	 * Get an array of all property values stored for the given subject and property. The result
+	 * is an array of SMWDataValue objects. The provided outputformat is a string identifier that
+	 * may be used by the datavalues to modify their output behaviour, e.g. when interpreted as a 
+	 * desired unit to convert the output to.
+	 */
+	abstract function getPropertyValues(Title $subject, Title $property, $requestoptions = NULL, $outputformat = '');
+
+	/**
+	 * Get an array of all subjects that have the given value for the given property. The
+	 * result is an array of Title objects.
+	 */
+	abstract function getPropertySubjects(Title $property, SMWDataValue $value, $requestoptions = NULL);
+
+	/**
+	 * Get an array of all subjects that have some value for the given property. The
+	 * result is an array of Title objects.
+	 */
+	abstract function getAllPropertySubjects(Title $property, $requestoptions = NULL);
+
+	/**
+	 * Get an array of all properties for which the given subject has some value. The result is an
+	 * array of Title objects.
+	 */
+	abstract function getProperties(Title $subject, $requestoptions = NULL);
+
+	/**
+	 * Get an array of all properties for which there is some subject that relates to the given value.
+	 * The result is an array of Title objects.
+	 * This function might be implemented partially so that only values of type Page (_wpg) are supported.
+	 */
+	abstract function getInProperties(SMWDataValue $object, $requestoptions = NULL);
+
+
+
+////// Transition methods (deprecated)
+
+	/**
 	 * Get an array of all attribute values stored for the given subject and atttribute. The result
 	 * is an array of SMWDataValue objects. The provided outputformat is a string identifier that
 	 * may be used by the datavalues to modify their output behaviour, e.g. when interpreted as a 
 	 * desierd unit to convert the output to.
+	 * @DEPRECATED
 	 */
-	abstract function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL, $outputformat = '');
+	function getAttributeValues(Title $subject, Title $attribute, $requestoptions = NULL, $outputformat = '') {
+		trigger_error("Function getAttributeValues is deprecated. Use new property methods.", E_USER_NOTICE);
+		return $this->getPropertyValues($subject, $attribute, $requestoptions, $outputformat);
+	}
 
 	/**
 	 * Get an array of all subjects that have the given value for the given attribute. The
 	 * result is an array of Title objects.
+	 * @DEPRECATED
 	 */
-	abstract function getAttributeSubjects(Title $relation, SMWDataValue $value, $requestoptions = NULL);
+	function getAttributeSubjects(Title $attribute, SMWDataValue $value, $requestoptions = NULL) {
+		trigger_error("Function getAttributeSubjects is deprecated. Use new property methods.", E_USER_NOTICE);
+		return $this->getPropertySubjects($attribute,$value,$requestoptions);
+	}
 
 	/**
 	 * Get an array of all subjects that have some value for the given attribute. The
 	 * result is an array of Title objects.
+	 * @DEPRECATED
 	 */
-	abstract function getAllAttributeSubjects(Title $attribute, $requestoptions = NULL);
+	function getAllAttributeSubjects(Title $attribute, $requestoptions = NULL) {
+		trigger_error("Function getAllAttributeSubjects is deprecated. Use new property methods.", E_USER_NOTICE);
+		return $this->getAllPropertySubjects($attribute,$requestoptions);
+	}
 
 	/**
 	 * Get an array of all attributes for which the given subject has some value. The result is an
 	 * array of Title objects.
+	 * @DEPRECATED
 	 */
-	abstract function getAttributes(Title $subject, $requestoptions = NULL);
+	function getAttributes(Title $subject, $requestoptions = NULL) {
+		trigger_error("Function getAttributes is deprecated. Use new property methods.", E_USER_NOTICE);
+		return $this->getProperties($subject, $requestoptions);
+	}
 
 	/**
 	 * Get an array of all objects that a given subject relates to via the given relation. The
 	 * result is an array of Title objects.
+	 * @DEPRECATED
 	 */
-	abstract function getRelationObjects(Title $subject, Title $relation, $requestoptions = NULL);
+	function getRelationObjects(Title $subject, Title $relation, $requestoptions = NULL) {
+		trigger_error("Function getRelationObjects is deprecated. Use new property methods.", E_USER_NOTICE);
+		$dvs = $this->getPropertyValues($subject, $relation, $requestoptions);
+		$result = array();
+		foreach ($dvs as $dv) {
+			if ($dv->getTypeID() == '_wpg') {
+				$result[] = $dv->getTitle();
+			}
+		}
+		return $result;
+	}
 
 	/**
 	 * Get an array of all subjects that are related to a given object via the given relation. The
 	 * result is an array of Title objects.
+	 * @DEPRECATED
 	 */
-	abstract function getRelationSubjects(Title $relation, Title $object, $requestoptions = NULL);
+	function getRelationSubjects(Title $relation, Title $object, $requestoptions = NULL) {
+		trigger_error("Function getRelationSubjects is deprecated. Use new property methods.", E_USER_NOTICE);
+		$value = SMWDataValueFactory::newTypeIDValue('_wpg');
+		$value->setValues($object->getDBKey(), $object->getNamespace());
+		return $this->getPropertySubjects($relation, $value, $requestoptions);
+	}
 
 	/**
 	 * Get an array of all subjects that relate to some object via the given relation. The
 	 * result is an array of Title objects.
+	 * @DEPRECATED
 	 */
-	abstract function getAllRelationSubjects(Title $relation, $requestoptions = NULL);
+	function getAllRelationSubjects(Title $relation, $requestoptions = NULL) {
+		trigger_error("Function getAllPropertySubjects is deprecated. Use new property methods.", E_USER_NOTICE);
+		return $this->getAllPropertySubjects($relation, $requestoptions);
+	}
 
 	/**
 	 * Get an array of all relations via which the given subject relates to some object. The result is an
 	 * array of Title objects.
+	 * @DEPRECATED
 	 */
-	abstract function getOutRelations(Title $subject, $requestoptions = NULL);
+	function getOutRelations(Title $subject, $requestoptions = NULL) {
+		trigger_error("Function getOutRelations is deprecated. Use new property methods.", E_USER_NOTICE);
+		return $this->getProperties($subject, $requestoptions);
+	}
 
 	/**
 	 * Get an array of all relations for which there is some subject that relates to the given object.
 	 * The result is an array of Title objects.
+	 * @DEPRECATED
 	 */
-	abstract function getInRelations(Title $object, $requestoptions = NULL);
+	function getInRelations(Title $object, $requestoptions = NULL) {
+		trigger_error("Function getInRelations is deprecated. Use new property methods.", E_USER_NOTICE);
+		$value = SMWDataValueFactory::newTypeIDValue('_wpg');
+		$value->setValues($object->getDBKey(), $object->getNamespace());
+		return $this->getInProperties($value,$requestoptions);
+	}
 
 ///// Writing methods /////
 

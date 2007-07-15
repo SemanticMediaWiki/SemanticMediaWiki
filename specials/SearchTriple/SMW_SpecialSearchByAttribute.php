@@ -53,7 +53,7 @@ class SMW_SearchByAttribute {
 			$html .= wfMsg('smw_sbv_docu') . "\n";
 		} else {
 			// Now that we have an attribute, let's figure out the datavalue
-			$value = SMWDataValueFactory::newAttributeObjectValue( $attribute, $valuestring );
+			$value = SMWDataValueFactory::newPropertyObjectValue( $attribute, $valuestring );
 			if ( $value->isValid() == FALSE ) { // no value understood
 				$html .= wfMSG('smw_sbv_novalue', $skin->makeLinkObj($attribute, $attribute->getText()));
 				$valuestring = '';
@@ -65,7 +65,7 @@ class SMW_SearchByAttribute {
 				$options->limit = $limit+1;
 				$options->offset = $offset;
 
-				$res = &smwfGetStore()->getAttributeSubjects( $attribute, $value, $options );
+				$res = &smwfGetStore()->getPropertySubjects( $attribute, $value, $options );
 				$count = count($res);
 
 

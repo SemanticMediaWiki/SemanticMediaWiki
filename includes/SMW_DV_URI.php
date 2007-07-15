@@ -62,7 +62,6 @@ class SMWURIValue extends SMWDataValue {
 					break;
 			}
 			$this->m_value = str_replace(array('&','<',' '),array('&amp;','&lt;','_'),$value); // TODO: spaces are just not allowed and should lead to an error
-			$this->m_infolinks[] = SMWInfolink::newAttributeSearchLink('+', $this->m_attribute, $this->m_value);		
 		} else {
 			$this->addError(wfMsgForContent('smw_emptystring'));
 		}

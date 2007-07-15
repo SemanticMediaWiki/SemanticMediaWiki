@@ -165,22 +165,13 @@ protected $smwUserMessages = array(
 	'smw_ask_ascorder' => 'בסדר עולה',
 	'smw_ask_descorder' => 'בסדר יורד',
 	'smw_ask_submit' => 'חפש תוצאות',
-	// Messages for search by relation Special
-	'searchbyrelation' => 'Search by relation',  //TODO: translate
-	'smw_tb_docu' => '<p>Search for all pages that have a certain relation to the given target page.</p>', //TODO: translate
-	'smw_tb_notype' => '<p>Please enter a relation, or <a href="$2">view all links to $1.</a></p>', //TODO: translate
-	'smw_tb_notarget' => '<p>Please enter a target page, or view all $1 relations.</p>', //TODO: translate
-	'smw_tb_displayresult' => 'A list of all pages that have a relation $1 to the page $2.', //TODO: translate
-	'smw_tb_linktype' => 'Relation', //TODO: translate
-	'smw_tb_linktarget' => 'To', //TODO: translate
-	'smw_tb_submit' => 'Find results', //TODO: translate
-	// Messages for the search by attribute special
-	'searchbyattribute' => 'Search by attribute', //TODO: translate
-	'smw_sbv_docu' => '<p>Search for all pages that have a given attribute and value.</p>', //TODO: translate
-	'smw_sbv_noattribute' => '<p>Please enter an attribute.</p>', //TODO: translate
-	'smw_sbv_novalue' => '<p>Please enter a value, or view all attributes values for $1.</p>', //TODO: translate
-	'smw_sbv_displayresult' => 'A list of all pages that have an attribute $1 with value $2.', //TODO: translate
-	'smw_sbv_attribute' => 'Attribute', //TODO: translate
+	// Messages for the search by property special TODO: translate
+	'searchbyproperty' => 'Search by property', //TODO: translate
+	'smw_sbv_docu' => '<p>Search for all pages that have a given property and value.</p>', //TODO: translate
+	'smw_sbv_noproperty' => '<p>Please enter a property.</p>', //TODO: translate
+	'smw_sbv_novalue' => '<p>Please enter a valid value for the property, or view all property values for “$1.”</p>', //TODO: translate
+	'smw_sbv_displayresult' => 'A list of all pages that have property “$1” with value “$2”', //TODO: translate
+	'smw_sbv_property' => 'Property', //TODO: translate
 	'smw_sbv_value' => 'Value', //TODO: translate
 	'smw_sbv_submit' => 'Find results', //TODO: translate
 	// Messages for the browsing system

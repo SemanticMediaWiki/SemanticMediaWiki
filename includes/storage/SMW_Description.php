@@ -98,7 +98,7 @@ class SMWPrintRequest {
 
 	public function getTypeID() {
 		if ($this->m_typeid === false) {
-			$dv = SMWDataValueFactory::newAttributeObjectValue($this->m_title);
+			$dv = SMWDataValueFactory::newPropertyObjectValue($this->m_title);
 			$this->m_typeid = $dv->getTypeID();
 		}
 		return $this->m_typeid;

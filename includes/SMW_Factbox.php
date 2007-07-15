@@ -6,7 +6,9 @@
  * @author Markus Krötzsch
  */
 
-require_once('SMW_SemanticData.php');
+global $smwgIP;
+require_once($smwgIP . '/includes/SMW_SemanticData.php');
+require_once($smwgIP . '/includes/SMW_Infolink.php');
 
 /**
  * Static class for representing semantic data, which accepts user
@@ -60,9 +62,9 @@ class SMWFactbox {
 
 		switch ($special) {
 			case false: // normal attribute
-				$result = SMWDataValueFactory::newAttributeValue($attribute,$value,$caption);
+				$result = SMWDataValueFactory::newPropertyValue($attribute,$value,$caption);
 				if ($smwgStoreActive) {
-					SMWFactbox::$semdata->addAttributeTextValue($attribute,$result);
+					SMWFactbox::$semdata->addPropertyValue($attribute,$result);
 				}
 				return $result;
 			case SMW_SP_IMPORTED_FROM: // this requires special handling
@@ -109,7 +111,7 @@ class SMWFactbox {
 				SMWFactbox::$semdata->addSpecialValue($special, $value);
 			}
 		} else {
-			SMWFactbox::$semdata->addRelationTextValue($relation, $value);
+			SMWFactbox::$semdata->addPropertyValue($relation, $value);
 		}
 	}
 
@@ -235,7 +237,7 @@ class SMWFactbox {
 		switch ($smwgShowFactbox) {
 		case SMW_FACTBOX_HIDDEN: return true;
 		case SMW_FACTBOX_NONEMPTY:
-			if ( (!SMWFactbox::$semdata->hasRelations()) && (!SMWFactbox::$semdata->hasAttributes()) && (!SMWFactbox::$semdata->hasSpecialProperties()) ) {
+			if ( (!SMWFactbox::$semdata->hasProperties()) && (!SMWFactbox::$semdata->hasSpecialProperties()) ) {
 				return;
 			}
 		}
@@ -251,8 +253,7 @@ class SMWFactbox {
 		         '<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
 		         '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
 		         '<table class="smwfacttable">' . "\n";
-		SMWFactbox::printRelations($text);
-		SMWFactbox::printAttributes($text);
+		SMWFactbox::printProperties($text);
 		SMWFactbox::printSpecialProperties($text);
 		$text .= '</table></div>';
 	}
@@ -260,15 +261,15 @@ class SMWFactbox {
 	/**
 	 * This method prints attribute values at the bottom of an article.
 	 */
-	static protected function printAttributes(&$text) {
-		if (!SMWFactbox::$semdata->hasAttributes()) {
+	static protected function printProperties(&$text) {
+		if (!SMWFactbox::$semdata->hasProperties()) {
 			return;
 		}
 
 		//$text .= ' <tr><th class="atthead"></th><th class="atthead">' . wfMsgForContent('smw_att_head') . "</th></tr>\n";
 
-		foreach(SMWFactbox::$semdata->getAttributes() as $attribute) {
-			$attributeValueArray = SMWFactbox::$semdata->getAttributeValues($attribute);
+		foreach(SMWFactbox::$semdata->getProperties() as $attribute) {
+			$attributeValueArray = SMWFactbox::$semdata->getPropertyValues($attribute);
 			$text .= '<tr><td class="smwattname">';
 			$text .= '   [[' . $attribute->getPrefixedText() . '|' . preg_replace('/[\s]/','&nbsp;',$attribute->getText(),2) . ']] </td><td class="smwatts">';
 			// TODO: the preg_replace is a kind of hack to ensure that the left column does not get too narrow; maybe we can find something nicer later

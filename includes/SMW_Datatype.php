@@ -286,12 +286,9 @@ class SMWTypeHandlerFactory {
 			global $wgContLang;
 
 			SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute] = Array();
-			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
+			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $attribute);
 			if ($atitle !== NULL) {
-				// get special property for possible values.  Assume only one such property per attribute.
 				$apvprops = smwfGetStore()->getSpecialValues($atitle, SMW_SP_POSSIBLE_VALUE);
-				// OBSOLETE: Possible values are separated by commas.
-				// SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute] = preg_split('/[,][\s]*/',$apvprops[0]);
 				foreach ($apvprops as $prop ) {
 					SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute][] = $prop;
 				}
@@ -372,137 +369,6 @@ SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_
 // Bools
 // Booleans can (and more problematic: will) be modelled by two-valued enums; too much choice yields confusion (note that Categories are also addressing a simliar modelling problem already -- let's not introduce three ways of encoding this)
 //SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_bool'),'bool','Boolean','SMWBooleanTypeHandler');
-
-
-
-/*********************************************************************/
-/* Helper classes for storing output of type handlers                */
-/*********************************************************************/
-
-/**
- * This class mainly is a container to store URLs for the factbox in a
- * clean way. The class provides methods for creating source code for
- * realising them in wiki or html contexts.
- */
-class SMWInfolink {
-	private $target;           // the actual link target
-	private $caption;       // the label for the link
-	private $style;         // CSS class of a span to embedd the link into, or
-	                        // false if no extra style is required
-	private $internal;      // indicates whether $target is a page name (true) or URL (false)
-
-	/**
-	 * Create a new link to an internal page $target. All parameters are mere strings
-	 * as used by wiki users
-	 */
-	static function newInternalLink($caption, $target, $style=false) {
-		return new SMWInfolink(true,$caption,$target,$style);
-	}
-
-	/**
-	 * Create a new link to an external location $url.
-	 */
-	static function newExternalLink($caption, $url, $style=false) {
-		return new SMWInfolink(false,$caption,$url,$style);
-	}
-
-	/**
-	 * Static function to construct links to attribute searches.
-	 */
-	static function newAttributeSearchLink($caption,$attribute,$value,$style = 'smwsearch') {
-		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByAttribute/' .  $attribute . ':=' . $value, $style);
-	}
-
-	/**
-	 * Static function to construct links to relation searches.
-	 */
-	static function newRelationSearchLink($caption,$relation,$object,$style = 'smwsearch') {
-		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByRelation/' . $relation . '::' . $object, $style);
-	}
-
-	/**
-	 * Static function to construct links to inverse relation searches.
-	 */
-	static function newInverseRelationSearchLink($caption,$subject,$relation,$style = false) {
-		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':PageProperty/' .  $subject . '::' . $relation, $style);
-	}
-
-	/**
-	 * Static function to construct links to inverse attribute searches.
-	 */
-	static function newInverseAttributeSearchLink($caption,$subject,$attribute,$style = false) {
-		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':PageProperty/' .  $subject . '::' . $attribute, $style);
-	}
-
-	/**
-	 * Static function to construct links to the browsing special.
-	 */
-	static function newBrowsingLink($caption,$titletext,$style = 'smwbrowse') {
-		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':Browse/' .  $titletext, $style);
-	}
-
-	/**
-	 * Create a new link to some internal page or to some external URL.
-	 */
-	function SMWInfolink($internal, $caption, $target, $style=false) {
-		$this->internal = $internal;
-		$this->caption = $caption;
-		$this->target = $target;
-		$this->style = $style;
-	}
-
-	/**
-	 * Return hyperlink for this infolink in HTML format.
-	 * @access public
-	 */
-	function getHTML($skin) {
-		if ($this->style !== false) {
-			$start = "<span class=\"$this->style\">";
-			$end = '</span>';
-		} else {
-			$start = '';
-			$end = '';
-		}
-		if ($this->internal) {
-			$title = Title::newFromText($this->target);
-			if ($title !== NULL) {
-				return $start . $skin->makeKnownLinkObj(Title::newFromText($this->target), $this->caption) . $end;
-			} else {
-				return '';
-			}
-		} else {
-			return $start . "<a href=\"$this->target\">$this->caption</a>" . $end;
-		}
-	}
-
-	/**
-	 * Return hyperlink for this infolink in wiki format.
-	 * @access public
-	 */
-	function getWikiText() {
-		if ($this->style !== false) {
-			$start = "<span class=\"$this->style\">";
-			$end = '</span>';
-		} else {
-			$start = '';
-			$end = '';
-		}
-		if ($this->internal) {
-			if (preg_match('/(.*)(\[|\]|<|>|&gt;|&lt;|{|})(.*)/', $this->target) != 0 ) {
-				return ''; // give up if illegal characters occur,
-				           // TODO: we would need a skin to provide an ext URL in this case
-			}
-			return $start . "[[$this->target|$this->caption]]" . $end;
-		} else {
-			return $start . "[$this->target $this->caption]" . $end;
-		}
-	}
-}
 
 /*********************************************************************/
 /* Basic typehandler classes                                         */

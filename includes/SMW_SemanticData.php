@@ -45,145 +45,60 @@ class SMWSemanticData {
 		$specprops = Array();
 	}
 
-//// Attributes
+//// Properties
 
 	/**
-	 * Get the array of all attributes that have stored values.
+	 * Get the array of all properties that have stored values.
 	 */
-	public function getAttributes() {
+	public function getProperties() {
 		ksort($this->attribtitles,SORT_STRING);
 		return $this->attribtitles;
 	}
 
 	/**
-	 * Get the array of all stored values for some attribute.
+	 * Get the array of all stored values for some property.
 	 */
-	public function getAttributeValues(Title $attribute) {
-		if (array_key_exists($attribute->getText(), $this->attribvals)) {
-			return $this->attribvals[$attribute->getText()];
-		} else {
-			return Array();
-		}
-	}
-
-	/**
-	 * Return true if there are any attributes.
-	 */
-	public function hasAttributes() {
-		return (count($this->attribtitles) != 0);
-	}
-
-	/**
-	 * Store a value for an attribute identified by its title object. Duplicate 
-	 * value entries are ignored.
-	 */
-	public function addAttributeValue(Title $attribute, SMWDataValue $value) {
-		if (!array_key_exists($attribute->getText(), $this->attribvals)) {
-			$this->attribvals[$attribute->getText()] = Array();
-			$this->attribtitles[$attribute->getText()] = $attribute;
-		}
-		$this->attribvals[$attribute->getText()][$value->getHash()] = $value;
-	}
-
-	/**
-	 * Store a value for a given attribute identified by its text label (without
-	 * namespace prefix). Duplicate value entries are ignored.
-	 */
-	public function addAttributeTextValue($attributetext, SMWDataValue $value) {
-		if (array_key_exists($attributetext, $this->attribtitles)) {
-			$attribute = $this->attribtitles[$attributetext];
-		} else {
-			$attribute = Title::newFromText($attributetext, SMW_NS_ATTRIBUTE);
-			if ($attribute === NULL) { // error, maybe illegal title text
-				return;
-			}
-		}
-		$this->addAttributeValue($attribute, $value);
-	}
-
-//// Relations
-
-	/**
-	 * Get the array of all relations that have stored values.
-	 */
-	public function getRelations() {
-		ksort($this->reltitles,SORT_STRING);
-		return $this->reltitles;
-	}
-
-	/**
-	 * Get the array of all stored objects for some relation.
-	 */
-	public function getRelationValues(Title $relation) {
-		if (array_key_exists($relation->getText(), $this->relobjs)) {
-			return $this->relobjs[$relation->getText()];
+	public function getPropertyValues(Title $property) {
+		if (array_key_exists($property->getText(), $this->attribvals)) {
+			return $this->attribvals[$property->getText()];
 		} else {
 			return array();
 		}
 	}
 
 	/**
-	 * Return true if there are any relations.
+	 * Return true if there are any properties.
 	 */
-	public function hasRelations() {
-		return (count($this->reltitles) != 0);
+	public function hasProperties() {
+		return (count($this->attribtitles) != 0);
 	}
 
 	/**
-	 * Store a value for a relation identified by its title. Duplicate 
-	 * object entries are ignored.
+	 * Store a value for an property identified by its title object. Duplicate 
+	 * value entries are ignored.
 	 */
-	public function addRelationValue(Title $relation, SMWDataValue $value) {
-		if (!array_key_exists($relation->getText(), $this->relobjs)) {
-			$this->relobjs[$relation->getText()] = Array();
-			$this->reltitles[$relation->getText()] = $relation;
+	public function addPropertyObjectValue(Title $property, SMWDataValue $value) {
+		if (!array_key_exists($property->getText(), $this->attribvals)) {
+			$this->attribvals[$property->getText()] = Array();
+			$this->attribtitles[$property->getText()] = $property;
 		}
-		$this->relobjs[$relation->getText()][$value->getHash()] = $value;
+		$this->attribvals[$property->getText()][$value->getHash()] = $value;
 	}
 
 	/**
-	 * Store a value for a given relation identified by its text label (without
+	 * Store a value for a given property identified by its text label (without
 	 * namespace prefix). Duplicate value entries are ignored.
 	 */
-	public function addRelationTextvalue($relationtext, SMWDataValue $value) {
-		if (array_key_exists($relationtext, $this->reltitles)) {
-			$relation = $this->reltitles[$relationtext];
+	public function addPropertyValue($propertyname, SMWDataValue $value) {
+		if (array_key_exists($propertyname, $this->attribtitles)) {
+			$property = $this->attribtitles[$propertyname];
 		} else {
-			$relation = Title::newFromText($relationtext, SMW_NS_RELATION);
-			if ($relation === NULL) { // error, maybe illegal title text
+			$property = Title::newFromText($propertyname, SMW_NS_PROPERTY);
+			if ($property === NULL) { // error, maybe illegal title text
 				return;
 			}
 		}
-		$this->addRelationValue($relation, $value);
-	}
-
-
-	/**
-	 * Store an object for a relation identified by its title. Duplicate 
-	 * object entries are ignored.
-	 */
-	public function addRelationObject(Title $relation, Title $object) {
-		if (!array_key_exists($relation->getText(), $this->relobjs)) {
-			$this->relobjs[$relation->getText()] = Array();
-			$this->reltitles[$relation->getText()] = $relation;
-		}
-		$this->relobjs[$relation->getText()][$object->getPrefixedText()] = $object;
-	}
-
-	/**
-	 * Store an object for a given relation identified by its text label (without
-	 * namespace prefix). Duplicate value entries are ignored.
-	 */
-	public function addRelationTextObject($relationtext, Title $object) {
-		if (array_key_exists($relationtext, $this->reltitles)) {
-			$relation = $this->reltitles[$relationtext];
-		} else {
-			$relation = Title::newFromText($relationtext, SMW_NS_RELATION);
-			if ($relation === NULL) { // error, maybe illegal title text
-				return;
-			}
-		}
-		$this->addRelationObject($relation, $object);
+		$this->addPropertyObjectValue($property, $value);
 	}
 
 //// Special properties
@@ -231,6 +146,59 @@ class SMWSemanticData {
 		} else {
 			$this->specprops[$special][$value] = $value;
 		}
+	}
+
+
+//// Attributes (deprecated)
+
+	/**
+	 * Get the array of all attributes that have stored values.
+	 */
+	public function getAttributes() {
+		trigger_error("Function getAttributes is deprecated. Use new property methods.", E_USER_NOTICE);
+		return $this->getProperties();
+	}
+
+	/**
+	 * Get the array of all stored values for some attribute.
+	 */
+	public function getAttributeValues(Title $attribute) {
+		trigger_error("Function getAttributeValues is deprecated. Use new property methods.", E_USER_NOTICE);
+		return $this->getAttributeValues($attribute);
+	}
+
+	/**
+	 * Return true if there are any attributes.
+	 */
+	public function hasAttributes() {
+		trigger_error("Function hasAttributes is deprecated. Use new property methods.", E_USER_NOTICE);
+		return $this->hasProperties();
+	}
+
+//// Relations (deprecated)
+
+	/**
+	 * Get the array of all relations that have stored values.
+	 */
+	public function getRelations() {
+		trigger_error("Function getRelations is deprecated. Use new property methods.", E_USER_NOTICE);
+		return array();
+	}
+
+	/**
+	 * Get the array of all stored objects for some relation.
+	 */
+	public function getRelationValues(Title $relation) {
+		trigger_error("Function getRelationValues is deprecated. Use new property methods.", E_USER_NOTICE);
+		return array();
+	}
+
+	/**
+	 * Return true if there are any relations.
+	 */
+	public function hasRelations() {
+		trigger_error("Function hasRelations is deprecated. Use new property methods.", E_USER_NOTICE);
+		return false;
 	}
 
 }

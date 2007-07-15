@@ -72,25 +72,19 @@ function smwgSetupExtension() {
 	smwfInitStore();
 	smwfInitMessages();
 
-	/**********************************************/
-	/***** register specials                  *****/
-	/**********************************************/
+	///// register specials /////
 
-	//require_once($smwgIP . '/specials/SearchSemantic/SMW_SpecialSearchSemantic.php'); //really not longer functional!
 	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchTriple.php');
-	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByAttribute.php');
-	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByRelation.php');
+	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByProperty.php');
 	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialPageProperty.php');
 	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialBrowse.php');
 
 	require_once($smwgIP . '/specials/URIResolver/SMW_SpecialURIResolver.php');
-	require_once($smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php'); // coming soon
+	require_once($smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php');
 	require_once($smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php');
 	//require_once($smwgIP . '/specials/OntologyImport/SMW_SpecialOntologyImport.php'); // broken, TODO: fix or delete
 	require_once($smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php');
 	require_once($smwgIP . '/specials/ExtendedStatistics/SMW_SpecialExtendedStatistics.php');
-
-	include_once($smwgIP . '/includes/SMW_QueryProcessor.php');
 
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialRelations.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedRelations.php');
@@ -99,12 +93,11 @@ function smwgSetupExtension() {
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialUnusedAttributes.php');
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialTypes.php');
 
-	/**********************************************/
-	/***** register hooks                     *****/
-	/**********************************************/
+	///// register hooks /////
 
 	require_once($smwgIP . '/includes/SMW_Hooks.php');
 	require_once($smwgIP . '/includes/SMW_RefreshTab.php');
+	require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
 
 	if ($smwgEnableTemplateSupport===true) {
 		$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; //patch required;
@@ -119,9 +112,7 @@ function smwgSetupExtension() {
 	$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries'; // a hook for registering the <ask> parser hook
 	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage';
 
-	/**********************************************/
-	/***** credits (see "Special:Version")    *****/
-	/**********************************************/
+	///// credits (see "Special:Version") /////
 	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, Markus&nbsp;Kr&ouml;tzsch, Denny&nbsp;Vrandecic, S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://ontoworld.org/wiki/Semantic_MediaWiki', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://ontoworld.org/wiki/Help:Semantics View online documentation.]');
 
 	return true;
@@ -219,12 +210,16 @@ function smwgSetupExtension() {
 
 		smwfInitContentLanguage($wgLanguageCode);
 
-		define('SMW_NS_RELATION',       $smwgNamespaceIndex);
-		define('SMW_NS_RELATION_TALK',  $smwgNamespaceIndex+1);
-		define('SMW_NS_ATTRIBUTE',      $smwgNamespaceIndex+2);
-		define('SMW_NS_ATTRIBUTE_TALK', $smwgNamespaceIndex+3);
+		define('SMW_NS_PROPERTY',       $smwgNamespaceIndex+2);
+		define('SMW_NS_PROPERTY_TALK',  $smwgNamespaceIndex+3);
 		define('SMW_NS_TYPE',           $smwgNamespaceIndex+4);
 		define('SMW_NS_TYPE_TALK',      $smwgNamespaceIndex+5);
+
+		/// @DEPRECATED
+		define('SMW_NS_ATTRIBUTE',      $smwgNamespaceIndex+2);
+		define('SMW_NS_ATTRIBUTE_TALK', $smwgNamespaceIndex+3);
+		define('SMW_NS_RELATION',       $smwgNamespaceIndex);
+		define('SMW_NS_RELATION_TALK',  $smwgNamespaceIndex+1);
 
 		// Register namespace identifiers
 		if (!is_array($wgExtraNamespaces)) { $wgExtraNamespaces=array(); }
