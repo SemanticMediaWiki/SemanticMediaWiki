@@ -779,7 +779,7 @@ class SMWSQLStore extends SMWStore {
 						$row[] = new SMWResultArray(array($qt), $pr);
 						break;
 					case SMW_PRINT_RELS:
-						$row[] = new SMWResultArray($this->getRelationObjects($qt,$pr->getTitle()), $pr);
+						$row[] = new SMWResultArray($this->getPropertyValues($qt,$pr->getTitle()), $pr);
 						break;
 					case SMW_PRINT_CATS:
 						$row[] = new SMWResultArray($this->getSpecialValues($qt,SMW_SP_HAS_CATEGORY), $pr);
