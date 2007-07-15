@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Markus Krötzsch
+ * @author Denny Vrandecic
  *
  * This special page for MediaWiki implements an RDF-export of
  * semantic data, gathered both from the annotations in articles,
@@ -100,7 +101,7 @@ class SMWExportTitle {
 	// Values for special properties, see SMW_Settings.php for documentation.
 	// Each value may be missing if not set or not relevant
 	public $has_type = false;
-	public $has_uri = false;
+	public $has_uri = false; // TODO not used right now
 	public $ext_nsid = false;
 	public $ext_section = false;
 	// relevant title values, mandatory
@@ -112,6 +113,7 @@ class SMWExportTitle {
 	public $title_prefurl;
 	public $title_dbkey;
 	public $modifier = '';
+	public $value; // the title as a datavalue
 	// details about URIs for export
 	public $ns_uri = false;
 	public $short_uri;
@@ -135,6 +137,7 @@ class SMWExportTitle {
 		$this->title_fragment = $title->getFragment();
 		$this->title_prefurl = $title->getPrefixedURL();
 		$this->title_dbkey = $title->getDBKey();
+		$this->value = 	SMWDataValueFactory::newTypeIDValue('_wpg', $title->getPrefixedText());
 		$this->hashkey = $this->title_prefurl . ' ' . $modifier; // must agree with keys generated elsewhere in this code!
 		$this->modifier = $modifier;
 		if ($modifier != '') $modifier = '#' . $modifier;
@@ -143,30 +146,16 @@ class SMWExportTitle {
 		$this->exists = $title->exists();
 
 		if ($this->exists) {
-			$res = $export->db->select($export->db->tableName('smw_specialprops'),
-									'property_id, value_string',
-									'subject_id =' . $export->db->addQuotes($this->title_id),
-									'SMWExportTitle::newFromID');
-			while($row = $export->db->fetchObject($res)) { // read out relevant special props
-				switch ($row->property_id) {
-					case SMW_SP_HAS_TYPE:
-						$this->has_type = $row->value_string;
-						break;
-					case SMW_SP_HAS_URI:
-						$this->has_uri = $row->value_string;
-						break;
-					case SMW_SP_EXT_BASEURI:
-						$this->ns_uri = $row->value_string;
-						break;
-					case SMW_SP_EXT_NSID:
-						$this->ext_nsid = $row->value_string;
-						break;
-					case SMW_SP_EXT_SECTION:
-						$this->ext_section = $row->value_string;
-						break;
-				}
+			if ($title->getNamespace() == SMW_NS_ATTRIBUTE) {
+				$a = $export->store->getSpecialValues( $title, SMW_SP_HAS_TYPE );
+				if (count($a)>0) $this->has_type = $a[0];
 			}
-			$export->db->freeResult($res);
+			$a = $export->store->getSpecialValues( $title, SMW_SP_EXT_BASEURI );
+			if (count($a)>0) $this->ns_uri = $a[0];
+			$a = $export->store->getSpecialValues( $title, SMW_SP_EXT_NSID );
+			if (count($a)>0) $this->ext_nsid = $a[0];
+			$a = $export->store->getSpecialValues( $title, SMW_SP_EXT_SECTION );
+			if (count($a)>0) $this->ext_section = $a[0];
 		}
 
 		// Calculate URIs and label
@@ -254,9 +243,9 @@ class ExportRDF {
 	var $special_url;
 
 	/**
-	 * Database handler -- needed multiple times, so "cache" it
+	 * Store handler -- needed multiple times, so "cache" it
 	 */
-	var $db;
+	var $store;
 
 	/**
 	 * Array of additional namespaces (abbreviation => URI), flushed on
@@ -313,8 +302,6 @@ class ExportRDF {
 		global $wgServer;   // actual server address (with http://)
 		global $wgScript;   // "/subdirectory/of/wiki/index.php"
 		global $wgArticlePath;
-		//@TODO: generate this properly, using $wgArticlePath DONE, please check
-		//$this->wiki_xmlns_url = $wgServer . $wgScript . '/';
 		$this->wiki_xmlns_url = $wgServer . str_replace('$1', '', $wgArticlePath);
 		if (''==$smwgNamespace) {
 			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
@@ -344,7 +331,7 @@ class ExportRDF {
 	 * properties are exported as well. Enables "browsable RDF."
 	 */
 	public function printPages($pages, $recursion = 1, $backlinks = true) {
-		$this->db = & wfGetDB( DB_MASTER );
+		$this->store = &smwfGetStore();
 		$this->pre_ns_buffer = '';
 		$this->post_ns_buffer = '';
 		$this->first_flush = true;
@@ -376,24 +363,20 @@ class ExportRDF {
 				}
 				// possibly add backlinks
 				if ($backlinks === true) {
-					$res = $this->db->query(
-					    'SELECT DISTINCT subject_id FROM ' . $this->db->tableName('smw_relations') .
-					     ' WHERE object_title=' . $this->db->addQuotes($et->title_dbkey) .
-					     ' AND object_namespace=' . $this->db->addQuotes($et->title_namespace),
-					     'SMWExportRDF::printPages');
-					while($row = $this->db->fetchObject($res)) {
-						$st = $this->getExportTitleFromID($row->subject_id);
-						if (!array_key_exists($st->hashkey, $this->element_done)) {
-							$cur_queue[] = $st;
+					$inRels = $this->store->getInProperties( $et->value );
+					foreach ($inRels as $inRel) {
+						$inSubs = $this->store->getPropertySubjects( $inRel, $et->value );
+						foreach($inSubs as $inSub) {
+							$st = $this->getExportTitleFromTitle( $inSub );
+							if (!array_key_exists($st->hashkey, $this->element_done)) {
+								$cur_queue[] = $st;
+							}
 						}
 					}
 					if ( NS_CATEGORY === $et->title_namespace ) { // also print elements of categories
-						$res = $this->db->query(
-						    'SELECT cl_from FROM ' . $this->db->tableName('categorylinks') .
-						     ' WHERE cl_to=' . $this->db->addQuotes($et->title_dbkey),
-						     'SMWExportRDF::printPages');
-						while($row = $this->db->fetchObject($res)) {
-							$st = $this->getExportTitleFromID($row->cl_from);
+						$instances = $this->store->getSpecialSubjects( SMW_SP_HAS_CATEGORY, $et->title );
+						foreach($instances as $instance) {
+							$st = $this->getExportTitleFromTitle( $instance );
 							if (!array_key_exists($st->hashkey, $this->element_done)) {
 								$cur_queue[] = $st;
 							}
@@ -430,7 +413,8 @@ class ExportRDF {
 		global $smwgNamespacesWithSemanticLinks;
 		$linkCache =& LinkCache::singleton();
 
-		$this->db = & wfGetDB( DB_MASTER );
+		$db = & wfGetDB( DB_MASTER );
+		$this->store = & smwfGetStore();
 		$this->pre_ns_buffer = '';
 		$this->post_ns_buffer = '';
 		$this->first_flush = true;
@@ -450,7 +434,7 @@ class ExportRDF {
 		$this->printHeader(); // also inits global namespaces
 
 		$start = 1;
-		$end = $this->db->selectField( 'page', 'max(page_id)', false, $fname );
+		$end = $db->selectField( 'page', 'max(page_id)', false, $outfile );
 
 		$a_count = 0; $d_count = 0; //DEBUG
 
@@ -587,11 +571,10 @@ class ExportRDF {
 				break;
 			case SMW_NS_ATTRIBUTE:
 				if ( $et->has_type === false ) return; //attributes w/o type not exportable, TODO: is this what we want?
-				$datatype_handler = SMWTypeHandlerFactory::getTypeHandlerByLabel($et->has_type);
-				if ( ('annouri' == $datatype_handler->getID()) || ('annostring' == $datatype_handler->getID()) ) {
+				if ( ('annouri' == $et->has_type->getTypeID()) || ('annostring' == $et->has_type->getTypeID()) ) {
 					$type = 'owl:AnnotationProperty'; // cannot be a subproperty, etc.
 				} else {
-					if ('' != $datatype_handler->getXSDType()) {
+					if ('' != SMWTypeHandlerFactory::getXSDTypeByID($et->has_type->getTypeID())) {
 						$type = 'owl:DatatypeProperty';
 					} else { // no xsd-type -> treat as object property
 						$type = 'owl:ObjectProperty';
@@ -633,12 +616,11 @@ class ExportRDF {
 		if ( ($fullexport) && ($et->exists) ) {
 			// add statements about categories
 			if ($category_rel) {
-				$res = $this->db->query( 'SELECT cl_to FROM ' . $this->db->tableName('categorylinks') . ' WHERE cl_from=' . $et->title_id, 'SMWExportRDF::printTriples');
-				while($row = $this->db->fetchObject($res)) {
-					$ct = $this->getExportTitle($row->cl_to, NS_CATEGORY);
+				$cats = $this->store->getSpecialValues( $et->title, SMW_SP_HAS_CATEGORY );
+				foreach ($cats as $cat) {
+					$ct = $this->getExportTitleFromTitle( $cat );
 					$this->post_ns_buffer .= "\t\t<" . $category_rel . ' rdf:resource="' . $ct->long_uri .  "\"/>\n";
 				}
-				$this->db->freeResult($res);
 			}
 
 			// TODO: this is not convincing, esp. now that we have custom types
@@ -661,7 +643,7 @@ class ExportRDF {
 
 			// add rdfs:subPropertyOf statements
  			if ($subrel_rel) {
-				$relations = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_SUBPROPERTY_OF); 
+				$relations = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_SUBPROPERTY_OF);
  				foreach ($relations as $relation) {
  					// TODO in future, check type safety relations <-> attributes
  					// TODO check also the type of what I am pointing to (is it a relation or sth else?)
@@ -673,7 +655,7 @@ class ExportRDF {
  				}
  			}
  			if ($subatt_rel) {
-				$attributes = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_SUBPROPERTY_OF); 
+				$attributes = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_SUBPROPERTY_OF);
  				foreach ($attributes as $attribute) {
  					// TODO in future, check type safety relations <-> attributes
  					// TODO check also the type of what I am pointing to (is it an atrribute or sth else?)
@@ -690,32 +672,36 @@ class ExportRDF {
 
 			if ($et->is_individual) { // do not print relations for schema elements, stay in OWL DL
 				// print all relations
-				$res = $this->db->query( 'SELECT relation_title, object_namespace, object_title FROM ' . $this->db->tableName('smw_relations') . ' WHERE subject_id=' . $et->title_id, 'SMWExportRDF::printTriples');
-				while($row = $this->db->fetchObject($res)) {
-					$pt = $this->getExportTitle($row->relation_title, SMW_NS_RELATION);
-					$ot = $this->getExportTitle($row->object_title, $row->object_namespace);
-					if ($ot->is_individual) { // no OWL Full
-						$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:resource="' . $ot->long_uri .  "\"/>\n";
+				$props = $this->store->getProperties( $et->title );
+				foreach ( $props as $prop ) {
+					$values = $this->store->getPropertyValues( $et->title, $prop );
+					foreach ( $values as $value ) {
+						$pt = $this->getExportTitleFromTitle( $prop, $value->getUnit() );
+						$this-> post_ns_buffer .= $value->exportToRDF( $pt->short_uri, $this );
+//						$ot = $this->getExportTitleFromTitle( $obj );
+//						if ($ot->is_individual) { // check OWL Fullness
+//							$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:resource="' . $ot->long_uri .  "\"/>\n";
+//						}
 					}
 				}
 				// print all attributes
-				$res = $this->db->query( 'SELECT attribute_title, value_unit, value_datatype, value_xsd FROM ' . $this->db->tableName('smw_attributes') . ' WHERE subject_id=' . $et->title_id, 'SMWExportRDF::printTriples');
-				while($row = $this->db->fetchObject($res)) {
-					$pt = $this->getExportTitle($row->attribute_title, SMW_NS_ATTRIBUTE, $row->value_unit);
-					// check whether attribute type has changed since data was stored:
-					if ( ($pt->has_type !== false) &&
-					   ($row->value_datatype !== SMWTypeHandlerFactory::getTypeHandlerByLabel($pt->has_type)->getID() ) )
-						continue;
-					$xsdtype = SMWTypeHandlerFactory::getXSDTypeByID($row->value_datatype);
-					if ( ($xsdtype !== '') && ($xsdtype !== NULL) ) {
-						$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:datatype="' . $xsdtype .  '">' . $row->value_xsd . '</' . $pt->short_uri . ">\n";
-					} elseif ($xsdtype === '') { // no xsd-type -> export as object property
-						$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:resource="' . $row->value_xsd .  "\"/>\n";
-					} else {
-						$this->post_ns_buffer .= "<!-- Sorry, type '$row->value_datatype' of attribute '$pt->label' could not be resolved to XSD. Probably an upgrade issue. Try saving the respective article again. -->";
+/*				$atts = $this->store->getAttributes( $et->title );
+				foreach ( $atts as $att ) {
+					$dvs = $this->store->getAttributeValues( $et->title, $att );
+					foreach ( $dvs as $dv ) {
+						$pt = $this->getExportTitleFromTitle( $att, $dv->getUnit() );
+						$xsdtype = SMWTypeHandlerFactory::getXSDTypeByID( $dv->getTypeID() );
+						$xsdvalue = $dv->getXSDValue();
+						if ( ($xsdtype !== '') && ($xsdtype !== NULL) && ($xsdvalue != '') ) {
+							$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:datatype="' . $xsdtype .  '">' . $xsdvalue . '</' . $pt->short_uri . ">\n";
+						} elseif ($xsdtype === '') { // no xsd-type -> export as object property
+							$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:resource="' . $xsdvalue .  "\"/>\n";
+						} else {
+							$this->post_ns_buffer .= "\t\t<!-- Sorry, type '$xsdtype' of attribute '$pt->label' could not be resolved to XSD. Probably an upgrade issue. Try saving the respective article again. -->\n";
+						}
 					}
 				}
-			}
+*/			}
 		}
 
 		$this->post_ns_buffer .= "\t</" . $type . ">\n";
@@ -761,6 +747,22 @@ class ExportRDF {
 		if (!array_key_exists($nsshort,$this->global_namespaces)) {
 			$this->extra_namespaces[$nsshort] = $nsuri;
 		}
+	}
+	
+	/**
+	 * Returns the exportable QName of a page.
+	 */
+	public function getQName(Title $title, $unit = '') {
+		$et = $this->getExportTitleFromTitle( $title, $unit );
+		return $et->long_uri;
+	}
+
+	/**
+	 * Returns the exportable URL of a page.
+	 */
+	public function getURI(Title $title, $unit = '') {
+		$et = $this->getExportTitleFromTitle( $title, $unit );
+		return $et->short_uri;
 	}
 
 	/** Fetch SMWExportTitle for a given article. The inputs are

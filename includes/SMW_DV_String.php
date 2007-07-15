@@ -3,7 +3,7 @@
 /**
  * This datavalue implements String-Datavalues suitable for defining
  * String-types of properties.
- * 
+ *
  * @author: Nikolas Iwan
  */
 class SMWStringValue extends SMWDataValue {
@@ -67,11 +67,11 @@ class SMWStringValue extends SMWDataValue {
 	public function getXSDValue() {
 		return $this->m_xsdvalue;
 	}
-	
+
 	public function getWikiValue(){
 		return $this->m_value;
 	}
-	
+
 	public function getNumericValue() {
 		return NULL;
 	}
@@ -88,5 +88,8 @@ class SMWStringValue extends SMWDataValue {
 		return false;
 	}
 
+	public function exportToRDF($QName, ExportRDF $exporter) {
+		return "\t\t<$QName rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">$this->m_xsdvalue</$QName>\n";
+	}
 
 }

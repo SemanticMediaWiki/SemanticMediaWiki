@@ -70,8 +70,8 @@ abstract class SMWDataValue {
 	/**
 	 * Define a particular output format. Output formats are user-supplied strings
 	 * that the datavalue may (or may not) use to customise its return value. For
-	 * example, quantities with units of measurement may interpret the string as 
-	 * a desired output unit. In other cases, the output format might be built-in 
+	 * example, quantities with units of measurement may interpret the string as
+	 * a desired output unit. In other cases, the output format might be built-in
 	 * and subject to internationalisation (which the datavalue has to implement).
 	 * In any case, an empty string resets the output format to the default.
 	 */
@@ -96,7 +96,7 @@ abstract class SMWDataValue {
 
 	/**
 	 * Initialise the datavalue from the given value string and unit.
-	 * The format of both strings strictly corresponds to the output 
+	 * The format of both strings strictly corresponds to the output
 	 * of this implementation for getXSDValue() and getUnit().
 	 */
 	abstract protected function parseXSDValue($value, $unit);
@@ -158,7 +158,7 @@ abstract class SMWDataValue {
 	/**
 	 * Return the plain wiki version of the value, or
 	 * FALSE if no such version is available. The returned
-	 * string suffices to reobtain the same DataValue 
+	 * string suffices to reobtain the same DataValue
 	 * when passing it as an input string to setUserValue().
 	 * Thus it also includes units, if any.
 	 */
@@ -237,6 +237,20 @@ abstract class SMWDataValue {
 	public function getErrors() {
 		return $this->m_errors;
 	}
+	
+	/**
+	 * Exports the datavalue to RDF (i.e. it returns a string that consists
+	 * of the lines that, in RDF/XML, can be fitted between the object-tags.
+	 * This should be overwritten.
+	 * QName -- the qualified name that the data value should use for exporting,
+	 * since it may be an imported name.
+	 * Exporter -- the exporting object
+	 * TODO make it an abstract function? Not sure.
+	 */
+	public function exportToRDF($QName, ExportRDF $exporter) {
+		$type = $this->getTypeID();
+		return "\t\t<!-- Sorry, unknown how to export type '$type'. -->\n";
+	}
 
 	/*********************************************************************/
 	/* Static methods for initialisation                                 */
@@ -246,7 +260,7 @@ abstract class SMWDataValue {
 	 * Create a value from a string supplied by a user for a given attribute.
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
-	 * 
+	 *
 	 * @DEPRECATED
 	 */
 	static function newAttributeValue($attribute, $value=false) {
@@ -256,7 +270,7 @@ abstract class SMWDataValue {
 
 	/**
 	 * Create a value from a string supplied by a user for a given special
-	 * property, encoded as a numeric constant. 
+	 * property, encoded as a numeric constant.
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
 	 *
@@ -271,14 +285,14 @@ abstract class SMWDataValue {
 	 * Create a value from a user-supplied string for which a type handler is known
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
-	 * 
+	 *
 	 * @DEPRECATED
 	 */
 	static function newTypedValue(SMWTypeHandler $type, $value=false) {
 		trigger_error("The function SMWDataValue::newTypedValue() is deprecated.", E_USER_NOTICE);
 		return SMWDataValueFactory::newTypeHandlerValue($type, $value);
 	}
-	
+
 	/*********************************************************************/
 	/* Legacy methods for compatiblity                                   */
 	/*********************************************************************/

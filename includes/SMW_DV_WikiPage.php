@@ -1,7 +1,7 @@
 <?php
 /**
  * This datavalue implements special processing suitable for defining
- * wikipages as values of properties. This value container currently 
+ * wikipages as values of properties. This value container currently
  * behaves somewhat special in that its xsdvalue is not containint all
  * relevant information (it just gives the DB-Key, not the namespace).
  * TODO: This should change, but is not really critical now.
@@ -126,6 +126,11 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	public function isNumeric() {
 		return false;
+	}
+
+	public function exportToRDF($QName, ExportRDF $exporter) {
+		$obj = $exporter->getURI( $this->getTitle() );
+		return "\t\t<$QName rdf:resource=\"$obj\" />\n";
 	}
 
 ///// special interface for wiki page values
