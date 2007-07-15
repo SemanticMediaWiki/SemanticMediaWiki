@@ -259,8 +259,8 @@ protected $smwSpecialProperties = array(
 		return array(
 			SMW_NS_RELATION       => 'Relacja',
 			SMW_NS_RELATION_TALK  => 'Dyskusja_relacji',
-			SMW_NS_ATTRIBUTE      => 'Atrybut',
-			SMW_NS_ATTRIBUTE_TALK => 'Dyskusja_atrybutu',
+			SMW_NS_PROPERTY       => 'Atrybut',
+			SMW_NS_PROPERTY_TALK  => 'Dyskusja_atrybutu',
 			SMW_NS_TYPE           => 'Typ',
 			SMW_NS_TYPE_TALK      => 'Dyskusja_typu'
 		);
