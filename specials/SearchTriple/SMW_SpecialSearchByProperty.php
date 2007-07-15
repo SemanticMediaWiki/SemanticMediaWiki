@@ -15,20 +15,20 @@ global $IP, $smwgIP;
 require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
 
-function doSpecialSearchByAttribute($query = '') {
-	SMW_SearchByAttribute::execute($query);
+function doSpecialSearchByProperty($query = '') {
+	SMW_SearchByProperty::execute($query);
 }
 
-SpecialPage::addPage( new SpecialPage('SearchByAttribute','',true,'doSpecialSearchByAttribute',false) );
+SpecialPage::addPage( new SpecialPage('SearchByProperty','',true,'doSpecialSearchByProperty',false) );
 
-class SMW_SearchByAttribute {
+class SMW_SearchByProperty {
 
 	static function execute($query = '') {
 		global $wgRequest, $wgOut, $wgUser, $smwgQMaxInlineLimit;
 		$skin = $wgUser->getSkin();
 
 		// get the GET parameters
-		$attributestring = $wgRequest->getVal( 'attribute' );
+		$attributestring = $wgRequest->getVal( 'property' );
 		$valuestring = $wgRequest->getVal( 'value' );
 		// no GET parameters? Then try the URL
 		if (('' == $attributestring) && ('' == $valuestring)) {
@@ -47,7 +47,7 @@ class SMW_SearchByAttribute {
 		$offset = $wgRequest->getVal( 'offset' );
 		if ('' == $offset) $offset = 0;
 		$html = '';
-		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByAttribute' );
+		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByProperty' );
 
 		if ('' == $attributestring) { // empty page. If no attribute given the value does not matter
 			$html .= wfMsg('smw_sbv_docu') . "\n";
@@ -73,14 +73,14 @@ class SMW_SearchByAttribute {
 
 				// prepare navigation bar
 				if ($offset > 0)
-					$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute->getText()) .'&value=' . urlencode($value->getWikiValue()))) . '">' . wfMsg('smw_result_prev') . '</a>';
+					$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute->getText()) .'&value=' . urlencode($value->getWikiValue()))) . '">' . wfMsg('smw_result_prev') . '</a>';
 				else
 					$navigation = wfMsg('smw_result_prev');
 
 				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min($count, $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 				if ($count>$limit) {
-					$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue())))  . '">' . wfMsg('smw_result_next') . '</a>';
+					$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue())))  . '">' . wfMsg('smw_result_next') . '</a>';
 				} else {
 					$navigation .= wfMsg('smw_result_next');
 				}
@@ -98,7 +98,7 @@ class SMW_SearchByAttribute {
 						$max = true;
 					}
 					if ( $limit != $l ) {
-						$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByAttribute','offset=' . $offset . '&limit=' . $l . '&attribute=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue()))) . '">' . $l . '</a>';
+						$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . $offset . '&limit=' . $l . '&attribute=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue()))) . '">' . $l . '</a>';
 					} else {
 						$navigation .= '<b>' . $l . '</b>';
 					}
@@ -144,9 +144,9 @@ class SMW_SearchByAttribute {
 
 		// display query form
 		$html .= '<p>&nbsp;</p>';
-		$html .= '<form name="searchbyattribute" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
+		$html .= '<form name="searchbyproperty" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
-		$html .= wfMsg('smw_sbv_attribute') . ' <input type="text" name="attribute" value="' . htmlspecialchars($attributestring) . '" />' . "&nbsp;&nbsp;&nbsp;\n";
+		$html .= wfMsg('smw_sbv_property') . ' <input type="text" name="property" value="' . htmlspecialchars($attributestring) . '" />' . "&nbsp;&nbsp;&nbsp;\n";
 		$html .= wfMsg('smw_sbv_value') . ' <input type="text" name="value" value="' . htmlspecialchars($valuestring) . '" />' . "\n";
 		$html .= '<input type="submit" value="' . wfMsg('smw_sbv_submit') . "\"/>\n</form>\n";
 
