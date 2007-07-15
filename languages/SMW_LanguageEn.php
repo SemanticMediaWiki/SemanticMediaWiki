@@ -237,8 +237,8 @@ protected $smwSpecialProperties = array(
 		return array(
 			SMW_NS_RELATION       => 'Relation',
 			SMW_NS_RELATION_TALK  => 'Relation_talk',
-			SMW_NS_ATTRIBUTE      => 'Attribute',
-			SMW_NS_ATTRIBUTE_TALK => 'Attribute_talk',
+			SMW_NS_ATTRIBUTE      => 'Property',
+			SMW_NS_ATTRIBUTE_TALK => 'Property_talk',
 			SMW_NS_TYPE           => 'Type',
 			SMW_NS_TYPE_TALK      => 'Type_talk'
 		);
