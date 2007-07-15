@@ -25,12 +25,8 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 		// In the regexp matches below, leading ':' escapes the markup, as
 		// known for Categories.
 		// Parse links to extract semantic relations
-		$semanticLinkPattern = '(\[\[(([^:][^]]*)::)+([^\|\]]*)(\|([^]]*))?\]\])';
-		$text = preg_replace_callback($semanticLinkPattern, 'smwfParseRelationsCallback', $text);
-
-		// Parse links to extract attribute values
-		$semanticLinkPattern = '(\[\[(([^:][^]]*):=)+((?:[^|\[\]]|\[\[[^]]*\]\])*)(\|([^]]*))?\]\])';
-		$text = preg_replace_callback($semanticLinkPattern, 'smwfParseAttributesCallback', $text);
+		$semanticLinkPattern = '(\[\[(([^:][^]]*):[=|:])+((?:[^|\[\]]|\[\[[^]]*\]\])*)(\|([^]]*))?\]\])';
+		$text = preg_replace_callback($semanticLinkPattern, 'smwfParsePropertiesCallback', $text);
 
 		// print the results if enabled (we have to parse them in any case, in order to
 		// clean the wiki source for further processing)
@@ -42,40 +38,10 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 	}
 
 	/**
-	* This callback function strips out the semantic relation from a
-	* wiki link. Retrieved data is stored in the static SMWFactbox.
-	*/
-	function smwfParseRelationsCallback($semanticLink) {
-		if (array_key_exists(2,$semanticLink)) {
-			$relation = $semanticLink[2];
-		} else { $relation = ''; }
-		if (array_key_exists(3,$semanticLink)) {
-			$linkTarget = $semanticLink[3];
-		} else { $linkTarget = ''; }
-		if (array_key_exists(4,$semanticLink)) {
-			$linkCaption = $semanticLink[4];
-			// answer to bug #1479616
-			// removes the extra : that comes in from the automatic | expansion in links
-			if (($linkCaption != '') && ($linkCaption[1] == ":")) {
-				$linkCaption = "|" . mb_substr($linkCaption, 2);
-			}
-		} else { $linkCaption = ''; }
-
-		//extract annotations
-		$relations = explode('::', $relation);
-		foreach($relations as $singleRelation) {
-			SMWFactbox::addRelation($singleRelation,$linkTarget);
-		}
-
-		//pass it back as a normal link
-		return '[[:' . $linkTarget . $linkCaption . ']]';
-	}
-
-	/**
 	* This callback function strips out the semantic attributes from a wiki
 	* link.
 	*/
-	function smwfParseAttributesCallback($semanticLink) {
+	function smwfParsePropertiesCallback($semanticLink) {
 		if (array_key_exists(2,$semanticLink)) {
 			$attribute = $semanticLink[2];
 		} else { $attribute = ''; }
@@ -89,7 +55,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 		//extract annotations and create tooltip
 		$attributes = explode(':=', $attribute);
 		foreach($attributes as $singleAttribute) {
-			$attr = SMWFactbox::addAttribute($singleAttribute,$value,$valueCaption);
+			$attr = SMWFactbox::addProperty($singleAttribute,$value,$valueCaption);
 		}
 
 		return $attr->getShortWikitext(true);

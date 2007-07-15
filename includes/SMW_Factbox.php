@@ -53,18 +53,18 @@ class SMWFactbox {
 	 * It returns an array which contains the result of the operation in
 	 * various formats.
 	 */
-	static function addAttribute($attribute, $value, $caption) {
+	static function addProperty($propertyname, $value, $caption) {
 		global $smwgContLang, $smwgStoreActive;
 		// See if this attribute is a special one like e.g. "Has unit"
-		$attribute = smwfNormalTitleText($attribute); //slightly normalize label
+		$propertyname = smwfNormalTitleText($propertyname); //slightly normalize label
 		$specprops = $smwgContLang->getSpecialPropertiesArray();
-		$special = array_search($attribute, $specprops);
+		$special = array_search($propertyname, $specprops);
 
 		switch ($special) {
 			case false: // normal attribute
-				$result = SMWDataValueFactory::newPropertyValue($attribute,$value,$caption);
+				$result = SMWDataValueFactory::newPropertyValue($propertyname,$value,$caption);
 				if ($smwgStoreActive) {
-					SMWFactbox::$semdata->addPropertyValue($attribute,$result);
+					SMWFactbox::$semdata->addPropertyValue($propertyname,$result);
 				}
 				return $result;
 			case SMW_SP_IMPORTED_FROM: // this requires special handling
@@ -84,34 +84,6 @@ class SMWFactbox {
 					SMWFactbox::$semdata->addSpecialValue($special,$result);
 				}
 				return $result;
-		}
-	}
-
-	/**
-	 * This method adds a new relation with the given target to the storage.
-	 */
-	static function addRelation($relation, $target) {
-		global $smwgContLang, $smwgStoreActive;
-		if (!$smwgStoreActive) return; // no action required
-		// See if this relation is a special one like e.g. "Has type"
-		$relation = smwfNormalTitleText($relation);
-		$srels = $smwgContLang->getSpecialPropertiesArray();
-		$special = array_search($relation, $srels);
-		$value = SMWDataValueFactory::newTypeIDValue('_wpg',$target, false, $relation);
-
-		if ($special !== false) {
-			$type = SMWTypeHandlerFactory::getSpecialTypeHandler($special);
-			if ( ($type->getID() != 'error') && ($special != SMW_SP_HAS_TYPE) ) { //Oops! This is not a relation!
-				//Note that this still changes the behaviour, since the [[ ]]
-				//are not removed! A cleaner solution would be to print a
-				//helpful message into the factbox, based on a new "print value as
-				//error" datatype handler. FIXME
-				SMWFactbox::addAttribute($relation, $target, false);
-			} else {
-				SMWFactbox::$semdata->addSpecialValue($special, $value);
-			}
-		} else {
-			SMWFactbox::$semdata->addPropertyValue($relation, $value);
 		}
 	}
 
@@ -297,70 +269,6 @@ class SMWFactbox {
 			$text .= '</td></tr>';
 		}
 	}
-
-	/**
-	 * This method prints semantic relations at the bottom of an article.
-	 */
-	static protected function printRelations(&$text) {
-		if(!SMWFactbox::$semdata->hasRelations()) { return true; }
-
-		//$text .= ' <tr><th class="relhead"></th><th class="relhead">' . wfMsgForContent('smw_rel_head') . "</th></tr>\n";
-		
-		foreach(SMWFactbox::$semdata->getRelations() as $relation) {
-			$relValueArray = SMWFactbox::$semdata->getRelationValues($relation);
-			$text .= '<tr><td class="smwattname">';
-			$text .= '   [[' . $relation->getPrefixedText() . '|' . preg_replace('/[\s]/','&nbsp;',$relation->getText(),2) . ']] </td><td class="smwatts">';
-			// TODO: the preg_replace is a kind of hack to ensure that the left column does not get too narrow; maybe we can find something nicer later
-
-			$l = count($relValueArray);
-			$i=0;
-			foreach ($relValueArray as $relValue) {
-				if ($i!=0) {
-					if ($i>$l-2) {
-						$text .= wfMsgForContent('smw_finallistconjunct') . ' ';
-					} else {
-						$text .= ', ';
-					}
-				}
-				$i+=1;
-
-				$text .= $relValue->getLongWikiText(true);
-
-				$sep = '<!-- -->&nbsp;&nbsp;'; // the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
-				foreach ($relValue->getInfolinks() as $link) {
-					$text .= $sep . $link->getWikiText();
-					$sep = ' &nbsp;&nbsp;'; // allow breaking for longer lists of infolinks
-				}
-			}
-			$text .= '</td></tr>';
-		}
-/*
-		foreach(SMWFactbox::$semdata->getRelations() as $relation) {
-			$relationObjectArray = SMWFactbox::$semdata->getRelationObjects($relation);
-			//$text .= '   ' . SMWFactbox::$semdata->getSubject()->getPrefixedText() . '&nbsp;';
-			$text .= '<tr><td class="smwrelname">[[' . $relation->getPrefixedText() . '|' . preg_replace('/[\s]/','&nbsp;',$relation->getText(),2) . ']]</td><td class="smwrels">';
-			// TODO: the preg_replace is a kind of hack to ensure that the left column does ont get too narrow; maybe we can find something nicer later
-
-			$l = count($relationObjectArray);
-			$i=0;
-			foreach ($relationObjectArray as $relationObject) {
-				if ($i!=0) {
-					if ($i>$l-2) {
-						$text .= wfMsgForContent('smw_finallistconjunct') . ' ';
-					} else {
-						$text .= ', ';
-					}
-				}
-				$i+=1;
-
-				$text .= '[[:' . $relationObject->getPrefixedText() . ']]';
-				$searchlink = SMWInfolink::newRelationSearchLink('+',$relation->getText(),$relationObject->getPrefixedText());
-				$text .= '&nbsp;&nbsp;' . $searchlink->getWikiText();
-			}
-			$text .= "</td></tr>\n";
-		}*/
-	}
-
 
 	/**
 	 * This method prints special properties at the bottom of an article.
