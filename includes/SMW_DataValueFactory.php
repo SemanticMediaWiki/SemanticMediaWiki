@@ -189,7 +189,11 @@ class SMWDataValueFactory {
 	static public function getPropertyObjectTypeID(Title $property) {
 		$propertyname = $property->getText();
 		if (array_key_exists($propertyname, SMWDataValueFactory::$m_typelabels)) {
-			return SMWDataValueFactory::$m_typelabels[$propertyname]->getXSDValue();
+			if (SMWDataValueFactory::$m_typelabels[$propertyname]->isUnary() ) {
+				return SMWDataValueFactory::$m_typelabels[$propertyname]->getXSDValue();
+			} else {
+				return '__nry';
+			}
 		} else {
 			return SMWDataValueFactory::newPropertyObjectValue($property)->getTypeID(); // this also triggers caching
 		}
