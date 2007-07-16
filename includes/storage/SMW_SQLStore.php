@@ -317,11 +317,11 @@ class SMWSQLStore extends SMWStore {
 		if ( !$value->isValid() ) {
 			return array();
 		}
-		$result = array();
 		$db =& wfGetDB( DB_SLAVE );
 
 		switch ($value->getTypeID()) {
 		case '_txt': // not supported
+			return array();
 		break;
 		case '_wpg': // wikipage
 			$sql = 'object_namespace=' . $db->addQuotes($value->getNamespace()) .
@@ -329,14 +329,42 @@ class SMWSQLStore extends SMWStore {
 			       ' AND relation_title=' . $db->addQuotes($property->getDBKey()) .
 			       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
-			$res = $db->select( $db->tableName('smw_relations'),
+			$res = $db->select( 'smw_relations',
 			                    'DISTINCT subject_id',
 			                    $sql, 'SMW::getPropertySubjects',
 			                    $this->getSQLOptions($requestoptions,'subject_title') );
-			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromID($row->subject_id);
+		break;
+		case '__nry':
+			$values = $value->getDVs();
+			$narytable = $db->tableName('smw_nary');
+			$where = "$narytable.attribute_title=" . $db->addQuotes($property->getDBKey());
+			$from = $narytable;
+			$count = 0;
+			foreach ($values as $dv) {
+				if ( ($dv === NULL) || (!$dv->isValid()) ) {
+					$count++;
+					continue;
+				}
+				switch ($dv->getTypeID()) {
+				case '_txt': // not supported
+				break;
+				case '_wpg':
+					$from .= ' INNER JOIN ' . $db->tableName('smw_nary_relations') . ' AS nary' . $count .
+					         " ON ($narytable.subject_id=nary$count.subject_id AND $narytable.nary_key=nary$count.nary_key)";
+					$where .= " AND nary$count.object_title=" . $db->addQuotes($dv->getDBKey()) . 
+					          " AND nary$count.object_namespace=" . $db->addQuotes($dv->getNamespace());
+				break;
+				default:
+					$from .= ' INNER JOIN ' . $db->tableName('smw_nary_attributes') . ' AS nary' . $count .
+					         " ON ($narytable.subject_id=nary$count.subject_id AND $narytable.nary_key=nary$count.nary_key)";
+					$where .= " AND nary$count.value_xsd=" . $db->addQuotes($dv->getXSDValue()) . 
+					          " AND nary$count.value_unit=" . $db->addQuotes($dv->getUnit());
+				}
+				$count++;
 			}
-			$db->freeResult($res);
+			$res = $db->query("SELECT DISTINCT $narytable.subject_id FROM $from WHERE $where", 
+			                  'SMW::getPropertySubjects',
+			                  $this->getSQLOptions($requestoptions,'subject_title'));
 		break;
 		default:
 			$sql = 'value_xsd=' . $db->addQuotes($value->getXSDValue()) .
@@ -347,12 +375,13 @@ class SMWSQLStore extends SMWStore {
 		                    'DISTINCT subject_id',
 		                    $sql, 'SMW::getPropertySubjects',
 		                    $this->getSQLOptions($requestoptions,'subject_title') );
-			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromID($row->subject_id);
-			}
-			$db->freeResult($res);
 		break;
 		}
+		$result = array();
+		while($row = $db->fetchObject($res)) {
+				$result[] = Title::newFromID($row->subject_id);
+		}
+		$db->freeResult($res);
 		return $result;
 	}
 
