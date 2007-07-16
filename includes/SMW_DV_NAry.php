@@ -241,6 +241,10 @@ class SMWNAryValue extends SMWDataValue {
 		return implode(';', $this->m_type->getTypeLabels());
 	}
 
+	public function getType() {
+		return $this->m_type;
+	}
+
 	public function getDVs() {
 		return $this->isValid() ? $this->m_values : null;
 	}
