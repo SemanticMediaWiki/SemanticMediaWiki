@@ -75,8 +75,8 @@ class SMWFactbox {
 					$v = str_replace(' ', '_', $value); //normalize slightly since messages distinguish '_' and ' '
 					$result = SMWDataValueFactory::newSpecialValue($special,$v,$caption);
 					$v = $result->getXSDValue(); //possibly further sanitized, so let's be cautious
-					$result->setProcessedValues($value,$v); //set user value back to the input version
-					$result->setPrintoutString('[[' . $wgContLang->getNsText(NS_MEDIAWIKI) . ':smw_service_' . $v . "|$value]]");
+					//$result->setProcessedValues($value,$v); //set user value back to the input version
+					//$result->setPrintoutString('[[' . $wgContLang->getNsText(NS_MEDIAWIKI) . ':smw_service_' . $v . "|$value]]");
 				} else { // standard processing
 					$result = SMWDataValueFactory::newSpecialValue($special,$value,$caption);
 				}
@@ -104,7 +104,8 @@ class SMWFactbox {
 
 		if ( count($msglines) < 2 ) { //error: no elements for this namespace
 			/// TODO: use new Error DV
-			$datavalue = SMWDataValueFactory::newTypeHandlerValue(new SMWErrorTypeHandler(wfMsgForContent('smw_unknown_importns',$onto_ns)),$value,$caption);
+			$datavalue = SMWDataValueFactory::newTypeIDValue('__err',$value,$caption);
+			$datavalue->addError(wfMsgForContent('smw_unknown_importns',$onto_ns));
 			if ($smwgStoreActive) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM,$datavalue);
 			}
@@ -122,13 +123,11 @@ class SMWFactbox {
 				// check whether type matches
 				switch ($namespace) {
 					case $wgContLang->getNsText(SMW_NS_TYPE):
-						$elemtype = SMW_NS_ATTRIBUTE;
-						$datatype = Title::newFromText($typestring, SMW_NS_TYPE);
+						$elemtype = SMW_NS_PROPERTY;
+						$datatype = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE, $typestring);
 						break;
-					case $wgContLang->getNsText(SMW_NS_ATTRIBUTE): // wrong: we need a datatype
-						break;
-					case $wgContLang->getNsText(SMW_NS_RELATION):
-						$elemtype = SMW_NS_RELATION;
+					case $wgContLang->getNsText(SMW_NS_PROPERTY):
+						$elemtype = SMW_NS_PROPERTY;
 						break;
 					case $wgContLang->getNsText(NS_CATEGORY):
 						$elemtype = NS_CATEGORY;
@@ -144,13 +143,13 @@ class SMWFactbox {
 		$this_ns = SMWFactbox::$semdata->getSubject()->getNamespace();
 		$error = NULL;
 		switch ($elemtype) {
-			case SMW_NS_ATTRIBUTE: case SMW_NS_RELATION: case NS_CATEGORY:
+			case SMW_NS_PROPERTY: case NS_CATEGORY:
 				if ($this_ns != $elemtype) {
 					$error = wfMsgForContent('smw_nonright_importtype',$value, $wgContLang->getNsText($elemtype));
 				}
 				break;
 			case NS_MAIN:
-				if ( (SMW_NS_ATTRIBUTE == $this_ns) || (SMW_NS_RELATION == $this_ns) || (NS_CATEGORY == $this_ns)) {
+				if ( (SMW_NS_PROPERTY == $this_ns) || (NS_CATEGORY == $this_ns)) {
 					$error = wfMsgForContent('smw_wrong_importtype',$value, $wgContLang->getNsText($this_ns));
 				}
 				break;
@@ -159,39 +158,24 @@ class SMWFactbox {
 		}
 
 		if (NULL != $error) {
-			/// TODO: use new Error DV
-			$datavalue = SMWDataValueFactory::newTypeHandlerValue(new SMWErrorTypeHandler($error),$value,$caption);
+			$datavalue = SMWDataValueFactory::newTypeIDValue('__err',$value,$caption);
+			$datavalue->addError($error);
 			if ($smwgStoreActive) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
 			}
 			return $datavalue;
 		}
 
-
-		///TODO: use new DVs
-
-		// Note: the following just overwrites any existing values for the given
-		// special properties, since they can only have one value anyway; this
-		// might hide errors -- should we care?
-		$sth = new SMWStringTypeHandler(); // making one is enough ...
-
 		if ($smwgStoreActive) {
-			$datavalue = SMWDataValueFactory::newTypeHandlerValue($sth,$onto_uri);
-			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_BASEURI,$datavalue);
-			$datavalue = SMWDataValueFactory::newTypeHandlerValue($sth,$onto_ns);
-			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_NSID,$datavalue);
-			$datavalue = SMWDataValueFactory::newTypeHandlerValue($sth,$onto_section);
-			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_SECTION,$datavalue);
+			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_BASEURI,SMWDataValueFactory::newTypeIDValue('_str',$onto_uri));
+			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_NSID,SMWDataValueFactory::newTypeIDValue('_str',$onto_ns));
+			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_SECTION,SMWDataValueFactory::newTypeIDValue('_str',$onto_section));
 			if (NULL !== $datatype) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_HAS_TYPE,$datatype);
 			}
 		}
-
 		// print the input (this property is usually not stored, see SMW_SQLStore.php)
-		$datavalue = SMWDataValueFactory::newTypeHandlerValue($sth,"[$onto_uri$onto_section $value]",$caption);
-		// TODO: Unfortunatelly, the following line can break the tooltip code if $onto_name has markup. -- mak
-		// if ('' != $onto_name) $datavalue->setPrintoutString($onto_name, 'onto_name');
-		if ('' != $onto_name) $datavalue->setPrintoutString("[$onto_uri$onto_section $value] ($onto_name)");
+		$datavalue = SMWDataValueFactory::newTypeIDValue('_str',"[$onto_uri$onto_section $value] ($onto_name)",$caption);
 		if ($smwgStoreActive) {
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
 		}
@@ -287,21 +271,14 @@ class SMWFactbox {
 			if (array_key_exists($specialProperty,$specprops)) { // only print specprops with an official name
 				$specialPropertyName = $specprops[$specialProperty];
 				foreach ($valueArray as $value) {
-					if ($value instanceof SMWDataValue) {
-						$vt = $value->getLongWikiText(true);
-						if ($specialProperty != SMW_SP_HAS_TYPE) {
-							$vn = $wgContLang->getNsText(SMW_NS_ATTRIBUTE);
-						} else {
-							$vn = $wgContLang->getNsText(SMW_NS_RELATION); //HACK
-						}
-					} elseif ($value instanceof Title) {
-						$vt = '[[' . $value->getPrefixedText() . ']]';
-						$vn = $wgContLang->getNsText(SMW_NS_RELATION);
-					} else {
-						$vt = $value;
-						$vn = $wgContLang->getNsText(SMW_NS_ATTRIBUTE);
-					}
-					$text .= '<tr><td class="smwspecname">[[' . $vn. ':' . $specialPropertyName . '|' . $specialPropertyName . ']]</td><td class="smwspecs">' . $vt . "</td></tr>\n";
+// 					if ($value instanceof SMWDataValue) {
+// 						$vt = $value->getLongWikiText(true);
+// 					} elseif ($value instanceof Title) {
+// 						$vt = '[[' . $value->getPrefixedText() . ']]';
+// 					} else {
+// 						$vt = $value;
+// 					}
+					$text .= '<tr><td class="smwspecname">[[' . $wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $specialPropertyName . '|' . $specialPropertyName . ']]</td><td class="smwspecs">' . $value->getLongWikiText(true) . "</td></tr>\n";
 				}
 			}
 		}

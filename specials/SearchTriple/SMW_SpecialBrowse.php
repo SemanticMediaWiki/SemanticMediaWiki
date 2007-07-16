@@ -44,7 +44,7 @@ class SMW_SpecialBrowse {
 
 		$vsep = '<div class="smwhr"><hr /></div>';
 
-		if (($article->isValid()) && ('' !== $articletext)) { // legal article given
+		if ($article->isValid()) {
 			$options = new SMWRequestOptions();
 			$atts = &smwfGetStore()->getProperties($article->getTitle(), $options);
 			$cats = &smwfGetStore()->getSpecialValues($article->getTitle(), SMW_SP_HAS_CATEGORY, $options);
@@ -125,7 +125,7 @@ class SMW_SpecialBrowse {
 							$html .= $skin->makeKnownLinkObj($subject, smwfT($subject, TRUE)) . '&nbsp;' . $subjectlink->getHTML($skin);
 							if ($innercount<$subjectcount) $html .= ", \n";
 						} else {
-							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByRelation', 'type=' . urlencode($result->getPrefixedText()) . '&target=' . urlencode($article->getPrefixedText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
+							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByProperty', 'property=' . urlencode($result->getPrefixedText()) . '&value=' . urlencode($article->getPrefixedText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
 						}
 					}
 					// replace the last two whitespaces in the relation name with

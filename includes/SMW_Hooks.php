@@ -12,7 +12,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 
 	/**
 	*  This method will be called before an article is displayed or previewed.
-	*  For display and preview we strip out the semantic relations and append them
+	*  For display and preview we strip out the semantic properties and append them
 	*  at the end of the article.
 	*
 	*  TODO: $strip_state is not used (and must not be used, since it is
@@ -24,7 +24,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 
 		// In the regexp matches below, leading ':' escapes the markup, as
 		// known for Categories.
-		// Parse links to extract semantic relations
+		// Parse links to extract semantic properties
 		$semanticLinkPattern = '(\[\[(([^:][^]]*):[=|:])+((?:[^|\[\]]|\[\[[^]]*\]\])*)(\|([^]]*))?\]\])';
 		$text = preg_replace_callback($semanticLinkPattern, 'smwfParsePropertiesCallback', $text);
 
@@ -66,7 +66,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 
 	/**
 	*  This method will be called after an article is saved
-	*  and stores the semantic relations in the database. One
+	*  and stores the semantic properties in the database. One
 	*  could consider creating an object for deferred saving
 	*  as used in other places of MediaWiki.
 	*/
@@ -78,7 +78,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 
 	/**
 	*  This method will be called whenever an article is deleted so that
-	*  semantic relations are cleared appropriately.
+	*  semantic properties are cleared appropriately.
 	*/
 	function smwfDeleteHook(&$article, &$user, &$reason) {
 		smwfGetStore()->deleteSubject($article->getTitle());
@@ -87,7 +87,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 
 	/**
 	*  This method will be called whenever an article is moved so that
-	*  semantic relations are moved accordingly.
+	*  semantic properties are moved accordingly.
 	*/
 	function smwfMoveHook(&$old_title, &$new_title, &$user, $pageid, $redirid) {
 		smwfGetStore()->changeTitle($old_title, $new_title);
@@ -97,14 +97,14 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 // Special display for certain types of pages
 
 /**
- * Register special classes for displaying semantic content on Relation/Attribute/Type pages
+ * Register special classes for displaying semantic content on Property/Type pages
  */
 function smwfShowListPage (&$title, &$article){
 	global $smwgIP;
 	if ($title->getNamespace() == SMW_NS_TYPE){
 		require_once($smwgIP . '/includes/articlepages/SMW_TypePage.php');
 		$article = new SMWTypePage($title);
-	} elseif ( ($title->getNamespace() == SMW_NS_RELATION) || ($title->getNamespace() == SMW_NS_ATTRIBUTE) ) {
+	} elseif ( $title->getNamespace() == SMW_NS_PROPERTY ) {
 		require_once($smwgIP . '/includes/articlepages/SMW_PropertyPage.php');
 		$article = new SMWPropertyPage($title);
 	}

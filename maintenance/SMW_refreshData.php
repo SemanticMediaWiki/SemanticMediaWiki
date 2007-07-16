@@ -77,7 +77,7 @@ for ($id = $start; $id <= $end; $id++) {
 		$doit = false;
 		if (($categories) && ($ns == NS_CATEGORY))
 			$doit = true;
-		if (($properties) && (($ns == SMW_NS_RELATION) || ($ns == SMW_NS_ATTRIBUTE)))
+		if (($properties) && ($ns == SMW_NS_PROPERTY))
 			$doit = true;
 		if (($types) && ($ns == SMW_NS_TYPE))
 			$doit = true;

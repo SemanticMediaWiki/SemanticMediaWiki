@@ -362,7 +362,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 
 		if ( !$eventline && ($this->m_tlstart == '') ) { // seek defaults
 			foreach ($res->getPrintRequests() as $pr) {
-				if ( ($pr->getMode() == SMW_PRINT_ATTS) && ($pr->getTypeID() == 'datetime') ) {
+				if ( ($pr->getMode() == SMW_PRINT_PROP) && ($pr->getTypeID() == 'datetime') ) {
 					if ( ($this->m_tlend == '') && ($this->m_tlstart != '') &&
 					     ($this->m_tlstart != $pr->getTitle()->getText()) ) {
 						$this->m_tlend = $pr->getTitle()->getText();
@@ -423,7 +423,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 								$header = $pr->getHTMLText($this->mLinker) . ' ';
 							}
 							// is this a start date?
-							if ( ($pr->getMode() == SMW_PRINT_ATTS) && 
+							if ( ($pr->getMode() == SMW_PRINT_PROP) && 
 							     ($pr->getTitle()->getText() == $this->m_tlstart) ) {
 								//FIXME: Timeline scripts should support XSD format explicitly. They
 								//currently seem to implement iso8601 which deviates from XSD in cases.
@@ -433,7 +433,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 								$hastime = true;
 							}
 							// is this the end date?
-							if ( ($pr->getMode() == SMW_PRINT_ATTS) && 
+							if ( ($pr->getMode() == SMW_PRINT_PROP) && 
 							     ($pr->getTitle()->getText() == $this->m_tlend) ) {
 								//NOTE: We can assume $object to be an SMWDataValue in this case.
 								$curmeta .= '<span class="smwtlend">' . $object->getXSDValue() . '</span>';
@@ -456,7 +456,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 							$curdata .= $header . $objectlabel;
 							$output = true;
 						}
-						if ($eventline && ($pr->getMode() == SMW_PRINT_ATTS) && ($pr->getTypeID() == 'datetime') && ('' != $pr->getLabel()) && ($pr->getTitle()->getText() != $this->m_tlstart) && ($pr->getTitle()->getText() != $this->m_tlend) ) {
+						if ($eventline && ($pr->getMode() == SMW_PRINT_PROP) && ($pr->getTypeID() == 'datetime') && ('' != $pr->getLabel()) && ($pr->getTitle()->getText() != $this->m_tlstart) && ($pr->getTitle()->getText() != $this->m_tlend) ) {
 							$events[] = array($object->getXSDValue(), $pr->getLabel(), $object->getNumericValue());
 						}
 						$first_value = false;
@@ -644,8 +644,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		while (  $row = $res->getNext() ) {
 			$first_col = true;
 			foreach ($row as $field) {
-				if ( ($field->getPrintRequest()->getMode() == SMW_PRINT_RELS) ||
-				     ($field->getPrintRequest()->getMode() == SMW_PRINT_THIS) ) { // ensure that we deal with titles
+				if ( $field->getPrintRequest()->getTypeID() == '_wpg' ) { // ensure that we deal with title-likes
 					while ( ($object = $field->getNextObject()) !== false ) {
 						$result .= $embstart;
 						// create text version (this will improve with the unified datavalue framework) ...

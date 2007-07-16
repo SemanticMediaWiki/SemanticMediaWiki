@@ -152,10 +152,10 @@ class SMWWikiPageValue extends SMWDataValue {
 	/**
 	 * Get MediaWiki's ID for this value, if any.
 	 */
-	public function getID() {
+	public function getArticleID() {
 		if ($this->m_id === false) {
 			if ($this->getTitle() !== NULL) {
-				$this->m_id = $this->m_title->getID();
+				$this->m_id = $this->m_title->getArticleID();
 			} else {
 				$this->m_id = -1;
 			}

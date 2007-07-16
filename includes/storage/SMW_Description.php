@@ -11,13 +11,11 @@ define('SMW_CMP_EQ',1); // matches only datavalues that are equal to the given v
 define('SMW_CMP_LEQ',2); // matches only datavalues that are less or equal than the given value
 define('SMW_CMP_GEQ',3); // matches only datavalues that are greater or equal to the given value
 define('SMW_CMP_NEQ',4); // matches only datavalues that are unequal to the given value
-define('SMW_CMP_ANY',5); // matches every datavalue of the given datatype and, if set, desired unit
 
 // print request
 define('SMW_PRINT_CATS', 0);  // print all direct cateories of the current element
-define('SMW_PRINT_RELS', 1);  // print all relations objects of a certain relation of the current element
-define('SMW_PRINT_ATTS', 2);  // print all attribute values of a certain attribute of the current element
-define('SMW_PRINT_THIS', 3);  // print the current element
+define('SMW_PRINT_PROP', 1);  // print all property values of a certain attribute of the current element
+define('SMW_PRINT_THIS', 2);  // print the current element
 
 
 /**
@@ -64,8 +62,7 @@ class SMWPrintRequest {
 		}
 		switch ($this->m_mode) {
 			case SMW_PRINT_CATS: return htmlspecialchars($this->m_label); // TODO: link to Special:Categories
-			case SMW_PRINT_RELS: return $linker->makeLinkObj($this->m_title, htmlspecialchars($this->m_label));
-			case SMW_PRINT_ATTS: return $linker->makeKnownLinkObj($this->m_title, htmlspecialchars($this->m_label));
+			case SMW_PRINT_PROP: return $linker->makeLinkObj($this->m_title, htmlspecialchars($this->m_label));
 			case SMW_PRINT_THIS: default: return htmlspecialchars($this->m_label);
 		}
 		
@@ -80,7 +77,7 @@ class SMWPrintRequest {
 		} else {
 			switch ($this->m_mode) {
 				case SMW_PRINT_CATS: return $this->m_label; // TODO: link to Special:Categories
-				case SMW_PRINT_RELS: case SMW_PRINT_ATTS: 
+				case SMW_PRINT_PROP:
 					return '[[' . $this->m_title->getPrefixedText() . '|' . $this->m_label . ']]';
 				case SMW_PRINT_THIS: default: return $this->m_label;
 			}
@@ -98,8 +95,11 @@ class SMWPrintRequest {
 
 	public function getTypeID() {
 		if ($this->m_typeid === false) {
-			$dv = SMWDataValueFactory::newPropertyObjectValue($this->m_title);
-			$this->m_typeid = $dv->getTypeID();
+			if ($this->m_mode == SMW_PRINT_PROP) {
+				$this->m_typeid = SMWDataValueFactory::getPropertyObjectTypeID($this->m_title);
+			} else {
+				$this->m_typeid = '_wpg'; // return objects might be titles, but anyway
+			}
 		}
 		return $this->m_typeid;
 	}
@@ -285,37 +285,6 @@ class SMWNamespaceDescription extends SMWDescription {
 }
 
 /**
- * Description of a class that contains exactly one explicitly given 
- * object.
- *
- * Corresponds to nominal concepts in OWL, and can be emulated for querying 
- * by using individuals directly in conjunctive queries (OWL) or SPARQL (RDF).
- */
-class SMWNominalDescription extends SMWDescription {
-	protected $m_title;
-
-	public function SMWNominalDescription(Title $individual) {
-		$this->m_title = $individual;
-	}
-
-	public function getIndividual() {
-		return $this->m_title;
-	}
-
-	public function getQueryString() {
-		if ($this->m_title !== NULL) {
-			return '[[:' . $this->m_title->getPrefixedText() . ']]';
-		} else {
-			return '';
-		}
-	}
-
-	public function isSingleton() {
-		return true;
-	}
-}
-
-/**
  * Description of one data value, or of a range of data values.
  *
  * Technically this usually corresponds to unary concrete domain predicates
@@ -323,15 +292,13 @@ class SMWNominalDescription extends SMWDescription {
  * In rare cases where SMW attributes represent object properties, this can
  * also be similar to a nominal class. In RDF, concrete domain predicates that
  * define ranges (like "greater or equal to") are not directly available.
- *
- * TODO: value wildcards probably need a different class
  */
 class SMWValueDescription extends SMWDescription {
 	protected $m_datavalue;
 	protected $m_comparator;
 
 	public function SMWValueDescription(SMWDataValue $datavalue, $comparator = SMW_CMP_EQ) {
-		$this->m_datavalue = $datavalue; // might be NULL for SMW_CMP_ANY
+		$this->m_datavalue = $datavalue;
 		$this->m_comparator = $comparator;
 	}
 
@@ -346,9 +313,6 @@ class SMWValueDescription extends SMWDescription {
 	public function getQueryString() {
 		if ($this->m_datavalue !== NULL) {
 			switch ($this->m_comparator) {
-				case SMW_CMP_EQ:
-					$comparator = '';
-				break;
 				case SMW_CMP_LEQ:
 					$comparator = '<';
 				break;
@@ -358,8 +322,9 @@ class SMWValueDescription extends SMWDescription {
 				case SMW_CMP_NEQ: 
 					$comparator = '!'; // not supported yet?
 				break;
-				case SMW_CMP_ANY: default:
-					return '+';
+				default: case SMW_CMP_EQ: 
+					$comparator = '';
+				break;
 			}
 			return $comparator . $this->m_datavalue->getWikiValue();
 		} else {
@@ -372,11 +337,7 @@ class SMWValueDescription extends SMWDescription {
 	}
 	
 	public function getSize() {
-		if ($this->m_comparator == SMW_CMP_ANY) {
-			return 0;
-		} else {
-			return 1;
-		}
+		return 1;
 	}
 
 }
@@ -566,6 +527,95 @@ class SMWDisjunction extends SMWDescription {
 }
 
 /**
+ * Description of a set of instances that have an attribute with some value that
+ * fits another (sub)description.
+ *
+ * Corresponds to existential quatification ("some" restriction) on concrete properties
+ * in OWL. In conjunctive queries (OWL) and SPARQL (RDF), it is represented by using 
+ * variables in the object part of such properties.
+ */
+class SMWSomeProperty extends SMWDescription {
+	protected $m_description;
+	protected $m_property;
+
+	public function SMWSomeProperty(Title $property, SMWDescription $description) {
+		$this->m_property = $property;
+		$this->m_description = $description;
+	}
+
+	public function getProperty() {
+		return $this->m_property;
+	}
+
+	public function getDescription() {
+		return $this->m_description;
+	}
+
+	public function getQueryString() {
+		return '[[' . $this->m_property->getText() . ':=' . $this->m_description->getQueryString() . ']]';
+	}
+
+	public function isSingleton() {
+		return false;
+	}
+
+	public function getSize() {
+		return 1+$this->getDescription()->getSize();
+	}
+
+	public function getDepth() {
+		return 1+$this->getDescription()->getDepth();
+	}
+
+	public function prune(&$maxsize, &$maxdepth, &$log) {
+		if (($maxsize <= 0)||($maxdepth <= 0)) {
+			$log[] = $this->getQueryString();
+			return new SMWThingDescription();
+		}
+		$maxsize--;
+		$maxdepth--;
+		$result = new SMWSomeProperty($this->m_property, $this->m_description->prune($maxsize,$maxdepth,$log));
+		$result->setPrintRequests($this->getPrintRequests());
+		return $result;
+	}
+}
+
+
+
+
+/**
+ * Description of a class that contains exactly one explicitly given 
+ * object.
+ *
+ * Corresponds to nominal concepts in OWL, and can be emulated for querying 
+ * by using individuals directly in conjunctive queries (OWL) or SPARQL (RDF).
+ */
+class SMWNominalDescription extends SMWDescription {
+	protected $m_title;
+
+	public function SMWNominalDescription(Title $individual) {
+		trigger_error("SMWNominalDescription is deprecated.", E_USER_NOTICE);
+		$this->m_title = $individual;
+	}
+
+	public function getIndividual() {
+		return $this->m_title;
+	}
+
+	public function getQueryString() {
+		if ($this->m_title !== NULL) {
+			return '[[:' . $this->m_title->getPrefixedText() . ']]';
+		} else {
+			return '';
+		}
+	}
+
+	public function isSingleton() {
+		return true;
+	}
+}
+
+/**
  * Description of a set of instances that have a relation to at least one
  * element that fits another (sub)description.
  *
@@ -578,6 +628,7 @@ class SMWSomeRelation extends SMWDescription {
 	protected $m_relation;
 
 	public function SMWSomeRelation(Title $relation, SMWDescription $description) {
+		trigger_error("SMWSomeRelation is deprecated.", E_USER_NOTICE);
 		$this->m_relation = $relation;
 		$this->m_description = $description;
 	}
@@ -636,6 +687,7 @@ class SMWSomeAttribute extends SMWDescription {
 	protected $m_attribute;
 
 	public function SMWSomeAttribute(Title $attribute, SMWDescription $description) {
+		trigger_error("SMWSomeAttribute is deprecated.", E_USER_NOTICE);
 		$this->m_attribute = $attribute;
 		$this->m_description = $description;
 	}

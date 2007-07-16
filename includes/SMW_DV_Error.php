@@ -41,11 +41,11 @@ class SMWErrorValue extends SMWDataValue {
 
 	public function getLongWikiText($linked = NULL) {
 		//TODO: support linking?
-		return $this->getErrorText() . '&nbsp;'; // &nbsp; is a hack to get non-empty table rows for better img placement in FF (any maybe elsewhere too); should not hurt
+		return $this->getErrorText();
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		return $this->getErrorText() . '&nbsp;'; // &nbsp; is a hack to get non-empty table rows for better img placement in FF (any maybe elsewhere too); should not hurt
+		return $this->getErrorText();
 	}
 
 	public function getXSDValue() {

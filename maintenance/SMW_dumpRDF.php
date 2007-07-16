@@ -7,10 +7,9 @@
  * -o <filename>  output file, stdout is used if omitted; 
  *                file output is generally better and strongly recommended for large wikis
  * --categories   only do categories
- * --relations    only do relations
- * --attributes   only do attributes
+ * --properties   only do properties
  * --types        only do types
- * --individuals  only do pages that are no categories, relations, attributes, or types
+ * --individuals  only do pages that are no categories, properties, or types
  */
 
 $optionsWithArgs = array( 'o' ); // -o <output file>
@@ -26,10 +25,8 @@ if ( !empty( $options['o'] ) ) {
 
 if ( $options['categories'] ) {
 	$export_ns = NS_CATEGORY;
-} elseif ( $options['relations'] ) {
-	$export_ns = SMW_NS_RELATION;
-} elseif ( $options['attributes'] ) {
-	$export_ns = SMW_NS_ATTRIBUTE;
+} elseif ( $options['properties'] ) {
+	$export_ns = SMW_NS_PROPERTY;
 } elseif ( $options['types'] ) {
 	$export_ns = SMW_NS_TYPE;
 } elseif ( $options['individuals'] ) {

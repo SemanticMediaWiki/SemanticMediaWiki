@@ -77,14 +77,13 @@ class SMWSQLStore extends SMWStore {
 			}
 			$db->freeResult($res);
 		} elseif ($specialprop === SMW_SP_SUBPROPERTY_OF) { // subproperty
-			$sql = 'subject_title=' . $db->addQuotes($subject->getDBKey()) .
-			       'AND namespace=' . $db->addQuotes($subject->getNamespace());
+			$sql = 'subject_title=' . $db->addQuotes($subject->getDBKey());
 			$res = $db->select( 'smw_subprops',
 								'object_title',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
 			// rewrite results as array
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::makeTitle($subject->namespace, $row->object_title);
+				$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->object_title);
 			}
 			$db->freeResult($res);
 		} else { // "normal" special property
@@ -143,14 +142,13 @@ class SMWSQLStore extends SMWStore {
 			}
 			$db->freeResult($res);
 		} elseif ($specialprop === SMW_SP_SUBPROPERTY_OF) { // subproperties
-			$sql = 'object_title=' . $db->addQuotes($value->getDBKey()) .
-			       'AND namespace=' . $db->addQuotes($value->getNamespace());
+			$sql = 'object_title=' . $db->addQuotes($value->getDBKey());
 			$res = $db->select( 'smw_subprops',
 								'subject_title',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
 			// reqrite results as array
 			while($row = $db->fetchObject($res)) {
-				$result[] =  Title::makeTitle($value->namespace, $row->subject_title);
+				$result[] =  Title::makeTitle(SMW_NS_PROPERTY, $row->subject_title);
 			}
 			$db->freeResult($res);
 		} else {
@@ -192,7 +190,7 @@ class SMWSQLStore extends SMWStore {
 
 		$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
 		switch ($id) {
-			case '_txt': // long text attribute
+			case '_txt': // long text property
 				$res = $db->select( $db->tableName('smw_longstrings'),
 									'value_blob',
 									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
@@ -299,7 +297,7 @@ class SMWSQLStore extends SMWStore {
 			case '_txt':
 				$res = $db->select( $db->tableName('smw_longstrings'),
 				                    'DISTINCT subject_id',
-				                    $sql, 'SMW::getAllAttributeSubjects', 
+				                    $sql, 'SMW::getAllPropertySubjects', 
 				                    $this->getSQLOptions($requestoptions,'subject_title') );
 				if($db->numRows( $res ) > 0) {
 					while($row = $db->fetchObject($res)) {
@@ -313,7 +311,7 @@ class SMWSQLStore extends SMWStore {
 				       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 				$res = $db->select( $db->tableName('smw_relations'),
 				                    'DISTINCT subject_id',
-				                    $sql, 'SMW::getAllAttributeSubjects',
+				                    $sql, 'SMW::getAllPropertySubjects',
 				                    $this->getSQLOptions($requestoptions,'subject_title') );
 				while($row = $db->fetchObject($res)) {
 					$result[] = Title::newFromId($row->subject_id);
@@ -323,7 +321,7 @@ class SMWSQLStore extends SMWStore {
 			default:
 				$res = $db->select( $db->tableName('smw_attributes'),
 				                    'DISTINCT subject_id',
-				                    $sql, 'SMW::getAllAttributeSubjects',
+				                    $sql, 'SMW::getAllPropertySubjects',
 				                    $this->getSQLOptions($requestoptions,'subject_title') );
 				if($db->numRows( $res ) > 0) {
 					while($row = $db->fetchObject($res)) {
@@ -345,7 +343,7 @@ class SMWSQLStore extends SMWStore {
 		                    $sql, 'SMW::getProperties', $this->getSQLOptions($requestoptions,'attribute_title') );
 		if ($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->attribute_title, SMW_NS_ATTRIBUTE);
+				$result[] = Title::newFromText($row->attribute_title, SMW_NS_PROPERTY);
 			}
 		}
 		$db->freeResult($res);
@@ -354,7 +352,7 @@ class SMWSQLStore extends SMWStore {
 		                    $sql, 'SMW::getProperties', $this->getSQLOptions($requestoptions,'attribute_title') );
 		if ($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->attribute_title, SMW_NS_ATTRIBUTE);
+				$result[] = Title::newFromText($row->attribute_title, SMW_NS_PROPERTY);
 			}
 		}
 		$db->freeResult($res);
@@ -363,10 +361,10 @@ class SMWSQLStore extends SMWStore {
 		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
 		$res = $db->select( $db->tableName('smw_relations'),
 		                    'DISTINCT relation_title',
-		                    $sql, 'SMW::getOutRelations', $this->getSQLOptions($requestoptions,'relation_title') );
+		                    $sql, 'SMW::getProperties', $this->getSQLOptions($requestoptions,'relation_title') );
 		if($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->relation_title, SMW_NS_ATTRIBUTE);
+				$result[] = Title::newFromText($row->relation_title, SMW_NS_PROPERTY);
 			}
 		}
 		$db->freeResult($res);
@@ -384,118 +382,14 @@ class SMWSQLStore extends SMWStore {
 	
 			$res = $db->select( $db->tableName('smw_relations'),
 								'DISTINCT relation_title',
-								$sql, 'SMW::getInRelations', $this->getSQLOptions($requestoptions,'relation_title') );
+								$sql, 'SMW::getInProperties', $this->getSQLOptions($requestoptions,'relation_title') );
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->relation_title, SMW_NS_RELATION);
+				$result[] = Title::newFromText($row->relation_title, SMW_NS_PROPERTY);
 			}
 			$db->freeResult($res);
 		}
 		return $result;
 	}
-
-// 	function getRelationObjects(Title $subject, Title $relation, $requestoptions = NULL) {
-// 		$db =& wfGetDB( DB_SLAVE );
-// 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-// 		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
-// 		       $this->getSQLConditions($requestoptions,'object_title','object_title');
-// 
-// 		$res = $db->select( $db->tableName('smw_relations'),
-// 		                    'object_title, object_namespace',
-// 		                    $sql, 'SMW::getRelationObjects', $this->getSQLOptions($requestoptions,'object_title') );
-// 		// rewrite result as array
-// 		$result = array();
-// 		if($db->numRows( $res ) > 0) {
-// 			while($row = $db->fetchObject($res)) {
-// 				$result[] = Title::newFromText($row->object_title, $row->object_namespace);
-// 			}
-// 		}
-// 		$db->freeResult($res);
-// 
-// 		return $result;
-// 	}
-
-// 	function getRelationSubjects(Title $relation, Title $object, $requestoptions = NULL) {
-// 		$db =& wfGetDB( DB_SLAVE );
-// 		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
-// 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
-// 		       ' AND relation_title=' . $db->addQuotes($relation->getDBKey()) .
-// 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
-// 
-// 		$res = $db->select( $db->tableName('smw_relations'),
-// 		                    'DISTINCT subject_id',
-// 		                    $sql, 'SMW::getRelationSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
-// 		// rewrite result as array
-// 		$result = array();
-// 		if($db->numRows( $res ) > 0) {
-// 			while($row = $db->fetchObject($res)) {
-// 				$result[] = Title::newFromID($row->subject_id);
-// 			}
-// 		}
-// 		$db->freeResult($res);
-// 
-// 		return $result;
-// 	}
-
-// 	function getAllRelationSubjects(Title $relation, $requestoptions = NULL) {
-// 		$db =& wfGetDB( DB_SLAVE );
-// 		$sql = 'relation_title=' . $db->addQuotes($relation->getDBkey()) .
-// 		       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
-// 
-// 		$res = $db->select( $db->tableName('smw_relations'),
-// 		                    'DISTINCT subject_id',
-// 		                    $sql, 'SMW::getAllRelationSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
-// 		// rewrite result as array
-// 		$result = array();
-// 		if($db->numRows( $res ) > 0) {
-// 			while($row = $db->fetchObject($res)) {
-// 				$result[] = Title::newFromId($row->subject_id);
-// 			}
-// 		}
-// 		$db->freeResult($res);
-// 
-// 		return $result;
-// 	}
-
-// 	function getOutRelations(Title $subject, $requestoptions = NULL) {
-// 		$db =& wfGetDB( DB_SLAVE );
-// 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
-// 		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
-// 
-// 		$res = $db->select( $db->tableName('smw_relations'),
-// 		                    'DISTINCT relation_title',
-// 		                    $sql, 'SMW::getOutRelations', $this->getSQLOptions($requestoptions,'relation_title') );
-// 		// rewrite result as array
-// 		$result = array();
-// 		if($db->numRows( $res ) > 0) {
-// 			while($row = $db->fetchObject($res)) {
-// 				$result[] = Title::newFromText($row->relation_title, SMW_NS_RELATION);
-// 			}
-// 		}
-// 		$db->freeResult($res);
-//
-// 		return $result;
-// 	}
-
-// 	function getInRelations(Title $object, $requestoptions = NULL) {
-// 		$db =& wfGetDB( DB_SLAVE );
-// 		$sql = 'object_namespace=' . $db->addQuotes($object->getNamespace()) .
-// 		       ' AND object_title=' . $db->addQuotes($object->getDBKey()) .
-// 		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
-// 
-// 		$res = $db->select( $db->tableName('smw_relations'),
-// 		                    'DISTINCT relation_title',
-// 		                    $sql, 'SMW::getInRelations', $this->getSQLOptions($requestoptions,'relation_title') );
-// 		// rewrite result as array
-// 		$result = array();
-// 		if($db->numRows( $res ) > 0) {
-// 			while($row = $db->fetchObject($res)) {
-// 				$result[] = Title::newFromText($row->relation_title, SMW_NS_RELATION);
-// 			}
-// 		}
-// 		$db->freeResult($res);
-// 
-// 		return $result;
-// 	}
 
 ///// Writing methods /////
 
@@ -513,9 +407,23 @@ class SMWSQLStore extends SMWStore {
 		$db->delete('smw_specialprops',
 		            array('subject_id' => $subject->getArticleID()),
 		            'SMW::deleteSubject::Specialprops');
-		if ( ($subject->getNamespace() == SMW_NS_ATTRIBUTE) || ($subject->getNamespace() == SMW_NS_RELATION) ) {
+		$db->delete('smw_nary',
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::NAry');
+		///FIXME: check there were entries in smw_nary before continuing!
+		/// "Affected rows" should be easy to get
+		$db->delete('smw_nary_relations',
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::NAryRelations');
+		$db->delete('smw_nary_attributes',
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::NAryAttributes');
+		$db->delete('smw_nary_longstrings',
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::NaryLongstrings');
+		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
 			$db->delete('smw_subprops',
-			            array('subject_title' => $subject->getDBKey(), 'namespace' => $subject->getNamespace()),
+			            array('subject_title' => $subject->getDBKey()),
 			            'SMW::deleteSubject::Subprops');
 		}
 	}
@@ -531,6 +439,12 @@ class SMWSQLStore extends SMWStore {
 		$up_longstrings = array();
 		$up_specials = array();
 		$up_subprops = array();
+		$up_nary = array();
+		$up_nary_relations = array();
+		$up_nary_attributes = array();
+		$up_nary_longstrings = array();
+
+		$nkey = 0; // "id" for blank node created for naries
 
 		//properties
 		foreach($data->getProperties() as $property) {
@@ -544,7 +458,7 @@ class SMWSQLStore extends SMWStore {
 						             'subject_title' => $subject->getDBkey(),
 						             'attribute_title' => $property->getDBkey(),
 						             'value_blob' => $value->getXSDValue() );
-					} elseif ($value->getTypeID() == '_wpg') { // f.k.a. "Relation"
+					} elseif ($value->getTypeID() == '_wpg') {
 						$up_relations[] =
 						     array( 'subject_id' => $subject->getArticleID(),
 						            'subject_namespace' => $subject->getNamespace(),
@@ -552,6 +466,43 @@ class SMWSQLStore extends SMWStore {
 						            'relation_title' => $property->getDBkey(),
 						            'object_namespace' => $value->getNamespace(),
 						            'object_title' => $value->getDBkey() );
+					} elseif ($value->getTypeID() == '__nry') {
+						$up_nary[] =
+						     array( 'subject_id' => $subject->getArticleID(),
+						            'subject_namespace' => $subject->getNamespace(),
+						            'subject_title' => $subject->getDBkey(),
+						            'attribute_title' => $property->getDBkey(),
+						            'nary_key' => $nkey );
+						$npos = 0;
+						foreach ($value->getDVs() as $dv) {
+							switch ($dv->getTypeID()) {
+							case '_wpg':
+								$up_nary_relations[] =
+								      array( 'subject_id' => $subject->getArticleID(),
+								             'nary_key'   => $nkey,
+								             'nary_pos'   => $npos,
+								             'object_namespace' => $dv->getNamespace(),
+								             'object_title' => $dv->getDBkey() );
+							break;
+							case '_txt':
+								$up_nary_longstrings[] =
+								      array( 'subject_id' => $subject->getArticleID(),
+								             'nary_key'   => $nkey,
+								             'nary_pos'   => $npos,
+								             'value_blob' => $dv->getXSDValue() );
+							break;
+							default:
+								$up_nary_attributes[] =
+								      array( 'subject_id' => $subject->getArticleID(),
+								             'nary_key'   => $nkey,
+								             'nary_pos'   => $npos,
+								             'value_unit' => $dv->getUnit(),
+								             'value_xsd' => $dv->getXSDValue(),
+								             'value_num' => $dv->getNumericValue() );
+							}
+							$npos++;
+						}
+						$nkey++;
 					} else {
 						$up_attributes[] =
 						      array( 'subject_id' => $subject->getArticleID(),
@@ -575,16 +526,14 @@ class SMWSQLStore extends SMWStore {
 					// TODO: filtering here is bad for fully neglected properties (IMPORTED FROM)
 				break;
 				case SMW_SP_SUBPROPERTY_OF:
-					if ( ($subject->getNamespace() != SMW_NS_RELATION) && 
-					     ($subject->getNamespace() != SMW_NS_ATTRIBUTE) ) {
+					if ( $subject->getNamespace() != SMW_NS_PROPERTY ) {
 						break;
 					}
 					$valueArray = $data->getSpecialValues($special);
 					foreach($valueArray as $value) {
-						if ( $subject->getNamespace() == $value->getNamespace())  {
+						if ( $value->getNamespace() == SMW_NS_PROPERTY )  {
 							$up_subprops[] =
 						      array('subject_title' => $subject->getDBkey(),
-						            'namespace' => $subject->getNamespace(),
 						            'object_title' => $value->getDBKey());
 						}
 					}
@@ -632,6 +581,18 @@ class SMWSQLStore extends SMWStore {
 		if (count($up_subprops) > 0) {
 			$db->insert( 'smw_subprops', $up_subprops, 'SMW::updateSubPropData');
 		}
+		if (count($up_nary) > 0) {
+			$db->insert( 'smw_nary', $up_nary, 'SMW::updateNAryData');
+		}
+		if (count($up_nary_relations) > 0) {
+			$db->insert( 'smw_nary_relations', $up_nary_relations, 'SMW::updateNAryRelData');
+		}
+		if (count($up_nary_attributes) > 0) {
+			$db->insert( 'smw_nary_attributes', $up_nary_attributes, 'SMW::updateNAryAttData');
+		}
+		if (count($up_nary_longstrings) > 0) {
+			$db->insert( 'smw_nary_longstrings', $up_nary_longstrings, 'SMW::updateNAryLongData');
+		}
 	}
 
 	function changeTitle(Title $oldtitle, Title $newtitle, $keepid = true) {
@@ -646,6 +607,7 @@ class SMWSQLStore extends SMWStore {
 		// are not the ones from the old article and the new one (in reality, the
 		// $old_title refers to the newly generated redirect article, which does
 		// not have the old id that was stored in the database):
+		// TODO: in its current for this is useless and it's incomplete for naries anyway
 		if (!$keepid) {
 			$old_id = $old_title->getArticleID();
 			$new_id = $new_title->getArticleID();
@@ -661,9 +623,10 @@ class SMWSQLStore extends SMWStore {
 		$db->update('smw_attributes', $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update('smw_longstrings', $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update('smw_specialprops', $val_array, $cond_array, 'SMW::changeTitle');
+		$db->update('smw_nary', $val_array, $cond_array, 'SMW::changeTitle');
 
-		if ( ($oldtitle->getNamespace() == SMW_NS_ATTRIBUTE) || ($oldtitle->getNamespace() == SMW_NS_RELATION) ) {
-			if ( $oldtitle->getNamespace() == $newtitle->getNamespace() ) {
+		if ( $oldtitle->getNamespace() == SMW_NS_PROPERTY ) {
+			if ( $newtitle->getNamespace() == SMW_NS_PROPERTY ) {
 				$db->update('smw_subprops', array('subject_title' => $newtitle->getDBkey()), array('subject_title' => $oldtitle->getDBkey()), 'SMW::changeTitle');
 			} else {
 				$db->delete('smw_subprops', array('subject_title' => $oldtitle->getDBKey()), 'SMW::changeTitle');
@@ -778,13 +741,10 @@ class SMWSQLStore extends SMWStore {
 					case SMW_PRINT_THIS:
 						$row[] = new SMWResultArray(array($qt), $pr);
 						break;
-					case SMW_PRINT_RELS:
-						$row[] = new SMWResultArray($this->getPropertyValues($qt,$pr->getTitle()), $pr);
-						break;
 					case SMW_PRINT_CATS:
 						$row[] = new SMWResultArray($this->getSpecialValues($qt,SMW_SP_HAS_CATEGORY), $pr);
 						break;
-					case SMW_PRINT_ATTS:
+					case SMW_PRINT_PROP:
 						$row[] = new SMWResultArray($this->getPropertyValues($qt,$pr->getTitle(), NULL, $pr->getOutputFormat()), $pr);
 						break;
 				}
@@ -802,7 +762,7 @@ class SMWSQLStore extends SMWStore {
 		$this->reportProgress("Setting up standard database configuration for SMW ...\n\n",$verbose);
 		$db =& wfGetDB( DB_MASTER );
 
-		extract( $db->tableNames('smw_relations','smw_attributes','smw_longstrings','smw_specialprops','smw_subprops') );
+		extract( $db->tableNames('smw_relations', 'smw_attributes', 'smw_longstrings', 'smw_specialprops', 'smw_subprops', 'smw_nary', 'smw_nary_attributes', 'smw_nary_longstrings', 'smw_nary_relations') );
 
 		// create relation table
 		$this->setupTable($smw_relations,
@@ -835,6 +795,36 @@ class SMWSQLStore extends SMWStore {
 		                    'value_blob'        => 'MEDIUMBLOB'), $db, $verbose);
 		$this->setupIndex($smw_longstrings, array('subject_id','attribute_title'), $db);
 
+		// set up according tables for nary properties
+		$this->setupTable($smw_nary,
+		              array('subject_id'        => 'INT(8) UNSIGNED NOT NULL',
+		                    'subject_namespace' => 'INT(11) NOT NULL',
+		                    'subject_title'     => 'VARCHAR(255) NOT NULL',
+		                    'attribute_title'   => 'VARCHAR(255) NOT NULL',
+		                    'nary_key'          => 'INT(8) UNSIGNED NOT NULL'), $db, $verbose);
+		$this->setupIndex($smw_nary, array('subject_id','attribute_title','subject_id,nary_key'), $db);
+		$this->setupTable($smw_nary_relations,
+		              array('subject_id'        => 'INT(8) UNSIGNED NOT NULL',
+		                    'nary_key'          => 'INT(8) UNSIGNED NOT NULL',
+		                    'nary_pos'          => 'INT(8) UNSIGNED NOT NULL',
+		                    'object_namespace'  => 'INT(11) NOT NULL',
+		                    'object_title'      => 'VARCHAR(255) NOT NULL'), $db, $verbose);
+		$this->setupIndex($smw_nary_relations, array('subject_id,nary_key','object_title,object_namespace'), $db);
+		$this->setupTable($smw_nary_attributes,
+		              array('subject_id'        => 'INT(8) UNSIGNED NOT NULL',
+		                    'nary_key'          => 'INT(8) UNSIGNED NOT NULL',
+		                    'nary_pos'          => 'INT(8) UNSIGNED NOT NULL',
+		                    'value_unit'        => 'VARCHAR(63)',
+		                    'value_xsd'         => 'VARCHAR(255) NOT NULL',
+		                    'value_num'         => 'DOUBLE'), $db, $verbose);
+		$this->setupIndex($smw_nary_attributes, array('subject_id,nary_key','value_num','value_xsd'), $db);
+		$this->setupTable($smw_nary_longstrings,
+		              array('subject_id'        => 'INT(8) UNSIGNED NOT NULL',
+		                    'nary_key'          => 'INT(8) UNSIGNED NOT NULL',
+		                    'nary_pos'          => 'INT(8) UNSIGNED NOT NULL',
+		                    'value_blob'        => 'MEDIUMBLOB'), $db, $verbose);
+		$this->setupIndex($smw_nary_longstrings, array('subject_id,nary_key'), $db);
+
 		// create table for special properties
 		$this->setupTable($smw_specialprops,
 		              array('subject_id'        => 'INT(8) UNSIGNED NOT NULL',
@@ -847,9 +837,8 @@ class SMWSQLStore extends SMWStore {
 		// create table for subproperty relationships
 		$this->setupTable($smw_subprops,
 		              array('subject_title'     => 'VARCHAR(255) NOT NULL',
-		                    'namespace'         => 'INT(11) NOT NULL', // will be obsolete when collapsing attribs+rels
 		                    'object_title'      => 'VARCHAR(255) NOT NULL'), $db, $verbose);
-		$this->setupIndex($smw_subprops, array('subject_title', 'namespace', 'object_title'), $db);
+		$this->setupIndex($smw_subprops, array('subject_title', 'object_title'), $db);
 
 		$this->reportProgress("Database initialised successfully.\n",$verbose);
 		return true;
@@ -940,8 +929,9 @@ class SMWSQLStore extends SMWStore {
 		}
 		$res = $db->select($db->tableName('redirect'), 'rd_namespace, rd_title', 'rd_from=' . $id, 'SMW::getRedirectTarget', $options);
 		if ($row = $db->fetchObject($res)) {
-			$result = Title::newFromText($row->rd_title, $row->rd_namespace);
-			if ($result !== NULL) {
+			$result = SMWDataValueFactory::newTypeIDValue('_wpg');
+			$result->setValues($row->rd_title, $row->rd_namespace);
+			if ($result->isValid()) {
 				return $result;
 			}
 		}
@@ -1178,9 +1168,8 @@ class SMWSQLStore extends SMWStore {
 	 * @param &$where The string of computed WHERE conditions, appended to supplied string.
 	 * @param $db The database object
 	 * @param $curtables Array with names of aliases of tables refering to the 'current' element (the one to which the description basically applies).
-	 * @param $sort True if the subcondition should be used for sorting. This is only meaningful for queries that are below some relation or attribute statement.
+	 * @param $sort True if the subcondition should be used for sorting. This is only meaningful for queries that are below some property statement.
 	 *
-	 * @TODO: The extra table for long string attributes should be supported for checking existence of such an attribute (but not for comparing values, which is not needed for blobs).
 	 * @TODO: Maybe there need to be optimisations in certain cases (atomic implementation for common nestings of descriptions?)
 	 */
 	protected function createSQLQuery(SMWDescription $description, &$from, &$where, &$db, &$curtables, $sort = false) {
@@ -1202,58 +1191,56 @@ class SMWSQLStore extends SMWStore {
 			if ($this->addJoin('PAGE', $from, $db, $curtables)) {
 				$where .=  $curtables['PAGE'] . '.page_namespace=' . $db->addQuotes($description->getNamespace());
 			}
-		} elseif ($description instanceof SMWNominalDescription) {
-			global $smwgQEqualitySupport;
-			if ($smwgQEqualitySupport) {
-				$page = $this->getRedirectTarget($description->getIndividual(), $db);
-			} else {
-				$page = $description->getIndividual();
-			}
-			if (array_key_exists('PREVREL', $curtables)) {
-				$cond = $curtables['PREVREL'] . '.object_title=' .
-				        $db->addQuotes($page->getDBKey()) . ' AND ' .
-				        $curtables['PREVREL'] . '.object_namespace=' .
-				        $page->getNamespace();
-				if ( $smwgQEqualitySupport && ($this->addJoin('REDIRECT', $from, $db, $curtables)) ) {
-					$cond = '(' . $cond . ') OR (' . 
-					        $curtables['REDIRECT'] . '.rd_title=' .
-					        $db->addQuotes($page->getDBKey()) . ' AND ' .
-					        $curtables['REDIRECT'] . '.rd_namespace=' .
-					        $page->getNamespace() . ')';
-				}
-				$where .= $cond;
-			} elseif ($this->addJoin('PAGE', $from, $db, $curtables)) {
-				$where .= $curtables['PAGE'] . '.page_title=' .
-				          $db->addQuotes($page->getDBKey()) . ' AND ' .
-				          $curtables['PAGE'] . '.page_namespace=' .
-				          $page->getNamespace();
-			}
 		} elseif ($description instanceof SMWValueDescription) {
 			switch ($description->getDatavalue()->getTypeID()) {
 				case '_txt': // actually this should not happen; we cannot do anything here 
 				break;
+				case '_wpg':
+					global $smwgQEqualitySupport;
+					if ($smwgQEqualitySupport) {
+						$page = $this->getRedirectTarget($description->getDatavalue(), $db);
+					} else {
+						$page = $description->getDatavalue();
+					}
+					if (array_key_exists('PREVREL', $curtables)) {
+						$cond = $curtables['PREVREL'] . '.object_title=' .
+						        $db->addQuotes($page->getDBKey()) . ' AND ' .
+						        $curtables['PREVREL'] . '.object_namespace=' .
+						        $page->getNamespace();
+						if ( $smwgQEqualitySupport && ($this->addJoin('REDIRECT', $from, $db, $curtables)) ) {
+							$cond = '(' . $cond . ') OR (' . 
+							        $curtables['REDIRECT'] . '.rd_title=' .
+							        $db->addQuotes($page->getDBKey()) . ' AND ' .
+							        $curtables['REDIRECT'] . '.rd_namespace=' .
+							        $page->getNamespace() . ')';
+						}
+						$where .= $cond;
+					} elseif ($this->addJoin('PAGE', $from, $db, $curtables)) {
+						$where .= $curtables['PAGE'] . '.page_title=' .
+						          $db->addQuotes($page->getDBKey()) . ' AND ' .
+						          $curtables['PAGE'] . '.page_namespace=' .
+						          $page->getNamespace();
+					}
+				break;
 				default:
 					if ( $this->addJoin('ATTS', $from, $db, $curtables) ) {
 						switch ($description->getComparator()) {
-							case SMW_CMP_EQ: $op = '='; break;
 							case SMW_CMP_LEQ: $op = '<='; break;
 							case SMW_CMP_GEQ: $op = '>='; break;
 							case SMW_CMP_NEQ: $op = '!='; break;
-							case SMW_CMP_ANY: default: $op = NULL; break;
+							case SMW_CMP_EQ: default: $op = '='; break;
 						}
-						if ($op !== NULL) {
-							if ($description->getDatavalue()->isNumeric()) {
-								$valuefield = 'value_num';
-								$value = $description->getDatavalue()->getNumericValue();
-							} else {
-								$valuefield = 'value_xsd';
-								$value = $description->getDatavalue()->getXSDValue();
-							}
-							///TODO: implement check for unit
-							$where .= $curtables['ATTS'] . '.' .  $valuefield . $op . $db->addQuotes($value);
-							if ($sort != '') {
-								$this->m_sortfield = $curtables['ATTS'] . '.' . $valuefield;
-							}
+						if ($description->getDatavalue()->isNumeric()) {
+							$valuefield = 'value_num';
+							$value = $description->getDatavalue()->getNumericValue();
+						} else {
+							$valuefield = 'value_xsd';
+							$value = $description->getDatavalue()->getXSDValue();
+						}
+						///TODO: implement check for unit
+						$where .= $curtables['ATTS'] . '.' .  $valuefield . $op . $db->addQuotes($value);
+						if ($sort != '') {
+							$this->m_sortfield = $curtables['ATTS'] . '.' . $valuefield;
 						}
 					}
 			}
@@ -1289,46 +1276,42 @@ class SMWSQLStore extends SMWStore {
 					$subwhere = '';
 				}
 			}
-		} elseif ($description instanceof SMWSomeRelation) {
-			if ($this->addJoin('RELS', $from, $db, $curtables)) {
-				global $smwgQSubpropertyDepth;
-				if ($smwgQSubpropertyDepth > 0) {
-					$pt = $this->getPropertyTable($description->getRelation()->getDBKey(), $db);
-					$from = '`' . $pt . '`, ' . $from;
-					$where = "$pt.title=" . $curtables['RELS'] . '.relation_title';
-				} else {
-					$where .= $curtables['RELS'] . '.relation_title=' . 
-					          $db->addQuotes($description->getRelation()->getDBKey());
-				}
-				$nexttables = array( 'PREVREL' => $curtables['RELS'] );
-				$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $nexttables, ($this->m_sortkey == $description->getRelation()->getDBKey()) );
-				if ( $subwhere != '') {
-					$where .= ' AND (' . $subwhere . ')';
-				}
-			}
-		} elseif ($description instanceof SMWSomeAttribute) {
-			$id = SMWDataValueFactory::getPropertyObjectTypeID($description->getAttribute());
+		} elseif ($description instanceof SMWSomeProperty) {
+			$id = SMWDataValueFactory::getPropertyObjectTypeID($description->getProperty());
 			switch ($id) {
+				case '_wpg':
+					$table = 'RELS';
+					$pcolumn = 'relation_title';
+					$sub = true; //no recursion: we do not support further conditions on text-type values
+				break;
 				case '_txt':
 					$table = 'TEXT';
+					$pcolumn = 'attribute_title';
 					$sub = false; //no recursion: we do not support further conditions on text-type values
 				break;
 				default:
 					$table = 'ATTS';
+					$pcolumn = 'attribute_title';
 					$sub = true;
 			}
 			if ($this->addJoin($table, $from, $db, $curtables)) {
 				global $smwgQSubpropertyDepth;
 				if ($smwgQSubpropertyDepth > 0) {
-					$pt = $this->getPropertyTable($description->getAttribute()->getDBKey(), $db);
+					$pt = $this->getPropertyTable($description->getProperty()->getDBKey(), $db);
 					$from = '`' . $pt . '`, ' . $from;
-					$where = "$pt.title=" . $curtables[$table] . '.attribute_title';
+					$where = "$pt.title=" . $curtables[$table] . '.' . $pcolumn;
 				} else {
-					$where .= $curtables[$table] . '.attribute_title=' .
-					          $db->addQuotes($description->getAttribute()->getDBKey());
+					$where .= $curtables[$table] . '.' . $pcolumn . '=' .
+					          $db->addQuotes($description->getProperty()->getDBKey());
 				}
 				if ($sub) {
-					$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $curtables, ($this->m_sortkey == $description->getAttribute()->getDBKey()) );
+					$nexttables = array();
+					if ($table == 'RELS') { // move deeper into property graph ...
+						$nexttables['PREVREL'] = $curtables['RELS'];
+					} else { // no other table should be used for the condition!
+						$nexttables[$table] = $curtables[$table];
+					}
+					$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $nexttables, ($this->m_sortkey == $description->getProperty()->getDBKey()) );
 					if ( $subwhere != '') {
 						$where .= ' AND (' . $subwhere . ')';
 					}

@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','0.7');
+define('SMW_VERSION','1.0prealpha');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -74,7 +74,7 @@ function smwgSetupExtension() {
 
 	///// register specials /////
 
-	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchTriple.php');
+	//require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchTriple.php'); // no longer supported
 	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByProperty.php');
 	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialPageProperty.php');
 	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialBrowse.php');
@@ -227,8 +227,7 @@ function smwgSetupExtension() {
 
 		// Support subpages only for talk pages by default
 		$wgNamespacesWithSubpages = $wgNamespacesWithSubpages + array(
-			      SMW_NS_RELATION_TALK => true,
-			      SMW_NS_ATTRIBUTE_TALK => true,
+			      SMW_NS_PROPERTY_TALK => true,
 			      SMW_NS_TYPE_TALK => true
 		);
 

@@ -43,13 +43,8 @@ class SMW_PageProperty {
 		}
 		$subject = Title::newFromText( $from );
 		if (NULL != $subject) { $from = $subject->getText(); } else { $from = ''; }
-		$relation = Title::newFromText( $type, SMW_NS_ATTRIBUTE );
-		$att = TRUE;
+		$relation = Title::newFromText( $type, SMW_NS_PROPERTY );
 		if (NULL != $relation) {
-			if (!$relation->exists()) {
-				$relation = Title::newFromText( $type, SMW_NS_RELATION );
-				$att = FALSE;
-			}
 			$type = $relation->getText();
 		} else {
 			$type = '';
@@ -70,10 +65,7 @@ class SMW_PageProperty {
 			$options->limit = $limit+1;
 			$options->offset = $offset;
 			// get results (get one more, to see if we have to add a link to more)
-			if ($att)
-				$results = &smwfGetStore()->getAttributeValues($subject, $relation, $options);
-			else
-				$results = &smwfGetStore()->getRelationObjects($subject, $relation, $options);
+			$results = &smwfGetStore()->getPropertyValues($subject, $relation, $options);
 
 			// prepare navigation bar
 			if ($offset > 0)
@@ -95,12 +87,12 @@ class SMW_PageProperty {
 			} else {
 				$html .= "<ul>\n";
 				foreach ($results as $result) {
-					if ($att) {
-						$html .= '<li>' . $result->getUserValue() . '</li>';
-					} else {
+					$html .= '<li>' . $result->getShortHTMLText($skin);
+					if ($result->getTypeID() == '_wpg') {
 						$browselink = SMWInfolink::newBrowsingLink('+',$result->getPrefixedText());
-						$html .= '<li>' . $skin->makeKnownLinkObj($result) . '&nbsp;&nbsp;' . $browselink->getHTML($skin) . "</li> \n";
+						$html .= $browselink->getHTML($skin);
 					}
+					$html .=  "</li> \n";
 				}
 				$html .= "</ul>\n";
 			}

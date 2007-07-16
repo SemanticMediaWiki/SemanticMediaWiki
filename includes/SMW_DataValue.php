@@ -81,7 +81,7 @@ abstract class SMWDataValue {
 	 * Add a new error string to the error list. All error string must be wiki and
 	 * html-safe! No further escaping will happen!
 	 */
-	protected function addError($errorstring) {
+	public function addError($errorstring) {
 		$this->m_errors[] = $errorstring;
 	}
 
@@ -227,7 +227,7 @@ abstract class SMWDataValue {
 	 * an empty string if no errors happened.
 	 */
 	public function getErrorText() {
-		return smwfEncodeMessages($this->m_errors);
+		return smwfEncodeMessages($this->m_errors) . '&nbsp;'; // &nbsp; is a hack to get non-empty table rows for better img placement in FF (any maybe elsewhere too); should not hurt
 	}
 
 	/**

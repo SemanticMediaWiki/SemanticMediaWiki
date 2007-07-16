@@ -12,20 +12,17 @@ class SMWStringValue extends SMWDataValue {
 	private $m_xsdvalue = '';
 
 	protected function parseUserValue($value) {
-		if ($this->m_caption === false) {
-			$this->m_caption = $value;
-		}
 		if ($value!='') {
 			$this->m_xsdvalue = smwfXMLContentEncode($value);
-			// 255 below matches smw_attributes.value_xsd definition in smwfMakeSemanticTables()
-			if (strlen($this->m_xsdvalue) > 255) {
-				$this->addError(wfMsgForContent('smw_maxstring', $this->m_xsdvalue));
-				$this->m_value = $this->m_xsdvalue;
-			} else {
-				$this->m_value = $this->m_xsdvalue;
+			if ( (strlen($this->m_xsdvalue) > 255) && ($this->m_typeid !== '_txt') ) { // limit size (for DB indexing)
+				$this->addError(wfMsgForContent('smw_maxstring', mb_substr($value, 0, 42) . ' <span class="smwwarning">[&hellip;]</span> ' . mb_substr($value, mb_strlen($this->m_xsdvalue) - 42)));
 			}
+			$this->m_value = $this->m_xsdvalue;
 		} else {
 			$this->addError(wfMsgForContent('smw_emptystring'));
+		}
+		if ($this->m_caption === false) {
+			$this->m_caption = $this->m_value;
 		}
 		return true;
 	}
@@ -45,14 +42,14 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		return htmlspecialchars($this->getShortWikiText($linker));
+		return $this->getShortWikiText($linker); // should be save (based on xsdvalue)
 	}
 
 	public function getLongWikiText($linked = NULL) {
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		} else {
-			return $this->m_value;
+			return $this->getAbbValue($linked);
 		}
 	}
 
@@ -60,7 +57,7 @@ class SMWStringValue extends SMWDataValue {
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		} else {
-			return htmlspecialchars($this->m_value);
+			return $this->getAbbValue($linker); // should be save (based on xsdvalue)
 		}
 	}
 
@@ -88,8 +85,32 @@ class SMWStringValue extends SMWDataValue {
 		return false;
 	}
 
+	public function getInfolinks() {
+		if ($this->m_typeid !== '_txt') {
+			return SMWDataValue::getInfolinks();
+		}
+		return $this->m_infolinks;
+	}
+
 	public function exportToRDF($QName, ExportRDF $exporter) {
 		return "\t\t<$QName rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">$this->m_xsdvalue</$QName>\n";
 	}
+
+	/**
+	 * Make a possibly shortened printout string for displaying the value.
+	 */
+	protected function getAbbValue($linked) {
+		$len = mb_strlen($this->m_value);
+		if ($len > 255) {
+			if ( ($linked === NULL)||($linked === false) ) {
+				return mb_substr($this->m_value, 0, 42) . ' <span class="smwwarning">&hellip;</span> ' . mb_substr($this->m_value, $len - 42);
+			} else {
+				return mb_substr($this->m_value, 0, 42) . ' <span class="smwttpersist"> &hellip; <span class="smwttcontent">' . $this->m_value . '</span></span> ' . mb_substr($this->m_value, $len - 42);
+			}
+		} else {
+			return $this->m_value;
+		}
+	}
+
 
 }

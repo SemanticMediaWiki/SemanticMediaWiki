@@ -73,14 +73,14 @@ class SMW_SearchByProperty {
 
 				// prepare navigation bar
 				if ($offset > 0)
-					$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute->getText()) .'&value=' . urlencode($value->getWikiValue()))) . '">' . wfMsg('smw_result_prev') . '</a>';
+					$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&property=' . urlencode($attribute->getText()) .'&value=' . urlencode($value->getWikiValue()))) . '">' . wfMsg('smw_result_prev') . '</a>';
 				else
 					$navigation = wfMsg('smw_result_prev');
 
 				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min($count, $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 				if ($count>$limit) {
-					$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&attribute=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue())))  . '">' . wfMsg('smw_result_next') . '</a>';
+					$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&property=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue())))  . '">' . wfMsg('smw_result_next') . '</a>';
 				} else {
 					$navigation .= wfMsg('smw_result_next');
 				}
@@ -98,7 +98,7 @@ class SMW_SearchByProperty {
 						$max = true;
 					}
 					if ( $limit != $l ) {
-						$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . $offset . '&limit=' . $l . '&attribute=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue()))) . '">' . $l . '</a>';
+						$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . $offset . '&limit=' . $l . '&property=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue()))) . '">' . $l . '</a>';
 					} else {
 						$navigation .= '<b>' . $l . '</b>';
 					}

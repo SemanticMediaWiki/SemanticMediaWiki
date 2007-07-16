@@ -196,6 +196,20 @@ class SMWDataValueFactory {
 	}
 
 	/**
+	 * Quickly get the type value of some property without necessarily making another datavalue.
+	 * FIXME not efficient
+	 */
+	static public function getPropertyObjectTypeValue(Title $property) {
+		$propertyname = $property->getText();
+		SMWDataValueFactory::newPropertyObjectValue($property);
+		if (array_key_exists($propertyname, SMWDataValueFactory::$m_typelabels)) {
+			return SMWDataValueFactory::$m_typelabels[$propertyname];
+		} else { // no type found
+			return NULL;
+		}
+	}
+
+	/**
 	 * Create a value from a user-supplied string for which a type handler is known
 	 * If no value is given, an empty container is created, the value of which
 	 * can be set later on.
@@ -226,6 +240,7 @@ class SMWDataValueFactory {
 		return SMWDataValueFactory::newPropertyObjectValue($property, $value, $caption);
 	}
 
+
 	/**
 	 * Register a new SMWDataValue class for dealing with some type. Will be included and
 	 * instantiated dynamically if needed.
@@ -239,6 +254,7 @@ class SMWDataValueFactory {
 /// NOTE: the type constants are registered to translated labels in SMW_TypeValue.php.
 /// However, types that are not available to users can also have ids for being registered here, but
 /// these ids should start with two underscores.
+SMWDataValueFactory::registerDataValueClass('_txt','String','SMWStringValue');
 SMWDataValueFactory::registerDataValueClass('_str','String','SMWStringValue');
 // SMWDataValueFactory::registerDataValueClass('ema','URI','SMWURIValue');
 // SMWDataValueFactory::registerDataValueClass('uri','URI','SMWURIValue');
@@ -248,3 +264,4 @@ SMWDataValueFactory::registerDataValueClass('_wpg','WikiPage','SMWWikiPageValue'
 
 SMWDataValueFactory::registerDataValueClass('__typ','Types','SMWTypesValue');
 SMWDataValueFactory::registerDataValueClass('__nry','NAry','SMWNAryValue');
+SMWDataValueFactory::registerDataValueClass('__err','Error','SMWErrorValue');
