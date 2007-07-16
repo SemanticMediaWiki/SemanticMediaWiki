@@ -83,6 +83,7 @@ class SMWNAryValue extends SMWDataValue {
 			$valueindex = 0;
 			// less values specified -> test for closest matchings
 			for ($i = 0; $i < sizeof($types); $i++) {
+				$this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i]);
 				// check if enough slots available -> if not set isValid to false...
 				if ((sizeof($values)-$valueindex) > ((sizeof($types)-$i))) {
 					$this->isValid = false;
