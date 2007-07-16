@@ -185,8 +185,10 @@ class SMWTypesValue extends SMWDataValue {
 	 */
 	public function getTypeValues() {
 		$result = array();
+		$i = 0;
 		foreach ($this->getTypeLabels() as $tl) {
-			$result[] = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE, $tl);
+			$result[$i] = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE, $tl);
+			$i++;
 		}
 		return $result;
 	}
