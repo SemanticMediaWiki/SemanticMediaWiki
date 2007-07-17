@@ -271,25 +271,9 @@ class SMWSQLStore extends SMWStore {
 						}
 					}
 					$db->freeResult($res2);
-// 					$uservalue = ''; /// hack hack hack
-// 					$first = true;
-// 					for ($i=0; $i<count($subtypes); $i++) {
-// // 						if (!array_key_exists($i, $values) {
-// // 							$values[$i] = NULL;
-// // 						}
-// 						if ($first) {
-// 							$first = false;
-// 						} else {
-// 							$uservalue .= ';';
-// 						}
-// 						if (array_key_exists($i, $values)) {
-// 							$uservalue .= $values[$i]->getWikiValue();
-// 						}
-// 					}
 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 					$dv->setOutputFormat($outputformat);
 					$dv->setDVs($values);
-					//$dv->setUserValue($uservalue);
 					$result[] = $dv;
 				}
 				$db->freeResult($res);
