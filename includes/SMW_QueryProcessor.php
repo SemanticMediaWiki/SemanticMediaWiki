@@ -745,7 +745,6 @@ class SMWQueryParser {
 								$printlabel = $property->getText();
 							}
 							if ($chunk == ']]') {
-								return new SMWSomeProperty($property,$innerdesc);
 								return new SMWPrintRequest(SMW_PRINT_PROP, $printlabel, $property, $printmodifier);
 							} else {
 								$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
