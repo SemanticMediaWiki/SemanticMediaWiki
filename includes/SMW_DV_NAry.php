@@ -1,317 +1,263 @@
 <?php
 
 /**
- * This DV implements the handling of n-ary relations.
+ * The SMWDataValue in this file implements the handling of n-ary relations.
+ * @author Jörg Heizmann
+ * @author Markus Krötzsch
  */
 
 require_once('SMW_DataValue.php');
 
 class SMWNAryValue extends SMWDataValue {
 
-  /**
-   * The array of the data values within this container value
-   */
-  private $m_values = Array();
+	private $m_scount = 0;
 
-  /**
-   * Is this n-ary datavalue valid?
-   */
-  private $isValid;
+	/**
+	 * The array of the data values within this container value
+	 */
+	private $m_values = array();
 
-  /**
-   * types as we received them when datafactory called us
-   */
-  private $m_type = Array();
+	/**
+	 * typevalue as we received them when datafactory called us
+	 */
+	private $m_type;
 
-  /**
-   * Set type array. Must be done before setting any values.
-   */
-  function setType($type) {
-    $this->m_type = $type;
-  }
+	/**
+	 * Set type array. Must be done before setting any values.
+	 */
+	function setType($type) {
+		$this->m_type = $type;
+		$this->m_count = count($this->m_type->getTypeLabels());
+		$this->m_values = array(); // careful: do not iterate to m_count if DV is not valid!
+	}
 
-  private function parseValues($commaValues) {
-    return preg_split('/[\s]*;[\s]*/', $commaValues, sizeof($this->m_type->getTypeLabels()));
-  }
+	private function parseValues($commaValues) {
+		return preg_split('/[\s]*;[\s]*/', trim($commaValues), $this->m_count);
+	}
 
-  protected function parseUserValue($value) {
-    $types = $this->m_type->getTypeValues();
-    if ($value!='') {
-      $values = $this->parseValues($value);
-      // check if all values were specified
-      if (sizeof($values) < sizeof($types)) {
-        $valueindex = 0;
-        // less values specified -> test for closest matchings
-        for ($i = 0; $i < sizeof($types); $i++) {
-          // check if enough slots available...
-          if ((sizeof($values)-$valueindex) > ((sizeof($types)-$i))) {
-          	$this->isValid = false;
-            $this->addError("N-ary DV is invalid");
-            $this->m_values[$i] = null;
-          } else {
-          	// are values left to set?
-          	if (sizeof($values) > $valueindex) {
-              $this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], $values[$valueindex]);
-              if ($this->m_values[$i]->isValid()) {
-                  $valueindex++;
-              } else {
-              /// TODO: Remove previously set (user)value from container!!!
-              $this->m_values[$i] = null;
-              }
-          	}
-          }
-        }
-      } else {
-      // 	everything specified and passed correctly
-        for ($i = 0; $i < sizeof($types); $i++) {
-          $this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], $values[$i]);
-        }
-        $this->isValid = true;
-      }
-    } else {
-      // no values specified -> create empty DVs
-      for ($i = 0; $i < sizeof($types); $i++) {
-        $this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], false);
-      }
-    }
-  }
+	protected function parseUserValue($value) {
+		$this->m_values = array();
+		if ($value == '') {
+			$this->addError('No values specified.');
+			return;
+		}
 
-  protected function parseXSDValue($value, $unit) {
-    // get DVtypes
-    $types = $this->m_type->getTypeValues();
-    // get values supplied by user
-    $values = $this->parseValues($value);
-    $units = $this->parseValues($unit);
+		$types = $this->m_type->getTypeValues();
+		$values = $this->parseValues($value);
+		$vi = 0; // index in value array
+		$empty = true;
+		for ($i = 0; $i < $this->m_count; $i++) { // iterate over slots
+			if ( (count($values) > $vi) && 
+			     ( ($values[$vi] == '') || ($values[$vi] == '?') ) ) { // explicit omission
+				$this->m_values[$i] = NULL;
+				$vi++;
+			} elseif (count($values) > $vi) { // some values left, try next slot
+				$dv = SMWDataValueFactory::newTypeObjectValue($types[$i], $values[$vi]);
+				if ($dv->isValid()) { // valid DV: keep
+					$this->m_values[$i] = $dv;
+					$vi++;
+					$empty = false;
+				} elseif ( (count($values)-$vi) == (count($types)-$i) ) { 
+					// too many errors: keep this one to have enough slots left
+					$this->m_values[$i] = $dv;
+					$vi++;
+				} else { // assume implicit omission, reset to NULL
+					$this->m_values[$i] = NULL;
+				}
+			} else { // fill rest with NULLs
+				$this->m_values[$i] = NULL;
+			}
+		}
+		if ($empty) {
+			$this->addError('No values specified.');
+		}
+	}
 
-    // create user specified DVs
-    if (sizeof($values) < sizeof($types)) {
-      $valueindex = 0;
-      // less values specified -> test for closest matchings
-      for ($i = 0; $i < sizeof($types); $i++) {
-        $this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i]);
-        // check if enough slots available -> if not set isValid to false...
-        if ((sizeof($values)-$valueindex) > ((sizeof($types)-$i))) {
-          $this->isValid = false;
-          $this->addError("N-ary DV is invalid");
-        } else {
-          // is value valid?
-          if ($this->m_values[$i]) {
-            $this->m_values[$i]->setXSDValue($values[$i], (is_array($unit)? $units[$valueindex] : null));
-            if ($this->m_values[$i]->isValid()) {
-              $valueindex++;
-            } else {
-              $this->m_values[$i] = null;
-            }
-          }
-        }
-      }
-    } else {
-      // everything specified and passed correctly - set XSDValue of DV containers.
-      for ($i = 0; $i < sizeof($types); $i++) {
-        $this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i]);
-        $this->m_values[$i]->setXSDValue($values[$i], (is_array($unit)? $units[$i] : null));
-      }
-    }
-  }
+	protected function parseXSDValue($value, $unit) {
+		$types = $this->m_type->getTypeValues();
+		// Note: we can always assume this to be the form that getXSDValue returns,
+		// unless it is complete junk. So be strict in parsing.
+		$values = explode(';', $value, $this->m_count);
+		$units = explode(';', $unit, $this->m_count);
 
-  public function setOutputFormat($formatstring) {
-    /// TODO
-  }
+		if (count($values) != $this->m_count) {
+			$this->addError('This is not an nary value.');
+			return;
+		}
 
-  public function getShortWikiText($linked = NULL) {
-    if ($this->m_caption !== false) {
-      return $this->m_caption;
-    }
-    /// TODO: beautify with (...) like LongText
-    $result = '';
-    $first = true;
-    $second = true;
-    foreach ($this->m_values as $value) {
-      if ($first) {
-      	$first = false;
-      }  else if ($second) {
-        $result .= ' (';
-        $second = false;
-      } else {
-        $result .= ", ";
-      }
-	  if ($value) {
-        if ($value->getShortWikiText($linked)) {
-          $result .= $value->getShortWikiText($linked);
-        }
-      } else {
-      	$result .= "?";
-	  }
-    }
-    return $second ? $result : $result .= ')';
-  }
+		$this->m_values = array();
+		for ($i = 0; $i < $this->m_count; $i++) {
+			if ($values[$i] == '') {
+				$this->m_values[$i] = NULL;
+			} else {
+				$this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], $values[$i]);
+			}
+		}
+	}
 
-  public function getShortHTMLText($linker = NULL) {
-    if ($this->m_caption !== false) {
-      return $this->m_caption;
-    }
-    /// TODO: beautify with (...) like LongText
-    $result = '';
-    $first = true;
-    foreach ($this->m_values as $value) {
-      if ($first) {
-        $first = false;
-      } else {
-        $result .= ", ";
-      }
-	  if ($value) {
-        if ($value->getShortHTMLText($linker)) {
-    	    $result .= $value->getShortHTMLText($linker);
-        }
-      } else {
-        $result .= "?";
-	  }
-    }
-    return $result;
-  }
+	public function setOutputFormat($formatstring) {
+		/// TODO
+	}
 
-  public function getLongWikiText($linked = NULL) {
-    $result = '';
-    $first = true;
-    $second = true;
-    foreach ($this->m_values as $value) {
-  	  if ($first) {
-        $first = false;
-      } else if ($second) {
-        $result .= ' (';
-        $second = false;
-      }
-      else {
-        $result .= ", ";
-      }
-      if ($value) {
-        $result .= $value->getLongWikiText($linked);
-      } else {
-      	$result .= null;
-      }
-    }
-    return $second ? $result : $result .= ')';
-  }
+	public function getShortWikiText($linked = NULL) {
+		if ($this->m_caption !== false) {
+			return $this->m_caption;
+		}
+		return $this->makeOutputText(0, $linked);
+	}
 
-  public function getLongHTMLText($linker = NULL) {
-    /// TODO: beautify with (...) like WikiText
-    $result = '';
-    $first = true;
-    foreach ($this->m_values as $value) {
-      if ($first) {
-        $first = false;
-      } else {
-        $result .= ", ";
-      }
-      if ($value) {
-        $result .= $value->getLongHTMLText($linker);
-      } else {
-      	$result .= "?";
-      }
-    }
-    return $result;
-  }
+	public function getShortHTMLText($linker = NULL) {
+		if ($this->m_caption !== false) {
+			return $this->m_caption;
+		}
+		return $this->makeOutputText(1, $linker);
+	}
 
-  public function getXSDValue() {
-    $xsdvals = Array();
-    for ($i = 0; $i < sizeof($this->m_type->getTypeLabels()); $i++) {
-      if ($this->m_values[$i]) {
-        $xsdvals[$i] = $this->m_values[$i]->getXSDValue();
-      }
-    }
-    return implode(';', $xsdvals);
-  }
+	public function getLongWikiText($linked = NULL) {
+		return $this->makeOutputText(2, $linked);
+	}
 
-  public function getWikiValue() {
-    $result = '';
-    $first = true;
-    foreach ($this->m_values as $value) {
-      if ($first) {
-        $first = false;
-      } else {
-        $result .= ";";
-      }
+	public function getLongHTMLText($linker = NULL) {
+		return $this->makeOutputText(3, $linker);
+	}
 
-      if ($value) {
-        $result .= $value->getWikiValue();
-      }
-    }
-    return $result;
-  }
+	private function makeOutputText($type = 0, $linker = NULL) {
+		if (!$this->isValid()) {
+			return ( ($type == 0)||($type == 1) )? '' : $this->getErrorText();
+		}
+		$result = '';
+		for ($i = 0; $i < $this->m_count; $i++) {
+			if ($i == 1) {
+				$result .= ' (';
+			} elseif ($i > 1) {
+				$result .= ", ";
+			}
+			if ($this->m_values[$i] !== NULL) {
+				$result .= $this->makeValueOutputText($type, $i, $linker);
+			} else {
+				$result .= '?';
+			}
+			if ($i == sizeof($this->m_values) - 1) {
+				$result .= ')';
+			}
+		}
+		return $result;
+	}
+	
+	private function makeValueOutputText($type, $index, $linker) {
+		switch ($type) {
+			case 0: return $this->m_values[$index]->getShortWikiText($linker);
+			case 1: return $this->m_values[$index]->getShortHTMLText($linker);
+			case 2: return $this->m_values[$index]->getLongWikiText($linker);
+			case 3: return $this->m_values[$index]->getLongHTMLText($linker);
+		}
+	}
 
-  public function getNumericValue() {
-    return false;
-  }
+	public function getXSDValue() {
+		$first = true;
+		$result = '';
+		foreach ($this->m_values as $value) {
+			if ($first) {
+				$first = false;
+			} else {
+				$result .= ';';
+			}
+			if ($value !== NULL) {
+				$result .= $value->getXSDValue();
+			}
+		}
+		return $result;
+	}
 
-  public function getUnit() {
-    $units = Array();
-    for ($i = 0; $i < sizeof($this->m_type->getTypeLabels()); $i++) {
-      if ($this->m_values[$i]) {
-        $units[$i] = $this->m_values[$i]->getUnit();
-      }
-    }
-    return implode(';', $units);
-  }
+	public function getWikiValue() {
+		$result = '';
+		$first = true;
+		foreach ($this->m_values as $value) {
+			if ($first) {
+				$first = false;
+			} else {
+				$result .= "; ";
+			}
+			if ($value !== NULL) {
+				$result .= $value->getWikiValue();
+			} else {
+				$result .= "?";
+			}
+		}
+		return $result;
+	}
 
-  public function getHash() {
-    $hash = '';
-    foreach ($this->m_values as $value) {
-      // is DV set?
-      if ($value) {
-      	$hash .= $value->getHash();
-      }
-      /// FIXME: this is wrong (different value combinations yield same hash)
-    }
-    return $hash;
-  }
+	public function getNumericValue() {
+		return false;
+	}
 
-  public function isNumeric() {
-    return false; // the n-ary is clearly non numeric (n-ary values cannot be ordered by numbers)
-  }
+	public function getUnit() {
+		$first = true;
+		$result = '';
+		foreach ($this->m_values as $value) {
+			if ($first) {
+				$first = false;
+			} else {
+				$result .= ';';
+			}
+			if ($value !== NULL) {
+				$result .= $value->Unit();
+			}
+		}
+		return $result;
+	}
 
-  //
-  // custom functions for n-ary attributes
-  //
+	public function getHash() {
+		$first = true;
+		$result = '';
+		foreach ($this->m_values as $value) {
+			if ($first) {
+				$first = false;
+			} else {
+				$result .= ' - ';
+			}
+			if ($value !== NULL) {
+				$result .= str_replace('-', '--', $value->getHash());
+			}
+		}
+		return $result;
+	}
 
-  public function getDVTypeIDs() {
-    return implode(';', $this->m_type->getTypeLabels());
-  }
+	public function isNumeric() {
+		return false; // the n-ary is clearly non numeric (n-ary values cannot be ordered by numbers)
+	}
 
-  public function getType() {
-    return $this->m_type;
-  }
+////// Custom functions for n-ary attributes
 
-  public function getDVs() {
-    return $this->isValid() ? $this->m_values : null;
-  }
+	public function getDVTypeIDs() {
+		return implode(';', $this->m_type->getTypeLabels());
+	}
 
-  public function setDVs($datavalues) {
-  	// less values specified...
-  	$typelabels = $this->m_type->getTypeLabels();
-	if (sizeof($datavalues) < sizeof($typelabels)) {
-	  for ($i = 0; $i < sizeof($datavalues); $i++) {
-	  	if ($datavalues[$i]) {
-          if ($datavalues[$i]->getTypeID() == SMWTypesValue::findTypeID($typelabels[$i])) {
-  		    $this->m_values[$i] = $datavalues[$i];
-      	  } else {
-       	    $this->m_values[$i] = null;
-          }
-	  	}
-	  }
-    } else if (sizeof($datavalues) == sizeof($typelabels)) {
-      // everything specified as desired
-	  for ($i = 0; $i < sizeof($typelabels); $i++) {
-	  	if ($datavalues[$i]) {
-        // check if dv matches expected one
-      	  if ($datavalues[$i]->getTypeID() == SMWTypesValue::findTypeID($typelabels[$i])) {
-		    $this->m_values[$i] = $datavalues[$i];
-      	  } else {
-      	    $this->m_values[$i] = null;
-          }
-        }
-	  }
-    }
-  }
+	public function getType() {
+		return $this->m_type;
+	}
+
+	public function getDVs() {
+		return $this->isValid() ? $this->m_values : NULL;
+	}
+
+	/**
+	 * Directly set the values to the given array of values. The given values
+	 * should correspond to the types and arity of the nary container, with 
+	 * NULL as an indication for omitted values.
+	 */
+	public function setDVs($datavalues) {
+		$typelabels = $this->m_type->getTypeLabels();
+		for ($i = 0; $i < $this->m_count; $i++) {
+			if ( ($i < count($datavalues) ) && ($datavalues[$i] !== NULL) ) {
+			    //&& ($datavalues[$i]->getTypeID() == SMWTypesValue::findTypeID($typelabels[$i])) ) {
+			    ///TODO: is the above typcheck required, or can we assume responsible callers?
+				$this->m_values[$i] = $datavalues[$i];
+			} else {
+					$this->m_values[$i] = NULL;
+			}
+		}
+	}
 
 }
 
