@@ -30,22 +30,6 @@ class SMWNAryValue extends SMWDataValue {
 	private $m_printstatement = false;
 	private $m_outputmodifiers;
 
-	/**
-	 * Set type array. Must be done before setting any values.
-	 */
-	public function setType($type) {
-		$this->m_type = $type;
-		$this->m_count = count($this->m_type->getTypeLabels());
-		$this->m_values = array(); // careful: do not iterate to m_count if DV is not valid!
-	}
-
-	/**
-	 * Change to query syntax mode.
-	 */
-	public function acceptQuerySyntax() {
-		$this->m_querysyntax = true;
-	}
-
 	protected function parseUserValue($value) {
 		$this->m_values = array();
 		$this->m_comparators = array(); // only for query mode
@@ -61,7 +45,8 @@ class SMWNAryValue extends SMWDataValue {
 		$vi = 0; // index in value array
 		$empty = true;
 		for ($i = 0; $i < $this->m_count; $i++) { // iterate over slots
-			if ($this->m_querysyntax) { // special extension for supporting query parsing
+			// special handling for supporting query parsing
+			if ($this->m_querysyntax) { 
 				$comparator = SMW_CMP_EQ;
 				$printmodifier = '';
 				$this->prepareValue($values[$vi], $comparator, $printmodifier);
@@ -73,6 +58,7 @@ class SMWNAryValue extends SMWDataValue {
 					$printmodifiers[$vi] = '';
 				}
 			}
+			// generating the DVs:
 			if ( (count($values) > $vi) && 
 			     ( ($values[$vi] == '') || ($values[$vi] == '?') ) ) { // explicit omission
 				$this->m_values[$i] = NULL;
@@ -266,6 +252,22 @@ class SMWNAryValue extends SMWDataValue {
 		return $this->m_type;
 	}
 
+	/**
+	 * Set type array. Must be done before setting any values.
+	 */
+	public function setType($type) {
+		$this->m_type = $type;
+		$this->m_count = count($this->m_type->getTypeLabels());
+		$this->m_values = array(); // careful: do not iterate to m_count if DV is not valid!
+	}
+
+	/**
+	 * Change to query syntax mode.
+	 */
+	public function acceptQuerySyntax() {
+		$this->m_querysyntax = true;
+	}
+
 	public function getDVs() {
 		return $this->isValid() ? $this->m_values : NULL;
 	}
@@ -291,6 +293,36 @@ class SMWNAryValue extends SMWDataValue {
 			}
 		}
 		$this->m_isset = true;
+	}
+
+	/**
+	 * If valid and in querymode, build a suitable SMWValueList description from the
+	 * given input or return NULL if no such description was given. This requires the 
+	 * input to be given to setUserValue(). Otherwise bad things will happen.
+	 */
+	public function getValueList() {
+		$vl = new SMWValueList();
+		if (!$this->isValid() || !$this->m_querysyntax) {
+			return NULL;
+		}
+		for ($i=0; $i < $this->m_count; $i++) {
+			if ($this->m_values[$i] !== NULL) {
+				$vl->setDescription($i,new SMWValueDescription($this->m_values[$i], $this->m_comparators[$i]));
+			}
+		}
+		return $vl;
+	}
+
+	/**
+	 * If in querymode, return all printmodifiers given or false if no print request 
+	 * was specified. This requires the input to be given to setUserValue(). 
+	 * Otherwise bad things will happen.
+	 */
+	public function getPrintModifier() {
+		if (!$this->m_printstatement || !$this->m_querysyntax) {
+			return false;
+		}
+		return implode(';', $this->m_outputmodifiers);
 	}
 
 	private function prepareValue(&$value, &$comparator, &$printmodifier) {
@@ -324,36 +356,6 @@ class SMWNAryValue extends SMWDataValue {
 				//default: not possible
 			}
 		}
-	}
-	
-	/**
-	 * If valid and in querymode, build a suitable SMWValueList description from the
-	 * given input or return NULL if no such description was given. This requires the 
-	 * input to be given to setUserValue(). Otherwise bad things will happen.
-	 */
-	public function getValueList() {
-		$vl = new SMWValueList();
-		if (!$this->isValid() || !$this->m_querysyntax) {
-			return NULL;
-		}
-		for ($i=0; $i < $this->m_count; $i++) {
-			if ($this->m_values[$i] !== NULL) {
-				$vl->setDescription($i,new SMWValueDescription($this->m_values[$i], $this->m_comparators[$i]));
-			}
-		}
-		return $vl;
-	}
-
-	/**
-	 * If in querymode, return all printmodifiers given or false if no print request 
-	 * was specified. This requires the input to be given to setUserValue(). 
-	 * Otherwise bad things will happen.
-	 */
-	public function getPrintModifier() {
-		if (!$this->m_printstatement || !$this->m_querysyntax) {
-			return false;
-		}
-		return implode(';', $this->m_outputmodifiers);
 	}
 
 }
