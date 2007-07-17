@@ -128,9 +128,16 @@ class SMWWikiPageValue extends SMWDataValue {
 		return false;
 	}
 
+	/**
+	 * Creates the export line for the RDF export
+	 *
+	 * @param string $QName The element name of this datavalue
+	 * @param ExportRDF $exporter the exporter calling this function
+	 * @return the line to be exported
+	 */
 	public function exportToRDF($QName, ExportRDF $exporter) {
 		$obj = $exporter->getURI( $this->getTitle() );
-		return "\t\t<$QName rdf:resource=\"$obj\" />\n";
+		return "\t\t<$QName rdf:resource=\"$obj\"/>\n";
 	}
 
 ///// special interface for wiki page values

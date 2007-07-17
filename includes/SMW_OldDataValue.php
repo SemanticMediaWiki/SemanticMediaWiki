@@ -542,6 +542,18 @@ class SMWOldDataValue extends SMWDataValue {
 		} else { return false; }
 	}
 
+	/**
+	 * Creates the export line for the RDF export
+	 *
+	 * @param string $QName The element name of this datavalue
+	 * @param ExportRDF $exporter the exporter calling this function
+	 * @return the line to be exported
+	 */
+	public function exportToRDF($QName, ExportRDF $exporter) {
+		$type = $this->type_handler->getXSDType();
+		$value = $this->getXSDValue();
+		return "\t\t<$QName rdf:datatype=\"$type\">$value</$QName>\n";
+	}
 }
 
 

@@ -68,8 +68,11 @@ function doSpecialExportRDF($page = '') {
 		} elseif ( ($bl == '0') || ( '' == $bl && $postform) ) {
 			$backlinks = false; //everybody can explicitly switch off backlinks
 		}
+		$date = $wgRequest->getText( 'date' );
+		if ('' == $date) $date = $wgRequest->getVal( 'date' );
 
 		$exRDF = new ExportRDF();
+		if ('' !== $date) $exRDF->setDate($date);
 		$exRDF->printPages($pages,$recursive,$backlinks);
 		return;
 	}
@@ -142,7 +145,7 @@ class SMWExportTitle {
 		$this->modifier = $modifier;
 		if ($modifier != '') $modifier = '#' . $modifier;
 
-		$this->is_individual = ( ($this->title_namespace !== SMW_NS_RELATION) && ($this->title_namespace !== SMW_NS_ATTRIBUTE) && ($this->title_namespace !== NS_CATEGORY) );
+		$this->is_individual = ( ($this->title_namespace !== SMW_NS_PROPERTY) && ($this->title_namespace !== NS_CATEGORY) );
 		$this->exists = $title->exists();
 
 		if ($this->exists) {
@@ -169,13 +172,9 @@ class SMWExportTitle {
 			$this->ns_uri = ExportRDF::makeXMLExportId(urlencode(str_replace(' ', '_', $ns_text)));
 			$baseXML = ExportRDF::makeXMLExportId(urlencode(str_replace(' ', '_', $this->title_text . $modifier)));
 			switch ($this->title_namespace) {
-				case SMW_NS_RELATION:
-					$xmlprefix = 'relation:';
-					$xmlent = '&relation;';
-					break;
-				case SMW_NS_ATTRIBUTE:
-					$xmlprefix = 'attribute:';
-					$xmlent = '&attribute;';
+				case SMW_NS_PROPERTY:
+					$xmlprefix = 'property:';
+					$xmlent = '&property;';
 					break;
 				default:
 					$xmlprefix = 'wiki:';
@@ -194,7 +193,11 @@ class SMWExportTitle {
 			$this->long_uri = $this->ns_uri . $this->ext_section;
 			$this->short_uri = $this->ext_nsid . ':' . $this->ext_section;
 		}
-		$this->label = $ns_text . $this->title_text;
+		if ($this->is_individual) {
+			$this->label = $ns_text . $this->title_text;
+		} else {
+			$this->label = $this->title_text;
+		}
 		//$this->label = $this->title_text; // we show the namespace prefixes in most specials in our wiki, so this should also be done by external (re)users (mak)
 		//TODO: should we make an exception for schema elements (Category, Attriubte, ...) where the prefix is clear from the context? At least namespaces like User: seem to be essential for understanding.
 		if ($this->modifier != '') $this->label .= " ($this->modifier)";
@@ -246,6 +249,12 @@ class ExportRDF {
 	 * Store handler -- needed multiple times, so "cache" it
 	 */
 	var $store;
+
+	/**
+	 * Date used to filter the export. If a page has not been changed since that
+	 * date it will not be exported
+	 */
+	var $date;
 
 	/**
 	 * Array of additional namespaces (abbreviation => URI), flushed on
@@ -318,6 +327,17 @@ class ExportRDF {
 
 		$this->element_queue = array();
 		$this->element_done = array();
+		$this->date = '';
+	}
+
+	/**
+	 * Sets a date as a filter. Any page that has not been changed since that date
+	 * will not be exported. The date has to be a string in XSD format.
+	 */
+	public function setDate($date) {
+		$timeint = strtotime($date);
+		$stamp = date("YmdHis", $timeint);
+		$this->date = $stamp;
 	}
 
 	/**
@@ -390,13 +410,14 @@ class ExportRDF {
 		}
 
 		// if pages are not processed recursively, print mentioned declarations
-		if (count($this->element_queue) > 0) {
+		if (!empty($this->element_queue)) {
 			if ( '' != $this->pre_ns_buffer ) {
 				$this->post_ns_buffer .= "\t<!-- auxilliary definitions -->\n";
 			} else {
 				print "\t<!-- auxilliary definitions -->\n"; // just print this comment, so that later outputs still find the empty pre_ns_buffer!
 			}
-			foreach ( $this->element_queue as $et ) {
+			while (!empty($this->element_queue)) {
+				$et = array_pop($this->element_queue);
 				$this->printTriples($et,false);
 			}
 		}
@@ -513,10 +534,8 @@ class ExportRDF {
 			"\t<!ENTITY smwdt 'http://smw.ontoware.org/2005/smw-datatype#'>\n" .
 			// A note on "wiki": this namespace is crucial as a fallback when it would be illegal to start e.g. with a number. In this case, one can always use wiki:... followed by "_" and possibly some namespace, since _ is legal as a first character.
 			"\t<!ENTITY wiki '" . $this->wiki_xmlns_xml .  "'>\n" .
-			"\t<!ENTITY relation '" . $this->wiki_xmlns_xml .
-			$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_RELATION) . ':'))) .  "'>\n" .
-			"\t<!ENTITY attribute '" . $this->wiki_xmlns_xml .
-			$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':'))) .  "'>\n" .
+			"\t<!ENTITY property '" . $this->wiki_xmlns_xml .
+			$this->makeXMLExportId(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_PROPERTY) . ':'))) .  "'>\n" .
 			"\t<!ENTITY wikiurl '" . $this->wiki_xmlns_url .  "'>\n" .
 			"]>\n\n" .
 			"<rdf:RDF\n" .
@@ -525,9 +544,8 @@ class ExportRDF {
 			"\txmlns:owl =\"&owl;\"\n" .
 			"\txmlns:smw=\"&smw;\"\n" .
 			"\txmlns:wiki=\"&wiki;\"\n" .
-			"\txmlns:relation=\"&relation;\"\n" .
-			"\txmlns:attribute=\"&attribute;\"";
-		$this->global_namespaces = array('rdf'=>true, 'rdfs'=>true, 'owl'=>true, 'smw'=>true, 'wiki'=>true, 'relation'=>true, 'attribute'=>true);
+			"\txmlns:property=\"&property;\"";
+		$this->global_namespaces = array('rdf'=>true, 'rdfs'=>true, 'owl'=>true, 'smw'=>true, 'wiki'=>true, 'property'=>true);
 
 		$this->post_ns_buffer .=
 			">\n\t<!-- reference to the Semantic MediaWiki schema -->\n" .
@@ -540,9 +558,21 @@ class ExportRDF {
 			"\t<owl:AnnotationProperty rdf:about=\"&smw;subPropertyOf\">\n" .
 			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
 			"\t</owl:AnnotationProperty>\n" .
+			"\t<owl:AnnotationProperty rdf:about=\"&smw;exportDate\">\n" .
+			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
+			"\t</owl:AnnotationProperty>\n" .
+			"\t<owl:AnnotationProperty rdf:about=\"&smw;hasModifier\">\n" .
+			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
+			"\t</owl:AnnotationProperty>\n" .
+			"\t<owl:AnnotationProperty rdf:about=\"&smw;baseProperty\">\n" .
+			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
+			"\t</owl:AnnotationProperty>\n" .
 			"\t<owl:Class rdf:about=\"&smw;Thing\">\n" .
 			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
 			"\t</owl:Class>\n" .
+			"\t<owl:Ontology rdf:about=\"\">\n" .
+			"\t\t<smw:exportDate rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">" . date(DATE_W3C) . "</smw:exportDate>\n" .
+			"\t</owl:Ontology>" .
 			"\t<!-- exported page data -->\n";
 	}
 
@@ -551,41 +581,43 @@ class ExportRDF {
 	}
 
 	function printTriples($et, $fullexport=true) {
+		// return if younger than the filtered date
+		if ($et->exists && ($this->date !== '')) {
+			$rev = Revision::getTimeStampFromID($et->title->getLatestRevID());
+			if ($rev < $this->date) return;
+		}
+
 		$datatype_rel = false;
 		$category_rel = false;
 		$equality_rel = false;
 		$subrel_rel = false;
 		$subatt_rel = false;
+		
+		// if this was already exported, don't do it again
+		if (array_key_exists($et->hashkey, $this->element_done)) return;
 
 		// Set parameters for export
 		switch ($et->title_namespace) {
-			case SMW_NS_RELATION:
-				$type = 'owl:ObjectProperty';
+			case SMW_NS_PROPERTY: 
+				if ( $et->has_type ) {
+					if ( ('annouri' == $et->has_type->getTypeID()) || ('annostring' == $et->has_type->getTypeID()) ) {
+						$type = 'owl:AnnotationProperty';
+						//$subrel_rel = "smw:subPropertyOf";
+						//TODO  can it be equivalent? cannot be a subproperty
+					} elseif ('_wpg' == $et->has_type->getTypeID()) {
+						$type = 'owl:ObjectProperty';
+					} else {
+						$type = 'owl:DatatypeProperty';						
+					}
+				} else {
+ 					$type = 'owl:ObjectProperty';
+				}
 				$equality_rel = "owl:equivalentProperty";
 				global $smwgExportSemanticRelationHierarchy;
 				if ($smwgExportSemanticRelationHierarchy) {
 					$subrel_rel = "rdfs:subPropertyOf";
 				} else {
 					$subrel_rel = "smw:subPropertyOf";
-				}
-				break;
-			case SMW_NS_ATTRIBUTE:
-				if ( $et->has_type === false ) return; //attributes w/o type not exportable, TODO: is this what we want?
-				if ( ('annouri' == $et->has_type->getTypeID()) || ('annostring' == $et->has_type->getTypeID()) ) {
-					$type = 'owl:AnnotationProperty'; // cannot be a subproperty, etc.
-				} else {
-					if ('' != SMWTypeHandlerFactory::getXSDTypeByID($et->has_type->getTypeID())) {
-						$type = 'owl:DatatypeProperty';
-					} else { // no xsd-type -> treat as object property
-						$type = 'owl:ObjectProperty';
-					}
-					$equality_rel = "owl:equivalentProperty";
-				}
-				global $smwgExportSemanticRelationHierarchy;
-				if ($smwgExportSemanticRelationHierarchy) {
-					$subatt_rel = "rdfs:subPropertyOf";
-				} else {
-					$subatt_rel = "smw:subPropertyOf";
 				}
 				break;
 			case NS_CATEGORY:
@@ -612,6 +644,18 @@ class ExportRDF {
 		              $et->title_prefurl . "\"/>\n" .
 		      "\t\t<rdfs:isDefinedBy rdf:resource=\"" .
 		              $this->special_url . '/' . $et->title_prefurl . "\"/>\n";
+		// If the property is modified by a unit, export the modifier
+		// and the base relation explicitly	              
+		if ( $et->has_type && $et->modifier ) {
+			$this->post_ns_buffer .= "\t\t<smw:hasModifier rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">" .
+				$et->modifier .
+				"</smw:hasModifier>\n";
+			$baseprop = $this->getExportTitle($et->title_text, SMW_NS_PROPERTY);
+			$this->post_ns_buffer .= "\t\t<smw:baseProperty rdf:resource=\"" . $baseprop->long_uri . "\"/>\n";
+			if (!array_key_exists($baseprop->hashkey, $this->element_queue)) {
+				$this->element_queue[$baseprop->hashkey] = $baseprop;
+			}
+		}
 
 		if ( ($fullexport) && ($et->exists) ) {
 			// add statements about categories
@@ -647,7 +691,7 @@ class ExportRDF {
  				foreach ($relations as $relation) {
  					// TODO in future, check type safety relations <-> attributes
  					// TODO check also the type of what I am pointing to (is it a relation or sth else?)
- 					$suprel = $this->getExportTitle($relation, SMW_NS_RELATION);
+ 					$suprel = $this->getExportTitle($relation, SMW_NS_PROPERTY);
  					$this->post_ns_buffer .= "\t\t<$subrel_rel rdf:resource=\"" . $suprel->long_uri . "\"/>\n";
  					if (!array_key_exists($suprel->hashkey, $this->element_queue)) {
  							$this->element_queue[$suprel->hashkey] = $suprel;
@@ -662,7 +706,7 @@ class ExportRDF {
  					// TODO check the type of the attribute pointed to, does it match?
  					// Could lead to inconsistencies in the output -- and in the wiki? But this will
  					// need to be dealt with as soon as people add subattribute semantics to the wiki
- 					$supatt = $this->getExportTitle($attribute, SMW_NS_ATTRIBUTE);
+ 					$supatt = $this->getExportTitle($attribute, SMW_NS_PROPERTY);
  					$this->post_ns_buffer .= "\t\t<$subatt_rel rdf:resource=\"" . $supatt->long_uri . "\"/>\n";
  					if (!array_key_exists($supatt->hashkey, $this->element_queue)) {
  							$this->element_queue[$supatt->hashkey] = $supatt;
@@ -678,30 +722,10 @@ class ExportRDF {
 					foreach ( $values as $value ) {
 						$pt = $this->getExportTitleFromTitle( $prop, $value->getUnit() );
 						$this-> post_ns_buffer .= $value->exportToRDF( $pt->short_uri, $this );
-//						$ot = $this->getExportTitleFromTitle( $obj );
-//						if ($ot->is_individual) { // check OWL Fullness
-//							$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:resource="' . $ot->long_uri .  "\"/>\n";
-//						}
+						// TODO check OWL Fullness in Wikipage
 					}
 				}
-				// print all attributes
-/*				$atts = $this->store->getAttributes( $et->title );
-				foreach ( $atts as $att ) {
-					$dvs = $this->store->getAttributeValues( $et->title, $att );
-					foreach ( $dvs as $dv ) {
-						$pt = $this->getExportTitleFromTitle( $att, $dv->getUnit() );
-						$xsdtype = SMWTypeHandlerFactory::getXSDTypeByID( $dv->getTypeID() );
-						$xsdvalue = $dv->getXSDValue();
-						if ( ($xsdtype !== '') && ($xsdtype !== NULL) && ($xsdvalue != '') ) {
-							$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:datatype="' . $xsdtype .  '">' . $xsdvalue . '</' . $pt->short_uri . ">\n";
-						} elseif ($xsdtype === '') { // no xsd-type -> export as object property
-							$this->post_ns_buffer .= "\t\t<" . $pt->short_uri . ' rdf:resource="' . $xsdvalue .  "\"/>\n";
-						} else {
-							$this->post_ns_buffer .= "\t\t<!-- Sorry, type '$xsdtype' of attribute '$pt->label' could not be resolved to XSD. Probably an upgrade issue. Try saving the respective article again. -->\n";
-						}
-					}
-				}
-*/			}
+			}
 		}
 
 		$this->post_ns_buffer .= "\t</" . $type . ">\n";
@@ -762,7 +786,7 @@ class ExportRDF {
 	 */
 	public function getURI(Title $title, $unit = '') {
 		$et = $this->getExportTitleFromTitle( $title, $unit );
-		return $et->short_uri;
+		return $et->long_uri;
 	}
 
 	/** Fetch SMWExportTitle for a given article. The inputs are
@@ -842,8 +866,7 @@ class ExportRDF {
 	static function fitsNsRestriction($res, $ns) {
 		if ($res === false) return true;
 		if ($res >= 0) return ( $res == $ns );
-		return ( ($res != NS_CATEGORY) && ($res != SMW_NS_RELATION)
-		         && ($res != SMW_NS_ATTRIBUTE) && ($res != SMW_NS_TYPE) );
+		return ( ($res != NS_CATEGORY) && ($res != SMW_NS_PROPERTY) && ($res != SMW_NS_TYPE) );
 	}
 
 	/** This function transforms a valid url-encoded URI into a string
