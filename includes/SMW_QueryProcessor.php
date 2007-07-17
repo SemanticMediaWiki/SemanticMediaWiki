@@ -701,37 +701,66 @@ class SMWQueryParser {
 						}
 					} // note that at this point, we normally already read one more chunk behind the value
 
-					// TODO: special treatment for naries needed ...
-					$comparator = SMW_CMP_EQ;
-					$printmodifier = '';
-					$this->prepareValue($value, $comparator, $printmodifier);
-					if ($value == '*') {
-						if ($chunk == '|') {
-							$printlabel = $this->readChunk('\]\]');
-							if ($printlabel != ']]') {
-								$chunk = $this->readChunk('\]\]');
+					if ($typeid == '__nry') { // nary value
+						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+						$dv->acceptQuerySyntax();
+						$dv->setUserValue($value);
+						$vl = $dv->getValueList();
+						$pm = $dv->getPrintModifier();
+						if ($vl !== NULL) { // prefer conditions over print statements (only one possible right now)
+							$innerdesc = $this->addDescription($innerdesc, $vl, false);
+						} elseif ($pm !== false) {
+							if ($chunk == '|') {
+								$printlabel = $this->readChunk('\]\]');
+								if ($printlabel != ']]') {
+									$chunk = $this->readChunk('\]\]');
+								} else {
+									$printlabel = '';
+									$chunk = ']]';
+								}
 							} else {
-								$printlabel = '';
-								$chunk = ']]';
+								$printlabel = $property->getText();
+							}
+							if ($chunk == ']]') {
+								return new SMWPrintRequest(SMW_PRINT_PROP, $printlabel, $property, $pm);
+							} else {
+								$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
+								return NULL;
+							}
+						}
+					} else { // unary value
+						$comparator = SMW_CMP_EQ;
+						$printmodifier = '';
+						$this->prepareValue($value, $comparator, $printmodifier);
+						if ($value == '*') {
+							if ($chunk == '|') {
+								$printlabel = $this->readChunk('\]\]');
+								if ($printlabel != ']]') {
+									$chunk = $this->readChunk('\]\]');
+								} else {
+									$printlabel = '';
+									$chunk = ']]';
+								}
+							} else {
+								$printlabel = $property->getText();
+							}
+							if ($chunk == ']]') {
+								return new SMWSomeProperty($property,$innerdesc);
+								return new SMWPrintRequest(SMW_PRINT_PROP, $printlabel, $property, $printmodifier);
+							} else {
+								$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
+								return NULL;
 							}
 						} else {
-							$printlabel = $property->getText();
+							$dv = SMWDataValueFactory::newPropertyObjectValue($property, $value);
+							if (!$dv->isValid()) {
+								$this->m_errors = $this->m_errors + $dv->getErrors();
+								$vd = new SMWThingDescription();
+							} else {
+								$vd = new SMWValueDescription($dv, $comparator);
+							}
+							$innerdesc = $this->addDescription($innerdesc, $vd, false);
 						}
-						if ($chunk == ']]') {
-							return new SMWPrintRequest(SMW_PRINT_PROP, $printlabel, $property, $printmodifier);
-						} else {
-							$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
-							return NULL;
-						}
-					} else {
-						$dv = SMWDataValueFactory::newPropertyObjectValue($property, $value);
-						if (!$dv->isValid()) {
-							$this->m_errors = $this->m_errors + $dv->getErrors();
-							$vd = new SMWThingDescription();
-						} else {
-							$vd = new SMWValueDescription($dv, $comparator);
-						}
-						$innerdesc = $this->addDescription($innerdesc, $vd, false);
 					}
 			}
 			$continue = ($chunk == '||');

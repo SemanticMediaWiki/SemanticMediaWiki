@@ -191,7 +191,9 @@ abstract class SMWDescription {
 	public function prune(&$maxsize, &$maxdepth, &$log) {
 		if ( ($maxsize < $this->getSize()) || ($maxdepth < $this->getDepth()) ) {
 			$log[] = $this->getQueryString();
-			return new SMWThingDescription();
+			$result = new SMWThingDescription();
+			$result->setPrintRequests($this->getPrintRequests());
+			return $result;
 		} else {
 			$maxsize = $maxsize - $this->getSize();
 			$maxdepth = $maxdepth - $this->getDepth();
@@ -287,11 +289,11 @@ class SMWNamespaceDescription extends SMWDescription {
 /**
  * Description of one data value, or of a range of data values.
  *
- * Technically this usually corresponds to unary concrete domain predicates
- * in OWL which are parametrised by one constant from the concrete domain.
- * In rare cases where SMW attributes represent object properties, this can
- * also be similar to a nominal class. In RDF, concrete domain predicates that
- * define ranges (like "greater or equal to") are not directly available.
+ * Technically this usually corresponds to nominal predicates or to unary 
+ * concrete domain predicates in OWL which are parametrised by one constant 
+ * from the concrete domain.
+ * In RDF, concrete domain predicates that define ranges (like "greater or 
+ * equal to") are not directly available.
  */
 class SMWValueDescription extends SMWDescription {
 	protected $m_datavalue;
@@ -333,13 +335,130 @@ class SMWValueDescription extends SMWDescription {
 	}
 
 	public function isSingleton() {
-		return false;
+		if ($this->m_comparator == SMW_CMP_EQ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public function getSize() {
 		return 1;
 	}
 
+}
+
+
+/**
+ * Description of an ordered list of SMWDescription objects, used as
+ * values for some n-ary property. NULL values are to be used for 
+ * Corresponds to the built-in support for n-ary properties, i.e.
+ * can be viewed as a macro in OWL and RDF.
+ */
+class SMWValueList extends SMWDescription {
+	protected $m_descriptions;
+	protected $m_size;
+
+	public function SMWValueList($descriptions = array()) {
+		$this->m_descriptions = array_values($descriptions);
+		$this->m_size = count($descriptions);
+	}
+
+	public function getCount() {
+		return $this->m_size;
+	}
+
+	public function getDescriptions() {
+		return $this->m_descriptions;
+	}
+
+	public function setDescription($index, $description) {
+		$this->m_descriptions[$index] = $description;
+		if ($index >= $this->m_size) { // fill other places with NULL
+			for ($i=$this->m_size; $i<$index; $i++) {
+				$this->m_descriptions[$i] = NULL;
+			}
+			$this->m_size = $index+1;
+		}
+	}
+
+	public function getDescription($index) {
+		if ($index < $this->m_size) {
+			return $this->m_descriptions[$index];
+		} else {
+			return NULL;
+		}
+	}
+
+	public function getQueryString() {
+		$result = '';
+		$first = true;
+		$nonempty = false;
+		for ($i=0; $i<$this->m_size; $i++) {
+			if ($first) {
+				$first = false;
+			} else {
+				$result .= ';';
+			}
+			if ($this->m_descriptions[$i] !== NULL) {
+				$nonempty = true;
+				$result .= $this->m_descriptions[$i]->getQueryString();
+			}
+		}
+		if (!$nonempty) {
+			return '+';
+		} else {
+			return $result;
+		}
+	}
+
+	public function isSingleton() {
+		return false;
+	}
+
+	public function getSize() {
+		$size = 1;
+		foreach ($this->m_descriptions as $desc) {
+			if ($desc !== NULL) {
+				$size += $desc->getSize();
+			}
+		}
+		return $size;
+	}
+
+	public function getDepth() {
+		$depth = 0;
+		foreach ($this->m_descriptions as $desc) {
+			if ($desc !== NULL) {
+				$depth = max($depth, $desc->getDepth());
+			}
+		}
+		return $depth;
+	}
+
+	public function prune(&$maxsize, &$maxdepth, &$log) {
+		if ($maxsize <= 0) {
+			$log[] = $this->getQueryString();
+			return new SMWThingDescription();
+		}
+		$maxsize--;
+		$prunelog = array();
+		$newdepth = $maxdepth;
+		$result = new SMWValueList();
+		$result->setPrintRequests($this->getPrintRequests());
+		for ($i=0; $i<$this->m_size; $i++) {
+			if ($this->m_descriptions[$i] !== NULL) {
+				$restdepth = $maxdepth;
+				$result->setDescription($i, $this->m_descriptions[$i]->prune($maxsize, $restdepth, $prunelog));
+				$newdepth = min($newdepth, $restdepth);
+			} else {
+				$result->setDescription($i, NULL);
+			}
+		}
+		$log = array_merge($log, $prunelog);
+		$maxdepth = $newdepth;
+		return $result;
+	}
 }
 
 /**
@@ -422,7 +541,9 @@ class SMWConjunction extends SMWDescription {
 			return $result;
 		} else {
 			$log[] = $this->getQueryString();
-			return new SMWThingDescription();
+			$result = new SMWThingDescription();
+			$result->setPrintRequests($this->getPrintRequests());
+			return $result;
 		}
 	}
 }
@@ -521,7 +642,9 @@ class SMWDisjunction extends SMWDescription {
 			return $result;
 		} else {
 			$log[] = $this->getQueryString();
-			return new SMWThingDescription();
+			$result = new SMWThingDescription();
+			$result->setPrintRequests($this->getPrintRequests());
+			return $result;
 		}
 	}
 }
@@ -579,154 +702,4 @@ class SMWSomeProperty extends SMWDescription {
 		return $result;
 	}
 }
-
-
-
-
-/**
- * Description of a class that contains exactly one explicitly given 
- * object.
- *
- * Corresponds to nominal concepts in OWL, and can be emulated for querying 
- * by using individuals directly in conjunctive queries (OWL) or SPARQL (RDF).
- */
-class SMWNominalDescription extends SMWDescription {
-	protected $m_title;
-
-	public function SMWNominalDescription(Title $individual) {
-		trigger_error("SMWNominalDescription is deprecated.", E_USER_NOTICE);
-		$this->m_title = $individual;
-	}
-
-	public function getIndividual() {
-		return $this->m_title;
-	}
-
-	public function getQueryString() {
-		if ($this->m_title !== NULL) {
-			return '[[:' . $this->m_title->getPrefixedText() . ']]';
-		} else {
-			return '';
-		}
-	}
-
-	public function isSingleton() {
-		return true;
-	}
-}
-
-/**
- * Description of a set of instances that have a relation to at least one
- * element that fits another (sub)description.
- *
- * Corresponds to existential quatification ("some" restriction) on abstract properties in 
- * OWL. In conjunctive queries (OWL) and SPARQL (RDF), it is represented by using 
- * variables in the object part of such properties.
- */
-class SMWSomeRelation extends SMWDescription {
-	protected $m_description;
-	protected $m_relation;
-
-	public function SMWSomeRelation(Title $relation, SMWDescription $description) {
-		trigger_error("SMWSomeRelation is deprecated.", E_USER_NOTICE);
-		$this->m_relation = $relation;
-		$this->m_description = $description;
-	}
-
-	public function getRelation() {
-		return $this->m_relation;
-	}
-
-	public function getDescription() {
-		return $this->m_description;
-	}
-
-	public function getQueryString() {
-		if ($this->m_description instanceof SMWThingDescription) {
-			return '[[' . $this->m_relation->getText() . '::+]]';
-		} else {
-			return '[[' . $this->m_relation->getText() . ':: &lt;q&gt;' . $this->m_description->getQueryString() . '&lt;/q&gt;]]';
-		}
-	}
-
-	public function isSingleton() {
-		return false;
-	}
-
-	public function getSize() {
-		return 1+$this->getDescription()->getSize();
-	}
-
-	public function getDepth() {
-		return 1+$this->getDescription()->getDepth();
-	}
-
-	public function prune(&$maxsize, &$maxdepth, &$log) {
-		if (($maxsize <= 0)||($maxdepth <= 0)) {
-			$log[] = $this->getQueryString();
-			return new SMWThingDescription();
-		}
-		$maxsize--;
-		$maxdepth--;
-		$result = new SMWSomeRelation($this->getRelation(), $this->m_description->prune($maxsize,$maxdepth,$log));
-		$result->setPrintRequests($this->getPrintRequests());
-		return $result;
-	}
-}
-
-/**
- * Description of a set of instances that have an attribute with some value that
- * fits another (sub)description.
- *
- * Corresponds to existential quatification ("some" restriction) on concrete properties
- * in OWL. In conjunctive queries (OWL) and SPARQL (RDF), it is represented by using 
- * variables in the object part of such properties.
- */
-class SMWSomeAttribute extends SMWDescription {
-	protected $m_description;
-	protected $m_attribute;
-
-	public function SMWSomeAttribute(Title $attribute, SMWDescription $description) {
-		trigger_error("SMWSomeAttribute is deprecated.", E_USER_NOTICE);
-		$this->m_attribute = $attribute;
-		$this->m_description = $description;
-	}
-
-	public function getAttribute() {
-		return $this->m_attribute;
-	}
-
-	public function getDescription() {
-		return $this->m_description;
-	}
-
-	public function getQueryString() {
-		return '[[' . $this->m_attribute->getText() . ':=' . $this->m_description->getQueryString() . ']]';
-	}
-
-	public function isSingleton() {
-		return false;
-	}
-
-	public function getSize() {
-		return 1+$this->getDescription()->getSize();
-	}
-
-	public function getDepth() {
-		return 1+$this->getDescription()->getDepth();
-	}
-
-	public function prune(&$maxsize, &$maxdepth, &$log) {
-		if (($maxsize <= 0)||($maxdepth <= 0)) {
-			$log[] = $this->getQueryString();
-			return new SMWThingDescription();
-		}
-		$maxsize--;
-		$maxdepth--;
-		$result = new SMWSomeAttribute($this->getAttribute(), $this->m_description->prune($maxsize,$maxdepth,$log));
-		$result->setPrintRequests($this->getPrintRequests());
-		return $result;
-	}
-}
-
 

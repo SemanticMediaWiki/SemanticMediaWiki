@@ -229,6 +229,10 @@ class SMWSQLStore extends SMWStore {
 									'SMW::getPropertyValues', $this->getSQLOptions($requestoptions) );
 				///TODO: presumably slow. Try to do less SQL queries by making a join with smw_nary
 				while($row = $db->fetchObject($res)) {
+					$values = array();
+					for ($i=0; $i < count($subtypes); $i++) { // init array
+						$values[$i] = NULL; 
+					}
 					$res2 = $db->select( $db->tableName('smw_nary_attributes'),
 									'nary_pos, value_unit, value_xsd',
 									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
@@ -267,24 +271,25 @@ class SMWSQLStore extends SMWStore {
 						}
 					}
 					$db->freeResult($res2);
-					$uservalue = ''; /// hack hack hack
-					$first = true;
-					for ($i=0; $i<count($subtypes); $i++) {
-// 						if (!array_key_exists($i, $values) {
-// 							$values[$i] = NULL;
+// 					$uservalue = ''; /// hack hack hack
+// 					$first = true;
+// 					for ($i=0; $i<count($subtypes); $i++) {
+// // 						if (!array_key_exists($i, $values) {
+// // 							$values[$i] = NULL;
+// // 						}
+// 						if ($first) {
+// 							$first = false;
+// 						} else {
+// 							$uservalue .= ';';
 // 						}
-						if ($first) {
-							$first = false;
-						} else {
-							$uservalue .= ';';
-						}
-						if (array_key_exists($i, $values)) {
-							$uservalue .= $values[$i]->getWikiValue();
-						}
-					}
+// 						if (array_key_exists($i, $values)) {
+// 							$uservalue .= $values[$i]->getWikiValue();
+// 						}
+// 					}
 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 					$dv->setOutputFormat($outputformat);
-					$dv->setUserValue($uservalue);
+					$dv->setDVs($values);
+					//$dv->setUserValue($uservalue);
 					$result[] = $dv;
 				}
 				$db->freeResult($res);
@@ -1159,88 +1164,154 @@ class SMWSQLStore extends SMWStore {
 	/**
 	 * Add the table $tablename to the $from condition via an inner join,
 	 * using the tables that are already available in $curtables (and extending 
-	 * $curtables with the new table). Return true if successful or false if it
-	 * wasn't possible to make a suitable inner join.
+	 * $curtables with the new table). Return the table name if successful or false 
+	 * if it wasn't possible to make a suitable inner join.
+	 *
+	 * The method in fact is very simple: since queries are tree-shaped, there is
+	 * always some "current node" (most often some wikipage). To add new conditions
+	 * to this node, joins must be created. These are possible with all basic 
+	 * semantic tables. In recursive calls, further conditions for subqueries might
+	 * be added: in this case the subject changes, the existing table list is cleared
+	 * by the query creation method, and only a single table (the "path" along which the
+	 * descent into the query structure happened) is kept. Such tables are prefixed
+	 * whith 'p' to distinguish them from yet to follow new condition tables for the
+	 * new node.
+	 *
+	 * In rare cases, the condition on a subnode actually introduces the
+	 * 'p'-table: this happens when naries are evaluated, and replaces the nary's
+	 * simulated intermediate node with its subquery condition. Note that those joins
+	 * do not require redirect(equality) handling as they do not involve actual pages.
+	 *
+	 * Finally, one can add a redirect table (this is a LEFT JOIN in order not to make
+	 * the existence of a redirect a new condition) and possibly an additional pagetable
+	 * to resolve redirect target ids.
+	 * 
+	 * That's all. The method can be read and modified case by case, each of which is 
+	 * rather short and completely independent from the other cases.
 	 */
-	protected function addJoin($tablename, &$from, &$db, &$curtables) {
+	protected function addJoin($tablename, &$from, &$db, &$curtables, $nary_pos = '') {
 		global $smwgQEqualitySupport;
 		if (array_key_exists($tablename, $curtables)) { // table already present
-			return true;
+			return $curtables[$tablename];
 		}
+
 		if ($tablename == 'PAGE') {
-			if (array_key_exists('PREVREL', $curtables)) { // PREVREL cannot be added if not present
+			if ($this->addJoin('pRELS', $from, $db, $curtables, $nary_pos)) {
 				$curtables['PAGE'] = 'p' . SMWSQLStore::$m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('page') . ' AS ' . $curtables['PAGE'] . ' ON (' .
-				           $curtables['PAGE'] . '.page_title=' . $curtables['PREVREL'] . '.object_title AND ' .
-				           $curtables['PAGE'] . '.page_namespace=' . $curtables['PREVREL'] . '.object_namespace)';
-				return true;
+				           $curtables['PAGE'] . '.page_title=' . $curtables['pRELS'] . '.object_title AND ' .
+				           $curtables['PAGE'] . '.page_namespace=' . $curtables['pRELS'] . '.object_namespace)';
+				return $curtables['PAGE'];
 			}
 		} elseif ($tablename == 'CATS') {
-			if ($this->addJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+			if ($this->addJoin('PAGE', $from, $db, $curtables, $nary_pos)) {
 				$curtables['CATS'] = 'cl' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['CATS'] . '.cl_from=' . $curtables['PAGE'] . '.page_id';
 				/// TODO: slow, introduce another parameter to activate this
-				if ($smwgQEqualitySupport && (array_key_exists('PREVREL', $curtables))) {
-					// only do this at inner queries (PREVREL set)
-					$this->addJoin('REDIPAGE', $from, $db, $curtables);
+				if ($smwgQEqualitySupport && (array_key_exists('pRELS', $curtables))) {
+					// only do this at inner queries (pREL set)
+					$this->addJoin('REDIPAGE', $from, $db, $curtables, $nary_pos);
 					$cond = '((' . $cond . ') OR (' .
 					  $curtables['REDIPAGE'] . '.page_id=' . $curtables['CATS'] . '.cl_from))';
 				}
 				$from .= ' INNER JOIN ' . $db->tableName('categorylinks') . ' AS ' . $curtables['CATS'] . ' ON ' . $cond;
-				return true;
+				return $curtables['CATS'];
 			}
 		} elseif ($tablename == 'RELS') {
-			if ($this->addJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+			if ( $this->addJoin('PAGE', $from, $db, $curtables, $nary_pos) ) {
 				$curtables['RELS'] = 'rel' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['RELS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
 				/// TODO: slow, introduce another parameter to activate this
-				if ($smwgQEqualitySupport && (array_key_exists('PREVREL', $curtables))) {
-					// only do this at inner queries (PREVREL set)
-					$this->addJoin('REDIRECT', $from, $db, $curtables);
+				if ($smwgQEqualitySupport && (array_key_exists('pRELS', $curtables))) {
+					// only do this at inner queries (pREL set)
+					$this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos);
 					$cond = '((' . $cond . ') OR (' .
-					  //$curtables['PAGE'] . '.page_id=' . $curtables['REDIRECT'] . '.rd_from AND ' .
 					  $curtables['REDIRECT'] . '.rd_title=' . $curtables['RELS'] . '.subject_title AND ' .
 					  $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['RELS'] . '.subject_namespace))';
 				}
 				$from .= ' INNER JOIN ' . $db->tableName('smw_relations') . ' AS ' . $curtables['RELS'] . ' ON ' . $cond;
-				return true;
+				return $curtables['RELS'];
 			}
 		} elseif ($tablename == 'ATTS') {
-			if ($this->addJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+			if ( $table = $this->addJoin('PAGE', $from, $db, $curtables, $nary_pos) ) {
 				$curtables['ATTS'] = 'att' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['ATTS'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
 				/// TODO: slow, introduce another parameter to activate this
-				if ($smwgQEqualitySupport && (array_key_exists('PREVREL', $curtables))) {
-					// only do this at inner queries (PREVREL set)
-					$this->addJoin('REDIRECT', $from, $db, $curtables);
+				if ($smwgQEqualitySupport && (array_key_exists('pRELS', $curtables))) {
+					// only do this at inner queries (pREL set)
+					$this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos);
 					$cond = '((' . $cond . ') OR (' .
-					  //$curtables['PAGE'] . '.page_id=' . $curtables['REDIRECT'] . '.rd_from AND ' .
 					  $curtables['REDIRECT'] . '.rd_title=' . $curtables['ATTS'] . '.subject_title AND ' .
 					  $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['ATTS'] . '.subject_namespace))';
 				}
 				$from .= ' INNER JOIN ' . $db->tableName('smw_attributes') . ' AS ' . $curtables['ATTS'] . ' ON ' . $cond;
-				return true;
+				return $curtables['ATTS'];
 			}
 		} elseif ($tablename == 'TEXT') {
-			if ($this->addJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+			if ($this->addJoin('PAGE', $from, $db, $curtables, $nary_pos)) { // try to add PAGE
 				$curtables['TEXT'] = 'txt' . SMWSQLStore::$m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('smw_longstrings') . ' AS ' . $curtables['TEXT'] . ' ON ' . $curtables['TEXT'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
-				return true;
+				return $curtables['TEXT'];
+			}
+		} elseif ($tablename == 'NARY') {
+			if ($this->addJoin('PAGE', $from, $db, $curtables, $nary_pos)) { // try to add PAGE
+				$curtables['NARY'] = 'nary' . SMWSQLStore::$m_tablenum++;
+				$cond = $curtables['NARY'] . '.subject_id=' . $curtables['PAGE'] . '.page_id';
+				/// TODO: slow, introduce another parameter to activate this
+				if ($smwgQEqualitySupport && (array_key_exists('pRELS', $curtables))) {
+					// only do this at inner queries (pREL set)
+					$this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos);
+					$cond = '((' . $cond . ') OR (' .
+					  $curtables['REDIRECT'] . '.rd_title=' . $curtables['RELS'] . '.subject_title AND ' .
+					  $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['RELS'] . '.subject_namespace))';
+				}
+				$from .= ' INNER JOIN ' . $db->tableName('smw_nary') . ' AS ' . $curtables['NARY'] . ' ON ' . $cond;
+				return $curtables['NARY'];
+			}
+		} elseif ($tablename == 'pATTS') {
+			if ( ($nary_pos !== '') && (array_key_exists('pNARY', $curtables)) ) {
+				$curtables['pATTS'] = 'natt' . SMWSQLStore::$m_tablenum++;
+				$cond = '(' . 
+				        $curtables['pATTS'] . '.subject_id=' . $curtables['pNARY'] . '.subject_id AND ' . 
+				        $curtables['pATTS'] . '.nary_key=' . $curtables['pNARY'] . '.nary_key AND ' .
+				        $curtables['pATTS'] . '.nary_pos=' . $db->addQuotes($nary_pos) . ')';
+				$from .= ' INNER JOIN ' . $db->tableName('smw_nary_attributes') . ' AS ' .
+				         $curtables['pATTS'] . ' ON ' . $cond;
+				return $curtables['pATTS'];
+			}
+		} elseif ($tablename == 'pRELS') {
+			if ( ($nary_pos !== '') && (array_key_exists('pNARY', $curtables)) ) {
+				$curtables['pRELS'] = 'nrel' . SMWSQLStore::$m_tablenum++;
+				$cond = '(' .
+				        $curtables['pRELS'] . '.subject_id=' . $curtables['pNARY'] . '.subject_id AND ' . 
+				        $curtables['pRELS'] . '.nary_key=' . $curtables['pNARY'] . '.nary_key AND ' .
+				        $curtables['pRELS'] . '.nary_pos=' . $db->addQuotes($nary_pos) . ')';
+				$from .= ' INNER JOIN ' . $db->tableName('smw_nary_relations') . ' AS ' . $curtables['pRELS'] . ' ON ' . $cond;
+				return $curtables['pRELS'];
+			}
+		} elseif ($tablename == 'pTEXT') {
+			if ( ($nary_pos !== '') && (array_key_exists('pNARY', $curtables)) ) {
+				$curtables['pTEXT'] = 'ntxt' . SMWSQLStore::$m_tablenum++;
+				$cond = '(' .
+				        $curtables['pTEXT'] . '.subject_id=' . $curtables['pNARY'] . '.subject_id AND ' . 
+				        $curtables['pTEXT'] . '.nary_key=' . $curtables['pNARY'] . '.nary_key AND ' .
+				        $curtables['pTEXT'] . '.nary_pos=' . $db->addQuotes($nary_pos) . ')';
+				$from .= ' INNER JOIN ' . $db->tableName('smw_nary_longstrings') . ' AS ' . $curtables['pTEXT'] . ' ON ' . $cond;
+				return $curtables['pTEXT'];
 			}
 		} elseif ($tablename == 'REDIRECT') {
-			if ($this->addJoin('PAGE', $from, $db, $curtables)) { // try to add PAGE
+			if ($this->addJoin('PAGE', $from, $db, $curtables, $nary_pos)) { // try to add PAGE
 				$curtables['REDIRECT'] = 'rd' . SMWSQLStore::$m_tablenum++;
 				$from .= ' LEFT JOIN ' . $db->tableName('redirect') . ' AS ' . $curtables['REDIRECT'] . ' ON ' . $curtables['REDIRECT'] . '.rd_from=' . $curtables['PAGE'] . '.page_id';
-				return true;
+				return $curtables['REDIRECT'];
 			}
-		} elseif ($tablename == 'REDIPAGE') { // add another copy of page for getting ids of redirect targets
-			if ($this->addJoin('REDIRECT', $from, $db, $curtables)) { 
+		} elseif ($tablename == 'REDIPAGE') { // +another copy of page for getting ids of redirect targets; *ouch*
+			if ($this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos)) { 
 				$curtables['REDIPAGE'] = 'rp' . SMWSQLStore::$m_tablenum++;
 				$from .= ' INNER JOIN ' . $db->tableName('page') . ' AS ' . $curtables['REDIPAGE'] . ' ON (' .
 				         $curtables['REDIRECT'] . '.rd_title=' . $curtables['REDIPAGE'] . '.page_title AND ' .
 					     $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['REDIPAGE'] . '.page_namespace)';
-				
-				return true;
+				return $curtables['REDIPAGE'];
 			}
 		}
 		return false;
@@ -1271,32 +1342,34 @@ class SMWSQLStore extends SMWStore {
 	 * @param &$where The string of computed WHERE conditions, appended to supplied string.
 	 * @param $db The database object
 	 * @param $curtables Array with names of aliases of tables refering to the 'current' element (the one to which the description basically applies).
+	 * @param $nary_pos If the subcondition is directly appended to an nary relation, this parameter holds the numerical index of the position in the nary in order to be able to join condition tables to that position.
 	 * @param $sort True if the subcondition should be used for sorting. This is only meaningful for queries that are below some property statement.
 	 *
 	 * @TODO: Maybe there need to be optimisations in certain cases (atomic implementation for common nestings of descriptions?)
 	 */
-	protected function createSQLQuery(SMWDescription $description, &$from, &$where, &$db, &$curtables, $sort = false) {
+	protected function createSQLQuery(SMWDescription $description, &$from, &$where, &$db, &$curtables, $nary_pos = '', $sort = false) {
 		$subwhere = '';
 		if ($description instanceof SMWThingDescription) {
 			// nothing to check
 		} elseif ($description instanceof SMWClassDescription) {
-			if ($this->addJoin('CATS', $from, $db, $curtables)) {
+			if ($table = $this->addJoin('CATS', $from, $db, $curtables, $nary_pos)) {
 				global $smwgQSubcategoryDepth;
 				if ($smwgQSubcategoryDepth > 0) {
 					$ct = $this->getCategoryTable($description->getCategory()->getDBKey(), $db);
 					$from = '`' . $ct . '`, ' . $from;
-					$where = "$ct.title=" . $curtables['CATS'] . '.cl_to';
+					$where = "$ct.title=" . $table . '.cl_to';
 				} else {
-					$where .=  $curtables['CATS'] . '.cl_to=' . $db->addQuotes($description->getCategory()->getDBKey());
+					$where .=  $table . '.cl_to=' . $db->addQuotes($description->getCategory()->getDBKey());
 				}
 			}
 		} elseif ($description instanceof SMWNamespaceDescription) {
-			if ($this->addJoin('PAGE', $from, $db, $curtables)) {
-				$where .=  $curtables['PAGE'] . '.page_namespace=' . $db->addQuotes($description->getNamespace());
+			if ($table = $this->addJoin('PAGE', $from, $db, $curtables, $nary_pos)) {
+				$where .=  $table . '.page_namespace=' . $db->addQuotes($description->getNamespace());
 			}
 		} elseif ($description instanceof SMWValueDescription) {
 			switch ($description->getDatavalue()->getTypeID()) {
-				case '_txt': // actually this should not happen; we cannot do anything here 
+				case '_txt': // possibly pull in loongstring table (for naries)
+					$this->addJoin('pTEXT', $from, $db, $curtables, $nary_pos);
 				break;
 				case '_wpg':
 					global $smwgQEqualitySupport;
@@ -1305,28 +1378,24 @@ class SMWSQLStore extends SMWStore {
 					} else {
 						$page = $description->getDatavalue();
 					}
-					if (array_key_exists('PREVREL', $curtables)) {
-						$cond = $curtables['PREVREL'] . '.object_title=' .
+					if ($table = $this->addJoin('pRELS', $from, $db, $curtables, $nary_pos)) {
+						$cond = $table . '.object_title=' .
 						        $db->addQuotes($page->getDBKey()) . ' AND ' .
-						        $curtables['PREVREL'] . '.object_namespace=' .
-						        $page->getNamespace();
-						if ( $smwgQEqualitySupport && ($this->addJoin('REDIRECT', $from, $db, $curtables)) ) {
+						        $table . '.object_namespace=' . $page->getNamespace();
+						if ( $smwgQEqualitySupport && 
+						     ($this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos)) ) {
 							$cond = '(' . $cond . ') OR (' . 
-							        $curtables['REDIRECT'] . '.rd_title=' .
-							        $db->addQuotes($page->getDBKey()) . ' AND ' .
-							        $curtables['REDIRECT'] . '.rd_namespace=' .
-							        $page->getNamespace() . ')';
+							   $curtables['REDIRECT'] . '.rd_title=' . $db->addQuotes($page->getDBKey()) . ' AND ' .
+							   $curtables['REDIRECT'] . '.rd_namespace=' . $page->getNamespace() . ')';
 						}
 						$where .= $cond;
-					} elseif ($this->addJoin('PAGE', $from, $db, $curtables)) {
-						$where .= $curtables['PAGE'] . '.page_title=' .
-						          $db->addQuotes($page->getDBKey()) . ' AND ' .
-						          $curtables['PAGE'] . '.page_namespace=' .
-						          $page->getNamespace();
+					} elseif ($table = $this->addJoin('PAGE', $from, $db, $curtables, $nary_pos)) {
+						$where .= $table . '.page_title=' . $db->addQuotes($page->getDBKey()) . ' AND ' .
+						          $table . '.page_namespace=' . $page->getNamespace();
 					}
 				break;
 				default:
-					if ( $this->addJoin('ATTS', $from, $db, $curtables) ) {
+					if ( $table = $this->addJoin('pATTS', $from, $db, $curtables, $nary_pos) ) {
 						switch ($description->getComparator()) {
 							case SMW_CMP_LEQ: $op = '<='; break;
 							case SMW_CMP_GEQ: $op = '>='; break;
@@ -1341,25 +1410,39 @@ class SMWSQLStore extends SMWStore {
 							$value = $description->getDatavalue()->getXSDValue();
 						}
 						///TODO: implement check for unit
-						$where .= $curtables['ATTS'] . '.' .  $valuefield . $op . $db->addQuotes($value);
+						$where .= $table . '.' .  $valuefield . $op . $db->addQuotes($value);
 						if ($sort != '') {
-							$this->m_sortfield = $curtables['ATTS'] . '.' . $valuefield;
+							$this->m_sortfield = $table . '.' . $valuefield;
 						}
 					}
+			}
+		} elseif ($description instanceof SMWValueList) {
+			for ($i=0; $i<$description->getCount(); $i++) {
+				$desc = $description->getDescription($i);
+				if ($desc === NULL) {
+					continue;
+				}
+				$subwhere = '';
+				$nexttables = array( 'pNARY' => $curtables['pNARY'] );
+				$this->createSQLQuery($desc, $from, $subwhere, $db, $nexttables, $i);
+				if ($where != '') {
+					$where .= ' AND ';
+				}
+				$where .= "($subwhere)";
 			}
 		} elseif ($description instanceof SMWConjunction) {
 			foreach ($description->getDescriptions() as $subdesc) {
 				/// TODO: this is not optimal -- we drop more table aliases than needed, but its hard to find out what is feasible in recursive calls ...
 				$nexttables = array();
 				// pull in page to prevent every child description pulling it seperately!
-				/// TODO: will be obsolete when PREVREL provides page indices
-				if ($this->addJoin('PAGE', $from, $db, $curtables)) {
+				/// TODO: will be obsolete when REL provides page indices
+				if ($this->addJoin('PAGE', $from, $db, $curtables, $nary_pos)) {
 					$nexttables['PAGE'] = $curtables['PAGE'];
 				}
-				if (array_key_exists('PREVREL',$curtables)) {
-					$nexttables['PREVREL'] = $curtables['PREVREL'];
+				if ($this->addJoin('pRELS', $from, $db, $curtables, $nary_pos)) {
+					$nexttables['pRELS'] = $curtables['pRELS'];
 				}
-				$this->createSQLQuery($subdesc, $from, $subwhere, $db, $nexttables);
+				$this->createSQLQuery($subdesc, $from, $subwhere, $db, $nexttables, $nary_pos);
 				if ($subwhere != '') {
 					if ($where != '') {
 						$where .= ' AND ';
@@ -1370,7 +1453,7 @@ class SMWSQLStore extends SMWStore {
 			}
 		} elseif ($description instanceof SMWDisjunction) {
 			foreach ($description->getDescriptions() as $subdesc) {
-				$this->createSQLQuery($subdesc, $from, $subwhere, $db, $curtables);
+				$this->createSQLQuery($subdesc, $from, $subwhere, $db, $curtables, $nary_pos);
 				if ($subwhere != '') {
 					if ($where != '') {
 						$where .= ' OR ';
@@ -1383,38 +1466,39 @@ class SMWSQLStore extends SMWStore {
 			$id = SMWDataValueFactory::getPropertyObjectTypeID($description->getProperty());
 			switch ($id) {
 				case '_wpg':
-					$table = 'RELS';
+					$tablename = 'RELS';
 					$pcolumn = 'relation_title';
-					$sub = true; //no recursion: we do not support further conditions on text-type values
+					$sub = true;
 				break;
 				case '_txt':
-					$table = 'TEXT';
+					$tablename = 'TEXT';
 					$pcolumn = 'attribute_title';
 					$sub = false; //no recursion: we do not support further conditions on text-type values
 				break;
+				case '__nry':
+					$tablename = 'NARY';
+					$pcolumn = 'attribute_title';
+					$sub = true;
+				break;
 				default:
-					$table = 'ATTS';
+					$tablename = 'ATTS';
 					$pcolumn = 'attribute_title';
 					$sub = true;
 			}
-			if ($this->addJoin($table, $from, $db, $curtables)) {
+			if ($table = $this->addJoin($tablename, $from, $db, $curtables, $nary_pos)) {
 				global $smwgQSubpropertyDepth;
 				if ($smwgQSubpropertyDepth > 0) {
 					$pt = $this->getPropertyTable($description->getProperty()->getDBKey(), $db);
 					$from = '`' . $pt . '`, ' . $from;
-					$where = "$pt.title=" . $curtables[$table] . '.' . $pcolumn;
+					$where = "$pt.title=" . $table . '.' . $pcolumn;
 				} else {
-					$where .= $curtables[$table] . '.' . $pcolumn . '=' .
+					$where .= $table . '.' . $pcolumn . '=' .
 					          $db->addQuotes($description->getProperty()->getDBKey());
 				}
 				if ($sub) {
 					$nexttables = array();
-					if ($table == 'RELS') { // move deeper into property graph ...
-						$nexttables['PREVREL'] = $curtables['RELS'];
-					} else { // no other table should be used for the condition!
-						$nexttables[$table] = $curtables[$table];
-					}
-					$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $nexttables, ($this->m_sortkey == $description->getProperty()->getDBKey()) );
+					$nexttables['p' . $tablename] = $table; // keep only current table for reference
+					$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $nexttables, $nary_pos, ($this->m_sortkey == $description->getProperty()->getDBKey()) );
 					if ( $subwhere != '') {
 						$where .= ' AND (' . $subwhere . ')';
 					}
@@ -1423,8 +1507,8 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		if ($sort && (!$description instanceof SMWValueDescription) ) {
-			if (array_key_exists('PREVREL', $curtables)) {
-				$this->m_sortfield = $curtables['PREVREL'] . '.object_title';
+			if (array_key_exists('pRELS', $curtables)) {
+				$this->m_sortfield = $curtables['pRELS'] . '.object_title';
 			}
 		}
 	}

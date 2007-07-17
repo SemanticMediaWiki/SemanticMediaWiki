@@ -18,35 +18,61 @@ class SMWNAryValue extends SMWDataValue {
 	private $m_values = array();
 
 	/**
-	 * typevalue as we received them when datafactory called us
+	 * TypeObject as we received them when datafactory called us
 	 */
 	private $m_type;
+	
+	/**
+	 * Should this DV operate on query syntax (special mode for parsing queries in a compatible fashion)
+	 */
+	private $m_querysyntax = false;
+	private $m_comparators;
+	private $m_printstatement = false;
+	private $m_outputmodifiers;
 
 	/**
 	 * Set type array. Must be done before setting any values.
 	 */
-	function setType($type) {
+	public function setType($type) {
 		$this->m_type = $type;
 		$this->m_count = count($this->m_type->getTypeLabels());
 		$this->m_values = array(); // careful: do not iterate to m_count if DV is not valid!
 	}
 
-	private function parseValues($commaValues) {
-		return preg_split('/[\s]*;[\s]*/', trim($commaValues), $this->m_count);
+	/**
+	 * Change to query syntax mode.
+	 */
+	public function acceptQuerySyntax() {
+		$this->m_querysyntax = true;
 	}
 
 	protected function parseUserValue($value) {
 		$this->m_values = array();
+		$this->m_comparators = array(); // only for query mode
+		$this->m_printstatement = false; // only for query mode
+		$this->m_outputmodifiers = array();  // only for query mode
 		if ($value == '') {
 			$this->addError('No values specified.');
 			return;
 		}
 
 		$types = $this->m_type->getTypeValues();
-		$values = $this->parseValues($value);
+		$values = preg_split('/[\s]*;[\s]*/', trim($value), $this->m_count);
 		$vi = 0; // index in value array
 		$empty = true;
 		for ($i = 0; $i < $this->m_count; $i++) { // iterate over slots
+			if ($this->m_querysyntax) { // special extension for supporting query parsing
+				$comparator = SMW_CMP_EQ;
+				$printmodifier = '';
+				$this->prepareValue($values[$vi], $comparator, $printmodifier);
+				if ($values[$vi] == '*') { // print statement, treat as omission
+					$this->m_printstatement = true;
+					$values[$vi] = '';
+					$printmodifiers[$vi] = $printmodifier;
+				} else {
+					$printmodifiers[$vi] = '';
+				}
+			}
 			if ( (count($values) > $vi) && 
 			     ( ($values[$vi] == '') || ($values[$vi] == '?') ) ) { // explicit omission
 				$this->m_values[$i] = NULL;
@@ -57,6 +83,9 @@ class SMWNAryValue extends SMWDataValue {
 					$this->m_values[$i] = $dv;
 					$vi++;
 					$empty = false;
+					if ($this->m_querysyntax) { // keep comparator for later querying
+						$this->m_comparators[$i] = $comparator;
+					}
 				} elseif ( (count($values)-$vi) == (count($types)-$i) ) { 
 					// too many errors: keep this one to have enough slots left
 					$this->m_values[$i] = $dv;
@@ -247,6 +276,10 @@ class SMWNAryValue extends SMWDataValue {
 	 * NULL as an indication for omitted values.
 	 */
 	public function setDVs($datavalues) {
+		$this->m_errors = array(); // clear errors
+		$this->m_infolinks = array(); // clear links
+		$this->m_hasssearchlink = false;
+		$this->m_caption = false;
 		$typelabels = $this->m_type->getTypeLabels();
 		for ($i = 0; $i < $this->m_count; $i++) {
 			if ( ($i < count($datavalues) ) && ($datavalues[$i] !== NULL) ) {
@@ -254,9 +287,73 @@ class SMWNAryValue extends SMWDataValue {
 			    ///TODO: is the above typcheck required, or can we assume responsible callers?
 				$this->m_values[$i] = $datavalues[$i];
 			} else {
-					$this->m_values[$i] = NULL;
+				$this->m_values[$i] = NULL;
 			}
 		}
+		$this->m_isset = true;
+	}
+
+	private function prepareValue(&$value, &$comparator, &$printmodifier) {
+		// get print modifier behind *
+		$list = preg_split('/^\*/',$value,2);
+		if (count($list) == 2) { //hit
+			$value = '*';
+			$printmodifier = $list[1];
+		} else {
+			$printmodifier = '';
+		}
+		if ($value == '*') { // printout statement
+			return;
+		}
+		$list = preg_split('/^(<|>|!)/',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
+		$comparator = SMW_CMP_EQ;
+		if (count($list) == 3) { // initial comparator found ($list[1] should be empty)
+			switch ($list[1]) {
+				case '<':
+					$comparator = SMW_CMP_LEQ;
+					$value = $list[2];
+				break;
+				case '>':
+					$comparator = SMW_CMP_GEQ;
+					$value = $list[2];
+				break;
+				case '!':
+					$comparator = SMW_CMP_NEQ;
+					$value = $list[2];
+				break;
+				//default: not possible
+			}
+		}
+	}
+	
+	/**
+	 * If valid and in querymode, build a suitable SMWValueList description from the
+	 * given input or return NULL if no such description was given. This requires the 
+	 * input to be given to setUserValue(). Otherwise bad things will happen.
+	 */
+	public function getValueList() {
+		$vl = new SMWValueList();
+		if (!$this->isValid() || !$this->m_querysyntax) {
+			return NULL;
+		}
+		for ($i=0; $i < $this->m_count; $i++) {
+			if ($this->m_values[$i] !== NULL) {
+				$vl->setDescription($i,new SMWValueDescription($this->m_values[$i], $this->m_comparators[$i]));
+			}
+		}
+		return $vl;
+	}
+
+	/**
+	 * If in querymode, return all printmodifiers given or false if no print request 
+	 * was specified. This requires the input to be given to setUserValue(). 
+	 * Otherwise bad things will happen.
+	 */
+	public function getPrintModifier() {
+		if (!$this->m_printstatement || !$this->m_querysyntax) {
+			return false;
+		}
+		return implode(';', $this->m_outputmodifiers);
 	}
 
 }
