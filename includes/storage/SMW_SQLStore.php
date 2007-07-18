@@ -245,6 +245,7 @@ class SMWSQLStore extends SMWStore {
 							$values[$row2->nary_pos] = $dv;
 						}
 					}
+					$db->freeResult($res2);
 					$res2 = $db->select( $db->tableName('smw_nary_longstrings'),
 									'nary_pos, value_blob',
 									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
@@ -257,6 +258,7 @@ class SMWSQLStore extends SMWStore {
 							$values[$row2->nary_pos] = $dv;
 						}
 					}
+					$db->freeResult($res2);
 					$res2 = $db->select( $db->tableName('smw_nary_relations'),
 									'nary_pos, object_title, object_namespace',
 									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
@@ -499,8 +501,6 @@ class SMWSQLStore extends SMWStore {
 		            array('subject_id' => $subject->getArticleID()),
 		            'SMW::deleteSubject::NAry');
 		if ($db->affectedRows() != 0) {
-		///FIXME: check there were entries in smw_nary before continuing!
-		/// "Affected rows" should be easy to get
 			$db->delete('smw_nary_relations',
 			            array('subject_id' => $subject->getArticleID()),
 			            'SMW::deleteSubject::NAryRelations');
@@ -1292,7 +1292,7 @@ class SMWSQLStore extends SMWStore {
 		} elseif ($tablename == 'REDIPAGE') { // +another copy of page for getting ids of redirect targets; *ouch*
 			if ($this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos)) { 
 				$curtables['REDIPAGE'] = 'rp' . SMWSQLStore::$m_tablenum++;
-				$from .= ' INNER JOIN ' . $db->tableName('page') . ' AS ' . $curtables['REDIPAGE'] . ' ON (' .
+				$from .= ' LEFT JOIN ' . $db->tableName('page') . ' AS ' . $curtables['REDIPAGE'] . ' ON (' .
 				         $curtables['REDIRECT'] . '.rd_title=' . $curtables['REDIPAGE'] . '.page_title AND ' .
 					     $curtables['REDIRECT'] . '.rd_namespace=' . $curtables['REDIPAGE'] . '.page_namespace)';
 				return $curtables['REDIPAGE'];
