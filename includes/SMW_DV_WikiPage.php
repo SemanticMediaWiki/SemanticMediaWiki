@@ -65,7 +65,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( ($linked === NULL) || ($linked === false) || (!$this->isValid()) ) {
 			return $this->m_caption;
 		} else {
-			return '[[' . $this->m_prefixedtext . '|' . $this->m_caption . ']]';
+			return '[[:' . $this->m_prefixedtext . '|' . $this->m_caption . ']]';
 		}
 	}
 
@@ -84,7 +84,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( ($linked === NULL) || ($linked === false) ) {
 			return $this->m_prefixedtext;
 		} else {
-			return '[[' . $this->m_prefixedtext . '|' . $this->m_textform . ']]';
+			return '[[:' . $this->m_prefixedtext . '|' . $this->m_textform . ']]';
 		}
 	}
 
