@@ -216,7 +216,7 @@ class SMWNAryValue extends SMWDataValue {
 				$result .= ';';
 			}
 			if ($value !== NULL) {
-				$result .= $value->Unit();
+				$result .= $value->getUnit();
 			}
 		}
 		return $result;
