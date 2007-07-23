@@ -86,6 +86,7 @@ protected $smwUserMessages = array(
 	'smw_exportrdf_docu' => '<p>This page allows you to obtain data from a page in RDF format. To export pages, enter the titles in the text box below, one title per line.</p>',
 	'smw_exportrdf_recursive' => 'Recursively export all related pages. Note that the result could be large!',
 	'smw_exportrdf_backlinks' => 'Also export all pages that refer to the exported pages. Generates browsable RDF.',
+	'smw_exportrdf_lastdate' => 'Do not export pages that were not changed since the given point in time',
 	// Messages for Search Triple Special
 	'searchtriple' => 'Simple semantic search', //name of this special
 	'smw_searchtriple_docu' => "<p>Fill in either the upper or lower row of the input form to search for relations or attributes, respectively. Some of the fields can be left empty to obtain more results. However, if an attribute value is given, the attribute name must be specified as well. As usual, attribute values can be entered with a unit of measurement.</p>\n\n<p>Be aware that you must press the right button to obtain results. Just pressing <i>Return</i> might not trigger the search you wanted.</p>",

@@ -88,6 +88,10 @@ function doSpecialExportRDF($page = '') {
 	if ( $wgUser->isAllowed('delete') || $smwgExportBacklinks) {
 		$html .= '<input type="checkbox" name="backlinks" value="1" default="true" id="bl">&nbsp;<label for="bl">' . wfMsg('smw_exportrdf_backlinks') . '</label></input><br />' . "\n";
 	}
+	if ( $wgUser->isAllowed('delete') || $smwgExportAll) {
+		$html .= '<br />';
+		$html .= '<input type="text" name="date" value="'.date(DATE_W3C, mktime(0, 0, 0, 1, 1, 2000)).'" id="date">&nbsp;<label for="ea">' . wfMsg('smw_exportrdf_lastdate') . '</label></input><br />' . "\n";
+	}
 	$html .= "<br /><input type=\"submit\"/>\n</form>";
 	$wgOut->addHTML($html);
 }
@@ -303,6 +307,12 @@ class ExportRDF {
 	 * is 0.
 	 */
 	var $delay_flush;
+	
+	/**
+	 * Boolean. If true, the export will be in OWL Full, i.e. it will also
+	 * icnlude properties of other properties and of classes, etc.
+	 */
+	var $owlfull;
 
 	public function ExportRDF()
 	{
@@ -321,12 +331,15 @@ class ExportRDF {
 			$smwgNamespace = "http://" . mb_substr($smwgNamespace, 1) . $resolver->getLocalURL() . '/';
 		}
 		$this->wiki_xmlns_xml = $smwgNamespace;
+		global $smwgOWLFullExport;
+		$this->owlfull = $smwgOWLFullExport; // by default listen to the setting
 
 		$title = Title::makeTitle( NS_SPECIAL, 'ExportRDF' );
 		$this->special_url = '&wikiurl;' . $title->getPrefixedURL();
 
 		$this->element_queue = array();
 		$this->element_done = array();
+		$this->schema_refs = array();
 		$this->date = '';
 	}
 
@@ -548,61 +561,86 @@ class ExportRDF {
 		$this->global_namespaces = array('rdf'=>true, 'rdfs'=>true, 'owl'=>true, 'smw'=>true, 'wiki'=>true, 'property'=>true);
 
 		$this->post_ns_buffer .=
-			">\n\t<!-- reference to the Semantic MediaWiki schema -->\n" .
-			"\t<owl:AnnotationProperty rdf:about=\"&smw;hasArticle\">\n" .
-			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
-			"\t</owl:AnnotationProperty>\n" .
-			"\t<owl:AnnotationProperty rdf:about=\"&smw;hasType\">\n" .
-			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
-			"\t</owl:AnnotationProperty>\n" .
-			"\t<owl:AnnotationProperty rdf:about=\"&smw;subPropertyOf\">\n" .
-			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
-			"\t</owl:AnnotationProperty>\n" .
-			"\t<owl:AnnotationProperty rdf:about=\"&smw;exportDate\">\n" .
-			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
-			"\t</owl:AnnotationProperty>\n" .
-			"\t<owl:AnnotationProperty rdf:about=\"&smw;hasModifier\">\n" .
-			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
-			"\t</owl:AnnotationProperty>\n" .
-			"\t<owl:AnnotationProperty rdf:about=\"&smw;baseProperty\">\n" .
-			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
-			"\t</owl:AnnotationProperty>\n" .
-			"\t<owl:Class rdf:about=\"&smw;Thing\">\n" .
-			"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
-			"\t</owl:Class>\n" .
+			">\n\t<!-- Ontology header -->\n" .
 			"\t<owl:Ontology rdf:about=\"\">\n" .
 			"\t\t<smw:exportDate rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">" . date(DATE_W3C) . "</smw:exportDate>\n" .
-			"\t</owl:Ontology>" .
+			"\t</owl:Ontology>\n" .
 			"\t<!-- exported page data -->\n";
+		$this->addSchemaRef( "hasArticle", "owl:AnnotationProperty" );
+		$this->addSchemaRef( "exportDate", "owl:AnnotationProperty" );
+		$this->addSchemaRef( "Thing", "owl:Class" );
 	}
 
 	function printFooter() {
+		$this->post_ns_buffer .= "\t<!-- reference to the Semantic MediaWiki schema -->\n";
+		foreach (array_keys($this->schema_refs) as $name) {
+			$type = $this->schema_refs[$name];			
+			$this->post_ns_buffer .=
+				"\t<$type rdf:about=\"&smw;$name\">\n" .
+				"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
+				"\t</$type>\n";				
+		}
+		$this->post_ns_buffer .= "\t<!-- Created with Semantic MediaWiki, http://ontoworld.org/wiki/SMW -->\n";
 		$this->post_ns_buffer .= '</rdf:RDF>';
 	}
+	
+	/**
+	 * Adds a reference to the SMW schema. This will make sure that at the end of the page,
+	 * all required schema references will be defined and point to the appropriate ontology.
+	 *
+	 * @param string $name The fragmend identifier of the entity to be referenced.
+	 *                     The SMW namespace is assumed. 
+	 * @param string $type The type of the referenced identifier, i.e. is it an annotation
+	 *                     property, an object property, a class, etc. Should be given as a QName
+	 *                     (i.e. in the form "owl:Class", etc.)
+	 */
+	public function addSchemaRef( $name,  $type ) {
+		if (!array_key_exists($name, $this->schema_refs))
+			$this->schema_refs[$name] = $type;
+	}
+	
+	/**
+	 * Adds a page to the queue of pages to be exported
+	 *
+	 * @param Title $title The page to be exported
+	 * @param boolean $fullexport If true, the export will export this page fully.
+	 *                            If false, the export will decide by itself.
+	 * @return nothing
+	 */
+	public function addPage( Title $title, $fullexport=false ) {
+		
+	}
 
-	function printTriples($et, $fullexport=true) {
+	/**
+	 * Printe the triples associated to a specific page, and references those needed.
+	 * They get printed in the printFooter-function.
+	 * 
+	 * @param SMWExportTitle $et The Exporttitle wrapping the page to be exported
+	 * @param boolean $fullexport If all the triples of the page should be exported, or just
+	 *                            a definition of the given title.
+	 * $return nothing
+	 */
+	function printTriples(SMWExportTitle $et, $fullexport=true) {
+		// if this was already exported, don't do it again
+		if (array_key_exists($et->hashkey, $this->element_done)) return;
 		// return if younger than the filtered date
 		if ($et->exists && ($this->date !== '')) {
 			$rev = Revision::getTimeStampFromID($et->title->getLatestRevID());
 			if ($rev < $this->date) return;
 		}
-
+		
 		$datatype_rel = false;
 		$category_rel = false;
 		$equality_rel = false;
-		$subrel_rel = false;
-		$subatt_rel = false;
-		
-		// if this was already exported, don't do it again
-		if (array_key_exists($et->hashkey, $this->element_done)) return;
-
+		$subprop_rel = false;
+				
 		// Set parameters for export
 		switch ($et->title_namespace) {
 			case SMW_NS_PROPERTY: 
 				if ( $et->has_type ) {
 					if ( ('annouri' == $et->has_type->getTypeID()) || ('annostring' == $et->has_type->getTypeID()) ) {
 						$type = 'owl:AnnotationProperty';
-						//$subrel_rel = "smw:subPropertyOf";
+						//$subprop_rel = "smw:subPropertyOf";
 						//TODO  can it be equivalent? cannot be a subproperty
 					} elseif ('_wpg' == $et->has_type->getTypeID()) {
 						$type = 'owl:ObjectProperty';
@@ -615,9 +653,9 @@ class ExportRDF {
 				$equality_rel = "owl:equivalentProperty";
 				global $smwgExportSemanticRelationHierarchy;
 				if ($smwgExportSemanticRelationHierarchy) {
-					$subrel_rel = "rdfs:subPropertyOf";
+					$subprop_rel = "rdfs:subPropertyOf";
 				} else {
-					$subrel_rel = "smw:subPropertyOf";
+					$subprop_rel = "smw:subPropertyOf";
 				}
 				break;
 			case NS_CATEGORY:
@@ -648,13 +686,15 @@ class ExportRDF {
 		// and the base relation explicitly	              
 		if ( $et->has_type && $et->modifier ) {
 			$this->post_ns_buffer .= "\t\t<smw:hasModifier rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">" .
-				$et->modifier .
+				smwfXMLContentEncode($et->modifier) .
 				"</smw:hasModifier>\n";
 			$baseprop = $this->getExportTitle($et->title_text, SMW_NS_PROPERTY);
 			$this->post_ns_buffer .= "\t\t<smw:baseProperty rdf:resource=\"" . $baseprop->long_uri . "\"/>\n";
 			if (!array_key_exists($baseprop->hashkey, $this->element_queue)) {
 				$this->element_queue[$baseprop->hashkey] = $baseprop;
 			}
+			$this->addSchemaRef( "baseProperty", "owl:AnnotationProperty" );
+			$this->addSchemaRef( "hasModifier", "owl:AnnotationProperty" );
 		}
 
 		if ( ($fullexport) && ($et->exists) ) {
@@ -670,6 +710,7 @@ class ExportRDF {
 			// TODO: this is not convincing, esp. now that we have custom types
 			if (isset($datatype_handler)) {
 				$this->post_ns_buffer .= "\t\t<smw:hasType " . 'rdf:resource="&smwdt;' . $datatype_handler->getID() . "\"/>\n";
+				$this->addSchemaRef( "hasType", "owl:AnnotationProperty" );
 			}
 
 			// add statements about equivalence to (external) URIs
@@ -686,35 +727,26 @@ class ExportRDF {
 // 			}
 
 			// add rdfs:subPropertyOf statements
- 			if ($subrel_rel) {
-				$relations = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_SUBPROPERTY_OF);
- 				foreach ($relations as $relation) {
- 					// TODO in future, check type safety relations <-> attributes
- 					// TODO check also the type of what I am pointing to (is it a relation or sth else?)
- 					$suprel = $this->getExportTitle($relation, SMW_NS_PROPERTY);
- 					$this->post_ns_buffer .= "\t\t<$subrel_rel rdf:resource=\"" . $suprel->long_uri . "\"/>\n";
- 					if (!array_key_exists($suprel->hashkey, $this->element_queue)) {
- 							$this->element_queue[$suprel->hashkey] = $suprel;
- 					}
- 				}
- 			}
- 			if ($subatt_rel) {
-				$attributes = &smwfGetStore()->getSpecialValues($et->title, SMW_SP_SUBPROPERTY_OF);
- 				foreach ($attributes as $attribute) {
+ 			if ($subprop_rel) {
+				$properties = $this->store->getSpecialValues($et->title, SMW_SP_SUBPROPERTY_OF);
+ 				foreach ($properties as $property) {
  					// TODO in future, check type safety relations <-> attributes
  					// TODO check also the type of what I am pointing to (is it an atrribute or sth else?)
  					// TODO check the type of the attribute pointed to, does it match?
  					// Could lead to inconsistencies in the output -- and in the wiki? But this will
  					// need to be dealt with as soon as people add subattribute semantics to the wiki
- 					$supatt = $this->getExportTitle($attribute, SMW_NS_PROPERTY);
- 					$this->post_ns_buffer .= "\t\t<$subatt_rel rdf:resource=\"" . $supatt->long_uri . "\"/>\n";
- 					if (!array_key_exists($supatt->hashkey, $this->element_queue)) {
- 							$this->element_queue[$supatt->hashkey] = $supatt;
+ 					$supprop = $this->getExportTitle($property, SMW_NS_PROPERTY);
+ 					$this->post_ns_buffer .= "\t\t<$subprop_rel rdf:resource=\"" . $supprop->long_uri . "\"/>\n";
+ 					if (!array_key_exists($supprop->hashkey, $this->element_queue)) {
+ 							$this->element_queue[$supprop->hashkey] = $supprop;
  					}
+ 					if (!$smwgExportSemanticRelationHierarchy)
+ 						$this->addSchemaRef( "subPropertyOf", "owl:AnnotationProperty");
  				}
  			}
 
-			if ($et->is_individual) { // do not print relations for schema elements, stay in OWL DL
+ 			// print relations for schema elements only if we are explictly set to OWL Full
+			if ($et->is_individual || $this->owlfull) {
 				// print all relations
 				$props = $this->store->getProperties( $et->title );
 				foreach ( $props as $prop ) {
