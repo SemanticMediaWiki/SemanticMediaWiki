@@ -136,6 +136,15 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return the line to be exported
 	 */
 	public function exportToRDF($QName, ExportRDF $exporter) {
+		$title = $this->getTitle();
+		if ($title==NULL) return "";
+		// Check if the object is an individual -- otherwise it would be
+		// an OWL Full export, which is OK, if we should export OWL Full
+		if (!$exporter->owlfull) {
+			$title_namespace = $title->getNamespace();
+			if (($title_namespace == SMW_NS_PROPERTY) || ($title_namespace == NS_CATEGORY) )
+				return "";
+		}
 		$obj = $exporter->getURI( $this->getTitle() );
 		return "\t\t<$QName rdf:resource=\"$obj\"/>\n";
 	}
