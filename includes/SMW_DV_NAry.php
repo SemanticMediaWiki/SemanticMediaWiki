@@ -357,6 +357,33 @@ class SMWNAryValue extends SMWDataValue {
 			}
 		}
 	}
+	
+	/**
+	 * Exports this n-ary relation to an appropriate RDF-structure.
+	 * The lines within the subject element.
+	 * 
+	 * @param string $QName The element name of this datavalue
+	 * @param ExportRDF $exporter the exporter calling this function
+	 * @return string the lines to be exported
+	 */
+	public function exportToRDF( $QName, ExportRDF $exporter ) {
+		$rdf = "\t\t<$QName>\n";
+		$count = 0;
+		foreach ($this->m_values as $value) {
+			$count++;
+			$type = $value->getTypeID();
+			$element = "nary" . $count . $value->getTypeID();
+			// TODO make the elemnet name dependant on the type of the value
+			$rdf .= "\t" . $value->exportToRDF( "smw:$element", $exporter );
+			if ($value->getTypeID() == '_wpg') {
+				$exporter->addSchemaRef( $element, "owl:ObjectProperty" );
+			} else {
+				$exporter->addSchemaRef( $element, "owl:DatatypeProperty" );	
+			}
+		}
+		$rdf .= "\t\t</$QName>\n";
+		return $rdf;		
+	}
 
 }
 
