@@ -362,7 +362,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 
 		if ( !$eventline && ($this->m_tlstart == '') ) { // seek defaults
 			foreach ($res->getPrintRequests() as $pr) {
-				if ( ($pr->getMode() == SMW_PRINT_PROP) && ($pr->getTypeID() == 'datetime') ) {
+				if ( ($pr->getMode() == SMW_PRINT_PROP) && ($pr->getTypeID() == '_dat') ) {
 					if ( ($this->m_tlend == '') && ($this->m_tlstart != '') &&
 					     ($this->m_tlstart != $pr->getTitle()->getText()) ) {
 						$this->m_tlend = $pr->getTitle()->getText();
@@ -456,7 +456,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 							$curdata .= $header . $objectlabel;
 							$output = true;
 						}
-						if ($eventline && ($pr->getMode() == SMW_PRINT_PROP) && ($pr->getTypeID() == 'datetime') && ('' != $pr->getLabel()) && ($pr->getTitle()->getText() != $this->m_tlstart) && ($pr->getTitle()->getText() != $this->m_tlend) ) {
+						if ($eventline && ($pr->getMode() == SMW_PRINT_PROP) && ($pr->getTypeID() == '_dat') && ('' != $pr->getLabel()) && ($pr->getTitle()->getText() != $this->m_tlstart) && ($pr->getTitle()->getText() != $this->m_tlend) ) {
 							$events[] = array($object->getXSDValue(), $pr->getLabel(), $object->getNumericValue());
 						}
 						$first_value = false;
