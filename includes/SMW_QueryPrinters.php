@@ -112,8 +112,6 @@ abstract class SMWResultPrinter {
 	 * Provides a simple formatted string of all the error messages that occurred.
 	 * Can be used if not specific error formatting is desired. Compatible with HTML
 	 * and Wiki.
-	 * 
-	 * TODO: use joined code for this and the similar method in SMWQueryParser?
 	 */
 	protected function getErrorString($res) {
 		return smwfEncodeMessages($res->getErrors());
@@ -399,23 +397,9 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 					$first_value = true;
 					$pr = $field->getPrintRequest();
 					while ( ($object = $field->getNextObject()) !== false ) {
-						// Obtain string value ...
-						// TODO: this would be simpler with uniform Datavalue usage
-						$urlobject = false; // is our current object having a URL representation string?
-						if ($object instanceof SMWDataValue) { //print data values
-							$objectlabel = $object->getShortHTMLText(NULL); // TODO: support linked datavalues once
-						} elseif ($object instanceof Title) { // print Title objects
-							if ($this->getLinker($first_col) === NULL) {
-								$objectlabel = htmlspecialchars($object->getPrefixedText());
-							} else {
-								$urlobject = true;
-								if ($pr->getMode() == SMW_PRINT_THIS) { // "this" results must exist
-									$objectlabel = $this->getLinker($first_col)->makeKnownLinkObj($object);
-								} else {
-									$objectlabel = $this->getLinker($first_col)->makeLinkObj($object);
-								}
-							}
-						} // ... done.
+						$l = $this->getLinker($first_col);
+						$objectlabel = $object->getShortHTMLText($l);
+						$urlobject =  ($l !== NULL);
 						$header = '';
 						if ($first_value) {
 							// find header for current value:
@@ -647,16 +631,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 				if ( $field->getPrintRequest()->getTypeID() == '_wpg' ) { // ensure that we deal with title-likes
 					while ( ($object = $field->getNextObject()) !== false ) {
 						$result .= $embstart;
-						// create text version (this will improve with the unified datavalue framework) ...
-						if ($this->getLinker(true) === NULL) {
-							$text = htmlspecialchars($object->getPrefixedText());
-						} else {
-							if ($field->getPrintRequest()->getMode() == SMW_PRINT_THIS) { // "this" results must exist
-								$text = $this->getLinker(true)->makeKnownLinkObj($object);
-							} else {
-								$text = $this->getLinker(true)->makeLinkObj($object);
-							}
-						} // ... done
+						$text= $object->getLongHTMLText($this->getLinker(true));
 						if ($this->m_showhead) {
 							$result .= $headstart . $text . $headend;
 						}
@@ -665,7 +640,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 						} else {
 							$articlename = $object->getPrefixedText();
 						}
-						$parserOutput = $parser->parse('{{' . $articlename . '}}', $object, $parser_options);
+						$parserOutput = $parser->parse('{{' . $articlename . '}}', $object->getTitle(), $parser_options);
 						$result .= $parserOutput->getText();
 						$result .= $embend;
 					}
