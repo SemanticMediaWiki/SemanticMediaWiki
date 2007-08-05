@@ -2,7 +2,7 @@
 /**
  * This datavalue implements special processing suitable for defining
  * wikipages as values of properties. This value container currently
- * behaves somewhat special in that its xsdvalue is not containint all
+ * behaves somewhat special in that its xsdvalue is not contained all
  * relevant information (it just gives the DB-Key, not the namespace).
  * TODO: This should change, but is not really critical now.
  *
@@ -204,7 +204,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	public function setValues($dbkey, $namespace, $id = false) {
 		$this->m_namespace = $namespace;
 		$this->setXSDValue($dbkey);
-		$this->m_id = $id;
+		$this->m_id = $id ? $id : false;
 	}
 
 ///// Legacy methods for compatibility
