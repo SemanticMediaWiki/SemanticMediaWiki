@@ -132,10 +132,9 @@ class SMWSemanticData {
 
 	/**
 	 * Store a value for a special property identified by an integer contant. Duplicate 
-	 * value entries are ignored. Values are not type checked, since different special
-	 * properties may take different values (Titles, strings, Datavalues).
+	 * value entries are ignored.
 	 */
-	public function addSpecialValue($special, $value) {
+	public function addSpecialValue($special, SMWDataValue $value) {
 		if (!array_key_exists($special, $this->specprops)) {
 			$this->specprops[$special] = Array();
 		}
@@ -146,59 +145,6 @@ class SMWSemanticData {
 		} else {
 			$this->specprops[$special][$value] = $value;
 		}
-	}
-
-
-//// Attributes (deprecated)
-
-	/**
-	 * Get the array of all attributes that have stored values.
-	 */
-	public function getAttributes() {
-		trigger_error("Function getAttributes is deprecated. Use new property methods.", E_USER_NOTICE);
-		return $this->getProperties();
-	}
-
-	/**
-	 * Get the array of all stored values for some attribute.
-	 */
-	public function getAttributeValues(Title $attribute) {
-		trigger_error("Function getAttributeValues is deprecated. Use new property methods.", E_USER_NOTICE);
-		return $this->getAttributeValues($attribute);
-	}
-
-	/**
-	 * Return true if there are any attributes.
-	 */
-	public function hasAttributes() {
-		trigger_error("Function hasAttributes is deprecated. Use new property methods.", E_USER_NOTICE);
-		return $this->hasProperties();
-	}
-
-//// Relations (deprecated)
-
-	/**
-	 * Get the array of all relations that have stored values.
-	 */
-	public function getRelations() {
-		trigger_error("Function getRelations is deprecated. Use new property methods.", E_USER_NOTICE);
-		return array();
-	}
-
-	/**
-	 * Get the array of all stored objects for some relation.
-	 */
-	public function getRelationValues(Title $relation) {
-		trigger_error("Function getRelationValues is deprecated. Use new property methods.", E_USER_NOTICE);
-		return array();
-	}
-
-	/**
-	 * Return true if there are any relations.
-	 */
-	public function hasRelations() {
-		trigger_error("Function hasRelations is deprecated. Use new property methods.", E_USER_NOTICE);
-		return false;
 	}
 
 }
