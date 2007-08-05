@@ -92,6 +92,11 @@ instructions to find out whether other changes are recommended therein.
 
 == Notes on Upgrading ==
 
+* This SVN Version des not provide a simple upgrade mechanism for existing wikis yet. *
+* If you upgrade, trigger Special:SMWAdmin again and run the maintenance script       *
+* "SMW_refreshData.php" twice (the first run can be restricted to properties using    *
+* the parameter -p.                                                                   *
+
 The below instructions describe how to upgrade from one minor version to the next, e.g.
 from 0.2 (or 0.2b) to 0.3. If you missed one of the updates (e.g. if you want to jump
 from 0.1 to 0.3) then it is wise to proceed stepwise: install all intermediate versions
