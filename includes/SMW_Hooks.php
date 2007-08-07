@@ -19,6 +19,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 	*        not relevant when moving the hook to internalParse()).
 	*/
 	function smwfParserHook(&$parser, &$text, &$strip_state = null) {
+		wfProfileIn('smwfSetupExtension');
 		// Init global storage for semantic data of this article.
 		SMWFactbox::initStorage($parser->getTitle(),$parser->getOptions()->getSkin());
 
@@ -34,6 +35,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 			SMWFactbox::printFactbox($text);
 		} else SMWFactbox::clearStorage();
 
+		wfProfileOut('smwfSetupExtension');
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
