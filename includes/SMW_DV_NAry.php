@@ -371,9 +371,11 @@ class SMWNAryValue extends SMWDataValue {
 		$count = 0;
 		foreach ($this->m_values as $value) {
 			$count++;
-			$type = $value->getTypeID();
+			if ($value === NULL) {
+				continue;
+			}
 			$element = "nary" . $count . $value->getTypeID();
-			// TODO make the elemnet name dependant on the type of the value
+			/// TODO make the element name dependent on the type of the value
 			$rdf .= "\t" . $value->exportToRDF( "smw:$element", $exporter );
 			if ($value->getTypeID() == '_wpg') {
 				$exporter->addSchemaRef( $element, "owl:ObjectProperty" );
@@ -382,7 +384,7 @@ class SMWNAryValue extends SMWDataValue {
 			}
 		}
 		$rdf .= "\t\t</$QName>\n";
-		return $rdf;		
+		return $rdf;
 	}
 
 }
