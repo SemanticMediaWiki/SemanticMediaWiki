@@ -8,22 +8,10 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $IP;
-require_once( "$IP/includes/SpecialPage.php" );
-global $smwgIP;
-require_once( "$smwgIP/includes/SMW_QueryProcessor.php" );
-
-function doSpecialAsk() {
-	SMW_AskPage::execute();
-}
-
-SpecialPage::addPage( new SpecialPage('Ask','',true,'doSpecialAsk',false) );
-
-
 class SMW_AskPage {
 
 	static function execute() {
-		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgQSortingSupport;
+		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgQSortingSupport, $smwgIP;
 
 		$skin = $wgUser->getSkin();
 
@@ -56,6 +44,7 @@ class SMW_AskPage {
 		
 		// print results if any
 		if ($smwgQEnabled && ('' != $query) ) {
+			include_once( "$smwgIP/includes/SMW_QueryProcessor.php" );
 			$params = array('offset' => $offset, 'limit' => $limit, 'format' => 'broadtable', 'mainlabel' => ' ', 'link' => 'all', 'default' => wfMsg('smw_result_noresults'), 'sort' => $sort, 'order' => $order);
 			$queryobj = SMWQueryProcessor::createQuery($query, $params, false);
 			$res = smwfGetStore()->getQueryResult($queryobj);

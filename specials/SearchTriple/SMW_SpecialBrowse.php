@@ -9,15 +9,8 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $IP, $smwgIP;
-require_once( "$IP/includes/SpecialPage.php" );
+global $smwgIP;
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
-
-function doSpecialBrowse($query = '') {
-	SMW_SpecialBrowse::execute($query);
-}
-
-SpecialPage::addPage( new SpecialPage('Browse','',true,'doSpecialBrowse','default',true) );
 
 /***
  * A class to encapsulate the special page that allows browsing through

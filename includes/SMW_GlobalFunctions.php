@@ -44,7 +44,7 @@ function enableSemantics($namespace = "", $complete = false) {
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
 	if (!$complete && !($smwgNamespace === '')) $smwgNamespace = ".$smwgNamespace";
-	$wgExtensionFunctions[] = 'smwgSetupExtension';
+	$wgExtensionFunctions[] = 'smwfSetupExtension';
 	return true;
 }
 
@@ -52,7 +52,8 @@ function enableSemantics($namespace = "", $complete = false) {
  *  Do the actual intialisation of the extension. This is just a delayed init that makes sure
  *  MediaWiki is set up properly before we add our stuff.
  */
-function smwgSetupExtension() {
+function smwfSetupExtension() {
+	wfProfileIn('smwfSetupExtension');
 	global $smwgVersion, $smwgNamespace, $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $wgArticlePath, $wgScriptPath, $wgServer;
 
 	/**
@@ -73,17 +74,9 @@ function smwgSetupExtension() {
 	smwfInitMessages();
 
 	///// register specials /////
+	include_once($smwgIP . '/includes/SMW_SpecialPages.php');
 
-	//require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchTriple.php'); // no longer supported
-	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByProperty.php');
-	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialPageProperty.php');
-	require_once($smwgIP . '/specials/SearchTriple/SMW_SpecialBrowse.php');
-
-	require_once($smwgIP . '/specials/URIResolver/SMW_SpecialURIResolver.php');
-	require_once($smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php');
-	require_once($smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php');
 	//require_once($smwgIP . '/specials/OntologyImport/SMW_SpecialOntologyImport.php'); // broken, TODO: fix or delete
-	require_once($smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php');
 	require_once($smwgIP . '/specials/ExtendedStatistics/SMW_SpecialExtendedStatistics.php');
 
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialRelations.php');
@@ -94,10 +87,8 @@ function smwgSetupExtension() {
 	require_once($smwgIP . '/specials/Relations/SMW_SpecialTypes.php');
 
 	///// register hooks /////
-
 	require_once($smwgIP . '/includes/SMW_Hooks.php');
 	require_once($smwgIP . '/includes/SMW_RefreshTab.php');
-	require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
 
 	if ($smwgEnableTemplateSupport===true) {
 		$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; //patch required;
@@ -115,7 +106,32 @@ function smwgSetupExtension() {
 	///// credits (see "Special:Version") /////
 	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, Markus&nbsp;Kr&ouml;tzsch, Denny&nbsp;Vrandecic, S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://ontoworld.org/wiki/Semantic_MediaWiki', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://ontoworld.org/wiki/Help:Semantics View online documentation.]');
 
+	wfProfileOut('smwfSetupExtension');
 	return true;
+}
+
+/**
+ * This hook registers a parser-hook to the current parser.
+ * Note that parser hooks are something different than MW hooks
+ * in general, which explains the two-level registration.
+ */
+function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
+	global $wgParser;
+	$wgParser->setHook( 'ask', 'smwfProcessInlineQuery' );
+	return true; // always return true, in order not to stop MW's hook processing!
+}
+
+/**
+ * The <ask> parser hook processing part.
+ */
+function smwfProcessInlineQuery($text, $param) {
+	global $smwgQEnabled, $smwgIP;
+	if ($smwgQEnabled) {
+		require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
+		return SMWQueryProcessor::getResultHTML($text,$param);
+	} else {
+		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
+	}
 }
 
 /**********************************************/

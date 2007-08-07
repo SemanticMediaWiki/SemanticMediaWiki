@@ -9,17 +9,6 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $IP;
-require_once( "$IP/includes/SpecialPage.php" );
-
-
-function doSpecialURIResolver($name = '') {
-	SMW_URIResolver::execute($name);
-}
-
-SpecialPage::addPage( new SpecialPage('URIResolver','',false,'doSpecialURIResolver',false) );
-
-
 class SMW_URIResolver {
 
 	static function execute($query = '') {

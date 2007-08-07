@@ -10,13 +10,13 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $IP;
-require_once( "$IP/includes/SpecialPage.php" );
+// global $IP;
+// require_once( "$IP/includes/SpecialPage.php" );
 
-SpecialPage::addPage( new SpecialPage('ExportRDF','',true,'doSpecialExportRDF',false) );
+//SpecialPage::addPage( new SpecialPage('ExportRDF','',true,'doSpecialExportRDF',false) );
 
 
-function doSpecialExportRDF($page = '') {
+function smwfExportRDF($page = '') {
 	global $wgOut, $wgRequest, $wgUser, $smwgAllowRecursiveExport, $smwgExportBacklinks;
 
 	$recursive = 0;  //default, no recursion

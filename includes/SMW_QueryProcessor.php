@@ -12,29 +12,6 @@ require_once($smwgIP . '/includes/SMW_QueryPrinters.php');
 
 
 /**
- * This hook registers a parser-hook to the current parser.
- * Note that parser hooks are something different than MW hooks
- * in general, which explains the two-level registration.
- */
-function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
-	global $wgParser;
-	$wgParser->setHook( 'ask', 'smwfProcessInlineQuery' );
-	return true; // always return true, in order not to stop MW's hook processing!
-}
-
-/**
- * The <ask> parser hook processing part.
- */
-function smwfProcessInlineQuery($text, $param) {
-	global $smwgQEnabled;
-	if ($smwgQEnabled) {
-		return SMWQueryProcessor::getResultHTML($text,$param);
-	} else {
-		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
-	}
-}
-
-/**
  * Static class for accessing functions to generate and execute semantic queries 
  * and to serialise their results.
  */

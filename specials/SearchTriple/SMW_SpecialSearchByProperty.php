@@ -10,16 +10,8 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $IP, $smwgIP;
-
-require_once( "$IP/includes/SpecialPage.php" );
+global $smwgIP;
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
-
-function doSpecialSearchByProperty($query = '') {
-	SMW_SearchByProperty::execute($query);
-}
-
-SpecialPage::addPage( new SpecialPage('SearchByProperty','',true,'doSpecialSearchByProperty',false) );
 
 class SMW_SearchByProperty {
 

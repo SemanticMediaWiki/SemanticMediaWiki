@@ -14,15 +14,6 @@ global $IP, $smwgIP;
 require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
 
-
-function doSpecialPageProperty($query = '') {
-	SMW_PageProperty::execute($query);
-}
-
-SpecialPage::addPage( new SpecialPage('PageProperty','',FALSE,'doSpecialPageProperty',false) );
-
-
-
 class SMW_PageProperty {
 
 	static function execute($query = '') {

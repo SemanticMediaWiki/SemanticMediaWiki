@@ -9,14 +9,7 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-// TODO: should these be messages?
-global $wgMessageCache;
-$wgMessageCache->addMessages(array('smwadmin' => 'Admin functions for Semantic MediaWiki'));
-
-SpecialPage::addPage( new SpecialPage('SMWAdmin','delete',true,'doSpecialSMWAdmin',false) );
-
-
-function doSpecialSMWAdmin($par = null) {
+function smwfSMWAdmin($par = null) {
 	global $IP;
 	require_once($IP . '/includes/SpecialPage.php' );
 	require_once($IP . '/includes/Title.php' );
