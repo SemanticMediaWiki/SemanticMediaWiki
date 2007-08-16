@@ -26,7 +26,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 		// In the regexp matches below, leading ':' escapes the markup, as
 		// known for Categories.
 		// Parse links to extract semantic properties
-		$semanticLinkPattern = '(\[\[(([^:][^]]*):[=|:])+((?:[^|\[\]]|\[\[[^]]*\]\])*)(\|([^]]*))?\]\])';
+		$semanticLinkPattern = '(\[\[(([^:][^]]*):[=|:])+((?:[^|\[\]]|\[\[[^]]*\]\]|\[[^]]*\])*)(\|([^]]*))?\]\])';
 		$text = preg_replace_callback($semanticLinkPattern, 'smwfParsePropertiesCallback', $text);
 
 		// print the results if enabled (we have to parse them in any case, in order to
