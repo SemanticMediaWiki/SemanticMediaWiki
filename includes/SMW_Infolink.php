@@ -101,7 +101,7 @@ class SMWInfolink {
 			$end = '';
 		}
 		if ($this->internal) {
-			if (preg_match('/(.*)(\[|\]|<|>|&gt;|&lt;|{|})(.*)/', $this->target) != 0 ) {
+			if (preg_match('/(.*)(\[|\]|<|>|&gt;|&lt;|\'\'|{|})(.*)/', $this->target) != 0 ) {
 				return ''; // give up if illegal characters occur,
 				           // TODO: we would need a skin to provide an ext URL in this case
 			}
