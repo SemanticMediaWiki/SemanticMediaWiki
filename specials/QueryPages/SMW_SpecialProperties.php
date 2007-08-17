@@ -8,7 +8,7 @@
 if (!defined('MEDIAWIKI')) die();
 
 global $smwgIP;
-include_once( "$smwgIP/specials/QueryPages/SMWQueryPage.php" );
+include_once( "$smwgIP/specials/QueryPages/SMW_QueryPage.php" );
 
 class PropertiesPage extends SMWQueryPage {
 
