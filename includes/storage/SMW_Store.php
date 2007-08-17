@@ -304,6 +304,31 @@ abstract class SMWStore {
 	 */
 	abstract function getQueryResult(SMWQuery $query);
 
+///// Special page functions /////
+
+	/**
+	 * Return all properties that have been used on pages in the wiki. The result is an array
+	 * of arrays, each containing a property title and a count. The expected order is
+	 * alphabetical w.r.t. to property title texts.
+	 */
+	abstract function getPropertiesSpecial($requestoptions = NULL);
+
+	/**
+	 * Return all properties that have been declared in the wiki but that
+	 * are not used on any page. Stores might restrict here to those properties
+	 * that have been given a type if they have no efficient means of accessing
+	 * the set of all pages in the property namespace.
+	 */
+	abstract function getUnusedPropertiesSpecial($requestoptions = NULL);
+
+	/**
+	 * Return all properties that are used on some page but that do not have any
+	 * page describing them. Stores that have no efficient way of accessing the
+	 * set of all existing pages can extend this list to all properties that are
+	 * used but do not have a type assigned to them.
+	 */
+	abstract function getWantedPropertiesSpecial($requestoptions = NULL);
+
 ///// Setup store /////
 
 	/**

@@ -851,6 +851,83 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
+///// Special page functions /////
+
+	function getPropertiesSpecial($requestoptions = NULL) {
+		$db =& wfGetDB( DB_SLAVE );
+		$options = ' ORDER BY title';
+		if ($requestoptions->limit >= 0) {
+			$options .= ' LIMIT ' . $requestoptions->limit;
+		}
+		if ($requestoptions->offset > 0) {
+			$options .= ' OFFSET ' . $requestoptions->offset;
+		}
+		$res = $db->query('(SELECT relation_title as title, COUNT(*) as count FROM ' . 
+		                  $db->tableName('smw_relations') . 'GROUP BY relation_title) UNION ' .
+		                  '(SELECT attribute_title as title, COUNT(*) as count FROM ' .
+		                  $db->tableName('smw_attributes') . 'GROUP BY attribute_title) UNION ' .
+		                  '(SELECT attribute_title as title, COUNT(*) as count FROM ' .
+		                  $db->tableName('smw_longstrings') . 'GROUP BY attribute_title) UNION ' .
+		                  '(SELECT attribute_title as title, COUNT(*) as count FROM ' .
+		                  $db->tableName('smw_nary') . 'GROUP BY attribute_title)' . $options,
+		                  'SMW::getPropertySubjects');
+		$result = array();
+		while($row = $db->fetchObject($res)) {
+			$title = Title::newFromText($row->title, SMW_NS_PROPERTY);
+			$result[] = array($title, $row->count);
+		}
+		$db->freeResult($res);
+		return $result;
+	}
+
+	function getUnusedPropertiesSpecial($requestoptions = NULL) {
+		$db =& wfGetDB( DB_SLAVE );
+		$options = ' ORDER BY page_title';
+		if ($requestoptions->limit >= 0) {
+			$options .= ' LIMIT ' . $requestoptions->limit;
+		}
+		if ($requestoptions->offset > 0) {
+			$options .= ' OFFSET ' . $requestoptions->offset;
+		}
+		extract( $db->tableNames('page', 'smw_relations', 'smw_attributes', 'smw_longstrings', 'smw_nary', 'smw_subprops') );
+		/// TODO: any chance of making this more efficient?
+		$res = $db->query("SELECT page_title FROM $page LEFT JOIN $smw_relations ON page_title=$smw_relations.relation_title" .
+		                  " LEFT JOIN $smw_attributes ON page_title=$smw_attributes.attribute_title " .
+		                  " LEFT JOIN $smw_longstrings ON page_title=$smw_longstrings.attribute_title " .
+		                  " LEFT JOIN $smw_nary ON page_title=$smw_nary.attribute_title " .
+		                  " LEFT JOIN $smw_subprops ON page_title=$smw_subprops.object_title " .
+		                  " WHERE page_namespace=" . SMW_NS_PROPERTY .  " AND $smw_relations.subject_id IS NULL" .
+		                  " AND $smw_attributes.subject_id IS NULL AND $smw_longstrings.subject_id IS NULL" .
+		                  " AND $smw_nary.subject_id IS NULL AND $smw_subprops.subject_title IS NULL" . $options,
+		                  'SMW::getUnusedPropertySubjects');
+		$result = array();
+		while($row = $db->fetchObject($res)) {
+			$result[] = Title::newFromText($row->page_title, SMW_NS_PROPERTY);
+		}
+		return $result;
+	}
+	
+	function getWantedPropertiesSpecial($requestoptions = NULL) {
+		$db =& wfGetDB( DB_SLAVE );
+		$options = ' ORDER BY count DESC';
+		if ($requestoptions->limit >= 0) {
+			$options .= ' LIMIT ' . $requestoptions->limit;
+		}
+		if ($requestoptions->offset > 0) {
+			$options .= ' OFFSET ' . $requestoptions->offset;
+		}
+		$res = $db->query('SELECT relation_title as title, COUNT(*) as count FROM ' .
+		                  $db->tableName('smw_relations') . ' LEFT JOIN page ON (page_namespace=' . SMW_NS_PROPERTY .
+		                  ' AND page_title=relation_title) WHERE page_id IS NULL GROUP BY relation_title' . $options,
+		                  'SMW::getPropertySubjects');
+		$result = array();
+		while($row = $db->fetchObject($res)) {
+			$title = Title::newFromText($row->title, SMW_NS_PROPERTY);
+			$result[] = array($title, $row->count);
+		}
+		return $result;
+	}
+
 ///// Setup store /////
 
 	function setup($verbose = true) {
