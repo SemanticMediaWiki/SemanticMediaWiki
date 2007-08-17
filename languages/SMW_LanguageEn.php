@@ -99,22 +99,21 @@ protected $smwUserMessages = array(
 	'smw_searchtriple_searchatt' => 'Search Attributes',
 	'smw_searchtriple_resultrel' => 'Search results (relations)',
 	'smw_searchtriple_resultatt' => 'Search results (attributes)',
-	// Messages for Relations Special
-	'relations' => 'Relations',
-	'smw_relations_docu' => 'The following relations exist in the wiki.',
-	// Messages for WantedRelations Special
-	'wantedrelations' => 'Wanted relations',
-	'smw_wanted_relations' => 'The following relations do not have an explanatory page yet, though they are already used to describe other pages.',
-	// Messages for Attributes Special
-	'attributes' => 'Attributes',
-	'smw_attributes_docu' => 'The following attributes exist in the wiki.',
-	'smw_attr_type_join' => ' with $1',
-	// Messages for Unused Relations Special
-	'unusedrelations' => 'Unused relations',
-	'smw_unusedrelations_docu' => 'The following relation pages exist although no other page makes use of them.',
-	// Messages for Unused Attributes Special
-	'unusedattributes' => 'Unused attributes',
-	'smw_unusedattributes_docu' => 'The following attribute pages exist although no other page makes use of them.',
+	// Messages for Properties Special
+	'properties' => 'Properties',
+	'smw_properties_docu' => 'The following properties are used in the wiki.',
+	'smw_property_template' => '$1 of type $2 ($3)', // <propname> of type <type> (<count>)
+	'smw_propertylackspage' => 'All properties should be described by a page!',
+	'smw_propertylackstype' => 'No type was specified for this property (assuming type $1 for now).',
+	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!',
+	// Messages for Unused Properties Special
+	'unusedproperties' => 'Unused Properties',
+	'smw_unusedproperties_docu' => 'The following properties exist although no other page makes use of them.',
+	'smw_unusedproperty_template' => '$1 of type $2', // <propname> of type <type>
+	// Messages for Wanted Properties Special
+	'wantedproperties' => 'Wanted Properties',
+	'smw_wantedproperties_docu' => 'The following properties are used in the wiki but do not yet have a page for describing them.',
+	'smw_wantedproperty_template' => '$1 ($2 uses)', // <propname> (<count> uses)
 	// Messages for the refresh button
 	'tooltip-purge' => 'Click here to refresh all queries and templates on this page',
 	'purge' => 'Refresh',

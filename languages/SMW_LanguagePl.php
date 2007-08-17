@@ -118,22 +118,40 @@ protected $smwUserMessages = array(
 	'smw_searchtriple_searchatt' => 'Szukaj atrybutów',
 	'smw_searchtriple_resultrel' => 'Szukaj wyników (relacje)',
 	'smw_searchtriple_resultatt' => 'Szukaj wyników (atrybuty)',
-	/*Messages for Relations Special*/
-	'relations' => 'Relacje',
-	'smw_relations_docu' => 'W wiki istnieją następujące relacje.',
-	// Messages for WantedRelations Special
-	'wantedrelations' => 'Potrzebne relacje',
-	'smw_wanted_relations' => 'Następujące relacje nie mają jeszcze strony objaśniającej, choć są już używane do opisu innych stron.',
-	/*Messages for Attributes Special*/
-	'attributes' => 'Atrybuty',
-	'smw_attributes_docu' => 'W wiki istnieją następujące atrybuty.',
-	'smw_attr_type_join' => ' z $1',
-	/*Messages for Unused Relations Special*/
-	'unusedrelations' => 'Nieużywane relacje',
-	'smw_unusedrelations_docu' => 'Następujące relacje posiadają własne strony, choć Żadna inna strona z nich nie korzysta.',
-	/*Messages for Unused Attributes Special*/
-	'unusedattributes' => 'Nieużywane atrybuty',
-	'smw_unusedattributes_docu' => 'Następujące atrybuty posiadają własne strony, choć żadna inna strona z nich nie korzysta.',
+	// Messages for Properties Special
+	'properties' => 'Properties', //TODO: translate
+	'smw_properties_docu' => 'The following properties are used in the wiki.', //TODO: translate
+	'smw_property_template' => '$1 of type $2 ($3)', // <propname> of type <type> (<count>) //TODO: translate
+	'smw_propertylackspage' => 'All properties should be described by a page!', //TODO: translate
+	'smw_propertylackstype' => 'No type was specified for this property (assuming type $1 for now).', //TODO: translate
+	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!', //TODO: translate
+	// Messages for Unused Properties Special
+	'unusedproperties' => 'Unused Properties', //TODO: translate
+	'smw_unusedproperties_docu' => 'The following properties exist although no other page makes use of them.', //TODO: translate
+	'smw_unusedproperty_template' => '$1 of type $2', // <propname> of type <type> //TODO: translate
+	// Messages for Wanted Properties Special
+	'wantedproperties' => 'Wanted Properties', //TODO: translate
+	'smw_wantedproperties_docu' => 'The following properties are used in the wiki but do not yet have a page for describing them.', //TODO: translate
+	'smw_wantedproperty_template' => '$1 ($2 uses)', // <propname> (<count> uses) //TODO: translate
+//// Note to translators:
+//// The following messages in comments were kept for reference to facilitate the translation of the property messages above.
+//// Delete them when no longer needed.
+// 	/*Messages for Relations Special*/
+// 	'relations' => 'Relacje',
+// 	'smw_relations_docu' => 'W wiki istnieją następujące relacje.',
+// 	// Messages for WantedRelations Special
+// 	'wantedrelations' => 'Potrzebne relacje',
+// 	'smw_wanted_relations' => 'Następujące relacje nie mają jeszcze strony objaśniającej, choć są już używane do opisu innych stron.',
+// 	/*Messages for Attributes Special*/
+// 	'attributes' => 'Atrybuty',
+// 	'smw_attributes_docu' => 'W wiki istnieją następujące atrybuty.',
+// 	'smw_attr_type_join' => ' z $1',
+// 	/*Messages for Unused Relations Special*/
+// 	'unusedrelations' => 'Nieużywane relacje',
+// 	'smw_unusedrelations_docu' => 'Następujące relacje posiadają własne strony, choć Żadna inna strona z nich nie korzysta.',
+// 	/*Messages for Unused Attributes Special*/
+// 	'unusedattributes' => 'Nieużywane atrybuty',
+// 	'smw_unusedattributes_docu' => 'Następujące atrybuty posiadają własne strony, choć żadna inna strona z nich nie korzysta.',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Kliknij tutaj, aby odświeżyć wszystkie zapytania i szablony na tej stronie',
 	'purge' => 'Odśwież',

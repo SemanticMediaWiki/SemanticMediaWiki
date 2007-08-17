@@ -98,22 +98,40 @@ protected $smwUserMessages = array(
 	'smw_searchtriple_searchatt' => 'Recherche par attribut',
 	'smw_searchtriple_resultrel' => 'Résultats de la recherche (relations)',
 	'smw_searchtriple_resultatt' => 'Résultats de la recherche (attributs)',
-	/*Messages for Relation Special*/
-	'relations' => 'Relations',
-	'smw_relations_docu' => 'Sur ce wiki, existent les relations suivantes:',
-	// Messages for WantedRelations Special
-	'wantedrelations' => 'Relations demandées',
-	'smw_wanted_relations' => 'Les relations suivantes n\'ont pas encore de page d\'explication, mais elles sont déjà utilisées pour décrire d\'autrees pages',
-	/*Messages for Attributes Special*/
-	'attributes' => 'Attributs',
-	'smw_attributes_docu' => 'Sur ce wiki, existent les attributs suivants:',
-	'smw_attr_type_join' => ' avec $1',
-	/*Messages for Unused Relations Special*/
-	'unusedrelations' => 'Relations orphelines',
-	'smw_unusedrelations_docu' => 'Des pages pour les relations suivantes existent, mais elles ne sont pas utilisées.',
-	/*Messages for Unused Attributes Special*/
-	'unusedattributes' => 'Attributs orphelins',
-	'smw_unusedattributes_docu' => 'Des pages pour les attribut suivants existent, mais ils ne sont pas utilisés.',
+	// Messages for Properties Special
+	'properties' => 'Properties', //TODO: translate
+	'smw_properties_docu' => 'The following properties are used in the wiki.', //TODO: translate
+	'smw_property_template' => '$1 of type $2 ($3)', // <propname> of type <type> (<count>) //TODO: translate
+	'smw_propertylackspage' => 'All properties should be described by a page!', //TODO: translate
+	'smw_propertylackstype' => 'No type was specified for this property (assuming type $1 for now).', //TODO: translate
+	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!', //TODO: translate
+	// Messages for Unused Properties Special
+	'unusedproperties' => 'Unused Properties', //TODO: translate
+	'smw_unusedproperties_docu' => 'The following properties exist although no other page makes use of them.', //TODO: translate
+	'smw_unusedproperty_template' => '$1 of type $2', // <propname> of type <type> //TODO: translate
+	// Messages for Wanted Properties Special
+	'wantedproperties' => 'Wanted Properties', //TODO: translate
+	'smw_wantedproperties_docu' => 'The following properties are used in the wiki but do not yet have a page for describing them.', //TODO: translate
+	'smw_wantedproperty_template' => '$1 ($2 uses)', // <propname> (<count> uses) //TODO: translate
+//// Note to translators:
+//// The following messages in comments were kept for reference to facilitate the translation of the property messages above.
+//// Delete them when no longer needed.
+// 	/*Messages for Relation Special*/
+// 	'relations' => 'Relations',
+// 	'smw_relations_docu' => 'Sur ce wiki, existent les relations suivantes:',
+// 	// Messages for WantedRelations Special
+// 	'wantedrelations' => 'Relations demandées',
+// 	'smw_wanted_relations' => 'Les relations suivantes n\'ont pas encore de page d\'explication, mais elles sont déjà utilisées pour décrire d\'autrees pages',
+// 	/*Messages for Attributes Special*/
+// 	'attributes' => 'Attributs',
+// 	'smw_attributes_docu' => 'Sur ce wiki, existent les attributs suivants:',
+// 	'smw_attr_type_join' => ' avec $1',
+// 	/*Messages for Unused Relations Special*/
+// 	'unusedrelations' => 'Relations orphelines',
+// 	'smw_unusedrelations_docu' => 'Des pages pour les relations suivantes existent, mais elles ne sont pas utilisées.',
+// 	/*Messages for Unused Attributes Special*/
+// 	'unusedattributes' => 'Attributs orphelins',
+// 	'smw_unusedattributes_docu' => 'Des pages pour les attribut suivants existent, mais ils ne sont pas utilisés.',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Réactualiser toutes les recherches et tous les brouillons de cette page.',
 	'purge' => 'Réactualiser',

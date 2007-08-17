@@ -99,22 +99,21 @@ protected $smwUserMessages = array(
 	'smw_searchtriple_searchatt' => 'Suche nach Attributen',
 	'smw_searchtriple_resultrel' => 'Suchergebnisse (Relationen)',
 	'smw_searchtriple_resultatt' => 'Suchergebnisse (Attribute)',
-	/*Messages for Relation Special*/
-	'relations' => 'Relationen',
-	'smw_relations_docu' => 'In diesem Wiki gibt es die folgenden Relationen:',
-	/*Messages for WantedRelations*/
-	'wantedrelations' => 'Gewünschte Relationen',
-	'smw_wanted_relations' => 'Folgende Relationen haben bisher keine erläuterende Seite, obwohl sie bereits für die Beschreibung anderer Seiten verwendet werden.',
-	/*Messages for Attributes Special*/
-	'attributes' => 'Attribute',
-	'smw_attributes_docu' => 'In diesem Wiki gibt es die folgenden Attribute:',
-	'smw_attr_type_join' => ' hat $1',
-	/*Messages for Unused Relations Special*/
-	'unusedrelations' => 'Verwaiste Relationen',
-	'smw_unusedrelations_docu' => 'Die folgenden Relationenseiten existieren, obwohl sie nicht verwendet werden.',
-	/*Messages for Unused Attributes Special*/
-	'unusedattributes' => 'Verwaiste Attribute',
-	'smw_unusedattributes_docu' => 'Die folgenden Attributseiten existieren, obwohl sie nicht verwendet werden.',
+	// Messages for Properties Special
+	'properties' => 'Attribute',
+	'smw_properties_docu' => 'In diesem Wiki gibt es die folgenden Attribute:',
+	'smw_property_template' => '$1 mit Datentyp $2 ($3)', // <propname> of type <type> (<count>)
+	'smw_propertylackspage' => 'Alle Attribute sollten durch eine Seite beschrieben werden!',
+	'smw_propertylackstype' => 'Für dieses Attribut wurde kein Datentyp angegeben ($1 wird vorläufig als Typ angenommen).',
+	'smw_propertyhardlyused' => 'Dieses Attribut wird im Wiki kaum verwendet!',
+	// Messages for Unused Properties Special
+	'unusedproperties' => 'Verwaiste Attribute',
+	'smw_unusedproperties_docu' => 'Die folgenden Attributseiten existieren, obwohl sie nicht verwendet werden.',
+	'smw_unusedproperty_template' => '$1 mit Datentyp $2', // <propname> of type <type>
+	// Messages for Wanted Properties Special
+	'wantedproperties' => 'Gewünschte Attribute',
+	'smw_wantedproperties_docu' => 'Folgende Attribute haben bisher keine erläuterende Seite, obwohl sie bereits für die Beschreibung anderer Seiten verwendet werden.',
+	'smw_wantedproperty_template' => '$1 ($2 Vorkommen)', // <propname> (<count> uses)
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Alle Anfrageergebnisse und Vorlagen auf dieser Seite auf den neuesten Stand bringen.',
 	'purge' => 'aktualisieren',

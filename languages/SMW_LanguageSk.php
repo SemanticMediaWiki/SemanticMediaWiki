@@ -99,22 +99,37 @@ protected $smwUserMessages = array(
 	'smw_searchtriple_searchatt' => 'Hľadaj atribúty',
 	'smw_searchtriple_resultrel' => 'Hľadaj výsledky (vzťahy)',
 	'smw_searchtriple_resultatt' => 'Hľadaj výsledky (atribúty)',
-	/*Messages for Relations Special*/
-	'relations' => 'Relations',
-	'smw_relations_docu' => 'Nasledujúce vzťahy existujú na wiki.',
-	/*Messages for Attributes Special*/
-	'attributes' => 'Attributes',
-	'smw_attributes_docu' => 'Nasledujúce atribúty existujú na wiki.',
-	'smw_attr_type_join' => ' s $1',
-	/*Messages for Unused Relations Special*/
-	'unusedrelations' => 'Nepoužité vzťahy',
-	'smw_unusedrelations_docu' => 'Nasledujúce stránky vzťahov existujú, hoci žiadne iné stránky ich nevyužvajú.',
-	// Messages for WantedRelations Special
-	'wantedrelations' => 'Wanted relations', //TODO: translate
-	'smw_wanted_relations' => 'The following relations do not have an explanatory page yet, though they are already used to describe other pages.', //TODO: translate
-	/*Messages for Unused Attributes Special*/
-	'unusedattributes' => 'Nepoužité atribúty',
-	'smw_unusedattributes_docu' => 'Nasledujúce stránky atribútov existujú, hoci žiadne iné stránky ich nevyužvajú.',
+	// Messages for Properties Special
+	'properties' => 'Properties', //TODO: translate
+	'smw_properties_docu' => 'The following properties are used in the wiki.', //TODO: translate
+	'smw_property_template' => '$1 of type $2 ($3)', // <propname> of type <type> (<count>) //TODO: translate
+	'smw_propertylackspage' => 'All properties should be described by a page!', //TODO: translate
+	'smw_propertylackstype' => 'No type was specified for this property (assuming type $1 for now).', //TODO: translate
+	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!', //TODO: translate
+	// Messages for Unused Properties Special
+	'unusedproperties' => 'Unused Properties', //TODO: translate
+	'smw_unusedproperties_docu' => 'The following properties exist although no other page makes use of them.', //TODO: translate
+	'smw_unusedproperty_template' => '$1 of type $2', // <propname> of type <type> //TODO: translate
+	// Messages for Wanted Properties Special
+	'wantedproperties' => 'Wanted Properties', //TODO: translate
+	'smw_wantedproperties_docu' => 'The following properties are used in the wiki but do not yet have a page for describing them.', //TODO: translate
+	'smw_wantedproperty_template' => '$1 ($2 uses)', // <propname> (<count> uses) //TODO: translate
+//// Note to translators:
+//// The following messages in comments were kept for reference to facilitate the translation of the property messages above.
+//// Delete them when no longer needed.
+// 	/*Messages for Relations Special*/
+// 	'relations' => 'Relations',
+// 	'smw_relations_docu' => 'Nasledujúce vzťahy existujú na wiki.',
+// 	/*Messages for Attributes Special*/
+// 	'attributes' => 'Attributes',
+// 	'smw_attributes_docu' => 'Nasledujúce atribúty existujú na wiki.',
+// 	'smw_attr_type_join' => ' s $1',
+// 	/*Messages for Unused Relations Special*/
+// 	'unusedrelations' => 'Nepoužité vzťahy',
+// 	'smw_unusedrelations_docu' => 'Nasledujúce stránky vzťahov existujú, hoci žiadne iné stránky ich nevyužvajú.',
+// 	/*Messages for Unused Attributes Special*/
+// 	'unusedattributes' => 'Nepoužité atribúty',
+// 	'smw_unusedattributes_docu' => 'Nasledujúce stránky atribútov existujú, hoci žiadne iné stránky ich nevyužvajú.',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Kliknutím sem obnovíte všetky dotazy a šablóny na tejto stránke',
 	'purge' => 'Obnoviť',

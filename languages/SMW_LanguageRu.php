@@ -98,22 +98,40 @@ protected $smwUserMessages = array(
 	'smw_searchtriple_searchatt' => 'Искать Атрибуты',
 	'smw_searchtriple_resultrel' => 'Результаты поиска (отношения)',
 	'smw_searchtriple_resultatt' => 'Результаты поиска (атрибуты)',
-	// Messages for Relations Special
-	'relations' => 'Отношения',
-	'smw_relations_docu' => 'Существуют следующие отношения.',
-	// Messages for WantedRelations Special
-	'wantedrelations' => 'Отношения без страниц',
-	'smw_wanted_relations' => 'Следующие отношения не имеют страниц с описанием, хотя и используются для описания других страниц.',
-	// Messages for Attributes Special
-	'attributes' => 'Атрибуты',
-	'smw_attributes_docu' => 'Существуют следующие атрибуты.',
-	'smw_attr_type_join' => ' с типом $1',
-	// Messages for Unused Relations Special
-	'unusedrelations' => 'Неиспользуемые отношения',
-	'smw_unusedrelations_docu' => 'Следующие отношения не используются.',
-	// Messages for Unused Attributes Special
-	'unusedattributes' => 'Неиспользуемые атрибуты',
-	'smw_unusedattributes_docu' => 'Следующие атрибуты не используются.',
+	// Messages for Properties Special
+	'properties' => 'Properties', //TODO: translate
+	'smw_properties_docu' => 'The following properties are used in the wiki.', //TODO: translate
+	'smw_property_template' => '$1 of type $2 ($3)', // <propname> of type <type> (<count>) //TODO: translate
+	'smw_propertylackspage' => 'All properties should be described by a page!', //TODO: translate
+	'smw_propertylackstype' => 'No type was specified for this property (assuming type $1 for now).', //TODO: translate
+	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!', //TODO: translate
+	// Messages for Unused Properties Special
+	'unusedproperties' => 'Unused Properties', //TODO: translate
+	'smw_unusedproperties_docu' => 'The following properties exist although no other page makes use of them.', //TODO: translate
+	'smw_unusedproperty_template' => '$1 of type $2', // <propname> of type <type> //TODO: translate
+	// Messages for Wanted Properties Special
+	'wantedproperties' => 'Wanted Properties', //TODO: translate
+	'smw_wantedproperties_docu' => 'The following properties are used in the wiki but do not yet have a page for describing them.', //TODO: translate
+	'smw_wantedproperty_template' => '$1 ($2 uses)', // <propname> (<count> uses) //TODO: translate
+//// Note to translators:
+//// The following messages in comments were kept for reference to facilitate the translation of the property messages above.
+//// Delete them when no longer needed.
+// 	// Messages for Relations Special
+// 	'relations' => 'Отношения',
+// 	'smw_relations_docu' => 'Существуют следующие отношения.',
+// 	// Messages for WantedRelations Special
+// 	'wantedrelations' => 'Отношения без страниц',
+// 	'smw_wanted_relations' => 'Следующие отношения не имеют страниц с описанием, хотя и используются для описания других страниц.',
+// 	// Messages for Attributes Special
+// 	'attributes' => 'Атрибуты',
+// 	'smw_attributes_docu' => 'Существуют следующие атрибуты.',
+// 	'smw_attr_type_join' => ' с типом $1',
+// 	// Messages for Unused Relations Special
+// 	'unusedrelations' => 'Неиспользуемые отношения',
+// 	'smw_unusedrelations_docu' => 'Следующие отношения не используются.',
+// 	// Messages for Unused Attributes Special
+// 	'unusedattributes' => 'Неиспользуемые атрибуты',
+// 	'smw_unusedattributes_docu' => 'Следующие атрибуты не используются.',
 	// Messages for the refresh button
 	'tooltip-purge' => 'Нажмите здесь для обновления всех шаблонов на этой странице',
 	'purge' => 'Обновить',
