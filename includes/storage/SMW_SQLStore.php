@@ -881,6 +881,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	function getUnusedPropertiesSpecial($requestoptions = NULL) {
+		/// FIXME filter out the builtin properties!
 		$db =& wfGetDB( DB_SLAVE );
 		$options = ' ORDER BY page_title';
 		if ($requestoptions->limit >= 0) {

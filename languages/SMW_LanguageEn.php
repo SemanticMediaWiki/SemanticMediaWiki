@@ -9,13 +9,11 @@ include_once($smwgIP . '/languages/SMW_Language.php');
 class SMW_LanguageEn extends SMW_Language {
 
 protected $smwContentMessages = array(
-	'smw_edithelp' => 'Editing help on relations and attributes',
+	'smw_edithelp' => 'Editing help on properties',
 	'smw_helppage' => 'Relation',
 	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => ', and', //used in "A, B, and C"
 	'smw_factbox_head' => 'Facts about $1',
-	'smw_att_head' => 'Attribute values',
-	'smw_rel_head' => 'Relations to other pages',
 	'smw_spec_head' => 'Special properties',
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
@@ -32,14 +30,12 @@ protected $smwContentMessages = array(
 	// Messages and strings for basic datatype processing
 	'smw_decseparator' => '.',
 	'smw_kiloseparator' => ',',
-	'smw_unknowntype' => 'Unsupported type “$1” defined for attribute.',
-	'smw_noattribspecial' => 'Special property “$1” is not an attribute (use “::” instead of “:=”).',
-	'smw_notype' => 'No type defined for attribute.',
-	'smw_manytypes' => 'More than one type defined for attribute.',
+	'smw_unknowntype' => 'Unsupported type “$1” defined for property.',
+	'smw_manytypes' => 'More than one type defined for property.',
 	'smw_emptystring' => 'Empty strings are not accepted.',
 	'smw_maxstring' => 'String representation $1 is too long for this site.',
-	'smw_nopossiblevalues' => 'Possible values for this attribute are not enumerated.',
-	'smw_notinenum' => '“$1” is not in the list of possible values ($2) for this attribute.',
+	'smw_nopossiblevalues' => 'Possible values for this property are not enumerated.',
+	'smw_notinenum' => '“$1” is not in the list of possible values ($2) for this property.',
 	'smw_noboolean' => '“$1” is not recognized as a boolean (true/false) value.',
 	'smw_true_words' => 't,yes,y',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,no,n',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
@@ -47,7 +43,7 @@ protected $smwContentMessages = array(
 	'smw_nofloat' => '“$1” is no floating point number.',
 	'smw_infinite' => 'Numbers as long as “$1” are not supported on this site.',
 	'smw_infinite_unit' => 'Conversion into unit “$1” resulted in a number that is too long for this site.',
-	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this attribute supports no unit conversion',
+	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this property supports no unit conversion',
 	'smw_unsupportedprefix' => 'Prefixes for numbers (“$1”) are not supported.',
 	'smw_unsupportedunit' => 'Unit conversion for unit “$1” not supported.',
 	// Messages for geo coordinates parsing
@@ -74,31 +70,17 @@ protected $smwContentMessages = array(
 
 protected $smwUserMessages = array(
 	'smw_devel_warning' => 'This feature is currently under development, and might not be fully functional. Backup your data before using it.',
-	// Messages for pages of types, relations, and attributes
-	'smw_type_header' => 'Attributes of type “$1”',
-	'smw_typearticlecount' => 'Showing $1 attributes using this type.',
-	'smw_attribute_header' => 'Pages using the attribute “$1”',
-	'smw_attributearticlecount' => '<p>Showing $1 pages using this attribute.</p>',
-	'smw_relation_header' => 'Pages using the relation “$1”',
-	'smw_relationarticlecount' => '<p>Showing $1 pages using this relation.</p>',
+	// Messages for pages of types and properties
+	'smw_type_header' => 'Properties of type “$1”',
+	'smw_typearticlecount' => 'Showing $1 properties using this type.',
+	'smw_attribute_header' => 'Pages using the property “$1”',
+	'smw_attributearticlecount' => '<p>Showing $1 pages using this property.</p>',
 	// Messages for Export RDF Special
 	'exportrdf' => 'Export pages to RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>This page allows you to obtain data from a page in RDF format. To export pages, enter the titles in the text box below, one title per line.</p>',
 	'smw_exportrdf_recursive' => 'Recursively export all related pages. Note that the result could be large!',
 	'smw_exportrdf_backlinks' => 'Also export all pages that refer to the exported pages. Generates browsable RDF.',
 	'smw_exportrdf_lastdate' => 'Do not export pages that were not changed since the given point in time',
-	// Messages for Search Triple Special
-	'searchtriple' => 'Simple semantic search', //name of this special
-	'smw_searchtriple_docu' => "<p>Fill in either the upper or lower row of the input form to search for relations or attributes, respectively. Some of the fields can be left empty to obtain more results. However, if an attribute value is given, the attribute name must be specified as well. As usual, attribute values can be entered with a unit of measurement.</p>\n\n<p>Be aware that you must press the right button to obtain results. Just pressing <i>Return</i> might not trigger the search you wanted.</p>",
-	'smw_searchtriple_subject' => 'Subject page:',
-	'smw_searchtriple_relation' => 'Relation name:',
-	'smw_searchtriple_attribute' => 'Attribute name:',
-	'smw_searchtriple_object' => 'Object page:',
-	'smw_searchtriple_attvalue' => 'Attribute value:',
-	'smw_searchtriple_searchrel' => 'Search Relations',
-	'smw_searchtriple_searchatt' => 'Search Attributes',
-	'smw_searchtriple_resultrel' => 'Search results (relations)',
-	'smw_searchtriple_resultatt' => 'Search results (attributes)',
 	// Messages for Properties Special
 	'properties' => 'Properties',
 	'smw_properties_docu' => 'The following properties are used in the wiki.',
@@ -134,7 +116,7 @@ protected $smwUserMessages = array(
 	'smw_oi_importedfromontology' => 'Import from ontology',
 	// Messages for (data)Types Special
 	'types' => 'Types',
-	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to attributes. Each datatype has a page where additional information can be provided.',
+	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to properties. Each datatype has a page where additional information can be provided.',
 	'smw_types_units' => 'Standard unit: $1; supported units: $2',
 	'smw_types_builtin' => 'Built-in types',
 	/*Messages for ExtendedStatistics Special*/
@@ -149,12 +131,12 @@ protected $smwUserMessages = array(
 	'smw_extstats_totalri' => 'Total number of relation instances:',
 	'smw_extstats_totalra' => 'Average number of instances per relation:',
 	'smw_extstats_totalpr' => 'Total number of pages about relations:',
-	'smw_extstats_totala' => 'Total number of attributes:',
-	'smw_extstats_totalai' => 'Total number of attribute instances:',
-	'smw_extstats_totalaa' => 'Average number of instances per attribute:',
+	'smw_extstats_totala' => 'Total number of properties:',
+	'smw_extstats_totalai' => 'Total number of property instances:',
+	'smw_extstats_totalaa' => 'Average number of instances per property:',
 	/*Messages for Flawed Attributes Special --disabled--*/
-	'flawedattributes' => 'Flawed Attributes',
-	'smw_fattributes' => 'The pages listed below have an incorrectly defined attribute. The number of incorrect attributes is given in the brackets.',
+	'flawedattributes' => 'Flawed Properties',
+	'smw_fattributes' => 'The pages listed below have an incorrectly defined property. The number of incorrect properties is given in the brackets.',
 	// Name of the URI Resolver Special (no content)
 	'uriresolver' => 'URI Resolver',
 	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>',

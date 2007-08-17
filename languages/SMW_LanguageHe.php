@@ -14,8 +14,6 @@ protected $smwContentMessages = array(
 	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => ', וגם', //used in "A, B, and C"
 	'smw_factbox_head' => 'עובדות על אודות $1 &mdash; לחץ <span class="smwsearchicon">+</span> בכדי למצוא דפים דומים.',
-	'smw_att_head' => 'ערכי התכונה',
-	'smw_rel_head' => 'יחס לדפים אחרים',
 	'smw_spec_head' => 'מאפיינים מיוחדים',
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
@@ -33,8 +31,6 @@ protected $smwContentMessages = array(
 	'smw_decseparator' => '.',
 	'smw_kiloseparator' => ',',
 	'smw_unknowntype' => '[אופס! טיפוס לא מוכר "$1" הוגדר עבור תכונה זו]',
-	'smw_noattribspecial' => '[אופס! מאפיין מיוחד "$1" אינו תכונה (יש להשתמש ב- "::" במקום ב- ":=")]',
-	'smw_notype' => '[אופס! לא הוגדר טיפוס לתכונה זו]',
 	'smw_manytypes' => '[אופס! הוגדר יותר מטיפוס אחד לתכונה זו]',
 	'smw_emptystring' => '[אופס! לא ניתן להשתמש כאן במחרוזות ריקות]',
 	'smw_maxstring' => '[מצטערת, ייצוג המחרוזת כ-$1 ארוך מדי עבור אתר זה.]',
@@ -78,25 +74,11 @@ protected $smwUserMessages = array(
 	'smw_typearticlecount' => 'Showing $1 attributes using this type.', // TODO translate
 	'smw_attribute_header' => 'Pages using the attribute “$1”', // TODO translate
 	'smw_attributearticlecount' => '<p>Showing $1 pages using this attribute.</p>', // TODO translate
-	'smw_relation_header' => 'Pages using the relation “$1”', // TODO translate
-	'smw_relationarticlecount' => '<p>Showing $1 pages using this relation.</p>', // TODO translate
 	/*Messages for Export RDF Special*/ // TODO: translate
 	'exportrdf' => 'Export pages to RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>This page allows you to obtain data from a page in RDF format. To export pages, enter the titles in the text box below, one title per line.</p>',
 	'smw_exportrdf_recursive' => 'Recursively export all related pages. Note that the result could be large!',
 	'smw_exportrdf_backlinks' => 'Also export all pages that refer to the exported pages. Generates browsable RDF.',
-	/*Messages for Search Triple Special*/
-	'searchtriple' => 'חיפוש סמנטי פשוט', //name of this special
-	'smw_searchtriple_docu' => "<p>Fill in either the upper or lower row of the input form to search for relations or attributes, respectively. Some of the fields can be left empty to obtain more results. However, if an attribute value is given, the attribute name must be specified as well. As usual, attribute values can be entered with a unit of measurement.</p>\n\n<p>Be aware that you must press the right button to obtain results. Just pressing <i>Return</i> might not trigger the search you wanted.</p>",
-	'smw_searchtriple_subject' => 'דף נושא:',
-	'smw_searchtriple_relation' => 'שם היחס:',
-	'smw_searchtriple_attribute' => 'שם התכונה:',
-	'smw_searchtriple_object' => 'דף נשוא:',
-	'smw_searchtriple_attvalue' => 'ערך התכונה:',
-	'smw_searchtriple_searchrel' => 'חפס יחסים',
-	'smw_searchtriple_searchatt' => 'חפש תכונות',
-	'smw_searchtriple_resultrel' => 'חפש בתוצאות (יחסים)',
-	'smw_searchtriple_resultatt' => 'חפש בתוצאות (תכונות)',
 	// Messages for Properties Special
 	'properties' => 'Properties', //TODO: translate
 	'smw_properties_docu' => 'The following properties are used in the wiki.', //TODO: translate

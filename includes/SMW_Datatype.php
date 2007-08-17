@@ -86,98 +86,12 @@ class SMWTypeHandlerFactory {
 	}
 
 	/**
-	 * This method returns the XSD datatype identifier
-	 * for the type of the given id, or NULL if id is not
-	 * known. Since this is used a lot during RDF export, it
-	 * should be reasonably light-weight.
-	 */
-	static function getXSDTypeByID($typeid) {
-		if (array_key_exists($typeid,SMWTypeHandlerFactory::$typeLabelsByID)) {
-			$label = SMWTypeHandlerFactory::$typeLabelsByID[$typeid];
-			$th = SMWTypeHandlerFactory::getTypeHandlerByLabel($label, false);
-			if ($th !== NULL) return $th->getXSDType();
-		}
-		// maybe a custom type?
-		if ( (mb_substr($typeid,0,5) == 'Type:') ||
-			('geoarea' == $typeid) || ('geolength' == $typeid) ) { // compatibility with <0.5 DB entries
-			    //TODO: when restructuring the type system, provide an update method that "fixes" those old types
-			// Reuse existing float type handler:
-			//FIXME: This is bad, since be create a cache entry with the wrong type. It is a good shortcut
-			// for the given purpose, but not for other purposes where the same cache entry will be used!
-			SMWTypeHandlerFactory::$typeLabelsByID[$typeid] = SMWTypeHandlerFactory::$typeLabelsByID['float'];
-			$th = SMWTypeHandlerFactory::getTypeHandlerByLabel(SMWTypeHandlerFactory::$typeLabelsByID['float'], false);
-			return $th->getXSDType();
-		}
-		return NULL;
-	}
-
-	/**
-	 * This method returns a typehandler object
-	 * for the type of the given id, or NULL if id is not
-	 * known. Since this is used a lot during RDF export, it
-	 * should be reasonably light-weight.
-	 */
-	static function getTypeHandlerByID($typeid) {
-		$label = SMWTypeHandlerFactory::getTypeLabelByID($typeid);
-		if ( $label !== NULL ) {
-			$th = SMWTypeHandlerFactory::getTypeHandlerByLabel($label);
-			return $th;
-		} else {
-			return NULL;
-		}
-	}
-
-	/**
-	 * This method returns a typehandler label
-	 * for the type of the given id, or NULL if id is not
-	 * known.  This is lighter-weight than creating a type handler.
-	 */
-	static function getTypeLabelByID($typeid) {
-		if (array_key_exists($typeid,SMWTypeHandlerFactory::$typeLabelsByID)) {
-			return SMWTypeHandlerFactory::$typeLabelsByID[$typeid];
-		}
-		// maybe a custom type? The label then is the string without the prefix "Type:"
-		if (mb_substr($typeid,0,5) == 'Type:') {
-			SMWTypeHandlerFactory::$typeLabelsByID[$typeid] = mb_substr($typeid,5);
-			return mb_substr($typeid,5);
-		} elseif ( ('geoarea' == $typeid) || ('geolength' == $typeid) ) { // compatibility with <0.5 DB entries
-			    //TODO: when restructuring the type system, provide an update method that "fixes" those old types
-			SMWTypeHandlerFactory::$typeLabelsByID[$typeid] = SMWTypeHandlerFactory::$typeLabelsByID['float']; // the best we can do
-			return SMWTypeHandlerFactory::$typeLabelsByID['float'];
-		}
-		return NULL;
-	}
-
-	/**
 	 * This method returns an array of the labels of built-in types (those
 	 * announced in code rather than user-defined types with custom units).
 	 * Needed since typeHandlersByLabel is private.
 	 */
 	static function getTypeLabels() {
 		return array_keys(SMWTypeHandlerFactory::$typeHandlersByLabel);
-	}
-
-	/**
-	 * This method retrieves a type handler object for a given
-	 * special property, provided as a constant identifier. Not
-	 * every special property has a type (some are relations),
-	 * and an error might be returned in certain cases.
-	 */
-	static function getSpecialTypeHandler($special) {
-		switch ($special) {
-			case SMW_SP_HAS_URI:
-				return new SMWURITypeHandler(SMW_URI_MODE_URI);
-			case SMW_SP_MAIN_DISPLAY_UNIT: case SMW_SP_DISPLAY_UNIT: case SMW_SP_SERVICE_LINK:
-				return new SMWStringTypeHandler();
-			case SMW_SP_CONVERSION_FACTOR: case SMW_SP_POSSIBLE_VALUE:
-				return new SMWStringTypeHandler();
-			case SMW_SP_CONVERSION_FACTOR_SI:
-				return new SMWStringTypeHandler(); // TODO: change this into an appropriate handler
-			default:
-				global $smwgContLang;
-				$specprops = $smwgContLang->getSpecialPropertiesArray();
-				return new SMWErrorTypeHandler(wfMsgForContent('smw_noattribspecial',$specprops[$special]));
-		}
 	}
 
 	/**
@@ -212,33 +126,6 @@ class SMWTypeHandlerFactory {
 		}
 
 		return new SMWErrorTypeHandler(wfMsgForContent('smw_unknowntype',$typelabel));
-	}
-
-	/**
-	 * This method retrieves a type handler object for a given
-	 * attribute. The attribute is expected to be in text
-	 * form without preceding namespace.
-	 */
-	static function getTypeHandler($attribute) {
-		if(!array_key_exists($attribute,SMWTypeHandlerFactory::$typeHandlersByAttribute)) {
-			global $wgContLang;
-			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
-			if ($atitle !== NULL) {
-				$typearray = smwfGetStore()->getSpecialValues($atitle,SMW_SP_HAS_TYPE);
-			} else { $typearray = Array(); }
-
-			if (count($typearray)==1) {
-				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] =
-				     SMWTypeHandlerFactory::getTypeHandlerByLabel($typearray[0]);
-			} elseif (count($typearray)==0) {
-				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] =
-				     new SMWErrorTypeHandler(wfMsgForContent('smw_notype'));
-			} else {
-				SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute] =
-				     new SMWErrorTypeHandler(wfMsgForContent('smw_manytypes'));
-			}
-		}
-		return SMWTypeHandlerFactory::$typeHandlersByAttribute[$attribute];
 	}
 
 	/**

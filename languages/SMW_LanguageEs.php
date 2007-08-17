@@ -14,8 +14,6 @@ protected $smwContentMessages = array(
 	'smw_viewasrdf' => 'Ver como RDF',
 	'smw_finallistconjunct' => ' y',					//utilizado en "A, B, y C"
 	'smw_factbox_head' => 'Hechos relativos a à $1 — Búsqueda de páginas similares con <span class="smwsearchicon">+</span>.',
-	'smw_att_head' => 'Atributos',
-	'smw_rel_head' => 'Relaciones con otros articulos',
 	'smw_spec_head' => 'Propiedades especiales',
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",					// http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#
@@ -33,8 +31,6 @@ protected $smwContentMessages = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_unknowntype' => 'El tipo de datos "$1" no soportado ha sido devuelto al atributo.',
-	'smw_noattribspecial' => 'La propiedad especial "$1" no es un atributo (utilice "::" en lugar de ":=").',
-	'smw_notype' => 'Ningún tipo de datos ha sido asignado al atributo.',
 	'smw_nomanytypes' => 'Demasiados tipos de datos han sido asignados al atributo.',
 	'smw_emptystring' => 'No se aceptan cadenas vacías.',
 	'smw_maxstring' => 'La representación de la cadena $1 es demasiado grande para este sitio.',
@@ -78,26 +74,11 @@ protected $smwUserMessages = array(
 	'smw_typearticlecount' => 'Mostrando $1 atributos usando este tipo.',
 	'smw_attribute_header' => 'Paginas usando el atributo “$1”',
 	'smw_attributearticlecount' => '<p>Mostrando $1 páginas usando este atributo.</p>',
-	'smw_relation_header' => 'Paginas usando la relación “$1”',
-	'smw_relationarticlecount' => '<p>Mostrando $1 páginas usando esta relación.</p>',
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Exportar el artículo como RDF', //name of this special
 	'smw_exportrdf_docu' => '<p> En esta página, las partes de contenido de un artículo pueden ser exportadas a formato RDF. Introduzca el nombre de las páginas deseadas en el cuadro de texto que se encuentra debajo, <i>un nombre por línea </i>.<p/>',
 	'smw_exportrdf_recursive' => 'Exportar igualmente todas las páginas pertinentes de forma recurrente. Esta posibilidad puede conseguir un gran número de resultados !',
 	'smw_exportrdf_backlinks' => 'Exportar igualmente todas las páginas que reenvían a páginas exportadas. Resulta un RDF en el que se facilita la navegación.',
-	/*Messages for Search Triple Special*/
-	'searchtriple' => 'Búsqueda semántica simple', //name of this special : Einfache semantische Suche
-	'smw_searchtriple_header' => '<h1>Búsqueda de relaciones y atributos</h1>',
-	'smw_searchtriple_docu' => "<p>Utilice la casilla de búsqueda para buscar artículos en función de ciertas propiedades. La línea superior está destinada a la búsqueda por relación, la línea inferior a la búsqueda por atributo. Ciertos campos pueden ser dejados en blanco para obtener más resultados. Siempre que se introduzca el valor de un atributo (con la unidad de medida correspondiente), el nombre del atributo debe ser también indicado </p>\n\n<p> Observe que existen dos botones de búsqueda. Presionar la tecla \"Enter\" no le llevará probablemente al resultado de su búsqueda.</p>",
-	'smw_searchtriple_subject' => 'Nombre del artículo (sujeto):',
-	'smw_searchtriple_relation' => 'Nombre de la relación:',
-	'smw_searchtriple_attribute' => 'Nombre de los atributos:',
-	'smw_searchtriple_object' => 'Nombre del artículo (objeto) (Objekt):',
-	'smw_searchtriple_attvalue' => 'Valor de los atributos:',
-	'smw_searchtriple_searchrel' => 'Búsqueda por Relación',
-	'smw_searchtriple_searchatt' => 'Búsqueda por atributo',
-	'smw_searchtriple_resultrel' => 'Resultados de la búsqueda (Relación)',
-	'smw_searchtriple_resultatt' => 'Resultados de la búsqueda (atributos)',
 	// Messages for Properties Special
 	'properties' => 'Properties', //TODO: translate
 	'smw_properties_docu' => 'The following properties are used in the wiki.', //TODO: translate

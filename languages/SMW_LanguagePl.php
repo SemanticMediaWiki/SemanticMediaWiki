@@ -33,8 +33,6 @@ protected $smwContentMessages = array(
 	'smw_viewasrdf' => 'RDF feed', //TODO: translate?
 	'smw_finallistconjunct' => ' i', //used in "A, B, and C"
 	'smw_factbox_head' => 'Fakty o $1 &mdash; Kliknij <span class="smwsearchicon">+</span> aby znaleźć podobne strony.',
-	'smw_att_head' => 'Wartości atrybutów',
-	'smw_rel_head' => 'Relacje do innych artykułów',
 	'smw_spec_head' => 'Własności specjalne',
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
@@ -52,8 +50,6 @@ protected $smwContentMessages = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_unknowntype' => '"$1" jako typ atrybutu nie jest wspierany.',
-	'smw_noattribspecial' => 'Własność specjalna "$1" nie jest atrybutem (użyj "::" zamiast ":=").',
-	'smw_notype' => 'Nie zdefiniowano typu dla atrybutu.',
 	'smw_manytypes' => 'Zdefiniowano więcej niż jeden typ dla atrybutu.',
 	'smw_emptystring' => 'Puste łańcuchy znakowe są niedozwolone.',
 	'smw_maxstring' => 'Reprezentacja znakowa $1 jest za długa jak na to miejsce.',
@@ -99,25 +95,11 @@ protected $smwUserMessages = array(
 	'smw_typearticlecount' => 'Pokazano $1 atrybutów używających tego typu.',
 	'smw_attribute_header' => 'Strony używające atrybutu “$1”',
 	'smw_attributearticlecount' => '<p>Pokazano $1 stron używających tego atrybutu.</p>',
-	'smw_relation_header' => 'Strony używające relacji “$1”',
-	'smw_relationarticlecount' => '<p>Pokazano $1 stron używających tej relacji.</p>',
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Eksport stron do RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>Ta strona pozwala eksportować fragmenty artykułu w formacie RDF.  Aby wyeksportować artykuły, wpisz ich tytuły w poniższym polu tekstowym, po jednym tytule w wierszu.</p>',
 	'smw_exportrdf_recursive' => 'Rekursywny eksport wszystkich powiązanych stron.  Zwróć uwagę, że wynik może być olbrzymi!',
 	'smw_exportrdf_backlinks' => 'Eksportuj także wszystkie strony, które odwołują się do eksportowanych stron.  Tworzy przeglądalny RDF.',
-	/*Messages for Search Triple Special*/
-	'searchtriple' => 'Proste szukanie semantyczne', //name of this special
-	'smw_searchtriple_docu' => "<p>Wypełnij górny albo dolny wiersz formularza w celu wyszukania, odpowiednio, relacji albo atrybutów. Niektóre pola mogą pozostać puste w celu uzyskania większej liczby wyników. Jednakże, jeśli podana jest wartość atrybutu, podana musi być także jego nazwa. Jak zwykle, wartości atrybutów mogą być podawane wraz z jednostkami miary.</p>\n\n<p>Pamiętaj, że aby uzyskać wyniki, musisz kliknąć w odpowiedni przycisk. Naciśnięcie po prostu <i>Return</i> może wywołać inne szukanie niż zamierzałeś.</p>",
-	'smw_searchtriple_subject' => 'Artykuł podmiotowy:',
-	'smw_searchtriple_relation' => 'Nazwa relacji:',
-	'smw_searchtriple_attribute' => 'Nazwa atrybutu:',
-	'smw_searchtriple_object' => 'Artykuł przedmiotowy:',
-	'smw_searchtriple_attvalue' => 'Wartość atrybutu:',
-	'smw_searchtriple_searchrel' => 'Szukaj relacji',
-	'smw_searchtriple_searchatt' => 'Szukaj atrybutów',
-	'smw_searchtriple_resultrel' => 'Szukaj wyników (relacje)',
-	'smw_searchtriple_resultatt' => 'Szukaj wyników (atrybuty)',
 	// Messages for Properties Special
 	'properties' => 'Properties', //TODO: translate
 	'smw_properties_docu' => 'The following properties are used in the wiki.', //TODO: translate

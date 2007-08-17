@@ -75,7 +75,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$nav = $this->getNavigationLinks();
 		$r = '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
 		$r .= '<h2>' . wfMsg('smw_attribute_header',$ti) . "</h2>\n";
-		$r .= wfMsg('smw_relationarticlecount', min($this->limit, count($this->articles))) . "\n";
+		$r .= wfMsg('smw_attributearticlecount', min($this->limit, count($this->articles))) . "\n";
 		$r .= $this->shortList( $this->articles, $this->articles_start_char ) . "\n</div>" . $nav;
 		return $r;
 	}

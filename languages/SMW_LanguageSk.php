@@ -14,8 +14,6 @@ protected $smwContentMessages = array(
 	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => ' a', //used in "A, B, and C"
 	'smw_factbox_head' => 'Skutočnosti o $1 &mdash; Kliknutím na <span class="smwsearchicon">+</span> vyhľadáte podobné stránky.',
-	'smw_att_head' => 'Hodnoty atribútov',
-	'smw_rel_head' => 'Vzťahy s inými stránkami',
 	'smw_spec_head' => 'Zvláštne vlastnosti',
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
@@ -33,8 +31,6 @@ protected $smwContentMessages = array(
 	'smw_decseparator' => '.',
 	'smw_kiloseparator' => ',',
 	'smw_unknowntype' => 'Pre atribút je definovaný nepodporovaný typ "$1".',
-	'smw_noattribspecial' => 'Zvláštna vlastnosť "$1" nie je atribút (použite "::" namiesto ":=").',
-	'smw_notype' => 'Pre atribút nebol definovaný typ.',
 	'smw_manytypes' => 'Pre atribút bol definovaný viac ako jeden typ.',
 	'smw_emptystring' => 'Prázdne reťazcie nie sú akceptované.',
 	'smw_maxstring' => 'Reprezentácia reťazca $1 je pre túro stránku príliš dlhá.',
@@ -80,25 +76,11 @@ protected $smwUserMessages = array(
 	'smw_typearticlecount' => 'Showing $1 attributes using this type.', // TODO translate
 	'smw_attribute_header' => 'Pages using the attribute “$1”', // TODO translate
 	'smw_attributearticlecount' => '<p>Showing $1 pages using this attribute.</p>', // TODO translate
-	'smw_relation_header' => 'Pages using the relation “$1”', // TODO translate
-	'smw_relationarticlecount' => '<p>Showing $1 pages using this relation.</p>', // TODO translate
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Exportovať stránky do RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>Táto stránka vám umožňuje exportovať časti stránok do formátu RDF. Po zadaní názvov stránok do spodného textového poľa, jeden názov na riadok, môžete exportovať stránky.</p>',
 	'smw_exportrdf_recursive' => 'Rekurzívne exportovať všetky súvisiace stránky. Pozor, výsledok môže byť veľmi veľký!',
 	'smw_exportrdf_backlinks' => 'Tieť exportovať všetky stránky, ktoré odkazujú na exportované stránky. Vytvorí prehliadateľné RDF.',
-	/*Messages for Search Triple Special*/
-	'searchtriple' => 'Jednoduché sémantické vyhľadávanie', //name of this special
-	'smw_searchtriple_docu' => "<p>Vyplňte buď vrchný alebo spodný riadok vstupného formulára pre hľadanie vzťahov resp. atribútov. Niektoré z polí je možné nechať nevyplnené, čím získate viac výsledkov. Ak je však zadaná hodnota atribútu, musí byť zadaný aj názov atribútu. Ako obyčajne, hodnoty atribútov je možné zadať spolu s meracou jednotkou.</p>\n\n<p>Buďte si vedomý, že je potrebné stlačiť správne tlačidlo, aby ste dostali výsledky. Iba stlačenie klávesy <i>Enter</i> nemusí spustiť vyhľadávanie, ktoré chcete.</p>",
-	'smw_searchtriple_subject' => 'Stránka predmetu:',
-	'smw_searchtriple_relation' => 'Názov vzťahu:',
-	'smw_searchtriple_attribute' => 'Názov atribútu:',
-	'smw_searchtriple_object' => 'Stránka objektu:',
-	'smw_searchtriple_attvalue' => 'Hodnota atribútu:',
-	'smw_searchtriple_searchrel' => 'Hľadaj vzťahy',
-	'smw_searchtriple_searchatt' => 'Hľadaj atribúty',
-	'smw_searchtriple_resultrel' => 'Hľadaj výsledky (vzťahy)',
-	'smw_searchtriple_resultatt' => 'Hľadaj výsledky (atribúty)',
 	// Messages for Properties Special
 	'properties' => 'Properties', //TODO: translate
 	'smw_properties_docu' => 'The following properties are used in the wiki.', //TODO: translate

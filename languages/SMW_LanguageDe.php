@@ -1,7 +1,13 @@
 <?php
 /**
  * @author Markus Krötzsch
+ * 
+ * Main translations:
+ * "property" --> "Attribut"
+ * "type" --> "Datentyp"
+ * "special properties" --> "Besondere Attribute"
  */
+
 
 global $smwgIP;
 include_once($smwgIP . '/languages/SMW_Language.php');
@@ -9,14 +15,12 @@ include_once($smwgIP . '/languages/SMW_Language.php');
 class SMW_LanguageDe extends SMW_Language {
 
 protected $smwContentMessages = array(
-	'smw_edithelp' => 'Bearbeitungshilfe für Relationen und Attribute',
+	'smw_edithelp' => 'Bearbeitungshilfe für Attribute',
 	'smw_helppage' => 'Relationen und Attribute',
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und', //used in "A, B, and C"
 	'smw_factbox_head' => 'Fakten zu $1',
-	'smw_att_head' => 'Attribute',
-	'smw_rel_head' => 'Relationen zu anderen Seiten',
-	'smw_spec_head' => 'Spezielle Eigenschaften',
+	'smw_spec_head' => 'Besondere Attribute',
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'URIs aus dem Bereich „$1“ sind an dieser Stelle leider nicht verfügbar.',
@@ -34,8 +38,6 @@ protected $smwContentMessages = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_unknowntype' => 'Dem Attribut wurde der unbekannte Datentyp „$1“ zugewiesen.',
-	'smw_noattribspecial' => 'Die spezielle Eigenschaft „$1“ ist kein Attribut (bitte „::“ anstelle von „:=“ verwenden).',
-	'smw_notype' => 'Dem Attribut wurde kein Datentyp zugewiesen.',
 	'smw_manytypes' => 'Dem Attribut wurden mehrere Datentypen zugewiesen.',
 	'smw_emptystring' => 'Leere Zeichenfolgen werden nicht akzeptiert.',
 	'smw_maxstring' => 'Die Zeichenkette „$1“ ist für diese Website zu lang.',
@@ -79,26 +81,11 @@ protected $smwUserMessages = array(
 	'smw_typearticlecount' => 'Es werden $1 Attribute mit diesem Datentyp angezeigt.',
 	'smw_attribute_header' => 'Seiten mit dem Attribut „$1“',
 	'smw_attributearticlecount' => '<p>Es werden $1 Seiten angezeigt, die dieses Attribut verwenden.</p>',
-	'smw_relation_header' => 'Seiten mit der Relation „$1“',
-	'smw_relationarticlecount' => '<p>Es werden $1 Seiten angezeigt, die diese Relation verwenden.</p>',
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Seite als RDF exportieren', //name of this special
 	'smw_exportrdf_docu' => '<p>Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte geben Sie die Namen der gewünschten Seiten <i>zeilenweise</i> ein.</p>',
 	'smw_exportrdf_recursive' => 'Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr großen Ergebnissen führen!',
 	'smw_exportrdf_backlinks' => 'Exportiere auch alle Seiten, die auf exportierte Seiten verweisen. Erzeugt RDF, das leichter durchsucht werden kann.',
-	/*Messages for Search Triple Special*/
-	'searchtriple' => 'Einfache semantische Suche', //name of this special
-	'smw_searchtriple_header' => '<h1>Suche nach Relationen und Attributen</h1>',
-	'smw_searchtriple_docu' => "<p>Benutzen Sie die Eingabemaske um nach Seiten mit bestimmten Eigenschaften zu suchen. Die obere Zeile dient der Suche nach Relationen, die untere der Suche nach Attributen. Sie können beliebige Felder leer lassen, um nach allen möglichen Belegungen zu suchen. Lediglich bei der Eingabe von Attributwerten (mit den entsprechenden Maßeinheiten) verlangt die Angabe des gewünschten Attributes.</p>\n\n<p>Beachten Sie, dass es zwei Suchknöpfe gibt. Bei Druck der Eingabetaste wird vielleicht nicht die gewünschte Suche durchgeführt.</p>",
-	'smw_searchtriple_subject' => 'Seitenname (Subjekt):',
-	'smw_searchtriple_relation' => 'Name der Relation:',
-	'smw_searchtriple_attribute' => 'Name des Attributs:',
-	'smw_searchtriple_object' => 'Seintenname (Objekt):',
-	'smw_searchtriple_attvalue' => 'Wert des Attributs:',
-	'smw_searchtriple_searchrel' => 'Suche nach Relationen',
-	'smw_searchtriple_searchatt' => 'Suche nach Attributen',
-	'smw_searchtriple_resultrel' => 'Suchergebnisse (Relationen)',
-	'smw_searchtriple_resultatt' => 'Suchergebnisse (Attribute)',
 	// Messages for Properties Special
 	'properties' => 'Attribute',
 	'smw_properties_docu' => 'In diesem Wiki gibt es die folgenden Attribute:',
@@ -175,7 +162,6 @@ protected $smwUserMessages = array(
 	'smw_result_next' => 'Vorwärts',
 	'smw_result_results' => 'Ergebnisse',
 	'smw_result_noresults' => 'Keine Ergebnisse gefunden.'
-
 );
 
 protected $smwDatatypeLabels = array(
@@ -223,8 +209,8 @@ protected $smwSpecialProperties = array(
 		return array(
 			SMW_NS_RELATION       => "Relation",
 			SMW_NS_RELATION_TALK  => "Relation_Diskussion",
-			SMW_NS_PROPERTY       => "Eigenschaft",
-			SMW_NS_PROPERTY_TALK  => "Eigenschaft_Diskussion",
+			SMW_NS_PROPERTY       => "Attribut",
+			SMW_NS_PROPERTY_TALK  => "Attribut_Diskussion",
 			SMW_NS_TYPE           => "Datentyp",
 			SMW_NS_TYPE_TALK      => "Datentyp_Diskussion"
 		);

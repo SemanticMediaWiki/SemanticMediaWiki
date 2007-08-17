@@ -14,8 +14,6 @@ protected $smwContentMessages = array(
 	'smw_viewasrdf' => 'RDF источник',
 	'smw_finallistconjunct' => ' и', //used in "A, B, and C"
 	'smw_factbox_head' => 'Факты о $1 &mdash; Кликните <span class="smwsearchicon">+</span> чтобы найти похожие страницы.',
-	'smw_att_head' => 'Значения атрибута',
-	'smw_rel_head' => 'Отношения к другим страницам',
 	'smw_spec_head' => 'Специальные свойства',
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
@@ -33,8 +31,6 @@ protected $smwContentMessages = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => ' ',
 	'smw_unknowntype' => 'Тип атрибута "$1" не поддерживается.',
-	'smw_noattribspecial' => 'Специальное свойство "$1" не является атрибутом (используйте "::" вместо ":=").',
-	'smw_notype' => 'Атрибуту не задан тип.',
 	'smw_manytypes' => 'Более одного типа определено для атрибута.',
 	'smw_emptystring' => 'Пустые строки не принимаются.',
 	'smw_maxstring' => 'Но строчное представление числа $1 слишком длинное для этого сайта.',
@@ -79,25 +75,11 @@ protected $smwUserMessages = array(
 	'smw_typearticlecount' => 'Отображается $1 атрибутов этого типа.',
 	'smw_attribute_header' => 'Страницы, использующие атрибут “$1”',
 	'smw_attributearticlecount' => '<p>Отображается $1 страниц, использующих этот атрибут.</p>',
-	'smw_relation_header' => 'Страницы, использующие отношение “$1”',
-	'smw_relationarticlecount' => '<p>Отображается $1 страниц, использующих это отношение.</p>',
 	// Messages for Export RDF Special
     'exportrdf' => 'Экспорт страниц в RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>Эта страница позволяет экспортировать части статьи в формате RDF. Наберите названия необходимых статей по одному на строку.</p>',
 	'smw_exportrdf_recursive' => 'Рекурсивный экспорт всех связанных страниц. Результат этой операции может быть очень большим!',
 	'smw_exportrdf_backlinks' => 'Также экспортировать все страницы, которые ссылаются на экспортируемые страницы. Генерирует RDF с поддержкой полноценной навигации.',
-	// Messages for Search Triple Special
-	'searchtriple' => 'Простой семантический поиск', //name of this special
-	'smw_searchtriple_docu' => "<p>Для поиска отношений используйте верхнюю строку. Для поиска атрибутов используйте нижнюю строку. Для пустого поля будут выведены все варианты. Если значение атрибута задано, то имя атрибута также должно быть задано. Значения атрибутов могут быть заданы с единицой измерения.</p>",
-	'smw_searchtriple_subject' => 'Страница-субъект:',
-	'smw_searchtriple_relation' => 'Имя отношения:',
-	'smw_searchtriple_attribute' => 'Имя атрибута:',
-	'smw_searchtriple_object' => 'Страница-объект:',
-	'smw_searchtriple_attvalue' => 'Значение атрибута:',
-	'smw_searchtriple_searchrel' => 'Искать Отношения',
-	'smw_searchtriple_searchatt' => 'Искать Атрибуты',
-	'smw_searchtriple_resultrel' => 'Результаты поиска (отношения)',
-	'smw_searchtriple_resultatt' => 'Результаты поиска (атрибуты)',
 	// Messages for Properties Special
 	'properties' => 'Properties', //TODO: translate
 	'smw_properties_docu' => 'The following properties are used in the wiki.', //TODO: translate
