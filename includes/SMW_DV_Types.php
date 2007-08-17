@@ -102,8 +102,22 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		/// TODO: support linking
-		return implode(', ', $this->getTypeLabels());
+		if ( ($linker === NULL) || ($linker === false) ) {
+			return str_replace('_',' ',implode(', ', $this->getTypeLabels()));
+		} else {
+			$result = '';
+			$first = true;
+			foreach ($this->getTypeLabels() as $type) {
+				if ($first) {
+					$first = false;
+				} else {
+					$result .= ', ';
+				}
+				$title = Title::newFromText($type, SMW_NS_TYPE);
+				$result .= $linker->makeLinkObj( $title, $type);
+			}
+			return $result;
+		}
 	}
 
 	public function getXSDValue() {
