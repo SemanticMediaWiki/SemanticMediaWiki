@@ -31,7 +31,6 @@ class PropertiesPage extends SMWQueryPage {
 
 	function formatResult( $skin, $result ) {
 		global $wgLang, $wgExtraNamespaces;
-		$proplink = $skin->makeLinkObj( $result[0], $result[0]->getText() );
 		$typestring = '';
 		$errors = array();
 		if ($result[1]<=5) {
@@ -42,8 +41,10 @@ class PropertiesPage extends SMWQueryPage {
 			if (count($types) >= 1) {
 				$typestring = $types[0]->getLongHTMLText($skin);
 			}
+			$proplink = $skin->makeKnownLinkObj( $result[0], $result[0]->getText());
 		} else {
 			$errors[] = wfMsg('smw_propertylackspage');
+			$proplink = $skin->makeBrokenLinkObj( $result[0], $result[0]->getText(), 'action=view');
 		}
 		if ($typestring == '') {
 			$type = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE);

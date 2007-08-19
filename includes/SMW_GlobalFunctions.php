@@ -53,7 +53,7 @@ function enableSemantics($namespace = "", $complete = false) {
  *  MediaWiki is set up properly before we add our stuff.
  */
 function smwfSetupExtension() {
-	wfProfileIn('smwfSetupExtension');
+	wfProfileIn('smwfSetupExtension (SMW)');
 	global $smwgVersion, $smwgNamespace, $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $wgArticlePath, $wgScriptPath, $wgServer;
 
 	/**
@@ -71,7 +71,8 @@ function smwfSetupExtension() {
 	$smwgStoreActive = true;
 
 	$smwgMasterStore = NULL;
-	smwfInitMessages();
+	smwfInitUserMessages(); /// TODO: try to eliminate this. Problem are pages like Special:Specialpages that access our messages directly.
+	smwfInitContentMessages();
 
 	///// register specials /////
 	include_once($smwgIP . '/includes/SMW_SpecialPages.php');
@@ -97,7 +98,7 @@ function smwfSetupExtension() {
 	///// credits (see "Special:Version") /////
 	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, Markus&nbsp;Kr&ouml;tzsch, Denny&nbsp;Vrandecic, S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://ontoworld.org/wiki/Semantic_MediaWiki', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://ontoworld.org/wiki/Help:Semantics View online documentation.]');
 
-	wfProfileOut('smwfSetupExtension');
+	wfProfileOut('smwfSetupExtension (SMW)');
 	return true;
 }
 
@@ -139,6 +140,7 @@ function smwfProcessInlineQuery($text, $param) {
 	*  $out is the modified OutputPage.
 	*/
 	function smwfAddHTMLHeader(&$out) {
+		wfProfileIn('smwfAddHTMLHeader (SMW)');
 		global $smwgHeadersInPlace; // record whether headers were created already
 		global $smwgArticleHeadersInPlace; // record whether article name specific headers are already there
 		global $smwgScriptPath;
@@ -195,6 +197,7 @@ function smwfProcessInlineQuery($text, $param) {
 			));
 			$smwgArticleHeadersInPlace = true;
 		}
+		wfProfileOut('smwfAddHTMLHeader (SMW)');
 
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
@@ -257,8 +260,8 @@ function smwfProcessInlineQuery($text, $param) {
 	 */
 	function smwfInitContentLanguage($langcode) {
 		global $smwgIP, $smwgContLang;
-
 		if (!empty($smwgContLang)) { return; }
+		wfProfileIn('smwfInitContentLanguage (SMW)');
 
 		$smwContLangClass = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
 
@@ -271,26 +274,42 @@ function smwfProcessInlineQuery($text, $param) {
 			include_once($smwgIP . '/languages/SMW_LanguageEn.php');
 			$smwContLangClass = 'SMW_LanguageEn';
 		}
-
 		$smwgContLang = new $smwContLangClass();
+
+		wfProfileOut('smwfInitContentLanguage (SMW)');
 	}
 
 	/**
-	 * Initialise the global language object for user language. This
+	 * Set up the content messages.
+	 */
+	function smwfInitContentMessages() {
+		global $smwgContMessagesInPlace;
+		if ($smwgContMessagesInPlace) { return; }
+		wfProfileIn('smwfInitContentMessages (SMW)');
+		global $wgMessageCache, $smwgContLang, $wgLanguageCode;
+		smwfInitContentLanguage($wgLanguageCode);
+
+		$wgMessageCache->addMessages($smwgContLang->getContentMsgArray(), $wgLanguageCode);
+		$smwgContMessagesInPlace = true;
+		wfProfileOut('smwfInitContentMessages (SMW)');
+	}
+
+	/**
+	 * Initialise the global language object and messages for user language. This
 	 * must happen after the content language was initialised, since
 	 * this language is used as a fallback.
 	 */
-	function smwfInitUserLanguage($langcode) {
+	function smwfInitUserMessages() {
 		global $smwgIP, $smwgLang;
-
 		if (!empty($smwgLang)) { return; }
+		wfProfileIn('smwfInitUserMessages (SMW)');
+		global $wgMessageCache, $wgLang;
 
-		$smwLangClass = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
+		$smwLangClass = 'SMW_Language' . str_replace( '-', '_', ucfirst( $wgLang->getCode() ) );
 
 		if (file_exists($smwgIP . '/languages/'. $smwLangClass . '.php')) {
 			include_once( $smwgIP . '/languages/'. $smwLangClass . '.php' );
 		}
-
 		// fallback if language not supported
 		if ( !class_exists($smwLangClass)) {
 			global $smwgContLang;
@@ -298,27 +317,11 @@ function smwfProcessInlineQuery($text, $param) {
 		} else {
 			$smwgLang = new $smwLangClass();
 		}
-	}
 
-	/**
-	 * Initialise messages. These settings must be applied later on, since
-	 * the MessageCache does not exist yet when the settings are loaded in
-	 * LocalSettings.php.
-	 */
-	function smwfInitMessages() {
-		global $smwgMessagesInPlace; // record whether the function was already called
-		if ($smwgMessagesInPlace) { return; }
-
-		global $wgMessageCache, $smwgContLang, $smwgLang, $wgContLang, $wgLang;
-		// make sure that language objects exist
-		smwfInitContentLanguage($wgContLang->getCode());
-		smwfInitUserLanguage($wgLang->getCode());
-
-		$wgMessageCache->addMessages($smwgContLang->getContentMsgArray(), $wgContLang->getCode());
 		$wgMessageCache->addMessages($smwgLang->getUserMsgArray(), $wgLang->getCode());
-
-		$smwgMessagesInPlace = true;
+		wfProfileOut('smwfInitUserMessages (SMW)');
 	}
+
 
 /**********************************************/
 /***** other global helpers               *****/

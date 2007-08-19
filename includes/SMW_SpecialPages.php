@@ -15,6 +15,7 @@ include_once( "$IP/includes/SpecialPage.php" );
 SpecialPage::addPage( new SpecialPage('Ask','',true,'doSpecialAsk',false) );
 
 function doSpecialAsk() {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialAsk (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php');
@@ -27,6 +28,7 @@ function doSpecialAsk() {
 SpecialPage::addPage( new SpecialPage('Browse','',true,'doSpecialBrowse','default',true) );
 
 function doSpecialBrowse($query = '') {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialBrowse (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/SearchTriple/SMW_SpecialBrowse.php');
@@ -39,6 +41,7 @@ function doSpecialBrowse($query = '') {
 SpecialPage::addPage( new SpecialPage('PageProperty','',FALSE,'doSpecialPageProperty',false) );
 
 function doSpecialPageProperty($query = '') {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialPageProperty (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/SearchTriple/SMW_SpecialPageProperty.php');
@@ -51,6 +54,7 @@ function doSpecialPageProperty($query = '') {
 SpecialPage::addPage( new SpecialPage('SearchByProperty','',true,'doSpecialSearchByProperty',false) );
 
 function doSpecialSearchByProperty($query = '') {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialSearchByProperty (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByProperty.php');
@@ -63,6 +67,7 @@ function doSpecialSearchByProperty($query = '') {
 SpecialPage::addPage( new SpecialPage('URIResolver','',false,'doSpecialURIResolver',false) );
 
 function doSpecialURIResolver($name = '') {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialURIResolver (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/URIResolver/SMW_SpecialURIResolver.php');
@@ -75,6 +80,7 @@ function doSpecialURIResolver($name = '') {
 SpecialPage::addPage( new SpecialPage('ExportRDF','',true,'doSpecialExportRDF',false) );
 
 function doSpecialExportRDF($page = '') {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialExportRDF (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php');
@@ -87,6 +93,7 @@ function doSpecialExportRDF($page = '') {
 SpecialPage::addPage( new SpecialPage('SemanticStatistics','',true,'doSpecialSemanticStatistics',false) );
 
 function doSpecialSemanticStatistics() {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialSemanticStatistics (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/Statistics/SMW_SpecialStatistics.php');
@@ -99,6 +106,7 @@ function doSpecialSemanticStatistics() {
 SpecialPage::addPage( new SpecialPage('Properties','',true,'doSpecialProperties',false) );
 
 function doSpecialProperties($par = null) {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialProperties (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/QueryPages/SMW_SpecialProperties.php');
@@ -114,6 +122,7 @@ function doSpecialProperties($par = null) {
 SpecialPage::addPage( new SpecialPage('UnusedProperties','',true,'doSpecialUnusedProperties',false) );
 
 function doSpecialUnusedProperties($par = null) {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialUnusedProperties (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/QueryPages/SMW_SpecialUnusedProperties.php');
@@ -129,6 +138,7 @@ function doSpecialUnusedProperties($par = null) {
 SpecialPage::addPage( new SpecialPage('WantedProperties','',true,'doSpecialWantedProperties',false) );
 
 function doSpecialWantedProperties($par = null) {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialWantedProperties (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/QueryPages/SMW_SpecialWantedProperties.php');
@@ -144,6 +154,7 @@ function doSpecialWantedProperties($par = null) {
 SpecialPage::addPage( new SpecialPage('Types','',true,'doSpecialTypes',false) );
 
 function doSpecialTypes($par = null) {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialTypes (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/QueryPages/SMW_SpecialTypes.php');
@@ -165,6 +176,7 @@ $wgMessageCache->addMessages(array('smwadmin' => 'Admin functions for Semantic M
 SpecialPage::addPage( new SpecialPage('SMWAdmin','delete',true,'doSpecialSMWAdmin',false) );
 
 function doSpecialSMWAdmin($par = null) {
+	smwfInitUserMessages();
 	wfProfileIn('doSpecialSMWAdmin (SMW)');
 	global $smwgIP;
 	include_once($smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php');

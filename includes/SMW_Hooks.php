@@ -16,7 +16,6 @@
 	*        not relevant when moving the hook to internalParse()).
 	*/
 	function smwfParserHook(&$parser, &$text, &$strip_state = null) {
-		wfProfileIn('smwfParserHook');
 		global $smwgIP;
 		include_once($smwgIP . '/includes/SMW_Factbox.php');
 		// Init global storage for semantic data of this article.
@@ -34,7 +33,6 @@
 			SMWFactbox::printFactbox($text);
 		} else SMWFactbox::clearStorage();
 
-		wfProfileOut('smwfParserHook');
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
@@ -54,7 +52,7 @@
 		} else { $valueCaption = false; }
 
 		//extract annotations and create tooltip
-		$attributes = explode(':=', $attribute);
+		$attributes = preg_split('/:[=|:]/', $attribute);
 		foreach($attributes as $singleAttribute) {
 			$attr = SMWFactbox::addProperty($singleAttribute,$value,$valueCaption);
 		}
@@ -105,9 +103,11 @@
 function smwfShowListPage (&$title, &$article){
 	global $smwgIP;
 	if ($title->getNamespace() == SMW_NS_TYPE){
+		smwfInitUserMessages();
 		include_once($smwgIP . '/includes/articlepages/SMW_TypePage.php');
 		$article = new SMWTypePage($title);
 	} elseif ( $title->getNamespace() == SMW_NS_PROPERTY ) {
+		smwfInitUserMessages();
 		include_once($smwgIP . '/includes/articlepages/SMW_PropertyPage.php');
 		$article = new SMWPropertyPage($title);
 	}

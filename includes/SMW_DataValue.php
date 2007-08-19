@@ -28,6 +28,7 @@ abstract class SMWDataValue {
 	 * label for printout might also be specified.
 	 */
 	public function setUserValue($value, $caption = false) {
+		wfProfileIn('SMWDataValue::setUserValue (SMW)');
 		$this->m_errors = array(); // clear errors
 		$this->m_infolinks = array(); // clear links
 		$this->m_hasssearchlink = false;
@@ -36,6 +37,7 @@ abstract class SMWDataValue {
 		}
 		$this->parseUserValue($value); // may set caption if not set yet, depending on datavalue
 		$this->m_isset = true;
+		wfProfileOut('SMWDataValue::setUserValue (SMW)');
 	}
 
 	/**
@@ -44,12 +46,14 @@ abstract class SMWDataValue {
 	 * implementations should support round-tripping).
 	 */
 	public function setXSDValue($value, $unit = '') {
+		wfProfileIn('SMWDataValue::setXSDValue (SMW)');
 		$this->m_errors = array(); // clear errors
 		$this->m_infolinks = array(); // clear links
 		$this->m_hasssearchlink = false;
 		$this->m_caption = false;
 		$this->parseXSDValue($value, $unit);
 		$this->m_isset = true;
+		wfProfileOut('SMWDataValue::setXSDValue (SMW)');
 	}
 
 	/**

@@ -31,7 +31,7 @@ class WantedPropertiesPage extends SMWQueryPage {
 
 	function formatResult( $skin, $result ) {
 		global $wgLang, $wgExtraNamespaces;
-		$proplink = $skin->makeLinkObj( $result[0], $result[0]->getText() );
+		$proplink = $skin->makeLinkObj($result[0], $result[0]->getText(), 'action=view');
 		return wfMsg('smw_wantedproperty_template', $proplink, $result[1]);
 	}
 	
