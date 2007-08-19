@@ -89,7 +89,7 @@ SpecialPage::addPage( new SpecialPage('SemanticStatistics','',true,'doSpecialSem
 function doSpecialSemanticStatistics() {
 	wfProfileIn('doSpecialSemanticStatistics (SMW)');
 	global $smwgIP;
-	include_once($smwgIP . '/specials/ExtendedStatistics/SMW_SpecialExtendedStatistics.php');
+	include_once($smwgIP . '/specials/Statistics/SMW_SpecialStatistics.php');
 	smwfExecuteSemanticStatistics();
 	wfProfileOut('doSpecialSemanticStatistics (SMW)');
 }
