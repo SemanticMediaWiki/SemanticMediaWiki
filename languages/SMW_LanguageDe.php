@@ -145,6 +145,12 @@ protected $smwUserMessages = array(
 	'smw_browse_article' => 'Bitte geben Sie den Titel einer Seite ein.',
 	'smw_browse_go' => 'Los',
 	'smw_browse_more' => '&hellip;',
+	// Messages for the page property special
+	'pageproperty' => 'Attributswerte einer Seite',
+	'smw_pp_docu' => 'Suche nach allen Werten, die ein bestimmtes Attribut für die angegebene Seite hat.',
+	'smw_pp_from' => 'Seite',
+	'smw_pp_type' => 'Attribut',
+	'smw_pp_submit' => 'Ergebnisse anzeigen',
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Zurück',
 	'smw_result_next' => 'Vorwärts',

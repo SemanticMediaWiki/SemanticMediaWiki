@@ -157,6 +157,12 @@ protected $smwUserMessages = array(
 	'smw_browse_article' => 'Introduzca el nombre de la página para empezar a explorar.',
 	'smw_browse_go' => 'Ir',
 	'smw_browse_more' => '&hellip;',
+	// Messages for the page property special
+	'pageproperty' => 'Page property search', // TODO: translate
+	'smw_pp_docu' => 'Search for all the fillers of a property on a given page. Please enter both a page and a property.', // TODO: translate
+	'smw_pp_from' => 'From page', // TODO: translate
+	'smw_pp_type' => 'Property', // TODO: translate
+	'smw_pp_submit' => 'Find results', // TODO: translate
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Anterior',
 	'smw_result_next' => 'Siguiente',
