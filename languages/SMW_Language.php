@@ -27,6 +27,16 @@ abstract class SMW_Language {
 	}
 
 	/**
+	 * Return all labels that are available as names for built-in datatypes. Those
+	 * are exactly the types that users can access via [[has type::...]] (more
+	 * built-in types may exist for internal purposes but the user won't need to
+	 * know this).
+	 */
+	function getAllDatatypeLabels() {
+		return $this->smwDatatypeLabels;
+	}
+
+	/**
 	 * Find the internal message id of some localised message string
 	 * for a datatype. If no type of the given name exists (maybe a 
 	 * custom of compound type) then FALSE is returned.

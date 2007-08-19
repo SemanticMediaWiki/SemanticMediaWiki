@@ -178,6 +178,15 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	/**
+	 * Is this a built-in datatype shipped with SMW?
+	 * (Alternatively it would be a user-defined derived datatype.)
+	 */
+	public function isBuiltIn() {
+		$v = $this->getXSDValue();
+		return ( ($this->isUnary()) && ($v[0] == '_') );
+	}
+
+	/**
 	 * Retrieve type labels if needed. Can be done lazily.
 	 */
 	public function getTypeLabels() {
@@ -208,7 +217,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	/**
-	 * Get the language independent id for some type label (e.g. "int" for "Integer").
+	 * Get the language independent id for some type label (e.g. "_int" for "Integer").
 	 * This id is used for all internal operations. Compound types are not supported
 	 * by this method (decomposition happens earlier). Custom types get their DBkeyed 
 	 * label as id. All ids are prefixed by an underscore in order to distinguish them 
@@ -219,7 +228,7 @@ class SMWTypesValue extends SMWDataValue {
 		$msgid = $smwgContLang->findDatatypeMsgID($label);
 		if ( ($msgid !== false) && (array_key_exists($msgid, SMWTypesValue::$m_typeids)) ) {
 			return SMWTypesValue::$m_typeids[$msgid];
-		} else { // hopefull $msgid was just FALSE ...
+		} else { // hopefully $msgid was just FALSE ...
 			return str_replace(' ', '_', $label);
 		}
 	}
