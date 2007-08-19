@@ -127,6 +127,23 @@ function doSpecialWantedProperties($par = null) {
 	return $result;
 }
 
+// Types special
+
+SpecialPage::addPage( new SpecialPage('Types','',true,'doSpecialTypes',false) );
+
+function doSpecialTypes($par = null) {
+	wfProfileIn('doSpecialTypes (SMW)');
+	global $smwgIP;
+	include_once($smwgIP . '/specials/QueryPages/SMW_SpecialTypes.php');
+	list( $limit, $offset ) = wfCheckLimits();
+	$rep = new TypesPage();
+	$result = $rep->doQuery( $offset, $limit );
+	wfProfileOut('doSpecialTypes (SMW)');
+	return $result;
+}
+
+
+
 // Admin special
 
 ///TODO: should these be messages?

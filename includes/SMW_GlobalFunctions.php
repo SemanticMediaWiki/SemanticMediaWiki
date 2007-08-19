@@ -78,7 +78,6 @@ function smwfSetupExtension() {
 
 	//require_once($smwgIP . '/specials/OntologyImport/SMW_SpecialOntologyImport.php'); // broken, TODO: fix or delete
 	require_once($smwgIP . '/specials/ExtendedStatistics/SMW_SpecialExtendedStatistics.php');
-	require_once($smwgIP . '/specials/Relations/SMW_SpecialTypes.php');
 
 	///// register hooks /////
 	require_once($smwgIP . '/includes/SMW_Hooks.php');
