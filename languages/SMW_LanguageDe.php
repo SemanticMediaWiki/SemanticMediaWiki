@@ -30,8 +30,7 @@ protected $smwContentMessages = array(
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "<span class='smwwarning'>Anfragen innerhalb einzelner Seiten sind in diesem Wiki leider nicht erlaubt.</span>",
 	'smw_iq_moreresults' => '&hellip; weitere Ergebnisse',
-	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung oder als
-	<a href="$1">Liste einzelner Suchergebnisse</a> betrachtet werden.',
+	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung oder als <a href="$1">Liste einzelner Suchergebnisse</a> betrachtet werden.',
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => 'Für den Namensraum „$1“ sind leider keine Importfunktionen verfügbar.',
 	'smw_nonright_importtype' => 'Das Element „$1“ kann nur für Seiten im Namensraum „$2“ verwendet werden.',
@@ -104,6 +103,7 @@ protected $smwUserMessages = array(
 	'smw_exportrdf_docu' => '<p>Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte geben Sie die Namen der gewünschten Seiten <i>zeilenweise</i> ein.</p>',
 	'smw_exportrdf_recursive' => 'Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr großen Ergebnissen führen!',
 	'smw_exportrdf_backlinks' => 'Exportiere auch alle Seiten, die auf exportierte Seiten verweisen. Erzeugt RDF, das leichter durchsucht werden kann.',
+	'smw_exportrdf_lastdate' => 'Exportiere keine Seiten, die seit dem angegebenen Zeitpunkt unverändert geblieben sind.',
 	// Messages for Properties Special
 	'properties' => 'Attribute',
 	'smw_properties_docu' => 'In diesem Wiki gibt es die folgenden Attribute:',
@@ -184,13 +184,7 @@ protected $smwDatatypeLabels = array(
 	'smw_bool' => 'Wahrheitswert',  // name of the boolean type
 	'smw_int' => 'Ganze Zahl',  // name of the int type
 	'smw_float' => 'Dezimalzahl',  // name of the floating point type
-	'smw_length' => 'Länge',  // name of the length type
-	'smw_area' => 'Fläche',  // name of the area type
-	'smw_geolength' => 'Geografische Länge',  // OBSOLETE name of the geolength type
-	'smw_geoarea' => 'Geografische Fläche',  // OBSOLETE name of the geoarea type
 	'smw_geocoordinate' => 'Geografische Koordinaten', // name of the geocoord type
-	'smw_mass' => 'Masse',  // name of the mass type
-	'smw_time' => 'Zeit',  // name of the time type
 	'smw_temperature' => 'Temperatur',  // name of the temperature type
 	'smw_datetime' => 'Datum',  // name of the datetime (calendar) type
 	'smw_email' => 'Email',  // name of the email (URI) type
