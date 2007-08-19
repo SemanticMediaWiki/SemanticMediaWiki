@@ -308,7 +308,7 @@ class SMWQueryParser {
 						if ($this->popDelimiter('</q>')) {
 							$continue = false; // leave the loop
 						} else {
-							$this->m_errors[] = 'There appear to be too many occurences of \'' . $chunk . '\' in the query.';
+							$this->m_errors[] = wfMsgForContent('smw_toomanyclosing', $chunk);
 							return NULL;
 						}
 					} elseif ($chunk == '') {
@@ -318,7 +318,7 @@ class SMWQueryParser {
 				case '+': // "... AND true" (ignore)
 				break;
 				default: // error: unexpected $chunk
-					$this->m_errors[] = 'The part \'' . $chunk . '\' in the query was not understood. Results might not be as expected.'; // TODO: internationalise
+					$this->m_errors[] = wfMsgForContent('smw_unexpectedpart', $chunk);
 					return NULL;
 			}
 			if ($setsubNS) { // namespace restrictions encountered in current conjunct
@@ -333,7 +333,7 @@ class SMWQueryParser {
 			$result = NULL;
 			foreach ($disjuncts as $d) {
 				if ($d === NULL) {
-					$this->m_errors[] = 'No condition in subquery.';
+					$this->m_errors[] = wfMsgForContent('smw_emptysubquery');
 					$setNS = false;
 					return NULL;
 				} else {
@@ -341,7 +341,7 @@ class SMWQueryParser {
 				}
 			}
 		} else {
-			$this->m_errors[] = 'No condition in subquery.';
+			$this->m_errors[] = wfMsgForContent('smw_emptysubquery');
 			$setNS = false;
 			return NULL;
 		}
@@ -353,7 +353,7 @@ class SMWQueryParser {
 				$result->addPrintRequest($pr);
 				$prcount++;
 			} else {
-				$this->m_errors[] = 'Too many printout requests.';
+				$this->m_errors[] = wfMsgForContent('smw_overprintoutlimit');
 				break;
 			}
 		}
@@ -416,7 +416,7 @@ class SMWQueryParser {
 					if ($chunk == ']]') {
 						return new SMWPrintRequest(SMW_PRINT_CATS, $printlabel);
 					} else {
-						$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
+						$this->m_errors[] = wfMsgForContent('smw_badprintout');
 						return NULL;
 					}
 				break;
@@ -447,7 +447,7 @@ class SMWQueryParser {
 		$this->readChunk(); // consume seperator ":="
 		$property = Title::newFromText($propertyname, SMW_NS_PROPERTY);
 		if ($property === NULL) {
-			$this->m_errors[] .= 'Sorry, but ' . htmlspecialchars($propertyname) . ' is no valid page title.'; // TODO internationalise
+			$this->m_errors[] .= wfMsgForContent('smw_badtitle', htmlspecialchars($propertyname));
 			return NULL; ///TODO: read some more chunks and try to finish [[ ]]
 		}
 
@@ -472,7 +472,7 @@ class SMWQueryParser {
 						$sublabel = '';
 						$innerdesc = $this->addDescription($innerdesc, $this->getSubqueryDescription($setsubNS, $sublabel), false);
 					} else { // no subqueries allowed for non-pages
-						$this->m_errors[] = 'Subqueries not supported for values of property ' . $propertyname . '.';
+						$this->m_errors[] = wfMsgForContent('smw_valuesubquery', $propertyname);
 						$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
 					}
 					$chunk = $this->readChunk();
@@ -528,7 +528,7 @@ class SMWQueryParser {
 							if ($chunk == ']]') {
 								return new SMWPrintRequest(SMW_PRINT_PROP, $printlabel, $property, $pm);
 							} else {
-								$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
+								$this->m_errors[] = wfMsgForContent('smw_badprintout');
 								return NULL;
 							}
 						}
@@ -551,7 +551,7 @@ class SMWQueryParser {
 							if ($chunk == ']]') {
 								return new SMWPrintRequest(SMW_PRINT_PROP, $printlabel, $property, $printmodifier);
 							} else {
-								$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
+								$this->m_errors[] = wfMsgForContent('smw_badprintout');
 								return NULL;
 							}
 						} else {
@@ -575,7 +575,7 @@ class SMWQueryParser {
 			} else {
 				$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
 			}
-			$this->m_errors[] = 'Value of relation ' . $property->getText() . ' was not understood.'; // TODO internationalise
+			$this->m_errors[] = wfMsgForContent('smw_propvalueproblem', $property->getText());
 		}
 		$result = new SMWSomeProperty($property,$innerdesc);
 
@@ -637,7 +637,7 @@ class SMWQueryParser {
 		//$innerdesc = NULL;
 		while ($continue) {
 			if ($chunk == '<q>') { // no subqueries of the form [[<q>...</q>]] (not needed)
-				$this->m_errors[] = 'Subqueries not allowed here.'; //TODO
+				$this->m_errors[] = wfMsgForContent('smw_misplacedsubquery');
 				return NULL;
 			}
 			$list = preg_split('/:/', $chunk, 3); // ":Category:Foo" "User:bar"  ":baz" ":+"
@@ -671,8 +671,7 @@ class SMWQueryParser {
 	
 	protected function finishLinkDescription($chunk, $hasNamespaces, $result, &$setNS, &$label) {
 		if ($result === NULL) { // no useful information or concrete error found
-			$this->m_errors[] = 'Some part [#x005B;&hellip]] of the query was not understood.'; 
-			//TODO internationalise
+			$this->m_errors[] = wfMsgForContent('smw_badqueryatom');
 		} elseif (!$hasNamespaces && $setNS && ($this->m_defaultns !== NULL) ) {
 			$result = $this->addDescription($result, $this->m_defaultns);
 			$hasNamespaces = true;
@@ -694,7 +693,7 @@ class SMWQueryParser {
 			// link content (as in [[Category:Test<q>]]) and there was no label to 
 			// eat it. Or the closing ]] are just missing entirely.
 			if ($chunk != '') {
-				$this->m_errors[] = 'The symbol \'' . htmlspecialchars($chunk) . '\' was used in a place where it is not useful.';
+				$this->m_errors[] = wfMsgForContent('smw_misplacedsymbol', htmlspecialchars($chunk));
 				// try to find a later closing ]] to finish this misshaped subpart
 				$chunk = $this->readChunk('\]\]');
 				if ($chunk != ']]') {
@@ -702,7 +701,7 @@ class SMWQueryParser {
 				}
 			}
 			if ($chunk == '') {
-				$this->m_errors[] = 'Some use of \'[&#x005B;\' in your query was not closed by a matching \']]\'.';
+				$this->m_errors[] = wfMsgForContent('smw_noclosingbrackets');
 			}
 		}
 		return $result;
@@ -795,7 +794,7 @@ class SMWQueryParser {
 				if ($smwgQDisjunctionSupport) {
 					return new SMWDisjunction(array($curdesc,$newdesc));
 				} else {
-					$this->m_errors[] = 'Disjunctions in queries not supported in this wiki, dropped part of query (' . $newdesc->getQueryString() . ').';
+					$this->m_errors[] = wfMsgForContent('smw_nodisjunctions', $newdesc->getQueryString());
 					return $curdesc;
 				}
 			}

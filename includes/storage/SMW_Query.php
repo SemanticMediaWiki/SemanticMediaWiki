@@ -127,7 +127,7 @@ class SMWQuery {
 			$log = array();
 			$this->m_description = $this->m_description->prune($maxsize, $maxdepth, $log);
 			if (count($log) > 0) {
-				$this->m_errors[] = 'The following query conditions could not be considered due to restrictions in query size or depth: ' . implode(', ' , $log) . '.';
+				$this->m_errors[] = wfMsgForContent('smw_querytoolarge',implode(', ' , $log));
 			}
 		}
 	}

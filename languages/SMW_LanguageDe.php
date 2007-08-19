@@ -6,6 +6,9 @@
  * "property" --> "Attribut"
  * "type" --> "Datentyp"
  * "special properties" --> "Besondere Attribute"
+ * "query" --> "Anfrage"
+ * "subquery" --> Teilanfrage
+ * "printout statement" --> Ausgabeanweisung
  */
 
 
@@ -71,7 +74,22 @@ protected $smwContentMessages = array(
 	/* some links for online maps; can be translated to different language versions of services, but need not*/
 	'smw_service_online_maps' => " Landkarten|http://tools.wikimedia.de/~magnus/geo/geohack.php?language=de&params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	/*Messages for datetime parsing */
-	'smw_nodatetime' => 'Das Datum „$1“ wurde nicht verstanden. Die Unterstützung von Kalenderdaten ist zur Zeit noch experimentell.'
+	'smw_nodatetime' => 'Das Datum „$1“ wurde nicht verstanden. Die Unterstützung von Kalenderdaten ist zur Zeit noch experimentell.',
+	// Errors and notices related to queries
+	'smw_toomanyclosing' => 'In der Anfrage kommen zu viele „$1“ vor.',
+	'smw_noclosingbrackets' => 'Ein Vorkommen von „[&#x005B;“ in der Anfrage wurde nicht durch ein entsprechendes „]]“ abgeschlossen.',
+	'smw_misplacedsymbol' => 'Das Symbol „$1“ wurde an einer Stelle verwendet, wo es keinen Sinn macht.',
+	'smw_unexpectedpart' => 'Der Teil „$1“ der Anfrage wurde nicht verstanden. Die Ergebnisse sind eventuell nicht wie erwartet.',
+	'smw_emtpysubquery' => 'Keine Bedingung in Teilanfrage.',
+	'smw_misplacedsubquery' => 'Eine Teilanfrage wurde an einer Stelle verwendet, an der keine Teilanfragen vorkommen dürfen.',
+	'smw_valuesubquery' => 'Teilanfragen werden für Werte des Attributs „$1“ werden nicht unterstützt.',
+	'smw_overprintoutlimit' => 'Die Anfrage enhält zu viele Ausgabeanweisungen.',
+	'smw_badprintout' => 'Eine Ausgabeanweisung wurde nicht verstanden.',
+	'smw_badtitle' => 'Leider ist „$1“ als Seitentitel nicht zulässig.',
+	'smw_badqueryatom' => 'Ein Teil „[#x005B;&hellip]]“ der Anfrage wurde nicht verstanden.',
+	'smw_propvalueproblem' => 'Der Wert des Attributs „$1“ wurde nicht verstanden.',
+	'smw_nodisjunctions' => 'Disjunktionen (ODER) in Anfragen sind in diesem Wiki nicht zulässig und ein Teil der Anfrage muss daher ignoriert werden ($1).',
+	'smw_querytoolarge' => 'Die folgenden Anfragebedingungne konnten wegen den in diesem Wiki gültigen Beschränkungen für größe und Tiefe von Anfragen nicht berücksichtigt werden: $1.'
 );
 
 protected $smwUserMessages = array(
