@@ -436,187 +436,14 @@ class SMWQueryParser {
 	}
 
 	/**
-	 * Parse a relation description (the part of an inline query that
-	 * is in between "[[Some Relation::" and the closing "]]" and create a
-	 * suitable description. The "::" is the first chunk on the current
-	 * string.
-	 */
-// 	protected function getRelationDescription($relname, &$setNS, &$label) {
-// 		$innerdesc = NULL;
-// 		$rel = Title::newFromText($relname, SMW_NS_RELATION);
-// 		if ($rel === NULL) {
-// 			$this->m_errors[] .= 'Sorry, but ' . htmlspecialchars($relname) . ' is no valid page title.'; // TODO internationalise
-// 			return NULL;///TODO: read some more chunks and try to finish [[ ]]
-// 		}
-// 
-// 		$this->readChunk(); // consume seperator "::"
-// 		$continue = true;
-// 		while ($continue) {
-// 			$chunk = $this->readChunk();
-// 			switch ($chunk) {
-// 				case '*': // print statement, abort processing
-// 					$chunk = $this->readChunk('\]\]|\|');
-// 					if ($chunk == '|') {
-// 						$printlabel = $this->readChunk('\]\]');
-// 						if ($printlabel != ']]') {
-// 							$chunk = $this->readChunk('\]\]');
-// 						} else {
-// 							$printlabel = '';
-// 							$chunk = ']]';
-// 						}
-// 					} else {
-// 						$printlabel = $rel->getText();
-// 					}
-// 					if ($chunk == ']]') {
-// 						return new SMWPrintRequest(SMW_PRINT_RELS, $printlabel, $rel);
-// 					} else {
-// 						$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
-// 						return NULL;
-// 					}
-// 				break;
-// 				case '+': // wildcard
-// 					if ($this->m_defaultns !== NULL) {
-// 						$innerdesc = $this->addDescription($innerdesc, $this->m_defaultns, false);
-// 					} else {
-// 						$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
-// 					}
-// 				break;
-// 				case '<q>': // subquery, set default namespaces
-// 					$this->pushDelimiter('</q>');
-// 					$setsubNS = true;
-// 					$sublabel = '';
-// 					$innerdesc = $this->addDescription($innerdesc, $this->getSubqueryDescription($setsubNS, $sublabel), false);
-// 				break;
-// 				default: //normal object value, brings its own namespace
-// 					$obj = Title::newFromText($chunk);
-// 					if ($obj !== NULL) {
-// 						$innerdesc = $this->addDescription($innerdesc, new SMWNominalDescription($obj), false);
-// 					}
-// 			}
-// 			$chunk = $this->readChunk();
-// 			$continue = ($chunk == '||');
-// 		}
-// 
-// 		if ($innerdesc === NULL) { // make a wildcard search
-// 			if ($this->m_defaultns !== NULL) {
-// 				$innerdesc = $this->addDescription($innerdesc, $this->m_defaultns, false);
-// 			} else {
-// 				$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
-// 			}
-// 			$this->m_errors[] = 'Value of relation ' . $rel->getText() . ' was not understood.'; // TODO internationalise
-// 		}
-// 		$result = new SMWSomeRelation($rel,$innerdesc);
-// 
-// 		return $this->finishLinkDescription($chunk, false, $result, $setNS, $label);
-// 	}
-// 
-// 	protected function getAttributeDescription($propertyname, &$setNS, &$label) {
-// 		$this->readChunk(); // consume seperator ":="
-// 		$att = Title::newFromText($propertyname, SMW_NS_PROPERTY);
-// 		if ($att === NULL) {
-// 			$this->m_errors[] .= 'Sorry, but ' . htmlspecialchars($propertyname) . ' is no valid page title.'; // TODO internationalise
-// 			return NULL; ///TODO: read some more chunks and try to finish [[ ]]
-// 		}
-// 		///TODO: currently no support for disjunctions in data values (needs extension of query processor)
-// 
-// 		// get values, including values with internal [[...]]
-// 		$open = 1;
-// 		$value = '';
-// 		$continue = true;
-// 		while ( ($open > 0) && ($continue) ) {
-// 			$chunk = $this->readChunk('\[\[|\]\]|\|');
-// 			switch ($chunk) {
-// 				case '[[': // open new [[ ]]
-// 					$open++;
-// 				break;
-// 				case ']]': // close [[ ]]
-// 					$open--;
-// 				break;
-// 				case '|': // terminates only outermost [[ ]]
-// 					if ($open == 1) {
-// 						$open = 0;
-// 					}
-// 				break;
-// 				case '': // this is not good ... TODO:report error
-// 					$continue = false;
-// 				break;
-// 			}
-// 			if ($open != 0) {
-// 				$value .= $chunk;
-// 			}
-// 		}
-// 		// note that at this point, we normally already read one more chunk behind the value
-// 		$list = preg_split('/^\*/',$value,2);
-// 		if (count($list) == 2) { //hit
-// 			$value = '*';
-// 			$printmodifier = $list[1];
-// 		} else {
-// 			$printmodifier = '';
-// 		}
-// 		switch ($value) {
-// 			case '*': // print statement
-// 				if ($chunk == '|') {
-// 					$printlabel = $this->readChunk('\]\]');
-// 					if ($printlabel != ']]') {
-// 						$chunk = $this->readChunk('\]\]');
-// 					} else {
-// 						$printlabel = '';
-// 						$chunk = ']]';
-// 					}
-// 				} else {
-// 					$printlabel = $att->getText();
-// 				}
-// 				if ($chunk == ']]') {
-// 					return new SMWPrintRequest(SMW_PRINT_ATTS, $printlabel, $att, $printmodifier);
-// 				} else {
-// 					$this->m_errors[] = 'Misshaped print statement.'; //TODO: internationalise
-// 					return NULL;
-// 				}
-// 			break;
-// 			case '+': // wildcard
-// 				$vd = new SMWValueDescription(SMWDataValueFactory::newPropertyObjectValue($att), SMW_CMP_ANY);
-// 			break;
-// 			default: // fixed value, possibly with comparator addons
-// 				// for now, treat comparators only if placed before whole value:
-// 				$list = preg_split('/^(<|>|!)/',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
-// 				$comparator = SMW_CMP_EQ;
-// 				if (count($list) == 3) { // initial comparator found ($list[1] should be empty)
-// 					switch ($list[1]) {
-// 						case '<':
-// 							$comparator = SMW_CMP_LEQ;
-// 							$value = $list[2];
-// 						break;
-// 						case '>':
-// 							$comparator = SMW_CMP_GEQ;
-// 							$value = $list[2];
-// 						break;
-// 						case '!':
-// 							$comparator = SMW_CMP_NEQ;
-// 							$value = $list[2];
-// 						break;
-// 						//default: not possible
-// 					}
-// 				}
-// 				// TODO: needs extension for n-ary values
-// 				$dv = SMWDataValueFactory::newPropertyObjectValue($att, $value);
-// 				if (!$dv->isValid()) {
-// 					$this->m_errors = $this->m_errors + $dv->getErrors();
-// 					$vd = new SMWValueDescription($dv, SMW_CMP_ANY);
-// 				} else {
-// 					$vd = new SMWValueDescription($dv, $comparator);
-// 				}
-// 		}
-// 
-// 		return $this->finishLinkDescription($chunk, false, new SMWSomeAttribute($att, $vd), $setNS, $label);
-// 	}
-		
-	/**
 	 * Parse a property description (the part of an inline query that
 	 * is in between "[[Some property:=" and the closing "]]" and create a
 	 * suitable description. The ":=" is the first chunk on the current
 	 * string.
 	 */
 	protected function getPropertyDescription($propertyname, &$setNS, &$label) {
+		global $smwgIP;
+		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 		$this->readChunk(); // consume seperator ":="
 		$property = Title::newFromText($propertyname, SMW_NS_PROPERTY);
 		if ($property === NULL) {
@@ -802,6 +629,8 @@ class SMWQueryParser {
 	 * passed as a parameter.
 	 */
 	protected function getArticleDescription($firstchunk, &$setNS, &$label) {
+		global $smwgIP;
+		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 		$chunk = $firstchunk;
 		$result = NULL;
 		$continue = true;

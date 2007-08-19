@@ -193,6 +193,8 @@ class SMWOldDataValue extends SMWDataValue {
 	 *   E.g. it is not very user-friendly. -- mak
 	 */
 	function addQuicksearchLink() {
+		global $smwgIP;
+		include_once($smwgIP . '/includes/SMW_Infolink.php');
 		$this->infolinks[] = SMWInfolink::newPropertySearchLink('+', $this->m_property, $this->vuser);
 	}
 
@@ -206,6 +208,8 @@ class SMWOldDataValue extends SMWDataValue {
 	 * usually crafted with a particular datatype in mind.
 	 */
 	function addServiceLinks() {
+		global $smwgIP;
+		include_once($smwgIP . '/includes/SMW_Infolink.php');
 		$args = func_get_args();
 		array_unshift($args, ''); // add a 0 element as placeholder
 		$serviceLinks = $this->getServiceLinks();

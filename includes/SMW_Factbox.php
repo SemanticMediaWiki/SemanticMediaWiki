@@ -7,8 +7,7 @@
  */
 
 global $smwgIP;
-require_once($smwgIP . '/includes/SMW_SemanticData.php');
-require_once($smwgIP . '/includes/SMW_Infolink.php');
+include_once($smwgIP . '/includes/SMW_SemanticData.php');
 
 /**
  * Static class for representing semantic data, which accepts user
@@ -54,7 +53,8 @@ class SMWFactbox {
 	 * various formats.
 	 */
 	static function addProperty($propertyname, $value, $caption) {
-		global $smwgContLang, $smwgStoreActive;
+		global $smwgContLang, $smwgStoreActive, $smwgIP;
+		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 		// See if this attribute is a special one like e.g. "Has unit"
 		$propertyname = smwfNormalTitleText($propertyname); //slightly normalize label
 		$specprops = $smwgContLang->getSpecialPropertiesArray();
@@ -188,7 +188,7 @@ class SMWFactbox {
 	 * This method prints semantic data at the bottom of an article.
 	 */
 	static function printFactbox(&$text) {
-		global $wgContLang, $wgServer, $smwgShowFactbox, $smwgStoreActive;
+		global $wgContLang, $wgServer, $smwgShowFactbox, $smwgStoreActive, $smwgIP;
 		if (!$smwgStoreActive) return true;
 		switch ($smwgShowFactbox) {
 		case SMW_FACTBOX_HIDDEN: return true;
@@ -198,6 +198,7 @@ class SMWFactbox {
 			}
 		}
 
+		include_once($smwgIP . '/includes/SMW_Infolink.php');
 		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . str_replace('%2F', '/', urlencode(SMWFactbox::$semdata->getSubject()->getPrefixedText())), 'rdflink');
 
 		$browselink = SMWInfolink::newBrowsingLink(SMWFactbox::$semdata->getSubject()->getText(), SMWFactbox::$semdata->getSubject()->getPrefixedText(), 'swmfactboxheadbrowse');

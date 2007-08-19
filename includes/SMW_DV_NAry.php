@@ -6,7 +6,8 @@
  * @author Markus Krötzsch
  */
 
-require_once('SMW_DataValue.php');
+global $smwgIP;
+include_once($smwgIP . '/includes/SMW_DataValue.php');
 
 class SMWNAryValue extends SMWDataValue {
 

@@ -5,9 +5,6 @@
  * @author Kai Hüner
  */
 
-global $smwgIP;
-require_once($smwgIP . '/includes/SMW_Factbox.php');
-
 //// Parsing annotations
 
 	/**
@@ -19,7 +16,9 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 	*        not relevant when moving the hook to internalParse()).
 	*/
 	function smwfParserHook(&$parser, &$text, &$strip_state = null) {
-		wfProfileIn('smwfSetupExtension');
+		wfProfileIn('smwfParserHook');
+		global $smwgIP;
+		include_once($smwgIP . '/includes/SMW_Factbox.php');
 		// Init global storage for semantic data of this article.
 		SMWFactbox::initStorage($parser->getTitle(),$parser->getOptions()->getSkin());
 
@@ -35,7 +34,7 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 			SMWFactbox::printFactbox($text);
 		} else SMWFactbox::clearStorage();
 
-		wfProfileOut('smwfSetupExtension');
+		wfProfileOut('smwfParserHook');
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
@@ -73,6 +72,8 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 	*  as used in other places of MediaWiki.
 	*/
 	function smwfSaveHook(&$article, &$user, &$text) {
+		global $smwgIP;
+		include_once($smwgIP . '/includes/SMW_Factbox.php'); // Normally this must have happende, but you never know ...
 		$title=$article->getTitle();
 		SMWFactbox::storeData($title, smwfIsSemanticsProcessed($title->getNamespace()));
 		return true; // always return true, in order not to stop MW's hook processing!
@@ -104,10 +105,10 @@ require_once($smwgIP . '/includes/SMW_Factbox.php');
 function smwfShowListPage (&$title, &$article){
 	global $smwgIP;
 	if ($title->getNamespace() == SMW_NS_TYPE){
-		require_once($smwgIP . '/includes/articlepages/SMW_TypePage.php');
+		include_once($smwgIP . '/includes/articlepages/SMW_TypePage.php');
 		$article = new SMWTypePage($title);
 	} elseif ( $title->getNamespace() == SMW_NS_PROPERTY ) {
-		require_once($smwgIP . '/includes/articlepages/SMW_PropertyPage.php');
+		include_once($smwgIP . '/includes/articlepages/SMW_PropertyPage.php');
 		$article = new SMWPropertyPage($title);
 	}
 	return true;

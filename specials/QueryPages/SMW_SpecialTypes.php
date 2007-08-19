@@ -13,10 +13,11 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $IP;
-require_once( "$IP/includes/SpecialPage.php" );
-require_once( "$IP/includes/Title.php" );
-require_once("$IP/includes/QueryPage.php");
+global $IP, $smwgIP;
+include_once($IP . '/includes/SpecialPage.php');
+include_once($IP . '/includes/Title.php');
+include_once($IP . '/includes/QueryPage.php');
+include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 
 class TypesPage extends QueryPage {
 

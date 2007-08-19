@@ -44,6 +44,8 @@ class SMW_SearchByProperty {
 		if ('' == $attributestring) { // empty page. If no attribute given the value does not matter
 			$html .= wfMsg('smw_sbv_docu') . "\n";
 		} else {
+			global $smwgIP;
+			include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 			// Now that we have an attribute, let's figure out the datavalue
 			$value = SMWDataValueFactory::newPropertyObjectValue( $attribute, $valuestring );
 			if ( $value->isValid() == FALSE ) { // no value understood
@@ -121,6 +123,8 @@ class SMW_SearchByProperty {
 				if ($count == 0) {
 					$html .= wfMsg( 'smw_result_noresults' );
 				} else { // if there are plenty of results anyway
+					global $smwgIP;
+					include_once($smwgIP . '/includes/SMW_Infolink.php');
 					// no need to show the navigation bars when there is not enough to navigate
 					if (($offset>0) || ($count>$limit)) $html .= '<br />' . $navigation;
 					$html .= "<ul>\n";

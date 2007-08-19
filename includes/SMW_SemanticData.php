@@ -4,10 +4,11 @@
  * special properties that are associated with a certain subject (article).
  * It is used as a container for chunks of subject-centred data.
  *
+ * @Note Ranking performance above beauty and reason, this file does not specify
+ * any includes but expects callers to  take care of that.
+ *
  * @author Markus Krötzsch
  */
-
-require_once('SMW_DataValue.php');
 
 /**
  * Class for representing junks of semantic data for one given 
@@ -77,7 +78,7 @@ class SMWSemanticData {
 	 * Store a value for an property identified by its title object. Duplicate 
 	 * value entries are ignored.
 	 */
-	public function addPropertyObjectValue(Title $property, SMWDataValue $value) {
+	public function addPropertyObjectValue(Title $property, /*SMWDataValue*/ $value) {
 		if (!array_key_exists($property->getText(), $this->attribvals)) {
 			$this->attribvals[$property->getText()] = Array();
 			$this->attribtitles[$property->getText()] = $property;
@@ -89,7 +90,7 @@ class SMWSemanticData {
 	 * Store a value for a given property identified by its text label (without
 	 * namespace prefix). Duplicate value entries are ignored.
 	 */
-	public function addPropertyValue($propertyname, SMWDataValue $value) {
+	public function addPropertyValue($propertyname, /*SMWDataValue*/ $value) {
 		if (array_key_exists($propertyname, $this->attribtitles)) {
 			$property = $this->attribtitles[$propertyname];
 		} else {
@@ -134,7 +135,7 @@ class SMWSemanticData {
 	 * Store a value for a special property identified by an integer contant. Duplicate 
 	 * value entries are ignored.
 	 */
-	public function addSpecialValue($special, SMWDataValue $value) {
+	public function addSpecialValue($special, /*SMWDataValue*/ $value) {
 		if (!array_key_exists($special, $this->specprops)) {
 			$this->specprops[$special] = Array();
 		}

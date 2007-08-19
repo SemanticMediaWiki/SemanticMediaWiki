@@ -10,9 +10,11 @@
 if (!defined('MEDIAWIKI')) die();
 
 global $smwgIP;
-require_once( "$smwgIP/includes/storage/SMW_Store.php" );
+include_once($smwgIP . '/includes/storage/SMW_Store.php');
+include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
+include_once($smwgIP . '/includes/SMW_Infolink.php');
 
-/***
+/**
  * A class to encapsulate the special page that allows browsing through
  * the knowledge structure of a Semantic MediaWiki.
  */

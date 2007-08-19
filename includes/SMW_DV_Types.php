@@ -1,5 +1,8 @@
 <?php
 
+global $smwgIP;
+include_once($smwgIP . '/includes/SMW_DataValue.php');
+
 /**
  * This datavalue implements special processing suitable for defining
  * types of properties (n-ary or binary).

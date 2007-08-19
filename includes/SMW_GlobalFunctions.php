@@ -70,7 +70,7 @@ function smwfSetupExtension() {
 	*/
 	$smwgStoreActive = true;
 
-	smwfInitStore();
+	$smwgMasterStore = NULL;
 	smwfInitMessages();
 
 	///// register specials /////
@@ -387,25 +387,6 @@ function smwfProcessInlineQuery($text, $param) {
 	}
 
 	/**
-	 * Initialise storage objects based on user settings. Called once during init.
-	 */
-	function smwfInitStore() {
-		global $smwgDefaultStore, $smwgMasterStore, $smwgIP;
-		// initialise main storage (there is no other storage implementation at the moment)
-		// Note: do never access this global variable directly! Use smwfGetStore() instead!
-		switch ($smwgDefaultStore) {
-			case (SMW_STORE_TESTING):
-				require_once($smwgIP . '/includes/storage/SMW_TestStore.php');
-				$smwgMasterStore = new SMWTestStore();
-			break;
-			case (SMW_STORE_MWDB): default:
-				require_once($smwgIP . '/includes/storage/SMW_SQLStore.php');
-				$smwgMasterStore = new SMWSQLStore();
-			break;
-		}
-	}
-
-	/**
 	 * Get a semantic storage object. Currently, it just returns one globally defined
 	 * object, but the infrastructure allows to set up load balancing and task-dependent
 	 * use of stores (e.g. using other stores for fast querying than for storing new facts),
@@ -413,6 +394,20 @@ function smwfProcessInlineQuery($text, $param) {
 	 */
 	function &smwfGetStore() {
 		global $smwgMasterStore;
+		if ($smwgMasterStore === NULL) {
+			// initialise main storage (there is no other store at the moment)
+			global $smwgDefaultStore, $smwgIP;
+			switch ($smwgDefaultStore) {
+				case (SMW_STORE_TESTING):
+					require_once($smwgIP . '/includes/storage/SMW_TestStore.php');
+					$smwgMasterStore = new SMWTestStore();
+				break;
+				case (SMW_STORE_MWDB): default:
+					require_once($smwgIP . '/includes/storage/SMW_SQLStore.php');
+					$smwgMasterStore = new SMWSQLStore();
+				break;
+			}
+		}
 		return $smwgMasterStore;
 	}
 

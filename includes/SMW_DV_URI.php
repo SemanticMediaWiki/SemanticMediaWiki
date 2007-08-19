@@ -1,5 +1,8 @@
 <?php
 
+global $smwgIP;
+include_once($smwgIP . '/includes/SMW_DataValue.php');
+
 /**
  * This datavalue implements URI-Datavalues suitable for defining
  * URI-types of properties.

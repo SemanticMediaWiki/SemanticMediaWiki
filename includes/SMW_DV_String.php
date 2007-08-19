@@ -1,5 +1,8 @@
 <?php
 
+global $smwgIP;
+include_once($smwgIP . '/includes/SMW_DataValue.php');
+
 /**
  * This datavalue implements String-Datavalues suitable for defining
  * String-types of properties.

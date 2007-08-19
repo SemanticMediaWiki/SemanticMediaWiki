@@ -103,6 +103,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$r = '<table style="width: 100%; ">';
 		$prevchar = 'None';
 		for ($index = $start; $index < $ac; $index++ ) {
+			global $smwgIP;
+			include_once($smwgIP . '/includes/SMW_Infolink.php');
 			// Header for index letters
 			if ($this->articles_start_char[$index] != $prevchar) {
 				$r .= '<tr><th class="smwattname"><h3>' . htmlspecialchars( $this->articles_start_char[$index] ) . "</h3></th><th></th></tr>\n";

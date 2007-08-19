@@ -1,7 +1,5 @@
 <?php
 
-require_once('SMW_DataValueFactory.php');
-
 /**
  * Objects of this type represent all that is known about
  * a certain user-provided data value, especially its various
@@ -196,6 +194,8 @@ abstract class SMWDataValue {
 	 * text, but no more. Result might have no entries but is always an array.
 	 */
 	public function getInfolinks() {
+		global $smwgIP;
+		include_once($smwgIP . '/includes/SMW_Infolink.php');
 		if (!$this->m_hasssearchlink && $this->isValid() && $this->m_property) {
 			$this->m_hasssearchlink = true;
 			$this->m_infolinks[] = SMWInfolink::newPropertySearchLink('+', $this->m_property, $this->getWikiValue());
@@ -250,47 +250,6 @@ abstract class SMWDataValue {
 	public function exportToRDF($QName, ExportRDF $exporter) {
 		$type = $this->getTypeID();
 		return "\t\t<!-- Sorry, unknown how to export type '$type'. -->\n";
-	}
-
-	/*********************************************************************/
-	/* Static methods for initialisation                                 */
-	/*********************************************************************/
-
-	/**
-	 * Create a value from a string supplied by a user for a given attribute.
-	 * If no value is given, an empty container is created, the value of which
-	 * can be set later on.
-	 *
-	 * @DEPRECATED
-	 */
-	static function newAttributeValue($attribute, $value=false) {
-		trigger_error("The function SMWDataValue::newAttributeValue() is deprecated.", E_USER_NOTICE);
-		return SMWDataValueFactory::newAttributeValue($attribute, $value);
-	}
-
-	/**
-	 * Create a value from a string supplied by a user for a given special
-	 * property, encoded as a numeric constant.
-	 * If no value is given, an empty container is created, the value of which
-	 * can be set later on.
-	 *
-	 * @DEPRECATED
-	 */
-	static function newSpecialValue($specialprop, $value=false) {
-		trigger_error("The function SMWDataValue::newSpecialValue() is deprecated.", E_USER_NOTICE);
-		return SMWDataValueFactory::newSpecialValue($specialprop, $value);
-	}
-
-	/**
-	 * Create a value from a user-supplied string for which a type handler is known
-	 * If no value is given, an empty container is created, the value of which
-	 * can be set later on.
-	 *
-	 * @DEPRECATED
-	 */
-	static function newTypedValue(SMWTypeHandler $type, $value=false) {
-		trigger_error("The function SMWDataValue::newTypedValue() is deprecated.", E_USER_NOTICE);
-		return SMWDataValueFactory::newTypeHandlerValue($type, $value);
 	}
 
 	/*********************************************************************/

@@ -1,10 +1,5 @@
 <?php
 
-global $smwgIP, $smwgContLang;
-require_once($smwgIP . '/includes/SMW_DataValue.php');
-require_once($smwgIP . '/includes/SMW_DV_Error.php');
-require_once($smwgIP . '/includes/SMW_OldDataValue.php');
-
 /**
  * Factory class for creating SMWDataValue objects for supplied types or properties
  * and data values.
@@ -76,6 +71,8 @@ class SMWDataValueFactory {
 			SMWDataValueFactory::$m_typelabels[$propertyname] = $type;
 			return SMWDataValueFactory::newTypeIDValue('_wpg',$value,$caption,$propertyname);
 		} else {
+			global $smwgIP;
+			include_once($smwgIP . '/includes/SMW_DV_Error.php');
 			return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value, $caption);
 		}
 	}
@@ -123,7 +120,7 @@ class SMWDataValueFactory {
 	 * @param $caption user-defined caption or false if none given
 	 * @param $propertyname text name of according property, or false (may be relevant for getting further parameters)
 	 */
-	static public function newTypeObjectValue(SMWDataValue $typevalue, $value=false, $caption=false, $propertyname=false) {
+	static public function newTypeObjectValue(/*SMWDataValue*/ $typevalue, $value=false, $caption=false, $propertyname=false) {
 		if (array_key_exists($typevalue->getXSDValue(), SMWDataValueFactory::$m_valueclasses)) {
 			return SMWDataValueFactory::newTypeIDValue($typevalue->getXSDValue(), $value, $caption, $propertyname);
 		} else {
@@ -131,6 +128,8 @@ class SMWDataValueFactory {
 				$result = SMWDataValueFactory::newTypeIDValue('__nry');
 				$result->setType($typevalue);
 			} else { ///TODO migrate to new system
+				global $smwgIP;
+				include_once($smwgIP . '/includes/SMW_OldDataValue.php');
 				$type = SMWTypeHandlerFactory::getTypeHandlerByLabel($typevalue->getWikiValue());
 				$result = new SMWOldDataValue($type);
 			}
@@ -163,6 +162,7 @@ class SMWDataValueFactory {
 				if (file_exists($smwgIP . '/includes/SMW_DV_'. $vc[1] . '.php')) {
 					include_once($smwgIP . '/includes/SMW_DV_'. $vc[1] . '.php');
 				} else { // file for registered type missing
+					include_once($smwgIP . '/includes/SMW_DV_Error.php');
 					new SMWErrorValue(wfMsgForContent('smw_unknowntype'), $value, $caption);
 				}
 				$vc[0] = true;
@@ -221,6 +221,8 @@ class SMWDataValueFactory {
 	 * @DEPRECATED
 	 */
 	static public function newTypeHandlerValue(SMWTypeHandler $type, $value=false) {
+		global $smwgIP;
+		include_once($smwgIP . '/includes/SMW_OldDataValue.php');
 		$result = new SMWOldDataValue($type);
 		if ($value !== false) {
 			$result->setUserValue($value);

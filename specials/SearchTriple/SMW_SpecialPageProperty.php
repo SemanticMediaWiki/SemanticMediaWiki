@@ -6,13 +6,17 @@
  * view on a object-relation pair, i.e. a page that shows
  * all the fillers of a property for a certain page.
  * This will be assumedly seldomly used.
+ *
+ * FIXME: Actually this is currently not used anywhere.
+ * FIXME: The result-page browsing is broken, showing the last result on one page as the first resutl of the next.
  */
 
 if (!defined('MEDIAWIKI')) die();
 
 global $IP, $smwgIP;
-require_once( "$IP/includes/SpecialPage.php" );
-require_once( "$smwgIP/includes/storage/SMW_Store.php" );
+include_once( "$IP/includes/SpecialPage.php" );
+include_once( "$smwgIP/includes/storage/SMW_Store.php" );
+include_once($smwgIP . '/includes/SMW_Infolink.php');
 
 class SMW_PageProperty {
 
