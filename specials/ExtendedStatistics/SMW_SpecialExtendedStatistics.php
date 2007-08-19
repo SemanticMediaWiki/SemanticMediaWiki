@@ -7,143 +7,43 @@
  */
 if (!defined('MEDIAWIKI')) die();
 
-global $IP, $smwgIP;
-
+global $IP;
 require_once( "$IP/includes/SpecialPage.php" );
 require_once( "$IP/includes/Title.php" );
 
-SpecialPage::addPage( new ExtendedStatistics );
+function smwfExecuteSemanticStatistics() {
+	global $wgOut, $wgLang;
+	$dbr =& wfGetDB( DB_SLAVE );
 
+	// Do not give these statistics here. They are quite unrelated.
+	// 		$views = SiteStats::views();
+	// 		$edits = SiteStats::edits();
+	// 		$good = SiteStats::articles();
+	// 		$images = SiteStats::images();
+	// 		$users = SiteStats::users();
 
-class ExtendedStatistics extends SpecialPage {
+	$semstats = smwfGetStore()->getStatistics();
 
-	function ExtendedStatistics() {
-		SpecialPage::SpecialPage( 'ExtendedStatistics' );
-		$this->includable( true );
-	}
+	$page_table = $dbr->tableName( 'page' );
+	$sql = "SELECT Count(page_id) AS count FROM $page_table WHERE page_namespace=" . SMW_NS_PROPERTY;
+	$res = $dbr->query( $sql );
+	$row = $dbr->fetchObject( $res );
+	$property_pages = $row->count;
+	$dbr->freeResult( $res );
 
-	function getName() {
-		return "extendedstatistics";
-	}
+	$sp = Title::makeTitle( NS_SPECIAL, 'Properties');
+	$purl = $sp->getFullURL();
+	$sp = Title::makeTitle( NS_SPECIAL, 'WantedProperties');
+	$wpurl = $sp->getFullURL();
+	$sp = Title::makeTitle( NS_SPECIAL, 'UnusedProperties');
+	$upurl = $sp->getFullURL();
+	$out = wfMsg('smw_semstats_text',
+	             $wgLang->formatNum($semstats['PROPUSES']), $wgLang->formatNum($semstats['USEDPROPS']),
+	             $purl, $wgLang->formatNum($property_pages), $wgLang->formatNum($semstats['DECLPROPS']),
+	             $upurl, $wpurl);
 
-	function execute( $par = null ) {
-		global $wgOut, $wgLang;
-
-		$dbr =& wfGetDB( DB_SLAVE );
-
-		$views = SiteStats::views();
-		$edits = SiteStats::edits();
-		$good = SiteStats::articles();
-		$images = SiteStats::images();
-		$users = SiteStats::users();
-
-
-		$relations_table = $dbr->tableName( 'smw_relations' );
-		$attributes_table = $dbr->tableName( 'smw_attributes' );
-		$page_table = $dbr->tableName( 'page' );
-
-
-		$sql = "SELECT Count(DISTINCT relation_title) AS count FROM $relations_table";
-		$res = $dbr->query( $sql );
-		$row = $dbr->fetchObject( $res );
-		$relations = $wgLang->formatNum($row->count);
-		$dbr->freeResult( $res );
-
-		$sql = "SELECT Count(*) AS count FROM $relations_table";
-		$res = $dbr->query( $sql );
-		$row = $dbr->fetchObject( $res );
-		$relation_instance = $wgLang->formatNum($row->count);
-		$dbr->freeResult( $res );
-
-		$sql  = "SELECT Count(*) AS count ";
-		$sql .= "FROM $page_table ";
-		$sql .= "where page_title IN ";
-		$sql .= "(SELECT DISTINCT $relations_table.relation_title FROM $relations_table);";
-		$res = $dbr->query( $sql );
-		$row = $dbr->fetchObject( $res );
-		$relation_pages = $wgLang->formatNum($row->count);
-		$dbr->freeResult( $res );
-
-		$sql = "SELECT Count(DISTINCT attribute_title) AS count FROM $attributes_table";
-		$res = $dbr->query( $sql );
-		$row = $dbr->fetchObject( $res );
-		$attributes = $wgLang->formatNum($row->count);
-		$dbr->freeResult( $res );
-
-		$sql = "SELECT Count(*) AS count FROM $attributes_table";
-		$res = $dbr->query( $sql );
-		$row = $dbr->fetchObject( $res );
-		$attribute_instance = $wgLang->formatNum($row->count);
-		$dbr->freeResult( $res );
-
-
-
-		$out = "<table >
-				<tr>
-					<td><h2>" . wfMsg('smw_extstats_general') ."</h2></td>
-					<td></td>
-				</tr>
-				<tr>
-						<td>" . wfMsg('smw_extstats_totalp') ."</td>
-						<td>".$good."</td>
-				</tr>
-				<tr>
-						<td>" . wfMsg('smw_extstats_totalv') ."</td>
-						<td>".$views."</td>
-				</tr>
-				<tr>
-						<td>" . wfMsg('smw_extstats_totalpe') ."</td>
-						<td>".$edits."</td>
-				</tr>
-				<tr>
-						<td>" . wfMsg('smw_extstats_totali') ."</td>
-						<td>".$images."</td>
-				</tr>
-				<tr>
-						<td>" . wfMsg('smw_extstats_totalu') ."</td>
-						<td>".$users." </td>
-				</tr>
-				</table>";
-
-		$out .= "<table>
-					<tr>
-							<td><h2>" . wfMsg('extendedstatistics') ."</h2> </td>
-							<td> </td>
-					</tr>
-					<tr>
-							<td>" . wfMsg('smw_extstats_totalr') ."</td>
-							<td>".$relations." </td>
-					</tr>
-					<tr>
-							<td>" . wfMsg('smw_extstats_totalri') ."</td>
-							<td>".$relation_instance."</td>
-					</tr>
-					<tr>
-							<td>" . wfMsg('smw_extstats_totalra') ."</td>
-							<td>".$wgLang->formatNum( sprintf( '%0.2f', $relation_instance!=0 ? $relation_instance / $relations : 0 ) ) ."</td>
-					</tr>
-
-					<tr>
-							<td>" . wfMsg('smw_extstats_totalpr') ."</td>
-							<td>".$relation_pages." </td>
-					</tr>
-					<tr>
-							<td>" . wfMsg('smw_extstats_totala') ."</td>
-							<td>".$attributes."</td>
-					</tr>
-					<tr>
-							<td>" . wfMsg('smw_extstats_totalai') ."</td>
-							<td>".$attribute_instance."</td>
-					</tr>
-					<tr>
-							<td>" . wfMsg('smw_extstats_totalaa') ."</td>
-							<td>".$wgLang->formatNum( sprintf( '%0.2f', $attribute_instance!=0 ? $attribute_instance / $attributes : 0 ) ) ." </td>
-					</tr>
-				</table>";
-
-		$wgOut->addHTML( $out );
-
-	}
+	$wgOut->addHTML( $out );
 }
+
 
 

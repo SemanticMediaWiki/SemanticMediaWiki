@@ -137,8 +137,12 @@ protected $smwUserMessages = array(
 	'smw_types_docu' => 'Список поддерживаемых типов атрибутов. Каждый тип имеет страницу с информацией.',
 	'smw_types_units' => 'Стандартный тип: $1; поддерживаемые типы: $2',
 	'smw_types_builtin' => 'Встроенные типы',
-
-
+	/*Messages for SemanticStatistics Special*/
+	'semanticstatistics' => 'Semantic Statistics', // TODO: translate
+	'smw_semstats_text' => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.', // TODO: translate
+	/*Messages for Flawed Attributes Special --disabled--*/
+	'flawedattributes' => 'Flawed Properties', // TODO: translate
+	'smw_fattributes' => 'The pages listed below have an incorrectly defined property. The number of incorrect properties is given in the brackets.', // TODO: translate
 	// Messages for ask Special
 	'ask' => 'Семантический поиск',
 	'smw_ask_docu' => '<p>Наберите запрос в форме поиска. Формат запроса приведен на <a href="$1">странице справки</a>.</p>',

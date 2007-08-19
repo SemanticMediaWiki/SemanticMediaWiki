@@ -329,6 +329,15 @@ abstract class SMWStore {
 	 */
 	abstract function getWantedPropertiesSpecial($requestoptions = NULL);
 
+	/**
+	 * Return statistical information as an associative array with the following
+	 * keys:
+	 * - 'PROPUSES': Number of property instances (value assignments) in the datatbase
+	 * - 'USEDPROPS': Number of properties that are used with at least one value
+	 * - 'DECLPROPS': Number of properties that have been declared (i.e. assigned a type)
+	 */
+	abstract function getStatistics();
+
 ///// Setup store /////
 
 	/**

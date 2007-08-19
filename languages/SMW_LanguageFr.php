@@ -126,21 +126,9 @@ protected $smwUserMessages = array(
 	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a son propre article, dans lequel peuvent figurer des informations plus précises.',
 	'smw_types_units' => 'Unité standard : $1 ; Unités supportées : $2',
 	'smw_types_builtin' => 'Types intégrés',
-	/*Messages for ExtendedStatistics Special*/
-	'extendedstatistics' => 'Statistiques détaillées',
-	'smw_extstats_general' => 'Statistiques globales',
-	'smw_extstats_totalp' => 'Nombre total de pages :',
-	'smw_extstats_totalv' => 'Nombre total de pages vues:',
-	'smw_extstats_totalpe' => 'Nombre total d\'éditions :',
-	'smw_extstats_totali' => 'Nombre total d\'images :',
-	'smw_extstats_totalu' => 'Nombre total d\'utilisateurs :',
-	'smw_extstats_totalr' => 'Nombre total de relations :',
-	'smw_extstats_totalri' => 'Nombre total d\'instances de la relation :',
-	'smw_extstats_totalra' => 'Nombre moyen d\'instances par relation :',
-	'smw_extstats_totalpr' => 'Nombre total de pages sur des relations :',
-	'smw_extstats_totala' => 'Nombre total d\'attributs :',
-	'smw_extstats_totalai' => 'Nombre total d\instances de l\'attribt :',
-	'smw_extstats_totalaa' => 'Nombre moyen d\instances par attribut :',
+	/*Messages for SemanticStatistics Special*/
+	'semanticstatistics' => 'Semantic Statistics', // TODO translate
+	'smw_semstats_text' => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.', // TODO translate
 	/*Messages for Flawed Attributes Special --disabled--*/
 	'flawedattributes' => 'Attributs défectueux',
 	'smw_fattributes' => 'Les pages ci-dessous ont un attribut qui n\'est pas défini correctement. Le nombre d\'attributs incorrects est donné entre les parenthèses.',

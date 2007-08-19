@@ -157,21 +157,9 @@ protected $smwUserMessages = array(
 	'smw_types_docu' => 'Poniżej znajduje się lista wszystkich typów które mogą być przypisane atrybutom.  Każdy typ posiada artykuł, w którym mogą znajdować się dodatkowe informacje.',
 	'smw_types_units' => 'Standardowa jednostka: $1; obsługiwane jednostki: $2',
 	'smw_types_builtin' => 'Wbudowane typy',
-	/*Messages for ExtendedStatistics Special*/
-	'extendedstatistics' => 'Statystyki rozszerzone',
-	'smw_extstats_general' => 'Statystyki ogólne',
-	'smw_extstats_totalp' => 'Całkowita liczba stron:',
-	'smw_extstats_totalv' => 'Całkowita liczba odsłon:',
-	'smw_extstats_totalpe' => 'Całkowita liczba edycji:',
-	'smw_extstats_totali' => 'Całkowita liczba obrazów:',
-	'smw_extstats_totalu' => 'Całkowita liczba użytkowników:',
-	'smw_extstats_totalr' => 'Całkowita liczba relacji:',
-	'smw_extstats_totalri' => 'Całkowita liczba instancji relacji:',
-	'smw_extstats_totalra' => 'Średnia liczba instancji na relację:',
-	'smw_extstats_totalpr' => 'Całkowita liczba stron o relacjach:',
-	'smw_extstats_totala' => 'Całkowita liczba atrybutów:',
-	'smw_extstats_totalai' => 'Całkowita liczba instancji atrybutów:',
-	'smw_extstats_totalaa' => 'Średnia liczba instancji na atrybut:',
+	/*Messages for SemanticStatistics Special*/
+	'semanticstatistics' => 'Semantic Statistics', // TODO: translate
+	'smw_semstats_text' => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.', // TODO: translate
 	/*Messages for Flawed Attributes Special --disabled--*/
 	'flawedattributes' => 'Flawed Attributes',
 	'smw_fattributes' => 'The pages listed below have an incorrectly defined attribute. The number of incorrect attributes is given in the brackets.',

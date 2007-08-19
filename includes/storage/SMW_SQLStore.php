@@ -929,6 +929,55 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
+	function getStatistics() {
+		$db =& wfGetDB( DB_SLAVE );
+		$result = array();
+		extract( $db->tableNames('smw_relations', 'smw_attributes', 'smw_longstrings', 'smw_nary', 'smw_specialprops') );
+
+		$res = $db->query("SELECT COUNT(subject_id) AS count FROM $smw_relations", 'SMW::getStatistics');
+		$row = $db->fetchObject( $res );
+		$propuses = $row->count;
+		$db->freeResult( $res );
+		$res = $db->query("SELECT COUNT(subject_id) AS count FROM $smw_attributes", 'SMW::getStatistics');
+		$row = $db->fetchObject( $res );
+		$propuses += $row->count;
+		$db->freeResult( $res );
+		$res = $db->query("SELECT COUNT(subject_id) AS count FROM $smw_longstrings", 'SMW::getStatistics');
+		$row = $db->fetchObject( $res );
+		$propuses += $row->count;
+		$db->freeResult( $res );
+		$res = $db->query("SELECT COUNT(subject_id) AS count FROM $smw_nary", 'SMW::getStatistics');
+		$row = $db->fetchObject( $res );
+		$propuses += $row->count;
+		$db->freeResult( $res );
+		$result['PROPUSES'] = $propuses;
+
+		$res = $db->query("SELECT COUNT(DISTINCT(relation_title)) AS count FROM $smw_relations", 'SMW::getStatistics');
+		$row = $db->fetchObject( $res );
+		$usedprops = $row->count;
+		$db->freeResult( $res );
+		$res = $db->query("SELECT COUNT(DISTINCT(attribute_title)) AS count FROM $smw_attributes", 'SMW::getStatistics');
+		$row = $db->fetchObject( $res );
+		$usedprops += $row->count;
+		$db->freeResult( $res );
+		$res = $db->query("SELECT COUNT(DISTINCT(attribute_title)) AS count FROM $smw_longstrings", 'SMW::getStatistics');
+		$row = $db->fetchObject( $res );
+		$usedprops += $row->count;
+		$db->freeResult( $res );
+		$res = $db->query("SELECT COUNT(DISTINCT(attribute_title)) AS count FROM $smw_nary", 'SMW::getStatistics');
+		$row = $db->fetchObject( $res );
+		$usedprops += $row->count;
+		$db->freeResult( $res );
+		$result['USEDPROPS'] = $usedprops;
+
+		$res = $db->query("SELECT COUNT(subject_id) AS count FROM $smw_specialprops WHERE property_id=" . $db->addQuotes(SMW_SP_HAS_TYPE), 'SMW::getStatistics');
+		$row = $db->fetchObject( $res );
+		$result['DECLPROPS'] = $row->count;
+		$db->freeResult( $res );
+
+		return $result;
+	}
+
 ///// Setup store /////
 
 	function setup($verbose = true) {

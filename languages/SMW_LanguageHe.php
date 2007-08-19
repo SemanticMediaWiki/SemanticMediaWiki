@@ -136,21 +136,9 @@ protected $smwUserMessages = array(
 	'smw_types_docu' => 'ברשימה זו מופיעים כל טיפוסי המידע שתכונות יכולות להשתמש בהם . לכל טיפוס מידע יש דף המסביר על אודותיו.',
 	'smw_types_units' => 'יחיסה סטנדרטית: $1; תומכת ביחידות: $2',
 	'smw_types_builtin' => 'טיפוסים מובנים',
-	/*Messages for ExtendedStatistics Special*/
-	'extendedstatistics' => 'Extended Statistics', //TODO:translate
-	'smw_extstats_general' => 'General Statistics', //TODO:translate
-	'smw_extstats_totalp' => 'Total number of pages:', //TODO:translate
-	'smw_extstats_totalv' => 'Total number of views:', //TODO:translate
-	'smw_extstats_totalpe' => 'Total number of page edits:', //TODO:translate
-	'smw_extstats_totali' => 'Total number of images:', //TODO:translate
-	'smw_extstats_totalu' => 'Total number of users:', //TODO:translate
-	'smw_extstats_totalr' => 'Total number of relations:', //TODO:translate
-	'smw_extstats_totalri' => 'Total number of relation instances:', //TODO:translate
-	'smw_extstats_totalra' => 'Average number of instances per relation:', //TODO:translate
-	'smw_extstats_totalpr' => 'Total number of pages about relations:', //TODO:translate
-	'smw_extstats_totala' => 'Total number of attributes:', //TODO:translate
-	'smw_extstats_totalai' => 'Total number of attribute instances:', //TODO:translate
-	'smw_extstats_totalaa' => 'Average number of instances per attribute:', //TODO:translate
+	/*Messages for SemanticStatistics Special*/
+	'semanticstatistics' => 'Semantic Statistics', // TODO: translate
+	'smw_semstats_text' => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.', // TODO: translate
 	/*Messages for Flawed Attributes Special --disabled--*/
 	'flawedattributes' => 'Flawed Attributes',
 	'smw_fattributes' => 'The pages listed below have an incorrectly defined attribute. The number of incorrect attributes is given in the brackets.',

@@ -126,21 +126,9 @@ protected $smwUserMessages = array(
 	'smw_types_docu' => 'Los tipos de datos siguientes pueden ser asignados a los atributos. Cada tipo de datos tiene su propio artículo, en el que puede figurar información más precisa.',
 	'smw_types_units' => 'Unidad estándar: $1; unidades soportadas: $2',
 	'smw_types_builtin' => 'Built-in types',
-	/*Messages for ExtendedStatistics Special*/
-	'extendedstatistics' => 'Estadísticas extendidas',
-	'smw_extstats_general' => 'Estadísticas generales',
-	'smw_extstats_totalp' => 'Número total de páginas:',
-	'smw_extstats_totalv' => 'Número total de vistas:',
-	'smw_extstats_totalpe' => 'Número total de ediciones:',
-	'smw_extstats_totali' => 'Número total de imágenes:',
-	'smw_extstats_totalu' => 'Número total de usuarios:',
-	'smw_extstats_totalr' => 'Número total de relaciones:',
-	'smw_extstats_totalri' => 'Número total de instancias de relación:',
-	'smw_extstats_totalra' => 'Número medio de instancias por relación:',
-	'smw_extstats_totalpr' => 'Número total de páginas sobre relaciones:',
-	'smw_extstats_totala' => 'Número total de atributos:',
-	'smw_extstats_totalai' => 'Número total de instancias de atributos:',
-	'smw_extstats_totalaa' => 'Número medio de instancias por atributo:',
+	/*Messages for SemanticStatistics Special*/
+	'semanticstatistics' => 'Semantic Statistics', // TODO translate
+	'smw_semstats_text' => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.', // TODO translate
 	/*Messages for Flawed Attributes Special --disabled--*/
 	'flawedattributes' => 'Flawed Attributes',
 	'smw_fattributes' => 'The pages listed below have an incorrectly defined attribute. The number of incorrect attributes is given in the brackets.',

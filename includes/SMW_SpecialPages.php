@@ -82,6 +82,18 @@ function doSpecialExportRDF($page = '') {
 	wfProfileOut('doSpecialExportRDF (SMW)');
 }
 
+// Semantic Statsitics Special
+
+SpecialPage::addPage( new SpecialPage('SemanticStatistics','',true,'doSpecialSemanticStatistics',false) );
+
+function doSpecialSemanticStatistics() {
+	wfProfileIn('doSpecialSemanticStatistics (SMW)');
+	global $smwgIP;
+	include_once($smwgIP . '/specials/ExtendedStatistics/SMW_SpecialExtendedStatistics.php');
+	smwfExecuteSemanticStatistics();
+	wfProfileOut('doSpecialSemanticStatistics (SMW)');
+}
+
 // Properties special
 
 SpecialPage::addPage( new SpecialPage('Properties','',true,'doSpecialProperties',false) );

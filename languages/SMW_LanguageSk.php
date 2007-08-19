@@ -135,21 +135,9 @@ protected $smwUserMessages = array(
 	'smw_types_docu' => 'Nasleduje zoznam všetkých údajových typov, ktoré je možné priradiť atribútom. Každý údajový typ má stránku, kde je možné poskytnúť dodatočné informácie.',
 	'smw_types_units' => 'Štandardné jednotky: $1; podporované jednotky: $2',
 	'smw_types_builtin' => 'Vstavané typy',
-	/*Messages for ExtendedStatistics Special*/
-	'extendedstatistics' => 'Rozšírená štatistika',
-	'smw_extstats_general' => 'Všeobecná štatistika',
-	'smw_extstats_totalp' => 'Celkový počet stránok:',
-	'smw_extstats_totalv' => 'Celkový počet prehliadnutí:',
-	'smw_extstats_totalpe' => 'Celkový počet úprav stránok:',
-	'smw_extstats_totali' => 'Celkový počet obrázkov:',
-	'smw_extstats_totalu' => 'Celkový počet používateľov:',
-	'smw_extstats_totalr' => 'Celkový počet vzťahov:',
-	'smw_extstats_totalri' => 'Celkový počet inštancií vzťahov:',
-	'smw_extstats_totalra' => 'Average number inštancií na vzťah:',
-	'smw_extstats_totalpr' => 'Celkový počet stránok o vzťahoch:',
-	'smw_extstats_totala' => 'Celkový počet atribútov:',
-	'smw_extstats_totalai' => 'Celkový počet inštancií atribútov:',
-	'smw_extstats_totalaa' => 'Average number inštancií na atribút:',
+	/*Messages for SemanticStatistics Special*/
+	'semanticstatistics' => 'Semantic Statistics', // TODO: translate
+	'smw_semstats_text' => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.', // TODO: translate
 	/*Messages for Flawed Attributes Special --disabled--*/
 	'flawedattributes' => 'Chybných atribútov',
 	'smw_fattributes' => 'Nižšie uvedené stránky majú nesprávne definovaný atribút. Počet nesprávnych atribútov udáva číslo v zátvorkách.',
