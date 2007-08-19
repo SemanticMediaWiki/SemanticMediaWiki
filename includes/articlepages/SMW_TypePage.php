@@ -10,8 +10,8 @@
 if( !defined( 'MEDIAWIKI' ) )   die( 1 );
 
 global $smwgIP;
-require_once( "$smwgIP/includes/articlepages/SMW_OrderedListPage.php");
-
+include_once($smwgIP . '/includes/articlepages/SMW_OrderedListPage.php');
+include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 
 /**
  * Implementation of MediaWiki's Article that shows additional information on
@@ -38,18 +38,19 @@ class SMWTypePage extends SMWOrderedListPage {
 		$options = new SMWRequestOptions();
 		$options->limit = $this->limit + 1;
 		$options->sort = true;
+		$typevalue = SMWDataValueFactory::newTypeIDValue('__typ', $this->mTitle->getText());
 		if ($this->from != '') {
 			$options->boundary = $this->from;
 			$options->ascending = true;
 			$options->include_boundary = true;
-			$this->articles = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $this->mTitle, $options);
+			$this->articles = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $typevalue, $options);
 		} elseif ($this->until != '') {
 			$options->boundary = $this->until;
 			$options->ascending = false;
 			$options->include_boundary = false;
-			$this->articles = array_reverse($store->getSpecialSubjects(SMW_SP_HAS_TYPE, $this->mTitle, $options));
+			$this->articles = array_reverse($store->getSpecialSubjects(SMW_SP_HAS_TYPE, $typevalue, $options));
 		} else {
-			$this->articles = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $this->mTitle, $options);
+			$this->articles = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $typevalue, $options);
 		}
 		foreach ($this->articles as $title) {
 			$this->articles_start_char[] = $wgContLang->convert( $wgContLang->firstChar( $title->getText() ) );
