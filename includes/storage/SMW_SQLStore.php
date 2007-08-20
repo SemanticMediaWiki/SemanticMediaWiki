@@ -51,6 +51,7 @@ class SMWSQLStore extends SMWStore {
 ///// Reading methods /////
 
 	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
+		wfProfileIn("SMWSQLStore::getSpecialValues-$specialprop (SMW)");
 		$db =& wfGetDB( DB_SLAVE ); // TODO: Is '=&' needed in PHP5?
 
 		// NOTE: this method currently supports no ordering or boundary. This is probably best anyway ...
@@ -109,22 +110,25 @@ class SMWSQLStore extends SMWStore {
 			}
 			$db->freeResult($res);
 		}
+		wfProfileOut("SMWSQLStore::getSpecialValues-$specialprop (SMW)");
 		return $result;
 	}
 
 	function getSpecialSubjects($specialprop, $value, $requestoptions = NULL) {
+		wfProfileIn("SMWSQLStore::getSpecialSubjects-$specialprop (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		
 		$result = array();
 		
 		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
 			if ( !($value instanceof Title) || ($value->getNamespace() != NS_CATEGORY) ) {
+				wfProfileOut("SMWSQLStore::getSpecialSubjects-$specialprop (SMW)");
 				return array();
 			}
 			$sql = 'cl_to=' . $db->addQuotes($value->getDBKey());
 			$res = $db->select( 'categorylinks',
 								'DISTINCT cl_from',
-								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
+								$sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
 			// rewrite result as array
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::newFromID($row->cl_from);
@@ -135,7 +139,7 @@ class SMWSQLStore extends SMWStore {
 					. ' AND rd_namespace=' . $db->addQuotes($value->getNamespace());
 			$res = $db->select( 'redirect',
 								'rd_from',
-								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
+								$sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
 			// reqrite results as array
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::newFromID($row->rd_from);
@@ -145,7 +149,7 @@ class SMWSQLStore extends SMWStore {
 			$sql = 'object_title=' . $db->addQuotes($value->getDBKey());
 			$res = $db->select( 'smw_subprops',
 								'subject_title',
-								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
+								$sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
 			// reqrite results as array
 			while($row = $db->fetchObject($res)) {
 				$result[] =  Title::makeTitle(SMW_NS_PROPERTY, $row->subject_title);
@@ -156,6 +160,7 @@ class SMWSQLStore extends SMWStore {
 				if ($value->getXSDValue() !== false) { // filters out error-values etc.
 					$stringvalue = $value->getXSDValue();
 				} else {
+					wfProfileOut("SMWSQLStore::getSpecialSubjects-$specialprop (SMW)");
 					return array();
 				}
 			} elseif ($value instanceof Title) {
@@ -179,12 +184,13 @@ class SMWSQLStore extends SMWStore {
 			}
 			$db->freeResult($res);
 		}
-
+		wfProfileOut("SMWSQLStore::getSpecialSubjects-$specialprop (SMW)");
 		return $result;
 	}
 
 
 	function getPropertyValues(Title $subject, Title $property, $requestoptions = NULL, $outputformat = '') {
+		wfProfileIn("SMWSQLStore::getPropertyValues (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
 
@@ -301,17 +307,21 @@ class SMWSQLStore extends SMWStore {
 				}
 				$db->freeResult($res);
 		}
+		wfProfileOut("SMWSQLStore::getPropertyValues (SMW)");
 		return $result;
 	}
 
 	function getPropertySubjects(Title $property, SMWDataValue $value, $requestoptions = NULL) {
+		wfProfileIn("SMWSQLStore::getPropertySubjects (SMW)");
 		if ( !$value->isValid() ) {
+			wfProfileOut("SMWSQLStore::getPropertySubjects (SMW)");
 			return array();
 		}
 		$db =& wfGetDB( DB_SLAVE );
 
 		switch ($value->getTypeID()) {
 		case '_txt': // not supported
+			wfProfileOut("SMWSQLStore::getPropertySubjects (SMW)");
 			return array();
 		break;
 		case '_wpg': // wikipage
@@ -373,10 +383,12 @@ class SMWSQLStore extends SMWStore {
 				$result[] = Title::newFromID($row->subject_id);
 		}
 		$db->freeResult($res);
+		wfProfileOut("SMWSQLStore::getPropertySubjects (SMW)");
 		return $result;
 	}
 
 	function getAllPropertySubjects(Title $property, $requestoptions = NULL) {
+		wfProfileIn("SMWSQLStore::getAllPropertySubjects (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
 		switch ($id) {
@@ -411,10 +423,12 @@ class SMWSQLStore extends SMWStore {
 			$result[] = Title::newFromId($row->subject_id);
 		}
 		$db->freeResult($res);
+		wfProfileOut("SMWSQLStore::getAllPropertySubjects (SMW)");
 		return $result;
 	}
 
 	function getProperties(Title $subject, $requestoptions = NULL) {
+		wfProfileIn("SMWSQLStore::getProperties (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) . $this->getSQLConditions($requestoptions,'attribute_title','attribute_title');
 
@@ -458,11 +472,12 @@ class SMWSQLStore extends SMWStore {
 			}
 		}
 		$db->freeResult($res);
-
+		wfProfileOut("SMWSQLStore::getProperties (SMW)");
 		return $result;
 	}
 
 	function getInProperties(SMWDataValue $value, $requestoptions = NULL) {
+		wfProfileIn("SMWSQLStore::getInProperties (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
 		if ($value->getTypeID() == '_wpg') {
@@ -478,12 +493,14 @@ class SMWSQLStore extends SMWStore {
 			}
 			$db->freeResult($res);
 		}
+		wfProfileOut("SMWSQLStore::getInProperties (SMW)");
 		return $result;
 	}
 
 ///// Writing methods /////
 
 	function deleteSubject(Title $subject) {
+		wfProfileIn("SMWSQLStore::deleteSubjects (SMW)");
 		$db =& wfGetDB( DB_MASTER );
 		$db->delete('smw_relations',
 		            array('subject_id' => $subject->getArticleID()),
@@ -518,9 +535,11 @@ class SMWSQLStore extends SMWStore {
 			            array('subject_title' => $subject->getDBKey()),
 			            'SMW::deleteSubject::Subprops');
 		}
+		wfProfileOut("SMWSQLStore::deleteSubjects (SMW)");
 	}
 
 	function updateData(SMWSemanticData $data) {
+		wfProfileOut("SMWSQLStore::updateData (SMW)");
 		$db =& wfGetDB( DB_MASTER );
 		$subject = $data->getSubject();
 		$this->deleteSubject($subject);
@@ -683,9 +702,11 @@ class SMWSQLStore extends SMWStore {
 		if (count($up_nary_longstrings) > 0) {
 			$db->insert( 'smw_nary_longstrings', $up_nary_longstrings, 'SMW::updateNAryLongData');
 		}
+		wfProfileOut("SMWSQLStore::updateData (SMW)");
 	}
 
 	function changeTitle(Title $oldtitle, Title $newtitle, $keepid = true) {
+		wfProfileIn("SMWSQLStore::changeTitle (SMW)");
 		$db =& wfGetDB( DB_MASTER );
 
 		$cond_array = array( 'subject_title' => $oldtitle->getDBkey(),
@@ -726,6 +747,7 @@ class SMWSQLStore extends SMWStore {
 				$db->delete('smw_subprops', array('subject_title' => $oldtitle->getDBKey()), 'SMW::changeTitle');
 			}
 		}
+		wfProfileOut("SMWSQLStore::changeTitle (SMW)");
 	}
 
 ///// Query answering /////
@@ -737,6 +759,7 @@ class SMWSQLStore extends SMWStore {
 	 * NOTE: we do not support category wildcards, as they have no useful semantics in OWL/RDFS/LP/whatever
 	 */
 	function getQueryResult(SMWQuery $query) {
+		wfProfileIn('SMWSQLStore::getQueryResult (SMW)');
 		global $smwgQSortingSupport;
 
 		$db =& wfGetDB( DB_SLAVE );
@@ -774,7 +797,10 @@ class SMWSQLStore extends SMWStore {
 			        'SMW::getQueryResult',
 			        $sql_options );
 			$row = $db->fetchObject($res);
-			return $row->count;
+			$count = $row->count;
+			$db->freeResult($res);
+			wfProfileOut('SMWSQLStore::getQueryResult (SMW)');
+			return $count;
 			// TODO: report query errors?
 		} elseif ($query->querymode == SMWQuery::MODE_DEBUG) { /// TODO: internationalise
 			list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sql_options );
@@ -804,6 +830,7 @@ class SMWSQLStore extends SMWStore {
 				$result .= '<br />';
 			}
 			$result .= '</div>';
+			wfProfileOut('SMWSQLStore::getQueryResult (SMW)');
 			return $result;
 		} // else: continue
 
@@ -847,13 +874,14 @@ class SMWSQLStore extends SMWStore {
 			}
 			$result->addRow($row);
 		}
-
+		wfProfileOut('SMWSQLStore::getQueryResult (SMW)');
 		return $result;
 	}
 
 ///// Special page functions /////
 
 	function getPropertiesSpecial($requestoptions = NULL) {
+		wfProfileIn("SMWSQLStore::getPropertiesSpecial (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$options = ' ORDER BY title';
 		if ($requestoptions->limit >= 0) {
@@ -877,10 +905,12 @@ class SMWSQLStore extends SMWStore {
 			$result[] = array($title, $row->count);
 		}
 		$db->freeResult($res);
+		wfProfileOut("SMWSQLStore::getPropertiesSpecial (SMW)");
 		return $result;
 	}
 
 	function getUnusedPropertiesSpecial($requestoptions = NULL) {
+		wfProfileIn("SMWSQLStore::getUnusedPropertiesSpecial (SMW)");
 		/// FIXME filter out the builtin properties!
 		$db =& wfGetDB( DB_SLAVE );
 		$options = ' ORDER BY page_title';
@@ -905,10 +935,12 @@ class SMWSQLStore extends SMWStore {
 		while($row = $db->fetchObject($res)) {
 			$result[] = Title::newFromText($row->page_title, SMW_NS_PROPERTY);
 		}
+		wfProfileOut("SMWSQLStore::getUnusedPropertiesSpecial (SMW)");
 		return $result;
 	}
 	
 	function getWantedPropertiesSpecial($requestoptions = NULL) {
+		wfProfileIn("SMWSQLStore::getWantedPropertiesSpecial (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$options = ' ORDER BY count DESC';
 		if ($requestoptions->limit >= 0) {
@@ -926,10 +958,12 @@ class SMWSQLStore extends SMWStore {
 			$title = Title::newFromText($row->title, SMW_NS_PROPERTY);
 			$result[] = array($title, $row->count);
 		}
+		wfProfileOut("SMWSQLStore::getWantedPropertiesSpecial (SMW)");
 		return $result;
 	}
 
 	function getStatistics() {
+		wfProfileIn("SMWSQLStore::getStatistics (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
 		extract( $db->tableNames('smw_relations', 'smw_attributes', 'smw_longstrings', 'smw_nary', 'smw_specialprops') );
@@ -975,6 +1009,7 @@ class SMWSQLStore extends SMWStore {
 		$result['DECLPROPS'] = $row->count;
 		$db->freeResult( $res );
 
+		wfProfileOut("SMWSQLStore::getStatistics (SMW)");
 		return $result;
 	}
 
@@ -1183,6 +1218,7 @@ class SMWSQLStore extends SMWStore {
 	 * wrt. the category table.
 	 */
 	protected function getCategoryTable($catname, &$db) {
+		wfProfileIn("SMWSQLStore::getCategoryTable (SMW)");
 		global $wgDBname, $smwgQSubcategoryDepth;
 
 		$tablename = 'cats' . SMWSQLStore::$m_tablenum++;
@@ -1195,6 +1231,7 @@ class SMWSQLStore extends SMWStore {
 			            SMWSQLStore::$m_categorytables[$catname] . 
 			            '.title FROM ' . SMWSQLStore::$m_categorytables[$catname], 
 			           'SMW::getCategoryTable');
+			wfProfileOut("SMWSQLStore::getCategoryTable (SMW)");
 			return $tablename;
 		}
 
@@ -1234,6 +1271,7 @@ class SMWSQLStore extends SMWStore {
 		SMWSQLStore::$m_categorytables[$catname] = $tablename;
 		$db->query('DROP TABLE smw_newcats', 'SMW::getCategoryTable');
 		$db->query('DROP TABLE smw_rescats', 'SMW::getCategoryTable');
+		wfProfileOut("SMWSQLStore::getCategoryTable (SMW)");
 		return $tablename;
 	}
 
@@ -1242,6 +1280,7 @@ class SMWSQLStore extends SMWStore {
 	 * wrt. the subproperty relation.
 	 */
 	protected function getPropertyTable($propname, &$db) {
+		wfProfileIn("SMWSQLStore::getPropertyTable (SMW)");
 		global $wgDBname, $smwgQSubpropertyDepth;
 
 		$tablename = 'prop' . SMWSQLStore::$m_tablenum++;
@@ -1254,6 +1293,7 @@ class SMWSQLStore extends SMWStore {
 			            SMWSQLStore::$m_propertytables[$propname] . 
 			            '.title FROM ' . SMWSQLStore::$m_propertytables[$propname], 
 			           'SMW::getPropertyTable');
+			wfProfileOut("SMWSQLStore::getPropertyTable (SMW)");
 			return $tablename;
 		}
 
@@ -1290,6 +1330,7 @@ class SMWSQLStore extends SMWStore {
 		SMWSQLStore::$m_propertytables[$propname] = $tablename;
 		$db->query('DROP TABLE smw_new', 'SMW::getPropertyTable');
 		$db->query('DROP TABLE smw_res', 'SMW::getPropertyTable');
+		wfProfileOut("SMWSQLStore::getPropertyTable (SMW)");
 		return $tablename;
 	}
 

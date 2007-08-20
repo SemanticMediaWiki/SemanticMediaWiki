@@ -110,18 +110,25 @@ class SMWQueryProcessor {
 	 * being part of some special search page.
 	 */
 	static public function getResultHTML($querystring, $params, $inline = true) {
+		wfProfileIn('SMWQueryProcessor::getResultHTML (SMW)');
 		$format = SMWQueryProcessor::getResultFormat($params);
 		$query = SMWQueryProcessor::createQuery($querystring, $params, $inline, $format);
 		if ($query instanceof SMWQuery) { // query parsing successful
 			$res = smwfGetStore()->getQueryResult($query);
 			if ($query->querymode == SMWQuery::MODE_INSTANCES) {
+				wfProfileIn('SMWQueryProcessor::getResultHTML-printout (SMW)');
 				$printer = SMWQueryProcessor::getResultPrinter($format, $inline, $res);
-				return $printer->getResultHTML($res, $params);
+				$result = $printer->getResultHTML($res, $params);
+				wfProfileOut('SMWQueryProcessor::getResultHTML-printout (SMW)');
+				wfProfileOut('SMWQueryProcessor::getResultHTML (SMW)');
+				return $result;
 			} else { // result for counting or debugging is just a string
+				wfProfileOut('SMWQueryProcessor::getResultHTML (SMW)');
 				return $res;
 			}
 		} else { // error string (should be HTML-safe)
-			return $query; ///TODO: improve error reporting format ...
+			wfProfileOut('SMWQueryProcessor::getResultHTML (SMW)');
+			return $query;
 		}
 	}
 
@@ -205,12 +212,15 @@ class SMWQueryParser {
 	 * false if there were errors.
 	 */
 	public function getQueryDescription($querystring) {
+		wfProfileIn('SMWQueryParser::getQueryDescription (SMW)');
 		$this->m_errors = array();
 		$this->m_label = '';
 		$this->m_curstring = $querystring;
 		$this->m_sepstack = array();
 		$setNS = true;
-		return $this->getSubqueryDescription($setNS, $this->m_label);
+		$result = $this->getSubqueryDescription($setNS, $this->m_label);
+		wfProfileOut('SMWQueryParser::getQueryDescription (SMW)');
+		return $result;
 	}
 
 	/**
