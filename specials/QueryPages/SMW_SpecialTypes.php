@@ -13,11 +13,19 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $IP, $smwgIP;
-include_once($IP . '/includes/SpecialPage.php');
-include_once($IP . '/includes/Title.php');
+global $IP;
 include_once($IP . '/includes/QueryPage.php');
-include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
+
+function smwfDoSpecialTypes() {
+	wfProfileIn('smwfDoSpecialTypes (SMW)');
+	global $smwgIP;
+	include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
+	list( $limit, $offset ) = wfCheckLimits();
+	$rep = new TypesPage();
+	$result = $rep->doQuery( $offset, $limit );
+	wfProfileOut('smwfDoSpecialTypes (SMW)');
+	return $result;
+}
 
 class TypesPage extends QueryPage {
 

@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.0prealpha-2');
+define('SMW_VERSION','1.0prealpha-3');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -37,7 +37,7 @@ define('SMW_FACTBOX_SHOWN',  5);
  * does not adhere to the naming conventions.
  */
 function enableSemantics($namespace = "", $complete = false) {
-	global $smwgNamespace, $wgExtensionFunctions;
+	global $smwgNamespace, $wgExtensionFunctions, $wgHooks;
 	$smwgNamespace = $namespace;
 
 	// The dot tells that the domain is not complete. It will be completed
@@ -54,7 +54,7 @@ function enableSemantics($namespace = "", $complete = false) {
  */
 function smwfSetupExtension() {
 	wfProfileIn('smwfSetupExtension (SMW)');
-	global $smwgVersion, $smwgNamespace, $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $wgArticlePath, $wgScriptPath, $wgServer;
+	global $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $wgSpecialPages, $wgAutoloadClasses;
 
 	/**
 	* Setting this to false prevents any new data from being stored in
@@ -71,11 +71,30 @@ function smwfSetupExtension() {
 	$smwgStoreActive = true;
 
 	$smwgMasterStore = NULL;
-	smwfInitUserMessages(); /// TODO: try to eliminate this. Problem are pages like Special:Specialpages that access our messages directly.
 	smwfInitContentMessages();
 
 	///// register specials /////
-	include_once($smwgIP . '/includes/SMW_SpecialPages.php');
+	$wgAutoloadClasses['SMWAskPage'] = $smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php';
+	$wgSpecialPages['Ask'] = array('SMWAskPage');
+	$wgAutoloadClasses['SMWSpecialBrowse'] = $smwgIP . '/specials/SearchTriple/SMW_SpecialBrowse.php';
+	$wgSpecialPages['Browse'] = array('SMWSpecialBrowse');
+	$wgAutoloadClasses['SMWPageProperty'] = $smwgIP . '/specials/SearchTriple/SMW_SpecialPageProperty.php';
+	$wgSpecialPages['PageProperty'] = array('SMWPageProperty');
+	$wgAutoloadClasses['SMWSearchByProperty'] = $smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByProperty.php';
+	$wgSpecialPages['SearchByProperty'] = array('SMWSearchByProperty');
+	$wgAutoloadClasses['SMWURIResolver'] = $smwgIP . '/specials/URIResolver/SMW_SpecialURIResolver.php';
+	$wgSpecialPages['URIResolver'] = array('SMWURIResolver');
+	$wgAutoloadClasses['SMWAdmin'] = $smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php';
+	$wgSpecialPages['SMWAdmin'] = array('SMWAdmin');
+
+	$wgAutoloadClasses['SMWSpecialPage'] = $smwgIP . '/includes/SMW_SpecialPage.php';
+	$wgSpecialPages['Properties'] = array('SMWSpecialPage','Properties', 'smwfDoSpecialProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialProperties.php');
+	$wgSpecialPages['UnusedProperties'] = array('SMWSpecialPage','UnusedProperties', 'smwfDoSpecialUnusedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialUnusedProperties.php');
+	$wgSpecialPages['WantedProperties'] = array('SMWSpecialPage','WantedProperties', 'smwfDoSpecialWantedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialWantedProperties.php');
+	$wgSpecialPages['ExportRDF'] = array('SMWSpecialPage','ExportRDF', 'smwfDoSpecialExportRDF', $smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php');
+	$wgSpecialPages['SemanticStatistics'] = array('SMWSpecialPage','SemanticStatistics', 'smwfExecuteSemanticStatistics', $smwgIP . '/specials/Statistics/SMW_SpecialStatistics.php');
+	$wgSpecialPages['Types'] = array('SMWSpecialPage','Types', 'smwfDoSpecialTypes', $smwgIP . '/specials/QueryPages/SMW_SpecialTypes.php');
+
 	//require_once($smwgIP . '/specials/OntologyImport/SMW_SpecialOntologyImport.php'); // broken, TODO: fix or delete
 
 	///// register hooks /////
@@ -94,6 +113,7 @@ function smwfSetupExtension() {
 	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeader';
 	$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries'; // a hook for registering the <ask> parser hook
 	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage';
+	$wgHooks['LoadAllMessages'][] = 'smwfLoadAllMessages'; // enable a complete display of all messages when requested by MW
 
 	///// credits (see "Special:Version") /////
 	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, Markus&nbsp;Kr&ouml;tzsch, Denny&nbsp;Vrandecic, S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://ontoworld.org/wiki/Semantic_MediaWiki', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://ontoworld.org/wiki/Help:Semantics View online documentation.]');
@@ -320,6 +340,15 @@ function smwfProcessInlineQuery($text, $param) {
 
 		$wgMessageCache->addMessages($smwgLang->getUserMsgArray(), $wgLang->getCode());
 		wfProfileOut('smwfInitUserMessages (SMW)');
+	}
+
+	/**
+	* Set up all messages if requested explicitly by MediaWiki.
+	*/
+	function smwfLoadAllMessages($pagelist) {
+		smwfInitContentMessages();
+		smwfInitUserMessages();
+		return true;
 	}
 
 

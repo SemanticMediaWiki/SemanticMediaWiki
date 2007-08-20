@@ -9,10 +9,22 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-class SMW_URIResolver {
+global $IP;
+include_once($IP . '/includes/SpecialPage.php');
 
-	static function execute($query = '') {
+class SMWURIResolver extends SpecialPage {
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		smwfInitUserMessages();
+		parent::__construct('URIResolver', '', false);
+	}
+
+	function execute($query = '') {
 		global $wgOut, $smwgIP;
+		wfProfileIn('SpecialURIResolver::execute (SMW)');
 		require_once( $smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php' );
 		if ('' == $query) {
 			$wgOut->addHTML(wfMsg('smw_uri_doc'));
@@ -34,5 +46,6 @@ class SMW_URIResolver {
 			else
 				header('Location: ' . $t);
 		}
+		wfProfileOut('SpecialURIResolver::execute (SMW)');
 	}
 }

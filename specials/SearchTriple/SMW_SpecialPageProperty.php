@@ -13,15 +13,24 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $IP, $smwgIP;
+global $IP;
 include_once( "$IP/includes/SpecialPage.php" );
-include_once( "$smwgIP/includes/storage/SMW_Store.php" );
-include_once($smwgIP . '/includes/SMW_Infolink.php');
 
-class SMW_PageProperty {
+class SMWPageProperty extends SpecialPage {
 
-	static function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser;
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		smwfInitUserMessages();
+		parent::__construct('PageProperty', '', false);
+	}
+
+	public function execute($query = '') {
+		global $wgRequest, $wgOut, $wgUser, $smwgIP;
+		include_once($smwgIP . '/includes/storage/SMW_Store.php');
+		include_once($smwgIP . '/includes/SMW_Infolink.php');
+
 		$skin = $wgUser->getSkin();
 
 		// get the GET parameters

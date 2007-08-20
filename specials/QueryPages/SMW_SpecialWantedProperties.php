@@ -10,7 +10,16 @@ if (!defined('MEDIAWIKI')) die();
 global $smwgIP;
 include_once( "$smwgIP/specials/QueryPages/SMW_QueryPage.php" );
 
-class WantedPropertiesPage extends SMWQueryPage {
+function smwfDoSpecialWantedProperties() {
+	wfProfileIn('smwfDoSpecialWantedProperties (SMW)');
+	list( $limit, $offset ) = wfCheckLimits();
+	$rep = new SMWWantedPropertiesPage();
+	$result = $rep->doQuery( $offset, $limit );
+	wfProfileOut('smwfDoSpecialWantedProperties (SMW)');
+	return $result;
+}
+
+class SMWWantedPropertiesPage extends SMWQueryPage {
 
 	function getName() {
 		/// TODO: should probably use SMW prefix

@@ -10,13 +10,8 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-// global $IP;
-// require_once( "$IP/includes/SpecialPage.php" );
 
-//SpecialPage::addPage( new SpecialPage('ExportRDF','',true,'doSpecialExportRDF',false) );
-
-
-function smwfExportRDF($page = '') {
+function smwfDoSpecialExportRDF($page = '') {
 	global $wgOut, $wgRequest, $wgUser, $smwgAllowRecursiveExport, $smwgExportBacklinks;
 
 	$recursive = 0;  //default, no recursion
@@ -314,8 +309,7 @@ class ExportRDF {
 	 */
 	var $owlfull;
 
-	public function ExportRDF()
-	{
+	public function ExportRDF() {
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http:/)
 		// if not completed yet, it wll be prefixed with a dot. Check for that and complete
 		global $wgServer;   // actual server address (with http://)

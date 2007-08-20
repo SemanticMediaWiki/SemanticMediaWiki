@@ -9,19 +9,29 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $smwgIP;
-include_once($smwgIP . '/includes/storage/SMW_Store.php');
-include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
-include_once($smwgIP . '/includes/SMW_Infolink.php');
+global $IP;
+include_once($IP . '/includes/SpecialPage.php');
 
 /**
  * A class to encapsulate the special page that allows browsing through
  * the knowledge structure of a Semantic MediaWiki.
  */
-class SMW_SpecialBrowse {
+class SMWSpecialBrowse extends SpecialPage {
 
-	static function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser,$wgContLang;
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		smwfInitUserMessages();
+		parent::__construct('Browse');
+	}
+
+	public function execute($query = '') {
+		global $wgRequest, $wgOut, $wgUser,$wgContLang, $smwgIP;
+		include_once($smwgIP . '/includes/storage/SMW_Store.php');
+		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
+		include_once($smwgIP . '/includes/SMW_Infolink.php');
+
 		$skin = $wgUser->getSkin();
 
 		// get the GET parameters

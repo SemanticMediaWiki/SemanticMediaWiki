@@ -8,9 +8,21 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-class SMW_AskPage {
+global $IP;
+include_once($IP . '/includes/SpecialPage.php');
 
-	static function execute() {
+class SMWAskPage extends SpecialPage {
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		smwfInitUserMessages();
+		parent::__construct('Ask');
+	}
+
+	function execute() {
+		wfProfileIn('doSpecialAsk (SMW)');
 		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgQSortingSupport, $smwgIP;
 
 		$skin = $wgUser->getSkin();
@@ -88,6 +100,7 @@ class SMW_AskPage {
 			$html .= '<br />' . wfMsgForContent('smw_iq_disabled');
 		}
 		$wgOut->addHTML($html);
+		wfProfileOut('doSpecialAsk (SMW)');
 	}
 
 }

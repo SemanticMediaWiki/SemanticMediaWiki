@@ -10,13 +10,22 @@
 
 if (!defined('MEDIAWIKI')) die();
 
-global $smwgIP;
-require_once( "$smwgIP/includes/storage/SMW_Store.php" );
+global $IP;
+include_once($IP . '/includes/SpecialPage.php');
 
-class SMW_SearchByProperty {
+class SMWSearchByProperty extends SpecialPage {
 
-	static function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser, $smwgQMaxInlineLimit;
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		smwfInitUserMessages();
+		parent::__construct('SearchByProperty');
+	}
+
+	public function execute($query = '') {
+		global $wgRequest, $wgOut, $wgUser, $smwgQMaxInlineLimit, $smwgIP;
+		require_once( "$smwgIP/includes/storage/SMW_Store.php" );
 		$skin = $wgUser->getSkin();
 
 		// get the GET parameters
