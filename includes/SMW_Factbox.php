@@ -53,6 +53,7 @@ class SMWFactbox {
 	 * various formats.
 	 */
 	static function addProperty($propertyname, $value, $caption) {
+		wfProfileIn("SMWFactbox::addProperty (SMW)");
 		global $smwgContLang, $smwgStoreActive, $smwgIP;
 		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 		// See if this attribute is a special one like e.g. "Has unit"
@@ -66,9 +67,12 @@ class SMWFactbox {
 				if ($smwgStoreActive) {
 					SMWFactbox::$semdata->addPropertyValue($propertyname,$result);
 				}
+				wfProfileOut("SMWFactbox::addProperty (SMW)");
 				return $result;
 			case SMW_SP_IMPORTED_FROM: // this requires special handling
-				return SMWFactbox::addImportedDefinition($value,$caption);
+				$result = SMWFactbox::addImportedDefinition($value,$caption);
+				wfProfileOut("SMWFactbox::addProperty (SMW)");
+				return $result;
 			default: // generic special attribute
 				if ( $special === SMW_SP_SERVICE_LINK ) { // do some custom formatting in this case
 					global $wgContLang;
@@ -83,6 +87,7 @@ class SMWFactbox {
 				if ($smwgStoreActive) {
 					SMWFactbox::$semdata->addSpecialValue($special,$result);
 				}
+				wfProfileOut("SMWFactbox::addProperty (SMW)");
 				return $result;
 		}
 	}
@@ -189,11 +194,15 @@ class SMWFactbox {
 	 */
 	static function printFactbox(&$text) {
 		global $wgContLang, $wgServer, $smwgShowFactbox, $smwgStoreActive, $smwgIP;
-		if (!$smwgStoreActive) return true;
+		if (!$smwgStoreActive) return;
+		wfProfileIn("SMWFactbox::printFactbox (SMW)");
 		switch ($smwgShowFactbox) {
-		case SMW_FACTBOX_HIDDEN: return true;
+		case SMW_FACTBOX_HIDDEN:
+			wfProfileOut("SMWFactbox::printFactbox (SMW)");
+			return;
 		case SMW_FACTBOX_NONEMPTY:
 			if ( (!SMWFactbox::$semdata->hasProperties()) && (!SMWFactbox::$semdata->hasSpecialProperties()) ) {
+				wfProfileOut("SMWFactbox::printFactbox (SMW)");
 				return;
 			}
 		}
@@ -213,6 +222,7 @@ class SMWFactbox {
 		SMWFactbox::printProperties($text);
 		SMWFactbox::printSpecialProperties($text);
 		$text .= '</table></div>';
+		wfProfileOut("SMWFactbox::printFactbox (SMW)");
 	}
 
 	/**

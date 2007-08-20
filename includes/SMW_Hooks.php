@@ -41,6 +41,7 @@
 	* link.
 	*/
 	function smwfParsePropertiesCallback($semanticLink) {
+		wfProfileIn("smwfParsePropertiesCallback (SMW)");
 		if (array_key_exists(2,$semanticLink)) {
 			$attribute = $semanticLink[2];
 		} else { $attribute = ''; }
@@ -57,7 +58,9 @@
 			$attr = SMWFactbox::addProperty($singleAttribute,$value,$valueCaption);
 		}
 
-		return $attr->getShortWikitext(true);
+		$result = $attr->getShortWikitext(true);
+		wfProfileOut("smwfParsePropertiesCallback (SMW)");
+		return $result;
 	}
 
 

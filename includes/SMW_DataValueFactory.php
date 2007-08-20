@@ -34,19 +34,24 @@ class SMWDataValueFactory {
 	 * can be set later on.
 	 */
 	static public function newPropertyValue($propertyname, $value=false, $caption=false) {
+		wfProfileIn("SMWDataValueFactory::newPropertyValue (SMW)");
 		if(array_key_exists($propertyname,SMWDataValueFactory::$m_typelabels)) { // use cache
-			return SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typelabels[$propertyname], $value, $caption, $propertyname);
+			$result = SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typelabels[$propertyname], $value, $caption, $propertyname);
+			wfProfileOut("SMWDataValueFactory::newPropertyValue (SMW)");
+			return $result;
 		} // else: find type for property:
 
 		$ptitle = Title::newFromText($propertyname, SMW_NS_PROPERTY);
 		if ($ptitle !== NULL) {
-			return SMWDataValueFactory::newPropertyObjectValue($ptitle,$value,$caption);
+			$result = SMWDataValueFactory::newPropertyObjectValue($ptitle,$value,$caption);
 		} else {
 			$type = SMWDataValueFactory::newTypeIDValue('__typ');
 			$type->setXSDValue('_wpg');
 			SMWDataValueFactory::$m_typelabels[$propertyname] = $type;
-			return SMWDataValueFactory::newTypeIDValue('_wpg',$value,$caption,$propertyname);
+			$result = SMWDataValueFactory::newTypeIDValue('_wpg',$value,$caption,$propertyname);
 		}
+		wfProfileOut("SMWDataValueFactory::newPropertyValue (SMW)");
+		return $result;
 	}
 
 	/**
