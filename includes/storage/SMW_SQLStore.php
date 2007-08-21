@@ -1247,8 +1247,8 @@ class SMWSQLStore extends SMWStore {
 
 		$pagetable = $db->tableName('page');
 		$cltable = $db->tableName('categorylinks');
-		$db->query("INSERT INTO $tablename (title) VALUES ('$catname')", 'SMW::getCategoryTable');
-		$db->query("INSERT INTO $tmpnew (title) VALUES ('$catname')", 'SMW::getCategoryTable');
+		$db->query("INSERT INTO $tablename (title) VALUES (" . $db->addQuotes($catname) . ')', 'SMW::getCategoryTable');
+		$db->query("INSERT INTO $tmpnew (title) VALUES (" . $db->addQuotes($catname) . ')', 'SMW::getCategoryTable');
 
 		/// TODO: avoid duplicate results?
 		for ($i=0; $i<$smwgQSubcategoryDepth; $i++) {
@@ -1308,8 +1308,8 @@ class SMWSQLStore extends SMWStore {
 		$tmpres = 'smw_res';
 
 		$sptable = $db->tableName('smw_subprops');
-		$db->query("INSERT INTO $tablename (title) VALUES ('$propname')", 'SMW::getPropertyTable');
-		$db->query("INSERT INTO $tmpnew (title) VALUES ('$propname')", 'SMW::getPropertyTable');
+		$db->query("INSERT INTO $tablename (title) VALUES (" . $db->addQuotes($propname) . ')', 'SMW::getPropertyTable');
+		$db->query("INSERT INTO $tmpnew (title) VALUES (" . $db->addQuotes($propname) . ')', 'SMW::getPropertyTable');
 
 		/// TODO: avoid duplicate results?
 		for ($i=0; $i<$smwgQSubpropertyDepth; $i++) {
