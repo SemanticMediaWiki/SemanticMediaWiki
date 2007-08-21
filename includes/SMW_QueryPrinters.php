@@ -45,6 +45,9 @@ abstract class SMWResultPrinter {
 	 */
 	public function getResultHTML($results, $params) {
 		$this->readParameters($params);
+		if ($results->getCount() == 0) {
+			return htmlspecialchars($this->mDefault);
+		}
 		return $this->getHTML($results);
 	}
 
@@ -127,6 +130,8 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 	protected function getHTML($res) {
 		global $smwgIQRunningNumber;
+
+		
 
 		// print header
 		if ('broadtable' == $this->mFormat)
