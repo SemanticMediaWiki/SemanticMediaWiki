@@ -64,7 +64,10 @@ class SMWSQLStore extends SMWStore {
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
 			// rewrite result as array
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->cl_to, NS_CATEGORY);
+				$v = SMWDataValueFactory::newTypeIDValue('_wpg');
+				$v->setValues($row->cl_to, NS_CATEGORY);
+				$result[] = $v;
+				//Title::newFromText($row->cl_to, NS_CATEGORY);
 			}
 			$db->freeResult($res);
 		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections

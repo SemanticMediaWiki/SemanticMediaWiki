@@ -202,8 +202,8 @@ class SMWSpecialBrowse extends SpecialPage {
 					$count = count($cats);
 					foreach ($cats as $cat) {
 						$count -= 1;
-						$browselink = SMWInfolink::newBrowsingLink('+', $cat->getFullText());
-						$html .= $skin->makeLinkObj($cat, smwfT($cat)) . '&nbsp;' . $browselink->getHTML($skin);
+						$browselink = SMWInfolink::newBrowsingLink('+', $cat->getPrefixedText());
+						$html .= $cat->getLongHTMLText($skin) . '&nbsp;' . $browselink->getHTML($skin);
 						if ($count > 0) $html .= ", ";
 					}
 					$html .= $vsep."\n";

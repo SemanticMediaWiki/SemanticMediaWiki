@@ -403,7 +403,7 @@ class ExportRDF {
 					if ( NS_CATEGORY === $et->title_namespace ) { // also print elements of categories
 						$instances = $this->store->getSpecialSubjects( SMW_SP_HAS_CATEGORY, $et->title );
 						foreach($instances as $instance) {
-							$st = $this->getExportTitleFromTitle( $instance );
+							$st = $this->getExportTitleFromTitle( $instance->getTitle() );
 							if (!array_key_exists($st->hashkey, $this->element_done)) {
 								$cur_queue[] = $st;
 							}
@@ -696,7 +696,7 @@ class ExportRDF {
 			if ($category_rel) {
 				$cats = $this->store->getSpecialValues( $et->title, SMW_SP_HAS_CATEGORY );
 				foreach ($cats as $cat) {
-					$ct = $this->getExportTitleFromTitle( $cat );
+					$ct = $this->getExportTitleFromTitle( $cat->getTitle() );
 					$this->post_ns_buffer .= "\t\t<" . $category_rel . ' rdf:resource="' . $ct->long_uri .  "\"/>\n";
 				}
 			}
