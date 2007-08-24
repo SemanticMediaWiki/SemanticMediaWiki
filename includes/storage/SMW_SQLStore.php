@@ -539,7 +539,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 	function updateData(SMWSemanticData $data) {
-		wfProfileOut("SMWSQLStore::updateData (SMW)");
+		wfProfileIn("SMWSQLStore::updateData (SMW)");
 		$db =& wfGetDB( DB_MASTER );
 		$subject = $data->getSubject();
 		$this->deleteSubject($subject);
