@@ -52,12 +52,14 @@ abstract class SMWOrderedListPage extends Article {
 	 * Main method for addig all additional HTML to the output stream.
 	 */
 	protected function showList() {
+		wfProfileIn( __METHOD__ . ' (SMW)');
 		global $wgOut, $wgRequest;
 		$this->from = $wgRequest->getVal( 'from' );
 		$this->until = $wgRequest->getVal( 'until' );
 		if ($this->initParameters()) {
 			$wgOut->addHTML( $this->getHTML() );
 		}
+		wfProfileOut( __METHOD__ . ' (SMW)');
 	}
 
 	/**

@@ -62,6 +62,7 @@ class SMWTypePage extends SMWOrderedListPage {
 	 * shall be shown.
 	 */
 	protected function getPages() {
+		wfProfileIn( __METHOD__ . ' (SMW)');
 		$ti = htmlspecialchars( $this->mTitle->getText() );
 		$nav = $this->getNavigationLinks();
 		$r = '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
@@ -71,6 +72,7 @@ class SMWTypePage extends SMWOrderedListPage {
 
 		$r .= $this->formatList();
 		$r .= "\n</div>" . $nav;
+		wfProfileOut( __METHOD__ . ' (SMW)');
 		return $r;
 	}
 
