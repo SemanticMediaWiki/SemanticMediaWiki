@@ -25,26 +25,26 @@ class SMWURIResolver extends SpecialPage {
 	function execute($query = '') {
 		global $wgOut, $smwgIP;
 		wfProfileIn('SpecialURIResolver::execute (SMW)');
-		require_once( $smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php' );
 		if ('' == $query) {
 			$wgOut->addHTML(wfMsg('smw_uri_doc'));
 		} else {
+			/// TODO: the next (large) include is used for just a single function, I think -- mak
+			require_once( $smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php' );
 			$wgOut->disable();
 
 			$query = ExportRDF::makeURIfromXMLExportId($query);
 			$query = str_replace( "_", "%20", $query );
 			$query = urldecode($query);
 			$title = Title::newFromText($query);
-			$t = $title->getFullURL();
-
-			$rdftitle = Title::newFromText('ExportRDF', NS_SPECIAL);
-			$s = $rdftitle->getFullURL() . "/" . $title->getPrefixedURL();
 
 			header('HTTP/1.1 303 See Other');
-			if (stristr($_SERVER['HTTP_ACCEPT'], 'RDF'))
+			if (stristr($_SERVER['HTTP_ACCEPT'], 'RDF')) {
+				$s = Skin::makeSpecialUrlSubpage('ExportRDF', $title->getPrefixedURL(), 'xmlmime=rdf');
 				header('Location: ' . $s);
-			else
+			} else {
+				$t = $title->getFullURL();
 				header('Location: ' . $t);
+			}
 		}
 		wfProfileOut('SpecialURIResolver::execute (SMW)');
 	}
