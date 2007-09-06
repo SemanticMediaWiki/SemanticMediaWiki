@@ -337,7 +337,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 			$this->m_tlstart = smwfNormalTitleDBKey($params['timelinestart']);
 		}
 		if (array_key_exists('timelineend', $params)) {
-			$this->m_tlstart = smwfNormalTitleDBKey($params['timelineend']);
+			$this->m_tlend = smwfNormalTitleDBKey($params['timelineend']);
 		}
 		if (array_key_exists('timelinesize', $params)) {
 			$this->m_tlsize = htmlspecialchars(str_replace(';', ' ', strtolower($params['timelinesize']))); 
