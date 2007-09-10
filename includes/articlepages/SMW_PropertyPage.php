@@ -18,20 +18,17 @@ require_once( "$smwgIP/includes/articlepages/SMW_OrderedListPage.php");
  */
 class SMWPropertyPage extends SMWOrderedListPage {
 
+	protected $special_prop; // code number of special property, false if not.
+
 	/**
 	 * Use small $limit (property pages might become large)
 	 */
 	protected function initParameters() {
 		global $smwgContLang, $smwgPropertyPagingLimit;
 		$this->limit = $smwgPropertyPagingLimit;
-		// Do not attempt listings for special properties:
-		// they behave differently, have dedicated search UIs, and
-		// might even be unsearchable by design
+		// TODO: Code shared with SMW_Factbox, should be a utility checkSpecialProperty function?
 		$srels = $smwgContLang->getSpecialPropertiesArray();
-		$special = array_search($this->mTitle->getText(), $srels);
-		if ($special !== false) {
-			return false;
-		}
+		$this->special_prop = array_search($this->mTitle->getText(), $srels);
 		return true;
 	}
 
@@ -41,6 +38,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function doQuery() {
 		global $wgContLang;
+
 		$store = smwfGetStore();
 		$options = new SMWRequestOptions();
 		$options->limit = $this->limit + 1;
@@ -56,7 +54,14 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$options->include_boundary = false;
 			$reverse = true;
 		}
-		$this->articles = $store->getAllPropertySubjects($this->mTitle, $options);
+		if ($this->special_prop === false) {
+			$this->articles = $store->getAllPropertySubjects($this->mTitle, $options);
+		} else {
+			// For now, do not attempt listings for special properties:
+			// they behave differently, have dedicated search UIs, and
+			// might even be unsearchable by design
+			return;
+		}
 		if ($reverse) {
 			$this->articles = array_reverse($this->articles);
 		}
@@ -72,12 +77,17 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getPages() {
 		wfProfileIn( __METHOD__ . ' (SMW)');
+		$r = '';
 		$ti = htmlspecialchars( $this->mTitle->getText() );
-		$nav = $this->getNavigationLinks();
-		$r = '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
-		$r .= '<h2>' . wfMsg('smw_attribute_header',$ti) . "</h2>\n";
-		$r .= wfMsg('smw_attributearticlecount', min($this->limit, count($this->articles))) . "\n";
-		$r .= $this->shortList( $this->articles, $this->articles_start_char ) . "\n</div>" . $nav;
+		if ($this->special_prop !== false) {
+			$r .= '<p>' .wfMsg('smw_propertyspecial') . "</p>\n";
+		} else {		
+			$nav = $this->getNavigationLinks();
+			$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
+			$r .= '<h2>' . wfMsg('smw_attribute_header',$ti) . "</h2>\n";
+			$r .= wfMsg('smw_attributearticlecount', min($this->limit, count($this->articles))) . "\n";
+			$r .= $this->shortList( $this->articles, $this->articles_start_char ) . "\n</div>" . $nav;
+		}
 		wfProfileOut( __METHOD__ . ' (SMW)');
 		return $r;
 	}
@@ -145,7 +155,6 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$r .= '</table>';
 		return $r;
 	}
-
 }
 
 
