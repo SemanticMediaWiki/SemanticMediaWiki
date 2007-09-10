@@ -521,6 +521,10 @@ class SMWConjunction extends SMWDescription {
 	public function addDescription(SMWDescription $description) {
 		if (! ($description instanceof SMWThingDescription) ) {
 			$this->m_descriptions[] = $description;
+			// move print descriptions downwards
+			///TODO: This may not be a good solution, since it does modify $description and since it does not react to future cahges
+			$this->m_printreqs = array_merge($this->m_printreqs, $description->getPrintRequests());
+			$description->setPrintRequests(array());
 		}
 	}
 
@@ -627,8 +631,11 @@ class SMWDisjunction extends SMWDescription {
 			} else {
 				$this->m_descriptions[] = $description;
 			}
-			
 		}
+		// move print descriptions downwards
+		///TODO: This may not be a good solution, since it does modify $description and since it does not react to future cahges
+		$this->m_printreqs = array_merge($this->m_printreqs, $description->getPrintRequests());
+		$description->setPrintRequests(array());
 	}
 
 	public function getQueryString() {
