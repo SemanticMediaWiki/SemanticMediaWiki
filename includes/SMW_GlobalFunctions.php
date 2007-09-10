@@ -344,8 +344,9 @@ function smwfProcessInlineQuery($text, $param) {
 
 	/**
 	* Set up all messages if requested explicitly by MediaWiki.
+	* $pagelist was used in earlier MW versions and is kept for compatibility.
 	*/
-	function smwfLoadAllMessages($pagelist) {
+	function smwfLoadAllMessages($pagelist = NULL) {
 		smwfInitContentMessages();
 		smwfInitUserMessages();
 		return true;
