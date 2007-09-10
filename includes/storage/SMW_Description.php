@@ -229,30 +229,70 @@ class SMWThingDescription extends SMWDescription {
 }
 
 /**
- * Description of a single class, i.e. a wiki category.
- * Corresponds to atomic concepts in OWL and to classes in RDF.
+ * Description of a single class, i.e. a wiki category, or of a disjunction
+ * of such classes. Corresponds to (disjunctions of) atomic concepts in OWL and 
+ * to (unions of) classes in RDF.
  */
 class SMWClassDescription extends SMWDescription {
-	protected $m_title;
+	protected $m_titles;
 
-	public function SMWClassDescription(Title $category) {
-		$this->m_title = $category;
+	public function SMWClassDescription($content) {
+		if ($content instanceof Title) {
+			$this->m_titles = array($content);
+		} elseif (is_array($content)) {
+			$this->m_titles = $content;
+		}
 	}
 
-	public function getCategory() {
-		return $this->m_title;
+	public function addDescription(SMWClassDescription $description) {
+		$this->m_titles = array_merge($this->m_titles, $description->getCategories());
+	}
+
+	public function getCategories() {
+		return $this->m_titles;
 	}
 
 	public function getQueryString() {
-		if ($this->m_title !== NULL) {
-			return '[[' . $this->m_title->getPrefixedText() . ']]';
-		} else {
-			return '';
+		$first = true;
+		foreach ($this->m_titles as $cat) {
+			if ($first) {
+				$result = '[[' . $cat->getPrefixedText();
+				$first = false;
+			} else {
+				$result .= '||' . $cat->getText();
+			}
 		}
+		return $result . ']]';
 	}
 
 	public function isSingleton() {
 		return false;
+	}
+
+	public function getSize() {
+		global $smwgQSubcategoryDepth;
+		if ($smwgQSubcategoryDepth > 0) {
+			return 1; // disj. of cats should not cause much effort if we compute cat-hierarchies anyway!
+		} else {
+			return count($this->m_titles);
+		}
+	}
+
+	public function prune(&$maxsize, &$maxdepth, &$log) {
+		if ($maxsize >= $this->getSize()) {
+			$maxsize = $maxsize - $this->getSize();
+			return $this;
+		} elseif ( $maxsize <= 0 ) {
+			$log[] = $this->getQueryString();
+			$result = new SMWThingDescription();
+		} else {
+			$result = new SMWClassDescription(array_slice($this->m_titles, 0, $maxsize));
+			$rest = new SMWClassDescription(array_slice($this->m_titles, $maxsize));
+			$log[] = $rest->getQueryString();
+			$maxsize = 0;
+		}
+		$result->setPrintRequests($this->getPrintRequests());
+		return $result;
 	}
 
 }
@@ -352,8 +392,8 @@ class SMWValueDescription extends SMWDescription {
 /**
  * Description of an ordered list of SMWDescription objects, used as
  * values for some n-ary property. NULL values are to be used for 
- * Corresponds to the built-in support for n-ary properties, i.e.
- * can be viewed as a macro in OWL and RDF.
+ * unspecifed values. Corresponds to the built-in support for n-ary 
+ * properties, i.e. can be viewed as a macro in OWL and RDF.
  */
 class SMWValueList extends SMWDescription {
 	protected $m_descriptions;
@@ -556,6 +596,8 @@ class SMWConjunction extends SMWDescription {
  */
 class SMWDisjunction extends SMWDescription {
 	protected $m_descriptions;
+	protected $m_classdesc = NULL; // contains a single class description if any such disjunct was given;
+	                               // disjunctive classes are aggregated therein
 	protected $m_true = false; // used if disjunction is trivially true already
 
 	public function SMWDisjunction($descriptions = array()) {
@@ -572,9 +614,20 @@ class SMWDisjunction extends SMWDescription {
 		if ($description instanceof SMWThingDescription) {
 			$this->m_true = true;
 			$this->m_descriptions = array(); // no conditions any more
+			$this->m_catdesc = NULL;
 		}
 		if (!$this->m_true) {
-			$this->m_descriptions[] = $description;
+			if ($description instanceof SMWClassDescription) {
+				if ($this->m_classdesc === NULL) { // first class description
+					$this->m_classdesc = $description;
+					$this->m_descriptions[] = $description;
+				} else {
+					$this->m_classdesc->addDescription($description);
+				}
+			} else {
+				$this->m_descriptions[] = $description;
+			}
+			
 		}
 	}
 
@@ -675,7 +728,7 @@ class SMWSomeProperty extends SMWDescription {
 	}
 
 	public function getQueryString() {
-		return '[[' . $this->m_property->getText() . ':=' . $this->m_description->getQueryString() . ']]';
+		return '[[' . $this->m_property->getText() . '::' . $this->m_description->getQueryString() . ']]';
 	}
 
 	public function isSingleton() {

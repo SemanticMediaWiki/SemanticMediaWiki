@@ -1220,19 +1220,30 @@ class SMWSQLStore extends SMWStore {
 	 * Make a (temporary) table that contains the lower closure of the given category
 	 * wrt. the category table.
 	 */
-	protected function getCategoryTable($catname, &$db) {
+	protected function getCategoryTable($cats, &$db) {
 		wfProfileIn("SMWSQLStore::getCategoryTable (SMW)");
 		global $wgDBname, $smwgQSubcategoryDepth;
+
+		$sqlvalues = '';
+		$hashkey = '';
+		foreach ($cats as $cat) {
+			if ($sqlvalues != '') {
+				$sqlvalues .= ', ';
+			}
+			$sqlvalues .= '(' . $db->addQuotes($cat->getDBKey()) . ')';
+			$hashkey .= ']' . $cat->getDBKey();
+		}
 
 		$tablename = 'cats' . SMWSQLStore::$m_tablenum++;
 		$this->m_usedtables[] = $tablename;
 		$db->query( 'CREATE TEMPORARY TABLE ' . $tablename .
 		            '( title VARCHAR(255) NOT NULL )
 		             TYPE=MEMORY', 'SMW::getCategoryTable' );
-		if (array_key_exists($catname, SMWSQLStore::$m_categorytables)) { // just copy known result
+		$db->query( 'ALTER TABLE ' . $tablename . ' ADD PRIMARY KEY ( title )' );
+		if (array_key_exists($hashkey, SMWSQLStore::$m_categorytables)) { // just copy known result
 			$db->query("INSERT INTO $tablename (title) SELECT " . 
-			            SMWSQLStore::$m_categorytables[$catname] . 
-			            '.title FROM ' . SMWSQLStore::$m_categorytables[$catname], 
+			            SMWSQLStore::$m_categorytables[$hashkey] . 
+			            '.title FROM ' . SMWSQLStore::$m_categorytables[$hashkey], 
 			           'SMW::getCategoryTable');
 			wfProfileOut("SMWSQLStore::getCategoryTable (SMW)");
 			return $tablename;
@@ -1250,8 +1261,8 @@ class SMWSQLStore extends SMWStore {
 
 		$pagetable = $db->tableName('page');
 		$cltable = $db->tableName('categorylinks');
-		$db->query("INSERT INTO $tablename (title) VALUES (" . $db->addQuotes($catname) . ')', 'SMW::getCategoryTable');
-		$db->query("INSERT INTO $tmpnew (title) VALUES (" . $db->addQuotes($catname) . ')', 'SMW::getCategoryTable');
+		$db->query("INSERT INTO $tablename (title) VALUES " . $sqlvalues, 'SMW::getCategoryTable');
+		$db->query("INSERT INTO $tmpnew (title) VALUES " . $sqlvalues, 'SMW::getCategoryTable');
 
 		/// TODO: avoid duplicate results?
 		for ($i=0; $i<$smwgQSubcategoryDepth; $i++) {
@@ -1260,18 +1271,18 @@ class SMWSQLStore extends SMWStore {
 			            $cltable.cl_to=$tmpnew.title AND
 			            $pagetable.page_namespace=" . NS_CATEGORY . " AND 
 			            $pagetable.page_id=$cltable.cl_from", 'SMW::getCategoryTable');
+			$db->query("INSERT IGNORE INTO $tablename (title) SELECT $tmpres.title
+			            FROM $tmpres", 'SMW::getCategoryTable');
 			if ($db->affectedRows() == 0) { // no change, exit loop
 				continue;
 			}
-			$db->query("INSERT INTO $tablename (title) SELECT $tmpres.title
-			            FROM $tmpres", 'SMW::getCategoryTable');
 			$db->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::getCategoryTable'); // empty "new" table
 			$tmpname = $tmpnew;
 			$tmpnew = $tmpres;
 			$tmpres = $tmpname;
 		}
 
-		SMWSQLStore::$m_categorytables[$catname] = $tablename;
+		SMWSQLStore::$m_categorytables[$hashkey] = $tablename;
 		$db->query('DROP TABLE smw_newcats', 'SMW::getCategoryTable');
 		$db->query('DROP TABLE smw_rescats', 'SMW::getCategoryTable');
 		wfProfileOut("SMWSQLStore::getCategoryTable (SMW)");
@@ -1291,6 +1302,7 @@ class SMWSQLStore extends SMWStore {
 		$db->query( 'CREATE TEMPORARY TABLE ' . $tablename .
 		            '( title VARCHAR(255) NOT NULL )
 		             TYPE=MEMORY', 'SMW::getPropertyTable' );
+		$db->query( 'ALTER TABLE ' . $tablename . ' ADD PRIMARY KEY ( title )' );
 		if (array_key_exists($propname, SMWSQLStore::$m_propertytables)) { // just copy known result
 			$db->query("INSERT INTO $tablename (title) SELECT " . 
 			            SMWSQLStore::$m_propertytables[$propname] . 
@@ -1322,8 +1334,11 @@ class SMWSQLStore extends SMWStore {
 			if ($db->affectedRows() == 0) { // no change, exit loop
 				continue;
 			}
-			$db->query("INSERT INTO $tablename (title) SELECT $tmpres.title
+			$db->query("INSERT IGNORE INTO $tablename (title) SELECT $tmpres.title
 			            FROM $tmpres", 'SMW::getCategoryTable');
+			if ($db->affectedRows() == 0) { // no change, exit loop
+				continue;
+			}
 			$db->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::getPropertyTable'); // empty "new" table
 			$tmpname = $tmpnew;
 			$tmpnew = $tmpres;
@@ -1531,11 +1546,16 @@ class SMWSQLStore extends SMWStore {
 			if ($table = $this->addJoin('CATS', $from, $db, $curtables, $nary_pos)) {
 				global $smwgQSubcategoryDepth;
 				if ($smwgQSubcategoryDepth > 0) {
-					$ct = $this->getCategoryTable($description->getCategory()->getDBKey(), $db);
+					$ct = $this->getCategoryTable($description->getCategories(), $db);
 					$from = '`' . $ct . '`, ' . $from;
 					$where = "$ct.title=" . $table . '.cl_to';
 				} else {
-					$where .=  $table . '.cl_to=' . $db->addQuotes($description->getCategory()->getDBKey());
+					foreach ($description->getCategories() as $cat) {
+						if ($subwhere != '') {
+							$subwhere .= ' OR ';
+						}
+						$subwhere .= '(' . $table . '.cl_to=' . $db->addQuotes($description->getCategories()->getDBKey()) . ')';
+					}
 				}
 			}
 		} elseif ($description instanceof SMWNamespaceDescription) {

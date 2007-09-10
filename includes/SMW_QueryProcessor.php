@@ -217,8 +217,11 @@ class SMWQueryParser {
 		$this->m_label = '';
 		$this->m_curstring = $querystring;
 		$this->m_sepstack = array();
-		$setNS = true;
+		$setNS = false;
 		$result = $this->getSubqueryDescription($setNS, $this->m_label);
+		if (!$setNS) { // add default namespaces if applicable
+			$result = $this->addDescription($result, $this->m_defaultns);
+		}
 		wfProfileOut('SMWQueryParser::getQueryDescription (SMW)');
 		return $result;
 	}
@@ -252,7 +255,7 @@ class SMWQueryParser {
 	 * "<q>...</q>". Recursively calls similar methods and returns NULL upon error.
 	 * 
 	 * The call-by-ref parameter $setNS is a boolean. Its input specifies whether
-	 * the query should set the current default namespace if no namespace restricitons
+	 * the query should set the current default namespace if no namespace restrictions
 	 * were given. If false, the calling super-query is happy to set the required 
 	 * NS-restrictions by itself if needed. Otherwise the subquery has to impose the defaults.
 	 * This is so, since outermost queries and subqueries of disjunctions will have to set
@@ -380,8 +383,8 @@ class SMWQueryParser {
 	 */
 	protected function getLinkDescription(&$setNS, &$label) {
 		// This method is called when we encountered an opening '[['. The following
-		// block could be a Category-statement, fixed object, relation or attribute
-		// statements, or according print statements.
+		// block could be a Category-statement, fixed object, property statements, 
+		// or according print statements.
 		$chunk = $this->readChunk();
 		if ($chunk == $this->m_categoryprefix) { // category statement
 			return $this->getCategoryDescription($setNS, $label);
