@@ -127,9 +127,8 @@ function smwfSetupExtension() {
  * Note that parser hooks are something different than MW hooks
  * in general, which explains the two-level registration.
  */
-function smwfRegisterInlineQueries( $semantic, $mediawiki, $rules ) {
-	global $wgParser;
-	$wgParser->setHook( 'ask', 'smwfProcessInlineQuery' );
+function smwfRegisterInlineQueries( &$parser, &$text, &$stripstate ) {
+	$parser->setHook( 'ask', 'smwfProcessInlineQuery' );
 	return true; // always return true, in order not to stop MW's hook processing!
 }
 
