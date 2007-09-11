@@ -220,7 +220,7 @@ class SMWQueryParser {
 		$setNS = false;
 		$result = $this->getSubqueryDescription($setNS, $this->m_label);
 		if (!$setNS) { // add default namespaces if applicable
-			$result = $this->addDescription($result, $this->m_defaultns);
+			$result = $this->addDescription($this->m_defaultns, $result);
 		}
 		wfProfileOut('SMWQueryParser::getQueryDescription (SMW)');
 		return $result;
