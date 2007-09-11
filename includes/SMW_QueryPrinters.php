@@ -600,7 +600,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 	public function getHTML($res) {
 		// handle factbox
-		global $smwgStoreActive;
+		global $smwgStoreActive, $wgTitle;
 		$old_smwgStoreActive = $smwgStoreActive;
 		$smwgStoreActive = false; // no annotations stored, no factbox printed
 
@@ -645,7 +645,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 						} else {
 							$articlename = $object->getPrefixedText();
 						}
-						$parserOutput = $parser->parse('{{' . $articlename . '}}', $object->getTitle(), $parser_options);
+						$parserOutput = $parser->parse('{{' . $articlename . '}}', $wgTitle, $parser_options);
 						$result .= $parserOutput->getText();
 						$result .= $embend;
 					}
