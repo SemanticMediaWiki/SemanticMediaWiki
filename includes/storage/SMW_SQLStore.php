@@ -1518,10 +1518,10 @@ class SMWSQLStore extends SMWStore {
 	 * be computed).
 	 *
 	 * Some notes on sorting: sorting is applied only to fields that appear in the query 
-	 * by verifying conditions and the sorting conditions thus operate on the values that
-	 * satisfy the given conditions. This may have side effects in cases where one porperty
+	 * by verifying conditions, and the sorting conditions thus operate on the values that
+	 * satisfy the given conditions. This may have side effects in cases where one property
 	 * that shall be sorted has multiple values. If no condition other than existence applies
-	 * to such a property, the value that is relevant for sorting is not really dertermined and
+	 * to such a property, the value that is relevant for sorting is not really determined and
 	 * the behaviour of SQL is not clear (I think). If the condition preselects larger or smaller
 	 * values, however, then these would probably be used for sorting. Overall this should not
 	 * be a problem, since it only occurs in cases where the sort order is not fully specified anyway.
@@ -1534,11 +1534,10 @@ class SMWSQLStore extends SMWStore {
 	 * @param $db The database object
 	 * @param $curtables Array with names of aliases of tables refering to the 'current' element (the one to which the description basically applies).
 	 * @param $nary_pos If the subcondition is directly appended to an nary relation, this parameter holds the numerical index of the position in the nary in order to be able to join condition tables to that position.
-	 * @param $sort True if the subcondition should be used for sorting. This is only meaningful for queries that are below some property statement.
 	 *
 	 * @TODO: Maybe there need to be optimisations in certain cases (atomic implementation for common nestings of descriptions?)
 	 */
-	protected function createSQLQuery(SMWDescription $description, &$from, &$where, &$db, &$curtables, $nary_pos = '', $sort = false) {
+	protected function createSQLQuery(SMWDescription $description, &$from, &$where, &$db, &$curtables, $nary_pos = '') {
 		$subwhere = '';
 		if ($description instanceof SMWThingDescription) {
 			// nothing to check
@@ -1661,11 +1660,15 @@ class SMWSQLStore extends SMWStore {
 			}
 		} elseif ($description instanceof SMWSomeProperty) {
 			$id = SMWDataValueFactory::getPropertyObjectTypeID($description->getProperty());
+			$sort = false;
 			switch ($id) {
 				case '_wpg':
 					$tablename = 'RELS';
 					$pcolumn = 'relation_title';
 					$sub = true;
+					if ($this->m_sortkey == $description->getProperty()->getDBKey()) {
+						$sort = 'object_title';
+					}
 				break;
 				case '_txt':
 					$tablename = 'TEXT';
@@ -1681,6 +1684,13 @@ class SMWSQLStore extends SMWStore {
 					$tablename = 'ATTS';
 					$pcolumn = 'attribute_title';
 					$sub = true;
+					if ($this->m_sortkey == $description->getProperty()->getDBKey()) {
+						if (SMWDataValueFactory::newTypeIDValue($id)->isNumeric()) {
+							$sort = 'value_num';
+						} else {
+							$sort = 'value_xsd';
+						}
+					}
 			}
 			if ($table = $this->addJoin($tablename, $from, $db, $curtables, $nary_pos)) {
 				global $smwgQSubpropertyDepth;
@@ -1695,7 +1705,10 @@ class SMWSQLStore extends SMWStore {
 				if ($sub) {
 					$nexttables = array();
 					$nexttables['p' . $tablename] = $table; // keep only current table for reference
-					$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $nexttables, $nary_pos, ($this->m_sortkey == $description->getProperty()->getDBKey()) );
+					$this->createSQLQuery($description->getDescription(), $from, $subwhere, $db, $nexttables, $nary_pos);
+					if ($sort) {
+						$this->m_sortfield = "$table.$sort";
+					}
 					if ( $subwhere != '') {
 						$where .= ' AND (' . $subwhere . ')';
 					}
@@ -1703,11 +1716,6 @@ class SMWSQLStore extends SMWStore {
 			}
 		}
 
-		if ($sort && (!$description instanceof SMWValueDescription) ) {
-			if (array_key_exists('pRELS', $curtables)) {
-				$this->m_sortfield = $curtables['pRELS'] . '.object_title';
-			}
-		}
 	}
 	
 	/**
