@@ -504,40 +504,10 @@ class SMWSQLStore extends SMWStore {
 
 	function deleteSubject(Title $subject) {
 		wfProfileIn("SMWSQLStore::deleteSubjects (SMW)");
+		$this->deleteSemanticData($subject);
 		$db =& wfGetDB( DB_MASTER );
-		$db->delete('smw_relations',
-		            array('subject_id' => $subject->getArticleID()),
-		            'SMW::deleteSubject::Relations');
+		// also delete any occurence of subject in object positions:
 		$db->update('smw_relations', array('object_id' => NULL), array('object_id' => $subject->getArticleID()), 'SMW::deleteSubject::RelationObj');
-		$db->delete('smw_attributes',
-		            array('subject_id' => $subject->getArticleID()),
-		            'SMW::deleteSubject::Attributes');
-		$db->delete('smw_longstrings',
-		            array('subject_id' => $subject->getArticleID()),
-		            'SMW::deleteSubject::Longstrings');
-		$db->delete('smw_specialprops',
-		            array('subject_id' => $subject->getArticleID()),
-		            'SMW::deleteSubject::Specialprops');
-		$db->delete('smw_nary',
-		            array('subject_id' => $subject->getArticleID()),
-		            'SMW::deleteSubject::NAry');
-		if ($db->affectedRows() != 0) {
-			$db->delete('smw_nary_relations',
-			            array('subject_id' => $subject->getArticleID()),
-			            'SMW::deleteSubject::NAryRelations');
-			$db->update('smw_nary_relations', array('object_id' => NULL), array('object_id' => $subject->getArticleID()), 'SMW::deleteSubject::NAryRelationsObj');
-			$db->delete('smw_nary_attributes',
-			            array('subject_id' => $subject->getArticleID()),
-			            'SMW::deleteSubject::NAryAttributes');
-			$db->delete('smw_nary_longstrings',
-			            array('subject_id' => $subject->getArticleID()),
-			            'SMW::deleteSubject::NaryLongstrings');
-		}
-		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
-			$db->delete('smw_subprops',
-			            array('subject_title' => $subject->getDBKey()),
-			            'SMW::deleteSubject::Subprops');
-		}
 		wfProfileOut("SMWSQLStore::deleteSubjects (SMW)");
 	}
 
@@ -545,7 +515,7 @@ class SMWSQLStore extends SMWStore {
 		wfProfileIn("SMWSQLStore::updateData (SMW)");
 		$db =& wfGetDB( DB_MASTER );
 		$subject = $data->getSubject();
-		$this->deleteSubject($subject);
+		$this->deleteSemanticData($subject);
 
 		// do bulk updates:
 		$up_relations = array();
@@ -1178,6 +1148,46 @@ class SMWSQLStore extends SMWStore {
 			}
 		}
 		return $sql_conds;
+	}
+
+	/**
+	 * Delete all semantic data stored for the given subject.
+	 * Used for update purposes.
+	 */
+	protected function deleteSemanticData(Title $subject) {
+		$db =& wfGetDB( DB_MASTER );
+		$db->delete('smw_relations',
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::Relations');
+		$db->delete('smw_attributes',
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::Attributes');
+		$db->delete('smw_longstrings',
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::Longstrings');
+		$db->delete('smw_specialprops',
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::Specialprops');
+		$db->delete('smw_nary',
+		            array('subject_id' => $subject->getArticleID()),
+		            'SMW::deleteSubject::NAry');
+		if ($db->affectedRows() != 0) {
+			$db->delete('smw_nary_relations',
+			            array('subject_id' => $subject->getArticleID()),
+			            'SMW::deleteSubject::NAryRelations');
+			$db->update('smw_nary_relations', array('object_id' => NULL), array('object_id' => $subject->getArticleID()), 'SMW::deleteSubject::NAryRelationsObj');
+			$db->delete('smw_nary_attributes',
+			            array('subject_id' => $subject->getArticleID()),
+			            'SMW::deleteSubject::NAryAttributes');
+			$db->delete('smw_nary_longstrings',
+			            array('subject_id' => $subject->getArticleID()),
+			            'SMW::deleteSubject::NaryLongstrings');
+		}
+		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
+			$db->delete('smw_subprops',
+			            array('subject_title' => $subject->getDBKey()),
+			            'SMW::deleteSubject::Subprops');
+		}
 	}
 	
 	/**
