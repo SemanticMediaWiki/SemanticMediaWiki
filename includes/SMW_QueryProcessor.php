@@ -49,9 +49,6 @@ class SMWQueryProcessor {
 		$qp = new SMWQueryParser();
 		$qp->setDefaultNamespaces($smwgQDefaultNamespaces);
 		$desc = $qp->getQueryDescription($querystring);
-		if ($desc === NULL) { //abort with failure
-			return $qp->getErrorString();
-		}
 
 		if (array_key_exists('mainlabel', $params)) {
 			$mainlabel = $params['mainlabel'] . $qp->getLabel();
