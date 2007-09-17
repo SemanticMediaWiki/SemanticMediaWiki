@@ -259,7 +259,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					}
 					$first_col = false;
 				}
-				$result .= '{{' . $this->mTemplate . str_replace('=','&#x007C;', $wikitext) . '}}'; // encode '=' for use in templates (templates fail otherwise)
+				$result .= '{{' . $this->mTemplate . str_replace(array('=','|'), array('&#x003D;', '&#x007C;'), $wikitext) . '}}'; // encode '=' and '|' for use in templates (templates fail otherwise)
 			} else {  // build simple list
 				$first_col = true;
 				$found_values = false; // has anything but the first column been printed?
@@ -547,7 +547,7 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 				}
 				$firstcol = false;
 			}
-			$parserinput .= '{{' . $this->m_template . str_replace('=','&#x007C;', $wikitext) . '}}'; // encode '=' for use in templates (templates fail otherwise)
+			$parserinput .= '{{' . $this->m_template . str_replace(array('=','|'), array('&#x003D;', '&#x007C;'), $wikitext) . '}}'; // encode '=' and '|' for use in templates (templates fail otherwise)
 		}
 		$parserOutput = $parser->parse($parserinput, $wgTitle, $parser_options);
 		$result = $parserOutput->getText();
