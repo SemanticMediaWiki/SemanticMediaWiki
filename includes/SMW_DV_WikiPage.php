@@ -26,7 +26,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	public function parseUserValue($value) {
 		if ($value != '') {
 			$this->m_value = $value;
-			if ($this->getTitle() != NULL) {
+			if ($this->getTitle() !== NULL) {
 				$this->m_textform = $this->m_title->getText();
 				$this->m_dbkeyform = $this->m_title->getDBkey();
 				$this->m_prefixedtext = $this->m_title->getPrefixedText();
@@ -69,7 +69,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( ($linked === NULL) || ($linked === false) || (!$this->isValid()) ) {
 			return $this->m_caption;
 		} else {
-			return '[[:' . $this->m_prefixedtext . '|' . $this->m_caption . ']]';
+			return '[[:' . str_replace("'", '&#x0027;', $this->m_prefixedtext) . '|' . $this->m_caption . ']]';
 		}
 	}
 
@@ -88,7 +88,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( ($linked === NULL) || ($linked === false) ) {
 			return $this->m_prefixedtext;
 		} else {
-			return '[[:' . $this->m_prefixedtext . '|' . $this->m_textform . ']]';
+			return '[[:' . str_replace("'", '&#x0027;', $this->m_prefixedtext) . '|' . $this->m_textform . ']]';
 		}
 	}
 
