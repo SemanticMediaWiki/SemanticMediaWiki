@@ -23,7 +23,7 @@ class SMWSQLStore extends SMWStore {
 	 */
 	protected $m_sortkey;
 	/**
-	 * The database field name by which results during query processing should 
+	 * The database field name by which results during query processing should
 	 * be ordered, if any. False if no $m_sortkey was specified or if the key
 	 * did not match any condition.
 	 */
@@ -33,12 +33,12 @@ class SMWSQLStore extends SMWStore {
 	 */
 	static protected $m_tablenum = 0;
 	/**
-	 * Array of names of virtual tables that hold the lower closure of certain 
+	 * Array of names of virtual tables that hold the lower closure of certain
 	 * categories wrt. hierarchy.
 	 */
 	static protected $m_categorytables = array();
 	/**
-	 * Array of names of virtual tables that hold the lower closure of certain 
+	 * Array of names of virtual tables that hold the lower closure of certain
 	 * categories wrt. hierarchy.
 	 */
 	static protected $m_propertytables = array();
@@ -120,9 +120,9 @@ class SMWSQLStore extends SMWStore {
 	function getSpecialSubjects($specialprop, $value, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore::getSpecialSubjects-$specialprop (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
-		
+
 		$result = array();
-		
+
 		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
 			if ( !($value instanceof Title) || ($value->getNamespace() != NS_CATEGORY) ) {
 				wfProfileOut("SMWSQLStore::getSpecialSubjects-$specialprop (SMW)");
@@ -240,7 +240,7 @@ class SMWSQLStore extends SMWStore {
 				while($row = $db->fetchObject($res)) {
 					$values = array();
 					for ($i=0; $i < count($subtypes); $i++) { // init array
-						$values[$i] = NULL; 
+						$values[$i] = NULL;
 					}
 					$res2 = $db->select( $db->tableName('smw_nary_attributes'),
 									'nary_pos, value_unit, value_xsd',
@@ -355,18 +355,18 @@ class SMWSQLStore extends SMWStore {
 				case '_wpg':
 					$from .= ' INNER JOIN ' . $db->tableName('smw_nary_relations') . ' AS nary' . $count .
 					         " ON ($narytable.subject_id=nary$count.subject_id AND $narytable.nary_key=nary$count.nary_key)";
-					$where .= " AND nary$count.object_title=" . $db->addQuotes($dv->getDBKey()) . 
+					$where .= " AND nary$count.object_title=" . $db->addQuotes($dv->getDBKey()) .
 					          " AND nary$count.object_namespace=" . $db->addQuotes($dv->getNamespace());
 				break;
 				default:
 					$from .= ' INNER JOIN ' . $db->tableName('smw_nary_attributes') . ' AS nary' . $count .
 					         " ON ($narytable.subject_id=nary$count.subject_id AND $narytable.nary_key=nary$count.nary_key)";
-					$where .= " AND nary$count.value_xsd=" . $db->addQuotes($dv->getXSDValue()) . 
+					$where .= " AND nary$count.value_xsd=" . $db->addQuotes($dv->getXSDValue()) .
 					          " AND nary$count.value_unit=" . $db->addQuotes($dv->getUnit());
 				}
 				$count++;
 			}
-			$res = $db->query("SELECT DISTINCT $narytable.subject_id FROM $from WHERE $where", 
+			$res = $db->query("SELECT DISTINCT $narytable.subject_id FROM $from WHERE $where",
 			                  'SMW::getPropertySubjects',
 			                  $this->getSQLOptions($requestoptions,'subject_title'));
 		break;
@@ -487,7 +487,7 @@ class SMWSQLStore extends SMWStore {
 			$sql = 'object_namespace=' . $db->addQuotes($value->getNamespace()) .
 				' AND object_title=' . $db->addQuotes($value->getDBKey()) .
 				$this->getSQLConditions($requestoptions,'relation_title','relation_title');
-	
+
 			$res = $db->select( $db->tableName('smw_relations'),
 								'DISTINCT relation_title',
 								$sql, 'SMW::getInProperties', $this->getSQLOptions($requestoptions,'relation_title') );
@@ -614,7 +614,7 @@ class SMWSQLStore extends SMWStore {
 		foreach ($data->getSpecialProperties() as $special) {
 			switch ($special) {
 				case SMW_SP_IMPORTED_FROM: case SMW_SP_HAS_CATEGORY: case SMW_SP_REDIRECTS_TO:
-					// don't store this, just used for display; 
+					// don't store this, just used for display;
 					// TODO: filtering here is bad for fully neglected properties (IMPORTED FROM)
 				break;
 				case SMW_SP_SUBPROPERTY_OF:
@@ -686,7 +686,7 @@ class SMWSQLStore extends SMWStore {
 		                     'subject_namespace' => $oldtitle->getNamespace() );
 		$val_array  = array( 'subject_title' => $newtitle->getDBkey(),
 		                     'subject_namespace' => $newtitle->getNamespace() );
-		
+
 		// don't do this by default, since the ids you get when moving articles
 		// are not the ones from the old article and the new one (in reality, the
 		// $old_title refers to the newly generated redirect article, which does
@@ -863,7 +863,7 @@ class SMWSQLStore extends SMWStore {
 		if ($requestoptions->offset > 0) {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
-		$res = $db->query('(SELECT relation_title as title, COUNT(*) as count FROM ' . 
+		$res = $db->query('(SELECT relation_title as title, COUNT(*) as count FROM ' .
 		                  $db->tableName('smw_relations') . 'GROUP BY relation_title) UNION ' .
 		                  '(SELECT attribute_title as title, COUNT(*) as count FROM ' .
 		                  $db->tableName('smw_attributes') . 'GROUP BY attribute_title) UNION ' .
@@ -911,7 +911,7 @@ class SMWSQLStore extends SMWStore {
 		wfProfileOut("SMWSQLStore::getUnusedPropertiesSpecial (SMW)");
 		return $result;
 	}
-	
+
 	function getWantedPropertiesSpecial($requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore::getWantedPropertiesSpecial (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
@@ -1189,7 +1189,7 @@ class SMWSQLStore extends SMWStore {
 			            'SMW::deleteSubject::Subprops');
 		}
 	}
-	
+
 	/**
 	 * Find out if the given page is a redirect and determine its target.
 	 * Return the target or the page itself if it is not redirect.
@@ -1246,14 +1246,16 @@ class SMWSQLStore extends SMWStore {
 
 		$tablename = 'cats' . SMWSQLStore::$m_tablenum++;
 		$this->m_usedtables[] = $tablename;
+		// TODO: unclear why this commit is needed -- is it a MySQL 4.x problem?
+		$db->query("COMMIT");
 		$db->query( 'CREATE TEMPORARY TABLE ' . $tablename .
 		            '( title VARCHAR(255) NOT NULL )
 		             TYPE=MEMORY', 'SMW::getCategoryTable' );
 		$db->query( 'ALTER TABLE ' . $tablename . ' ADD PRIMARY KEY ( title )' );
 		if (array_key_exists($hashkey, SMWSQLStore::$m_categorytables)) { // just copy known result
-			$db->query("INSERT INTO $tablename (title) SELECT " . 
-			            SMWSQLStore::$m_categorytables[$hashkey] . 
-			            '.title FROM ' . SMWSQLStore::$m_categorytables[$hashkey], 
+			$db->query("INSERT INTO $tablename (title) SELECT " .
+			            SMWSQLStore::$m_categorytables[$hashkey] .
+			            '.title FROM ' . SMWSQLStore::$m_categorytables[$hashkey],
 			           'SMW::getCategoryTable');
 			wfProfileOut("SMWSQLStore::getCategoryTable (SMW)");
 			return $tablename;
@@ -1276,10 +1278,10 @@ class SMWSQLStore extends SMWStore {
 
 		/// TODO: avoid duplicate results?
 		for ($i=0; $i<$smwgQSubcategoryDepth; $i++) {
-			$db->query("INSERT INTO $tmpres (title) SELECT $pagetable.page_title 
-			            FROM $cltable,$pagetable,$tmpnew WHERE 
+			$db->query("INSERT INTO $tmpres (title) SELECT $pagetable.page_title
+			            FROM $cltable,$pagetable,$tmpnew WHERE
 			            $cltable.cl_to=$tmpnew.title AND
-			            $pagetable.page_namespace=" . NS_CATEGORY . " AND 
+			            $pagetable.page_namespace=" . NS_CATEGORY . " AND
 			            $pagetable.page_id=$cltable.cl_from", 'SMW::getCategoryTable');
 			$db->query("INSERT IGNORE INTO $tablename (title) SELECT $tmpres.title
 			            FROM $tmpres", 'SMW::getCategoryTable');
@@ -1314,9 +1316,9 @@ class SMWSQLStore extends SMWStore {
 		             TYPE=MEMORY', 'SMW::getPropertyTable' );
 		$db->query( 'ALTER TABLE ' . $tablename . ' ADD PRIMARY KEY ( title )' );
 		if (array_key_exists($propname, SMWSQLStore::$m_propertytables)) { // just copy known result
-			$db->query("INSERT INTO $tablename (title) SELECT " . 
-			            SMWSQLStore::$m_propertytables[$propname] . 
-			            '.title FROM ' . SMWSQLStore::$m_propertytables[$propname], 
+			$db->query("INSERT INTO $tablename (title) SELECT " .
+			            SMWSQLStore::$m_propertytables[$propname] .
+			            '.title FROM ' . SMWSQLStore::$m_propertytables[$propname],
 			           'SMW::getPropertyTable');
 			wfProfileOut("SMWSQLStore::getPropertyTable (SMW)");
 			return $tablename;
@@ -1339,7 +1341,7 @@ class SMWSQLStore extends SMWStore {
 		/// TODO: avoid duplicate results?
 		for ($i=0; $i<$smwgQSubpropertyDepth; $i++) {
 			$db->query("INSERT INTO $tmpres (title) SELECT $sptable.subject_title
-			            FROM $sptable,$tmpnew WHERE 
+			            FROM $sptable,$tmpnew WHERE
 			            $sptable.object_title=$tmpnew.title", 'SMW::getPropertyTable');
 			if ($db->affectedRows() == 0) { // no change, exit loop
 				continue;
@@ -1364,13 +1366,13 @@ class SMWSQLStore extends SMWStore {
 
 	/**
 	 * Add the table $tablename to the $from condition via an inner join,
-	 * using the tables that are already available in $curtables (and extending 
-	 * $curtables with the new table). Return the table name if successful or false 
+	 * using the tables that are already available in $curtables (and extending
+	 * $curtables with the new table). Return the table name if successful or false
 	 * if it wasn't possible to make a suitable inner join.
 	 *
 	 * The method in fact is very simple: since queries are tree-shaped, there is
 	 * always some "current node" (most often some wikipage). To add new conditions
-	 * to this node, joins must be created. These are possible with all basic 
+	 * to this node, joins must be created. These are possible with all basic
 	 * semantic tables. In recursive calls, further conditions for subqueries might
 	 * be added: in this case the subject changes, the existing table list is cleared
 	 * by the query creation method, and only a single table (the "path" along which the
@@ -1386,8 +1388,8 @@ class SMWSQLStore extends SMWStore {
 	 * Finally, one can add a redirect table (this is a LEFT JOIN in order not to make
 	 * the existence of a redirect a new condition) and possibly an additional pagetable
 	 * to resolve redirect target ids.
-	 * 
-	 * That's all. The method can be read and modified case by case, each of which is 
+	 *
+	 * That's all. The method can be read and modified case by case, each of which is
 	 * rather short and completely independent from the other cases.
 	 */
 	protected function addJoin($tablename, &$from, &$db, &$curtables, $nary_pos = '') {
@@ -1472,8 +1474,8 @@ class SMWSQLStore extends SMWStore {
 		} elseif ($tablename == 'pATTS') {
 			if ( ($nary_pos !== '') && (array_key_exists('pNARY', $curtables)) ) {
 				$curtables['pATTS'] = 'natt' . SMWSQLStore::$m_tablenum++;
-				$cond = '(' . 
-				        $curtables['pATTS'] . '.subject_id=' . $curtables['pNARY'] . '.subject_id AND ' . 
+				$cond = '(' .
+				        $curtables['pATTS'] . '.subject_id=' . $curtables['pNARY'] . '.subject_id AND ' .
 				        $curtables['pATTS'] . '.nary_key=' . $curtables['pNARY'] . '.nary_key AND ' .
 				        $curtables['pATTS'] . '.nary_pos=' . $db->addQuotes($nary_pos) . ')';
 				$from .= ' INNER JOIN ' . $db->tableName('smw_nary_attributes') . ' AS ' .
@@ -1484,7 +1486,7 @@ class SMWSQLStore extends SMWStore {
 			if ( ($nary_pos !== '') && (array_key_exists('pNARY', $curtables)) ) {
 				$curtables['pRELS'] = 'nrel' . SMWSQLStore::$m_tablenum++;
 				$cond = '(' .
-				        $curtables['pRELS'] . '.subject_id=' . $curtables['pNARY'] . '.subject_id AND ' . 
+				        $curtables['pRELS'] . '.subject_id=' . $curtables['pNARY'] . '.subject_id AND ' .
 				        $curtables['pRELS'] . '.nary_key=' . $curtables['pNARY'] . '.nary_key AND ' .
 				        $curtables['pRELS'] . '.nary_pos=' . $db->addQuotes($nary_pos) . ')';
 				$from .= ' INNER JOIN ' . $db->tableName('smw_nary_relations') . ' AS ' . $curtables['pRELS'] . ' ON ' . $cond;
@@ -1494,7 +1496,7 @@ class SMWSQLStore extends SMWStore {
 			if ( ($nary_pos !== '') && (array_key_exists('pNARY', $curtables)) ) {
 				$curtables['pTEXT'] = 'ntxt' . SMWSQLStore::$m_tablenum++;
 				$cond = '(' .
-				        $curtables['pTEXT'] . '.subject_id=' . $curtables['pNARY'] . '.subject_id AND ' . 
+				        $curtables['pTEXT'] . '.subject_id=' . $curtables['pNARY'] . '.subject_id AND ' .
 				        $curtables['pTEXT'] . '.nary_key=' . $curtables['pNARY'] . '.nary_key AND ' .
 				        $curtables['pTEXT'] . '.nary_pos=' . $db->addQuotes($nary_pos) . ')';
 				$from .= ' INNER JOIN ' . $db->tableName('smw_nary_longstrings') . ' AS ' . $curtables['pTEXT'] . ' ON ' . $cond;
@@ -1507,7 +1509,7 @@ class SMWSQLStore extends SMWStore {
 				return $curtables['REDIRECT'];
 			}
 		} elseif ($tablename == 'REDIPAGE') { // +another copy of page for getting ids of redirect targets; *ouch*
-			if ($this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos)) { 
+			if ($this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos)) {
 				$curtables['REDIPAGE'] = 'rp' . SMWSQLStore::$m_tablenum++;
 				$from .= ' LEFT JOIN ' . $db->tableName('page') . ' AS ' . $curtables['REDIPAGE'] . ' ON (' .
 				         $curtables['REDIRECT'] . '.rd_title=' . $curtables['REDIPAGE'] . '.page_title AND ' .
@@ -1524,10 +1526,10 @@ class SMWSQLStore extends SMWStore {
 	 * encoded in the description. Additional conditions refer to tables that are already
 	 * used in the query, whose aliases are given in $curtables. It may also happen that
 	 * inner joins with existing tables ($curtables) are added to formulate the new condition.
-	 * In any case, $curtables should never be completely empty (or otherwise nothing will 
+	 * In any case, $curtables should never be completely empty (or otherwise nothing will
 	 * be computed).
 	 *
-	 * Some notes on sorting: sorting is applied only to fields that appear in the query 
+	 * Some notes on sorting: sorting is applied only to fields that appear in the query
 	 * by verifying conditions, and the sorting conditions thus operate on the values that
 	 * satisfy the given conditions. This may have side effects in cases where one property
 	 * that shall be sorted has multiple values. If no condition other than existence applies
@@ -1589,9 +1591,9 @@ class SMWSQLStore extends SMWStore {
 						$cond = $table . '.object_title=' .
 						        $db->addQuotes($page->getDBKey()) . ' AND ' .
 						        $table . '.object_namespace=' . $page->getNamespace();
-						if ( $smwgQEqualitySupport && 
+						if ( $smwgQEqualitySupport &&
 						     ($this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos)) ) {
-							$cond = '(' . $cond . ') OR (' . 
+							$cond = '(' . $cond . ') OR (' .
 							   $curtables['REDIRECT'] . '.rd_title=' . $db->addQuotes($page->getDBKey()) . ' AND ' .
 							   $curtables['REDIRECT'] . '.rd_namespace=' . $page->getNamespace() . ')';
 						}
@@ -1727,16 +1729,16 @@ class SMWSQLStore extends SMWStore {
 		}
 
 	}
-	
+
 	/**
 	 * Make sure the table of the given name has the given fields, provided
 	 * as an array with entries fieldname => typeparams. typeparams should be
 	 * in a normalised form and order to match to existing values.
 	 *
 	 * The function returns an array that includes all columns that have been
-	 * changed. For each such column, the array contains an entry 
+	 * changed. For each such column, the array contains an entry
 	 * columnname => action, where action is one of 'up', 'new', or 'del'
-	 * If the table was already fine or was created completely anew, an empty 
+	 * If the table was already fine or was created completely anew, an empty
 	 * array is returned (assuming that both cases require no action).
 	 *
 	 * NOTE: the function partly ignores the order in which fields are set up.

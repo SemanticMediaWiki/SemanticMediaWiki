@@ -66,7 +66,7 @@ $smwgQSortingSupport  = true; // (De)activate sorting of results.
 $smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE); // Which namespaces should be searched by default?
                               // (value NULL switches off default restrictions on searching -- this is faster)
 $smwgQMaxLimit = 10000;       // Max number of results ever retrieved, even when using special query pages.
-$smwgQDisjunctionSupport = true; // Support disjunctions in queries (||)? 
+$smwgQDisjunctionSupport = true; // Support disjunctions in queries (||)?
                              // (Note: things like namespace defaults and property/category hierarchies
                              //        can also cause disjunctions!)
 
