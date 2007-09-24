@@ -36,7 +36,7 @@ class SMWAdmin extends SpecialPage {
 		global $wgUser;
 	
 		if ( ! $wgUser->isAllowed('delete') ) {
-			$wgOut->sysopRequired();
+			$wgOut->permissionRequired('delete');
 			return;
 		}
 	
