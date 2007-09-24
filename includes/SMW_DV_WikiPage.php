@@ -33,7 +33,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->m_namespace = $this->m_title->getNamespace();
 				$this->m_id = false; // unset id
 				if ($this->m_caption === false) {
-					$this->m_caption = $this->m_textform;
+					$this->m_caption = $this->m_prefixedtext;
 				}
 			} else {
 				$this->addError('Invalid title string'); // TODO: internationalise
@@ -50,12 +50,12 @@ class SMWWikiPageValue extends SMWDataValue {
 		global $wgContLang;
 		$this->m_dbkeyform = $value;
 		$this->m_textform = str_replace('_', ' ', $value);
-		$this->m_caption = $this->m_textform;
 		$nstext = $wgContLang->getNSText($this->m_namespace);
 		if ($nstext !== '') {
 			$nstext .= ':';
 		}
 		$this->m_prefixedtext = $nstext . $this->m_textform;
+		$this->m_caption = $this->m_prefixedtext;
 		$this->m_value = $this->m_prefixedtext;
 		$this->m_id = false; // unset id
 		$this->m_title = NULL; // unset title
@@ -99,7 +99,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ($linker === NULL) {
 			return htmlspecialchars($this->m_prefixedtext);
 		} else {
-			return $linker->makeLinkObj($this->getTitle());
+			return $linker->makeLinkObj($this->getTitle(), $this->m_textform);
 		}
 	}
 
