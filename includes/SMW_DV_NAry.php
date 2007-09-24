@@ -22,7 +22,7 @@ class SMWNAryValue extends SMWDataValue {
 	 * TypeObject as we received them when datafactory called us
 	 */
 	private $m_type;
-	
+
 	/**
 	 * Should this DV operate on query syntax (special mode for parsing queries in a compatible fashion)
 	 */
@@ -47,7 +47,7 @@ class SMWNAryValue extends SMWDataValue {
 		$empty = true;
 		for ($i = 0; $i < $this->m_count; $i++) { // iterate over slots
 			// special handling for supporting query parsing
-			if ($this->m_querysyntax) { 
+			if ($this->m_querysyntax) {
 				$comparator = SMW_CMP_EQ;
 				$printmodifier = '';
 				$this->prepareValue($values[$vi], $comparator, $printmodifier);
@@ -60,7 +60,7 @@ class SMWNAryValue extends SMWDataValue {
 				}
 			}
 			// generating the DVs:
-			if ( (count($values) > $vi) && 
+			if ( (count($values) > $vi) &&
 			     ( ($values[$vi] == '') || ($values[$vi] == '?') ) ) { // explicit omission
 				$this->m_values[$i] = NULL;
 				$vi++;
@@ -73,7 +73,7 @@ class SMWNAryValue extends SMWDataValue {
 					if ($this->m_querysyntax) { // keep comparator for later querying
 						$this->m_comparators[$i] = $comparator;
 					}
-				} elseif ( (count($values)-$vi) == (count($types)-$i) ) { 
+				} elseif ( (count($values)-$vi) == (count($types)-$i) ) {
 					// too many errors: keep this one to have enough slots left
 					$this->m_values[$i] = $dv;
 					$vi++;
@@ -159,7 +159,7 @@ class SMWNAryValue extends SMWDataValue {
 		}
 		return $result;
 	}
-	
+
 	private function makeValueOutputText($type, $index, $linker) {
 		switch ($type) {
 			case 0: return $this->m_values[$index]->getShortWikiText($linker);
@@ -275,7 +275,7 @@ class SMWNAryValue extends SMWDataValue {
 
 	/**
 	 * Directly set the values to the given array of values. The given values
-	 * should correspond to the types and arity of the nary container, with 
+	 * should correspond to the types and arity of the nary container, with
 	 * NULL as an indication for omitted values.
 	 */
 	public function setDVs($datavalues) {
@@ -298,7 +298,7 @@ class SMWNAryValue extends SMWDataValue {
 
 	/**
 	 * If valid and in querymode, build a suitable SMWValueList description from the
-	 * given input or return NULL if no such description was given. This requires the 
+	 * given input or return NULL if no such description was given. This requires the
 	 * input to be given to setUserValue(). Otherwise bad things will happen.
 	 */
 	public function getValueList() {
@@ -315,8 +315,8 @@ class SMWNAryValue extends SMWDataValue {
 	}
 
 	/**
-	 * If in querymode, return all printmodifiers given or false if no print request 
-	 * was specified. This requires the input to be given to setUserValue(). 
+	 * If in querymode, return all printmodifiers given or false if no print request
+	 * was specified. This requires the input to be given to setUserValue().
 	 * Otherwise bad things will happen.
 	 */
 	public function getPrintModifier() {
@@ -358,11 +358,11 @@ class SMWNAryValue extends SMWDataValue {
 			}
 		}
 	}
-	
+
 	/**
 	 * Exports this n-ary relation to an appropriate RDF-structure.
 	 * The lines within the subject element.
-	 * 
+	 *
 	 * @param string $QName The element name of this datavalue
 	 * @param ExportRDF $exporter the exporter calling this function
 	 * @return string the lines to be exported
@@ -375,13 +375,15 @@ class SMWNAryValue extends SMWDataValue {
 			if ($value === NULL) {
 				continue;
 			}
-			$element = "nary" . $count . $value->getTypeID();
+			$element = "nary" . $count; 
+
+//			$element = "nary" . $count . $value->getTypeID();
 			/// TODO make the element name dependent on the type of the value
 			$rdf .= "\t" . $value->exportToRDF( "smw:$element", $exporter );
 			if ($value->getTypeID() == '_wpg') {
 				$exporter->addSchemaRef( $element, "owl:ObjectProperty" );
 			} else {
-				$exporter->addSchemaRef( $element, "owl:DatatypeProperty" );	
+				$exporter->addSchemaRef( $element, "owl:DatatypeProperty" );
 			}
 		}
 		$rdf .= "\t\t</$QName>\n";
