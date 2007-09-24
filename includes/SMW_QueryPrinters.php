@@ -46,7 +46,18 @@ abstract class SMWResultPrinter {
 	public function getResultHTML($results, $params) {
 		$this->readParameters($params);
 		if ($results->getCount() == 0) {
-			return htmlspecialchars($this->mDefault);
+			if (!$results->hasFurtherResults()) {
+				return htmlspecialchars($this->mDefault);
+			} elseif ($this->mInline) {
+				$label = $this->mSearchlabel;
+				if ($label === NULL) { //apply defaults
+					$result = '<a href="' . $results->getQueryURL() . '">' . wfMsgForContent('smw_iq_moreresults') . '</a>';
+				} else {
+					$result = '<a href="' . $results->getQueryURL() . '">' . $label . '</a>';
+				}
+				$result .= $this->getErrorString($results); // just append error messages
+				return $result;
+			}
 		}
 		return $this->getHTML($results);
 	}
