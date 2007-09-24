@@ -187,7 +187,11 @@ class SMWResultArray {
 		$object = current($this->content);
 		next($this->content);
 		if ($object instanceof SMWDataValue) { //print data values
-			return $object->getShortHTMLText($linker);
+			if ($object->getTypeID() == '_wpg') { // prefer "long" text for page-values
+				return $object->getLongHTMLText($linker);
+			} else {
+				return $object->getShortHTMLText($linker);
+			}
 		} elseif ($object instanceof Title) { // print Title objects
 			if ($linker === NULL) {
 				return htmlspecialchars($object->getPrefixedText());
@@ -215,7 +219,11 @@ class SMWResultArray {
 		$object = current($this->content);
 		next($this->content);
 		if ($object instanceof SMWDataValue) { //print data values
-			return $object->getShortWikiText($linked);
+			if ($object->getTypeID() == '_wpg') { // prefer "long" text for page-values
+				return $object->getLongWikiText($linked);
+			} else {
+				return $object->getShortWikiText($linked);
+			}
 		} elseif ($object instanceof Title) { // print Title objects
 			if ( ($linked === NULL) || ($linked === false) ) {
 				return $object->getPrefixedText();
