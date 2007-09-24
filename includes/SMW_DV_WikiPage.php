@@ -77,7 +77,11 @@ class SMWWikiPageValue extends SMWDataValue {
 		if (($linker === NULL) || (!$this->isValid())) {
 			return htmlspecialchars($this->m_caption);
 		} else {
-			return $linker->makeLinkObj($this->getTitle(), $this->m_caption);
+			if ($this->getArticleID() !== 0) { // aritcle ID might be cached already, save DB calls
+				return $linker->makeKnownLinkObj($this->getTitle(), $this->m_caption);
+			} else {
+				return $linker->makeBrokenLinkObj($this->getTitle(), $this->m_caption);
+			}
 		}
 	}
 
@@ -99,7 +103,11 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ($linker === NULL) {
 			return htmlspecialchars($this->m_prefixedtext);
 		} else {
-			return $linker->makeLinkObj($this->getTitle(), $this->m_textform);
+			if ($this->getArticleID() !== 0) { // aritcle ID might be cached already, save DB calls
+				return $linker->makeKnownLinkObj($this->getTitle(), $this->m_textform);
+			} else {
+				return $linker->makeBrokenLinkObj($this->getTitle(), $this->m_textform);
+			}
 		}
 	}
 
@@ -177,7 +185,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			if ($this->getTitle() !== NULL) {
 				$this->m_id = $this->m_title->getArticleID();
 			} else {
-				$this->m_id = -1;
+				$this->m_id = 0;
 			}
 		}
 		return $this->m_id;
