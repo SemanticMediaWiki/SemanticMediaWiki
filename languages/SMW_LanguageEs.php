@@ -213,7 +213,6 @@ protected $smwSpecialProperties = array(
 	SMW_SP_DISPLAY_UNIT => 'Unidad de medida',
 	SMW_SP_IMPORTED_FROM => 'Importado de',
 	SMW_SP_CONVERSION_FACTOR => 'Corresponde a',
-	SMW_SP_CONVERSION_FACTOR_SI => 'Corresponde a SI',
 	SMW_SP_SERVICE_LINK => 'Provee servicio',
 	SMW_SP_POSSIBLE_VALUE => 'Permite el valor'
 );

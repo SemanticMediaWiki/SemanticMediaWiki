@@ -245,7 +245,6 @@ protected $smwSpecialProperties = array(
 	SMW_SP_DISPLAY_UNIT => 'Wyświetlana jednostka',
 	SMW_SP_IMPORTED_FROM => 'Zaimportowane z',
 	SMW_SP_CONVERSION_FACTOR => 'Odpowiada',
-	SMW_SP_CONVERSION_FACTOR_SI => 'Corresponds to SI', // TODO translate
 	SMW_SP_SERVICE_LINK => 'Zapewnia usługę',
 	SMW_SP_POSSIBLE_VALUE => 'Dopuszcza wartość'
 );

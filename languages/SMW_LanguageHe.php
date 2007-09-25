@@ -223,7 +223,6 @@ protected $smwSpecialProperties = array(
 	SMW_SP_DISPLAY_UNIT => 'יחידת הצגה',
 	SMW_SP_IMPORTED_FROM => 'יובא מ',
 	SMW_SP_CONVERSION_FACTOR => 'מתורגם ל',
-	SMW_SP_CONVERSION_FACTOR_SI => 'Corresponds to SI', //TODO: translate
 	SMW_SP_SERVICE_LINK => 'מספק שירות',
 	SMW_SP_POSSIBLE_VALUE => 'ערכים אפשריים' //   TODO: check translation, should be singular value//
 );

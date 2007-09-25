@@ -205,7 +205,6 @@ protected $smwSpecialProperties = array(
 	SMW_SP_DISPLAY_UNIT => 'Display unit',
 	SMW_SP_IMPORTED_FROM => 'Imported from',
 	SMW_SP_CONVERSION_FACTOR => 'Corresponds to',
-	SMW_SP_CONVERSION_FACTOR_SI => 'Corresponds to SI',
 	SMW_SP_SERVICE_LINK => 'Provides service',
 	SMW_SP_POSSIBLE_VALUE => 'Allows value'
 );

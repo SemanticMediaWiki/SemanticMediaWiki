@@ -191,4 +191,31 @@ protected $smwDatatypeLabels = array(
 	'smw_annouri' => 'Annotatie URI'  // name of the annotation URI type (annotation property)
 );
 
+protected $smwSpecialProperties = array( //TODO: translate
+	//always start upper-case
+	SMW_SP_HAS_TYPE  => 'Has type',
+	SMW_SP_HAS_URI   => 'Equivalent URI',
+	SMW_SP_SUBPROPERTY_OF => 'Subproperty of',
+	SMW_SP_MAIN_DISPLAY_UNIT => 'Main display unit',
+	SMW_SP_DISPLAY_UNIT => 'Display unit',
+	SMW_SP_IMPORTED_FROM => 'Imported from',
+	SMW_SP_CONVERSION_FACTOR => 'Corresponds to',
+	SMW_SP_SERVICE_LINK => 'Provides service',
+	SMW_SP_POSSIBLE_VALUE => 'Allows value'
+);
+
+	/**
+	 * Function that returns the namespace identifiers.
+	 */
+	public function getNamespaceArray() { //TODO: translate
+		return array(
+			SMW_NS_RELATION       => 'Relation',
+			SMW_NS_RELATION_TALK  => 'Relation_talk',
+			SMW_NS_PROPERTY       => 'Property',
+			SMW_NS_PROPERTY_TALK  => 'Property_talk',
+			SMW_NS_TYPE           => 'Type',
+			SMW_NS_TYPE_TALK      => 'Type_talk'
+		);
+	}
+
 }

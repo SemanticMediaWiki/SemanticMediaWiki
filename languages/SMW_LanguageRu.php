@@ -221,7 +221,6 @@ protected $smwSpecialProperties = array(
 	SMW_SP_DISPLAY_UNIT => 'Отображаемая единица',
 	SMW_SP_IMPORTED_FROM => 'Импортировано из',
 	SMW_SP_CONVERSION_FACTOR => 'Относится к',
-	SMW_SP_CONVERSION_FACTOR_SI => 'Corresponds to SI', // TODO translate
 	SMW_SP_SERVICE_LINK => 'Предоставляет сервис',
 	SMW_SP_POSSIBLE_VALUE => 'Возможные значения' // TODO: check translation, should be "Allowed value" (singular)
 );

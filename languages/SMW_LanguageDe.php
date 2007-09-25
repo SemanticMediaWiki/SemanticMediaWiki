@@ -204,7 +204,6 @@ protected $smwSpecialProperties = array(
 	SMW_SP_DISPLAY_UNIT => 'Ausgabeeinheit',
 	SMW_SP_IMPORTED_FROM => 'Importiert aus',
 	SMW_SP_CONVERSION_FACTOR => 'Entspricht',
-	SMW_SP_CONVERSION_FACTOR_SI => 'Entspricht SI',
 	SMW_SP_SERVICE_LINK => 'Bietet Service',
 	SMW_SP_POSSIBLE_VALUE => 'Erlaubt Wert'
 );
