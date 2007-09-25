@@ -79,7 +79,6 @@ protected $smwContentMessages = array(
 	'smw_querytoolarge' => 'De volgende zoekopdrachtcondities zijn niet in acht genomen vanwege beperkingen in de grootte of diepte van zoekopdrachten in deze wiki: $1.'
 );
 
-
 protected $smwUserMessages = array(
 	'smw_devel_warning' => 'Deze functie wordt op het moment ontwikkeld en is wellicht niet volledig functioneel. Maak een back-up voordat u deze functie gebruikt.',
 	// Messages for pages of types and properties
@@ -100,7 +99,7 @@ protected $smwUserMessages = array(
 	'smw_propertylackspage' => 'Alle eigenschappen moeten op een pagina beschreven worden!',
 	'smw_propertylackstype' => 'Er is geen type opgegeven voor deze eigenschap (type $1 wordt verondersteld).',
 	'smw_propertyhardlyused' => 'Deze eigenschap wordt vrijwel niet gebruikt in de wiki!',
-	'smw_propertyspecial' => 'This is a special property with a reserved meaning in the wiki.', // TODO: translate
+	'smw_propertyspecial' => 'Dit is een speciale eigenschap met een gereserveerde betekenis in de wiki.',
 	// Messages for Unused Properties Special
 	'unusedproperties' => 'Ongebruikte eigenschappen',
 	'smw_unusedproperties_docu' => 'De volgende eigenschappen bestaan, hoewel ze niet gebruikt worden.',
@@ -191,31 +190,30 @@ protected $smwDatatypeLabels = array(
 	'smw_annouri' => 'Annotatie URI'  // name of the annotation URI type (annotation property)
 );
 
-protected $smwSpecialProperties = array( //TODO: translate
+protected $smwSpecialProperties = array(
 	//always start upper-case
-	SMW_SP_HAS_TYPE  => 'Has type',
+	SMW_SP_HAS_TYPE  => 'Heeft type',
 	SMW_SP_HAS_URI   => 'Equivalent URI',
-	SMW_SP_SUBPROPERTY_OF => 'Subproperty of',
+	SMW_SP_SUBPROPERTY_OF => 'Subeigenschap van',
 	SMW_SP_MAIN_DISPLAY_UNIT => 'Main display unit',
 	SMW_SP_DISPLAY_UNIT => 'Display unit',
-	SMW_SP_IMPORTED_FROM => 'Imported from',
-	SMW_SP_CONVERSION_FACTOR => 'Corresponds to',
-	SMW_SP_SERVICE_LINK => 'Provides service',
-	SMW_SP_POSSIBLE_VALUE => 'Allows value'
+	SMW_SP_IMPORTED_FROM => 'Geïmporteerd van',
+	SMW_SP_CONVERSION_FACTOR => 'Komt overeen met',
+	SMW_SP_SERVICE_LINK => 'Verleent dienst',
+	SMW_SP_POSSIBLE_VALUE => 'Geldige waarde'
 );
 
 	/**
 	 * Function that returns the namespace identifiers.
 	 */
-	public function getNamespaceArray() { //TODO: translate
+	public function getNamespaceArray() {
 		return array(
-			SMW_NS_RELATION       => 'Relation',
-			SMW_NS_RELATION_TALK  => 'Relation_talk',
-			SMW_NS_PROPERTY       => 'Property',
-			SMW_NS_PROPERTY_TALK  => 'Property_talk',
+			SMW_NS_RELATION       => 'Relatie',
+			SMW_NS_RELATION_TALK  => 'Overleg_relatie',
+			SMW_NS_PROPERTY       => 'Eigenschap',
+			SMW_NS_PROPERTY_TALK  => 'Overleg_eigenschap',
 			SMW_NS_TYPE           => 'Type',
-			SMW_NS_TYPE_TALK      => 'Type_talk'
+			SMW_NS_TYPE_TALK      => 'Overleg_type'
 		);
 	}
-
 }
