@@ -53,6 +53,22 @@ abstract class SMW_Language {
 	}
 
 	/**
+	 * Extends the array of special properties with a mapping from an $id to a
+	 * language dependent label.
+	 * NOTE: this function is provided for ad hoc compatibility with the Halo project.
+	 * A better solution will replace it at some time.
+	 */
+	function addSpecialProperty($id, $label) {
+		if (array_key_exists($id, $this->smwSpecialProperties)) {
+			trigger_error('The ID "' . $id . '" already belongs to the special property "' . $this->smwSpecialProperties[$key] . '" and thus cannot be used for "' . $label . '".', E_USER_WARNING);
+		} elseif ($id < 1000) {
+			trigger_error('IDs below 1000 are not allowed for custom special properties. Registration of "' . $label . '" failed.', E_USER_WARNING);
+		} else {
+			$this->smwSpecialProperties[$id] = $label;
+		}
+	}
+
+	/**
 	 * Function that returns all content messages (those that are stored
 	 * in some article, and can thus not be translated to individual users).
 	 */
