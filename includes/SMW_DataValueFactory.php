@@ -216,16 +216,6 @@ class SMWDataValueFactory {
 	}
 
 	/**
-	 * Register a new SMWDataValue class for dealing with some type. Will be included and
-	 * instantiated dynamically if needed.
-	 * @DEPRECATED
-	 */
-	static public function registerDataValueClass($typestring, $filepart, $classname) {
-		SMWDataValueFactory::initDatatypes();
-		SMWDataValueFactory::$m_typeclasses[$typestring] = $classname;
-	}
-
-	/**
 	 * Gather all available datatypes and label<=>id<=>datatype associations. This method 
 	 * is called before most methods of this factory.
 	 */
@@ -267,11 +257,20 @@ class SMWDataValueFactory {
 	 * A function for registering/overwriting datatypes for SMW. Should be called from 
 	 * within the hook 'smwInitDatatypes'.
 	 */
-	static function registerDatatype($id, $classname, $label='') {
+	static function registerDatatype($id, $classname, $label=false) {
 		SMWDataValueFactory::$m_typeclasses[$id] = $classname;
-		if ($label != '') {
+		if ($label != false) {
 			SMWDataValueFactory::$m_typelabels[$id] = $label;
 		}
+	}
+
+	/**
+	 * Add a new alias label to an existing datatype id. Note that every ID should have a primary
+	 * label, either provided by SMW or registered with registerDatatype. This function should be 
+	 * called from within the hook 'smwInitDatatypes'.
+	 */
+	static function registerDatatypeAlias($id, $label) {
+		SMWDataValueFactory::$m_typealiases[$label] = $id;
 	}
 
 	/**
