@@ -33,7 +33,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->m_namespace = $this->m_title->getNamespace();
 				$this->m_id = false; // unset id
 				if ($this->m_caption === false) {
-					$this->m_caption = $this->m_prefixedtext;
+					$this->m_caption = $value;
 				}
 			} else {
 				$this->addError('Invalid title string'); // TODO: internationalise

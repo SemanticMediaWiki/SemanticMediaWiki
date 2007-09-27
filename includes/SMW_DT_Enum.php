@@ -12,7 +12,7 @@
 class SMWEnumTypeHandler implements SMWTypeHandler {
 
 	function getID() {
-		return 'enum';
+		return '_enu';
 	}
 
 	// Can't represent any better way than as a string

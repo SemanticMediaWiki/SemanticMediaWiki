@@ -15,38 +15,8 @@ include_once($smwgIP . '/includes/SMW_DataValue.php');
 class SMWTypesValue extends SMWDataValue {
 
 	private $m_typelabels = false;
+	private $m_typecaptions = false;
 	private $m_xsdvalue = false;
-
-	/**
-	 * This associative array links message ids for type label to internal type
-	 * ids. Datavalue classes register for certain internal type ids, and this
-	 * class establishes the required mapping. No id must be duplicated, and
-	 * ids should in general not be changed, since they act as universal handles
-	 * for types throughout the code. The registration happens in 
-	 * SMW_DataValueFactory.php
-	 */
-	static private $m_typeids = array(
-		'smw_wikipage'      => '_wpg',
-		'smw_string'        => '_str',
-		'smw_text'          => '_txt',
-		'smw_enum'          => '_enu',
-		'smw_bool'          => '_boo',
-		'smw_int'           => '_int',
-		'smw_float'         => '_flt',
-		//case 'smw_length'
-		//case 'smw_area'
-		//case 'smw_geolength'
-		//case 'smw_geoarea'
-		'smw_geocoordinate' => '_crd',
-		//case 'smw_mass'
-		'smw_time'          => '_tim',
-		'smw_temperature'   => '_tmp',
-		'smw_datetime'      => '_dat',
-		'smw_email'         => '_ema',
-		'smw_url'           => '_url',
-		'smw_uri'           => '_uri',
-		'smw_annouri'       => '_anu'
-	);
 
 	protected function parseUserValue($value) {
 		// no use for being lazy here: plain user values are never useful
@@ -57,7 +27,8 @@ class SMWTypesValue extends SMWDataValue {
 			$type = rtrim($type, ' ]');
 			$ttype = Title::newFromText($type,SMW_NS_TYPE);
 			if ($ttype->getNamespace() == SMW_NS_TYPE) {
-				$this->m_typelabels[] = $ttype->getText();
+				$this->m_typecaptions[] = $type;
+				$this->m_typelabels[] = SMWDataValueFactory::findTypeLabel(SMWDataValueFactory::findTypeID($ttype->getText()));
 			} // else: wrong namespace given -- what now? TODO
 		}
 	}
@@ -71,17 +42,68 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText($linked = NULL) {
-		if ($this->m_caption !== false) {
-			return $this->m_caption;
+		if ( ($linked === NULL) || ($linked === false) ) {
+			if ($this->m_caption !== false) {
+				return $this->m_caption;
+			} else {
+				return str_replace('_',' ',implode(', ', $this->getTypeCaptions()));
+			}
+		} else {
+			global $wgContLang;
+			$typenamespace = $wgContLang->getNsText(SMW_NS_TYPE);
+			if ($this->m_caption !== false) {
+				if ($this->isUnary()) {
+					return '[[' . $typenamespace . ':' . $this->getWikiValue() . '|' . $this->m_caption . ']]';
+				} else {
+					return $this->m_caption;
+				}
+			}
+			$result = '';
+			$first = true;
+			$captions = $this->getTypeCaptions();
+			reset($captions);
+			foreach ($this->getTypeLabels() as $type) {
+				$caption = next($captions);
+				if ($first) {
+					$first = false;
+				} else {
+					$result .= ', ';
+				}
+				$result .= '[[' . $typenamespace . ':' . $type . '|' . $caption . ']]';
+			}
+			return $result;
 		}
-		return $this->getLongWikiText($linked);
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		if ($this->m_caption !== false) {
-			return htmlspecialchars($this->m_caption);
+		if ( ($linker === NULL) || ($linker === false) ) {
+			if ($this->m_caption !== false) {
+				return htmlspecialchars($this->m_caption);
+			} else {
+				return str_replace('_',' ',implode(', ', $this->getTypeCaptions()));
+			}
+		} else {
+			if ($this->m_caption !== false) {
+				if ($this->isUnary()) {
+					$title = Title::newFromText($this->getWikiValue(), SMW_NS_TYPE);
+					return $linker->makeLinkObj($title, $this->m_caption);
+				} else {
+					return htmlspecialchars($this->m_caption);
+				}
+			}
+			$result = '';
+			$first = true;
+			foreach ($this->getTypeLabels() as $type) {
+				if ($first) {
+					$first = false;
+				} else {
+					$result .= ', ';
+				}
+				$title = Title::newFromText($type, SMW_NS_TYPE);
+				$result .= $linker->makeLinkObj( $title, $type);
+			}
+			return $result;
 		}
-		return $this->getLongHTMLText($linker);
 	}
 
 	public function getLongWikiText($linked = NULL) {
@@ -134,7 +156,7 @@ class SMWTypesValue extends SMWDataValue {
 					} else {
 						$this->m_xsdvalue .= ';';
 					}
-					$this->m_xsdvalue .= SMWTypesValue::findTypeID($label);
+					$this->m_xsdvalue .= SMWDataValueFactory::findTypeID($label);
 				}
 			}
 			return $this->m_xsdvalue;
@@ -181,7 +203,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	/**
-	 * Is this a built-in datatype shipped with SMW?
+	 * Is this a built-in datatype shipped with SMW (or an extension of SMW)?
 	 * (Alternatively it would be a user-defined derived datatype.)
 	 */
 	public function isBuiltIn() {
@@ -193,16 +215,40 @@ class SMWTypesValue extends SMWDataValue {
 	 * Retrieve type labels if needed. Can be done lazily.
 	 */
 	public function getTypeLabels() {
+		$this->initTypeData();
+		if ($this->m_typelabels === false) {
+			return array(); // fallback for unary callers
+		} else {
+			return $this->m_typelabels;
+		}
+	}
+
+	/**
+	 * Retrieve type captions if needed. Can be done lazily. The captions 
+	 * are different from the labels if type aliases are used.
+	 */
+	public function getTypeCaptions() {
+		$this->initTypeData();
+		if ($this->m_typecaptions === false) {
+			return array(); // fallback for unary callers
+		} else {
+			return $this->m_typecaptions;
+		}
+	}
+
+	/**
+	 * Internal method to extract data from XSD-representation. Called lazily.
+	 */
+	protected function initTypeData() {
 		if ( ($this->m_typelabels === false) && ($this->m_xsdvalue !== false) ) {
 			$this->m_typelabels = array();
 			$ids = explode(';', $this->m_xsdvalue);
 			foreach ($ids as $id) {
-				$this->m_typelabels[] = SMWTypesValue::findTypeLabel($id);
+				$label = SMWDataValueFactory::findTypeLabel($id);
+				$this->m_typelabels[] = $label;
+				$this->m_typecaptions[] = $label;
 			}
-		} elseif ($this->m_typelabels === false) {
-			return array(); // fallback for unwary callers
 		}
-		return $this->m_typelabels; // false only if nothing set yet
 	}
 
 	/**
@@ -217,40 +263,6 @@ class SMWTypesValue extends SMWDataValue {
 			$i++;
 		}
 		return $result;
-	}
-
-	/**
-	 * Get the language independent id for some type label (e.g. "_int" for "Integer").
-	 * This id is used for all internal operations. Compound types are not supported
-	 * by this method (decomposition happens earlier). Custom types get their DBkeyed 
-	 * label as id. All ids are prefixed by an underscore in order to distinguish them 
-	 * from custom types.
-	 */
-	static public function findTypeID($label) {
-		global $smwgContLang;
-		$msgid = $smwgContLang->findDatatypeMsgID($label);
-		if ( ($msgid !== false) && (array_key_exists($msgid, SMWTypesValue::$m_typeids)) ) {
-			return SMWTypesValue::$m_typeids[$msgid];
-		} else { // hopefully $msgid was just FALSE ...
-			return str_replace(' ', '_', $label);
-		}
-	}
-
-	/**
-	 * Inverse of findTypeID();
-	 */
-	static public function findTypeLabel($id) {
-		global $smwgContLang;
-		if ($id{0} === '_') {
-			$key = array_search($id, SMWTypesValue::$m_typeids);
-			if ($key !== false) {
-				return $smwgContLang->getDatatypeLabel($key);
-			} else { // maybe some no longer supported type?
-				return str_replace('_', ' ', $id);
-			}
-		} else {
-			return str_replace('_', ' ', $id);
-		}
 	}
 
 }

@@ -17,7 +17,7 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 	/** @public */
 
 	function getID() {
-		return 'datetime';
+		return '_dat';
 	}
 
 	function getXSDType() {
@@ -128,9 +128,5 @@ class SMWDateTimeTypeHandler implements SMWTypeHandler {
 		return TRUE;
 	}
 } //SMWDateTimeTypeHandler
-
-//register type handler:
-//SMWTypeHandlerFactory::registerTypeHandler($smwgContLang->getDatatypeLabel('smw_datetime'),
-//                       new SMWDateTimeTypeHandler());
 
 

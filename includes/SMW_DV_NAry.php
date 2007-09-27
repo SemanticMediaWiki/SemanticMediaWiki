@@ -286,7 +286,7 @@ class SMWNAryValue extends SMWDataValue {
 		$typelabels = $this->m_type->getTypeLabels();
 		for ($i = 0; $i < $this->m_count; $i++) {
 			if ( ($i < count($datavalues) ) && ($datavalues[$i] !== NULL) ) {
-			    //&& ($datavalues[$i]->getTypeID() == SMWTypesValue::findTypeID($typelabels[$i])) ) {
+			    //&& ($datavalues[$i]->getTypeID() == SMWDataValueFactory::findTypeID($typelabels[$i])) ) {
 			    ///TODO: is the above typcheck required, or can we assume responsible callers?
 				$this->m_values[$i] = $datavalues[$i];
 			} else {

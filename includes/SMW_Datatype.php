@@ -59,7 +59,6 @@ class SMWTypeHandlerFactory {
 
 	static private $typeHandlersByLabel = Array();
 	static private $typeHandlersByAttribute = Array();
-	static private $typeLabelsByID = Array();
 	static private $desiredUnitsByAttribute = Array();
 	static private $possibleValuesByAttribute = Array();
 	static private $serviceLinksByAttribute = Array();
@@ -71,7 +70,6 @@ class SMWTypeHandlerFactory {
 	 */
 	static function registerTypeHandler($label, $th) {
 		SMWTypeHandlerFactory::$typeHandlersByLabel[$label] = $th;
-		SMWTypeHandlerFactory::$typeLabelsByID[$th->getID()] = $label;
 	}
 
 	/**
@@ -82,16 +80,6 @@ class SMWTypeHandlerFactory {
 	 */
 	static function announceTypeHandler($label, $id, $filepart, $class, $param = NULL) {
 		SMWTypeHandlerFactory::$typeHandlersByLabel[$label] = array($filepart, $class, $param);
-		SMWTypeHandlerFactory::$typeLabelsByID[$id] = $label;
-	}
-
-	/**
-	 * This method returns an array of the labels of built-in types (those
-	 * announced in code rather than user-defined types with custom units).
-	 * Needed since typeHandlersByLabel is private.
-	 */
-	static function getTypeLabels() {
-		return array_keys(SMWTypeHandlerFactory::$typeHandlersByLabel);
 	}
 
 	/**
@@ -120,7 +108,7 @@ class SMWTypeHandlerFactory {
 		if (!$findConversions) return NULL;
 		$conversionFactors = SMWTypeHandlerFactory::getConversionFactors($typelabel);
 		if (count($conversionFactors) !== 0) {
-			$instance = new SMWLinearTypeHandler('Type:' . $typelabel, $conversionFactors); // no localisation needed -- "Type:" is just a disamb. string in the DB
+			$instance = new SMWLinearTypeHandler($typelabel, $conversionFactors);
 			SMWTypeHandlerFactory::$typeHandlersByLabel[$typelabel] = $instance;
 			return SMWTypeHandlerFactory::$typeHandlersByLabel[$typelabel];
 		}
@@ -239,23 +227,23 @@ class SMWTypeHandlerFactory {
  * then you must add it to this list!
  */
 // Integer
-SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_int'),'int','Integer','SMWIntegerTypeHandler');
+SMWTypeHandlerFactory::announceTypeHandler('_int','int','Integer','SMWIntegerTypeHandler');
 // URLs etc.
-SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_email'),'email','URI','SMWURITypeHandler','email');
-SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_url'),'url','URI','SMWURITypeHandler','url');
-SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_uri'),'uri','URI','SMWURITypeHandler','uri');
-SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_annouri'),'annouri','URI','SMWURITypeHandler','annouri');
+SMWTypeHandlerFactory::announceTypeHandler('_ema','email','URI','SMWURITypeHandler','email');
+SMWTypeHandlerFactory::announceTypeHandler('_url','url','URI','SMWURITypeHandler','url');
+SMWTypeHandlerFactory::announceTypeHandler('_uri','uri','URI','SMWURITypeHandler','uri');
+SMWTypeHandlerFactory::announceTypeHandler('_ari','annouri','URI','SMWURITypeHandler','annouri');
 // Dates & times
-SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_datetime'),'datetime','DateTime','SMWDateTimeTypeHandler');
+SMWTypeHandlerFactory::announceTypeHandler('_dat','datetime','DateTime','SMWDateTimeTypeHandler');
 // Geographic coordinates
-SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_geocoordinate'),'geocoords','GeoCoords','SMWGeographicLocationTypeHandler');
+SMWTypeHandlerFactory::announceTypeHandler('_geo','geocoords','GeoCoords','SMWGeographicLocationTypeHandler');
 // Enums
-SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_enum'),'enum','Enum','SMWEnumTypeHandler');
+SMWTypeHandlerFactory::announceTypeHandler('_enu','enum','Enum','SMWEnumTypeHandler');
 // Text
-SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_text'),'text','Text','SMWTextTypeHandler');
+//SMWTypeHandlerFactory::announceTypeHandler('_txt','text','Text','SMWTextTypeHandler');
 // Bools
 // Booleans can (and more problematic: will) be modelled by two-valued enums; too much choice yields confusion (note that Categories are also addressing a simliar modelling problem already -- let's not introduce three ways of encoding this)
-//SMWTypeHandlerFactory::announceTypeHandler($smwgContLang->getDatatypeLabel('smw_bool'),'bool','Boolean','SMWBooleanTypeHandler');
+//SMWTypeHandlerFactory::announceTypeHandler('_boo'),'bool','Boolean','SMWBooleanTypeHandler');
 
 /*********************************************************************/
 /* Basic typehandler classes                                         */
@@ -369,52 +357,52 @@ class SMWErrorTypeHandler implements SMWTypeHandler {
 /**
  * Class for managing string types. Very simple.
  */
-class SMWStringTypeHandler implements SMWTypeHandler {
-
-	function getID() {
-		return 'string';
-	}
-
-	function getXSDType() {
-		return 'http://www.w3.org/2001/XMLSchema#string';
-	}
-
-	function getUnits() { //no units for strings
-		return array('STDUNIT'=>false, 'ALLUNITS'=>array());
-	}
-
-	function processValue($value,&$datavalue) {
-		if ($value!='') { //do not accept empty strings
-			$xsdvalue = smwfXMLContentEncode($value);
-			// 255 below matches smw_attributes.value_xsd definition in smwfMakeSemanticTables()
-			// Note that depending on database encoding and UTF-8 settings, longer or
-			// shorter strings than this with int'l characters may exceed database field.
-			if (strlen($xsdvalue) > 255) {
-				$datavalue->setError(wfMsgForContent('smw_maxstring', $xsdvalue));
-			} else {
-				$datavalue->setProcessedValues($value, $xsdvalue);
-				$datavalue->setPrintoutString($value);
-				$datavalue->addQuicksearchLink();
-				// TODO: Performance: this causes a SpecialProperties database query and some callers don't use it.
-				$datavalue->addServiceLinks(urlencode($value));
-			}
-		} else {
-			$datavalue->setError(wfMsgForContent('smw_emptystring'));
-		}
-		return true;
-	}
-
-	function processXSDValue($value,$unit,&$datavalue) {
-		return $this->processValue($value,$datavalue);
-	}
-
-	function isNumeric() {
-		return false;
-	}
-}
-
-SMWTypeHandlerFactory::registerTypeHandler($smwgContLang->getDatatypeLabel('smw_string'),
-                       new SMWStringTypeHandler());
+// class SMWStringTypeHandler implements SMWTypeHandler {
+// 
+// 	function getID() {
+// 		return 'string';
+// 	}
+// 
+// 	function getXSDType() {
+// 		return 'http://www.w3.org/2001/XMLSchema#string';
+// 	}
+// 
+// 	function getUnits() { //no units for strings
+// 		return array('STDUNIT'=>false, 'ALLUNITS'=>array());
+// 	}
+// 
+// 	function processValue($value,&$datavalue) {
+// 		if ($value!='') { //do not accept empty strings
+// 			$xsdvalue = smwfXMLContentEncode($value);
+// 			// 255 below matches smw_attributes.value_xsd definition in smwfMakeSemanticTables()
+// 			// Note that depending on database encoding and UTF-8 settings, longer or
+// 			// shorter strings than this with int'l characters may exceed database field.
+// 			if (strlen($xsdvalue) > 255) {
+// 				$datavalue->setError(wfMsgForContent('smw_maxstring', $xsdvalue));
+// 			} else {
+// 				$datavalue->setProcessedValues($value, $xsdvalue);
+// 				$datavalue->setPrintoutString($value);
+// 				$datavalue->addQuicksearchLink();
+// 				// TODO: Performance: this causes a SpecialProperties database query and some callers don't use it.
+// 				$datavalue->addServiceLinks(urlencode($value));
+// 			}
+// 		} else {
+// 			$datavalue->setError(wfMsgForContent('smw_emptystring'));
+// 		}
+// 		return true;
+// 	}
+// 
+// 	function processXSDValue($value,$unit,&$datavalue) {
+// 		return $this->processValue($value,$datavalue);
+// 	}
+// 
+// 	function isNumeric() {
+// 		return false;
+// 	}
+// }
+// 
+// SMWTypeHandlerFactory::registerTypeHandler('_str'),
+//                        new SMWStringTypeHandler());
 
 /**
  * This method formats a float number value according to the given

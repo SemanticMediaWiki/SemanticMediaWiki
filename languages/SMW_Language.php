@@ -11,8 +11,9 @@ abstract class SMW_Language {
 	// the message arrays ...
 	protected $smwContentMessages;
 	protected $smwUserMessages;
-	protected $smwDatatypeLabels;
 	protected $smwSpecialProperties;
+	protected $m_DatatypeLabels;
+	protected $m_DatatypeAliases = array();
 
 	/**
 	 * Function that returns an array of namespace identifiers.
@@ -20,7 +21,26 @@ abstract class SMW_Language {
 	abstract function getNamespaceArray();
 
 	/**
+	 * Return all labels that are available as names for built-in datatypes. Those
+	 * are the types that users can access via [[has type::...]] (more built-in 
+	 * types may exist for internal purposes but the user won't need to
+	 * know this). The returned array is indexed by (internal) type ids.
+	 */
+	function getDatatypeLabels() {
+		return $this->m_DatatypeLabels;
+	}
+
+	/**
+	 * Return an array that maps aliases to internal type ids. All ids used here
+	 * should also have a primary label defined in m_DatatypeLabels.
+	 */
+	function getDatatypeAliases() {
+		return $this->m_DatatypeAliases;
+	}
+
+	/**
 	 * Function that returns the localised label for a datatype.
+	 * @DEPRECATED
 	 */
 	function getDatatypeLabel($msgid) {
 		return $this->smwDatatypeLabels[$msgid];
@@ -31,6 +51,7 @@ abstract class SMW_Language {
 	 * are exactly the types that users can access via [[has type::...]] (more
 	 * built-in types may exist for internal purposes but the user won't need to
 	 * know this).
+	 * @DEPRECATED
 	 */
 	function getAllDatatypeLabels() {
 		return $this->smwDatatypeLabels;
@@ -40,6 +61,7 @@ abstract class SMW_Language {
 	 * Find the internal message id of some localised message string
 	 * for a datatype. If no type of the given name exists (maybe a 
 	 * custom of compound type) then FALSE is returned.
+	 * @DEPRECATED
 	 */
 	function findDatatypeMsgID($label) {
 		return array_search($label, $this->smwDatatypeLabels);

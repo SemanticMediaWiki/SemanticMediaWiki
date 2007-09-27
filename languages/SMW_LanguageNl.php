@@ -173,21 +173,35 @@ protected $smwUserMessages = array(
 	'smw_result_noresults' => 'Sorry, geen resultaten.'
 );
 
-protected $smwDatatypeLabels = array(
-	'smw_wikipage' => 'Pagina', // name of page datatype
-	'smw_string' => 'String',  // name of the string type
-	'smw_text' => 'Tekst',  // name of the text type
-	'smw_enum' => 'Opsomming',  // name of the enum type
-	'smw_bool' => 'Booleans',  // name of the boolean type
-	'smw_int' => 'Integer',  // name of the int type
-	'smw_float' => 'Float',  // name of the floating point type
-	'smw_geocoordinate' => 'Geographische coordinaat', // name of the geocoord type
-	'smw_temperature' => 'Temperatuur',  // name of the temperature type
-	'smw_datetime' => 'Datum',  // name of the datetime (calendar) type
-	'smw_email' => 'E-mail',  // name of the email (URI) type
-	'smw_url' => 'URL',  // name of the URL type (string datatype property)
-	'smw_uri' => 'URI',  // name of the URI type (object property)
-	'smw_annouri' => 'Annotatie URI'  // name of the annotation URI type (annotation property)
+protected $m_DatatypeLabels = array(
+	'_wpg' => 'Pagina', // name of page datatype
+	'_str' => 'String',  // name of the string type
+	'_txt' => 'Tekst',  // name of the text type
+	'_enu' => 'Opsomming',  // name of the enum type
+	'_boo' => 'Booleans',  // name of the boolean type
+	'_int' => 'Integer',  // name of the int type
+	'_flt' => 'Float',  // name of the floating point type
+	'_geo' => 'Geographische coordinaat', // name of the geocoord type
+	'_tem' => 'Temperatuur',  // name of the temperature type
+	'_dat' => 'Datum',  // name of the datetime (calendar) type
+	'_ema' => 'E-mail',  // name of the email (URI) type
+	'_url' => 'URL',  // name of the URL type (string datatype property)
+	'_uri' => 'URI',  // name of the URI type (object property)
+	'_anu' => 'Annotatie URI'  // name of the annotation URI type (annotation property)
+);
+
+protected $m_DatatypeAliases = array(
+	// support English aliases:
+	'Page'                  => '_wpg',
+	'String'                => '_str',
+	'Text'                  => '_txt',
+	'Integer'               => '_int',
+	'Float'                 => '_flt',
+	'Geographic coordinate' => '_geo',
+	'Temperature'           => '_tem',
+	'Date'                  => '_dat',
+	'Email'                 => '_ema',
+	'Annotation URI'        => '_anu'
 );
 
 protected $smwSpecialProperties = array(

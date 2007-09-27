@@ -51,7 +51,7 @@ class SMWGeographicLocationTypeHandler implements SMWTypeHandler {
 	}
 
 	function getID() {
-		return 'geocoords';
+		return '_geo';
 	}
 
 	function getXSDType() {

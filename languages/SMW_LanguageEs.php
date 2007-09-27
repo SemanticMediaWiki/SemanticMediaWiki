@@ -187,21 +187,35 @@ protected $smwUserMessages = array(
 	'smw_result_noresults' => 'Lo siento, no hay resultados.'
 );
 
-protected $smwDatatypeLabels = array(
-	'smw_wikipage' => 'Page', // name of page datatype  //TODO translate
-	'smw_string' => 'Cadena de caracteres',  // name of the string type
-	'smw_text' => 'Texto',  // name of the text type (very long strings)
-	'smw_enum' => 'Enumeración',  // name of the enum type
-	'smw_bool' => 'Booleano',  // name of the boolean type
-	'smw_int' => 'Número entero',  // name of the int type
-	'smw_float' => 'Número con coma',  // name of the floating point type
-	'smw_geocoordinate' => 'Coordenadas geográficas', // name of the geocoord type
-	'smw_temperature' => 'Temperatura',  // name of the temperature type
-	'smw_datetime' => 'Fecha',  // name of the datetime (calendar) type
-	'smw_email' => 'Dirección electrónica',  // name of the email (URI) type
-	'smw_url' => 'URL',  // name of the URL type (string datatype property)
-	'smw_uri' => 'URI',  // name of the URI type (object property)
-	'smw_annouri' => 'Anotación-URI'  // name of the annotation URI type (annotation property)
+protected $m_DatatypeLabels = array(
+	'_wpg' => 'Page', // name of page datatype  //TODO translate
+	'_str' => 'Cadena de caracteres',  // name of the string type
+	'_txt' => 'Texto',  // name of the text type (very long strings)
+	'_enu' => 'Enumeración',  // name of the enum type
+	//'_boo' => 'Booleano',  // name of the boolean type
+	'_int' => 'Número entero',  // name of the int type
+	'_flt' => 'Número con coma',  // name of the floating point type
+	'_geo' => 'Coordenadas geográficas', // name of the geocoord type
+	'_tem' => 'Temperatura',  // name of the temperature type
+	'_dat' => 'Fecha',  // name of the datetime (calendar) type
+	'_ema' => 'Dirección electrónica',  // name of the email (URI) type
+	'_url' => 'URL',  // name of the URL type (string datatype property)
+	'_uri' => 'URI',  // name of the URI type (object property)
+	'_anu' => 'Anotación-URI'  // name of the annotation URI type (annotation property)
+);
+
+protected $m_DatatypeAliases = array(
+	// support English aliases:
+	'Page'                  => '_wpg',
+	'String'                => '_str',
+	'Text'                  => '_txt',
+	'Integer'               => '_int',
+	'Float'                 => '_flt',
+	'Geographic coordinate' => '_geo',
+	'Temperature'           => '_tem',
+	'Date'                  => '_dat',
+	'Email'                 => '_ema',
+	'Annotation URI'        => '_anu'
 );
 
 protected $smwSpecialProperties = array(

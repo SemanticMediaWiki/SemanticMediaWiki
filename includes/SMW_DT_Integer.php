@@ -11,7 +11,7 @@
 class SMWIntegerTypeHandler implements SMWTypeHandler {
 
 	function getID() {
-		return 'int';
+		return '_int';
 	}
 
 	function getXSDType() {

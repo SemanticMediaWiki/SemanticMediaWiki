@@ -48,10 +48,10 @@ class SMWURITypeHandler implements SMWTypeHandler {
 
 	function getID() {
 		switch ($this->mMode) {
-			case SMW_URI_MODE_EMAIL: return 'email';
-			case SMW_URI_MODE_URL: return 'url';
-			case SMW_URI_MODE_URI: return 'uri';
-			case SMW_URI_MODE_ANNOURI: return 'annouri';
+			case SMW_URI_MODE_EMAIL: return '_ema';
+			case SMW_URI_MODE_URL: return '_url';
+			case SMW_URI_MODE_URI: return '_uri';
+			case SMW_URI_MODE_ANNOURI: return '_anu';
 		}
 	}
 

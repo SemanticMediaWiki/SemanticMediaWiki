@@ -55,7 +55,7 @@ class TypesPage extends QueryPage {
 		$sql = "(SELECT 'Types' as type, {$NStype} as namespace, page_title as title, " .
 		        "page_title as value, 1 as count FROM $page WHERE page_namespace = $NStype)";
 		// make SQL for built-in datatypes
-		foreach ($smwgContLang->getAllDatatypeLabels() as $label) {
+		foreach (SMWDataValueFactory::getKnownTypeLabels() as $label) {
 			$label = str_replace(' ', '_', $label); // DBkey form so that SQL can elminate duplicates
 			$sql .= " UNION (SELECT 'Types' as type,  {$NStype} as namespace, '$label' as title, " .
 		            "'$label' as value, 1 as count)";

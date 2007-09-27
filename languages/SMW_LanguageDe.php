@@ -177,21 +177,35 @@ protected $smwUserMessages = array(
 	'smw_result_noresults' => 'Keine Ergebnisse gefunden.'
 );
 
-protected $smwDatatypeLabels = array(
-	'smw_wikipage' => 'Seite', // name of page datatype
-	'smw_string' => 'Zeichenkette',  // name of the string type
-	'smw_text' => 'Text',  // name of the text type
-	'smw_enum' => 'Aufzählung',  // name of the enum type
-	'smw_bool' => 'Wahrheitswert',  // name of the boolean type
-	'smw_int' => 'Ganze Zahl',  // name of the int type
-	'smw_float' => 'Dezimalzahl',  // name of the floating point type
-	'smw_geocoordinate' => 'Geografische Koordinaten', // name of the geocoord type
-	'smw_temperature' => 'Temperatur',  // name of the temperature type
-	'smw_datetime' => 'Datum',  // name of the datetime (calendar) type
-	'smw_email' => 'Email',  // name of the email (URI) type
-	'smw_url' => 'URL',  // name of the URL type (string datatype property)
-	'smw_uri' => 'URI',  // name of the URI type (object property)
-	'smw_annouri' => 'URI-Annotation'  // name of the annotation URI type (annotation property)
+protected $m_DatatypeLabels = array(
+	'_wpg' => 'Seite', // name of page datatype
+	'_str' => 'Zeichenkette',  // name of the string type
+	'_txt' => 'Text',  // name of the text type
+	'_enu' => 'Aufzählung',  // name of the enum type
+	//'_boo' => 'Wahrheitswert',  // name of the boolean type
+	'_int' => 'Ganze Zahl',  // name of the int type
+	'_flt' => 'Dezimalzahl',  // name of the floating point type
+	'_geo' => 'Geografische Koordinaten', // name of the geocoord type
+	'_tem' => 'Temperatur',  // name of the temperature type
+	'_dat' => 'Datum',  // name of the datetime (calendar) type
+	'_ema' => 'Email',  // name of the email (URI) type
+	'_url' => 'URL',  // name of the URL type (string datatype property)
+	'_uri' => 'URI',  // name of the URI type (object property)
+	'_anu' => 'URI-Annotation'  // name of the annotation URI type (annotation property)
+);
+
+protected $m_DatatypeAliases = array(
+	// support English aliases:
+	'Page'                  => '_wpg',
+	'String'                => '_str',
+	'Text'                  => '_txt',
+	'Integer'               => '_int',
+	'Float'                 => '_flt',
+	'Geographic coordinate' => '_geo',
+	'Temperature'           => '_tem',
+	'Date'                  => '_dat',
+	'Email'                 => '_ema',
+	'Annotation URI'        => '_anu'
 );
 
 protected $smwSpecialProperties = array(
@@ -200,7 +214,6 @@ protected $smwSpecialProperties = array(
 	SMW_SP_HAS_URI   => 'Gleichwertige URI',
 	SMW_SP_SUBPROPERTY_OF => 'Untereigenschaft von',
 	SMW_SP_MAIN_DISPLAY_UNIT => 'Erste Ausgabeeinheit',
-	// SMW_SP_MAIN_DISPLAY_UNIT => 'Primärmaßeinheit für Schirmanzeige', // Great! We really should keep this wonderful translation here! Still, I am not fully certain about my versions either. -- mak
 	SMW_SP_DISPLAY_UNIT => 'Ausgabeeinheit',
 	SMW_SP_IMPORTED_FROM => 'Importiert aus',
 	SMW_SP_CONVERSION_FACTOR => 'Entspricht',

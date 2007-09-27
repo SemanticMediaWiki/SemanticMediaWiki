@@ -11,7 +11,7 @@
 class SMWBooleanTypeHandler implements SMWTypeHandler {
 
 	function getID() {
-		return 'boolean';
+		return '_boo';
 	}
 
 	function getXSDType() {
