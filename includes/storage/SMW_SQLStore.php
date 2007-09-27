@@ -1620,9 +1620,6 @@ class SMWSQLStore extends SMWStore {
 						}
 						///TODO: implement check for unit
 						$where .= $table . '.' .  $valuefield . $op . $db->addQuotes($value);
-						if ($sort != '') {
-							$this->m_sortfield = $table . '.' . $valuefield;
-						}
 					}
 			}
 		} elseif ($description instanceof SMWValueList) {
