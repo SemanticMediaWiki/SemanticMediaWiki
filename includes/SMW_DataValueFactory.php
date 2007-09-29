@@ -288,7 +288,7 @@ class SMWDataValueFactory {
 		$id = array_search($label, SMWDataValueFactory::$m_typelabels);
 		if ($id !== false) {
 			return $id;
-		} elseif (array_key_exists($label, SMWDataValueFactory::$m_typealiases)) {
+		} elseif ( ($useAlias) && (array_key_exists($label, SMWDataValueFactory::$m_typealiases)) ) {
 			return SMWDataValueFactory::$m_typealiases[$label];
 		} else {
 			return str_replace(' ', '_', $label);
