@@ -63,13 +63,14 @@ class SMWTypesValue extends SMWDataValue {
 			$captions = $this->getTypeCaptions();
 			reset($captions);
 			foreach ($this->getTypeLabels() as $type) {
-				$caption = next($captions);
+				$caption = current($captions);
 				if ($first) {
 					$first = false;
 				} else {
 					$result .= ', ';
 				}
 				$result .= '[[' . $typenamespace . ':' . $type . '|' . $caption . ']]';
+				next($captions);
 			}
 			return $result;
 		}
@@ -93,14 +94,17 @@ class SMWTypesValue extends SMWDataValue {
 			}
 			$result = '';
 			$first = true;
+			reset($captions);
 			foreach ($this->getTypeLabels() as $type) {
+				$caption = current($captions);
 				if ($first) {
 					$first = false;
 				} else {
 					$result .= ', ';
 				}
 				$title = Title::newFromText($type, SMW_NS_TYPE);
-				$result .= $linker->makeLinkObj( $title, $type);
+				$result .= $linker->makeLinkObj( $title, $caption);
+				next($captions);
 			}
 			return $result;
 		}
