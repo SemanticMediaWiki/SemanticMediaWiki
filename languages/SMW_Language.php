@@ -39,35 +39,6 @@ abstract class SMW_Language {
 	}
 
 	/**
-	 * Function that returns the localised label for a datatype.
-	 * @DEPRECATED
-	 */
-	function getDatatypeLabel($msgid) {
-		return $this->smwDatatypeLabels[$msgid];
-	}
-
-	/**
-	 * Return all labels that are available as names for built-in datatypes. Those
-	 * are exactly the types that users can access via [[has type::...]] (more
-	 * built-in types may exist for internal purposes but the user won't need to
-	 * know this).
-	 * @DEPRECATED
-	 */
-	function getAllDatatypeLabels() {
-		return $this->smwDatatypeLabels;
-	}
-
-	/**
-	 * Find the internal message id of some localised message string
-	 * for a datatype. If no type of the given name exists (maybe a 
-	 * custom of compound type) then FALSE is returned.
-	 * @DEPRECATED
-	 */
-	function findDatatypeMsgID($label) {
-		return array_search($label, $this->smwDatatypeLabels);
-	}
-
-	/**
 	 * Function that returns the labels for the special relations and attributes.
 	 */
 	function getSpecialPropertiesArray() {
