@@ -44,7 +44,7 @@ remarks in the section "Notes on Upgrading" below!
     directory "SemanticMediaWiki" that contains all relevant files. Copy this
     directory to "[wikipath]/extensions/" (or extract/download it to this place).
     We abbreviate "[wikipath]/extensions/SemanticMediaWiki" as "[SMW_path]" below.
-(2) If you use MediaWiki 1.9 or smaller, you *must* manually change the file
+(2) If you use MediaWiki 1.9 or lower, you *must* manually change the file
     "[wikipath]/includes/Parser.php". Open the file in some text editor and find
     the first line "$text = $this->replaceVariables( $text, $args );" located
     around line 1000 in the function "internalParse". Right after this line, insert 
