@@ -314,6 +314,7 @@ class SMWOldDataValue extends SMWDataValue {
 		}
 		// add tooltip (only if "linking" is enabled)
 		if ( ($linked !== NULL) && ($linked !==false) && ($this->getTooltip() != '') ) {
+			smwfRequireHeadItem(SMW_SCRIPT_TOOLTIP);
 			$result = '<span class="smwttinline">' . $result . '<span class="smwttcontent">' . $this->getTooltip() . '</span></span>';
 		}
 		return $result;

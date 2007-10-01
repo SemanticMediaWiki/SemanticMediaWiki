@@ -26,6 +26,13 @@ define('SMW_FACTBOX_HIDDEN', 1);
 define('SMW_FACTBOX_NONEMPTY',  3);
 define('SMW_FACTBOX_SHOWN',  5);
 
+// constants for identifying javascripts as used in smwfRequireHeadItem
+define('SMW_SCRIPT_TIMELINE', 1);
+define('SMW_SCRIPT_TOOLTIP', 2);
+define('SMW_SCRIPT_SORTTABLE', 3);
+// HTML items to load in current page; format: "idtext => "<script ... "
+$smwgHeadItems = array();
+
 /**
  * Switch on Semantic MediaWiki. This function must be called in LocalSettings.php
  * after incldung this file. It is used to ensure that required parameters for SMW
@@ -119,6 +126,7 @@ function smwfSetupExtension() {
 	$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries'; // a hook for registering the <ask> parser hook
 	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage';
 	$wgHooks['LoadAllMessages'][] = 'smwfLoadAllMessages'; // enable a complete display of all messages when requested by MW
+	$wgHooks['ParserAfterTidy'][] = 'smwfInsertHTMLHeaders';
 
 	///// credits (see "Special:Version") /////
 	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, Markus&nbsp;Kr&ouml;tzsch, Denny&nbsp;Vrandecic, S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://ontoworld.org/wiki/Semantic_MediaWiki', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://ontoworld.org/wiki/Help:Semantics View online documentation.]');
@@ -140,7 +148,7 @@ function smwfRegisterInlineQueries( &$parser, &$text, &$stripstate ) {
 /**
  * The <ask> parser hook processing part.
  */
-function smwfProcessInlineQuery($text, $param) {
+function smwfProcessInlineQuery($text, $param, &$parser) {
 	global $smwgQEnabled, $smwgIP;
 	if ($smwgQEnabled) {
 		require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
@@ -153,6 +161,50 @@ function smwfProcessInlineQuery($text, $param) {
 /**********************************************/
 /***** Header modifications               *****/
 /**********************************************/
+
+/**
+ * Hook function to insert HTML headers into parser output.
+ */
+function smwfInsertHTMLHeaders(&$parser, &$text) {
+	global $smwgHeadItems;
+	foreach ($smwgHeadItems as $item) {
+		$parser->mOutput->addHeadItem($item);
+	}
+	$smwgHeadItems = array(); // flush array
+	return true;
+}
+
+/**
+ * Add a head item (e.g. JavaScript) to the current list of things that
+ * SMW will add to the output page. This works only while a page is parsed.
+ * The $id can be one of SMW's internal numerical IDs for builtin scripts,
+ * or a non-numerical tag that uniquely identifies this item, followed by 
+ * the full HTML-text $item that is to be added.
+ */
+function smwfRequireHeadItem($id, $item='') {
+	global $smwgHeadItems;
+	if (is_numeric($id)) { //builtin head items
+		global $smwgScriptPath;
+		// Note: currently all scripts need the sorttable-script to work, and some tooltips require the timeline.
+		// This is bad and will change.
+		switch ($id) {
+			case SMW_SCRIPT_TIMELINE:
+				smwfRequireHeadItem(SMW_SCRIPT_SORTTABLE);
+				$smwgHeadItems['smw_tl'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SimileTimeline/timeline-api.js"></script>';
+				$smwgHeadItems['smw_tlhelper'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_timeline.js"></script>';
+			return;
+			case SMW_SCRIPT_TOOLTIP:
+				smwfRequireHeadItem(SMW_SCRIPT_TIMELINE);
+				$smwgHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
+			return;
+			case SMW_SCRIPT_SORTTABLE:
+				 $smwgHeadItems['smw_st'] ='<script type="text/javascript" id="SMW_sorttable_script_inclusion" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
+			return;
+		}
+	} else { // custom head items
+		$smwgHeadItems[$id] = $item;
+	}
+}
 
 	/**
 	*  This method is in charge of inserting additional CSS, JScript, and meta tags
@@ -169,20 +221,31 @@ function smwfProcessInlineQuery($text, $param) {
 		global $smwgArticleHeadersInPlace; // record whether article name specific headers are already there
 		global $smwgScriptPath;
 
-		if (!$smwgHeadersInPlace) {
-			$sortTableScript = '<script type="text/javascript" id="SMW_sorttable_script_inclusion" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
-			// The above id is essential for the JavaScript to find out the $smwgScriptPath to
-			// include images. Changes in the above must always be coordinated with the script!
-			$out->addScript($sortTableScript);
+		global $smwgHeadItems;
+		
+		// Fallback: add scripts to output if not done already (should happen only if we are
+		// not using a parser, e.g on special pages.
+		$i = 0;
+		foreach ($smwgHeadItems as $item) {
+			$out->addHeadItem("smw_$i", $item);
+			$i++;
+		}
+		$smwgHeadItems = array(); // flush array
 
-			$toolTipScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
-			$out->addScript($toolTipScript);
+		if (!$smwgHeadersInPlace) {
+// 			$sortTableScript = '<script type="text/javascript" id="SMW_sorttable_script_inclusion" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
+// 			// The above id is essential for the JavaScript to find out the $smwgScriptPath to
+// 			// include images. Changes in the above must always be coordinated with the script!
+// 			$out->addScript($sortTableScript);
+
+// 			$toolTipScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
+// 			$out->addScript($toolTipScript);
 
 			// TODO: we should rather have a script that only pulls the whole Timeline on demand, if possible
-			$TimelineScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SimileTimeline/timeline-api.js"></script>';
-			$SMWTimelineScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_timeline.js"></script>';
-			$out->addScript($TimelineScript);
-			$out->addScript($SMWTimelineScript);
+// 			$TimelineScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SimileTimeline/timeline-api.js"></script>';
+// 			$SMWTimelineScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_timeline.js"></script>';
+// 			$out->addScript($TimelineScript);
+// 			$out->addScript($SMWTimelineScript);
 
 			// Also we add a custom CSS file for our needs
 			$customCssUrl = $smwgScriptPath . '/skins/SMW_custom.css';
@@ -416,6 +479,7 @@ function smwfProcessInlineQuery($text, $param) {
 	 */
 	function smwfEncodeMessages($msgarray) {
 		if (count($msgarray) > 0) {
+			smwfRequireHeadItem(SMW_SCRIPT_TOOLTIP);
 			$msgs = implode(' ', $msgarray);
 			return '<span class="smwttpersist"><span class="smwtticon">warning.png</span><span class="smwttcontent">' . $msgs . '</span></span>';
 		} else {
