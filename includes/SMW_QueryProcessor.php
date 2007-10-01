@@ -8,8 +8,6 @@
 
 global $smwgIP;
 require_once($smwgIP . '/includes/storage/SMW_Store.php');
-require_once($smwgIP . '/includes/SMW_QueryPrinters.php');
-
 
 /**
  * Static class for accessing functions to generate and execute semantic queries 

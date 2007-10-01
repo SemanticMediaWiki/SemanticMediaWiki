@@ -69,6 +69,14 @@ function smwfSetupExtension() {
 
 	$smwgMasterStore = NULL;
 	smwfInitContentMessages();
+	
+	///// setup some autoloading /////
+	$wgAutoloadClasses[SMWResultPrinter]         = $smwgIP . '/includes/SMW_QueryPrinter.php';
+	$wgAutoloadClasses[SMWTableResultPrinter]    = $smwgIP . '/includes/SMW_QP_Table.php';
+	$wgAutoloadClasses[SMWListResultPrinter]     = $smwgIP . '/includes/SMW_QP_List.php';
+	$wgAutoloadClasses[SMWTimelineResultPrinter] = $smwgIP . '/includes/SMW_QP_Timeline.php';
+	$wgAutoloadClasses[SMWEmbeddedResultPrinter] = $smwgIP . '/includes/SMW_QP_Embedded.php';
+	$wgAutoloadClasses[SMWTemplateResultPrinter] = $smwgIP . '/includes/SMW_QP_Template.php';
 
 	///// register specials /////
 	$wgAutoloadClasses['SMWAskPage'] = $smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php';

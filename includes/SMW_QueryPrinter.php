@@ -1,0 +1,134 @@
+<?php
+/**
+ * Abstract base class for printing qurey results.
+ * @author Markus Krötzsch
+ */
+
+/**
+ * Abstract base class for SMW's novel query printing mechanism. It implements
+ * part of the former functionality of SMWInlineQuery (everything related to
+ * output formatting and the correspoding parameters) and is subclassed by concrete
+ * printers that provide the main formatting functionality.
+ */
+abstract class SMWResultPrinter {
+
+	// parameters:
+	protected $mFormat;  // a string identifier describing a valid format
+	protected $mIntro = ''; // text to print before the output in case it is *not* empty
+	protected $mSearchlabel = NULL; // text to use for link to further results, or empty if link should not be shown
+	protected $mLinkFirst; // should article names of the first column be linked?
+	protected $mLinkOthers; // should article names of other columns (besides the first) be linked?
+	protected $mDefault = ''; // default return value for empty queries
+	protected $mShowHeaders = true; // should the headers (property names) be printed?
+	protected $mInline; // is this query result "inline" in some page (only then a link to unshown results is created, error handling may also be affected)
+	protected $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
+
+	/**
+	 * Constructor. The parameter $format is a format string
+	 * that may influence the processing details.
+	 */
+	public function SMWResultPrinter($format, $inline) {
+		global $smwgQDefaultLinking;
+		$this->mFormat = $format;
+		$this->mInline = $inline;
+		$this->mLinkFirst = ($smwgQDefaultLinking != 'none');
+		$this->mLinkOthers = ($smwgQDefaultLinking == 'all');
+		$this->mLinker = new Linker(); ///TODO: how can we get the default or user skin here (depending on context)?
+	}
+
+	/**
+	 * Main entry point: takes an SMWQueryResult and parameters
+	 * given as key-value-pairs in an array and returns the 
+	 * serialised version of the results, formatted as inline HTML
+	 * or (for special printers) as RDF or XML or whatever. Normally
+	 * not overwritten by subclasses.
+	 */
+	public function getResultHTML($results, $params) {
+		$this->readParameters($params);
+		if ($results->getCount() == 0) {
+			if (!$results->hasFurtherResults()) {
+				return htmlspecialchars($this->mDefault);
+			} elseif ($this->mInline) {
+				$label = $this->mSearchlabel;
+				if ($label === NULL) { //apply defaults
+					$result = '<a href="' . $results->getQueryURL() . '">' . wfMsgForContent('smw_iq_moreresults') . '</a>';
+				} else {
+					$result = '<a href="' . $results->getQueryURL() . '">' . $label . '</a>';
+				}
+				$result .= $this->getErrorString($results); // just append error messages
+				return $result;
+			}
+		}
+		return $this->getHTML($results);
+	}
+
+	/**
+	 * Read an array of parameter values given as key-value-pairs and
+	 * initialise internal member fields accordingly. Possibly overwritten
+	 * (extended) by subclasses.
+	 */
+	protected function readParameters($params) {
+		if (array_key_exists('intro', $params)) {
+			$this->mIntro = htmlspecialchars(str_replace('_', ' ', $params['intro']));
+		}
+		if (array_key_exists('searchlabel', $params)) {
+			$this->mSearchlabel = htmlspecialchars($params['searchlabel']);
+		}
+		if (array_key_exists('link', $params)) {
+			switch (strtolower($params['link'])) {
+			case 'head': case 'subject':
+				$this->mLinkFirst = true;
+				$this->mLinkOthers  = false;
+				break;
+			case 'all':
+				$this->mLinkFirst = true;
+				$this->mLinkOthers  = true;
+				break;
+			case 'none':
+				$this->mLinkFirst = false;
+				$this->mLinkOthers  = false;
+				break;
+			}
+		}
+		if (array_key_exists('default', $params)) {
+			$this->mDefault = htmlspecialchars(str_replace('_', ' ', $params['default']));
+		}
+		if (array_key_exists('headers', $params)) {
+			if ( 'hide' == strtolower($params['headers'])) {
+				$this->mShowHeaders = false;
+			} else {
+				$this->mShowHeaders = true;
+			}
+		}
+	}
+
+	/**
+	 * Return HTML version of serialised results.
+	 * Implemented by subclasses.
+	 */
+	abstract protected function getHTML($res);
+
+	/**
+	 * Depending on current linking settings, returns a linker object
+	 * for making hyperlinks or NULL if no links should be created.
+	 *
+	 * @param $firstrow True of this is the first result row (having special linkage settings).
+	 */
+	protected function getLinker($firstcol = false) {
+		if ( ($firstcol && $this->mLinkFirst) || (!$firstcol && $this->mLinkOthers) ) {
+			return $this->mLinker;
+		} else {
+			return NULL;
+		}
+	}
+
+	/**
+	 * Provides a simple formatted string of all the error messages that occurred.
+	 * Can be used if not specific error formatting is desired. Compatible with HTML
+	 * and Wiki.
+	 */
+	protected function getErrorString($res) {
+		return smwfEncodeMessages($res->getErrors());
+	}
+
+}
