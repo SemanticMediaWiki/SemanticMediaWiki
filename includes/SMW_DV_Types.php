@@ -21,15 +21,16 @@ class SMWTypesValue extends SMWDataValue {
 	protected function parseUserValue($value) {
 		// no use for being lazy here: plain user values are never useful
 		$this->m_typelabels = array();
+		$this->m_typecaptions = array();
 		$types = explode(';', $value);
 		foreach ($types as $type) {
 			$type = ltrim($type, ' [');
 			$type = rtrim($type, ' ]');
 			$ttype = Title::newFromText($type,SMW_NS_TYPE);
-			if ($ttype->getNamespace() == SMW_NS_TYPE) {
+			if ( ($ttype !== NULL) && ($ttype->getNamespace() == SMW_NS_TYPE) ) {
 				$this->m_typecaptions[] = $type;
 				$this->m_typelabels[] = SMWDataValueFactory::findTypeLabel(SMWDataValueFactory::findTypeID($ttype->getText()));
-			} // else: wrong namespace given -- what now? TODO
+			} // else: wrong namespace or invalid title given -- what now? TODO
 		}
 	}
 
