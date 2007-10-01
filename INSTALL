@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 0.7]]
+[[Semantic MediaWiki 1.0 * PRE-RELEASE]]
 
 Contents:
 * Disclaimer
@@ -22,7 +22,7 @@ For a proper legal disclaimer, see the file "COPYING".
 
 == Requirements ==
 
-- MediaWiki 1.9.* or 1.10 (versions >=1.7 might still work)
+- MediaWiki 1.10.* (tested on 1.10.1 and 1.11.0).  
 - PHP 5.x or greater installed and working
 - MySQL >= 4.0.14 (version required by MediaWiki)
 
@@ -35,6 +35,9 @@ php_mbstring.dll extension. This is standard but not enabled by default
 on some distributions of PHP.
 See http://php.net/manual/en/ref.mbstring.php#mbstring.installation
 
+* MediaWiki versions prior to 1.10 lack an OutputPage->addHeadItem that SMW uses.
+
+
 == Installation ==
 
 If you upgrade an existing installation of Semantic MediaWiki, also read the
@@ -44,21 +47,12 @@ remarks in the section "Notes on Upgrading" below!
     directory "SemanticMediaWiki" that contains all relevant files. Copy this
     directory to "[wikipath]/extensions/" (or extract/download it to this place).
     We abbreviate "[wikipath]/extensions/SemanticMediaWiki" as "[SMW_path]" below.
-(2) If you use MediaWiki 1.9 or lower, you *must* manually change the file
-    "[wikipath]/includes/Parser.php". Open the file in some text editor and find
-    the first line "$text = $this->replaceVariables( $text, $args );" located
-    around line 1000 in the function "internalParse". Right after this line, insert 
-    the new line:
-
-      wfRunHooks( 'InternalParseBeforeLinks', array( &$this, &$text ) );
-
-    Users of MediaWiki 1.10 or greater do not have to do this.
-(3) Insert the following lines into the file "[wikipath]/LocalSettings.php":
+(2) Insert the following lines into the file "[wikipath]/LocalSettings.php":
      include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');
      enableSemantics('example.org');
     where example.org should be replaced by your server's name (or IP address).
     If you have custom namespaces (e.g. "Portal"), read the note below.
-(4) In your wiki, log in as a user with admin status and go to the page
+(3) In your wiki, log in as a user with admin status and go to the page
     "Special:SMWAdmin" to do the final setup steps.
 
 '''Remark:'''  Semantic MediaWiki uses six additional custom namespaces (see
@@ -92,17 +86,28 @@ instructions to find out whether other changes are recommended therein.
 
 == Notes on Upgrading ==
 
-* This SVN Version des not provide a simple upgrade mechanism for existing wikis yet. *
-* If you upgrade, trigger Special:SMWAdmin again and run the maintenance script       *
-* "SMW_refreshData.php" twice (the first run can be restricted to properties using    *
-* the parameter -p.                                                                   *
-
-The below instructions describe how to upgrade from one minor version to the next, e.g.
+The instructions below describe how to upgrade from one minor version to the next, e.g.
 from 0.2 (or 0.2b) to 0.3. If you missed one of the updates (e.g. if you want to jump
 from 0.1 to 0.3) then it is wise to proceed stepwise: install all intermediate versions
 subsequently and follow the given update instructions. For example, first upgrade from 0.1
 to 0.2 before upgrading further from 0.2 to 0.3. Also, do not forget to backup your
 database before any upgrade.
+
+'''Upgrading from version 0.7'''
+
+* This SVN Version does not provide a simple upgrade mechanism for existing wikis yet.*
+* If you upgrade, trigger Special:SMWAdmin again and run the maintenance script       *
+* "SMW_refreshData.php" twice (the first run can be restricted to properties using    *
+* the parameter -p.                                                                   *
+
+1.0 unifies relations and attributes into Properties, although they are still separate
+tables in the database.  Many factboxes and queries should work, but our wiki will 
+have broken links to relation and property pages.
+See http://ontoworld.org/wiki/Upgrading_from_SMW_0.7_to_SMW_1.0 for guidelines on what
+to fix.
+
+SMW_unifyProperties.php script, TODO: document this?   
+
 
 '''Upgrading from version 0.6 or 0.5'''
 
@@ -112,6 +117,10 @@ now obsolete (but your changes should have vanished when MediaWiki 1.10 anyway).
 The file SMW_LocalSettings.php is now obsolete. Modify your LocalSettings.php as described
 above, and import your changes in SMW_LocalSettings.php, if any, into LocalSettings.php as
 well.
+
+SMW 1.0 now requires MediaWiki 1.10 or higher; the manual change to 
+"[wikipath]/includes/Parser.php" that SMW needed to run on earlier versions of MediaWiki
+no longer applies.
 
 '''Upgrading from 0.4.x:'''
 
@@ -133,12 +142,10 @@ listed as a Parser Hook and several wfSMWXxxx functions listed as Extension
 Functions.
 
 Create a regular wiki page named "TestSMW", and in it enter the wiki text
-  Relation test:  [[testrelation::Dummypage]]
-  Attribute test: [[testattribute:=dummyvalue]]
+  Property test:  [[testproperty::Dummypage]]
 
 when you preview and save the page, the SMW "Factbox" should appear showing the
-relation Testrelation to Dummypage and the attribute Testattribute with a warning
-(since you haven't given it a type).
+Testproperty as a link Dummypage.
 
 If you don't get these results, check the steps in the Installation section, consult
 the FAQ section, then contact the user support list (see the Contact section).
@@ -155,11 +162,11 @@ the FAQ section, then contact the user support list (see the Contact section).
 
   Start with a kind of article that occurs often in your wiki, possibly with
   some type of articles that is already collected in some category, such as
-  cities, persons, or software projects. For these articles, introduce a small
-  amount of relations and attributes, and annotate many of the articles in
-  this way. As with categories, less is often more in semantic annotation: do
-  not use overly specific relations or attributes. A relation that is not
-  applicable in at least ten or twenty articles is hardly useful.
+  cities, persons, or software projects. For these articles, introduce a few
+  properties, and annotate many of the articles with the property.
+  As with categories, less is often more in semantic annotation: do
+  not use overly specific properties. A property that is not applicable to at
+  least ten articles is hardly useful.
 
   Templates can greatly simplify initial annotation. Create a flashy template
   for your users to play with, and hide the semantic annotations in the code
@@ -183,10 +190,10 @@ the FAQ section, then contact the user support list (see the Contact section).
   information. Cleaning too specific and possibly contradictory annotations
   can be more problematic.
 
-  Regularly review users' use of categories, relations, attributes, and types
-  using the Special pages for each.
+  Regularly review users' use of categories, properties, and types using 
+  the Special pages for each.
 
-- Problem: Previewing or storing articles with semantic relations causes
+- Problem: Previewing or storing articles with semantic properties causes
   database errors.
 
   Your database was not initialized properly. Go to Special:SMWAdmin for
@@ -199,15 +206,15 @@ the FAQ section, then contact the user support list (see the Contact section).
   You probably use a version of MediaWiki that is smaller or equal to 1.9.*
   and you did not make the required changes in Parser.php as described above.
 
-- Problem: In my non-English installation, attributes and relations don't
-  work even when I follow the examples.
+- Problem: In my non-English installation, properties don't work even when 
+  I follow the examples.
 
   You must use the localized names for special properties and namespaces.
   Although MediaWiki has some support for canonical (English) names such as
   Category and Special:Allpages, the SMW extension requires localized names.
-  Thus in a German wiki, instead of creating a page Attribute:abc with
-  [[Has type::Type:String]], you must create page Attribut:abc with
-  [[Hat Datentyp::Datentyp:Zeichenkette]]
+  Thus in a German wiki, instead of creating a page Property:abc with
+  [[Has type::String]], you must create page Attribut:abc with
+  [[Hat Datentyp::Zeichenkette]]
   The translated strings for each language are in the languages subdirectory.
 
 - Problem: After installing SMW, some or all pages are not displayed at all.
