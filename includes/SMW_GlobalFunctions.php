@@ -185,7 +185,7 @@ function smwfRequireHeadItem($id, $item = '') {
 			return;
 			case SMW_HEADER_TOOLTIP:
 				smwfRequireHeadItem(SMW_HEADER_STYLE);
-				smwfRequireHeadItem(SMW_HEADER_TIMELINE); /// TODO: make obsolete
+				smwfRequireHeadItem(SMW_HEADER_SORTTABLE); /// TODO: make obsolete
 				$smwgHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
 			return;
 			case SMW_HEADER_SORTTABLE:

@@ -51,7 +51,7 @@ function smw_makePersistentTooltip(a) {
 		}
 	}
 	//register event with anchor
-	if (Timeline.Platform.browser.isIE) {
+	if (BubbleTT.Platform.browser.isIE) {
 		a.attachEvent("onclick", smw_showTooltipPersist);
 	} else {
 		a.addEventListener("click", smw_showTooltipPersist, false);
@@ -79,7 +79,7 @@ function smw_showTooltipPersist(e) {
 	BubbleTT.fillBubble(tt, origin);
 
 	//unregister handler to open bubble 
-	if (Timeline.Platform.browser.isIE) {
+	if (BubbleTT.Platform.browser.isIE) {
 		origin.detachEvent("onclick", smw_showTooltipPersist);
 	} else {
 		origin.removeEventListener("click", smw_showTooltipPersist, false);
@@ -177,7 +177,7 @@ BubbleTT.createBubbleForPoint = function(closingButton, origin, pageX, pageY, co
 				this._content = null;
 				this._closed = true;
 			if(closingButton){//for persistent bubble: re-attach handler to open bubble again
-			if (Timeline.Platform.browser.isIE) {
+			if (BubbleTT.Platform.browser.isIE) {
 					origin.attachEvent("onclick", smw_showTooltipPersist);
 				} else {
 					origin.addEventListener("click", smw_showTooltipPersist, false);
