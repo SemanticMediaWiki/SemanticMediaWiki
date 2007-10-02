@@ -44,6 +44,14 @@ $smwgShowFactbox = SMW_FACTBOX_NONEMPTY;
 ##
 
 ###
+# Same as $smwgShowFactbox but for edit mode.
+##
+$smwgShowFactboxEdit = SMW_FACTBOX_NONEMPTY;
+//$smwgShowFactbox = SMW_FACTBOX_HIDDEN; # hide always
+//$smwgShowFactbox = SMW_FACTBOX_SHOWN; # show always, buggy and not recommended
+##
+
+###
 # Number results shown in the listings on pages of properties (attributes or
 # relations) and types.
 ##

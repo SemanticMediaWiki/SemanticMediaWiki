@@ -23,6 +23,7 @@ define('SMW_SP_SUBPROPERTY_OF',17);
 
 // constants for displaying the factbox
 define('SMW_FACTBOX_HIDDEN', 1);
+define('SMW_FACTBOX_SPECIAL', 2);
 define('SMW_FACTBOX_NONEMPTY',  3);
 define('SMW_FACTBOX_SHOWN',  5);
 
