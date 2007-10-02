@@ -51,11 +51,11 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 					} else {
 						$wikitext .= ', ';
 					}
-					$wikitext .= $text;
+					$wikitext .= $text; //str_replace(array('=','|'), array('&#x003D;', '&#x007C;'),$text); // encode '=' and '|' for use in templates (templates fail otherwise)
 				}
 				$firstcol = false;
 			}
-			$parserinput .= '{{' . $this->m_template . str_replace(array('=','|'), array('&#x003D;', '&#x007C;'), $wikitext) . '}}'; // encode '=' and '|' for use in templates (templates fail otherwise)
+			$parserinput .= '{{' . $this->m_template .  $wikitext . '}}';
 		}
 		$parserOutput = $parser->parse($parserinput, $wgTitle, $parser_options);
 		$result = $parserOutput->getText();

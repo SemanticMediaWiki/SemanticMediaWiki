@@ -1,6 +1,6 @@
 <?php
 /**
- * Print query results in tables.
+ * Print query results by embeddings them into pages.
  * @author Markus Krötzsch
  */
 

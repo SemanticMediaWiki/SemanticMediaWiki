@@ -83,7 +83,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					}
 					$first_col = false;
 				}
-				$result .= '{{' . $this->mTemplate . str_replace(array('=','|'), array('&#x003D;', '&#x007C;'), $wikitext) . '}}'; // encode '=' and '|' for use in templates (templates fail otherwise)
+				$result .= '{{' . $this->mTemplate . $wikitext . '}}'; 
+				//str_replace(array('=','|'), array('&#x003D;', '&#x007C;'), // encode '=' and '|' for use in templates (templates fail otherwise) -- this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
 			} else {  // build simple list
 				$first_col = true;
 				$found_values = false; // has anything but the first column been printed?
