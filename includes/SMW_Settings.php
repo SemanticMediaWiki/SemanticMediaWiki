@@ -39,16 +39,15 @@ if (!isset($smwgNamespaceIndex)) {
 # which shows only those factboxes that have some content. Other options:
 ##
 $smwgShowFactbox = SMW_FACTBOX_NONEMPTY;
+//$smwgShowFactbox = SMW_FACTBOX_SPECIAL # show only if special properties were set
 //$smwgShowFactbox = SMW_FACTBOX_HIDDEN; # hide always
 //$smwgShowFactbox = SMW_FACTBOX_SHOWN; # show always, buggy and not recommended
 ##
 
 ###
-# Same as $smwgShowFactbox but for edit mode.
+# Same as $smwgShowFactbox but for edit mode and same possible values.
 ##
 $smwgShowFactboxEdit = SMW_FACTBOX_NONEMPTY;
-//$smwgShowFactbox = SMW_FACTBOX_HIDDEN; # hide always
-//$smwgShowFactbox = SMW_FACTBOX_SHOWN; # show always, buggy and not recommended
 ##
 
 ###
