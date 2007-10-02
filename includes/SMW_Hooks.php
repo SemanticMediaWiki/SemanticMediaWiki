@@ -48,10 +48,11 @@
 	* link.
 	*/
 	function smwfParsePropertiesCallback($semanticLink) {
+		global $smwgInlineErrors;
 		wfProfileIn("smwfParsePropertiesCallback (SMW)");
 		if (array_key_exists(2,$semanticLink)) {
-			$attribute = $semanticLink[2];
-		} else { $attribute = ''; }
+			$property = $semanticLink[2];
+		} else { $property = ''; }
 		if (array_key_exists(3,$semanticLink)) {
 			$value = $semanticLink[3];
 		} else { $value = ''; }
@@ -60,12 +61,14 @@
 		} else { $valueCaption = false; }
 
 		//extract annotations and create tooltip
-		$attributes = preg_split('/:[=|:]/', $attribute);
-		foreach($attributes as $singleAttribute) {
-			$attr = SMWFactbox::addProperty($singleAttribute,$value,$valueCaption);
+		$properties = preg_split('/:[=|:]/', $property);
+		foreach($properties as $singleprop) {
+			$dv = SMWFactbox::addProperty($singleprop,$value,$valueCaption);
 		}
-
-		$result = $attr->getShortWikitext(true);
+		$result = $dv->getShortWikitext(true);
+		if ( ($smwgInlineErrors) && (!$dv->isValid()) ) {
+			$result .= $dv->getErrorText();
+		}
 		wfProfileOut("smwfParsePropertiesCallback (SMW)");
 		return $result;
 	}

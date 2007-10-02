@@ -231,7 +231,7 @@ abstract class SMWDataValue {
 	 * an empty string if no errors happened.
 	 */
 	public function getErrorText() {
-		return smwfEncodeMessages($this->m_errors) . '&nbsp;'; // &nbsp; is a hack to get non-empty table rows for better img placement in FF (any maybe elsewhere too); should not hurt
+		return smwfEncodeMessages($this->m_errors);
 	}
 
 	/**

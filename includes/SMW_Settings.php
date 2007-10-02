@@ -52,6 +52,14 @@ $smwgShowFactboxEdit = SMW_FACTBOX_NONEMPTY;
 ##
 
 ###
+# Should warnings be displayed in wikitexts right after the problematic
+# input? This currently affects only semantic annotations, not warnings
+# that are displayed by inline queries.
+##
+$smwgInlineErrors = true;
+##
+
+###
 # Number results shown in the listings on pages of properties (attributes or
 # relations) and types.
 ##
