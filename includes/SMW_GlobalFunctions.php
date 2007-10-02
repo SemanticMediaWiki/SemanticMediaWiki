@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.0prealpha-4');
+define('SMW_VERSION','1.0alpha-1');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -27,10 +27,12 @@ define('SMW_FACTBOX_NONEMPTY',  3);
 define('SMW_FACTBOX_SHOWN',  5);
 
 // constants for identifying javascripts as used in smwfRequireHeadItem
-define('SMW_SCRIPT_TIMELINE', 1);
-define('SMW_SCRIPT_TOOLTIP', 2);
-define('SMW_SCRIPT_SORTTABLE', 3);
-// HTML items to load in current page; format: "idtext => "<script ... "
+define('SMW_HEADER_TIMELINE', 1);
+define('SMW_HEADER_TOOLTIP', 2);
+define('SMW_HEADER_SORTTABLE', 3);
+define('SMW_HEADER_STYLE', 4);
+
+// HTML items to load in current page, use smwfRequireHeadItem to extend
 $smwgHeadItems = array();
 
 /**
@@ -40,14 +42,16 @@ $smwgHeadItems = array();
  * SMW_LocalSettings.php. For readability, this is the only global function that
  * does not adhere to the naming conventions.
  */
-function enableSemantics($namespace = "", $complete = false) {
-	global $smwgNamespace, $wgExtensionFunctions, $wgHooks;
-	$smwgNamespace = $namespace;
-
+function enableSemantics($namespace = '', $complete = false) {
+	global $smwgNamespace, $wgExtensionFunctions;
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
-	if (!$complete && !($smwgNamespace === '')) $smwgNamespace = ".$smwgNamespace";
+	if ( !$complete && ($smwgNamespace !== '') ) {
+		$smwgNamespace = '.' . $namespace;
+	} else {
+		$smwgNamespace = $namespace;
+	}
 	$wgExtensionFunctions[] = 'smwfSetupExtension';
 	return true;
 }
@@ -65,7 +69,7 @@ function smwfSetupExtension() {
 	* the static SMWSemanticData store, and disables printing of the
 	* factbox, and clearing of the existing data.
 	* This is a hack to enable parsing of included articles in a save
-	* way without importing their annotations. Unfortunatelly, there
+	* way without importing their annotations. Unfortunately, there
 	* appears to be no way for finding out whether the current parse
 	* is the "main" parse, or whether some intro, docu, or whatever
 	* text is parsed. Using the hook mechanism, we have to rely on
@@ -78,12 +82,12 @@ function smwfSetupExtension() {
 	smwfInitContentMessages();
 	
 	///// setup some autoloading /////
-	$wgAutoloadClasses[SMWResultPrinter]         = $smwgIP . '/includes/SMW_QueryPrinter.php';
-	$wgAutoloadClasses[SMWTableResultPrinter]    = $smwgIP . '/includes/SMW_QP_Table.php';
-	$wgAutoloadClasses[SMWListResultPrinter]     = $smwgIP . '/includes/SMW_QP_List.php';
-	$wgAutoloadClasses[SMWTimelineResultPrinter] = $smwgIP . '/includes/SMW_QP_Timeline.php';
-	$wgAutoloadClasses[SMWEmbeddedResultPrinter] = $smwgIP . '/includes/SMW_QP_Embedded.php';
-	$wgAutoloadClasses[SMWTemplateResultPrinter] = $smwgIP . '/includes/SMW_QP_Template.php';
+	$wgAutoloadClasses['SMWResultPrinter']         = $smwgIP . '/includes/SMW_QueryPrinter.php';
+	$wgAutoloadClasses['SMWTableResultPrinter']    = $smwgIP . '/includes/SMW_QP_Table.php';
+	$wgAutoloadClasses['SMWListResultPrinter']     = $smwgIP . '/includes/SMW_QP_List.php';
+	$wgAutoloadClasses['SMWTimelineResultPrinter'] = $smwgIP . '/includes/SMW_QP_Timeline.php';
+	$wgAutoloadClasses['SMWEmbeddedResultPrinter'] = $smwgIP . '/includes/SMW_QP_Embedded.php';
+	$wgAutoloadClasses['SMWTemplateResultPrinter'] = $smwgIP . '/includes/SMW_QP_Template.php';
 
 	///// register specials /////
 	$wgAutoloadClasses['SMWAskPage'] = $smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php';
@@ -113,20 +117,16 @@ function smwfSetupExtension() {
 	require_once($smwgIP . '/includes/SMW_Hooks.php');
 	require_once($smwgIP . '/includes/SMW_RefreshTab.php');
 
-	if ($smwgEnableTemplateSupport===true) {
-		$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; //patch required;
-	} else {
-		$wgHooks['ParserAfterStrip'][] = 'smwfParserHook'; //default setting
-	}
+	$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; // parse annotations
+	$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries'; // register the <ask> parser hook
+	$wgHooks['ArticleSaveComplete'][] = 'smwfSaveHook'; // store annotations
+	$wgHooks['ArticleDelete'][] = 'smwfDeleteHook'; // delete annotations
+	$wgHooks['TitleMoveComplete'][]='smwfMoveHook'; // move annotations
+	$wgHooks['ParserAfterTidy'][] = 'smwfAddHTMLHeadersParser'; // add items to HTML header during parsing
+	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeadersOutput'; // add items to HTML header during output
 
-	$wgHooks['ArticleSaveComplete'][] = 'smwfSaveHook';
-	$wgHooks['ArticleDelete'][] = 'smwfDeleteHook';
-	$wgHooks['TitleMoveComplete'][]='smwfMoveHook';
-	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeader';
-	$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries'; // a hook for registering the <ask> parser hook
-	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage';
-	$wgHooks['LoadAllMessages'][] = 'smwfLoadAllMessages'; // enable a complete display of all messages when requested by MW
-	$wgHooks['ParserAfterTidy'][] = 'smwfInsertHTMLHeaders';
+	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage'; // special implementations for property/type articles
+	$wgHooks['LoadAllMessages'][] = 'smwfLoadAllMessages'; // complete setup of all messages when requested by MW
 
 	///// credits (see "Special:Version") /////
 	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, Markus&nbsp;Kr&ouml;tzsch, Denny&nbsp;Vrandecic, S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://ontoworld.org/wiki/Semantic_MediaWiki', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://ontoworld.org/wiki/Help:Semantics View online documentation.]');
@@ -163,131 +163,77 @@ function smwfProcessInlineQuery($text, $param, &$parser) {
 /**********************************************/
 
 /**
- * Hook function to insert HTML headers into parser output.
+ * Add some head items (e.g. JavaScripts) to the current list of things 
+ * that SMW will add to the returned HTML page. The ID can be one of SMW's
+ * SMW_HEADER_... constants, or a string id followed by the actual item
+ * that should be added to the output html header. In the first case, the
+ * $item parameter should be left empty.
  */
-function smwfInsertHTMLHeaders(&$parser, &$text) {
+function smwfRequireHeadItem($id, $item = '') {
 	global $smwgHeadItems;
-	foreach ($smwgHeadItems as $item) {
-		$parser->mOutput->addHeadItem($item);
-	}
-	$smwgHeadItems = array(); // flush array
-	return true;
-}
-
-/**
- * Add a head item (e.g. JavaScript) to the current list of things that
- * SMW will add to the output page. This works only while a page is parsed.
- * The $id can be one of SMW's internal numerical IDs for builtin scripts,
- * or a non-numerical tag that uniquely identifies this item, followed by 
- * the full HTML-text $item that is to be added.
- */
-function smwfRequireHeadItem($id, $item='') {
-	global $smwgHeadItems;
-	if (is_numeric($id)) { //builtin head items
+	if (is_numeric($id)) {
 		global $smwgScriptPath;
 		// Note: currently all scripts need the sorttable-script to work, and some tooltips require the timeline.
 		// This is bad and will change.
 		switch ($id) {
-			case SMW_SCRIPT_TIMELINE:
-				smwfRequireHeadItem(SMW_SCRIPT_SORTTABLE);
+			case SMW_HEADER_TIMELINE:
+				smwfRequireHeadItem(SMW_HEADER_STYLE);
+				smwfRequireHeadItem(SMW_HEADER_SORTTABLE); /// TODO: make obsolete
 				$smwgHeadItems['smw_tl'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SimileTimeline/timeline-api.js"></script>';
 				$smwgHeadItems['smw_tlhelper'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_timeline.js"></script>';
 			return;
-			case SMW_SCRIPT_TOOLTIP:
-				smwfRequireHeadItem(SMW_SCRIPT_TIMELINE);
+			case SMW_HEADER_TOOLTIP:
+				smwfRequireHeadItem(SMW_HEADER_STYLE);
+				smwfRequireHeadItem(SMW_HEADER_TIMELINE); /// TODO: make obsolete
 				$smwgHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
 			return;
-			case SMW_SCRIPT_SORTTABLE:
-				 $smwgHeadItems['smw_st'] ='<script type="text/javascript" id="SMW_sorttable_script_inclusion" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
+			case SMW_HEADER_SORTTABLE:
+				smwfRequireHeadItem(SMW_HEADER_STYLE);
+				$smwgHeadItems['smw_st'] = '<script type="text/javascript" id="SMW_sorttable_script_inclusion" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
+			return;
+			case SMW_HEADER_STYLE:
+				global $wgContLang;
+				$smwgHeadItems['smw_css'] = '<link rel="stylesheet" type="text/css" media="screen, projection" href="' . $smwgScriptPath . '/skins/SMW_custom.css" />';
+				if ($wgContLang->isRTL()) { // right-to-left support
+					$smwgHeadItems['smw_cssrtl'] = '<link rel="stylesheet" type="text/css" media="screen, projection" href="' . $smwgScriptPath . '/skins/SMW_custom_rtl.css" />';
+				}
 			return;
 		}
-	} else { // custom head items
+	} else { // custom head item
 		$smwgHeadItems[$id] = $item;
 	}
 }
 
-	/**
-	*  This method is in charge of inserting additional CSS, JScript, and meta tags
-	*  into the html header of each page. It is either called after initialising wgout
-	*  (requiring a patch in MediaWiki), or during parsing. Calling it during parsing,
-	*  however, is not sufficient to get the header modifiactions into every page that
-	*  is shipped to a reader, since the parser cache can make parsing obsolete.
-	*
-	*  $out is the modified OutputPage.
-	*/
-	function smwfAddHTMLHeader(&$out) {
-		wfProfileIn('smwfAddHTMLHeader (SMW)');
-		global $smwgHeadersInPlace; // record whether headers were created already
-		global $smwgArticleHeadersInPlace; // record whether article name specific headers are already there
-		global $smwgScriptPath;
-
-		global $smwgHeadItems;
-		
-		// Fallback: add scripts to output if not done already (should happen only if we are
-		// not using a parser, e.g on special pages.
-		$i = 0;
-		foreach ($smwgHeadItems as $item) {
-			$out->addHeadItem("smw_$i", $item);
-			$i++;
-		}
-		$smwgHeadItems = array(); // flush array
-
-		if (!$smwgHeadersInPlace) {
-// 			$sortTableScript = '<script type="text/javascript" id="SMW_sorttable_script_inclusion" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
-// 			// The above id is essential for the JavaScript to find out the $smwgScriptPath to
-// 			// include images. Changes in the above must always be coordinated with the script!
-// 			$out->addScript($sortTableScript);
-
-// 			$toolTipScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
-// 			$out->addScript($toolTipScript);
-
-			// TODO: we should rather have a script that only pulls the whole Timeline on demand, if possible
-// 			$TimelineScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SimileTimeline/timeline-api.js"></script>';
-// 			$SMWTimelineScript = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_timeline.js"></script>';
-// 			$out->addScript($TimelineScript);
-// 			$out->addScript($SMWTimelineScript);
-
-			// Also we add a custom CSS file for our needs
-			$customCssUrl = $smwgScriptPath . '/skins/SMW_custom.css';
-			$out->addLink(array(
-				'rel'   => 'stylesheet',
-				'type'  => 'text/css',
-				'media' => 'screen, projection',
-				'href'  => $customCssUrl
-			));
-
-			//BEGIN RTL PATCH
-			global $wgContLang;
-			if ($wgContLang->isRTL()) {
-				$customCssUrl = $smwgScriptPath . '/skins/SMW_custom_rtl.css';
-				$out->addLink(array(
-					'rel'   => 'stylesheet',
-					'type'  => 'text/css',
-					'media' => 'screen, projection',
-					'href'  => $customCssUrl
-				));
-			}
-			//END RTL PATCH
-			$smwgHeadersInPlace = true;
-		}
-
-		if ((!$smwgArticleHeadersInPlace) && ($out->mIsarticle) && ($out->mPagetitle!='')) {
-			global $wgContLang, $wgServer, $wgScript;
-
-			$out->addLink(array(
-				'rel'   => 'alternate',
-				'type'  => 'application/rdf+xml',
-				'title' => $out->mPagetitle,
-				'href'  => $wgServer . $wgScript . '/' .
-				           $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' .
-				           str_replace('%2F', "/", urlencode(str_replace(' ', '_', $out->mPagetitle))) . '?xmlmime=rdf'
-			));
-			$smwgArticleHeadersInPlace = true;
-		}
-		wfProfileOut('smwfAddHTMLHeader (SMW)');
-
-		return true; // always return true, in order not to stop MW's hook processing!
+/**
+ * Hook function to insert HTML headers (CSS, JavaScript, and meta tags) into parser 
+ * output. This is our preferred method of working off the required scripts, since it 
+ * exploits parser caching.
+ */
+function smwfAddHTMLHeadersParser(&$parser, &$text) {
+	global $smwgHeadItems;
+	foreach ($smwgHeadItems as $key => $item) {
+		$parser->mOutput->addHeadItem("\t\t" . $item . "\n", $key);
 	}
+	$smwgHeadItems = array(); // flush array so that smwfAddHTMLHeader does not take needless actions
+	return true;
+}
+
+/**
+ * This method is in charge of inserting additional CSS, JavaScript, and meta tags
+ * into the HTML header of each page. This method is needed for pages that are not 
+ * parsed, especially for special pages. All others get their headers with the parser
+ * output (exploiting parser caching).
+ */
+function smwfAddHTMLHeadersOutput(&$out) {
+	global $smwgHeadItems;
+	// Add scripts to output if not done already (should happen only if we are
+	// not using a parser, e.g on special pages).
+	foreach ($smwgHeadItems as $key => $item) {
+		$out->addHeadItem($key, "\t\t" . $item . "\n");
+	}
+	$smwgHeadItems = array(); // flush array
+	return true; // always return true, in order not to stop MW's hook processing!
+}
 
 /**********************************************/
 /***** namespace settings                 *****/
@@ -312,9 +258,7 @@ function smwfRequireHeadItem($id, $item='') {
 		define('SMW_NS_TYPE',           $smwgNamespaceIndex+4);
 		define('SMW_NS_TYPE_TALK',      $smwgNamespaceIndex+5);
 
-		/// @DEPRECATED
-		define('SMW_NS_ATTRIBUTE',      $smwgNamespaceIndex+2);
-		define('SMW_NS_ATTRIBUTE_TALK', $smwgNamespaceIndex+3);
+		/// For backwards compatibility. Might vanish at some point.
 		define('SMW_NS_RELATION',       $smwgNamespaceIndex);
 		define('SMW_NS_RELATION_TALK',  $smwgNamespaceIndex+1);
 
@@ -479,7 +423,7 @@ function smwfRequireHeadItem($id, $item='') {
 	 */
 	function smwfEncodeMessages($msgarray) {
 		if (count($msgarray) > 0) {
-			smwfRequireHeadItem(SMW_SCRIPT_TOOLTIP);
+			smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
 			$msgs = implode(' ', $msgarray);
 			return '<span class="smwttpersist"><span class="smwtticon">warning.png</span><span class="smwttcontent">' . $msgs . '</span></span>';
 		} else {

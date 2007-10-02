@@ -115,7 +115,7 @@ class SMWStringValue extends SMWDataValue {
 			if ( ($linked === NULL)||($linked === false) ) {
 				return mb_substr($this->m_value, 0, 42) . ' <span class="smwwarning">&hellip;</span> ' . mb_substr($this->m_value, $len - 42);
 			} else {
-				smwfRequireHeadItem(SMW_SCRIPT_TOOLTIP);
+				smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
 				return mb_substr($this->m_value, 0, 42) . ' <span class="smwttpersist"> &hellip; <span class="smwttcontent">' . $this->m_value . '</span></span> ' . mb_substr($this->m_value, $len - 42);
 			}
 		} else {

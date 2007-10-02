@@ -11,7 +11,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 	protected function getHTML($res) {
 		global $smwgIQRunningNumber;
-		smwfRequireHeadItem(SMW_SCRIPT_SORTTABLE);
+		smwfRequireHeadItem(SMW_HEADER_SORTTABLE);
 
 		// print header
 		if ('broadtable' == $this->mFormat)

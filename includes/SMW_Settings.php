@@ -142,16 +142,6 @@ $smwgDefaultStore = SMW_STORE_MWDB;
 ##
 
 ###
-# Set the following value to "true" if you want to enable support
-# for semantic annotations within templates. For the moment, this
-# will only work if after minor change in your MediaWiki files --
-# see INSTALL for details. Enabling this is necessary for normal
-# operation.
-##
-$smwgEnableTemplateSupport = true;
-##
-
-###
 # Setting this to true allows to translate all the labels within
 # the browser GIVEN that they have interwiki links.
 ##

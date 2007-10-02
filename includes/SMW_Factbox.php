@@ -196,6 +196,7 @@ class SMWFactbox {
 		global $wgContLang, $wgServer, $smwgShowFactbox, $smwgStoreActive, $smwgIP;
 		if (!$smwgStoreActive) return;
 		wfProfileIn("SMWFactbox::printFactbox (SMW)");
+		smwfRequireHeadItem(SMW_HEADER_STYLE);
 		switch ($smwgShowFactbox) {
 		case SMW_FACTBOX_HIDDEN:
 			wfProfileOut("SMWFactbox::printFactbox (SMW)");
