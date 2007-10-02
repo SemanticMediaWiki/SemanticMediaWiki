@@ -3,8 +3,7 @@
 // Modified for SMW (in fact, we might rewrite the code since we
 // usually have very special tables to sort)
 
-addEvent(window, "load", smw_sortables_init);
-//addOnLoadHook(sortables_init);
+addOnloadHook(smw_sortables_init);
 
 var SORT_COLUMN_INDEX;
 var SMW_PATH;
@@ -12,9 +11,10 @@ var SMW_PATH;
 function smw_sortables_init() {
 	// The following is a hack to find out the path to our skin directory
 	// I am happy to change this into anything else if there is another way ...
-	if (!document.getElementById) return;
-	st = document.getElementById("SMW_sorttable_script_inclusion");
-	SMW_PATH = st.src.substring(0, st.src.length-17);
+// 	if (!document.getElementById) return;
+// 	st = document.getElementById("SMW_sorttable_script_inclusion");
+// 	SMW_PATH = st.src.substring(0, st.src.length-17);
+	SMW_PATH = wgScriptPath + "/extensions/SemanticMediaWiki/skins/";
 	// Preload images
 	smw_preload_images();
 	// Now find the tables

@@ -3,12 +3,9 @@
  * for inserting the required Simile scripts if needed.
  */
 
-addEvent(window, "load", smw_timeline_init);
-//addEvent(window, "resize", onResize);
-
 var smwtl;
 
-//addOnLoadHook(smw_timeline_init);
+addOnloadHook(smw_timeline_init);
 
 function smw_timeline_init() {
 	if (!document.getElementsByName) return;
@@ -255,13 +252,15 @@ function smw_add_event(evspan,evs) {
 }
 
 //FIXME: Not used at the moment. Is this needed?
-var resizeTimerID = null;
-function onResize() {
-    if (resizeTimerID == null) {
-        resizeTimerID = window.setTimeout(function() {
-            resizeTimerID = null;
-            smwtl.layout();
-        }, 500);
-    }
-}
+//addEvent(window, "resize", onResize);
+
+// var resizeTimerID = null;
+// function onResize() {
+//     if (resizeTimerID == null) {
+//         resizeTimerID = window.setTimeout(function() {
+//             resizeTimerID = null;
+//             smwtl.layout();
+//         }, 500);
+//     }
+// }
 

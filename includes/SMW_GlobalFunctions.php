@@ -174,23 +174,19 @@ function smwfRequireHeadItem($id, $item = '') {
 	global $smwgHeadItems;
 	if (is_numeric($id)) {
 		global $smwgScriptPath;
-		// Note: currently all scripts need the sorttable-script to work, and some tooltips require the timeline.
-		// This is bad and will change.
 		switch ($id) {
 			case SMW_HEADER_TIMELINE:
 				smwfRequireHeadItem(SMW_HEADER_STYLE);
-				smwfRequireHeadItem(SMW_HEADER_SORTTABLE); /// TODO: make obsolete
 				$smwgHeadItems['smw_tl'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SimileTimeline/timeline-api.js"></script>';
 				$smwgHeadItems['smw_tlhelper'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_timeline.js"></script>';
 			return;
 			case SMW_HEADER_TOOLTIP:
 				smwfRequireHeadItem(SMW_HEADER_STYLE);
-				smwfRequireHeadItem(SMW_HEADER_SORTTABLE); /// TODO: make obsolete
 				$smwgHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
 			return;
 			case SMW_HEADER_SORTTABLE:
 				smwfRequireHeadItem(SMW_HEADER_STYLE);
-				$smwgHeadItems['smw_st'] = '<script type="text/javascript" id="SMW_sorttable_script_inclusion" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
+				$smwgHeadItems['smw_st'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
 			return;
 			case SMW_HEADER_STYLE:
 				global $wgContLang;
