@@ -33,15 +33,15 @@ class SMWSearchByProperty extends SpecialPage {
 		$valuestring = $wgRequest->getVal( 'value' );
 		// no GET parameters? Then try the URL
 		if (('' == $attributestring) && ('' == $valuestring)) {
-			$queryparts = explode(':=', $query);
+			$queryparts = explode('::', $query);
 			$attributestring = $query;
 			if (count($queryparts) == 2) {
 				$attributestring = $queryparts[0];
 				$valuestring = str_replace("_", " ", $queryparts[1]);
 			}
 		}
-		$attribute = Title::newFromText( $attributestring, SMW_NS_ATTRIBUTE );
-		if (NULL == $attribute) { $attributestring = ''; } else { $attributestring = $attribute->getText(); }
+		$attribute = Title::newFromText( $attributestring, SMW_NS_PROPERTY );
+		if (NULL === $attribute) { $attributestring = ''; } else { $attributestring = $attribute->getText(); }
 
 		$limit = $wgRequest->getVal( 'limit' );
 		if ('' == $limit) $limit =  20;

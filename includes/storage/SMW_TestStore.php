@@ -61,7 +61,7 @@ class SMWTestStore extends SMWStore {
 		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
 			return array(); // TODO: any better idea?
 		} elseif ($specialprop === SMW_SP_HAS_TYPE) { // redirections
-			return $this->getTestTitles($requestoptions, SMW_NS_ATTRIBUTE);
+			return $this->getTestTitles($requestoptions, SMW_NS_PROPERTY);
 		} else {
 			return $this->getTestTitles($requestoptions);
 		}
@@ -116,7 +116,7 @@ class SMWTestStore extends SMWStore {
 		if ( ($requestoptions->limit == -1) || $requestoptions->limit > 8) {
 			$requestoptions->limit = 8;
 		}
-		return $this->getTestTitles($requestoptions, SMW_NS_ATTRIBUTE);
+		return $this->getTestTitles($requestoptions, SMW_NS_PROPERTY);
 	}
 
 	function getRelationObjects(Title $subject, Title $relation, $requestoptions = NULL) {
@@ -207,7 +207,7 @@ class SMWTestStore extends SMWStore {
 	private function getTestTitles($requestoptions, $namespace = -1) {
 		$result = Array();
 		$initarray = Array();
-		if ($namespace == SMW_NS_ATTRIBUTE) {
+		if ($namespace == SMW_NS_PROPERTY) {
 			$initarray = array( 'Teststring','Testint','Testfloat','Testcoords','Testdate','Testenum');
 		}
 		for ($i=0; $i<300; $i++) {

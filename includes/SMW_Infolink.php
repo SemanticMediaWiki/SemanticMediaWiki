@@ -37,7 +37,7 @@ class SMWInfolink {
 	 */
 	public static function newPropertySearchLink($caption,$propertyname,$value,$style = 'smwsearch') {
 		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByProperty/' .  $propertyname . ':=' . $value, $style);
+		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByProperty/' .  $propertyname . '::' . $value, $style);
 	}
 
 	/**
@@ -71,6 +71,7 @@ class SMWInfolink {
 	 */
 	public function getHTML($skin) {
 		if ($this->style !== false) {
+			smwfRequireHeadItem(SMW_HEADER_STYLE); // make SMW styles available
 			$start = "<span class=\"$this->style\">";
 			$end = '</span>';
 		} else {
@@ -94,6 +95,7 @@ class SMWInfolink {
 	 */
 	public function getWikiText() {
 		if ($this->style !== false) {
+			smwfRequireHeadItem(SMW_HEADER_STYLE); // make SMW styles available
 			$start = "<span class=\"$this->style\">";
 			$end = '</span>';
 		} else {
@@ -109,49 +111,6 @@ class SMWInfolink {
 		} else {
 			return $start . "[$this->target $this->caption]" . $end;
 		}
-	}
-
-
-///// Deprecated transition functions
-
-	/**
-	 * Static function to construct links to attribute searches.
-	 * @DEPRECATED
-	 */
-	public static function newAttributeSearchLink($caption,$attribute,$value,$style = 'smwsearch') {
-		trigger_error("Function newAttributeSearchLink is deprecated. Use new property methods.", E_USER_NOTICE);
-		return SMWInfolink::newPropertySearchLink($caption,$attribute,$value,$style);
-	}
-
-	/**
-	 * Static function to construct links to relation searches.
-	 * @DEPRECATED
-	 */
-	public static function newRelationSearchLink($caption,$relation,$object,$style = 'smwsearch') {
-		trigger_error("Function newRelationSearchLink is deprecated. Use new property methods.", E_USER_NOTICE);
-		return SMWInfolink::newPropertySearchLink($caption,$relation,$value,$style);
-// 		global $wgContLang;
-// 		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByRelation/' . $relation . '::' . $object, $style);
-	}
-
-	/**
-	 * Static function to construct links to inverse relation searches.
-	 * @DEPRECATED
-	 */
-	public static function newInverseRelationSearchLink($caption,$subject,$relation,$style = false) {
-		trigger_error("Function newInverseRelationSearchLink is deprecated. Use new property methods.", E_USER_NOTICE);
-		return SMWInfolink::newInversePropertySearchLink($caption,$subject,$relation,$style);
-// 		global $wgContLang;
-// 		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':PageProperty/' .  $subject . '::' . $relation, $style);
-	}
-
-	/**
-	 * Static function to construct links to inverse attribute searches.
-	 * @DEPRECATED
-	 */
-	public static function newInverseAttributeSearchLink($caption,$subject,$attribute,$style = false) {
-		trigger_error("Function newInverseAttributeSearchLink is deprecated. Use new property methods.", E_USER_NOTICE);
-		return SMWInfolink::newInversePropertySearchLink($caption,$subject,$attribute,$style);
 	}
 
 }

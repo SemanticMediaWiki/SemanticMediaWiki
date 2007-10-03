@@ -132,7 +132,7 @@ class SMWTypeHandlerFactory {
 			$store = smwfGetStore();
 
 			SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute] = Array();
-			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
+			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $attribute);
 			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
 				// get main display unit:
 				$auprops = $store->getSpecialValues($atitle, SMW_SP_MAIN_DISPLAY_UNIT);
@@ -208,7 +208,7 @@ class SMWTypeHandlerFactory {
 		if(!array_key_exists($attribute, SMWTypeHandlerFactory::$serviceLinksByAttribute)) {
 			global $wgContLang;
 			SMWTypeHandlerFactory::$serviceLinksByAttribute[$attribute] = Array();
-			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_ATTRIBUTE) . ':' . $attribute);
+			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $attribute);
 			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
 				$auprops = smwfGetStore()->getSpecialValues($atitle, SMW_SP_SERVICE_LINK);
 				if (count($auprops) > 0) { // ignore any further service link annotations if given

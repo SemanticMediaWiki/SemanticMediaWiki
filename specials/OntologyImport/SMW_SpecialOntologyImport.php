@@ -151,7 +151,7 @@ class SMWOntologyImport {
 			}
 			if (!$propertyIsAttribute->isEmpty()) {
 				$pLabel = SMWOntologyImport::getLabel($property, $model);
-				$pt = Title::newFromText( $pLabel , SMW_NS_ATTRIBUTE );
+				$pt = Title::newFromText( $pLabel , SMW_NS_PROPERTY );
 				if ($pt == NULL) continue; // Could not create a title, next please
 				if ($pt->exists()) {
 					$pclassnew = '';
@@ -461,7 +461,7 @@ class SMWOntologyImport {
 			while ($it->hasNext()) {
 				$statement = $it->next();
 				$subject = $statement->getSubject();
-				$message .= SMWOntologyImport::displayEntity($subject, SMW_NS_ATTRIBUTE, $model, $enr++);
+				$message .= SMWOntologyImport::displayEntity($subject, SMW_NS_PROPERTY, $model, $enr++);
 			}
 
 			$it  = $model->findAsIterator(NULL, RDF::TYPE(), NULL);
