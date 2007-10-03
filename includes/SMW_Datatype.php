@@ -229,10 +229,9 @@ class SMWTypeHandlerFactory {
 // Integer
 SMWTypeHandlerFactory::announceTypeHandler('_int','int','Integer','SMWIntegerTypeHandler');
 // URLs etc.
-SMWTypeHandlerFactory::announceTypeHandler('_ema','email','URI','SMWURITypeHandler','email');
-SMWTypeHandlerFactory::announceTypeHandler('_url','url','URI','SMWURITypeHandler','url');
-SMWTypeHandlerFactory::announceTypeHandler('_uri','uri','URI','SMWURITypeHandler','uri');
-SMWTypeHandlerFactory::announceTypeHandler('_ari','annouri','URI','SMWURITypeHandler','annouri');
+// SMWTypeHandlerFactory::announceTypeHandler('_ema','email','URI','SMWURITypeHandler','email');
+// SMWTypeHandlerFactory::announceTypeHandler('_uri','uri','URI','SMWURITypeHandler','uri');
+// SMWTypeHandlerFactory::announceTypeHandler('_anu','annouri','URI','SMWURITypeHandler','annouri');
 // Dates & times
 SMWTypeHandlerFactory::announceTypeHandler('_dat','datetime','DateTime','SMWDateTimeTypeHandler');
 // Geographic coordinates

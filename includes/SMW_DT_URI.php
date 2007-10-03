@@ -2,6 +2,10 @@
 /**
  * This file contains a typehandler for accepting URIs (and URLs) of various
  * kinds.
+ * 
+ * @DEPRECATED
+ * This file is klept only for temporary reference. The current implementation 
+ * is in SMW_DV_URI.php.
  *
  * @author Markus Krötzsch
  */
