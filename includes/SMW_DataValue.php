@@ -246,10 +246,10 @@ abstract class SMWDataValue {
 	 * Exports the datavalue to RDF (i.e. it returns a string that consists
 	 * of the lines that, in RDF/XML, can be fitted between the object-tags.
 	 * This should be overwritten.
-	 * QName -- the qualified name that the data value should use for exporting,
+	 * @param QName -- the qualified name that the data value should use for exporting,
 	 * since it may be an imported name.
-	 * Exporter -- the exporting object
-	 * TODO make it an abstract function? Not sure.
+	 * @param Exporter -- the exporting object
+	 * @TODO: could we provide a more useful default? (e.g. export as untyped)
 	 */
 	public function exportToRDF($QName, ExportRDF $exporter) {
 		$type = $this->getTypeID();

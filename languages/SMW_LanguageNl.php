@@ -184,13 +184,13 @@ protected $m_DatatypeLabels = array(
 	'_geo' => 'Geographische coordinaat', // name of the geocoord type
 	'_tem' => 'Temperatuur',  // name of the temperature type
 	'_dat' => 'Datum',  // name of the datetime (calendar) type
-	'_ema' => 'E-mail',  // name of the email (URI) type
-	'_url' => 'URL',  // name of the URL type (string datatype property)
-	'_uri' => 'URI',  // name of the URI type (object property)
-	'_anu' => 'Annotatie URI'  // name of the annotation URI type (annotation property)
+	'_ema' => 'E-mail',  // name of the email type
+	'_uri' => 'URL',  // name of the URL type
+	'_anu' => 'Annotatie URI'  // name of the annotation URI type (OWL annotation property)
 );
 
 protected $m_DatatypeAliases = array(
+	'URI'                   => '_uri',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',

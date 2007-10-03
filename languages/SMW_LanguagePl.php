@@ -230,13 +230,13 @@ protected $m_DatatypeLabels = array(
 	'_geo' => 'Współrzędne geograficzne', // name of the geocoord type
 	'_tem' => 'Temperatura',  // name of the temperature type
 	'_dat' => 'Data',  // name of the datetime (calendar) type
-	'_ema' => 'Email',  // name of the email (URI) type
-	'_url' => 'URL',  // name of the URL type (string datatype property)
-	'_uri' => 'URI',  // name of the URI type (object property)
-	'_anu' => 'Annotation URI'  // name of the annotation URI type (annotation property) //TODO: translate
+	'_ema' => 'Email',  // name of the email type
+	'_uri' => 'URL',  // name of the URL type
+	'_anu' => 'Annotation URI'  // name of the annotation URI type (OWL annotation property) //TODO: translate
 );
 
 protected $m_DatatypeAliases = array(
+	'URI'                   => '_uri',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',

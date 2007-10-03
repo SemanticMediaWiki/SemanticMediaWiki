@@ -209,12 +209,13 @@ protected $m_DatatypeLabels = array(
 	'_tem' => 'טמפרטורה',  // name of the temperature type
 	'_dat' => 'תאריך',  // name of the datetime (calendar) type
 	'_ema' => 'דואל',  // name of the email (URI) type
-	'_url' => 'URL',  // name of the URL type (string datatype property)
-	'_uri' => 'מזהה יחודי',  // name of the URI type (object property)
-	'_anu' => 'Annotation URI'  // name of the annotation URI type (annotation property)
+	'_uri' => 'URL',  // name of the URL type
+	'_anu' => 'Annotation URI'  // name of the annotation URI type (OWL annotation property)
 );
 
 protected $m_DatatypeAliases = array(
+	'מזהה יחודי'
+	             => '_uri',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',

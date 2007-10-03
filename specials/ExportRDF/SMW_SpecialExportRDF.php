@@ -102,7 +102,7 @@ class SMWExportTitle {
 
 	// Values for special properties, see SMW_Settings.php for documentation.
 	// Each value may be missing if not set or not relevant
-	public $has_type = false;
+	public $has_type = false; // (nonempty) type-ID or false
 	public $has_uri = false; // TODO not used right now
 	public $ext_nsid = false;
 	public $ext_section = false;
@@ -148,9 +148,15 @@ class SMWExportTitle {
 		$this->exists = $title->exists();
 
 		if ($this->exists) {
-			if ($title->getNamespace() == SMW_NS_ATTRIBUTE) {
+			if ($title->getNamespace() == SMW_NS_PROPERTY) {
 				$a = $export->store->getSpecialValues( $title, SMW_SP_HAS_TYPE );
-				if (count($a)>0) $this->has_type = $a[0];
+				if (count($a)>0) {
+					if ($a[0]->isUnary()) {
+						$this->has_type = $a[0]->getXSDValue();
+					} else {
+						$this->has_type = '__nry';
+					}
+				}
 			}
 			$a = $export->store->getSpecialValues( $title, SMW_SP_EXT_BASEURI );
 			if (count($a)>0) $this->ns_uri = $a[0];
@@ -608,7 +614,7 @@ class ExportRDF {
 	/**
 	 * Printe the triples associated to a specific page, and references those needed.
 	 * They get printed in the printFooter-function.
-	 * 
+	 *
 	 * @param SMWExportTitle $et The Exporttitle wrapping the page to be exported
 	 * @param boolean $fullexport If all the triples of the page should be exported, or just
 	 *                            a definition of the given title.
@@ -622,34 +628,34 @@ class ExportRDF {
 			$rev = Revision::getTimeStampFromID($et->title->getLatestRevID());
 			if ($rev < $this->date) return;
 		}
-		
+
 		$datatype_rel = false;
 		$category_rel = false;
 		$equality_rel = false;
 		$subprop_rel = false;
-				
 		// Set parameters for export
 		switch ($et->title_namespace) {
-			case SMW_NS_PROPERTY: 
-				if ( $et->has_type ) {
-					if ( ('annouri' == $et->has_type->getTypeID()) || ('annostring' == $et->has_type->getTypeID()) ) {
-						$type = 'owl:AnnotationProperty';
-						//$subprop_rel = "smw:subPropertyOf";
-						//TODO  can it be equivalent? cannot be a subproperty
-					} elseif ('_wpg' == $et->has_type->getTypeID()) {
-						$type = 'owl:ObjectProperty';
-					} else {
-						$type = 'owl:DatatypeProperty';						
-					}
-				} else {
- 					$type = 'owl:ObjectProperty';
-				}
+			case SMW_NS_PROPERTY:
 				$equality_rel = "owl:equivalentProperty";
 				global $smwgExportSemanticRelationHierarchy;
 				if ($smwgExportSemanticRelationHierarchy) {
 					$subprop_rel = "rdfs:subPropertyOf";
 				} else {
 					$subprop_rel = "smw:subPropertyOf";
+				}
+
+				switch ($et->has_type) {
+					case '': case '_wpg': case '_uri': case '_ema': case '__nry':
+						$type = 'owl:ObjectProperty';
+					break;
+					case '_anu':
+						$type = 'owl:AnnotationProperty';
+						$equality_rel = false; // disabled for annotations
+						$subprop_rel = false; // disabled for annotations
+					break;
+					default:
+						$type = 'owl:DatatypeProperty';
+					break;
 				}
 				break;
 			case NS_CATEGORY:
@@ -677,7 +683,7 @@ class ExportRDF {
 		      "\t\t<rdfs:isDefinedBy rdf:resource=\"" .
 		              $this->special_url . '/' . $et->title_prefurl . "\"/>\n";
 		// If the property is modified by a unit, export the modifier
-		// and the base relation explicitly	              
+		// and the base relation explicitly
 		if ( $et->has_type && $et->modifier ) {
 			$this->post_ns_buffer .= "\t\t<smw:hasModifier rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">" .
 				smwfXMLContentEncode($et->modifier) .

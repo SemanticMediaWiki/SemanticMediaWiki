@@ -1,58 +1,47 @@
 <?php
 
-global $smwgIP;
-include_once($smwgIP . '/includes/SMW_DataValue.php');
-
 /**
- * This datavalue implements URI-Datavalues suitable for defining
- * URI-types of properties.
- * 
+ * This datavalue implements URL/URI/ANNURI/EMAIL-Datavalues suitable for defining
+ * the respective types of properties.
+ *
  * @author: Nikolas Iwan
+ * @author: Markus Krötzsch
  */
- 
 
-define('SMW_URI_MODE_URL',1);
-define('SMW_URI_MODE_URI',2);
-define('SMW_URI_MODE_ANNOURI',3);
-
+define('SMW_URI_MODE_EMAIL',1);
+define('SMW_URI_MODE_URI',3);
+define('SMW_URI_MODE_ANNOURI',4);
 
 /**
- * FIXME: correctly support caption ($this->m_caption).
  * FIXME: correctly create safe HTML and Wiki text.
  */
 class SMWURIValue extends SMWDataValue {
 
 	private $m_value = '';
-	private $m_xsdvalue = '';
-	private $m_infolinks = Array();
+	private $m_url = '';
+	private $m_uri = '';
 	private $m_mode = '';
 
 	public function SMWURIValue($typeid) {
 		SMWDataValue::__construct($typeid);
-		switch ($mode) {
-		/// TODO: support email type
-		case '_uri':
-			$this->m_mode = SMW_URI_MODE_URI; 
-			break;
-		case '_anu':
-			$this->m_mode = SMW_URI_MODE_ANNOURI;
-			break;
-		case '_url': default:
-			$this->m_mode = SMW_URI_MODE_URL; 
-			break;
-		}
+		switch ($typeid) {
+			case '_ema':
+				$this->m_mode = SMW_URI_MODE_EMAIL;
+				break;
+			case '_anu':
+				$this->m_mode = SMW_URI_MODE_ANNOURI;
+				break;
+			case '_uri': case '_url': default:
+				$this->m_mode = SMW_URI_MODE_URI;
+				break;
+		}	
 	}
-	
+
 	protected function parseUserValue($value) {
-		if ($this->m_caption === false) {
-			$this->m_caption = $value;
-		}
 		if ($value!='') { //do not accept empty strings
 			switch ($this->m_mode) {
-				case SMW_URI_MODE_URL: 
-					$this->m_value = $value;
-					break;
 				case SMW_URI_MODE_URI: case SMW_URI_MODE_ANNOURI:
+					// check against blacklist
 					$uri_blacklist = explode("\n",wfMsgForContent('smw_uri_blacklist'));
 					foreach ($uri_blacklist as $uri) {
 						if (' ' == $uri[0]) $uri = mb_substr($uri,1); //tolerate beautification space
@@ -61,56 +50,113 @@ class SMWURIValue extends SMWDataValue {
 							return true;
 						}
 					}
-					$this->m_value = $value;
+					// simple check for invalid characters: '?', ' ', '{', '}'
+					$check1 = "@(\?|\}|\{| )+@";
+					if (preg_match($check1, $value, &$matches)) {
+						$this->addError(wfMsgForContent('smw_baduri', $value));
+						break;
+					}
+					// validate last part of URI (after #) if provided 
+					$uri_ex = explode('#',$value); 
+					$check2 = "@^[a-zA-Z0-9-_\%]+$@"; ///FIXME: why only ascii symbols?
+					if(sizeof($uri_ex)>2 ){ // URI should only contain at most one '#'
+						$this->addError(wfMsgForContent('smw_baduri', $value));
+						break;
+					} elseif ( (sizeof($uri_ex) == 2) && !(preg_match($check2, $uri_ex[1])) ) {
+						$this->addError(wfMsgForContent('smw_baduri', $value));
+						break;
+					}
+					// validate protocol + domain part of URI
+					$check3 = "@^([a-zA-Z]{0,6}:)[a-zA-Z0-9\.\/%]+$@";  //simple regexp for protocol+domain part of URI
+					/// FIXME: why {0,6}?
+					if (!preg_match($check3, $uri_ex[0],&$matches)){
+						$this->addError(wfMsgForContent('smw_baduri', $value));
+						break;
+					}
+					$this->m_value =$value;
+					$this->m_url =$value;
+					$this->m_uri =$value;
 					break;
+				case SMW_URI_MODE_EMAIL:
+					$check = "#^([_a-z0-9-]+)((\.[_a-z0-9-]+)*)@([_a-z0-9-]+(\.[_a-z0-9-]+)*)\.([a-z]{2,3})$#";
+					if (!preg_match($check, $value)) {
+						///TODO: introduce error-message for "bad" email
+						$this->addError(wfMsgForContent('smw_baduri', $value));
+						break;
+					}
+					$this->m_value = $value;
+					$this->m_url = 'mailto:' . $value;
+					$this->m_uri = 'mailto:' . $value;
 			}
-			$this->m_value = str_replace(array('&','<',' '),array('&amp;','&lt;','_'),$value); // TODO: spaces are just not allowed and should lead to an error
 		} else {
 			$this->addError(wfMsgForContent('smw_emptystring'));
 		}
-		return true;
 
+		if ($this->m_caption === false) {
+			$this->m_caption = $value;
+		}
+		return true;
 	}
 
 	protected function parseXSDValue($value, $unit) {
-		$this->setUserValue($value);
+		$this->m_value = $value;
+		$this->m_caption = $value;
+		if ($this->m_mode == SMW_URI_MODE_EMAIL) {
+			$this->m_url = 'mailto:' . $value;
+		} else {
+			$this->m_url = $value;
+		}
+		$this->m_uri = $this->m_url;
 	}
 
 	public function setOutputFormat($formatstring){
-		//TODO
+		//TODO ?
 	}
 
 	public function getShortWikiText($linked = NULL) {
-		wfDebug("\r\n getShortWikiText:  ".$this->m_caption);
-		return $this->m_caption; // TODO: support linking with caption as alternative text, depending on type of DV
+		if ( ($linked === NULL) || ($linked === false) || ($this->m_url == '') ) {
+			return $this->m_caption;
+		} else {
+			return '[' . $this->m_url . ' ' . $this->m_caption . ']';
+		}
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		return htmlspecialchars($this->getShortWikiText($linker)); /// TODO: support linking
+		if (($linker === NULL) || (!$this->isValid()) || ($this->m_url == '')) {
+			return $this->m_caption;
+		} else {
+			return $linker->makeExternalLink($this->m_url, $this->m_caption);
+		}
 	}
 
 	public function getLongWikiText($linked = NULL) {
-		if ($this->isValid()){
+		if (!$this->isValid()) {
 			return $this->getErrorText();
-		} else {
+		}
+		if ( ($linked === NULL) || ($linked === false) || ($this->m_url == '') ) {
 			return $this->m_value;
+		} else {
+			return '[' . $this->m_url . ' ' . $this->m_value . ']';
 		}
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		if ($this->isValid()){
+		if (!$this->isValid()) {
 			return $this->getErrorText();
+		}
+		if (($linker === NULL) || ($this->m_url == '') ) {
+			return htmlspecialchars($this->m_value);
 		} else {
-			return '<span class="external free">' . htmlspecialchars($this->m_value) . '</span>'; /// TODO support linking
+			return $linker->makeExternalLink($this->m_url, $this->m_caption);
 		}
 	}
 
 	public function getXSDValue() {
-		return $this->getShortWikiText(false); ///FIXME
+		return $this->m_value;
 	}
 
 	public function getWikiValue(){
-		return $this->getShortWikiText(false); /// FIXME (wikivalue must not be influenced by the caption)
+		return $this->m_value;
 	}
 	
 	public function getNumericValue() {
@@ -121,16 +167,17 @@ class SMWURIValue extends SMWDataValue {
 		return ''; // empty unit
 	}
 
-	public function getInfolinks() {
-		return $this->m_infolinks;
-	}
-
 	public function getHash() {
-		return $this->getShortWikiText(false);
+		return $this->getXSDValue();
 	}
 
 	public function isNumeric() {
 		return false;
 	}
+
+	public function exportToRDF($QName, ExportRDF $exporter) {
+		return "\t\t<$QName rdf:resource=\"$this->m_uri\" />\n";
+	}
+
 }
 

@@ -240,10 +240,9 @@ class SMWDataValueFactory {
 		SMWDataValueFactory::$m_typeclasses = array(
 			'_txt'  => 'SMWStringValue',
 			'_str'  => 'SMWStringValue',
-// 			'_ema'  => 'SMWURIValue',
-// 			'_uri'  => 'SMWURIValue',
-// 			'_url'  => 'SMWURIValue',
-// 			'_anu'  => 'SMWURIValue',
+			'_ema'  => 'SMWURIValue',
+			'_uri'  => 'SMWURIValue',
+			'_anu'  => 'SMWURIValue',
 			'_wpg'  => 'SMWWikiPageValue',
 			'__typ' => 'SMWTypesValue',
 			'__nry' => 'SMWNAryValue',
