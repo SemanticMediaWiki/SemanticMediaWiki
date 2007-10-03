@@ -14,11 +14,23 @@ abstract class SMW_Language {
 	protected $smwSpecialProperties;
 	protected $m_DatatypeLabels;
 	protected $m_DatatypeAliases = array();
+	protected $m_Namespaces;
+	protected $m_NamespaceAliases = array();
+	
 
 	/**
 	 * Function that returns an array of namespace identifiers.
 	 */
-	abstract function getNamespaceArray();
+	function getNamespaces() {
+		return $this->m_Namespaces;
+	}
+
+	/**
+	 * Function that returns an array of namespace aliases, if any.
+	 */
+	function getNamespaceAliases() {
+		return $this->m_NamespaceAliases;
+	}
 
 	/**
 	 * Return all labels that are available as names for built-in datatypes. Those

@@ -242,13 +242,11 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 * greater or equal to 100.
 	 */
 	function smwfInitNamespaces() {
-		global $smwgNamespaceIndex, $wgExtraNamespaces, $wgNamespacesWithSubpages, $wgLanguageCode, $smwgContLang;
+		global $smwgNamespaceIndex, $wgExtraNamespaces, $wgNamespaceAliases, $wgNamespacesWithSubpages, $wgLanguageCode, $smwgContLang;
 
 		if (!isset($smwgNamespaceIndex)) {
 			$smwgNamespaceIndex = 100;
 		}
-
-		smwfInitContentLanguage($wgLanguageCode);
 
 		define('SMW_NS_PROPERTY',       $smwgNamespaceIndex+2);
 		define('SMW_NS_PROPERTY_TALK',  $smwgNamespaceIndex+3);
@@ -259,9 +257,13 @@ function smwfAddHTMLHeadersOutput(&$out) {
 		define('SMW_NS_RELATION',       $smwgNamespaceIndex);
 		define('SMW_NS_RELATION_TALK',  $smwgNamespaceIndex+1);
 
+		smwfInitContentLanguage($wgLanguageCode);
+
 		// Register namespace identifiers
 		if (!is_array($wgExtraNamespaces)) { $wgExtraNamespaces=array(); }
-		$wgExtraNamespaces = $wgExtraNamespaces + $smwgContLang->getNamespaceArray();
+		$wgExtraNamespaces = $wgExtraNamespaces + $smwgContLang->getNamespaces();
+		$wgNamespaceAliases = $wgNamespaceAliases + $smwgContLang->getNamespaceAliases();
+		
 
 		// Support subpages only for talk pages by default
 		$wgNamespacesWithSubpages = $wgNamespacesWithSubpages + array(

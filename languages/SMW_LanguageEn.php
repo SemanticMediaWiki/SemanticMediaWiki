@@ -212,19 +212,15 @@ protected $smwSpecialProperties = array(
 	SMW_SP_POSSIBLE_VALUE => 'Allows value'
 );
 
-	/**
-	 * Function that returns the namespace identifiers.
-	 */
-	public function getNamespaceArray() {
-		return array(
-			SMW_NS_RELATION       => 'Relation',
-			SMW_NS_RELATION_TALK  => 'Relation_talk',
-			SMW_NS_PROPERTY       => 'Property',
-			SMW_NS_PROPERTY_TALK  => 'Property_talk',
-			SMW_NS_TYPE           => 'Type',
-			SMW_NS_TYPE_TALK      => 'Type_talk'
-		);
-	}
+protected $m_Namespaces = array(
+	SMW_NS_RELATION       => 'Relation',
+	SMW_NS_RELATION_TALK  => 'Relation_talk',
+	SMW_NS_PROPERTY       => 'Property',
+	SMW_NS_PROPERTY_TALK  => 'Property_talk',
+	SMW_NS_TYPE           => 'Type',
+	SMW_NS_TYPE_TALK      => 'Type_talk'
+);
+
 }
 
 

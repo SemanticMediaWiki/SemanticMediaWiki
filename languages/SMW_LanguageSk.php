@@ -241,19 +241,25 @@ protected $smwSpecialProperties = array(
 );
 
 
-	/**
-	 * Function that returns the namespace identifiers.
-	 */
-	public function getNamespaceArray() {
-		return array(
-			SMW_NS_RELATION       => 'Vzťah',
-			SMW_NS_RELATION_TALK  => 'Diskusia o vzťahu',
-			SMW_NS_PROPERTY       => 'Atribút',
-			SMW_NS_PROPERTY_TALK  => 'Diskusia o atribúte',
-			SMW_NS_TYPE           => 'Typ',
-			SMW_NS_TYPE_TALK      => 'Diskusia o type'
-		);
-	}
+protected $m_Namespaces = array(
+	SMW_NS_RELATION       => 'Vzťah',
+	SMW_NS_RELATION_TALK  => 'Diskusia o vzťahu',
+	SMW_NS_PROPERTY       => 'Atribút',
+	SMW_NS_PROPERTY_TALK  => 'Diskusia o atribúte',
+	SMW_NS_TYPE           => 'Typ',
+	SMW_NS_TYPE_TALK      => 'Diskusia o type'
+);
+
+protected $m_NamespaceAliases = array(
+	// support English aliases for namespaces
+	'Relation'      => SMW_NS_RELATION,
+	'Relation_talk' => SMW_NS_RELATION_TALK,
+	'Property'      => SMW_NS_PROPERTY,
+	'Property_talk' => SMW_NS_PROPERTY_TALK,
+	'Type'          => SMW_NS_TYPE,
+	'Type_talk'     => SMW_NS_TYPE_TALK
+);
+
 }
 
 

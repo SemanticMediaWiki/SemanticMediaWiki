@@ -232,19 +232,25 @@ protected $smwSpecialProperties = array(
 	SMW_SP_POSSIBLE_VALUE => 'Valeur possible'
 );
 
-	/**
-	 * Function that returns the namespace identifiers.
-	 */
-	public function getNamespaceArray() {
-		return array(
-			SMW_NS_RELATION       => "Relation",
-			SMW_NS_RELATION_TALK  => "Discussion_relation",
-			SMW_NS_PROPERTY       => "Attribut",
-			SMW_NS_PROPERTY_TALK  => "Discussion_attribut",
-			SMW_NS_TYPE           => "Type",
-			SMW_NS_TYPE_TALK      => "Discussion_type"
-		);
-	}
+protected $m_Namespaces = array(
+	SMW_NS_RELATION       => "Relation",
+	SMW_NS_RELATION_TALK  => "Discussion_relation",
+	SMW_NS_PROPERTY       => "Attribut",
+	SMW_NS_PROPERTY_TALK  => "Discussion_attribut",
+	SMW_NS_TYPE           => "Type",
+	SMW_NS_TYPE_TALK      => "Discussion_type"
+);
+
+protected $m_NamespaceAliases = array(
+	// support English aliases for namespaces
+	//'Relation'      => SMW_NS_RELATION,
+	'Relation_talk' => SMW_NS_RELATION_TALK,
+	'Property'      => SMW_NS_PROPERTY,
+	'Property_talk' => SMW_NS_PROPERTY_TALK,
+	'Type'          => SMW_NS_TYPE,
+	'Type_talk'     => SMW_NS_TYPE_TALK
+);
+
 }
 
 
