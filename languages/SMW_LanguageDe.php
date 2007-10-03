@@ -17,7 +17,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
 
 class SMW_LanguageDe extends SMW_Language {
 
-protected $smwContentMessages = array(
+protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Bearbeitungshilfe für Attribute',
 	'smw_helppage' => 'Relationen und Attribute',
 	'smw_viewasrdf' => 'RDF-Feed',
@@ -91,7 +91,7 @@ protected $smwContentMessages = array(
 	'smw_querytoolarge' => 'Die folgenden Anfragebedingungne konnten wegen den in diesem Wiki gültigen Beschränkungen für größe und Tiefe von Anfragen nicht berücksichtigt werden: $1.'
 );
 
-protected $smwUserMessages = array(
+protected $m_UserMessages = array(
 	'smw_devel_warning' => 'Diese Funktion befindet sich zur Zeit in Entwicklung und ist eventuell noch nicht voll einsatzfähig. Eventuell ist es ratsam, den Inhalt des Wikis vor der Benutzung dieser Funktion zu sichern.',
 	// Messages for article pages of types, relations, and attributes
 	'smw_type_header' => 'Attribute mit dem Datentyp „$1“',
@@ -208,7 +208,7 @@ protected $m_DatatypeAliases = array(
 	'Annotation URI'        => '_anu'
 );
 
-protected $smwSpecialProperties = array(
+protected $m_SpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Hat Datentyp',
 	SMW_SP_HAS_URI   => 'Gleichwertige URI',
@@ -219,6 +219,19 @@ protected $smwSpecialProperties = array(
 	SMW_SP_CONVERSION_FACTOR => 'Entspricht',
 	SMW_SP_SERVICE_LINK => 'Bietet Service',
 	SMW_SP_POSSIBLE_VALUE => 'Erlaubt Wert'
+);
+
+protected $m_SpecialPropertyAliases = array(
+	// support English aliases for special properties
+	'Has type'          => SMW_SP_HAS_TYPE,
+	'Equivalent URI'    => SMW_SP_HAS_URI,
+	'Subproperty of'    => SMW_SP_SUBPROPERTY_OF,
+	'Main display unit' => SMW_SP_MAIN_DISPLAY_UNIT,
+	'Display unit'      => SMW_SP_DISPLAY_UNIT,
+	'Imported from'     => SMW_SP_IMPORTED_FROM,
+	'Corresponds to'    => SMW_SP_CONVERSION_FACTOR,
+	'Provides service'  => SMW_SP_SERVICE_LINK,
+	'Allows value'      => SMW_SP_POSSIBLE_VALUE
 );
 
 protected $m_Namespaces = array(

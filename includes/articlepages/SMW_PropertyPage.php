@@ -26,9 +26,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	protected function initParameters() {
 		global $smwgContLang, $smwgPropertyPagingLimit;
 		$this->limit = $smwgPropertyPagingLimit;
-		// TODO: Code shared with SMW_Factbox, should be a utility checkSpecialProperty function?
-		$srels = $smwgContLang->getSpecialPropertiesArray();
-		$this->special_prop = array_search($this->mTitle->getText(), $srels);
+		$this->special_prop = $smwgContLang->findSpecialPropertyID($this->mTitle->getText(), false);
 		return true;
 	}
 

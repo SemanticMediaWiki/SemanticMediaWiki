@@ -8,7 +8,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
 
 class SMW_LanguageSk extends SMW_Language {
 
-protected $smwContentMessages = array(
+protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Pomoc pri upravovaní vzťahov a atribútov',
 	'smw_helppage' => 'Vzťah',
 	'smw_viewasrdf' => 'RDF feed',
@@ -84,7 +84,7 @@ protected $smwContentMessages = array(
 );
 
 
-protected $smwUserMessages = array(
+protected $m_UserMessages = array(
 	'smw_devel_warning' => 'Táto vlastnosť je momentálne vo vývoji a nemusí byť celkom funkčná. Predtým, než ju použijete si zálohujte dáta.',
 	// Messages for article pages of types, relations, and attributes
 	'smw_type_header' => 'Attributes of type “$1”', // TODO translate
@@ -227,7 +227,7 @@ protected $m_DatatypeAliases = array(
 	'Annotation URI'        => '_anu'
 );
 
-protected $smwSpecialProperties = array(
+protected $m_SpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Má typ',
 	SMW_SP_HAS_URI   => 'Ekvivalent URI',
@@ -238,6 +238,19 @@ protected $smwSpecialProperties = array(
 	SMW_SP_CONVERSION_FACTOR => 'Zodpovedá',
 	SMW_SP_SERVICE_LINK => 'Poskytuje službu',
 	SMW_SP_POSSIBLE_VALUE => 'Allowed value'	//TODO translate
+);
+
+protected $m_SpecialPropertyAliases = array(
+	// support English aliases for special properties
+	'Has type'          => SMW_SP_HAS_TYPE,
+	'Equivalent URI'    => SMW_SP_HAS_URI,
+	'Subproperty of'    => SMW_SP_SUBPROPERTY_OF,
+	'Main display unit' => SMW_SP_MAIN_DISPLAY_UNIT,
+	'Display unit'      => SMW_SP_DISPLAY_UNIT,
+	'Imported from'     => SMW_SP_IMPORTED_FROM,
+	'Corresponds to'    => SMW_SP_CONVERSION_FACTOR,
+	'Provides service'  => SMW_SP_SERVICE_LINK,
+	'Allows value'      => SMW_SP_POSSIBLE_VALUE
 );
 
 

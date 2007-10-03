@@ -8,7 +8,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
 
 class SMW_LanguageEn extends SMW_Language {
 
-protected $smwContentMessages = array(
+protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Editing help on properties',
 	'smw_helppage' => 'Relation',
 	'smw_viewasrdf' => 'RDF feed',
@@ -83,7 +83,7 @@ protected $smwContentMessages = array(
 );
 
 
-protected $smwUserMessages = array(
+protected $m_UserMessages = array(
 	'smw_devel_warning' => 'This feature is currently under development, and might not be fully functional. Backup your data before using it.',
 	// Messages for pages of types and properties
 	'smw_type_header' => 'Properties of type “$1”',
@@ -199,7 +199,7 @@ protected $m_DatatypeAliases = array(
 	'URI'  => '_uri'
 );
 
-protected $smwSpecialProperties = array(
+protected $m_SpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Has type',
 	SMW_SP_HAS_URI   => 'Equivalent URI',

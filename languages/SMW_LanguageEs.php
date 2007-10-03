@@ -8,7 +8,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
 
 class SMW_LanguageEs extends SMW_Language {
 
-protected $smwContentMessages = array(
+protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Ayuda a la redacción de relaciones y atributos',
 	'smw_helppage' => 'Relaciones y atributos',
 	'smw_viewasrdf' => 'Ver como RDF',
@@ -82,7 +82,7 @@ protected $smwContentMessages = array(
 	'smw_querytoolarge' => 'The following query conditions could not be considered due to the wikis restrictions in query size or depth: $1.'
 );
 
-protected $smwUserMessages = array(
+protected $m_UserMessages = array(
 	'smw_devel_warning' => 'Esta función está aún en desarrollo y quizá aun no sea operativa. Es quizá recomendable hacer una copia de seguridad del wiki antes de utilizar esta función.',
 	// Messages for article pages of types, relations, and attributes
 	'smw_type_header' => 'Atributos de tipo “$1”',
@@ -218,7 +218,7 @@ protected $m_DatatypeAliases = array(
 	'Annotation URI'        => '_anu'
 );
 
-protected $smwSpecialProperties = array(
+protected $m_SpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Tiene tipo de datos',
 	SMW_SP_HAS_URI   => 'URI equivalente',
@@ -229,6 +229,19 @@ protected $smwSpecialProperties = array(
 	SMW_SP_CONVERSION_FACTOR => 'Corresponde a',
 	SMW_SP_SERVICE_LINK => 'Provee servicio',
 	SMW_SP_POSSIBLE_VALUE => 'Permite el valor'
+);
+
+protected $m_SpecialPropertyAliases = array(
+	// support English aliases for special properties
+	'Has type'          => SMW_SP_HAS_TYPE,
+	'Equivalent URI'    => SMW_SP_HAS_URI,
+	'Subproperty of'    => SMW_SP_SUBPROPERTY_OF,
+	'Main display unit' => SMW_SP_MAIN_DISPLAY_UNIT,
+	'Display unit'      => SMW_SP_DISPLAY_UNIT,
+	'Imported from'     => SMW_SP_IMPORTED_FROM,
+	'Corresponds to'    => SMW_SP_CONVERSION_FACTOR,
+	'Provides service'  => SMW_SP_SERVICE_LINK,
+	'Allows value'      => SMW_SP_POSSIBLE_VALUE
 );
 
 protected $m_Namespaces = array(

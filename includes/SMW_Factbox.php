@@ -58,8 +58,7 @@ class SMWFactbox {
 		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 		// See if this attribute is a special one like e.g. "Has unit"
 		$propertyname = smwfNormalTitleText($propertyname); //slightly normalize label
-		$specprops = $smwgContLang->getSpecialPropertiesArray();
-		$special = array_search($propertyname, $specprops);
+		$special = $smwgContLang->findSpecialPropertyID($propertyname);
 
 		switch ($special) {
 			case false: // normal attribute
@@ -292,11 +291,10 @@ class SMWFactbox {
 		}
 
 		global $smwgContLang, $wgContLang;
-		$specprops = $smwgContLang->getSpecialPropertiesArray();
 		foreach(SMWFactbox::$semdata->getSpecialProperties() as $specialProperty) {
 			$valueArray = SMWFactbox::$semdata->getSpecialValues($specialProperty);
-			if (array_key_exists($specialProperty,$specprops)) { // only print specprops with an official name
-				$specialPropertyName = $specprops[$specialProperty];
+			$specialPropertyName = $smwgContLang->findSpecialPropertyLabel($specialProperty);
+			if ($specialPropertyName !== false) { // only print specprops with an official name
 				foreach ($valueArray as $value) {
 // 					if ($value instanceof SMWDataValue) {
 // 						$vt = $value->getLongWikiText(true);

@@ -8,7 +8,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
 
 class SMW_LanguageRu extends SMW_Language {
 
-protected $smwContentMessages = array(
+protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Редактирование справки по отношениям и атрибутам',
 	'smw_helppage' => 'Отношение',
 	'smw_viewasrdf' => 'RDF источник',
@@ -83,7 +83,7 @@ protected $smwContentMessages = array(
 );
 
 
-protected $smwUserMessages = array(
+protected $m_UserMessages = array(
 	'smw_devel_warning' => 'Эта функция в настоящее время находится в разработке. Сделайте резервную копию прежде чем продолжать.',
 	// Messages for article pages of types, relations, and attributes
 	'smw_type_header' => 'Атрибуты типа “$1”',
@@ -226,7 +226,7 @@ protected $m_DatatypeAliases = array(
 	'Annotation URI'        => '_anu'
 );
 
-protected $smwSpecialProperties = array(
+protected $m_SpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Имеет тип',
 	SMW_SP_HAS_URI   => 'Эквивалентный URI',
@@ -237,6 +237,19 @@ protected $smwSpecialProperties = array(
 	SMW_SP_CONVERSION_FACTOR => 'Относится к',
 	SMW_SP_SERVICE_LINK => 'Предоставляет сервис',
 	SMW_SP_POSSIBLE_VALUE => 'Возможные значения' // TODO: check translation, should be "Allowed value" (singular)
+);
+
+protected $m_SpecialPropertyAliases = array(
+	// support English aliases for special properties
+	'Has type'          => SMW_SP_HAS_TYPE,
+	'Equivalent URI'    => SMW_SP_HAS_URI,
+	'Subproperty of'    => SMW_SP_SUBPROPERTY_OF,
+	'Main display unit' => SMW_SP_MAIN_DISPLAY_UNIT,
+	'Display unit'      => SMW_SP_DISPLAY_UNIT,
+	'Imported from'     => SMW_SP_IMPORTED_FROM,
+	'Corresponds to'    => SMW_SP_CONVERSION_FACTOR,
+	'Provides service'  => SMW_SP_SERVICE_LINK,
+	'Allows value'      => SMW_SP_POSSIBLE_VALUE
 );
 
 
