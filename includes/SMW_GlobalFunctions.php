@@ -44,7 +44,7 @@ $smwgHeadItems = array();
  * does not adhere to the naming conventions.
  */
 function enableSemantics($namespace = '', $complete = false) {
-	global $smwgNamespace, $wgExtensionFunctions;
+	global $smwgNamespace, $wgExtensionFunctions, $wgSpecialPages, $wgAutoloadClasses, $smwgIP;
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
@@ -54,34 +54,7 @@ function enableSemantics($namespace = '', $complete = false) {
 		$smwgNamespace = $namespace;
 	}
 	$wgExtensionFunctions[] = 'smwfSetupExtension';
-	return true;
-}
 
-/**
- *  Do the actual intialisation of the extension. This is just a delayed init that makes sure
- *  MediaWiki is set up properly before we add our stuff.
- */
-function smwfSetupExtension() {
-	wfProfileIn('smwfSetupExtension (SMW)');
-	global $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $wgSpecialPages, $wgAutoloadClasses;
-
-	/**
-	* Setting this to false prevents any new data from being stored in
-	* the static SMWSemanticData store, and disables printing of the
-	* factbox, and clearing of the existing data.
-	* This is a hack to enable parsing of included articles in a save
-	* way without importing their annotations. Unfortunately, there
-	* appears to be no way for finding out whether the current parse
-	* is the "main" parse, or whether some intro, docu, or whatever
-	* text is parsed. Using the hook mechanism, we have to rely on
-	* globals/static fields -- so we cannot somehow differentiate this
-	* store between parsers.
-	*/
-	$smwgStoreActive = true;
-
-	$smwgMasterStore = NULL;
-	smwfInitContentMessages();
-	
 	///// setup some autoloading /////
 	$wgAutoloadClasses['SMWResultPrinter']         = $smwgIP . '/includes/SMW_QueryPrinter.php';
 	$wgAutoloadClasses['SMWTableResultPrinter']    = $smwgIP . '/includes/SMW_QP_Table.php';
@@ -90,7 +63,7 @@ function smwfSetupExtension() {
 	$wgAutoloadClasses['SMWEmbeddedResultPrinter'] = $smwgIP . '/includes/SMW_QP_Embedded.php';
 	$wgAutoloadClasses['SMWTemplateResultPrinter'] = $smwgIP . '/includes/SMW_QP_Template.php';
 
-	///// register specials /////
+	///// register specials, do that early on in case some other extension calls "addPage" /////
 	$wgAutoloadClasses['SMWAskPage'] = $smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php';
 	$wgSpecialPages['Ask'] = array('SMWAskPage');
 	$wgAutoloadClasses['SMWSpecialBrowse'] = $smwgIP . '/specials/SearchTriple/SMW_SpecialBrowse.php';
@@ -112,7 +85,33 @@ function smwfSetupExtension() {
 	$wgSpecialPages['SemanticStatistics'] = array('SMWSpecialPage','SemanticStatistics', 'smwfExecuteSemanticStatistics', $smwgIP . '/specials/Statistics/SMW_SpecialStatistics.php');
 	$wgSpecialPages['Types'] = array('SMWSpecialPage','Types', 'smwfDoSpecialTypes', $smwgIP . '/specials/QueryPages/SMW_SpecialTypes.php');
 
-	//require_once($smwgIP . '/specials/OntologyImport/SMW_SpecialOntologyImport.php'); // broken, TODO: fix or delete
+	return true;
+}
+
+/**
+ *  Do the actual intialisation of the extension. This is just a delayed init that makes sure
+ *  MediaWiki is set up properly before we add our stuff.
+ */
+function smwfSetupExtension() {
+	wfProfileIn('smwfSetupExtension (SMW)');
+	global $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore;
+
+	/**
+	* Setting this to false prevents any new data from being stored in
+	* the static SMWSemanticData store, and disables printing of the
+	* factbox, and clearing of the existing data.
+	* This is a hack to enable parsing of included articles in a save
+	* way without importing their annotations. Unfortunately, there
+	* appears to be no way for finding out whether the current parse
+	* is the "main" parse, or whether some intro, docu, or whatever
+	* text is parsed. Using the hook mechanism, we have to rely on
+	* globals/static fields -- so we cannot somehow differentiate this
+	* store between parsers.
+	*/
+	$smwgStoreActive = true;
+
+	$smwgMasterStore = NULL;
+	smwfInitContentMessages(); // this really could not be done in enableSemantics()
 
 	///// register hooks /////
 	require_once($smwgIP . '/includes/SMW_Hooks.php');
