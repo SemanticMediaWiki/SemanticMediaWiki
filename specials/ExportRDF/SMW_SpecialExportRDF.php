@@ -851,7 +851,7 @@ class ExportRDF {
 	 * have a normalised key for looking up the caches, and to create
 	 * new SMWExportTitles.
 	 */
-	private function getExportTitleFromTitle($title, $modifier = '') {
+	private function getExportTitleFromTitle(Title $title, $modifier = '') {
 		$key = $title->getPrefixedURL() . ' ' . $modifier;
 		if (array_key_exists($key, $this->element_done)) {
 			$result = $this->element_done[$key];
