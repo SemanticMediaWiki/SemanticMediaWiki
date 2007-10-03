@@ -923,7 +923,8 @@ class SMWSQLStore extends SMWStore {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
 		$res = $db->query('SELECT relation_title as title, COUNT(*) as count FROM ' .
-		                  $db->tableName('smw_relations') . ' LEFT JOIN page ON (page_namespace=' . SMW_NS_PROPERTY .
+		                  $db->tableName('smw_relations') . ' LEFT JOIN ' . $db->tableName('page') . 
+		                  ' ON (page_namespace=' . SMW_NS_PROPERTY .
 		                  ' AND page_title=relation_title) WHERE page_id IS NULL GROUP BY relation_title' . $options,
 		                  'SMW::getPropertySubjects');
 		$result = array();
