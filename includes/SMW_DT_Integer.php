@@ -23,6 +23,8 @@ class SMWIntegerTypeHandler implements SMWTypeHandler {
 	}
 
 	function processValue($v,&$datavalue) {
+		// remove spaces between sign and number:
+		$v = preg_replace('/([+-])\s*(.*)/', '$1'.'$2', trim($v), 1);
 		// strip kilo separators and split off number from the rest:
 		// TODO: this regexp is also in FloatTypeHandler, should move to common.
 		$arr= preg_split('/([-+]?[\d]+)/', str_replace(wfMsgForContent('smw_kiloseparator'), '', $v), 2, PREG_SPLIT_DELIM_CAPTURE);

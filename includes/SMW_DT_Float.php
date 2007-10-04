@@ -289,8 +289,7 @@ class SMWFloatTypeHandler implements SMWTypeHandler{
 		// Number is, e.g. -12,347,421.55e6
 		// Note the separators might be a magic regexp value like '.', so have to escape them with backslash.
 		// This rejects .1 , it needs a leading 0.
-		// This rejects - 3, there can't be spaces in the number.
-		$arr = preg_split('/([-+]?\d+(?:\\' . $kiloseparator . '\d+)*\\' . $decseparator . '?[\d]*(?:\s*[eE][-+]?\d+)?)[ ]*/', trim($v), 2, PREG_SPLIT_DELIM_CAPTURE);
+		$arr = preg_split('/([-+]?\s*\d+(?:\\' . $kiloseparator . '\d+)*\\' . $decseparator . '?[\d]*(?:\s*[eE][-+]?\d+)?)[ ]*/', trim($v), 2, PREG_SPLIT_DELIM_CAPTURE);
 
 		$arrSiz = count($arr);
 		if ($arrSiz >= 1) $preNum = $arr[0];
