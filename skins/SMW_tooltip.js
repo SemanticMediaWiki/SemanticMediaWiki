@@ -23,6 +23,7 @@ function smw_tooltipInit() {
 
 function smw_makeInlineTooltip(a) {
 	var spans = a.getElementsByTagName("span");
+	a.className="smwttactiveinline";
 	//make content invisible
 	//done here and not in the css so that non-js clients can see it
 	for (var i=0;i<spans.length;i++) {
@@ -36,6 +37,7 @@ function smw_makeInlineTooltip(a) {
 
 function smw_makePersistentTooltip(a) {
 	var spans = a.getElementsByTagName("span");
+	a.className="smwttactivepersist";
 	for (var i=0;i<spans.length;i++) {
 		if(spans[i].className=="smwtticon"){
 			img=document.createElement("img");
@@ -73,7 +75,7 @@ function smw_showTooltipPersist(e) {
 	var origin = (BubbleTT.Platform.browser.isIE) ? window.event.srcElement : e.target;
 	//If the anchor of the tooltip contains hmtl, the source of the event is not the anchor.
 	//As we need a reference to it to get the tooltip content we need to go up the dom-tree.
-	while(!(origin.className=="smwttpersist")){origin=origin.parentNode};
+	while(!(origin.className=="smwttactivepersist")){origin=origin.parentNode};
 
 	tt = BubbleTT.createBubbleForPoint(true,origin,x,y,200,80);
 	BubbleTT.fillBubble(tt, origin);
@@ -102,7 +104,7 @@ function smw_showTooltipInline(e) {
 	var origin = (BubbleTT.Platform.browser.isIE) ? window.event.srcElement : e.target;
 	//If the anchor of the tooltip contains hmtl, the source of the event is not the anchor.
 	//As we need a reference to it to get the tooltip content we need to go up the dom-tree.
-	while(!(origin.className=="smwttinline"))origin=origin.parentNode;
+	while(!(origin.className=="smwttactiveinline"))origin=origin.parentNode;
 	var doc = origin.ownerDocument;
 	tt = BubbleTT.createBubbleForPoint(false,origin,x,y,150,50);
 	BubbleTT.fillBubble(tt, origin);

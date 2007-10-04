@@ -258,11 +258,12 @@ span.smwtticon{ /* style for image anchor for persistent tooltips */
 	display: none;
 }
 
-span.smwttpersist { /* colored anchors? */
+span.smwttactivepersist { /* colored anchors? */
+	cursor: help;
 	color: #0000C8;
 }
 
-span.smwttinline { /* colored anchors */
+span.smwttactiveinline { /* colored anchors */
 	color: #BB7700;
 	text-decoration: none;
 }
