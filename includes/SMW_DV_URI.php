@@ -52,7 +52,7 @@ class SMWURIValue extends SMWDataValue {
 					}
 					// simple check for invalid characters: '?', ' ', '{', '}'
 					$check1 = "@(\?|\}|\{| )+@";
-					if (preg_match($check1, $value, &$matches)) {
+					if (preg_match($check1, $value, $matches)) {
 						$this->addError(wfMsgForContent('smw_baduri', $value));
 						break;
 					}
@@ -71,7 +71,7 @@ class SMWURIValue extends SMWDataValue {
 // // 					$check3 = "@^([a-zA-Z]{0,6}:)[a-zA-Z0-9\.\/%]+$@";  //simple regexp for protocol+domain part of URI
 // 					$check3 = "@^([a-zA-Z]:)[a-zA-Z0-9\.\/%]+$@";  //simple regexp for protocol+domain part of URI
 // 					/// FIXME: why {0,6}?
-// 					if (!preg_match($check3, $uri_ex[0],&$matches)){
+// 					if (!preg_match($check3, $uri_ex[0],$matches)){
 // 						$this->addError(wfMsgForContent('smw_baduri', $value) . 'Debug5');
 // 						break;
 // 					}

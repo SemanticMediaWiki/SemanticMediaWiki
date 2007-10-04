@@ -23,7 +23,7 @@ require_once('SMW_DT_Float.php');
  *   property Equivalent URI.
  * TODO: remove this dependency. The special property needs to be checked for that
  */
-require_once('SMW_DT_URI.php');
+//require_once('SMW_DT_URI.php');
 
 /**
  * Static class for registering and retrieving typehandlers.
