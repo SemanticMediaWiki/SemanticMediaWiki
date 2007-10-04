@@ -20,6 +20,7 @@ global $smwgIP;
 require_once($smwgIP . '/includes/SMW_GlobalFunctions.php');
 
 smwfGetStore()->setup();
+wfRunHooks('smwInitializeTables');
 
 print "\n\nDone.\n";
 
