@@ -139,9 +139,10 @@ class SMWFloatTypeHandler implements SMWTypeHandler{
 			// TODO: Perhaps class SMWDataValue should have setWarning() to achieve the following output
 			$datavalue->setProcessedValues($v, $numIn, $numIn, $unitIn);
 			if ($errStr !== '') {
-				$errStr = ' <span class="smwwarning">(' . $errStr . ')</span>';
+				//$errStr = ' <span class="smwwarning">(' . $errStr . ')</span>';
+				$datavalue->setError($errStr);
 			}
-			$datavalue->setPrintoutString($this->appendUnit(smwfNumberFormat($numIn), $unitIn) . $errStr);
+			$datavalue->setPrintoutString($this->appendUnit(smwfNumberFormat($numIn), $unitIn));
 			$datavalue->addQuicksearchLink();
 			$datavalue->addServiceLinks($numIn);
 			return;
@@ -289,7 +290,7 @@ class SMWFloatTypeHandler implements SMWTypeHandler{
 		// Number is, e.g. -12,347,421.55e6
 		// Note the separators might be a magic regexp value like '.', so have to escape them with backslash.
 		// This rejects .1 , it needs a leading 0.
-		$arr = preg_split('/([-+]?\s*\d+(?:\\' . $kiloseparator . '\d+)*\\' . $decseparator . '?[\d]*(?:\s*[eE][-+]?\d+)?)[ ]*/', trim($v), 2, PREG_SPLIT_DELIM_CAPTURE);
+		$arr = preg_split('/([-+]?\d+(?:\\' . $kiloseparator . '\d+)*\\' . $decseparator . '?[\d]*(?:\s*[eE][-+]?\d+)?)[ ]*/', trim($v), 2, PREG_SPLIT_DELIM_CAPTURE);
 
 		$arrSiz = count($arr);
 		if ($arrSiz >= 1) $preNum = $arr[0];
