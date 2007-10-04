@@ -56,23 +56,25 @@ class SMWURIValue extends SMWDataValue {
 						$this->addError(wfMsgForContent('smw_baduri', $value));
 						break;
 					}
-					// validate last part of URI (after #) if provided 
-					$uri_ex = explode('#',$value); 
-					$check2 = "@^[a-zA-Z0-9-_\%]+$@"; ///FIXME: why only ascii symbols?
-					if(sizeof($uri_ex)>2 ){ // URI should only contain at most one '#'
-						$this->addError(wfMsgForContent('smw_baduri', $value));
-						break;
-					} elseif ( (sizeof($uri_ex) == 2) && !(preg_match($check2, $uri_ex[1])) ) {
-						$this->addError(wfMsgForContent('smw_baduri', $value));
-						break;
-					}
-					// validate protocol + domain part of URI
-					$check3 = "@^([a-zA-Z]{0,6}:)[a-zA-Z0-9\.\/%]+$@";  //simple regexp for protocol+domain part of URI
-					/// FIXME: why {0,6}?
-					if (!preg_match($check3, $uri_ex[0],&$matches)){
-						$this->addError(wfMsgForContent('smw_baduri', $value));
-						break;
-					}
+/// TODO: the remaining checks need improvement
+// 					// validate last part of URI (after #) if provided 
+// 					$uri_ex = explode('#',$value);
+// 					$check2 = "@^[a-zA-Z0-9-_\%]+$@"; ///FIXME: why only ascii symbols?
+// 					if(sizeof($uri_ex)>2 ){ // URI should only contain at most one '#'
+// 						$this->addError(wfMsgForContent('smw_baduri', $value) . 'Debug3');
+// 						break;
+// 					} elseif ( (sizeof($uri_ex) == 2) && !(preg_match($check2, $uri_ex[1])) ) {
+// 						$this->addError(wfMsgForContent('smw_baduri', $value) . 'Debug4');
+// 						break;
+// 					}
+// 					// validate protocol + domain part of URI
+// // 					$check3 = "@^([a-zA-Z]{0,6}:)[a-zA-Z0-9\.\/%]+$@";  //simple regexp for protocol+domain part of URI
+// 					$check3 = "@^([a-zA-Z]:)[a-zA-Z0-9\.\/%]+$@";  //simple regexp for protocol+domain part of URI
+// 					/// FIXME: why {0,6}?
+// 					if (!preg_match($check3, $uri_ex[0],&$matches)){
+// 						$this->addError(wfMsgForContent('smw_baduri', $value) . 'Debug5');
+// 						break;
+// 					}
 					$this->m_value =$value;
 					$this->m_url =$value;
 					$this->m_uri =$value;
