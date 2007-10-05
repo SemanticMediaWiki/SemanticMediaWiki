@@ -1277,7 +1277,6 @@ class SMWSQLStore extends SMWStore {
 		$db->query("INSERT INTO $tablename (title) VALUES " . $sqlvalues, 'SMW::getCategoryTable');
 		$db->query("INSERT INTO $tmpnew (title) VALUES " . $sqlvalues, 'SMW::getCategoryTable');
 
-		/// TODO: avoid duplicate results?
 		for ($i=0; $i<$smwgQSubcategoryDepth; $i++) {
 			$db->query("INSERT INTO $tmpres (title) SELECT $pagetable.page_title
 			            FROM $cltable,$pagetable,$tmpnew WHERE
@@ -1339,7 +1338,6 @@ class SMWSQLStore extends SMWStore {
 		$db->query("INSERT INTO $tablename (title) VALUES (" . $db->addQuotes($propname) . ')', 'SMW::getPropertyTable');
 		$db->query("INSERT INTO $tmpnew (title) VALUES (" . $db->addQuotes($propname) . ')', 'SMW::getPropertyTable');
 
-		/// TODO: avoid duplicate results?
 		for ($i=0; $i<$smwgQSubpropertyDepth; $i++) {
 			$db->query("INSERT INTO $tmpres (title) SELECT $sptable.subject_title
 			            FROM $sptable,$tmpnew WHERE
@@ -1348,7 +1346,7 @@ class SMWSQLStore extends SMWStore {
 				continue;
 			}
 			$db->query("INSERT IGNORE INTO $tablename (title) SELECT $tmpres.title
-			            FROM $tmpres", 'SMW::getCategoryTable');
+			            FROM $tmpres", 'SMW::getPropertyTable');
 			if ($db->affectedRows() == 0) { // no change, exit loop
 				continue;
 			}
