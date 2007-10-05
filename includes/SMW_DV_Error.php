@@ -1,12 +1,10 @@
 <?php
 
-global $smwgIP;
-include_once($smwgIP . '/includes/SMW_DataValue.php');
-
 /**
  * This datavalue implements Error-Datavalues.
- * 
- * @author: Nikolas Iwan
+ *
+ * @author Nikolas Iwan
+ * @note AUTOLOADED
  */
 class SMWErrorValue extends SMWDataValue {
 

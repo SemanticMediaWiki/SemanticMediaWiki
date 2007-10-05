@@ -7,6 +7,8 @@
 
 /**
  * New implementation of SMW's printer for timeline data.
+ *
+ * @note AUTOLOADED
  */
 class SMWTimelineResultPrinter extends SMWResultPrinter {
 

@@ -1,7 +1,6 @@
 <?php
 
 require_once('SMW_Datatype.php');
-require_once('SMW_DataValue.php');
 
 /**
  * Objects of this type represent all that is known about

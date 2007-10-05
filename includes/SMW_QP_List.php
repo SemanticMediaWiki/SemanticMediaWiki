@@ -11,6 +11,8 @@
  * in between their elements depending on whether the element is the first that is 
  * printed, the first that is printed in parentheses, or the last that will be printed.
  * Maybe one could further simplify this.
+ *
+ * @note AUTOLOADED
  */
 class SMWListResultPrinter extends SMWResultPrinter {
 

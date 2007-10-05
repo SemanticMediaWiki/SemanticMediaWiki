@@ -4,8 +4,9 @@
  * This datavalue implements URL/URI/ANNURI/EMAIL-Datavalues suitable for defining
  * the respective types of properties.
  *
- * @author: Nikolas Iwan
- * @author: Markus Krötzsch
+ * @author Nikolas Iwan
+ * @author Markus Krötzsch
+ * @note AUTOLOADED
  */
 
 define('SMW_URI_MODE_EMAIL',1);

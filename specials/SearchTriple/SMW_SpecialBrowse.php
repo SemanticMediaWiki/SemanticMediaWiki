@@ -15,6 +15,8 @@ include_once($IP . '/includes/SpecialPage.php');
 /**
  * A class to encapsulate the special page that allows browsing through
  * the knowledge structure of a Semantic MediaWiki.
+ *
+ * @note AUTOLOAD
  */
 class SMWSpecialBrowse extends SpecialPage {
 

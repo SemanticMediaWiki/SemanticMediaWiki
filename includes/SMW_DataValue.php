@@ -4,6 +4,8 @@
  * Objects of this type represent all that is known about
  * a certain user-provided data value, especially its various
  * representations as strings, tooltips, numbers, etc.
+ *
+ * @note AUTOLOADED
  */
 abstract class SMWDataValue {
 

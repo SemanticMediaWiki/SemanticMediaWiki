@@ -12,6 +12,7 @@
  * If "titlestyle" is not specified, a <h1> tag is used.
  * @author Fernando Correia
  * @author Markus Krötzsch
+ * @note AUTOLOADED
  */
 class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 

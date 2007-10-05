@@ -1,4 +1,10 @@
 <?php
+
+if (!defined('MEDIAWIKI')) die();
+
+global $IP;
+include_once($IP . '/includes/SpecialPage.php');
+
 /**
  * @author Denny Vrandecic
  *
@@ -6,13 +12,9 @@
  * view on a relation-object pair, i.e. a typed baclink.
  * For example, it shows me all persons born in Croatia,
  * or all winners of the Academy Award for best actress.
+ *
+ * @note AUTOLOAD
  */
-
-if (!defined('MEDIAWIKI')) die();
-
-global $IP;
-include_once($IP . '/includes/SpecialPage.php');
-
 class SMWSearchByProperty extends SpecialPage {
 
 	/**

@@ -1,17 +1,19 @@
 <?php
-/**
- * @author Denny Vrandecic
- *
- * This special page solves with the URI crisis
- * without the need of changing code deep in
- * MediaWiki were no hook has ever seen light.
- */
 
 if (!defined('MEDIAWIKI')) die();
 
 global $IP;
 include_once($IP . '/includes/SpecialPage.php');
 
+/**
+ * @author Denny Vrandecic
+ *
+ * This special page solves the URI crisis
+ * without the need of changing code deep in
+ * MediaWiki were no hook has ever seen light.
+ *
+ * @note AUTOLOAD
+ */
 class SMWURIResolver extends SpecialPage {
 
 	/**

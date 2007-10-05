@@ -1,8 +1,5 @@
 <?php
 
-global $smwgIP;
-include_once($smwgIP . '/includes/SMW_DataValue.php');
-
 /**
  * This datavalue implements special processing suitable for defining
  * wikipages as values of properties. This value container currently
@@ -12,6 +9,7 @@ include_once($smwgIP . '/includes/SMW_DataValue.php');
  *
  * @author Nikolas Iwan
  * @author Markus Krötzsch
+ * @note AUTOLOADED
  */
 class SMWWikiPageValue extends SMWDataValue {
 

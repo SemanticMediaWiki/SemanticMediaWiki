@@ -1,14 +1,12 @@
 <?php
 
 /**
- * The SMWDataValue in this file implements the handling of n-ary relations.
+ * SMWDataValue implements the handling of n-ary relations.
+ *
  * @author Jörg Heizmann
  * @author Markus Krötzsch
+ * @note AUTOLOADED
  */
-
-global $smwgIP;
-include_once($smwgIP . '/includes/SMW_DataValue.php');
-
 class SMWNAryValue extends SMWDataValue {
 
 	private $m_scount = 0;

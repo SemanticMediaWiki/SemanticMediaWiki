@@ -1,16 +1,18 @@
 <?php
-/**
- * @author Markus Krötzsch
- *
- * This special page for MediaWiki implements a customisable form for
- * executing queries outside of articles.
- */
 
 if (!defined('MEDIAWIKI')) die();
 
 global $IP;
 include_once($IP . '/includes/SpecialPage.php');
 
+/**
+ * @author Markus Krötzsch
+ *
+ * This special page for MediaWiki implements a customisable form for
+ * executing queries outside of articles.
+ *
+ * @note AUTOLOAD
+ */
 class SMWAskPage extends SpecialPage {
 
 	/**

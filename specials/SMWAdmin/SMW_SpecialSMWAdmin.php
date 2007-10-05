@@ -1,17 +1,19 @@
 <?php
-/**
- * @author Markus Krötzsch
- *
- * This special page for MediaWiki provides an administrative interface 
- * that allows to execute certain functions related to the maintainance 
- * of the semantic database. It is restricted to users with siteadmin status.
- */
 
 if (!defined('MEDIAWIKI')) die();
 
 global $IP;
 include_once($IP . '/includes/SpecialPage.php');
 
+/**
+ * @author Markus Krötzsch
+ *
+ * This special page for MediaWiki provides an administrative interface 
+ * that allows to execute certain functions related to the maintainance 
+ * of the semantic database. It is restricted to users with siteadmin status.
+ *
+ * @note AUTOLOAD
+ */
 class SMWAdmin extends SpecialPage {
 
 	/**

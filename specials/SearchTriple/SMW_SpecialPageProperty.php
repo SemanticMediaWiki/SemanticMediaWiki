@@ -8,7 +8,7 @@
  * This will be assumedly seldomly used.
  *
  * FIXME: Actually this is currently not used anywhere.
- * FIXME: The result-page browsing is broken, showing the last result on one page as the first resutl of the next.
+ * FIXME: The result-page browsing is broken, showing the last result on one page as the first result of the next.
  */
 
 if (!defined('MEDIAWIKI')) die();
@@ -16,6 +16,9 @@ if (!defined('MEDIAWIKI')) die();
 global $IP;
 include_once( "$IP/includes/SpecialPage.php" );
 
+/**
+ * @note AUTOLOAD
+ */
 class SMWPageProperty extends SpecialPage {
 
 	/**

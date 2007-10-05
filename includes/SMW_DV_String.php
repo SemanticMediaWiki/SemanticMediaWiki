@@ -1,13 +1,12 @@
 <?php
 
-global $smwgIP;
-include_once($smwgIP . '/includes/SMW_DataValue.php');
-
 /**
  * This datavalue implements String-Datavalues suitable for defining
  * String-types of properties.
  *
- * @author: Nikolas Iwan
+ * @author Nikolas Iwan
+ * @author Markus Krötzsch
+ * @note AUTOLOADED
  */
 class SMWStringValue extends SMWDataValue {
 

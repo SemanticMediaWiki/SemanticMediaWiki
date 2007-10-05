@@ -6,6 +6,8 @@
 
 /**
  * New implementation of SMW's printer for result tables.
+ *
+ * @note AUTOLOADED
  */
 class SMWTableResultPrinter extends SMWResultPrinter {
 

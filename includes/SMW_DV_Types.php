@@ -1,8 +1,5 @@
 <?php
 
-global $smwgIP;
-include_once($smwgIP . '/includes/SMW_DataValue.php');
-
 /**
  * This datavalue implements special processing suitable for defining
  * types of properties (n-ary or binary).
@@ -11,6 +8,9 @@ include_once($smwgIP . '/includes/SMW_DataValue.php');
  * - to efficiently be generated from XSD values and to provide according 
  *   wiki values, in order to support speedy creation of datavalues in
  *   SMWDataValueFactory.
+ *
+ * @author Markus Krötzsch
+ * @note AUTOLOADED
  */
 class SMWTypesValue extends SMWDataValue {
 
