@@ -1564,7 +1564,7 @@ class SMWSQLStore extends SMWStore {
 						if ($subwhere != '') {
 							$subwhere .= ' OR ';
 						}
-						$subwhere .= '(' . $table . '.cl_to=' . $db->addQuotes($description->getCategories()->getDBKey()) . ')';
+						$subwhere .= '(' . $table . '.cl_to=' . $db->addQuotes($cat->getDBKey()) . ')';
 					}
 				}
 			}
