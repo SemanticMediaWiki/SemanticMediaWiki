@@ -735,7 +735,7 @@ class ExportRDF {
  					// TODO check the type of the attribute pointed to, does it match?
  					// Could lead to inconsistencies in the output -- and in the wiki? But this will
  					// need to be dealt with as soon as people add subattribute semantics to the wiki
- 					$supprop = $this->getExportTitle($property, SMW_NS_PROPERTY);
+ 					$supprop = $this->getExportTitleFromTitle($property, SMW_NS_PROPERTY);
  					$this->post_ns_buffer .= "\t\t<$subprop_rel rdf:resource=\"" . $supprop->long_uri . "\"/>\n";
  					if (!array_key_exists($supprop->hashkey, $this->element_queue)) {
  							$this->element_queue[$supprop->hashkey] = $supprop;
