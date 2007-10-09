@@ -69,6 +69,7 @@ print "Processing pages from ID $start to ID $end ...\n";
 $num_files = 0;
 $options = new ParserOptions();
 
+$linkCache =& LinkCache::singleton();
 for ($id = $start; $id <= $end; $id++) {
 	$title = Title::newFromID($id);
 	if ( ($title === NULL) ) continue;
@@ -104,6 +105,7 @@ for ($id = $start; $id <= $end; $id++) {
 		}
 	}
 	$num_files++;
+	$linkCache->clear(); // avoid memory leaks
 }
 
 print "$num_files pages refreshed.\n";
