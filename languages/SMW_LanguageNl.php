@@ -18,7 +18,7 @@ protected $m_ContentMessages = array(
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_baduri' => 'Sorry, URI\'s uit de reeks “$1” zijn hier niet beschikbaar.',
 	// Messages and strings for inline queries
-	'smw_iq_disabled' => "<span class='smwwarning'>Sorry. Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.</span>",
+	'smw_iq_disabled' => "Sorry. Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.",
 	'smw_iq_moreresults' => '&hellip; overige resultaten',
 	'smw_iq_nojs' => 'Gebruiker een browser waarin JavaScript is ingeschakeld om dit element te zien, of <a href="$1">bekijk de resultatenlijst</a>.',
 	// Messages and strings for ontology resued (import)

@@ -19,7 +19,7 @@ protected $m_ContentMessages = array(
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Sorry, URIs from the range “$1” are not available in this place.',
 	// Messages and strings for inline queries
-	'smw_iq_disabled' => "<span class='smwwarning'>Sorry. Inline queries have been disabled for this wiki.</span>",
+	'smw_iq_disabled' => "Sorry. Semantic queries have been disabled for this wiki.",
 	'smw_iq_moreresults' => '&hellip; further results',
 	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.',
 	// Messages and strings for ontology resued (import)

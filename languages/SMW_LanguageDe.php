@@ -28,7 +28,7 @@ protected $m_ContentMessages = array(
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'URIs aus dem Bereich „$1“ sind an dieser Stelle leider nicht verfügbar.',
 	/*Messages and strings for inline queries*/
-	'smw_iq_disabled' => "<span class='smwwarning'>Anfragen innerhalb einzelner Seiten sind in diesem Wiki leider nicht erlaubt.</span>",
+	'smw_iq_disabled' => "Semantische Anfragen sind in diesem Wiki zur Zeit nicht möglich.",
 	'smw_iq_moreresults' => '&hellip; weitere Ergebnisse',
 	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung oder als <a href="$1">Liste einzelner Suchergebnisse</a> betrachtet werden.',
 	/*Messages and strings for ontology resued (import) */

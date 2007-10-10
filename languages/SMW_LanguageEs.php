@@ -19,7 +19,7 @@ protected $m_ContentMessages = array(
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",					// http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#
 	'smw_baduri' => 'Lo sentimos. Las URIs del dominio $1 no están disponibles en este emplazamiento',
 	/*Messages and strings for inline queries*/
-	'smw_iq_disabled' => "<span class='smwwarning'>Lo sentimos. Las búsquedas en los artículos de este wiki no están autorizadas</span>",
+	'smw_iq_disabled' => "Lo sentimos. Las búsquedas en los artículos de este wiki no están autorizadas.",
 	'smw_iq_moreresults' => '&hellip; siguientes resultados',
 	'smw_iq_nojs' => 'Use un navegador con JavaScript habilitado para ver este elemento, o directamente <a href="$1">vea la lista de resultados</a>.',
 	/*Messages and strings for ontology resued (import) */

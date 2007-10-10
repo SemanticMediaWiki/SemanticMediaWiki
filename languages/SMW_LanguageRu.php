@@ -19,7 +19,7 @@ protected $m_ContentMessages = array(
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Извините, но URI "$1" не доступны из этого места.',
 	// Messages and strings for inline queries
-	'smw_iq_disabled' => "<span class='smwwarning'>Извините, но встроенные запросы отключены для этого сайта.</span>",
+	'smw_iq_disabled' => "Извините, но встроенные запросы отключены для этого сайта.",
 	'smw_iq_moreresults' => '&hellip; следующие результаты',
 	'smw_iq_nojs' => 'Используйте браузер с поддержкой JavaScript для просмотра этого элемента, или <a href="$1">просмотрите результат в виде списка</a>.',
 	// Messages and strings for ontology resued (import)

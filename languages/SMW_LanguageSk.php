@@ -19,7 +19,7 @@ protected $m_ContentMessages = array(
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Prepáčte, URI z rozsahu "$1" na tomto mieste nie sú dostupné.',
 	/*Messages and strings for inline queries*/
-	'smw_iq_disabled' => "<span class='smwwarning'>Prepáčte. Inline queries have been disabled for this wiki.</span>",
+	'smw_iq_disabled' => "Prepáčte. Inline queries have been disabled for this wiki.",
 	'smw_iq_morevýsledky' => '&hellip; ďalšie výsledky',
 	'smw_iq_nojs' => 'Tento prvok zobrazíte použitím prehliadača podporujúcim JavaScript alebo priamo <a href="$1">prehliadajte zoznam výsledkov</a>.',
 	/*Messages and strings for ontology resued (import) */

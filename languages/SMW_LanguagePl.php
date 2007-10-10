@@ -38,7 +38,7 @@ protected $m_ContentMessages = array(
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Niestety, URI z przestrzeni "$1" nie są w tym miejscu dostępne.',
 	/*Messages and strings for inline queries*/
-	'smw_iq_disabled' => "<span class='smwwarning'>Niestety, w tym wiki wyłączono możliwość tworzenia zapytań w artykułach.</span>",
+	'smw_iq_disabled' => "Niestety, w tym wiki wyłączono możliwość tworzenia zapytań w artykułach.",
 	'smw_iq_moreresults' => '&hellip; dalsze wyniki',
 	'smw_iq_nojs' => 'Aby obejrzeć ten element, włącz w przeglądarce obsługę JavaScript, lub <a href="$1">przeglądaj listę wyników</a> bezpośrednio.',
 	/*Messages and strings for ontology resued (import) */
