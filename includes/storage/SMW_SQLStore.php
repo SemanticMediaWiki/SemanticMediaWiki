@@ -1566,6 +1566,10 @@ class SMWSQLStore extends SMWStore {
 						}
 						$subwhere .= '(' . $table . '.cl_to=' . $db->addQuotes($cat->getDBKey()) . ')';
 					}
+				if ($where != '') {
+					$where .= ' AND ';
+				}
+				$where .= "($subwhere)";
 				}
 			}
 		} elseif ($description instanceof SMWNamespaceDescription) {
