@@ -10,6 +10,7 @@
  * php SMW_refreshData.php [options...]
  *
  * -d <delay>   Wait for this many milliseconds after processing an article, useful for limiting server load.
+ * -s <startid> Start refreshing with given article ID, useful for partial refreshing
  * -v           Be verbose about the progress.
  * -c			Will refresh only category pages (and other explicitly named namespaces)
  * -p			Will refresh only property pages (and other explicitly named namespaces)
@@ -19,7 +20,7 @@
  * @author Markus Krötzsch
  */
 
-$optionsWithArgs = array( 'd' ); // -d <delay>
+$optionsWithArgs = array( 'd', 's' ); // -d <delay>, -s <startid>
 
 require_once( 'commandLine.inc' );
 
@@ -30,6 +31,12 @@ if ( array_key_exists( 'd', $options ) ) {
 	$delay = intval($options['d']) * 100000; // sleep 100 times the given time, but do so only each 100 pages
 } else {
 	$delay = false;
+}
+
+if ( array_key_exists( 's', $options ) ) {
+	$start = intval($options['s']); 
+} else {
+	$start = 0;
 }
 
 if (  array_key_exists( 'v', $options ) ) {
@@ -60,7 +67,6 @@ if (  array_key_exists( 't', $options ) ) {
 global $wgParser;
 
 $dbr =& wfGetDB( DB_MASTER );
-$start = 0;
 $end = $dbr->selectField( 'page', 'max(page_id)', false, 'SMW_refreshData' );
 
 print "Refreshing all semantic data in the database!\n";
