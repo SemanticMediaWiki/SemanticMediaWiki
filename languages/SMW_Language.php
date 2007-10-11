@@ -103,7 +103,7 @@ abstract class SMW_Language {
 	 */
 	function addSpecialProperty($id, $label) {
 		if (array_key_exists($id, $this->m_SpecialProperties)) {
-			trigger_error('The ID "' . $id . '" already belongs to the special property "' . $this->m_SpecialProperties[$key] . '" and thus cannot be used for "' . $label . '".', E_USER_WARNING);
+			trigger_error('The ID "' . $id . '" already belongs to the special property "' . $this->m_SpecialProperties[$id] . '" and thus cannot be used for "' . $label . '".', E_USER_WARNING);
 		} elseif ($id < 1000) {
 			trigger_error('IDs below 1000 are not allowed for custom special properties. Registration of "' . $label . '" failed.', E_USER_WARNING);
 		} else {
