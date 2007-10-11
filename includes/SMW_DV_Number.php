@@ -75,6 +75,8 @@ class SMWNumberValue extends SMWDataValue {
 		$this->m_value = $value;
 		$this->m_caption = smwfNumberFormat($this->m_value);
 		$this->m_wikivalue = $this->m_caption . ' ' . $unit;
+		$this->m_unitin = false; // TODO: should we assume that this is still the main unit (might have changes since last saving ...)
+		$this->m_unitvalues = false;
 	}
 
 	public function setOutputFormat($formatstring) {
