@@ -231,8 +231,7 @@ protected $m_SpecialProperties = array(
 	SMW_SP_HAS_TYPE  => 'Имеет тип',
 	SMW_SP_HAS_URI   => 'Эквивалентный URI',
 	SMW_SP_SUBPROPERTY_OF => 'Subproperty of', // TODO: translate
-	SMW_SP_MAIN_DISPLAY_UNIT => 'Основная отображаемая единица',
-	SMW_SP_DISPLAY_UNIT => 'Отображаемая единица',
+	SMW_SP_DISPLAY_UNITS => 'Отображаемая единица', // TODO: should be plural now ("units"), singluar stays alias
 	SMW_SP_IMPORTED_FROM => 'Импортировано из',
 	SMW_SP_CONVERSION_FACTOR => 'Относится к',
 	SMW_SP_SERVICE_LINK => 'Предоставляет сервис',
@@ -240,12 +239,12 @@ protected $m_SpecialProperties = array(
 );
 
 protected $m_SpecialPropertyAliases = array(
+	'Отображаемая единица' => SMW_SP_DISPLAY_UNITS,
 	// support English aliases for special properties
 	'Has type'          => SMW_SP_HAS_TYPE,
 	'Equivalent URI'    => SMW_SP_HAS_URI,
 	'Subproperty of'    => SMW_SP_SUBPROPERTY_OF,
-	'Main display unit' => SMW_SP_MAIN_DISPLAY_UNIT,
-	'Display unit'      => SMW_SP_DISPLAY_UNIT,
+	'Display units'     => SMW_SP_DISPLAY_UNITS,
 	'Imported from'     => SMW_SP_IMPORTED_FROM,
 	'Corresponds to'    => SMW_SP_CONVERSION_FACTOR,
 	'Provides service'  => SMW_SP_SERVICE_LINK,

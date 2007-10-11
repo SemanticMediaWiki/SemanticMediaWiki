@@ -13,6 +13,7 @@ class SMWLinearValue extends SMWNumberValue {
 
 	protected $m_unitfactors = false; // array mapping canonical unit strings to conversion factors
 	protected $m_unitids = false; // array mapping (normalised) unit strings to canonical unit strings (ids)
+	protected $m_displayunits = false; // array of (canonical) units that should be displayed
 	protected $m_mainunit = false; // main unit (recognised by the conversion factor 1)
 
 	/**
@@ -59,14 +60,27 @@ class SMWLinearValue extends SMWNumberValue {
 	protected function makeConversionValues() {
 		if ($this->m_unitvalues !== false) return;
 		$this->convertToMainUnit();
-		if ($this->m_unit !== $this->m_mainunit) { // conversion failed
+		if ($this->m_unit !== $this->m_mainunit) { // conversion failed, no choice for us
 			$this->m_unitvalues = array($this->m_unit => $this->m_value);
 			return;
 		}
+		$this->initDisplayData();
 
 		$this->m_unitvalues = array();
-		foreach ($this->m_unitfactors as $unit => $factor) {
-			$this->m_unitvalues[$unit] = $this->m_value*$factor;
+		if (count($this->m_displayunits) == 0) { // no display units, just show all
+			foreach ($this->m_unitfactors as $unit => $factor) {
+				$this->m_unitvalues[$unit] = $this->m_value*$factor;
+			}
+		} else {
+			foreach ($this->m_displayunits as $unit) {
+				if (array_key_exists($unit, $this->m_unitfactors)) {
+					$this->m_unitvalues[$unit] = $this->m_value*$this->m_unitfactors[$unit];
+				}
+			}
+			if (count($this->m_unitvalues) == 0) { // none of the desired units matches
+				// display just the current one (so one can disable unit tooltips by setting a nonunit for display)
+				$this->m_unitvalues = array($this->m_unit => $this->m_value);
+			}
 		}
 	}
 
@@ -98,10 +112,34 @@ class SMWLinearValue extends SMWNumberValue {
 						$this->m_mainunit = $unit;
 					}
 					$first = false;
-				} else {
-					$this->m_unitids[$unit] = $unitid;
 				}
+				// add all known units to m_unitids to simplify checking for them
+				$this->m_unitids[$unit] = $unitid;
 			}
+		}
+	}
+
+	/**
+	 * This method fills $m_displayunits.
+	 */
+	protected function initDisplayData() {
+		if ($this->m_displayunits !== false) return;
+		$this->initConversionData(); // needed to normalise unit strings
+		$this->m_displayunits = array();
+		if (!$this->m_property) return;
+		$proptitle = Title::newFromText($this->m_property, SMW_NS_PROPERTY);
+		if ($proptitle === NULL) return;
+		$values = smwfGetStore()->getSpecialValues($proptitle, SMW_SP_DISPLAY_UNITS);
+		$units = array();
+		foreach ($values as $value) { // Join all if many annotations exist. Discouraged but possible.
+			$units = $units + preg_split('/\s*,\s*/',$value->getXSDValue());
+		}
+		foreach ($units as $unit) {
+			$unit = $this->normalizeUnit($unit);
+			if (array_key_exists($unit, $this->m_unitids)) {
+				$unit = $this->m_unitids[$unit];
+				$this->m_displayunits[$unit] = $unit; // avoid duplicates
+			} // note: we ignore unsuppported units, as they are printed anyway for lack of alternatives
 		}
 	}
 

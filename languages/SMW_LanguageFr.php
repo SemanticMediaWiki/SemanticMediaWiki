@@ -224,8 +224,7 @@ protected $m_SpecialProperties = array(
 	SMW_SP_HAS_TYPE  => 'A le type',
 	SMW_SP_HAS_URI   => 'URI équivalente',
 	SMW_SP_SUBPROPERTY_OF => 'Subproperty of', // TODO: translate
-	SMW_SP_MAIN_DISPLAY_UNIT => 'Unité de mesure principale pour l\'affichage',
-	SMW_SP_DISPLAY_UNIT => 'Unité de mesure',
+	SMW_SP_DISPLAY_UNITS => 'Unités de mesure',
 	SMW_SP_IMPORTED_FROM => 'Importé de',
 	SMW_SP_CONVERSION_FACTOR => 'Correspond à',
 	SMW_SP_SERVICE_LINK => 'Fournit le service',
@@ -233,12 +232,12 @@ protected $m_SpecialProperties = array(
 );
 
 protected $m_SpecialPropertyAliases = array(
+	'Unité de mesure'   => SMW_SP_DISPLAY_UNITS,
 	// support English aliases for special properties
 	'Has type'          => SMW_SP_HAS_TYPE,
 	'Equivalent URI'    => SMW_SP_HAS_URI,
 	'Subproperty of'    => SMW_SP_SUBPROPERTY_OF,
-	'Main display unit' => SMW_SP_MAIN_DISPLAY_UNIT,
-	'Display unit'      => SMW_SP_DISPLAY_UNIT,
+	'Display units'     => SMW_SP_DISPLAY_UNITS,
 	'Imported from'     => SMW_SP_IMPORTED_FROM,
 	'Corresponds to'    => SMW_SP_CONVERSION_FACTOR,
 	'Provides service'  => SMW_SP_SERVICE_LINK,

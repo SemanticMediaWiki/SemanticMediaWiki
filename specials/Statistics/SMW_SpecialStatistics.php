@@ -1,9 +1,9 @@
 <?php
 /**
  * @author Daniel M. Herzig
- * @version 0.1
  *
- * This special page of the Semantic Media Wiki Extension displays some statistics about relations and attributes.
+ * This special page of the Semantic MediaWiki extension displays some 
+ * statistics about properties.
  */
 if (!defined('MEDIAWIKI')) die();
 

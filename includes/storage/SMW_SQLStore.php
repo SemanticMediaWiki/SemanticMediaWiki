@@ -105,6 +105,13 @@ class SMWSQLStore extends SMWStore {
 					$result[] = $v;
 				}
 			break;
+			case SMW_SP_DISPLAY_UNITS: // string values
+				while($row = $db->fetchObject($res)) {
+					$v = SMWDataValueFactory::newSpecialValue($specialprop);
+					$v->setXSDValue($row->value_string);
+					$result[] = $v;
+				}
+			break;
 			default: // plain strings
 			///TODO: this should also be handled by the appropriate special handlers
 				while($row = $db->fetchObject($res)) {
