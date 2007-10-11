@@ -93,7 +93,10 @@ class SMWPageProperty extends SpecialPage {
 				$html .= wfMsg( 'smw_result_noresults' );
 			} else {
 				$html .= "<ul>\n";
+				$count = $limit+1;
 				foreach ($results as $result) {
+					$count -= 1;
+					if ($count < 1) continue;
 					$html .= '<li>' . $result->getShortHTMLText($skin);
 					if ($result->getTypeID() == '_wpg') {
 						$browselink = SMWInfolink::newBrowsingLink('+',$result->getPrefixedText());
