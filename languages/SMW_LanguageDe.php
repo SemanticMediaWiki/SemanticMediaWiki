@@ -183,8 +183,7 @@ protected $m_DatatypeLabels = array(
 	'_txt' => 'Text',  // name of the text type
 	'_enu' => 'Aufzählung',  // name of the enum type
 	//'_boo' => 'Wahrheitswert',  // name of the boolean type
-	'_int' => 'Ganze Zahl',  // name of the int type
-	'_flt' => 'Dezimalzahl',  // name of the floating point type
+	'_num' => 'Zahl', // name for the datatype of numbers
 	'_geo' => 'Geografische Koordinaten', // name of the geocoord type
 	'_tem' => 'Temperatur',  // name of the temperature type
 	'_dat' => 'Datum',  // name of the datetime (calendar) type
@@ -195,12 +194,13 @@ protected $m_DatatypeLabels = array(
 
 protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
+	'Ganze Zahl'            => '_num',
+	'Dezimalzahl'           => '_num',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',
 	'Text'                  => '_txt',
-	'Integer'               => '_int',
-	'Float'                 => '_flt',
+	'Number'                => '_num',
 	'Geographic coordinate' => '_geo',
 	'Temperature'           => '_tem',
 	'Date'                  => '_dat',

@@ -201,8 +201,7 @@ protected $m_DatatypeLabels = array(
 	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
 	'_enu' => 'Перечисление',  // name of the enum type
 	'_boo' => 'Булево',  // name of the boolean type
-	'_int' => 'Целое',  // name of the int type
-	'_flt' => 'Десятичное',  // name of the floating point type
+	'_num' => 'Number', // name for the datatype of numbers //TODO: translate
 	'_geo' => 'Географическая координата', // name of the geocoord type
 	'_tem' => 'Температура',  // name of the temperature type
 	'_dat' => 'Дата',  // name of the datetime (calendar) type
@@ -213,12 +212,13 @@ protected $m_DatatypeLabels = array(
 
 protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
+	'Целое'                 => '_num',
+	'Десятичное'            => '_num',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',
 	'Text'                  => '_txt',
-	'Integer'               => '_int',
-	'Float'                 => '_flt',
+	'Number'                => '_num',
 	'Geographic coordinate' => '_geo',
 	'Temperature'           => '_tem',
 	'Date'                  => '_dat',

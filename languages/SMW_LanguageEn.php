@@ -185,8 +185,9 @@ protected $m_DatatypeLabels = array(
 	'_txt' => 'Text',  // name of the text type
 	'_enu' => 'Enumeration',  // name of the enum type
 	//'_boo' => 'Boolean',  // name of the boolean type
-	'_int' => 'Integer',  // name of the int type
-	'_flt' => 'Float',  // name of the floating point type
+// 	'_int' => 'Integer',  // name of the int type
+// 	'_flt' => 'Float',  // name of the floating point type
+	'_num' => 'Number',  // generic numerical values
 	'_geo' => 'Geographic coordinate', // name of the geocoord type
 	'_tem' => 'Temperature',  // name of the temperature type
 	'_dat' => 'Date',  // name of the datetime (calendar) type
@@ -196,7 +197,9 @@ protected $m_DatatypeLabels = array(
 );
 
 protected $m_DatatypeAliases = array(
-	'URI'  => '_uri'
+	'URI'      => '_uri',
+	'Float'    => '_num',
+	'Integer'  => '_num',
 );
 
 protected $m_SpecialProperties = array(

@@ -202,8 +202,7 @@ protected $m_DatatypeLabels = array(
 	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
 	'_enu' => 'Enumeration',  // name of the enum type TODO: translate
 	'_boo' => 'Boolean',  // name of the boolean type TODO: translate
-	'_int' => 'Celé číslo',  // name of the int type
-	'_flt' => 'Desatinné číslo',  // name of the floating point type
+	'_num' => 'Číslo', // name for the datatype of numbers // TODO: check translation (done by pattern matching; mak)
 	'_geo' => 'Zemepisné súradnice', // name of the geocoord type
 	'_tem' => 'Teplota',  // name of the temperature type
 	'_dat' => 'Dátum',  // name of the datetime (calendar) type
@@ -214,12 +213,13 @@ protected $m_DatatypeLabels = array(
 
 protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
+	'Celé číslo'            => '_num',
+	'Desatinné číslo'       => '_num',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',
 	'Text'                  => '_txt',
-	'Integer'               => '_int',
-	'Float'                 => '_flt',
+	'Number'                => '_num',
 	'Geographic coordinate' => '_geo',
 	'Temperature'           => '_tem',
 	'Date'                  => '_dat',

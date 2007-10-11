@@ -194,8 +194,7 @@ protected $m_DatatypeLabels = array(
 	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
 	'_enu' => 'Énumeration',  // name of the enum type
 	//'_boo' => 'Booléen',  // name of the boolean type
-	'_int' => 'Nombre entier',  // name of the int type
-	'_flt' => 'Nombre décimal',  // name of the floating point type
+	'_num' => 'Nombre', // name for the datatype of numbers
 	'_geo' => 'Coordonnées géographiques', // name of the geocoord type
 	'_tem' => 'Température',  // name of the temperature type
 	'_dat' => 'Date',  // name of the datetime (calendar) type
@@ -206,12 +205,13 @@ protected $m_DatatypeLabels = array(
 
 protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
+	'Nombre entier'         => '_num',
+	'Nombre décimal'        => '_num',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',
 	'Text'                  => '_txt',
-	'Integer'               => '_int',
-	'Float'                 => '_flt',
+	'Number'                => '_num',
 	'Geographic coordinate' => '_geo',
 	'Temperature'           => '_tem',
 	'Date'                  => '_dat',

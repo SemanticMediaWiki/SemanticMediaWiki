@@ -225,8 +225,7 @@ protected $m_DatatypeLabels = array(
 	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
 	'_enu' => 'Wyliczenie',  // name of the enum type
 	'_boo' => 'Wartość logiczna',  // name of the boolean type
-	'_int' => 'Liczba całkowita',  // name of the int type
-	'_flt' => 'Liczba zmiennoprzecinkowa',  // name of the floating point type
+	'_num' => 'Liczba' // name for the datatype of numbers // TODO: check translation (done by pattern matching. mak)
 	'_geo' => 'Współrzędne geograficzne', // name of the geocoord type
 	'_tem' => 'Temperatura',  // name of the temperature type
 	'_dat' => 'Data',  // name of the datetime (calendar) type
@@ -237,12 +236,13 @@ protected $m_DatatypeLabels = array(
 
 protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
+	'Liczba całkowita'      => '_num',
+	'Liczba zmiennoprzecinkowa' => '_num',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',
 	'Text'                  => '_txt',
-	'Integer'               => '_int',
-	'Float'                 => '_flt',
+	'Number'                => '_num',
 	'Geographic coordinate' => '_geo',
 	'Temperature'           => '_tem',
 	'Date'                  => '_dat',

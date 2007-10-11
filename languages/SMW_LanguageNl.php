@@ -179,8 +179,7 @@ protected $m_DatatypeLabels = array(
 	'_txt' => 'Tekst',  // name of the text type
 	'_enu' => 'Opsomming',  // name of the enum type
 	'_boo' => 'Booleans',  // name of the boolean type
-	'_int' => 'Integer',  // name of the int type
-	'_flt' => 'Float',  // name of the floating point type
+	'_num' => 'Number', // name for the datatype of numbers // TODO: translate
 	'_geo' => 'Geographische coordinaat', // name of the geocoord type
 	'_tem' => 'Temperatuur',  // name of the temperature type
 	'_dat' => 'Datum',  // name of the datetime (calendar) type
@@ -191,12 +190,13 @@ protected $m_DatatypeLabels = array(
 
 protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
+	'Integer'               => '_num',
+	'Float'                 => '_num',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',
 	'Text'                  => '_txt',
-	'Integer'               => '_int',
-	'Float'                 => '_flt',
+	'Number'                => '_num';
 	'Geographic coordinate' => '_geo',
 	'Temperature'           => '_tem',
 	'Date'                  => '_dat',
