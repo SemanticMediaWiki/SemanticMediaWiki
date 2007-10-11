@@ -232,10 +232,6 @@ class SMWNumberValue extends SMWDataValue {
 	protected function makeConversionValues() {
 		$this->convertToMainUnit();
 		$this->m_unitvalues = array($this->m_unit => $this->m_value);
-		if ($this->isValid() && ($this->m_unit != '')) {
-			$this->m_unitvalues['km²'] = $this->m_value/13;
-			$this->m_unitvalues['ounces'] = $this->m_value/8;
-		}
 	}
 
 }
