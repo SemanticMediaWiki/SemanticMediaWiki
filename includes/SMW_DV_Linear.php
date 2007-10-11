@@ -85,6 +85,61 @@ class SMWLinearValue extends SMWNumberValue {
 	}
 
 	/**
+	 * This method is used when no user input was given to find the best
+	 * values for m_wikivalue, m_unitin, and m_caption. After conversion,
+	 * these fields will look as if they were generated from user input,
+	 * and convertToMainUnit() will have been called (if not, it would be
+	 * blocked by the presence of m_unitin).
+	 */
+	protected function makeUserValue() {
+		$this->convertToMainUnit();
+
+		$value = false;
+		if ($this->m_unit === $this->m_mainunit) { // only try if conversion worked
+			if ( ($value === false) && $this->m_outunit) { // first try given output unit
+				$unit = $this->normalizeUnit($this->m_outunit);
+				$printunit = $unit;
+				if (array_key_exists($unit, $this->m_unitids)) { // find id for output unit
+					$unit = $this->m_unitids[$unit];
+					if (array_key_exists($unit, $this->m_unitfactors)) { // find factor for this id
+						$value = $this->m_value * $this->m_unitfactors[$unit];
+					}
+				}
+			}
+			if ($value === false) { // next look for the first given display unit
+				$this->initDisplayData();
+				foreach ($this->m_displayunits as $unit) {
+					if (array_key_exists($unit, $this->m_unitids)) { // find id for first display unit
+						$unit = $this->m_unitids[$unit];
+						if (array_key_exists($unit, $this->m_unitfactors)) { // find factor for this id
+							$value = $this->m_value * $this->m_unitfactors[$unit];
+							$printunit = $unit;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		if ($value === false) { // finally fallback to current value
+			$value = $this->m_value;
+			$unit = $this->m_unit;
+			$printunit = $unit;
+		}
+
+		$this->m_caption = smwfNumberFormat($value);
+		if ($printunit != '') {
+			$this->m_caption .= '&nbsp;' . $printunit;
+		}
+		$this->m_wikivalue = $this->m_caption;
+		$this->m_unitin = $unit;
+	}
+
+/// The remaining functions are relatively "private" but are kept protected since 
+/// subclasses might exploit this to, e.g., "fake" conversion factors instead of
+/// getting them from the database. A cheap way of making built-in types.
+
+	/**
 	 * This method fills $m_unitfactors and $m_unitids with required values.
 	 */
 	protected function initConversionData() {

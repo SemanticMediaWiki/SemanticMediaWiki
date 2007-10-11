@@ -26,25 +26,21 @@ class SMWTemperatureValue extends SMWNumberValue {
 
 		// Find current ID and covert main values to Kelvin, if possible
 		// Note: there is no error when unknown units are used.
-		/// TODO possibly localise some of those strings
+		$this->m_unitin = $this->getUnitID($this->m_unit);
 		switch ( $this->m_unit ) {
-			case '': case 'K': case 'Kelvin': case 'kelvin': case 'kelvins':
-				$this->m_unitin = 'K';
+			case 'K':
+				$this->m_unit = 'K';
 			break;
-			// There's a dedicated Unicode character (℃, U+2103) for degrees C.
-			// Your font may or may not display it; do not be alarmed.
-			case '°C': case '℃': case 'Celsius': case 'centigrade':
-				$this->m_unitin = '°C';
+			case '°C':
 				$this->m_unit = 'K';
 				$this->m_value = $this->m_value + 273.15;
 			break;
 			case '°F': case 'Fahrenheit':
-				$this->m_unitin ='°F';
 				$this->m_unit = 'K';
 				$this->m_value = ($this->m_value - 32) /1.8 + 273.15;
 			break;
 			default: //unsupported unit
-				$this->m_unitin = $this->m_unit;
+				$this->m_unit = $this->m_unitin;
 			break;
 		}
 	}
@@ -67,6 +63,71 @@ class SMWTemperatureValue extends SMWNumberValue {
 		if ($this->isValid() && ($this->m_unit == 'K')) {
 			$this->m_unitvalues['°C'] = $this->m_value - 273.15;
 			$this->m_unitvalues['°F'] = ($this->m_value - 273.15) * 1.8 + 32;
+		}
+	}
+
+	/**
+	 * This method is used when no user input was given to find the best
+	 * values for m_wikivalue, m_unitin, and m_caption. After conversion,
+	 * these fields will look as if they were generated from user input,
+	 * and convertToMainUnit() will have been called (if not, it would be
+	 * blocked by the presence of m_unitin).
+	 */
+	protected function makeUserValue() {
+		$this->convertToMainUnit();
+
+		$value = false;
+		if (($this->m_unit === 'K') && $this->m_outunit) { // try given output unit (only if conversion worked)
+			$unit = $this->getUnitID($this->normalizeUnit($this->m_outunit));
+			$printunit = $this->m_outunit;
+			switch ($unit) {
+				case 'K':
+					$value = $this->m_value;
+				break; // nothing to do
+				case '°C':
+					$value = $this->m_value - 273.15;
+				break;
+				case '°F':
+					$value = ($this->m_value - 273.15) * 1.8 + 32;
+				break;
+				// default: unit not supported
+			}
+		}
+		if ($value === false) { // finally fallback to current value
+			$value = $this->m_value;
+			$unit = $this->m_unit;
+			$printunit = $unit;
+		}
+
+		$this->m_caption = smwfNumberFormat($value);
+		if ($printunit != '') {
+			$this->m_caption .= '&nbsp;' . $printunit;
+		}
+		$this->m_wikivalue = $this->m_caption;
+		$this->m_unitin = $unit;
+	}
+
+
+
+	/**
+	 * Helper method to find the main representation of a certain unit.
+	 */
+	protected function getUnitID($unit) {
+		/// TODO possibly localise some of those strings
+		switch ( $unit ) {
+			case '': case 'K': case 'Kelvin': case 'kelvin': case 'kelvins':
+				return 'K';
+			// There's a dedicated Unicode character (℃, U+2103) for degrees C.
+			// Your font may or may not display it; do not be alarmed.
+			case '°C': case '℃': case 'Celsius': case 'centigrade':
+				return '°C';
+			break;
+			case '°F': case 'Fahrenheit':
+				return '°F';
+			break;
+			default: //unsupported unit
+				return $unit;
+			break;
 		}
 	}
 

@@ -73,9 +73,8 @@ class SMWNumberValue extends SMWDataValue {
 	protected function parseXSDValue($value, $unit) {
 		$this->m_unit = $unit;
 		$this->m_value = $value;
-		$this->m_caption = smwfNumberFormat($this->m_value);
-		$this->m_wikivalue = $this->m_caption . ' ' . $unit;
-		$this->m_unitin = false; // TODO: should we assume that this is still the main unit (might have changes since last saving ...)
+		$this->m_unitin = false;
+		$this->makeUserValue();
 		$this->m_unitvalues = false;
 	}
 
@@ -232,6 +231,25 @@ class SMWNumberValue extends SMWDataValue {
 	protected function makeConversionValues() {
 		$this->convertToMainUnit();
 		$this->m_unitvalues = array($this->m_unit => $this->m_value);
+	}
+
+	/**
+	 * This method is used when no user input was given to find the best
+	 * values for m_wikivalue, m_unitin, and m_caption. After conversion,
+	 * these fields will look as if they were generated from user input,
+	 * and convertToMainUnit() will have been called (if not, it would be
+	 * blocked by the presence of m_unitin).
+	 *
+	 * Overwritten by subclasses that support units.
+	 */
+	protected function makeUserValue() {
+		$this->convertToMainUnit();
+		$this->m_caption = smwfNumberFormat($this->m_value);
+		if ($this->m_unit != '') {
+			$this->m_caption .= '&nbsp;' . $this->m_unit;
+		}
+		$this->m_wikivalue = $this->m_caption;
+		$this->m_unitin = $this->m_unit;
 	}
 
 }
