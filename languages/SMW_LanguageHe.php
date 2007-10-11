@@ -223,7 +223,7 @@ protected $m_DatatypeAliases = array(
 	'Page'                  => '_wpg',
 	'String'                => '_str',
 	'Text'                  => '_txt',
-	'Number'                => '_num'
+	'Number'                => '_num',
 	'Geographic coordinate' => '_geo',
 	'Temperature'           => '_tem',
 	'Date'                  => '_dat',
@@ -267,6 +267,7 @@ protected $m_Namespaces = array(
 	SMW_NS_TYPE           => 'טיפוס',
 	SMW_NS_TYPE_TALK      => 'שיחת_טיפוס'
 );
+
 
 protected $m_NamespaceAliases = array(
 	// support English aliases for namespaces
