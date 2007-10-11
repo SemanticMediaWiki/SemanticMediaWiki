@@ -270,7 +270,6 @@ function smwfAddHTMLHeadersOutput(&$out) {
 		if (!is_array($wgExtraNamespaces)) { $wgExtraNamespaces=array(); }
 		$wgExtraNamespaces = $wgExtraNamespaces + $smwgContLang->getNamespaces();
 		$wgNamespaceAliases = $wgNamespaceAliases + $smwgContLang->getNamespaceAliases();
-		
 
 		// Support subpages only for talk pages by default
 		$wgNamespacesWithSubpages = $wgNamespacesWithSubpages + array(
@@ -422,6 +421,76 @@ function smwfAddHTMLHeadersOutput(&$out) {
 		global $IP;
 		include_once($IP . '/includes/Sanitizer.php');
 		return str_replace(array('&','<','>'), array('&amp;','&lt;','&gt;'), Sanitizer::decodeCharReferences($text));
+	}
+
+	/**
+	* This method formats a float number value according to the given
+	* language and precision settings, with some intelligence to
+	* produce readable output. Use it whenever you get a number that
+	* was not hand-formatted by a user.
+	* @param $value input number
+	* @param $decplaces optional positive integer, controls how many
+	*                   digits after the decimal point (but not in
+	*                   scientific notation)
+	*/
+	function smwfNumberFormat($value, $decplaces=3) {
+		$decseparator = wfMsgForContent('smw_decseparator');
+		$kiloseparator = wfMsgForContent('smw_kiloseparator');
+	
+		// If number is a trillion or more, then switch to scientific
+		// notation. If number is less than 0.0000001 (i.e. twice decplaces),
+		// then switch to scientific notation. Otherwise print number
+		// using number_format. This may lead to 1.200, so then use trim to
+		// remove trailing zeroes.
+		$doScientific = false;
+		//@TODO: Don't do all this magic for integers, since the formatting does not fit there
+		//       correctly. E.g. one would have integers formatted as 1234e6, not as 1.234e9, right?
+		//The "$value!=0" is relevant: we want to scientify numbers that are close to 0, but never 0!
+		if ( ($decplaces > 0) && ($value != 0) ) {
+			$absValue = abs($value);
+			if ($absValue >= 1000000000) {
+				$doScientific = true;
+			} elseif ($absValue <= pow(10,-$decplaces)) {
+				$doScientific = true;
+			} elseif ($absValue < 1) {
+				if ($absValue <= pow(10,-$decplaces)) {
+					$doScientific = true;
+				} else {
+					// Increase decimal places for small numbers, e.g. .00123 should be 5 places.
+					for ($i=0.1; $absValue <= $i; $i*=0.1) {
+						$decplaces++;
+					}
+				}
+			}
+		}
+		if ($doScientific) {
+			// Should we use decimal places here?
+			$value = sprintf("%1.6e", $value);
+			// Make it more readable by removing trailing zeroes from n.n00e7.
+			$value = preg_replace('/(\\.\\d+?)0*e/', '${1}e', $value, 1);
+			//NOTE: do not use the optional $count parameter with preg_replace. We need to
+			//      remain compatible with PHP 4.something.
+			if ($decseparator !== '.') {
+				$value = str_replace('.', $decseparator, $value);
+			}
+		} else {
+			// Format to some level of precision;
+			// this does rounding and locale formatting.
+			$value = number_format($value, $decplaces, $decseparator, wfMsgForContent('smw_kiloseparator'));
+	
+			// Make it more readable by removing ending .000 from nnn.000
+			//    Assumes substr is faster than a regular expression replacement.
+			$end = $decseparator . str_repeat('0', $decplaces);
+			$lenEnd = strlen($end);
+			if (substr($value, -$lenEnd) === $end ) {
+				$value = substr($value, 0, -$lenEnd);
+			} else {
+				// If above replacement occurred, no need to do the next one.
+				// Make it more readable by removing trailing zeroes from nn.n00.
+				$value = preg_replace("/(\\$decseparator\\d+?)0*$/", '$1', $value, 1);
+			}
+		}
+		return $value;
 	}
 
 	/**

@@ -595,7 +595,7 @@ class SMWTemperatureTypeHandler extends SMWFloatTypeHandler {
 	}
 } // End class SMWTemperatureTypeHandler
 
-SMWTypeHandlerFactory::registerTypeHandler('_tem',
-                       new SMWTemperatureTypeHandler());
+// SMWTypeHandlerFactory::registerTypeHandler('_tem',
+//                        new SMWTemperatureTypeHandler());
 
 
