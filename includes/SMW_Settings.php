@@ -107,6 +107,11 @@ $smwgExportSemanticRelationHierarchy = false; // should subrelations be exported
 // should reflect the same.
 $smwgOWLFullExport = false; // decides, if the RDF export will export, by default,
 // OWL Full or rather nice OWL DL. Can be overriden in the RDF export class.
+// global $smwgNamespace;                     // The Namespace of exported URIs.
+// $smwgNamespace = "http://example.org/id/"; // Will be set automatically if 
+// nothing is given, but in order to make pretty URIs you will need to set this
+// to something nice and adapt your Apache configuration appropriately. See the
+// documentation on http://ontoworld.org/wiki/Help:Cool_URIs
 ##
 
 ###
