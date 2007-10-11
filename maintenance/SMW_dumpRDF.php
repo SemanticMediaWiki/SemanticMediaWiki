@@ -23,13 +23,13 @@ if ( !empty( $options['o'] ) ) {
 	$outfile = false;
 }
 
-if ( $options['categories'] ) {
+if ( array_key_exists( 'categories' , $options ) ) {
 	$export_ns = NS_CATEGORY;
-} elseif ( $options['properties'] ) {
+} elseif ( array_key_exists( 'properties' , $options ) ) {
 	$export_ns = SMW_NS_PROPERTY;
-} elseif ( $options['types'] ) {
+} elseif ( array_key_exists( 'types' , $options ) ) {
 	$export_ns = SMW_NS_TYPE;
-} elseif ( $options['individuals'] ) {
+} elseif ( array_key_exists( 'individuals' , $options ) ) {
 	$export_ns = -1;
 } else {
 	$export_ns = false;
