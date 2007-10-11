@@ -12,7 +12,7 @@ if (!defined('MEDIAWIKI')) die();
 
 
 function smwfDoSpecialExportRDF($page = '') {
-	global $wgOut, $wgRequest, $wgUser, $smwgAllowRecursiveExport, $smwgExportBacklinks;
+	global $wgOut, $wgRequest, $wgUser, $smwgAllowRecursiveExport, $smwgExportBacklinks, $smwgExportAll;
 
 	$recursive = 0;  //default, no recursion
 	$backlinks = $smwgExportBacklinks; //default
@@ -223,32 +223,32 @@ class ExportRDF {
 	                             // avoids too much array copying; <= MAX_CACHE_SIZE!
 
 	/**
-	 * The basic namespace for acrticles in this wiki (computed on creation).
+	 * The basic namespace for articles in this wiki (computed on creation).
 	 * Version suitable for URLs.
 	 */
-	var $wiki_xmlns_url;
+	private $wiki_xmlns_url;
 
 	/**
-	 * The basic namespace for acrticles in this wiki (computed on creation).
+	 * The basic namespace for topics talked about in this wiki (computed on creation).
 	 * Version suitable for XML identifiers.
 	 */
-	var $wiki_xmlns_xml;
+	private $wiki_xmlns_xml;
 
 	/**
 	 * An array that keeps track of the elements for which we still need to
 	 * write auxilliary definitions.
 	 */
-	var $element_queue;
+	private $element_queue;
 
 	/**
 	 * An array that keeps track of the elements which have been exported already
 	 */
-	var $element_done;
+	private $element_done;
 
 	/**
 	 * URL of this special page
 	 */
-	var $special_url;
+	private $special_url;
 
 	/**
 	 * Store handler -- needed multiple times, so "cache" it
@@ -259,7 +259,7 @@ class ExportRDF {
 	 * Date used to filter the export. If a page has not been changed since that
 	 * date it will not be exported
 	 */
-	var $date;
+	private $date;
 
 	/**
 	 * Array of additional namespaces (abbreviation => URI), flushed on
@@ -270,7 +270,7 @@ class ExportRDF {
 	 * from this array can still be printed (note that you never know which
 	 * extra namespaces you encounter during export).
 	 */
-	var $extra_namespaces;
+	private $extra_namespaces;
 
 	/**
 	 * Array of namespaces that have been declared globally already. Contains
@@ -279,7 +279,13 @@ class ExportRDF {
 	 * something as rdf:bla if you do not want rdf to be the standard
 	 * namespace that is already given in every RDF export).
 	 */
-	var $global_namespaces;
+	private $global_namespaces;
+	
+	/**
+	 * Array of references to the SMW schema. Will be added at the end of the
+	 * export.
+	 */
+	private $schema_refs;
 
 	/**
 	 * Unprinted XML is composed from the strings $pre_ns_buffer and $post_ns_buffer.
@@ -288,18 +294,18 @@ class ExportRDF {
 	 * buffers are flushed during output in order to achieve "streaming" RDF export
 	 * for larger files.
 	 */
-	var $pre_ns_buffer;
+	private $pre_ns_buffer;
 
 	/**
 	 * See documentation for ExportRDF::pre_ns_buffer.
 	 */
-	var $post_ns_buffer;
+	private $post_ns_buffer;
 
 	/**
 	 * Boolean that is true as long as nothing was flushed yet. Indicates that
 	 * extra namespaces can still become global.
 	 */
-	var $first_flush;
+	private $first_flush;
 
 	/**
 	 * Integer that counts down the number of objects we still process before
@@ -307,7 +313,7 @@ class ExportRDF {
 	 * to get more namespaces global. Flushing will only happen if $delay_flush
 	 * is 0.
 	 */
-	var $delay_flush;
+	private $delay_flush;
 	
 	/**
 	 * Boolean. If true, the export will be in OWL Full, i.e. it will also
@@ -315,13 +321,15 @@ class ExportRDF {
 	 */
 	var $owlfull;
 
+	/**
+	 * Constructor.
+	 */
 	public function ExportRDF() {
-		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http:/)
-		// if not completed yet, it wll be prefixed with a dot. Check for that and complete
 		global $wgServer;   // actual server address (with http://)
 		global $wgScript;   // "/subdirectory/of/wiki/index.php"
 		global $wgArticlePath;
 		$this->wiki_xmlns_url = $wgServer . str_replace('$1', '', $wgArticlePath);
+		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
 		if (''==$smwgNamespace) {
 			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
 			$smwgNamespace = $resolver->getFullURL() . '/';
@@ -409,7 +417,7 @@ class ExportRDF {
 					if ( NS_CATEGORY === $et->title_namespace ) { // also print elements of categories
 						$instances = $this->store->getSpecialSubjects( SMW_SP_HAS_CATEGORY, $et->title );
 						foreach($instances as $instance) {
-							$st = $this->getExportTitleFromTitle( $instance->getTitle() );
+							$st = $this->getExportTitleFromTitle( $instance );
 							if (!array_key_exists($st->hashkey, $this->element_done)) {
 								$cur_queue[] = $st;
 							}
@@ -534,7 +542,7 @@ class ExportRDF {
 
 	/* Functions for exporting RDF */
 
-	function printHeader() {
+	private function printHeader() {
 		global $wgContLang;
 
 		$this->pre_ns_buffer .=
@@ -571,7 +579,11 @@ class ExportRDF {
 		$this->addSchemaRef( "Thing", "owl:Class" );
 	}
 
-	function printFooter() {
+	/**
+	 * Prints the footer. Prints also all open schema-references.
+	 * No schema-references can be added after printing the footer.
+	 */
+	private function printFooter() {
 		$this->post_ns_buffer .= "\t<!-- reference to the Semantic MediaWiki schema -->\n";
 		foreach (array_keys($this->schema_refs) as $name) {
 			$type = $this->schema_refs[$name];			
@@ -608,7 +620,7 @@ class ExportRDF {
 	 * @return nothing
 	 */
 	public function addPage( Title $title, $fullexport=false ) {
-		
+		$this->element_queue[] = $this->getExportTitleFromTitle( $title );
 	}
 
 	/**
@@ -620,7 +632,7 @@ class ExportRDF {
 	 *                            a definition of the given title.
 	 * $return nothing
 	 */
-	function printTriples(SMWExportTitle $et, $fullexport=true) {
+	private function printTriples(SMWExportTitle $et, $fullexport=true) {
 		// if this was already exported, don't do it again
 		if (array_key_exists($et->hashkey, $this->element_done)) return;
 		// return if younger than the filtered date
@@ -657,6 +669,7 @@ class ExportRDF {
 						$type = 'owl:DatatypeProperty';
 					break;
 				}
+				if ($this->owlfull) $category_rel = "rdf:type";
 				break;
 			case NS_CATEGORY:
 				$type = 'owl:Class';
@@ -770,7 +783,7 @@ class ExportRDF {
 	 *
 	 * @param force if true, the flush cannot be delayed any longer
 	 */
-	public function flushBuffers($force = false) {
+	private function flushBuffers($force = false) {
 		if ( '' == $this->post_ns_buffer ) return; // nothing to flush (every non-empty pre_ns_buffer also requires a non-empty post_ns_buffer)
 		if ( (0 != $this->delay_flush) && !$force ) return; // wait a little longer
 
