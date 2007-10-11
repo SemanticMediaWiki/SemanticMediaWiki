@@ -367,6 +367,7 @@ class SMWNAryValue extends SMWDataValue {
 	 */
 	public function exportToRDF( $QName, ExportRDF $exporter ) {
 		$rdf = "\t\t<$QName>\n";
+		$rdf.= "\t\t\t<smw:NAry>\n";
 		$count = 0;
 		foreach ($this->m_values as $value) {
 			$count++;
@@ -377,13 +378,15 @@ class SMWNAryValue extends SMWDataValue {
 
 //			$element = "nary" . $count . $value->getTypeID();
 			/// TODO make the element name dependent on the type of the value
-			$rdf .= "\t" . $value->exportToRDF( "smw:$element", $exporter );
+			$rdf .= "\t\t" . $value->exportToRDF( "smw:$element", $exporter );
 			if ($value->getTypeID() == '_wpg') {
 				$exporter->addSchemaRef( $element, "owl:ObjectProperty" );
 			} else {
 				$exporter->addSchemaRef( $element, "owl:DatatypeProperty" );
 			}
 		}
+		$rdf .= "\t\t\t</smw:NAry>\n";
+		$exporter->addSchemaRef( "NAry", "owl:Class" );
 		$rdf .= "\t\t</$QName>\n";
 		return $rdf;
 	}
