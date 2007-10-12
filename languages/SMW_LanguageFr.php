@@ -46,15 +46,9 @@ protected $m_ContentMessages = array(
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'Cet attribut ne supporte aucune conversion d\'unité',
 	'smw_unsupportedprefix' => 'Des préfixes ("$1") ne sont pas supportés actuellement',
 	'smw_unsupportedunit' => 'La conversion de l\'unité "$1" n\'est pas supportée',
-	/*Messages for geo coordinates parsing*/
-	'smw_err_latitude' => 'Les indications sur la latitude (N, S) doivent être comprises entre 0 et 90. "$1" ne se trouve pas à l\'intérieur de ces limites !',
-	'smw_err_longitude' => 'Les indications sur la longitude (E, O) doivent être comprises entre 0 et 180. "$1" ne se trouve pas à l\'intérieur de ces limites !',
-	'smw_err_noDirection' => 'Quelque chose ne va pas avec l\'indication "$1".',
-	'smw_err_parsingLatLong' => 'Quelque chose ne va pas avec l\'indication "$1". Quelque chose dans la forme "1°2′3.4′′O" ou au minimum y ressemblant est attendu !',
-	'smw_err_wrongSyntax' => 'Quelque chose ne va pas avec l\'indication "$1". Quelque chose dans la forme "1°2′3.4′′ O, 5°6′7.8′ N" ou au minimum y ressemblant est attendu !',
-	'smw_err_sepSyntax' => 'L\'expression "$1" semble être exacte, mais les valeurs de la latitude et de la longitude doivent être séparées par des signes tels que "," ou ";".',
-	'smw_err_notBothGiven' => 'Une valeur doit être donnée pour la latitude (N, S) <i>et</i> la longitude (E, O).',
-	/* additionals ... */
+	// Messages for geo coordinates parsing
+	'smw_lonely_unit' => 'No number found before the symbol “$1”.', // $1 is something like ° TODO Translate
+	'smw_bad_latlong' => 'Latitude and longitude must be given only once, and with valid coordinates.', // TODO Translate
 	'smw_label_latitude' => 'Latitude :',
 	'smw_label_longitude' => 'Longitude :',
 	'smw_abb_north' => 'N',

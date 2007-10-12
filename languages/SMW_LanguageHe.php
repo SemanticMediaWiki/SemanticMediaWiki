@@ -46,15 +46,9 @@ protected $m_ContentMessages = array(
 	//'smw_unexpectedunit' => 'תכונה זו אינה תומכת בהמרה מטיפוס לטיפוס',
 	'smw_unsupportedprefix' => 'Prefixes for numbers (“$1”) are not supported.', // TODO translate
 	'smw_unsupportedunit' => 'אין תמיכה להמרת יחידות לטיפוס "$1"',
-	/*Messages for geo coordinates parsing*/
-	'smw_err_latitude' => 'הערכים לקו-רוחב (צפון, דרום) ,צריכים להיות בין 0 ל-90. "$1" הינו ערך שאינו עומד בדרישה זו!',
-	'smw_err_longitude' => 'הערכים לקו-אורך )מזרח, מערב)חייבים להיות בין 0 ל-180. "$1" הינו ערך שאינו עומד בדרישה זו!',
-	'smw_err_noDirection' => '[אופס!  משהו אינו כשורה עם הערך שצוין "$1"]',
-	'smw_err_parsingLatLong' => '[אופס!  משהו אינו כשורה עם הערך שצוין "$1". ציפיתי למשהו בסגנון "1°2′3.4′′ מערב"!]',
-	'smw_err_wrongSyntax' => '[אופס!  משהו לא בסדר עם הערך שצוין "$1". ציפיתי למשהו בסגנון "1°2′3.4′′ W, 5°6′7.8′′ צפון" !]',
-	'smw_err_sepSyntax' => 'הרך שהוזן "$1" נראה בסדר, אבל ערכים לקוי-רוחב וקוי גובה צריכים להיות מופרדים ב "," או ב ";".',
-	'smw_err_notBothGiven' => 'עליך להזין ערך חוקי לקו האורך (מערב, מזרח) וגם לקו הגובה (צפון, דרום)! אחד מהערכים לפחות חסר!',
-	/* additionals ... */
+	// Messages for geo coordinates parsing
+	'smw_lonely_unit' => 'No number found before the symbol “$1”.', // $1 is something like ° TODO Translate
+	'smw_bad_latlong' => 'Latitude and longitude must be given only once, and with valid coordinates.', // TODO Translate
 	'smw_label_latitude' => 'קו רוחב:',
 	'smw_label_longitude' => 'קו אורך:',
 	'smw_abb_north' => 'צפון',

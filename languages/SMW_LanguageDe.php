@@ -55,15 +55,9 @@ protected $m_ContentMessages = array(
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'dieses Attribut unterstützt keine Umrechnung von Einheiten',
 	'smw_unsupportedprefix' => 'Vorangestellte Zeichen bei Dezimalzahlen („$1“) werden nicht unterstützt.',
 	'smw_unsupportedunit' => 'Umrechnung der Einheit „$1“ nicht unterstützt.',
-	/*Messages for geo coordinates parsing*/
-	'smw_err_latitude' => 'Angaben zur Geographischen Breite (N, S) müssen zwischen 0 und 90 liegen. „$1“ liegt nicht in diesem Bereich!',
-	'smw_err_longitude' => 'Angaben zur Geographischen Länge (O, W) müssen zwischen 0 und 180 liegen. „$1“ liegt nicht in diesem Bereich!',
-	'smw_err_noDirection' => 'Irgendwas stimmt nicht mit dem angegebenen Wert „$1“. Ein Beispiel für eine gültige Angabe ist „1°2′3.4′′ W“.',
-	'smw_err_parsingLatLong' => 'Irgendwas stimmt nicht mit dem angegebenen Wert „$1“. Ein Beispiel für eine gültige Angabe ist „1°2′3.4′′ W“.',
-	'smw_err_wrongSyntax' => 'Irgendwas stimmt nicht mit dem angegebenen Wert „$1“. Ein Beispiel für eine gültige Angabe ist „1°2′3.4′′ W, 5°6′7.8′′ N“.',
-	'smw_err_sepSyntax' => 'Die Werte für geographische Breite und Länge sollten durch Komma oder Semikolon getrennt werden.',
-	'smw_err_notBothGiven' => 'Es muss ein Wert für die geographische Breite (N, S) <i>und</i> die geographische Länge (O, W) angegeben werden.',
-	/* additionals ... */
+	// Messages for geo coordinates parsing
+	'smw_lonely_unit' => 'Keine Zahl vor dem “$1”-Zeichen gefunden.', // $1 is something like ° TODO Translate
+	'smw_bad_latlong' => 'Länge und Breite dürfen nur einmal und mit gültigen Werten angegeben werden.', // TODO Translate
 	'smw_label_latitude' => 'Geographische Breite:',
 	'smw_label_longitude' => 'Geographische Länge:',
 	'smw_abb_north' => 'N',

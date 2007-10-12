@@ -46,15 +46,9 @@ protected $m_ContentMessages = array(
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'tento atribút nepodporuje konverziu jednotiek',
 	'smw_unsupportedprefix' => 'prefixes ("$1") are not currently supported',	 // TODO: translate
 	'smw_unsupportedunit' => 'konverzia jednotiek "$1" nie je podporované',
-	/*Messages for geo coordinates parsing*/
-	'smw_err_latitude' => 'Hodnoty zemepisnej šírky (S, J) musia byť v rozmedzí 0 a 90. "$1" nespĺňa túto podmienku!',
-	'smw_err_longitude' => 'Hodnoty zemepisnej dĺžky (V, Z) musia byť v rozmedzí 0 a 180. "$1" nespĺňa túto podmienku!',
-	'smw_err_noDirection' => 'Niečo je zle na danej hodnote "$1".',
-	'smw_err_parsingLatLong' => 'Niečo je zle na danej hodnote "$1". Na tomto mieste očakávame hodnotu ako "1°2′3.4′′ Z"!',
-	'smw_err_wrongSyntax' => 'Niečo je zle na danej hodnote  "$1". Na tomto mieste očakávame hodnotu ako "1°2′3.4′′ Z, 5°6′7.8′′ S"!',
-	'smw_err_sepSyntax' => 'Daná hodnota "$1" vyzerá byť v poriadku, akehodnoty zemepisnej šírky a dĺžky by mali byť oddelené "," alebo ";".',
-	'smw_err_notBothGiven' => 'Musíte uviesť platnú hodnotu pre zemepisnú šírku (V, Z) AJ dĺžku (S, J)! Aspoň jedna z nich chýba!',
-	/* additionals ... */
+	// Messages for geo coordinates parsing
+	'smw_lonely_unit' => 'No number found before the symbol “$1”.', // $1 is something like ° TODO Translate
+	'smw_bad_latlong' => 'Latitude and longitude must be given only once, and with valid coordinates.', // TODO Translate
 	'smw_label_latitude' => 'Zemepisná šírka:',
 	'smw_label_longitude' => 'Zemepisná dĺžka:',
 	'smw_abb_north' => 'S',

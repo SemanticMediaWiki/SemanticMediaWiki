@@ -47,14 +47,8 @@ protected $m_ContentMessages = array(
 	'smw_unsupportedprefix' => 'Префиксы ("$1") не поддерживаются в настоящее время.',
 	'smw_unsupportedunit' => 'Конвертация единиц измерения для "$1" не поддерживается.',
 	// Messages for geo coordinates parsing
-	'smw_err_latitude' => 'Значения для широты (N, S) должны находится в диапазоне от 0 до 90. "$1" не удовлетворяет этому условию!',
-	'smw_err_longitude' => 'Значения для долготы (E, W) должны находится в диапазоне от 0 до 180. "$1" не удовлетворяет этому условию!',
-	'smw_err_noDirection' => 'Что-то не так со значением "$1".',
-	'smw_err_parsingLatLong' => 'Что-то не так со значением "$1". Здесь ожидается значение вида "1°2?3.4?? W"!',
-	'smw_err_wrongSyntax' => 'Что-то не так со значением "$1". Здесь ожидается значение вида "1°2?3.4?? W, 5°6?7.8?? N"!',
-	'smw_err_sepSyntax' => 'Значение "$1" похоже на правильное, но широта и долгота должна быть разделена символом "," или ";".',
-	'smw_err_notBothGiven' => 'Вам следует указать правильное значение как для широты (E, W) так и для долготы (N, S)! Одного не хватает!',
-	// additionals ...
+	'smw_lonely_unit' => 'No number found before the symbol “$1”.', // $1 is something like ° TODO Translate
+	'smw_bad_latlong' => 'Latitude and longitude must be given only once, and with valid coordinates.', // TODO Translate
 	'smw_label_latitude' => 'Широта:',
 	'smw_label_longitude' => 'Долгота:',
 	'smw_abb_north' => 'N',

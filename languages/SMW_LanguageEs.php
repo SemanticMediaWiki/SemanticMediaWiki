@@ -46,15 +46,9 @@ protected $m_ContentMessages = array(
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'Este atributo no soporta ninguna conversión de unidad',
 	'smw_unsupportedprefix' => 'prefijos ("$1") no esta soportados actualmente',
 	'smw_unsupportedunit' => 'La conversión de la unidad "$1" no está soportada',
-	/*Messages for geo coordinates parsing*/
-	'smw_err_latitude' => 'Las indicaciones de latitud (N, S) deben estar comprendidas entre 0 et 90. "$1" no se encuentra dentro de estos límites !',
-	'smw_err_longitude' => 'Las indicaciones de longitud (E, O) deben estar comprendidas entre 0 y 180. "$1" no se encuentra dentro de estos límites !',
-	'smw_err_noDirection' => 'Algo no funciona con la indicación "$1".',
-	'smw_err_parsingLatLong' => 'Algo no funciona con la indicación "$1". Se espera algo con la forma "1°2′3.4′′O" o como mínimo algo parecido !',
-	'smw_err_wrongSyntax' => 'Algo no funciona con la indicación "$1". Se espera algo con la forma "1°2′3.4′′ O, 5°6′7.8′ N" o como mínimo algo parecido !',
-	'smw_err_sepSyntax' => 'La expresión "$1" parece ser correcta, pero los valores de la latitud y de la longitud deben ser separados por signos como "," o ";".',
-	'smw_err_notBothGiven' => 'Se debe dar un valor para la latitud (N, S) <i>y</i> la longitud (E, O).',
-	/* additionals ... */
+	// Messages for geo coordinates parsing
+	'smw_lonely_unit' => 'No number found before the symbol “$1”.', // $1 is something like ° TODO Translate
+	'smw_bad_latlong' => 'Latitude and longitude must be given only once, and with valid coordinates.', // TODO Translate
 	'smw_label_latitude' => 'Latitud :',
 	'smw_label_longitude' => 'Longitud :',
 	'smw_abb_north' => 'N',

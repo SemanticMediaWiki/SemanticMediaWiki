@@ -47,14 +47,8 @@ protected $m_ContentMessages = array(
 	'smw_unsupportedprefix' => 'Voorvoegsels voor getallen (“$1”) worden niet ondersteund.',
 	'smw_unsupportedunit' => 'Eenheidconversie voor eenheid “$1” is niet ondersteund.',
 	// Messages for geo coordinates parsing
-	'smw_err_latitude' => 'Waarden voor breedte (N, Z) moeten tussen 0 en 90 liggen, en “$1” voldoet niet aan deze voorwaarde.',
-	'smw_err_longitude' => 'Waarden voor lengte (O, W) moeten tussen 0 en 180 liggen, en “$1” voldoet niet aan deze voorwaarde.',
-	'smw_err_noDirection' => 'Er is iets misgegaan met de opgegeven waarde “$1”.',
-	'smw_err_parsingLatLong' => 'Er is iets misgegaan met de opgegeven waarde “$1” &ndash; er werd iets verwacht als “1°2′3.4′′ W” op deze plaats.',
-	'smw_err_wrongSyntax' => 'Er is iets mis met de opgegeven waarde “$1” &ndash; er werd iets verwacht als “1°2′3.4′′ W, 5°6′7.8′′ N” op deze plaats.',
-	'smw_err_sepSyntax' => 'De opgegeven waarde “$1” lijkt in orde, maar de waarden voor breedte en lengte moeten gescheiden worden door “,” of “;”.',
-	'smw_err_notBothGiven' => 'Geef alstublieft een geldige waarde op voor zowel lengte (O, W) <it>als</it> breedte (N, Z) &ndash; er mist er tenminste één.',
-	// additionals ...
+	'smw_lonely_unit' => 'No number found before the symbol “$1”.', // $1 is something like ° TODO Translate
+	'smw_bad_latlong' => 'Latitude and longitude must be given only once, and with valid coordinates.', // TODO Translate
 	'smw_label_latitude' => 'Breedte:',
 	'smw_label_longitude' => 'Lengte:',
 	'smw_abb_north' => 'N',
