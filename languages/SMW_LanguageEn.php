@@ -40,27 +40,21 @@ protected $m_ContentMessages = array(
 	'smw_noboolean' => '“$1” is not recognized as a boolean (true/false) value.',
 	'smw_true_words' => 't,yes,y',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,no,n',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nofloat' => '“$1” is no floating point number.',
+	'smw_nofloat' => '“$1” is no number.',
 	'smw_infinite' => 'Numbers as large as “$1” are not supported on this site.',
 	'smw_infinite_unit' => 'Conversion into unit “$1” resulted in a number that is too large for this site.',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this property supports no unit conversion',
 	'smw_unsupportedprefix' => 'Prefixes for numbers (“$1”) are not supported.',
 	'smw_unsupportedunit' => 'Unit conversion for unit “$1” not supported.',
 	// Messages for geo coordinates parsing
-	'smw_err_latitude' => 'Values for latitude (N, S) must be within 0 and 90, and “$1” does not fulfill this condition.',
-	'smw_err_longitude' => 'Values for longitude (E, W) must be within 0 and 180, and “$1” does not fulfill this condition.',
-	'smw_err_noDirection' => 'Something is wrong with the given value “$1”.',
-	'smw_err_parsingLatLong' => 'Something is wrong with the given value “$1” &ndash; we expect a value like “1°2′3.4′′ W” at this place.',
-	'smw_err_wrongSyntax' => 'Something is wrong with the given value “$1” &ndash; we expect a value like “1°2′3.4′′ W, 5°6′7.8′′ N” at this place.',
-	'smw_err_sepSyntax' => 'The given value “$1” seems to be right, but values for latitude and longitude should be seperated by “,” or “;”.',
-	'smw_err_notBothGiven' => 'Please specify a valid value for both longitude (E, W) <it>and</it> latitude (N, S) &ndash; at least one is missing.',
-	// additionals ...
-	'smw_label_latitude' => 'Latitude:',
-	'smw_label_longitude' => 'Longitude:',
+	'smw_lonely_unit' => 'No number found before the symbol “$1”.', // $1 is something like °
+	'smw_bad_latlong' => 'Latitude and longitude must be given only once, and with valid coordinates.',
 	'smw_abb_north' => 'N',
 	'smw_abb_east' => 'E',
 	'smw_abb_south' => 'S',
 	'smw_abb_west' => 'W',
+	'smw_label_latitude' => 'Latitude:',
+	'smw_label_longitude' => 'Longitude:',
 	// some links for online maps; can be translated to different language versions of services, but need not
 	'smw_service_online_maps' => " find&nbsp;maps|http://tools.wikimedia.de/~magnus/geo/geohack.php?params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	// Messages for datetime parsing

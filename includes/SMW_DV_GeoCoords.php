@@ -52,7 +52,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 						$angles[0] = $curnum;
 						$curnum = false;
 					} else {
-						$this->addError("No number found before the symbol $part."); // TODO: internationalise
+						$this->addError(wfMsgForContent('smw_lonely_unit', $part));
 					}
 				break;
 				case SMW_GEO_MIN:
@@ -61,7 +61,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 						if ($angles[0] === false) $angles[0] = 0;
 						$curnum = false;
 					} else {
-						$this->addError("No number found before the symbol $part."); // TODO: internationalise
+						$this->addError(wfMsgForContent('smw_lonely_unit', $part));
 					}
 				break;
 				case SMW_GEO_SEC:
@@ -71,21 +71,21 @@ class SMWGeoCoordsValue extends SMWDataValue {
 						if ($angles[1] === false) $angles[1] = 0;
 						$curnum = false;
 					} else {
-						$this->addError("No number found before the symbol $part."); // TODO: internationalise
+						$this->addError(wfMsgForContent('smw_lonely_unit', $part));
 					}
 				break;
 				case 'N': case 'S': // interpret findings as latitude
 					if (($this->m_lat === false) && ($angles[0] !== false)) {
 						$this->setAngleValues($part,$angles);
 					} else {
-						$this->addError("Latitude and longitude must be given only once, and with valid coordinates."); // TODO: internationalise
+						$this->addError(wfMsgForContent('smw_bad_latlong'));
 					}
 				break;
 				case 'E': case 'W': // interpret findings as longitude
 					if (($this->m_long === false) && ($angles[0] !== false)) {
 						$this->setAngleValues($part,$angles);
 					} else {
-						$this->addError("Latitude and longitude must be given only once, and with valid coordinates."); // TODO: internationalise
+						$this->addError(wfMsgForContent('smw_bad_latlong'));
 					}
 				break;
 				case '': break; // ignore
