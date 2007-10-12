@@ -256,6 +256,7 @@ class SMWFactbox {
 				$text .= '<tr><td class="smwattname">[[' . $property->getPrefixedText() . '|' . preg_replace('/[\s]/','&nbsp;',$property->getText(),2) . ']] </td><td class="smwatts">';
 				// TODO: the preg_replace is a kind of hack to ensure that the left column does not get too narrow; maybe we can find something nicer later
 			} else { // special property
+				if ($key{0} == '_') continue; // internal special property without label
 				smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
 				$text .= '<tr><td class="smwspecname"><span class="smwttinline"><span class="smwbuiltin">[[' .
 				          $wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $key . '|' . $key .

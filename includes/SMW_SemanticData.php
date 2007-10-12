@@ -103,6 +103,9 @@ class SMWSemanticData {
 	public function addSpecialValue($special, /*SMWDataValue*/ $value) {	
 		global $smwgContLang;
 		$property = $smwgContLang->findSpecialPropertyLabel($special);
+		if ($property === false) {
+			$property = '_' . $special;
+		}
 		if (!array_key_exists($property, $this->attribvals)) {
 			$this->attribvals[$property] = array();
 			$this->attribtitles[$property] = $special;
