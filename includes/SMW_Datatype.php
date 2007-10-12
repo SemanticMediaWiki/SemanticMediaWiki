@@ -17,7 +17,7 @@
  *   as custom units (class SMWLinear).
  * TODO: revisit this dependency and announce Float/Linear/Temperature like other datatypes?
  */
-require_once('SMW_DT_Float.php');
+//require_once('SMW_DT_Float.php');
 
 /**@ We need to always pull in DT_URI because it is the unit of the special
  *   property Equivalent URI.
@@ -126,28 +126,28 @@ class SMWTypeHandlerFactory {
 	 *
 	 * @param $attribute should be in text form without preceding namespace.
 	 */
-	static function &getUnitsList($attribute) {
-		if(!array_key_exists($attribute, SMWTypeHandlerFactory::$desiredUnitsByAttribute)) {
-			global $wgContLang;
-			$store = smwfGetStore();
-
-			SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute] = Array();
-			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $attribute);
-			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
-				// get main display unit:
-				$auprops = $store->getSpecialValues($atitle, SMW_SP_MAIN_DISPLAY_UNIT);
-				if (count($auprops) > 0) { // ignore any further main units if given
-					SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute][] = $auprops[0];
-				}
-				// get further units:
-				$auprops = $store->getSpecialValues($atitle, SMW_SP_DISPLAY_UNIT);
-				foreach ($auprops as $uprop) {
-					SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute][] = $uprop;
-				}
-			}
-		}
-		return SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute];
-	}
+// 	static function &getUnitsList($attribute) {
+// 		if(!array_key_exists($attribute, SMWTypeHandlerFactory::$desiredUnitsByAttribute)) {
+// 			global $wgContLang;
+// 			$store = smwfGetStore();
+// 
+// 			SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute] = Array();
+// 			$atitle = Title::newFromText($wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $attribute);
+// 			if ( ($atitle !== NULL) && ($atitle->exists()) ) {
+// 				// get main display unit:
+// 				$auprops = $store->getSpecialValues($atitle, SMW_SP_MAIN_DISPLAY_UNIT);
+// 				if (count($auprops) > 0) { // ignore any further main units if given
+// 					SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute][] = $auprops[0];
+// 				}
+// 				// get further units:
+// 				$auprops = $store->getSpecialValues($atitle, SMW_SP_DISPLAY_UNIT);
+// 				foreach ($auprops as $uprop) {
+// 					SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute][] = $uprop;
+// 				}
+// 			}
+// 		}
+// 		return SMWTypeHandlerFactory::$desiredUnitsByAttribute[$attribute];
+// 	}
 
 
 	/**
@@ -182,18 +182,18 @@ class SMWTypeHandlerFactory {
 	 * @return (possibly empty) array of conversion factors, each a string
 	 * @param $type should be in text form without preceding namespace.
 	 */
-	static function &getConversionFactors($type) {
-		global $wgContLang;
-
-		$ttitle = Title::newFromText($wgContLang->getNsText(SMW_NS_TYPE) . ':' . $type);
-		if ( ($ttitle !== NULL) && ($ttitle->exists()) ) {
-			$result = smwfGetStore()->getSpecialValues($ttitle, SMW_SP_CONVERSION_FACTOR);
-			if (count($result) == 0) {
-				$result = array();
-			}
-		}
-		return $result;
-	}
+// 	static function &getConversionFactors($type) {
+// 		global $wgContLang;
+// 
+// 		$ttitle = Title::newFromText($wgContLang->getNsText(SMW_NS_TYPE) . ':' . $type);
+// 		if ( ($ttitle !== NULL) && ($ttitle->exists()) ) {
+// 			$result = smwfGetStore()->getSpecialValues($ttitle, SMW_SP_CONVERSION_FACTOR);
+// 			if (count($result) == 0) {
+// 				$result = array();
+// 			}
+// 		}
+// 		return $result;
+// 	}
 
 
 	/**
@@ -227,13 +227,13 @@ class SMWTypeHandlerFactory {
  * then you must add it to this list!
  */
 // Integer
-SMWTypeHandlerFactory::announceTypeHandler('_int','int','Integer','SMWIntegerTypeHandler');
+// SMWTypeHandlerFactory::announceTypeHandler('_int','int','Integer','SMWIntegerTypeHandler');
 // URLs etc.
 // SMWTypeHandlerFactory::announceTypeHandler('_ema','email','URI','SMWURITypeHandler','email');
 // SMWTypeHandlerFactory::announceTypeHandler('_uri','uri','URI','SMWURITypeHandler','uri');
 // SMWTypeHandlerFactory::announceTypeHandler('_anu','annouri','URI','SMWURITypeHandler','annouri');
 // Dates & times
-SMWTypeHandlerFactory::announceTypeHandler('_dat','datetime','DateTime','SMWDateTimeTypeHandler');
+// SMWTypeHandlerFactory::announceTypeHandler('_dat','datetime','DateTime','SMWDateTimeTypeHandler');
 // Geographic coordinates
 SMWTypeHandlerFactory::announceTypeHandler('_geo','geocoords','GeoCoords','SMWGeographicLocationTypeHandler');
 // Enums

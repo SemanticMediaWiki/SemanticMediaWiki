@@ -106,7 +106,7 @@ class SMWDataValueFactory {
 			case SMW_SP_HAS_URI:
 				$result = SMWDataValueFactory::newTypeIDValue('_uri', $value, $caption);
 				break;
-			case SMW_SP_MAIN_DISPLAY_UNIT: case SMW_SP_DISPLAY_UNIT: case SMW_SP_SERVICE_LINK:
+			case SMW_SP_DISPLAY_UNITS: case SMW_SP_SERVICE_LINK:
 			case SMW_SP_CONVERSION_FACTOR: case SMW_SP_POSSIBLE_VALUE:
 				$result = SMWDataValueFactory::newTypeIDValue('_str', $value, $caption);
 				break;
@@ -245,6 +245,7 @@ class SMWDataValueFactory {
 		$wgAutoloadClasses['SMWNumberValue']      =  $smwgIP . '/includes/SMW_DV_Number.php';
 		$wgAutoloadClasses['SMWTemperatureValue'] =  $smwgIP . '/includes/SMW_DV_Temperature.php';
 		$wgAutoloadClasses['SMWLinearValue']      =  $smwgIP . '/includes/SMW_DV_Linear.php';
+		$wgAutoloadClasses['SMWTimeValue']        =  $smwgIP . '/includes/SMW_DV_Time.php';
 		SMWDataValueFactory::$m_typeclasses = array(
 			'_txt'  => 'SMWStringValue',
 			'_str'  => 'SMWStringValue',
@@ -254,6 +255,7 @@ class SMWDataValueFactory {
 			'_wpg'  => 'SMWWikiPageValue',
 			'_num'  => 'SMWNumberValue',
 			'_tem'  => 'SMWTemperatureValue',
+			'_dat'  => 'SMWTimeValue',
 			'__typ' => 'SMWTypesValue',
 			'__lin' => 'SMWLinearValue',
 			'__nry' => 'SMWNAryValue',
