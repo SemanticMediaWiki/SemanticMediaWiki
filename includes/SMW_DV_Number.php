@@ -83,6 +83,9 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText($linked = NULL) {
+		if (($linked === NULL) || ($linked === false)) {
+			return $this->m_caption;
+		}
 		$this->makeConversionValues();
 		$tooltip = '';
 		$i = 0;
