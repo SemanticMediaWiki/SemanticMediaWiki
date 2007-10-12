@@ -23,7 +23,8 @@ protected $m_ContentMessages = array(
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und', //used in "A, B, and C"
 	'smw_factbox_head' => 'Fakten zu $1',
-	'smw_spec_head' => 'Besondere Attribute',
+	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
+	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'URIs aus dem Bereich „$1“ sind an dieser Stelle leider nicht verfügbar.',
@@ -39,16 +40,15 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
+	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate
 	'smw_unknowntype' => 'Dem Attribut wurde der unbekannte Datentyp „$1“ zugewiesen.',
 	'smw_manytypes' => 'Dem Attribut wurden mehrere Datentypen zugewiesen.',
 	'smw_emptystring' => 'Leere Zeichenfolgen werden nicht akzeptiert.',
 	'smw_maxstring' => 'Die Zeichenkette „$1“ ist für diese Website zu lang.',
-	'smw_nopossiblevalues' => 'Für dieses Attribut wurden keine möglichen Werte angegeben.',
 	'smw_notinenum' => '„$1“ gehört nicht zu den möglichen Werten dieses Attributs ($2).',
 	'smw_noboolean' => '„$1“ ist kein Boolescher Wert (wahr/falsch).',
 	'smw_true_words' => 'wahr,ja',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'falsch,nein',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '„$1“ ist keine ganze Zahl.',
 	'smw_nofloat' => '„$1“ ist keine Dezimalzahl.',
 	'smw_infinite' => 'Die Zahl $1 ist zu lang.',
 	'smw_infinite_unit' => 'Die Umrechnung in Einheit $1 ist nicht möglich: die Zahl ist zu lang.',

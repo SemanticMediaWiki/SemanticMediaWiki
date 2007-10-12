@@ -14,7 +14,8 @@ protected $m_ContentMessages = array(
 	'smw_viewasrdf' => 'Voir comme RDF',
 	'smw_finallistconjunct' => ' et',					//utilisé dans "A, B, et C"
 	'smw_factbox_head' => 'Faits relatifs à $1 &mdash; Recherche de pages similaires avec <span class="smwsearchicon">+</span>.',
-	'smw_spec_head' => 'Propriétés spéciales',
+	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
+	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Désolé. Les URIs du domaine $1 ne sont pas disponible à cet emplacement',
@@ -30,16 +31,15 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
+	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate
 	'smw_unknowntype' => 'Le type de données "$1" non supporté a été retourné à l\'attribut.',
 	'smw_manytypes' => 'Plusieurs types de données ont été assignés à l\'attribut.',
 	'smw_emptystring' => 'Les chaînes vides ne sont pas acceptées.',
 	'smw_maxstring' => 'La chaîne de représentation $1 est trop grande pour ce site.',
-	'smw_nopossiblevalues' => 'Les valeurs possibles pour cet attribut ne sont pas énumérées.',
 	'smw_notinenum' => '"$1" ne fait pas partie des valeurs possibles ($2) pour cet attribut.',
 	'smw_noboolean' => '"$1" n\'est pas reconnu comme une valeur boléenne (vrai/faux).',
 	'smw_true_words' => 'v,oui',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,non',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '"$1" n\'est pas un nombre entier.',
 	'smw_nofloat' => '"$1" n\'est pas un nombre à virgule flottante.',
 	'smw_infinite' => 'Le nombre $1 est trop long.',
 	'smw_infinite_unit' => 'La conversion dans l\'unité $1 est impossible : le nombre est trop long.',

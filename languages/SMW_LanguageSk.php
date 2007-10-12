@@ -14,7 +14,8 @@ protected $m_ContentMessages = array(
 	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => ' a', //used in "A, B, and C"
 	'smw_factbox_head' => 'Skutočnosti o $1 &mdash; Kliknutím na <span class="smwsearchicon">+</span> vyhľadáte podobné stránky.',
-	'smw_spec_head' => 'Zvláštne vlastnosti',
+	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
+	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Prepáčte, URI z rozsahu "$1" na tomto mieste nie sú dostupné.',
@@ -30,16 +31,15 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => '.',
 	'smw_kiloseparator' => ',',
+	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate
 	'smw_unknowntype' => 'Pre atribút je definovaný nepodporovaný typ "$1".',
 	'smw_manytypes' => 'Pre atribút bol definovaný viac ako jeden typ.',
 	'smw_emptystring' => 'Prázdne reťazcie nie sú akceptované.',
 	'smw_maxstring' => 'Reprezentácia reťazca $1 je pre túro stránku príliš dlhá.',
-	'smw_nopossiblevalues' => 'Possible values for this attribute are not enumerated.',	//TODO translate
 	'smw_notinenum' => '"$1" is not in the list of possible values ($2) for this attribute.',	//TODO translate
 	'smw_noboolean' => '"$1" nebolo rozpoznané ako platná hodnota typy boolean (áno/nie).',
 	'smw_true_words' => 'áno',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'nie',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '"$1" nie je celé číslo (integer).',
 	'smw_nofloat' => '"$1" nie je číslo s plávajúcou desatinnou čiarkou.',
 	'smw_infinite' => 'Čísla také dlhé ako $1 nie sú na tejto stránke podporované.',
 	'smw_infinite_unit' => 'Konverzia na jednotky $1 dala ako výsledok číslo, ktoré je pre túto stránku príliš dlhé.',

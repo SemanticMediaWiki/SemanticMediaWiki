@@ -14,7 +14,8 @@ protected $m_ContentMessages = array(
 	'smw_viewasrdf' => 'RDF источник',
 	'smw_finallistconjunct' => ' и', //used in "A, B, and C"
 	'smw_factbox_head' => 'Факты о $1 &mdash; Кликните <span class="smwsearchicon">+</span> чтобы найти похожие страницы.',
-	'smw_spec_head' => 'Специальные свойства',
+	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
+	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Извините, но URI "$1" не доступны из этого места.',
@@ -30,16 +31,15 @@ protected $m_ContentMessages = array(
 	// Messages and strings for basic datatype processing
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => ' ',
+	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate
 	'smw_unknowntype' => 'Тип атрибута "$1" не поддерживается.',
 	'smw_manytypes' => 'Более одного типа определено для атрибута.',
 	'smw_emptystring' => 'Пустые строки не принимаются.',
 	'smw_maxstring' => 'Но строчное представление числа $1 слишком длинное для этого сайта.',
-	'smw_nopossiblevalues' => 'Возможные значения для этого перечисления не заданы.',
 	'smw_notinenum' => '"$1" не входит в список допустимых значений ($2) для этого атрибута.',
 	'smw_noboolean' => '"$1" не является булевым значением (да/нет).',
 	'smw_true_words' => 't,yes,да,д,истина,и',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,no,n,нет,н,ложь,л',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '"$1" не является целым числом.',
 	'smw_nofloat' => '"$1" не является десятичным числом.',
 	'smw_infinite' => 'Но такие длинные числа как $1 не поддерживаются этим сайтом.',
 	'smw_infinite_unit' => 'Но конвертация значения в $1 привело к слишком длинному числу для этого сайта.',

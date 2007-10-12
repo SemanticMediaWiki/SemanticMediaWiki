@@ -14,7 +14,8 @@ protected $m_ContentMessages = array(
 	'smw_viewasrdf' => 'RDF-feed',
 	'smw_finallistconjunct' => ', en', //used in "A, B, and C"
 	'smw_factbox_head' => 'Feiten over $1',
-	'smw_spec_head' => 'Speciale eigenschappen',
+	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
+	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Sorry, URI\'s uit de reeks “$1” zijn hier niet beschikbaar.',
@@ -30,16 +31,15 @@ protected $m_ContentMessages = array(
 	// Messages and strings for basic datatype processing
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
+	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate
 	'smw_unknowntype' => 'Type “$1” is niet beschikbaar voor de gedefinieerde eigenschap.',
 	'smw_manytypes' => 'Meer dan één type gedefinieerd voor eigenschap.',
 	'smw_emptystring' => 'Lege strings zijn niet toegestaan.',
 	'smw_maxstring' => 'Stringrepresentatie $1 is te lang voor deze site.',
-	'smw_nopossiblevalues' => 'Mogelijke waarden voor deze eigenschap worden niet geenumereerd.',
 	'smw_notinenum' => '“$1” komt niet voor in de lijst met mogelijke waarden ($2) voor deze eigenschap.',
 	'smw_noboolean' => '“$1” is niet herkend als een booleaanse waarde (waar/onwaar).',
 	'smw_true_words' => 'w,ja,j',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'o,nee,n',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '“$1” is geen integer getal.',
 	'smw_nofloat' => '“$1” is geen getal met drijvende komma.',
 	'smw_infinite' => 'Getallen zo groot als “$1” zijn niet ondersteund door deze site.',
 	'smw_infinite_unit' => 'Conversie naar eenheid “$1” resulteerde in een getal dat te groot is voor deze site.',

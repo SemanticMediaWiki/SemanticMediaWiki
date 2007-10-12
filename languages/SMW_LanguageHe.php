@@ -14,7 +14,8 @@ protected $m_ContentMessages = array(
 	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => ', וגם', //used in "A, B, and C"
 	'smw_factbox_head' => 'עובדות על אודות $1 &mdash; לחץ <span class="smwsearchicon">+</span> בכדי למצוא דפים דומים.',
-	'smw_spec_head' => 'מאפיינים מיוחדים',
+	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
+	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Sorry, URIs from the range "$1" are not available in this place.',
@@ -30,16 +31,15 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => '.',
 	'smw_kiloseparator' => ',',
+	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate
 	'smw_unknowntype' => '[אופס! טיפוס לא מוכר "$1" הוגדר עבור תכונה זו]',
 	'smw_manytypes' => '[אופס! הוגדר יותר מטיפוס אחד לתכונה זו]',
 	'smw_emptystring' => '[אופס! לא ניתן להשתמש כאן במחרוזות ריקות]',
 	'smw_maxstring' => '[מצטערת, ייצוג המחרוזת כ-$1 ארוך מדי עבור אתר זה.]',
-	'smw_nopossiblevalues' => '[אופס! הערכים האפשריים לתכונה זו לא הוגדרו]',
 	'smw_notinenum' => '[אופס! "$1" לא נמצא בערכים האפשריים ($2) לתכונה זו]',
 	'smw_noboolean' => '[אופס! "$1" אינה תכונה מטיפוס נכון-לאנכון]',
 	'smw_true_words' => 't,yes,y,כן,נכון,אמת,חיובי,כ',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,no,n,לא,לא נכון,לא-נכון,שקר,שלישי,ל',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '[אופס! "$1" אינו מספר שלם]',
 	'smw_nofloat' => '[אופס! "$1" אינו מספר מטיפוס נקודה צפה]',
 	'smw_infinite' => '[מצטרת, $1 הוא מספר גדול מדי לאתר זה .]',
 	'smw_infinite_unit' => '[מצטערת, תוצאת ההמרה ליחידה $1 היא מספר גדול מדי לאתר זה.]',

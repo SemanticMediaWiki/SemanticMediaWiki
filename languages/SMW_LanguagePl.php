@@ -33,7 +33,8 @@ protected $m_ContentMessages = array(
 	'smw_viewasrdf' => 'RDF feed', //TODO: translate?
 	'smw_finallistconjunct' => ' i', //used in "A, B, and C"
 	'smw_factbox_head' => 'Fakty o $1 &mdash; Kliknij <span class="smwsearchicon">+</span> aby znaleźć podobne strony.',
-	'smw_spec_head' => 'Własności specjalne',
+	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
+	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Niestety, URI z przestrzeni "$1" nie są w tym miejscu dostępne.',
@@ -49,16 +50,15 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
+	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate
 	'smw_unknowntype' => '"$1" jako typ atrybutu nie jest wspierany.',
 	'smw_manytypes' => 'Zdefiniowano więcej niż jeden typ dla atrybutu.',
 	'smw_emptystring' => 'Puste łańcuchy znakowe są niedozwolone.',
 	'smw_maxstring' => 'Reprezentacja znakowa $1 jest za długa jak na to miejsce.',
-	'smw_nopossiblevalues' => 'Dozwolone wartości dla tego atrybutu nie zostały wyliczone.',
 	'smw_notinenum' => '“$1” nie jest na liście dozwolonych wartości ($2) dla tego atrybutu.',
 	'smw_noboolean' => '“$1” nie zostało rozpoznane jako wartość logiczna (prawda/fałsz).',
 	'smw_true_words' => 't,yes,y,tak,prawda',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,no,n,nie,fałsz',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nointeger' => '"$1" nie jest liczbą całkowitą.',
 	'smw_nofloat' => '"$1" nie jest liczbą zmiennoprzecinkową.',
 	'smw_infinite' => 'Liczby tak duże jak $1 nie są w tym miejscu wspierane.',
 	'smw_infinite_unit' => 'Konwersja do jednostki $1 zwróciła liczbę, która jest za duża jak na to miejsce.',
