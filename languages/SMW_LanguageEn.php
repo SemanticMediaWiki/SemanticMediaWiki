@@ -197,7 +197,7 @@ protected $m_DatatypeAliases = array(
 	'URI'         => '_uri',
 	'Float'       => '_num',
 	'Integer'     => '_num',
-	'Enumeration' => '_enu'
+	'Enumeration' => '_str'
 );
 
 protected $m_SpecialProperties = array(
