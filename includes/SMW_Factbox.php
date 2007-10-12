@@ -235,7 +235,6 @@ class SMWFactbox {
 		         '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
 		         '<table class="smwfacttable">' . "\n";
 		SMWFactbox::printProperties($text);
-		SMWFactbox::printSpecialProperties($text);
 		$text .= '</table></div>';
 		wfProfileOut("SMWFactbox::printFactbox (SMW)");
 	}
@@ -247,15 +246,23 @@ class SMWFactbox {
 		if (!SMWFactbox::$semdata->hasProperties()) {
 			return;
 		}
+		global $wgContLang;
 
 		//$text .= ' <tr><th class="atthead"></th><th class="atthead">' . wfMsgForContent('smw_att_head') . "</th></tr>\n";
 
-		foreach(SMWFactbox::$semdata->getProperties() as $attribute) {
-			$attributeValueArray = SMWFactbox::$semdata->getPropertyValues($attribute);
+		foreach(SMWFactbox::$semdata->getProperties() as $key => $property) {
 			$text .= '<tr><td class="smwattname">';
-			$text .= '   [[' . $attribute->getPrefixedText() . '|' . preg_replace('/[\s]/','&nbsp;',$attribute->getText(),2) . ']] </td><td class="smwatts">';
-			// TODO: the preg_replace is a kind of hack to ensure that the left column does not get too narrow; maybe we can find something nicer later
+			if ($property instanceof Title) {
+				$text .= '<tr><td class="smwattname">[[' . $property->getPrefixedText() . '|' . preg_replace('/[\s]/','&nbsp;',$property->getText(),2) . ']] </td><td class="smwatts">';
+				// TODO: the preg_replace is a kind of hack to ensure that the left column does not get too narrow; maybe we can find something nicer later
+			} else { // special property
+				$text .= '<tr><td class="smwspecname"><span class="smwttinline"><span class="smwbuiltin">[[' .
+				          $wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $key . '|' . $key .
+				          ']]</span><span class="smwttcontent">' . wfMsgForContent('smw_isspecprop') .
+				          '</span></span></td><td class="smwspecs">';
+			}
 
+			$attributeValueArray = SMWFactbox::$semdata->getPropertyValues($property);
 			$l = count($attributeValueArray);
 			$i=0;
 			foreach ($attributeValueArray as $attributeValue) {
@@ -277,35 +284,6 @@ class SMWFactbox {
 				}
 			}
 			$text .= '</td></tr>';
-		}
-	}
-
-	/**
-	 * This method prints special properties at the bottom of an article.
-	 */
-	static protected function printSpecialProperties(&$text) {
-		if (SMWFactbox::$semdata->hasSpecialProperties()) {
-			$text .= ' <tr><th class="spechead"></th><th class="spechead">' . wfMsgForContent('smw_spec_head') . "</th></tr>\n";
-		} else {
-			return true;
-		}
-
-		global $smwgContLang, $wgContLang;
-		foreach(SMWFactbox::$semdata->getSpecialProperties() as $specialProperty) {
-			$valueArray = SMWFactbox::$semdata->getSpecialValues($specialProperty);
-			$specialPropertyName = $smwgContLang->findSpecialPropertyLabel($specialProperty);
-			if ($specialPropertyName !== false) { // only print specprops with an official name
-				foreach ($valueArray as $value) {
-// 					if ($value instanceof SMWDataValue) {
-// 						$vt = $value->getLongWikiText(true);
-// 					} elseif ($value instanceof Title) {
-// 						$vt = '[[' . $value->getPrefixedText() . ']]';
-// 					} else {
-// 						$vt = $value;
-// 					}
-					$text .= '<tr><td class="smwspecname">[[' . $wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $specialPropertyName . '|' . $specialPropertyName . ']]</td><td class="smwspecs">' . $value->getLongWikiText(true) . "</td></tr>\n";
-				}
-			}
 		}
 	}
 
