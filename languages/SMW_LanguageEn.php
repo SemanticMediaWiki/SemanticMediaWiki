@@ -183,7 +183,6 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype
 	'_str' => 'String',  // name of the string type
 	'_txt' => 'Text',  // name of the text type
-	'_enu' => 'Enumeration',  // name of the enum type
 	//'_boo' => 'Boolean',  // name of the boolean type
 	'_num' => 'Number',  // name for the datatype of numbers
 	'_geo' => 'Geographic coordinate', // name of the geocoord type
@@ -195,9 +194,10 @@ protected $m_DatatypeLabels = array(
 );
 
 protected $m_DatatypeAliases = array(
-	'URI'      => '_uri',
-	'Float'    => '_num',
-	'Integer'  => '_num',
+	'URI'         => '_uri',
+	'Float'       => '_num',
+	'Integer'     => '_num',
+	'Enumeration' => '_enu'
 );
 
 protected $m_SpecialProperties = array(
