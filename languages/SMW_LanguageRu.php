@@ -213,7 +213,7 @@ protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
 	'Целое'                 => '_num',
 	'Десятичное'            => '_num',
-	'Перечисление'          => '_enu',
+	'Перечисление'          => '_str',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',
