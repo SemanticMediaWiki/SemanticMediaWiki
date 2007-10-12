@@ -20,7 +20,7 @@ protected $m_ContentMessages = array(
 	'smw_baduri' => 'Prepáčte, URI z rozsahu "$1" na tomto mieste nie sú dostupné.',
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "Prepáčte. Inline queries have been disabled for this wiki.",
-	'smw_iq_morevýsledky' => '&hellip; ďalšie výsledky',
+	'smw_iq_moreresults' => '&hellip; ďalšie výsledky',
 	'smw_iq_nojs' => 'Tento prvok zobrazíte použitím prehliadača podporujúcim JavaScript alebo priamo <a href="$1">prehliadajte zoznam výsledkov</a>.',
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => 'Funkcie importu nie sú dostupné pre menný priestor "$1".',
@@ -193,14 +193,13 @@ protected $m_UserMessages = array(
 	'smw_result_prev' => 'Späť',
 	'smw_result_next' => 'Ďalej',
 	'smw_result_results' => 'Výsledky',
-	'smw_result_noresult' => 'Prepáčte, žiadne výsledky.'
+	'smw_result_noresults' => 'Prepáčte, žiadne výsledky.'
 );
 
 protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype  //TODO translate
 	'_str' => 'Reťazec',  // name of the string type
 	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
-	'_boo' => 'Boolean',  // name of the boolean type TODO: translate
 	'_num' => 'Číslo', // name for the datatype of numbers // TODO: check translation (done by pattern matching; mak)
 	'_geo' => 'Zemepisné súradnice', // name of the geocoord type
 	'_tem' => 'Teplota',  // name of the temperature type

@@ -43,7 +43,8 @@ protected $m_ContentMessages = array(
 	'smw_nofloat' => '[אופס! "$1" אינו מספר מטיפוס נקודה צפה]',
 	'smw_infinite' => '[מצטרת, $1 הוא מספר גדול מדי לאתר זה .]',
 	'smw_infinite_unit' => '[מצטערת, תוצאת ההמרה ליחידה $1 היא מספר גדול מדי לאתר זה.]',
-	'smw_unexpectedunit' => 'תכונה זו אינה תומכת בהמרה מטיפוס לטיפוס',
+	//'smw_unexpectedunit' => 'תכונה זו אינה תומכת בהמרה מטיפוס לטיפוס',
+	'smw_unsupportedprefix' => 'Prefixes for numbers (“$1”) are not supported.', // TODO translate
 	'smw_unsupportedunit' => 'אין תמיכה להמרת יחידות לטיפוס "$1"',
 	/*Messages for geo coordinates parsing*/
 	'smw_err_latitude' => 'הערכים לקו-רוחב (צפון, דרום) ,צריכים להיות בין 0 ל-90. "$1" הינו ערך שאינו עומד בדרישה זו!',

@@ -31,7 +31,7 @@ protected $m_ContentMessages = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_unknowntype' => 'El tipo de datos "$1" no soportado ha sido devuelto al atributo.',
-	'smw_nomanytypes' => 'Demasiados tipos de datos han sido asignados al atributo.',
+	'smw_manytypes' => 'Demasiados tipos de datos han sido asignados al atributo.',
 	'smw_emptystring' => 'No se aceptan cadenas vacías.',
 	'smw_maxstring' => 'La representación de la cadena $1 es demasiado grande para este sitio.',
 	'smw_nopossiblevalues' => 'Los posibles valores para este atributo no están enumerados',
@@ -134,12 +134,23 @@ protected $m_UserMessages = array(
 	'tooltip-purge' => 'Volver a actualizar todas las búsquedas y borradores de esta página.',
 	'purge' => 'Volver a actualizar',
 	/*Messages for Import Ontology Special*/
+	// Messages for Import Ontology Special
 	'ontologyimport' => 'Importar la ontología',
-	'smw_ontologyimport_docu' => 'Esta página especial permite importar datos de una ontología externa. Dicha ontología debe estar en un formato RDF simplificado. Información adicional disponible en <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">Documentación relativa a la importación de ontologías en lengua inglesa.',
-	'smw_ontologyimport_action' => 'Importar',
-	'smw_ontologyimport_return' => 'Volver a <a href="$1">Importar la ontología</a>.',	//Différence avec la version anglaise
+	'smw_oi_docu' => 'Esta página especial permite importar datos de una ontología externa. Dicha ontología debe estar en un formato RDF simplificado. Información adicional disponible en <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">Documentación relativa a la importación de ontologías en lengua inglesa.',
+	'smw_oi_action' => 'Importar',
+	'smw_oi_return' => 'Volver a <a href="$1">Importar la ontología</a>.',	//Différence avec la version anglaise
+	'smw_oi_noontology' => 'No ontology supplied, or could not load ontology.', // TODO Translate
+	'smw_oi_select' => 'Please select the statements to import, and then click the import button.', // TODO Translate
+	'smw_oi_textforall' => 'Header text to add to all imports (may be empty):', // TODO Translate
+	'smw_oi_selectall' => 'Select or unselect all statements', // TODO Translate
+	'smw_oi_statementsabout' => 'Statements about', // TODO Translate
+	'smw_oi_mapto' => 'Map entity to', // TODO Translate
+	'smw_oi_comment' => 'Add the following text:', // TODO Translate
+	'smw_oi_thisissubcategoryof' => 'A subcategory of', // TODO Translate
+	'smw_oi_thishascategory' => 'Is part of', // TODO Translate
+	'smw_oi_importedfromontology' => 'Import from ontology', // TODO Translate
 	/*Messages for (data)Types Special*/
-	'tipos' => 'Tipos de datos',
+	'types' => 'Tipos de datos',
 	'smw_types_docu' => 'Los tipos de datos siguientes pueden ser asignados a los atributos. Cada tipo de datos tiene su propio artículo, en el que puede figurar información más precisa.',
 	'smw_types_units' => 'Unidad estándar: $1; unidades soportadas: $2',
 	'smw_types_builtin' => 'Built-in types',

@@ -16,6 +16,7 @@ protected $m_ContentMessages = array(
 	'smw_factbox_head' => 'Feiten over $1',
 	'smw_spec_head' => 'Speciale eigenschappen',
 	// URIs that should not be used in objects in cases where users can provide URIs
+	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Sorry, URI\'s uit de reeks “$1” zijn hier niet beschikbaar.',
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "Sorry. Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.",
@@ -60,6 +61,8 @@ protected $m_ContentMessages = array(
 	'smw_abb_east' => 'O',
 	'smw_abb_south' => 'Z',
 	'smw_abb_west' => 'W',
+	// some links for online maps; can be translated to different language versions of services, but need not
+	'smw_service_online_maps' => " find&nbsp;maps|http://tools.wikimedia.de/~magnus/geo/geohack.php?params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	// Messages for datetime parsing
 	'smw_nodatetime' => 'De datum “$1” werd niet begrepen (ondersteuning voor datums is nog experimenteel).',
 	// Errors and notices related to queries
@@ -158,8 +161,10 @@ protected $m_UserMessages = array(
 	'smw_sbv_value' => 'Waarde',
 	'smw_sbv_submit' => 'Zoek resultaten',
 	// Messages for the browsing special
+	'browse' => 'Browse wiki',
 	'smw_browse_article' => 'Voer de naam in van de pagina waar u met browsen wilt beginnen.',
 	'smw_browse_go' => 'OK',
+	'smw_browse_more' => '&hellip;',
 	// Messages for the page property special
 	'pageproperty' => 'Eigenschap pagina zoeken',
 	'smw_pp_docu' => 'Zoek naar alle fillers voor een eigenschap op een gegeven pagina. Voer alstublieft zowel een pagina als een eigenschap in.',
@@ -177,7 +182,7 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Pagina', // name of page datatype
 	'_str' => 'String',  // name of the string type
 	'_txt' => 'Tekst',  // name of the text type
-	'_boo' => 'Booleans',  // name of the boolean type
+	//'_boo' => 'Booleans',  // name of the boolean type
 	'_num' => 'Number', // name for the datatype of numbers // TODO: translate
 	'_geo' => 'Geographische coordinaat', // name of the geocoord type
 	'_tem' => 'Temperatuur',  // name of the temperature type

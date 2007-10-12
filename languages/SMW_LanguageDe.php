@@ -125,9 +125,19 @@ protected $m_UserMessages = array(
 	'purge' => 'aktualisieren',
 	/*Messages for Import Ontology Special*/
 	'ontologyimport' => 'Importiere Ontologie',
-	'smw_ontologyimport_docu' => 'Diese Spezialseite erlaubt es, Informationen aus einer externen Ontologie zu importieren. Die Ontologie sollte in einem vereinfachten RDF-Format vorliegen. Weitere Informationen sind in der englischsprachigen <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">Dokumentation zum Ontologieimport</a> zu finden.',
-	'smw_ontologyimport_action' => 'Importieren',
-	'smw_ontologyimport_return' => 'Zurück zum <a href="$1">Ontologieimport</a>.',
+	'smw_oi_docu' => 'Diese Spezialseite erlaubt es, Informationen aus einer externen Ontologie zu importieren. Die Ontologie sollte in einem vereinfachten RDF-Format vorliegen. Weitere Informationen sind in der englischsprachigen <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">Dokumentation zum Ontologieimport</a> zu finden.',
+	'smw_oi_action' => 'Importieren',
+	'smw_oi_return' => 'Zurück zum <a href="$1">Ontologieimport</a>.',
+	'smw_oi_noontology' => 'No ontology supplied, or could not load ontology.', // TODO Translate
+	'smw_oi_select' => 'Please select the statements to import, and then click the import button.', // TODO Translate
+	'smw_oi_textforall' => 'Header text to add to all imports (may be empty):', // TODO Translate
+	'smw_oi_selectall' => 'Select or unselect all statements', // TODO Translate
+	'smw_oi_statementsabout' => 'Statements about', // TODO Translate
+	'smw_oi_mapto' => 'Map entity to', // TODO Translate
+	'smw_oi_comment' => 'Add the following text:', // TODO Translate
+	'smw_oi_thisissubcategoryof' => 'A subcategory of', // TODO Translate
+	'smw_oi_thishascategory' => 'Is part of', // TODO Translate
+	'smw_oi_importedfromontology' => 'Import from ontology', // TODO Translate
 	/*Messages for (data)Types Special*/
 	'types' => 'Datentypen',
 	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden. Jeder Datentyp hat eine eigene Seite, auf der genauere Informationen eingetragen werden können.',

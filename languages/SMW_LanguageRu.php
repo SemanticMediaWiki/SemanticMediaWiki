@@ -160,6 +160,9 @@ protected $m_UserMessages = array(
 	/*Messages for Flawed Attributes Special --disabled--*/
 	'flawedattributes' => 'Flawed Properties', // TODO: translate
 	'smw_fattributes' => 'The pages listed below have an incorrectly defined property. The number of incorrect properties is given in the brackets.', // TODO: translate
+	// Name of the URI Resolver Special (no content)
+	'uriresolver' => 'URI Resolver', // TODO translate
+	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>', // TODO translate
 	// Messages for ask Special
 	'ask' => 'Семантический поиск',
 	'smw_ask_docu' => '<p>Наберите запрос в форме поиска. Формат запроса приведен на <a href="$1">странице справки</a>.</p>',
@@ -199,7 +202,7 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype  //TODO translate
 	'_str' => 'Строка',  // name of the string type
 	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
-	'_boo' => 'Булево',  // name of the boolean type
+	//'_boo' => 'Булево',  // name of the boolean type
 	'_num' => 'Number', // name for the datatype of numbers //TODO: translate
 	'_geo' => 'Географическая координата', // name of the geocoord type
 	'_tem' => 'Температура',  // name of the temperature type

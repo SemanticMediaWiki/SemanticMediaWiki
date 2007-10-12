@@ -135,9 +135,19 @@ protected $m_UserMessages = array(
 	'purge' => 'Réactualiser',
 	/*Messages for Import Ontology Special*/
 	'ontologyimport' => 'Importer une ontologie',
-	'smw_ontologyimport_docu' => 'Cette page spéciale permet d\'importer des informations d\'une ontologie externe. Cette ontologie doit être dans un format RDF simplifié. Des informations supplémentaires sont disponibles dans la <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">Documentation relative à l\'import d\'ontologie</a> en langues anglaise.',
-	'smw_ontologyimport_action' => 'Importer',
-	'smw_ontologyimport_return' => 'Revenir à <a href="$1">Importer l\'ontologie</a>.',	//Différence avec la version anglaise
+	'smw_oi_docu' => 'Cette page spéciale permet d\'importer des informations d\'une ontologie externe. Cette ontologie doit être dans un format RDF simplifié. Des informations supplémentaires sont disponibles dans la <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">Documentation relative à l\'import d\'ontologie</a> en langues anglaise.',
+	'smw_oi_action' => 'Importer',
+	'smw_oi_return' => 'Revenir à <a href="$1">Importer l\'ontologie</a>.',	//Différence avec la version anglaise
+	'smw_oi_noontology' => 'No ontology supplied, or could not load ontology.', // TODO Translate
+	'smw_oi_select' => 'Please select the statements to import, and then click the import button.', // TODO Translate
+	'smw_oi_textforall' => 'Header text to add to all imports (may be empty):', // TODO Translate
+	'smw_oi_selectall' => 'Select or unselect all statements', // TODO Translate
+	'smw_oi_statementsabout' => 'Statements about', // TODO Translate
+	'smw_oi_mapto' => 'Map entity to', // TODO Translate
+	'smw_oi_comment' => 'Add the following text:', // TODO Translate
+	'smw_oi_thisissubcategoryof' => 'A subcategory of', // TODO Translate
+	'smw_oi_thishascategory' => 'Is part of', // TODO Translate
+	'smw_oi_importedfromontology' => 'Import from ontology', // TODO Translate
 	/*Messages for (data)Types Special*/
 	'types' => 'Types de données',
 	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a son propre article, dans lequel peuvent figurer des informations plus précises.',
