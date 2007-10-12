@@ -243,7 +243,7 @@ class SMWFactbox {
 	 * This method prints attribute values at the bottom of an article.
 	 */
 	static protected function printProperties(&$text) {
-		if (!SMWFactbox::$semdata->hasProperties()) {
+		if (!SMWFactbox::$semdata->hasProperties() && !SMWFactbox::$semdata->hasSpecialProperties()) {
 			return;
 		}
 		global $wgContLang;
