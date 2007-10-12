@@ -151,7 +151,15 @@ class SMWTypesValue extends SMWDataValue {
 					$result .= ', ';
 				}
 				$title = Title::newFromText($type, SMW_NS_TYPE);
-				$result .= $linker->makeLinkObj( $title, $type);
+				$id = SMWDataValueFactory::findTypeID($type);
+				if ($id{0} == '_') { // builtin
+					smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
+					$result .= '<span class="smwttinline"><span class="smwbuiltin">' . 
+					$linker->makeLinkObj( $title, $type) . '</span><span class="smwttcontent">' .
+					wfMsgForContent('smw_isknowntype') . '</span></span>';
+				} else {
+					$result .= $linker->makeLinkObj( $title, $type);
+				}
 			}
 			return $result;
 		}

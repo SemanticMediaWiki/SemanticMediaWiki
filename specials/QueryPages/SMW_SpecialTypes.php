@@ -79,11 +79,9 @@ class TypesPage extends QueryPage {
 
 		// Use the type handler interface to get more info.
 		$tv = SMWDataValueFactory::newTypeIDValue('__typ', $titletext);
-		if ($tv->isBuiltIn() ) {
-			$link = $skin->makeLinkObj( $title, $title->getText() );
-		} else {
-			$link = $skin->makeKnownLinkObj( $title, $title->getText() ); // page must exist
-		}
+		$link = $tv->getLongHTMLText($skin);
+
+/// TODO: displaying units will be fixed soon
 // 		$units = $th->getUnits();
 // 		// TODO: String internationalization and localization.
 // 		$stdunit = $units['STDUNIT'];
