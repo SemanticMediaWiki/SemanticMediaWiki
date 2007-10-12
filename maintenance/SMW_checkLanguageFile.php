@@ -9,6 +9,8 @@
  *
  * -l <language code>  which language to check
  *                     if omitted it checks all.
+ * 
+ * @author Denny Vrandečić
  */
 
 $langloc = '../extensions/SemanticMediaWiki/languages/SMW_Language';
@@ -35,13 +37,16 @@ class SMW_LanguageChecker  {
 		$this->base = new $classname();
 	}
 	
-	private function checkarray( $A , $B ) {
+	private function checkarray( $field, $A , $B ) {
+		$diff = false;
 		$printed = false;
 		foreach ( array_keys( $A ) as $i ) {
 			if ( ! array_key_exists( $i , $B ) ) {
 				if (!$printed) {
+					print "Checking " . $field . "...\n";
 					print "\tMissing:\n";
 					$printed = true;
+					$diff = true;
 				}
 				print "\t\t" . $i . "\n";
 			}
@@ -50,12 +55,17 @@ class SMW_LanguageChecker  {
 		foreach ( array_keys( $B ) as $i ) {
 			if ( ! array_key_exists( $i , $A ) ) {
 				if (!$printed) {
+					if (!$diff) {
+						print "Checking " . $field . "...\n";
+						$diff = true;
+					}
 					print "\tSuperfluous:\n";
 					$printed = true;
 				}
 				print "\t\t" . $i . "\n";
 			}
 		}
+		return $diff;
 	}
 	
 	public function check($lc) {
@@ -65,28 +75,23 @@ class SMW_LanguageChecker  {
 		
 		$A = $this->base->getContentMsgArray();
 		$B = $lang->getContentMsgArray();
-		print "Checking contentmessages...\n";
-		$this->checkarray( $A , $B );
+		$this->checkarray( "contentmessages", $A , $B );
 
 		$A = $this->base->getUserMsgArray();
 		$B = $lang->getUserMsgArray();
-		print "Checking usermessages...\n";
-		$this->checkarray( $A , $B );
+		$this->checkarray( "usermessages", $A , $B );
 
 		$A = $this->base->getSpecialPropertiesArray();
 		$B = $lang->getSpecialPropertiesArray();
-		print "Checking special properties...\n";
-		$this->checkarray( $A , $B );
+		$this->checkarray( "special properties", $A , $B );
 
 		$A = $this->base->getDatatypeLabels();
 		$B = $lang->getDatatypeLabels();
-		print "Checking datatypes...\n";
-		$this->checkarray( $A , $B );
+		$this->checkarray( "datatypes", $A , $B );
 
 		$A = $this->base->getNamespaces();
 		$B = $lang->getNamespaces();
-		print "Checking namespaces...\n";
-		$this->checkarray( $A , $B );
+		$this->checkarray( "namespaces", $A , $B );
 	}
 
 }
@@ -95,7 +100,7 @@ $checker = new SMW_LanguageChecker( $langloc );
 
 if ( $lc == "") {
 	foreach ( $lcs as $lc ) {
-		print "\nChecking language " . $lc . "\n";
+		print "== Checking language " . $lc . " ==\n";
 		$checker->check( $lc );	
 	}		
 } else {

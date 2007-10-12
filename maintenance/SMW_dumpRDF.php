@@ -10,6 +10,8 @@
  * --properties   only do properties
  * --types        only do types
  * --individuals  only do pages that are no categories, properties, or types
+ * 
+ * @author Markus Krötzsch
  */
 
 $optionsWithArgs = array( 'o' ); // -o <output file>
