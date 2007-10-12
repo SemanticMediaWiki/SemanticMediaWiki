@@ -165,7 +165,7 @@ class SMWTypeHandlerFactory {
 			if ($atitle !== NULL) {
 				$apvprops = smwfGetStore()->getSpecialValues($atitle, SMW_SP_POSSIBLE_VALUE);
 				foreach ($apvprops as $prop ) {
-					SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute][] = $prop;
+					SMWTypeHandlerFactory::$possibleValuesByAttribute[$attribute][] = $prop->getXSDValue();
 				}
 			}
 		}

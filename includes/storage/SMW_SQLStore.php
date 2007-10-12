@@ -98,14 +98,7 @@ class SMWSQLStore extends SMWStore {
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
 			// rewrite result as array
 			switch ($specialprop) {
-			case SMW_SP_HAS_TYPE: // type values
-				while($row = $db->fetchObject($res)) {
-					$v = SMWDataValueFactory::newSpecialValue($specialprop);
-					$v->setXSDValue($row->value_string);
-					$result[] = $v;
-				}
-			break;
-			case SMW_SP_DISPLAY_UNITS: // string values
+			case SMW_SP_HAS_TYPE: case SMW_SP_POSSIBLE_VALUE: case SMW_SP_DISPLAY_UNITS:
 				while($row = $db->fetchObject($res)) {
 					$v = SMWDataValueFactory::newSpecialValue($specialprop);
 					$v->setXSDValue($row->value_string);

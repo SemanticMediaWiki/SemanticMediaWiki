@@ -10,7 +10,7 @@
 abstract class SMWDataValue {
 
 	protected $m_property = false; /// The text label of the respective property or false if none given
-	protected $m_caption = false;   /// The text label to be used for output or false if none given
+	protected $m_caption;          /// The text label to be used for output or false if none given
 	protected $m_errors = array();  /// Array of error text messages
 	protected $m_isset = false;     /// True if a value was set.
 	protected $m_typeid;            /// The type id for this value object
@@ -34,11 +34,12 @@ abstract class SMWDataValue {
 		$this->m_errors = array(); // clear errors
 		$this->m_infolinks = array(); // clear links
 		$this->m_hasssearchlink = false;
-		if ($caption !== false) {
-			$this->m_caption = $caption;
-		}
+		$this->m_caption = $caption;
 		$this->parseUserValue($value); // may set caption if not set yet, depending on datavalue
 		$this->m_isset = true;
+		if ($this->isValid()) {
+			$this->checkAllowedValues();
+		}
 		wfProfileOut('SMWDataValue::setUserValue (SMW)');
 	}
 
@@ -248,9 +249,10 @@ abstract class SMWDataValue {
 	 * Exports the datavalue to RDF (i.e. it returns a string that consists
 	 * of the lines that, in RDF/XML, can be fitted between the object-tags.
 	 * This should be overwritten.
-	 * @param QName -- the qualified name that the data value should use for exporting,
+	 *
+	 * @param string QName -- the qualified name that the data value should use for exporting,
 	 * since it may be an imported name.
-	 * @param Exporter -- the exporting object
+	 * @param ExportRDF exporter -- the exporting object
 	 * @TODO: could we provide a more useful default? (e.g. export as untyped)
 	 */
 	public function exportToRDF($QName, ExportRDF $exporter) {
@@ -258,32 +260,35 @@ abstract class SMWDataValue {
 		return "\t\t<!-- Sorry, unknown how to export type '$type'. -->\n";
 	}
 
-	/*********************************************************************/
-	/* Legacy methods for compatiblity                                   */
-	/*********************************************************************/
-
 	/**
-	 * @DEPRECATED
+	 * Check if property is range restricted and, if so, whether the current value is allowed.
+	 * Creates an error if the value is illegal.
 	 */
-	public function getUserValue() {
-		trigger_error("The function SMWDataValue::getUserValue() is deprecated.", E_USER_NOTICE);
-		return $this->getShortWikiText();
-	}
-
-	/**
-	 * @DEPRECATED
-	 */
-	public function getValueDescription() {
-		trigger_error("The function SMWDataValue::getValueDescription() is deprecated.", E_USER_NOTICE);
-		return $this->getLongWikiText();
-	}
-
-	/**
-	 * Return error string or an empty string if no error occured.
-	 * @DEPRECATED
-	 */
-	public function getError() {
-		trigger_error("getError is no longer available. Use getErrorText or getErrors.", E_USER_NOTICE);
+	protected function checkAllowedValues() {
+		if ($this->m_property === false) return; // allowed values apply only to concrete properties
+		$ptitle = Title::newFromText($this->m_property, SMW_NS_PROPERTY);
+		if ($ptitle === NULL) return;
+		$allowedvalues = smwfGetStore()->getSpecialValues($ptitle, SMW_SP_POSSIBLE_VALUE);
+		if (count($allowedvalues) == 0) return;
+		$hash = $this->getHash();
+		$value = SMWDataValueFactory::newTypeIDValue($this->getTypeID());
+		$accept = false;
+		$valuestring = '';
+		foreach ($allowedvalues as $stringvalue) {
+			$value->setUserValue($stringvalue->getXSDValue());
+			if ($hash === $value->getHash()) {
+				$accept = true;
+				break;
+			} else {
+				if ($valuestring != '') {
+					$valuestring .= ', ';
+				}
+				$valuestring .= $value->getShortWikiText();
+			}
+		}
+		if (!$accept) {
+			$this->addError(wfMsgForContent('smw_notinenum', $this->getWikiValue(), $valuestring));
+		}
 	}
 
 }
