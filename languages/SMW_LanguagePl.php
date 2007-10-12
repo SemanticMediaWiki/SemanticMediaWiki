@@ -223,7 +223,6 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype  //TODO translate
 	'_str' => 'Łańcuch znaków',  // name of the string type
 	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
-	'_enu' => 'Wyliczenie',  // name of the enum type
 	'_boo' => 'Wartość logiczna',  // name of the boolean type
 	'_num' => 'Liczba', // name for the datatype of numbers // TODO: check translation (done by pattern matching. mak)
 	'_geo' => 'Współrzędne geograficzne', // name of the geocoord type
@@ -238,6 +237,7 @@ protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
 	'Liczba całkowita'      => '_num',
 	'Liczba zmiennoprzecinkowa' => '_num',
+	'Wyliczenie'            => '_str',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',

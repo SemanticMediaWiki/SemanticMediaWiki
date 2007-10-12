@@ -199,7 +199,6 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype  //TODO translate
 	'_str' => 'Строка',  // name of the string type
 	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
-	'_enu' => 'Перечисление',  // name of the enum type
 	'_boo' => 'Булево',  // name of the boolean type
 	'_num' => 'Number', // name for the datatype of numbers //TODO: translate
 	'_geo' => 'Географическая координата', // name of the geocoord type
@@ -214,6 +213,7 @@ protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
 	'Целое'                 => '_num',
 	'Десятичное'            => '_num',
+	'Перечисление'          => '_enu',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',

@@ -191,7 +191,6 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype  //TODO translate
 	'_str' => 'Cadena de caracteres',  // name of the string type
 	'_txt' => 'Texto',  // name of the text type (very long strings)
-	'_enu' => 'Enumeración',  // name of the enum type
 	//'_boo' => 'Booleano',  // name of the boolean type
 	'_num' => 'Número', // name for the datatype of numbers
 	'_geo' => 'Coordenadas geográficas', // name of the geocoord type
@@ -206,6 +205,7 @@ protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
 	'Número entero'         => '_num',
 	'Número con coma'       => '_num',
+	'Enumeración'           => '_str',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',

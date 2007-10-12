@@ -201,7 +201,6 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype  //TODO translate
 	'_str' => 'מחרוזת',  // name of the string type
 	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
-	'_enu' => 'Enumeration',  // name of the enum type
 	//'_boo' => 'נכוןלאנכון',  // name of the boolean type
 	'_num' => 'Number', // name for the datatype of numbers //TODO: translate
 	'_geo' => 'קורדינטות גיאוגרפיות', // name of the geocoord type

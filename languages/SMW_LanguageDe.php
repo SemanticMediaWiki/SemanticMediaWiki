@@ -181,7 +181,6 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Seite', // name of page datatype
 	'_str' => 'Zeichenkette',  // name of the string type
 	'_txt' => 'Text',  // name of the text type
-	'_enu' => 'Aufzählung',  // name of the enum type
 	//'_boo' => 'Wahrheitswert',  // name of the boolean type
 	'_num' => 'Zahl', // name for the datatype of numbers
 	'_geo' => 'Geografische Koordinaten', // name of the geocoord type
@@ -196,6 +195,7 @@ protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
 	'Ganze Zahl'            => '_num',
 	'Dezimalzahl'           => '_num',
+	'Aufzählung'            => '_str',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',

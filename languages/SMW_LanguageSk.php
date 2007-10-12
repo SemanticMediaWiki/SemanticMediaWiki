@@ -200,7 +200,6 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype  //TODO translate
 	'_str' => 'Reťazec',  // name of the string type
 	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
-	'_enu' => 'Enumeration',  // name of the enum type TODO: translate
 	'_boo' => 'Boolean',  // name of the boolean type TODO: translate
 	'_num' => 'Číslo', // name for the datatype of numbers // TODO: check translation (done by pattern matching; mak)
 	'_geo' => 'Zemepisné súradnice', // name of the geocoord type
