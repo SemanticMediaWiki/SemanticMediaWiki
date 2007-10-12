@@ -34,10 +34,10 @@ class SMWWikiPageValue extends SMWDataValue {
 					$this->m_caption = $value;
 				}
 			} else {
-				$this->addError('Invalid title string'); // TODO: internationalise
+				$this->addError(wfMsgForContent('smw_notitle', $value));
 			}
 		} else {
-			$this->addError(wfMsgForContent('smw_emptystring'));
+			$this->addError(wfMsgForContent('smw_notitle', $value));
 		}
 		if ($this->m_caption === false) {
 			$this->m_caption = '';
