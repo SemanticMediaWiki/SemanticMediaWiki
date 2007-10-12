@@ -391,5 +391,9 @@ class SMWNAryValue extends SMWDataValue {
 		return $rdf;
 	}
 
+	protected function checkAllowedValues() {
+		return; // not implemented yet
+	}
+
 }
 
