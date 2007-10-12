@@ -221,41 +221,6 @@ class SMWDataValueFactory {
 	}
 
 	/**
-	 * This method retrieves the possible values, if any,
-	 * for a given property as an array.
-	 * The possible values are the keys of the array.
-	 * If the possible value has a numeric =nnn on the end, that
-	 * becomes the value.
-	 *
-	 * @param $property should be in text form without preceding namespace.
-	 */
-	static function &getPossibleValues($property) {
-		if(!array_key_exists($property, SMWDataValueFactory::$m_possiblevalues)) {
-			global $wgContLang;
-
-			SMWDataValueFactory::$m_possiblevalues[$property] = Array();
-			$ptitle = Title::newFromText($wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $property);
-			if ($ptitle !== NULL) {
-				$pvprops = smwfGetStore()->getSpecialValues($ptitle, SMW_SP_POSSIBLE_VALUE);
-				$matches = Array();
-				foreach ($pvprops as $pv ) {
-					// see if there's =number on the end of the attribute, e.g. Medium=3
-					// TODO: internationalize the decimal point? (smw_decseparator).
-					if (preg_match('/(.*)=\s*([+-]?\d+\.?\d*)\s*$/S',$pv, $matches)) {
-						$pv = $matches[1];
-						SMWDataValueFactory::$m_possiblevalues[$property][$pv] = $matches[2] + 0;
-					} else {
-						// The possible value special properties don't return in any order.
-						// So there's no obvious numeric value to use.
-						SMWDataValueFactory::$m_possiblevalues[$property][$pv] = null;
-					}
-				}
-			}
-		}
-		return SMWDataValueFactory::$m_possiblevalues[$property];
-	}
-
-	/**
 	 * Gather all available datatypes and label<=>id<=>datatype associations. This method 
 	 * is called before most methods of this factory.
 	 */
@@ -281,6 +246,7 @@ class SMWDataValueFactory {
 		$wgAutoloadClasses['SMWTemperatureValue'] =  $smwgIP . '/includes/SMW_DV_Temperature.php';
 		$wgAutoloadClasses['SMWLinearValue']      =  $smwgIP . '/includes/SMW_DV_Linear.php';
 		$wgAutoloadClasses['SMWTimeValue']        =  $smwgIP . '/includes/SMW_DV_Time.php';
+		$wgAutoloadClasses['SMWGeoCoordsValue']   =  $smwgIP . '/includes/SMW_DV_GeoCoords.php';
 		SMWDataValueFactory::$m_typeclasses = array(
 			'_txt'  => 'SMWStringValue',
 			'_str'  => 'SMWStringValue',
@@ -291,6 +257,7 @@ class SMWDataValueFactory {
 			'_num'  => 'SMWNumberValue',
 			'_tem'  => 'SMWTemperatureValue',
 			'_dat'  => 'SMWTimeValue',
+			'_geo'  => 'SMWGeoCoordsValue',
 			'__typ' => 'SMWTypesValue',
 			'__lin' => 'SMWLinearValue',
 			'__nry' => 'SMWNAryValue',
