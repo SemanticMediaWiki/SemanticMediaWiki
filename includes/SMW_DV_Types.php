@@ -126,7 +126,13 @@ class SMWTypesValue extends SMWDataValue {
 				} else {
 					$result .= ', ';
 				}
-				$result .= '[[' . $typenamespace . ':' . $type . '|' . $type . ']]';
+				$id = SMWDataValueFactory::findTypeID($type);
+				if ($id{0} == '_') { // builtin
+					smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
+					$result .= '<span class="smwttinline"><span class="smwbuiltin">[[' . $typenamespace . ':' . $type . '|' . $type . ']]</span><span class="smwttcontent">' . wfMsgForContent('smw_isknowntype') . '</span></span>';
+				} else {
+					$result .= '[[' . $typenamespace . ':' . $type . '|' . $type . ']]';
+				}
 			}
 			return $result;
 		}
