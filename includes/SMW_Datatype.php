@@ -235,7 +235,7 @@ class SMWTypeHandlerFactory {
 // Dates & times
 // SMWTypeHandlerFactory::announceTypeHandler('_dat','datetime','DateTime','SMWDateTimeTypeHandler');
 // Geographic coordinates
-SMWTypeHandlerFactory::announceTypeHandler('_geo','geocoords','GeoCoords','SMWGeographicLocationTypeHandler');
+// SMWTypeHandlerFactory::announceTypeHandler('_geo','geocoords','GeoCoords','SMWGeographicLocationTypeHandler');
 // Enums
 SMWTypeHandlerFactory::announceTypeHandler('_enu','enum','Enum','SMWEnumTypeHandler');
 // Text
