@@ -539,28 +539,28 @@ class SMWSQLStore extends SMWStore {
 						if ($value->getTypeID() == '_txt') {
 							$up_longstrings[] =
 								array( 'subject_id' => $subject->getArticleID(),
-										'subject_namespace' => $subject->getNamespace(),
-										'subject_title' => $subject->getDBkey(),
-										'attribute_title' => $property->getDBkey(),
-										'value_blob' => $value->getXSDValue() );
+								       'subject_namespace' => $subject->getNamespace(),
+								       'subject_title' => $subject->getDBkey(),
+								       'attribute_title' => $property->getDBkey(),
+								       'value_blob' => $value->getXSDValue() );
 						} elseif ($value->getTypeID() == '_wpg') {
 							$oid = $value->getArticleID();
 							if ($oid == 0) { $oid = NULL; }
 							$up_relations[] =
 								array( 'subject_id' => $subject->getArticleID(),
-										'subject_namespace' => $subject->getNamespace(),
-										'subject_title' => $subject->getDBkey(),
-										'relation_title' => $property->getDBkey(),
-										'object_namespace' => $value->getNamespace(),
-										'object_title' => $value->getDBkey(),
-										'object_id' => $oid );
+								       'subject_namespace' => $subject->getNamespace(),
+								       'subject_title' => $subject->getDBkey(),
+								       'relation_title' => $property->getDBkey(),
+								       'object_namespace' => $value->getNamespace(),
+								       'object_title' => $value->getDBkey(),
+								       'object_id' => $oid );
 						} elseif ($value->getTypeID() == '__nry') {
 							$up_nary[] =
 								array( 'subject_id' => $subject->getArticleID(),
-										'subject_namespace' => $subject->getNamespace(),
-										'subject_title' => $subject->getDBkey(),
-										'attribute_title' => $property->getDBkey(),
-										'nary_key' => $nkey );
+								       'subject_namespace' => $subject->getNamespace(),
+								       'subject_title' => $subject->getDBkey(),
+								       'attribute_title' => $property->getDBkey(),
+								       'nary_key' => $nkey );
 							$npos = 0;
 							foreach ($value->getDVs() as $dv) {
 								if ( ($dv !== NULL) && ($dv->isValid()) ) {
@@ -570,27 +570,27 @@ class SMWSQLStore extends SMWStore {
 										if ($oid == 0) { $oid = NULL; }
 										$up_nary_relations[] =
 											array( 'subject_id' => $subject->getArticleID(),
-													'nary_key'   => $nkey,
-													'nary_pos'   => $npos,
-													'object_namespace' => $dv->getNamespace(),
-													'object_title' => $dv->getDBkey(),
-													'object_id' => $oid );
+											       'nary_key'   => $nkey,
+											       'nary_pos'   => $npos,
+											       'object_namespace' => $dv->getNamespace(),
+											       'object_title' => $dv->getDBkey(),
+											       'object_id' => $oid );
 									break;
 									case '_txt':
 										$up_nary_longstrings[] =
 											array( 'subject_id' => $subject->getArticleID(),
-													'nary_key'   => $nkey,
-													'nary_pos'   => $npos,
-													'value_blob' => $dv->getXSDValue() );
+											       'nary_key'   => $nkey,
+											       'nary_pos'   => $npos,
+											       'value_blob' => $dv->getXSDValue() );
 									break;
 									default:
 										$up_nary_attributes[] =
 											array( 'subject_id' => $subject->getArticleID(),
-													'nary_key'   => $nkey,
-													'nary_pos'   => $npos,
-													'value_unit' => $dv->getUnit(),
-													'value_xsd' => $dv->getXSDValue(),
-													'value_num' => $dv->getNumericValue() );
+											       'nary_key'   => $nkey,
+											       'nary_pos'   => $npos,
+											       'value_unit' => $dv->getUnit(),
+											       'value_xsd' => $dv->getXSDValue(),
+											       'value_num' => $dv->getNumericValue() );
 									}
 								}
 								$npos++;
@@ -599,13 +599,13 @@ class SMWSQLStore extends SMWStore {
 						} else {
 							$up_attributes[] =
 								array( 'subject_id' => $subject->getArticleID(),
-										'subject_namespace' => $subject->getNamespace(),
-										'subject_title' => $subject->getDBkey(),
-										'attribute_title' => $property->getDBkey(),
-										'value_unit' => $value->getUnit(),
-										'value_datatype' => $value->getTypeID(),
-										'value_xsd' => $value->getXSDValue(),
-										'value_num' => $value->getNumericValue() );
+								       'subject_namespace' => $subject->getNamespace(),
+								       'subject_title' => $subject->getDBkey(),
+								       'attribute_title' => $property->getDBkey(),
+								       'value_unit' => $value->getUnit(),
+								       'value_datatype' => $value->getTypeID(),
+								       'value_xsd' => $value->getXSDValue(),
+								       'value_num' => $value->getNumericValue() );
 						}
 					}
 				}
@@ -623,7 +623,7 @@ class SMWSQLStore extends SMWStore {
 							if ( $value->getNamespace() == SMW_NS_PROPERTY )  {
 								$up_subprops[] =
 								array('subject_title' => $subject->getDBkey(),
-										'object_title' => $value->getDBKey());
+								      'object_title' => $value->getDBKey());
 							}
 						}
 					break;
@@ -634,10 +634,10 @@ class SMWSQLStore extends SMWStore {
 							}
 							$up_specials[] =
 							array('subject_id' => $subject->getArticleID(),
-									'subject_namespace' => $subject->getNamespace(),
-									'subject_title' => $subject->getDBkey(),
-									'property_id' => $special,
-									'value_string' => $stringvalue);
+							      'subject_namespace' => $subject->getNamespace(),
+							      'subject_title' => $subject->getDBkey(),
+							      'property_id' => $property,
+							      'value_string' => $stringvalue);
 						}
 					break;
 				}
