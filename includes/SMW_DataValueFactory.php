@@ -146,11 +146,8 @@ class SMWDataValueFactory {
 				$result->setType($typevalue);
 		} elseif ($typeid{0} != '_') { // custom type with linear conversion
 			$result = new SMWDataValueFactory::$m_typeclasses['__lin']($typeid);
-		} else { ///TODO migrate to new system
-				global $smwgIP;
-				include_once($smwgIP . '/includes/SMW_OldDataValue.php');
-				$type = SMWTypeHandlerFactory::getTypeHandlerByLabel($typeid);
-				$result = new SMWOldDataValue($type);
+		} else { // type really unknown
+			return new SMWErrorValue(wfMsgForContent('smw_unknowntype', $typevalue->getWikiValue() ), $value, $caption);
 		}
 
 		if ($propertyname != false) {

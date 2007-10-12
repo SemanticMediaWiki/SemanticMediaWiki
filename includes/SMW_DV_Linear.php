@@ -150,6 +150,12 @@ class SMWLinearValue extends SMWNumberValue {
 		$typetitle = Title::newFromText($this->m_typeid, SMW_NS_TYPE);
 		if ($typetitle === NULL) return;
 		$factors = smwfGetStore()->getSpecialValues($typetitle, SMW_SP_CONVERSION_FACTOR);
+		if (count($factors)==0) { // no custom type
+			// delete all previous errors, this is our thing
+			// TODO: probably we should check for this earlier, but avoid unnecessary DB requests ...
+			$this->m_errors = array(wfMsgForContent('smw_unknowntype', SMWDataValueFactory::findTypeLabel($this->getTypeID())));
+			return;
+		}
 		$numdv = SMWDataValueFactory::newTypeIDValue('_num'); // used for parsing the factors
 		foreach ($factors as $factorstring) {
 			$numdv->setUserValue($factorstring);
