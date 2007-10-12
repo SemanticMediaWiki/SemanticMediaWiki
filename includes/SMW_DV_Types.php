@@ -95,6 +95,7 @@ class SMWTypesValue extends SMWDataValue {
 			}
 			$result = '';
 			$first = true;
+			$captions = $this->getTypeCaptions();
 			reset($captions);
 			foreach ($this->getTypeLabels() as $type) {
 				$caption = current($captions);
