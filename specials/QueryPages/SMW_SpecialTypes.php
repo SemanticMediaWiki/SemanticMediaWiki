@@ -38,7 +38,7 @@ class TypesPage extends QueryPage {
 	}
 
 	function isSyndicated() {
-		return false; 
+		return false;
 	}
 
 	function getPageHeader() {
@@ -53,7 +53,7 @@ class TypesPage extends QueryPage {
 		// TODO: Perhaps use the dbr syntax from SpecialAllpages.
 		// NOTE: type, namespace, title and value must all be defined for QueryPage to work (incl. caching)
 		$sql = "(SELECT 'Types' as type, {$NStype} as namespace, page_title as title, " .
-		        "page_title as value, 1 as count FROM $page WHERE page_namespace = $NStype)";
+		        "page_title as value, 1 as count FROM $page WHERE page_namespace = $NStype AND page_is_redirect = '0')";
 		// make SQL for built-in datatypes
 		foreach (SMWDataValueFactory::getKnownTypeLabels() as $label) {
 			$label = str_replace(' ', '_', $label); // DBkey form so that SQL can elminate duplicates
@@ -92,9 +92,6 @@ class TypesPage extends QueryPage {
 				} else {
 					$info[] = wfMsg('smw_typeunits', $tv->getLongHTMLText(), implode(', ', $units));
 				}
-// 				} else {
-// 					$units = array();
-// 				}
 			}
 		}
 	
@@ -104,25 +101,6 @@ class TypesPage extends QueryPage {
 		if (count($info)>0) {
 			$link .= smwfEncodeMessages($info,'info');
 		}
-
-
-/// TODO: displaying units will be fixed soon
-// 		$units = $th->getUnits();
-// 		// TODO: String internationalization and localization.
-// 		$stdunit = $units['STDUNIT'];
-// 		$allunits = $units['ALLUNITS'];
-// 		if (!is_array($allunits)) {
-// 			$allunits = '';
-// 		} else {
-// 			$allunits = implode(", ", $allunits);
-// 		}
-// 		if ( strlen($stdunit) || strlen($allunits) ) {
-// 			$extra = wfMsg('smw_types_units', $stdunit, $allunits);
-// 		}
-// 
-// 		if (strlen($extra)) {
-// 			$text .= "<br />&nbsp;&nbsp;&nbsp;$extra";
-// 		}
 		return $link;
 	}
 
