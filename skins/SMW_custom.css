@@ -1,11 +1,21 @@
+/** CSS style file for Semantic MediaWiki. */
+
+span.smwbuiltin, span.smwttactiveinline span.smwbuiltin { /* highlighting for builtin elements */
+	font-style: italic;
+}
+
 /* tables for inline queries */
 
-table.smwtable th {
-	background-color: #EEEEFF; /* Note: here and below, we use six digits, since some users had problems with the three digit short forms */
+table.smwtable{
+	background-color: #EEEEFF;/* Note: here and below, we use six digits, since some users had problems with the three digit short forms */
+}
+
+table.smwtable th{
+	background-color: #EEEEFF;
 	text-align: left;
 }
 
-table.smwtable td {
+table.smwtable td{
 	background-color: #FFFFFF;
 	padding: 1px;
 	padding-left: 5px;
@@ -14,7 +24,7 @@ table.smwtable td {
 	vertical-align: top;
 }
 
-table.smwtable tr.smwfooter td {
+table.smwtable tr.smwfooter td{
 	font-size: 90%;
 	line-height: 1;
 	background-color: #EEEEFF;
@@ -25,50 +35,35 @@ table.smwtable tr.smwfooter td {
 	vertical-align: top;
 }
 
-table.smwtable {
-	background-color: #EEEEFF;
-}
-
 /* buttons for sort-arrows */
-
 a.sortheader:hover{
 	text-decoration: none;
 }
 
 /* "semantic" span classes for Timeline */
 
-div.smwtimeline {
+div.smwtimeline{
 	border: 1px solid #AAAAAA;
 	background-color: #F9F9F9;
 	/*text-align: center;*/
-	/* After hours of debugging and frustration I now can savely say: IE sucks.
-	   You can support Semantic MediaWiki developent by not using Internet Explorer. Thanks.
-	   (IE centers the Timeline elements, which messes up the whole layout) */
+	/* After hours of debugging and frustration I now can savely say: IE sucks. (mak)
+	   You can support Semantic MediaWiki development by not using Internet Explorer. Thanks.
+	   (IE centers the Timeline *elements*, which messes up the whole layout) */
 }
 
-span.smwtlevent, span.smwtlband, span.smwtlsize, span.smwtlposition {
+span.smwtlevent, span.smwtlband, span.smwtlsize, span.smwtlposition{
 	display: none;
 	speak: none;
 }
 
-span.smwtlcomment {
+span.smwtlcomment{
 	font-style: italic;
 	padding: 5px;
 }
 
-/* factbox */
+/* Factbox */
 
-span.smwfactboxhead {
-	font-size: 110%;
-	font-weight: bold;
-	float: left;
-}
-
-span.smwfactboxhead a {
-	color: #FFFFFF;
-}
-
-div.smwfact {
+div.smwfact{
 	clear: both;
 	background-color: #F9F9F9;
 	padding: 5px;
@@ -81,37 +76,27 @@ div.smwfact td, div.smwfact tr, div.smwfact table{
 	background-color: #F9F9F9;
 }
 
+span.smwfactboxhead{
+	font-size: 110%;
+	font-weight: bold;
+	float: left;
+}
+
 table.smwfacttable{
 	border-top: 1px dotted #AAAAAA;
 	width: 100%;
 	clear: both;
 }
 
-td.smwrelname, td.smwattname, td.smwspecname, th.smwrelname, th.smwattname, th.smwspecname{
+td.smwpropname, th.smwpropname, td.smwspecname{
 	text-align: right;
 	vertical-align: top;
 	padding-right: 1em;
 }
 
-td.smwsubjects{
-	text-align: right;
-	vertical-align: top;
-	padding-right: 1em;
-	width: 65%;
-}
-
-td.swmrelright{
-	vertical-align: middle;
-}
-
-td.smwrels, td.smwatts, td.smwspecs{
+td.smwprops, td.smwspecs{
 	vertical-align: top;
 	width: 75%;
-}
-
-th.relhead, th.atthead, th.spechead{
-	text-align: left;
-/* 	border-top: 1px dotted #AAAAAA; */
 }
 
 div.smwhr hr{
@@ -127,9 +112,9 @@ span.smwwarning{
 	font-size: 90%;
 }
 
-/* search icons */
+/* search, browse, RDF icons */
 
-span.smwsearchicon {
+span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be removed from code*/
 	padding-right: 16px;
 	margin-right: 2px;
 	color: #888888;
@@ -149,13 +134,6 @@ span.smwsearchicon {
 	padding-right: 18px;
 	margin-right: 0px;
 	background: url(images/search_icon.png) center right no-repeat;
-}
-
-span.smwbrowseicon {
-	padding-right: 16px;
-	margin-right: 2px;
-	color: #888888;
-	background: url(images/browse_iconsmall.png) center right no-repeat;
 }
 
 #bodyContent span.swmfactboxheadbrowse a{
@@ -188,23 +166,6 @@ span.smwbrowseicon {
 	background: url(images/browse_icon.png) center right no-repeat;
 }
 
-/* Do not gray browse link in factbox header */
-#bodyContent span.smwfactboxhead span.smwbrowse a{
-	padding-right: 16px;
-	margin-right: 2px;
-	color: black;
-	background: url(images/browse_iconsmall.png) center right no-repeat;
-}
-
-/* Do not gray browse link in factbox header */
-#bodyContent span.smwfactboxhead span.smwbrowse a:hover{
-	text-decoration: none;
-	color: #0000FF;
-	padding-right: 18px;
-	margin-right: 0px;
-	background: url(images/browse_icon.png) center right no-repeat;
-}
-
 #bodyContent span.smwmap a{
 	padding-right: 20px;
 	color: #888888;
@@ -216,8 +177,6 @@ span.smwbrowseicon {
 	color: #0000FF;
 	background: url(images/world.png) center right no-repeat;
 }
-
-/* RDF icons */
 
 #bodyContent span.rdflink{
 	float: right;
@@ -238,7 +197,7 @@ span.smwbrowseicon {
 	background: url(images/rdf_flyer.18.gif) center right no-repeat;
 }
 
-/* tooltips */
+/* Tooltips */
 
 div.smwtt { /* style for content of the bubble */
 	color: #000000;
@@ -266,10 +225,6 @@ span.smwttactivepersist { /* colored anchors? */
 span.smwttactiveinline { /* colored anchors */
 	color: #BB7700;
 	text-decoration: none;
-}
-
-span.smwbuiltin, span.smwttactiveinline span.smwbuiltin { /* highlighting for builtin elements */
-	font-style: italic;
 }
 
 img.smwttimg { /* images for tooltip icons */

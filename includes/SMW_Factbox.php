@@ -48,7 +48,7 @@ class SMWFactbox {
 //// Methods for adding data to the object
 
 	/**
-	 * This method adds a new attribute with the given value to the storage.
+	 * This method adds a new property with the given value to the storage.
 	 * It returns an array which contains the result of the operation in
 	 * various formats.
 	 */
@@ -56,12 +56,12 @@ class SMWFactbox {
 		wfProfileIn("SMWFactbox::addProperty (SMW)");
 		global $smwgContLang, $smwgStoreActive, $smwgIP;
 		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
-		// See if this attribute is a special one like e.g. "Has unit"
+		// See if this property is a special one, such as e.g. "has type"
 		$propertyname = smwfNormalTitleText($propertyname); //slightly normalize label
 		$special = $smwgContLang->findSpecialPropertyID($propertyname);
 
 		switch ($special) {
-			case false: // normal attribute
+			case false: // normal property
 				$result = SMWDataValueFactory::newPropertyValue($propertyname,$value,$caption);
 				if ($smwgStoreActive) {
 					SMWFactbox::$semdata->addPropertyValue($propertyname,$result);
@@ -72,7 +72,7 @@ class SMWFactbox {
 				$result = SMWFactbox::addImportedDefinition($value,$caption);
 				wfProfileOut("SMWFactbox::addProperty (SMW)");
 				return $result;
-			default: // generic special attribute
+			default: // generic special property
 				if ( $special === SMW_SP_SERVICE_LINK ) { // do some custom formatting in this case
 					global $wgContLang;
 					$v = str_replace(' ', '_', $value); //normalize slightly since messages distinguish '_' and ' '
@@ -96,7 +96,7 @@ class SMWFactbox {
 	 * article for representing an element from a whitelisted external
 	 * ontology element. It does various feasibility checks (typing etc.)
 	 * and returns a "virtual" value object that can be used for printing
-	 * in text. Although many attributes are added, not all are printed in
+	 * in text. Although many property values are added, not all are printed in
 	 * the factbox, since some do not have a translated name (and thus also
 	 * could not be specified directly).
 	 */
@@ -240,7 +240,7 @@ class SMWFactbox {
 	}
 
 	/**
-	 * This method prints attribute values at the bottom of an article.
+	 * This method prints (special) property values at the bottom of an article.
 	 */
 	static protected function printProperties(&$text) {
 		if (!SMWFactbox::$semdata->hasProperties() && !SMWFactbox::$semdata->hasSpecialProperties()) {
@@ -248,12 +248,10 @@ class SMWFactbox {
 		}
 		global $wgContLang;
 
-		//$text .= ' <tr><th class="atthead"></th><th class="atthead">' . wfMsgForContent('smw_att_head') . "</th></tr>\n";
-
 		foreach(SMWFactbox::$semdata->getProperties() as $key => $property) {
-			$text .= '<tr><td class="smwattname">';
+			$text .= '<tr><td class="smwpropname">';
 			if ($property instanceof Title) {
-				$text .= '<tr><td class="smwattname">[[' . $property->getPrefixedText() . '|' . preg_replace('/[\s]/','&nbsp;',$property->getText(),2) . ']] </td><td class="smwatts">';
+				$text .= '<tr><td class="smwpropname">[[' . $property->getPrefixedText() . '|' . preg_replace('/[\s]/','&nbsp;',$property->getText(),2) . ']] </td><td class="smwprops">';
 				// TODO: the preg_replace is a kind of hack to ensure that the left column does not get too narrow; maybe we can find something nicer later
 			} else { // special property
 				if ($key{0} == '_') continue; // internal special property without label
@@ -264,10 +262,10 @@ class SMWFactbox {
 				          '</span></span></td><td class="smwspecs">';
 			}
 
-			$attributeValueArray = SMWFactbox::$semdata->getPropertyValues($property);
-			$l = count($attributeValueArray);
+			$propvalues = SMWFactbox::$semdata->getPropertyValues($property);
+			$l = count($propvalues);
 			$i=0;
-			foreach ($attributeValueArray as $attributeValue) {
+			foreach ($propvalues as $propvalue) {
 				if ($i!=0) {
 					if ($i>$l-2) {
 						$text .= wfMsgForContent('smw_finallistconjunct') . ' ';
@@ -277,10 +275,10 @@ class SMWFactbox {
 				}
 				$i+=1;
 
-				$text .= $attributeValue->getLongWikiText(true);
+				$text .= $propvalue->getLongWikiText(true);
 
 				$sep = '<!-- -->&nbsp;&nbsp;'; // the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
-				foreach ($attributeValue->getInfolinks() as $link) {
+				foreach ($propvalue->getInfolinks() as $link) {
 					$text .= $sep . $link->getWikiText();
 					$sep = ' &nbsp;&nbsp;'; // allow breaking for longer lists of infolinks
 				}

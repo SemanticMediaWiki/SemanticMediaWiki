@@ -117,15 +117,15 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			include_once($smwgIP . '/includes/SMW_Infolink.php');
 			// Header for index letters
 			if ($this->articles_start_char[$index] != $prevchar) {
-				$r .= '<tr><th class="smwattname"><h3>' . htmlspecialchars( $this->articles_start_char[$index] ) . "</h3></th><th></th></tr>\n";
+				$r .= '<tr><th class="smwpropname"><h3>' . htmlspecialchars( $this->articles_start_char[$index] ) . "</h3></th><th></th></tr>\n";
 				$prevchar = $this->articles_start_char[$index];
 			}
 			// Property name
 			$searchlink = SMWInfolink::newBrowsingLink('+',$this->articles[$index]->getPrefixedText());
-			$r .= '<tr><td class="smwattname">' . $this->getSkin()->makeKnownLinkObj( $this->articles[$index], 
+			$r .= '<tr><td class="smwpropname">' . $this->getSkin()->makeKnownLinkObj( $this->articles[$index], 
 			  $wgContLang->convert( $this->articles[$index]->getPrefixedText() ) ) . 
 			  '&nbsp;' . $searchlink->getHTML($this->getSkin()) .
-			  '</td><td class="smwatts">';
+			  '</td><td class="smwprops">';
 			// Property values
 			$ropts = new SMWRequestOptions();
 			$ropts->limit = 4;
