@@ -98,16 +98,16 @@ database before any upgrade.
 * This SVN Version does not provide a simple upgrade mechanism for existing wikis yet.*
 * If you upgrade, trigger Special:SMWAdmin again and run the maintenance script       *
 * "SMW_refreshData.php" twice (the first run can be restricted to properties using    *
-* the parameter -p.                                                                   *
+* the parameter -p.)                                                                   *
 
 1.0 unifies relations and attributes into Properties, although they are still separate
 tables in the database.  Many factboxes and queries should work, but our wiki will 
-have broken links to relation and property pages.
-See http://ontoworld.org/wiki/Upgrading_from_SMW_0.7_to_SMW_1.0 for guidelines on what
-to fix.
-
-SMW_unifyProperties.php script, TODO: document this?   
-
+have broken links to relation and property pages. In order to unify relation and
+attribute pages to the new property namespace, you can use the maintenance script
+SMW_unifyProperties.php. It has a -c switch that only checks if there are any conflicts,
+i.e. names that appear in both namespaces. If you run it without the switch it will
+actually move all pages to one namespace, and return you a list of all conflicts that
+have to be resolved manually. The script can be run safely more than once.
 
 '''Upgrading from version 0.6 or 0.5'''
 

@@ -53,7 +53,7 @@ if ($numRels === 0) {
 		print "$numConflicts conflicts have been detected.\n";
 		while( $conflict = $conflicts->fetchObject() ) {
 			$con[] = $conflict->page_id;
-			if ( $verbose ) print $conflict->page_title . "\n";
+			print $conflict->page_title . "\n";
 		}
 		print "Please unify these conflicts manually.\n";
 	}
