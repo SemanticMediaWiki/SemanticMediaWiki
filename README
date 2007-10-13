@@ -8,18 +8,21 @@ Notes on installing Semantic MediaWiki are found in the file INSTALL.
 
 == Contact ==
 
-If you have remarks, questions, or suggestions, please please send them
-to semediawiki-users@lists.sourceforge.net. Bugs should be filed at 
-MediaZilla, http://bugzilla.wikimedia.org/.
+If you have remarks, questions, or suggestions, please send them to
+semediawiki-users@lists.sourceforge.net. You can subscribe to this 
+list at
+http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user.
+
+Bugs should be filed at MediaZilla, http://bugzilla.wikimedia.org/.
 
 People who want to contribute work to the project should subscribe to
 the developers list semediawiki-devel@lists.sourceforge.net.
 
 Specific inquiries (e.g. for press releases) should go to Markus Krötzsch, 
-mak@aifb.uni-karlsruhe.de. Do not contact Markus directly for free technical 
-support -- you will get no answer.
+mak@aifb.uni-karlsruhe.de. Do not contact Markus directly if you just need
+free technical support -- that is what the user list is for.
 
-== Current developers ==
+== Developers ==
 
 Development is coordinated by Markus Krötzsch and Denny Vrandecic. The current
 core development team further consists of S Page, Daniel Herzig, Nikolas Iwan, and
@@ -28,9 +31,8 @@ Tobias Matzner.
 Semantic MediaWiki development is funded by Institut AIFB of Universität Karlsruhe,
 Germany; see http://aifb.uni-karlsruhe.de.
 
-SMW is also supported in the Halo project, where development is coordinated by 
-ontoprise GmbH, Karlsruhe, Germany. A team of developers from ontoprise will also 
-contribute code to future releases of SMW.
+SMW has also been supported in the Halo project, where development is coordinated by 
+ontoprise GmbH, Karlsruhe, Germany.
 
 == Contributors ==
 
@@ -42,7 +44,7 @@ contribute code to future releases of SMW.
   The first implementation has been done by Klaus Lassleben.
 
 * Further code has been contributed by (in no particular order) Kai Hüner,
-  Fernando Correia, Yaron Koren, and Nick Grandy.
+  Fernando Correia, Yaron Koren, and Nick Grandy, Jörg Heizmann, .
 
 * The new logo and related artwork for Semantic MediaWiki (see ontoworld.org) 
   has been designed and realised by Rozana Vrandecic.
