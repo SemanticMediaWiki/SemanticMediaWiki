@@ -48,7 +48,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 			$type = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE);
 			$type->setXSDValue('_wpg');
 			$typestring = $type->getLongHTMLText($skin);
-			$errors[] = wfMsg('smw_propertylackstype', $type->getLongHTMLText($skin));
+			$errors[] = wfMsg('smw_propertylackstype', $type->getLongHTMLText());
 		}
 		return wfMsg('smw_unusedproperty_template', $proplink, $typestring) . ' ' . smwfEncodeMessages($errors);
 	}
