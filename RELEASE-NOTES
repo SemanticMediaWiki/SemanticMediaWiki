@@ -2,8 +2,6 @@ For a documentation of all features, see http://ontoworld.org/wiki/Help:Semantic
 
 == Semantic MediaWiki 1.0RC1 ==
 
-SMW1.0 is almost a complete rewrite of SMW0.7. Its main features are:
-
 * Simplified semantic annotations: just one kind of annotation ("Property").
 * Significant speedup (both server and network load substantially reduced).
 * Prettier and easier to understand interfaces:
