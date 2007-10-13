@@ -32,10 +32,6 @@ class SMWStringValue extends SMWDataValue {
 		$this->m_caption = $this->m_value; // this is our output text
 	}
 
-	public function setOutputFormat($formatstring) {
-		// no output formats
-	}
-
 	public function getShortWikiText($linked = NULL) {
 		//TODO: Support linking?
 		return $this->m_caption;
@@ -67,22 +63,6 @@ class SMWStringValue extends SMWDataValue {
 
 	public function getWikiValue(){
 		return $this->m_value;
-	}
-
-	public function getNumericValue() {
-		return NULL;
-	}
-
-	public function getUnit() {
-		return ''; // empty unit
-	}
-
-	public function getHash() {
-		return $this->getLongWikiText(false) . $this->m_value;
-	}
-
-	public function isNumeric() {
-		return false;
 	}
 
 	public function getInfolinks() {

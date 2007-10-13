@@ -38,10 +38,6 @@ class SMWTypesValue extends SMWDataValue {
 		$this->m_xsdvalue = $value; // lazy parsing
 	}
 
-	public function setOutputFormat($formatstring) {
-		// no output formats supported, ignore
-	}
-
 	public function getShortWikiText($linked = NULL) {
 		if ( ($linked === NULL) || ($linked === false) ) {
 			if ($this->m_caption !== false) {
@@ -189,24 +185,8 @@ class SMWTypesValue extends SMWDataValue {
 		return implode('; ', $this->getTypeLabels());
 	}
 
-	public function getNumericValue() {
-		return false;
-	}
-
-	public function getUnit() {
-		return ''; // empty unit
-	}
-
-	public function getInfolinks() {
-		return array();
-	}
-
 	public function getHash() {
 		return implode('[]', $this->getTypeLabels());
-	}
-
-	public function isNumeric() {
-		return false;
 	}
 
 	/**

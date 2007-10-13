@@ -50,10 +50,6 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_wikivalue = $value;
 	}
 
-	public function setOutputFormat($formatstring) {
-		// no output formats yet
-	}
-
 	public function getShortWikiText($linked = NULL) {
 		//TODO: Support linking?
 		return $this->m_caption;
@@ -83,28 +79,24 @@ class SMWTimeValue extends SMWDataValue {
 		return $this->m_xsdvalue;
 	}
 
+	public function getNumericValue() {
+		return $this->m_time;
+	}
+
 	public function getWikiValue(){
 		return $this->m_wikivalue;
-	}
-
-	public function getNumericValue() {
-		return NULL;
-	}
-
-	public function getUnit() {
-		return ''; // empty unit
 	}
 
 	public function getHash() {
 		if ($this->isValid()) {
 			return $this->m_time;
 		} else {
-			return $this->getErrorText();
+			return implode("\t", $this->m_errors);
 		}
 	}
 
 	public function isNumeric() {
-		return false;
+		return true;
 	}
 
 	/**

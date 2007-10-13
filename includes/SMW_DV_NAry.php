@@ -2,6 +2,8 @@
 
 /**
  * SMWDataValue implements the handling of n-ary relations.
+ * TODO: support outputformat
+ * TODO: support "allows value" and "display units"
  *
  * @author Jörg Heizmann
  * @author Markus Krötzsch
@@ -25,6 +27,7 @@ class SMWNAryValue extends SMWDataValue {
 	 * Should this DV operate on query syntax (special mode for parsing queries in a compatible fashion)
 	 */
 	private $m_querysyntax = false;
+
 	private $m_comparators;
 	private $m_printstatement = false;
 	private $m_outputmodifiers;
@@ -107,10 +110,6 @@ class SMWNAryValue extends SMWDataValue {
 				$this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], $values[$i]);
 			}
 		}
-	}
-
-	public function setOutputFormat($formatstring) {
-		/// TODO
 	}
 
 	public function getShortWikiText($linked = NULL) {
@@ -201,10 +200,6 @@ class SMWNAryValue extends SMWDataValue {
 		return $result;
 	}
 
-	public function getNumericValue() {
-		return false;
-	}
-
 	public function getUnit() {
 		$first = true;
 		$result = '';
@@ -235,10 +230,6 @@ class SMWNAryValue extends SMWDataValue {
 			}
 		}
 		return $result;
-	}
-
-	public function isNumeric() {
-		return false; // the n-ary is clearly non numeric (n-ary values cannot be ordered by numbers)
 	}
 
 ////// Custom functions for n-ary attributes

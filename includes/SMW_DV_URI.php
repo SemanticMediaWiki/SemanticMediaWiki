@@ -112,10 +112,6 @@ class SMWURIValue extends SMWDataValue {
 		$this->m_uri = $this->m_url;
 	}
 
-	public function setOutputFormat($formatstring){
-		//TODO ?
-	}
-
 	public function getShortWikiText($linked = NULL) {
 		if ( ($linked === NULL) || ($linked === false) || ($this->m_url == '') ) {
 			return $this->m_caption;
@@ -160,22 +156,6 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getWikiValue(){
 		return $this->m_value;
-	}
-	
-	public function getNumericValue() {
-		return NULL;
-	}
-
-	public function getUnit() {
-		return ''; // empty unit
-	}
-
-	public function getHash() {
-		return $this->getXSDValue();
-	}
-
-	public function isNumeric() {
-		return false;
 	}
 
 	public function exportToRDF($QName, ExportRDF $exporter) {

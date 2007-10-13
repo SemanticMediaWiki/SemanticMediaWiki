@@ -32,8 +32,6 @@ class SMWNumberValue extends SMWDataValue {
 	protected $m_unitin; // if set, specifies the originally given input unit in a standard writing
 	protected $m_unitvalues; // array with entries unit=>value
 
-	protected $m_outunit = false; // desired unit for main printout, if any
-
 	protected function parseUserValue($value) {
 		$this->m_wikivalue = $value;
 		$this->m_unitin = false;
@@ -76,10 +74,6 @@ class SMWNumberValue extends SMWDataValue {
 		$this->m_unitin = false;
 		$this->makeUserValue();
 		$this->m_unitvalues = false;
-	}
-
-	public function setOutputFormat($formatstring) {
-		$this->m_outunit = $formatstring;
 	}
 
 	public function getShortWikiText($linked = NULL) {
@@ -165,8 +159,12 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	public function getHash() {
-		$this->convertToMainUnit();
-		return $this->m_value . $this->m_unit;
+		if ($this->isValid()) {
+			$this->convertToMainUnit();
+			return $this->m_value . $this->m_unit;
+		} else {
+			return implode("\t", $this->m_errors);
+		}
 	}
 
 	public function isNumeric() {

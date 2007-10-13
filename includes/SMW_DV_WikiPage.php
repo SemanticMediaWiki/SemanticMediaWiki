@@ -59,10 +59,6 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->m_title = NULL; // unset title
 	}
 
-	public function setOutputFormat($formatstring) {
-		//no formatting
-	}
-
 	public function getShortWikiText($linked = NULL) {
 		if ( ($linked === NULL) || ($linked === false) || (!$this->isValid()) ) {
 			return $this->m_caption;
@@ -122,20 +118,8 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 	}
 
-	public function getNumericValue() {
-		return false;
-	}
-
-	public function getUnit() {
-		return '';
-	}
-
 	public function getHash() {
 		return $this->m_prefixedtext;
-	}
-
-	public function isNumeric() {
-		return false;
 	}
 
 	/**

@@ -77,9 +77,9 @@ class SMWTemperatureValue extends SMWNumberValue {
 		$this->convertToMainUnit();
 
 		$value = false;
-		if (($this->m_unit === 'K') && $this->m_outunit) { // try given output unit (only if conversion worked)
-			$unit = $this->getUnitID($this->normalizeUnit($this->m_outunit));
-			$printunit = $this->m_outunit;
+		if (($this->m_unit === 'K') && $this->m_outformat) { // try given output unit (only if conversion worked)
+			$unit = $this->getUnitID($this->normalizeUnit($this->m_outformat));
+			$printunit = $this->m_outformat;
 			switch ($unit) {
 				case 'K':
 					$value = $this->m_value;

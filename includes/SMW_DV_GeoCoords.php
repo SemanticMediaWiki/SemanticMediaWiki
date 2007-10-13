@@ -91,7 +91,8 @@ class SMWGeoCoordsValue extends SMWDataValue {
 				case '': break; // ignore
 				default: // should be a number
 					$curnum = $part;
-					if ($curnum{0} == ',') { // should be seperator between lat and long ...
+					if ( ($curnum{0} == ',') || ($curnum{0} == ';') || ($curnum{0} == '/') ) { 
+					    // probably the separator between lat and long ...
 						$curnum = substr($curnum,1); // mb-safe enough, since {0} is ascii
 					}
 				break;
@@ -123,10 +124,6 @@ class SMWGeoCoordsValue extends SMWDataValue {
 			$this->m_caption = $this->formatAngleValues(true) . ', ' . $this->formatAngleValues(false); // this is our output text
 			$this->m_wikivalue = $this->m_caption;
 		}
-	}
-
-	public function setOutputFormat($formatstring) {
-		// no output formats
 	}
 
 	public function getShortWikiText($linked = NULL) {
@@ -163,26 +160,6 @@ class SMWGeoCoordsValue extends SMWDataValue {
 
 	public function getWikiValue(){
 		return $this->m_wikivalue;
-	}
-
-	public function getNumericValue() {
-		return NULL;
-	}
-
-	public function getUnit() {
-		return ''; // empty unit
-	}
-
-	public function getHash() {
-		if ($this->isValid()) {
-			return $this->getXSDValue();
-		} else {
-			return $this->getErrorText();
-		}
-	}
-
-	public function isNumeric() {
-		return false;
 	}
 
 	/**

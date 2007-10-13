@@ -9,14 +9,15 @@
  */
 abstract class SMWDataValue {
 
-	protected $m_property = false; /// The text label of the respective property or false if none given
-	protected $m_caption;          /// The text label to be used for output or false if none given
-	protected $m_errors = array();  /// Array of error text messages
-	protected $m_isset = false;     /// True if a value was set.
-	protected $m_typeid;            /// The type id for this value object
+	protected $m_property = false;    /// The text label of the respective property or false if none given
+	protected $m_caption;             /// The text label to be used for output or false if none given
+	protected $m_errors = array();    /// Array of error text messages
+	protected $m_isset = false;       /// True if a value was set.
+	protected $m_typeid;              /// The type id for this value object
 	protected $m_infolinks = array(); /// Array of infolink objects
+	protected $m_outformat = false;   /// output formatting string, see setOutputFormat()
 
-	private $m_hasssearchlink;    /// used to control the addition of the standard search link
+	private $m_hasssearchlink;        /// used to control the addition of the standard search link
 
 	public function SMWDataValue($typeid) {
 		$this->m_typeid = $typeid;
@@ -80,7 +81,9 @@ abstract class SMWDataValue {
 	 * and subject to internationalisation (which the datavalue has to implement).
 	 * In any case, an empty string resets the output format to the default.
 	 */
-	abstract public function setOutputFormat($formatstring);
+	public function setOutputFormat($formatstring) {
+		$this->m_outformat = $formatstring; // just store it, subclasses may or may not use this
+	}
 
 	/**
 	 * Add a new error string to the error list. All error string must be wiki and
@@ -175,15 +178,21 @@ abstract class SMWDataValue {
 	 * compare values of scalar types more efficiently, especially
 	 * for sorting queries. If the datatype has units, then this
 	 * value is to be interpreted wrt. the unit provided by getUnit().
+	 * Possibly overwritten by subclasses.
 	 */
-	abstract public function getNumericValue();
+	public function getNumericValue() {
+		return NULL;
+	}
 
 	/**
 	 * Return the unit in which the returned value is to be interpreted.
 	 * This string is a plain UTF-8 string without wiki or html markup.
 	 * Returns the empty string if no unit is given for the value.
+	 * Possibly overwritten by subclasses.
 	 */
-	abstract public function getUnit();
+	public function getUnit() {
+		return ''; // empty unit
+	}
 
 	/**
 	 * Return a short string that unambiguously specify the type of this value.
@@ -213,13 +222,24 @@ abstract class SMWDataValue {
 	/**
 	 * Return a string that identifies the value of the object, and that can
 	 * be used to compare different value objects.
+	 * Possibly overwritten by subclasses (e.g. to ensure that returned value is
+	 * normalised first)
 	 */
-	abstract public function getHash();
+	public function getHash() {
+		if ($this->isValid()) { // assume that XSD value + unit say all
+			return $this->getXSDValue() . $this->getUnit();
+		} else {
+			return implode("\t", $this->m_errors);
+		}
+	}
 
 	/**
 	 * Return TRUE if values of the given type generally have a numeric version.
+	 * Possibly overwritten by subclasses.
 	 */
-	abstract public function isNumeric();
+	public function isNumeric() {
+		return false;
+	}
 
 	/**
 	 * Return TRUE if a value was defined and understood by the given type,

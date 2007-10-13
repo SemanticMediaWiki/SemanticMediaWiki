@@ -52,24 +52,9 @@ class SMWErrorValue extends SMWDataValue {
 	public function getXSDValue() {
 		return $this->getShortWikiText(); ///TODO: really? (errors are not meant to be saved, or are they?)
 	}
-	
+
 	public function getWikiValue(){
 		return $this->getShortWikiText(); /// FIXME: wikivalue must not be influenced by the caption
 	}
-	
-	public function getNumericValue() {
-		return NULL;
-	}
 
-	public function getUnit() {
-		return ''; // empty unit
-	}
-
-	public function getHash() {
-		return $this->getLongWikiText(); // use only error for hash so as not to display the same error twice
-	}
-
-	public function isNumeric() {
-		return false;
-	}
 }
