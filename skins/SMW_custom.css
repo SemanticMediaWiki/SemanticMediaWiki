@@ -211,6 +211,7 @@ span.smwttpersist span.smwttcontent{ /* show persistent tooltips for non-JavaScr
 
 span.smwttinline span.smwttcontent{ /* hide inline tooltips for non-JavaScript clients */
 	display: none;
+	speak: none;
 }
 
 span.smwtticon{ /* style for image anchor for persistent tooltips */

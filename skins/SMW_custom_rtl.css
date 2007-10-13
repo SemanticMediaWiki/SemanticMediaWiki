@@ -1,10 +1,6 @@
 /* tables for inline queries */
 
-table.smwtable th {
-	text-align: right;
-}
-
-table.smwtable td {
+table.smwtable th, table.smwtable td{
 	text-align: right;
 }
 
@@ -16,21 +12,12 @@ span.smwfactboxhead {
 	float:right;
 }
 
-span.smwfactboxhead {
-	float:right;
-}
-
 span.smwrdflink {
 	float:left;
 }
 
-
-td.smwrelname, td.smwattname, td.smwspecname, th.smwrelname, th.smwattname, th.smwspecname{
+td.smwpropname, th.smwpropname, td.smwspecname{
 	text-align: left;
-}
-
-th.relhead, th.atthead, th.spechead{
-	text-align: right;
 }
 
 span.smwsearchicon {
@@ -52,6 +39,44 @@ span.smwsearchicon {
 	margin-right: 0;
 	padding-left: 18px;
 	margin-left: 0px;
+}
+
+#bodyContent span.swmfactboxheadbrowse a{
+	padding-left: 16px;
+	margin-left: 2px;
+	padding-right: 0px;
+	margin-right: 0px;
+	color: #000000;
+	background: url(images/browse_iconsmall.png) center left no-repeat;
+}
+
+#bodyContent span.swmfactboxheadbrowse a:hover{
+	text-decoration: none;
+	color: #0000FF;
+	padding-left: 18px;
+	margin-left: 0px;
+	padding-right: 0px;
+	margin-right: 0px;
+	background: url(images/browse_icon.png) center left no-repeat;
+}
+
+#bodyContent span.smwbrowse a{
+	padding-left: 16px;
+	margin-left: 2px;
+	padding-right: 0px;
+	margin-right: 0px;
+	color: #888888;
+	background: url(images/browse_iconsmall.png) center left no-repeat;
+}
+
+#bodyContent span.smwbrowse a:hover{
+	text-decoration: none;
+	color: #0000FF;
+	padding-left: 18px;
+	margin-left: 0px;
+	padding-right: 0px;
+	margin-right: 0px;
+	background: url(images/browse_icon.png) center left no-repeat;
 }
 
 #bodyContent span.smwmap a{
@@ -80,4 +105,3 @@ span.smwsearchicon {
 	margin-left: 0px;
 	background: url(rdf_flyer.18.gif) center left no-repeat;
 }
-
