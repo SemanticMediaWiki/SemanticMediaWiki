@@ -59,7 +59,9 @@ class SMWPropertiesPage extends SMWQueryPage {
 			$type = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE);
 			$type->setXSDValue('_wpg');
 			$typestring = $type->getLongHTMLText($skin);
-			$errors[] = wfMsg('smw_propertylackstype', $type->getLongHTMLText($skin));
+			if ($result[0]->exists()) { // print only when we did not print a "nopage" warning yet
+				$errors[] = wfMsg('smw_propertylackstype', $type->getLongHTMLText());
+			}
 		}
 		return wfMsg('smw_property_template', $proplink, $typestring, $result[1]) . ' ' . smwfEncodeMessages($errors);
 	}
