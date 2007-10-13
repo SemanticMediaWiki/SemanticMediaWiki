@@ -23,8 +23,10 @@ protected $m_ContentMessages = array(
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und', //used in "A, B, and C"
 	'smw_factbox_head' => 'Fakten zu $1',
-	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
-	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
+	'smw_isspecprop' => 'Dieses Attribut ist ein Spezialattribut in diesem Wiki.',
+	'smw_isknowntype' => 'Dieser Datentyp gehört zu den Standardtypen in diesem Wiki.',
+	'smw_isaliastype' => 'Dieser Datentyp ist ein Alias für den Typ “$1”.',
+	'smw_isnotype' => 'Der Datentyp “$1” ist kein Standardtyp in diesem Wiki, und hat auch keine ausreichende Definition auf seiner Seite.',
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'URIs aus dem Bereich „$1“ sind an dieser Stelle leider nicht verfügbar.',

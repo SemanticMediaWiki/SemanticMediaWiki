@@ -16,6 +16,8 @@ protected $m_ContentMessages = array(
 	'smw_factbox_head' => 'Feiten over $1',
 	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
 	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
+	'smw_isaliastype' => 'This type is an alias for the datatype “$1”.', // TODO Translate
+	'smw_isnotype' => 'This type “$1” is not a standard datatype in the wiki, and has not been given a user definition either.', // TODO Translate
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Sorry, URI\'s uit de reeks “$1” zijn hier niet beschikbaar.',
@@ -126,8 +128,7 @@ protected $m_UserMessages = array(
 	// Messages for (data)Types Special
 	'types' => 'Typen',
 	'smw_types_docu' => 'Hieronder staat een lijst van alle datatypen die aan eigenschappen kunnen worden toegewezen. Ieder datatype heeft een pagina waar aanvullende informatie opgegeven kan worden.',
-	'smw_types_units' => 'Standaardeenheid: $1; ondersteunde eenheden: $2',
-	'smw_types_builtin' => 'Ingebouwde typen',
+	'smw_typeunits' => 'Units of measurement of type “$1”: $2', // TODO: Translate
 	/*Messages for SemanticStatistics Special*/
 	'semanticstatistics' => 'Semantische statistieken',
 	'smw_semstats_text' => 'Deze wiki bevat <b>$1</b> eigenschapwaaren voor <b>$2</b> verschillden <a href="$3">eigenschappen</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Eigenschappen waar nog geen pagina voor is zijn te vinden op de <a href="$7">lijst met gewenste eigenschappen</a>.',
