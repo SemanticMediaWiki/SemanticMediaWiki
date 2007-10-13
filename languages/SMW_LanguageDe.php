@@ -135,8 +135,7 @@ protected $m_UserMessages = array(
 	/*Messages for (data)Types Special*/
 	'types' => 'Datentypen',
 	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden. Jeder Datentyp hat eine eigene Seite, auf der genauere Informationen eingetragen werden können.',
-	'smw_types_units' => 'Standardumrechnung: $1; gestützte Umrechnungen: $2',
-	'smw_types_builtin' => 'Eingebaute Datatypen',
+	'smw_typeunits' => 'Maßeinheiten des Datentyps “$1”: $2',
 	/*Messages for SemanticStatistics Special*/
 	'semanticstatistics' => 'Statistik über semantische Daten',
 	'smw_semstats_text' => 'In diesem Wiki wurden <b>$1</b> Werte für insgesamt <b>$2</b> verschiedene <a href="$3">Attribute</a> eingegeben. <b>$4</b> Attribute haben eine eigene Seite und der gewünschte Datentyp ist für <b>$5</b> von diesen angegeben worden. Einige der existierenden Attribute können <a href="$6">verwaiste Attribute</a> sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der <a href="$7">Liste der gewünschten Attribute</a> aufgeführt.',

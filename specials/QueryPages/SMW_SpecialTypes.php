@@ -75,11 +75,36 @@ class TypesPage extends QueryPage {
 	 * Returns the info about a type as HTML
 	 */
 	function getTypeInfo( $skin, $titletext ) {
-		$title = Title::makeTitle( SMW_NS_TYPE, $titletext );
-
-		// Use the type handler interface to get more info.
 		$tv = SMWDataValueFactory::newTypeIDValue('__typ', $titletext);
-		$link = $tv->getLongHTMLText($skin);
+		$info = array();
+		$error = array();
+		if ($tv->isAlias()) { // print the type title as found, long text would (again) print the alias
+			$ttitle = Title::makeTitle(SMW_NS_TYPE, $titletext);
+			$link = $skin->makeKnownLinkObj($ttitle, $ttitle->getText()); // aliases are only found if the page exists
+			$info[] = wfMsg('smw_isaliastype', $tv->getLongHTMLText());
+		} else {
+			$link = $tv->getLongHTMLText($skin);
+			if (!$tv->isBuiltIn()) { // find out whether and how this was user-defined
+				$dv = SMWDataValueFactory::newTypeObjectValue($tv);
+				$units = $dv->getUnitList();
+				if (count($units)==0) {
+					$error[] = wfMsg('smw_isnotype', $tv->getLongHTMLText());
+				} else {
+					$info[] = wfMsg('smw_typeunits', $tv->getLongHTMLText(), implode(', ', $units));
+				}
+// 				} else {
+// 					$units = array();
+// 				}
+			}
+		}
+	
+		if (count($error)>0) {
+			$link .= smwfEncodeMessages($error);
+		}
+		if (count($info)>0) {
+			$link .= smwfEncodeMessages($info,'info');
+		}
+
 
 /// TODO: displaying units will be fixed soon
 // 		$units = $th->getUnits();

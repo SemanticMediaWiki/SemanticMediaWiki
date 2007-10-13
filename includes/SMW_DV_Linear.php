@@ -135,6 +135,15 @@ class SMWLinearValue extends SMWNumberValue {
 		$this->m_unitin = $unit;
 	}
 
+	/**
+	 * Return an array of major unit strings (ids only recommended) supported by 
+	 * this datavalue.
+	 */
+	public function getUnitList() {
+		$this->initConversionData();
+		return array_keys($this->m_unitfactors);
+	}
+
 /// The remaining functions are relatively "private" but are kept protected since 
 /// subclasses might exploit this to, e.g., "fake" conversion factors instead of
 /// getting them from the database. A cheap way of making built-in types.

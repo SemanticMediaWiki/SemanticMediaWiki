@@ -16,6 +16,8 @@ protected $m_ContentMessages = array(
 	'smw_factbox_head' => 'Facts about $1',
 	'smw_isspecprop' => 'This property is a special property in this wiki.',
 	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.',
+	'smw_isaliastype' => 'This type is an alias for the datatype “$1”.',
+	'smw_isnotype' => 'This type “$1” is not a standard datatype in the wiki, and has not been given a user definition either.',
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Sorry, URIs from the range “$1” are not available in this place.',
@@ -127,8 +129,7 @@ protected $m_UserMessages = array(
 	// Messages for (data)Types Special
 	'types' => 'Types',
 	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to properties. Each datatype has a page where additional information can be provided.',
-	'smw_types_units' => 'Standard unit: $1; supported units: $2',
-	'smw_types_builtin' => 'Built-in types',
+	'smw_typeunits' => 'Units of measurement of type “$1”: $2',
 	/*Messages for SemanticStatistics Special*/
 	'semanticstatistics' => 'Semantic Statistics',
 	'smw_semstats_text' => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.',

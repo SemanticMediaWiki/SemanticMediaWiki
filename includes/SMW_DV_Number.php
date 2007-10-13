@@ -253,4 +253,14 @@ class SMWNumberValue extends SMWDataValue {
 		$this->m_unitin = $this->m_unit;
 	}
 
+	/**
+	 * Return an array of major unit strings (ids only recommended) supported by 
+	 * this datavalue.
+	 *
+	 * Overwritten by subclasses that support units.
+	 */
+	public function getUnitList() {
+		return array();
+	}
+
 }

@@ -131,4 +131,12 @@ class SMWTemperatureValue extends SMWNumberValue {
 		}
 	}
 
+	/**
+	 * Return an array of major unit strings (ids only recommended) supported by 
+	 * this datavalue.
+	 */
+	public function getUnitList() {
+		return array('K', '°C', '°F');
+	}
+
 }

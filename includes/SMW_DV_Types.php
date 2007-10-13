@@ -17,6 +17,7 @@ class SMWTypesValue extends SMWDataValue {
 	private $m_typelabels = false;
 	private $m_typecaptions = false;
 	private $m_xsdvalue = false;
+	private $m_isalias = false; // record whether this is an alias to another type, used to avoid duplicates when listing page types
 
 	protected function parseUserValue($value) {
 		// no use for being lazy here: plain user values are never useful
@@ -29,13 +30,16 @@ class SMWTypesValue extends SMWDataValue {
 			$ttype = Title::newFromText($type,SMW_NS_TYPE);
 			if ( ($ttype !== NULL) && ($ttype->getNamespace() == SMW_NS_TYPE) ) {
 				$this->m_typecaptions[] = $type;
-				$this->m_typelabels[] = SMWDataValueFactory::findTypeLabel(SMWDataValueFactory::findTypeID($ttype->getText()));
+				$label = SMWDataValueFactory::findTypeLabel(SMWDataValueFactory::findTypeID($ttype->getText()));
+				$this->m_typelabels[] = $label;
+				$this->m_isalias = ($label === $ttype->getText())?false:true;
 			} // else: wrong namespace or invalid title given -- what now? TODO
 		}
 	}
 
 	protected function parseXSDValue($value, $unit) {
 		$this->m_xsdvalue = $value; // lazy parsing
+		$this->m_isalias = false;
 	}
 
 	public function getShortWikiText($linked = NULL) {
@@ -209,6 +213,14 @@ class SMWTypesValue extends SMWDataValue {
 	public function isBuiltIn() {
 		$v = $this->getXSDValue();
 		return ( ($this->isUnary()) && ($v[0] == '_') );
+	}
+
+	/**
+	 * Is this an alias for another datatype in SMW? This information is used to
+	 * explain entries in Special:Types that are found since they have pages.
+	 */
+	public function isAlias() {
+		return $this->m_isalias;
 	}
 
 	/**

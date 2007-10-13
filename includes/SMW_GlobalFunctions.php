@@ -495,12 +495,13 @@ function smwfAddHTMLHeadersOutput(&$out) {
 
 	/**
 	 * Formats an array of message strings so that it appears as a tooltip.
+	 * $icon should be one of: 'warning' (default), 'info'
 	 */
-	function smwfEncodeMessages($msgarray) {
+	function smwfEncodeMessages($msgarray, $icon = 'warning') {
 		if (count($msgarray) > 0) {
 			smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
 			$msgs = implode(' ', $msgarray);
-			return '<span class="smwttpersist"><span class="smwtticon">warning.png</span><span class="smwttcontent">' . $msgs . '</span> </span>';
+			return '<span class="smwttpersist"><span class="smwtticon">' . $icon . '.png</span><span class="smwttcontent">' . $msgs . '</span> </span>';
 			// Note: the space is essential to make FF (and maybe other) align icons properly in tables
 		} else {
 			return '';
