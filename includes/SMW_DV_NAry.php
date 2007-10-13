@@ -374,14 +374,13 @@ class SMWNAryValue extends SMWDataValue {
 			if ($value === NULL) {
 				continue;
 			}
-			$element = "nary" . $count; 
-
-//			$element = "nary" . $count . $value->getTypeID();
-			/// TODO make the element name dependent on the type of the value
-			$rdf .= "\t\t" . $value->exportToRDF( "smw:$element", $exporter );
-			if ($value->getTypeID() == '_wpg') {
+			if (($value->getTypeID() == '_wpg') || ($value->getTypeID() == '_uri') || ($value->getTypeID() == '_ema')) {
+				$element = "nary" . $count . "o"; 
+				$rdf .= "\t\t" . $value->exportToRDF( "smw:$element", $exporter );
 				$exporter->addSchemaRef( $element, "owl:ObjectProperty" );
 			} else {
+				$element = "nary" . $count; 
+				$rdf .= "\t\t" . $value->exportToRDF( "smw:$element", $exporter );
 				$exporter->addSchemaRef( $element, "owl:DatatypeProperty" );
 			}
 		}
