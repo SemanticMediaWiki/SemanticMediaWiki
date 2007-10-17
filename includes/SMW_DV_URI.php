@@ -51,8 +51,8 @@ class SMWURIValue extends SMWDataValue {
 							return true;
 						}
 					}
-					// simple check for invalid characters: '?', ' ', '{', '}'
-					$check1 = "@(\?|\}|\{| )+@";
+					// simple check for invalid characters: ' ', '{', '}'
+					$check1 = "@(\}|\{| )+@";
 					if (preg_match($check1, $value, $matches)) {
 						$this->addError(wfMsgForContent('smw_baduri', $value));
 						break;
