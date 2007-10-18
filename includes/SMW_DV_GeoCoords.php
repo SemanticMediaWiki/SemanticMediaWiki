@@ -34,10 +34,12 @@ class SMWGeoCoordsValue extends SMWDataValue {
 
 		// first normalise some typical symbols
 		$this->initDirectionLabels();
-		$value = str_replace(array('&#176;', '$nbsp;', $this->m_N, $this->m_E, $this->m_W, $this->m_S),
-		                     array('°', ' ','N','E','W','S'),$value);
-		$value = str_replace(array('&#8243;', "''", '"', '´´'),SMW_GEO_SEC,$value);
-		$value = str_replace(array('&#8242;', "'", '´'),SMW_GEO_MIN,$value);
+		$value = str_replace(array('&nbsp;', $this->m_N, $this->m_E, $this->m_W, $this->m_S, ),
+		                     array(' ','N','E','W','S'),$value);
+		$value = str_replace(array('&#176;', '&deg;'), '°', $value);
+		$value = str_replace(array('&acute;', '&#180;'),'´',$value);
+		$value = str_replace(array('&#8243;', '&Prime;', "''", '"', '´´', SMW_GEO_MIN . SMW_GEO_MIN),SMW_GEO_SEC,$value);
+		$value = str_replace(array('&#8242;', '&prime;', "'", '´'),SMW_GEO_MIN,$value);
 		// now split the string
 		$parts = preg_split('/\s*(°|' . SMW_GEO_MIN . '|' . SMW_GEO_SEC . '|N|E|W|S)\s*/',$value, -1, PREG_SPLIT_DELIM_CAPTURE);
 		$curnum = false;
