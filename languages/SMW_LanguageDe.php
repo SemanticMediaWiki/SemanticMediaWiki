@@ -156,12 +156,12 @@ protected $m_UserMessages = array(
 	'smw_ask_descorder' => 'Absteigend',
 	'smw_ask_submit' => 'Finde Ergebnisse',
 	// Messages for the search by property special
-	'searchbyproperty' => 'Suche mittels Eigenschaft',
-	'smw_sbv_docu' => '<p>Diese Spezialseite findet alle Seiten, die einen bestimmten Wert für die angegebene Eigenschaft haben.</p>',
-	'smw_sbv_noproperty' => '<p>Bitte den Namen einer Eigenschaft eingeben</p>',
-	'smw_sbv_novalue' => '<p>Bitte den gewünschten Wert eingeben oder alle Werte für die Eingenschaft $1 ansehen.</p>',
-	'smw_sbv_displayresult' => 'Eine Liste aller Seiten, die eine Eigenschaft $1 mit dem Wert $2 haben.',
-	'smw_sbv_property' => 'Eigenschaft',
+	'searchbyproperty' => 'Suche mittels Attribut',
+	'smw_sbv_docu' => '<p>Diese Spezialseite findet alle Seiten, die einen bestimmten Wert für das angegebene Attribut haben.</p>',
+	'smw_sbv_noproperty' => '<p>Bitte den Namen eines Attributs eingeben</p>',
+	'smw_sbv_novalue' => '<p>Bitte den gewünschten Wert eingeben oder alle Werte für das Attribut $1 ansehen.</p>',
+	'smw_sbv_displayresult' => 'Eine Liste aller Seiten, die ein Attribut $1 mit dem Wert $2 haben.',
+	'smw_sbv_property' => 'Attribut',
 	'smw_sbv_value' => 'Wert',
 	'smw_sbv_submit' => 'Finde Ergebnisse',
 	// Messages for the browsing system
@@ -217,7 +217,7 @@ protected $m_SpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Datentyp',
 	SMW_SP_HAS_URI   => 'Gleichwertige URI',
-	SMW_SP_SUBPROPERTY_OF => 'Untereigenschaft von',
+	SMW_SP_SUBPROPERTY_OF => 'Unterattribut von',
 	SMW_SP_DISPLAY_UNITS => 'Einheiten',
 	SMW_SP_IMPORTED_FROM => 'Importiert aus',
 	SMW_SP_CONVERSION_FACTOR => 'Entspricht',
