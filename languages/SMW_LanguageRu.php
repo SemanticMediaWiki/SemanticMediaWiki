@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Dmitry Khoroshev
+ * @author cnit@uniyar.ac.ru
  */
 
 global $smwgIP;
@@ -9,134 +10,115 @@ include_once($smwgIP . '/languages/SMW_Language.php');
 class SMW_LanguageRu extends SMW_Language {
 
 protected $m_ContentMessages = array(
-	'smw_edithelp' => 'Редактирование справки по отношениям и атрибутам',
+	'smw_edithelp' => 'Редактирование справки по свойствам',
 	'smw_helppage' => 'Отношение',
 	'smw_viewasrdf' => 'RDF источник',
 	'smw_finallistconjunct' => ' и', //used in "A, B, and C"
-	'smw_factbox_head' => 'Факты о $1 &mdash; Кликните <span class="smwsearchicon">+</span> чтобы найти похожие страницы.',
-	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
-	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
-	'smw_isaliastype' => 'This type is an alias for the datatype “$1”.', // TODO Translate
-	'smw_isnotype' => 'This type “$1” is not a standard datatype in the wiki, and has not been given a user definition either.', // TODO Translate
+	'smw_factbox_head' => 'Факты: $1',
+	'smw_isspecprop' => 'Это свойство является специальным для данного сайта.',
+	'smw_isknowntype' => 'Этот тип данных принадлежит к стандартным типам данных данного сайта.',
+	'smw_isaliastype' => 'Этот тип данных является альтернативным именем типа данных “$1”.',
+	'smw_isnotype' => 'Тип данных “$1” не был определен.',
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
-	'smw_baduri' => 'Извините, но URI "$1" не доступны из этого места.',
+	'smw_baduri' => 'Извините, но ссылки из диапазона "$1" не доступны отсюда.',
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "Извините, но встроенные запросы отключены для этого сайта.",
 	'smw_iq_moreresults' => '&hellip; следующие результаты',
 	'smw_iq_nojs' => 'Используйте браузер с поддержкой JavaScript для просмотра этого элемента, или <a href="$1">просмотрите результат в виде списка</a>.',
 	// Messages and strings for ontology resued (import)
-	'smw_unknown_importns' => 'Но функции импорта не доступны для пространства имен "$1".',
-	'smw_nonright_importtype' => 'Но $1 может быть использован только для статей с пространством имен "$2".',
-	'smw_wrong_importtype' => 'Но $1 не может быть использован для статей с пространством имен "$2".',
-	'smw_no_importelement' => 'Но элемент "$1" не доступен для импорта.',
+	'smw_unknown_importns' => 'Ошибка: Функции импорта не доступны для пространства имен "$1".',
+	'smw_nonright_importtype' => 'Ошибка: $1 может быть использован только для статей с пространством имен "$2".',
+	'smw_wrong_importtype' => 'Ошибка: $1 не может быть использован для статей с пространством имен "$2".',
+	'smw_no_importelement' => 'Ошибка: Элемент "$1" не доступен для импорта.',
 	// Messages and strings for basic datatype processing
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => ' ',
-	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate
-	'smw_unknowntype' => 'Тип атрибута "$1" не поддерживается.',
-	'smw_manytypes' => 'Более одного типа определено для атрибута.',
-	'smw_emptystring' => 'Пустые строки не принимаются.',
-	'smw_maxstring' => 'Но строчное представление числа $1 слишком длинное для этого сайта.',
-	'smw_notinenum' => '"$1" не входит в список допустимых значений ($2) для этого атрибута.',
+	'smw_notitle' => '“$1” не может быть использован как заголовок статьи на данном сайте.',
+	'smw_unknowntype' => 'Тип "$1" не поддерживается для данного свойства.',
+	'smw_manytypes' => 'Более одного типа определено для свойства.',
+	'smw_emptystring' => 'Пустые строки недопустимы.',
+	'smw_maxstring' => 'Ошибка: Строковое представление $1 слишком длинное для этого сайта.',
+	'smw_notinenum' => '"$1" не входит в список допустимых значений ($2) для этого свойства.',
 	'smw_noboolean' => '"$1" не является булевым значением (да/нет).',
 	'smw_true_words' => 't,yes,да,д,истина,и',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,no,n,нет,н,ложь,л',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nofloat' => '"$1" не является десятичным числом.', // TODO Change "floating-point" number to just "number"
-	'smw_infinite' => 'Но такие длинные числа как $1 не поддерживаются этим сайтом.',
-	'smw_infinite_unit' => 'Но конвертация значения в $1 привело к слишком длинному числу для этого сайта.',
+	'smw_nofloat' => '"$1" не является числом.',
+	'smw_infinite' => 'Ошибка: Столь длинные числа как $1 не поддерживаются этим сайтом.',
+	'smw_infinite_unit' => 'Ошибка: Преобразование значения в единицы измерения “$1” привело к слишком длинному числу для этого сайта.',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this attribute supports no unit conversion',
-	'smw_unsupportedprefix' => 'Префиксы ("$1") не поддерживаются в настоящее время.',
-	'smw_unsupportedunit' => 'Конвертация единиц измерения для "$1" не поддерживается.',
+	'smw_unsupportedprefix' => 'Префиксы для чисел ("$1") не поддерживаются в настоящее время.',
+	'smw_unsupportedunit' => 'Преобразование единиц измерения для "$1" не поддерживается.',
 	// Messages for geo coordinates parsing
-	'smw_lonely_unit' => 'No number found before the symbol “$1”.', // $1 is something like ° TODO Translate
-	'smw_bad_latlong' => 'Latitude and longitude must be given only once, and with valid coordinates.', // TODO Translate
-	'smw_label_latitude' => 'Широта:',
-	'smw_label_longitude' => 'Долгота:',
+	'smw_lonely_unit' => 'Числовое значение перед символом “$1” отсутствует.', // $1 is something like °
+	'smw_bad_latlong' => 'Широта и долгота должны быть заданы только один раз, и с корректными координатами.',
 	'smw_abb_north' => 'N',
 	'smw_abb_east' => 'E',
 	'smw_abb_south' => 'S',
 	'smw_abb_west' => 'W',
+	'smw_label_latitude' => 'Широта:',
+	'smw_label_longitude' => 'Долгота:',
 	// some links for online maps; can be translated to different language versions of services, but need not
 	'smw_service_online_maps' => " найти&nbsp;на&nbsp;карте|http://tools.wikimedia.de/~magnus/geo/geohack.php?language=ru&params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	// Messages for datetime parsing
-	'smw_nodatetime' => 'Дата "$1" не распознана. Как бы то ни было, в настоящее время поддержка дат находится в разработке.',
-	// Errors and notices related to queries // TODO: translate
-	'smw_toomanyclosing' => 'There appear to be too many occurrences of “$1” in the query.',
-	'smw_noclosingbrackets' => 'Some use of “[&#x005B;” in your query was not closed by a matching “]]”.',
-	'smw_misplacedsymbol' => 'The symbol “$1” was used in a place where it is not useful.',
-	'smw_unexpectedpart' => 'The part “$1” of the query was not understood. Results might not be as expected.',
-	'smw_emtpysubquery' => 'Some subquery has no valid condition.',
-	'smw_misplacedsubquery' => 'Some subquery was used in a place where no subqueries are allowed.',
-	'smw_valuesubquery' => 'Subqueries not supported for values of property “$1”.',
-	'smw_overprintoutlimit' => 'The query contains too many printout requests.',
-	'smw_badprintout' => 'Some print statement in the query was misshaped.',
-	'smw_badtitle' => 'Sorry, but “$1” is no valid page title.',
-	'smw_badqueryatom' => 'Some part “[#x005B;&hellip]]” of the query was not understood.',
-	'smw_propvalueproblem' => 'The value of property “$1” was not understood.',
-	'smw_nodisjunctions' => 'Disjunctions in queries are not supported in this wiki and part of the query was dropped ($1).',
-	'smw_querytoolarge' => 'The following query conditions could not be considered due to the wikis restrictions in query size or depth: $1.'
+	'smw_nodatetime' => 'Дата "$1" не распознана (поддержка дат находится в разработке).',
+	// Errors and notices related to queries
+	'smw_toomanyclosing' => 'Ошибка: Слишком много вхождений “$1” в данном запросе.',
+	'smw_noclosingbrackets' => 'Ошибка: Открывающаяся пара скобок “[&#x005B;” не была закрыта парой соответствующих ей закрывающих скобок “]]” в данном запросе.',
+	'smw_misplacedsymbol' => 'Ошибка: Использование символа “$1” в данном месте лишено смысла.',
+	'smw_unexpectedpart' => 'Ошибка: Часть “$1” запроса не была распознана. Результаты могут отличаться от ожидаемых.',
+	'smw_emtpysubquery' => 'Ошибка: В одном из подзапросов не указано правильного знака условия.',
+	'smw_misplacedsubquery' => 'Ошибка: Подзапрос используется в месте, где подзапросы не разрешены.',
+	'smw_valuesubquery' => 'Ошибка: Подзапросы не поддерживаются для значений свойства “$1”.',
+	'smw_overprintoutlimit' => 'Ошибка: Запрос содержит слишком много требований вывода.',
+	'smw_badprintout' => 'Ошибка: Некоторое выражение вывода в запросе неправильно составлено.',
+	'smw_badtitle' => 'Извините, но “$1” не является правильным заголовком статьи.',
+	'smw_badqueryatom' => 'Ошибка: Часть запроса “[#x005B;&hellip]]” не была разобрана.',
+	'smw_propvalueproblem' => 'Ошибка: Значение свойства “$1” не разобрано.',
+	'smw_nodisjunctions' => 'Ошибка: Дизъюнкции (логическое ИЛИ) не поддерживаются данным сайтом, поэтому использующая их часть запроса была проигнорирована ($1).',
+	'smw_querytoolarge' => 'Ошибка: Указанные условия запроса “$1” не могут быть выполнены из-за ограничения на глубину или размер запроса.'
 );
 
 
 protected $m_UserMessages = array(
-	'smw_devel_warning' => 'Эта функция в настоящее время находится в разработке. Сделайте резервную копию прежде чем продолжать.',
+	'smw_devel_warning' => 'Эта функция в настоящее время находится в разработке. Сделайте резервную копию прежде чем её использовать.',
 	// Messages for article pages of types, relations, and attributes
-	'smw_type_header' => 'Атрибуты типа “$1”',
-	'smw_typearticlecount' => 'Отображается $1 атрибутов этого типа.',
-	'smw_attribute_header' => 'Страницы, использующие атрибут “$1”',
-	'smw_attributearticlecount' => '<p>Отображается $1 страниц, использующих этот атрибут.</p>',
+	'smw_type_header' => 'Свойства типа “$1”',
+	'smw_typearticlecount' => 'Отображается $1 свойств этого типа.',
+	'smw_attribute_header' => 'Страницы, использующие свойство “$1”',
+	'smw_attributearticlecount' => '<p>Отображается $1 страниц, использующих это свойство.</p>',
 	// Messages for Export RDF Special
     'exportrdf' => 'Экспорт страниц в RDF', //name of this special
-	'smw_exportrdf_docu' => '<p>Эта страница позволяет экспортировать части статьи в формате RDF. Наберите названия необходимых статей по одному на строку.</p>',
+	'smw_exportrdf_docu' => '<p>Эта страница позволяет экспортировать части статьи в формате RDF. Наберите заголовки необходимых статей по одному на строку.</p>',
 	'smw_exportrdf_recursive' => 'Рекурсивный экспорт всех связанных страниц. Результат этой операции может быть очень большим!',
 	'smw_exportrdf_backlinks' => 'Также экспортировать все страницы, которые ссылаются на экспортируемые страницы. Генерирует RDF с поддержкой полноценной навигации.',
-	'smw_exportrdf_lastdate' => 'Do not export pages that were not changed since the given point in time.', // TODO: translate
+	'smw_exportrdf_lastdate' => 'Не экспортировать страницы, которые не менялись с указанной даты.',
 	// Messages for Properties Special
-	'properties' => 'Properties', //TODO: translate
-	'smw_properties_docu' => 'The following properties are used in the wiki.', //TODO: translate
-	'smw_property_template' => '$1 of type $2 ($3)', // <propname> of type <type> (<count>) //TODO: translate
-	'smw_propertylackspage' => 'All properties should be described by a page!', //TODO: translate
-	'smw_propertylackstype' => 'No type was specified for this property (assuming type $1 for now).', //TODO: translate
-	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!', //TODO: translate
-	'smw_propertyspecial' => 'This is a special property with a reserved meaning in the wiki.', // TODO: translate
+	'properties' => 'Свойства',
+	'smw_properties_docu' => 'Следующие свойства используются на данном сайте.',
+	'smw_property_template' => '$1 имеет тип $2, количество использований ($3)', // <propname> of type <type> (<count>)
+	'smw_propertylackspage' => 'Каждое свойство должно иметь свою страницу описания!',
+	'smw_propertylackstype' => 'Данному свойству не сопоставлен тип данных (по умолчанию будет использоваться тип $1).',
+	'smw_propertyhardlyused' => 'Это свойство изначально предопределено для данного сайта!',
+	'smw_propertyspecial' => 'Специальное свойство, имеющее разерезвированный тип для данного сайта.',
 	// Messages for Unused Properties Special
-	'unusedproperties' => 'Unused Properties', //TODO: translate
-	'smw_unusedproperties_docu' => 'The following properties exist although no other page makes use of them.', //TODO: translate
-	'smw_unusedproperty_template' => '$1 of type $2', // <propname> of type <type> //TODO: translate
+	'unusedproperties' => 'Неиспользуемые свойства',
+	'smw_unusedproperties_docu' => 'Следующие свойства определены, но не используются ни в одной из статей.',
+	'smw_unusedproperty_template' => '$1 имеет тип $2', // <propname> of type <type>
 	// Messages for Wanted Properties Special
-	'wantedproperties' => 'Wanted Properties', //TODO: translate
-	'smw_wantedproperties_docu' => 'The following properties are used in the wiki but do not yet have a page for describing them.', //TODO: translate
-	'smw_wantedproperty_template' => '$1 ($2 uses)', // <propname> (<count> uses) //TODO: translate
-//// Note to translators:
-//// The following messages in comments were kept for reference to facilitate the translation of the property messages above.
-//// Delete them when no longer needed.
-// 	// Messages for Relations Special
-// 	'relations' => 'Отношения',
-// 	'smw_relations_docu' => 'Существуют следующие отношения.',
-// 	// Messages for WantedRelations Special
-// 	'wantedrelations' => 'Отношения без страниц',
-// 	'smw_wanted_relations' => 'Следующие отношения не имеют страниц с описанием, хотя и используются для описания других страниц.',
-// 	// Messages for Attributes Special
-// 	'attributes' => 'Атрибуты',
-// 	'smw_attributes_docu' => 'Существуют следующие атрибуты.',
-// 	'smw_attr_type_join' => ' с типом $1',
-// 	// Messages for Unused Relations Special
-// 	'unusedrelations' => 'Неиспользуемые отношения',
-// 	'smw_unusedrelations_docu' => 'Следующие отношения не используются.',
-// 	// Messages for Unused Attributes Special
-// 	'unusedattributes' => 'Неиспользуемые атрибуты',
-// 	'smw_unusedattributes_docu' => 'Следующие атрибуты не используются.',
+	'wantedproperties' => 'Неописанные свойства',
+	'smw_wantedproperties_docu' => 'Следующие свойства используются в статьях данного сайта, но не имеют соответствующих им страниц описаний.',
+	'smw_wantedproperty_template' => '$1 ($2 использований)', // <propname> (<count> uses)
 	// Messages for the refresh button
-	'tooltip-purge' => 'Нажмите здесь для обновления всех шаблонов на этой странице',
+	'tooltip-purge' => 'Нажмите здесь для обновления всех запросов и шаблонов на этой странице',
 	'purge' => 'Обновить',
 	// Messages for Import Ontology Special
 	'ontologyimport' => 'Импорт онтологии',
 	'smw_oi_docu' => 'Это специальная страница для импорта онтологий. Формат онтологии приведен на <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">странице справки</a>.',
 	'smw_oi_action' => 'Импорт',
-	'smw_oi_return' => 'Вернутся к <a href="$1">Импорту онтологий</a>.',
+	'smw_oi_return' => 'Вернуться к <a href="$1">Импорту онтологий</a>.',
 	'smw_oi_noontology' => 'Онтология не задана или не может быть загружена.',
-	'smw_oi_select' => 'Пожалуйста, выберите утверждения для импорта и нажмите кнопку импорта.',
+	'smw_oi_select' => 'Пожалуйста, выберите утверждения для импорта и нажмите кнопку Импорт.',
 	'smw_oi_textforall' => 'Текст заголовка для импорта (может быть пустым):',
 	'smw_oi_selectall' => 'Включите/отключите все утверждения',
 	'smw_oi_statementsabout' => 'Утверждения о',
@@ -147,17 +129,17 @@ protected $m_UserMessages = array(
 	'smw_oi_importedfromontology' => 'Импортировать из онтологии',
 	// Messages for (data)Types Special
 	'types' => 'Типы',
-	'smw_types_docu' => 'Список поддерживаемых типов атрибутов. Каждый тип имеет страницу с информацией.',
-	'smw_typeunits' => 'Units of measurement of type “$1”: $2', // TODO: Translate
+	'smw_types_docu' => 'Список поддерживаемых типов свойств. Каждый тип имеет страницу, на которую можно поместить его расширенное описание.',
+	'smw_typeunits' => 'Единицы измерения типа “$1”: $2',
 	/*Messages for SemanticStatistics Special*/
-	'semanticstatistics' => 'Semantic Statistics', // TODO: translate
-	'smw_semstats_text' => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.', // TODO: translate
+	'semanticstatistics' => 'Семантическая статистика',
+	'smw_semstats_text' => 'Данный сайт содержит <b>$1</b> значений свойств, общее количество различных <a href="$3">свойств</a> равно <b>$2</b>. <b>$4</b> свойств имеют страницу описания. Определенный тип данных задан на соответствующей странице описания для <b>$5</b> из общего числа свойств. Некоторые из существующих свойств могут <a href="$6">не использоваться</a>. Свойства, для которых не созданы страницы описания, могут быть найдены по специальной ссылке <a href="$7">список неописанных свойств</a>.',
 	/*Messages for Flawed Attributes Special --disabled--*/
-	'flawedattributes' => 'Flawed Properties', // TODO: translate
-	'smw_fattributes' => 'The pages listed below have an incorrectly defined property. The number of incorrect properties is given in the brackets.', // TODO: translate
+	'flawedattributes' => 'Поврежденные свойства',
+	'smw_fattributes' => 'Статьи, указанные ниже, содержат неправильно определенные свойства. Количество неверных свойств указано в скобках.',
 	// Name of the URI Resolver Special (no content)
-	'uriresolver' => 'URI Resolver', // TODO translate
-	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>', // TODO translate
+	'uriresolver' => 'Преобразователь URI',
+	'smw_uri_doc' => '<p>Преобразователь URI осуществляет <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C поиск http тэгов с использованием Range-14</a>. Данная возможность упрощает поиск семантической информации.</p>',
 	// Messages for ask Special
 	'ask' => 'Семантический поиск',
 	'smw_ask_docu' => '<p>Наберите запрос в форме поиска. Формат запроса приведен на <a href="$1">странице справки</a>.</p>',
@@ -167,25 +149,25 @@ protected $m_UserMessages = array(
 	'smw_ask_descorder' => 'По убыванию',
 	'smw_ask_submit' => 'Найти',
 	// Messages for the search by property special
-	'searchbyproperty' => 'Искать по атрибуту',
-	'smw_sbv_docu' => '<p>Искать все страницы, которые содержат указанный атрибут и значение.</p>',
-	'smw_sbv_noproperty' => '<p>Укажите атрибут.</p>',
-	'smw_sbv_novalue' => '<p>Укажите значение или просмотрите все значения атрибута $1.</p>',
-	'smw_sbv_displayresult' => 'Список всех страниц, которые содержат атрибут $1 со значением $2.',
-	'smw_sbv_property' => 'Атрибут',
+	'searchbyproperty' => 'Искать по свойству',
+	'smw_sbv_docu' => '<p>Искать все страницы, которые содержат указаннок свойство и значение.</p>',
+	'smw_sbv_noproperty' => '<p>Укажите свойство.</p>',
+	'smw_sbv_novalue' => '<p>Укажите значение или просмотрите все значения свойства $1.</p>',
+	'smw_sbv_displayresult' => 'Список всех страниц, которые содержат свойство $1 со значением $2.',
+	'smw_sbv_property' => 'Свойство',
 	'smw_sbv_value' => 'значение',
 	'smw_sbv_submit' => 'Найти',
 	// Messages for the browsing system
-	'browse' => 'Browse wiki', //TODO: translate
-	'smw_browse_article' => 'Enter the name of the page to start browsing from.', //TODO: translate
-	'smw_browse_go' => 'Go', //TODO: translate
-	'smw_browse_more' => '&hellip;', //TODO: translate
+	'browse' => 'Просмотреть сайт',
+	'smw_browse_article' => 'Введите имя страницы для начала просмотра.',
+	'smw_browse_go' => 'Перейти',
+	'smw_browse_more' => '&hellip;',
 	// Messages for the page property special
-	'pageproperty' => 'Page property search', // TODO: translate
-	'smw_pp_docu' => 'Search for all the fillers of a property on a given page. Please enter both a page and a property.', // TODO: translate
-	'smw_pp_from' => 'From page', // TODO: translate
-	'smw_pp_type' => 'Property', // TODO: translate
-	'smw_pp_submit' => 'Find results', // TODO: translate
+	'pageproperty' => 'Страница поиска свойств',
+	'smw_pp_docu' => 'Искать все значения свойства на указанной странице. Пожалуйста введите имя страницы и имя свойства.',
+	'smw_pp_from' => 'Со страницы',
+	'smw_pp_type' => 'Свойство',
+	'smw_pp_submit' => 'Поиск результатов',
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Предыдущая',
 	'smw_result_next' => 'Следующая',
@@ -194,11 +176,11 @@ protected $m_UserMessages = array(
 );
 
 protected $m_DatatypeLabels = array(
-	'_wpg' => 'Page', // name of page datatype  //TODO translate
+	'_wpg' => 'Страница', // name of page datatype
 	'_str' => 'Строка',  // name of the string type
-	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
+	'_txt' => 'Текст',  // name of the text type (very long strings)
 	//'_boo' => 'Булево',  // name of the boolean type
-	'_num' => 'Number', // name for the datatype of numbers //TODO: translate
+	'_num' => 'Число', // name for the datatype of numbers
 	'_geo' => 'Географическая координата', // name of the geocoord type
 	'_tem' => 'Температура',  // name of the temperature type
 	'_dat' => 'Дата',  // name of the datetime (calendar) type
@@ -211,6 +193,7 @@ protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
 	'Целое'                 => '_num',
 	'Десятичное'            => '_num',
+	'Плавающее'             => '_num',
 	'Перечисление'          => '_str',
 	// support English aliases:
 	'Page'                  => '_wpg',
@@ -228,12 +211,12 @@ protected $m_SpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'Имеет тип',
 	SMW_SP_HAS_URI   => 'Эквивалентный URI',
-	SMW_SP_SUBPROPERTY_OF => 'Subproperty of', // TODO: translate
-	SMW_SP_DISPLAY_UNITS => 'Отображаемая единица', // TODO: should be plural now ("units"), singluar stays alias
+	SMW_SP_SUBPROPERTY_OF => 'Подчиненное свойству',
+	SMW_SP_DISPLAY_UNITS => 'Отображаемые единицы',
 	SMW_SP_IMPORTED_FROM => 'Импортировано из',
 	SMW_SP_CONVERSION_FACTOR => 'Относится к',
 	SMW_SP_SERVICE_LINK => 'Предоставляет сервис',
-	SMW_SP_POSSIBLE_VALUE => 'Возможные значения' // TODO: check translation, should be "Allowed value" (singular)
+	SMW_SP_POSSIBLE_VALUE => 'Допустимое значение'
 );
 
 protected $m_SpecialPropertyAliases = array(
@@ -253,8 +236,8 @@ protected $m_SpecialPropertyAliases = array(
 protected $m_Namespaces = array(
 	SMW_NS_RELATION       => 'Отношение',
 	SMW_NS_RELATION_TALK  => 'Отношение_дискуссия',
-	SMW_NS_PROPERTY       => 'Атрибут',
-	SMW_NS_PROPERTY_TALK  => 'Атрибут_дискуссия',
+	SMW_NS_PROPERTY       => 'Свойство',
+	SMW_NS_PROPERTY_TALK  => 'Свойство_дискуссия',
 	SMW_NS_TYPE           => 'Тип',
 	SMW_NS_TYPE_TALK      => 'Тип_дискуссия'
 );
