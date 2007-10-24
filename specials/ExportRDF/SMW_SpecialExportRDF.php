@@ -282,7 +282,7 @@ class ExportRDF {
 	private $global_namespaces;
 	
 	/**
-	 * Array of references to the SMW schema. Will be added at the end of the
+	 * Array of references to the SWIVT schema. Will be added at the end of the
 	 * export.
 	 */
 	private $schema_refs;
@@ -551,8 +551,7 @@ class ExportRDF {
 			"\t<!ENTITY rdf 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>\n" .
 			"\t<!ENTITY rdfs 'http://www.w3.org/2000/01/rdf-schema#'>\n" .
 			"\t<!ENTITY owl 'http://www.w3.org/2002/07/owl#'>\n" .
-			"\t<!ENTITY smw 'http://smw.ontoware.org/2005/smw#'>\n" .
-			"\t<!ENTITY smwdt 'http://smw.ontoware.org/2005/smw-datatype#'>\n" .
+			"\t<!ENTITY swivt 'http://semantic-mediawiki.org/swivt/1.0#'>\n" .
 			// A note on "wiki": this namespace is crucial as a fallback when it would be illegal to start e.g. with a number. In this case, one can always use wiki:... followed by "_" and possibly some namespace, since _ is legal as a first character.
 			"\t<!ENTITY wiki '" . $this->wiki_xmlns_xml .  "'>\n" .
 			"\t<!ENTITY property '" . $this->wiki_xmlns_xml .
@@ -563,20 +562,21 @@ class ExportRDF {
 			"\txmlns:rdf=\"&rdf;\"\n" .
 			"\txmlns:rdfs=\"&rdfs;\"\n" .
 			"\txmlns:owl =\"&owl;\"\n" .
-			"\txmlns:smw=\"&smw;\"\n" .
+			"\txmlns:swivt=\"&swivt;\"\n" .
 			"\txmlns:wiki=\"&wiki;\"\n" .
 			"\txmlns:property=\"&property;\"";
-		$this->global_namespaces = array('rdf'=>true, 'rdfs'=>true, 'owl'=>true, 'smw'=>true, 'wiki'=>true, 'property'=>true);
+		$this->global_namespaces = array('rdf'=>true, 'rdfs'=>true, 'owl'=>true, 'swivt'=>true, 'wiki'=>true, 'property'=>true);
 
 		$this->post_ns_buffer .=
 			">\n\t<!-- Ontology header -->\n" .
 			"\t<owl:Ontology rdf:about=\"\">\n" .
-			"\t\t<smw:exportDate rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">" . date(DATE_W3C) . "</smw:exportDate>\n" .
+			"\t\t<swivt:creationDate rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">" . date(DATE_W3C) . "</swivt:creationDate>\n" .
+			"\t\t<owl:imports rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0\" />\n" .
 			"\t</owl:Ontology>\n" .
 			"\t<!-- exported page data -->\n";
-		$this->addSchemaRef( "hasArticle", "owl:AnnotationProperty" );
-		$this->addSchemaRef( "exportDate", "owl:AnnotationProperty" );
-		$this->addSchemaRef( "Thing", "owl:Class" );
+		$this->addSchemaRef( "page", "owl:AnnotationProperty" );
+		$this->addSchemaRef( "creationDate", "owl:AnnotationProperty" );
+		$this->addSchemaRef( "Subject", "owl:Class" );
 	}
 
 	/**
@@ -588,20 +588,20 @@ class ExportRDF {
 		foreach (array_keys($this->schema_refs) as $name) {
 			$type = $this->schema_refs[$name];			
 			$this->post_ns_buffer .=
-				"\t<$type rdf:about=\"&smw;$name\">\n" .
-				"\t\t<rdfs:isDefinedBy rdf:resource=\"http://smw.ontoware.org/2005/smw\"/>\n" .
+				"\t<$type rdf:about=\"&swivt;$name\">\n" .
+				"\t\t<rdfs:isDefinedBy rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0\"/>\n" .
 				"\t</$type>\n";				
 		}
-		$this->post_ns_buffer .= "\t<!-- Created with Semantic MediaWiki, http://ontoworld.org/wiki/SMW -->\n";
+		$this->post_ns_buffer .= "\t<!-- Created with Semantic MediaWiki, http://semantic-mediawiki.org -->\n";
 		$this->post_ns_buffer .= '</rdf:RDF>';
 	}
 	
 	/**
-	 * Adds a reference to the SMW schema. This will make sure that at the end of the page,
+	 * Adds a reference to the SWIVT schema. This will make sure that at the end of the page,
 	 * all required schema references will be defined and point to the appropriate ontology.
 	 *
 	 * @param string $name The fragmend identifier of the entity to be referenced.
-	 *                     The SMW namespace is assumed. 
+	 *                     The SWIVT namespace is added. 
 	 * @param string $type The type of the referenced identifier, i.e. is it an annotation
 	 *                     property, an object property, a class, etc. Should be given as a QName
 	 *                     (i.e. in the form "owl:Class", etc.)
@@ -649,12 +649,7 @@ class ExportRDF {
 		switch ($et->title_namespace) {
 			case SMW_NS_PROPERTY:
 				$equality_rel = "owl:equivalentProperty";
-				global $smwgExportSemanticRelationHierarchy;
-				if ($smwgExportSemanticRelationHierarchy) {
-					$subprop_rel = "rdfs:subPropertyOf";
-				} else {
-					$subprop_rel = "smw:subPropertyOf";
-				}
+				$subprop_rel = "rdfs:subPropertyOf";
 
 				switch ($et->has_type) {
 					case '': case '_wpg': case '_uri': case '_ema': case '__nry':
@@ -677,7 +672,7 @@ class ExportRDF {
 				$equality_rel = "owl:equivalentClass";
 				break;
 			default:
-				$type = 'smw:Thing';
+				$type = 'swivt:Subject';
 				$category_rel = "rdf:type";
 				$equality_rel = "owl:sameAs";
 				break;
@@ -691,23 +686,23 @@ class ExportRDF {
 		}
 		$this->post_ns_buffer .= ">\n" .
 		      "\t\t<rdfs:label>" . $et->label . "</rdfs:label>\n" .
-		      "\t\t<smw:hasArticle rdf:resource=\"&wikiurl;" .
+		      "\t\t<swivt:page rdf:resource=\"&wikiurl;" .
 		              $et->title_prefurl . "\"/>\n" .
 		      "\t\t<rdfs:isDefinedBy rdf:resource=\"" .
 		              $this->special_url . '/' . $et->title_prefurl . "\"/>\n";
 		// If the property is modified by a unit, export the modifier
 		// and the base relation explicitly
 		if ( $et->has_type && $et->modifier ) {
-			$this->post_ns_buffer .= "\t\t<smw:hasModifier rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">" .
+			$this->post_ns_buffer .= "\t\t<swivt:modifier rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">" .
 				smwfXMLContentEncode($et->modifier) .
-				"</smw:hasModifier>\n";
+				"</swivt:modifier>\n";
 			$baseprop = $this->getExportTitle($et->title_text, SMW_NS_PROPERTY);
-			$this->post_ns_buffer .= "\t\t<smw:baseProperty rdf:resource=\"" . $baseprop->long_uri . "\"/>\n";
+			$this->post_ns_buffer .= "\t\t<swivt:baseProperty rdf:resource=\"" . $baseprop->long_uri . "\"/>\n";
 			if (!array_key_exists($baseprop->hashkey, $this->element_queue)) {
 				$this->element_queue[$baseprop->hashkey] = $baseprop;
 			}
 			$this->addSchemaRef( "baseProperty", "owl:AnnotationProperty" );
-			$this->addSchemaRef( "hasModifier", "owl:AnnotationProperty" );
+			$this->addSchemaRef( "modifier", "owl:AnnotationProperty" );
 		}
 
 		if ( ($fullexport) && ($et->exists) ) {
@@ -721,10 +716,10 @@ class ExportRDF {
 			}
 
 			// TODO: this is not convincing, esp. now that we have custom types
-			if (isset($datatype_handler)) {
-				$this->post_ns_buffer .= "\t\t<smw:hasType " . 'rdf:resource="&smwdt;' . $datatype_handler->getID() . "\"/>\n";
-				$this->addSchemaRef( "hasType", "owl:AnnotationProperty" );
-			}
+//			if (isset($datatype_handler)) {
+//				$this->post_ns_buffer .= "\t\t<swivt:type " . 'rdf:resource="&??;' . $datatype_handler->getID() . "\"/>\n";
+//				$this->addSchemaRef( "type", "owl:AnnotationProperty" );
+//			}
 
 			// add statements about equivalence to (external) URIs
 			// FIXME: temporarily disabled
@@ -753,8 +748,6 @@ class ExportRDF {
  					if (!array_key_exists($supprop->hashkey, $this->element_queue)) {
  							$this->element_queue[$supprop->hashkey] = $supprop;
  					}
- 					if (!$smwgExportSemanticRelationHierarchy)
- 						$this->addSchemaRef( "subPropertyOf", "owl:AnnotationProperty");
  				}
  			}
 

@@ -358,7 +358,7 @@ class SMWNAryValue extends SMWDataValue {
 	 */
 	public function exportToRDF( $QName, ExportRDF $exporter ) {
 		$rdf = "\t\t<$QName>\n";
-		$rdf.= "\t\t\t<smw:NAry>\n";
+		$rdf.= "\t\t\t<swivt:Container>\n";
 		$count = 0;
 		foreach ($this->m_values as $value) {
 			$count++;
@@ -366,17 +366,17 @@ class SMWNAryValue extends SMWDataValue {
 				continue;
 			}
 			if (($value->getTypeID() == '_wpg') || ($value->getTypeID() == '_uri') || ($value->getTypeID() == '_ema')) {
-				$element = "nary" . $count . "o"; 
-				$rdf .= "\t\t" . $value->exportToRDF( "smw:$element", $exporter );
+				$element = "object" . $count; 
+				$rdf .= "\t\t" . $value->exportToRDF( "swivt:$element", $exporter );
 				$exporter->addSchemaRef( $element, "owl:ObjectProperty" );
 			} else {
-				$element = "nary" . $count; 
-				$rdf .= "\t\t" . $value->exportToRDF( "smw:$element", $exporter );
+				$element = "value" . $count; 
+				$rdf .= "\t\t" . $value->exportToRDF( "swivt:$element", $exporter );
 				$exporter->addSchemaRef( $element, "owl:DatatypeProperty" );
 			}
 		}
-		$rdf .= "\t\t\t</smw:NAry>\n";
-		$exporter->addSchemaRef( "NAry", "owl:Class" );
+		$rdf .= "\t\t\t</swivt:Container>\n";
+		$exporter->addSchemaRef( "Container", "owl:Class" );
 		$rdf .= "\t\t</$QName>\n";
 		return $rdf;
 	}

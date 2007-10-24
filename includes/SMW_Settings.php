@@ -102,9 +102,6 @@ $smwgQDefaultLinking = 'subject'; // Default linking behaviour. Can be one of "n
 ##
 $smwgAllowRecursiveExport = false; // can normal users request recursive export?
 $smwgExportBacklinks = true; // should backlinks be included by default?
-$smwgExportSemanticRelationHierarchy = false; // should subrelations be exported with or wo semantics?
-// as long as the underlying implementation does not support the semantics the export
-// should reflect the same.
 $smwgOWLFullExport = false; // decides, if the RDF export will export, by default,
 // OWL Full or rather nice OWL DL. Can be overriden in the RDF export class.
 // global $smwgNamespace;                     // The Namespace of exported URIs.
