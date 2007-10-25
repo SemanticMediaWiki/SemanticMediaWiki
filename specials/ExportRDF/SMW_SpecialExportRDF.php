@@ -372,6 +372,9 @@ class ExportRDF {
 	 * properties are exported as well. Enables "browsable RDF."
 	 */
 	public function printPages($pages, $recursion = 1, $backlinks = true) {
+		
+		wfProfileIn("RDF::PrintPages");
+		
 		$this->store = &smwfGetStore();
 		$this->pre_ns_buffer = '';
 		$this->post_ns_buffer = '';
@@ -381,6 +384,7 @@ class ExportRDF {
 		$this->printHeader(); // also inits global namespaces
 		$linkCache =& LinkCache::singleton();
 
+		wfProfileIn("RDF::PrintPages::PrepareQueue");
 		// transform pages into queued export titles
 		$cur_queue = array();
 		foreach ($pages as $page) {
@@ -389,12 +393,15 @@ class ExportRDF {
 			$et = new SMWExportTitle($title, $this);
 			$cur_queue[$title->getPrefixedURL() . ' '] = $et; // " " is the modifier separator
 		}
+		wfProfileOut("RDF::PrintPages::PrepareQueue");
 
 		while (count($cur_queue) > 0) {
 			// first, print all selected pages
 			foreach ( $cur_queue as $et) {
+				wfProfileIn("RDF::PrintPages::PrintOne");
 				$this->printTriples($et);
 				$this->markAsDone($et);
+				wfProfileOut("RDF::PrintPages::PrintOne");
 
 				// prepare array for next iteration
 				$cur_queue = array();
@@ -404,6 +411,7 @@ class ExportRDF {
 				}
 				// possibly add backlinks
 				if ($backlinks === true) {
+					wfProfileIn("RDF::PrintPages::GetBacklinks");
 					$inRels = $this->store->getInProperties( $et->value );
 					foreach ($inRels as $inRel) {
 						$inSubs = $this->store->getPropertySubjects( $inRel, $et->value );
@@ -424,12 +432,14 @@ class ExportRDF {
 						}
 					}
 					if ( 0 == $recursion ) $backlinks = false; // do not recurse through backlinks either
+					wfProfileOut("RDF::PrintPages::GetBacklinks");
 				}
 				if ($this->delay_flush > 0) $this->delay_flush--;
 			}
 			$linkCache->clear();
 		}
 
+		wfProfileIn("RDF::PrintPages::Auxilliary");
 		// if pages are not processed recursively, print mentioned declarations
 		if (!empty($this->element_queue)) {
 			if ( '' != $this->pre_ns_buffer ) {
@@ -442,16 +452,19 @@ class ExportRDF {
 				$this->printTriples($et,false);
 			}
 		}
+		wfProfileOut("RDF::PrintPages::Auxilliary");
 
 		$this->printFooter();
 		$this->flushBuffers(true);
+
+		wfProfileOut("RDF::PrintPages");
 	}
 
 	/**
 	 * This function prints RDF for *all* pages within the wiki, and for all
 	 * elements that are referred to in the exported RDF.
 	 */
-	public function printAll($outfile, $ns_restriction = false) {
+	public function printAll($outfile, $ns_restriction = false, $delay, $delayeach) {
 		global $smwgNamespacesWithSemanticLinks;
 		$linkCache =& LinkCache::singleton();
 
@@ -480,6 +493,7 @@ class ExportRDF {
 
 		$a_count = 0; $d_count = 0; //DEBUG
 
+		$delaycount = $delayeach;
 		for ($id = $start; $id <= $end; $id++) {
 			$title = Title::newFromID($id);
 			if ( ($title === NULL) || !smwfIsSemanticsProcessed($title->getNamespace()) ) continue;
@@ -509,6 +523,11 @@ class ExportRDF {
 						                                   // want to export now is a potential memory leak
 					}
 				}
+				// sleep each $delaycount for $delay ms to be nice to the server
+				if (($delaycount-- < 0) && ($delayeach != 0)) {
+					usleep($delay);
+					$delaycount = $delayeach;
+				} 
 			}
 			if ($outfile !== false) { // flush buffer
 				fwrite($file, $this->post_ns_buffer);
