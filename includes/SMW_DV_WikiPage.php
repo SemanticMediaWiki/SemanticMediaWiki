@@ -24,6 +24,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	public function parseUserValue($value) {
 		if ($value != '') {
 			$this->m_value = $value;
+			$this->m_title = NULL;
 			if ($this->getTitle() !== NULL) {
 				$this->m_textform = $this->m_title->getText();
 				$this->m_dbkeyform = $this->m_title->getDBkey();
@@ -35,6 +36,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				}
 			} else {
 				$this->addError(wfMsgForContent('smw_notitle', $value));
+				# TODO: Escape the text so users can see any punctuation problems (bug 11666).
 			}
 		} else {
 			$this->addError(wfMsgForContent('smw_notitle', $value));
