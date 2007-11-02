@@ -854,7 +854,7 @@ class SMWSQLStore extends SMWStore {
 		wfProfileIn("SMWSQLStore::getPropertiesSpecial (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$options = ' ORDER BY title';
-		if ($requestoptions->limit >= 0) {
+		if ($requestoptions->limit > 0) {
 			$options .= ' LIMIT ' . $requestoptions->limit;
 		}
 		if ($requestoptions->offset > 0) {
@@ -884,7 +884,7 @@ class SMWSQLStore extends SMWStore {
 		/// FIXME filter out the builtin properties!
 		$db =& wfGetDB( DB_SLAVE );
 		$options = ' ORDER BY page_title';
-		if ($requestoptions->limit >= 0) {
+		if ($requestoptions->limit > 0) {
 			$options .= ' LIMIT ' . $requestoptions->limit;
 		}
 		if ($requestoptions->offset > 0) {
@@ -913,7 +913,7 @@ class SMWSQLStore extends SMWStore {
 		wfProfileIn("SMWSQLStore::getWantedPropertiesSpecial (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$options = ' ORDER BY count DESC';
-		if ($requestoptions->limit >= 0) {
+		if ($requestoptions->limit > 0) {
 			$options .= ' LIMIT ' . $requestoptions->limit;
 		}
 		if ($requestoptions->offset > 0) {
@@ -1086,7 +1086,7 @@ class SMWSQLStore extends SMWStore {
 	protected function getSQLOptions($requestoptions, $valuecol = NULL) {
 		$sql_options = array();
 		if ($requestoptions !== NULL) {
-			if ($requestoptions->limit >= 0) {
+			if ($requestoptions->limit > 0) {
 				$sql_options['LIMIT'] = $requestoptions->limit;
 			}
 			if ($requestoptions->offset > 0) {
