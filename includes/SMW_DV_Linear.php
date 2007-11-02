@@ -160,8 +160,8 @@ class SMWLinearValue extends SMWNumberValue {
 		if ($typetitle === NULL) return;
 		$factors = smwfGetStore()->getSpecialValues($typetitle, SMW_SP_CONVERSION_FACTOR);
 		if (count($factors)==0) { // no custom type
-			// delete all previous errors, this is our thing
-			// TODO: probably we should check for this earlier, but avoid unnecessary DB requests ...
+			// delete all previous errors, this is our real problem
+			/// TODO: probably we should check for this earlier, but avoid unnecessary DB requests ...
 			$this->m_errors = array(wfMsgForContent('smw_unknowntype', SMWDataValueFactory::findTypeLabel($this->getTypeID())));
 			return;
 		}
@@ -177,9 +177,11 @@ class SMWLinearValue extends SMWNumberValue {
 				$unit = $this->normalizeUnit($unit);
 				if ($first) {
 					$unitid = $unit;
-					$this->m_unitfactors[$unit] = $numdv->getNumericValue();
-					if ($numdv->getNumericValue() == 1) {
+					if ( $numdv->getNumericValue() == 1 ) { // add main unit to front of array (displyed first)
 						$this->m_mainunit = $unit;
+						$this->m_unitfactors = array( $unit => $numdv->getNumericValue() ) + $this->m_unitfactors;
+					} else { // non-main units are not ordered -- they might come out in any way the DB likes (can be modified via display units)
+						$this->m_unitfactors[$unit] = $numdv->getNumericValue();
 					}
 					$first = false;
 				}
