@@ -13,7 +13,7 @@ class SMWLinearValue extends SMWNumberValue {
 
 	protected $m_unitfactors = false; // array mapping canonical unit strings to conversion factors
 	protected $m_unitids = false; // array mapping (normalised) unit strings to canonical unit strings (ids)
-	protected $m_displayunits = false; // array of (canonical) units that should be displayed
+	protected $m_displayunits = false; // array of units that should be displayed
 	protected $m_mainunit = false; // main unit (recognised by the conversion factor 1)
 
 	/**
@@ -73,8 +73,8 @@ class SMWLinearValue extends SMWNumberValue {
 			}
 		} else {
 			foreach ($this->m_displayunits as $unit) {
-				if (array_key_exists($unit, $this->m_unitfactors)) {
-					$this->m_unitvalues[$unit] = $this->m_value*$this->m_unitfactors[$unit];
+				if (array_key_exists($this->m_unitids[$unit], $this->m_unitfactors)) {
+					$this->m_unitvalues[$unit] = $this->m_value*$this->m_unitfactors[$this->m_unitids[$unit]];
 				}
 			}
 			if (count($this->m_unitvalues) == 0) { // none of the desired units matches
@@ -108,14 +108,11 @@ class SMWLinearValue extends SMWNumberValue {
 			}
 			if ($value === false) { // next look for the first given display unit
 				$this->initDisplayData();
-				foreach ($this->m_displayunits as $unit) {
-					if (array_key_exists($unit, $this->m_unitids)) { // find id for first display unit
-						$unit = $this->m_unitids[$unit];
-						if (array_key_exists($unit, $this->m_unitfactors)) { // find factor for this id
-							$value = $this->m_value * $this->m_unitfactors[$unit];
-							$printunit = $unit;
-							break;
-						}
+				if (count($this->m_displayunits) > 0) {
+					$unit = $this->m_unitids[$this->m_displayunits[0]]; // was already verified to exist before
+					if (array_key_exists($unit, $this->m_unitfactors)) { // find factor for this id
+						$value = $this->m_value * $this->m_unitfactors[$unit];
+						$printunit = $this->m_displayunits[0];
 					}
 				}
 			}
@@ -203,14 +200,13 @@ class SMWLinearValue extends SMWNumberValue {
 		if ($proptitle === NULL) return;
 		$values = smwfGetStore()->getSpecialValues($proptitle, SMW_SP_DISPLAY_UNITS);
 		$units = array();
-		foreach ($values as $value) { // Join all if many annotations exist. Discouraged but possible.
+		foreach ($values as $value) { // Join all if many annotations exist. Discouraged (random order) but possible.
 			$units = $units + preg_split('/\s*,\s*/',$value->getXSDValue());
 		}
 		foreach ($units as $unit) {
 			$unit = $this->normalizeUnit($unit);
 			if (array_key_exists($unit, $this->m_unitids)) {
-				$unit = $this->m_unitids[$unit];
-				$this->m_displayunits[$unit] = $unit; // avoid duplicates
+				$this->m_displayunits[] = $unit; // avoid duplicates
 			} // note: we ignore unsuppported units, as they are printed anyway for lack of alternatives
 		}
 	}
