@@ -22,6 +22,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	private $m_title = NULL;
 
 	public function parseUserValue($value) {
+		$value = ltrim(rtrim($value,' ]'),' ['); // support inputs like " [[Test]] "
 		if ($value != '') {
 			$this->m_value = $value;
 			$this->m_title = NULL;
@@ -121,7 +122,11 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	public function getHash() {
-		return $this->m_prefixedtext;
+		if ($this->isValid()) { // assume that XSD value + unit say all
+			return $this->m_prefixedtext;
+		} else {
+			return implode("\t", $this->m_errors);
+		}
 	}
 
 	/**
