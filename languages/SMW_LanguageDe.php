@@ -60,8 +60,8 @@ protected $m_ContentMessages = array(
 	// Messages for geo coordinates parsing
 	'smw_lonely_unit' => 'Keine Zahl vor dem “$1”-Zeichen gefunden.', // $1 is something like ° TODO Translate
 	'smw_bad_latlong' => 'Länge und Breite dürfen nur einmal und mit gültigen Werten angegeben werden.', // TODO Translate
-	'smw_label_latitude' => 'Geographische Breite:',
-	'smw_label_longitude' => 'Geographische Länge:',
+	'smw_label_latitude' => 'Breite:',
+	'smw_label_longitude' => 'Länge:',
 	'smw_abb_north' => 'N',
 	'smw_abb_east' => 'O',
 	'smw_abb_south' => 'S',
