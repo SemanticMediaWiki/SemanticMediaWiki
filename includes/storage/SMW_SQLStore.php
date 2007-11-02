@@ -52,13 +52,19 @@ class SMWSQLStore extends SMWStore {
 
 	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore::getSpecialValues-$specialprop (SMW)");
-		$db =& wfGetDB( DB_SLAVE ); // TODO: Is '=&' needed in PHP5?
-
 		// NOTE: this method currently supports no ordering or boundary. This is probably best anyway ...
+		if ($specialprop !== SMW_SP_SUBPROPERTY_OF) {
+			$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
+			if ($subjectid <= 0) {
+				wfProfileOut("SMWSQLStore::getSpecialValues-$specialprop (SMW)");
+				return array();
+			}
+		}
 
+		$db =& wfGetDB( DB_SLAVE ); // TODO: Is '=&' needed in PHP5?
 		$result = array();
 		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
-			$sql = 'cl_from=' . $db->addQuotes($subject->getArticleID());
+			$sql = 'cl_from=' . $db->addQuotes($subjectid);
 			$res = $db->select( 'categorylinks',
 								'DISTINCT cl_to',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
@@ -71,7 +77,7 @@ class SMWSQLStore extends SMWStore {
 			}
 			$db->freeResult($res);
 		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
-			$sql = 'rd_from=' . $db->addQuotes($subject->getArticleID());
+			$sql = 'rd_from=' . $db->addQuotes($subjectid);
 			$res = $db->select( 'redirect',
 								'rd_namespace,rd_title',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
@@ -91,7 +97,7 @@ class SMWSQLStore extends SMWStore {
 			}
 			$db->freeResult($res);
 		} else { // "normal" special property
-			$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+			$sql = 'subject_id=' . $db->addQuotes($subjectid) .
 				'AND property_id=' . $db->addQuotes($specialprop);
 			$res = $db->select( 'smw_specialprops',
 								'value_string',
@@ -194,15 +200,20 @@ class SMWSQLStore extends SMWStore {
 
 	function getPropertyValues(Title $subject, Title $property, $requestoptions = NULL, $outputformat = '') {
 		wfProfileIn("SMWSQLStore::getPropertyValues (SMW)");
+		$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
+		if ($subjectid <= 0) {
+			wfProfileOut("SMWSQLStore::getPropertyValues (SMW)");
+			return array();
+		}
+
 		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
-
 		$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
 		switch ($id) {
 			case '_txt':
 				$res = $db->select( $db->tableName('smw_longstrings'),
 									'value_blob',
-									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+									'subject_id=' . $db->addQuotes($subjectid) .
 									' AND attribute_title=' . $db->addQuotes($property->getDBkey()),
 									'SMW::getPropertyValues', $this->getSQLOptions($requestoptions) );
 				while($row = $db->fetchObject($res)) {
@@ -216,7 +227,7 @@ class SMWSQLStore extends SMWStore {
 			case '_wpg':
 				$res = $db->select( $db->tableName('smw_relations'),
 									'object_title, object_namespace, object_id',
-									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+									'subject_id=' . $db->addQuotes($subjectid) .
 									' AND relation_title=' . $db->addQuotes($property->getDBkey()) .
 									$this->getSQLConditions($requestoptions,'object_title','object_title'),
 									'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,'object_title') );
@@ -233,7 +244,7 @@ class SMWSQLStore extends SMWStore {
 				$subtypes = $type->getTypeValues();
 				$res = $db->select( $db->tableName('smw_nary'),
 									'nary_key',
-									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+									'subject_id=' . $db->addQuotes($subjectid) .
 									' AND attribute_title=' . $db->addQuotes($property->getDBkey()),
 									'SMW::getPropertyValues', $this->getSQLOptions($requestoptions) );
 				///TODO: presumably slow. Try to do less SQL queries by making a join with smw_nary
@@ -244,7 +255,7 @@ class SMWSQLStore extends SMWStore {
 					}
 					$res2 = $db->select( $db->tableName('smw_nary_attributes'),
 									'nary_pos, value_unit, value_xsd',
-									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+									'subject_id=' . $db->addQuotes($subjectid) .
 									' AND nary_key=' . $db->addQuotes($row->nary_key),
 									'SMW::getPropertyValues');
 					while($row2 = $db->fetchObject($res2)) {
@@ -257,7 +268,7 @@ class SMWSQLStore extends SMWStore {
 					$db->freeResult($res2);
 					$res2 = $db->select( $db->tableName('smw_nary_longstrings'),
 									'nary_pos, value_blob',
-									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+									'subject_id=' . $db->addQuotes($subjectid) .
 									' AND nary_key=' . $db->addQuotes($row->nary_key),
 									'SMW::getPropertyValues');
 					while($row2 = $db->fetchObject($res2)) {
@@ -270,7 +281,7 @@ class SMWSQLStore extends SMWStore {
 					$db->freeResult($res2);
 					$res2 = $db->select( $db->tableName('smw_nary_relations'),
 									'nary_pos, object_title, object_namespace, object_id',
-									'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+									'subject_id=' . $db->addQuotes($subjectid) .
 									' AND nary_key=' . $db->addQuotes($row->nary_key),
 									'SMW::getPropertyValues');
 					while($row2 = $db->fetchObject($res2)) {
@@ -296,7 +307,7 @@ class SMWSQLStore extends SMWStore {
 				} else {
 					$value_column = 'value_xsd';
 				}
-				$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+				$sql = 'subject_id=' . $db->addQuotes($subjectid) .
 					' AND attribute_title=' . $db->addQuotes($property->getDBkey()) .
 					$this->getSQLConditions($requestoptions,$value_column,'value_xsd');
 				$res = $db->select( $db->tableName('smw_attributes'),
@@ -432,8 +443,14 @@ class SMWSQLStore extends SMWStore {
 
 	function getProperties(Title $subject, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore::getProperties (SMW)");
+		$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
+		if ($subjectid <= 0) {
+			wfProfileOut("SMWSQLStore::getProperties (SMW)");
+			return array();
+		}
+		
 		$db =& wfGetDB( DB_SLAVE );
-		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) . $this->getSQLConditions($requestoptions,'attribute_title','attribute_title');
+		$sql = 'subject_id=' . $db->addQuotes($subjectid) . $this->getSQLConditions($requestoptions,'attribute_title','attribute_title');
 
 		$result = array();
 		$res = $db->select( $db->tableName('smw_attributes'),
@@ -455,7 +472,7 @@ class SMWSQLStore extends SMWStore {
 		}
 		$db->freeResult($res);
 
-		$sql = 'subject_id=' . $db->addQuotes($subject->getArticleID()) .
+		$sql = 'subject_id=' . $db->addQuotes($subjectid) .
 		       $this->getSQLConditions($requestoptions,'relation_title','relation_title');
 		$res = $db->select( $db->tableName('smw_relations'),
 		                    'DISTINCT relation_title',
