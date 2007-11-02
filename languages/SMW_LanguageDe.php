@@ -107,7 +107,6 @@ protected $m_UserMessages = array(
 	'smw_propertylackspage' => 'Alle Attribute sollten durch eine Seite beschrieben werden!',
 	'smw_propertylackstype' => 'Für dieses Attribut wurde kein Datentyp angegeben ($1 wird vorläufig als Typ angenommen).',
 	'smw_propertyhardlyused' => 'Dieses Attribut wird im Wiki kaum verwendet!',
-	'smw_propertyspecial' => 'This is a special property with a reserved meaning in the wiki.', // TODO: translate
 	// Messages for Unused Properties Special
 	'unusedproperties' => 'Verwaiste Attribute',
 	'smw_unusedproperties_docu' => 'Die folgenden Attributseiten existieren, obwohl sie nicht verwendet werden.',

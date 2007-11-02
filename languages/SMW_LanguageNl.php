@@ -14,7 +14,7 @@ protected $m_ContentMessages = array(
 	'smw_viewasrdf' => 'RDF-feed',
 	'smw_finallistconjunct' => ', en', //used in "A, B, and C"
 	'smw_factbox_head' => 'Feiten over $1',
-	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
+	'smw_isspecprop' => 'Dit is een speciale eigenschap in de wiki.',
 	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
 	'smw_isaliastype' => 'This type is an alias for the datatype “$1”.', // TODO Translate
 	'smw_isnotype' => 'This type “$1” is not a standard datatype in the wiki, and has not been given a user definition either.', // TODO Translate
@@ -98,7 +98,6 @@ protected $m_UserMessages = array(
 	'smw_propertylackspage' => 'Alle eigenschappen moeten op een pagina beschreven worden!',
 	'smw_propertylackstype' => 'Er is geen type opgegeven voor deze eigenschap (type $1 wordt verondersteld).',
 	'smw_propertyhardlyused' => 'Deze eigenschap wordt vrijwel niet gebruikt in de wiki!',
-	'smw_propertyspecial' => 'Dit is een speciale eigenschap met een gereserveerde betekenis in de wiki.',
 	// Messages for Unused Properties Special
 	'unusedproperties' => 'Ongebruikte eigenschappen',
 	'smw_unusedproperties_docu' => 'De volgende eigenschappen bestaan, hoewel ze niet gebruikt worden.',

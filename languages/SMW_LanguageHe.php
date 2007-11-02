@@ -99,7 +99,6 @@ protected $m_UserMessages = array(
 	'smw_propertylackspage' => 'All properties should be described by a page!', //TODO: translate
 	'smw_propertylackstype' => 'No type was specified for this property (assuming type $1 for now).', //TODO: translate
 	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!', //TODO: translate
-	'smw_propertyspecial' => 'This is a special property with a reserved meaning in the wiki.', // TODO: translate
 	// Messages for Unused Properties Special
 	'unusedproperties' => 'Unused Properties', //TODO: translate
 	'smw_unusedproperties_docu' => 'The following properties exist although no other page makes use of them.', //TODO: translate

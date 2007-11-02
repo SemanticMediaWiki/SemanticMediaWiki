@@ -100,7 +100,6 @@ protected $m_UserMessages = array(
 	'smw_propertylackspage' => 'Каждое свойство должно иметь свою страницу описания!',
 	'smw_propertylackstype' => 'Данному свойству не сопоставлен тип данных (по умолчанию будет использоваться тип $1).',
 	'smw_propertyhardlyused' => 'Это свойство изначально предопределено для данного сайта!',
-	'smw_propertyspecial' => 'Специальное свойство, имеющее разерезвированный тип для данного сайта.',
 	// Messages for Unused Properties Special
 	'unusedproperties' => 'Неиспользуемые свойства',
 	'smw_unusedproperties_docu' => 'Следующие свойства определены, но не используются ни в одной из статей.',

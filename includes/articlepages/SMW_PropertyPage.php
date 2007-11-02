@@ -78,7 +78,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$r = '';
 		$ti = htmlspecialchars( $this->mTitle->getText() );
 		if ($this->special_prop !== false) {
-			$r .= '<p>' .wfMsg('smw_propertyspecial') . "</p>\n";
+			$r .= '<p>' .wfMsg('smw_isspecprop') . "</p>\n";
 		} else {		
 			$nav = $this->getNavigationLinks();
 			$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
