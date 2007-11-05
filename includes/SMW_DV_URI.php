@@ -39,24 +39,35 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	protected function parseUserValue($value) {
+		$value = trim($value);
 		if ($value!='') { //do not accept empty strings
+			$this->m_value = $value;
 			switch ($this->m_mode) {
 				case SMW_URI_MODE_URI: case SMW_URI_MODE_ANNOURI:
+					$parts = explode(':', $value, 2); // try to split "schema:rest"
+					if (count($parts) == 1) { // take "http" as default
+						$value = 'http://' . $value;
+						$parts[1] = $parts[0];
+						$parts[0] = 'http';
+					} elseif ( (count($parts) < 1) || ($parts[0] == '') || ($parts[1] == '') || (preg_match('/[^a-zA-Z]/',$parts[0]) )) { 
+						$this->addError(wfMsgForContent('smw_baduri', $value));
+						return true;
+					}
+
 					// check against blacklist
 					$uri_blacklist = explode("\n",wfMsgForContent('smw_uri_blacklist'));
 					foreach ($uri_blacklist as $uri) {
-						if (' ' == $uri[0]) $uri = mb_substr($uri,1); //tolerate beautification space
 						if ($uri == mb_substr($value,0,mb_strlen($uri))) { //disallowed URI!
 							$this->addError(wfMsgForContent('smw_baduri', $uri));
 							return true;
 						}
 					}
 					// simple check for invalid characters: ' ', '{', '}'
-					$check1 = "@(\}|\{| )+@";
-					if (preg_match($check1, $value, $matches)) {
-						$this->addError(wfMsgForContent('smw_baduri', $value));
-						break;
-					}
+// 					$check1 = "@(\}|\{| )+@";
+// 					if (preg_match($check1, $value, $matches)) {
+// 						$this->addError(wfMsgForContent('smw_baduri', $value));
+// 						break;
+// 					}
 /// TODO: the remaining checks need improvement
 // 					// validate last part of URI (after #) if provided 
 // 					$uri_ex = explode('#',$value);
@@ -76,9 +87,15 @@ class SMWURIValue extends SMWDataValue {
 // 						$this->addError(wfMsgForContent('smw_baduri', $value) . 'Debug5');
 // 						break;
 // 					}
-					$this->m_value =$value;
-					$this->m_url =$value;
-					$this->m_uri =$value;
+
+					$this->m_uri = str_replace(array('%3A','%2F','%23'), array(':', '/', '#'),urlencode($value));
+					global $wgUrlProtocols;
+					foreach ($wgUrlProtocols as $prot) { // only set URL if wiki-enabled protocoll
+						if ( ($prot == $parts[0] . ':') || ($prot == $parts[0] . '://') ) {
+							$this->m_url = $this->m_uri;
+							break;
+						}
+					}
 					break;
 				case SMW_URI_MODE_EMAIL:
 					$check = "#^([_a-z0-9-]+)((\.[_a-z0-9-]+)*)@([_a-z0-9-]+(\.[_a-z0-9-]+)*)\.([a-z]{2,3})$#";
@@ -87,16 +104,15 @@ class SMWURIValue extends SMWDataValue {
 						$this->addError(wfMsgForContent('smw_baduri', $value));
 						break;
 					}
-					$this->m_value = $value;
-					$this->m_url = 'mailto:' . $value;
-					$this->m_uri = 'mailto:' . $value;
+					$this->m_url = 'mailto:' . urlencode($value);
+					$this->m_uri = 'mailto:' . urlencode($value);
 			}
 		} else {
 			$this->addError(wfMsgForContent('smw_emptystring'));
 		}
 
 		if ($this->m_caption === false) {
-			$this->m_caption = $value;
+			$this->m_caption = $this->m_value;
 		}
 		return true;
 	}
