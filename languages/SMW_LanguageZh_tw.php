@@ -189,10 +189,14 @@ protected $m_DatatypeLabels = array(
 );
 
 protected $m_DatatypeAliases = array(
-	'URI'         => '_uri',	//'_uri',
 	'浮點數'       => '_num',	//'_num',
 	'整數'         => '_num' ,	//'_num',
 	 '列舉'        => '_str',	//'_str'
+	// SMW0.7 compatibility:
+	'Float'       => '_num',
+	'Integer'     => '_num',
+	'Enumeration' => '_str',
+	'URI'         => '_uri',
 	// support English aliases:
 	'Page'                  => '_wpg',
 	'String'                => '_str',
