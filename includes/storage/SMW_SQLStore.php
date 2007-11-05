@@ -1004,7 +1004,6 @@ class SMWSQLStore extends SMWStore {
 ///// Setup store /////
 
 	function setup($verbose = true) {
-		global $wgDBname;
 		$this->reportProgress("Setting up standard database configuration for SMW ...\n\n",$verbose);
 		$db =& wfGetDB( DB_MASTER );
 
@@ -1247,7 +1246,7 @@ class SMWSQLStore extends SMWStore {
 	 */
 	protected function getCategoryTable($cats, &$db) {
 		wfProfileIn("SMWSQLStore::getCategoryTable (SMW)");
-		global $wgDBname, $smwgQSubcategoryDepth;
+		global $smwgQSubcategoryDepth;
 
 		$sqlvalues = '';
 		$hashkey = '';
@@ -1321,7 +1320,7 @@ class SMWSQLStore extends SMWStore {
 	 */
 	protected function getPropertyTable($propname, &$db) {
 		wfProfileIn("SMWSQLStore::getPropertyTable (SMW)");
-		global $wgDBname, $smwgQSubpropertyDepth;
+		global $smwgQSubpropertyDepth;
 
 		$tablename = 'prop' . SMWSQLStore::$m_tablenum++;
 		$this->m_usedtables[] = $tablename;
@@ -1762,7 +1761,7 @@ class SMWSQLStore extends SMWStore {
 		global $wgDBname;
 		$this->reportProgress("Setting up table $table ...\n",$verbose);
 		if ($db->tableExists($table) === false) { // create new table
-			$sql = 'CREATE TABLE ' . $wgDBname . '.' . $table . ' (';
+			$sql = 'CREATE TABLE `' . $wgDBname . '`.' . $table . ' (';
 			$first = true;
 			foreach ($fields as $name => $type) {
 				if ($first) {
