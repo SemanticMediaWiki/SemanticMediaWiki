@@ -88,7 +88,12 @@ class SMWURIValue extends SMWDataValue {
 // 						break;
 // 					}
 
-					$this->m_uri = str_replace(array('%3A','%2F','%23'), array(':', '/', '#'),urlencode($value));
+					// encode most characters, but leave special symbols as given by user:
+					$this->m_uri = str_replace(array('%3A','%2F','%23','%40','%3F','%3D','%26','%25'), array(':','/','#','@','?','=','&','%'),rawurlencode($value));
+					/// NOTE: we do not support raw [ (%5D) and ] (%5E), although they are needed for ldap:// (but rarely in a wiki)
+					/// NOTE: we do not check the validity of the use of the raw symbols -- does RFC 3986 as such care?
+					/// NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
+					///       this prevents tel: from working directly, but we should have a datatype for this anyway.
 					global $wgUrlProtocols;
 					foreach ($wgUrlProtocols as $prot) { // only set URL if wiki-enabled protocoll
 						if ( ($prot == $parts[0] . ':') || ($prot == $parts[0] . '://') ) {
@@ -104,8 +109,8 @@ class SMWURIValue extends SMWDataValue {
 						$this->addError(wfMsgForContent('smw_baduri', $value));
 						break;
 					}
-					$this->m_url = 'mailto:' . urlencode($value);
-					$this->m_uri = 'mailto:' . urlencode($value);
+					$this->m_url = 'mailto:' . rawurlencode($value);
+					$this->m_uri = $this->m_url;
 			}
 		} else {
 			$this->addError(wfMsgForContent('smw_emptystring'));
