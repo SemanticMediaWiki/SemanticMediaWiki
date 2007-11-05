@@ -132,6 +132,7 @@ class SMWExportTitle {
 	 * provided DB handler.
 	 */
 	public function SMWExportTitle($title, $export, $modifier = '') {
+		wfProfileIn("RDF::ExportTitle");
 		$this->title = $title;
 		$this->title_text = $title->getText();
 		$this->title_id = $title->getArticleID();
@@ -207,6 +208,7 @@ class SMWExportTitle {
 		//TODO: should we make an exception for schema elements (Category, Attriubte, ...) where the prefix is clear from the context? At least namespaces like User: seem to be essential for understanding.
 		if ($this->modifier != '') $this->label .= " ($this->modifier)";
 		$this->label = smwfXMLContentEncode($this->label);
+		wfProfileOut("RDF::ExportTitle");
 	}
 }
 
@@ -362,6 +364,22 @@ class ExportRDF {
 	}
 
 	/**
+	 * This outputs a single triple with a subject, object, and predicate.
+	 * Note that this is not used by printTriples, since this would make the
+	 * export far too long (opening and closing the subject all the time),
+	 * but is rather used for a single specific triple that needs to be added
+	 * for whatever reason.
+	 * All three inputs most be export titles
+	 */
+	private function printTriple(SMWExportTitle $subject, SMWExportTitle $predicate, SMWExportTitle $object) {
+		$this->flushBuffers(true);
+		$this->pre_ns_buffer =
+			  "\t<swivt:Subject rdf:about=\"$subject->long_uri\">\n" .
+		      "\t\t<$predicate->short_uri rdf:resource=\"$object->long_uri\"/>\n" .
+		      "\t</swivt:Subject>\n" . $this->pre_ns_buffer;		
+	}
+
+	/**
 	 * This function prints all selected pages. The parameter $recursion determines
 	 * how referenced ressources are treated:
 	 * '0' : add brief declarations for each
@@ -418,7 +436,9 @@ class ExportRDF {
 						foreach($inSubs as $inSub) {
 							$st = $this->getExportTitleFromTitle( $inSub );
 							if (!array_key_exists($st->hashkey, $this->element_done)) {
-								$cur_queue[] = $st;
+								$pt = $this->getExportTitleFromTitle( $inRel );							
+								$this->printTriple($st, $pt, $et);							
+								//$cur_queue[] = $st;
 							}
 						}
 					}
@@ -590,7 +610,7 @@ class ExportRDF {
 			">\n\t<!-- Ontology header -->\n" .
 			"\t<owl:Ontology rdf:about=\"\">\n" .
 			"\t\t<swivt:creationDate rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">" . date(DATE_W3C) . "</swivt:creationDate>\n" .
-			"\t\t<owl:imports rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0\" />\n" .
+#			"\t\t<owl:imports rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0\" />\n" .
 			"\t</owl:Ontology>\n" .
 			"\t<!-- exported page data -->\n";
 		$this->addSchemaRef( "page", "owl:AnnotationProperty" );
