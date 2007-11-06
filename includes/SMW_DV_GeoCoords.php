@@ -126,37 +126,12 @@ class SMWGeoCoordsValue extends SMWDataValue {
 				break;
 				case '': break; // ignore
 				default: // should be a number (if not, errors appear elsewhere)
-					$curnum = $part;
-// 					if ( ($curnum{0} == ',') || ($curnum{0} == ';') || ($curnum{0} == '/') ) { 
-					    // probably the separator between lat and long ... make sure everything before that is done
-// 						if ( $curnum !== false ) { // work off number without °
-// 							if ($angles[0] !== false) { // "12° 34" as coordinate, complain
-// 								$this->addError(wfMsgForContent('smw_bad_latlong'));
-// 								break;
-// 							} else {
-// 								$angles[0] = $curnum;
-// 								$curnum = false;
-// 							}
-// 						}
-// 						if (($this->m_lat === false) && ($angles[0] !== false)) {
-// 							$this->setAngleValues('N',$angles);
-// 						} else {
-// 							$this->addError(wfMsgForContent('smw_bad_latlong'));
-// 						}
-// 						$curnum = substr($curnum,1); // mb-safe enough, since {0} is ascii
-// 					}
+					// no kiloseps in coordinates, use as decsep as a convenience to some users (Bug 11808):
+					$curnum = str_replace(wfMsgForContent('smw_kiloseparator'), wfMsgForContent('smw_decseparator'), $part);
 				break;
 			}
 		}
 
-// 		if ( $curnum !== false ) { // work off number without °
-// 			if ($angles[0] !== false) { // "12° 34" as coordinate, complain
-// 				$this->addError(wfMsgForContent('smw_bad_latlong'));
-// 			} else {
-// 				$angles[0] = $curnum;
-// 				$curnum = false;
-// 			}
-// 		}
 		if ( ($this->m_lat !== false) && ($this->m_long === false) && ($angles[0] !== false) ) { // no final E or W?
 			$this->setAngleValues('E',$angles);
 		}
