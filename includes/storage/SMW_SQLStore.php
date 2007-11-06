@@ -528,11 +528,15 @@ class SMWSQLStore extends SMWStore {
 		wfProfileOut("SMWSQLStore::deleteSubjects (SMW)");
 	}
 
-	function updateData(SMWSemanticData $data) {
+	function updateData(SMWSemanticData $data, $newpage) {
 		wfProfileIn("SMWSQLStore::updateData (SMW)");
 		$db =& wfGetDB( DB_MASTER );
 		$subject = $data->getSubject();
-		$this->deleteSemanticData($subject);
+		if ($newpage) { // set new ID in relation table
+			$db->update('smw_relations', array('object_id' => $subject->getArticleID()), array('object_title' => $subject->getDBKey(), 'object_namespace' => $subject->getNamespace()), 'SMW::updateData::SetRelIDs');
+		} else {
+			$this->deleteSemanticData($subject);
+		}
 
 		// do bulk updates:
 		$up_relations = array();

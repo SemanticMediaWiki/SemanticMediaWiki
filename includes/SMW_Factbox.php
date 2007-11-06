@@ -18,21 +18,22 @@ include_once($smwgIP . '/includes/SMW_SemanticData.php');
 class SMWFactbox {
 
 	/**
-	 * The actual contained for the semantic annotations. Public, since
-	 * it is ref-passed to othes for further processing.
+	 * The actual container for the semantic annotations. Public, since
+	 * it is ref-passed to others for further processing.
 	 */
 	static $semdata;
 	/**
-	 * The skin that is to be used for output functions.
+	 * True if the respective article is newly created. This affects some
+	 * storage operations.
 	 */
-	static protected $skin;
+	static protected $m_new;
 
 	/**
 	 * Initialisation method. Must be called before anything else happens.
 	 */
-	static function initStorage($title, $skin) {
+	static function initStorage($title) {
 		SMWFactbox::$semdata = new SMWSemanticData($title);
-		SMWFactbox::$skin = $skin;
+		SMWFactbox::$m_new   = false;
 	}
 
 	/**
@@ -45,7 +46,23 @@ class SMWFactbox {
 		}
 	}
 
+	/**
+	 * True if the respective article is newly created, but always false until
+	 * an article is actually saved.
+	 */
+	static function isNewArticle() {
+		return SMWFactbox::$m_new;
+	}
+
 //// Methods for adding data to the object
+
+	/**
+	 * Called to state that the respective article was newly created. Not known until
+	 * an article is actually saved.
+	 */
+	static function setNewArticle() {
+		SMWFactbox::$m_new = true;
+	}
 
 	/**
 	 * This method adds a new property with the given value to the storage.
@@ -294,13 +311,13 @@ class SMWFactbox {
 	 * for the current article.
 	 * @TODO: is $title still needed, since we now have SMWFactbox::$title? Could they differ significantly?
 	 */
-	static function storeData(&$t, $processSemantics) {
+	static function storeData($processSemantics) {
 		// clear data even if semantics are not processed for this namespace
 		// (this setting might have been changed, so that data still exists)
 		$title = SMWFactbox::$semdata->getSubject();
 		if ($processSemantics) {
-			smwfGetStore()->updateData(SMWFactbox::$semdata);
-		} else {
+			smwfGetStore()->updateData(SMWFactbox::$semdata, SMWFactbox::$m_new);
+		} elseif (!SMWFactbox::$m_new) {
 			smwfGetStore()->deleteSubject($title);
 		}
 	}

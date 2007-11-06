@@ -127,6 +127,7 @@ function smwfSetupExtension() {
 
 	$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; // parse annotations
 	$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries'; // register the <ask> parser hook
+	$wgHooks['ArticleSave'][] = 'smwfPreSaveHook'; // check some settings here
 	$wgHooks['ArticleSaveComplete'][] = 'smwfSaveHook'; // store annotations
 	$wgHooks['ArticleDelete'][] = 'smwfDeleteHook'; // delete annotations
 	$wgHooks['TitleMoveComplete'][]='smwfMoveHook'; // move annotations

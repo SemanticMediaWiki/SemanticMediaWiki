@@ -174,9 +174,10 @@ abstract class SMWStore {
 	/**
 	 * Update the semantic data stored for some individual. The data is given
 	 * as a SMWSemData object, which contains all semantic data for one particular
-	 * subject.
+	 * subject. The boolean $newpage specifies whether the page is stored for the
+	 * first time or not.
 	 */
-	abstract function updateData(SMWSemanticData $data);
+	abstract function updateData(SMWSemanticData $data, $newpage);
 
 	/**
 	 * Update the store to reflect a renaming of some article. The old and new title objects
