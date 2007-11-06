@@ -610,7 +610,7 @@ class ExportRDF {
 			">\n\t<!-- Ontology header -->\n" .
 			"\t<owl:Ontology rdf:about=\"\">\n" .
 			"\t\t<swivt:creationDate rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">" . date(DATE_W3C) . "</swivt:creationDate>\n" .
-#			"\t\t<owl:imports rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0\" />\n" .
+			"\t\t<owl:imports rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0\" />\n" .
 			"\t</owl:Ontology>\n" .
 			"\t<!-- exported page data -->\n";
 		$this->addSchemaRef( "page", "owl:AnnotationProperty" );
