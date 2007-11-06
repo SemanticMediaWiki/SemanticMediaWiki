@@ -1,5 +1,13 @@
 For a documentation of all features, see http://ontoworld.org/wiki/Help:Semantics
 
+== Semantic MediaWiki 1.0RC2 ==
+
+* More liberal parsing for geographic coordinates, most user inputs accepted now.
+* Improved URL datatype: better linking behaviour, tolerant towards Unicode-URLs
+* Significantly improved performance for RDF export.
+* Complete translations for Fr, Zh-tw, and Zh-ch added
+* Various minor bugfixes
+
 == Semantic MediaWiki 1.0RC1 ==
 
 * Simplified semantic annotations: just one kind of annotation ("Property").

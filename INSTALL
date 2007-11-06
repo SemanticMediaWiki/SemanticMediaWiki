@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.0 RC1]]
+[[Semantic MediaWiki 1.0 RC2]]
 
 Contents:
 * Disclaimer
@@ -141,7 +141,7 @@ The above generic steps are strictly necessary, and suffice to get a working wik
 However, some further steps are required. SMW1.0 mainly introduced the following incompatible 
 changes to SMW0.7:
 
-(a) The concept (and namespaces) "Relation" and "Attribute" are now unified into "Property"
+(a) The concepts (and namespaces) "Relation" and "Attribute" are now unified into "Property"
 (b) The special property "Main display unit" is obsolete, and the property "display unit"
     shows slightly modified behaviour.
 (c) The Type:Boolean is currently not available.
@@ -240,26 +240,19 @@ with the new type customisation features. See the docu at ontoworld.org for deta
   Your database was not initialized properly. Go to Special:SMWAdmin for
   instructions.
 
-- Problem: When using annotations like [[located in::Europe]], the semantic
-  data is not extracted, and a link to an article called "located in::Europe"
-  appears.
-
-  You probably use a version of MediaWiki that is smaller or equal to 1.9.*
-  and you did not make the required changes in Parser.php as described above.
-
 - Problem: In my non-English installation, properties don't work even when 
   I follow the examples.
 
-  Although SMW provides many aliases, you may need to use the localised names 
-  for special properties and namespaces. The translated strings and aliases 
-  for each language are in the languages subdirectory.
+  Although SMW normally provides English aliases, you may need to use the 
+  localised names for special properties and namespaces. The translated strings 
+  and aliases for each language are in the languages subdirectory.
 
 - Problem: After installing SMW, some or all pages are not displayed at all.
 - Problem: In some cases, pages are displayed incompletely, with some parts
   vanishing.
 
-  This is due to the restrictive memory default settings on some sites, and
-  is not directly caused by SMW (any additional extension code might cause this).
+  This is usually due to the restrictive memory default settings on some sites, 
+  and is not directly caused by SMW (any additional extension code might cause this).
   Uncomment the line "ini_set( 'memory_limit', '20M' );" in LocalSettings.php
   and possibly adjust the value to your needs. More than 100M is harldy useful,
   but values around 50M might be required for large pages in some cases.
