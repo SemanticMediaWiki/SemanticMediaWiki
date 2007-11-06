@@ -14,7 +14,7 @@
  */
 
 $langloc = '../extensions/SemanticMediaWiki/languages/SMW_Language';
-$lcs = array( 'De', 'Es', 'Fr', 'He', 'Nl', 'Pl', 'Ru', 'Sk');
+$lcs = array( 'De', 'Es', 'Fr', 'He', 'Nl', 'Pl', 'Ru', 'Sk', 'Zh_cn', 'Zh_tw');
 
 $optionsWithArgs = array( 'l' ); // -l <language code>
 require_once( 'commandLine.inc' );
