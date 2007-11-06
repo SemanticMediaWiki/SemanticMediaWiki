@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * @author Pierre Matringe
  */
@@ -106,25 +106,6 @@ protected $m_UserMessages = array(
 	'wantedproperties' => 'Propriétés demandées',
 	'smw_wantedproperties_docu' => 'Les propriétés suivantes sont utilisées sur ce wiki mes n\'ont pas encore de page pour les décrire.',
 	'smw_wantedproperty_template' => '$1 ($2 utilisations)', // <propname> (<count> uses)
-//// Note to translators:
-//// The following messages in comments were kept for reference to facilitate the translation of the property messages above.
-//// Delete them when no longer needed.
-// 	/*Messages for Relation Special*/
-// 	'relations' => 'Relations',
-// 	'smw_relations_docu' => 'Sur ce wiki, existent les relations suivantes:',
-// 	// Messages for WantedRelations Special
-// 	'wantedrelations' => 'Relations demandées',
-// 	'smw_wanted_relations' => 'Les relations suivantes n\'ont pas encore de page d\'explication, mais elles sont déjà utilisées pour décrire d\'autrees pages',
-// 	/*Messages for Attributes Special*/
-// 	'attributes' => 'Attributs',
-// 	'smw_attributes_docu' => 'Sur ce wiki, existent les attributs suivants:',
-// 	'smw_attr_type_join' => ' avec $1',
-// 	/*Messages for Unused Relations Special*/
-// 	'unusedrelations' => 'Relations orphelines',
-// 	'smw_unusedrelations_docu' => 'Des pages pour les relations suivantes existent, mais elles ne sont pas utilisées.',
-// 	/*Messages for Unused Attributes Special*/
-// 	'unusedattributes' => 'Attributs orphelins',
-// 	'smw_unusedattributes_docu' => 'Des pages pour les attribut suivants existent, mais ils ne sont pas utilisés.',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Réactualiser toutes les recherches et tous les brouillons de cette page.',
 	'purge' => 'Réactualiser',
