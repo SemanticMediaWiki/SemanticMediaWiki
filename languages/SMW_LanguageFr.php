@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * @author Pierre Matringe
  */
@@ -14,10 +14,10 @@ protected $m_ContentMessages = array(
 	'smw_viewasrdf' => 'Voir comme RDF',
 	'smw_finallistconjunct' => ' et',					//utilisé dans "A, B, et C"
 	'smw_factbox_head' => 'Faits relatifs à $1 &mdash; Recherche de pages similaires avec <span class="smwsearchicon">+</span>.',
-	'smw_isspecprop' => 'This property is a special property in this wiki.', // TODO Translate
-	'smw_isknowntype' => 'This type is among the standard datatypes of this wiki.', // TODO Translate
-	'smw_isaliastype' => 'This type is an alias for the datatype “$1”.', // TODO Translate
-	'smw_isnotype' => 'This type “$1” is not a standard datatype in the wiki, and has not been given a user definition either.', // TODO Translate
+	'smw_isspecprop' => 'Cette propriété est une propriété spéciale sur ce wiki.',
+	'smw_isknowntype' => 'Ce type fait partie des types de données standards de ce wiki.',
+	'smw_isaliastype' => 'Ce type est un alias du type de données “$1”.',
+	'smw_isnotype' => 'Le type “$1” n\'est pas un type de données standard sur ce wiki, et n\'a pas non plus été n\'a pas non plus été défini par un utilisateur.',
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Désolé. Les URIs du domaine $1 ne sont pas disponible à cet emplacement',
@@ -33,24 +33,24 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
-	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate
+	'smw_notitle' => '“$1” ne peut être utilisé comme nom de page sur ce wiki.',
 	'smw_unknowntype' => 'Le type de données "$1" non supporté a été retourné à l\'attribut.',
 	'smw_manytypes' => 'Plusieurs types de données ont été assignés à l\'attribut.',
 	'smw_emptystring' => 'Les chaînes vides ne sont pas acceptées.',
 	'smw_maxstring' => 'La chaîne de représentation $1 est trop grande pour ce site.',
-	'smw_notinenum' => '"$1" ne fait pas partie des valeurs possibles ($2) pour cet attribut.',
-	'smw_noboolean' => '"$1" n\'est pas reconnu comme une valeur boléenne (vrai/faux).',
+	'smw_notinenum' => '\"$1\" ne fait pas partie des valeurs possibles ($2) pour cet attribut.',
+	'smw_noboolean' => '\"$1\" n\'est pas reconnu comme une valeur boléenne (vrai/faux).',
 	'smw_true_words' => 'v,oui',	// comma-separated synonyms for boolean TRUE besides 'true' and '1'
 	'smw_false_words' => 'f,non',	// comma-separated synonyms for boolean FALSE besides 'false' and '0'
-	'smw_nofloat' => '"$1" n\'est pas un nombre.', // TODO Change "floating-point" number to just "number"
+	'smw_nofloat' => '"$1" n\'est pas un nombre.',
 	'smw_infinite' => 'Le nombre $1 est trop long.',
 	'smw_infinite_unit' => 'La conversion dans l\'unité $1 est impossible : le nombre est trop long.',
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'Cet attribut ne supporte aucune conversion d\'unité',
 	'smw_unsupportedprefix' => 'Des préfixes ("$1") ne sont pas supportés actuellement',
 	'smw_unsupportedunit' => 'La conversion de l\'unité "$1" n\'est pas supportée',
 	// Messages for geo coordinates parsing
-	'smw_lonely_unit' => 'No number found before the symbol “$1”.', // $1 is something like ° TODO Translate
-	'smw_bad_latlong' => 'Latitude and longitude must be given only once, and with valid coordinates.', // TODO Translate
+	'smw_lonely_unit' => 'Aucun nombre trouvé avant le symbole “$1”.', // $1 is something like °
+	'smw_bad_latlong' => 'Latitude et longitude ne doivent être indiqués qu\'une seule fois, et avec des coordonnées valides.',
 	'smw_label_latitude' => 'Latitude :',
 	'smw_label_longitude' => 'Longitude :',
 	'smw_abb_north' => 'N',
@@ -58,54 +58,54 @@ protected $m_ContentMessages = array(
 	'smw_abb_south' => 'S',
 	'smw_abb_west' => 'O',
 	/* some links for online maps; can be translated to different language versions of services, but need not*/
-	'smw_service_online_maps' => " Cartes&nbsp;géographiques|http://tools.wikimedia.de/~magnus/geo/geohack.php?language=fr&params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
+	'smw_service_online_maps' => " Cartes géographiques|http://tools.wikimedia.de/~magnus/geo/geohack.php?language=fr&params=\$9_\$7_\$10_\$8\n Google maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 	/*Messages for datetime parsing */
 	'smw_nodatetime' => 'La date "$1" n\'a pas été comprise. Le support des données calendaires est encore expérimental.',
-	// Errors and notices related to queries // TODO: translate
-	'smw_toomanyclosing' => 'There appear to be too many occurrences of “$1” in the query.',
-	'smw_noclosingbrackets' => 'Some use of “[&#x005B;” in your query was not closed by a matching “]]”.',
-	'smw_misplacedsymbol' => 'The symbol “$1” was used in a place where it is not useful.',
-	'smw_unexpectedpart' => 'The part “$1” of the query was not understood. Results might not be as expected.',
-	'smw_emptysubquery' => 'Some subquery has no valid condition.',
-	'smw_misplacedsubquery' => 'Some subquery was used in a place where no subqueries are allowed.',
-	'smw_valuesubquery' => 'Subqueries not supported for values of property “$1”.',
-	'smw_overprintoutlimit' => 'The query contains too many printout requests.',
-	'smw_badprintout' => 'Some print statement in the query was misshaped.',
-	'smw_badtitle' => 'Sorry, but “$1” is no valid page title.',
-	'smw_badqueryatom' => 'Some part “[&#x005B;&hellip;]]” of the query was not understood.',
-	'smw_propvalueproblem' => 'The value of property “$1” was not understood.',
-	'smw_nodisjunctions' => 'Disjunctions in queries are not supported in this wiki and part of the query was dropped ($1).',
-	'smw_querytoolarge' => 'The following query conditions could not be considered due to the wikis restrictions in query size or depth: $1.'
+	// Errors and notices related to queries //
+	'smw_toomanyclosing' => 'Il semble y avoir trop d\'occurences de “$1” dans la requête.',
+	'smw_noclosingbrackets' => 'Certains “[[” dans votre requête n\'ont pas été clos par des “]]” correspondants.',
+	'smw_misplacedsymbol' => 'Le symbole “$1” a été utilisé à un endroit où il n\'est pas utile.',
+	'smw_unexpectedpart' => 'La partie “$1” de la requête n\'a pas été comprise. Les Résults peuvent être inattendus.',
+	'smw_emptysubquery' => 'Certaines sous-requêtes ont une condition non-valide.',
+	'smw_misplacedsubquery' => 'Certaines sous-requêtes ont été utilisées à un endroit où aucune sous-requête n\'est permise.',
+	'smw_valuesubquery' => 'Sous-requête non supportée pour les valeurs de la propriété “$1”.',
+	'smw_overprintoutlimit' => 'La requête contient trop d\'instructions de formatage.',
+	'smw_badprintout' => 'Certaines instructions de formatage dans la requête n\'ont pas été comprises.',
+	'smw_badtitle' => 'Désolé, mais “$1” n\'est pas un titre de page valable.',
+	'smw_badqueryatom' => 'Les parties “[[…]]” de la requête n\'ont pas été comprises.',
+	'smw_propvalueproblem' => 'La valeur de la propriété “$1” n\'a pas été comprises.',
+	'smw_nodisjunctions' => 'Les disjonctions dans les requêtes ne sont pas supportées sur ce wiki et des parties de la requête ont été ignorées($1).',
+	'smw_querytoolarge' => 'Les conditions suivantes de la requête n\'ont pu être évaluées en raison des restrictions de ce wiki à la taille ou à la profondeur des requêtes : $1.'
 );
 
 protected $m_UserMessages = array(
 	'smw_devel_warning' => 'Cette fonction est encore en développement et n\'est peut-être pas encore opérationnelle. Il est peut-être judicieux de faire une sauvegarde du contenu du wiki avant toute utilisation de cette fonction.',
 	// Messages for article pages of types, relations, and attributes
-	'smw_type_header' => 'Attributes of type “$1”', // TODO translate
-	'smw_typearticlecount' => 'Showing $1 attributes using this type.', // TODO translate
-	'smw_attribute_header' => 'Pages using the attribute “$1”', // TODO translate
-	'smw_attributearticlecount' => '<p>Showing $1 pages using this attribute.</p>', // TODO translate
+	'smw_type_header' => 'Attributs de type “$1”',
+	'smw_typearticlecount' => 'Afficher les attributs de $1 en utilisant ce type.',
+	'smw_attribute_header' => 'Pages utilisant l\'attribut “$1”',
+	'smw_attributearticlecount' => '<p>Afficher $1 pages utilisant cet attribut.</p>',
 	/*Messages for Export RDF Special*/
-	'exportrdf' => 'Exporter l\'article comme RDF', //name of this special
+	'exportrdf' => 'Exporter l\'article en RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>Sur cette page, des parties du contenu d\'un article peuvent être exportées dans le format RDF. Veuillez entrer le nom des pages souhaitées dans la boîte de texte ci-dessous, <i>un nom par ligne </i>.</p>',
-	'smw_exportrdf_recursive' => 'Exporter également toutes les pages pertinentes de manière récursive. Cette possibilité peut aboutir à un très grand nombre de résultats !',
+	'smw_exportrdf_recursive' => 'Exporter également toutes les pages pertinentes de manière récursive. Cette possibilité peut aboutir à un très grand nombre de résultats !',
 	'smw_exportrdf_backlinks' => 'Exporter également toutes les pages qui renvoient à des pages exportées. Produit un RDF dans lequel la navigation est facilitée.',
-	'smw_exportrdf_lastdate' => 'Do not export pages that were not changed since the given point in time.', // TODO: translate
+	'smw_exportrdf_lastdate' => 'Ne pas exporter les pages non modifiées depuis le moment indiqué.',
 	// Messages for Properties Special
-	'properties' => 'Properties', //TODO: translate
-	'smw_properties_docu' => 'The following properties are used in the wiki.', //TODO: translate
-	'smw_property_template' => '$1 of type $2 ($3)', // <propname> of type <type> (<count>) //TODO: translate
-	'smw_propertylackspage' => 'All properties should be described by a page!', //TODO: translate
-	'smw_propertylackstype' => 'No type was specified for this property (assuming type $1 for now).', //TODO: translate
-	'smw_propertyhardlyused' => 'This property is hardly used within the wiki!', //TODO: translate
+	'properties' => 'Propriétés',
+	'smw_properties_docu' => 'Sur ce wiki, sont utilisées les propriétés suivantes.',
+	'smw_property_template' => '$1 du type $2 ($3)', // <propname> of type <type> (<count>)
+	'smw_propertylackspage' => 'Toute propriété devrait être décrite par une page !',
+	'smw_propertylackstype' => 'Aucun type n\'a été spécifié pour cette propriété (type actuellement supposé : §1.',
+	'smw_propertyhardlyused' => 'Cette propriété est très utilisée sur ce wiki !',
 	// Messages for Unused Properties Special
-	'unusedproperties' => 'Unused Properties', //TODO: translate
-	'smw_unusedproperties_docu' => 'The following properties exist although no other page makes use of them.', //TODO: translate
-	'smw_unusedproperty_template' => '$1 of type $2', // <propname> of type <type> //TODO: translate
+	'unusedproperties' => 'Propriétés inutilisées',
+	'smw_unusedproperties_docu' => 'Les propriétés suivantes existent, bien qu\'aucune page ne les utilise.',
+	'smw_unusedproperty_template' => '$1 de type $2', // <propname> of type <type>
 	// Messages for Wanted Properties Special
-	'wantedproperties' => 'Wanted Properties', //TODO: translate
-	'smw_wantedproperties_docu' => 'The following properties are used in the wiki but do not yet have a page for describing them.', //TODO: translate
-	'smw_wantedproperty_template' => '$1 ($2 uses)', // <propname> (<count> uses) //TODO: translate
+	'wantedproperties' => 'Propriétés demandées',
+	'smw_wantedproperties_docu' => 'Les propriétés suivantes sont utilisées sur ce wiki mes n\'ont pas encore de page pour les décrire.',
+	'smw_wantedproperty_template' => '$1 ($2 utilisations)', // <propname> (<count> uses)
 //// Note to translators:
 //// The following messages in comments were kept for reference to facilitate the translation of the property messages above.
 //// Delete them when no longer needed.
@@ -133,23 +133,23 @@ protected $m_UserMessages = array(
 	'smw_oi_docu' => 'Cette page spéciale permet d\'importer des informations d\'une ontologie externe. Cette ontologie doit être dans un format RDF simplifié. Des informations supplémentaires sont disponibles dans la <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">Documentation relative à l\'import d\'ontologie</a> en langues anglaise.',
 	'smw_oi_action' => 'Importer',
 	'smw_oi_return' => 'Revenir à <a href="$1">Importer l\'ontologie</a>.',	//Différence avec la version anglaise
-	'smw_oi_noontology' => 'No ontology supplied, or could not load ontology.', // TODO Translate
-	'smw_oi_select' => 'Please select the statements to import, and then click the import button.', // TODO Translate
-	'smw_oi_textforall' => 'Header text to add to all imports (may be empty):', // TODO Translate
-	'smw_oi_selectall' => 'Select or unselect all statements', // TODO Translate
-	'smw_oi_statementsabout' => 'Statements about', // TODO Translate
-	'smw_oi_mapto' => 'Map entity to', // TODO Translate
-	'smw_oi_comment' => 'Add the following text:', // TODO Translate
-	'smw_oi_thisissubcategoryof' => 'A subcategory of', // TODO Translate
-	'smw_oi_thishascategory' => 'Is part of', // TODO Translate
-	'smw_oi_importedfromontology' => 'Import from ontology', // TODO Translate
+	'smw_oi_noontology' => 'Aucune ontologie fournie, ou impossible de charger l\'ontologie.',
+	'smw_oi_select' => 'Veuillez sélectionner le texte à importer, puis cliquez sur le bouton « importer ».',
+	'smw_oi_textforall' => 'Texte à ajouter en en-tête à toutes les importations (peut rester vice :',
+	'smw_oi_selectall' => 'Sélectionner ou désélectionner tous les textes',
+	'smw_oi_statementsabout' => 'Textes sur',
+	'smw_oi_mapto' => 'Carte de l\'entité sur',
+	'smw_oi_comment' => 'Ajouter le texte suivant :',
+	'smw_oi_thisissubcategoryof' => 'Sous-catégorie de',
+	'smw_oi_thishascategory' => 'Fait partie de',
+	'smw_oi_importedfromontology' => 'Importer de l\'ontologie',
 	/*Messages for (data)Types Special*/
 	'types' => 'Types de données',
 	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a son propre article, dans lequel peuvent figurer des informations plus précises.',
-	'smw_typeunits' => 'Units of measurement of type “$1”: $2', // TODO: Translate
+	'smw_typeunits' => 'Unités de measure de type “$1” : $2',
 	/*Messages for SemanticStatistics Special*/
-	'semanticstatistics' => 'Semantic Statistics', // TODO translate
-	'smw_semstats_text' => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.', // TODO translate
+	'semanticstatistics' => 'Statistiques sémantiques',
+	'smw_semstats_text' => 'Ce wiki contient <b>$1</b> valeurs de propriété pour un total de <b>$2</b> <a href="$3">propriétés</a> différentes. <b>$4</b> propriétés ont leur propre page, et le type de données voulu est spécifié pour <b>$5</b> de celles-ci. Certaines des propriétés existantes peuvent faire partient des <a href="$6">propriétés inutilisées</a>. Les propriétés qui n\'ont pas encore de page se trouvent sur la <a href="$7">liste des propriétés demandées</a>.',
 	/*Messages for Flawed Attributes Special --disabled--*/
 	'flawedattributes' => 'Attributs défectueux',
 	'smw_fattributes' => 'Les pages ci-dessous ont un attribut qui n\'est pas défini correctement. Le nombre d\'attributs incorrects est donné entre les parenthèses.',
@@ -175,16 +175,16 @@ protected $m_UserMessages = array(
 	'smw_sbv_value' => 'Valeur',
 	'smw_sbv_submit' => 'Trouver des résultats',
 	// Messages for the browsing system
-	'browse' => 'Browse wiki', //TODO: translate
-	'smw_browse_article' => 'Enter the name of the page to start browsing from.', //TODO: translate
-	'smw_browse_go' => 'Go', //TODO: translate
-	'smw_browse_more' => '&hellip;', //TODO: translate
+	'browse' => 'Parcourir le wiki',
+	'smw_browse_article' => 'Entrez le nom de la page à partir de laquelle commencer la navigation.',
+	'smw_browse_go' => 'Démarrer',
+	'smw_browse_more' => '…',
 	// Messages for the page property special
-	'pageproperty' => 'Page property search', // TODO: translate
-	'smw_pp_docu' => 'Search for all the fillers of a property on a given page. Please enter both a page and a property.', // TODO: translate
-	'smw_pp_from' => 'From page', // TODO: translate
-	'smw_pp_type' => 'Property', // TODO: translate
-	'smw_pp_submit' => 'Find results', // TODO: translate
+	'pageproperty' => 'Rechercher dans les propriétés de la page',
+	'smw_pp_docu' => 'Rechercher toutes les valeurs d\'une propriété dans une page donnée. Veuillez entrer la page et une propriété.',
+	'smw_pp_from' => 'De la page',
+	'smw_pp_type' => 'Propriété',
+	'smw_pp_submit' => 'Afficher les résultats',
 	// Generic messages for result navigation in all kinds of search pages
 	'smw_result_prev' => 'Précédent',
 	'smw_result_next' => 'Suivant',
@@ -193,9 +193,9 @@ protected $m_UserMessages = array(
 );
 
 protected $m_DatatypeLabels = array(
-	'_wpg' => 'Page', // name of page datatype  //TODO translate
+	'_wpg' => 'Page', // name of page datatype
 	'_str' => 'Chaîne de caractères',  // name of the string type
-	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
+	'_txt' => 'Texte',  // name of the text type (very long strings)
 	//'_boo' => 'Booléen',  // name of the boolean type
 	'_num' => 'Nombre', // name for the datatype of numbers
 	'_geo' => 'Coordonnées géographiques', // name of the geocoord type
@@ -227,7 +227,7 @@ protected $m_SpecialProperties = array(
 	//always start upper-case
 	SMW_SP_HAS_TYPE  => 'A le type',
 	SMW_SP_HAS_URI   => 'URI équivalente',
-	SMW_SP_SUBPROPERTY_OF => 'Subproperty of', // TODO: translate
+	SMW_SP_SUBPROPERTY_OF => 'Sous^-propriété de',
 	SMW_SP_DISPLAY_UNITS => 'Unités de mesure',
 	SMW_SP_IMPORTED_FROM => 'Importé de',
 	SMW_SP_CONVERSION_FACTOR => 'Correspond à',
