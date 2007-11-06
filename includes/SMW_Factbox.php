@@ -240,7 +240,7 @@ class SMWFactbox {
 
 		smwfRequireHeadItem(SMW_HEADER_STYLE);
 		include_once($smwgIP . '/includes/SMW_Infolink.php');
-		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . str_replace('%2F', '/', urlencode(SMWFactbox::$semdata->getSubject()->getPrefixedText())), 'rdflink');
+		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . str_replace('%2F', '/', rawurlencode(SMWFactbox::$semdata->getSubject()->getPrefixedText())), 'rdflink');
 
 		$browselink = SMWInfolink::newBrowsingLink(SMWFactbox::$semdata->getSubject()->getText(), SMWFactbox::$semdata->getSubject()->getPrefixedText(), 'swmfactboxheadbrowse');
 		// The "\n" is to ensure that lists on the end of articles are terminated

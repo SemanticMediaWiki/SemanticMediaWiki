@@ -23,7 +23,7 @@ function smwfDoSpecialExportRDF($page = '') {
 		$page = $wgRequest->getVal( 'page' );
 	} else {
 		//this is needed since MediaWiki 1.8, but it is wrong for 1.7
-		$page = urldecode($page);
+		$page = rawurldecode($page);
 	}
 
 	if ($page=='') { //try to get POST list; some settings are only available via POST
