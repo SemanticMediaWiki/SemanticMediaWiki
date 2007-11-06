@@ -139,8 +139,6 @@ class SMWListResultPrinter extends SMWResultPrinter {
 
 		// print footer
 		$result .= $footer;
-		$result .= $this->getErrorString($res); // just append error messages
-
 		return $result;
 	}
 }

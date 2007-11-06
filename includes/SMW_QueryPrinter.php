@@ -47,7 +47,7 @@ abstract class SMWResultPrinter {
 		$this->readParameters($params);
 		if ($results->getCount() == 0) {
 			if (!$results->hasFurtherResults()) {
-				return htmlspecialchars($this->mDefault);
+				return htmlspecialchars($this->mDefault) . $this->getErrorString($results);
 			} elseif ($this->mInline) {
 				$label = $this->mSearchlabel;
 				if ($label === NULL) { //apply defaults
@@ -55,11 +55,11 @@ abstract class SMWResultPrinter {
 				} else {
 					$result = '<a href="' . $results->getQueryURL() . '">' . $label . '</a>';
 				}
-				$result .= $this->getErrorString($results); // just append error messages
+				$result .= $this->getErrorString($results);
 				return $result;
 			}
 		}
-		return $this->getHTML($results);
+		return $this->getHTML($results) . $this->getErrorString($results);
 	}
 
 	/**

@@ -101,7 +101,6 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 			}
 		}
 		$result .= $footer;
-		$result .= $this->getErrorString($res); // just append error messages
 
 		$smwgStoreActive = $old_smwgStoreActive;
 		return $result;

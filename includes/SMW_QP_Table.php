@@ -57,7 +57,6 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			}
 		}
 		$result .= "\t</table>"; // print footer
-		$result .= $this->getErrorString($res); // just append error messages
 		return $result;
 	}
 }

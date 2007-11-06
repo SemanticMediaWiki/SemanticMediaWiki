@@ -73,7 +73,6 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 		}
 
 		$smwgStoreActive = $old_smwgStoreActive;
-		$result .= $this->getErrorString($res); // just append error messages
 		return $result;
 	}
 }

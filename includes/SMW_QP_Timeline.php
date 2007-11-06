@@ -179,7 +179,6 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 
 		// print footer
 		$result .= "</div>";
-		$result .= $this->getErrorString($res); // just append error messages
 		return $result;
 	}
 }
