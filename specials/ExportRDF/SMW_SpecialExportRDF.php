@@ -777,7 +777,7 @@ class ExportRDF {
  			if ($subprop_rel) {
 				$properties = $this->store->getSpecialValues($et->title, SMW_SP_SUBPROPERTY_OF);
  				foreach ($properties as $property) {
- 					$supprop = $this->getExportTitleFromTitle($property, SMW_NS_PROPERTY);
+ 					$supprop = $this->getExportTitleFromTitle($property);
  					if ($et->has_type == $supprop->has_type) {
 	 					$this->post_ns_buffer .= "\t\t<$subprop_rel rdf:resource=\"" . $supprop->long_uri . "\"/>\n";
  						if (!array_key_exists($supprop->hashkey, $this->element_queue)) {
