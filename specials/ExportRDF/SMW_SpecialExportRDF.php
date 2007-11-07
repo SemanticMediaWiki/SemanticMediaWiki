@@ -777,15 +777,12 @@ class ExportRDF {
  			if ($subprop_rel) {
 				$properties = $this->store->getSpecialValues($et->title, SMW_SP_SUBPROPERTY_OF);
  				foreach ($properties as $property) {
- 					// TODO in future, check type safety relations <-> attributes
- 					// TODO check also the type of what I am pointing to (is it an atrribute or sth else?)
- 					// TODO check the type of the attribute pointed to, does it match?
- 					// Could lead to inconsistencies in the output -- and in the wiki? But this will
- 					// need to be dealt with as soon as people add subattribute semantics to the wiki
  					$supprop = $this->getExportTitleFromTitle($property, SMW_NS_PROPERTY);
- 					$this->post_ns_buffer .= "\t\t<$subprop_rel rdf:resource=\"" . $supprop->long_uri . "\"/>\n";
- 					if (!array_key_exists($supprop->hashkey, $this->element_queue)) {
+ 					if ($et->has_type == $supprop->has_type) {
+	 					$this->post_ns_buffer .= "\t\t<$subprop_rel rdf:resource=\"" . $supprop->long_uri . "\"/>\n";
+ 						if (!array_key_exists($supprop->hashkey, $this->element_queue)) {
  							$this->element_queue[$supprop->hashkey] = $supprop;
+ 						}
  					}
  				}
  			}
