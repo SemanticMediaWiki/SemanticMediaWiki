@@ -100,7 +100,9 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ($linker === NULL) {
 			return htmlspecialchars($this->m_prefixedtext);
 		} else {
-			if ($this->getArticleID() !== 0) { // aritcle ID might be cached already, save DB calls
+			if ($this->getNamespace() == NS_MEDIA) {
+				return $linker->makeMediaLinkObj($this->getTitle(), $this->m_textform);
+			} elseif ($this->getArticleID() !== 0) { // aritcle ID might be cached already, save DB calls
 				return $linker->makeKnownLinkObj($this->getTitle(), $this->m_textform);
 			} else {
 				return $linker->makeBrokenLinkObj($this->getTitle(), $this->m_textform);
@@ -137,16 +139,26 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @return the line to be exported
 	 */
 	public function exportToRDF($QName, ExportRDF $exporter) {
-		$title = $this->getTitle();
-		if ($title==NULL) return "";
-		// Check if the object is an individual -- otherwise it would be
-		// an OWL Full export, which is OK, if we should export OWL Full
-		if (!$exporter->owlfull) {
-			$title_namespace = $title->getNamespace();
-			if (($title_namespace == SMW_NS_PROPERTY) || ($title_namespace == NS_CATEGORY) )
-				return "";
+		if (!$this->isValid()) return '';
+
+		switch ($this->getNamespace()) {
+			case NS_MEDIA: // special handling for linking media files directly
+				$file = wfFindFile( $this->getTitle() );
+				if ($file) {
+					$obj = $file->getFullURL();
+				} else { // Medialink to non-existing file :-/
+					return "\t\t <!-- $QName points to the media object " . $this->getXSDValue() . " but no such file was uploaded. -->\n";
+				}
+			break;
+			case SMW_NS_PROPERTY: case NS_CATEGORY: // export would be OWL Full, check if this is desired
+				if (!$exporter->owlfull) {
+					return '';
+				} // < very bad coding: we omit the break deliberately :-o
+			default:
+				$obj = $exporter->getURI( $this->getTitle() );
+			break;
 		}
-		$obj = $exporter->getURI( $this->getTitle() );
+
 		return "\t\t<$QName rdf:resource=\"$obj\"/>\n";
 	}
 
