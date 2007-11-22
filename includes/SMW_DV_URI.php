@@ -167,7 +167,7 @@ class SMWURIValue extends SMWDataValue {
 		if (($linker === NULL) || ($this->m_url == '') ) {
 			return htmlspecialchars($this->m_value);
 		} else {
-			return $linker->makeExternalLink($this->m_url, $this->m_caption);
+			return $linker->makeExternalLink($this->m_url, $this->m_value);
 		}
 	}
 
@@ -180,7 +180,8 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function exportToRDF($QName, ExportRDF $exporter) {
-		return "\t\t<$QName rdf:resource=\"$this->m_uri\" />\n";
+		// also do some minimal XML escaping (< and > have been rawurlencoded earlier)
+		return "\t\t<$QName rdf:resource=\"" . str_replace('&','&amp;', $this->m_uri) . "\" />\n";
 	}
 
 }
