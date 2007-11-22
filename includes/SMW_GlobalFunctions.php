@@ -215,7 +215,8 @@ function smwfRequireHeadItem($id, $item = '') {
  * exploits parser caching.
  */
 function smwfAddHTMLHeadersParser(&$parser, &$text) {
-	global $smwgHeadItems;
+	global $smwgHeadItems, $smwgStoreActive;
+	if (!$smwgStoreActive) return true; // avoid doing this in SMW-generated sub-parsers
 	foreach ($smwgHeadItems as $key => $item) {
 		$parser->mOutput->addHeadItem("\t\t" . $item . "\n", $key);
 	}
@@ -230,7 +231,8 @@ function smwfAddHTMLHeadersParser(&$parser, &$text) {
  * output (exploiting parser caching).
  */
 function smwfAddHTMLHeadersOutput(&$out) {
-	global $smwgHeadItems;
+	global $smwgHeadItems, $smwgStoreActive;
+	if (!$smwgStoreActive) return true; // avoid doing this in SMW-generated sub-parsers
 	// Add scripts to output if not done already (should happen only if we are
 	// not using a parser, e.g on special pages).
 	foreach ($smwgHeadItems as $key => $item) {
