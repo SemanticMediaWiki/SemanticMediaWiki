@@ -19,8 +19,8 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 	protected $m_showhead;
 	protected $m_embedformat;
 
-	protected function readParameters($params) {
-		SMWResultPrinter::readParameters($params);
+	protected function readParameters($params,$outputmode) {
+		SMWResultPrinter::readParameters($params,$outputmode);
 
 		if (array_key_exists('embedonly', $params)) {
 			$this->m_showhead = false;
@@ -28,13 +28,13 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 			$this->m_showhead = true;
 		}
 		if (array_key_exists('embedformat', $params)) {
-			$this->m_embedformat = $params['embedformat'];
+			$this->m_embedformat = trim($params['embedformat']);
 		} else {
 			$this->m_embedformat = 'h1';
 		}
 	}
 
-	public function getHTML($res) {
+	protected function getResultText($res,$outputmode) {
 		// handle factbox
 		global $smwgStoreActive, $wgTitle;
 		$old_smwgStoreActive = $smwgStoreActive;
@@ -62,9 +62,11 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		}
 
 		// print all result rows
-		$parser_options = new ParserOptions();
-		$parser_options->setEditSection(false);  // embedded sections should not have edit links
-		$parser = new Parser();
+		if ($outputmode == SMW_OUTPUT_HTML) {
+			$parser_options = new ParserOptions();
+			$parser_options->setEditSection(false);  // embedded sections should not have edit links
+			$parser = new Parser();
+		}
 
 		while (  $row = $res->getNext() ) {
 			$first_col = true;
@@ -72,7 +74,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 				if ( $field->getPrintRequest()->getTypeID() == '_wpg' ) { // ensure that we deal with title-likes
 					while ( ($object = $field->getNextObject()) !== false ) {
 						$result .= $embstart;
-						$text= $object->getLongHTMLText($this->getLinker(true));
+						$text= $object->getLongText($outputmode,$this->getLinker(true));
 						if ($this->m_showhead) {
 							$result .= $headstart . $text . $headend;
 						}
@@ -81,8 +83,12 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 						} else {
 							$articlename = $object->getPrefixedText();
 						}
-						$parserOutput = $parser->parse('{{' . $articlename . '}}', $wgTitle, $parser_options);
-						$result .= $parserOutput->getText();
+						if ($outputmode == SMW_OUTPUT_HTML) {
+							$parserOutput = $parser->parse('{{' . $articlename . '}}', $wgTitle, $parser_options);
+							$result .= $parserOutput->getText();
+						} else {
+							$result .= '{{' . $articlename . '}}';
+						}
 						$result .= $embend;
 					}
 				}
@@ -91,7 +97,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		}
 
 		// show link to more results
-		if ($this->mInline && $res->hasFurtherResults()) {
+		if ($this->mInline && $res->hasFurtherResults() && ($outputmode == SMW_OUTPUT_HTML)) {
 			$label = $this->mSearchlabel;
 			if ($label === NULL) { //apply defaults
 				$label = wfMsgForContent('smw_iq_moreresults');

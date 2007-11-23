@@ -35,7 +35,7 @@ class SMWQueryProcessor {
 	 * known. Otherwise it will be determined from the parameters when 
 	 * needed. This parameter is just for optimisation in a common case.
 	 */
-	static public function createQuery($querystring, $params, $inline = true, $format = '') {
+	static public function createQuery($querystring, $params, $inline = true, $format = '', $extraprintouts = array()) {
 		// This should be the proper way of substituting templates in a safe and comprehensive way:
 		global $wgTitle, $smwgQDefaultNamespaces;
 		$parser = new Parser();
@@ -47,6 +47,9 @@ class SMWQueryProcessor {
 		$qp = new SMWQueryParser();
 		$qp->setDefaultNamespaces($smwgQDefaultNamespaces);
 		$desc = $qp->getQueryDescription($querystring);
+		foreach ($extraprintouts as $printout) {
+			$desc->addPrintRequest($printout);
+		}
 
 		if (array_key_exists('mainlabel', $params)) {
 			$mainlabel = $params['mainlabel'] . $qp->getLabel();
@@ -71,11 +74,11 @@ class SMWQueryProcessor {
 			$query->querymode = SMWQuery::MODE_DEBUG;
 		}
 		if ( (array_key_exists('offset',$params)) && (is_int($params['offset'] + 0)) ) {
-			$query->setOffset(max(0,$params['offset'] + 0));
+			$query->setOffset(max(0,trim($params['offset']) + 0));
 		}
 		if ($query->querymode != SMWQuery::MODE_COUNT) {
 			if ( (array_key_exists('limit',$params)) && (is_int($params['limit'] + 0)) ) {
-				$query->setLimit(max(0,$params['limit'] + 0));
+				$query->setLimit(max(0,trim($params['limit']) + 0));
 			} else {
 				global $smwgQDefaultLimit;
 				$query->setLimit($smwgQDefaultLimit);
@@ -90,7 +93,8 @@ class SMWQueryProcessor {
 			$query->sortkey = smwfNormalTitleDBKey($params['sort']);
 		}
 		if (array_key_exists('order', $params)) {
-			if (('descending'==strtolower($params['order']))||('reverse'==strtolower($params['order']))||('desc'==strtolower($params['order']))) {
+			$order = strtolower(trim($params['order']));
+			if (('descending'==$order)||('reverse'==$order)||('desc'==$order)) {
 				$query->ascending = false;
 			}
 		}
@@ -103,26 +107,38 @@ class SMWQueryProcessor {
 	 * the query and determines the serialisation mode for results. The third
 	 * parameter $inline defines whether the query is "inline" as opposed to
 	 * being part of some special search page.
+	 * @DEPRECATED use getResult
 	 */
 	static public function getResultHTML($querystring, $params, $inline = true) {
-		wfProfileIn('SMWQueryProcessor::getResultHTML (SMW)');
+		return SMWQueryProcessor::getResult($querystring, $params, SMW_OUTPUT_HTML, $inline);
+	}
+
+	/**
+	 * Process a query string in SMW's query language and return a formatted
+	 * result set as Wiki text. A parameter array of key-value-pairs constrains
+	 * the query and determines the serialisation mode for results. The third
+	 * parameter $inline defines whether the query is "inline" as opposed to
+	 * being part of some special search page.
+	 */
+	static public function getResult($querystring, $params, $outputmode, $inline = true, $extraprintouts = array()) {
+		wfProfileIn('SMWQueryProcessor::getResult (SMW)');
 		$format = SMWQueryProcessor::getResultFormat($params);
-		$query = SMWQueryProcessor::createQuery($querystring, $params, $inline, $format);
+		$query = SMWQueryProcessor::createQuery($querystring, $params, $inline, $format, $extraprintouts);
 		if ($query instanceof SMWQuery) { // query parsing successful
 			$res = smwfGetStore()->getQueryResult($query);
 			if ($query->querymode == SMWQuery::MODE_INSTANCES) {
-				wfProfileIn('SMWQueryProcessor::getResultHTML-printout (SMW)');
+				wfProfileIn('SMWQueryProcessor::getResult-printout (SMW)');
 				$printer = SMWQueryProcessor::getResultPrinter($format, $inline, $res);
-				$result = $printer->getResultHTML($res, $params);
-				wfProfileOut('SMWQueryProcessor::getResultHTML-printout (SMW)');
-				wfProfileOut('SMWQueryProcessor::getResultHTML (SMW)');
+				$result = $printer->getResult($res, $params, $outputmode);
+				wfProfileOut('SMWQueryProcessor::getResult-printout (SMW)');
+				wfProfileOut('SMWQueryProcessor::getResult (SMW)');
 				return $result;
 			} else { // result for counting or debugging is just a string
-				wfProfileOut('SMWQueryProcessor::getResultHTML (SMW)');
+				wfProfileOut('SMWQueryProcessor::getResult (SMW)');
 				return $res;
 			}
-		} else { // error string (should be HTML-safe)
-			wfProfileOut('SMWQueryProcessor::getResultHTML (SMW)');
+		} else { // error string (should be HTML and wiki compatible)
+			wfProfileOut('SMWQueryProcessor::getResult (SMW)');
 			return $query;
 		}
 	}
@@ -133,7 +149,7 @@ class SMWQueryProcessor {
 	static protected function getResultFormat($params) {
 		$format = 'auto';
 		if (array_key_exists('format', $params)) {
-			$format = strtolower($params['format']);
+			$format = strtolower(trim($params['format']));
 			if ( !in_array($format,SMWQueryProcessor::$formats) ) {
 				$format = 'auto'; // If it is an unknown format, defaults to list/table again
 			}

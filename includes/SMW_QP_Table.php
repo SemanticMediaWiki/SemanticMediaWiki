@@ -11,7 +11,7 @@
  */
 class SMWTableResultPrinter extends SMWResultPrinter {
 
-	protected function getHTML($res) {
+	protected function getResultText($res, $outputmode) {
 		global $smwgIQRunningNumber;
 		smwfRequireHeadItem(SMW_HEADER_SORTTABLE);
 
@@ -24,7 +24,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		if ($this->mShowHeaders) { // building headers
 			$result .= "\n\t\t<tr>";
 			foreach ($res->getPrintRequests() as $pr) {
-				$result .= "\t\t\t<th>" . $pr->getHTMLText($this->mLinker) . "</th>\n";
+				$result .= "\t\t\t<th>" . $pr->getText($outputmode, $this->mLinker) . "</th>\n";
 			}
 			$result .= "\n\t\t</tr>";
 		}
@@ -36,7 +36,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			foreach ($row as $field) {
 				$result .= "<td>";
 				$first = true;
-				while ( ($text = $field->getNextHTMLText($this->getLinker($firstcol))) !== false ) {
+				while ( ($text = $field->getNextText($outputmode, $this->getLinker($firstcol))) !== false ) {
 					if ($first) $first = false; else $result .= '<br />';
 					$result .= $text;
 				}
@@ -47,7 +47,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		}
 
 		// print further results footer
-		if ($this->mInline && $res->hasFurtherResults()) {
+		if ($this->mInline && $res->hasFurtherResults() && ($outputmode == SMW_OUTPUT_HTML)) {
 			$label = $this->mSearchlabel;
 			if ($label === NULL) { //apply default
 				$label = wfMsgForContent('smw_iq_moreresults');
@@ -59,4 +59,5 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		$result .= "\t</table>"; // print footer
 		return $result;
 	}
+
 }

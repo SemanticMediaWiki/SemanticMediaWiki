@@ -19,18 +19,21 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	protected $mSep = '';
 	protected $mTemplate = '';
 
-	protected function readParameters($params) {
-		SMWResultPrinter::readParameters($params);
+	protected function readParameters($params,$outputmode) {
+		SMWResultPrinter::readParameters($params,$outputmode);
 
 		if (array_key_exists('sep', $params)) {
-			$this->mSep = htmlspecialchars(str_replace('_',' ',$params['sep']));
+			$this->mSep = str_replace('_',' ',$params['sep']);
+			if ($outputmode==SMW_OUTPUT_HTML) {
+				$this->mSep = htmlspecialchars($this->mSep);
+			}
 		}
 		if (array_key_exists('template', $params)) {
-			$this->mTemplate = $params['template'];
+			$this->mTemplate = trim($params['template']);
 		}
 	}
 
-	protected function getHTML($res) {
+	protected function getResultText($res,$outputmode) {
 		global $wgTitle,$smwgStoreActive;
 		// print header
 		$result = $this->mIntro;
@@ -79,7 +82,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				foreach ($row as $field) {
 					$wikitext .= "|";
 					$first_value = true;
-					while ( ($text = $field->getNextWikiText($this->getLinker($first_col))) !== false ) {
+					while ( ($text = $field->getNextText(SMW_OUTPUT_WIKI, $this->getLinker($first_col))) !== false ) {
 						if ($first_value) $first_value = false; else $wikitext .= ', ';
 						$wikitext .= $text;
 					}
@@ -92,7 +95,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				$found_values = false; // has anything but the first column been printed?
 				foreach ($row as $field) {
 					$first_value = true;
-					while ( ($text = $field->getNextHTMLText($this->getLinker($first_col))) !== false ) {
+					while ( ($text = $field->getNextText($outputmode, $this->getLinker($first_col))) !== false ) {
 						if (!$first_col && !$found_values) { // first values after first column
 							$result .= ' (';
 							$found_values = true;
@@ -103,7 +106,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 						if ($first_value) { // first value in any column, print header
 							$first_value = false;
 							if ( $this->mShowHeaders && ('' != $field->getPrintRequest()->getLabel()) ) {
-								$result .= $field->getPrintRequest()->getHTMLText($this->mLinker) . ' ';
+								$result .= $field->getPrintRequest()->getText($outputmode, $this->mLinker) . ' ';
 							}
 						}
 						$result .= $text; // actual output value
@@ -117,7 +120,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$row = $nextrow;
 		}
 
-		if ($usetemplate) {
+		if ( ($usetemplate) && ($outputmode === SMW_OUTPUT_HTML) ) {
 			$old_smwgStoreActive = $smwgStoreActive;
 			$smwgStoreActive = false; // no annotations stored, no factbox printed
 			$parserOutput = $parser->parse($result, $wgTitle, $parser_options);
@@ -125,7 +128,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$smwgStoreActive = $old_smwgStoreActive;
 		}
 
-		if ($this->mInline && $res->hasFurtherResults()) {
+		if ($this->mInline && $res->hasFurtherResults() && ($outputmode === SMW_OUTPUT_HTML)) {
 			$label = $this->mSearchlabel;
 			if ($label === NULL) { //apply defaults
 				if ('ol' == $this->mFormat) $label = '';
@@ -141,4 +144,5 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		$result .= $footer;
 		return $result;
 	}
+
 }

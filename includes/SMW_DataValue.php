@@ -156,6 +156,38 @@ abstract class SMWDataValue {
 	abstract public function getLongHTMLText($linker = NULL);
 
 	/**
+	 * Returns a short textual representation for this data value. If the value
+	 * was initialised from a user supplied string, then this original string
+	 * should be reflected in this short version (i.e. no normalisation should
+	 * normally happen). There might, however, be additional parts such as code
+	 * for generating tooltips. The output is in the specified format.
+	 *
+	 * The parameter $linker controls linking of values such as titles and should
+	 * be some Linker object (for HTML output), or NULL for no linking.
+	 */
+	public function getShortText($outputformat, $linker = NULL) {
+		switch ($outputformat) {
+			case SMW_OUTPUT_WIKI: return $this->getShortWikiText($linker);
+			case SMW_OUTPUT_HTML: default: return $this->getShortHTMLText($linker);
+		}
+	}
+
+	/**
+	 * Return the long textual description of the value, as printed for
+	 * example in the factbox. If errors occurred, return the error message.
+	 * The output is in the specified format.
+	 *
+	 * The parameter $linker controls linking of values such as titles and should
+	 * be some Linker object (for HTML output), or NULL for no linking.
+	 */
+	public function getLongText($outputformat, $linker = NULL) {
+		switch ($outputformat) {
+			case SMW_OUTPUT_WIKI: return $this->getLongWikiText($linker);
+			case SMW_OUTPUT_HTML: default: return $this->getLongHTMLText($linker);
+		}
+	}
+
+	/**
 	 * Return the XSD compliant version of the value, or
 	 * FALSE if parsing the value failed and no XSD version
 	 * is available. If the datatype has units, then this

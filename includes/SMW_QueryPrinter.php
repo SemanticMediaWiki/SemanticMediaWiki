@@ -42,9 +42,21 @@ abstract class SMWResultPrinter {
 	 * serialised version of the results, formatted as inline HTML
 	 * or (for special printers) as RDF or XML or whatever. Normally
 	 * not overwritten by subclasses.
+	 * @DEPRECATED use getResult()
 	 */
 	public function getResultHTML($results, $params) {
-		$this->readParameters($params);
+		return $this->getResult($results,$params,SMW_OUTPUT_HTML);
+	}
+
+	/**
+	 * Main entry point: takes an SMWQueryResult and parameters
+	 * given as key-value-pairs in an array, and returns the 
+	 * serialised version of the results, formatted as HTML or Wiki
+	 * or whatever is specified. Normally this is not overwritten by
+	 * subclasses.
+	 */
+	public function getResult($results, $params, $outputmode) {
+		$this->readParameters($params,$outputmode);
 		if ($results->getCount() == 0) {
 			if (!$results->hasFurtherResults()) {
 				return htmlspecialchars($this->mDefault) . $this->getErrorString($results);
@@ -59,7 +71,7 @@ abstract class SMWResultPrinter {
 				return $result;
 			}
 		}
-		return $this->getHTML($results) . $this->getErrorString($results);
+		return $this->getResultText($results,$outputmode) . $this->getErrorString($results);
 	}
 
 	/**
@@ -67,12 +79,18 @@ abstract class SMWResultPrinter {
 	 * initialise internal member fields accordingly. Possibly overwritten
 	 * (extended) by subclasses.
 	 */
-	protected function readParameters($params) {
+	protected function readParameters($params,$outputmode) {
 		if (array_key_exists('intro', $params)) {
-			$this->mIntro = htmlspecialchars(str_replace('_', ' ', $params['intro']));
+			$this->mIntro = str_replace('_',' ',$params['intro']);
+			if ($outputmode==SMW_OUTPUT_HTML) {
+				$this->mIntro = htmlspecialchars($this->mIntro);
+			}
 		}
 		if (array_key_exists('searchlabel', $params)) {
-			$this->mSearchlabel = htmlspecialchars($params['searchlabel']);
+			$this->mSearchlabel = $params['searchlabel'];
+			if ($outputmode==SMW_OUTPUT_HTML) {
+				$this->mSearchlabel = htmlspecialchars($this->mSearchlabel);
+			}
 		}
 		if (array_key_exists('link', $params)) {
 			switch (strtolower($params['link'])) {
@@ -91,10 +109,13 @@ abstract class SMWResultPrinter {
 			}
 		}
 		if (array_key_exists('default', $params)) {
-			$this->mDefault = htmlspecialchars(str_replace('_', ' ', $params['default']));
+			$this->mDefault = str_replace('_',' ',$params['default']);
+			if ($outputmode==SMW_OUTPUT_HTML) {
+				$this->mDefault = htmlspecialchars($this->mDefault);
+			}
 		}
 		if (array_key_exists('headers', $params)) {
-			if ( 'hide' == strtolower($params['headers'])) {
+			if ( 'hide' == strtolower(trim($params['headers']))) {
 				$this->mShowHeaders = false;
 			} else {
 				$this->mShowHeaders = true;
@@ -104,9 +125,17 @@ abstract class SMWResultPrinter {
 
 	/**
 	 * Return HTML version of serialised results.
+	 * @DEPRECATED: Legacy method, use getResultText instead
+	 */
+	protected function getHTML($res) {
+		return $this->getResultText($res,SMW_OUTPUT_HTML);
+	}
+
+	/**
+	 * Return serialised results in specified format.
 	 * Implemented by subclasses.
 	 */
-	abstract protected function getHTML($res);
+	abstract protected function getResultText($res, $outputmode);
 
 	/**
 	 * Depending on current linking settings, returns a linker object

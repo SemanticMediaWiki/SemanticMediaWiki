@@ -18,8 +18,8 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 	protected $m_tlbands = ''; // array of band IDs (MONTH, YEAR, ...)
 	protected $m_tlpos = ''; // position identifier (start, end, today, middle)
 
-	protected function readParameters($params) {
-		SMWResultPrinter::readParameters($params);
+	protected function readParameters($params,$outputmode) {
+		SMWResultPrinter::readParameters($params,$outputmode);
 
 		if (array_key_exists('timelinestart', $params)) {
 			$this->m_tlstart = smwfNormalTitleDBKey($params['timelinestart']);
@@ -28,25 +28,26 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 			$this->m_tlend = smwfNormalTitleDBKey($params['timelineend']);
 		}
 		if (array_key_exists('timelinesize', $params)) {
-			$this->m_tlsize = htmlspecialchars(str_replace(';', ' ', strtolower($params['timelinesize']))); 
+			$this->m_tlsize = htmlspecialchars(str_replace(';', ' ', strtolower(trim($params['timelinesize'])))); 
 			// str_replace makes sure this is only one value, not mutliple CSS fields (prevent CSS attacks)
+			/// FIXME: this is either unsafe or redundant, since Timeline is Wiki-compatible. If the JavaScript makes user inputs to CSS then it is bad even if we block this injection path.
 		} else {
 			$this->m_tlsize = '300px';
 		}
 		if (array_key_exists('timelinebands', $params)) { 
 		//check for band parameter, should look like "DAY,MONTH,YEAR"
-			$this->m_tlbands = preg_split('/[,][\s]*/',$params['timelinebands']);
+			$this->m_tlbands = preg_split('/[,][\s]*/',trim($params['timelinebands']));
 		} else {
-			$this->m_tlbands = array('MONTH','YEAR'); // TODO: check what default the JavaScript uses
+			$this->m_tlbands = array('MONTH','YEAR'); /// TODO: check what default the JavaScript uses
 		}
 		if (array_key_exists('timelineposition', $params)) {
-			$this->m_tlpos = strtolower($params['timelineposition']);
+			$this->m_tlpos = strtolower(trim($params['timelineposition']));
 		} else {
 			$this->m_tlpos = 'middle';
 		}
 	}
 
-	public function getHTML($res) {
+	protected function getResultText($res, $outputmode) {
 		global $smwgIQRunningNumber;
 		smwfRequireHeadItem(SMW_HEADER_TIMELINE); //make sure JavaScripts are available
 
@@ -92,13 +93,13 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 					$pr = $field->getPrintRequest();
 					while ( ($object = $field->getNextObject()) !== false ) {
 						$l = $this->getLinker($first_col);
-						$objectlabel = $object->getShortHTMLText($l);
+						$objectlabel = $object->getShortText($outputmode,$l);
 						$urlobject =  ($l !== NULL);
 						$header = '';
 						if ($first_value) {
 							// find header for current value:
 							if ( $this->mShowHeaders && ('' != $pr->getLabel()) ) {
-								$header = $pr->getHTMLText($this->mLinker) . ' ';
+								$header = $pr->getText($outputmode,$this->mLinker) . ' ';
 							}
 							// is this a start date?
 							if ( ($pr->getMode() == SMW_PRINT_PROP) && 

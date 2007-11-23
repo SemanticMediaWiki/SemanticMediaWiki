@@ -33,7 +33,7 @@ class SMWPrintRequest {
 	 * Create a print request.
 	 * @param $mode a constant defining what to printout
 	 * @param $label the string label to describe this printout
-	 * @param $title optional Title object that specifies the request (usually a relation or attribute)
+	 * @param $title optional Title object that specifies the request (usually some property)
 	 * @param $datavalue optional SMWDataValue container that sets parameters for printing data values (e.g. the unit)
 	 */
 	public function SMWPrintRequest($mode, $label, Title $title = NULL, $outputformat = '') {
@@ -83,6 +83,13 @@ class SMWPrintRequest {
 			}
 		}
 		
+	}
+
+	public function getText($outputmode, $linker = NULL) {
+		switch ($outputmode) {
+			case SMW_OUTPUT_WIKI: return $this->getWikiText($linker);
+			case SMW_OUTPUT_HTML: default: return $this->getHTMLText($linker);
+		}
 	}
 
 	public function getTitle() {

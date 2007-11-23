@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.0-RC2');
+define('SMW_VERSION','1.0-RC3alpha');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -33,6 +33,10 @@ define('SMW_HEADER_TOOLTIP', 2);
 define('SMW_HEADER_SORTTABLE', 3);
 define('SMW_HEADER_STYLE', 4);
 
+// constants for denoting output modes in many functions: HTML or Wiki?
+define('SMW_OUTPUT_HTML', 1);
+define('SMW_OUTPUT_WIKI', 2);
+
 // HTML items to load in current page, use smwfRequireHeadItem to extend
 $smwgHeadItems = array();
 
@@ -44,7 +48,7 @@ $smwgHeadItems = array();
  * does not adhere to the naming conventions.
  */
 function enableSemantics($namespace = '', $complete = false) {
-	global $smwgNamespace, $wgExtensionFunctions, $wgSpecialPages, $wgAutoloadClasses, $smwgIP;
+	global $smwgNamespace, $wgExtensionFunctions, $wgSpecialPages, $wgAutoloadClasses, $smwgIP, $wgHooks;
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
@@ -54,6 +58,7 @@ function enableSemantics($namespace = '', $complete = false) {
 		$smwgNamespace = $namespace;
 	}
 	$wgExtensionFunctions[] = 'smwfSetupExtension';
+	$wgHooks['LanguageGetMagic'][] = 'smwfParserFunctionMagic'; // setup names for parser functions (needed here)
 
 	///// Set up autoloading
 	///// All classes registered for autoloading here should be tagged with this information:
@@ -151,6 +156,7 @@ function smwfSetupExtension() {
  */
 function smwfRegisterInlineQueries( &$parser, &$text, &$stripstate ) {
 	$parser->setHook( 'ask', 'smwfProcessInlineQuery' );
+	$parser->setFunctionHook( 'ask', 'smwfProcessInlineQueryParserFunction' );
 	return true; // always return true, in order not to stop MW's hook processing!
 }
 
@@ -162,6 +168,50 @@ function smwfProcessInlineQuery($text, $param, &$parser) {
 	if ($smwgQEnabled) {
 		require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
 		return SMWQueryProcessor::getResultHTML($text,$param);
+	} else {
+		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
+	}
+}
+
+/**
+ * The {{#ask }} parser hook processing part.
+ */
+function smwfProcessInlineQueryParserFunction(&$parser) {
+	global $smwgQEnabled, $smwgIP;
+	if ($smwgQEnabled) {
+		require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
+		$params = func_get_args();
+		array_shift( $params ); // we already know the $parser ...
+		$query = '';
+		$printouts = array();
+		//array(new SMWPrintRequest(SMW_PRINT_PROP, 'Borders', Title::newFromText('Property:Borders')), new SMWPrintRequest(SMW_PRINT_PROP, 'Area', Title::newFromText('Property:Area'),'sqkm') )
+		$args = array();
+		foreach ($params as $param) {
+			if ($param{0} == '?') { // print statement
+				$param = substr($param,1);
+				$parts = explode('=',$param,2);
+				$propparts = explode('#',$parts[0],2);
+				$property = Title::newFromText(trim($propparts[0]), SMW_NS_PROPERTY); // trim needed for \n
+				if ($property === NULL) { // too bad
+					continue;
+				}
+				if (count($parts) == 1) { // no label found, use property name
+					$parts[] = $property->getText();
+				}
+				if (count($propparts) == 1) { // no outputformat found, use property name
+					$propparts[] = '';
+				}
+				$printouts[] = new SMWPrintRequest(SMW_PRINT_PROP, trim($parts[1]), $property, $propparts[1]);
+			} else { // parameter or query
+				$parts = explode('=',$param,2);
+				if (count($parts) >= 2) {
+					$args[strtolower(trim($parts[0]))] = $parts[1]; // don't trim here, some params care for " "
+				} else {
+					$query .= $param;
+				}
+			}
+		}
+		return SMWQueryProcessor::getResult($query,$args,SMW_OUTPUT_WIKI, true, $printouts);
 	} else {
 		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 	}
@@ -290,6 +340,14 @@ function smwfAddHTMLHeadersOutput(&$out) {
 /**********************************************/
 /***** language settings                  *****/
 /**********************************************/
+
+	/**
+	 * Set up (possibly localised) names for SMW's parser functions.
+	 */
+	function smwfParserFunctionMagic(&$magicWords, $langCode) {
+		$magicWords['ask'] = array( 0, 'ask' );
+		return true;
+	}
 
 	/**
 	 * Initialise a global language object for content language. This
