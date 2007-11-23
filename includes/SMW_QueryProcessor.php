@@ -38,10 +38,14 @@ class SMWQueryProcessor {
 	static public function createQuery($querystring, $params, $inline = true, $format = '', $extraprintouts = array()) {
 		// This should be the proper way of substituting templates in a safe and comprehensive way:
 		global $wgTitle, $smwgQDefaultNamespaces;
+		/// FIXME: move this outside, or make it param dependent, since it is not required for {{#ask}}
 		$parser = new Parser();
 		$parserOptions = new ParserOptions();
 		$parser->startExternalParse( $wgTitle, $parserOptions, OT_HTML );
 		$querystring = $parser->transformMsg( $querystring, $parserOptions );
+		
+		/// TODO: this is needed for {{#ask}}, probably should go elsewhere
+		$querystring = str_replace(array('&lt;','&gt;'),array('<','>'),$querystring);
 
 		// parse query:
 		$qp = new SMWQueryParser();
