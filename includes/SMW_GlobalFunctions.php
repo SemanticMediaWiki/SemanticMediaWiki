@@ -187,7 +187,8 @@ function smwfProcessInlineQueryParserFunction(&$parser) {
 		//array(new SMWPrintRequest(SMW_PRINT_PROP, 'Borders', Title::newFromText('Property:Borders')), new SMWPrintRequest(SMW_PRINT_PROP, 'Area', Title::newFromText('Property:Area'),'sqkm') )
 		$args = array();
 		foreach ($params as $param) {
-			if ($param{0} == '?') { // print statement
+			if ($param == '') {
+			} elseif ($param{0} == '?') { // print statement
 				$param = substr($param,1);
 				$parts = explode('=',$param,2);
 				$propparts = explode('#',$parts[0],2);
