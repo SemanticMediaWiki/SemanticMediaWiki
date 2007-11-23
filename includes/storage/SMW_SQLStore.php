@@ -140,7 +140,10 @@ class SMWSQLStore extends SMWStore {
 								$sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
 			// rewrite result as array
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromID($row->cl_from);
+				$t = Title::newFromID($row->cl_from);
+				if ($t !== NULL) {
+					$result[] = $t;
+				}
 			}
 			$db->freeResult($res);
 		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
@@ -151,7 +154,10 @@ class SMWSQLStore extends SMWStore {
 								$sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
 			// reqrite results as array
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromID($row->rd_from);
+				$t = Title::newFromID($row->rd_from);
+				if ($t !== NULL) {
+					$result[] = $t;
+				}
 			}
 			$db->freeResult($res);
 		} elseif ($specialprop === SMW_SP_SUBPROPERTY_OF) { // subproperties
@@ -189,7 +195,10 @@ class SMWSQLStore extends SMWStore {
 			                    'DISTINCT subject_id',
 			                    $sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromID($row->subject_id);
+				$t = Title::newFromID($row->subject_id);
+				if ($t !== NULL) {
+					$result[] = $t;
+				}
 			}
 			$db->freeResult($res);
 		}
@@ -394,7 +403,10 @@ class SMWSQLStore extends SMWStore {
 		}
 		$result = array();
 		while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromID($row->subject_id);
+			$t = Title::newFromID($row->subject_id);
+			if ($t !== NULL) {
+				$result[] = $t;
+			}
 		}
 		$db->freeResult($res);
 		wfProfileOut("SMWSQLStore::getPropertySubjects (SMW)");
@@ -434,7 +446,10 @@ class SMWSQLStore extends SMWStore {
 		                    $this->getSQLOptions($requestoptions,'subject_title') );
 		$result = array();
 		while($row = $db->fetchObject($res)) {
-			$result[] = Title::newFromId($row->subject_id);
+			$t = Title::newFromId($row->subject_id);
+			if ($t !== NULL) {
+				$result[] = $t;
+			}
 		}
 		$db->freeResult($res);
 		wfProfileOut("SMWSQLStore::getAllPropertySubjects (SMW)");
