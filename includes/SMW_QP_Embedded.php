@@ -78,16 +78,20 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 						if ($this->m_showhead) {
 							$result .= $headstart . $text . $headend;
 						}
-						if ($object->getNamespace() == NS_MAIN) {
-							$articlename = ':' . $object->getText();
+						if ($object->getPrefixedText() != $wgTitle) { // prevent recursion!
+							if ($object->getNamespace() == NS_MAIN) {
+								$articlename = ':' . $object->getText();
+							} else {
+								$articlename = $object->getPrefixedText();
+							}
+							if ($outputmode == SMW_OUTPUT_HTML) {
+								$parserOutput = $parser->parse('{{' . $articlename . '}}', $wgTitle, $parser_options);
+								$result .= $parserOutput->getText();
+							} else {
+								$result .= '{{' . $articlename . '}}';
+							}
 						} else {
-							$articlename = $object->getPrefixedText();
-						}
-						if ($outputmode == SMW_OUTPUT_HTML) {
-							$parserOutput = $parser->parse('{{' . $articlename . '}}', $wgTitle, $parser_options);
-							$result .= $parserOutput->getText();
-						} else {
-							$result .= '{{' . $articlename . '}}';
+							$result .= '<b>' . $wgTitle . '</b>';
 						}
 						$result .= $embend;
 					}
@@ -97,13 +101,13 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		}
 
 		// show link to more results
-		if ($this->mInline && $res->hasFurtherResults() && ($outputmode == SMW_OUTPUT_HTML)) {
+		if ( $this->mInline && $res->hasFurtherResults() ) {
 			$label = $this->mSearchlabel;
 			if ($label === NULL) { //apply defaults
 				$label = wfMsgForContent('smw_iq_moreresults');
 			}
 			if ($label != '') {
-				$result .= $embstart . '<a href="' . $res->getQueryURL() . '">' . $label . '</a>' . $embend ;
+				$result .= $embstart . $this->getFurtherResultsLink($outputmode,$res,$label) . $embend ;
 			}
 		}
 		$result .= $footer;

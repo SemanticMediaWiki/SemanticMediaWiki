@@ -136,7 +136,7 @@ class SMWQueryResult {
 				$params .= '&order=DESC';
 			}
 		}
-		return $title->getLocalURL($params);
+		return $title->getFullURL($params);
 	}
 }
 

@@ -65,13 +65,13 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 			$result = $parserinput;
 		}
 		// show link to more results
-		if ($this->mInline && $res->hasFurtherResults() && ($outputmode == SMW_OUTPUT_HTML)) {
+		if ( $this->mInline && $res->hasFurtherResults() ) {
 			$label = $this->mSearchlabel;
 			if ($label === NULL) { //apply defaults
 				$label = wfMsgForContent('smw_iq_moreresults');
 			}
 			if ($label != '') {
-				$result .= '<a href="' . $res->getQueryURL() . '">' . $label . '</a>';
+				$result .= $this->getFurtherResultsLink($outputmode,$res,$label);
 			}
 		}
 		return $result;

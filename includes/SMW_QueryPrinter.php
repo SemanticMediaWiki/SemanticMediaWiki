@@ -63,9 +63,10 @@ abstract class SMWResultPrinter {
 			} elseif ($this->mInline) {
 				$label = $this->mSearchlabel;
 				if ($label === NULL) { //apply defaults
-					$result = '<a href="' . $results->getQueryURL() . '">' . wfMsgForContent('smw_iq_moreresults') . '</a>';
-				} else {
-					$result = '<a href="' . $results->getQueryURL() . '">' . $label . '</a>';
+					$label = wfMsgForContent('smw_iq_moreresults');
+				}
+				if ($label != '') {
+					$result = $this->getFurtherResultsLink($outputmode,$results,$label);
 				}
 				$result .= $this->getErrorString($results);
 				return $result;
@@ -158,6 +159,17 @@ abstract class SMWResultPrinter {
 	 */
 	protected function getErrorString($res) {
 		return smwfEncodeMessages($res->getErrors());
+	}
+
+	/**
+	 * Generate a link to further results of the given query, using syntactic encoding
+	 * as appropriate for $outputmode.
+	 */
+	protected function getFurtherResultsLink($outputmode, $res, $label) {
+		switch ($outputmode) {
+			case SMW_OUTPUT_WIKI: return '[' . $res->getQueryURL() . ' ' . $label . ']';
+			case SMW_OUTPUT_HTML: default: return '<a href="' . $res->getQueryURL() . '">' . $label . '</a>';
+		}
 	}
 
 }

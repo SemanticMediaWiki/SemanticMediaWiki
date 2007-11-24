@@ -47,13 +47,13 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		}
 
 		// print further results footer
-		if ($this->mInline && $res->hasFurtherResults() && ($outputmode == SMW_OUTPUT_HTML)) {
+		if ( $this->mInline && $res->hasFurtherResults() ) {
 			$label = $this->mSearchlabel;
 			if ($label === NULL) { //apply default
 				$label = wfMsgForContent('smw_iq_moreresults');
 			}
 			if ($label != '') {
-				$result .= "\n\t\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . $res->getColumnCount() . '"> <a href="' . $res->getQueryURL() . '">' . $label . '</a></td></tr>';
+				$result .= "\n\t\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . $res->getColumnCount() . '"> ' . $this->getFurtherResultsLink($outputmode,$res,$label) . '</td></tr>';
 			}
 		}
 		$result .= "\t</table>"; // print footer

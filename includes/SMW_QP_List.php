@@ -128,7 +128,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$smwgStoreActive = $old_smwgStoreActive;
 		}
 
-		if ($this->mInline && $res->hasFurtherResults() && ($outputmode === SMW_OUTPUT_HTML)) {
+		if ( $this->mInline && $res->hasFurtherResults() ) {
 			$label = $this->mSearchlabel;
 			if ($label === NULL) { //apply defaults
 				if ('ol' == $this->mFormat) $label = '';
@@ -136,7 +136,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			}
 			if (!$first_row) $result .= ' '; // relevant for list, unproblematic for ul/ol
 			if ($label != '') {
-				$result .= $rowstart . '<a href="' . $res->getQueryURL() . '">' . $label . '</a>' . $rowend;
+				$result .= $rowstart . $this->getFurtherResultsLink($outputmode,$res,$label) . $rowend;
 			}
 		}
 
