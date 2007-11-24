@@ -36,36 +36,25 @@ class SMWQueryProcessor {
 	 * needed. This parameter is just for optimisation in a common case.
 	 */
 	static public function createQuery($querystring, $params, $inline = true, $format = '', $extraprintouts = array()) {
-		// This should be the proper way of substituting templates in a safe and comprehensive way:
-		global $wgTitle, $smwgQDefaultNamespaces;
-		/// FIXME: move this outside, or make it param dependent, since it is not required for {{#ask}}
-		$parser = new Parser();
-		$parserOptions = new ParserOptions();
-		$parser->startExternalParse( $wgTitle, $parserOptions, OT_HTML );
-		$querystring = $parser->transformMsg( $querystring, $parserOptions );
-		
-		/// TODO: this is needed for {{#ask}}, probably should go elsewhere
-		$querystring = str_replace(array('&lt;','&gt;'),array('<','>'),$querystring);
+		global $smwgQDefaultNamespaces;
 
 		// parse query:
 		$qp = new SMWQueryParser();
 		$qp->setDefaultNamespaces($smwgQDefaultNamespaces);
 		$desc = $qp->getQueryDescription($querystring);
-		foreach ($extraprintouts as $printout) {
-			$desc->addPrintRequest($printout);
-		}
 
 		if (array_key_exists('mainlabel', $params)) {
 			$mainlabel = $params['mainlabel'] . $qp->getLabel();
 		} else {
 			$mainlabel = $qp->getLabel();
 		}
-		if ( !$desc->isSingleton() || (count($desc->getPrintRequests()) == 0) ) {
+		if ( !$desc->isSingleton() || (count($desc->getPrintRequests()) + count($extraprintouts) == 0) ) {
 			$desc->prependPrintRequest(new SMWPrintRequest(SMW_PRINT_THIS, $mainlabel));
 		}
 
 		$query = new SMWQuery($desc, $inline);
 		$query->setQueryString($querystring);
+		$query->setExtraPrintouts($extraprintouts);
 		$query->addErrors($qp->getErrors()); // keep parsing errors for later output
 
 		// set query parameters:
@@ -106,6 +95,78 @@ class SMWQueryProcessor {
 	}
 
 	/**
+	 * Process and answer a query as given by an array of parameters as is 
+	 * typically produced by the #ask parser function. The result is formatted
+	 * according to the specified $outputformat. The third parameter $inline
+	 * defines whether the query is "inline" as opposed to being part of some
+	 * special search page.
+	 *
+	 * The main task of this function is to preprocess the raw parameters to
+	 * obtain actual parameters, printout requests, and the query string for
+	 * further processing.
+	 */
+	static public function getResultFromFunctionParams($rawparams, $outputmode, $inline = true) {
+		global $wgContLang;
+		$querystring = '';
+		$printouts = array();
+		$params = array();
+		foreach ($rawparams as $param) {
+			if ($param == '') {
+			} elseif ($param{0} == '?') { // print statement
+				$param = substr($param,1);
+				$parts = explode('=',$param,2);
+				$propparts = explode('#',$parts[0],2);
+				if ($wgContLang->getNsText(NS_CATEGORY) != ucfirst(trim($propparts[0]))) {
+					$property = Title::newFromText(trim($propparts[0]), SMW_NS_PROPERTY); // trim needed for \n
+					if ($property === NULL) { // too bad, this is no legal property name, ignore
+						continue;
+					}
+					$printmode = SMW_PRINT_PROP;
+					if (count($parts) == 1) { // no label found, use property name
+						$parts[] = $property->getText();
+					}
+				} else {
+					$property = NULL;
+					$printmode = SMW_PRINT_CATS;
+					if (count($parts) == 1) { // no label found, use category label
+						$parts[] = $wgContLang->getNSText(NS_CATEGORY);
+					}
+				}
+				if (count($propparts) == 1) { // no outputformat found, use property name
+					$propparts[] = '';
+				}
+				$printouts[] = new SMWPrintRequest($printmode, trim($parts[1]), $property, $propparts[1]);
+			} else { // parameter or query
+				$parts = explode('=',$param,2);
+				if (count($parts) >= 2) {
+					$params[strtolower(trim($parts[0]))] = $parts[1]; // don't trim here, some params care for " "
+				} else {
+					$querystring .= $param;
+				}
+			}
+		}
+		$querystring = str_replace(array('&lt;','&gt;'), array('<','>'), $querystring);
+		return SMWQueryProcessor::getResultFromQueryString($querystring,$params,$printouts, SMW_OUTPUT_WIKI, $inline);
+	}
+
+	/**
+	 * Process and answer a query as given by a string and an array of parameters 
+	 * as is typically produced by the <ask> parser hook. The result is formatted
+	 * according to the specified $outputformat. The fourth parameter $inline
+	 * defines whether the query is "inline" as opposed to being part of some
+	 * special search page.
+	 */
+	static public function getResultFromHookParams($querystring, $params, $outputmode, $inline = true) {
+		global $wgTitle;
+		// Take care at least of some templates -- for better template support use #ask
+		$parser = new Parser();
+		$parserOptions = new ParserOptions();
+		$parser->startExternalParse( $wgTitle, $parserOptions, OT_HTML );
+		$querystring = $parser->transformMsg( $querystring, $parserOptions );
+		return SMWQueryProcessor::getResultFromQueryString($querystring, $params, array(), $outputmode, $inline);
+	}
+
+	/**
 	 * Process a query string in SMW's query language and return a formatted
 	 * result set as HTML text. A parameter array of key-value-pairs constrains
 	 * the query and determines the serialisation mode for results. The third
@@ -114,36 +175,46 @@ class SMWQueryProcessor {
 	 * @DEPRECATED use getResult
 	 */
 	static public function getResultHTML($querystring, $params, $inline = true) {
-		return SMWQueryProcessor::getResult($querystring, $params, SMW_OUTPUT_HTML, $inline);
+		return SMWQueryProcessor::getResultFromQueryString($querystring, $params, array(), SMW_OUTPUT_HTML, $inline);
 	}
 
 	/**
 	 * Process a query string in SMW's query language and return a formatted
-	 * result set as Wiki text. A parameter array of key-value-pairs constrains
-	 * the query and determines the serialisation mode for results. The third
-	 * parameter $inline defines whether the query is "inline" as opposed to
-	 * being part of some special search page.
+	 * result set as specified by $outputmode. A parameter array of key-value-pairs 
+	 * constrains the query and determines the serialisation mode for results. 
+	 * The fourth parameter $inline defines whether the query is "inline" as opposed 
+	 * to being part of some special search page. Finally, $extraprintouts supplies
+	 * additional printout requests for the query results.
 	 */
-	static public function getResult($querystring, $params, $outputmode, $inline = true, $extraprintouts = array()) {
-		wfProfileIn('SMWQueryProcessor::getResult (SMW)');
+	static public function getResultFromQueryString($querystring, $params, $extraprintouts, $outputmode, $inline = true) {
+		wfProfileIn('SMWQueryProcessor::getResultFromQueryString (SMW)');
 		$format = SMWQueryProcessor::getResultFormat($params);
 		$query = SMWQueryProcessor::createQuery($querystring, $params, $inline, $format, $extraprintouts);
 		if ($query instanceof SMWQuery) { // query parsing successful
-			$res = smwfGetStore()->getQueryResult($query);
-			if ($query->querymode == SMWQuery::MODE_INSTANCES) {
-				wfProfileIn('SMWQueryProcessor::getResult-printout (SMW)');
-				$printer = SMWQueryProcessor::getResultPrinter($format, $inline, $res);
-				$result = $printer->getResult($res, $params, $outputmode);
-				wfProfileOut('SMWQueryProcessor::getResult-printout (SMW)');
-				wfProfileOut('SMWQueryProcessor::getResult (SMW)');
-				return $result;
-			} else { // result for counting or debugging is just a string
-				wfProfileOut('SMWQueryProcessor::getResult (SMW)');
-				return $res;
-			}
+			$result = SMWQueryProcessor::getResultFromQuery($query, $params, $extraprintouts, $outputmode, $inline, $format);
 		} else { // error string (should be HTML and wiki compatible)
-			wfProfileOut('SMWQueryProcessor::getResult (SMW)');
-			return $query;
+			$result = $query;
+		}
+		wfProfileOut('SMWQueryProcessor::getResultFromQueryString (SMW)');
+		return $result;
+	}
+
+	static public function getResultFromQuery($query, $params, $extraprintouts, $outputmode, $inline = true, $format = '') {
+		wfProfileIn('SMWQueryProcessor::getResultFromQuery (SMW)');
+		if ($format == '') {
+			$format = SMWQueryProcessor::getResultFormat($params);
+		}
+		$res = smwfGetStore()->getQueryResult($query);
+		if ($query->querymode == SMWQuery::MODE_INSTANCES) {
+			wfProfileIn('SMWQueryProcessor::getResultFromQuery-printout (SMW)');
+			$printer = SMWQueryProcessor::getResultPrinter($format, $inline, $res);
+			$result = $printer->getResult($res, $params, $outputmode);
+			wfProfileOut('SMWQueryProcessor::getResultFromQuery-printout (SMW)');
+			wfProfileOut('SMWQueryProcessor::getResultFromQuery (SMW)');
+			return $result;
+		} else { // result for counting or debugging is just a string
+			wfProfileOut('SMWQueryProcessor::getResultFromQuery (SMW)');
+			return $res;
 		}
 	}
 

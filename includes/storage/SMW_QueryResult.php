@@ -18,13 +18,14 @@
  * returned by this object has the same number of elements (columns).
  */
 class SMWQueryResult {
-	protected $m_content; //an array (table) of arrays (rows) of arrays (fields, SMWResultArray)
-	protected $m_printrequests; //an array of SMWPrintRequest objects, indexed by their natural hash keys
-	protected $m_furtherres;
-	protected $m_errors; // error array (simple string messages, possibly empty)
+	protected $m_content; // array (table) of arrays (rows) of arrays (fields, SMWResultArray)
+	protected $m_printrequests; // array of SMWPrintRequest objects, indexed by their natural hash keys
+	protected $m_furtherres; // are there more results than the ones given?
+	// The following are not part of the result, but specify the input query (needed for further results link):
+	protected $m_query; // the query object, must be set on create and is our fallback for all other data
 	protected $m_querystring; // string (inline query) version of query
-	protected $m_ascending; // order ascending?
-	protected $m_sortkey; // by which property to sort (false: do not sort)
+	protected $m_extraprintouts; // the additional SMWPrintRequest objects specified outside $m_querystring
+	  // Note: these may differ from m_printrequests, since they do not involve requests given in the querystring
 
 	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
@@ -34,10 +35,9 @@ class SMWQueryResult {
 		$this->m_content = array();
 		$this->m_printrequests = $printrequests;
 		$this->m_furtherres = $furtherres;
-		$this->m_errors = $query->getErrors();
+		$this->m_query = $query;
 		$this->m_querystring = $query->getQueryString();
-		$this->m_ascending = $query->ascending;
-		$this->m_sortkey = $query->sortkey;
+		$this->m_extraprintouts = $query->getExtraPrintouts();
 	}
 
 	/**
@@ -116,7 +116,8 @@ class SMWQueryResult {
 	 * Return error array, possibly empty.
 	 */
 	public function getErrors() {
-		return $this->m_errors;
+		// just use query errors (no own errors generated so up to now)
+		return $this->m_query->getErrors();
 	}
 
 	/**
@@ -128,9 +129,9 @@ class SMWQueryResult {
 		/// TODO implement (requires some way of generating/maintaining this URL as part of the query, and setting it when creating this result)
 		$title = Title::makeTitle(NS_SPECIAL, 'ask');
 		$params = 'query=' . urlencode($this->m_querystring);
-		if ($this->m_sortkey != false) {
-			$params .= '&sort=' . urlencode($this->m_sortkey);
-			if ($this->m_ascending) {
+		if ($this->m_query->sortkey != false) {
+			$params .= '&sort=' . urlencode($this->m_query->sortkey);
+			if ($this->m_query->ascending) {
 				$params .= '&order=ASC';
 			} else {
 				$params .= '&order=DESC';

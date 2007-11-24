@@ -12,7 +12,8 @@
  */
 abstract class SMWResultPrinter {
 
-	// parameters:
+	protected $m_params;
+	// parameters relevant for printers in general:
 	protected $mFormat;  // a string identifier describing a valid format
 	protected $mIntro = ''; // text to print before the output in case it is *not* empty
 	protected $mSearchlabel = NULL; // text to use for link to further results, or empty if link should not be shown
@@ -81,6 +82,7 @@ abstract class SMWResultPrinter {
 	 * (extended) by subclasses.
 	 */
 	protected function readParameters($params,$outputmode) {
+		$this->m_params = $params;
 		if (array_key_exists('intro', $params)) {
 			$this->mIntro = str_replace('_',' ',$params['intro']);
 			if ($outputmode==SMW_OUTPUT_HTML) {

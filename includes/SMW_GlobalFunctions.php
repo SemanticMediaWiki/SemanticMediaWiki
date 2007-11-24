@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.0-RC3alpha');
+define('SMW_VERSION','1.0-RC3alpha-svn2');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -163,64 +163,26 @@ function smwfRegisterInlineQueries( &$parser, &$text, &$stripstate ) {
 /**
  * The <ask> parser hook processing part.
  */
-function smwfProcessInlineQuery($text, $param, &$parser) {
+function smwfProcessInlineQuery($querytext, $params, &$parser) {
 	global $smwgQEnabled, $smwgIP;
 	if ($smwgQEnabled) {
 		require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
-		return SMWQueryProcessor::getResultHTML($text,$param);
+		return SMWQueryProcessor::getResultFromHookParams($querytext,$params,SMW_OUTPUT_HTML);
 	} else {
 		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 	}
 }
 
 /**
- * The {{#ask }} parser hook processing part.
+ * The {{#ask }} parser function processing part.
  */
 function smwfProcessInlineQueryParserFunction(&$parser) {
-	global $smwgQEnabled, $smwgIP, $wgContLang;
+	global $smwgQEnabled, $smwgIP;
 	if ($smwgQEnabled) {
 		require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
 		$params = func_get_args();
 		array_shift( $params ); // we already know the $parser ...
-		$query = '';
-		$printouts = array();
-		$args = array();
-		foreach ($params as $param) {
-			if ($param == '') {
-			} elseif ($param{0} == '?') { // print statement
-				$param = substr($param,1);
-				$parts = explode('=',$param,2);
-				$propparts = explode('#',$parts[0],2);
-				if ($wgContLang->getNsText(NS_CATEGORY) != ucfirst(trim($propparts[0]))) {
-					$property = Title::newFromText(trim($propparts[0]), SMW_NS_PROPERTY); // trim needed for \n
-					if ($property === NULL) { // too bad, this is no legal property name, ignore
-						continue;
-					}
-					$printmode = SMW_PRINT_PROP;
-					if (count($parts) == 1) { // no label found, use property name
-						$parts[] = $property->getText();
-					}
-				} else {
-					$property = NULL;
-					$printmode = SMW_PRINT_CATS;
-					if (count($parts) == 1) { // no label found, use category label
-						$parts[] = $wgContLang->getNSText(NS_CATEGORY);
-					}
-				}
-				if (count($propparts) == 1) { // no outputformat found, use property name
-					$propparts[] = '';
-				}
-				$printouts[] = new SMWPrintRequest($printmode, trim($parts[1]), $property, $propparts[1]);
-			} else { // parameter or query
-				$parts = explode('=',$param,2);
-				if (count($parts) >= 2) {
-					$args[strtolower(trim($parts[0]))] = $parts[1]; // don't trim here, some params care for " "
-				} else {
-					$query .= $param;
-				}
-			}
-		}
-		return SMWQueryProcessor::getResult($query,$args,SMW_OUTPUT_WIKI, true, $printouts);
+		return SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI);
 	} else {
 		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 	}
