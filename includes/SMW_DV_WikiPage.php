@@ -145,7 +145,13 @@ class SMWWikiPageValue extends SMWDataValue {
 			case NS_MEDIA: // special handling for linking media files directly
 				$file = wfFindFile( $this->getTitle() );
 				if ($file) {
-					$obj = $file->getFullURL();
+					//$obj = $file->getFullURL();
+					/// TODO: the following just emulates getFullURL() which is not yet available in MW1.11:
+					$obj = $file->getUrl();
+					if( substr( $obj, 0, 1 ) == '/' ) {
+						global $wgServer;
+						$obj = $wgServer . $obj;
+					}
 				} else { // Medialink to non-existing file :-/
 					return "\t\t <!-- $QName points to the media object " . $this->getXSDValue() . " but no such file was uploaded. -->\n";
 				}
