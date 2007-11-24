@@ -28,7 +28,7 @@ the authors.
 
 == Requirements ==
 
-* MediaWiki 1.10.* or greater (tested from 1.10.1 to 1.12alpha).
+* MediaWiki 1.11.* or greater (tested from 1.11.0 to 1.12alpha, 1.10.* also may still work to some extent).
 * PHP 5.x or greater installed and working
 * MySQL >= 4.0.14 (version required by MediaWiki)
 
