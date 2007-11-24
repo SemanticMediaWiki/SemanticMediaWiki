@@ -177,14 +177,13 @@ function smwfProcessInlineQuery($text, $param, &$parser) {
  * The {{#ask }} parser hook processing part.
  */
 function smwfProcessInlineQueryParserFunction(&$parser) {
-	global $smwgQEnabled, $smwgIP;
+	global $smwgQEnabled, $smwgIP, $wgContLang;
 	if ($smwgQEnabled) {
 		require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
 		$params = func_get_args();
 		array_shift( $params ); // we already know the $parser ...
 		$query = '';
 		$printouts = array();
-		//array(new SMWPrintRequest(SMW_PRINT_PROP, 'Borders', Title::newFromText('Property:Borders')), new SMWPrintRequest(SMW_PRINT_PROP, 'Area', Title::newFromText('Property:Area'),'sqkm') )
 		$args = array();
 		foreach ($params as $param) {
 			if ($param == '') {
@@ -192,17 +191,26 @@ function smwfProcessInlineQueryParserFunction(&$parser) {
 				$param = substr($param,1);
 				$parts = explode('=',$param,2);
 				$propparts = explode('#',$parts[0],2);
-				$property = Title::newFromText(trim($propparts[0]), SMW_NS_PROPERTY); // trim needed for \n
-				if ($property === NULL) { // too bad
-					continue;
-				}
-				if (count($parts) == 1) { // no label found, use property name
-					$parts[] = $property->getText();
+				if ($wgContLang->getNsText(NS_CATEGORY) != ucfirst(trim($propparts[0]))) {
+					$property = Title::newFromText(trim($propparts[0]), SMW_NS_PROPERTY); // trim needed for \n
+					if ($property === NULL) { // too bad, this is no legal property name, ignore
+						continue;
+					}
+					$printmode = SMW_PRINT_PROP;
+					if (count($parts) == 1) { // no label found, use property name
+						$parts[] = $property->getText();
+					}
+				} else {
+					$property = NULL;
+					$printmode = SMW_PRINT_CATS;
+					if (count($parts) == 1) { // no label found, use category label
+						$parts[] = $wgContLang->getNSText(NS_CATEGORY);
+					}
 				}
 				if (count($propparts) == 1) { // no outputformat found, use property name
 					$propparts[] = '';
 				}
-				$printouts[] = new SMWPrintRequest(SMW_PRINT_PROP, trim($parts[1]), $property, $propparts[1]);
+				$printouts[] = new SMWPrintRequest($printmode, trim($parts[1]), $property, $propparts[1]);
 			} else { // parameter or query
 				$parts = explode('=',$param,2);
 				if (count($parts) >= 2) {
