@@ -82,7 +82,6 @@ class SMWPrintRequest {
 				case SMW_PRINT_THIS: default: return $this->m_label;
 			}
 		}
-		
 	}
 
 	public function getText($outputmode, $linker = NULL) {
@@ -122,6 +121,21 @@ class SMWPrintRequest {
 		}
 		$hash .= $this->m_outputformat . ':';
 		return $hash;
+	}
+
+	/**
+	 * Serialise this object like print requests given in #ask.
+	 */
+	public function getSerialisation() {
+		/// TODO: do not use "= label" if label is the default anyway
+		switch ($this->m_mode) {
+			case SMW_PRINT_CATS:
+				global $wgContLang;
+				return '?' . $wgContLang->getNSText(NS_CATEGORY) . '=' . $this->m_label;
+			case SMW_PRINT_PROP:
+				return '?' . $this->m_title->getText() . '=' . $this->m_label;
+			case SMW_PRINT_THIS: default: return ''; // no current serialisation
+		}
 	}
 }
 

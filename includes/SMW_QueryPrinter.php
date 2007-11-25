@@ -169,7 +169,8 @@ abstract class SMWResultPrinter {
 	 */
 	protected function getFurtherResultsLink($outputmode, $res, $label) {
 		switch ($outputmode) {
-			case SMW_OUTPUT_WIKI: return '[' . $res->getQueryURL() . ' ' . $label . ']';
+			//case SMW_OUTPUT_WIKI: return '[' . $res->getQueryURL() . ' ' . $label . ']';
+			case SMW_OUTPUT_WIKI: return '[[' . $res->getQueryTitle() . '|' . $label . ']]';
 			case SMW_OUTPUT_HTML: default: return '<a href="' . $res->getQueryURL() . '">' . $label . '</a>';
 		}
 	}

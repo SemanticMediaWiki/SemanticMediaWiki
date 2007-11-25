@@ -139,6 +139,26 @@ class SMWQueryResult {
 		}
 		return $title->getFullURL($params);
 	}
+	
+	/**
+	 * Return titlestring of a page that displays those search results
+	 * (and enables browsing results, and is accessible even without
+	 * JavaScript enabled browsers).
+	 */
+	public function getQueryTitle() {
+		$title = Title::makeTitle(NS_SPECIAL, 'ask');
+		$titlestring = $title->getPrefixedText();
+		$params = array($this->m_querystring);
+		foreach ($this->m_extraprintouts as $printout) {
+			$params[] = $printout->getSerialisation();
+		}
+		foreach ($params as $p) {
+			$p = str_replace(array('/','=','-','%'),array('-2F','-3D','-2D','-'), rawurlencode($p));
+			$titlestring .= '/' . $p;
+		}
+		/// TODO: finish implementation
+		return $titlestring;
+	}
 }
 
 /**

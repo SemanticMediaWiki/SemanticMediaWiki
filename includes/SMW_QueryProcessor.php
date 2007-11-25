@@ -27,9 +27,7 @@ class SMWQueryProcessor {
 	 * an SMWQuery. Parameters are given as key-value-pairs in the
 	 * given array. The parameter $inline defines whether the query
 	 * is "inline" as opposed to being part of some special search page.
-	 *
-	 * If an error occurs during parsing, an error-message is returned 
-	 * as a string. Otherwise an object of type SMWQuery is returned.
+	 * An object of type SMWQuery is returned.
 	 *
 	 * The format string is used to specify the output format if already
 	 * known. Otherwise it will be determined from the parameters when 
@@ -95,17 +93,12 @@ class SMWQueryProcessor {
 	}
 
 	/**
-	 * Process and answer a query as given by an array of parameters as is 
-	 * typically produced by the #ask parser function. The result is formatted
-	 * according to the specified $outputformat. The third parameter $inline
-	 * defines whether the query is "inline" as opposed to being part of some
-	 * special search page.
-	 *
-	 * The main task of this function is to preprocess the raw parameters to
-	 * obtain actual parameters, printout requests, and the query string for
-	 * further processing.
+	 * Prerocess a query as given by an array of parameters as is  typically 
+	 * produced by the #ask parser function. The parsing results in a querystring,
+	 * an array of additional parameters, and an array of additional SMWPrintRequest
+	 * objects, which are filled into call-by-ref parameters.
 	 */
-	static public function getResultFromFunctionParams($rawparams, $outputmode, $inline = true) {
+	static public function processFunctionParams($rawparams, &$querystring, &$params, &$printouts) {
 		global $wgContLang;
 		$querystring = '';
 		$printouts = array();
@@ -146,6 +139,21 @@ class SMWQueryProcessor {
 			}
 		}
 		$querystring = str_replace(array('&lt;','&gt;'), array('<','>'), $querystring);
+	}
+
+	/**
+	 * Process and answer a query as given by an array of parameters as is 
+	 * typically produced by the #ask parser function. The result is formatted
+	 * according to the specified $outputformat. The third parameter $inline
+	 * defines whether the query is "inline" as opposed to being part of some
+	 * special search page.
+	 *
+	 * The main task of this function is to preprocess the raw parameters to
+	 * obtain actual parameters, printout requests, and the query string for
+	 * further processing.
+	 */
+	static public function getResultFromFunctionParams($rawparams, $outputmode, $inline = true) {
+		SMWQueryProcessor::processFunctionParams($rawparams,$querystring,$params,$printouts);
 		return SMWQueryProcessor::getResultFromQueryString($querystring,$params,$printouts, SMW_OUTPUT_WIKI, $inline);
 	}
 
@@ -189,12 +197,8 @@ class SMWQueryProcessor {
 	static public function getResultFromQueryString($querystring, $params, $extraprintouts, $outputmode, $inline = true) {
 		wfProfileIn('SMWQueryProcessor::getResultFromQueryString (SMW)');
 		$format = SMWQueryProcessor::getResultFormat($params);
-		$query = SMWQueryProcessor::createQuery($querystring, $params, $inline, $format, $extraprintouts);
-		if ($query instanceof SMWQuery) { // query parsing successful
-			$result = SMWQueryProcessor::getResultFromQuery($query, $params, $extraprintouts, $outputmode, $inline, $format);
-		} else { // error string (should be HTML and wiki compatible)
-			$result = $query;
-		}
+		$query  = SMWQueryProcessor::createQuery($querystring, $params, $inline, $format, $extraprintouts);
+		$result = SMWQueryProcessor::getResultFromQuery($query, $params, $extraprintouts, $outputmode, $inline, $format);
 		wfProfileOut('SMWQueryProcessor::getResultFromQueryString (SMW)');
 		return $result;
 	}
@@ -235,7 +239,7 @@ class SMWQueryProcessor {
 	/**
 	 * Find suitable SMWResultPrinter for the given format.
 	 */
-	static protected function getResultPrinter($format,$inline,$res) {
+	static public function getResultPrinter($format,$inline,$res) {
 		if ( 'auto' == $format ) {
 			if ( ($res->getColumnCount()>1) && ($res->getColumnCount()>0) )
 				$format = 'table';
