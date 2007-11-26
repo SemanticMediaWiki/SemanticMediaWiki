@@ -96,7 +96,11 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 						if ( !$hastitle && $object->getTypeID() != '_wpg') { // "linking" non-pages in title positions confuses timeline scripts, don't try this
 							$l = NULL;
 						}
-						$objectlabel = $object->getShortText($outputmode,$l);
+						if ($object->getTypeID() == '_wpg') { // use shorter "LongText" for wikipage
+							$objectlabel = $object->getLongText($outputmode,$l);
+						} else {
+							$objectlabel = $object->getShortText($outputmode,$l);
+						}
 						$urlobject =  ($l !== NULL);
 						$header = '';
 						if ($first_value) {
