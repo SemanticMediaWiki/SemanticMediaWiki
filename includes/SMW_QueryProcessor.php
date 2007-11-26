@@ -46,7 +46,7 @@ class SMWQueryProcessor {
 		} else {
 			$mainlabel = $qp->getLabel();
 		}
-		if ( !$desc->isSingleton() || (count($desc->getPrintRequests()) + count($extraprintouts) == 0) ) {
+		if ( ( !$desc->isSingleton() || (count($desc->getPrintRequests()) + count($extraprintouts) == 0) ) && ($mainlabel != '-') ) {
 			$desc->prependPrintRequest(new SMWPrintRequest(SMW_PRINT_THIS, $mainlabel));
 		}
 
@@ -109,7 +109,19 @@ class SMWQueryProcessor {
 				$param = substr($param,1);
 				$parts = explode('=',$param,2);
 				$propparts = explode('#',$parts[0],2);
-				if ($wgContLang->getNsText(NS_CATEGORY) != ucfirst(trim($propparts[0]))) {
+				if (trim($propparts[0]) == '') { // print "this"
+					$printmode = SMW_PRINT_THIS;
+					if (count($parts) == 1) { // no label found, use empty label
+						$parts[] = '';
+					}
+					$property = NULL;
+				} elseif ($wgContLang->getNsText(NS_CATEGORY) == ucfirst(trim($propparts[0]))) { // print category
+					$property = NULL;
+					$printmode = SMW_PRINT_CATS;
+					if (count($parts) == 1) { // no label found, use category label
+						$parts[] = $wgContLang->getNSText(NS_CATEGORY);
+					}
+				} else { // print property
 					$property = Title::newFromText(trim($propparts[0]), SMW_NS_PROPERTY); // trim needed for \n
 					if ($property === NULL) { // too bad, this is no legal property name, ignore
 						continue;
@@ -117,12 +129,6 @@ class SMWQueryProcessor {
 					$printmode = SMW_PRINT_PROP;
 					if (count($parts) == 1) { // no label found, use property name
 						$parts[] = $property->getText();
-					}
-				} else {
-					$property = NULL;
-					$printmode = SMW_PRINT_CATS;
-					if (count($parts) == 1) { // no label found, use category label
-						$parts[] = $wgContLang->getNSText(NS_CATEGORY);
 					}
 				}
 				if (count($propparts) == 1) { // no outputformat found, use property name
