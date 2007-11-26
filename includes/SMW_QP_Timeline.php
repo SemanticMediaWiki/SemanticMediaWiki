@@ -93,6 +93,9 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 					$pr = $field->getPrintRequest();
 					while ( ($object = $field->getNextObject()) !== false ) {
 						$l = $this->getLinker($first_col);
+						if ( !$hastitle && $object->getTypeID() != '_wpg') { // "linking" non-pages in title positions confuses timeline scripts, don't try this
+							$l = NULL;
+						}
 						$objectlabel = $object->getShortText($outputmode,$l);
 						$urlobject =  ($l !== NULL);
 						$header = '';
