@@ -10,7 +10,6 @@ class SMW_LanguageHe extends SMW_Language {
 
 protected $m_ContentMessages = array(
 	'smw_edithelp' => 'עזרה בנושא עריכת יחסים ותכונות',
-	'smw_helppage' => 'יחס',
 	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => ', וגם', //used in "A, B, and C"
 	'smw_factbox_head' => 'עובדות על אודות $1 &mdash; לחץ <span class="smwsearchicon">+</span> בכדי למצוא דפים דומים.',
@@ -24,7 +23,8 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "Sorry. Semantic queries have been disabled for this wiki.", // TODO: translate
 	'smw_iq_moreresults' => '&hellip; תוצאות נוספות',
-	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.', //TODO: translate
+	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element.', //TODO: translate
+	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled // TODO: translate
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => '[Sorry, import functions are not avalable for namespace "$1".]', // TODO: translate
 	'smw_nonright_importtype' => '[Sorry, $1 can only be used for pages with namespace "$2"]',

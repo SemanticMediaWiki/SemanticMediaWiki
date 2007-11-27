@@ -10,7 +10,6 @@ class SMW_LanguageSk extends SMW_Language {
 
 protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Pomoc pri upravovaní vzťahov a atribútov',
-	'smw_helppage' => 'Vzťah',
 	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => ' a', //used in "A, B, and C"
 	'smw_factbox_head' => 'Skutočnosti o $1 &mdash; Kliknutím na <span class="smwsearchicon">+</span> vyhľadáte podobné stránky.',
@@ -24,7 +23,9 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "Prepáčte. Inline queries have been disabled for this wiki.",
 	'smw_iq_moreresults' => '&hellip; ďalšie výsledky',
-	'smw_iq_nojs' => 'Tento prvok zobrazíte použitím prehliadača podporujúcim JavaScript alebo priamo <a href="$1">prehliadajte zoznam výsledkov</a>.',
+	//'smw_iq_nojs' => 'Tento prvok zobrazíte použitím prehliadača podporujúcim JavaScript alebo priamo <a href="$1">prehliadajte zoznam výsledkov</a>.',
+	'smw_iq_nojs' => 'Please use a JavaScript-enabled browser to view this element.', // TODO: translate (change from above translation)
+	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled // TODO: translate
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => 'Funkcie importu nie sú dostupné pre menný priestor "$1".',
 	'smw_nonright_importtype' => '$1 je možné použiť iba pre stránky z menného priestoru "$2".',

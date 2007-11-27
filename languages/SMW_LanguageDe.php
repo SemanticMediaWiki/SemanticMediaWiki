@@ -19,7 +19,6 @@ class SMW_LanguageDe extends SMW_Language {
 
 protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Bearbeitungshilfe für Attribute',
-	'smw_helppage' => 'Relationen und Attribute',
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und', //used in "A, B, and C"
 	'smw_factbox_head' => 'Fakten zu $1',
@@ -33,7 +32,8 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "Semantische Anfragen sind in diesem Wiki zur Zeit nicht möglich.",
 	'smw_iq_moreresults' => '&hellip; weitere Ergebnisse',
-	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung oder als <a href="$1">Liste einzelner Suchergebnisse</a> betrachtet werden.',
+	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung betrachtet werden.',
+	'smw_iq_altresults' => 'Suchergebnisse als Liste anzeigen.', // available link when JS is disabled
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => 'Für den Namensraum „$1“ sind leider keine Importfunktionen verfügbar.',
 	'smw_nonright_importtype' => 'Das Element „$1“ kann nur für Seiten im Namensraum „$2“ verwendet werden.',

@@ -29,7 +29,6 @@ class SMW_LanguagePl extends SMW_Language {
 
 protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Pomoc edycyjna odnośnie relacji i atrybutów',
-	'smw_helppage' => 'Relacja',
 	'smw_viewasrdf' => 'RDF feed', //TODO: translate?
 	'smw_finallistconjunct' => ' i', //used in "A, B, and C"
 	'smw_factbox_head' => 'Fakty o $1 &mdash; Kliknij <span class="smwsearchicon">+</span> aby znaleźć podobne strony.',
@@ -43,7 +42,8 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "Niestety, w tym wiki wyłączono możliwość tworzenia zapytań w artykułach.",
 	'smw_iq_moreresults' => '&hellip; dalsze wyniki',
-	'smw_iq_nojs' => 'Aby obejrzeć ten element, włącz w przeglądarce obsługę JavaScript, lub <a href="$1">przeglądaj listę wyników</a> bezpośrednio.',
+	'smw_iq_nojs' => 'Aby obejrzeć ten element, włącz w przeglądarce obsługę JavaScript.', // TODO: check if this is a sentence (Markus pruned it ;)
+	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled // TODO: translate
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => 'Nie ma możliwości importu z przestrzeni nazw "$1".',
 	'smw_nonright_importtype' => '$1 może być użyte tylko dla artykułów z przestrzeni nazw "$2".',

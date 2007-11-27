@@ -10,7 +10,6 @@ class SMW_LanguageZh_tw extends SMW_Language {
 
 protected $m_ContentMessages = array(
 	'smw_edithelp' => '與關聯(relations)及屬性(attributes)有關的編輯協助',  //(Editing help on relations and attributes)
-	'smw_helppage' => '關聯',    //(Relation)
 	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => '， 和',    //(, and) used in "A, B, and C"
 	'smw_factbox_head' => '關於$1 的小檔案', //(Facts about $1)
@@ -24,7 +23,8 @@ protected $m_ContentMessages = array(
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "抱歉，線上查詢在此wiki已被設定為無效", //"Sorry. Semantic queries have been disabled for this wiki."
 	'smw_iq_moreresults' => '&hellip; 進階查詢',	//'&hellip; further results'
-	'smw_iq_nojs' => '請使用內建JavaScript的瀏覽器以瀏覽此元素，或直接<a href="$1">瀏覽結果清單</a>.',	//'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.'
+	'smw_iq_nojs' => '請使用內建JavaScript的瀏覽器以瀏覽此元素.',	//'Use a JavaScript-enabled browser to view this element.' // TODO: check translation (Markus pruned it ;)
+	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled // TODO: translate
 	// Messages and strings for ontology resued (import)
 	'smw_unknown_importns' => '匯入功能對“$1”的名字空間無效”.', 	//'Import functions are not avalable for namespace “$1”.
 	'smw_nonright_importtype' => '$1僅能用於名字空間為“$2”的頁面。',	//'$1 can only be used for pages with namespace “$2”.'

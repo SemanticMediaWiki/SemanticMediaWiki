@@ -11,7 +11,6 @@ class SMW_LanguageRu extends SMW_Language {
 
 protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Редактирование справки по свойствам',
-	'smw_helppage' => 'Отношение',
 	'smw_viewasrdf' => 'RDF источник',
 	'smw_finallistconjunct' => ' и', //used in "A, B, and C"
 	'smw_factbox_head' => 'Факты: $1',
@@ -25,7 +24,8 @@ protected $m_ContentMessages = array(
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "Извините, но встроенные запросы отключены для этого сайта.",
 	'smw_iq_moreresults' => '&hellip; следующие результаты',
-	'smw_iq_nojs' => 'Используйте браузер с поддержкой JavaScript для просмотра этого элемента, или <a href="$1">просмотрите результат в виде списка</a>.',
+	'smw_iq_nojs' => 'Используйте браузер с поддержкой JavaScript для просмотра этого элемента.', // TODO: check if this is a sentence (Markus pruned it ;-)
+	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled // TODO: translate
 	// Messages and strings for ontology resued (import)
 	'smw_unknown_importns' => 'Ошибка: Функции импорта не доступны для пространства имен "$1".',
 	'smw_nonright_importtype' => 'Ошибка: $1 может быть использован только для статей с пространством имен "$2".',

@@ -10,7 +10,6 @@ class SMW_LanguageFr extends SMW_Language {
 
 protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Aide à la rédaction de relations et d\'attributs',
-	'smw_helppage' => 'Relations et attributs',
 	'smw_viewasrdf' => 'Voir comme RDF',
 	'smw_finallistconjunct' => ' et',					//utilisé dans "A, B, et C"
 	'smw_factbox_head' => 'Faits relatifs à $1 &mdash; Recherche de pages similaires avec <span class="smwsearchicon">+</span>.',
@@ -24,7 +23,8 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "Désolé. Les recherches dans les articles de ce wiki ne sont pas autorisées.",
 	'smw_iq_moreresults' => '&hellip; autres résultats',
-	'smw_iq_nojs' => 'Utilisez un navigateur avec JavaScript pour voir cet élément, ou <a href="$1">consultez la liste des résultats</a> directement.',
+	'smw_iq_nojs' => 'Utilisez un navigateur avec JavaScript pour voir cet élément.',
+	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled // TODO: translate
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => 'Aucune fonction d\'import n\'est disponible pour l\'espace de nommage "$1".',
 	'smw_nonright_importtype' => 'L\'élément "$1" ne peut être employé que pour des articles de l\'espace de nommage "$2".',

@@ -10,7 +10,6 @@ class SMW_LanguageZh_cn extends SMW_Language {
 
 protected $m_ContentMessages = array(
 	'smw_edithelp' => '与关联(relations)及属性(attributes)有关的编辑协助',  //(Editing help on relations and attributes)
-	'smw_helppage' => '关联',    //(Relation)
 	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => '， 和',    //(, and) used in "A, B, and C"
 	'smw_factbox_head' => '关于$1 的小文件', //(Facts about $1)
@@ -20,11 +19,12 @@ protected $m_ContentMessages = array(
 	'smw_isnotype' => '在此wiki系统内，此一“$1＂型态并非是一项标准的资料型态，并且尚未被用户赋予其定义',
 	//(This type “$1＂ is not a standard datatype in the wiki, and has not been given a user definition either.) URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
-	'smw_baduri' => '抱歉，在此处无法取得从“$1＂范围的，URIs. (译注原文为：Sorry, URIs from the range “$1＂ are not available in this place.)',         
+	'smw_baduri' => '抱歉，在此处无法取得从“$1＂范围的，URIs. (译注原文为：Sorry, URIs from the range “$1＂ are not available in this place.)',
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "抱歉，联机查询在此wiki已被设置为无效", //"Sorry. Semantic queries have been disabled for this wiki."
 	'smw_iq_moreresults' => '&hellip; 高级查询',       //'&hellip; further results'
-	'smw_iq_nojs' => '请使用内建JavaScript的浏览器以浏览此元素，或直接<a href="$1">浏览结果列表</a>.',    //'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.'
+	'smw_iq_nojs' => '请使用内建JavaScript的浏览器以浏览此元素.',    //'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.' // TODO: check translation (Markus pruned it ;)
+	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled // TODO: translate
 	// Messages and strings for ontology resued (import)
 	'smw_unknown_importns' => '导入功能对“$1＂的名字空间无效＂.',    //'Import functions are not avalable for namespace “$1＂.
 	'smw_nonright_importtype' => '$1仅能用于名字空间为“$2＂的页面。',        //'$1 can only be used for pages with namespace “$2＂.'

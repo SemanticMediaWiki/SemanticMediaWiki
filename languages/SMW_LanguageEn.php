@@ -10,7 +10,6 @@ class SMW_LanguageEn extends SMW_Language {
 
 protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Editing help on properties',
-	'smw_helppage' => 'Relation',
 	'smw_viewasrdf' => 'RDF feed',
 	'smw_finallistconjunct' => ', and', //used in "A, B, and C"
 	'smw_factbox_head' => 'Facts about $1',
@@ -20,11 +19,12 @@ protected $m_ContentMessages = array(
 	'smw_isnotype' => 'This type “$1” is not a standard datatype in the wiki, and has not been given a user definition either.',
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
-	'smw_baduri' => 'Sorry, URIs from the range “$1” are not available in this place.',
+	'smw_baduri' => 'Sorry, URIs of the form “$1” are not available in this place.',
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "Sorry. Semantic queries have been disabled for this wiki.",
 	'smw_iq_moreresults' => '&hellip; further results',
-	'smw_iq_nojs' => 'Use a JavaScript-enabled browser to view this element, or directly <a href="$1">browse the result list</a>.',
+	'smw_iq_nojs' => 'Please use a JavaScript-enabled browser to view this element.',
+	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled
 	// Messages and strings for ontology resued (import)
 	'smw_unknown_importns' => 'Import functions are not avalable for namespace “$1”.',
 	'smw_nonright_importtype' => '$1 can only be used for pages with namespace “$2”.',

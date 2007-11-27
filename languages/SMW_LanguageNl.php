@@ -10,7 +10,6 @@ class SMW_LanguageNl extends SMW_Language {
 
 protected $m_ContentMessages = array(
 	'smw_edithelp' => 'Bewerkingshulp bij eigenschappen',
-	'smw_helppage' => 'Relatie',
 	'smw_viewasrdf' => 'RDF-feed',
 	'smw_finallistconjunct' => ', en', //used in "A, B, and C"
 	'smw_factbox_head' => 'Feiten over $1',
@@ -24,7 +23,8 @@ protected $m_ContentMessages = array(
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "Sorry. Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.",
 	'smw_iq_moreresults' => '&hellip; overige resultaten',
-	'smw_iq_nojs' => 'Gebruiker een browser waarin JavaScript is ingeschakeld om dit element te zien, of <a href="$1">bekijk de resultatenlijst</a>.',
+	'smw_iq_nojs' => 'Gebruiker een browser waarin JavaScript is ingeschakeld om dit element te zien.',
+	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled // TODO: translate
 	// Messages and strings for ontology resued (import)
 	'smw_unknown_importns' => 'Importfuncties zijn niet beschikbaar voor de naamruimte “$1”.',
 	'smw_nonright_importtype' => '$1 kan alleen gebruikt worden voor pagina\'s in de naamruimte “$2”.',
