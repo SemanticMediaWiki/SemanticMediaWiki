@@ -148,12 +148,16 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>Der URI-Auflöser setzt die Empfehlungen »<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>« um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.</p>',
 	/*Messages for ask Special*/
 	'ask' => 'Semantische Suche',
-	'smw_ask_docu' => '<p>Bitte geben Sie eine Suchanfrage ein. Weitere Informationen sind auf der <a href="$1">Hilfeseite für die semantische Suche</a> zu finden.</p>',
 	'smw_ask_doculink' => 'Semantische Suche',
-	'smw_ask_sortby' => 'Sortiere nach Spalte',
+	'smw_ask_sortby' => 'Sortiere nach Spalte (optional)',
 	'smw_ask_ascorder' => 'Aufsteigend',
 	'smw_ask_descorder' => 'Absteigend',
 	'smw_ask_submit' => 'Finde Ergebnisse',
+	'smw_ask_editquery' => '[Anfrage bearbeiten]',
+	'smw_ask_hidequery' => 'Anfrage ausblenden',
+	'smw_ask_help' => 'Hilfe',
+	'smw_ask_queryhead' => 'Anfrage',
+	'smw_ask_printhead' => 'Zusätzliche Ausgaben (optional)',
 	// Messages for the search by property special
 	'searchbyproperty' => 'Suche mittels Attribut',
 	'smw_sbv_docu' => '<p>Diese Spezialseite findet alle Seiten, die einen bestimmten Wert für das angegebene Attribut haben.</p>',

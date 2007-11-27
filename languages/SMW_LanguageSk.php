@@ -158,12 +158,16 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>URI resolver sa stará o implementáciu <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG hľadanie na httpRange-14</a>. Stará sa o to, aby sa ľudia nestali webstránkami.</p>',
 	/*Messages for ask Special*/
 	'ask' => 'Sémantické vyhľadávanie',
-	'smw_ask_docu' => '<p>Prehľadávajte wiki zadaním dotazu do vyhľadávacieho poľa dolu. Ďalšie informácie sú ovedené na <a href="$1">stránke pomocníka pre sémantické vyhľadávanie</a>.</p>',
 	'smw_ask_doculink' => 'Sémantické vyhľadávanie',
 	'smw_ask_sortby' => 'Zoradiť podľa stĺpca',
 	'smw_ask_ascorder' => 'Vzostupne',
 	'smw_ask_descorder' => 'Zostupne',
 	'smw_ask_submit' => 'Nájdi výsledky',
+	'smw_ask_editquery' => '[Edit query]', // TODO: translate
+	'smw_ask_hidequery' => 'Hide query', // TODO: translate
+	'smw_ask_help' => 'Querying help', // TODO: translate
+	'smw_ask_queryhead' => 'Query', // TODO: translate
+	'smw_ask_printhead' => 'Additional printouts (optional)', // TODO: translate
 	// Messages for the search by value special // TODO: consider re-translation (look at new English version)
 	'searchbyproperty' => 'Hľadať podľa hodnoty atribútu',
 	'smw_sbv_docu' => '<p>Hľadať na wiki článok, ktorý má atribút s istou hodnotou.</p>',

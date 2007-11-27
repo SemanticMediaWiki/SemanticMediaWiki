@@ -159,12 +159,16 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>El traductor de URI implementa <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Esto se preocupa de cosas que los humanos no lo hacen en los sitios web..</p>',
 	/*Messages for ask Special*/
 	'ask' => 'Búsqueda semántica',
-	'smw_ask_docu' => '<p>Buscar páginas introduciendo una consulta en el campo de búsqueda de abajo. Más información es mostrada en la <a href="$1">página de ayuda para búsqueda semántica</a>.</p>',
 	'smw_ask_doculink' => 'Búsqueda semántica',
 	'smw_ask_sortby' => 'Ordenar por columna',
 	'smw_ask_ascorder' => 'Ascendente',
 	'smw_ask_descorder' => 'Descendente',
 	'smw_ask_submit' => 'Buscar resultados',
+	'smw_ask_editquery' => '[Edit query]', // TODO: translate
+	'smw_ask_hidequery' => 'Hide query', // TODO: translate
+	'smw_ask_help' => 'Querying help', // TODO: translate
+	'smw_ask_queryhead' => 'Query', // TODO: translate
+	'smw_ask_printhead' => 'Additional printouts (optional)', // TODO: translate
 	// Messages for the search by property special
 	'searchbyproperty' => 'Buscar por atributo',
 	'smw_sbv_docu' => '<p>Buscar por todas las páginas que tiene un atributo y valor dado.</p>',

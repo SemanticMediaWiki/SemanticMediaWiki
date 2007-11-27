@@ -159,12 +159,16 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>', //TODO: translate
 	/*Messages for ask Special*/
 	'ask' => 'חיפוש סמנטי',
-	'smw_ask_docu' => '<p>Search pages by entering a query into the search field below. Further information is given on the <a href="$1">help page for semantic search</a>.</p>',
 	'smw_ask_doculink' => 'חיפוש סמנטי',
 	'smw_ask_sortby' => 'מיין לפי טור',
 	'smw_ask_ascorder' => 'בסדר עולה',
 	'smw_ask_descorder' => 'בסדר יורד',
 	'smw_ask_submit' => 'חפש תוצאות',
+	'smw_ask_editquery' => '[Edit query]', // TODO: translate
+	'smw_ask_hidequery' => 'Hide query', // TODO: translate
+	'smw_ask_help' => 'Querying help', // TODO: translate
+	'smw_ask_queryhead' => 'Query', // TODO: translate
+	'smw_ask_printhead' => 'Additional printouts (optional)', // TODO: translate
 	// Messages for the search by property special TODO: translate
 	'searchbyproperty' => 'Search by property', //TODO: translate
 	'smw_sbv_docu' => '<p>Search for all pages that have a given property and value.</p>', //TODO: translate

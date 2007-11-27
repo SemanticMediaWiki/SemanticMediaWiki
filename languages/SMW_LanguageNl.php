@@ -139,12 +139,16 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>De URI-resolver implementeert de <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Het zorgt ervoor dat mensen niet veranderen in websites.</p>',
 	// Messages for ask Special
 	'ask' => 'Semantisch zoeken',
-	'smw_ask_docu' => '<p>Zoek door een zoekopdracht in te geven in het onderstaande invoerveld. Veredere informatie staat op de <a href="$1">helppagina voor semantisch zoeken</a>.</p>',
 	'smw_ask_doculink' => 'Semantisch zoeken',
 	'smw_ask_sortby' => 'Sort op kolom',
 	'smw_ask_ascorder' => 'Oplopend',
 	'smw_ask_descorder' => 'Aflopend',
 	'smw_ask_submit' => 'Zoek resultaten',
+	'smw_ask_editquery' => '[Edit query]', // TODO: translate
+	'smw_ask_hidequery' => 'Hide query', // TODO: translate
+	'smw_ask_help' => 'Querying help', // TODO: translate
+	'smw_ask_queryhead' => 'Query', // TODO: translate
+	'smw_ask_printhead' => 'Additional printouts (optional)', // TODO: translate
 	// Messages for the search by property special
 	'searchbyproperty' => 'Zoek op eigenschap',
 	'smw_sbv_docu' => '<p>Zoek naar alle pagina\'s die een bepaalde eigenschap en waarde hebben.</p>',

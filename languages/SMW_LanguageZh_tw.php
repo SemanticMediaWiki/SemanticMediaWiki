@@ -140,12 +140,16 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>',	//'<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>',
 	// Messages for ask Special
 	'ask' => '語意搜尋',	//'Semantic search',
-	'smw_ask_docu' => '<p>依下方的搜尋欄位內所鍵入的查詢值進行搜尋，進一步的資訊位於<a href="$1">語意搜尋的求助頁面</a>.</p>',	//'<p>Search by entering a query into the search field below. Further information is given on the <a href="$1">help page for semantic search</a>.</p>',
 	'smw_ask_doculink' => '語意搜尋',	//'Semantic search',
 	'smw_ask_sortby' => '依欄位排序',       //(Sort by column)
 	'smw_ask_ascorder' => '升冪',        //(Ascending)
 	'smw_ask_descorder' => '降冪',       //(Descending)
 	'smw_ask_submit' => '搜尋的結果',       //(Find results)	
+	'smw_ask_editquery' => '[Edit query]', // TODO: translate
+	'smw_ask_hidequery' => 'Hide query', // TODO: translate
+	'smw_ask_help' => 'Querying help', // TODO: translate
+	'smw_ask_queryhead' => 'Query', // TODO: translate
+	'smw_ask_printhead' => 'Additional printouts (optional)', // TODO: translate
 	// Messages for the search by property special
 	'searchbyproperty' => '依性質搜尋',	//'Search by property',
 	'smw_sbv_docu' => '<p>依所指定的性質及其值來搜尋頁面</p>',	//'<p>Search for all pages that have a given property and value.</p>',

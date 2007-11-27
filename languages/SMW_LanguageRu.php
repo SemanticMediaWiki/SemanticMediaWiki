@@ -141,12 +141,16 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>Преобразователь URI осуществляет <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C поиск http тэгов с использованием Range-14</a>. Данная возможность упрощает поиск семантической информации.</p>',
 	// Messages for ask Special
 	'ask' => 'Семантический поиск',
-	'smw_ask_docu' => '<p>Наберите запрос в форме поиска. Формат запроса приведен на <a href="$1">странице справки</a>.</p>',
 	'smw_ask_doculink' => 'Семантический поиск',
 	'smw_ask_sortby' => 'Сортировать по столбцу',
 	'smw_ask_ascorder' => 'По возрастанию',
 	'smw_ask_descorder' => 'По убыванию',
 	'smw_ask_submit' => 'Найти',
+	'smw_ask_editquery' => '[Edit query]', // TODO: translate
+	'smw_ask_hidequery' => 'Hide query', // TODO: translate
+	'smw_ask_help' => 'Querying help', // TODO: translate
+	'smw_ask_queryhead' => 'Query', // TODO: translate
+	'smw_ask_printhead' => 'Additional printouts (optional)', // TODO: translate
 	// Messages for the search by property special
 	'searchbyproperty' => 'Искать по свойству',
 	'smw_sbv_docu' => '<p>Искать все страницы, которые содержат указаннок свойство и значение.</p>',

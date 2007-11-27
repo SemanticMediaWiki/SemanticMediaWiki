@@ -140,12 +140,16 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>',
 	// Messages for ask Special
 	'ask' => 'Semantic search',
-	'smw_ask_docu' => '<p>Search by entering a query into the search field below. Further information is given on the <a href="$1">help page for semantic search</a>.</p>',
 	'smw_ask_doculink' => 'Semantic search',
-	'smw_ask_sortby' => 'Sort by column',
+	'smw_ask_sortby' => 'Sort by column (optional)',
 	'smw_ask_ascorder' => 'Ascending',
 	'smw_ask_descorder' => 'Descending',
 	'smw_ask_submit' => 'Find results',
+	'smw_ask_editquery' => '[Edit query]',
+	'smw_ask_hidequery' => 'Hide query',
+	'smw_ask_help' => 'Querying help',
+	'smw_ask_queryhead' => 'Query',
+	'smw_ask_printhead' => 'Additional printouts (optional)',
 	// Messages for the search by property special
 	'searchbyproperty' => 'Search by property',
 	'smw_sbv_docu' => '<p>Search for all pages that have a given property and value.</p>',

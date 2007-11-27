@@ -107,7 +107,7 @@ function enableSemantics($namespace = '', $complete = false) {
  */
 function smwfSetupExtension() {
 	wfProfileIn('smwfSetupExtension (SMW)');
-	global $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore;
+	global $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber;
 
 	/**
 	* Setting this to false prevents any new data from being stored in
@@ -125,6 +125,7 @@ function smwfSetupExtension() {
 
 	$smwgMasterStore = NULL;
 	smwfInitContentMessages(); // this really could not be done in enableSemantics()
+	$smwgIQRunningNumber = 0;
 
 	///// register hooks /////
 	require_once($smwgIP . '/includes/SMW_Hooks.php');
@@ -164,8 +165,9 @@ function smwfRegisterInlineQueries( &$parser, &$text, &$stripstate ) {
  * The <ask> parser hook processing part.
  */
 function smwfProcessInlineQuery($querytext, $params, &$parser) {
-	global $smwgQEnabled, $smwgIP;
+	global $smwgQEnabled, $smwgIP, $smwgIQRunningNumber;
 	if ($smwgQEnabled) {
+		$smwgIQRunningNumber++;
 		require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
 		return SMWQueryProcessor::getResultFromHookParams($querytext,$params,SMW_OUTPUT_HTML);
 	} else {
@@ -177,8 +179,9 @@ function smwfProcessInlineQuery($querytext, $params, &$parser) {
  * The {{#ask }} parser function processing part.
  */
 function smwfProcessInlineQueryParserFunction(&$parser) {
-	global $smwgQEnabled, $smwgIP;
+	global $smwgQEnabled, $smwgIP, $smwgIQRunningNumber;
 	if ($smwgQEnabled) {
+		$smwgIQRunningNumber++;
 		require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
 		$params = func_get_args();
 		array_shift( $params ); // we already know the $parser ...

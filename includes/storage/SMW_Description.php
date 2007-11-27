@@ -133,7 +133,14 @@ class SMWPrintRequest {
 				global $wgContLang;
 				return '?' . $wgContLang->getNSText(NS_CATEGORY) . '=' . $this->m_label;
 			case SMW_PRINT_PROP:
-				return '?' . $this->m_title->getText() . '=' . $this->m_label;
+				$result = '?' . $this->m_title->getText();
+				if ( $this->m_outputformat != '' ) {
+					$result .= '#' . $this->m_outputformat;
+				}
+				if ( $this->m_title->getText() != $this->m_label ) {
+					$result .= '=' . $this->m_label;
+				}
+				return $result;
 			case SMW_PRINT_THIS: default: return ''; // no current serialisation
 		}
 	}

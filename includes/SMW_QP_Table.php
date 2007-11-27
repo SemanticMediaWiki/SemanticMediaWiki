@@ -22,28 +22,28 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		$result = $this->mIntro .
 		          "<table class=\"smwtable\"$widthpara id=\"querytable" . $smwgIQRunningNumber . "\">\n";
 		if ($this->mShowHeaders) { // building headers
-			$result .= "\n\t\t<tr>";
+			$result .= "\t<tr>\n";
 			foreach ($res->getPrintRequests() as $pr) {
-				$result .= "\t\t\t<th>" . $pr->getText($outputmode, $this->mLinker) . "</th>\n";
+				$result .= "\t\t<th>" . $pr->getText($outputmode, $this->mLinker) . "</th>\n";
 			}
-			$result .= "\n\t\t</tr>";
+			$result .= "\t</tr>\n";
 		}
 
 		// print all result rows
 		while ( $row = $res->getNext() ) {
-			$result .= "\t\t<tr>\n";
+			$result .= "\t<tr>\n";
 			$firstcol = true;
 			foreach ($row as $field) {
-				$result .= "<td>";
+				$result .= "\t\t<td>";
 				$first = true;
 				while ( ($text = $field->getNextText($outputmode, $this->getLinker($firstcol))) !== false ) {
 					if ($first) $first = false; else $result .= '<br />';
 					$result .= $text;
 				}
-				$result .= "</td>";
+				$result .= "</td>\n";
 				$firstcol = false;
 			}
-			$result .= "\n\t\t</tr>\n";
+			$result .= "\t</tr>\n";
 		}
 
 		// print further results footer
@@ -53,10 +53,10 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 				$label = wfMsgForContent('smw_iq_moreresults');
 			}
 			if ($label != '') {
-				$result .= "\n\t\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . $res->getColumnCount() . '"> ' . $this->getFurtherResultsLink($outputmode,$res,$label) . '</td></tr>';
+				$result .= "\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . $res->getColumnCount() . '"> ' . $this->getFurtherResultsLink($outputmode,$res,$label) . "</td></tr>\n";
 			}
 		}
-		$result .= "\t</table>"; // print footer
+		$result .= "</table>\n"; // print footer
 		return $result;
 	}
 

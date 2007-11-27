@@ -180,12 +180,16 @@ protected $m_UserMessages = array(
 	/*Messages for ask Special*/
 	/*Messages for ask Special*/
 	'ask' => 'Szukanie semantyczne',
-	'smw_ask_docu' => '<p>Szukaj w wiki wpisując zapytanie w poniższe pole. Dalsze informacje znajdują się na <a href="$1">stronie pomocy poświęconej szukaniu semantycznemu</a>.</p>',
 	'smw_ask_doculink' => 'Szukanie semantyczne',
 	'smw_ask_sortby' => 'Sortuj po kolumnie',
 	'smw_ask_ascorder' => 'Rosnąco',
 	'smw_ask_descorder' => 'Malejąco',
 	'smw_ask_submit' => 'Szukaj wyników',
+	'smw_ask_editquery' => '[Edit query]', // TODO: translate
+	'smw_ask_hidequery' => 'Hide query', // TODO: translate
+	'smw_ask_help' => 'Querying help', // TODO: translate
+	'smw_ask_queryhead' => 'Query', // TODO: translate
+	'smw_ask_printhead' => 'Additional printouts (optional)', // TODO: translate
 	// Messages for the search by property special
 	'searchbyproperty' => 'Szukaj po atrybucie',
 	'smw_sbv_docu' => '<p>Szukanie wszystkich stron, które mają dany atrybut i wartość.</p>',
