@@ -10,7 +10,8 @@
  * php SMW_refreshData.php [options...]
  *
  * -d <delay>   Wait for this many milliseconds after processing an article, useful for limiting server load.
- * -s <startid> Start refreshing with given article ID, useful for partial refreshing
+ * -s <startid> Start refreshing at given article ID, useful for partial refreshing
+ * -e <endid>   Stop refreshing at given article ID, useful for partial refreshing 
  * -v           Be verbose about the progress.
  * -c			Will refresh only category pages (and other explicitly named namespaces)
  * -p			Will refresh only property pages (and other explicitly named namespaces)
@@ -20,12 +21,14 @@
  * @author Markus Krötzsch
  */
 
-$optionsWithArgs = array( 'd', 's' ); // -d <delay>, -s <startid>
+$optionsWithArgs = array( 'd', 's', 'e' ); // -d <delay>, -s <startid>
 
 require_once( 'commandLine.inc' );
 
 global $smwgIP;
 require_once($smwgIP . '/includes/SMW_Factbox.php');
+
+$dbr =& wfGetDB( DB_MASTER );
 
 if ( array_key_exists( 'd', $options ) ) {
 	$delay = intval($options['d']) * 100000; // sleep 100 times the given time, but do so only each 100 pages
@@ -34,9 +37,13 @@ if ( array_key_exists( 'd', $options ) ) {
 }
 
 if ( array_key_exists( 's', $options ) ) {
-	$start = intval($options['s']); 
+	$start = intval($options['s']);
 } else {
 	$start = 0;
+}
+$end = $dbr->selectField( 'page', 'max(page_id)', false, 'SMW_refreshData' );
+if ( array_key_exists( 'e', $options ) ) {
+	$end = min(intval($options['e']), $end);
 }
 
 if (  array_key_exists( 'v', $options ) ) {
@@ -65,9 +72,6 @@ if (  array_key_exists( 't', $options ) ) {
 }
 
 global $wgParser;
-
-$dbr =& wfGetDB( DB_MASTER );
-$end = $dbr->selectField( 'page', 'max(page_id)', false, 'SMW_refreshData' );
 
 print "Refreshing all semantic data in the database!\n";
 print "Processing pages from ID $start to ID $end ...\n";
