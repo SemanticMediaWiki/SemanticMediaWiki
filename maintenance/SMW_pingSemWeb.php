@@ -82,6 +82,7 @@ $skin = $wgUser->getSkin();
 for ($id = $start; $id <= $end; $id++) {
 	$title = Title::newFromID($id);
 	if ( ($title === NULL) ) continue;
+	if ( !smwfIsSemanticsProcessed($title->getNamespace()) ) continue;
 	$url = $server . $skin->makeSpecialUrl( 'ExportRDF/' . $title->getPrefixedText() );
 	if ($verbose) {
 		print "($num_files) Processing page with ID " . $id . " ($url).\n";
