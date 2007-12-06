@@ -68,8 +68,8 @@ for ($id = $start; $id <= $end; $id++) {
 		print "($num_files) Processing page with ID " . $id . " ($url).\n";
 	}
 	print " Pinging http://pingthesemanticweb.com/rest/?url=" . rawurlencode($url) . "...";
-	$fp = fsockopen('pingthesemanticweb.com/rest/?url=' . rawurlencode($url), 80);
-	if (!$fp) {
+	$fp = fopen('http://pingthesemanticweb.com/rest/?url=' . rawurlencode($url), 'r');
+	if ($fp === false) {
 		print " failed.\n";
 	} else {
 		fclose($fp);
