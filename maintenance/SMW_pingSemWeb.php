@@ -63,11 +63,18 @@ $skin = $wgUser->getSkin();
 for ($id = $start; $id <= $end; $id++) {
 	$title = Title::newFromID($id);
 	if ( ($title === NULL) ) continue;
-	$rdfurl = $wgServer . $skin->makeSpecialUrl( 'ExportRDF/' . $title->getPrefixedText() );
+	$url = $wgServer . $skin->makeSpecialUrl( 'ExportRDF/' . $title->getPrefixedText() );
 	if ($verbose) {
-		print "($num_files) Processing page with ID " . $id . " ($rdfurl).\n";
+		print "($num_files) Processing page with ID " . $id . " ($url).\n";
 	}
-	print "URL: http://pingthesemanticweb.com/rest/?url=" . rawurlencode($rdfurl) . "\n";
+	print " Pinging http://pingthesemanticweb.com/rest/?url=" . rawurlencode($url) . "...";
+	$fp = fsockopen('http://pingthesemanticweb.com/rest/?url=' . rawurlencode($url));
+	if (!$fp) {
+		print " failed.\n";
+	} else {
+		fclose($fp);
+		print " done.\n";
+	}
 
 // 		$revision = Revision::newFromTitle( $title );
 // 		if ( $revision === NULL ) continue;
