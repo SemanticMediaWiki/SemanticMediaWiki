@@ -623,7 +623,7 @@ class ExportRDF {
 	 * No schema-references can be added after printing the footer.
 	 */
 	private function printFooter() {
-		$this->post_ns_buffer .= "\t<!-- reference to the Semantic MediaWiki schema -->\n";
+		$this->post_ns_buffer .= "\t<!-- references to the SWIVT Ontology, see http://semantic-mediawiki.org/swivt/ -->\n";
 		foreach (array_keys($this->schema_refs) as $name) {
 			$type = $this->schema_refs[$name];			
 			$this->post_ns_buffer .=
