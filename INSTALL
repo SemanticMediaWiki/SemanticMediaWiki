@@ -106,7 +106,6 @@ older MediaWiki version, additional patches/modifications might be needed.
 Download an older release of SMW and have a look at the included INSTALL
 instructions to find out whether other changes are recommended therein.
 
-
 == Notes on Upgrading ==
 
 === General Upgrading Instructions ===
@@ -137,9 +136,10 @@ may need to be fixed. You may want to read this first.
 
 === Upgrading from version 0.7 ===
 
-The above generic steps are strictly necessary, and suffice to get a working wiki. 
-However, some further steps are required. SMW1.0 mainly introduced the following incompatible 
-changes to SMW0.7:
+*The above generic steps are strictly necessary, and suffice to get a wiki that basically works.*
+
+However, some further steps are strongly suggested. SMW1.0 mainly introduced the following 
+incompatible changes to SMW0.7:
 
 (a) The concepts (and namespaces) "Relation" and "Attribute" are now unified into "Property"
 (b) The special property "Main display unit" is obsolete, and the property "display unit"
@@ -162,6 +162,9 @@ had Attribute and Relation pages of the same title. It will report in which case
 occurred and leave it to you to clean up the merged pages. You can also run the script
 with option "-c" to get an overview of the conflicts, e.g. to delete undesired pages first.
 The script can be run safely more than once.
+
+In addition, you should run the MediaWiki maintenance script "refreshLinks.php" so that old
+links in SMW Factboxes are refreshed to point to Property: instead of Relation:/Attribute:.
 
 For (b), all (property) pages using properties "Main display unit" and "display unit" should
 be updated: delete these annotations and use a single annotation "[[display units::...]]" 
