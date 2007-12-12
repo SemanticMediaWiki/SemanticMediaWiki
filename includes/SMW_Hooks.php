@@ -24,7 +24,7 @@ function smwfParserHook(&$parser, &$text, &$strip_state = null) {
 	// In the regexp matches below, leading ':' escapes the markup, as
 	// known for Categories.
 	// Parse links to extract semantic properties
-	$semanticLinkPattern = '(\[\[(([^:][^]]*):[=|:])+((?:[^|\[\]]|\[\[[^]]*\]\]|\[[^]]*\])*)(\|([^]]*))?\]\])';
+	$semanticLinkPattern = '(\[\[(([^:][^]]*):[=:])+((?:[^|\[\]]|\[\[[^]]*\]\]|\[[^]]*\])*)(\|([^]]*))?\]\])';
 	$text = preg_replace_callback($semanticLinkPattern, 'smwfParsePropertiesCallback', $text);
 
 	// print the results if enabled (we have to parse them in any case, in order to
@@ -63,7 +63,7 @@ function smwfParsePropertiesCallback($semanticLink) {
 	} else { $valueCaption = false; }
 
 	//extract annotations and create tooltip
-	$properties = preg_split('/:[=|:]/', $property);
+	$properties = preg_split('/:[=:]/', $property);
 	foreach($properties as $singleprop) {
 		$dv = SMWFactbox::addProperty($singleprop,$value,$valueCaption);
 	}
