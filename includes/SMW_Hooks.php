@@ -38,9 +38,9 @@ function smwfParserHook(&$parser, &$text, &$strip_state = null) {
 	// add link to RDF to HTML header
 	smwfRequireHeadItem('smw_rdf', '<link rel="alternate" type="application/rdf+xml" title="' .
 						$parser->getTitle()->getPrefixedText() . '" href="' .
-						$parser->getOptions()->getSkin()->makeSpecialUrl(
+						htmlspecialchars($parser->getOptions()->getSkin()->makeSpecialUrl(
 							'ExportRDF/' . $parser->getTitle()->getPrefixedText(), 'xmlmime=rdf'
-						) . "\" />");
+						)) . "\" />");
 
 	return true; // always return true, in order not to stop MW's hook processing!
 }
