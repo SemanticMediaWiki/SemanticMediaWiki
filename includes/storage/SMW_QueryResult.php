@@ -152,11 +152,18 @@ class SMWQueryResult {
 		foreach ($this->m_extraprintouts as $printout) {
 			$params[] = $printout->getSerialisation();
 		}
+		if ($this->m_query->sortkey != false) {
+			$params[] = 'sort=' . $this->m_query->sortkey;
+			if ($this->m_query->ascending) {
+				$params[] = 'order=ASC';
+			} else {
+				$params[] = 'order=DESC';
+			}
+		}
 		foreach ($params as $p) {
 			$p = str_replace(array('/','=','-','%'),array('-2F','-3D','-2D','-'), rawurlencode($p));
 			$titlestring .= '/' . $p;
 		}
-		/// TODO: finish implementation
 		return $titlestring;
 	}
 }

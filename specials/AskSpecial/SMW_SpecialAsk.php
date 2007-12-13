@@ -45,14 +45,14 @@ class SMWAskPage extends SpecialPage {
 			$rawparams[] = $querystring;
 		}
 		if ($paramstring != '') {
-			$ps = explode("\n", $paramstring); // params separated by newlines
+			$ps = explode("\n", $paramstring); // params separated by newlines here (compatible with text-input for printouts)
 			foreach ($ps as $param) {
 				$rawparams[] = $param;
 			}
 		}
 		if ($p != '') { // extract query from $p
 			// unescape $p; escaping scheme: all parameters rawurlencoded, "-" and "/" urlencoded, all "%" replaced by "-", parameters then joined with /
-			$ps = explode('/', $p);
+			$ps = explode('/', $p); // params separated by / here (compatible with wiki link syntax)
 			foreach ($ps as $param) {
 				$rawparams[] = rawurldecode(str_replace('-', '%', $param));
 			}
@@ -60,7 +60,7 @@ class SMWAskPage extends SpecialPage {
 		if ('' == $limit) $limit =  20;
 		if ('' == $offset) $offset = 0;
 
-		// Now parse parameters and rebuilt the param strings
+		// Now parse parameters and rebuilt the param strings for URLs
 		include_once( "$smwgIP/includes/SMW_QueryProcessor.php" );
 		SMWQueryProcessor::processFunctionParams($rawparams,$querystring,$params,$printouts);
 		if ( ('' == $sort) && (array_key_exists('sort',$params)) ) {
@@ -83,6 +83,7 @@ class SMWAskPage extends SpecialPage {
 		foreach ($printouts as $printout) {
 			$printoutstring .= $printout->getSerialisation() . "\n";
 		}
+		// Finally complete $params so that it can be used to make queries
 		$params['format'] = 'broadtable';
 		$params['limit']  = $limit;
 		$params['offset'] = $offset;
@@ -93,6 +94,8 @@ class SMWAskPage extends SpecialPage {
 
 		// Optionally print input form
 		$urltail = '&q=' . urlencode($querystring) . '&p=' . urlencode($paramstring) .'&po=' . urlencode($printoutstring);
+		if ('' != $sort) $urltail .= '&sort=' . $sort;
+		if ('' != $order) $urltail .= '&order=' . $order;
 		$skin = $wgUser->getSkin();
 		if ($editquery) {
 			$spectitle = Title::makeTitle( NS_SPECIAL, 'Ask' );
