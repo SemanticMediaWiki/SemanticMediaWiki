@@ -133,7 +133,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 								}
 								if ( ($pr->getMode() == SMW_PRINT_THIS) ) {
 									// NOTE: type Title of $object implied
-									$curarticle = $object->getText();
+									$curarticle = $object->getLongWikiText();
 								}
 								$hastitle = true;
 							}
