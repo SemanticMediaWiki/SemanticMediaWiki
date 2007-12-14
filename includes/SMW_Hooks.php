@@ -24,7 +24,16 @@ function smwfParserHook(&$parser, &$text, &$strip_state = null) {
 	// In the regexp matches below, leading ':' escapes the markup, as
 	// known for Categories.
 	// Parse links to extract semantic properties
-	$semanticLinkPattern = '(\[\[(([^:][^]]*):[=:])+((?:[^|\[\]]|\[\[[^]]*\]\]|\[[^]]*\])*)(\|([^]]*))?\]\])';
+	$semanticLinkPattern = '/\[\[               # Beginning of the link
+	                        (([^:][^]]*):[=:])+ # Property name (can be nested?)
+	                        (                   # After that:
+	                          (?:[^|\[\]]       #   either normal text (without |, [ or ])
+	                          |\[\[[^]]*\]\]    #   or a [[link]]
+	                          |\[[^]]*\]        #   or an [external link]
+	                        )*)                 # all this zero or more times
+	                        (\|([^]]*))?        # Display text (like "text" in [[link|text]]), optional
+	                        \]\]                # End of link
+	                        /x';
 	$text = preg_replace_callback($semanticLinkPattern, 'smwfParsePropertiesCallback', $text);
 
 	// print the results if enabled (we have to parse them in any case, in order to
