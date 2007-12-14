@@ -13,7 +13,6 @@ class SMW_LanguageKo extends SMW_Language {
 
 protected $m_ContentMessages = array(
 	'smw_edithelp' => '도움말을 수정하려면 속성을',
-	'smw_helppage' => '관계',
 	'smw_viewasrdf' => '으로 볼 rdf',
 	'smw_finallistconjunct' => ', 그리고', //used in "A, B, and C"
 	'smw_factbox_head' => '사실에 대한 $1',
@@ -28,6 +27,7 @@ protected $m_ContentMessages = array(
 	'smw_iq_disabled' => "죄송합니다. 이 위키에 대한 의미 론적 검색어가 해제되었습니다.",
 	'smw_iq_moreresults' => '&hellip; 다른 경기 결과',
 	'smw_iq_nojs' => '자바 스크립트 - 활성화된 브라우저를 사용하는이 요소를 참조하거나, 직접 <a href="$1">찾아보기 결과 목록</a>.',
+	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled
 	// Messages and strings for ontology resued (import)
 	'smw_unknown_importns' => '져올 네임 스페이스를 사용할 수있는 기능이없습니다 “$1”.',
 	'smw_nonright_importtype' => '$1 페이지에 대해서만 사용할 수있습니다 네임 스페이스 “$2”.',
@@ -143,12 +143,16 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>열린우리당 확인자 <a href="http://www.w3.org/2001/tag/issues.html#httprange-14"> w3c 태그를 구현합니다 규명에 httprange-14</a>입니다. 인간을 치료하는 데 걸리는 웹사이트로 나타나지 않습니다.</p>',
 	// Messages for ask Special
 	'ask' => '의미 론적 검색',
-	'smw_ask_docu' => '<p>검색 필드에 검색어를 입력하여 검색을 아래에있습니다. 더 자세한 정보는 <a href="$1"> 도움말 페이지에서 제공에 대한 의미 론적 검색 </a>.</p>',
 	'smw_ask_doculink' => '의미 론적 검색',
 	'smw_ask_sortby' => '열로 정렬',
 	'smw_ask_ascorder' => '오름차순',
 	'smw_ask_descorder' => '내림차순',
 	'smw_ask_submit' => '검색 결과 찾기',
+	'smw_ask_editquery' => '[Edit query]',
+	'smw_ask_hidequery' => 'Hide query',
+	'smw_ask_help' => 'Querying help',
+	'smw_ask_queryhead' => 'Query',
+	'smw_ask_printhead' => 'Additional printouts (optional)',
 	// Messages for the search by property special
 	'searchbyproperty' => '검색을 통해 재산',
 	'smw_sbv_docu' => '<p>주어진 속성이있는 모든 페이지를 검색 및 값입니다.</p>',
