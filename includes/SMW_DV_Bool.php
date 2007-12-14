@@ -10,6 +10,8 @@ class SMWBoolValue extends SMWDataValue {
 
 	protected $m_value = NULL; // true, false, or NULL (unset)
 	protected $m_stdcaption = ''; // a localised standard label for that value (if value is not NULL)
+	protected $m_truecaption = NULL; // a desired label for "true" if given
+	protected $m_falsecaption = NULL; // a desired label for "false" if given
 
 	protected function parseUserValue($value) {
 		$value = trim($value);
@@ -31,11 +33,19 @@ class SMWBoolValue extends SMWDataValue {
 			$this->m_caption = $value;
 		}
 		if ($this->m_value === true) {
-			$vals = explode(',', wfMsgForContent('smw_true_words'));
-			$this->m_stdcaption = $vals[0];
+			if ($this->m_truecaption !== NULL) {
+				$this->m_stdcaption = $this->m_truecaption;
+			} else {
+				$vals = explode(',', wfMsgForContent('smw_true_words'));
+				$this->m_stdcaption = $vals[0];
+			}
 		} elseif ($this->m_value === false) {
-			$vals = explode(',', wfMsgForContent('smw_false_words'));
-			$this->m_stdcaption = $vals[0];
+			if ($this->m_falsecaption !== NULL) {
+				$this->m_stdcaption = $this->m_falsecaption;
+			} else {
+				$vals = explode(',', wfMsgForContent('smw_false_words'));
+				$this->m_stdcaption = $vals[0];
+			}
 		} else {
 			$this->m_stdcaption = '';
 		}
@@ -45,6 +55,21 @@ class SMWBoolValue extends SMWDataValue {
 	protected function parseXSDValue($value, $unit) {
 		$this->parseUserValue($value); // no units, XML compatible syntax
 		$this->m_caption = $this->m_stdcaption; // use default for this language
+	}
+
+	public function setOutputFormat($formatstring) {
+		if ($formatstring == '') {
+			// ignore
+		} elseif (strtolower($formatstring) == 'x') {
+			$this->m_truecaption = '<span style="font-family: sans-serif; ">X</span>';
+			$this->m_falsecaption = '';
+		} else { // try format "truelabel, falselabel"
+			$captions = explode(',', $formatstring, 2);
+			if ( count($captions) == 2 ) {
+				$this->m_truecaption = trim($captions[0]);
+				$this->m_falsecaption = trim($captions[1]);
+			} // else ignore
+		}
 	}
 
 	public function getShortWikiText($linked = NULL) {
