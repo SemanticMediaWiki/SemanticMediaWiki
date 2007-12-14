@@ -876,6 +876,21 @@ class SMWSQLStore extends SMWStore {
 					case SMW_PRINT_PROP:
 						$row[] = new SMWResultArray($this->getPropertyValues($qt->getTitle(),$pr->getTitle(), NULL, $pr->getOutputFormat()), $pr);
 						break;
+					case SMW_PRINT_CCAT:
+						$cats = $this->getSpecialValues($qt->getTitle(),SMW_SP_HAS_CATEGORY);
+						$found = '0';
+						foreach ($cats as $cat) {
+							if ($cat->getDBKey() == $pr->getTitle()->getDBKey()) {
+								$found = '1';
+								break;
+							}
+						}
+						$dv = SMWDataValueFactory::newTypeIDValue('_boo');
+						$dv->setOutputFormat($pr->getOutputFormat());
+						$dv->setXSDValue($found);
+// 						$dv = SMWDataValueFactory::newTypeIDValue('_str',$found . ' Format:' . $pr->getOutputFormat() . '!');
+						$row[] = new SMWResultArray(array($dv), $pr);
+						break;
 				}
 			}
 			$result->addRow($row);

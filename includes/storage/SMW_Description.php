@@ -16,6 +16,7 @@ define('SMW_CMP_NEQ',4); // matches only datavalues that are unequal to the give
 define('SMW_PRINT_CATS', 0);  // print all direct cateories of the current element
 define('SMW_PRINT_PROP', 1);  // print all property values of a certain attribute of the current element
 define('SMW_PRINT_THIS', 2);  // print the current element
+define('SMW_PRINT_CCAT', 3);  // check whether current element is in given category
 
 
 /**
@@ -41,6 +42,9 @@ class SMWPrintRequest {
 		$this->m_label = $label;
 		$this->m_title = $title;
 		$this->m_outputformat = $outputformat;
+		if ( ($mode == SMW_PRINT_CCAT) && ($outputformat === '') ) {
+			$this->m_outputformat = 'x'; // changed default for Boolean case
+		}
 	}
 	
 	public function getMode() {
@@ -62,7 +66,8 @@ class SMWPrintRequest {
 		}
 		switch ($this->m_mode) {
 			case SMW_PRINT_CATS: return htmlspecialchars($this->m_label); // TODO: link to Special:Categories
-			case SMW_PRINT_PROP: return $linker->makeLinkObj($this->m_title, htmlspecialchars($this->m_label));
+			case SMW_PRINT_PROP: case SMW_PRINT_CCAT:
+				return $linker->makeLinkObj($this->m_title, htmlspecialchars($this->m_label));
 			case SMW_PRINT_THIS: default: return htmlspecialchars($this->m_label);
 		}
 		
@@ -77,8 +82,8 @@ class SMWPrintRequest {
 		} else {
 			switch ($this->m_mode) {
 				case SMW_PRINT_CATS: return $this->m_label; // TODO: link to Special:Categories
-				case SMW_PRINT_PROP:
-					return '[[' . $this->m_title->getPrefixedText() . '|' . $this->m_label . ']]';
+				case SMW_PRINT_PROP: case SMW_PRINT_CCAT:
+					return '[[:' . $this->m_title->getPrefixedText() . '|' . $this->m_label . ']]';
 				case SMW_PRINT_THIS: default: return $this->m_label;
 			}
 		}
@@ -131,11 +136,23 @@ class SMWPrintRequest {
 		switch ($this->m_mode) {
 			case SMW_PRINT_CATS:
 				global $wgContLang;
-				return '?' . $wgContLang->getNSText(NS_CATEGORY) . '=' . $this->m_label;
-			case SMW_PRINT_PROP:
-				$result = '?' . $this->m_title->getText();
-				if ( $this->m_outputformat != '' ) {
-					$result .= '#' . $this->m_outputformat;
+				$catlabel = $wgContLang->getNSText(NS_CATEGORY);
+				$result = '?' . $catlabel;
+				if ($this->m_label != $catlabel) {
+					$result .= '=' . $this->m_label;
+				}
+				return $result;
+			case SMW_PRINT_PROP: case SMW_PRINT_CCAT:
+				if ($this->m_mode == SMW_PRINT_CCAT) {
+					$result = '?' . $this->m_title->getPrefixedText();
+					if ( $this->m_outputformat != 'x' ) {
+						$result .= '#' . $this->m_outputformat;
+					}
+				} else {
+					$result = '?' . $this->m_title->getText();
+					if ( $this->m_outputformat != '' ) {
+						$result .= '#' . $this->m_outputformat;
+					}
 				}
 				if ( $this->m_title->getText() != $this->m_label ) {
 					$result .= '=' . $this->m_label;

@@ -232,16 +232,10 @@ class SMWWikiPageValue extends SMWDataValue {
 	 *  @DEPRECATED
 	 */
 	public function getPrefixedText(){
-		//trigger_error("The function SMWWikiPageValue::getPrefixedText) is deprecated.", E_USER_NOTICE);
+		trigger_error("The function SMWWikiPageValue::getPrefixedText) is deprecated.", E_USER_NOTICE);
 		return $this->getLongWikiText(false);
 	}
-	/**
-	 * @DEPRECATED
-	 */
-	public function getText(){
-		//trigger_error("The function SMWWikiPageValue::getText() is deprecated.", E_USER_NOTICE);
-		return $this->getLongWikiText(false);
-	}
+
 }
 
 ?>
