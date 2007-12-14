@@ -134,6 +134,16 @@ script is called SMW_setup.php.
 Some versions of SMW also introduced incompatibilities in the wiki syntax that
 may need to be fixed. You may want to read this first.
 
+=== Upgrading from 1.0 RC1 and 1.0 RC2 ===
+
+Following the generaic upgrading instructions above is recommended in any case. Moreover, some
+configuration options have changed slightly between release candidates. Currently these are:
+
+* $smwgQEqualitySupport now is no longer true/false, but one of SMW_EQ_NONE, SMW_EQ_SOME, SMW_EQ_FULL
+
+If you set any of these parameters in your LocalSettings.php, you need to update the config.
+Please see SMW_Settings.php for more documentation on the available parameters.
+
 === Upgrading from version 0.7 ===
 
 *The above generic steps are strictly necessary, and suffice to get a wiki that basically works.*

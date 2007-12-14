@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.0-RC3alpha-svn2');
+define('SMW_VERSION','1.0-RC3alpha-svn3');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -26,6 +26,11 @@ define('SMW_FACTBOX_HIDDEN', 1);
 define('SMW_FACTBOX_SPECIAL', 2);
 define('SMW_FACTBOX_NONEMPTY',  3);
 define('SMW_FACTBOX_SHOWN',  5);
+
+// constants for regulating equality reasoning
+define('SMW_EQ_NONE', 0);
+define('SMW_EQ_SOME', 1);
+define('SMW_EQ_FULL', 2);
 
 // constants for identifying javascripts as used in smwfRequireHeadItem
 define('SMW_HEADER_TIMELINE', 1);

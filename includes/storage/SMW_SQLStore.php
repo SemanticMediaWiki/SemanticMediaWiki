@@ -1441,8 +1441,7 @@ class SMWSQLStore extends SMWStore {
 			if ($id = $this->getCurrentIDField($from, $db, $curtables, $nary_pos)) {
 				$curtables['CATS'] = 'cl' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['CATS'] . '.cl_from=' . $id;
-				/// TODO: slow, introduce another parameter to activate this
-				if ($smwgQEqualitySupport && (array_key_exists('pRELS', $curtables))) {
+				if ( ($smwgQEqualitySupport === SMW_EQ_FULL) && (array_key_exists('pRELS', $curtables))) {
 					// only do this at inner queries (pRELS set)
 					$this->addJoin('REDIPAGE', $from, $db, $curtables, $nary_pos);
 					$cond = '((' . $cond . ') OR (' .
@@ -1455,8 +1454,7 @@ class SMWSQLStore extends SMWStore {
 			if ($id = $this->getCurrentIDField($from, $db, $curtables, $nary_pos)) {
 				$curtables['RELS'] = 'rel' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['RELS'] . '.subject_id=' . $id;
-				/// TODO: slow, introduce another parameter to activate this
-				if ($smwgQEqualitySupport && (array_key_exists('pRELS', $curtables))) {
+				if ( ($smwgQEqualitySupport === SMW_EQ_FULL) && (array_key_exists('pRELS', $curtables))) {
 					// only do this at inner queries (pRELS set)
 					$this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos);
 					$cond = '((' . $cond . ') OR (' .
@@ -1470,8 +1468,7 @@ class SMWSQLStore extends SMWStore {
 			if ($id = $this->getCurrentIDField($from, $db, $curtables, $nary_pos)) {
 				$curtables['ATTS'] = 'att' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['ATTS'] . '.subject_id=' . $id;
-				/// TODO: slow, introduce another parameter to activate this
-				if ($smwgQEqualitySupport && (array_key_exists('pRELS', $curtables))) {
+				if ( ($smwgQEqualitySupport === SMW_EQ_FULL) && (array_key_exists('pRELS', $curtables))) {
 					// only do this at inner queries (pREL set)
 					$this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos);
 					$cond = '((' . $cond . ') OR (' .
@@ -1491,8 +1488,7 @@ class SMWSQLStore extends SMWStore {
 			if ($id = $this->getCurrentIDField($from, $db, $curtables, $nary_pos)) {
 				$curtables['NARY'] = 'nary' . SMWSQLStore::$m_tablenum++;
 				$cond = $curtables['NARY'] . '.subject_id=' . $id;
-				/// TODO: slow, introduce another parameter to activate this
-				if ($smwgQEqualitySupport && (array_key_exists('pRELS', $curtables))) {
+				if ( ($smwgQEqualitySupport === SMW_EQ_FULL) && (array_key_exists('pRELS', $curtables))) {
 					// only do this at inner queries (pRELS set)
 					$this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos);
 					$cond = '((' . $cond . ') OR (' .
@@ -1617,7 +1613,7 @@ class SMWSQLStore extends SMWStore {
 				break;
 				case '_wpg':
 					global $smwgQEqualitySupport;
-					if ($smwgQEqualitySupport) {
+					if ($smwgQEqualitySupport != SMW_EQ_NONE) {
 						$page = $this->getRedirectTarget($description->getDatavalue(), $db);
 					} else {
 						$page = $description->getDatavalue();
@@ -1626,7 +1622,7 @@ class SMWSQLStore extends SMWStore {
 						$cond = $table . '.object_title=' .
 						        $db->addQuotes($page->getDBKey()) . ' AND ' .
 						        $table . '.object_namespace=' . $page->getNamespace();
-						if ( $smwgQEqualitySupport &&
+						if ( ($smwgQEqualitySupport != SMW_EQ_NONE) &&
 						     ($this->addJoin('REDIRECT', $from, $db, $curtables, $nary_pos)) ) {
 							$cond = '(' . $cond . ') OR (' .
 							   $curtables['REDIRECT'] . '.rd_title=' . $db->addQuotes($page->getDBKey()) . ' AND ' .
