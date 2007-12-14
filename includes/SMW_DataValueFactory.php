@@ -244,6 +244,7 @@ class SMWDataValueFactory {
 		$wgAutoloadClasses['SMWLinearValue']      =  $smwgIP . '/includes/SMW_DV_Linear.php';
 		$wgAutoloadClasses['SMWTimeValue']        =  $smwgIP . '/includes/SMW_DV_Time.php';
 		$wgAutoloadClasses['SMWGeoCoordsValue']   =  $smwgIP . '/includes/SMW_DV_GeoCoords.php';
+		$wgAutoloadClasses['SMWBoolValue']      =  $smwgIP . '/includes/SMW_DV_Bool.php';
 		SMWDataValueFactory::$m_typeclasses = array(
 			'_txt'  => 'SMWStringValue',
 			'_str'  => 'SMWStringValue',
@@ -255,6 +256,7 @@ class SMWDataValueFactory {
 			'_tem'  => 'SMWTemperatureValue',
 			'_dat'  => 'SMWTimeValue',
 			'_geo'  => 'SMWGeoCoordsValue',
+			'_boo'  => 'SMWBoolValue',
 			'__typ' => 'SMWTypesValue',
 			'__lin' => 'SMWLinearValue',
 			'__nry' => 'SMWNAryValue',
