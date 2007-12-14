@@ -65,9 +65,9 @@ class SMWBoolValue extends SMWDataValue {
 			$this->m_falsecaption = '';
 		} else { // try format "truelabel, falselabel"
 			$captions = explode(',', $formatstring, 2);
-			if ( count($captions) == 2 ) {
-				$this->m_truecaption = trim($captions[0]);
-				$this->m_falsecaption = trim($captions[1]);
+			if ( count($captions) == 2 ) { // note: escaping needed to be safe; MW-sanitising would be an alternative
+				$this->m_truecaption = htmlspecialchars(trim($captions[0]));
+				$this->m_falsecaption = htmlspecialchars(trim($captions[1]));
 			} // else ignore
 		}
 	}
@@ -77,7 +77,7 @@ class SMWBoolValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		return htmlspecialchars($this->m_caption);
+		return $this->m_caption;
 	}
 
 	public function getLongWikiText($linked = NULL) {
