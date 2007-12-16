@@ -912,13 +912,13 @@ class SMWSQLStore extends SMWStore {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
 		$res = $db->query('(SELECT relation_title as title, COUNT(*) as count FROM ' .
-		                  $db->tableName('smw_relations') . 'GROUP BY relation_title) UNION ' .
+		                  $db->tableName('smw_relations') . ' GROUP BY relation_title) UNION ' .
 		                  '(SELECT attribute_title as title, COUNT(*) as count FROM ' .
-		                  $db->tableName('smw_attributes') . 'GROUP BY attribute_title) UNION ' .
+		                  $db->tableName('smw_attributes') . ' GROUP BY attribute_title) UNION ' .
 		                  '(SELECT attribute_title as title, COUNT(*) as count FROM ' .
-		                  $db->tableName('smw_longstrings') . 'GROUP BY attribute_title) UNION ' .
+		                  $db->tableName('smw_longstrings') . ' GROUP BY attribute_title) UNION ' .
 		                  '(SELECT attribute_title as title, COUNT(*) as count FROM ' .
-		                  $db->tableName('smw_nary') . 'GROUP BY attribute_title)' . $options,
+		                  $db->tableName('smw_nary') . ' GROUP BY attribute_title)' . $options,
 		                  'SMW::getPropertySubjects');
 		$result = array();
 		while($row = $db->fetchObject($res)) {
