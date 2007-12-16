@@ -149,13 +149,7 @@ function smwfSetupExtension() {
 	$wgHooks['LoadAllMessages'][] = 'smwfLoadAllMessages'; // complete setup of all messages when requested by MW
 
 	///// credits (see "Special:Version") /////
-	$wgExtensionCredits['parserhook'][]= array(
-		'name'=>'Semantic&nbsp;MediaWiki',
-		'version'=>SMW_VERSION,
-		'author'=>"Klaus&nbsp;Lassleben, Markus&nbsp;Kr&ouml;tzsch, Denny&nbsp;Vrandecic, S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].",
-		'url'=>'http://ontoworld.org/wiki/Semantic_MediaWiki',
-		'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://ontoworld.org/wiki/Help:Semantics View online documentation]',
-	);
+	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, Markus&nbsp;Kr&ouml;tzsch, Denny&nbsp;Vrandecic, S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://ontoworld.org/wiki/Semantic_MediaWiki', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://ontoworld.org/wiki/Help:Semantics View online documentation.]');
 
 	wfProfileOut('smwfSetupExtension (SMW)');
 	return true;
@@ -207,7 +201,7 @@ function smwfProcessInlineQueryParserFunction(&$parser) {
 /**********************************************/
 
 /**
- * Add some head items (e.g. JavaScripts) to the current list of things
+ * Add some head items (e.g. JavaScripts) to the current list of things 
  * that SMW will add to the returned HTML page. The ID can be one of SMW's
  * SMW_HEADER_... constants, or a string id followed by the actual item
  * that should be added to the output html header. In the first case, the
@@ -245,8 +239,8 @@ function smwfRequireHeadItem($id, $item = '') {
 }
 
 /**
- * Hook function to insert HTML headers (CSS, JavaScript, and meta tags) into parser
- * output. This is our preferred method of working off the required scripts, since it
+ * Hook function to insert HTML headers (CSS, JavaScript, and meta tags) into parser 
+ * output. This is our preferred method of working off the required scripts, since it 
  * exploits parser caching.
  */
 function smwfAddHTMLHeadersParser(&$parser, &$text) {
@@ -261,7 +255,7 @@ function smwfAddHTMLHeadersParser(&$parser, &$text) {
 
 /**
  * This method is in charge of inserting additional CSS, JavaScript, and meta tags
- * into the HTML header of each page. This method is needed for pages that are not
+ * into the HTML header of each page. This method is needed for pages that are not 
  * parsed, especially for special pages. All others get their headers with the parser
  * output (exploiting parser caching).
  */
@@ -482,7 +476,7 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	function smwfNumberFormat($value, $decplaces=3) {
 		$decseparator = wfMsgForContent('smw_decseparator');
 		$kiloseparator = wfMsgForContent('smw_kiloseparator');
-
+	
 		// If number is a trillion or more, then switch to scientific
 		// notation. If number is less than 0.0000001 (i.e. twice decplaces),
 		// then switch to scientific notation. Otherwise print number
@@ -523,7 +517,7 @@ function smwfAddHTMLHeadersOutput(&$out) {
 			// Format to some level of precision;
 			// this does rounding and locale formatting.
 			$value = number_format($value, $decplaces, $decseparator, wfMsgForContent('smw_kiloseparator'));
-
+	
 			// Make it more readable by removing ending .000 from nnn.000
 			//    Assumes substr is faster than a regular expression replacement.
 			$end = $decseparator . str_repeat('0', $decplaces);
@@ -578,3 +572,4 @@ function smwfAddHTMLHeadersOutput(&$out) {
 		}
 		return $smwgMasterStore;
 	}
+
