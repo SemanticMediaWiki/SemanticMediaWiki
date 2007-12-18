@@ -101,7 +101,7 @@ abstract class SMWDataValue {
 			foreach ($links as $link) {
 				$linkdat = explode('|',$link,2);
 				if (count($linkdat) == 2)
-					$this->addInfolink(SMWInfolink::newExternalLink($linkdat[0],$linkdat[1]));
+					$this->addInfolink(SMWInfolink::newExternalLink($linkdat[0],trim($linkdat[1])));
 			}
 		}
 		$this->m_hasservicelinks = true;

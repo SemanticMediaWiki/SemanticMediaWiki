@@ -285,20 +285,19 @@ class SMWFactbox {
 
 				$text .= $propvalue->getLongWikiText(true);
 
-				$sep = '<!-- -->&nbsp;&nbsp;'; // the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
 				$first = true;
 				$extralinks = array();
 				foreach ($propvalue->getInfolinks() as $link) {
 					if ($first) {
-						$text .= $sep . $link->getWikiText();
-						//$sep = ' &nbsp;&nbsp;'; // allow breaking for longer lists of infolinks
+						$text .= '<!-- -->&nbsp;&nbsp;' . $link->getWikiText();
+						    // the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
 						$first = false;
 					} else {
-						$extralinks[] = $link->getWikiText() . '&nbsp; &nbsp; ';
+						$extralinks[] = $link->getWikiText();
 					}
 				}
 				if (count($extralinks) > 0) {
-					$text .= smwfEncodeMessages($extralinks, 'info');
+					$text .= smwfEncodeMessages($extralinks, 'info', ',&nbsp; ');
 				}
 			}
 			$text .= '</td></tr>';
