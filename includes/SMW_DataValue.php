@@ -18,6 +18,7 @@ abstract class SMWDataValue {
 	protected $m_outformat = false;   /// output formatting string, see setOutputFormat()
 
 	private $m_hasssearchlink;        /// used to control the addition of the standard search link
+	private $m_hasservicelinks;       /// used to control service link creation
 
 	public function SMWDataValue($typeid) {
 		$this->m_typeid = $typeid;
@@ -35,6 +36,7 @@ abstract class SMWDataValue {
 		$this->m_errors = array(); // clear errors
 		$this->m_infolinks = array(); // clear links
 		$this->m_hasssearchlink = false;
+		$this->m_hasservicelinks = false;
 		$this->m_caption = $caption;
 		$this->parseUserValue($value); // may set caption if not set yet, depending on datavalue
 		$this->m_isset = true;
@@ -54,6 +56,7 @@ abstract class SMWDataValue {
 		$this->m_errors = array(); // clear errors
 		$this->m_infolinks = array(); // clear links
 		$this->m_hasssearchlink = false;
+		$this->m_hasservicelinks = false;
 		$this->m_caption = false;
 		$this->parseXSDValue($value, $unit);
 		$this->m_isset = true;
@@ -71,6 +74,37 @@ abstract class SMWDataValue {
 
 	public function addInfoLink(SMWInfoLink $link) {
 		$this->m_infolinks[] = $link;
+	}
+
+	/**
+	 * Servicelinks are special kinds of infolinks that are created from current parameters
+	 * and in-wiki specification of URL templates. This method adds the current property's
+	 * servicelinks found in the messages. The number and content of the parameters is
+	 * depending on the datatype, and the service link message is usually crafted with a
+	 * particular datatype in mind.
+	 */
+	function addServiceLinks() {
+		if ($this->m_hasservicelinks) return;
+		$args = $this->getServiceLinkParams();
+		if ($args === false) return; // no services supported
+		array_unshift($args, ''); // add a 0 element as placeholder
+		$ptitle = Title::newFromText($this->m_property, SMW_NS_PROPERTY);
+		$servicelinks = array();
+		if ( $ptitle !== NULL ) {
+			$servicelinks = smwfGetStore()->getSpecialValues($ptitle, SMW_SP_SERVICE_LINK);
+		}
+
+		foreach ($servicelinks as $dvs) {
+			$args[0] = 'smw_service_' . str_replace(' ', '_', $dvs); // messages distinguish ' ' from '_'
+			$text = call_user_func_array('wfMsgForContent', $args);
+			$links = preg_split("([\n][\s]?)", $text);
+			foreach ($links as $link) {
+				$linkdat = explode('|',$link,2);
+				if (count($linkdat) == 2)
+					$this->addInfolink(SMWInfolink::newExternalLink($linkdat[0],$linkdat[1]));
+			}
+		}
+		$this->m_hasservicelinks = true;
 	}
 
 	/**
@@ -244,11 +278,25 @@ abstract class SMWDataValue {
 	public function getInfolinks() {
 		global $smwgIP;
 		include_once($smwgIP . '/includes/SMW_Infolink.php');
-		if (!$this->m_hasssearchlink && $this->isValid() && $this->m_property) {
-			$this->m_hasssearchlink = true;
-			$this->m_infolinks[] = SMWInfolink::newPropertySearchLink('+', $this->m_property, $this->getWikiValue());
+		if ($this->isValid() && $this->m_property) {
+			if (!$this->m_hasssearchlink) { // add default search link
+				$this->m_hasssearchlink = true;
+				$this->m_infolinks[] = SMWInfolink::newPropertySearchLink('+', $this->m_property, $this->getWikiValue());
+			}
+			if (!$this->m_hasservicelinks) { // add further service links
+				$this->addServiceLinks();
+			}
 		}
 		return $this->m_infolinks;
+	}
+
+	/**
+	 * Overwritten by callers to supply an array of parameters that can be used for 
+	 * creating servicelinks. The number and content of values in the parameter array
+	 * may vary, depending on the concrete datatype.
+	 */
+	protected function getServiceLinkParams() {
+		return false;
 	}
 
 	/**
@@ -296,7 +344,7 @@ abstract class SMWDataValue {
 	public function getErrors() {
 		return $this->m_errors;
 	}
-	
+
 	/**
 	 * Exports the datavalue to RDF (i.e. it returns a string that consists
 	 * of the lines that, in RDF/XML, can be fitted between the object-tags.

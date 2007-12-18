@@ -90,16 +90,7 @@ class SMWFactbox {
 				wfProfileOut("SMWFactbox::addProperty (SMW)");
 				return $result;
 			default: // generic special property
-				if ( $special === SMW_SP_SERVICE_LINK ) { // do some custom formatting in this case
-					global $wgContLang;
-					$v = str_replace(' ', '_', $value); //normalize slightly since messages distinguish '_' and ' '
-					$result = SMWDataValueFactory::newSpecialValue($special,$v,$caption);
-					$v = $result->getXSDValue(); //possibly further sanitized, so let's be cautious
-					//$result->setProcessedValues($value,$v); //set user value back to the input version
-					//$result->setPrintoutString('[[' . $wgContLang->getNsText(NS_MEDIAWIKI) . ':smw_service_' . $v . "|$value]]");
-				} else { // standard processing
-					$result = SMWDataValueFactory::newSpecialValue($special,$value,$caption);
-				}
+				$result = SMWDataValueFactory::newSpecialValue($special,$value,$caption);
 				if ($smwgStoreActive) {
 					SMWFactbox::$semdata->addSpecialValue($special,$result);
 				}
@@ -295,9 +286,19 @@ class SMWFactbox {
 				$text .= $propvalue->getLongWikiText(true);
 
 				$sep = '<!-- -->&nbsp;&nbsp;'; // the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
+				$first = true;
+				$extralinks = array();
 				foreach ($propvalue->getInfolinks() as $link) {
-					$text .= $sep . $link->getWikiText();
-					$sep = ' &nbsp;&nbsp;'; // allow breaking for longer lists of infolinks
+					if ($first) {
+						$text .= $sep . $link->getWikiText();
+						//$sep = ' &nbsp;&nbsp;'; // allow breaking for longer lists of infolinks
+						$first = false;
+					} else {
+						$extralinks[] = $link->getWikiText() . '&nbsp; &nbsp; ';
+					}
+				}
+				if (count($extralinks) > 0) {
+					$text .= smwfEncodeMessages($extralinks, 'info');
 				}
 			}
 			$text .= '</td></tr>';

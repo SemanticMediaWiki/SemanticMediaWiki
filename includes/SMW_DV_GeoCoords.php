@@ -36,8 +36,6 @@ class SMWGeoCoordsValue extends SMWDataValue {
 		$this->initDirectionLabels();
 		$value = str_replace(array('&nbsp;', $this->m_N, $this->m_E, $this->m_W, $this->m_S, ),
 		                     array(' ','N','E','W','S'),$value);
-// 		$value = str_replace(', ', ';', $value); // do not support "," as separator if no space is used, 
-		                                         // ambiguous with German decimal separators
 		$value = str_replace(array('&#176;', '&deg;'), '°', $value);
 		$value = str_replace(array('&acute;', '&#180;'),'´',$value);
 		$value = str_replace(array('&#8243;', '&Prime;', "''", '"', '´´', SMW_GEO_MIN . SMW_GEO_MIN),SMW_GEO_SEC,$value);
@@ -255,7 +253,6 @@ class SMWGeoCoordsValue extends SMWDataValue {
 	/**
 	 * Return array with four entries for deg, min, sec, direction,
 	 * that corresponds to the current latitude or longitude.
-	 * @TODO: never called directly, maybe merge with formatAngleValues()
 	 */
 	protected function getAngleValues($lat = true) {
 		if ($lat) {
@@ -264,7 +261,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 			}
 			$num = abs($this->m_lat);
 			$d = ($this->m_lat<0)?'S':'N';
-		} elseif (!$lat) {
+		} else {
 			if ($this->m_longparts !== false) {
 				return $this->m_longparts;
 			}
@@ -308,6 +305,25 @@ class SMWGeoCoordsValue extends SMWDataValue {
 			return smwfNumberFormat($values[0]) . '°' . smwfNumberFormat($values[1]) . SMW_GEO_MIN .
 			       smwfNumberFormat($values[2]) . SMW_GEO_SEC . $values[3];
 		}
+	}
+
+	protected function getServiceLinkParams() {
+		// Create links to mapping services based on a wiki-editable message. The parameters 
+		// available to the message are:
+		// $1: latitude integer degrees, $2: longitude integer degrees
+		// $3: latitude integer minutes, $4: longitude integer minutes
+		// $5: latitude integer seconds, $6: longitude integer seconds,
+		// $7: latitude direction string (N or S), $8: longitude direction string (W or E)
+		// $9: latitude in decimal degrees, $10: longitude in decimal degrees
+		// $11: sign (- if south) for latitude, $12: sign (- if west) for longitude
+		$latvals = $this->getAngleValues(true);
+		$longvals = $this->getAngleValues(false);
+		return array($latvals[0], $longvals[0],
+		             $latvals[1], $longvals[1], 
+		             round($latvals[2]), round($longvals[2]),
+		             $latvals[3], $longvals[3],
+		             abs($this->m_lat), abs($this->m_long),
+		             $latvals[3]=='S'?'-':'', $longvals[3]=='W'?'-':'');
 	}
 
 }
