@@ -167,6 +167,14 @@ class SMWNumberValue extends SMWDataValue {
 		}
 	}
 
+	protected function getServiceLinkParams() {
+		// Create links to mapping services based on a wiki-editable message. The parameters 
+		// available to the message are:
+		// $1: string of numerical value in English punctuation
+		// $2: string of integer version of value, in English punctuation
+		return array((string)$this->m_value, (string)round($this->m_value));
+	}
+
 	public function isNumeric() {
 		return true;
 	}

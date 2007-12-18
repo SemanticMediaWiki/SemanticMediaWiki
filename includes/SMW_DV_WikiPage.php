@@ -131,6 +131,13 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 	}
 
+	protected function getServiceLinkParams() {
+		// Create links to mapping services based on a wiki-editable message. The parameters 
+		// available to the message are:
+		// $1: urlencoded article name (no namespace)
+		return array(rawurlencode(str_replace('_',' ',$this->m_dbkeyform)));
+	}
+
 	/**
 	 * Creates the export line for the RDF export
 	 *

@@ -95,7 +95,7 @@ class SMWURIValue extends SMWDataValue {
 					/// NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
 					///       this prevents tel: from working directly, but we should have a datatype for this anyway.
 					global $wgUrlProtocols;
-					foreach ($wgUrlProtocols as $prot) { // only set URL if wiki-enabled protocoll
+					foreach ($wgUrlProtocols as $prot) { // only set URL if wiki-enabled protocol
 						if ( ($prot == $parts[0] . ':') || ($prot == $parts[0] . '://') ) {
 							$this->m_url = $this->m_uri;
 							break;
@@ -177,6 +177,13 @@ class SMWURIValue extends SMWDataValue {
 
 	public function getWikiValue(){
 		return $this->m_value;
+	}
+
+	protected function getServiceLinkParams() {
+		// Create links to mapping services based on a wiki-editable message. The parameters 
+		// available to the message are:
+		// $1: urlencoded version of URI/URL value (includes mailto: for emails)
+		return array(rawurlencode($this->m_uri));
 	}
 
 	public function exportToRDF($QName, ExportRDF $exporter) {

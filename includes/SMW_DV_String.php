@@ -72,6 +72,17 @@ class SMWStringValue extends SMWDataValue {
 		return $this->m_infolinks;
 	}
 
+	protected function getServiceLinkParams() {
+		// Create links to mapping services based on a wiki-editable message. The parameters 
+		// available to the message are:
+		// $1: urlencoded string
+		if ($this->m_typeid === '_txt') {
+			return false; // no services for Type:Text
+		} else {
+			return array(rawurlencode($this->m_value));
+		}
+	}
+
 	/**
 	 * Creates the export line for the RDF export
 	 *
