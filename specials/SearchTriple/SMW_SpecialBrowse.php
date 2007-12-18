@@ -183,7 +183,7 @@ class SMWSpecialBrowse extends SpecialPage {
 						$count += 1;
 						$html .= $object->getLongHTMLText($skin);
 						if ($object->getTypeID() == '_wpg') {
-							$searchlink = SMWInfolink::newBrowsingLink('+',$object->getPrefixedText());
+							$searchlink = SMWInfolink::newBrowsingLink('+',$object->getLongWikiText());
 							$html .= '&nbsp;' . $searchlink->getHTML($skin);
 						}
 						if ($count<$objectcount) $html .= ", ";

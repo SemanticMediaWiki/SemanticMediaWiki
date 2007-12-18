@@ -282,23 +282,7 @@ class SMWFactbox {
 					}
 				}
 				$i+=1;
-
-				$text .= $propvalue->getLongWikiText(true);
-
-				$first = true;
-				$extralinks = array();
-				foreach ($propvalue->getInfolinks() as $link) {
-					if ($first) {
-						$text .= '<!-- -->&nbsp;&nbsp;' . $link->getWikiText();
-						    // the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
-						$first = false;
-					} else {
-						$extralinks[] = $link->getWikiText();
-					}
-				}
-				if (count($extralinks) > 0) {
-					$text .= smwfEncodeMessages($extralinks, 'info', ',&nbsp; ');
-				}
+				$text .= $propvalue->getLongWikiText(true) . $propvalue->getInfolinkText(SMW_OUTPUT_WIKI);
 			}
 			$text .= '</td></tr>';
 		}

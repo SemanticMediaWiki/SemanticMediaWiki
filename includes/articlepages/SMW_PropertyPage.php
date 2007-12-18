@@ -137,12 +137,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				}
 				$i++;
 				if ($i < 4) {
-					$r .= $value->getLongHTMLText($this->getSkin());
-					$sep = '&nbsp;&nbsp;';
-					foreach ($value->getInfolinks() as $link) {
-						$r .= $sep . $link->getHTML($this->getSkin());
-						$sep = ' &nbsp;&nbsp;'; // allow breaking for longer lists of infolinks
-					}
+					$r .= $value->getLongHTMLText($this->getSkin()) . $value->getInfolinkText(SMW_OUTPUT_HTML, $this->getSkin());
 				} else {
 					$searchlink = SMWInfolink::newInversePropertySearchLink('&hellip;', $this->articles[$index]->getPrefixedText(), $this->mTitle->getText());
 					$r .= $searchlink->getHTML($this->getSkin());

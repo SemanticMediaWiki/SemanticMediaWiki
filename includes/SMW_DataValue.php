@@ -222,10 +222,46 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Return the XSD compliant version of the value, or
-	 * FALSE if parsing the value failed and no XSD version
-	 * is available. If the datatype has units, then this
-	 * value is given in the unit provided by getUnit().
+	 * Return text serialisation of info links. Ensures more uniform layout 
+	 * throughout wiki (Factbox, Property pages, ...).
+	 */
+	public function getInfolinkText($outputformat, $linker=NULL) {
+		$result = '';
+		$first = true;
+		$extralinks = array();
+		switch ($outputformat) {
+		case SMW_OUTPUT_WIKI:
+			foreach ($this->getInfolinks() as $link) {
+				if ($first) {
+					$result .= '<!-- -->&nbsp;&nbsp;' . $link->getWikiText();
+						// the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
+					$first = false;
+				} else {
+					$extralinks[] = $link->getWikiText();
+				}
+			}
+			break;
+		case SMW_OUTPUT_HTML:
+			foreach ($this->getInfolinks() as $link) {
+				if ($first) {
+					$result .= '&nbsp;&nbsp;' . $link->getHTML($linker);
+					$first = false;
+				} else {
+					$extralinks[] = $link->getHTML($linker);
+				}
+			}
+			break;
+		}
+		if (count($extralinks) > 0) {
+			$result .= smwfEncodeMessages($extralinks, 'info', ',&nbsp; ');
+		}
+		return $result;
+	}
+
+	/**
+	 * Return the XSD compliant version of the value, or FALSE if parsing the 
+	 * value failed and no XSD version is available. If the datatype has units, 
+	 * then this value is given in the unit provided by getUnit().
 	 */
 	abstract public function getXSDValue();
 
