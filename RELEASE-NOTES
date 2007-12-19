@@ -1,12 +1,24 @@
 For a documentation of all features, see http://ontoworld.org/wiki/Help:Semantics
 
+== Semantic MediaWiki 1.0RC3 ==
+
+* New method for integrating inline queries via #ask parser function, separation of
+  query and printout requests, full compatibility ith templates.
+* New layout for Special:Ask to reflect #ask structure.
+* New printout option: "?Category:Name" to ask for membership in that category.
+* Re-enabled service links (e.g. use [[provides service::online maps]] on any page of
+  a property to Type:Geographic coordinates).
+* Re-enabled Type:Boolean.
+* Prototype translation for Korean (still alpha).
+* Various minor bugfixes.
+
 == Semantic MediaWiki 1.0RC2 ==
 
 * More liberal parsing for geographic coordinates, most user inputs accepted now.
-* Improved URL datatype: better linking behaviour, tolerant towards Unicode-URLs
+* Improved URL datatype: better linking behaviour, tolerant towards Unicode-URLs.
 * Significantly improved performance for RDF export.
-* Complete translations for Fr, Zh-tw, and Zh-ch added
-* Various minor bugfixes
+* Complete translations for Fr, Zh-tw, and Zh-ch added.
+* Various minor bugfixes.
 
 == Semantic MediaWiki 1.0RC1 ==
 
