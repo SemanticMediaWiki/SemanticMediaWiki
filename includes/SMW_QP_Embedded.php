@@ -78,7 +78,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 						if ($this->m_showhead) {
 							$result .= $headstart . $text . $headend;
 						}
-						if ($object->getPrefixedText() != $wgTitle) { // prevent recursion!
+						if ($object->getLongWikiText() != $wgTitle) { // prevent recursion!
 							if ($object->getNamespace() == NS_MAIN) {
 								$articlename = ':' . $object->getDBKey();
 							} else {
