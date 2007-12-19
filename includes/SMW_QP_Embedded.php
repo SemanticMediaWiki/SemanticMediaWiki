@@ -80,9 +80,9 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 						}
 						if ($object->getPrefixedText() != $wgTitle) { // prevent recursion!
 							if ($object->getNamespace() == NS_MAIN) {
-								$articlename = ':' . $object->getText();
+								$articlename = ':' . $object->getDBKey();
 							} else {
-								$articlename = $object->getPrefixedText();
+								$articlename = $object->getLongWikiText();
 							}
 							if ($outputmode == SMW_OUTPUT_HTML) {
 								$parserOutput = $parser->parse('{{' . $articlename . '}}', $wgTitle, $parser_options);
