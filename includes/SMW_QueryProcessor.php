@@ -20,7 +20,17 @@ class SMWQueryProcessor {
 	 * formats. The formats 'table' and 'list' are defaults that cannot be disabled. The format 'broadtable'
 	 * should not be disabled either in order not to break Special:ask.
 	 */
-	static $formats = array('table', 'list', 'ol', 'ul', 'broadtable', 'embedded', 'timeline', 'eventline', 'template', 'count', 'debug');
+	static $formats = array('table'      => "SMWTableResultPrinter",
+							'list'       => "SMWListResultPrinter",
+							'ol'         => "SMWListResultPrinter",
+							'ul'         => "SMWListResultPrinter",
+							'broadtable' => "SMWTableResultPrinter",
+							'embedded'   => "SMWEmbeddedResultPrinter",
+							'timeline'   => "SMWTimelineResultPrinter",
+							'eventline'  => "SMWTimelineResultPrinter",
+							'template'   => "SMWTemplateResultPrinter",
+							'count'      => "SMWListResultPrinter",
+							'debug'      => "SMWListResultPrinter");
 
 	/**
 	 * Parse a query string given in SMW's query language to create
@@ -239,7 +249,7 @@ class SMWQueryProcessor {
 		$format = 'auto';
 		if (array_key_exists('format', $params)) {
 			$format = strtolower(trim($params['format']));
-			if ( !in_array($format,SMWQueryProcessor::$formats) ) {
+			if ( !array_key_exists($format, SMWQueryProcessor::$formats) ) {
 				$format = 'auto'; // If it is an unknown format, defaults to list/table again
 			}
 		}
@@ -255,19 +265,12 @@ class SMWQueryProcessor {
 				$format = 'table';
 			else $format = 'list';
 		}
-		switch ($format) {
-			case 'table': case 'broadtable':
-				return new SMWTableResultPrinter($format,$inline);
-			case 'ul': case 'ol': case 'list':
-				return new SMWListResultPrinter($format,$inline);
-			case 'timeline': case 'eventline':
-				return new SMWTimelineResultPrinter($format,$inline);
-			case 'embedded':
-				return new SMWEmbeddedResultPrinter($format,$inline);
-			case 'template':
-				return new SMWTemplateResultPrinter($format,$inline);
-			default: return new SMWListResultPrinter($format,$inline);
-		}
+		
+		if (array_key_exists($format, SMWQueryProcessor::$formats))
+			$formatclass = SMWQueryProcessor::$formats[$format];
+		else
+			$formatclass = "SMWListResultPrinter";
+		return new $formatclass($format,$inline);
 	}
 
 }
