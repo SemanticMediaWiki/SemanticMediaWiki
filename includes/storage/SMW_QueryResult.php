@@ -105,6 +105,14 @@ class SMWQueryResult {
 	}
 
 	/**
+	 * Returns the query string, that sets the conditions for the entities to be
+	 * returned.
+	 */
+	public function getQueryString() {
+		return $this->m_querystring;
+	}
+
+	/**
 	 * Would there be more query results that were 
 	 * not shown due to a limit?
 	 */
