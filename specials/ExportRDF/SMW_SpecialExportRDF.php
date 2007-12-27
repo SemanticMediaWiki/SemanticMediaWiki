@@ -966,6 +966,27 @@ class ExportRDF {
 		$id = str_replace( '-2D', '-', $id);
 		return $id;
 	}
+	
+	/**
+	 * Creates an RDF URI of the thing that is described by a page with
+	 * the given title.
+	 */
+	static function makeURIfromTitle(Title $title, $unit = '') {
+		global $smwgNamespace;
+		if (''==$smwgNamespace) {
+			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
+			$smwgNamespace = $resolver->getFullURL() . '/';
+		}
+		if ($smwgNamespace[0] == '.') {
+			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
+			$smwgNamespace = "http://" . mb_substr($smwgNamespace, 1) . $resolver->getLocalURL() . '/';
+		}
+		$localpart = ExportRDF::makeXMLExportId( urlencode($title->getPrefixedDBKey()));
+		if ($unit !== '') {
+			$unit = '#' . ExportRDF::makeURIfromXMLExportId($unit);
+		}
+		return $smwgNamespace . $localpart . $unit;
+	}
 }
 
 
