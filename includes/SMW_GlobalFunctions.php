@@ -564,6 +564,10 @@ function smwfAddHTMLHeadersOutput(&$out) {
 					require_once($smwgIP . '/includes/storage/SMW_TestStore.php');
 					$smwgMasterStore = new SMWTestStore();
 				break;
+				case (SMW_STORE_RAP):
+					require_once($smwgIP . '/includes/storage/SMW_RAPStore.php');
+					$smwgMasterStore = new SMWRAPStore();
+				break;
 				case (SMW_STORE_MWDB): default:
 					require_once($smwgIP . '/includes/storage/SMW_SQLStore.php');
 					$smwgMasterStore = new SMWSQLStore();

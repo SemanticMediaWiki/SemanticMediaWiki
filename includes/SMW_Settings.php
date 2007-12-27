@@ -157,6 +157,7 @@ $smwgNamespacesWithSemanticLinks = array(
 ##
 define('SMW_STORE_MWDB',1); // uses the MediaWiki database, needs initialisation via Special:SMWAdmin.
 define('SMW_STORE_TESTING',2); // dummy store for testing
+define('SMW_STORE_RAP',3); // layers RAP between the MW db, needs initialisation via Special:SMWAdmin.
 $smwgDefaultStore = SMW_STORE_MWDB;
 ##
 

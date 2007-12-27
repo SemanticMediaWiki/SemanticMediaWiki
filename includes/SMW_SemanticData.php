@@ -8,7 +8,7 @@
  */
 
 /**
- * Class for representing junks of semantic data for one given 
+ * Class for representing chunks of semantic data for one given 
  * article (subject), similar what is typically displayed in the factbox.
  * This is a light-weight data container.
  */
