@@ -8,6 +8,10 @@
  * @author Denny Vrandecic
  */
 
+if( !defined( 'MEDIAWIKI' ) ) {
+	die( 'Not an entry point.' );
+}
+
 global $smwgIP;
 require_once( "$smwgIP/includes/storage/SMW_Store.php" );
 require_once( "$smwgIP/includes/storage/SMW_SQLStore.php" );
