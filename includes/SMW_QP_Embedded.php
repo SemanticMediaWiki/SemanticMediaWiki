@@ -36,9 +36,15 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 	protected function getResultText($res,$outputmode) {
 		// handle factbox
-		global $smwgStoreActive, $wgTitle;
+		global $smwgStoreActive, $wgTitle, $smwgEmbeddingList;
 		$old_smwgStoreActive = $smwgStoreActive;
 		$smwgStoreActive = false; // no annotations stored, no factbox printed
+		if (!isset($smwgEmbeddingList)) { // used to catch recursions, sometimes more restrictive than needed, but no major use cases should be affected by that!
+			$smwgEmbeddingList = array($wgTitle);
+			$oldEmbeddingList = array($wgTitle);
+		} else {
+			$oldEmbeddingList = array_values($smwgEmbeddingList);
+		}
 
 		// print header
 		$result = $this->mIntro;
@@ -78,7 +84,8 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 						if ($this->m_showhead) {
 							$result .= $headstart . $text . $headend;
 						}
-						if ($object->getLongWikiText() != $wgTitle) { // prevent recursion!
+						if (!in_array($object->getLongWikiText(), $smwgEmbeddingList)) { // prevent recursion!
+							$smwgEmbeddingList[] = $object->getLongWikiText();
 							if ($object->getNamespace() == NS_MAIN) {
 								$articlename = ':' . $object->getDBKey();
 							} else {
@@ -91,7 +98,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 								$result .= '{{' . $articlename . '}}';
 							}
 						} else {
-							$result .= '<b>' . $wgTitle . '</b>';
+							$result .= '<b>' . $object->getLongWikiText() . '</b>';
 						}
 						$result .= $embend;
 					}
@@ -113,6 +120,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		$result .= $footer;
 
 		$smwgStoreActive = $old_smwgStoreActive;
+		$smwgEmbeddingList = array_values($oldEmbeddingList);
 		return $result;
 	}
 }
