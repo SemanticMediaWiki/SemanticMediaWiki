@@ -102,13 +102,24 @@ function smwfPreSaveHook(&$article, &$user, &$text, &$summary, $minor, $watch, $
 
 
 /**
-*  This method will be called after an article is saved
-*  and stores the semantic properties in the database. One
-*  could consider creating an object for deferred saving
-*  as used in other places of MediaWiki.
-*/
+ *  This method will be called after an article is saved after
+ *  editing. It stores the semantic properties in the database.
+ *  One could consider creating an object for deferred saving
+ *  as used in other places of MediaWiki.
+ */
 function smwfSaveHook(&$article, &$user, &$text) {
 	SMWFactbox::storeData(smwfIsSemanticsProcessed($article->getTitle()->getNamespace()));
+	return true; // always return true, in order not to stop MW's hook processing!
+}
+
+/**
+*  Restore semantic data if articles are undeleted.
+*/
+function smwfUndeleteHook(&$title, $create) {
+	if ($create) {
+		SMWFactbox::setNewArticle();
+	}
+	SMWFactbox::storeData(smwfIsSemanticsProcessed($title->getNamespace()));
 	return true; // always return true, in order not to stop MW's hook processing!
 }
 
