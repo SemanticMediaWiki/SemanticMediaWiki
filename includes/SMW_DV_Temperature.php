@@ -27,7 +27,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 		// Find current ID and covert main values to Kelvin, if possible
 		// Note: there is no error when unknown units are used.
 		$this->m_unitin = $this->getUnitID($this->m_unit);
-		switch ( $this->m_unit ) {
+		switch ( $this->m_unitin ) {
 			case 'K':
 				$this->m_unit = 'K';
 			break;
@@ -35,11 +35,13 @@ class SMWTemperatureValue extends SMWNumberValue {
 				$this->m_unit = 'K';
 				$this->m_value = $this->m_value + 273.15;
 			break;
-			case '°F': case 'Fahrenheit':
+			case '°F':
 				$this->m_unit = 'K';
 				$this->m_value = ($this->m_value - 32) /1.8 + 273.15;
 			break;
 			default: //unsupported unit
+				// create error here, assuming that our temperature units should not be augmented by unknown units
+				$this->addError(wfMsgForContent('smw_unsupportedunit',$this->m_unit));
 				$this->m_unit = $this->m_unitin;
 			break;
 		}
