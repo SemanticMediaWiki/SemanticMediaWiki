@@ -158,9 +158,11 @@ class SMWRAPStore extends SMWStore {
 		return $this->sqlstore->setup($verbose);
 	}
 
-	function drop() {
+	function drop($verbose = true) {
 		/// TODO: undo all DB changes introduced by setup()
-		return true;
+		/// Well, not all, just delete the created model. The database tables must retain, since
+		/// there are only one set of tables for several models.
+		return $this->sqlstore->drop();
 	}
 
 	/**
