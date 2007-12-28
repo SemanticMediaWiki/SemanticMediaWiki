@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.0-RC3');
+define('SMW_VERSION','1.0-alpha-SVN');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
