@@ -88,6 +88,8 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 		if ( ($linked === NULL) || ($linked === false) ) {
 			return $this->m_prefixedtext;
+		} elseif ($this->m_namespace == NS_IMAGE) {
+			 return '[[' . str_replace("'", '&#x0027;', $this->m_prefixedtext) . '|' . $this->m_textform . '|frameless|border|text-top]]';
 		} else {
 			return '[[:' . str_replace("'", '&#x0027;', $this->m_prefixedtext) . '|' . $this->m_textform . ']]';
 		}
