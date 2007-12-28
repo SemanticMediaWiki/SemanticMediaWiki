@@ -430,7 +430,11 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 * in Title.php in order to achieve conversion with less overhead.
 	 */
 	function smwfNormalTitleDBKey( $text ) {
-		return str_replace(' ', '_', ucfirst($text));
+		global $wgCapitalLinks;
+		if ($wgCapitalLinks) {
+			$text = ucfirst($text);
+		}
+		return str_replace(' ', '_', $text);
 		///// The long and secure way. Use if problems occur.
 		// 		$t = Title::newFromText( $text );
 		// 		if ($t != NULL) {
