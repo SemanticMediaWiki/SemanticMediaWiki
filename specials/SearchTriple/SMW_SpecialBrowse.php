@@ -135,7 +135,7 @@ class SMWSpecialBrowse extends SpecialPage {
 							$html .= $skin->makeKnownLinkObj($subject, smwfT($subject, TRUE)) . '&nbsp;' . $subjectlink->getHTML($skin);
 							if ($innercount<$subjectcount) $html .= ", \n";
 						} else {
-							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByProperty', 'property=' . urlencode($result->getPrefixedText()) . '&value=' . urlencode($article->getPrefixedText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
+							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByProperty', 'property=' . urlencode($result->getPrefixedText()) . '&value=' . urlencode($article->getLongWikiText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
 						}
 					}
 					// replace the last two whitespaces in the relation name with
@@ -207,7 +207,7 @@ class SMWSpecialBrowse extends SpecialPage {
 					$count = count($cats);
 					foreach ($cats as $cat) {
 						$count -= 1;
-						$browselink = SMWInfolink::newBrowsingLink('+', $cat->getPrefixedText());
+						$browselink = SMWInfolink::newBrowsingLink('+', $cat->getLongWikiText());
 						$html .= $cat->getLongHTMLText($skin) . '&nbsp;' . $browselink->getHTML($skin);
 						if ($count > 0) $html .= ", ";
 					}
