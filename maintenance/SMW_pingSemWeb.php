@@ -115,9 +115,7 @@ for ($id = $start; $id <= $end; $id++) {
 	}
 	if ($site_sind) {
 		if ($verbose) print ' Pinging http://www.sindice.com/general/submit ...';
-// 		print " currently disabled.\n";
-
-		$post_URL = 'http://www.sindice.com/general/submit';
+		$post_URL = 'http://www.sindice.com/general/parse';
 		$context = stream_context_create();
 		stream_context_set_option($context, 'http', 'method', 'POST');
 		// The content to be POSTed, if any
