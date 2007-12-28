@@ -537,7 +537,7 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 * Formats an array of message strings so that it appears as a tooltip.
 	 * $icon should be one of: 'warning' (default), 'info'
 	 */
-	function smwfEncodeMessages($msgarray, $icon = 'warning', $sep = ' ') {
+	function smwfEncodeMessages($msgarray, $icon = 'warning', $sep = " <!--br-->") {
 		if (count($msgarray) > 0) {
 			smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
 			$msgs = implode($sep, $msgarray);

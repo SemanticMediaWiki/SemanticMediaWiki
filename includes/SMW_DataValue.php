@@ -253,7 +253,7 @@ abstract class SMWDataValue {
 			break;
 		}
 		if (count($extralinks) > 0) {
-			$result .= smwfEncodeMessages($extralinks, 'info', ',&nbsp; ');
+			$result .= smwfEncodeMessages($extralinks, 'info', ', <!--br-->');
 		}
 		return $result;
 	}
