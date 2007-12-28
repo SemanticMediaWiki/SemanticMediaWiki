@@ -761,17 +761,20 @@ class ExportRDF {
 //			}
 
 			// add statements about equivalence to (external) URIs
-			// FIXME: temporarily disabled
-// 			if ($equality_rel) {
-// 				$equalities = smwfGetSpecialPropertyValues($title,SMW_SP_HAS_URI);
-// 				$fragment = $title->getFragment();
-// 				if( '' != $fragment ) {
-// 					$fragment = '#' . $fragment;
-// 				}
-// 				foreach ($equalities as $equality) {
-// 					$this->post_ns_buffer .= "\t\t<" . $equality_rel . ' rdf:resource="' . $equality . $fragment .  "\"/>\n";
-// 				}
-// 			}
+ 			if ($equality_rel) {
+ 				$equalities = $this->store->getSpecialValues( $et->title, SMW_SP_HAS_URI );
+ 				$fragment = $et->title->getFragment();
+ 				$fragment = ''; // FIXME: temporarily disabled.
+ 				// I think this should be always disabled, I am trying to think of a situation
+ 				// where something should be equal to the frag-id'd URI, but don't see the
+ 				// use case really.
+ 				if( '' != $fragment ) {
+ 					$fragment = '#' . $fragment;
+ 				}
+ 				foreach ($equalities as $equality) {
+ 					$this->post_ns_buffer .= "\t\t<" . $equality_rel . ' rdf:resource="' . $equality . $fragment .  "\"/>\n";
+ 				}
+ 			}
 
 			// add rdfs:subPropertyOf statements
  			if ($subprop_rel) {
@@ -860,7 +863,8 @@ class ExportRDF {
 	 */
 	public function getURI(Title $title, $unit = '') {
 		$et = $this->getExportTitleFromTitle( $title, $unit );
-		return $et->long_uri;
+		return $et->long_uri; // TODO this function should be static! and it should return
+		// the correct URI. Needs a bit of work still.
 	}
 
 	/** Fetch SMWExportTitle for a given article. The inputs are
