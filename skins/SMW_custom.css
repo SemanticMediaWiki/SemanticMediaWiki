@@ -35,6 +35,11 @@ table.smwtable tr.smwfooter td{
 	vertical-align: top;
 }
 
+/*hide keys for sorting table entries*/
+span.smwsortkey{
+	display: none;
+}
+
 /* buttons for sort-arrows */
 a.sortheader:hover{
 	text-decoration: none;

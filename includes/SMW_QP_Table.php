@@ -36,8 +36,20 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			foreach ($row as $field) {
 				$result .= "\t\t<td>";
 				$first = true;
-				while ( ($text = $field->getNextText($outputmode, $this->getLinker($firstcol))) !== false ) {
-					if ($first) $first = false; else $result .= '<br />';
+				while ( ($object = $field->getNextObject()) !== false ) {
+					if ($object->getTypeID() == '_wpg') { // use shorter "LongText" for wikipage
+						$text = $object->getLongText($outputmode,$this->getLinker($firstcol));
+					} else {
+						$text = $object->getShortText($outputmode,$this->getLinker($firstcol));
+					}
+					if ($first) {
+						if ($object->isNumeric()) { // use numeric sortkey
+							$result .= '<span class="smwsortkey">' . $object->getNumericValue() . '</span>';
+						}
+						$first = false;
+					} else {
+						$result .= '<br />';
+					}
 					$result .= $text;
 				}
 				$result .= "</td>\n";

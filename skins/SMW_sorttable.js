@@ -33,15 +33,15 @@ function smw_sortables_init() {
 }
 
 function smw_preload_images() {
-	// preload icons needed by SMW
-	if (document.images) {
-		pic1= new Image(12,14);
-		pic1.src = SMW_PATH + "/images/sort_up.gif";
-		pic2= new Image(12,14);
-		pic2.src = SMW_PATH + "/images/sort_down.gif";
-		pic3= new Image(16,16); 
-		pic3.src = SMW_PATH + "/images/search_icon.png"; // TODO: move this preload to somewhere else?
-	}
+    // preload icons needed by SMW
+    if (document.images) {
+	pic1= new Image(12,14);
+	pic1.src = SMW_PATH + "/images/sort_up.gif";
+	pic2= new Image(12,14);
+	pic2.src = SMW_PATH + "/images/sort_down.gif";
+	pic3= new Image(16,16); 
+	pic3.src = SMW_PATH + "/images/search_icon.png"; // TODO: move this preload to somewhere else?
+    }
 }
 
 function smw_makeSortable(table) {
@@ -59,27 +59,36 @@ function smw_makeSortable(table) {
         'onclick="smw_resortTable(this, '+i+');return false;">' +
         '<span class="sortarrow"><img alt="[&lt;&gt;]" src="' + SMW_PATH + '/images/sort_none.gif"/></span></a>&nbsp;<span style="margin-left: 0.3em; margin-right: 1em;">' + cell.innerHTML + '</span>'; // the &nbsp; is for Opera ...
     }
+
+    /*make sortkeys invisible
+     *for now done in css
+     *this code provides the possibility to do it via js, so that non js clients
+     *can see the keys
+     */
+//    for(var ti=0; ti<table.rows.length; ti++){
+// 	for (var tj=0; tj<table.rows[ti].cells.length; tj++){
+// 	    var spans=table.rows[ti].cells[tj].getElementsByTagName("span");
+// 	    if(spans.length > 0){
+// 		for (var tk=0;tk<spans.length;tk++) {
+// 		    if(spans[tk].className=="smwsortkey"){
+// 			spans[tk].style.display="none";
+// 		    }
+// 		}
+// 	    }
+// 	}
+//    }
 }
 
-function smw_getInnerText(el) {
-	if (typeof el == "string") return el;
-	if (typeof el == "undefined") { return el };
-	if (el.innerText) return el.innerText;	//Not needed but it is faster
-	var str = "";
-
-	var cs = el.childNodes;
-	var l = cs.length;
-	for (var i = 0; i < l; i++) {
-		switch (cs[i].nodeType) {
-			case 1: //ELEMENT_NODE
-				str += smw_getInnerText(cs[i]);
-				break;
-			case 3:	//TEXT_NODE
-				str += cs[i].nodeValue;
-				break;
-		}
+function smw_getInnerText(el){
+    var spans = el.getElementsByTagName("span");
+    if(spans.length > 0){
+	for (var i=0;i<spans.length;i++) {
+	    if(spans[i].className=="smwsortkey") return spans[i].innerHTML;
 	}
-	return str;
+    }else{
+	return el.innerHTML;	
+    }
+
 }
 
 function smw_resortTable(lnk,clid) {
@@ -88,19 +97,25 @@ function smw_resortTable(lnk,clid) {
     for (var ci=0;ci<lnk.childNodes.length;ci++) {
         if (lnk.childNodes[ci].tagName && lnk.childNodes[ci].tagName.toLowerCase() == 'span') span = lnk.childNodes[ci];
     }
-    var spantext = smw_getInnerText(span);
+    var spantext = smw_getInnerText(span);//is this variable unused
     var td = lnk.parentNode;
     var column = clid || td.cellIndex;
     var table = smw_getParent(td,'TABLE');
 
-    // Work out a type for the column
+
     if (table.rows.length <= 1) return;
-    var itm = smw_getInnerText(table.rows[1].cells[column]);
-    sortfn = smw_sort_caseinsensitive;
-    if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d\d\d$/)) sortfn = smw_sort_date;
-    if (itm.match(/^\d\d[\/-]\d\d[\/-]\d\d$/)) sortfn = smw_sort_date;
-    if (itm.match(/^[�$]/)) sortfn = smw_sort_currency;
-    if (itm.match(/^[\d\.]+$/)) sortfn = smw_sort_numeric;
+
+    sortfn = smw_sort_caseinsensitive; //sorting w/o keys
+    //check for sorting keys and change sorting function
+    var itm = table.rows[1].cells[column];
+    var spans = itm.getElementsByTagName("span");
+    if(spans.length > 0){
+	for (var i=0;i<spans.length;i++) {
+	    if(spans[i].className=="smwsortkey") sortfn=smw_sort_numeric; //sorting with keys
+	}
+    }
+
+
     SORT_COLUMN_INDEX = column;
     var firstRow = new Array();
     var newRows = new Array();
@@ -145,47 +160,11 @@ function smw_resortTable(lnk,clid) {
 }
 
 function smw_getParent(el, pTagName) {
-	if (el == null) return null;
-	else if (el.nodeType == 1 && el.tagName.toLowerCase() == pTagName.toLowerCase())	// Gecko bug, supposed to be uppercase
-		return el;
-	else
-		return smw_getParent(el.parentNode, pTagName);
-}
-function smw_sort_date(a,b) {
-    // y2k notes: two digit years less than 50 are treated as 20XX, greater than 50 are treated as 19XX
-    aa = smw_getInnerText(a.cells[SORT_COLUMN_INDEX]);
-    bb = smw_getInnerText(b.cells[SORT_COLUMN_INDEX]);
-    if (aa.length == 10) {
-        dt1 = aa.substr(6,4)+aa.substr(3,2)+aa.substr(0,2);
-    } else {
-        yr = aa.substr(6,2);
-        if (parseInt(yr) < 50) { yr = '20'+yr; } else { yr = '19'+yr; }
-        dt1 = yr+aa.substr(3,2)+aa.substr(0,2);
-    }
-    if (bb.length == 10) {
-        dt2 = bb.substr(6,4)+bb.substr(3,2)+bb.substr(0,2);
-    } else {
-        yr = bb.substr(6,2);
-        if (parseInt(yr) < 50) { yr = '20'+yr; } else { yr = '19'+yr; }
-        dt2 = yr+bb.substr(3,2)+bb.substr(0,2);
-    }
-    if (dt1==dt2) return 0;
-    if (dt1<dt2) return -1;
-    return 1;
-}
-
-function smw_sort_currency(a,b) {
-    aa = smw_getInnerText(a.cells[SORT_COLUMN_INDEX]).replace(/[^0-9.]/g,'');
-    bb = smw_getInnerText(b.cells[SORT_COLUMN_INDEX]).replace(/[^0-9.]/g,'');
-    return parseFloat(aa) - parseFloat(bb);
-}
-
-function smw_sort_numeric(a,b) {
-    aa = parseFloat(smw_getInnerText(a.cells[SORT_COLUMN_INDEX]));
-    if (isNaN(aa)) aa = 0;
-    bb = parseFloat(smw_getInnerText(b.cells[SORT_COLUMN_INDEX]));
-    if (isNaN(bb)) bb = 0;
-    return aa-bb;
+    if (el == null) return null;
+    else if (el.nodeType == 1 && el.tagName.toLowerCase() == pTagName.toLowerCase())	// Gecko bug, supposed to be uppercase
+	return el;
+    else
+	return smw_getParent(el.parentNode, pTagName);
 }
 
 function smw_sort_caseinsensitive(a,b) {
@@ -196,6 +175,16 @@ function smw_sort_caseinsensitive(a,b) {
     return 1;
 }
 
+
+function smw_sort_numeric(a,b) {
+    aa = parseFloat(smw_getInnerText(a.cells[SORT_COLUMN_INDEX]));
+    if (isNaN(aa)) aa = 0;
+    bb = parseFloat(smw_getInnerText(b.cells[SORT_COLUMN_INDEX]));
+    if (isNaN(bb)) bb = 0;
+    return aa-bb;
+}
+
+
 function smw_sort_default(a,b) {
     aa = smw_getInnerText(a.cells[SORT_COLUMN_INDEX]);
     bb = smw_getInnerText(b.cells[SORT_COLUMN_INDEX]);
@@ -205,18 +194,18 @@ function smw_sort_default(a,b) {
 }
 
 
-function addEvent(elm, evType, fn, useCapture)
+function addEvent(elm, evType, fn, useCapture){
 // addEvent and removeEvent
 // cross-browser event handling for IE5+,  NS6 and Mozilla
 // By Scott Andrew
-{
-  if (elm.addEventListener){
-    elm.addEventListener(evType, fn, useCapture);
-    return true;
-  } else if (elm.attachEvent){
-    var r = elm.attachEvent("on"+evType, fn);
-    return r;
-  } else {
-    alert("Handler could not be removed");
-  }
+
+    if (elm.addEventListener){
+	elm.addEventListener(evType, fn, useCapture);
+	return true;
+    } else if (elm.attachEvent){
+	var r = elm.attachEvent("on"+evType, fn);
+	return r;
+    } else {
+	alert("Handler could not be removed");
+    }
 }
