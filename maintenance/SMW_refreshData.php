@@ -75,7 +75,7 @@ if (  array_key_exists( 't', $options ) ) {
 }
 
 if (  array_key_exists( 'f', $options ) ) {
-	print "\n  Deleting all stored data completely before refreshing!\n  Semantic data in the wiki might be incomplete for some\n  time while this operation runs.\n\n";
+	print "\n  Deleting all stored data completely and rebuilding it again later!\n  Semantic data in the wiki might be incomplete for some time while this operation runs.\n\n  NOTE: It is usually necessary to run this script ONE MORE TIME after this operation,\n  since some properties' types are not stored yet in the first run.\n  The first run can normally use the parameter -p to refresh only properties.\n\n";
 	if ( (array_key_exists( 's', $options ))  || (array_key_exists( 'e', $options )) ) {
 		print "  WARNING: -s or -e are used, so some pages will not be refreshed at all!\n    Data for those pages will only be available again when they have been\n    refreshed as well!\n\n";
 	}
