@@ -709,6 +709,7 @@ class SMWQueryParser {
 	 * effective value string, or of "*" for print statements.
 	 */
 	protected function prepareValue(&$value, &$comparator, &$printmodifier) {
+		global $smwgQComparators;
 		// get print modifier behind *
 		$list = preg_split('/^\*/',$value,2);
 		if (count($list) == 2) { //hit
@@ -720,7 +721,7 @@ class SMWQueryParser {
 		if ($value == '*') { // printout statement
 			return;
 		}
-		$list = preg_split('/^(<|>|!)/',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
+		$list = preg_split('/^(' . $smwgQComparators . ')/',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
 		$comparator = SMW_CMP_EQ;
 		if (count($list) == 3) { // initial comparator found ($list[1] should be empty)
 			switch ($list[1]) {
@@ -734,6 +735,10 @@ class SMWQueryParser {
 				break;
 				case '!':
 					$comparator = SMW_CMP_NEQ;
+					$value = $list[2];
+				break;
+				case '%':
+					$comparator = SMW_CMP_LIKE;
 					$value = $list[2];
 				break;
 				//default: not possible

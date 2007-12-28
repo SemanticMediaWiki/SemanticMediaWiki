@@ -11,6 +11,7 @@ define('SMW_CMP_EQ',1); // matches only datavalues that are equal to the given v
 define('SMW_CMP_LEQ',2); // matches only datavalues that are less or equal than the given value
 define('SMW_CMP_GEQ',3); // matches only datavalues that are greater or equal to the given value
 define('SMW_CMP_NEQ',4); // matches only datavalues that are unequal to the given value
+define('SMW_CMP_LIKE',5); // matches only datavalues that are LIKE the given value
 
 // print request
 define('SMW_PRINT_CATS', 0);  // print all direct cateories of the current element
@@ -408,6 +409,9 @@ class SMWValueDescription extends SMWDescription {
 				break;
 				case SMW_CMP_NEQ: 
 					$comparator = '!'; // not supported yet?
+				break;
+				case SMW_CMP_LIKE: 
+					$comparator = '%'; // not supported yet?
 				break;
 				default: case SMW_CMP_EQ: 
 					$comparator = '';

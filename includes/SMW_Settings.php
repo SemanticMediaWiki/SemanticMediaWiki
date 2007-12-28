@@ -86,6 +86,10 @@ $smwgQMaxLimit = 10000;       // Max number of results ever retrieved, even when
 $smwgQDisjunctionSupport = true; // Support disjunctions in queries (||)?
                              // (Note: things like namespace defaults and property/category hierarchies
                              //        can also cause disjunctions!)
+$smwgQComparators = '<|>|!'; // List of comparator characters supported by queries, separated by '|'
+                             // Available entries: < (smaller than), < (greater than), ! (unequal to),
+                             //                    % (pattern with '%' as wildcard, only for Type:String)
+                             // If unsupported comparators are used, they are treated as part of the queried value
 
 ### Settings about printout of (especially inline) queries:
 $smwgQDefaultLimit = 50;    // Default number of rows returned in a query. Can be increased with <ask limit="num">...

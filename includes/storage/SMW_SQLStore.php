@@ -812,7 +812,7 @@ class SMWSQLStore extends SMWStore {
 			list( $startOpts, $useIndex, $tailOpts ) = $db->makeSelectOptions( $sql_options );
 			$result = '<div style="border: 1px dotted black; background: #A1FB00; padding: 20px; ">' .
 			          '<b>Generated Wiki-Query</b><br />' .
-			          $query->getDescription()->getQueryString() . '<br />' .
+			          str_replace('[', '&#x005B;', $query->getDescription()->getQueryString()) . '<br />' .
 			          '<b>Query-Size: </b>' . $query->getDescription()->getSize() . '<br />' .
 			          '<b>Query-Depth: </b>' . $query->getDescription()->getDepth() . '<br />' .
 			          '<b>SQL-Query</b><br />' .
@@ -1651,18 +1651,25 @@ class SMWSQLStore extends SMWStore {
 				break;
 				default:
 					if ( $table = $this->addJoin('pATTS', $from, $db, $curtables, $nary_pos) ) {
-						switch ($description->getComparator()) {
-							case SMW_CMP_LEQ: $op = '<='; break;
-							case SMW_CMP_GEQ: $op = '>='; break;
-							case SMW_CMP_NEQ: $op = '!='; break;
-							case SMW_CMP_EQ: default: $op = '='; break;
-						}
 						if ($description->getDatavalue()->isNumeric()) {
 							$valuefield = 'value_num';
 							$value = $description->getDatavalue()->getNumericValue();
 						} else {
 							$valuefield = 'value_xsd';
 							$value = $description->getDatavalue()->getXSDValue();
+						}
+						switch ($description->getComparator()) {
+							case SMW_CMP_LEQ: $op = '<='; break;
+							case SMW_CMP_GEQ: $op = '>='; break;
+							case SMW_CMP_NEQ: $op = '!='; break;
+							case SMW_CMP_LIKE:
+								if ($description->getDatavalue()->getTypeID() == '_str') {
+									$op = ' LIKE ';
+								} else { // LIKE only works for strings at the moment
+									$op = '=';
+								}
+							break;
+							case SMW_CMP_EQ: default: $op = '='; break;
 						}
 						///TODO: implement check for unit
 						$where .= $table . '.' .  $valuefield . $op . $db->addQuotes($value);
