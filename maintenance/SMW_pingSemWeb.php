@@ -9,6 +9,9 @@
  * Usage:
  * php SMW_pingSemWeb.php [options...]
  *
+ * -t <target>  What sites to notify, comma-separated list with possible values:
+ *                ptsw -- http://pingthesemanticweb.com
+ *                sind -- http://www.sindice.com
  * -d <delay>   Wait for this many milliseconds after processing an article, useful for limiting server load.
  * -s <startid> Start refreshing at given article ID, useful for partial refreshing
  * -e <endid>   Stop refreshing at given article ID, useful for partial refreshing 
@@ -21,7 +24,7 @@
  * @TODO it should be possible to ping based on pages' modification dates
  */
 
-$optionsWithArgs = array( 'd', 's', 'e', 'h' ); // -d <delay>, -s <startid>, -e <endid>
+$optionsWithArgs = array( 'd', 's', 'e', 'h', 't' ); // -d <delay>, -s <startid>, -e <endid>
 
 require_once( 'commandLine.inc' );
 
@@ -29,6 +32,21 @@ global $smwgIP, $wgServer;
 include_once($smwgIP . '/includes/SMW_Infolink.php');
 
 $dbr =& wfGetDB( DB_MASTER );
+
+if ( array_key_exists( 't', $options ) ) {
+	$sites = explode(',',$options['t']);
+	$site_ptsw = false;
+	$site_sind = false;
+	foreach ($sites as $site) {
+		switch ($site) {
+			case 'ptsw':  $site_ptsw = true; print "Notifying pingthesemanticweb.com. \n";  break;
+			case 'sind':  $site_sind = true; print "Notifying www.sindice.com. \n"; break;
+			default: print "Unknown site parameter '$site'. Possible values are listed in the docu in this script.\n";
+		}
+	}
+} else {
+	print "No sites selected. Notifying all available sites!\n";
+}
 
 if ( array_key_exists( 'd', $options ) ) {
 	$delay = intval($options['d']) * 100000; // sleep 100 times the given time, but do so only each 100 pages
@@ -65,14 +83,14 @@ if ( ($server == 'http://localhost') || ($server == '') || ($server == '-') ) {
 		$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
 		$server = "http://" . mb_substr($server, 1);
 	}
-	if ($verbose) print "Trying to construct ping URL with use server parameter given to SMW:\n  $server\nAlternatively, you can specify a publicly reachable server via the parameter -h with this script.\n\n";
+	if ($verbose) print "Trying to construct wiki URLs with server parameter given to SMW:\n  $server\nAlternatively, you can specify a publicly reachable server via the parameter -h of this script.\n\n";
 }
 
 $linkCache =& LinkCache::singleton();
 global $wgUser;
 
 if ($verbose) {
-	print "Notifying pingthesemanticweb.com of all semantic data in this wiki!\n\n";
+	print "Notifying selected sites of all semantic data in this wiki!\n\n";
 	print "Processing pages from ID $start to ID $end ...\n";
 }
 
@@ -84,16 +102,32 @@ for ($id = $start; $id <= $end; $id++) {
 	if ( ($title === NULL) ) continue;
 	if ( !smwfIsSemanticsProcessed($title->getNamespace()) ) continue;
 	$url = $server . $skin->makeSpecialUrl( 'ExportRDF/' . $title->getPrefixedText() );
-	if ($verbose) {
-		print "($num_files) Processing page with ID " . $id . " ($url).\n";
-		print ' Pinging http://pingthesemanticweb.com/rest/?url=' . rawurlencode($url) . ' ...';
+	if ($verbose) print "($num_files) Processing page with ID " . $id . " ($url).\n";
+	if ($site_ptsw) {
+		if ($verbose) print ' Pinging http://pingthesemanticweb.com/rest/?url=' . rawurlencode($url) . ' ...';
+		$fp = fopen('http://pingthesemanticweb.com/rest/?url=' . rawurlencode($url), 'r');
+		if ($fp === false) {
+			if ($verbose) print " failed.\n";
+		} else {
+			fclose($fp);
+			if ($verbose) print " done.\n";
+		}
 	}
-	$fp = fopen('http://pingthesemanticweb.com/rest/?url=' . rawurlencode($url), 'r');
-	if ($fp === false) {
-		if ($verbose) print " failed.\n";
-	} else {
-		fclose($fp);
-		if ($verbose) print " done.\n";
+	if ($site_sind) {
+		if ($verbose) print ' Pinging http://www.sindice.com/general/submit ...';
+// 		print " currently disabled.\n";
+
+		$post_URL = 'http://www.sindice.com/general/submit';
+		$context = stream_context_create();
+		stream_context_set_option($context, 'http', 'method', 'POST');
+		// The content to be POSTed, if any
+		stream_context_set_option($context, 'http', 'content', "url=" . rawurlencode($url));
+		$response = @file_get_contents($post_URL, "rb", $context);
+		if ($response) {
+			if ($verbose) print " done.\n";
+		} else {
+			if ($verbose) print " failed.\n";
+		}
 	}
 
 	// sleep to be nice to the server
