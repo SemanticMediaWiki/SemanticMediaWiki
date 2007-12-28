@@ -13,9 +13,11 @@
  * -s <startid> Start refreshing at given article ID, useful for partial refreshing
  * -e <endid>   Stop refreshing at given article ID, useful for partial refreshing 
  * -v           Be verbose about the progress.
- * -c			Will refresh only category pages (and other explicitly named namespaces)
- * -p			Will refresh only property pages (and other explicitly named namespaces)
- * -t			Will refresh only type pages (and other explicitly named namespaces)
+ * -c           Will refresh only category pages (and other explicitly named namespaces)
+ * -p           Will refresh only property pages (and other explicitly named namespaces)
+ * -t           Will refresh only type pages (and other explicitly named namespaces)
+ * -f           Fully delete all content instead of just refreshing relevant entries. This will also
+ *              rebuild the whole storage structure. May leave the wiki temporarily incomplete.
  *
  * @author Yaron Koren
  * @author Markus Krötzsch
@@ -23,7 +25,8 @@
 
 $optionsWithArgs = array( 'd', 's', 'e' ); // -d <delay>, -s <startid>
 
-require_once( 'commandLine.inc' );
+require_once('counter.php');
+require_once('commandLine.inc');
 
 global $smwgIP;
 require_once($smwgIP . '/includes/SMW_Factbox.php');
@@ -69,6 +72,28 @@ if (  array_key_exists( 'p', $options ) ) {
 if (  array_key_exists( 't', $options ) ) {
 	$filter = true;
 	$types = true;
+}
+
+if (  array_key_exists( 'f', $options ) ) {
+	print "\n  Deleting all stored data completely before refreshing!\n  Semantic data in the wiki might be incomplete for some\n  time while this operation runs.\n\n";
+	if ( (array_key_exists( 's', $options ))  || (array_key_exists( 'e', $options )) ) {
+		print "  WARNING: -s or -e are used, so some pages will not be refreshed at all!\n    Data for those pages will only be available again when they have been\n    refreshed as well!\n\n";
+	}
+
+	print "Abort with control-c in the next five seconds ...  ";
+
+	for ($i = 6; $i >= 1;) {
+		print_c($i, --$i);
+		sleep(1);
+	}
+	echo "\n";
+	smwfGetStore()->drop($verbose);
+	print "\n";
+	smwfGetStore()->setup($verbose);
+	while (ob_get_level() > 0) { // be sure to have some buffer, otherwise some PHPs complain
+		ob_end_flush();
+	}
+	echo "\nAll storage structures have been deleted and recreated.\n\n";
 }
 
 global $wgParser;

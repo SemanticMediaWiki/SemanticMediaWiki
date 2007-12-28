@@ -247,6 +247,12 @@ abstract class SMWStore {
 	 */
 	abstract function setup($verbose = true);
 
+	/**
+	 * Drop (delete) all storage structures created by setup(). This will delete all semantic data and
+	 * possibly leave the wiki uninitialised.
+	 */
+	abstract function drop($verbose = true);
+
 }
 
 

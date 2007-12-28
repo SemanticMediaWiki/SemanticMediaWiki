@@ -157,7 +157,12 @@ class SMWRAPStore extends SMWStore {
 		$this->reportProgress("RAP setup finished. Handing over to SQL store setup.\n\n",$verbose);
 		return $this->sqlstore->setup($verbose);
 	}
-	
+
+	function drop() {
+		/// TODO: undo all DB changes introduced by setup()
+		return true;
+	}
+
 	/**
 	 * Returns the connection to the RAP Database store. As of now, only MySQL
 	 * is supported. TODO allow other DBs

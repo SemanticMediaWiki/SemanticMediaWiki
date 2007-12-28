@@ -197,6 +197,10 @@ class SMWTestStore extends SMWStore {
 		return true;
 	}
 
+	function drop() {
+		return true;
+	}
+
 
 ///// Private methods /////
 
