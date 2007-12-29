@@ -378,7 +378,7 @@ class SMWRSSEntry {
 	 * Constructor for a single item in the feed. Requires the URI of the item.
 	 */
 	public function SMWRSSEntry(Title $t, $c, $d) {
-		global $wgServer, $wgTitle;
+		global $wgServer;
 		$this->uri = $t->getFullURL();
 		$this->label = $t->getText();
 		$article = null;
@@ -407,10 +407,15 @@ class SMWRSSEntry {
 		} else {
 			$articlename = $t->getPrefixedDBKey();
 		}
-		$parser_options = new ParserOptions();
-		$parser_options->setEditSection(false);  // embedded sections should not have edit links
-		$parser = new Parser();
+		static $parser = null;
+		static $parser_options = null;
+		if ($parser == null) {
+			$parser_options = new ParserOptions();
+			$parser_options->setEditSection(false);  // embedded sections should not have edit links
+			$parser = new Parser();
+		}
 		//print " A:$articlename#"; // Debug
+		global $wgTitle;
 		$parserOutput = $parser->parse('{{' . $articlename . '}}', $wgTitle, $parser_options);
 		//print "done.\n "; // Debug
 		$this->content = $parserOutput->getText();
