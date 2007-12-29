@@ -14,6 +14,11 @@ include_once($IP . '/includes/SpecialPage.php');
  * @note AUTOLOAD
  */
 class SMWAskPage extends SpecialPage {
+	protected $m_querystring = '';
+	protected $m_params = array();
+	protected $m_printouts = array();
+	protected $m_editquery = false;
+	protected $m_rssoutput = false;
 
 	/**
 	 * Constructor
@@ -24,109 +29,144 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	function execute($p = '') {
-		global $wgOut, $wgRequest, $smwgIP, $smwgQEnabled, $smwgQMaxLimit, $smwgQSortingSupport, $wgUser;
+		global $wgOut, $wgRequest, $smwgIP, $smwgQEnabled;
+		wfProfileIn('doSpecialAsk (SMW)');
 		if ( ($wgRequest->getVal( 'query' ) != '') ) { // old processing
 			$this->executSimpleAsk();
+			wfProfileOut('doSpecialAsk (SMW)');
+			return;
+		}
+		if (!$smwgQEnabled) {
+			$wgOut->addHTML('<br />' . wfMsgForContent('smw_iq_disabled'));
+			wfProfileOut('doSpecialAsk (SMW)');
 			return;
 		}
 
-		$querystring    = $wgRequest->getVal( 'q' );
-		$paramstring    = $wgRequest->getVal( 'p' ) . $wgRequest->getVal( 'po' );
-		$limit          = $wgRequest->getVal( 'limit' );
-		$offset         = $wgRequest->getVal( 'offset' );
-		$order          = $wgRequest->getVal( 'order' );
-		$sort           = $wgRequest->getVal( 'sort' );
-		$editquery      = ( $wgRequest->getVal( 'eq' ) != '' );
-		wfProfileIn('doSpecialAsk (SMW)');
+		$this->extractQueryParameters($p);
 
-		// First make all those inputs into a simple parameter list that can again be parsed into components later
-		$rawparams = array();
-		if ($querystring != '') {
-			$rawparams[] = $querystring;
-		}
-		if ($paramstring != '') {
-			$ps = explode("\n", $paramstring); // params separated by newlines here (compatible with text-input for printouts)
-			foreach ($ps as $param) {
-				$rawparams[] = $param;
-			}
-		}
-		if ($p != '') { // extract query from $p
-			// unescape $p; escaping scheme: all parameters rawurlencoded, "-" and "/" urlencoded, all "%" replaced by "-", parameters then joined with /
-			$ps = explode('/', $p); // params separated by / here (compatible with wiki link syntax)
-			foreach ($ps as $param) {
-				$rawparams[] = rawurldecode(str_replace('-', '%', $param));
-			}
-		}
-		if ('' == $limit) $limit =  20;
-		if ('' == $offset) $offset = 0;
-
-		// Now parse parameters and rebuilt the param strings for URLs
-		include_once( "$smwgIP/includes/SMW_QueryProcessor.php" );
-		SMWQueryProcessor::processFunctionParams($rawparams,$querystring,$params,$printouts);
-		if ( ('' == $sort) && (array_key_exists('sort',$params)) ) {
-			$sort = $params['sort'];
-		}
-		if ( ('' == $order) && (array_key_exists('order',$params)) ) {
-			$order = $params['order'];
-		}
-		if ($smwgQEnabled && ('' == $querystring) ) {
-			$editquery = true;
-		}
 		$paramstring = '';
-		foreach ($params as $key => $value) {
+		foreach ($this->m_params as $key => $value) {
 			if ( in_array($key,array('format', 'template')) ) {
 				$paramstring .= "$key=$value\n";
 			}
 		}
 		$paramstring = str_replace('=','%3D',$paramstring);
 		$printoutstring = '';
-		foreach ($printouts as $printout) {
+		foreach ($this->m_printouts as $printout) {
 			$printoutstring .= $printout->getSerialisation() . "\n";
 		}
-		// Finally complete $params so that it can be used to make queries
-		$params['format'] = 'broadtable';
-		$params['limit']  = $limit;
-		$params['offset'] = $offset;
-		$params['sort'] = $sort;
-		$params['order'] = $order;
+		$urltail = '&q=' . urlencode($this->m_querystring) . '&p=' . urlencode($paramstring) .'&po=' . urlencode($printoutstring);
+		if ('' != $this->m_params['sort'])  $urltail .= '&sort=' . $this->m_params['sort'];
+		if ('' != $this->m_params['order']) $urltail .= '&order=' . $this->m_params['order'];
 
-		$html = '';
-
-		// Optionally print input form
-		$urltail = '&q=' . urlencode($querystring) . '&p=' . urlencode($paramstring) .'&po=' . urlencode($printoutstring);
-		if ('' != $sort) $urltail .= '&sort=' . $sort;
-		if ('' != $order) $urltail .= '&order=' . $order;
-		$skin = $wgUser->getSkin();
-		if ($editquery) {
-			$spectitle = Title::makeTitle( NS_SPECIAL, 'Ask' );
-			$docutitle = Title::newFromText(wfMsg('smw_ask_doculink'), NS_HELP);
-			$html .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
-			         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
-			$html .= '<table style="width: 100%; "><tr><th>' . wfMsg('smw_ask_queryhead') . '</th><th>' . wfMsg('smw_ask_printhead') . '</th></tr>' .
-			         '<tr><td><textarea name="q" cols="20" rows="6">' . htmlspecialchars($querystring) . '</textarea></td>' .
-			         '<td><textarea name="po" cols="20" rows="6">' . htmlspecialchars($printoutstring) . '</textarea></td></tr></table>' . "\n";
-			if ($smwgQSortingSupport) {
-				$html .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort" value="' .
-				          htmlspecialchars($sort) . '"/> <select name="order"><option ';
-				if ($order == 'ASC') $html .= 'selected="selected" ';
-				$html .=  'value="ASC">' . wfMsg('smw_ask_ascorder') . '</option><option ';
-				if ($order == 'DESC') $html .= 'selected="selected" ';
-				$html .=  'value="DESC">' . wfMsg('smw_ask_descorder') . '</option></select> <br />';
-			}
-			$html .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
-			         '<input type="hidden" name="eq" value="yes"/>' . 
-			         ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . $offset . '&limit=' . $limit . $urltail)) . '">' . wfMsg('smw_ask_hidequery') . '</a> | <a href="' . $docutitle->getFullURL() . '">' . wfMsg('smw_ask_help') . '</a>' .
-			         "\n</form><br />";
-			$urltail .= '&eq=yes';
-		} else {
-			$html .= '<p><a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . $offset . '&limit=' . $limit . $urltail . '&eq=yes')) . '">' . wfMsg('smw_ask_editquery') . '</a></p>';
-		}
+		// Print input form (or links to display it)
+		$this->makeInputForm($printoutstring, 'offset=' . $this->m_params['offset'] . '&limit=' . $this->m_params['limit'] . $urltail);
 
 		// Finally process query and build more HTML output
-		if ($smwgQEnabled && ('' != $querystring) ) { // print results if any
-			$queryobj = SMWQueryProcessor::createQuery($querystring, $params, false, '', $printouts);
-			$res = smwfGetStore()->getQueryResult($queryobj);
+		if ('' != $this->m_querystring ) { // print results if any
+			if ($this->m_rssoutput) {
+				$this->makeRSSResult();
+			} else {
+				$this->makeHTMLResult($urltail);
+			}
+		}
+		wfProfileOut('doSpecialAsk (SMW)');
+	}
 
+	protected function extractQueryParameters($p) {
+		global $wgRequest, $smwgIP;
+		$this->m_querystring = $wgRequest->getVal( 'q' );
+		$paramstring         = $wgRequest->getVal( 'p' ) . $wgRequest->getVal( 'po' );
+
+		// First make all those inputs into a simple parameter list that can again be parsed into components later
+		$rawparams = array();
+		if ($this->m_querystring != '') {
+			$rawparams[] = $this->m_querystring;
+		}
+		if ($paramstring != '') { // parameters from HTML input fields
+			$ps = explode("\n", $paramstring); // params separated by newlines here (compatible with text-input for printouts)
+			foreach ($ps as $param) { // add initial ? if omitted (all params considered as printouts)
+				$param = trim($param);
+				if ( ($param != '') && ($param{0} != '?') ) {
+					$param = '?' . $param;
+				}
+				$rawparams[] = $param;
+			}
+		}
+		if ($p != '') { // parameters from wiki-compatible URL encoding (further results etc.)
+			// unescape $p; escaping scheme: all parameters rawurlencoded, "-" and "/" urlencoded, all "%" replaced by "-", parameters then joined with /
+			$ps = explode('/', $p); // params separated by / here (compatible with wiki link syntax)
+			foreach ($ps as $param) {
+				$rawparams[] = rawurldecode(str_replace('-', '%', $param));
+			}
+		}
+
+		// Now parse parameters and rebuilt the param strings for URLs
+		include_once( "$smwgIP/includes/SMW_QueryProcessor.php" );
+		SMWQueryProcessor::processFunctionParams($rawparams,$this->m_querystring,$this->m_params,$this->m_printouts);
+
+		// Try to complete undefined parameter values from dedicated URL params
+		if ( !array_key_exists('order',$this->m_params) ) {
+			$this->m_params['order'] = $wgRequest->getVal( 'order' );
+		}
+		if ( !array_key_exists('sort',$this->m_params) ) {
+			$this->m_params['sort'] = $wgRequest->getVal( 'sort' );
+		}
+		if ( !array_key_exists('limit',$this->m_params) ) {
+			$this->m_params['limit'] = $wgRequest->getVal( 'limit' );
+			if ($this->m_params['limit'] == '')  $this->m_params['limit'] = 20;
+		}
+		if ( !array_key_exists('offset',$this->m_params) ) {
+			$this->m_params['offset'] = $wgRequest->getVal( 'offset' );
+			if ($this->m_params['offset'] == '')  $this->m_params['offset'] = 0;
+		}
+		$this->m_params['format'] = 'broadtable';
+
+		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) != '' ) || ('' == $this->m_querystring );
+		$this->m_rssoutput = (array_key_exists('rss', $this->m_params));
+	}
+
+	protected function makeInputForm($printoutstring, $urltail) {
+		global $wgUser, $smwgQSortingSupport, $wgOut;
+		if ($this->m_rssoutput) { // no input form in RSS ...
+			return;
+		}
+		$skin = $wgUser->getSkin();
+		$result = '';
+		if ($this->m_editquery) {
+			$spectitle = Title::makeTitle( NS_SPECIAL, 'Ask' );
+			$docutitle = Title::newFromText(wfMsg('smw_ask_doculink'), NS_HELP);
+			$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
+			           '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
+			$result .= '<table style="width: 100%; "><tr><th>' . wfMsg('smw_ask_queryhead') . '</th><th>' . wfMsg('smw_ask_printhead') . '</th></tr>' .
+			         '<tr><td><textarea name="q" cols="20" rows="6">' . htmlspecialchars($this->m_querystring) . '</textarea></td>' .
+			         '<td><textarea name="po" cols="20" rows="6">' . htmlspecialchars($printoutstring) . '</textarea></td></tr></table>' . "\n";
+			if ($smwgQSortingSupport) {
+				$result .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort" value="' .
+				            htmlspecialchars($this->m_params['sort']) . '"/> <select name="order"><option ';
+				if ($this->m_params['order'] == 'ASC') $result .= 'selected="selected" ';
+				$result .=  'value="ASC">' . wfMsg('smw_ask_ascorder') . '</option><option ';
+				if ($this->m_params['order'] == 'DESC') $result .= 'selected="selected" ';
+				$result .=  'value="DESC">' . wfMsg('smw_ask_descorder') . '</option></select> <br />';
+			}
+			$result .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
+			           '<input type="hidden" name="eq" value="yes"/>' . 
+			           ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '">' . wfMsg('smw_ask_hidequery') . '</a> | <a href="' . $docutitle->getFullURL() . '">' . wfMsg('smw_ask_help') . '</a>' .
+			           "\n</form><br />";
+			$urltail .= '&eq=yes';
+		} else {
+			$result .= '<p><a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes')) . '">' . wfMsg('smw_ask_editquery') . '</a></p>';
+		}
+		$wgOut->addHTML($result);
+	}
+
+	protected function makeHTMLResult($urltail) {
+			global $wgUser, $smwgQMaxLimit, $wgOut;
+			$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
+			$res = smwfGetStore()->getQueryResult($queryobj);
+			$skin = $wgUser->getSkin();
+			$offset = $this->m_params['offset'];
+			$limit  = $this->m_params['limit'];
 			// prepare navigation bar
 			if ($offset > 0) 
 				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . $urltail)) . '">' . wfMsg('smw_result_prev') . '</a>';
@@ -158,24 +198,91 @@ class SMWAskPage extends SpecialPage {
 			$navigation .= ')';
 
 			$printer = SMWQueryProcessor::getResultPrinter('broadtable',false,$res);
-			//$result = $printer->getResult($res, $params,SMW_OUTPUT_HTML);
-			//$result = SMWQueryProcessor::getResultFromQueryString($querystring,$params,$printouts, SMW_OUTPUT_HTML, false);
-			$html .= '<div style="text-align: center;">' . $navigation;
-			$html .= '<br />' . $printer->getResult($res, $params,SMW_OUTPUT_HTML);
-			$html .= '<br />' . $navigation . '</div>';
-		} elseif (!$smwgQEnabled) {
-			$html .= '<br />' . wfMsgForContent('smw_iq_disabled');
-		}
-		$wgOut->addHTML($html);
-		wfProfileOut('doSpecialAsk (SMW)');
+			$result = '<div style="text-align: center;">' . $navigation;
+			$result .= '<br />' . $printer->getResult($res, $this->m_params,SMW_OUTPUT_HTML);
+			$result .= '<br />' . $navigation . '</div>';
+			$wgOut->addHTML($result);
 	}
-	
+
+	protected function makeRSSResult() {
+		global $wgOut, $wgRequest, $wgServer, $wgSitename;
+		$wgOut->disable();
+
+		$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
+		$res = smwfGetStore()->getQueryResult($queryobj);
+
+		if (!array_key_exists('rsstitle', $this->m_params)) {
+			$this->m_params['rsstitle'] = $wgSitename;
+		}
+		if (!array_key_exists('rssdescription', $this->m_params)) {
+			$this->m_params['rssdescription'] = $wgSitename . ' ' . wfMsg( 'blog2rss' );
+		}
+
+		$items = array();
+		$row = $res->getNext();
+		while ( $row !== false ) {
+			$creator = array();
+			$date = array();
+			$wikipage = $row[0]->getNextObject(); // get the object
+			foreach ($row as $result) {
+				// for now we ignore everything but creator and date, later we may
+				// add more things like geolocs, categories, and even a generic
+				// mechanism to add whatever you want :)
+				$req = $result->getPrintRequest();
+				if (strtolower($req->getLabel()) == "creator") {
+					$content = $result->getContent();
+					foreach ($content as $entry) {
+						$creator[] = $entry->getShortWikiText();
+					}
+				}
+				if ((strtolower($req->getLabel()) == "date") and ($req->getTypeID() == "_dat")) {
+					$content = $result->getContent();
+					foreach ($content as $entry) {
+						$date[] = $entry->getShortWikiText();
+					}
+				}
+			}
+// 			print "Trying " . $wikipage->getShortWikiText() . '...'; // Debug
+			$items[] = new SMWRSSEntry($wikipage->getTitle(), $creator, $date);
+			$row = $res->getNext();
+		}
+			
+		$text  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+		$text .= "<rdf:RDF\n";
+		$text .= "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n";
+		$text .= "    xmlns:content=\"http://purl.org/rss/1.0/modules/content/\"\n";
+		$text .= "    xmlns:admin=\"http://webns.net/mvcb/\"\n";
+		$text .= "    xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n";
+		$text .= "    xmlns=\"http://purl.org/rss/1.0/\">\n";
+		$text .= "  <channel rdf:about=\"" . $wgRequest->getFullRequestURL() . "\">\n";
+		$text .= "    <admin:generatorAgent rdf:resource=\"http://ontoworld.org/wiki/Special:URIResolver/Semantic_MediaWiki\"/>\n";
+		$text .= "    <title>" . $this->m_params['rsstitle'] . "</title>\n";
+		$text .= "    <link>$wgServer</link>\n";
+		$text .= "    <description>" . $this->m_params['rssdescription'] . "</description>\n";
+		if (count($items) > 0) {
+			$text .= "    <items>\n";
+			$text .= "      <rdf:Seq>\n";
+			foreach($items as $item) {
+				$text .= "        <rdf:li rdf:resource=\"" . $item->uri() . "\"/>\n";
+			}
+			$text .= "      </rdf:Seq>\n";
+			$text .= "    </items>\n";
+		} 
+		$text .= "  </channel>\n";
+		foreach ($items as $item) {
+			$text .= $item->text();
+		}
+		$text .= "</rdf:RDF>";
+
+		print $text;
+	}
+
+
 	/**
 	 * Exectues ask-interface as done in SMW<=0.7, using a simple textbox interface and supporting only
 	 * certain parameters.
 	 */
 	protected function executSimpleAsk() {
-		wfProfileIn('doSpecialAsk (SMW)');
 		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgQSortingSupport, $smwgIP;
 
 		$skin = $wgUser->getSkin();
@@ -251,9 +358,97 @@ class SMWAskPage extends SpecialPage {
 			$html .= '<br />' . wfMsgForContent('smw_iq_disabled');
 		}
 		$wgOut->addHTML($html);
-		wfProfileOut('doSpecialAsk (SMW)');
 	}
 
 }
 
+
+/**
+ * Represents a single entry, or item, in the feed.
+ */
+class SMWRSSEntry {
+
+	private $uri;
+	private $label;
+	private $creator;
+	private $date;
+	private $content;
+
+	/**
+	 * Constructor for a single item in the feed. Requires the URI of the item.
+	 */
+	public function SMWRSSEntry(Title $t, $c, $d) {
+		global $wgServer, $wgTitle;
+		$this->uri = $t->getFullURL();
+		$this->label = $t->getText();
+		$article = null;
+		if (count($c)==0) {
+			$article = new Article($t);
+			$this->creator = array();
+			$this->creator[] = $article->getUserText();
+		} else { 
+			$this->creator = $c;	
+		}
+		$this->date = array();
+		if (count($d)==0) {
+			if ($article === null) {
+				$article = new Article($t);
+			}
+			$this->date[] = date("c", strtotime($article->getTimestamp()));
+		} else {
+			foreach ($d as $date) {
+				$this->date[] = date("c", strtotime($date));
+			}
+		}
+
+		// get content
+		if ($t->getNamespace() == NS_MAIN) {
+			$articlename = ':' . $t->getDBKey();
+		} else {
+			$articlename = $t->getPrefixedDBKey();
+		}
+		$parser_options = new ParserOptions();
+		$parser_options->setEditSection(false);  // embedded sections should not have edit links
+		$parser = new Parser();
+		//print " A:$articlename#"; // Debug
+		$parserOutput = $parser->parse('{{' . $articlename . '}}', $wgTitle, $parser_options);
+		//print "done.\n "; // Debug
+		$this->content = $parserOutput->getText();
+		$this->content = str_replace('<a href="/', '<a href="' . $wgServer . '/', $this->content);
+		// This makes absolute URLs out of the local ones 
+		// TODO is there maybe a way in the parser options to make the URLs absolute?
+	}
+
+	/**
+	 * Get function for the Item URI
+	 */
+	public function uri() {
+		return $this->uri;
+	}
+	
+	/**
+	 * Creates the RSS output for the single item.
+	 */
+	public function text() {
+		$text  = "  <item rdf:about=\"$this->uri\">\n";
+		$text .= "    <title>$this->label</title>\n";
+		$text .= "    <link>$this->uri</link>\n";
+		foreach ($this->date as $date)
+			$text .= "    <dc:date>$date</dc:date>\n";
+		foreach ($this->creator as $creator)
+			$text .= "    <dc:creator>$creator</dc:creator>\n";
+		$text .= "    <description>" . $this->clean($this->content) . "</description>\n";
+		$text .= "    <content:encoded  rdf:datatype=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral\"><![CDATA[$this->content]]></content:encoded>\n";
+		$text .= "  </item>\n";
+		return $text;
+	}
+	
+	/**
+	 * Descriptions are unescaped simple text. The content is given in HTML. This should
+	 * clean the description.
+	 */
+	private function clean($t) {
+		return trim(strip_tags(html_entity_decode($t, null, 'UTF-8'))); 
+	}
+}
 
