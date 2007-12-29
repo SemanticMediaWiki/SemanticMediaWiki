@@ -20,17 +20,18 @@ class SMWQueryProcessor {
 	 * formats. The formats 'table' and 'list' are defaults that cannot be disabled. The format 'broadtable'
 	 * should not be disabled either in order not to break Special:ask.
 	 */
-	static $formats = array('table'      => "SMWTableResultPrinter",
-							'list'       => "SMWListResultPrinter",
-							'ol'         => "SMWListResultPrinter",
-							'ul'         => "SMWListResultPrinter",
-							'broadtable' => "SMWTableResultPrinter",
-							'embedded'   => "SMWEmbeddedResultPrinter",
-							'timeline'   => "SMWTimelineResultPrinter",
-							'eventline'  => "SMWTimelineResultPrinter",
-							'template'   => "SMWTemplateResultPrinter",
-							'count'      => "SMWListResultPrinter",
-							'debug'      => "SMWListResultPrinter");
+	static $formats = array('table'      => 'SMWTableResultPrinter',
+							'list'       => 'SMWListResultPrinter',
+							'ol'         => 'SMWListResultPrinter',
+							'ul'         => 'SMWListResultPrinter',
+							'broadtable' => 'SMWTableResultPrinter',
+							'embedded'   => 'SMWEmbeddedResultPrinter',
+							'timeline'   => 'SMWTimelineResultPrinter',
+							'eventline'  => 'SMWTimelineResultPrinter',
+							'template'   => 'SMWTemplateResultPrinter',
+							'count'      => 'SMWListResultPrinter',
+							'debug'      => 'SMWListResultPrinter',
+							'rss'        => 'SMWRSSResultPrinter');
 
 	/**
 	 * Parse a query string given in SMW's query language to create
@@ -77,17 +78,17 @@ class SMWQueryProcessor {
 		if ( (array_key_exists('offset',$params)) && (is_int($params['offset'] + 0)) ) {
 			$query->setOffset(max(0,trim($params['offset']) + 0));
 		}
-		if ($query->querymode != SMWQuery::MODE_COUNT) {
+		if ($query->querymode == SMWQuery::MODE_COUNT) { // largest possible limit for "count", even inline
+			global $smwgQMaxLimit;
+			$query->setOffset(0);
+			$query->setLimit($smwgQMaxLimit, false);
+		} else {
 			if ( (array_key_exists('limit',$params)) && (is_int($params['limit'] + 0)) ) {
 				$query->setLimit(max(0,trim($params['limit']) + 0));
 			} else {
 				global $smwgQDefaultLimit;
 				$query->setLimit($smwgQDefaultLimit);
 			}
-		} else { // largest possible limit for "count", even inline
-			global $smwgQMaxLimit;
-			$query->setOffset(0);
-			$query->setLimit($smwgQMaxLimit, false);
 		}
 		if (array_key_exists('sort', $params)) {
 			$query->sort = true;
@@ -265,7 +266,6 @@ class SMWQueryProcessor {
 				$format = 'table';
 			else $format = 'list';
 		}
-		
 		if (array_key_exists($format, SMWQueryProcessor::$formats))
 			$formatclass = SMWQueryProcessor::$formats[$format];
 		else

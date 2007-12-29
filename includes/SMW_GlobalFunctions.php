@@ -76,6 +76,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWTimelineResultPrinter'] = $smwgIP . '/includes/SMW_QP_Timeline.php';
 	$wgAutoloadClasses['SMWEmbeddedResultPrinter'] = $smwgIP . '/includes/SMW_QP_Embedded.php';
 	$wgAutoloadClasses['SMWTemplateResultPrinter'] = $smwgIP . '/includes/SMW_QP_Template.php';
+	$wgAutoloadClasses['SMWRSSResultPrinter']      = $smwgIP . '/includes/SMW_QP_RSSlink.php';
 	// datavalues
 	$wgAutoloadClasses['SMWDataValue']             =  $smwgIP . '/includes/SMW_DataValue.php';
 	// the builtin types are registered by SMWDataValueFactory if needed, will be reliably available

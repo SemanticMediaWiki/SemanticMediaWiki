@@ -104,6 +104,7 @@ class SMWAskPage extends SpecialPage {
 		// Now parse parameters and rebuilt the param strings for URLs
 		include_once( "$smwgIP/includes/SMW_QueryProcessor.php" );
 		SMWQueryProcessor::processFunctionParams($rawparams,$this->m_querystring,$this->m_params,$this->m_printouts);
+		$this->m_rssoutput = (array_key_exists('rss', $this->m_params));
 
 		// Try to complete undefined parameter values from dedicated URL params
 		if ( !array_key_exists('order',$this->m_params) ) {
@@ -114,7 +115,9 @@ class SMWAskPage extends SpecialPage {
 		}
 		if ( !array_key_exists('limit',$this->m_params) ) {
 			$this->m_params['limit'] = $wgRequest->getVal( 'limit' );
-			if ($this->m_params['limit'] == '')  $this->m_params['limit'] = 20;
+			if ($this->m_params['limit'] == '') {
+				 $this->m_params['limit'] = $this->m_rssoutput?10:20; // standard limit for RSS is 10
+			}
 		}
 		if ( !array_key_exists('offset',$this->m_params) ) {
 			$this->m_params['offset'] = $wgRequest->getVal( 'offset' );
@@ -123,7 +126,6 @@ class SMWAskPage extends SpecialPage {
 		$this->m_params['format'] = 'broadtable';
 
 		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) != '' ) || ('' == $this->m_querystring );
-		$this->m_rssoutput = (array_key_exists('rss', $this->m_params));
 	}
 
 	protected function makeInputForm($printoutstring, $urltail) {
@@ -161,47 +163,47 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	protected function makeHTMLResult($urltail) {
-			global $wgUser, $smwgQMaxLimit, $wgOut;
-			$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
-			$res = smwfGetStore()->getQueryResult($queryobj);
-			$skin = $wgUser->getSkin();
-			$offset = $this->m_params['offset'];
-			$limit  = $this->m_params['limit'];
-			// prepare navigation bar
-			if ($offset > 0) 
-				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . $urltail)) . '">' . wfMsg('smw_result_prev') . '</a>';
-			else $navigation = wfMsg('smw_result_prev');
+		global $wgUser, $smwgQMaxLimit, $wgOut;
+		$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
+		$res = smwfGetStore()->getQueryResult($queryobj);
+		$skin = $wgUser->getSkin();
+		$offset = $this->m_params['offset'];
+		$limit  = $this->m_params['limit'];
+		// prepare navigation bar
+		if ($offset > 0) 
+			$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . $urltail)) . '">' . wfMsg('smw_result_prev') . '</a>';
+		else $navigation = wfMsg('smw_result_prev');
 
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $res->getCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+		$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $res->getCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
-			if ($res->hasFurtherResults()) 
-				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . $urltail)) . '">' . wfMsg('smw_result_next') . '</a>';
-			else $navigation .= wfMsg('smw_result_next');
+		if ($res->hasFurtherResults()) 
+			$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . $urltail)) . '">' . wfMsg('smw_result_next') . '</a>';
+		else $navigation .= wfMsg('smw_result_next');
 
-			$max = false; $first=true;
-			foreach (array(20,50,100,250,500) as $l) {
-				if ($max) continue;
-				if ($first) {
-					$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
-					$first = false;
-				} else $navigation .= ' | ';
-				if ($l > $smwgQMaxLimit) {
-					$l = $smwgQMaxLimit;
-					$max = true;
-				}
-				if ( $limit != $l ) {
-					$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . $offset . '&limit=' . $l . $urltail)) . '">' . $l . '</a>';
-				} else {
-					$navigation .= '<b>' . $l . '</b>';
-				}
+		$max = false; $first=true;
+		foreach (array(20,50,100,250,500) as $l) {
+			if ($max) continue;
+			if ($first) {
+				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
+				$first = false;
+			} else $navigation .= ' | ';
+			if ($l > $smwgQMaxLimit) {
+				$l = $smwgQMaxLimit;
+				$max = true;
 			}
-			$navigation .= ')';
+			if ( $limit != $l ) {
+				$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . $offset . '&limit=' . $l . $urltail)) . '">' . $l . '</a>';
+			} else {
+				$navigation .= '<b>' . $l . '</b>';
+			}
+		}
+		$navigation .= ')';
 
-			$printer = SMWQueryProcessor::getResultPrinter('broadtable',false,$res);
-			$result = '<div style="text-align: center;">' . $navigation;
-			$result .= '<br />' . $printer->getResult($res, $this->m_params,SMW_OUTPUT_HTML);
-			$result .= '<br />' . $navigation . '</div>';
-			$wgOut->addHTML($result);
+		$printer = SMWQueryProcessor::getResultPrinter('broadtable',false,$res);
+		$result = '<div style="text-align: center;">' . $navigation;
+		$result .= '<br />' . $printer->getResult($res, $this->m_params,SMW_OUTPUT_HTML);
+		$result .= '<br />' . $navigation . '</div>';
+		$wgOut->addHTML($result);
 	}
 
 	protected function makeRSSResult() {
@@ -249,26 +251,26 @@ class SMWAskPage extends SpecialPage {
 			
 		$text  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 		$text .= "<rdf:RDF\n";
-		$text .= "    xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n";
-		$text .= "    xmlns:content=\"http://purl.org/rss/1.0/modules/content/\"\n";
-		$text .= "    xmlns:admin=\"http://webns.net/mvcb/\"\n";
-		$text .= "    xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n";
-		$text .= "    xmlns=\"http://purl.org/rss/1.0/\">\n";
-		$text .= "  <channel rdf:about=\"" . $wgRequest->getFullRequestURL() . "\">\n";
-		$text .= "    <admin:generatorAgent rdf:resource=\"http://ontoworld.org/wiki/Special:URIResolver/Semantic_MediaWiki\"/>\n";
-		$text .= "    <title>" . $this->m_params['rsstitle'] . "</title>\n";
-		$text .= "    <link>$wgServer</link>\n";
-		$text .= "    <description>" . $this->m_params['rssdescription'] . "</description>\n";
+		$text .= "\txmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n";
+		$text .= "\txmlns:content=\"http://purl.org/rss/1.0/modules/content/\"\n";
+		$text .= "\txmlns:admin=\"http://webns.net/mvcb/\"\n";
+		$text .= "\txmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n";
+		$text .= "\txmlns=\"http://purl.org/rss/1.0/\">\n";
+		$text .= "\t<channel rdf:about=\"" . $wgRequest->getFullRequestURL() . "\">\n";
+		$text .= "\t\t<admin:generatorAgent rdf:resource=\"http://ontoworld.org/wiki/Special:URIResolver/Semantic_MediaWiki\"/>\n";
+		$text .= "\t\t<title>" . $this->m_params['rsstitle'] . "</title>\n";
+		$text .= "\t\t<link>$wgServer</link>\n";
+		$text .= "\t\t<description>" . $this->m_params['rssdescription'] . "</description>\n";
 		if (count($items) > 0) {
-			$text .= "    <items>\n";
-			$text .= "      <rdf:Seq>\n";
+			$text .= "\t\t<items>\n";
+			$text .= "\t\t\t<rdf:Seq>\n";
 			foreach($items as $item) {
-				$text .= "        <rdf:li rdf:resource=\"" . $item->uri() . "\"/>\n";
+				$text .= "\t\t\t\t<rdf:li rdf:resource=\"" . $item->uri() . "\"/>\n";
 			}
-			$text .= "      </rdf:Seq>\n";
-			$text .= "    </items>\n";
-		} 
-		$text .= "  </channel>\n";
+			$text .= "\t\t\t</rdf:Seq>\n";
+			$text .= "\t\t</items>\n";
+		}
+		$text .= "\t</channel>\n";
 		foreach ($items as $item) {
 			$text .= $item->text();
 		}
@@ -304,7 +306,7 @@ class SMWAskPage extends SpecialPage {
 		
 		if ($smwgQSortingSupport) {
 			$html .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort" value="' .
-					htmlspecialchars($sort) . '"/> <select name="order"><option ';
+			          htmlspecialchars($sort) . '"/> <select name="order"><option ';
 			if ($order == 'ASC') $html .= 'selected="selected" ';
 			$html .=  'value="ASC">' . wfMsg('smw_ask_ascorder') . '</option><option ';
 			if ($order == 'DESC') $html .= 'selected="selected" ';
@@ -372,7 +374,7 @@ class SMWRSSEntry {
 	private $label;
 	private $creator;
 	private $date;
-	private $content;
+	private $articlename;
 
 	/**
 	 * Constructor for a single item in the feed. Requires the URI of the item.
@@ -386,8 +388,8 @@ class SMWRSSEntry {
 			$article = new Article($t);
 			$this->creator = array();
 			$this->creator[] = $article->getUserText();
-		} else { 
-			$this->creator = $c;	
+		} else {
+			$this->creator = $c;
 		}
 		$this->date = array();
 		if (count($d)==0) {
@@ -403,25 +405,10 @@ class SMWRSSEntry {
 
 		// get content
 		if ($t->getNamespace() == NS_MAIN) {
-			$articlename = ':' . $t->getDBKey();
+			$this->articlename = ':' . $t->getDBKey();
 		} else {
-			$articlename = $t->getPrefixedDBKey();
+			$this->articlename = $t->getPrefixedDBKey();
 		}
-		static $parser = null;
-		static $parser_options = null;
-		if ($parser == null) {
-			$parser_options = new ParserOptions();
-			$parser_options->setEditSection(false);  // embedded sections should not have edit links
-			$parser = new Parser();
-		}
-		//print " A:$articlename#"; // Debug
-		global $wgTitle;
-		$parserOutput = $parser->parse('{{' . $articlename . '}}', $wgTitle, $parser_options);
-		//print "done.\n "; // Debug
-		$this->content = $parserOutput->getText();
-		$this->content = str_replace('<a href="/', '<a href="' . $wgServer . '/', $this->content);
-		// This makes absolute URLs out of the local ones 
-		// TODO is there maybe a way in the parser options to make the URLs absolute?
 	}
 
 	/**
@@ -435,19 +422,33 @@ class SMWRSSEntry {
 	 * Creates the RSS output for the single item.
 	 */
 	public function text() {
-		$text  = "  <item rdf:about=\"$this->uri\">\n";
-		$text .= "    <title>$this->label</title>\n";
-		$text .= "    <link>$this->uri</link>\n";
+		global $wgTitle, $wgServer;
+		static $parser = null;
+		static $parser_options = null;
+		if ($parser == null) {
+			$parser_options = new ParserOptions();
+			$parser_options->setEditSection(false);  // embedded sections should not have edit links
+			$parser = new Parser();
+		}
+		$parserOutput = $parser->parse('{{' . $this->articlename . '}}', $wgTitle, $parser_options);
+		$content = $parserOutput->getText();
+		$content = str_replace('<a href="/', '<a href="' . $wgServer . '/', $content);
+		// This makes absolute URLs out of the local ones
+		///TODO is there maybe a way in the parser options to make the URLs absolute?
+
+		$text  = "\t<item rdf:about=\"$this->uri\">\n";
+		$text .= "\t\t<title>$this->label</title>\n";
+		$text .= "\t\t<link>$this->uri</link>\n";
 		foreach ($this->date as $date)
-			$text .= "    <dc:date>$date</dc:date>\n";
+			$text .= "\t\t<dc:date>$date</dc:date>\n";
 		foreach ($this->creator as $creator)
-			$text .= "    <dc:creator>$creator</dc:creator>\n";
-		$text .= "    <description>" . $this->clean($this->content) . "</description>\n";
-		$text .= "    <content:encoded  rdf:datatype=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral\"><![CDATA[$this->content]]></content:encoded>\n";
-		$text .= "  </item>\n";
+			$text .= "\t\t<dc:creator>$creator</dc:creator>\n";
+		$text .= "\t\t<description>" . $this->clean($content) . "</description>\n";
+		$text .= "\t\t<content:encoded  rdf:datatype=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral\"><![CDATA[$content]]></content:encoded>\n";
+		$text .= "\t</item>\n";
 		return $text;
 	}
-	
+
 	/**
 	 * Descriptions are unescaped simple text. The content is given in HTML. This should
 	 * clean the description.
