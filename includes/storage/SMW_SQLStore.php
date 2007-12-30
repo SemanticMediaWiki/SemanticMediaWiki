@@ -1684,6 +1684,7 @@ class SMWSQLStore extends SMWStore {
 							case SMW_CMP_LIKE:
 								if ($description->getDatavalue()->getTypeID() == '_str') {
 									$op = ' LIKE ';
+									$value =  str_replace(array('%', '_', '*', '?'), array('\%', '\_', '%', '_'), $value);
 								} else { // LIKE only works for strings at the moment
 									$op = '=';
 								}
