@@ -218,6 +218,8 @@ class SMWAskPage extends SpecialPage {
 			}
 			if ((strtolower($printout->getLabel()) == "date") and ($printout->getTypeID() == "_dat")) {
 				$newprintouts[] = $printout;
+				$this->m_params['sort'] = $printout->getTitle()->getText();
+				$this->m_params['order'] = 'DESC';
 			}
 		}
 		$this->m_printouts = $newprintouts;
