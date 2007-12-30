@@ -45,33 +45,33 @@ class SMWAskPage extends SpecialPage {
 
 		$this->extractQueryParameters($p);
 
-		$paramstring = '';
-		foreach ($this->m_params as $key => $value) {
-			if ( in_array($key,array('format', 'template')) ) {
-				$paramstring .= "$key=$value\n";
-			}
-		}
-		$paramstring = str_replace('=','%3D',$paramstring);
-		$printoutstring = '';
-		foreach ($this->m_printouts as $printout) {
-			$printoutstring .= $printout->getSerialisation() . "\n";
-		}
-		$urltail = '&q=' . urlencode($this->m_querystring) . '&p=' . urlencode($paramstring) .'&po=' . urlencode($printoutstring);
-		if ('' != $this->m_params['sort'])  $urltail .= '&sort=' . $this->m_params['sort'];
-		if ('' != $this->m_params['order']) $urltail .= '&order=' . $this->m_params['order'];
-
-		// Print input form (or links to display it)
-		$this->makeInputForm($printoutstring, 'offset=' . $this->m_params['offset'] . '&limit=' . $this->m_params['limit'] . $urltail);
-
-		// Finally process query and build more HTML output
-		if ('' != $this->m_querystring ) { // print results if any
-			if ($this->m_rssoutput) {
-				if ($smwgRSSEnabled) {
-					$this->makeRSSResult();
-				} else {
-					// nothing at the moment
-				}
+		if ($this->m_rssoutput) {
+			if ($smwgRSSEnabled && ('' != $this->m_querystring )) {
+				$this->makeRSSResult();
 			} else {
+				// nothing at the moment
+			}
+		} else { // HTML output
+			$paramstring = '';
+			foreach ($this->m_params as $key => $value) {
+				if ( in_array($key,array('format', 'template')) ) {
+					$paramstring .= "$key=$value\n";
+				}
+			}
+			$paramstring = str_replace('=','%3D',$paramstring);
+			$printoutstring = '';
+			foreach ($this->m_printouts as $printout) {
+				$printoutstring .= $printout->getSerialisation() . "\n";
+			}
+			$urltail = '&q=' . urlencode($this->m_querystring) . '&p=' . urlencode($paramstring) .'&po=' . urlencode($printoutstring);
+			if ('' != $this->m_params['sort'])  $urltail .= '&sort=' . $this->m_params['sort'];
+			if ('' != $this->m_params['order']) $urltail .= '&order=' . $this->m_params['order'];
+
+			// Print input form (or links to display it)
+			$this->makeInputForm($printoutstring, 'offset=' . $this->m_params['offset'] . '&limit=' . $this->m_params['limit'] . $urltail);
+	
+			// Finally process query and build more HTML output
+			if ('' != $this->m_querystring ) { // print results if any
 				$this->makeHTMLResult($urltail);
 			}
 		}
@@ -135,9 +135,6 @@ class SMWAskPage extends SpecialPage {
 
 	protected function makeInputForm($printoutstring, $urltail) {
 		global $wgUser, $smwgQSortingSupport, $wgOut;
-		if ($this->m_rssoutput) { // no input form in RSS ...
-			return;
-		}
 		$skin = $wgUser->getSkin();
 		$result = '';
 		if ($this->m_editquery) {
@@ -214,6 +211,16 @@ class SMWAskPage extends SpecialPage {
 	protected function makeRSSResult() {
 		global $wgOut, $wgRequest, $wgServer, $wgSitename;
 		$wgOut->disable();
+		$newprintouts = array(); // filter printouts
+		foreach ($this->m_printouts as $printout) {
+			if (strtolower($printout->getLabel()) == "creator") {
+				$newprintouts[] = $printout;
+			}
+			if ((strtolower($printout->getLabel()) == "date") and ($printout->getTypeID() == "_dat")) {
+				$newprintouts[] = $printout;
+			}
+		}
+		$this->m_printouts = $newprintouts;
 
 		$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
 		$res = smwfGetStore()->getQueryResult($queryobj);
@@ -242,7 +249,7 @@ class SMWAskPage extends SpecialPage {
 						$creator[] = $entry->getShortWikiText();
 					}
 				}
-				if ((strtolower($req->getLabel()) == "date") and ($req->getTypeID() == "_dat")) {
+				if (strtolower($req->getLabel()) == "date") {
 					$content = $result->getContent();
 					foreach ($content as $entry) {
 						$date[] = $entry->getShortWikiText();
@@ -441,7 +448,7 @@ class SMWRSSEntry {
 		foreach ($this->date as $date)
 			$text .= "\t\t<dc:date>$date</dc:date>\n";
 		foreach ($this->creator as $creator)
-			$text .= "\t\t<dc:creator>$creator</dc:creator>\n";
+			$text .= "\t\t<dc:creator>" . smwfXMLContentEncode($creator) . "</dc:creator>\n";
 		if ($smwgRSSWithPages) {
 			if ($parser == null) {
 				$parser_options = new ParserOptions();
