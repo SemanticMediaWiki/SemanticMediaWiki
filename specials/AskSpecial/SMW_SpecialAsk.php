@@ -14,6 +14,7 @@ include_once($IP . '/includes/SpecialPage.php');
  * @note AUTOLOAD
  */
 class SMWAskPage extends SpecialPage {
+
 	protected $m_querystring = '';
 	protected $m_params = array();
 	protected $m_printouts = array();
@@ -29,7 +30,7 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	function execute($p = '') {
-		global $wgOut, $wgRequest, $smwgIP, $smwgQEnabled;
+		global $wgOut, $wgRequest, $smwgIP, $smwgQEnabled, $smwgRSSEnabled;
 		wfProfileIn('doSpecialAsk (SMW)');
 		if ( ($wgRequest->getVal( 'query' ) != '') ) { // old processing
 			$this->executSimpleAsk();
@@ -65,7 +66,11 @@ class SMWAskPage extends SpecialPage {
 		// Finally process query and build more HTML output
 		if ('' != $this->m_querystring ) { // print results if any
 			if ($this->m_rssoutput) {
-				$this->makeRSSResult();
+				if ($smwgRSSEnabled) {
+					$this->makeRSSResult();
+				} else {
+					// nothing at the moment
+				}
 			} else {
 				$this->makeHTMLResult($urltail);
 			}
@@ -424,21 +429,11 @@ class SMWRSSEntry {
 	 * Creates the RSS output for the single item.
 	 */
 	public function text() {
-		global $wgTitle, $wgServer, $wgParser, $smwgStoreActive;
+		global $wgTitle, $wgServer, $wgParser, $smwgStoreActive, $smwgRSSWithPages;
 		static $parser = null;
 		static $parser_options = null;
 		$smwgStoreActive = false; // make sure no Factbox is shown (RSS lacks the required styles)
 		// do not bother to restore this later, not needed in this context
-		if ($parser == null) {
-			$parser_options = new ParserOptions();
-			$parser_options->setEditSection(false);  // embedded sections should not have edit links
-			$parser = clone $wgParser;
-		}
-		$parserOutput = $parser->parse('{{' . $this->articlename . '}}', $this->title, $parser_options);
-		$content = $parserOutput->getText();
-		$content = str_replace('<a href="/', '<a href="' . $wgServer . '/', $content);
-		// This makes absolute URLs out of the local ones
-		///TODO is there maybe a way in the parser options to make the URLs absolute?
 
 		$text  = "\t<item rdf:about=\"$this->uri\">\n";
 		$text .= "\t\t<title>$this->label</title>\n";
@@ -447,8 +442,20 @@ class SMWRSSEntry {
 			$text .= "\t\t<dc:date>$date</dc:date>\n";
 		foreach ($this->creator as $creator)
 			$text .= "\t\t<dc:creator>$creator</dc:creator>\n";
-		$text .= "\t\t<description>" . $this->clean($content) . "</description>\n";
-		$text .= "\t\t<content:encoded  rdf:datatype=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral\"><![CDATA[$content]]></content:encoded>\n";
+		if ($smwgRSSWithPages) {
+			if ($parser == null) {
+				$parser_options = new ParserOptions();
+				$parser_options->setEditSection(false);  // embedded sections should not have edit links
+				$parser = clone $wgParser;
+			}
+			$parserOutput = $parser->parse('{{' . $this->articlename . '}}', $this->title, $parser_options);
+			$content = $parserOutput->getText();
+			$content = str_replace('<a href="/', '<a href="' . $wgServer . '/', $content);
+			// This makes absolute URLs out of the local ones
+			///TODO is there maybe a way in the parser options to make the URLs absolute?
+			$text .= "\t\t<description>" . $this->clean($content) . "</description>\n";
+			$text .= "\t\t<content:encoded  rdf:datatype=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral\"><![CDATA[$content]]></content:encoded>\n";
+		}
 		$text .= "\t</item>\n";
 		return $text;
 	}

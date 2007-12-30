@@ -100,8 +100,11 @@ $smwgQPrintoutLimit = 10;   // Max number of supported printouts (added columns 
 ### Formatting settings
 $smwgQDefaultLinking = 'subject'; // Default linking behaviour. Can be one of "none", "subject", "all"
 
-## older query parameters below, some of those might be ignored
-//$smwgIQDisjunctiveQueriesEnabled = true; // Support disjunctions in queries (||)?
+###
+# Settings for RSS export
+##
+$smwgRSSEnabled = true;  // use to switch off RSS (it's not worse than querying Special:Ask, but attracts more users)
+$smwgRSSWithPages = true; // Should RSS feeds deliver whole pages or just link to them?
 ##
 
 ###
