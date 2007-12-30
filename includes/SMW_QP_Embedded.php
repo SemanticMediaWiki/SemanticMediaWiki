@@ -36,7 +36,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 	protected function getResultText($res,$outputmode) {
 		// handle factbox
-		global $smwgStoreActive, $wgTitle, $smwgEmbeddingList;
+		global $smwgStoreActive, $wgTitle, $smwgEmbeddingList, $wgParser;
 		$old_smwgStoreActive = $smwgStoreActive;
 		$smwgStoreActive = false; // no annotations stored, no factbox printed
 		if (!isset($smwgEmbeddingList)) { // used to catch recursions, sometimes more restrictive than needed, but no major use cases should be affected by that!
@@ -70,7 +70,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		// print all result rows
 		$parser_options = new ParserOptions();
 		$parser_options->setEditSection(false);  // embedded sections should not have edit links
-		$parser = new Parser();
+		$parser = clone $wgParser;
 
 		while (  $row = $res->getNext() ) {
 			$first_col = true;

@@ -422,13 +422,13 @@ class SMWRSSEntry {
 	 * Creates the RSS output for the single item.
 	 */
 	public function text() {
-		global $wgTitle, $wgServer;
+		global $wgTitle, $wgServer, $wgParser;
 		static $parser = null;
 		static $parser_options = null;
 		if ($parser == null) {
 			$parser_options = new ParserOptions();
 			$parser_options->setEditSection(false);  // embedded sections should not have edit links
-			$parser = new Parser();
+			$parser = clone $wgParser;
 		}
 		$parserOutput = $parser->parse('{{' . $this->articlename . '}}', $wgTitle, $parser_options);
 		$content = $parserOutput->getText();

@@ -26,7 +26,7 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 
 	protected function getResultText($res, $outputmode) {
 		// handle factbox
-		global $smwgStoreActive, $wgTitle;
+		global $smwgStoreActive, $wgTitle, $wgParser;
 
 		// print all result rows
 		if ($this->m_template == false) {
@@ -57,7 +57,7 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 		$smwgStoreActive = false; // no annotations stored, no factbox printed
 		$parser_options = new ParserOptions();
 		$parser_options->setEditSection(false);  // embedded sections should not have edit links
-		$parser = new Parser();
+		$parser = clone $wgParser;
 		if ($outputmode == SMW_OUTPUT_HTML) {
 			$parserOutput = $parser->parse($parserinput, $wgTitle, $parser_options);
 			$result = $parserOutput->getText();

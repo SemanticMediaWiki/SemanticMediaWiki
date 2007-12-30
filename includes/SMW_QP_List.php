@@ -58,9 +58,10 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		}
 
 		if ($this->mTemplate != '') {
+			global $wgParser;
 			$parser_options = new ParserOptions();
 			$parser_options->setEditSection(false);  // embedded sections should not have edit links
-			$parser = new Parser();
+			$parser = clone $wgParser;
 			$usetemplate = true;
 		} else {
 			$usetemplate = false;
