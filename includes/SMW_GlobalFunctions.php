@@ -79,6 +79,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWRSSResultPrinter']      = $smwgIP . '/includes/SMW_QP_RSSlink.php';
 	// datavalues
 	$wgAutoloadClasses['SMWDataValue']             =  $smwgIP . '/includes/SMW_DataValue.php';
+	$wgAutoloadClasses['SMWDataValueFactory']      =  $smwgIP . '/includes/SMW_DataValueFactory.php';
 	// the builtin types are registered by SMWDataValueFactory if needed, will be reliably available
 	// to other DV-implementations that register to the factory.
 
