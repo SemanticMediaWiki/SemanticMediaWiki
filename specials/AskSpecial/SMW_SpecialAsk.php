@@ -375,12 +375,14 @@ class SMWRSSEntry {
 	private $creator;
 	private $date;
 	private $articlename;
+	private $title;
 
 	/**
 	 * Constructor for a single item in the feed. Requires the URI of the item.
 	 */
 	public function SMWRSSEntry(Title $t, $c, $d) {
 		global $wgServer;
+		$this->title = $t;
 		$this->uri = $t->getFullURL();
 		$this->label = $t->getText();
 		$article = null;
@@ -430,7 +432,7 @@ class SMWRSSEntry {
 			$parser_options->setEditSection(false);  // embedded sections should not have edit links
 			$parser = clone $wgParser;
 		}
-		$parserOutput = $parser->parse('{{' . $this->articlename . '}}', $wgTitle, $parser_options);
+		$parserOutput = $parser->parse('{{' . $this->articlename . '}}', $this->title, $parser_options);
 		$content = $parserOutput->getText();
 		$content = str_replace('<a href="/', '<a href="' . $wgServer . '/', $content);
 		// This makes absolute URLs out of the local ones
@@ -454,7 +456,8 @@ class SMWRSSEntry {
 	 * clean the description.
 	 */
 	private function clean($t) {
-		return trim(strip_tags(smwfXMLContentEncode($t)));
+		return trim(smwfXMLContentEncode($t, null, 'UTF-8'));
+		//return trim(str_replace(array('&','<','>'), array('&amp;','&lt;','&gt;'), strip_tags(html_entity_decode($t, null, 'UTF-8')))); 
 	}
 }
 
