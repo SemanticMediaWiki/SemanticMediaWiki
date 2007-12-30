@@ -16,14 +16,24 @@
 *        not relevant when moving the hook to internalParse()).
 */
 function smwfParserHook(&$parser, &$text, &$strip_state = null) {
-	global $smwgIP;
+	global $smwgIP, $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgStoreActive;
 	include_once($smwgIP . '/includes/SMW_Factbox.php');
 	// Init global storage for semantic data of this article.
 	SMWFactbox::initStorage($parser->getTitle());
 
+	// print the results if enabled (we have to parse them in any case, in order to
+	// clean the wiki source for further processing)
+	if ( $smwgStoreActive && smwfIsSemanticsProcessed($parser->getTitle()->getNamespace()) ) {
+		$smwgStoreAnnotations = true;
+	} else {
+		$smwgStoreAnnotations = false;
+	}
+	$smwgTempStoreAnnotations = true; // for [[SMW::on]] and [[SMW:off]]
+
 	// In the regexp matches below, leading ':' escapes the markup, as
 	// known for Categories.
 	// Parse links to extract semantic properties
+	
 	$semanticLinkPattern = '/\[\[               # Beginning of the link
 	                        (([^:][^]]*):[=:])+ # Property name (can be nested?)
 	                        (                   # After that:
@@ -35,21 +45,14 @@ function smwfParserHook(&$parser, &$text, &$strip_state = null) {
 	                        \]\]                # End of link
 	                        /x';
 	$text = preg_replace_callback($semanticLinkPattern, 'smwfParsePropertiesCallback', $text);
-
-	// print the results if enabled (we have to parse them in any case, in order to
-	// clean the wiki source for further processing)
-	if ( smwfIsSemanticsProcessed($parser->getTitle()->getNamespace()) ) {
-		SMWFactbox::printFactbox($text);
-	} else {
-		SMWFactbox::clearStorage();
-	}
+	SMWFactbox::printFactbox($text);
 
 	// add link to RDF to HTML header
 	smwfRequireHeadItem('smw_rdf', '<link rel="alternate" type="application/rdf+xml" title="' .
-						$parser->getTitle()->getPrefixedText() . '" href="' .
-						htmlspecialchars($parser->getOptions()->getSkin()->makeSpecialUrl(
-							'ExportRDF/' . $parser->getTitle()->getPrefixedText(), 'xmlmime=rdf'
-						)) . "\" />");
+	                    $parser->getTitle()->getPrefixedText() . '" href="' .
+	                    htmlspecialchars($parser->getOptions()->getSkin()->makeSpecialUrl(
+	                       'ExportRDF/' . $parser->getTitle()->getPrefixedText(), 'xmlmime=rdf'
+	                    )) . "\" />");
 
 	return true; // always return true, in order not to stop MW's hook processing!
 }
@@ -59,7 +62,7 @@ function smwfParserHook(&$parser, &$text, &$strip_state = null) {
 * link.
 */
 function smwfParsePropertiesCallback($semanticLink) {
-	global $smwgInlineErrors;
+	global $smwgInlineErrors, $smwgStoreAnnotations, $smwgTempStoreAnnotations;
 	wfProfileIn("smwfParsePropertiesCallback (SMW)");
 	if (array_key_exists(2,$semanticLink)) {
 		$property = $semanticLink[2];
@@ -67,6 +70,15 @@ function smwfParsePropertiesCallback($semanticLink) {
 	if (array_key_exists(3,$semanticLink)) {
 		$value = $semanticLink[3];
 	} else { $value = ''; }
+
+	if ($property == 'SMW') {
+		switch ($value) {
+			case 'on': $smwgTempStoreAnnotations = true;
+			case 'off': $smwgTempStoreAnnotations = false;
+		}
+		return '';
+	}
+
 	if (array_key_exists(5,$semanticLink)) {
 		$valueCaption = $semanticLink[5];
 	} else { $valueCaption = false; }
@@ -74,10 +86,10 @@ function smwfParsePropertiesCallback($semanticLink) {
 	//extract annotations and create tooltip
 	$properties = preg_split('/:[=:]/', $property);
 	foreach($properties as $singleprop) {
-		$dv = SMWFactbox::addProperty($singleprop,$value,$valueCaption);
+		$dv = SMWFactbox::addProperty($singleprop,$value,$valueCaption, $smwgStoreAnnotations && $smwgTempStoreAnnotations);
 	}
 	$result = $dv->getShortWikitext(true);
-	if ( ($smwgInlineErrors) && (!$dv->isValid()) ) {
+	if ( ($smwgInlineErrors && $smwgStoreAnnotations && $smwgTempStoreAnnotations) && (!$dv->isValid()) ) {
 		$result .= $dv->getErrorText();
 	}
 	wfProfileOut("smwfParsePropertiesCallback (SMW)");

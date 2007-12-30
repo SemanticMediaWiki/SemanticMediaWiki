@@ -69,9 +69,9 @@ class SMWFactbox {
 	 * It returns an array which contains the result of the operation in
 	 * various formats.
 	 */
-	static function addProperty($propertyname, $value, $caption) {
+	static function addProperty($propertyname, $value, $caption, $storeannotation = true) {
 		wfProfileIn("SMWFactbox::addProperty (SMW)");
-		global $smwgContLang, $smwgStoreActive, $smwgIP;
+		global $smwgContLang, $smwgIP;
 		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 		// See if this property is a special one, such as e.g. "has type"
 		$propertyname = smwfNormalTitleText($propertyname); //slightly normalize label
@@ -80,18 +80,18 @@ class SMWFactbox {
 		switch ($special) {
 			case false: // normal property
 				$result = SMWDataValueFactory::newPropertyValue($propertyname,$value,$caption);
-				if ($smwgStoreActive) {
+				if ($storeannotation) {
 					SMWFactbox::$semdata->addPropertyValue($propertyname,$result);
 				}
 				wfProfileOut("SMWFactbox::addProperty (SMW)");
 				return $result;
 			case SMW_SP_IMPORTED_FROM: // this requires special handling
-				$result = SMWFactbox::addImportedDefinition($value,$caption);
+				$result = SMWFactbox::addImportedDefinition($value,$caption,$storeannotation);
 				wfProfileOut("SMWFactbox::addProperty (SMW)");
 				return $result;
 			default: // generic special property
 				$result = SMWDataValueFactory::newSpecialValue($special,$value,$caption);
-				if ($smwgStoreActive) {
+				if ($storeannotation) {
 					SMWFactbox::$semdata->addSpecialValue($special,$result);
 				}
 				wfProfileOut("SMWFactbox::addProperty (SMW)");
@@ -108,8 +108,8 @@ class SMWFactbox {
 	 * the factbox, since some do not have a translated name (and thus also
 	 * could not be specified directly).
 	 */
-	static private function addImportedDefinition($value,$caption) {
-		global $wgContLang, $smwgStoreActive;
+	static private function addImportedDefinition($value,$caption,$storeannotation) {
+		global $wgContLang;
 
 		list($onto_ns,$onto_section) = explode(':',$value,2);
 		$msglines = preg_split("([\n][\s]?)",wfMsgForContent("smw_import_$onto_ns")); // get the definition for "$namespace:$section"
@@ -118,7 +118,7 @@ class SMWFactbox {
 			/// TODO: use new Error DV
 			$datavalue = SMWDataValueFactory::newTypeIDValue('__err',$value,$caption);
 			$datavalue->addError(wfMsgForContent('smw_unknown_importns',$onto_ns));
-			if ($smwgStoreActive) {
+			if ($storeannotation) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM,$datavalue);
 			}
 			return $datavalue;
@@ -172,13 +172,13 @@ class SMWFactbox {
 		if (NULL != $error) {
 			$datavalue = SMWDataValueFactory::newTypeIDValue('__err',$value,$caption);
 			$datavalue->addError($error);
-			if ($smwgStoreActive) {
+			if ($storeannotation) {
 				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
 			}
 			return $datavalue;
 		}
 
-		if ($smwgStoreActive) {
+		if ($storeannotation) {
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_BASEURI,SMWDataValueFactory::newTypeIDValue('_str',$onto_uri));
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_NSID,SMWDataValueFactory::newTypeIDValue('_str',$onto_ns));
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_SECTION,SMWDataValueFactory::newTypeIDValue('_str',$onto_section));
@@ -188,7 +188,7 @@ class SMWFactbox {
 		}
 		// print the input (this property is usually not stored, see SMW_SQLStore.php)
 		$datavalue = SMWDataValueFactory::newTypeIDValue('_str',"[$onto_uri$onto_section $value] ($onto_name)",$caption);
-		if ($smwgStoreActive) {
+		if ($storeannotation) {
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
 		}
 		return $datavalue;
