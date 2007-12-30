@@ -38,7 +38,7 @@ class SMWPrintRequest {
 	 * @param $title optional Title object that specifies the request (usually some property)
 	 * @param $datavalue optional SMWDataValue container that sets parameters for printing data values (e.g. the unit)
 	 */
-	public function SMWPrintRequest($mode, $label, Title $title = NULL, $outputformat = '') {
+	public function SMWPrintRequest($mode, $label, $title = NULL, $outputformat = '') {
 		$this->m_mode = $mode;
 		$this->m_label = $label;
 		$this->m_title = $title;
