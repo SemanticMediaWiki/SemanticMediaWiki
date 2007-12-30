@@ -795,9 +795,21 @@ class SMWSQLStore extends SMWStore {
 			$order = $query->ascending ? 'ASC' : 'DESC';
 			if ( ($this->m_sortfield == false) && ($this->m_sortkey == false) ) {
 				$sql_options['ORDER BY'] = "$pagetable.page_title $order "; // default
-			} elseif ($this->m_sortfield != false) {
-				$sql_options['ORDER BY'] = $this->m_sortfield . " $order ";
-			} // else: sortkey given but not found: do not sort
+			} else {
+				if ($this->m_sortfield == false) { // also query for sort property
+					$extrawhere = '';
+					$this->createSQLQuery(new SMWSomeProperty(Title::newFromText($this->m_sortkey, SMW_NS_PROPERTY), new SMWThingDescription()), $from, $extrawhere, $db, $curtables);
+					if ($extrawhere != '') {
+						if ($where != '') {
+							$where = "($where) AND ";
+						}
+						$where .= "($extrawhere)";
+					}
+				}
+				if ($this->m_sortfield != false) { // should always be the case, but who knows ...
+					$sql_options['ORDER BY'] = $this->m_sortfield . " $order ";
+				}
+			}
 		}
 
 		// Execute query and format result as array
