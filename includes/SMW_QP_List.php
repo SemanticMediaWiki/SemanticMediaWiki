@@ -88,7 +88,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					}
 					$first_col = false;
 				}
-				$result .= '{{' . $this->mTemplate . $wikitext . '}}'; 
+				$result .= '[[SMW::off]]{{' . $this->mTemplate . $wikitext . '}}[[SMW::on]]';
 				//str_replace(array('=','|'), array('&#x003D;', '&#x007C;'), // encode '=' and '|' for use in templates (templates fail otherwise) -- this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
 			} else {  // build simple list
 				$first_col = true;
@@ -120,11 +120,15 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$row = $nextrow;
 		}
 
-		if ( ($usetemplate) && ($outputmode === SMW_OUTPUT_HTML) ) {
+		if ($usetemplate) {
 			$old_smwgStoreActive = $smwgStoreActive;
 			$smwgStoreActive = false; // no annotations stored, no factbox printed
-			$parserOutput = $parser->parse($result, $wgTitle, $parser_options);
-			$result = $parserOutput->getText();
+			if ($outputmode === SMW_OUTPUT_HTML) {
+				$parserOutput = $parser->parse($result, $wgTitle, $parser_options);
+				$result = $parserOutput->getText();
+			} else {
+				$result = $parser->preprocess($result, $wgTitle, $parser_options);
+			}
 			$smwgStoreActive = $old_smwgStoreActive;
 		}
 

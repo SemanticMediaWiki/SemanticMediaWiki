@@ -50,20 +50,21 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 				}
 				$firstcol = false;
 			}
-			$parserinput .= '{{' . $this->m_template .  $wikitext . '}}';
+			$parserinput .= '[[SMW::off]]{{' . $this->m_template .  $wikitext . '}}[[SMW::on]]';
 		}
+
+		$old_smwgStoreActive = $smwgStoreActive;
+		$smwgStoreActive = false; // no annotations stored, no factbox printed
+		$parser_options = new ParserOptions();
+		$parser_options->setEditSection(false);  // embedded sections should not have edit links
+		$parser = new Parser();
 		if ($outputmode == SMW_OUTPUT_HTML) {
-			$old_smwgStoreActive = $smwgStoreActive;
-			$smwgStoreActive = false; // no annotations stored, no factbox printed
-			$parser_options = new ParserOptions();
-			$parser_options->setEditSection(false);  // embedded sections should not have edit links
-			$parser = new Parser();
 			$parserOutput = $parser->parse($parserinput, $wgTitle, $parser_options);
 			$result = $parserOutput->getText();
-			$smwgStoreActive = $old_smwgStoreActive;
 		} else {
-			$result = $parserinput;
+			$result = $parser->preprocess($parserinput, $wgTitle, $parser_options);
 		}
+		$smwgStoreActive = $old_smwgStoreActive;
 		// show link to more results
 		if ( $this->mInline && $res->hasFurtherResults() ) {
 			$label = $this->mSearchlabel;

@@ -68,11 +68,9 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		}
 
 		// print all result rows
-		if ($outputmode == SMW_OUTPUT_HTML) {
-			$parser_options = new ParserOptions();
-			$parser_options->setEditSection(false);  // embedded sections should not have edit links
-			$parser = new Parser();
-		}
+		$parser_options = new ParserOptions();
+		$parser_options->setEditSection(false);  // embedded sections should not have edit links
+		$parser = new Parser();
 
 		while (  $row = $res->getNext() ) {
 			$first_col = true;
@@ -92,10 +90,11 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 								$articlename = $object->getLongWikiText();
 							}
 							if ($outputmode == SMW_OUTPUT_HTML) {
-								$parserOutput = $parser->parse('{{' . $articlename . '}}', $wgTitle, $parser_options);
+								$parserOutput = $parser->parse('[[SMW::off]]{{' . $articlename . '}}[[SMW::on]]', $wgTitle, $parser_options);
 								$result .= $parserOutput->getText();
 							} else {
-								$result .= '{{' . $articlename . '}}';
+// 								$result .= '{{' . $articlename . '}}'; // fails in MW1.12 and later
+								$result .= '[[SMW::off]]' . $parser->preprocess('{{' . $articlename . '}}', $wgTitle, $parser_options) . '[[SMW::on]]';
 							}
 						} else {
 							$result .= '<b>' . $object->getLongWikiText() . '</b>';
