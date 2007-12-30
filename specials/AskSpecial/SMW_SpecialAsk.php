@@ -217,7 +217,7 @@ class SMWAskPage extends SpecialPage {
 			$this->m_params['rsstitle'] = $wgSitename;
 		}
 		if (!array_key_exists('rssdescription', $this->m_params)) {
-			$this->m_params['rssdescription'] = $wgSitename . ' ' . wfMsg( 'blog2rss' );
+			$this->m_params['rssdescription'] = wfMsg('smw_rss_description', $wgSitename);
 		}
 
 		$items = array();
