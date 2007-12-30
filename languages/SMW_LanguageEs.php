@@ -20,6 +20,8 @@ protected $m_ContentMessages = array(
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",					// http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#
 	'smw_baduri' => 'Lo sentimos. Las URIs del dominio $1 no están disponibles en este emplazamiento',
+	// Link to RSS feeds
+	'smw_rss_link' => 'RSS', // TODO: translate (default text for linking to semantic RSS feeds)
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "Lo sentimos. Las búsquedas en los artículos de este wiki no están autorizadas.",
 	'smw_iq_moreresults' => '&hellip; siguientes resultados',
@@ -85,6 +87,8 @@ protected $m_UserMessages = array(
 	'smw_typearticlecount' => 'Mostrando $1 atributos usando este tipo.',
 	'smw_attribute_header' => 'Paginas usando el atributo “$1”',
 	'smw_attributearticlecount' => '<p>Mostrando $1 páginas usando este atributo.</p>',
+	// Messages used in RSS feeds
+	'smw_rss_description' => '$1 RSS feed', // TODO: translate, used as default semantic RSS-feed description
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Exportar el artículo como RDF', //name of this special
 	'smw_exportrdf_docu' => '<p> En esta página, las partes de contenido de un artículo pueden ser exportadas a formato RDF. Introduzca el nombre de las páginas deseadas en el cuadro de texto que se encuentra debajo, <i>un nombre por línea </i>.<p/>',

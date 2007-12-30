@@ -23,6 +23,8 @@ protected $m_ContentMessages = array(
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => '죄송합니다, uri의 범위에서 “$1” 해당 장소에서 사용할 수 없다.',
+	// Link to RSS feeds
+	'smw_rss_link' => 'RSS', // TODO: translate (default text for linking to semantic RSS feeds)
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "죄송합니다. 이 위키에 대한 의미 론적 검색어가 해제되었습니다.",
 	'smw_iq_moreresults' => '&hellip; 다른 경기 결과',
@@ -89,6 +91,8 @@ protected $m_UserMessages = array(
 	'smw_typearticlecount' => '이 유형을 사용하여 보여주 $1 의 등록 정보를합니다.',
 	'smw_attribute_header' => '페이지를 사용하여 속성이 “$1”',
 	'smw_attributearticlecount' => '<p>이 속성을 사용하여 보여주 $1 페이지입니다.</p>',
+	// Messages used in RSS feeds
+	'smw_rss_description' => '$1 RSS feed', // TODO: translate, used as default semantic RSS-feed description
 	// Messages for Export RDF Special
 	'exportrdf' => '수출에 페이지를 RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>이 페이지를 사용하면 RDF 포맷의 페이지에서 데이터를 구하려합니다. 을 수출 페이지, 아래 텍스트 상자에 제목을 입력을 한 줄에 제목입니다.</p>',

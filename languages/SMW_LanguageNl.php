@@ -20,6 +20,8 @@ protected $m_ContentMessages = array(
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Sorry, URI\'s uit de reeks “$1” zijn hier niet beschikbaar.',
+	// Link to RSS feeds
+	'smw_rss_link' => 'RSS', // TODO: translate (default text for linking to semantic RSS feeds)
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "Sorry. Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.",
 	'smw_iq_moreresults' => '&hellip; overige resultaten',
@@ -85,6 +87,8 @@ protected $m_UserMessages = array(
 	'smw_typearticlecount' => 'Er zijn $1 eigenschappen die gebruik maken van dit type.',
 	'smw_attribute_header' => 'Pagina\'s die de eigenschap “$1” gebruiken',
 	'smw_attributearticlecount' => '<p>Er zijn $1 pagina\'s die deze eigenschap gebruiken.</p>',
+	// Messages used in RSS feeds
+	'smw_rss_description' => '$1 RSS feed', // TODO: translate, used as default semantic RSS-feed description
 	// Messages for Export RDF Special
 	'exportrdf' => 'Export pagina\'s naar RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>Deze pagina maakt het mogelijk gegevens te verkrijgen van een pagina in RDF-formaat. Geef titels in het onderstaande invoerveld in om pagina\'s te exporteren. Iedere pagina op een eigen regel.</p>',

@@ -28,7 +28,9 @@ protected $m_ContentMessages = array(
 	'smw_isnotype' => 'Der Datentyp “$1” ist kein Standardtyp in diesem Wiki, und hat auch keine ausreichende Definition auf seiner Seite.',
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
-	'smw_baduri' => 'URIs aus dem Bereich „$1“ sind an dieser Stelle leider nicht verfügbar.',
+	'smw_baduri' => 'URIs der Form „$1“ sind nicht zulässig.',
+	// Link to RSS feeds
+	'smw_rss_link' => 'RSS',
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "Semantische Anfragen sind in diesem Wiki zur Zeit nicht möglich.",
 	'smw_iq_moreresults' => '&hellip; weitere Ergebnisse',
@@ -94,6 +96,8 @@ protected $m_UserMessages = array(
 	'smw_typearticlecount' => 'Es werden $1 Attribute mit diesem Datentyp angezeigt.',
 	'smw_attribute_header' => 'Seiten mit dem Attribut „$1“',
 	'smw_attributearticlecount' => '<p>Es werden $1 Seiten angezeigt, die dieses Attribut verwenden.</p>',
+	// Messages used in RSS feeds
+	'smw_rss_description' => 'RSS-Feed von $1',
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Seite als RDF exportieren', //name of this special
 	'smw_exportrdf_docu' => '<p>Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte geben Sie die Namen der gewünschten Seiten <i>zeilenweise</i> ein.</p>',

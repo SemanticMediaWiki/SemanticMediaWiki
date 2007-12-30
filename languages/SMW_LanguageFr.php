@@ -20,6 +20,8 @@ protected $m_ContentMessages = array(
 	/*URIs that should not be used in objects in cases where users can provide URIs */
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Désolé. Les URIs du domaine $1 ne sont pas disponible à cet emplacement',
+	// Link to RSS feeds
+	'smw_rss_link' => 'RSS', // TODO: translate (default text for linking to semantic RSS feeds)
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "Désolé. Les recherches dans les articles de ce wiki ne sont pas autorisées.",
 	'smw_iq_moreresults' => '&hellip; autres résultats',
@@ -85,6 +87,8 @@ protected $m_UserMessages = array(
 	'smw_typearticlecount' => 'Afficher les attributs de $1 en utilisant ce type.',
 	'smw_attribute_header' => 'Pages utilisant l\'attribut “$1”',
 	'smw_attributearticlecount' => '<p>Afficher $1 pages utilisant cet attribut.</p>',
+	// Messages used in RSS feeds
+	'smw_rss_description' => '$1 RSS feed', // TODO: translate, used as default semantic RSS-feed description
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Exporter l\'article en RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>Sur cette page, des parties du contenu d\'un article peuvent être exportées dans le format RDF. Veuillez entrer le nom des pages souhaitées dans la boîte de texte ci-dessous, <i>un nom par ligne </i>.</p>',

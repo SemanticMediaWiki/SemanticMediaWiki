@@ -21,6 +21,8 @@ protected $m_ContentMessages = array(
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Извините, но ссылки из диапазона "$1" не доступны отсюда.',
+	// Link to RSS feeds
+	'smw_rss_link' => 'RSS', // TODO: translate (default text for linking to semantic RSS feeds)
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "Извините, но встроенные запросы отключены для этого сайта.",
 	'smw_iq_moreresults' => '&hellip; следующие результаты',
@@ -87,6 +89,8 @@ protected $m_UserMessages = array(
 	'smw_typearticlecount' => 'Отображается $1 свойств этого типа.',
 	'smw_attribute_header' => 'Страницы, использующие свойство “$1”',
 	'smw_attributearticlecount' => '<p>Отображается $1 страниц, использующих это свойство.</p>',
+	// Messages used in RSS feeds
+	'smw_rss_description' => '$1 RSS feed', // TODO: translate, used as default semantic RSS-feed description
 	// Messages for Export RDF Special
     'exportrdf' => 'Экспорт страниц в RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>Эта страница позволяет экспортировать части статьи в формате RDF. Наберите заголовки необходимых статей по одному на строку.</p>',

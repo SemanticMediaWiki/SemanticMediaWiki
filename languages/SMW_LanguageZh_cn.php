@@ -20,6 +20,8 @@ protected $m_ContentMessages = array(
 	//(This type “$1＂ is not a standard datatype in the wiki, and has not been given a user definition either.) URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => '抱歉，在此处无法取得从“$1＂范围的，URIs. (译注原文为：Sorry, URIs from the range “$1＂ are not available in this place.)',
+	// Link to RSS feeds
+	'smw_rss_link' => 'RSS', // TODO: translate (default text for linking to semantic RSS feeds)
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "抱歉，联机查询在此wiki已被设置为无效", //"Sorry. Semantic queries have been disabled for this wiki."
 	'smw_iq_moreresults' => '&hellip; 高级查询',       //'&hellip; further results'
@@ -85,6 +87,8 @@ protected $m_UserMessages = array(
 	'smw_typearticlecount' => '以此型态显示 $1 性质',  //'Showing $1 properties using this type.',
 	'smw_attribute_header' => '使用性质“$1＂的页面',   //'Pages using the property “$1＂',
 	'smw_attributearticlecount' => '<p>以此性质显示$1页面.</p>',   //'<p>Showing $1 pages using this property.</p>',
+	// Messages used in RSS feeds
+	'smw_rss_description' => '$1 RSS feed', // TODO: translate, used as default semantic RSS-feed description
 	// Messages for Export RDF Special
 	'exportrdf' => '输出页面至RDF 。',       //'Export pages to RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>此一页面可让您获取RDF格式页面的资料，要输出页面，请在下方的文字框内键入页面的抬头，一项一行。</p>',     //'<p>This page allows you to obtain data from a page in RDF format. To export pages, enter the titles in the text box below, one title per line.</p>',
