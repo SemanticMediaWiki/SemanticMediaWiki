@@ -424,9 +424,11 @@ class SMWRSSEntry {
 	 * Creates the RSS output for the single item.
 	 */
 	public function text() {
-		global $wgTitle, $wgServer, $wgParser;
+		global $wgTitle, $wgServer, $wgParser, $smwgStoreActive;
 		static $parser = null;
 		static $parser_options = null;
+		$smwgStoreActive = false; // make sure no Factbox is shown (RSS lacks the required styles)
+		// do not bother to restore this later, not needed in this context
 		if ($parser == null) {
 			$parser_options = new ParserOptions();
 			$parser_options->setEditSection(false);  // embedded sections should not have edit links
