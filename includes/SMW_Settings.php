@@ -80,8 +80,9 @@ $smwgQEqualitySupport = SMW_EQ_SOME; // Evaluate #redirects as equality between 
   //$smwgQEqualitySupport = SMW_EQ_FULL; // Evaluate #redirects as equality between page names in all cases
   //$smwgQEqualitySupport = SMW_EQ_NONE; // Never evaluate #redirects as equality between page names
 $smwgQSortingSupport  = true; // (De)activate sorting of results.
-$smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE); // Which namespaces should be searched by default?
+$smwgQDefaultNamespaces = NULL; // Which namespaces should be searched by default?
                               // (value NULL switches off default restrictions on searching -- this is faster)
+                              // Example with namespaces: $smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE);
 $smwgQMaxLimit = 10000;       // Max number of results ever retrieved, even when using special query pages.
 $smwgQDisjunctionSupport = true; // Support disjunctions in queries (||)?
                              // (Note: things like namespace defaults and property/category hierarchies
