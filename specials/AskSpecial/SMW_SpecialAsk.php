@@ -454,7 +454,7 @@ class SMWRSSEntry {
 	 * clean the description.
 	 */
 	private function clean($t) {
-		return trim(strip_tags(html_entity_decode($t, null, 'UTF-8'))); 
+		return trim(strip_tags(smwfXMLContentEncode($t)));
 	}
 }
 
