@@ -73,8 +73,8 @@ function smwfParsePropertiesCallback($semanticLink) {
 
 	if ($property == 'SMW') {
 		switch ($value) {
-			case 'on': $smwgTempStoreAnnotations = true;
-			case 'off': $smwgTempStoreAnnotations = false;
+			case 'on': $smwgTempStoreAnnotations = true; break;
+			case 'off': $smwgTempStoreAnnotations = false; break;
 		}
 		return '';
 	}
