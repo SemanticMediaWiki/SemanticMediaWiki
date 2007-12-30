@@ -767,9 +767,14 @@ class SMWSQLStore extends SMWStore {
 	function getQueryResult(SMWQuery $query) {
 		wfProfileIn('SMWSQLStore::getQueryResult (SMW)');
 		global $smwgQSortingSupport;
+		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deeper levels
+		if ($query->querymode == SMWQuery::MODE_NONE) { // don't query, but return something to printer
+			$result = new SMWQueryResult($prs, $query, false);
+			wfProfileOut('SMWSQLStore::getQueryResult (SMW)');
+			return $result;
+		}
 
 		$db =& wfGetDB( DB_SLAVE );
-		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deeper levels
 
 		// Build main query
 		$this->m_usedtables = array();

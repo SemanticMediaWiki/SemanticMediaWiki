@@ -24,13 +24,18 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		}
 	}
 
+	public function getResult($results, $params, $outputmode) { // skip all checks, the result is never populated
+		$this->readParameters($params,$outputmode);
+		return $this->getResultText($results,$outputmode) . $this->getErrorString($results);
+	}
+
 	protected function getResultText($res, $outputmode) {
 		global $smwgIQRunningNumber;
 		$result = '';
-		if (array_key_exists('label', $this->m_params)) { /// TODO: reuse 'mainlabel' here?
-			$label = $this->m_params['label'];
+		if ($this->mSearchlabel) {
+			$label = $this->mSearchlabel;
 		} else { // default label
-			$label = 'RSS'; /// TODO i18n
+			$label = wfMsgForContent('smw_rss_link');
 		}
 		$result .= $this->getRSSLink($outputmode, $res, $label);
 		smwfRequireHeadItem('rss' . $smwgIQRunningNumber, '<link rel="alternate" type="application/rss+xml" title="' . $this->title . '" href="' . $this->getRSSURL($res) . '" />');

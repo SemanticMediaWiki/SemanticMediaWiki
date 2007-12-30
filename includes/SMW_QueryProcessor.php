@@ -74,6 +74,8 @@ class SMWQueryProcessor {
 			$query->querymode = SMWQuery::MODE_COUNT;
 		} elseif ($format == 'debug') {
 			$query->querymode = SMWQuery::MODE_DEBUG;
+		} elseif ($format == 'rss') {
+			$query->querymode = SMWQuery::MODE_NONE;
 		}
 		if ( (array_key_exists('offset',$params)) && (is_int($params['offset'] + 0)) ) {
 			$query->setOffset(max(0,trim($params['offset']) + 0));
@@ -230,7 +232,7 @@ class SMWQueryProcessor {
 			$format = SMWQueryProcessor::getResultFormat($params);
 		}
 		$res = smwfGetStore()->getQueryResult($query);
-		if ($query->querymode == SMWQuery::MODE_INSTANCES) {
+		if ( ($query->querymode == SMWQuery::MODE_INSTANCES) || ($query->querymode == SMWQuery::MODE_NONE) ) {
 			wfProfileIn('SMWQueryProcessor::getResultFromQuery-printout (SMW)');
 			$printer = SMWQueryProcessor::getResultPrinter($format, $inline, $res);
 			$result = $printer->getResult($res, $params, $outputmode);

@@ -20,9 +20,10 @@ require_once($smwgIP . '/includes/storage/SMW_Description.php');
  */
 class SMWQuery {
 
-	const MODE_INSTANCES = 1;
-	const MODE_COUNT = 2;
-	const MODE_DEBUG = 3;
+	const MODE_INSTANCES = 1; // normal instance retrieval
+	const MODE_COUNT = 2; // find result count only
+	const MODE_DEBUG = 3; // prepare query, but show debug data instead of executing it
+	const MODE_NONE = 4;  // do nothing with the query
 
 	public $sort = false;
 	public $ascending = true;
