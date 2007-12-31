@@ -80,8 +80,9 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$first_col = true;
 			if ($usetemplate) { // build template code
 				$wikitext = '';
+				$i = 1; // explicitly number parameters for more robust parsing (values may contain "=")
 				foreach ($row as $field) {
-					$wikitext .= "|";
+					$wikitext .= '|' . $i++ . '=';
 					$first_value = true;
 					while ( ($text = $field->getNextText(SMW_OUTPUT_WIKI, $this->getLinker($first_col))) !== false ) {
 						if ($first_value) $first_value = false; else $wikitext .= ', ';
@@ -90,7 +91,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					$first_col = false;
 				}
 				$result .= '[[SMW::off]]{{' . $this->mTemplate . $wikitext . '}}[[SMW::on]]';
-				//str_replace(array('=','|'), array('&#x003D;', '&#x007C;'), // encode '=' and '|' for use in templates (templates fail otherwise) -- this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
+				//str_replace('|', '&#x007C;', // encode '|' for use in templates (templates fail otherwise) -- this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
 			} else {  // build simple list
 				$first_col = true;
 				$found_values = false; // has anything but the first column been printed?

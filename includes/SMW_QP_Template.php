@@ -35,10 +35,11 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 
 		$parserinput = $this->mIntro;
 		while ( $row = $res->getNext() ) {
+			$i = 1; // explicitly number parameters for more robust parsing (values may contain "=")
 			$wikitext = '';
 			$firstcol = true;
 			foreach ($row as $field) {
-				$wikitext .= "|";
+				$wikitext .= '|' . $i++ . '=';
 				$first = true;
 				while ( ($text = $field->getNextText(SMW_OUTPUT_WIKI, $this->getLinker($firstcol))) !== false ) {
 					if ($first) {
@@ -46,7 +47,7 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 					} else {
 						$wikitext .= ', ';
 					}
-					$wikitext .= $text; //str_replace(array('=','|'), array('&#x003D;', '&#x007C;'),$text); // encode '=' and '|' for use in templates (templates fail otherwise)
+					$wikitext .= $text; //str_replace('|', '&#x007C;',$text); // encode '|' for use in templates (templates fail otherwise) -- this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
 				}
 				$firstcol = false;
 			}
