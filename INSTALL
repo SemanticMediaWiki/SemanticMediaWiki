@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.0 RC3]]
+[[Semantic MediaWiki 1.0]]
 
 Contents:
 * Disclaimer
@@ -9,6 +9,7 @@ Contents:
   ** Running SMW on older versions of MediaWiki
 * Notes on Upgrading
   ** General Upgrading Instructions
+  ** Upgrading from 1.0 RC1, 1.0 RC2, 1.0 RC3
   ** Upgrading from version 0.7
   ** Upgrading from versions 0.6 and 0.5
   ** Upgrading from 0.4.x
@@ -28,7 +29,7 @@ the authors.
 
 == Requirements ==
 
-* MediaWiki 1.11.* or greater (tested from 1.11.0 to 1.12alpha, 1.10.* also may still work to some extent).
+* MediaWiki 1.11.* or greater (tested from 1.11.0 to 1.12alpha (r29006), 1.10.* works with some restrictions).
 * PHP 5.x or greater installed and working
 * MySQL >= 4.0.14 (version required by MediaWiki)
 
@@ -98,6 +99,42 @@ to create links for all results returned by inline queries. The parameters that
 are available are documented in the file SMW_Settings.php. Do not change this
 file directly, but make all adoptions in your LocalSettings.php.
 
+==== Semantic MediaWiki on small wikis -- extended features ====
+
+Some features of SMW are turned off by default, since they could slow down larger
+sites. If you run a small site or have a very controlled user base, then you may
+wish to enable these additional features. Suggested entries for LocalSettings.php
+are:
+
+$smwgQEqualitySupport = SMW_EQ_FULL;  // always interpret redirects as equality in queries
+$smwgQComparators = '<|>|!|~'; // enable the pattern search comparator ~ for strings
+
+Further relaxation of default limits e.g. on query size are possible. See SMW_Settings.php.
+
+==== Semantic MediaWiki on very large wikis -- improving performance ====
+
+On very large or high traffic sites, further restriction of SMW features might be desirable
+for performance reasons. Besides setting up the usual external caches and distributed 
+DB-servers, you can also modify some SMW options to increase speed (while switching off
+features). Try some or all of the below in LocalSettings.php:
+
+$smwgQEnabled = false; // most radical -- no more semantic queries, just browsing/display features
+$smwgQSubcategoryDepth = 0; // disable subcategory reasoning in queries
+$smwgQSubpropertyDepth = 0; // disable subproperty reasoning in queries
+$smwgQDisjunctionSupport = false; // completely disable disjunctions in queries
+$smwgQMaxSize = 5; // allow only queries of 5 or fewer conditions (default 12)
+$smwgQMaxDepth = 2; // allow only queries of depth 2 or smaller (default 4)
+$smwgQMaxLimit = 100; // never ever return more than 100 results to a query (default 10000)
+$smwgQDefaultLimit = 10; // only return 10 query results by default
+$smwgRSSWithPages = false; // do not include pages into RSS feeds, speeds up feed generation
+$smwgRSSEnabled = false; // switch off RSS feeds completely, so as not to atttract too many queries
+
+These settings have different effects, and their effectiveness depends very much on the
+usage and content structure of your wiki. You may wich to try out conservative settings
+first and relax these step by step when things work reliably. If you have continued 
+performance issues on your *large* wiki, please do not hesitate to contact the SMW developers 
+for support.
+
 === Running SMW on older versions of MediaWiki ===
 
 If your site is still running on PHP4, SMW is not supported. It would hardly be 
@@ -129,17 +166,22 @@ Instructions:
 
 Since the databse updates can take a long time, it might be better to perform them
 via an SMW maintenance script as well instead of using Special:SMWAdmin. The according 
-script is called SMW_setup.php.
+script is called SMW_setup.php. In case of problems, retry the above procedure with
+the modified command "php SMW_refreshData.php -fpv" in step (4).
 
 Some versions of SMW also introduced incompatibilities in the wiki syntax that
 may need to be fixed. You may want to read this first.
 
-=== Upgrading from 1.0 RC1 and 1.0 RC2 ===
+=== Upgrading from 1.0 RC1, 1.0 RC2, 1.0 RC3 ===
 
-Following the generaic upgrading instructions above is recommended in any case. Moreover, some
+Following the generic upgrading instructions above is recommended in any case. Moreover, some
 configuration options have changed slightly between release candidates. Currently these are:
 
 * $smwgQEqualitySupport now is no longer true/false, but one of SMW_EQ_NONE, SMW_EQ_SOME, SMW_EQ_FULL
+* $smwgQDefaultNamespaces is now NULL by default, so that all namespaces are queried. The old default
+  was "array(NS_MAIN, NS_IMAGE)".
+* $smwgQDefaultLinking now defaults to 'all' such that all query results are linked. This is not a
+  performance issue any more. The old default was 'subject'.
 
 If you set any of these parameters in your LocalSettings.php, you need to update the config.
 Please see SMW_Settings.php for more documentation on the available parameters.
@@ -154,8 +196,7 @@ incompatible changes to SMW0.7:
 (a) The concepts (and namespaces) "Relation" and "Attribute" are now unified into "Property"
 (b) The special property "Main display unit" is obsolete, and the property "display unit"
     shows slightly modified behaviour.
-(c) The Type:Boolean is currently not available.
-(d) The configuration options in LocalSettings.php have changed.
+(c) The configuration options in LocalSettings.php have changed.
 
 For (a), the namespace "Attribute:" was renamed into "Property:" -- you will find all your
 former attribute pages in the new place. All SMW-generated property links now point to 
@@ -182,10 +223,7 @@ instead. Its value is the list of units you like to have diplayed, separated by 
 online docu for details. Running SMW_refreshData.php again (once) is required to reliably 
 propagate the updated property setting to all pages.
 
-For (c) there is currently no fix. If you need Type:Boolean, you should not upgrade. It is
-planned to provide a new implementation for this type later.
-
-For (d), please consult the file [SMW_path]/includes/SMW_Settings.php to find out about
+For (c), please consult the file [SMW_path]/includes/SMW_Settings.php to find out about
 the current options, and use only those in your LocalSettings.php (using older options
 will not hurt, but has no effect). Note that some options have just changed labels, while
 others were added or removed.
@@ -200,7 +238,7 @@ upgrade to SMW0.7 first, and to move on to SMW1.0 next.
 === Upgrading from 0.4.x ===
 
 Upgrading should work like for versions 0.6 and 0.5. The type "Geographic area" and 
-"Geographic length" are no longer built in. But you can easily create them by yourself 
+"Geographic length" are no longer built in. But you can easily create them by yourself
 with the new type customisation features. See the docu at ontoworld.org for details.
 
 
@@ -251,9 +289,11 @@ with the new type customisation features. See the docu at ontoworld.org for deta
   database errors.
 
   Your database was not initialized properly. Go to Special:SMWAdmin for
-  instructions.
+  instructions. If all fails, run the maintenance script 
+  "SMW_refreshData -vfp" (followed by "SMW_refreshData -v" if you already 
+  stored annotations).
 
-- Problem: In my non-English installation, properties don't work even when 
+- Problem: In my non-English installation, properties don't work even when
   I follow the examples.
 
   Although SMW normally provides English aliases, you may need to use the 
@@ -269,6 +309,19 @@ with the new type customisation features. See the docu at ontoworld.org for deta
   Uncomment the line "ini_set( 'memory_limit', '20M' );" in LocalSettings.php
   and possibly adjust the value to your needs. More than 100M is harldy useful,
   but values around 50M might be required for large pages in some cases.
+
+- When issuing semantic queries, I receive database errors that talk about some
+  "illegal collation". Otherwise storing of annotations seems to work.
+
+  Your database tables for MediaWiki and SMW have been generated with different
+  settings. To fix the problem, first try to run the maintenance script 
+  "SMW_refreshData -vfp" followed by "SMW_refreshData -v". If this does not help,
+  you need to investigate the collation/character set settings of your DB.
+  To do that, use a DB frontend tool or the SQL command "SHOW CREATE TABLE tablename;".
+  Look up the collation/charset of, e.g., the table "categorylinks" and change the
+  default collation/charset of your DB to these settings as described in the manual
+  http://dev.mysql.com/doc/refman/5.0/en/charset-syntax.html
+  Finally, run the aforementioned maintenance scripts again.
 
 - Problem: I have a problem that is not in this list.
 
