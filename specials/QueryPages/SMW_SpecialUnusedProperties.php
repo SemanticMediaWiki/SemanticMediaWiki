@@ -42,6 +42,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 		global $wgLang, $wgExtraNamespaces;
 		$proplink = $skin->makeKnownLinkObj( $result, $result->getText() );
 		$types = smwfGetStore()->getSpecialValues($result, SMW_SP_HAS_TYPE);
+		$errors = array();
 		if (count($types) >= 1) {
 			$typestring = $types[0]->getLongHTMLText($skin);
 		} else {
