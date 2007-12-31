@@ -193,7 +193,6 @@ protected $m_DatatypeLabels = array(
 	'_geo' => '지리적 좌표', // name of the geocoord type
 	'_tem' => '온도',  // name of the temperature type
 	'_dat' => '날짜',  // name of the datetime (calendar) type
-	'_hda' => '역사적 날짜', // name of the historical-range calendar type
 	'_ema' => '이메일',  // name of the email type
 	'_uri' => '하십시오',  // name of the URL type
 	'_anu' => '열린우리당 해설'  // name of the annotation URI type (OWL annotation property)
