@@ -184,7 +184,9 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getTitle() {
 		if ($this->m_title === NULL){
-			if ($this->m_value != ''){
+			if ($this->m_dbkeyform != '') {
+				$this->m_title = Title::makeTitle($this->m_namespace, $this->m_dbkeyform);
+			} elseif ($this->m_value != ''){
 				$this->m_title = Title::newFromText($this->m_value);
 			} else {
 				return NULL; //not possible to create title from empty string
@@ -232,7 +234,17 @@ class SMWWikiPageValue extends SMWDataValue {
 	public function setValues($dbkey, $namespace, $id = false) {
 		$this->m_namespace = $namespace;
 		$this->setXSDValue($dbkey);
-		$this->m_id = $id ? $id : false;
+		$linkCache =& LinkCache::singleton();
+		$this->m_title = Title::makeTitle($namespace, $dbkey);
+		if ($id === NULL) {
+			$this->m_id = 0;
+			$linkCache->addBadLinkObj($this->m_title); // prefill link cache, save lookups
+		} elseif ($id === false) {
+			$this->m_id = false;
+		} else {
+			$this->m_id = $id;
+			$linkCache->addGoodLinkObj($id, $this->m_title); // prefill link cache, save lookups
+		}
 	}
 
 ///// Legacy methods for compatibility
