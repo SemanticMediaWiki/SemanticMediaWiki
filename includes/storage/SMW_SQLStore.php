@@ -73,7 +73,7 @@ class SMWSQLStore extends SMWStore {
 				$v = SMWDataValueFactory::newTypeIDValue('_wpg');
 				$v->setValues($row->cl_to, NS_CATEGORY);
 				$result[] = $v;
-				//Title::newFromText($row->cl_to, NS_CATEGORY);
+				//Title::makeTitle(NS_CATEGORY, $row->cl_to);
 			}
 			$db->freeResult($res);
 		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
@@ -473,7 +473,7 @@ class SMWSQLStore extends SMWStore {
 		                    $sql, 'SMW::getProperties', $this->getSQLOptions($requestoptions,'attribute_title') );
 		if ($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->attribute_title, SMW_NS_PROPERTY);
+				$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->attribute_title);
 			}
 		}
 		$db->freeResult($res);
@@ -482,7 +482,7 @@ class SMWSQLStore extends SMWStore {
 		                    $sql, 'SMW::getProperties', $this->getSQLOptions($requestoptions,'attribute_title') );
 		if ($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->attribute_title, SMW_NS_PROPERTY);
+				$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->attribute_title);
 			}
 		}
 		$db->freeResult($res);
@@ -494,7 +494,7 @@ class SMWSQLStore extends SMWStore {
 		                    $sql, 'SMW::getProperties', $this->getSQLOptions($requestoptions,'relation_title') );
 		if($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->relation_title, SMW_NS_PROPERTY);
+				$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->relation_title);
 			}
 		}
 		$db->freeResult($res);
@@ -503,7 +503,7 @@ class SMWSQLStore extends SMWStore {
 		                    $sql, 'SMW::getProperties', $this->getSQLOptions($requestoptions,'attribute_title') );
 		if ($db->numRows( $res ) > 0) {
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->attribute_title, SMW_NS_PROPERTY);
+				$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->attribute_title);
 			}
 		}
 		$db->freeResult($res);
@@ -524,7 +524,7 @@ class SMWSQLStore extends SMWStore {
 								'DISTINCT relation_title',
 								$sql, 'SMW::getInProperties', $this->getSQLOptions($requestoptions,'relation_title') );
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText($row->relation_title, SMW_NS_PROPERTY);
+				$result[] = Title::newFromText(SMW_NS_PROPERTY, $row->relation_title);
 			}
 			$db->freeResult($res);
 		}
@@ -939,7 +939,7 @@ class SMWSQLStore extends SMWStore {
 		                  'SMW::getPropertySubjects');
 		$result = array();
 		while($row = $db->fetchObject($res)) {
-			$title = Title::newFromText($row->title, SMW_NS_PROPERTY);
+			$title = Title::makeTitle(SMW_NS_PROPERTY, $row->title);
 			$result[] = array($title, $row->count);
 		}
 		$db->freeResult($res);
@@ -971,7 +971,7 @@ class SMWSQLStore extends SMWStore {
 		                  'SMW::getUnusedPropertySubjects');
 		$result = array();
 		while($row = $db->fetchObject($res)) {
-			$result[] = Title::newFromText($row->page_title, SMW_NS_PROPERTY);
+			$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->page_title);
 		}
 		wfProfileOut("SMWSQLStore::getUnusedPropertiesSpecial (SMW)");
 		return $result;
@@ -988,13 +988,13 @@ class SMWSQLStore extends SMWStore {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
 		$res = $db->query('SELECT relation_title as title, COUNT(*) as count FROM ' .
-		                  $db->tableName('smw_relations') . ' LEFT JOIN ' . $db->tableName('page') . 
+		                  $db->tableName('smw_relations') . ' LEFT JOIN ' . $db->tableName('page') .
 		                  ' ON (page_namespace=' . SMW_NS_PROPERTY .
 		                  ' AND page_title=relation_title) WHERE page_id IS NULL GROUP BY relation_title' . $options,
 		                  'SMW::getPropertySubjects');
 		$result = array();
 		while($row = $db->fetchObject($res)) {
-			$title = Title::newFromText($row->title, SMW_NS_PROPERTY);
+			$title = Title::makeTitle(SMW_NS_PROPERTY, $row->title);
 			$result[] = array($title, $row->count);
 		}
 		wfProfileOut("SMWSQLStore::getWantedPropertiesSpecial (SMW)");
