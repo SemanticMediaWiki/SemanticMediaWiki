@@ -191,6 +191,9 @@ class SMWDataValueFactory {
 	 * Quickly get the type id of some property without necessarily making another datavalue.
 	 */
 	static public function getPropertyObjectTypeID(Title $property) {
+		if ($property->getNamespace() !== SMW_NS_PROPERTY) { // somebody made a mistake ...
+			return false;
+		}
 		$propertyname = $property->getText();
 		if (array_key_exists($propertyname, SMWDataValueFactory::$m_typebyproperty)) {
 			if (SMWDataValueFactory::$m_typebyproperty[$propertyname]->isUnary() ) {
