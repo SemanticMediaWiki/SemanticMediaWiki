@@ -207,23 +207,28 @@ class SMWSQLStore extends SMWStore {
 	}
 
 
-	function getPropertyValues(Title $subject, Title $property, $requestoptions = NULL, $outputformat = '') {
+	function getPropertyValues($subject, $property, $requestoptions = NULL, $outputformat = '') {
 		wfProfileIn("SMWSQLStore::getPropertyValues (SMW)");
-		$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
-		if ($subjectid <= 0) {
-			wfProfileOut("SMWSQLStore::getPropertyValues (SMW)");
-			return array();
+		$db =& wfGetDB( DB_SLAVE );
+		if ($subject !== NULL) {
+			$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
+			if ($subjectid <= 0) {
+				wfProfileOut("SMWSQLStore::getPropertyValues (SMW)");
+				return array();
+			}
+			$subjectcond = 'subject_id=' . $db->addQuotes($subjectid) . ' AND ';
+		} else { // get all values for this property
+			$subjectcond = 'subject_id=' . $db->addQuotes(0) . ' AND ';
 		}
 
-		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
 		$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
 		switch ($id) {
 			case '_txt':
 				$res = $db->select( $db->tableName('smw_longstrings'),
 									'value_blob',
-									'subject_id=' . $db->addQuotes($subjectid) .
-									' AND attribute_title=' . $db->addQuotes($property->getDBkey()),
+									$subjectcond .
+									'attribute_title=' . $db->addQuotes($property->getDBkey()),
 									'SMW::getPropertyValues', $this->getSQLOptions($requestoptions) );
 				while($row = $db->fetchObject($res)) {
 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
@@ -236,8 +241,8 @@ class SMWSQLStore extends SMWStore {
 			case '_wpg':
 				$res = $db->select( $db->tableName('smw_relations'),
 									'object_title, object_namespace, object_id',
-									'subject_id=' . $db->addQuotes($subjectid) .
-									' AND relation_title=' . $db->addQuotes($property->getDBkey()) .
+									$subjectcond .
+									'relation_title=' . $db->addQuotes($property->getDBkey()) .
 									$this->getSQLConditions($requestoptions,'object_title','object_title'),
 									'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,'object_title') );
 				while($row = $db->fetchObject($res)) {
@@ -253,8 +258,8 @@ class SMWSQLStore extends SMWStore {
 				$subtypes = $type->getTypeValues();
 				$res = $db->select( $db->tableName('smw_nary'),
 									'nary_key',
-									'subject_id=' . $db->addQuotes($subjectid) .
-									' AND attribute_title=' . $db->addQuotes($property->getDBkey()),
+									$subjectcond .
+									'attribute_title=' . $db->addQuotes($property->getDBkey()),
 									'SMW::getPropertyValues', $this->getSQLOptions($requestoptions) );
 				///TODO: presumably slow. Try to do less SQL queries by making a join with smw_nary
 				while($row = $db->fetchObject($res)) {
@@ -264,8 +269,8 @@ class SMWSQLStore extends SMWStore {
 					}
 					$res2 = $db->select( $db->tableName('smw_nary_attributes'),
 									'nary_pos, value_unit, value_xsd',
-									'subject_id=' . $db->addQuotes($subjectid) .
-									' AND nary_key=' . $db->addQuotes($row->nary_key),
+									$subjectcond .
+									'nary_key=' . $db->addQuotes($row->nary_key),
 									'SMW::getPropertyValues');
 					while($row2 = $db->fetchObject($res2)) {
 						if ($row2->nary_pos < count($subtypes)) {
@@ -277,8 +282,8 @@ class SMWSQLStore extends SMWStore {
 					$db->freeResult($res2);
 					$res2 = $db->select( $db->tableName('smw_nary_longstrings'),
 									'nary_pos, value_blob',
-									'subject_id=' . $db->addQuotes($subjectid) .
-									' AND nary_key=' . $db->addQuotes($row->nary_key),
+									$subjectcond .
+									'nary_key=' . $db->addQuotes($row->nary_key),
 									'SMW::getPropertyValues');
 					while($row2 = $db->fetchObject($res2)) {
 						if ( $row2->nary_pos < count($subtypes) ) {
@@ -290,8 +295,8 @@ class SMWSQLStore extends SMWStore {
 					$db->freeResult($res2);
 					$res2 = $db->select( $db->tableName('smw_nary_relations'),
 									'nary_pos, object_title, object_namespace, object_id',
-									'subject_id=' . $db->addQuotes($subjectid) .
-									' AND nary_key=' . $db->addQuotes($row->nary_key),
+									$subjectcond .
+									'nary_key=' . $db->addQuotes($row->nary_key),
 									'SMW::getPropertyValues');
 					while($row2 = $db->fetchObject($res2)) {
 						if ( ($row2->nary_pos < count($subtypes)) &&
@@ -316,9 +321,8 @@ class SMWSQLStore extends SMWStore {
 				} else {
 					$value_column = 'value_xsd';
 				}
-				$sql = 'subject_id=' . $db->addQuotes($subjectid) .
-					' AND attribute_title=' . $db->addQuotes($property->getDBkey()) .
-					$this->getSQLConditions($requestoptions,$value_column,'value_xsd');
+				$sql = $subjectcond . 'attribute_title=' . $db->addQuotes($property->getDBkey()) .
+				       $this->getSQLConditions($requestoptions,$value_column,'value_xsd');
 				$res = $db->select( $db->tableName('smw_attributes'),
 									'value_unit, value_xsd',
 									$sql, 'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,$value_column) );

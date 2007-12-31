@@ -133,8 +133,10 @@ abstract class SMWStore {
 	 * is an array of SMWDataValue objects. The provided outputformat is a string identifier that
 	 * may be used by the datavalues to modify their output behaviour, e.g. when interpreted as a 
 	 * desired unit to convert the output to.
+	 *
+	 * If called with $subject == NULL, all values for the given property are returned.
 	 */
-	abstract function getPropertyValues(Title $subject, Title $property, $requestoptions = NULL, $outputformat = '');
+	abstract function getPropertyValues($subject, $property, $requestoptions = NULL, $outputformat = '');
 
 	/**
 	 * Get an array of all subjects that have the given value for the given property. The
