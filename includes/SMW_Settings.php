@@ -98,7 +98,7 @@ $smwgQMaxInlineLimit = 500; // Max number of rows ever printed in a single inlin
 $smwgQPrintoutLimit = 10;   // Max number of supported printouts (added columns in result table, * statements)
 
 ### Formatting settings
-$smwgQDefaultLinking = 'subject'; // Default linking behaviour. Can be one of "none", "subject", "all"
+$smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none", "subject", "all"
 
 ###
 # Settings for RSS export
