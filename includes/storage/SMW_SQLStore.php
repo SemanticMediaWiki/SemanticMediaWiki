@@ -528,7 +528,7 @@ class SMWSQLStore extends SMWStore {
 								'DISTINCT relation_title',
 								$sql, 'SMW::getInProperties', $this->getSQLOptions($requestoptions,'relation_title') );
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::newFromText(SMW_NS_PROPERTY, $row->relation_title);
+				$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->relation_title);
 			}
 			$db->freeResult($res);
 		}
