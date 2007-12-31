@@ -739,7 +739,7 @@ class SMWQueryParser {
 					$comparator = SMW_CMP_NEQ;
 					$value = $list[2];
 				break;
-				case '%':
+				case '~':
 					$comparator = SMW_CMP_LIKE;
 					$value = $list[2];
 				break;

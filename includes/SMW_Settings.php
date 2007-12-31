@@ -89,7 +89,7 @@ $smwgQDisjunctionSupport = true; // Support disjunctions in queries (||)?
                              //        can also cause disjunctions!)
 $smwgQComparators = '<|>|!'; // List of comparator characters supported by queries, separated by '|'
                              // Available entries: < (smaller than), < (greater than), ! (unequal to),
-                             //                    % (pattern with '%' as wildcard, only for Type:String)
+                             //                    ~ (pattern with '*' as wildcard, only for Type:String)
                              // If unsupported comparators are used, they are treated as part of the queried value
 
 ### Settings about printout of (especially inline) queries:
