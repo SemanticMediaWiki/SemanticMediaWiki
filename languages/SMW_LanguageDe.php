@@ -33,7 +33,7 @@ protected $m_ContentMessages = array(
 	'smw_rss_link' => 'RSS',
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "Semantische Anfragen sind in diesem Wiki zur Zeit nicht möglich.",
-	'smw_iq_moreresults' => '&hellip; weitere Ergebnisse',
+	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung betrachtet werden.',
 	'smw_iq_altresults' => 'Suchergebnisse als Liste anzeigen.', // available link when JS is disabled
 	/*Messages and strings for ontology resued (import) */
@@ -44,7 +44,7 @@ protected $m_ContentMessages = array(
 	/*Messages and strings for basic datatype processing*/
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
-	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate
+	'smw_notitle' => '“$1” kann nicht als Seitenname in diesem Wiki verwendet werden.',
 	'smw_unknowntype' => 'Dem Attribut wurde der unbekannte Datentyp „$1“ zugewiesen.',
 	'smw_manytypes' => 'Dem Attribut wurden mehrere Datentypen zugewiesen.',
 	'smw_emptystring' => 'Leere Zeichenfolgen werden nicht akzeptiert.',
@@ -83,7 +83,7 @@ protected $m_ContentMessages = array(
 	'smw_overprintoutlimit' => 'Die Anfrage enhält zu viele Ausgabeanweisungen.',
 	'smw_badprintout' => 'Eine Ausgabeanweisung wurde nicht verstanden.',
 	'smw_badtitle' => 'Leider ist „$1“ als Seitentitel nicht zulässig.',
-	'smw_badqueryatom' => 'Ein Teil „[&#x005B;&hellip;]]“ der Anfrage wurde nicht verstanden.',
+	'smw_badqueryatom' => 'Ein Teil „[&#x005B…]]“ der Anfrage wurde nicht verstanden.',
 	'smw_propvalueproblem' => 'Der Wert des Attributs „$1“ wurde nicht verstanden.',
 	'smw_nodisjunctions' => 'Disjunktionen (ODER) in Anfragen sind in diesem Wiki nicht zulässig und ein Teil der Anfrage muss daher ignoriert werden ($1).',
 	'smw_querytoolarge' => 'Die folgenden Anfragebedingungne konnten wegen den in diesem Wiki gültigen Beschränkungen für größe und Tiefe von Anfragen nicht berücksichtigt werden: $1.'
@@ -100,7 +100,7 @@ protected $m_UserMessages = array(
 	'smw_rss_description' => 'RSS-Feed von $1',
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Seite als RDF exportieren', //name of this special
-	'smw_exportrdf_docu' => '<p>Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte geben Sie die Namen der gewünschten Seiten <i>zeilenweise</i> ein.</p>',
+	'smw_exportrdf_docu' => '<p>Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte gib die Namen der gewünschten Seiten <i>zeilenweise</i> ein.</p>',
 	'smw_exportrdf_recursive' => 'Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr großen Ergebnissen führen!',
 	'smw_exportrdf_backlinks' => 'Exportiere auch alle Seiten, die auf exportierte Seiten verweisen. Erzeugt RDF, das leichter durchsucht werden kann.',
 	'smw_exportrdf_lastdate' => 'Exportiere keine Seiten, die seit dem angegebenen Zeitpunkt unverändert geblieben sind.',
@@ -127,16 +127,16 @@ protected $m_UserMessages = array(
 	'smw_oi_docu' => 'Diese Spezialseite erlaubt es, Informationen aus einer externen Ontologie zu importieren. Die Ontologie sollte in einem vereinfachten RDF-Format vorliegen. Weitere Informationen sind in der englischsprachigen <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">Dokumentation zum Ontologieimport</a> zu finden.',
 	'smw_oi_action' => 'Importieren',
 	'smw_oi_return' => 'Zurück zum <a href="$1">Ontologieimport</a>.',
-	'smw_oi_noontology' => 'No ontology supplied, or could not load ontology.', // TODO Translate
-	'smw_oi_select' => 'Please select the statements to import, and then click the import button.', // TODO Translate
-	'smw_oi_textforall' => 'Header text to add to all imports (may be empty):', // TODO Translate
-	'smw_oi_selectall' => 'Select or unselect all statements', // TODO Translate
-	'smw_oi_statementsabout' => 'Statements about', // TODO Translate
+	'smw_oi_noontology' => 'Keine Ontologie unterstützt, oder Ontologie kann nicht geladen werden.',
+	'smw_oi_select' => 'Bitte wähle die zu importierenden Statements aus und klicke dann auf die Import-Schaltfläche.',
+	'smw_oi_textforall' => 'Text, der allen Importen vorangestellt werden soll (darf leer bleiben):',
+	'smw_oi_selectall' => 'Auswählen oder abwählen aller Statements',
+	'smw_oi_statementsabout' => 'Statements über',
 	'smw_oi_mapto' => 'Map entity to', // TODO Translate
-	'smw_oi_comment' => 'Add the following text:', // TODO Translate
-	'smw_oi_thisissubcategoryof' => 'A subcategory of', // TODO Translate
-	'smw_oi_thishascategory' => 'Is part of', // TODO Translate
-	'smw_oi_importedfromontology' => 'Import from ontology', // TODO Translate
+	'smw_oi_comment' => 'Füge den folgenden Text hinzu:',
+	'smw_oi_thisissubcategoryof' => 'Unterkategorie von',
+	'smw_oi_thishascategory' => 'Ist Teil von',
+	'smw_oi_importedfromontology' => 'Importiere von Ontologie',
 	/*Messages for (data)Types Special*/
 	'types' => 'Datentypen',
 	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden. Jeder Datentyp hat eine eigene Seite, auf der genauere Informationen eingetragen werden können.',
@@ -173,9 +173,9 @@ protected $m_UserMessages = array(
 	'smw_sbv_submit' => 'Finde Ergebnisse',
 	// Messages for the browsing system
 	'browse' => 'Wiki browsen',
-	'smw_browse_article' => 'Bitte geben Sie den Titel einer Seite ein.',
+	'smw_browse_article' => 'Bitte gib den Titel einer Seite ein.',
 	'smw_browse_go' => 'Los',
-	'smw_browse_more' => '&hellip;',
+	'smw_browse_more' => '…',
 	// Messages for the page property special
 	'pageproperty' => 'Attributswerte einer Seite',
 	'smw_pp_docu' => 'Suche nach allen Werten, die ein bestimmtes Attribut für die angegebene Seite hat.',
@@ -267,5 +267,3 @@ protected $m_NamespaceAliases = array(
 );
 
 }
-
-
