@@ -9,6 +9,7 @@ BubbleTT = new Object();
 BubbleTT.Platform= new Object();
 
 var tt; //the tooltip
+var all_tt = []; // all visible tooltips
 
 var imagePath=wgScriptPath+"/extensions/SemanticMediaWiki/skins/images/";
 
@@ -85,6 +86,7 @@ function smw_showTooltipPersist(e) {
 	while(!(origin.className=="smwttactivepersist")){origin=origin.parentNode};
 
 	tt = BubbleTT.createBubbleForPoint(true,origin,x,y,SMWTT_WIDTH_P,SMWTT_HEIGHT_P);
+	all_tt.push(tt);
 	BubbleTT.fillBubble(tt, origin);
 
 	//unregister handler to open bubble 
@@ -119,8 +121,15 @@ function smw_showTooltipInline(e) {
 
 
 
+function _smw_hideAllTooltips() {
+	for(var i = 0; i < all_tt.length; i++) {
+		all_tt[i].close();
+	}
+	all_tt = [];
+}
+
 function smw_hideTooltip(){
-	tt.close();
+	if (tt) tt.close();
 }
 
 /**
@@ -138,9 +147,11 @@ BubbleTT.getElementCoordinates = function(elmt) {
 
 	while (elmt != null) {
 		left += elmt.offsetLeft;
-		top += elmt.offsetTop;
+		top += elmt.offsetTop - (elmt.scrollTop ? elmt.scrollTop : 0);
 		elmt = elmt.offsetParent;
 	}
+	// consider document scroll position too
+	top += document.documentElement.scrollTop;
 	return { left: left, top: top };
 };
 
