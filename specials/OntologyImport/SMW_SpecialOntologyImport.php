@@ -260,6 +260,7 @@ class SMWOntologyImport {
 	 * Turns the triples of a datatype property into both a human-readable description and wiki source
 	 */
 	function createAttributeText($entity, $model) {
+		global $wgContLang;
 		$text = '';
 
 		$it  = $model->findAsIterator($entity, RDFS::DOMAIN(), NULL);
