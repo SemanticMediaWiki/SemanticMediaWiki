@@ -22,12 +22,12 @@ protected $m_ContentMessages = array(
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Извините, но ссылки из диапазона "$1" не доступны отсюда.',
 	// Link to RSS feeds
-	'smw_rss_link' => 'RSS', // TODO: translate (default text for linking to semantic RSS feeds)
+	'smw_rss_link' => 'RSS',
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "Извините, но встроенные запросы отключены для этого сайта.",
 	'smw_iq_moreresults' => '&hellip; следующие результаты',
-	'smw_iq_nojs' => 'Используйте браузер с поддержкой JavaScript для просмотра этого элемента.', // TODO: check if this is a sentence (Markus pruned it ;-)
-	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled // TODO: translate
+	'smw_iq_nojs' => 'Используйте браузер с поддержкой JavaScript для просмотра данного элемента.',
+	'smw_iq_altresults' => 'Просмотреть список результатов.', // available link when JS is disabled
 	// Messages and strings for ontology resued (import)
 	'smw_unknown_importns' => 'Ошибка: Функции импорта не доступны для пространства имен "$1".',
 	'smw_nonright_importtype' => 'Ошибка: $1 может быть использован только для статей с пространством имен "$2".',
@@ -90,7 +90,7 @@ protected $m_UserMessages = array(
 	'smw_attribute_header' => 'Страницы, использующие свойство “$1”',
 	'smw_attributearticlecount' => '<p>Отображается $1 страниц, использующих это свойство.</p>',
 	// Messages used in RSS feeds
-	'smw_rss_description' => '$1 RSS feed', // TODO: translate, used as default semantic RSS-feed description
+	'smw_rss_description' => '$1 источник RSS',
 	// Messages for Export RDF Special
     'exportrdf' => 'Экспорт страниц в RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>Эта страница позволяет экспортировать части статьи в формате RDF. Наберите заголовки необходимых статей по одному на строку.</p>',
@@ -150,11 +150,11 @@ protected $m_UserMessages = array(
 	'smw_ask_ascorder' => 'По возрастанию',
 	'smw_ask_descorder' => 'По убыванию',
 	'smw_ask_submit' => 'Найти',
-	'smw_ask_editquery' => '[Edit query]', // TODO: translate
-	'smw_ask_hidequery' => 'Hide query', // TODO: translate
-	'smw_ask_help' => 'Querying help', // TODO: translate
-	'smw_ask_queryhead' => 'Query', // TODO: translate
-	'smw_ask_printhead' => 'Additional printouts (optional)', // TODO: translate
+	'smw_ask_editquery' => '[Редактировать запрос]',
+	'smw_ask_hidequery' => 'Скрыть запрос',
+	'smw_ask_help' => 'Помощь по составлению запросов',
+	'smw_ask_queryhead' => 'Запрос',
+	'smw_ask_printhead' => 'Дополнительные поля вывода (не являются обязательными)',
 	// Messages for the search by property special
 	'searchbyproperty' => 'Искать по свойству',
 	'smw_sbv_docu' => '<p>Искать все страницы, которые содержат указаннок свойство и значение.</p>',
