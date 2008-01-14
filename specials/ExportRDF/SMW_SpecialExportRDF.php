@@ -139,7 +139,7 @@ class SMWExportTitle {
 		$this->title_namespace = $title->getNamespace();
 		$this->title_fragment = $title->getFragment();
 		$this->title_prefurl = $title->getPrefixedURL();
-		$this->title_dbkey = $title->getDBKey();
+		$this->title_dbkey = $title->getDBkey();
 		$this->value = 	SMWDataValueFactory::newTypeIDValue('_wpg', $title->getPrefixedText());
 		$this->hashkey = $this->title_prefurl . ' ' . $modifier; // must agree with keys generated elsewhere in this code!
 		$this->modifier = $modifier;

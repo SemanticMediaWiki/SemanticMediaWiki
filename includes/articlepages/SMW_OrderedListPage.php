@@ -115,7 +115,7 @@ abstract class SMWOrderedListPage extends Article {
 		$ac = count($this->articles);
 		if ($this->until != '') {
 			if ($ac > $this->limit) { // (we assume that limit is at least 1)
-				$first = $this->articles[1]->getDBKey();
+				$first = $this->articles[1]->getDBkey();
 			} else {
 				$first = '';
 			}
@@ -123,7 +123,7 @@ abstract class SMWOrderedListPage extends Article {
 		} elseif ( ($ac > $this->limit) || ($this->from != '') ) {
 			$first = $this->from;
 			if ( $ac > $this->limit) {
-				$last = $this->articles[$ac-1]->getDBKey();
+				$last = $this->articles[$ac-1]->getDBkey();
 			} else {
 				$last = '';
 			}

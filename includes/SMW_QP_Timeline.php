@@ -57,10 +57,10 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 			foreach ($res->getPrintRequests() as $pr) {
 				if ( ($pr->getMode() == SMW_PRINT_PROP) && ($pr->getTypeID() == '_dat') ) {
 					if ( ($this->m_tlend == '') && ($this->m_tlstart != '') &&
-					     ($this->m_tlstart != $pr->getTitle()->getDBKey()) ) {
-						$this->m_tlend = $pr->getTitle()->getDBKey();
-					} elseif ( ($this->m_tlstart == '') && ($this->m_tlend != $pr->getTitle()->getDBKey()) ) {
-						$this->m_tlstart = $pr->getTitle()->getDBKey();
+					     ($this->m_tlstart != $pr->getTitle()->getDBkey()) ) {
+						$this->m_tlend = $pr->getTitle()->getDBkey();
+					} elseif ( ($this->m_tlstart == '') && ($this->m_tlend != $pr->getTitle()->getDBkey()) ) {
+						$this->m_tlstart = $pr->getTitle()->getDBkey();
 					}
 				}
 			}
@@ -110,7 +110,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 							}
 							// is this a start date?
 							if ( ($pr->getMode() == SMW_PRINT_PROP) && 
-							     ($pr->getTitle()->getDBKey() == $this->m_tlstart) ) {
+							     ($pr->getTitle()->getDBkey() == $this->m_tlstart) ) {
 								//FIXME: Timeline scripts should support XSD format explicitly. They
 								//currently seem to implement iso8601 which deviates from XSD in cases.
 								//NOTE: We can assume $object to be an SMWDataValue in this case.
@@ -120,7 +120,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 							}
 							// is this the end date?
 							if ( ($pr->getMode() == SMW_PRINT_PROP) && 
-							     ($pr->getTitle()->getDBKey() == $this->m_tlend) ) {
+							     ($pr->getTitle()->getDBkey() == $this->m_tlend) ) {
 								//NOTE: We can assume $object to be an SMWDataValue in this case.
 								$curmeta .= '<span class="smwtlend">' . $object->getXSDValue() . '</span>';
 							}

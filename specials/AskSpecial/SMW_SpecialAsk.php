@@ -421,7 +421,7 @@ class SMWRSSEntry {
 
 		// get content
 		if ($t->getNamespace() == NS_MAIN) {
-			$this->articlename = ':' . $t->getDBKey();
+			$this->articlename = ':' . $t->getDBkey();
 		} else {
 			$this->articlename = $t->getPrefixedDBKey();
 		}

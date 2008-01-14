@@ -223,7 +223,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	/**
 	 * Get DBKey for this value.
 	 */
-	public function getDBKey() {
+	public function getDBkey() {
 		return $this->m_dbkeyform;
 	}
 

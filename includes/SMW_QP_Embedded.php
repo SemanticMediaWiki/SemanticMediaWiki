@@ -85,7 +85,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 						if (!in_array($object->getLongWikiText(), $smwgEmbeddingList)) { // prevent recursion!
 							$smwgEmbeddingList[] = $object->getLongWikiText();
 							if ($object->getNamespace() == NS_MAIN) {
-								$articlename = ':' . $object->getDBKey();
+								$articlename = ':' . $object->getDBkey();
 							} else {
 								$articlename = $object->getLongWikiText();
 							}
