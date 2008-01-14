@@ -13,6 +13,7 @@
 class SMWRSSResultPrinter extends SMWResultPrinter {
 	protected $title = '';
 	protected $description = '';
+	protected $rsslinktitle; // just a cache
 
 	protected function readParameters($params,$outputmode) {
 		SMWResultPrinter::readParameters($params,$outputmode);
@@ -22,6 +23,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		if (array_key_exists('rssdescription', $this->m_params)) {
 			$this->description = $this->m_params['rssdescription'];
 		}
+		$this->rsslinktitle = '';
 	}
 
 	public function getResult($results, $params, $outputmode) { // skip all checks, the result is never populated
@@ -38,7 +40,10 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			$label = wfMsgForContent('smw_rss_link');
 		}
 		$result .= $this->getRSSLink($outputmode, $res, $label);
-		smwfRequireHeadItem('rss' . $smwgIQRunningNumber, '<link rel="alternate" type="application/rss+xml" title="' . $this->title . '" href="' . $this->getRSSURL($res) . '" />');
+		$rurl = $this->getRSSURL($res);
+		if ($rurl != false) {
+			smwfRequireHeadItem('rss' . $smwgIQRunningNumber, '<link rel="alternate" type="application/rss+xml" title="' . $this->title . '" href="' . $rurl . '" />');
+		}
 		return $result;
 	}
 
@@ -51,11 +56,15 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 	
 	protected function getRSSURL($res) {
 		$title = Title::newFromText( $this->getRSSTitle($res) );
+		if ($title === NULL) return false; // this should not happen, but there can always be unexpected problems in user input strings
 		return $title->getFullURL();
 	}
 
 	protected function getRSSTitle($res) {
-		$result = $res->getQueryTitle();
+		if ($this->rsslinktitle != '') {
+			return $this->rsslinktitle;
+		}
+		$this->rsslinktitle = $res->getQueryTitle();
 		$params = array('rss=1');
 		if (array_key_exists('limit', $this->m_params)) {
 			$params[] = 'limit=' . $this->m_params['limit'];
@@ -68,9 +77,9 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		}
 		foreach ($params as $p) {
 			$p = str_replace(array('/','=','-','%'),array('-2F','-3D','-2D','-'), rawurlencode($p));
-			$result .= '/' . $p;
+			$this->rsslinktitle .= '/' . $p;
 		}
-		return $result;
+		return $this->rsslinktitle;
 	}
 
 }
