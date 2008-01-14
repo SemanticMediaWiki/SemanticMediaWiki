@@ -39,7 +39,7 @@ protected $m_ContentMessages = array(
 	'smw_unknowntype' => '不支援為性質所定義的“$1”形態。',	//'Unsupported type “$1” defined for property.'
 	'smw_manytypes' => '定義此性質的型態已超過了一種以上。',	//'More than one type defined for property.'
 	'smw_emptystring' => '不接受空白字串。',	//'Empty strings are not accepted.'
-	'smw_maxstring' => '對本站而言，$1所代表的字串太長了。(譯註原文為：String representation $1 is too long for this site.)',	//'String representation $1 is too long for this site.'
+	'smw_maxstring' => '對本站而言，$1所代表的字串太長了。',	//'String representation $1 is too long for this site.'
 	'smw_notinenum' => '“$1” 並非在此屬性有可能的值 ($2)的清單之中',	// '“$1” is not in the list of possible values ($2) for this property.'
 	'smw_noboolean' => '“$1”無法被視為布林值(true/false)。',	//'“$1” is not recognized as a boolean (true/false) value.'
 	'smw_true_words' => '是,t,yes,y,true',	// comma-separated synonyms for boolean TRUE besides '1'
@@ -71,10 +71,10 @@ protected $m_ContentMessages = array(
 	'smw_emptysubquery' => '某些子查詢並不具備有效的查詢條件',	//'Some subquery has no valid condition.'
 	'smw_misplacedsubquery' => '某些子查詢被用在不宜於使用子查詢之處',	//'Some subquery was used in a place where no subqueries are allowed.'
 	'smw_valuesubquery' => '“$1”質性的值並不適用於子查詢',	//'Subqueries not supported for values of property “$1”.',	//'Subqueries not supported for values of property “$1”.'
-	'smw_overprintoutlimit' => '此查詢含有太多的列印要求(譯註原文為：The query contains too many printout requests.)',	
-	'smw_badprintout' => '在此查詢中，有些列印敘述已被弄錯了(譯註原文為：Some print statement in the query was misshaped.)',
+	'smw_overprintoutlimit' => '此查詢含有太多的輸出要求',	//'The query contains too many printout requests.'
+	'smw_badprintout' => '在此查詢中，有些輸出敘述已被弄錯了',  //'Some print statement in the query was misshaped.'
 	'smw_badtitle' => '抱歉！“$1” 並非是有效的頁面名稱',	//'Sorry, but “$1” is no valid page title.',
-	'smw_badqueryatom' => '在此查詢中，部份的“[#x005B;&hellip]]”無法被識別。(譯註原文為：Some part “[#x005B;&hellip]]” of the query was not understood.)',	//'Some part “[#x005B;&hellip]]” of the query was not understood.',
+	'smw_badqueryatom' => '在此查詢中，部份的“[#x005B;&hellip]]”無法被識別。',	//'Some part “[#x005B;&hellip]]” of the query was not understood.',
 	'smw_propvalueproblem' => '質性“$1”的值無法被識別',	//'The value of property “$1” was not understood.',
 	'smw_nodisjunctions' => '在此wiki系統內分開查詢是不被支援的，並有部份查詢已被遺漏 ($1)。(譯註原文為：Disjunctions in queries are not supported in this wiki and part of the query was dropped ($1).)',
 	'smw_querytoolarge' => '基於此wiki系統對查詢的規模及在深度方面的限制，以下的查詢條件無法被接受：$1',	//The following query conditions could not be considered due to the wikis restrictions in query size or depth: $1.
@@ -99,9 +99,9 @@ protected $m_UserMessages = array(
 	// Messages for Properties Special
 	'properties' => '性質',	//'Properties',
 	'smw_properties_docu' => '以下的性質已被用於此wiki內',	//'The following properties are used in the wiki.',
-	'smw_property_template' => ' 型態 $2 ($3)的$1 (譯註原文為：$1 of type $2 ($3) )',	//'$1 of type $2 ($3)', // <propname> of type <type> (<count>)
-	'smw_propertylackspage' => '所有的性質應以某一頁面加以描述。(譯註原文為：All properties should be described by a page!)',	//'All properties should be described by a page!',
-	'smw_propertylackstype' => '此一性質尚未被指定形態，先暫定為$1型態。(譯註原文為：No type was specified for this property (assuming type $1 for now).)',	//'No type was specified for this property (assuming type $1 for now).',
+	'smw_property_template' => ' $1 　型態為：$2　使用次數：($3)',	//'$1 of type $2 ($3)', // <propname> of type <type> (<count>)
+	'smw_propertylackspage' => '所有的性質應以某一頁面加以描述。',	//'All properties should be described by a page!',
+	'smw_propertylackstype' => '此一性質尚未被指定形態，先暫定為$1型態。',	//'No type was specified for this property (assuming type $1 for now).',
 	'smw_propertyhardlyused' => '此一性質難以用於此wiki內',	//'This property is hardly used within the wiki!',
 	// Messages for Unused Properties Special
 	'unusedproperties' => '未使用的性質',	//'Unused Properties',
@@ -149,11 +149,11 @@ protected $m_UserMessages = array(
 	'smw_ask_ascorder' => '升冪',        //(Ascending)
 	'smw_ask_descorder' => '降冪',       //(Descending)
 	'smw_ask_submit' => '搜尋的結果',       //(Find results)	
-	'smw_ask_editquery' => '[Edit query]', // TODO: translate
-	'smw_ask_hidequery' => 'Hide query', // TODO: translate
-	'smw_ask_help' => 'Querying help', // TODO: translate
-	'smw_ask_queryhead' => 'Query', // TODO: translate
-	'smw_ask_printhead' => 'Additional printouts (optional)', // TODO: translate
+	'smw_ask_editquery' => '[編輯查詢]', // '[Edit query]'
+	'smw_ask_hidequery' => '隱藏查詢', // 'Hide query'
+	'smw_ask_help' => '查詢協助', // 'Querying help'
+	'smw_ask_queryhead' => '查詢', // 'Query'
+	'smw_ask_printhead' => '其他查詢(選擇性的)', // 'Additional printouts (optional)'
 	// Messages for the search by property special
 	'searchbyproperty' => '依性質搜尋',	//'Search by property',
 	'smw_sbv_docu' => '<p>依所指定的性質及其值來搜尋頁面</p>',	//'<p>Search for all pages that have a given property and value.</p>',
@@ -245,11 +245,11 @@ protected $m_SpecialPropertyAliases = array(
 
 protected $m_Namespaces = array(
 	SMW_NS_RELATION       => '關聯',	//'Relation',
-	SMW_NS_RELATION_TALK  => '關聯_talk',	//'Relation_talk',
+	SMW_NS_RELATION_TALK  => '關聯討論',	//'Relation_talk',
 	SMW_NS_PROPERTY       => '性質',	//'Property',
-	SMW_NS_PROPERTY_TALK  => '性質_talk',	//'Property_talk',
+	SMW_NS_PROPERTY_TALK  => '性質討論',	//'Property_talk',
 	SMW_NS_TYPE           => '型態',	//'Type',
-	SMW_NS_TYPE_TALK      => '型態_talk',	//'Type_talk'
+	SMW_NS_TYPE_TALK      => '型態討論',	//'Type_talk'
 );
 
 protected $m_NamespaceAliases = array(
