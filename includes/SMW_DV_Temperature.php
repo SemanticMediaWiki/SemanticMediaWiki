@@ -39,6 +39,10 @@ class SMWTemperatureValue extends SMWNumberValue {
 				$this->m_unit = 'K';
 				$this->m_value = ($this->m_value - 32) /1.8 + 273.15;
 			break;
+			case '°R':
+				$this->m_unit = 'K';
+				$this->m_value = ($this->m_value) /1.8;
+			break;
 			default: //unsupported unit
 				// create error here, assuming that our temperature units should not be augmented by unknown units
 				$this->addError(wfMsgForContent('smw_unsupportedunit',$this->m_unit));
@@ -65,6 +69,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 		if ($this->isValid() && ($this->m_unit == 'K')) {
 			$this->m_unitvalues['°C'] = $this->m_value - 273.15;
 			$this->m_unitvalues['°F'] = ($this->m_value - 273.15) * 1.8 + 32;
+			$this->m_unitvalues['°R'] = ($this->m_value) * 1.8;
 		}
 	}
 
@@ -91,6 +96,9 @@ class SMWTemperatureValue extends SMWNumberValue {
 				break;
 				case '°F':
 					$value = ($this->m_value - 273.15) * 1.8 + 32;
+				break;
+				case '°R':
+					$value = ($this->m_value) * 1.8;
 				break;
 				// default: unit not supported
 			}
@@ -127,6 +135,9 @@ class SMWTemperatureValue extends SMWNumberValue {
 			case '°F': case 'Fahrenheit':
 				return '°F';
 			break;
+			case '°R': case 'Rankine':
+				return '°R';
+			break;
 			default: //unsupported unit
 				return $unit;
 			break;
@@ -138,7 +149,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 	 * this datavalue.
 	 */
 	public function getUnitList() {
-		return array('K', '°C', '°F');
+		return array('K', '°C', '°F', '°R');
 	}
 
 }
