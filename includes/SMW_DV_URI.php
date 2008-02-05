@@ -134,7 +134,7 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText($linked = NULL) {
-		if ( ($linked === NULL) || ($linked === false) || ($this->m_url == '') ) {
+		if ( ($linked === NULL) || ($linked === false) || ($this->m_url == '') || ($this->m_caption == '') ) {
 			return $this->m_caption;
 		} else {
 			return '[' . $this->m_url . ' ' . $this->m_caption . ']';
@@ -142,7 +142,7 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		if (($linker === NULL) || (!$this->isValid()) || ($this->m_url == '')) {
+		if (($linker === NULL) || (!$this->isValid()) || ($this->m_url == '') || ($this->m_caption == '')) {
 			return $this->m_caption;
 		} else {
 			return $linker->makeExternalLink($this->m_url, $this->m_caption);

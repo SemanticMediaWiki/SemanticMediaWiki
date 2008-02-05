@@ -37,7 +37,11 @@ abstract class SMWDataValue {
 		$this->m_infolinks = array(); // clear links
 		$this->m_hasssearchlink = false;
 		$this->m_hasservicelinks = false;
-		$this->m_caption = $caption;
+		if ( is_string($caption) ) { // always trim caption, esp. ' ' becomes ''
+			$this->m_caption = trim($caption);
+		} else {
+			$this->m_caption = false;
+		}
 		$this->parseUserValue($value); // may set caption if not set yet, depending on datavalue
 		$this->m_isset = true;
 		if ($this->isValid()) {
