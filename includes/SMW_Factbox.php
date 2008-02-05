@@ -26,14 +26,15 @@ class SMWFactbox {
 	 * True if the respective article is newly created. This affects some
 	 * storage operations.
 	 */
-	static protected $m_new;
+	static protected $m_new = false;
 
 	/**
 	 * Initialisation method. Must be called before anything else happens.
 	 */
 	static function initStorage($title) {
-		SMWFactbox::$semdata = new SMWSemanticData($title);
-		SMWFactbox::$m_new   = false;
+		SMWFactbox::$semdata = new SMWSemanticData($title); // reset data 
+		///TODO: is this (global) reset safe when cloned subparses happen? May kill unsafed data.
+		//SMWFactbox::$m_new   = false; // do not reset, keep (order of hooks can be strange ...)
 	}
 
 	/**
@@ -293,24 +294,15 @@ class SMWFactbox {
 	/**
 	 * This method stores the semantic data, and clears any outdated entries
 	 * for the current article.
-	 * @TODO: is $title still needed, since we now have SMWFactbox::$title? Could they differ significantly?
 	 */
 	static function storeData($processSemantics) {
 		// clear data even if semantics are not processed for this namespace
 		// (this setting might have been changed, so that data still exists)
-		$title = SMWFactbox::$semdata->getSubject();
 		if ($processSemantics) {
 			smwfGetStore()->updateData(SMWFactbox::$semdata, SMWFactbox::$m_new);
-		} elseif (!SMWFactbox::$m_new) {
-			smwfGetStore()->deleteSubject($title);
+		} else {
+			smwfGetStore()->clearData(SMWFactbox::$semdata->getSubject(), SMWFactbox::$m_new);
 		}
-	}
-
-	/**
-	 * Delete semantic data currently associated with some article.
-	 */
-	static function clearData($s_title) {
-		smwfGetStore()->deleteSubject($s_title);
 	}
 
 }

@@ -177,9 +177,19 @@ abstract class SMWStore {
 	 * Update the semantic data stored for some individual. The data is given
 	 * as a SMWSemData object, which contains all semantic data for one particular
 	 * subject. The boolean $newpage specifies whether the page is stored for the
-	 * first time or not.
+	 * first time or not; its correct value is esential to keep stores consistent.
 	 */
 	abstract function updateData(SMWSemanticData $data, $newpage);
+
+	/**
+	 * Clear all semantic data specified for some page. $newpage works like for
+	 * SMWStore::updateData() -- if $newpage is set, nothing is really cleared
+	 * but the id of the page might be used internally by the store.
+	 */
+	function clearData(Title $subject, $newpage) {
+		$emptydata = new SMWSemanticData($subject);
+		$this->updateData($emptydata, $newpage);
+	}
 
 	/**
 	 * Update the store to reflect a renaming of some article. The old and new title objects
