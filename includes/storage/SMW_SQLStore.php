@@ -1723,7 +1723,9 @@ class SMWSQLStore extends SMWStore {
 				if ($where != '') {
 					$where .= ' AND ';
 				}
-				$where .= "($subwhere)";
+				if ($subwhere != '') {
+					$where .= "($subwhere)";
+				}
 			}
 		} elseif ($description instanceof SMWConjunction) {
 			foreach ($description->getDescriptions() as $subdesc) {
