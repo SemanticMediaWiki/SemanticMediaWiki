@@ -14,7 +14,7 @@ function smw_sortables_init() {
 // 	if (!document.getElementById) return;
 // 	st = document.getElementById("SMW_sorttable_script_inclusion");
 // 	SMW_PATH = st.src.substring(0, st.src.length-17);
-	SMW_PATH = wgScriptPath + "/extensions/SemanticMediaWiki/skins/";
+	SMW_PATH = wgScriptPath + "/extensions/SemanticMediaWiki/skins";
 	// Preload images
 	smw_preload_images();
 	// Now find the tables
