@@ -85,7 +85,7 @@ class SMWNumberValue extends SMWDataValue {
 		$i = 0;
 		$sep = '';
 		foreach ($this->m_unitvalues as $unit => $value) {
-			if ($unit != $this->m_unitin) {
+			if ( $unit != $this->m_unitin ) {
 				$tooltip .= $sep . smwfNumberFormat($value);
 				if ($unit != '') {
 					$tooltip .= '&nbsp;' . $unit;

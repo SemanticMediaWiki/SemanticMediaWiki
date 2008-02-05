@@ -72,9 +72,12 @@ class SMWLinearValue extends SMWNumberValue {
 				$this->m_unitvalues[$unit] = $this->m_value*$factor;
 			}
 		} else {
-			foreach ($this->m_displayunits as $unit) {
+			foreach ($this->m_displayunits as $unit) { // do not use unit ids here (requires a small hack below, but allows to select representation of unit via displayunits)
 				if (array_key_exists($this->m_unitids[$unit], $this->m_unitfactors)) {
 					$this->m_unitvalues[$unit] = $this->m_value*$this->m_unitfactors[$this->m_unitids[$unit]];
+					if ($this->m_unitids[$unit] == $this->m_unitin) { // use the display unit version of the input unit as id
+						$this->m_unitin = $unit;
+					}
 				}
 			}
 			if (count($this->m_unitvalues) == 0) { // none of the desired units matches
