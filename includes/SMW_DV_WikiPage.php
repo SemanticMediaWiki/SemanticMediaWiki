@@ -63,7 +63,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText($linked = NULL) {
-		if ( ($linked === NULL) || ($linked === false) || (!$this->isValid()) ) {
+		if ( ($linked === NULL) || ($linked === false) || (!$this->isValid()) || ($this->m_caption == '') ) {
 			return $this->m_caption;
 		} else {
 			return '[[:' . str_replace("'", '&#x0027;', $this->m_prefixedtext) . '|' . $this->m_caption . ']]';
@@ -71,7 +71,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		if (($linker === NULL) || (!$this->isValid())) {
+		if ( ($linker === NULL) || (!$this->isValid()) || ($this->m_caption == '') ) {
 			return htmlspecialchars($this->m_caption);
 		} else {
 			if ($this->getArticleID() !== 0) { // aritcle ID might be cached already, save DB calls
