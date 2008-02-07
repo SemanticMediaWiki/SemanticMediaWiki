@@ -48,6 +48,7 @@ class SMWRAPStore extends SMWStore {
 	function deleteSubject(Title $subject) {
 		$rdfmodel = $this->getRAPModel();
 		$this->closeRAP();
+		// TODO Implement
 		return $this->sqlstore->deleteSubject($subject);
 	}
 
@@ -79,6 +80,9 @@ class SMWRAPStore extends SMWStore {
 					}
 				}
 			}
+			// TODO Save all other data pertaining to a specific subject,
+			// i.e. n-aries, longstrings, specials, subproperties, ...
+			// For an example see the SMW_SQLStore::updateData function
 			
 			// Now add the local model to the DB model
 			$rdfmodel = $this->getRAPModel();
@@ -89,7 +93,8 @@ class SMWRAPStore extends SMWStore {
 			while ($i->current() != null) {
 				$rdfmodel->remove($i->current());
 				$i->next();
-			}		
+			}
+			// TODO Also remove in the other tables (longstring etc.) from above
 			$rdfmodel->addModel($model);
 			$rdfmodel->close();
 			$model->close();
@@ -118,6 +123,7 @@ class SMWRAPStore extends SMWStore {
 	function changeTitle(Title $oldtitle, Title $newtitle, $keepid = true) {
 		$rdfmodel = $this->getRAPModel();
 		$this->closeRAP();
+		// TODO Implement
 		return $this->sqlstore->changeTitle($oldtitle, $newtitle, $keepid);
 	}
 
