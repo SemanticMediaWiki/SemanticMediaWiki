@@ -14,6 +14,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 	protected $title = '';
 	protected $description = '';
 	protected $rsslinktitle; // just a cache
+	protected $rsslinkurl; // just a cache
 
 	protected function readParameters($params,$outputmode) {
 		SMWResultPrinter::readParameters($params,$outputmode);
@@ -49,22 +50,36 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 
 	protected function getRSSLink($outputmode,$res,$label) {
 		switch ($outputmode) {
-			case SMW_OUTPUT_WIKI: return '[[' . $this->getRSSTitle($res) . '|' . $label . ']]';
+			case SMW_OUTPUT_WIKI:
+				$title = Title::newFromText( $this->getRSSTitle($res), NS_SPECIAL );
+				if ($title === NULL) {
+					return '[' . $this->getRSSURL($res) . ' ' . $label . ']';
+				} else {
+					return '[[' . $this->getRSSTitle($res) . '|' . $label . ']]';
+				}
 			case SMW_OUTPUT_HTML: default: return '<a href="' . $this->getRSSURL($res) . '">' . $label . '</a>';
 		}	
 	}
 	
 	protected function getRSSURL($res) {
-		$title = Title::newFromText( $this->getRSSTitle($res) );
-		if ($title === NULL) return false; // this should not happen, but there can always be unexpected problems in user input strings
-		return $title->getFullURL();
+		$this->makeURLs($res);
+		return $this->rsslinkurl;
+		//$title = Title::newFromText( $this->getRSSTitle($res) );
+// 		$title = Title::makeTitle( NS_SPECIAL, $this->getRSSTitle($res) );
+// 		if ($title === NULL) return false; // this should not happen, but there can always be unexpected problems in user input strings
+// 		return $title->getFullURL();
 	}
 
 	protected function getRSSTitle($res) {
+		$this->makeURLs($res);
+		return $this->rsslinktitle;
+	}
+
+	protected function makeURLs($res) {
 		if ($this->rsslinktitle != '') {
-			return $this->rsslinktitle;
+			return;
 		}
-		$this->rsslinktitle = $res->getQueryTitle();
+		$paramstring = $res->getQueryTitle(false);
 		$params = array('rss=1');
 		if (array_key_exists('limit', $this->m_params)) {
 			$params[] = 'limit=' . $this->m_params['limit'];
@@ -77,10 +92,13 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		}
 		foreach ($params as $p) {
 			$p = str_replace(array('/','=','-','%'),array('-2F','-3D','-2D','-'), rawurlencode($p));
-			$this->rsslinktitle .= '/' . $p;
+			$paramstring .= '/' . $p;
 		}
-		return $this->rsslinktitle;
+		$title = Title::makeTitle(NS_SPECIAL, 'ask');
+		$this->rsslinktitle = $title->getPrefixedText() . '/' . $paramstring;
+		$this->rsslinkurl = $title->getFullURL('raw=' . $paramstring);
 	}
+
 
 }
 

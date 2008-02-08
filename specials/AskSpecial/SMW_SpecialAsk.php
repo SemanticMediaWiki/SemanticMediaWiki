@@ -80,6 +80,7 @@ class SMWAskPage extends SpecialPage {
 
 	protected function extractQueryParameters($p) {
 		global $wgRequest, $smwgIP;
+		$p .= $wgRequest->getVal( 'raw' );
 		$this->m_querystring = $wgRequest->getVal( 'q' );
 		$paramstring         = $wgRequest->getVal( 'p' ) . $wgRequest->getVal( 'po' );
 
@@ -262,7 +263,7 @@ class SMWAskPage extends SpecialPage {
 			$items[] = new SMWRSSEntry($wikipage->getTitle(), $creator, $date);
 			$row = $res->getNext();
 		}
-			
+
 		$text  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 		$text .= "<rdf:RDF\n";
 		$text .= "\txmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n";
@@ -270,7 +271,7 @@ class SMWAskPage extends SpecialPage {
 		$text .= "\txmlns:admin=\"http://webns.net/mvcb/\"\n";
 		$text .= "\txmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n";
 		$text .= "\txmlns=\"http://purl.org/rss/1.0/\">\n";
-		$text .= "\t<channel rdf:about=\"" . $wgRequest->getFullRequestURL() . "\">\n";
+		$text .= "\t<channel rdf:about=\"" . str_replace('&', '&amp;', $wgRequest->getFullRequestURL()) . "\">\n";
 		$text .= "\t\t<admin:generatorAgent rdf:resource=\"http://ontoworld.org/wiki/Special:URIResolver/Semantic_MediaWiki\"/>\n";
 		$text .= "\t\t<title>" . $this->m_params['rsstitle'] . "</title>\n";
 		$text .= "\t\t<link>$wgServer</link>\n";

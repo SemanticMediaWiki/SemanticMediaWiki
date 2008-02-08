@@ -153,9 +153,13 @@ class SMWQueryResult {
 	 * (and enables browsing results, and is accessible even without
 	 * JavaScript enabled browsers).
 	 */
-	public function getQueryTitle() {
-		$title = Title::makeTitle(NS_SPECIAL, 'ask');
-		$titlestring = $title->getPrefixedText();
+	public function getQueryTitle($prefixed = true) {
+		if ($prefixed) {
+			$title = Title::makeTitle(NS_SPECIAL, 'ask');
+			$titlestring = $title->getPrefixedText();
+		} else { // useful for further processing
+			$titlestring = '';
+		}
 		$params = array($this->m_querystring);
 		foreach ($this->m_extraprintouts as $printout) {
 			$params[] = $printout->getSerialisation();
@@ -170,7 +174,8 @@ class SMWQueryResult {
 		}
 		foreach ($params as $p) {
 			$p = str_replace(array('/','=','-','%'),array('-2F','-3D','-2D','-'), rawurlencode($p));
-			$titlestring .= '/' . $p;
+			if ($titlestring != '') $titlestring .= '/';
+			$titlestring .= $p;
 		}
 		return $titlestring;
 	}
