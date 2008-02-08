@@ -592,7 +592,7 @@ class ExportRDF {
 	 * Offset and limit refer to the count of existing pages, not to the
 	 * page id.
 	 */
-	public function printPageList($offset = 0, $limit = 10) {
+	public function printPageList($offset = 0, $limit = 30) {
 		wfProfileIn("RDF::PrintPageList");
 		
 		$this->store = &smwfGetStore();
@@ -605,8 +605,16 @@ class ExportRDF {
 		$this->printHeader(); // also inits global namespaces
 		$linkCache =& LinkCache::singleton();
 
+		global $smwgNamespacesWithSemanticLinks;
+		$query = '';
+		foreach ($smwgNamespacesWithSemanticLinks as $ns => $enabled) {
+			if ($enabled) {
+				if ($query != '') $query .= ' OR ';
+				$query .= 'page_namespace = ' . $db->addQuotes($ns);
+			}
+		}
 		$res = $db->select( $db->tableName('page'),
-		                    'page_id,page_title,page_namespace', ''
+		                    'page_id,page_title,page_namespace', $query
 		                    , 'SMW::RDF::PrintPageList', array('ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit) );
 		$foundpages = false;
 		while($row = $db->fetchObject($res)) {
