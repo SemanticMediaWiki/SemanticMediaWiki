@@ -70,6 +70,16 @@ function smwfDoSpecialExportRDF($page = '') {
 		if ('' !== $date) $exRDF->setDate($date);
 		$exRDF->printPages($pages,$recursive,$backlinks);
 		return;
+	} else {
+		$offset = $wgRequest->getVal( 'offset' );
+		if (isset($offset)) {
+			$wgOut->disable();
+			ob_start();
+			header( "Content-type: application/xml; charset=UTF-8" );
+			$exRDF = new ExportRDF();
+			$exRDF->printPageList($offset);
+			return;
+		}
 	}
 
 	// nothing exported yet; show user interface:
@@ -190,7 +200,7 @@ class SMWExportTitle {
 					break;
 			}
 			$this->long_uri = $xmlent . $baseXML;
-			if (in_array(mb_substr($baseXML,0,1), array('-','0','1','2','3','4','5','6','7','8','9'))) { // illegal as first char in XML
+			if (in_array($baseXML[0], array('-','0','1','2','3','4','5','6','7','8','9'))) { // illegal as first char in XML
 				$this->short_uri = 'wiki:' . $this->ns_uri . $baseXML;
 			} else {
 				$this->short_uri = $xmlprefix . $baseXML;
@@ -330,7 +340,7 @@ class ExportRDF {
 		global $wgServer;   // actual server address (with http://)
 		global $wgScript;   // "/subdirectory/of/wiki/index.php"
 		global $wgArticlePath;
-		$this->wiki_xmlns_url = $wgServer . str_replace('$1', '', $wgArticlePath);
+		$this->wiki_xmlns_url = $wgServer . str_replace('$1', '', $wgArticlePath); // the article name must be the last part of wiki URLs for RDF export
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
 		if (''==$smwgNamespace) {
 			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
@@ -338,7 +348,7 @@ class ExportRDF {
 		}
 		if ($smwgNamespace[0] == '.') {
 			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
-			$smwgNamespace = "http://" . mb_substr($smwgNamespace, 1) . $resolver->getLocalURL() . '/';
+			$smwgNamespace = "http://" . substr($smwgNamespace, 1) . $resolver->getLocalURL() . '/';
 		}
 		$this->wiki_xmlns_xml = $smwgNamespace;
 		global $smwgOWLFullExport;
@@ -376,7 +386,7 @@ class ExportRDF {
 		$this->pre_ns_buffer =
 			  "\t<swivt:Subject rdf:about=\"$subject->long_uri\">\n" .
 		      "\t\t<$predicate->short_uri rdf:resource=\"$object->long_uri\"/>\n" .
-		      "\t</swivt:Subject>\n" . $this->pre_ns_buffer;		
+		      "\t</swivt:Subject>\n" . $this->pre_ns_buffer;
 	}
 
 	/**
@@ -390,7 +400,6 @@ class ExportRDF {
 	 * properties are exported as well. Enables "browsable RDF."
 	 */
 	public function printPages($pages, $recursion = 1, $backlinks = true) {
-		
 		wfProfileIn("RDF::PrintPages");
 		
 		$this->store = &smwfGetStore();
@@ -578,6 +587,56 @@ class ExportRDF {
 		}
 	}
 
+	/**
+	 * Print basic definitions a list of pages ordered by their page id.
+	 * Offset and limit refer to the count of existing pages, not to the
+	 * page id.
+	 */
+	public function printPageList($offset = 0, $limit = 10) {
+		wfProfileIn("RDF::PrintPageList");
+		
+		$this->store = &smwfGetStore();
+		$db = & wfGetDB( DB_MASTER );
+		$this->pre_ns_buffer = '';
+		$this->post_ns_buffer = '';
+		$this->first_flush = true;
+		$this->delay_flush = 10; //flush only after (fully) printing 11 objects
+		$this->extra_namespaces = array();
+		$this->printHeader(); // also inits global namespaces
+		$linkCache =& LinkCache::singleton();
+
+		$res = $db->select( $db->tableName('page'),
+		                    'page_id,page_title,page_namespace', ''
+		                    , 'SMW::RDF::PrintPageList', array('ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit) );
+		$foundpages = false;
+		while($row = $db->fetchObject($res)) {
+			$foundpages = true;
+			$t = Title::makeTitle($row->page_namespace, $row->page_title);
+			if ($t === NULL) continue;
+			$et = new SMWExportTitle($t, $this);
+			$this->printTriples($et,false);
+			$this->markAsDone($et);
+			if ($this->delay_flush > 0) $this->delay_flush--;
+			$linkCache->clear();
+		}
+		if ($foundpages) { // add link to next result page
+			if (strpos($this->wiki_xmlns_url, '?') === false) { // check whether we have title as a first parameter or in URL
+				$nexturl = $this->special_url . '?offset=' . ($offset + $limit);
+			} else {
+				$nexturl = $this->special_url . '&amp;offset=' . ($offset + $limit);
+			}
+			$this->post_ns_buffer .=
+			    "<!-- Link to next set of results -->" .
+			    "\t<owl:Thing rdf:about=\"$nexturl\">\n" .
+			    "\t\t<rdfs:isDefinedBy rdf:resource=\"$nexturl\"/>\n" .
+			    "\t</owl:Thing>\n";
+		}
+		$this->printFooter();
+		$this->flushBuffers(true);
+
+		wfProfileOut("RDF::PrintPageList");
+	}
+
 
 	/* Functions for exporting RDF */
 
@@ -623,18 +682,18 @@ class ExportRDF {
 	 * No schema-references can be added after printing the footer.
 	 */
 	private function printFooter() {
-		$this->post_ns_buffer .= "\t<!-- references to the SWIVT Ontology, see http://semantic-mediawiki.org/swivt/ -->\n";
+		$this->post_ns_buffer .= "\t<!-- References to the SWiVT Ontology, see http://semantic-mediawiki.org/swivt/ -->\n";
 		foreach (array_keys($this->schema_refs) as $name) {
-			$type = $this->schema_refs[$name];			
+			$type = $this->schema_refs[$name];
 			$this->post_ns_buffer .=
 				"\t<$type rdf:about=\"&swivt;$name\">\n" .
 				"\t\t<rdfs:isDefinedBy rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0\"/>\n" .
-				"\t</$type>\n";				
+				"\t</$type>\n";
 		}
-		$this->post_ns_buffer .= "\t<!-- Created with Semantic MediaWiki, http://semantic-mediawiki.org -->\n";
+		$this->post_ns_buffer .= "\t<!-- Created by Semantic MediaWiki, http://semantic-mediawiki.org -->\n";
 		$this->post_ns_buffer .= '</rdf:RDF>';
 	}
-	
+
 	/**
 	 * Adds a reference to the SWIVT schema. This will make sure that at the end of the page,
 	 * all required schema references will be defined and point to the appropriate ontology.
@@ -649,7 +708,7 @@ class ExportRDF {
 		if (!array_key_exists($name, $this->schema_refs))
 			$this->schema_refs[$name] = $type;
 	}
-	
+
 	/**
 	 * Adds a page to the queue of pages to be exported
 	 *
