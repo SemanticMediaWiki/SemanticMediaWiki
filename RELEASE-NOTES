@@ -1,5 +1,10 @@
 For a documentation of all features, see http://ontoworld.org/wiki/Help:Semantics
 
+== Semantic MediaWiki 1.0.1 ==
+
+* Extended translations, new Italian translation
+* minor bugfies, fixed RSS links for long description texts
+
 == Changes in SMW1.0 as compared to SMW0.7 ==
 
 * Simplified semantic annotations: just one kind of annotation ("Property").
