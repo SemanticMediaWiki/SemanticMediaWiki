@@ -106,7 +106,7 @@ class SMWQueryProcessor {
 	}
 
 	/**
-	 * Prerocess a query as given by an array of parameters as is  typically 
+	 * Preprocess a query as given by an array of parameters as is  typically
 	 * produced by the #ask parser function. The parsing results in a querystring,
 	 * an array of additional parameters, and an array of additional SMWPrintRequest
 	 * objects, which are filled into call-by-ref parameters.
