@@ -44,7 +44,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText($linked = NULL) {
-		if ( ($linked === NULL) || ($linked === false) ) {
+		if ( ($linked === NULL) || ($linked === false) || ($this->m_caption === '') ) {
 			if ($this->m_caption !== false) {
 				return $this->m_caption;
 			} else {
@@ -79,7 +79,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		if ( ($linker === NULL) || ($linker === false) ) {
+		if ( ($linker === NULL) || ($linker === false) || ($this->m_caption === '') ) {
 			if ($this->m_caption !== false) {
 				return htmlspecialchars($this->m_caption);
 			} else {
