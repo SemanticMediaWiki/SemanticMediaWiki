@@ -103,6 +103,7 @@ Other changes for SMW1.0 include:
 
 == Semantic MediaWiki 1.0RC2 ==
 
+* Experimental Postgres support.
 * More liberal parsing for geographic coordinates, most user inputs accepted now.
 * Improved URL datatype: better linking behaviour, tolerant towards Unicode-URLs.
 * Significantly improved performance for RDF export.

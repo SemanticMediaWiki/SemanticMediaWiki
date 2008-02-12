@@ -1059,7 +1059,14 @@ class SMWSQLStore extends SMWStore {
 ///// Setup store /////
 
 	function setup($verbose = true) {
+		global $wgDBtype;
 		$this->reportProgress("Setting up standard database configuration for SMW ...\n\n",$verbose);
+
+		if ($wgDBtype === 'postgres') {
+			$this->reportProgress("For Postgres, please import the file SMW_Postgres_Schema.sql manually\n",$verbose);
+			return;
+		}
+
 		$db =& wfGetDB( DB_MASTER );
 
 		extract( $db->tableNames('smw_relations', 'smw_attributes', 'smw_longstrings', 'smw_specialprops', 'smw_subprops', 'smw_nary', 'smw_nary_attributes', 'smw_nary_longstrings', 'smw_nary_relations') );

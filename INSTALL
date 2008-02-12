@@ -34,7 +34,7 @@ the authors.
 * MySQL >= 4.0.14 (version required by MediaWiki)
 
 Notes:
-* SMW is (currently) incompatible with PostgreSQL 
+* SMW currently has experimental Postgres support. Testing and bug reports welcome.
 * SMW uses the PHP mb_*() multibyte functions such as mb_strpos in the
 php_mbstring.dll extension. This is standard but not enabled by default
 on some distributions of PHP.
@@ -65,6 +65,14 @@ custom namespaces, you have to set the parameter $smwgNamespaceIndex  before
 including SMW_Settings.php. See the documentation within SMW_Settings.php for
 details. If you add more namespaces later on, then you have to assign them to
 higher numbers than those used by Semantic MediaWiki.
+
+If you are using a Postgres database, install the needed database objects by 
+importing the script "maintenance/SMW_Postgres_Schema.sql" using the psql 
+utility like so:
+  psql -U wikiuser -d wikidb -f maintenance/SMW_Postgres_Schema.sql
+Replace with your username and database, and use a -h hostname or -p port 
+as needed.
+
 
 === Testing your Installation ===
 
