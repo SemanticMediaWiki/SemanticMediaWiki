@@ -802,15 +802,18 @@ class SMWSQLStore extends SMWStore {
 			} else {
 				if ($this->m_sortfield == false) { // also query for sort property
 					$extrawhere = '';
-					$this->createSQLQuery(new SMWSomeProperty(Title::newFromText($this->m_sortkey, SMW_NS_PROPERTY), new SMWThingDescription()), $from, $extrawhere, $db, $curtables);
-					if ($extrawhere != '') {
-						if ($where != '') {
-							$where = "($where) AND ";
+					$sorttitle = Title::newFromText($this->m_sortkey, SMW_NS_PROPERTY);
+					if ($sorttitle !== NULL) { // careful, Title creation might well fail
+						$this->createSQLQuery(new SMWSomeProperty($sorttitle, new SMWThingDescription()), $from, $extrawhere, $db, $curtables);
+						if ($extrawhere != '') {
+							if ($where != '') {
+								$where = "($where) AND ";
+							}
+							$where .= "($extrawhere)";
 						}
-						$where .= "($extrawhere)";
 					}
 				}
-				if ($this->m_sortfield != false) { // should always be the case, but who knows ...
+				if ($this->m_sortfield != false) { // field found or successfully added
 					$sql_options['ORDER BY'] = $this->m_sortfield . " $order ";
 				}
 			}
