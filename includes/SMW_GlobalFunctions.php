@@ -433,6 +433,7 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 */
 	function smwfNormalTitleDBKey( $text ) {
 		global $wgCapitalLinks;
+		$text = trim($text);
 		if ($wgCapitalLinks) {
 			$text = ucfirst($text);
 		}
@@ -452,6 +453,7 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 */
 	function smwfNormalTitleText( $text ) {
 		global $wgCapitalLinks;
+		$text = trim($text);
 		if ($wgCapitalLinks) {
 			$text = ucfirst($text);
 		}
