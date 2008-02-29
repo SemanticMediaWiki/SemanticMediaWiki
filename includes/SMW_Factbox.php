@@ -203,14 +203,24 @@ class SMWFactbox {
 	static function printFactbox(&$text) {
 		global $wgContLang, $wgServer, $smwgShowFactbox, $smwgShowFactboxEdit, $smwgStoreActive, $smwgIP, $wgRequest;
 		if (!$smwgStoreActive) return;
+		wfProfileIn("SMWFactbox::printFactbox (SMW)");
 
+		// Global settings:
 		if ( $wgRequest->getCheck('wpPreview') ) {
 			$showfactbox = $smwgShowFactboxEdit;
 		} else {
 			$showfactbox = $smwgShowFactbox;
 		}
+		// Page settings via Magic Words:
+		$mw = MagicWord::get('SMW_NOFACTBOX');
+		if ($mw->matchAndRemove($text)) {
+			$showfactbox = SMW_FACTBOX_HIDDEN;
+		}
+		$mw = MagicWord::get('SMW_SHOWFACTBOX');
+		if ($mw->matchAndRemove($text)) {
+			$showfactbox = SMW_FACTBOX_NONEMPTY;
+		}
 
-		wfProfileIn("SMWFactbox::printFactbox (SMW)");
 		switch ($showfactbox) {
 		case SMW_FACTBOX_HIDDEN: // never
 			wfProfileOut("SMWFactbox::printFactbox (SMW)");

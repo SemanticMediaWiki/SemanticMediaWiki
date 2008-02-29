@@ -45,6 +45,7 @@ function smwfParserHook(&$parser, &$text, &$strip_state = null) {
 	                        \]\]                # End of link
 	                        /x';
 	$text = preg_replace_callback($semanticLinkPattern, 'smwfParsePropertiesCallback', $text);
+
 	SMWFactbox::printFactbox($text);
 
 	// add link to RDF to HTML header

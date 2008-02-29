@@ -63,7 +63,7 @@ function enableSemantics($namespace = '', $complete = false) {
 		$smwgNamespace = $namespace;
 	}
 	$wgExtensionFunctions[] = 'smwfSetupExtension';
-	$wgHooks['LanguageGetMagic'][] = 'smwfParserFunctionMagic'; // setup names for parser functions (needed here)
+	$wgHooks['LanguageGetMagic'][] = 'smwfAddMagicWords'; // setup names for parser functions (needed here)
 
 	///// Set up autoloading
 	///// All classes registered for autoloading here should be tagged with this information:
@@ -326,10 +326,21 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	/**
 	 * Set up (possibly localised) names for SMW's parser functions.
 	 */
-	function smwfParserFunctionMagic(&$magicWords, $langCode) {
+	function smwfAddMagicWords(&$magicWords, $langCode) {
 		$magicWords['ask'] = array( 0, 'ask' );
+		$magicWords['SMW_NOFACTBOX'] = array( 0, '__NOFACTBOX__' );
+		$magicWords['SMW_SHOWFACTBOX'] = array( 0, '__SHOWFACTBOX__' );
 		return true;
 	}
+
+//   function smwfAddMagicWords(&$magicWords) {
+//     $magicWords[] = 'MAG_NOTITLE';
+//     return true;
+//   }
+//  
+//   function smwfAddMagicWordIds(&$magicWords) {
+//     $magicWords[] = MAG_NOTITLE;
+//   }
 
 	/**
 	 * Initialise a global language object for content language. This
