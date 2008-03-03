@@ -69,7 +69,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	///// All classes registered for autoloading here should be tagged with this information:
 	///// Add "@note AUTOLOADED" to their class documentation. This avoids useless includes.
 
-	// printers
+	//// printers
 	$wgAutoloadClasses['SMWResultPrinter']         = $smwgIP . '/includes/SMW_QueryPrinter.php';
 	$wgAutoloadClasses['SMWTableResultPrinter']    = $smwgIP . '/includes/SMW_QP_Table.php';
 	$wgAutoloadClasses['SMWListResultPrinter']     = $smwgIP . '/includes/SMW_QP_List.php';
@@ -77,11 +77,15 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWEmbeddedResultPrinter'] = $smwgIP . '/includes/SMW_QP_Embedded.php';
 	$wgAutoloadClasses['SMWTemplateResultPrinter'] = $smwgIP . '/includes/SMW_QP_Template.php';
 	$wgAutoloadClasses['SMWRSSResultPrinter']      = $smwgIP . '/includes/SMW_QP_RSSlink.php';
-	// datavalues
+	//// datavalues
 	$wgAutoloadClasses['SMWDataValue']             =  $smwgIP . '/includes/SMW_DataValue.php';
 	$wgAutoloadClasses['SMWDataValueFactory']      =  $smwgIP . '/includes/SMW_DataValueFactory.php';
 	// the builtin types are registered by SMWDataValueFactory if needed, will be reliably available
 	// to other DV-implementations that register to the factory.
+	//// export
+	$wgAutoloadClasses['SMWExporter']              =  $smwgIP . '/includes/export/SMW_Exporter.php';
+	$wgAutoloadClasses['SMWExpData']               =  $smwgIP . '/includes/export/SMW_Exp_Data.php';
+	$wgAutoloadClasses['SMWExpElement']            =  $smwgIP . '/includes/export/SMW_Exp_Element.php';
 
 	///// Register specials, do that early on in case some other extension calls "addPage" /////
 	$wgAutoloadClasses['SMWAskPage']          = $smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php';
