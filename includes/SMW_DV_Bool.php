@@ -124,4 +124,14 @@ class SMWBoolValue extends SMWDataValue {
 		return "\t\t<$QName rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">$xsdvalue</$QName>\n";
 	}
 
+	public function getExportData() {
+		if ($this->isValid()) {
+			$xsdvalue =  $this->m_value?'true':'false';
+			$lit = new SMWExpLiteral($xsdvalue, $this, 'http://www.w3.org/2001/XMLSchema#boolean');
+			return new SMWExpData($lit);
+		} else {
+			return NULL;
+		}
+	}
+
 }

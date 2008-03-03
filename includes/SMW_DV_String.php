@@ -94,6 +94,15 @@ class SMWStringValue extends SMWDataValue {
 		return "\t\t<$QName rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">$this->m_value</$QName>\n";
 	}
 
+	public function getExportData() {
+		if ($this->isValid()) {
+			$lit = new SMWExpLiteral($this->m_value, $this, 'http://www.w3.org/2001/XMLSchema#string');
+			return new SMWExpData($lit);
+		} else {
+			return NULL;
+		}
+	}
+
 	/**
 	 * Make a possibly shortened printout string for displaying the value.
 	 */

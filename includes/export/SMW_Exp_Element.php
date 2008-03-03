@@ -70,7 +70,7 @@ class SMWExpResource extends SMWExpElement {
 			$this->m_localname = $name;
 			SMWExpElement::__construct($namespace . $name, $dv);
 		} else {
-			SMWExpResource::__construct($name, $dv);
+			SMWExpElement::__construct($name, $dv);
 		}
 	}
 

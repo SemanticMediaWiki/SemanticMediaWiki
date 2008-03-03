@@ -55,13 +55,13 @@ class SMWExporter {
 
 
 	/**
-	 * Create an SMWExportElement for some property.
+	 * Create an SMWExportElement for some property (currently a Title).
 	 */
 	static protected function getPropertyElement($property) {
 		$name = SMWExporter::encodeURI(urlencode($property->getDBKey()));
 		if (in_array($name[0], array('-','0','1','2','3','4','5','6','7','8','9'))) { // illegal as first local name char in XML
 			global $wgContLang;
-			$name = SMWExporter::encodeURI(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_PROPERTY)))) . ':' . $name;
+			$name = SMWExporter::encodeURI(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_PROPERTY)) . ':')) . $name;
 			$namespaceid = 'wiki';
 			$namespace = '&wiki;';
 		} else {

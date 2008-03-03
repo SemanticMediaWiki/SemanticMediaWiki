@@ -191,5 +191,14 @@ class SMWURIValue extends SMWDataValue {
 		return "\t\t<$QName rdf:resource=\"" . str_replace('&','&amp;', $this->m_uri) . "\" />\n";
 	}
 
+	public function getExportData() {
+		if ($this->isValid()) {
+			$res = new SMWExpResource(str_replace('&','&amp;', $this->m_uri), $this);
+			return new SMWExpData($res);
+		} else {
+			return NULL;
+		}
+	}
+
 }
 

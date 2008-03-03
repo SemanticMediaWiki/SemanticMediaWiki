@@ -111,6 +111,15 @@ class SMWTimeValue extends SMWDataValue {
 		       $this->getXSDValue() . "</$QName>\n";
 	}
 
+	public function getExportData() {
+		if ($this->isValid()) {
+			$lit = new SMWExpLiteral($this->getXSDValue(), $this, 'http://www.w3.org/2001/XMLSchema#dateTime');
+			return new SMWExpData($lit);
+		} else {
+			return NULL;
+		}
+	}
+
 	/**
 	 * Build a preferred value for printout, also used as a caption when setting up values
 	 * from the store.

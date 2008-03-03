@@ -206,6 +206,15 @@ class SMWGeoCoordsValue extends SMWDataValue {
 		       $this->formatAngleValues(true, false) . ', ' . $this->formatAngleValues(false, false) . "</$QName>\n";
 	}
 
+	public function getExportData() {
+		if ($this->isValid()) {
+			$lit = new SMWExpLiteral($this->formatAngleValues(true, false) . ', ' . $this->formatAngleValues(false, false), $this, 'http://www.w3.org/2001/XMLSchema#string');
+			return new SMWExpData($lit);
+		} else {
+			return NULL;
+		}
+	}
+
 	/**
 	 * Get and cache localised direction labels. Just for convenience.
 	 */

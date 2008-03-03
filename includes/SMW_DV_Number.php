@@ -190,6 +190,14 @@ class SMWNumberValue extends SMWDataValue {
 		return "\t\t<$QName rdf:datatype=\"http://www.w3.org/2001/XMLSchema#double\">$this->m_value</$QName>\n";
 	}
 
+	public function getExportData() {
+		if ($this->isValid()) {
+			$lit = new SMWExpLiteral($this->m_value, $this, 'http://www.w3.org/2001/XMLSchema#double');
+			return new SMWExpData($lit);
+		} else {
+			return NULL;
+		}
+	}
 
 	/**
 	 * Transform a (typically unit-) string into a normalised form,

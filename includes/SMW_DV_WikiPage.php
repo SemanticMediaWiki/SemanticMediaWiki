@@ -177,6 +177,32 @@ class SMWWikiPageValue extends SMWDataValue {
 		return "\t\t<$QName rdf:resource=\"$obj\"/>\n";
 	}
 
+	public function getExportData() { // default implementation: encode value as untyped string
+		if (!$this->isValid()) return NULL;
+		switch ($this->getNamespace()) {
+			case NS_MEDIA: // special handling for linking media files directly
+				$file = wfFindFile( $this->getTitle() );
+				if ($file) {
+					//$name = $file->getFullURL();
+					/// TODO: the following just emulates getFullURL() which is not yet available in MW1.11:
+					$uri = $file->getUrl();
+					if( substr( $uri, 0, 1 ) == '/' ) {
+						global $wgServer;
+						$uri = $wgServer . $uri;
+					}
+				} else { // Medialink to non-existing file :-/
+					return NULL;
+				}
+			break;
+			default: // some true wiki page
+				///TODO: treat vocabulary imports properly
+				$uri = '&wiki;' . SMWExporter::encodeURI(urlencode($this->getDBkey()));
+			break;
+		}
+		$lit = new SMWExpResource($uri, $this);
+		return new SMWExpData($lit);
+	}
+
 ///// special interface for wiki page values
 
 	/**

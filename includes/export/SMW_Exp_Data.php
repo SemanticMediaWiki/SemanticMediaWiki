@@ -49,6 +49,24 @@ class SMWExpData {
 	}
 
 	/**
+	 * Return the list of SMWExpElements for all properties for which some values exist.
+	 */
+	public function getProperties() {
+		return $this->m_edges;
+	}
+
+	/**
+	 * Return the list of SMWExpData values associated to some property (element)
+	 */
+	public function getValues(/*SMWExpElement*/ $property) {
+		if (array_key_exists($property->getName(), $this->m_children)) {
+			return $this->m_children[$property->getName()];
+		} else {
+			return array();
+		}
+	}
+
+	/**
 	 * Return an array of ternary arrays (subject predicate object) of SMWExpElements
 	 * that represents the flattened version of the given data.
 	 */
