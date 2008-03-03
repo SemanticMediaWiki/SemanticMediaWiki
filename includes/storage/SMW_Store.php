@@ -115,6 +115,13 @@ abstract class SMWStore {
 ///// Reading methods /////
 
 	/**
+	 * Retrieve all data stored about the given subject and return it as a
+	 * SMWSemanticData container. There are no options: it just returns all
+	 * available data as shown in the page's Factbox.
+	 */
+	abstract function getSemanticData(Title $subject);
+
+	/**
 	 * Get an array of all special values stored for the given subject and special property
 	 * (identified as usual by an integer constant). The result is an array which may contain
 	 * different kinds of contents depending on the special property that was requested.

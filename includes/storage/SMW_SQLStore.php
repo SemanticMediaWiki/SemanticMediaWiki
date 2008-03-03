@@ -50,6 +50,145 @@ class SMWSQLStore extends SMWStore {
 
 ///// Reading methods /////
 
+	function getSemanticData(Title $subject) {
+		wfProfileIn("SMWSQLStore::getSemanticData (SMW)");
+		$db =& wfGetDB( DB_SLAVE );
+		$result = new SMWSemanticData($subject);
+
+		$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
+		if ($subjectid <= 0) {
+			wfProfileOut("SMWSQLStore::getSemanticData (SMW)");
+			return $result;
+		}
+		$subjectcond = 'subject_id=' . $db->addQuotes($subjectid);
+
+		// "relations"
+		$res = $db->select( $db->tableName('smw_relations'),
+							'relation_title, object_title, object_namespace, object_id',
+							$subjectcond,
+							'SMW::getSemanticData' );
+		while($row = $db->fetchObject($res)) {
+			$property = Title::makeTitle(SMW_NS_PROPERTY, $row->relation_title);
+			$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+			$dv->setValues($row->object_title, $row->object_namespace, $row->object_id);
+			$result->addPropertyObjectValue($property, $dv);
+		}
+		$db->freeResult($res);
+
+		// "attributes"
+		$res = $db->select( $db->tableName('smw_attributes'),
+							'attribute_title, value_unit, value_xsd',
+							$subjectcond, 'SMW::getSemanticData' );
+		while($row = $db->fetchObject($res)) {
+			$property = Title::makeTitle(SMW_NS_PROPERTY, $row->attribute_title);
+			$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+			$dv->setXSDValue($row->value_xsd, $row->value_unit);
+			$result->addPropertyObjectValue($property, $dv);
+		}
+		$db->freeResult($res);
+
+		// long strings
+		$res = $db->select( $db->tableName('smw_longstrings'),
+							'attribute_title, value_blob',
+							$subjectcond, 'SMW::getSemanticData');
+		while($row = $db->fetchObject($res)) {
+			$property = Title::makeTitle(SMW_NS_PROPERTY, $row->attribute_title);
+			$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+			$dv->setXSDValue($row->value_blob, '');
+			$result->addPropertyObjectValue($property, $dv);
+		}
+		$db->freeResult($res);
+
+		// nary values
+		$res = $db->select( $db->tableName('smw_nary'),
+							'attribute_title, nary_key',
+							$subjectcond, 'SMW::getSemanticData');
+		///TODO: presumably slow. Try to do less SQL queries by making a join with smw_nary
+		while($row = $db->fetchObject($res)) {
+			$property = Title::makeTitle(SMW_NS_PROPERTY, $row->attribute_title);
+			$type = SMWDataValueFactory::getPropertyObjectTypeValue($property);
+			$subtypes = $type->getTypeValues();
+			$values = array();
+			for ($i=0; $i < count($subtypes); $i++) { // init array
+				$values[$i] = NULL;
+			}
+			$res2 = $db->select( $db->tableName('smw_nary_attributes'),
+							'nary_pos, value_unit, value_xsd',
+							$subjectcond .
+							' AND nary_key=' . $db->addQuotes($row->nary_key),
+							'SMW::getPropertyValues');
+			while($row2 = $db->fetchObject($res2)) {
+				if ($row2->nary_pos < count($subtypes)) {
+					$dv = SMWDataValueFactory::newTypeObjectValue($subtypes[$row2->nary_pos]);
+					$dv->setXSDValue($row2->value_xsd, $row2->value_unit);
+					$values[$row2->nary_pos] = $dv;
+				}
+			}
+			$db->freeResult($res2);
+			$res2 = $db->select( $db->tableName('smw_nary_longstrings'),
+							'nary_pos, value_blob',
+							$subjectcond .
+							' AND nary_key=' . $db->addQuotes($row->nary_key),
+							'SMW::getPropertyValues');
+			while($row2 = $db->fetchObject($res2)) {
+				if ( $row2->nary_pos < count($subtypes) ) {
+					$dv = SMWDataValueFactory::newTypeObjectValue($subtypes[$row2->nary_pos]);
+					$dv->setXSDValue($row2->value_blob, '');
+					$values[$row2->nary_pos] = $dv;
+				}
+			}
+			$db->freeResult($res2);
+			$res2 = $db->select( $db->tableName('smw_nary_relations'),
+							'nary_pos, object_title, object_namespace, object_id',
+							$subjectcond .
+							' AND nary_key=' . $db->addQuotes($row->nary_key),
+							'SMW::getPropertyValues');
+			while($row2 = $db->fetchObject($res2)) {
+				if ( ($row2->nary_pos < count($subtypes)) &&
+						($subtypes[$row2->nary_pos]->getXSDValue() == '_wpg') ) {
+					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+					$dv->setValues($row2->object_title, $row2->object_namespace, $row2->object_id);
+					$values[$row2->nary_pos] = $dv;
+				}
+			}
+			$db->freeResult($res2);
+			$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+			$dv->setDVs($values);
+			$result->addPropertyObjectValue($property, $dv);
+		}
+		$db->freeResult($res);
+
+		// simple special properties
+		$res = $db->select( 'smw_specialprops',
+							'property_id, value_string',
+							$subjectcond, 'SMW::getSemanticData');
+		while($row = $db->fetchObject($res)) {
+			$dv = SMWDataValueFactory::newSpecialValue($row->property_id);
+			$dv->setXSDValue($row->value_string);
+			$result->addSpecialValue($row->property_id, $dv);
+		}
+		$db->freeResult($res);
+
+		// categories
+		$res = $db->select( 'categorylinks',
+							'DISTINCT cl_to',
+							'cl_from=' . $db->addQuotes($subjectid), 'SMW::getSemanticData');
+		while($row = $db->fetchObject($res)) {
+			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+			$dv->setValues($row->cl_to, NS_CATEGORY);
+			$result->addSpecialValue(SMW_SP_HAS_CATEGORY, $dv);
+		}
+		$db->freeResult($res);
+
+		// properties
+		/// TODO (only for subjects in property namespace)
+		// redirects
+		/// TODO
+
+		wfProfileOut("SMWSQLStore::getSemanticData (SMW)");
+		return $result;
+	}
+
 	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore::getSpecialValues-$specialprop (SMW)");
 		// NOTE: this method currently supports no ordering or boundary. This is probably best anyway ...
@@ -68,20 +207,17 @@ class SMWSQLStore extends SMWStore {
 			$res = $db->select( 'categorylinks',
 								'DISTINCT cl_to',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
-			// rewrite result as array
 			while($row = $db->fetchObject($res)) {
 				$v = SMWDataValueFactory::newTypeIDValue('_wpg');
 				$v->setValues($row->cl_to, NS_CATEGORY);
 				$result[] = $v;
-				//Title::makeTitle(NS_CATEGORY, $row->cl_to);
 			}
 			$db->freeResult($res);
-		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
+		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirects
 			$sql = 'rd_from=' . $db->addQuotes($subjectid);
 			$res = $db->select( 'redirect',
 								'rd_namespace,rd_title',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
-			// rewrite results as array
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::makeTitle($row->rd_namespace, $row->rd_title);
 			}
@@ -91,7 +227,6 @@ class SMWSQLStore extends SMWStore {
 			$res = $db->select( 'smw_subprops',
 								'object_title',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
-			// rewrite results as array
 			while($row = $db->fetchObject($res)) {
 				$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->object_title);
 			}
@@ -102,7 +237,6 @@ class SMWSQLStore extends SMWStore {
 			$res = $db->select( 'smw_specialprops',
 								'value_string',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
-			// rewrite result as array
 			switch ($specialprop) {
 			case SMW_SP_HAS_TYPE: case SMW_SP_POSSIBLE_VALUE: case SMW_SP_DISPLAY_UNITS:
 				while($row = $db->fetchObject($res)) {
@@ -217,7 +351,8 @@ class SMWSQLStore extends SMWStore {
 				return array();
 			}
 			$subjectcond = 'subject_id=' . $db->addQuotes($subjectid) . ' AND ';
-		} else { // get all values for this property
+		} else { // get all values for this property 
+		    ///TODO: shouldn't this rather be ''? Confused by my own code (mak)
 			$subjectcond = 'subject_id=' . $db->addQuotes(0) . ' AND ';
 		}
 
