@@ -401,6 +401,21 @@ abstract class SMWDataValue {
 	}
 
 	/**
+	 * Create an SMWExpData object that encodes the given data value in an exportable
+	 * way. This representation is used by exporters, e.g. to be further decomposed into
+	 * RDF triples or to generate OWL/XML serialisations.
+	 * If the value is empty or invalid, NULL is returned.
+	 */
+	public function getExportData() { // default implementation: encode value as untyped string
+		if ($this->isValid()) {
+			$lit = new SMWExpLiteral($this->getXSDValue(), $this);
+			return new SMWExpData($lit);
+		} else {
+			return NULL;
+		}
+	}
+
+	/**
 	 * Check if property is range restricted and, if so, whether the current value is allowed.
 	 * Creates an error if the value is illegal.
 	 */

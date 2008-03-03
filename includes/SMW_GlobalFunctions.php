@@ -86,6 +86,8 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWExporter']              =  $smwgIP . '/includes/export/SMW_Exporter.php';
 	$wgAutoloadClasses['SMWExpData']               =  $smwgIP . '/includes/export/SMW_Exp_Data.php';
 	$wgAutoloadClasses['SMWExpElement']            =  $smwgIP . '/includes/export/SMW_Exp_Element.php';
+	$wgAutoloadClasses['SMWExpLiteral']            =  $smwgIP . '/includes/export/SMW_Exp_Element.php';
+	$wgAutoloadClasses['SMWExpResource']            =  $smwgIP . '/includes/export/SMW_Exp_Element.php';
 
 	///// Register specials, do that early on in case some other extension calls "addPage" /////
 	$wgAutoloadClasses['SMWAskPage']          = $smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php';
