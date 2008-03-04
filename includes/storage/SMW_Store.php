@@ -118,8 +118,15 @@ abstract class SMWStore {
 	 * Retrieve all data stored about the given subject and return it as a
 	 * SMWSemanticData container. There are no options: it just returns all
 	 * available data as shown in the page's Factbox.
+	 * $filter is an array of strings that are datatype IDs or special
+	 * property ids. If given, the function will only retreive values for 
+	 * these properties/properties of this type.
+	 *
+	 * Note: there is currently no guarantee that the store does not retrieve
+	 * more data than requested when a filter is used. Filtering just ensures that
+	 * only necessary requests are made, i.e. it improves performance.
 	 */
-	abstract function getSemanticData(Title $subject);
+	abstract function getSemanticData(Title $subject, $filter = false);
 
 	/**
 	 * Get an array of all special values stored for the given subject and special property
