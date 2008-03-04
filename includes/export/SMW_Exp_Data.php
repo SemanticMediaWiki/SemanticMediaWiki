@@ -109,6 +109,10 @@ class SMWExpData {
 	 * that represents the flattened version of the given data.
 	 */
 	public function getTripleList() {
+// 		global $smwgBnodeCount;
+// 		if (!defined($smwgBnodeCount)) {
+// 			$smwgBnodeCount = 0;
+// 		}
 		$result = array();
 		foreach ($this->m_edges as $key => $edge) {
 			foreach ($this->m_children[$key] as $child) {

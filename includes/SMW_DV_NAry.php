@@ -388,6 +388,31 @@ class SMWNAryValue extends SMWDataValue {
 		return $rdf;
 	}
 
+	public function getExportData() {
+		if (!$this->isValid()) return NULL;
+
+		$result = new SMWExpData(new SMWExpElement('', $this)); // bnode
+		$ed = new SMWExpData(SMWExporter::getSpecialElement('swivt','Container'));
+		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf','type'), $ed);
+		$count = 0;
+		foreach ($this->m_values as $value) {
+			$count++;
+			if ($value === NULL) {
+				continue;
+			}
+			if (($value->getTypeID() == '_wpg') || ($value->getTypeID() == '_uri') || ($value->getTypeID() == '_ema')) {
+				$result->addPropertyObjectValue(
+				      SMWExporter::getSpecialElement('swivt','object' . $count),
+				      $value->getExportData());
+			} else {
+				$result->addPropertyObjectValue(
+				      SMWExporter::getSpecialElement('swivt','value' . $count),
+				      $value->getExportData());
+			}
+		}
+		return $result;
+	}
+
 	protected function checkAllowedValues() {
 		return; // not implemented yet
 	}
