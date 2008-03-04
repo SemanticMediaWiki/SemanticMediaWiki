@@ -46,7 +46,7 @@ class SMWExporter {
 
 		// first set some general parameters for export
 		global $smwgOWLFullExport; // export like individual (even if Category/Property)
-		$indexp = ((($subj_title->getNamespace() != SMW_NS_PROPERTY) && 
+		$indexp = ((($subj_title->getNamespace() != SMW_NS_PROPERTY) &&
 		            ($subj_title->getNamespace() != NS_CATEGORY)) || $smwgOWLFullExport);
 		$category_pe = NULL;
 		$subprop_pe = NULL;

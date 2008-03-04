@@ -203,6 +203,7 @@ class SMWNAryValue extends SMWDataValue {
 	public function getUnit() {
 		$first = true;
 		$result = '';
+		$hasunit = false;
 		foreach ($this->m_values as $value) {
 			if ($first) {
 				$first = false;
@@ -211,7 +212,13 @@ class SMWNAryValue extends SMWDataValue {
 			}
 			if ($value !== NULL) {
 				$result .= $value->getUnit();
+				if ( (!$hasunit) && ($value->getUnit() != '') ) {
+					$hasunit = true;
+				}
 			}
+		}
+		if (!$hasunit) {
+			$result = '';
 		}
 		return $result;
 	}
