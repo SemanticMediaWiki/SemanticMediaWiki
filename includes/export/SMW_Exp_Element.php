@@ -83,8 +83,12 @@ class SMWExpResource extends SMWExpElement {
 	 * SMWExpResource.
 	 */
 	public function makeVariant($modifier) {
-		$result = new SMWExpResource($this->m_localname . SMWExporter::encodeURI(urlencode(str_replace(' ', '_', '#' . $modifier))),
-		                             $this->m_dv, $this->m_namespace, $this->m_namespaceid);
+		if ($this->m_namespace != false) {
+			$result = new SMWExpResource($this->m_localname . SMWExporter::encodeURI(urlencode(str_replace(' ', '_', '#' . $modifier))),
+			                             $this->m_dv, $this->m_namespace, $this->m_namespaceid);
+		} else {
+			$result = new SMWExpResource($this->m_name . SMWExporter::encodeURI(urlencode(str_replace(' ', '_', '#' . $modifier))), $this->m_dv);
+		}
 		$result->setModifier($modifier);
 		return $result;
 	}

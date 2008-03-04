@@ -33,9 +33,10 @@ class SMWExporter {
 	}
 
 	/**
-	 * Create exportable data from a given semantic data record.
+	 * Create exportable data from a given semantic data record. If given, the string $modifier is used
+	 * as a modifier to the URI of the subject (e.g. a unit for properties).
 	 */
-	static public function makeExportData(/*SMWSemanticData*/ $semdata) {
+	static public function makeExportData(/*SMWSemanticData*/ $semdata, $modifier = '') {
 		SMWExporter::initBaseURIs();
 		///TODO: currently the subject is a Title; should change to SMWWikiPageValue (needs Factbox changes)
 		$subject = SMWDataValueFactory::newTypeIDValue('_wpg');
@@ -54,6 +55,7 @@ class SMWExporter {
 				$category_pe = SMWExporter::getSpecialElement('rdfs','subClassOf');
 				$equality_pe = SMWExporter::getSpecialElement('owl','equivalentClass');
 				$maintype_pe = SMWExporter::getSpecialElement('owl','Class');
+				$label = $subj_title->getText();
 			break;
 			case SMW_NS_PROPERTY:
 				if ($indexp) {
@@ -78,22 +80,34 @@ class SMWExporter {
 					default:
 						$maintype_pe = SMWExporter::getSpecialElement('owl','DatatypeProperty');
 				}
-				
+				$label = $subj_title->getText();
 			break;
 			default:
 				$category_pe = SMWExporter::getSpecialElement('rdf','type');
 				$equality_pe = SMWExporter::getSpecialElement('owl','sameAs');
 				$maintype_pe = SMWExporter::getSpecialElement('swivt','Subject');
+				$label = $subj_title->getPrefixedText();
 		}
 
 		// export standard properties
-		$ed = new SMWExpData(new SMWExpLiteral($subject->getShortWikiText()));
+		if ($modifier != '') {
+			$label .= ' (' . $modifier . ')';
+		}
+		$ed = new SMWExpData(new SMWExpLiteral($label));
 		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdfs','label'), $ed);
 		$ed = new SMWExpData(new SMWExpResource('&wikiurl;' . $subj_title->getPrefixedURL()));
 		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','page'), $ed);
-		$ed = new SMWExpData(new SMWExpResource(SMWExporter::$m_exporturl . $subj_title->getPrefixedURL()));
+		$ed = new SMWExpData(new SMWExpResource(SMWExporter::$m_exporturl . '/' . $subj_title->getPrefixedURL()));
 		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdfs','isDefinedBy'), $ed);
 		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf','type'), new SMWExpData($maintype_pe));
+		if ($modifier != '') { // make variant and possibly add meta data on base properties
+			if ($subj_title->getNamespace() == SMW_NS_PROPERTY) {
+				$ed = new SMWExpData(new SMWExpLiteral($modifier, NULL, 'http://www.w3.org/2001/XMLSchema#string'));
+				$result->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','modifier'), $ed);
+ 				$result->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','baseProperty'), new SMWExpData($result->getSubject()));
+			}
+			$result->setSubject( $result->getSubject()->makeVariant($modifier) );
+		}
 
 		// export properties based on stored data
 		foreach($semdata->getProperties() as $key => $property) {

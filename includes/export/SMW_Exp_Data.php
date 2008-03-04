@@ -37,6 +37,13 @@ class SMWExpData {
 	}
 
 	/**
+	 * Set the subject element.
+	 */
+	public function setSubject(/*SMWExpElement*/ $subject) {
+		$this->m_subject = $subject;
+	}
+
+	/**
 	 * Store a value for an property identified by its title object. No duplicate elimination as this
 	 * is usually done in SMWSemanticData already (which is typically used to generate this object)
 	 */
