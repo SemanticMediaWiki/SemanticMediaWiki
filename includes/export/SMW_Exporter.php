@@ -9,10 +9,15 @@
  */
 class SMWExporter {
 
+	static protected $m_exporturl = false;
+
+
 	/**
 	 * Make sure that necessary base URIs are initialised properly.
 	 */
 	static public function initBaseURIs() {
+		if (SMWExporter::$m_exporturl !== false) return;
+
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
 		if (''==$smwgNamespace) {
 			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
@@ -22,6 +27,9 @@ class SMWExporter {
 			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver');
 			$smwgNamespace = "http://" . substr($smwgNamespace, 1) . $resolver->getLocalURL() . '/';
 		}
+
+		$title = Title::makeTitle( NS_SPECIAL, 'ExportRDF' );
+		SMWExporter::$m_exporturl = '&wikiurl;' . $title->getPrefixedURL();
 	}
 
 	/**
@@ -31,11 +39,66 @@ class SMWExporter {
 		SMWExporter::initBaseURIs();
 		///TODO: currently the subject is a Title; should change to SMWWikiPageValue (needs Factbox changes)
 		$subject = SMWDataValueFactory::newTypeIDValue('_wpg');
-		$subject->setValues($semdata->getSubject()->getDBKey(), $semdata->getSubject()->getNamespace());
+		$subj_title = $semdata->getSubject();
+		$subject->setValues($subj_title->getDBKey(), $subj_title->getNamespace());
 		$result = $subject->getExportData();
 
+		// first set some general parameters for export
+		global $smwgOWLFullExport; // export like individual (even if Category/Property)
+		$indexp = ((($subj_title->getNamespace() != SMW_NS_PROPERTY) && 
+		            ($subj_title->getNamespace() != NS_CATEGORY)) || $smwgOWLFullExport);
+		$category_pe = NULL;
+		$subprop_pe = NULL;
+		switch ($subj_title->getNamespace()) {
+			case NS_CATEGORY:
+				$category_pe = SMWExporter::getSpecialElement('rdfs','subClassOf');
+				$equality_pe = SMWExporter::getSpecialElement('owl','equivalentClass');
+				$maintype_pe = SMWExporter::getSpecialElement('owl','Class');
+			break;
+			case SMW_NS_PROPERTY:
+				if ($indexp) {
+					$category_pe = SMWExporter::getSpecialElement('rdfs','subClassOf');
+				}
+				$subprop_pe = SMWExporter::getSpecialElement('rdfs','subPropertyOf');
+				$equality_pe = SMWExporter::getSpecialElement('owl','equivalentProperty');
+				$types = $semdata->getPropertyValues(SMW_SP_HAS_TYPE);
+				/// TODO: improved mechanism for selecting property types is needed.
+				if (count($types)>0) {
+					$typeid = (current($types)->isUnary())?current($types)->getXSDValue():'__nry';
+				} else {
+					$typeid = '';
+				}
+				switch ($typeid) {
+					case '_anu':
+						$maintype_pe = SMWExporter::getSpecialElement('owl','AnnotationProperty');
+					break;
+					case '': case '_wpg': case '_uri': case '_ema': case '__nry':
+						$maintype_pe = SMWExporter::getSpecialElement('owl','ObjectProperty');
+					break;
+					default:
+						$maintype_pe = SMWExporter::getSpecialElement('owl','DatatypeProperty');
+				}
+				
+			break;
+			default:
+				$category_pe = SMWExporter::getSpecialElement('rdf','type');
+				$equality_pe = SMWExporter::getSpecialElement('owl','sameAs');
+				$maintype_pe = SMWExporter::getSpecialElement('swivt','Subject');
+		}
+
+		// export standard properties
+		$ed = new SMWExpData(new SMWExpLiteral($subject->getShortWikiText()));
+		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdfs','label'), $ed);
+		$ed = new SMWExpData(new SMWExpResource('&wikiurl;' . $subj_title->getPrefixedURL()));
+		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','page'), $ed);
+		$ed = new SMWExpData(new SMWExpResource(SMWExporter::$m_exporturl . $subj_title->getPrefixedURL()));
+		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdfs','isDefinedBy'), $ed);
+		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf','type'), new SMWExpData($maintype_pe));
+
+		// export properties based on stored data
 		foreach($semdata->getProperties() as $key => $property) {
 			if ($property instanceof Title) { // normal property
+				if (!$indexp) continue; // no properties for schema elements
 				$pe = SMWExporter::getPropertyElement($property);
 				foreach ($semdata->getPropertyValues($property) as $dv) {
 					$ed = $dv->getExportData();
@@ -45,7 +108,29 @@ class SMWExporter {
 					}
 				}
 			} else { // special property
-				/// TODO switch type of special property
+				$pe = NULL;
+				switch ($property) {
+					case SMW_SP_HAS_CATEGORY:
+						$pe = $category_pe;
+					break;
+					case SMW_SP_HAS_URI:
+						$pe = $equality_pe;
+					break;
+					case SMW_SP_SUBPROPERTY_OF:
+						$pe = $subprop_pe;
+					break;
+					case SMW_SP_REDIRECTS_TO: /// TODO: currently no check for avoiding OWL DL illegal redirects is done
+						$pe = $equality_pe;
+					break;
+				}
+				if ($pe !== NULL) {
+					foreach ($semdata->getPropertyValues($property) as $dv) {
+						$ed = $dv->getExportData();
+						if ($ed !== NULL) {
+							$result->addPropertyObjectValue($pe, $ed);
+						}
+					}
+				}
 			}
 		}
 
@@ -68,7 +153,28 @@ class SMWExporter {
 			$namespaceid = 'property';
 			$namespace = '&property;';
 		}
-		return new SMWExpResource($name, NULL, $namespace, $namespaceid);
+		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+		$dv->setValues($property->getDBKey(), $property->getNamespace());
+		return new SMWExpResource($name, $dv, $namespace, $namespaceid);
+	}
+
+	/**
+	 * Create an SMWExportElement for some special element that belongs to a known vocabulary.
+	 * The parameter given must be a supported namespace id (e.g. "rdfs") and a local name (e.g. "label").
+	 * Returns NULL if $namespace is not known.
+	 */
+	static public function getSpecialElement($namespace, $localname) {
+		$namespaces = array(
+			'swivt' => '&swivt;',
+			'rdfs'  => '&rdfs;',
+			'rdf'   => '&rdf;',
+			'owl'   => '&owl;',
+		);
+		if (array_key_exists($namespace,$namespaces)) {
+			return new SMWExpResource($localname, NULL, $namespaces[$namespace], $namespace);
+		} else {
+			return NULL;
+		}
 	}
 
 	/**
@@ -77,10 +183,9 @@ class SMWExporter {
 	 */
 	static function encodeURI($uri) {
 		$uri = str_replace( '-', '-2D', $uri);
-		//$uri = str_replace( ':', '-3A', $uri); //already done by PHP
 		//$uri = str_replace( '_', '-5F', $uri); //not necessary
-		$uri = str_replace( array('"','#','&',"'",'+','%'),
-		                    array('-22','-23','-26','-27','-2B','-'),
+		$uri = str_replace( array(':', '"','#','&',"'",'+','%'),
+		                    array('-3A', '-22','-23','-26','-27','-2B','-'),
 		                    $uri);
 		return $uri;
 	}

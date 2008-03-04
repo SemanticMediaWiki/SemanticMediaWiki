@@ -181,9 +181,28 @@ class SMWSQLStore extends SMWStore {
 		$db->freeResult($res);
 
 		// properties
-		/// TODO (only for subjects in property namespace)
+		if ($subject->getNamespace() == SMW_NS_PROPERTY) {
+			$sql = 'subject_title=' . $db->addQuotes($subject->getDBkey());
+			$res = $db->select( 'smw_subprops', 'object_title',
+								'subject_title=' . $db->addQuotes($subject->getDBkey()), 'SMW::getSemanticData');
+			while($row = $db->fetchObject($res)) {
+				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+				$dv->setValues($row->object_title, SMW_NS_PROPERTY);
+				$result->addSpecialValue(SMW_SP_SUBPROPERTY_OF, $dv);
+			}
+			$db->freeResult($res);
+		}
+
 		// redirects
-		/// TODO
+		$sql = 'rd_from=' . $db->addQuotes($subjectid);
+		$res = $db->select( 'redirect', 'rd_namespace,rd_title',
+							'rd_from=' . $db->addQuotes($subjectid), 'SMW::getSemanticData' );
+		while($row = $db->fetchObject($res)) {
+			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+			$dv->setValues($row->rd_title, $row->rd_namespace);
+			$result->addSpecialValue(SMW_SP_REDIRECTS_TO, $dv);
+		}
+		$db->freeResult($res);
 
 		wfProfileOut("SMWSQLStore::getSemanticData (SMW)");
 		return $result;

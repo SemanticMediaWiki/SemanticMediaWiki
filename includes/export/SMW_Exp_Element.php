@@ -56,6 +56,8 @@ class SMWExpResource extends SMWExpElement {
 	protected $m_namespace = false;
 	protected $m_namespaceid = false;
 	protected $m_localname = false;
+	protected $m_modifier = ''; // "modifier" string: resources might refer to a wiki page, 
+	                               // but many resources may refer to the same page, using different modifiers (e.g.: unit strings)
 
 	/**
 	 * Constructor. $dv is the SMWDataValue from which this object was created,
@@ -81,8 +83,24 @@ class SMWExpResource extends SMWExpElement {
 	 * SMWExpResource.
 	 */
 	public function makeVariant($modifier) {
-		return new SMWExpResource($this->m_localname . SMWExporter::encodeURI(urlencode(str_replace(' ', '_', '#' . $modifier))),
-		                          $this->m_dv, $this->m_namespace, $this->m_namespaceid);
+		$result = new SMWExpResource($this->m_localname . SMWExporter::encodeURI(urlencode(str_replace(' ', '_', '#' . $modifier))),
+		                             $this->m_dv, $this->m_namespace, $this->m_namespaceid);
+		$result->setModifier($modifier);
+		return $result;
+	}
+
+	/**
+	 * See comment for SMWExpResource::m_modifier and SMWExpResource::makeVariant().
+	 */
+	public function setModifier($modifier) {
+		$this->m_modifier = $modifier;
+	}
+
+	/**
+	 * See comment for SMWExpResource::m_modifier and SMWExpResource::makeVariant().
+	 */
+	public function getModifier() {
+		return $this->m_modifier;
 	}
 
 	/**

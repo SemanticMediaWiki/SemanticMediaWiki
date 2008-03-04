@@ -196,7 +196,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			break;
 			default: // some true wiki page
 				///TODO: treat vocabulary imports properly
-				$uri = '&wiki;' . SMWExporter::encodeURI(urlencode($this->getDBkey()));
+				$uri = '&wiki;' . SMWExporter::encodeURI($this->getTitle()->getPrefixedURL());
 			break;
 		}
 		$lit = new SMWExpResource($uri, $this);

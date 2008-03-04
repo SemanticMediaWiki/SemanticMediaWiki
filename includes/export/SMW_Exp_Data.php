@@ -67,6 +67,37 @@ class SMWExpData {
 	}
 
 	/**
+	 * Return the list of SMWExpData values associated to some property that is
+	 * specifed by a standard namespace id and local name.
+	 */
+	public function getSpecialValues($namespace, $localname) {
+		$pe = SMWExporter::getSpecialElement($namespace, $localname);
+		if ($pe !== NULL) {
+			return $this->getValues($pe);
+		} else {
+			return array();
+		}
+	}
+
+	/**
+	 * This function finds the main type (class) element of the subject based on the 
+	 * current property assignments. It returns this type element (SMWExpElement) and 
+	 * removes the according type assignement from the data.
+	 */
+	public function extractMainType() {
+		$pe = SMWExporter::getSpecialElement('rdf', 'type');
+		if (array_key_exists($pe->getName(), $this->m_children)) {
+			$result = array_shift($this->m_children[$pe->getName()]);
+			if (count($this->m_children[$pe->getName()]) == 0) {
+				unset($this->m_edges[$pe->getName()]);
+			}
+			return $result;
+		} else {
+			return SMWExporter::getSpecialElement('rdf', 'Resource');
+		}
+	}
+
+	/**
 	 * Return an array of ternary arrays (subject predicate object) of SMWExpElements
 	 * that represents the flattened version of the given data.
 	 */
