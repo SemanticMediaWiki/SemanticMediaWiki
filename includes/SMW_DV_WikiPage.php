@@ -140,43 +140,6 @@ class SMWWikiPageValue extends SMWDataValue {
 		return array(rawurlencode(str_replace('_',' ',$this->m_dbkeyform)));
 	}
 
-	/**
-	 * Creates the export line for the RDF export
-	 *
-	 * @param string $QName The element name of this datavalue
-	 * @param ExportRDF $exporter the exporter calling this function
-	 * @return the line to be exported
-	 */
-	public function exportToRDF($QName, ExportRDF $exporter) {
-		if (!$this->isValid()) return '';
-
-		switch ($this->getNamespace()) {
-			case NS_MEDIA: // special handling for linking media files directly
-				$file = wfFindFile( $this->getTitle() );
-				if ($file) {
-					//$obj = $file->getFullURL();
-					/// TODO: the following just emulates getFullURL() which is not yet available in MW1.11:
-					$obj = $file->getUrl();
-					if( substr( $obj, 0, 1 ) == '/' ) {
-						global $wgServer;
-						$obj = $wgServer . $obj;
-					}
-				} else { // Medialink to non-existing file :-/
-					return "\t\t <!-- $QName points to the media object " . $this->getXSDValue() . " but no such file was uploaded. -->\n";
-				}
-			break;
-			case SMW_NS_PROPERTY: case NS_CATEGORY: // export would be OWL Full, check if this is desired
-				if (!$exporter->owlfull) {
-					return '';
-				} // < very bad coding: we omit the break deliberately :-o
-			default:
-				$obj = $exporter->getURI( $this->getTitle() );
-			break;
-		}
-
-		return "\t\t<$QName rdf:resource=\"$obj\"/>\n";
-	}
-
 	public function getExportData() { // default implementation: encode value as untyped string
 		if (!$this->isValid()) return NULL;
 		switch ($this->getNamespace()) {

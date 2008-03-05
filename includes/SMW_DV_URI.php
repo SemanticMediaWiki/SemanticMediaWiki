@@ -186,11 +186,6 @@ class SMWURIValue extends SMWDataValue {
 		return array(rawurlencode($this->m_uri));
 	}
 
-	public function exportToRDF($QName, ExportRDF $exporter) {
-		// also do some minimal XML escaping (< and > have been rawurlencoded earlier)
-		return "\t\t<$QName rdf:resource=\"" . str_replace('&','&amp;', $this->m_uri) . "\" />\n";
-	}
-
 	public function getExportData() {
 		if ($this->isValid()) {
 			$res = new SMWExpResource(str_replace('&','&amp;', $this->m_uri), $this);

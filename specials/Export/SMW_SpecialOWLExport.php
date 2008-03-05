@@ -179,7 +179,7 @@ class OWLExport {
 	private $pre_ns_buffer;
 
 	/**
-	 * See documentation for ExportRDF::pre_ns_buffer.
+	 * See documentation for OWLExport::pre_ns_buffer.
 	 */
 	private $post_ns_buffer;
 

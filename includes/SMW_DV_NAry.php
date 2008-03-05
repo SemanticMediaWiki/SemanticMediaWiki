@@ -363,30 +363,30 @@ class SMWNAryValue extends SMWDataValue {
 	 * @param ExportRDF $exporter the exporter calling this function
 	 * @return string the lines to be exported
 	 */
-	public function exportToRDF( $QName, ExportRDF $exporter ) {
-		$rdf = "\t\t<$QName>\n";
-		$rdf.= "\t\t\t<swivt:Container>\n";
-		$count = 0;
-		foreach ($this->m_values as $value) {
-			$count++;
-			if ($value === NULL) {
-				continue;
-			}
-			if (($value->getTypeID() == '_wpg') || ($value->getTypeID() == '_uri') || ($value->getTypeID() == '_ema')) {
-				$element = "object" . $count; 
-				$rdf .= "\t\t" . $value->exportToRDF( "swivt:$element", $exporter );
-				$exporter->addSchemaRef( $element, "owl:ObjectProperty" );
-			} else {
-				$element = "value" . $count; 
-				$rdf .= "\t\t" . $value->exportToRDF( "swivt:$element", $exporter );
-				$exporter->addSchemaRef( $element, "owl:DatatypeProperty" );
-			}
-		}
-		$rdf .= "\t\t\t</swivt:Container>\n";
-		$exporter->addSchemaRef( "Container", "owl:Class" );
-		$rdf .= "\t\t</$QName>\n";
-		return $rdf;
-	}
+// 	public function exportToRDF( $QName, ExportRDF $exporter ) {
+// 		$rdf = "\t\t<$QName>\n";
+// 		$rdf.= "\t\t\t<swivt:Container>\n";
+// 		$count = 0;
+// 		foreach ($this->m_values as $value) {
+// 			$count++;
+// 			if ($value === NULL) {
+// 				continue;
+// 			}
+// 			if (($value->getTypeID() == '_wpg') || ($value->getTypeID() == '_uri') || ($value->getTypeID() == '_ema')) {
+// 				$element = "object" . $count; 
+// 				$rdf .= "\t\t" . $value->exportToRDF( "swivt:$element", $exporter );
+// 				$exporter->addSchemaRef( $element, "owl:ObjectProperty" );
+// 			} else {
+// 				$element = "value" . $count; 
+// 				$rdf .= "\t\t" . $value->exportToRDF( "swivt:$element", $exporter );
+// 				$exporter->addSchemaRef( $element, "owl:DatatypeProperty" );
+// 			}
+// 		}
+// 		$rdf .= "\t\t\t</swivt:Container>\n";
+// 		$exporter->addSchemaRef( "Container", "owl:Class" );
+// 		$rdf .= "\t\t</$QName>\n";
+// 		return $rdf;
+// 	}
 
 	public function getExportData() {
 		if (!$this->isValid()) return NULL;

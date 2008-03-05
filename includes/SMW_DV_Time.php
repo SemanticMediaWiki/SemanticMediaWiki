@@ -99,18 +99,6 @@ class SMWTimeValue extends SMWDataValue {
 		return true;
 	}
 
-	/**
-	 * Creates the export line for the RDF export
-	 *
-	 * @param string $QName The element name of this datavalue
-	 * @param ExportRDF $exporter the exporter calling this function
-	 * @return the line to be exported
-	 */
-	public function exportToRDF($QName, ExportRDF $exporter) {
-		return "\t\t<$QName rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">" .
-		       $this->getXSDValue() . "</$QName>\n";
-	}
-
 	public function getExportData() {
 		if ($this->isValid()) {
 			$lit = new SMWExpLiteral($this->getXSDValue(), $this, 'http://www.w3.org/2001/XMLSchema#dateTime');

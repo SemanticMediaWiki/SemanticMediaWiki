@@ -386,21 +386,6 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Exports the datavalue to RDF (i.e. it returns a string that consists
-	 * of the lines that, in RDF/XML, can be fitted between the object-tags.
-	 * This should be overwritten.
-	 *
-	 * @param string QName -- the qualified name that the data value should use for exporting,
-	 * since it may be an imported name.
-	 * @param ExportRDF exporter -- the exporting object
-	 * @TODO: could we provide a more useful default? (e.g. export as untyped)
-	 */
-	public function exportToRDF($QName, ExportRDF $exporter) {
-		$type = $this->getTypeID();
-		return "\t\t<!-- Sorry, unknown how to export type '$type'. -->\n";
-	}
-
-	/**
 	 * Create an SMWExpData object that encodes the given data value in an exportable
 	 * way. This representation is used by exporters, e.g. to be further decomposed into
 	 * RDF triples or to generate OWL/XML serialisations.

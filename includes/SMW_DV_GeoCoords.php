@@ -194,18 +194,6 @@ class SMWGeoCoordsValue extends SMWDataValue {
 		return $this->m_wikivalue;
 	}
 
-	/**
-	 * Creates the export line for the RDF export
-	 *
-	 * @param string $QName The element name of this datavalue
-	 * @param ExportRDF $exporter the exporter calling this function
-	 * @return the line to be exported
-	 */
-	public function exportToRDF($QName, ExportRDF $exporter) {
-		return "\t\t<$QName rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">" . 
-		       $this->formatAngleValues(true, false) . ', ' . $this->formatAngleValues(false, false) . "</$QName>\n";
-	}
-
 	public function getExportData() {
 		if ($this->isValid()) {
 			$lit = new SMWExpLiteral($this->formatAngleValues(true, false) . ', ' . $this->formatAngleValues(false, false), $this, 'http://www.w3.org/2001/XMLSchema#string');
