@@ -21,12 +21,12 @@ protected $m_ContentMessages = array(
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
 	'smw_baduri' => 'Désolé. Les URIs du domaine $1 ne sont pas disponible à cet emplacement',
 	// Link to RSS feeds
-	'smw_rss_link' => 'RSS', // TODO: translate (default text for linking to semantic RSS feeds)
+	'smw_rss_link' => 'RSS',
 	/*Messages and strings for inline queries*/
 	'smw_iq_disabled' => "Désolé. Les recherches dans les articles de ce wiki ne sont pas autorisées.",
 	'smw_iq_moreresults' => '&hellip; autres résultats',
 	'smw_iq_nojs' => 'Utilisez un navigateur avec JavaScript pour voir cet élément.',
-	'smw_iq_altresults' => 'Browse the result list directly.', // available link when JS is disabled // TODO: translate
+	'smw_iq_altresults' => 'Parcourir directement la liste des résultats.',
 	/*Messages and strings for ontology resued (import) */
 	'smw_unknown_importns' => 'Aucune fonction d\'import n\'est disponible pour l\'espace de nommage "$1".',
 	'smw_nonright_importtype' => 'L\'élément "$1" ne peut être employé que pour des articles de l\'espace de nommage "$2".',
@@ -67,7 +67,7 @@ protected $m_ContentMessages = array(
 	'smw_toomanyclosing' => 'Il semble y avoir trop d\'occurences de “$1” dans la requête.',
 	'smw_noclosingbrackets' => 'Certains “[[” dans votre requête n\'ont pas été clos par des “]]” correspondants.',
 	'smw_misplacedsymbol' => 'Le symbole “$1” a été utilisé à un endroit où il n\'est pas utile.',
-	'smw_unexpectedpart' => 'La partie “$1” de la requête n\'a pas été comprise. Les Résults peuvent être inattendus.',
+	'smw_unexpectedpart' => 'La partie “$1” de la requête n\'a pas été comprise. Les Résultats peuvent être inattendus.',
 	'smw_emptysubquery' => 'Certaines sous-requêtes ont une condition non-valide.',
 	'smw_misplacedsubquery' => 'Certaines sous-requêtes ont été utilisées à un endroit où aucune sous-requête n\'est permise.',
 	'smw_valuesubquery' => 'Sous-requête non supportée pour les valeurs de la propriété “$1”.',
@@ -88,7 +88,7 @@ protected $m_UserMessages = array(
 	'smw_attribute_header' => 'Pages utilisant l\'attribut “$1”',
 	'smw_attributearticlecount' => '<p>Afficher $1 pages utilisant cet attribut.</p>',
 	// Messages used in RSS feeds
-	'smw_rss_description' => '$1 RSS feed', // TODO: translate, used as default semantic RSS-feed description
+	'smw_rss_description' => '$1 fil RSS',
 	/*Messages for Export RDF Special*/
 	'exportrdf' => 'Exporter l\'article en RDF', //name of this special
 	'smw_exportrdf_docu' => '<p>Sur cette page, des parties du contenu d\'un article peuvent être exportées dans le format RDF. Veuillez entrer le nom des pages souhaitées dans la boîte de texte ci-dessous, <i>un nom par ligne </i>.</p>',
@@ -140,7 +140,7 @@ protected $m_UserMessages = array(
 	'smw_fattributes' => 'Les pages ci-dessous ont un attribut qui n\'est pas défini correctement. Le nombre d\'attributs incorrects est donné entre les parenthèses.',
 	// Name of the URI Resolver Special (no content)
 	'uriresolver' => 'Résolveur d\'URI',
-	'smw_uri_doc' => '<p>Le résolveur d\'URI implémente la <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">Conclusion du TAG du W3C à propos du httpRange-14</a>. Il peut garde à ce que les humaines ne deviennent pas des sites web.',
+	'smw_uri_doc' => '<p>Le résolveur d\'URI implémente la <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">Conclusion du TAG du W3C à propos du httpRange-14</a>. Il peut veiller à ce que les humains ne deviennent pas des sites web.',
 	/*Messages for ask Special*/
 	/*Messages for ask Special*/
 	'ask' => 'Recherche sémantique',
@@ -149,11 +149,11 @@ protected $m_UserMessages = array(
 	'smw_ask_ascorder' => 'Croissant',
 	'smw_ask_descorder' => 'Décroissant',
 	'smw_ask_submit' => 'Trouver des résultats',
-	'smw_ask_editquery' => '[Edit query]', // TODO: translate
-	'smw_ask_hidequery' => 'Hide query', // TODO: translate
-	'smw_ask_help' => 'Querying help', // TODO: translate
-	'smw_ask_queryhead' => 'Query', // TODO: translate
-	'smw_ask_printhead' => 'Additional printouts (optional)', // TODO: translate
+	'smw_ask_editquery' => '[Éditer la requête]',
+	'smw_ask_hidequery' => 'Masquer la requête',
+	'smw_ask_help' => 'Aide à la requête',
+	'smw_ask_queryhead' => 'Requête',
+	'smw_ask_printhead' => 'Conditions supplémentaires (facultatif)',
 	// Messages for the search by property special
 	'searchbyproperty' => 'Rechercher par attribut',
 	'smw_sbv_docu' => '<p>Rechercher toutes les pages qui ont un attribut donné avec un certaine valeur.</p>',
