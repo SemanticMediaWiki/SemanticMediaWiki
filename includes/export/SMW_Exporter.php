@@ -234,14 +234,26 @@ class SMWExporter {
 	}
 
 	/**
+	 * This function unescapes URIs generated with SMWExporter::encodeURI. This
+	 * allows services that receive a URI to extract e.g. the according wiki page.
+	 */
+	static public function decodeURI($uri) {
+		$uri = str_replace( array('-22','-23','-26','-27','-2B','-'),
+		                    array('"','#','&',"'",'+','%'),
+		                   $uri);
+		$uri = str_replace( '-2D', '-', $uri);
+		return $uri;
+	}
+
+	/**
 	 * This function expands standard XML entities used in some generated
 	 * URIs. Given a string with such entities, it returns a string with
 	 * all entities properly replaced.
 	 */
 	static public function expandURI($uri) {
 		SMWExporter::initBaseURIs();
-		$uri = str_replace( array('&wiki;', '&wikiurl;','&property;'),
-		                    array(SMWExporter::$m_ent_wiki, SMWExporter::$m_ent_wikiurl, SMWExporter::$m_ent_property),
+		$uri = str_replace( array('&wiki;', '&wikiurl;','&property;', '&owl;', '&rdf;', '&rdfs;', '&swivt;'),
+		                    array(SMWExporter::$m_ent_wiki, SMWExporter::$m_ent_wikiurl, SMWExporter::$m_ent_property, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#'),
 		                    $uri);
 		return $uri;
 	}
