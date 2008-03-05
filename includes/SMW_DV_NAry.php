@@ -397,7 +397,7 @@ class SMWNAryValue extends SMWDataValue {
 		$count = 0;
 		foreach ($this->m_values as $value) {
 			$count++;
-			if ($value === NULL) {
+			if ( ($value === NULL) || (!$value->isValid()) ) {
 				continue;
 			}
 			if (($value->getTypeID() == '_wpg') || ($value->getTypeID() == '_uri') || ($value->getTypeID() == '_ema')) {

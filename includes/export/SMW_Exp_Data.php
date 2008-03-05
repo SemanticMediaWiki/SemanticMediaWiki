@@ -25,7 +25,7 @@ class SMWExpData {
 	 * Constructor. $subject is the SMWExpElement for the 
 	 * subject about which this SMWExpData is.
 	 */
-	public function __construct(/*SMWExpElement*/ $subject) {
+	public function __construct(SMWExpElement $subject) {
 		$this->m_subject = $subject;
 	}
 
@@ -39,7 +39,7 @@ class SMWExpData {
 	/**
 	 * Set the subject element.
 	 */
-	public function setSubject(/*SMWExpElement*/ $subject) {
+	public function setSubject(SMWExpElement $subject) {
 		$this->m_subject = $subject;
 	}
 
@@ -47,7 +47,7 @@ class SMWExpData {
 	 * Store a value for an property identified by its title object. No duplicate elimination as this
 	 * is usually done in SMWSemanticData already (which is typically used to generate this object)
 	 */
-	public function addPropertyObjectValue(/*SMWExpElement*/ $property, /*SMWExpData*/ $child) {
+	public function addPropertyObjectValue(SMWExpElement $property, SMWExpData $child) {
 		if (!array_key_exists($property->getName(), $this->m_edges)) {
 			$this->m_children[$property->getName()] = array();
 			$this->m_edges[$property->getName()] = $property;
@@ -109,15 +109,21 @@ class SMWExpData {
 	 * that represents the flattened version of the given data.
 	 */
 	public function getTripleList() {
-// 		global $smwgBnodeCount;
-// 		if (!defined($smwgBnodeCount)) {
-// 			$smwgBnodeCount = 0;
-// 		}
+		global $smwgBnodeCount;
+		if (!isset($smwgBnodeCount)) {
+			$smwgBnodeCount = 0;
+		}
 		$result = array();
 		foreach ($this->m_edges as $key => $edge) {
 			foreach ($this->m_children[$key] as $child) {
+				$name = $child->getSubject()->getName();
+				if ( ($name == '') || ($name[0] == '_') ) { // bnode, distribute ID
+					$child = clone $child;
+					$subject = new SMWExpElement('_' . $smwgBnodeCount++,$child->getSubject()->getDataValue());
+					$child->setSubject($subject);
+				}
 				$result[] = array($this->m_subject, $edge, $child->getSubject());
-				///TODO also recursively generate all children of childs.
+				$result = array_merge($result, $child->getTripleList()); //recursively generate all children of childs.
 			}
 		}
 		return $result;
