@@ -119,8 +119,10 @@ class SMWSQLStore extends SMWStore {
 			while($row = $db->fetchObject($res)) {
 				$property = Title::makeTitle(SMW_NS_PROPERTY, $row->relation_title);
 				$dv = SMWDataValueFactory::newPropertyObjectValue($property);
-				$dv->setValues($row->object_title, $row->object_namespace, $row->object_id);
-				$result->addPropertyObjectValue($property, $dv);
+				if ($dv instanceof SMWWikiPagevalue) { // may fail if type was changed!
+					$dv->setValues($row->object_title, $row->object_namespace, $row->object_id);
+					$result->addPropertyObjectValue($property, $dv);
+				}
 			}
 			$db->freeResult($res);
 		}
