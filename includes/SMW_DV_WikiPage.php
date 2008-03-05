@@ -190,17 +190,15 @@ class SMWWikiPageValue extends SMWDataValue {
 						global $wgServer;
 						$uri = $wgServer . $uri;
 					}
+					return new SMWExpData(new SMWExpResource($uri, $this));
 				} else { // Medialink to non-existing file :-/
 					return NULL;
 				}
 			break;
 			default: // some true wiki page
-				///TODO: treat vocabulary imports properly
-				$uri = '&wiki;' . SMWExporter::encodeURI($this->getTitle()->getPrefixedURL());
+				return new SMWExpData(SMWExporter::getResourceElement($this));
 			break;
 		}
-		$lit = new SMWExpResource($uri, $this);
-		return new SMWExpData($lit);
 	}
 
 ///// special interface for wiki page values

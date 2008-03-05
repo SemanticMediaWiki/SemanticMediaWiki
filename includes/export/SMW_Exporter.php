@@ -113,7 +113,7 @@ class SMWExporter {
 		foreach($semdata->getProperties() as $key => $property) {
 			if ($property instanceof Title) { // normal property
 				if (!$indexp) continue; // no properties for schema elements
-				$pe = SMWExporter::getPropertyElement($property);
+				$pe = SMWExporter::getResourceElement($property);
 				foreach ($semdata->getPropertyValues($property) as $dv) {
 					$ed = $dv->getExportData();
 					$pem = ($dv->getUnit() != false)?$pe->makeVariant($dv->getUnit()):$pe;
@@ -151,25 +151,45 @@ class SMWExporter {
 		return $result;
 	}
 
-
-
 	/**
-	 * Create an SMWExportElement for some property (currently a Title).
+	 * Create an SMWExpElement for some internal resource, given by a Title of
+	 * SMWWikiPageValue object. Returns NULL on error.
+	 * $makeqname determines whether the function should strive to create a legal
+	 * XML QName for the resource.
 	 */
-	static protected function getPropertyElement($property) {
-		$name = SMWExporter::encodeURI(urlencode($property->getDBKey()));
-		if (in_array($name[0], array('-','0','1','2','3','4','5','6','7','8','9'))) { // illegal as first local name char in XML
-			global $wgContLang;
-			$name = SMWExporter::encodeURI(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_PROPERTY)) . ':')) . $name;
-			$namespaceid = 'wiki';
-			$namespace = '&wiki;';
+	static public function getResourceElement($resource) {
+		if ($resource instanceof Title) {
+			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+			$dv->setValues($resource->getDBKey(), $resource->getNamespace());
+		} elseif ($resource instanceof SMWWikiPageValue) {
+			$dv = $resource;
 		} else {
-			$namespaceid = 'property';
-			$namespace = '&property;';
+			return NULL;
 		}
-		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-		$dv->setValues($property->getDBKey(), $property->getNamespace());
-		return new SMWExpResource($name, $dv, $namespace, $namespaceid);
+		$uridata = smwfGetStore()->getSemanticData($dv->getTitle(), array(SMW_SP_EXT_BASEURI, SMW_SP_EXT_NSID, SMW_SP_EXT_SECTION));
+		if (count($uridata->getPropertyValues(SMW_SP_EXT_BASEURI)) > 0) {
+			$namespace = current($uridata->getPropertyValues(SMW_SP_EXT_BASEURI))->getXSDValue();
+			$namespaceid = current($uridata->getPropertyValues(SMW_SP_EXT_NSID))->getXSDValue();
+			$localname = current($uridata->getPropertyValues(SMW_SP_EXT_SECTION))->getXSDValue();
+		} else {
+			$localname = '';
+			if ($dv->getNamespace() == SMW_NS_PROPERTY) {
+				$namespace = '&property;';
+				$namespaceid = 'property';
+				$localname = SMWExporter::encodeURI($dv->getTitle()->getDBKey());
+				if (in_array($localname[0], array('-','0','1','2','3','4','5','6','7','8','9'))) {
+					$namespace = '&wiki;';
+					$namespaceid = 'wiki';
+					$localname = SMWExporter::encodeURI($dv->getTitle()->getPrefixedURL());
+				}
+			} else { // no QName needed, do not attempt to make one
+				$namespace = false;
+				$namespaceid = false;
+				$localname = '&wiki;' . SMWExporter::encodeURI($dv->getTitle()->getPrefixedURL());
+			}
+		}
+
+		return new SMWExpResource($localname, $dv, $namespace, $namespaceid);
 	}
 
 	/**
