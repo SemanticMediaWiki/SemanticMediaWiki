@@ -20,7 +20,7 @@
 $optionsWithArgs = array( 'o', 'd', 'e' ); 
 
 require_once( 'commandLine.inc' );
-require_once( "$IP/extensions/SemanticMediaWiki/specials/ExportRDF/SMW_SpecialExportRDF.php");
+require_once( "$IP/extensions/SemanticMediaWiki/specials/Export/SMW_SpecialOWLExport.php");
 
 if ( !empty( $options['o'] ) ) {
 	$outfile = $options['o'];
@@ -51,6 +51,6 @@ if ( array_key_exists( 'categories' , $options ) ) {
 	$export_ns = false;
 }
 
-$exRDF = new ExportRDF();
+$exRDF = new OWLExport();
 $exRDF->printAll($outfile, $export_ns, $delay, $delayeach);
 
