@@ -10,6 +10,9 @@
 class SMWExporter {
 
 	static protected $m_exporturl = false;
+	static protected $m_ent_wiki = false;
+	static protected $m_ent_property = false;
+	static protected $m_ent_wikiurl = false;
 
 
 	/**
@@ -17,6 +20,7 @@ class SMWExporter {
 	 */
 	static public function initBaseURIs() {
 		if (SMWExporter::$m_exporturl !== false) return;
+		global $wgContLang, $wgServer, $wgArticlePath;
 
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
 		if (''==$smwgNamespace) {
@@ -28,8 +32,13 @@ class SMWExporter {
 			$smwgNamespace = "http://" . substr($smwgNamespace, 1) . $resolver->getLocalURL() . '/';
 		}
 
+		// The article name must be the last part of wiki URLs for proper OWL/RDF export:
+		SMWExporter::$m_ent_wikiurl  = $wgServer . str_replace('$1', '', $wgArticlePath); 
+		SMWExporter::$m_ent_wiki     = $smwgNamespace;
+		SMWExporter::$m_ent_property = SMWExporter::$m_ent_wiki .
+		          SMWExporter::encodeURI(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_PROPERTY) . ':')));
 		$title = Title::makeTitle( NS_SPECIAL, 'ExportRDF' );
-		SMWExporter::$m_exporturl = '&wikiurl;' . $title->getPrefixedURL();
+		SMWExporter::$m_exporturl    = '&wikiurl;' . $title->getPrefixedURL();
 	}
 
 	/**
@@ -215,11 +224,24 @@ class SMWExporter {
 	 * This function escapes symbols that might be problematic in XML in a uniform
 	 * and injective way. It is used to encode URIs.
 	 */
-	static function encodeURI($uri) {
+	static public function encodeURI($uri) {
 		$uri = str_replace( '-', '-2D', $uri);
 		//$uri = str_replace( '_', '-5F', $uri); //not necessary
 		$uri = str_replace( array(':', '"','#','&',"'",'+','%'),
 		                    array('-3A', '-22','-23','-26','-27','-2B','-'),
+		                    $uri);
+		return $uri;
+	}
+
+	/**
+	 * This function expands standard XML entities used in some generated
+	 * URIs. Given a string with such entities, it returns a string with
+	 * all entities properly replaced.
+	 */
+	static public function expandURI($uri) {
+		SMWExporter::initBaseURIs();
+		$uri = str_replace( array('&wiki;', '&wikiurl;','&property;'),
+		                    array(SMWExporter::$m_ent_wiki, SMWExporter::$m_ent_wikiurl, SMWExporter::$m_ent_property),
 		                    $uri);
 		return $uri;
 	}
