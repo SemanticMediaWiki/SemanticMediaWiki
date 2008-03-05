@@ -11,6 +11,7 @@
 class SMWStringValue extends SMWDataValue {
 
 	protected $m_value = ''; // XML-safe, HTML-safe, Wiki-compatible value representation
+	                         // however, this string might contain HTML entities such as &amp;
 
 	protected function parseUserValue($value) {
 		if ($value!='') {
@@ -85,7 +86,7 @@ class SMWStringValue extends SMWDataValue {
 
 	public function getExportData() {
 		if ($this->isValid()) {
-			$lit = new SMWExpLiteral($this->m_value, $this, 'http://www.w3.org/2001/XMLSchema#string');
+			$lit = new SMWExpLiteral(smwfHTMLtoUTF8($this->m_value), $this, 'http://www.w3.org/2001/XMLSchema#string');
 			return new SMWExpData($lit);
 		} else {
 			return NULL;

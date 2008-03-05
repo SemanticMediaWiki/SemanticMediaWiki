@@ -156,9 +156,9 @@ class SMWExpLiteral extends SMWExpElement {
 	/**
 	 * Constructor. $dv is the SMWDataValue from which this object was created,
 	 * if any. $name here should be the plain string for representing the literal
-	 * without datatype or language information. The string $name is a UTF8-string
-	 * which might include &amp; &lt; &gt; as escapes (note: these must be unescaped 
-	 * if the value is used later in non-XML contexts).
+	 * without datatype or language information. The string $name is a plain UTF8-string
+	 * witout any escape sequences whatsoever. Note that it may be required to escape
+	 * some symbols in some contexts, especially <, >, & in XML and HTML.
 	 */
 	public function __construct($name, $dv = NULL, $datatype = false) {
 		$this->m_datatype = $datatype;

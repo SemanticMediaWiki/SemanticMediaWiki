@@ -393,7 +393,7 @@ abstract class SMWDataValue {
 	 */
 	public function getExportData() { // default implementation: encode value as untyped string
 		if ($this->isValid()) {
-			$lit = new SMWExpLiteral(smwfXMLContentEncode($this->getXSDValue()), $this);
+			$lit = new SMWExpLiteral(smwfHTMLtoUTF8($this->getXSDValue()), $this);
 			return new SMWExpData($lit);
 		} else {
 			return NULL;

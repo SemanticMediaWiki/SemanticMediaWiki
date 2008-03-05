@@ -494,6 +494,16 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	}
 
 	/**
+	 * Escapes text in a way that allows it to be used as XML
+	 * content (e.g. as a string value for some property).
+	 */
+	function smwfHTMLtoUTF8($text) {
+		global $IP;
+		include_once($IP . '/includes/Sanitizer.php');
+		return Sanitizer::decodeCharReferences($text);
+	}
+
+	/**
 	* This method formats a float number value according to the given
 	* language and precision settings, with some intelligence to
 	* produce readable output. Use it whenever you get a number that
