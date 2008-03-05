@@ -30,11 +30,8 @@ class SMWURIResolver extends SpecialPage {
 		if ('' == $query) {
 			$wgOut->addHTML(wfMsg('smw_uri_doc'));
 		} else {
-			/// TODO: the next (large) include is used for just a single function, I think -- mak
-			require_once( $smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php' );
 			$wgOut->disable();
-
-			$query = ExportRDF::makeURIfromXMLExportId($query);
+			$query = SMWExporter::decodeURI($query);
 			$query = str_replace( "_", "%20", $query );
 			$query = urldecode($query);
 			$title = Title::newFromText($query);

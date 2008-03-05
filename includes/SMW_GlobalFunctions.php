@@ -107,7 +107,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgSpecialPages['Properties']             = array('SMWSpecialPage','Properties', 'smwfDoSpecialProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialProperties.php');
 	$wgSpecialPages['UnusedProperties']       = array('SMWSpecialPage','UnusedProperties', 'smwfDoSpecialUnusedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialUnusedProperties.php');
 	$wgSpecialPages['WantedProperties']       = array('SMWSpecialPage','WantedProperties', 'smwfDoSpecialWantedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialWantedProperties.php');
-	$wgSpecialPages['ExportRDF']              = array('SMWSpecialPage','ExportRDF', 'smwfDoSpecialExportRDF', $smwgIP . '/specials/ExportRDF/SMW_SpecialExportRDF.php');
+	$wgSpecialPages['ExportRDF']              = array('SMWSpecialPage','ExportRDF', 'smwfDoSpecialOWLExport', $smwgIP . '/specials/Export/SMW_SpecialOWLExport.php');
 	$wgSpecialPages['SemanticStatistics']     = array('SMWSpecialPage','SemanticStatistics', 'smwfExecuteSemanticStatistics', $smwgIP . '/specials/Statistics/SMW_SpecialStatistics.php');
 	$wgSpecialPages['Types']                  = array('SMWSpecialPage','Types', 'smwfDoSpecialTypes', $smwgIP . '/specials/QueryPages/SMW_SpecialTypes.php');
 
