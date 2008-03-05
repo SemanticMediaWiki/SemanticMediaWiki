@@ -530,7 +530,9 @@ class OWLExport {
 					if ($object->getDatatype() != '') {
 						$this->post_ns_buffer .= ' rdf:datatype="' . $object->getDatatype() . '"';
 					}
-					$this->post_ns_buffer .= '>' . $object->getName() . '</' . $property->getQName() . ">\n";
+					$this->post_ns_buffer .= '>' . 
+					     str_replace(array('&', '>', '<'), array('&amp;', '&gt;', '&lt;'), $object->getName()) . 
+					     '</' . $property->getQName() . ">\n";
 				} else { // bnode or resource, may have subdescriptions
 					if (count($value->getProperties()) > 0) {
 						$this->post_ns_buffer .= ">\n";
