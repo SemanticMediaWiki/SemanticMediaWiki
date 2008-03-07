@@ -135,7 +135,7 @@ protected $m_UserMessages = array(
 	'smw_typeunits' => 'Units of measurement of type “$1”: $2',
 	/*Messages for SemanticStatistics Special*/
 	'semanticstatistics' => 'Semantic Statistics',
-	'smw_semstats_text' => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.',
+	'smw_semstats_text' => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might be <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.',
 	/*Messages for Flawed Attributes Special --disabled--*/
 	'flawedattributes' => 'Flawed Properties',
 	'smw_fattributes' => 'The pages listed below have an incorrectly defined property. The number of incorrect properties is given in the brackets.',
