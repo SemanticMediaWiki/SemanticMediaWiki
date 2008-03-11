@@ -63,7 +63,13 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 			$parserOutput = $parser->parse($parserinput, $wgTitle, $parser_options);
 			$result = $parserOutput->getText();
 		} else {
-			$result = $parser->preprocess($parserinput, $wgTitle, $parser_options);
+			if ( method_exists($parser, 'getPreprocessor') ) {
+				$frame = $parser->getPreprocessor()->newFrame();
+				$dom = $parser->preprocessToDom( $parserinput );
+				$result = $frame->expand( $dom );
+			} else {
+				$result = $parser->preprocess($parserinput, $wgTitle, $parser_options);
+			}
 		}
 		$smwgStoreActive = $old_smwgStoreActive;
 		// show link to more results
