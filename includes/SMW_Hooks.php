@@ -43,7 +43,7 @@ function smwfParserHook(&$parser, &$text, &$strip_state = null) {
 	                        )*)                 # all this zero or more times
 	                        (\|([^]]*))?        # Display text (like "text" in [[link|text]]), optional
 	                        \]\]                # End of link
-	                        /x';
+	                        /xu';
 	$text = preg_replace_callback($semanticLinkPattern, 'smwfParsePropertiesCallback', $text);
 
 	SMWFactbox::printFactbox($text);
@@ -85,7 +85,7 @@ function smwfParsePropertiesCallback($semanticLink) {
 	} else { $valueCaption = false; }
 
 	//extract annotations and create tooltip
-	$properties = preg_split('/:[=:]/', $property);
+	$properties = preg_split('/:[=:]/u', $property);
 	foreach($properties as $singleprop) {
 		$dv = SMWFactbox::addProperty($singleprop,$value,$valueCaption, $smwgStoreAnnotations && $smwgTempStoreAnnotations);
 	}

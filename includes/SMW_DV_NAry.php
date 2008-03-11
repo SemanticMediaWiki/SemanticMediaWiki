@@ -43,7 +43,7 @@ class SMWNAryValue extends SMWDataValue {
 		}
 
 		$types = $this->m_type->getTypeValues();
-		$values = preg_split('/[\s]*;[\s]*/', trim($value), $this->m_count);
+		$values = preg_split('/[\s]*;[\s]*/u', trim($value), $this->m_count);
 		$vi = 0; // index in value array
 		$empty = true;
 		for ($i = 0; $i < $this->m_count; $i++) { // iterate over slots

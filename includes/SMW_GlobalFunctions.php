@@ -547,7 +547,7 @@ function smwfAddHTMLHeadersOutput(&$out) {
 			// Should we use decimal places here?
 			$value = sprintf("%1.6e", $value);
 			// Make it more readable by removing trailing zeroes from n.n00e7.
-			$value = preg_replace('/(\\.\\d+?)0*e/', '${1}e', $value, 1);
+			$value = preg_replace('/(\\.\\d+?)0*e/u', '${1}e', $value, 1);
 			//NOTE: do not use the optional $count parameter with preg_replace. We need to
 			//      remain compatible with PHP 4.something.
 			if ($decseparator !== '.') {
@@ -567,7 +567,7 @@ function smwfAddHTMLHeadersOutput(&$out) {
 			} else {
 				// If above replacement occurred, no need to do the next one.
 				// Make it more readable by removing trailing zeroes from nn.n00.
-				$value = preg_replace("/(\\$decseparator\\d+?)0*$/", '$1', $value, 1);
+				$value = preg_replace("/(\\$decseparator\\d+?)0*$/u", '$1', $value, 1);
 			}
 		}
 		return $value;

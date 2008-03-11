@@ -171,7 +171,7 @@ class SMWLinearValue extends SMWNumberValue {
 			if (!$numdv->isValid() || ($numdv->getNumericValue() === 0)) {
 				continue; // ignore problmatic conversions
 			}
-			$unit_aliases = preg_split('/\s*,\s*/', $numdv->getUnit());
+			$unit_aliases = preg_split('/\s*,\s*/u', $numdv->getUnit());
 			$first = true;
 			foreach ($unit_aliases as $unit) {
 				$unit = $this->normalizeUnit($unit);
@@ -204,7 +204,7 @@ class SMWLinearValue extends SMWNumberValue {
 		$values = smwfGetStore()->getSpecialValues($proptitle, SMW_SP_DISPLAY_UNITS);
 		$units = array();
 		foreach ($values as $value) { // Join all if many annotations exist. Discouraged (random order) but possible.
-			$units = $units + preg_split('/\s*,\s*/',$value->getXSDValue());
+			$units = $units + preg_split('/\s*,\s*/u',$value->getXSDValue());
 		}
 		foreach ($units as $unit) {
 			$unit = $this->normalizeUnit($unit);

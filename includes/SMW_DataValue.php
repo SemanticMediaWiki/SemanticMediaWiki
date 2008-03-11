@@ -101,7 +101,7 @@ abstract class SMWDataValue {
 		foreach ($servicelinks as $dvs) {
 			$args[0] = 'smw_service_' . str_replace(' ', '_', $dvs); // messages distinguish ' ' from '_'
 			$text = call_user_func_array('wfMsgForContent', $args);
-			$links = preg_split("([\n][\s]?)", $text);
+			$links = preg_split("/[\n][\s]?/u", $text);
 			foreach ($links as $link) {
 				$linkdat = explode('|',$link,2);
 				if (count($linkdat) == 2)

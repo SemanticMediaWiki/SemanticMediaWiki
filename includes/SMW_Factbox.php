@@ -113,7 +113,7 @@ class SMWFactbox {
 		global $wgContLang;
 
 		list($onto_ns,$onto_section) = explode(':',$value,2);
-		$msglines = preg_split("([\n][\s]?)",wfMsgForContent("smw_import_$onto_ns")); // get the definition for "$namespace:$section"
+		$msglines = preg_split("/[\n][\s]?/u",wfMsgForContent("smw_import_$onto_ns")); // get the definition for "$namespace:$section"
 
 		if ( count($msglines) < 2 ) { //error: no elements for this namespace
 			/// TODO: use new Error DV

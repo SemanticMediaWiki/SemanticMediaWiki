@@ -41,7 +41,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 		$value = str_replace(array('&#8243;', '&Prime;', "''", '"', '´´', SMW_GEO_MIN . SMW_GEO_MIN),SMW_GEO_SEC,$value);
 		$value = str_replace(array('&#8242;', '&prime;', "'", '´'),SMW_GEO_MIN,$value);
 		// now split the string
-		$parts = preg_split('/\s*(°|' . SMW_GEO_MIN . '|' . SMW_GEO_SEC . '|N|E|W|S|;)\s*/',str_replace(', ', ';', $value) . ';', -1, PREG_SPLIT_DELIM_CAPTURE);
+		$parts = preg_split('/\s*(°|' . SMW_GEO_MIN . '|' . SMW_GEO_SEC . '|N|E|W|S|;)\s*/u',str_replace(', ', ';', $value) . ';', -1, PREG_SPLIT_DELIM_CAPTURE);
 		$curnum = false;
 		$angles = array(false, false, false); // temporary values for deg, min, sec
 		foreach ($parts as $part) {

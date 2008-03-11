@@ -42,12 +42,12 @@ class SMWNumberValue extends SMWDataValue {
 		$kiloseparator = wfMsgForContent('smw_kiloseparator');
 
 		$parts = preg_split('/([-+]?\s*\d+(?:\\' . $kiloseparator . '\d\d\d)*' .
-		                      '(?:\\' . $decseparator . '\d+)?\s*(?:[eE][-+]?\d+)?)/',
+		                      '(?:\\' . $decseparator . '\d+)?\s*(?:[eE][-+]?\d+)?)/u',
 		                      trim(str_replace(array('&nbsp;','&thinsp;'), '', $value)),
 		                      2, PREG_SPLIT_DELIM_CAPTURE);
 
 		if (count($parts) >= 2) {
-			$numstring = str_replace($kiloseparator, '', preg_replace('/\s*/', '', $parts[1])); // simplify
+			$numstring = str_replace($kiloseparator, '', preg_replace('/\s*/u', '', $parts[1])); // simplify
 			if ($decseparator != '.') {
 				$numstring = str_replace($decseparator, '.', $numstring);
 			}

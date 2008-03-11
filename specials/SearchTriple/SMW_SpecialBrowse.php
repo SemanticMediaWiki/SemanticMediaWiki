@@ -156,7 +156,7 @@ class SMWSpecialBrowse extends SpecialPage {
 // 				foreach ($outrel as $result) {
 // 					$objectoptions = new SMWRequestOptions();
 // 					$objectoptions->limit = $innerlimit;
-// 					$html .=  '<strong>' . $skin->makeKnownLinkObj($result, preg_replace('/[\s]/', '&nbsp;', smwfT($result), 2)) . "</strong>&nbsp; \n";// TODO makeLinkObj or makeKnownLinkObj?
+// 					$html .=  '<strong>' . $skin->makeKnownLinkObj($result, preg_replace('/[\s]/u', '&nbsp;', smwfT($result), 2)) . "</strong>&nbsp; \n";// TODO makeLinkObj or makeKnownLinkObj?
 // 					$objects = &smwfGetStore()->getRelationObjects($article, $result, $objectoptions);
 // 					$objectcount = count($objects);
 // 					$count = 0;

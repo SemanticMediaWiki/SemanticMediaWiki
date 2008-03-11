@@ -36,7 +36,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 		}
 		if (array_key_exists('timelinebands', $params)) { 
 		//check for band parameter, should look like "DAY,MONTH,YEAR"
-			$this->m_tlbands = preg_split('/[,][\s]*/',trim($params['timelinebands']));
+			$this->m_tlbands = preg_split('/[,][\s]*/u',trim($params['timelinebands']));
 		} else {
 			$this->m_tlbands = array('MONTH','YEAR'); /// TODO: check what default the JavaScript uses
 		}
