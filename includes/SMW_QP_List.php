@@ -129,7 +129,13 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				$parserOutput = $parser->parse($result, $wgTitle, $parser_options);
 				$result = $parserOutput->getText();
 			} else {
-				$result = $parser->preprocess($result, $wgTitle, $parser_options);
+				if ( method_exists($parser, 'getPreprocessor') ) {
+					$frame = $parser->getPreprocessor()->newFrame();
+					$dom = $parser->preprocessToDom( $result );
+					$result = $frame->expand( $dom );
+				} else {
+					$result = $parser->preprocess($result, $wgTitle, $parser_options);
+				}
 			}
 			$smwgStoreActive = $old_smwgStoreActive;
 		}
