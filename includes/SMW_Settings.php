@@ -36,10 +36,12 @@ if (!isset($smwgNamespaceIndex)) {
 ###
 # This setting allows you to select in which cases you want to have a factbox
 # appear below an article. The default setting is "SMW_FACTBOX_NONEMPTY"
-# which shows only those factboxes that have some content. Other options:
+# which shows only those factboxes that have some content. Note that the Magic
+# Words __SHOWFACTBOX__ and __HIDEFACTBOX__ can be used to control Factbox 
+# display for individual pages. Other options for this setting include:
 ##
 $smwgShowFactbox = SMW_FACTBOX_NONEMPTY;
-//$smwgShowFactbox = SMW_FACTBOX_SPECIAL # show only if special properties were set
+// $smwgShowFactbox = SMW_FACTBOX_SPECIAL # show only if special properties were set
 //$smwgShowFactbox = SMW_FACTBOX_HIDDEN; # hide always
 //$smwgShowFactbox = SMW_FACTBOX_SHOWN; # show always, buggy and not recommended
 ##
