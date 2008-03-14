@@ -158,6 +158,7 @@ protected $m_UserMessages = array(
 	'smw_ask_descorder' => 'Absteigend',
 	'smw_ask_submit' => 'Finde Ergebnisse',
 	'smw_ask_editquery' => '[Anfrage bearbeiten]',
+	'smw_add_sortcondition' => '[Sortieranweisung hinzufügen]',
 	'smw_ask_hidequery' => 'Anfrage ausblenden',
 	'smw_ask_help' => 'Hilfe',
 	'smw_ask_queryhead' => 'Anfrage',

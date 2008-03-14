@@ -150,6 +150,7 @@ protected $m_UserMessages = array(
 	'smw_ask_descorder' => '降冪',       //(Descending)
 	'smw_ask_submit' => '搜尋的結果',       //(Find results)	
 	'smw_ask_editquery' => '[編輯查詢]', // '[Edit query]'
+	'smw_add_sortcondition' => '[Add sorting condition]', // TODO: translate
 	'smw_ask_hidequery' => '隱藏查詢', // 'Hide query'
 	'smw_ask_help' => '查詢協助', // 'Querying help'
 	'smw_ask_queryhead' => '查詢', // 'Query'

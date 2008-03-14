@@ -168,6 +168,7 @@ protected $m_UserMessages = array(
 	'smw_ask_descorder' => 'Zostupne',
 	'smw_ask_submit' => 'Nájdi výsledky',
 	'smw_ask_editquery' => '[Edit query]', // TODO: translate
+	'smw_add_sortcondition' => '[Add sorting condition]', // TODO: translate
 	'smw_ask_hidequery' => 'Hide query', // TODO: translate
 	'smw_ask_help' => 'Querying help', // TODO: translate
 	'smw_ask_queryhead' => 'Query', // TODO: translate

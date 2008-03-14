@@ -150,6 +150,7 @@ protected $m_UserMessages = array(
 	'smw_ask_descorder' => 'Décroissant',
 	'smw_ask_submit' => 'Trouver des résultats',
 	'smw_ask_editquery' => '[Éditer la requête]',
+	'smw_add_sortcondition' => '[Add sorting condition]', // TODO: translate
 	'smw_ask_hidequery' => 'Masquer la requête',
 	'smw_ask_help' => 'Aide à la requête',
 	'smw_ask_queryhead' => 'Requête',

@@ -134,16 +134,23 @@ class SMWQueryResult {
 	 * JavaScript enabled browsers).
 	 */
 	public function getQueryURL() {
-		/// TODO implement (requires some way of generating/maintaining this URL as part of the query, and setting it when creating this result)
 		$title = Title::makeTitle(NS_SPECIAL, 'ask');
 		$params = 'query=' . urlencode($this->m_querystring);
-		if ($this->m_query->sortkey != false) {
-			$params .= '&sort=' . urlencode($this->m_query->sortkey);
-			if ($this->m_query->ascending) {
-				$params .= '&order=ASC';
-			} else {
-				$params .= '&order=DESC';
+		if ( count($this->m_query->sortkeys)>0 ) {
+			$psort  = '&sort=';
+			$porder = '&order=';
+			$first = true;
+			foreach ( $this->m_query->sortkeys as $sortkey => $order ) {
+				if ( $first ) {
+					$first = false;
+				} else {
+					$psort  .= ',';
+					$porder .= ',';
+				}
+				$psort .= urlencode($sortkey);
+				$porder .= $order;
 			}
+			$params .= $psort . $porder;
 		}
 		return $title->getFullURL($params);
 	}
@@ -164,16 +171,49 @@ class SMWQueryResult {
 		foreach ($this->m_extraprintouts as $printout) {
 			$params[] = $printout->getSerialisation();
 		}
-		if ($this->m_query->sortkey != false) {
-			$params[] = 'sort=' . $this->m_query->sortkey;
-			if ($this->m_query->ascending) {
-				$params[] = 'order=ASC';
-			} else {
-				$params[] = 'order=DESC';
+		if ( count($this->m_query->sortkeys)>0 ) {
+			$psort  = 'sort=';
+			$porder = 'order=';
+			$first = true;
+			foreach ( $this->m_query->sortkeys as $sortkey => $order ) {
+				if ( $first ) {
+					$first = false;
+				} else {
+					$psort  .= ',';
+					$porder .= ',';
+				}
+				$psort .= urlencode($sortkey);
+				$porder .= $order;
 			}
+			$params[] = $psort;
+			$params[] = $porder;
 		}
+// 		if ( is_array( $this->m_query->sortkeys ) ) {
+// 			$first_elem = true;
+// 			$param = 'sort=';
+// 			foreach ( $this->m_query->sortkeys as $val ) {
+// 				if ( $first_elem )
+// 					$first_elem = false;
+// 				else
+// 					$param .= ',';
+//   			$param .= $val;
+// 		  }
+// 			$params[] = $param;
+// 			if ( is_array( $this->m_query->ascendings ) ) {
+// 				$first_elem = true;
+// 				$param = 'order=';
+// 				foreach ( $this->m_query->ascendings as $val ) {
+// 					if ( $first_elem )
+// 						$first_elem = false;
+// 					else
+// 						$param .= ',';
+// 					$param .= $val ? 'ASC' : 'DESC';
+// 				}
+// 				$params[] = $param;
+// 			}
+// 		}
 		foreach ($params as $p) {
-			$p = str_replace(array('/','=','-','%'),array('-2F','-3D','-2D','-'), rawurlencode($p));
+			$p = str_replace(array('/','=','-',',','%'),array('-2F','-3D','-2D','-2C','-'), rawurlencode($p));
 			if ($titlestring != '') $titlestring .= '/';
 			$titlestring .= $p;
 		}

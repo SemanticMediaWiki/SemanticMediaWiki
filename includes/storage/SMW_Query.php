@@ -26,8 +26,7 @@ class SMWQuery {
 	const MODE_NONE = 4;  // do nothing with the query
 
 	public $sort = false;
-	public $ascending = true;
-	public $sortkey = false;
+	public $sortkeys = array(); // format: "Property name" => "ASC" / "DESC" (note: order of entries also matters)
 	public $querymode = SMWQuery::MODE_INSTANCES;
 
 	protected $m_limit;

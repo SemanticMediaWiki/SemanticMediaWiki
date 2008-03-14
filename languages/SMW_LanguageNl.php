@@ -149,6 +149,7 @@ protected $m_UserMessages = array(
 	'smw_ask_descorder' => 'Aflopend',
 	'smw_ask_submit' => 'Zoek resultaten',
 	'smw_ask_editquery' => '[Edit query]', // TODO: translate
+	'smw_add_sortcondition' => '[Add sorting condition]', // TODO: translate
 	'smw_ask_hidequery' => 'Hide query', // TODO: translate
 	'smw_ask_help' => 'Querying help', // TODO: translate
 	'smw_ask_queryhead' => 'Query', // TODO: translate

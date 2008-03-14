@@ -150,6 +150,7 @@ protected $m_UserMessages = array(
 	'smw_ask_descorder' => '降幂',       //(Descending)
 	'smw_ask_submit' => '搜自导引结果',       //(Find results)	
 	'smw_ask_editquery' => '[编辑查询]',  //'[Edit query]'
+	'smw_add_sortcondition' => '[Add sorting condition]', // TODO: translate
 	'smw_ask_hidequery' => '隐藏查询', // 'Hide query'
 	'smw_ask_help' => '查询协助',   //'Querying help'
 	'smw_ask_queryhead' => '查询', //'Query'

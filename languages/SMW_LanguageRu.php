@@ -151,6 +151,7 @@ protected $m_UserMessages = array(
 	'smw_ask_descorder' => 'По убыванию',
 	'smw_ask_submit' => 'Найти',
 	'smw_ask_editquery' => '[Редактировать запрос]',
+	'smw_add_sortcondition' => '[Add sorting condition]', // TODO: translate
 	'smw_ask_hidequery' => 'Скрыть запрос',
 	'smw_ask_help' => 'Помощь по составлению запросов',
 	'smw_ask_queryhead' => 'Запрос',

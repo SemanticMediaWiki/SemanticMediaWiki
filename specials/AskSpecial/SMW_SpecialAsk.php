@@ -113,11 +113,29 @@ class SMWAskPage extends SpecialPage {
 		$this->m_rssoutput = (array_key_exists('rss', $this->m_params));
 
 		// Try to complete undefined parameter values from dedicated URL params
+		$sortcount = $wgRequest->getVal( 'sc' );
+		if (!is_numeric($sortcount)) {
+			$sortcount = 0;
+		}
 		if ( !array_key_exists('order',$this->m_params) ) {
-			$this->m_params['order'] = $wgRequest->getVal( 'order' );
+			$this->m_params['order'] = $wgRequest->getVal( 'order' ); // basic ordering parameter (, separated)
+			for ($i=0; $i<$sortcount; $i++) {
+				if ($this->m_params['order'] != '') {
+					$this->m_params['order'] .= ',';
+				}
+				$value = $wgRequest->getVal( 'order' . $i );
+				$value = ($value == '')?'ASC':$value;
+				$this->m_params['order'] .= $value;
+			}
 		}
 		if ( !array_key_exists('sort',$this->m_params) ) {
-			$this->m_params['sort'] = $wgRequest->getVal( 'sort' );
+			$this->m_params['sort'] = $wgRequest->getVal( 'sort' ); // basic sorting parameter (, separated)
+			for ($i=0; $i<$sortcount; $i++) {
+				if ( ($this->m_params['sort'] != '') || ($i>0) ) { // admit empty sort strings here
+					$this->m_params['sort'] .= ',';
+				}
+				$this->m_params['sort'] .= $wgRequest->getVal( 'sort' . $i );
+			}
 		}
 		if ( !array_key_exists('limit',$this->m_params) ) {
 			$this->m_params['limit'] = $wgRequest->getVal( 'limit' );
@@ -147,18 +165,34 @@ class SMWAskPage extends SpecialPage {
 			         '<tr><td><textarea name="q" cols="20" rows="6">' . htmlspecialchars($this->m_querystring) . '</textarea></td>' .
 			         '<td><textarea name="po" cols="20" rows="6">' . htmlspecialchars($printoutstring) . '</textarea></td></tr></table>' . "\n";
 			if ($smwgQSortingSupport) {
-				$result .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort" value="' .
-				            htmlspecialchars($this->m_params['sort']) . '"/> <select name="order"><option ';
-				if ($this->m_params['order'] == 'ASC') $result .= 'selected="selected" ';
-				$result .=  'value="ASC">' . wfMsg('smw_ask_ascorder') . '</option><option ';
-				if ($this->m_params['order'] == 'DESC') $result .= 'selected="selected" ';
-				$result .=  'value="DESC">' . wfMsg('smw_ask_descorder') . '</option></select> <br />';
+				if ( $this->m_params['sort'] . $this->m_params['order'] == '') {
+					$orders = Array(); // do not even show one sort input here
+				} else {
+					$sorts = explode(',', $this->m_params['sort']);
+					$orders = explode(',', $this->m_params['order']);
+					reset($sorts);
+				}
+				$i = 0;
+				foreach ($orders as $order) {
+					if ($i>0) {
+						$result .= '<br />';
+					}
+					$result .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort' . $i . '" value="' .
+					            htmlspecialchars(current($sorts)) . '"/> <select name="order' . $i . '"><option ';
+					if ($order == 'ASC') $result .= 'selected="selected" ';
+					$result .=  'value="ASC">' . wfMsg('smw_ask_ascorder') . '</option><option ';
+					if ($order == 'DESC') $result .= 'selected="selected" ';
+					$result .=  'value="DESC">' . wfMsg('smw_ask_descorder') . '</option></select> ';
+					next($sorts);
+					$i++;
+				}
+				$result .= '<input type="hidden" name="sc" value="' . $i . '"/>';
+				$result .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes&sc=1')) . '">' . wfMsg('smw_add_sortcondition') . '</a>'; // note that $urltail uses a , separated list for sorting, so setting sc to 1 always adds one new condition
 			}
 			$result .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
 			           '<input type="hidden" name="eq" value="yes"/>' . 
 			           ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '">' . wfMsg('smw_ask_hidequery') . '</a> | <a href="' . $docutitle->getFullURL() . '">' . wfMsg('smw_ask_help') . '</a>' .
 			           "\n</form><br />";
-			$urltail .= '&eq=yes';
 		} else {
 			$result .= '<p><a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes')) . '">' . wfMsg('smw_ask_editquery') . '</a></p>';
 		}

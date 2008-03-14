@@ -153,6 +153,7 @@ protected $m_UserMessages = array(
 	'smw_ask_descorder' => '내림차순',
 	'smw_ask_submit' => '검색 결과 찾기',
 	'smw_ask_editquery' => '[Edit query]',
+	'smw_add_sortcondition' => '[Add sorting condition]', // TODO: translate
 	'smw_ask_hidequery' => 'Hide query',
 	'smw_ask_help' => 'Querying help',
 	'smw_ask_queryhead' => 'Query',
