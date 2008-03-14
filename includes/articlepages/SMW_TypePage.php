@@ -19,6 +19,8 @@ include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
  */
 class SMWTypePage extends SMWOrderedListPage {
 
+	protected $m_typevalue;
+
 	/**
 	 * Use higher limit. This operation is very similar to showing members of cateogies.
 	 */
@@ -39,6 +41,7 @@ class SMWTypePage extends SMWOrderedListPage {
 		$options->limit = $this->limit + 1;
 		$options->sort = true;
 		$typevalue = SMWDataValueFactory::newTypeIDValue('__typ', $this->mTitle->getText());
+		$this->m_typevalue = $typevalue;
 		if ($this->from != '') {
 			$options->boundary = $this->from;
 			$options->ascending = true;
@@ -63,9 +66,19 @@ class SMWTypePage extends SMWOrderedListPage {
 	 */
 	protected function getPages() {
 		wfProfileIn( __METHOD__ . ' (SMW)');
+		$r = '';
+		$typevalue = $this->m_typevalue;
+		if ( $typevalue->isBuiltIn() ) {
+			$r .= '<p style="font-style: italic; ">' .wfMsg('smw_isknowntype') . "</p>\n";
+		}
+		/*
+		 * TODO: also detect isAlias()? 
+		 * But smw_isaliastype message requires determining alias target; 
+		 * code is in SMW_SpecialTypes, not SMW_DV_Types.
+		 */
 		$ti = htmlspecialchars( $this->mTitle->getText() );
 		$nav = $this->getNavigationLinks();
-		$r = '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
+		$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
 
 		$r .= '<h2>' . wfMsg('smw_type_header',$ti) . "</h2>\n";
 		$r .= wfMsg('smw_typearticlecount', min($this->limit, count($this->articles))) . "\n";
