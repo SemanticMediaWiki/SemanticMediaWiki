@@ -163,7 +163,7 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>El traductor de URI implementa <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Esto se preocupa de cosas que los humanos no lo hacen en los sitios web..</p>',
 	/*Messages for ask Special*/
 	'ask' => 'Búsqueda semántica',
-	'smw_ask_doculink' => 'Búsqueda semántica',
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Búsqueda semántica',
 	'smw_ask_sortby' => 'Ordenar por columna',
 	'smw_ask_ascorder' => 'Ascendente',
 	'smw_ask_descorder' => 'Descendente',

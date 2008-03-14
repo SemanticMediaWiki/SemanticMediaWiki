@@ -147,7 +147,7 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>열린우리당 확인자 <a href="http://www.w3.org/2001/tag/issues.html#httprange-14"> w3c 태그를 구현합니다 규명에 httprange-14</a>입니다. 인간을 치료하는 데 걸리는 웹사이트로 나타나지 않습니다.</p>',
 	// Messages for ask Special
 	'ask' => '의미 론적 검색',
-	'smw_ask_doculink' => '의미 론적 검색',
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search', // TODO: translate, and provide translated documentation for semantic-mediawiki.org,
 	'smw_ask_sortby' => '열로 정렬',
 	'smw_ask_ascorder' => '오름차순',
 	'smw_ask_descorder' => '내림차순',

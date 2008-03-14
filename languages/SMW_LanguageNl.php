@@ -143,7 +143,7 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>De URI-resolver implementeert de <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Het zorgt ervoor dat mensen niet veranderen in websites.</p>',
 	// Messages for ask Special
 	'ask' => 'Semantisch zoeken',
-	'smw_ask_doculink' => 'Semantisch zoeken',
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search', // TODO: translate, and provide translated documentation for semantic-mediawiki.org
 	'smw_ask_sortby' => 'Sort op kolom',
 	'smw_ask_ascorder' => 'Oplopend',
 	'smw_ask_descorder' => 'Aflopend',

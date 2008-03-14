@@ -184,7 +184,7 @@ protected $m_UserMessages = array(
 	/*Messages for ask Special*/
 	/*Messages for ask Special*/
 	'ask' => 'Szukanie semantyczne',
-	'smw_ask_doculink' => 'Szukanie semantyczne',
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search', // TODO: translate, and provide translated documentation for semantic-mediawiki.org,
 	'smw_ask_sortby' => 'Sortuj po kolumnie',
 	'smw_ask_ascorder' => 'Rosnąco',
 	'smw_ask_descorder' => 'Malejąco',

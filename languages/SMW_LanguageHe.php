@@ -163,7 +163,7 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>', //TODO: translate
 	/*Messages for ask Special*/
 	'ask' => 'חיפוש סמנטי',
-	'smw_ask_doculink' => 'חיפוש סמנטי',
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search', // TODO: translate, and provide translated documentation for semantic-mediawiki.org
 	'smw_ask_sortby' => 'מיין לפי טור',
 	'smw_ask_ascorder' => 'בסדר עולה',
 	'smw_ask_descorder' => 'בסדר יורד',

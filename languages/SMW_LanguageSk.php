@@ -162,7 +162,7 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>URI resolver sa stará o implementáciu <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG hľadanie na httpRange-14</a>. Stará sa o to, aby sa ľudia nestali webstránkami.</p>',
 	/*Messages for ask Special*/
 	'ask' => 'Sémantické vyhľadávanie',
-	'smw_ask_doculink' => 'Sémantické vyhľadávanie',
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search', // TODO: translate, and provide translated documentation for semantic-mediawiki.org,
 	'smw_ask_sortby' => 'Zoradiť podľa stĺpca',
 	'smw_ask_ascorder' => 'Vzostupne',
 	'smw_ask_descorder' => 'Zostupne',

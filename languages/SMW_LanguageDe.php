@@ -152,7 +152,7 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>Der URI-Auflöser setzt die Empfehlungen »<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>« um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.</p>',
 	/*Messages for ask Special*/
 	'ask' => 'Semantische Suche',
-	'smw_ask_doculink' => 'Semantische Suche',
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Semantische_Suche',
 	'smw_ask_sortby' => 'Sortiere nach Spalte (optional)',
 	'smw_ask_ascorder' => 'Aufsteigend',
 	'smw_ask_descorder' => 'Absteigend',

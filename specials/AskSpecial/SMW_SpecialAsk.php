@@ -158,7 +158,6 @@ class SMWAskPage extends SpecialPage {
 		$result = '';
 		if ($this->m_editquery) {
 			$spectitle = Title::makeTitle( NS_SPECIAL, 'Ask' );
-			$docutitle = Title::newFromText(wfMsg('smw_ask_doculink'), NS_HELP);
 			$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 			           '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
 			$result .= '<table style="width: 100%; "><tr><th>' . wfMsg('smw_ask_queryhead') . '</th><th>' . wfMsg('smw_ask_printhead') . '</th></tr>' .
@@ -189,9 +188,10 @@ class SMWAskPage extends SpecialPage {
 				$result .= '<input type="hidden" name="sc" value="' . $i . '"/>';
 				$result .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes&sc=1')) . '">' . wfMsg('smw_add_sortcondition') . '</a>'; // note that $urltail uses a , separated list for sorting, so setting sc to 1 always adds one new condition
 			}
+// 			$docutitle = Title::newFromText(wfMsg('smw_ask_doculink'), NS_HELP);
 			$result .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
 			           '<input type="hidden" name="eq" value="yes"/>' . 
-			           ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '">' . wfMsg('smw_ask_hidequery') . '</a> | <a href="' . $docutitle->getFullURL() . '">' . wfMsg('smw_ask_help') . '</a>' .
+			           ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '">' . wfMsg('smw_ask_hidequery') . '</a> | <a href="' . htmlspecialchars(wfMsg('smw_ask_doculink')) . '">' . wfMsg('smw_ask_help') . '</a>' .
 			           "\n</form><br />";
 		} else {
 			$result .= '<p><a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes')) . '">' . wfMsg('smw_ask_editquery') . '</a></p>';

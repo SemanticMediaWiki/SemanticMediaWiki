@@ -144,7 +144,7 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>',	//'<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>',
 	// Messages for ask Special
 	'ask' => '语意搜寻',	//'Semantic search',
-	'smw_ask_doculink' => '语意搜寻',	//'Semantic search',
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search', // TODO: translate, and provide translated documentation for semantic-mediawiki.org,
 	'smw_ask_sortby' => '依栏位排序',       //(Sort by column)
 	'smw_ask_ascorder' => '升幂',        //(Ascending)
 	'smw_ask_descorder' => '降幂',       //(Descending)

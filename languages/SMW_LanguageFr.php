@@ -144,7 +144,7 @@ protected $m_UserMessages = array(
 	/*Messages for ask Special*/
 	/*Messages for ask Special*/
 	'ask' => 'Recherche sémantique',
-	'smw_ask_doculink' => 'Recherche sémantique',
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Aide:Recherche_s%C3%A9mantique',
 	'smw_ask_sortby' => 'Trier par colonnes',
 	'smw_ask_ascorder' => 'Croissant',
 	'smw_ask_descorder' => 'Décroissant',

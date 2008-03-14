@@ -144,7 +144,7 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>Il risolutore di URI implementa il <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Fa in modo che gli esseri umani non diventino siti Web.',
 	// Messages for ask Special
 	'ask' => 'Ricerca semantica',
-	'smw_ask_doculink' => 'Ricerca semantica',
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search', // TODO: translate, and provide translated documentation for semantic-mediawiki.org,
 	'smw_ask_sortby' => 'Ordina per colonna (opzionale)',
 	'smw_ask_ascorder' => 'Crescente',
 	'smw_ask_descorder' => 'Decrescente',
