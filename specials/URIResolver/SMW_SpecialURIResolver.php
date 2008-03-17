@@ -28,7 +28,13 @@ class SMWURIResolver extends SpecialPage {
 		global $wgOut, $smwgIP;
 		wfProfileIn('SpecialURIResolver::execute (SMW)');
 		if ('' == $query) {
-			$wgOut->addHTML(wfMsg('smw_uri_doc'));
+			if (stristr($_SERVER['HTTP_ACCEPT'], 'RDF')) {
+				header('HTTP/1.1 303 See Other');
+				$s = Skin::makeSpecialUrlSubpage('ExportRDF', $title->getPrefixedURL(), 'stats=1');
+				header('Location: ' . $s);
+			} else {
+				$wgOut->addHTML(wfMsg('smw_uri_doc'));
+			}
 		} else {
 			$wgOut->disable();
 			$query = SMWExporter::decodeURI($query);

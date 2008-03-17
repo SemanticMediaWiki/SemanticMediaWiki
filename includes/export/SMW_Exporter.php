@@ -253,8 +253,9 @@ class SMWExporter {
 	 */
 	static public function expandURI($uri) {
 		SMWExporter::initBaseURIs();
-		$uri = str_replace( array('&wiki;', '&wikiurl;','&property;', '&owl;', '&rdf;', '&rdfs;', '&swivt;'),
-		                    array(SMWExporter::$m_ent_wiki, SMWExporter::$m_ent_wikiurl, SMWExporter::$m_ent_property, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#'),
+		$uri = str_replace( array('&wiki;', '&wikiurl;','&property;', '&owl;', '&rdf;', '&rdfs;', '&swivt;', '&export;'),
+		                    array(SMWExporter::$m_ent_wiki, SMWExporter::$m_ent_wikiurl, SMWExporter::$m_ent_property, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
+		                    SMWExporter::$m_exporturl),
 		                    $uri);
 		return $uri;
 	}

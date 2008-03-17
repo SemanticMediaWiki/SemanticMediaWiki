@@ -98,7 +98,7 @@ class SMWExpData {
 			if (count($this->m_children[$pe->getName()]) == 0) {
 				unset($this->m_edges[$pe->getName()]);
 			}
-			return $result;
+			return $result->getSubject();
 		} else {
 			return SMWExporter::getSpecialElement('rdf', 'Resource');
 		}

@@ -77,6 +77,15 @@ function smwfDoSpecialOWLExport($page = '') {
 			$exp = new OWLExport();
 			$exp->printPageList($offset);
 			return;
+		} else {
+			$stats = $wgRequest->getVal( 'stats' );
+			if (isset($stats)) {
+				$wgOut->disable();
+				ob_start();
+				header( "Content-type: application/xml; charset=UTF-8" );
+				$exp = new OWLExport();
+				$exp->printWikiInfo();
+			}
 		}
 	}
 
@@ -433,13 +442,13 @@ class OWLExport {
 			$linkCache->clear();
 		}
 		if ($foundpages) { // add link to next result page
-			if (strpos($this->wiki_xmlns_url, '?') === false) { // check whether we have title as a first parameter or in URL
-				$nexturl = $this->special_url . '?offset=' . ($offset + $limit);
+			if (strpos(SMWExporter::expandURI('&wikiurl;'), '?') === false) { // check whether we have title as a first parameter or in URL
+				$nexturl = SMWExporter::expandURI('&export;?offset=') . ($offset + $limit);
 			} else {
-				$nexturl = $this->special_url . '&amp;offset=' . ($offset + $limit);
+				$nexturl = SMWExporter::expandURI('&export;&amp;offset=') . ($offset + $limit);
 			}
 			$this->post_ns_buffer .=
-			    "<!-- Link to next set of results -->" .
+			    "\t<!-- Link to next set of results -->\n" .
 			    "\t<owl:Thing rdf:about=\"$nexturl\">\n" .
 			    "\t\t<rdfs:isDefinedBy rdf:resource=\"$nexturl\"/>\n" .
 			    "\t</owl:Thing>\n";
@@ -450,6 +459,73 @@ class OWLExport {
 		wfProfileOut("RDF::PrintPageList");
 	}
 
+
+	/**
+	 * Print basic information about this site.
+	 */
+	public function printWikiInfo() {
+		wfProfileIn("RDF::PrintWikiInfo");
+		global $wgSitename, $wgLanguageCode;
+		
+		$db = & wfGetDB( DB_MASTER );
+		$this->pre_ns_buffer = '';
+		$this->post_ns_buffer = '';
+		$this->extra_namespaces = array();
+		$data = new SMWExpData(new SMWExpResource('&wiki;#wiki'));
+
+		$ed = new SMWExpData(SMWExporter::getSpecialElement('swivt','Wikisite'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf','type'), $ed);
+		$ed = new SMWExpData(new SMWExpLiteral($wgSitename));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('rdfs','label'), $ed);
+		$ed = new SMWExpData(new SMWExpLiteral($wgSitename, NULL, 'http://www.w3.org/2001/XMLSchema#string'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','siteName'), $ed);
+		$ed = new SMWExpData(new SMWExpLiteral(SMWExporter::expandURI('&wikiurl;'), NULL, 'http://www.w3.org/2001/XMLSchema#string'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','pagePrefix'), $ed);
+		$ed = new SMWExpData(new SMWExpLiteral(SMW_VERSION, NULL, 'http://www.w3.org/2001/XMLSchema#string'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','smwVersion'), $ed);
+		$ed = new SMWExpData(new SMWExpLiteral($wgLanguageCode, NULL, 'http://www.w3.org/2001/XMLSchema#string'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','langCode'), $ed);
+
+		// stats
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::pages(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','pageCount'), $ed);
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::articles(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','contentPageCount'), $ed);
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::images(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','mediaCount'), $ed);
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::edits(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','editCount'), $ed);
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::views(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','viewCount'), $ed);
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::users(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','userCount'), $ed);
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::admins(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','adminCount'), $ed);
+
+		$mainpage = Title::newFromText(wfMsgForContent('Mainpage'));
+		if ($mainpage !== NULL) {
+			$ed = new SMWExpData(new SMWExpResource($mainpage->getFullURL()));
+			$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','mainPage'), $ed);
+		}
+
+
+		$this->printHeader(); // also inits global namespaces
+		$this->printExpData($data);
+		if (strpos(SMWExporter::expandURI('&wikiurl;'), '?') === false) { // check whether we have title as a first parameter or in URL
+			$nexturl = SMWExporter::expandURI('&export;?offset=0');
+		} else {
+			$nexturl = SMWExporter::expandURI('&export;&amp;offset=0');
+		}
+		$this->post_ns_buffer .=
+			    "\t<!-- Link to semantic page list -->\n" .
+			    "\t<owl:Thing rdf:about=\"$nexturl\">\n" .
+			    "\t\t<rdfs:isDefinedBy rdf:resource=\"$nexturl\"/>\n" .
+			    "\t</owl:Thing>\n";
+		$this->printFooter();
+		$this->flushBuffers(true);
+
+		wfProfileOut("RDF::PrintWikiInfo");
+	}
 
 	/* Functions for exporting RDF */
 
@@ -509,7 +585,7 @@ class OWLExport {
 	 * Serialise the given semantic data.
 	 */
 	protected function printExpData(/*SMWExpData*/ $data) {
-		$type = $data->extractMainType()->getSubject()->getQName();
+		$type = $data->extractMainType()->getQName();
 		if ('' == $this->pre_ns_buffer) { // start new ns block
 			$this->pre_ns_buffer .= "\t<$type";
 		} else {
