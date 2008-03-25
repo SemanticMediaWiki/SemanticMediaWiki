@@ -188,30 +188,6 @@ class SMWQueryResult {
 			$params[] = $psort;
 			$params[] = $porder;
 		}
-// 		if ( is_array( $this->m_query->sortkeys ) ) {
-// 			$first_elem = true;
-// 			$param = 'sort=';
-// 			foreach ( $this->m_query->sortkeys as $val ) {
-// 				if ( $first_elem )
-// 					$first_elem = false;
-// 				else
-// 					$param .= ',';
-//   			$param .= $val;
-// 		  }
-// 			$params[] = $param;
-// 			if ( is_array( $this->m_query->ascendings ) ) {
-// 				$first_elem = true;
-// 				$param = 'order=';
-// 				foreach ( $this->m_query->ascendings as $val ) {
-// 					if ( $first_elem )
-// 						$first_elem = false;
-// 					else
-// 						$param .= ',';
-// 					$param .= $val ? 'ASC' : 'DESC';
-// 				}
-// 				$params[] = $param;
-// 			}
-// 		}
 		foreach ($params as $p) {
 			$p = str_replace(array('/','=','-',',','%'),array('-2F','-3D','-2D','-2C','-'), rawurlencode($p));
 			if ($titlestring != '') $titlestring .= '/';
