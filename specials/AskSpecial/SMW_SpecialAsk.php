@@ -147,7 +147,9 @@ class SMWAskPage extends SpecialPage {
 			$this->m_params['offset'] = $wgRequest->getVal( 'offset' );
 			if ($this->m_params['offset'] == '')  $this->m_params['offset'] = 0;
 		}
-		$this->m_params['format'] = 'broadtable';
+		if ( !array_key_exists('format',$this->m_params) ) {
+			$this->m_params['format'] = 'broadtable';
+		}
 
 		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) != '' ) || ('' == $this->m_querystring );
 	}
@@ -236,10 +238,10 @@ class SMWAskPage extends SpecialPage {
 		}
 		$navigation .= ')';
 
-		$printer = SMWQueryProcessor::getResultPrinter('broadtable',false,$res);
+		$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'],false,$res);
 		$result = '<div style="text-align: center;">' . $navigation;
-		$result .= '<br />' . $printer->getResult($res, $this->m_params,SMW_OUTPUT_HTML);
-		$result .= '<br />' . $navigation . '</div>';
+		$result .= '</div>' . $printer->getResult($res, $this->m_params,SMW_OUTPUT_HTML);
+		$result .= '<div style="text-align: center;">' . $navigation . '</div>';
 		$wgOut->addHTML($result);
 	}
 
