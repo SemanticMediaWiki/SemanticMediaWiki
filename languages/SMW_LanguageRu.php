@@ -145,13 +145,13 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>Преобразователь URI осуществляет <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C поиск http тэгов с использованием Range-14</a>. Данная возможность упрощает поиск семантической информации.</p>',
 	// Messages for ask Special
 	'ask' => 'Семантический поиск',
-	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search', // TODO: translate, and provide translated documentation for semantic-mediawiki.org,
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Семантический поиск', // QUESTION: what's more appropriate: translated name the of page - Help:Семантический поиск, or a language subpage Help:Help:Semantic_search/ru ?
 	'smw_ask_sortby' => 'Сортировать по столбцу',
 	'smw_ask_ascorder' => 'По возрастанию',
 	'smw_ask_descorder' => 'По убыванию',
 	'smw_ask_submit' => 'Найти',
 	'smw_ask_editquery' => '[Редактировать запрос]',
-	'smw_add_sortcondition' => '[Add sorting condition]', // TODO: translate
+	'smw_add_sortcondition' => '[Добавить условие сортировки]',
 	'smw_ask_hidequery' => 'Скрыть запрос',
 	'smw_ask_help' => 'Помощь по составлению запросов',
 	'smw_ask_queryhead' => 'Запрос',
