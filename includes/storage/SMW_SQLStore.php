@@ -860,7 +860,6 @@ class SMWSQLStore extends SMWStore {
 								       'subject_title' => $subject->getDBkey(),
 								       'attribute_title' => $property->getDBkey(),
 								       'value_unit' => $value->getUnit(),
-								       'value_datatype' => $value->getTypeID(),
 								       'value_xsd' => $value->getXSDValue(),
 								       'value_num' => $value->getNumericValue() );
 						}
@@ -1329,7 +1328,6 @@ class SMWSQLStore extends SMWStore {
 		                    'subject_title'     => 'VARCHAR(255) binary NOT NULL',
 		                    'attribute_title'   => 'VARCHAR(255) binary NOT NULL',
 		                    'value_unit'        => 'VARCHAR(63) binary',
-		                    'value_datatype'    => 'VARCHAR(31) binary NOT NULL', /// TODO: remove value_datatype column
 		                    'value_xsd'         => 'VARCHAR(255) binary NOT NULL',
 		                    'value_num'         => 'DOUBLE'), $db, $verbose);
 		$this->setupIndex($smw_attributes, array('subject_id','attribute_title','value_num','value_xsd'), $db);
