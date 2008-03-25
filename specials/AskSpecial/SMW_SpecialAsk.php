@@ -81,8 +81,8 @@ class SMWAskPage extends SpecialPage {
 	protected function extractQueryParameters($p) {
 		global $wgRequest, $smwgIP;
 		$p .= $wgRequest->getVal( 'raw' );
-		$this->m_querystring = $wgRequest->getVal( 'q' );
-		$paramstring         = $wgRequest->getVal( 'p' ) . $wgRequest->getVal( 'po' );
+		$this->m_querystring = $wgRequest->getText( 'q' );
+		$paramstring         = $wgRequest->getVal( 'p' ) . $wgRequest->getText( 'po' );
 
 		// First make all those inputs into a simple parameter list that can again be parsed into components later
 		$rawparams = array();
@@ -129,12 +129,12 @@ class SMWAskPage extends SpecialPage {
 			}
 		}
 		if ( !array_key_exists('sort',$this->m_params) ) {
-			$this->m_params['sort'] = $wgRequest->getVal( 'sort' ); // basic sorting parameter (, separated)
+			$this->m_params['sort'] = $wgRequest->getText( 'sort' ); // basic sorting parameter (, separated)
 			for ($i=0; $i<$sortcount; $i++) {
 				if ( ($this->m_params['sort'] != '') || ($i>0) ) { // admit empty sort strings here
 					$this->m_params['sort'] .= ',';
 				}
-				$this->m_params['sort'] .= $wgRequest->getVal( 'sort' . $i );
+				$this->m_params['sort'] .= $wgRequest->getText( 'sort' . $i );
 			}
 		}
 		if ( !array_key_exists('limit',$this->m_params) ) {
@@ -190,7 +190,6 @@ class SMWAskPage extends SpecialPage {
 				$result .= '<input type="hidden" name="sc" value="' . $i . '"/>';
 				$result .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes&sc=1')) . '">' . wfMsg('smw_add_sortcondition') . '</a>'; // note that $urltail uses a , separated list for sorting, so setting sc to 1 always adds one new condition
 			}
-// 			$docutitle = Title::newFromText(wfMsg('smw_ask_doculink'), NS_HELP);
 			$result .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
 			           '<input type="hidden" name="eq" value="yes"/>' . 
 			           ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '">' . wfMsg('smw_ask_hidequery') . '</a> | <a href="' . htmlspecialchars(wfMsg('smw_ask_doculink')) . '">' . wfMsg('smw_ask_help') . '</a>' .
