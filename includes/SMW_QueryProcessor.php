@@ -144,7 +144,10 @@ class SMWQueryProcessor {
 		$querystring = '';
 		$printouts = array();
 		$params = array();
-		foreach ($rawparams as $param) {
+		foreach ($rawparams as $name => $param) {
+			if ( is_string($name) && ($name != '') ) { // accept 'name' => 'value' just as '' => 'name=value'
+				$param = $name . '=' . $param;
+			}
 			if ($param == '') {
 			} elseif ($param{0} == '?') { // print statement
 				$param = substr($param,1);

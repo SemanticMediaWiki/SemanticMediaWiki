@@ -79,16 +79,28 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	protected function extractQueryParameters($p) {
+		// This code rather hacky since there are many ways to call that special page, the most involved of
+		// which is the way that this page calls itself when data is submitted via the form (since the shape
+		// of the parameters then is governed by the UI structure, as opposed to being governed by reason).
 		global $wgRequest, $smwgIP;
-		$p .= $wgRequest->getVal( 'raw' );
-		$this->m_querystring = $wgRequest->getText( 'q' );
-		$paramstring         = $wgRequest->getVal( 'p' ) . $wgRequest->getText( 'po' );
 
-		// First make all those inputs into a simple parameter list that can again be parsed into components later
-		$rawparams = array();
+		// First make all inputs into a simple parameter list that can again be parsed into components later.
+
+		// Check for title-part params, as used when special page is called via internal wiki link:
+		$p .= $wgRequest->getVal( 'raw' );
+		if (!$wgRequest->getCheck('q')) { // only do that for calls from outside this special page
+			$rawparams = SMWInfoLink::decodeParameters($p);
+		} else {
+			$rawparams = array();
+		}
+		// Check for q= query string, used whenever this special page calls itself (via submit or plain link):
+		$this->m_querystring = $wgRequest->getText( 'q' );
 		if ($this->m_querystring != '') {
 			$rawparams[] = $this->m_querystring;
 		}
+		// Check for param strings in po (printouts) and p (other settings) parameters, as used in calls of
+		// this special page to itself (p only appears in some links, po also in submits):
+		$paramstring = $wgRequest->getVal( 'p' ) . $wgRequest->getText( 'po' );
 		if ($paramstring != '') { // parameters from HTML input fields
 			$ps = explode("\n", $paramstring); // params separated by newlines here (compatible with text-input for printouts)
 			foreach ($ps as $param) { // add initial ? if omitted (all params considered as printouts)
@@ -97,13 +109,6 @@ class SMWAskPage extends SpecialPage {
 					$param = '?' . $param;
 				}
 				$rawparams[] = $param;
-			}
-		}
-		if ($p != '') { // parameters from wiki-compatible URL encoding (further results etc.)
-			// unescape $p; escaping scheme: all parameters rawurlencoded, "-" and "/" urlencoded, all "%" replaced by "-", parameters then joined with /
-			$ps = explode('/', $p); // params separated by / here (compatible with wiki link syntax)
-			foreach ($ps as $param) {
-				$rawparams[] = rawurldecode(str_replace('-', '%', $param));
 			}
 		}
 

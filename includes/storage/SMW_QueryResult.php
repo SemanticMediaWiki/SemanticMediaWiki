@@ -135,10 +135,10 @@ class SMWQueryResult {
 	 */
 	public function getQueryURL() {
 		$title = Title::makeTitle(NS_SPECIAL, 'ask');
-		$params = 'query=' . urlencode($this->m_querystring);
+		$params['query'] = $this->m_querystring;
 		if ( count($this->m_query->sortkeys)>0 ) {
-			$psort  = '&sort=';
-			$porder = '&order=';
+			$psort  = '';
+			$porder = '';
 			$first = true;
 			foreach ( $this->m_query->sortkeys as $sortkey => $order ) {
 				if ( $first ) {
@@ -147,12 +147,13 @@ class SMWQueryResult {
 					$psort  .= ',';
 					$porder .= ',';
 				}
-				$psort .= urlencode($sortkey);
+				$psort .= $sortkey;
 				$porder .= $order;
 			}
-			$params .= $psort . $porder;
+			$params['sort'] = $psort;
+			$params['order'] = $porder;
 		}
-		return $title->getFullURL($params);
+		return $title->getFullURL(SMWInfoLink::encodeParameters($params,false));
 	}
 	
 	/**
@@ -163,7 +164,7 @@ class SMWQueryResult {
 	public function getQueryTitle($prefixed = true) {
 		if ($prefixed) {
 			$title = Title::makeTitle(NS_SPECIAL, 'ask');
-			$titlestring = $title->getPrefixedText();
+			$titlestring = $title->getPrefixedText() . '/';
 		} else { // useful for further processing
 			$titlestring = '';
 		}
@@ -172,8 +173,8 @@ class SMWQueryResult {
 			$params[] = $printout->getSerialisation();
 		}
 		if ( count($this->m_query->sortkeys)>0 ) {
-			$psort  = 'sort=';
-			$porder = 'order=';
+			$psort  = '';
+			$porder = '';
 			$first = true;
 			foreach ( $this->m_query->sortkeys as $sortkey => $order ) {
 				if ( $first ) {
@@ -182,17 +183,13 @@ class SMWQueryResult {
 					$psort  .= ',';
 					$porder .= ',';
 				}
-				$psort .= urlencode($sortkey);
+				$psort .= $sortkey;
 				$porder .= $order;
 			}
-			$params[] = $psort;
-			$params[] = $porder;
+			$params['sort'] = $psort;
+			$params['order'] = $porder;
 		}
-		foreach ($params as $p) {
-			$p = str_replace(array('/','=','-',',','%'),array('-2F','-3D','-2D','-2C','-'), rawurlencode($p));
-			if ($titlestring != '') $titlestring .= '/';
-			$titlestring .= $p;
-		}
+		$titlestring .= SMWInfoLink::encodeParameters($params);
 		return $titlestring;
 	}
 }
