@@ -172,7 +172,8 @@ class SMWNumberValue extends SMWDataValue {
 		// available to the message are:
 		// $1: string of numerical value in English punctuation
 		// $2: string of integer version of value, in English punctuation
-		return array((string)$this->m_value, (string)round($this->m_value));
+		// $3: string of unit (if any)
+		return array((string)$this->m_value, (string)round($this->m_value), $this->m_unit);
 	}
 
 	public function isNumeric() {
