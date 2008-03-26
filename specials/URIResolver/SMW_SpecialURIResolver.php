@@ -31,7 +31,7 @@ class SMWURIResolver extends SpecialPage {
 			if (stristr($_SERVER['HTTP_ACCEPT'], 'RDF')) {
 				$wgOut->disable();
 				header('HTTP/1.1 303 See Other');
-				$s = Skin::makeSpecialUrlSubpage('ExportRDF', $title->getPrefixedURL(), 'stats=1');
+				$s = Skin::makeSpecialUrl('ExportRDF', 'stats=1');
 				header('Location: ' . $s);
 			} else {
 				$wgOut->addHTML(wfMsg('smw_uri_doc'));
