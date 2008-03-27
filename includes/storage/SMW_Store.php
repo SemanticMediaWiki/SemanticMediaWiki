@@ -126,7 +126,7 @@ abstract class SMWStore {
 	 * more data than requested when a filter is used. Filtering just ensures that
 	 * only necessary requests are made, i.e. it improves performance.
 	 */
-	abstract function getSemanticData(Title $subject, $filter = false);
+	abstract function getSemanticData($subject, $filter = false);
 
 	/**
 	 * Get an array of all special values stored for the given subject and special property
