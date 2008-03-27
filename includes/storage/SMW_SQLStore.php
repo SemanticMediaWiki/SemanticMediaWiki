@@ -52,12 +52,16 @@ class SMWSQLStore extends SMWStore {
 	function getSemanticData($subject, $filter = false) {
 		wfProfileIn("SMWSQLStore::getSemanticData (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
-		$result = new SMWSemanticData($subject);
 
-		if ( ($subject instanceof Title) || ($subject instanceof SMWWikiPageValue) ) {
+		if ( $subject instanceof Title ) {
 			$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
+			$result = new SMWSemanticData($subject);
+		} elseif ($subject instanceof SMWWikiPageValue) {
+			$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
+			$result = new SMWSemanticData($subject->getTitle());
 		} else {
 			$subjectid = 0;
+			$result = NULL;
 		}
 		if ($subjectid <= 0) {
 			wfProfileOut("SMWSQLStore::getSemanticData (SMW)");
