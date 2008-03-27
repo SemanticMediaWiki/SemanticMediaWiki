@@ -931,34 +931,18 @@ class SMWSQLStore extends SMWStore {
 		wfProfileOut("SMWSQLStore::updateData (SMW)");
 	}
 
-	function changeTitle(Title $oldtitle, Title $newtitle, $keepid = true) {
+	function changeTitle(Title $oldtitle, Title $newtitle, $pageid, $redirid=0) {
 		wfProfileIn("SMWSQLStore::changeTitle (SMW)");
 		$db =& wfGetDB( DB_MASTER );
 
+		// First change all data for the old subject to its new name
+		// (data moves with the subject, as it is part of the page)
 		$cond_array = array( 'subject_title' => $oldtitle->getDBkey(),
 		                     'subject_namespace' => $oldtitle->getNamespace() );
 		$val_array  = array( 'subject_title' => $newtitle->getDBkey(),
-		                     'subject_namespace' => $newtitle->getNamespace() );
-
-		// don't do this by default, since the ids you get when moving articles
-		// are not the ones from the old article and the new one (in reality, the
-		// $old_title refers to the newly generated redirect article, which does
-		// not have the old id that was stored in the database):
-		// TODO: in its current form this is useless and it's incomplete for naries anyway
-		if (!$keepid) {
-			$old_id = $oldtitle->getArticleID();
-			$new_id = $newtitle->getArticleID();
-			if ($old_id != 0) {
-				$cond_array['subject_id'] = $old_id;
-			}
-			if ($new_id != 0) {
-				$val_array['subject_id'] = $new_id;
-			}
-		} else {
-			/// FIXME: this just sets ids to NULL -- the redirect article does not exist yet
-			$db->update('smw_relations', array('object_id' => $oldtitle->getArticleID()), array('object_id' => $newtitle->getArticleID()), 'SMW::changeTitle');
-			$db->update('smw_nary_relations', array('object_id' => $oldtitle->getArticleID()), array('object_id' => $newtitle->getArticleID()), 'SMW::changeTitle');
-		}
+		                     'subject_namespace' => $newtitle->getNamespace(),
+		                     'subject_id' => $pageid );
+		// Note on the above: usually the ID does not change, but setting it does not hurt either
 
 		$db->update('smw_relations', $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update('smw_attributes', $val_array, $cond_array, 'SMW::changeTitle');
@@ -966,6 +950,7 @@ class SMWSQLStore extends SMWStore {
 		$db->update('smw_specialprops', $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update('smw_nary', $val_array, $cond_array, 'SMW::changeTitle');
 
+		// properties need special treatment (special table layout)
 		if ( $oldtitle->getNamespace() == SMW_NS_PROPERTY ) {
 			if ( $newtitle->getNamespace() == SMW_NS_PROPERTY ) {
 				$db->update('smw_subprops', array('subject_title' => $newtitle->getDBkey()), array('subject_title' => $oldtitle->getDBkey()), 'SMW::changeTitle');
@@ -973,6 +958,26 @@ class SMWSQLStore extends SMWStore {
 				$db->delete('smw_subprops', array('subject_title' => $oldtitle->getDBkey()), 'SMW::changeTitle');
 			}
 		}
+
+		// Second change all objects referring to the old page
+		// (objects are bound to the old name and do not point to the new page)
+		if ($redirid == 0) $redirid = NULL; // use NULL in DB to unset id
+		$cond_array = array( 'object_title' => $oldtitle->getDBkey(),
+		                     'object_namespace' => $oldtitle->getNamespace() );
+		$val_array  = array( 'object_id' => $redirid );
+
+		$db->update('smw_relations', $val_array, $cond_array, 'SMW::changeTitle');
+		$db->update('smw_nary_relations', $val_array, $cond_array, 'SMW::changeTitle');
+
+		// Third change all objects referring to the new page
+		// (objects are bound to the old name and do not point to the new page)
+		$cond_array = array( 'object_title' => $newtitle->getDBkey(),
+		                     'object_namespace' => $newtitle->getNamespace() );
+		$val_array  = array( 'object_id' => $pageid );
+
+		$db->update('smw_relations', $val_array, $cond_array, 'SMW::changeTitle');
+		$db->update('smw_nary_relations', $val_array, $cond_array, 'SMW::changeTitle');
+
 		wfProfileOut("SMWSQLStore::changeTitle (SMW)");
 	}
 
