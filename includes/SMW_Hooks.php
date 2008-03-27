@@ -150,7 +150,7 @@ function smwfDeleteHook(&$article, &$user, &$reason) {
 *  semantic properties are moved accordingly.
 */
 function smwfMoveHook(&$old_title, &$new_title, &$user, $pageid, $redirid) {
-	smwfGetStore()->changeTitle($old_title, $new_title);
+	smwfGetStore()->changeTitle($old_title, $new_title, $pageid, $redirid);
 	return true; // always return true, in order not to stop MW's hook processing!
 }
 
