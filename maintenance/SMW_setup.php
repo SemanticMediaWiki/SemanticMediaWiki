@@ -21,7 +21,7 @@
 
 set_include_path( get_include_path() . PATH_SEPARATOR .  dirname(__FILE__) . '/../../../' . 'maintenance' );
 
-/* usser/password in LocalSettings probably don't have the rights we need,
+/* user/password in LocalSettings probably don't have the rights we need,
  * so allow override
  */
 
