@@ -1590,9 +1590,8 @@ class SMWSQLStore extends SMWStore {
 		// TODO: unclear why this commit is needed -- is it a MySQL 4.x problem?
 		$db->query("COMMIT");
 		$db->query( 'CREATE TEMPORARY TABLE ' . $tablename .
-		            '( title VARCHAR(255) binary NOT NULL )
+		            '( title VARCHAR(255) binary NOT NULL PRIMARY KEY)
 		             TYPE=MEMORY', 'SMW::getCategoryTable' );
-		$db->query( 'ALTER TABLE ' . $tablename . ' ADD PRIMARY KEY ( title )' );
 		if (array_key_exists($hashkey, SMWSQLStore::$m_categorytables)) { // just copy known result
 			$db->query("INSERT INTO $tablename (title) SELECT " .
 			            SMWSQLStore::$m_categorytables[$hashkey] .
@@ -1652,9 +1651,8 @@ class SMWSQLStore extends SMWStore {
 		$tablename = 'prop' . SMWSQLStore::$m_tablenum++;
 		$this->m_usedtables[] = $tablename;
 		$db->query( 'CREATE TEMPORARY TABLE ' . $tablename .
-		            '( title VARCHAR(255) binary NOT NULL )
+		            '( title VARCHAR(255) binary NOT NULL PRIMARY KEY)
 		             TYPE=MEMORY', 'SMW::getPropertyTable' );
-		$db->query( 'ALTER TABLE ' . $tablename . ' ADD PRIMARY KEY ( title )' );
 		if (array_key_exists($propname, SMWSQLStore::$m_propertytables)) { // just copy known result
 			$db->query("INSERT INTO $tablename (title) SELECT " .
 			            SMWSQLStore::$m_propertytables[$propname] .
