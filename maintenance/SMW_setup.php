@@ -14,9 +14,34 @@
  * @author Markus Krötzsch
  */
 
+/**
+ *no guarantees, but look in the usual place for commandLine.inc, so this
+ * so it will work most of the time
+ */
+
+set_include_path( get_include_path() . PATH_SEPARATOR .  dirname(__FILE__) . '/../../../' . 'maintenance' );
+
+/* usser/password in LocalSettings probably don't have the rights we need,
+ * so allow override
+ */
+
+$optionsWithArgs = array('user', 'password');
 require_once( 'commandLine.inc' );
 
+if( isset( $options['user'] ) ) {
+	global $wgDBuser;
+	$wgDBuser = $options['user'];
+}
+if( isset( $options['password'] ) ) {
+	global $wgDBuser;
+	$wgDBpassword = $options['password'];
+}
+
+
 global $smwgIP;
+if (! isset($smwgIP)) 
+     $smwgIP = dirname(__FILE__) . '/..';
+     
 require_once($smwgIP . '/includes/SMW_GlobalFunctions.php');
 
 smwfGetStore()->setup();
