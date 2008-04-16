@@ -145,7 +145,7 @@ protected $m_UserMessages = array(
 	'smw_uri_doc' => '<p>Преобразователь URI осуществляет <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C поиск http тэгов с использованием Range-14</a>. Данная возможность упрощает поиск семантической информации.</p>',
 	// Messages for ask Special
 	'ask' => 'Семантический поиск',
-	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Семантический поиск', // QUESTION: what's more appropriate: translated name the of page - Help:Семантический поиск, or a language subpage Help:Help:Semantic_search/ru ?
+	'smw_ask_doculink' => 'http://semantic-mediawiki.org/wiki/Help:Семантический поиск',
 	'smw_ask_sortby' => 'Сортировать по столбцу',
 	'smw_ask_ascorder' => 'По возрастанию',
 	'smw_ask_descorder' => 'По убыванию',
@@ -243,12 +243,12 @@ protected $m_SpecialPropertyAliases = array(
 
 
 protected $m_Namespaces = array(
-	SMW_NS_RELATION       => 'Отношение',
-	SMW_NS_RELATION_TALK  => 'Отношение_дискуссия',
-	SMW_NS_PROPERTY       => 'Свойство',
-	SMW_NS_PROPERTY_TALK  => 'Свойство_дискуссия',
-	SMW_NS_TYPE           => 'Тип',
-	SMW_NS_TYPE_TALK      => 'Тип_дискуссия'
+    SMW_NS_RELATION       => 'Отношение',
+    SMW_NS_RELATION_TALK  => 'Обсуждение_отношения',
+    SMW_NS_PROPERTY       => 'Свойство',
+    SMW_NS_PROPERTY_TALK  => 'Обсуждение_свойства',
+    SMW_NS_TYPE           => 'Тип',
+    SMW_NS_TYPE_TALK      => 'Обсуждение_типа'
 );
 
 protected $m_NamespaceAliases = array(
