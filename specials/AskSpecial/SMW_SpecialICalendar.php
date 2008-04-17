@@ -214,15 +214,15 @@ class SMWICalendarPage extends SpecialPage {
 			$row = $res->getNext();
 		}
 
-		$text  = "BEGIN:VCALENDAR\n";
-		$text .= "PRODID:-//AIFB//Semantic MediaWiki\n";
-		$text .= "VERSION:2:0\n";
-		$text .= "METHOD:PUBLISH\n";
-		$text .= "X-WR-CALNAME:" . $this->m_params['icalendartitle'] . "\n";
-		if ($this->m_params['icalendardescription'] !== '') $text .= "X-WR-CALDESC:" . $this->m_params['icalendardescription'] . "\n";
+		$text  = "BEGIN:VCALENDAR\r\n";
+		$text .= "PRODID:-//AIFB//Semantic MediaWiki\r\n";
+		$text .= "VERSION:2:0\r\n";
+		$text .= "METHOD:PUBLISH\r\n";
+		$text .= "X-WR-CALNAME:" . $this->m_params['icalendartitle'] . "\r\n";
+		if ($this->m_params['icalendardescription'] !== '') $text .= "X-WR-CALDESC:" . $this->m_params['icalendardescription'] . "\r\n";
 		foreach ($items as $item)
 			$text .= $item->text();
-		$text .= "END:VCALENDAR\n";
+		$text .= "END:VCALENDAR\r\n";
 
 		print $text;
 	}
@@ -287,16 +287,16 @@ class SMWICalendarEntry {
 	 * Creates the iCalendar output for a single item.
 	 */
 	public function text() {
-		$text  = "BEGIN:VEVENT\n";
-		$text .= "SUMMARY:$this->label\n";
-		$text .= "URL:$this->uri\n";
-		$text .= "UID:$this->uri\n";
-		if ($this->startdate !== "") $text .= "DTSTART:$this->startdate\n";
-		if ($this->enddate !== "") $text .= "DTEND:$this->enddate\n";
-		if ($this->location !== "") $text .= "LOCATION:$this->location\n";
-		$text .= "DTSTAMP:$this->dtstamp\n"; 
-		$text .= "SEQUENCE:$this->sequence\n"; 
-		$text .= "END:VEVENT\n";
+		$text  = "BEGIN:VEVENT\r\n";
+		$text .= "SUMMARY:$this->label\r\n";
+		$text .= "URL:$this->uri\r\n";
+		$text .= "UID:$this->uri\r\n";
+		if ($this->startdate !== "") $text .= "DTSTART:$this->startdate\r\n";
+		if ($this->enddate !== "") $text .= "DTEND:$this->enddate\r\n";
+		if ($this->location !== "") $text .= "LOCATION:$this->location\r\n";
+		$text .= "DTSTAMP:$this->dtstamp\r\n"; 
+		$text .= "SEQUENCE:$this->sequence\r\n"; 
+		$text .= "END:VEVENT\r\n";
 		return $text;
 	}
 
