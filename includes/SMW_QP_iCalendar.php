@@ -91,7 +91,7 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 			$paramstring .= '/' . $p;
 		}
 		$title = Title::makeTitle(NS_SPECIAL, 'icalendar');
-		$this->icalendarlinktitle = $title->getPrefixedText() . '/' . $paramstring;
+		$this->icalendarlinktitle = ':' . $title->getPrefixedText() . '/' . $paramstring;
 		$this->icalendarlinkurl = $title->getFullURL('raw=' . $paramstring);
 	}
 

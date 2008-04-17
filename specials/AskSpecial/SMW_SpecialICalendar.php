@@ -150,6 +150,9 @@ class SMWICalendarPage extends SpecialPage {
 			if ((strtolower($printout->getLabel()) == "end") and ($printout->getTypeID() == "_dat")) {
 				$newprintouts[] = $printout;
 			}
+			if ((strtolower($printout->getLabel()) == "location") and ($printout->getTypeID() == "_wpg")) {
+				$newprintouts[] = $printout;
+			}
 		}
 		$this->m_printouts = $newprintouts;
 
@@ -180,11 +183,12 @@ class SMWICalendarPage extends SpecialPage {
 			$wikipage = $row[0]->getNextObject(); // get the object
 			$startdate = "";
 			$enddate = "";
+			$location = "";
 			foreach ($row as $result) {
 				// for now we ignore everything but start and end
 				// later we may add more things like a generic
 				// mechanism to add whatever you want :)
-				// could include funny things like geo, location etc. though
+				// could include funny things like geo, description etc. though
 				$req = $result->getPrintRequest();
 				if (strtolower($req->getLabel()) == "start") {
 					$content = $result->getContent();
@@ -198,9 +202,15 @@ class SMWICalendarPage extends SpecialPage {
 						$enddate = $entry->getShortWikiText();
 					}
 				}
+				if (strtolower($req->getLabel()) == "location") {
+					$content = $result->getContent();
+					foreach ($content as $entry) { // saves only the last one
+						$location = $entry->getShortWikiText();
+					}
+				}
 			}
 			if ($page !== null) $wikipage = $page;
-			$items[] = new SMWICalendarEntry($wikipage->getTitle(), $startdate, $enddate);
+			$items[] = new SMWICalendarEntry($wikipage->getTitle(), $startdate, $enddate, $location);
 			$row = $res->getNext();
 		}
 
@@ -238,13 +248,14 @@ class SMWICalendarEntry {
 	/**
 	 * Constructor for a single item in the feed. Requires the URI of the item.
 	 */
-	public function SMWICalendarEntry(Title $t, $startdate, $enddate) {
+	public function SMWICalendarEntry(Title $t, $startdate, $enddate, $location='') {
 		global $wgServer;
 		$this->title = $t;
 		$this->uri = $t->getFullURL();
 		$this->label = $t->getText();
-		$this->startdate = $this->parsedate($startdate);
-		$this->enddate = $this->parsedate($enddate);
+		$this->startdate = $this->parsedate($startdate, $enddate);
+		$this->enddate = $this->parsedate($enddate, $startdate);
+		$this->location = $location;
 		
 		$this->sequence = $t->getLatestRevID();
 
@@ -252,9 +263,24 @@ class SMWICalendarEntry {
 		$this->dtstamp  = $this->parsedate($article->getTimestamp());
 	}
 	
-	static private function parsedate($d) {
-		if ($d=='') return ''; 
-		return date("Ymd", strtotime(str_replace("&nbsp;", " ", $d))) . "T" . date("His", strtotime(str_replace("&nbsp;", " ", $d)));
+	/**
+	 * Parses the date as given by MediaWiki and returns the appropriate
+	 * formatting for iCalendar.
+	 * If the second parameter is '', the time is always given. If the second
+	 * parameter is set, then the fucntion checks if both times are on midnight,
+	 * and if so it assumes that only the date, not a datetime should be returned.
+	 * This heuristic tries to go circumvent the problem that SMW saves only
+	 * datetimes, but not just days, and thus it has trouble to display
+	 * multi-day events and anniversaries and such.
+	 */
+	static private function parsedate($d, $check = '') {
+		if ($d=='') return '';
+		if ($check=='')
+			return date("Ymd", strtotime(str_replace("&nbsp;", " ", $d))) . "T" . date("His", strtotime(str_replace("&nbsp;", " ", $d)));
+		if ((date("His", strtotime(str_replace("&nbsp;", " ", $d)))=="000000") && ((date("His", strtotime(str_replace("&nbsp;", " ", $check)))=="000000")))
+			return date("Ymd", strtotime(str_replace("&nbsp;", " ", $d)));
+		else
+			return date("Ymd", strtotime(str_replace("&nbsp;", " ", $d))) . "T" . date("His", strtotime(str_replace("&nbsp;", " ", $d)));			
 	}
 	
 	/**
@@ -267,6 +293,7 @@ class SMWICalendarEntry {
 		$text .= "UID:$this->uri\n";
 		if ($this->startdate !== "") $text .= "DTSTART:$this->startdate\n";
 		if ($this->enddate !== "") $text .= "DTEND:$this->enddate\n";
+		if ($this->location !== "") $text .= "LOCATION:$this->location\n";
 		$text .= "DTSTAMP:$this->dtstamp\n"; 
 		$text .= "SEQUENCE:$this->sequence\n"; 
 		$text .= "END:VEVENT\n";
