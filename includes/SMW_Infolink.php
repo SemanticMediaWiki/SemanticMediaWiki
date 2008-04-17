@@ -316,7 +316,7 @@ class SMWInfolink {
 					if (count($parts)>1) {
 						$result[$parts[0]] = $parts[1];
 					} else {
-						$result[] = $parts[0];
+						$result[] = $p;
 					}
 				}
 			}
