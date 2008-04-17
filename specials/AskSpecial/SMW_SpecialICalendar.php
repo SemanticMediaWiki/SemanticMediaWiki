@@ -2,12 +2,20 @@
 
 if (!defined('MEDIAWIKI')) die();
 
+/**
+ * TODO
+ * 
+ * This page copies a lot of code from SMW_SpecialAsk.php, which sucks high
+ * time. But we cannot keep adding such exporters to the SMW_SpeciaAsk file
+ * (like the RSS exporter), it is easy to think of further exporters like a
+ * for KML,  VCard,  Bibtext, and heck, even Java,  Python, or such (anyone
+ * cares about  distributed literate programming?). So  we  obviously  need
+ * some structure  to allow us to make  this kind of exporters without such
+ * spurious repetition,  and then refactor the RSS and iCalendar code to it
+ */
+
 global $IP;
 include_once($IP . '/includes/SpecialPage.php');
-
-global $wgAutoloadClasses, $wgSpecialPages;
-$wgSpecialPages['ICalendar'] = array('SMWICalendarPage');
-
 
 /**
  * @author Markus Krötzsch
@@ -28,13 +36,13 @@ class SMWICalendarPage extends SpecialPage {
 	 */
 	public function __construct() {
 		smwfInitUserMessages();
-		parent::__construct('ICalendar');
+		parent::__construct('ICalendar', '', false);
 	}
 
-	function execute($p = '') {
+	function execute($query = '') {
 		global $wgOut, $wgRequest, $smwgIP, $smwgQEnabled, $smwgRSSEnabled;
 		wfProfileIn('doSpecialICalendar (SMW)');
-		if ( ($wgRequest->getVal( 'query' ) != '') ) { // old processing
+		if ( ($wgRequest->getVal( 'query' ) != '') or ( $query == '') ) { // old processing
 			$wgOut->addHTML('<br /> This is the special page for iCalendar exports.');
 			wfProfileOut('doSpecialICalendar (SMW)');
 			return;
@@ -45,7 +53,7 @@ class SMWICalendarPage extends SpecialPage {
 			return;
 		}
 
-		$this->extractQueryParameters($p);
+		$this->extractQueryParameters($query);
 
 		$this->makeICalendarResult();
 
@@ -118,7 +126,7 @@ class SMWICalendarPage extends SpecialPage {
 		if ( !array_key_exists('limit',$this->m_params) ) {
 			$this->m_params['limit'] = $wgRequest->getVal( 'limit' );
 			if ($this->m_params['limit'] == '') {
-				 $this->m_params['limit'] = 50; // magic number TODO
+				 $this->m_params['limit'] = 200; // magic number TODO
 			}
 		}
 		if ( !array_key_exists('offset',$this->m_params) ) {
@@ -135,8 +143,8 @@ class SMWICalendarPage extends SpecialPage {
 		foreach ($this->m_printouts as $printout) {
 			if ((strtolower($printout->getLabel()) == "start") and ($printout->getTypeID() == "_dat")) {
 				$newprintouts[] = $printout;
-				$this->m_params['sort'] = $printout->getTitle()->getText();
-				$this->m_params['order'] = 'DESC';
+				//$this->m_params['sort'] = $printout->getTitle()->getText();
+				//$this->m_params['order'] = 'DESC';
 			}
 			if ((strtolower($printout->getLabel()) == "end") and ($printout->getTypeID() == "_dat")) {
 				$newprintouts[] = $printout;
@@ -145,6 +153,17 @@ class SMWICalendarPage extends SpecialPage {
 		$this->m_printouts = $newprintouts;
 
 		$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
+		
+		// figure out if this is a singletong query. if yes we need to save the
+		// singleton for later use, as the query result will not include it.
+		$page = null;
+		if ($queryobj->getDescription()->isSingleton()) {
+			$desc = $queryobj->getDescription();
+			if ($desc instanceof SMWValueDescription) {
+				$page = $desc->getDataValue();
+			}
+		}
+		
 		$res = smwfGetStore()->getQueryResult($queryobj);
 
 		if (!array_key_exists('icalendartitle', $this->m_params)) {
@@ -164,20 +183,22 @@ class SMWICalendarPage extends SpecialPage {
 				// for now we ignore everything but start and end
 				// later we may add more things like a generic
 				// mechanism to add whatever you want :)
+				// could include funny things like geo, location etc. though
 				$req = $result->getPrintRequest();
 				if (strtolower($req->getLabel()) == "start") {
 					$content = $result->getContent();
-					foreach ($content as $entry) {
+					foreach ($content as $entry) { // saves only the last one
 						$startdate = $entry->getShortWikiText();
 					}
 				}
 				if (strtolower($req->getLabel()) == "end") {
 					$content = $result->getContent();
-					foreach ($content as $entry) {
+					foreach ($content as $entry) { // saves only the last one
 						$enddate = $entry->getShortWikiText();
 					}
 				}
 			}
+			if ($page !== null) $wikipage = $page;
 			$items[] = new SMWICalendarEntry($wikipage->getTitle(), $startdate, $enddate);
 			$row = $res->getNext();
 		}
@@ -207,7 +228,11 @@ class SMWICalendarEntry {
 	private $label;
 	private $startdate;
 	private $enddate;
+	private $sequence;
+	private $dtstamp;
+	private $lastmodified;
 	private $title;
+	private $revid;
 
 	/**
 	 * Constructor for a single item in the feed. Requires the URI of the item.
@@ -219,9 +244,15 @@ class SMWICalendarEntry {
 		$this->label = $t->getText();
 		$this->startdate = $this->parsedate($startdate);
 		$this->enddate = $this->parsedate($enddate);
+		
+		$this->sequence = $t->getLatestRevID();
+
+		$article = new Article($t);
+		$this->dtstamp  = $this->parsedate($article->getTimestamp());
 	}
 	
 	static private function parsedate($d) {
+		if ($d=='') return ''; 
 		return date("Ymd", strtotime(str_replace("&nbsp;", " ", $d))) . "T" . date("His", strtotime(str_replace("&nbsp;", " ", $d)));
 	}
 	
@@ -230,13 +261,15 @@ class SMWICalendarEntry {
 	 */
 	public function text() {
 		$text  = "BEGIN:VEVENT\n";
-		$text .= "SUMMARY=$this->label\n";
-		$text .= "URL=$this->uri\n";
-		$text .= "DTSTART=$this->startdate\n";
-		if ($this->enddate !== "") $text .= "DTEND=$this->enddate\n";
+		$text .= "SUMMARY:$this->label\n";
+		$text .= "URL:$this->uri\n";
+		$text .= "UID:$this->uri\n";
+		if ($this->startdate !== "") $text .= "DTSTART:$this->startdate\n";
+		if ($this->enddate !== "") $text .= "DTEND:$this->enddate\n";
+		$text .= "DTSTAMP:$this->dtstamp\n"; 
+		$text .= "SEQUENCE:$this->sequence\n"; 
 		$text .= "END:VEVENT\n";
 		return $text;
 	}
 
 }
-

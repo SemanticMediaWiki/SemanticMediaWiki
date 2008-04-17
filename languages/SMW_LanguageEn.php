@@ -22,6 +22,8 @@ protected $m_ContentMessages = array(
 	'smw_baduri' => 'Sorry, URIs of the form “$1” are not allowed.',
 	// Link to RSS feeds
 	'smw_rss_link' => 'RSS',
+	// Link to iCalendar files
+	'smw_icalendar_link' => 'iCalendar',
 	// Messages and strings for inline queries
 	'smw_iq_disabled' => "Sorry. Semantic queries have been disabled for this wiki.",
 	'smw_iq_moreresults' => '&hellip; further results',

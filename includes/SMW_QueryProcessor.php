@@ -31,7 +31,8 @@ class SMWQueryProcessor {
 							'template'   => 'SMWTemplateResultPrinter',
 							'count'      => 'SMWListResultPrinter',
 							'debug'      => 'SMWListResultPrinter',
-							'rss'        => 'SMWRSSResultPrinter');
+							'rss'        => 'SMWRSSResultPrinter',
+							'icalendar'  => 'SMWiCalendarResultPrinter');	
 
 	/**
 	 * Parse a query string given in SMW's query language to create

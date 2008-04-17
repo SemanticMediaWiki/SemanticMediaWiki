@@ -77,6 +77,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWEmbeddedResultPrinter'] = $smwgIP . '/includes/SMW_QP_Embedded.php';
 	$wgAutoloadClasses['SMWTemplateResultPrinter'] = $smwgIP . '/includes/SMW_QP_Template.php';
 	$wgAutoloadClasses['SMWRSSResultPrinter']      = $smwgIP . '/includes/SMW_QP_RSSlink.php';
+	$wgAutoloadClasses['SMWiCalendarResultPrinter']= $smwgIP . '/includes/SMW_QP_iCalendar.php';
 	//// datavalues
 	$wgAutoloadClasses['SMWDataValue']             =  $smwgIP . '/includes/SMW_DataValue.php';
 	$wgAutoloadClasses['SMWDataValueFactory']      =  $smwgIP . '/includes/SMW_DataValueFactory.php';
@@ -102,6 +103,9 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgSpecialPages['URIResolver']            = array('SMWURIResolver');
 	$wgAutoloadClasses['SMWAdmin']            = $smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php';
 	$wgSpecialPages['SMWAdmin']               = array('SMWAdmin');
+	$wgAutoloadClasses['SMWICalendarPage']    = $smwgIP . '/specials/AskSpecial/SMW_SpecialICalendar.php';
+	$wgSpecialPages['ICalendar']              = array('SMWICalendarPage');
+	
 	// suboptimal special pages using the SMWSpecialPage wrapper class:
 	$wgAutoloadClasses['SMWSpecialPage']      = $smwgIP . '/includes/SMW_SpecialPage.php';
 	$wgSpecialPages['Properties']             = array('SMWSpecialPage','Properties', 'smwfDoSpecialProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialProperties.php');

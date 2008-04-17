@@ -51,7 +51,7 @@ class SMWQuery {
 
 	public function setDescription(SMWDescription $description) {
 		$this->m_description = $description;
-		foreach ($extraprintouts as $printout) {
+		foreach ($this->m_extraprintouts as $printout) {
 			$this->m_description->addPrintRequest($printout);
 		}
 		$this->applyRestrictions();
