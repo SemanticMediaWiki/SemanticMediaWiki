@@ -114,7 +114,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 			}
 			$link->setParameter('embedded','format');
 			$format = $this->m_embedformat;
-			if ($format='ol') $format = 'ul'; // ordered lists confusing in paged output
+			if ($format=='ol') $format = 'ul'; // ordered lists confusing in paged output
 			$link->setParameter($format,'embedformat');
 			if (!$this->m_showhead) {
 				$link->setParameter('1','embedonly');
