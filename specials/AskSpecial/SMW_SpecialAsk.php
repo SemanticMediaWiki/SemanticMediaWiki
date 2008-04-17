@@ -52,6 +52,11 @@ class SMWAskPage extends SpecialPage {
 				// nothing at the moment
 			}
 		} else { // HTML output
+			if ($this->m_querystring) {
+				$wgOut->setHTMLtitle($this->m_querystring);
+			} else {
+				$wgOut->setHTMLtitle(wfMsg('ask'));
+			}
 			$parray = array();
 			foreach ($this->m_params as $key => $value) {
 				if ( !in_array($key,array('sort', 'order', 'limit', 'offset')) ) {
