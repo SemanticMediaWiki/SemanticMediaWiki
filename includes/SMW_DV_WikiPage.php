@@ -26,6 +26,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ($value != '') {
 			$this->m_value = $value;
 			$this->m_title = NULL;
+			$this->m_dbkeyform = NULL;
 			if ($this->getTitle() !== NULL) {
 				$this->m_textform = $this->m_title->getText();
 				$this->m_dbkeyform = $this->m_title->getDBkey();
