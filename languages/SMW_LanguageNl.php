@@ -33,6 +33,7 @@ protected $m_ContentMessages = array(
 	'smw_wrong_importtype' => '$1 kan niet gebruikt worden in pagina\'s in de naamruimte “$2”.',
 	'smw_no_importelement' => 'Element “$1” is niet beschikbaar voor import.',
 	// Messages and strings for basic datatype processing
+	'smw_parseerror' => 'The given value was not understood.', // TODO: translate; generic error, "something" went
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate

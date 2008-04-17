@@ -52,6 +52,7 @@ protected $m_ContentMessages = array(
 	'smw_wrong_importtype' => '$1 nie może być użyte dla artykułów z przestrzeni nazw "$2".',
 	'smw_no_importelement' => 'Nie można zaimportować elementu "$1".',
 	/*Messages and strings for basic datatype processing*/
+	'smw_parseerror' => 'The given value was not understood.', // TODO: translate; generic error, "something" went
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_notitle' => '“$1” cannot be used as a page name in this wiki.', // TODO Translate

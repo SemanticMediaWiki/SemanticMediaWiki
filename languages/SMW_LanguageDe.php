@@ -42,6 +42,7 @@ protected $m_ContentMessages = array(
 	'smw_wrong_importtype' => 'Das Element „$1“ kann nicht für Seiten im Namensraum „$2“ verwendet werden.',
 	'smw_no_importelement' => 'Das Element „$1“ steht leider nicht zum Importieren zur Verfügung.',
 	/*Messages and strings for basic datatype processing*/
+	'smw_parseerror' => 'Der eingegebene Wert wurde nicht verstanden.', // generic error, "something" went wrong
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_notitle' => '“$1” kann nicht als Seitenname in diesem Wiki verwendet werden.',

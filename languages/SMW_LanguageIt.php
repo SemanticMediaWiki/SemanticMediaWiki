@@ -33,6 +33,7 @@ protected $m_ContentMessages = array(
 	'smw_wrong_importtype' => '$1 non pu&ograve; essere utilizzate per pagine nel namespace “$2”.',
 	'smw_no_importelement' => 'L\'elemento “$1” non &egrave; disponibile per l\'importazione.',
 	// Messages and strings for basic datatype processing
+	'smw_parseerror' => 'The given value was not understood.', // TODO: translate; generic error, "something" went
 	'smw_decseparator' => '.',
 	'smw_kiloseparator' => ',',
 	'smw_notitle' => '“$1” non pu&ograve; essere utilizzato come nome di una pagina all\'interno di questo wiki.',

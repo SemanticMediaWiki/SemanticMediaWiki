@@ -33,6 +33,7 @@ protected $m_ContentMessages = array(
 	'smw_wrong_importtype' => 'L\'élément "$1" ne peut être employé pour des articles de l\'espace de nommage domaine "$2".',
 	'smw_no_importelement' => 'L\'élément "$1" n\'est pas disponible pour l\'importation.',
 	/*Messages and strings for basic datatype processing*/
+	'smw_parseerror' => 'The given value was not understood.', // TODO: translate; generic error, "something" went
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_notitle' => '“$1” ne peut être utilisé comme nom de page sur ce wiki.',

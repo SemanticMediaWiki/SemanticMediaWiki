@@ -36,6 +36,7 @@ protected $m_ContentMessages = array(
 	'smw_wrong_importtype' => '$1 페이지에 대해 사용할 수없습니다 네임 스페이스 “$2”.',
 	'smw_no_importelement' => '원소 “$1” 에 사용할 수없습니다 져올.',
 	// Messages and strings for basic datatype processing
+	'smw_parseerror' => 'The given value was not understood.', // TODO: translate; generic error, "something" went
 	'smw_decseparator' => '.',
 	'smw_kiloseparator' => ',',
 	'smw_notitle' => '“$1” 대한 이름으로 사용하실 수없습니다이 위키는 페이지입니다.',

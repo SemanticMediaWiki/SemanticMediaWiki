@@ -34,6 +34,7 @@ protected $m_ContentMessages = array(
 	'smw_wrong_importtype' => 'Ошибка: $1 не может быть использован для статей с пространством имен "$2".',
 	'smw_no_importelement' => 'Ошибка: Элемент "$1" не доступен для импорта.',
 	// Messages and strings for basic datatype processing
+	'smw_parseerror' => 'The given value was not understood.', // TODO: translate; generic error, "something" went
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => ' ',
 	'smw_notitle' => '“$1” не может быть использован как заголовок статьи на данном сайте.',

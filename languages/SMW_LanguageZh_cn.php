@@ -33,6 +33,7 @@ protected $m_ContentMessages = array(
 	'smw_wrong_importtype' => '$1无法用于名字空间为“$2＂的页面。',	//'$1 can not be used for pages in the namespace “$2＂.'
 	'smw_no_importelement' => '无法导入“$1＂元素',	//'Element “$1＂ not available for import.'
 	// Messages and strings for basic datatype processing
+	'smw_parseerror' => 'The given value was not understood.', // TODO: translate; generic error, "something" went
 	'smw_decseparator' => '.',
 	'smw_kiloseparator' => ',',
 	'smw_notitle' => '在此wiki内，是无法用“$1＂来当作页面名称的',	//'“$1＂ cannot be used as a page name in this wiki.'
