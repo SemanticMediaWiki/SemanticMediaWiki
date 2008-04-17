@@ -42,12 +42,16 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		} else {
 			$link->setCaption(wfMsgForContent('smw_rss_link'));
 		}
-		$link->addParameter('1','rss');
+		$link->setParameter('1','rss');
 		if ($this->title !== '') {
-			$link->addParameter($this->title,'rsstitle');
+			$link->setParameter($this->title,'rsstitle');
 		}
 		if ($this->description !== '') {
-			$link->addParameter($this->description,'rssdescription');
+			$link->setParameter($this->description,'rssdescription');
+		}
+		$limit = $link->getParameter('limit');
+		if ($limit === NULL) {
+			$link->setParameter(10,'limit');
 		}
 
 		$result .= $link->getText($outputmode,$this->getLinker());

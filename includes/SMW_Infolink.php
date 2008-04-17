@@ -75,13 +75,25 @@ class SMWInfolink {
 
 
 	/**
-	 * Add more parameters values to an existing link
+	 * Set (or add) parameter values for an existing link
 	 */
-	public function addParameter($value, $key = false) {
+	public function setParameter($value, $key = false) {
 		if ($key === false) {
 			$this->m_params[] = $value;
 		} else {
 			$this->m_params[$key] = $value;
+		}
+	}
+
+	/**
+	 * Get the value of some named parameter, or NULL if no parameter of
+	 * that name exists.
+	 */
+	public function getParameter($key) {
+		if ( array_key_exists($key,$this->m_params) ) {
+			return $this->m_params[$key];
+		} else {
+			return NULL;
 		}
 	}
 
