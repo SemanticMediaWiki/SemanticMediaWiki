@@ -140,16 +140,18 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$smwgStoreActive = $old_smwgStoreActive;
 		}
 
-		if ( $this->mInline && $res->hasFurtherResults() ) {
-			$label = $this->mSearchlabel;
-			if ($label === NULL) { //apply defaults
-				if ('ol' == $this->mFormat) $label = '';
-				else $label = wfMsgForContent('smw_iq_moreresults');
+		if ( $this->mInline && $res->hasFurtherResults() && 
+		     ( ('ol' != $this->mFormat) || ($this->mSearchlabel) ) ) {
+			$link = $res->getQueryLink();
+			if ($this->mSearchlabel) {
+				$link->setCaption($this->mSearchlabel);
 			}
-			if (!$first_row) $result .= ' '; // relevant for list, unproblematic for ul/ol
-			if ($label != '') {
-				$result .= $rowstart . $this->getFurtherResultsLink($outputmode,$res,$label) . $rowend;
-			}
+			$format = $this->mFormat;
+			if ('ol' == $this->mFormat) $format = 'ul';
+			$link->setParameter($format,'format');
+			$link->setParameter($this->mSep,'sep');
+			$link->setParameter($this->mTemplate,'template');
+			$result .= $rowstart . $link->getText($outputmode,$this->getLinker()) . $rowend;
 		}
 
 		// print footer

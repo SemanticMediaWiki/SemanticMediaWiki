@@ -35,13 +35,13 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 	protected function getResultText($res, $outputmode) {
 		global $smwgIQRunningNumber;
 		$result = '';
-		
-		$link = $res->getQueryLink();
+
 		if ($this->mSearchlabel) {
-			$link->setCaption($this->mSearchlabel);
+			$label = $this->mSearchlabel;
 		} else {
-			$link->setCaption(wfMsgForContent('smw_rss_link'));
+			$label = wfMsgForContent('smw_rss_link');
 		}
+		$link = $res->getQueryLink($label);
 		$link->setParameter('1','rss');
 		if ($this->title !== '') {
 			$link->setParameter($this->title,'rsstitle');
@@ -49,8 +49,9 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		if ($this->description !== '') {
 			$link->setParameter($this->description,'rssdescription');
 		}
-		$limit = $link->getParameter('limit');
-		if ($limit === NULL) {
+		if (array_key_exists('limit', $this->m_params)) {
+			$link->setParameter($this->m_params['limit'],'limit');
+		} else { // use a reasonable deafult limit (10 is suggested by RSS)
 			$link->setParameter(10,'limit');
 		}
 

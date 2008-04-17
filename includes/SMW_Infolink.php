@@ -53,7 +53,6 @@ class SMWInfolink {
 	 */
 	public static function newPropertySearchLink($caption,$propertyname,$value,$style = 'smwsearch') {
 		global $wgContLang;
-// 		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByProperty/' .  $propertyname . '::' . $value, $style);
 		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByProperty', $style, array($propertyname, $value));
 	}
 
@@ -70,7 +69,7 @@ class SMWInfolink {
 	 */
 	public static function newBrowsingLink($caption,$titletext,$style = 'smwbrowse') {
 		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':Browse/' .  $titletext, $style);
+		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':Browse', $style, array($titletext));
 	}
 
 
@@ -169,6 +168,20 @@ class SMWInfolink {
 	}
 
 	/**
+	 * Return hyperlink for this infolink in HTML format.
+	 */
+	public function getHTML($linker) {
+		return $this->getText(SMW_OUTPUT_HTML, $linker);
+	}
+
+	/**
+	 * Return hyperlink for this infolink in wiki format.
+	 */
+	public function getWikiText($linker = NULL) {
+		return $this->getText(SMW_OUTPUT_WIKI, $linker);
+	}
+
+	/**
 	 * Return a fully qualified URL that points to the link target (whether internal or not).
 	 * This function might be used when the URL is needed outside normal links, e.g. in the HTML
 	 * header or in some metadata file. For making normal links, getText() should be used.
@@ -209,56 +222,6 @@ class SMWInfolink {
 		}
 	}
 
-
-	/**
-	 * Return hyperlink for this infolink in HTML format.
-	 */
-	public function getHTML($linker) {
-		return $this->getText(SMW_OUTPUT_HTML, $linker);
-// 		if ($this->m_style !== false) {
-// 			smwfRequireHeadItem(SMW_HEADER_STYLE); // make SMW styles available
-// 			$start = "<span class=\"$this->m_style\">";
-// 			$end = '</span>';
-// 		} else {
-// 			$start = '';
-// 			$end = '';
-// 		}
-// 		if ($this->m_internal) {
-// 			$title = Title::newFromText($this->m_target);
-// 			if ($title !== NULL) {
-// 				return $start . $linker->makeKnownLinkObj(Title::newFromText($this->m_target), $this->m_caption) . $end;
-// 			} else { // Title creation failed, maybe illegal symbols or too long
-// 				return '';
-// 			}
-// 		} else {
-// 			return $start . "<a href=\"$this->m_target\">$this->m_caption</a>" . $end;
-// 		}
-	}
-
-	/**
-	 * Return hyperlink for this infolink in wiki format.
-	 */
-	public function getWikiText($linker = NULL) {
-		return $this->getText(SMW_OUTPUT_WIKI, $linker);
-// 		if ($this->m_style !== false) {
-// 			smwfRequireHeadItem(SMW_HEADER_STYLE); // make SMW styles available
-// 			$start = "<span class=\"$this->m_style\">";
-// 			$end = '</span>';
-// 		} else {
-// 			$start = '';
-// 			$end = '';
-// 		}
-// 		if ($this->m_internal) {
-// 			if (preg_match('/(.*)(\[|\]|<|>|&gt;|&lt;|\'\'|{|})(.*)/u', $this->m_target) != 0 ) {
-// 				return ''; // give up if illegal characters occur,
-// 				           /// TODO: we would need a skin to provide an ext URL in this case
-// 			}
-// 			return $start . "[[$this->m_target|$this->m_caption]]" . $end;
-// 		} else {
-// 			return $start . "[$this->m_target $this->m_caption]" . $end;
-// 		}
-	}
-
 	/**
 	 * Encode an array of parameters, formatted as $name => $value, to a parameter
 	 * string that can be used for linking. If $forTitle is true (default), then the
@@ -278,8 +241,6 @@ class SMWInfolink {
 		if ($forTitle) {
 			foreach ($params as $name => $value) {
 				if ( is_string($name) && ($name != '') ) $value = $name . '=' . $value;
-// 				$value = str_replace(array('/','=','-',',','%'),array('-2F','-3D','-2D','-2C','-'), urlencode($value));
-
 				// Escape certain problematic values. Use SMW-escape 
 				// (like URLencode but - instead of % to prevent double encoding by later MW actions)
 				//
@@ -321,9 +282,11 @@ class SMWInfolink {
 	 * Obtain an array of parameters from the parameters given to some HTTP service.
 	 * In particular, this function perfoms all necessary decoding as may be needed, e.g.,
 	 * to recover the proper paramter strings after encoding for use in wiki title names
-	 * as done by SMWInfolink::encodeParameters(). It is assumed that further data can be
-	 * obtained from the global $wgRequest.
-	 * 
+	 * as done by SMWInfolink::encodeParameters(). 
+	 *
+	 * If $allparams is set to true, it is assumed that further data should be obtained 
+	 * from the global $wgRequest, and all given parameters are read.
+	 *
 	 * $titleparam is the string extracted by MediaWiki from special page calls of the 
 	 * form Special:Something/titleparam
 	 *
@@ -332,13 +295,16 @@ class SMWInfolink {
 	 * concrete way of how parameters are encoded within this function, and to always use 
 	 * the respective encoding/decoding methods instead.
 	 */
-	static public function decodeParameters($titleparam = '') {
+	static public function decodeParameters($titleparam = '', $allparams = false) {
 		global $wgRequest;
-		$result = $wgRequest->getValues();
-		if (array_key_exists('x',$result)) { // considered to be part of the title param
-			if ($titleparam != '') $titleparam .= '/';
-			$titleparam .= $result['x'];
-			unset($result['x']);
+		$result = array();
+		if ($allparams) {
+			$result = $wgRequest->getValues();
+			if (array_key_exists('x',$result)) { // considered to be part of the title param
+				if ($titleparam != '') $titleparam .= '/';
+				$titleparam .= $result['x'];
+				unset($result['x']);
+			}
 		}
 		if ($titleparam != '') {
 			// unescape $p; escaping scheme: all parameters rawurlencoded, "-" and "/" urlencoded, all "%" replaced by "-", parameters then joined with /

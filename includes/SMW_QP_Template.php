@@ -74,13 +74,13 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 		$smwgStoreActive = $old_smwgStoreActive;
 		// show link to more results
 		if ( $this->mInline && $res->hasFurtherResults() ) {
-			$label = $this->mSearchlabel;
-			if ($label === NULL) { //apply defaults
-				$label = wfMsgForContent('smw_iq_moreresults');
+			$link = $res->getQueryLink();
+			if ($this->mSearchlabel) {
+				$link->setCaption($this->mSearchlabel);
 			}
-			if ($label != '') {
-				$result .= $this->getFurtherResultsLink($outputmode,$res,$label);
-			}
+			$link->setParameter('template','format');
+			$link->setParameter($this->m_template,'template');
+			$result .= $link->getText($outputmode,$this->getLinker());
 		}
 		return $result;
 	}

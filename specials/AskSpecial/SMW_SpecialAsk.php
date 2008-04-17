@@ -52,13 +52,13 @@ class SMWAskPage extends SpecialPage {
 				// nothing at the moment
 			}
 		} else { // HTML output
-			$paramstring = '';
+			$parray = array();
 			foreach ($this->m_params as $key => $value) {
-				if ( in_array($key,array('format', 'template')) ) {
-					$paramstring .= "$key=$value\n";
+				if ( !in_array($key,array('sort', 'order', 'limit', 'offset')) ) {
+					$parray[$key] = $value;
 				}
 			}
-			$paramstring = str_replace('=','%3D',$paramstring);
+			$paramstring = SMWInfolink::encodeParameters($parray);
 			$printoutstring = '';
 			foreach ($this->m_printouts as $printout) {
 				$printoutstring .= $printout->getSerialisation() . "\n";
@@ -86,21 +86,18 @@ class SMWAskPage extends SpecialPage {
 
 		// First make all inputs into a simple parameter list that can again be parsed into components later.
 
-		// Check for title-part params, as used when special page is called via internal wiki link:
-		$p .= $wgRequest->getVal( 'raw' );
-		if (!$wgRequest->getCheck('q')) { // only do that for calls from outside this special page
-			$rawparams = SMWInfolink::decodeParameters($p);
-		} else {
-			$rawparams = array();
+		if ($wgRequest->getCheck('q')) { // called by own Special, ignore full param string in that case
+			$rawparams = SMWInfolink::decodeParameters($wgRequest->getVal( 'p' ), false); // p is used for any additional parameters in certain links
+		} else { // called from wiki, get all parameters
+			$rawparams = SMWInfolink::decodeParameters($p, true);
 		}
 		// Check for q= query string, used whenever this special page calls itself (via submit or plain link):
 		$this->m_querystring = $wgRequest->getText( 'q' );
 		if ($this->m_querystring != '') {
 			$rawparams[] = $this->m_querystring;
 		}
-		// Check for param strings in po (printouts) and p (other settings) parameters, as used in calls of
-		// this special page to itself (p only appears in some links, po also in submits):
-		$paramstring = $wgRequest->getVal( 'p' ) . $wgRequest->getText( 'po' );
+		// Check for param strings in po (printouts), appears in some links and in submits:
+		$paramstring = $wgRequest->getText( 'po' );
 		if ($paramstring != '') { // parameters from HTML input fields
 			$ps = explode("\n", $paramstring); // params separated by newlines here (compatible with text-input for printouts)
 			foreach ($ps as $param) { // add initial ? if omitted (all params considered as printouts)

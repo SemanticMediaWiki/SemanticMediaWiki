@@ -196,8 +196,11 @@ class SMWQueryResult {
 	/**
 	 * Create an SMWInfolink object representing a link to further query results.
 	 * This link can then be serialised or extended by further params first.
+	 * The optional $caption can be used to set the caption of the link (though this
+	 * can also be changed afterwards with SMWInfolink::setCaption()). If empty, the
+	 * message 'smw_iq_moreresults' is used as a caption.
 	 */
-	public function getQueryLink() {
+	public function getQueryLink($caption = false) {
 		$params = array(trim($this->m_querystring));
 		foreach ($this->m_extraprintouts as $printout) {
 			$params[] = $printout->getSerialisation();
@@ -219,7 +222,10 @@ class SMWQueryResult {
 			$params['sort'] = $psort;
 			$params['order'] = $porder;
 		}
-		$result = SMWInfolink::newInternalLink(wfMsgForContent('smw_iq_moreresults'),':Special:Ask', false, $params);
+		if ($caption == false) {
+			$caption = wfMsgForContent('smw_iq_moreresults');
+		}
+		$result = SMWInfolink::newInternalLink($caption,':Special:Ask', false, $params);
 		// Note: the initial : prevents SMW from reparsing :: in the query string
 		return $result;
 	}
