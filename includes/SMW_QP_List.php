@@ -146,10 +146,12 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			if ($this->mSearchlabel) {
 				$link->setCaption($this->mSearchlabel);
 			}
-			$format = $this->mFormat;
-			if ('ol' == $this->mFormat) $format = 'ul';
-			$link->setParameter($format,'format');
-			$link->setParameter($this->mSep,'sep');
+			// not needed for 'ul' (see below):
+// 			if ($this->mSep != '') {
+// 				$link->setParameter($this->mSep,'sep');
+// 			}
+
+			$link->setParameter('ul','format'); // always use ul, other formats suck as search page output
 			$link->setParameter($this->mTemplate,'template');
 			$result .= $rowstart . $link->getText($outputmode,$this->getLinker()) . $rowend;
 		}
