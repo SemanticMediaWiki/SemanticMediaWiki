@@ -153,7 +153,7 @@ class SMWQueryResult {
 			$params['sort'] = $psort;
 			$params['order'] = $porder;
 		}
-		return $title->getFullURL(SMWInfoLink::encodeParameters($params,false));
+		return $title->getFullURL(SMWInfolink::encodeParameters($params,false));
 	}
 	
 	/**
@@ -164,7 +164,7 @@ class SMWQueryResult {
 	public function getQueryTitle($prefixed = true) {
 		if ($prefixed) {
 			$title = Title::makeTitle(NS_SPECIAL, 'ask');
-			$titlestring = $title->getPrefixedText() . '/';
+			$titlestring = ':' . $title->getPrefixedText() . '/';
 		} else { // useful for further processing
 			$titlestring = '';
 		}
@@ -189,8 +189,39 @@ class SMWQueryResult {
 			$params['sort'] = $psort;
 			$params['order'] = $porder;
 		}
-		$titlestring .= SMWInfoLink::encodeParameters($params);
+		$titlestring .= SMWInfolink::encodeParameters($params);
 		return $titlestring;
+	}
+
+	/**
+	 * Create an SMWInfolink object representing a link to further query results.
+	 * This link can then be serialised or extended by further params first.
+	 */
+	public function getQueryLink() {
+		$params = array(trim($this->m_querystring));
+		foreach ($this->m_extraprintouts as $printout) {
+			$params[] = $printout->getSerialisation();
+		}
+		if ( count($this->m_query->sortkeys)>0 ) {
+			$psort  = '';
+			$porder = '';
+			$first = true;
+			foreach ( $this->m_query->sortkeys as $sortkey => $order ) {
+				if ( $first ) {
+					$first = false;
+				} else {
+					$psort  .= ',';
+					$porder .= ',';
+				}
+				$psort .= $sortkey;
+				$porder .= $order;
+			}
+			$params['sort'] = $psort;
+			$params['order'] = $porder;
+		}
+		$result = SMWInfolink::newInternalLink(wfMsgForContent('smw_iq_moreresults'),':Special:Ask', false, $params);
+		// Note: the initial : prevents SMW from reparsing :: in the query string
+		return $result;
 	}
 }
 

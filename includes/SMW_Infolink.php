@@ -53,7 +53,8 @@ class SMWInfolink {
 	 */
 	public static function newPropertySearchLink($caption,$propertyname,$value,$style = 'smwsearch') {
 		global $wgContLang;
-		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByProperty/' .  $propertyname . '::' . $value, $style);
+// 		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByProperty/' .  $propertyname . '::' . $value, $style);
+		return new SMWInfolink(true,$caption,$wgContLang->getNsText(NS_SPECIAL) . ':SearchByProperty', $style, array($propertyname, $value));
 	}
 
 	/**
@@ -74,6 +75,31 @@ class SMWInfolink {
 
 
 	/**
+	 * Add more parameters values to an existing link
+	 */
+	public function addParameter($value, $key = false) {
+		if ($key === false) {
+			$this->m_params[] = $value;
+		} else {
+			$this->m_params[$key] = $value;
+		}
+	}
+
+	/**
+	 * Change the link text.
+	 */
+	public function setCaption($caption) {
+		$this->m_caption = $caption;
+	}
+
+	/**
+	 * Change the link's CSS class.
+	 */
+	public function setStyle($style) {
+		$this->m_style = $style;
+	}
+
+	/**
 	 * Returns a suitable text string for displaying this link in HTML or wiki, depending
 	 * on whether $outputformat is SMW_OUTPUT_WIKI or SMW_OUTPUT_HTML.
 	 *
@@ -91,10 +117,15 @@ class SMWInfolink {
 			$end = '';
 		}
 		if ($this->m_internal) {
-			$title = Title::newFromText($this->m_target);
+			if (count($this->m_params) > 0) {
+				$titletext = $this->m_target . '/' . SMWInfolink::encodeParameters($this->m_params);
+			} else {
+				$titletext = $this->m_target;
+			}
+			$title = Title::newFromText($titletext);
 			if ($title !== NULL) {
 				if ($outputformat == SMW_OUTPUT_WIKI) {
-					$link = "[[$this->m_target|$this->m_caption]]";
+					$link = "[[$titletext|$this->m_caption]]";
 				} else { // SMW_OUTPUT_HTML
 					$link = $this->getLinker($linker)->makeKnownLinkObj($title, $this->m_caption);
 				}
@@ -102,22 +133,54 @@ class SMWInfolink {
 			         // (only possible if offending target parts belong to some parameter
 			         //  that can be separated from title text,
 			         //  e.g. as in Special:Bla/il<leg>al -> Special:Bla&p=il&lt;leg&gt;al)
-				return '';
-// 				if ($outputformat == SMW_OUTPUT_WIKI) {
-// 					$link = '[' . SMWExporter::expandURI('&wikiurl;' . rawurlencode($this->m_target)) . " $this->m_caption]";
-// 				} else {
-// 					$link = '<a href="' . SMWExporter::expandURI('&wikiurl;' . rawurlencode($this->m_target)) . "\">$this->m_caption</a>";
-// 				}
+				$title = Title::newFromText($this->m_target);
+				if ($title !== NULL) {
+					if ($outputformat == SMW_OUTPUT_WIKI) {
+						$link = "[" . $title->getFullURL(SMWInfolink::encodeParameters($this->m_params,false)) . " $this->m_caption]";
+					} else { // SMW_OUTPUT_HTML
+						$link = $this->getLinker($linker)->makeKnownLinkObj($title, $this->m_caption, SMWInfolink::encodeParameters($this->m_params,false));
+					}
+				} else {
+					return ''; // the title was bad, normally this would indicate a software bug
+				}
 			}
 		} else {
+			$target = $this->getURL();
 			if ($outputformat == SMW_OUTPUT_WIKI) {
-				$link = "[$this->m_target $this->m_caption]";
+				$link = "[$target $this->m_caption]";
 			} else {
-				$link = "<a href=\"$this->m_target\">$this->m_caption</a>";
+				$link = "<a href=\"" . htmlspecialchars($target) . "\">$this->m_caption</a>";
 			}
 		}
 
 		return $start . $link . $end;
+	}
+
+	/**
+	 * Return a fully qualified URL that points to the link target (whether internal or not).
+	 * This function might be used when the URL is needed outside normal links, e.g. in the HTML
+	 * header or in some metadata file. For making normal links, getText() should be used.
+	 */
+	public function getURL() {
+		if ($this->m_internal) {
+			$title = Title::newFromText($this->m_target);
+			if ($title !== NULL) {
+				return $title->getFullURL(SMWInfolink::encodeParameters($this->m_params,false));
+			} else {
+				return ''; // the title was bad, normally this would indicate a software bug
+			}
+		} else {
+			if (count($this->m_params) > 0) {
+				if (strpos(SMWExporter::expandURI('&wikiurl;'), '?') === false) {
+					$target = $this->m_target . '?' . SMWInfolink::encodeParameters($this->m_params,false);
+				} else {
+					$target = $this->m_target . '&' . SMWInfolink::encodeParameters($this->m_params,false);
+				}
+			} else {
+				$target = $this->m_target;
+			}
+			return $target;
+		}
 	}
 
 
@@ -190,7 +253,7 @@ class SMWInfolink {
 	 * parameters are encoded for use in a MediaWiki page title (useful for making
 	 * internal links to parameterised special pages), otherwise the parameters are
 	 * encoded HTTP GET style. The parameter name "x" is used to collect parameters
-	 * that do not have any string keys in GET, and hance "x" should never be used
+	 * that do not have any string keys in GET, and hence "x" should never be used
 	 * as a parameter name.
 	 *
 	 * The function SMWInfolink::decodeParameters() can be used to undo this encoding.
@@ -203,7 +266,23 @@ class SMWInfolink {
 		if ($forTitle) {
 			foreach ($params as $name => $value) {
 				if ( is_string($name) && ($name != '') ) $value = $name . '=' . $value;
-				$value = str_replace(array('/','=','-',',','%'),array('-2F','-3D','-2D','-2C','-'), rawurlencode($value));
+// 				$value = str_replace(array('/','=','-',',','%'),array('-2F','-3D','-2D','-2C','-'), urlencode($value));
+
+				// Escape certain problematic values. Use SMW-escape 
+				// (like URLencode but - instead of % to prevent double encoding by later MW actions)
+				//
+				// / : SMW's parameter separator, must not occur within params
+				// - : used in SMW-encoding strings, needs escaping too
+				// [ ] < > &lt; &gt; '' |: problematic in MW titles
+				// & : sometimes problematic in MW titles ([[&amp;]] is OK, [[&test]] is OK, [[&test;]] is not OK)
+				//     (Note: '&' in strings obtained during parsing already has &entities; replaced by UTF8 anyway)
+				// ' ': are equivalent with '_' in MW titles, but are not equivalent in certain parameter values
+				// "\n": real breaks not possible in [[...]]
+				// "#": has special meaning in URLs, triggers additional MW escapes (using . for %)
+				//
+				$value = str_replace(
+				          array('-', '#', "\n", ' ', '/', '[', ']', '<', '>', '&lt;', '&gt;', '&amp;', '\'\'', '|', '&'),
+				          array('-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26'), $value);
 				if ($result != '') $result .= '/';
 				$result .= $value;
 			}
@@ -211,7 +290,7 @@ class SMWInfolink {
 			$q = array(); // collect unlabelled query parameters here
 			foreach ($params as $name => $value) {
 				if ( is_string($name) && ($name != '') ) {
-					$value = $name . '=' . rawurlencode($value);
+					$value = $name . '=' . urlencode($value);
 					if ($result != '') $result .= '&';
 					$result .= $value;
 				} else {

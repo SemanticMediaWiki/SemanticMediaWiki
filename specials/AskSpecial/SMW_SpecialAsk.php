@@ -89,7 +89,7 @@ class SMWAskPage extends SpecialPage {
 		// Check for title-part params, as used when special page is called via internal wiki link:
 		$p .= $wgRequest->getVal( 'raw' );
 		if (!$wgRequest->getCheck('q')) { // only do that for calls from outside this special page
-			$rawparams = SMWInfoLink::decodeParameters($p);
+			$rawparams = SMWInfolink::decodeParameters($p);
 		} else {
 			$rawparams = array();
 		}

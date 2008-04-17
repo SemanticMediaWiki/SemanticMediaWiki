@@ -76,7 +76,7 @@ abstract class SMWDataValue {
 		$this->m_property = $propertyname;
 	}
 
-	public function addInfoLink(SMWInfoLink $link) {
+	public function addInfolink(SMWInfolink $link) {
 		$this->m_infolinks[] = $link;
 	}
 

@@ -68,7 +68,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	///// Set up autoloading
 	///// All classes registered for autoloading here should be tagged with this information:
 	///// Add "@note AUTOLOADED" to their class documentation. This avoids useless includes.
-	$wgAutoloadClasses['SMWInfoLink']         = $smwgIP . '/includes/SMW_Infolink.php';
+	$wgAutoloadClasses['SMWInfolink']         = $smwgIP . '/includes/SMW_Infolink.php';
 	//// printers
 	$wgAutoloadClasses['SMWResultPrinter']         = $smwgIP . '/includes/SMW_QueryPrinter.php';
 	$wgAutoloadClasses['SMWTableResultPrinter']    = $smwgIP . '/includes/SMW_QP_Table.php';
