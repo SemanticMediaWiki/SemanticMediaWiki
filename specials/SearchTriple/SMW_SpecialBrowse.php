@@ -32,14 +32,17 @@ class SMWSpecialBrowse extends SpecialPage {
 		global $wgRequest, $wgOut, $wgUser,$wgContLang, $smwgIP;
 		include_once($smwgIP . '/includes/storage/SMW_Store.php');
 		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
-		include_once($smwgIP . '/includes/SMW_Infolink.php');
 
 		$skin = $wgUser->getSkin();
 
 		// get the GET parameters
 		$articletext = $wgRequest->getVal( 'article' );
 		// no GET parameters? Then try the URL
-		if ('' == $articletext) { $articletext = $query; }
+		if ('' == $articletext) {
+			$params = SMWInfolink::decodeParameters($query,false);
+			reset($params);
+			$articletext = current($params);
+		}
 		$article = SMWDataValueFactory::newTypeIDValue('_wpg', $articletext);
 		$limit = $wgRequest->getVal( 'limit' );
 		if ('' == $limit) $limit =  10;

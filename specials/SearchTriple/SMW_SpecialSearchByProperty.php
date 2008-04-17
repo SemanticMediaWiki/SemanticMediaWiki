@@ -34,18 +34,11 @@ class SMWSearchByProperty extends SpecialPage {
 		$attributestring = $wgRequest->getVal( 'property' );
 		$valuestring = $wgRequest->getVal( 'value' );
 		// no GET parameters? Then try the URL
-		$params = SMWInfolink::decodeParameters($query, true);
+		$params = SMWInfolink::decodeParameters($query, false);
 		reset($params);
-		if (count($params) > 0 ) $attributestring = next($params);
-		if (count($params) > 1 ) $valuestring = next($params);
-// 		if (('' == $attributestring) && ('' == $valuestring)) {
-// 			$queryparts = explode('::', $query);
-// 			$attributestring = $query;
-// 			if (count($queryparts) == 2) {
-// 				$attributestring = $queryparts[0];
-// 				$valuestring = str_replace("_", " ", $queryparts[1]);
-// 			}
-// 		}
+		$attributestring = current($params);
+		$valuestring = next($params);
+
 		$attribute = Title::newFromText( $attributestring, SMW_NS_PROPERTY );
 		if (NULL === $attribute) { $attributestring = ''; } else { $attributestring = $attribute->getText(); }
 
