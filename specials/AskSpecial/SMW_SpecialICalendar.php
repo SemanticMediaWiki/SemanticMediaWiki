@@ -139,6 +139,7 @@ class SMWICalendarPage extends SpecialPage {
 	protected function makeICalendarResult() {
 		global $wgOut, $wgRequest, $wgServer, $wgSitename;
 		$wgOut->disable();
+		header( "Content-type: text/calendar" );
 		$newprintouts = array(); // filter printouts
 		foreach ($this->m_printouts as $printout) {
 			if ((strtolower($printout->getLabel()) == "start") and ($printout->getTypeID() == "_dat")) {
