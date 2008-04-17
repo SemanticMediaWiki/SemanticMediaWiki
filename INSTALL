@@ -40,6 +40,10 @@ php_mbstring.dll extension. This is standard but not enabled by default
 on some distributions of PHP.
 See http://php.net/manual/en/ref.mbstring.php#mbstring.installation
 * MediaWiki versions prior to 1.10 lack an OutputPage->addHeadItem that SMW uses.
+* SMW creates and alters temporary tables on the fly for certain semantic queries. 
+  To do this, your wikidb user must have privileges for CREATE TEMPORARY TABLE, 
+  DROP TEMPORARY TABLE, and ALTER TABLE. The according feature can be disabled by
+  adding $smwgQSubcategoryDepth=0; and $smwgQPropertyDepth=0; to Localsettings.php.
 
 == Installation ==
 
