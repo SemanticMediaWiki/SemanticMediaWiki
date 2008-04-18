@@ -37,7 +37,7 @@ $messages['en'] = array(
 	'smw_iq_altresults'  => 'Browse the result list directly.', // available link when JS is disabled
 
 	// Messages and strings for ontology resued (import)
-	'smw_unknown_importns'    => 'Import functions are not avalable for namespace “$1”.',
+	'smw_unknown_importns'    => 'Import functions are not available for namespace “$1”.',
 	'smw_nonright_importtype' => '$1 can only be used for pages with namespace “$2”.',
 	'smw_wrong_importtype'    => '$1 can not be used for pages in the namespace “$2”.',
 	'smw_no_importelement'    => 'Element “$1” not available for import.',
