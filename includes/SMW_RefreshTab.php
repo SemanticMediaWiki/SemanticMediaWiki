@@ -11,7 +11,7 @@ function smwfAddRefreshTab($obj, $content_actions) {
 	if($wgUser->isAllowed('delete')){
 		$content_actions['purge'] = array(
 			'class' => false,
-			'text' => wfMsg('purge'),
+			'text' => wfMsg('smw_purge'),
 			'href' => $wgTitle->getLocalUrl( 'action=purge' )
 		);
 	}

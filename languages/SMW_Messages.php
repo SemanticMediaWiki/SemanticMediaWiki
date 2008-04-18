@@ -114,7 +114,7 @@ $messages['en'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 uses)', // <propname> (<count> uses)
 	// Messages for the refresh button
 	'tooltip-purge' => 'Click here to refresh all queries and templates on this page',
-	'purge' => 'Refresh',
+	'smw_purge' => 'Refresh',
 	// Messages for Import Ontology Special
 	'ontologyimport' => 'Import ontology',
 	'smw_oi_docu' => 'This special page allows to import ontologies. The ontologies have to follow a certain format, specified at the <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">ontology import help page</a>.',
@@ -296,7 +296,7 @@ $messages['de'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 Vorkommen)', // <propname> (<count> uses)
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Alle Anfrageergebnisse und Vorlagen auf dieser Seite auf den neuesten Stand bringen.',
-	'purge' => 'aktualisieren',
+	'smw_purge' => 'aktualisieren',
 	/*Messages for Import Ontology Special*/
 	'ontologyimport' => 'Importiere Ontologie',
 	'smw_oi_docu' => 'Diese Spezialseite erlaubt es, Informationen aus einer externen Ontologie zu importieren. Die Ontologie sollte in einem vereinfachten RDF-Format vorliegen. Weitere Informationen sind in der englischsprachigen <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">Dokumentation zum Ontologieimport</a> zu finden.',
@@ -468,7 +468,7 @@ $messages['fr'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 utilisations)', // <propname> (<count> uses)
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Réactualiser toutes les recherches et tous les brouillons de cette page.',
-	'purge' => 'Réactualiser',
+	'smw_purge' => 'Réactualiser',
 	/*Messages for Import Ontology Special*/
 	'ontologyimport' => 'Importer une ontologie',
 	'smw_oi_docu' => 'Cette page spéciale permet d\'importer des informations d\'une ontologie externe. Cette ontologie doit être dans un format RDF simplifié. Des informations supplémentaires sont disponibles dans la <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">Documentation relative à l\'import d\'ontologie</a> en langues anglaise.',
@@ -601,7 +601,7 @@ $messages['es'] = array(
 	'smw_exportrdf_backlinks' => 'Exportar igualmente todas las páginas que reenvían a páginas exportadas. Resulta un RDF en el que se facilita la navegación.',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Volver a actualizar todas las búsquedas y borradores de esta página.',
-	'purge' => 'Volver a actualizar',
+	'smw_purge' => 'Volver a actualizar',
 	/*Messages for Import Ontology Special*/
 	// Messages for Import Ontology Special
 	'ontologyimport' => 'Importar la ontología',
@@ -686,7 +686,7 @@ $messages['he'] = array(
 	'smw_nodatetime' => '[אופס! התאריך "$1" אינו מובן. מצד שני התמיכה בתאריכים היא עדיין ניסיונית.]',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'לחץ כאן הכדי לרענן את כל התבניות והשאילתות בדף זה',
-	'purge' => 'רענן תבניות ושאילתות',
+	'smw_purge' => 'רענן תבניות ושאילתות',
 	/*Messages for (data)Types Special*/
 	'types' => 'טיפוסים',
 	'smw_types_docu' => 'ברשימה זו מופיעים כל טיפוסי המידע שתכונות יכולות להשתמש בהם . לכל טיפוס מידע יש דף המסביר על אודותיו.',
@@ -797,7 +797,7 @@ $messages['nl'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 keren gebruikt)', // <propname> (<count> uses)
 	// Messages for the refresh button
 	'tooltip-purge' => 'Klik hier om alle zoekopdrachten en sjablonen op deze pagina bij te werken',
-	'purge' => 'Verversen',
+	'smw_purge' => 'Verversen',
 	// Messages for Import Ontology Special
 	'ontologyimport' => 'Importeer ontologie',
 	'smw_oi_docu' => 'Via deze speciale pagina is het mogelijk een ontologie te importeren. Een ontologie moet een bepaalde opmaak hebben, die is gespecificeerd op de <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">ontologie importhelppagina</a>.',
@@ -931,7 +931,7 @@ $messages['pl'] = array(
 	'smw_exportrdf_backlinks' => 'Eksportuj także wszystkie strony, które odwołują się do eksportowanych stron.  Tworzy przeglądalny RDF.',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Kliknij tutaj, aby odświeżyć wszystkie zapytania i szablony na tej stronie',
-	'purge' => 'Odśwież',
+	'smw_purge' => 'Odśwież',
 	/*Messages for Import Ontology Special*/
 	'ontologyimport' => 'Importuj ontologię',
 	'smw_oi_docu' => 'Ta strona specjalna pozwala na import ontologii.  Ontologie muszą być reprezentowane w odpowiednim formacie, opisanym na <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">stronie pomocy poświęconej importowi ontologii</a>.',
@@ -1090,7 +1090,7 @@ $messages['ru'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 использований)', // <propname> (<count> uses)
 	// Messages for the refresh button
 	'tooltip-purge' => 'Нажмите здесь для обновления всех запросов и шаблонов на этой странице',
-	'purge' => 'Обновить',
+	'smw_purge' => 'Обновить',
 	// Messages for Import Ontology Special
 	'ontologyimport' => 'Импорт онтологии',
 	'smw_oi_docu' => 'Это специальная страница для импорта онтологий. Формат онтологии приведен на <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">странице справки</a>.',
@@ -1211,7 +1211,7 @@ $messages['sk'] = array(
 	'smw_exportrdf_backlinks' => 'Tieť exportovať všetky stránky, ktoré odkazujú na exportované stránky. Vytvorí prehliadateľné RDF.',
 	/* Messages for the refresh button */
 	'tooltip-purge' => 'Kliknutím sem obnovíte všetky dotazy a šablóny na tejto stránke',
-	'purge' => 'Obnoviť',
+	'smw_purge' => 'Obnoviť',
 	/*Messages for Import Ontology Special*/
 	'ontologyimport' => 'Importovať ontológiu',
 	'smw_oi_docu' => 'Táto špeciálna stránka umožňuje import ontológií. Ontológie musia dodržiavať istý formát, špecifkovaný na <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">stránke pomocníka pre import ontógie</a>.',
@@ -1357,7 +1357,7 @@ $messages['zh-tw'] = array(
 	'smw_wantedproperty_template' => '$1 (已用於$2處)',	//'$1 ($2 uses)', // <propname> (<count> uses)
 	// Messages for the refresh button
 	'tooltip-purge' => '按此處以更新此頁全部的查詢項目及樣板。',	//'Click here to refresh all queries and templates on this page',
-	'purge' => '更新',	//'Refresh',
+	'smw_purge' => '更新',	//'Refresh',
 	// Messages for Import Ontology Special
 	'ontologyimport' => '輸入知識本體(ontology)',	//'Import ontology',
 	'smw_oi_docu' => '此特殊頁可用以輸入知識本體(ontology)，此知識本體(ontology)必須依循特定的格式，此特定格式在<a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">知識本體(ontology)的匯入求助頁面。</a>',	//'This special page allows to import ontologies. The ontologies have to follow a certain format, specified at the <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">ontology import help page</a>.',
@@ -1523,7 +1523,7 @@ $messages['zh-cn'] = array(
 	'smw_wantedproperty_template' => '$1 (已用于$2处)',	//'$1 ($2 uses)', // <propname> (<count> uses)
 	// Messages for the refresh button
 	'tooltip-purge' => '按此处以更新此页全部的查询项目及样板。',	//'Click here to refresh all queries and templates on this page',
-	'purge' => '更新',	//'Refresh',
+	'smw_purge' => '更新',	//'Refresh',
 	// Messages for Import Ontology Special
 	'ontologyimport' => '输入知识本体(ontology)',	//'Import ontology',
 	'smw_oi_docu' => '此特殊页可用以输入知识本体(ontology)，此知识本体(ontology)必须依循特定的格式，此特定格式在<a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">知识本体(ontology)的导入求助页面。</a>',	//'This special page allows to import ontologies. The ontologies have to follow a certain format, specified at the <a href="http://wiki.ontoworld.org/index.php/Help:Ontology_import">ontology import help page</a>.',
@@ -1690,7 +1690,7 @@ $messages['ko'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 사용)', // <propname> (<count> uses)
 	// Messages for the refresh button
 	'tooltip-purge' => '여기를 클릭하여이 페이지를 새로 고치 모든 쿼리와 템플릿',
-	'purge' => '새로 고침',
+	'smw_purge' => '새로 고침',
 	// Messages for Import Ontology Special
 	'ontologyimport' => '져올 존재론',
 	'smw_oi_docu' => '이 특별 페이지를 통해를가 져올 존재론. 가 존재론 필요가 다음과 일정한 형식, 지정된 부분에 <a href="http://wiki.ontoworld.org/index.php/help:ontology_import"> 존재론 져올 도움말 페이지 </a>.',
@@ -1856,7 +1856,7 @@ $messages['it'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 usi)', // <propname> (<count> uses)
 	// Messages for the refresh button
 	'tooltip-purge' => 'Clicca qui per riaggiornare tutte le query e i template di questa pagina',
-	'purge' => 'Aggiorna',
+	'smw_purge' => 'Aggiorna',
 	// Messages for Import Ontology Special
 	'ontologyimport' => 'Importa ontologia',
 	'smw_oi_docu' => 'Questa pagina speciale permette di importare ontologie. Le ontologie devono seguire un certo formato, specificato nella <a href="http://semantic-mediawiki.org/index.php/Help:Ontology_import">pagina di aiuto per l\'importazione di ontologie (in inglese)</a>.',
@@ -2028,7 +2028,7 @@ $messages['ar'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 الاستعمالات)', // <propname> (<count> uses)
 	// Messages for the refresh button
 	'tooltip-purge' => ' اضغط هنا لتحديث كافة الاستفسارات والقوالب على هذه الصفحه',
-	'purge' => 'تحديث',
+	'smw_purge' => 'تحديث',
 	// Messages for Import Ontology Special
 	'ontologyimport' => 'استيراد أنتولوجي',
 	
