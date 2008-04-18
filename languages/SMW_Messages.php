@@ -95,7 +95,8 @@ Results might not be as expected.',
 	'smw_propvalueproblem'  => 'The value of property “$1” was not understood.',
 	'smw_nodisjunctions'    => 'Disjunctions in queries are not supported in this wiki and part of the query was dropped ($1).',
 	'smw_querytoolarge'     => 'The following query conditions could not be considered due to the wikis restrictions in query size or depth: $1.',
-	'smw_devel_warning'     => 'This feature is currently under development, and might not be fully functional. Backup your data before using it.',
+	'smw_devel_warning'     => 'This feature is currently under development, and might not be fully functional.
+Backup your data before using it.',
 
 	// Messages for pages of types and properties
 	'smw_type_header'           => 'Properties of type “$1”',
@@ -209,7 +210,8 @@ The number of incorrect properties is given in the brackets.',
 
 	// Messages for the page property special
 	'pageproperty'  => 'Page property search',
-	'smw_pp_docu'   => 'Search for all the fillers of a property on a given page. Please enter both a page and a property.',
+	'smw_pp_docu'   => 'Search for all the fillers of a property on a given page.
+Please enter both a page and a property.',
 	'smw_pp_from'   => 'From page',
 	'smw_pp_type'   => 'Property',
 	'smw_pp_submit' => 'Find results',
