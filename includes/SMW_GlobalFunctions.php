@@ -53,7 +53,7 @@ $smwgHeadItems = array();
  * does not adhere to the naming conventions.
  */
 function enableSemantics($namespace = '', $complete = false) {
-	global $smwgNamespace, $wgExtensionFunctions, $wgSpecialPages, $wgAutoloadClasses, $smwgIP, $wgHooks;
+	global $smwgNamespace, $wgExtensionFunctions, $wgSpecialPages, $wgAutoloadClasses, $smwgIP, $wgHooks, $wgExtensionMessagesFiles;
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
@@ -64,6 +64,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	}
 	$wgExtensionFunctions[] = 'smwfSetupExtension';
 	$wgHooks['LanguageGetMagic'][] = 'smwfAddMagicWords'; // setup names for parser functions (needed here)
+	$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . '/languages/SMW_Messages.php'; // register messages (requires MW=>1.11)
 
 	///// Set up autoloading
 	///// All classes registered for autoloading here should be tagged with this information:
@@ -124,7 +125,7 @@ function enableSemantics($namespace = '', $complete = false) {
  */
 function smwfSetupExtension() {
 	wfProfileIn('smwfSetupExtension (SMW)');
-	global $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber;
+	global $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode;
 
 	/**
 	* Setting this to false prevents any new data from being stored in
@@ -141,7 +142,8 @@ function smwfSetupExtension() {
 	$smwgStoreActive = true;
 
 	$smwgMasterStore = NULL;
-	smwfInitContentMessages(); // this really could not be done in enableSemantics()
+	smwfInitContentLanguage($wgLanguageCode); // this really could not be done in enableSemantics()
+	wfLoadExtensionMessages('SemanticMediaWiki');
 	$smwgIQRunningNumber = 0;
 
 	///// register hooks /////
@@ -159,7 +161,6 @@ function smwfSetupExtension() {
 	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeadersOutput'; // add items to HTML header during output
 
 	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage'; // special implementations for property/type articles
-	$wgHooks['LoadAllMessages'][] = 'smwfLoadAllMessages'; // complete setup of all messages when requested by MW
 
 	///// credits (see "Special:Version") /////
 	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, [http://korrekt.org Markus&nbsp;Kr&ouml;tzsch], [http://simia.net Denny&nbsp;Vrandecic], S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://semantic-mediawiki.org', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://semantic-mediawiki.org/wiki/Help:User_manual View online documentation.]');
@@ -378,60 +379,6 @@ function smwfAddHTMLHeadersOutput(&$out) {
 
 		wfProfileOut('smwfInitContentLanguage (SMW)');
 	}
-
-	/**
-	 * Set up the content messages.
-	 */
-	function smwfInitContentMessages() {
-		global $smwgContMessagesInPlace;
-		if ($smwgContMessagesInPlace) { return; }
-		wfProfileIn('smwfInitContentMessages (SMW)');
-		global $wgMessageCache, $smwgContLang, $wgLanguageCode;
-		smwfInitContentLanguage($wgLanguageCode);
-
-		$wgMessageCache->addMessages($smwgContLang->getContentMsgArray(), $wgLanguageCode);
-		$smwgContMessagesInPlace = true;
-		wfProfileOut('smwfInitContentMessages (SMW)');
-	}
-
-	/**
-	 * Initialise the global language object and messages for user language. This
-	 * must happen after the content language was initialised, since
-	 * this language is used as a fallback.
-	 */
-	function smwfInitUserMessages() {
-		global $smwgIP, $smwgLang;
-		if (!empty($smwgLang)) { return; }
-		wfProfileIn('smwfInitUserMessages (SMW)');
-		global $wgMessageCache, $wgLang;
-
-		$smwLangClass = 'SMW_Language' . str_replace( '-', '_', ucfirst( $wgLang->getCode() ) );
-
-		if (file_exists($smwgIP . '/languages/'. $smwLangClass . '.php')) {
-			include_once( $smwgIP . '/languages/'. $smwLangClass . '.php' );
-		}
-		// fallback if language not supported
-		if ( !class_exists($smwLangClass)) {
-			global $smwgContLang;
-			$smwgLang = $smwgContLang;
-		} else {
-			$smwgLang = new $smwLangClass();
-		}
-
-		$wgMessageCache->addMessages($smwgLang->getUserMsgArray(), $wgLang->getCode());
-		wfProfileOut('smwfInitUserMessages (SMW)');
-	}
-
-	/**
-	* Set up all messages if requested explicitly by MediaWiki.
-	* $pagelist was used in earlier MW versions and is kept for compatibility.
-	*/
-	function smwfLoadAllMessages($pagelist = NULL) {
-		smwfInitContentMessages();
-		smwfInitUserMessages();
-		return true;
-	}
-
 
 /**********************************************/
 /***** other global helpers               *****/

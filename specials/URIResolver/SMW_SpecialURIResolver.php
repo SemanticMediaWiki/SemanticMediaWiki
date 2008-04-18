@@ -20,7 +20,6 @@ class SMWURIResolver extends SpecialPage {
 	 * Constructor
 	 */
 	public function __construct() {
-		smwfInitUserMessages();
 		parent::__construct('URIResolver', '', false);
 	}
 

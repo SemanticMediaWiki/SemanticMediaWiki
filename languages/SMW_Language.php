@@ -8,9 +8,7 @@
  */
 abstract class SMW_Language {
 
-	// the message arrays ...
-	protected $m_ContentMessages;
-	protected $m_UserMessages;
+	// the special message arrays ...
 	protected $m_DatatypeLabels;
 	protected $m_DatatypeAliases = array();
 	protected $m_SpecialProperties;
@@ -111,21 +109,6 @@ abstract class SMW_Language {
 		}
 	}
 
-	/**
-	 * Function that returns all content messages (those that are stored
-	 * in some article, and can thus not be translated to individual users).
-	 */
-	function getContentMsgArray() {
-		return $this->m_ContentMessages;
-	}
-
-	/**
-	 * Function that returns all user messages (those that are given only to
-	 * the current user, and can thus be given in the individual user language).
-	 */
-	function getUserMsgArray() {
-		return $this->m_UserMessages;
-	}
 }
 
 

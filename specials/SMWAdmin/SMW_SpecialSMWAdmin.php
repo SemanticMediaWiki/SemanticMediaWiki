@@ -20,7 +20,6 @@ class SMWAdmin extends SpecialPage {
 	 * Constructor
 	 */
 	public function __construct() {
-		smwfInitUserMessages();
 		global $wgMessageCache; ///TODO: should these be messages?
 		$wgMessageCache->addMessages(array('smwadmin' => 'Admin functions for Semantic MediaWiki'));
 		parent::__construct('SMWAdmin', 'delete');

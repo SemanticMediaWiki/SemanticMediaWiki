@@ -18,7 +18,6 @@ class SMWSpecialPage extends SpecialPage {
 	 * Constructor
 	 */
 	public function __construct($name, $function, $file = 'default', $listed=true, $restriction='') {
-		smwfInitUserMessages();
 		parent::__construct($name, $restriction, $listed, $function, $file);
 	}
 

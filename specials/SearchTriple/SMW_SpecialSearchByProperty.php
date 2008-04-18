@@ -21,7 +21,6 @@ class SMWSearchByProperty extends SpecialPage {
 	 * Constructor
 	 */
 	public function __construct() {
-		smwfInitUserMessages();
 		parent::__construct('SearchByProperty');
 	}
 
