@@ -616,6 +616,24 @@ $messages['es'] = array(
 	'smw_result_noresults'      => 'Lo siento, no hay resultados.',
 );
 
+/** Finnish (Suomi)
+ * @author Nike
+ */
+$messages['fi'] = array(
+	'smw_edithelp'                => 'Muokkausohjeita ominaisuuksista',
+	'smw_viewasrdf'               => 'RDF-syöte',
+	'smw_finallistconjunct'       => ' ja',
+	'smw_iq_moreresults'          => '… lisää tuloksia',
+	'smw_noboolean'               => '”$1” ei ole tunnistettavissa totuusarvoksi.',
+	'smw_true_words'              => 'kyllä,k,y',
+	'smw_false_words'             => 'ei,e,n',
+	'smw_nofloat'                 => '”$1” ei ole luku.',
+	'smw_badtitle'                => '”$1” ei ole kelvollinen sivun nimi.',
+	'exportrdf'                   => 'Vie sivut RDF:nä',
+	'smw_oi_importedfromontology' => 'Tuo ontologiasta',
+	'types'                       => 'Tyypit',
+);
+
 /** French (Français)
  * @author Pierre Matringe
  * @author Grondin
@@ -1579,6 +1597,24 @@ $messages['sk'] = array(
 	'smw_result_next'             => 'Ďalej',
 	'smw_result_results'          => 'Výsledky',
 	'smw_result_noresults'        => 'Prepáčte, žiadne výsledky.',
+);
+
+/** Swedish (Svenska)
+ * @author M.M.S.
+ */
+$messages['sv'] = array(
+	'smw_viewasrdf'         => 'RDF-matning',
+	'smw_finallistconjunct' => ', och',
+	'smw_factbox_head'      => 'Fakta om $1',
+	'smw_browse_go'         => 'Gå',
+	'pageproperty'          => 'Sidegenskapssökning',
+	'smw_pp_from'           => 'Från sida',
+	'smw_pp_type'           => 'Egenskap',
+	'smw_pp_submit'         => 'Hitta resultat',
+	'smw_result_prev'       => 'Föregående',
+	'smw_result_next'       => 'Nästa',
+	'smw_result_results'    => 'Resultat',
+	'smw_result_noresults'  => 'Beklagar, inga resultat.',
 );
 
 /** Mainland Chinese
