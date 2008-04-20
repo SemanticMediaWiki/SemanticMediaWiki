@@ -140,7 +140,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$smwgStoreActive = $old_smwgStoreActive;
 		}
 
-		if ( $this->mInline && $res->hasFurtherResults() && 
+		if ( $this->mInline && $res->hasFurtherResults() && ($this->mSearchlabel !== '') &&
 		     ( ('ol' != $this->mFormat) || ($this->mSearchlabel) ) ) {
 			$link = $res->getQueryLink();
 			if ($this->mSearchlabel) {
