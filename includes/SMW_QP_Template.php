@@ -26,7 +26,7 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 
 	protected function getResultText($res, $outputmode) {
 		// handle factbox
-		global $smwgStoreActive, $wgTitle, $wgParser;
+		global $smwgStoreActive, $wgParser;
 
 		// print all result rows
 		if ($this->m_template == false) {
@@ -60,7 +60,7 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 		$parser_options->setEditSection(false);  // embedded sections should not have edit links
 		$parser = clone $wgParser;
 		if ($outputmode == SMW_OUTPUT_HTML) {
-			$parserOutput = $parser->parse($parserinput, $wgTitle, $parser_options);
+			$parserOutput = $parser->parse($parserinput, $wgParser->getTitle(), $parser_options);
 			$result = $parserOutput->getText();
 		} else {
 			if ( method_exists($parser, 'getPreprocessor') ) {
@@ -68,7 +68,7 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 				$dom = $parser->preprocessToDom( $parserinput );
 				$result = $frame->expand( $dom );
 			} else {
-				$result = $parser->preprocess($parserinput, $wgTitle, $parser_options);
+				$result = $parser->preprocess($parserinput, $wgParser->getTitle(), $parser_options);
 			}
 		}
 		$smwgStoreActive = $old_smwgStoreActive;
