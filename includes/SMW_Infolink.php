@@ -217,9 +217,8 @@ class SMWInfolink {
 	protected function getLinker(&$linker = NULL) {
 		if ($linker === NULL) {
 			$linker = new Linker();
-		} else {
-			return $linker;
 		}
+		return $linker;
 	}
 
 	/**
