@@ -68,6 +68,8 @@ remarks in the section "Notes on Upgrading" below!
 (3) In your wiki, log in as a user with admin status and go to the page
     "Special:SMWAdmin" to do the final setup steps. This can also be done with
     a command-line php script. See [SMW_path]/maintenance/README for details.
+    Please consider announcing your new site to the SMW semantic wiki list by
+    using the according button on "Special:SMWAdmin".
 
 '''Remark:'''  Semantic MediaWiki uses six additional custom namespaces (see
 http://meta.wikimedia.org/wiki/Help:Custom_namespaces). If you have your own
