@@ -152,7 +152,12 @@ class SMWListResultPrinter extends SMWResultPrinter {
 // 			}
 
 			$link->setParameter('ul','format'); // always use ul, other formats suck as search page output
-			$link->setParameter($this->mTemplate,'template');
+			if ($this->mTemplate != '') {
+				$link->setParameter($this->mTemplate,'template');
+				if (array_key_exists('link', $this->m_params)) { // linking may interfere with templates
+					$link->setParameter($this->m_params['link'],'link');
+				}
+			}
 			$result .= $rowstart . $link->getText($outputmode,$this->getLinker()) . $rowend;
 		}
 

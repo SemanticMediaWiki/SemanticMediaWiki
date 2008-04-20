@@ -58,7 +58,7 @@ class SMWAskPage extends SpecialPage {
 			}
 			$parray = array();
 			foreach ($this->m_params as $key => $value) {
-				if ( !in_array($key,array('sort', 'order', 'limit', 'offset')) ) {
+				if ( !in_array($key,array('sort', 'order', 'limit', 'offset', 'title')) ) {
 					$parray[$key] = $value;
 				}
 			}

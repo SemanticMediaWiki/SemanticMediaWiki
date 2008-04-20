@@ -80,6 +80,9 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 			}
 			$link->setParameter('template','format');
 			$link->setParameter($this->m_template,'template');
+			if (array_key_exists('link', $this->m_params)) { // linking may interfere with templates
+				$link->setParameter($this->m_params['link'],'link');
+			}
 			$result .= $link->getText($outputmode,$this->getLinker());
 		}
 		return $result;
