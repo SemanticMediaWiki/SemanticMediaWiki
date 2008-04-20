@@ -1,4 +1,9 @@
-[[Semantic MediaWiki 1.0.1]]
+[[Semantic MediaWiki 1.1]]
+
+Install instructions for the latest SMW version are also online:
+
+ http://semantic-mediawiki.org/wiki/Help:Administrator_manual
+
 
 Contents:
 * Disclaimer
@@ -8,12 +13,14 @@ Contents:
   ** Customising Semantic MediaWiki
   ** Running SMW on older versions of MediaWiki
 * Notes on Upgrading
+  ** Upgrading from SMW 1.0 and SMW 1.0.1
   ** General Upgrading Instructions
   ** Upgrading from 1.0 RC1, 1.0 RC2, 1.0 RC3
   ** Upgrading from version 0.7
   ** Upgrading from versions 0.6 and 0.5
   ** Upgrading from 0.4.x
-* FAQ
+* Troubleshooting
+* SMW is installed. What should I do now?
 * Contact
 
 == Disclaimer ==
@@ -156,6 +163,12 @@ instructions to find out whether other changes are recommended therein.
 
 == Notes on Upgrading ==
 
+=== Upgrading from SMW 1.0 and SMW 1.0.1 ===
+
+No specific actions are required to run the wiki, but you should go once to
+Special:SMWAdmin for minor updates in the database, and maybe for using the 
+new SMW registration service.
+
 === General Upgrading Instructions ===
 
 All SMW data is extracted from wiki pages, and SMW offers an easy way of
@@ -250,104 +263,58 @@ upgrade to SMW0.7 first, and to move on to SMW1.0 next.
 
 Upgrading should work like for versions 0.6 and 0.5. The type "Geographic area" and 
 "Geographic length" are no longer built in. But you can easily create them by yourself
-with the new type customisation features. See the docu at ontoworld.org for details.
+with the new type customisation features. See the docu at http://semantic-mediawiki.org
+for details.
 
 
-== FAQ ==
+== Troubleshooting ==
 
-- Problem: I installed Semantic MediaWiki and all went fine. What should I do
-  with it now?
+Some technical problems are well known and have easy fixes. Please view the online manual: 
+http://semantic-mediawiki.org/wiki/Help:Troubleshooting
 
-  Semantic MediaWiki is there to help you to structure your data, so that you
-  can browse and search it easier. Typically, you should first add semantic 
-  markup to articles that cover a topic that is typical for your wiki. A single
-  article, semantic or not, will not improve your search capabilities.
+For reporting and looking up bugs, see http://semantic-mediawiki.org/wiki/Help:Reporting_bugs. 
+You can also send an email to semediawiki-user@lists.sourceforge.net (subscribe first at
+http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user)
 
-  Start with a kind of article that occurs often in your wiki, possibly with
-  some type of articles that is already collected in some category, such as
-  cities, persons, or software projects. For these articles, introduce a few
-  properties, and annotate many of the articles with the property.
-  As with categories, less is often more in semantic annotation: do
-  not use overly specific properties. A property that is not applicable to at
-  least ten articles is hardly useful.
+== SMW is installed. What should I do now? ==
 
-  Templates can greatly simplify initial annotation. Create a flashy template
-  for your users to play with, and hide the semantic annotations in the code
-  of the template. Use the ParserFunctions extension to implement optional
-  parameters, so that your users can leave fields in the template unspecified
-  without creating faulty annotations.
+Semantic MediaWiki is there to help you to structure your data, so that you
+can browse and search it easier. Typically, you should first add semantic 
+markup to articles that cover a topic that is typical for your wiki. A single
+article, semantic or not, will not improve your search capabilities.
 
-  Develop suitable inline queries (<ask> ... </ask>) along with any new
-  annotation. If you don't know how to use some annotation for searching, or
-  if you are not interested in searching for the annotated information anyway,
-  then you should probably not take the effort in the first place. Annotate
-  in a goal-directed way! Not all information can be extracted from the
-  annotations in your wiki. E.g. one can currently not search for articles that
-  are *not* in a given category. Think about what you want to ask for before
-  editing half of your wiki with new semantics ...
+Start with a kind of article that occurs often in your wiki, possibly with
+some type of articles that is already collected in some category, such as
+cities, persons, or software projects. For these articles, introduce a few
+properties, and annotate many of the articles with the property.
+As with categories, less is often more in semantic annotation: do
+not use overly specific properties. A property that is not applicable to at
+least ten articles is hardly useful.
 
-  If in doubt, choose simple annotations and learn to combine them into more
-  complex information. For example, you do not need to have a category for
-  "European cities" -- just combine "located in::Europe" and "Category:City."
-  In any case, if some annotation is not sufficient, you can still add more
-  information. Cleaning too specific and possibly contradictory annotations
-  can be more problematic.
+Templates can greatly simplify initial annotation. Create a flashy template
+for your users to play with, and hide the semantic annotations in the code
+of the template. Use the ParserFunctions extension to implement optional
+parameters, so that your users can leave fields in the template unspecified
+without creating faulty annotations.
 
-  Regularly review users' use of categories, properties, and types using 
-  the Special pages for each.
+Develop suitable inline queries ({{#ask: ... }}) along with any new
+annotation. If you don't know how to use some annotation for searching, or
+if you are not interested in searching for the annotated information anyway,
+then you should probably not take the effort in the first place. Annotate
+in a goal-directed way! Not all information can be extracted from the
+annotations in your wiki. E.g. one can currently not search for articles that
+are *not* in a given category. Think about what you want to ask for before
+editing half of your wiki with new semantics ...
 
-- Problem: Previewing or storing articles with semantic properties causes
-  database errors.
+If in doubt, choose simple annotations and learn to combine them into more
+complex information. For example, you do not need to have a category for
+"European cities" -- just combine "located in::Europe" and "Category:City."
+In any case, if some annotation is not sufficient, you can still add more
+information. Cleaning too specific and possibly contradictory annotations
+can be more problematic.
 
-  Your database was not initialized properly. Go to Special:SMWAdmin for
-  instructions. If all fails, run the maintenance script 
-  "SMW_refreshData -vfp" (followed by "SMW_refreshData -v" if you already 
-  stored annotations).
-
-- Problem: In my non-English installation, properties don't work even when
-  I follow the examples.
-
-  Although SMW normally provides English aliases, you may need to use the 
-  localised names for special properties and namespaces. The translated strings 
-  and aliases for each language are in the languages subdirectory.
-
-- Problem: After installing SMW, some or all pages are not displayed at all.
-- Problem: In some cases, pages are displayed incompletely, with some parts
-  vanishing.
-
-  This is usually due to the restrictive memory default settings on some sites, 
-  and is not directly caused by SMW (any additional extension code might cause this).
-  Uncomment the line "ini_set( 'memory_limit', '20M' );" in LocalSettings.php
-  and possibly adjust the value to your needs. More than 100M is harldy useful,
-  but values around 50M might be required for large pages in some cases.
-
-- When issuing semantic queries, I receive database errors that talk about some
-  "illegal collation". Otherwise storing of annotations seems to work.
-
-  Your database tables for MediaWiki and SMW have been generated with different
-  settings. To fix the problem, first try to run the maintenance script 
-  "SMW_refreshData -vfp" followed by "SMW_refreshData -v". If this does not help,
-  you need to investigate the collation/character set settings of your DB.
-  To do that, use a DB frontend tool or the SQL command "SHOW CREATE TABLE tablename;".
-  Look up the collation/charset of, e.g., the table "categorylinks" and change the
-  default collation/charset of your DB to these settings as described in the manual
-  http://dev.mysql.com/doc/refman/5.0/en/charset-syntax.html
-  Finally, run the aforementioned maintenance scripts again.
-
-- Problem: I have a problem that is not in this list.
-
-  Report general bugs at http://bugzilla.wikimedia.org/ where you can also 
-  find out whether your problem is known. You can also send an email to 
-  semediawiki-user@lists.sourceforge.net (subscribe first at 
-  http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user)
-
-  Provide the versions of PHP and MediaWiki and SMW that you are using, and
-  any other extensions you installed (all this information is on the MediaWiki
-  Special:Version page).
-
-  Turn on debugging in MediaWiki (try 
-  http://meta.wikimedia.org/wiki/How_to_debug_MediaWiki ) and you should see
-  something in the log file.
+Regularly review users' use of categories, properties, and types using 
+the Special pages for each.
 
 
 == Contact ==

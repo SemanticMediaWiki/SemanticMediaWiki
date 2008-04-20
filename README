@@ -28,9 +28,9 @@ Development is coordinated by Markus Krötzsch and Denny Vrandecic.
 
 Semantic MediaWiki development is funded by Institut AIFB of Universität Karlsruhe,
 Germany; see http://aifb.uni-karlsruhe.de. Specific development tasks have been
-supported by the European Union under the projects SEKT and NeOn. SMW has also been 
-supported in the Halo project funded by Vulcan Inc., where development is coordinated 
-by ontoprise GmbH, Karlsruhe, Germany.
+supported by the European Union under the projects SEKT, NeOn, and Active. SMW has 
+also been supported in the Halo project funded by Vulcan Inc., where development 
+is coordinated by ontoprise GmbH, Karlsruhe, Germany.
 
 == Contributors ==
 
@@ -43,17 +43,22 @@ by ontoprise GmbH, Karlsruhe, Germany.
   going at the early stages of the project, and set up the first testing wiki.
   The first implementation has been done by Klaus Lassleben.
 
-* Code has been contributed by (in no particular order) Kai Hüner, Fernando Correia, 
+* Code has been contributed by (in no particular order) Kai Hüner, Fernando Correia,
   Yaron Koren, and Nick Grandy, Jörg Heizmann, Daniel Herzig, Nikolas Iwan, Tobias Matzner,
-  Thomas Bleher.
+  Thomas Bleher, Felix Kratzer.
 
-* The new logo and related artwork for Semantic MediaWiki (see ontoworld.org) 
+* The new logo and related artwork for Semantic MediaWiki (see semanticweb.org) 
   has been designed and realised by Rozana Vrandecic.
 
 == Translations ==
 
 Translations to various languages are provided and maintained by many people.
-In general, current maintainers should also be found in the language files.
+In general, main contributors can be found in the message file. Special thanks
+are due to Siebrand Mazeland and the Betawiki project for their excellent 
+support in that matter.
+
+Before moving to Betawiki, the following people already contributed significantly
+to translating SMW:
 
 * The Jurispedia project (www.jurispedia.org) has initiated and supported
   some of the translations:
@@ -95,6 +100,6 @@ In general, current maintainers should also be found in the language files.
 
 * Many people have contributed to the project by providing helpful comments and
   suggestions. Among them are the members of the Semantic Wiki Interest Group
-  (swikig@aifb.uni-karlsruhe.de; see ontoworld.org), the people at the project
+  (swikig@aifb.uni-karlsruhe.de; see semanticweb.org), the people at the project
   mailing lists, and, of course, a number of anonymous reviewers. Thanks a lot!
 

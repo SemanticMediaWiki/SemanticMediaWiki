@@ -115,12 +115,14 @@ $smwgRSSWithPages = true; // Should RSS feeds deliver whole pages or just link t
 $smwgAllowRecursiveExport = false; // can normal users request recursive export?
 $smwgExportBacklinks = true; // should backlinks be included by default?
 $smwgOWLFullExport = false; // decides, if the RDF export will export, by default,
-// OWL Full or rather nice OWL DL. Can be overriden in the RDF export class.
+                            // OWL Full or rather nice OWL DL.
+                            // Can be overriden in the RDF export class.
 // global $smwgNamespace;                     // The Namespace of exported URIs.
 // $smwgNamespace = "http://example.org/id/"; // Will be set automatically if 
 // nothing is given, but in order to make pretty URIs you will need to set this
-// to something nice and adapt your Apache configuration appropriately. See the
-// documentation on http://ontoworld.org/wiki/Help:Cool_URIs
+// to something nice and adapt your Apache configuration appropriately. This is
+// done, e.g., on semanticweb.org, where URIs are of the form 
+// http://semanticweb.org/id/FOAF
 ##
 
 ###

@@ -313,7 +313,7 @@ class SMWAskPage extends SpecialPage {
 		$text .= "\txmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n";
 		$text .= "\txmlns=\"http://purl.org/rss/1.0/\">\n";
 		$text .= "\t<channel rdf:about=\"" . str_replace('&', '&amp;', $wgRequest->getFullRequestURL()) . "\">\n";
-		$text .= "\t\t<admin:generatorAgent rdf:resource=\"http://ontoworld.org/wiki/Special:URIResolver/Semantic_MediaWiki\"/>\n";
+		$text .= "\t\t<admin:generatorAgent rdf:resource=\"http://semantic-mediawiki.org/wiki/Special:URIResolver/Semantic_MediaWiki\"/>\n";
 		$text .= "\t\t<title>" . $this->m_params['rsstitle'] . "</title>\n";
 		$text .= "\t\t<link>$wgServer</link>\n";
 		$text .= "\t\t<description>" . $this->m_params['rssdescription'] . "</description>\n";

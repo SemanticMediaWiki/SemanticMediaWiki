@@ -1,4 +1,21 @@
-For a documentation of all features, see http://ontoworld.org/wiki/Help:Semantics
+For a documentation of all features, see http://semantic-mediawiki.org
+
+== Semantic MediaWiki 1.1 ==
+
+* Support for formatted results on Special:Ask. "Further results" links
+  from inline queries now preserve format.
+* New iCalendar export for inline queries (format=icalendar)
+* Initial support (beta) for synching external RDF stores with SMW. 
+  This also provides support for wiki-based SPARQL query services, see 
+  http://semantic-mediawiki.org/wiki/Help:SPARQL_endpoint
+* More robust link generation code; even long query texts and links 
+  that contain very special characters are built properly.
+* Extended translations. Completely new Arab translation.
+* New SMW registry http://semantic-mediawiki.org/wiki/Special:SMWRegistry
+  to replace hand-crafted list of "sites using SMW".
+* Various bugfixes. For example:
+ ** Enumerated properties (allows value) for Type:Page works now.
+ ** Page moves are handled more reliably
 
 == Semantic MediaWiki 1.0.1 ==
 
@@ -250,7 +267,7 @@ performance and features of inline queries. It also includes some major code
 cleanups and various bugfixes.
 
 An updated documentation of the current inline queries is (soon) to be found at
-http://wiki.ontoworld.org/index.php/Help:Inline_queries
+http://semantic-mediawiki.org/wiki/Help:Inline_queries
 
 == Semantic MediaWiki 0.4 ==
 
@@ -263,7 +280,7 @@ Semantic MediaWiki 0.4 includes the following new features:
   displayed in many different formats, including bulleted and numbered 
   lists, tables with intercative (JScript) sorting (credits go to 
   Stuart Langridge for www.kryogenix.org/code/browser/sorttable/), and 
-  plain text. See http://wiki.ontoworld.org/index.php/Help:Inline_queries 
+  plain text. See http://semantic-mediawiki.org/wiki/Help:Inline_queries 
   for documentation.
 * Improved output for Special:Relations and Special:Attributes: usage of
   relations and attributes is now counted
