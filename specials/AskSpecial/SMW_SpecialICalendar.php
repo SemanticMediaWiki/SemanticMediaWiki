@@ -214,8 +214,8 @@ class SMWICalendarPage extends SpecialPage {
 		}
 
 		$text  = "BEGIN:VCALENDAR\r\n";
-		$text .= "PRODID:-//AIFB//Semantic MediaWiki\r\n";
-		$text .= "VERSION:2:0\r\n";
+		$text .= "PRODID:-//SMW Project//Semantic MediaWiki\r\n";
+		$text .= "VERSION:2.0\r\n";
 		$text .= "METHOD:PUBLISH\r\n";
 		$text .= "X-WR-CALNAME:" . $this->m_params['icalendartitle'] . "\r\n";
 		if ($this->m_params['icalendardescription'] !== '') $text .= "X-WR-CALDESC:" . $this->m_params['icalendardescription'] . "\r\n";
