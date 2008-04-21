@@ -35,6 +35,12 @@ class SMWListResultPrinter extends SMWResultPrinter {
 
 	protected function getResultText($res,$outputmode) {
 		global $smwgStoreActive, $wgParser;
+		$parsetitle = $wgParser->getTitle();
+		if ($parsetitle === NULL) { // try that in emergency, needed in 1.11 in Special:Ask
+			global $wgTitle;
+			$parsetitle = $wgTitle;
+		}
+
 		// print header
 		$result = $this->mIntro;
 		if ( ('ul' == $this->mFormat) || ('ol' == $this->mFormat) ) {
@@ -125,7 +131,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$old_smwgStoreActive = $smwgStoreActive;
 			$smwgStoreActive = false; // no annotations stored, no factbox printed
 			if ($outputmode === SMW_OUTPUT_HTML) {
-				$parserOutput = $parser->parse($result, $wgParser->getTitle(), $parser_options);
+				$parserOutput = $parser->parse($result, $parsetitle, $parser_options);
 				$result = $parserOutput->getText();
 			} else {
 				if ( method_exists($parser, 'getPreprocessor') ) {
@@ -133,7 +139,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					$dom = $parser->preprocessToDom( $result );
 					$result = $frame->expand( $dom );
 				} else {
-					$result = $parser->preprocess($result, $wgParser->getTitle(), $parser_options);
+					$result = $parser->preprocess($result, $parsetitle, $parser_options);
 				}
 			}
 			$smwgStoreActive = $old_smwgStoreActive;
