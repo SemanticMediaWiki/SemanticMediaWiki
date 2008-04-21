@@ -226,6 +226,7 @@ Please enter both a page and a property.',
 /** Arabic (العربية)
  * @author Mahmoud Zouari  mahmoudzouari@yahoo.fr http://www.cri.ensmp.fr
  * @author Meno25
+ * @author Siebrand
  */
 $messages['ar'] = array(
 	'smw_edithelp'                => 'تعديل المساعدة على الخصائص',
@@ -980,6 +981,57 @@ $messages['it'] = array(
 	'smw_result_noresults'        => 'Spiacenti, nessun risultato.',
 );
 
+/** Javanese (Basa Jawa)
+ * @author Meursault2004
+ */
+$messages['jv'] = array(
+	'smw_viewasrdf'              => 'RDF feed',
+	'smw_finallistconjunct'      => ', lan',
+	'smw_factbox_head'           => 'Fakta-fakta ngenani $1',
+	'smw_icalendar_link'         => 'iKalèndher',
+	'smw_unknown_importns'       => 'Fungsi impor ora ana kanggo bilik nama “$1”.',
+	'smw_nofloat'                => '“$1” iku dudu angka.',
+	'smw_unsupportedunit'        => 'Konvèrsi unit kanggo unit “$1” ora disengkuyung.',
+	'smw_abb_north'              => 'L',
+	'smw_abb_east'               => 'W',
+	'smw_abb_south'              => 'Kdl',
+	'smw_abb_west'               => 'Kln',
+	'smw_attribute_header'       => 'Kaca-kaca sing nganggo sifat “$1”',
+	'exportrdf'                  => 'Èkspor kaca-kaca menyang RDF',
+	'wantedproperties'           => 'Sifat sing dipéngini',
+	'smw_purge'                  => 'Anyarana',
+	'ontologyimport'             => 'Impor ontologi',
+	'smw_oi_action'              => 'Impor',
+	'smw_oi_comment'             => 'Tambah tèks iki:',
+	'smw_oi_thisissubcategoryof' => 'Sawijining subkategori saka',
+	'smw_oi_thishascategory'     => 'Iku bagéyan saka',
+	'semanticstatistics'         => 'Statistik sémantik',
+	'ask'                        => 'Panggolèkan sémantik',
+	'smw_ask_ascorder'           => 'Munggah saka ngisor menyang ndhuwur',
+	'smw_ask_descorder'          => 'Mudhun saka ndhuwur menyang ngisor',
+	'smw_ask_submit'             => 'Pituwas panggolèkan',
+	'smw_ask_editquery'          => '[Sunting kwéri]',
+	'smw_add_sortcondition'      => '[Tambah sarat nyortir]',
+	'smw_ask_hidequery'          => 'Delikna kwéri',
+	'smw_ask_help'               => 'Pitulung kwéri',
+	'smw_ask_queryhead'          => 'Kwéri',
+	'searchbyproperty'           => 'Golèk miturut sifat',
+	'smw_sbv_noproperty'         => '<p>Mangga lebokna sawijining sifat.</p>',
+	'smw_sbv_displayresult'      => 'Sawijining daftar kabèh kaca sing duwé sifat “$1” mawa bijih “$2”',
+	'smw_sbv_property'           => 'Sifat',
+	'smw_sbv_value'              => 'Bijih (nilai)',
+	'smw_sbv_submit'             => 'Golèk pituwas (kasil)',
+	'browse'                     => 'Jlajaha wiki',
+	'smw_browse_go'              => 'Tumuju',
+	'pageproperty'               => 'Panggolèkan sifat kaca',
+	'smw_pp_from'                => 'Saka kaca',
+	'smw_pp_type'                => 'Sifat',
+	'smw_result_prev'            => 'Sadurungé',
+	'smw_result_next'            => 'Sabanjuré',
+	'smw_result_results'         => 'Pituwas (kasil)',
+	'smw_result_noresults'       => 'Nuwun sèwu, ora ana pituwasé (kasilé).',
+);
+
 /** Georgian (ქართული)
  * @author Malafaya
  */
@@ -1129,9 +1181,13 @@ $messages['lb'] = array(
 	'smw_infinite'               => 'Zuelen esou grouss wéi "$1" ginn op {{SITENAME}} net ënnerstetzt.',
 	'smw_lonely_unit'            => 'Virum Symbol "$1" gouf keng Zuel fonnt.',
 	'smw_label_latitude'         => 'Geografesch Breet:',
+	'smw_misplacedsymbol'        => 'D\'Symbol "$1" gouf op ener Plaz benotzt wou et net nëtzlech ass.',
+	'smw_badtitle'               => 'Pardon, awer "$1" ass kee gëltegen Titel vun enger Säit.',
 	'exportrdf'                  => 'Säiten als RDF exportéieren',
+	'smw_purge'                  => 'Aktualiséieren',
 	'smw_oi_thisissubcategoryof' => 'Ënnerkategorie vu(n)',
 	'smw_browse_go'              => 'Lass',
+	'smw_pp_from'                => 'Vun der Säit',
 	'smw_pp_submit'              => 'Resultater sichen',
 	'smw_result_prev'            => 'Vireg',
 	'smw_result_next'            => 'Nächst',
@@ -1283,6 +1339,7 @@ $messages['nl'] = array(
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
  * @author Jon Harald Søby
+ * @author Siebrand
  */
 $messages['no'] = array(
 	'smw_edithelp'                => 'Redigeringshjelp for egenskaper',
@@ -1435,6 +1492,7 @@ Skriv inn både sidenavn og egenskap.',
 
 /** Occitan (Occitan)
  * @author Cedric31
+ * @author Siebrand
  */
 $messages['oc'] = array(
 	'smw_edithelp'                => "Ajuda a la redaccion de relacions e d'atributs",
@@ -1675,13 +1733,19 @@ $messages['ps'] = array(
  * @author Lijealso
  */
 $messages['pt'] = array(
+	'smw_edithelp'                => 'Ajuda de edição sobre propriedades',
 	'smw_viewasrdf'               => 'Feed RDF',
 	'smw_finallistconjunct'       => ', e',
 	'smw_factbox_head'            => 'Factos sobre $1',
 	'smw_isspecprop'              => 'Esta propriedade é uma propriedade especial neste wiki.',
+	'smw_isknowntype'             => 'Este tipo está entre os tipos de dados padrão deste wiki.',
+	'smw_isaliastype'             => 'Este tipo é um alias do tipo de dados “$1”.',
+	'smw_isnotype'                => 'Este tipo “$1” não é um tipo de dados padrão no wiki, e também não lhe foi dada uma definição de utilizador.',
 	'smw_baduri'                  => 'Desculpe, URIs da forma “$1” não são permitidos.',
 	'smw_icalendar_link'          => 'iCalendário',
+	'smw_iq_disabled'             => 'Desculpe. Pesquisas semânticas foram desactivadas neste wiki.',
 	'smw_iq_moreresults'          => '&hellip; mais resultados',
+	'smw_iq_nojs'                 => 'Por favor, use um navegador com JavaScript activado para visualizar este elemento.',
 	'smw_iq_altresults'           => 'Navegar pela lista de resultados directamente.',
 	'smw_unknown_importns'        => 'As funções de importação não estão disponíveis para o espaço nominal “$1”.',
 	'smw_nonright_importtype'     => '$1 só pode ser usado com páginas no espaço nominal “$2”.',
@@ -1690,10 +1754,13 @@ $messages['pt'] = array(
 	'smw_parseerror'              => 'O valor fornecido não foi compreendido.',
 	'smw_notitle'                 => '“$1” não pode ser usado como nome de página neste wiki.',
 	'smw_unknowntype'             => 'Tipo não suportado “$1”  definido para propriedade.',
+	'smw_manytypes'               => 'Mais do que um tipo definido para a propriedade.',
 	'smw_emptystring'             => 'Cadeias de caracteres vazias não são aceites.',
 	'smw_maxstring'               => 'Representação de cadeia de caracteres $1 é demasiado longa para {{SITENAME}}.',
 	'smw_notinenum'               => '“$1” não está na lista de valores possíveis ($2) para esta propriedade.',
 	'smw_noboolean'               => '“$1” não é reconhecido como um valor boleano (verdadeiro/falso).',
+	'smw_true_words'              => 'verdadeiro,v,sim,s',
+	'smw_false_words'             => 'falso,f,não,nao,n',
 	'smw_nofloat'                 => '“$1” não é um número.',
 	'smw_infinite'                => 'Números tão grandes como “$1” não são suportados em {{SITENAME}}.',
 	'smw_infinite_unit'           => 'A conversão para a unidade “$1” resultou num número demasiado grande para {{SITENAME}}.',
@@ -1708,49 +1775,103 @@ $messages['pt'] = array(
 	'smw_label_latitude'          => 'Latitude:',
 	'smw_label_longitude'         => 'Longitude:',
 	'smw_nodatetime'              => 'A data “$1” não foi compreendida (o suporte de datas ainda é experimental).',
+	'smw_toomanyclosing'          => 'Parece haver demasiadas ocorrências de “$1” na pesquisa.',
+	'smw_noclosingbrackets'       => 'Um uso de “[&#x005B;” na sua pesquisa não foi fechada por um “]]” correspondente.',
 	'smw_misplacedsymbol'         => 'O símbolo “$1” foi usado num sítio onde não é útil.',
+	'smw_unexpectedpart'          => 'A parte “$1” da pesquisa não foi compreendida.
+Os resultados podem não ser os esperados.',
+	'smw_emptysubquery'           => 'Uma subpesquisa tem uma condição inválida.',
+	'smw_misplacedsubquery'       => 'Uma subpesquisa foi usada num local onde não são permitidas subpesquisas.',
+	'smw_valuesubquery'           => 'Subpesquisas não suportadas para valores da propriedade “$1”.',
+	'smw_overprintoutlimit'       => 'Esta pesquisa contém demasiados pedidos de saídas.',
+	'smw_badprintout'             => 'Uma frase de saída na pesquisa estava mal formada.',
 	'smw_badtitle'                => 'Desculpe, mas “$1” não é um título de página válido.',
+	'smw_badqueryatom'            => 'Uma parte “[&#x005B;&hellip;]]” da pesquisa não foi compreendida.',
 	'smw_propvalueproblem'        => 'O valor da propriedade “$1” não foi compreendido.',
+	'smw_nodisjunctions'          => 'Disjunções em pesquisas não são suportadas neste wiki e parte da pesquisa foi descartada ($1).',
+	'smw_querytoolarge'           => 'As seguintes condições da pesquisa não puderam ser consideradas devido às restrições dos wikis em tamanho ou profundidade de pesquisa: $1.',
+	'smw_devel_warning'           => 'Esta funcionalidade está neste momento em desenvolvimento, e pode não estar totalmente funcional.
+Faça uma cópia de segurança dos seus dados antes de a usar.',
 	'smw_type_header'             => 'Propriedades do tipo “$1”',
 	'smw_typearticlecount'        => 'Mostrando $1 propriedades que usam este tipo.',
 	'smw_attribute_header'        => 'Páginas que usam a propriedade “$1”',
 	'smw_attributearticlecount'   => '<p>Mostrando $1 páginas que usam esta propriedade.</p>',
 	'exportrdf'                   => 'Exportar páginas para RDF',
+	'smw_exportrdf_docu'          => '<p>Esta página permite-lhe obter dados de uma página no formato RDF.
+Para exportar páginas, introduza os seus títulos na caixa de texto abaixo, um título por linha.</p>',
+	'smw_exportrdf_recursive'     => 'Exportar recursivamente todas as páginas relacionadas.
+Note que o resultado poderá ser grande!',
+	'smw_exportrdf_backlinks'     => 'Também exporta todas as páginas que referem as páginas exportadas.
+Gera RDF navegável.',
+	'smw_exportrdf_lastdate'      => 'Não exporte páginas que não foram alteradas desde o tempo dado.',
 	'properties'                  => 'Propriedades',
 	'smw_properties_docu'         => 'As seguintes propriedades são usadas neste wiki.',
 	'smw_property_template'       => '$1 de tipo $2 ($3)',
+	'smw_propertylackspage'       => 'Todas as propriedades devem ser descritas por uma página!',
+	'smw_propertylackstype'       => 'Nenhum tipo foi especificado para esta propriedade (assumindo tipo $1 por agora).',
 	'smw_propertyhardlyused'      => 'Esta propriedade dificilmente é usada neste wiki!',
 	'unusedproperties'            => 'Propriedades não usadas',
 	'smw_unusedproperties_docu'   => 'As seguintes propriedade existem apesar de nenhuma página fazer uso delas.',
 	'smw_unusedproperty_template' => '$1 de tipo $2',
 	'wantedproperties'            => 'Propriedades em falta',
+	'smw_wantedproperties_docu'   => 'As seguintes propriedades são usadas no wiki mas ainda não têm uma página que as descreva.',
 	'smw_wantedproperty_template' => '$1 ($2 usos)',
+	'tooltip-purge'               => 'Carregue aqui para refrescar todas as pesquisas e predefinições nesta página',
 	'smw_purge'                   => 'Refrescar',
 	'ontologyimport'              => 'Importar ontologia',
+	'smw_oi_docu'                 => 'Esta página especial permite importar ontologias.
+As ontologias têm de seguir um certo formato, especificado na <a href="http://semantic-mediawiki.org/wiki/Help:Ontology_import">página de ajuda à importação de ontologias</a>.',
 	'smw_oi_action'               => 'Importar',
 	'smw_oi_return'               => 'Voltar para <a href="$1">{{ns:Special}}:OntologyImport</a>.',
 	'smw_oi_noontology'           => 'Nenhuma ontologia fornecida, ou não foi possível carregar ontologia.',
+	'smw_oi_select'               => 'Por favor, seleccione as frases a importar, e depois carregue no botão de importar.',
+	'smw_oi_textforall'           => 'Texto do cabeçalho a adicionar a todas as importações (pode ser vazio):',
+	'smw_oi_selectall'            => 'Seleccionar ou desseleccionar todas as frases',
+	'smw_oi_statementsabout'      => 'Frases sobre',
 	'smw_oi_mapto'                => 'Mapear entidade para',
 	'smw_oi_comment'              => 'Adicione o seguinte texto:',
 	'smw_oi_thisissubcategoryof'  => 'Uma subcategoria de',
 	'smw_oi_thishascategory'      => 'É parte de',
 	'smw_oi_importedfromontology' => 'Importar de ontologia',
 	'types'                       => 'Tipos',
+	'smw_types_docu'              => 'As seguinte lista contém todos os tipos de dados que podem ser atribuídos a propriedades.
+Cada tipo de dados tem uma página onde informação adicional pode ser providenciada.',
 	'smw_typeunits'               => 'Unidades de medida de tipo “$1”: $2',
 	'semanticstatistics'          => 'Estatísticas de semântica',
+	'smw_semstats_text'           => 'Este wiki contém <b>$1</b> valores de propriedades num total de <b>$2</b> <a href="$3">propriedades</a> diferentes.
+<b>$4</b> propriedades têm uma página própria, e o tipo de dados pretendido é especificado por b>$5</b> delas.
+Algumas das propriedades existentes poderão ser <a href="$6">propriedades não usadas</a>.
+As propriedades a que faltam uma página poderão ser encontradas na <a href="$7">lista de propriedades em falta</a>.',
 	'flawedattributes'            => 'Propriedades Problemáticas',
+	'smw_fattributes'             => 'As páginas listadas abaixo contêm uma propriedade incorrectamente definida.
+O número de propriedades incorrectas é dada entre parênteses rectos.',
+	'uriresolver'                 => 'Resolvedor de URIs',
+	'smw_uri_doc'                 => '<p>O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>. Trata que humanos não se tornem em sítios web.</p>',
 	'ask'                         => 'Pesquisa semântica',
 	'smw_ask_sortby'              => 'Ordenar por coluna (opcional)',
 	'smw_ask_ascorder'            => 'Ascendente',
 	'smw_ask_descorder'           => 'Descendente',
 	'smw_ask_submit'              => 'Procurar resultados',
+	'smw_ask_editquery'           => '[Editar pesquisa]',
+	'smw_add_sortcondition'       => '[Adicionar condição de ordenação]',
+	'smw_ask_hidequery'           => 'Esconder pesquisa',
+	'smw_ask_help'                => 'Ajuda sobre pesquisas',
+	'smw_ask_queryhead'           => 'Pesquisa',
+	'smw_ask_printhead'           => 'Saídas adicionais (opcional)',
 	'searchbyproperty'            => 'Procurar por propriedade',
+	'smw_sbv_docu'                => '<p>Buscar todas as páginas que possuem uma determinada propriedade e valor.</p>',
 	'smw_sbv_noproperty'          => '<p>Por favor, introduza uma propriedade.</p>',
+	'smw_sbv_novalue'             => '<p>Por favor, introduza um valor válido para a propriedade, ou veja todos os valores da propriedade “$1.”</p>',
+	'smw_sbv_displayresult'       => 'Uma lista de todas as páginas que possuem a propriedade “$1” com valor “$2”',
 	'smw_sbv_property'            => 'Propriedade',
 	'smw_sbv_value'               => 'Valor',
 	'smw_sbv_submit'              => 'Procurar resultados',
 	'browse'                      => 'Navegue pela wiki',
+	'smw_browse_article'          => 'Introduza o nome da página a partir da qual deseja começar a navegar.',
 	'smw_browse_go'               => 'Ir',
+	'pageproperty'                => 'Busca de propriedades de página',
+	'smw_pp_docu'                 => 'Buscar todos os conteúdos de uma propriedade numa dada página.
+Por favor, introduza ambas a página e a propriedade.',
 	'smw_pp_from'                 => 'Da página',
 	'smw_pp_type'                 => 'Propriedade',
 	'smw_pp_submit'               => 'Procurar resultados',
@@ -2045,11 +2166,15 @@ Prosím, zadajte stránku aj vlastnosť.',
 
 /** Swedish (Svenska)
  * @author M.M.S.
+ * @author Lejonel
  */
 $messages['sv'] = array(
 	'smw_viewasrdf'         => 'RDF-matning',
 	'smw_finallistconjunct' => ', och',
 	'smw_factbox_head'      => 'Fakta om $1',
+	'exportrdf'             => 'Exportera sidor till RDF',
+	'smw_exportrdf_docu'    => '<p>Den här sidan låter dig hämta data från en sida i RDF-format.
+Skriv sidtitlar i textrutan härunder för att exportera sidor (en titel per rad).</p>',
 	'smw_browse_go'         => 'Gå',
 	'pageproperty'          => 'Sidegenskapssökning',
 	'smw_pp_from'           => 'Från sida',
