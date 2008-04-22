@@ -746,6 +746,7 @@ $messages['fi'] = array(
  * @author Pierre Matringe
  * @author Sherbrooke
  * @author Grondin
+ * @author Siebrand
  * @author Meithal
  */
 $messages['fr'] = array(
@@ -775,8 +776,8 @@ $messages['fr'] = array(
 	'smw_manytypes'               => "Plusieurs types de données ont été assignés à l'attribut.",
 	'smw_emptystring'             => 'Les chaînes vides ne sont pas acceptées.',
 	'smw_maxstring'               => 'La chaîne de représentation $1 est trop grande pour ce site.',
-	'smw_notinenum'               => '\"$1\" ne fait pas partie des valeurs possibles ($2) pour cet attribut.',
-	'smw_noboolean'               => '\"$1\" n\'est pas reconnu comme valeur booléenne (vrai/faux).',
+	'smw_notinenum'               => '"$1" ne fait pas partie des valeurs possibles ($2) pour cet attribut.',
+	'smw_noboolean'               => '"$1" n\'est pas reconnu comme valeur booléenne (vrai/faux).',
 	'smw_true_words'              => 'vrai,v,oui,true',
 	'smw_false_words'             => 'faux,f,non,false',
 	'smw_nofloat'                 => '"$1" n\'est pas un nombre.',
@@ -940,6 +941,58 @@ $messages['he'] = array(
 	'smw_result_noresults'  => 'מצטערת, אין תוצאות',
 );
 
+/** Hindi (हिन्दी)
+ * @author Kaustubh
+ */
+$messages['hi'] = array(
+	'smw_edithelp'                => 'गुणधर्मोंकी सहायता बदल रहें हैं',
+	'smw_viewasrdf'               => 'RDF फ़ीड',
+	'smw_finallistconjunct'       => ', और',
+	'smw_factbox_head'            => '$1 के बारेमें फ़ैक्ट्स',
+	'smw_icalendar_link'          => 'आइकैलेंडर',
+	'smw_iq_moreresults'          => '&hellip; आगे के रिज़ल्ट',
+	'smw_true_words'              => 'सही,t,हां,y',
+	'smw_false_words'             => 'गलत,f,ना,n',
+	'smw_nofloat'                 => '“$1” यह संख्या नहीं हैं।',
+	'smw_abb_north'               => 'N',
+	'smw_abb_east'                => 'E',
+	'smw_abb_south'               => 'S',
+	'smw_abb_west'                => 'W',
+	'smw_label_latitude'          => 'अक्षांश:',
+	'smw_label_longitude'         => 'रेखांश:',
+	'smw_type_header'             => '“$1” प्रकारके गुणधर्म',
+	'properties'                  => 'गुणधर्म',
+	'unusedproperties'            => 'इस्तेमाल न किये हुए गुणधर्म',
+	'smw_unusedproperty_template' => '$2 प्रकारके $1',
+	'wantedproperties'            => 'चाहिये होनेवाले गुणधर्म',
+	'smw_oi_action'               => 'आयात',
+);
+
+/** Haitian (Kreyòl ayisyen)
+ * @author Masterches
+ */
+$messages['ht'] = array(
+	'smw_edithelp'            => 'Èd nan redaksyon pwopryete yo ak relasyon',
+	'smw_viewasrdf'           => 'Wè tankou fòma RDF',
+	'smw_finallistconjunct'   => ', epi',
+	'smw_factbox_head'        => 'Bagay an relasyon ak $1',
+	'smw_isspecprop'          => 'Pwopryete sa espesyal toutbon nan wiki sa',
+	'smw_isknowntype'         => 'Tip sa ap fè pati de tip done estanda nan wiki sa.',
+	'smw_isaliastype'         => 'Tip sa se yon alyas pou done "$1".',
+	'smw_isnotype'            => 'Tip "$1" sa pa yon tip estanda nan wiki a, li pa defini pa yon itilizatè tou.',
+	'smw_baduri'              => 'Eskize nou, URIs yo pou domèn "$1" pa otorize, oubyen li pa disponib nan plas isit an.',
+	'smw_icalendar_link'      => 'iKalandrye',
+	'smw_iq_disabled'         => 'Eskize nou. Rechèch nan atik wiki sa a pa otorize oubyen nou dezaktive l.',
+	'smw_iq_nojs'             => 'Souple, itilize yon navigatè (bwozè entènèt) ki aksepte JavaScript aktive pou ou kapab wè eleman sa, bagay sa.',
+	'smw_iq_altresults'       => 'Fouye, gade lis rezilta yo dirèkteman.',
+	'smw_unknown_importns'    => 'Fonksyon pou ou kapab chaje fichye (rekipere pou ou menm) pa disponib pou espas non sa "$".',
+	'smw_nonright_importtype' => 'Ou dwèt itilize eleman $1 sa sèlman pou paj ki genyen espas non sa "$2".',
+	'smw_wrong_importtype'    => '$1 pa dwèt itilize pou paj ki nan espas non $2',
+	'smw_no_importelement'    => 'Eleman "$1" pa disponib pou rekipere, pou chaje.',
+	'smw_parseerror'          => 'Valè ou bay oubyen li ritounen pa klè, nou pa konprann li.',
+	'smw_notitle'             => 'Nou pa kapab itilize "$1" tankou non yon paj nan wiki sa.',
+);
+
 /** Italian (Italiano)
  * @author Davide Eynard, David Laniado
  */
@@ -1077,10 +1130,13 @@ $messages['it'] = array(
  * @author Meursault2004
  */
 $messages['jv'] = array(
+	'smw_edithelp'               => 'Pitulung panyuntingan ing sifat-sifat',
 	'smw_viewasrdf'              => 'RDF feed',
 	'smw_finallistconjunct'      => ', lan',
 	'smw_factbox_head'           => 'Fakta-fakta ngenani $1',
+	'smw_isspecprop'             => 'Sifat iki iku sawijining sifat kusus ing wiki iki.',
 	'smw_icalendar_link'         => 'iKalèndher',
+	'smw_iq_nojs'                => 'Mangga nganggo sawijining panjlajah wèb JavaScript kanggo ndeleng unsur iki.',
 	'smw_unknown_importns'       => 'Fungsi impor ora ana kanggo bilik nama “$1”.',
 	'smw_no_importelement'       => 'Unsur “$1” ora kasedyakaké kanggi diimpor.',
 	'smw_parseerror'             => 'Bijih sing diwènèhaké ora dimangertèni.',
@@ -1088,12 +1144,21 @@ $messages['jv'] = array(
 	'smw_nofloat'                => '“$1” iku dudu angka.',
 	'smw_infinite'               => 'Angka sing gedhéné kaya "$1" ora disengkuyung ing {{SITENAME}}.',
 	'smw_unsupportedunit'        => 'Konvèrsi unit kanggo unit “$1” ora disengkuyung.',
+	'smw_bad_latlong'            => 'Latituda lan longituda namung olèh diwènèhaké sapisan, lan mawa koordinat sing absah.',
 	'smw_abb_north'              => 'L',
 	'smw_abb_east'               => 'W',
 	'smw_abb_south'              => 'Kdl',
 	'smw_abb_west'               => 'Kln',
+	'smw_label_latitude'         => 'Latituda:',
+	'smw_label_longitude'        => 'Longituda:',
+	'smw_nodatetime'             => 'Tanggal “$1” ora dimangertèni (pasengkuyungan kanggo tanggal isih ing tahapan èkspèrimèntal).',
+	'smw_badtitle'               => 'Nuwun sèwu, nanging "$1" iku dudu irah-irahan utawa judhul kaca sing absah.',
+	'smw_type_header'            => 'Sifat-sifat saka jenis "$1"',
 	'smw_attribute_header'       => 'Kaca-kaca sing nganggo sifat “$1”',
 	'exportrdf'                  => 'Èkspor kaca-kaca menyang RDF',
+	'properties'                 => 'Sifat-sifat',
+	'smw_properties_docu'        => 'Sifat-sifat ing ngisori iki dienggo ing wiki iki.',
+	'unusedproperties'           => 'Sifat-sifat sing ora dienggo',
 	'wantedproperties'           => 'Sifat sing dipéngini',
 	'smw_purge'                  => 'Anyarana',
 	'ontologyimport'             => 'Impor ontologi',
@@ -1103,6 +1168,7 @@ $messages['jv'] = array(
 	'smw_oi_thishascategory'     => 'Iku bagéyan saka',
 	'semanticstatistics'         => 'Statistik sémantik',
 	'ask'                        => 'Panggolèkan sémantik',
+	'smw_ask_sortby'             => 'Sortir miturut kolom (opsional)',
 	'smw_ask_ascorder'           => 'Munggah saka ngisor menyang ndhuwur',
 	'smw_ask_descorder'          => 'Mudhun saka ndhuwur menyang ngisor',
 	'smw_ask_submit'             => 'Pituwas panggolèkan',
@@ -1122,6 +1188,7 @@ $messages['jv'] = array(
 	'pageproperty'               => 'Panggolèkan sifat kaca',
 	'smw_pp_from'                => 'Saka kaca',
 	'smw_pp_type'                => 'Sifat',
+	'smw_pp_submit'              => 'Pituwas panggolèkan',
 	'smw_result_prev'            => 'Sadurungé',
 	'smw_result_next'            => 'Sabanjuré',
 	'smw_result_results'         => 'Pituwas (kasil)',
@@ -1270,25 +1337,60 @@ $messages['ko'] = array(
  * @author Robby
  */
 $messages['lb'] = array(
-	'smw_finallistconjunct'      => ', an',
-	'smw_iq_moreresults'         => '&hellip; weider Resultater',
-	'smw_iq_nojs'                => 'Benotzt w.e.g e Browser matt JavaScript fir dëst Element ze gesinn',
-	'smw_nofloat'                => '"$1" ass keng Zuel.',
-	'smw_infinite'               => 'Zuelen esou grouss wéi "$1" ginn op {{SITENAME}} net ënnerstetzt.',
-	'smw_lonely_unit'            => 'Virum Symbol "$1" gouf keng Zuel fonnt.',
-	'smw_label_latitude'         => 'Geografesch Breet:',
-	'smw_misplacedsymbol'        => 'D\'Symbol "$1" gouf op ener Plaz benotzt wou et net nëtzlech ass.',
-	'smw_badtitle'               => 'Pardon, awer "$1" ass kee gëltegen Titel vun enger Säit.',
-	'exportrdf'                  => 'Säiten als RDF exportéieren',
-	'smw_purge'                  => 'Aktualiséieren',
-	'smw_oi_thisissubcategoryof' => 'Ënnerkategorie vu(n)',
-	'smw_browse_go'              => 'Lass',
-	'smw_pp_from'                => 'Vun der Säit',
-	'smw_pp_submit'              => 'Resultater sichen',
-	'smw_result_prev'            => 'Vireg',
-	'smw_result_next'            => 'Nächst',
-	'smw_result_results'         => 'Resultater',
-	'smw_result_noresults'       => 'Pardon, et gouf näischt fonnt.',
+	'smw_finallistconjunct'       => ', an',
+	'smw_iq_moreresults'          => '&hellip; weider Resultater',
+	'smw_iq_nojs'                 => 'Benotzt w.e.g e Browser matt JavaScript fir dëst Element ze gesinn',
+	'smw_true_words'              => 'wouer,w,jo,j',
+	'smw_nofloat'                 => '"$1" ass keng Zuel.',
+	'smw_infinite'                => 'Zuelen esou grouss wéi "$1" ginn op {{SITENAME}} net ënnerstetzt.',
+	'smw_lonely_unit'             => 'Virum Symbol "$1" gouf keng Zuel fonnt.',
+	'smw_abb_north'               => 'N',
+	'smw_abb_east'                => 'O',
+	'smw_abb_south'               => 'S',
+	'smw_abb_west'                => 'W',
+	'smw_label_latitude'          => 'Geografesch Breet:',
+	'smw_misplacedsymbol'         => 'D\'Symbol "$1" gouf op ener Plaz benotzt wou et net nëtzlech ass.',
+	'smw_badtitle'                => 'Pardon, awer "$1" ass kee gëltegen Titel vun enger Säit.',
+	'exportrdf'                   => 'Säiten als RDF exportéieren',
+	'smw_property_template'       => '$1 vum Typ $2 ($3)',
+	'smw_wantedproperty_template' => '$1 ($2 mol benotzt)',
+	'smw_purge'                   => 'Aktualiséieren',
+	'smw_oi_thisissubcategoryof'  => 'Ënnerkategorie vu(n)',
+	'smw_sbv_property'            => 'Eegeschaft',
+	'smw_browse_go'               => 'Lass',
+	'smw_pp_from'                 => 'Vun der Säit',
+	'smw_pp_type'                 => 'Eegeschaft',
+	'smw_pp_submit'               => 'Resultater sichen',
+	'smw_result_prev'             => 'Vireg',
+	'smw_result_next'             => 'Nächst',
+	'smw_result_results'          => 'Resultater',
+	'smw_result_noresults'        => 'Pardon, et gouf näischt fonnt.',
+);
+
+/** Marathi (मराठी)
+ * @author Kaustubh
+ */
+$messages['mr'] = array(
+	'smw_viewasrdf'               => 'RDF फीड',
+	'smw_finallistconjunct'       => ', व',
+	'smw_factbox_head'            => '$1 च्या फॅक्ट्स',
+	'smw_icalendar_link'          => 'इ-कैलेंडर',
+	'smw_iq_moreresults'          => '&hellip; पुढचे निकाल',
+	'smw_abb_north'               => 'N',
+	'smw_abb_east'                => 'E',
+	'smw_abb_south'               => 'S',
+	'smw_abb_west'                => 'W',
+	'smw_label_latitude'          => 'अक्षांश:',
+	'smw_label_longitude'         => 'रेखांश:',
+	'properties'                  => 'गुणधर्म',
+	'unusedproperties'            => 'न वापरलेले गुणधर्म',
+	'smw_unusedproperty_template' => '$2 प्रकारचे $1',
+	'wantedproperties'            => 'पाहिजे असलेले गुणधर्म',
+	'smw_wantedproperty_template' => '$1 ($2 वापरतो)',
+	'smw_purge'                   => 'ताजेतवाने करा',
+	'ontologyimport'              => 'ऑन्टोलॉजी आयात करा',
+	'smw_oi_action'               => 'आयात',
+	'smw_oi_return'               => '<a href="$1">Special:OntologyImport</a> कडे परत जा.',
 );
 
 /** Dutch (Nederlands)
