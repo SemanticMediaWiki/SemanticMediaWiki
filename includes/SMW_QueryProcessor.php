@@ -75,7 +75,7 @@ class SMWQueryProcessor {
 			$query->querymode = SMWQuery::MODE_COUNT;
 		} elseif ($format == 'debug') {
 			$query->querymode = SMWQuery::MODE_DEBUG;
-		} elseif ($format == 'rss') {
+		} elseif (in_array($format, array('rss','icalendar'))) {
 			$query->querymode = SMWQuery::MODE_NONE;
 		}
 		if ( (array_key_exists('offset',$params)) && (is_int($params['offset'] + 0)) ) {
