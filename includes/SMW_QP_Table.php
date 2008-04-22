@@ -64,7 +64,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			if ($this->mSearchlabel) {
 				$link->setCaption($this->mSearchlabel);
 			}
-			$result .= "\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . $res->getColumnCount() . '"> ' . $link->getText($outputmode,$this->getLinker()) . "</td></tr>\n";
+			$result .= "\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . $res->getColumnCount() . '"> ' . $link->getText($outputmode,$this->mLinker) . "</td></tr>\n";
 		}
 		$result .= "</table>\n"; // print footer
 		return $result;

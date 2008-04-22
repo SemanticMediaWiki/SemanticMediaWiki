@@ -93,7 +93,7 @@ class SMWPrintRequest {
 	public function getText($outputmode, $linker = NULL) {
 		switch ($outputmode) {
 			case SMW_OUTPUT_WIKI: return $this->getWikiText($linker);
-			case SMW_OUTPUT_HTML: default: return $this->getHTMLText($linker);
+			case SMW_OUTPUT_HTML: case SMW_OUTPUT_FILE: default: return $this->getHTMLText($linker);
 		}
 	}
 

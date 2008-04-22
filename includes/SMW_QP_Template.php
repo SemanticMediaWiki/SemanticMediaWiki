@@ -64,10 +64,7 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 		$parser_options = new ParserOptions();
 		$parser_options->setEditSection(false);  // embedded sections should not have edit links
 		$parser = clone $wgParser;
-		if ($outputmode == SMW_OUTPUT_HTML) {
-			$parserOutput = $parser->parse($parserinput, $parsetitle, $parser_options);
-			$result = $parserOutput->getText();
-		} else {
+		if ($outputmode == SMW_OUTPUT_WIKI) {
 			if ( method_exists($parser, 'getPreprocessor') ) {
 				$frame = $parser->getPreprocessor()->newFrame();
 				$dom = $parser->preprocessToDom( $parserinput );
@@ -75,6 +72,9 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 			} else {
 				$result = $parser->preprocess($parserinput, $parsetitle, $parser_options);
 			}
+		} else /* SMW_OUTPUT_HTML, SMW_OUTPUT_FILE */ {
+			$parserOutput = $parser->parse($parserinput, $parsetitle, $parser_options);
+			$result = $parserOutput->getText();
 		}
 		$smwgStoreActive = $old_smwgStoreActive;
 		// show link to more results
@@ -88,7 +88,7 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 			if (array_key_exists('link', $this->m_params)) { // linking may interfere with templates
 				$link->setParameter($this->m_params['link'],'link');
 			}
-			$result .= $link->getText($outputmode,$this->getLinker());
+			$result .= $link->getText($outputmode,$this->mLinker);
 		}
 		return $result;
 	}

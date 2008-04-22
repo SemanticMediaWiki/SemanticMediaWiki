@@ -215,7 +215,7 @@ abstract class SMWDataValue {
 	public function getShortText($outputformat, $linker = NULL) {
 		switch ($outputformat) {
 			case SMW_OUTPUT_WIKI: return $this->getShortWikiText($linker);
-			case SMW_OUTPUT_HTML: default: return $this->getShortHTMLText($linker);
+			case SMW_OUTPUT_HTML: case SMW_OUTPUT_FILE: default: return $this->getShortHTMLText($linker);
 		}
 	}
 
@@ -230,7 +230,7 @@ abstract class SMWDataValue {
 	public function getLongText($outputformat, $linker = NULL) {
 		switch ($outputformat) {
 			case SMW_OUTPUT_WIKI: return $this->getLongWikiText($linker);
-			case SMW_OUTPUT_HTML: default: return $this->getLongHTMLText($linker);
+			case SMW_OUTPUT_HTML: case SMW_OUTPUT_FILE: default: return $this->getLongHTMLText($linker);
 		}
 	}
 
@@ -254,7 +254,7 @@ abstract class SMWDataValue {
 				}
 			}
 			break;
-		case SMW_OUTPUT_HTML:
+		case SMW_OUTPUT_HTML: case SMW_OUTPUT_FILE: default:
 			foreach ($this->getInfolinks() as $link) {
 				if ($first) {
 					$result .= '&nbsp;&nbsp;' . $link->getHTML($linker);

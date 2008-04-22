@@ -137,7 +137,7 @@ class SMWInfolink {
 			if ($title !== NULL) {
 				if ($outputformat == SMW_OUTPUT_WIKI) {
 					$link = "[[$titletext|$this->m_caption]]";
-				} else { // SMW_OUTPUT_HTML
+				} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
 					$link = $this->getLinker($linker)->makeKnownLinkObj($title, $this->m_caption);
 				}
 			} else { // Title creation failed, maybe illegal symbols or too long; make a direct URL link 
@@ -148,7 +148,7 @@ class SMWInfolink {
 				if ($title !== NULL) {
 					if ($outputformat == SMW_OUTPUT_WIKI) {
 						$link = "[" . $title->getFullURL(SMWInfolink::encodeParameters($this->m_params,false)) . " $this->m_caption]";
-					} else { // SMW_OUTPUT_HTML
+					} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
 						$link = $this->getLinker($linker)->makeKnownLinkObj($title, $this->m_caption, SMWInfolink::encodeParameters($this->m_params,false));
 					}
 				} else {
@@ -159,7 +159,7 @@ class SMWInfolink {
 			$target = $this->getURL();
 			if ($outputformat == SMW_OUTPUT_WIKI) {
 				$link = "[$target $this->m_caption]";
-			} else {
+			} else { //SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
 				$link = "<a href=\"" . htmlspecialchars($target) . "\">$this->m_caption</a>";
 			}
 		}

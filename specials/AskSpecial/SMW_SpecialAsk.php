@@ -19,7 +19,6 @@ class SMWAskPage extends SpecialPage {
 	protected $m_params = array();
 	protected $m_printouts = array();
 	protected $m_editquery = false;
-	protected $m_rssoutput = false;
 
 	/**
 	 * Constructor
@@ -32,52 +31,15 @@ class SMWAskPage extends SpecialPage {
 		global $wgOut, $wgRequest, $smwgIP, $smwgQEnabled, $smwgRSSEnabled;
 		wfProfileIn('doSpecialAsk (SMW)');
 		if ( ($wgRequest->getVal( 'query' ) != '') ) { // old processing
-			$this->executSimpleAsk();
+			$this->executeSimpleAsk();
 			wfProfileOut('doSpecialAsk (SMW)');
 			return;
 		}
 		if (!$smwgQEnabled) {
 			$wgOut->addHTML('<br />' . wfMsgForContent('smw_iq_disabled'));
-			wfProfileOut('doSpecialAsk (SMW)');
-			return;
-		}
-
-		$this->extractQueryParameters($p);
-
-		if ($this->m_rssoutput) {
-			if ($smwgRSSEnabled && ('' != $this->m_querystring )) {
-				$this->makeRSSResult();
-			} else {
-				// nothing at the moment
-			}
-		} else { // HTML output
-			if ($this->m_querystring) {
-				$wgOut->setHTMLtitle($this->m_querystring);
-			} else {
-				$wgOut->setHTMLtitle(wfMsg('ask'));
-			}
-			$parray = array();
-			foreach ($this->m_params as $key => $value) {
-				if ( !in_array($key,array('sort', 'order', 'limit', 'offset', 'title')) ) {
-					$parray[$key] = $value;
-				}
-			}
-			$paramstring = SMWInfolink::encodeParameters($parray);
-			$printoutstring = '';
-			foreach ($this->m_printouts as $printout) {
-				$printoutstring .= $printout->getSerialisation() . "\n";
-			}
-			$urltail = '&q=' . urlencode($this->m_querystring) . '&p=' . urlencode($paramstring) .'&po=' . urlencode($printoutstring);
-			if ('' != $this->m_params['sort'])  $urltail .= '&sort=' . $this->m_params['sort'];
-			if ('' != $this->m_params['order']) $urltail .= '&order=' . $this->m_params['order'];
-
-			// Print input form (or links to display it)
-			$this->makeInputForm($printoutstring, 'offset=' . $this->m_params['offset'] . '&limit=' . $this->m_params['limit'] . $urltail);
-	
-			// Finally process query and build more HTML output
-			if ('' != $this->m_querystring ) { // print results if any
-				$this->makeHTMLResult($urltail);
-			}
+		} else {
+			$this->extractQueryParameters($p);
+			$this->makeHTMLResult();
 		}
 		wfProfileOut('doSpecialAsk (SMW)');
 	}
@@ -116,7 +78,6 @@ class SMWAskPage extends SpecialPage {
 		// Now parse parameters and rebuilt the param strings for URLs
 		include_once( "$smwgIP/includes/SMW_QueryProcessor.php" );
 		SMWQueryProcessor::processFunctionParams($rawparams,$this->m_querystring,$this->m_params,$this->m_printouts);
-		$this->m_rssoutput = (array_key_exists('rss', $this->m_params));
 
 		// Try to complete undefined parameter values from dedicated URL params
 		$sortcount = $wgRequest->getVal( 'sc' );
@@ -143,27 +104,87 @@ class SMWAskPage extends SpecialPage {
 				$this->m_params['sort'] .= $wgRequest->getText( 'sort' . $i );
 			}
 		}
-		if ( !array_key_exists('limit',$this->m_params) ) {
-			$this->m_params['limit'] = $wgRequest->getVal( 'limit' );
-			if ($this->m_params['limit'] == '') {
-				 $this->m_params['limit'] = $this->m_rssoutput?10:20; // standard limit for RSS is 10
-			}
-		}
 		if ( !array_key_exists('offset',$this->m_params) ) {
 			$this->m_params['offset'] = $wgRequest->getVal( 'offset' );
 			if ($this->m_params['offset'] == '')  $this->m_params['offset'] = 0;
 		}
 		if ( !array_key_exists('format',$this->m_params) ) {
-			$this->m_params['format'] = 'broadtable';
+			if (array_key_exists('rss', $this->m_params)) { // backwards compatibility (SMW<=1.1 used this)
+				$this->m_params['format'] = 'rss';
+			} else { // default
+				$this->m_params['format'] = 'broadtable';
+			}
+		}
+		if ( !array_key_exists('limit',$this->m_params) ) {
+			$this->m_params['limit'] = $wgRequest->getVal( 'limit' );
+			if ($this->m_params['limit'] == '') {
+				 $this->m_params['limit'] = ($this->m_params['format'] == 'rss')?10:20; // standard limit for RSS
+			}
 		}
 
 		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) != '' ) || ('' == $this->m_querystring );
 	}
 
-	protected function makeInputForm($printoutstring, $urltail) {
-		global $wgUser, $smwgQSortingSupport, $wgOut;
+	protected function makeHTMLResult() {
+		global $wgOut;
+		$result = '';
+		$result_mime = false; // output in MW Special page as usual
+
+		// build parameter strings for URLs, based on current settings
+		$urltail = '&q=' . urlencode($this->m_querystring);
+
+		$tmp_parray = array();
+		foreach ($this->m_params as $key => $value) {
+			if ( !in_array($key,array('sort', 'order', 'limit', 'offset', 'title')) ) {
+				$tmp_parray[$key] = $value;
+			}
+		}
+		$urltail .= '&p=' . urlencode(SMWInfolink::encodeParameters($tmp_parray));
+		$printoutstring = '';
+		foreach ($this->m_printouts as $printout) {
+			$printoutstring .= $printout->getSerialisation() . "\n";
+		}
+		if ('' != $printoutstring)          $urltail .= '&po=' . urlencode($printoutstring);
+		if ('' != $this->m_params['sort'])  $urltail .= '&sort=' . $this->m_params['sort'];
+		if ('' != $this->m_params['order']) $urltail .= '&order=' . $this->m_params['order'];
+
+		if ($this->m_querystring != '') {
+			$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
+			$queryobj->querymode = SMWQuery::MODE_INSTANCES; ///TODO: Somewhat hacky (just as the query mode computation in SMWQueryProcessor::createQuery!)
+			$res = smwfGetStore()->getQueryResult($queryobj);
+			$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'],false,$res);
+			$result_mime = $printer->getMimeType($res);
+			if ($result_mime == false) {
+				$navigation = $this->getNavigationBar($res, $urltail);
+				$result = '<div style="text-align: center;">' . $navigation;
+				$result .= '</div>' . $printer->getResult($res, $this->m_params,SMW_OUTPUT_HTML);
+				$result .= '<div style="text-align: center;">' . $navigation . '</div>';
+			} else { // make a stand-alone file
+				$result = $printer->getResult($res, $this->m_params,SMW_OUTPUT_FILE);
+			}
+		}
+
+		if ($result_mime == false) {
+			if ($this->m_querystring) {
+				$wgOut->setHTMLtitle($this->m_querystring);
+			} else {
+				$wgOut->setHTMLtitle(wfMsg('ask'));
+			}
+			$result = $this->getInputForm($printoutstring, 'offset=' . $this->m_params['offset'] . '&limit=' . $this->m_params['limit'] . $urltail) . $result;
+			$wgOut->addHTML($result);
+		} else {
+			$wgOut->disable();
+			header( "Content-type: $result_mime; charset=UTF-8" );
+			print $result;
+		}
+	}
+
+
+	protected function getInputForm($printoutstring, $urltail) {
+		global $wgUser, $smwgQSortingSupport;
 		$skin = $wgUser->getSkin();
 		$result = '';
+
 		if ($this->m_editquery) {
 			$spectitle = Title::makeTitle( NS_SPECIAL, 'Ask' );
 			$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
@@ -203,20 +224,23 @@ class SMWAskPage extends SpecialPage {
 		} else {
 			$result .= '<p><a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes')) . '">' . wfMsg('smw_ask_editquery') . '</a></p>';
 		}
-		$wgOut->addHTML($result);
+		return $result;
 	}
 
-	protected function makeHTMLResult($urltail) {
-		global $wgUser, $smwgQMaxLimit, $wgOut;
-		$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
-		$res = smwfGetStore()->getQueryResult($queryobj);
+	/**
+	 * Build the navigation for some given query result, reuse url-tail parameters
+	 */
+	protected function getNavigationBar($res, $urltail) {
+		global $wgUser, $smwgQMaxLimit;
 		$skin = $wgUser->getSkin();
 		$offset = $this->m_params['offset'];
 		$limit  = $this->m_params['limit'];
 		// prepare navigation bar
-		if ($offset > 0) 
+		if ($offset > 0) {
 			$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . $urltail)) . '">' . wfMsg('smw_result_prev') . '</a>';
-		else $navigation = wfMsg('smw_result_prev');
+		} else {
+			$navigation = wfMsg('smw_result_prev');
+		}
 
 		$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $res->getCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
@@ -242,105 +266,14 @@ class SMWAskPage extends SpecialPage {
 			}
 		}
 		$navigation .= ')';
-
-		$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'],false,$res);
-		$result = '<div style="text-align: center;">' . $navigation;
-		$result .= '</div>' . $printer->getResult($res, $this->m_params,SMW_OUTPUT_HTML);
-		$result .= '<div style="text-align: center;">' . $navigation . '</div>';
-		$wgOut->addHTML($result);
+		return $navigation;
 	}
-
-	protected function makeRSSResult() {
-		global $wgOut, $wgRequest, $wgServer, $wgSitename;
-		$wgOut->disable();
-		$newprintouts = array(); // filter printouts
-		foreach ($this->m_printouts as $printout) {
-			if (strtolower($printout->getLabel()) == "creator") {
-				$newprintouts[] = $printout;
-			}
-			if ((strtolower($printout->getLabel()) == "date") and ($printout->getTypeID() == "_dat")) {
-				$newprintouts[] = $printout;
-				$this->m_params['sort'] = $printout->getTitle()->getText();
-				$this->m_params['order'] = 'DESC';
-			}
-		}
-		$this->m_printouts = $newprintouts;
-
-		$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
-		$res = smwfGetStore()->getQueryResult($queryobj);
-
-		if (!array_key_exists('rsstitle', $this->m_params)) {
-			$this->m_params['rsstitle'] = $wgSitename;
-		}
-		if (!array_key_exists('rssdescription', $this->m_params)) {
-			$this->m_params['rssdescription'] = wfMsg('smw_rss_description', $wgSitename);
-		}
-
-		$items = array();
-		$row = $res->getNext();
-		while ( $row !== false ) {
-			$creator = array();
-			$date = array();
-			$wikipage = $row[0]->getNextObject(); // get the object
-			foreach ($row as $result) {
-				// for now we ignore everything but creator and date, later we may
-				// add more things like geolocs, categories, and even a generic
-				// mechanism to add whatever you want :)
-				$req = $result->getPrintRequest();
-				if (strtolower($req->getLabel()) == "creator") {
-					$content = $result->getContent();
-					foreach ($content as $entry) {
-						$creator[] = $entry->getShortWikiText();
-					}
-				}
-				if (strtolower($req->getLabel()) == "date") {
-					$content = $result->getContent();
-					foreach ($content as $entry) {
-						$date[] = $entry->getShortWikiText();
-					}
-				}
-			}
-// 			print "Trying " . $wikipage->getShortWikiText() . '...'; // Debug
-			$items[] = new SMWRSSEntry($wikipage->getTitle(), $creator, $date);
-			$row = $res->getNext();
-		}
-
-		$text  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-		$text .= "<rdf:RDF\n";
-		$text .= "\txmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n";
-		$text .= "\txmlns:content=\"http://purl.org/rss/1.0/modules/content/\"\n";
-		$text .= "\txmlns:admin=\"http://webns.net/mvcb/\"\n";
-		$text .= "\txmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n";
-		$text .= "\txmlns=\"http://purl.org/rss/1.0/\">\n";
-		$text .= "\t<channel rdf:about=\"" . str_replace('&', '&amp;', $wgRequest->getFullRequestURL()) . "\">\n";
-		$text .= "\t\t<admin:generatorAgent rdf:resource=\"http://semantic-mediawiki.org/wiki/Special:URIResolver/Semantic_MediaWiki\"/>\n";
-		$text .= "\t\t<title>" . $this->m_params['rsstitle'] . "</title>\n";
-		$text .= "\t\t<link>$wgServer</link>\n";
-		$text .= "\t\t<description>" . $this->m_params['rssdescription'] . "</description>\n";
-		if (count($items) > 0) {
-			$text .= "\t\t<items>\n";
-			$text .= "\t\t\t<rdf:Seq>\n";
-			foreach($items as $item) {
-				$text .= "\t\t\t\t<rdf:li rdf:resource=\"" . $item->uri() . "\"/>\n";
-			}
-			$text .= "\t\t\t</rdf:Seq>\n";
-			$text .= "\t\t</items>\n";
-		}
-		$text .= "\t</channel>\n";
-		foreach ($items as $item) {
-			$text .= $item->text();
-		}
-		$text .= "</rdf:RDF>";
-
-		print $text;
-	}
-
 
 	/**
 	 * Exectues ask-interface as done in SMW<=0.7, using a simple textbox interface and supporting only
 	 * certain parameters.
 	 */
-	protected function executSimpleAsk() {
+	protected function executeSimpleAsk() {
 		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgQSortingSupport, $smwgIP;
 
 		$skin = $wgUser->getSkin();
@@ -418,106 +351,5 @@ class SMWAskPage extends SpecialPage {
 		$wgOut->addHTML($html);
 	}
 
-}
-
-
-/**
- * Represents a single entry, or item, in the feed.
- */
-class SMWRSSEntry {
-
-	private $uri;
-	private $label;
-	private $creator;
-	private $date;
-	private $articlename;
-	private $title;
-
-	/**
-	 * Constructor for a single item in the feed. Requires the URI of the item.
-	 */
-	public function SMWRSSEntry(Title $t, $c, $d) {
-		global $wgServer;
-		$this->title = $t;
-		$this->uri = $t->getFullURL();
-		$this->label = $t->getText();
-		$article = null;
-		if (count($c)==0) {
-			$article = new Article($t);
-			$this->creator = array();
-			$this->creator[] = $article->getUserText();
-		} else {
-			$this->creator = $c;
-		}
-		$this->date = array();
-		if (count($d)==0) {
-			if ($article === null) {
-				$article = new Article($t);
-			}
-			$this->date[] = date("c", strtotime($article->getTimestamp()));
-		} else {
-			foreach ($d as $date) {
-				$this->date[] = date("c", strtotime($date));
-			}
-		}
-
-		// get content
-		if ($t->getNamespace() == NS_MAIN) {
-			$this->articlename = ':' . $t->getDBkey();
-		} else {
-			$this->articlename = $t->getPrefixedDBKey();
-		}
-	}
-
-	/**
-	 * Get function for the Item URI
-	 */
-	public function uri() {
-		return $this->uri;
-	}
-	
-	/**
-	 * Creates the RSS output for the single item.
-	 */
-	public function text() {
-		global $wgTitle, $wgServer, $wgParser, $smwgStoreActive, $smwgRSSWithPages;
-		static $parser = null;
-		static $parser_options = null;
-		$smwgStoreActive = false; // make sure no Factbox is shown (RSS lacks the required styles)
-		// do not bother to restore this later, not needed in this context
-
-		$text  = "\t<item rdf:about=\"$this->uri\">\n";
-		$text .= "\t\t<title>$this->label</title>\n";
-		$text .= "\t\t<link>$this->uri</link>\n";
-		foreach ($this->date as $date)
-			$text .= "\t\t<dc:date>$date</dc:date>\n";
-		foreach ($this->creator as $creator)
-			$text .= "\t\t<dc:creator>" . smwfXMLContentEncode($creator) . "</dc:creator>\n";
-		if ($smwgRSSWithPages) {
-			if ($parser == null) {
-				$parser_options = new ParserOptions();
-				$parser_options->setEditSection(false);  // embedded sections should not have edit links
-				$parser = clone $wgParser;
-			}
-			$parserOutput = $parser->parse('{{' . $this->articlename . '}}', $this->title, $parser_options);
-			$content = $parserOutput->getText();
-			$content = str_replace('<a href="/', '<a href="' . $wgServer . '/', $content);
-			// This makes absolute URLs out of the local ones
-			///TODO is there maybe a way in the parser options to make the URLs absolute?
-			$text .= "\t\t<description>" . $this->clean($content) . "</description>\n";
-			$text .= "\t\t<content:encoded  rdf:datatype=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral\"><![CDATA[$content]]></content:encoded>\n";
-		}
-		$text .= "\t</item>\n";
-		return $text;
-	}
-
-	/**
-	 * Descriptions are unescaped simple text. The content is given in HTML. This should
-	 * clean the description.
-	 */
-	private function clean($t) {
-		return trim(smwfXMLContentEncode($t, null, 'UTF-8'));
-		//return trim(str_replace(array('&','<','>'), array('&amp;','&lt;','&gt;'), strip_tags(html_entity_decode($t, null, 'UTF-8')))); 
-	}
 }
 

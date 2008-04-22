@@ -24,7 +24,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 
 		if (array_key_exists('sep', $params)) {
 			$this->mSep = str_replace('_',' ',$params['sep']);
-			if ($outputmode==SMW_OUTPUT_HTML) {
+			if ($outputmode != SMW_OUTPUT_WIKI) {
 				$this->mSep = htmlspecialchars($this->mSep);
 			}
 		}
@@ -130,10 +130,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		if ($usetemplate) {
 			$old_smwgStoreActive = $smwgStoreActive;
 			$smwgStoreActive = false; // no annotations stored, no factbox printed
-			if ($outputmode === SMW_OUTPUT_HTML) {
-				$parserOutput = $parser->parse($result, $parsetitle, $parser_options);
-				$result = $parserOutput->getText();
-			} else {
+			if ($outputmode == SMW_OUTPUT_WIKI) {
 				if ( method_exists($parser, 'getPreprocessor') ) {
 					$frame = $parser->getPreprocessor()->newFrame();
 					$dom = $parser->preprocessToDom( $result );
@@ -141,6 +138,9 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				} else {
 					$result = $parser->preprocess($result, $parsetitle, $parser_options);
 				}
+			} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
+				$parserOutput = $parser->parse($result, $parsetitle, $parser_options);
+				$result = $parserOutput->getText();
 			}
 			$smwgStoreActive = $old_smwgStoreActive;
 		}
@@ -163,7 +163,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					$link->setParameter($this->m_params['link'],'link');
 				}
 			}
-			$result .= $rowstart . $link->getText($outputmode,$this->getLinker()) . $rowend;
+			$result .= $rowstart . $link->getText($outputmode,$this->mLinker) . $rowend;
 		}
 
 		// print footer

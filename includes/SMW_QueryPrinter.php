@@ -39,18 +39,6 @@ abstract class SMWResultPrinter {
 
 	/**
 	 * Main entry point: takes an SMWQueryResult and parameters
-	 * given as key-value-pairs in an array and returns the 
-	 * serialised version of the results, formatted as inline HTML
-	 * or (for special printers) as RDF or XML or whatever. Normally
-	 * not overwritten by subclasses.
-	 * @DEPRECATED use getResult()
-	 */
-	public function getResultHTML($results, $params) {
-		return $this->getResult($results,$params,SMW_OUTPUT_HTML);
-	}
-
-	/**
-	 * Main entry point: takes an SMWQueryResult and parameters
 	 * given as key-value-pairs in an array, and returns the 
 	 * serialised version of the results, formatted as HTML or Wiki
 	 * or whatever is specified. Normally this is not overwritten by
@@ -58,7 +46,7 @@ abstract class SMWResultPrinter {
 	 */
 	public function getResult($results, $params, $outputmode) {
 		$this->readParameters($params,$outputmode);
-		if ($results->getCount() == 0) {
+		if ($results->getCount() == 0) { // no results, take over processing
 			if (!$results->hasFurtherResults()) {
 				return htmlspecialchars($this->mDefault) . $this->getErrorString($results);
 			} elseif ($this->mInline) {
@@ -67,7 +55,8 @@ abstract class SMWResultPrinter {
 					$label = wfMsgForContent('smw_iq_moreresults');
 				}
 				if ($label != '') {
-					$result = $this->getFurtherResultsLink($outputmode,$results,$label);
+					$link = $res->getQueryLink($label);
+					$result = $link->getText($outputmode,$this->mLinker);
 				}
 				$result .= $this->getErrorString($results);
 				return $result;
@@ -85,13 +74,13 @@ abstract class SMWResultPrinter {
 		$this->m_params = $params;
 		if (array_key_exists('intro', $params)) {
 			$this->mIntro = str_replace('_',' ',$params['intro']);
-			if ($outputmode==SMW_OUTPUT_HTML) {
+			if ($outputmode != SMW_OUTPUT_WIKI) {
 				$this->mIntro = htmlspecialchars($this->mIntro);
 			}
 		}
 		if (array_key_exists('searchlabel', $params)) {
 			$this->mSearchlabel = $params['searchlabel'];
-			if ($outputmode==SMW_OUTPUT_HTML) {
+			if ($outputmode != SMW_OUTPUT_WIKI) {
 				$this->mSearchlabel = htmlspecialchars($this->mSearchlabel);
 			}
 		}
@@ -113,7 +102,7 @@ abstract class SMWResultPrinter {
 		}
 		if (array_key_exists('default', $params)) {
 			$this->mDefault = str_replace('_',' ',$params['default']);
-			if ($outputmode==SMW_OUTPUT_HTML) {
+			if ($outputmode != SMW_OUTPUT_WIKI) {
 				$this->mDefault = htmlspecialchars($this->mDefault);
 			}
 		}
@@ -124,14 +113,6 @@ abstract class SMWResultPrinter {
 				$this->mShowHeaders = true;
 			}
 		}
-	}
-
-	/**
-	 * Return HTML version of serialised results.
-	 * @DEPRECATED: Legacy method, use getResultText instead
-	 */
-	protected function getHTML($res) {
-		return $this->getResultText($res,SMW_OUTPUT_HTML);
 	}
 
 	/**
@@ -155,6 +136,16 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
+	 * Some printers can produce not only embeddable HTML or Wikitext, but
+	 * can also produce stand-alone files. An example is RSS or iCalendar.
+	 * This function returns the mimetype string that this file would have,
+	 * or FALSE if no standalone files are produced.
+	 */
+	public function getMimeType($res) {
+		return false;
+	}
+
+	/**
 	 * Provides a simple formatted string of all the error messages that occurred.
 	 * Can be used if not specific error formatting is desired. Compatible with HTML
 	 * and Wiki.
@@ -164,15 +155,28 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
+	 * @DEPRECATED (since >1.0) use getResult()
+	 */
+	public function getResultHTML($results, $params) {
+		return $this->getResult($results,$params,SMW_OUTPUT_HTML);
+	}
+
+	/**
+	 * Return HTML version of serialised results.
+	 * @DEPRECATED: (since >1.0) Legacy method, use getResultText instead
+	 */
+	protected function getHTML($res) {
+		return $this->getResultText($res,SMW_OUTPUT_HTML);
+	}
+
+	/**
 	 * Generate a link to further results of the given query, using syntactic encoding
 	 * as appropriate for $outputmode.
+	 * @DEPRECATED (since >1.1) This function no longer does anything interesting. Intelligence moved to SMWInfolink: Use the code as given below directly!
 	 */
 	protected function getFurtherResultsLink($outputmode, $res, $label) {
-		switch ($outputmode) {
-			//case SMW_OUTPUT_WIKI: return '[' . $res->getQueryURL() . ' ' . $label . ']';
-			case SMW_OUTPUT_WIKI: return '[[' . $res->getQueryTitle() . '|' . $label . ']]';
-			case SMW_OUTPUT_HTML: default: return '<a href="' . $res->getQueryURL() . '">' . $label . '</a>';
-		}
+		$link = $res->getQueryLink($label);
+		return $link->getText($outputmode,$this->mLinker);
 	}
 
 }

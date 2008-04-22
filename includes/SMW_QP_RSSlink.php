@@ -11,56 +11,231 @@
  */
 
 class SMWRSSResultPrinter extends SMWResultPrinter {
-	protected $title = '';
-	protected $description = '';
-	protected $rsslinktitle; // just a cache
-	protected $rsslinkurl; // just a cache
+	protected $m_title = '';
+	protected $m_description = '';
 
 	protected function readParameters($params,$outputmode) {
 		SMWResultPrinter::readParameters($params,$outputmode);
 		if (array_key_exists('rsstitle', $this->m_params)) {
-			$this->title = $this->m_params['rsstitle'];
+			$this->m_title = $this->m_params['rsstitle'];
 		}
 		if (array_key_exists('rssdescription', $this->m_params)) {
-			$this->description = $this->m_params['rssdescription'];
+			$this->m_description = $this->m_params['rssdescription'];
 		}
-		$this->rsslinktitle = '';
 	}
 
-	public function getResult($results, $params, $outputmode) { // skip all checks, the result is never populated
+	public function getResult($results, $params, $outputmode) { // skip checks, results with 0 entries are normal
 		$this->readParameters($params,$outputmode);
 		return $this->getResultText($results,$outputmode) . $this->getErrorString($results);
 	}
 
+	public function getMimeType($res) {
+		return 'application/rdf+xml'; // or is rss+xml better? Might be confused in either case (with RSS2.0 or RDF)
+	}
+
 	protected function getResultText($res, $outputmode) {
-		global $smwgIQRunningNumber;
+		global $smwgIQRunningNumber, $wgSitename, $wgServer, $smwgRSSEnabled;
 		$result = '';
 
-		if ($this->mSearchlabel) {
-			$label = $this->mSearchlabel;
-		} else {
-			$label = wfMsgForContent('smw_rss_link');
-		}
-		$link = $res->getQueryLink($label);
-		$link->setParameter('1','rss');
-		if ($this->title !== '') {
-			$link->setParameter($this->title,'rsstitle');
-		}
-		if ($this->description !== '') {
-			$link->setParameter($this->description,'rssdescription');
-		}
-		if (array_key_exists('limit', $this->m_params)) {
-			$link->setParameter($this->m_params['limit'],'limit');
-		} else { // use a reasonable deafult limit (10 is suggested by RSS)
-			$link->setParameter(10,'limit');
-		}
+		if ($outputmode == SMW_OUTPUT_FILE) { // make RSS feed
+			if (!$smwgRSSEnabled) return '';
+			if ($this->m_title == '') {
+				$this->m_title = $wgSitename;
+			}
+			if ($this->m_description == '') {
+				$this->m_description = wfMsg('smw_rss_description', $wgSitename);
+			}
 
-		$result .= $link->getText($outputmode,$this->getLinker());
+			// cast printouts into "items"
+			$items = array();
+			$row = $res->getNext();
+			while ( $row !== false ) {
+				$creator = array();
+				$date = array();
+				$wikipage = $row[0]->getNextObject(); // get the object
+				foreach ($row as $field) {
+					// for now we ignore everything but creator and date, later we may
+					// add more things like geolocs, categories, and even a generic
+					// mechanism to add whatever you want :)
+					$req = $field->getPrintRequest();
+					if (strtolower($req->getLabel()) == "creator") {
+						$content = $field->getContent();
+						foreach ($content as $entry) {
+							$creator[] = $entry->getShortWikiText();
+						}
+					} elseif (strtolower($req->getLabel()) == "date") {
+						$content = $field->getContent();
+						foreach ($content as $entry) {
+							$date[] = $entry->getShortWikiText();
+						}
+					}
+				}
+				$items[] = new SMWRSSItem($wikipage->getTitle(), $creator, $date);
+				$row = $res->getNext();
+			}
 
-		smwfRequireHeadItem('rss' . $smwgIQRunningNumber, '<link rel="alternate" type="application/rss+xml" title="' . $this->title . '" href="' . $link->getURL() . '" />');
+			$result .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+			$result .= "<rdf:RDF\n";
+			$result .= "\txmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n";
+			$result .= "\txmlns:content=\"http://purl.org/rss/1.0/modules/content/\"\n";
+			$result .= "\txmlns:admin=\"http://webns.net/mvcb/\"\n";
+			$result .= "\txmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n";
+			$result .= "\txmlns=\"http://purl.org/rss/1.0/\">\n";
+			global $wgRequest;
+			$result .= "\t<channel rdf:about=\"" . str_replace('&', '&amp;', $wgRequest->getFullRequestURL()) . "\">\n";
+			$result .= "\t\t<admin:generatorAgent rdf:resource=\"http://semantic-mediawiki.org/wiki/Special:URIResolver/Semantic_MediaWiki\"/>\n";
+			$result .= "\t\t<title>" . $this->m_title . "</title>\n";
+			$result .= "\t\t<link>$wgServer</link>\n";
+			$result .= "\t\t<description>" . $this->m_description . "</description>\n";
+			if (count($items) > 0) {
+				$result .= "\t\t<items>\n";
+				$result .= "\t\t\t<rdf:Seq>\n";
+				foreach($items as $item) {
+					$result .= "\t\t\t\t<rdf:li rdf:resource=\"" . $item->uri() . "\"/>\n";
+				}
+				$result .= "\t\t\t</rdf:Seq>\n";
+				$result .= "\t\t</items>\n";
+			}
+			$result .= "\t</channel>\n";
+			foreach ($items as $item) {
+				$result .= $item->text();
+			}
+			$result .= "</rdf:RDF>";
+		} else { // just make link to feed
+			if ($this->mSearchlabel) {
+				$label = $this->mSearchlabel;
+			} else {
+				$label = wfMsgForContent('smw_rss_link');
+			}
+			$link = $res->getQueryLink($label);
+			$link->setParameter('rss','format');
+			if ($this->m_title !== '') {
+				$link->setParameter($this->m_title,'rsstitle');
+			}
+			if ($this->m_description !== '') {
+				$link->setParameter($this->m_description,'rssdescription');
+			}
+			if (array_key_exists('limit', $this->m_params)) {
+				$link->setParameter($this->m_params['limit'],'limit');
+			} else { // use a reasonable deafult limit (10 is suggested by RSS)
+				$link->setParameter(10,'limit');
+			}
+
+			$newprintouts = array(); // filter printouts
+			foreach ($res->getPrintRequests() as $printout) {
+				if ((strtolower($printout->getLabel()) == "date") and ($printout->getTypeID() == "_dat")) {
+					$link->setParameter($printout->getTitle()->getText(),'sort');
+					$link->setParameter('DESC','order');
+				}
+			}
+
+			$result .= $link->getText($outputmode,$this->mLinker);
+	
+			smwfRequireHeadItem('rss' . $smwgIQRunningNumber, '<link rel="alternate" type="application/rss+xml" title="' . $this->m_title . '" href="' . $link->getURL() . '" />');
+		}
 
 		return $result;
 	}
 
+}
+
+
+/**
+ * Represents a single entry, or item, in the feed.
+ */
+class SMWRSSItem {
+
+	private $uri;
+	private $label;
+	private $creator;
+	private $date;
+	private $articlename;
+	private $title;
+
+	/**
+	 * Constructor for a single item in the feed. Requires the URI of the item.
+	 */
+	public function __construct(Title $t, $c, $d) {
+		$this->title = $t;
+		$this->uri = $t->getFullURL();
+		$this->label = $t->getText();
+		$article = null;
+		if (count($c)==0) {
+			$article = new Article($t);
+			$this->creator = array();
+			$this->creator[] = $article->getUserText();
+		} else {
+			$this->creator = $c;
+		}
+		$this->date = array();
+		if (count($d)==0) {
+			if ($article === null) {
+				$article = new Article($t);
+			}
+			$this->date[] = date("c", strtotime($article->getTimestamp()));
+		} else {
+			foreach ($d as $date) {
+				$this->date[] = date("c", strtotime($date));
+			}
+		}
+
+		// get content
+		if ($t->getNamespace() == NS_MAIN) {
+			$this->articlename = ':' . $t->getDBkey();
+		} else {
+			$this->articlename = $t->getPrefixedDBKey();
+		}
+	}
+
+	/**
+	 * Get function for the Item URI
+	 */
+	public function uri() {
+		return $this->uri;
+	}
+	
+	/**
+	 * Creates the RSS output for the single item.
+	 */
+	public function text() {
+		global $wgTitle, $wgServer, $wgParser, $smwgStoreActive, $smwgRSSWithPages;
+		static $parser = null;
+		static $parser_options = null;
+		$smwgStoreActive = false; // make sure no Factbox is shown (RSS lacks the required styles)
+		// do not bother to restore this later, not needed in this context
+
+		$text  = "\t<item rdf:about=\"$this->uri\">\n";
+		$text .= "\t\t<title>$this->label</title>\n";
+		$text .= "\t\t<link>$this->uri</link>\n";
+		foreach ($this->date as $date)
+			$text .= "\t\t<dc:date>$date</dc:date>\n";
+		foreach ($this->creator as $creator)
+			$text .= "\t\t<dc:creator>" . smwfXMLContentEncode($creator) . "</dc:creator>\n";
+		if ($smwgRSSWithPages) {
+			if ($parser == null) {
+				$parser_options = new ParserOptions();
+				$parser_options->setEditSection(false);  // embedded sections should not have edit links
+				$parser = clone $wgParser;
+			}
+			$parserOutput = $parser->parse('{{' . $this->articlename . '}}', $this->title, $parser_options);
+			$content = $parserOutput->getText();
+			// Make absolute URLs out of the local ones:
+			///TODO is there maybe a way in the parser options to make the URLs absolute?
+			$content = str_replace('<a href="/', '<a href="' . $wgServer . '/', $content);
+			$text .= "\t\t<description>" . $this->clean($content) . "</description>\n";
+			$text .= "\t\t<content:encoded  rdf:datatype=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral\"><![CDATA[$content]]></content:encoded>\n";
+		}
+		$text .= "\t</item>\n";
+		return $text;
+	}
+
+	/**
+	 * Descriptions are unescaped simple text. The content is given in HTML. This should
+	 * clean the description.
+	 */
+	private function clean($t) {
+		return trim(smwfXMLContentEncode($t, null, 'UTF-8'));
+		//return trim(str_replace(array('&','<','>'), array('&amp;','&lt;','&gt;'), strip_tags(html_entity_decode($t, null, 'UTF-8')))); 
+	}
 }
 

@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.2aSVN');
+define('SMW_VERSION','1.2bSVN');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -39,8 +39,12 @@ define('SMW_HEADER_SORTTABLE', 3);
 define('SMW_HEADER_STYLE', 4);
 
 // constants for denoting output modes in many functions: HTML or Wiki?
+// "File" is for printing results into stand-alone files (e.g. building RSS)
+// and should be treated like HTML when building single strings. Only query
+// printers tend to have special handling for that.
 define('SMW_OUTPUT_HTML', 1);
 define('SMW_OUTPUT_WIKI', 2);
+define('SMW_OUTPUT_FILE', 3);
 
 // HTML items to load in current page, use smwfRequireHeadItem to extend
 $smwgHeadItems = array();
