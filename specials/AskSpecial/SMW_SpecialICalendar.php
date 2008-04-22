@@ -139,6 +139,9 @@ class SMWICalendarPage extends SpecialPage {
 		global $wgOut, $wgRequest, $wgServer, $wgSitename;
 		$wgOut->disable();
 		header( "Content-type: text/calendar" );
+		// TODO add encoding. probably this is why it does not work on
+		// a Mac (and on Linux?), add "; charset=???", us-ascii maybe?
+		// I can't test I, I don't have a mac...
 		$newprintouts = array(); // filter printouts
 		foreach ($this->m_printouts as $printout) {
 			if ((strtolower($printout->getLabel()) == "start") and ($printout->getTypeID() == "_dat")) {
@@ -253,7 +256,7 @@ class SMWICalendarEntry {
 		$this->uri = $t->getFullURL();
 		$this->label = $t->getText();
 		$this->startdate = $this->parsedate($startdate, $enddate);
-		$this->enddate = $this->parsedate($enddate, $startdate);
+		$this->enddate = $this->parsedate($enddate, $startdate, true);
 		$this->location = $location;
 		
 		$this->sequence = $t->getLatestRevID();
@@ -272,14 +275,17 @@ class SMWICalendarEntry {
 	 * datetimes, but not just days, and thus it has trouble to display
 	 * multi-day events and anniversaries and such.
 	 */
-	static private function parsedate($d, $check = '') {
+	static private function parsedate($d, $check = '', $addday=false) {
 		if ($d=='') return '';
+		$t = strtotime(str_replace("&nbsp;", " ", $d));
 		if ($check=='')
-			return date("Ymd", strtotime(str_replace("&nbsp;", " ", $d))) . "T" . date("His", strtotime(str_replace("&nbsp;", " ", $d)));
-		if ((date("His", strtotime(str_replace("&nbsp;", " ", $d)))=="000000") && ((date("His", strtotime(str_replace("&nbsp;", " ", $check)))=="000000")))
-			return date("Ymd", strtotime(str_replace("&nbsp;", " ", $d)));
-		else
-			return date("Ymd", strtotime(str_replace("&nbsp;", " ", $d))) . "T" . date("His", strtotime(str_replace("&nbsp;", " ", $d)));			
+			return date("Ymd", $t) . "T" . date("His", $t);
+		if ((date("His", $t)=="000000") && ((date("His", $t)=="000000"))) {
+			if ($addday) $t = $t + 60*60*24;
+			return date("Ymd", $t);
+		} else {
+			return date("Ymd", $t) . "T" . date("His", $t);
+		}			
 	}
 	
 	/**
