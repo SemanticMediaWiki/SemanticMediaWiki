@@ -44,6 +44,10 @@ class SMWQueryProcessor {
 	 * The format string is used to specify the output format if already
 	 * known. Otherwise it will be determined from the parameters when 
 	 * needed. This parameter is just for optimisation in a common case.
+	 *
+	 * @TODO: this method contains too many special cases for certain 
+	 * printouts. Especially the case of rss, icalendar, etc. (no query) 
+	 * should be specified differently.
 	 */
 	static public function createQuery($querystring, $params, $inline = true, $format = '', $extraprintouts = array()) {
 		global $smwgQDefaultNamespaces;
@@ -53,12 +57,30 @@ class SMWQueryProcessor {
 		$qp->setDefaultNamespaces($smwgQDefaultNamespaces);
 		$desc = $qp->getQueryDescription($querystring);
 
+		if ($format == '') {
+			$format = SMWQueryProcessor::getResultFormat($params);
+		}
+		if ($format == 'count') {
+			$querymode = SMWQuery::MODE_COUNT;
+		} elseif ($format == 'debug') {
+			$querymode = SMWQuery::MODE_DEBUG;
+		} elseif (in_array($format, array('rss','icalendar'))) {
+			$querymode = SMWQuery::MODE_NONE;
+		} else {
+			$querymode = SMWQuery::MODE_INSTANCES;
+		}
+
 		if (array_key_exists('mainlabel', $params)) {
 			$mainlabel = $params['mainlabel'] . $qp->getLabel();
 		} else {
 			$mainlabel = $qp->getLabel();
 		}
-		if ( ( !$desc->isSingleton() || (count($desc->getPrintRequests()) + count($extraprintouts) == 0) ) && ($mainlabel != '-') ) {
+		if ( ($querymode == SMWQuery::MODE_NONE) ||
+		     ( ( !$desc->isSingleton() ||
+		         (count($desc->getPrintRequests()) + count($extraprintouts) == 0) 
+		       ) && ($mainlabel != '-') 
+		     )
+		   ) {
 			$desc->prependPrintRequest(new SMWPrintRequest(SMW_PRINT_THIS, $mainlabel));
 		}
 
@@ -68,16 +90,7 @@ class SMWQueryProcessor {
 		$query->addErrors($qp->getErrors()); // keep parsing errors for later output
 
 		// set query parameters:
-		if ($format == '') {
-			$format = SMWQueryProcessor::getResultFormat($params);
-		}
-		if ($format == 'count') {
-			$query->querymode = SMWQuery::MODE_COUNT;
-		} elseif ($format == 'debug') {
-			$query->querymode = SMWQuery::MODE_DEBUG;
-		} elseif (in_array($format, array('rss','icalendar'))) {
-			$query->querymode = SMWQuery::MODE_NONE;
-		}
+		$query->querymode = $querymode;
 		if ( (array_key_exists('offset',$params)) && (is_int($params['offset'] + 0)) ) {
 			$query->setOffset(max(0,trim($params['offset']) + 0));
 		}

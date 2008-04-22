@@ -78,8 +78,14 @@ class SMWAskPage extends SpecialPage {
 		// Now parse parameters and rebuilt the param strings for URLs
 		include_once( "$smwgIP/includes/SMW_QueryProcessor.php" );
 		SMWQueryProcessor::processFunctionParams($rawparams,$this->m_querystring,$this->m_params,$this->m_printouts);
-
 		// Try to complete undefined parameter values from dedicated URL params
+		if ( !array_key_exists('format',$this->m_params) ) {
+			if (array_key_exists('rss', $this->m_params)) { // backwards compatibility (SMW<=1.1 used this)
+				$this->m_params['format'] = 'rss';
+			} else { // default
+				$this->m_params['format'] = 'broadtable';
+			}
+		}
 		$sortcount = $wgRequest->getVal( 'sc' );
 		if (!is_numeric($sortcount)) {
 			$sortcount = 0;
@@ -107,13 +113,6 @@ class SMWAskPage extends SpecialPage {
 		if ( !array_key_exists('offset',$this->m_params) ) {
 			$this->m_params['offset'] = $wgRequest->getVal( 'offset' );
 			if ($this->m_params['offset'] == '')  $this->m_params['offset'] = 0;
-		}
-		if ( !array_key_exists('format',$this->m_params) ) {
-			if (array_key_exists('rss', $this->m_params)) { // backwards compatibility (SMW<=1.1 used this)
-				$this->m_params['format'] = 'rss';
-			} else { // default
-				$this->m_params['format'] = 'broadtable';
-			}
 		}
 		if ( !array_key_exists('limit',$this->m_params) ) {
 			$this->m_params['limit'] = $wgRequest->getVal( 'limit' );

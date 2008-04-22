@@ -34,7 +34,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 	}
 
 	protected function getResultText($res, $outputmode) {
-		global $smwgIQRunningNumber, $wgSitename, $wgServer, $smwgRSSEnabled;
+		global $smwgIQRunningNumber, $wgSitename, $wgServer, $smwgRSSEnabled, $wgRequest;
 		$result = '';
 
 		if ($outputmode == SMW_OUTPUT_FILE) { // make RSS feed
@@ -50,8 +50,8 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			$items = array();
 			$row = $res->getNext();
 			while ( $row !== false ) {
-				$creator = array();
-				$date = array();
+				$creators = array();
+				$dates = array();
 				$wikipage = $row[0]->getNextObject(); // get the object
 				foreach ($row as $field) {
 					// for now we ignore everything but creator and date, later we may
@@ -59,18 +59,16 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 					// mechanism to add whatever you want :)
 					$req = $field->getPrintRequest();
 					if (strtolower($req->getLabel()) == "creator") {
-						$content = $field->getContent();
-						foreach ($content as $entry) {
-							$creator[] = $entry->getShortWikiText();
+						foreach ($field->getContent() as $entry) {
+							$creators[] = $entry->getShortWikiText();
 						}
-					} elseif (strtolower($req->getLabel()) == "date") {
-						$content = $field->getContent();
-						foreach ($content as $entry) {
-							$date[] = $entry->getShortWikiText();
+					} elseif ( (strtolower($req->getLabel()) == "date") && ($req->getTypeID() == "_dat") ) {
+						foreach ($field->getContent() as $entry) {
+							$dates[] = $entry->getShortWikiText(); ///FIXME: just say NO to processing localised strings like reliable values internally. This sucks critically.
 						}
 					}
 				}
-				$items[] = new SMWRSSItem($wikipage->getTitle(), $creator, $date);
+				$items[] = new SMWRSSItem($wikipage->getTitle(), $creators, $dates);
 				$row = $res->getNext();
 			}
 
@@ -81,7 +79,6 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			$result .= "\txmlns:admin=\"http://webns.net/mvcb/\"\n";
 			$result .= "\txmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n";
 			$result .= "\txmlns=\"http://purl.org/rss/1.0/\">\n";
-			global $wgRequest;
 			$result .= "\t<channel rdf:about=\"" . str_replace('&', '&amp;', $wgRequest->getFullRequestURL()) . "\">\n";
 			$result .= "\t\t<admin:generatorAgent rdf:resource=\"http://semantic-mediawiki.org/wiki/Special:URIResolver/Semantic_MediaWiki\"/>\n";
 			$result .= "\t\t<title>" . $this->m_title . "</title>\n";
@@ -121,16 +118,15 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 				$link->setParameter(10,'limit');
 			}
 
-			$newprintouts = array(); // filter printouts
 			foreach ($res->getPrintRequests() as $printout) {
-				if ((strtolower($printout->getLabel()) == "date") and ($printout->getTypeID() == "_dat")) {
+				if ((strtolower($printout->getLabel()) == "date") && ($printout->getTypeID() == "_dat")) {
 					$link->setParameter($printout->getTitle()->getText(),'sort');
 					$link->setParameter('DESC','order');
 				}
 			}
 
 			$result .= $link->getText($outputmode,$this->mLinker);
-	
+
 			smwfRequireHeadItem('rss' . $smwgIQRunningNumber, '<link rel="alternate" type="application/rss+xml" title="' . $this->m_title . '" href="' . $link->getURL() . '" />');
 		}
 
@@ -141,7 +137,9 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 
 
 /**
- * Represents a single entry, or item, in the feed.
+ * Represents a single entry, or item, in an RSS feed. Useful since those items are iterated more
+ * than once when serialising RSS.
+ * @TODO: this code still needs cleanup, it's a mess
  */
 class SMWRSSItem {
 

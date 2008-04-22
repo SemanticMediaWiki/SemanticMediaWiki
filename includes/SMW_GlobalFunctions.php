@@ -108,8 +108,6 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgSpecialPages['URIResolver']            = array('SMWURIResolver');
 	$wgAutoloadClasses['SMWAdmin']            = $smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php';
 	$wgSpecialPages['SMWAdmin']               = array('SMWAdmin');
-	$wgAutoloadClasses['SMWICalendarPage']    = $smwgIP . '/specials/AskSpecial/SMW_SpecialICalendar.php';
-	$wgSpecialPages['ICalendar']              = array('SMWICalendarPage');
 	
 	// suboptimal special pages using the SMWSpecialPage wrapper class:
 	$wgAutoloadClasses['SMWSpecialPage']      = $smwgIP . '/includes/SMW_SpecialPage.php';
