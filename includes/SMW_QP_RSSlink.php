@@ -64,7 +64,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 						}
 					} elseif ( (strtolower($req->getLabel()) == "date") && ($req->getTypeID() == "_dat") ) {
 						foreach ($field->getContent() as $entry) {
-							$dates[] = $entry->getShortWikiText(); ///FIXME: just say NO to processing localised strings like reliable values internally. This sucks critically.
+							$dates[] = $entry->getXSDvalue();
 						}
 					}
 				}
@@ -173,7 +173,7 @@ class SMWRSSItem {
 			$this->date[] = date("c", strtotime($article->getTimestamp()));
 		} else {
 			foreach ($d as $date) {
-				$this->date[] = date("c", strtotime($date));
+				$this->date[] = $date;
 			}
 		}
 
@@ -232,7 +232,7 @@ class SMWRSSItem {
 	 * clean the description.
 	 */
 	private function clean($t) {
-		return trim(smwfXMLContentEncode($t, null, 'UTF-8'));
+		return trim(smwfXMLContentEncode($t));
 		//return trim(str_replace(array('&','<','>'), array('&amp;','&lt;','&gt;'), strip_tags(html_entity_decode($t, null, 'UTF-8')))); 
 	}
 }
