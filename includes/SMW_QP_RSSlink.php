@@ -30,7 +30,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getMimeType($res) {
-		return 'application/rdf+xml'; // or is rss+xml better? Might be confused in either case (with RSS2.0 or RDF)
+		return 'application/rss+xml'; // or is rdf+xml better? Might be confused in either case (with RSS2.0 or RDF)
 	}
 
 	protected function getResultText($res, $outputmode) {
