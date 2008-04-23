@@ -97,7 +97,7 @@ $smwgQComparators = '<|>|!'; // List of comparator characters supported by queri
 ### Settings about printout of (especially inline) queries:
 $smwgQDefaultLimit = 50;    // Default number of rows returned in a query. Can be increased with <ask limit="num">...
 $smwgQMaxInlineLimit = 500; // Max number of rows ever printed in a single inline query on a single page.
-$smwgQPrintoutLimit = 10;   // Max number of supported printouts (added columns in result table, * statements)
+$smwgQPrintoutLimit = 10;   // Max number of supported printouts (added columns in result table, ?-statements)
 
 ### Formatting settings
 $smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none", "subject", "all"
