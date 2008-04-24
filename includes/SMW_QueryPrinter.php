@@ -55,7 +55,7 @@ abstract class SMWResultPrinter {
 					$label = wfMsgForContent('smw_iq_moreresults');
 				}
 				if ($label != '') {
-					$link = $res->getQueryLink($label);
+					$link = $results->getQueryLink($label);
 					$result = $link->getText($outputmode,$this->mLinker);
 				}
 				$result .= $this->getErrorString($results);
