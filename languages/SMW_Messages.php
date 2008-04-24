@@ -460,6 +460,13 @@ $messages['bg'] = array(
 	'smw_result_noresults'        => 'Съжаляваме, няма резултати.',
 );
 
+/** Chamorro (Chamoru)
+ * @author Jatrobat
+ */
+$messages['ch'] = array(
+	'smw_browse_go' => 'Hånao',
+);
+
 /** German (Deutsch)
  * @author Markus Krötzsch
  * @author Denny
@@ -609,16 +616,25 @@ $messages['de'] = array(
  * @author Yekrats
  */
 $messages['eo'] = array(
+	'smw_viewasrdf'              => 'RDF-fonto',
 	'smw_finallistconjunct'      => ', kaj',
 	'smw_factbox_head'           => 'Faktoj pri $1',
 	'smw_icalendar_link'         => 'iKalendaro',
+	'smw_iq_moreresults'         => '&hellip; pluaj rezultoj',
+	'smw_iq_altresults'          => 'Rigardu la rezulto-liston rekte.',
+	'smw_parseerror'             => 'La donata valuto ne estis komprenita.',
 	'smw_emptystring'            => 'Malplenaj ĉenoj ne estas akceptitaj.',
+	'smw_true_words'             => 'vera,v,jes,j',
+	'smw_false_words'            => 'falsa,f,ne,n',
 	'smw_nofloat'                => '"$1" ne estas nombro.',
 	'smw_abb_east'               => 'O',
 	'smw_abb_west'               => 'U',
 	'smw_label_latitude'         => 'Latitudo:',
 	'smw_label_longitude'        => 'Longitudo:',
+	'smw_nodatetime'             => 'La dato "$1" ne estis komprenita (subteno por datoj ankoraŭ estas eksperimenta).',
 	'smw_badtitle'               => 'Bedaŭrinde, "$1" ne estas valida paĝa titolo.',
+	'exportrdf'                  => 'Eksportu paĝojn al RDF',
+	'smw_purge'                  => 'Refreŝigu',
 	'smw_oi_action'              => 'Importu',
 	'smw_oi_comment'             => 'Aldonu la jenan tekston:',
 	'smw_oi_thisissubcategoryof' => 'Subkategorio de',
@@ -631,6 +647,7 @@ $messages['eo'] = array(
 	'smw_result_prev'            => 'Antaŭe',
 	'smw_result_next'            => 'Sekve',
 	'smw_result_results'         => 'Rezultoj',
+	'smw_result_noresults'       => 'Bedaŭrinde, neniuj rezultoj',
 );
 
 /** Spanish
@@ -970,6 +987,7 @@ $messages['hi'] = array(
 
 /** Haitian (Kreyòl ayisyen)
  * @author Masterches
+ * @author Jvm
  */
 $messages['ht'] = array(
 	'smw_edithelp'            => 'Èd nan redaksyon pwopryete yo ak relasyon',
@@ -979,22 +997,40 @@ $messages['ht'] = array(
 	'smw_isspecprop'          => 'Pwopryete sa espesyal toutbon nan wiki sa',
 	'smw_isknowntype'         => 'Tip sa ap fè pati de tip done estanda nan wiki sa.',
 	'smw_isaliastype'         => 'Tip sa se yon alyas pou done "$1".',
-	'smw_isnotype'            => 'Tip "$1" sa pa yon tip estanda nan wiki a, li pa defini pa yon itilizatè tou.',
-	'smw_baduri'              => 'Eskize nou, URIs yo pou domèn "$1" pa otorize, oubyen li pa disponib nan plas isit an.',
+	'smw_isnotype'            => 'Tip "$1" sa pa yon tip estandè nan wiki a, li pa defini pa yon itilizatè tou.',
+	'smw_baduri'              => 'Eskize nou, URIs yo pou domèn "$1" pa otorize, oubyen li pa disponib nan plas isit la.',
 	'smw_icalendar_link'      => 'iKalandrye',
 	'smw_iq_disabled'         => 'Eskize nou. Rechèch nan atik wiki sa a pa otorize oubyen nou dezaktive l.',
+	'smw_iq_moreresults'      => '&hellip; lòt rezilta yo',
 	'smw_iq_nojs'             => 'Souple, itilize yon navigatè (bwozè entènèt) ki aksepte JavaScript aktive pou ou kapab wè eleman sa, bagay sa.',
 	'smw_iq_altresults'       => 'Fouye, gade lis rezilta yo dirèkteman.',
 	'smw_unknown_importns'    => 'Fonksyon pou ou kapab chaje fichye (rekipere pou ou menm) pa disponib pou espas non sa "$".',
-	'smw_nonright_importtype' => 'Ou dwèt itilize eleman $1 sa sèlman pou paj ki genyen espas non sa "$2".',
-	'smw_wrong_importtype'    => '$1 pa dwèt itilize pou paj ki nan espas non $2',
+	'smw_nonright_importtype' => 'Ou dwe itilize eleman $1 sa sèlman pou paj ki genyen non espas sa "$2".',
+	'smw_wrong_importtype'    => '$1 pa dwe itilize pou paj ki nan non espas "$2".',
 	'smw_no_importelement'    => 'Eleman "$1" pa disponib pou rekipere, pou chaje.',
-	'smw_parseerror'          => 'Valè ou bay oubyen li ritounen pa klè, nou pa konprann li.',
+	'smw_parseerror'          => 'Valè ou bay oubyen sa li retounen pa klè, nou pa kapab konprann li.',
 	'smw_notitle'             => 'Nou pa kapab itilize "$1" tankou non yon paj nan wiki sa.',
+	'smw_unknowntype'         => 'Tip done "$1" yo ki pa sipòte retounen nan atribi a.',
+	'smw_manytypes'           => 'Plizyè tip done pase  nan atribi.',
+	'smw_emptystring'         => 'Chèn mo ou bay an pa dwe vid.',
+	'smw_maxstring'           => 'Chèn reprezantasyon $1 an two long pou {{SITENAME}}.',
+	'smw_notinenum'           => '"$1" pa nan lis valè posib pou ($2) pou atribi, pwopryete a.',
+	'smw_noboolean'           => '"$1" pa rekonèt tankou yon valè bouleyen (vre/fo).',
+	'smw_true_words'          => 'vre,v,wi,w',
+	'smw_false_words'         => 'fo,f,non,n',
+	'smw_nofloat'             => '"$1" pa yon nonmb.',
+	'smw_infinite'            => 'Nonmb $1 an two lon.',
+	'smw_infinite_unit'       => 'Konvèsyon inite pou $1 bay yon nonmb two gran pou {{SITENAME}}.',
+	'smw_unsupportedprefix'   => 'Prefiks pou nonmb ("$1") yo pa sipòte nan sistèm an.',
+	'smw_abb_north'           => 'N',
+	'smw_abb_east'            => 'E',
+	'smw_abb_south'           => 'S',
+	'smw_abb_west'            => 'W',
 );
 
 /** Italian (Italiano)
  * @author Davide Eynard, David Laniado
+ * @author Cruccone
  */
 $messages['it'] = array(
 	'smw_edithelp'                => 'Aiuto sulla modifica delle propriet&agrave;',
@@ -1014,6 +1050,7 @@ $messages['it'] = array(
 	'smw_nonright_importtype'     => '$1 pu&ograve; essere utilizzato solo per pagine con namespace “$2”.',
 	'smw_wrong_importtype'        => '$1 non pu&ograve; essere utilizzate per pagine nel namespace “$2”.',
 	'smw_no_importelement'        => "L'elemento “$1” non &egrave; disponibile per l'importazione.",
+	'smw_parseerror'              => 'Il valore dato non è stato compreso.',
 	'smw_notitle'                 => "“$1” non pu&ograve; essere utilizzato come nome di una pagina all'interno di questo wiki.",
 	'smw_unknowntype'             => '&Egrave; stato definito un tipo non supportato “$1” per la propriet&agrave;.',
 	'smw_manytypes'               => '&Egrave; stato definito pi&ugrave; di un tipo per la propriet&agrave;.',
@@ -1030,6 +1067,9 @@ $messages['it'] = array(
 	'smw_unsupportedunit'         => "La conversione per l'unit&agrave; di misura “$1” non &egrave; supportata.",
 	'smw_lonely_unit'             => 'Non &egrave; stato trovato nessun numero prima del simbolo “$1”.',
 	'smw_bad_latlong'             => 'Latitudine e longitudine devono essere inserite solo una volta, e con coordinate valide.',
+	'smw_abb_north'               => 'N',
+	'smw_abb_east'                => 'E',
+	'smw_abb_south'               => 'S',
 	'smw_abb_west'                => 'O',
 	'smw_label_latitude'          => 'Latitudine:',
 	'smw_label_longitude'         => 'Longitudine:',
@@ -1101,8 +1141,10 @@ $messages['it'] = array(
 	'smw_ask_descorder'           => 'Decrescente',
 	'smw_ask_submit'              => 'Trova risultati',
 	'smw_ask_editquery'           => '[Modifica query]',
+	'smw_add_sortcondition'       => '[Aggiungi condizione di ordinamento]',
 	'smw_ask_hidequery'           => 'Nascondi query',
 	'smw_ask_help'                => 'Help sulle query',
+	'smw_ask_queryhead'           => 'Interrogazione',
 	'smw_ask_printhead'           => 'Output aggiuntivi (opzionali)',
 	'searchbyproperty'            => 'Cerca per propriet&agrave;',
 	'smw_sbv_docu'                => '<p>Cerca tutte le pagine che hanno propriet&agrave; e valore specificati.</p>',
@@ -1140,6 +1182,8 @@ $messages['jv'] = array(
 	'smw_isnotype'                => 'Jenis “$1” iki dudu sawijining jenis data baku ing wiki, lan uga ora diwènèhi sawijining définisi déning sang panganggo.',
 	'smw_baduri'                  => 'Nuwun sèwu, URI awujud “$1” ora diidinaké.',
 	'smw_icalendar_link'          => 'iKalèndher',
+	'smw_iq_disabled'             => 'Nuwun sèwu. Kwéri sémantik kanggo wiki iki dipatèni.',
+	'smw_iq_moreresults'          => '&hellip; pituwas sabanjuré',
 	'smw_iq_nojs'                 => 'Mangga nganggo sawijining panjlajah wèb JavaScript kanggo ndeleng unsur iki.',
 	'smw_iq_altresults'           => 'Sigra mirsani daftar pituwas.',
 	'smw_unknown_importns'        => 'Fungsi impor ora ana kanggo bilik nama “$1”.',
@@ -1148,6 +1192,7 @@ $messages['jv'] = array(
 	'smw_no_importelement'        => 'Unsur “$1” ora kasedyakaké kanggi diimpor.',
 	'smw_parseerror'              => 'Bijih sing diwènèhaké ora dimangertèni.',
 	'smw_notitle'                 => '“$1” ora bisa dienggo minangka jeneng kaca ing wiki iki.',
+	'smw_unknowntype'             => 'Jenis “$1” sing ora disengkuyung, didéfinisi kanggo sifat.',
 	'smw_manytypes'               => 'Sifaté didéfinisi luwih saka sajenis.',
 	'smw_emptystring'             => 'Rangkéan kosong ora ditampa.',
 	'smw_maxstring'               => 'Réprésèntasi string $1 kedawan kanggo {{SITENAME}}.',
@@ -1172,7 +1217,9 @@ $messages['jv'] = array(
 	'smw_misplacedsymbol'         => 'Simbul “$1” dienggo ing sawijining panggonan sing ora miguna.',
 	'smw_emptysubquery'           => 'Sawetara subkwéri ora nduwé kondisi absah.',
 	'smw_overprintoutlimit'       => 'Kwériné kakèhan ngandhut panyuwunan cithakan.',
+	'smw_badprintout'             => 'Sawetara déklarasi print sajroning kwéri formulasiné salah.',
 	'smw_badtitle'                => 'Nuwun sèwu, nanging "$1" iku dudu irah-irahan utawa judhul kaca sing absah.',
+	'smw_badqueryatom'            => 'Ora mudheng “[&#x005B;&hellip;]]” sawetara bagéyan kwéri.',
 	'smw_propvalueproblem'        => 'Bijih sifat "$1" ora dimangertèni.',
 	'smw_devel_warning'           => "Fitur iki saiki isih dikembangaké, lan mbok-menawa durung sakabèhé fungsional.
 ''Backup'' dhisik data panjenengan sadurungé nganggo fitur iki.",
@@ -1181,6 +1228,10 @@ $messages['jv'] = array(
 	'smw_attribute_header'        => 'Kaca-kaca sing nganggo sifat “$1”',
 	'smw_attributearticlecount'   => '<p>Nuduhaké $1 kaca nganggo sifat iki.</p>',
 	'exportrdf'                   => 'Èkspor kaca-kaca menyang RDF',
+	'smw_exportrdf_docu'          => '<p>Kaca iki marengaké panjenengan kanggo olèh data saka sawijining kaca ing format RDF.
+Kanggo ngèkspor kaca-kaca, mangga lebokna irah-irahan ing kothak tèks ing ngisor iki, sairah-irahan per baris.</p>',
+	'smw_exportrdf_recursive'     => 'Ngèkspor kabèh kaca sing ana gandhèngané minangka rékursif.
+Pènget: pituwasé bisa gedhé!',
 	'smw_exportrdf_backlinks'     => 'Uga ngèkspor kabèh kaca ing ngrujuk ing kaca-kaca sing dièkspor.
 Nggawé berkas RDF sing bisa dijlajah.',
 	'smw_exportrdf_lastdate'      => 'Aja ngèkspor kaca-kaca sing ora diowahi wiwit sawijining wektu tartamtu.',
@@ -1191,8 +1242,11 @@ Nggawé berkas RDF sing bisa dijlajah.',
 	'smw_propertylackstype'       => 'Ora ana jenis sing dispésifikasi kanggo sifat iki (ngasumsi jenis $1 kanggo saiki).',
 	'smw_propertyhardlyused'      => 'Sifat iki mèh ora dienggo sajroning wiki iki!',
 	'unusedproperties'            => 'Sifat-sifat sing ora dienggo',
+	'smw_unusedproperties_docu'   => 'Sifat-sifat sing kapacak iki ana, senadyan ora ana kaca liya sing nganggo.',
 	'smw_unusedproperty_template' => '$1 saka jenis $2',
 	'wantedproperties'            => 'Sifat sing dipéngini',
+	'smw_wantedproperties_docu'   => 'Sifat-sifat iki dienggo ing wiki, nanging durung duwé kaca sing ndéskripsi.',
+	'smw_wantedproperty_template' => '$1 (dienggo kaping $2)',
 	'tooltip-purge'               => 'Kliken ing kéné kanggo nganyari kabèh kwéri lan cithakan ing kaca iki',
 	'smw_purge'                   => 'Anyarana',
 	'ontologyimport'              => 'Impor ontologi',
@@ -1213,6 +1267,8 @@ Ontologi-ontologiné nanging kudu cocog karo sawijining format, ditrangaké ing 
 	'smw_typeunits'               => 'Unit-unit pangukuran jenis “$1”: $2',
 	'semanticstatistics'          => 'Statistik sémantik',
 	'flawedattributes'            => 'Sifat-sifaté Ora Pepak',
+	'smw_fattributes'             => 'Kaca-kaca sing kapacak ing ngisor iki duwé sifat sing didéfinisi ora bener.
+Cacahé sifat sing ora bener iki diwènèhaké antara tandha kurung.',
 	'uriresolver'                 => 'URI Resolver',
 	'ask'                         => 'Panggolèkan sémantik',
 	'smw_ask_sortby'              => 'Sortir miturut kolom (opsional)',
@@ -1226,7 +1282,9 @@ Ontologi-ontologiné nanging kudu cocog karo sawijining format, ditrangaké ing 
 	'smw_ask_queryhead'           => 'Kwéri',
 	'smw_ask_printhead'           => 'Cithakan tambahan (opsional)',
 	'searchbyproperty'            => 'Golèk miturut sifat',
+	'smw_sbv_docu'                => '<p>Golèk kabèh kaca sing duwé sifat lan bijih tartamtu.</p>',
 	'smw_sbv_noproperty'          => '<p>Mangga lebokna sawijining sifat.</p>',
+	'smw_sbv_novalue'             => '<p>Mangga lebokna bijih absah kanggo sifat iki, utawa tuduhna kabèh bijih-bijihé sifat kanggo “$1.”</p>',
 	'smw_sbv_displayresult'       => 'Sawijining daftar kabèh kaca sing duwé sifat “$1” mawa bijih “$2”',
 	'smw_sbv_property'            => 'Sifat',
 	'smw_sbv_value'               => 'Bijih (nilai)',
@@ -1387,9 +1445,11 @@ $messages['ko'] = array(
  */
 $messages['lb'] = array(
 	'smw_finallistconjunct'       => ', an',
+	'smw_icalendar_link'          => 'iKalenner',
 	'smw_iq_moreresults'          => '&hellip; weider Resultater',
 	'smw_iq_nojs'                 => 'Benotzt w.e.g e Browser matt JavaScript fir dëst Element ze gesinn',
 	'smw_true_words'              => 'wouer,w,jo,j',
+	'smw_false_words'             => 'falsch,f,neen,n',
 	'smw_nofloat'                 => '"$1" ass keng Zuel.',
 	'smw_infinite'                => 'Zuelen esou grouss wéi "$1" ginn op {{SITENAME}} net ënnerstetzt.',
 	'smw_lonely_unit'             => 'Virum Symbol "$1" gouf keng Zuel fonnt.',
@@ -1404,8 +1464,13 @@ $messages['lb'] = array(
 	'smw_property_template'       => '$1 vum Typ $2 ($3)',
 	'smw_wantedproperty_template' => '$1 ($2 mol benotzt)',
 	'smw_purge'                   => 'Aktualiséieren',
+	'smw_oi_action'               => 'Importéieren',
 	'smw_oi_thisissubcategoryof'  => 'Ënnerkategorie vu(n)',
+	'smw_ask_submit'              => 'Resultater sichen',
+	'smw_ask_queryhead'           => 'Ufro',
 	'smw_sbv_property'            => 'Eegeschaft',
+	'smw_sbv_value'               => 'Wert',
+	'smw_sbv_submit'              => 'Resultater sichen',
 	'smw_browse_go'               => 'Lass',
 	'smw_pp_from'                 => 'Vun der Säit',
 	'smw_pp_type'                 => 'Eegeschaft',
@@ -1431,7 +1496,11 @@ $messages['mr'] = array(
 	'smw_abb_west'                => 'W',
 	'smw_label_latitude'          => 'अक्षांश:',
 	'smw_label_longitude'         => 'रेखांश:',
+	'smw_type_header'             => '“$1” प्रकारचे गुणधर्म',
+	'smw_attribute_header'        => '“$1” गुणधर्म वापरणारी पृष्ठे',
+	'exportrdf'                   => 'RDF कडे पाने निर्यात करा',
 	'properties'                  => 'गुणधर्म',
+	'smw_property_template'       => '$2 प्रकारची $1 ($3)',
 	'unusedproperties'            => 'न वापरलेले गुणधर्म',
 	'smw_unusedproperty_template' => '$2 प्रकारचे $1',
 	'wantedproperties'            => 'पाहिजे असलेले गुणधर्म',
@@ -1440,6 +1509,12 @@ $messages['mr'] = array(
 	'ontologyimport'              => 'ऑन्टोलॉजी आयात करा',
 	'smw_oi_action'               => 'आयात',
 	'smw_oi_return'               => '<a href="$1">Special:OntologyImport</a> कडे परत जा.',
+	'smw_oi_selectall'            => 'सर्व स्टेटमेंट्स निवडा किंवा निवड काढून टाका',
+	'smw_oi_statementsabout'      => 'स्टेटमेंट्स अबाउट',
+	'smw_oi_comment'              => 'खालील मजकूर वाढवा:',
+	'smw_oi_thisissubcategoryof'  => 'चा उपवर्ग',
+	'types'                       => 'प्रकार',
+	'semanticstatistics'          => 'सिमँटिक सांख्यिकी',
 );
 
 /** Dutch (Nederlands)
@@ -1803,6 +1878,7 @@ $messages['oc'] = array(
 	'smw_typearticlecount'        => 'Afichar los atributs de $1 en utilizant aqueste tipe.',
 	'smw_attribute_header'        => "Paginas utilizant l'atribut “$1”",
 	'smw_attributearticlecount'   => '<p>Afichar $1 paginas utilizant aquesta atribut.</p>',
+	'smw_rss_description'         => '$1 fial RSS',
 	'exportrdf'                   => "Exportar l'article en RDF",
 	'smw_exportrdf_docu'          => "<p>Sus aquesta pagina, de partidas del contengut d'un article pòdon èsser exportadas dins lo format RDF. Picatz lo nom de las paginas desiradas dins la bóstia de tèxt çaijós, <i>un nom per linha </i>.</p>",
 	'smw_exportrdf_recursive'     => "Exportar tanben totas las paginas pertinentas d'un biais recursiu. Aquesta possibilitat pòt abotir a un fòrt grand nombre de resultats !",
