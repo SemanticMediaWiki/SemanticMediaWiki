@@ -102,6 +102,9 @@ $smwgQPrintoutLimit = 10;   // Max number of supported printouts (added columns 
 ### Formatting settings
 $smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none", "subject", "all"
 
+### Default property type
+$smwgPDefaultType = '_wpg';
+
 ###
 # Settings for RSS export
 ##

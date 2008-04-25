@@ -55,7 +55,7 @@ $messages['en'] = array(
 	'smw_noboolean'     => '“$1” is not recognized as a Boolean (true/false) value.',
 	'smw_true_words'    => 'true,t,yes,y', // comma-separated synonyms for Boolean TRUE besides '1', primary value first
 	'smw_false_words'   => 'false,f,no,n', // comma-separated synonyms for Boolean FALSE besides '0', primary value first
-	'smw_nofloat'       => '“$1” is no number.',
+	'smw_nofloat'       => '“$1” is not a number.',
 	'smw_infinite'      => 'Numbers as large as “$1” are not supported on {{SITENAME}}.',
 	'smw_infinite_unit' => 'Conversion into unit “$1” resulted in a number that is too large for {{SITENAME}}.',
 

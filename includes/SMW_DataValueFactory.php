@@ -44,6 +44,7 @@ class SMWDataValueFactory {
 	 * can be set later on.
 	 */
 	static public function newPropertyValue($propertyname, $value=false, $caption=false) {
+		global $smwPDefaultType;
 		wfProfileIn("SMWDataValueFactory::newPropertyValue (SMW)");
 		if(array_key_exists($propertyname,SMWDataValueFactory::$m_typebyproperty)) { // use cache
 			$result = SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typebyproperty[$propertyname], $value, $caption, $propertyname);
@@ -56,9 +57,9 @@ class SMWDataValueFactory {
 			$result = SMWDataValueFactory::newPropertyObjectValue($ptitle,$value,$caption);
 		} else {
 			$type = SMWDataValueFactory::newTypeIDValue('__typ');
-			$type->setXSDValue('_wpg');
+			$type->setXSDValue($smwgPDefaultType);
 			SMWDataValueFactory::$m_typebyproperty[$propertyname] = $type;
-			$result = SMWDataValueFactory::newTypeIDValue('_wpg',$value,$caption,$propertyname);
+			$result = SMWDataValueFactory::newTypeIDValue($smwgPDefaultType,$value,$caption,$propertyname);
 		}
 		wfProfileOut("SMWDataValueFactory::newPropertyValue (SMW)");
 		return $result;
@@ -70,6 +71,7 @@ class SMWDataValueFactory {
 	 * can be set later on.
 	 */
 	static public function newPropertyObjectValue(Title $property, $value=false, $caption=false) {
+		global $smwgPDefaultType;
 		$propertyname = $property->getText();
 		if(array_key_exists($propertyname,SMWDataValueFactory::$m_typebyproperty)) { // use cache
 			return SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typebyproperty[$propertyname], $value, $caption, $propertyname);
@@ -82,9 +84,9 @@ class SMWDataValueFactory {
 			return $result;
 		} elseif (count($typearray)==0) {
 			$type = SMWDataValueFactory::newTypeIDValue('__typ');
-			$type->setXSDValue('_wpg');
+			$type->setXSDValue($smwgPDefaultType);
 			SMWDataValueFactory::$m_typebyproperty[$propertyname] = $type;
-			return SMWDataValueFactory::newTypeIDValue('_wpg',$value,$caption,$propertyname);
+			return SMWDataValueFactory::newTypeIDValue($smwgPDefaultType,$value,$caption,$propertyname);
 		} else {
 			global $smwgIP;
 			include_once($smwgIP . '/includes/SMW_DV_Error.php');
