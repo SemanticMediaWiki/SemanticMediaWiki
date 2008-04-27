@@ -287,6 +287,7 @@ $messages['ar'] = array(
 	'smw_isnotype'                => 'هذا النوع “$1” هو ليس معيار البيانات في الويكي، ولم يعط تعريفا من قبل المستخدمين.',
 	'smw_baduri'                  => 'عذرا، URIs من النوع “$1” غير مسموح بها.',
 	'smw_rss_link'                => 'رس س',
+	'smw_icalendar_link'          => 'آي كالندر',
 	'smw_iq_disabled'             => 'عذرا. الاستفسارات الدلالية تم تعطيلها في هذا الويكي.',
 	'smw_iq_moreresults'          => '&hellip; مزيد من النتائج',
 	'smw_iq_nojs'                 => 'الرجاء استخدام المتصفح الذي يمكن جافا سكريبت لعرض هذا العنصر.',
@@ -386,6 +387,7 @@ $messages['ar'] = array(
 	'smw_fattributes'             => 'خصائص الصفحات المذكورة أدناه لم تعرف بشكل صحيح.
 عدد الخصائص غير صحيح يرد في الاقواس.',
 	'uriresolver'                 => 'محلل URI',
+	'smw_uri_doc'                 => '<p>محلل URI ينفذ <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C على httpRange-14</a>. إنه يتأكد من أن البشر لا يتحولون إلى مواقع ويب.</p>',
 	'ask'                         => 'بحث دلالي',
 	'smw_ask_sortby'              => 'الترتيب حسب العمود (اختياري)',
 	'smw_ask_ascorder'            => 'تصاعدي',
@@ -745,6 +747,9 @@ $messages['fi'] = array(
 	'smw_true_words'              => 'kyllä,k,y',
 	'smw_false_words'             => 'ei,e,n',
 	'smw_nofloat'                 => '”$1” ei ole luku.',
+	'smw_unsupportedprefix'       => 'Lukujen etuliitteitä (”$1”) ei tueta.',
+	'smw_unsupportedunit'         => 'Yksikön ”$1” yksikkömuunnosta ei tueta.',
+	'smw_lonely_unit'             => 'Symbolin ”$1” edestä puuttuu luku.',
 	'smw_bad_latlong'             => 'Pituuspiiri ja leveysaste voidaan määritellä vain kerran ja toimivilla koordinaateilla.',
 	'smw_abb_north'               => 'Pohj.',
 	'smw_abb_east'                => 'It.',
@@ -752,11 +757,26 @@ $messages['fi'] = array(
 	'smw_abb_west'                => 'Länt.',
 	'smw_label_latitude'          => 'Korkeusaste:',
 	'smw_label_longitude'         => 'Pituuspiiri:',
+	'smw_nodatetime'              => 'Päiväystä ”$1” ei tunnistettu. Päiväysmuotojen tuki on vielä kokeiluasteella.',
+	'smw_emptysubquery'           => 'Jollakin alikyselyllä ei ole kelvollista ehtoa.',
 	'smw_badtitle'                => '”$1” ei ole kelvollinen sivun nimi.',
 	'smw_devel_warning'           => 'Tämä ominaisuutta kehitetään aktiivisesti, eikä välttämättä ole kaikin osin toimiva. Varmuuskopioi tietosi ennen käyttöä.',
 	'exportrdf'                   => 'Vie sivut RDF:nä',
+	'smw_purge'                   => 'Päivitä',
+	'ontologyimport'              => 'Tuo ontologia',
 	'smw_oi_importedfromontology' => 'Tuo ontologiasta',
 	'types'                       => 'Tyypit',
+	'smw_ask_ascorder'            => 'Nouseva',
+	'smw_ask_descorder'           => 'Laskeva',
+	'smw_ask_editquery'           => '[Muokkaa kyselyä]',
+	'smw_add_sortcondition'       => '[Lisää lajitteluehto]',
+	'smw_sbv_property'            => 'Ominaisuus',
+	'smw_sbv_value'               => 'Arvo',
+	'browse'                      => 'Selaa wikiä',
+	'smw_result_prev'             => 'Edellinen',
+	'smw_result_next'             => 'Seuraava',
+	'smw_result_results'          => 'Tulokset',
+	'smw_result_noresults'        => 'Ei hakutuloksia.',
 );
 
 /** French (Français)
@@ -985,6 +1005,13 @@ $messages['hi'] = array(
 	'smw_oi_action'               => 'आयात',
 );
 
+/** Hiligaynon (Ilonggo)
+ * @author Jose77
+ */
+$messages['hil'] = array(
+	'smw_browse_go' => 'Lakat',
+);
+
 /** Haitian (Kreyòl ayisyen)
  * @author Masterches
  * @author Jvm
@@ -1019,8 +1046,8 @@ $messages['ht'] = array(
 	'smw_true_words'          => 'vre,v,wi,w',
 	'smw_false_words'         => 'fo,f,non,n',
 	'smw_nofloat'             => '"$1" pa yon nonmb.',
-	'smw_infinite'            => 'Nonmb $1 an two lon.',
-	'smw_infinite_unit'       => 'Konvèsyon inite pou $1 bay yon nonmb two gran pou {{SITENAME}}.',
+	'smw_infinite'            => 'Nonmb $1 an twò lon.',
+	'smw_infinite_unit'       => 'Konvèsyon inite pou $1 bay yon nonmb twò gran pou {{SITENAME}}.',
 	'smw_unsupportedprefix'   => 'Prefiks pou nonmb ("$1") yo pa sipòte nan sistèm an.',
 	'smw_abb_north'           => 'N',
 	'smw_abb_east'            => 'E',
@@ -1221,6 +1248,7 @@ $messages['jv'] = array(
 	'smw_badtitle'                => 'Nuwun sèwu, nanging "$1" iku dudu irah-irahan utawa judhul kaca sing absah.',
 	'smw_badqueryatom'            => 'Ora mudheng “[&#x005B;&hellip;]]” sawetara bagéyan kwéri.',
 	'smw_propvalueproblem'        => 'Bijih sifat "$1" ora dimangertèni.',
+	'smw_querytoolarge'           => 'Sarat kwéri sing kapacak ing ngisor iki ora bisa digalih amerga anané rèstriksi wiki ing ukuran utawa jeroné: $1.',
 	'smw_devel_warning'           => "Fitur iki saiki isih dikembangaké, lan mbok-menawa durung sakabèhé fungsional.
 ''Backup'' dhisik data panjenengan sadurungé nganggo fitur iki.",
 	'smw_type_header'             => 'Sifat-sifat saka jenis "$1"',
@@ -1485,17 +1513,61 @@ $messages['lb'] = array(
  * @author Kaustubh
  */
 $messages['mr'] = array(
+	'smw_edithelp'                => 'गुणधर्मांवरील मदत संपादा',
 	'smw_viewasrdf'               => 'RDF फीड',
 	'smw_finallistconjunct'       => ', व',
 	'smw_factbox_head'            => '$1 च्या फॅक्ट्स',
+	'smw_isspecprop'              => 'हा गुणधर्म या विकिवरील विशेष गुणधर्म आहे.',
+	'smw_isknowntype'             => 'हा प्रकार या विकिवरील ठराविक डाटा प्रकारांपैकी एक आहे.',
+	'smw_isaliastype'             => 'हा प्रकार “$1” या डाटाप्रकारची पुनरुक्ती आहे.',
+	'smw_isnotype'                => 'हा  “$1” प्रकार या विकिवरील ठराविक डाटा प्रकारांपैकी नाही, व त्याची सदस्य व्याख्या सुद्धा दिलेली नाही.',
+	'smw_baduri'                  => 'माफ करा, “$1” अर्जाचे URI वापरण्यास परवानगी नाही.',
 	'smw_icalendar_link'          => 'इ-कैलेंडर',
+	'smw_iq_disabled'             => 'माफ करा. या विकिवर सिमँटिक पॄच्छा करण्यास बंदी आहे.',
 	'smw_iq_moreresults'          => '&hellip; पुढचे निकाल',
+	'smw_iq_nojs'                 => 'हा एलेमेंट पाहण्यासाठी जावास्क्रीप्ट युक्त ब्राउजर वापरा.',
+	'smw_iq_altresults'           => 'थेट निकाल यादी चाळा.',
+	'smw_unknown_importns'        => '“$1” या नामविश्वासाठी आयात कार्ये उपलब्ध नाहीत.',
+	'smw_nonright_importtype'     => '$1 हे फक्त “$2” या नामविश्वातील पानांसाठीच वापरता येते.',
+	'smw_wrong_importtype'        => '$1 हे “$2” या नामविश्वातील पानांसाठी वापरता येत नाही.',
+	'smw_no_importelement'        => '“$1” हा एलेमेंट आयातीसाठी उपलब्ध नाही.',
+	'smw_parseerror'              => 'दिलेली किंमत समजलेली नाही.',
+	'smw_notitle'                 => 'या विकिवर “$1” हे पानाच्या शीर्षकात वापरता येत नाही.',
+	'smw_unknowntype'             => 'गुणधर्माचा प्रकार “$1” वापरता येत नाही.',
+	'smw_manytypes'               => 'गुणधर्माला एकापेक्षा जास्त प्रकार दिलेले आहेत.',
+	'smw_emptystring'             => 'रिकाम्या किंमती वापरता येत नाहीत.',
+	'smw_maxstring'               => '{{SITENAME}} साठी $1 हे स्ट्रींग रिप्रेझेंटेशन खूप लांब आहे.',
+	'smw_notinenum'               => 'या गुणधर्माच्या योग्य किंमतींच्या ($2) यादीत “$1” नाही आहे.',
+	'smw_noboolean'               => '“$1” ही योग्य बुलियन (बरोबर/चूक) किंमत नाही.',
+	'smw_true_words'              => 'बरोबर,t,हो,y',
+	'smw_false_words'             => 'चूक,f,नाही,n',
+	'smw_nofloat'                 => '“$1” ही संख्या नाही.',
+	'smw_infinite'                => '{{SITENAME}} वर “$1” एवढ्या मोठ्या संख्या वापरता येत नाहीत.',
+	'smw_infinite_unit'           => '“$1” एककात बदल केल्यानंतर येणारी संख्या ही {{SITENAME}} वर वापरता येण्यासारख्या संख्यांपेक्षा खूप मोठी आहे.',
+	'smw_unsupportedprefix'       => 'संख्या (“$1”) साठी उपपदे वापरता येत नाहीत.',
+	'smw_unsupportedunit'         => '“$1” हे एकक बदलता येत नाही.',
+	'smw_lonely_unit'             => '“$1” चिन्हाच्या आधी कुठलीही संख्या सापडली नाही.',
+	'smw_bad_latlong'             => 'अक्षांश व रेखांश फक्त एकदाच देता येतील, ते सुद्धा योग्य किंमतींसकट.',
 	'smw_abb_north'               => 'N',
 	'smw_abb_east'                => 'E',
 	'smw_abb_south'               => 'S',
 	'smw_abb_west'                => 'W',
 	'smw_label_latitude'          => 'अक्षांश:',
 	'smw_label_longitude'         => 'रेखांश:',
+	'smw_nodatetime'              => '“$1” हा दिनांक समजला नाही (दिनांक प्रकार अजूनही प्रायोगिक अवस्थेत आहेत).',
+	'smw_toomanyclosing'          => 'या पृच्छेमध्ये “$1” खूप ठिकाणी आलेले आहे.',
+	'smw_noclosingbrackets'       => 'तुमच्या पृच्छेत कुठेतरी वापरलेले “[&#x005B;” हे योग्य अशा जुळणार्‍या “]]” ने बंद केलेले नाही.',
+	'smw_misplacedsymbol'         => '“$1” चिन्ह जिथे उपयोगी नाही अशा ठिकाणी वापरलेले आहे.',
+	'smw_unexpectedpart'          => 'पृच्छेचा “$1” हा भाग समजलेला नाही.
+निकाल योग्य असतीलच याची खात्री नाही.',
+	'smw_emptysubquery'           => 'कुठल्यातरी उपपृच्छेमध्ये योग्य कंडिशन दिलेली नाही.',
+	'smw_misplacedsubquery'       => 'एक उपपृच्छा अशा ठिकाणी दिलेली आहे जिथे उपपृच्छा वापरायला परवानगी नाही.',
+	'smw_valuesubquery'           => '“$1” गुणधर्माच्या किंमतींसाठी उपपृच्छा वापरता येत नाहीत.',
+	'smw_overprintoutlimit'       => 'या पृच्छेमध्ये खूप जास्त प्रिंट विनंत्या आहेत.',
+	'smw_badprintout'             => 'या पृच्छेमधील काही प्रिंट मागण्या अयोग्य प्रकारे दिलेल्या आहेत.',
+	'smw_badtitle'                => 'माफ करा, पण “$1” हे योग्य पानाचे शीर्षक नाही.',
+	'smw_badqueryatom'            => 'पृच्छेचा काही भाग “[&#x005B;&hellip;]]” समजलेला नाही.',
+	'smw_propvalueproblem'        => '“$1” गुणधर्माची किंमत समजलेली नाही.',
 	'smw_type_header'             => '“$1” प्रकारचे गुणधर्म',
 	'smw_attribute_header'        => '“$1” गुणधर्म वापरणारी पृष्ठे',
 	'exportrdf'                   => 'RDF कडे पाने निर्यात करा',
@@ -1515,6 +1587,15 @@ $messages['mr'] = array(
 	'smw_oi_thisissubcategoryof'  => 'चा उपवर्ग',
 	'types'                       => 'प्रकार',
 	'semanticstatistics'          => 'सिमँटिक सांख्यिकी',
+	'smw_sbv_property'            => 'गुणधर्म',
+	'smw_browse_go'               => 'चला',
+	'smw_pp_from'                 => 'पानावरून',
+	'smw_pp_type'                 => 'गुणधर्म',
+	'smw_pp_submit'               => 'निकाल शोधा',
+	'smw_result_prev'             => 'मागील',
+	'smw_result_next'             => 'पुढील',
+	'smw_result_results'          => 'निकाल',
+	'smw_result_noresults'        => 'माफ करा, निकाल नाहीत.',
 );
 
 /** Dutch (Nederlands)
@@ -2555,6 +2636,16 @@ $messages['vi'] = array(
 	'smw_manytypes'           => 'Thuộc tính này có nhiều hơn một kiểu',
 	'smw_emptystring'         => 'Không chấp nhận chuỗi trống.',
 	'smw_maxstring'           => 'Đại diện chuỗi $1 quá dài đối với {{SITENAME}}.',
+);
+
+/** Volapük (Volapük)
+ * @author Malafaya
+ */
+$messages['vo'] = array(
+	'smw_abb_north' => 'N',
+	'smw_abb_east'  => 'L',
+	'smw_abb_south' => 'S',
+	'smw_abb_west'  => 'V',
 );
 
 /** Mainland Chinese
