@@ -103,7 +103,12 @@ $smwgQPrintoutLimit = 10;   // Max number of supported printouts (added columns 
 $smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none", "subject", "all"
 
 ### Default property type
+# Undefined properties (those without pages or whose pages have no "has type" statement) will
+# be assumed to be of this type. This is an internal type id. See the file languages/SMW_LanguageXX.php
+# to find what IDs to use for datatpyes in your language. The default corresponds to "Type:Page".
+##
 $smwgPDefaultType = '_wpg';
+##
 
 ###
 # Settings for RSS export
