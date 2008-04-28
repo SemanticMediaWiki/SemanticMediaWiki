@@ -1625,7 +1625,7 @@ class SMWSQLStore extends SMWStore {
 			$db->query("INSERT IGNORE INTO $tablename (title) SELECT $tmpres.title
 			            FROM $tmpres", 'SMW::getCategoryTable');
 			if ($db->affectedRows() == 0) { // no change, exit loop
-				continue;
+				break;
 			}
 			$db->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::getCategoryTable'); // empty "new" table
 			$tmpname = $tmpnew;
@@ -1681,12 +1681,12 @@ class SMWSQLStore extends SMWStore {
 			            FROM $sptable,$tmpnew WHERE
 			            $sptable.object_title=$tmpnew.title", 'SMW::getPropertyTable');
 			if ($db->affectedRows() == 0) { // no change, exit loop
-				continue;
+				break;
 			}
 			$db->query("INSERT IGNORE INTO $tablename (title) SELECT $tmpres.title
 			            FROM $tmpres", 'SMW::getPropertyTable');
 			if ($db->affectedRows() == 0) { // no change, exit loop
-				continue;
+				break;
 			}
 			$db->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::getPropertyTable'); // empty "new" table
 			$tmpname = $tmpnew;
