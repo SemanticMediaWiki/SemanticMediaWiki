@@ -103,7 +103,7 @@ class SMWURIValue extends SMWDataValue {
 					}
 					break;
 				case SMW_URI_MODE_EMAIL:
-					$check = "#^([_a-zA-Z0-9-]+)((\.[_a-zA-Z0-9-]+)*)@([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*)\.([a-zA-Z]{2,3})$#u";
+					$check = "#^([_a-zA-Z0-9-]+)((\.[_a-zA-Z0-9-]+)*)@([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*)\.([a-zA-Z]{2,6})$#u";
 					if (!preg_match($check, $value)) {
 						///TODO: introduce error-message for "bad" email
 						$this->addError(wfMsgForContent('smw_baduri', $value));
