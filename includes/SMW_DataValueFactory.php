@@ -44,7 +44,7 @@ class SMWDataValueFactory {
 	 * can be set later on.
 	 */
 	static public function newPropertyValue($propertyname, $value=false, $caption=false) {
-		global $smwPDefaultType;
+		global $smwgPDefaultType;
 		wfProfileIn("SMWDataValueFactory::newPropertyValue (SMW)");
 		if(array_key_exists($propertyname,SMWDataValueFactory::$m_typebyproperty)) { // use cache
 			$result = SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typebyproperty[$propertyname], $value, $caption, $propertyname);
