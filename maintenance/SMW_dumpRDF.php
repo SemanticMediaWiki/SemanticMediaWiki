@@ -22,8 +22,11 @@
 
 $optionsWithArgs = array( 'o', 'd', 'e' ); 
 
-require_once( 'commandLine.inc' );
-require_once( "$IP/extensions/SemanticMediaWiki/specials/Export/SMW_SpecialOWLExport.php");
+require_once ( getenv('MW_INSTALL_PATH') !== false
+	? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
+	: 'commandLine.inc' );
+global $smwgIP;
+require_once( "$smwgIP/specials/Export/SMW_SpecialOWLExport.php");
 
 if ( !empty( $options['o'] ) ) {
 	$outfile = $options['o'];

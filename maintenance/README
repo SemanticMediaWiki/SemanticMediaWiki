@@ -1,8 +1,13 @@
 == Semantic MediaWiki maintenance scripts ==
 
-Maintenance scripts must be placed within the "./maintenance" directory 
-of your MediaWiki installation. In most cases, it is best to do this via 
-a symbolic link, e.g.
+To run maintenance scripts it is recomended to set the environment
+variable MW_INSTALL_PATH to the root of your MediaWiki install.
+Then you may run them from their location here, or in the maintenance
+directory.
+
+Otherwise maintenance scripts must be placed within the "./maintenance"
+directory of your MediaWiki installation. In most cases, it is best to do
+this via a symbolic link, e.g.
 
 % ln -s ./myMediaWiki/extensions/SemanticMediaWiki/maintenance/SMW_dumpRDF.php ./myMediaWiki/maintenance/SMW_dumpRDF.php
 

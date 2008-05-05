@@ -7,6 +7,7 @@
  * migrating a lot of existing data.
  *
  * Note: this file must be placed in MediaWiki's "maintenance" directory!
+ *       or the MW_INSTALL_PATH environment variable must be set.
  *
  * Usage:
  * php SMW_refreshData.php [options...]
@@ -26,7 +27,9 @@ set_include_path( get_include_path() . PATH_SEPARATOR .  dirname(__FILE__) . '/.
  */
 
 $optionsWithArgs = array('user', 'password');
-require_once( 'commandLine.inc' );
+require_once ( getenv('MW_INSTALL_PATH') !== false
+	? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
+	: 'commandLine.inc' );
 
 if( isset( $options['user'] ) ) {
 	global $wgDBuser;

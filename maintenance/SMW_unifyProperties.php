@@ -19,7 +19,9 @@
  * @author Denny Vrandecic
  */
 
-require_once( 'commandLine.inc' );
+require_once ( getenv('MW_INSTALL_PATH') !== false
+	? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
+	: 'commandLine.inc' );
 
 global $smwgIP;
 global $wgParser;

@@ -7,6 +7,7 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Bugfix for Special:SearchByProperty (form-based serach failed)
 * Minor bugfixes for RSS generation
 * Bugfix for Special_Ask in MediaWiki 1.11 with template formatting
+* Maintenance scripts now accept the MW_INSTALL_PATH environment variable
 
 == Semantic MediaWiki 1.1 ==
 

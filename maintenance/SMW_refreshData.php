@@ -25,8 +25,9 @@
 
 $optionsWithArgs = array( 'd', 's', 'e' ); // -d <delay>, -s <startid>
 
-require_once('counter.php');
-require_once('commandLine.inc');
+$mwPath = getenv('MW_INSTALL_PATH') !== false ? getenv('MW_INSTALL_PATH').'/' : '';
+require_once("{$mwPath}counter.php");
+require_once("{$mwPath}commandLine.inc");
 
 global $smwgIP;
 require_once($smwgIP . '/includes/SMW_Factbox.php');
