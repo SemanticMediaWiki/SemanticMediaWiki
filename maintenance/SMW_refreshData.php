@@ -25,7 +25,7 @@
 
 $optionsWithArgs = array( 'd', 's', 'e' ); // -d <delay>, -s <startid>
 
-$mwPath = getenv('MW_INSTALL_PATH') !== false ? getenv('MW_INSTALL_PATH').'/' : '';
+$mwPath = getenv('MW_INSTALL_PATH') !== false ? getenv('MW_INSTALL_PATH').'/maintenance/' : '';
 require_once("{$mwPath}counter.php");
 require_once("{$mwPath}commandLine.inc");
 
