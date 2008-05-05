@@ -1296,6 +1296,7 @@ Pituwasé bisa-bisa ora kaya sing diarepaké.',
 	'smw_badtitle'                => 'Nuwun sèwu, nanging "$1" iku dudu irah-irahan utawa judhul kaca sing absah.',
 	'smw_badqueryatom'            => 'Ora mudheng “[&#x005B;&hellip;]]” sawetara bagéyan kwéri.',
 	'smw_propvalueproblem'        => 'Bijih sifat "$1" ora dimangertèni.',
+	'smw_nodisjunctions'          => 'Pamisahan ing kwéri ora disengkuyung ing wiki iki lan sabagéyan saka kwéri dadi dilirwakaké ($1).',
 	'smw_querytoolarge'           => 'Sarat kwéri sing kapacak ing ngisor iki ora bisa digalih amerga anané rèstriksi wiki ing ukuran utawa jeroné: $1.',
 	'smw_devel_warning'           => "Fitur iki saiki isih dikembangaké, lan mbok-menawa durung sakabèhé fungsional.
 ''Backup'' dhisik data panjenengan sadurungé nganggo fitur iki.",
@@ -1345,10 +1346,15 @@ Ontologi-ontologiné nanging kudu cocog karo sawijining format, ditrangaké ing 
 Saben jenis data duwé kaca ing ngendi informasi tambahan bisa diwènèhaké.',
 	'smw_typeunits'               => 'Unit-unit pangukuran jenis “$1”: $2',
 	'semanticstatistics'          => 'Statistik sémantik',
+	'smw_semstats_text'           => 'Wiki iki ngemot <b>$1</b> bijih-bijih sifat kanggo gunggungé <b>$2</b> <a href="$3">sifat-sifat</a> sing béda-béda.
+<b>$4</b> sifat duwé kaca dhéwé, lan jenis data sing dimaksud iku dispésifikasi kanggo <b>$5</b> saka iku.
+Sawetara saka sifat sing ana mbok-menawa <a href="$6">sifat sing ora dienggo</a>.
+Sifat-sifat sing isih ora duwé kaca ditemokaké ing <a href="$7">daftar sifat-sifat sing dipèngèni</a>.',
 	'flawedattributes'            => 'Sifat-sifaté Ora Pepak',
 	'smw_fattributes'             => 'Kaca-kaca sing kapacak ing ngisor iki duwé sifat sing didéfinisi ora bener.
 Cacahé sifat sing ora bener iki diwènèhaké antara tandha kurung.',
 	'uriresolver'                 => 'URI Resolver',
+	'smw_uri_doc'                 => "<p>''URI resolver''-é ngimplèmèntasi <a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">W3C TAG finding on httpRange-14</a>. Iku ngurusi supaya manungsa ora owah lan dadi situs-situs wèb.</p>",
 	'ask'                         => 'Panggolèkan sémantik',
 	'smw_ask_sortby'              => 'Sortir miturut kolom (opsional)',
 	'smw_ask_ascorder'            => 'Munggah saka ngisor menyang ndhuwur',
