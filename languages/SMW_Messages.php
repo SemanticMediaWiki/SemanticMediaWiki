@@ -269,6 +269,8 @@ $messages['af'] = array(
 	'smw_sbv_submit'              => 'Vind resultate',
 	'smw_pp_from'                 => 'Vanaf bladsy',
 	'smw_pp_type'                 => 'Eienskap',
+	'smw_result_prev'             => 'Vorige',
+	'smw_result_next'             => 'Volgende',
 );
 
 /** Arabic (العربية)
@@ -1527,6 +1529,13 @@ $messages['ko'] = array(
 	'smw_result_noresults'        => '죄송합니다, 결과가없습니다.',
 );
 
+/** Kinaray-a (Kinaray-a)
+ * @author Jose77
+ */
+$messages['krj'] = array(
+	'smw_browse_go' => 'Agto',
+);
+
 /** Luxembourgish (Lëtzebuergesch)
  * @author Robby
  */
@@ -1700,10 +1709,19 @@ $messages['mr'] = array(
 	'smw_oi_thishascategory'      => 'चा भाग आहे',
 	'smw_oi_importedfromontology' => 'ओन्टोलोजी मधून आयात करा',
 	'types'                       => 'प्रकार',
+	'smw_types_docu'              => 'खाली गुणधर्माशी जोडता येणार्‍या सर्व डाटा प्रकारांची यादी आहे.
+प्रत्येक डाटा प्रकाराचे एक पाने आहे जिथे जास्तीची माहिती देता येईल.',
 	'smw_typeunits'               => '“$1” प्रकारची मापनाची एकके: $2',
 	'semanticstatistics'          => 'सिमँटिक सांख्यिकी',
+	'smw_semstats_text'           => 'ह्या विकिमध्ये <b>$1</b> गुणधर्मांच्या किंमती आहेत ज्या एकूण <b>$2</b> वेगवेगळ्या <a href="$3">गुणधर्म</a> दर्शवितात.
+<b>$4</b> गुणधर्मांना स्वत:ची पाने आहेत, व त्यापैकी <b>$5</b> गुणधर्मांना जुळणारे डाटा प्रकार दिलेले आहेत.
+यातील काही गुणधर्म हे <a href="$6">न वापरलेले गुणधर्म</a> असण्याची शक्यता आहे.
+ज्या गुणधर्मांना स्वत:चे पान नाही असे गुणधर्म <a href="$7">पाहिजे असलेल्या गुणधर्मांची यादी</a> मध्ये सापडतील.',
 	'flawedattributes'            => 'चुकीचे गुणधर्म',
+	'smw_fattributes'             => 'खाली दिलेल्या यादीतील पानांना चुकीचे गुणधर्म आहेत.
+चुकीच्या गुणधर्मांची संख्या कंसात दिलेली आहे.',
 	'uriresolver'                 => 'URI रिजल्व्हर',
+	'smw_uri_doc'                 => '<p>URI रिझॉल्वर मध्ये एक <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C टॅग आहे जो httpRange-14 शोधण्यास मदत करतो</a>. हा मनुष्यप्राणी संकेतस्थळामध्ये बदलणार नाही याची काळजी घेतो.</p>',
 	'ask'                         => 'सिमंटिक शोध',
 	'smw_ask_sortby'              => 'रकान्या प्रमाणे लावा (वैकल्पिक)',
 	'smw_ask_ascorder'            => 'चढत्या श्रेणीने',
@@ -1727,6 +1745,8 @@ $messages['mr'] = array(
 	'smw_browse_article'          => 'विकि ज्या पानापासून न्याहाळायचा त्या पानाचे नाव लिहा',
 	'smw_browse_go'               => 'चला',
 	'pageproperty'                => 'पान गुणधर्म शोध',
+	'smw_pp_docu'                 => 'दिलेल्या पानावरील एखाद्या गुणधर्माच्या सर्व किंमतींचा शोध घ्या.
+कृपया पान व गुणधर्म दोन्ही द्या.',
 	'smw_pp_from'                 => 'पानावरून',
 	'smw_pp_type'                 => 'गुणधर्म',
 	'smw_pp_submit'               => 'निकाल शोधा',
