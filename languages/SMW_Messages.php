@@ -2298,12 +2298,13 @@ $messages['ps'] = array(
 /** Portuguese (Português)
  * @author Malafaya
  * @author Lijealso
+ * @author 555
  */
 $messages['pt'] = array(
 	'smw_edithelp'                => 'Ajuda de edição sobre propriedades',
 	'smw_viewasrdf'               => 'Feed RDF',
-	'smw_finallistconjunct'       => ', e',
-	'smw_factbox_head'            => 'Factos sobre $1',
+	'smw_finallistconjunct'       => 'e',
+	'smw_factbox_head'            => 'Dados acerca $1',
 	'smw_isspecprop'              => 'Esta propriedade é uma propriedade especial neste wiki.',
 	'smw_isknowntype'             => 'Este tipo está entre os tipos de dados padrão deste wiki.',
 	'smw_isaliastype'             => 'Este tipo é um alias do tipo de dados “$1”.',
