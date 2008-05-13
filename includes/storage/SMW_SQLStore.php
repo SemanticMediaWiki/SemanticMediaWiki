@@ -1634,8 +1634,8 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		SMWSQLStore::$m_categorytables[$hashkey] = $tablename;
-		$db->query('DROP TABLE smw_newcats', 'SMW::getCategoryTable');
-		$db->query('DROP TABLE smw_rescats', 'SMW::getCategoryTable');
+		$db->query('DROP TEMPORARY TABLE smw_newcats', 'SMW::getCategoryTable');
+		$db->query('DROP TEMPORARY TABLE smw_rescats', 'SMW::getCategoryTable');
 		wfProfileOut("SMWSQLStore::getCategoryTable (SMW)");
 		return $tablename;
 	}
@@ -1695,8 +1695,8 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		SMWSQLStore::$m_propertytables[$propname] = $tablename;
-		$db->query('DROP TABLE smw_new', 'SMW::getPropertyTable');
-		$db->query('DROP TABLE smw_res', 'SMW::getPropertyTable');
+		$db->query('DROP TEMPORARY TABLE smw_new', 'SMW::getPropertyTable');
+		$db->query('DROP TEMPORARY TABLE smw_res', 'SMW::getPropertyTable');
 		wfProfileOut("SMWSQLStore::getPropertyTable (SMW)");
 		return $tablename;
 	}
@@ -2005,6 +2005,13 @@ class SMWSQLStore extends SMWStore {
 			}
 		} elseif ($description instanceof SMWDisjunction) {
 			foreach ($description->getDescriptions() as $subdesc) {
+				/// FIXME: This does not work when disjunctions refer not to values but to property conditions. 
+				// The reason is that the WHERE part uses OR (as it should), but new tables are 
+				// always added with INNER JOIN to the current base (page of prel table). But 
+				// INNER JOINS are like conjunctions and impose unwanted restrictions that reduce 
+				// the result size. The only way of solving this without using UNION right away will 
+				// be to move join conditions into WHERE parts -- which might hurt performance a lot
+				// (using new tables here, as in the case of conjunction, will not do any good)
 				$this->createSQLQuery($subdesc, $from, $subwhere, $db, $curtables, $nary_pos);
 				if ($subwhere != '') {
 					if ($where != '') {
