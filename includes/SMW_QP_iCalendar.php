@@ -55,6 +55,7 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 				$startdate = '';
 				$enddate = '';
 				$location = '';
+				$description = '';
 				foreach ($row as $field) {
 					// later we may add more things like a generic
 					// mechanism to add whatever you want :)
@@ -78,6 +79,12 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 							$location = $value->getShortWikiText();
 						}
 					}
+					if (strtolower($req->getLabel()) == "description") {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$description = $value->getShortWikiText();
+						}
+					}
 				}
 				$title = $wikipage->getTitle();
 				$article = new Article($title);
@@ -89,6 +96,7 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 				if ($startdate != "") $result .= "DTSTART:" . $this->parsedate($startdate,$enddate) . "\r\n";
 				if ($enddate != "")   $result .= "DTEND:" . $this->parsedate($enddate,$startdate,true) . "\r\n";
 				if ($location != "")  $result .= "LOCATION:$location\r\n";
+				if ($description != "")  $result .= "DESCRIPTION:$description\r\n";
 				$result .= "DTSTAMP:" . $this->parsedate($article->getTimestamp()) . "\r\n";
 				$result .= "SEQUENCE:" . $title->getLatestRevID() . "\r\n";
 				$result .= "END:VEVENT\r\n";
@@ -116,9 +124,6 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 			}
 
 			$result .= $link->getText($outputmode,$this->mLinker);
-
-			// is this useful?
-			//smwfRequireHeadItem('ical' . $smwgIQRunningNumber, '<link rel="alternate" type="text/calendar" title="' . $this->m_title . '" href="' . $link->getURL() . '" />');
 		}
 
 		return $result;
