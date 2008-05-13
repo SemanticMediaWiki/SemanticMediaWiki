@@ -451,7 +451,7 @@ class SMWQueryParser {
 					$conjunction = $this->addDescription($conjunction, $this->getSubqueryDescription($setsubNS, $label));
 					/// TODO: print requests from subqueries currently are ignored, should be moved down
 				break;
-				case '||': case '': case '</q>': // finish disjunction and maybe subquery
+				case 'OR': case '||': case '': case '</q>': // finish disjunction and maybe subquery
 					if ($this->m_defaultns !== NULL) { // possibly add namespace restrictions
 						if ( $hasNamespaces && !$mustSetNS) {
 							// add ns restrictions to all earlier conjunctions (all of which did not have them yet)
@@ -604,8 +604,8 @@ class SMWQueryParser {
 
 	/**
 	 * Parse a property description (the part of an inline query that
-	 * is in between "[[Some property:=" and the closing "]]" and create a
-	 * suitable description. The ":=" is the first chunk on the current
+	 * is in between "[[Some property::" and the closing "]]" and create a
+	 * suitable description. The "::" is the first chunk on the current
 	 * string.
 	 */
 	protected function getPropertyDescription($propertyname, &$setNS, &$label) {
