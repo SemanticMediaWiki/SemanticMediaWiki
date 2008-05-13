@@ -1590,17 +1590,19 @@ $messages['lb'] = array(
  * @author Shijualex
  */
 $messages['ml'] = array(
-	'smw_nofloat'         => '“$1” ഒരു സംഖ്യയല്ല.',
-	'smw_abb_north'       => 'വടക്ക്',
-	'smw_abb_east'        => 'കിഴക്ക്',
-	'smw_abb_south'       => 'തെക്ക്',
-	'smw_abb_west'        => 'പടിഞ്ഞാറ്‌',
-	'smw_label_latitude'  => 'അക്ഷാംശം:',
-	'smw_label_longitude' => 'രേഖാംശം:',
-	'smw_ask_ascorder'    => 'ആരോഹണം',
-	'smw_ask_descorder'   => 'അവരോഹണം',
-	'smw_browse_go'       => 'പോകൂ',
-	'smw_result_next'     => 'അടുത്തത്',
+	'smw_nofloat'          => '“$1” ഒരു സംഖ്യയല്ല.',
+	'smw_abb_north'        => 'വടക്ക്',
+	'smw_abb_east'         => 'കിഴക്ക്',
+	'smw_abb_south'        => 'തെക്ക്',
+	'smw_abb_west'         => 'പടിഞ്ഞാറ്‌',
+	'smw_label_latitude'   => 'അക്ഷാംശം:',
+	'smw_label_longitude'  => 'രേഖാംശം:',
+	'smw_ask_ascorder'     => 'ആരോഹണം',
+	'smw_ask_descorder'    => 'അവരോഹണം',
+	'smw_sbv_value'        => 'മൂല്യം',
+	'smw_browse_go'        => 'പോകൂ',
+	'smw_result_next'      => 'അടുത്തത്',
+	'smw_result_noresults' => 'ക്ഷമിക്കുക, ഫലങ്ങള്‍ ഒന്നുമില്ല',
 );
 
 /** Marathi (मराठी)
