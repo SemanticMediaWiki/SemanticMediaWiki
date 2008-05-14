@@ -353,7 +353,7 @@ class OWLExport {
 				foreach ($this->element_queue as $key => $staux) {
 					$taux = Title::makeTitle($staux->namespace, $staux->dbkey);
 					if ( !smwfIsSemanticsProcessed($staux->namespace) || ($staux->modifier !== '') ||
-					     !OWLExport::fitsNsRestriction($ns_restriction, $styux->namespace) ||
+					     !OWLExport::fitsNsRestriction($ns_restriction, $staux->namespace) ||
 					     (!$taux->exists()) ) {
 					// Note: we do not need to check the cache to guess if an element was already
 					// printed. If so, it would not be included in the queue in the first place.
