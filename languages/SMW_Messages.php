@@ -977,7 +977,21 @@ Certaines des propriétés existantes peuvent faire être <a href="$6">inutilis�
  * @author Toliño
  */
 $messages['gl'] = array(
-	'smw_finallistconjunct' => 'e',
+	'smw_finallistconjunct'      => 'e',
+	'smw_abb_north'              => 'N',
+	'smw_abb_east'               => 'E',
+	'smw_abb_south'              => 'S',
+	'smw_abb_west'               => 'W',
+	'smw_label_latitude'         => 'Latitude:',
+	'smw_label_longitude'        => 'Lonxitude:',
+	'properties'                 => 'Propiedades',
+	'unusedproperties'           => 'Propiedades non usadas',
+	'smw_purge'                  => 'Refrescar',
+	'smw_oi_action'              => 'Importar',
+	'smw_oi_return'              => 'Voltar a <a href="$1">Special:OntologyImport</a>.',
+	'smw_oi_thisissubcategoryof' => 'Unha subcategoría de',
+	'smw_oi_thishascategory'     => 'É parte de',
+	'types'                      => 'Tipos',
 );
 
 /** Hebrew
@@ -1396,6 +1410,13 @@ Tulung isèkna loro-loroné sawijining kaca lan sifat.',
  */
 $messages['ka'] = array(
 	'smw_finallistconjunct' => ', და',
+);
+
+/** Khmer (ភាសាខ្មែរ)
+ * @author គីមស៊្រុន
+ */
+$messages['km'] = array(
+	'smw_sbv_value' => 'តំលៃ',
 );
 
 /** Korean (한국어)
