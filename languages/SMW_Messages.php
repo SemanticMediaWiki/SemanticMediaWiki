@@ -1611,6 +1611,10 @@ $messages['lb'] = array(
  * @author Shijualex
  */
 $messages['ml'] = array(
+	'smw_factbox_head'     => '$1നെ കുറിച്ചുള്ള സത്യങ്ങള്‍',
+	'smw_icalendar_link'   => 'iകലണ്ടര്‍',
+	'smw_iq_nojs'          => 'ഈ എലമെന്റ് കാണുവാന്‍ ദയവായി ജാവാസ്ക്രിപ് എനേബിള്‍ ചെയ്ത ബ്രൗസര്‍ ഉപയോഗിക്കുക.',
+	'smw_unknown_importns' => 'ഇറക്കുമതി ഫങ്ങ്ഷന്‍സ് “$1” എന്ന നേംസ്പേസില്‍ ലഭ്യമല്ല.',
 	'smw_nofloat'          => '“$1” ഒരു സംഖ്യയല്ല.',
 	'smw_abb_north'        => 'വടക്ക്',
 	'smw_abb_east'         => 'കിഴക്ക്',
@@ -1618,6 +1622,7 @@ $messages['ml'] = array(
 	'smw_abb_west'         => 'പടിഞ്ഞാറ്‌',
 	'smw_label_latitude'   => 'അക്ഷാംശം:',
 	'smw_label_longitude'  => 'രേഖാംശം:',
+	'smw_oi_action'        => 'ഇറക്കുമതി',
 	'smw_ask_ascorder'     => 'ആരോഹണം',
 	'smw_ask_descorder'    => 'അവരോഹണം',
 	'smw_sbv_value'        => 'മൂല്യം',
