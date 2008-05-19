@@ -24,6 +24,10 @@ class SMWPageProperty extends SpecialPage {
 	 */
 	public function __construct() {
 		parent::__construct('PageProperty', '', false);
+		//the key defining the group name in the language files is specialpages-group-smw_group
+		if (method_exists('SpecialPage', 'setGroup')) { 
+			parent::setGroup('PageProperty', 'smw_group');	
+		}
 	}
 
 	public function execute($query = '') {

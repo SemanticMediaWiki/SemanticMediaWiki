@@ -25,6 +25,10 @@ class SMWAskPage extends SpecialPage {
 	 */
 	public function __construct() {
 		parent::__construct('Ask');
+		//the key defining the group name in the language files is specialpages-group-smw_group
+		if (method_exists('SpecialPage', 'setGroup')) { 
+			parent::setGroup('Ask', 'smw_group');	
+		}
 	}
 
 	function execute($p = '') {
