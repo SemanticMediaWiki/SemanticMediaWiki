@@ -165,7 +165,8 @@ function smwfSetupExtension() {
 	$wgHooks['TitleMoveComplete'][]='smwfMoveHook'; // move annotations
 	$wgHooks['ParserAfterTidy'][] = 'smwfAddHTMLHeadersParser'; // add items to HTML header during parsing
 	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeadersOutput'; // add items to HTML header during output
-
+    $wgHooks['LinksUpdateConstructed'][] = 'smwfUpdateSemanticData'; // update data after template change
+    
 	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage'; // special implementations for property/type articles
 
 	///// credits (see "Special:Version") /////
@@ -214,6 +215,18 @@ function smwfProcessInlineQueryParserFunction(&$parser) {
 	} else {
 		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 	}
+}
+
+/**
+ * Updates data after changes of templates.
+ * (How does this relate tot he jobs/SMW_UpdateJob?)
+ */
+function smwfUpdateSemanticData($links_update) {
+        $title = $links_update->mTitle;
+        if ( smwfIsSemanticsProcessed($title->getNamespace()) && ! SMWFactbox::isNewArticle() ) {
+                SMWFactbox::storeData(true);
+        }
+        return true;
 }
 
 /**********************************************/
