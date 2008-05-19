@@ -113,16 +113,110 @@ function smwfPreSaveHook(&$article, &$user, &$text, &$summary, $minor, $watch, $
 	return true; // always return true, in order not to stop MW's hook processing!
 }
 
-
 /**
- *  This method will be called after an article is saved after
- *  editing. It stores the semantic properties in the database.
- *  One could consider creating an object for deferred saving
- *  as used in other places of MediaWiki.
+ *  This method will be called after an article is saved
+ *  and stores the semantic data in the database.
+ *  If the saved article describes an attrbute or data type,
+ *  the method checks wether the attribute type, the data type,
+ *  the allowed values or the conversion factors have changed.
+ *  If so, it triggers SMW_UpdateJobs for the relevant articles,
+ *  which asynchronously update the semantic data in the database. 
+ *  
+ *  Known Bug -- TODO
+ *  If an attribute is wrongly instanced. i.e.  it has an "Oops" message.
+ *  It will not be found by the getAllAttributeSubjects method of the store
+ *  object and thus there will be no Updatejobs triggered for it. 
+ *  In order to resolve this, wrongly instanced properties need to be saved,
+ *  too, so that they can be iterated. 
  */
 function smwfSaveHook(&$article, &$user, &$text) {
-	SMWFactbox::storeData(smwfIsSemanticsProcessed($article->getTitle()->getNamespace()));
+	$title = $article->getTitle();
+	$updatejobflag = 0;
+
+	/**
+	 * Checks if the semantic data has been changed.
+	 * Sets the updateflag if so.
+	 */
+
+	$namespace = $article->getTitle()->getNamespace();
+
+	if ($namespace == SMW_NS_PROPERTY || $namespace == SMW_NS_TYPE) {
+
+		$oldstore = smwfGetStore()->getSemanticData($title);
+
+		$oldproperties = $oldstore->getProperties($title); // returns only saved properties, properties that are not saved are not returned (e.g. when there is an error)
+		$currentproperties = SMWFactbox :: $semdata->getProperties($title);
+		//double side diff
+		$diff = array_merge(array_diff($currentproperties, $oldproperties), array_diff($oldproperties, $currentproperties));
+
+		//if any propery has changed the updateflag is set
+		if (!empty ($diff)) { $updatejobflag = 1; }
+		if ($updatejobflag == 0) {
+
+			foreach ($oldproperties as $oldproperty) {
+				$oldvalues[] = $oldstore->getPropertyValues($oldproperty);
+			}
+
+			foreach ($currentproperties as $currentproperty) {
+				$currentvalues[] = SMWFactbox::$semdata->getPropertyValues($currentproperty);
+			}
+
+			//double side diff, if any propery value has changed the updateflag is set
+			$diff2 = array_merge(array_diff_key($currentvalues[0], $oldvalues[0]), array_diff_key($oldvalues[0], $currentvalues[0]));
+
+			if (!empty ($diff2)) {
+				$updatejobflag = 1;
+			}
+		}
+	}
+
+	/**
+	 * Saves the semantic data
+	 */
+	SMWFactbox :: storeData($title, smwfIsSemanticsProcessed($title->getNamespace()));
+
+	/**
+	 * Triggers the relevant Updatejobs if necessary
+	 */
+	if ($updatejobflag == 1) {
+		$store = smwfGetStore();
+		if ($namespace == SMW_NS_PROPERTY) {
+			
+			$subjects = $store->getAllPropertySubjects($title);
+
+			foreach ($subjects as $subject) {
+				smwfGenerateSMWUpdateJobs($subject);
+			}
+
+		} else
+			if ($namespace == SMW_NS_TYPE) {
+
+				$subjects = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $title);
+
+				foreach ($subjects as $titlesofpropertypagestoupdate) {
+					$subjectsPropertyPages = $store->getAllPropertySubjects($titlesofpropertypagestoupdate);
+					smwfGenerateSMWUpdateJobs($titlesofpropertypagestoupdate);
+					
+					foreach ($subjectsPropertyPages as $titleOfPageToUpdate) {
+						smwfGenerateSMWUpdateJobs($titleOfPageToUpdate);
+					}
+
+				}
+			}
+	}
+
 	return true; // always return true, in order not to stop MW's hook processing!
+}
+ 
+/**
+ * Generates a job, which update the semantic data of the responding page
+ * 
+ */
+function smwfGenerateSMWUpdateJobs(& $title) {
+	global $smwgIP;
+	include_once($smwgIP . '/includes/Jobs/SMW_UpdateJob.php');
+	$job = new SMW_UpdateJob($title);
+	$job->insert();
 }
 
 /**

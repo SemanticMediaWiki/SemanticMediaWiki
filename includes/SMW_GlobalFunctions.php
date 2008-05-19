@@ -57,7 +57,7 @@ $smwgHeadItems = array();
  * does not adhere to the naming conventions.
  */
 function enableSemantics($namespace = '', $complete = false) {
-	global $smwgNamespace, $wgExtensionFunctions, $wgSpecialPages, $wgAutoloadClasses, $smwgIP, $wgHooks, $wgExtensionMessagesFiles;
+	global $smwgNamespace, $wgExtensionFunctions, $wgSpecialPages, $wgAutoloadClasses, $smwgIP, $wgHooks, $wgExtensionMessagesFiles, $wgJobClasses;
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
@@ -112,11 +112,15 @@ function enableSemantics($namespace = '', $complete = false) {
 	// suboptimal special pages using the SMWSpecialPage wrapper class:
 	$wgAutoloadClasses['SMWSpecialPage']      = $smwgIP . '/includes/SMW_SpecialPage.php';
 	$wgSpecialPages['Properties']             = array('SMWSpecialPage','Properties', 'smwfDoSpecialProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialProperties.php');
-	$wgSpecialPages['UnusedProperties']       = array('SMWSpecialPage','UnusedProperties', 'smwfDoSpecialUnusedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialUnusedProperties.php');
-	$wgSpecialPages['WantedProperties']       = array('SMWSpecialPage','WantedProperties', 'smwfDoSpecialWantedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialWantedProperties.php');
-	$wgSpecialPages['ExportRDF']              = array('SMWSpecialPage','ExportRDF', 'smwfDoSpecialOWLExport', $smwgIP . '/specials/Export/SMW_SpecialOWLExport.php');
-	$wgSpecialPages['SemanticStatistics']     = array('SMWSpecialPage','SemanticStatistics', 'smwfExecuteSemanticStatistics', $smwgIP . '/specials/Statistics/SMW_SpecialStatistics.php');
+	$wgSpecialPages['UnusedProperties']       = array('SMWSpecialPage','UnusedProperties', 'smwfDoSpecialUnusedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialUnusedProperties.php', true, '', 'maintenance');
+	$wgSpecialPages['WantedProperties']       = array('SMWSpecialPage','WantedProperties', 'smwfDoSpecialWantedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialWantedProperties.php', true, '', 'needy');
+	$wgSpecialPages['ExportRDF']              = array('SMWSpecialPage','ExportRDF', 'smwfDoSpecialOWLExport', $smwgIP . '/specials/Export/SMW_SpecialOWLExport.php', true, '', 'smw_group');
+	$wgSpecialPages['SemanticStatistics']     = array('SMWSpecialPage','SemanticStatistics', 'smwfExecuteSemanticStatistics', $smwgIP . '/specials/Statistics/SMW_SpecialStatistics.php', true, '', 'smw_group');
 	$wgSpecialPages['Types']                  = array('SMWSpecialPage','Types', 'smwfDoSpecialTypes', $smwgIP . '/specials/QueryPages/SMW_SpecialTypes.php');
+
+	///// Register Jobs
+	$wgAutoloadClasses['SMW_UpdateJob']       = $smwgIP . '/includes/Jobs/SMW_UpdateJob.php';
+	$wgJobClasses['SMW_UpdateJob']            ='SMW_UpdateJob'; 
 
 	return true;
 }
