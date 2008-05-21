@@ -443,7 +443,8 @@ class SMWSQLStore extends SMWStore {
 			$subjectcond = 'subject_id=' . $db->addQuotes($subjectid) . ' AND ';
 		} else { // get all values for this property 
 		    ///TODO: shouldn't this rather be ''? Confused by my own code (mak)
-			$subjectcond = 'subject_id=' . $db->addQuotes(0) . ' AND ';
+		    // dvr: I also think this should be '' -- anyone want to check and remove this comment?
+			$subjectcond = ''; // previously: 'subject_id=' . $db->addQuotes(0) . ' AND ';
 		}
 
 		$result = array();
