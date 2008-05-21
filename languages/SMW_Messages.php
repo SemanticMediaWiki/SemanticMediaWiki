@@ -2498,7 +2498,7 @@ Por favor, introduza ambas a página e a propriedade.',
 );
 
 /** Russian (Русский)
- * @author .:Ajvol:.
+ * @author Александр Сигачёв
  */
 $messages['ru'] = array(
 	'smw_edithelp'                => 'Редактирование справки по свойствам',
