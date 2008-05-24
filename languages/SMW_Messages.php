@@ -2124,7 +2124,7 @@ $messages['oc'] = array(
 	'smw_icalendar_link'          => 'iCalendièr',
 	'smw_iq_disabled'             => "O planhèm. Las recèrcas dins los articles d'aqueste wiki son pas autorizadas.",
 	'smw_iq_moreresults'          => '&hellip; autres resultats',
-	'smw_iq_nojs'                 => 'Utilizatz un navigaire amb JavaScript per veire aqueste element.',
+	'smw_iq_nojs'                 => 'Utilizatz un navigador amb JavaScript per veire aqueste element.',
 	'smw_iq_altresults'           => 'Percórrer dirèctament la lista dels resultats.',
 	'smw_unknown_importns'        => 'Cap de foncion d\'impòrt es pas disponible per l\'espaci de nomenatge "$1".',
 	'smw_nonright_importtype'     => 'L\'element "$1" pòt pas èsser emplegat que per d\'articles de l\'espaci de nomenatge "$2".',
@@ -2844,6 +2844,8 @@ $messages['sv'] = array(
 	'smw_toomanyclosing'      => '"$1" uppträder för många gånger i efterfrågningen.',
 	'smw_noclosingbrackets'   => 'Användningen av "[&#x005B;" i din efterfrågning stängdes inte av "]]".',
 	'smw_misplacedsymbol'     => 'Symbolen "$1" användes på en plats där den inte är användbar.',
+	'smw_unexpectedpart'      => '"$1"-delen av efterfrågningen var oförstålig.
+Resultaten kan vara oväntade.',
 	'exportrdf'               => 'Exportera sidor till RDF',
 	'smw_exportrdf_docu'      => '<p>Den här sidan låter dig hämta data från en sida i RDF-format.
 Skriv sidtitlar i textrutan härunder för att exportera sidor (en titel per rad).</p>',
