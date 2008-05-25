@@ -1593,6 +1593,7 @@ $messages['lb'] = array(
 	'smw_oi_thisissubcategoryof'  => 'Ënnerkategorie vu(n)',
 	'smw_oi_thishascategory'      => 'Ass een Deel vu(n)',
 	'semanticstatistics'          => 'Semantesch Statistiken',
+	'ask'                         => 'Semantesch Sich',
 	'smw_ask_submit'              => 'Resultater sichen',
 	'smw_ask_editquery'           => '[Ufro änneren]',
 	'smw_ask_hidequery'           => 'Ufro verstoppen',
