@@ -485,6 +485,38 @@ $messages['ch'] = array(
 	'smw_browse_go' => 'Hånao',
 );
 
+/** Czech (Česky)
+ * @author Matěj Grabovský
+ */
+$messages['cs'] = array(
+	'smw_edithelp'            => 'Nápověda při upravování vztahů a vlastností',
+	'smw_viewasrdf'           => 'RDF kanál',
+	'smw_finallistconjunct'   => ' a',
+	'smw_factbox_head'        => 'Skutečnosti o $1 &mdash; kliknutím na <span class="smwsearchicon">+</span> vyhledáte podobné stránky.',
+	'smw_isspecprop'          => 'Tato vlastnost je speciální vlastnost na této wiki.',
+	'smw_isknowntype'         => 'Tento typ patří meti standardní datové typy na této wiki.',
+	'smw_isaliastype'         => 'Tento typ je alias datového typu „$1“.',
+	'smw_isnotype'            => 'Tento typ „$1“ není standardní datový typ na této wiki a nebyl ani definován uživatelem.',
+	'smw_baduri'              => 'Promiňte, URI z rozsahu „$1“ na tomto místě nejsou dostupné.',
+	'smw_icalendar_link'      => 'iCalendar',
+	'smw_iq_disabled'         => 'Promiňtě, semantické dotazy byly pro tuto wiki zakázány.',
+	'smw_iq_moreresults'      => '…další výsledky',
+	'smw_iq_nojs'             => 'Pro zobrazení tohoto prvku prosím použijte prohlížeč se zapnutým JavaScriptem.',
+	'smw_iq_altresults'       => 'Prohlížet přímo seznam výsledků.',
+	'smw_unknown_importns'    => 'Funkce importu nejsou dostupné pro jmenný prostor „$1“.',
+	'smw_nonright_importtype' => '$1 je možné použít jen pro stránky ve jmenném prostoru „$2“.',
+	'smw_wrong_importtype'    => '$1 není možné použít pro stránky ve jmenném prostoru „$2“.',
+	'smw_no_importelement'    => 'Prvek „$1“ není dotupný pro import.',
+	'smw_parseerror'          => 'Zadaná hodnota nebyla pochopená.',
+	'smw_notitle'             => '„$1“ není možné použít na této wiki jako název stránky.',
+	'smw_unknowntype'         => 'Pro vlastnost je definován nepodporovaný typ „$1“.',
+	'smw_manytypes'           => 'Pro vlastnost byl definován více než jeden typ.',
+	'smw_emptystring'         => 'Prázdné řetězce nejsou povolené.',
+	'smw_maxstring'           => 'Reprezentace řetězce $1 je pro tuto wiki příliš dlouhá.',
+	'smw_notinenum'           => '„$1“ není v seznamu možných hodnot ($2) této vlastnosti.',
+	'smw_noboolean'           => '„$1“ nebylo rozpoznáno jako platná hodnota typu boolean (ano/ne).',
+);
+
 /** German (Deutsch)
  * @author Markus Krötzsch
  * @author Denny
@@ -1567,7 +1599,8 @@ $messages['krj'] = array(
  * @author Purodha
  */
 $messages['ksh'] = array(
-	'smw_browse_go' => 'Loß Jonn!',
+	'smw_browse_go'   => 'Loß Jonn!',
+	'smw_result_next' => 'Wigger',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
