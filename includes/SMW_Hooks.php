@@ -77,6 +77,7 @@ function smwfParsePropertiesCallback($semanticLink) {
 			case 'on': $smwgTempStoreAnnotations = true; break;
 			case 'off': $smwgTempStoreAnnotations = false; break;
 		}
+		wfProfileOut("smwfParsePropertiesCallback (SMW)");
 		return '';
 	}
 
