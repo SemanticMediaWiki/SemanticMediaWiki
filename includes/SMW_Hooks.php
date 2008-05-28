@@ -117,57 +117,48 @@ function smwfPreSaveHook(&$article, &$user, &$text, &$summary, $minor, $watch, $
 /**
  *  This method will be called after an article is saved
  *  and stores the semantic data in the database.
- *  If the saved article describes an attrbute or data type,
- *  the method checks wether the attribute type, the data type,
- *  the allowed values or the conversion factors have changed.
+ *  If the saved article describes a property or data type,
+ *  the method checks whether the property type, the data type,
+ *  the allowed values, or the conversion factors have changed.
  *  If so, it triggers SMW_UpdateJobs for the relevant articles,
- *  which asynchronously update the semantic data in the database. 
- *  
+ *  which asynchronously update the semantic data in the database.
+ *
  *  Known Bug -- TODO
- *  If an attribute is wrongly instanced. i.e.  it has an "Oops" message.
- *  It will not be found by the getAllAttributeSubjects method of the store
- *  object and thus there will be no Updatejobs triggered for it. 
+ *  If a property is wrongly instantiated, i.e. if it has an "Oops" message,
+ *  it will not be found by the getAllAttributeSubjects() method of the store
+ *  object, and thus there will be no Updatejobs triggered for it.
  *  In order to resolve this, wrongly instanced properties need to be saved,
- *  too, so that they can be iterated. 
+ *  too, so that they can be iterated.
  */
 function smwfSaveHook(&$article, &$user, &$text) {
 	$title = $article->getTitle();
+	$namespace = $title->getNamespace();
 	$updatejobflag = 0;
-
-	/**
+	/*
 	 * Checks if the semantic data has been changed.
 	 * Sets the updateflag if so.
 	 */
 
-	$namespace = $article->getTitle()->getNamespace();
-
 	if ($namespace == SMW_NS_PROPERTY || $namespace == SMW_NS_TYPE) {
-
 		$oldstore = smwfGetStore()->getSemanticData($title);
 
 		$oldproperties = $oldstore->getProperties($title); // returns only saved properties, properties that are not saved are not returned (e.g. when there is an error)
-		$currentproperties = SMWFactbox :: $semdata->getProperties($title);
+		$currentproperties = SMWFactbox::$semdata->getProperties($title);
 		//double side diff
 		$diff = array_merge(array_diff($currentproperties, $oldproperties), array_diff($oldproperties, $currentproperties));
 
 		//if any propery has changed the updateflag is set
 		if (!empty ($diff)) { $updatejobflag = 1; }
 		if ($updatejobflag == 0) {
-
 			foreach ($oldproperties as $oldproperty) {
 				$oldvalues[] = $oldstore->getPropertyValues($oldproperty);
 			}
-
 			foreach ($currentproperties as $currentproperty) {
 				$currentvalues[] = SMWFactbox::$semdata->getPropertyValues($currentproperty);
 			}
-
 			//double side diff, if any propery value has changed the updateflag is set
 			$diff2 = array_merge(array_diff_key($currentvalues[0], $oldvalues[0]), array_diff_key($oldvalues[0], $currentvalues[0]));
-
-			if (!empty ($diff2)) {
-				$updatejobflag = 1;
-			}
+			if (!empty ($diff2)) { $updatejobflag = 1; }
 		}
 	}
 
