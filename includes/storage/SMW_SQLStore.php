@@ -899,8 +899,6 @@ class SMWSQLStore extends SMWStore {
 							}
 							$up_specials[] =
 							array('subject_id' => $subject->getArticleID(),
-							      'subject_namespace' => $subject->getNamespace(),
-							      'subject_title' => $subject->getDBkey(),
 							      'property_id' => $property,
 							      'value_string' => $stringvalue);
 						}
@@ -956,7 +954,6 @@ class SMWSQLStore extends SMWStore {
 		$db->update('smw_relations', $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update('smw_attributes', $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update('smw_longstrings', $val_array, $cond_array, 'SMW::changeTitle');
-		$db->update('smw_specialprops', $val_array, $cond_array, 'SMW::changeTitle');
 		$db->update('smw_nary', $val_array, $cond_array, 'SMW::changeTitle');
 
 		// properties need special treatment (special table layout)
@@ -1389,11 +1386,9 @@ class SMWSQLStore extends SMWStore {
 		// create table for special properties
 		$this->setupTable($smw_specialprops,
 		              array('subject_id'        => 'INT(8) UNSIGNED NOT NULL',
-		                    'subject_namespace' => 'INT(11) NOT NULL',
-		                    'subject_title'     => 'VARCHAR(255) binary NOT NULL',
 		                    'property_id'       => 'SMALLINT(6) NOT NULL',
 		                    'value_string'      => 'VARCHAR(255) binary NOT NULL'), $db, $verbose);
-		$this->setupIndex($smw_specialprops, array('subject_id', 'property_id'), $db);
+		$this->setupIndex($smw_specialprops, array('subject_id', 'property_id', 'subject_id,property_id'), $db);
 
 		// create table for subproperty relationships
 		$this->setupTable($smw_subprops,
