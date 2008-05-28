@@ -93,7 +93,11 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWExpData']               =  $smwgIP . '/includes/export/SMW_Exp_Data.php';
 	$wgAutoloadClasses['SMWExpElement']            =  $smwgIP . '/includes/export/SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpLiteral']            =  $smwgIP . '/includes/export/SMW_Exp_Element.php';
-	$wgAutoloadClasses['SMWExpResource']            =  $smwgIP . '/includes/export/SMW_Exp_Element.php';
+	$wgAutoloadClasses['SMWExpResource']           =  $smwgIP . '/includes/export/SMW_Exp_Element.php';
+	//// stores
+	$wgAutoloadClasses['SMWSQLStore']              =  $smwgIP . '/includes/storage/SMW_SQLStore.php';
+	$wgAutoloadClasses['SMWRAPStore']              =  $smwgIP . '/includes/storage/SMW_RAPStore.php';
+	$wgAutoloadClasses['SMWTestStore']             =  $smwgIP . '/includes/storage/SMW_TestStore.php';
 
 	///// Register specials, do that early on in case some other extension calls "addPage" /////
 	$wgAutoloadClasses['SMWAskPage']          = $smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php';
@@ -565,24 +569,9 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 * similar to MediaWiki's DB implementation.
 	 */
 	function &smwfGetStore() {
-		global $smwgMasterStore;
+		global $smwgMasterStore, $smwgDefaultStore;
 		if ($smwgMasterStore === NULL) {
-			// initialise main storage (there is no other store at the moment)
-			global $smwgDefaultStore, $smwgIP;
-			switch ($smwgDefaultStore) {
-				case (SMW_STORE_TESTING):
-					require_once($smwgIP . '/includes/storage/SMW_TestStore.php');
-					$smwgMasterStore = new SMWTestStore();
-				break;
-				case (SMW_STORE_RAP):
-					require_once($smwgIP . '/includes/storage/SMW_RAPStore.php');
-					$smwgMasterStore = new SMWRAPStore();
-				break;
-				case (SMW_STORE_MWDB): default:
-					require_once($smwgIP . '/includes/storage/SMW_SQLStore.php');
-					$smwgMasterStore = new SMWSQLStore();
-				break;
-			}
+			$smwgMasterStore = new $smwgDefaultStore();
 		}
 		return $smwgMasterStore;
 	}
