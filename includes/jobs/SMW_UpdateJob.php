@@ -28,7 +28,7 @@ class SMWUpdateJob extends Job {
 	 */
 	function run() {
 		wfDebug(__METHOD__);
-		global $wgParser;
+		global $wgParser, $smwgHeadItems;
 		wfProfileIn( __METHOD__ );
 
 		$linkCache =& LinkCache::singleton();
@@ -52,7 +52,11 @@ class SMWUpdateJob extends Job {
 		wfProfileIn( __METHOD__.'-parse' );
 		$options = new ParserOptions;
 		//$parserOutput = $wgParser->parse( $revision->getText(), $this->title, $options, true, true, $revision->getId() );
+
+		$cur_headitems = $smwgHeadItems;  // subparses will purge/mess up our globals; every such global would require similar handling here (semdata anyone?!); this is all rather nasty and needs a unified architecture (e.g. one object to manage/copy/restore all SMW globals)
+		$smwgHeadItems = array();
 		$wgParser->parse($revision->getText(), $this->title, $options, true, true, $revision->getID());
+		$smwgHeadItems = $cur_headitems;
 
 		wfProfileOut( __METHOD__.'-parse' );
 		wfProfileIn( __METHOD__.'-update' );
