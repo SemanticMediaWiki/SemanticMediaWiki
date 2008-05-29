@@ -213,7 +213,6 @@ function smwfSaveDataForTitle($title) {
  * Generates a job, which update the semantic data of the responding page
  */
 function smwfGenerateSMWUpdateJobs(& $title) {
-	global $smwgIP;
 	$job = new SMWUpdateJob($title);
 	$job->insert();
 }
