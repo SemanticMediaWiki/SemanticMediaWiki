@@ -564,7 +564,10 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getPropertySubjects(Title $property, SMWDataValue $value, $requestoptions = NULL) {
+	function getPropertySubjects(Title $property, $value, $requestoptions = NULL) {
+		if ($value === NULL) {
+			return $this->getAllPropertySubjects($property,$requestoptions);
+		}
 		wfProfileIn("SMWSQLStore::getPropertySubjects (SMW)");
 		if ( !$value->isValid() ) {
 			wfProfileOut("SMWSQLStore::getPropertySubjects (SMW)");

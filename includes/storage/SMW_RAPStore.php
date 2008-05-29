@@ -277,7 +277,7 @@ class SMWRAPStore extends SMWSQLStore {
 	function getPropertyValues($subject, $property, $requestoptions = NULL, $outputformat = '') {
 		return parent::getPropertyValues($subject, $property, $requestoptions, $outputformat);
 	}
-	function getPropertySubjects(Title $property, SMWDataValue $value, $requestoptions = NULL) {
+	function getPropertySubjects(Title $property, $value, $requestoptions = NULL) {
 		return parent::getPropertySubjects($property, $value, $requestoptions);
 	}
 	function getAllPropertySubjects(Title $property, $requestoptions = NULL) {
