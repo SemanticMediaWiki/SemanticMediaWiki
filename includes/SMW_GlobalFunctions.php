@@ -125,8 +125,8 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgSpecialPages['Types']                  = array('SMWSpecialPage','Types', 'smwfDoSpecialTypes', $smwgIP . '/specials/QueryPages/SMW_SpecialTypes.php');
 
 	///// Register Jobs
-	$wgAutoloadClasses['SMW_UpdateJob']       = $smwgIP . '/includes/jobs/SMW_UpdateJob.php';
-	$wgJobClasses['SMW_UpdateJob']            ='SMW_UpdateJob'; 
+	$wgAutoloadClasses['SMWUpdateJob']       = $smwgIP . '/includes/jobs/SMW_UpdateJob.php';
+	$wgJobClasses['SMWUpdateJob']            ='SMWUpdateJob';
 
 	return true;
 }

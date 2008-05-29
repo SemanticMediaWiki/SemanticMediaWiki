@@ -11,11 +11,8 @@
 *  This method will be called before an article is displayed or previewed.
 *  For display and preview we strip out the semantic properties and append them
 *  at the end of the article.
-*
-*  TODO: $strip_state is not used (and must not be used, since it is
-*        not relevant when moving the hook to internalParse()).
 */
-function smwfParserHook(&$parser, &$text, &$strip_state = null) {
+function smwfParserHook(&$parser, &$text) {
 	global $smwgIP, $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgStoreActive;
 	include_once($smwgIP . '/includes/SMW_Factbox.php');
 	// Init global storage for semantic data of this article.
@@ -30,7 +27,7 @@ function smwfParserHook(&$parser, &$text, &$strip_state = null) {
 	}
 	$smwgTempStoreAnnotations = true; // used for [[SMW::on]] and [[SMW:off]]
 
-	// process redirects, if any 
+	// process redirects, if any
 	// (it seems that there is indeed no more direct way of getting this info from MW)
 	$rt = Title::newFromRedirect($text);
 	if ($rt !== NULL) {
@@ -125,6 +122,7 @@ function smwfPreSaveHook(&$article, &$user, &$text, &$summary, $minor, $watch, $
 
 /**
  * Former hook used for storing data. Probably obsolete now (some testing required).
+ * TODO: delete this when the current architecture has been tested sucessfully
  */
 function smwfSaveHook(&$article, &$user, &$text) {
 // 	smwfSaveDataForTitle($article->getTitle()); // done by LinksUpdate now
@@ -132,8 +130,7 @@ function smwfSaveHook(&$article, &$user, &$text) {
 }
 
 /**
- * Updates data after changes of templates.
- * (How does this relate tot he jobs/SMW_UpdateJob?)
+ * Used to updates data after changes of templates, but also at each saving of an article.
  */
 function smwfLinkUpdateHook($links_update) {
 // 	$title = $links_update->mTitle;
@@ -148,7 +145,7 @@ function smwfLinkUpdateHook($links_update) {
  * The generic safe method for some title. It is assumed that parsing has happened and that
  * SMWFactbox contains all relevant data. If the saved page describes a property or data type,
  * the method checks whether the property type, the data type, the allowed values, or the 
- * conversion factors have changed. If so, it triggers SMW_UpdateJobs for the relevant articles,
+ * conversion factors have changed. If so, it triggers SMWUpdateJobs for the relevant articles,
  * which then asynchronously update the semantic data in the database.
  *
  *  Known Bug -- TODO
@@ -217,8 +214,7 @@ function smwfSaveDataForTitle($title) {
  */
 function smwfGenerateSMWUpdateJobs(& $title) {
 	global $smwgIP;
-	include_once($smwgIP . '/includes/Jobs/SMW_UpdateJob.php');
-	$job = new SMW_UpdateJob($title);
+	$job = new SMWUpdateJob($title);
 	$job->insert();
 }
 
