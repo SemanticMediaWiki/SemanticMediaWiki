@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.2c-SVN');
+define('SMW_VERSION','1.2d-SVN');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -96,7 +96,9 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWExpResource']           =  $smwgIP . '/includes/export/SMW_Exp_Element.php';
 	//// stores
 	$wgAutoloadClasses['SMWSQLStore']              =  $smwgIP . '/includes/storage/SMW_SQLStore.php';
-	$wgAutoloadClasses['SMWRAPStore']              =  $smwgIP . '/includes/storage/SMW_RAPStore.php';
+	// Do not autoload RAPStore, since some special pages load all autoloaded classes, which causes
+	// troubles with RAP store if RAP is not installed (require_once fails).
+	//$wgAutoloadClasses['SMWRAPStore']              =  $smwgIP . '/includes/storage/SMW_RAPStore.php';
 	$wgAutoloadClasses['SMWTestStore']             =  $smwgIP . '/includes/storage/SMW_TestStore.php';
 
 	///// Register specials, do that early on in case some other extension calls "addPage" /////
@@ -163,14 +165,14 @@ function smwfSetupExtension() {
 	$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; // parse annotations
 	$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries'; // register the <ask> parser hook
 	$wgHooks['ArticleSave'][] = 'smwfPreSaveHook'; // check some settings here
-	$wgHooks['ArticleSaveComplete'][] = 'smwfSaveHook'; // store annotations
+// 	$wgHooks['ArticleSaveComplete'][] = 'smwfSaveHook'; // store annotations
 	$wgHooks['ArticleUndelete'][] = 'smwfUndeleteHook'; // restore annotations
 	$wgHooks['ArticleDelete'][] = 'smwfDeleteHook'; // delete annotations
 	$wgHooks['TitleMoveComplete'][]='smwfMoveHook'; // move annotations
 	$wgHooks['ParserAfterTidy'][] = 'smwfAddHTMLHeadersParser'; // add items to HTML header during parsing
 	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeadersOutput'; // add items to HTML header during output
-    $wgHooks['LinksUpdateConstructed'][] = 'smwfUpdateSemanticData'; // update data after template change
-    
+    $wgHooks['LinksUpdateConstructed'][] = 'smwfLinkUpdateHook'; // update data after template change and at safe
+
 	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage'; // special implementations for property/type articles
 
 	///// credits (see "Special:Version") /////
@@ -219,18 +221,6 @@ function smwfProcessInlineQueryParserFunction(&$parser) {
 	} else {
 		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 	}
-}
-
-/**
- * Updates data after changes of templates.
- * (How does this relate tot he jobs/SMW_UpdateJob?)
- */
-function smwfUpdateSemanticData($links_update) {
-        $title = $links_update->mTitle;
-        if ( smwfIsSemanticsProcessed($title->getNamespace()) && ! SMWFactbox::isNewArticle() ) {
-                SMWFactbox::storeData(true);
-        }
-        return true;
 }
 
 /**********************************************/
@@ -569,7 +559,10 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 * similar to MediaWiki's DB implementation.
 	 */
 	function &smwfGetStore() {
-		global $smwgMasterStore, $smwgDefaultStore;
+		global $smwgMasterStore, $smwgDefaultStore, $smwgIP;
+		if ($smwgDefaultStore == 'RAPStore') { // no autoloading for RAP store, since autoloaded classes are in rare cases loaded by MW even if not used in code -- this is not possible for RAPstore, which depends on RAP being installed
+			include_once($smwgIP . '/includes/storage/SMW_RAPStore.php');
+		}
 		if ($smwgMasterStore === NULL) {
 			$smwgMasterStore = new $smwgDefaultStore();
 		}

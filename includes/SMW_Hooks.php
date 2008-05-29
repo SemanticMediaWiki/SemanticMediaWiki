@@ -21,14 +21,24 @@ function smwfParserHook(&$parser, &$text, &$strip_state = null) {
 	// Init global storage for semantic data of this article.
 	SMWFactbox::initStorage($parser->getTitle());
 
-	// print the results if enabled (we have to parse them in any case, in order to
+	// store the results if enabled (we have to parse them in any case, in order to
 	// clean the wiki source for further processing)
 	if ( $smwgStoreActive && smwfIsSemanticsProcessed($parser->getTitle()->getNamespace()) ) {
 		$smwgStoreAnnotations = true;
 	} else {
 		$smwgStoreAnnotations = false;
 	}
-	$smwgTempStoreAnnotations = true; // for [[SMW::on]] and [[SMW:off]]
+	$smwgTempStoreAnnotations = true; // used for [[SMW::on]] and [[SMW:off]]
+
+	// process redirects, if any 
+	// (it seems that there is indeed no more direct way of getting this info from MW)
+	$rt = Title::newFromRedirect($text);
+	if ($rt !== NULL) {
+		$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_REDIRECTS_TO,$rt->getPrefixedText());
+		if ($smwgStoreAnnotations) {
+			SMWFactbox::$semdata->addSpecialValue(SMW_SP_REDIRECTS_TO,$dv);
+		}
+	}
 
 	// In the regexp matches below, leading ':' escapes the markup, as
 	// known for Categories.
@@ -45,7 +55,6 @@ function smwfParserHook(&$parser, &$text, &$strip_state = null) {
 	                        \]\]                # End of link
 	                        /xu';
 	$text = preg_replace_callback($semanticLinkPattern, 'smwfParsePropertiesCallback', $text);
-
 	SMWFactbox::printFactbox($text);
 
 	// add link to RDF to HTML header
@@ -115,30 +124,45 @@ function smwfPreSaveHook(&$article, &$user, &$text, &$summary, $minor, $watch, $
 }
 
 /**
- *  This method will be called after an article is saved
- *  and stores the semantic data in the database.
- *  If the saved article describes a property or data type,
- *  the method checks whether the property type, the data type,
- *  the allowed values, or the conversion factors have changed.
- *  If so, it triggers SMW_UpdateJobs for the relevant articles,
- *  which asynchronously update the semantic data in the database.
- *
- *  Known Bug -- TODO
- *  If a property is wrongly instantiated, i.e. if it has an "Oops" message,
- *  it will not be found by the getAllAttributeSubjects() method of the store
- *  object, and thus there will be no Updatejobs triggered for it.
- *  In order to resolve this, wrongly instanced properties need to be saved,
- *  too, so that they can be iterated.
+ * Former hook used for storing data. Probably obsolete now (some testing required).
  */
 function smwfSaveHook(&$article, &$user, &$text) {
-	$title = $article->getTitle();
-	$namespace = $title->getNamespace();
-	$updatejobflag = 0;
-	/*
-	 * Checks if the semantic data has been changed.
-	 * Sets the updateflag if so.
-	 */
+// 	smwfSaveDataForTitle($article->getTitle()); // done by LinksUpdate now
+	return true;
+}
 
+/**
+ * Updates data after changes of templates.
+ * (How does this relate tot he jobs/SMW_UpdateJob?)
+ */
+function smwfLinkUpdateHook($links_update) {
+// 	$title = $links_update->mTitle;
+// 	if ( smwfIsSemanticsProcessed($title->getNamespace()) && ! SMWFactbox::isNewArticle() ) {
+// 		SMWFactbox::storeData(true);
+// 	}
+	smwfSaveDataForTitle($links_update->mTitle);
+	return true;
+}
+
+/**
+ * The generic safe method for some title. It is assumed that parsing has happened and that
+ * SMWFactbox contains all relevant data. If the saved page describes a property or data type,
+ * the method checks whether the property type, the data type, the allowed values, or the 
+ * conversion factors have changed. If so, it triggers SMW_UpdateJobs for the relevant articles,
+ * which then asynchronously update the semantic data in the database.
+ *
+ *  Known Bug -- TODO
+ *  Updatejobs are triggered when a property or type definition has
+ *  changed, so that all affected pages get updated. However, if a page
+ *  uses a property but the given value caused an error, then there is
+ *  no record of that page using the property, so that it will not be
+ *  updated. To fix this, one would need to store errors as well.
+ */
+function smwfSaveDataForTitle($title) {
+	$namespace = $title->getNamespace();
+	$updatejobflag = false;
+
+	// Check if the semantic data has been changed. Sets the updateflag if so.
 	if ($namespace == SMW_NS_PROPERTY || $namespace == SMW_NS_TYPE) {
 		$oldstore = smwfGetStore()->getSemanticData($title);
 
@@ -148,8 +172,9 @@ function smwfSaveHook(&$article, &$user, &$text) {
 		$diff = array_merge(array_diff($currentproperties, $oldproperties), array_diff($oldproperties, $currentproperties));
 
 		//if any propery has changed the updateflag is set
-		if (!empty ($diff)) { $updatejobflag = 1; }
-		if ($updatejobflag == 0) {
+		if (!empty ($diff)) {
+			$updatejobflag = true;
+		} else {
 			foreach ($oldproperties as $oldproperty) {
 				$oldvalues[] = $oldstore->getPropertyValues($oldproperty);
 			}
@@ -157,52 +182,38 @@ function smwfSaveHook(&$article, &$user, &$text) {
 				$currentvalues[] = SMWFactbox::$semdata->getPropertyValues($currentproperty);
 			}
 			//double side diff, if any propery value has changed the updateflag is set
-			$diff2 = array_merge(array_diff_key($currentvalues[0], $oldvalues[0]), array_diff_key($oldvalues[0], $currentvalues[0]));
-			if (!empty ($diff2)) { $updatejobflag = 1; }
+			$diff = array_merge(array_diff_key($currentvalues[0], $oldvalues[0]), array_diff_key($oldvalues[0], $currentvalues[0]));
+			if (!empty ($diff)) { $updatejobflag = true; }
 		}
 	}
 
-	/**
-	 * Saves the semantic data
-	 */
-	SMWFactbox :: storeData($title, smwfIsSemanticsProcessed($title->getNamespace()));
+	// Save semantic data
+	SMWFactbox::storeData(smwfIsSemanticsProcessed($title->getNamespace()));
 
-	/**
-	 * Triggers the relevant Updatejobs if necessary
-	 */
-	if ($updatejobflag == 1) {
+	// Trigger relevant Updatejobs if necessary
+	if ($updatejobflag) {
 		$store = smwfGetStore();
 		if ($namespace == SMW_NS_PROPERTY) {
-			
 			$subjects = $store->getAllPropertySubjects($title);
-
 			foreach ($subjects as $subject) {
 				smwfGenerateSMWUpdateJobs($subject);
 			}
-
-		} else
-			if ($namespace == SMW_NS_TYPE) {
-
-				$subjects = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $title);
-
-				foreach ($subjects as $titlesofpropertypagestoupdate) {
-					$subjectsPropertyPages = $store->getAllPropertySubjects($titlesofpropertypagestoupdate);
-					smwfGenerateSMWUpdateJobs($titlesofpropertypagestoupdate);
-					
-					foreach ($subjectsPropertyPages as $titleOfPageToUpdate) {
-						smwfGenerateSMWUpdateJobs($titleOfPageToUpdate);
-					}
-
+		} elseif ($namespace == SMW_NS_TYPE) {
+			$subjects = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $title);
+			foreach ($subjects as $titlesofpropertypagestoupdate) {
+				$subjectsPropertyPages = $store->getAllPropertySubjects($titlesofpropertypagestoupdate);
+				smwfGenerateSMWUpdateJobs($titlesofpropertypagestoupdate);
+				foreach ($subjectsPropertyPages as $titleOfPageToUpdate) {
+					smwfGenerateSMWUpdateJobs($titleOfPageToUpdate);
 				}
 			}
+		}
 	}
-
-	return true; // always return true, in order not to stop MW's hook processing!
+	return true;
 }
- 
+
 /**
  * Generates a job, which update the semantic data of the responding page
- * 
  */
 function smwfGenerateSMWUpdateJobs(& $title) {
 	global $smwgIP;
