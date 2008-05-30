@@ -44,7 +44,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 		$types = smwfGetStore()->getSpecialValues($result, SMW_SP_HAS_TYPE);
 		$errors = array();
 		if (count($types) >= 1) {
-			$typestring = $types[0]->getLongHTMLText($skin);
+			$typestring = current($types)->getLongHTMLText($skin);
 		} else {
 			$type = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE);
 			$type->setXSDValue('_wpg');

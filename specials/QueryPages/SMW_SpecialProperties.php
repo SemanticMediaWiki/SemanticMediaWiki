@@ -48,7 +48,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 		if ($result[0]->exists()) {
 			$types = smwfGetStore()->getSpecialValues($result[0], SMW_SP_HAS_TYPE);
 			if (count($types) >= 1) {
-				$typestring = $types[0]->getLongHTMLText($skin);
+				$typestring = current($types)->getLongHTMLText($skin);
 			}
 			$proplink = $skin->makeKnownLinkObj( $result[0], $result[0]->getText());
 		} else {
