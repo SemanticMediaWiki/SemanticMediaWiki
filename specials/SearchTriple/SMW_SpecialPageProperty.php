@@ -72,6 +72,7 @@ class SMWPageProperty extends SpecialPage {
 			$options = new SMWRequestOptions();
 			$options->limit = $limit+1;
 			$options->offset = $offset;
+			$options->sort = true;
 			// get results (get one more, to see if we have to add a link to more)
 			$results = &smwfGetStore()->getPropertyValues($subject, $relation, $options);
 
