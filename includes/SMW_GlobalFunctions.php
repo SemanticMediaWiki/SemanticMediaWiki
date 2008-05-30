@@ -560,7 +560,7 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 */
 	function &smwfGetStore() {
 		global $smwgMasterStore, $smwgDefaultStore, $smwgIP;
-		if ($smwgDefaultStore == 'RAPStore') { // no autoloading for RAP store, since autoloaded classes are in rare cases loaded by MW even if not used in code -- this is not possible for RAPstore, which depends on RAP being installed
+		if ($smwgDefaultStore == 'SMWRAPStore') { // no autoloading for RAP store, since autoloaded classes are in rare cases loaded by MW even if not used in code -- this is not possible for RAPstore, which depends on RAP being installed
 			include_once($smwgIP . '/includes/storage/SMW_RAPStore.php');
 		}
 		if ($smwgMasterStore === NULL) {
