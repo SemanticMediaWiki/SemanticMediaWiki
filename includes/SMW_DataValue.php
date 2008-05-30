@@ -107,8 +107,8 @@ abstract class SMWDataValue {
 			$servicelinks = smwfGetStore()->getSpecialValues($ptitle, SMW_SP_SERVICE_LINK);
 		}
 
-		foreach ($servicelinks as $dvs) {
-			$args[0] = 'smw_service_' . str_replace(' ', '_', $dvs); // messages distinguish ' ' from '_'
+		foreach ($servicelinks as $dv) {
+			$args[0] = 'smw_service_' . str_replace(' ', '_', $dv->getXSDValue()); // messages distinguish ' ' from '_'
 			$text = call_user_func_array('wfMsgForContent', $args);
 			$links = preg_split("/[\n][\s]?/u", $text);
 			foreach ($links as $link) {

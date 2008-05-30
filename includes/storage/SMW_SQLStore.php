@@ -327,19 +327,11 @@ class SMWSQLStore extends SMWStore {
 			$res = $db->select( 'smw_specialprops',
 								'value_string',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
-			switch ($specialprop) {
-			case SMW_SP_HAS_TYPE: case SMW_SP_POSSIBLE_VALUE: case SMW_SP_DISPLAY_UNITS:
-				while($row = $db->fetchObject($res)) {
-					$v = SMWDataValueFactory::newSpecialValue($specialprop);
-					$v->setXSDValue($row->value_string);
-					$result[] = $v;
-				}
-			break;
-			default: // plain strings
-			///TODO: this should also be handled by the appropriate special handlers
-				while($row = $db->fetchObject($res)) {
-					$result[] = $row->value_string;
-				}
+// 			case SMW_SP_HAS_TYPE: case SMW_SP_POSSIBLE_VALUE: case SMW_SP_DISPLAY_UNITS:
+			while($row = $db->fetchObject($res)) {
+				$v = SMWDataValueFactory::newSpecialValue($specialprop);
+				$v->setXSDValue($row->value_string);
+				$result[] = $v;
 			}
 			$db->freeResult($res);
 		}

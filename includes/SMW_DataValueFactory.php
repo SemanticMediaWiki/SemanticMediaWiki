@@ -79,7 +79,7 @@ class SMWDataValueFactory {
 
 		$typearray = smwfGetStore()->getSpecialValues($property,SMW_SP_HAS_TYPE);
 		if (count($typearray)==1) {
-			SMWDataValueFactory::$m_typebyproperty[$propertyname] = $typearray[0];
+			SMWDataValueFactory::$m_typebyproperty[$propertyname] = current($typearray);
 			$result = SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typebyproperty[$propertyname], $value, $caption, $propertyname);
 			return $result;
 		} elseif (count($typearray)==0) {

@@ -166,10 +166,10 @@ class SMWLinearValue extends SMWNumberValue {
 			return;
 		}
 		$numdv = SMWDataValueFactory::newTypeIDValue('_num'); // used for parsing the factors
-		foreach ($factors as $factorstring) {
-			$numdv->setUserValue($factorstring);
+		foreach ($factors as $dv) {
+			$numdv->setUserValue($dv->getXSDValue());
 			if (!$numdv->isValid() || ($numdv->getNumericValue() === 0)) {
-				continue; // ignore problmatic conversions
+				continue; // ignore problematic conversions
 			}
 			$unit_aliases = preg_split('/\s*,\s*/u', $numdv->getUnit());
 			$first = true;
