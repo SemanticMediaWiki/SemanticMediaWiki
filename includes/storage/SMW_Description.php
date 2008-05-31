@@ -569,7 +569,13 @@ class SMWConjunction extends SMWDescription {
 
 	public function addDescription(SMWDescription $description) {
 		if (! ($description instanceof SMWThingDescription) ) {
-			$this->m_descriptions[] = $description;
+			if ($description instanceof SMWConjunction) { // absorb sub-conjunctions
+				foreach ($description->getDescriptions() as $subdesc) {
+					$this->m_descriptions[] = $subdesc;
+				}
+			} else {
+				$this->m_descriptions[] = $description;
+			}
 			// move print descriptions downwards
 			///TODO: This may not be a good solution, since it does modify $description and since it does not react to future cahges
 			$this->m_printreqs = array_merge($this->m_printreqs, $description->getPrintRequests());
@@ -670,13 +676,19 @@ class SMWDisjunction extends SMWDescription {
 			$this->m_catdesc = NULL;
 		}
 		if (!$this->m_true) {
-			if ($description instanceof SMWClassDescription) {
+			if ($description instanceof SMWClassDescription) { // combine class descriptions
 				if ($this->m_classdesc === NULL) { // first class description
 					$this->m_classdesc = $description;
 					$this->m_descriptions[] = $description;
 				} else {
 					$this->m_classdesc->addDescription($description);
 				}
+			} elseif ($description instanceof SMWDisjunction) { // absorb sub-disjunctions
+				foreach ($description->getDescriptions() as $subdesc) {
+					$this->m_descriptions[] = $subdesc;
+				}
+			//} elseif ($description instanceof SMWSomeProperty) {
+			   ///TODO: use subdisjunct. for multiple SMWSomeProperty descs with same property
 			} else {
 				$this->m_descriptions[] = $description;
 			}
