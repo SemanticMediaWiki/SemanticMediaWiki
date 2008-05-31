@@ -17,12 +17,8 @@ class SMWSpecialPage extends SpecialPage {
 	/**
 	 * Constructor
 	 */
-	public function __construct($name, $function, $file = 'default', $listed=true, $restriction='', $group='') {
+	public function __construct($name, $function, $file = 'default', $listed=true, $restriction='', $group='' /*depreciated*/) {
 		parent::__construct($name, $restriction, $listed, $function, $file);
-		//the key defining the group name in the language files is specialpages-group-smw_group
-		if (method_exists('SpecialPage', 'setGroup') && ($group != '')) {
-			parent::setGroup($name, $group);	
-		}
 	}
 
 }
