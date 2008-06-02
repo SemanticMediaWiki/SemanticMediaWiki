@@ -19,7 +19,7 @@ define('SMW_SQL2_SPEC2',8);
 define('SMW_SQL2_REDI2',16);
 define('SMW_SQL2_NARY2',32); // not really a table, but a retrieval type
 define('SMW_SQL2_SUBS2',64);
-define('SMW_SQL2_CATS2',128);
+define('SMW_SQL2_INST2',128);
 
 // Types for query descriptions
 define('SMW_SQL2_TABLE',1);
@@ -129,7 +129,7 @@ class SMWSQLStore2 extends SMWStore {
 					case '_wpg': $tasks = $tasks | SMW_SQL2_RELS2; break;
 					case '_txt': $tasks = $tasks | SMW_SQL2_TEXT2; break;
 					case '__nry': $tasks = $tasks | SMW_SQL2_NARY2; break;
-					case SMW_SP_HAS_CATEGORY: $tasks = $tasks | SMW_SQL2_CATS2; break;
+					case SMW_SP_INSTANCE_OF: $tasks = $tasks | SMW_SQL2_INST2; break;
 					case SMW_SP_REDIRECTS_TO: $tasks = $tasks | SMW_SQL2_REDI2;	break;
 					case SMW_SP_SUBPROPERTY_OF:	$tasks = $tasks | SMW_SQL2_SUBS2; break;
 					default:
@@ -141,7 +141,7 @@ class SMWSQLStore2 extends SMWStore {
 				}
 			}
 		} else {
-			$tasks = SMW_SQL2_RELS2 | SMW_SQL2_ATTS2 | SMW_SQL2_TEXT2| SMW_SQL2_SPEC2 | SMW_SQL2_NARY2 | SMW_SQL2_SUBS2 | SMW_SQL2_CATS2 | SMW_SQL2_REDI2;
+			$tasks = SMW_SQL2_RELS2 | SMW_SQL2_ATTS2 | SMW_SQL2_TEXT2| SMW_SQL2_SPEC2 | SMW_SQL2_NARY2 | SMW_SQL2_SUBS2 | SMW_SQL2_INST2 | SMW_SQL2_REDI2;
 		}
 		if ($subject->getNamespace() != SMW_NS_PROPERTY) {
 			$tasks = $tasks & ~SMW_SQL2_SUBS2;
@@ -175,7 +175,7 @@ class SMWSQLStore2 extends SMWStore {
 			$db->freeResult($res);
 		}
 		// most other types of data suggest rather similar code
-		foreach (array(SMW_SQL2_ATTS2, SMW_SQL2_TEXT2, SMW_SQL2_CATS2, SMW_SQL2_SUBS2, SMW_SQL2_SPEC2, SMW_SQL2_REDI2) as $task) {
+		foreach (array(SMW_SQL2_ATTS2, SMW_SQL2_TEXT2, SMW_SQL2_INST2, SMW_SQL2_SUBS2, SMW_SQL2_SPEC2, SMW_SQL2_REDI2) as $task) {
 			if ( !($tasks & $task) ) continue;
 			$where = 'p_id=smw_id AND s_id=' . $db->addQuotes($sid);
 			switch ($task) {
@@ -203,10 +203,10 @@ class SMWSQLStore2 extends SMWStore {
 					$where = 'o_id=smw_id AND s_title=' . $db->addQuotes($subject->getDBkey()) .
 					         ' AND s_namespace=' . $db->addQuotes($subject->getNamespace());
 				break;
-				case SMW_SQL2_CATS2:
-					$from = 'categorylinks';
-					$select = 'DISTINCT cl_to as value';
-					$where = 'cl_from=' . $db->addQuotes($subject->getArticleID());
+				case SMW_SQL2_INST2:
+					$from = array('smw_inst2','smw_ids');
+					$select = 'smw_title as value';
+					$where = 'o_id=smw_id AND s_id=' . $db->addQuotes($sid);
 				break;
 			}
 			$res = $db->select( $from, $select, $where, 'SMW::getSemanticData' );
@@ -234,9 +234,9 @@ class SMWSQLStore2 extends SMWStore {
 				} elseif ($task == SMW_SQL2_REDI2) {
 					$dv->setValues($row->title, $row->namespace);
 					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_REDIRECTS_TO, $dv);
-				} elseif ($task == SMW_SQL2_CATS2) {
+				} elseif ($task == SMW_SQL2_INST2) {
 					$dv->setValues($row->value, NS_CATEGORY);
-					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_HAS_CATEGORY, $dv);
+					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_INSTANCE_OF, $dv);
 				}
 			}
 			$db->freeResult($res);
@@ -332,23 +332,17 @@ class SMWSQLStore2 extends SMWStore {
 
 		$result = array();
 
-		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
-			if ( !($value instanceof Title) || ($value->getNamespace() != NS_CATEGORY) ) {
-				wfProfileOut("SMWSQLStore2::getSpecialSubjects-$specialprop (SMW)");
-				return array();
-			}
-			$sql = 'cl_to=' . $db->addQuotes($value->getDBkey());
-			$res = $db->select( 'categorylinks',
-								'DISTINCT cl_from',
-								$sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
-			// rewrite result as array
-			while($row = $db->fetchObject($res)) {
-				$t = Title::newFromID($row->cl_from);
-				if ($t !== NULL) {
-					$result[] = $t;
+		if ($specialprop === SMW_SP_INSTANCE_OF) { // class membership
+			$oid = $this->getSMWPageID($value->getDBkey(),NS_CATEGORY,'');
+			if ( ($oid != 0) && ($value->getNamespace() == NS_CATEGORY) ) {
+				$res = $db->select( array('smw_inst2','smw_ids'), 'smw_title,smw_namespace',
+				                    's_id=smw_id AND o_id=' . $db->addQuotes($oid), 
+				                    'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
+				while($row = $db->fetchObject($res)) {
+					$result[] =  Title::makeTitle($row->smw_namespace, $row->smw_title);
 				}
+				$db->freeResult($res);
 			}
-			$db->freeResult($res);
 		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
 			$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),'');
 			if ($oid != 0) {
@@ -370,7 +364,7 @@ class SMWSQLStore2 extends SMWStore {
 				                    's_id=smw_id AND o_id=' . $db->addQuotes($oid), 
 				                    'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
 				while($row = $db->fetchObject($res)) {
-					$result[] =  Title::makeTitle(SMW_NS_PROPERTY, $row->subject_title);
+					$result[] =  Title::makeTitle(SMW_NS_PROPERTY, $row->smw_title);
 				}
 				$db->freeResult($res);
 			}
@@ -597,7 +591,7 @@ class SMWSQLStore2 extends SMWStore {
 		// do bulk updates:
 		$up_rels2 = array();  $up_atts2 = array();
 		$up_text2 = array();  $up_spec2 = array();
-		$up_subs2 = array();
+		$up_subs2 = array();  $up_inst2 = array();
 
 		//properties
 		foreach($data->getProperties() as $key => $property) {
@@ -665,9 +659,18 @@ class SMWSQLStore2 extends SMWStore {
 				}
 			} else { // special property
 				switch ($property) {
-					case SMW_SP_IMPORTED_FROM: case SMW_SP_HAS_CATEGORY: case SMW_SP_REDIRECTS_TO:
+					case SMW_SP_IMPORTED_FROM: case SMW_SP_REDIRECTS_TO:
 						// don't store this, just used for display;
 						/// TODO: filtering here is bad for fully neglected properties (IMPORTED FROM)
+					break;
+					case SMW_SP_INSTANCE_OF:
+						foreach($propertyValueArray as $value) {
+							if ( $value->getNamespace() == NS_CATEGORY )  {
+								$up_inst2[] =
+								array('s_id' => $this->makeSMWPageID($subject->getDBkey(),$subject->getNamespace(),''),
+								      'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),''));
+							}
+						}
 					break;
 					case SMW_SP_SUBPROPERTY_OF:
 						if ( $subject->getNamespace() != SMW_NS_PROPERTY ) {
@@ -711,6 +714,9 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		if (count($up_subs2) > 0) {
 			$db->insert( 'smw_subs2', $up_subs2, 'SMW::updateSubs2Data');
+		}
+		if (count($up_inst2) > 0) {
+			$db->insert( 'smw_inst2', $up_inst2, 'SMW::updateInst2Data');
 		}
 
 		wfProfileOut("SMWSQLStore2::updateData (SMW)");
@@ -785,6 +791,8 @@ class SMWSQLStore2 extends SMWStore {
 // 		$qobj->jointable = 'smw_ids';
 		$qobj->components = array($qid => 'ids.smw_id');
 		$this->executeQueries($qobj);
+
+		// debug:
 		$result = 'SELECT DISTINCT ids.smw_title,ids.smw_namespace FROM smw_ids AS ids' . $qobj->from . ' WHERE ' . $qobj->where . ";\n\n" . str_replace('[','&#x005B;',$query->getDescription()->getQueryString());
 
 		$res = $this->m_dbs->query('SELECT DISTINCT ids.smw_title as t,ids.smw_namespace as ns FROM smw_ids AS ids' . $qobj->from . ($qobj->where?"WHERE $qobj->where":'') . ' LIMIT 10');
@@ -935,13 +943,13 @@ class SMWSQLStore2 extends SMWStore {
 						$row[] = new SMWResultArray(array($qt), $pr);
 						break;
 					case SMW_PRINT_CATS:
-						$row[] = new SMWResultArray($this->getSpecialValues($qt->getTitle(),SMW_SP_HAS_CATEGORY), $pr);
+						$row[] = new SMWResultArray($this->getSpecialValues($qt->getTitle(),SMW_SP_INSTANCE_OF), $pr);
 						break;
 					case SMW_PRINT_PROP:
 						$row[] = new SMWResultArray($this->getPropertyValues($qt->getTitle(),$pr->getTitle(), NULL, $pr->getOutputFormat()), $pr);
 						break;
 					case SMW_PRINT_CCAT:
-						$cats = $this->getSpecialValues($qt->getTitle(),SMW_SP_HAS_CATEGORY);
+						$cats = $this->getSpecialValues($qt->getTitle(),SMW_SP_INSTANCE_OF);
 						$found = '0';
 						foreach ($cats as $cat) {
 							if ($cat->getDBkey() == $pr->getTitle()->getDBkey()) {
@@ -1100,7 +1108,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		$db =& wfGetDB( DB_MASTER );
 		extract( $db->tableNames('smw_ids','smw_rels2','smw_atts2','smw_text2',
-		                         'smw_spec2','smw_subs2','smw_redi2') );
+		                         'smw_spec2','smw_subs2','smw_redi2','smw_inst2') );
 
 		$this->setupTable($smw_ids, // internal IDs used in this store
 		              array('smw_id'        => 'INT(8) UNSIGNED NOT NULL KEY AUTO_INCREMENT',
@@ -1146,6 +1154,11 @@ class SMWSQLStore2 extends SMWStore {
 		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL',
 		                    'o_id'        => 'INT(8) UNSIGNED NOT NULL',), $db, $verbose);
 		$this->setupIndex($smw_subs2, array('s_id', 'o_id'), $db);
+
+		$this->setupTable($smw_inst2, // class instances (s_id the element, o_id the class)
+		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL',
+		                    'o_id'        => 'INT(8) UNSIGNED NOT NULL',), $db, $verbose);
+		$this->setupIndex($smw_inst2, array('s_id', 'o_id'), $db);
 
 		$this->reportProgress("Database initialised successfully.\n",$verbose);
 		return true;
