@@ -1031,6 +1031,15 @@ $messages['gl'] = array(
 	'smw_oi_thisissubcategoryof' => 'Unha subcategoría de',
 	'smw_oi_thishascategory'     => 'É parte de',
 	'types'                      => 'Tipos',
+	'smw_ask_submit'             => 'Atopar os resultados',
+	'smw_sbv_value'              => 'Valor',
+	'smw_sbv_submit'             => 'Atopar os resultados',
+	'smw_browse_go'              => 'Ir',
+	'smw_pp_submit'              => 'Atopar os resultados',
+	'smw_result_prev'            => 'Anterior',
+	'smw_result_next'            => 'Seguinte',
+	'smw_result_results'         => 'Resultados',
+	'smw_result_noresults'       => 'Sentímolo, non hai resultados.',
 );
 
 /** Hebrew
@@ -2466,6 +2475,7 @@ Faça uma cópia de segurança dos seus dados antes de a usar.',
 	'smw_typearticlecount'        => 'Mostrando $1 propriedades que usam este tipo.',
 	'smw_attribute_header'        => 'Páginas que usam a propriedade “$1”',
 	'smw_attributearticlecount'   => '<p>Mostrando $1 páginas que usam esta propriedade.</p>',
+	'smw_rss_description'         => 'Feed RSS de $1',
 	'exportrdf'                   => 'Exportar páginas para RDF',
 	'smw_exportrdf_docu'          => '<p>Esta página permite-lhe obter dados de uma página no formato RDF.
 Para exportar páginas, introduza os seus títulos na caixa de texto abaixo, um título por linha.</p>',
