@@ -628,7 +628,6 @@ class SMWConjunction extends SMWDescription {
 		$prunelog = array();
 		$newdepth = $maxdepth;
 		$result = new SMWConjunction();
-		$result->setPrintRequests($this->getPrintRequests());
 		foreach ($this->m_descriptions as $desc) {
 			$restdepth = $maxdepth;
 			$result->addDescription($desc->prune($maxsize, $restdepth, $prunelog));
@@ -637,6 +636,10 @@ class SMWConjunction extends SMWDescription {
 		if (count($result->getDescriptions()) > 0) {
 			$log = array_merge($log, $prunelog);
 			$maxdepth = $newdepth;
+			if (count($result->getDescriptions()) == 1) { // simplify unary conjunctions!
+				$result = array_shift($result->getDescriptions());
+			}
+			$result->setPrintRequests($this->getPrintRequests());
 			return $result;
 		} else {
 			$log[] = $this->getQueryString();
@@ -751,7 +754,6 @@ class SMWDisjunction extends SMWDescription {
 		$prunelog = array();
 		$newdepth = $maxdepth;
 		$result = new SMWDisjunction();
-		$result->setPrintRequests($this->getPrintRequests());
 		foreach ($this->m_descriptions as $desc) {
 			$restdepth = $maxdepth;
 			$result->addDescription($desc->prune($maxsize, $restdepth, $prunelog));
@@ -760,6 +762,10 @@ class SMWDisjunction extends SMWDescription {
 		if (count($result->getDescriptions()) > 0) {
 			$log = array_merge($log, $prunelog);
 			$maxdepth = $newdepth;
+			if (count($result->getDescriptions()) == 1) { // simplify unary disjunctions!
+				$result = array_shift($result->getDescriptions());
+			}
+			$result->setPrintRequests($this->getPrintRequests());
 			return $result;
 		} else {
 			$log[] = $this->getQueryString();
