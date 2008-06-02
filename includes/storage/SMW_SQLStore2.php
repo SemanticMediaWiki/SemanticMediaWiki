@@ -11,7 +11,7 @@ require_once( "$smwgIP/includes/SMW_DataValueFactory.php" );
 
 define('SMW_SQL2_SMWIW',':smw'); // virtual "interwiki prefix" for special SMW objects
 
-// Constants flags for identifying tables/retrieval types
+// Constant flags for identifying tables/retrieval types
 define('SMW_SQL2_RELS2',1);
 define('SMW_SQL2_ATTS2',2);
 define('SMW_SQL2_TEXT2',4);
@@ -20,6 +20,31 @@ define('SMW_SQL2_REDI2',16);
 define('SMW_SQL2_NARY2',32); // not really a table, but a retrieval type
 define('SMW_SQL2_SUBS2',64);
 define('SMW_SQL2_CATS2',128);
+
+// Types for query descriptions
+define('SMW_SQL2_TABLE',1);
+define('SMW_SQL2_VALUE',2);
+define('SMW_SQL2_DISJUNCTION',7);
+define('SMW_SQL2_CONJUNCTION',8);
+
+/**
+ * Class for representing a single (sub)query description. Simple data
+ * container.
+ */
+class SMWSQLStore2Query {
+	public $type = SMW_SQL2_TABLE;
+	public $jointable = '';
+	public $joinfield = '';
+	public $from = '';
+	public $where = '';
+	public $components = array();
+	public $alias; // the alias to be used for jointable; read-only after construct!
+	public static $qnum = 0;
+	// ...
+	public function __construct() {
+		$this->alias = 't' . SMWSQLStore2Query::$qnum++;
+	}
+}
 
 /**
  * Storage access class for using the standard MediaWiki SQL database
@@ -34,6 +59,14 @@ class SMWSQLStore2 extends SMWStore {
 	protected $m_semdata = array();
 	/// Like SMWSQLStore2::m_semdata, but containing flags indicating completeness of the SMWSemanticData objs
 	protected $m_sdstate = array();
+
+	/// Database slave to be used
+	protected $m_dbs = NULL;
+
+	/// Query engine:
+	/// Array of generated query descriptions
+	protected $m_queries = array();
+	
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC". Used during query
@@ -745,7 +778,27 @@ class SMWSQLStore2 extends SMWStore {
 			return $result;
 		}
 
-		$db =& wfGetDB( DB_SLAVE );
+		$this->m_dbs =& wfGetDB( DB_SLAVE );
+
+		$qid = $this->compileQueries($query->getDescription());
+		$qobj = new SMWSQLStore2Query();
+// 		$qobj->jointable = 'smw_ids';
+		$qobj->components = array($qid => 'ids.smw_id');
+		$this->executeQueries($qobj);
+		$result = 'SELECT DISTINCT ids.smw_title,ids.smw_namespace FROM smw_ids AS ids' . $qobj->from . ' WHERE ' . $qobj->where . ";\n\n" . str_replace('[','&#x005B;',$query->getDescription()->getQueryString());
+
+		$res = $this->m_dbs->query('SELECT DISTINCT ids.smw_title as t,ids.smw_namespace as ns FROM smw_ids AS ids' . $qobj->from . ($qobj->where?"WHERE $qobj->where":'') . ' LIMIT 10');
+		while ($row = $this->m_dbs->fetchObject($res)) {
+			$result .= "\n\n$row->t  ($row->ns)";
+		}
+		$count=0;
+// 		$result = new SMWQueryResult($prs, $query, ($count > $query->getLimit()) );
+
+		wfProfileOut('SMWSQLStore2::getQueryResult (SMW)');
+		return $result;
+		
+		
+		/// Old code below, unused now
 
 		// Build main query
 		$this->m_usedtables = array();
@@ -1837,6 +1890,174 @@ class SMWSQLStore2 extends SMWStore {
 			}
 		}
 
+	}
+
+	/**
+	 * Create a new SMWSQLStore2Query object that can be used to obtain results for
+	 * the given description. The result is stored in $this->m_queries using a numeric
+	 * key that is returned as a result of the function. Returns -1 if no query was
+	 * created.
+	 */
+	protected function compileQueries(SMWDescription $description) {
+		$qid = SMWSQLStore2Query::$qnum;
+		$query = new SMWSQLStore2Query();
+		if ($description instanceof SMWSomeProperty) {
+			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($description->getProperty());
+			$query->joinfield = "$query->alias.s_id";
+			$pid = $this->getSMWPageID($description->getProperty()->getDBkey(), $description->getProperty()->getNamespace(),'');
+			$query->where = "$query->alias.p_id=" . $this->m_dbs->addQuotes($pid);
+			switch ($typeid) {
+				case '_wpg': case '__nry': // subconditions as subqueries (compiled)
+					$query->jointable = 'smw_rels2';
+					$sub = $this->compileQueries($description->getDescription());
+					if ($sub >= 0) {
+						$query->components = array($sub => "$query->alias.o_id");
+					}
+				break;
+				case '_txt': // no subconditions
+					$query->jointable = 'smw_text2';
+				break;
+				default: // subquery only conj/disj of values, compile to single "where"
+					$query->jointable = 'smw_atts2';
+					$aw = $this->compileAttributeWhere($description->getDescription(),"$query->alias");
+					if ($aw != '') {
+						$query->where .= " AND $aw";
+					}
+			}
+		} elseif ($description instanceof SMWNamespaceDescription) { /// TODO: One instance of smw_ids on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
+			$query->jointable = 'smw_ids';
+			$query->joinfield = "$query->alias.smw_id";
+			$query->where = "$query->alias.smw_namespace=" . $this->m_dbs->addQuotes($description->getNamespace());
+		} elseif ( ($description instanceof SMWConjunction) || ($description instanceof SMWDisjunction) ) {
+			$query->type = ($description instanceof SMWConjunction)?SMW_SQL2_CONJUNCTION:SMW_SQL2_DISJUNCTION;
+			foreach ($description->getDescriptions() as $subdesc) {
+				$sub = $this->compileQueries($subdesc);
+				if ($sub >= 0) {
+					$query->components[$sub] = true;
+				}
+			}
+		} elseif ($description instanceof SMWClassDescription) {
+			$qid = -1; // TODO
+		} elseif ($description instanceof SMWValueList) {
+			$qid = -1; // TODO
+		} elseif ($description instanceof SMWValueDescription) { // only processsed here for '_wpg'
+			if ($description->getDatavalue()->getTypeID() == '_wpg') {
+				if ($description->getComparator() == SMW_CMP_EQ) {
+					$query->type = SMW_SQL2_VALUE;
+					$oid = $this->getSMWPageID($description->getDatavalue()->getDBkey(), $description->getDatavalue()->getNamespace(),'');
+					$query->joinfield = $oid;
+				} else { // join with smw_ids needed for other comparators (apply to title string)
+					$query->jointable = 'smw_ids';
+					$query->joinfield = "$query->alias.smw_id";
+					$value = $description->getDatavalue()->getDBKey();
+					switch ($description->getComparator()) {
+						case SMW_CMP_LEQ: $comp = '<='; break;
+						case SMW_CMP_GEQ: $comp = '>='; break;
+						case SMW_CMP_NEQ: $comp = '!='; break;
+						case SMW_CMP_LIKE:
+							$comp = ' LIKE ';
+							$value =  str_replace(array('%', '_', '*', '?'), array('\%', '\_', '%', '_'), $value);
+						break;
+					}
+					$query->where = "$query->alias.smw_title$comp" . $this->m_dbs->addQuotes($value);
+				}
+			}
+		} else { // (e.g. SMWThingDescription)
+			$qid = -1; // no condition
+		}
+		if ($qid >= 0) {
+			$this->m_queries[$qid] = $query;
+		}
+		return $qid;
+	}
+
+	/**
+	 * Given an SMWDescription that is just a conjunction or disjunction of
+	 * SMWValueDescription objects, create a plain WHERE condition string for it.
+	 */
+	protected function compileAttributeWhere(SMWDescription $description, $jointable) {
+		if ($description instanceof SMWValueDescription) {
+			$dv = $description->getDatavalue();
+			$value = $dv->isNumeric() ? $dv->getNumericValue() : $dv->getXSDValue();
+			$field = $dv->isNumeric() ? "$jointable.value_num" : "$jointable.value_string";
+			switch ($description->getComparator()) {
+				case SMW_CMP_LEQ: $comp = '<='; break;
+				case SMW_CMP_GEQ: $comp = '>='; break;
+				case SMW_CMP_NEQ: $comp = '!='; break;
+				case SMW_CMP_LIKE:
+					if ($dv->getTypeID() == '_str') {
+						$comp = ' LIKE ';
+						$value =  str_replace(array('%', '_', '*', '?'), array('\%', '\_', '%', '_'), $value);
+					} else { // LIKE only works for strings at the moment
+						$comp = '=';
+					}
+				break;
+				case SMW_CMP_EQ: default: $comp = '='; break;
+			}
+			$result = "$field$comp" . $this->m_dbs->addQuotes($value);
+		} elseif ( ($description instanceof SMWConjunction) || ($description instanceof SMWDisjunction) ) {
+			$op = ($description instanceof SMWConjunction) ? ' AND ' : ' OR ';
+			$result = '';
+			foreach ($description->getDescriptions() as $subdesc) {
+				$result= $result . ( $result!=''?$op:'' ) . $this->compileAttributeWhere($subdesc,$jointable);
+			}
+			$result = "($result)";
+		} else {
+			$result = '';
+		}
+		return $result;
+	}
+
+	/**
+	 * Process stored queries and change store accordingly. The query obj is modified
+	 * so that it contains non-recursive description of a select to execute for getting
+	 * the actual result.
+	 */
+	protected function executeQueries(SMWSQLStore2Query &$query) {
+		switch ($query->type) {
+			case SMW_SQL2_TABLE: case SMW_SQL2_VALUE:
+				foreach ($query->components as $qid => $joinfield) {
+					$subquery = $this->m_queries[$qid];
+					$this->executeQueries($subquery);
+					if ($subquery->jointable != '') { // join with jointable.joinfield
+						$query->from .= ' INNER JOIN ' . $subquery->jointable . " AS $subquery->alias ON $joinfield=" . $subquery->joinfield;
+					} elseif ($subquery->joinfield != '') { // require joinfield as "value" via WHERE
+						$query->where .= (($query->where == '')?'':' AND ') . "$joinfield=" . $subquery->joinfield;
+					} // else: no usable output from subquery, ignore
+					if ($subquery->where != '') {
+						$query->where .= (($query->where == '')?'':' AND ') . $subquery->where;
+					}
+					$query->from .= $subquery->from;
+				}
+				$query->components = array();
+			break;
+			case SMW_SQL2_CONJUNCTION:
+				// pick one subquery as anchor point ...
+				reset($query->components);
+				$key = key($query->components);
+				$result = $this->m_queries[$key];
+				unset($query->components[$key]);
+				$this->executeQueries($result); // execute it first (may change jointable and joinfield, e.g. when making temporary tables
+				// ... and append to this query the remaining queries
+				foreach ($query->components as $qid => $joinfield) {
+					$result->components[$qid] = $result->joinfield;
+				}
+				$this->executeQueries($result); // second execute, now incorporating remaining conditions
+				$query = $result;
+			break;
+			case SMW_SQL2_DISJUNCTION:
+				$this->m_dbs->query( "CREATE TEMPORARY TABLE $query->alias" .
+				                     ' ( id INT UNSIGNED KEY ) TYPE=MEMORY', 'SMW::executeQueries' );
+				foreach ($query->components as $qid => $joinfield) {
+					$subquery = $this->m_queries[$qid];
+					$this->executeQueries($subquery);
+					$this->m_dbs->query( "INSERT INTO $query->alias SELECT $subquery->joinfield FROM $subquery->jointable AS $subquery->alias $subquery->from" .
+					            " WHERE $subquery->where ", 'SMW::executeQueries');
+				}
+				$query->jointable = $query->alias;
+				$query->joinfield = "$query->alias.id";
+			break;
+		}
 	}
 
 	/**
