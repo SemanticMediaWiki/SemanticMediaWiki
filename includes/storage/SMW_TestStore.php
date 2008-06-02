@@ -25,7 +25,7 @@ class SMWTestStore extends SMWStore {
 
 	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
 		// TODO
-		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
+		if ($specialprop === SMW_SP_INSTANCE_OF) { // category membership
 			if ( ($requestoptions->limit == -1) || $requestoptions->limit > 8) {
 				$requestoptions->limit = 5;
 			}
@@ -56,7 +56,7 @@ class SMWTestStore extends SMWStore {
 	}
 
 	function getSpecialSubjects($specialprop, $value, $requestoptions = NULL) {
-		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
+		if ($specialprop === SMW_SP_INSTANCE_OF) { // category membership
 			if ( !($value instanceof Title) || ($value->getNamespace() != NS_CATEGORY) ) {
 				return array();
 			}
@@ -161,7 +161,7 @@ class SMWTestStore extends SMWStore {
 						$row[] = new SMWResultArray($this->getRelationObjects($qt,$pr->getTitle()), $pr);
 						break;
 					case SMW_PRINT_CATS:
-						$row[] = new SMWResultArray($this->getSpecialValues($qt,SMW_SP_HAS_CATEGORY), $pr);
+						$row[] = new SMWResultArray($this->getSpecialValues($qt,SMW_SP_INSTANCE_OF), $pr);
 						break;
 					case SMW_PRINT_ATTS:
 						///TODO: respect given datavalue (desired unit), needs extension of getAttributeValues()

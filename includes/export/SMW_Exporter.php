@@ -134,7 +134,7 @@ class SMWExporter {
 			} else { // special property
 				$pe = NULL;
 				switch ($property) {
-					case SMW_SP_HAS_CATEGORY:
+					case SMW_SP_INSTANCE_OF:
 						$pe = $category_pe;
 					break;
 					case SMW_SP_HAS_URI:

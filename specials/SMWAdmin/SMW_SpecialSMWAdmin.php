@@ -380,7 +380,7 @@ class SMWAdmin extends SpecialPage {
 // 	
 // 	
 // 	// delete obsolete categorisation values; in the future, we will use the MediaWiki table instead
-// 	$sql = "DELETE FROM $smw_specialprops WHERE property = " . $dbr->addQuotes(SMW_SP_HAS_CATEGORY);
+// 	$sql = "DELETE FROM $smw_specialprops WHERE property = " . $dbr->addQuotes(SMW_SP_INSTANCE_OF);
 // 	$res = $dbr->query( $sql, $fname );
 // 	// extend table structure for special properties
 // 	$sql = "ALTER TABLE $smw_specialprops TYPE = innodb";

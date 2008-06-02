@@ -8,7 +8,7 @@ define('SMW_VERSION','1.2d-SVN');
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
 define('SMW_SP_HAS_URI',2);
-define('SMW_SP_HAS_CATEGORY',4);
+define('SMW_SP_INSTANCE_OF',4);
 define('SMW_SP_MAIN_DISPLAY_UNIT', 6);
 define('SMW_SP_DISPLAY_UNITS', 7);
 define('SMW_SP_IMPORTED_FROM',8);
@@ -20,6 +20,11 @@ define('SMW_SP_SERVICE_LINK', 13);
 define('SMW_SP_POSSIBLE_VALUE', 14);
 define('SMW_SP_REDIRECTS_TO', 15);
 define('SMW_SP_SUBPROPERTY_OF',17);
+define('SMW_SP_SUBCATEGORY_OF',18);
+
+// old names, will be removed *two* releases after given version
+// SMW 1.1.1
+define('SMW_SP_HAS_CATEGORY',4); // name specific for categories, use "instance of" to distinguish from future explicit "subclass of"
 
 // constants for displaying the factbox
 define('SMW_FACTBOX_HIDDEN', 1);

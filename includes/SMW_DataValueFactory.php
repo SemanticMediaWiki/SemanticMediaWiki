@@ -112,7 +112,8 @@ class SMWDataValueFactory {
 			case SMW_SP_CONVERSION_FACTOR: case SMW_SP_POSSIBLE_VALUE:
 				$result = SMWDataValueFactory::newTypeIDValue('_str', $value, $caption);
 				break;
-			case SMW_SP_SUBPROPERTY_OF: case SMW_SP_REDIRECTS_TO:
+			case SMW_SP_SUBPROPERTY_OF: case SMW_SP_SUBCATEGORY_OF: case SMW_SP_REDIRECTS_TO: 
+			case SMW_SP_INSTANCE_OF:
 				$result = SMWDataValueFactory::newTypeIDValue('_wpg', $value, $caption);
 				break;
 			default:

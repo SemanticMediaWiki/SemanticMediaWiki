@@ -89,7 +89,7 @@ class SMWSQLStore extends SMWStore {
 					case '__nry':
 						$do_nary = true;
 					break;
-					case SMW_SP_HAS_CATEGORY:
+					case SMW_SP_INSTANCE_OF: case SMW_SP_SUBCATEGORY_OF:
 						$do_cats = true;
 					break;
 					case SMW_SP_REDIRECTS_TO:
@@ -244,7 +244,11 @@ class SMWSQLStore extends SMWStore {
 			while($row = $db->fetchObject($res)) {
 				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 				$dv->setValues($row->cl_to, NS_CATEGORY);
-				$result->addSpecialValue(SMW_SP_HAS_CATEGORY, $dv);
+				if ($subject->getNamespace() == NS_CATEGORY) {
+					$result->addSpecialValue(SMW_SP_SUBCATEGORY_OF, $dv);
+				} else {
+					$result->addSpecialValue(SMW_SP_INSTANCE_OF, $dv);
+				}
 			}
 			$db->freeResult($res);
 		}
@@ -292,7 +296,7 @@ class SMWSQLStore extends SMWStore {
 
 		$db =& wfGetDB( DB_SLAVE ); // TODO: Is '=&' needed in PHP5?
 		$result = array();
-		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
+		if ( ($specialprop === SMW_SP_INSTANCE_OF) ||  ($specialprop === SMW_SP_SUBCATEGORY_OF)) { // category membership
 			$sql = 'cl_from=' . $db->addQuotes($subjectid);
 			$res = $db->select( 'categorylinks',
 								'DISTINCT cl_to',
@@ -345,7 +349,7 @@ class SMWSQLStore extends SMWStore {
 
 		$result = array();
 
-		if ($specialprop === SMW_SP_HAS_CATEGORY) { // category membership
+		if ( ($specialprop === SMW_SP_INSTANCE_OF) || ($specialprop === SMW_SP_SUBCATEGORY_OF) ) { // category membership
 			if ( !($value instanceof Title) || ($value->getNamespace() != NS_CATEGORY) ) {
 				wfProfileOut("SMWSQLStore::getSpecialSubjects-$specialprop (SMW)");
 				return array();
@@ -871,7 +875,7 @@ class SMWSQLStore extends SMWStore {
 				}
 			} else { // special property
 				switch ($property) {
-					case SMW_SP_IMPORTED_FROM: case SMW_SP_HAS_CATEGORY: case SMW_SP_REDIRECTS_TO:
+					case SMW_SP_IMPORTED_FROM: case SMW_SP_INSTANCE_OF: case SMW_SP_SUBCATEGORY_OF: case SMW_SP_REDIRECTS_TO:
 						// don't store this, just used for display;
 						// TODO: filtering here is bad for fully neglected properties (IMPORTED FROM)
 					break;
@@ -1137,13 +1141,13 @@ class SMWSQLStore extends SMWStore {
 						$row[] = new SMWResultArray(array($qt), $pr);
 						break;
 					case SMW_PRINT_CATS:
-						$row[] = new SMWResultArray($this->getSpecialValues($qt->getTitle(),SMW_SP_HAS_CATEGORY), $pr);
+						$row[] = new SMWResultArray($this->getSpecialValues($qt->getTitle(),SMW_SP_INSTANCE_OF), $pr);
 						break;
 					case SMW_PRINT_PROP:
 						$row[] = new SMWResultArray($this->getPropertyValues($qt->getTitle(),$pr->getTitle(), NULL, $pr->getOutputFormat()), $pr);
 						break;
 					case SMW_PRINT_CCAT:
-						$cats = $this->getSpecialValues($qt->getTitle(),SMW_SP_HAS_CATEGORY);
+						$cats = $this->getSpecialValues($qt->getTitle(),SMW_SP_INSTANCE_OF);
 						$found = '0';
 						foreach ($cats as $cat) {
 							if ($cat->getDBkey() == $pr->getTitle()->getDBkey()) {

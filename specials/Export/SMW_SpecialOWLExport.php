@@ -677,14 +677,15 @@ class OWLExport {
 				}
 			}
 			if ( NS_CATEGORY === $title->getNamespace() ) { // also print elements of categories
-				$instances = smwfGetStore()->getSpecialSubjects( SMW_SP_HAS_CATEGORY, $title );
+				/// FIXME: this needs a limit! Categories can be large!
+				$instances = smwfGetStore()->getSpecialSubjects( SMW_SP_INSTANCE_OF, $title );
 				foreach($instances as $instance) {
 					$stb = new SMWSmallTitle();
 					$stb->dbkey = $instance->getDBKey();
 					$stb->namespace = $instance->getNamespace();
 					if (!array_key_exists($stb->getHash(), $this->element_done)) {
 						$semdata = smwfGetStore()->getSemanticData($instance, array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_EXT_BASEURI));
-						$semdata->addSpecialValue(SMW_SP_HAS_CATEGORY, $value);
+						$semdata->addSpecialValue(SMW_SP_INSTANCE_OF, $value);
 						$data = SMWExporter::makeExportData($semdata);
 						$this->printExpData($data);
 					}

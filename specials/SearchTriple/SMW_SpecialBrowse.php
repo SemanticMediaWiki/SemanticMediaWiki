@@ -61,11 +61,11 @@ class SMWSpecialBrowse extends SpecialPage {
 			$options = new SMWRequestOptions();
 			$options->sort = TRUE;
 			$atts = &smwfGetStore()->getProperties($article->getTitle(), $options);
-			$cats = &smwfGetStore()->getSpecialValues($article->getTitle(), SMW_SP_HAS_CATEGORY, $options);
+			$cats = &smwfGetStore()->getSpecialValues($article->getTitle(), SMW_SP_INSTANCE_OF, $options);
 			$redout = &smwfGetStore()->getSpecialValues($article->getTitle(), SMW_SP_REDIRECTS_TO, $options);
 			$redin = &smwfGetStore()->getSpecialSubjects(SMW_SP_REDIRECTS_TO, $article->getTitle(), $options);
 			$options->limit = $innerlimit;
-			$instances = &smwfGetStore()->getSpecialSubjects(SMW_SP_HAS_CATEGORY, $article->getTitle(), $options);
+			$instances = &smwfGetStore()->getSpecialSubjects(SMW_SP_INSTANCE_OF, $article->getTitle(), $options);
 			$options->limit = $limit+1;
 			$options->offset = $offset;
 			// get results (get one more, to see if we have to add a link to more)
