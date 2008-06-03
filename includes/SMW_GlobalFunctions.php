@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.2d-SVN');
+define('SMW_VERSION','1.2e-SVN');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -101,6 +101,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWExpResource']            = $smwgIP . '/includes/export/SMW_Exp_Element.php';
 	//// stores
 	$wgAutoloadClasses['SMWSQLStore']               = $smwgIP . '/includes/storage/SMW_SQLStore.php';
+	$wgAutoloadClasses['SMWSQLStore2']              =  $smwgIP . '/includes/storage/SMW_SQLStore2.php';
 	// Do not autoload RAPStore, since some special pages load all autoloaded classes, which causes
 	// troubles with RAP store if RAP is not installed (require_once fails).
 	//$wgAutoloadClasses['SMWRAPStore']             = $smwgIP . '/includes/storage/SMW_RAPStore.php';
@@ -182,7 +183,7 @@ function smwfSetupExtension() {
 	$wgHooks['ArticleUndelete'][] = 'smwfUndeleteHook'; // restore annotations
 	$wgHooks['ArticleDelete'][] = 'smwfDeleteHook'; // delete annotations
 	$wgHooks['TitleMoveComplete'][]='smwfMoveHook'; // move annotations
-	$wgHooks['ParserAfterTidy'][] = 'smwfAddHTMLHeadersParser'; // add items to HTML header during parsing
+	$wgHooks['ParserAfterTidy'][] = 'smwfParserAfterTidy'; // add items to HTML header during parsing
 	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeadersOutput'; // add items to HTML header during output
     $wgHooks['LinksUpdateConstructed'][] = 'smwfLinkUpdateHook'; // update data after template change and at safe
 
@@ -279,17 +280,27 @@ function smwfRequireHeadItem($id, $item = '') {
 }
 
 /**
- * Hook function to insert HTML headers (CSS, JavaScript, and meta tags) into parser 
+ * Hook function for two tasks:
+ * (1) insert HTML headers (CSS, JavaScript, and meta tags) into parser 
  * output. This is our preferred method of working off the required scripts, since it 
  * exploits parser caching.
+ * (2) Fetch category information from parser output.
  */
-function smwfAddHTMLHeadersParser(&$parser, &$text) {
+function smwfParserAfterTidy(&$parser, &$text) {
 	global $smwgHeadItems, $smwgStoreActive;
+	// make HTML header
 	if (!$smwgStoreActive) return true; // avoid doing this in SMW-generated sub-parsers
 	foreach ($smwgHeadItems as $key => $item) {
 		$parser->mOutput->addHeadItem("\t\t" . $item . "\n", $key);
 	}
 	$smwgHeadItems = array(); // flush array so that smwfAddHTMLHeader does not take needless actions
+	// fetch category data
+	$categories = $parser->mOutput->getCategoryLinks();
+	foreach ($categories as $name) {
+		$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_INSTANCE_OF);
+		$dv->setValues($name,NS_CATEGORY);
+		SMWFactbox::$semdata->addSpecialValue(SMW_SP_INSTANCE_OF,$dv);
+	}
 	return true;
 }
 

@@ -133,11 +133,6 @@ function smwfSaveHook(&$article, &$user, &$text) {
  * Used to updates data after changes of templates, but also at each saving of an article.
  */
 function smwfLinkUpdateHook($links_update) {
-	foreach ($links_update->mCategories as $name => $sortkey) {
-		$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_INSTANCE_OF);
-		$dv->setValues($name,NS_CATEGORY);
-		SMWFactbox::$semdata->addSpecialValue(SMW_SP_INSTANCE_OF,$dv);
-	}
 	smwfSaveDataForTitle($links_update->mTitle);
 	return true;
 }
