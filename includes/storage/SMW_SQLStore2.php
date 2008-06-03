@@ -36,27 +36,6 @@ class SMWSQLStore2 extends SMWStore {
 	/// Like SMWSQLStore2::m_semdata, but containing flags indicating completeness of the SMWSemanticData objs
 	protected $m_sdstate = array();
 
-
-	/**
-	 * Global counter to prevent clashes between table aliases.
-	 */
-// 	static protected $m_tablenum = 0;
-	/**
-	 * Array of names of virtual tables that hold the lower closure of certain
-	 * categories wrt. hierarchy.
-	 */
-// 	static protected $m_categorytables = array();
-	/**
-	 * Array of names of virtual tables that hold the lower closure of certain
-	 * categories wrt. hierarchy.
-	 */
-// 	static protected $m_propertytables = array();
-	/**
-	 * Record all virtual tables used for a single operation (especially query) to produce debug output.
-	 */
-// 	protected $m_usedtables;
-
-
 ///// Reading methods /////
 
 	function getSemanticData($subject, $filter = false) {
