@@ -20,7 +20,7 @@ define('SMW_SP_SERVICE_LINK', 13);
 define('SMW_SP_POSSIBLE_VALUE', 14);
 define('SMW_SP_REDIRECTS_TO', 15);
 define('SMW_SP_SUBPROPERTY_OF',17);
-define('SMW_SP_SUBCATEGORY_OF',18);
+define('SMW_SP_SUBCLASS_OF',18);
 
 // old names, will be removed *two* releases after given version
 // SMW 1.1.1
@@ -300,6 +300,9 @@ function smwfParserAfterTidy(&$parser, &$text) {
 		$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_INSTANCE_OF);
 		$dv->setValues($name,NS_CATEGORY);
 		SMWFactbox::$semdata->addSpecialValue(SMW_SP_INSTANCE_OF,$dv);
+		if (SMWFactbox::$semdata->getSubject()->getNamespace() == NS_CATEGORY) {
+			SMWFactbox::$semdata->addSpecialValue(SMW_SP_SUBCLASS_OF,$dv);
+		}
 	}
 	return true;
 }
