@@ -6,11 +6,13 @@
  * @author Markus Krötzsch
  */
 
-// Types for query descriptions
-define('SMW_SQL2_TABLE',1);
-define('SMW_SQL2_VALUE',2);
-define('SMW_SQL2_DISJUNCTION',7);
-define('SMW_SQL2_CONJUNCTION',8);
+/// Types for query descriptions (comments refer to SMWSQLStore2Query class below):
+define('SMW_SQL2_TABLE',1); // jointable: internal table name, joinfield, components, where use alias.fields, from uses external table names, components interpreted conjunctively (JOIN)
+define('SMW_SQL2_VALUE',2); // joinfield (disjunctive) array of unquoted values, jointable empty, components empty
+define('SMW_SQL2_DISJUNCTION',3); // joinfield, jointable empty, only components relevant
+define('SMW_SQL2_CONJUNCTION',4); // joinfield, jointable empty, only components relevant
+define('SMW_SQL2_CLASS_HIERARCHY',5); // only joinfield relevant: (disjunctive) array of unquoted values
+define('SMW_SQL2_PROP_HIERARCHY',6); // only joinfield relevant: (disjunctive) array of unquoted values
 
 /**
  * Class for representing a single (sub)query description. Simple data
@@ -42,6 +44,8 @@ class SMWSQLStore2QueryEngine {
 	protected $m_dbs; /// TODO: should temporary tables be created on the master DB?
 	/// Parent SMWSQLStore2
 	protected $m_store;
+	/// Query mode copied from given query, some submethods act differently when in SMWQuery::MODE_DEBUG
+	protected $m_qmode;
 	/// Array of generated query descriptions
 	protected $m_queries = array();
 	/// Array of arrays of executed queries, indexed by the temporary table names results were fed into
@@ -52,6 +56,8 @@ class SMWSQLStore2QueryEngine {
 	 * conditions).
 	 */
 	protected $m_sortkeys;
+	/// Cache of computed hierarchy queries for reuse, cat/prop-value string => tablename
+	protected $m_hierarchies = array();
 
 	public function __construct(&$parentstore, &$dbslave) {
 		$this->m_store = $parentstore;
@@ -69,7 +75,9 @@ class SMWSQLStore2QueryEngine {
 			$result = new SMWQueryResult($query->getDescription()->getPrintrequests(), $query, false);
 			return $result;
 		}
+		$this->m_qmode = $query->querymode;
 		$this->m_queries = array();
+		$this->m_hierarchies = array();
 		$this->m_querylog = array();
 		SMWSQLStore2Query::$qnum = 0;
 		$this->m_sortkeys = $query->sortkeys;
@@ -88,7 +96,6 @@ class SMWSQLStore2QueryEngine {
 
 		$this->applyOrderConditions($query,$rootid); // may extend query if needed for sorting
 		$this->executeQueries($this->m_queries[$rootid]); // execute query tree, resolve all dependencies
-		/// TODO: the above needs to know whether we are in debug mode or not
 		switch ($query->querymode) {
 			case SMWQuery::MODE_DEBUG:
 				$result = $this->getDebugQueryResult($query,$rootid);
@@ -101,8 +108,10 @@ class SMWSQLStore2QueryEngine {
 			break;
 		}
 		// finally, free temporary tables
-		foreach ($this->m_querylog as $table => $log) {
-			$this->m_dbs->query("DROP TEMPORARY TABLE $table", 'SMW::getQueryResult');
+		if ($this->m_qmode !== SMWQuery::MODE_DEBUG) {
+			foreach ($this->m_querylog as $table => $log) {
+				$this->m_dbs->query("DROP TEMPORARY TABLE $table", 'SMW::getQueryResult');
+			}
 		}
 		return $result;
 	}
@@ -116,16 +125,17 @@ class SMWSQLStore2QueryEngine {
 		$sql_options = $this->getSQLOptions($query,$rootid);
 		list( $startOpts, $useIndex, $tailOpts ) = $this->m_dbs->makeSelectOptions( $sql_options );
 		$result = '<div style="border: 1px dotted black; background: #A1FB00; padding: 20px; ">' .
-		          '<b>Generated Wiki-Query</b><br />' .
-		          str_replace('[', '&#x005B;', $query->getDescription()->getQueryString()) . '<br />' .
-		          '<b>Query-Size: </b>' . $query->getDescription()->getSize() . '<br />' .
-		          '<b>Query-Depth: </b>' . $query->getDescription()->getDepth() . '<br />';
+		          '<b>Debug output by SMWSQLStore2</b><br />' .
+		          'Generated Wiki-Query<br /><tt>' .
+		          str_replace('[', '&#x005B;', $query->getDescription()->getQueryString()) . '</tt><br />' .
+		          'Query-Size: ' . $query->getDescription()->getSize() . '<br />' .
+		          'Query-Depth: ' . $query->getDescription()->getDepth() . '<br />';
 		if ($qobj->joinfield !== '') {
-			$result .= '<b>SQL query</b><br />' .
-			           "SELECT DISTINCT $qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns FROM " .
-			           "$qobj->jointable AS $qobj->alias" . $qobj->from . (($qobj->where=='')?'':' WHERE ') .
-			           $qobj->where . "$tailOpts LIMIT " . $sql_options['LIMIT'] . ' OFFSET ' .
-			           $sql_options['OFFSET'] . ';';
+			$result .= 'SQL query<br />' .
+			           "<tt>SELECT DISTINCT $qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns FROM " .
+			           $this->m_dbs->tableName($qobj->jointable) . " AS $qobj->alias" . $qobj->from .
+			           (($qobj->where=='')?'':' WHERE ') . $qobj->where . "$tailOpts LIMIT " .
+			           $sql_options['LIMIT'] . ' OFFSET ' . $sql_options['OFFSET'] . ';</tt>';
 		} else {
 			$result .= '<b>Empty result, no SQL query created.</b>';
 		}
@@ -133,15 +143,16 @@ class SMWSQLStore2QueryEngine {
 		foreach ($query->getErrors() as $error) {
 			$errors .= $error . '<br />';
 		}
-		$result .= ($errors)?"<br /><b>Errors and warnings:</b><br />$errors":'<br /><b>No errors or warnings.</b>';
+		$result .= ($errors)?"<br />Errors and warnings:<br />$errors":'<br />No errors or warnings.';
 		$auxtables = '';
 		foreach ($this->m_querylog as $table => $log) {
-			$auxtables .= "\n\n<b>Temporary table $table</b>";
+			$auxtables .= "<li>Temporary table $table";
 			foreach ($log as $q) {
-				$auxtables .= "\n\n$q";
+				$auxtables .= "<br />&nbsp;&nbsp;<tt>$q</tt>";
 			}
+			$auxtables .= '</li>';
 		}
-		$result .= ($auxtables)?"<br /><b>Auxilliary tables used:</b><br />$auxtables":'<br /><b>No auxilliary tables used.</b>';
+		$result .= ($auxtables)?"<br />Auxilliary tables used:<ul>$auxtables</ul>":'<br />No auxilliary tables used.';
 		$result .= '</div>';
 		return $result;
 	}
@@ -241,14 +252,23 @@ class SMWSQLStore2QueryEngine {
 			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($description->getProperty());
 			$query->joinfield = "$query->alias.s_id";
 			$pid = $this->m_store->getSMWPageID($description->getProperty()->getDBkey(), $description->getProperty()->getNamespace(),'');
-			$query->where = "$query->alias.p_id=" . $this->m_dbs->addQuotes($pid);
+			$pqid = SMWSQLStore2Query::$qnum;
+			$pquery = new SMWSQLStore2Query();
+			$pquery->type = SMW_SQL2_PROP_HIERARCHY;
+			$pquery->joinfield = array($pid);
+			$query->components[$pqid] = "$query->alias.p_id";
+			$this->m_queries[$pqid] = $pquery;
 			$sortfield = ''; // used if we should sort by this property
 			switch ($typeid) {
 				case '_wpg': case '__nry': // subconditions as subqueries (compiled)
 					$query->jointable = 'smw_rels2';
 					$sub = $this->compileQueries($description->getDescription());
 					if ($sub >= 0) {
-						$query->components = array($sub => "$query->alias.o_id");
+						$query->components[$sub] = "$query->alias.o_id";
+					}
+					if ( array_key_exists($description->getProperty()->getDBkey(), $this->m_sortkeys) ) {
+						$query->from = ' INNER JOIN ' . $this->m_dbs->tableName('smw_ids') . " AS ids$query->alias ON ids$query->alias.smw_id=$query->alias.o_id";
+						$sortfield = "ids$query->alias.smw_title"; /// TODO: as below, smw_ids here is possibly duplicated! Can we prevent that? (PERFORMANCE)
 					}
 				break;
 				case '_txt': // no subconditions
@@ -258,7 +278,7 @@ class SMWSQLStore2QueryEngine {
 					$query->jointable = 'smw_atts2';
 					$aw = $this->compileAttributeWhere($description->getDescription(),"$query->alias");
 					if ($aw != '') {
-						$query->where .= " AND $aw";
+						$query->where .= ($query->where?' AND ':'') . $aw;
 					}
 					if ( array_key_exists($description->getProperty()->getDBkey(), $this->m_sortkeys) ) {
 						$sortfield = "$query->alias." .  (SMWDataValueFactory::newTypeIDValue($typeid)->isNumeric()?'value_num':'value_xsd');
@@ -280,17 +300,26 @@ class SMWSQLStore2QueryEngine {
 				}
 			}
 		} elseif ($description instanceof SMWClassDescription) {
-			$query->jointable = 'smw_inst2';
-			$query->joinfield = "$query->alias.s_id";
-			$where = '';
+			$cqid = SMWSQLStore2Query::$qnum;
+			$cquery = new SMWSQLStore2Query();
+			$cquery->type = SMW_SQL2_CLASS_HIERARCHY;
+			$cquery->joinfield = array();
 			foreach ($description->getCategories() as $cat) {
 				$cid = $this->m_store->getSMWPageID($cat->getDBkey(), NS_CATEGORY, '');
-				$where .= ($where == ''?'':' OR ') . "$query->alias.o_id=" . $this->m_dbs->addQuotes($cid);
+				if ($cid != 0) {
+					$cquery->joinfield[] = $cid;
+				}
 			}
-			if (count($description->getCategories()) > 1) {
-				$where = "($where)";
+			if (count($cquery->joinfield) == 0) { // empty result
+				$query->type = SMW_SQL2_VALUE;
+				$query->jointable = '';
+				$query->joinfield = '';
+			} else { // instance query with dicjunction of classes (categories) 
+				$query->jointable = 'smw_inst2';
+				$query->joinfield = "$query->alias.s_id";
+				$query->components[$cqid] = "$query->alias.o_id";
+				$this->m_queries[$cqid] = $cquery;
 			}
-			$query->where = $where;
 		} elseif ($description instanceof SMWValueList) {
 			$qid = -1; /// TODO
 		} elseif ($description instanceof SMWValueDescription) { // only processsed here for '_wpg'
@@ -298,7 +327,7 @@ class SMWSQLStore2QueryEngine {
 				if ($description->getComparator() == SMW_CMP_EQ) {
 					$query->type = SMW_SQL2_VALUE;
 					$oid = $this->m_store->getSMWPageID($description->getDatavalue()->getDBkey(), $description->getDatavalue()->getNamespace(),'');
-					$query->joinfield = $oid;
+					$query->joinfield = array($oid);
 				} else { // join with smw_ids needed for other comparators (apply to title string)
 					$query->jointable = 'smw_ids';
 					$query->joinfield = "$query->alias.smw_id";
@@ -378,9 +407,16 @@ class SMWSQLStore2QueryEngine {
 					$subquery = $this->m_queries[$qid];
 					$this->executeQueries($subquery);
 					if ($subquery->jointable != '') { // join with jointable.joinfield
-						$query->from .= ' INNER JOIN ' . $subquery->jointable . " AS $subquery->alias ON $joinfield=" . $subquery->joinfield;
+						$query->from .= ' INNER JOIN ' . $this->m_dbs->tableName($subquery->jointable) . " AS $subquery->alias ON $joinfield=" . $subquery->joinfield;
 					} elseif ($subquery->joinfield !== '') { // require joinfield as "value" via WHERE
-						$query->where .= (($query->where == '')?'':' AND ') . "$joinfield=" . $subquery->joinfield;
+						$condition = '';
+						foreach ($subquery->joinfield as $value) {
+							$condition .= ($condition?' OR ':'') . "$joinfield=" . $this->m_dbs->addQuotes($value);
+						}
+						if (count($subquery->joinfield) > 1) {
+							$condition = "($condition)";
+						}
+						$query->where .= (($query->where == '')?'':' AND ') . $condition;
 					} else { // interpret empty joinfields as impossible condition (empty result)
 						$query->joinfield = ''; // make whole query false
 						$query->jointable = '';
@@ -428,23 +464,32 @@ class SMWSQLStore2QueryEngine {
 				$query = $result;
 			break;
 			case SMW_SQL2_DISJUNCTION:
-				$this->m_dbs->query( "CREATE TEMPORARY TABLE $query->alias" .
-				                     ' ( id INT UNSIGNED KEY ) TYPE=MEMORY', 'SMW::executeQueries' );
+				if ($this->m_qmode !== SMWQuery::MODE_DEBUG) {
+					$this->m_dbs->query( "CREATE TEMPORARY TABLE " . $this->m_dbs->tableName($query->alias) .
+					                     ' ( id INT UNSIGNED KEY ) TYPE=MEMORY', 'SMW::executeQueries' );
+				}
 				$this->m_querylog[$query->alias] = array();
 				foreach ($query->components as $qid => $joinfield) {
 					$subquery = $this->m_queries[$qid];
 					$this->executeQueries($subquery);
 					$sql = '';
 					if ($subquery->jointable != '') {
-						$sql = "INSERT IGNORE INTO $query->alias SELECT $subquery->joinfield FROM $subquery->jointable AS $subquery->alias $subquery->from WHERE $subquery->where ";
+						$sql = "INSERT IGNORE INTO $query->alias SELECT $subquery->joinfield FROM " .
+						$this->m_dbs->tableName($subquery->jointable) . " AS $subquery->alias $subquery->from" . ($subquery->where?" WHERE $subquery->where":'');
 					} elseif ($subquery->joinfield !== '') {
 						/// NOTE: this works only for single "unconditional" values without further 
 						/// WHERE or FROM. The execution must take care of not creating any others.
-						$sql = "INSERT IGNORE INTO $query->alias (id) VALUES (" . $this->m_dbs->addQuotes($subquery->joinfield) . ')';
+						$values = '';
+						foreach ($subquery->joinfield as $value) {
+							$values .= ($values?',':'') . '(' . $this->m_dbs->addQuotes($value) . ')';
+						}
+						$sql = "INSERT IGNORE INTO $query->alias (id) VALUES $values";
 					} // else: // interpret empty joinfields as impossible condition (empty result), ignore
 					if ($sql) {
 						$this->m_querylog[$query->alias][] = $sql;
-						$this->m_dbs->query($sql , 'SMW::executeQueries');
+						if ($this->m_qmode !== SMWQuery::MODE_DEBUG) {
+							$this->m_dbs->query($sql , 'SMW::executeQueries');
+						}
 					}
 				}
 				$query->jointable = $query->alias;
@@ -452,143 +497,69 @@ class SMWSQLStore2QueryEngine {
 				$query->sortfields = array(); // make sure we got no sortfields
 				/// TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
 			break;
+			case SMW_SQL2_PROP_HIERARCHY: case SMW_SQL2_CLASS_HIERARCHY: // make a saturated hierarchy
+				global $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
+				$depth = ($query->type == SMW_SQL2_PROP_HIERARCHY)?$smwgQSubpropertyDepth:$smwgQSubcategoryDepth;
+				if ($depth <= 0) { // treat as value, no recursion
+					$query->type = SMW_SQL2_VALUE;
+				} else {
+					$values = '';
+					foreach ($query->joinfield as $value) {
+						$values .= ($values?',':'') . '(' . $this->m_dbs->addQuotes($value) . ')';
+					}
+					$tablename = $this->m_dbs->tableName($query->alias);
+					$this->m_querylog[$query->alias] = array("Recursively computed hierarchy for element(s) $values.");
+					$query->jointable = $query->alias;
+					$query->joinfield = "$query->alias.id";
+					if ($this->m_qmode == SMWQuery::MODE_DEBUG) {
+						break; // no real queries in debug mode
+					}
+					$this->m_dbs->query( "CREATE TEMPORARY TABLE $query->alias" .
+					                     ' ( id INT UNSIGNED KEY ) TYPE=MEMORY', 'SMW::executeQueries' );
+					if (array_key_exists($values, $this->m_hierarchies)) { // just copy known result
+						$this->m_dbs->query("INSERT INTO $tablename (id) SELECT id" .
+						                    ' FROM ' . $this->m_hierarchies[$values],
+						                    'SMW::executeQueries');
+						break;
+					}
+					/// NOTE: we use two helper tables. One holds the results of each new iteration, one holds the
+					/// results of the previous iteration. One could of course do with only the above result table,
+					/// but then every iteration would use all elements of this table, while only the new ones 
+					/// obtained in the previous step are relevant. So this is a performance measure.
+					$tmpnew = 'smw_new';
+					$tmpres = 'smw_res';
+					$this->m_dbs->query( "CREATE TEMPORARY TABLE $tmpnew " .
+					            '( id INT UNSIGNED NOT NULL ) TYPE=MEMORY', 'SMW::executeQueries' );
+					$this->m_dbs->query( "CREATE TEMPORARY TABLE $tmpres " .
+					            '( id INT UNSIGNED NOT NULL ) TYPE=MEMORY', 'SMW::executeQueries' );
+
+					$smw_subs2 = $this->m_dbs->tableName('smw_subs2');
+					$this->m_dbs->query("INSERT IGNORE INTO $tablename (id) VALUES $values", 'SMW::executeQueries');
+					$this->m_dbs->query("INSERT IGNORE INTO $tmpnew (id) VALUES $values", 'SMW::executeQueries');
+
+					for ($i=0; $i<$depth; $i++) {
+						$this->m_dbs->query("INSERT INTO $tmpres (id) SELECT s_id FROM $smw_subs2,$tmpnew WHERE o_id=id",
+						           'SMW::executeQueries');
+						if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
+							break;
+						}
+						$this->m_dbs->query("INSERT IGNORE INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
+						           'SMW::executeQueries');
+						if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
+							break;
+						}
+						$this->m_dbs->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::executeQueries'); // empty "new" table
+						$tmpname = $tmpnew;
+						$tmpnew = $tmpres;
+						$tmpres = $tmpname;
+					}
+					$this->m_hierarchies[$values] = $tablename;
+					$this->m_dbs->query('DROP TEMPORARY TABLE smw_new', 'SMW::executeQueries');
+					$this->m_dbs->query('DROP TEMPORARY TABLE smw_res', 'SMW::executeQueries');
+				}
+			break;
 			case SMW_SQL2_VALUE: break; // nothing to do
 		}
-	}
-
-
-	/**
-	 * Make a (temporary) table that contains the lower closure of the given category
-	 * wrt. the category table.
-	 */
-	protected function getCategoryTable($cats, &$db) {
-		wfProfileIn("SMWSQLStore2::getCategoryTable (SMW)");
-		global $smwgQSubcategoryDepth;
-
-		$sqlvalues = '';
-		$hashkey = '';
-		foreach ($cats as $cat) {
-			if ($sqlvalues != '') {
-				$sqlvalues .= ', ';
-			}
-			$sqlvalues .= '(' . $db->addQuotes($cat->getDBkey()) . ')';
-			$hashkey .= ']' . $cat->getDBkey();
-		}
-
-		$tablename = 'cats' . SMWSQLStore2::$m_tablenum++;
-		$this->m_usedtables[] = $tablename;
-		// TODO: unclear why this commit is needed -- is it a MySQL 4.x problem?
-		$db->query("COMMIT");
-		$db->query( 'CREATE TEMPORARY TABLE ' . $tablename .
-		            '( title VARCHAR(255) binary NOT NULL PRIMARY KEY)
-		             TYPE=MEMORY', 'SMW::getCategoryTable' );
-		if (array_key_exists($hashkey, SMWSQLStore2::$m_categorytables)) { // just copy known result
-			$db->query("INSERT INTO $tablename (title) SELECT " .
-			            SMWSQLStore2::$m_categorytables[$hashkey] .
-			            '.title FROM ' . SMWSQLStore2::$m_categorytables[$hashkey],
-			           'SMW::getCategoryTable');
-			wfProfileOut("SMWSQLStore2::getCategoryTable (SMW)");
-			return $tablename;
-		}
-
-		// Create multiple temporary tables for recursive computation
-		$db->query( 'CREATE TEMPORARY TABLE smw_newcats
-		             ( title VARCHAR(255) binary NOT NULL )
-		             TYPE=MEMORY', 'SMW::getCategoryTable' );
-		$db->query( 'CREATE TEMPORARY TABLE smw_rescats
-		             ( title VARCHAR(255) binary NOT NULL )
-		             TYPE=MEMORY', 'SMW::getCategoryTable' );
-		$tmpnew = 'smw_newcats';
-		$tmpres = 'smw_rescats';
-
-		$pagetable = $db->tableName('page');
-		$cltable = $db->tableName('categorylinks');
-		$db->query("INSERT INTO $tablename (title) VALUES " . $sqlvalues, 'SMW::getCategoryTable');
-		$db->query("INSERT INTO $tmpnew (title) VALUES " . $sqlvalues, 'SMW::getCategoryTable');
-
-		for ($i=0; $i<$smwgQSubcategoryDepth; $i++) {
-			$db->query("INSERT INTO $tmpres (title) SELECT $pagetable.page_title
-			            FROM $cltable,$pagetable,$tmpnew WHERE
-			            $cltable.cl_to=$tmpnew.title AND
-			            $pagetable.page_namespace=" . NS_CATEGORY . " AND
-			            $pagetable.page_id=$cltable.cl_from", 'SMW::getCategoryTable');
-			$db->query("INSERT IGNORE INTO $tablename (title) SELECT $tmpres.title
-			            FROM $tmpres", 'SMW::getCategoryTable');
-			if ($db->affectedRows() == 0) { // no change, exit loop
-				break;
-			}
-			$db->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::getCategoryTable'); // empty "new" table
-			$tmpname = $tmpnew;
-			$tmpnew = $tmpres;
-			$tmpres = $tmpname;
-		}
-
-		SMWSQLStore2::$m_categorytables[$hashkey] = $tablename;
-		$db->query('DROP TEMPORARY TABLE smw_newcats', 'SMW::getCategoryTable');
-		$db->query('DROP TEMPORARY TABLE smw_rescats', 'SMW::getCategoryTable');
-		wfProfileOut("SMWSQLStore2::getCategoryTable (SMW)");
-		return $tablename;
-	}
-
-	/**
-	 * Make a (temporary) table that contains the lower closure of the given property
-	 * wrt. the subproperty relation.
-	 */
-	protected function getPropertyTable($propname, &$db) {
-		wfProfileIn("SMWSQLStore2::getPropertyTable (SMW)");
-		global $smwgQSubpropertyDepth;
-
-		$tablename = 'prop' . SMWSQLStore2::$m_tablenum++;
-		$this->m_usedtables[] = $tablename;
-		$db->query( 'CREATE TEMPORARY TABLE ' . $tablename .
-		            '( title VARCHAR(255) binary NOT NULL PRIMARY KEY)
-		             TYPE=MEMORY', 'SMW::getPropertyTable' );
-		if (array_key_exists($propname, SMWSQLStore2::$m_propertytables)) { // just copy known result
-			$db->query("INSERT INTO $tablename (title) SELECT " .
-			            SMWSQLStore2::$m_propertytables[$propname] .
-			            '.title FROM ' . SMWSQLStore2::$m_propertytables[$propname],
-			           'SMW::getPropertyTable');
-			wfProfileOut("SMWSQLStore2::getPropertyTable (SMW)");
-			return $tablename;
-		}
-
-		// Create multiple temporary tables for recursive computation
-		$db->query( 'CREATE TEMPORARY TABLE smw_new
-		             ( title VARCHAR(255) binary NOT NULL )
-		             TYPE=MEMORY', 'SMW::getPropertyTable' );
-		$db->query( 'CREATE TEMPORARY TABLE smw_res
-		             ( title VARCHAR(255) binary NOT NULL )
-		             TYPE=MEMORY', 'SMW::getPropertyTable' );
-		$tmpnew = 'smw_new';
-		$tmpres = 'smw_res';
-
-		$sptable = $db->tableName('smw_subprops');
-		$db->query("INSERT INTO $tablename (title) VALUES (" . $db->addQuotes($propname) . ')', 'SMW::getPropertyTable');
-		$db->query("INSERT INTO $tmpnew (title) VALUES (" . $db->addQuotes($propname) . ')', 'SMW::getPropertyTable');
-
-		for ($i=0; $i<$smwgQSubpropertyDepth; $i++) {
-			$db->query("INSERT INTO $tmpres (title) SELECT $sptable.subject_title
-			            FROM $sptable,$tmpnew WHERE
-			            $sptable.object_title=$tmpnew.title", 'SMW::getPropertyTable');
-			if ($db->affectedRows() == 0) { // no change, exit loop
-				break;
-			}
-			$db->query("INSERT IGNORE INTO $tablename (title) SELECT $tmpres.title
-			            FROM $tmpres", 'SMW::getPropertyTable');
-			if ($db->affectedRows() == 0) { // no change, exit loop
-				break;
-			}
-			$db->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::getPropertyTable'); // empty "new" table
-			$tmpname = $tmpnew;
-			$tmpnew = $tmpres;
-			$tmpres = $tmpname;
-		}
-
-		SMWSQLStore2::$m_propertytables[$propname] = $tablename;
-		$db->query('DROP TEMPORARY TABLE smw_new', 'SMW::getPropertyTable');
-		$db->query('DROP TEMPORARY TABLE smw_res', 'SMW::getPropertyTable');
-		wfProfileOut("SMWSQLStore2::getPropertyTable (SMW)");
-		return $tablename;
 	}
 
 	/**
