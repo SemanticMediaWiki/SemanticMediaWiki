@@ -76,6 +76,18 @@ class SMWNumberValue extends SMWDataValue {
 		$this->m_unitvalues = false;
 	}
 
+	public function setOutputFormat($formatstring) {
+		if ( ($formatstring != $this->m_outformat) && $this->isValid() ) {
+			// recompute conversion if outputformat is changed after initialisation
+			$this->m_outformat = $formatstring;
+			$this->m_unitin = false;
+			$this->makeUserValue();
+			$this->m_unitvalues = false;
+		} else { // otherwise just set it as usual
+			$this->m_outformat = $formatstring;
+		}
+	}
+
 	public function getShortWikiText($linked = NULL) {
 		if (($linked === NULL) || ($linked === false)) {
 			return $this->m_caption;
