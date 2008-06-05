@@ -26,7 +26,7 @@ set_include_path( get_include_path() . PATH_SEPARATOR .  dirname(__FILE__) . '/.
  * so allow override
  */
 
-$optionsWithArgs = array('user', 'password');
+$optionsWithArgs = array('user', 'password','b');
 require_once ( getenv('MW_INSTALL_PATH') !== false
 	? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
 	: 'commandLine.inc' );
@@ -40,11 +40,17 @@ if( isset( $options['password'] ) ) {
 	$wgDBpassword = $options['password'];
 }
 
+if ( array_key_exists( 'b', $options ) ) {
+	global $smwgDefaultStore;
+	$smwgDefaultStore = $options['b'];
+	print "\nSelected storage $smwgDefaultStore for update!\n\n";
+}
+
 
 global $smwgIP;
 if (! isset($smwgIP)) 
      $smwgIP = dirname(__FILE__) . '/..';
-     
+
 require_once($smwgIP . '/includes/SMW_GlobalFunctions.php');
 
 smwfGetStore()->setup();

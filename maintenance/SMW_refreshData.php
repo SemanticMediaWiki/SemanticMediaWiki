@@ -12,6 +12,8 @@
  * -d <delay>   Wait for this many milliseconds after processing an article, useful for limiting server load.
  * -s <startid> Start refreshing at given article ID, useful for partial refreshing
  * -e <endid>   Stop refreshing at given article ID, useful for partial refreshing 
+ * -b <backend> Execute the operation for the storage backend of the given name 
+ *              (default is to use the current backend)
  * -v           Be verbose about the progress.
  * -c           Will refresh only category pages (and other explicitly named namespaces)
  * -p           Will refresh only property pages (and other explicitly named namespaces)
@@ -23,7 +25,7 @@
  * @author Markus Krötzsch
  */
 
-$optionsWithArgs = array( 'd', 's', 'e' ); // -d <delay>, -s <startid>
+$optionsWithArgs = array( 'd', 's', 'e', 'b' ); // -d <delay>, -s <startid>, -e <endid>, -b <backend>
 
 $mwPath = getenv('MW_INSTALL_PATH') !== false ? getenv('MW_INSTALL_PATH').'/maintenance/' : '';
 require_once("{$mwPath}counter.php");
@@ -48,6 +50,12 @@ if ( array_key_exists( 's', $options ) ) {
 $end = $dbr->selectField( 'page', 'max(page_id)', false, 'SMW_refreshData' );
 if ( array_key_exists( 'e', $options ) ) {
 	$end = min(intval($options['e']), $end);
+}
+
+if ( array_key_exists( 'b', $options ) ) {
+	global $smwgDefaultStore;
+	$smwgDefaultStore = $options['b'];
+	print "\nSelected storage $smwgDefaultStore for update!\n\n";
 }
 
 if (  array_key_exists( 'v', $options ) ) {
