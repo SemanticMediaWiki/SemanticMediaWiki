@@ -201,8 +201,9 @@ class SMWSpecialBrowse extends SpecialPage {
 					$html .= '<strong>' . $skin->specialLink( 'Listredirects', 'isredirect' ) . '</strong>&nbsp; ';
 					foreach ($redout as $red) {
 						$count -= 1;
-						$browselink = SMWInfolink::newBrowsingLink('+', $red->getFullText());
-						$html .= $skin->makeLinkObj($red, smwfT($red)) . '&nbsp;' . $browselink->getHTML($skin);
+						$browselink = SMWInfolink::newBrowsingLink('+', $red->getWikiValue());
+						/// TODO: inefficient to cast into Title here, we are dealing with a SMWWikiPageValue (PERFORMANCE)
+						$html .= $skin->makeLinkObj($red->getTitle(), smwfT($red->getTitle())) . '&nbsp;' . $browselink->getHTML($skin);
 						if ($count > 0) $html .= ", ";
 					}
 					$html .= $vsep."\n";
