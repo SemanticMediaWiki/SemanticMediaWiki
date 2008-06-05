@@ -684,10 +684,14 @@ class SMWSQLStore2 extends SMWStore {
 			} else { // make id for use in redirect table
 				$sid = $this->makeSMWPageID($oldtitle->getDBKey(),$oldtitle->getNamespace(),'',false);
 			}
-			// record new redirect
+			// update redirects
 			/// NOTE: there is the (bad) case that the moved page is a redirect. As chains of
 			/// redirects are not supported by MW or SMW, the below is maximally correct there too.
-			$db->insert( 'smw_redi2', array('s_title'=>$newtitle->getDBkey(), 's_namespace'=>$newtitle->getNamespace(), 'o_id'=>$sid), 'SMWSQLStore2::changeTitle');
+			$db->insert( 'smw_redi2', array('s_title'=>$oldtitle->getDBkey(), 's_namespace'=>$oldtitle->getNamespace(), 'o_id'=>$sid), 'SMWSQLStore2::changeTitle');
+			/// NOTE: this temporarily leaves existing redirects to oldtitle point to newtitle as well, which
+			/// will be lost after the next update. Since double redirects are an error anyway, this is not
+			/// a bad behaviour: everything will continue to work until the old redirect is updated, which 
+			/// will hopefully be to fix the double redirect.
 		} else {
 			$this->deleteSemanticData($newtitle); // should not have much effect, but let's be sure
 			$this->updateRedirects($newtitle->getDBkey(), $newtitle->getNamespace()); // delete these redirects, may trigger update jobs!
