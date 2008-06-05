@@ -78,19 +78,18 @@ class SMWNumberValue extends SMWDataValue {
 			$this->m_value = $this->m_stubdata[0];
 			$this->m_unit = $this->m_stubdata[1];
 			$this->m_unitin = false;
+			$this->m_stubdata = false;
 			$this->makeUserValue();
 			$this->m_unitvalues = false;
-			$this->m_stubdata = false;
 		}
 	}
 
 	public function setOutputFormat($formatstring) {
-		if ( ($formatstring != $this->m_outformat) && $this->isValid() ) {
+		$oldformat = $this->m_outformat;
+		$this->m_outformat = $formatstring;
+		if ( ($formatstring != $oldformat) && $this->isValid() ) {
 			// recompute conversion if outputformat is changed after initialisation
-			$this->m_outformat = $formatstring;
 			$this->m_stubdata = array($this->m_value, $this->m_unit);
-		} else { // otherwise just set it as usual
-			$this->m_outformat = $formatstring;
 		}
 	}
 
@@ -227,13 +226,6 @@ class SMWNumberValue extends SMWDataValue {
 		$unit = str_replace(array('³','<sup>3</sup>'), '&sup3;', $unit);
 		return smwfXMLContentEncode($unit);
 	}
-
-	/**
-	 * Overwritten by subclasses that support units.
-	 */
-// 	protected function hasUnitSupport() {
-// 		return false;
-// 	}
 
 	/**
 	 * Converts the current m_value and m_unit to the main unit, if possible.

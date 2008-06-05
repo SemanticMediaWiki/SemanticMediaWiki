@@ -60,7 +60,6 @@ class SMWWikiPageValue extends SMWDataValue {
 			global $wgContLang;
 			$this->m_dbkeyform = $this->m_stubdata[0];
 			$this->m_namespace = $this->m_stubdata[1];
-// 			print "Unstub $this->m_dbkeyform  ";
 			$this->m_textform = str_replace('_', ' ', $this->m_dbkeyform);
 			$nstext = $wgContLang->getNSText($this->m_namespace);
 			if ($nstext !== '') {
