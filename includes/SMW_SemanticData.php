@@ -17,11 +17,15 @@ class SMWSemanticData {
 	protected $attribtitles = array(); // text keys and title objects
 	protected $hasprops = false; // any normal properties yet?
 	protected $hasspecs = false; // any special properties yet?
+	protected $m_noduplicates; // avoid repeated values? 
+	/// NOTE: not needing (e.g. when loading from store) can safe much time, 
+	/// since objects can remain stubs until someone really acesses their value
 
 	protected $subject;
 
-	public function SMWSemanticData(Title $subject) {
+	public function SMWSemanticData(Title $subject, $noduplicates = true) {
 		$this->subject = $subject;
+		$this->m_noduplicates = $noduplicates;
 	}
 
 	/**
@@ -76,7 +80,11 @@ class SMWSemanticData {
 			$this->attribvals[$property->getText()] = array();
 			$this->attribtitles[$property->getText()] = $property;
 		}
-		$this->attribvals[$property->getText()][$value->getHash()] = $value;
+		if ($this->m_noduplicates) {
+			$this->attribvals[$property->getText()][$value->getHash()] = $value;
+		} else {
+			$this->attribvals[$property->getText()][] = $value;
+		}
 		$this->hasprops = true;
 	}
 
@@ -88,7 +96,7 @@ class SMWSemanticData {
 		if (array_key_exists($propertyname, $this->attribtitles)) {
 			$property = $this->attribtitles[$propertyname];
 		} else {
-			$property = Title::newFromText($propertyname, SMW_NS_PROPERTY);
+			$property = Title::newFromText($propertyname,SMW_NS_PROPERTY);
 			if ($property === NULL) { // error, maybe illegal title text
 				return;
 			}
@@ -111,7 +119,12 @@ class SMWSemanticData {
 			$this->attribtitles[$property] = $special;
 		}
 		if ($value instanceof SMWDataValue) {
-			$this->attribvals[$special][$value->getHash()] = $value;
+			if ($this->m_noduplicates) {
+				$this->attribvals[$special][$value->getHash()] = $value;
+			} else {
+				$this->attribvals[$special][] = $value;
+			}
+		/// TODO: legacy cases, should soon be obsolete (maybe already now):
 		} elseif ($value instanceof Title) {
 			$this->attribvals[$special][$value->getPrefixedText()] = $value;
 		} else {

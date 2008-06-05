@@ -69,26 +69,33 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	protected function parseXSDValue($value, $unit) {
-		$this->m_unit = $unit;
-		$this->m_value = $value;
-		$this->m_unitin = false;
-		$this->makeUserValue();
-		$this->m_unitvalues = false;
+		// very lazy processing, lets store implementations prefetch more data, even if not needed
+		$this->m_stubdata = array($value, $unit);
+	}
+
+	protected function unstub() {
+		if (is_array($this->m_stubdata)) {
+			$this->m_value = $this->m_stubdata[0];
+			$this->m_unit = $this->m_stubdata[1];
+			$this->m_unitin = false;
+			$this->makeUserValue();
+			$this->m_unitvalues = false;
+			$this->m_stubdata = false;
+		}
 	}
 
 	public function setOutputFormat($formatstring) {
 		if ( ($formatstring != $this->m_outformat) && $this->isValid() ) {
 			// recompute conversion if outputformat is changed after initialisation
 			$this->m_outformat = $formatstring;
-			$this->m_unitin = false;
-			$this->makeUserValue();
-			$this->m_unitvalues = false;
+			$this->m_stubdata = array($this->m_value, $this->m_unit);
 		} else { // otherwise just set it as usual
 			$this->m_outformat = $formatstring;
 		}
 	}
 
 	public function getShortWikiText($linked = NULL) {
+		$this->unstub();
 		if (($linked === NULL) || ($linked === false)) {
 			return $this->m_caption;
 		}
@@ -122,6 +129,7 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	public function getLongWikiText($linked = NULL) {
+		$this->unstub();
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		} else {
@@ -152,25 +160,30 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	public function getXSDValue() {
+		$this->unstub();
 		$this->convertToMainUnit();
 		return $this->m_value;
 	}
 
 	public function getWikiValue(){
+		$this->unstub();
 		return $this->m_wikivalue;
 	}
 
 	public function getNumericValue() {
+		$this->unstub();
 		$this->convertToMainUnit();
 		return $this->m_value;
 	}
 
 	public function getUnit() {
+		$this->unstub();
 		$this->convertToMainUnit();
 		return $this->m_unit;
 	}
 
 	public function getHash() {
+		$this->unstub();
 		if ($this->isValid()) {
 			$this->convertToMainUnit();
 			return $this->m_value . $this->m_unit;
@@ -180,6 +193,7 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	protected function getServiceLinkParams() {
+		$this->unstub();
 		// Create links to mapping services based on a wiki-editable message. The parameters 
 		// available to the message are:
 		// $1: string of numerical value in English punctuation
@@ -193,6 +207,7 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	public function getExportData() {
+		$this->unstub();
 		if ($this->isValid()) {
 			$lit = new SMWExpLiteral($this->m_value, $this, 'http://www.w3.org/2001/XMLSchema#double');
 			return new SMWExpData($lit);

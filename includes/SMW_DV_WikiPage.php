@@ -21,7 +21,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	private $m_id; // false if unset
 	private $m_title = NULL;
 
-	public function parseUserValue($value) {
+	protected function parseUserValue($value) {
 		$value = ltrim(rtrim($value,' ]'),' ['); // support inputs like " [[Test]] "
 		if ($value != '') {
 			$this->m_value = $value;
@@ -48,22 +48,45 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 	}
 
-	public function parseXSDValue($value, $unit) { // (ignore "unit")
-		global $wgContLang;
-		$this->m_dbkeyform = $value;
-		$this->m_textform = str_replace('_', ' ', $value);
-		$nstext = $wgContLang->getNSText($this->m_namespace);
-		if ($nstext !== '') {
-			$nstext .= ':';
+	protected function parseXSDValue($value, $unit) { // (ignore "unit")
+		// This method in its current for is not really useful for init, since the XSD value is just
+		// the (dbkey) title string without the namespace.
+		/// FIXME: change this to properly use a prefixed title string, in case someone wants to use this
+		$this->m_stubdata = array($value,$this->m_namespace,false);
+	}
+
+	protected function unstub() {
+		if (is_array($this->m_stubdata)) {
+			global $wgContLang;
+			$this->m_dbkeyform = $this->m_stubdata[0];
+			$this->m_namespace = $this->m_stubdata[1];
+// 			print "Unstub $this->m_dbkeyform  ";
+			$this->m_textform = str_replace('_', ' ', $this->m_dbkeyform);
+			$nstext = $wgContLang->getNSText($this->m_namespace);
+			if ($nstext !== '') {
+				$nstext .= ':';
+			}
+			$this->m_prefixedtext = $nstext . $this->m_textform;
+			$this->m_caption = $this->m_prefixedtext;
+			$this->m_value = $this->m_prefixedtext;
+			$this->m_title = Title::makeTitle($this->m_namespace, $this->m_dbkeyform);
+			if ($this->m_stubdata[2] === NULL) {
+				$this->m_id = 0;
+				$linkCache =& LinkCache::singleton();
+				$linkCache->addBadLinkObj($this->m_title); // prefill link cache, save lookups
+			} elseif ($this->m_stubdata[2] === false) {
+				$this->m_id = false;
+			} else {
+				$this->m_id = $this->m_stubdata[2];
+				$linkCache =& LinkCache::singleton();
+				$linkCache->addGoodLinkObj($this->m_id, $this->m_title); // prefill link cache, save lookups
+			}
+			$this->m_stubdata = false;
 		}
-		$this->m_prefixedtext = $nstext . $this->m_textform;
-		$this->m_caption = $this->m_prefixedtext;
-		$this->m_value = $this->m_prefixedtext;
-		$this->m_id = false; // unset id
-		$this->m_title = NULL; // unset title
 	}
 
 	public function getShortWikiText($linked = NULL) {
+		$this->unstub();
 		if ( ($linked === NULL) || ($linked === false) || (!$this->isValid()) || ($this->m_caption == '') ) {
 			return $this->m_caption;
 		} else {
@@ -72,6 +95,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText($linker = NULL) {
+		$this->unstub();
 		if ( ($linker === NULL) || (!$this->isValid()) || ($this->m_caption == '') ) {
 			return htmlspecialchars($this->m_caption);
 		} else {
@@ -84,6 +108,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	public function getLongWikiText($linked = NULL) {
+		$this->unstub();
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		}
@@ -97,6 +122,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	public function getLongHTMLText($linker = NULL) {
+		$this->unstub();
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		}
@@ -114,10 +140,12 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	public function getXSDValue() {
+		$this->unstub();
 		return $this->m_dbkeyform;
 	}
 
 	public function getWikiValue() {
+		$this->unstub();
 		if ($this->m_namespace == NS_CATEGORY) {
 			// escape to enable use in links; todo: not generally required/suitable :-/
 			return ':' . $this->m_prefixedtext;
@@ -127,6 +155,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	public function getHash() {
+		$this->unstub();
 		if ($this->isValid()) { // assume that XSD value + unit say all
 			return $this->m_prefixedtext;
 		} else {
@@ -135,13 +164,15 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	protected function getServiceLinkParams() {
+		$this->unstub();
 		// Create links to mapping services based on a wiki-editable message. The parameters 
 		// available to the message are:
 		// $1: urlencoded article name (no namespace)
 		return array(rawurlencode(str_replace('_',' ',$this->m_dbkeyform)));
 	}
 
-	public function getExportData() { // default implementation: encode value as untyped string
+	public function getExportData() {
+		$this->unstub();
 		if (!$this->isValid()) return NULL;
 		switch ($this->getNamespace()) {
 			case NS_MEDIA: // special handling for linking media files directly
@@ -171,6 +202,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * Return according Title object or NULL if no valid value was set.
 	 */
 	public function getTitle() {
+		$this->unstub();
 		if ($this->m_title === NULL){
 			if ($this->m_dbkeyform != '') {
 				$this->m_title = Title::makeTitle($this->m_namespace, $this->m_dbkeyform);
@@ -187,6 +219,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * Get MediaWiki's ID for this value, if any.
 	 */
 	public function getArticleID() {
+		$this->unstub();
 		if ($this->m_id === false) {
 			if ($this->getTitle() !== NULL) {
 				$this->m_id = $this->m_title->getArticleID();
@@ -202,6 +235,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * return FALSE.
 	 */
 	public function getNamespace() {
+		$this->unstub();
 		if (!$this->isValid()) {
 			return false;
 		}
@@ -212,6 +246,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * Get DBKey for this value.
 	 */
 	public function getDBkey() {
+		$this->unstub();
 		return $this->m_dbkeyform;
 	}
 
@@ -220,19 +255,10 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * available. Simplifies and speeds up creation from stored data.
 	 */
 	public function setValues($dbkey, $namespace, $id = false) {
-		$this->m_namespace = $namespace;
-		$this->setXSDValue($dbkey);
-		$linkCache =& LinkCache::singleton();
-		$this->m_title = Title::makeTitle($namespace, $dbkey);
-		if ($id === NULL) {
-			$this->m_id = 0;
-			$linkCache->addBadLinkObj($this->m_title); // prefill link cache, save lookups
-		} elseif ($id === false) {
-			$this->m_id = false;
-		} else {
-			$this->m_id = $id;
-			$linkCache->addGoodLinkObj($id, $this->m_title); // prefill link cache, save lookups
-		}
+		$this->setXSDValue($dbkey,''); // just used to trigger standard parent class methods!
+		/// TODO: rethink our standard set interfaces for datavalues to make wikipage fit better with the rest
+		$this->m_stubdata = array($dbkey, $namespace, $id);
+		$this->unstub();
 	}
 
 ///// Legacy methods for compatibility

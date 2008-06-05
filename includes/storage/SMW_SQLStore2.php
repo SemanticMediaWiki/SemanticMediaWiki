@@ -52,7 +52,7 @@ class SMWSQLStore2 extends SMWStore {
 			$sid = 0;
 			$result = NULL;
 		}
-		if ($sid == 0) { // no data, save our time
+		if ($sid == 0) { // no data, safe our time
 		/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
 			wfProfileOut("SMWSQLStore2::getSemanticData (SMW)");
 			return isset($stitle)?(new SMWSemanticData($stitle)):NULL;
@@ -86,7 +86,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		if (!array_key_exists($sid, $this->m_semdata)) { // new cache entry
-			$this->m_semdata[$sid] = new SMWSemanticData($stitle);
+			$this->m_semdata[$sid] = new SMWSemanticData($stitle, false);
 			$this->m_sdstate[$sid] = $tasks;
 		} else { // do only remaining tasks
 			$newtasks = $tasks & ~$this->m_sdstate[$sid];
@@ -101,6 +101,7 @@ class SMWSQLStore2 extends SMWStore {
 		// most types of data suggest rather similar code
 		foreach (array(SMW_SQL2_RELS2, SMW_SQL2_ATTS2, SMW_SQL2_TEXT2, SMW_SQL2_INST2, SMW_SQL2_SUBS2, SMW_SQL2_SPEC2, SMW_SQL2_REDI2) as $task) {
 			if ( !($tasks & $task) ) continue;
+			wfProfileIn("SMWSQLStore2::getSemanticData-task$task (SMW)");
 			$where = 'p_id=smw_id AND s_id=' . $db->addQuotes($sid);
 			switch ($task) {
 				case SMW_SQL2_RELS2:
@@ -176,6 +177,7 @@ class SMWSQLStore2 extends SMWStore {
 				}
 			}
 			$db->freeResult($res);
+			wfProfileOut("SMWSQLStore2::getSemanticData-task$task (SMW)");
 		}
 
 		// nary values
@@ -247,12 +249,12 @@ class SMWSQLStore2 extends SMWStore {
 
 	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore2::getSpecialValues-$specialprop (SMW)");
-		
+
 		if ($subject !== NULL) {
 			$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),'');
 		}
 		if ( ($sid == 0) && ($specialprop != SMW_SP_REDIRECTS_TO)) {
-			// NOTE: SMW_SP_REDIRECTS_TO is the only property, that objectgs without an SMW-ID may have
+			// NOTE: SMW_SP_REDIRECTS_TO is the only property, that objects without an SMW-ID may have
 			wfProfileOut("SMWSQLStore2::getSpecialValues-$specialprop (SMW)");
 			return array();
 		}
@@ -346,9 +348,13 @@ class SMWSQLStore2 extends SMWStore {
 		$sd = $this->getSemanticData($subject,array(SMWDataValueFactory::getPropertyObjectTypeID($property)));
 		$result = $this->applyRequestOptions($sd->getPropertyValues($property),$requestoptions);
 		if ($outputformat != '') {
+			$newres = array();
 			foreach ($result as $dv) {
-				$dv->setOutputFormat($outputformat);
+				$ndv = clone $dv;
+				$ndv->setOutputFormat($outputformat);
+				$newres[] = $ndv;
 			}
+			$result = $newres;
 		}
 		wfProfileOut("SMWSQLStore2::getPropertyValues (SMW)");
 		return $result;
@@ -716,7 +722,6 @@ class SMWSQLStore2 extends SMWStore {
 					$db->delete('smw_subs2', $cond_array, 'SMWSQLStore2::changeTitle');
 				}
 			}
-			/// TODO: test that
 			/// TODO: may not be optimal for the standard case that newtitle existed and redirected to oldtitle (PERFORMANCE)
 		}
 
@@ -831,7 +836,7 @@ class SMWSQLStore2 extends SMWStore {
 	}
 
 	function getStatistics() {
-		wfProfileIn("SMWSQLStore2::getStatistics (SMW)");
+		wfProfileIn('SMWSQLStore2::getStatistics (SMW)');
 		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
 		extract( $db->tableNames('smw_rels2', 'smw_atts2', 'smw_text2', 'smw_spec2') );
@@ -857,7 +862,7 @@ class SMWSQLStore2 extends SMWStore {
 		$result['DECLPROPS'] = $row->count;
 		$db->freeResult( $res );
 
-		wfProfileOut("SMWSQLStore2::getStatistics (SMW)");
+		wfProfileOut('SMWSQLStore2::getStatistics (SMW)');
 		return $result;
 	}
 
@@ -1007,10 +1012,14 @@ class SMWSQLStore2 extends SMWStore {
 	 * the given requestoptions as appropriate.
 	 */
 	protected function applyRequestOptions($data, $requestoptions) {
+		wfProfileIn("SMWSQLStore2::applyRequestOptions (SMW)");
 		$result = array();
 		$sortres = array();
 		$key = 0;
-		if ( (count($data) == 0) || ($requestoptions === NULL) ) return $data;
+		if ( (count($data) == 0) || ($requestoptions === NULL) ) {
+			wfProfileOut("SMWSQLStore2::applyRequestOptions (SMW)");
+			return $data;
+		}
 		foreach ($data as $item) {
 			$numeric = false;
 			$ok = true;
@@ -1080,6 +1089,7 @@ class SMWSQLStore2 extends SMWStore {
 		} else {
 			$result = array_slice($result,$requestoptions->offset);
 		}
+		wfProfileOut("SMWSQLStore2::applyRequestOptions (SMW)");
 		return $result;
 	}
 
@@ -1226,8 +1236,10 @@ class SMWSQLStore2 extends SMWStore {
 	 * If no such ID exists, 0 is returned.
 	 */
 	public function getSMWPageID($title, $namespace, $iw, $canonical=true) {
+		wfProfileIn('SMWSQLStore2::getSMWPageID (SMW)');
 		$key = "$iw $namespace $title " . ($canonical?'C':'-');
 		if (array_key_exists($key,$this->m_ids)) {
+			wfProfileOut('SMWSQLStore2::getSMWPageID (SMW)');
 			return $this->m_ids[$key];
 		}
 		$db =& wfGetDB( DB_SLAVE );
@@ -1254,6 +1266,7 @@ class SMWSQLStore2 extends SMWStore {
 			$this->m_ids = array();
 		}
 		$this->m_ids[$key] = $id;
+		wfProfileOut('SMWSQLStore2::getSMWPageID (SMW)');
 		return $id;
 	}
 
@@ -1264,6 +1277,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * If no such ID exists, a new ID is created and returned.
 	 */
 	protected function makeSMWPageID($title, $namespace, $iw, $canonical=true) {
+		wfProfileIn('SMWSQLStore2::makeSMWPageID (SMW)');
 		$id = $this->getSMWPageID($title, $namespace, $iw, $canonical);
 		if ($id == 0) {
 			$db =& wfGetDB( DB_MASTER );
@@ -1274,6 +1288,7 @@ class SMWSQLStore2 extends SMWStore {
 				$this->m_ids["$iw $namespace $title C"] = $id;
 			}
 		}
+		wfProfileOut('SMWSQLStore2::makeSMWPageID (SMW)');
 		return $id;
 	}
 
