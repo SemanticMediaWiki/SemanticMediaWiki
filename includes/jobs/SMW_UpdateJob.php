@@ -18,7 +18,6 @@ require_once( $IP . "/includes/JobQueue.php" );
 class SMWUpdateJob extends Job {
 
 	function __construct($title) {
-		wfDebug(__METHOD__." SMWUpdateJob " . $title->getText() . " \r\n");
 		parent::__construct( 'SMWUpdateJob', $title);
 	}
 
@@ -27,25 +26,22 @@ class SMWUpdateJob extends Job {
 	 * @return boolean success
 	 */
 	function run() {
-		wfDebug(__METHOD__);
+		wfProfileIn('SMWUpdateJob::run (SMW)');
 		global $wgParser, $smwgHeadItems;
-		wfProfileIn( __METHOD__ );
 
 		$linkCache =& LinkCache::singleton();
 		$linkCache->clear();
 
 		if ( is_null( $this->title ) ) {
 			$this->error = "SMWUpdateJob: Invalid title";
-			wfDebug($this->error);
-			wfProfileOut( __METHOD__ );
+			wfProfileOut('SMWUpdateJob::run (SMW)');
 			return false;
 		}
 
 		$revision = Revision::newFromTitle( $this->title );
 		if ( !$revision ) {
 			$this->error = 'SMWUpdateJob: Article not found "' . $this->title->getPrefixedDBkey() . '"';
-			wfDebug($this->error);
-			wfProfileOut( __METHOD__ );
+			wfProfileOut('SMWUpdateJob::run (SMW)');
 			return false;
 		}
 
@@ -61,9 +57,9 @@ class SMWUpdateJob extends Job {
 		wfProfileOut( __METHOD__.'-parse' );
 		wfProfileIn( __METHOD__.'-update' );
 
-		SMWFactbox::storeData(true); /// FIXME: why is this always true?
-		wfDebug("SMWUpdateJob done for ".$this->title->getText()."\r\n");	
+		SMWFactbox::storeData(true); /// FIXME: why is this just fixed to "true"?
 		wfProfileOut( __METHOD__.'-update' );
+		wfProfileOut('SMWUpdateJob::run (SMW)');
 		return true;
 	}
 }

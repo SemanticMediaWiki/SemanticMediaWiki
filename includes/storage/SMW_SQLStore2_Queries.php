@@ -87,7 +87,9 @@ class SMWSQLStore2QueryEngine {
 		$qobj->jointable = 'smw_ids';
 		$qobj->joinfield = "$qobj->alias.smw_id";
 		// build query dependency tree:
+		wfProfileIn('SMWSQLStore2Queries::compileMainQuery (SMW)');
 		$qid = $this->compileQueries($query->getDescription());
+		wfProfileOut('SMWSQLStore2Queries::compileMainQuery (SMW)');
 		if ($qid >= 0) { // append to root
 			$qobj->components = array($qid => "$qobj->alias.smw_id");
 			$qobj->sortfields = $this->m_queries[$qid]->sortfields;
@@ -95,7 +97,9 @@ class SMWSQLStore2QueryEngine {
 		$this->m_queries[$rootid] = $qobj;
 
 		$this->applyOrderConditions($query,$rootid); // may extend query if needed for sorting
+		wfProfileIn('SMWSQLStore2Queries::executeMainQuery (SMW)');
 		$this->executeQueries($this->m_queries[$rootid]); // execute query tree, resolve all dependencies
+		wfProfileOut('SMWSQLStore2Queries::executeMainQuery (SMW)');
 		switch ($query->querymode) {
 			case SMWQuery::MODE_DEBUG:
 				$result = $this->getDebugQueryResult($query,$rootid);
@@ -162,8 +166,10 @@ class SMWSQLStore2QueryEngine {
 	 * the proper counting output for the given query.
 	 */
 	protected function getCountQueryResult($query,$rootid) {
+		wfProfileIn('SMWSQLStore2Queries::getCountQueryResult (SMW)');
 		$qobj = $this->m_queries[$rootid];
 		if ($qobj->joinfield === '') { // empty result, no query needed
+			wfProfileOut('SMWSQLStore2Queries::getCountQueryResult (SMW)');
 			return 0;
 		}
 		$sql_options = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
@@ -171,6 +177,7 @@ class SMWSQLStore2QueryEngine {
 		$row = $this->m_dbs->fetchObject($res);
 		$count = $row->count;
 		$this->m_dbs->freeResult($res);
+		wfProfileOut('SMWSQLStore2Queries::getCountQueryResult (SMW)');
 		return $count;
 	}
 
@@ -179,9 +186,11 @@ class SMWSQLStore2QueryEngine {
 	 * the proper result instance output for the given query.
 	 */
 	protected function getInstanceQueryResult($query,$rootid) {
+		wfProfileIn('SMWSQLStore2Queries::getInstanceQueryResult (SMW)');
 		$qobj = $this->m_queries[$rootid];
 		if ($qobj->joinfield === '') { // empty result, no query needed
 			$result = new SMWQueryResult($query->getDescription()->getPrintrequests(), $query, false);
+			wfProfileOut('SMWSQLStore2Queries::getInstanceQueryResult (SMW)');
 			return $result;
 		}
 		$sql_options = $this->getSQLOptions($query,$rootid);
@@ -236,6 +245,7 @@ class SMWSQLStore2QueryEngine {
 			}
 			$result->addRow($row);
 		}
+		wfProfileOut('SMWSQLStore2Queries::getInstanceQueryResult (SMW)');
 		return $result;
 	}
 
@@ -498,6 +508,7 @@ class SMWSQLStore2QueryEngine {
 				/// TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
 			break;
 			case SMW_SQL2_PROP_HIERARCHY: case SMW_SQL2_CLASS_HIERARCHY: // make a saturated hierarchy
+				wfProfileIn("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
 				global $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
 				$depth = ($query->type == SMW_SQL2_PROP_HIERARCHY)?$smwgQSubpropertyDepth:$smwgQSubcategoryDepth;
 				if ($depth <= 0) { // treat as value, no recursion
@@ -512,16 +523,20 @@ class SMWSQLStore2QueryEngine {
 					$query->jointable = $query->alias;
 					$query->joinfield = "$query->alias.id";
 					if ($this->m_qmode == SMWQuery::MODE_DEBUG) {
+						wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
 						break; // no real queries in debug mode
 					}
-					$this->m_dbs->query( "CREATE TEMPORARY TABLE $query->alias" .
-					                     ' ( id INT UNSIGNED KEY ) TYPE=MEMORY', 'SMW::executeQueries' );
+
+					$this->m_dbs->query( "CREATE TEMPORARY TABLE $tablename " .
+					                     '( id INT UNSIGNED NOT NULL KEY) TYPE=MEMORY', 'SMW::executeQueries' );
 					if (array_key_exists($values, $this->m_hierarchies)) { // just copy known result
 						$this->m_dbs->query("INSERT INTO $tablename (id) SELECT id" .
 						                    ' FROM ' . $this->m_hierarchies[$values],
 						                    'SMW::executeQueries');
+						wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
 						break;
 					}
+
 					/// NOTE: we use two helper tables. One holds the results of each new iteration, one holds the
 					/// results of the previous iteration. One could of course do with only the above result table,
 					/// but then every iteration would use all elements of this table, while only the new ones 
@@ -529,16 +544,16 @@ class SMWSQLStore2QueryEngine {
 					$tmpnew = 'smw_new';
 					$tmpres = 'smw_res';
 					$this->m_dbs->query( "CREATE TEMPORARY TABLE $tmpnew " .
-					            '( id INT UNSIGNED NOT NULL ) TYPE=MEMORY', 'SMW::executeQueries' );
+					            '( id INT UNSIGNED ) TYPE=MEMORY', 'SMW::executeQueries' );
 					$this->m_dbs->query( "CREATE TEMPORARY TABLE $tmpres " .
-					            '( id INT UNSIGNED NOT NULL ) TYPE=MEMORY', 'SMW::executeQueries' );
+					            '( id INT UNSIGNED ) TYPE=MEMORY', 'SMW::executeQueries' );
 
 					$smw_subs2 = $this->m_dbs->tableName('smw_subs2');
 					$this->m_dbs->query("INSERT IGNORE INTO $tablename (id) VALUES $values", 'SMW::executeQueries');
 					$this->m_dbs->query("INSERT IGNORE INTO $tmpnew (id) VALUES $values", 'SMW::executeQueries');
 
 					for ($i=0; $i<$depth; $i++) {
-						$this->m_dbs->query("INSERT INTO $tmpres (id) SELECT s_id FROM $smw_subs2,$tmpnew WHERE o_id=id",
+						$this->m_dbs->query("INSERT INTO $tmpres (id) SELECT s_id FROM $smw_subs2, $tmpnew WHERE o_id=id",
 						           'SMW::executeQueries');
 						if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
 							break;
@@ -557,6 +572,7 @@ class SMWSQLStore2QueryEngine {
 					$this->m_dbs->query('DROP TEMPORARY TABLE smw_new', 'SMW::executeQueries');
 					$this->m_dbs->query('DROP TEMPORARY TABLE smw_res', 'SMW::executeQueries');
 				}
+			wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
 			break;
 			case SMW_SQL2_VALUE: break; // nothing to do
 		}
