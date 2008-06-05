@@ -89,7 +89,7 @@ class SMWSQLStore extends SMWStore {
 					case '__nry':
 						$do_nary = true;
 					break;
-					case SMW_SP_INSTANCE_OF: case SMW_SP_SUBCATEGORY_OF:
+					case SMW_SP_INSTANCE_OF: case SMW_SP_SUBCLASS_OF:
 						$do_cats = true;
 					break;
 					case SMW_SP_REDIRECTS_TO:
@@ -245,7 +245,7 @@ class SMWSQLStore extends SMWStore {
 				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 				$dv->setValues($row->cl_to, NS_CATEGORY);
 				if ($subject->getNamespace() == NS_CATEGORY) {
-					$result->addSpecialValue(SMW_SP_SUBCATEGORY_OF, $dv);
+					$result->addSpecialValue(SMW_SP_SUBCLASS_OF, $dv);
 				} else {
 					$result->addSpecialValue(SMW_SP_INSTANCE_OF, $dv);
 				}
@@ -296,7 +296,7 @@ class SMWSQLStore extends SMWStore {
 
 		$db =& wfGetDB( DB_SLAVE ); // TODO: Is '=&' needed in PHP5?
 		$result = array();
-		if ( ($specialprop === SMW_SP_INSTANCE_OF) ||  ($specialprop === SMW_SP_SUBCATEGORY_OF)) { // category membership
+		if ( ($specialprop === SMW_SP_INSTANCE_OF) ||  ($specialprop === SMW_SP_SUBCLASS_OF)) { // category membership
 			$sql = 'cl_from=' . $db->addQuotes($subjectid);
 			$res = $db->select( 'categorylinks',
 								'DISTINCT cl_to',
@@ -349,7 +349,7 @@ class SMWSQLStore extends SMWStore {
 
 		$result = array();
 
-		if ( ($specialprop === SMW_SP_INSTANCE_OF) || ($specialprop === SMW_SP_SUBCATEGORY_OF) ) { // category membership
+		if ( ($specialprop === SMW_SP_INSTANCE_OF) || ($specialprop === SMW_SP_SUBCLASS_OF) ) { // category membership
 			if ( !($value instanceof Title) || ($value->getNamespace() != NS_CATEGORY) ) {
 				wfProfileOut("SMWSQLStore::getSpecialSubjects-$specialprop (SMW)");
 				return array();
@@ -875,7 +875,7 @@ class SMWSQLStore extends SMWStore {
 				}
 			} else { // special property
 				switch ($property) {
-					case SMW_SP_IMPORTED_FROM: case SMW_SP_INSTANCE_OF: case SMW_SP_SUBCATEGORY_OF: case SMW_SP_REDIRECTS_TO:
+					case SMW_SP_IMPORTED_FROM: case SMW_SP_INSTANCE_OF: case SMW_SP_SUBCLASS_OF: case SMW_SP_REDIRECTS_TO:
 						// don't store this, just used for display;
 						// TODO: filtering here is bad for fully neglected properties (IMPORTED FROM)
 					break;
