@@ -107,7 +107,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		}
 
 		// show link to more results
-		if ( $this->mInline && $res->hasFurtherResults() ) {
+		if ( $this->mInline && $res->hasFurtherResults() && ($this->mSearchlabel !== '') ) {
 			$link = $res->getQueryLink();
 			if ($this->mSearchlabel) {
 				$link->setCaption($this->mSearchlabel);
