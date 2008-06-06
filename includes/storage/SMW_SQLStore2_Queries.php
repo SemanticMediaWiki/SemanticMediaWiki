@@ -259,44 +259,14 @@ class SMWSQLStore2QueryEngine {
 		$qid = SMWSQLStore2Query::$qnum;
 		$query = new SMWSQLStore2Query();
 		if ($description instanceof SMWSomeProperty) {
-			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($description->getProperty());
-			$query->joinfield = "$query->alias.s_id";
-			$pid = $this->m_store->getSMWPageID($description->getProperty()->getDBkey(), $description->getProperty()->getNamespace(),'');
-			$pqid = SMWSQLStore2Query::$qnum;
-			$pquery = new SMWSQLStore2Query();
-			$pquery->type = SMW_SQL2_PROP_HIERARCHY;
-			$pquery->joinfield = array($pid);
-			$query->components[$pqid] = "$query->alias.p_id";
-			$this->m_queries[$pqid] = $pquery;
-			$sortfield = ''; // used if we should sort by this property
-			switch ($typeid) {
-				case '_wpg': case '__nry': // subconditions as subqueries (compiled)
-					$query->jointable = 'smw_rels2';
-					$sub = $this->compileQueries($description->getDescription());
-					if ($sub >= 0) {
-						$query->components[$sub] = "$query->alias.o_id";
-					}
-					if ( array_key_exists($description->getProperty()->getDBkey(), $this->m_sortkeys) ) {
-						$query->from = ' INNER JOIN ' . $this->m_dbs->tableName('smw_ids') . " AS ids$query->alias ON ids$query->alias.smw_id=$query->alias.o_id";
-						$sortfield = "ids$query->alias.smw_title"; /// TODO: as below, smw_ids here is possibly duplicated! Can we prevent that? (PERFORMANCE)
-					}
-				break;
-				case '_txt': // no subconditions
-					$query->jointable = 'smw_text2';
-				break;
-				default: // subquery only conj/disj of values, compile to single "where"
-					$query->jointable = 'smw_atts2';
-					$aw = $this->compileAttributeWhere($description->getDescription(),"$query->alias");
-					if ($aw != '') {
-						$query->where .= ($query->where?' AND ':'') . $aw;
-					}
-					if ( array_key_exists($description->getProperty()->getDBkey(), $this->m_sortkeys) ) {
-						$sortfield = "$query->alias." .  (SMWDataValueFactory::newTypeIDValue($typeid)->isNumeric()?'value_num':'value_xsd');
-					}
-			}
-			if ($sortfield) {
-				$query->sortfields[$description->getProperty()->getDBkey()] = $sortfield;
-			}
+// 			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($description->getProperty());
+// 			$typevalue = NULL;
+// 			if ($typeid == '__nry') {
+// 				$typevalue = SMWDataValueFactory::getPropertyObjectTypeValue($description->getProperty());
+// 			}
+// 			$pid = $this->m_store->getSMWPageID($description->getProperty()->getDBkey(), $description->getProperty()->getNamespace(),'');
+// 			$this->compilePropertyCondition($query, $pid, $typeid, $typevalue, $description->getProperty()->getDBkey(), $description->getDescription());
+			$this->compilePropertyCondition($query, $description->getProperty(), $description->getDescription());
 		} elseif ($description instanceof SMWNamespaceDescription) { /// TODO: One instance of smw_ids on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
 			$query->jointable = 'smw_ids';
 			$query->joinfield = "$query->alias.smw_id";
@@ -330,8 +300,6 @@ class SMWSQLStore2QueryEngine {
 				$query->components[$cqid] = "$query->alias.o_id";
 				$this->m_queries[$cqid] = $cquery;
 			}
-		} elseif ($description instanceof SMWValueList) {
-			$qid = -1; /// TODO
 		} elseif ($description instanceof SMWValueDescription) { // only processsed here for '_wpg'
 			if ($description->getDatavalue()->getTypeID() == '_wpg') {
 				if ($description->getComparator() == SMW_CMP_EQ) {
@@ -354,7 +322,7 @@ class SMWSQLStore2QueryEngine {
 					$query->where = "$query->alias.smw_title$comp" . $this->m_dbs->addQuotes($value);
 				}
 			}
-		} else { // (e.g. SMWThingDescription)
+		} else { // (e.g. SMWThingDescription, SMWValueList is also treated elswhere)
 			$qid = -1; // no condition
 		}
 		if ($qid >= 0) {
@@ -366,6 +334,88 @@ class SMWSQLStore2QueryEngine {
 			}
 		}
 		return $qid;
+	}
+
+	/**
+	 * Modify the given query object to account for some property condition for the given property.
+	 * The parameter $property may be a Title object or an internal storage id. This is what makes
+	 * this method useful: it can be used even with internal properties that have no MediaWiki Title.
+	 * $typeid is set if property ids are used, since internal properties may not have a defined type.
+	 */
+	protected function compilePropertyCondition(&$query, $property, SMWDescription $valuedesc, $typeid=false) {
+		$query->joinfield = "$query->alias.s_id";
+		if ($property instanceof Title) {
+			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
+			$pid = $this->m_store->getSMWPageID($property->getDBkey(), $property->getNamespace(),'');
+			$sortkey = $property->getDBkey();
+			// also make property hierarchy
+			$pqid = SMWSQLStore2Query::$qnum;
+			$pquery = new SMWSQLStore2Query();
+			$pquery->type = SMW_SQL2_PROP_HIERARCHY;
+			$pquery->joinfield = array($pid);
+			$query->components[$pqid] = "$query->alias.p_id";
+			$this->m_queries[$pqid] = $pquery;
+		} else {
+			$pid = $property;
+			$sortkey = false;
+			// no property hierarchy
+			$query->where = "$query->alias.p_id=" . $this->m_dbs->addQuotes($pid);
+		}
+		$sortfield = ''; // used if we should sort by this property
+		switch ($typeid) {
+			case '_wpg': // subconditions as subqueries (compiled)
+				$query->jointable = 'smw_rels2';
+				$sub = $this->compileQueries($valuedesc);
+				if ($sub >= 0) {
+					$query->components[$sub] = "$query->alias.o_id";
+				}
+				if ( $sortkey && array_key_exists($sortkey, $this->m_sortkeys) ) {
+					$query->from = ' INNER JOIN ' . $this->m_dbs->tableName('smw_ids') . " AS ids$query->alias ON ids$query->alias.smw_id=$query->alias.o_id";
+					$sortfield = "ids$query->alias.smw_title"; /// TODO: as below, smw_ids here is possibly duplicated! Can we prevent that? (PERFORMANCE)
+				}
+			break;
+			case '__nry':
+				$query->jointable = 'smw_rels2';
+				if ($valuedesc instanceof SMWValueList) { // anything else is ignored!
+					$typevalue = SMWDataValueFactory::getPropertyObjectTypeValue($property);
+					$typelabels = $typevalue->getTypeLabels();
+					reset($typelabels);
+					$subqid = SMWSQLStore2Query::$qnum;
+					$subquery = new SMWSQLStore2Query();
+					$subquery->type = SMW_SQL2_CONJUNCTION;
+					$query->components[$subqid] = "$query->alias.o_id";
+					$this->m_queries[$subqid] = $subquery;
+					for ($i=0; $i<$valuedesc->getCount(); $i++) {
+						$desc = $valuedesc->getDescription($i);
+						if ($desc !== NULL) {
+							$stypeid = SMWDataValueFactory::findTypeID(current($typelabels));
+							$valpid = $this->m_store->getSMWPageID(strval($i),SMW_NS_PROPERTY,SMW_SQL2_SMWIW);
+							$valqid = SMWSQLStore2Query::$qnum;
+							$valquery = new SMWSQLStore2Query();
+							$this->compilePropertyCondition($valquery, $valpid, $desc, $stypeid);
+							$subquery->components[$valqid] = true;
+							$this->m_queries[$valqid] = $valquery;
+						}
+						next($typelabels);
+					}
+				}
+			break;
+			case '_txt': // no subconditions
+				$query->jointable = 'smw_text2';
+			break;
+			default: // subquery only conj/disj of values, compile to single "where"
+				$query->jointable = 'smw_atts2';
+				$aw = $this->compileAttributeWhere($valuedesc,"$query->alias");
+				if ($aw != '') {
+					$query->where .= ($query->where?' AND ':'') . $aw;
+				}
+				if ( $sortkey && array_key_exists($sortkey, $this->m_sortkeys) ) {
+					$sortfield = "$query->alias." .  (SMWDataValueFactory::newTypeIDValue($typeid)->isNumeric()?'value_num':'value_xsd');
+				}
+		}
+		if ($sortfield) {
+			$query->sortfields[$sortkey] = $sortfield;
+		}
 	}
 
 	/**
