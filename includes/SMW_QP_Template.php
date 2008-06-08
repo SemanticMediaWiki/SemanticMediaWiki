@@ -13,6 +13,7 @@
 class SMWTemplateResultPrinter extends SMWResultPrinter {
 
 	protected $m_template;
+	protected $m_userparam;
 
 	protected function readParameters($params,$outputmode) {
 		SMWResultPrinter::readParameters($params,$outputmode);
@@ -21,6 +22,12 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 			$this->m_template = trim($params['template']);
 		} else {
 			$this->m_template = false;
+		}
+
+		if (array_key_exists('userparam', $params)) {
+			$this->m_userparam = trim($params['userparam']);
+		} else {
+			$this->m_userparam = false;
 		}
 	}
 
@@ -41,14 +48,14 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 		$parserinput = $this->mIntro;
 		while ( $row = $res->getNext() ) {
 			$i = 1; // explicitly number parameters for more robust parsing (values may contain "=")
-			$wikitext = '';
+			$wikitext = ($this->m_userparam)?"|userparam=$this->m_userparam":'';
 			$firstcol = true;
 			foreach ($row as $field) {
 				$wikitext .= '|' . $i++ . '=';
 				$first = true;
 				while ( ($text = $field->getNextText(SMW_OUTPUT_WIKI, $this->getLinker($firstcol))) !== false ) {
 					if ($first) {
-						$first = false; 
+						$first = false;
 					} else {
 						$wikitext .= ', ';
 					}
