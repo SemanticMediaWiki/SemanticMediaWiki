@@ -1467,7 +1467,11 @@ class SMWSQLStore extends SMWStore {
 			}
 			if ($labelcol !== NULL) { // apply string conditions
 				foreach ($requestoptions->getStringConditions() as $strcond) {
-					$string = str_replace(array('_', ' '), array('\_', '\_'), $strcond->string);
+					if ($labelcol == 'value_xsd') {
+						$string = str_replace('_', '\_', $strcond->string);
+					} else { // equate ' ' to '_' for title strings
+						$string = str_replace(array('_', ' '), array('\_', '\_'), $strcond->string);
+					}
 					switch ($strcond->condition) {
 						case SMW_STRCOND_PRE:
 							$string .= '%';

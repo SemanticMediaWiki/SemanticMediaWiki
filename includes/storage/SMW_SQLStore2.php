@@ -992,7 +992,7 @@ class SMWSQLStore2 extends SMWStore {
 			}
 			if ($labelcol !== NULL) { // apply string conditions
 				foreach ($requestoptions->getStringConditions() as $strcond) {
-					$string = str_replace(array('_', ' '), array('\_', '\_'), $strcond->string);
+					$string = str_replace('_', '\_', $strcond->string);
 					switch ($strcond->condition) {
 						case SMW_STRCOND_PRE:  $string .= '%'; break;
 						case SMW_STRCOND_POST: $string = '%' . $string; break;
@@ -1032,7 +1032,7 @@ class SMWSQLStore2 extends SMWStore {
 					$value = $label;
 				}
 			} else { // instance of Title
-				$label = $item->getPrefixedText();
+				$label = $item->getText(); /// NOTE: no prefixed text, since only Text is used in SQL operations
 				$value = $label;
 			}
 			if ($requestoptions->boundary !== NULL) { // apply value boundary
