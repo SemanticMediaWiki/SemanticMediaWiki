@@ -51,7 +51,7 @@ class SMWNAryValue extends SMWDataValue {
 			if ($this->m_querysyntax) {
 				$comparator = SMW_CMP_EQ;
 				$printmodifier = '';
-				$this->prepareValue($values[$vi], $comparator, $printmodifier);
+				SMWQueryParser::prepareValue($values[$vi], $comparator, $printmodifier);
 				if ($values[$vi] == '*') { // print statement, treat as omission
 					$this->m_printstatement = true;
 					$values[$vi] = '';
@@ -320,39 +320,6 @@ class SMWNAryValue extends SMWDataValue {
 			return false;
 		}
 		return implode(';', $this->m_outputmodifiers);
-	}
-
-	private function prepareValue(&$value, &$comparator, &$printmodifier) {
-		// get print modifier behind *
-		$list = preg_split('/^\*/',$value,2);
-		if (count($list) == 2) { //hit
-			$value = '*';
-			$printmodifier = $list[1];
-		} else {
-			$printmodifier = '';
-		}
-		if ($value == '*') { // printout statement
-			return;
-		}
-		$list = preg_split('/^(<|>|!)/',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
-		$comparator = SMW_CMP_EQ;
-		if (count($list) == 3) { // initial comparator found ($list[1] should be empty)
-			switch ($list[1]) {
-				case '<':
-					$comparator = SMW_CMP_LEQ;
-					$value = $list[2];
-				break;
-				case '>':
-					$comparator = SMW_CMP_GEQ;
-					$value = $list[2];
-				break;
-				case '!':
-					$comparator = SMW_CMP_NEQ;
-					$value = $list[2];
-				break;
-				//default: not possible
-			}
-		}
 	}
 
 	/**

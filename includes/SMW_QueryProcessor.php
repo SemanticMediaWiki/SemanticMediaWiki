@@ -702,7 +702,7 @@ class SMWQueryParser {
 					} else { // unary value
 						$comparator = SMW_CMP_EQ;
 						$printmodifier = '';
-						$this->prepareValue($value, $comparator, $printmodifier);
+						SMWQueryParser::prepareValue($value, $comparator, $printmodifier);
 						if ($value == '*') {
 							if ($chunk == '|') {
 								$printlabel = $this->readChunk('\]\]');
@@ -755,7 +755,7 @@ class SMWQueryParser {
 	 * printmodifier. $value is changed to consist only of the remaining
 	 * effective value string, or of "*" for print statements.
 	 */
-	protected function prepareValue(&$value, &$comparator, &$printmodifier) {
+	static public function prepareValue(&$value, &$comparator, &$printmodifier) {
 		global $smwgQComparators;
 		// get print modifier behind *
 		$list = preg_split('/^\*/',$value,2);
