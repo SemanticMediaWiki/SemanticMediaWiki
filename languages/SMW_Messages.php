@@ -2854,6 +2854,7 @@ Prosím, zadajte stránku aj vlastnosť.',
  * @author M.M.S.
  * @author Leo Johannes
  * @author Lejonel
+ * @author Flrn
  */
 $messages['sv'] = array(
 	'smw_edithelp'               => 'Redigeringshjälp för egenskaper',
