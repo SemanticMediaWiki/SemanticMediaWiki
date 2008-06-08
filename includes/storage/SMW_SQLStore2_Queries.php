@@ -558,74 +558,94 @@ class SMWSQLStore2QueryEngine {
 				/// TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
 			break;
 			case SMW_SQL2_PROP_HIERARCHY: case SMW_SQL2_CLASS_HIERARCHY: // make a saturated hierarchy
-				wfProfileIn("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
-				global $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
-				$depth = ($query->type == SMW_SQL2_PROP_HIERARCHY)?$smwgQSubpropertyDepth:$smwgQSubcategoryDepth;
-				if ($depth <= 0) { // treat as value, no recursion
-					$query->type = SMW_SQL2_VALUE;
-				} else {
-					$values = '';
-					foreach ($query->joinfield as $value) {
-						$values .= ($values?',':'') . '(' . $this->m_dbs->addQuotes($value) . ')';
-					}
-					$tablename = $this->m_dbs->tableName($query->alias);
-					$this->m_querylog[$query->alias] = array("Recursively computed hierarchy for element(s) $values.");
-					$query->jointable = $query->alias;
-					$query->joinfield = "$query->alias.id";
-					if ($this->m_qmode == SMWQuery::MODE_DEBUG) {
-						wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
-						break; // no real queries in debug mode
-					}
-
-					$this->m_dbs->query( "CREATE TEMPORARY TABLE $tablename " .
-					                     '( id INT UNSIGNED NOT NULL KEY) TYPE=MEMORY', 'SMW::executeQueries' );
-					if (array_key_exists($values, $this->m_hierarchies)) { // just copy known result
-						$this->m_dbs->query("INSERT INTO $tablename (id) SELECT id" .
-						                    ' FROM ' . $this->m_hierarchies[$values],
-						                    'SMW::executeQueries');
-						wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
-						break;
-					}
-
-					/// NOTE: we use two helper tables. One holds the results of each new iteration, one holds the
-					/// results of the previous iteration. One could of course do with only the above result table,
-					/// but then every iteration would use all elements of this table, while only the new ones 
-					/// obtained in the previous step are relevant. So this is a performance measure.
-					$tmpnew = 'smw_new';
-					$tmpres = 'smw_res';
-					$this->m_dbs->query( "CREATE TEMPORARY TABLE $tmpnew " .
-					            '( id INT UNSIGNED ) TYPE=MEMORY', 'SMW::executeQueries' );
-					$this->m_dbs->query( "CREATE TEMPORARY TABLE $tmpres " .
-					            '( id INT UNSIGNED ) TYPE=MEMORY', 'SMW::executeQueries' );
-
-					$smw_subs2 = $this->m_dbs->tableName('smw_subs2');
-					$this->m_dbs->query("INSERT IGNORE INTO $tablename (id) VALUES $values", 'SMW::executeQueries');
-					$this->m_dbs->query("INSERT IGNORE INTO $tmpnew (id) VALUES $values", 'SMW::executeQueries');
-
-					for ($i=0; $i<$depth; $i++) {
-						$this->m_dbs->query("INSERT INTO $tmpres (id) SELECT s_id FROM $smw_subs2, $tmpnew WHERE o_id=id",
-						           'SMW::executeQueries');
-						if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
-							break;
-						}
-						$this->m_dbs->query("INSERT IGNORE INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
-						           'SMW::executeQueries');
-						if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
-							break;
-						}
-						$this->m_dbs->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::executeQueries'); // empty "new" table
-						$tmpname = $tmpnew;
-						$tmpnew = $tmpres;
-						$tmpres = $tmpname;
-					}
-					$this->m_hierarchies[$values] = $tablename;
-					$this->m_dbs->query('DROP TEMPORARY TABLE smw_new', 'SMW::executeQueries');
-					$this->m_dbs->query('DROP TEMPORARY TABLE smw_res', 'SMW::executeQueries');
-				}
-			wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+				$this->executeHierarchyQuery($query);
 			break;
 			case SMW_SQL2_VALUE: break; // nothing to do
 		}
+	}
+	
+	/**
+	 * Find subproperties or subcategories. This may require iterative computation,
+	 * and temporary tables are used in many cases.
+	 */
+	protected function executeHierarchyQuery(&$query) {
+		wfProfileIn("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+		global $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
+		$depth = ($query->type == SMW_SQL2_PROP_HIERARCHY)?$smwgQSubpropertyDepth:$smwgQSubcategoryDepth;
+		if ($depth <= 0) { // treat as value, no recursion
+			$query->type = SMW_SQL2_VALUE;
+			wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+			return;
+		}
+		$values = '';
+		$valuecond = '';
+		foreach ($query->joinfield as $value) {
+			$values .= ($values?',':'') . '(' . $this->m_dbs->addQuotes($value) . ')';
+			$valuecond .= ($valuecond?' OR ':'') . 'o_id=' . $this->m_dbs->addQuotes($value);
+		}
+		$smw_subs2 = $this->m_dbs->tableName('smw_subs2');
+		// try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
+		$res = $this->m_dbs->select($smw_subs2,'s_id',$valuecond, array('LIMIT'=>1));
+		if (!$this->m_dbs->fetchObject($res)) { // no subobjects, we are done!
+			$query->type = SMW_SQL2_VALUE;
+			$this->m_dbs->freeResult($res);
+			wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+			return;
+		}
+		$this->m_dbs->freeResult($res);
+		$tablename = $this->m_dbs->tableName($query->alias);
+		$this->m_querylog[$query->alias] = array("Recursively computed hierarchy for element(s) $values.");
+		$query->jointable = $query->alias;
+		$query->joinfield = "$query->alias.id";
+		if ($this->m_qmode == SMWQuery::MODE_DEBUG) {
+			wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+			return; // no real queries in debug mode
+		}
+
+		$this->m_dbs->query( "CREATE TEMPORARY TABLE $tablename " .
+								'( id INT UNSIGNED NOT NULL KEY) TYPE=MEMORY', 'SMW::executeQueries' );
+		if (array_key_exists($values, $this->m_hierarchies)) { // just copy known result
+			$this->m_dbs->query("INSERT INTO $tablename (id) SELECT id" .
+								' FROM ' . $this->m_hierarchies[$values],
+								'SMW::executeQueries');
+			wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+			break;
+		}
+
+		/// NOTE: we use two helper tables. One holds the results of each new iteration, one holds the
+		/// results of the previous iteration. One could of course do with only the above result table,
+		/// but then every iteration would use all elements of this table, while only the new ones 
+		/// obtained in the previous step are relevant. So this is a performance measure.
+		$tmpnew = 'smw_new';
+		$tmpres = 'smw_res';
+		$this->m_dbs->query( "CREATE TEMPORARY TABLE $tmpnew " .
+					'( id INT UNSIGNED ) TYPE=MEMORY', 'SMW::executeQueries' );
+		$this->m_dbs->query( "CREATE TEMPORARY TABLE $tmpres " .
+					'( id INT UNSIGNED ) TYPE=MEMORY', 'SMW::executeQueries' );
+
+		$this->m_dbs->query("INSERT IGNORE INTO $tablename (id) VALUES $values", 'SMW::executeQueries');
+		$this->m_dbs->query("INSERT IGNORE INTO $tmpnew (id) VALUES $values", 'SMW::executeQueries');
+
+		for ($i=0; $i<$depth; $i++) {
+			$this->m_dbs->query("INSERT INTO $tmpres (id) SELECT s_id FROM $smw_subs2, $tmpnew WHERE o_id=id",
+						'SMW::executeQueries');
+			if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
+				break;
+			}
+			$this->m_dbs->query("INSERT IGNORE INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
+						'SMW::executeQueries');
+			if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
+				break;
+			}
+			$this->m_dbs->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::executeQueries'); // empty "new" table
+			$tmpname = $tmpnew;
+			$tmpnew = $tmpres;
+			$tmpres = $tmpname;
+		}
+		$this->m_hierarchies[$values] = $tablename;
+		$this->m_dbs->query('DROP TEMPORARY TABLE smw_new', 'SMW::executeQueries');
+		$this->m_dbs->query('DROP TEMPORARY TABLE smw_res', 'SMW::executeQueries');
+		wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
 	}
 
 	/**
