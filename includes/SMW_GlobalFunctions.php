@@ -169,7 +169,9 @@ function smwfSetupExtension() {
 
 	$smwgMasterStore = NULL;
 	smwfInitContentLanguage($wgLanguageCode); // this really could not be done in enableSemantics()
-	wfLoadExtensionMessages('SemanticMediaWiki');
+	wfLoadExtensionMessages('SemanticMediaWiki'); /// FIXME: this is extremely slow; up to 10% of page display time (on a page with queries!) are consumed by loading unnecessary messages from a large file ...
+	/// Past SMW releases had an average of about 1% extension loading time per call, while we are now up at 10%!
+	/// Should we return to our earlier message management for releases?
 	$smwgIQRunningNumber = 0;
 
 	///// register hooks /////
