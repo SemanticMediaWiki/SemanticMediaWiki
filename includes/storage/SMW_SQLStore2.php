@@ -390,6 +390,10 @@ class SMWSQLStore2 extends SMWStore {
 			}
 		break;
 		case '__nry':
+			if ($value === NULL) { // no value -- handled just like for wikipage
+				$table = 'smw_rels2';
+				break;
+			}
 			$values = $value->getDVs();
 			$smw_rels2 = $db->tableName('smw_rels2');
 			$smw_ids = $db->tableName('smw_ids');
