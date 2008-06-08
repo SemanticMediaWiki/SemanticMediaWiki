@@ -1204,28 +1204,43 @@ class SMWSQLStore extends SMWStore {
 		wfProfileIn("SMWSQLStore::getUnusedPropertiesSpecial (SMW)");
 		/// FIXME filter out the builtin properties!
 		$db =& wfGetDB( DB_SLAVE );
-		$options = ' ORDER BY page_title';
+		$options = ' ORDER BY title';
 		if ($requestoptions->limit > 0) {
 			$options .= ' LIMIT ' . $requestoptions->limit;
 		}
 		if ($requestoptions->offset > 0) {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
+
+		// Originally this was implemented as a set of left joins, but the performance was horrible.
+		// It has been re-implemented using a scratch table
+		
+		/// Get a scratch table to delete from
 		extract( $db->tableNames('page', 'smw_relations', 'smw_attributes', 'smw_longstrings', 'smw_nary', 'smw_subprops') );
-		/// TODO: any chance of making this more efficient?
-		$res = $db->query("SELECT page_title FROM $page LEFT JOIN $smw_relations ON page_title=$smw_relations.relation_title" .
-		                  " LEFT JOIN $smw_attributes ON page_title=$smw_attributes.attribute_title " .
-		                  " LEFT JOIN $smw_longstrings ON page_title=$smw_longstrings.attribute_title " .
-		                  " LEFT JOIN $smw_nary ON page_title=$smw_nary.attribute_title " .
-		                  " LEFT JOIN $smw_subprops ON page_title=$smw_subprops.object_title " .
-		                  " WHERE page_namespace=" . SMW_NS_PROPERTY .  " AND $smw_relations.subject_id IS NULL" .
-		                  " AND $smw_attributes.subject_id IS NULL AND $smw_longstrings.subject_id IS NULL" .
-		                  " AND $smw_nary.subject_id IS NULL AND $smw_subprops.subject_title IS NULL" . $options,
-		                  'SMW::getUnusedPropertySubjects');
+
+		$db->query( 'CREATE TEMPORARY TABLE smw_unusedProps' .
+		            ' ( title VARCHAR(255)) TYPE=MEMORY', 'SMW::getUnusedPropertiesSpecial' );
+
+		$db->query( "INSERT INTO smw_unusedProps SELECT page_title FROM $page" .
+		            " WHERE page_namespace=" . SMW_NS_PROPERTY , 'SMW::getUnusedPropertySubjects');
+		$db->query( "DELETE smw_unusedProps.* FROM smw_unusedProps, $smw_relations" .
+		            " WHERE title=relation_title" , 'SMW::getUnusedPropertySubjects');
+		$db->query( "DELETE smw_unusedProps.* FROM smw_unusedProps, $smw_attributes" .
+		            " WHERE title=attribute_title" , 'SMW::getUnusedPropertySubjects');
+		$db->query( "DELETE smw_unusedProps.* FROM smw_unusedProps, $smw_longstrings" .
+		            " WHERE title=attribute_title" , 'SMW::getUnusedPropertySubjects');
+		$db->query( "DELETE smw_unusedProps.* FROM smw_unusedProps, $smw_nary" .
+		            " WHERE title=attribute_title" , 'SMW::getUnusedPropertySubjects');
+		$db->query( "DELETE smw_unusedProps.* FROM smw_unusedProps, $smw_subprops" .
+		            " WHERE title=object_title" , 'SMW::getUnusedPropertySubjects');	
+
+		$res = $db->query("SELECT title from smw_unusedProps " . $options, 'SMW::getUnusedPropertySubjects');
 		$result = array();
 		while($row = $db->fetchObject($res)) {
-			$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->page_title);
+			$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->title);
 		}
+		$db->freeResult($res);
+		$db->query("DROP table smw_unusedProps", 'SMW::getUnusedPropertySubjects');
 		wfProfileOut("SMWSQLStore::getUnusedPropertiesSpecial (SMW)");
 		return $result;
 	}
