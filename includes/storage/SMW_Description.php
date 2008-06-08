@@ -411,7 +411,7 @@ class SMWValueDescription extends SMWDescription {
 					$comparator = '!'; // not supported yet?
 				break;
 				case SMW_CMP_LIKE: 
-					$comparator = '%'; // not supported yet?
+					$comparator = '~'; // not supported yet?
 				break;
 				default: case SMW_CMP_EQ: 
 					$comparator = '';
