@@ -114,7 +114,7 @@ class SMWSQLStore2QueryEngine {
 		// finally, free temporary tables
 		if ($this->m_qmode !== SMWQuery::MODE_DEBUG) {
 			foreach ($this->m_querylog as $table => $log) {
-				$this->m_dbs->query("DROP TEMPORARY TABLE $table", 'SMW::getQueryResult');
+				$this->m_dbs->query("DROP TEMPORARY TABLE " . $this->m_dbs->tableName($table), 'SMW::getQueryResult');
 			}
 		}
 		return $result;
