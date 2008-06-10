@@ -264,7 +264,7 @@ class SMWSQLStore2 extends SMWStore {
 		return $result;
 	}
 
-	function getSpecialSubjects($specialprop, $value, $requestoptions = NULL) {
+	function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore2::getSpecialSubjects-$specialprop (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 

@@ -55,7 +55,7 @@ class SMWTestStore extends SMWStore {
 		}
 	}
 
-	function getSpecialSubjects($specialprop, $value, $requestoptions = NULL) {
+	function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = NULL) {
 		if ($specialprop === SMW_SP_INSTANCE_OF) { // category membership
 			if ( !($value instanceof Title) || ($value->getNamespace() != NS_CATEGORY) ) {
 				return array();

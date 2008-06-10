@@ -270,7 +270,7 @@ class SMWRAPStore extends SMWSQLStore {
 	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
 		return parent::getSpecialValues($subject, $specialprop, $requestoptions);
 	}
-	function getSpecialSubjects($specialprop, $value, $requestoptions = NULL) {
+	function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = NULL) {
 		return parent::getSpecialSubjects($specialprop, $value, $requestoptions);
 	}
 

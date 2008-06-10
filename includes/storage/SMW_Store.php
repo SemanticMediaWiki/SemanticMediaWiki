@@ -140,7 +140,7 @@ abstract class SMWStore {
 	 * (identified as usual by an integer constant). The result is an array of titles. The tpye of
 	 * the input value depends on the kind of special property that was requested
 	 */
-	abstract function getSpecialSubjects($specialprop, $value, $requestoptions = NULL);
+	abstract function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = NULL);
 
 	/**
 	 * Get an array of all property values stored for the given subject and property. The result
