@@ -63,9 +63,10 @@ class SMWSpecialBrowse extends SpecialPage {
 			$atts = &smwfGetStore()->getProperties($article->getTitle(), $options);
 			$cats = &smwfGetStore()->getSpecialValues($article->getTitle(), SMW_SP_INSTANCE_OF, $options);
 			$redout = &smwfGetStore()->getSpecialValues($article->getTitle(), SMW_SP_REDIRECTS_TO, $options);
-			$redin = &smwfGetStore()->getSpecialSubjects(SMW_SP_REDIRECTS_TO, $article->getTitle(), $options);
+			$articledv = SMWDataValueFactory::newSpecialValue(SMW_SP_REDIRECTS_TO,$article->getTitle()->getDBkey());
+			$redin = &smwfGetStore()->getSpecialSubjects(SMW_SP_REDIRECTS_TO, $articledv, $options);
 			$options->limit = $innerlimit;
-			$instances = &smwfGetStore()->getSpecialSubjects(SMW_SP_INSTANCE_OF, $article->getTitle(), $options);
+			$instances = &smwfGetStore()->getSpecialSubjects(SMW_SP_INSTANCE_OF, $articledv, $options);
 			$options->limit = $limit+1;
 			$options->offset = $offset;
 			// get results (get one more, to see if we have to add a link to more)
