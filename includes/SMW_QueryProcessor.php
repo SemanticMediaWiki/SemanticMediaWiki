@@ -537,19 +537,22 @@ class SMWQueryParser {
 	 */
 	protected function getLinkDescription(&$setNS, &$label) {
 		// This method is called when we encountered an opening '[['. The following
-		// block could be a Category-statement, fixed object, property statements, 
+		// block could be a Category-statement, fixed object, property statements,
 		// or according print statements.
-		$chunk = $this->readChunk();
-		if ($chunk == $this->m_categoryprefix) { // category statement
+		$chunk = $this->readChunk('',true,false); // NOTE: untrimmed, initial " " escapes prop. chains
+		if (smwfNormalTitleText($chunk) == $this->m_categoryprefix) { // category statement
 			return $this->getCategoryDescription($setNS, $label);
 		} else { // fixed subject, namespace restriction, property query, or subquery
 			$sep = $this->readChunk('',false); //do not consume hit, "look ahead"
-			if ($sep == '::') { // relation statement
-				return $this->getPropertyDescription($chunk, $setNS, $label);
-			} elseif ($sep == ':=') { // attribute statement
-				return $this->getPropertyDescription($chunk, $setNS, $label);
+			if ( ($sep == '::') || ($sep == ':=') ) {
+				if ($chunk{0} !=':') { // property statement
+					return $this->getPropertyDescription($chunk, $setNS, $label);
+				} else { // escaped article description, read part after :: to get full contents
+					$chunk .= $this->readChunk('\[\[|\]\]|\|\||\|');
+					return $this->getArticleDescription(trim($chunk), $setNS, $label);
+				}
 			} else { // Fixed article/namespace restriction. $sep should be ]] or ||
-				return $this->getArticleDescription($chunk, $setNS, $label);
+				return $this->getArticleDescription(trim($chunk), $setNS, $label);
 			}
 		}
 	}
@@ -611,16 +614,31 @@ class SMWQueryParser {
 	protected function getPropertyDescription($propertyname, &$setNS, &$label) {
 		global $smwgIP;
 		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
-		$this->readChunk(); // consume seperator ":="
-		$property = Title::newFromText($propertyname, SMW_NS_PROPERTY);
-		if ($property === NULL) {
-			$this->m_errors[] .= wfMsgForContent('smw_badtitle', htmlspecialchars($propertyname));
-			return NULL; ///TODO: read some more chunks and try to finish [[ ]]
+		$this->readChunk(); // consume separator ":=" or "::"
+		// first process property chain syntax (e.g. "property1.property2::value"):
+		if ($propertyname{0} == ' ') { // escape
+			$propertynames = array($propertyname);
+		} else {
+			$propertynames = explode('.', $propertyname);
 		}
+		$properties = array();
+		$typeid = '_wpg';
+		foreach ($propertynames as $name) {
+			if ($typeid != '_wpg') { // non-final property in chain was no wikipage: not allowed
+				$this->m_errors[] .= wfMsgForContent('smw_valuesubquery', end($name));
+				return NULL; ///TODO: read some more chunks and try to finish [[ ]]
+			}
+			$property = Title::newFromText($name, SMW_NS_PROPERTY);
+			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
+			if ($property === NULL) { // illegal title
+				$this->m_errors[] .= wfMsgForContent('smw_badtitle', htmlspecialchars($name));
+				return NULL; ///TODO: read some more chunks and try to finish [[ ]]
+			}
+			$properties[] = $property;
+		} ///NOTE: after iteration, $property and $typeid correspond to last value
 
 		$innerdesc = NULL;
 		$continue = true;
-		$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
 		while ($continue) {
 			$chunk = $this->readChunk();
 			switch ($chunk) {
@@ -639,7 +657,7 @@ class SMWQueryParser {
 						$sublabel = '';
 						$innerdesc = $this->addDescription($innerdesc, $this->getSubqueryDescription($setsubNS, $sublabel), false);
 					} else { // no subqueries allowed for non-pages
-						$this->m_errors[] = wfMsgForContent('smw_valuesubquery', $propertyname);
+						$this->m_errors[] = wfMsgForContent('smw_valuesubquery', end($propertynames));
 						$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
 					}
 					$chunk = $this->readChunk();
@@ -649,6 +667,7 @@ class SMWQueryParser {
 					$open = 1;
 					$value = $chunk;
 					$continue2 = true;
+					// read value with inner [[, ]], ||
 					while ( ($open > 0) && ($continue2) ) {
 						$chunk = $this->readChunk('\[\[|\]\]|\|\||\|');
 						switch ($chunk) {
@@ -663,14 +682,14 @@ class SMWQueryParser {
 									$open = 0;
 								}
 							break;
-							case '': // this is not good ... TODO:report error
+							case '': ///TODO: report error; this is not good right now
 								$continue2 = false;
 							break;
 						}
 						if ($open != 0) {
 							$value .= $chunk;
 						}
-					} // note that at this point, we normally already read one more chunk behind the value
+					} ///NOTE: at this point, we normally already read one more chunk behind the value
 
 					if ($typeid == '__nry') { // nary value
 						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
@@ -744,8 +763,11 @@ class SMWQueryParser {
 			}
 			$this->m_errors[] = wfMsgForContent('smw_propvalueproblem', $property->getText());
 		}
-		$result = new SMWSomeProperty($property,$innerdesc);
-
+		$properties = array_reverse($properties);
+		foreach ($properties as $property) {
+			$innerdesc = new SMWSomeProperty($property,$innerdesc);
+		}
+		$result = $innerdesc;
 		return $this->finishLinkDescription($chunk, false, $result, $setNS, $label);
 	}
 
@@ -795,7 +817,7 @@ class SMWQueryParser {
 	
 	/**
 	 * Parse an article description (the part of an inline query that
-	 * is in between "[[" and the closing "]]" if it is not specifying
+	 * is in between "[[" and the closing "]]" assuming it is not specifying
 	 * a category or property) and create a suitable description.
 	 * The first chunk behind the "[[" has already been read and is
 	 * passed as a parameter.
@@ -829,9 +851,9 @@ class SMWQueryParser {
 				}
 			}
 
-			$chunk = $this->readChunk();
+			$chunk = $this->readChunk('\[\[|\]\]|\|\||\|');
 			if ($chunk == '||') {
-				$chunk = $this->readChunk();
+				$chunk = $this->readChunk('\[\[|\]\]|\|\||\|');
 				$continue = true;
 			} else {
 				$continue = false;
@@ -885,7 +907,7 @@ class SMWQueryParser {
 	 * (such as [[, ]], <q>, ...). If the string starts with such a delimiter,
 	 * this delimiter is returned. Otherwise the first string in front of such a 
 	 * delimiter is returned.
-	 * Trailing and initial spaces are always ignored and chunks
+	 * Trailing and initial spaces are ignored if $trim is true, and chunks
 	 * consisting only of spaces are not returned.
 	 * If there is no more qurey string left to process, the empty string is
 	 * returned (and in no other case).
@@ -896,27 +918,27 @@ class SMWQueryParser {
 	 * $consume specifies whether the returned chunk should be removed from the
 	 * query string.
 	 */
-	protected function readChunk($stoppattern = '', $consume=true) {
+	protected function readChunk($stoppattern = '', $consume=true, $trim=true) {
 		if ($stoppattern == '') {
 			$stoppattern = '\[\[|\]\]|::|:=|<q>|<\/q>|^' . $this->m_categoryprefix . '|\|\||\|';
 		}
-		$chunks = preg_split('/[\s]*(' . $stoppattern . ')[\s]*/u', $this->m_curstring, 2, PREG_SPLIT_DELIM_CAPTURE);
+		$chunks = preg_split('/(' . $stoppattern . ')/u', $this->m_curstring, 2, PREG_SPLIT_DELIM_CAPTURE);
 		if (count($chunks) == 1) { // no matches anymore, strip spaces and finish
 			if ($consume) {
 				$this->m_curstring = '';
 			}
-			return trim($chunks[0]);
-		} elseif (count($chunks) == 3) { // this chould generally happen if count is not 1
+			return $trim?trim($chunks[0]):$chunks[0];
+		} elseif (count($chunks) == 3) { // this should generally happen if count is not 1
 			if ($chunks[0] == '') { // string started with delimiter
 				if ($consume) {
 					$this->m_curstring = $chunks[2];
 				}
-				return $chunks[1]; // spaces stripped already
+				return $trim?trim($chunks[1]):$chunks[1];
 			} else {
 				if ($consume) {
 					$this->m_curstring = $chunks[1] . $chunks[2];
 				}
-				return $chunks[0]; // spaces stripped already
+				return $trim?trim($chunks[0]):$chunks[0];
 			}
 		} else { return false; }  //should never happen
 	}
