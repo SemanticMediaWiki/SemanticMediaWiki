@@ -537,6 +537,8 @@ class SMWSQLStore2 extends SMWStore {
 		} else {
 			$this->updateRedirects($subject->getDBKey(),$subject->getNamespace());
 		}
+		// always make an ID (pages without ID cannot be in qurey results, not even in fixed value queries!):
+		$sid = $this->makeSMWPageID($subject->getDBkey(),$subject->getNamespace(),'');
 		$db =& wfGetDB( DB_MASTER );
 
 		// do bulk updates:
@@ -552,17 +554,16 @@ class SMWSQLStore2 extends SMWStore {
 					if ($value->isValid()) {
 						if ($value->getTypeID() == '_txt') {
 							$up_text2[] =
-								array( 's_id' => $this->makeSMWPageID($subject->getDBkey(),$subject->getNamespace(),''),
+								array( 's_id' => $sid,
 								       'p_id' => $this->makeSMWPageID($property->getDBkey(),SMW_NS_PROPERTY,''),
 								       'value_blob' => $value->getXSDValue() );
 						} elseif ($value->getTypeID() == '_wpg') {
 							$up_rels2[] =
-								array( 's_id' => $this->makeSMWPageID($subject->getDBkey(),$subject->getNamespace(),''),
+								array( 's_id' => $sid,
 								       'p_id' => $this->makeSMWPageID($property->getDBkey(),SMW_NS_PROPERTY,''),
 								       'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),'') );
 							$oid = $value->getArticleID();
 						} elseif ($value->getTypeID() == '__nry') {
-							$sid = $this->makeSMWPageID($subject->getDBkey(),$subject->getNamespace(),'');
 							$bnode = $this->makeSMWBnodeID($sid);
 							$up_rels2[] =
 								array( 's_id' => $sid,
@@ -600,7 +601,7 @@ class SMWSQLStore2 extends SMWStore {
 							}
 						} else {
 							$up_atts2[] =
-								array( 's_id' => $this->makeSMWPageID($subject->getDBkey(),$subject->getNamespace(),''),
+								array( 's_id' => $sid,
 								       'p_id' => $this->makeSMWPageID($property->getDBkey(),SMW_NS_PROPERTY,''),
 								       'value_unit' => $value->getUnit(),
 								       'value_xsd' => $value->getXSDValue(),
@@ -618,7 +619,7 @@ class SMWSQLStore2 extends SMWStore {
 						foreach($propertyValueArray as $value) {
 							if ( $value->getNamespace() == NS_CATEGORY )  {
 								$up_inst2[] =
-								array('s_id' => $this->makeSMWPageID($subject->getDBkey(),$subject->getNamespace(),''),
+								array('s_id' => $sid,
 								      'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),''));
 							}
 						}
@@ -631,7 +632,7 @@ class SMWSQLStore2 extends SMWStore {
 						foreach($propertyValueArray as $value) {
 							if ( $value->getNamespace() == $namespace )  {
 								$up_subs2[] =
-								array('s_id' => $this->makeSMWPageID($subject->getDBkey(),$subject->getNamespace(),''),
+								array('s_id' => $sid,
 								      'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),''));
 							}
 						}
@@ -642,7 +643,7 @@ class SMWSQLStore2 extends SMWStore {
 								$stringvalue = $value->getXSDValue();
 							}
 							$up_spec2[] =
-							array('s_id' => $this->makeSMWPageID($subject->getDBkey(),$subject->getNamespace(),''),
+							array('s_id' => $sid,
 							      'sp_id' => $property,
 							      'value_string' => $stringvalue);
 						}
