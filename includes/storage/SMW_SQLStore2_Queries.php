@@ -534,7 +534,7 @@ class SMWSQLStore2QueryEngine {
 					$this->executeQueries($subquery);
 					$sql = '';
 					if ($subquery->jointable != '') {
-						$sql = "INSERT IGNORE INTO $query->alias SELECT $subquery->joinfield FROM " .
+						$sql = "INSERT IGNORE INTO " . $this->m_dbs->tableName($query->alias) . " SELECT $subquery->joinfield FROM " .
 						$this->m_dbs->tableName($subquery->jointable) . " AS $subquery->alias $subquery->from" . ($subquery->where?" WHERE $subquery->where":'');
 					} elseif ($subquery->joinfield !== '') {
 						/// NOTE: this works only for single "unconditional" values without further 
@@ -543,7 +543,7 @@ class SMWSQLStore2QueryEngine {
 						foreach ($subquery->joinfield as $value) {
 							$values .= ($values?',':'') . '(' . $this->m_dbs->addQuotes($value) . ')';
 						}
-						$sql = "INSERT IGNORE INTO $query->alias (id) VALUES $values";
+						$sql = "INSERT IGNORE INTO " . $this->m_dbs->tableName($query->alias) . " (id) VALUES $values";
 					} // else: // interpret empty joinfields as impossible condition (empty result), ignore
 					if ($sql) {
 						$this->m_querylog[$query->alias][] = $sql;
