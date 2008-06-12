@@ -161,23 +161,35 @@ function smwfSaveDataForTitle($title) {
 
 		$oldproperties = $oldstore->getProperties($title); // returns only saved properties, properties that are not saved are not returned (e.g. when there is an error)
 		$currentproperties = SMWFactbox::$semdata->getProperties($title);
-		//double side diff
-		$diff = array_merge(array_diff($currentproperties, $oldproperties), array_diff($oldproperties, $currentproperties));
+		
+		$oldcount = count($oldproperties);
+		$newcount = count($currentproperties);
+		if ($oldcount == $newcount) {
+			
+			if ($oldcount > 0) {
+				//double side diff
+				$diff = array_merge(array_diff($currentproperties, $oldproperties), array_diff($oldproperties, $currentproperties));
 
-		//if any propery has changed the updateflag is set
-		if (!empty ($diff)) {
-			$updatejobflag = true;
+				//if any propery has changed the updateflag is set
+				if (!empty ($diff)) {
+					$updatejobflag = true;
+				} else {
+					foreach ($oldproperties as $oldproperty) {
+						$oldvalues[] = $oldstore->getPropertyValues($oldproperty);
+					}
+					foreach ($currentproperties as $currentproperty) {
+						$currentvalues[] = SMWFactbox::$semdata->getPropertyValues($currentproperty);
+					}
+					//double side diff, if any propery value has changed the updateflag is set
+					$diff = array_merge(array_diff_key($currentvalues[0], $oldvalues[0]), array_diff_key($oldvalues[0], $currentvalues[0]));
+					if (!empty ($diff)) { $updatejobflag = true; }
+				}
+			}
+
 		} else {
-			foreach ($oldproperties as $oldproperty) {
-				$oldvalues[] = $oldstore->getPropertyValues($oldproperty);
-			}
-			foreach ($currentproperties as $currentproperty) {
-				$currentvalues[] = SMWFactbox::$semdata->getPropertyValues($currentproperty);
-			}
-			//double side diff, if any propery value has changed the updateflag is set
-			$diff = array_merge(array_diff_key($currentvalues[0], $oldvalues[0]), array_diff_key($oldvalues[0], $currentvalues[0]));
-			if (!empty ($diff)) { $updatejobflag = true; }
+			$updatejobflag = true;
 		}
+		
 	}
 
 	// Save semantic data
