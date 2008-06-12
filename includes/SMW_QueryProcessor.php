@@ -630,11 +630,11 @@ class SMWQueryParser {
 				return NULL; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 			$property = Title::newFromText($name, SMW_NS_PROPERTY);
-			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
 			if ($property === NULL) { // illegal title
 				$this->m_errors[] .= wfMsgForContent('smw_badtitle', htmlspecialchars($name));
 				return NULL; ///TODO: read some more chunks and try to finish [[ ]]
 			}
+			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
 			$properties[] = $property;
 		} ///NOTE: after iteration, $property and $typeid correspond to last value
 
