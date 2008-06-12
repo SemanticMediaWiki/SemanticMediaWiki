@@ -125,7 +125,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	// suboptimal special pages using the SMWSpecialPage wrapper class:
 	$wgAutoloadClasses['SMWSpecialPage']            = $smwgIP . '/includes/SMW_SpecialPage.php';
 	$wgSpecialPages['Properties']                   = array('SMWSpecialPage','Properties', 'smwfDoSpecialProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialProperties.php');
-	$wgSpecialPageGroups['Properties']                   = 'smw_group';
+	$wgSpecialPageGroups['Properties']                   = 'pages';
 	$wgSpecialPages['UnusedProperties']             = array('SMWSpecialPage','UnusedProperties', 'smwfDoSpecialUnusedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialUnusedProperties.php', true, '');
 	$wgSpecialPageGroups['UnusedProperties']        = 'maintenance';
 	$wgSpecialPages['WantedProperties']             = array('SMWSpecialPage','WantedProperties', 'smwfDoSpecialWantedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialWantedProperties.php', true, '');
@@ -133,9 +133,9 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgSpecialPages['ExportRDF']                    = array('SMWSpecialPage','ExportRDF', 'smwfDoSpecialOWLExport', $smwgIP . '/specials/Export/SMW_SpecialOWLExport.php', true, '');
 	$wgSpecialPageGroups['ExportRDF']               = 'smw_group';
 	$wgSpecialPages['SemanticStatistics']           = array('SMWSpecialPage','SemanticStatistics', 'smwfExecuteSemanticStatistics', $smwgIP . '/specials/Statistics/SMW_SpecialStatistics.php', true, '');
-	$wgSpecialPageGroups['SemanticStatistics']      = 'smw_group';
+	$wgSpecialPageGroups['SemanticStatistics']      = 'wiki'; // like Special:Statistics
 	$wgSpecialPages['Types']                        = array('SMWSpecialPage','Types', 'smwfDoSpecialTypes', $smwgIP . '/specials/QueryPages/SMW_SpecialTypes.php');
-	$wgSpecialPageGroups['Types']                   = 'smw_group';
+	$wgSpecialPageGroups['Types']                   = 'pages';
 
 	///// Register Jobs
 	$wgAutoloadClasses['SMWUpdateJob']              = $smwgIP . '/includes/jobs/SMW_UpdateJob.php';
