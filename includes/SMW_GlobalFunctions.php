@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.2e-SVN');
+define('SMW_VERSION','1.2f-SVN');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -129,7 +129,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgSpecialPages['UnusedProperties']             = array('SMWSpecialPage','UnusedProperties', 'smwfDoSpecialUnusedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialUnusedProperties.php', true, '');
 	$wgSpecialPageGroups['UnusedProperties']        = 'maintenance';
 	$wgSpecialPages['WantedProperties']             = array('SMWSpecialPage','WantedProperties', 'smwfDoSpecialWantedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialWantedProperties.php', true, '');
-	$wgSpecialPageGroups['WantedProperties']        = 'needy';
+	$wgSpecialPageGroups['WantedProperties']        = 'maintenance';
 	$wgSpecialPages['ExportRDF']                    = array('SMWSpecialPage','ExportRDF', 'smwfDoSpecialOWLExport', $smwgIP . '/specials/Export/SMW_SpecialOWLExport.php', true, '');
 	$wgSpecialPageGroups['ExportRDF']               = 'smw_group';
 	$wgSpecialPages['SemanticStatistics']           = array('SMWSpecialPage','SemanticStatistics', 'smwfExecuteSemanticStatistics', $smwgIP . '/specials/Statistics/SMW_SpecialStatistics.php', true, '');
