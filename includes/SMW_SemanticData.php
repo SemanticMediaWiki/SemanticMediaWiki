@@ -20,10 +20,11 @@ class SMWSemanticData {
 	protected $m_noduplicates; // avoid repeated values? 
 	/// NOTE: not needing (e.g. when loading from store) can safe much time, 
 	/// since objects can remain stubs until someone really acesses their value
+	static protected $m_propertyprefix = false; // cache for the local version of "Property:"
 
 	protected $subject;
 
-	public function SMWSemanticData(Title $subject, $noduplicates = true) {
+	public function __construct(Title $subject, $noduplicates = true) {
 		$this->subject = $subject;
 		$this->m_noduplicates = $noduplicates;
 	}
@@ -96,7 +97,11 @@ class SMWSemanticData {
 		if (array_key_exists($propertyname, $this->attribtitles)) {
 			$property = $this->attribtitles[$propertyname];
 		} else {
-			$property = Title::newFromText($propertyname,SMW_NS_PROPERTY);
+			if (SMWSemanticData::$m_propertyprefix == false) {
+				global $wgContLang;
+				SMWSemanticData::$m_propertyprefix = $wgContLang->getNsText(SMW_NS_PROPERTY) . ':';
+			} // explicitly use prefix to cope with things like [[Property:User:Stupid::somevalue]]
+			$property = Title::newFromText(SMWSemanticData::$m_propertyprefix . $propertyname);
 			if ($property === NULL) { // error, maybe illegal title text
 				return;
 			}
