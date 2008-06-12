@@ -25,6 +25,14 @@ define('SMW_SQL2_INST2',128);
 /**
  * Storage access class for using the standard MediaWiki SQL database
  * for keeping semantic data.
+ * 
+ * NOTE: Regarding the use of interwiki links in the store, there is currently
+ * no support for storing semantic data about interwiki objects, and hence queries
+ * that involve interwiki objects really make sense only for them occurring in 
+ * object positions. Most methods still use the given input interwiki text as a simple
+ * way to filter out results that may be found if an interwiki object is given but a
+ * local object of the same name exists. It is currently not planned to support things
+ * like interwiki reuse of properties.
  */
 class SMWSQLStore2 extends SMWStore {
 
@@ -43,10 +51,10 @@ class SMWSQLStore2 extends SMWStore {
 		$db =& wfGetDB( DB_SLAVE );
 
 		if ( $subject instanceof Title ) {
-			$sid = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),'');
+			$sid = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki());
 			$stitle = $subject;
 		} elseif ($subject instanceof SMWWikiPageValue) {
-			$sid = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),'');
+			$sid = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki());
 			$stitle = $subject->getTitle();
 		} else {
 			$sid = 0;
@@ -153,7 +161,7 @@ class SMWSQLStore2 extends SMWStore {
 				}
 				if ($task == SMW_SQL2_RELS2) {
 					if ($dv instanceof SMWWikiPagevalue) { // may fail if type was changed!
-						$dv->setValues($row->title, $row->namespace);
+						$dv->setValues($row->title, $row->namespace, false, $row->iw);
 						$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
 					}
 				} elseif ($task == SMW_SQL2_ATTS2) {
@@ -251,10 +259,10 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn("SMWSQLStore2::getSpecialValues-$specialprop (SMW)");
 
 		if ($subject !== NULL) {
-			$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),'');
+			$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki());
 		}
 		if ( ($sid == 0) && ($specialprop != SMW_SP_REDIRECTS_TO)) {
-			// NOTE: SMW_SP_REDIRECTS_TO is the only property, that objects without an SMW-ID may have
+			/// NOTE: SMW_SP_REDIRECTS_TO is the only property that objects without an SMW-ID may have
 			wfProfileOut("SMWSQLStore2::getSpecialValues-$specialprop (SMW)");
 			return array();
 		}
@@ -269,9 +277,13 @@ class SMWSQLStore2 extends SMWStore {
 		$db =& wfGetDB( DB_SLAVE );
 
 		$result = array();
+		/// NOTE: We expect the given SMWDataValue to have the appropriate type for the special 
+		/// property that is queried. There is some dependency between the store's assumptions and
+		/// the types returned for special properties by SMWDataValueFactory. But the type alone 
+		/// would always be too little, since the store uses custom tables for many special properties.
 
 		if ($specialprop === SMW_SP_INSTANCE_OF) { // class membership
-			$oid = $this->getSMWPageID($value->getDBkey(),NS_CATEGORY,'');
+			$oid = $this->getSMWPageID($value->getDBkey(),NS_CATEGORY,$value->getInterwiki());
 			if ( ($oid != 0) && ($value->getNamespace() == NS_CATEGORY) ) {
 				$res = $db->select( array('smw_inst2','smw_ids'), 'smw_title,smw_namespace',
 				                    's_id=smw_id AND o_id=' . $db->addQuotes($oid), 
@@ -282,7 +294,7 @@ class SMWSQLStore2 extends SMWStore {
 				$db->freeResult($res);
 			}
 		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
-			$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),'',false);
+			$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki(),false);
 			/// NOTE: we do not use the canonical (redirect-aware) id here!
 			if ($oid != 0) {
 				$res = $db->select( array('smw_redi2'), 's_title,s_namespace',
@@ -299,7 +311,7 @@ class SMWSQLStore2 extends SMWStore {
 		} elseif ( ($specialprop === SMW_SP_SUBPROPERTY_OF) || ($specialprop === SMW_SP_CLASS_OF) ) { 
 			// subproperties/subclasses
 			$namespace = ($specialprop === SMW_SP_CLASS_OF)?NS_CATEGORY:SMW_NS_PROPERTY;
-			$oid = $this->getSMWPageID($value->getDBkey(),$namespace,'');
+			$oid = $this->getSMWPageID($value->getDBkey(),$namespace,$value->getInterwiki());
 			if ( ($oid != 0) && ($value->getNamespace() == $namespace) ) {
 				$res = $db->select( array('smw_subs2','smw_ids'), 'smw_title',
 				                    's_id=smw_id AND o_id=' . $db->addQuotes($oid), 
@@ -338,9 +350,9 @@ class SMWSQLStore2 extends SMWStore {
 	function getPropertyValues($subject, $property, $requestoptions = NULL, $outputformat = '') {
 		wfProfileIn("SMWSQLStore2::getPropertyValues (SMW)");
 		if ($subject !== NULL) {
-			$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),'');
+			$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki());
 		}
-		$pid = $this->getSMWPageID($property->getDBkey(), SMW_NS_PROPERTY,'');
+		$pid = $this->getSMWPageID($property->getDBkey(), SMW_NS_PROPERTY, $property->getInterwiki());
 		if ( ($sid == 0) || ($pid == 0)) {
 			wfProfileOut("SMWSQLStore2::getPropertyValues (SMW)");
 			return array();
@@ -364,7 +376,7 @@ class SMWSQLStore2 extends SMWStore {
 		/// TODO: should we share code with #ask query computation here? Just use queries?
 		wfProfileIn("SMWSQLStore2::getPropertySubjects (SMW)");
 		$result = array();
-		$pid = $this->getSMWPageID($property->getDBkey(), $property->getNamespace(),'');
+		$pid = $this->getSMWPageID($property->getDBkey(), $property->getNamespace(),$property->getInterwiki());
 		if ( ($pid == 0) || ( ($value !== NULL) && (!$value->isValid()) ) ) {
 			wfProfileOut("SMWSQLStore2::getPropertySubjects (SMW)");
 			return $result;
@@ -382,7 +394,7 @@ class SMWSQLStore2 extends SMWStore {
 		case '_txt': break; // not supported
 		case '_wpg': // wikipage
 			if ($value !== NULL) {
-				$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),'');
+				$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki());
 				$sql .= ' AND o_id=' . $db->addQuotes($oid);
 			}
 			if ( ($value === NULL) || ($oid != 0) ) {
@@ -468,7 +480,7 @@ class SMWSQLStore2 extends SMWStore {
 
 	function getProperties(Title $subject, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore2::getProperties (SMW)");
-		$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),'');
+		$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki());
 		if ($sid == 0) {
 			wfProfileOut("SMWSQLStore2::getProperties (SMW)");
 			return array();
@@ -498,7 +510,7 @@ class SMWSQLStore2 extends SMWStore {
 		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
 		if ($value->getTypeID() == '_wpg') {
-			$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),'');
+			$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki());
 			$sql = 'p_id=smw_id AND o_id=' . $db->addQuotes($oid) .
 			       $this->getSQLConditions($requestoptions,'smw_title','smw_title');
 			$res = $db->select( array('smw_rels2','smw_ids'), 'DISTINCT smw_title',
@@ -561,8 +573,7 @@ class SMWSQLStore2 extends SMWStore {
 							$up_rels2[] =
 								array( 's_id' => $sid,
 								       'p_id' => $this->makeSMWPageID($property->getDBkey(),SMW_NS_PROPERTY,''),
-								       'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),'') );
-							$oid = $value->getArticleID();
+								       'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki()) );
 						} elseif ($value->getTypeID() == '__nry') {
 							$bnode = $this->makeSMWBnodeID($sid);
 							$up_rels2[] =
@@ -575,12 +586,10 @@ class SMWSQLStore2 extends SMWStore {
 									$pid = $this->makeSMWPageID(strval($npos),SMW_NS_PROPERTY,SMW_SQL2_SMWIW);
 									switch ($dv->getTypeID()) {
 									case '_wpg':
-										$oid = $dv->getArticleID();
-										if ($oid == 0) { $oid = NULL; }
 										$up_rels2[] =
 											array( 's_id' => $bnode,
 											       'p_id' => $pid,
-											       'o_id' => $this->makeSMWPageID($dv->getDBkey(),$dv->getNamespace(),'') );
+											       'o_id' => $this->makeSMWPageID($dv->getDBkey(),$dv->getNamespace(),$dv->getInterwiki()) );
 									break;
 									case '_txt':
 										$up_text2[] =
@@ -678,6 +687,7 @@ class SMWSQLStore2 extends SMWStore {
 	function changeTitle(Title $oldtitle, Title $newtitle, $pageid, $redirid=0) {
 		wfProfileIn("SMWSQLStore2::changeTitle (SMW)");
 		///NOTE: this function ignores the given MediaWiki IDs (this store has its own IDs)
+		///NOTE: this function assumes input titles to be local (no interwiki). Anything else would be too gross.
 		$sid_c = $this->getSMWPageID($oldtitle->getDBKey(),$oldtitle->getNamespace(),'');
 		$sid = $this->getSMWPageID($oldtitle->getDBKey(),$oldtitle->getNamespace(),'',false);
 		$tid_c = $this->getSMWPageID($newtitle->getDBKey(),$newtitle->getNamespace(),'');
@@ -1339,7 +1349,7 @@ class SMWSQLStore2 extends SMWStore {
 		$db =& wfGetDB( DB_MASTER );
 		/// NOTE: redirects are handled by updateRedirects(), not here!
 			//$db->delete('smw_redi2', array('s_title' => $subject->getDBkey(),'s_namespace' => $subject->getNamespace()), 'SMW::deleteSubject::Redi2');
-		$id = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),'',false);
+		$id = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki(),false);
 		if ($id == 0) return; // not (directly) used anywhere yet, maybe a redirect but we do not care here
 		$db->delete('smw_rels2', array('s_id' => $id), 'SMW::deleteSubject::Rels2');
 		$db->delete('smw_atts2', array('s_id' => $id), 'SMW::deleteSubject::Atts2');

@@ -259,13 +259,6 @@ class SMWSQLStore2QueryEngine {
 		$qid = SMWSQLStore2Query::$qnum;
 		$query = new SMWSQLStore2Query();
 		if ($description instanceof SMWSomeProperty) {
-// 			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($description->getProperty());
-// 			$typevalue = NULL;
-// 			if ($typeid == '__nry') {
-// 				$typevalue = SMWDataValueFactory::getPropertyObjectTypeValue($description->getProperty());
-// 			}
-// 			$pid = $this->m_store->getSMWPageID($description->getProperty()->getDBkey(), $description->getProperty()->getNamespace(),'');
-// 			$this->compilePropertyCondition($query, $pid, $typeid, $typevalue, $description->getProperty()->getDBkey(), $description->getDescription());
 			$this->compilePropertyCondition($query, $description->getProperty(), $description->getDescription());
 		} elseif ($description instanceof SMWNamespaceDescription) { /// TODO: One instance of smw_ids on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
 			$query->jointable = 'smw_ids';
@@ -285,7 +278,7 @@ class SMWSQLStore2QueryEngine {
 			$cquery->type = SMW_SQL2_CLASS_HIERARCHY;
 			$cquery->joinfield = array();
 			foreach ($description->getCategories() as $cat) {
-				$cid = $this->m_store->getSMWPageID($cat->getDBkey(), NS_CATEGORY, '');
+				$cid = $this->m_store->getSMWPageID($cat->getDBkey(), NS_CATEGORY, $cat->getInterwiki());
 				if ($cid != 0) {
 					$cquery->joinfield[] = $cid;
 				}
@@ -304,7 +297,7 @@ class SMWSQLStore2QueryEngine {
 			if ($description->getDatavalue()->getTypeID() == '_wpg') {
 				if ($description->getComparator() == SMW_CMP_EQ) {
 					$query->type = SMW_SQL2_VALUE;
-					$oid = $this->m_store->getSMWPageID($description->getDatavalue()->getDBkey(), $description->getDatavalue()->getNamespace(),'');
+					$oid = $this->m_store->getSMWPageID($description->getDatavalue()->getDBkey(), $description->getDatavalue()->getNamespace(),$description->getDatavalue()->getInterwiki());
 					$query->joinfield = array($oid);
 				} else { // join with smw_ids needed for other comparators (apply to title string)
 					$query->jointable = 'smw_ids';
@@ -346,7 +339,7 @@ class SMWSQLStore2QueryEngine {
 		$query->joinfield = "$query->alias.s_id";
 		if ($property instanceof Title) {
 			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
-			$pid = $this->m_store->getSMWPageID($property->getDBkey(), $property->getNamespace(),'');
+			$pid = $this->m_store->getSMWPageID($property->getDBkey(), $property->getNamespace(),$property->getInterwiki());
 			$sortkey = $property->getDBkey();
 			// also make property hierarchy
 			$pqid = SMWSQLStore2Query::$qnum;
