@@ -42,7 +42,8 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 
 		// print all result rows
 		if ($this->m_template == false) {
-			return 'Please provide parameter "template" for query to work.'; // TODO: internationalise, beautify
+			$res->addErrors(array(wfMsgForContent('smw_notemplategiven')));
+			return '';
 		}
 
 		$parserinput = $this->mIntro;

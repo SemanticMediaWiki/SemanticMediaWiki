@@ -97,6 +97,7 @@ Results might not be as expected.',
 	'smw_querytoolarge'     => 'The following query conditions could not be considered due to the wikis restrictions in query size or depth: $1.',
 	'smw_devel_warning'     => 'This feature is currently under development, and might not be fully functional.
 Backup your data before using it.',
+	'smw_notemplategiven'   => 'Please provide a value for the parameter “template” for this query format to work.',
 
 	// Messages for pages of types and properties
 	'smw_type_header'           => 'Properties of type “$1”',

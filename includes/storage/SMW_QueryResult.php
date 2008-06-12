@@ -128,6 +128,10 @@ class SMWQueryResult {
 		return $this->m_query->getErrors();
 	}
 
+	public function addErrors($errors) {
+		$this->m_query->addErrors($errors);
+	}
+
 	/**
 	 * Create an SMWInfolink object representing a link to further query results.
 	 * This link can then be serialised or extended by further params first.
