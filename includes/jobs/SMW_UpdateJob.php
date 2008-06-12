@@ -62,4 +62,15 @@ class SMWUpdateJob extends Job {
 		wfProfileOut('SMWUpdateJob::run (SMW)');
 		return true;
 	}
+
+	/**
+	 * This actually files the job. This is prevented if the configuration of SMW
+	 * disables jobs.
+	 */
+	function insert() {
+		global $smwgEnableUpdateJobs;
+		if ($smwgEnableUpdateJobs) {
+			parent::insert();
+		}
+	}
 }

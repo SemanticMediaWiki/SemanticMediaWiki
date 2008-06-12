@@ -31,7 +31,8 @@ $mwPath = getenv('MW_INSTALL_PATH') !== false ? getenv('MW_INSTALL_PATH').'/main
 require_once("{$mwPath}counter.php");
 require_once("{$mwPath}commandLine.inc");
 
-global $smwgIP;
+global $smwgIP, $smwgEnableUpdateJobs;
+$smwgEnableUpdateJobs = false; // do not fork additional update jobs while running this script
 require_once($smwgIP . '/includes/SMW_Factbox.php');
 
 $dbr =& wfGetDB( DB_MASTER );

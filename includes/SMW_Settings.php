@@ -69,11 +69,11 @@ $smwgPropertyPagingLimit = 25; // use smaller value since property lists are muc
 ##
 
 ###
-# Settings for inline queries (<ask>) and for semantic queries in general.
+# Settings for inline queries ({{#ask:...}}) and for semantic queries in general.
 # Especially meant to prevent overly high server-load by complex queries.
 ##
 $smwgQEnabled = true;         // (De)activates all query related features and interfaces
-$smwgQMaxSize = 12;           // Maximal number of conditions in queries, use format="debug" for example sizes
+$smwgQMaxSize = 12;           // Maximal number of conditions in queries, use format=debug for example sizes
 $smwgQMaxDepth = 4;           // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
 $smwgQSubcategoryDepth = 10;  // Restrict level of sub-category inclusion (steps within category hierarchy)
 $smwgQSubpropertyDepth = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)
@@ -86,7 +86,7 @@ $smwgQDefaultNamespaces = NULL; // Which namespaces should be searched by defaul
                               // (value NULL switches off default restrictions on searching -- this is faster)
                               // Example with namespaces: $smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE);
 $smwgQMaxLimit = 10000;       // Max number of results ever retrieved, even when using special query pages.
-$smwgQDisjunctionSupport = true; // Support disjunctions in queries (||)?
+$smwgQDisjunctionSupport = true; // Support disjunctions in queries ("||" and "OR")?
                              // (Note: things like namespace defaults and property/category hierarchies
                              //        can also cause disjunctions!)
 $smwgQComparators = '<|>|!'; // List of comparator characters supported by queries, separated by '|'
@@ -97,7 +97,7 @@ $smwgQComparators = '<|>|!'; // List of comparator characters supported by queri
 ### Settings about printout of (especially inline) queries:
 $smwgQDefaultLimit = 50;    // Default number of rows returned in a query. Can be increased with <ask limit="num">...
 $smwgQMaxInlineLimit = 500; // Max number of rows ever printed in a single inline query on a single page.
-$smwgQPrintoutLimit = 10;   // Max number of supported printouts (added columns in result table, ?-statements)
+$smwgQPrintoutLimit = 100;   // Max number of supported printouts (added columns in result table, ?-statements)
 
 ### Formatting settings
 $smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none", "subject", "all"
@@ -118,7 +118,7 @@ $smwgRSSWithPages = true; // Should RSS feeds deliver whole pages or just link t
 ##
 
 ###
-# Settings for RDF export
+# Settings for OWL/RDF export
 ##
 $smwgAllowRecursiveExport = false; // can normal users request recursive export?
 $smwgExportBacklinks = true; // should backlinks be included by default?
@@ -131,6 +131,19 @@ $smwgOWLFullExport = false; // decides, if the RDF export will export, by defaul
 // to something nice and adapt your Apache configuration appropriately. This is
 // done, e.g., on semanticweb.org, where URIs are of the form 
 // http://semanticweb.org/id/FOAF
+##
+
+###
+# SMW defers some tasks until after a page was edited by using the MediaWiki job
+# queueing system (see http://www.mediawiki.org/wiki/Manual:Job_queue). For example,
+# when the type of a property is changed, all affected pages will be scheduled for
+# (later) update. If a wiki generates too many jobs in this way (Special:Statistics
+# and "showJobs.php" can be used to check that), the following setting can be used
+# to disable jobs. Note that this will cause some parts of the semantic data to get 
+# out of date, so that manual modifications or the use of SMW_refreshData.php might
+# be needed.
+##
+$smwgEnableUpdateJobs = true;
 ##
 
 ###
