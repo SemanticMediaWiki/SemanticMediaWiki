@@ -593,7 +593,8 @@ class SMWQueryParser {
 				case '+': //wildcard, ignore for categories (semantically meaningless)
 				break;
 				default: //assume category title
-					$cat = Title::newFromText($chunk, NS_CATEGORY);
+					/// NOTE: use m_categoryprefix to prevent problems with, e.g., [[Category:Template:Test]]
+					$cat = Title::newFromText($this->m_categoryprefix . $chunk);
 					if ($cat !== NULL) {
 						$result = $this->addDescription($result, new SMWClassDescription($cat), false);
 					}
