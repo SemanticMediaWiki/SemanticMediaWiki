@@ -609,7 +609,7 @@ class SMWSQLStore2QueryEngine {
 								' FROM ' . $this->m_hierarchies[$values],
 								'SMW::executeQueries');
 			wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
-			break;
+			return;
 		}
 
 		/// NOTE: we use two helper tables. One holds the results of each new iteration, one holds the
