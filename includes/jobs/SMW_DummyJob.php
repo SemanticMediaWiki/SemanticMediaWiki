@@ -11,10 +11,6 @@
  *   
  * @author Daniel M. Herzig
  */
-
-global $IP;
-require_once ($IP."/includes/JobQueue.php");
-
 class SMW_DummyJob extends Job {
 
 	//Constructor
