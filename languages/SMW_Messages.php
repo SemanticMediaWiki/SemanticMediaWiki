@@ -488,6 +488,7 @@ $messages['ch'] = array(
 
 /** Czech (Česky)
  * @author Matěj Grabovský
+ * @author Kjbenes
  */
 $messages['cs'] = array(
 	'smw_edithelp'            => 'Nápověda při upravování vztahů a vlastností',
@@ -516,6 +517,29 @@ $messages['cs'] = array(
 	'smw_maxstring'           => 'Reprezentace řetězce $1 je pro tuto wiki příliš dlouhá.',
 	'smw_notinenum'           => '„$1“ není v seznamu možných hodnot ($2) této vlastnosti.',
 	'smw_noboolean'           => '„$1“ nebylo rozpoznáno jako platná hodnota typu boolean (ano/ne).',
+	'smw_nofloat'             => '“$1” není číslem.',
+	'smw_infinite'            => 'Tak dlouhá čísla jako $1 nejsou na této stránce podporovaná.',
+	'smw_infinite_unit'       => 'Konverze na jednotky $1 dala jako výsledek číslo, které je pro tuto stránku příliš dlouhé.',
+	'smw_unsupportedprefix'   => 'Předpony pro čísla („$1“) nejsou podporované.',
+	'smw_unsupportedunit'     => 'Konverze pro jednotku "$1" není podporována.',
+	'smw_lonely_unit'         => 'Před symbolem „$1“ se nenachází číslo.',
+	'smw_bad_latlong'         => 'Zeměpisná šířka a délka musí být zadány jen jednou a s platnými souřadnicemi.',
+	'smw_abb_north'           => 'S',
+	'smw_abb_east'            => 'V',
+	'smw_abb_south'           => 'J',
+	'smw_abb_west'            => 'Z',
+	'smw_label_latitude'      => 'Zeměpisná šířka:',
+	'smw_label_longitude'     => 'Zeměpisná délka:',
+	'smw_nodatetime'          => 'Datum "$1" nedává smysl. Podpora datumů je stále experimentální.',
+	'smw_toomanyclosing'      => 'Dotazovaný řetězec „$1“ má příliš mnoho výskytů.',
+	'smw_noclosingbrackets'   => 'Užití „[&#x005B;” ve vašem dotazu nebylo ukončeno odpovídajícími „]]”.',
+	'smw_misplacedsymbol'     => 'Symbol „$1“ byl užitý na místě, kde nemá význam.',
+	'smw_unexpectedpart'      => 'Část dotazu „$1“ nedává smysl.
+Výsledky pravděpodobně nesplní očekávání.',
+	'smw_emptysubquery'       => 'Některý poddotaz nemá platné podmínky.',
+	'smw_misplacedsubquery'   => 'Některý poddotaz byl použitý na místě, kde nejsou poddotazy povoleny.',
+	'smw_valuesubquery'       => 'Poddotazy nejsou podporovány pro hodnoty vlastnosti „$1“.',
+	'smw_overprintoutlimit'   => 'Obsah dotazu překračuje limity pro výpis.',
 );
 
 /** German (Deutsch)
@@ -930,6 +954,7 @@ $messages['fr'] = array(
 	'smw_nodisjunctions'           => 'Les disjonctions dans les requêtes ne sont pas supportées sur ce wiki et des parties de la requête ont été ignorées ($1).',
 	'smw_querytoolarge'            => "Les conditions suivantes de la requête n'ont pu être évaluées en raison des restrictions de ce wiki à la taille ou à la profondeur des requêtes : $1.",
 	'smw_devel_warning'            => "Cette fonction est encore en développement et n'est peut-être pas encore opérationnelle. Il est peut-être judicieux de faire une sauvegarde du contenu du wiki avant toute utilisation de cette fonction.",
+	'smw_notemplategiven'          => 'Veuillez fournir une valeur pour le paramètre « modèle » pour ce format de requête afin de travailler.',
 	'smw_type_header'              => 'Attributs de type “$1”',
 	'smw_typearticlecount'         => 'Afficher les attributs de $1 en utilisant ce type.',
 	'smw_attribute_header'         => "Pages utilisant l'attribut “$1”",
@@ -2098,6 +2123,7 @@ Resultatene kan være uventede.',
 	'smw_querytoolarge'           => 'Følgende spørringsbetingelser kunne ikke tas til hensyn på grunn av wikiens begrensninger i spørringsstørrelse eller dybde: $1',
 	'smw_devel_warning'           => 'Denne funksjonen er under utvikling, og fungerer muligens ikke som den skal.
 Ta en kopi av dataene før du bruker den.',
+	'smw_notemplategiven'         => 'Oppgi en verdi for parameteret «mal» for at dette spørringsformatet skal fungere.',
 	'smw_type_header'             => 'Egenskaper av typen «$1»',
 	'smw_typearticlecount'        => 'Viser $1 egenskaper av denne typen.',
 	'smw_attribute_header'        => 'Sider som bruker egenskapen «$1»',
@@ -2249,6 +2275,7 @@ $messages['oc'] = array(
 	'smw_nodisjunctions'          => 'Las disjoncions dins las requèstas son pas suportadas sus aqueste wiki e de partidas de la requèsta son estadas ignoradas($1).',
 	'smw_querytoolarge'           => "Las condicions seguentas de la requèsta an pas pogut èsser evaluadas en rason de las restriccions d'aqueste wiki a la talha o a la prigondor de las requèstas : $1.",
 	'smw_devel_warning'           => "Aquesta foncion es encara en desvolopament e benlèu es pas encara operacionala. Pòt èsser judiciós de far un salvament del contengut del wiki abans tota utilizacion d'aquesta foncion.",
+	'smw_notemplategiven'         => 'Provesissètz una valor pel paramètre « modèl » per aqueste format de requèsta per trabalhar.',
 	'smw_type_header'             => 'Atributs de tipe “$1”',
 	'smw_typearticlecount'        => 'Afichar los atributs de $1 en utilizant aqueste tipe.',
 	'smw_attribute_header'        => "Paginas utilizant l'atribut “$1”",
@@ -2793,6 +2820,7 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_nodisjunctions'          => 'Disjunkcie nie sú v požiadavkách na tejto wiki podporované a časť požiadavky bola ignorovaná ($1).',
 	'smw_querytoolarge'           => 'Nasledovné podmienky požiadavky nebudú zohľadnené z dôvodu obmedzení tejto wiki na dĺžku alebo hĺbku požiadavky: $1.',
 	'smw_devel_warning'           => 'Táto vlastnosť je momentálne vo vývoji a nemusí byť celkom funkčná. Predtým, než ju použijete si zálohujte dáta.',
+	'smw_notemplategiven'         => 'Aby tento formát požiadavky fungoval, poskytnite prosím hodnotu parametra „template”.',
 	'smw_type_header'             => 'Vlastnosti typu „$1“',
 	'smw_typearticlecount'        => 'Zobrazuje sa $1 vlastností tohto typu.',
 	'smw_attribute_header'        => 'Stránky používajúce vlastnosť „$1“',
@@ -3052,6 +3080,7 @@ Kết quả có thể không như mong đợi.',
 	'smw_querytoolarge'           => 'Các điều kiện truy vấn sau đây không được xem xét do hạn chế của wiki trong độ dài hoặc độ sâu truy vấn: $1.',
 	'smw_devel_warning'           => 'Tính năng này hiện đang được phát triển, và có thể không hoạt động đầy đủ.
 Hãy sao lưu dữ liệu của bạn trước khi dùng nó.',
+	'smw_notemplategiven'         => 'Xin hãy cung cấp giá trị cho tham số “template” để đinh dạng truy vấn này có thể hoạt động.',
 	'smw_type_header'             => 'Tính chất của loại “$1”',
 	'smw_typearticlecount'        => 'Hiển thị $1 thuộc tính sử dụng kiểu này.',
 	'smw_attribute_header'        => 'Những trang dùng thuộc tính “$1”',
