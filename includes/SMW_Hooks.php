@@ -138,6 +138,27 @@ function smwfLinkUpdateHook($links_update) {
 }
 
 /**
+ * Compares if two arrays of data values contain the same content.
+ * Returns true if the two arrays contain the same data values,
+ * false otherwise.
+ */
+function smwfEqualDatavalues($dv1, $dv2) {
+	// The hashes of all values of both arrays are taken, then sorted
+	// and finally concatenated, thus creating one long hash out of each
+	// of the data value arrays. These are compared.
+	$values = array();
+	foreach($dv1 as $v) $values[] = $v->getHash();
+	sort($values);
+	$dv1hash = implode("___", $values);
+	$values = array();
+	foreach($dv2 as $v) $values[] = $v->getHash();
+	sort($values);
+	$dv2hash = implode("___", $values);
+	
+	return ($dv1hash == $dv2hash);	
+}
+
+/**
  * The generic safe method for some title. It is assumed that parsing has happened and that
  * SMWFactbox contains all relevant data. If the saved page describes a property or data type,
  * the method checks whether the property type, the data type, the allowed values, or the 
@@ -155,41 +176,29 @@ function smwfSaveDataForTitle($title) {
 	$namespace = $title->getNamespace();
 	$updatejobflag = false;
 
-	// Check if the semantic data has been changed. Sets the updateflag if so.
-	if ($namespace == SMW_NS_PROPERTY || $namespace == SMW_NS_TYPE) {
-		$oldstore = smwfGetStore()->getSemanticData($title);
-
-		$oldproperties = $oldstore->getProperties($title); // returns only saved properties, properties that are not saved are not returned (e.g. when there is an error)
-		$currentproperties = SMWFactbox::$semdata->getProperties($title);
-		
-		$oldcount = count($oldproperties);
-		$newcount = count($currentproperties);
-		if ($oldcount == $newcount) {
-			
-			if ($oldcount > 0) {
-				//double side diff
-				$diff = array_merge(array_diff($currentproperties, $oldproperties), array_diff($oldproperties, $currentproperties));
-
-				//if any propery has changed the updateflag is set
-				if (!empty ($diff)) {
-					$updatejobflag = true;
-				} else {
-					foreach ($oldproperties as $oldproperty) {
-						$oldvalues[] = $oldstore->getPropertyValues($oldproperty);
-					}
-					foreach ($currentproperties as $currentproperty) {
-						$currentvalues[] = SMWFactbox::$semdata->getPropertyValues($currentproperty);
-					}
-					//double side diff, if any propery value has changed the updateflag is set
-					$diff = array_merge(array_diff_key($currentvalues[0], $oldvalues[0]), array_diff_key($oldvalues[0], $currentvalues[0]));
-					if (!empty ($diff)) { $updatejobflag = true; }
-				}
-			}
-
-		} else {
+	// Check if the semantic data has been changed.
+	// Sets the updateflag to true if so.
+	if ($namespace == SMW_NS_PROPERTY) {
+		// if it is a property, then we need to check if the type or
+		// the allowed values have been changed 
+		$oldtype = smwfGetStore()->getSpecialValues($title, SMW_SP_HAS_TYPE);
+		$newtype = SMWFactbox::$semdata->getPropertyValues(SMW_SP_HAS_TYPE);
+				
+		if (smwfEqualDatavalues($oldtype, $newtype)) {
 			$updatejobflag = true;
+		} else {
+			$oldvalues = smwfGetStore()->getSpecialValues($title, SMW_SP_POSSIBLE_VALUE);
+			$newvalues = SMWFactbox::$semdata->getPropertyValues(SMW_SP_POSSIBLE_VALUE);
+			$updatejobflag = smwfEqualDatavalues($oldvalues, $newvalues);
 		}
+	}
 		
+	if ($namespace == SMW_NS_TYPE) {
+		// if it is a type we need to check if the conversion factors have been changed
+		$oldfactors = smwfGetStore()->getSpecialValues($title, SMW_SP_CONVERSION_FACTOR);
+		$newfactors = SMWFactbox::$semdata->getPropertyValues(SMW_SP_CONVERSION_FACTOR);
+		
+		$updatejobflag = smwfEqualDatavalues($oldfactors, $newfactors);
 	}
 
 	// Save semantic data
