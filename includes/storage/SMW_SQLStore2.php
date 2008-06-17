@@ -314,9 +314,9 @@ class SMWSQLStore2 extends SMWStore {
 				}
 				$db->freeResult($res);
 			}
-		} elseif ( ($specialprop === SMW_SP_SUBPROPERTY_OF) || ($specialprop === SMW_SP_CLASS_OF) ) { 
+		} elseif ( ($specialprop === SMW_SP_SUBPROPERTY_OF) || ($specialprop === SMW_SP_SUBCLASS_OF) ) { 
 			// subproperties/subclasses
-			$namespace = ($specialprop === SMW_SP_CLASS_OF)?NS_CATEGORY:SMW_NS_PROPERTY;
+			$namespace = ($specialprop === SMW_SP_SUBCLASS_OF)?NS_CATEGORY:SMW_NS_PROPERTY;
 			$oid = $this->getSMWPageID($value->getDBkey(),$namespace,$value->getInterwiki());
 			if ( ($oid != 0) && ($value->getNamespace() == $namespace) ) {
 				$res = $db->select( array('smw_subs2','smw_ids'), 'smw_title',
