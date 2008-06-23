@@ -14,16 +14,6 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 	protected $m_title = '';
 	protected $m_description = '';
 
-	protected function readParameters($params,$outputmode) {
-		SMWResultPrinter::readParameters($params,$outputmode);
-		if (array_key_exists('vcardtitle', $this->m_params)) {
-			$this->m_title = $this->m_params['vcardtitle'];
-		}
-		if (array_key_exists('vcarddescription', $this->m_params)) {
-			$this->m_description = $this->m_params['vcarddescription'];
-		}
-	}
-
 	public function getResult($results, $params, $outputmode) { // skip checks, results with 0 entries are normal
 		$this->readParameters($params,$outputmode);
 		return $this->getResultText($results,$outputmode) . $this->getErrorString($results);
@@ -34,8 +24,8 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getFileName($res) {
-		if ($this->m_title != '') {
-			return str_replace(' ', '_',$this->m_title) . '.vcf';
+		if ($this->mSearchlabel != '') {
+			return str_replace(' ', '_',$this->mSearchlabel) . '.vcf';
 		} else {
 			return 'vCard.vcf';
 		}
@@ -67,6 +57,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 				$department ='';
 				$category ='';
 				$url ='';
+				$note ='';
 
 				foreach ($row as $field) {
 					// later we may add more things like a generic
@@ -95,6 +86,11 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 						$value = current($field->getContent()); // save only the first
 						if ($value !== false) {
 							$url =  $value->getXSDValue();
+						}
+					}
+					if ( strtolower($req->getLabel()) == "note" ) {
+						foreach ($field->getContent() as $value) {
+							$note .= ($note?', ':'') . $value->getShortWikiText();
 						}
 					}
 					if (strtolower($req->getLabel()) == "email") {
@@ -127,7 +123,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 
 				}
 				$title = $wikipage->getTitle();
-				$items[] = new SMWvCardEntry($title, $firstname, $lastname, $additionalname, $honorprefix, $nickname, $tels, $addresses, $emails, $birthday, $jobtitle, $role, $organization, $department, $category, $url);
+				$items[] = new SMWvCardEntry($title, $firstname, $lastname, $additionalname, $honorprefix, $nickname, $tels, $addresses, $emails, $birthday, $jobtitle, $role, $organization, $department, $category, $url, $note);
             	$row = $res->getNext();
 			}
             foreach ($items as $item) {
@@ -141,11 +137,8 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 			}
 			$link = $res->getQueryLink($label);
 			$link->setParameter('vcard','format');
-			if ($this->m_title !== '') {
-				$link->setParameter($this->m_title,'vcardtitle');
-			}
-			if ($this->m_description !== '') {
-				$link->setParameter($this->m_description,'vcarddescription');
+			if ($this->mSearchlabel != '') {
+				$link->setParameter($this->mSearchlabel,'searchlabel');
 			}
 			if (array_key_exists('limit', $this->m_params)) {
 				$link->setParameter($this->m_params['limit'],'limit');
@@ -184,13 +177,12 @@ class SMWvCardEntry {
 	private $organization;
 	private $department;
 	private $category;
-	private $revid;
-	private $prodid;
+	private $note;
 
 	/**
 	 * Constructor for a single item in the vcard. Requires the URI of the item.
 	 */
-	public function SMWVCardEntry(Title $t, $firstname, $lastname, $additionalname, $honorprefix, $nickname, $tels, $addresses, $emails, $birthday, $title, $role, $organization, $department, $category, $url) {
+	public function SMWVCardEntry(Title $t, $firstname, $lastname, $additionalname, $honorprefix, $nickname, $tels, $addresses, $emails, $birthday, $title, $role, $organization, $department, $category, $url, $note) {
 		global $wgServer;
 		$this->uri = $t->getFullURL();
 		$this->url = $url;
@@ -209,8 +201,7 @@ class SMWvCardEntry {
 		$this->organization = $organization;
 		$this->department = $department;
 		$this->category = $category;
-
-		$this->revid = $t->getLatestRevID();
+		$this->note = $note;
 
 		$article = new Article($t);
 		$this->dtstamp  = $article->getTimestamp();
@@ -230,12 +221,13 @@ class SMWvCardEntry {
         if ($this->title !== "") $text .= "TITLE;CHARSET=UTF-8:$this->title\r\n";
         if ($this->role !== "") $text .= "ROLE;CHARSET=UTF-8:$this->role\r\n";
         if ($this->organization !== "") $text .= "ORG;CHARSET=UTF-8:$this->organization;$this->department\r\n";
-        if ($this->category !== "") $text .= "CATEGORIES;CHARSET=UTF-8$this->category\r\n";
+        if ($this->category !== "") $text .= "CATEGORIES;CHARSET=UTF-8:$this->category\r\n";
         foreach ($this->emails as $entry) $text .= $entry->createVCardEmailText();
         foreach ($this->addresses as $entry) $text .= $entry->createVCardAddressText();
         foreach ($this->tels as $entry) $text .= $entry->createVCardTelText();
-        $text .= "NOTE;CHARSET=UTF-8:Exported by Semantic MediaWiki from $this->uri\r\n";
-        $text .= "PRODID:-//$this->prodid//Semantic MediaWiki\r\n";
+        if ($this->note !== "") $text .= "NOTE;CHARSET=UTF-8:$this->note\r\n";
+        $text .= "SOURCE;CHARSET=UTF-8:$this->uri\r\n";
+        $text .= "PRODID:-////Semantic MediaWiki\r\n";
         $text .= "REV:$this->dtstamp\r\n";
         $text .= "URL:" . ($this->url?$this->url:$this->uri) . "\r\n";
         $text .= "UID:$this->uri\r\n";
@@ -286,17 +278,16 @@ class SMWvCardAddress{
  * Represents a single telephone entry in an vCard entry.
  */
 class SMWvCardTel{
-    private $type;
-    private $telnumber;
+	private $type;
+	private $telnumber;
 
-    /**
+	/**
 	 * Constructor for a single telephone item in the vcard item.
 	 */
-    public function __construct($type, $telnumber) {
-    $this->uri = $uri;
-    $this->type = $type;
-    $this->telnumber = $telnumber;
-    }
+	public function __construct($type, $telnumber) {
+		$this->type = $type;
+		$this->telnumber = $telnumber;
+	}
     /**
 	 * Creates the vCard output for a single telephone item.
 	 */
