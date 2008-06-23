@@ -254,10 +254,13 @@ class SMWInfolink {
 				// "#": has special meaning in URLs, triggers additional MW escapes (using . for %)
 				// '%': must be escaped to prevent any impact of double decoding when replacing - 
 				//      by % before urldecode
+				// '?': if not escaped, strange effects were observed on some sites (printout and other 
+				//      parameters ignored without obvious cause); SMW-escaping is always save to do -- it just
+				//      make URLs less readable
 				//
 				$value = str_replace(
-				          array('-', '#', "\n", ' ', '/', '[', ']', '<', '>', '&lt;', '&gt;', '&amp;', '\'\'', '|', '&', '%'),
-				          array('-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25'), $value);
+				          array('-', '#', "\n", ' ', '/', '[', ']', '<', '>', '&lt;', '&gt;', '&amp;', '\'\'', '|', '&', '%', '?'),
+				          array('-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F'), $value);
 				if ($result != '') $result .= '/';
 				$result .= $value;
 			}
