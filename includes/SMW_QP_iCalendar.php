@@ -32,6 +32,14 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 		return 'text/calendar';
 	}
 
+	public function getFileName($res) {
+		if ($this->m_title != '') {
+			return str_replace(' ', '_',$this->m_title) . '.ics';
+		} else {
+			return 'iCalendar.ics';
+		}
+	}
+
 	protected function getResultText($res, $outputmode) {
 		global $smwgIQRunningNumber, $wgSitename, $wgServer, $wgRequest;
 		$result = '';

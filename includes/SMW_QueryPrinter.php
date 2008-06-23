@@ -146,6 +146,17 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
+	 * Some printers can produce not only embeddable HTML or Wikitext, but
+	 * can also produce stand-alone files. An example is RSS or iCalendar.
+	 * This function returns a filename that is to be sent to the caller
+	 * in such a case (the default filename is created by browsers from the
+	 * URL, and it is often not pretty).
+	 */
+	public function getFileName($res) {
+		return false;
+	}
+
+	/**
 	 * Provides a simple formatted string of all the error messages that occurred.
 	 * Can be used if not specific error formatting is desired. Compatible with HTML
 	 * and Wiki.

@@ -88,6 +88,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWTemplateResultPrinter']  = $smwgIP . '/includes/SMW_QP_Template.php';
 	$wgAutoloadClasses['SMWRSSResultPrinter']       = $smwgIP . '/includes/SMW_QP_RSSlink.php';
 	$wgAutoloadClasses['SMWiCalendarResultPrinter'] = $smwgIP . '/includes/SMW_QP_iCalendar.php';
+	$wgAutoloadClasses['SMWvCardResultPrinter']     = $smwgIP . '/includes/SMW_QP_vCard.php';
 	//// datavalues
 	$wgAutoloadClasses['SMWDataValue']              = $smwgIP . '/includes/SMW_DataValue.php';
 	$wgAutoloadClasses['SMWDataValueFactory']       = $smwgIP . '/includes/SMW_DataValueFactory.php';

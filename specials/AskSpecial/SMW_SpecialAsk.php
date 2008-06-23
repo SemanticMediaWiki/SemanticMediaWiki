@@ -173,6 +173,7 @@ class SMWAskPage extends SpecialPage {
 				$result .= '<div style="text-align: center;">' . $navigation . '</div>';
 			} else { // make a stand-alone file
 				$result = $printer->getResult($res, $this->m_params,SMW_OUTPUT_FILE);
+				$result_name = $printer->getFileName($res); // only fetch that after initialising the parameters
 			}
 		}
 
@@ -187,6 +188,9 @@ class SMWAskPage extends SpecialPage {
 		} else {
 			$wgOut->disable();
 			header( "Content-type: $result_mime; charset=UTF-8" );
+			if ($result_name !== false) {
+				header( "Content-Disposition: attachment; filename=$result_name");
+			}
 			print $result;
 		}
 	}

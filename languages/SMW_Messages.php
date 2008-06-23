@@ -27,8 +27,9 @@ $messages['en'] = array(
 	// Link to RSS feeds
 	'smw_rss_link' => 'RSS',
 
-	// Link to iCalendar files
+	// Link to iCalendar and vCard files
 	'smw_icalendar_link' => 'iCalendar',
+	'smw_vcard_link' => 'vCard',
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Sorry. Semantic queries have been disabled for this wiki.",
