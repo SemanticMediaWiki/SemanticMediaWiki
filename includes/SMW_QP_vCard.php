@@ -270,10 +270,8 @@ class SMWvCardAddress{
 	 */
     public function createVCardAddressText(){
         if ($this->type == "") $this->type="work";
-        $text  =  "ADR;TYPE=$this->type;CHARSET=ISO-8859-1:$this->$postofficebox;$this->extendedaddress;$this->street;$this->locality;$this->region;$this->postalcode;$this->country\r\n";
+        $text  =  "ADR;TYPE=$this->type;CHARSET=ISO-8859-1:$this->postofficebox;$this->extendedaddress;$this->street;$this->locality;$this->region;$this->postalcode;$this->country\r\n";
         return $text;
-
-
     }
 }
 
