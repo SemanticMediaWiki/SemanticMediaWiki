@@ -133,6 +133,7 @@ class SMWExporter {
 				}
 			} else { // special property
 				$pe = NULL;
+				$cat_only = false; // basic namespace checking for equivalent categories
 				switch ($property) {
 					case SMW_SP_INSTANCE_OF:
 						$pe = $category_pe;
@@ -144,11 +145,21 @@ class SMWExporter {
 						$pe = $subprop_pe;
 					break;
 					case SMW_SP_REDIRECTS_TO: /// TODO: currently no check for avoiding OWL DL illegal redirects is done
-						$pe = $equality_pe;
+						if ( $subj_title->getNamespace() == SMW_NS_PROPERTY ) {
+							$pe = NULL; // checking the typing here is too cumbersome, smart stores will smush the properties anyway, and the others will not handle them equivalently
+						} else {
+							$pe = $equality_pe;
+							$cat_only = ($subj_title->getNamespace() == NS_CATEGORY);
+						}
 					break;
 				}
 				if ($pe !== NULL) {
 					foreach ($semdata->getPropertyValues($property) as $dv) {
+						if ($cat_only) {
+							if ( !($dv instanceof SMWWikiPageValue) || ($dv->etNamespace != NS_CATEGORY) ) {
+								continue;
+							}
+						}
 						$ed = $dv->getExportData();
 						if ($ed !== NULL) {
 							$result->addPropertyObjectValue($pe, $ed);
