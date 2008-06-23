@@ -104,18 +104,18 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 					}
 					if (strtolower($req->getLabel()) == "workphone") {
 						foreach ($field->getContent() as $entry) {
-							$tels[] = new SMWvCardTel('work,voice',$entry->getShortWikiText());
+							$tels[] = new SMWvCardTel('WORK',$entry->getShortWikiText());
 						}
 					}
 
 					if (strtolower($req->getLabel()) == "cellphone") {
 						foreach ($field->getContent() as $entry) {
-							$tels[] = new SMWvCardTel('cell,voice',$entry->getShortWikiText());
+							$tels[] = new SMWvCardTel('CELL',$entry->getShortWikiText());
 						}
 					}
 					if (strtolower($req->getLabel()) == "homephone") {
 						foreach ($field->getContent() as $entry) {
-							$tels[] = new SMWvCardTel('home,voice',$entry->getShortWikiText());
+							$tels[] = new SMWvCardTel('HOME',$entry->getShortWikiText());
 						}
 					}
 					if ( (strtolower($req->getLabel()) == "organization")) {
