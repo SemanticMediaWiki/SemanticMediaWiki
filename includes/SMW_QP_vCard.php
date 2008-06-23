@@ -66,6 +66,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 				$role = '';
 				$department ='';
 				$category ='';
+				$url ='';
 
 				foreach ($row as $field) {
 					// later we may add more things like a generic
@@ -88,6 +89,12 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 						$value = current($field->getContent()); // save only the first
 						if ($value !== false) {
 							$birthday =  $value->getXSDValue();
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "homepage") && ($req->getTypeID() == "_uri") ) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$url =  $value->getXSDValue();
 						}
 					}
 					if (strtolower($req->getLabel()) == "email") {
@@ -120,7 +127,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 
 				}
 				$title = $wikipage->getTitle();
-	            $items[] = new SMWvCardEntry($title, $firstname, $lastname, $additionalname, $honorprefix, $nickname, $tels, $addresses, $emails, $birthday, $jobtitle, $role, $organization, $department, $category);
+				$items[] = new SMWvCardEntry($title, $firstname, $lastname, $additionalname, $honorprefix, $nickname, $tels, $addresses, $emails, $birthday, $jobtitle, $role, $organization, $department, $category, $url);
             	$row = $res->getNext();
 			}
             foreach ($items as $item) {
@@ -164,45 +171,44 @@ class SMWvCardEntry {
 	private $label;
 	private $firstname;
 	private $lastname;
-    private $additionalname;
-    private $honorprefix;
-    private $nickname;
-    private $tels = array();
-    private $addresses = array();
-    private $emails = array();
-    private $birthday;
+	private $additionalname;
+	private $honorprefix;
+	private $nickname;
+	private $tels = array();
+	private $addresses = array();
+	private $emails = array();
+	private $birthday;
 	private $dtstamp;
 	private $title;
-    private $role;
-    private $organization;
-    private $department;
-    private $category;
+	private $role;
+	private $organization;
+	private $department;
+	private $category;
 	private $revid;
-    private $prodid;
-
+	private $prodid;
 
 	/**
 	 * Constructor for a single item in the vcard. Requires the URI of the item.
 	 */
-	public function SMWVCardEntry(Title $t, $firstname, $lastname, $additionalname, $honorprefix, $nickname, $tels, $addresses, $emails, $birthday, $title, $role, $organization, $department, $category) {
+	public function SMWVCardEntry(Title $t, $firstname, $lastname, $additionalname, $honorprefix, $nickname, $tels, $addresses, $emails, $birthday, $title, $role, $organization, $department, $category, $url) {
 		global $wgServer;
 		$this->uri = $t->getFullURL();
+		$this->url = $url;
 		$this->label = $t->getText();
 		$this->firstname = $firstname;
 		$this->lastname = $lastname;
-        $this->additionalname = $additionalname;
-        $this->honorprefix = $honorprefix;
-        $this->nickname = $nickname;
-        $this->tels = $tels;
-        $this->addresses = $addresses;
-        $this->emails = $emails;
-        $this->birthday = $birthday;
-    	$this->title = $title;
-        $this->role = $role;
-        $this->organization = $organization;
-        $this->department = $department;
-        $this->category = $category;
-
+		$this->additionalname = $additionalname;
+		$this->honorprefix = $honorprefix;
+		$this->nickname = $nickname;
+		$this->tels = $tels;
+		$this->addresses = $addresses;
+		$this->emails = $emails;
+		$this->birthday = $birthday;
+		$this->title = $title;
+		$this->role = $role;
+		$this->organization = $organization;
+		$this->department = $department;
+		$this->category = $category;
 
 		$this->revid = $t->getLatestRevID();
 
@@ -217,20 +223,21 @@ class SMWvCardEntry {
 	public function text() {
 		$text  = "BEGIN:VCARD\r\n";
 		$text .= "VERSION:3.0\r\n";
-		$text .= "N;CHARSET=ISO-8859-1:$this->lastname;$this->firstname;$this->additionalname;$this->honorprefix\r\n";
-		$text .= "FN;CHARSET=ISO-8859-1:$this->label\r\n";
+		$text .= "N;CHARSET=UTF-8:$this->lastname;$this->firstname;$this->additionalname;$this->honorprefix\r\n";
+		$text .= "FN;CHARSET=UTF-8:$this->label\r\n";
         $text .= "CLASS:PRIVATE\r\n";
         if ($this->birthday !== "") $text .= "BDAY:$this->birthday\r\n";
-        if ($this->title !== "") $text .= "TITLE;CHARSET=ISO-8859-1:$this->title\r\n";
-        if ($this->role !== "") $text .= "ROLE;CHARSET=ISO-8859-1:$this->role\r\n";
-        if ($this->organization !== "") $text .= "ORG;CHARSET=ISO-8859-1:$this->organization;$this->department\r\n";
-        if ($this->category !== "") $text .= "CATEGORIES;CHARSET=ISO-8859-1$this->category\r\n";
+        if ($this->title !== "") $text .= "TITLE;CHARSET=UTF-8:$this->title\r\n";
+        if ($this->role !== "") $text .= "ROLE;CHARSET=UTF-8:$this->role\r\n";
+        if ($this->organization !== "") $text .= "ORG;CHARSET=UTF-8:$this->organization;$this->department\r\n";
+        if ($this->category !== "") $text .= "CATEGORIES;CHARSET=UTF-8$this->category\r\n";
         foreach ($this->emails as $entry) $text .= $entry->createVCardEmailText();
         foreach ($this->addresses as $entry) $text .= $entry->createVCardAddressText();
         foreach ($this->tels as $entry) $text .= $entry->createVCardTelText();
-        $text .= "NOTE;CHARSET=ISO-8859-1:$this->dtstamp - Semantic MediaWiki - $this->uri\r\n";
+        $text .= "NOTE;CHARSET=UTF-8:$this->dtstamp - Semantic MediaWiki - $this->uri\r\n";
         $text .= "PRODID:-//$this->prodid//Semantic MediaWiki\r\n";
         $text .= "REV:$this->revid\r\n";
+        $text .= "URL:" . ($this->url?$this->url:$this->uri) . "\r\n";
         $text .= "UID:$this->uri\r\n";
 		$text .= "END:VCARD\r\n";
 		return $text;
@@ -270,7 +277,7 @@ class SMWvCardAddress{
 	 */
     public function createVCardAddressText(){
         if ($this->type == "") $this->type="work";
-        $text  =  "ADR;TYPE=$this->type;CHARSET=ISO-8859-1:$this->postofficebox;$this->extendedaddress;$this->street;$this->locality;$this->region;$this->postalcode;$this->country\r\n";
+        $text  =  "ADR;TYPE=$this->type;CHARSET=UTF-8:$this->postofficebox;$this->extendedaddress;$this->street;$this->locality;$this->region;$this->postalcode;$this->country\r\n";
         return $text;
     }
 }
