@@ -234,9 +234,9 @@ class SMWvCardEntry {
         foreach ($this->emails as $entry) $text .= $entry->createVCardEmailText();
         foreach ($this->addresses as $entry) $text .= $entry->createVCardAddressText();
         foreach ($this->tels as $entry) $text .= $entry->createVCardTelText();
-        $text .= "NOTE;CHARSET=UTF-8:$this->dtstamp - Semantic MediaWiki - $this->uri\r\n";
+        $text .= "NOTE;CHARSET=UTF-8:Exported by Semantic MediaWiki from $this->uri\r\n";
         $text .= "PRODID:-//$this->prodid//Semantic MediaWiki\r\n";
-        $text .= "REV:$this->revid\r\n";
+        $text .= "REV:$this->dtstamp\r\n";
         $text .= "URL:" . ($this->url?$this->url:$this->uri) . "\r\n";
         $text .= "UID:$this->uri\r\n";
 		$text .= "END:VCARD\r\n";
