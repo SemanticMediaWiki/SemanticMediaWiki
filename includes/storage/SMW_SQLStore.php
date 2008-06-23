@@ -890,7 +890,7 @@ class SMWSQLStore extends SMWStore {
 							break;
 						}
 						foreach($propertyValueArray as $value) {
-							if ( $value->getNamespace() == SMW_NS_PROPERTY )  {
+							if ( ($value->isValid()) && ($value->getNamespace() == SMW_NS_PROPERTY) )  {
 								$up_subprops[] =
 								array('subject_title' => $subject->getDBkey(),
 								      'object_title' => $value->getDBkey());
@@ -899,13 +899,13 @@ class SMWSQLStore extends SMWStore {
 					break;
 					default: // normal special value
 						foreach($propertyValueArray as $value) {
-							if ($value->getXSDValue() !== false) { // filters out error-values etc.
+							if ( $value->isValid() ) { // filters out error-values etc.
 								$stringvalue = $value->getXSDValue();
+								$up_specials[] =
+								array('subject_id' => $subject->getArticleID(),
+								      'property_id' => $property,
+								      'value_string' => $stringvalue);
 							}
-							$up_specials[] =
-							array('subject_id' => $subject->getArticleID(),
-							      'property_id' => $property,
-							      'value_string' => $stringvalue);
 						}
 					break;
 				}

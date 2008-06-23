@@ -632,7 +632,7 @@ class SMWSQLStore2 extends SMWStore {
 					break;
 					case SMW_SP_INSTANCE_OF:
 						foreach($propertyValueArray as $value) {
-							if ( $value->getNamespace() == NS_CATEGORY )  {
+							if ( ($value->isValid()) && ($value->getNamespace() == NS_CATEGORY) )  {
 								$up_inst2[] =
 								array('s_id' => $sid,
 								      'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),''));
@@ -645,7 +645,7 @@ class SMWSQLStore2 extends SMWStore {
 							break;
 						}
 						foreach($propertyValueArray as $value) {
-							if ( $value->getNamespace() == $namespace )  {
+							if ( ($value->isValid()) && ($value->getNamespace() == $namespace) )  {
 								$up_subs2[] =
 								array('s_id' => $sid,
 								      'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),''));
@@ -654,13 +654,13 @@ class SMWSQLStore2 extends SMWStore {
 					break;
 					default: // normal special value
 						foreach($propertyValueArray as $value) {
-							if ($value->getXSDValue() !== false) { // filters out error-values etc.
+							if ($value->isValid()) { // filters out error-values etc.
 								$stringvalue = $value->getXSDValue();
+								$up_spec2[] =
+								array('s_id' => $sid,
+								      'sp_id' => $property,
+								      'value_string' => $stringvalue);
 							}
-							$up_spec2[] =
-							array('s_id' => $sid,
-							      'sp_id' => $property,
-							      'value_string' => $stringvalue);
 						}
 					break;
 				}
