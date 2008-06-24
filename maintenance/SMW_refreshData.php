@@ -20,20 +20,27 @@
  * -t           Will refresh only type pages (and other explicitly named namespaces)
  * -f           Fully delete all content instead of just refreshing relevant entries. This will also
  *              rebuild the whole storage structure. May leave the wiki temporarily incomplete.
+ * --server=<server> The protocol and server name to as base URLs, e.g.
+ *              http://en.wikipedia.org. This is sometimes necessary because
+ *              server name detection may fail in command line scripts.
  *
  * @author Yaron Koren
  * @author Markus Krötzsch
  */
 
-$optionsWithArgs = array( 'd', 's', 'e', 'b' ); // -d <delay>, -s <startid>, -e <endid>, -b <backend>
+$optionsWithArgs = array( 'd', 's', 'e', 'b', 'server'); // -d <delay>, -s <startid>, -e <endid>, -b <backend>
 
 $mwPath = getenv('MW_INSTALL_PATH') !== false ? getenv('MW_INSTALL_PATH').'/maintenance/' : '';
 require_once("{$mwPath}counter.php");
 require_once("{$mwPath}commandLine.inc");
 
-global $smwgIP, $smwgEnableUpdateJobs;
+global $smwgIP, $smwgEnableUpdateJobs, $wgServer;
 $smwgEnableUpdateJobs = false; // do not fork additional update jobs while running this script
 require_once($smwgIP . '/includes/SMW_Factbox.php');
+
+if ( isset( $options['server'] ) ) {
+	$wgServer = $options['server'];
+}
 
 $dbr =& wfGetDB( DB_MASTER );
 

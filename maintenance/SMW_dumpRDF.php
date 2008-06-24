@@ -20,12 +20,12 @@
  * @author Markus Krötzsch
  */
 
-$optionsWithArgs = array( 'o', 'd', 'e' ); 
+$optionsWithArgs = array( 'o', 'd', 'e', 'server');
 
 require_once ( getenv('MW_INSTALL_PATH') !== false
 	? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
 	: 'commandLine.inc' );
-global $smwgIP;
+global $smwgIP, $wgServer;
 require_once( "$smwgIP/specials/Export/SMW_SpecialOWLExport.php");
 
 if ( !empty( $options['o'] ) ) {
