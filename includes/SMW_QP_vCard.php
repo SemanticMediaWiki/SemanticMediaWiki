@@ -42,32 +42,58 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 			$row = $res->getNext();
 			while ( $row !== false ) {
 				$wikipage = $row[0]->getNextObject(); // get the object
-				$firstname = '';
-				$lastname = '';
-				$birthday = '';
-				$organization = '';
+				// name
+				$prefix = ''; // something like 'Dr.'
+				$firstname = ''; // given name
+				$additionalname = ''; // typically the "middle" name (second first name)
+				$lastname = ''; // family name
+				$suffix = ''; // things like "jun." or "sen."
+				$fullname = ''; // the "formatted name", may be independent from first/lastname & co.
+				// contacts
 				$emails = array();
 				$tels = array();
 				$addresses = array();
-				$additionalname = '';
-				$honorprefix = '';
-				$nickname = '';
+				// organisational details:
+				$organization = ''; // any string
 				$jobtitle ='';
 				$role = '';
 				$department ='';
+				// other stuff
 				$category ='';
-				$url ='';
-				$note ='';
+				$birthday = ''; // a date
+				$url =''; // homepage, a legal URL
+				$note =''; // any text
 
 				foreach ($row as $field) {
 					// later we may add more things like a generic
-					// mechanism to add whatever you want :)
-					// could include funny things like geo, description etc. though
+					// mechanism to add non-standard vCard properties as well
+					// (could include funny things like geo, description etc.)
 					$req = $field->getPrintRequest();
+					if ( (strtolower($req->getLabel()) == "name")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$fullname = $value->getShortWikiText();
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "prefix")) {
+						foreach ($field->getContent() as $value) {
+							$prefix .= ($prefix?',':'') . $value->getShortWikiText();
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "suffix")) {
+						foreach ($field->getContent() as $value) {
+							$suffix .= ($suffix?',':'') . $value->getShortWikiText();
+						}
+					}
 					if ( (strtolower($req->getLabel()) == "firstname")) {
 						$value = current($field->getContent()); // save only the first
 						if ($value !== false) {
 							$firstname = $value->getShortWikiText();
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "extraname")) {
+						foreach ($field->getContent() as $value) {
+							$additionalname .= ($additionalname?',':'') . $value->getShortWikiText();
 						}
 					}
 					if ( (strtolower($req->getLabel()) == "lastname")) {
@@ -122,8 +148,8 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 					}
 
 				}
-				$title = $wikipage->getTitle();
-				$items[] = new SMWvCardEntry($title, $firstname, $lastname, $additionalname, $honorprefix, $nickname, $tels, $addresses, $emails, $birthday, $jobtitle, $role, $organization, $department, $category, $url, $note);
+				$pagetitle = $wikipage->getTitle();
+				$items[] = new SMWvCardEntry($pagetitle, $prefix, $firstname, $lastname, $additionalname, $suffix, $fullname, $tels, $addresses, $emails, $birthday, $jobtitle, $role, $organization, $department, $category, $url, $note);
             	$row = $res->getNext();
 			}
             foreach ($items as $item) {
@@ -145,11 +171,8 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 			} else { // use a reasonable default limit
 				$link->setParameter(20,'limit');
 			}
-
 			$result .= $link->getText($outputmode,$this->mLinker);
-
 		}
-
 		return $result;
 	}
 
@@ -159,14 +182,14 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
  * Represents a single entry in an vCard
  */
 class SMWvCardEntry {
-
 	private $uri;
 	private $label;
+	private $fullname;
 	private $firstname;
 	private $lastname;
 	private $additionalname;
-	private $honorprefix;
-	private $nickname;
+	private $prefix;
+	private $suffix;
 	private $tels = array();
 	private $addresses = array();
 	private $emails = array();
@@ -182,26 +205,49 @@ class SMWvCardEntry {
 	/**
 	 * Constructor for a single item in the vcard. Requires the URI of the item.
 	 */
-	public function SMWVCardEntry(Title $t, $firstname, $lastname, $additionalname, $honorprefix, $nickname, $tels, $addresses, $emails, $birthday, $title, $role, $organization, $department, $category, $url, $note) {
+	public function SMWVCardEntry(Title $t, $prefix, $firstname, $lastname, $additionalname, $suffix, $fullname, $tels, $addresses, $emails, $birthday, $jobtitle, $role, $organization, $department, $category, $url, $note) {
 		global $wgServer;
 		$this->uri = $t->getFullURL();
 		$this->url = $url;
-		$this->label = $t->getText();
-		$this->firstname = $firstname;
-		$this->lastname = $lastname;
-		$this->additionalname = $additionalname;
-		$this->honorprefix = $honorprefix;
-		$this->nickname = $nickname;
+		// read fullname or guess it in a simple way from other names that are given
+		if ($fullname != '') {
+			$this->label = $fullname;
+		} elseif ($firstname . $lastname != '') {
+			$this->label = $firstname . (( ($firstname!='') && ($lastname!='') )?' ':'') .  $lastname;
+		} else {
+			$this->label = $t->getText();
+		}
+		$this->label = SMWVCardEntry::vCardEscape($this->label);
+		// read firstname and lastname, or guess it from other names that are given
+		if ($firstname . $lastname == '') { // guessing needed
+			$nameparts = explode(' ', $this->label);
+			// Accepted forms for guessing:
+			// "Lastname"
+			// "Firstname Lastname"
+			// "Firstname <Additionalnames> Lastname"
+			$this->lastname = SMWVCardEntry::vCardEscape(array_pop($nameparts));
+			if (count($nameparts)>0) $this->firstname = SMWVCardEntry::vCardEscape(array_shift($nameparts));
+			foreach ($nameparts as $name) {
+				$this->additionalname .= ($this->additionalname!=''?',':'') . SMWVCardEntry::vCardEscape($name);
+			}
+		} else {
+			$this->firstname = SMWVCardEntry::vCardEscape($firstname);
+			$this->lastname = SMWVCardEntry::vCardEscape($lastname);
+		}
+		if ($additionalname != '') $this->additionalname = $additionalname; // no escape, can be a value list
+			// ^ overwrite above guessing in that case
+		$this->prefix = SMWVCardEntry::vCardEscape($prefix);
+		$this->suffix = SMWVCardEntry::vCardEscape($suffix);
 		$this->tels = $tels;
 		$this->addresses = $addresses;
 		$this->emails = $emails;
 		$this->birthday = $birthday;
-		$this->title = $title;
-		$this->role = $role;
-		$this->organization = $organization;
-		$this->department = $department;
-		$this->category = $category;
-		$this->note = $note;
+		$this->title = SMWVCardEntry::vCardEscape($jobtitle);
+		$this->role = SMWVCardEntry::vCardEscape($role);
+		$this->organization = SMWVCardEntry::vCardEscape($organization);
+		$this->department = SMWVCardEntry::vCardEscape($department);
+		$this->category = $category; // allow non-escaped "," in here for making a list of categories
+		$this->note = SMWVCardEntry::vCardEscape($note);
 
 		$article = new Article($t);
 		$this->dtstamp  = $article->getTimestamp();
@@ -214,25 +260,38 @@ class SMWvCardEntry {
 	public function text() {
 		$text  = "BEGIN:VCARD\r\n";
 		$text .= "VERSION:3.0\r\n";
-		$text .= "N;CHARSET=UTF-8:$this->lastname;$this->firstname;$this->additionalname;$this->honorprefix\r\n";
+		// N and FN are required properties in vCard 3.0, we need to write something there
+		$text .= "N;CHARSET=UTF-8:$this->lastname;$this->firstname;$this->additionalname;$this->prefix;$this->suffix\r\n";
 		$text .= "FN;CHARSET=UTF-8:$this->label\r\n";
-        $text .= "CLASS:PRIVATE\r\n";
-        if ($this->birthday !== "") $text .= "BDAY:$this->birthday\r\n";
-        if ($this->title !== "") $text .= "TITLE;CHARSET=UTF-8:$this->title\r\n";
-        if ($this->role !== "") $text .= "ROLE;CHARSET=UTF-8:$this->role\r\n";
-        if ($this->organization !== "") $text .= "ORG;CHARSET=UTF-8:$this->organization;$this->department\r\n";
-        if ($this->category !== "") $text .= "CATEGORIES;CHARSET=UTF-8:$this->category\r\n";
-        foreach ($this->emails as $entry) $text .= $entry->createVCardEmailText();
-        foreach ($this->addresses as $entry) $text .= $entry->createVCardAddressText();
-        foreach ($this->tels as $entry) $text .= $entry->createVCardTelText();
-        if ($this->note !== "") $text .= "NOTE;CHARSET=UTF-8:$this->note\r\n";
-        $text .= "SOURCE;CHARSET=UTF-8:$this->uri\r\n";
-        $text .= "PRODID:-////Semantic MediaWiki\r\n";
-        $text .= "REV:$this->dtstamp\r\n";
-        $text .= "URL:" . ($this->url?$this->url:$this->uri) . "\r\n";
-        $text .= "UID:$this->uri\r\n";
+		// heuristic for setting confidentiality level of vCard:
+		global $wgGroupPermissions;
+		if ( (array_key_exists('*', $wgGroupPermissions)) &&
+		     (array_key_exists('read', $wgGroupPermissions['*'])) ) {
+			$public = $wgGroupPermissions['*']['read'];
+		} else {
+			$public = true;
+		}
+		$text .= ($public?'CLASS:PUBLIC':'CLASS:CONFIDENTIAL') . "\r\n";
+		if ($this->birthday !== "") $text .= "BDAY:$this->birthday\r\n";
+		if ($this->title !== "") $text .= "TITLE;CHARSET=UTF-8:$this->title\r\n";
+		if ($this->role !== "") $text .= "ROLE;CHARSET=UTF-8:$this->role\r\n";
+		if ($this->organization !== "") $text .= "ORG;CHARSET=UTF-8:$this->organization;$this->department\r\n";
+		if ($this->category !== "") $text .= "CATEGORIES;CHARSET=UTF-8:$this->category\r\n";
+		foreach ($this->emails as $entry) $text .= $entry->createVCardEmailText();
+		foreach ($this->addresses as $entry) $text .= $entry->createVCardAddressText();
+		foreach ($this->tels as $entry) $text .= $entry->createVCardTelText();
+		if ($this->note !== "") $text .= "NOTE;CHARSET=UTF-8:$this->note\r\n";
+		$text .= "SOURCE;CHARSET=UTF-8:$this->uri\r\n";
+		$text .= "PRODID:-////Semantic MediaWiki\r\n";
+		$text .= "REV:$this->dtstamp\r\n";
+		$text .= "URL:" . ($this->url?$this->url:$this->uri) . "\r\n";
+		$text .= "UID:$this->uri\r\n";
 		$text .= "END:VCARD\r\n";
 		return $text;
+	}
+
+	public static function vCardEscape($text) {
+		return str_replace(array('\\',',',':',';'), array('\\\\','\,','\:','\;'),$text);
 	}
 
 }
@@ -241,37 +300,37 @@ class SMWvCardEntry {
  * Represents a single address entry in an vCard entry.
  */
 class SMWvCardAddress{
-    private $type;
-    private $postofficebox;
-    private $extendedaddress;
-    private $street;
-    private $locality;
-    private $region;
-    private $postalcode;
-    private $country;
+	private $type;
+	private $postofficebox;
+	private $extendedaddress;
+	private $street;
+	private $locality;
+	private $region;
+	private $postalcode;
+	private $country;
 
-    /**
+	/**
 	 * Constructor for a single address item in the vcard item.
 	 */
-    public function __construct($type, $postofficebox, $extendedaddress, $street, $locality, $region, $postalcode, $country) {
-    $this->type = $type;
-    $this->postofficebox = $postofficebox;
-    $this->extendedaddress = $extendedaddress;
-    $this->street = $street;
-    $this->locality = $locality;
-    $this->region = $region;
-    $this->postalcode = $postalcode;
-    $this->country = $country;
+	public function __construct($type, $postofficebox, $extendedaddress, $street, $locality, $region, $postalcode, $country) {
+		$this->type = $type;
+		$this->postofficebox = SMWVCardEntry::vCardEscape($postofficebox);
+		$this->extendedaddress = SMWVCardEntry::vCardEscape($extendedaddress);
+		$this->street = SMWVCardEntry::vCardEscape($street);
+		$this->locality = SMWVCardEntry::vCardEscape($locality);
+		$this->region = SMWVCardEntry::vCardEscape($region);
+		$this->postalcode = SMWVCardEntry::vCardEscape($postalcode);
+		$this->country = SMWVCardEntry::vCardEscape($country);
+	}
 
-    }
-    /**
+	/**
 	 * Creates the vCard output for a single address item.
 	 */
-    public function createVCardAddressText(){
-        if ($this->type == "") $this->type="work";
-        $text  =  "ADR;TYPE=$this->type;CHARSET=UTF-8:$this->postofficebox;$this->extendedaddress;$this->street;$this->locality;$this->region;$this->postalcode;$this->country\r\n";
-        return $text;
-    }
+	public function createVCardAddressText(){
+		if ($this->type == "") $this->type="work";
+		$text  =  "ADR;TYPE=$this->type;CHARSET=UTF-8:$this->postofficebox;$this->extendedaddress;$this->street;$this->locality;$this->region;$this->postalcode;$this->country\r\n";
+		return $text;
+	}
 }
 
 /**
@@ -285,43 +344,41 @@ class SMWvCardTel{
 	 * Constructor for a single telephone item in the vcard item.
 	 */
 	public function __construct($type, $telnumber) {
-		$this->type = $type;
-		$this->telnumber = $telnumber;
+		$this->type = $type;  // may be a vCard value list using ",", no escaping
+		$this->telnumber = SMWVCardEntry::vCardEscape($telnumber); // escape to be sure
 	}
-    /**
+
+	/**
 	 * Creates the vCard output for a single telephone item.
 	 */
-    public function createVCardTelText(){
-        if ($this->type == "") $this->type="work";
-        $text  =  "TEL;TYPE=$this->type:$this->telnumber\r\n";
-        return $text;
-
-
-    }
+	public function createVCardTelText(){
+		if ($this->type == "") $this->type="work";
+		$text  =  "TEL;TYPE=$this->type:$this->telnumber\r\n";
+		return $text;
+	}
 }
 
 /**
  * Represents a single email entry in an vCard entry.
  */
 class SMWvCardEmail{
-    private $type;
-    private $emailaddress;
+	private $type;
+	private $emailaddress;
 
-    /**
+	/**
 	 * Constructor for a email telephone item in the vcard item.
 	 */
-    public function __construct($type, $emailaddress) {
-    $this->type = $type;
-    $this->emailaddress = $emailaddress;
-    }
-    /**
+	public function __construct($type, $emailaddress) {
+		$this->type = $type;
+		$this->emailaddress = $emailaddress; // no escape, normally not needed anyway
+	}
+
+	/**
 	 * Creates the vCard output for a single email item.
 	 */
-    public function createVCardEmailText(){
-        if ($this->type == "") $this->type="internet";
-        $text  =  "EMAIL;TYPE=$this->type:$this->emailaddress\r\n";
-        return $text;
-
-
-    }
+	public function createVCardEmailText(){
+		if ($this->type == "") $this->type="internet";
+		$text  =  "EMAIL;TYPE=$this->type:$this->emailaddress\r\n";
+		return $text;
+	}
 }
