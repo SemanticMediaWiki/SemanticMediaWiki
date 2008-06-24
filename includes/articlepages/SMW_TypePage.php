@@ -153,7 +153,7 @@ class SMWTypePage extends SMWOrderedListPage {
 					$cont_msg = "";
 					if ( $this->articles_start_char[$index] == $prev_start_char )
 						$cont_msg = wfMsgHtml('listingcontinuesabbrev');
-					$r .= "<h3>" . htmlspecialchars( $this->articles_start_char[$index] ) . "$cont_msg</h3>\n<ul>";
+					$r .= "<h3>" . htmlspecialchars( $this->articles_start_char[$index] ) . " $cont_msg</h3>\n<ul>";
 					$prev_start_char = $this->articles_start_char[$index];
 				}
 				$r .= "<li>" . $this->getArticleLink($this->articles[$index]) . "</li>\n";
