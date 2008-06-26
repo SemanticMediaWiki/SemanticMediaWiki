@@ -61,10 +61,14 @@ remarks in the section "Notes on Upgrading" below!
     directory to "[wikipath]/extensions/" (or extract/download it to this place).
     We abbreviate "[wikipath]/extensions/SemanticMediaWiki" as "[SMW_path]" below.
 (2) Insert the following two lines into the file "[wikipath]/LocalSettings.php":
+
        include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');
        enableSemantics('example.org');
+
     where example.org should be replaced by your server's name (or IP address).
-    If you have custom namespaces (e.g. "Portal"), read the note below.
+    The latter is needed only once, using the "preferred" name of your server.
+    It is no problem to access a site by more than one servername in any case.
+    If you have custom namespaces (such as "Portal"), read the note below.
 (3) In your wiki, log in as a user with admin status and go to the page
     "Special:SMWAdmin" to do the final setup steps. This can also be done with
     a command-line php script. See [SMW_path]/maintenance/README for details.
