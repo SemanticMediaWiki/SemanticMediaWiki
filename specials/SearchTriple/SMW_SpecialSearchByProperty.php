@@ -1,10 +1,5 @@
 <?php
 
-if (!defined('MEDIAWIKI')) die();
-
-global $IP;
-include_once($IP . '/includes/SpecialPage.php');
-
 /**
  * @author Denny Vrandecic
  *
@@ -13,7 +8,7 @@ include_once($IP . '/includes/SpecialPage.php');
  * For example, it shows me all persons born in Croatia,
  * or all winners of the Academy Award for best actress.
  *
- * @note AUTOLOAD
+ * @note AUTOLOADED
  */
 class SMWSearchByProperty extends SpecialPage {
 
@@ -29,8 +24,7 @@ class SMWSearchByProperty extends SpecialPage {
 	}
 
 	public function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser, $smwgQMaxInlineLimit, $smwgIP;
-		require_once( "$smwgIP/includes/storage/SMW_Store.php" );
+		global $wgRequest, $wgOut, $wgUser, $smwgQMaxInlineLimit;
 		$skin = $wgUser->getSkin();
 
 		// get the GET parameters
@@ -55,8 +49,6 @@ class SMWSearchByProperty extends SpecialPage {
 		if ('' == $attributestring) { // empty page. If no attribute given the value does not matter
 			$html .= wfMsg('smw_sbv_docu') . "\n";
 		} else {
-			global $smwgIP;
-			include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 			// Now that we have an attribute, let's figure out the datavalue
 			$value = SMWDataValueFactory::newPropertyObjectValue( $attribute, $valuestring );
 			if ( $value->isValid() == FALSE ) { // no value understood

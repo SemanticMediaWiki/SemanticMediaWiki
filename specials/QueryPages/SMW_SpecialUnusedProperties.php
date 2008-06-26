@@ -2,13 +2,9 @@
 /**
  * @author Markus Krötzsch
  *
- * This page shows all used attributes.
+ * This page shows all unused properties.
  */
 
-if (!defined('MEDIAWIKI')) die();
-
-global $smwgIP;
-include_once( "$smwgIP/specials/QueryPages/SMW_QueryPage.php" );
 
 function smwfDoSpecialUnusedProperties() {
 	wfProfileIn('smwfDoSpecialUnusedProperties (SMW)');

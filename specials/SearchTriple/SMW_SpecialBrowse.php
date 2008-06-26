@@ -7,11 +7,6 @@
  * properties.
  */
 
-if (!defined('MEDIAWIKI')) die();
-
-global $IP;
-include_once($IP . '/includes/SpecialPage.php');
-
 /**
  * A class to encapsulate the special page that allows browsing through
  * the knowledge structure of a Semantic MediaWiki.
@@ -32,9 +27,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	}
 
 	public function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser,$wgContLang, $smwgIP;
-		include_once($smwgIP . '/includes/storage/SMW_Store.php');
-		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
+		global $wgRequest, $wgOut, $wgUser, $wgContLang;
 
 		$skin = $wgUser->getSkin();
 

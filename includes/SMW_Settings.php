@@ -1,5 +1,9 @@
 <?php
 
+if ( !defined( 'MEDIAWIKI' ) ) {
+  die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
+}
+
 ###
 # This is the path to your installation of Semantic MediaWiki as
 # seen from the web. Change it if required ($wgScriptPath is the
@@ -27,11 +31,7 @@ require_once('SMW_GlobalFunctions.php');
 # that is not in use yet. However, it must not be smaller
 # than 100.
 ##
-if (!isset($smwgNamespaceIndex)) {
-	smwfInitNamespaces(100);
-} else {
-	smwfInitNamespaces();
-}
+smwfInitNamespaces();
 
 ###
 # This setting allows you to select in which cases you want to have a factbox

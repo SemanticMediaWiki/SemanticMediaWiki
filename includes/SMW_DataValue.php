@@ -338,8 +338,6 @@ abstract class SMWDataValue {
 	 * text, but no more. Result might have no entries but is always an array.
 	 */
 	public function getInfolinks() {
-		global $smwgIP;
-		include_once($smwgIP . '/includes/SMW_Infolink.php');
 		if ($this->isValid() && $this->m_property) {
 			if (!$this->m_hasssearchlink) { // add default search link
 				$this->m_hasssearchlink = true;

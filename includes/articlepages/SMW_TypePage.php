@@ -7,15 +7,10 @@
  * @author: Markus Krötzsch
  */
 
-if( !defined( 'MEDIAWIKI' ) )   die( 1 );
-
-global $smwgIP;
-include_once($smwgIP . '/includes/articlepages/SMW_OrderedListPage.php');
-include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
-
 /**
  * Implementation of MediaWiki's Article that shows additional information on
  * Type: pages. Very simliar to CategoryPage.
+ * @note AUTOLOADED
  */
 class SMWTypePage extends SMWOrderedListPage {
 

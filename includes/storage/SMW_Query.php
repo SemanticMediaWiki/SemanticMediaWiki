@@ -7,15 +7,6 @@
  */
 
 /**
- * Protect against register_globals vulnerabilities.
- * This line must be present before any global variable is referenced.
- */
-if (!defined('MEDIAWIKI')) die();
-
-global $smwgIP;
-require_once($smwgIP . '/includes/storage/SMW_Description.php');
-
-/**
  * Representation of queries in SMW, each consisting of a query 
  * description and various parameters. Some settings might also lead to 
  * changes in the query description.
@@ -23,6 +14,7 @@ require_once($smwgIP . '/includes/storage/SMW_Description.php');
  * Most additional query parameters (limit, sort, ascending, ...) are 
  * interpreted as in SMWRequestOptions (though the latter contains some
  * additional settings).
+ * @note: AUTOLOADED
  */
 class SMWQuery {
 

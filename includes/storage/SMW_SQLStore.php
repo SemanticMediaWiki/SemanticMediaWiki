@@ -6,16 +6,6 @@
  */
 
 /**
- * Protect against register_globals vulnerabilities.
- * This line must be present before any global variable is referenced.
- */
-if (!defined('MEDIAWIKI')) die();
-
-global $smwgIP;
-require_once( "$smwgIP/includes/storage/SMW_Store.php" );
-require_once( "$smwgIP/includes/SMW_DataValueFactory.php" );
-
-/**
  * Storage access class for using the standard MediaWiki SQL database
  * for keeping semantic data.
  */
@@ -1143,16 +1133,16 @@ class SMWSQLStore extends SMWStore {
 			$row = array();
 			foreach ($prs as $pr) {
 				switch ($pr->getMode()) {
-					case SMW_PRINT_THIS:
+					case SMWPrintRequest::PRINT_THIS:
 						$row[] = new SMWResultArray(array($qt), $pr);
 						break;
-					case SMW_PRINT_CATS:
+					case SMWPrintRequest::PRINT_CATS:
 						$row[] = new SMWResultArray($this->getSpecialValues($qt->getTitle(),SMW_SP_INSTANCE_OF), $pr);
 						break;
-					case SMW_PRINT_PROP:
+					case SMWPrintRequest::PRINT_PROP:
 						$row[] = new SMWResultArray($this->getPropertyValues($qt->getTitle(),$pr->getTitle(), NULL, $pr->getOutputFormat()), $pr);
 						break;
-					case SMW_PRINT_CCAT:
+					case SMWPrintRequest::PRINT_CCAT:
 						$cats = $this->getSpecialValues($qt->getTitle(),SMW_SP_INSTANCE_OF);
 						$found = '0';
 						foreach ($cats as $cat) {
@@ -1494,13 +1484,13 @@ class SMWSQLStore extends SMWStore {
 						$string = str_replace(array('_', ' '), array('\_', '\_'), $strcond->string);
 					}
 					switch ($strcond->condition) {
-						case SMW_STRCOND_PRE:
+						case SMWStringCondition::STRCOND_PRE:
 							$string .= '%';
 							break;
-						case SMW_STRCOND_POST:
+						case SMWStringCondition::STRCOND_POST:
 							$string = '%' . $string;
 							break;
-						case SMW_STRCOND_MID:
+						case SMWStringCondition::STRCOND_MID:
 							$string = '%' . $string . '%';
 							break;
 					}

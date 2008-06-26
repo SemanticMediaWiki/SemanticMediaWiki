@@ -7,15 +7,6 @@
  */
 
 /**
- * Protect against register_globals vulnerabilities.
- * This line must be present before any global variable is referenced.
- */
-if (!defined('MEDIAWIKI')) die();
-
-global $smwgIP;
-require_once( "$smwgIP/includes/storage/SMW_Store.php" );
-
-/**
  * Storage access class for testing purposes. No persitent storage is implemented, but
  * all methods return non-empty result sets that can be used for testing purposes.
  * 
@@ -160,16 +151,13 @@ class SMWTestStore extends SMWStore {
 			$row = array();
 			foreach ($prs as $pr) {
 				switch ($pr->getMode()) {
-					case SMW_PRINT_THIS:
+					case SMWPrintRequest::PRINT_THIS:
 						$row[] = new SMWResultArray(array($qt), $pr);
 						break;
-					case SMW_PRINT_RELS:
-						$row[] = new SMWResultArray($this->getRelationObjects($qt,$pr->getTitle()), $pr);
-						break;
-					case SMW_PRINT_CATS:
+					case SMWPrintRequest::PRINT_CATS:
 						$row[] = new SMWResultArray($this->getSpecialValues($qt,SMW_SP_INSTANCE_OF), $pr);
 						break;
-					case SMW_PRINT_ATTS:
+					case SMWPrintRequest::PRINT_PROP:
 						///TODO: respect given datavalue (desired unit), needs extension of getAttributeValues()
 						$row[] = new SMWResultArray($this->getAttributeValues($qt,$pr->getTitle()), $pr);
 						break;
@@ -302,13 +290,13 @@ class SMWTestStore extends SMWStore {
 // 				foreach ($requestoptions->getStringConditions() as $strcond) {
 // 					$string = str_replace(array('_', ' '), array('\_', '\_'), $strcond->string);
 // 					switch ($strcond->condition) {
-// 						case SMW_STRCOND_PRE:
+// 						case SMWStringCondition::STRCOND_PRE:
 // 							$string .= '%';
 // 							break;
-// 						case SMW_STRCOND_POST:
+// 						case SMWStringCondition::STRCOND_POST:
 // 							$string = '%' . $string;
 // 							break;
-// 						case SMW_STRCOND_MID:
+// 						case SMWStringCondition::STRCOND_MID:
 // 							$string = '%' . $string . '%';
 // 							break;
 // 					}

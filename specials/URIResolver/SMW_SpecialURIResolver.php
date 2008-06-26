@@ -1,10 +1,5 @@
 <?php
 
-if (!defined('MEDIAWIKI')) die();
-
-global $IP;
-include_once($IP . '/includes/SpecialPage.php');
-
 /**
  * @author Denny Vrandecic
  *

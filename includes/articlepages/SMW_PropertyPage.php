@@ -6,15 +6,11 @@
  * @author: Markus Krötzsch
  */
 
-if( !defined( 'MEDIAWIKI' ) )   die( 1 );
-
-global $smwgIP;
-require_once( "$smwgIP/includes/articlepages/SMW_OrderedListPage.php");
-
 /**
  * Implementation of MediaWiki's Article that shows additional information on
  * property pages. Very simliar to CategoryPage, but with different printout 
  * that also displays values for each subject with the given property.
+ * @note AUTOLOADED
  */
 class SMWPropertyPage extends SMWOrderedListPage {
 
@@ -113,8 +109,6 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$r = '<table style="width: 100%; ">';
 		$prevchar = 'None';
 		for ($index = $start; $index < $ac; $index++ ) {
-			global $smwgIP;
-			include_once($smwgIP . '/includes/SMW_Infolink.php');
 			// Header for index letters
 			if ($this->articles_start_char[$index] != $prevchar) {
 				$r .= '<tr><th class="smwpropname"><h3>' . htmlspecialchars( $this->articles_start_char[$index] ) . "</h3></th><th></th></tr>\n";

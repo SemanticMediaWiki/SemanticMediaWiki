@@ -1,10 +1,5 @@
 <?php
 
-if (!defined('MEDIAWIKI')) die();
-
-global $IP;
-include_once($IP . '/includes/SpecialPage.php');
-
 /**
  * @author Markus Krötzsch
  *
@@ -26,10 +21,6 @@ class SMWAdmin extends SpecialPage {
 	}
 
 	public function execute($par = null) {
-		global $IP;
-		require_once($IP . '/includes/SpecialPage.php' );
-		require_once($IP . '/includes/Title.php' );
-	
 		global $wgOut, $wgRequest;
 		global $wgServer; // "http://www.yourserver.org"
 							// (should be equal to 'http://'.$_SERVER['SERVER_NAME'])

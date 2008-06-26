@@ -11,14 +11,6 @@
  *
  */
 
-if (!defined('MEDIAWIKI')) die();
-
-global $IP, $smwgIP;
-
-require_once( "$IP/includes/SpecialPage.php" );
-require_once( "$IP/includes/Title.php" );
-require_once("$IP/includes/QueryPage.php");
-
 function doSpecialFlawedAttributes($par = null) {
 	list( $limit, $offset ) = wfCheckLimits();
 	$rep = new FlawedAttributes();
@@ -85,5 +77,3 @@ class FlawedAttributes extends QueryPage {
 		return "$link ($result->count)";
 	}
 }
-
-

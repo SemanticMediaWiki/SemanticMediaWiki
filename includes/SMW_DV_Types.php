@@ -12,7 +12,6 @@
  * @author Markus Krötzsch
  * @note AUTOLOADED
  */
-require_once ('SMW_DataValue.php');
 class SMWTypesValue extends SMWDataValue {
 
 	private $m_typelabels = false;

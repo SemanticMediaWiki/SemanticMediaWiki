@@ -55,7 +55,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 
 		if ( !$eventline && ($this->m_tlstart == '') ) { // seek defaults
 			foreach ($res->getPrintRequests() as $pr) {
-				if ( ($pr->getMode() == SMW_PRINT_PROP) && ($pr->getTypeID() == '_dat') ) {
+				if ( ($pr->getMode() == SMWPrintRequest::PRINT_PROP) && ($pr->getTypeID() == '_dat') ) {
 					if ( ($this->m_tlend == '') && ($this->m_tlstart != '') &&
 					     ($this->m_tlstart != $pr->getTitle()->getDBkey()) ) {
 						$this->m_tlend = $pr->getTitle()->getDBkey();
@@ -109,7 +109,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 								$header = $pr->getText($outputmode,$this->mLinker) . ' ';
 							}
 							// is this a start date?
-							if ( ($pr->getMode() == SMW_PRINT_PROP) && 
+							if ( ($pr->getMode() == SMWPrintRequest::PRINT_PROP) && 
 							     ($pr->getTitle()->getDBkey() == $this->m_tlstart) ) {
 								//FIXME: Timeline scripts should support XSD format explicitly. They
 								//currently seem to implement iso8601 which deviates from XSD in cases.
@@ -119,7 +119,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 								$hastime = true;
 							}
 							// is this the end date?
-							if ( ($pr->getMode() == SMW_PRINT_PROP) && 
+							if ( ($pr->getMode() == SMWPrintRequest::PRINT_PROP) && 
 							     ($pr->getTitle()->getDBkey() == $this->m_tlend) ) {
 								//NOTE: We can assume $object to be an SMWDataValue in this case.
 								$curmeta .= '<span class="smwtlend">' . $object->getXSDValue() . '</span>';
@@ -131,7 +131,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 								} else {
 									$curmeta .= '<span class="smwtltitle">' . $objectlabel . '</span>';
 								}
-								if ( ($pr->getMode() == SMW_PRINT_THIS) ) {
+								if ( ($pr->getMode() == SMWPrintRequest::PRINT_THIS) ) {
 									// NOTE: type Title of $object implied
 									$curarticle = $object->getLongWikiText();
 								}
@@ -142,7 +142,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 							$curdata .= $header . $objectlabel;
 							$output = true;
 						}
-						if ($eventline && ($pr->getMode() == SMW_PRINT_PROP) && ($pr->getTypeID() == '_dat') && ('' != $pr->getLabel()) && ($pr->getTitle()->getText() != $this->m_tlstart) && ($pr->getTitle()->getText() != $this->m_tlend) ) {
+						if ($eventline && ($pr->getMode() == SMWPrintRequest::PRINT_PROP) && ($pr->getTypeID() == '_dat') && ('' != $pr->getLabel()) && ($pr->getTitle()->getText() != $this->m_tlstart) && ($pr->getTitle()->getText() != $this->m_tlend) ) {
 							$events[] = array($object->getXSDValue(), $pr->getLabel(), $object->getNumericValue());
 						}
 						$first_value = false;

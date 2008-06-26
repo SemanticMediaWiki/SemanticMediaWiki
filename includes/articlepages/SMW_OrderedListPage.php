@@ -6,13 +6,8 @@
  * Some code adapted from CategoryPage.php
  *
  * @author Nikolas Iwan
- * @author Markus Krötzsch 
+ * @author Markus Krötzsch
  */
-
-if ( !defined( 'MEDIAWIKI' ) )  die( 1 );
-
-global $IP;
-require_once( "$IP/includes/Article.php" );
 
 /**
  * Abstract subclass of MediaWiki's Article that handles the common tasks of
@@ -21,6 +16,7 @@ require_once( "$IP/includes/Article.php" );
  * parameters.
  *
  * Some code adapted from CategoryPage.php
+ * @note AUTOLOADED
  */
 abstract class SMWOrderedListPage extends Article {
 

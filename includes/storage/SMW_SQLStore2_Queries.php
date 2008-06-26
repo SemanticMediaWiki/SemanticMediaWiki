@@ -217,16 +217,16 @@ class SMWSQLStore2QueryEngine {
 			$row = array();
 			foreach ($prs as $pr) {
 				switch ($pr->getMode()) {
-				case SMW_PRINT_THIS:
+				case SMWPrintRequest::PRINT_THIS:
 					$row[] = new SMWResultArray(array($qt), $pr);
 				break;
-				case SMW_PRINT_CATS:
+				case SMWPrintRequest::PRINT_CATS:
 					$row[] = new SMWResultArray($this->m_store->getSpecialValues($qt->getTitle(),SMW_SP_INSTANCE_OF), $pr);
 				break;
-				case SMW_PRINT_PROP:
+				case SMWPrintRequest::PRINT_PROP:
 					$row[] = new SMWResultArray($this->m_store->getPropertyValues($qt->getTitle(),$pr->getTitle(), NULL, $pr->getOutputFormat()), $pr);
 				break;
-				case SMW_PRINT_CCAT:
+				case SMWPrintRequest::PRINT_CCAT:
 					$cats = $this->m_store->getSpecialValues($qt->getTitle(),SMW_SP_INSTANCE_OF);
 					$found = '0';
 					foreach ($cats as $cat) {

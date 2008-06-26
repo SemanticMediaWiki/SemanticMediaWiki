@@ -34,9 +34,8 @@ $mwPath = getenv('MW_INSTALL_PATH') !== false ? getenv('MW_INSTALL_PATH').'/main
 require_once("{$mwPath}counter.php");
 require_once("{$mwPath}commandLine.inc");
 
-global $smwgIP, $smwgEnableUpdateJobs, $wgServer;
+global $smwgEnableUpdateJobs, $wgServer;
 $smwgEnableUpdateJobs = false; // do not fork additional update jobs while running this script
-require_once($smwgIP . '/includes/SMW_Factbox.php');
 
 if ( isset( $options['server'] ) ) {
 	$wgServer = $options['server'];
@@ -115,7 +114,12 @@ if (  array_key_exists( 'f', $options ) ) {
 
 global $wgParser;
 
-print "Refreshing all semantic data in the database!\n";
+print "Refreshing all semantic data in the database!\n---\n" .
+" Some versions of PHP suffer from memory leaks in long-running scripts.\n" .
+" If your machine gets very slow after many pages (typically more than\n" .
+" 1000) were refreshed, please abort with CTRL-C and resume this script\n" .
+" at the last processed page id using the parameter -s (use -v to display\n" .
+" page ids during refresh). Continue this until all pages were refreshed.\n---\n";
 print "Processing pages from ID $start to ID $end ...\n";
 
 $num_files = 0;

@@ -6,18 +6,11 @@
  * data retrieval instead of the SQL-based access used by MW.
  */
 
-if (!defined('MEDIAWIKI')) die();
-
-global $IP, $smwgIP;
-include_once($IP . '/includes/SpecialPage.php');
-include_once($IP . '/includes/Title.php');
-include_once($IP . '/includes/QueryPage.php');
-include_once($smwgIP . '/includes/storage/SMW_Store.php');
-
 /**
  * Abstract base class for SMW's variant of the MW QueryPage.
  * Subclasses must implement getResults() and formatResult(), as
  * well as some other standard functions of QueryPage.
+ * @note AUTOLOADED
  */
 abstract class SMWQueryPage extends QueryPage {
 

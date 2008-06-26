@@ -8,13 +8,6 @@
  * @author Daniel M. Herzig
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-  die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
-}
-
-global $IP;
-require_once( $IP . "/includes/JobQueue.php" );
-
 class SMWUpdateJob extends Job {
 
 	function __construct($title) {

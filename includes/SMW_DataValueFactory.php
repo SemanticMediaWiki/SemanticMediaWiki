@@ -88,8 +88,6 @@ class SMWDataValueFactory {
 			SMWDataValueFactory::$m_typebyproperty[$propertyname] = $type;
 			return SMWDataValueFactory::newTypeIDValue($smwgPDefaultType,$value,$caption,$propertyname);
 		} else {
-			global $smwgIP;
-			include_once($smwgIP . '/includes/SMW_DV_Error.php');
 			return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value, $caption);
 		}
 	}

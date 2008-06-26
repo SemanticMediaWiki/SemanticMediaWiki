@@ -13,8 +13,7 @@
 *  at the end of the article.
 */
 function smwfParserHook(&$parser, &$text) {
-	global $smwgIP, $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgStoreActive;
-	include_once($smwgIP . '/includes/SMW_Factbox.php');
+	global $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgStoreActive;
 	// Init global storage for semantic data of this article.
 	SMWFactbox::initStorage($parser->getTitle());
 
@@ -112,8 +111,6 @@ function smwfParsePropertiesCallback($semanticLink) {
  * Called before the article is saved. Allows us to check and remember whether an article is new.
  */
 function smwfPreSaveHook(&$article, &$user, &$text, &$summary, $minor, $watch, $sectionanchor, &$flags) {
-	global $smwgIP;
-	include_once($smwgIP . '/includes/SMW_Factbox.php'); // Normally this must have happened, but you never know ...
 	if ($flags & EDIT_NEW) {
 		SMWFactbox::setNewArticle();
 	}
@@ -272,10 +269,8 @@ function smwfMoveHook(&$old_title, &$new_title, &$user, $pageid, $redirid) {
 function smwfShowListPage (&$title, &$article){
 	global $smwgIP;
 	if ($title->getNamespace() == SMW_NS_TYPE){
-		include_once($smwgIP . '/includes/articlepages/SMW_TypePage.php');
 		$article = new SMWTypePage($title);
 	} elseif ( $title->getNamespace() == SMW_NS_PROPERTY ) {
-		include_once($smwgIP . '/includes/articlepages/SMW_PropertyPage.php');
 		$article = new SMWPropertyPage($title);
 	}
 	return true;

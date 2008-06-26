@@ -7,17 +7,9 @@
  */
 
 /**
- * Protect against register_globals vulnerabilities.
- * This line must be present before any global variable is referenced.
- */
-if (!defined('MEDIAWIKI')) die();
-
-global $smwgIP;
-require_once($smwgIP . '/includes/storage/SMW_Store.php');
-
-/**
  * Static class for accessing functions to generate and execute semantic queries 
  * and to serialise their results.
+ * @note AUTOLOADED
  */
 class SMWQueryProcessor {
 
@@ -88,7 +80,7 @@ class SMWQueryProcessor {
 		       ) && ($mainlabel != '-') 
 		     )
 		   ) {
-			$desc->prependPrintRequest(new SMWPrintRequest(SMW_PRINT_THIS, $mainlabel));
+			$desc->prependPrintRequest(new SMWPrintRequest(SMWPrintRequest::PRINT_THIS, $mainlabel));
 		}
 
 		$query = new SMWQuery($desc, $inline);
@@ -175,14 +167,14 @@ class SMWQueryProcessor {
 				$parts = explode('=',$param,2);
 				$propparts = explode('#',$parts[0],2);
 				if (trim($propparts[0]) == '') { // print "this"
-					$printmode = SMW_PRINT_THIS;
+					$printmode = SMWPrintRequest::PRINT_THIS;
 					if (count($parts) == 1) { // no label found, use empty label
 						$parts[] = '';
 					}
 					$title = NULL;
 				} elseif ($wgContLang->getNsText(NS_CATEGORY) == ucfirst(trim($propparts[0]))) { // print category
 					$title = NULL;
-					$printmode = SMW_PRINT_CATS;
+					$printmode = SMWPrintRequest::PRINT_CATS;
 					if (count($parts) == 1) { // no label found, use category label
 						$parts[] = $wgContLang->getNSText(NS_CATEGORY);
 					}
@@ -192,9 +184,9 @@ class SMWQueryProcessor {
 						continue;
 					}
 					if ($title->getNamespace() == SMW_NS_PROPERTY) {
-						$printmode = SMW_PRINT_PROP;
+						$printmode = SMWPrintRequest::PRINT_PROP;
 					} elseif ($title->getNamespace() == NS_CATEGORY) {
-						$printmode = SMW_PRINT_CCAT;
+						$printmode = SMWPrintRequest::PRINT_CCAT;
 					} //else?
 					if (count($parts) == 1) { // no label found, use property/category name
 						$parts[] = $title->getText();
@@ -591,7 +583,7 @@ class SMWQueryParser {
 						$printlabel = $wgContLang->getNSText(NS_CATEGORY);
 					}
 					if ($chunk == ']]') {
-						return new SMWPrintRequest(SMW_PRINT_CATS, $printlabel);
+						return new SMWPrintRequest(SMWPrintRequest::PRINT_CATS, $printlabel);
 					} else {
 						$this->m_errors[] = wfMsgForContent('smw_badprintout');
 						return NULL;
@@ -620,8 +612,6 @@ class SMWQueryParser {
 	 * string.
 	 */
 	protected function getPropertyDescription($propertyname, &$setNS, &$label) {
-		global $smwgIP;
-		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 		$this->readChunk(); // consume separator ":=" or "::"
 		// first process property chain syntax (e.g. "property1.property2::value"):
 		if ($propertyname{0} == ' ') { // escape
@@ -720,7 +710,7 @@ class SMWQueryParser {
 								$printlabel = $property->getText();
 							}
 							if ($chunk == ']]') {
-								return new SMWPrintRequest(SMW_PRINT_PROP, $printlabel, $property, $pm);
+								return new SMWPrintRequest(SMWPrintRequest::PRINT_PROP, $printlabel, $property, $pm);
 							} else {
 								$this->m_errors[] = wfMsgForContent('smw_badprintout');
 								return NULL;
@@ -743,7 +733,7 @@ class SMWQueryParser {
 								$printlabel = $property->getText();
 							}
 							if ($chunk == ']]') {
-								return new SMWPrintRequest(SMW_PRINT_PROP, $printlabel, $property, $printmodifier);
+								return new SMWPrintRequest(SMWPrintRequest::PRINT_PROP, $printlabel, $property, $printmodifier);
 							} else {
 								$this->m_errors[] = wfMsgForContent('smw_badprintout');
 								return NULL;
@@ -831,8 +821,6 @@ class SMWQueryParser {
 	 * passed as a parameter.
 	 */
 	protected function getArticleDescription($firstchunk, &$setNS, &$label) {
-		global $smwgIP;
-		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 		$chunk = $firstchunk;
 		$result = NULL;
 		$continue = true;

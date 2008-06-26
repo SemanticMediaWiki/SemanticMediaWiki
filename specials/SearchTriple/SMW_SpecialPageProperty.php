@@ -9,11 +9,6 @@
  * dynamic output pages.
  */
 
-if (!defined('MEDIAWIKI')) die();
-
-global $IP;
-include_once( "$IP/includes/SpecialPage.php" );
-
 /**
  * @note AUTOLOAD
  */
@@ -31,9 +26,7 @@ class SMWPageProperty extends SpecialPage {
 	}
 
 	public function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser, $smwgIP;
-		include_once($smwgIP . '/includes/storage/SMW_Store.php');
-		include_once($smwgIP . '/includes/SMW_Infolink.php');
+		global $wgRequest, $wgOut, $wgUser;
 
 		$skin = $wgUser->getSkin();
 

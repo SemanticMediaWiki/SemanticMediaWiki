@@ -11,6 +11,7 @@
  * Class for representing chunks of semantic data for one given 
  * article (subject), similar what is typically displayed in the factbox.
  * This is a light-weight data container.
+ * @note: AUTOLOADED
  */
 class SMWSemanticData {
 	protected $attribvals = array(); // text keys and arrays of datavalue objects

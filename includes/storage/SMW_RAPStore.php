@@ -13,10 +13,7 @@ if( !defined( 'MEDIAWIKI' ) ) {
 	die( 'Not an entry point.' );
 }
 
-global $smwgIP,$smwgRAPPath;
-require_once( "$smwgIP/includes/storage/SMW_Store.php" );
-require_once( "$smwgIP/includes/storage/SMW_SQLStore.php" );
-require_once( "$smwgIP/includes/SMW_DataValueFactory.php" );
+global $smwgRAPPath;
 
 define('RDFAPI_INCLUDE_DIR',$smwgRAPPath);
 require_once( "$smwgRAPPath/RdfAPI.php");

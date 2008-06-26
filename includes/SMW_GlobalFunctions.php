@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.2f-SVN');
+define('SMW_VERSION','1.2g-SVN');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -23,7 +23,7 @@ define('SMW_SP_SUBPROPERTY_OF',17);
 define('SMW_SP_SUBCLASS_OF',18);
 
 // old names, will be removed *two* releases after given version
-// SMW 1.1.1
+// SMW 1.1.2
 define('SMW_SP_HAS_CATEGORY',4); // name specific for categories, use "instance of" to distinguish from future explicit "subclass of"
 
 // constants for displaying the factbox
@@ -50,6 +50,13 @@ define('SMW_HEADER_STYLE', 4);
 define('SMW_OUTPUT_HTML', 1);
 define('SMW_OUTPUT_WIKI', 2);
 define('SMW_OUTPUT_FILE', 3);
+
+// comparators for datavalues:
+define('SMW_CMP_EQ',1); // matches only datavalues that are equal to the given value
+define('SMW_CMP_LEQ',2); // matches only datavalues that are less or equal than the given value
+define('SMW_CMP_GEQ',3); // matches only datavalues that are greater or equal to the given value
+define('SMW_CMP_NEQ',4); // matches only datavalues that are unequal to the given value
+define('SMW_CMP_LIKE',5); // matches only datavalues that are LIKE the given value
 
 // HTML items to load in current page, use smwfRequireHeadItem to extend
 $smwgHeadItems = array();
@@ -79,6 +86,11 @@ function enableSemantics($namespace = '', $complete = false) {
 	///// All classes registered for autoloading here should be tagged with this information:
 	///// Add "@note AUTOLOADED" to their class documentation. This avoids useless includes.
 	$wgAutoloadClasses['SMWInfolink']               = $smwgIP . '/includes/SMW_Infolink.php';
+	$wgAutoloadClasses['SMWFactbox']                = $smwgIP . '/includes/SMW_Factbox.php';
+	$wgAutoloadClasses['SMWSemanticData']           = $smwgIP . '/includes/SMW_SemanticData.php';
+	$wgAutoloadClasses['SMWOrderedListPage']        = $smwgIP . '/includes/articlepages/SMW_OrderedListPage.php';
+	$wgAutoloadClasses['SMWTypePage']               = $smwgIP . '/includes/articlepages/SMW_TypePage.php';
+	$wgAutoloadClasses['SMWPropertyPage']           = $smwgIP . '/includes/articlepages/SMW_PropertyPage.php';
 	//// printers
 	$wgAutoloadClasses['SMWResultPrinter']          = $smwgIP . '/includes/SMW_QueryPrinter.php';
 	$wgAutoloadClasses['SMWTableResultPrinter']     = $smwgIP . '/includes/SMW_QP_Table.php';
@@ -91,6 +103,9 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWvCardResultPrinter']     = $smwgIP . '/includes/SMW_QP_vCard.php';
 	//// datavalues
 	$wgAutoloadClasses['SMWDataValue']              = $smwgIP . '/includes/SMW_DataValue.php';
+	$wgAutoloadClasses['SMWErrorvalue']             = $smwgIP . '/includes/SMW_DV_Error.php';
+	///NOTE: other DataValues are registered for autoloading later on by the factory, use the hook
+	/// smwInitDatatypes to modify paths for datatype implementations and for registering new types.
 	$wgAutoloadClasses['SMWDataValueFactory']       = $smwgIP . '/includes/SMW_DataValueFactory.php';
 	// the builtin types are registered by SMWDataValueFactory if needed, will be reliably available
 	// to other DV-implementations that register to the factory.
@@ -100,15 +115,31 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWExpElement']             = $smwgIP . '/includes/export/SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpLiteral']             = $smwgIP . '/includes/export/SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpResource']            = $smwgIP . '/includes/export/SMW_Exp_Element.php';
-	//// stores
+	//// stores & queries
+	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . '/includes/SMW_QueryProcessor.php';
+	$wgAutoloadClasses['SMWQuery']                  = $smwgIP . '/includes/storage/SMW_Query.php';
+	$wgAutoloadClasses['SMWQueryResult']            = $smwgIP . '/includes/storage/SMW_QueryResult.php';
+	$wgAutoloadClasses['SMWStore']                  = $smwgIP . '/includes/storage/SMW_Store.php';
+	$wgAutoloadClasses['SMWStringCondition']        = $smwgIP . '/includes/storage/SMW_Store.php';
+	$wgAutoloadClasses['SMWRequestOptions']         = $smwgIP . '/includes/storage/SMW_Store.php';
+	$wgAutoloadClasses['SMWPrintRequest']           = $smwgIP . '/includes/storage/SMW_Description.php';
+	$wgAutoloadClasses['SMWThingDescription']       = $smwgIP . '/includes/storage/SMW_Description.php';
+	$wgAutoloadClasses['SMWClassDescription']       = $smwgIP . '/includes/storage/SMW_Description.php';
+	$wgAutoloadClasses['SMWNamespaceDescription']   = $smwgIP . '/includes/storage/SMW_Description.php';
+	$wgAutoloadClasses['SMWValueDescription']       = $smwgIP . '/includes/storage/SMW_Description.php';
+	$wgAutoloadClasses['SMWValueList']              = $smwgIP . '/includes/storage/SMW_Description.php';
+	$wgAutoloadClasses['SMWConjunction']            = $smwgIP . '/includes/storage/SMW_Description.php';
+	$wgAutoloadClasses['SMWDisjunction']            = $smwgIP . '/includes/storage/SMW_Description.php';
+	$wgAutoloadClasses['SMWSomeProperty']           = $smwgIP . '/includes/storage/SMW_Description.php';
 	$wgAutoloadClasses['SMWSQLStore']               = $smwgIP . '/includes/storage/SMW_SQLStore.php';
-	$wgAutoloadClasses['SMWSQLStore2']              =  $smwgIP . '/includes/storage/SMW_SQLStore2.php';
+	$wgAutoloadClasses['SMWSQLStore2']              = $smwgIP . '/includes/storage/SMW_SQLStore2.php';
 	// Do not autoload RAPStore, since some special pages load all autoloaded classes, which causes
 	// troubles with RAP store if RAP is not installed (require_once fails).
 	//$wgAutoloadClasses['SMWRAPStore']             = $smwgIP . '/includes/storage/SMW_RAPStore.php';
 	$wgAutoloadClasses['SMWTestStore']              = $smwgIP . '/includes/storage/SMW_TestStore.php';
 
 	///// Register specials, do that early on in case some other extension calls "addPage" /////
+	$wgAutoloadClasses['SMWQueryPage']              = $smwgIP . '/specials/QueryPages/SMW_QueryPage.php';
 	$wgAutoloadClasses['SMWAskPage']                = $smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php';
 	$wgSpecialPages['Ask']                          = array('SMWAskPage');
 	$wgAutoloadClasses['SMWSpecialBrowse']          = $smwgIP . '/specials/SearchTriple/SMW_SpecialBrowse.php';
@@ -141,7 +172,6 @@ function enableSemantics($namespace = '', $complete = false) {
 	///// Register Jobs
 	$wgAutoloadClasses['SMWUpdateJob']              = $smwgIP . '/includes/jobs/SMW_UpdateJob.php';
 	$wgJobClasses['SMWUpdateJob']                   = 'SMWUpdateJob';
-
 
 	return true;
 }
@@ -214,10 +244,9 @@ function smwfRegisterInlineQueries( &$parser, &$text, &$stripstate ) {
  * The <ask> parser hook processing part.
  */
 function smwfProcessInlineQuery($querytext, $params, &$parser) {
-	global $smwgQEnabled, $smwgIP, $smwgIQRunningNumber;
+	global $smwgQEnabled, $smwgIQRunningNumber;
 	if ($smwgQEnabled) {
 		$smwgIQRunningNumber++;
-		require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
 		return SMWQueryProcessor::getResultFromHookParams($querytext,$params,SMW_OUTPUT_HTML);
 	} else {
 		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
@@ -228,10 +257,9 @@ function smwfProcessInlineQuery($querytext, $params, &$parser) {
  * The {{#ask }} parser function processing part.
  */
 function smwfProcessInlineQueryParserFunction(&$parser) {
-	global $smwgQEnabled, $smwgIP, $smwgIQRunningNumber;
+	global $smwgQEnabled, $smwgIQRunningNumber;
 	if ($smwgQEnabled) {
 		$smwgIQRunningNumber++;
-		require_once($smwgIP . '/includes/SMW_QueryProcessor.php');
 		$params = func_get_args();
 		array_shift( $params ); // we already know the $parser ...
 		return SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI);
@@ -482,8 +510,6 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 * content (e.g. as a string value for some property).
 	 */
 	function smwfXMLContentEncode($text) {
-		global $IP;
-		include_once($IP . '/includes/Sanitizer.php');
 		return str_replace(array('&','<','>'), array('&amp;','&lt;','&gt;'), Sanitizer::decodeCharReferences($text));
 	}
 
@@ -492,8 +518,6 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 * content (e.g. as a string value for some property).
 	 */
 	function smwfHTMLtoUTF8($text) {
-		global $IP;
-		include_once($IP . '/includes/Sanitizer.php');
 		return Sanitizer::decodeCharReferences($text);
 	}
 

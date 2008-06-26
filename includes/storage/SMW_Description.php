@@ -6,25 +6,17 @@
  * @author Markus Krötzsch
  */
 
-// comparators for datavalues:
-define('SMW_CMP_EQ',1); // matches only datavalues that are equal to the given value
-define('SMW_CMP_LEQ',2); // matches only datavalues that are less or equal than the given value
-define('SMW_CMP_GEQ',3); // matches only datavalues that are greater or equal to the given value
-define('SMW_CMP_NEQ',4); // matches only datavalues that are unequal to the given value
-define('SMW_CMP_LIKE',5); // matches only datavalues that are LIKE the given value
-
-// print request
-define('SMW_PRINT_CATS', 0);  // print all direct cateories of the current element
-define('SMW_PRINT_PROP', 1);  // print all property values of a certain attribute of the current element
-define('SMW_PRINT_THIS', 2);  // print the current element
-define('SMW_PRINT_CCAT', 3);  // check whether current element is in given category
-
-
 /**
  * Container class for request for printout, as used in queries to
  * obtain additional information for the retrieved results.
+ * @note: AUTOLOADED
  */
 class SMWPrintRequest {
+	const PRINT_CATS = 0; // print all direct cateories of the current element
+	const PRINT_PROP = 1; // print all property values of a certain attribute of the current element
+	const PRINT_THIS = 2;  // print the current element
+	const PRINT_CCAT = 3;  // check whether current element is in given category	
+
 	protected $m_mode; // type of print request
 	protected $m_label; // string for labelling results, contains no markup
 	protected $m_title; // title object to which print request refers (if any)
@@ -43,7 +35,7 @@ class SMWPrintRequest {
 		$this->m_label = $label;
 		$this->m_title = $title;
 		$this->m_outputformat = $outputformat;
-		if ( ($mode == SMW_PRINT_CCAT) && ($outputformat === '') ) {
+		if ( ($mode == SMWPrintRequest::PRINT_CCAT) && ($outputformat === '') ) {
 			$this->m_outputformat = 'x'; // changed default for Boolean case
 		}
 	}
@@ -66,10 +58,10 @@ class SMWPrintRequest {
 			return htmlspecialchars($this->m_label);
 		}
 		switch ($this->m_mode) {
-			case SMW_PRINT_CATS: return htmlspecialchars($this->m_label); // TODO: link to Special:Categories
-			case SMW_PRINT_PROP: case SMW_PRINT_CCAT:
+			case SMWPrintRequest::PRINT_CATS: return htmlspecialchars($this->m_label); // TODO: link to Special:Categories
+			case SMWPrintRequest::PRINT_PROP: case SMWPrintRequest::PRINT_CCAT:
 				return $linker->makeLinkObj($this->m_title, htmlspecialchars($this->m_label));
-			case SMW_PRINT_THIS: default: return htmlspecialchars($this->m_label);
+			case SMWPrintRequest::PRINT_THIS: default: return htmlspecialchars($this->m_label);
 		}
 		
 	}
@@ -82,10 +74,10 @@ class SMWPrintRequest {
 			return $this->m_label;
 		} else {
 			switch ($this->m_mode) {
-				case SMW_PRINT_CATS: return $this->m_label; // TODO: link to Special:Categories
-				case SMW_PRINT_PROP: case SMW_PRINT_CCAT:
+				case SMWPrintRequest::PRINT_CATS: return $this->m_label; // TODO: link to Special:Categories
+				case SMWPrintRequest::PRINT_PROP: case SMWPrintRequest::PRINT_CCAT:
 					return '[[:' . $this->m_title->getPrefixedText() . '|' . $this->m_label . ']]';
-				case SMW_PRINT_THIS: default: return $this->m_label;
+				case SMWPrintRequest::PRINT_THIS: default: return $this->m_label;
 			}
 		}
 	}
@@ -107,7 +99,7 @@ class SMWPrintRequest {
 
 	public function getTypeID() {
 		if ($this->m_typeid === false) {
-			if ($this->m_mode == SMW_PRINT_PROP) {
+			if ($this->m_mode == SMWPrintRequest::PRINT_PROP) {
 				$this->m_typeid = SMWDataValueFactory::getPropertyObjectTypeID($this->m_title);
 			} else {
 				$this->m_typeid = '_wpg'; // return objects might be titles, but anyway
@@ -135,7 +127,7 @@ class SMWPrintRequest {
 	public function getSerialisation() {
 		/// TODO: do not use "= label" if label is the default anyway
 		switch ($this->m_mode) {
-			case SMW_PRINT_CATS:
+			case SMWPrintRequest::PRINT_CATS:
 				global $wgContLang;
 				$catlabel = $wgContLang->getNSText(NS_CATEGORY);
 				$result = '?' . $catlabel;
@@ -143,8 +135,8 @@ class SMWPrintRequest {
 					$result .= '=' . $this->m_label;
 				}
 				return $result;
-			case SMW_PRINT_PROP: case SMW_PRINT_CCAT:
-				if ($this->m_mode == SMW_PRINT_CCAT) {
+			case SMWPrintRequest::PRINT_PROP: case SMWPrintRequest::PRINT_CCAT:
+				if ($this->m_mode == SMWPrintRequest::PRINT_CCAT) {
 					$result = '?' . $this->m_title->getPrefixedText();
 					if ( $this->m_outputformat != 'x' ) {
 						$result .= '#' . $this->m_outputformat;
@@ -159,7 +151,7 @@ class SMWPrintRequest {
 					$result .= '=' . $this->m_label;
 				}
 				return $result;
-			case SMW_PRINT_THIS: default: return ''; // no current serialisation
+			case SMWPrintRequest::PRINT_THIS: default: return ''; // no current serialisation
 		}
 	}
 }

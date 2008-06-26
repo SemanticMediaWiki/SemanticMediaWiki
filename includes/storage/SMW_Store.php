@@ -6,33 +6,22 @@
  */
 
 /**
- * Protect against register_globals vulnerabilities.
- * This line must be present before any global variable is referenced.
- */
-if (!defined('MEDIAWIKI')) die();
-
-global $smwgIP;
-require_once($smwgIP . '/includes/SMW_SemanticData.php');
-require_once($smwgIP . '/includes/storage/SMW_Query.php');
-require_once($smwgIP . '/includes/storage/SMW_QueryResult.php');
-
-define('SMW_STRCOND_PRE',0);
-define('SMW_STRCOND_POST',1);
-define('SMW_STRCOND_MID',2);
-
-/**
  * Small data container class for describing filtering conditions on the string
  * label of some entity. States that a given string should either be prefix, postfix,
  * or some arbitrary part of labels.
+ * @note AUTOLOADED
  */
 class SMWStringCondition {
+	const STRCOND_PRE = 0;
+	const STRCOND_POST = 1;
+	const STRCOND_MID = 2;
 	/**
 	 * String to match.
 	 */
 	public $string;
 	/**
-	 * Condition. One of SMW_STRCOND_PRE (string matches prefix),
-	 * SMW_STRCOND_POST (string matches postfix), SMW_STRCOND_MID
+	 * Condition. One of STRCOND_PRE (string matches prefix),
+	 * STRCOND_POST (string matches postfix), STRCOND_MID
 	 * (string matches to some inner part).
 	 */
 	public $condition;
@@ -50,6 +39,7 @@ class SMWStringCondition {
  * to their more complex structure.
  * Options that should not be used or where default values should be used
  * can be left as initialised.
+ * @note AUTOLOADED
  */
 class SMWRequestOptions {
 	/**
@@ -95,7 +85,7 @@ class SMWRequestOptions {
 	/**
 	 * Set a new string condition applied to labels of results (if available).
 	 * @param $string the string to match
-	 * @param $condition type of condition, one of SMW_STRCOND_PRE, SMW_STRCOND_POST, SMW_STRCOND_MID
+	 * @param $condition type of condition, one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
 	 */
 	public function addStringCondition($string, $condition) {
 		$this->stringcond[] = new SMWStringCondition($string, $condition);

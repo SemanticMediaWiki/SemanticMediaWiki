@@ -10,16 +10,8 @@
  * This only reports on the Type: Wiki pages.
  */
 
-
-if (!defined('MEDIAWIKI')) die();
-
-global $IP;
-include_once($IP . '/includes/QueryPage.php');
-
 function smwfDoSpecialTypes() {
 	wfProfileIn('smwfDoSpecialTypes (SMW)');
-	global $smwgIP;
-	include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
 	list( $limit, $offset ) = wfCheckLimits();
 	$rep = new TypesPage();
 	$result = $rep->doQuery( $offset, $limit );

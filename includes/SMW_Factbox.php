@@ -7,19 +7,11 @@
  */
 
 /**
- * Protect against register_globals vulnerabilities.
- * This line must be present before any global variable is referenced.
- */
-if (!defined('MEDIAWIKI')) die();
-
-global $smwgIP;
-include_once($smwgIP . '/includes/SMW_SemanticData.php');
-
-/**
  * Static class for representing semantic data, which accepts user
  * inputs and provides methods for printing and storing its contents.
  * Its main purpose is to provide a persistent storage to keep semantic
  * data between hooks for parsing and storing.
+ * @note AUTOLOADED
  */
 class SMWFactbox {
 
@@ -78,8 +70,7 @@ class SMWFactbox {
 	 */
 	static function addProperty($propertyname, $value, $caption, $storeannotation = true) {
 		wfProfileIn("SMWFactbox::addProperty (SMW)");
-		global $smwgContLang, $smwgIP;
-		include_once($smwgIP . '/includes/SMW_DataValueFactory.php');
+		global $smwgContLang;
 		// See if this property is a special one, such as e.g. "has type"
 		$propertyname = smwfNormalTitleText($propertyname); //slightly normalize label
 		$special = $smwgContLang->findSpecialPropertyID($propertyname);
@@ -247,7 +238,6 @@ class SMWFactbox {
 		}
 
 		smwfRequireHeadItem(SMW_HEADER_STYLE);
-		include_once($smwgIP . '/includes/SMW_Infolink.php');
 		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . SMWFactbox::$semdata->getSubject()->getPrefixedText(), 'rdflink');
 
 		$browselink = SMWInfolink::newBrowsingLink(SMWFactbox::$semdata->getSubject()->getText(), SMWFactbox::$semdata->getSubject()->getPrefixedText(), 'swmfactboxheadbrowse');

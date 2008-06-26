@@ -13,9 +13,10 @@
  * Objects of this class encapsulate the result of a query in SMW. They
  * provide access to the query result and printed data, and to some
  * relevant query parameters that were used.
- * 
+ *
  * While the API does not require this, it is ensured that every result row 
  * returned by this object has the same number of elements (columns).
+ * @note: AUTOLOADED
  */
 class SMWQueryResult {
 	protected $m_content; // array (table) of arrays (rows) of arrays (fields, SMWResultArray)

@@ -1,10 +1,5 @@
 <?php
 
-if (!defined('MEDIAWIKI')) die();
-
-global $IP;
-include_once($IP . '/includes/SpecialPage.php');
-
 /**
  * @author Markus Krötzsch
  *
@@ -32,7 +27,7 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	function execute($p = '') {
-		global $wgOut, $wgRequest, $smwgIP, $smwgQEnabled, $smwgRSSEnabled;
+		global $wgOut, $wgRequest, $smwgQEnabled, $smwgRSSEnabled;
 		wfProfileIn('doSpecialAsk (SMW)');
 		if ( ($wgRequest->getVal( 'query' ) != '') ) { // old processing
 			$this->executeSimpleAsk();
@@ -52,7 +47,7 @@ class SMWAskPage extends SpecialPage {
 		// This code rather hacky since there are many ways to call that special page, the most involved of
 		// which is the way that this page calls itself when data is submitted via the form (since the shape
 		// of the parameters then is governed by the UI structure, as opposed to being governed by reason).
-		global $wgRequest, $smwgIP;
+		global $wgRequest;
 
 		// First make all inputs into a simple parameter list that can again be parsed into components later.
 
@@ -80,7 +75,6 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		// Now parse parameters and rebuilt the param strings for URLs
-		include_once( "$smwgIP/includes/SMW_QueryProcessor.php" );
 		SMWQueryProcessor::processFunctionParams($rawparams,$this->m_querystring,$this->m_params,$this->m_printouts);
 		// Try to complete undefined parameter values from dedicated URL params
 		if ( !array_key_exists('format',$this->m_params) ) {
@@ -290,7 +284,7 @@ class SMWAskPage extends SpecialPage {
 	 * certain parameters.
 	 */
 	protected function executeSimpleAsk() {
-		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgQSortingSupport, $smwgIP;
+		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgQSortingSupport;
 
 		$skin = $wgUser->getSkin();
 
@@ -321,7 +315,6 @@ class SMWAskPage extends SpecialPage {
 		
 		// print results if any
 		if ($smwgQEnabled && ('' != $query) ) {
-			include_once( "$smwgIP/includes/SMW_QueryProcessor.php" );
 			$params = array('offset' => $offset, 'limit' => $limit, 'format' => 'broadtable', 'mainlabel' => ' ', 'link' => 'all', 'default' => wfMsg('smw_result_noresults'), 'sort' => $sort, 'order' => $order);
 			$queryobj = SMWQueryProcessor::createQuery($query, $params, false);
 			$res = smwfGetStore()->getQueryResult($queryobj);

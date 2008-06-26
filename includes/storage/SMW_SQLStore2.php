@@ -5,16 +5,6 @@
  * @author Markus Krötzsch
  */
 
-/**
- * Protect against register_globals vulnerabilities.
- * This line must be present before any global variable is referenced.
- */
-if (!defined('MEDIAWIKI')) die();
-
-global $smwgIP;
-require_once( "$smwgIP/includes/storage/SMW_Store.php" );
-require_once( "$smwgIP/includes/SMW_DataValueFactory.php" );
-
 define('SMW_SQL2_SMWIW',':smw'); // virtual "interwiki prefix" for special SMW objects
 
 // Constant flags for identifying tables/retrieval types
@@ -1015,9 +1005,9 @@ class SMWSQLStore2 extends SMWStore {
 				foreach ($requestoptions->getStringConditions() as $strcond) {
 					$string = str_replace('_', '\_', $strcond->string);
 					switch ($strcond->condition) {
-						case SMW_STRCOND_PRE:  $string .= '%'; break;
-						case SMW_STRCOND_POST: $string = '%' . $string; break;
-						case SMW_STRCOND_MID:  $string = '%' . $string . '%'; break;
+						case SMWStringCondition::STRCOND_PRE:  $string .= '%'; break;
+						case SMWStringCondition::STRCOND_POST: $string = '%' . $string; break;
+						case SMWStringCondition::STRCOND_MID:  $string = '%' . $string . '%'; break;
 					}
 					$sql_conds .= ' AND ' . $labelcol . ' LIKE ' . $db->addQuotes($string);
 				}
@@ -1074,13 +1064,13 @@ class SMWSQLStore2 extends SMWStore {
 			}
 			foreach ($requestoptions->getStringConditions() as $strcond) { // apply string conditions
 				switch ($strcond->condition) {
-					case SMW_STRCOND_PRE:
+					case SMWStringCondition::STRCOND_PRE:
 						$ok = $ok && (strpos($label,$strcond->string)===0);
 						break;
-					case SMW_STRCOND_POST:
+					case SMWStringCondition::STRCOND_POST:
 						$ok = $ok && (strpos(strrev($label),strrev($strcond->string))===0);
 						break;
-					case SMW_STRCOND_MID:
+					case SMWStringCondition::STRCOND_MID:
 						$ok = $ok && (strpos($label,$strcond->string)!==false);
 						break;
 				}
