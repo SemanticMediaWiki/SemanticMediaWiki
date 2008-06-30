@@ -21,6 +21,7 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => '인공', // name of page datatype
 	'_str' => '배열의 문자',  // name of the string type
 	'_txt' => '텍스트',  // name of the text type
+	'_cod' => 'Code',  // name of the (source) code type //TODO: translate
 	'_boo' => '부울',  // name of the boolean type
 	'_num' => '번호',  // name for the datatype of numbers
 	'_geo' => '지리적 좌표', // name of the geocoord type

@@ -18,6 +18,7 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => '頁面',	//'Page', // name of page datatype
 	'_str' => '字串',	//'String',  // name of the string type
 	'_txt' => '文字',	//'Text',  // name of the text type
+	'_cod' => 'Code',  // name of the (source) code type //TODO: translate
 	'_boo' => '布林',	//'Boolean',  // name of the boolean type
 	'_num' => '數字',	//'Number',  // name for the datatype of numbers
 	'_geo' => '地理學的座標',	//'Geographic coordinate', // name of the geocoord type

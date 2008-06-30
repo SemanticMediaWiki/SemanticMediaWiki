@@ -19,6 +19,7 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'الصفحة', // name of page datatype
 	'_str' => 'سلسلة أحرف',  // name of the string type
 	'_txt' => 'نص',  // name of the text type
+	'_cod' => 'Code',  // name of the (source) code type //TODO: translate
 	'_boo' => 'منطقي',  // name of the boolean type
 	'_num' => 'عدد',  // name for the datatype of numbers
 	'_geo' => 'الإحداثيات', // name of the geocoord type

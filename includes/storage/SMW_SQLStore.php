@@ -79,7 +79,7 @@ class SMWSQLStore extends SMWStore {
 					case '_wpg':
 						$do_rels = true;
 					break;
-					case '_txt':
+					case '_txt': case '_cod':
 						$do_text = true;
 					break;
 					case '__nry':
@@ -442,7 +442,7 @@ class SMWSQLStore extends SMWStore {
 		$result = array();
 		$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
 		switch ($id) {
-			case '_txt':
+			case '_txt': case '_cod':
 				$res = $db->select( $db->tableName('smw_longstrings'),
 									'value_blob',
 									$subjectcond .
@@ -568,7 +568,7 @@ class SMWSQLStore extends SMWStore {
 		$db =& wfGetDB( DB_SLAVE );
 
 		switch ($value->getTypeID()) {
-		case '_txt': // not supported
+		case '_txt': case '_cod': // not supported
 			wfProfileOut("SMWSQLStore::getPropertySubjects (SMW)");
 			return array();
 		break;
@@ -595,7 +595,7 @@ class SMWSQLStore extends SMWStore {
 					continue;
 				}
 				switch ($dv->getTypeID()) {
-				case '_txt': // not supported
+				case '_txt': case '_cod': // not supported
 				break;
 				case '_wpg':
 					$from .= ' INNER JOIN ' . $db->tableName('smw_nary_relations') . ' AS nary' . $count .
@@ -643,7 +643,7 @@ class SMWSQLStore extends SMWStore {
 		$db =& wfGetDB( DB_SLAVE );
 		$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
 		switch ($id) {
-			case '_txt':
+			case '_txt': case '_cod':
 				$tablename = 'smw_longstrings';
 				$pcolumn = 'attribute_title';
 				$extraconds = '';
@@ -797,7 +797,7 @@ class SMWSQLStore extends SMWStore {
 			if ($property instanceof Title) { // normal property
 				foreach($propertyValueArray as $value) {
 					if ($value->isValid()) {
-						if ($value->getTypeID() == '_txt') {
+						if ( ($value->getTypeID() == '_txt') || ($value->getTypeID() == '_cod') ){
 							$up_longstrings[] =
 								array( 'subject_id' => $subject->getArticleID(),
 								       'subject_namespace' => $subject->getNamespace(),
@@ -837,7 +837,7 @@ class SMWSQLStore extends SMWStore {
 											       'object_title' => $dv->getDBkey(),
 											       'object_id' => $oid );
 									break;
-									case '_txt':
+									case '_txt': case '_cod':
 										$up_nary_longstrings[] =
 											array( 'subject_id' => $subject->getArticleID(),
 											       'nary_key'   => $nkey,
@@ -1924,7 +1924,7 @@ class SMWSQLStore extends SMWStore {
 			}
 		} elseif ($description instanceof SMWValueDescription) {
 			switch ($description->getDatavalue()->getTypeID()) {
-				case '_txt': // possibly pull in longstring table (for naries)
+				case '_txt': case '_cod': // possibly pull in longstring table (for naries)
 					$this->addJoin('pTEXT', $from, $db, $curtables, $nary_pos);
 				break;
 				case '_wpg':
@@ -2045,7 +2045,7 @@ class SMWSQLStore extends SMWStore {
 						$sortfield = 'object_title';
 					}
 				break;
-				case '_txt':
+				case '_txt': case '_cod':
 					$tablename = 'TEXT';
 					$pcolumn = 'attribute_title';
 					$sub = false; //no recursion: we do not support further conditions on text-type values

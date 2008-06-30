@@ -19,6 +19,7 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Страница', // name of page datatype
 	'_str' => 'Строка',  // name of the string type
 	'_txt' => 'Текст',  // name of the text type (very long strings)
+	'_cod' => 'Code',  // name of the (source) code type //TODO: translate
 	'_boo' => 'Булево',  // name of the boolean type
 	'_num' => 'Число', // name for the datatype of numbers
 	'_geo' => 'Географическая координата', // name of the geocoord type

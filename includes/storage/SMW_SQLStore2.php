@@ -67,7 +67,8 @@ class SMWSQLStore2 extends SMWStore {
 			foreach ($filter as $value) {
 				switch ($value) {
 					case '_wpg': $tasks = $tasks | SMW_SQL2_RELS2; break;
-					case '_txt': $tasks = $tasks | SMW_SQL2_TEXT2; break;
+					case '_txt': case '_cod': 
+					             $tasks = $tasks | SMW_SQL2_TEXT2; break;
 					case '__nry': $tasks = $tasks | SMW_SQL2_NARY2; break;
 					case SMW_SP_INSTANCE_OF: $tasks = $tasks | SMW_SQL2_INST2; break;
 					case SMW_SP_REDIRECTS_TO: $tasks = $tasks | SMW_SQL2_REDI2;	break;
@@ -387,7 +388,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		switch ($typeid) {
-		case '_txt': break; // not supported
+		case '_txt': case '_cod': break; // not supported
 		case '_wpg': // wikipage
 			if ($value !== NULL) {
 				$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki());
@@ -416,7 +417,7 @@ class SMWSQLStore2 extends SMWStore {
 				}
 				$npid = $this->makeSMWPageID(strval($count),SMW_NS_PROPERTY,SMW_SQL2_SMWIW); // might be cached
 				switch ($dv->getTypeID()) {
-				case '_txt': break; // not supported
+				case '_txt': case '_cod': break; // not supported
 				case '_wpg':
 					$from .= " INNER JOIN $smw_rels2 AS t$count ON t.o_id=t$count.s_id INNER JOIN $smw_ids AS i$count ON t$count.o_id=i$count.smw_id";
 					$where .= " AND t$count.p_id=" . $db->addQuotes($npid) .
@@ -560,7 +561,7 @@ class SMWSQLStore2 extends SMWStore {
 			if ($property instanceof Title) { // normal property
 				foreach($propertyValueArray as $value) {
 					if ($value->isValid()) {
-						if ($value->getTypeID() == '_txt') {
+						if ( ($value->getTypeID() == '_txt') || ($value->getTypeID() == '_cod') ){
 							$up_text2[] =
 								array( 's_id' => $sid,
 								       'p_id' => $this->makeSMWPageID($property->getDBkey(),SMW_NS_PROPERTY,''),
@@ -587,7 +588,7 @@ class SMWSQLStore2 extends SMWStore {
 											       'p_id' => $pid,
 											       'o_id' => $this->makeSMWPageID($dv->getDBkey(),$dv->getNamespace(),$dv->getInterwiki()) );
 									break;
-									case '_txt':
+									case '_txt': case '_cod':
 										$up_text2[] =
 											array( 's_id' => $bnode,
 											       'p_id' => $pid,

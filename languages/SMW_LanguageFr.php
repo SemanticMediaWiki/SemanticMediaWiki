@@ -18,6 +18,7 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype
 	'_str' => 'Chaîne de caractères',  // name of the string type
 	'_txt' => 'Texte',  // name of the text type (very long strings)
+	'_cod' => 'Code',  // name of the (source) code type //TODO: translate
 	'_boo' => 'Booléen',  // name of the boolean type
 	'_num' => 'Nombre', // name for the datatype of numbers
 	'_geo' => 'Coordonnées géographiques', // name of the geocoord type
