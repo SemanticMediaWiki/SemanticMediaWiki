@@ -118,7 +118,7 @@ class SMWStringValue extends SMWDataValue {
 	 * Special features for Type:Code formating.
 	 */
 	protected function getCodeDisplay($value, $scroll = false) {
-		$result = str_replace( array('<', '>', ' ','://'), array('&lt;', '&gt;', '&nbsp;', '<!-- -->://<!-- -->'), $value);
+		$result = str_replace( array('<', '>', ' ', '://', '=', "'"), array('&lt;', '&gt;', '&nbsp;', '<!-- -->://<!-- -->', '&#x003D;', '&#x0027;'), $value);
 		if ($scroll) {
 			$result = "<div style=\"height:5em; overflow:auto;\">$result</div>";
 		}
