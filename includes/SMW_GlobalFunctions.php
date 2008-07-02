@@ -237,6 +237,8 @@ function smwfSetupExtension() {
 function smwfRegisterInlineQueries( &$parser, &$text, &$stripstate ) {
 	$parser->setHook( 'ask', 'smwfProcessInlineQuery' );
 	$parser->setFunctionHook( 'ask', 'smwfProcessInlineQueryParserFunction' );
+	$parser->setFunctionHook( 'show', 'smwfProcessShowParserFunction' );
+	$parser->setFunctionHook( 'info', 'smwfProcessInfoParserFunction' );
 	return true; // always return true, in order not to stop MW's hook processing!
 }
 
@@ -266,6 +268,31 @@ function smwfProcessInlineQueryParserFunction(&$parser) {
 	} else {
 		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 	}
+}
+
+/**
+ * The {{#show }} parser function processing part.
+ */
+function smwfProcessShowParserFunction(&$parser) {
+	global $smwgQEnabled, $smwgIQRunningNumber;
+	if ($smwgQEnabled) {
+		$smwgIQRunningNumber++;
+		$params = func_get_args();
+		array_shift( $params ); // we already know the $parser ...
+		return SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI,true,true);
+	} else {
+		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
+	}
+}
+
+/**
+ * The {{#info }} parser function processing part.
+ */
+function smwfProcessInfoParserFunction(&$parser) {
+	$params = func_get_args();
+	array_shift( $params ); // we already know the $parser ...
+	$content = array_shift( $params ); // use only first parameter, ignore rest (may get meaning later)
+	return smwfEncodeMessages(array($content), 'info');
 }
 
 /**********************************************/
@@ -409,20 +436,13 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 * Set up (possibly localised) names for SMW's parser functions.
 	 */
 	function smwfAddMagicWords(&$magicWords, $langCode) {
-		$magicWords['ask'] = array( 0, 'ask' );
+		$magicWords['ask']  = array( 0, 'ask' );
+		$magicWords['show'] = array( 0, 'show' );
+		$magicWords['info'] = array( 0, 'info' );
 		$magicWords['SMW_NOFACTBOX'] = array( 0, '__NOFACTBOX__' );
 		$magicWords['SMW_SHOWFACTBOX'] = array( 0, '__SHOWFACTBOX__' );
 		return true;
 	}
-
-//   function smwfAddMagicWords(&$magicWords) {
-//     $magicWords[] = 'MAG_NOTITLE';
-//     return true;
-//   }
-//  
-//   function smwfAddMagicWordIds(&$magicWords) {
-//     $magicWords[] = MAG_NOTITLE;
-//   }
 
 	/**
 	 * Initialise a global language object for content language. This

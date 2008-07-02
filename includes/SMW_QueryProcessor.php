@@ -151,8 +151,9 @@ class SMWQueryProcessor {
 	 * produced by the #ask parser function. The parsing results in a querystring,
 	 * an array of additional parameters, and an array of additional SMWPrintRequest
 	 * objects, which are filled into call-by-ref parameters.
+	 * $showmode is true if the input should be treated as if given by #show
 	 */
-	static public function processFunctionParams($rawparams, &$querystring, &$params, &$printouts) {
+	static public function processFunctionParams($rawparams, &$querystring, &$params, &$printouts, $showmode=false) {
 		global $wgContLang;
 		$querystring = '';
 		$printouts = array();
@@ -176,7 +177,7 @@ class SMWQueryProcessor {
 					$title = NULL;
 					$printmode = SMWPrintRequest::PRINT_CATS;
 					if (count($parts) == 1) { // no label found, use category label
-						$parts[] = $wgContLang->getNSText(NS_CATEGORY);
+						$parts[] = $showmode?'':$wgContLang->getNSText(NS_CATEGORY);
 					}
 				} else { // print property or check category
 					$title = Title::newFromText(trim($propparts[0]), SMW_NS_PROPERTY); // trim needed for \n
@@ -189,7 +190,7 @@ class SMWQueryProcessor {
 						$printmode = SMWPrintRequest::PRINT_CCAT;
 					} //else?
 					if (count($parts) == 1) { // no label found, use property/category name
-						$parts[] = $title->getText();
+						$parts[] = $showmode?'':$title->getText();
 					}
 				}
 				if (count($propparts) == 1) { // no outputformat found, leave empty
@@ -206,6 +207,7 @@ class SMWQueryProcessor {
 			}
 		}
 		$querystring = str_replace(array('&lt;','&gt;'), array('<','>'), $querystring);
+		if ($showmode) $querystring = "[[:$querystring]]";
 	}
 
 	/**
@@ -219,8 +221,8 @@ class SMWQueryProcessor {
 	 * obtain actual parameters, printout requests, and the query string for
 	 * further processing.
 	 */
-	static public function getResultFromFunctionParams($rawparams, $outputmode, $inline = true) {
-		SMWQueryProcessor::processFunctionParams($rawparams,$querystring,$params,$printouts);
+	static public function getResultFromFunctionParams($rawparams, $outputmode, $inline = true, $showmode = false) {
+		SMWQueryProcessor::processFunctionParams($rawparams,$querystring,$params,$printouts,$showmode);
 		return SMWQueryProcessor::getResultFromQueryString($querystring,$params,$printouts, SMW_OUTPUT_WIKI, $inline);
 	}
 
