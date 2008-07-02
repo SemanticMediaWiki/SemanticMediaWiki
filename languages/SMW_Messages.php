@@ -228,6 +228,20 @@ Please enter both a page and a property.',
 	'smw_result_noresults' => 'Sorry, no results.'
 );
 
+/** Tarifit (Tarifit)
+ * @author Jose77
+ */
+$messages['rif'] = array(
+	'smw_browse_go' => 'Raḥ ɣa',
+);
+
+/** Niuean (native name missing)
+ * @author Jose77
+ */
+$messages['niu'] = array(
+	'smw_browse_go' => 'Fano',
+);
+
 /** Afrikaans (Afrikaans)
  * @author Arnobarnard
  */
@@ -1067,15 +1081,19 @@ Certaines des propriétés existantes peuvent faire être <a href="$6">inutilis�
  */
 $messages['gl'] = array(
 	'smw_edithelp'                => 'Axuda de edición nas propiedades',
-	'smw_viewasrdf'               => 'Alimentación RDF',
+	'smw_viewasrdf'               => 'Fonte de noticias RDF',
 	'smw_finallistconjunct'       => 'e',
 	'smw_factbox_head'            => 'Feitos acerca de $1',
 	'smw_isspecprop'              => 'Esta propiedade é especial neste wiki.',
+	'smw_isknowntype'             => 'Este tipo está entre os tipos de datos deste wiki.',
+	'smw_isaliastype'             => 'Este tipo é un alias para o tipo de datos “$1”.',
+	'smw_isnotype'                => 'O tipo “$1” non é un tipo de datos estándar no wiki, e ningún usuario lle deu unha definición.',
 	'smw_baduri'                  => 'Sentímolo, os URIs da forma “$1” non están permitidos.',
 	'smw_icalendar_link'          => 'iCalendario',
 	'smw_vcard_link'              => 'vTarxeta',
 	'smw_iq_disabled'             => 'Sentímolo. As preguntas semánticas foron deshabilitadas para este wiki.',
 	'smw_iq_moreresults'          => '&hellip; máis resultados',
+	'smw_iq_nojs'                 => 'Por favor, use un nevegador co JavaScript permitido para ver este elemento.',
 	'smw_iq_altresults'           => 'Procurar directamente pola lista de resultados.',
 	'smw_unknown_importns'        => 'As funcións de importación non están dispoñibles no espazo de nomes “$1”.',
 	'smw_nonright_importtype'     => '$1 só pode ser usado para as páxinas co espazo de nomes “$2”.',
@@ -1083,30 +1101,55 @@ $messages['gl'] = array(
 	'smw_no_importelement'        => 'O elemento “$1” non está dispoñible para importar.',
 	'smw_parseerror'              => 'O valor dado non foi entendido.',
 	'smw_notitle'                 => '“$1” non pode ser usado como nome de páxina neste wiki.',
+	'smw_unknowntype'             => 'Tipo “$1” non soportado definido para a propiedade.',
+	'smw_manytypes'               => 'Máis dun tipo definido para a propiedade.',
 	'smw_emptystring'             => 'As cordas baleiras non están aceptadas.',
 	'smw_maxstring'               => 'A representación da corda $1 é demasiado longa para {{SITENAME}}.',
+	'smw_notinenum'               => '“$1” non é a lista de posibles valores ($2) para esta propiedade.',
+	'smw_noboolean'               => '“$1” non é recoñecido como un valor booleano (verdadeiro/falso).',
 	'smw_true_words'              => 'verdadeiro,v,si,s',
 	'smw_false_words'             => 'falso,f,non,n',
 	'smw_nofloat'                 => '“$1” non é un número.',
 	'smw_infinite'                => 'Os números tan longos como “$1” non están soportados en {{SITENAME}}.',
+	'smw_infinite_unit'           => 'A conversión na unidade “$1” deu como resultado un número que é moi grande para {{SITENAME}}.',
 	'smw_unsupportedprefix'       => 'Os prefixos para os números (“$1”) non están soportados.',
+	'smw_unsupportedunit'         => 'Non está soportada a unidade de conversión para a unidade “$1”.',
 	'smw_lonely_unit'             => 'Non foi atopado ningún número antes do símbolo “$1”.',
+	'smw_bad_latlong'             => 'A latitude e mais a lonxitude deben darse só unha vez e con coordenadas válidas.',
 	'smw_abb_north'               => 'N',
 	'smw_abb_east'                => 'E',
 	'smw_abb_south'               => 'S',
 	'smw_abb_west'                => 'W',
 	'smw_label_latitude'          => 'Latitude:',
 	'smw_label_longitude'         => 'Lonxitude:',
+	'smw_nodatetime'              => 'A data “$1” non foi entendida (o soporte para as datas aínda é experimental).',
+	'smw_toomanyclosing'          => 'Parece que hai demasiados acontecementos de “$1” na pregunta.',
+	'smw_noclosingbrackets'       => 'Algún uso de “[&#x005B;” na súa pregunta non foi pechado polo seu “]]” correspondente.',
 	'smw_misplacedsymbol'         => 'O símbolo “$1” foi usado nun lugar no que non era útil.',
 	'smw_unexpectedpart'          => 'A parte “$1” da pregunta non foi entendida.
 Pode que os resultados non sexan os agardados.',
+	'smw_emptysubquery'           => 'Algunha subcuestión non ten unha condición válida.',
+	'smw_misplacedsubquery'       => 'Algunha subcuestión foi usada nun lugar onde non están permitidas.',
+	'smw_valuesubquery'           => 'As subcuestións non están soportadas para os valores da propiedade “$1”.',
+	'smw_overprintoutlimit'       => 'A pregunta contén demasiadas solicitudes de copias impresas.',
+	'smw_badprintout'             => 'Algunha declaración imprimida da pregunta non foi entendida.',
 	'smw_badtitle'                => 'Sentímolo, pero “$1” non é un título de páxina válido.',
+	'smw_badqueryatom'            => 'Unha parte “[&#x005B;&hellip;]]” da pregunta non foi entendida.',
 	'smw_propvalueproblem'        => 'O valor da propiedade “$1” non foi entendido.',
+	'smw_nodisjunctions'          => 'Non están soportadas as disxuncións nas preguntas neste wiki e parte desta foi ignorada ($1).',
+	'smw_querytoolarge'           => 'As seguintes condicións da pregunta non poden ser consideradas debido ás restricións do wiki no tamaño ou profundidade desta: $1.',
+	'smw_devel_warning'           => 'Actualmente esta característica está en desenvolvemento e pode que non funcione en toda a súa totalidade.
+Faga unha copia de seguridade dos seus datos antes de usala.',
+	'smw_notemplategiven'         => 'Por favor, proporcione un valor para o parámetro “modelo” do formato desta pregunta para poder funcionar.',
 	'smw_type_header'             => 'Propiedades do tipo “$1”',
 	'smw_typearticlecount'        => 'Amosando $1 resultados de propiedades que usan este tipo.',
 	'smw_attribute_header'        => 'Páxinas que usan a propiedade “$1”',
 	'smw_attributearticlecount'   => '<p>Amosando $1 páxinas que usan esta propiedade.</p>',
 	'exportrdf'                   => 'Exportar páxinas a RDF',
+	'smw_exportrdf_docu'          => '<p>Esta páxina permítelle obter datos dunha páxina en formato RDF.
+Para exportar páxinas, insira os títulos na caixa de embaixo (un título por liña).</p>',
+	'smw_exportrdf_recursive'     => 'Exportar igualmente todas as páxinas relacionadas.
+Déase conta de que o resultado pode ser longo!',
 	'smw_exportrdf_backlinks'     => 'Exportar tamén todas as páxinas que se refiren ás páxinas exportadas.
 Xera un RDF que se pode navegar.',
 	'smw_exportrdf_lastdate'      => 'Non exportar páxina que non tiveron cambios desde a data dada.',
@@ -1114,6 +1157,7 @@ Xera un RDF que se pode navegar.',
 	'smw_properties_docu'         => 'As seguintes propiedades son usadas neste wiki.',
 	'smw_property_template'       => '$1 de tipo $2 ($3)',
 	'smw_propertylackspage'       => 'Todas as propiedades deberían estar descritas nunha páxina!',
+	'smw_propertylackstype'       => 'Non foi especificado ningún tipo para esta propiedade (asúmese o tipo $1 polo de agora).',
 	'smw_propertyhardlyused'      => 'Esta propiedade apenas é usada neste wiki!',
 	'unusedproperties'            => 'Propiedades non usadas',
 	'smw_unusedproperties_docu'   => 'As seguintes propiedades existen aínda que ningunha páxina faga uso delas.',
@@ -1125,13 +1169,22 @@ Xera un RDF que se pode navegar.',
 	'smw_purge'                   => 'Refrescar',
 	'smw_oi_action'               => 'Importar',
 	'smw_oi_return'               => 'Voltar a <a href="$1">Special:OntologyImport</a>.',
+	'smw_oi_select'               => 'Por favor, seleccione as instrucións que quere importar e logo prema no botón "Importar".',
 	'smw_oi_textforall'           => 'Texto da cabeceira para engadir a todas as importacións (pode quedar baleiro):',
+	'smw_oi_selectall'            => 'Seleccionar ou cancelar a selección de todas as instrucións',
+	'smw_oi_statementsabout'      => 'Instrucións acerca de',
 	'smw_oi_comment'              => 'Engadir o seguinte texto:',
 	'smw_oi_thisissubcategoryof'  => 'Unha subcategoría de',
 	'smw_oi_thishascategory'      => 'É parte de',
 	'types'                       => 'Tipos',
+	'smw_types_docu'              => 'O que segue é unha lista de todos os tipos de datos que poden ser asignados ás propiedades.
+Cada tipo de datos ten unha páxina onde vén proporcionada información adicional sobre el.',
 	'smw_typeunits'               => 'Unidades de medida do tipo “$1”: $2',
 	'semanticstatistics'          => 'Estatísticas semánticas',
+	'smw_semstats_text'           => 'Este wiki contén <b>$1</b> valores de propiedade, dun total de <b>$2</b> <a href="$3">propiedades</a> diferentes.
+<b>$4</b> propiedades teñen unha páxina propia e o tipo de datos desexado está especificado para <b>$5</b> de elas.
+Algunhas das propiedades existentes poden <a href="$6">non ser usadas</a>.
+As propiedades ás que aínda lles falta unha páxina atópanse na <a href="$7">lista de propiedades desexadas</a>.',
 	'flawedattributes'            => 'Propiedades defectuosas',
 	'smw_fattributes'             => 'As páxinas listadas embaixo teñen propiedades definidas incorrectamente.
 O númeor de propiedades incorrectas está dado entre parénteses.',
@@ -1158,6 +1211,8 @@ O númeor de propiedades incorrectas está dado entre parénteses.',
 	'smw_browse_article'          => 'Insira o nome da páxina para comezar o formulario de procura.',
 	'smw_browse_go'               => 'Ir',
 	'pageproperty'                => 'Procura de páxinas de propiedades',
+	'smw_pp_docu'                 => 'Procurar por todos os filtros dunha propiedade nunha páxina dada.
+Por favor, insira ambas, a páxina e mais a propiedade.',
 	'smw_pp_from'                 => 'Da páxina',
 	'smw_pp_type'                 => 'Propiedades',
 	'smw_pp_submit'               => 'Atopar os resultados',
@@ -2050,7 +2105,7 @@ $messages['nl'] = array(
 	'smw_overprintoutlimit'       => 'De zoekopdracht bevat te veel printoutverzoeken.',
 	'smw_badprintout'             => 'Er is een print statement in de zoekopdracht onjuist geformuleerd.',
 	'smw_badtitle'                => 'Sorry, maar “$1” is geen geldige paginanaam.',
-	'smw_badqueryatom'            => 'Een onderdeel “[&#x005B;&hellip;]]” van de zoekopdrtacht is niet begrepen.',
+	'smw_badqueryatom'            => 'Een onderdeel “[&#x005B;&hellip;]]” van de zoekopdracht is niet begrepen.',
 	'smw_propvalueproblem'        => 'De waarde van eigenschap “$1” is niet begrepen.',
 	'smw_nodisjunctions'          => 'Scheidingen in zoekopdrachten worden niet ondersteund in deze wiki en er is een deel van de zoekopdracht genegeerd ($1).',
 	'smw_querytoolarge'           => 'De volgende zoekopdrachtcondities zijn niet in acht genomen vanwege beperkingen in de grootte of diepte van zoekopdrachten in deze wiki: $1.',
@@ -2150,6 +2205,7 @@ $messages['no'] = array(
 	'smw_isnotype'                => 'Datatypen «$1» er ikke en standardtype på denne wikien, og har ikke blitt gitt en brukerdefinsjon.',
 	'smw_baduri'                  => 'Beklager, URI-er på formen «$1» er ikke tillatt.',
 	'smw_icalendar_link'          => 'iKalender',
+	'smw_vcard_link'              => 'vCard',
 	'smw_iq_disabled'             => 'Beklager. Semantiske spørringer er slått av på denne wikien.',
 	'smw_iq_moreresults'          => '&hellip; flere resultater',
 	'smw_iq_nojs'                 => 'Bruk en nettleser med JavaScript-støtte for å vise dette elementet.',
@@ -2999,6 +3055,7 @@ $messages['sv'] = array(
 	'smw_isnotype'                => 'Datatypen "$1" är inte en standardtyp på den här wikin, och har inte blivit givet en användardefinition.',
 	'smw_baduri'                  => 'Beklagar, URI-er på formen "$1" är inte tillåtet.',
 	'smw_icalendar_link'          => 'iKalender',
+	'smw_vcard_link'              => 'vCard',
 	'smw_iq_disabled'             => 'Beklagar. Semantiska efterfrågningar har slagits av på den här wikin.',
 	'smw_iq_moreresults'          => '&hellip; mer resultat',
 	'smw_iq_nojs'                 => 'Var god använd en webbläsare som stödjer JavaScript för att visa det här elementet.',
@@ -3037,6 +3094,7 @@ $messages['sv'] = array(
 	'smw_unexpectedpart'          => '"$1"-delen av efterfrågningen var oförstålig.
 Resultaten kan vara oväntade.',
 	'smw_badtitle'                => 'Beklagar, "$1" är inte en giltig sidtitel.',
+	'smw_attribute_header'        => 'Sidor som använder egenskapen "$1"',
 	'exportrdf'                   => 'Exportera sidor till RDF',
 	'smw_exportrdf_docu'          => '<p>Den här sidan låter dig hämta data från en sida i RDF-format.
 Skriv sidtitlar i textrutan härunder för att exportera sidor (en titel per rad).</p>',
