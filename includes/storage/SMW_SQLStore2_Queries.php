@@ -393,7 +393,7 @@ class SMWSQLStore2QueryEngine {
 					}
 				}
 			break;
-			case '_txt': // no subconditions
+			case '_txt': case '_cod': // no subconditions
 				$query->jointable = 'smw_text2';
 			break;
 			default: // subquery only conj/disj of values, compile to single "where"
