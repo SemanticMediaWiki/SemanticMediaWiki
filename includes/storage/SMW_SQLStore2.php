@@ -1395,7 +1395,7 @@ class SMWSQLStore2 extends SMWStore {
 					}
 				} else {
 					$redirect = true;
-					$this->m_ids[$nkey] = $id; // what we found is the non-canonical key, cache it
+					$this->m_ids[$nkey] = $row->smw_id; // what we found is the non-canonical key, cache it
 				}
 			}
 		}
