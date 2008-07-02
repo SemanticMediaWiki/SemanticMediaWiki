@@ -350,20 +350,135 @@ class SMWSQLStore2 extends SMWStore {
 			$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki());
 		}
 		$pid = $this->getSMWPageID($property->getDBkey(), SMW_NS_PROPERTY, $property->getInterwiki());
-		if ( ($sid == 0) || ($pid == 0)) {
+		if ( ( ($sid == 0) && ($subject !== NULL) ) || ($pid == 0)) {
 			wfProfileOut("SMWSQLStore2::getPropertyValues (SMW)");
 			return array();
 		}
-		$sd = $this->getSemanticData($subject,array(SMWDataValueFactory::getPropertyObjectTypeID($property)));
-		$result = $this->applyRequestOptions($sd->getPropertyValues($property),$requestoptions);
-		if ($outputformat != '') {
-			$newres = array();
-			foreach ($result as $dv) {
-				$ndv = clone $dv;
-				$ndv->setOutputFormat($outputformat);
-				$newres[] = $ndv;
+
+		if ($sid != 0) { // subject given, use semantic data cache:
+			$sd = $this->getSemanticData($subject,array(SMWDataValueFactory::getPropertyObjectTypeID($property)));
+			$result = $this->applyRequestOptions($sd->getPropertyValues($property),$requestoptions);
+			if ($outputformat != '') { // reformat cached values
+				$newres = array();
+				foreach ($result as $dv) {
+					$ndv = clone $dv;
+					$ndv->setOutputFormat($outputformat);
+					$newres[] = $ndv;
+				}
+				$result = $newres;
 			}
-			$result = $newres;
+		} else { // no subject given, get all values for the given property
+			$result = array();
+			$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
+			switch ($id) {
+				case '_txt': case '_cod':
+					$res = $db->select( 'smw_text2', 'value_blob',
+										'p_id=' . $db->addQuotes($pid),
+										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions) );
+					while($row = $db->fetchObject($res)) {
+						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+						$dv->setOutputFormat($outputformat);
+						$dv->setXSDValue($row->value_blob, '');
+						$result[] = $dv;
+					}
+					$db->freeResult($res);
+				break;
+				case '_wpg':
+					$res = $db->select( array('smw_rels2', 'smw_ids'),
+										'smw_namespace, smw_title, smw_iw',
+										'p_id=' . $db->addQuotes($pid) . ' AND o_id=smw_id' .
+										$this->getSQLConditions($requestoptions,'smw_title','smw_title'),
+										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,'smw_title') );
+					while($row = $db->fetchObject($res)) {
+						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+						$dv->setOutputFormat($outputformat);
+						$dv->setValues($row->smw_title, $row->smw_namespace, false, $row->smw_iw);
+						$result[] = $dv;
+					}
+					$db->freeResult($res);
+				break;
+				case '__nry': ///TODO: currently disabled
+// 					$type = SMWDataValueFactory::getPropertyObjectTypeValue($property);
+// 					$subtypes = $type->getTypeValues();
+// 					$res = $db->select( $db->tableName('smw_nary'),
+// 										'nary_key',
+// 										$subjectcond .
+// 										'attribute_title=' . $db->addQuotes($property->getDBkey()),
+// 										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions) );
+// 					///TODO: presumably slow. Try to do less SQL queries by making a join with smw_nary
+// 					while($row = $db->fetchObject($res)) {
+// 						$values = array();
+// 						for ($i=0; $i < count($subtypes); $i++) { // init array
+// 							$values[$i] = NULL;
+// 						}
+// 						$res2 = $db->select( $db->tableName('smw_nary_attributes'),
+// 										'nary_pos, value_unit, value_xsd',
+// 										$subjectcond .
+// 										'nary_key=' . $db->addQuotes($row->nary_key),
+// 										'SMW::getPropertyValues');
+// 						while($row2 = $db->fetchObject($res2)) {
+// 							if ($row2->nary_pos < count($subtypes)) {
+// 								$dv = SMWDataValueFactory::newTypeObjectValue($subtypes[$row2->nary_pos]);
+// 								$dv->setXSDValue($row2->value_xsd, $row2->value_unit);
+// 								$values[$row2->nary_pos] = $dv;
+// 							}
+// 						}
+// 						$db->freeResult($res2);
+// 						$res2 = $db->select( $db->tableName('smw_nary_longstrings'),
+// 										'nary_pos, value_blob',
+// 										$subjectcond .
+// 										'nary_key=' . $db->addQuotes($row->nary_key),
+// 										'SMW::getPropertyValues');
+// 						while($row2 = $db->fetchObject($res2)) {
+// 							if ( $row2->nary_pos < count($subtypes) ) {
+// 								$dv = SMWDataValueFactory::newTypeObjectValue($subtypes[$row2->nary_pos]);
+// 								$dv->setXSDValue($row2->value_blob, '');
+// 								$values[$row2->nary_pos] = $dv;
+// 							}
+// 						}
+// 						$db->freeResult($res2);
+// 						$res2 = $db->select( $db->tableName('smw_nary_relations'),
+// 										'nary_pos, object_title, object_namespace, object_id',
+// 										$subjectcond .
+// 										'nary_key=' . $db->addQuotes($row->nary_key),
+// 										'SMW::getPropertyValues');
+// 						while($row2 = $db->fetchObject($res2)) {
+// 							if ( ($row2->nary_pos < count($subtypes)) &&
+// 								($subtypes[$row2->nary_pos]->getXSDValue() == '_wpg') ) {
+// 								$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+// 								$dv->setValues($row2->object_title, $row2->object_namespace, $row2->object_id);
+// 								$values[$row2->nary_pos] = $dv;
+// 							}
+// 						}
+// 						$db->freeResult($res2);
+// 						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+// 						$dv->setOutputFormat($outputformat);
+// 						$dv->setDVs($values);
+// 						$result[] = $dv;
+// 					}
+// 					$db->freeResult($res);
+				break;
+				default:
+					if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) &&
+						($requestoptions->boundary->isNumeric()) ) {
+						$value_column = 'value_num';
+					} else {
+						$value_column = 'value_xsd';
+					}
+					$sql = 'p_id=' . $db->addQuotes($pid) .
+						$this->getSQLConditions($requestoptions,$value_column,'value_xsd');
+					$res = $db->select( 'smw_atts2', 'value_unit, value_xsd',
+										'p_id=' . $db->addQuotes($pid) .
+										$this->getSQLConditions($requestoptions,$value_column,'value_xsd'),
+										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,$value_column) );
+					while($row = $db->fetchObject($res)) {
+						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+						$dv->setOutputFormat($outputformat);
+						$dv->setXSDValue($row->value_xsd, $row->value_unit);
+						$result[] = $dv;
+					}
+					$db->freeResult($res);
+			}
 		}
 		wfProfileOut("SMWSQLStore2::getPropertyValues (SMW)");
 		return $result;
