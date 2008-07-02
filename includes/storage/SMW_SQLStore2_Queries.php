@@ -70,7 +70,6 @@ class SMWSQLStore2QueryEngine {
 	 * NOTE: we do not support category wildcards as they have no useful semantics in OWL/RDFS/LP/Whatever
 	 */
 	public function getQueryResult(SMWQuery $query) {
-		global $smwgQSortingSupport;
 		if ($query->querymode == SMWQuery::MODE_NONE) { // don't query, but return something to printer
 			$result = new SMWQueryResult($query->getDescription()->getPrintrequests(), $query, false);
 			return $result;
@@ -194,7 +193,7 @@ class SMWSQLStore2QueryEngine {
 			return $result;
 		}
 		$sql_options = $this->getSQLOptions($query,$rootid);
-		$res = $this->m_dbs->select($this->m_dbs->tableName($qobj->jointable) . " AS $qobj->alias" . $qobj->from, "DISTINCT $qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns", $qobj->where, 'SMW::getQueryResult', $sql_options);
+		$res = $this->m_dbs->select($this->m_dbs->tableName($qobj->jointable) . " AS $qobj->alias" . $qobj->from, "DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw", $qobj->where, 'SMW::getQueryResult', $sql_options);
 
 		$qr = array();
 		$count = 0;
@@ -203,6 +202,7 @@ class SMWSQLStore2QueryEngine {
 			$v = SMWDataValueFactory::newTypeIDValue('_wpg');
 			$v->setValues($row->t, $row->ns);
 			$qr[] = $v;
+			$this->m_store->cacheSMWPageID($row->id,$row->t,$row->ns,$row->iw);
 		}
 		if ($this->m_dbs->fetchObject($res)) {
 			$count++;
@@ -224,7 +224,7 @@ class SMWSQLStore2QueryEngine {
 					$row[] = new SMWResultArray($this->m_store->getSpecialValues($qt->getTitle(),SMW_SP_INSTANCE_OF), $pr);
 				break;
 				case SMWPrintRequest::PRINT_PROP:
-					$row[] = new SMWResultArray($this->m_store->getPropertyValues($qt->getTitle(),$pr->getTitle(), NULL, $pr->getOutputFormat()), $pr);
+					$row[] = new SMWResultArray($this->m_store->getPropertyValues($qt,$pr->getTitle(), NULL, $pr->getOutputFormat()), $pr);
 				break;
 				case SMWPrintRequest::PRINT_CCAT:
 					$cats = $this->m_store->getSpecialValues($qt->getTitle(),SMW_SP_INSTANCE_OF);
@@ -562,12 +562,13 @@ class SMWSQLStore2QueryEngine {
 	 * and temporary tables are used in many cases.
 	 */
 	protected function executeHierarchyQuery(&$query) {
-		wfProfileIn("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+		$fname = "SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)";
+		wfProfileIn($fname);
 		global $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
 		$depth = ($query->type == SMW_SQL2_PROP_HIERARCHY)?$smwgQSubpropertyDepth:$smwgQSubcategoryDepth;
 		if ($depth <= 0) { // treat as value, no recursion
 			$query->type = SMW_SQL2_VALUE;
-			wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+			wfProfileOut($fname);
 			return;
 		}
 		$values = '';
@@ -580,9 +581,9 @@ class SMWSQLStore2QueryEngine {
 		// try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
 		$res = $this->m_dbs->select($smw_subs2,'s_id',$valuecond, array('LIMIT'=>1));
 		if (!$this->m_dbs->fetchObject($res)) { // no subobjects, we are done!
-			$query->type = SMW_SQL2_VALUE;
 			$this->m_dbs->freeResult($res);
-			wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+			$query->type = SMW_SQL2_VALUE;
+			wfProfileOut($fname);
 			return;
 		}
 		$this->m_dbs->freeResult($res);
@@ -591,7 +592,7 @@ class SMWSQLStore2QueryEngine {
 		$query->jointable = $query->alias;
 		$query->joinfield = "$query->alias.id";
 		if ($this->m_qmode == SMWQuery::MODE_DEBUG) {
-			wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+			wfProfileOut($fname);
 			return; // no real queries in debug mode
 		}
 
@@ -601,7 +602,7 @@ class SMWSQLStore2QueryEngine {
 			$this->m_dbs->query("INSERT INTO $tablename (id) SELECT id" .
 								' FROM ' . $this->m_hierarchies[$values],
 								'SMW::executeQueries');
-			wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+			wfProfileOut($fname);
 			return;
 		}
 
@@ -638,7 +639,7 @@ class SMWSQLStore2QueryEngine {
 		$this->m_hierarchies[$values] = $tablename;
 		$this->m_dbs->query('DROP TEMPORARY TABLE smw_new', 'SMW::executeQueries');
 		$this->m_dbs->query('DROP TEMPORARY TABLE smw_res', 'SMW::executeQueries');
-		wfProfileOut("SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)");
+		wfProfileOut($fname);
 	}
 
 	/**

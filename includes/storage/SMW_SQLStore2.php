@@ -6,6 +6,7 @@
  */
 
 define('SMW_SQL2_SMWIW',':smw'); // virtual "interwiki prefix" for special SMW objects
+define('SMW_SQL2_SMWREDIIW',':smw-redi'); // virtual "interwiki prefix" for SMW objects that are redirected
 
 // Constant flags for identifying tables/retrieval types
 define('SMW_SQL2_RELS2',1);
@@ -814,9 +815,10 @@ class SMWSQLStore2 extends SMWStore {
 				$val_array  = array( 'smw_title' => $newtitle->getDBkey(),
 				                     'smw_namespace' => $newtitle->getNamespace());
 				$db->update('smw_ids', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
-			} else { // make id for use in redirect table
-				$sid = $this->makeSMWPageID($oldtitle->getDBKey(),$oldtitle->getNamespace(),'',false);
-			}
+			} else { // make new (target) id for use in redirect table
+				$sid = $this->makeSMWPageID($newtitle->getDBKey(),$newtitle->getNamespace(),''); // make target id
+			} // at this point, $sid is the id of the target page (according to smw_ids)
+			$this->makeSMWPageID($oldtitle->getDBKey(),$oldtitle->getNamespace(),SMW_SQL2_SMWREDIIW); // make redirect id for oldtitle
 			// update redirects
 			/// NOTE: there is the (bad) case that the moved page is a redirect. As chains of
 			/// redirects are not supported by MW or SMW, the below is maximally correct there too.
@@ -1363,16 +1365,45 @@ class SMWSQLStore2 extends SMWStore {
 	 * If no such ID exists, 0 is returned.
 	 */
 	public function getSMWPageID($title, $namespace, $iw, $canonical=true) {
+		global $smwgQEqualitySupport;
 		wfProfileIn('SMWSQLStore2::getSMWPageID (SMW)');
-		$key = "$iw $namespace $title " . ($canonical?'C':'-');
+		$ckey = "$iw $namespace $title C";
+		$nkey = "$iw $namespace $title -";
+		$key = ($canonical?$ckey:$nkey);
 		if (array_key_exists($key,$this->m_ids)) {
 			wfProfileOut('SMWSQLStore2::getSMWPageID (SMW)');
 			return $this->m_ids[$key];
 		}
+		if (count($this->m_ids)>1500) { // prevent memory leak in very long PHP runs
+			$this->m_ids = array();
+		}
 		$db =& wfGetDB( DB_SLAVE );
 		$id = 0;
-		if ( $canonical && (!$iw) ) { // check redirect alias first
+		$redirect = false;
+		if ($iw != '') {
+			$res = $db->select('smw_ids', 'smw_id', 'smw_title=' . $db->addQuotes($title) . ' AND ' . 'smw_namespace=' . $db->addQuotes($namespace) . ' AND smw_iw=' . $db->addQuotes($iw), 'SMW::getSMWPageID', array('LIMIT'=>1));
+			if ($row = $db->fetchObject($res)) {
+				$id = $row->smw_id;
+			}
+		} else { // check for potential redirects also
+			$res = $db->select('smw_ids', array('smw_id', 'smw_iw'), 'smw_title=' . $db->addQuotes($title) . ' AND ' . 'smw_namespace=' . $db->addQuotes($namespace) . ' AND (smw_iw=' . $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWREDIIW) . ')', 'SMW::getSMWPageID', array('LIMIT'=>1));
+			if ($row = $db->fetchObject($res)) {
+				if ( ($row->smw_iw == '') || (!$canonical) || ($smwgQEqualitySupport == SMW_EQ_NONE) ) {
+					$id = $row->smw_id;
+					if ($row->smw_iw == '') {
+						$this->m_ids[$ckey] = $id; // what we found is also the canonical key, cache it
+					}
+				} else {
+					$redirect = true;
+					$this->m_ids[$nkey] = $id; // what we found is the non-canonical key, cache it
+				}
+			}
+		}
+		$db->freeResult($res);
+
+		if ($redirect) { // get redirect alias
 			if ($namespace == SMW_NS_PROPERTY) { // redirect properties only to properties
+				/// FIXME: Shouldn't this condition be ensured during writing?
 				$res = $db->select(array('smw_redi2','smw_ids'), 'o_id', 'o_id=smw_id AND smw_namespace=s_namespace AND s_title=' . $db->addQuotes($title) . ' AND s_namespace=' . $db->addQuotes($namespace), 'SMW::getSMWPageID', array('LIMIT'=>1) );
 			} else {
 				$res = $db->select('smw_redi2', 'o_id', 's_title=' . $db->addQuotes($title) . ' AND s_namespace=' . $db->addQuotes($namespace), 'SMW::getSMWPageID', array('LIMIT'=>1) );
@@ -1381,16 +1412,6 @@ class SMWSQLStore2 extends SMWStore {
 				$id = $row->o_id;
 			}
 			$db->freeResult($res);
-		}
-		if ($id == 0) { // try other table if nothing was found yet
-			$res = $db->select('smw_ids', 'smw_id', 'smw_title=' . $db->addQuotes($title) . ' AND ' . 'smw_namespace=' . $db->addQuotes($namespace) . ' AND smw_iw=' . $db->addQuotes($iw), 'SMW::getSMWPageID', array('LIMIT'=>1));
-			if ($row = $db->fetchObject($res)) {
-				$id = $row->smw_id;
-			}
-			$db->freeResult($res);
-		}
-		if (count($this->m_ids)>1000) { // prevent memory leak in very long PHP runs
-			$this->m_ids = array();
 		}
 		$this->m_ids[$key] = $id;
 		wfProfileOut('SMWSQLStore2::getSMWPageID (SMW)');
@@ -1402,6 +1423,8 @@ class SMWSQLStore2 extends SMWStore {
 	 * If $canonical is set to true, redirects are taken into account to find the
 	 * canonical alias ID for the given page.
 	 * If no such ID exists, a new ID is created and returned.
+	 * NOTE: using this with $canonical==false may make sense, especially when
+	 * the title is a redirect target (we do not want chains of redirects)
 	 */
 	protected function makeSMWPageID($title, $namespace, $iw, $canonical=true) {
 		wfProfileIn('SMWSQLStore2::makeSMWPageID (SMW)');
@@ -1417,6 +1440,25 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		wfProfileOut('SMWSQLStore2::makeSMWPageID (SMW)');
 		return $id;
+	}
+
+	/**
+	 * Extend the ID cache as specified. This is called in places where IDs are retrieved
+	 * by SQL queries and it would be a pity to throw them away. This function expects to
+	 * get the contents of a line in smw_ids, i.e. possibly with iw being SMW_SQL2_SMWREDIIW.
+	 * This information is used to determine whether the given ID is canonical or not.
+	 */
+	public function cacheSMWPageID($id, $title, $namespace, $iw) {
+		$real_iw = ($iw == SMW_SQL2_SMWREDIIW)?'':$iw;
+		$ckey = "$iw $namespace $title C";
+		$nkey = "$iw $namespace $title -";
+		if (count($this->m_ids)>1500) { // prevent memory leak in very long PHP runs
+			$this->m_ids = array();
+		}
+		$this->m_ids[$nkey] = $id;
+		if ($real_iw == $iw) {
+			$this->m_ids[$ckey] = $id;
+		}
 	}
 
 	/**
@@ -1497,8 +1539,9 @@ class SMWSQLStore2 extends SMWStore {
 	 * making changes, especially since errors may go unnoticed for some time.
 	 */
 	protected function updateRedirects($subject_t, $subject_ns, $curtarget_t='', $curtarget_ns=-1) {
+		global $smwgQEqualitySupport;
 		$sid = $this->getSMWPageID($subject_t, $subject_ns, '', false); // find real id of subject, if any
-		/// NOTE: $sid can be 0 here, which is fine for redirect pages (they do not need an own id)
+		/// NOTE: $sid can be 0 here; this is useful to know since it means that fewer table updates are needed
 		$db =& wfGetDB( DB_SLAVE );
 		$res = $db->select( array('smw_redi2'),'o_id','s_title=' . $db->addQuotes($subject_t) .
 		                    ' AND s_namespace=' . $db->addQuotes($subject_ns),
@@ -1508,10 +1551,12 @@ class SMWSQLStore2 extends SMWStore {
 		$new_tid = $curtarget_t?($this->makeSMWPageID($curtarget_t, $curtarget_ns, '', false)):0; // real id of new target
 		/// NOTE: $old_tid and $new_tid both ignore further redirects, (intentionally) no redirect chains!
 		if ($old_tid == $new_tid) { // no change, all happy
-			return $sid;
-		} elseif ( ($old_tid == 0) && ($sid != 0) ) { // new redirect, directly change object entries of $sid to $new_tid
+			return ($new_tid==0)?$sid:$new_tid;
+		}
+		$db =& wfGetDB( DB_MASTER ); // now we need to write something
+		if ( ($old_tid == 0) && ($sid != 0) && ($smwgQEqualitySupport != SMW_EQ_NONE) ) {
+			// new redirect, directly change object entries of $sid to $new_tid
 			/// NOTE: if $sid == 0, then nothing needs to be done here
-			$db =& wfGetDB( DB_MASTER );
 			$db->update('smw_rels2', array( 'o_id' => $new_tid ), array( 'o_id' => $sid ), 'SMW::updateRedirects');
 			if ( ( $subject_ns == SMW_NS_PROPERTY ) && ( $curtarget_ns == SMW_NS_PROPERTY ) ) {
 				$cond_array = array( 'p_id' => $sid );
@@ -1535,32 +1580,10 @@ class SMWSQLStore2 extends SMWStore {
 		} elseif ($old_tid != 0) { // existing redirect is overwritten
 			// we do not know which entries of $old_tid are now $new_tid/$sid
 			// -> ask SMW to update all affected pages as soon as possible (using jobs)
-			$db =& wfGetDB( DB_MASTER );
 			//first delete the existing redirect:
 			$db->delete('smw_redi2', array('s_title' => $subject_t,'s_namespace' => $subject_ns), 'SMW::updateRedirects');
-			$res = $db->select( array('smw_rels2','smw_ids'),'DISTINCT smw_title,smw_namespace',
-			                    's_id=smw_id AND o_id=' . $db->addQuotes($old_tid),
-			                    'SMW::updateRedirects');
-			while ($row = $db->fetchObject($res)) {
-				$t = Title::makeTitle($row->smw_namespace,$row->smw_title);
-				$job = new SMWUpdateJob($t);
-				$job->insert();
-			}
-			$db->freeResult($res);
-			if ( $subject_ns == SMW_NS_PROPERTY ) {
-				/// TODO: this would be more efficient when we would know the type of the
-				/// property, but the current architecture deletes this first (PERFORMANCE)
-				foreach (array('smw_rels2','smw_atts2','smw_text2') as $table) {
-					$res = $db->select( array($table,'smw_ids'),'DISTINCT smw_title,smw_namespace',
-					                    's_id=smw_id AND p_id=' . $db->addQuotes($old_tid),
-					                    'SMW::updateRedirects');
-					while ($row = $db->fetchObject($res)) {
-						$t = Title::makeTitle($row->smw_namespace,$row->smw_title);
-						$job = new SMWUpdateJob($t);
-						$job->insert();
-					}
-				}
-				$res = $db->select( array('smw_subs2','smw_ids'),'DISTINCT smw_title,smw_namespace',
+			if ($smwgQEqualitySupport != SMW_EQ_NONE) { // further updates if equality reasoning is enabled
+				$res = $db->select( array('smw_rels2','smw_ids'),'DISTINCT smw_title,smw_namespace',
 				                    's_id=smw_id AND o_id=' . $db->addQuotes($old_tid),
 				                    'SMW::updateRedirects');
 				while ($row = $db->fetchObject($res)) {
@@ -1568,9 +1591,21 @@ class SMWSQLStore2 extends SMWStore {
 					$job = new SMWUpdateJob($t);
 					$job->insert();
 				}
-			} elseif ( $subject_ns == NS_CATEGORY ) {
-				foreach (array('smw_subs2','smw_inst2') as $table) {
-					$res = $db->select( array($table,'smw_ids'),'DISTINCT smw_title,smw_namespace',
+				$db->freeResult($res);
+				if ( $subject_ns == SMW_NS_PROPERTY ) {
+					/// TODO: this would be more efficient when we would know the type of the
+					/// property, but the current architecture deletes this first (PERFORMANCE)
+					foreach (array('smw_rels2','smw_atts2','smw_text2') as $table) {
+						$res = $db->select( array($table,'smw_ids'),'DISTINCT smw_title,smw_namespace',
+						                    's_id=smw_id AND p_id=' . $db->addQuotes($old_tid),
+						                    'SMW::updateRedirects');
+						while ($row = $db->fetchObject($res)) {
+							$t = Title::makeTitle($row->smw_namespace,$row->smw_title);
+							$job = new SMWUpdateJob($t);
+							$job->insert();
+						}
+					}
+					$res = $db->select( array('smw_subs2','smw_ids'),'DISTINCT smw_title,smw_namespace',
 					                    's_id=smw_id AND o_id=' . $db->addQuotes($old_tid),
 					                    'SMW::updateRedirects');
 					while ($row = $db->fetchObject($res)) {
@@ -1578,15 +1613,32 @@ class SMWSQLStore2 extends SMWStore {
 						$job = new SMWUpdateJob($t);
 						$job->insert();
 					}
+				} elseif ( $subject_ns == NS_CATEGORY ) {
+					foreach (array('smw_subs2','smw_inst2') as $table) {
+						$res = $db->select( array($table,'smw_ids'),'DISTINCT smw_title,smw_namespace',
+						                    's_id=smw_id AND o_id=' . $db->addQuotes($old_tid),
+						                    'SMW::updateRedirects');
+						while ($row = $db->fetchObject($res)) {
+							$t = Title::makeTitle($row->smw_namespace,$row->smw_title);
+							$job = new SMWUpdateJob($t);
+							$job->insert();
+						}
+					}
 				}
 			}
 		}
 		// finally, write the new redirect AND refresh your internal canonical id cache!
 		if ($new_tid != 0) {
 			$db->insert( 'smw_redi2', array('s_title'=>$subject_t, 's_namespace'=>$subject_ns, 'o_id'=>$new_tid), 'SMW::updateRedirects');
+			if ($smwgQEqualitySupport != SMW_EQ_NONE) {
+				$db->update('smw_ids', array('smw_iw'=>SMW_SQL2_SMWREDIIW), array('smw_id'=>$sid), 'SMW::updateRedirects');
+			}
 			$this->m_ids[" $subject_ns $subject_t C"] = $new_tid; // "iw" is empty here
 		} else {
 			$this->m_ids[" $subject_ns $subject_t C"] = $sid; // "iw" is empty here
+			if ($smwgQEqualitySupport != SMW_EQ_NONE) {
+				$db->update('smw_ids', array('smw_iw'=>''), array('smw_id'=>$sid), 'SMW::updateRedirects');
+			}
 		}
 		// just flush those caches to be safe, they are not essential in program runs with redirect updates
 		unset($this->m_semdata[$sid]); unset($this->m_semdata[$new_tid]); unset($this->m_semdata[$old_tid]);
