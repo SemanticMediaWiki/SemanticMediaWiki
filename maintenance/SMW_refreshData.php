@@ -104,8 +104,10 @@ if (  array_key_exists( 'f', $options ) ) {
 	}
 	echo "\n";
 	smwfGetStore()->drop($verbose);
+	wfRunHooks('smwDropTables');
 	print "\n";
 	smwfGetStore()->setup($verbose);
+	wfRunHooks('smwInitializeTables');
 	while (ob_get_level() > 0) { // be sure to have some buffer, otherwise some PHPs complain
 		ob_end_flush();
 	}
