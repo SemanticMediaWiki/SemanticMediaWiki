@@ -1510,7 +1510,7 @@ class SMWSQLStore2 extends SMWStore {
 		$db->delete('smw_atts2', array('s_id' => $id), 'SMW::deleteSubject::Atts2');
 		$db->delete('smw_text2', array('s_id' => $id), 'SMW::deleteSubject::Text2');
 		$db->delete('smw_spec2', array('s_id' => $id), 'SMW::deleteSubject::Spec2');
-		$db->delete('smw_inst2', array('s_id' => $id), 'SMW::deleteSubject::Text2');
+		$db->delete('smw_inst2', array('s_id' => $id), 'SMW::deleteSubject::Inst2');
 		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
 			$db->delete('smw_subs2', array('s_id' => $id), 'SMW::deleteSubject::Subs2');
 		}
