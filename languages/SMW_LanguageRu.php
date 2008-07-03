@@ -76,12 +76,14 @@ protected $m_SpecialPropertyAliases = array(
 
 
 protected $m_Namespaces = array(
-    SMW_NS_RELATION       => 'Отношение',
-    SMW_NS_RELATION_TALK  => 'Обсуждение_отношения',
-    SMW_NS_PROPERTY       => 'Свойство',
-    SMW_NS_PROPERTY_TALK  => 'Обсуждение_свойства',
-    SMW_NS_TYPE           => 'Тип',
-    SMW_NS_TYPE_TALK      => 'Обсуждение_типа'
+	SMW_NS_RELATION       => 'Отношение',
+	SMW_NS_RELATION_TALK  => 'Обсуждение_отношения',
+	SMW_NS_PROPERTY       => 'Свойство',
+	SMW_NS_PROPERTY_TALK  => 'Обсуждение_свойства',
+	SMW_NS_TYPE           => 'Тип',
+	SMW_NS_TYPE_TALK      => 'Обсуждение_типа',
+	SMW_NS_CONCEPT        => 'Concept', // TODO: translate
+	SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
 );
 
 protected $m_NamespaceAliases = array(
@@ -91,7 +93,9 @@ protected $m_NamespaceAliases = array(
 	'Property'      => SMW_NS_PROPERTY,
 	'Property_talk' => SMW_NS_PROPERTY_TALK,
 	'Type'          => SMW_NS_TYPE,
-	'Type_talk'     => SMW_NS_TYPE_TALK
+	'Type_talk'     => SMW_NS_TYPE_TALK,
+	'Concept'       => SMW_NS_CONCEPT,
+	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 
 }

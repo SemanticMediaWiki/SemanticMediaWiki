@@ -58,7 +58,9 @@ protected $m_Namespaces = array(
 	SMW_NS_PROPERTY       => 'الخاصية',
 	SMW_NS_PROPERTY_TALK  => 'الحديث عن السمة',
 	SMW_NS_TYPE           => 'النوع',
-	SMW_NS_TYPE_TALK      => 'نوع الحديث'
+	SMW_NS_TYPE_TALK      => 'نوع الحديث',
+	SMW_NS_CONCEPT        => 'Concept', // TODO: translate
+	SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
 );
 
 }

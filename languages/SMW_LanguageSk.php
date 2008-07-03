@@ -78,7 +78,9 @@ protected $m_Namespaces = array(
 	SMW_NS_PROPERTY       => 'Atribút',
 	SMW_NS_PROPERTY_TALK  => 'Diskusia o atribúte',
 	SMW_NS_TYPE           => 'Typ',
-	SMW_NS_TYPE_TALK      => 'Diskusia o type'
+	SMW_NS_TYPE_TALK      => 'Diskusia o type',
+	SMW_NS_CONCEPT        => 'Concept', // TODO: translate
+	SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
 );
 
 protected $m_NamespaceAliases = array(
@@ -88,7 +90,9 @@ protected $m_NamespaceAliases = array(
 	'Property'      => SMW_NS_PROPERTY,
 	'Property_talk' => SMW_NS_PROPERTY_TALK,
 	'Type'          => SMW_NS_TYPE,
-	'Type_talk'     => SMW_NS_TYPE_TALK
+	'Type_talk'     => SMW_NS_TYPE_TALK,
+	'Concept'       => SMW_NS_CONCEPT,
+	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 
 }

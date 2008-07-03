@@ -88,7 +88,9 @@ protected $m_Namespaces = array(
 	SMW_NS_PROPERTY       => "Attribut",
 	SMW_NS_PROPERTY_TALK  => "Attribut_Diskussion",
 	SMW_NS_TYPE           => "Datentyp",
-	SMW_NS_TYPE_TALK      => "Datentyp_Diskussion"
+	SMW_NS_TYPE_TALK      => "Datentyp_Diskussion",
+	SMW_NS_CONCEPT        => 'Konzept',
+	SMW_NS_CONCEPT_TALK   => 'Konzept_Diskussion'
 );
 
 protected $m_NamespaceAliases = array(
@@ -98,7 +100,9 @@ protected $m_NamespaceAliases = array(
 	'Property'      => SMW_NS_PROPERTY,
 	'Property_talk' => SMW_NS_PROPERTY_TALK,
 	'Type'          => SMW_NS_TYPE,
-	'Type_talk'     => SMW_NS_TYPE_TALK
+	'Type_talk'     => SMW_NS_TYPE_TALK,
+	'Concept'       => SMW_NS_CONCEPT,
+	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 
 }

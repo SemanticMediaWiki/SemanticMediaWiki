@@ -17,6 +17,7 @@ define('SMW_SQL2_REDI2',16);
 define('SMW_SQL2_NARY2',32); // not really a table, but a retrieval type
 define('SMW_SQL2_SUBS2',64);
 define('SMW_SQL2_INST2',128);
+define('SMW_SQL2_CONC2',256);
 
 
 /**
@@ -68,14 +69,15 @@ class SMWSQLStore2 extends SMWStore {
 			foreach ($filter as $value) {
 				switch ($value) {
 					case '_wpg': $tasks = $tasks | SMW_SQL2_RELS2; break;
-					case '_txt': case '_cod': 
+					case '_txt': case '_cod':
 					             $tasks = $tasks | SMW_SQL2_TEXT2; break;
 					case '__nry': $tasks = $tasks | SMW_SQL2_NARY2; break;
 					case SMW_SP_INSTANCE_OF: $tasks = $tasks | SMW_SQL2_INST2; break;
-					case SMW_SP_REDIRECTS_TO: $tasks = $tasks | SMW_SQL2_REDI2;	break;
+					case SMW_SP_REDIRECTS_TO: $tasks = $tasks | SMW_SQL2_REDI2; break;
 					case SMW_SP_SUBPROPERTY_OF: case SMW_SP_SUBCLASS_OF:
 						$tasks = $tasks | SMW_SQL2_SUBS2;
 					break;
+					case SMW_SP_CONCEPT_DESC: $tasks = $tasks | SMW_SQL2_CONC2; break;
 					default:
 						if (is_numeric($value)) { // some special property
 							$tasks = $tasks | SMW_SQL2_SPEC2;
@@ -85,10 +87,13 @@ class SMWSQLStore2 extends SMWStore {
 				}
 			}
 		} else {
-			$tasks = SMW_SQL2_RELS2 | SMW_SQL2_ATTS2 | SMW_SQL2_TEXT2| SMW_SQL2_SPEC2 | SMW_SQL2_NARY2 | SMW_SQL2_SUBS2 | SMW_SQL2_INST2 | SMW_SQL2_REDI2;
+			$tasks = SMW_SQL2_RELS2 | SMW_SQL2_ATTS2 | SMW_SQL2_TEXT2| SMW_SQL2_SPEC2 | SMW_SQL2_NARY2 | SMW_SQL2_SUBS2 | SMW_SQL2_INST2 | SMW_SQL2_REDI2 | SMW_SQL2_CONC2;
 		}
 		if ( ($subject->getNamespace() != SMW_NS_PROPERTY) && ($subject->getNamespace() != NS_CATEGORY) ) {
 			$tasks = $tasks & ~SMW_SQL2_SUBS2;
+		}
+		if ($subject->getNamespace() != SMW_NS_CONCEPT) {
+			$tasks = $tasks & ~SMW_SQL2_CONC2;
 		}
 
 		if (!array_key_exists($sid, $this->m_semdata)) { // new cache entry
@@ -105,7 +110,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		// most types of data suggest rather similar code
-		foreach (array(SMW_SQL2_RELS2, SMW_SQL2_ATTS2, SMW_SQL2_TEXT2, SMW_SQL2_INST2, SMW_SQL2_SUBS2, SMW_SQL2_SPEC2, SMW_SQL2_REDI2) as $task) {
+		foreach (array(SMW_SQL2_RELS2, SMW_SQL2_ATTS2, SMW_SQL2_TEXT2, SMW_SQL2_INST2, SMW_SQL2_SUBS2, SMW_SQL2_SPEC2, SMW_SQL2_REDI2, SMW_SQL2_CONC2) as $task) {
 			if ( !($tasks & $task) ) continue;
 			wfProfileIn("SMWSQLStore2::getSemanticData-task$task (SMW)");
 			$where = 'p_id=smw_id AND s_id=' . $db->addQuotes($sid);
@@ -146,40 +151,51 @@ class SMWSQLStore2 extends SMWStore {
 					$select = 'smw_title as value';
 					$where = 'o_id=smw_id AND s_id=' . $db->addQuotes($sid);
 				break;
+				case SMW_SQL2_CONC2:
+					$from = 'smw_conc2';
+					$select = 'concept_txt as value';
+					$where = 's_id=' . $db->addQuotes($sid);
+				break;
 			}
 			$res = $db->select( $from, $select, $where, 'SMW::getSemanticData' );
 			while($row = $db->fetchObject($res)) {
 				if ($task & (SMW_SQL2_RELS2 | SMW_SQL2_ATTS2 | SMW_SQL2_TEXT2) ) {
 					$property = Title::makeTitle(SMW_NS_PROPERTY, $row->prop);
-					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
-				} elseif ($task == SMW_SQL2_SPEC2) {
-					$dv = SMWDataValueFactory::newSpecialValue($row->prop);
-				} else {
-					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 				}
 				if ($task == SMW_SQL2_RELS2) {
+					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 					if ($dv instanceof SMWWikiPagevalue) { // may fail if type was changed!
 						$dv->setValues($row->title, $row->namespace, false, $row->iw);
 						$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
 					}
 				} elseif ($task == SMW_SQL2_ATTS2) {
+					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 					$dv->setXSDValue($row->value, $row->unit);
 					$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
 				} elseif ($task == SMW_SQL2_TEXT2) {
+					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 					$dv->setXSDValue($row->value, '');
 					$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
 				} elseif ($task == SMW_SQL2_SPEC2) {
-					$dv->setXSDValue($row->value);
+					$dv = SMWDataValueFactory::newSpecialValue($row->prop);
+					$dv->setXSDValue($row->value, '');
 					$this->m_semdata[$sid]->addSpecialValue($row->prop, $dv);
 				} elseif ($task == SMW_SQL2_SUBS2) {
+					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 					$dv->setValues($row->value, $namespace);
 					$this->m_semdata[$sid]->addSpecialValue($specprop, $dv);
 				} elseif ($task == SMW_SQL2_REDI2) {
+					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 					$dv->setValues($row->title, $row->namespace);
 					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_REDIRECTS_TO, $dv);
 				} elseif ($task == SMW_SQL2_INST2) {
+					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 					$dv->setValues($row->value, NS_CATEGORY);
 					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_INSTANCE_OF, $dv);
+				} elseif ($task == SMW_SQL2_CONC2) {
+					$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC);
+					$dv->setXSDValue($row->value, '');
+					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_CONCEPT_DESC, $dv);
 				}
 			}
 			$db->freeResult($res);
@@ -319,6 +335,8 @@ class SMWSQLStore2 extends SMWStore {
 				}
 				$db->freeResult($res);
 			}
+		} elseif ($specialprop === SMW_SP_CONCEPT_DESC) {
+			// no inverse search for concept descriptions (blobs)
 		} else {
 			if ($value->getXSDValue() !== false) { // filters out error-values etc.
 				$stringvalue = $value->getXSDValue();
@@ -670,6 +688,7 @@ class SMWSQLStore2 extends SMWStore {
 		$up_rels2 = array();  $up_atts2 = array();
 		$up_text2 = array();  $up_spec2 = array();
 		$up_subs2 = array();  $up_inst2 = array();
+		$up_conc2 = array();
 
 		//properties
 		foreach($data->getProperties() as $key => $property) {
@@ -759,6 +778,15 @@ class SMWSQLStore2 extends SMWStore {
 							}
 						}
 					break;
+					case SMW_SP_CONCEPT_DESC: // textual concept description
+						if ( $subject->getNamespace() != SMW_NS_CONCEPT ) {
+							break;
+						}
+						$value = end($propertyValueArray); // only one value per page!
+						if ( ($value->isValid()) )  {
+							$up_conc2[] = array('s_id' => $sid, 'concept_txt' => $value->getXSDValue());
+						}
+					break;
 					default: // normal special value
 						foreach($propertyValueArray as $value) {
 							if ($value->isValid()) { // filters out error-values etc.
@@ -792,6 +820,9 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		if (count($up_inst2) > 0) {
 			$db->insert( 'smw_inst2', $up_inst2, 'SMW::updateInst2Data');
+		}
+		if (count($up_conc2) > 0) {
+			$db->insert( 'smw_conc2', $up_conc2, 'SMW::updateConc2Data');
 		}
 
 		wfProfileOut("SMWSQLStore2::updateData (SMW)");
@@ -849,6 +880,11 @@ class SMWSQLStore2 extends SMWStore {
 					$db->update('smw_subs2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
 				} elseif ($oldtitle->getNamespace() == NS_CATEGORY) {
 					$db->delete('smw_subs2', $cond_array, 'SMWSQLStore2::changeTitle');
+				} elseif ( ( $oldtitle->getNamespace() == SMW_NS_CONCEPT ) && 
+				           ( $newtitle->getNamespace() == SMW_NS_CONCEPT ) ) {
+					$db->update('smw_conc2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
+				} elseif ($oldtitle->getNamespace() == SMW_NS_CONCEPT) {
+					$db->delete('smw_conc2', $cond_array, 'SMWSQLStore2::changeTitle');
 				}
 			}
 			/// TODO: may not be optimal for the standard case that newtitle existed and redirected to oldtitle (PERFORMANCE)
@@ -1006,7 +1042,8 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		$db =& wfGetDB( DB_MASTER );
 		extract( $db->tableNames('smw_ids','smw_rels2','smw_atts2','smw_text2',
-		                         'smw_spec2','smw_subs2','smw_redi2','smw_inst2') );
+		                         'smw_spec2','smw_subs2','smw_redi2','smw_inst2',
+		                         'smw_conc2') );
 
 		$this->setupTable($smw_ids, // internal IDs used in this store
 		              array('smw_id'        => 'INT(8) UNSIGNED NOT NULL KEY AUTO_INCREMENT',
@@ -1058,6 +1095,11 @@ class SMWSQLStore2 extends SMWStore {
 		                    'o_id'        => 'INT(8) UNSIGNED NOT NULL',), $db, $verbose);
 		$this->setupIndex($smw_inst2, array('s_id', 'o_id'), $db);
 
+		$this->setupTable($smw_conc2, // concept descriptions
+		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL KEY',
+		                    'concept_txt' => 'MEDIUMBLOB'), $db, $verbose);
+		$this->setupIndex($smw_conc2, array('s_id'), $db);
+
 		$this->reportProgress("Database initialised successfully.\n",$verbose);
 		return true;
 	}
@@ -1066,7 +1108,8 @@ class SMWSQLStore2 extends SMWStore {
 		$this->reportProgress("Deleting all database content and tables generated by SMW ...\n\n",$verbose);
 		$db =& wfGetDB( DB_MASTER );
 		$tables = array('smw_rels2', 'smw_atts2', 'smw_text2', 'smw_spec2', 
-		                'smw_subs2', 'smw_redi2', 'smw_ids', 'smw_inst2');
+		                'smw_subs2', 'smw_redi2', 'smw_ids', 'smw_inst2',
+		                'smw_conc2');
 		foreach ($tables as $table) {
 			$name = $db->tableName($table);
 			$db->query("DROP TABLE $name", 'SMWSQLStore2::drop');
@@ -1514,6 +1557,9 @@ class SMWSQLStore2 extends SMWStore {
 		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
 			$db->delete('smw_subs2', array('s_id' => $id), 'SMW::deleteSubject::Subs2');
 		}
+		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) {
+			$db->delete('smw_conc2', array('s_id' => $id), 'SMW::deleteSubject::Conc2');
+		}
 
 		// find bnodes used by this ID ...
 		$res = $db->select('smw_ids', 'smw_id','smw_title=' . $db->addQuotes('') . ' AND smw_namespace=' . $db->addQuotes($id) . ' AND smw_iw=' . $db->addQuotes(SMW_SQL2_SMWIW), 'SMW::deleteSubject::Nary');
@@ -1594,7 +1640,7 @@ class SMWSQLStore2 extends SMWStore {
 				}
 				$db->freeResult($res);
 				if ( $subject_ns == SMW_NS_PROPERTY ) {
-					/// TODO: this would be more efficient when we would know the type of the
+					/// TODO: this would be more efficient if we would know the type of the
 					/// property, but the current architecture deletes this first (PERFORMANCE)
 					foreach (array('smw_rels2','smw_atts2','smw_text2') as $table) {
 						$res = $db->select( array($table,'smw_ids'),'DISTINCT smw_title,smw_namespace',

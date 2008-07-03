@@ -15,7 +15,7 @@ abstract class SMW_Language {
 	protected $m_SpecialPropertyAliases = array();
 	protected $m_Namespaces;
 	protected $m_NamespaceAliases = array();
-	
+
 
 	/**
 	 * Function that returns an array of namespace identifiers.

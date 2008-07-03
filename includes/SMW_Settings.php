@@ -24,6 +24,16 @@ $smwgIP = $IP . '/extensions/SemanticMediaWiki';
 require_once('SMW_GlobalFunctions.php');
 
 ###
+# SMW has changed a lot since version 0.1 and some additional settings are
+# needed to preserve all functions on sites that have been using beta versions
+# of SMW (any version prior to 1.0). For example, old SMWs had a namespace
+# "Relation". Sites still use that namespace in some way should set the 
+# following to "true". All others can safely leave the default here.
+##
+$smwgSMWBetaCompatible = false;
+##
+
+###
 # If you already have custom namespaces on your site, insert
 # $smwgNamespaceIndex = ???;
 # into your LocalSettings.php *before* including this file.
@@ -176,7 +186,9 @@ $smwgNamespacesWithSemanticLinks = array(
 	     SMW_NS_PROPERTY  => true,
 	SMW_NS_PROPERTY_TALK  => false,
 	          SMW_NS_TYPE => true,
-	     SMW_NS_TYPE_TALK => false
+	     SMW_NS_TYPE_TALK => false,
+	       SMW_NS_CONCEPT => true,
+	  SMW_NS_CONCEPT_TALK => false,
 );
 ##
 

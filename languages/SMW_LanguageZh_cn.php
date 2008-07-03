@@ -84,6 +84,8 @@ protected $m_Namespaces = array(
 	SMW_NS_PROPERTY_TALK  => '性质讨论',	//'Property_talk',
 	SMW_NS_TYPE           => '型态',	//'Type',
 	SMW_NS_TYPE_TALK      => '型态讨论',	//'Type_talk'
+	SMW_NS_CONCEPT        => 'Concept', // TODO: translate
+	SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
 );
 
 protected $m_NamespaceAliases = array(
@@ -93,7 +95,9 @@ protected $m_NamespaceAliases = array(
 	'Property'      => SMW_NS_PROPERTY,
 	'Property_talk' => SMW_NS_PROPERTY_TALK,
 	'Type'          => SMW_NS_TYPE,
-	'Type_talk'     => SMW_NS_TYPE_TALK
+	'Type_talk'     => SMW_NS_TYPE_TALK,
+	'Concept'       => SMW_NS_CONCEPT,
+	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 
 }
