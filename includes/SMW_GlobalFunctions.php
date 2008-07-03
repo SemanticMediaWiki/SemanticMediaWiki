@@ -637,6 +637,9 @@ function smwfAddHTMLHeadersOutput(&$out) {
 		if ($smwgDefaultStore == 'SMWRAPStore') { // no autoloading for RAP store, since autoloaded classes are in rare cases loaded by MW even if not used in code -- this is not possible for RAPstore, which depends on RAP being installed
 			include_once($smwgIP . '/includes/storage/SMW_RAPStore.php');
 		}
+		if ($smwgDefaultStore == 'SMWRAPStore2') { // no autoloading for RAP store, since autoloaded classes are in rare cases loaded by MW even if not used in code -- this is not possible for RAPstore, which depends on RAP being installed
+			include_once($smwgIP . '/includes/storage/SMW_RAPStore2.php');
+		}
 		if ($smwgMasterStore === NULL) {
 			$smwgMasterStore = new $smwgDefaultStore();
 		}
