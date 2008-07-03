@@ -192,8 +192,14 @@ abstract class SMWDescription {
 
 	/**
 	 * Return a string expressing this query.
+	 * Some descriptions have different syntax in property value positions. The
+	 * parameter $asvalue specifies whether the serialisation should take that into
+	 * account.
+	 * Example: The SMWValueDescription [[Paris]] returns the single result "Paris"
+	 * but can also be used as value in [[has location::Paris]] which is preferred
+	 * over the canonical [[has location::<q>[[Paris]]</q>]].
 	 */
-	abstract public function getQueryString();
+	abstract public function getQueryString($asvalue = false);
 
 	/**
 	 * Return true if the description is required to encompass at most a single
@@ -249,7 +255,7 @@ abstract class SMWDescription {
  * SMWValueDescription objects.
  */
 class SMWThingDescription extends SMWDescription {
-	public function getQueryString() {
+	public function getQueryString($asvalue = false) {
 		return '+';
 	}
 
@@ -290,7 +296,7 @@ class SMWClassDescription extends SMWDescription {
 		return $this->m_titles;
 	}
 
-	public function getQueryString() {
+	public function getQueryString($asvalue = false) {
 		$first = true;
 		foreach ($this->m_titles as $cat) {
 			if ($first) {
@@ -353,7 +359,7 @@ class SMWNamespaceDescription extends SMWDescription {
 		return $this->m_namespace;
 	}
 
-	public function getQueryString() {
+	public function getQueryString($asvalue = false) {
 		global $wgContLang;
 		return '[[' . $wgContLang->getNSText($this->m_namespace) . ':+]]';
 	}
@@ -390,7 +396,7 @@ class SMWValueDescription extends SMWDescription {
 		return $this->m_comparator;
 	}
 
-	public function getQueryString() {
+	public function getQueryString($asvalue = false) {
 		if ($this->m_datavalue !== NULL) {
 			switch ($this->m_comparator) {
 				case SMW_CMP_LEQ:
@@ -405,13 +411,17 @@ class SMWValueDescription extends SMWDescription {
 				case SMW_CMP_LIKE: 
 					$comparator = '~'; // not supported yet?
 				break;
-				default: case SMW_CMP_EQ: 
+				default: case SMW_CMP_EQ:
 					$comparator = '';
 				break;
 			}
-			return $comparator . $this->m_datavalue->getWikiValue();
+			if ($asvalue) {
+				return $comparator . $this->m_datavalue->getWikiValue();
+			} else { // this only is possible for values of Type:Page
+				return '[[' . $comparator . $this->m_datavalue->getWikiValue() . ']]';
+			}
 		} else {
-			return '+';
+			return $asvalue?'+':''; //the else case may result in an error here (query without proper condition)
 		}
 	}
 
@@ -471,7 +481,7 @@ class SMWValueList extends SMWDescription {
 		}
 	}
 
-	public function getQueryString() {
+	public function getQueryString($asvalue = false) {
 		$result = '';
 		$first = true;
 		$nonempty = false;
@@ -575,15 +585,17 @@ class SMWConjunction extends SMWDescription {
 		}
 	}
 
-	public function getQueryString() {
+	public function getQueryString($asvalue = false) {
 		$result = '';
 		foreach ($this->m_descriptions as $desc) {
-			$result .= $desc->getQueryString() . ' ';
+			$result .= ($result?' ':'') . $desc->getQueryString(false);
 		}
 		if ($result == '') {
-			return '+';
+			return $asvalue?'+':'';
+		} elseif ($asvalue) { // <q> not needed for stand-alone conjunctions (AND binds stronger than OR)
+			return ' &lt;q&gt;' . $result . '&lt;/q&gt; ';
 		} else {
-			return ' &lt;q&gt;' . $result . '&lt;/q&gt;';
+			return $result;
 		}
 	}
 
@@ -694,22 +706,20 @@ class SMWDisjunction extends SMWDescription {
 		$description->setPrintRequests(array());
 	}
 
-	public function getQueryString() {
+	public function getQueryString($asvalue = false) {
 		if ($this->m_true) {
 			return '+';
 		}
 		$result = '';
-		// TODO: many disjunctions have more suitable || abbreviations
-		$first = true;
+		$sep = $asvalue?'||':' OR ';
 		foreach ($this->m_descriptions as $desc) {
-			if ($first) {
-				$first = false;
-			} else {
-				$result .= ' || ';
-			}
-			$result .= $desc->getQueryString();
+			$result .= ($result?$sep:'') . $desc->getQueryString($asvalue);
 		}
-		return ' &lt;q&gt;' . $result . '&lt;/q&gt;';
+		if ($asvalue) {
+			return $result;
+		} else {
+			return ' &lt;q&gt;' . $result . '&lt;/q&gt; ';
+		}
 	}
 
 	public function isSingleton() {
@@ -793,8 +803,14 @@ class SMWSomeProperty extends SMWDescription {
 		return $this->m_description;
 	}
 
-	public function getQueryString() {
-		return '[[' . $this->m_property->getText() . '::' . $this->m_description->getQueryString() . ']]';
+	public function getQueryString($asvalue = false) {
+		$subdesc = $this->m_description->getQueryString(true);
+		$sep = ($this->m_description instanceof SMWSomeProperty)?'.':'::'; // use property chain syntax
+		if ($asvalue) {
+			return $this->m_property->getText() . $sep . $subdesc;
+		} else {
+			return '[[' . $this->m_property->getText() . $sep . $subdesc . ']]';
+		}
 	}
 
 	public function isSingleton() {
