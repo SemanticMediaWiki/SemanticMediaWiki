@@ -93,6 +93,7 @@ protected $m_NamespaceAliases = array(
 	'Type_talk'     => SMW_NS_TYPE_TALK,
 	'Concept'       => SMW_NS_CONCEPT,
 	'Concept_talk'  => SMW_NS_CONCEPT_TALK
+);
 
 }
 
