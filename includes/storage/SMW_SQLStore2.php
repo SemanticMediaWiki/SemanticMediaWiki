@@ -1628,6 +1628,9 @@ class SMWSQLStore2 extends SMWStore {
 			}
 		}
 		// finally, write the new redirect AND refresh your internal canonical id cache!
+		if ($sid == 0) {
+			$sid = $this->makeSMWPageID($subject_t, $subject_ns, '', false);
+		}
 		if ($new_tid != 0) {
 			$db->insert( 'smw_redi2', array('s_title'=>$subject_t, 's_namespace'=>$subject_ns, 'o_id'=>$new_tid), 'SMW::updateRedirects');
 			if ($smwgQEqualitySupport != SMW_EQ_NONE) {
