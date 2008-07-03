@@ -306,7 +306,12 @@ class SMWClassDescription extends SMWDescription {
 				$result .= '||' . $cat->getText();
 			}
 		}
-		return $result . ']]';
+		$result .= ']]';
+		if ($asvalue) {
+			return ' &lt;q&gt;' . $result . '&lt;/q&gt; ';
+		} else {
+			return $result;
+		}
 	}
 
 	public function isSingleton() {
@@ -361,7 +366,11 @@ class SMWNamespaceDescription extends SMWDescription {
 
 	public function getQueryString($asvalue = false) {
 		global $wgContLang;
-		return '[[' . $wgContLang->getNSText($this->m_namespace) . ':+]]';
+		if ($asvalue) {
+			return ' &lt;q&gt;[[' . $wgContLang->getNSText($this->m_namespace) . ':+]]&lt;/q&gt; ';;
+		} else {
+			return '[[' . $wgContLang->getNSText($this->m_namespace) . ':+]]';
+		}
 	}
 
 	public function isSingleton() {
@@ -713,7 +722,15 @@ class SMWDisjunction extends SMWDescription {
 		$result = '';
 		$sep = $asvalue?'||':' OR ';
 		foreach ($this->m_descriptions as $desc) {
-			$result .= ($result?$sep:'') . $desc->getQueryString($asvalue);
+			$subdesc = $desc->getQueryString($asvalue);
+			if ($desc instanceof SMWSomeProperty) { // enclose in <q> for parsing
+				if ($asvalue) {
+					$subdesc = ' &lt;q&gt;[[' . $subdesc . ']]&lt;/q&gt; ';
+				} else {
+					$subdesc = ' &lt;q&gt;' . $subdesc . '&lt;/q&gt; ';
+				}
+			}
+			$result .= ($result?$sep:'') . $subdesc;
 		}
 		if ($asvalue) {
 			return $result;
