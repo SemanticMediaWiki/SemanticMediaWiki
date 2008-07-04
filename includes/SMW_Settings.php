@@ -25,10 +25,15 @@ require_once('SMW_GlobalFunctions.php');
 
 ###
 # SMW has changed a lot since version 0.1 and some additional settings are
-# needed to preserve all functions on sites that have been using beta versions
-# of SMW (any version prior to 1.0). For example, old SMWs had a namespace
-# "Relation". Sites still use that namespace in some way should set the 
-# following to "true". All others can safely leave the default here.
+# needed to preserve old functions on sites that have been using beta versions
+# of SMW (any version prior to 1.0). Sites still using obsolete SMW beta features 
+# should set the following to "true". All others can safely keep the default here.
+#
+# Setting this option to true has the following effect:
+# * The obsolete namespace "Relation" will still be created (maybe some sites have
+#   content there).
+# * Statements like [[property::*]] in queries will be interpreted as printout
+#   statements (like ?property in the current #ask query syntax).
 ##
 $smwgSMWBetaCompatible = false;
 ##
