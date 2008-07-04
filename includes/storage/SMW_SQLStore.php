@@ -871,9 +871,10 @@ class SMWSQLStore extends SMWStore {
 				}
 			} else { // special property
 				switch ($property) {
-					case SMW_SP_IMPORTED_FROM: case SMW_SP_INSTANCE_OF: case SMW_SP_SUBCLASS_OF: case SMW_SP_REDIRECTS_TO:
+					case SMW_SP_IMPORTED_FROM: case SMW_SP_INSTANCE_OF: case SMW_SP_SUBCLASS_OF: case SMW_SP_REDIRECTS_TO: case SMW_SP_CONCEPT_DESC:
 						// don't store this, just used for display;
 						// TODO: filtering here is bad for fully neglected properties (IMPORTED FROM)
+						// NOTE: concept descriptions are ignored by that storage implementation
 					break;
 					case SMW_SP_SUBPROPERTY_OF:
 						if ( $subject->getNamespace() != SMW_NS_PROPERTY ) {
