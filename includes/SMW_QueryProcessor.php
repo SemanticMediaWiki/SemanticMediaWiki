@@ -338,10 +338,12 @@ class SMWQueryParser {
 	protected $m_defaultns; //description of the default namespace restriction, or NULL if not used
 	
 	protected $m_categoryprefix; // cache label of category namespace . ':'
+	protected $m_conceptprefix; // cache label of concept namespace . ':'
 	
 	public function SMWQueryParser() {
 		global $wgContLang;
 		$this->m_categoryprefix = $wgContLang->getNsText(NS_CATEGORY) . ':';
+		$this->m_conceptprefix = $wgContLang->getNsText(SMW_NS_CONCEPT) . ':';
 		$this->m_defaultns = NULL;
 	}
 
@@ -541,8 +543,10 @@ class SMWQueryParser {
 		// block could be a Category-statement, fixed object, property statements,
 		// or according print statements.
 		$chunk = $this->readChunk('',true,false); // NOTE: untrimmed, initial " " escapes prop. chains
-		if (smwfNormalTitleText($chunk) == $this->m_categoryprefix) { // category statement
-			return $this->getCategoryDescription($setNS, $label);
+		if ( (smwfNormalTitleText($chunk) == $this->m_categoryprefix) ||  // category statement or
+		     (smwfNormalTitleText($chunk) == $this->m_conceptprefix) ) {  // concept statement
+			return $this->getClassDescription($setNS, $label,
+			       (smwfNormalTitleText($chunk) == $this->m_categoryprefix));
 		} else { // fixed subject, namespace restriction, property query, or subquery
 			$sep = $this->readChunk('',false); //do not consume hit, "look ahead"
 			if ( ($sep == '::') || ($sep == ':=') ) {
@@ -563,45 +567,45 @@ class SMWQueryParser {
 	 * is in between "[[Category:" and the closing "]]" and create a
 	 * suitable description.
 	 */
-	protected function getCategoryDescription(&$setNS, &$label) {
+	protected function getClassDescription(&$setNS, &$label, $category=true) {
+		global $smwgSMWBetaCompatible; // * printouts only for this old version
 		// note: no subqueries allowed here, inline disjunction allowed, wildcards allowed
 		$result = NULL;
 		$continue = true;
 		while ($continue) {
 			$chunk = $this->readChunk();
-			switch ($chunk) {
-				case '*': //print statement
-					$chunk = $this->readChunk('\]\]|\|');
-					if ($chunk == '|') {
-						$printlabel = $this->readChunk('\]\]');
-						if ($printlabel != ']]') {
-							$chunk = $this->readChunk('\]\]');
-						} else {
-							$printlabel = '';
-							$chunk = ']]';
-						}
+			if ($chunk == '+') {
+				//wildcard, ignore for categories (semantically meaningless, everything is in some class)
+			} elseif ( ($chunk == '+') && $category && $smwgSMWBetaCompatible) { // print statement
+				$chunk = $this->readChunk('\]\]|\|');
+				if ($chunk == '|') {
+					$printlabel = $this->readChunk('\]\]');
+					if ($printlabel != ']]') {
+						$chunk = $this->readChunk('\]\]');
 					} else {
-						global $wgContLang;
-						$printlabel = $wgContLang->getNSText(NS_CATEGORY);
+						$printlabel = '';
+						$chunk = ']]';
 					}
-					if ($chunk == ']]') {
-						return new SMWPrintRequest(SMWPrintRequest::PRINT_CATS, $printlabel);
-					} else {
-						$this->m_errors[] = wfMsgForContent('smw_badprintout');
-						return NULL;
-					}
-				break;
-				case '+': //wildcard, ignore for categories (semantically meaningless)
-				break;
-				default: //assume category title
-					/// NOTE: use m_categoryprefix to prevent problems with, e.g., [[Category:Template:Test]]
-					$cat = Title::newFromText($this->m_categoryprefix . $chunk);
-					if ($cat !== NULL) {
-						$result = $this->addDescription($result, new SMWClassDescription($cat), false);
-					}
+				} else {
+					global $wgContLang;
+					$printlabel = $wgContLang->getNSText(NS_CATEGORY);
+				}
+				if ($chunk == ']]') {
+					return new SMWPrintRequest(SMWPrintRequest::PRINT_CATS, $printlabel);
+				} else {
+					$this->m_errors[] = wfMsgForContent('smw_badprintout');
+					return NULL;
+				}
+			} else { //assume category/concept title
+				/// NOTE: use m_c...prefix to prevent problems with, e.g., [[Category:Template:Test]]
+				$class = Title::newFromText(($category?$this->m_categoryprefix:$this->m_conceptprefix) . $chunk);
+				if ($class !== NULL) {
+					$desc = $category?new SMWClassDescription($class):new SMWConceptDescription($class);
+					$result = $this->addDescription($result, $desc, false);
+				}
 			}
 			$chunk = $this->readChunk();
-			$continue = ($chunk == '||');
+			$continue = ($chunk == '||') && $category; // disjunctions only for cateories
 		}
 
 		return $this->finishLinkDescription($chunk, false, $result, $setNS, $label);
@@ -614,6 +618,7 @@ class SMWQueryParser {
 	 * string.
 	 */
 	protected function getPropertyDescription($propertyname, &$setNS, &$label) {
+		global $smwgSMWBetaCompatible; // support for old * printouts of beta
 		$this->readChunk(); // consume separator ":=" or "::"
 		// first process property chain syntax (e.g. "property1.property2::value"):
 		if ($propertyname{0} == ' ') { // escape
@@ -722,7 +727,7 @@ class SMWQueryParser {
 						$comparator = SMW_CMP_EQ;
 						$printmodifier = '';
 						SMWQueryParser::prepareValue($value, $comparator, $printmodifier);
-						if ($value == '*') {
+						if ( ($value == '*') && $smwgSMWBetaCompatible ) {
 							if ($chunk == '|') {
 								$printlabel = $this->readChunk('\]\]');
 								if ($printlabel != ']]') {
@@ -778,17 +783,19 @@ class SMWQueryParser {
 	 * effective value string, or of "*" for print statements.
 	 */
 	static public function prepareValue(&$value, &$comparator, &$printmodifier) {
-		global $smwgQComparators;
+		global $smwgQComparators, $smwgSMWBetaCompatible; // support for old * printouts of beta
 		// get print modifier behind *
-		$list = preg_split('/^\*/',$value,2);
-		if (count($list) == 2) { //hit
-			$value = '*';
-			$printmodifier = $list[1];
-		} else {
-			$printmodifier = '';
-		}
-		if ($value == '*') { // printout statement
-			return;
+		if ($smwgSMWBetaCompatible) {
+			$list = preg_split('/^\*/',$value,2);
+			if (count($list) == 2) { //hit
+				$value = '*';
+				$printmodifier = $list[1];
+			} else {
+				$printmodifier = '';
+			}
+			if ($value == '*') { // printout statement
+				return;
+			}
 		}
 		$list = preg_split('/^(' . $smwgQComparators . ')/u',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
 		$comparator = SMW_CMP_EQ;
@@ -918,7 +925,8 @@ class SMWQueryParser {
 	 */
 	protected function readChunk($stoppattern = '', $consume=true, $trim=true) {
 		if ($stoppattern == '') {
-			$stoppattern = '\[\[|\]\]|::|:=|<q>|<\/q>|^' . $this->m_categoryprefix . '|\|\||\|';
+			$stoppattern = '\[\[|\]\]|::|:=|<q>|<\/q>|^' . $this->m_categoryprefix .
+			               '|^' . $this->m_conceptprefix . '|\|\||\|';
 		}
 		$chunks = preg_split('/[\s]*(' . $stoppattern . ')/u', $this->m_curstring, 2, PREG_SPLIT_DELIM_CAPTURE);
 		if (count($chunks) == 1) { // no matches anymore, strip spaces and finish
