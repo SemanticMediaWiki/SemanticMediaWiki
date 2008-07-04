@@ -315,6 +315,18 @@ class SMWSQLStore2QueryEngine {
 					$query->where = "$query->alias.smw_title$comp" . $this->m_dbs->addQuotes($value);
 				}
 			}
+		} elseif ($description instanceof SMWConceptDescription) { // fetch concept definition and insert it here
+			$dv = end($this->m_store->getSpecialValues($description->getConcept(), SMW_SP_CONCEPT_DESC));
+			$desctxt = ($dv!==false)?$dv->getXSDValue():false;
+			if ($desctxt == false) { // no description found, no condition
+				$qid = -1; ///TODO: announce an error here?
+			} else { // parse description and process it recursively
+				$qp = new SMWQueryParser();
+				// no defaultnamespaces here; if any, these are already in the concept
+				$desc = $qp->getQueryDescription($desctxt);
+				$qid = $this->compileQueries($desc);
+				$query = $this->m_queries[$qid];
+			}
 		} else { // (e.g. SMWThingDescription, SMWValueList is also treated elswhere)
 			$qid = -1; // no condition
 		}
