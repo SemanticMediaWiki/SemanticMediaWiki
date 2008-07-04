@@ -56,9 +56,9 @@ smwfInitNamespaces();
 # display for individual pages. Other options for this setting include:
 ##
 $smwgShowFactbox = SMW_FACTBOX_NONEMPTY;
-// $smwgShowFactbox = SMW_FACTBOX_SPECIAL # show only if special properties were set
+//$smwgShowFactbox = SMW_FACTBOX_SPECIAL # show only if special properties were set
 //$smwgShowFactbox = SMW_FACTBOX_HIDDEN; # hide always
-//$smwgShowFactbox = SMW_FACTBOX_SHOWN; # show always, buggy and not recommended
+//$smwgShowFactbox = SMW_FACTBOX_SHOWN;  # show always, buggy and not recommended
 ##
 
 ###
@@ -69,8 +69,8 @@ $smwgShowFactboxEdit = SMW_FACTBOX_NONEMPTY;
 
 ###
 # Should warnings be displayed in wikitexts right after the problematic
-# input? This currently affects only semantic annotations, not warnings
-# that are displayed by inline queries.
+# input? This affects only semantic annotations, not warnings that are 
+# displayed by inline queries or other features.
 ##
 $smwgInlineErrors = true;
 ##
@@ -79,17 +79,28 @@ $smwgInlineErrors = true;
 # Number results shown in the listings on pages of properties (attributes or
 # relations) and types.
 ##
-$smwgTypePagingLimit = 200; // same as for categories
-$smwgPropertyPagingLimit = 25; // use smaller value since property lists are much longer
+$smwgTypePagingLimit = 200;    // same number as for categories
+$smwgPropertyPagingLimit = 25; // use smaller value since property lists need more space
 ##
 
 ###
 # Settings for inline queries ({{#ask:...}}) and for semantic queries in general.
 # Especially meant to prevent overly high server-load by complex queries.
 ##
-$smwgQEnabled = true;         // (De)activates all query related features and interfaces
-$smwgQMaxSize = 12;           // Maximal number of conditions in queries, use format=debug for example sizes
-$smwgQMaxDepth = 4;           // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
+$smwgQEnabled = true;   // (De)activates all query related features and interfaces
+$smwgQMaxSize = 12;     // Maximal number of conditions in queries, use format=debug for example sizes
+$smwgQMaxDepth = 4;     // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
+$smwgQMaxLimit = 10000; // Max number of results ever retrieved, even when using special query pages.
+
+// The below setting defines which query features should be available by default.
+// Examples:
+// only cateory intersections: $smwgQFeatures = SMW_CATEGORY_QUERY | SMW_CONJUNCTION_QUERY;
+// only single concepts:       $smwgQFeatures = SMW_CONCEPT_QUERY;
+// anything but disjunctions:  $smwgQFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
+// The default is to support all basic features.
+$smwgQFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
+                 SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
+
 $smwgQSubcategoryDepth = 10;  // Restrict level of sub-category inclusion (steps within category hierarchy)
 $smwgQSubpropertyDepth = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)
                               // (Use 0 to disable hierarchy-inferencing in queries)
@@ -97,30 +108,20 @@ $smwgQEqualitySupport = SMW_EQ_SOME; // Evaluate #redirects as equality between 
                                      // performance-relevant restrictions depending on the storage engine
   //$smwgQEqualitySupport = SMW_EQ_FULL; // Evaluate #redirects as equality between page names in all cases
   //$smwgQEqualitySupport = SMW_EQ_NONE; // Never evaluate #redirects as equality between page names
-$smwgQSortingSupport  = true; // (De)activate sorting of results.
+$smwgQSortingSupport    = true; // (De)activate sorting of results.
 $smwgQDefaultNamespaces = NULL; // Which namespaces should be searched by default?
-                              // (value NULL switches off default restrictions on searching -- this is faster)
-                              // Example with namespaces: $smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE);
-$smwgQMaxLimit = 10000;       // Max number of results ever retrieved, even when using special query pages.
-// The next defines which query features should be available by default. 
-// Examples:
-// only cateory intersections: $smwgQFeatures = SMW_CATEGORY_QUERY | SMW_CONJUNCTION_QUERY
-// only single concepts:       $smwgQFeatures = SMW_CONCEPT_QUERY
-// The default is to support all basic features.
-$smwgQFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
-                 SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
+                                // (value NULL switches off default restrictions on searching -- this is faster)
+                                // Example with namespaces: $smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE);
 $smwgQComparators = '<|>|!'; // List of comparator characters supported by queries, separated by '|'
                              // Available entries: < (smaller than), < (greater than), ! (unequal to),
                              //                    ~ (pattern with '*' as wildcard, only for Type:String)
                              // If unsupported comparators are used, they are treated as part of the queried value
 
 ### Settings about printout of (especially inline) queries:
-$smwgQDefaultLimit = 50;    // Default number of rows returned in a query. Can be increased with limit=num in #ask
-$smwgQMaxInlineLimit = 500; // Max number of rows ever printed in a single inline query on a single page.
-$smwgQPrintoutLimit  = 100; // Max number of supported printouts (added columns in result table, ?-statements)
-
-### Formatting settings
-$smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none", "subject", "all"
+$smwgQDefaultLimit = 50;      // Default number of rows returned in a query. Can be increased with limit=num in #ask
+$smwgQMaxInlineLimit = 500;   // Max number of rows ever printed in a single inline query on a single page.
+$smwgQPrintoutLimit  = 100;   // Max number of supported printouts (added columns in result table, ?-statements)
+$smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none", "subject" (first column), "all".
 
 ### Default property type
 # Undefined properties (those without pages or whose pages have no "has type" statement) will
