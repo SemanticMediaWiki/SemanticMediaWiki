@@ -291,7 +291,7 @@ function smwfProcessShowParserFunction(&$parser) {
 		$smwgIQRunningNumber++;
 		$params = func_get_args();
 		array_shift( $params ); // we already know the $parser ...
-		return SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI,true,true);
+		return SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI,SMWQueryProcessor::INLINE_QUERY,true);
 	} else {
 		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 	}
@@ -314,7 +314,7 @@ function smwfProcessConceptParserFunction(&$parser) {
 	$params = func_get_args();
 	array_shift( $params ); // we already know the $parser ...
 	$concept_input = array_shift( $params ); // use only first parameter, ignore rest (may get meaning later)
-	$query = SMWQueryProcessor::createQuery($concept_input, array('limit' => -1));
+	$query = SMWQueryProcessor::createQuery($concept_input, array('limit' => -1), SMWQueryProcessor::CONCEPT_DESC);
 	$smwgConceptText = $query->getDescription()->getQueryString();
 
 	$qresult = smwfGetStore()->getQueryResult($query);

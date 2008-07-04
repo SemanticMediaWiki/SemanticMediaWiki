@@ -13,6 +13,13 @@
  */
 class SMWQueryProcessor {
 
+	// "query contexts" define restrictions during query parsing and
+	// are used to preconfigure query (e.g. special pages show no further
+	// results link):
+	const SPECIAL_PAGE = 0; // query for special page
+	const INLINE_QUERY = 1; // query for inline use
+	const CONCEPT_DESC = 2; // query for concept definition
+
 	/**
 	 * Array of enabled formats for formatting queries. Can be redefined in the settings to disallow certain
 	 * formats. The formats 'table' and 'list' are defaults that cannot be disabled. The format 'broadtable'
@@ -36,8 +43,8 @@ class SMWQueryProcessor {
 	/**
 	 * Parse a query string given in SMW's query language to create
 	 * an SMWQuery. Parameters are given as key-value-pairs in the
-	 * given array. The parameter $inline defines whether the query
-	 * is "inline" as opposed to being part of some special search page.
+	 * given array. The parameter $context defines in what context the
+	 * query is used, which affects ceretain general settings.
 	 * An object of type SMWQuery is returned.
 	 *
 	 * The format string is used to specify the output format if already
@@ -48,11 +55,16 @@ class SMWQueryProcessor {
 	 * printouts. Especially the case of rss, icalendar, etc. (no query) 
 	 * should be specified differently.
 	 */
-	static public function createQuery($querystring, $params, $inline = true, $format = '', $extraprintouts = array()) {
-		global $smwgQDefaultNamespaces;
+	static public function createQuery($querystring, $params, $context = SMWQueryProcessor::INLINE_QUERY, $format = '', $extraprintouts = array()) {
+		global $smwgQDefaultNamespaces, $smwgQFeatures, $smwgQConceptFeatures;
 
 		// parse query:
-		$qp = new SMWQueryParser();
+		if ($context == SMWQueryProcessor::CONCEPT_DESC) {
+			$queryfeatures = $smwgQConceptFeatures;
+		} else {
+			$queryfeatures = $smwgQFeatures;
+		}
+		$qp = new SMWQueryParser($queryfeatures);
 		$qp->setDefaultNamespaces($smwgQDefaultNamespaces);
 		$desc = $qp->getQueryDescription($querystring);
 
@@ -83,7 +95,7 @@ class SMWQueryProcessor {
 			$desc->prependPrintRequest(new SMWPrintRequest(SMWPrintRequest::PRINT_THIS, $mainlabel));
 		}
 
-		$query = new SMWQuery($desc, $inline);
+		$query = new SMWQuery($desc, ($context != SMWQueryProcessor::SPECIAL_PAGE));
 		$query->setQueryString($querystring);
 		$query->setExtraPrintouts($extraprintouts);
 		$query->addErrors($qp->getErrors()); // keep parsing errors for later output
@@ -213,66 +225,64 @@ class SMWQueryProcessor {
 	/**
 	 * Process and answer a query as given by an array of parameters as is 
 	 * typically produced by the #ask parser function. The result is formatted
-	 * according to the specified $outputformat. The third parameter $inline
-	 * defines whether the query is "inline" as opposed to being part of some
-	 * special search page.
+	 * according to the specified $outputformat. The parameter $context defines 
+	 * in what context the query is used, which affects ceretain general settings.
 	 *
 	 * The main task of this function is to preprocess the raw parameters to
 	 * obtain actual parameters, printout requests, and the query string for
 	 * further processing.
 	 */
-	static public function getResultFromFunctionParams($rawparams, $outputmode, $inline = true, $showmode = false) {
+	static public function getResultFromFunctionParams($rawparams, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY, $showmode = false) {
 		SMWQueryProcessor::processFunctionParams($rawparams,$querystring,$params,$printouts,$showmode);
-		return SMWQueryProcessor::getResultFromQueryString($querystring,$params,$printouts, SMW_OUTPUT_WIKI, $inline);
+		return SMWQueryProcessor::getResultFromQueryString($querystring,$params,$printouts, SMW_OUTPUT_WIKI, $context);
 	}
 
 	/**
 	 * Process and answer a query as given by a string and an array of parameters 
 	 * as is typically produced by the <ask> parser hook. The result is formatted
-	 * according to the specified $outputformat. The fourth parameter $inline
-	 * defines whether the query is "inline" as opposed to being part of some
-	 * special search page.
+	 * according to the specified $outputformat. The parameter $context defines in 
+	 * what context the query is used, which affects ceretain general settings.
 	 */
-	static public function getResultFromHookParams($querystring, $params, $outputmode, $inline = true) {
+	static public function getResultFromHookParams($querystring, $params, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY) {
 		global $wgTitle;
 		// Take care at least of some templates -- for better template support use #ask
 		$parser = new Parser();
 		$parserOptions = new ParserOptions();
 		$parser->startExternalParse( $wgTitle, $parserOptions, OT_HTML );
 		$querystring = $parser->transformMsg( $querystring, $parserOptions );
-		return SMWQueryProcessor::getResultFromQueryString($querystring, $params, array(), $outputmode, $inline);
+		return SMWQueryProcessor::getResultFromQueryString($querystring, $params, array(), $outputmode, $context);
 	}
 
 	/**
 	 * Process a query string in SMW's query language and return a formatted
 	 * result set as HTML text. A parameter array of key-value-pairs constrains
-	 * the query and determines the serialisation mode for results. The third
-	 * parameter $inline defines whether the query is "inline" as opposed to
-	 * being part of some special search page.
+	 * the query and determines the serialisation mode for results. The parameter
+	 * $context defines in what context the query is used, which affects ceretain
+	 * general settings.
 	 * @DEPRECATED use getResult
 	 */
-	static public function getResultHTML($querystring, $params, $inline = true) {
-		return SMWQueryProcessor::getResultFromQueryString($querystring, $params, array(), SMW_OUTPUT_HTML, $inline);
+	static public function getResultHTML($querystring, $params, $context = SMWQueryProcessor::INLINE_QUERY) {
+		return SMWQueryProcessor::getResultFromQueryString($querystring, $params, array(), SMW_OUTPUT_HTML, $context);
 	}
 
 	/**
 	 * Process a query string in SMW's query language and return a formatted
 	 * result set as specified by $outputmode. A parameter array of key-value-pairs 
-	 * constrains the query and determines the serialisation mode for results. 
-	 * The fourth parameter $inline defines whether the query is "inline" as opposed 
-	 * to being part of some special search page. Finally, $extraprintouts supplies
-	 * additional printout requests for the query results.
+	 * constrains the query and determines the serialisation mode for results. The 
+	 * parameter $context defines in what context the query is used, which affects 
+	 * certain general settings. Finally, $extraprintouts supplies additional 
+	 * printout requests for the query results.
 	 */
-	static public function getResultFromQueryString($querystring, $params, $extraprintouts, $outputmode, $inline = true) {
+	static public function getResultFromQueryString($querystring, $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY) {
 		wfProfileIn('SMWQueryProcessor::getResultFromQueryString (SMW)');
 		$format = SMWQueryProcessor::getResultFormat($params);
-		$query  = SMWQueryProcessor::createQuery($querystring, $params, $inline, $format, $extraprintouts);
-		$result = SMWQueryProcessor::getResultFromQuery($query, $params, $extraprintouts, $outputmode, $inline, $format);
+		$query  = SMWQueryProcessor::createQuery($querystring, $params, $context, $format, $extraprintouts);
+		$result = SMWQueryProcessor::getResultFromQuery($query, $params, $extraprintouts, $outputmode, $context, $format);
 		wfProfileOut('SMWQueryProcessor::getResultFromQueryString (SMW)');
 		return $result;
 	}
 
-	static public function getResultFromQuery($query, $params, $extraprintouts, $outputmode, $inline = true, $format = '') {
+	static public function getResultFromQuery($query, $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY, $format = '') {
 		wfProfileIn('SMWQueryProcessor::getResultFromQuery (SMW)');
 		if ($format == '') {
 			$format = SMWQueryProcessor::getResultFormat($params);
@@ -280,7 +290,7 @@ class SMWQueryProcessor {
 		$res = smwfGetStore()->getQueryResult($query);
 		if ( ($query->querymode == SMWQuery::MODE_INSTANCES) || ($query->querymode == SMWQuery::MODE_NONE) ) {
 			wfProfileIn('SMWQueryProcessor::getResultFromQuery-printout (SMW)');
-			$printer = SMWQueryProcessor::getResultPrinter($format, $inline, $res);
+			$printer = SMWQueryProcessor::getResultPrinter($format, $context, $res);
 			$result = $printer->getResult($res, $params, $outputmode);
 			wfProfileOut('SMWQueryProcessor::getResultFromQuery-printout (SMW)');
 			wfProfileOut('SMWQueryProcessor::getResultFromQuery (SMW)');
@@ -308,7 +318,7 @@ class SMWQueryProcessor {
 	/**
 	 * Find suitable SMWResultPrinter for the given format.
 	 */
-	static public function getResultPrinter($format,$inline,$res) {
+	static public function getResultPrinter($format,$context,$res) {
 		if ( 'auto' == $format ) {
 			if ( ($res->getColumnCount()>1) && ($res->getColumnCount()>0) )
 				$format = 'table';
@@ -318,7 +328,7 @@ class SMWQueryProcessor {
 			$formatclass = SMWQueryProcessor::$formats[$format];
 		else
 			$formatclass = "SMWListResultPrinter";
-		return new $formatclass($format,$inline);
+		return new $formatclass($format, ($context != SMWQueryProcessor::SPECIAL_PAGE));
 	}
 
 }
@@ -339,12 +349,14 @@ class SMWQueryParser {
 	
 	protected $m_categoryprefix; // cache label of category namespace . ':'
 	protected $m_conceptprefix; // cache label of concept namespace . ':'
+	protected $m_queryfeatures; // query features to be supported, format similar to $smwgQFeatures
 	
-	public function SMWQueryParser() {
-		global $wgContLang;
+	public function SMWQueryParser($queryfeatures = false) {
+		global $wgContLang, $smwgQFeatures;
 		$this->m_categoryprefix = $wgContLang->getNsText(NS_CATEGORY) . ':';
 		$this->m_conceptprefix = $wgContLang->getNsText(SMW_NS_CONCEPT) . ':';
 		$this->m_defaultns = NULL;
+		$this->m_queryfeatures = $queryfeatures===false?$smwgQFeatures:$queryfeatures;
 	}
 
 	/**
@@ -980,19 +992,18 @@ class SMWQueryParser {
 	 * also be changed (if it was non-NULL).
 	 */
 	protected function addDescription($curdesc, $newdesc, $conjunction = true) {
-		global $smwgQFeatures;
 		$notallowedmessage = 'smw_noqueryfeature';
 		if ($newdesc instanceof SMWSomeProperty) {
-			$allowed = $smwgQFeatures & SMW_PROPERTY_QUERY;
+			$allowed = $this->m_queryfeatures & SMW_PROPERTY_QUERY;
 		} elseif ($newdesc instanceof SMWClassDescription) {
-			$allowed = $smwgQFeatures & SMW_CATEGORY_QUERY;
+			$allowed = $this->m_queryfeatures & SMW_CATEGORY_QUERY;
 		} elseif ($newdesc instanceof SMWConceptDescription) {
-			$allowed = $smwgQFeatures & SMW_CONCEPT_QUERY;
+			$allowed = $this->m_queryfeatures & SMW_CONCEPT_QUERY;
 		} elseif ($newdesc instanceof SMWConjunction) {
-			$allowed = $smwgQFeatures & SMW_CONJUNCTION_QUERY;
+			$allowed = $this->m_queryfeatures & SMW_CONJUNCTION_QUERY;
 			$notallowedmessage = 'smw_noconjunctions';
 		} elseif ($newdesc instanceof SMWDisjunction) {
-			$allowed = $smwgQFeatures & SMW_DISJUNCTION_QUERY;
+			$allowed = $this->m_queryfeatures & SMW_DISJUNCTION_QUERY;
 			$notallowedmessage = 'smw_nodisjunctions';
 		} else {
 			$allowed = true;
@@ -1011,14 +1022,14 @@ class SMWQueryParser {
 				$curdesc->addDescription($newdesc);
 				return $curdesc;
 			} elseif ($conjunction) { // make new conjunction
-				if ($smwgQFeatures & SMW_CONJUNCTION_QUERY) {
+				if ($this->m_queryfeatures & SMW_CONJUNCTION_QUERY) {
 					return new SMWConjunction(array($curdesc,$newdesc));
 				} else {
 					$this->m_errors[] = wfMsgForContent('smw_noconjunctions', str_replace('[', '&#x005B;', $newdesc->getQueryString()));
 					return $curdesc;
 				}
 			} else { // make new disjunction
-				if ($smwgQFeatures & SMW_DISJUNCTION_QUERY) {
+				if ($this->m_queryfeatures & SMW_DISJUNCTION_QUERY) {
 					return new SMWDisjunction(array($curdesc,$newdesc));
 				} else {
 					$this->m_errors[] = wfMsgForContent('smw_nodisjunctions', str_replace('[', '&#x005B;', $newdesc->getQueryString()));

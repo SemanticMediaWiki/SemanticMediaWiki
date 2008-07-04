@@ -100,6 +100,10 @@ $smwgQMaxLimit = 10000; // Max number of results ever retrieved, even when using
 // The default is to support all basic features.
 $smwgQFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
                  SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
+// Same as $smwgQFeatures but for concept pages, may be used for allowing complex queries only in "Concept:"
+// (note: using concepts in concepts is currently not supported)
+$smwgQConceptFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_NAMESPACE_QUERY |
+                        SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
 
 $smwgQSubcategoryDepth = 10;  // Restrict level of sub-category inclusion (steps within category hierarchy)
 $smwgQSubpropertyDepth = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)

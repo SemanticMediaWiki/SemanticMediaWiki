@@ -158,7 +158,7 @@ class SMWAskPage extends SpecialPage {
 			$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
 			$queryobj->querymode = SMWQuery::MODE_INSTANCES; ///TODO: Somewhat hacky (just as the query mode computation in SMWQueryProcessor::createQuery!)
 			$res = smwfGetStore()->getQueryResult($queryobj);
-			$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'],false,$res);
+			$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE, $res);
 			$result_mime = $printer->getMimeType($res);
 			if ($result_mime == false) {
 				$navigation = $this->getNavigationBar($res, $urltail);
