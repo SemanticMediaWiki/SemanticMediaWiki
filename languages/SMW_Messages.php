@@ -98,6 +98,8 @@ Results might not be as expected.',
 	'smw_badtitle'          => 'Sorry, but “$1” is no valid page title.',
 	'smw_badqueryatom'      => 'Some part “[&#x005B;&hellip;]]” of the query was not understood.',
 	'smw_propvalueproblem'  => 'The value of property “$1” was not understood.',
+	'smw_noqueryfeature'    => 'Some query feature was not supported in this wiki and part of the query was dropped ($1).',
+	'smw_noconjunctions'    => 'Conjunctions in queries are not supported in this wiki and part of the query was dropped ($1).',
 	'smw_nodisjunctions'    => 'Disjunctions in queries are not supported in this wiki and part of the query was dropped ($1).',
 	'smw_querytoolarge'     => 'The following query conditions could not be considered due to the wikis restrictions in query size or depth: $1.',
 	'smw_devel_warning'     => 'This feature is currently under development, and might not be fully functional.

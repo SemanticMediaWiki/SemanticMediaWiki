@@ -38,6 +38,14 @@ define('SMW_EQ_NONE', 0);
 define('SMW_EQ_SOME', 1);
 define('SMW_EQ_FULL', 2);
 
+// flags to classify available query descriptions, used to enable/disable certain features
+define('SMW_PROPERTY_QUERY', 1);     // [[some property::...]]
+define('SMW_CATEGORY_QUERY', 2);     // [[Category:...]]
+define('SMW_CONCEPT_QUERY', 4);      // [[Concept:...]]
+define('SMW_NAMESPACE_QUERY', 8);    // [[User:+]] etc.
+define('SMW_CONJUNCTION_QUERY', 16); // any conjunctions
+define('SMW_DISJUNCTION_QUERY', 32); // any disjunctions (OR, ||)
+
 // constants for identifying javascripts as used in smwfRequireHeadItem
 define('SMW_HEADER_TIMELINE', 1);
 define('SMW_HEADER_TOOLTIP', 2);

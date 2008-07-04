@@ -93,7 +93,8 @@ $smwgQMaxDepth = 4;           // Maximal property depth of queries, e.g. [[rel::
 $smwgQSubcategoryDepth = 10;  // Restrict level of sub-category inclusion (steps within category hierarchy)
 $smwgQSubpropertyDepth = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)
                               // (Use 0 to disable hierarchy-inferencing in queries)
-$smwgQEqualitySupport = SMW_EQ_SOME; // Evaluate #redirects as equality between page names in simple cases
+$smwgQEqualitySupport = SMW_EQ_SOME; // Evaluate #redirects as equality between page names, with possible
+                                     // performance-relevant restrictions depending on the storage engine
   //$smwgQEqualitySupport = SMW_EQ_FULL; // Evaluate #redirects as equality between page names in all cases
   //$smwgQEqualitySupport = SMW_EQ_NONE; // Never evaluate #redirects as equality between page names
 $smwgQSortingSupport  = true; // (De)activate sorting of results.
@@ -101,18 +102,22 @@ $smwgQDefaultNamespaces = NULL; // Which namespaces should be searched by defaul
                               // (value NULL switches off default restrictions on searching -- this is faster)
                               // Example with namespaces: $smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE);
 $smwgQMaxLimit = 10000;       // Max number of results ever retrieved, even when using special query pages.
-$smwgQDisjunctionSupport = true; // Support disjunctions in queries ("||" and "OR")?
-                             // (Note: things like namespace defaults and property/category hierarchies
-                             //        can also cause disjunctions!)
+// The next defines which query features should be available by default. 
+// Examples:
+// only cateory intersections: $smwgQFeatures = SMW_CATEGORY_QUERY | SMW_CONJUNCTION_QUERY
+// only single concepts:       $smwgQFeatures = SMW_CONCEPT_QUERY
+// The default is to support all basic features.
+$smwgQFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
+                 SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
 $smwgQComparators = '<|>|!'; // List of comparator characters supported by queries, separated by '|'
                              // Available entries: < (smaller than), < (greater than), ! (unequal to),
                              //                    ~ (pattern with '*' as wildcard, only for Type:String)
                              // If unsupported comparators are used, they are treated as part of the queried value
 
 ### Settings about printout of (especially inline) queries:
-$smwgQDefaultLimit = 50;    // Default number of rows returned in a query. Can be increased with <ask limit="num">...
+$smwgQDefaultLimit = 50;    // Default number of rows returned in a query. Can be increased with limit=num in #ask
 $smwgQMaxInlineLimit = 500; // Max number of rows ever printed in a single inline query on a single page.
-$smwgQPrintoutLimit = 100;   // Max number of supported printouts (added columns in result table, ?-statements)
+$smwgQPrintoutLimit  = 100; // Max number of supported printouts (added columns in result table, ?-statements)
 
 ### Formatting settings
 $smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none", "subject", "all"

@@ -160,6 +160,7 @@ class SMWPrintRequest {
  * Abstract base class for all descriptions.
  */
 abstract class SMWDescription {
+
 	protected $m_printreqs = array();
 	// add code for managing printouts, including iteration
 

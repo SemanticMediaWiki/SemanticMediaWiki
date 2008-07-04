@@ -980,6 +980,27 @@ class SMWQueryParser {
 	 * also be changed (if it was non-NULL).
 	 */
 	protected function addDescription($curdesc, $newdesc, $conjunction = true) {
+		global $smwgQFeatures;
+		$notallowedmessage = 'smw_noqueryfeature';
+		if ($newdesc instanceof SMWSomeProperty) {
+			$allowed = $smwgQFeatures & SMW_PROPERTY_QUERY;
+		} elseif ($newdesc instanceof SMWClassDescription) {
+			$allowed = $smwgQFeatures & SMW_CATEGORY_QUERY;
+		} elseif ($newdesc instanceof SMWConceptDescription) {
+			$allowed = $smwgQFeatures & SMW_CONCEPT_QUERY;
+		} elseif ($newdesc instanceof SMWConjunction) {
+			$allowed = $smwgQFeatures & SMW_CONJUNCTION_QUERY;
+			$notallowedmessage = 'smw_noconjunctions';
+		} elseif ($newdesc instanceof SMWDisjunction) {
+			$allowed = $smwgQFeatures & SMW_DISJUNCTION_QUERY;
+			$notallowedmessage = 'smw_nodisjunctions';
+		} else {
+			$allowed = true;
+		}
+		if (!$allowed) {
+			$this->m_errors[] = wfMsgForContent($notallowedmessage, str_replace('[', '&#x005B;', $newdesc->getQueryString()));
+			return $curdesc;
+		}
 		if ($newdesc === NULL) {
 			return $curdesc;
 		} elseif ($curdesc === NULL) {
@@ -990,13 +1011,17 @@ class SMWQueryParser {
 				$curdesc->addDescription($newdesc);
 				return $curdesc;
 			} elseif ($conjunction) { // make new conjunction
-				return new SMWConjunction(array($curdesc,$newdesc));
+				if ($smwgQFeatures & SMW_CONJUNCTION_QUERY) {
+					return new SMWConjunction(array($curdesc,$newdesc));
+				} else {
+					$this->m_errors[] = wfMsgForContent('smw_noconjunctions', str_replace('[', '&#x005B;', $newdesc->getQueryString()));
+					return $curdesc;
+				}
 			} else { // make new disjunction
-				global $smwgQDisjunctionSupport;
-				if ($smwgQDisjunctionSupport) {
+				if ($smwgQFeatures & SMW_DISJUNCTION_QUERY) {
 					return new SMWDisjunction(array($curdesc,$newdesc));
 				} else {
-					$this->m_errors[] = wfMsgForContent('smw_nodisjunctions', $newdesc->getQueryString());
+					$this->m_errors[] = wfMsgForContent('smw_nodisjunctions', str_replace('[', '&#x005B;', $newdesc->getQueryString()));
 					return $curdesc;
 				}
 			}
