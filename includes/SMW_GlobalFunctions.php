@@ -3,7 +3,7 @@
  * Global functions and constants for Semantic MediaWiki.
  */
 
-define('SMW_VERSION','1.2g-SVN');
+define('SMW_VERSION','1.2h-SVN');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -458,12 +458,14 @@ function smwfAddHTMLHeadersOutput(&$out) {
 		if (!is_array($wgExtraNamespaces)) { $wgExtraNamespaces=array(); }
 		$namespaces = $smwgContLang->getNamespaces();
 		$namespacealiases = $smwgContLang->getNamespaceAliases();
-		if (!$smwgSMWBetaCompatible) { // remove obsolete namespaces
+		if (!$smwgSMWBetaCompatible) { // redirect obsolete namespaces to new ones
+			$namespacealiases[$namespaces[SMW_NS_RELATION]] = SMW_NS_PROPERTY;
+			$namespacealiases[$namespaces[SMW_NS_RELATION_TALK]] = SMW_NS_PROPERTY_TALK;
 			unset($namespaces[SMW_NS_RELATION]);
 			unset($namespaces[SMW_NS_RELATION_TALK]);
 			foreach ($namespacealiases as $alias => $namespace) { // without this, links using aliases break
 				if ( ($namespace == SMW_NS_RELATION) || ($namespace == SMW_NS_RELATION_TALK) ) {
-					unset($namespacealiases[$alias]);
+					$namespacealiases[$alias] = $namespace+2;
 				}
 			}
 		}
