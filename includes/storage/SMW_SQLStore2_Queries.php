@@ -317,7 +317,7 @@ class SMWSQLStore2QueryEngine {
 			}
 		} elseif ($description instanceof SMWConceptDescription) { // fetch concept definition and insert it here
 			$dv = end($this->m_store->getSpecialValues($description->getConcept(), SMW_SP_CONCEPT_DESC));
-			$desctxt = ($dv!==false)?$dv->getXSDValue():false;
+			$desctxt = ($dv!==false)?$dv->getWikiValue():false;
 			if ($desctxt == false) { // no description found, concept does not exist
 				// keep the above query object, it yields an empty result
 				///TODO: announce an error here? (maybe not, since the query processor can check for 

@@ -58,7 +58,7 @@ class SMWConceptValue extends SMWDataValue {
 	}
 
 	public function getWikiValue(){
-		return $this->m_concept;
+		return str_replace(array('&lt;','&gt;','&amp;'),array('<','>','&'), $this->m_concept);
 	}
 
 	public function getExportData() {
