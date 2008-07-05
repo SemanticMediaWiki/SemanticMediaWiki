@@ -35,7 +35,7 @@ class SMWAskPage extends SpecialPage {
 			return;
 		}
 		if (!$smwgQEnabled) {
-			$wgOut->addHTML('<br />' . wfMsgForContent('smw_iq_disabled'));
+			$wgOut->addHTML('<br />' . wfMsg('smw_iq_disabled'));
 		} else {
 			$this->extractQueryParameters($p);
 			$this->makeHTMLResult();
@@ -161,10 +161,14 @@ class SMWAskPage extends SpecialPage {
 			$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE, $res);
 			$result_mime = $printer->getMimeType($res);
 			if ($result_mime == false) {
-				$navigation = $this->getNavigationBar($res, $urltail);
-				$result = '<div style="text-align: center;">' . $navigation;
-				$result .= '</div>' . $printer->getResult($res, $this->m_params,SMW_OUTPUT_HTML);
-				$result .= '<div style="text-align: center;">' . $navigation . '</div>';
+				if ($res->getCount() > 0) {
+					$navigation = $this->getNavigationBar($res, $urltail);
+					$result = '<div style="text-align: center;">' . $navigation;
+					$result .= '</div>' . $printer->getResult($res, $this->m_params,SMW_OUTPUT_HTML);
+					$result .= '<div style="text-align: center;">' . $navigation . '</div>';
+				} else {
+					$result = '<div style="text-align: center;">' . wfMsg('smw_result_noresults') . '</div>';
+				}
 			} else { // make a stand-alone file
 				$result = $printer->getResult($res, $this->m_params,SMW_OUTPUT_FILE);
 				$result_name = $printer->getFileName($res); // only fetch that after initialising the parameters
@@ -355,7 +359,7 @@ class SMWAskPage extends SpecialPage {
 			$html .= '<br />' . $result;
 			$html .= '<br />' . $navigation . '</div>';
 		} elseif (!$smwgQEnabled) {
-			$html .= '<br />' . wfMsgForContent('smw_iq_disabled');
+			$html .= '<br />' . wfMsg('smw_iq_disabled');
 		}
 		$wgOut->addHTML($html);
 	}
