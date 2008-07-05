@@ -321,7 +321,6 @@ function smwfProcessConceptParserFunction(&$parser) {
 	$params = func_get_args();
 	array_shift( $params ); // we already know the $parser ...
 	$concept_input = array_shift( $params ); // use first parameter as concept (query) string
-// 	$query = SMWQueryProcessor::createQuery($concept_input, array('limit' => -1), SMWQueryProcessor::CONCEPT_DESC);
 	$query = SMWQueryProcessor::createQuery($concept_input, array('limit' => 20, 'format' => 'list'), SMWQueryProcessor::CONCEPT_DESC);
 	$concept_text = $query->getDescription()->getQueryString();
 	$concept_docu = array_shift( $params ); // second parameter, if any, might be a description

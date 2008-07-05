@@ -20,7 +20,6 @@ $messages['en'] = array(
 	'smw_isaliastype'       => 'This type is an alias for the datatype “$1”.',
 	'smw_isnotype'          => 'This type “$1” is not a standard datatype in the wiki, and has not been given a user definition either.',
 	'smw_concept_description' => 'Description of concept "$1"', // used in the namespace "Concept:"
-	'smw_concept_preview'     => '[show results]',
 	'smw_no_concept_namespace'=> 'Concepts can only be defined on pages in the Concept: namespace.',
 	'smw_multiple_concepts'   => 'Each concept page can have only one concept definition.',
 
@@ -597,7 +596,6 @@ $messages['de'] = array(
 	'smw_isaliastype'             => 'Dieser Datentyp ist ein Alias für den Typ “$1”.',
 	'smw_isnotype'                => 'Der Datentyp “$1” ist kein Standardtyp in diesem Wiki, und hat auch keine ausreichende Definition auf seiner Seite.',
 	'smw_concept_description' => 'Beschreibung des Konzepts „$1“', // used in the namespace "Concept:"
-	'smw_concept_preview'     => '[Ergebnisse anzeigen]',
 	'smw_baduri'                  => 'URIs der Form „$1“ sind nicht zulässig.',
 	'smw_icalendar_link'          => 'iCalendar',
 	'smw_iq_disabled'             => 'Semantische Anfragen sind in diesem Wiki zur Zeit nicht möglich.',
