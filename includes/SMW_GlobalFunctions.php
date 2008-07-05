@@ -246,11 +246,16 @@ function smwfSetupExtension() {
  * in general, which explains the two-level registration.
  */
 function smwfRegisterInlineQueries( &$parser, &$text, &$stripstate ) {
-	$parser->setHook( 'ask', 'smwfProcessInlineQuery' );
-	$parser->setFunctionHook( 'ask', 'smwfProcessInlineQueryParserFunction' );
-	$parser->setFunctionHook( 'show', 'smwfProcessShowParserFunction' );
-	$parser->setFunctionHook( 'info', 'smwfProcessInfoParserFunction' );
-	$parser->setFunctionHook( 'concept', 'smwfProcessConceptParserFunction' );
+	SMWFactbox::initStorage($parser->getTitle());
+
+	$oldhook = $parser->setFunctionHook( 'ask', 'smwfProcessInlineQueryParserFunction' );
+	if ($oldhook != 'smwfProcessInlineQueryParserFunction') {
+		$parser->setHook( 'ask', 'smwfProcessInlineQuery' );
+		$parser->setFunctionHook( 'ask', 'smwfProcessInlineQueryParserFunction' );
+		$parser->setFunctionHook( 'show', 'smwfProcessShowParserFunction' );
+		$parser->setFunctionHook( 'info', 'smwfProcessInfoParserFunction' );
+		$parser->setFunctionHook( 'concept', 'smwfProcessConceptParserFunction' );
+	}
 	return true; // always return true, in order not to stop MW's hook processing!
 }
 
@@ -301,7 +306,7 @@ function smwfProcessShowParserFunction(&$parser) {
  * The {{#concept }} parser function processing part.
  */
 function smwfProcessConceptParserFunction(&$parser) {
-	global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $smwgPreviousConcept, $smwgConceptText;
+	global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $smwgPreviousConcept;
 	// The global $smwgConceptText is used to pass information to the MW hooks for storing it,
 	// $smwgPreviousConcept is used to detect if we already have a concept defined for this page.
 	$title = $parser->getTitle();
@@ -311,21 +316,25 @@ function smwfProcessConceptParserFunction(&$parser) {
 		return smwfEncodeMessages(array(wfMsgForContent('smw_multiple_concepts')));
 	}
 	$smwgPreviousConcept = $title->getText();
+
+	// process input:
 	$params = func_get_args();
 	array_shift( $params ); // we already know the $parser ...
 	$concept_input = array_shift( $params ); // use only first parameter, ignore rest (may get meaning later)
 	$query = SMWQueryProcessor::createQuery($concept_input, array('limit' => -1), SMWQueryProcessor::CONCEPT_DESC);
-	$smwgConceptText = $query->getDescription()->getQueryString();
+	$conceptText = $query->getDescription()->getQueryString();
+	$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC, $conceptText);
+	SMWFactbox::$semdata->addSpecialValue(SMW_SP_CONCEPT_DESC,$dv);
 
+	// display concept box:
 	$qresult = smwfGetStore()->getQueryResult($query);
 	$printer = new SMWListResultPrinter('list',true);
 	$resultlink = $printer->getResult($qresult, array('searchlabel' => wfMsgForContent('smw_concept_preview')), SMW_OUTPUT_WIKI);
-
 	smwfRequireHeadItem(SMW_HEADER_STYLE);
 	$result = '<div class="smwfact"><span class="smwfactboxhead">' . wfMsgForContent('smw_concept_description',$title->getText()) .
 	          //(count($query->getErrors())>0?' ' . smwfEncodeMessages($query->getErrors()):'') . // errors are shown by $resultlink anyway
 	          '</span> &nbsp;&nbsp;&nbsp;' . $resultlink . '<br/>' .
-	          '<pre>' . str_replace('[', '&#x005B;', $smwgConceptText) . '</pre></div>';
+	          '<pre>' . str_replace('[', '&#x005B;', $conceptText) . '</pre></div>';
 	return $result;
 }
 
@@ -387,10 +396,9 @@ function smwfRequireHeadItem($id, $item = '') {
  * output. This is our preferred method of working off the required scripts, since it 
  * exploits parser caching.
  * (2) Fetch category information from parser output.
- * (3) Store concept descriptions for concept pages.
  */
 function smwfParserAfterTidy(&$parser, &$text) {
-	global $smwgHeadItems, $smwgStoreActive, $smwgConceptText;
+	global $smwgHeadItems, $smwgStoreActive;
 	// make HTML header
 	if (!$smwgStoreActive) return true; // avoid doing this in SMW-generated sub-parsers
 	foreach ($smwgHeadItems as $key => $item) {
@@ -406,12 +414,6 @@ function smwfParserAfterTidy(&$parser, &$text) {
 		if (SMWFactbox::$semdata->getSubject()->getNamespace() == NS_CATEGORY) {
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_SUBCLASS_OF,$dv);
 		}
-	}
-	// store concept descriptions
-	if (isset($smwgConceptText) && ($smwgConceptText != '') ) { // no check for Concept namespace here, was done earlier
-		$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC, $smwgConceptText);
-		SMWFactbox::$semdata->addSpecialValue(SMW_SP_CONCEPT_DESC,$dv);
-		$smwgConceptText = '';
 	}
 	return true;
 }

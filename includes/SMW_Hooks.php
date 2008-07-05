@@ -14,8 +14,6 @@
 */
 function smwfParserHook(&$parser, &$text) {
 	global $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgStoreActive;
-	// Init global storage for semantic data of this article.
-	SMWFactbox::initStorage($parser->getTitle());
 
 	// store the results if enabled (we have to parse them in any case, in order to
 	// clean the wiki source for further processing)

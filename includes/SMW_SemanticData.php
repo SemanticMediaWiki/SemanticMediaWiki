@@ -18,6 +18,7 @@ class SMWSemanticData {
 	protected $attribtitles = array(); // text keys and title objects
 	protected $hasprops = false; // any normal properties yet?
 	protected $hasspecs = false; // any special properties yet?
+	protected $hasvisiblespecs = false; // any displayable special properties yet? (some are internal only withot a display name)
 	protected $m_noduplicates; // avoid repeated values? 
 	/// NOTE: not needing (e.g. when loading from store) can safe much time, 
 	/// since objects can remain stubs until someone really acesses their value
@@ -74,6 +75,14 @@ class SMWSemanticData {
 	}
 
 	/**
+	 * Return true if there are any special properties that can
+	 * be displayed.
+	 */
+	public function hasVisibleSpecialProperties() {
+		return $this->hasvisiblespecs;
+	}
+
+	/**
 	 * Store a value for an property identified by its title object. Duplicate 
 	 * value entries are ignored.
 	 */
@@ -119,6 +128,8 @@ class SMWSemanticData {
 		$property = $smwgContLang->findSpecialPropertyLabel($special);
 		if ($property === false) {
 			$property = '_' . $special;
+		} else {
+			$this->hasvisiblespecs = true;
 		}
 		if (!array_key_exists($property, $this->attribvals)) {
 			$this->attribvals[$property] = array();
@@ -147,6 +158,7 @@ class SMWSemanticData {
 		$this->attribtitles = array();
 		$this->hasprops = false;
 		$this->hasspecs = false;
+		$this->hasvisiblespecs = false;
 	}
 
 }

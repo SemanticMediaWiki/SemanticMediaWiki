@@ -19,29 +19,40 @@ class SMWFactbox {
 	 * The actual container for the semantic annotations. Public, since
 	 * it is ref-passed to others for further processing.
 	 */
-	static $semdata;
+	static $semdata = NULL;
 	/**
 	 * True if the respective article is newly created. This affects some
 	 * storage operations.
 	 */
 	static protected $m_new = false;
+	/**
+	 * True if Factbox was printed, our best attempt at reliably preventing multiple
+	 * Factboxes to appear on one page.
+	 */
+	static protected $m_printed = false;
 
 	/**
 	 * Initialisation method. Must be called before anything else happens.
 	 */
 	static function initStorage($title) {
-		SMWFactbox::$semdata = new SMWSemanticData($title); // reset data 
-		///TODO: is this (global) reset safe when cloned subparses happen? May kill unsafed data.
+		// reset only if title is new
+		if ( (SMWFactbox::$semdata === NULL) ||
+		     (SMWFactbox::$semdata->getSubject()->getText() != $title->getText()) || 
+		     (SMWFactbox::$semdata->getSubject()->getNamespace() != $title->getNamespace()) ) {
+			SMWFactbox::$semdata = new SMWSemanticData($title); // reset data
+			SMWFactbox::$m_printed = false;
+		}
 		//SMWFactbox::$m_new   = false; // do not reset, keep (order of hooks can be strange ...)
 	}
 
 	/**
-	 * Clear all stored data
+	 * Clear all stored data.
 	 */
 	static function clearStorage() {
 		global $smwgStoreActive;
 		if ($smwgStoreActive) {
 			SMWFactbox::$semdata->clear();
+			SMWFactbox::$m_printed = false;
 		}
 	}
 
@@ -200,7 +211,9 @@ class SMWFactbox {
 	static function printFactbox(&$text) {
 		global $wgContLang, $wgServer, $smwgShowFactbox, $smwgShowFactboxEdit, $smwgStoreActive, $smwgIP, $wgRequest;
 		if (!$smwgStoreActive) return;
+		if (SMWFactbox::$m_printed) return;
 		wfProfileIn("SMWFactbox::printFactbox (SMW)");
+		SMWFactbox::$m_printed = true;
 
 		// Global settings:
 		if ( $wgRequest->getCheck('wpPreview') ) {
@@ -223,13 +236,13 @@ class SMWFactbox {
 			wfProfileOut("SMWFactbox::printFactbox (SMW)");
 			return;
 		case SMW_FACTBOX_SPECIAL: // only when there are special properties
-			if ( !SMWFactbox::$semdata->hasSpecialProperties() ) {
+			if ( !SMWFactbox::$semdata->hasVisibleSpecialProperties() ) {
 				wfProfileOut("SMWFactbox::printFactbox (SMW)");
 				return;
 			}
 			break;
 		case SMW_FACTBOX_NONEMPTY: // only when non-empty
-			if ( (!SMWFactbox::$semdata->hasProperties()) && (!SMWFactbox::$semdata->hasSpecialProperties()) ) {
+			if ( (!SMWFactbox::$semdata->hasProperties()) && (!SMWFactbox::$semdata->hasVisibleSpecialProperties()) ) {
 				wfProfileOut("SMWFactbox::printFactbox (SMW)");
 				return;
 			}
