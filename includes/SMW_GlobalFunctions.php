@@ -321,7 +321,8 @@ function smwfProcessConceptParserFunction(&$parser) {
 	$params = func_get_args();
 	array_shift( $params ); // we already know the $parser ...
 	$concept_input = array_shift( $params ); // use first parameter as concept (query) string
-	$query = SMWQueryProcessor::createQuery($concept_input, array('limit' => -1), SMWQueryProcessor::CONCEPT_DESC);
+// 	$query = SMWQueryProcessor::createQuery($concept_input, array('limit' => -1), SMWQueryProcessor::CONCEPT_DESC);
+	$query = SMWQueryProcessor::createQuery($concept_input, array('limit' => 20, 'format' => 'list'), SMWQueryProcessor::CONCEPT_DESC);
 	$concept_text = $query->getDescription()->getQueryString();
 	$concept_docu = array_shift( $params ); // second parameter, if any, might be a description
 
@@ -331,14 +332,16 @@ function smwfProcessConceptParserFunction(&$parser) {
 
 	// display concept box:
 	$qresult = smwfGetStore()->getQueryResult($query);
-	$printer = new SMWListResultPrinter('list',true);
-	$resultlink = $printer->getResult($qresult, array('searchlabel' => wfMsgForContent('smw_concept_preview')), SMW_OUTPUT_WIKI);
+	$printer = SMWQueryProcessor::getResultPrinter('list', SMWQueryProcessor::CONCEPT_DESC, $qresult);
+	$printer->setShowErrors(false);
+	$resultlink = $printer->getResult($qresult, array('sep' => ',_'), SMW_OUTPUT_WIKI);
 	smwfRequireHeadItem(SMW_HEADER_STYLE);
 	$result = '<div class="smwfact"><span class="smwfactboxhead">' . wfMsgForContent('smw_concept_description',$title->getText()) .
-	          //(count($query->getErrors())>0?' ' . smwfEncodeMessages($query->getErrors()):'') . // errors are shown by $resultlink anyway
-	          '</span> &nbsp;&nbsp;&nbsp;' . $resultlink . '<br />' . 
+	          (count($query->getErrors())>0?' ' . smwfEncodeMessages($query->getErrors()):'') .
+	          '</span><br />' .
 	          ($concept_docu?"<p>$concept_docu</p>":'') .
-	          '<pre>' . str_replace('[', '&#x005B;', $concept_text) . '</pre></div>';
+	          '<pre>' . str_replace('[', '&#x005B;', $concept_text) . "</pre>\n" .
+	          $resultlink . '</div>';
 	return $result;
 }
 
