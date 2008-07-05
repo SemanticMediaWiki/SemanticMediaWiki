@@ -73,8 +73,8 @@ class SMWStringValue extends SMWDataValue {
 		// Create links to mapping services based on a wiki-editable message. The parameters 
 		// available to the message are:
 		// $1: urlencoded string
-		if ($this->m_typeid == '_str') {
-			return false; // no services for Type:Text
+		if ($this->m_typeid != '_str') {
+			return false; // no services for Type:Text and Type:Code
 		} else {
 			return array(rawurlencode($this->m_value));
 		}
