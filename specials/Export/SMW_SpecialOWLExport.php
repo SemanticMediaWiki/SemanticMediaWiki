@@ -677,8 +677,11 @@ class OWLExport {
 				}
 			}
 			if ( NS_CATEGORY === $title->getNamespace() ) { // also print elements of categories
-				/// FIXME: this needs a limit! Categories can be large!
-				$instances = smwfGetStore()->getSpecialSubjects( SMW_SP_INSTANCE_OF, $title );
+				$options = new SMWRequestOptions();
+				$options->limit = 50; /// Categories can be large, use limit
+				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+				$dv->setValues($title->getDBKey(), $title->getNamespace());
+				$instances = smwfGetStore()->getSpecialSubjects( SMW_SP_INSTANCE_OF, $dv, $options );
 				foreach($instances as $instance) {
 					$stb = new SMWSmallTitle();
 					$stb->dbkey = $instance->getDBKey();
