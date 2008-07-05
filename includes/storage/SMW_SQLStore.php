@@ -996,7 +996,7 @@ class SMWSQLStore extends SMWStore {
 		global $smwgQSortingSupport;
 		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deeper levels
 		if ($query->querymode == SMWQuery::MODE_NONE) { // don't query, but return something to printer
-			$result = new SMWQueryResult($prs, $query, false);
+			$result = new SMWQueryResult($prs, $query, true);
 			wfProfileOut('SMWSQLStore::getQueryResult (SMW)');
 			return $result;
 		}

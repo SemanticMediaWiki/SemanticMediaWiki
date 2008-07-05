@@ -71,7 +71,7 @@ class SMWSQLStore2QueryEngine {
 	 */
 	public function getQueryResult(SMWQuery $query) {
 		if ($query->querymode == SMWQuery::MODE_NONE) { // don't query, but return something to printer
-			$result = new SMWQueryResult($query->getDescription()->getPrintrequests(), $query, false);
+			$result = new SMWQueryResult($query->getDescription()->getPrintrequests(), $query, true);
 			return $result;
 		}
 		$this->m_qmode = $query->querymode;

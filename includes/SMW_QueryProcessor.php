@@ -110,8 +110,11 @@ class SMWQueryProcessor {
 			$query->setOffset(0);
 			$query->setLimit($smwgQMaxLimit, false);
 		} else {
-			if ( (array_key_exists('limit',$params)) && (is_int($params['limit'] + 0)) ) {
+			if ( (array_key_exists('limit',$params)) && (is_int(trim($params['limit']) + 0)) ) {
 				$query->setLimit(max(0,trim($params['limit']) + 0));
+				if ( (trim($params['limit']) + 0) < 0 ) { // limit < 0: always show further results link only
+					$query->querymode = SMWQuery::MODE_NONE;
+				}
 			} else {
 				global $smwgQDefaultLimit;
 				$query->setLimit($smwgQDefaultLimit);
