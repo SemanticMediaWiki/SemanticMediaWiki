@@ -318,8 +318,10 @@ class SMWSQLStore2QueryEngine {
 		} elseif ($description instanceof SMWConceptDescription) { // fetch concept definition and insert it here
 			$dv = end($this->m_store->getSpecialValues($description->getConcept(), SMW_SP_CONCEPT_DESC));
 			$desctxt = ($dv!==false)?$dv->getXSDValue():false;
-			if ($desctxt == false) { // no description found, no condition
-				$qid = -1; ///TODO: announce an error here?
+			if ($desctxt == false) { // no description found, concept does not exist
+				// keep the above query object, it yields an empty result
+				///TODO: announce an error here? (maybe not, since the query processor can check for 
+				///non-existing concept pages which is probably the main reason for finding nothing here
 			} else { // parse description and process it recursively
 				$qp = new SMWQueryParser();
 				// no defaultnamespaces here; if any, these are already in the concept
