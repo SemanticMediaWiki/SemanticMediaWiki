@@ -70,6 +70,10 @@ class SMWBoolValue extends SMWDataValue {
 				$this->m_falsecaption = htmlspecialchars(trim($captions[1]));
 			} // else ignore
 		}
+		if ( ($formatstring != $this->m_outformat) && $this->isValid() && ($this->m_truecaption !== NULL) ) { // also adjust display
+			$this->m_caption = $this->m_stdcaption = ($this->m_value?$this->m_truecaption:$this->m_falsecaption);
+		}
+		$this->m_outformat = $formatstring;
 	}
 
 	public function getShortWikiText($linked = NULL) {
