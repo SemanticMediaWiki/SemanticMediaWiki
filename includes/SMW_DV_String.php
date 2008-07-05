@@ -51,11 +51,7 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		if (!$this->isValid()) {
-			return $this->getErrorText();
-		} else {
-			return $this->getAbbValue($linker); // should be save (based on xsdvalue)
-		}
+		return $this->getLongWikiText($linker); // should be save (based on xsdvalue)
 	}
 
 	public function getXSDValue() {
