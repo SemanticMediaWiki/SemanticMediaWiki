@@ -160,7 +160,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 // 				$link->setParameter($this->mSep,'sep');
 // 			}
 
-			$link->setParameter('ul','format'); // always use ul, other formats suck as search page output
+			$link->setParameter('ul','format'); // always use ul, other formats hardly work as search page output
 			if ($this->mTemplate != '') {
 				$link->setParameter($this->mTemplate,'template');
 				if (array_key_exists('link', $this->m_params)) { // linking may interfere with templates
