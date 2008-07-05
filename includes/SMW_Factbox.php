@@ -213,7 +213,6 @@ class SMWFactbox {
 		if (!$smwgStoreActive) return;
 		if (SMWFactbox::$m_printed) return;
 		wfProfileIn("SMWFactbox::printFactbox (SMW)");
-		SMWFactbox::$m_printed = true;
 
 		// Global settings:
 		if ( $wgRequest->getCheck('wpPreview') ) {
@@ -249,6 +248,7 @@ class SMWFactbox {
 			break;
 		// case SMW_FACTBOX_SHOWN: display
 		}
+		SMWFactbox::$m_printed = true;
 
 		smwfRequireHeadItem(SMW_HEADER_STYLE);
 		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . SMWFactbox::$semdata->getSubject()->getPrefixedText(), 'rdflink');
