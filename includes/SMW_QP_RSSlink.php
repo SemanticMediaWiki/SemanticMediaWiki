@@ -17,10 +17,10 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 	protected function readParameters($params,$outputmode) {
 		SMWResultPrinter::readParameters($params,$outputmode);
 		if (array_key_exists('rsstitle', $this->m_params)) {
-			$this->m_title = $this->m_params['rsstitle'];
+			$this->m_title = trim($this->m_params['rsstitle']);
 		}
 		if (array_key_exists('rssdescription', $this->m_params)) {
-			$this->m_description = $this->m_params['rssdescription'];
+			$this->m_description = trim($this->m_params['rssdescription']);
 		}
 	}
 

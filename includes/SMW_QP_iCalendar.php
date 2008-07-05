@@ -16,10 +16,10 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 	protected function readParameters($params,$outputmode) {
 		SMWResultPrinter::readParameters($params,$outputmode);
 		if (array_key_exists('icalendartitle', $this->m_params)) {
-			$this->m_title = $this->m_params['icalendartitle'];
+			$this->m_title = trim($this->m_params['icalendartitle']);
 		}
 		if (array_key_exists('icalendardescription', $this->m_params)) {
-			$this->m_description = $this->m_params['icalendardescription'];
+			$this->m_description = trim($this->m_params['icalendardescription']);
 		}
 	}
 
