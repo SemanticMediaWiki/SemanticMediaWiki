@@ -320,10 +320,13 @@ function smwfProcessConceptParserFunction(&$parser) {
 	// process input:
 	$params = func_get_args();
 	array_shift( $params ); // we already know the $parser ...
-	$concept_input = array_shift( $params ); // use only first parameter, ignore rest (may get meaning later)
+	$concept_input = array_shift( $params ); // use first parameter as concept (query) string
 	$query = SMWQueryProcessor::createQuery($concept_input, array('limit' => -1), SMWQueryProcessor::CONCEPT_DESC);
-	$conceptText = $query->getDescription()->getQueryString();
-	$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC, $conceptText);
+	$concept_text = $query->getDescription()->getQueryString();
+	$concept_docu = array_shift( $params ); // second parameter, if any, might be a description
+
+	$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC);
+	$dv->setValues($concept_text, $concept_docu);
 	SMWFactbox::$semdata->addSpecialValue(SMW_SP_CONCEPT_DESC,$dv);
 
 	// display concept box:
@@ -333,8 +336,9 @@ function smwfProcessConceptParserFunction(&$parser) {
 	smwfRequireHeadItem(SMW_HEADER_STYLE);
 	$result = '<div class="smwfact"><span class="smwfactboxhead">' . wfMsgForContent('smw_concept_description',$title->getText()) .
 	          //(count($query->getErrors())>0?' ' . smwfEncodeMessages($query->getErrors()):'') . // errors are shown by $resultlink anyway
-	          '</span> &nbsp;&nbsp;&nbsp;' . $resultlink . '<br/>' .
-	          '<pre>' . str_replace('[', '&#x005B;', $conceptText) . '</pre></div>';
+	          '</span> &nbsp;&nbsp;&nbsp;' . $resultlink . '<br />' . 
+	          ($concept_docu?"<p>$concept_docu</p>":'') .
+	          '<pre>' . str_replace('[', '&#x005B;', $concept_text) . '</pre></div>';
 	return $result;
 }
 

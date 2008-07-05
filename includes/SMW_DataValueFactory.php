@@ -115,7 +115,7 @@ class SMWDataValueFactory {
 				$result = SMWDataValueFactory::newTypeIDValue('_wpg', $value, $caption);
 				break;
 			case SMW_SP_CONCEPT_DESC:
-				$result = SMWDataValueFactory::newTypeIDValue('_txt', $value, $caption);
+				$result = SMWDataValueFactory::newTypeIDValue('__con', $value, $caption);
 				break;
 			default:
 				/// NOTE: unstable hook, future versions might have better ways of enabling extensions to add properties
@@ -252,6 +252,7 @@ class SMWDataValueFactory {
 		$wgAutoloadClasses['SMWTimeValue']        =  $smwgIP . '/includes/SMW_DV_Time.php';
 		$wgAutoloadClasses['SMWGeoCoordsValue']   =  $smwgIP . '/includes/SMW_DV_GeoCoords.php';
 		$wgAutoloadClasses['SMWBoolValue']        =  $smwgIP . '/includes/SMW_DV_Bool.php';
+		$wgAutoloadClasses['SMWConceptValue']     =  $smwgIP . '/includes/SMW_DV_Concept.php';
 		SMWDataValueFactory::$m_typeclasses = array(
 			'_txt'  => 'SMWStringValue',
 			'_cod'  => 'SMWStringValue',
@@ -268,7 +269,8 @@ class SMWDataValueFactory {
 			'__typ' => 'SMWTypesValue',
 			'__lin' => 'SMWLinearValue',
 			'__nry' => 'SMWNAryValue',
-			'__err' => 'SMWErrorValue'
+			'__err' => 'SMWErrorValue',
+			'__con' => 'SMWConceptValue'
 		);
 
 		wfRunHooks( 'smwInitDatatypes' );

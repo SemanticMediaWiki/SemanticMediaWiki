@@ -153,7 +153,7 @@ class SMWSQLStore2 extends SMWStore {
 				break;
 				case SMW_SQL2_CONC2:
 					$from = 'smw_conc2';
-					$select = 'concept_txt as value';
+					$select = 'concept_txt as concept, concept_docu as docu';
 					$where = 's_id=' . $db->addQuotes($sid);
 				break;
 			}
@@ -194,7 +194,7 @@ class SMWSQLStore2 extends SMWStore {
 					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_INSTANCE_OF, $dv);
 				} elseif ($task == SMW_SQL2_CONC2) {
 					$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC);
-					$dv->setXSDValue($row->value, '');
+					$dv->setValues($row->concept, $row->docu);
 					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_CONCEPT_DESC, $dv);
 				}
 			}
@@ -784,7 +784,9 @@ class SMWSQLStore2 extends SMWStore {
 						}
 						$value = end($propertyValueArray); // only one value per page!
 						if ( ($value->isValid()) )  {
-							$up_conc2[] = array('s_id' => $sid, 'concept_txt' => $value->getXSDValue());
+							$up_conc2[] = array('s_id' => $sid,
+							                    'concept_txt' => $value->getXSDValue(),
+							                    'concept_docu' => $value->getDocu());
 						}
 					break;
 					default: // normal special value
@@ -1097,7 +1099,8 @@ class SMWSQLStore2 extends SMWStore {
 
 		$this->setupTable($smw_conc2, // concept descriptions
 		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL KEY',
-		                    'concept_txt' => 'MEDIUMBLOB'), $db, $verbose);
+		                    'concept_txt' => 'MEDIUMBLOB',
+		                    'concept_docu'=> 'MEDIUMBLOB'), $db, $verbose);
 		$this->setupIndex($smw_conc2, array('s_id'), $db);
 
 		$this->reportProgress("Database initialised successfully.\n",$verbose);
