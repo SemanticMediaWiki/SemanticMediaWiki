@@ -60,7 +60,7 @@ class SMWExporter {
 		$category_pe = NULL;
 		$subprop_pe = NULL;
 		switch ($subj_title->getNamespace()) {
-			case NS_CATEGORY:
+			case NS_CATEGORY: case SMW_NS_CONCEPT:
 				$category_pe = SMWExporter::getSpecialElement('rdfs','subClassOf');
 				$equality_pe = SMWExporter::getSpecialElement('owl','equivalentClass');
 				$maintype_pe = SMWExporter::getSpecialElement('owl','Class');

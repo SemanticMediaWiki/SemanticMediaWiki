@@ -127,6 +127,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWExpResource']            = $smwgIP . '/includes/export/SMW_Exp_Element.php';
 	//// stores & queries
 	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . '/includes/SMW_QueryProcessor.php';
+	$wgAutoloadClasses['SMWQueryParser']            = $smwgIP . '/includes/SMW_QueryProcessor.php';
 	$wgAutoloadClasses['SMWQuery']                  = $smwgIP . '/includes/storage/SMW_Query.php';
 	$wgAutoloadClasses['SMWQueryResult']            = $smwgIP . '/includes/storage/SMW_QueryResult.php';
 	$wgAutoloadClasses['SMWStore']                  = $smwgIP . '/includes/storage/SMW_Store.php';

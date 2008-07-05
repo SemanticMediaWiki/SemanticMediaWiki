@@ -678,10 +678,8 @@ class OWLExport {
 			}
 			if ( NS_CATEGORY === $title->getNamespace() ) { // also print elements of categories
 				$options = new SMWRequestOptions();
-				$options->limit = 50; /// Categories can be large, use limit
-				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-				$dv->setValues($title->getDBKey(), $title->getNamespace());
-				$instances = smwfGetStore()->getSpecialSubjects( SMW_SP_INSTANCE_OF, $dv, $options );
+				$options->limit = 100; /// Categories can be large, use limit
+				$instances = smwfGetStore()->getSpecialSubjects( SMW_SP_INSTANCE_OF, $value, $options );
 				foreach($instances as $instance) {
 					$stb = new SMWSmallTitle();
 					$stb->dbkey = $instance->getDBKey();
@@ -692,6 +690,27 @@ class OWLExport {
 						$data = SMWExporter::makeExportData($semdata);
 						$this->printExpData($data);
 					}
+				}
+			} elseif  ( SMW_NS_CONCEPT === $title->getNamespace() ) { // print concept members (slightly different code)
+				$desc = new SMWConceptDescription($title);
+				$desc->addPrintRequest(new SMWPrintRequest(SMWPrintRequest::PRINT_THIS, ''));
+				$query = new SMWQuery($desc);
+				$query->setLimit(100);
+
+				$res = smwfGetStore()->getQueryResult($query);
+				$resarray = $res->getNext();
+				while ($resarray !== false) {
+					$instance = end($resarray)->getNextObject();
+					$stb = new SMWSmallTitle();
+					$stb->dbkey = $instance->getDBKey();
+					$stb->namespace = $instance->getNamespace();
+					if (!array_key_exists($stb->getHash(), $this->element_done)) {
+						$semdata = smwfGetStore()->getSemanticData($instance, array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_EXT_BASEURI));
+						$semdata->addSpecialValue(SMW_SP_INSTANCE_OF, $value);
+						$data = SMWExporter::makeExportData($semdata);
+						$this->printExpData($data);
+					}
+					$resarray = $res->getNext();
 				}
 			}
 			wfProfileOut("RDF::PrintPages::GetBacklinks");
