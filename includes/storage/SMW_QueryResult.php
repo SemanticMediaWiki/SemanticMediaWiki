@@ -163,7 +163,7 @@ class SMWQueryResult {
 			$params['order'] = $porder;
 		}
 		if ($caption == false) {
-			$caption = wfMsgForContent('smw_iq_moreresults');
+			$caption = ' ' . wfMsgForContent('smw_iq_moreresults'); // the space is right here, not in the QPs!
 		}
 		$result = SMWInfolink::newInternalLink($caption,':Special:Ask', false, $params);
 		// Note: the initial : prevents SMW from reparsing :: in the query string
