@@ -158,6 +158,27 @@ class SMWAskPage extends SpecialPage {
 			$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
 			$queryobj->querymode = SMWQuery::MODE_INSTANCES; ///TODO: Somewhat hacky (just as the query mode computation in SMWQueryProcessor::createQuery!)
 			$res = smwfGetStore()->getQueryResult($queryobj);
+			// try to be smart for rss/ical if no description/title is given and we have a concept query:
+			if ($this->m_params['format'] == 'rss') {
+				$desckey = 'rssdescription';
+				$titlekey = 'rsstitle';
+			} elseif ($this->m_params['format'] == 'icalendar') {
+				$desckey = 'icalendardescription';
+				$titlekey = 'icalendartitle';
+			} else { $desckey = false; }
+			if ( ($desckey) && ($queryobj->getDescription() instanceof SMWConceptDescription) &&
+			     (!isset($this->m_params[$desckey]) || !isset($this->m_params[$titlekey])) ) {
+				$concept = $queryobj->getDescription()->getConcept();
+				if ( !isset($this->m_params[$titlekey]) ) {
+					$this->m_params[$titlekey] = $concept->getText();
+				}
+				if ( !isset($this->m_params[$desckey]) ) {
+					$dv = end(smwfGetStore()->getSpecialValues($concept, SMW_SP_CONCEPT_DESC));
+					if ($dv instanceof SMWConceptValue) {
+						$this->m_params[$desckey] = $dv->getDocu();
+					}
+				}
+			}
 			$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE, $res);
 			$result_mime = $printer->getMimeType($res);
 			if ($result_mime == false) {
