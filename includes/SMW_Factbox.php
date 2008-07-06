@@ -44,6 +44,7 @@ class SMWFactbox {
 			$dv->setValues($title->getDBkey(), $title->getNamespace());
 			SMWFactbox::$semdata = new SMWSemanticData($dv); // reset data
 			SMWFactbox::$m_printed = false;
+			//print " Title set: " . $title->getPrefixedText() . "\n"; // useful for debug
 		}
 		//SMWFactbox::$m_new   = false; // do not reset, keep (order of hooks can be strange ...)
 	}
