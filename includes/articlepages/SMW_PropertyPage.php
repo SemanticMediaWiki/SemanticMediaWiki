@@ -116,7 +116,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			}
 			// Property name
 			$searchlink = SMWInfolink::newBrowsingLink('+',$this->articles[$index]->getShortHTMLText());
-			$r .= '<tr><td class="smwpropname">' . $this->articles[$index]->getShortHTMLText($this->getSkin()) .
+			$r .= '<tr><td class="smwpropname">' . $this->articles[$index]->getLongHTMLText($this->getSkin()) .
 			/*$this->getSkin()->makeKnownLinkObj( $this->articles[$index]->getTitle, 
 			  $wgContLang->convert( $this->articles[$index]->getLongHTMLText() ) ) .*/ 
 			  '&nbsp;' . $searchlink->getHTML($this->getSkin()) .
