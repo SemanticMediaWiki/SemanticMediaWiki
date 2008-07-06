@@ -446,18 +446,10 @@ class SMWValueDescription extends SMWDescription {
 	public function getQueryString($asvalue = false) {
 		if ($this->m_datavalue !== NULL) {
 			switch ($this->m_comparator) {
-				case SMW_CMP_LEQ:
-					$comparator = '<';
-				break;
-				case SMW_CMP_GEQ:
-					$comparator = '>';
-				break;
-				case SMW_CMP_NEQ: 
-					$comparator = '!'; // not supported yet?
-				break;
-				case SMW_CMP_LIKE: 
-					$comparator = '~'; // not supported yet?
-				break;
+				case SMW_CMP_LEQ:  $comparator = '<'; break;
+				case SMW_CMP_GEQ:  $comparator = '>'; break;
+				case SMW_CMP_NEQ:  $comparator = '!'; break;
+				case SMW_CMP_LIKE: $comparator = '~'; break;
 				default: case SMW_CMP_EQ:
 					$comparator = '';
 				break;
