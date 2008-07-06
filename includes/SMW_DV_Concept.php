@@ -63,12 +63,79 @@ class SMWConceptValue extends SMWDataValue {
 
 	public function getExportData() {
 		if ($this->isValid()) {
-// 			$lit = new SMWExpLiteral(smwfHTMLtoUTF8($this->m_value), $this, 'http://www.w3.org/2001/XMLSchema#string');
-// 			return new SMWExpData($lit);
-			return NULL; /// TODO
+			$qp = new SMWQueryParser();
+			$desc = $qp->getQueryDescription($this->getWikiValue());
+			$exact = true;
+			$owldesc = $this->descriptionToExpData($desc, $exact);
+			if (!$exact) {
+				$result = new SMWExpData(new SMWExpElement(''));
+				$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf', 'type'),
+				                                new SMWExpData(SMWExporter::getSpecialElement('owl', 'Class')));
+				$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdfs', 'subClassOf'), $owldesc);
+				return $result;
+			} else {
+				return $owldesc;
+			}
 		} else {
 			return NULL;
 		}
+	}
+	
+	public function descriptionToExpData($desc, &$exact) {
+		if ( ($desc instanceof SMWConjunction) || ($desc instanceof SMWDisjunction) ) {
+			$result = new SMWExpData(new SMWExpElement(''));
+			$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf', 'type'),
+			                                new SMWExpData(SMWExporter::getSpecialElement('owl', 'Class')));
+			$elements = array();
+			foreach ($desc->getDescriptions() as $subdesc) {
+				$elements[] = $this->descriptionToExpData($subdesc, $exact);
+			}
+			$prop = ($desc instanceof SMWConjunction)?'intersectionOf':'unionOf';
+			$result->addPropertyObjectValue(SMWExporter::getSpecialElement('owl', $prop),
+			                                SMWExpData::makeCollection($elements));
+		} elseif ($desc instanceof SMWClassDescription) {
+			if (count($desc->getCategories()) == 1) { // single category
+				$result = new SMWExpData(SMWExporter::getResourceElement(end($desc->getCategories())));
+			} else { // disjunction of categories
+				$result = new SMWExpData(new SMWExpElement(''));
+				$elements = array();
+				foreach ($desc->getCategories() as $cat) {
+					$elements[] = new SMWExpData(SMWExporter::getResourceElement($cat));;
+				}
+				$result->addPropertyObjectValue(SMWExporter::getSpecialElement('owl', 'unionOf'),
+				                                SMWExpData::makeCollection($elements));
+			}
+			$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf', 'type'),
+			                                new SMWExpData(SMWExporter::getSpecialElement('owl', 'Class')));
+		} elseif ($desc instanceof SMWConceptDescription) {
+			$result = new SMWExpData(SMWExporter::getResourceElement($desc->getConcept()));
+		} elseif ($desc instanceof SMWSomeProperty) {
+			$result = new SMWExpData(new SMWExpElement(''));
+			$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf', 'type'),
+			                                new SMWExpData(SMWExporter::getSpecialElement('owl', 'Restriction')));
+			$result->addPropertyObjectValue(SMWExporter::getSpecialElement('owl', 'onProperty'),
+			                                new SMWExpData(SMWExporter::getResourceElement($desc->getProperty())));
+			$subdata = $this->descriptionToExpData($desc->getDescription(), $exact);
+			if ( ($desc->getDescription() instanceof SMWValueDescription) && 
+			     ($desc->getDescription()->getComparator() == SMW_CMP_EQ) ) {
+				$result->addPropertyObjectValue(SMWExporter::getSpecialElement('owl', 'hasValue'), $subdata);
+			} else {
+				$result->addPropertyObjectValue(SMWExporter::getSpecialElement('owl', 'someValuesFrom'), $subdata);
+			}
+		} elseif ($desc instanceof SMWValueDescription) {
+			if ($desc->getComparator() == SMW_CMP_EQ) {
+				$result = $desc->getDataValue()->getExportData();
+			} else { // alas, OWL cannot represent <= and >= ...
+				$result = new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
+				$exact = false;
+			}
+		} elseif ($desc instanceof SMWThingDescription) {
+			$result = new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
+		} else {
+			$result = new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
+			$exact = false;
+		}
+		return $result;
 	}
 
 	/**

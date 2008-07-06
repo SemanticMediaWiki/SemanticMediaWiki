@@ -584,47 +584,57 @@ class OWLExport {
 	/**
 	 * Serialise the given semantic data.
 	 */
-	protected function printExpData(/*SMWExpData*/ $data) {
+	protected function printExpData(/*SMWExpData*/ $data, $indent = '') {
 		$type = $data->extractMainType()->getQName();
 		if ('' == $this->pre_ns_buffer) { // start new ns block
-			$this->pre_ns_buffer .= "\t<$type";
+			$this->pre_ns_buffer .= "\t$indent<$type";
 		} else {
-			$this->post_ns_buffer .= "\t<$type";
+			$this->post_ns_buffer .= "\t$indent<$type";
 		}
 		if ( ($data->getSubject() instanceof SMWExpLiteral) || ($data->getSubject() instanceof SMWExpResource) ) {
 			 $this->post_ns_buffer .= ' rdf:about="' . $data->getSubject()->getName() . '"';
 		} // else: blank node
-		$this->post_ns_buffer .= ">\n";
-
-		foreach ($data->getProperties() as $property) {
-			$this->queueElement($property);
-			foreach ($data->getValues($property) as $value) {
-				$this->post_ns_buffer .= "\t\t<" . $property->getQName();
-				$this->addExtraNamespace($property->getNamespaceID(),$property->getNamespace());
-				$object = $value->getSubject();
-				if ($object instanceof SMWExpLiteral) {
-					if ($object->getDatatype() != '') {
-						$this->post_ns_buffer .= ' rdf:datatype="' . $object->getDatatype() . '"';
-					}
-					$this->post_ns_buffer .= '>' . 
-					     str_replace(array('&', '>', '<'), array('&amp;', '&gt;', '&lt;'), $object->getName()) . 
-					     '</' . $property->getQName() . ">\n";
-				} else { // bnode or resource, may have subdescriptions
-					if (count($value->getProperties()) > 0) {
-						$this->post_ns_buffer .= ">\n";
-						$this->printExpData($value);
-						$this->post_ns_buffer .= "\t\t</" . $property->getQName() . ">\n";
-					} else {
-						if ($object instanceof SMWExpResource) {
-							$this->post_ns_buffer .= ' rdf:resource="' . $object->getName() . '"';
-							$this->queueElement($object); // queue only non-explicated resources
+		if (count($data->getProperties()) == 0) {
+			$this->post_ns_buffer .= " />\n";
+		} else {
+			$this->post_ns_buffer .= ">\n";
+			foreach ($data->getProperties() as $property) {
+				$this->queueElement($property);
+				foreach ($data->getValues($property) as $value) {
+					$this->post_ns_buffer .= "\t\t$indent<" . $property->getQName();
+					$this->addExtraNamespace($property->getNamespaceID(),$property->getNamespace());
+					$object = $value->getSubject();
+					if ($object instanceof SMWExpLiteral) {
+						if ($object->getDatatype() != '') {
+							$this->post_ns_buffer .= ' rdf:datatype="' . $object->getDatatype() . '"';
 						}
-						$this->post_ns_buffer .= "/>\n";
+						$this->post_ns_buffer .= '>' . 
+							str_replace(array('&', '>', '<'), array('&amp;', '&gt;', '&lt;'), $object->getName()) . 
+							'</' . $property->getQName() . ">\n";
+					} else { // bnode or resource, may have subdescriptions
+						$collection = $value->getCollection();
+						if ($collection != false) {
+							$this->post_ns_buffer .= " rdf:parseType=\"Collection\">\n";
+							foreach ($collection as $subvalue) {
+								$this->printExpData($subvalue, $indent . "\t\t");
+							}
+							$this->post_ns_buffer .= "\t\t$indent</" . $property->getQName() . ">\n";
+						} elseif (count($value->getProperties()) > 0) {
+							$this->post_ns_buffer .= ">\n";
+							$this->printExpData($value, $indent . "\t\t");
+							$this->post_ns_buffer .= "\t\t$indent</" . $property->getQName() . ">\n";
+						} else {
+							if ($object instanceof SMWExpResource) {
+								$this->post_ns_buffer .= ' rdf:resource="' . $object->getName() . '"';
+								$this->queueElement($object); // queue only non-explicated resources
+							}
+							$this->post_ns_buffer .= "/>\n";
+						}
 					}
 				}
 			}
+			$this->post_ns_buffer .= "\t$indent</" . $type . ">\n";
 		}
-		$this->post_ns_buffer .= "\t</" . $type . ">\n";
 		$this->flushBuffers();
 	}
 

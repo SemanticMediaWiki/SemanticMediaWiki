@@ -30,6 +30,24 @@ class SMWExpData {
 	}
 
 	/**
+	 * Turn an array of SMWElements into an RDF collection.
+	 */
+	public static function makeCollection($elements) {
+		if (count($elements) == 0) {
+			return new SMWExpData(SMWExporter::getSpecialElement('rdf', 'nil'));
+		} else {
+			$rdftype  = SMWExporter::getSpecialElement('rdf', 'type');
+			$rdffirst = SMWExporter::getSpecialElement('rdf', 'first');
+			$rdfrest  = SMWExporter::getSpecialElement('rdf', 'rest');
+			$result = new SMWExpData(new SMWExpElement('')); // bnode
+			$result->addPropertyObjectValue($rdftype, new SMWExpData(SMWExporter::getSpecialElement('rdf', 'List')));
+			$result->addPropertyObjectValue($rdffirst, array_shift($elements));
+			$result->addPropertyObjectValue($rdfrest, SMWExpData::makeCollection($elements));
+			return $result;
+		}
+	}
+
+	/**
 	 * Return subject to which the stored semantic annotation refer to.
 	 */
 	public function getSubject() {
@@ -44,7 +62,7 @@ class SMWExpData {
 	}
 
 	/**
-	 * Store a value for an property identified by its title object. No duplicate elimination as this
+	 * Store a value for a property identified by its title object. No duplicate elimination as this
 	 * is usually done in SMWSemanticData already (which is typically used to generate this object)
 	 */
 	public function addPropertyObjectValue(SMWExpElement $property, SMWExpData $child) {
@@ -97,10 +115,56 @@ class SMWExpData {
 			$result = array_shift($this->m_children[$pe->getName()]);
 			if (count($this->m_children[$pe->getName()]) == 0) {
 				unset($this->m_edges[$pe->getName()]);
+				unset($this->m_children[$pe->getName()]);
 			}
 			return $result->getSubject();
 		} else {
 			return SMWExporter::getSpecialElement('rdf', 'Resource');
+		}
+	}
+
+	/**
+	 * Check if this element can be serialised using parserType="Collection" and
+	 * if yes return an array of SMWExpElements corresponding to the collection 
+	 * elements in the specified order. Otherwise return false.
+	 */
+	public function getCollection() {
+		$rdftype  = SMWExporter::getSpecialElement('rdf', 'type');
+		$rdffirst = SMWExporter::getSpecialElement('rdf', 'first');
+		$rdfrest  = SMWExporter::getSpecialElement('rdf', 'rest');
+		$rdfnil   = SMWExporter::getSpecialElement('rdf', 'nil');
+		$name = $this->getSubject()->getName();
+		// first check if we are basically an rdf List:
+		if ( ( ($name == '') || ($name{0} == '_') ) && //bnode
+		     (array_key_exists($rdftype->getName(), $this->m_children)) &&
+		     (count($this->m_children[$rdftype->getName()]) == 1) &&
+		     (array_key_exists($rdffirst->getName(), $this->m_children)) &&
+		     (count($this->m_children[$rdffirst->getName()]) == 1) &&
+		     (array_key_exists($rdfrest->getName(), $this->m_children)) &&
+		     !(end($this->m_children[$rdffirst->getName()]) instanceof SMWExpLiteral) &&
+		     // (parseType collection in RDF not possible with literals :-/)
+		     (count($this->m_children[$rdfrest->getName()]) == 1) &&
+		     (count($this->m_children) == 3) ) {
+			$typedata = end($this->m_children[$rdftype->getName()]);
+			$rdflist = SMWExporter::getSpecialElement('rdf', 'List');
+			if ($typedata->getSubject()->getName() == $rdflist->getName()) {
+				$first = end($this->m_children[$rdffirst->getName()]);
+				$rest  = end($this->m_children[$rdfrest->getName()]);
+				$restlist = $rest->getCollection();
+				if ($restlist === false) {
+					return false;
+				} else {
+					array_unshift($restlist,$first);
+					return $restlist;
+				}
+			} else {
+				return $false;
+			}
+		} elseif ( (!array_key_exists($rdftype->getName(),$this->m_children)) &&
+		           ($name == $rdfnil->getName()) ) {
+			return array();
+		} else {
+			return false;
 		}
 	}
 

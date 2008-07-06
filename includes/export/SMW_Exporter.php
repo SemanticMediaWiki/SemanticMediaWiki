@@ -135,8 +135,11 @@ class SMWExporter {
 				$pe = NULL;
 				$cat_only = false; // basic namespace checking for equivalent categories
 				switch ($property) {
-					case SMW_SP_INSTANCE_OF:
+					case SMW_SP_INSTANCE_OF: ///TODO: distinguish instanceof and subclassof
 						$pe = $category_pe;
+					break;
+					case SMW_SP_CONCEPT_DESC:
+						$pe = $equality_pe;
 					break;
 					case SMW_SP_HAS_URI:
 						$pe = $equality_pe;
@@ -162,7 +165,19 @@ class SMWExporter {
 						}
 						$ed = $dv->getExportData();
 						if ($ed !== NULL) {
-							$result->addPropertyObjectValue($pe, $ed);
+							if ( ($property == SMW_SP_CONCEPT_DESC) &&
+							     ($ed->getSubject()->getName() == '') ) {
+								// equivalent to anonymous class -> simplify description
+								foreach ($ed->getProperties() as $subp) {
+									if ($subp->getName() != SMWExporter::getSpecialElement('rdf','type')->getName()) {
+										foreach ($ed->getValues($subp) as $subval) {
+											$result->addPropertyObjectValue($subp, $subval);
+										}
+									}
+								}
+							} else {
+								$result->addPropertyObjectValue($pe, $ed);
+							}
 						}
 					}
 				}
