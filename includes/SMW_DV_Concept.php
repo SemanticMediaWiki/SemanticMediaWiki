@@ -131,7 +131,7 @@ class SMWConceptValue extends SMWDataValue {
 					$owltype = SMWExporter::getOWLPropertyType(SMWDataValueFactory::getPropertyObjectTypeID($desc->getProperty()));
 					if ($owltype == 'ObjectProperty') {
 						$subdata = new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
-					} elseif ($owltype == 'DatatypeProperty') {#
+					} elseif ($owltype == 'DatatypeProperty') {
 						$subdata = new SMWExpData(SMWExporter::getSpecialElement('rdfs','Literal'));
 					} else { // no restrictions at all with annotation properties ...
 						return new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
