@@ -672,7 +672,7 @@ class SMWSQLStore2QueryEngine {
 		foreach ($this->m_sortkeys as $propkey => $order) {
 			if (!array_key_exists($propkey,$qobj->sortfields)) { // find missing property to sort by
 				if ($propkey == '') { // sort by first result column (page titles)
-					$qobj->sortfields[$propkey] = "$qobj->alias.smw_title";
+					$qobj->sortfields[$propkey] = "$qobj->alias.smw_sortkey";
 				} else { // try to extend query
 					$extrawhere = '';
 					$sorttitle = Title::newFromText($propkey, SMW_NS_PROPERTY);

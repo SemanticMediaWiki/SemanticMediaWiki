@@ -51,10 +51,12 @@ class SMWSQLStore extends SMWStore {
 
 		if ( $subject instanceof Title ) {
 			$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
-			$result = new SMWSemanticData($subject);
+			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+			$dv->setValues($subject->getDBkey(), $subject->getNamespace());
+			$result = new SMWSemanticData($dv);
 		} elseif ($subject instanceof SMWWikiPageValue) {
 			$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
-			$result = new SMWSemanticData($subject->getTitle());
+			$result = new SMWSemanticData($subject);
 		} else {
 			$subjectid = 0;
 			$result = NULL;
@@ -309,7 +311,9 @@ class SMWSQLStore extends SMWStore {
 								'rd_namespace,rd_title',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::makeTitle($row->rd_namespace, $row->rd_title);
+				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+				$dv->setValues($row->rd_title, $row->rd_namespace);
+				$result[] = $dv;
 			}
 			$db->freeResult($res);
 		} elseif ($specialprop === SMW_SP_SUBPROPERTY_OF) { // subproperty
@@ -318,7 +322,9 @@ class SMWSQLStore extends SMWStore {
 								'object_title',
 								$sql, 'SMW::getSpecialValues', $this->getSQLOptions($requestoptions) );
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->object_title);
+				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+				$dv->setValues($row->object_title, SMW_NS_PROPERTY);
+				$result[] = $dv;
 			}
 			$db->freeResult($res);
 		} else { // "normal" special property
@@ -358,7 +364,9 @@ class SMWSQLStore extends SMWStore {
 			while($row = $db->fetchObject($res)) {
 				$t = Title::newFromID($row->cl_from);
 				if ($t !== NULL) {
-					$result[] = $t;
+					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+					$dv->setValues($t->getDBkey(), NS_CATEGORY, $row->cl_from);
+					$result[] = $dv;
 				}
 			}
 			$db->freeResult($res);
@@ -372,7 +380,9 @@ class SMWSQLStore extends SMWStore {
 			while($row = $db->fetchObject($res)) {
 				$t = Title::newFromID($row->rd_from);
 				if ($t !== NULL) {
-					$result[] = $t;
+					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+					$dv->setValues($t->getDBkey(), NS_CATEGORY, $row->rd_from);
+					$result[] = $dv;
 				}
 			}
 			$db->freeResult($res);
@@ -383,7 +393,9 @@ class SMWSQLStore extends SMWStore {
 								$sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
 			// reqrite results as array
 			while($row = $db->fetchObject($res)) {
-				$result[] =  Title::makeTitle(SMW_NS_PROPERTY, $row->subject_title);
+				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+				$dv->setValues($row->subject_title, SMW_NS_PROPERTY);
+				$result[] = $dv;
 			}
 			$db->freeResult($res);
 		} else {
@@ -405,16 +417,15 @@ class SMWSQLStore extends SMWStore {
 			}
 
 			$sql = 'property_id=' . $db->addQuotes($specialprop) .
-			       ' AND value_string=' . $db->addQuotes($stringvalue) .
-			       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
-			$res = $db->select( 'smw_specialprops',
-			                    'DISTINCT subject_id',
-			                    $sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions,'subject_title') );
+			       ' AND value_string=' . $db->addQuotes($stringvalue) . ' AND page_id=subject_id' .
+			       $this->getSQLConditions($requestoptions,'page_title','page_title');
+			$res = $db->select( array('smw_specialprops','page'),
+			                    'DISTINCT subject_id,page_title,page_namespace',
+			                    $sql, 'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions,'page_title') );
 			while($row = $db->fetchObject($res)) {
-				$t = Title::newFromID($row->subject_id);
-				if ($t !== NULL) {
-					$result[] = $t;
-				}
+				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+				$dv->setValues($row->page_title, $row->page_namespace, $row->subject_id);
+				$result[] = $dv;
 			}
 			$db->freeResult($res);
 		}
@@ -579,7 +590,7 @@ class SMWSQLStore extends SMWStore {
 			       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 
 			$res = $db->select( 'smw_relations',
-			                    'DISTINCT subject_id',
+			                    'DISTINCT subject_id, subject_title, subject_namespace',
 			                    $sql, 'SMW::getPropertySubjects',
 			                    $this->getSQLOptions($requestoptions,'subject_title') );
 		break;
@@ -611,7 +622,7 @@ class SMWSQLStore extends SMWStore {
 				}
 				$count++;
 			}
-			$res = $db->query("SELECT DISTINCT $narytable.subject_id FROM $from WHERE $where",
+			$res = $db->query("SELECT DISTINCT $narytable.subject_id, $narytable.subject_title, $narytable.subject_namespace FROM $from WHERE $where",
 			                  'SMW::getPropertySubjects',
 			                  $this->getSQLOptions($requestoptions,'subject_title'));
 		break;
@@ -621,17 +632,16 @@ class SMWSQLStore extends SMWStore {
 			       ' AND attribute_title=' . $db->addQuotes($property->getDBkey()) .
 			       $this->getSQLConditions($requestoptions,'subject_title','subject_title');
 			$res = $db->select( $db->tableName('smw_attributes'),
-		                    'DISTINCT subject_id',
+		                    'DISTINCT subject_id, subject_title, subject_namespace',
 		                    $sql, 'SMW::getPropertySubjects',
 		                    $this->getSQLOptions($requestoptions,'subject_title') );
 		break;
 		}
 		$result = array();
 		while($row = $db->fetchObject($res)) {
-			$t = Title::newFromID($row->subject_id);
-			if ($t !== NULL) {
-				$result[] = $t;
-			}
+			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+			$dv->setValues($row->subject_title, $row->subject_namespace, $row->subject_id);
+			$result[] = $dv;
 		}
 		$db->freeResult($res);
 		wfProfileOut("SMWSQLStore::getPropertySubjects (SMW)");
@@ -665,16 +675,15 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		$res = $db->select( $db->tableName($tablename),
-		                    'DISTINCT subject_id',
+		                    'DISTINCT subject_id,subject_title,subject_namespace',
 		                    $pcolumn .'=' . $db->addQuotes($property->getDBkey()) . $extraconds,
 		                    'SMW::getAllPropertySubjects',
 		                    $this->getSQLOptions($requestoptions,'subject_title') );
 		$result = array();
 		while($row = $db->fetchObject($res)) {
-			$t = Title::newFromId($row->subject_id);
-			if ($t !== NULL) {
-				$result[] = $t;
-			}
+			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+			$dv->setValues($row->subject_title, $row->subject_namespace, $row->subject_id);
+			$result[] = $dv;
 		}
 		$db->freeResult($res);
 		wfProfileOut("SMWSQLStore::getAllPropertySubjects (SMW)");
@@ -871,7 +880,7 @@ class SMWSQLStore extends SMWStore {
 				}
 			} else { // special property
 				switch ($property) {
-					case SMW_SP_IMPORTED_FROM: case SMW_SP_INSTANCE_OF: case SMW_SP_SUBCLASS_OF: case SMW_SP_REDIRECTS_TO: case SMW_SP_CONCEPT_DESC:
+					case SMW_SP_IMPORTED_FROM: case SMW_SP_INSTANCE_OF: case SMW_SP_SUBCLASS_OF: case SMW_SP_REDIRECTS_TO: case SMW_SP_CONCEPT_DESC: case SMW_SP_DEFAULT_SORT:
 						// don't store this, just used for display;
 						// TODO: filtering here is bad for fully neglected properties (IMPORTED FROM)
 						// NOTE: concept descriptions are ignored by that storage implementation

@@ -35,11 +35,14 @@ class SMWFactbox {
 	 * Initialisation method. Must be called before anything else happens.
 	 */
 	static function initStorage($title) {
-		// reset only if title is new
+		// reset only if title is new and not the notorious NO TITLE thing the MW parser creates
+		if ( $title->getText() == 'NO TITLE' ) return;
 		if ( (SMWFactbox::$semdata === NULL) ||
-		     (SMWFactbox::$semdata->getSubject()->getText() != $title->getText()) || 
+		     (SMWFactbox::$semdata->getSubject()->getDBkey() != $title->getDBkey()) || 
 		     (SMWFactbox::$semdata->getSubject()->getNamespace() != $title->getNamespace()) ) {
-			SMWFactbox::$semdata = new SMWSemanticData($title); // reset data
+			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+			$dv->setValues($title->getDBkey(), $title->getNamespace());
+			SMWFactbox::$semdata = new SMWSemanticData($dv); // reset data
 			SMWFactbox::$m_printed = false;
 		}
 		//SMWFactbox::$m_new   = false; // do not reset, keep (order of hooks can be strange ...)
@@ -251,9 +254,9 @@ class SMWFactbox {
 		SMWFactbox::$m_printed = true;
 
 		smwfRequireHeadItem(SMW_HEADER_STYLE);
-		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . SMWFactbox::$semdata->getSubject()->getPrefixedText(), 'rdflink');
+		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . SMWFactbox::$semdata->getSubject()->getWikiValue(), 'rdflink');
 
-		$browselink = SMWInfolink::newBrowsingLink(SMWFactbox::$semdata->getSubject()->getText(), SMWFactbox::$semdata->getSubject()->getPrefixedText(), 'swmfactboxheadbrowse');
+		$browselink = SMWInfolink::newBrowsingLink(SMWFactbox::$semdata->getSubject()->getText(), SMWFactbox::$semdata->getSubject()->getWikiValue(), 'swmfactboxheadbrowse');
 		// The "\n" is to ensure that lists on the end of articles are terminated
 		// before the div starts. It would of course be much cleaner to print the
 		// factbox in another way, similar to the way that categories are printed

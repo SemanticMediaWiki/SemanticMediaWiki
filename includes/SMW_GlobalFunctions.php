@@ -403,7 +403,7 @@ function smwfRequireHeadItem($id, $item = '') {
  * (1) insert HTML headers (CSS, JavaScript, and meta tags) into parser 
  * output. This is our preferred method of working off the required scripts, since it 
  * exploits parser caching.
- * (2) Fetch category information from parser output.
+ * (2) Fetch category information and other final settings from parser output.
  */
 function smwfParserAfterTidy(&$parser, &$text) {
 	global $smwgHeadItems, $smwgStoreActive;
@@ -423,6 +423,8 @@ function smwfParserAfterTidy(&$parser, &$text) {
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_SUBCLASS_OF,$dv);
 		}
 	}
+	$sortkey = ($parser->mDefaultSort?$parser->mDefaultSort:SMWFactbox::$semdata->getSubject()->getText());
+	SMWFactbox::$semdata->getSubject()->setSortkey($sortkey);
 	return true;
 }
 

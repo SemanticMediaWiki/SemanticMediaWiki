@@ -130,9 +130,9 @@ class SMWSearchByProperty extends SpecialPage {
 					// no need to show the navigation bars when there is not enough to navigate
 					if (($offset>0) || ($count>$limit)) $html .= '<br />' . $navigation;
 					$html .= "<ul>\n";
-					foreach ($res as $t) {
-						$browselink = SMWInfolink::newBrowsingLink('+',$t->getPrefixedText());
-						$html .= '<li>' . $skin->makeKnownLinkObj($t) . '&nbsp;&nbsp;' . $browselink->getHTML($skin) . "</li> \n";
+					foreach ($res as $dv) {
+						$browselink = SMWInfolink::newBrowsingLink('+',$dv->getShortHTMLText());
+						$html .= '<li>' . $dv->getShortHTMLText($skin) . '&nbsp;&nbsp;' . $browselink->getHTML($skin) . "</li> \n";
 					}
 					$html .= "</ul>\n";
 					if (($offset>0) || ($count>$limit)) $html .= $navigation;

@@ -17,6 +17,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	private $m_textform = ''; // the isolated title as text
 	private $m_dbkeyform = ''; // the isolated title in DB form
 	private $m_interwiki = ''; // interwiki prefix or '', actually stored in SMWSQLStore2
+	private $m_sortkey = ''; // key for alphabetical sorting
 	private $m_fragment = ''; // not stored, but kept for printout on page
 	private $m_prefixedtext = ''; // full titletext with prefixes, including interwiki prefix
 	private $m_namespace = NS_MAIN;
@@ -65,6 +66,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_dbkeyform = $this->m_stubdata[0];
 			$this->m_namespace = $this->m_stubdata[1];
 			$this->m_interwiki = $this->m_stubdata[3];
+			$this->m_sortkey   = $this->m_stubdata[4];
 			$this->m_textform = str_replace('_', ' ', $this->m_dbkeyform);
 			if ($this->m_interwiki == '') {
 				$this->m_title = Title::makeTitle($this->m_namespace, $this->m_dbkeyform);
@@ -260,6 +262,14 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->unstub();
 		return $this->m_dbkeyform;
 	}
+
+	/**
+	 * Get text label for this value.
+	 */
+	public function getText() {
+		$this->unstub();
+		return str_replace('_',' ',$this->m_dbkeyform);
+	}
 	
 	/**
 	 * Get interwiki prefix or empty string.
@@ -270,14 +280,29 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
+	 * Get sortkey or make one as default.
+	 */
+	public function getSortkey() {
+		$this->unstub();
+		return $this->m_sortkey?$this->m_sortkey:$this->m_dbkeyform;
+	}
+
+	/**
+	 * Set sortkey
+	 */
+	public function setSortkey($sortkey) {
+		$this->unstub(); // unstub first, since the stubarray also may hold a sortkey
+		$this->m_sortkey = $sortkey;
+	}
+
+	/**
 	 * Set all basic values for this datavalue to the extent these are
 	 * available. Simplifies and speeds up creation from stored data.
 	 */
-	public function setValues($dbkey, $namespace, $id = false, $interwiki = '') {
+	public function setValues($dbkey, $namespace, $id = false, $interwiki = '', $sortkey = '') {
 		$this->setXSDValue($dbkey,''); // just used to trigger standard parent class methods!
 		/// TODO: rethink our standard set interfaces for datavalues to make wikipage fit better with the rest
-		$this->m_stubdata = array($dbkey, $namespace, $id, $interwiki);
-		$this->unstub();
+		$this->m_stubdata = array($dbkey, $namespace, $id, $interwiki, $sortkey);
 	}
 
 }

@@ -24,9 +24,9 @@ class SMWSemanticData {
 	/// since objects can remain stubs until someone really acesses their value
 	static protected $m_propertyprefix = false; // cache for the local version of "Property:"
 
-	protected $subject;
+	protected $subject; // SMWWikiPageValue object
 
-	public function __construct(Title $subject, $noduplicates = true) {
+	public function __construct(SMWWikiPageValue $subject, $noduplicates = true) {
 		$this->subject = $subject;
 		$this->m_noduplicates = $noduplicates;
 	}

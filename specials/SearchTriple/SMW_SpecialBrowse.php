@@ -111,8 +111,8 @@ class SMWSpecialBrowse extends SpecialPage {
 				if ((0==$offset) && ($count > 0)) {
 					foreach ($redin as $red) {
 						$count -= 1;
-						$browselink = SMWInfolink::newBrowsinglink('+', $red->getFulltext());
-						$html .= $skin->makeKnownLinkObj( $red ) . '&nbsp;' . $browselink->getHTML($skin);
+						$browselink = SMWInfolink::newBrowsinglink('+', $red->getShortHTMLText());
+						$html .= $red->getShortHTMLText($skin) . '&nbsp;' . $browselink->getHTML($skin);
 						if ($count > 0) $html .= ', ';
 					}
 					$html .= ' &nbsp;<strong>' . $skin->specialLink( 'Listredirects', 'isredirect' ) . '</strong>';
@@ -131,8 +131,8 @@ class SMWSpecialBrowse extends SpecialPage {
 					foreach ($subjects as $subject) {
 						$innercount += 1;
 						if (($innercount < $innerlimit) || !$more) {
-							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getPrefixedText());
-							$html .= $skin->makeKnownLinkObj($subject, smwfT($subject, TRUE)) . '&nbsp;' . $subjectlink->getHTML($skin);
+							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getShortHTMLText());
+							$html .= $skin->makeKnownLinkObj($subject, smwfT($subject->getTitle(), TRUE)) . '&nbsp;' . $subjectlink->getHTML($skin);
 							if ($innercount<$subjectcount) $html .= ", \n";
 						} else {
 							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByProperty', 'property=' . urlencode($result->getPrefixedText()) . '&value=' . urlencode($article->getLongWikiText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";

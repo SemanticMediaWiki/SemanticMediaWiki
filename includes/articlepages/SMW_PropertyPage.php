@@ -60,8 +60,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$this->articles = array_reverse($this->articles);
 		}
 
-		foreach ($this->articles as $title) {
-			$this->articles_start_char[] = $wgContLang->convert( $wgContLang->firstChar( $title->getText() ) );
+		foreach ($this->articles as $dv) {
+			$this->articles_start_char[] = $wgContLang->convert( $wgContLang->firstChar( $dv->getSortkey() ) );
 		}
 	}
 
@@ -115,9 +115,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$prevchar = $this->articles_start_char[$index];
 			}
 			// Property name
-			$searchlink = SMWInfolink::newBrowsingLink('+',$this->articles[$index]->getPrefixedText());
-			$r .= '<tr><td class="smwpropname">' . $this->getSkin()->makeKnownLinkObj( $this->articles[$index], 
-			  $wgContLang->convert( $this->articles[$index]->getPrefixedText() ) ) . 
+			$searchlink = SMWInfolink::newBrowsingLink('+',$this->articles[$index]->getShortHTMLText());
+			$r .= '<tr><td class="smwpropname">' . $this->articles[$index]->getShortHTMLText($this->getSkin()) .
+			/*$this->getSkin()->makeKnownLinkObj( $this->articles[$index]->getTitle, 
+			  $wgContLang->convert( $this->articles[$index]->getLongHTMLText() ) ) .*/ 
 			  '&nbsp;' . $searchlink->getHTML($this->getSkin()) .
 			  '</td><td class="smwprops">';
 			// Property values
