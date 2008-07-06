@@ -307,7 +307,7 @@ function smwfProcessShowParserFunction(&$parser) {
  * The {{#concept }} parser function processing part.
  */
 function smwfProcessConceptParserFunction(&$parser) {
-	global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $smwgPreviousConcept;
+	global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $smwgPreviousConcept, $wgContLang;
 	// The global $smwgConceptText is used to pass information to the MW hooks for storing it,
 	// $smwgPreviousConcept is used to detect if we already have a concept defined for this page.
 	$title = $parser->getTitle();
@@ -331,6 +331,7 @@ function smwfProcessConceptParserFunction(&$parser) {
 	SMWFactbox::$semdata->addSpecialValue(SMW_SP_CONCEPT_DESC,$dv);
 
 	// display concept box:
+	$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink');
 	$qresult = smwfGetStore()->getQueryResult($query);
 	$printer = SMWQueryProcessor::getResultPrinter('list', SMWQueryProcessor::CONCEPT_DESC, $qresult);
 	$printer->setShowErrors(false);
@@ -338,7 +339,7 @@ function smwfProcessConceptParserFunction(&$parser) {
 	smwfRequireHeadItem(SMW_HEADER_STYLE);
 	$result = '<div class="smwfact"><span class="smwfactboxhead">' . wfMsgForContent('smw_concept_description',$title->getText()) .
 	          (count($query->getErrors())>0?' ' . smwfEncodeMessages($query->getErrors()):'') .
-	          '</span><br />' .
+	          '</span>' . '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' . '<br />' .
 	          ($concept_docu?"<p>$concept_docu</p>":'') .
 	          '<pre>' . str_replace('[', '&#x005B;', $concept_text) . "</pre>\n" .
 	          $resultlink . '</div>';
