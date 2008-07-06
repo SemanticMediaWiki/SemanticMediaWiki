@@ -14,6 +14,7 @@
 */
 function smwfParserHook(&$parser, &$text) {
 	global $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgStoreActive;
+	SMWFactbox::initStorage($parser->getTitle()); // be sure we have our title, strange things happen in parsing
 
 	// store the results if enabled (we have to parse them in any case, in order to
 	// clean the wiki source for further processing)
