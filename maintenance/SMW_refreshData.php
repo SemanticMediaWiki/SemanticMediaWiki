@@ -149,7 +149,7 @@ for ($id = $start; $id <= $end; $id++) {
 		$revision = Revision::newFromTitle( $title );
 		if ( $revision === NULL ) continue;
 		$wgParser->parse($revision->getText(), $title, $options, true, true, $revision->getID());
-		SMWFactbox::storeData($title, true);
+		SMWFactbox::storeData(true);
 		// sleep to be nice to the server
 		if ( ($delay !== false) && (($num_files+1) % 100 === 0) ) {
 			usleep($delay);
