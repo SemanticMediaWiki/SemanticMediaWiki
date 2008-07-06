@@ -73,22 +73,7 @@ class SMWExporter {
 				$subprop_pe = SMWExporter::getSpecialElement('rdfs','subPropertyOf');
 				$equality_pe = SMWExporter::getSpecialElement('owl','equivalentProperty');
 				$types = $semdata->getPropertyValues(SMW_SP_HAS_TYPE);
-				/// TODO: improved mechanism for selecting property types is needed.
-				if (count($types)>0) {
-					$typeid = (current($types)->isUnary())?current($types)->getXSDValue():'__nry';
-				} else {
-					$typeid = '';
-				}
-				switch ($typeid) {
-					case '_anu':
-						$maintype_pe = SMWExporter::getSpecialElement('owl','AnnotationProperty');
-					break;
-					case '': case '_wpg': case '_uri': case '_ema': case '__nry':
-						$maintype_pe = SMWExporter::getSpecialElement('owl','ObjectProperty');
-					break;
-					default:
-						$maintype_pe = SMWExporter::getSpecialElement('owl','DatatypeProperty');
-				}
+				$maintype_pe = SMWExporter::getSpecialElement('owl', SMWExporter::getOWLPropertyType(end($types)));
 				$label = $subj_title->getText();
 			break;
 			default:
@@ -226,6 +211,25 @@ class SMWExporter {
 		}
 
 		return new SMWExpResource($localname, $dv, $namespace, $namespaceid);
+	}
+
+	/**
+	 * Determine what kind of OWL property some SMW property should be exported as.
+	 * The input is a SMWTypeValue object, a typeid string, or empty (use default)
+	 */
+	static public function getOWLPropertyType($type = '') {
+		/// TODO: improved mechanism for selecting property types is needed.
+		if ($type instanceof SMWTypeValue) {
+			$type = ($type->isUnary())?$type->getXSDValue():'__nry';
+		} elseif ($type == false) {
+			$type = '';
+		} // else keep $type
+		switch ($type) {
+			case '_anu': return 'AnnotationProperty';
+			case '': case '_wpg': case '_uri': case '_ema': case '__nry':
+				return 'ObjectProperty';
+			default: return 'DatatypeProperty';
+		}
 	}
 
 	/**

@@ -67,6 +67,9 @@ class SMWConceptValue extends SMWDataValue {
 			$desc = $qp->getQueryDescription($this->getWikiValue());
 			$exact = true;
 			$owldesc = $this->descriptionToExpData($desc, $exact);
+			if ($owldesc === false) {
+				$element = new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
+			}
 			if (!$exact) {
 				$result = new SMWExpData(new SMWExpElement(''));
 				$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf', 'type'),
@@ -88,7 +91,11 @@ class SMWConceptValue extends SMWDataValue {
 			                                new SMWExpData(SMWExporter::getSpecialElement('owl', 'Class')));
 			$elements = array();
 			foreach ($desc->getDescriptions() as $subdesc) {
-				$elements[] = $this->descriptionToExpData($subdesc, $exact);
+				$element = $this->descriptionToExpData($subdesc, $exact);
+				if ($element === false) {
+					$element = new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
+				}
+				$elements[] = $element;
 			}
 			$prop = ($desc instanceof SMWConjunction)?'intersectionOf':'unionOf';
 			$result->addPropertyObjectValue(SMWExporter::getSpecialElement('owl', $prop),
@@ -120,19 +127,29 @@ class SMWConceptValue extends SMWDataValue {
 			     ($desc->getDescription()->getComparator() == SMW_CMP_EQ) ) {
 				$result->addPropertyObjectValue(SMWExporter::getSpecialElement('owl', 'hasValue'), $subdata);
 			} else {
+				if ($subdata === false) {
+					$owltype = SMWExporter::getOWLPropertyType(SMWDataValueFactory::getPropertyObjectTypeID($desc->getProperty()));
+					if ($owltype == 'ObjectProperty') {
+						$subdata = new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
+					} elseif ($owltype == 'DatatypeProperty') {#
+						$subdata = new SMWExpData(SMWExporter::getSpecialElement('rdfs','Literal'));
+					} else { // no restrictions at all with annotation properties ...
+						return new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
+					}
+				}
 				$result->addPropertyObjectValue(SMWExporter::getSpecialElement('owl', 'someValuesFrom'), $subdata);
 			}
 		} elseif ($desc instanceof SMWValueDescription) {
 			if ($desc->getComparator() == SMW_CMP_EQ) {
 				$result = $desc->getDataValue()->getExportData();
 			} else { // alas, OWL cannot represent <= and >= ...
-				$result = new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
 				$exact = false;
+				$result = false;
 			}
 		} elseif ($desc instanceof SMWThingDescription) {
-			$result = new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
+			$result = false;
 		} else {
-			$result = new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
+			$result = false;
 			$exact = false;
 		}
 		return $result;
