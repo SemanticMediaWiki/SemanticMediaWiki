@@ -589,7 +589,7 @@ $messages['de'] = array(
 	'smw_isknowntype'             => 'Dieser Datentyp gehört zu den Standardtypen in diesem Wiki.',
 	'smw_isaliastype'             => 'Dieser Datentyp ist ein Alias für den Typ “$1”.',
 	'smw_isnotype'                => 'Der Datentyp “$1” ist kein Standardtyp in diesem Wiki, und hat auch keine ausreichende Definition auf seiner Seite.',
-	'smw_concept_description' => 'Beschreibung des Konzepts „$1“', // used in the namespace "Concept:"
+	'smw_concept_description'     => 'Beschreibung des Konzepts „$1“',
 	'smw_baduri'                  => 'URIs der Form „$1“ sind nicht zulässig.',
 	'smw_icalendar_link'          => 'iCalendar',
 	'smw_iq_disabled'             => 'Semantische Anfragen sind in diesem Wiki zur Zeit nicht möglich.',
@@ -3558,7 +3558,7 @@ $messages['zh-cn'] = array(
 	'smw_result_noresults'        => '抱歉，无您所要的结果。',
 );
 
-/** ‪中文(台灣)‬ (‪中文(台灣)‬)
+/** Taiwan Chinese (‪中文(台灣)‬)
  * @author Roc michael
  */
 $messages['zh-tw'] = array(
