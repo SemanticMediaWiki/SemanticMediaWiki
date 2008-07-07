@@ -233,14 +233,7 @@ Please enter both a page and a property.',
 	'smw_result_noresults' => 'Sorry, no results.'
 );
 
-/** Tarifit (Tarifit)
- * @author Jose77
- */
-$messages['rif'] = array(
-	'smw_browse_go' => 'Raḥ ɣa',
-);
-
-/** Niuean (native name missing)
+/** Niuean (ko e vagahau Niuē)
  * @author Jose77
  */
 $messages['niu'] = array(
@@ -946,6 +939,9 @@ $messages['fr'] = array(
 	'smw_isknowntype'              => 'Ce type fait partie des types de données standards de ce wiki.',
 	'smw_isaliastype'              => 'Ce type est un alias du type de données “$1”.',
 	'smw_isnotype'                 => "Le type « $1 » n'est pas un type de données standard sur ce wiki, et n'a pas non plus été défini par un utilisateur.",
+	'smw_concept_description'      => 'Description du concept « $1 »',
+	'smw_no_concept_namespace'     => 'Les concepts peut uniquement être définis dans les page dans le Concept : espace de nom.',
+	'smw_multiple_concepts'        => 'Chaque page de concept ne peut avoir qu’une seule définition.',
 	'smw_baduri'                   => 'Désolé. Les URIs du domaine $1 ne sont pas disponible à cet emplacement',
 	'smw_icalendar_link'           => 'iCalendrier',
 	'smw_vcard_link'               => 'vCarte',
@@ -995,6 +991,8 @@ $messages['fr'] = array(
 	'smw_badtitle'                 => "Désolé, mais “$1” n'est pas un titre de page valable.",
 	'smw_badqueryatom'             => "Les parties “[[…]]” de la requête n'ont pas été comprises.",
 	'smw_propvalueproblem'         => "La valeur de la propriété « $1 » n'a pas été comprise.",
+	'smw_noqueryfeature'           => 'Quelques fonctionnalité de requêtes ne sont pas supportés sur ce wiki et une partie d’entre elles ont été retirées ($1).',
+	'smw_noconjunctions'           => 'Les conjonctions dans les requêtes ne sont pas supportées sur ce wiki et une parties d’entres elles ont été retirées ($1).',
 	'smw_nodisjunctions'           => 'Les disjonctions dans les requêtes ne sont pas supportées sur ce wiki et des parties de la requête ont été ignorées ($1).',
 	'smw_querytoolarge'            => "Les conditions suivantes de la requête n'ont pu être évaluées en raison des restrictions de ce wiki à la taille ou à la profondeur des requêtes : $1.",
 	'smw_devel_warning'            => "Cette fonction est encore en développement et n'est peut-être pas encore opérationnelle. Il est peut-être judicieux de faire une sauvegarde du contenu du wiki avant toute utilisation de cette fonction.",
@@ -1095,6 +1093,9 @@ $messages['gl'] = array(
 	'smw_isknowntype'             => 'Este tipo está entre os tipos de datos deste wiki.',
 	'smw_isaliastype'             => 'Este tipo é un alias para o tipo de datos “$1”.',
 	'smw_isnotype'                => 'O tipo “$1” non é un tipo de datos estándar no wiki, e ningún usuario lle deu unha definición.',
+	'smw_concept_description'     => 'Descrición do concepto “$1”',
+	'smw_no_concept_namespace'    => 'O conceptos só poden ser definidos nas páxinas que están no espazo de nomes Concepto:.',
+	'smw_multiple_concepts'       => 'Cada páxina de conceptos só pode conter unha definición dun concepto.',
 	'smw_baduri'                  => 'Sentímolo, os URIs da forma “$1” non están permitidos.',
 	'smw_icalendar_link'          => 'iCalendario',
 	'smw_vcard_link'              => 'vTarxeta',
@@ -1143,6 +1144,8 @@ Pode que os resultados non sexan os agardados.',
 	'smw_badtitle'                => 'Sentímolo, pero “$1” non é un título de páxina válido.',
 	'smw_badqueryatom'            => 'Unha parte “[&#x005B;&hellip;]]” da pregunta non foi entendida.',
 	'smw_propvalueproblem'        => 'O valor da propiedade “$1” non foi entendido.',
+	'smw_noqueryfeature'          => 'Algunha característica da pregunta non está soportada neste wiki, polo que unha parte foi excluída ($1).',
+	'smw_noconjunctions'          => 'As conxuncións nas preguntas non están soportadas neste wiki, polo que unha parte foi excluída ($1).',
 	'smw_nodisjunctions'          => 'Non están soportadas as disxuncións nas preguntas neste wiki e parte desta foi ignorada ($1).',
 	'smw_querytoolarge'           => 'As seguintes condicións da pregunta non poden ser consideradas debido ás restricións do wiki no tamaño ou profundidade desta: $1.',
 	'smw_devel_warning'           => 'Actualmente esta característica está en desenvolvemento e pode que non funcione en toda a súa totalidade.
@@ -2511,6 +2514,7 @@ $messages['oc'] = array(
 
 /** Polish (Polski)
  * @author Łukasz Bolikowski
+ * @author Sp5uhe
  */
 $messages['pl'] = array(
 	'smw_edithelp'                => 'Pomoc edycyjna odnośnie relacji i atrybutów',
@@ -2768,6 +2772,13 @@ Por favor, introduza ambas a página e a propriedade.',
 	'smw_result_noresults'        => 'Desculpe, não há resultados.',
 );
 
+/** Tarifit (Tarifit)
+ * @author Jose77
+ */
+$messages['rif'] = array(
+	'smw_browse_go' => 'Raḥ ɣa',
+);
+
 /** Russian (Русский)
  * @author Александр Сигачёв
  */
@@ -2923,6 +2934,9 @@ $messages['sk'] = array(
 	'smw_isknowntype'             => 'Tento typ patrí medzi štandardné údajové typy na tejto wiki.',
 	'smw_isaliastype'             => 'Tento typ je alias údajového typu „$1“.',
 	'smw_isnotype'                => 'Tento typ „$1“ nie je štandardný údajový typ na tejto wiki a nebol ani definovaný používateľom.',
+	'smw_concept_description'     => 'Popis pojmu „$1”',
+	'smw_no_concept_namespace'    => 'Pojmy je možné definovať iba na stránkach v mennom priestore Concept:',
+	'smw_multiple_concepts'       => 'Každý pojem môže mať iba jednu definíciu pojmu.',
 	'smw_baduri'                  => 'Prepáčte, URI z rozsahu "$1" na tomto mieste nie sú dostupné.',
 	'smw_icalendar_link'          => 'iCalendar',
 	'smw_vcard_link'              => 'vCard',
@@ -2971,6 +2985,8 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_badtitle'                => 'Prepáčte, ale „$1“ nie je platný názov stránky.',
 	'smw_badqueryatom'            => 'Niektorá časť „[&#x005B;&hellip;]]“ nebola pochopená.',
 	'smw_propvalueproblem'        => 'Hodnota vlastnosti „$1“ nebola pochopená.',
+	'smw_noqueryfeature'          => 'Táto wiki nepodporuje istú časť požiadavky a jej časť bola ignorovaná ($1).',
+	'smw_noconjunctions'          => 'Táto wiki nepodporuje konjunkcie v požiadavkách a časť požiadavky bola ignorovaná ($1).',
 	'smw_nodisjunctions'          => 'Disjunkcie nie sú v požiadavkách na tejto wiki podporované a časť požiadavky bola ignorovaná ($1).',
 	'smw_querytoolarge'           => 'Nasledovné podmienky požiadavky nebudú zohľadnené z dôvodu obmedzení tejto wiki na dĺžku alebo hĺbku požiadavky: $1.',
 	'smw_devel_warning'           => 'Táto vlastnosť je momentálne vo vývoji a nemusí byť celkom funkčná. Predtým, než ju použijete si zálohujte dáta.',
