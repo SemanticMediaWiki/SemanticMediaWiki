@@ -824,6 +824,7 @@ class OWLExport {
 	 */
 	static public function fitsNsRestriction($res, $ns) {
 		if ($res === false) return true;
+		if (is_array($res)) return in_array($ns,$res);
 		if ($res >= 0) return ( $res == $ns );
 		return ( ($res != NS_CATEGORY) && ($res != SMW_NS_PROPERTY) && ($res != SMW_NS_TYPE) );
 	}

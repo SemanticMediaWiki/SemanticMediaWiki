@@ -6,10 +6,12 @@
  *
  * -o <filename>  output file, stdout is used if omitted; 
  *                file output is generally better and strongly recommended for large wikis
- * --categories   only do categories
- * --properties   only do properties
- * --types        only do types
- * --individuals  only do pages that are no categories, properties, or types
+ * --categories   do only categories
+ * --concepts     do only concepts
+ * --classes      do only concepts and categories
+ * --properties   do only properties
+ * --types        do only types
+ * --individuals  do only pages that are no categories, properties, or types
  * -d <delay>     slows down the export in order to stress the server less,
  *                sleeping for <delay> milliseconds every now and then
  * -e <each>      after how many exported entities should the server take a nap?
@@ -47,6 +49,10 @@ if ( !empty( $options['e'] ) ) {
 
 if ( array_key_exists( 'categories' , $options ) ) {
 	$export_ns = NS_CATEGORY;
+} elseif ( array_key_exists( 'concepts' , $options ) ) {
+	$export_ns = SMW_NS_CONCEPT;
+} elseif ( array_key_exists( 'classes' , $options ) ) {
+	$export_ns = array(NS_CATEGORY, SMW_NS_CONCEPT);
 } elseif ( array_key_exists( 'properties' , $options ) ) {
 	$export_ns = SMW_NS_PROPERTY;
 } elseif ( array_key_exists( 'types' , $options ) ) {
