@@ -4,6 +4,15 @@ if ( !defined( 'MEDIAWIKI' ) ) {
   die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
 }
 
+#################################################################
+#    CHANGING THE CONFIGURATION FOR SEMANTIC MEDIAWIKI          #
+#################################################################
+# Do not change this file directly, but copy custom settings    #
+# into your LocalSettings.php. Most settings should be make     #
+# between including this file and the call to enableSemantics().#
+# Exceptions that need to be set before are documented below.   #
+#################################################################
+
 ###
 # This is the path to your installation of Semantic MediaWiki as
 # seen from the web. Change it if required ($wgScriptPath is the
@@ -34,8 +43,12 @@ require_once('SMW_GlobalFunctions.php');
 #   content there).
 # * Statements like [[property::*]] in queries will be interpreted as printout
 #   statements (like ?property in the current #ask query syntax).
+# This option must be set before including this file, or otherwise the old Relation
+# namespaces will not be available.
 ##
-$smwgSMWBetaCompatible = false;
+if (!isset($smwgSMWBetaCompatible)) {
+	$smwgSMWBetaCompatible = false;
+}
 ##
 
 ###
