@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.1.1]]
+[[Semantic MediaWiki 1.2]]
 
 Install instructions for the latest SMW version are also online:
 
@@ -13,8 +13,8 @@ Contents:
   ** Customising Semantic MediaWiki
   ** Running SMW on older versions of MediaWiki
 * Notes on Upgrading
-  ** Upgrading from SMW 1.0 and SMW 1.0.1
   ** General Upgrading Instructions
+  ** Upgrading from SMW 1.0.* and SMW 1.1.*
   ** Upgrading from 1.0 RC1, 1.0 RC2, 1.0 RC3
   ** Upgrading from version 0.7
   ** Upgrading from versions 0.6 and 0.5
@@ -27,29 +27,34 @@ Contents:
 
 For a proper legal disclaimer, see the file "COPYING".
 
-In general, the extension can be installed into a working wiki without
-making any irreversible changes to the source code or database, so you
-can try out the software without much risk (though no dedicated uninstall
-mechanism is provided). Every serious wiki should be subject to regular 
-database backups! If you have any specific questions, please contact 
-the authors.
+In general, the extension can be installed into a working wiki without making
+any irreversible changes to the source code or database, so you can try out
+the software without much risk (though no dedicated uninstall mechanism is
+provided). Every serious wiki should be subject to regular database backups!
+If you have any specific questions, please contact the authors.
 
 == Requirements ==
 
-* MediaWiki 1.11.* or greater (tested from 1.11.0 to 1.13alpha (r33087)).
+* MediaWiki 1.11.* or greater (tested from 1.11.0 to 1.13alpha (r36227)).
 * PHP 5.x or greater installed and working
 * MySQL >= 4.0.14 (version required by MediaWiki)
 
 Notes:
-* SMW currently has experimental Postgres support. Testing and bug reports welcome.
-* SMW uses the PHP mb_*() multibyte functions such as mb_strpos in the
-php_mbstring.dll extension. This is standard but not enabled by default
-on some distributions of PHP.
-See http://php.net/manual/en/ref.mbstring.php#mbstring.installation
-* SMW creates and alters temporary tables on the fly for certain semantic queries. 
-  To do this, your wikidb user must have privileges for CREATE TEMPORARY TABLE, 
-  DROP TEMPORARY TABLE, and ALTER TABLE. The according feature can be disabled by
-  adding $smwgQSubcategoryDepth=0; and $smwgQPropertyDepth=0; to Localsettings.php.
+* SMW 1.2 currently has no Postgres support. It could be done if someone cares
+  to support this action.
+* SMW uses the PHP mb_*() multibyte functions such as mb_strpos in the 
+  php_mbstring.dll extension. This is standard but not enabled by default on 
+  some distributions of PHP.
+  See http://php.net/manual/en/ref.mbstring.php#mbstring.installation
+* SMW creates and alters temporary tables for certain semantic queries. To do
+  this, your wikidb user must have privileges for CREATE TEMPORARY TABLE,
+  DROP TEMPORARY TABLE, and ALTER TABLE. The according features can be disabled
+  by adding the following to Localsettings.php:
+
+  $smwgQSubcategoryDepth=0;
+  $smwgQPropertyDepth=0;
+  $smwgQFeatures        = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
+  $smwgQConceptFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY & ~SMW_CONCEPT_QUERY;
 
 == Installation ==
 
@@ -58,9 +63,9 @@ remarks in the section "Notes on Upgrading" below!
 
 (1) Extract the archive or check out the current files from SVN to obtain the
     directory "SemanticMediaWiki" that contains all relevant files. Copy this
-    directory to "[wikipath]/extensions/" (or extract/download it to this place).
-    We abbreviate "[wikipath]/extensions/SemanticMediaWiki" as "[SMW_path]" below.
-(2) Insert the following two lines into the file "[wikipath]/LocalSettings.php":
+    directory to "[wikipath]/extensions/" (or extract/download it there).
+    We abbreviate "[wikipath]/extensions/SemanticMediaWiki" as "[SMW_path]".
+(2) Insert the following two lines into "[wikipath]/LocalSettings.php":
 
        include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');
        enableSemantics('example.org');
@@ -75,38 +80,38 @@ remarks in the section "Notes on Upgrading" below!
     Please consider announcing your new site to the SMW semantic wiki list by
     using the according button on "Special:SMWAdmin".
 
-'''Remark:'''  Semantic MediaWiki uses six additional custom namespaces (see
-http://meta.wikimedia.org/wiki/Help:Custom_namespaces). If you have your own
-custom namespaces, you have to set the parameter $smwgNamespaceIndex  before
-including SMW_Settings.php. See the documentation within SMW_Settings.php for
-details. If you add more namespaces later on, then you have to assign them to
-higher numbers than those used by Semantic MediaWiki.
+'''Remark:'''  Semantic MediaWiki uses ten additional namespace indexes (see
+http://meta.wikimedia.org/wiki/Help:Custom_namespaces), in the range from
+100 to 109. 100 and 101 are only needed if $smwgSMWBetaCompatible is set.
+106 and 107 are reserved for the SemanticForms extension and not used by SMW.
+If you have your own custom namespaces, you have to set the parameter
+$smwgNamespaceIndex before including SMW_Settings.php. See the documentation
+$within SMW_Settings.php for details. If you add more namespaces later on,
+$then you have to assign them to higher numbers than those used by Semantic
+MediaWiki.
 
-If you are using a Postgres database, install the needed database objects by 
-importing the script "maintenance/SMW_Postgres_Schema.sql" using the psql 
-utility like so:
-  psql -U wikiuser -d wikidb -f maintenance/SMW_Postgres_Schema.sql
-Replace with your username and database, and use a -h hostname or -p port 
-as needed.
+There is currently no working Postgres support. If you need that, please
+contact the developers and support them in adjusting SMW appropriately.
 
 
 === Testing your Installation ===
 
-If you are uncertain that everything went well, you can do some testing steps to
-check if SMW is set up properly.
+If you are uncertain that everything went well, you can do some testing steps
+to check if SMW is set up properly.
 
-Go to the Special:Version page and you should see Semantic MediaWiki (version nn)
-listed as a Parser Hook and several wfSMWXxxx functions listed as Extension 
-Functions.
+Go to the Special:Version page and you should see Semantic MediaWiki (version
+nn) listed as a Parser Hook and several wfSMWXxxx functions listed as
+Extension Functions.
 
 Create a regular wiki page named "TestSMW", and in it enter the wiki text
   Property test:  [[testproperty::Dummypage]]
 
-when you preview and save the page, the SMW "Factbox" should appear showing the
-Testproperty as a link Dummypage.
+when you preview and save the page, the SMW "Factbox" should appear showing
+the Testproperty as a link Dummypage.
 
-If you don't get these results, check the steps in the Installation section, consult
-the FAQ section, then contact the user support list (see the Contact section).
+If you don't get these results, check the steps in the Installation section,
+consult the FAQ section, then contact the user support list (see the Contact
+section).
 
 === Customising Semantic MediaWiki ===
 
@@ -116,64 +121,70 @@ can set respective parameters somewhere below the line
 in your LocalSetting.php. For example, one can write
 
  include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');
- $smwgQDefaultLinking = 'all';
+ $smwgQDefaultLimit = 20;
  enableSemantics('example.org');
 
-to create links for all results returned by inline queries. The parameters that
-are available are documented in the file SMW_Settings.php. Do not change this
-file directly, but make all adoptions in your LocalSettings.php.
+to have only 20 results of inline queries being shown by default. The
+parameters that are available are documented in the file SMW_Settings.php. Do
+not change this file directly, but put adoptions into your LocalSettings.php.
 
 ==== Semantic MediaWiki on small wikis -- extended features ====
 
-Some features of SMW are turned off by default, since they could slow down larger
-sites. If you run a small site or have a very controlled user base, then you may
-wish to enable these additional features. Suggested entries for LocalSettings.php
-are:
+Some features of SMW are turned off by default, since they could slow down
+larger sites. If you run a small site or have a controlled user base, then you
+may wish to enable these additional features. Suggested entries for 
+LocalSettings.php are:
 
-$smwgQEqualitySupport = SMW_EQ_FULL;  // always interpret redirects as equality in queries
-$smwgQComparators = '<|>|!|~'; // enable the pattern search comparator ~ for strings
+$smwgQComparators = '<|>|!|~'; // + pattern search comparator ~ for strings
 
-Further relaxation of default limits e.g. on query size are possible. See SMW_Settings.php.
+Further relaxation of default limits e.g. on query size are possible.
+See SMW_Settings.php.
 
 ==== Semantic MediaWiki on very large wikis -- improving performance ====
 
-On very large or high traffic sites, further restriction of SMW features might be desirable
-for performance reasons. Besides setting up the usual external caches and distributed 
-DB-servers, you can also modify some SMW options to increase speed (while switching off
-features). Try some or all of the below in LocalSettings.php:
+On very large or high traffic sites, further restriction of SMW features might
+be desirable for performance reasons. Besides setting up the usual external
+caches and distributed DB-servers, you can also modify some SMW options to
+increase speed (while switching off features). Try some or all of the below in
+LocalSettings.php:
 
 $smwgQEnabled = false; // most radical -- no more semantic queries, just browsing/display features
 $smwgQSubcategoryDepth = 0; // disable subcategory reasoning in queries
 $smwgQSubpropertyDepth = 0; // disable subproperty reasoning in queries
-$smwgQDisjunctionSupport = false; // completely disable disjunctions in queries
-$smwgQMaxSize = 5; // allow only queries of 5 or fewer conditions (default 12)
+$smwgQFeatures        = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY; // disable disjunctions in queries
+$smwgQConceptFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY & ~SMW_CONCEPT_QUERY;
+$smwgQMaxSize  = 5; // allow only queries of 5 or fewer conditions (default 12)
 $smwgQMaxDepth = 2; // allow only queries of depth 2 or smaller (default 4)
 $smwgQMaxLimit = 100; // never ever return more than 100 results to a query (default 10000)
 $smwgQDefaultLimit = 10; // only return 10 query results by default
-$smwgRSSWithPages = false; // do not include pages into RSS feeds, speeds up feed generation
-$smwgRSSEnabled = false; // switch off RSS feeds completely, so as not to atttract too many queries
+$smwgRSSWithPages  = false; // do not include pages into RSS feeds, speeds up feed generation
+$smwgRSSEnabled    = false; // switch off RSS feeds completely, so as not to atttract too many queries
 
-These settings have different effects, and their effectiveness depends very much on the
-usage and content structure of your wiki. You may wich to try out conservative settings
-first and relax these step by step when things work reliably. If you have continued 
-performance issues on your *large* wiki, please do not hesitate to contact the SMW developers 
-for support.
+These settings have different effects, and their effectiveness depends very
+much on the usage and content structure of your wiki. You may wish to try out
+conservative settings first and relax these step by step when things work
+reliably. You can also restrict complex queries to Concept pages (wich may be
+editable only to certain user groups) as follows:
+
+$smwgQFeatures        = SMW_CONCEPT_QUERY; // only allow queries {{#ask: [[Concept:...]] }}
+$smwgQConceptFeatures = SMW_ANY_QUERY & ~SMW_CONCEPT_QUERY;
+
+If you have continued performance issues on your *large* wiki, please do not
+hesitate to contact the SMW developers for support.
 
 === Running SMW on older versions of MediaWiki ===
 
-If your site is still running on PHP4, SMW is not supported. It would hardly be 
-possible to backport the code to the old PHP version. If you have PHP5 but an 
-older MediaWiki version, additional patches/modifications might be needed.
+If your site is still running on PHP4, SMW is not supported. It would hardly
+be possible to backport the code to the old PHP version. If you have PHP5 but
+an older MediaWiki version, additional patches/modifications might be needed.
 Download an older release of SMW and have a look at the included INSTALL
 instructions to find out whether other changes are recommended therein.
 
 == Notes on Upgrading ==
 
-=== Upgrading from SMW 1.0 and SMW 1.0.1 ===
-
-No specific actions are required to run the wiki, but you should go once to
-Special:SMWAdmin for minor updates in the database, and maybe for using the 
-new SMW registration service.
+This section starts with some generic upgrading instructions that may or may
+not be needed for particular upgrades. Please read upgrading instructions for
+your wiki first to see whether this is actually needed.
 
 === General Upgrading Instructions ===
 
@@ -189,98 +200,145 @@ Instructions:
 (1) Install the new SMW version as described above.
 (2) Install SMW_refreshData.php as described in [SMW_path]/maintenance/README
 (3) Login to your server, and change directory to [wikipath]/maintenance
-(4) Run "php SMW_refreshData.php -pv" and follow its progress.
+(4) Run "php SMW_refreshData.php -ftpv" and follow its progress.
 (5) Run "php SMW_refreshData.php -v" and follow its progress.
-(6) Run "touch [wikipath]/LocalSettings.php" to make sure that no cached old versions
-    of wiki pages are used in the wiki.
+(6) Run "touch [wikipath]/LocalSettings.php" to make sure that no cached old
+    versions of wiki pages are used in the wiki.
 
-Since the databse updates can take a long time, it might be better to perform them
-via an SMW maintenance script as well instead of using Special:SMWAdmin. The according 
-script is called SMW_setup.php. In case of problems, retry the above procedure with
-the modified command "php SMW_refreshData.php -fpv" in step (4).
+Since the databse updates can take a long time, it might be better to perform
+them via an SMW maintenance script as well instead of using Special:SMWAdmin.
+The according script is called SMW_setup.php. For later updates, you can leave
+away the "f" option in step (4), so that your existing database is not deleted
+before the refresh (however, deletion is the most secure way to fully update).
 
 Some versions of SMW also introduced incompatibilities in the wiki syntax that
 may need to be fixed. You may want to read this first.
 
+=== Upgrading from SMW 1.0.* and SMW 1.1.* ===
+
+After file installation, you wiki will not show any semantic data at first! To
+use fix that temporarily, use the setting $smwgDefaultStore = 'SMWSQLStore'; 
+in your LocalSettings.php. This uses the existing old store, which is slower
+and has less features.
+
+To upgrade to the new store, do the following:
+(1) Login to your server, and change directory to [wikipath]/maintenance
+(2) Run "php SMW_setup.php -b SMWSQLStore2" and follow its progress.
+(3) Run "php SMW_refreshData.php -tpv -b SMWSQLStore2" and follow its progress.
+(4) Run "php SMW_refreshData.php -v -b SMWSQLStore2" and follow its progress.
+
+After completing this successfully, remove the $smwgDefaultStore setting from
+your LocalSettings.php again. Then check the whether the contents of the wiki
+is displayed properly. In case of problems, you can always go back to the old
+store again with $smwgDefaultStore. If the new store works well, you can free
+the space taken by the old store with
+
+         "php SMW_setup.php --delete -b SMWSQLStore"
+
+Changed configuration options:
+(all documented in detail in SMW_Settings.php)
+
+* If your wiki uses <ask> syntax or the Relation: namespace, you may want to
+  set $smwgSMWBetaCompatible = true; *before* inclusing SMW_Settings.php.
+  Consider changing <ask> to #ask to be able to drop SMW beta compatibility.
+* If you had a setting $smwgQDisjunctionSupport = false, then you now need the
+  following settings:
+
+  $smwgQFeatures        = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
+  $smwgQConceptFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY & ~SMW_CONCEPT_QUERY;
+
 === Upgrading from 1.0 RC1, 1.0 RC2, 1.0 RC3 ===
 
-Following the generic upgrading instructions above is recommended in any case. Moreover, some
-configuration options have changed slightly between release candidates. Currently these are:
+Following the generic upgrading instructions above is recommended in any case.
+Moreover, some configuration options have changed slightly between release
+candidates. Currently these are:
 
-* $smwgQEqualitySupport now is no longer true/false, but one of SMW_EQ_NONE, SMW_EQ_SOME, SMW_EQ_FULL
-* $smwgQDefaultNamespaces is now NULL by default, so that all namespaces are queried. The old default
-  was "array(NS_MAIN, NS_IMAGE)".
-* $smwgQDefaultLinking now defaults to 'all' such that all query results are linked. This is not a
-  performance issue any more. The old default was 'subject'.
+* $smwgQEqualitySupport now is no longer true/false, but one of SMW_EQ_NONE,
+  SMW_EQ_SOME, SMW_EQ_FULL
+* $smwgQDefaultNamespaces is now NULL by default, so that all namespaces are
+  queried. The old default was "array(NS_MAIN, NS_IMAGE)".
+* $smwgQDefaultLinking now defaults to 'all' such that all query results are
+  linked. This is not a performance issue any more. The old default was
+  'subject'.
 
-If you set any of these parameters in your LocalSettings.php, you need to update the config.
-Please see SMW_Settings.php for more documentation on the available parameters.
+If you set any of these parameters in your LocalSettings.php, you need to
+update the config. Please see SMW_Settings.php for more documentation on the
+available parameters.
 
 === Upgrading from version 0.7 ===
 
-*The above generic steps are strictly necessary, and suffice to get a wiki that basically works.*
+The above generic steps are strictly necessary, and suffice to get a wiki that
+basically works.
 
-However, some further steps are strongly suggested. SMW1.0 mainly introduced the following 
-incompatible changes to SMW0.7:
+However, some further steps are strongly suggested. SMW1.0 mainly introduced
+the following incompatible changes to SMW0.7:
 
-(a) The concepts (and namespaces) "Relation" and "Attribute" are now unified into "Property"
-(b) The special property "Main display unit" is obsolete, and the property "display unit"
-    shows slightly modified behaviour.
+(a) The concepts (and namespaces) "Relation" and "Attribute" are now unified
+    into "Property"
+(b) The special property "Main display unit" is obsolete, and the property
+    "display unit" shows slightly modified behaviour.
 (c) The configuration options in LocalSettings.php have changed.
 
-For (a), the namespace "Attribute:" was renamed into "Property:" -- you will find all your
-former attribute pages in the new place. All SMW-generated property links now point to 
-"Property", and thus work for your former Attributes. But the former Relations are still in 
-their old namespace nd need to be moved. SMW provides the maintenance script
-SMW_unifyProperties.php for this purpose.
+For (a), the namespace "Attribute:" was renamed into "Property:" -- you will
+find all your former attribute pages in the new place. All SMW-generated
+property links now point to "Property", and thus work for your former
+Attributes. But the former Relations are still in their old namespace and need
+to be moved. SMW provides the maintenance script SMW_unifyProperties.php for
+this purpose.
 
 Instructions:
-(1) Install SMW_unifyProperties.php as described in [SMW_path]/maintenance/README
+(1) Install SMW_unifyProperties.php following [SMW_path]/maintenance/README
 (2) Run "php SMW_unifyProperties" and follow its progress.
 
-The script moves all Relation pages to the according Property page. Problems occur if you
-had Attribute and Relation pages of the same title. It will report in which cases this
-occurred and leave it to you to clean up the merged pages. You can also run the script
-with option "-c" to get an overview of the conflicts, e.g. to delete undesired pages first.
-The script can be run safely more than once.
+The script moves all Relation pages to the according Property page. Problems
+occur if you had Attribute and Relation pages of the same title. It will report
+in which cases this occurred and leave it to you to clean up the merged pages.
+You can also run the script with option "-c" to get an overview of the
+conflicts, e.g. to delete undesired pages first. The script can be run safely
+more than once.
 
-In addition, you should run the MediaWiki maintenance script "refreshLinks.php" so that old
-links in SMW Factboxes are refreshed to point to Property: instead of Relation:/Attribute:.
+In addition, you should run the MediaWiki maintenance script "refreshLinks.php"
+so that old links in SMW Factboxes are refreshed to point to Property: instead
+of Relation:/Attribute:.
 
-For (b), all (property) pages using properties "Main display unit" and "display unit" should
-be updated: delete these annotations and use a single annotation "[[display units::...]]" 
-instead. Its value is the list of units you like to have diplayed, separated by ",". See the
-online docu for details. Running SMW_refreshData.php again (once) is required to reliably 
-propagate the updated property setting to all pages.
+For (b), all (property) pages using properties "Main display unit" and "display
+unit" should be updated: delete these annotations and use a single annotation
+"[[display units::...]]" instead. Its value is the list of units you like to
+have diplayed, separated by ",". See the online docu for details. Running 
+SMW_refreshData.php again (once) is required to reliably propagate the updated
+property setting to all pages.
 
-For (c), please consult the file [SMW_path]/includes/SMW_Settings.php to find out about
-the current options, and use only those in your LocalSettings.php (using older options
-will not hurt, but has no effect). Note that some options have just changed labels, while
-others were added or removed.
+For (c), please consult the file [SMW_path]/includes/SMW_Settings.php to find
+out about the current options, and use only those in your LocalSettings.php
+(using older options will not hurt, but has no effect). Note that some options
+have just changed labels, while others were added or removed.
 
 === Upgrading from version 0.6 or 0.5 ===
 
-It should in principle be possible to delete (move away) SMW, install a fresh SMW version,
-and run all updates as in the case of SMW0.7. Patches to MediaWiki (known before SMW0.7) are
-no longer required. Note that this upgrade has not been tested. An alternative would be to
-upgrade to SMW0.7 first, and to move on to SMW1.0 next.
+It should in principle be possible to delete (move away) SMW, install a fresh
+SMW version, and run all updates as in the case of SMW0.7. Patches to MediaWiki
+(known before SMW0.7) are no longer required. Note that this upgrade has not
+been tested. An alternative would be to upgrade to SMW0.7 first, and to move on
+to SMW1.0 next.
 
 === Upgrading from 0.4.x ===
 
-Upgrading should work like for versions 0.6 and 0.5. The type "Geographic area" and 
-"Geographic length" are no longer built in. But you can easily create them by yourself
-with the new type customisation features. See the docu at http://semantic-mediawiki.org
-for details.
+Upgrading should work like for versions 0.6 and 0.5. The type "Geographic area"
+and "Geographic length" are no longer built in. But you can easily create them
+by yourself with the new type customisation features. See the docu at 
+http://semantic-mediawiki.org for details.
 
 
 == Troubleshooting ==
 
-Some technical problems are well known and have easy fixes. Please view the online manual: 
-http://semantic-mediawiki.org/wiki/Help:Troubleshooting
+Some technical problems are well known and have easy fixes. Please view the 
+online manual: http://semantic-mediawiki.org/wiki/Help:Troubleshooting
 
-For reporting and looking up bugs, see http://semantic-mediawiki.org/wiki/Help:Reporting_bugs. 
-You can also send an email to semediawiki-user@lists.sourceforge.net (subscribe first at
+See http://semantic-mediawiki.org/wiki/Help:Reporting_bugs for reporting and
+looking up bugs. You can also send an email to
+semediawiki-user@lists.sourceforge.net (subscribe first at
 http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user)
+
 
 == SMW is installed. What should I do now? ==
 
@@ -292,10 +350,10 @@ article, semantic or not, will not improve your search capabilities.
 Start with a kind of article that occurs often in your wiki, possibly with
 some type of articles that is already collected in some category, such as
 cities, persons, or software projects. For these articles, introduce a few
-properties, and annotate many of the articles with the property.
-As with categories, less is often more in semantic annotation: do
-not use overly specific properties. A property that is not applicable to at
-least ten articles is hardly useful.
+properties, and annotate many of the articles with the property. As with 
+categories, less is often more in semantic annotation: do not use overly 
+specific properties. A property that is not applicable to at least ten
+articles is hardly useful.
 
 Templates can greatly simplify initial annotation. Create a flashy template
 for your users to play with, and hide the semantic annotations in the code
@@ -315,11 +373,12 @@ editing half of your wiki with new semantics ...
 If in doubt, choose simple annotations and learn to combine them into more
 complex information. For example, you do not need to have a category for
 "European cities" -- just combine "located in::Europe" and "Category:City."
-In any case, if some annotation is not sufficient, you can still add more
-information. Cleaning too specific and possibly contradictory annotations
-can be more problematic.
+If European cities are important for your wiki, you can create a Concept
+page for storing that particular query. In any case, if some annotation is
+not sufficient, you can still add more information. Cleaning too specific
+and possibly contradictory annotations can be more problematic.
 
-Regularly review users' use of categories, properties, and types using 
+Regularly review users' use of categories, properties, and types using
 the Special pages for each.
 
 
@@ -329,6 +388,7 @@ See "Contact" in the file README.
 
 If you have remarks or questions, please send them to
  semediawiki-user@lists.sourceforge.net
-You can join this mailing list at http://sourceforge.net/mail/?group_id=147937
+You can join this mailing list at
+ http://sourceforge.net/mail/?group_id=147937
 
 Please report bugs to MediaZilla, http://bugzilla.wikimedia.org
