@@ -323,7 +323,7 @@ class SMWFactbox {
 		if ($processSemantics) {
 			smwfGetStore()->updateData(SMWFactbox::$semdata, SMWFactbox::$m_new);
 		} else {
-			smwfGetStore()->clearData(SMWFactbox::$semdata->getSubject(), SMWFactbox::$m_new);
+			smwfGetStore()->clearData(SMWFactbox::$semdata->getSubject()->getTitle(), SMWFactbox::$m_new);
 		}
 	}
 
