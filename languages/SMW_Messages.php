@@ -17,15 +17,15 @@ $messages['en'] = array(
 	'smw_factbox_head'      => 'Facts about $1',
 	'smw_isspecprop'        => 'This property is a special property in this wiki.',
 	'smw_isknowntype'       => 'This type is among the standard datatypes of this wiki.',
-	'smw_isaliastype'       => 'This type is an alias for the datatype “$1”.',
-	'smw_isnotype'          => 'This type “$1” is not a standard datatype in the wiki, and has not been given a user definition either.',
+	'smw_isaliastype'       => 'This type is an alias for the datatype "$1".',
+	'smw_isnotype'          => 'This type "$1" is not a standard datatype in the wiki, and has not been given a user definition either.',
 	'smw_concept_description' => 'Description of concept "$1"', // used in the namespace "Concept:"
 	'smw_no_concept_namespace'=> 'Concepts can only be defined on pages in the Concept: namespace.',
 	'smw_multiple_concepts'   => 'Each concept page can have only one concept definition.',
 
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
-	'smw_baduri'        => 'Sorry, URIs of the form “$1” are not allowed.',
+	'smw_baduri'        => 'Sorry, URIs of the form "$1" are not allowed.',
 
 	// Link to RSS feeds
 	'smw_rss_link' => 'RSS',
@@ -41,34 +41,34 @@ $messages['en'] = array(
 	'smw_iq_altresults'  => 'Browse the result list directly.', // available link when JS is disabled
 
 	// Messages and strings for ontology resued (import)
-	'smw_unknown_importns'    => 'Import functions are not available for namespace “$1”.',
-	'smw_nonright_importtype' => '$1 can only be used for pages with namespace “$2”.',
-	'smw_wrong_importtype'    => '$1 can not be used for pages in the namespace “$2”.',
-	'smw_no_importelement'    => 'Element “$1” not available for import.',
+	'smw_unknown_importns'    => 'Import functions are not available for namespace "$1".',
+	'smw_nonright_importtype' => '$1 can only be used for pages with namespace "$2".',
+	'smw_wrong_importtype'    => '$1 can not be used for pages in the namespace "$2".',
+	'smw_no_importelement'    => 'Element "$1" not available for import.',
 
 	// Messages and strings for basic datatype processing
 	'smw_parseerror'    => 'The given value was not understood.', // generic error, "something" went wrong
 	'smw_decseparator'  => '.',
 	'smw_kiloseparator' => ',',
-	'smw_notitle'       => '“$1” cannot be used as a page name in this wiki.',
-	'smw_unknowntype'   => 'Unsupported type “$1” defined for property.',
+	'smw_notitle'       => '"$1" cannot be used as a page name in this wiki.',
+	'smw_unknowntype'   => 'Unsupported type "$1" defined for property.',
 	'smw_manytypes'     => 'More than one type defined for property.',
 	'smw_emptystring'   => 'Empty strings are not accepted.',
 	'smw_maxstring'     => 'String representation $1 is too long for {{SITENAME}}.',
-	'smw_notinenum'     => '“$1” is not in the list of possible values ($2) for this property.',
-	'smw_noboolean'     => '“$1” is not recognized as a Boolean (true/false) value.',
+	'smw_notinenum'     => '"$1" is not in the list of possible values ($2) for this property.',
+	'smw_noboolean'     => '"$1" is not recognized as a Boolean (true/false) value.',
 	'smw_true_words'    => 'true,t,yes,y', // comma-separated synonyms for Boolean TRUE besides '1', primary value first
 	'smw_false_words'   => 'false,f,no,n', // comma-separated synonyms for Boolean FALSE besides '0', primary value first
-	'smw_nofloat'       => '“$1” is not a number.',
-	'smw_infinite'      => 'Numbers as large as “$1” are not supported on {{SITENAME}}.',
-	'smw_infinite_unit' => 'Conversion into unit “$1” resulted in a number that is too large for {{SITENAME}}.',
+	'smw_nofloat'       => '"$1" is not a number.',
+	'smw_infinite'      => 'Numbers as large as "$1" are not supported on {{SITENAME}}.',
+	'smw_infinite_unit' => 'Conversion into unit "$1" resulted in a number that is too large for {{SITENAME}}.',
 
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this property supports no unit conversion',
-	'smw_unsupportedprefix' => 'Prefixes for numbers (“$1”) are not supported.',
-	'smw_unsupportedunit'   => 'Unit conversion for unit “$1” not supported.',
+	'smw_unsupportedprefix' => 'Prefixes for numbers ("$1") are not supported.',
+	'smw_unsupportedunit'   => 'Unit conversion for unit "$1" not supported.',
 
 	// Messages for geo coordinates parsing
-	'smw_lonely_unit'     => 'No number found before the symbol “$1”.', // $1 is something like °
+	'smw_lonely_unit'     => 'No number found before the symbol "$1".', // $1 is something like °
 	'smw_bad_latlong'     => 'Latitude and longitude must be given only once, and with valid coordinates.',
 	'smw_abb_north'       => 'N',
 	'smw_abb_east'        => 'E',
@@ -81,34 +81,34 @@ $messages['en'] = array(
 	'smw_service_online_maps' => " Find&nbsp;online&nbsp;maps|http://tools.wikimedia.de/~magnus/geo/geohack.php?params=\$9_\$7_\$10_\$8\n Google&nbsp;maps|http://maps.google.com/maps?ll=\$11\$9,\$12\$10&spn=0.1,0.1&t=k\n Mapquest|http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=latlong&latlongtype=degrees&latdeg=\$11\$1&latmin=\$3&latsec=\$5&longdeg=\$12\$2&longmin=\$4&longsec=\$6&zoom=6",
 
 	// Messages for datetime parsing
-	'smw_nodatetime' => 'The date “$1” was not understood (support for dates is still experimental).',
+	'smw_nodatetime' => 'The date "$1" was not understood (support for dates is still experimental).',
 
 	// Errors and notices related to queries
-	'smw_toomanyclosing'    => 'There appear to be too many occurrences of “$1” in the query.',
-	'smw_noclosingbrackets' => 'Some use of “[&#x005B;” in your query was not closed by a matching “]]”.',
-	'smw_misplacedsymbol'   => 'The symbol “$1” was used in a place where it is not useful.',
-	'smw_unexpectedpart'    => 'The part “$1” of the query was not understood.
+	'smw_toomanyclosing'    => 'There appear to be too many occurrences of "$1" in the query.',
+	'smw_noclosingbrackets' => 'Some use of "[&#x005B;" in your query was not closed by a matching "]]".',
+	'smw_misplacedsymbol'   => 'The symbol "$1" was used in a place where it is not useful.',
+	'smw_unexpectedpart'    => 'The part "$1" of the query was not understood.
 Results might not be as expected.',
 	'smw_emptysubquery'     => 'Some subquery has no valid condition.',
 	'smw_misplacedsubquery' => 'Some subquery was used in a place where no subqueries are allowed.',
-	'smw_valuesubquery'     => 'Subqueries not supported for values of property “$1”.',
+	'smw_valuesubquery'     => 'Subqueries not supported for values of property "$1".',
 	'smw_overprintoutlimit' => 'The query contains too many printout requests.',
 	'smw_badprintout'       => 'Some print statement in the query was misshaped.',
-	'smw_badtitle'          => 'Sorry, but “$1” is no valid page title.',
-	'smw_badqueryatom'      => 'Some part “[&#x005B;&hellip;]]” of the query was not understood.',
-	'smw_propvalueproblem'  => 'The value of property “$1” was not understood.',
+	'smw_badtitle'          => 'Sorry, but "$1" is no valid page title.',
+	'smw_badqueryatom'      => 'Some part "[&#x005B;&hellip;]]" of the query was not understood.',
+	'smw_propvalueproblem'  => 'The value of property "$1" was not understood.',
 	'smw_noqueryfeature'    => 'Some query feature was not supported in this wiki and part of the query was dropped ($1).',
 	'smw_noconjunctions'    => 'Conjunctions in queries are not supported in this wiki and part of the query was dropped ($1).',
 	'smw_nodisjunctions'    => 'Disjunctions in queries are not supported in this wiki and part of the query was dropped ($1).',
 	'smw_querytoolarge'     => 'The following query conditions could not be considered due to the wikis restrictions in query size or depth: $1.',
 	'smw_devel_warning'     => 'This feature is currently under development, and might not be fully functional.
 Backup your data before using it.',
-	'smw_notemplategiven'   => 'Please provide a value for the parameter “template” for this query format to work.',
+	'smw_notemplategiven'   => 'Please provide a value for the parameter "template" for this query format to work.',
 
 	// Messages for pages of types and properties
-	'smw_type_header'           => 'Properties of type “$1”',
+	'smw_type_header'           => 'Properties of type "$1"',
 	'smw_typearticlecount'      => 'Showing $1 properties using this type.',
-	'smw_attribute_header'      => 'Pages using the property “$1”',
+	'smw_attribute_header'      => 'Pages using the property "$1"',
 	'smw_attributearticlecount' => '<p>Showing $1 pages using this property.</p>',
 
 	// Messages used in RSS feeds
@@ -170,7 +170,7 @@ The ontologies have to follow a certain format, specified at the <a href="http:/
 	'types'          => 'Types',
 	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to properties.
 Each datatype has a page where additional information can be provided.',
-	'smw_typeunits'  => 'Units of measurement of type “$1”: $2',
+	'smw_typeunits'  => 'Units of measurement of type "$1": $2',
 
 	/*Messages for SemanticStatistics Special*/
 	'semanticstatistics' => 'Semantic statistics',
@@ -180,12 +180,12 @@ Some of the existing properties might be <a href="$6">unused properties</a>.
 Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.',
 
 	/*Messages for Flawed Attributes Special --disabled--*/
-	'flawedattributes' => 'Flawed Properties',
+	'flawedattributes' => 'Flawed properties',
 	'smw_fattributes'  => 'The pages listed below have an incorrectly defined property.
 The number of incorrect properties is given in the brackets.',
 
 	// Name of the URI Resolver Special (no content)
-	'uriresolver' => 'URI Resolver',
+	'uriresolver' => 'URI resolver',
 	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>',
 
 	// Messages for ask Special
@@ -206,8 +206,8 @@ The number of incorrect properties is given in the brackets.',
 	'searchbyproperty'      => 'Search by property',
 	'smw_sbv_docu'          => '<p>Search for all pages that have a given property and value.</p>',
 	'smw_sbv_noproperty'    => '<p>Please enter a property.</p>',
-	'smw_sbv_novalue'       => '<p>Please enter a valid value for the property, or view all property values for “$1.”</p>',
-	'smw_sbv_displayresult' => 'A list of all pages that have property “$1” with value “$2”',
+	'smw_sbv_novalue'       => '<p>Please enter a valid value for the property, or view all property values for "$1".</p>',
+	'smw_sbv_displayresult' => 'A list of all pages that have property "$1" with value "$2"',
 	'smw_sbv_property'      => 'Property',
 	'smw_sbv_value'         => 'Value',
 	'smw_sbv_submit'        => 'Find results',
