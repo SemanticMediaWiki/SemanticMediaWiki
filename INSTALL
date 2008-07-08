@@ -1,11 +1,13 @@
 [[Semantic MediaWiki 1.2]]
 
-Install instructions for the latest SMW version are also online:
+Install instructions for the latest SMW version are also online in a more
+convenient format for reading:
 
- http://semantic-mediawiki.org/wiki/Help:Administrator_manual
+         http://semantic-mediawiki.org/wiki/Help:Installation
 
 
-Contents:
+Contents
+
 * Disclaimer
 * Requirements
 * Installation
@@ -87,7 +89,7 @@ http://meta.wikimedia.org/wiki/Help:Custom_namespaces), in the range from
 If you have your own custom namespaces, you have to set the parameter
 $smwgNamespaceIndex before including SMW_Settings.php. See the documentation
 $within SMW_Settings.php for details. If you add more namespaces later on,
-$then you have to assign them to higher numbers than those used by Semantic
+then you have to assign them to higher numbers than those used by Semantic
 MediaWiki.
 
 There is currently no working Postgres support. If you need that, please
@@ -239,7 +241,7 @@ Changed configuration options:
 (all documented in detail in SMW_Settings.php)
 
 * If your wiki uses <ask> syntax or the Relation: namespace, you may want to
-  set $smwgSMWBetaCompatible = true; *before* inclusing SMW_Settings.php.
+  set $smwgSMWBetaCompatible = true; *before* including SMW_Settings.php.
   Consider changing <ask> to #ask to be able to drop SMW beta compatibility.
 * If you had a setting $smwgQDisjunctionSupport = false, then you now need the
   following settings:
