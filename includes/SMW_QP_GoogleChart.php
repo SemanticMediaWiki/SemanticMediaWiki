@@ -56,7 +56,7 @@ class SMWGoogleBarResultPrinter extends SMWResultPrinter {
 		$barwidth = 20; // width of each bar
 		$bardistance = 4; // distance between two bars
 		$height = $count* ($barwidth + $bardistance) + 15; // calculates the height of the image
-		return 	'<img src="http://chart.apis.google.com/chart?cht=bhs&chbh=' . $barwidth . ',' . $bardistance . '&chs=' . $this->m_width . 'x' . $height . '&chds=0,' . $max . '&chd=t:' . $t . '&chxt=y&chxl=0:|' . $n . '" height="' . $this->m_width . '" width="' . $height . '" />';
+		return 	'<img src="http://chart.apis.google.com/chart?cht=bhs&chbh=' . $barwidth . ',' . $bardistance . '&chs=' . $this->m_width . 'x' . $height . '&chds=0,' . $max . '&chd=t:' . $t . '&chxt=y&chxl=0:|' . $n . '" width="' . $this->m_width . '" height="' . $height . '" />';
 		
 	}
 
@@ -110,7 +110,7 @@ class SMWGooglePieResultPrinter extends SMWResultPrinter {
 				}
 			}
 		}
-		return 	'<img src="http://chart.apis.google.com/chart?cht=p3&chs=' . $this->m_width . 'x' . $this->m_height . '&chds=0,' . $max . '&chd=t:' . $t . '&chl=' . $n . '" height="' . $this->m_width . '" width="' . $this->m_height . '"  />';
+		return 	'<img src="http://chart.apis.google.com/chart?cht=p3&chs=' . $this->m_width . 'x' . $this->m_height . '&chds=0,' . $max . '&chd=t:' . $t . '&chl=' . $n . '" width="' . $this->m_width . '" height="' . $this->m_height . '"  />';
 		
 	}
 
