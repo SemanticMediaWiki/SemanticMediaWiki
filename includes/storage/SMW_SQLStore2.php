@@ -391,6 +391,7 @@ class SMWSQLStore2 extends SMWStore {
 				$result = $newres;
 			}
 		} else { // no subject given, get all values for the given property
+			$db =& wfGetDB( DB_SLAVE );
 			$result = array();
 			$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
 			switch ($id) {
