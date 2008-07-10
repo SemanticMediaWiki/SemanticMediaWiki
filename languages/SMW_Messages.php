@@ -794,7 +794,7 @@ $messages['eo'] = array(
 	'smw_result_noresults'        => 'Bedaŭrinde, neniuj rezultoj',
 );
 
-/** Spanish
+/** Spanish (Español)
  * @author Javier Calzada Prado
  * @author Carmen Jorge García-Reyes
  */
@@ -852,7 +852,6 @@ $messages['es'] = array(
 	'uriresolver'               => 'Traductor de URI',
 	'smw_uri_doc'               => '<p>El traductor de URI implementa <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Esto se preocupa de cosas que los humanos no lo hacen en los sitios web..</p>',
 	'ask'                       => 'Búsqueda semántica',
-	'smw_ask_doculink'          => 'http://semantic-mediawiki.org/wiki/Help:Búsqueda semántica',
 	'smw_ask_sortby'            => 'Ordenar por columna',
 	'smw_ask_ascorder'          => 'Ascendente',
 	'smw_ask_descorder'         => 'Descendente',
@@ -1240,7 +1239,7 @@ Por favor, insira ambas, a páxina e mais a propiedade.',
 	'smw_result_noresults'        => 'Sentímolo, non hai resultados.',
 );
 
-/** Hebrew
+/** Hebrew (עברית)
  * @author Udi Oron אודי אורון
  */
 $messages['he'] = array(
@@ -1660,13 +1659,26 @@ $messages['ka'] = array(
 
 /** Khmer (ភាសាខ្មែរ)
  * @author គីមស៊្រុន
+ * @author Lovekhmer
  */
 $messages['km'] = array(
-	'smw_sbv_value' => 'តំលៃ',
+	'smw_finallistconjunct' => 'និង',
+	'smw_oi_action'         => 'នាំចូល',
+	'types'                 => 'ប្រភេទ',
+	'smw_ask_ascorder'      => 'លំដាប់ឡើង',
+	'smw_ask_descorder'     => 'លំដាប់ចុះ',
+	'smw_ask_submit'        => 'ស្វែងរកលទ្ធផល',
+	'smw_sbv_value'         => 'តំលៃ',
+	'browse'                => 'រាវរកវិគី',
+	'smw_browse_go'         => 'ទៅ',
+	'smw_result_prev'       => 'មុន',
+	'smw_result_next'       => 'បន្ទាប់',
+	'smw_result_results'    => 'លទ្ធផល',
+	'smw_result_noresults'  => 'សូមអភ័យទោស! មិនមានលទ្ធផលទេ។',
 );
 
 /** Korean (한국어)
- * autotranslated
+ * @comment autotranslated
  */
 $messages['ko'] = array(
 	'smw_edithelp'                => '도움말을 수정하려면 속성을',
@@ -3429,7 +3441,7 @@ $messages['vo'] = array(
 	'smw_abb_west'  => 'V',
 );
 
-/** Mainland Chinese
+/** ‪Mainland Chinese‬ (‪中文(中国大陆)‬)
  * @author Roc Michael
  */
 $messages['zh-cn'] = array(
