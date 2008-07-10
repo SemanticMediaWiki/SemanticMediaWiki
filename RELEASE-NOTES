@@ -28,7 +28,7 @@ See http://semantic-mediawiki.org/wiki/SMW_1.2
   ** SMW_dumpRDF now supports restriction to concepts or concepts+categories
 * SMW <1.0 features disabled by default (remove obsolete features),
   can be reenabled with $smwgSMWBetaCompatible.
-* Compatible with Semantic Forms 1.2.5 and MediaWiki 1.13 (current devel 
+* Compatible with Semantic Forms 1.2.3 and MediaWiki 1.13 (current devel 
   version)
 
 
