@@ -233,6 +233,7 @@ function smwfSetupExtension() {
 	$wgHooks['ParserAfterTidy'][] = 'smwfParserAfterTidy'; // add items to HTML header during parsing
 	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeadersOutput'; // add items to HTML header during output
     $wgHooks['LinksUpdateConstructed'][] = 'smwfLinkUpdateHook'; // update data after template change and at safe
+	$wgHooks['BeforeParserrenderImageGallery'][] = 'smwfBlockFactboxFromImageGallery';
 
 	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage'; // special implementations for property/type articles
 
