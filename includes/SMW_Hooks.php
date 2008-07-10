@@ -101,6 +101,14 @@ function smwfParsePropertiesCallback($semanticLink) {
 	return $result;
 }
 
+/**
+ * Adds a block whenever a gallery will be started, otherwise the gallery may cause
+ * a factbox to be rendered. The smwgBlockFactBox is checked i
+ */
+function smwfBlockFactboxFromImageGallery(  ) {
+	SMWFactbox::blockOnce();
+	return true;
+}
 
 //// Saving, deleting, and moving articles
 

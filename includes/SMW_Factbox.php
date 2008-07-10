@@ -30,6 +30,10 @@ class SMWFactbox {
 	 * Factboxes to appear on one page.
 	 */
 	static protected $m_printed = false;
+	/**
+	 * True if the next try on printing should be blocked
+	 */
+	static protected $m_blocked = false;
 
 	/**
 	 * Initialisation method. Must be called before anything else happens.
@@ -58,6 +62,13 @@ class SMWFactbox {
 			SMWFactbox::$semdata->clear();
 			SMWFactbox::$m_printed = false;
 		}
+	}
+	
+	/**
+	 * Blocks the next rendering of the Factbox
+	 */
+	static function blockOnce() {
+		SMWFactbox::$m_blocked = true;
 	}
 
 	/**
@@ -214,6 +225,7 @@ class SMWFactbox {
 	 */
 	static function printFactbox(&$text) {
 		global $wgContLang, $wgServer, $smwgShowFactbox, $smwgShowFactboxEdit, $smwgStoreActive, $smwgIP, $wgRequest;
+		if (SMWFactbox::$m_blocked) { SMWFactbox::$m_blocked = false; return;}		
 		if (!$smwgStoreActive) return;
 		if (SMWFactbox::$m_printed) return;
 		wfProfileIn("SMWFactbox::printFactbox (SMW)");
