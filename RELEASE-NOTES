@@ -24,24 +24,24 @@ See http://semantic-mediawiki.org/wiki/SMW_1.2
   are automatically applied to affected pages (after some time)
 * Extended maintenance scripts
   ** delete an existing (now unused) SMW store with SMW_setup --delete
-  ** select SMW sotrage engine to use for scripts with option -b <Store>
+  ** select SMW storage engine to use for scripts with option -b <Store>
   ** SMW_dumpRDF now supports restriction to concepts or concepts+categories
 * SMW <1.0 features disabled by default (remove obsolete features),
-  can be reenabled with $smwgSMWBetaCompatible.
+  can be re-enabled with $smwgSMWBetaCompatible.
 * Compatible with Semantic Forms 1.2.3 and MediaWiki 1.13 (current devel 
   version)
 
 
 == Semantic MediaWiki 1.1.2 ==
 
-* Security update to favoid vulnerabilities on sites that use PHP 
+* Security update to avoid vulnerabilities on sites that use PHP 
   superglobals
 
 == Semantic MediaWiki 1.1.1 ==
 
 * Improved iCalendar support: more efficient processing, better heuristic 
   for giving dates, formatting bugfixes
-* Bugfix for Special:SearchByProperty (form-based serach failed)
+* Bugfix for Special:SearchByProperty (form-based search failed)
 * Minor bugfixes for RSS generation
 * Bugfix for Special_Ask in MediaWiki 1.11 with template formatting
 * Maintenance scripts now accept the MW_INSTALL_PATH environment variable
@@ -68,7 +68,7 @@ See http://semantic-mediawiki.org/wiki/SMW_1.2
 == Semantic MediaWiki 1.0.1 ==
 
 * Extended translations, new Italian translation
-* minor bugfies, fixed RSS links for long description texts
+* minor bugfixes, fixed RSS links for long description texts
 
 == Changes in SMW1.0 as compared to SMW0.7 ==
 
@@ -76,7 +76,7 @@ See http://semantic-mediawiki.org/wiki/SMW_1.2
 * Significant speedup (both server and network load substantially reduced,
   faster RDF export, more efficient query result formatting).
 * Prettier and easier to understand interfaces:
-  ** New tooltips for warnings and addtional information.
+  ** New tooltips for warnings and additional information.
   ** Simplified factbox layout, with all properties in alphabetic order.
   ** Inline warnings to simplify trouble shooting with annotations.
   ** Improved, more helpful and informative warning and error messages.
@@ -90,7 +90,7 @@ See http://semantic-mediawiki.org/wiki/SMW_1.2
   ** more readable inline query structure in #ask parser function,
      printouts separated from query
   ** semantic RSS feeds making feeds from query results via "format=rss"
-  ** new prinout format "?Category:Name" for #ask
+  ** new printout format "?Category:Name" for #ask
   ** option to hide main column by setting "mainlabel=-", and reinserting
      via print request "?" (only for #ask)
 * More expressivity for semantic querying:
@@ -135,7 +135,7 @@ See http://semantic-mediawiki.org/wiki/SMW_1.2
 Other changes for SMW1.0 include:
 * Type:Enum became obsolete, since all types now suppport "allows value", but it
   remains an alias for Type:String.
-* Some configurtation options for LocalSettings.php have changed. Read INSTALL
+* Some configuration options for LocalSettings.php have changed. Read INSTALL
   for details on how to upgrade from your old installation.
 
 
@@ -240,7 +240,7 @@ Other changes for the RC1 include:
 * Improved support for arbitrary symbols in string values, including wiki links
   and HTML entities (now correct in RDF).
 * Improved headers for query tables, with sort icon and link to attribute/relation
-  seperated.
+  separated.
 * Added maintenance script to rebuild semantic data, thus fixing any inconsistencies 
   in the semantic database that may have occurred earlier or due to text-only imports
   of pages.
