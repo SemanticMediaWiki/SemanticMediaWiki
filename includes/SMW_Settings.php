@@ -228,7 +228,7 @@ $smwgNamespacesWithSemanticLinks = array(
 # Use another storage backend for Semantic MediaWiki. Use SMW_STORE_TESTING
 # to run tests without modifying your database at all.
 ##
-$smwgDefaultStore = "SMWSQLStore";
+$smwgDefaultStore = "SMWSQLStore2";
 ##
 ## The following is for backwards compatibility of LocalSettings.php only
  define('SMW_STORE_MWDB',"SMWSQLStore"); // uses the MediaWiki database, needs initialisation via Special:SMWAdmin.
