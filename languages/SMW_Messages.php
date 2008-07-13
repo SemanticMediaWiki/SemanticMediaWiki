@@ -242,6 +242,7 @@ $messages['niu'] = array(
 
 /** Afrikaans (Afrikaans)
  * @author Arnobarnard
+ * @author Naudefj
  */
 $messages['af'] = array(
 	'smw_finallistconjunct'       => ', en',
@@ -284,6 +285,7 @@ $messages['af'] = array(
 	'smw_sbv_property'            => 'Eienskap',
 	'smw_sbv_value'               => 'Waarde',
 	'smw_sbv_submit'              => 'Vind resultate',
+	'smw_browse_go'               => 'Gaan',
 	'smw_pp_from'                 => 'Vanaf bladsy',
 	'smw_pp_type'                 => 'Eienskap',
 	'smw_result_prev'             => 'Vorige',
@@ -2529,6 +2531,7 @@ $messages['oc'] = array(
 /** Polish (Polski)
  * @author Łukasz Bolikowski
  * @author Sp5uhe
+ * @author Maikking
  */
 $messages['pl'] = array(
 	'smw_edithelp'                => 'Pomoc edycyjna odnośnie relacji i atrybutów',
@@ -2542,8 +2545,10 @@ $messages['pl'] = array(
 	'smw_nonright_importtype'     => '$1 może być użyte tylko dla artykułów z przestrzeni nazw "$2".',
 	'smw_wrong_importtype'        => '$1 nie może być użyte dla artykułów z przestrzeni nazw "$2".',
 	'smw_no_importelement'        => 'Nie można zaimportować elementu "$1".',
+	'smw_parseerror'              => 'Podana wartość nie została rozpoznana.',
 	'smw_decseparator'            => ',',
 	'smw_kiloseparator'           => '.',
+	'smw_notitle'                 => 'Nazwa "$1" nie może być używana jako nazwa strony.',
 	'smw_unknowntype'             => '"$1" jako typ atrybutu nie jest wspierany.',
 	'smw_manytypes'               => 'Zdefiniowano więcej niż jeden typ dla atrybutu.',
 	'smw_emptystring'             => 'Puste łańcuchy znakowe są niedozwolone.',
@@ -2552,13 +2557,22 @@ $messages['pl'] = array(
 	'smw_noboolean'               => '“$1” nie zostało rozpoznane jako wartość logiczna (prawda/fałsz).',
 	'smw_true_words'              => 'prawda,t,yes,y,tak,true',
 	'smw_false_words'             => 'fałsz,f,no,n,nie,false',
+	'smw_nofloat'                 => '"$1" nie jest cyfrą.',
 	'smw_infinite'                => 'Liczby tak duże jak $1 nie są w tym miejscu wspierane.',
 	'smw_infinite_unit'           => 'Konwersja do jednostki $1 zwróciła liczbę, która jest za duża jak na to miejsce.',
 	'smw_unsupportedprefix'       => 'Przedrostki dla liczb (“$1”) nie są obecnie wspierane.',
 	'smw_unsupportedunit'         => 'Konwersja dla jednostki "$1" nie jest wspierana.',
+	'smw_lonely_unit'             => 'Przed symbolem "$1" nie umieszczono żadnej cyfry.',
+	'smw_abb_north'               => 'N',
+	'smw_abb_east'                => 'E',
+	'smw_abb_south'               => 'S',
+	'smw_abb_west'                => 'W',
 	'smw_label_latitude'          => 'Długość:',
 	'smw_label_longitude'         => 'Szerokość:',
 	'smw_nodatetime'              => 'Data "$1" nie została zrozumiana. Wsparcie dla dat jest jednak wciąż w fazie eksperymentalnej.',
+	'smw_misplacedsymbol'         => 'Symbol "$1" został użyty w niewłaściwym miejscu.',
+	'smw_badtitle'                => '"$1" nie jest prawidłowym tytułem strony.',
+	'smw_propvalueproblem'        => 'Wartość "$1" nie została rozpoznana.',
 	'smw_devel_warning'           => 'Ta opcja jest obecnie w fazie rozwoju, może nie być w pełni funkcjonalna. Przed użyciem zabezpiecz swoje dane.',
 	'smw_type_header'             => 'Atrybuty typu “$1”',
 	'smw_typearticlecount'        => 'Pokazano $1 atrybutów używających tego typu.',
@@ -2568,10 +2582,12 @@ $messages['pl'] = array(
 	'smw_exportrdf_docu'          => '<p>Ta strona pozwala eksportować fragmenty artykułu w formacie RDF.  Aby wyeksportować artykuły, wpisz ich tytuły w poniższym polu tekstowym, po jednym tytule w wierszu.</p>',
 	'smw_exportrdf_recursive'     => 'Rekursywny eksport wszystkich powiązanych stron.  Zwróć uwagę, że wynik może być olbrzymi!',
 	'smw_exportrdf_backlinks'     => 'Eksportuj także wszystkie strony, które odwołują się do eksportowanych stron.  Tworzy przeglądalny RDF.',
+	'properties'                  => 'Właściwości',
 	'tooltip-purge'               => 'Kliknij tutaj, aby odświeżyć wszystkie zapytania i szablony na tej stronie',
 	'smw_purge'                   => 'Odśwież',
 	'ontologyimport'              => 'Importuj ontologię',
 	'smw_oi_docu'                 => 'Ta strona specjalna pozwala na import ontologii.  Ontologie muszą być reprezentowane w odpowiednim formacie, opisanym na <a href="http://semantic-mediawiki.org/wiki/Help:Ontology_import">stronie pomocy poświęconej importowi ontologii</a>.',
+	'smw_oi_action'               => 'Import',
 	'smw_oi_return'               => 'Powrót do <a href="$1">Special:OntologyImport</a>.',
 	'smw_oi_noontology'           => 'Nie podano ontologii, lub podana ontologia nie mogła być załadowana.',
 	'smw_oi_select'               => 'Wybierz zdania do importu, a następnie kliknij przycisk importu.',
@@ -2592,6 +2608,7 @@ $messages['pl'] = array(
 	'smw_ask_ascorder'            => 'Rosnąco',
 	'smw_ask_descorder'           => 'Malejąco',
 	'smw_ask_submit'              => 'Szukaj wyników',
+	'smw_ask_hidequery'           => 'Ukryj zapytanie',
 	'searchbyproperty'            => 'Szukaj po atrybucie',
 	'smw_sbv_docu'                => '<p>Szukanie wszystkich stron, które mają dany atrybut i wartość.</p>',
 	'smw_sbv_noproperty'          => '<p>Wpisz atrybut.</p>',
