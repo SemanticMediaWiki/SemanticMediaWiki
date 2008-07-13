@@ -65,6 +65,8 @@ class SMWUpdateJob extends Job {
 	/**
 	 * This actually files the job. This is prevented if the configuration of SMW
 	 * disables jobs.
+	 * NOTE: Any method that inserts jobs with Job::batchInsert or otherwise must
+	 * implement this check individually. The below is not called in these cases.
 	 */
 	function insert() {
 		global $smwgEnableUpdateJobs;

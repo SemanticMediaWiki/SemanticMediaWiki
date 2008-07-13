@@ -124,15 +124,6 @@ function smwfPreSaveHook(&$article, &$user, &$text, &$summary, $minor, $watch, $
 }
 
 /**
- * Former hook used for storing data. Probably obsolete now (some testing required).
- * TODO: delete this when the current architecture has been tested sucessfully
- */
-function smwfSaveHook(&$article, &$user, &$text) {
-// 	smwfSaveDataForTitle($article->getTitle()); // done by LinksUpdate now
-	return true;
-}
-
-/**
  * Used to updates data after changes of templates, but also at each saving of an article.
  */
 function smwfLinkUpdateHook($links_update) {
@@ -176,12 +167,13 @@ function smwfEqualDatavalues($dv1, $dv2) {
  *  updated. To fix this, one would need to store errors as well.
  */
 function smwfSaveDataForTitle($title) {
+	global $smwgEnableUpdateJobs;
 	$namespace = $title->getNamespace();
-	$updatejobflag = false;
 
 	// Check if the semantic data has been changed.
 	// Sets the updateflag to true if so.
-	if ($namespace == SMW_NS_PROPERTY) {
+	$updatejobflag = false;
+	if ($smwgEnableUpdateJobs && ($namespace == SMW_NS_PROPERTY) ) {
 		// if it is a property, then we need to check if the type or
 		// the allowed values have been changed 
 		$oldtype = smwfGetStore()->getSpecialValues($title, SMW_SP_HAS_TYPE);
@@ -194,48 +186,39 @@ function smwfSaveDataForTitle($title) {
 			$newvalues = SMWFactbox::$semdata->getPropertyValues(SMW_SP_POSSIBLE_VALUE);
 			$updatejobflag = smwfEqualDatavalues($oldvalues, $newvalues);
 		}
-	}
-		
-	if ($namespace == SMW_NS_TYPE) {
+	} elseif ($smwgEnableUpdateJobs && ($namespace == SMW_NS_TYPE) ) {
 		// if it is a type we need to check if the conversion factors have been changed
 		$oldfactors = smwfGetStore()->getSpecialValues($title, SMW_SP_CONVERSION_FACTOR);
 		$newfactors = SMWFactbox::$semdata->getPropertyValues(SMW_SP_CONVERSION_FACTOR);
-		
 		$updatejobflag = smwfEqualDatavalues($oldfactors, $newfactors);
 	}
 
-	// Save semantic data
+	// Actually store semantic data
 	SMWFactbox::storeData(smwfIsSemanticsProcessed($title->getNamespace()));
 
 	// Trigger relevant Updatejobs if necessary
 	if ($updatejobflag) {
+		$jobs = array();
 		$store = smwfGetStore();
 		if ($namespace == SMW_NS_PROPERTY) {
 			$subjects = $store->getAllPropertySubjects($title);
 			foreach ($subjects as $subject) {
-				smwfGenerateSMWUpdateJobs($subject);
+				$jobs[] = new SMWUpdateJob($subject);
 			}
 		} elseif ($namespace == SMW_NS_TYPE) {
 			$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE,$title->getDBkey());
 			$subjects = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $dv);
 			foreach ($subjects as $titlesofpropertypagestoupdate) {
 				$subjectsPropertyPages = $store->getAllPropertySubjects($titlesofpropertypagestoupdate);
-				smwfGenerateSMWUpdateJobs($titlesofpropertypagestoupdate);
+				$jobs[] = new SMWUpdateJob($titlesofpropertypagestoupdate);
 				foreach ($subjectsPropertyPages as $titleOfPageToUpdate) {
-					smwfGenerateSMWUpdateJobs($titleOfPageToUpdate);
+					$jobs[] = new SMWUpdateJob($titleOfPageToUpdate);
 				}
 			}
 		}
+		Job::batchInsert($jobs); ///NOTE: this only happens if $smwgEnableUpdateJobs was true above
 	}
 	return true;
-}
-
-/**
- * Generates a job, which update the semantic data of the responding page
- */
-function smwfGenerateSMWUpdateJobs(& $title) {
-	$job = new SMWUpdateJob($title);
-	$job->insert();
 }
 
 /**

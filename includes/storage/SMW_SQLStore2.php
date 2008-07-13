@@ -1614,7 +1614,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * making changes, especially since errors may go unnoticed for some time.
 	 */
 	protected function updateRedirects($subject_t, $subject_ns, $curtarget_t='', $curtarget_ns=-1) {
-		global $smwgQEqualitySupport;
+		global $smwgQEqualitySupport, $smwgEnableUpdateJobs;
 		$sid = $this->getSMWPageID($subject_t, $subject_ns, '', false); // find real id of subject, if any
 		/// NOTE: $sid can be 0 here; this is useful to know since it means that fewer table updates are needed
 		$db =& wfGetDB( DB_SLAVE );
@@ -1657,14 +1657,14 @@ class SMWSQLStore2 extends SMWStore {
 			// -> ask SMW to update all affected pages as soon as possible (using jobs)
 			//first delete the existing redirect:
 			$db->delete('smw_redi2', array('s_title' => $subject_t,'s_namespace' => $subject_ns), 'SMW::updateRedirects');
-			if ($smwgQEqualitySupport != SMW_EQ_NONE) { // further updates if equality reasoning is enabled
+			if ( $smwgEnableUpdateJobs && ($smwgQEqualitySupport != SMW_EQ_NONE) ) { // further updates if equality reasoning is enabled
+				$jobs = array();
 				$res = $db->select( array('smw_rels2','smw_ids'),'DISTINCT smw_title,smw_namespace',
 				                    's_id=smw_id AND o_id=' . $db->addQuotes($old_tid),
 				                    'SMW::updateRedirects');
 				while ($row = $db->fetchObject($res)) {
 					$t = Title::makeTitle($row->smw_namespace,$row->smw_title);
-					$job = new SMWUpdateJob($t);
-					$job->insert();
+					$jobs[] = new SMWUpdateJob($t);
 				}
 				$db->freeResult($res);
 				if ( $subject_ns == SMW_NS_PROPERTY ) {
@@ -1676,8 +1676,7 @@ class SMWSQLStore2 extends SMWStore {
 						                    'SMW::updateRedirects');
 						while ($row = $db->fetchObject($res)) {
 							$t = Title::makeTitle($row->smw_namespace,$row->smw_title);
-							$job = new SMWUpdateJob($t);
-							$job->insert();
+							$jobs[] = new SMWUpdateJob($t);
 						}
 					}
 					$res = $db->select( array('smw_subs2','smw_ids'),'DISTINCT smw_title,smw_namespace',
@@ -1685,8 +1684,7 @@ class SMWSQLStore2 extends SMWStore {
 					                    'SMW::updateRedirects');
 					while ($row = $db->fetchObject($res)) {
 						$t = Title::makeTitle($row->smw_namespace,$row->smw_title);
-						$job = new SMWUpdateJob($t);
-						$job->insert();
+						$jobs[] = new SMWUpdateJob($t);
 					}
 				} elseif ( $subject_ns == NS_CATEGORY ) {
 					foreach (array('smw_subs2','smw_inst2') as $table) {
@@ -1695,11 +1693,11 @@ class SMWSQLStore2 extends SMWStore {
 						                    'SMW::updateRedirects');
 						while ($row = $db->fetchObject($res)) {
 							$t = Title::makeTitle($row->smw_namespace,$row->smw_title);
-							$job = new SMWUpdateJob($t);
-							$job->insert();
+							$jobs[] = new SMWUpdateJob($t);
 						}
 					}
 				}
+				Job::batchInsert($jobs); ///NOTE: this only happens if $smwgEnableUpdateJobs was true above
 			}
 		}
 		// finally, write the new redirect AND refresh your internal canonical id cache!
