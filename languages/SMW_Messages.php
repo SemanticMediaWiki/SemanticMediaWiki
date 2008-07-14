@@ -1362,6 +1362,13 @@ $messages['ht'] = array(
 	'smw_abb_west'            => 'W',
 );
 
+/** Interlingua (Interlingua)
+ * @author McDutchie
+ */
+$messages['ia'] = array(
+	'smw_oi_action' => 'Importar',
+);
+
 /** Italian (Italiano)
  * @author Davide Eynard, David Laniado
  * @author Cruccone
