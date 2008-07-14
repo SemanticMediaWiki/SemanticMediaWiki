@@ -43,7 +43,7 @@ class SMWNumberValue extends SMWDataValue {
 
 		$parts = preg_split('/([-+]?\s*\d+(?:\\' . $kiloseparator . '\d\d\d)*' .
 		                      '(?:\\' . $decseparator . '\d+)?\s*(?:[eE][-+]?\d+)?)/u',
-		                      trim(str_replace(array('&nbsp;','&thinsp;'), '', $value)),
+		                      trim(str_replace(array('&nbsp;','&thinsp;', ' '), '', $value)),
 		                      2, PREG_SPLIT_DELIM_CAPTURE);
 
 		if (count($parts) >= 2) {
