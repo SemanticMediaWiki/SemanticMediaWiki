@@ -320,7 +320,7 @@ $messages['ar'] = array(
 	'smw_parseerror'               => 'القيمة المعطاة كانت غير مفهومة.',
 	'smw_kiloseparator'            => '،',
 	'smw_notitle'                  => '“$1” لا يمكن أن تستخدم مثل هذا الاسم في صفحة ويكي.',
-	'smw_unknowntype'              => 'نوع غير مدعوم "$ 1" لتعريف الممتلكات.',
+	'smw_unknowntype'              => 'نوع غير مدعوم "$1" لتعريف الممتلكات.',
 	'smw_manytypes'                => 'أكثر من نوع واحد لتعريف الخاصية.',
 	'smw_emptystring'              => 'الجمل الفارغة غير مقبولة.',
 	'smw_maxstring'                => '{{SITENAME}} طويل جدا ل $1 سلسلة أحرف ترميز.',
@@ -724,6 +724,14 @@ $messages['de'] = array(
 	'smw_result_next'             => 'Vorwärts',
 	'smw_result_results'          => 'Ergebnisse',
 	'smw_result_noresults'        => 'Keine Ergebnisse gefunden.',
+);
+
+/** Greek (Ελληνικά)
+ * @author Consta
+ */
+$messages['el'] = array(
+	'smw_sbv_property' => 'Ιδιότητα',
+	'smw_pp_type'      => 'Ιδιότητα',
 );
 
 /** Esperanto (Esperanto)
@@ -1322,6 +1330,7 @@ $messages['hil'] = array(
 /** Haitian (Kreyòl ayisyen)
  * @author Masterches
  * @author Jvm
+ * @author Siebrand
  */
 $messages['ht'] = array(
 	'smw_edithelp'            => 'Èd nan redaksyon pwopryete yo ak relasyon',
@@ -1338,7 +1347,7 @@ $messages['ht'] = array(
 	'smw_iq_moreresults'      => '&hellip; lòt rezilta yo',
 	'smw_iq_nojs'             => 'Souple, itilize yon navigatè (bwozè entènèt) ki aksepte JavaScript aktive pou ou kapab wè eleman sa, bagay sa.',
 	'smw_iq_altresults'       => 'Fouye, gade lis rezilta yo dirèkteman.',
-	'smw_unknown_importns'    => 'Fonksyon pou ou kapab chaje fichye (rekipere pou ou menm) pa disponib pou espas non sa "$".',
+	'smw_unknown_importns'    => 'Fonksyon pou ou kapab chaje fichye (rekipere pou ou menm) pa disponib pou espas non sa "$1".',
 	'smw_nonright_importtype' => 'Ou dwe itilize eleman $1 sa sèlman pou paj ki genyen non espas sa "$2".',
 	'smw_wrong_importtype'    => '$1 pa dwe itilize pou paj ki nan non espas "$2".',
 	'smw_no_importelement'    => 'Eleman "$1" pa disponib pou rekipere, pou chaje.',
@@ -2471,7 +2480,7 @@ $messages['oc'] = array(
 	'smw_properties_docu'         => 'Sus aqueste wiki, son utilizadas las proprietats seguentas.',
 	'smw_property_template'       => '$1 del tipe $2 ($3)',
 	'smw_propertylackspage'       => 'Tota proprietat deuriá èsser descricha per una pagina !',
-	'smw_propertylackstype'       => 'Cap de tipe es pas estat especificat per aquesta proprietat (tipe actualament supausat : §1.',
+	'smw_propertylackstype'       => 'Cap de tipe es pas estat especificat per aquesta proprietat (tipe actualament supausat : §1).',
 	'smw_propertyhardlyused'      => 'Aquesta proprietat es fòrça utilizada sus aqueste wiki !',
 	'unusedproperties'            => 'Proprietats inutilizadas',
 	'smw_unusedproperties_docu'   => 'Las proprietats seguentas existisson, quitament se cap de pagina las utiliza pas.',
@@ -2541,6 +2550,7 @@ $messages['oc'] = array(
  * @author Łukasz Bolikowski
  * @author Sp5uhe
  * @author Maikking
+ * @author Siebrand
  */
 $messages['pl'] = array(
 	'smw_edithelp'                => 'Pomoc edycyjna odnośnie relacji i atrybutów',
@@ -2611,7 +2621,7 @@ $messages['pl'] = array(
 	'types'                       => 'Typy',
 	'smw_types_docu'              => 'Poniżej znajduje się lista wszystkich typów które mogą być przypisane atrybutom.  Każdy typ posiada artykuł, w którym mogą znajdować się dodatkowe informacje.',
 	'uriresolver'                 => 'Resolver URI',
-	'smw_uri_doc'                 => '<p>Resolver URI implementuje <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Dzięki temu ludzie nie zamieniają się w strony WWW ;)</p>',
+	'smw_uri_doc'                 => '<p>Resolver URI implementuje <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Dzięki temu ludzie nie zamieniają się w strony WWW.</p>',
 	'ask'                         => 'Szukanie semantyczne',
 	'smw_ask_sortby'              => 'Sortuj po kolumnie',
 	'smw_ask_ascorder'            => 'Rosnąco',
@@ -3308,6 +3318,7 @@ $messages['te'] = array(
 /** Vietnamese (Tiếng Việt)
  * @author Vinhtantran
  * @author Minh Nguyen
+ * @author Siebrand
  */
 $messages['vi'] = array(
 	'smw_edithelp'                => 'Trợ giúp sửa đổi tại thuộc tính',
@@ -3362,7 +3373,7 @@ Kết quả có thể không như mong đợi.',
 	'smw_valuesubquery'           => 'Truy vấn con không hỗ trợ các giá trị của tham số “$1”.',
 	'smw_overprintoutlimit'       => 'Câu truy vấn chứa quá nhiều yêu cầu trang in.',
 	'smw_badprintout'             => 'Lệnh yêu cầu in nào đó trong câu truy vấn có dạng sai.',
-	'smw_badtitle'                => 'Tên trang “1” không hợp lệ.',
+	'smw_badtitle'                => 'Tên trang “$1” không hợp lệ.',
 	'smw_badqueryatom'            => 'Phần “[&#x005B;&hellip;]]” nào đó của câu truy vấn không hiểu được.',
 	'smw_propvalueproblem'        => 'Không hiểu giá trị của thuộc tính “$1”.',
 	'smw_nodisjunctions'          => 'Phân tách trong câu truy vấn không hỗ trợ trong wiki này và một phần câu truy vấn bị bỏ qua ($1).',
