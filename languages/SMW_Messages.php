@@ -1366,7 +1366,9 @@ $messages['ht'] = array(
  * @author McDutchie
  */
 $messages['ia'] = array(
-	'smw_oi_action' => 'Importar',
+	'smw_label_latitude'  => 'Latitude:',
+	'smw_label_longitude' => 'Longitude:',
+	'smw_oi_action'       => 'Importar',
 );
 
 /** Italian (Italiano)
