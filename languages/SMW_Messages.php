@@ -2099,6 +2099,13 @@ $messages['mr'] = array(
 	'smw_result_noresults'         => 'माफ करा, निकाल नाहीत.',
 );
 
+/** Nahuatl (Nahuatl)
+ * @author Fluence
+ */
+$messages['nah'] = array(
+	'smw_browse_go' => 'Yāuh',
+);
+
 /** Dutch (Nederlands)
  * @author Siebrand
  */
