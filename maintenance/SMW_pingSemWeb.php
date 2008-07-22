@@ -27,8 +27,8 @@
 $optionsWithArgs = array( 'd', 's', 'e', 'h', 't' ); // -d <delay>, -s <startid>, -e <endid>
 
 require_once ( getenv('MW_INSTALL_PATH') !== false
-	? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
-	: 'commandLine.inc' );
+    ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
+    : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 
 global $smwgIP, $wgServer;
 include_once($smwgIP . '/includes/SMW_Infolink.php');

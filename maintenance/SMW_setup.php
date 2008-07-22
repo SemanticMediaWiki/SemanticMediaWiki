@@ -34,11 +34,10 @@
 
 $optionsWithArgs = array( 'b', 'user', 'password');
 
-set_include_path( get_include_path() . PATH_SEPARATOR .  dirname(__FILE__) . '/../../../' . 'maintenance' );
-
-$mwPath = getenv('MW_INSTALL_PATH') !== false ? getenv('MW_INSTALL_PATH').'/maintenance/' : '';
-require_once("{$mwPath}counter.php");
-require_once("{$mwPath}commandLine.inc");
+require_once ( getenv('MW_INSTALL_PATH') !== false
+    ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
+    : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
+require_once("$IP/maintenance/counter.php");
 
 global $smwgDefaultStore;
 

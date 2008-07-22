@@ -20,8 +20,8 @@
  */
 
 require_once ( getenv('MW_INSTALL_PATH') !== false
-	? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
-	: 'commandLine.inc' );
+    ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
+    : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 
 global $smwgIP;
 global $wgParser;

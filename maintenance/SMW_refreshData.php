@@ -30,9 +30,10 @@
 
 $optionsWithArgs = array( 'd', 's', 'e', 'b', 'server'); // -d <delay>, -s <startid>, -e <endid>, -b <backend>
 
-$mwPath = getenv('MW_INSTALL_PATH') !== false ? getenv('MW_INSTALL_PATH').'/maintenance/' : '';
-require_once("{$mwPath}counter.php");
-require_once("{$mwPath}commandLine.inc");
+require_once ( getenv('MW_INSTALL_PATH') !== false
+    ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
+    : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
+require_once("$IP/maintenance/counter.php");
 
 global $smwgEnableUpdateJobs, $wgServer;
 $smwgEnableUpdateJobs = false; // do not fork additional update jobs while running this script
