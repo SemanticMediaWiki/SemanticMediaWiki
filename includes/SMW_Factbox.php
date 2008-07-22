@@ -39,8 +39,9 @@ class SMWFactbox {
 	 * Initialisation method. Must be called before anything else happens.
 	 */
 	static function initStorage($title) {
-		// reset only if title is new and not the notorious NO TITLE thing the MW parser creates
-		if ( $title->getText() == 'NO TITLE' ) return;
+		// reset only if title exists, is new and is not the notorious
+		// NO TITLE thing the MW parser creates
+		if ( $title === NULL || $title->getText() == 'NO TITLE' ) return;
 		if ( (SMWFactbox::$semdata === NULL) ||
 		     (SMWFactbox::$semdata->getSubject()->getDBkey() != $title->getDBkey()) || 
 		     (SMWFactbox::$semdata->getSubject()->getNamespace() != $title->getNamespace()) ) {
