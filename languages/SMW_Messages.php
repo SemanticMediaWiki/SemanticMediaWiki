@@ -2103,7 +2103,8 @@ $messages['mr'] = array(
  * @author Fluence
  */
 $messages['nah'] = array(
-	'smw_browse_go' => 'Yāuh',
+	'smw_browse_go'   => 'Yāuh',
+	'smw_result_prev' => 'Achtopa',
 );
 
 /** Dutch (Nederlands)
@@ -2835,6 +2836,14 @@ Por favor, introduza ambas a página e a propriedade.',
  */
 $messages['rif'] = array(
 	'smw_browse_go' => 'Raḥ ɣa',
+);
+
+/** Romanian (Română)
+ * @author KlaudiuMihaila
+ */
+$messages['ro'] = array(
+	'smw_sbv_value'        => 'Valoare',
+	'smw_result_noresults' => 'Ne pare rău, nici un rezultat.',
 );
 
 /** Russian (Русский)
