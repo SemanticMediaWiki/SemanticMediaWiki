@@ -480,6 +480,7 @@ $messages['bg'] = array(
 	'smw_oi_return'               => 'Връщане към <a href="$1">Special:OntologyImport</a>.',
 	'smw_oi_comment'              => 'Добавяне на следния текст:',
 	'smw_oi_thisissubcategoryof'  => 'Подкатегория на',
+	'smw_oi_thishascategory'      => 'Част е от',
 	'types'                       => 'Типове',
 	'semanticstatistics'          => 'Семантични статистики',
 	'ask'                         => 'Семантично търсене',
@@ -2105,6 +2106,7 @@ $messages['mr'] = array(
 $messages['nah'] = array(
 	'smw_browse_go'   => 'Yāuh',
 	'smw_result_prev' => 'Achtopa',
+	'smw_result_next' => 'Niman',
 );
 
 /** Dutch (Nederlands)
