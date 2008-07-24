@@ -15,6 +15,8 @@
 class SMWPropertyPage extends SMWOrderedListPage {
 
 	protected $special_prop; // code number of special property, false if not.
+	private $subproperties;  // list of sub-properties of this property
+	private $subprop_start_char;  // array of first characters of printed articles, used for making subheaders
 
 	/**
 	 * Use small $limit (property pages might become large)
@@ -24,6 +26,12 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$this->limit = $smwgPropertyPagingLimit;
 		$this->special_prop = $smwgContLang->findSpecialPropertyID($this->mTitle->getText(), false);
 		return true;
+	}
+
+	protected function clearPageState() {
+		parent::clearPageState();
+		$this->subproperties = array();
+		$this->subprop_start_char = array();
 	}
 
 	/**
@@ -63,6 +71,15 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		foreach ($this->articles as $dv) {
 			$this->articles_start_char[] = $wgContLang->convert( $wgContLang->firstChar( $dv->getSortkey() ) );
 		}
+
+		// retrieve all subproperties of this property
+		$s_options = new SMWRequestOptions();
+		$s_options->sort = true;
+		$s_options->ascending = true;
+		$this->subproperties = $store->getSpecialSubjects(SMW_SP_SUBPROPERTY_OF, $this->getDataValue(), $s_options);
+		foreach ($this->subproperties as $dv) {
+			$this->subprop_start_char[] = $wgContLang->convert( $wgContLang->firstChar( $dv->getSortKey() ) );
+		}
 	}
 
 	/**
@@ -75,12 +92,22 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$ti = htmlspecialchars( $this->mTitle->getText() );
 		if ($this->special_prop !== false) {
 			$r .= '<p>' .wfMsg('smw_isspecprop') . "</p>\n";
-		} else {		
+		} else {
 			$nav = $this->getNavigationLinks();
+			if (count($this->subproperties) > 0) {
+				$r .= "<div id=\"mw-subcategories\">\n<h2>" . wfMsg('smw_subproperty_header',$ti) . "</h2>\n";
+				$r .= '<p>' . wfMsg('smw_subpropertyarticlecount', min($this->limit, count($this->subproperties))) . "</p>\n";
+				if (count($this->subproperties) <= 6) {
+					$r .= $this->shortList(0,count($this->subproperties), $this->subproperties, $this->subprop_start_char);
+				} else {
+					$r .= $this->columnList(0,count($this->subproperties), $this->subproperties, $this->subprop_start_char);
+				}
+				$r .= "\n</div>";
+			}
 			$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
 			$r .= '<h2>' . wfMsg('smw_attribute_header',$ti) . "</h2>\n";
-			$r .= wfMsg('smw_attributearticlecount', min($this->limit, count($this->articles))) . "\n";
-			$r .= $this->shortList( $this->articles, $this->articles_start_char ) . "\n</div>" . $nav;
+			$r .= '<p>' . wfMsg('smw_attributearticlecount', min($this->limit, count($this->articles))) . "</p>\n";
+			$r .= $this->subjectObjectList() . "\n</div>" . $nav;
 		}
 		wfProfileOut( __METHOD__ . ' (SMW)');
 		return $r;
@@ -90,7 +117,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * Format a list of articles chunked by letter in a table that shows subject articles in
 	 * one column and object articles/values in the other one.
 	 */
-	private function shortList() {
+	private function subjectObjectList() {
 		global $wgContLang;
 		$store = smwfGetStore();
 

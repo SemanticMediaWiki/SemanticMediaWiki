@@ -151,6 +151,82 @@ abstract class SMWOrderedListPage extends Article {
 		}
 		return $this->skin;
 	}
+
+	/**
+	 * Like Article's getTitle(), but returning a suitable SMWWikiPageValue
+	 */
+	protected function getDataValue() {
+		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+		$t = $this->getTitle();
+		$dv->setValues($t->getDBkey(), $t->getNamespace());
+		return $dv;
+	}
+
+	/**
+	 * Format a list of SMWWikipageValues chunked by letter in a three-column
+	 * list, ordered vertically.
+	 */
+	protected function columnList($start, $end, $elements, $elements_start_char) {
+		// divide list into three equal chunks
+		$chunk = (int) ( ($end-$start+1) / 3);
+
+		// get and display header
+		$r = '<table width="100%"><tr valign="top">';
+
+		$prev_start_char = 'none';
+
+		// loop through the chunks
+		for($startChunk = $start, $endChunk = $chunk, $chunkIndex = 0;
+			$chunkIndex < 3;
+			$chunkIndex++, $startChunk = $endChunk, $endChunk += $chunk + 1) {
+			$r .= "<td>\n";
+			$atColumnTop = true;
+
+			// output all articles
+			for ($index = $startChunk ;
+				$index < $endChunk && $index < $end;
+				$index++ ) {
+				// check for change of starting letter or begining of chunk
+				if ( ($index == $startChunk) ||
+					 ($elements_start_char[$index] != $elements_start_char[$index - 1]) ) {
+					if( $atColumnTop ) {
+						$atColumnTop = false;
+					} else {
+						$r .= "</ul>\n";
+					}
+					$cont_msg = "";
+					if ( $elements_start_char[$index] == $prev_start_char )
+						$cont_msg = wfMsgHtml('listingcontinuesabbrev');
+					$r .= "<h3>" . htmlspecialchars( $elements_start_char[$index] ) . " $cont_msg</h3>\n<ul>";
+					$prev_start_char = $elements_start_char[$index];
+				}
+				$r .= "<li>" . $elements[$index]->getLongHTMLText($this->getSkin()) . "</li>\n";
+			}
+			if( !$atColumnTop ) {
+				$r .= "</ul>\n";
+			}
+			$r .= "</td>\n";
+		}
+		$r .= '</tr></table>';
+		return $r;
+	}
+
+	/**
+	 * Format a list of articles chunked by letter in a bullet list.
+	 */
+	protected function shortList($start, $end, $elements, $elements_start_char) {
+		$r = '<h3>' . htmlspecialchars( $elements_start_char[$start] ) . "</h3>\n";
+		$r .= '<ul><li>'. $elements[$start]->getLongHTMLText($this->getSkin()) . '</li>';
+		for ($index = $start+1; $index < $end; $index++ ) {
+			if ($elements_start_char[$index] != $elements_start_char[$index - 1]) {
+				$r .= "</ul><h3>" . htmlspecialchars( $elements_start_char[$index] ) . "</h3>\n<ul>";
+			}
+			$r .= '<li>' . $elements[$index]->getLongHTMLText($this->getSkin()) . '</li>';
+		}
+		$r .= '</ul>';
+		return $r;
+	}
+
 }
 
 

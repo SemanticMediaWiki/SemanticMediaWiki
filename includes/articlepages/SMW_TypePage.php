@@ -105,77 +105,12 @@ class SMWTypePage extends SMWOrderedListPage {
 		}
 
 		if ( count ( $this->articles ) > $cutoff ) {
-			return $this->columnList( $start, $end );
+			return $this->columnList( $start, $end, $this->articles, $this->articles_start_char );
 		} elseif ( count($this->articles) > 0) {
 			// for short lists of articles
-			return $this->shortList( $start, $end );
+			return $this->shortList( $start, $end, $this->articles, $this->articles_start_char );
 		}
 		return '';
-	}
-
-	/**
-	 * Format a list of articles chunked by letter in a three-column
-	 * list, ordered vertically.
-	 */
-	private function columnList($start, $end) {
-		// divide list into three equal chunks
-		$chunk = (int) ( ($end-$start+1) / 3);
-
-		// get and display header
-		$r = '<table width="100%"><tr valign="top">';
-
-		$prev_start_char = 'none';
-
-		// loop through the chunks
-		for($startChunk = $start, $endChunk = $chunk, $chunkIndex = 0;
-			$chunkIndex < 3;
-			$chunkIndex++, $startChunk = $endChunk, $endChunk += $chunk + 1) {
-			$r .= "<td>\n";
-			$atColumnTop = true;
-
-			// output all articles
-			for ($index = $startChunk ;
-				$index < $endChunk && $index < $end;
-				$index++ ) {
-				// check for change of starting letter or begining of chunk
-				if ( ($index == $startChunk) ||
-					 ($this->articles_start_char[$index] != $this->articles_start_char[$index - 1]) ) {
-					if( $atColumnTop ) {
-						$atColumnTop = false;
-					} else {
-						$r .= "</ul>\n";
-					}
-					$cont_msg = "";
-					if ( $this->articles_start_char[$index] == $prev_start_char )
-						$cont_msg = wfMsgHtml('listingcontinuesabbrev');
-					$r .= "<h3>" . htmlspecialchars( $this->articles_start_char[$index] ) . " $cont_msg</h3>\n<ul>";
-					$prev_start_char = $this->articles_start_char[$index];
-				}
-				$r .= "<li>" . $this->articles[$index]->getLongHTMLText($this->getSkin()) . "</li>\n";
-			}
-			if( !$atColumnTop ) {
-				$r .= "</ul>\n";
-			}
-			$r .= "</td>\n";
-		}
-		$r .= '</tr></table>';
-		return $r;
-	}
-
-	/**
-	 * Format a list of articles chunked by letter in a bullet list.
-	 */
-	private function shortList($start, $end) {
-		$r = '<h3>' . htmlspecialchars( $this->articles_start_char[$start] ) . "</h3>\n";
-		$r .= '<ul><li>'. $this->articles[$start]->getLongHTMLText($this->getSkin()) . '</li>';
-		for ($index = $start+1; $index < $end; $index++ ) {
-			if ($this->articles_start_char[$index] != $this->articles_start_char[$index - 1]) {
-				$r .= "</ul><h3>" . htmlspecialchars( $this->articles_start_char[$index] ) . "</h3>\n<ul>";
-			}
-			$r .= '<li>' . $this->articles[$index]->getLongHTMLText($this->getSkin()) . '</li>';
-		}
-		$r .= '</ul>';
-		return $r;
 	}
 
 }

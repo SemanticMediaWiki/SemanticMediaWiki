@@ -331,8 +331,8 @@ class SMWSQLStore2 extends SMWStore {
 			$oid = $this->getSMWPageID($value->getDBkey(),$namespace,$value->getInterwiki());
 			if ( ($oid != 0) && ($value->getNamespace() == $namespace) ) {
 				$res = $db->select( array('smw_subs2','smw_ids'), array('smw_title','smw_sortkey'),
-				                    's_id=smw_id AND o_id=' . $db->addQuotes($oid), 
-				                    'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
+				                    's_id=smw_id AND o_id=' . $db->addQuotes($oid) . $this->getSQLConditions($requestoptions, 'smw_sortkey', 'smw_sortkey'),
+				                    'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions, 'smw_sortkey') );
 				while($row = $db->fetchObject($res)) {
 					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 					$dv->setValues($row->smw_title, $namespace, false, '', $row->smw_sortkey);
