@@ -4,7 +4,9 @@
  * the pages that might have semantic data, and calling functions that
  * re-save semantic data for each one.
  *
- * Note: this file must be placed in MediaWiki's "maintenance" directory!
+ * Note: if SMW is not installed in its standard path under ./extensions
+ *       then the MW_INSTALL_PATH environment variable must be set.
+ *       See README in the maintenance directory.
  *
  * Usage:
  * php SMW_refreshData.php [options...]

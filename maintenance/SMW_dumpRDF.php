@@ -4,6 +4,10 @@
  * Usage:
  * php SMW_dumpRDF.php [options...]
  *
+ * Note: if SMW is not installed in its standard path under ./extensions
+ *       then the MW_INSTALL_PATH environment variable must be set.
+ *       See README in the maintenance directory.
+ *
  * -o <filename>  output file, stdout is used if omitted; 
  *                file output is generally better and strongly recommended for large wikis
  * --categories   do only categories

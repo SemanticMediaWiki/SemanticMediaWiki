@@ -4,7 +4,9 @@
  * See http://pingthesemanticweb.com/about.php for the rational behind this.
  * This script may be extended to other such services if desired.
  *
- * Note: this file must be placed in MediaWiki's "maintenance" directory!
+ * Note: if SMW is not installed in its standard path under ./extensions
+ *       then the MW_INSTALL_PATH environment variable must be set.
+ *       See README in the maintenance directory.
  *
  * Usage:
  * php SMW_pingSemWeb.php [options...]

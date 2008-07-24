@@ -8,7 +8,9 @@
  * This script helps by moving pages in the wrong namespace (i.e.
  * the former relations namespace) to the property namespace.
  *
- * Note: this file must be placed in MediaWiki's "maintenance" directory!
+ * Note: if SMW is not installed in its standard path under ./extensions
+ *       then the MW_INSTALL_PATH environment variable must be set.
+ *       See README in the maintenance directory.
  *
  * Usage:
  * php SMW_unifyProperties.php [options...]

@@ -1,15 +1,19 @@
 == Semantic MediaWiki maintenance scripts ==
 
-To run maintenance scripts it is recomended to set the environment
-variable MW_INSTALL_PATH to the root of your MediaWiki install.
-Then you may run them from their location here, or in the maintenance
-directory.
-
-Otherwise maintenance scripts must be placed within the "./maintenance"
-directory of your MediaWiki installation. In most cases, it is best to do
-this via a symbolic link, e.g.
-
-% ln -s ./myMediaWiki/extensions/SemanticMediaWiki/maintenance/SMW_dumpRDF.php ./myMediaWiki/maintenance/SMW_dumpRDF.php
-
-Scripts can be run with a command line PHP call if your MediaWiki is 
+Scripts can be run with a command line PHP call if your MediaWiki is
 properly configured to run maintenance scripts.
+
+If you keep SMW in the standard directory ./extensions/SemanticMediaWiki
+below your MediaWiki installation, then you can run these scripts from
+almost anywhere.
+
+Otherwise, it is required to set the environment variable MW_INSTALL_PATH
+to the root of your MediaWiki installation first. This is also required if
+you use a symbolic link from ./extensions/SemanticMediaWiki to the actual
+installation directory of SMW. Setting environment variables is different
+for different operating systems and shells, but can normally be done from
+the command line right before the php call. On Bash(Linux), e.g., one can
+use the following call to execute SMW_setup.php with different MW location.
+
+  export MW_INSTALL_PATH="/path/to/mediawiki" &&  php SMW_setup.php
+

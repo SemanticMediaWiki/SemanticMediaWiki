@@ -6,8 +6,9 @@
  * Special:SMWAdmin. However, the latter may timeout if the setup involves
  * migrating a lot of existing data.
  *
- * Note: this file must be placed in MediaWiki's "maintenance" directory!
- *       or the MW_INSTALL_PATH environment variable must be set.
+ * Note: if SMW is not installed in its standard path under ./extensions
+ *       then the MW_INSTALL_PATH environment variable must be set.
+ *       See README in the maintenance directory.
  *
  * Usage:
  * php SMW_refreshData.php [options...]
