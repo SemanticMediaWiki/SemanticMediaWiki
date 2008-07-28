@@ -602,6 +602,7 @@ Výsledky pravděpodobně nesplní očekávání.',
  * @author Markus Krötzsch
  * @author Denny
  * @author DaSch
+ * @author Pill
  */
 $messages['de'] = array(
 	'smw_edithelp'                => 'Bearbeitungshilfe für Attribute',
@@ -614,7 +615,7 @@ $messages['de'] = array(
 	'smw_isnotype'                => 'Der Datentyp “$1” ist kein Standardtyp in diesem Wiki, und hat auch keine ausreichende Definition auf seiner Seite.',
 	'smw_concept_description'     => 'Beschreibung des Konzepts „$1“',
 	'smw_no_concept_namespace'    => "Konzepte können nur im ''Konzept:'' Namensraum erstellt werden.",
-	'smw_multiple_concepts'       => 'Jede Konzept Seite kann nur eine Konzept-Definition beinhalten.',
+	'smw_multiple_concepts'       => 'Jede Konzeptseite kann nur eine Konzeptdefinition beinhalten.',
 	'smw_baduri'                  => 'URIs der Form „$1“ sind nicht zulässig.',
 	'smw_icalendar_link'          => 'iCalendar',
 	'smw_vcard_link'              => 'vCard',
@@ -667,7 +668,7 @@ $messages['de'] = array(
 	'smw_nodisjunctions'          => 'Disjunktionen (ODER) in Anfragen sind in diesem Wiki nicht zulässig und ein Teil der Anfrage muss daher ignoriert werden ($1).',
 	'smw_querytoolarge'           => 'Die folgenden Anfragebedingungen konnten wegen den in diesem Wiki gültigen Beschränkungen für größe und Tiefe von Anfragen nicht berücksichtigt werden: $1.',
 	'smw_devel_warning'           => 'Diese Funktion befindet sich zur Zeit in Entwicklung und ist eventuell noch nicht voll einsatzfähig. Eventuell ist es ratsam, den Inhalt des Wikis vor der Benutzung dieser Funktion zu sichern.',
-	'smw_notemplategiven'         => 'Der Parameter "template" muss angegeben werden damit diese Anfrage funktioniert.',
+	'smw_notemplategiven'         => 'Der Parameter „template“ muss angegeben werden, damit diese Anfrage durchgeführt werden kann.',
 	'smw_type_header'             => 'Attribute mit dem Datentyp „$1“',
 	'smw_typearticlecount'        => 'Es werden $1 Attribute mit diesem Datentyp angezeigt.',
 	'smw_attribute_header'        => 'Seiten mit dem Attribut „$1“',
@@ -1117,6 +1118,13 @@ Certaines des propriétés existantes peuvent faire être <a href="$6">inutilis�
 	'smw_result_next'              => 'Suivant',
 	'smw_result_results'           => 'Résultats',
 	'smw_result_noresults'         => 'Désolé, aucun résultat.',
+);
+
+/** Western Frisian (Frysk)
+ * @author Snakesteuben
+ */
+$messages['fy'] = array(
+	'smw_oi_action' => 'Ymportearje',
 );
 
 /** Galician (Galego)
@@ -2300,6 +2308,9 @@ $messages['no'] = array(
 	'smw_isknowntype'             => 'Denne datatypen er blant standardtypene på denne wikien.',
 	'smw_isaliastype'             => 'Denne datatypen er et alias for typen «$1».',
 	'smw_isnotype'                => 'Datatypen «$1» er ikke en standardtype på denne wikien, og har ikke blitt gitt en brukerdefinsjon.',
+	'smw_concept_description'     => 'Beskrivelse av konseptet «$1»',
+	'smw_no_concept_namespace'    => 'Konsepter kan kun defineres på sider i Concept:-navnerommet.',
+	'smw_multiple_concepts'       => 'Hver konseptside kan kun ha én konseptdefinisjon.',
 	'smw_baduri'                  => 'Beklager, URI-er på formen «$1» er ikke tillatt.',
 	'smw_icalendar_link'          => 'iKalender',
 	'smw_vcard_link'              => 'vCard',
@@ -2348,6 +2359,8 @@ Resultatene kan være uventede.',
 	'smw_badtitle'                => 'Beklager, «$1» er ikke en gyldig sidetittel.',
 	'smw_badqueryatom'            => 'En del («[&#x005B;&hellip;]]») av spørringen ble ikke forstått.',
 	'smw_propvalueproblem'        => 'Verdien av egenskapen «$1» ble ikke forstått.',
+	'smw_noqueryfeature'          => 'Noen spørringsfunksjoner ble ikke støttet i denne wikien, og deler av spørringen ble hoppet over ($1).',
+	'smw_noconjunctions'          => 'Konjunksjoner i spørringer støttes ikke i denne wikien, og deler av spørringen ble hoppet over ($1).',
 	'smw_nodisjunctions'          => 'Disjunksjoner i spørringer støttes ikke på denne wikien, og deler av spøringen ble utelatt ($1).',
 	'smw_querytoolarge'           => 'Følgende spørringsbetingelser kunne ikke tas til hensyn på grunn av wikiens begrensninger i spørringsstørrelse eller dybde: $1',
 	'smw_devel_warning'           => 'Denne funksjonen er under utvikling, og fungerer muligens ikke som den skal.
@@ -2357,6 +2370,8 @@ Ta en kopi av dataene før du bruker den.',
 	'smw_typearticlecount'        => 'Viser $1 egenskaper av denne typen.',
 	'smw_attribute_header'        => 'Sider som bruker egenskapen «$1»',
 	'smw_attributearticlecount'   => 'Viser $1 sider som bruker denne egenskapen.',
+	'smw_subproperty_header'      => 'Underegenskaper',
+	'smw_subpropertyarticlecount' => 'Denne egenskapen har følgende {{PLURAL:$|underegenskap|$1 underegenskaper}}.',
 	'exportrdf'                   => 'Eksporter sider til RDF',
 	'smw_exportrdf_docu'          => '<p>Denne siden lar deg skaffe data fra en side i RDF-format.
 Skriv inn titler i tekstboksten nedenfor for å eksportere sider, én tittel per linje.</p>',
