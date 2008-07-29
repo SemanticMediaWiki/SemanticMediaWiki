@@ -3267,6 +3267,8 @@ Gör backup på din data innan du använder den.',
 	'smw_typearticlecount'        => 'Visar $1 egenskaper som använder denna typen.',
 	'smw_attribute_header'        => 'Sidor som använder egenskapen "$1"',
 	'smw_attributearticlecount'   => 'Visar $1 sidor som använder denna egenskapen.',
+	'smw_subproperty_header'      => 'Underegenskaper',
+	'smw_subpropertyarticlecount' => 'Denna egenskap har följande $1 underegenskaper.',
 	'exportrdf'                   => 'Exportera sidor till RDF',
 	'smw_exportrdf_docu'          => '<p>Den här sidan låter dig hämta data från en sida i RDF-format.
 Skriv sidtitlar i textrutan härunder för att exportera sidor (en titel per rad).</p>',
