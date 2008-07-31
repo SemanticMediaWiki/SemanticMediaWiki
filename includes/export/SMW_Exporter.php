@@ -213,11 +213,11 @@ class SMWExporter {
 
 	/**
 	 * Determine what kind of OWL property some SMW property should be exported as.
-	 * The input is a SMWTypeValue object, a typeid string, or empty (use default)
+	 * The input is an SMWTypesValue object, a typeid string, or empty (use default)
 	 */
 	static public function getOWLPropertyType($type = '') {
 		/// TODO: improved mechanism for selecting property types is needed.
-		if ($type instanceof SMWTypeValue) {
+		if ($type instanceof SMWTypesValue) {
 			$type = ($type->isUnary())?$type->getXSDValue():'__nry';
 		} elseif ($type == false) {
 			$type = '';
