@@ -36,7 +36,7 @@ $messages['en'] = array(
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Sorry. Semantic queries have been disabled for this wiki.",
-	'smw_iq_moreresults' => '&hellip; further results',
+	'smw_iq_moreresults' => '… further results',
 	'smw_iq_nojs'        => 'Please use a JavaScript-enabled browser to view this element.',
 	'smw_iq_altresults'  => 'Browse the result list directly.', // available link when JS is disabled
 
@@ -85,7 +85,7 @@ $messages['en'] = array(
 
 	// Errors and notices related to queries
 	'smw_toomanyclosing'    => 'There appear to be too many occurrences of "$1" in the query.',
-	'smw_noclosingbrackets' => 'Some use of "[&#x005B;" in your query was not closed by a matching "]]".',
+	'smw_noclosingbrackets' => 'Some use of "<nowiki>[[</nowiki>" in your query was not closed by a matching "]]".',
 	'smw_misplacedsymbol'   => 'The symbol "$1" was used in a place where it is not useful.',
 	'smw_unexpectedpart'    => 'The part "$1" of the query was not understood.
 Results might not be as expected.',
@@ -95,7 +95,7 @@ Results might not be as expected.',
 	'smw_overprintoutlimit' => 'The query contains too many printout requests.',
 	'smw_badprintout'       => 'Some print statement in the query was misshaped.',
 	'smw_badtitle'          => 'Sorry, but "$1" is no valid page title.',
-	'smw_badqueryatom'      => 'Some part "[&#x005B;&hellip;]]" of the query was not understood.',
+	'smw_badqueryatom'      => 'Some part "<nowiki>[[…]]</nowiki>" of the query was not understood.',
 	'smw_propvalueproblem'  => 'The value of property "$1" was not understood.',
 	'smw_noqueryfeature'    => 'Some query feature was not supported in this wiki and part of the query was dropped ($1).',
 	'smw_noconjunctions'    => 'Conjunctions in queries are not supported in this wiki and part of the query was dropped ($1).',
@@ -218,7 +218,7 @@ The number of incorrect properties is given in the brackets.',
 	'browse'             => 'Browse wiki',
 	'smw_browse_article' => 'Enter the name of the page to start browsing from.',
 	'smw_browse_go'      => 'Go',
-	'smw_browse_more'    => '&hellip;',
+	'smw_browse_more'    => '…',
 
 	// Messages for the page property special
 	'pageproperty'  => 'Page property search',
