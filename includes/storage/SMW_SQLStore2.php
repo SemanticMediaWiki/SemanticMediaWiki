@@ -1119,7 +1119,7 @@ class SMWSQLStore2 extends SMWStore {
 		                'smw_conc2');
 		foreach ($tables as $table) {
 			$name = $db->tableName($table);
-			$db->query("DROP TABLE $name", 'SMWSQLStore2::drop');
+			$db->query("DROP TABLE IF EXISTS $name", 'SMWSQLStore2::drop');
 			$this->reportProgress(" ... dropped table $name.\n", $verbose);
 		}
 		$this->reportProgress("All data removed successfully.\n",$verbose);
