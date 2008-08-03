@@ -298,7 +298,6 @@ $messages['af'] = array(
 /** Arabic (العربية)
  * @author Mahmoud Zouari  mahmoudzouari@yahoo.fr http://www.cri.ensmp.fr
  * @author Meno25
- * @author Siebrand
  */
 $messages['ar'] = array(
 	'smw_edithelp'                 => 'تعديل المساعدة على الخصائص',
@@ -360,7 +359,7 @@ $messages['ar'] = array(
 	'smw_overprintoutlimit'        => 'هذا الاستعلام يحتوي على عدد كبير جدا من طلبات الطبع.',
 	'smw_badprintout'              => 'بعض المطبوعات في الاستعلام لم تتشكل بصورة صحيحة.',
 	'smw_badtitle'                 => 'عذرا، لكن "$1" ليس عنوان صفحة صحيحا.',
-	'smw_badqueryatom'             => 'من الاستعلام لم يتم فهمه "<nowiki>[[…]]</nowiki>" أجزاء من.',
+	'smw_badqueryatom'             => 'جزء ما "<nowiki>[[…]]</nowiki>" من الاستعلام لم يتم فهمه.',
 	'smw_propvalueproblem'         => 'قيمة الخاصية "$1" لم يتم فهمها.',
 	'smw_noqueryfeature'           => 'ميزة استعلام ما لم يتم دعمها في هذا الويكي وجزء من الاستعلام تم إسقاطه ($1).',
 	'smw_noconjunctions'           => 'الوقوفات في الاستعلامات غير مدعومة في هذا الويكي وجزء من الاستعلام تم إسقاطه ($1).',
