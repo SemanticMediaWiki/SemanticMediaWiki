@@ -1,5 +1,13 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
+== Semantic MediaWiki 1.2.1 ==
+
+* New sub-property display for property pages
+* Improved number parsing, admitting arbitrary spaces in numbers
+  (required for French)
+* Extended translations
+* Various minor bugfixes
+
 == Semantic MediaWiki 1.2 ==
 
 See http://semantic-mediawiki.org/wiki/SMW_1.2
