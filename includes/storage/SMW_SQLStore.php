@@ -352,7 +352,7 @@ class SMWSQLStore extends SMWStore {
 		$result = array();
 
 		if ( ($specialprop === SMW_SP_INSTANCE_OF) || ($specialprop === SMW_SP_SUBCLASS_OF) ) { // category membership
-			if ( !($value instanceof Title) || ($value->getNamespace() != NS_CATEGORY) ) {
+			if ( !($value instanceof SMWWikiPageValue) || ($value->getNamespace() != NS_CATEGORY) ) {
 				wfProfileOut("SMWSQLStore::getSpecialSubjects-$specialprop (SMW)");
 				return array();
 			}
@@ -399,21 +399,11 @@ class SMWSQLStore extends SMWStore {
 			}
 			$db->freeResult($res);
 		} else {
-			if ($value instanceof SMWDataValue) {
-				if ($value->getXSDValue() !== false) { // filters out error-values etc.
-					$stringvalue = $value->getXSDValue();
-				} else {
-					wfProfileOut("SMWSQLStore::getSpecialSubjects-$specialprop (SMW)");
-					return array();
-				}
-			} elseif ($value instanceof Title) {
-				if ( $specialprop == SMW_SP_HAS_TYPE ) { // special handling, TODO: change this to use type ids
-					$stringvalue = $value->getText();
-				} else {
-					$stringvalue = $value->getPrefixedText();
-				}
+			if ($value->getXSDValue() !== false) { // filters out error-values etc.
+				$stringvalue = $value->getXSDValue();
 			} else {
-				$stringvalue = $value;
+				wfProfileOut("SMWSQLStore::getSpecialSubjects-$specialprop (SMW)");
+				return array();
 			}
 
 			$sql = 'property_id=' . $db->addQuotes($specialprop) .
