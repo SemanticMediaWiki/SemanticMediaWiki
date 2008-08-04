@@ -2459,7 +2459,6 @@ Skriv inn både sidenavn og egenskap.',
 
 /** Occitan (Occitan)
  * @author Cedric31
- * @author Siebrand
  */
 $messages['oc'] = array(
 	'smw_edithelp'                => "Ajuda a la redaccion de relacions e d'atributs",
@@ -2470,6 +2469,9 @@ $messages['oc'] = array(
 	'smw_isknowntype'             => "Aqueste tipe fa partida dels tipes de donadas estandards d'aqueste wiki.",
 	'smw_isaliastype'             => 'Aqueste tipe es un aliàs del tipe de donadas “$1”.',
 	'smw_isnotype'                => 'Lo tipe “$1” es pas un tipe de donadas estandard sus aqueste wiki, e tanpauc es pas estat definit per un utilizaire.',
+	'smw_concept_description'     => 'Descripcion del concèpte « $1 »',
+	'smw_no_concept_namespace'    => 'Los concèptes pòt unicament èsser definits dins la pagina dins lo Concèpte : espaci de nom.',
+	'smw_multiple_concepts'       => 'Cada pagina de concèpte pòt pas aver qu’una sola definicion.',
 	'smw_baduri'                  => 'O planhèm. Las URIs del domeni $1 son pas disponiblas a aqueste emplaçament',
 	'smw_icalendar_link'          => 'iCalendièr',
 	'smw_vcard_link'              => 'vCarta',
@@ -2517,6 +2519,8 @@ $messages['oc'] = array(
 	'smw_badtitle'                => 'O planhèm, mas “$1” es pas un títol de pagina valable.',
 	'smw_badqueryatom'            => 'Las partidas “<nowiki>[[…]]</nowiki>” de la requèsta son pas estadas compresas.',
 	'smw_propvalueproblem'        => 'La valor de la proprietat “$1” es pas estada compresa.',
+	'smw_noqueryfeature'          => 'Qualques foncionalitats de requèstas son pas suportadas sus aqueste wiki e una partida d’entre elas es estada levada ($1).',
+	'smw_noconjunctions'          => 'Las conjoncions dins las requèstas son pas suportadas sus aqueste wiki e una partida d’entre elas es estada levada ($1).',
 	'smw_nodisjunctions'          => 'Las disjoncions dins las requèstas son pas suportadas sus aqueste wiki e de partidas de la requèsta son estadas ignoradas($1).',
 	'smw_querytoolarge'           => "Las condicions seguentas de la requèsta an pas pogut èsser evaluadas en rason de las restriccions d'aqueste wiki a la talha o a la prigondor de las requèstas : $1.",
 	'smw_devel_warning'           => "Aquesta foncion es encara en desvolopament e benlèu es pas encara operacionala. Pòt èsser judiciós de far un salvament del contengut del wiki abans tota utilizacion d'aquesta foncion.",
@@ -2525,6 +2529,8 @@ $messages['oc'] = array(
 	'smw_typearticlecount'        => 'Afichar los atributs de $1 en utilizant aqueste tipe.',
 	'smw_attribute_header'        => "Paginas utilizant l'atribut “$1”",
 	'smw_attributearticlecount'   => 'Afichar $1 paginas utilizant aquesta atribut.',
+	'smw_subproperty_header'      => 'Sosproprietats',
+	'smw_subpropertyarticlecount' => 'Aquesta proprietat dispausa de las $1 sosproprietats seguentas.',
 	'smw_rss_description'         => '$1 fial RSS',
 	'exportrdf'                   => "Exportar l'article en RDF",
 	'smw_exportrdf_docu'          => "<p>Sus aquesta pagina, de partidas del contengut d'un article pòdon èsser exportadas dins lo format RDF. Picatz lo nom de las paginas desiradas dins la bóstia de tèxt çaijós, <i>un nom per linha </i>.</p>",
