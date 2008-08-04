@@ -42,10 +42,13 @@ class SMWSQLStore2 extends SMWStore {
 	/// Like SMWSQLStore2::m_semdata, but containing flags indicating completeness of the SMWSemanticData objs
 	protected $m_sdstate = array();
 
+	protected static $in_getSemanticData = 0; /// >0 while getSemanticData runs, used to prevent nested calls from clearing the cache while another call runs and is about to fill it with data
+
 ///// Reading methods /////
 
 	function getSemanticData($subject, $filter = false) {
 		wfProfileIn("SMWSQLStore2::getSemanticData (SMW)");
+		SMWSQLStore2::$in_getSemanticData++;
 		$db =& wfGetDB( DB_SLAVE );
 
 		if ( $subject instanceof Title ) {
@@ -61,6 +64,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		if ($sid == 0) { // no data, safe our time
 		/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
+			SMWSQLStore2::$in_getSemanticData--;
 			wfProfileOut("SMWSQLStore2::getSemanticData (SMW)");
 			return isset($svalue)?(new SMWSemanticData($svalue)):NULL;
 		}
@@ -105,7 +109,8 @@ class SMWSQLStore2 extends SMWStore {
 			$this->m_sdstate[$sid] = $this->m_sdstate[$sid] | $tasks;
 			$tasks = $newtasks;
 		}
-		if (count($this->m_semdata) > 1000) { // prevent memory leak on very long PHP runs
+		if ( (count($this->m_semdata) > 1000) && (SMWSQLStore2::$in_getSemanticData == 0) ) {
+			// prevent memory leak on very long PHP runs
 			$this->m_semdata = array($sid => $this->m_semdata[$sid]);
 			$this->m_sdstate = array($sid => $this->m_sdstate[$sid]);
 		}
@@ -266,6 +271,7 @@ class SMWSQLStore2 extends SMWStore {
 			}
 		}
 
+		SMWSQLStore2::$in_getSemanticData--;
 		wfProfileOut("SMWSQLStore2::getSemanticData (SMW)");
 		return $this->m_semdata[$sid];
 	}
