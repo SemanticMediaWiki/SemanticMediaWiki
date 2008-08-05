@@ -300,7 +300,7 @@ class SMWQueryProcessor {
 			return $result;
 		} else { // result for counting or debugging is just a string
 			wfProfileOut('SMWQueryProcessor::getResultFromQuery (SMW)');
-			return $res;
+			return $res . smwfEncodeMessages($query->getErrors());
 		}
 	}
 
