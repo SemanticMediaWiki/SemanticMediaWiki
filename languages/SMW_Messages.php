@@ -2134,6 +2134,13 @@ $messages['mr'] = array(
 	'smw_result_noresults'         => 'माफ करा, निकाल नाहीत.',
 );
 
+/** Maltese (Malti)
+ * @author Roderick Mallia
+ */
+$messages['mt'] = array(
+	'smw_result_prev' => "Ta' qabel",
+);
+
 /** Nahuatl (Nahuatl)
  * @author Fluence
  */
