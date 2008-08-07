@@ -250,6 +250,7 @@ class SMWFactbox {
 		switch ($showfactbox) {
 		case SMW_FACTBOX_HIDDEN: // never
 			wfProfileOut("SMWFactbox::printFactbox (SMW)");
+			SMWFactbox::$m_printed = true; // do not print again, period (the other cases may safely try again, if new data should come in)
 			return;
 		case SMW_FACTBOX_SPECIAL: // only when there are special properties
 			if ( !SMWFactbox::$semdata->hasVisibleSpecialProperties() ) {
