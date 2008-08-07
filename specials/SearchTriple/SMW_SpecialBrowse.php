@@ -132,7 +132,7 @@ class SMWSpecialBrowse extends SpecialPage {
 						$innercount += 1;
 						if (($innercount < $innerlimit) || !$more) {
 							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getShortHTMLText());
-							$html .= $skin->makeKnownLinkObj($subject, smwfT($subject->getTitle(), TRUE)) . '&nbsp;' . $subjectlink->getHTML($skin);
+							$html .= $skin->makeKnownLinkObj($subject->getTitle(), smwfT($subject->getTitle(), TRUE)) . '&nbsp;' . $subjectlink->getHTML($skin);
 							if ($innercount<$subjectcount) $html .= ", \n";
 						} else {
 							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByProperty', 'property=' . urlencode($result->getPrefixedText()) . '&value=' . urlencode($article->getLongWikiText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
