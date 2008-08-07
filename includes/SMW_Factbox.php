@@ -36,12 +36,19 @@ class SMWFactbox {
 	static protected $m_blocked = false;
 
 	/**
+	 * True *while* the Factbox is used for writing, prevents
+	 * broken submethods of MW and extensions to screw up our
+	 * subject title due to illegal $wgTitle uses in parsing.
+	 */
+	static protected $m_writelock = false;
+
+	/**
 	 * Initialisation method. Must be called before anything else happens.
 	 */
 	static function initStorage($title) {
 		// reset only if title exists, is new and is not the notorious
 		// NO TITLE thing the MW parser creates
-		if ( $title === NULL || $title->getText() == 'NO TITLE' ) return;
+		if ( SMWFactbox::$m_writelock || $title === NULL || $title->getText() == 'NO TITLE' ) return;
 		if ( (SMWFactbox::$semdata === NULL) ||
 		     (SMWFactbox::$semdata->getSubject()->getDBkey() != $title->getDBkey()) || 
 		     (SMWFactbox::$semdata->getSubject()->getNamespace() != $title->getNamespace()) ) {
@@ -64,12 +71,21 @@ class SMWFactbox {
 			SMWFactbox::$m_printed = false;
 		}
 	}
-	
+
 	/**
 	 * Blocks the next rendering of the Factbox
 	 */
 	static function blockOnce() {
 		SMWFactbox::$m_blocked = true;
+	}
+
+	/**
+	 * Set the writlock (true while the Factbox is used for writing,
+	 * ensures that our title object cannot be changed by cross-firing
+	 * hooks).
+	 */
+	static function setWriteLock($value) {
+		SMWFactbox::$m_writelock = $value;
 	}
 
 	/**

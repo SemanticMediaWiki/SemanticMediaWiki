@@ -15,6 +15,7 @@
 function smwfParserHook(&$parser, &$text) {
 	global $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgStoreActive;
 	SMWFactbox::initStorage($parser->getTitle()); // be sure we have our title, strange things happen in parsing
+	SMWFactbox::setWritelock(true); // disallow changes to the title object by other hooks!
 
 	// store the results if enabled (we have to parse them in any case, in order to
 	// clean the wiki source for further processing)
@@ -58,6 +59,7 @@ function smwfParserHook(&$parser, &$text) {
 	                       'ExportRDF/' . $parser->getTitle()->getPrefixedText(), 'xmlmime=rdf'
 	                    )) . "\" />");
 
+	SMWFactbox::setWritelock(false); // free Factbox again (the hope of course is that it is only reset after the data we just gathered was processed; but this then might be okay, e.g. if some jobs are processed)
 	return true; // always return true, in order not to stop MW's hook processing!
 }
 
@@ -140,6 +142,7 @@ function smwfEqualDatavalues($dv1, $dv2) {
 	// The hashes of all values of both arrays are taken, then sorted
 	// and finally concatenated, thus creating one long hash out of each
 	// of the data value arrays. These are compared.
+
 	$values = array();
 	foreach($dv1 as $v) $values[] = $v->getHash();
 	sort($values);
@@ -148,8 +151,8 @@ function smwfEqualDatavalues($dv1, $dv2) {
 	foreach($dv2 as $v) $values[] = $v->getHash();
 	sort($values);
 	$dv2hash = implode("___", $values);
-	
-	return ($dv1hash == $dv2hash);	
+
+	return ($dv1hash == $dv2hash);
 }
 
 /**
@@ -159,7 +162,7 @@ function smwfEqualDatavalues($dv1, $dv2) {
  * conversion factors have changed. If so, it triggers SMWUpdateJobs for the relevant articles,
  * which then asynchronously update the semantic data in the database.
  *
- *  Known Bug -- TODO
+ *  Known bug/limitation -- TODO
  *  Updatejobs are triggered when a property or type definition has
  *  changed, so that all affected pages get updated. However, if a page
  *  uses a property but the given value caused an error, then there is
@@ -169,43 +172,49 @@ function smwfEqualDatavalues($dv1, $dv2) {
 function smwfSaveDataForTitle($title) {
 	global $smwgEnableUpdateJobs;
 	$namespace = $title->getNamespace();
+	$processSemantics = smwfIsSemanticsProcessed($namespace);
+	if ($processSemantics) {
+		$newdata = SMWFactbox::$semdata;
+	} else { // nothing stored, use empty container
+		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+		$dv->setValues($title->getDBkey(), $title->getNamespace());
+		$newdata = new SMWSemanticData($dv);
+	}
 
 	// Check if the semantic data has been changed.
 	// Sets the updateflag to true if so.
+	// Careful: storage access must happen *before* the storage update;
+	// even finding uses of a property fails after its type was changed.
 	$updatejobflag = false;
+	$jobs = array();
 	if ($smwgEnableUpdateJobs && ($namespace == SMW_NS_PROPERTY) ) {
 		// if it is a property, then we need to check if the type or
-		// the allowed values have been changed 
+		// the allowed values have been changed
 		$oldtype = smwfGetStore()->getSpecialValues($title, SMW_SP_HAS_TYPE);
-		$newtype = SMWFactbox::$semdata->getPropertyValues(SMW_SP_HAS_TYPE);
-				
-		if (smwfEqualDatavalues($oldtype, $newtype)) {
+		$newtype = $newdata->getPropertyValues(SMW_SP_HAS_TYPE);
+
+		if (!smwfEqualDatavalues($oldtype, $newtype)) {
 			$updatejobflag = true;
 		} else {
 			$oldvalues = smwfGetStore()->getSpecialValues($title, SMW_SP_POSSIBLE_VALUE);
-			$newvalues = SMWFactbox::$semdata->getPropertyValues(SMW_SP_POSSIBLE_VALUE);
-			$updatejobflag = smwfEqualDatavalues($oldvalues, $newvalues);
+			$newvalues = $newdata->getPropertyValues(SMW_SP_POSSIBLE_VALUE);
+			$updatejobflag = !smwfEqualDatavalues($oldvalues, $newvalues);
+		}
+
+		if ($updatejobflag) {
+			$subjects = smwfGetStore()->getAllPropertySubjects($title);
+			foreach ($subjects as $subject) {
+				$jobs[] = new SMWUpdateJob($subject);
+			}
 		}
 	} elseif ($smwgEnableUpdateJobs && ($namespace == SMW_NS_TYPE) ) {
 		// if it is a type we need to check if the conversion factors have been changed
 		$oldfactors = smwfGetStore()->getSpecialValues($title, SMW_SP_CONVERSION_FACTOR);
-		$newfactors = SMWFactbox::$semdata->getPropertyValues(SMW_SP_CONVERSION_FACTOR);
-		$updatejobflag = smwfEqualDatavalues($oldfactors, $newfactors);
-	}
-
-	// Actually store semantic data
-	SMWFactbox::storeData(smwfIsSemanticsProcessed($title->getNamespace()));
-
-	// Trigger relevant Updatejobs if necessary
-	if ($updatejobflag) {
-		$jobs = array();
-		$store = smwfGetStore();
-		if ($namespace == SMW_NS_PROPERTY) {
-			$subjects = $store->getAllPropertySubjects($title);
-			foreach ($subjects as $subject) {
-				$jobs[] = new SMWUpdateJob($subject);
-			}
-		} elseif ($namespace == SMW_NS_TYPE) {
+		$newfactors = $newdata->getPropertyValues(SMW_SP_CONVERSION_FACTOR);
+		$updatejobflag = !smwfEqualDatavalues($oldfactors, $newfactors);
+		if ($updatejobflag) {
+			$store = smwfGetStore();
+			/// FIXME: this would kill large wikis! Use incremental updates!
 			$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE,$title->getDBkey());
 			$subjects = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $dv);
 			foreach ($subjects as $valueofpropertypagestoupdate) {
@@ -216,6 +225,13 @@ function smwfSaveDataForTitle($title) {
 				}
 			}
 		}
+	}
+
+	// Actually store semantic data
+	SMWFactbox::storeData($processSemantics);
+
+	// Trigger relevant Updatejobs if necessary
+	if ($updatejobflag) {
 		Job::batchInsert($jobs); ///NOTE: this only happens if $smwgEnableUpdateJobs was true above
 	}
 	return true;

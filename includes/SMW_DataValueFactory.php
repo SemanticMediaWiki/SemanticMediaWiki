@@ -225,6 +225,17 @@ class SMWDataValueFactory {
 	}
 
 	/**
+	 * Signal the class that the type of some property has changed. Clearing this
+	 * is crucial to let subsequent jobs work properly.
+	 */
+	static public function clearTypeCache(Title $property) {
+		$propertyname = $property->getText();
+		if (array_key_exists($propertyname, SMWDataValueFactory::$m_typebyproperty)) {
+			unset(SMWDataValueFactory::$m_typebyproperty[$propertyname]);
+		}
+	}
+
+	/**
 	 * Gather all available datatypes and label<=>id<=>datatype associations. This method 
 	 * is called before most methods of this factory.
 	 */

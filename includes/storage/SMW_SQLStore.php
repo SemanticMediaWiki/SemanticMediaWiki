@@ -930,6 +930,11 @@ class SMWSQLStore extends SMWStore {
 		if (count($up_nary_longstrings) > 0) {
 			$db->insert( 'smw_nary_longstrings', $up_nary_longstrings, 'SMW::updateNAryLongData');
 		}
+
+		if ($subject->getNamespace() == SMW_NS_PROPERTY) { // be sure that this is not invalid after update
+			SMWDataValueFactory::clearTypeCache($subject);
+		}
+
 		wfProfileOut("SMWSQLStore::updateData (SMW)");
 	}
 

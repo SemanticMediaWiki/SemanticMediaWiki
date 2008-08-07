@@ -675,6 +675,7 @@ class SMWSQLStore2 extends SMWStore {
 		///FIXME: if a property page is deleted, more pages may need to be updated by jobs!
 		///TODO: who is responsible for these updates? Some update jobs are currently created in SMW_Hooks, some internally in the store
 		///TODO: Possibly delete ID here (at least for non-properties/categories, if not used in any place in rels2)
+		///FIXME: clean internal caches here
 		wfProfileOut('SMWSQLStore2::deleteSubject (SMW)');
 	}
 
@@ -836,6 +837,12 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		if (count($up_conc2) > 0) {
 			$db->insert( 'smw_conc2', $up_conc2, 'SMW::updateConc2Data');
+		}
+
+		$this->m_semdata[$sid] = clone $data; // update cache, important if jobs are directly following this call
+		$this->m_sdstate[$sid] = 0xFFFFFFFF; // everything that one can know
+		if ($subject->getNamespace() == SMW_NS_PROPERTY) { // be sure that this is not invalid after update
+			SMWDataValueFactory::clearTypeCache($subject->getTitle());
 		}
 
 		wfProfileOut("SMWSQLStore2::updateData (SMW)");

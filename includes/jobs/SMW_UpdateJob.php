@@ -56,7 +56,7 @@ class SMWUpdateJob extends Job {
 		wfProfileOut( __METHOD__.'-parse' );
 		wfProfileIn( __METHOD__.'-update' );
 
-		SMWFactbox::storeData(true); /// FIXME: why is this just fixed to "true"?
+		SMWFactbox::storeData(smwfIsSemanticsProcessed($this->title->getNamespace()));
 		wfProfileOut( __METHOD__.'-update' );
 		wfProfileOut('SMWUpdateJob::run (SMW)');
 		return true;
