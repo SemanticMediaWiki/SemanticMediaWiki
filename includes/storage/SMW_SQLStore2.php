@@ -533,7 +533,9 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		switch ($typeid) {
-		case '_txt': case '_cod': break; // not supported
+		case '_txt': case '_cod':
+			$table = 'smw_text2'; // ignore value condition in any case
+		break;
 		case '_wpg': // wikipage
 			if ($value !== NULL) {
 				$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki());
