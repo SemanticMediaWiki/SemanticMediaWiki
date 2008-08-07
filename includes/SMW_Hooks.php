@@ -208,9 +208,9 @@ function smwfSaveDataForTitle($title) {
 		} elseif ($namespace == SMW_NS_TYPE) {
 			$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE,$title->getDBkey());
 			$subjects = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $dv);
-			foreach ($subjects as $titlesofpropertypagestoupdate) {
-				$subjectsPropertyPages = $store->getAllPropertySubjects($titlesofpropertypagestoupdate);
-				$jobs[] = new SMWUpdateJob($titlesofpropertypagestoupdate);
+			foreach ($subjects as $valueofpropertypagestoupdate) {
+				$subjectsPropertyPages = $store->getAllPropertySubjects($valueofpropertypagestoupdate->getTitle());
+				$jobs[] = new SMWUpdateJob($valueofpropertypagestoupdate->getTitle());
 				foreach ($subjectsPropertyPages as $titleOfPageToUpdate) {
 					$jobs[] = new SMWUpdateJob($titleOfPageToUpdate);
 				}
