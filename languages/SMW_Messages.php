@@ -2141,10 +2141,14 @@ $messages['mt'] = array(
 	'smw_result_prev' => "Ta' qabel",
 );
 
-/** Nahuatl (Nahuatl)
+/** Nahuatl (Nāhuatl)
  * @author Fluence
  */
 $messages['nah'] = array(
+	'smw_abb_north'   => 'M',
+	'smw_abb_east'    => 'T',
+	'smw_abb_south'   => 'H',
+	'smw_abb_west'    => 'C',
 	'smw_oi_action'   => 'Tiquicōhuāz',
 	'smw_browse_go'   => 'Yāuh',
 	'smw_result_prev' => 'Achtopa',
