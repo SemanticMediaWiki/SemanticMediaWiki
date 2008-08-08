@@ -7,6 +7,7 @@ For a documentation of all features, see http://semantic-mediawiki.org
   (required for French)
 * Extended translations
 * Update job generation actually works now
+* Query format "csv" to export data as file of comma-separated values
 * Prevent crashes for very long property values (due to PHP PCRE)
 * Various other bugfixes
 

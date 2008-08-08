@@ -29,6 +29,8 @@ $messages['en'] = array(
 
 	// Link to RSS feeds
 	'smw_rss_link' => 'RSS',
+	// Link to CSV feeds
+	'smw_csv_link' => 'CSV',
 
 	// Link to iCalendar and vCard files
 	'smw_icalendar_link' => 'iCalendar',
