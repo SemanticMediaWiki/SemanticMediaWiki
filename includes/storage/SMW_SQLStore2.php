@@ -377,6 +377,8 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn("SMWSQLStore2::getPropertyValues (SMW)");
 		if ($subject !== NULL) {
 			$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki());
+		} else {
+			$sid = 0;
 		}
 		$pid = $this->getSMWPageID($property->getDBkey(), SMW_NS_PROPERTY, $property->getInterwiki());
 		if ( ( ($sid == 0) && ($subject !== NULL) ) || ($pid == 0)) {
