@@ -97,7 +97,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			if (count($this->subproperties) > 0) {
 				$r .= "<div id=\"mw-subcategories\">\n<h2>" . wfMsg('smw_subproperty_header',$ti) . "</h2>\n";
 				$r .= '<p>' . wfMsg('smw_subpropertyarticlecount', min($this->limit, count($this->subproperties))) . "</p>\n";
-				if (count($this->subproperties) <= 6) {
+				if (count($this->subproperties) < 6) {
 					$r .= $this->shortList(0,count($this->subproperties), $this->subproperties, $this->subprop_start_char);
 				} else {
 					$r .= $this->columnList(0,count($this->subproperties), $this->subproperties, $this->subprop_start_char);
