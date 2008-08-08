@@ -1518,9 +1518,10 @@ class SMWSQLStore2 extends SMWStore {
 			$db->insert('smw_ids', array('smw_id' => 0, 'smw_title' => $title, 'smw_namespace' => $namespace, 'smw_iw' => $iw, 'smw_sortkey' => $sortkey), 'SMW::makeSMWPageID');
 			$id = $db->insertId();
 			$this->m_ids["$iw $namespace $title -"] = $id; // fill that cache, even if canonical was given
-			if ($canonical) { // this ID is also authorative for the canonical version
-				$this->m_ids["$iw $namespace $title C"] = $id;
-			}
+			// This ID is also authorative for the canonical version.
+			// This is always the case: if $canonical===false and $id===0, then there is no redi-entry in
+			// smw_ids either, hence the object just did not exist at all.
+			$this->m_ids["$iw $namespace $title C"] = $id;
 		} elseif ( ($sortkey != '') && ($sortkey != $oldsort) ) {
 			$db =& wfGetDB( DB_MASTER );
 			$db->update('smw_ids', array('smw_sortkey' => $sortkey), array('smw_id' => $id), 'SMW::makeSMWPageID');
