@@ -284,7 +284,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	public function getSortkey() {
 		$this->unstub();
-		return $this->m_sortkey?$this->m_sortkey:$this->m_dbkeyform;
+		return $this->m_sortkey?$this->m_sortkey:(str_replace('_',' ',$this->m_dbkeyform));
 	}
 
 	/**

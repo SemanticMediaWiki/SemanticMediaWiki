@@ -692,7 +692,7 @@ class SMWSQLStore2 extends SMWStore {
 		} else {
 			$this->updateRedirects($subject->getDBKey(),$subject->getNamespace());
 		}
-		// always make an ID (pages without ID cannot be in qurey results, not even in fixed value queries!):
+		// always make an ID (pages without ID cannot be in query results, not even in fixed value queries!):
 		$sid = $this->makeSMWPageID($subject->getDBkey(),$subject->getNamespace(),'',true,$subject->getSortkey());
 		$db =& wfGetDB( DB_MASTER );
 
@@ -1468,14 +1468,14 @@ class SMWSQLStore2 extends SMWStore {
 			$res = $db->select('smw_ids', array('smw_id', 'smw_iw', 'smw_sortkey'), 'smw_title=' . $db->addQuotes($title) . ' AND ' . 'smw_namespace=' . $db->addQuotes($namespace) . ' AND (smw_iw=' . $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWREDIIW) . ')', 'SMW::getSMWPageID', array('LIMIT'=>1));
 			if ($row = $db->fetchObject($res)) {
 				$sort = $row->smw_sortkey;
+				$id = $row->smw_id; // set id in any case, the below check for properties will use even the redirect id in emergency
 				if ( ($row->smw_iw == '') || (!$canonical) || ($smwgQEqualitySupport == SMW_EQ_NONE) ) {
-					$id = $row->smw_id;
 					if ($row->smw_iw == '') {
 						$this->m_ids[$ckey] = $id; // what we found is also the canonical key, cache it
 					}
 				} else {
 					$redirect = true;
-					$this->m_ids[$nkey] = $row->smw_id; // what we found is the non-canonical key, cache it
+					$this->m_ids[$nkey] = $id; // what we found is the non-canonical key, cache it
 				}
 			}
 		}
@@ -1514,7 +1514,7 @@ class SMWSQLStore2 extends SMWStore {
 		$id = $this->getSMWPageIDandSort($title, $namespace, $iw, $oldsort, $canonical);
 		if ($id == 0) {
 			$db =& wfGetDB( DB_MASTER );
-			$sortkey = $sortkey?$sortkey:$title;
+			$sortkey = $sortkey?$sortkey:(str_replace('_',' ',$title));
 			$db->insert('smw_ids', array('smw_id' => 0, 'smw_title' => $title, 'smw_namespace' => $namespace, 'smw_iw' => $iw, 'smw_sortkey' => $sortkey), 'SMW::makeSMWPageID');
 			$id = $db->insertId();
 			$this->m_ids["$iw $namespace $title -"] = $id; // fill that cache, even if canonical was given
@@ -1543,7 +1543,7 @@ class SMWSQLStore2 extends SMWStore {
 			$this->m_ids = array();
 		}
 		$this->m_ids[$nkey] = $id;
-		if ($real_iw == $iw) {
+		if ($real_iw === $iw) {
 			$this->m_ids[$ckey] = $id;
 		}
 	}
