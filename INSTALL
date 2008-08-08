@@ -16,6 +16,7 @@ Contents
   ** Running SMW on older versions of MediaWiki
 * Notes on Upgrading
   ** General Upgrading Instructions
+  ** Upgrading from SMW 1.2
   ** Upgrading from SMW 1.0.* and SMW 1.1.*
   ** Upgrading from 1.0 RC1, 1.0 RC2, 1.0 RC3
   ** Upgrading from version 0.7
@@ -82,6 +83,12 @@ remarks in the section "Notes on Upgrading" below!
     Please consider announcing your new site to the SMW semantic wiki list by
     using the according button on "Special:SMWAdmin".
 
+(4) If you already have categories in your wiki, they will not immediately be
+    available for SMW queries. Category information becomes available if a
+    page in a category is edited next time. To make all information available
+    immediately, run the script [SMW_path]/maintenance/SMW_refreshData.php
+    as described in [SMW_path]/maintenance/README.
+
 '''Remark:'''  Semantic MediaWiki uses ten additional namespace indexes (see
 http://meta.wikimedia.org/wiki/Help:Custom_namespaces), in the range from
 100 to 109. 100 and 101 are only needed if $smwgSMWBetaCompatible is set.
@@ -141,6 +148,14 @@ $smwgQComparators = '<|>|!|~'; // + pattern search comparator ~ for strings
 
 Further relaxation of default limits e.g. on query size are possible.
 See SMW_Settings.php.
+
+In controlled wikis that do not use extremely length property values, it may
+also be save to allow links in property values, as in [[area::42 [[m²]] ]].
+This is done with the setting
+
+$smwgLinksInValues = true;
+
+This may cause PHP crashes in some cases -- see SMW_Settings.php for details.
 
 ==== Semantic MediaWiki on very large wikis -- improving performance ====
 
@@ -215,6 +230,16 @@ before the refresh (however, deletion is the most secure way to fully update).
 
 Some versions of SMW also introduced incompatibilities in the wiki syntax that
 may need to be fixed. You may want to read this first.
+
+=== Upgrtading from SMW 1.2 ===
+
+No special changes are needed, but one default settgin has changed: SMW will no
+longer support nested link syntax in property values by default, since this
+requires a complex pattern match that causes PHP to crash if property values
+are very long (in the order of 3400 characters). If you have no such long
+values, you may activate the feature with the option
+
+$smwgLinksInValues = true;
 
 === Upgrading from SMW 1.0.* and SMW 1.1.* ===
 

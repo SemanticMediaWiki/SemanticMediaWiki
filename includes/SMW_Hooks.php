@@ -13,7 +13,7 @@
 *  at the end of the article.
 */
 function smwfParserHook(&$parser, &$text) {
-	global $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgStoreActive;
+	global $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgStoreActive, $smwgLinksInValues;
 	SMWFactbox::initStorage($parser->getTitle()); // be sure we have our title, strange things happen in parsing
 	SMWFactbox::setWritelock(true); // disallow changes to the title object by other hooks!
 
@@ -39,17 +39,26 @@ function smwfParserHook(&$parser, &$text) {
 	// In the regexp matches below, leading ':' escapes the markup, as
 	// known for Categories.
 	// Parse links to extract semantic properties
-	$semanticLinkPattern = '/\[\[               # Beginning of the link
-	                        (([^:][^]]*):[=:])+ # Property name (can be nested?)
-	                        (                   # After that:
-	                          (?:[^|\[\]]       #   either normal text (without |, [ or ])
-	                          |\[\[[^]]*\]\]    #   or a [[link]]
-	                          |\[[^]]*\]        #   or an [external link]
-	                        )*)                 # all this zero or more times
-	                        (\|([^]]*))?        # Display text (like "text" in [[link|text]]), optional
-	                        \]\]                # End of link
-	                        /xu';
-	$text = preg_replace_callback($semanticLinkPattern, 'smwfParsePropertiesCallback', $text);
+	if ($smwgLinksInValues) { // more complex regexp -- lib PCRE may cause segfaults if text is long :-(
+		$semanticLinkPattern = '/\[\[                 # Beginning of the link
+		                        (?:([^:][^]]*):[=:])+ # Property name (or a list of those)
+		                        (                     # After that:
+		                          (?:[^|\[\]]         #   either normal text (without |, [ or ])
+		                          |\[\[[^]]*\]\]      #   or a [[link]]
+		                          |\[[^]]*\]          #   or an [external link]
+		                        )*)                   # all this zero or more times
+		                        (?:\|([^]]*))?        # Display text (like "text" in [[link|text]]), optional
+		                        \]\]                  # End of link
+		                        /xu';
+		$text = preg_replace_callback($semanticLinkPattern, 'smwfParsePropertiesCallback', $text);
+	} else { // simpler regexps -- no segfaults found for those, but no links in values
+		$semanticLinkPattern = '/\[\[                 # Beginning of the link
+		                        (?:([^:][^]]*):[=:])+ # Property name (or a list of those)
+		                        ([^\[\]]*)            # content: anything but [, |, ]
+		                        \]\]                  # End of link
+		                        /xu';
+		$text = preg_replace_callback($semanticLinkPattern, 'smwfSimpleParsePropertiesCallback', $text);
+	}
 	SMWFactbox::printFactbox($text);
 
 	// add link to RDF to HTML header
@@ -65,16 +74,42 @@ function smwfParserHook(&$parser, &$text) {
 
 /**
 * This callback function strips out the semantic attributes from a wiki
-* link.
+* link. Expected parameter: array(linktext, properties, value|caption)
+* This function is a preprocessing for smwfParsePropertiesCallback, and
+* takes care of separating value and caption (instead of leaving this to
+* a more complex regexp).
+*/
+function smwfSimpleParsePropertiesCallback($semanticLink) {
+	$value = '';
+	$caption = false;
+	if (array_key_exists(2,$semanticLink)) {
+		$parts = explode('|',$semanticLink[2]);
+		if (array_key_exists(0,$parts)) {
+			$value = $parts[0];
+		}
+		if (array_key_exists(1,$parts)) {
+			$caption = $parts[1];
+		}
+	}
+	if ($caption !== false) {
+		return smwfParsePropertiesCallback(array($semanticLink[0],$semanticLink[1],$value,$caption));
+	} else {
+		return smwfParsePropertiesCallback(array($semanticLink[0],$semanticLink[1],$value));
+	}
+}
+
+/**
+* This callback function strips out the semantic attributes from a wiki
+* link. Expected parameter: array(linktext, properties, value, caption)
 */
 function smwfParsePropertiesCallback($semanticLink) {
 	global $smwgInlineErrors, $smwgStoreAnnotations, $smwgTempStoreAnnotations;
 	wfProfileIn("smwfParsePropertiesCallback (SMW)");
-	if (array_key_exists(2,$semanticLink)) {
-		$property = $semanticLink[2];
+	if (array_key_exists(1,$semanticLink)) {
+		$property = $semanticLink[1];
 	} else { $property = ''; }
-	if (array_key_exists(3,$semanticLink)) {
-		$value = $semanticLink[3];
+	if (array_key_exists(2,$semanticLink)) {
+		$value = $semanticLink[2];
 	} else { $value = ''; }
 
 	if ($property == 'SMW') {
@@ -86,8 +121,8 @@ function smwfParsePropertiesCallback($semanticLink) {
 		return '';
 	}
 
-	if (array_key_exists(5,$semanticLink)) {
-		$valueCaption = $semanticLink[5];
+	if (array_key_exists(3,$semanticLink)) {
+		$valueCaption = $semanticLink[3];
 	} else { $valueCaption = false; }
 
 	//extract annotations and create tooltip

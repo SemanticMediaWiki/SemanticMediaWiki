@@ -6,7 +6,9 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Improved number parsing, admitting arbitrary spaces in numbers
   (required for French)
 * Extended translations
-* Various minor bugfixes
+* Update job generation actually works now
+* Prevent crashes for very long property values (due to PHP PCRE)
+* Various other bugfixes
 
 == Semantic MediaWiki 1.2 ==
 

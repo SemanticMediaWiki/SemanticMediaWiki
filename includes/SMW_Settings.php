@@ -89,6 +89,19 @@ $smwgInlineErrors = true;
 ##
 
 ###
+# Should SMW accept inputs like [[property::Some [[link]] in value]]?
+# If enabled, this may lead to PHP crashes (!) when very long texts
+# are used as values. This is due to limitations in the library PCRE
+# that PHP uses for pattern matching. The provoked PHP crashes will
+# prevent requests from being completed -- usually clients will receive
+# server errors ("invalid response") or be offered to download "index.php".
+# It might be okay to enable this if such problems are not observed in
+# your wiki.
+##
+$smwgLinksInValues = false;
+##
+
+###
 # Number results shown in the listings on pages of properties (attributes or
 # relations) and types.
 ##
