@@ -43,6 +43,13 @@ class SMWFactbox {
 	static protected $m_writelock = false;
 
 	/**
+	 * To prevent cross-firing parser hooks (e.g. by other extensions' subparsers) 
+	 * from resetting our global data, cache the last non-empty data set and restore
+	 * it later if we should "return" to this article.
+	 */
+	static protected $m_oldsemdata = NULL;
+
+	/**
 	 * Initialisation method. Must be called before anything else happens.
 	 */
 	static function initStorage($title) {
@@ -50,12 +57,25 @@ class SMWFactbox {
 		// NO TITLE thing the MW parser creates
 		if ( SMWFactbox::$m_writelock || $title === NULL || $title->getText() == 'NO TITLE' ) return;
 		if ( (SMWFactbox::$semdata === NULL) ||
-		     (SMWFactbox::$semdata->getSubject()->getDBkey() != $title->getDBkey()) || 
+		     (SMWFactbox::$semdata->getSubject()->getDBkey() != $title->getDBkey()) ||
 		     (SMWFactbox::$semdata->getSubject()->getNamespace() != $title->getNamespace()) ) {
-			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-			$dv->setValues($title->getDBkey(), $title->getNamespace());
-			SMWFactbox::$semdata = new SMWSemanticData($dv); // reset data
-			SMWFactbox::$m_printed = false;
+			$curdata = SMWFactbox::$semdata;
+			// check if we can restore the previous (non-empty) data container:
+			if ( (SMWFactbox::$m_oldsemdata !== NULL) &&
+			     (SMWFactbox::$m_oldsemdata->getSubject()->getDBkey() == $title->getDBkey()) &&
+			     (SMWFactbox::$m_oldsemdata->getSubject()->getNamespace() == $title->getNamespace()) ) {
+				SMWFactbox::$semdata = SMWFactbox::$m_oldsemdata;
+			} else { // otherwise make a new data container
+				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
+				$dv->setValues($title->getDBkey(), $title->getNamespace());
+				SMWFactbox::$semdata = new SMWSemanticData($dv); // reset data
+				SMWFactbox::$m_printed = false;
+			}
+			// store non-empty existing data, just in case we need it later again
+			if ( ($curdata !== NULL) && 
+			     ($curdata->hasProperties() || $curdata->hasSpecialProperties() ) ) {
+				SMWFactbox::$m_oldsemdata = $curdata;
+			}
 			//print " Title set: " . $title->getPrefixedText() . "\n"; // useful for debug
 		}
 		//SMWFactbox::$m_new   = false; // do not reset, keep (order of hooks can be strange ...)
@@ -68,6 +88,7 @@ class SMWFactbox {
 		global $smwgStoreActive;
 		if ($smwgStoreActive) {
 			SMWFactbox::$semdata->clear();
+			SMWFactbox::$m_oldsemdata = NULL;
 			SMWFactbox::$m_printed = false;
 		}
 	}
