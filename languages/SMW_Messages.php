@@ -315,6 +315,7 @@ $messages['ar'] = array(
 	'smw_multiple_concepts'        => 'كل صفحة مبدأ يمكن أن تحتوي على تعريف مبدأ واحد.',
 	'smw_baduri'                   => 'عذرا، URIs من النوع "$1" غير مسموح بها.',
 	'smw_rss_link'                 => 'آر إس إس',
+	'smw_csv_link'                 => 'سي في إس',
 	'smw_icalendar_link'           => 'آي كالندر',
 	'smw_vcard_link'               => 'في كارد',
 	'smw_iq_disabled'              => 'عذرا. استعلامات السيمانتيك تم تعطيلها في هذا الويكي.',
@@ -2173,6 +2174,7 @@ $messages['nl'] = array(
 	'smw_no_concept_namespace'    => "Concepten kunnen alleen gedefinieerd worden op pagina's in de naamruimte Concept:",
 	'smw_multiple_concepts'       => 'Iedere conceptpagina kan maar één conceptdefinitie bevatten.',
 	'smw_baduri'                  => "Sorry, URI's uit de reeks “$1” zijn hier niet beschikbaar.",
+	'smw_csv_link'                => 'CSV',
 	'smw_icalendar_link'          => 'iCalendar',
 	'smw_vcard_link'              => 'vCard',
 	'smw_iq_disabled'             => 'Sorry. Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.',
@@ -2310,7 +2312,6 @@ $messages['nl'] = array(
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
  * @author Jon Harald Søby
- * @author Siebrand
  */
 $messages['no'] = array(
 	'smw_edithelp'                => 'Redigeringshjelp for egenskaper',
@@ -2325,6 +2326,7 @@ $messages['no'] = array(
 	'smw_no_concept_namespace'    => 'Konsepter kan kun defineres på sider i Concept:-navnerommet.',
 	'smw_multiple_concepts'       => 'Hver konseptside kan kun ha én konseptdefinisjon.',
 	'smw_baduri'                  => 'Beklager, URI-er på formen «$1» er ikke tillatt.',
+	'smw_csv_link'                => 'CSV',
 	'smw_icalendar_link'          => 'iKalender',
 	'smw_vcard_link'              => 'vCard',
 	'smw_iq_disabled'             => 'Beklager. Semantiske spørringer er slått av på denne wikien.',
@@ -3228,6 +3230,7 @@ $messages['sv'] = array(
 	'smw_no_concept_namespace'    => 'Koncept kan endast defineras på sidor i namnrymden Concept:',
 	'smw_multiple_concepts'       => 'Varje konceptsida kan endast ha en konceptdefinition.',
 	'smw_baduri'                  => 'Beklagar, URI-er på formen "$1" är inte tillåtet.',
+	'smw_csv_link'                => 'CSV',
 	'smw_icalendar_link'          => 'iKalender',
 	'smw_vcard_link'              => 'vCard',
 	'smw_iq_disabled'             => 'Beklagar. Semantiska efterfrågningar har slagits av på den här wikin.',
