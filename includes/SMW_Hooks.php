@@ -206,6 +206,7 @@ function smwfEqualDatavalues($dv1, $dv2) {
  */
 function smwfSaveDataForTitle($title) {
 	global $smwgEnableUpdateJobs;
+	SMWFactbox::initStorage($title); // be sure we have our title, strange things happen in parsing
 	$namespace = $title->getNamespace();
 	$processSemantics = smwfIsSemanticsProcessed($namespace);
 	if ($processSemantics) {

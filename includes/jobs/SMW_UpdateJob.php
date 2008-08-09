@@ -56,6 +56,7 @@ class SMWUpdateJob extends Job {
 		wfProfileOut( __METHOD__.'-parse' );
 		wfProfileIn( __METHOD__.'-update' );
 
+		SMWFactbox::initStorage($this->title); // be sure we have our title, strange things happen in parsing
 		SMWFactbox::storeData(smwfIsSemanticsProcessed($this->title->getNamespace()));
 		wfProfileOut( __METHOD__.'-update' );
 		wfProfileOut('SMWUpdateJob::run (SMW)');

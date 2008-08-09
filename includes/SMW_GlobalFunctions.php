@@ -408,6 +408,7 @@ function smwfRequireHeadItem($id, $item = '') {
  */
 function smwfParserAfterTidy(&$parser, &$text) {
 	global $smwgHeadItems, $smwgStoreActive;
+	SMWFactbox::initStorage($parser->getTitle()); // be sure we have our title, strange things happen in parsing
 	// make HTML header
 	if (!$smwgStoreActive) return true; // avoid doing this in SMW-generated sub-parsers
 	foreach ($smwgHeadItems as $key => $item) {
