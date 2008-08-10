@@ -238,6 +238,7 @@ Please enter both a page and a property.',
 );
 
 /** Message documentation (Message documentation)
+ * @author Jon Harald Søby
  * @author Markus Krötzsch
  */
 $messages['qqq'] = array(
