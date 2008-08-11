@@ -29,6 +29,10 @@ class SMWUpdateJob extends Job {
 			$this->error = "SMWUpdateJob: Invalid title";
 			wfProfileOut('SMWUpdateJob::run (SMW)');
 			return false;
+		} elseif (!$this->title->exists()) {
+			smwfGetStore()->deleteSubject($this->title); // be sure to clear the data
+			wfProfileOut('SMWUpdateJob::run (SMW)');
+			return true;
 		}
 
 		$revision = Revision::newFromTitle( $this->title );

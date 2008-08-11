@@ -185,6 +185,8 @@ function enableSemantics($namespace = '', $complete = false) {
 	///// Register Jobs
 	$wgAutoloadClasses['SMWUpdateJob']              = $smwgIP . '/includes/jobs/SMW_UpdateJob.php';
 	$wgJobClasses['SMWUpdateJob']                   = 'SMWUpdateJob';
+	$wgJobClasses['SMWRefreshJob']                  = 'SMWRefreshJob';
+	$wgAutoloadClasses['SMWRefreshJob']             = $smwgIP . '/includes/jobs/SMW_RefreshJob.php';
 
 	return true;
 }

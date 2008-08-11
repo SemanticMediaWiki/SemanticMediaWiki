@@ -1589,7 +1589,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * Delete all semantic data stored for the given subject.
 	 * Used for update purposes.
 	 */
-	protected function deleteSemanticData($subject) {
+	public function deleteSemanticData($subject) {
 		$db =& wfGetDB( DB_MASTER );
 		/// NOTE: redirects are handled by updateRedirects(), not here!
 			//$db->delete('smw_redi2', array('s_title' => $subject->getDBkey(),'s_namespace' => $subject->getNamespace()), 'SMW::deleteSubject::Redi2');
