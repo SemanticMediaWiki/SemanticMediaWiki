@@ -50,7 +50,7 @@ abstract class SMWResultPrinter {
 		$this->readParameters($params,$outputmode);
 		if ($results->getCount() == 0) { // no results, take over processing
 			if (!$results->hasFurtherResults()) {
-				return htmlspecialchars($this->mDefault) . $this->getErrorString($results);
+				return $this->mDefault . $this->getErrorString($results);
 			} elseif ($this->mInline) {
 				$label = $this->mSearchlabel;
 				if ($label === NULL) { //apply defaults
