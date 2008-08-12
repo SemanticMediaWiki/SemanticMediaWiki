@@ -1407,6 +1407,13 @@ $messages['hil'] = array(
 	'smw_browse_go' => 'Lakat',
 );
 
+/** Croatian (Hrvatski)
+ * @author Dalibor Bosits
+ */
+$messages['hr'] = array(
+	'smw_browse_go' => 'Kreni',
+);
+
 /** Haitian (Kreyòl ayisyen)
  * @author Jvm
  * @author Masterches
@@ -3753,6 +3760,9 @@ $messages['zh-tw'] = array(
 	'smw_isknowntype' => '此一型態係為這個wiki系統內的標準的資料型態之一',
 	'smw_isaliastype' => '此一型態係為資料型態“$1”的別稱',
 	'smw_isnotype' => '在此wiki系統內，此一“$1”型態並非是一項標準的資料型態，並且尚未被用戶賦予其定義',
+	'smw_concept_description' => '"$1"概念的描述',
+	'smw_no_concept_namespace' => '概念僅能在屬於概念此一名字空間的頁面內予以定義',
+	'smw_multiple_concepts' => '每個概念頁面僅能有一項概念定義',
 	'smw_baduri' => '抱歉，在此處不允許“$1”的URI. (譯註原文為：Sorry, URIs of the form “$1” are not allowed.)',
 	'smw_iq_disabled' => '抱歉，線上查詢在此wiki已被設定為無效',
 	'smw_iq_moreresults' => '&hellip; 進階查詢',
@@ -3794,6 +3804,7 @@ $messages['zh-tw'] = array(
 	'smw_badtitle' => '抱歉！“$1” 並非是有效的頁面名稱',
 	'smw_badqueryatom' => '在此查詢中，部份的“[#x005B;&hellip]]”無法被識別。',
 	'smw_propvalueproblem' => '質性“$1”的值無法被識別',
+	'smw_noqueryfeature' => '某些查詢元件並不被此一wiki所支援且部份的查詢已被中止 ($1)。',
 	'smw_nodisjunctions' => '在此wiki系統內分開查詢是不被支援的，並有部份查詢已被遺漏 ($1)。(譯註原文為：Disjunctions in queries are not supported in this wiki and part of the query was dropped ($1).)',
 	'smw_querytoolarge' => '基於此wiki系統對查詢的規模及在深度方面的限制，以下的查詢條件無法被接受：$1',
 	'smw_devel_warning' => '此元件尚於開發中，也許無法完成發揮功效，在使用它之前，請先備份您的資料',
