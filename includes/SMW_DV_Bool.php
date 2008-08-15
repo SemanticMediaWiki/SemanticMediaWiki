@@ -14,6 +14,7 @@ class SMWBoolValue extends SMWDataValue {
 	protected $m_falsecaption = NULL; // a desired label for "false" if given
 
 	protected function parseUserValue($value) {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		$value = trim($value);
 		$lcv = strtolower($value);
 		$this->m_value = NULL;

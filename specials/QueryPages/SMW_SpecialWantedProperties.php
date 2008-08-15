@@ -30,12 +30,14 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	}
 
 	function getPageHeader() {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		return '<p>' . wfMsg('smw_wantedproperties_docu') . "</p><br />\n";
 	}
 
 	function formatResult( $skin, $result ) {
 		global $wgLang, $wgExtraNamespaces;
 		$proplink = $skin->makeLinkObj($result[0], $result[0]->getText(), 'action=view');
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		return wfMsg('smw_wantedproperty_template', $proplink, $result[1]);
 	}
 	

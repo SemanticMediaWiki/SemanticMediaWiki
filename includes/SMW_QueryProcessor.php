@@ -447,6 +447,7 @@ class SMWQueryParser {
 	 */
 	protected function getSubqueryDescription(&$setNS, &$label) {
 		global $smwgQPrintoutLimit;
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		$conjunction = NULL;      // used for the current inner conjunction
 		$disjuncts = array();     // (disjunctive) array of subquery conjunctions
 		$printrequests = array(); // the printrequests found for this query level
@@ -635,6 +636,7 @@ class SMWQueryParser {
 	 */
 	protected function getPropertyDescription($propertyname, &$setNS, &$label) {
 		global $smwgSMWBetaCompatible; // support for old * printouts of beta
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		$this->readChunk(); // consume separator ":=" or "::"
 		// first process property chain syntax (e.g. "property1.property2::value"):
 		if ($propertyname{0} == ' ') { // escape
@@ -846,6 +848,7 @@ class SMWQueryParser {
 	 * passed as a parameter.
 	 */
 	protected function getArticleDescription($firstchunk, &$setNS, &$label) {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		$chunk = $firstchunk;
 		$result = NULL;
 		$continue = true;
@@ -885,6 +888,7 @@ class SMWQueryParser {
 	}
 	
 	protected function finishLinkDescription($chunk, $hasNamespaces, $result, &$setNS, &$label) {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		if ($result === NULL) { // no useful information or concrete error found
 			$this->m_errors[] = wfMsgForContent('smw_badqueryatom');
 		} elseif (!$hasNamespaces && $setNS && ($this->m_defaultns !== NULL) ) {
@@ -996,6 +1000,7 @@ class SMWQueryParser {
 	 * also be changed (if it was non-NULL).
 	 */
 	protected function addDescription($curdesc, $newdesc, $conjunction = true) {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		$notallowedmessage = 'smw_noqueryfeature';
 		if ($newdesc instanceof SMWSomeProperty) {
 			$allowed = $this->m_queryfeatures & SMW_PROPERTY_QUERY;

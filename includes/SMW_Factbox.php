@@ -173,6 +173,8 @@ class SMWFactbox {
 	static private function addImportedDefinition($value,$caption,$storeannotation) {
 		global $wgContLang;
 
+		wfLoadExtensionMessages('SemanticMediaWiki');
+
 		list($onto_ns,$onto_section) = explode(':',$value,2);
 		$msglines = preg_split("/[\n][\s]?/u",wfMsgForContent("smw_import_$onto_ns")); // get the definition for "$namespace:$section"
 
@@ -330,6 +332,8 @@ class SMWFactbox {
 			return;
 		}
 		global $wgContLang;
+		
+		wfLoadExtensionMessages('SemanticMediaWiki');
 
 		foreach(SMWFactbox::$semdata->getProperties() as $key => $property) {
 			if ($property instanceof Title) {

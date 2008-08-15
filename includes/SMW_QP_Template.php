@@ -42,6 +42,7 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 
 		// print all result rows
 		if ($this->m_template == false) {
+			wfLoadExtensionMessages('SemanticMediaWiki');
 			$res->addErrors(array(wfMsgForContent('smw_notemplategiven')));
 			return '';
 		}

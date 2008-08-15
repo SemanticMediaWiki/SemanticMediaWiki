@@ -35,6 +35,7 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_wikivalue = $value;
 		$this->m_time = strtotime(trim($value));
 		if ( ($this->m_time == -1) || ($this->m_time === false) ) {
+			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_nodatetime',$value));
 		}
 		if ($this->m_caption === false) {

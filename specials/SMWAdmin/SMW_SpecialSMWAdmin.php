@@ -15,8 +15,9 @@ class SMWAdmin extends SpecialPage {
 	 * Constructor
 	 */
 	public function __construct() {
-		global $wgMessageCache; ///TODO: should these be messages?
-		$wgMessageCache->addMessages(array('smwadmin' => 'Admin functions for Semantic MediaWiki'));
+		wfLoadExtensionMessages('SemanticMediaWiki');
+		/*global $wgMessageCache; ///TODO: should these be messages?
+		$wgMessageCache->addMessages(array('smwadmin' => 'Admin functions for Semantic MediaWiki'));*/
 		parent::__construct('SMWAdmin', 'delete');
 	}
 
@@ -32,6 +33,7 @@ class SMWAdmin extends SpecialPage {
 			return;
 		}
 
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		$wgOut->setPageTitle(wfMsg('smwadmin'));
 
 		/**** Execute actions if any ****/

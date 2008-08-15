@@ -276,6 +276,7 @@ function smwfProcessInlineQuery($querytext, $params, &$parser) {
 		$smwgIQRunningNumber++;
 		return SMWQueryProcessor::getResultFromHookParams($querytext,$params,SMW_OUTPUT_HTML);
 	} else {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 	}
 }
@@ -291,6 +292,7 @@ function smwfProcessInlineQueryParserFunction(&$parser) {
 		array_shift( $params ); // we already know the $parser ...
 		return SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI);
 	} else {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 	}
 }
@@ -306,6 +308,7 @@ function smwfProcessShowParserFunction(&$parser) {
 		array_shift( $params ); // we already know the $parser ...
 		return SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI,SMWQueryProcessor::INLINE_QUERY,true);
 	} else {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 	}
 }
@@ -315,6 +318,7 @@ function smwfProcessShowParserFunction(&$parser) {
  */
 function smwfProcessConceptParserFunction(&$parser) {
 	global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $smwgPreviousConcept, $wgContLang;
+	wfLoadExtensionMessages('SemanticMediaWiki');
 	// The global $smwgConceptText is used to pass information to the MW hooks for storing it,
 	// $smwgPreviousConcept is used to detect if we already have a concept defined for this page.
 	$title = $parser->getTitle();
@@ -641,6 +645,7 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	*                   scientific notation)
 	*/
 	function smwfNumberFormat($value, $decplaces=3) {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		$decseparator = wfMsgForContent('smw_decseparator');
 	
 		// If number is a trillion or more, then switch to scientific

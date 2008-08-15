@@ -15,6 +15,7 @@ class SMWURIResolver extends SpecialPage {
 	 * Constructor
 	 */
 	public function __construct() {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		parent::__construct('URIResolver', '', false);
 	}
 
@@ -28,6 +29,7 @@ class SMWURIResolver extends SpecialPage {
 				$s = Skin::makeSpecialUrl('ExportRDF', 'stats=1');
 				header('Location: ' . $s);
 			} else {
+				wfLoadExtensionMessages('SemanticMediaWiki');
 				$wgOut->addHTML(wfMsg('smw_uri_doc'));
 			}
 		} else {

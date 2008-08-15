@@ -36,7 +36,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 	protected function getResultText($res, $outputmode) {
 		global $smwgIQRunningNumber, $wgSitename, $wgServer, $smwgRSSEnabled, $wgRequest;
 		$result = '';
-
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		if ($outputmode == SMW_OUTPUT_FILE) { // make RSS feed
 			if (!$smwgRSSEnabled) return '';
 			if ($this->m_title == '') {

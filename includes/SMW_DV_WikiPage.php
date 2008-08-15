@@ -42,10 +42,12 @@ class SMWWikiPageValue extends SMWDataValue {
 					$this->m_caption = $value;
 				}
 			} else {
+				wfLoadExtensionMessages('SemanticMediaWiki');
 				$this->addError(wfMsgForContent('smw_notitle', $value));
 				# TODO: Escape the text so users can see any punctuation problems (bug 11666).
 			}
 		} else {
+			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_notitle', $value));
 		}
 		if ($this->m_caption === false) {

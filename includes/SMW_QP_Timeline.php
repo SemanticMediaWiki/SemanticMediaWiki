@@ -66,6 +66,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 			}
 		}
 
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		// print header
 		$result = "<div class=\"smwtimeline\" id=\"smwtimeline$smwgIQRunningNumber\" style=\"height: $this->m_tlsize\">";
 		$result .= '<span class="smwtlcomment">' . wfMsgForContent('smw_iq_nojs') . ' ' . $this->getFurtherResultsLink($outputmode,$res,wfMsgForContent('smw_iq_altresults')). '</span>'; // note for people without JavaScript

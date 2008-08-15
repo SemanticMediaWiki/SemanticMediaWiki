@@ -18,6 +18,7 @@ class SMWPageProperty extends SpecialPage {
 	 * Constructor
 	 */
 	public function __construct() {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		parent::__construct('PageProperty', '', false);
 		//the key defining the group name in the language files is specialpages-group-smw_group
 		if (method_exists('SpecialPage', 'setGroup')) { 
@@ -57,6 +58,8 @@ class SMWPageProperty extends SpecialPage {
 		if ('' == $offset) $offset = 0;
 		$html = '';
 		$spectitle = Title::makeTitle( NS_SPECIAL, 'PageProperty' );
+
+		wfLoadExtensionMessages('SemanticMediaWiki');
 
 		if (('' == $type) || ('' == $from)) { // No relation or subject given.
 			$html .= wfMsg('smw_pp_docu') . "\n";

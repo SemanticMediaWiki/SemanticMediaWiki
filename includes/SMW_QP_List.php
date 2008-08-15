@@ -58,6 +58,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				$listsep = $this->mSep;
 				$finallistsep = $listsep;
 			} else {  // default list ", , , and, "
+				wfLoadExtensionMessages('SemanticMediaWiki');
 				$listsep = ', ';
 				$finallistsep = wfMsgForContent('smw_finallistconjunct') . ' ';
 			}

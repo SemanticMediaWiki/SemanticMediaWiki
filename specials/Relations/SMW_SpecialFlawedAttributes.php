@@ -33,6 +33,7 @@ class FlawedAttributes extends QueryPage {
 	function isSyndicated() { return false; }
 
 	function getPageHeader() {
+		wfLoadExtensionMessages('SemanticMediaWiki');
 		return '<p>' . wfMsg('smw_fattributes') . "</p><br />\n";
 	}
 

@@ -115,6 +115,7 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 			if ($this->mSearchlabel) {
 				$label = $this->mSearchlabel;
 			} else {
+				wfLoadExtensionMessages('SemanticMediaWiki');
 				$label = wfMsgForContent('smw_icalendar_link');
 			}
 			$link = $res->getQueryLink($label);

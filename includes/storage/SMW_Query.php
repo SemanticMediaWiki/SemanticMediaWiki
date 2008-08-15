@@ -142,6 +142,7 @@ class SMWQuery {
 			$log = array();
 			$this->m_description = $this->m_description->prune($maxsize, $maxdepth, $log);
 			if (count($log) > 0) {
+				wfLoadExtensionMessages('SemanticMediaWiki');
 				$this->m_errors[] = wfMsgForContent('smw_querytoolarge',implode(', ' , $log));
 			}
 		}

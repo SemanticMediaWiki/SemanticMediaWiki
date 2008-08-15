@@ -88,6 +88,7 @@ class SMWDataValueFactory {
 			SMWDataValueFactory::$m_typebyproperty[$propertyname] = $type;
 			return SMWDataValueFactory::newTypeIDValue($smwgPDefaultType,$value,$caption,$propertyname);
 		} else {
+			wfLoadExtensionMessages('SemanticMediaWiki');
 			return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value, $caption);
 		}
 	}
@@ -151,6 +152,7 @@ class SMWDataValueFactory {
 		} elseif ($typeid{0} != '_') { // custom type with linear conversion
 			$result = new SMWDataValueFactory::$m_typeclasses['__lin']($typeid);
 		} else { // type really unknown
+			wfLoadExtensionMessages('SemanticMediaWiki');
 			return new SMWErrorValue(wfMsgForContent('smw_unknowntype', $typevalue->getWikiValue() ), $value, $caption);
 		}
 
