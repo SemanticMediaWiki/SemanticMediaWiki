@@ -197,7 +197,7 @@ function enableSemantics($namespace = '', $complete = false) {
  */
 function smwfSetupExtension() {
 	wfProfileIn('smwfSetupExtension (SMW)');
-	global $smwgIP, $smwgStoreActive, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode;
+	global $smwgIP, $smwgStoreActive, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode;
 
 	/**
 	* Setting this to false prevents any new data from being stored in
@@ -215,8 +215,9 @@ function smwfSetupExtension() {
 
 	$smwgMasterStore = NULL;
 	smwfInitContentLanguage($wgLanguageCode); // this really could not be done in enableSemantics()
-	wfLoadExtensionMessages('SemanticMediaWiki'); /// FIXME: this is extremely slow; up to 10% of page display time (on a page with queries!) are consumed by loading unnecessary messages from a large file ...
+	wfLoadExtensionMessages('SemanticMediaWiki'); /// TODO: this is extremely slow; up to 10% of page display time (on a page with queries!) are consumed by loading unnecessary messages from a large file ...
 	/// Past SMW releases had an average of about 1% extension loading time per call, while we are now up at 10%!
+	/// (if no PHP caching is enabled, things become better with ACP but impact still is noticeable)
 	/// Should we return to our earlier message management for releases?
 	$smwgIQRunningNumber = 0;
 
@@ -225,7 +226,6 @@ function smwfSetupExtension() {
 	require_once($smwgIP . '/includes/SMW_RefreshTab.php');
 
 	$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; // parse annotations
-	$wgHooks['ParserBeforeStrip'][] = 'smwfRegisterInlineQueries'; // register the <ask> parser hook
 	$wgHooks['ArticleSave'][] = 'smwfPreSaveHook'; // check some settings here
 	$wgHooks['ArticleUndelete'][] = 'smwfUndeleteHook'; // restore annotations
 	$wgHooks['ArticleDelete'][] = 'smwfDeleteHook'; // delete annotations
@@ -237,6 +237,15 @@ function smwfSetupExtension() {
 
 	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage'; // special implementations for property/type articles
 
+	if( defined( 'MW_SUPPORTS_PARSERFIRSTCALLINIT' ) ) {
+		$wgHooks['ParserFirstCallInit'][] = 'smwfRegisterParserFunctions';
+	} else {
+		if ( class_exists( 'StubObject' ) && !StubObject::isRealObject( $wgParser ) ) {
+			$wgParser->_unstub();
+		}
+		smwfRegisterParserFunctions( $wgParser );
+	}
+
 	///// credits (see "Special:Version") /////
 	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, [http://korrekt.org Markus&nbsp;Kr&ouml;tzsch], [http://simia.net Denny&nbsp;Vrandecic], S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://semantic-mediawiki.org', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://semantic-mediawiki.org/wiki/Help:User_manual View online documentation.]');
 
@@ -245,21 +254,16 @@ function smwfSetupExtension() {
 }
 
 /**
- * This hook registers a parser-hook to the current parser.
+ * This hook registers parser functions and hooks to the given parser.
  * Note that parser hooks are something different than MW hooks
  * in general, which explains the two-level registration.
  */
-function smwfRegisterInlineQueries( &$parser, &$text, &$stripstate ) {
-	SMWFactbox::initStorage($parser->getTitle());
-
-	$oldhook = $parser->setFunctionHook( 'ask', 'smwfProcessInlineQueryParserFunction' );
-	if ($oldhook != 'smwfProcessInlineQueryParserFunction') {
-		$parser->setHook( 'ask', 'smwfProcessInlineQuery' );
-		$parser->setFunctionHook( 'ask', 'smwfProcessInlineQueryParserFunction' );
-		$parser->setFunctionHook( 'show', 'smwfProcessShowParserFunction' );
-		$parser->setFunctionHook( 'info', 'smwfProcessInfoParserFunction' );
-		$parser->setFunctionHook( 'concept', 'smwfProcessConceptParserFunction' );
-	}
+function smwfRegisterParserFunctions( &$parser) {
+	$parser->setHook( 'ask', 'smwfProcessInlineQuery' );
+	$parser->setFunctionHook( 'ask', 'smwfProcessInlineQueryParserFunction' );
+	$parser->setFunctionHook( 'show', 'smwfProcessShowParserFunction' );
+	$parser->setFunctionHook( 'info', 'smwfProcessInfoParserFunction' );
+	$parser->setFunctionHook( 'concept', 'smwfProcessConceptParserFunction' );
 	return true; // always return true, in order not to stop MW's hook processing!
 }
 
@@ -314,6 +318,7 @@ function smwfProcessConceptParserFunction(&$parser) {
 	// The global $smwgConceptText is used to pass information to the MW hooks for storing it,
 	// $smwgPreviousConcept is used to detect if we already have a concept defined for this page.
 	$title = $parser->getTitle();
+	SMWFactbox::initStorage($title); // make sure we have the right title
 	if ($title->getNamespace() != SMW_NS_CONCEPT) {
 		return smwfEncodeMessages(array(wfMsgForContent('smw_no_concept_namespace')));
 	} elseif (isset($smwgPreviousConcept) && ($smwgPreviousConcept == $title->getText())) {
