@@ -9,9 +9,6 @@
  */
 if (!defined('MEDIAWIKI')) die();
 
-global $smwgIP;
-include_once($smwgIP . '/languages/SMW_Language.php');
-
 class SMW_LanguageEn extends SMW_Language {
 
 protected $m_DatatypeLabels = array(
@@ -64,5 +61,4 @@ protected $m_Namespaces = array(
 );
 
 }
-
 

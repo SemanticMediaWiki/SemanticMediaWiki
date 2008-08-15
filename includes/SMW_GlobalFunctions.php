@@ -188,6 +188,9 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgJobClasses['SMWRefreshJob']                  = 'SMWRefreshJob';
 	$wgAutoloadClasses['SMWRefreshJob']             = $smwgIP . '/includes/jobs/SMW_RefreshJob.php';
 
+	///// Language class to avoid using a require inside of language files
+	$wgAutoloadClasses['SMW_Language']              = $smwgIP . '/includes/languages/SMW_Language.php';
+
 	return true;
 }
 

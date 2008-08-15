@@ -12,9 +12,6 @@
  */
 if (!defined('MEDIAWIKI')) die();
 
-global $smwgIP;
-include_once($smwgIP . '/languages/SMW_Language.php');
-
 class SMW_LanguageKo extends SMW_Language {
 
 protected $m_DatatypeLabels = array(
@@ -105,5 +102,4 @@ protected $m_NamespaceAliases = array(
 	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 }
-
 
