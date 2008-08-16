@@ -2356,6 +2356,7 @@ $messages['nl'] = array(
 	'smw_result_next' => 'Volgende',
 	'smw_result_results' => 'Resultaten',
 	'smw_result_noresults' => 'Sorry, geen resultaten.',
+	'smwadmin' => 'Administratieve functies voor Semantic MediaWiki',
 );
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
