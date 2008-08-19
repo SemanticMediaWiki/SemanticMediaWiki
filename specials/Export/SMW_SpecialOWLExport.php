@@ -504,7 +504,7 @@ class OWLExport {
 		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::admins(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','adminCount'), $ed);
 
-		$mainpage = Title::newMainPage());
+		$mainpage = Title::newMainPage();
 		if ($mainpage !== NULL) {
 			$ed = new SMWExpData(new SMWExpResource($mainpage->getFullURL()));
 			$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','mainPage'), $ed);
