@@ -21,27 +21,6 @@ class SMWQueryProcessor {
 	const CONCEPT_DESC = 2; // query for concept definition
 
 	/**
-	 * Array of enabled formats for formatting queries. Can be redefined in the settings to disallow certain
-	 * formats. The formats 'table' and 'list' are defaults that cannot be disabled. The format 'broadtable'
-	 * should not be disabled either in order not to break Special:ask.
-	 */
-	static $formats = array('table'      => 'SMWTableResultPrinter',
-							'list'       => 'SMWListResultPrinter',
-							'ol'         => 'SMWListResultPrinter',
-							'ul'         => 'SMWListResultPrinter',
-							'broadtable' => 'SMWTableResultPrinter',
-							'embedded'   => 'SMWEmbeddedResultPrinter',
-							'timeline'   => 'SMWTimelineResultPrinter',
-							'eventline'  => 'SMWTimelineResultPrinter',
-							'template'   => 'SMWTemplateResultPrinter',
-							'count'      => 'SMWListResultPrinter',
-							'debug'      => 'SMWListResultPrinter',
-							'rss'        => 'SMWRSSResultPrinter',
-							'icalendar'  => 'SMWiCalendarResultPrinter',
-							'vcard'      => 'SMWvCardResultPrinter',
-							'csv'        => 'SMWCsvResultPrinter');
-
-	/**
 	 * Parse a query string given in SMW's query language to create
 	 * an SMWQuery. Parameters are given as key-value-pairs in the
 	 * given array. The parameter $context defines in what context the
@@ -312,7 +291,8 @@ class SMWQueryProcessor {
 		$format = 'auto';
 		if (array_key_exists('format', $params)) {
 			$format = strtolower(trim($params['format']));
-			if ( !array_key_exists($format, SMWQueryProcessor::$formats) ) {
+			global $smwgResultFormats;
+			if ( !array_key_exists($format, $smwgResultFormats) ) {
 				$format = 'auto'; // If it is an unknown format, defaults to list/table again
 			}
 		}
@@ -328,8 +308,9 @@ class SMWQueryProcessor {
 				$format = 'table';
 			else $format = 'list';
 		}
-		if (array_key_exists($format, SMWQueryProcessor::$formats))
-			$formatclass = SMWQueryProcessor::$formats[$format];
+		global $smwgResultFormats;
+		if (array_key_exists($format, $smwgResultFormats))
+			$formatclass = $smwgResultFormats[$format];
 		else
 			$formatclass = "SMWListResultPrinter";
 		return new $formatclass($format, ($context != SMWQueryProcessor::SPECIAL_PAGE));
