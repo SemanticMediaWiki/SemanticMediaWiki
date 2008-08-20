@@ -170,7 +170,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	// suboptimal special pages using the SMWSpecialPage wrapper class:
 	$wgAutoloadClasses['SMWSpecialPage']            = $smwgIP . '/includes/SMW_SpecialPage.php';
 	$wgSpecialPages['Properties']                   = array('SMWSpecialPage','Properties', 'smwfDoSpecialProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialProperties.php');
-	$wgSpecialPageGroups['Properties']                   = 'pages';
+	$wgSpecialPageGroups['Properties']              = 'pages';
 	$wgSpecialPages['UnusedProperties']             = array('SMWSpecialPage','UnusedProperties', 'smwfDoSpecialUnusedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialUnusedProperties.php', true, '');
 	$wgSpecialPageGroups['UnusedProperties']        = 'maintenance';
 	$wgSpecialPages['WantedProperties']             = array('SMWSpecialPage','WantedProperties', 'smwfDoSpecialWantedProperties', $smwgIP . '/specials/QueryPages/SMW_SpecialWantedProperties.php', true, '');
