@@ -49,10 +49,14 @@ Notes:
   php_mbstring.dll extension. This is standard but not enabled by default on 
   some distributions of PHP.
   See http://php.net/manual/en/ref.mbstring.php#mbstring.installation
+* For installation, SMW needs the right to create new tables (CREATE). For
+  upgrades it may also need the right to alter tables (ALTER TABLE). Both can
+  be removed again after SMW was set up. The script SMW_setup.php can use the
+  DB credentials from AdminSettings.php for this purpose, avoiding the need of
+  extra rights for the wiki DB user.
 * SMW creates and alters temporary tables for certain semantic queries. To do
-  this, your wikidb user must have privileges for CREATE TEMPORARY TABLE,
-  DROP TEMPORARY TABLE, and ALTER TABLE. The according features can be disabled
-  by adding the following to Localsettings.php:
+  this, your wikidb user must have privileges for CREATE TEMPORARY TABLES. The 
+  according features can be disabled by adding the following to Localsettings.php:
 
   $smwgQSubcategoryDepth=0;
   $smwgQPropertyDepth=0;
