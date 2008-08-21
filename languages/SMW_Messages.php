@@ -2616,6 +2616,7 @@ $messages['oc'] = array(
 	'smw_no_concept_namespace' => 'Los concèptes pòt unicament èsser definits dins la pagina dins lo Concèpte : espaci de nom.',
 	'smw_multiple_concepts' => 'Cada pagina de concèpte pòt pas aver qu’una sola definicion.',
 	'smw_baduri' => 'O planhèm. Las URIs del domeni $1 son pas disponiblas a aqueste emplaçament',
+	'smw_csv_link' => 'CSV',
 	'smw_icalendar_link' => 'iCalendièr',
 	'smw_vcard_link' => 'vCarta',
 	'smw_iq_disabled' => "O planhèm. Las recèrcas dins los articles d'aqueste wiki son pas autorizadas.",
@@ -2749,6 +2750,7 @@ $messages['oc'] = array(
 	'smw_result_next' => 'Seguent',
 	'smw_result_results' => 'Resultats',
 	'smw_result_noresults' => 'O planhèm, pas de resultats.',
+	'smwadmin' => "Foncions d'administrator per Semantic MediaWiki",
 );
 
 /** Polish (Polski)
@@ -3200,6 +3202,7 @@ $messages['sk'] = array(
 	'smw_no_concept_namespace' => 'Pojmy je možné definovať iba na stránkach v mennom priestore Concept:',
 	'smw_multiple_concepts' => 'Každý pojem môže mať iba jednu definíciu pojmu.',
 	'smw_baduri' => 'Prepáčte, URI z rozsahu "$1" na tomto mieste nie sú dostupné.',
+	'smw_csv_link' => 'CSV',
 	'smw_icalendar_link' => 'iCalendar',
 	'smw_vcard_link' => 'vCard',
 	'smw_iq_disabled' => 'Prepáčte. Inline queries have been disabled for this wiki.',
@@ -3336,6 +3339,7 @@ Prosím, zadajte stránku aj vlastnosť.',
 	'smw_result_next' => 'Ďalej',
 	'smw_result_results' => 'Výsledky',
 	'smw_result_noresults' => 'Prepáčte, žiadne výsledky.',
+	'smwadmin' => 'Správcovské funkcie Semantic MediaWiki',
 );
 
 /** Swedish (Svenska)
