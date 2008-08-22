@@ -1268,6 +1268,7 @@ $messages['gl'] = array(
 	'smw_no_concept_namespace' => 'O conceptos só poden ser definidos nas páxinas que están no espazo de nomes Concepto:.',
 	'smw_multiple_concepts' => 'Cada páxina de conceptos só pode conter unha definición dun concepto.',
 	'smw_baduri' => 'Sentímolo, os URIs da forma “$1” non están permitidos.',
+	'smw_csv_link' => 'CSV',
 	'smw_icalendar_link' => 'iCalendario',
 	'smw_vcard_link' => 'vTarxeta',
 	'smw_iq_disabled' => 'Sentímolo. As preguntas semánticas foron deshabilitadas para este wiki.',
