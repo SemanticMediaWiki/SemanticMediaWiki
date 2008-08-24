@@ -15,8 +15,8 @@ class SMWAdmin extends SpecialPage {
 	 * Constructor
 	 */
 	public function __construct() {
-		wfLoadExtensionMessages('SemanticMediaWiki');
 		parent::__construct('SMWAdmin', 'delete');
+		wfLoadExtensionMessages('SemanticMediaWiki');
 	}
 
 	public function execute($par = null) {
@@ -31,9 +31,8 @@ class SMWAdmin extends SpecialPage {
 			return;
 		}
 
-		wfLoadExtensionMessages('SemanticMediaWiki');
-		$wgOut->setPageTitle(wfMsg('smwadmin'));
-
+		$this->setHeaders();
+		
 		/**** Execute actions if any ****/
 
 		$action = $wgRequest->getText( 'action' );

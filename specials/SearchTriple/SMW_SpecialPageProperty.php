@@ -18,18 +18,15 @@ class SMWPageProperty extends SpecialPage {
 	 * Constructor
 	 */
 	public function __construct() {
-		wfLoadExtensionMessages('SemanticMediaWiki');
 		parent::__construct('PageProperty', '', false);
-		//the key defining the group name in the language files is specialpages-group-smw_group
-		if (method_exists('SpecialPage', 'setGroup')) { 
-			parent::setGroup('PageProperty', 'smw_group');	
-		}
+		wfLoadExtensionMessages('SemanticMediaWiki');
 	}
 
 	public function execute($query = '') {
 		global $wgRequest, $wgOut, $wgUser;
 
 		$skin = $wgUser->getSkin();
+		$this->setHeaders();
 
 		// get the GET parameters
 		$from = $wgRequest->getVal( 'from' );

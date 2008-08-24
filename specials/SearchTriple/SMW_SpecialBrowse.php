@@ -19,20 +19,15 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * Constructor
 	 */
 	public function __construct() {
-		wfLoadExtensionMessages('SemanticMediaWiki');
 		parent::__construct('Browse');
-		//the key defining the group name in the language files is specialpages-group-smw_group
-		if (method_exists('SpecialPage', 'setGroup')) { 
-			parent::setGroup('Browse', 'smw_group');	
-		}
+		wfLoadExtensionMessages('SemanticMediaWiki');
 	}
 
 	public function execute($query = '') {
 		global $wgRequest, $wgOut, $wgUser, $wgContLang;
 
 		$skin = $wgUser->getSkin();
-
-		wfLoadExtensionMessages('SemanticMediaWiki');
+		$this->setHeaders();
 
 		// get the GET parameters
 		$articletext = $wgRequest->getVal( 'article' );

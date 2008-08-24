@@ -11,7 +11,7 @@
 
 //ToDo: Please refactor into a real class we can autoload
 wfLoadExtensionMessages('SemanticMediaWiki');
-SpecialPage::addPage( new SpecialPage('OntologyImport','delete',true,'doSpecialImportOntology',false) );
+SpecialPage::addPage( new SpecialPage('OntologyImport','import',true,'doSpecialImportOntology',false) );
 
 function doSpecialImportOntology($par = NULL) {
 	global $smwgIP;
@@ -22,8 +22,8 @@ function doSpecialImportOntology($par = NULL) {
 						// (should be equal to 'http://'.$_SERVER['SERVER_NAME'])
 	global $wgScript;   // "/subdirectory/of/wiki/index.php"
 
-	if ( ! $wgUser->isAllowed('delete') ) {
-		$wgOut->sysopRequired();
+	if ( ! $wgUser->isAllowed('import') ) {
+		$wgOut->permissionRequired('import');
 		return;
 	}
 

@@ -19,12 +19,8 @@ class SMWAskPage extends SpecialPage {
 	 * Constructor
 	 */
 	public function __construct() {
-		wfLoadExtensionMessages('SemanticMediaWiki');
 		parent::__construct('Ask');
-		//the key defining the group name in the language files is specialpages-group-smw_group
-		if (method_exists('SpecialPage', 'setGroup')) { 
-			parent::setGroup('Ask', 'smw_group');	
-		}
+		wfLoadExtensionMessages('SemanticMediaWiki');
 	}
 
 	function execute($p = '') {
@@ -36,7 +32,6 @@ class SMWAskPage extends SpecialPage {
 			return;
 		}
 		if (!$smwgQEnabled) {
-			wfLoadExtensionMessages('SemanticMediaWiki');
 			$wgOut->addHTML('<br />' . wfMsg('smw_iq_disabled'));
 		} else {
 			$this->extractQueryParameters($p);
@@ -135,7 +130,6 @@ class SMWAskPage extends SpecialPage {
 
 	protected function makeHTMLResult() {
 		global $wgOut;
-		wfLoadExtensionMessages('SemanticMediaWiki');
 		$result = '';
 		$result_mime = false; // output in MW Special page as usual
 
@@ -223,7 +217,6 @@ class SMWAskPage extends SpecialPage {
 		$skin = $wgUser->getSkin();
 		$result = '';
 
-		wfLoadExtensionMessages('SemanticMediaWiki');
 		if ($this->m_editquery) {
 			$spectitle = Title::makeTitle( NS_SPECIAL, 'Ask' );
 			$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
@@ -271,7 +264,6 @@ class SMWAskPage extends SpecialPage {
 	 */
 	protected function getNavigationBar($res, $urltail) {
 		global $wgUser, $smwgQMaxLimit;
-		wfLoadExtensionMessages('SemanticMediaWiki');
 		$skin = $wgUser->getSkin();
 		$offset = $this->m_params['offset'];
 		$limit  = $this->m_params['limit'];
@@ -316,7 +308,6 @@ class SMWAskPage extends SpecialPage {
 	protected function executeSimpleAsk() {
 		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgQSortingSupport;
 
-		wfLoadExtensionMessages('SemanticMediaWiki');
 		$skin = $wgUser->getSkin();
 
 		$query = $wgRequest->getVal( 'query' );

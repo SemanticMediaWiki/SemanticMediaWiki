@@ -155,12 +155,16 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWQueryPage']              = $smwgIP . '/specials/QueryPages/SMW_QueryPage.php';
 	$wgAutoloadClasses['SMWAskPage']                = $smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php';
 	$wgSpecialPages['Ask']                          = array('SMWAskPage');
+	$wgSpecialPageGroups['Ask']                     = 'smw_group';
 	$wgAutoloadClasses['SMWSpecialBrowse']          = $smwgIP . '/specials/SearchTriple/SMW_SpecialBrowse.php';
 	$wgSpecialPages['Browse']                       = array('SMWSpecialBrowse');
+	$wgSpecialPageGroups['Browse']                  = 'smw_group';
 	$wgAutoloadClasses['SMWPageProperty']           = $smwgIP . '/specials/SearchTriple/SMW_SpecialPageProperty.php';
 	$wgSpecialPages['PageProperty']                 = array('SMWPageProperty');
+	$wgSpecialPageGroups['PageProperty']            = 'smw_group';
 	$wgAutoloadClasses['SMWSearchByProperty']       = $smwgIP . '/specials/SearchTriple/SMW_SpecialSearchByProperty.php';
 	$wgSpecialPages['SearchByProperty']             = array('SMWSearchByProperty');
+	$wgSpecialPageGroups['SearchByProperty']        = 'smw_group';
 	$wgAutoloadClasses['SMWURIResolver']            = $smwgIP . '/specials/URIResolver/SMW_SpecialURIResolver.php';
 	$wgSpecialPages['URIResolver']                  = array('SMWURIResolver');
 	$wgAutoloadClasses['SMWAdmin']                  = $smwgIP . '/specials/SMWAdmin/SMW_SpecialSMWAdmin.php';
