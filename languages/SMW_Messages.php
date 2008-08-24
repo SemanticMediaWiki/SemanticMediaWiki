@@ -505,6 +505,7 @@ $messages['ar'] = array(
 	'smw_result_next' => 'التالي',
 	'smw_result_results' => 'النتائج',
 	'smw_result_noresults' => 'عذرا، لا توجد نتائج.',
+	'smwadmin' => 'وظائف إدارية لسيمانتيك ميدياويكي',
 );
 
 /** Bulgarian (Български)
