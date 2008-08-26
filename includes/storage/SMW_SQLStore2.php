@@ -634,7 +634,7 @@ class SMWSQLStore2 extends SMWStore {
 		$sql = 's_id=' . $db->addQuotes($sid) . ' AND p_id=smw_id' . $this->getSQLConditions($requestoptions,'smw_sortkey','smw_sortkey');
 
 		$result = array();
-		// NOTE: the following also includes naries, which are now kepn in smw_rels2
+		// NOTE: the following also includes naries, which are now kept in smw_rels2
 		foreach (array('smw_atts2','smw_text2','smw_rels2') as $table) {
 			$res = $db->select( array($table,'smw_ids'), 'DISTINCT smw_title',
 			                    $sql, 'SMW::getProperties', $this->getSQLOptions($requestoptions,'smw_sortkey') );
@@ -656,6 +656,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ($value->getTypeID() == '_wpg') {
 			$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki());
 			$sql = 'p_id=smw_id AND o_id=' . $db->addQuotes($oid) .
+			       ' AND smw_iw=' . $db->addQuotes('') . // only local, non-internal properties
 			       $this->getSQLConditions($requestoptions,'smw_sortkey','smw_sortkey');
 			$res = $db->select( array('smw_rels2','smw_ids'), 'DISTINCT smw_title',
 			                    $sql, 'SMW::getInProperties', $this->getSQLOptions($requestoptions,'smw_sortkey') );
