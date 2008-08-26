@@ -129,8 +129,7 @@ class SMWFactbox {
 
 	/**
 	 * This method adds a new property with the given value to the storage.
-	 * It returns an array which contains the result of the operation in
-	 * various formats.
+	 * It returns a datavlue object that contains the result of the operation.
 	 */
 	static function addProperty($propertyname, $value, $caption, $storeannotation = true) {
 		wfProfileIn("SMWFactbox::addProperty (SMW)");
@@ -142,7 +141,7 @@ class SMWFactbox {
 		switch ($special) {
 			case false: // normal property
 				$result = SMWDataValueFactory::newPropertyValue($propertyname,$value,$caption);
-				if ($storeannotation) {
+				if ($storeannotation && (SMWFactbox::$semdata !== NULL)) {
 					SMWFactbox::$semdata->addPropertyValue($propertyname,$result);
 				}
 				wfProfileOut("SMWFactbox::addProperty (SMW)");
@@ -153,7 +152,7 @@ class SMWFactbox {
 				return $result;
 			default: // generic special property
 				$result = SMWDataValueFactory::newSpecialValue($special,$value,$caption);
-				if ($storeannotation) {
+				if ($storeannotation && (SMWFactbox::$semdata !== NULL)) {
 					SMWFactbox::$semdata->addSpecialValue($special,$result);
 				}
 				wfProfileOut("SMWFactbox::addProperty (SMW)");
@@ -216,33 +215,35 @@ class SMWFactbox {
 		}
 
 		// check whether element of correct type was found
-		$this_ns = SMWFactbox::$semdata->getSubject()->getNamespace();
-		$error = NULL;
-		switch ($elemtype) {
-			case SMW_NS_PROPERTY: case NS_CATEGORY:
-				if ($this_ns != $elemtype) {
-					$error = wfMsgForContent('smw_nonright_importtype',$value, $wgContLang->getNsText($elemtype));
-				}
-				break;
-			case NS_MAIN:
-				if ( (SMW_NS_PROPERTY == $this_ns) || (NS_CATEGORY == $this_ns)) {
-					$error = wfMsgForContent('smw_wrong_importtype',$value, $wgContLang->getNsText($this_ns));
-				}
-				break;
-			case -1:
-				$error = wfMsgForContent('smw_no_importelement',$value);
-		}
-
-		if (NULL != $error) {
-			$datavalue = SMWDataValueFactory::newTypeIDValue('__err',$value,$caption);
-			$datavalue->addError($error);
-			if ($storeannotation) {
-				SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
+		if (SMWFactbox::$semdata !== NULL) {
+			$this_ns = SMWFactbox::$semdata->getSubject()->getNamespace();
+			$error = NULL;
+			switch ($elemtype) {
+				case SMW_NS_PROPERTY: case NS_CATEGORY:
+					if ($this_ns != $elemtype) {
+						$error = wfMsgForContent('smw_nonright_importtype',$value, $wgContLang->getNsText($elemtype));
+					}
+					break;
+				case NS_MAIN:
+					if ( (SMW_NS_PROPERTY == $this_ns) || (NS_CATEGORY == $this_ns)) {
+						$error = wfMsgForContent('smw_wrong_importtype',$value, $wgContLang->getNsText($this_ns));
+					}
+					break;
+				case -1:
+					$error = wfMsgForContent('smw_no_importelement',$value);
 			}
-			return $datavalue;
+	
+			if (NULL != $error) {
+				$datavalue = SMWDataValueFactory::newTypeIDValue('__err',$value,$caption);
+				$datavalue->addError($error);
+				if ($storeannotation) {
+					SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
+				}
+				return $datavalue;
+			}
 		}
 
-		if ($storeannotation) {
+		if ( ($storeannotation) && (SMWFactbox::$semdata !== NULL) ) {
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_BASEURI,SMWDataValueFactory::newTypeIDValue('_str',$onto_uri));
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_NSID,SMWDataValueFactory::newTypeIDValue('_str',$onto_ns));
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_SECTION,SMWDataValueFactory::newTypeIDValue('_str',$onto_section));
@@ -252,7 +253,7 @@ class SMWFactbox {
 		}
 		// print the input (this property is usually not stored, see SMW_SQLStore.php)
 		$datavalue = SMWDataValueFactory::newTypeIDValue('_str',"[$onto_uri$onto_section $value] ($onto_name)",$caption);
-		if ($storeannotation) {
+		if ( ($storeannotation) && (SMWFactbox::$semdata !== NULL) ) {
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
 		}
 		return $datavalue;
@@ -292,18 +293,24 @@ class SMWFactbox {
 			SMWFactbox::$m_printed = true; // do not print again, period (the other cases may safely try again, if new data should come in)
 			return;
 		case SMW_FACTBOX_SPECIAL: // only when there are special properties
-			if ( !SMWFactbox::$semdata->hasVisibleSpecialProperties() ) {
+			if ( (SMWFactbox::$semdata === NULL) || (!SMWFactbox::$semdata->hasVisibleSpecialProperties()) ) {
 				wfProfileOut("SMWFactbox::printFactbox (SMW)");
 				return;
 			}
 			break;
 		case SMW_FACTBOX_NONEMPTY: // only when non-empty
-			if ( (!SMWFactbox::$semdata->hasProperties()) && (!SMWFactbox::$semdata->hasVisibleSpecialProperties()) ) {
+			if ( (SMWFactbox::$semdata === NULL) || (!SMWFactbox::$semdata->hasProperties()) && (!SMWFactbox::$semdata->hasVisibleSpecialProperties()) ) {
 				wfProfileOut("SMWFactbox::printFactbox (SMW)");
 				return;
 			}
 			break;
-		// case SMW_FACTBOX_SHOWN: display
+		case SMW_FACTBOX_SHOWN: // escape only if we have no data container at all 
+			///NOTE: this should not happen, but we have no way of being fully sure, hence be prepared
+			if (SMWFactbox::$semdata === NULL) {
+				wfProfileOut("SMWFactbox::printFactbox (SMW)");
+				return;
+			}
+			break;
 		}
 		SMWFactbox::$m_printed = true;
 
