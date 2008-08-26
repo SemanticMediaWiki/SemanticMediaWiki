@@ -1,5 +1,12 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
+== Semantic MediaWiki 1.2.2 ==
+
+Minor release with bugfixes:
+* in rare cases undelete would create errors on pages
+* inverse links for binary properties were displayed wrongly
+* some additional checks to make parsing more reliable
+
 == Semantic MediaWiki 1.2.1 ==
 
 See http://semantic-mediawiki.org/wiki/SMW_1.2.1
@@ -12,6 +19,7 @@ See http://semantic-mediawiki.org/wiki/SMW_1.2.1
 * Query format "csv" to export data as file of comma-separated values
 * Prevent crashes for very long property values (due to PHP PCRE)
 * Various other bugfixes
+
 
 == Semantic MediaWiki 1.2 ==
 

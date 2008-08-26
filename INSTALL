@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.2.1]]
+[[Semantic MediaWiki 1.2.2]]
 
 Install instructions for the latest SMW version are also online in a more
 convenient format for reading:
@@ -16,7 +16,7 @@ Contents
   ** Running SMW on older versions of MediaWiki
 * Notes on Upgrading
   ** General Upgrading Instructions
-  ** Upgrading from SMW 1.2
+  ** Upgrading from SMW 1.2 and SMW 1.2.1
   ** Upgrading from SMW 1.0.* and SMW 1.1.*
   ** Upgrading from 1.0 RC1, 1.0 RC2, 1.0 RC3
   ** Upgrading from version 0.7
@@ -235,12 +235,12 @@ before the refresh (however, deletion is the most secure way to fully update).
 Some versions of SMW also introduced incompatibilities in the wiki syntax that
 may need to be fixed. You may want to read this first.
 
-=== Upgrtading from SMW 1.2 ===
+=== Upgrtading from SMW 1.2 and SMW 1.2.1 ===
 
-No special changes are needed, but one default settgin has changed: SMW will no
-longer support nested link syntax in property values by default, since this
-requires a complex pattern match that causes PHP to crash if property values
-are very long (in the order of 3400 characters). If you have no such long
+No special changes are needed, but one default setting has changed from SMW 1.2:
+SMW will no longer support nested link syntax in property values by default,
+since this requires a complex pattern match that causes PHP to crash if property
+values are very long (in the order of 3400 characters). If you have no such long
 values, you may activate the feature with the option
 
 $smwgLinksInValues = true;
