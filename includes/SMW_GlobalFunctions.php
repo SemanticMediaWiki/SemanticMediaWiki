@@ -344,7 +344,9 @@ function smwfProcessConceptParserFunction(&$parser) {
 
 	$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC);
 	$dv->setValues($concept_text, $concept_docu);
-	SMWFactbox::$semdata->addSpecialValue(SMW_SP_CONCEPT_DESC,$dv);
+	if (SMWFactbox::$semdata !== NULL) {
+		SMWFactbox::$semdata->addSpecialValue(SMW_SP_CONCEPT_DESC,$dv);
+	}
 
 	// display concept box:
 	$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink');
@@ -424,8 +426,8 @@ function smwfRequireHeadItem($id, $item = '') {
 function smwfParserAfterTidy(&$parser, &$text) {
 	global $smwgHeadItems, $smwgStoreActive;
 	SMWFactbox::initStorage($parser->getTitle()); // be sure we have our title, strange things happen in parsing
-	// make HTML header
 	if (!$smwgStoreActive || (SMWFactbox::$semdata === NULL)) return true; // avoid doing this in SMW-generated sub-parsers
+	// make HTML header
 	foreach ($smwgHeadItems as $key => $item) {
 		$parser->mOutput->addHeadItem("\t\t" . $item . "\n", $key);
 	}

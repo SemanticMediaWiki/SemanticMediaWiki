@@ -147,7 +147,7 @@ class SMWFactbox {
 				wfProfileOut("SMWFactbox::addProperty (SMW)");
 				return $result;
 			case SMW_SP_IMPORTED_FROM: // this requires special handling
-				$result = SMWFactbox::addImportedDefinition($value,$caption,$storeannotation);
+				$result = SMWFactbox::addImportedDefinition($value,$caption,$storeannotation && (SMWFactbox::$semdata !== NULL));
 				wfProfileOut("SMWFactbox::addProperty (SMW)");
 				return $result;
 			default: // generic special property
@@ -243,7 +243,7 @@ class SMWFactbox {
 			}
 		}
 
-		if ( ($storeannotation) && (SMWFactbox::$semdata !== NULL) ) {
+		if ($storeannotation) {
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_BASEURI,SMWDataValueFactory::newTypeIDValue('_str',$onto_uri));
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_NSID,SMWDataValueFactory::newTypeIDValue('_str',$onto_ns));
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_EXT_SECTION,SMWDataValueFactory::newTypeIDValue('_str',$onto_section));
@@ -253,7 +253,7 @@ class SMWFactbox {
 		}
 		// print the input (this property is usually not stored, see SMW_SQLStore.php)
 		$datavalue = SMWDataValueFactory::newTypeIDValue('_str',"[$onto_uri$onto_section $value] ($onto_name)",$caption);
-		if ( ($storeannotation) && (SMWFactbox::$semdata !== NULL) ) {
+		if ($storeannotation) {
 			SMWFactbox::$semdata->addSpecialValue(SMW_SP_IMPORTED_FROM, $datavalue);
 		}
 		return $datavalue;
