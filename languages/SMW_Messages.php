@@ -224,7 +224,7 @@ The number of incorrect properties is given in the brackets.',
 	'smw_browse_show_incoming'   => 'show properties that link here',
 	'smw_browse_hide_incoming'   => 'hide properties that link here',
 	'smw_inverse_label_default'  => '$1 of',
-	'smw_inverse_label_property' => 'Opposite property label',
+	'smw_inverse_label_property' => 'Inverse property label',
 
 	// Messages for the page property special
 	'pageproperty'  => 'Page property search',
