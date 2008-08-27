@@ -746,26 +746,3 @@ function smwfAddHTMLHeadersOutput(&$out) {
 		return $smwgMasterStore;
 	}
 
-/**
- * Array of enabled formats for formatting queries. Can be redefined in the
- * settings to disallow certain formats. The formats 'table' and 'list' are
- * defaults that cannot be disabled. The format 'broadtable' should not be
- * disabled either in order not to break Special:ask.
- */
-global $smwgResultFormats;
-$smwgResultFormats = 
-	array(	'table'      => 'SMWTableResultPrinter',
-			'list'       => 'SMWListResultPrinter',
-			'ol'         => 'SMWListResultPrinter',
-			'ul'         => 'SMWListResultPrinter',
-			'broadtable' => 'SMWTableResultPrinter',
-			'embedded'   => 'SMWEmbeddedResultPrinter',
-			'timeline'   => 'SMWTimelineResultPrinter',
-			'eventline'  => 'SMWTimelineResultPrinter',
-			'template'   => 'SMWTemplateResultPrinter',
-			'count'      => 'SMWListResultPrinter',
-			'debug'      => 'SMWListResultPrinter',
-			'rss'        => 'SMWRSSResultPrinter',
-			'icalendar'  => 'SMWiCalendarResultPrinter',
-			'vcard'      => 'SMWvCardResultPrinter',
-			'csv'        => 'SMWCsvResultPrinter');

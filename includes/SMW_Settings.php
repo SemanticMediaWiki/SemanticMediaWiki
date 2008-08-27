@@ -153,6 +153,34 @@ $smwgQMaxInlineLimit = 500;   // Max number of rows ever printed in a single inl
 $smwgQPrintoutLimit  = 100;   // Max number of supported printouts (added columns in result table, ?-statements)
 $smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none", "subject" (first column), "all".
 
+
+### Predefined result formats for queries
+# Array of available formats for formatting queries. Can be redefined in
+# the settings to disallow certain formats or to register extension formats.
+# To disable a format, do "unset($smwgResultFormats['template']);" Disabled
+# formats will be treated like if the format parameter had been omitted. The
+# formats 'table' and 'list' are defaults that cannot be disabled. The format
+# 'broadtable' should not be disabled either in order not to break Special:ask.
+##
+$smwgResultFormats = array(
+	'table'      => 'SMWTableResultPrinter',
+	'list'       => 'SMWListResultPrinter',
+	'ol'         => 'SMWListResultPrinter',
+	'ul'         => 'SMWListResultPrinter',
+	'broadtable' => 'SMWTableResultPrinter',
+	'embedded'   => 'SMWEmbeddedResultPrinter',
+	'timeline'   => 'SMWTimelineResultPrinter',
+	'eventline'  => 'SMWTimelineResultPrinter',
+	'template'   => 'SMWTemplateResultPrinter',
+	'count'      => 'SMWListResultPrinter',
+	'debug'      => 'SMWListResultPrinter',
+	'rss'        => 'SMWRSSResultPrinter',
+	'icalendar'  => 'SMWiCalendarResultPrinter',
+	'vcard'      => 'SMWvCardResultPrinter',
+	'csv'        => 'SMWCsvResultPrinter'
+);
+##
+
 ### Default property type
 # Undefined properties (those without pages or whose pages have no "has type" statement) will
 # be assumed to be of this type. This is an internal type id. See the file languages/SMW_LanguageXX.php
