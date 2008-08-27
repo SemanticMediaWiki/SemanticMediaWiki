@@ -236,3 +236,97 @@ img.smwttimg { /* images for tooltip icons */
 	padding-right: 5px;
 	padding-left: 4px;
 }
+
+/** CSS style file for Semantic MediaWiki Special Browse. */
+
+table.smwb-factbox {
+	border-left: 8px solid #DDDDDD;
+	width:100%
+}
+
+tr.smwb-title {
+	font-size: 200%;
+	background-color: #DDDDDD;
+	line-height: 1.5;
+}
+
+tr.smwb-title td {
+	padding-left:5px;
+	border-bottom: 2px solid white;
+}
+
+tr.smwb-propvalue {
+	width:100%;
+	background-color: #EEEEEE;
+}
+
+tr.smwb-propvalue th {
+	text-align: right;
+	font-weight: bold;
+	font-size: 120%;
+	background-color: #DDDDDD;
+	padding:0.2em 0.6em;
+	border-bottom: 2px solid white;
+	border-top: 2px solid white;
+}
+
+tr.smwb-propvalue td {
+	padding-left:0.4em;
+	background-color: #EEEEEE;
+	border: 0px solid white;
+	border-bottom: 2px solid white;
+	border-top: 2px solid white;
+	width:90%;
+}
+
+tr.smwb-center {
+	background-color: #DDDDDD;
+}
+
+span.smwb-value {
+}
+
+/** Inverse factbox */
+
+table.smwb-ifactbox {
+	border-right: 8px solid #DDDDDD;
+	width:100%
+}
+
+tr.smwb-ititle {
+	font-size: 200%;
+	background-color: #DDDDDD;
+	line-height: 1.5;
+}
+
+tr.smwb-ititle td {
+	padding-left:5px;
+	border-bottom: 2px solid white;
+}
+
+tr.smwb-ipropvalue {
+	width:100%;
+	background-color: #EEEEEE;
+	text-align:right;
+}
+
+tr.smwb-ipropvalue th {
+	text-align: left;
+	font-weight: bold;
+	font-size: 120%;
+	background-color: #DDDDDD;
+	padding:0.2em 0.6em;
+	border-bottom: 3px solid white;
+	border-top: 3px solid white;
+}
+
+tr.smwb-ipropvalue td {
+	background-color: #EEEEEE;
+	border-bottom: 3px solid white;
+	border-top: 3px solid white;
+	padding-right:1em;
+	width:90%;
+}
+
+span.smwb-ivalue {
+}

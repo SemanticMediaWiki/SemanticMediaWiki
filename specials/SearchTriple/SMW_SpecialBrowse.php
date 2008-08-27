@@ -1,269 +1,370 @@
 <?php
 /**
- * @author Denny Vrandecic
- *
- * This special page for Semantic MediaWiki implements a
- * view on an article displaying outgoing and incoming
- * properties.
+ * @defgroup Browse Browse
+ * 
+ * @file
+ * @ingroup Browse
+ * 
+ * A factbox like view on an article, implemented by a special page.
+ * 
+ *  * @author Denny Vrandecic
  */
 
 /**
- * A class to encapsulate the special page that allows browsing through
- * the knowledge structure of a Semantic MediaWiki.
- *
+ * A factbox view on one specific article, showing all the Semantic data about it
+ * 
+ * @ingroup Browse
  * @note AUTOLOAD
  */
 class SMWSpecialBrowse extends SpecialPage {
+
+	static public $incomingvaluescount = 8; /// int How  many incoming values should be asked for
+	static public $incomingpropertiescount = 21; /// int  How many incoming properties should be asked for 
+	private $subject = null; /// SMWDataValue  Topic of this page
+	private $articletext = ""; /// Text to be set in the query form 
+	private $showoutgoing = true; /// bool  To display outgoing values?
+	private $showincoming = false; /// bool  To display incoming values?
+	private $offset = 0; /// int  At which incoming property are we currently?
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
-		parent::__construct('Browse');
+		parent::__construct('Browse', '', true, false, 'default', true);
 		wfLoadExtensionMessages('SemanticMediaWiki');
+		
+		global $smwgBrowseShowAll;
+		if ($smwgBrowseShowAll) {
+			SMWSpecialBrowse::$incomingvaluescount = 21;
+			SMWSpecialBrowse::$incomingpropertiescount = -1;
+		}
+		
 	}
 
+	/**
+	 * Main entry point for Special Pages
+	 * 
+	 * @param[in] $query string  Given by MediaWiki
+	 */
 	public function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser, $wgContLang;
-
-		$skin = $wgUser->getSkin();
+		global $wgRequest, $wgOut;
 		$this->setHeaders();
-
 		// get the GET parameters
-		$articletext = $wgRequest->getVal( 'article' );
+		$this->articletext = $wgRequest->getVal( 'article' );
 		// no GET parameters? Then try the URL
-		if ('' == $articletext) {
+		if ('' == $this->articletext) {
 			$params = SMWInfolink::decodeParameters($query,false);
 			reset($params);
-			$articletext = current($params);
+			$this->articletext = current($params);
 		}
-		$article = SMWDataValueFactory::newTypeIDValue('_wpg', $articletext);
-		$limit = $wgRequest->getVal( 'limit' );
-		if ('' == $limit) $limit =  10;
-		$offset = $wgRequest->getVal( 'offset' );
-		if ('' == $offset) $offset = 0;
-		$spectitle = Title::makeTitle( NS_SPECIAL, 'Browse' );
-		$innerlimit = 4; // magic variable: how many linked articles should be shown?
-		$html = '';
-
-		$vsep = '<div class="smwhr"><hr /></div>';
-
-		if ($article->isValid()) {
-			$options = new SMWRequestOptions();
-			$options->sort = TRUE;
-			$atts = &smwfGetStore()->getProperties($article->getTitle(), $options);
-			$cats = &smwfGetStore()->getSpecialValues($article->getTitle(), SMW_SP_INSTANCE_OF, $options);
-			$redout = &smwfGetStore()->getSpecialValues($article->getTitle(), SMW_SP_REDIRECTS_TO, $options);
-			$articledv = SMWDataValueFactory::newSpecialValue(SMW_SP_REDIRECTS_TO,$article->getTitle()->getDBkey());
-			$redin = &smwfGetStore()->getSpecialSubjects(SMW_SP_REDIRECTS_TO, $articledv, $options);
-			$options->limit = $innerlimit;
-			$instances = &smwfGetStore()->getSpecialSubjects(SMW_SP_INSTANCE_OF, $articledv, $options);
-			$options->limit = $limit+1;
-			$options->offset = $offset;
-			// get results (get one more, to see if we have to add a link to more)
-			$inprop = &smwfGetStore()->getInProperties($article, $options);
-
-			$wgOut->setPagetitle($article->getLongHTMLText(NULL));
-
-			$html .= '<table width="100%"><tr>';
-			// left column (incoming links)
-			$html .= '<td style="vertical-align=middle; text-align:right;" width="40%">';
-
-			// prepare navigation bar
-			if ($offset > 0)
-				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse','offset=' . max(0,$offset-$limit) . '&article=' . urlencode($articletext) )) . '">' . wfMsg('smw_result_prev') . '</a>';
-			else
-				$navigation = wfMsg('smw_result_prev');
-
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;'; // The following shows the numbers of the result.
-			// Is this better, or not? TODO
-			// <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($inprop), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
-
-			if (count($inprop)==($limit+1))
-				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse', 'offset=' . ($offset+$limit) . '&article=' . urlencode($articletext) ))  . '">' . wfMsg('smw_result_next') . '</a>';
-			else
-				$navigation .= wfMsg('smw_result_next');
-
-			if ((count($inprop) == 0) && (count($instances) == 0) && (count($redin)==0)) {
-				$html .= '&nbsp;';
-			} else {
-				// no need to show the navigation bars when there is not enough to navigate
-				if (($offset>0) || (count($inprop)>$limit)) $html .= $navigation;
-				$html .= $vsep . "\n";
-				if ((0==$offset) && (count($instances) > 0)) {
-					$count = 0;
-					foreach ($instances as $instance) {
-						$count += 1;
-						if ($count < $innerlimit) {
-							$browselink = SMWInfolink::newBrowsinglink('+', $instance->getFulltext());
-							$html .= $skin->makeKnownLinkObj( $instance ) . '&nbsp;' . $browselink->getHTML($skin);
-							if ($count < count( $instances )) $html .= ', ';
-						} else {
-							$html .= $skin->makeKnownLinkObj( $article->getTitle(), wfMsg('smw_browse_more') );
-						}
-					}
-					$html .= ' &nbsp;<strong>' . $skin->specialLink( 'Categories' ) . '</strong>';
-					$html .= $vsep . "\n";
-				}
-				$count = count($redin);
-				if ((0==$offset) && ($count > 0)) {
-					foreach ($redin as $red) {
-						$count -= 1;
-						$browselink = SMWInfolink::newBrowsinglink('+', $red->getShortHTMLText());
-						$html .= $red->getShortHTMLText($skin) . '&nbsp;' . $browselink->getHTML($skin);
-						if ($count > 0) $html .= ', ';
-					}
-					$html .= ' &nbsp;<strong>' . $skin->specialLink( 'Listredirects', 'isredirect' ) . '</strong>';
-					$html .= $vsep . "\n";
-				}
-				$count = $limit+1;
-				foreach ($inprop as $result) {
-					$count -= 1;
-					if ($count < 1) continue;
-					$subjectoptions = new SMWRequestOptions();
-					$subjectoptions->limit = $innerlimit;
-					$subjects = &smwfGetStore()->getPropertySubjects($result, $article, $subjectoptions);
-					$subjectcount = count($subjects);
-					$more = ($subjectcount == $innerlimit);
-					$innercount = 0;
-					foreach ($subjects as $subject) {
-						$innercount += 1;
-						if (($innercount < $innerlimit) || !$more) {
-							$subjectlink = SMWInfolink::newBrowsingLink('+',$subject->getShortHTMLText());
-							$html .= $skin->makeKnownLinkObj($subject->getTitle(), smwfT($subject->getTitle(), TRUE)) . '&nbsp;' . $subjectlink->getHTML($skin);
-							if ($innercount<$subjectcount) $html .= ", \n";
-						} else {
-							$html .= '<a href="' . $skin->makeSpecialUrl('SearchByProperty', 'property=' . urlencode($result->getPrefixedText()) . '&value=' . urlencode($article->getLongWikiText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
-						}
-					}
-					// replace the last two whitespaces in the relation name with
-					// non-breaking spaces. Since there seems to be no PHP-replacer
-					// for the last two, a strrev ist done twice to turn it around.
-					// That's why nbsp is written backwards.
-					$html .= ' &nbsp;<strong>' . $skin->makeKnownLinkObj($result, strrev(preg_replace('/[\s]/u', ';psbn&', strrev(smwfT($result)), 2) )) . '</strong>' . $vsep . "\n"; // TODO makeLinkObj or makeKnownLinkObj?
-				}
-				if (($offset>0) || (count($inprop)>$limit)) $html .= $navigation;
-			}
-
-			$html .= '</td><td style="vertical-align:middle; text-align:center;" width="18%">' . $skin->makeLinkObj($article->getTitle(), smwfT($article->getTitle(), TRUE)) . '</td><td style="vertical-align:middle; text-align:left;" width="40%">';
-
-			if ((count($atts) == 0) && (count($cats) == 0) && (count($redout) == 0)) {
-				$html .= '&nbsp;';
-			} else {
-				$html .= $vsep . "\n";
-// 				foreach ($outrel as $result) {
-// 					$objectoptions = new SMWRequestOptions();
-// 					$objectoptions->limit = $innerlimit;
-// 					$html .=  '<strong>' . $skin->makeKnownLinkObj($result, preg_replace('/[\s]/u', '&nbsp;', smwfT($result), 2)) . "</strong>&nbsp; \n";// TODO makeLinkObj or makeKnownLinkObj?
-// 					$objects = &smwfGetStore()->getRelationObjects($article, $result, $objectoptions);
-// 					$objectcount = count($objects);
-// 					$count = 0;
-// 					foreach ($objects as $object) {
-// 						$count += 1;
-// 						if ($count == 4) {
-// 							$querylink = SMWInfolink::newInverseRelationSearchLink( wfMsg("smw_browse_more"), $article->getPrefixedText(), $result->getText() );
-// 							$html .= $querylink->getHTML($skin);
-// 						} else {
-// 							$searchlink = SMWInfolink::newBrowsingLink('+',$object->getFullText());
-// 							$html .= $skin->makeLinkObj($object, smwfT($object, TRUE)) . '&nbsp;' . $searchlink->getHTML($skin);
-// 						}
-// 						if ($count<$objectcount) $html .= ", ";
-// 					}
-// 					$html .= $vsep."\n";
-// 				}
-				foreach ($atts as $att) {
-					$objectoptions = new SMWRequestOptions();
-					$html .=  '<strong>' . $skin->makeKnownLinkObj($att, preg_replace('/[\s]/u', '&nbsp;', smwfT($att), 2)) . "</strong>&nbsp; \n";
-					$objects = &smwfGetStore()->getPropertyValues($article->getTitle(), $att, $objectoptions);
-					$objectcount = count($objects);
-					$count = 0;
-					foreach ($objects as $object) {
-						$count += 1;
-						$html .= $object->getLongHTMLText($skin);
-						if ($object->getTypeID() == '_wpg') {
-							$searchlink = SMWInfolink::newBrowsingLink('+',$object->getLongWikiText());
-							$html .= '&nbsp;' . $searchlink->getHTML($skin);
-						}
-						if ($count<$objectcount) $html .= ", ";
-					}
-					$html .= $vsep."\n";
-				}
-				$count = count($redout);
-				if ($count>0) {
-					$html .= '<strong>' . $skin->specialLink( 'Listredirects', 'isredirect' ) . '</strong>&nbsp; ';
-					foreach ($redout as $red) {
-						$count -= 1;
-						$browselink = SMWInfolink::newBrowsingLink('+', $red->getWikiValue());
-						/// TODO: inefficient to cast into Title here, we are dealing with a SMWWikiPageValue (PERFORMANCE)
-						$html .= $skin->makeLinkObj($red->getTitle(), smwfT($red->getTitle())) . '&nbsp;' . $browselink->getHTML($skin);
-						if ($count > 0) $html .= ", ";
-					}
-					$html .= $vsep."\n";
-				}
-				$count = count($cats);
-				if ($count>0) {
-					$html .= '<strong>' . $skin->specialLink( 'Categories' ) . '</strong>&nbsp; ';
-					$count = count($cats);
-					foreach ($cats as $cat) {
-						$count -= 1;
-						$browselink = SMWInfolink::newBrowsingLink('+', $cat->getLongWikiText());
-						$html .= $cat->getLongHTMLText($skin) . '&nbsp;' . $browselink->getHTML($skin);
-						if ($count > 0) $html .= ", ";
-					}
-					$html .= $vsep."\n";
-				}
-			}
-			$html .= "</td></tr></table>";
-			$html .= "<p>&nbsp;</p>";
+		$this->subject = SMWDataValueFactory::newTypeIDValue('_wpg', $this->articletext);
+		$offsettext = $wgRequest->getVal( 'offset' );
+		if ('' == $offsettext) {
+			$this->offset = 0;	
+		} else {
+			$this->offset = intval($offsettext);
 		}
-
-		// display query form
-		$html .= '<form name="smwbrowse" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n";
-		$html .= '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
-		$html .= wfMsg('smw_browse_article') . "<br />\n";
-		if (!$article->isValid()) {	$boxtext = $articletext; } else { $boxtext = $article->getWikiValue(); }
-		$html .= '<input type="text" name="article" value="' . htmlspecialchars($boxtext) . '" />' . "\n";
-		$html .= '<input type="submit" value="' . wfMsg('smw_browse_go') . "\"/>\n</form>\n";
-
+		$dir = $wgRequest->getVal( 'dir' );
+		if (($dir == 'both')||($dir == 'in')) $this->showincoming = true;
+		if ($dir == 'in') $this->showoutgoing = false; 		
+		global $smwgBrowseShowAll;
+		if ($smwgBrowseShowAll) {
+			$this->showoutgoing = true;
+			$this->showincoming = true;
+		}
+		
+		$wgOut->addHTML($this->displayBrowse());
+	}
+	
+	/**
+	 * Create an HTML including the complete factbox, based on the extracted parameters
+	 * in the execute comment.
+	 * 
+	 * @return string  A HTML string with the factbox
+	 */	
+	private function displayBrowse() {
+		global $wgContLang, $wgOut;
+		$html = "\n";
+		$leftside = !($wgContLang->isRTL()); // For right to left languages, all is mirrored
+		if ($this->subject->isValid()) {
+			$wgOut->addStyle( '../extensions/SemanticMediaWiki/skins/SMW_custom.css' );
+			
+			$html .= $this->displayHead();
+			if ($this->showoutgoing) {
+				$data = &smwfGetStore()->getSemanticData($this->subject->getTitle());
+				$html .= $this->displayData($data, $leftside);
+				$html .= $this->displayCenter();
+			}
+			if ($this->showincoming) {
+				list($indata, $more) = $this->getInData();
+				global $smwgBrowseShowInverse;
+				if (!$smwgBrowseShowInverse) $leftside = !$leftside;
+				$html .= $this->displayData($indata, $leftside, true);
+				$html .= $this->displayBottom($more);
+			}
+			
+			$this->articletext = $this->subject->getWikiValue();
+			// Add a bit space between the factbox and the query form
+			if (!$this->including()) $html .= "<p> &nbsp; </p>\n";
+		}
+		if (!$this->including()) $html .= $this->queryForm();
 		$wgOut->addHTML($html);
 	}
-}
-
-///// Translation functions /////
-
-/**
- * Shortcut to translateTitle with global language
- */
-function smwfT(Title $title, $namespace = FALSE ) {
-	global $wgLang;
-	return smwfTranslateTitle($title, $wgLang, $namespace);
-}
-
-/**
- * Translate a title into another language, based on the langlinks-table.
- * This is just a first try, needs to be reworked into a proper translation
- * mechanism. Returns the Nameaspace.
- */
-function smwfTranslateTitle(Title $title, Language $language, $namespace = FALSE ) {
-	global $smwgTranslate;
-	if ( !$smwgTranslate ) {
-		if ( $namespace ) return $title->getFullText(); else return $title->getText();
+	
+	/**
+	 * Creates the HTML displaying the data of one subject.
+	 * 
+	 * @param[in] $data SMWSemanticData  The data to be displayed
+	 * @param[in] $left bool  Should properties be displayed on the left side?
+	 * @param[in] $incoming bool  Is this an incoming? Or an outgoing?
+	 * @return A string containing the HTML with the factbox
+	 */
+	private function displayData(SMWSemanticData $data, $left=true, $incoming=false) {
+		global $wgUser;
+		$skin = $wgUser->getSkin();
+		// Some of the CSS classes are different for the left or the right side.
+		// In this case, there is an "i" after the "smwb-". This is set here.
+		$inv = "i"; 
+		if ($left) $inv = "";
+		$html  = "<table class=\"smwb-" . $inv . "factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$properties = $data->getProperties();
+		if (count($properties) == 0) {
+			$html .= "<tr class=\"smwb-propvalue\"><th> &nbsp; </th><td><em>" . wfMsg('smw_result_noresults') . "</em></td></th></table>\n";
+		} else foreach ($properties as $property) {
+			if ($property instanceof Title) {
+				// display property
+				$head  = "<th>\n";
+				$head .= $skin->link($property, $this->getPropertyLabel($property, $incoming)) . "\n";
+				$head .= "</th>\n";
+				
+				// display value
+				$body  = "<td>\n";
+				$values = $data->getPropertyValues($property);
+				$count = count($values);
+				$more = ($count >= SMWSpecialBrowse::$incomingvaluescount);
+				foreach ($values as $value) {
+					if (($count==1) && $more && $incoming) {
+						// If there are more incoming values than a certain treshold, display a link to the rest instead
+						$body .= '<a href="' . $skin->makeSpecialUrl('SearchByProperty', 'property=' . urlencode($property->getPrefixedText()) . '&value=' . urlencode($data->getSubject()->getLongWikiText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
+					} else {
+						$body .= "<span class=\"smwb-" . $inv . "value\">";
+						$body .= $this->displayValue($property, $value, $incoming);
+						$body .= "</span>";
+					}
+					$count--;
+					if ($count>0) $body .= ", \n"; else $body .= "\n";
+				} // end foreach values
+				$body .= "</td>\n";
+				
+				// display row
+				$html .= "<tr class=\"smwb-" . $inv . "propvalue\">\n";
+				if ($left) {
+					$html .= $head; $html .= $body;
+				} else {
+					$html .= $body; $html .= $head;
+				}
+				$html .= "</tr>\n";
+			} else {
+				// TODO Special property, Categories, Instances?
+			}
+		} // end foreach properties
+		$html .= "</table>\n";
+		return $html;
 	}
-	$db =& wfGetDB( DB_MASTER ); // TODO: can we use SLAVE here? Is '=&' needed in PHP5?
-	$sql = 'll_from=' . $db->addQuotes($title->getArticleID()) .
-	       ' AND ll_lang=' . $db->addQuotes($language->mCode);
-	$res = $db->select( $db->tableName('langlinks'),
-	                    'll_title',
-	                    $sql, 'SMW::translateTitle' );
-	// return result as string (only the first -- there should be only one, anyway)
-	if($db->numRows( $res ) > 0) {
-		$row = $db->fetchObject($res);
-		$db->freeResult($res);
-		return $row->ll_title; // TODO need to get rid of NS in other language
-	} else {
-		$db->freeResult($res);
-		if ( $namespace ) return $title->getFullText(); else return $title->getText();
+	
+	/**
+	 * Displays a value, including all relevant links (browse and search by property)
+	 * 
+	 * @param[in] $property Title  The property this value is linked to the subject with
+	 * @param[in] $value SMWDataValue  The actual value
+	 * @param[in] $incoming bool  If this is an incoming or outgoing link
+	 * @return string  HTML with the link to the article, browse, and search pages
+	 */
+	private function displayValue(Title $property, SMWDataValue $value, $incoming) {
+		global $wgUser;
+		$skin = $wgUser->getSkin();
+		$html = $value->getLongHTMLText($skin);
+		if ($value->getTypeID() == '_wpg')
+			$html .= "&nbsp;" . SMWInfolink::newBrowsingLink('+',$value->getLongWikiText())->getHTML($skin);
+		else
+			if ($incoming)
+				$html .= "&nbsp;" . SMWInfolink::newInversePropertySearchLink('+', $value->getTitle(), $property->getText(), 'smwsearch')->getHTML($skin);
+			else
+				$html .= $value->getInfolinkText(SMW_OUTPUT_HTML, $skin);
+		return $html; 
 	}
-}
+	
+	/**
+	 * Displays the subject that is currently being browsed to.
+	 * 
+	 * @return A string containing the HTML with the subject line
+	 */
+	 private function displayHead() {
+	 	global $wgUser;
+	 	$skin = $wgUser->getSkin();
+		$html  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$html .= "<tr class=\"smwb-title\"><td colspan=\"2\">\n";
+		$html .= $skin->link($this->subject->getTitle()) . "\n";
+		$html .= "</td></tr>\n";
+		$html .= "</table>\n";
+		return $html;
+	 }
+	
+	/**
+	 * Creates the HTML for the center bar including the links with further navigation options.
+	 * 
+	 * @return string  HTMl with the center bar
+	 */
+	private function displayCenter() {
+		$html  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$html .= "<tr class=\"smwb-center\"><td colspan=\"2\">\n";
+		global $smwgBrowseShowAll;
+		if (!$smwgBrowseShowAll) {
+			if ($this->showincoming) {
+				$html .= $this->linkhere(wfMsg('smw_browse_hide_incoming'), true, false, 0); 
+			} else {
+				$html .= $this->linkhere(wfMsg('smw_browse_show_incoming'), true, true, $this->offset);
+			}
+		}
+		$html .= "&nbsp;\n";
+		$html .= "</td></tr>\n";
+		$html .= "</table>\n";
+		return $html;		
+	}
+	
+	/**
+	 * Creates the HTML for the bottom bar including the links with further navigation options.
+	 * 
+	 * @param[in] $more bool  Are there more inproperties to be displayed?
+	 * @return string  HTMl with the bottom bar
+	 */
+	private function displayBottom($more) {
+		$html  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$html .= "<tr class=\"smwb-center\"><td colspan=\"2\">\n";
+		$sometext = false;
+		global $smwgBrowseShowAll;
+		if (!$smwgBrowseShowAll) {
+			if (($this->offset > 0) || ($more)) {
+				$offset = max($this->offset-SMWSpecialBrowse::$incomingpropertiescount+1, 0);
+				if ($this->offset > 0)
+					$html .= $this->linkhere(wfMsg('smw_result_prev'), $this->showoutgoing, true, $offset);
+				else
+					$html .= wfMsg('smw_result_prev');
+				$html .= " &nbsp;&nbsp;&nbsp; ";
+				$html .= " <strong>" . wfMsg('smw_result_results') . " " . ($this->offset+1) . " &ndash; " . ($this->offset + SMWSpecialBrowse::$incomingpropertiescount - 1) . "</strong> ";
+				$html .= " &nbsp;&nbsp;&nbsp; ";
+				$offset = $this->offset+SMWSpecialBrowse::$incomingpropertiescount-1;
+				if ($more)
+					$html .= $this->linkhere(wfMsg('smw_result_next'), $this->showoutgoing, true, $offset);
+				else
+					$html .= wfMsg('smw_result_next');
+			}
+		}
+		$html .= "&nbsp;\n";
+		$html .= "</td></tr>\n";
+		$html .= "</table>\n";
+		return $html;		
+	}
+	
+	/**
+	 * Creates the HTML for a link to this page, with some parameters set.
+	 * 
+	 * @param[in] $text string  The anchor text for the link
+	 * @param[in] $out bool  Should the linked to page include outgoing properties?
+	 * @param[in] $in bool  Should the linked to page include incoming properties?
+	 * @param[in] $offset int  What is the offset for the incoming properties?
+	 * @return string  HTML with the link to this page
+	 */
+	private function linkhere($text, $out, $in, $offset) {
+	 	global $wgUser;
+	 	$skin = $wgUser->getSkin();
+		$dir = 'in';
+		if ($out) $dir = 'out';
+		if ($in && $out) $dir = 'both';
+		return '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse', 'offset=' . $offset . '&dir=' . $dir . '&article=' . urlencode($this->subject->getLongWikiText()) ))  . '">' . $text . '</a>';
+	}
+	
+	/**
+	 * Creates a Semantic Data object with the inproperties instead of the
+	 * usual outproperties.
+	 * 
+	 * @return array(SMWSemanticData, bool)  The semantic data including all inproperties, and if there are more inproperties left
+	 */
+	private function getInData() {
+		$indata = new SMWSemanticData($this->subject);
+		$options = new SMWRequestOptions();
+		$options->sort = true;
+		$options->limit = SMWSpecialBrowse::$incomingpropertiescount;
+		if ($this->offset > 0) $options->offset = $this->offset;
+		$inproperties = &smwfGetStore()->getInProperties($this->subject, $options);
+		$more = (count($inproperties) == SMWSpecialBrowse::$incomingpropertiescount);
+		if ($more) array_pop($inproperties); // drop the last one
+		foreach ($inproperties as $property) {
+			$valoptions = new SMWRequestOptions();
+			$valoptions->sort = true;
+			$valoptions->limit = SMWSpecialBrowse::$incomingvaluescount;
+			$values = &smwfGetStore()->getPropertySubjects($property, $this->subject, $valoptions);
+			foreach ($values as $value) {
+				$indata->addPropertyObjectValue($property, $value);
+			}
+			// TODO Special properties?
+		}
+		return array($indata, $more);
+	}
+	
+	/**
+	 * Figures out the label of the property to be used. For outgoing ones it is just
+	 * the text, for incoming ones we try to figure out the inverse one if needed,
+	 * either by looking for an explicitly stated one or by creating a default one.
+	 * 
+	 * @param[in] $property Title  The property of interest
+	 * @param[in] $incoming bool  If it is an incoming property
+	 * @return string  The label of the property
+	 */
+	private function getPropertyLabel(Title $property, $incoming = false) {
+		$rv = $property->getText();
+		global $smwgBrowseShowInverse;
+		if ($incoming && $smwgBrowseShowInverse) {
+			$oppositeproplabel = Title::newFromText(wfMsg('smw_inverse_label_property'), SMW_NS_PROPERTY);
+			$labelarray = &smwfGetStore()->getPropertyValues($property, $oppositeproplabel);
+			if (count($labelarray)>0) {
+				$rv = $labelarray[0]->getLongWikiText();
+			} else {
+				$rv = wfMsg('smw_inverse_label_default', $property->getText());
+			}
+		}
+		return $this->unbreak($rv);
+	}
+	
+	/**
+	 * Creates the query form in order to quickly switch to a specific article.
+	 * 
+	 * @return A string containing the HTML for the form
+	 */
+	private function queryForm() {
+		$title = Title::makeTitle( NS_SPECIAL, 'Browse' );
+		$html  = '  <form name="smwbrowse" action="' . $title->escapeLocalURL() . '" method="get">' . "\n";
+		$html .= '    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' ;
+		$html .= wfMsg('smw_browse_article') . "<br />\n";
+		$html .= '    <input type="text" name="article" value="' . htmlspecialchars($this->articletext) . '" />' . "\n";
+		$html .= '    <input type="submit" value="' . wfMsg('smw_browse_go') . "\"/>\n";
+		$html .= "  </form>\n";
+		return $html;
+	}
 
+	/**
+	 * Replace the last two space characters with unbreakable spaces
+	 * 
+	 * @param[in] $text string  Text to be transformed. Does not need to have spaces
+	 * @return string  Transformed text
+	 */
+	private function unbreak($text) {
+		// replace the last two whitespaces in the relation name with
+		// non-breaking spaces. Since there seems to be no PHP-replacer
+		// for the last two, a strrev ist done twice to turn it around.
+		// That's why nbsp is written backwards.
+		return strrev(preg_replace('/[\s]/u', ';psbn&', strrev($text), 2) );
+	}
+
+}
 

@@ -2,7 +2,7 @@
 /**
  * Internationalization file for Semantic MediaWiki
  *
- * @addtogroup Extensions
+ * @addtogroup I18n
 */
 
 $messages = array();
@@ -217,10 +217,14 @@ The number of incorrect properties is given in the brackets.',
 	'smw_sbv_submit'        => 'Find results',
 
 	// Messages for the browsing special
-	'browse'             => 'Browse wiki',
-	'smw_browse_article' => 'Enter the name of the page to start browsing from.',
-	'smw_browse_go'      => 'Go',
-	'smw_browse_more'    => '…',
+	'browse'                     => 'Browse wiki',
+	'smw_browse_article'         => 'Enter the name of the page to start browsing from.',
+	'smw_browse_go'              => 'Go',
+	'smw_browse_more'            => '…',
+	'smw_browse_show_incoming'   => 'show properties that link here',
+	'smw_browse_hide_incoming'   => 'hide properties that link here',
+	'smw_inverse_label_default'  => '$1 of',
+	'smw_inverse_label_property' => 'Opposite property label',
 
 	// Messages for the page property special
 	'pageproperty'  => 'Page property search',

@@ -1,15 +1,21 @@
 <?php
 /**
+ * @file
+ * @ingroup Browse
+ * 
+ * Special page to show object relation pairs.
+ * 
  * @author Denny Vrandecic
- *
+ */
+
+/**
  * This special page for Semantic MediaWiki implements a
  * view on a object-relation pair, i.e. a page that shows
  * all the fillers of a property for a certain page.
  * This is typically used for overflow results from other 
  * dynamic output pages.
- */
-
-/**
+ * 
+ * @ingroup Browse
  * @note AUTOLOAD
  */
 class SMWPageProperty extends SpecialPage {
