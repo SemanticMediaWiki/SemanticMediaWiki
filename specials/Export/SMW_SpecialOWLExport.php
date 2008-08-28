@@ -664,7 +664,7 @@ class OWLExport {
 		if ($fullexport) {
 			$filter = false;
 		} else { // retrieve only some core special properties
-			$filter = array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_EXT_BASEURI);
+			$filter = array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_IMPORTED_FROM);
 		}
 		$data = SMWExporter::makeExportData(smwfGetStore()->getSemanticData($title, $filter), $st->modifier);
 
@@ -682,7 +682,7 @@ class OWLExport {
 					$stb->dbkey = $inSub->getDBKey();
 					$stb->namespace = $inSub->getNamespace();
 					if (!array_key_exists($stb->getHash(), $this->element_done)) {
-						$semdata = smwfGetStore()->getSemanticData($inSub, array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_EXT_BASEURI));
+						$semdata = smwfGetStore()->getSemanticData($inSub, array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_IMPORTED_FROM));
 						$semdata->addPropertyObjectValue($inRel, $value);
 						$data = SMWExporter::makeExportData($semdata);
 						$this->printExpData($data);
@@ -698,7 +698,7 @@ class OWLExport {
 					$stb->dbkey = $instance->getDBKey();
 					$stb->namespace = $instance->getNamespace();
 					if (!array_key_exists($stb->getHash(), $this->element_done)) {
-						$semdata = smwfGetStore()->getSemanticData($instance, array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_EXT_BASEURI));
+						$semdata = smwfGetStore()->getSemanticData($instance, array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_IMPORTED_FROM));
 						$semdata->addSpecialValue(SMW_SP_INSTANCE_OF, $value);
 						$data = SMWExporter::makeExportData($semdata);
 						$this->printExpData($data);
@@ -718,7 +718,7 @@ class OWLExport {
 					$stb->dbkey = $instance->getDBKey();
 					$stb->namespace = $instance->getNamespace();
 					if (!array_key_exists($stb->getHash(), $this->element_done)) {
-						$semdata = smwfGetStore()->getSemanticData($instance, array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_EXT_BASEURI));
+						$semdata = smwfGetStore()->getSemanticData($instance, array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_IMPORTED_FROM));
 						$semdata->addSpecialValue(SMW_SP_INSTANCE_OF, $value);
 						$data = SMWExporter::makeExportData($semdata);
 						$this->printExpData($data);

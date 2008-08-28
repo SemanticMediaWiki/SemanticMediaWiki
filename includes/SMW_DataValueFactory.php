@@ -118,6 +118,9 @@ class SMWDataValueFactory {
 			case SMW_SP_CONCEPT_DESC:
 				$result = SMWDataValueFactory::newTypeIDValue('__con', $value, $caption);
 				break;
+			case SMW_SP_IMPORTED_FROM:
+				$result = SMWDataValueFactory::newTypeIDValue('__imp', $value, $caption);
+				break;
 			default:
 				/// NOTE: unstable hook, future versions might have better ways of enabling extensions to add properties
 				wfRunHooks('smwNewSpecialValue', array($specialprop, $value, $caption, &$result));
@@ -266,6 +269,7 @@ class SMWDataValueFactory {
 		$wgAutoloadClasses['SMWGeoCoordsValue']   =  $smwgIP . '/includes/SMW_DV_GeoCoords.php';
 		$wgAutoloadClasses['SMWBoolValue']        =  $smwgIP . '/includes/SMW_DV_Bool.php';
 		$wgAutoloadClasses['SMWConceptValue']     =  $smwgIP . '/includes/SMW_DV_Concept.php';
+		$wgAutoloadClasses['SMWImportValue']      =  $smwgIP . '/includes/SMW_DV_Import.php';
 		SMWDataValueFactory::$m_typeclasses = array(
 			'_txt'  => 'SMWStringValue',
 			'_cod'  => 'SMWStringValue',
@@ -283,7 +287,8 @@ class SMWDataValueFactory {
 			'__lin' => 'SMWLinearValue',
 			'__nry' => 'SMWNAryValue',
 			'__err' => 'SMWErrorValue',
-			'__con' => 'SMWConceptValue'
+			'__con' => 'SMWConceptValue',
+			'__imp'  => 'SMWImportValue',
 		);
 
 		wfRunHooks( 'smwInitDatatypes' );

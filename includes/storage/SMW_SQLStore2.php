@@ -767,8 +767,6 @@ class SMWSQLStore2 extends SMWStore {
 				}
 			} else { // special property
 				switch ($property) {
-					case SMW_SP_IMPORTED_FROM: // don't store this, just used for display;
-						/// TODO: filtering here is bad for fully neglected properties (IMPORTED FROM)
 					case SMW_SP_REDIRECTS_TO: // handled above
 					break;
 					case SMW_SP_INSTANCE_OF:
