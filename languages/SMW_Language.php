@@ -1,12 +1,9 @@
 <?php
-/**
- * @file
- * @author Markus Krötzsch
- * @ingroup Language
- */
 
 /**
- * Base class for all language classes.
+ * Base class for all SMW language classes.
+ * @author Markus Krötzsch
+ * @ingroup Language
  */
 abstract class SMWLanguage {
 

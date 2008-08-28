@@ -1,9 +1,4 @@
 <?php
-/**
- * @file
- * @author Markus Krötzsch
- * @ingroup Language
- */
 
 /*
  * Protect against register_globals vulnerabilities.
@@ -14,6 +9,13 @@ if (!defined('MEDIAWIKI')) die();
 global $smwgIP;
 include_once($smwgIP . '/languages/SMW_Language.php');
 
+
+/**
+ * English language labels for important SMW labels (namespaces, datatypes,...).
+ * 
+ * @author Markus Krötzsch
+ * @ingroup Language
+ */
 class SMWLanguageEn extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(

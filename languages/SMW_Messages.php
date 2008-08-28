@@ -2,8 +2,9 @@
 /**
  * Internationalization file for Semantic MediaWiki
  *
+ * @file
  * @ingroup Language
- * @addtogroup I18n
+ * @ingroup I18n
  */
 
 $messages = array();
