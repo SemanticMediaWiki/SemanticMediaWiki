@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * @ingroup SMW
+ */
 
 /**
  * This datavalue implements String-Datavalues suitable for defining

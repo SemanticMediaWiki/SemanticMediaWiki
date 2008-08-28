@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * @ingroup SMW
+ */
 
 /**
  * Factory class for creating SMWDataValue objects for supplied types or properties

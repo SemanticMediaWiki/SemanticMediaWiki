@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * @ingroup SMW
+ */
 
 /**
  * This datavalue implements Error-Datavalues.

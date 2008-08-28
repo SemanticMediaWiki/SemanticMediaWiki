@@ -2,6 +2,8 @@
 /**
  * Print query results by embeddings them into pages.
  * @author Markus Krötzsch
+ * @file
+ * @ingroup SMW
  */
 
 /**

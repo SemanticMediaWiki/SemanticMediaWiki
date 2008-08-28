@@ -7,6 +7,8 @@
  *
  * @author Nikolas Iwan
  * @author Markus Krötzsch
+ * @file
+ * @ingroup SMW
  */
 
 /**

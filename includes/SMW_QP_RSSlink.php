@@ -1,6 +1,8 @@
 <?php
 /**
  * Print links to RSS feeds for query results.
+ * @file
+ * @ingroup SMW
  */
 
 /**

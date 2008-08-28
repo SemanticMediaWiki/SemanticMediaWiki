@@ -24,6 +24,8 @@
  *                server name detection may fail in command line scripts.
  *
  * @author Markus Krötzsch
+ * @file
+ * @ingroup SMW
  */
 
 $optionsWithArgs = array( 'o', 'd', 'e', 'server');

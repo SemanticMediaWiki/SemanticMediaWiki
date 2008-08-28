@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * @ingroup SMW
+ */
 
 /**
  * @author Markus Krötzsch

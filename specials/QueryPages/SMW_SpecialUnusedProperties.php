@@ -3,6 +3,9 @@
  * @author Markus Krötzsch
  *
  * This page shows all unused properties.
+ *
+ * @file
+ * @ingroup SMW
  */
 
 

@@ -1,18 +1,22 @@
 <?php
 /**
+ * @file
+ * @ingroup SMW
+ */
+
+/**
  * SMWRefreshJob iterates over all page ids of the wiki, to perform an update
  * action for all of them in sequence. This corresponds to the in-wiki version of
  * the SMW_refreshData.php script for updating the whole wiki, but it also fixes
  * problems with SMWSQLStore2 (which may have objects in its database that are not
  * proper wiki pages).
  * 
- * NOTE: this class ignores $smwgEnableUpdateJobs and always creates updates. In
+ * @note this class ignores $smwgEnableUpdateJobs and always creates updates. In
  * fact, it might be needed specifically on wikis that do not use update jobs in
  * normal operation.
  *
  * @author Markus Krötzsch
  */
-
 class SMWRefreshJob extends Job {
 
 	function __construct($title, $params = array('spos'=>1) ) {

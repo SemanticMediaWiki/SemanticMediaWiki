@@ -1,7 +1,8 @@
 <?php
 /**
  * Basic abstract classes for SMW's storage abstraction layer.
- *
+ * @file
+ * @ingroup SMW
  * @author Markus Krötzsch
  */
 

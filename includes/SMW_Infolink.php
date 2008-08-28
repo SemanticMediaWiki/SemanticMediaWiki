@@ -3,6 +3,8 @@
  * This file contains the SMWInfolink class.
  *
  * @author Markus Krötzsch
+ * @file
+ * @ingroup SMW
  */
 
 /**

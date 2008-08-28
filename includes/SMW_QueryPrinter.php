@@ -1,7 +1,9 @@
 <?php
 /**
- * Abstract base class for printing qurey results.
+ * File with abstract base class for printing query results.
  * @author Markus Krötzsch
+ * @file
+ * @ingroup SMW
  */
 
 /**

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * @ingroup SMW
+ */
 
 /**
  * SMWExporter is a class for converting internal page-based data (SMWSemanticData) into

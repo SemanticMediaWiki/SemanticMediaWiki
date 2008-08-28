@@ -1,17 +1,10 @@
 <?php
 /**
- * @author Markus Krötzsch
- * 
- * Main translations:
- * "property" --> "Attribut"
- * "type" --> "Datentyp"
- * "special properties" --> "Besondere Attribute"
- * "query" --> "Anfrage"
- * "subquery" --> Teilanfrage
- * "printout statement" --> Ausgabeanweisung
+ * @file
+ * @ingroup SMW
  */
 
-/**
+/*
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */

@@ -1,6 +1,13 @@
 <?php
 /**
  * Global functions and constants for Semantic MediaWiki.
+ * @file
+ * @ingroup SMW
+ */
+
+/**
+ * This documenation group collects source code files belonging to Semantic MediaWiki.
+ * @defgroup SMW
  */
 
 define('SMW_VERSION','1.3a-SVN');

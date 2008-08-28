@@ -3,7 +3,8 @@
  * The class in this file manages (special) properties that are
  * associated with a certain subject (article). It is used as a
  * container for chunks of subject-centred data.
- *
+ * @file
+ * @ingroup SMW
  * @author Markus Krötzsch
  */
 

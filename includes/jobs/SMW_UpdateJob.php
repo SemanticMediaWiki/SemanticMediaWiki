@@ -4,8 +4,10 @@
  * using the MediaWiki JobQueue.
  * Update jobs are created if, when saving an article, it is detected that the
  * content of other pages must be re-parsed as well (e.g. due to some type change).
- * 
+ *
  * @author Daniel M. Herzig
+ * @file
+ * @ingroup SMW
  */
 
 class SMWUpdateJob extends Job {

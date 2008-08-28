@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * @ingroup SMW
+ */
 
 /**
  * This datavalue implements datavalues used by special property SMW_SP_IMPORTED_FROM.

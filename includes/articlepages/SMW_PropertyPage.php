@@ -4,6 +4,8 @@
  * Some code based on CategoryPage.php
  *
  * @author: Markus Krötzsch
+ * @file
+ * @ingroup SMW
  */
 
 /**

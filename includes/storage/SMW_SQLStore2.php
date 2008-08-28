@@ -3,6 +3,8 @@
  * New SQL implementation of SMW's storage abstraction layer.
  *
  * @author Markus Krötzsch
+ * @file
+ * @ingroup SMW
  */
 
 define('SMW_SQL2_SMWIW',':smw'); // virtual "interwiki prefix" for special SMW objects
@@ -23,8 +25,8 @@ define('SMW_SQL2_CONC2',256);
 /**
  * Storage access class for using the standard MediaWiki SQL database
  * for keeping semantic data.
- * 
- * NOTE: Regarding the use of interwiki links in the store, there is currently
+ *
+ * @note Regarding the use of interwiki links in the store, there is currently
  * no support for storing semantic data about interwiki objects, and hence queries
  * that involve interwiki objects really make sense only for them occurring in 
  * object positions. Most methods still use the given input interwiki text as a simple

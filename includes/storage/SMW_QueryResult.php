@@ -5,7 +5,8 @@
  * These classes might once be replaced by interfaces that are implemented
  * by storage-specific classes if this is useful (e.g. for performance gains by
  * lazy retrieval).
- *
+ * @file
+ * @ingroup SMW
  * @author Markus Krötzsch
  */
 

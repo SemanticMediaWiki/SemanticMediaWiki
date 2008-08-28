@@ -1,4 +1,14 @@
 <?php
+/**
+ * @file
+ * @ingroup SMW
+ */
+
+/*
+ * Protect against register_globals vulnerabilities.
+ * This line must be present before any global variable is referenced.
+ */
+if (!defined('MEDIAWIKI')) die();
 global $wgHooks;
 $wgHooks[ 'SkinTemplateTabs' ][] = 'smwfAddRefreshTab';
 

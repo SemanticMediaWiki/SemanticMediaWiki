@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * @ingroup SMW
+ */
 
 /// Unicode symbols for coordinate minutes and seconds;
 /// may not display in every font ...

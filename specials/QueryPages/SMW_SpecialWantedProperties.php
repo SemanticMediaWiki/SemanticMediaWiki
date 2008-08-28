@@ -3,6 +3,8 @@
  * @author Markus Krötzsch
  *
  * This page shows all wanted properties (used but not having a page).
+ * @file
+ * @ingroup SMW
  */
 
 function smwfDoSpecialWantedProperties() {

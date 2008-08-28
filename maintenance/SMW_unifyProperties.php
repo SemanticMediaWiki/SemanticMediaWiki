@@ -19,6 +19,8 @@
  * -c           Checks if there are any pages that need to be moved
  *
  * @author Denny Vrandecic
+ * @file
+ * @ingroup SMW
  */
 
 require_once ( getenv('MW_INSTALL_PATH') !== false

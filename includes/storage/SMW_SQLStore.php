@@ -1,7 +1,8 @@
 <?php
 /**
  * SQL implementation of SMW's storage abstraction layer.
- *
+ * @file
+ * @ingroup SMW
  * @author Markus Krötzsch
  */
 

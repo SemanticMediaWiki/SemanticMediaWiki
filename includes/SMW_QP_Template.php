@@ -2,6 +2,8 @@
 /**
  * Print query results using templates.
  * @author Markus Krötzsch
+ * @file
+ * @ingroup SMW
  */
 
 /**

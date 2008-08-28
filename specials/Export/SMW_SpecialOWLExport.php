@@ -5,6 +5,8 @@
  * This special page for MediaWiki implements an OWL-export of
  * semantic data, gathered both from the annotations in articles,
  * and from metadata already present in the database.
+ * @file
+ * @ingroup SMW
  */
 
 if (!defined('MEDIAWIKI')) die();

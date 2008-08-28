@@ -1,19 +1,16 @@
 <?php
 /**
- * @defgroup Browse Browse
- * 
  * @file
- * @ingroup Browse
- * 
+ * @ingroup SMW
+ *
  * A factbox like view on an article, implemented by a special page.
- * 
- *  * @author Denny Vrandecic
+ *
+ * @author Denny Vrandecic
  */
 
 /**
  * A factbox view on one specific article, showing all the Semantic data about it
- * 
- * @ingroup Browse
+ *
  * @note AUTOLOAD
  */
 class SMWSpecialBrowse extends SpecialPage {

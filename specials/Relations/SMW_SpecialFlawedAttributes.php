@@ -9,6 +9,8 @@
  * However, every attribute regardless its correctness is stored in the table pagelinks with namespace = 102.
  * Thus, the query below returns all pages, which have a pagelink with namespace 102 but no corresponding entry in the smw_attributes table.
  *
+ * @file
+ * @ingroup SMW
  */
 
 function doSpecialFlawedAttributes($par = null) {

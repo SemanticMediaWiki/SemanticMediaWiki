@@ -4,6 +4,8 @@
  * for avoiding twice the amount of code being required on every use of a simple storage function.
  *
  * @author Markus Krötzsch
+ * @file
+ * @ingroup SMW
  */
 
 /// Types for query descriptions (comments refer to SMWSQLStore2Query class below):

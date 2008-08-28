@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * @ingroup SMW
+ */
 
 /**
  * A simple extension of SpecialPage that ensures that all relevant SMW-user

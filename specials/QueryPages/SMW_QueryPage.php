@@ -4,6 +4,8 @@
  *
  * An abstract query page base class that supports array-based
  * data retrieval instead of the SQL-based access used by MW.
+ * @file
+ * @ingroup SMW
  */
 
 /**

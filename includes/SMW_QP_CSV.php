@@ -1,6 +1,8 @@
 <?php
 /**
  * CSV export for SMW Queries
+ * @file
+ * @ingroup SMW
  */
 
 /**

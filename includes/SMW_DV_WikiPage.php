@@ -1,11 +1,14 @@
 <?php
+/**
+ * @file
+ * @ingroup SMW
+ */
 
 /**
  * This datavalue implements special processing suitable for defining
  * wikipages as values of properties. This value container currently
  * behaves somewhat special in that its xsdvalue is not contained all
  * relevant information (it just gives the DB-Key, not the namespace).
- * TODO: This should change, but is not really critical now.
  *
  * @author Nikolas Iwan
  * @author Markus Krötzsch

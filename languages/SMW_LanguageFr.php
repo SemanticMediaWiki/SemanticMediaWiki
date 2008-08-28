@@ -1,6 +1,7 @@
 <?php
 /**
- * @author Pierre Matringe
+ * @file
+ * @ingroup SMW
  */
 
 /*

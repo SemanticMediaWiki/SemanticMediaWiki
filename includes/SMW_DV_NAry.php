@@ -1,9 +1,13 @@
 <?php
+/**
+ * @file
+ * @ingroup SMW
+ */
 
 /**
  * SMWDataValue implements the handling of n-ary relations.
- * TODO: support outputformat
- * TODO: support "allows value" and "display units"
+ * @todo: support outputformat
+ * @todo: support "allows value" and "display units"
  *
  * @author Jörg Heizmann
  * @author Markus Krötzsch

@@ -8,6 +8,8 @@
  * some global variables managed by SMWTypeHandlerFactory,
  * and in Type: Wiki pages.
  * This only reports on the Type: Wiki pages.
+ * @file
+ * @ingroup SMW
  */
 
 function smwfDoSpecialTypes() {

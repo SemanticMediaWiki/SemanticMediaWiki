@@ -4,9 +4,10 @@
  * @author Markus Krötzsch
  *
  * This special page for MediaWiki provides an interface
- * that allows to import an ontology. 
- *
- * TODO: The code below is still very very messy and undocumented. Cleanup needed!
+ * that allows to import an ontology.
+ * @file
+ * @ingroup SMW
+ * @todo The code in this file is still very very messy and undocumented. Cleanup needed!
  */
 
 //ToDo: Please refactor into a real class we can autoload

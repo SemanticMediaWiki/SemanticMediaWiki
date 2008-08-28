@@ -1,16 +1,18 @@
 <?php
-/*
+/**
  * This is an implementation of the SMW store that still uses the new
  * SMW SQL 2 Store for everything SMW does, but it decorates all edits to
  * the store with calls to a RAP store, so it keeps in parallel a second
  * store with all the semantic data. This allows for a SPARQL endpoint.
  * 
- * TODO: This currently sucks big time because SMW_RAPStor2 is basically
+ * @todo It is not good that SMW_RAPStore2 is basically
  * a copy of SMW_RAPStore. The architecture of these two stores need to be
- * rethought so that code duplication can be avoided. 
- * 
+ * rethought so that code duplication can be avoided.
+ *
  * @author Denny Vrandecic (V. 0.1)
  * @author Felix Kratzer (V. 0.2)
+ * @file
+ * @ingroup SMW
  */
 
 if( !defined( 'MEDIAWIKI' ) ) {

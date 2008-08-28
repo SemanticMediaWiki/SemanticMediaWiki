@@ -1,6 +1,8 @@
 <?php
 /**
  * Create iCalendar exports
+ * @file
+ * @ingroup SMW
  */
 
 /**

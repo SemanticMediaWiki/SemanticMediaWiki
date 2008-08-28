@@ -2,7 +2,8 @@
 /**
  * The class in this file manages the parsing, displaying, and storing of semantic
  * data that is usually displayed within the factbox.
- *
+ * @file
+ * @ingroup SMW
  * @author Markus Krötzsch
  */
 

@@ -1,6 +1,8 @@
 <?php
 /**
  * Create vCard exports
+ * @file
+ * @ingroup SMW
  */
 
 /**

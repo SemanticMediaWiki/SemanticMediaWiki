@@ -1,10 +1,10 @@
 <?php
 /**
  * @file
- * @ingroup Browse
- * 
+ * @ingroup SMW
+ *
  * Special page to show object relation pairs.
- * 
+ *
  * @author Denny Vrandecic
  */
 
@@ -14,8 +14,7 @@
  * all the fillers of a property for a certain page.
  * This is typically used for overflow results from other 
  * dynamic output pages.
- * 
- * @ingroup Browse
+ *
  * @note AUTOLOAD
  */
 class SMWPageProperty extends SpecialPage {

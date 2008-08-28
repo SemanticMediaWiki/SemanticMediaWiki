@@ -1,6 +1,8 @@
 <?php
 /**
  * @author Markus Krötzsch
+ * @file
+ * @ingroup SMW
  *
  * This page shows all used properties.
  */

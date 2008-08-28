@@ -1,10 +1,11 @@
 <?php
-
 /**
  * Special handling for relation/attribute description pages.
  * Some code based on CategoryPage.php
  *
  * @author: Markus Krötzsch
+ * @file
+ * @ingroup SMW
  */
 
 /**

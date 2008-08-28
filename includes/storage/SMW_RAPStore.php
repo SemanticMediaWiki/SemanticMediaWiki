@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This is an implementation of the SMW store that still uses the default
  * SMW SQL Store for everything SMW does, but it decorates all edits to
  * the store with calls to a RAP store, so it keeps in parallel a second
@@ -7,6 +7,8 @@
  * 
  * @author Denny Vrandecic (V. 0.1)
  * @author Felix Kratzer (V. 0.2)
+ * @file
+ * @ingroup SMW
  */
 
 if( !defined( 'MEDIAWIKI' ) ) {
