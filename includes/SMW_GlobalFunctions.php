@@ -2,7 +2,7 @@
 /**
  * Global functions and constants for Semantic MediaWiki.
  * @file
- * @ingroup SMW Semantic MediaWiki
+ * @ingroup SMW
  */
 
 /**
@@ -11,7 +11,7 @@
  * For documenting extensions of SMW, please do not use groups starting with "SMW"
  * but make your own groups instead. Browsing at http://semantic-mediawiki.org/doc/
  * is assumed to be easier this way.
- * @defgroup SMW
+ * @defgroup SMW Semantic MediaWiki
  */
 
 define('SMW_VERSION','1.3b-SVN');
