@@ -1,6 +1,13 @@
 <?php
 /**
  * @file
+ * @ingroup SMWDataValues
+ */
+
+/**
+ * This group contains all parts of SMW that relate to the processing of datavalues
+ * of various types.
+ * @defgroup SMWDataValues
  * @ingroup SMW
  */
 
