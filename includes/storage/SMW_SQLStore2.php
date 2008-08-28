@@ -4,7 +4,7 @@
  *
  * @author Markus Krötzsch
  * @file
- * @ingroup SMW
+ * @ingroup SMWStore
  */
 
 define('SMW_SQL2_SMWIW',':smw'); // virtual "interwiki prefix" for special SMW objects

@@ -2,7 +2,7 @@
 /**
  * Create vCard exports
  * @file
- * @ingroup SMW
+ * @ingroup SMWQuery
  */
 
 /**

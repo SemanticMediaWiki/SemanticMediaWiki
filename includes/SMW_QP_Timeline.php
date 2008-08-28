@@ -3,7 +3,7 @@
  * Print query results in interactive timelines.
  * @author Markus Krötzsch
  * @file
- * @ingroup SMW
+ * @ingroup SMWQuery
  */
 
 

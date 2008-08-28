@@ -3,7 +3,7 @@
  * This file contains a static class for accessing functions to generate and execute
  * semantic queries and to serialise their results.
  * @file
- * @ingroup SMW
+ * @ingroup SMWQuery
  * @author Markus Krötzsch
  */
 

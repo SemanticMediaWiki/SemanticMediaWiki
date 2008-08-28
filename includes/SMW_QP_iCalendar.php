@@ -2,7 +2,7 @@
 /**
  * Create iCalendar exports
  * @file
- * @ingroup SMW
+ * @ingroup SMWQuery
  */
 
 /**

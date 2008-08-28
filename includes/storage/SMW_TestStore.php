@@ -3,7 +3,7 @@
  * Test implementation of SMW's storage abstraction layer.
  * @bug Currently not really functional.
  * @file
- * @ingroup SMW
+ * @ingroup SMWStore
  * @author Markus Krötzsch
  */
 

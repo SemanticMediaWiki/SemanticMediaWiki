@@ -12,7 +12,7 @@
  * @author Denny Vrandecic (V. 0.1)
  * @author Felix Kratzer (V. 0.2)
  * @file
- * @ingroup SMW
+ * @ingroup SMWStore
  */
 
 if( !defined( 'MEDIAWIKI' ) ) {

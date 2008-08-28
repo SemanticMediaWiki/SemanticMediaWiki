@@ -6,7 +6,7 @@
  * by storage-specific classes if this is useful (e.g. for performance gains by
  * lazy retrieval).
  * @file
- * @ingroup SMW
+ * @ingroup SMWQuery
  * @author Markus Krötzsch
  */
 

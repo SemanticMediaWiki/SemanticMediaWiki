@@ -7,10 +7,14 @@
 
 /**
  * This documenation group collects source code files belonging to Semantic MediaWiki.
+ *
+ * For documenting extensions of SMW, please do not use groups starting with "SMW"
+ * but make your own groups instead. Browsing at http://semantic-mediawiki.org/doc/
+ * is assumed to be easier this way.
  * @defgroup SMW
  */
 
-define('SMW_VERSION','1.3a-SVN');
+define('SMW_VERSION','1.3b-SVN');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);

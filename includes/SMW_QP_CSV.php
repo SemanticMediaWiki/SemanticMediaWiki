@@ -2,7 +2,7 @@
 /**
  * CSV export for SMW Queries
  * @file
- * @ingroup SMW
+ * @ingroup SMWQuery
  */
 
 /**

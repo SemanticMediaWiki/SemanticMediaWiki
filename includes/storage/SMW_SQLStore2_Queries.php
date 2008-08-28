@@ -5,7 +5,7 @@
  *
  * @author Markus Krötzsch
  * @file
- * @ingroup SMW
+ * @ingroup SMWStore
  */
 
 /// Types for query descriptions (comments refer to SMWSQLStore2Query class below):

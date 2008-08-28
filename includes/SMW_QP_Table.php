@@ -3,7 +3,7 @@
  * Print query results in tables.
  * @author Markus Krötzsch
  * @file
- * @ingroup SMW
+ * @ingroup SMWQuery
  */
 
 /**

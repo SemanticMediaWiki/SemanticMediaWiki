@@ -2,7 +2,7 @@
 /**
  * SQL implementation of SMW's storage abstraction layer.
  * @file
- * @ingroup SMW
+ * @ingroup SMWStore
  * @author Markus Krötzsch
  */
 
