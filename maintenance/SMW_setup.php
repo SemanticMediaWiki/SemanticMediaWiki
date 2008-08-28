@@ -31,7 +31,7 @@
  */
 
 /**
- * @defgroup SMWMaintenance
+ * @defgroup SMWMaintenance SMWMaintenance
  * This group contains all parts of SMW that are maintenance scripts.
  * @ingroup SMW
  */

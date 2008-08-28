@@ -10,7 +10,7 @@
  * This group contains all parts of SMW that relate to storing and retrieving
  * semantic data. SMW components that relate to semantic querying only have their
  * own group.
- * @defgroup SMWStore
+ * @defgroup SMWStore SMWStore
  * @ingroup SMW
  */
 

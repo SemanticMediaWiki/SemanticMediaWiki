@@ -11,7 +11,7 @@
  * This group contains all parts of SMW that relate to processing semantic queries.
  * SMW components that relate to plain storage access (for querying or otherwise)
  * have their own group.
- * @defgroup SMWQuery
+ * @defgroup SMWQuery SMWQuery
  * @ingroup SMW
  */
 
