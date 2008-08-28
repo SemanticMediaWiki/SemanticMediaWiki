@@ -134,7 +134,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			if ($property instanceof Title) {
 				// display property
 				$head  = "<th>\n";
-				$head .= $skin->link($property, $this->getPropertyLabel($property, $incoming)) . "\n";
+				$head .= $skin->makeLinkObj($property, $this->getPropertyLabel($property, $incoming)) . "\n"; // TODO: Replace makeLinkObj with link as soon as we drop MW1.12 compatibility
 				$head .= "</th>\n";
 				
 				// display value
@@ -204,7 +204,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 	$skin = $wgUser->getSkin();
 		$html  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		$html .= "<tr class=\"smwb-title\"><td colspan=\"2\">\n";
-		$html .= $skin->link($this->subject->getTitle()) . "\n";
+		$html .= $skin->makeLinkObj($this->subject->getTitle()) . "\n"; // TODO: Replace makeLinkObj with link as soon as we drop MW1.12 compatibility
 		$html .= "</td></tr>\n";
 		$html .= "</table>\n";
 		return $html;
