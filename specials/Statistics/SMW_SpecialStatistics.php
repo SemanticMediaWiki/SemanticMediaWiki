@@ -5,7 +5,8 @@
  * This special page of the Semantic MediaWiki extension displays some 
  * statistics about properties.
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 
 function smwfExecuteSemanticStatistics() {

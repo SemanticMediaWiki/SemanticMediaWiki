@@ -6,7 +6,8 @@
  * This special page for MediaWiki provides an interface
  * that allows to import an ontology.
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  * @todo The code in this file is still very very messy and undocumented. Cleanup needed!
  */
 

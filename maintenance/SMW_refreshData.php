@@ -29,7 +29,7 @@
  * @author Yaron Koren
  * @author Markus Krötzsch
  * @file
- * @ingroup SMW
+ * @ingroup SMWMaintenance
  */
 
 $optionsWithArgs = array( 'd', 's', 'e', 'b', 'server'); // -d <delay>, -s <startid>, -e <endid>, -b <backend>

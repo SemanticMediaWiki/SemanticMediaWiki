@@ -20,7 +20,7 @@
  *
  * @author Denny Vrandecic
  * @file
- * @ingroup SMW
+ * @ingroup SMWMaintenance
  */
 
 require_once ( getenv('MW_INSTALL_PATH') !== false

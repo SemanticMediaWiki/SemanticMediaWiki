@@ -1,7 +1,14 @@
 <?php
 /**
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
+ */
+
+/**
+ * @defgroup SMWMaintenance
+ * This group contains all parts of SMW that are maintenance scripts.
+ * @ingroup SMWSpecialPage
  */
 
 /**
@@ -12,6 +19,8 @@
  * of the semantic database. It is restricted to users with siteadmin status.
  *
  * @note AUTOLOAD
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 class SMWAdmin extends SpecialPage {
 

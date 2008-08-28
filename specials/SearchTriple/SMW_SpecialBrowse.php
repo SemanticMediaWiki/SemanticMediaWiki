@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  *
  * A factbox like view on an article, implemented by a special page.
  *
@@ -12,6 +13,8 @@
  * A factbox view on one specific article, showing all the Semantic data about it
  *
  * @note AUTOLOAD
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 class SMWSpecialBrowse extends SpecialPage {
 

@@ -25,7 +25,7 @@
  * @author Markus Krötzsch
  * @todo It should be possible to ping based on pages' modification dates.
  * @file
- * @ingroup SMW
+ * @ingroup SMWMaintenance
  */
 
 $optionsWithArgs = array( 'd', 's', 'e', 'h', 't' ); // -d <delay>, -s <startid>, -e <endid>

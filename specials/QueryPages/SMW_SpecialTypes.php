@@ -9,7 +9,8 @@
  * and in Type: Wiki pages.
  * This only reports on the Type: Wiki pages.
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 
 function smwfDoSpecialTypes() {

@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 
 /**
@@ -13,6 +14,8 @@
  * or all winners of the Academy Award for best actress.
  *
  * @note AUTOLOADED
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 class SMWSearchByProperty extends SpecialPage {
 

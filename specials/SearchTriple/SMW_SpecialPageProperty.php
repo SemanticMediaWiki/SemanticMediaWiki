@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  *
  * Special page to show object relation pairs.
  *
@@ -16,6 +17,8 @@
  * dynamic output pages.
  *
  * @note AUTOLOAD
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 class SMWPageProperty extends SpecialPage {
 

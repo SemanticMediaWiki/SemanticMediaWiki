@@ -4,7 +4,8 @@
  *
  * This page shows all wanted properties (used but not having a page).
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 
 function smwfDoSpecialWantedProperties() {

@@ -27,6 +27,12 @@
  *            SMW_refreshData.php but this may take some time.
  * @author Markus Krötzsch
  * @file
+ * @ingroup SMWMaintenance
+ */
+
+/**
+ * @defgroup SMWMaintenance
+ * This group contains all parts of SMW that are maintenance scripts.
  * @ingroup SMW
  */
 

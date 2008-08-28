@@ -5,7 +5,8 @@
  * This page shows all unused properties.
  *
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 
 

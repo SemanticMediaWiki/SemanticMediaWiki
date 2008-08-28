@@ -6,7 +6,8 @@
  * semantic data, gathered both from the annotations in articles,
  * and from metadata already present in the database.
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 
 if (!defined('MEDIAWIKI')) die();

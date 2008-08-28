@@ -25,7 +25,7 @@
  *
  * @author Markus Krötzsch
  * @file
- * @ingroup SMW
+ * @ingroup SMWMaintenance
  */
 
 $optionsWithArgs = array( 'o', 'd', 'e', 'server');

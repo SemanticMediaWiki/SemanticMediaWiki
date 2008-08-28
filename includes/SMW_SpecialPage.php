@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 
 /**
@@ -10,6 +11,8 @@
  * relevant as an adaptor for query pages.
  *
  * @note AUTOLOAD
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 class SMWSpecialPage extends SpecialPage {
 

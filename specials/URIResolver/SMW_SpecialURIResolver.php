@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 
 /**
@@ -12,6 +13,8 @@
  * MediaWiki were no hook has ever seen light.
  *
  * @note AUTOLOAD
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 class SMWURIResolver extends SpecialPage {
 

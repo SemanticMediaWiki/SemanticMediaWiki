@@ -2,7 +2,8 @@
 /**
  * @author Markus Krötzsch
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  *
  * This page shows all used properties.
  */

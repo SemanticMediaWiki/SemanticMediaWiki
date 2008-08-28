@@ -10,7 +10,8 @@
  * Thus, the query below returns all pages, which have a pagelink with namespace 102 but no corresponding entry in the smw_attributes table.
  *
  * @file
- * @ingroup SMW
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
  */
 
 function doSpecialFlawedAttributes($par = null) {
