@@ -7,8 +7,8 @@
 /**
  * This group contains all parts of SMW that relate to localisation and
  * translation.
- * @defgroup SMWDataValues
- * @ingroup SMWLanguage
+ * @defgroup SMWLanguae
+ * @ingroup SMW
  */
 
 /**
