@@ -176,7 +176,7 @@ class SMWQueryResult {
 	 * Return URL of a page that displays those search results
 	 * (and enables browsing results, and is accessible even without
 	 * JavaScript enabled browsers).
-	 * @DEPRECATED (since >1.1) use getQueryLink
+	 * @deprecated use getQueryLink in SMW >1.1
 	 */
 	public function getQueryURL() {
 		$title = Title::makeTitle(NS_SPECIAL, 'ask');
@@ -205,7 +205,7 @@ class SMWQueryResult {
 	 * Return titlestring of a page that displays those search results
 	 * (and enables browsing results, and is accessible even without
 	 * JavaScript enabled browsers).
-	 * @DEPRECATED (since >1.1) use getQueryLink
+	 * @deprecated use getQueryLink in SMW >1.1
 	 */
 	public function getQueryTitle($prefixed = true) {
 		if ($prefixed) {
@@ -280,7 +280,7 @@ class SMWResultArray {
 	 *
 	 * The parameter $linker controls linking of title values and should
 	 * be some Linker object (or NULL for no linking).
-	 * @DEPRECATED Use getNextText()
+	 * @deprecated Use getNextText()
 	 */
 	public function getNextHTMLText($linker = NULL) {
 		$object = current($this->content);
@@ -301,7 +301,7 @@ class SMWResultArray {
 	 * (Title or SMWDataValue) as Wikitext. The parameter $linked controls 
 	 * linking of title values and should be non-NULL and non-false if this 
 	 * is desired.
-	 * @DEPRECATED Use getNextText()
+	 * @deprecated Use getNextText()
 	 */
 	public function getNextWikiText($linked = NULL) {
 		$object = current($this->content);
