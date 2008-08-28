@@ -2,7 +2,7 @@
 /**
  * Global functions and constants for Semantic MediaWiki.
  * @file
- * @ingroup SMW
+ * @ingroup SMW Semantic MediaWiki
  */
 
 /**
