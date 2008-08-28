@@ -7,7 +7,7 @@
 /**
  * This group contains all parts of SMW that relate to localisation and
  * translation.
- * @defgroup SMWLanguage
+ * @defgroup SMWLanguage SMWLanguage
  * @ingroup SMW
  */
 
