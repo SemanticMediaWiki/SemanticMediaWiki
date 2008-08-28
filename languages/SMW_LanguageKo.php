@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by Terry A. Hurlbut using an automatic translation machine. Please use with caution,
- * and send suggesntions for improvement to mak@aifb.uni-karlsruhe.de. The original English messages
- * found in the file SMW_LanguageEn.php may be useful as a reference.
- * @author Terry A. Hurlbut
- */
 
-/**
+/*
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -15,7 +9,16 @@ if (!defined('MEDIAWIKI')) die();
 global $smwgIP;
 include_once($smwgIP . '/languages/SMW_Language.php');
 
-class SMW_LanguageKo extends SMW_Language {
+/**
+ * Korean language labels for important SMW labels (namespaces, datatypes,...).
+ * Created by Terry A. Hurlbut using an automatic translation machine. Please use with caution,
+ * and send suggestions for improvement to mak\@aifb.uni-karlsruhe.de. The original English messages
+ * found in the file SMW_LanguageEn.php may be useful as a reference.
+ *
+ * @author Terry A. Hurlbut
+ * @ingroup Language
+ */
+class SMWLanguageKo extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(
 	'_wpg' => '인공', // name of page datatype

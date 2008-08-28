@@ -1,10 +1,6 @@
 <?php
-/**
- * @author Dmitry Khoroshev
- * @author cnit@uniyar.ac.ru
- */
 
-/**
+/*
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -13,7 +9,13 @@ if (!defined('MEDIAWIKI')) die();
 global $smwgIP;
 include_once($smwgIP . '/languages/SMW_Language.php');
 
-class SMW_LanguageRu extends SMW_Language {
+/**
+ * Russian language labels for important SMW labels (namespaces, datatypes,...).
+ *
+ * @author Dmitry Khoroshev cnit\@uniyar.ac.ru
+ * @ingroup Language
+ */
+class SMWLanguageRu extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(
 	'_wpg' => 'Страница', // name of page datatype

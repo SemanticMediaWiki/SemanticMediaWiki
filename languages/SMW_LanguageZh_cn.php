@@ -1,9 +1,6 @@
 <?php
-/**
- * @author Markus Krötzsch 翻译:张致信 本档系以电子字典译自繁体版，请自行修订(Translation: Roc Michael Email:roc.no1@gmail.com. This file is translated from Tradition Chinese by useing electronic dictionary. Please correct the file by yourself.) 2007-10-22
- */
 
-/**
+/*
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -12,7 +9,15 @@ if (!defined('MEDIAWIKI')) die();
 global $smwgIP;
 include_once($smwgIP . '/languages/SMW_Language.php');
 
-class SMW_LanguageZh_cn extends SMW_Language {
+/**
+ * Simplified Chinese language labels for important SMW labels (namespaces, datatypes,...).
+ * This file is translated from Tradition Chinese by using an electronic dictionary. Please
+ * contribute any corrections to the SMW project.
+ *
+ * @author 張致信 (Roc Michael roc.no1\@gmail.com)
+ * @ingroup Language
+ */
+class SMWLanguageZh_cn extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(
 	'_wpg' => '页面',	//'Page', // name of page datatype

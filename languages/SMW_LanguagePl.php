@@ -1,13 +1,21 @@
 <?php
-/**
- * @author Łukasz Bolikowski
- * @version 0.2
- */
 
 /*
+ * Protect against register_globals vulnerabilities.
+ * This line must be present before any global variable is referenced.
+ */
+if (!defined('MEDIAWIKI')) die();
+
+global $smwgIP;
+include_once($smwgIP . '/languages/SMW_Language.php');
+
+/**
+ * Polish language labels for important SMW labels (namespaces, datatypes,...).
+ *
  * To further translators: some key terms appear * in multiple strings.
  * If you wish to change them, please be consistent.  The following
  * translations are currently used:
+ *
  *   relation = relacja
  *   attribute = atrybut
  *   property = własność
@@ -17,22 +25,16 @@
  *   conversion = konwersja
  *   search (n) = szukanie
  *   sorry, oops ~ niestety, ojej
+ *
  * These ones may need to be refined:
  *   to support = wspierać
  *   on this site = w tym miejscu
+ *
+ * @author Łukasz Bolikowski
+ * @version 0.2
+ * @ingroup Language
  */
-
-/**
- * Protect against register_globals vulnerabilities.
- * This line must be present before any global variable is referenced.
- */
-if (!defined('MEDIAWIKI')) die();
-
-
-global $smwgIP;
-include_once($smwgIP . '/languages/SMW_Language.php');
-
-class SMW_LanguagePl extends SMW_Language {
+class SMWLanguagePl extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype  //TODO translate

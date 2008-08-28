@@ -20,7 +20,21 @@ if (!defined('MEDIAWIKI')) die();
 global $smwgIP;
 include_once($smwgIP . '/languages/SMW_Language.php');
 
-class SMW_LanguageDe extends SMW_Language {
+/**
+ * German language labels for important SMW labels (namespaces, datatypes,...).
+ *
+ * Main translations:
+ * "property" --> "Attribut"
+ * "type" --> "Datentyp"
+ * "special properties" --> "Besondere Attribute"
+ * "query" --> "Anfrage"
+ * "subquery" --> Teilanfrage
+ * "printout statement" --> Ausgabeanweisung
+ *
+ * @author Markus Krötzsch
+ * @ingroup Language
+ */
+class SMWLanguageDe extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(
 	'_wpg' => 'Seite', // name of page datatype

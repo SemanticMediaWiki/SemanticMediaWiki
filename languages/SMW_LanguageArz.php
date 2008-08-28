@@ -1,9 +1,6 @@
 <?php
-/**
- * @author Meno25
- */
 
-/**
+/*
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -12,7 +9,13 @@ if (!defined('MEDIAWIKI')) die();
 global $smwgIP;
 include_once($smwgIP . '/languages/SMW_Language.php');
 
-class SMW_LanguageArz extends SMW_Language {
+/**
+ * Egyptian Arab language labels for important SMW labels (namespaces, datatypes,...).
+ *
+ * @author Meno25
+ * @ingroup Language
+ */
+class SMWLanguageArz extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(
 	'_wpg' => 'الصفحة', // name of page datatype

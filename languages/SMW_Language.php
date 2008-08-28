@@ -1,12 +1,14 @@
 <?php
 /**
+ * @file
  * @author Markus Krötzsch
+ * @ingroup Language
  */
 
 /**
  * Base class for all language classes.
  */
-abstract class SMW_Language {
+abstract class SMWLanguage {
 
 	// the special message arrays ...
 	protected $m_DatatypeLabels;

@@ -1,9 +1,11 @@
 <?php
 /**
+ * @file
  * @author Markus Krötzsch
+ * @ingroup Language
  */
 
-/**
+/*
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -12,7 +14,7 @@ if (!defined('MEDIAWIKI')) die();
 global $smwgIP;
 include_once($smwgIP . '/languages/SMW_Language.php');
 
-class SMW_LanguageEn extends SMW_Language {
+class SMWLanguageEn extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype

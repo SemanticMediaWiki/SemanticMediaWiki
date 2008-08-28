@@ -1,9 +1,6 @@
 <?php
-/**
- * @author Udi Oron אודי אורון
- */
 
-/**
+/*
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
@@ -12,7 +9,13 @@ if (!defined('MEDIAWIKI')) die();
 global $smwgIP;
 include_once($smwgIP . '/languages/SMW_Language.php');
 
-class SMW_LanguageHe extends SMW_Language {
+/**
+ * Hebrew language labels for important SMW labels (namespaces, datatypes,...).
+ *
+ * @author Udi Oron אודי אורון
+ * @ingroup Language
+ */
+class SMWLanguageHe extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype  //TODO translate
