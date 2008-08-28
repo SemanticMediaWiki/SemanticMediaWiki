@@ -59,7 +59,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		// This method in its current for is not really useful for init, since the XSD value is just
 		// the (dbkey) title string without the namespace.
 		/// FIXME: change this to properly use a prefixed title string, in case someone wants to use this
-		$this->m_stubdata = array($value,$this->m_namespace,false,'');
+		$this->m_stubdata = array($value,$this->m_namespace,false,'','');
 	}
 
 	protected function unstub() {
