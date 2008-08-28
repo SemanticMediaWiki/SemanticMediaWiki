@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * @ingroup SMW
+ * @ingroup SMWDataValues
  */
 
 define('SMW_URI_MODE_EMAIL',1);

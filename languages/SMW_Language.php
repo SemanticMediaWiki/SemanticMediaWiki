@@ -1,7 +1,14 @@
 <?php
 /**
  * @file
- * @ingroup SMW
+ * @ingroup SMWLanguage
+ */
+
+/**
+ * This group contains all parts of SMW that relate to localisation and
+ * translation.
+ * @defgroup SMWDataValues
+ * @ingroup SMWLanguage
  */
 
 /**

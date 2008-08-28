@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * @ingroup SMW
+ * @ingroup SMWLanguage
  */
 
 /*

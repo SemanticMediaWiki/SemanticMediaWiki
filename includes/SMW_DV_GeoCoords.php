@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * @ingroup SMW
+ * @ingroup SMWDataValues
  */
 
 /// Unicode symbols for coordinate minutes and seconds;

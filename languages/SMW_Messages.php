@@ -5,7 +5,7 @@
  * @file
  * @ingroup Language
  * @ingroup I18n
- * @ingroup SMW
+ * @ingroup SMWLanguage
  */
 
 $messages = array();
