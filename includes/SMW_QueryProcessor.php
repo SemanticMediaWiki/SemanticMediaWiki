@@ -31,7 +31,7 @@ class SMWQueryProcessor {
 	 * known. Otherwise it will be determined from the parameters when 
 	 * needed. This parameter is just for optimisation in a common case.
 	 *
-	 * @TODO: this method contains too many special cases for certain 
+	 * @todo This method contains too many special cases for certain 
 	 * printouts. Especially the case of rss, icalendar, etc. (no query) 
 	 * should be specified differently.
 	 */
@@ -242,7 +242,7 @@ class SMWQueryProcessor {
 	 * the query and determines the serialisation mode for results. The parameter
 	 * $context defines in what context the query is used, which affects ceretain
 	 * general settings.
-	 * @DEPRECATED use getResult
+	 * @deprecated use SMWQueryProcessor::getResult()
 	 */
 	static public function getResultHTML($querystring, $params, $context = SMWQueryProcessor::INLINE_QUERY) {
 		return SMWQueryProcessor::getResultFromQueryString($querystring, $params, array(), SMW_OUTPUT_HTML, $context);

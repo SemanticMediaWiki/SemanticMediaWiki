@@ -128,7 +128,7 @@ abstract class SMWResultPrinter {
 	 * Depending on current linking settings, returns a linker object
 	 * for making hyperlinks or NULL if no links should be created.
 	 *
-	 * @param $firstrow True of this is the first result row (having special linkage settings).
+	 * @param $firstcol True of this is the first result column (having special linkage settings).
 	 */
 	protected function getLinker($firstcol = false) {
 		if ( ($firstcol && $this->mLinkFirst) || (!$firstcol && $this->mLinkOthers) ) {
@@ -176,7 +176,7 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
-	 * @DEPRECATED (since >1.0) use getResult()
+	 * @deprecated use SMWResultPrinter::getResult() in SMW >1.0
 	 */
 	public function getResultHTML($results, $params) {
 		return $this->getResult($results,$params,SMW_OUTPUT_HTML);
@@ -184,7 +184,7 @@ abstract class SMWResultPrinter {
 
 	/**
 	 * Return HTML version of serialised results.
-	 * @DEPRECATED: (since >1.0) Legacy method, use getResultText instead
+	 * @deprecated use SMWResultPrinter::getResultText() since SMW >1.0
 	 */
 	protected function getHTML($res) {
 		return $this->getResultText($res,SMW_OUTPUT_HTML);
@@ -193,7 +193,7 @@ abstract class SMWResultPrinter {
 	/**
 	 * Generate a link to further results of the given query, using syntactic encoding
 	 * as appropriate for $outputmode.
-	 * @DEPRECATED (since >1.1) This function no longer does anything interesting. Intelligence moved to SMWInfolink: Use the code as given below directly!
+	 * @deprecated Since SMW>1.1 this function no longer does anything interesting. Intelligence moved to SMWInfolink. Directly use the code of this method instead of calling it!
 	 */
 	protected function getFurtherResultsLink($outputmode, $res, $label) {
 		$link = $res->getQueryLink($label);

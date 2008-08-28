@@ -23,7 +23,7 @@
  *              the value of $wgServer is used, though this may be localhost in many cases.
  *
  * @author Markus Krötzsch
- * @TODO it should be possible to ping based on pages' modification dates
+ * @todo It should be possible to ping based on pages' modification dates.
  */
 
 $optionsWithArgs = array( 'd', 's', 'e', 'h', 't' ); // -d <delay>, -s <startid>, -e <endid>

@@ -660,7 +660,7 @@ function smwfAddHTMLHeadersOutput(&$out) {
 		// using number_format. This may lead to 1.200, so then use trim to
 		// remove trailing zeroes.
 		$doScientific = false;
-		//@TODO: Don't do all this magic for integers, since the formatting does not fit there
+		//@todo: Don't do all this magic for integers, since the formatting does not fit there
 		//       correctly. E.g. one would have integers formatted as 1234e6, not as 1.234e9, right?
 		//The "$value!=0" is relevant: we want to scientify numbers that are close to 0, but never 0!
 		if ( ($decplaces > 0) && ($value != 0) ) {

@@ -20,9 +20,9 @@
  * @author Markus Krötzsch
  * @note AUTOLOADED
  *
- * @TODO Wiki-HTML-conversion for unit strings must be revisited, as the current
+ * @todo Wiki-HTML-conversion for unit strings must be revisited, as the current
  * solution might be unsafe.
- * @TODO respect desired output unit (relevant for queries)
+ * @todo Respect desired output unit (relevant for queries).
  */
 class SMWNumberValue extends SMWDataValue {
 

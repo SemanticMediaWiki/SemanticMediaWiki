@@ -17,7 +17,7 @@
  * weekdays in your values, and use ":" between hours, minutes,
  * and seconds (i.e. no "1230" as 12:30).
  *
- * @TODO currently we cannot distinguish incomplete dates
+ * @todo Currently we cannot distinguish incomplete dates
  * such as "Oct 10 2007" from certain complete dates such
  * as "Oct 10 2007T00:00:00". This should change.
  *

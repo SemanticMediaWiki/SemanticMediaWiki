@@ -1895,7 +1895,8 @@ class SMWSQLStore extends SMWStore {
 	 * @param $curtables Array with names of aliases of tables refering to the 'current' element (the one to which the description basically applies).
 	 * @param $nary_pos If the subcondition is directly appended to an nary relation, this parameter holds the numerical index of the position in the nary in order to be able to join condition tables to that position.
 	 *
-	 * @TODO: Maybe there need to be optimisations in certain cases (atomic implementation for common nestings of descriptions?)
+	 * @todo Maybe there need to be further optimisations in certain cases (atomic implementation for 
+	 * common nestings of descriptions?).
 	 */
 	protected function createSQLQuery(SMWDescription $description, &$from, &$where, &$db, &$curtables, $nary_pos = '') {
 		$subwhere = '';

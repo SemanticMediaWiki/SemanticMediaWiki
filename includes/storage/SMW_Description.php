@@ -28,7 +28,7 @@ class SMWPrintRequest {
 	 * @param $mode a constant defining what to printout
 	 * @param $label the string label to describe this printout
 	 * @param $title optional Title object that specifies the request (usually some property)
-	 * @param $datavalue optional SMWDataValue container that sets parameters for printing data values (e.g. the unit)
+	 * @param $outputformat optional string for specifying an output format, e.g. an output unit
 	 */
 	public function SMWPrintRequest($mode, $label, $title = NULL, $outputformat = '') {
 		$this->m_mode = $mode;

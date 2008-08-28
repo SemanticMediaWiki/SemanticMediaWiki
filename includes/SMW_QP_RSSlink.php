@@ -139,7 +139,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 /**
  * Represents a single entry, or item, in an RSS feed. Useful since those items are iterated more
  * than once when serialising RSS.
- * @TODO: this code still needs cleanup, it's a mess
+ * @todo This code still needs cleanup, it's a mess.
  */
 class SMWRSSItem {
 
