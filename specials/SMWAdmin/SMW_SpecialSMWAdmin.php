@@ -6,9 +6,9 @@
  */
 
 /**
- * @defgroup SMWMaintenance
+ * @defgroup SMWSpecialPage
  * This group contains all parts of SMW that are maintenance scripts.
- * @ingroup SMWSpecialPage
+ * @ingroup SMW
  */
 
 /**
