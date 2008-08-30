@@ -876,6 +876,8 @@ $messages['de'] = array(
 	'browse' => 'Wiki browsen',
 	'smw_browse_article' => 'Bitte gib den Titel einer Seite ein.',
 	'smw_browse_go' => 'Los',
+	'smw_browse_show_incoming' => 'zeige Attribute die hierhin verlinken',
+	'smw_browse_hide_incoming' => 'verstecke Attribute die hierhin verlinken',
 	'pageproperty' => 'Attributswerte einer Seite',
 	'smw_pp_docu' => 'Suche nach allen Werten, die ein bestimmtes Attribut für die angegebene Seite hat.',
 	'smw_pp_from' => 'Seite',
@@ -885,6 +887,7 @@ $messages['de'] = array(
 	'smw_result_next' => 'Vorwärts',
 	'smw_result_results' => 'Ergebnisse',
 	'smw_result_noresults' => 'Keine Ergebnisse gefunden.',
+	'smwadmin' => 'Admin-Funktionen für Semantic MediaWiki',
 );
 
 /** Greek (Ελληνικά)
@@ -1570,7 +1573,7 @@ $messages['ia'] = array(
  */
 $messages['it'] = array(
 	'smw_edithelp' => 'Aiuto sulla modifica delle propriet&agrave;',
-	'smw_viewasrdf' => 'Feed RDF ',
+	'smw_viewasrdf' => 'Feed RDF',
 	'smw_finallistconjunct' => ' e',
 	'smw_factbox_head' => 'Fatti riguardanti $1',
 	'smw_isspecprop' => "Questa propriet&agrave; &egrave; una propriet&agrave; speciale all'interno di questo wiki.",
@@ -3103,7 +3106,6 @@ $messages['ru'] = array(
 	'smw_no_importelement' => 'Ошибка: Элемент "$1" не доступен для импорта.',
 	'smw_parseerror' => 'Переданное значение не было понято.',
 	'smw_decseparator' => ',',
-	'smw_kiloseparator' => ' ',
 	'smw_notitle' => '“$1” не может быть использован как заголовок статьи на данном сайте.',
 	'smw_unknowntype' => 'Тип "$1" не поддерживается для данного свойства.',
 	'smw_manytypes' => 'Более одного типа определено для свойства.',
