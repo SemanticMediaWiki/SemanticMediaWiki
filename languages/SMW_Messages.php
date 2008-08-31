@@ -250,6 +250,7 @@ Please enter both a page and a property.',
 /** Message documentation (Message documentation)
  * @author Jon Harald Søby
  * @author Markus Krötzsch
+ * @author Pietrodn
  */
 $messages['qqq'] = array(
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
@@ -263,6 +264,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 Note that spaces and space-like HTML entities are always ignored when reading numbers, whether or not a space symbol is used here.",
 	'smw_label_latitude' => '{{Identical|Latitude}}',
 	'smw_label_longitude' => '{{Identical|Longitude}}',
+	'smw_subpropertyarticlecount' => '[[bugzilla:15393|Bug on Bugzilla about this message]]',
 	'properties' => 'This is the title of the special page showing all properties.',
 	'smw_property_template' => 'Used to display information about properties on Special:Properties. The parameters have the following meaning:
 * $1: the property name
@@ -962,6 +964,7 @@ $messages['eo'] = array(
 	'smw_sbv_property' => 'Eco',
 	'smw_sbv_value' => 'Valuto',
 	'smw_sbv_submit' => 'Trovu rezultojn',
+	'browse' => 'Foliumi vikion',
 	'smw_browse_go' => 'Ek',
 	'smw_pp_from' => 'De paĝo',
 	'smw_pp_type' => 'Eco',
@@ -1570,6 +1573,7 @@ $messages['ia'] = array(
 /** Italian (Italiano)
  * @author Cruccone
  * @author Davide Eynard, David Laniado
+ * @author Pietrodn
  */
 $messages['it'] = array(
 	'smw_edithelp' => 'Aiuto sulla modifica delle propriet&agrave;',
@@ -1580,7 +1584,13 @@ $messages['it'] = array(
 	'smw_isknowntype' => 'Questo tipo &egrave; fra i tipi di dato standard di questo wiki',
 	'smw_isaliastype' => 'Questo tipo &egrave; un alias per il tipo di dato “$1”.',
 	'smw_isnotype' => "Il tipo “$1” non &egrave; un tipo di dato standard nel wiki, n&eacute; &egrave; stato ancora definito dall'utente.",
+	'smw_concept_description' => 'Descrizione del concetto "$1"',
+	'smw_no_concept_namespace' => 'I concetti possono essere definiti solo sulle pagine nel namespace Concept:.',
+	'smw_multiple_concepts' => 'Ogni pagina concetto può avere una sola definizione di concetto.',
 	'smw_baduri' => 'Spiacenti. Gli URI del tipo “$1” non sono consentiti.',
+	'smw_csv_link' => 'CSV',
+	'smw_icalendar_link' => 'iCalendar',
+	'smw_vcard_link' => 'vCard',
 	'smw_iq_disabled' => 'Spiacenti. Le query semantiche sono state disabilitate per questo wiki.',
 	'smw_iq_moreresults' => '&hellip; risultati successivi',
 	'smw_iq_nojs' => 'Per favore, usate un browser che supporti Javascript per visualizzare questo elemento.',
@@ -1625,13 +1635,18 @@ $messages['it'] = array(
 	'smw_badtitle' => 'Spiacenti, “$1” non &egrave; un titolo valido.',
 	'smw_badqueryatom' => 'Non &egrave; stato possibile comprendere parte “[&#x005B;&hellip;]]” della query.',
 	'smw_propvalueproblem' => 'Non &egrave; stato possibile comprendere il valore della propriet&agrave; “$1”.',
+	'smw_noqueryfeature' => 'Qualche funzionalità di query non è stata supportata in questa wiki e parte della query è stata rimossa ($1).',
+	'smw_noconjunctions' => 'Le congiunzioni nelle query non sono supportate in questa wiki e parte della query è stata rimossa ($1).',
 	'smw_nodisjunctions' => "La disgiunzione all'interno delle query non &egrave; supportata in questo wiki, quindi parte della query &egrave; stata ignorata ($1).",
 	'smw_querytoolarge' => "Le seguenti condizioni all'interno della query non sono state considerate a causa delle restrizioni di dimensione o profondit&agrave; delle query impostate per questo wiki: $1.",
 	'smw_devel_warning' => 'Questa funzione &egrave; attualmente in fase di sviluppo e potrebbe non essere completamente funzionante: si consiglia di eseguire un backup dei dati prima di usarla.',
+	'smw_notemplategiven' => 'Per favore fornisci un valore per il parametro "template" per far funzionare questo formato di query.',
 	'smw_type_header' => 'Propriet&agrave; del tipo “$1”',
 	'smw_typearticlecount' => 'Visualizzazione di $1 propriet&agrave; che usano questo tipo.',
 	'smw_attribute_header' => 'Pagine che usano la propriet&agrave; “$1”',
 	'smw_attributearticlecount' => 'Visualizzazione di $1 pagine che usano questa propriet&agrave;.',
+	'smw_subproperty_header' => 'Sottoproprietà',
+	'smw_subpropertyarticlecount' => 'Questa proprietà ha {{PLURAL:$1|la seguente|le seguenti $1}} sottoproprietà.',
 	'exportrdf' => 'Esporta le pagine in RDF',
 	'smw_exportrdf_docu' => '<p>Questa pagina consente di ottenere dati da una pagina in formato RDF. Per esportare delle pagine, inseritene i titoli nella casella di testo sottostante, un titolo per riga.</p>',
 	'smw_exportrdf_recursive' => 'Esporta ricorsivamente tutte le pagine correlate. Nota: il risultato potrebbe essere molto grande!',
@@ -1696,6 +1711,10 @@ $messages['it'] = array(
 	'browse' => 'Esplora il wiki',
 	'smw_browse_article' => "Inserire il nome della pagina da cui iniziare l'esplorazione",
 	'smw_browse_go' => 'Vai',
+	'smw_browse_show_incoming' => 'mostra le proprietà che linkano qui',
+	'smw_browse_hide_incoming' => 'nascondi le proprietà che linkano qui',
+	'smw_inverse_label_default' => '$1 di',
+	'smw_inverse_label_property' => 'Etichetta della proprietà inversa',
 	'pageproperty' => 'Ricerca propriet&agrave; della pagina',
 	'smw_pp_docu' => 'Cerca tutti i valori che soddisfano una propriet&agrave; su una data pagina. Inserire sia la pagina sia la propriet&agrave;',
 	'smw_pp_from' => 'Da pagina',
@@ -1705,6 +1724,7 @@ $messages['it'] = array(
 	'smw_result_next' => 'Successivo',
 	'smw_result_results' => 'Risultati',
 	'smw_result_noresults' => 'Spiacenti, nessun risultato.',
+	'smwadmin' => 'Funzioni amministrative per Semantic MediaWiki',
 );
 
 /** Javanese (Basa Jawa)
