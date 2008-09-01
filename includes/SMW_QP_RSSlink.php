@@ -198,7 +198,7 @@ class SMWRSSItem {
 	 * Creates the RSS output for the single item.
 	 */
 	public function text() {
-		global $wgTitle, $wgServer, $wgParser, $smwgStoreActive, $smwgRSSWithPages;
+		global $wgServer, $wgParser, $smwgStoreActive, $smwgRSSWithPages;
 		static $parser = null;
 		static $parser_options = null;
 		$smwgStoreActive = false; // make sure no Factbox is shown (RSS lacks the required styles)

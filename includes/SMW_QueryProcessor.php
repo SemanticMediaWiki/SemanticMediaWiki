@@ -225,14 +225,19 @@ class SMWQueryProcessor {
 	 * Process and answer a query as given by a string and an array of parameters 
 	 * as is typically produced by the <ask> parser hook. The result is formatted
 	 * according to the specified $outputformat. The parameter $context defines in 
-	 * what context the query is used, which affects ceretain general settings.
+	 * what context the query is used, which affects certain general settings.
 	 */
 	static public function getResultFromHookParams($querystring, $params, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY) {
-		global $wgTitle;
+		global $wgParser;
+		$title = $wgParser->getTitle();
+		if ($title === NULL) { // try that in emergency, needed in 1.11 in Special:Ask
+			global $wgTitle;
+			$title = $wgTitle;
+		}
 		// Take care at least of some templates -- for better template support use #ask
 		$parser = new Parser();
 		$parserOptions = new ParserOptions();
-		$parser->startExternalParse( $wgTitle, $parserOptions, OT_HTML );
+		$parser->startExternalParse( $title, $parserOptions, OT_HTML );
 		$querystring = $parser->transformMsg( $querystring, $parserOptions );
 		return SMWQueryProcessor::getResultFromQueryString($querystring, $params, array(), $outputmode, $context);
 	}

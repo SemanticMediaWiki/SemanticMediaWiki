@@ -38,12 +38,18 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 	protected function getResultText($res,$outputmode) {
 		// handle factbox
-		global $smwgStoreActive, $wgTitle, $smwgEmbeddingList, $wgParser;
+		global $smwgStoreActive, $smwgEmbeddingList, $wgParser;
 		$old_smwgStoreActive = $smwgStoreActive;
+		$title = $wgParser->getTitle();
+		if ($title === NULL) { // try that in emergency, needed in 1.11 in Special:Ask
+			global $wgTitle;
+			$title = $wgTitle;
+		}
+
 		$smwgStoreActive = false; // no annotations stored, no factbox printed
 		if (!isset($smwgEmbeddingList)) { // used to catch recursions, sometimes more restrictive than needed, but no major use cases should be affected by that!
-			$smwgEmbeddingList = array($wgTitle);
-			$oldEmbeddingList = array($wgTitle);
+			$smwgEmbeddingList = array($title);
+			$oldEmbeddingList = array($title);
 		} else {
 			$oldEmbeddingList = array_values($smwgEmbeddingList);
 		}
@@ -93,9 +99,9 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 							}
 							if ($outputmode == SMW_OUTPUT_WIKI) {
 // 								$result .= '{{' . $articlename . '}}'; // fails in MW1.12 and later
-								$result .= '[[SMW::off]]' . $parser->preprocess('{{' . $articlename . '}}', $wgTitle, $parser_options) . '[[SMW::on]]';
+								$result .= '[[SMW::off]]' . $parser->preprocess('{{' . $articlename . '}}', $title, $parser_options) . '[[SMW::on]]';
 							} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
-								$parserOutput = $parser->parse('[[SMW::off]]{{' . $articlename . '}}[[SMW::on]]', $wgTitle, $parser_options);
+								$parserOutput = $parser->parse('[[SMW::off]]{{' . $articlename . '}}[[SMW::on]]', $title, $parser_options);
 								$result .= $parserOutput->getText();
 							}
 						} else {
