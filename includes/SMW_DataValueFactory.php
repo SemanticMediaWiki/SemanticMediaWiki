@@ -221,7 +221,9 @@ class SMWDataValueFactory {
 
 	/**
 	 * Quickly get the type value of some property without necessarily making another datavalue.
-	 * FIXME not efficient
+	 * @note The internal error type id is returned if this method failed to find the type.
+	 * @bug This method is not implemented efficiently.
+	 * @todo This method is mainly used in the processing of multi-valued properties. Revise all its uses.
 	 */
 	static public function getPropertyObjectTypeValue(Title $property) {
 		$propertyname = $property->getText();
@@ -229,7 +231,7 @@ class SMWDataValueFactory {
 		if (array_key_exists($propertyname, SMWDataValueFactory::$m_typebyproperty)) {
 			return SMWDataValueFactory::$m_typebyproperty[$propertyname];
 		} else { // no type found
-			return NULL;
+			return new SMWTypesValue('__err');
 		}
 	}
 
