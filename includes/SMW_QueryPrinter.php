@@ -84,6 +84,8 @@ abstract class SMWResultPrinter {
 	 * are directly generated and appended. For SMW_OUTPUT_FILE, only the plain generated text is returned.
 	 */
 	public function getResult($results, $params, $outputmode) {
+		$this->isHTML = false;
+		$this->hasTemplates = false;
 		$this->readParameters($params,$outputmode);
 
 		// Default output for normal printers:
