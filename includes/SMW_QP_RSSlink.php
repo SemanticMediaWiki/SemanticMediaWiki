@@ -191,14 +191,11 @@ class SMWRSSItem {
 	
 	/**
 	 * Creates the RSS output for the single item.
-	 * @bug This still clones $wgParser, change thisl
 	 */
 	public function text() {
-		global $wgServer, $wgParser, $smwgStoreActive, $smwgRSSWithPages;
-		static $parser = null;
+		global $wgServer, $wgParser, $smwgShowFactbox, $smwgRSSWithPages;
 		static $parser_options = null;
-		$smwgStoreActive = false; // make sure no Factbox is shown (RSS lacks the required styles)
-		// do not bother to restore this later, not needed in this context
+		$smwgShowFactbox = SMW_FACTBOX_HIDDEN; // just hide factbox; no need to restore this setting, I hope that nothing comes after FILE outputs
 
 		$text  = "\t<item rdf:about=\"$this->uri\">\n";
 		$text .= "\t\t<title>$this->label</title>\n";
@@ -208,12 +205,9 @@ class SMWRSSItem {
 		foreach ($this->creator as $creator)
 			$text .= "\t\t<dc:creator>" . smwfXMLContentEncode($creator) . "</dc:creator>\n";
 		if ($smwgRSSWithPages) {
-			if ($parser == null) {
-				$parser_options = new ParserOptions();
-				$parser_options->setEditSection(false);  // embedded sections should not have edit links
-				$parser = clone $wgParser;
-			}
-			$parserOutput = $parser->parse('{{' . $this->articlename . '}}', $this->title, $parser_options);
+			$parser_options = new ParserOptions();
+			$parser_options->setEditSection(false);  // embedded sections should not have edit links
+			$parserOutput = $wgParser->parse('{{' . $this->articlename . '}}', $this->title, $parser_options);
 			$content = $parserOutput->getText();
 			// Make absolute URLs out of the local ones:
 			///TODO is there maybe a way in the parser options to make the URLs absolute?
