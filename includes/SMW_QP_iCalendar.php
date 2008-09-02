@@ -25,11 +25,6 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 		}
 	}
 
-	public function getResult($results, $params, $outputmode) { // skip checks, results with 0 entries are normal
-		$this->readParameters($params,$outputmode);
-		return $this->getResultText($results,$outputmode) . $this->getErrorString($results);
-	}
-
 	public function getMimeType($res) {
 		return 'text/calendar';
 	}
@@ -114,8 +109,8 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 			}
 			$result .= "END:VCALENDAR\r\n";
 		} else { // just make link to feed
-			if ($this->mSearchlabel) {
-				$label = $this->mSearchlabel;
+			if ($this->getSearchLabel($outputmode)) {
+				$label = $this->getSearchLabel($outputmode);
 			} else {
 				wfLoadExtensionMessages('SemanticMediaWiki');
 				$label = wfMsgForContent('smw_icalendar_link');
@@ -135,6 +130,7 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 			}
 
 			$result .= $link->getText($outputmode,$this->mLinker);
+			$this->isHTML = ($outputmode == SMW_OUTPUT_HTML); // yes, our code can be viewed as HTML if requested, no more parsing needed
 		}
 
 		return $result;

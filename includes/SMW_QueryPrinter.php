@@ -15,18 +15,47 @@
 abstract class SMWResultPrinter {
 
 	protected $m_params;
+
+	/** Text to print before the output in case it is *not* empty; assumed to be wikitext.
+	  * Normally this is handled in SMWResultPrinter and can be ignored by subclasses. */
+	protected $mIntro = '';
+	
+	/** Text to use for link to further results, or empty if link should not be shown.
+	 *  Unescaped! Use SMWResultPrinter::getSearchLabel() and SMWResultPrinter::linkFurtherResults()
+	 *  instead of accessing this directly. */
+	protected $mSearchlabel = NULL;
+
+	/** Default return value for empty queries. Unescaped. Normally not used in sub-classes! */
+	protected $mDefault = '';
+
 	// parameters relevant for printers in general:
 	protected $mFormat;  // a string identifier describing a valid format
-	protected $mIntro = ''; // text to print before the output in case it is *not* empty
-	protected $mSearchlabel = NULL; // text to use for link to further results, or empty if link should not be shown
 	protected $mLinkFirst; // should article names of the first column be linked?
 	protected $mLinkOthers; // should article names of other columns (besides the first) be linked?
-	protected $mDefault = ''; // default return value for empty queries
 	protected $mShowHeaders = true; // should the headers (property names) be printed?
 	protected $mShowErrors = true; // should errors possibly be printed?
 	protected $mInline; // is this query result "inline" in some page (only then a link to unshown results is created, error handling may also be affected)
 	protected $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
-	
+
+	/**
+	 * If set, treat result as plain HTML. Can be used by printer classes if wiki mark-up is not enough.
+	 * This setting is used only after the result text was generated.
+	 * @note HTML query results cannot be used as parameters for other templates or in any other way 
+	 * in combination with other wiki text. The result will be inserted on the page literally.
+	 */
+	protected $isHTML = false;
+
+	/**
+	 * If set, take the necessary steps to make sure that things like {{templatename| ...}} are properly
+	 * processed if they occur in the result. Clearly, this is only relevant if the output is not HTML, i.e.
+	 * it is ignored if SMWResultPrinter::$is_HTML is true. This setting is used only after the result
+	 * text was generated.
+	 * @note This requires extra processing and may make the result less useful for being used as a
+	 * parameter for further parser functions. Use only if required.
+	 */
+	protected $hasTemplates = false;
+
+	private static $mRecursionDepth = 0; // increment while expanding templates inserted during printout; stop expansion at some point
 
 	/**
 	 * Constructor. The parameter $format is a format string
@@ -42,17 +71,27 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
-	 * Main entry point: takes an SMWQueryResult and parameters
-	 * given as key-value-pairs in an array, and returns the 
-	 * serialised version of the results, formatted as HTML or Wiki
-	 * or whatever is specified. Normally this is not overwritten by
-	 * subclasses.
+	 * Main entry point: takes an SMWQueryResult and parameters given as key-value-pairs in an array,
+	 * and returns the serialised version of the results, formatted as HTML or Wiki or whatever is
+	 * specified. Normally this is not overwritten by subclasses.
+	 *
+	 * If the outputmode is SMW_OUTPUT_WIKI, then the function will return something that is suitable
+	 * for being used in a MediaWiki parser function, i.e. a wikitext strong *or* an array with flags
+	 * and the string as entry 0. See Parser::setFunctionHook() for documentation on this. In all other
+	 * cases, the function returns just a string.
+	 *
+	 * For outputs SMW_OUTPUT_WIKI and SMW_OUTPUT_HTML, error messages or standard "further results" links
+	 * are directly generated and appended. For SMW_OUTPUT_FILE, only the plain generated text is returned.
 	 */
 	public function getResult($results, $params, $outputmode) {
 		$this->readParameters($params,$outputmode);
-		if ($results->getCount() == 0) { // no results, take over processing
+
+		// Default output for normal printers:
+		if ( ($outputmode != SMW_OUTPUT_FILE) && // not in FILE context,
+		     ($results->getCount() == 0) && // no results,
+		     ($this->getMimeType($results) === false)) { // normal printer -> take over processing
 			if (!$results->hasFurtherResults()) {
-				return $this->mDefault . $this->getErrorString($results);
+				return $this->escapeText($this->mDefault,$outputmode) . $this->getErrorString($results);
 			} elseif ($this->mInline) {
 				$label = $this->mSearchlabel;
 				if ($label === NULL) { //apply defaults
@@ -60,14 +99,47 @@ abstract class SMWResultPrinter {
 					$label = wfMsgForContent('smw_iq_moreresults');
 				}
 				if ($label != '') {
-					$link = $results->getQueryLink($label);
+					$link = $results->getQueryLink($this->escapeText($label));
 					$result = $link->getText($outputmode,$this->mLinker);
+				} else {
+					$result = '';
 				}
 				$result .= $this->getErrorString($results);
 				return $result;
 			}
 		}
-		return $this->getResultText($results,$outputmode) . $this->getErrorString($results);
+
+		// Get output from printer:
+		$result = $this->getResultText($results,$outputmode);
+		if ($outputmode == SMW_OUTPUT_FILE) { // just return result in file mode
+			return $result;
+		}
+		$result .= $this->getErrorString($results); // append errors
+		if ( (!$this->isHTML) && ($this->hasTemplates) ) { // preprocess embedded templates if needed
+			global $wgParser;
+			SMWResultPrinter::$mRecursionDepth++;
+			if (SMWResultPrinter::$mRecursionDepth <= 2) { // restrict recursion
+				$result = '[[SMW::off]]' . $wgParser->replaceVariables($result) . '[[SMW::on]]';
+			}
+			SMWResultPrinter::$mRecursionDepth--;
+		}
+
+		if ( ($this->isHTML) && ($outputmode == SMW_OUTPUT_WIKI) ) {
+			$result = array($result, 'isHTML' => true);
+		} elseif ( (!$this->isHTML) && ($outputmode == SMW_OUTPUT_HTML) ) {
+			global $wgParser;
+			$result = $wgParser->recursiveTagParse($result);
+		}
+
+		if ( ($this->mIntro) && ($results->getCount() > 0) ) {
+			if ($outputmode == SMW_OUTPUT_HTML) {
+				global $wgParser;
+				$result = $wgParser->recursiveTagParse($this->mIntro) . $result;
+			} else {
+				$result = $this->mIntro . $result;
+			}
+		}
+		return $result;
 	}
 
 	/**
@@ -79,15 +151,9 @@ abstract class SMWResultPrinter {
 		$this->m_params = $params;
 		if (array_key_exists('intro', $params)) {
 			$this->mIntro = str_replace('_',' ',$params['intro']);
-			if ($outputmode != SMW_OUTPUT_WIKI) {
-				$this->mIntro = htmlspecialchars($this->mIntro);
-			}
 		}
 		if (array_key_exists('searchlabel', $params)) {
 			$this->mSearchlabel = $params['searchlabel'];
-			if ($outputmode != SMW_OUTPUT_WIKI) {
-				$this->mSearchlabel = htmlspecialchars($this->mSearchlabel);
-			}
 		}
 		if (array_key_exists('link', $params)) {
 			switch (strtolower($params['link'])) {
@@ -107,9 +173,6 @@ abstract class SMWResultPrinter {
 		}
 		if (array_key_exists('default', $params)) {
 			$this->mDefault = str_replace('_',' ',$params['default']);
-			if ($outputmode != SMW_OUTPUT_WIKI) {
-				$this->mDefault = htmlspecialchars($this->mDefault);
-			}
 		}
 		if (array_key_exists('headers', $params)) {
 			if ( 'hide' == strtolower(trim($params['headers']))) {
@@ -141,10 +204,16 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
-	 * Some printers can produce not only embeddable HTML or Wikitext, but
-	 * can also produce stand-alone files. An example is RSS or iCalendar.
-	 * This function returns the mimetype string that this file would have,
-	 * or FALSE if no standalone files are produced.
+	 * Some printers do not mainly produce embeddable HTML or Wikitext, but
+	 * produce stand-alone files. An example is RSS or iCalendar. This function 
+	 * returns the mimetype string that this file would have, or FALSE if no 
+	 * standalone files are produced.
+	 *
+	 * If this function returns something other than FALSE, then the printer will
+	 * not be regarded as a printer that displays in-line results. In in-line mode,
+	 * queries to that printer will not be executed, but behave as if the user
+	 * would have set limit=-1. This saves effort for printers that do not show
+	 * results in-line anyway, even if they would be part of the result.
 	 */
 	public function getMimeType($res) {
 		return false;
@@ -156,6 +225,8 @@ abstract class SMWResultPrinter {
 	 * This function returns a filename that is to be sent to the caller
 	 * in such a case (the default filename is created by browsers from the
 	 * URL, and it is often not pretty).
+	 *
+	 * See also SMWResultPrinter::getMimeType()
 	 */
 	public function getFileName($res) {
 		return false;
@@ -171,14 +242,40 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
-	 * Change if errors should be shown-
+	 * Set whether errors should be shown. By default they are.
 	 */
 	public function setShowErrors($show) {
 		$this->mShowErrors = $show;
 	}
 
 	/**
-	 * @deprecated use SMWResultPrinter::getResult() in SMW >1.0
+	 * If $outputmode is SMW_OUTPUT_HTML, escape special characters occuring in the
+	 * given text. Otherwise return text as is.
+	 */
+	protected function escapeText($text, $outputmode) {
+		return ($outputmode == SMW_OUTPUT_HTML)?htmlspecialchars($text):$text;
+	}
+
+	/**
+	 * Get the string the user specified as a text for the "further results" link,
+	 * properly escaped for the current output mode.
+	 */
+	protected function getSearchLabel($outputmode) {
+		return $this->escapeText($this->mSearchlabel, $outputmode);
+	}
+
+	/**
+	 * Check whether a "further results" link would normally be generated for this
+	 * result set with the given parameters. Individual result printers may decide to
+	 * create or hide such a link independent of that, but this is the default.
+	 */
+	protected function linkFurtherResults($results) {
+		return ($this->mInline && $results->hasFurtherResults() && ($this->mSearchlabel !== ''));
+	}
+
+
+	/**
+	 * @deprecated Use SMWResultPrinter::getResult() in SMW >1.0.  This method will last be available in SMW 1.3 and vanish thereafter.
 	 */
 	public function getResultHTML($results, $params) {
 		return $this->getResult($results,$params,SMW_OUTPUT_HTML);
@@ -186,7 +283,7 @@ abstract class SMWResultPrinter {
 
 	/**
 	 * Return HTML version of serialised results.
-	 * @deprecated use SMWResultPrinter::getResultText() since SMW >1.0
+	 * @deprecated Use SMWResultPrinter::getResultText() since SMW >1.0.  This method will last be available in SMW 1.3 and vanish thereafter.
 	 */
 	protected function getHTML($res) {
 		return $this->getResultText($res,SMW_OUTPUT_HTML);
@@ -195,7 +292,7 @@ abstract class SMWResultPrinter {
 	/**
 	 * Generate a link to further results of the given query, using syntactic encoding
 	 * as appropriate for $outputmode.
-	 * @deprecated Since SMW>1.1 this function no longer does anything interesting. Intelligence moved to SMWInfolink. Directly use the code of this method instead of calling it!
+	 * @deprecated Since SMW>1.1 this function no longer does anything interesting. Intelligence moved to SMWInfolink. Directly use the code of this method instead of calling it!  This method will last be available in SMW 1.3 and vanish thereafter.
 	 */
 	protected function getFurtherResultsLink($outputmode, $res, $label) {
 		$link = $res->getQueryLink($label);

@@ -27,9 +27,6 @@ class SMWListResultPrinter extends SMWResultPrinter {
 
 		if (array_key_exists('sep', $params)) {
 			$this->mSep = str_replace('_',' ',$params['sep']);
-			if ($outputmode != SMW_OUTPUT_WIKI) {
-				$this->mSep = htmlspecialchars($this->mSep);
-			}
 		}
 		if (array_key_exists('template', $params)) {
 			$this->mTemplate = trim($params['template']);
@@ -39,6 +36,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		}
 	}
 
+
 	protected function getResultText($res,$outputmode) {
 		global $smwgStoreActive, $wgParser;
 		$parsetitle = $wgParser->getTitle();
@@ -47,10 +45,9 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$parsetitle = $wgTitle;
 		}
 
-		// print header
-		$result = $this->mIntro;
+		// Determine mark-up strings used around list items:
 		if ( ('ul' == $this->mFormat) || ('ol' == $this->mFormat) ) {
-			$result .= '<' . $this->mFormat . '>';
+			$header = '<' . $this->mFormat . '>';
 			$footer = '</' . $this->mFormat . '>';
 			$rowstart = "\n\t<li>";
 			$rowend = '</li>';
@@ -59,38 +56,36 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			if ($this->mSep != '') {
 				$listsep = $this->mSep;
 				$finallistsep = $listsep;
-			} else {  // default list ", , , and, "
+			} else {  // default list ", , , and "
 				wfLoadExtensionMessages('SemanticMediaWiki');
 				$listsep = ', ';
 				$finallistsep = wfMsgForContent('smw_finallistconjunct') . ' ';
 			}
+			$header = '';
 			$footer = '';
 			$rowstart = '';
 			$rowend = '';
 			$plainlist = true;
 		}
 
-		if ($this->mTemplate != '') {
-			$parser_options = new ParserOptions();
-			$parser_options->setEditSection(false);  // embedded sections should not have edit links
-			$parser = clone $wgParser;
-			$usetemplate = true;
-		} else {
-			$usetemplate = false;
-		}
+		// Print header:
+		$result = '';
+		$result .= $header;
 
-		// print all result rows
+		// Print all result rows:
 		$first_row = true;
 		$row = $res->getNext();
 		while ( $row !== false ) {
 			$nextrow = $res->getNext(); // look ahead
 			if ( !$first_row && $plainlist )  {
-				if ($nextrow !== false) $result .= $listsep; // the comma between "rows" other than the last one
-				else $result .= $finallistsep;
-			} else $result .= $rowstart;
+				$result .=  ($nextrow !== false)?$listsep:$finallistsep; // the comma between "rows" other than the last one
+			} else {
+				$result .= $rowstart;
+			}
 
 			$first_col = true;
-			if ($usetemplate) { // build template code
+			if ($this->mTemplate != '') { // build template code
+				$this->hasTemplates = true;
 				$wikitext = ($this->mUserParam)?"|userparam=$this->mUserParam":'';
 				$i = 1; // explicitly number parameters for more robust parsing (values may contain "=")
 				foreach ($row as $field) {
@@ -102,14 +97,14 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					}
 					$first_col = false;
 				}
-				$result .= '[[SMW::off]]{{' . $this->mTemplate . $wikitext . '}}[[SMW::on]]';
+				$result .= '{{' . $this->mTemplate . $wikitext . '}}';
 				//str_replace('|', '&#x007C;', // encode '|' for use in templates (templates fail otherwise) -- this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
 			} else {  // build simple list
 				$first_col = true;
 				$found_values = false; // has anything but the first column been printed?
 				foreach ($row as $field) {
 					$first_value = true;
-					while ( ($text = $field->getNextText($outputmode, $this->getLinker($first_col))) !== false ) {
+					while ( ($text = $field->getNextText(SMW_OUTPUT_WIKI, $this->getLinker($first_col))) !== false ) {
 						if (!$first_col && !$found_values) { // first values after first column
 							$result .= ' (';
 							$found_values = true;
@@ -120,7 +115,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 						if ($first_value) { // first value in any column, print header
 							$first_value = false;
 							if ( $this->mShowHeaders && ('' != $field->getPrintRequest()->getLabel()) ) {
-								$result .= $field->getPrintRequest()->getText($outputmode, $this->mLinker) . ' ';
+								$result .= $field->getPrintRequest()->getText(SMW_OUTPUT_WIKI, $this->mLinker) . ' ';
 							}
 						}
 						$result .= $text; // actual output value
@@ -134,34 +129,13 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$row = $nextrow;
 		}
 
-		if ($usetemplate) {
-			$old_smwgStoreActive = $smwgStoreActive;
-			$smwgStoreActive = false; // no annotations stored, no factbox printed
-			if ($outputmode == SMW_OUTPUT_WIKI) {
-				if ( method_exists($parser, 'getPreprocessor') ) {
-					$frame = $parser->getPreprocessor()->newFrame();
-					$dom = $parser->preprocessToDom( $result );
-					$result = $frame->expand( $dom );
-				} else {
-					$result = $parser->preprocess($result, $parsetitle, $parser_options);
-				}
-			} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
-				$parserOutput = $parser->parse($result, $parsetitle, $parser_options);
-				$result = $parserOutput->getText();
-			}
-			$smwgStoreActive = $old_smwgStoreActive;
-		}
-
-		if ( $this->mInline && $res->hasFurtherResults() && ($this->mSearchlabel !== '') &&
-		     ( ('ol' != $this->mFormat) || ($this->mSearchlabel) ) ) {
+		// Make label for finding further results
+		if ( $this->linkFurtherResults($res) && ( ('ol' != $this->mFormat) || ($this->getSearchLabel(SMW_OUTPUT_WIKI)) ) ) {
 			$link = $res->getQueryLink();
-			if ($this->mSearchlabel) {
-				$link->setCaption($this->mSearchlabel);
+			if ($this->getSearchLabel(SMW_OUTPUT_WIKI)) {
+				$link->setCaption($this->getSearchLabel(SMW_OUTPUT_WIKI));
 			}
-			// not needed for 'ul' (see below):
-// 			if ($this->mSep != '') {
-// 				$link->setParameter($this->mSep,'sep');
-// 			}
+			/// NOTE: passing the parameter sep is not needed, since we use format=ul
 
 			$link->setParameter('ul','format'); // always use ul, other formats hardly work as search page output
 			if ($this->mTemplate != '') {
@@ -170,10 +144,10 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					$link->setParameter($this->m_params['link'],'link');
 				}
 			}
-			$result .= $rowstart . $link->getText($outputmode,$this->mLinker) . $rowend;
+			$result .= $rowstart . $link->getText(SMW_OUTPUT_WIKI,$this->mLinker) . $rowend;
 		}
 
-		// print footer
+		// Print footer:
 		$result .= $footer;
 		return $result;
 	}

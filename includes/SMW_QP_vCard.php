@@ -16,18 +16,13 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 	protected $m_title = '';
 	protected $m_description = '';
 
-	public function getResult($results, $params, $outputmode) { // skip checks, results with 0 entries are normal
-		$this->readParameters($params,$outputmode);
-		return $this->getResultText($results,$outputmode) . $this->getErrorString($results);
-	}
-
 	public function getMimeType($res) {
 		return 'text/x-vcard';
 	}
 
 	public function getFileName($res) {
-		if ($this->mSearchlabel != '') {
-			return str_replace(' ', '_',$this->mSearchlabel) . '.vcf';
+		if ($this->getSearchLabel(SMW_OUTPUT_WIKI) != '') {
+			return str_replace(' ', '_',$this->getSearchLabel(SMW_OUTPUT_WIKI)) . '.vcf';
 		} else {
 			return 'vCard.vcf';
 		}
@@ -158,16 +153,16 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 				$result .= $item->text();
 			}
 		} else { // just make link to vcard
-			if ($this->mSearchlabel) {
-				$label = $this->mSearchlabel;
+			if ($this->getSearchLabel($outputmode)) {
+				$label = $this->getSearchLabel($outputmode);
 			} else {
 				wfLoadExtensionMessages('SemanticMediaWiki');
 				$label = wfMsgForContent('smw_vcard_link');
 			}
 			$link = $res->getQueryLink($label);
 			$link->setParameter('vcard','format');
-			if ($this->mSearchlabel != '') {
-				$link->setParameter($this->mSearchlabel,'searchlabel');
+			if ($this->getSearchLabel(SMW_OUTPUT_WIKI) != '') {
+				$link->setParameter($this->getSearchLabel(SMW_OUTPUT_WIKI),'searchlabel');
 			}
 			if (array_key_exists('limit', $this->m_params)) {
 				$link->setParameter($this->m_params['limit'],'limit');
@@ -175,6 +170,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 				$link->setParameter(20,'limit');
 			}
 			$result .= $link->getText($outputmode,$this->mLinker);
+			$this->isHTML = ($outputmode == SMW_OUTPUT_HTML); // yes, our code can be viewed as HTML if requested, no more parsing needed
 		}
 		return $result;
 	}

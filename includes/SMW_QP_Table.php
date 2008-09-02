@@ -21,8 +21,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		if ('broadtable' == $this->mFormat)
 			$widthpara = ' width="100%"';
 		else $widthpara = '';
-		$result = $this->mIntro .
-		          "<table class=\"smwtable\"$widthpara id=\"querytable" . $smwgIQRunningNumber . "\">\n";
+		$result = "<table class=\"smwtable\"$widthpara id=\"querytable" . $smwgIQRunningNumber . "\">\n";
 		if ($this->mShowHeaders) { // building headers
 			$result .= "\t<tr>\n";
 			foreach ($res->getPrintRequests() as $pr) {
@@ -61,14 +60,15 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		}
 
 		// print further results footer
-		if ( $this->mInline && $res->hasFurtherResults() && $this->mSearchlabel !== '') {
+		if ( $this->linkFurtherResults($res) ) {
 			$link = $res->getQueryLink();
-			if ($this->mSearchlabel) {
-				$link->setCaption($this->mSearchlabel);
+			if ($this->getSearchLabel($outputmode)) {
+				$link->setCaption($this->getSearchLabel($outputmode));
 			}
 			$result .= "\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . $res->getColumnCount() . '"> ' . $link->getText($outputmode,$this->mLinker) . "</td></tr>\n";
 		}
 		$result .= "</table>\n"; // print footer
+		$this->isHTML = ($outputmode == SMW_OUTPUT_HTML); // yes, our code can be viewed as HTML if requested, no more parsing needed
 		return $result;
 	}
 

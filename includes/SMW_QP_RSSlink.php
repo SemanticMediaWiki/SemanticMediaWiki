@@ -7,11 +7,11 @@
 
 /**
  * Printer for creating a link to RSS feeds.
+ *
  * @author Denny Vrandecic
  * @author Markus Krötzsch
  * @note AUTOLOADED
  */
-
 class SMWRSSResultPrinter extends SMWResultPrinter {
 	protected $m_title = '';
 	protected $m_description = '';
@@ -24,11 +24,6 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		if (array_key_exists('rssdescription', $this->m_params)) {
 			$this->m_description = trim($this->m_params['rssdescription']);
 		}
-	}
-
-	public function getResult($results, $params, $outputmode) { // skip checks, results with 0 entries are normal
-		$this->readParameters($params,$outputmode);
-		return $this->getResultText($results,$outputmode) . $this->getErrorString($results);
 	}
 
 	public function getMimeType($res) {
@@ -101,8 +96,8 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			}
 			$result .= "</rdf:RDF>";
 		} else { // just make link to feed
-			if ($this->mSearchlabel) {
-				$label = $this->mSearchlabel;
+			if ($this->getSearchLabel($outputmode)) {
+				$label = $this->getSearchLabel($outputmode);
 			} else {
 				$label = wfMsgForContent('smw_rss_link');
 			}
@@ -128,7 +123,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			}
 
 			$result .= $link->getText($outputmode,$this->mLinker);
-
+			$this->isHTML = ($outputmode == SMW_OUTPUT_HTML); // yes, our code can be viewed as HTML if requested, no more parsing needed
 			smwfRequireHeadItem('rss' . $smwgIQRunningNumber, '<link rel="alternate" type="application/rss+xml" title="' . $this->m_title . '" href="' . $link->getURL() . '" />');
 		}
 
@@ -196,6 +191,7 @@ class SMWRSSItem {
 	
 	/**
 	 * Creates the RSS output for the single item.
+	 * @bug This still clones $wgParser, change thisl
 	 */
 	public function text() {
 		global $wgServer, $wgParser, $smwgStoreActive, $smwgRSSWithPages;

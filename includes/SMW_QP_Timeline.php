@@ -190,6 +190,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 
 		// print footer
 		$result .= "</div>";
+		$this->isHTML = ($outputmode == SMW_OUTPUT_HTML); // yes, our code can be viewed as HTML if requested, no more parsing needed
 		return $result;
 	}
 }
