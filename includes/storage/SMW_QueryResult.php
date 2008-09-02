@@ -45,7 +45,7 @@ class SMWQueryResult {
 	/**
 	 * Checks whether it conforms to the given schema of print requests, adds the
 	 * row to the result, and returns true. Otherwise returns false.
-	 * TODO: should we just skip the checks and trust our callers?
+	 * @todo Should we just skip the checks and trust our callers?
 	 */
 	public function addRow($row) {
 		reset($row);
@@ -177,7 +177,7 @@ class SMWQueryResult {
 	 * Return URL of a page that displays those search results
 	 * (and enables browsing results, and is accessible even without
 	 * JavaScript enabled browsers).
-	 * @deprecated use SMWQueryResult::getQueryLink() in SMW >1.1
+	 * @deprecated Use SMWQueryResult::getQueryLink() in SMW >1.1. This method will last be available in SMW 1.3 and vanish thereafter.
 	 */
 	public function getQueryURL() {
 		$title = Title::makeTitle(NS_SPECIAL, 'ask');
@@ -206,7 +206,7 @@ class SMWQueryResult {
 	 * Return titlestring of a page that displays those search results
 	 * (and enables browsing results, and is accessible even without
 	 * JavaScript enabled browsers).
-	 * @deprecated use SMWQueryResult::getQueryLink() in SMW >1.1
+	 * @deprecated use SMWQueryResult::getQueryLink() in SMW >1.1. This method will last be available in SMW 1.3 and vanish thereafter.
 	 */
 	public function getQueryTitle($prefixed = true) {
 		if ($prefixed) {
@@ -243,8 +243,7 @@ class SMWQueryResult {
 
 /**
  * Container for the contents of a single result field of a query result,
- * i.e. basically an array of Titles or SMWDataValues with some additional
- * parameters.
+ * i.e. basically an array of SMWDataValues with some additional parameters.
  */
 class SMWResultArray {
 	protected $printrequest;
@@ -273,49 +272,6 @@ class SMWResultArray {
 		$result = current($this->content);
 		next($this->content);
 		return $result;
-	}
-
-	/**
-	 * Return the main text representation of the next result object 
-	 * (Title or SMWDataValue) as HTML.
-	 *
-	 * The parameter $linker controls linking of title values and should
-	 * be some Linker object (or NULL for no linking).
-	 * @deprecated Use SMWResultArray::getNextText()
-	 */
-	public function getNextHTMLText($linker = NULL) {
-		$object = current($this->content);
-		next($this->content);
-		if ($object instanceof SMWDataValue) { //print data values
-			if ($object->getTypeID() == '_wpg') { // prefer "long" text for page-values
-				return $object->getLongHTMLText($linker);
-			} else {
-				return $object->getShortHTMLText($linker);
-			}
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Return the main text representation of the next result object 
-	 * (Title or SMWDataValue) as Wikitext. The parameter $linked controls 
-	 * linking of title values and should be non-NULL and non-false if this 
-	 * is desired.
-	 * @deprecated Use SMWResultArray::getNextText()
-	 */
-	public function getNextWikiText($linked = NULL) {
-		$object = current($this->content);
-		next($this->content);
-		if ($object instanceof SMWDataValue) { //print data values
-			if ($object->getTypeID() == '_wpg') { // prefer "long" text for page-values
-				return $object->getLongWikiText($linked);
-			} else {
-				return $object->getShortWikiText($linked);
-			}
-		} else {
-			return false;
-		}
 	}
 
 	/**
@@ -356,5 +312,49 @@ class SMWResultArray {
 	public function getPrintRequest() {
 		return $this->printrequest;
 	}
+
+	/**
+	 * Return the main text representation of the next result object 
+	 * (Title or SMWDataValue) as HTML.
+	 *
+	 * The parameter $linker controls linking of title values and should
+	 * be some Linker object (or NULL for no linking).
+	 * @deprecated Use SMWResultArray::getNextText().  This method will last be available in SMW 1.3 and vanish thereafter.
+	 */
+	public function getNextHTMLText($linker = NULL) {
+		$object = current($this->content);
+		next($this->content);
+		if ($object instanceof SMWDataValue) { //print data values
+			if ($object->getTypeID() == '_wpg') { // prefer "long" text for page-values
+				return $object->getLongHTMLText($linker);
+			} else {
+				return $object->getShortHTMLText($linker);
+			}
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Return the main text representation of the next result object 
+	 * (Title or SMWDataValue) as Wikitext. The parameter $linked controls 
+	 * linking of title values and should be non-NULL and non-false if this 
+	 * is desired.
+	 * @deprecated Use SMWResultArray::getNextText().  This method will last be available in SMW 1.3 and vanish thereafter.
+	 */
+	public function getNextWikiText($linked = NULL) {
+		$object = current($this->content);
+		next($this->content);
+		if ($object instanceof SMWDataValue) { //print data values
+			if ($object->getTypeID() == '_wpg') { // prefer "long" text for page-values
+				return $object->getLongWikiText($linked);
+			} else {
+				return $object->getShortWikiText($linked);
+			}
+		} else {
+			return false;
+		}
+	}
+
 }
 
