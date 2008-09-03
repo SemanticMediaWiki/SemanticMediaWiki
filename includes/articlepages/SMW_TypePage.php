@@ -31,7 +31,6 @@ class SMWTypePage extends SMWOrderedListPage {
 	 * article that indicates further results).
 	 */
 	protected function doQuery() {
-		global $wgContLang;
 		$store = smwfGetStore();
 		$options = new SMWRequestOptions();
 		$options->limit = $this->limit + 1;
