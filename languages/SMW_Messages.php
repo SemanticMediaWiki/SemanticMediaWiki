@@ -434,6 +434,8 @@ $messages['ar'] = array(
 	'smw_attributearticlecount' => 'عرض $1 صفحة تستخدم هذه الخاصية.',
 	'smw_subproperty_header' => 'خواص فرعية',
 	'smw_subpropertyarticlecount' => 'هذه الخاصية تمتلك ال$1 خاصية فرعية التالية.',
+	'smw_concept_header' => 'صفحات المبدأ "$1"',
+	'smw_conceptarticlecount' => 'عرض $1 صفحة تنتمي إلى هذا المبدأ.',
 	'smw_rss_description' => '$1 تلقيم آر إس إس',
 	'specialpages-group-smw_group' => 'سيمانتيك ميدياويكي',
 	'exportrdf' => 'آر دی‌ إف إلى صفحات تصدير',
@@ -503,6 +505,8 @@ $messages['ar'] = array(
 	'smw_sbv_noproperty' => '<p>من فضلك أدخل خاصية.</p>',
 	'smw_sbv_novalue' => '<p>من فضلك أدخل قيمة صحيحة للخاصية، أو انظر كل قيم الخصائص ل"$1"</p>',
 	'smw_sbv_displayresult' => 'قائمة بكل الصفحات التي بها الخاصية "$1" بالقيمة "$2"',
+	'smw_sbv_displayresultfuzzy' => 'قائمة بكل الصفحات التي لديها الخاصية "$1" بالقيمة "$2".
+بما أنه كانت هناك فقط عدة نتائج، فالقيم المقاربة معروضة أيضا.',
 	'smw_sbv_property' => 'خاصية',
 	'smw_sbv_value' => 'قيمة',
 	'smw_sbv_submit' => 'إيجاد نتائج',
@@ -524,6 +528,13 @@ $messages['ar'] = array(
 	'smw_result_results' => 'النتائج',
 	'smw_result_noresults' => 'عذرا، لا توجد نتائج.',
 	'smwadmin' => 'وظائف إدارية لسيمانتيك ميدياويكي',
+);
+
+/** Egyptian Spoken Arabic (مصرى)
+ * @author Meno25
+ */
+$messages['arz'] = array(
+	'specialpages-group-smw_group' => 'سيمانتيك ميدياويكى',
 );
 
 /** Bulgarian (Български)
@@ -818,8 +829,8 @@ $messages['de'] = array(
 	'smw_attributearticlecount' => 'Es werden $1 Seiten angezeigt, die dieses Attribut verwenden:',
 	'smw_subproperty_header' => 'Unterattribute',
 	'smw_subpropertyarticlecount' => 'Dieses Attribut hat folgende $1 Unterattribute:',
-	'smw_concept_header'          => 'Seiten des Konzepts „$1“',
-	'smw_conceptarticlecount'     => 'Es werden $1 Seiten angezeigt, die zu diesem Konzept gehören:',
+	'smw_concept_header' => 'Seiten des Konzepts „$1“',
+	'smw_conceptarticlecount' => 'Es werden $1 Seiten angezeigt, die zu diesem Konzept gehören:',
 	'smw_rss_description' => 'RSS-Feed von $1',
 	'exportrdf' => 'Seite als RDF exportieren',
 	'smw_exportrdf_docu' => '<p>Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte gib die Namen der gewünschten Seiten <i>zeilenweise</i> ein.</p>',
@@ -1185,11 +1196,13 @@ $messages['fr'] = array(
 	'smw_devel_warning' => "Cette fonction est encore en développement et n'est peut-être pas encore opérationnelle. Il est peut-être judicieux de faire une sauvegarde du contenu du wiki avant toute utilisation de cette fonction.",
 	'smw_notemplategiven' => 'Veuillez fournir une valeur pour le paramètre « modèle » pour ce format de requête afin de travailler.',
 	'smw_type_header' => 'Attributs de type “$1”',
-	'smw_typearticlecount' => 'Afficher les attributs de $1 en utilisant ce type.',
+	'smw_typearticlecount' => 'Afficher les attributs de $1 utilisant ce type.',
 	'smw_attribute_header' => "Pages utilisant l'attribut “$1”",
 	'smw_attributearticlecount' => 'Afficher $1 pages utilisant cet attribut.',
 	'smw_subproperty_header' => 'Sous-propriétés',
 	'smw_subpropertyarticlecount' => 'Cette propriété dispose de $1 sous-propriétés suivantes.',
+	'smw_concept_header' => 'Page du concept « $1 »',
+	'smw_conceptarticlecount' => 'Afficher $1 pages reposant sur ce concept',
 	'smw_rss_description' => 'fil RSS $1',
 	'specialpages-group-smw_group' => 'MediaWiki sémantique',
 	'exportrdf' => "Exporter l'article en RDF",
@@ -1252,6 +1265,7 @@ Certaines des propriétés existantes peuvent faire être <a href="$6">inutilis�
 	'smw_sbv_noproperty' => '<p>Veuillez entrer un attribut.</p>',
 	'smw_sbv_novalue' => '<p>Veuillez entrer une valeur ou consulter toutes les valeurs des attributs pour $1.</p>',
 	'smw_sbv_displayresult' => 'Liste de toutes les pages qui ont un attribut $1 avec la valeur $2.',
+	'smw_sbv_displayresultfuzzy' => 'Une liste de toutes les pages qui ont la propriété « $1 » avec la valeur « $2 ». Depuis il y a seulement quelques résultats, les valeurs proches sont aussi affichées.',
 	'smw_sbv_property' => 'Propriété',
 	'smw_sbv_value' => 'Valeur',
 	'smw_sbv_submit' => 'Trouver des résultats',
@@ -1357,6 +1371,9 @@ Faga unha copia de seguridade dos seus datos antes de usala.',
 	'smw_attribute_header' => 'Páxinas que usan a propiedade “$1”',
 	'smw_attributearticlecount' => 'Amosando $1 páxinas que usan esta propiedade.',
 	'smw_subproperty_header' => 'Subpropiedades',
+	'smw_subpropertyarticlecount' => 'Esta propiedade ten as seguintes $1 subpropiedades.',
+	'smw_concept_header' => 'Páxinas do concepto "$1"',
+	'smw_conceptarticlecount' => 'Amosando $1 páxinas que pertencen a ese concepto.',
 	'exportrdf' => 'Exportar páxinas a RDF',
 	'smw_exportrdf_docu' => '<p>Esta páxina permítelle obter datos dunha páxina en formato RDF.
 Para exportar páxinas, insira os títulos na caixa de embaixo (un título por liña).</p>',
@@ -1430,6 +1447,9 @@ O númeor de propiedades incorrectas está dado entre parénteses.',
 	'browse' => 'Navegar polo wiki',
 	'smw_browse_article' => 'Insira o nome da páxina para comezar o formulario de procura.',
 	'smw_browse_go' => 'Ir',
+	'smw_browse_show_incoming' => 'amosar as propiedades que ligan cara a aquí',
+	'smw_browse_hide_incoming' => 'agochar as propiedades que ligan cara a aquí',
+	'smw_inverse_label_default' => '$1 de',
 	'pageproperty' => 'Procura de páxinas de propiedades',
 	'smw_pp_docu' => 'Procurar por todos os filtros dunha propiedade nunha páxina dada.
 Por favor, insira ambas, a páxina e mais a propiedade.',
@@ -1579,6 +1599,7 @@ $messages['ia'] = array(
 
 /** Italian (Italiano)
  * @author Cruccone
+ * @author Darth Kule
  * @author Davide Eynard, David Laniado
  * @author Pietrodn
  */
@@ -2346,11 +2367,11 @@ $messages['nl'] = array(
 	'smw_concept_description' => 'Beschrijving van het concept "$1"',
 	'smw_no_concept_namespace' => "Concepten kunnen alleen gedefinieerd worden op pagina's in de naamruimte Concept:",
 	'smw_multiple_concepts' => 'Iedere conceptpagina kan maar één conceptdefinitie bevatten.',
-	'smw_baduri' => "Sorry, URI's uit de reeks “$1” zijn hier niet beschikbaar.",
+	'smw_baduri' => "URI's uit de reeks “$1” zijn hier niet beschikbaar.",
 	'smw_csv_link' => 'CSV',
 	'smw_icalendar_link' => 'iCalendar',
 	'smw_vcard_link' => 'vCard',
-	'smw_iq_disabled' => 'Sorry. Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.',
+	'smw_iq_disabled' => 'Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.',
 	'smw_iq_moreresults' => '… overige resultaten',
 	'smw_iq_nojs' => 'Gebruiker een browser waarin JavaScript is ingeschakeld om dit element te zien.',
 	'smw_iq_altresults' => 'De resultatenlijst direct bekijken',
@@ -2393,7 +2414,7 @@ $messages['nl'] = array(
 	'smw_valuesubquery' => 'Subzoekopdrachten worden niet ondersteund voor waarden van eigenschap “$1”.',
 	'smw_overprintoutlimit' => 'De zoekopdracht bevat te veel printoutverzoeken.',
 	'smw_badprintout' => 'Er is een print statement in de zoekopdracht onjuist geformuleerd.',
-	'smw_badtitle' => 'Sorry, maar “$1” is geen geldige paginanaam.',
+	'smw_badtitle' => '“$1” is geen geldige paginanaam.',
 	'smw_badqueryatom' => 'Een onderdeel “<nowiki>[[…]]</nowiki>” van de zoekopdracht is niet begrepen.',
 	'smw_propvalueproblem' => 'De waarde van eigenschap “$1” is niet begrepen.',
 	'smw_noqueryfeature' => 'Een bepaalde vraagoptie wordt niet ondersteund in deze wiki en een deel van de zoekopdracht is genegeerd ($1).',
@@ -2401,13 +2422,15 @@ $messages['nl'] = array(
 	'smw_nodisjunctions' => 'Scheidingen in zoekopdrachten worden niet ondersteund in deze wiki en er is een deel van de zoekopdracht genegeerd ($1).',
 	'smw_querytoolarge' => 'De volgende zoekopdrachtcondities zijn niet in acht genomen vanwege beperkingen in de grootte of diepte van zoekopdrachten in deze wiki: $1.',
 	'smw_devel_warning' => 'Deze functie wordt op het moment ontwikkeld en is wellicht niet volledig functioneel. Maak een back-up voordat u deze functie gebruikt.',
-	'smw_notemplategiven' => 'Geef alstublieft een waarde voor de parameter "sjabloon" op om deze zoekopdracht te laten werken.',
+	'smw_notemplategiven' => 'Geef een waarde voor de parameter "sjabloon" op om deze zoekopdracht te laten werken.',
 	'smw_type_header' => 'Eigenschappen voor type “$1”',
 	'smw_typearticlecount' => 'Er zijn $1 eigenschappen die gebruik maken van dit type.',
 	'smw_attribute_header' => "Pagina's die de eigenschap “$1” gebruiken",
 	'smw_attributearticlecount' => "Er zijn $1 pagina's die deze eigenschap gebruiken.",
 	'smw_subproperty_header' => 'Subeigenschappen',
 	'smw_subpropertyarticlecount' => 'Deze eigenschap heeft de volgende $1 subeigenschappen.',
+	'smw_concept_header' => 'Pagina\'s met het concept "$1"',
+	'smw_conceptarticlecount' => "$1 {{PLURAL:$1|pagina|pagina's}} die bij dat concept {{PLURAL:$1|hoort|horen}} worden weergegeven.",
 	'exportrdf' => "Export pagina's naar RDF",
 	'smw_exportrdf_docu' => "<p>Deze pagina maakt het mogelijk gegevens te verkrijgen van een pagina in RDF-formaat. Geef titels in het onderstaande invoerveld in om pagina's te exporteren. Iedere pagina op een eigen regel.</p>",
 	'smw_exportrdf_recursive' => "Exporteer alle gerelateerde pagina's recursief. Het resultaat kan groot zijn!",
@@ -2432,7 +2455,7 @@ $messages['nl'] = array(
 	'smw_oi_action' => 'Importeer',
 	'smw_oi_return' => 'Keer terug naar <a href="$1">Special:OntologyImport</a>.',
 	'smw_oi_noontology' => 'Geen ontologie opgegeven, of de ontologie kon niet geladen worden.',
-	'smw_oi_select' => 'Selecteer alstublieft de te importeren declaraties en klik dan op de knop Importeer.',
+	'smw_oi_select' => 'Selecteer de te importeren declaraties en klik dan op de knop Importeer.',
 	'smw_oi_textforall' => 'Koptekst voor alle imports (mag leeg blijven):',
 	'smw_oi_selectall' => 'Selecteer of deselecteer alle declaraties',
 	'smw_oi_statementsabout' => 'Declaraties over',
@@ -2463,9 +2486,11 @@ $messages['nl'] = array(
 	'smw_ask_printhead' => 'Additionele afdrukken (optioneel)',
 	'searchbyproperty' => 'Zoek op eigenschap',
 	'smw_sbv_docu' => "<p>Zoek naar alle pagina's die een bepaalde eigenschap en waarde hebben.</p>",
-	'smw_sbv_noproperty' => '<p>Voer alstublieft een eigenschap in.</p>',
-	'smw_sbv_novalue' => '<p>Voer alstublieft een geldige waarde in voor de eigenschap, of bekijk alle waarden voor eigenschap “$1.”</p>',
+	'smw_sbv_noproperty' => '<p>Voer een eigenschap in.</p>',
+	'smw_sbv_novalue' => '<p>Voer een geldige waarde in voor de eigenschap, of bekijk alle waarden voor eigenschap “$1.”</p>',
 	'smw_sbv_displayresult' => "Een lijst met alle pagina's waarop eigenschap “$1” de waarde “$2” heeft",
+	'smw_sbv_displayresultfuzzy' => 'Een lijst van alle pagina\'s met de eigenschap "$1" met waarde "$2".
+Omdat er een beperkt aantal resultaten is, worden ook nabije waarden weergegeven.',
 	'smw_sbv_property' => 'Eigenschap',
 	'smw_sbv_value' => 'Waarde',
 	'smw_sbv_submit' => 'Zoek resultaten',
@@ -2477,14 +2502,15 @@ $messages['nl'] = array(
 	'smw_inverse_label_default' => '$1 van',
 	'smw_inverse_label_property' => 'Tegenovergesteld eigenschapslabel',
 	'pageproperty' => 'Eigenschap pagina zoeken',
-	'smw_pp_docu' => 'Zoek naar alle fillers voor een eigenschap op een gegeven pagina. Voer alstublieft zowel een pagina als een eigenschap in.',
+	'smw_pp_docu' => 'Zoek naar alle fillers voor een eigenschap op een gegeven pagina.
+Voer zowel een pagina als een eigenschap in.',
 	'smw_pp_from' => 'Van pagina',
 	'smw_pp_type' => 'Eigenschap',
 	'smw_pp_submit' => 'Zoek resultaten',
 	'smw_result_prev' => 'Vorige',
 	'smw_result_next' => 'Volgende',
 	'smw_result_results' => 'Resultaten',
-	'smw_result_noresults' => 'Sorry, geen resultaten.',
+	'smw_result_noresults' => 'Geen resultaten.',
 	'smwadmin' => 'Administratieve functies voor Semantic MediaWiki',
 );
 
@@ -3774,6 +3800,7 @@ $messages['vo'] = array(
 	'smw_abb_east' => 'L',
 	'smw_abb_south' => 'S',
 	'smw_abb_west' => 'V',
+	'smw_sbv_value' => 'Völad',
 );
 
 /** ‪中文(中国大陆)‬ (‪中文(中国大陆)‬)
