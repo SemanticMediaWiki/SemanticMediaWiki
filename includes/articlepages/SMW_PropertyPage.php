@@ -18,7 +18,6 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 	protected $special_prop; // code number of special property, false if not.
 	private $subproperties;  // list of sub-properties of this property
-	private $subprop_start_char;  // array of first characters of printed articles, used for making subheaders
 
 	/**
 	 * Use small $limit (property pages might become large)
@@ -33,7 +32,6 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	protected function clearPageState() {
 		parent::clearPageState();
 		$this->subproperties = array();
-		$this->subprop_start_char = array();
 	}
 
 	/**
@@ -70,18 +68,11 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$this->articles = array_reverse($this->articles);
 		}
 
-		foreach ($this->articles as $dv) {
-			$this->articles_start_char[] = $wgContLang->convert( $wgContLang->firstChar( $dv->getSortkey() ) );
-		}
-
 		// retrieve all subproperties of this property
 		$s_options = new SMWRequestOptions();
 		$s_options->sort = true;
 		$s_options->ascending = true;
 		$this->subproperties = $store->getSpecialSubjects(SMW_SP_SUBPROPERTY_OF, $this->getDataValue(), $s_options);
-		foreach ($this->subproperties as $dv) {
-			$this->subprop_start_char[] = $wgContLang->convert( $wgContLang->firstChar( $dv->getSortKey() ) );
-		}
 	}
 
 	/**
@@ -101,9 +92,9 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$r .= "<div id=\"mw-subcategories\">\n<h2>" . wfMsg('smw_subproperty_header',$ti) . "</h2>\n";
 				$r .= '<p>' . wfMsg('smw_subpropertyarticlecount', min($this->limit, count($this->subproperties))) . "</p>\n";
 				if (count($this->subproperties) < 6) {
-					$r .= $this->shortList(0,count($this->subproperties), $this->subproperties, $this->subprop_start_char);
+					$r .= $this->shortList(0,count($this->subproperties), $this->subproperties);
 				} else {
-					$r .= $this->columnList(0,count($this->subproperties), $this->subproperties, $this->subprop_start_char);
+					$r .= $this->columnList(0,count($this->subproperties), $this->subproperties);
 				}
 				$r .= "\n</div>";
 			}
@@ -137,20 +128,18 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		}
 
 		$r = '<table style="width: 100%; ">';
-		$prevchar = 'None';
+		$prev_start_char = 'None';
 		for ($index = $start; $index < $ac; $index++ ) {
+			$start_char = $wgContLang->convert( $wgContLang->firstChar( $this->articles[$index]->getSortkey() ) );
 			// Header for index letters
-			if ($this->articles_start_char[$index] != $prevchar) {
-				$r .= '<tr><th class="smwpropname"><h3>' . htmlspecialchars( $this->articles_start_char[$index] ) . "</h3></th><th></th></tr>\n";
-				$prevchar = $this->articles_start_char[$index];
+			if ($start_char != $prev_start_char) {
+				$r .= '<tr><th class="smwpropname"><h3>' . htmlspecialchars( $start_char ) . "</h3></th><th></th></tr>\n";
+				$prev_start_char = $start_char;
 			}
 			// Property name
 			$searchlink = SMWInfolink::newBrowsingLink('+',$this->articles[$index]->getShortHTMLText());
 			$r .= '<tr><td class="smwpropname">' . $this->articles[$index]->getLongHTMLText($this->getSkin()) .
-			/*$this->getSkin()->makeKnownLinkObj( $this->articles[$index]->getTitle, 
-			  $wgContLang->convert( $this->articles[$index]->getLongHTMLText() ) ) .*/ 
-			  '&nbsp;' . $searchlink->getHTML($this->getSkin()) .
-			  '</td><td class="smwprops">';
+			      '&nbsp;' . $searchlink->getHTML($this->getSkin()) . '</td><td class="smwprops">';
 			// Property values
 			$ropts = new SMWRequestOptions();
 			$ropts->limit = 4;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Special handling for relation/attribute description pages.
+ * Special handling for type description pages.
  * Some code based on CategoryPage.php
  *
  * @author: Markus Krötzsch
@@ -50,9 +50,6 @@ class SMWTypePage extends SMWOrderedListPage {
 			$this->articles = array_reverse($store->getSpecialSubjects(SMW_SP_HAS_TYPE, $typevalue, $options));
 		} else {
 			$this->articles = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $typevalue, $options);
-		}
-		foreach ($this->articles as $dv) {
-			$this->articles_start_char[] = $wgContLang->convert( $wgContLang->firstChar( $dv->getSortkey() ) );
 		}
 	}
 
@@ -107,10 +104,10 @@ class SMWTypePage extends SMWOrderedListPage {
 		}
 
 		if ( count ( $this->articles ) > $cutoff ) {
-			return $this->columnList( $start, $end, $this->articles, $this->articles_start_char );
+			return $this->columnList( $start, $end, $this->articles );
 		} elseif ( count($this->articles) > 0) {
 			// for short lists of articles
-			return $this->shortList( $start, $end, $this->articles, $this->articles_start_char );
+			return $this->shortList( $start, $end, $this->articles );
 		}
 		return '';
 	}

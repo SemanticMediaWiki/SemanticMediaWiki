@@ -1,8 +1,6 @@
 <?php
 /**
  * Abstract class to encapsulate properties of OrderedListPages.
- * Inherited by SMWTypePage and SMWPropertyPage.
- *
  * Some code adapted from CategoryPage.php
  *
  * @author Nikolas Iwan
@@ -26,7 +24,6 @@ abstract class SMWOrderedListPage extends Article {
 	protected $from; // start string: print $limit results from here
 	protected $until; // end string: print $limit results strictly before this article
 	protected $articles; // array of articles for which information is printed (primary ordering method)
-	protected $articles_start_char; // array of first characters of printed articles, used for making subheaders
 	protected $skin; // cache for the current skin, obtained from $wgUser
 
 	/**
@@ -63,7 +60,7 @@ abstract class SMWOrderedListPage extends Article {
 	/**
 	 * Initialise some parameters that might be changed by subclasses
 	 * (e.g. $limit). Method can be overwritten in this case.
-	 * If the method returns false, nothing will be printed besides 
+	 * If the method returns false, nothing will be printed besides
 	 * the original article.
 	 */
 	protected function initParameters() {
@@ -87,7 +84,6 @@ abstract class SMWOrderedListPage extends Article {
 	 */
 	protected function clearPageState() {
 		$this->articles = array();
-		$this->articles_start_char = array();
 	}
 
 	/**
@@ -168,7 +164,8 @@ abstract class SMWOrderedListPage extends Article {
 	 * Format a list of SMWWikipageValues chunked by letter in a three-column
 	 * list, ordered vertically.
 	 */
-	protected function columnList($start, $end, $elements, $elements_start_char) {
+	protected function columnList($start, $end, $elements) {
+		global $wgContLang;
 		// divide list into three equal chunks
 		$chunk = (int) ( ($end-$start+1) / 3);
 
@@ -189,18 +186,20 @@ abstract class SMWOrderedListPage extends Article {
 				$index < $endChunk && $index < $end;
 				$index++ ) {
 				// check for change of starting letter or begining of chunk
+				$start_char = $wgContLang->convert( $wgContLang->firstChar( $elements[$index]->getSortkey() ) );
 				if ( ($index == $startChunk) ||
-					 ($elements_start_char[$index] != $elements_start_char[$index - 1]) ) {
+					 ($start_char != $prev_start_char) ) {
 					if( $atColumnTop ) {
 						$atColumnTop = false;
 					} else {
 						$r .= "</ul>\n";
 					}
 					$cont_msg = "";
-					if ( $elements_start_char[$index] == $prev_start_char )
+					if ( $start_char == $prev_start_char ) {
 						$cont_msg = wfMsgHtml('listingcontinuesabbrev');
-					$r .= "<h3>" . htmlspecialchars( $elements_start_char[$index] ) . " $cont_msg</h3>\n<ul>";
-					$prev_start_char = $elements_start_char[$index];
+					}
+					$r .= "<h3>" . htmlspecialchars( $start_char ) . " $cont_msg</h3>\n<ul>";
+					$prev_start_char = $start_char;
 				}
 				$r .= "<li>" . $elements[$index]->getLongHTMLText($this->getSkin()) . "</li>\n";
 			}
@@ -216,12 +215,17 @@ abstract class SMWOrderedListPage extends Article {
 	/**
 	 * Format a list of articles chunked by letter in a bullet list.
 	 */
-	protected function shortList($start, $end, $elements, $elements_start_char) {
-		$r = '<h3>' . htmlspecialchars( $elements_start_char[$start] ) . "</h3>\n";
+	protected function shortList($start, $end, $elements) {
+		global $wgContLang;
+		$start_char = $wgContLang->convert( $wgContLang->firstChar( $elements[$start]->getSortkey() ) );
+		$prev_start_char = $start_char;
+		$r = '<h3>' . htmlspecialchars( $start_char ) . "</h3>\n";
 		$r .= '<ul><li>'. $elements[$start]->getLongHTMLText($this->getSkin()) . '</li>';
 		for ($index = $start+1; $index < $end; $index++ ) {
-			if ($elements_start_char[$index] != $elements_start_char[$index - 1]) {
-				$r .= "</ul><h3>" . htmlspecialchars( $elements_start_char[$index] ) . "</h3>\n<ul>";
+			$start_char = $wgContLang->convert( $wgContLang->firstChar( $elements[$index]->getSortkey() ) );
+			if ($start_char != $prev_start_char) {
+				$r .= "</ul><h3>" . htmlspecialchars( $start_char ) . "</h3>\n<ul>";
+				$prev_start_char = $start_char;
 			}
 			$r .= '<li>' . $elements[$index]->getLongHTMLText($this->getSkin()) . '</li>';
 		}
