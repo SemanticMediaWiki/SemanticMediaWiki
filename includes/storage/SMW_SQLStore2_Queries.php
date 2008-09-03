@@ -434,7 +434,11 @@ class SMWSQLStore2QueryEngine {
 	protected function compileAttributeWhere(SMWDescription $description, $jointable) {
 		if ($description instanceof SMWValueDescription) {
 			$dv = $description->getDatavalue();
-			$value = $dv->isNumeric() ? $dv->getNumericValue() : $dv->getXSDValue();
+			if ($dv instanceof SMWWikiPageValue) { // sort by sortkey
+				$value = $dv->getSortkey();
+			} else { // sort by string or number
+				$value = $dv->isNumeric() ? $dv->getNumericValue() : $dv->getXSDValue();
+			}
 			$field = $dv->isNumeric() ? "$jointable.value_num" : "$jointable.value_xsd";
 			switch ($description->getComparator()) {
 				case SMW_CMP_LEQ: $comp = '<='; break;
