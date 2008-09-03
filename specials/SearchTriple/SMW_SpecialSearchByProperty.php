@@ -95,7 +95,7 @@ class SMWSearchByProperty extends SpecialPage {
 	 * @return string  HTML of the search by property function
 	 */	
 	private function displaySearchByProperty() {
-		global $wgUser, $wgOut;
+		global $wgUser, $wgOut, $smwgSearchByPropertyFuzzy;
 		$skin = $wgUser->getSkin();
 
 		if ('' == $this->propertystring) return wfMsg('smw_sbv_docu') . "\n";
@@ -106,7 +106,7 @@ class SMWSearchByProperty extends SpecialPage {
 
 		$exact = $this->getExactResults();
 		$count = count($exact);
-		if (($count < ($this->limit/3)) && ($this->value->isNumeric())) {
+		if (($count < ($this->limit/3)) && ($this->value->isNumeric()) && $smwgSearchByPropertyFuzzy) {
 			$greater = $this->getNearbyResults( $count, true );
 			$lesser = $this->getNearbyResults( $count, false );
 			// Calculate how many greater and lesser results should be displayed

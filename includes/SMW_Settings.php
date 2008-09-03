@@ -106,6 +106,25 @@ $smwgLinksInValues = false;
 ##
 
 ###
+# Should the browse view for incoming links show the incoming links via its
+# inverses, or shall they be displayed on the other side?
+##
+$smwgBrowseShowInverse = false;
+
+###
+# Should the browse view always show the incoming links as well, and more
+# of the incoming values?
+##
+$smwgBrowseShowAll = false;
+
+###
+# Should the search by property special page dipslay nearby results when there
+# are only few results with the exact value? Switch this off if this page has
+# performance problems.
+##
+$smwgSearchByPropertyFuzzy = true;
+
+###
 # Number results shown in the listings on pages of properties (attributes or
 # relations) and types.
 ##
