@@ -28,7 +28,7 @@ $messages['en'] = array(
 
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
-	'smw_baduri'        => 'Sorry, URIs of the form "$1" are not allowed.',
+	'smw_baduri'        => 'URIs of the form "$1" are not allowed.',
 
 	// Link to RSS feeds
 	'smw_rss_link' => 'RSS',
@@ -40,9 +40,9 @@ $messages['en'] = array(
 	'smw_vcard_link' => 'vCard',
 
 	// Messages and strings for inline queries
-	'smw_iq_disabled'    => "Sorry. Semantic queries have been disabled for this wiki.",
+	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
 	'smw_iq_moreresults' => '… further results',
-	'smw_iq_nojs'        => 'Please use a JavaScript-enabled browser to view this element.',
+	'smw_iq_nojs'        => 'Use a JavaScript-enabled browser to view this element.',
 	'smw_iq_altresults'  => 'Browse the result list directly.', // available link when JS is disabled
 
 	// Messages and strings for ontology resued (import)
@@ -99,7 +99,7 @@ Results might not be as expected.',
 	'smw_valuesubquery'     => 'Subqueries not supported for values of property "$1".',
 	'smw_overprintoutlimit' => 'The query contains too many printout requests.',
 	'smw_badprintout'       => 'Some print statement in the query was misshaped.',
-	'smw_badtitle'          => 'Sorry, but "$1" is no valid page title.',
+	'smw_badtitle'          => '"$1" is no valid page title.',
 	'smw_badqueryatom'      => 'Some part "<nowiki>[[…]]</nowiki>" of the query was not understood.',
 	'smw_propvalueproblem'  => 'The value of property "$1" was not understood.',
 	'smw_noqueryfeature'    => 'Some query feature was not supported in this wiki and part of the query was dropped ($1).',
@@ -108,7 +108,7 @@ Results might not be as expected.',
 	'smw_querytoolarge'     => 'The following query conditions could not be considered due to the wikis restrictions in query size or depth: $1.',
 	'smw_devel_warning'     => 'This feature is currently under development, and might not be fully functional.
 Backup your data before using it.',
-	'smw_notemplategiven'   => 'Please provide a value for the parameter "template" for this query format to work.',
+	'smw_notemplategiven'   => 'Provide a value for the parameter "template" for this query format to work.',
 
 	// Messages for pages of types and properties
 	'smw_type_header'             => 'Properties of type "$1"',
@@ -165,7 +165,7 @@ The ontologies have to follow a certain format, specified at the <a href="http:/
 	'smw_oi_action'               => 'Import',
 	'smw_oi_return'               => 'Return to <a href="$1">Special:OntologyImport</a>.',
 	'smw_oi_noontology'           => 'No ontology supplied, or could not load ontology.',
-	'smw_oi_select'               => 'Please select the statements to import, and then click the import button.',
+	'smw_oi_select'               => 'Select the statements to import, and then click the import button.',
 	'smw_oi_textforall'           => 'Header text to add to all imports (may be empty):',
 	'smw_oi_selectall'            => 'Select or unselect all statements',
 	'smw_oi_statementsabout'      => 'Statements about',
@@ -195,7 +195,8 @@ The number of incorrect properties is given in the brackets.',
 
 	// Name of the URI Resolver Special (no content)
 	'uriresolver' => 'URI resolver',
-	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. It takes care that humans don\'t turn into websites.</p>',
+	'smw_uri_doc' => '<p>The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>.
+It takes care that humans don\'t turn into websites.</p>',
 
 	// Messages for ask Special
 	'ask'                   => 'Semantic search',
@@ -214,10 +215,11 @@ The number of incorrect properties is given in the brackets.',
 	// Messages for the search by property special
 	'searchbyproperty'      => 'Search by property',
 	'smw_sbv_docu'          => '<p>Search for all pages that have a given property and value.</p>',
-	'smw_sbv_noproperty'    => '<p>Please enter a property.</p>',
-	'smw_sbv_novalue'       => '<p>Please enter a valid value for the property, or view all property values for "$1".</p>',
+	'smw_sbv_noproperty'    => '<p>Enter a property.</p>',
+	'smw_sbv_novalue'       => '<p>Enter a valid value for the property, or view all property values for "$1".</p>',
 	'smw_sbv_displayresult' => 'A list of all pages that have property "$1" with value "$2"',
-	'smw_sbv_displayresultfuzzy' => 'A list of all pages that have property "$1" with value "$2". Since there have been only a few results, also nearby values are displayed.',
+	'smw_sbv_displayresultfuzzy' => 'A list of all pages that have property "$1" with value "$2".
+Since there have been only a few results, also nearby values are displayed.',
 	'smw_sbv_property'      => 'Property',
 	'smw_sbv_value'         => 'Value',
 	'smw_sbv_submit'        => 'Find results',
@@ -235,7 +237,7 @@ The number of incorrect properties is given in the brackets.',
 	// Messages for the page property special
 	'pageproperty'  => 'Page property search',
 	'smw_pp_docu'   => 'Search for all the fillers of a property on a given page.
-Please enter both a page and a property.',
+Enter both a page and a property.',
 	'smw_pp_from'   => 'From page',
 	'smw_pp_type'   => 'Property',
 	'smw_pp_submit' => 'Find results',
@@ -244,7 +246,7 @@ Please enter both a page and a property.',
 	'smw_result_prev'      => 'Previous',
 	'smw_result_next'      => 'Next',
 	'smw_result_results'   => 'Results',
-	'smw_result_noresults' => 'Sorry, no results.',
+	'smw_result_noresults' => 'No results.',
 	
 	// Messages for SMWAdmin
 	'smwadmin' => 'Admin functions for Semantic MediaWiki',
