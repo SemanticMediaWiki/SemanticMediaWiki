@@ -15,17 +15,17 @@
  * @note: AUTOLOADED
  */
 class SMWSemanticData {
-	protected $attribvals = array(); // text keys and arrays of datavalue objects
-	protected $attribtitles = array(); // text keys and title objects
-	protected $hasprops = false; // any normal properties yet?
-	protected $hasspecs = false; // any special properties yet?
-	protected $hasvisiblespecs = false; // any displayable special properties yet? (some are internal only withot a display name)
-	protected $m_noduplicates; // avoid repeated values? 
+	protected $attribvals = array(); /// text keys and arrays of datavalue objects
+	protected $attribtitles = array(); /// text keys and title objects
+	protected $hasprops = false; /// any normal properties yet?
+	protected $hasspecs = false; /// any special properties yet?
+	protected $hasvisiblespecs = false; /// any displayable special properties yet? (some are internal only withot a display name)
+	protected $m_noduplicates; /// avoid repeated values? 
 	/// NOTE: not needing (e.g. when loading from store) can safe much time, 
 	/// since objects can remain stubs until someone really acesses their value
-	static protected $m_propertyprefix = false; // cache for the local version of "Property:"
+	static protected $m_propertyprefix = false; /// cache for the local version of "Property:"
 
-	protected $subject; // SMWWikiPageValue object
+	protected $subject; /// SMWWikiPageValue object
 
 	public function __construct(SMWWikiPageValue $subject, $noduplicates = true) {
 		$this->subject = $subject;
@@ -34,6 +34,8 @@ class SMWSemanticData {
 
 	/**
 	 * Return subject to which the stored semantic annotation refer to.
+	 * 
+	 * @return SMWWikiPageValue subject
 	 */
 	public function getSubject() {
 		return $this->subject;
