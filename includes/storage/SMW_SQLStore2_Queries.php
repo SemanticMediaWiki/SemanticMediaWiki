@@ -304,7 +304,7 @@ class SMWSQLStore2QueryEngine {
 				} else { // join with smw_ids needed for other comparators (apply to title string)
 					$query->jointable = 'smw_ids';
 					$query->joinfield = "$query->alias.smw_id";
-					$value = $description->getDatavalue()->getDBKey();
+					$value = $description->getDatavalue()->getSortkey();
 					switch ($description->getComparator()) {
 						case SMW_CMP_LEQ: $comp = '<='; break;
 						case SMW_CMP_GEQ: $comp = '>='; break;
@@ -314,7 +314,7 @@ class SMWSQLStore2QueryEngine {
 							$value =  str_replace(array('%', '_', '*', '?'), array('\%', '\_', '%', '_'), $value);
 						break;
 					}
-					$query->where = "$query->alias.smw_title$comp" . $this->m_dbs->addQuotes($value);
+					$query->where = "$query->alias.smw_sortkey$comp" . $this->m_dbs->addQuotes($value);
 				}
 			}
 		} elseif ($description instanceof SMWConceptDescription) { // fetch concept definition and insert it here
@@ -434,11 +434,7 @@ class SMWSQLStore2QueryEngine {
 	protected function compileAttributeWhere(SMWDescription $description, $jointable) {
 		if ($description instanceof SMWValueDescription) {
 			$dv = $description->getDatavalue();
-			if ($dv instanceof SMWWikiPageValue) { // sort by sortkey
-				$value = $dv->getSortkey();
-			} else { // sort by string or number
-				$value = $dv->isNumeric() ? $dv->getNumericValue() : $dv->getXSDValue();
-			}
+			$value = $dv->isNumeric() ? $dv->getNumericValue() : $dv->getXSDValue();
 			$field = $dv->isNumeric() ? "$jointable.value_num" : "$jointable.value_xsd";
 			switch ($description->getComparator()) {
 				case SMW_CMP_LEQ: $comp = '<='; break;
