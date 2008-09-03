@@ -67,6 +67,8 @@ class SMWSearchByProperty extends SpecialPage {
 		if ($this->propertystring == '') $this->propertystring = current($params);
 		if ($this->valuestring == '') $this->valuestring = next($params);
 
+		$this->valuestring = str_replace("&nbsp;", " ", $this->valuestring);
+
 		$this->property = Title::newFromText( $this->propertystring, SMW_NS_PROPERTY );
 		if (null === $this->property) {
 			$this->propertystring = '';
@@ -86,7 +88,7 @@ class SMWSearchByProperty extends SpecialPage {
 		if (is_numeric($offsetstring)) $this->offset = intval($offsetstring);
 		
 		$wgOut->addHTML($this->displaySearchByProperty());
-		$wgOut->addHTML($this->queryFormAutocomplete());
+		$wgOut->addHTML($this->queryForm());
 	}
 	
 	/**
@@ -171,7 +173,7 @@ class SMWSearchByProperty extends SpecialPage {
 		if (!$first && ($number > 0)) while ( count($results) > $number ) array_pop($results); 
 		while ( $results && $number != 0) {
 			$result = array_pop( $results );
-			$thing = $skin->makeKnownLinkObj( $result[0]->getTitle() );
+			$thing = $skin->makeKnownLinkObj( $result[0]->getTitle(), $result[0]->getText() );
 			$browselink = SMWInfolink::newBrowsingLink('+', $result[0]->getShortHTMLText())->getHTML($skin);
 			$val = $result[1]->getLongHTMLText( $skin );
 			$html .= '<li>' . $thing . '&nbsp;&nbsp;' . $browselink;
@@ -308,103 +310,6 @@ class SMWSearchByProperty extends SpecialPage {
 		$html .= wfMsg('smw_sbv_value') . ' <input type="text" name="value" value="' . htmlspecialchars($this->valuestring) . '" />' . "\n";
 		$html .= '<input type="submit" value="' . wfMsg('smw_sbv_submit') . "\"/>\n</form>\n";
 		
-		return $html;
-	}
-
-	private function queryFormAutocomplete() {
-		global $wgAjaxExportList;
-		$wgAjaxExportList[] = 'smwfGetValues';
-		$javascript_text =<<<END
-		
-var last_property = null;
-
-function suggestValues(){
-	var suggestdiv = document.getElementById("suggestedvalues");
-	var x = document.getElementById("smw_searchbyprop_value").value;
-	var z = document.getElementById("searchInput2").value;
-
-	if (z == last_property) {
-		return;
-	}
-	last_property = z;
-
-	if (z.value != "" && z.length > 3) {
-		sajax_do_call("smwfGetValues", [z,x], suggestdiv);
-	}
-}
-
-function start_value_suggestion_onload(){
-	var z = document.getElementById('searchInput2');
-	var y = document.getElementById('smw_searchbyprop_value');
-	y.onfocus = function() { suggestValues(); };
-
-	if(z.value != "" && y.value == "") {
-		suggestValues();	
-	}
-}
-
-function setValues(){
-	document.getElementById("smw_searchbyprop_value").value = document.getElementById("smw_suggestedvalueselection").options[document.getElementById("smw_suggestedvalueselection").selectedIndex].value;
-}
-END;
-		global $wgJsMimeType, $wgOut;
-		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByProperty' );
-		$wgOut->addScript('<script type="' . $wgJsMimeType . '" >' . $javascript_text . '</script>');
-		$wgOut->addScript('<script type="' . $wgJsMimeType . '"> hookEvent("load", start_value_suggestion_onload);</script>');
-
-		// display query form
-		$html = '<p>&nbsp;' .
-		'<form id="searchform2" action ="' . $spectitle->escapeLocalURL() . '" method="get">' .
-		'<table>' .
-			'<tr>' .
-				'<td>'  . 			
-						'<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '" />' .
-						'<input type="hidden" name="ns'.SMW_NS_PROPERTY.'" value="1" />'.  //defines the namespace for mwsuggest
-			 			 wfMsg('smw_sbv_property') . '' .
-			 			' <input id="searchInput2" type="text" name="property" value="' . htmlspecialchars($this->propertystring) . '" />'.
-				'</td>' .
-				'<td>'  . '&nbsp;&nbsp;&nbsp;' . wfMsg('smw_sbv_value') .
-				'</td>' .
-				'<td>'  .
-						'<input id ="smw_searchbyprop_value" type="text" name="value" value="' . htmlspecialchars($this->valuestring) . '" style="width:100%;" />'.
-				'</td>' .
-				'<td>'  .
-						'&nbsp;&nbsp;&nbsp;<input type="submit" value="' . wfMsg('smw_sbv_submit') . '" />' .
-				'</td>'.
-			'</tr>' .
-			'<tr>' .
-				'<td></td>' .
-				'<td></td>' .
-				'<td><div id="suggestedvalues"></div></td>' .
-				'<td></td>' .
-			'</tr>' .
-		'</table>' .
-		'</form>'.
-		'</p>';
-
-		return $html;
-	}
-
-	// @todo doc
-	static function getSuggestedValues($property, $value) {
-		//replace white space with underscore
-		$property = str_replace(' ', '_', $property);
-		$propertytitle = Title::newFromText($property, SMW_NS_PROPERTY );
-		$values = array();
-		$values = smwfGetStore()->getPropertyValues(null, $propertytitle);
-	
-		$r = '';
-		foreach($values as $datavalue){
-			$r .= '<option>' .$datavalue->getWikiValue() . "</option>";
-		}
-		$number = sizeof($values);
-		if ($number > 5)
-			$number = 5;
-		if ($number == 0) {
-			$html = wfMsg('smw_sbv_novaluesuggest');
-		} else {
-			$html = '<form><select id="smw_suggestedvalueselection" size="' . $number . '" onfocus="setValues()" onchange="setValues()" style="width:100%;">' . $r . '</select></form>';
-		}
 		return $html;
 	}
 

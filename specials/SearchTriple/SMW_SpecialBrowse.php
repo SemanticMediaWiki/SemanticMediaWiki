@@ -210,8 +210,9 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return A string containing the HTML with the subject line
 	 */
 	 private function displayHead() {
-	 	global $wgUser;
+	 	global $wgUser, $wgOut;
 	 	$skin = $wgUser->getSkin();
+		$wgOut->setHTMLTitle($this->subject->getTitle());
 		$html  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		$html .= "<tr class=\"smwb-title\"><td colspan=\"2\">\n";
 		$html .= $skin->makeLinkObj($this->subject->getTitle()) . "\n"; // @todo Replace makeLinkObj with link as soon as we drop MW1.12 compatibility
