@@ -156,7 +156,7 @@ class SMWDataValueFactory {
 		} elseif (!$typevalue->isUnary()) { // n-ary type?
 				$result = SMWDataValueFactory::newTypeIDValue('__nry');
 				$result->setType($typevalue);
-		} elseif ($typeid{0} != '_') { // custom type with linear conversion
+		} elseif (($typeid != '') && ($typeid{0} != '_')) { // custom type with linear conversion
 			$result = new SMWDataValueFactory::$m_typeclasses['__lin']($typeid);
 		} else { // type really unknown
 			wfLoadExtensionMessages('SemanticMediaWiki');
