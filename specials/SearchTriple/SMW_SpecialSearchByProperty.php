@@ -3,21 +3,43 @@
  * @file
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
+ * 
+ * A special page to search for entities that have a certain property with
+ * a certain value.
+ * 
+ * @author Denny Vrandecic
+ * @autho Daniel Herzig
  */
 
+global $wgAjaxExportList;
+$wgAjaxExportList[] = "smwfGetValues";
+
+//function smwfGetValues($p, $v) { return SMWSearchByProperty::getSuggestedValues($p, $v); }
+
 /**
- * @author Denny Vrandecic
- *
  * This special page for Semantic MediaWiki implements a
- * view on a relation-object pair, i.e. a typed baclink.
+ * view on a relation-object pair,i.e. a typed backlink.
  * For example, it shows me all persons born in Croatia,
  * or all winners of the Academy Award for best actress.
  *
- * @note AUTOLOADED
+ * @note AUTOLOAD
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  */
 class SMWSearchByProperty extends SpecialPage {
+
+	/// string  Name of the property searched for
+	private $propertystring = "";
+	/// Title  The property that is searched for
+	private $property = null;
+	/// string  Name of the value that is searched for
+	private $valuestring = "";
+	/// SMWDataValue  The value that is searched for
+	private $value = null;
+	/// How many results should be displayed
+	private $limit = 20;
+	/// At what position are we currently
+	private $offset = 0;
 
 	/**
 	 * Constructor
@@ -27,134 +49,363 @@ class SMWSearchByProperty extends SpecialPage {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 	}
 
+	/**
+	 * Main entry point for Special Pages. Gets all required parameters.
+	 * 
+	 * @param[in] $query string  Given by MediaWiki
+	 */
 	public function execute($query = '') {
-		global $wgRequest, $wgOut, $wgUser, $smwgQMaxInlineLimit;
-		$skin = $wgUser->getSkin();
+		global $wgRequest, $wgOut;
 		$this->setHeaders();
 
 		// get the GET parameters
-		$attributestring = $wgRequest->getVal( 'property' );
-		$valuestring = $wgRequest->getVal( 'value' );
+		$this->propertystring = $wgRequest->getVal( 'property' );
+		$this->valuestring = $wgRequest->getVal( 'value' );
 		$params = SMWInfolink::decodeParameters($query, false);
 		reset($params);
 		// no GET parameters? Then try the URL
-		if ($attributestring == '') $attributestring = current($params);
-		if ($valuestring == '') $valuestring = next($params);
+		if ($this->propertystring == '') $this->propertystring = current($params);
+		if ($this->valuestring == '') $this->valuestring = next($params);
 
-		$attribute = Title::newFromText( $attributestring, SMW_NS_PROPERTY );
-		if (NULL === $attribute) { $attributestring = ''; } else { $attributestring = $attribute->getText(); }
-
-		$limit = $wgRequest->getVal( 'limit' );
-		if ('' == $limit) $limit =  20;
-		$offset = $wgRequest->getVal( 'offset' );
-		if ('' == $offset) $offset = 0;
-		$html = '';
-		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByProperty' );
-
-		if ('' == $attributestring) { // empty page. If no attribute given the value does not matter
-			$html .= wfMsg('smw_sbv_docu') . "\n";
+		$this->property = Title::newFromText( $this->propertystring, SMW_NS_PROPERTY );
+		if (null === $this->property) {
+			$this->propertystring = '';
 		} else {
-			// Now that we have an attribute, let's figure out the datavalue
-			$value = SMWDataValueFactory::newPropertyObjectValue( $attribute, $valuestring );
-			if ( $value->isValid() == FALSE ) { // no value understood
-				$html .= wfMSG('smw_sbv_novalue', $skin->makeLinkObj($attribute, $attribute->getText()));
-				$valuestring = '';
-			} else { // everything is given
-				$wgOut->setPagetitle( $attribute->getText() . ' ' . $value->getShortHTMLText(NULL) );
-				$valuestring = $value->getWikiValue();
-
-				$options = new SMWRequestOptions();
-				$options->limit = $limit+1;
-				$options->offset = $offset;
-
-				$res = &smwfGetStore()->getPropertySubjects( $attribute, $value, $options );
-				$count = count($res);
-
-
-				$html .= wfMsg('smw_sbv_displayresult', $skin->makeLinkObj($attribute, $attribute->getText()), $value->getShortHTMLText($skin)) . "<br />\n";
-
-				// prepare navigation bar
-				if ($offset > 0)
-					$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&property=' . urlencode($attribute->getText()) .'&value=' . urlencode($value->getWikiValue()))) . '">' . wfMsg('smw_result_prev') . '</a>';
-				else
-					$navigation = wfMsg('smw_result_prev');
-
-				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min($count, $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
-
-				if ($count>$limit) {
-					$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&property=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue())))  . '">' . wfMsg('smw_result_next') . '</a>';
-				} else {
-					$navigation .= wfMsg('smw_result_next');
-				}
-
-				$max = false; $first=true;
-				foreach (array(20,50,100,250,500) as $l) {
-					if ($max) continue;
-					if ($first) {
-						$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
-						$first = false;
-					} else
-						$navigation .= ' | ';
-					if ($l > $smwgQMaxInlineLimit) {
-						$l = $smwgQMaxInlineLimit;
-						$max = true;
-					}
-					if ( $limit != $l ) {
-						$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . $offset . '&limit=' . $l . '&property=' . urlencode($attribute->getText()) . '&value=' . urlencode($value->getWikiValue()))) . '">' . $l . '</a>';
-					} else {
-						$navigation .= '<b>' . $l . '</b>';
-					}
-				}
-				$navigation .= ')';
-
-// TODO The following code can be turned into a list of similar result, instead of
-// exact results one day. It is unclear, if this should go over the iq or if rather
-// the storage API should be extended. The iq part is outlined here, but does not
-// really work, and would require another query printer as it is outlined here.
-
-//				if ($count < ($limit/2)) { // if there is only a small number of results
-//					$iqoptions = array();
-//					$iqoptions['limit'] = $limit/2+$count;
-//					$iqoptions['sort'] = $attribute->getText();
-//					$iqoptions['order'] = 'DESC';
-//					$iqoptions['format'] = 'ul';
-//					$iqoptions['headers'] = 'hide';
-//					$iq = new SMWInlineQuery($iqoptions, FALSE);
-//					$html .= $iq->getHTMLResult("[[" . $attribute->getText() . ":=<" . $value->getUserValue() . "]] [[" . $attribute->getText() . ":=*]]");
-//					$iqoptions['offset'] = $count;
-//					$iqoptions['order'] = 'ASC';
-//					$iqoptions['limit'] = $limit/2-$count;
-//					$iq = new SMWInlineQuery($iqoptions, FALSE);
-//					$html .= $iq->getHTMLResult("[[" . $attribute->getText() . ":=>" . $value->getUserValue() . "]] [[" . $attribute->getText() . ":=*]]");
-//				}
-
-				if ($count == 0) {
-					$html .= wfMsg( 'smw_result_noresults' );
-				} else { // if there are plenty of results anyway
-					global $smwgIP;
-					// no need to show the navigation bars when there is not enough to navigate
-					if (($offset>0) || ($count>$limit)) $html .= '<br />' . $navigation;
-					$html .= "<ul>\n";
-					foreach ($res as $dv) {
-						$browselink = SMWInfolink::newBrowsingLink('+',$dv->getShortHTMLText());
-						$html .= '<li>' . $dv->getShortHTMLText($skin) . '&nbsp;&nbsp;' . $browselink->getHTML($skin) . "</li> \n";
-					}
-					$html .= "</ul>\n";
-					if (($offset>0) || ($count>$limit)) $html .= $navigation;
-				}
+			$this->propertystring = $this->property->getText();
+			$this->value = SMWDataValueFactory::newPropertyObjectValue( $this->property, $this->valuestring );
+			if ($this->value->isValid()) {
+				$this->valuestring = $this->value->getWikiValue(); 
+			} else {
+				$this->value = null;
 			}
 		}
 
-		// display query form
-		$html .= '<p>&nbsp;</p>';
-		$html .= '<form name="searchbyproperty" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
-		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
-		$html .= wfMsg('smw_sbv_property') . ' <input type="text" name="property" value="' . htmlspecialchars($attributestring) . '" />' . "&nbsp;&nbsp;&nbsp;\n";
-		$html .= wfMsg('smw_sbv_value') . ' <input type="text" name="value" value="' . htmlspecialchars($valuestring) . '" />' . "\n";
-		$html .= '<input type="submit" value="' . wfMsg('smw_sbv_submit') . "\"/>\n</form>\n";
+		$limitstring = $wgRequest->getVal( 'limit' );
+		if (is_numeric($limitstring)) $this->limit =  intval($limitstring);
+		$offsetstring = $wgRequest->getVal( 'offset' );
+		if (is_numeric($offsetstring)) $this->offset = intval($offsetstring);
+		
+		$wgOut->addHTML($this->displaySearchByProperty());
+		$wgOut->addHTML($this->queryFormAutocomplete());
+	}
+	
+	/**
+	 * Returns the HTML for the complete search by property.
+	 * 
+	 * @return string  HTML of the search by property function
+	 */	
+	private function displaySearchByProperty() {
+		global $wgUser, $wgOut;
+		$skin = $wgUser->getSkin();
 
-		$wgOut->addHTML($html);
+		if ('' == $this->propertystring) return wfMsg('smw_sbv_docu') . "\n";
+		if (!$this->value->isValid() || ($this==null)) return wfMsg('smw_sbv_novalue', $skin->makeLinkObj($this->property, $this->property->getText())) . "\n";
+
+		$wgOut->setPagetitle( $this->property->getText() . ' ' . $this->value->getShortHTMLText(null) );
+		$html = '';
+
+		$exact = $this->getExactResults();
+		$count = count($exact);
+		if (($count < ($this->limit/3)) && ($this->value->isNumeric())) {
+			$greater = $this->getNearbyResults( $count, true );
+			$lesser = $this->getNearbyResults( $count, false );
+			// Calculate how many greater and lesser results should be displayed
+			$cG = count($greater);
+			$cL = count($lesser);
+			if (($cG + $cL + $count)>$this->limit) {
+				$l = $this->limit - $count;
+				$lhalf = round($l/2);
+				if ($lhalf < $cG) {
+					if ($lhalf < $cL) {
+						$cL = $lhalf; $cG = $lhalf;
+					} else {
+						$cG = $this->limit - ($count + $cL);
+					}
+				} else {
+					$cL = $this->limit - ($count + $cG);
+				}
+			}
+			if (($cG + $cL + $count) == 0)
+				$html .= wfMsg( 'smw_result_noresults' );
+			else {
+				$html .= wfMsg('smw_sbv_displayresultfuzzy', $skin->makeLinkObj($this->property, $this->property->getText()), $this->value->getShortHTMLText($skin)) . "<br />\n";
+				$html .= $this->displayResults($greater, $cG, false);
+				if ( $count == 0 ) {
+					$html .= " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em><strong><small>(" . $this->value->getLongHTMLText() . ")</small></strong></em>\n";
+				} else {
+					$html .= $this->displayResults($exact, $count, true, true);					
+				}
+				$html .= $this->displayResults($lesser, $cL);
+			}
+		} else {
+			$html .= wfMsg('smw_sbv_displayresult', $skin->makeLinkObj($this->property, $this->property->getText()), $this->value->getShortHTMLText($skin)) . "<br />\n";
+			if (0 == $count)
+				$html .= wfMsg( 'smw_result_noresults' );
+			else {
+				$navi = $this->getNavigationBar($count);
+				if (($this->offset > 0) || ($count > $this->limit)) $html .= $navi;
+				$html .= $this->displayResults($exact);
+				if (($this->offset > 0) || ($count > $this->limit)) $html .= $navi;
+			}
+		}
+	
+		$html .= '<p>&nbsp;</p>';
+		return $html;
+	}
+
+	/**
+	 * Creates the HTML for a bullet list with all the results of the set query.
+	 * 
+	 * @param[in] $results array of array of SMWWikiPageValue, SMWDataValue  The entity and its datavalue
+	 * @param[in] $number int  How many results should be displayed? -1 for all
+	 * @param[in] $first bool  If less results should be displayed than given, should they show the first $number results, or the last $number results?
+	 * @param[in] $highlight bool  Should the results be highlighted?
+	 * @return string  HTML with the bullet list and a header
+	 */
+	private function displayResults($results, $number = -1, $first = true, $highlight = false) {
+		global $wgUser;
+		$skin = $wgUser->getSkin();
+
+		$html  = "<ul>\n";
+		
+		if (!$first && ($number > 0)) while ( count($results) > $number ) array_pop($results); 
+		while ( $results && $number != 0) {
+			$result = array_pop( $results );
+			$thing = $skin->makeKnownLinkObj( $result[0]->getTitle() );
+			$browselink = SMWInfolink::newBrowsingLink('+', $result[0]->getShortHTMLText())->getHTML($skin);
+			$val = $result[1]->getLongHTMLText( $skin );
+			$html .= '<li>' . $thing . '&nbsp;&nbsp;' . $browselink;
+			if (($this->value != $result[1]) || $highlight) $html .= " <em><small>(" . $val . ")</small></em>";
+			$html .= "</li>";
+			if ($highlight) $html = "<strong>" . $html . "</strong>";
+			$html .= "\n";
+			$number--;
+		}
+		$html .= "</ul>\n";
+
+		return $html;
+	}
+	
+	/**
+	 * Creates the HTML for a Navigation bar for too many results.
+	 * Most of the parameters are taken from the object members.
+	 * 
+	 * @param[in] $count int  How many results are currently displayed?
+	 * @return string  HTML with the navigation bar
+	 */
+	private function getNavigationBar($count) {
+		global $wgUser, $smwgQMaxInlineLimit;
+		$skin = $wgUser->getSkin();
+
+		if ($this->offset > 0)
+			$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . max(0,$this->offset-$this->limit) . '&limit=' . $this->limit . '&property=' . urlencode($this->property->getText()) .'&value=' . urlencode($this->value->getWikiValue()))) . '">' . wfMsg('smw_result_prev') . '</a>';
+		else
+			$navigation = wfMsg('smw_result_prev');
+
+		$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($this->offset+1) . '&ndash; ' . ($this->offset + min($count, $this->limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+
+		if ($count>$this->limit) {
+			$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty', 'offset=' . ($this->offset+$this->limit) . '&limit=' . $this->limit . '&property=' . urlencode($this->property->getText()) . '&value=' . urlencode($this->value->getWikiValue())))  . '">' . wfMsg('smw_result_next') . '</a>';
+		} else {
+			$navigation .= wfMsg('smw_result_next');
+		}
+
+		$max = false; $first=true;
+		foreach (array(20,50,100,250,500) as $l) {
+			if ($max) continue;
+			if ($first) {
+				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
+				$first = false;
+			} else
+				$navigation .= ' | ';
+			if ($l > $smwgQMaxInlineLimit) {
+				$l = $smwgQMaxInlineLimit;
+				$max = true;
+			}
+			if ( $this->limit != $l ) {
+				$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . $this->offset . '&limit=' . $l . '&property=' . urlencode($this->property->getText()) . '&value=' . urlencode($this->value->getWikiValue()))) . '">' . $l . '</a>';
+			} else {
+				$navigation .= '<b>' . $l . '</b>';
+			}
+		}
+		$navigation .= ')';
+		return $navigation;
+	}
+	
+	/**
+	 * Returns all results that have exactly the value on the property.
+	 * 
+	 * @return array of array of SMWWikiPageValue, SMWDataValue with the first being the entity, and the second the value
+	 */
+	private function getExactResults() {
+		$options = new SMWRequestOptions();
+		$options->limit = $this->limit+1;
+		$options->offset = $this->offset;
+		$options->sort = true;
+
+		$res = &smwfGetStore()->getPropertySubjects( $this->property, $this->value, $options );
+		$results = array();
+		foreach ( $res as $result ) 
+			array_push( $results, array( $result, $this->value ));
+
+		return $results;
+	}
+
+	/**
+	 * Returns all results that have a value near to the searched for value
+	 * on the property, ordered, and sorted by ending with the smallest one.
+	 * 
+	 * @param[in] $count int  How many entities have the exact same value on the property?
+	 * @param[in] $greater bool  Should the values be bigger? Set false for smaller values 
+	 * @return array of array of SMWWikiPageValue, SMWDataValue with the first being the entity, and the second the value
+	 */
+	private function getNearbyResults( $count, $greater = true ) {
+		$options = new SMWRequestOptions();
+		$options->limit = $this->limit+1;
+		$options->sort = true;
+
+		$printrequest = new SMWPrintRequest(SMWPrintRequest::PRINT_PROP, "", $this->property);
+
+		$params = array();
+		$params['format'] = 'ul';
+		$params['sort'] = $this->propertystring;
+		$params['order'] = 'DESC';
+		if ( $greater ) $params['order'] = 'ASC';
+		$cmp = "<";
+		if ( $greater ) $cmp = ">";
+		$querystring = "[[" . $this->propertystring . "::" . $cmp . $this->valuestring . "]]";
+		$queryobj = SMWQueryProcessor::createQuery( $querystring, $params, SMWQueryProcessor::SPECIAL_PAGE, 'ul', array( $printrequest ) );
+		$queryobj->querymode = SMWQuery::MODE_INSTANCES;
+		$queryobj->setLimit( $this->limit );
+		$queryobj->setOffset( $count );
+
+		$results = smwfGetStore()->getQueryResult( $queryobj );
+
+		$result = $results->getNext();
+		$ret = array();
+		while ( $result ) {
+			array_push( $ret, array( $result[0]->getNextObject(), $result[1]->getNextObject() ));
+			$result = $results->getNext();
+		}
+		if ( !$greater ) {
+			$temp = array();
+			while ( $ret ) array_push( $temp, array_pop( $ret ));
+			$ret = $temp;
+		}
+		return $ret;
+	}
+
+	/**
+	 * Creates the HTML for the query form for this special page.
+	 * 
+	 * @return string  HTML for the query form
+	 */
+	private function queryForm() {
+		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByProperty' );
+		$html  = '<form name="searchbyproperty" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
+		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
+		$html .= wfMsg('smw_sbv_property') . ' <input type="text" name="property" value="' . htmlspecialchars($this->propertystring) . '" />' . "&nbsp;&nbsp;&nbsp;\n";
+		$html .= wfMsg('smw_sbv_value') . ' <input type="text" name="value" value="' . htmlspecialchars($this->valuestring) . '" />' . "\n";
+		$html .= '<input type="submit" value="' . wfMsg('smw_sbv_submit') . "\"/>\n</form>\n";
+		
+		return $html;
+	}
+
+	private function queryFormAutocomplete() {
+		global $wgAjaxExportList;
+		$wgAjaxExportList[] = 'smwfGetValues';
+		$javascript_text =<<<END
+		
+var last_property = null;
+
+function suggestValues(){
+	var suggestdiv = document.getElementById("suggestedvalues");
+	var x = document.getElementById("smw_searchbyprop_value").value;
+	var z = document.getElementById("searchInput2").value;
+
+	if (z == last_property) {
+		return;
+	}
+	last_property = z;
+
+	if (z.value != "" && z.length > 3) {
+		sajax_do_call("smwfGetValues", [z,x], suggestdiv);
+	}
+}
+
+function start_value_suggestion_onload(){
+	var z = document.getElementById('searchInput2');
+	var y = document.getElementById('smw_searchbyprop_value');
+	y.onfocus = function() { suggestValues(); };
+
+	if(z.value != "" && y.value == "") {
+		suggestValues();	
+	}
+}
+
+function setValues(){
+	document.getElementById("smw_searchbyprop_value").value = document.getElementById("smw_suggestedvalueselection").options[document.getElementById("smw_suggestedvalueselection").selectedIndex].value;
+}
+END;
+		global $wgJsMimeType, $wgOut;
+		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByProperty' );
+		$wgOut->addScript('<script type="' . $wgJsMimeType . '" >' . $javascript_text . '</script>');
+		$wgOut->addScript('<script type="' . $wgJsMimeType . '"> hookEvent("load", start_value_suggestion_onload);</script>');
+
+		// display query form
+		$html = '<p>&nbsp;' .
+		'<form id="searchform2" action ="' . $spectitle->escapeLocalURL() . '" method="get">' .
+		'<table>' .
+			'<tr>' .
+				'<td>'  . 			
+						'<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '" />' .
+						'<input type="hidden" name="ns'.SMW_NS_PROPERTY.'" value="1" />'.  //defines the namespace for mwsuggest
+			 			 wfMsg('smw_sbv_property') . '' .
+			 			' <input id="searchInput2" type="text" name="property" value="' . htmlspecialchars($this->propertystring) . '" />'.
+				'</td>' .
+				'<td>'  . '&nbsp;&nbsp;&nbsp;' . wfMsg('smw_sbv_value') .
+				'</td>' .
+				'<td>'  .
+						'<input id ="smw_searchbyprop_value" type="text" name="value" value="' . htmlspecialchars($this->valuestring) . '" style="width:100%;" />'.
+				'</td>' .
+				'<td>'  .
+						'&nbsp;&nbsp;&nbsp;<input type="submit" value="' . wfMsg('smw_sbv_submit') . '" />' .
+				'</td>'.
+			'</tr>' .
+			'<tr>' .
+				'<td></td>' .
+				'<td></td>' .
+				'<td><div id="suggestedvalues"></div></td>' .
+				'<td></td>' .
+			'</tr>' .
+		'</table>' .
+		'</form>'.
+		'</p>';
+
+		return $html;
+	}
+
+	// @todo doc
+	static function getSuggestedValues($property, $value) {
+		//replace white space with underscore
+		$property = str_replace(' ', '_', $property);
+		$propertytitle = Title::newFromText($property, SMW_NS_PROPERTY );
+		$values = array();
+		$values = smwfGetStore()->getPropertyValues(null, $propertytitle);
+	
+		$r = '';
+		foreach($values as $datavalue){
+			$r .= '<option>' .$datavalue->getWikiValue() . "</option>";
+		}
+		$number = sizeof($values);
+		if ($number > 5)
+			$number = 5;
+		if ($number == 0) {
+			$html = wfMsg('smw_sbv_novaluesuggest');
+		} else {
+			$html = '<form><select id="smw_suggestedvalueselection" size="' . $number . '" onfocus="setValues()" onchange="setValues()" style="width:100%;">' . $r . '</select></form>';
+		}
+		return $html;
 	}
 
 }
-

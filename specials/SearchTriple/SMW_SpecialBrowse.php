@@ -18,13 +18,20 @@
  */
 class SMWSpecialBrowse extends SpecialPage {
 
-	static public $incomingvaluescount = 8; /// int How  many incoming values should be asked for
-	static public $incomingpropertiescount = 21; /// int  How many incoming properties should be asked for 
-	private $subject = null; /// SMWDataValue  Topic of this page
-	private $articletext = ""; /// Text to be set in the query form 
-	private $showoutgoing = true; /// bool  To display outgoing values?
-	private $showincoming = false; /// bool  To display incoming values?
-	private $offset = 0; /// int  At which incoming property are we currently?
+	/// int How  many incoming values should be asked for
+	static public $incomingvaluescount = 8;
+	/// int  How many incoming properties should be asked for
+	static public $incomingpropertiescount = 21;
+	/// SMWDataValue  Topic of this page
+	private $subject = null;
+	/// Text to be set in the query form
+	private $articletext = "";
+	/// bool  To display outgoing values?
+	private $showoutgoing = true;
+	/// bool  To display incoming values?
+	private $showincoming = false;
+	/// int  At which incoming property are we currently?
+	private $offset = 0;
 
 	/**
 	 * Constructor
@@ -128,13 +135,12 @@ class SMWSpecialBrowse extends SpecialPage {
 		if ($left) $inv = "";
 		$html  = "<table class=\"smwb-" . $inv . "factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		$properties = $data->getProperties();
-		if (count($properties) == 0) {
-			$html .= "<tr class=\"smwb-propvalue\"><th> &nbsp; </th><td><em>" . wfMsg('smw_result_noresults') . "</em></td></th></table>\n";
-		} else foreach ($properties as $property) {
+		$noresult = true;
+		 foreach ($properties as $property) {
 			if ($property instanceof Title) {
 				// display property
 				$head  = "<th>\n";
-				$head .= $skin->makeLinkObj($property, $this->getPropertyLabel($property, $incoming)) . "\n"; // TODO: Replace makeLinkObj with link as soon as we drop MW1.12 compatibility
+				$head .= $skin->makeLinkObj($property, $this->getPropertyLabel($property, $incoming)) . "\n"; // @todo Replace makeLinkObj with link as soon as we drop MW1.12 compatibility
 				$head .= "</th>\n";
 				
 				// display value
@@ -164,10 +170,14 @@ class SMWSpecialBrowse extends SpecialPage {
 					$html .= $body; $html .= $head;
 				}
 				$html .= "</tr>\n";
+				$noresult = false;
 			} else {
-				// TODO Special property, Categories, Instances?
+				// @todo Add special property, Categories, Instances, ...
+				//$noresult = false;
 			}
 		} // end foreach properties
+		if ($noresult) $html .= "<tr class=\"smwb-propvalue\"><th> &nbsp; </th><td><em>" . wfMsg('smw_result_noresults') . "</em></td></th></table>\n";
+		
 		$html .= "</table>\n";
 		return $html;
 	}
@@ -204,7 +214,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 	$skin = $wgUser->getSkin();
 		$html  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		$html .= "<tr class=\"smwb-title\"><td colspan=\"2\">\n";
-		$html .= $skin->makeLinkObj($this->subject->getTitle()) . "\n"; // TODO: Replace makeLinkObj with link as soon as we drop MW1.12 compatibility
+		$html .= $skin->makeLinkObj($this->subject->getTitle()) . "\n"; // @todo Replace makeLinkObj with link as soon as we drop MW1.12 compatibility
 		$html .= "</td></tr>\n";
 		$html .= "</table>\n";
 		return $html;
@@ -216,7 +226,8 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return string  HTMl with the center bar
 	 */
 	private function displayCenter() {
-		$html  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$html  = "<a name=\"smw_browse_incoming\"></a>\n";
+		$html .= "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		$html .= "<tr class=\"smwb-center\"><td colspan=\"2\">\n";
 		global $smwgBrowseShowAll;
 		if (!$smwgBrowseShowAll) {
@@ -281,7 +292,9 @@ class SMWSpecialBrowse extends SpecialPage {
 		$dir = 'in';
 		if ($out) $dir = 'out';
 		if ($in && $out) $dir = 'both';
-		return '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse', 'offset=' . $offset . '&dir=' . $dir . '&article=' . urlencode($this->subject->getLongWikiText()) ))  . '">' . $text . '</a>';
+		$frag = "";
+		if ($text == wfMsg('smw_browse_show_incoming')) $frag = "#smw_browse_incoming";
+		return '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Browse', 'offset=' . $offset . '&dir=' . $dir . '&article=' . urlencode($this->subject->getLongWikiText()) ))  . $frag . '">' . $text . '</a>';
 	}
 	
 	/**
@@ -307,7 +320,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			foreach ($values as $value) {
 				$indata->addPropertyObjectValue($property, $value);
 			}
-			// TODO Special properties?
+			// @todo Add special properties and such
 		}
 		return array($indata, $more);
 	}

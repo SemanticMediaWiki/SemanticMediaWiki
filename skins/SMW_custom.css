@@ -262,6 +262,7 @@ tr.smwb-propvalue {
 
 tr.smwb-propvalue th {
 	text-align: right;
+	vertical-align: top;
 	font-weight: bold;
 	font-size: 120%;
 	background-color: #DDDDDD;
