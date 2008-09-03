@@ -38,15 +38,17 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 	protected function getResultText($res,$outputmode) {
 		global $smwgEmbeddingList, $wgParser;
-		$title = $wgParser->getTitle();
-		if ($title === NULL) { // try that in emergency, needed in 1.11 in Special:Ask
-			global $wgTitle;
-			$title = $wgTitle;
-		}
-
-		if (!isset($smwgEmbeddingList)) { // used to catch recursions, sometimes more restrictive than needed, but no major use cases should be affected by that!
-			$smwgEmbeddingList = array($title->getPrefixedText());
-			$oldEmbeddingList = array($title->getPrefixedText());
+		if (!is_array($smwgEmbeddingList)) { // catch recursions (sometimes more restrictive than needed, but normal usage is not affected)
+			$firstrun = true;
+			$smwgEmbeddingList = array();
+			// No page should embed itself:
+			if ($wgParser->getTitle() instanceof Title) {
+				$smwgEmbeddingList[] = $wgParser->getTitle()->getPrefixedText();
+			} else {
+				global $wgTitle;
+				$smwgEmbeddingList[] = $wgTitle->getPrefixedText();
+			}
+			$oldEmbeddingList = false;
 		} else {
 			$oldEmbeddingList = array_values($smwgEmbeddingList);
 		}
@@ -119,7 +121,11 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		}
 		$result .= $footer;
 
-		$smwgEmbeddingList = array_values($oldEmbeddingList);
+		if (is_array($oldEmbeddingList)) {
+			$smwgEmbeddingList = array_values($oldEmbeddingList);
+		} else {
+			$smwgEmbeddingList = false;
+		}
 		return $result;
 	}
 }

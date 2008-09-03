@@ -38,13 +38,6 @@ class SMWListResultPrinter extends SMWResultPrinter {
 
 
 	protected function getResultText($res,$outputmode) {
-		global $wgParser;
-		$parsetitle = $wgParser->getTitle();
-		if ($parsetitle === NULL) { // try that in emergency, needed in 1.11 in Special:Ask
-			global $wgTitle;
-			$parsetitle = $wgTitle;
-		}
-
 		// Determine mark-up strings used around list items:
 		if ( ('ul' == $this->mFormat) || ('ol' == $this->mFormat) ) {
 			$header = '<' . $this->mFormat . '>';
@@ -69,8 +62,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		}
 
 		// Print header:
-		$result = '';
-		$result .= $header;
+		$result = $header;
 
 		// Print all result rows:
 		$first_row = true;

@@ -130,7 +130,15 @@ abstract class SMWResultPrinter {
 			$result = array($result, 'isHTML' => true);
 		} elseif ( (!$this->isHTML) && ($outputmode == SMW_OUTPUT_HTML) ) {
 			global $wgParser;
-			$result = $wgParser->recursiveTagParse($result);
+			// check whether we are in an existing parse, or if we should start a new parse for $wgTitle
+			if ( ($wgParser->getTitle() instanceof Title) && ($wgParser->getOptions() instanceof ParserOptions) ) {
+				$result = $wgParser->recursiveTagParse($result);
+			} else {
+				global $wgTitle;
+				$popt = new ParserOptions();
+				$pout = $wgParser->parse($result, $wgTitle, $popt);
+				$result = $pout->getText();
+			}
 		}
 
 		if ( ($this->mIntro) && ($results->getCount() > 0) ) {

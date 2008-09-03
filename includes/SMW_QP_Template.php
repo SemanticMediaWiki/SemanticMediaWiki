@@ -34,13 +34,6 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 	}
 
 	protected function getResultText($res, $outputmode) {
-		global $wgParser;
-		$parsetitle = $wgParser->getTitle();
-		if ($parsetitle === NULL) { // try that in emergency, needed in 1.11 in Special:Ask
-			global $wgTitle;
-			$parsetitle = $wgTitle;
-		}
-
 		// print all result rows
 		if ($this->m_template == false) {
 			wfLoadExtensionMessages('SemanticMediaWiki');
