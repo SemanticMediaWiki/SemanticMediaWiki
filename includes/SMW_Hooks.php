@@ -316,6 +316,8 @@ function smwfShowListPage (&$title, &$article){
 		$article = new SMWTypePage($title);
 	} elseif ( $title->getNamespace() == SMW_NS_PROPERTY ) {
 		$article = new SMWPropertyPage($title);
+	} elseif ( $title->getNamespace() == SMW_NS_CONCEPT ) {
+		$article = new SMWConceptPage($title);
 	}
 	return true;
 }

@@ -125,10 +125,11 @@ $smwgBrowseShowAll = false;
 $smwgSearchByPropertyFuzzy = true;
 
 ###
-# Number results shown in the listings on pages of properties (attributes or
-# relations) and types.
+# Number results shown in the listings on pages in the namespaces Property,
+# Type, and Concept.
 ##
 $smwgTypePagingLimit = 200;    // same number as for categories
+$smwgConceptPagingLimit = 200; // same number as for categories
 $smwgPropertyPagingLimit = 25; // use smaller value since property lists need more space
 ##
 

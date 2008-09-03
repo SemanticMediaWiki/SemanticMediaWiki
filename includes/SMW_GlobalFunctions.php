@@ -30,8 +30,7 @@ define('SMW_SP_SUBPROPERTY_OF',17);
 define('SMW_SP_SUBCLASS_OF',18);
 define('SMW_SP_CONCEPT_DESC',19);
 
-// old names, will be removed *two* releases after given version
-// SMW 1.1.2
+/** @deprecated This constant will be removed in SMW 1.4. Use SMW_SP_INSTANCE_OF or SMW_SP_SUBCLASS_OF as appropriate. */
 define('SMW_SP_HAS_CATEGORY',4); // name specific for categories, use "instance of" to distinguish from future explicit "subclass of"
 
 // constants for displaying the factbox
@@ -108,6 +107,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWOrderedListPage']        = $smwgIP . '/includes/articlepages/SMW_OrderedListPage.php';
 	$wgAutoloadClasses['SMWTypePage']               = $smwgIP . '/includes/articlepages/SMW_TypePage.php';
 	$wgAutoloadClasses['SMWPropertyPage']           = $smwgIP . '/includes/articlepages/SMW_PropertyPage.php';
+	$wgAutoloadClasses['SMWConceptPage']            = $smwgIP . '/includes/articlepages/SMW_ConceptPage.php';
 	//// printers
 	$wgAutoloadClasses['SMWResultPrinter']          = $smwgIP . '/includes/SMW_QueryPrinter.php';
 	$wgAutoloadClasses['SMWTableResultPrinter']     = $smwgIP . '/includes/SMW_QP_Table.php';
@@ -357,17 +357,20 @@ function smwfProcessConceptParserFunction(&$parser) {
 
 	// display concept box:
 	$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink');
-	$qresult = smwfGetStore()->getQueryResult($query);
-	$printer = SMWQueryProcessor::getResultPrinter('list', SMWQueryProcessor::CONCEPT_DESC, $qresult);
-	$printer->setShowErrors(false);
-	$resultlink = $printer->getResult($qresult, array('sep' => ',_'), SMW_OUTPUT_WIKI);
 	smwfRequireHeadItem(SMW_HEADER_STYLE);
+
+// 	$qresult = smwfGetStore()->getQueryResult($query);
+// 	$printer = SMWQueryProcessor::getResultPrinter('list', SMWQueryProcessor::CONCEPT_DESC, $qresult);
+// 	$printer->setShowErrors(false);
+// 	$resultlink = $printer->getResult($qresult, array('sep' => ',_'), SMW_OUTPUT_WIKI);
+
 	$result = '<div class="smwfact"><span class="smwfactboxhead">' . wfMsgForContent('smw_concept_description',$title->getText()) .
 	          (count($query->getErrors())>0?' ' . smwfEncodeMessages($query->getErrors()):'') .
 	          '</span>' . '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' . '<br />' .
 	          ($concept_docu?"<p>$concept_docu</p>":'') .
 	          '<pre>' . str_replace('[', '&#x005B;', $concept_text) . "</pre>\n" .
-	          $resultlink . '</div>';
+// 	          $resultlink . 
+	          '</div>';
 	return $result;
 }
 
