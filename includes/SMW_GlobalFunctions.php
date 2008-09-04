@@ -564,10 +564,10 @@ function smwfAddHTMLHeadersOutput(&$out) {
 		if (!empty($smwgContLang)) { return; }
 		wfProfileIn('smwfInitContentLanguage (SMW)');
 
+		$smwContLangFile = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
 		$smwContLangClass = 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
-
-		if (file_exists($smwgIP . '/languages/'. $smwContLangClass . '.php')) {
-			include_once( $smwgIP . '/languages/'. $smwContLangClass . '.php' );
+		if (file_exists($smwgIP . '/languages/'. $smwContLangFile . '.php')) {
+			include_once( $smwgIP . '/languages/'. $smwContLangFile . '.php' );
 		}
 
 		// fallback if language not supported
