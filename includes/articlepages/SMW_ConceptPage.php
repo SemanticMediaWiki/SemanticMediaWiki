@@ -13,6 +13,7 @@
  * Concept: pages. Very simliar to CategoryPage.
  */
 class SMWConceptPage extends SMWOrderedListPage {
+	protected $m_errors;
 
 	/**
 	 * Use higher limit. This operation is very similar to showing members of categories.
@@ -61,6 +62,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 		if ($order == 'DESC') {
 			$this->articles = array_reverse($this->articles);
 		}
+		$this->m_errors = $query->getErrors();
 	}
 
 	/**
@@ -76,7 +78,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 		$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
 
 		$r .= '<h2>' . wfMsg('smw_concept_header',$ti) . "</h2>\n";
-		$r .= wfMsg('smw_conceptarticlecount', min($this->limit, count($this->articles))) . "\n";
+		$r .= wfMsg('smw_conceptarticlecount', min($this->limit, count($this->articles))) . smwfEncodeMessages($this->m_errors) .  "\n";
 
 		$r .= $this->formatList();
 		$r .= "\n</div>" . $nav;
