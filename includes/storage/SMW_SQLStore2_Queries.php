@@ -60,6 +60,8 @@ class SMWSQLStore2QueryEngine {
 	protected $m_sortkeys;
 	/// Cache of computed hierarchy queries for reuse, cat/prop-value string => tablename
 	protected $m_hierarchies = array();
+	/// Local collection of error strings, passed on to callers if possible.
+	protected $m_errors = array();
 
 	public function __construct(&$parentstore, &$dbslave) {
 		$this->m_store = $parentstore;
@@ -67,9 +69,69 @@ class SMWSQLStore2QueryEngine {
 	}
 
 	/**
-	 * The new SQL store's implementation of query answering.
+	 * Refresh the concept cache for the given concept.
 	 *
-	 * NOTE: we do not support category wildcards as they have no useful semantics in OWL/RDFS/LP/Whatever
+	 * @param $concept Title
+	 */
+	public function refreshConceptCache($concept) {
+		global $smwgQMaxLimit, $smwgQConceptFeatures;
+		$cid = $this->m_store->getSMWPageID($concept->getDBKey(), SMW_NS_CONCEPT, '');
+		$cid_c = $this->m_store->getSMWPageID($concept->getDBKey(), SMW_NS_CONCEPT, '', false);
+		if ($cid != $cid_c) {
+			$this->m_errors[] = "Skipping redirect concept.";
+			return $this->m_errors;
+		}
+		$dv = end($this->m_store->getSpecialValues($concept, SMW_SP_CONCEPT_DESC));
+		$desctxt = ($dv!==false)?$dv->getWikiValue():false;
+		$this->m_errors = array();
+		if ($desctxt) { // concept found
+			$this->m_qmode = SMWQuery::MODE_INSTANCES;
+			$this->m_queries = array();
+			$this->m_hierarchies = array();
+			$this->m_querylog = array();
+			$this->m_sortkeys = array();
+			SMWSQLStore2Query::$qnum = 0;
+
+			// Pre-process query:
+			$qp = new SMWQueryParser($smwgQConceptFeatures);
+			$desc = $qp->getQueryDescription($desctxt);
+			$qid = $this->compileQueries($desc);
+			$this->executeQueries($this->m_queries[$qid]); // execute query tree, resolve all dependencies
+			$qobj = $this->m_queries[$qid];
+			if ($qobj->joinfield === '') {
+				return;
+			}
+			// Update database:
+			$this->m_dbs->delete('smw_conccache', array('o_id' => $cid), 'SMW::refreshConceptCache');
+			$this->m_dbs->query("INSERT IGNORE INTO " . $this->m_dbs->tableName('smw_conccache') .
+			                    " SELECT DISTINCT $qobj->joinfield AS s_id, $cid AS o_id FROM " .
+			                    $this->m_dbs->tableName($qobj->jointable) . " AS $qobj->alias" . $qobj->from .
+			                    ($qobj->where?" WHERE ":'') . $qobj->where . " LIMIT $smwgQMaxLimit",
+			                    'SMW::refreshConceptCache');
+			$this->m_dbs->update('smw_conc2', array('cache_date' => strtotime("now"), 'cache_count' => $this->m_dbs->affectedRows()), array('s_id' => $cid), 'SMW::refreshConceptCache');
+			//print $desc->getQueryString(); //DEBUG
+		} else { // just delete old data if there is any
+			$this->m_dbs->delete('smw_conccache', array('o_id' => $cid), 'SMW::refreshConceptCache');
+			$this->m_dbs->update('smw_conc2', array('cache_date' => NULL, 'cache_count' => NULL), array('s_id' => $cid), 'SMW::refreshConceptCache');
+			$this->m_errors[] = "No concept description found.";
+		}
+		$this->cleanUp();
+		return $this->m_errors;
+	}
+
+	/**
+	 * Delete the concept cache for the given concept.
+	 *
+	 * @param $concept Title
+	 */
+	public function deleteConceptCache($concept) {
+		$cid = $this->m_store->getSMWPageID($concept->getDBKey(), SMW_NS_CONCEPT, '', false);
+		$this->m_dbs->delete('smw_conccache', array('o_id' => $cid), 'SMW::refreshConceptCache');
+		$this->m_dbs->update('smw_conc2', array('cache_date' => NULL, 'cache_count' => NULL), array('s_id' => $cid), 'SMW::refreshConceptCache');
+	}
+
+	/**
+	 * The new SQL store's implementation of query answering.
 	 */
 	public function getQueryResult(SMWQuery $query) {
 		if ($query->querymode == SMWQuery::MODE_NONE) { // don't query, but return something to printer
@@ -80,6 +142,7 @@ class SMWSQLStore2QueryEngine {
 		$this->m_queries = array();
 		$this->m_hierarchies = array();
 		$this->m_querylog = array();
+		$this->m_errors = array();
 		SMWSQLStore2Query::$qnum = 0;
 		$this->m_sortkeys = $query->sortkeys;
 		// manually make final root query (to retrieve namespace,title):
@@ -89,7 +152,7 @@ class SMWSQLStore2QueryEngine {
 		$qobj->joinfield = "$qobj->alias.smw_id";
 		// build query dependency tree:
 		wfProfileIn('SMWSQLStore2Queries::compileMainQuery (SMW)');
-		$qid = $this->compileQueries($query->getDescription());
+		$qid = $this->compileQueries($query->getDescription()); // compile query, build query "plan"
 		wfProfileOut('SMWSQLStore2Queries::compileMainQuery (SMW)');
 		if ($qid >= 0) { // append to root
 			$qobj->components = array($qid => "$qobj->alias.smw_id");
@@ -112,12 +175,8 @@ class SMWSQLStore2QueryEngine {
 				$result = $this->getInstanceQueryResult($query,$rootid);
 			break;
 		}
-		// finally, free temporary tables
-		if ($this->m_qmode !== SMWQuery::MODE_DEBUG) {
-			foreach ($this->m_querylog as $table => $log) {
-				$this->m_dbs->query("DROP TEMPORARY TABLE " . $this->m_dbs->tableName($table), 'SMW::getQueryResult');
-			}
-		}
+		$this->cleanUp();
+		$query->addErrors($this->m_errors);
 		return $result;
 	}
 
@@ -289,7 +348,7 @@ class SMWSQLStore2QueryEngine {
 				$query->type = SMW_SQL2_VALUE;
 				$query->jointable = '';
 				$query->joinfield = '';
-			} else { // instance query with dicjunction of classes (categories) 
+			} else { // instance query with dicjunction of classes (categories)
 				$query->jointable = 'smw_inst2';
 				$query->joinfield = "$query->alias.s_id";
 				$query->components[$cqid] = "$query->alias.o_id";
@@ -318,19 +377,34 @@ class SMWSQLStore2QueryEngine {
 				}
 			}
 		} elseif ($description instanceof SMWConceptDescription) { // fetch concept definition and insert it here
-			$dv = end($this->m_store->getSpecialValues($description->getConcept(), SMW_SP_CONCEPT_DESC));
-			$desctxt = ($dv!==false)?$dv->getWikiValue():false;
-			if ($desctxt == false) { // no description found, concept does not exist
+			$cid = $this->m_store->getSMWPageID($description->getConcept()->getDBKey(), SMW_NS_CONCEPT, '');
+			$row = $this->m_dbs->selectRow('smw_conc2',
+			         array('concept_txt','concept_features','concept_size','concept_depth','cache_date'),
+			         array('s_id'=>$cid), 'SMWSQLStore2Queries::compileQueries');
+			if ( $row === false ) { // no description found, concept does not exist
 				// keep the above query object, it yields an empty result
 				///TODO: announce an error here? (maybe not, since the query processor can check for 
 				///non-existing concept pages which is probably the main reason for finding nothing here
-			} else { // parse description and process it recursively
-				$qp = new SMWQueryParser();
-				// no defaultnamespaces here; if any, these are already in the concept
-				$desc = $qp->getQueryDescription($desctxt);
-				$qid = $this->compileQueries($desc);
-				$query = $this->m_queries[$qid];
-			}
+			} elseif ($row->cache_date) { // cached concept, use cache!
+				$query->jointable = 'smw_conccache';
+				$query->joinfield = "$query->alias.s_id";
+				$query->where = "$query->alias.o_id=" . $this->m_dbs->addQuotes($cid);
+			} elseif ($row->concept_txt) { // parse description and process it recursively
+				global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures;
+				if ( ($smwgQConceptCaching == 2) ||
+				     ( ($smwgQConceptCaching == 1) && ( (~(~($row->concept_features+0) | $smwgQFeatures)) == 0) 
+				       && ($smwgQMaxSize >= $row->concept_size) && ($smwgQMaxDepth >= $row->concept_depth))
+				   ) {
+					$qp = new SMWQueryParser();
+					// no defaultnamespaces here; if any, these are already in the concept
+					$desc = $qp->getQueryDescription($row->concept_txt);
+					$qid = $this->compileQueries($desc);
+					$query = $this->m_queries[$qid];
+				} else {
+					wfLoadExtensionMessages('SemanticMediaWiki');
+					$this->m_errors[] = wfMsg('smw_concept_cache_miss',$description->getConcept()->getText());
+				}
+			} // else: no cache, no description (this may happen); treat like empty concept
 		} else { // (e.g. SMWThingDescription, SMWValueList is also treated elswhere)
 			$qid = -1; // no condition
 		}
@@ -718,6 +792,17 @@ class SMWSQLStore2QueryEngine {
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * After querying, make sure no temporary database tables are left.
+	 */
+	protected function cleanUp() {
+		if ($this->m_qmode !== SMWQuery::MODE_DEBUG) {
+			foreach ($this->m_querylog as $table => $log) {
+				$this->m_dbs->query("DROP TEMPORARY TABLE " . $this->m_dbs->tableName($table), 'SMW::getQueryResult');
+			}
+		}
 	}
 
 }

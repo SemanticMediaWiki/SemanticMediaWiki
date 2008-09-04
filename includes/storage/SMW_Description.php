@@ -10,6 +10,7 @@
 /**
  * Container class for request for printout, as used in queries to
  * obtain additional information for the retrieved results.
+ * @ingroup SMWQuery
  * @note: AUTOLOADED
  */
 class SMWPrintRequest {
@@ -123,7 +124,7 @@ class SMWPrintRequest {
 	}
 
 	/**
-	 * Serialise this object like print requests given in #ask.
+	 * Serialise this object like print requests given in \#ask.
 	 */
 	public function getSerialisation() {
 		/// TODO: do not use "= label" if label is the default anyway
@@ -159,6 +160,7 @@ class SMWPrintRequest {
 
 /**
  * Abstract base class for all descriptions.
+ * @ingroup SMWQuery
  */
 abstract class SMWDescription {
 
@@ -199,7 +201,7 @@ abstract class SMWDescription {
 	 * account.
 	 * Example: The SMWValueDescription [[Paris]] returns the single result "Paris"
 	 * but can also be used as value in [[has location::Paris]] which is preferred
-	 * over the canonical [[has location::<q>[[Paris]]</q>]].
+	 * over the canonical [[has location::\<q\>[[Paris]]\</q\>]].
 	 */
 	abstract public function getQueryString($asvalue = false);
 
@@ -224,15 +226,23 @@ abstract class SMWDescription {
 	}
 
 	/**
+	 * Report on query features used in description. Return values are (sums of)
+	 * query feature constants such as SMW_PROPERTY_QUERY.
+	 */
+	public function getQueryFeatures() {
+		return 0;
+	}
+
+	/**
 	 * Recursively restrict query to a maximal size and depth as given.
 	 * Returns a possibly changed description that should be used as a replacement.
 	 * Reduce values of parameters to account for the returned descriptions size.
 	 * Default implementation for non-nested descriptions of size 1.
 	 * The parameter $log contains a list of all pruned conditions, updated when some
 	 * description was reduced.
-	 * NOTE: objects must not do changes on $this during pruning, since $this can be
+	 * @note Objects must not do changes on $this during pruning, since $this can be
 	 * reused in multiple places of one or many queries. Make new objects to reflect
-	 * changes.
+	 * changes!
 	 */
 	public function prune(&$maxsize, &$maxdepth, &$log) {
 		if ( ($maxsize < $this->getSize()) || ($maxdepth < $this->getDepth()) ) {
@@ -255,6 +265,7 @@ abstract class SMWDescription {
  * not used for datavalues of attributes in order to support type 
  * hinting in the API: descriptions of data are always 
  * SMWValueDescription objects.
+ * @ingroup SMWQuery
  */
 class SMWThingDescription extends SMWDescription {
 	public function getQueryString($asvalue = false) {
@@ -278,6 +289,7 @@ class SMWThingDescription extends SMWDescription {
  * Description of a single class as given by a wiki category, or of a disjunction
  * of such classes. Corresponds to (disjunctions of) atomic classes in OWL and 
  * to (unions of) classes in RDF.
+ * @ingroup SMWQuery
  */
 class SMWClassDescription extends SMWDescription {
 	protected $m_titles;
@@ -329,6 +341,14 @@ class SMWClassDescription extends SMWDescription {
 		}
 	}
 
+	public function getQueryFeatures() {
+		if (count($this->m_titles) > 1) {
+			return SMW_CATEGORY_QUERY | SMW_DISJUNCTION_QUERY;
+		} else {
+			return SMW_CATEGORY_QUERY;
+		}
+	}
+
 	public function prune(&$maxsize, &$maxdepth, &$log) {
 		if ($maxsize >= $this->getSize()) {
 			$maxsize = $maxsize - $this->getSize();
@@ -352,6 +372,7 @@ class SMWClassDescription extends SMWDescription {
 /**
  * Description of a single class as described by a concept page in the wiki. Corresponds to 
  * classes in (the EL fragment of) OWL DL, and to some extent to tree-shaped queries in SPARQL.
+ * @ingroup SMWQuery
  */
 class SMWConceptDescription extends SMWDescription {
 	protected $m_title;
@@ -377,6 +398,10 @@ class SMWConceptDescription extends SMWDescription {
 		return false;
 	}
 
+	public function getQueryFeatures() {
+		return SMW_CONCEPT_QUERY;
+	}
+
 	///NOTE: getSize and getDepth /could/ query the store to find the real size
 	/// of the concept. But it is not clear if this is desirable anyway, given that
 	/// caching structures may be established for retrieving concepts more quickly.
@@ -391,6 +416,7 @@ class SMWConceptDescription extends SMWDescription {
  * Corresponds to a class restriction with a special class
  * that characterises the given namespace (or at least that
  * is how one could map this to OWL etc.).
+ * @ingroup SMWQuery
  */
 class SMWNamespaceDescription extends SMWDescription {
 	protected $m_namespace;
@@ -416,6 +442,10 @@ class SMWNamespaceDescription extends SMWDescription {
 		return false;
 	}
 
+	public function getQueryFeatures() {
+		return SMW_NAMESPACE_QUERY;
+	}
+
 }
 
 /**
@@ -426,6 +456,7 @@ class SMWNamespaceDescription extends SMWDescription {
  * from the concrete domain.
  * In RDF, concrete domain predicates that define ranges (like "greater or 
  * equal to") are not directly available.
+ * @ingroup SMWQuery
  */
 class SMWValueDescription extends SMWDescription {
 	protected $m_datavalue;
@@ -485,6 +516,7 @@ class SMWValueDescription extends SMWDescription {
  * values for some n-ary property. NULL values are to be used for 
  * unspecifed values. Corresponds to the built-in support for n-ary 
  * properties, i.e. can be viewed as a macro in OWL and RDF.
+ * @ingroup SMWQuery
  */
 class SMWValueList extends SMWDescription {
 	protected $m_descriptions;
@@ -597,6 +629,7 @@ class SMWValueList extends SMWDescription {
  * must be satisfied (AND, conjunction).
  *
  * Corresponds to conjunction in OWL and SPARQL. Not available in RDFS.
+ * @ingroup SMWQuery
  */
 class SMWConjunction extends SMWDescription {
 	protected $m_descriptions;
@@ -664,6 +697,14 @@ class SMWConjunction extends SMWDescription {
 		return $depth;
 	}
 
+	public function getQueryFeatures() {
+		$result = SMW_CONJUNCTION_QUERY;
+		foreach ($this->m_descriptions as $desc) {
+			$result = $result | $desc->getQueryFeatures();
+		}
+		return $result;
+	}
+
 	public function prune(&$maxsize, &$maxdepth, &$log) {
 		if ($maxsize <= 0) {
 			$log[] = $this->getQueryString();
@@ -699,6 +740,7 @@ class SMWConjunction extends SMWDescription {
  * must be satisfied (OR, disjunction).
  *
  * Corresponds to disjunction in OWL and SPARQL. Not available in RDFS.
+ * @ingroup SMWQuery
  */
 class SMWDisjunction extends SMWDescription {
 	protected $m_descriptions;
@@ -796,6 +838,14 @@ class SMWDisjunction extends SMWDescription {
 		return $depth;
 	}
 
+	public function getQueryFeatures() {
+		$result = SMW_DISJUNCTION_QUERY;
+		foreach ($this->m_descriptions as $desc) {
+			$result = $result | $desc->getQueryFeatures();
+		}
+		return $result;
+	}
+
 	public function prune(&$maxsize, &$maxdepth, &$log) {
 		if ($maxsize <= 0) {
 			$log[] = $this->getQueryString();
@@ -833,6 +883,7 @@ class SMWDisjunction extends SMWDescription {
  * Corresponds to existential quatification ("some" restriction) on concrete properties
  * in OWL. In conjunctive queries (OWL) and SPARQL (RDF), it is represented by using 
  * variables in the object part of such properties.
+ * @ingroup SMWQuery
  */
 class SMWSomeProperty extends SMWDescription {
 	protected $m_description;
@@ -871,6 +922,10 @@ class SMWSomeProperty extends SMWDescription {
 
 	public function getDepth() {
 		return 1+$this->getDescription()->getDepth();
+	}
+
+	public function getQueryFeatures() {
+		return SMW_PROPERTY_QUERY | $this->m_description->getQueryFeatures();
 	}
 
 	public function prune(&$maxsize, &$maxdepth, &$log) {

@@ -53,6 +53,11 @@ define('SMW_CONJUNCTION_QUERY', 16); // any conjunctions
 define('SMW_DISJUNCTION_QUERY', 32); // any disjunctions (OR, ||)
 define('SMW_ANY_QUERY', 0xFFFFFFFF);  // subsumes all other options
 
+// constants for defining which concepts to show only if cached
+define('CONCEPT_CACHE_ALL', 4); //show concept elements anywhere only if cached
+define('CONCEPT_CACHE_HARD',1); //show without cache if concept is not harder than permitted inline queries
+define('CONCEPT_CACHE_NONE',0); //show all concepts even without any cache
+
 // constants for identifying javascripts as used in smwfRequireHeadItem
 define('SMW_HEADER_TIMELINE', 1);
 define('SMW_HEADER_TOOLTIP', 2);
@@ -85,7 +90,7 @@ $smwgHeadItems = array();
  * does not adhere to the naming conventions.
  */
 function enableSemantics($namespace = '', $complete = false) {
-	global $smwgIP, $smwgNamespace, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles, $wgJobClasses;
+	global $smwgIP, $smwgNamespace, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles, $wgJobClasses, $wgExtensionAliasesFiles;
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
@@ -353,7 +358,7 @@ function smwfProcessConceptParserFunction(&$parser) {
 	$concept_docu = array_shift( $params ); // second parameter, if any, might be a description
 
 	$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC);
-	$dv->setValues($concept_text, $concept_docu);
+	$dv->setValues($concept_text, $concept_docu, $query->getDescription()->getQueryFeatures(), $query->getDescription()->getSize(), $query->getDescription()->getDepth());
 	if (SMWFactbox::$semdata !== NULL) {
 		SMWFactbox::$semdata->addSpecialValue(SMW_SP_CONCEPT_DESC,$dv);
 	}

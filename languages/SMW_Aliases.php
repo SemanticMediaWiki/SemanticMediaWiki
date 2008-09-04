@@ -4,6 +4,7 @@
  *
  * @file
  * @ingroup Extensions
+ * @ingroup SMWLanguage
  */
 
 $aliases = array();

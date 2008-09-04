@@ -76,7 +76,7 @@ class SMWQueryProcessor {
 			$desc->prependPrintRequest(new SMWPrintRequest(SMWPrintRequest::PRINT_THIS, $mainlabel));
 		}
 
-		$query = new SMWQuery($desc, ($context != SMWQueryProcessor::SPECIAL_PAGE));
+		$query = new SMWQuery($desc, ($context != SMWQueryProcessor::SPECIAL_PAGE), ($context == SMWQueryProcessor::CONCEPT_DESC));
 		$query->setQueryString($querystring);
 		$query->setExtraPrintouts($extraprintouts);
 		$query->addErrors($qp->getErrors()); // keep parsing errors for later output
@@ -412,7 +412,7 @@ class SMWQueryParser {
 	/**
 	 * Compute an SMWDescription for current part of a query, which should
 	 * be a standalone query (the main query or a subquery enclosed within
-	 * "<q>...</q>". Recursively calls similar methods and returns NULL upon error.
+	 * "\<q\>...\</q\>". Recursively calls similar methods and returns NULL upon error.
 	 * 
 	 * The call-by-ref parameter $setNS is a boolean. Its input specifies whether
 	 * the query should set the current default namespace if no namespace restrictions

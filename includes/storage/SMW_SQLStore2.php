@@ -161,7 +161,7 @@ class SMWSQLStore2 extends SMWStore {
 				break;
 				case SMW_SQL2_CONC2:
 					$from = 'smw_conc2';
-					$select = 'concept_txt as concept, concept_docu as docu';
+					$select = 'concept_txt as concept, concept_docu as docu, concept_features as features, concept_size as size, concept_depth as depth';
 					$where = 's_id=' . $db->addQuotes($sid);
 				break;
 			}
@@ -202,7 +202,7 @@ class SMWSQLStore2 extends SMWStore {
 					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_INSTANCE_OF, $dv);
 				} elseif ($task == SMW_SQL2_CONC2) {
 					$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC);
-					$dv->setValues($row->concept, $row->docu);
+					$dv->setValues($row->concept, $row->docu, $row->features, $row->size, $row->depth);
 					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_CONCEPT_DESC, $dv);
 				}
 			}
@@ -677,6 +677,12 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn('SMWSQLStore2::deleteSubject (SMW)');
 		$this->deleteSemanticData($subject);
 		$this->updateRedirects($subject->getDBkey(), $subject->getNamespace()); // also delete redirects, may trigger update jobs!
+		if ($subject->getNamespace() == SMW_NS_CONCEPT) { // make sure to clear caches
+			$db =& wfGetDB( DB_MASTER );
+			$id = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki(),false);
+			$db->delete('smw_conc2', array('s_id' => $id), 'SMW::deleteSubject::Conc2');
+			$db->delete('smw_conccache', array('o_id' => $id), 'SMW::deleteSubject::Conccache');
+		}
 		///FIXME: if a property page is deleted, more pages may need to be updated by jobs!
 		///TODO: who is responsible for these updates? Some update jobs are currently created in SMW_Hooks, some internally in the store
 		///TODO: Possibly delete ID here (at least for non-properties/categories, if not used in any place in rels2)
@@ -705,7 +711,8 @@ class SMWSQLStore2 extends SMWStore {
 		$up_rels2 = array();  $up_atts2 = array();
 		$up_text2 = array();  $up_spec2 = array();
 		$up_subs2 = array();  $up_inst2 = array();
-		$up_conc2 = array();
+
+		$concept_desc = NULL;
 
 		//properties
 		foreach($data->getProperties() as $key => $property) {
@@ -794,15 +801,7 @@ class SMWSQLStore2 extends SMWStore {
 						}
 					break;
 					case SMW_SP_CONCEPT_DESC: // textual concept description
-						if ( $subject->getNamespace() != SMW_NS_CONCEPT ) {
-							break;
-						}
-						$value = end($propertyValueArray); // only one value per page!
-						if ( ($value->isValid()) )  {
-							$up_conc2[] = array('s_id' => $sid,
-							                    'concept_txt' => $value->getXSDValue(),
-							                    'concept_docu' => $value->getDocu());
-						}
+						$concept_desc = end($propertyValueArray); // only one value per page!
 					break;
 					default: // normal special value
 						foreach($propertyValueArray as $value) {
@@ -838,8 +837,33 @@ class SMWSQLStore2 extends SMWStore {
 		if (count($up_inst2) > 0) {
 			$db->insert( 'smw_inst2', $up_inst2, 'SMW::updateInst2Data');
 		}
-		if (count($up_conc2) > 0) {
-			$db->insert( 'smw_conc2', $up_conc2, 'SMW::updateConc2Data');
+		// Concepts are not just written but carefully updated,
+		// preserving existing metadata (cache ...) for a concept:
+		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) {
+			if ( ($concept_desc !== NULL) && ($concept_desc->isValid()) )  {
+				$up_conc2 = array(
+				     'concept_txt'   => $concept_desc->getXSDValue(),
+				     'concept_docu'  => $concept_desc->getDocu(),
+				     'concept_features' => $concept_desc->getQueryFeatures(),
+				     'concept_size'  => $concept_desc->getSize(),
+				     'concept_depth' => $concept_desc->getDepth()
+				);
+			} else {
+				$up_conc2 = array(
+				     'concept_txt'   => '',
+				     'concept_docu'  => '',
+				     'concept_features' => 0,
+				     'concept_size'  => -1,
+				     'concept_depth' => -1
+				);
+			}
+			$row = $db->selectRow('smw_conc2', array('cache_date','cache_count'), array('s_id'=>$sid), 'SMWSQLStore2Queries::updateConst2Data');
+			if ( ($row === false) && ($up_conc2['concept_txt'] != '') ) { // insert newly given data
+				$up_conc2['s_id'] = $sid;
+				$db->insert( 'smw_conc2', $up_conc2, 'SMW::updateConc2Data');
+			} elseif ($row !== false) { // update data, preserve existing entries
+				$db->update('smw_conc2',$up_conc2, array('s_id'=>$sid), 'SMW::updateConc2Data');
+			}
 		}
 
 		$this->m_semdata[$sid] = clone $data; // update cache, important if jobs are directly following this call
@@ -906,8 +930,10 @@ class SMWSQLStore2 extends SMWStore {
 				} elseif ( ( $oldtitle->getNamespace() == SMW_NS_CONCEPT ) && 
 				           ( $newtitle->getNamespace() == SMW_NS_CONCEPT ) ) {
 					$db->update('smw_conc2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
+					$db->update('smw_conccache', array('o_id' => $tid), array('o_id' => $sid), 'SMWSQLStore2::changeTitle');
 				} elseif ($oldtitle->getNamespace() == SMW_NS_CONCEPT) {
 					$db->delete('smw_conc2', $cond_array, 'SMWSQLStore2::changeTitle');
+					$db->delete('smw_conccache', array('o_id' => $sid), 'SMWSQLStore2::changeTitle');
 				}
 			}
 			/// TODO: may not be optimal for the standard case that newtitle existed and redirected to oldtitle (PERFORMANCE)
@@ -1066,7 +1092,7 @@ class SMWSQLStore2 extends SMWStore {
 		$db =& wfGetDB( DB_MASTER );
 		extract( $db->tableNames('smw_ids','smw_rels2','smw_atts2','smw_text2',
 		                         'smw_spec2','smw_subs2','smw_redi2','smw_inst2',
-		                         'smw_conc2') );
+		                         'smw_conc2','smw_conccache') );
 
 		$this->setupTable($smw_ids, // internal IDs used in this store
 		              array('smw_id'        => 'INT(8) UNSIGNED NOT NULL KEY AUTO_INCREMENT',
@@ -1120,10 +1146,20 @@ class SMWSQLStore2 extends SMWStore {
 		$this->setupIndex($smw_inst2, array('s_id', 'o_id'), $db);
 
 		$this->setupTable($smw_conc2, // concept descriptions
-		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL KEY',
-		                    'concept_txt' => 'MEDIUMBLOB',
-		                    'concept_docu'=> 'MEDIUMBLOB'), $db, $verbose);
+		              array('s_id'             => 'INT(8) UNSIGNED NOT NULL KEY',
+		                    'concept_txt'      => 'MEDIUMBLOB',
+		                    'concept_docu'     => 'MEDIUMBLOB',
+		                    'concept_features' => 'INT(8)',
+		                    'concept_size'     => 'INT(8)',
+		                    'concept_depth'    => 'INT(8)',
+		                    'cache_date'       => 'INT(8) UNSIGNED',
+		                    'cache_count'      => 'INT(8) UNSIGNED' ), $db, $verbose);
 		$this->setupIndex($smw_conc2, array('s_id'), $db);
+
+		$this->setupTable($smw_conccache, // concept cache: member elements (s)->concepts (o)
+		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL',
+		                    'o_id'        => 'INT(8) UNSIGNED NOT NULL'), $db, $verbose);
+		$this->setupIndex($smw_conccache, array('o_id'), $db);
 
 		$this->reportProgress("Database initialised successfully.\n",$verbose);
 		return true;
@@ -1142,6 +1178,60 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		$this->reportProgress("All data removed successfully.\n",$verbose);
 		return true;
+	}
+
+
+///// Concept caching /////
+
+	/**
+	 * Refresh the concept cache for the given concept.
+	 *
+	 * @param $concept Title
+	 */
+	public function refreshConceptCache($concept) {
+		wfProfileIn('SMWSQLStore2::refreshConceptCache (SMW)');
+		global $smwgIP;
+		include_once("$smwgIP/includes/storage/SMW_SQLStore2_Queries.php");
+		$qe = new SMWSQLStore2QueryEngine($this,wfGetDB( DB_MASTER ));
+		$result = $qe->refreshConceptCache($concept);
+		wfProfileOut('SMWSQLStore2::refreshConceptCache (SMW)');
+		return $result;
+	}
+
+	/**
+	 * Delete the concept cache for the given concept.
+	 *
+	 * @param $concept Title
+	 */
+	public function deleteConceptCache($concept) {
+		wfProfileIn('SMWSQLStore2::deleteConceptCache (SMW)');
+		global $smwgIP;
+		include_once("$smwgIP/includes/storage/SMW_SQLStore2_Queries.php");
+		$qe = new SMWSQLStore2QueryEngine($this,wfGetDB( DB_MASTER ));
+		$result = $qe->deleteConceptCache($concept);
+		wfProfileOut('SMWSQLStore2::deleteConceptCache (SMW)');
+		return $result;
+	}
+
+	/**
+	 * Show status of the concept cache for the given concept.
+	 *
+	 * @param $concept Title
+	 */
+	public function showConceptCache($concept) {
+		wfProfileIn('SMWSQLStore2::showConceptCache (SMW)');
+		$db =& wfGetDB( DB_SLAVE );
+		$cid = $this->getSMWPageID($concept->getDBKey(), $concept->getNamespace(), '', false);
+		$row = $db->selectRow('smw_conc2',
+		         array('concept_txt','concept_features','concept_size','concept_depth','cache_date','cache_count'),
+		         array('s_id'=>$cid), 'SMWSQLStore2::showConceptCache (SMW)');
+		if ($row !== false) {
+			$result = ($row->cache_date?"Cache created at " . date("Y-m-d H:i:s",$row->cache_date) . " ($row->cache_count elements)":'Not cached.');
+		} else {
+			$result = 'Concept not known or redirect.';
+		}
+		wfProfileOut('SMWSQLStore2::showConceptCache (SMW)');
+		return $result;
 	}
 
 
@@ -1306,7 +1396,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * If the table was already fine or was created completely anew, an empty
 	 * array is returned (assuming that both cases require no action).
 	 *
-	 * NOTE: the function partly ignores the order in which fields are set up.
+	 * @note The function partly ignores the order in which fields are set up.
 	 * Only if the type of some field changes will its order be adjusted explicitly.
 	 */
 	protected function setupTable($table, $fields, $db, $verbose) {
@@ -1508,8 +1598,8 @@ class SMWSQLStore2 extends SMWStore {
 	 * If no such ID exists, a new ID is created and returned.
 	 * In any case, the current sortkey is set to the given one unless $sortkey 
 	 * is empty.
-	 * NOTE: using this with $canonical==false may make sense, especially when
-	 * the title is a redirect target (we do not want chains of redirects)
+	 * @note Using this with $canonical==false may make sense, especially when
+	 * the title is a redirect target (we do not want chains of redirects).
 	 */
 	protected function makeSMWPageID($title, $namespace, $iw, $canonical=true, $sortkey = '') {
 		wfProfileIn('SMWSQLStore2::makeSMWPageID (SMW)');
@@ -1604,9 +1694,6 @@ class SMWSQLStore2 extends SMWStore {
 		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
 			$db->delete('smw_subs2', array('s_id' => $id), 'SMW::deleteSubject::Subs2');
 		}
-		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) {
-			$db->delete('smw_conc2', array('s_id' => $id), 'SMW::deleteSubject::Conc2');
-		}
 
 		// find bnodes used by this ID ...
 		$res = $db->select('smw_ids', 'smw_id','smw_title=' . $db->addQuotes('') . ' AND smw_namespace=' . $db->addQuotes($id) . ' AND smw_iw=' . $db->addQuotes(SMW_SQL2_SMWIW), 'SMW::deleteSubject::Nary');
@@ -1628,7 +1715,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * target are given. The target can be empty ('') if none is specified.
 	 * Returns the canonical ID that is now to be used for the subject, or 0 if the subject did
 	 * not occur anywhere yet.
-	 * NOTE: this method must do a lot of updates right, and some care is needed to not confuse
+	 * @note This method must do a lot of updates right, and some care is needed to not confuse
 	 * ids or forget relevant tables. Please make sure you understand the relevant cases before
 	 * making changes, especially since errors may go unnoticed for some time.
 	 */

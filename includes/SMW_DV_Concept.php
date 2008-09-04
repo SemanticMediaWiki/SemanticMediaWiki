@@ -19,6 +19,7 @@ class SMWConceptValue extends SMWDataValue {
 	protected $m_docu = '';    // text description of concept, can only be set by special function "setvalues"
 
 	protected function parseUserValue($value) {
+		$this->clear();
 		// this function is normally not used for this class, not created from user input directly
 		$this->m_concept = smwfXMLContentEncode($value);
 		if ($this->m_caption === false) {
@@ -29,8 +30,17 @@ class SMWConceptValue extends SMWDataValue {
 
 	protected function parseXSDValue($value, $unit) {
 		// normally not used, store should use setValues
+		$this->clear();
 		$this->m_concept = $value;
 		$this->m_caption = $this->m_concept; // this is our output text
+	}
+
+	protected function clear() {
+		$this->m_concept = '';
+		$this->m_docu = '';
+		$this->m_queryfeatures = 0;
+		$this->m_size = -1;
+		$this->m_depth = -1;
 	}
 
 	public function getShortWikiText($linked = NULL) {
@@ -170,13 +180,28 @@ class SMWConceptValue extends SMWDataValue {
 		return "<pre>$result</pre>";
 	}
 
-	public function setValues($concept, $docu) {
+	public function setValues($concept, $docu, $queryfeatures, $size, $depth) {
 		$this->setUserValue($concept); // must be called to make object valid (parent implementation)
 		$this->m_docu = $docu?smwfXMLContentEncode($docu):'';
+		$this->m_queryfeatures = $queryfeatures;
+		$this->m_size = $size;
+		$this->m_depth = $depth;
 	}
 
 	public function getDocu() {
 		return $this->m_docu;
+	}
+
+	public function getSize() {
+		return $this->m_size;
+	}
+
+	public function getDepth() {
+		return $this->m_depth;
+	}
+
+	public function getQueryFeatures() {
+		return $this->m_queryfeatures;
 	}
 
 }

@@ -4,10 +4,6 @@
  * @ingroup SMW
  */
 
-if ( !defined( 'MEDIAWIKI' ) ) {
-  die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
-}
-
 #################################################################
 #    CHANGING THE CONFIGURATION FOR SEMANTIC MEDIAWIKI          #
 #################################################################
@@ -16,6 +12,10 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 # between including this file and the call to enableSemantics().#
 # Exceptions that need to be set before are documented below.   #
 #################################################################
+
+if ( !defined( 'MEDIAWIKI' ) ) {
+  die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
+}
 
 ###
 # This is the path to your installation of Semantic MediaWiki as
@@ -135,25 +135,11 @@ $smwgPropertyPagingLimit = 25; // use smaller value since property lists need mo
 
 ###
 # Settings for inline queries ({{#ask:...}}) and for semantic queries in general.
-# Especially meant to prevent overly high server-load by complex queries.
+# This can especially  be used to prevent overly high server-load by complex queries.
+# The following settings affect all queries, wherever they occur.
 ##
 $smwgQEnabled = true;   // (De)activates all query related features and interfaces
-$smwgQMaxSize = 12;     // Maximal number of conditions in queries, use format=debug for example sizes
-$smwgQMaxDepth = 4;     // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
 $smwgQMaxLimit = 10000; // Max number of results ever retrieved, even when using special query pages.
-
-// The below setting defines which query features should be available by default.
-// Examples:
-// only cateory intersections: $smwgQFeatures = SMW_CATEGORY_QUERY | SMW_CONJUNCTION_QUERY;
-// only single concepts:       $smwgQFeatures = SMW_CONCEPT_QUERY;
-// anything but disjunctions:  $smwgQFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
-// The default is to support all basic features.
-$smwgQFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
-                 SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
-// Same as $smwgQFeatures but for concept pages, may be used for allowing complex queries only in "Concept:"
-// (note: using concepts in concepts is currently not supported)
-$smwgQConceptFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_NAMESPACE_QUERY |
-                        SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
 
 $smwgQSubcategoryDepth = 10;  // Restrict level of sub-category inclusion (steps within category hierarchy)
 $smwgQSubpropertyDepth = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)
@@ -171,11 +157,52 @@ $smwgQComparators = '<|>|!'; // List of comparator characters supported by queri
                              //                    ~ (pattern with '*' as wildcard, only for Type:String)
                              // If unsupported comparators are used, they are treated as part of the queried value
 
+###
+# Further settings for queries. The following settings affect inline queries and 
+# querying special pages. Essentially they should mirror the kind of queries that
+# should immediately be answered by the wiki, using whatever computations are
+# needed.
+##
+$smwgQMaxSize = 12; // Maximal number of conditions in queries, use format=debug for example sizes
+$smwgQMaxDepth = 4; // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
+
+// The below setting defines which query features should be available by default.
+// Examples:
+// only cateory intersections: $smwgQFeatures = SMW_CATEGORY_QUERY | SMW_CONJUNCTION_QUERY;
+// only single concepts:       $smwgQFeatures = SMW_CONCEPT_QUERY;
+// anything but disjunctions:  $smwgQFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
+// The default is to support all basic features.
+$smwgQFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
+                 SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
+
 ### Settings about printout of (especially inline) queries:
 $smwgQDefaultLimit = 50;      // Default number of rows returned in a query. Can be increased with limit=num in #ask
 $smwgQMaxInlineLimit = 500;   // Max number of rows ever printed in a single inline query on a single page.
 $smwgQPrintoutLimit  = 100;   // Max number of supported printouts (added columns in result table, ?-statements)
 $smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none", "subject" (first column), "all".
+
+
+###
+# Further settings for queries. The following settings affect queries that are part
+# of concept pages. These are usually chosen to be les restricted than inline queries,
+# since there are two other means for controling their use:
+# (1) Concept queries that would not be allowed as normal queries will not be executed
+# directly, but can use pre-computed results instead. This is the default.
+# (2) The whoel Concept: namespace can be restricted (using some suitable MediaWiki extension)
+# to an experienced user group that may create more complex queries responably. Other users
+# can employ thus defined concepts in their queries.
+##
+$smwgQConceptCaching = CONCEPT_CACHE_HARD; // Which concepts should be displayed only if available from cache?
+       // CONCEPT_CACHE_ALL   -- show concept elements anywhere only if cached
+       // CONCEPT_CACHE_HARD  -- show without cache if concept is not harder than permitted inline queries
+       // CONCEPT_CACHE_NONE  -- show all concepts without any cache
+       // In any cases, caches will always be used if available.
+$smwgQConceptMaxSize = 20; // Same as $smwgQMaxSize, but for concepts
+$smwgQConceptMaxDepth = 8; // Same as $smwgQMaxDepth, but for concepts
+
+// Same as $smwgQFeatures but for concepts (note: using concepts in concepts is currently not supported!)
+$smwgQConceptFeatures = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_NAMESPACE_QUERY |
+                        SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
 
 
 ### Predefined result formats for queries

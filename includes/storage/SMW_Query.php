@@ -42,9 +42,18 @@ class SMWQuery {
 	protected $m_errors = array(); // keep any errors that occurred so far
 	protected $m_querystring = false; // string (inline query) version (if fixed and known)
 	protected $m_inline; // query used inline? (required for finding right default parameters)
+	protected $m_concept; // query used in concept? (required for finding right default parameters)
 	protected $m_extraprintouts = array(); // SMWPrintoutRequest objects supplied outside querystring
 
-	public function SMWQuery($description = NULL, $inline = false) {
+	/**
+	 * Constructor.
+	 * @param $description Optional SMWDescription object describing the query conditions
+	 * @param $inline bool stating whether this query runs in an inline context; used to determine
+	 * proper default parameters (e.g. the default limit)
+	 * @param $concept bool stating whether this query belongs to a concept; used to determine
+	 * proper default parameters (concepts usually have less restrictions)
+	 */
+	public function __construct($description = NULL, $inline = false, $concept = false) {
 		global $smwgQMaxLimit, $smwgQMaxInlineLimit;
 		if ($inline) {
 			$this->m_limit = $smwgQMaxInlineLimit;
@@ -52,6 +61,7 @@ class SMWQuery {
 			$this->m_limit = $smwgQMaxLimit;
 		}
 		$this->m_inline = $inline;
+		$this->m_concept = $concept;
 		$this->m_description = $description;
 		$this->applyRestrictions();
 	}
@@ -127,7 +137,7 @@ class SMWQuery {
 	 * current offset so as to ensure that the number of the last considered result does not
 	 * exceed the maximum amount of supported results.
 	 * The function returns the chosen limit.
-	 * NOTE: it makes sense to have limit==0 e.g. to only show a link to the search special
+	 * @note It makes sense to have limit==0, e.g. to only show a link to the search special
 	 */
 	public function setLimit($limit, $restrictinline = true) {
 		global $smwgQMaxLimit, $smwgQMaxInlineLimit;
@@ -144,15 +154,20 @@ class SMWQuery {
 	 * Apply structural restrictions to the current description.
 	 */
 	public function applyRestrictions() {
-		global $smwgQMaxSize, $smwgQMaxDepth;
+		global $smwgQMaxSize, $smwgQMaxDepth, $smwgQConceptMaxSize, $smwgQConceptMaxDepth;
 		if ($this->m_description !== NULL) {
-			$maxsize = $smwgQMaxSize;
-			$maxdepth = $smwgQMaxDepth;
+			if ($this->m_concept) {
+				$maxsize = $smwgQConceptMaxSize;
+				$maxdepth = $smwgQConceptMaxDepth;
+			} else {
+				$maxsize = $smwgQMaxSize;
+				$maxdepth = $smwgQMaxDepth;
+			}
 			$log = array();
 			$this->m_description = $this->m_description->prune($maxsize, $maxdepth, $log);
 			if (count($log) > 0) {
 				wfLoadExtensionMessages('SemanticMediaWiki');
-				$this->m_errors[] = wfMsgForContent('smw_querytoolarge',implode(', ' , $log));
+				$this->m_errors[] = wfMsgForContent('smw_querytoolarge',str_replace('[','&#x005B;',implode(', ' , $log)));
 			}
 		}
 	}
