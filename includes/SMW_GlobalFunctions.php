@@ -14,7 +14,7 @@
  * @defgroup SMW Semantic MediaWiki
  */
 
-define('SMW_VERSION','1.3b-SVN');
+define('SMW_VERSION','1.3c-SVN');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -97,6 +97,9 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgExtensionFunctions[] = 'smwfSetupExtension';
 	$wgHooks['LanguageGetMagic'][] = 'smwfAddMagicWords'; // setup names for parser functions (needed here)
 	$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . '/languages/SMW_Messages.php'; // register messages (requires MW=>1.11)
+
+	// Register special pages aliases file
+	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . '/languages/SMW_Aliases.php';
 
 	///// Set up autoloading
 	///// All classes registered for autoloading here should be tagged with this information:
