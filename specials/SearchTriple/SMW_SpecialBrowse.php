@@ -72,13 +72,14 @@ class SMWSpecialBrowse extends SpecialPage {
 			$this->offset = intval($offsettext);
 		}
 		$dir = $wgRequest->getVal( 'dir' );
-		if (($dir == 'both')||($dir == 'in')) $this->showincoming = true;
-		if ($dir == 'in') $this->showoutgoing = false; 		
 		global $smwgBrowseShowAll;
 		if ($smwgBrowseShowAll) {
 			$this->showoutgoing = true;
 			$this->showincoming = true;
 		}
+		if (($dir == 'both')||($dir == 'in')) $this->showincoming = true;
+		if ($dir == 'in') $this->showoutgoing = false; 		
+		if ($dir == 'out') $this->showincoming = false; 		
 		
 		$wgOut->addHTML($this->displayBrowse());
 	}
@@ -230,13 +231,10 @@ class SMWSpecialBrowse extends SpecialPage {
 		$html  = "<a name=\"smw_browse_incoming\"></a>\n";
 		$html .= "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		$html .= "<tr class=\"smwb-center\"><td colspan=\"2\">\n";
-		global $smwgBrowseShowAll;
-		if (!$smwgBrowseShowAll) {
-			if ($this->showincoming) {
-				$html .= $this->linkhere(wfMsg('smw_browse_hide_incoming'), true, false, 0); 
-			} else {
-				$html .= $this->linkhere(wfMsg('smw_browse_show_incoming'), true, true, $this->offset);
-			}
+		if ($this->showincoming) {
+			$html .= $this->linkhere(wfMsg('smw_browse_hide_incoming'), true, false, 0); 
+		} else {
+			$html .= $this->linkhere(wfMsg('smw_browse_show_incoming'), true, true, $this->offset);
 		}
 		$html .= "&nbsp;\n";
 		$html .= "</td></tr>\n";

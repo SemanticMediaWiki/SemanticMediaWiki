@@ -115,7 +115,7 @@ $smwgBrowseShowInverse = false;
 # Should the browse view always show the incoming links as well, and more
 # of the incoming values?
 ##
-$smwgBrowseShowAll = false;
+$smwgBrowseShowAll = true;
 
 ###
 # Should the search by property special page dipslay nearby results when there
