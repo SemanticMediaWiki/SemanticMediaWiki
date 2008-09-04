@@ -24,3 +24,19 @@ $aliases['en'] = array(
 	'UnusedProperties' => array( 'UnusedProperties' ),
 	'WantedProperties' => array( 'WantedProperties' ),
 );
+
+/** Dutch (Nederlands) */
+$aliases['nl'] = array(
+	'Ask' => array( 'Vragen' ),
+	'Browse' => array( 'Bekijken' ),
+	'ExportRDF' => array( 'RDFExporteren' ),
+	'PageProperty' => array( 'Paginaeigenschap' ),
+	'Properties' => array( 'Eigenschappen' ),
+	'SMWAdmin' => array( 'SMWBeheer' ),
+	'SearchByProperty' => array( 'OpEigenschapZoeken' ),
+	'SemanticStatistics' => array( 'SemantischeStatistieken' ),
+	'Types' => array( 'Typen' ),
+	'UnusedProperties' => array( 'OngebruikteEigenschappen' ),
+	'WantedProperties' => array( 'GewensteEigenschappen' ),
+);
+

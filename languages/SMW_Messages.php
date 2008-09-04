@@ -371,14 +371,14 @@ $messages['ar'] = array(
 	'smw_concept_description' => 'وصف المبدأ "$1"',
 	'smw_no_concept_namespace' => 'المبادئ يمكن تعريفها فقط في الصفحات في نطاق Concept:',
 	'smw_multiple_concepts' => 'كل صفحة مبدأ يمكن أن تحتوي على تعريف مبدأ واحد.',
-	'smw_baduri' => 'عذرا، URIs من النوع "$1" غير مسموح بها.',
+	'smw_baduri' => 'URIs من النوع "$1" غير مسموح بها.',
 	'smw_rss_link' => 'آر إس إس',
 	'smw_csv_link' => 'سي في إس',
 	'smw_icalendar_link' => 'آي كالندر',
 	'smw_vcard_link' => 'في كارد',
-	'smw_iq_disabled' => 'عذرا. استعلامات السيمانتيك تم تعطيلها في هذا الويكي.',
+	'smw_iq_disabled' => 'استعلامات السيمانتيك تم تعطيلها في هذا الويكي.',
 	'smw_iq_moreresults' => '… مزيد من النتائج',
-	'smw_iq_nojs' => 'الرجاء استخدام المتصفح الذي يمكن جافا سكريبت لعرض هذا العنصر.',
+	'smw_iq_nojs' => 'استخدم متصفحا يمكن جافا سكريبت لرؤية هذا العنصر.',
 	'smw_iq_altresults' => 'استعرض قائمة النتائج مباشرة.',
 	'smw_unknown_importns' => 'إمكانية استيراد ليست متوفرة للنطاق "$1".',
 	'smw_nonright_importtype' => '$1 لا يمكن أن تستخدم إلا لصفحات مع النطاق "$2".',
@@ -419,7 +419,7 @@ $messages['ar'] = array(
 	'smw_valuesubquery' => 'الاستعلامات الفرعية غير مدعومة لقيم الخاصية "$1".',
 	'smw_overprintoutlimit' => 'هذا الاستعلام يحتوي على عدد كبير جدا من طلبات الطبع.',
 	'smw_badprintout' => 'بعض المطبوعات في الاستعلام لم تتشكل بصورة صحيحة.',
-	'smw_badtitle' => 'عذرا، لكن "$1" ليس عنوان صفحة صحيحا.',
+	'smw_badtitle' => '"$1" ليس عنوان صفحة صحيحا.',
 	'smw_badqueryatom' => 'جزء ما "<nowiki>[[…]]</nowiki>" من الاستعلام لم يتم فهمه.',
 	'smw_propvalueproblem' => 'قيمة الخاصية "$1" لم يتم فهمها.',
 	'smw_noqueryfeature' => 'ميزة استعلام ما لم يتم دعمها في هذا الويكي وجزء من الاستعلام تم إسقاطه ($1).',
@@ -428,7 +428,7 @@ $messages['ar'] = array(
 	'smw_querytoolarge' => 'شروط الاستفسار التالية لم يمكن اعتبارها نتيجة لقيود الويكي في حجم أو عمق الاستعلام: $1.',
 	'smw_devel_warning' => 'هذه الخاصية حاليا قيد التطوير، وربما لا تعمل بشكل كامل.
 احفظ بياناتك قبل استخدامها.',
-	'smw_notemplategiven' => 'من فضلك وفر قيمة للمحدد "template" لتعمل صيغة الاستعلام هذه.',
+	'smw_notemplategiven' => 'وفر قيمة للمحدد "template" لتعمل صيغة الاستعلام هذه.',
 	'smw_type_header' => 'خصائص النوع "$1"',
 	'smw_typearticlecount' => 'باستخدام هذا النوع $1 خصائص عرض.',
 	'smw_attribute_header' => 'الصفحات التي تستخدم الخاصية "$1"',
@@ -467,7 +467,7 @@ $messages['ar'] = array(
 	'smw_oi_action' => 'استيراد',
 	'smw_oi_return' => 'رجوع إلى <a href="$1">Special:OntologyImport</a>.',
 	'smw_oi_noontology' => 'لا توجد أنتولوجي، أو تعذر تحميل أنتولوجي.',
-	'smw_oi_select' => 'رجاء اختر الجمل للاستيراد، وبعد ذلك انقر على زر الاستيراد.',
+	'smw_oi_select' => 'اختر الجمل للاستيراد، وبعد ذلك انقر على زر الاستيراد.',
 	'smw_oi_textforall' => 'بداية النص الذي سيضاف إلى جميع الواردات (قد تكون فارغة):',
 	'smw_oi_selectall' => 'اختر أو احذف جميع الجمل',
 	'smw_oi_statementsabout' => 'بيانات حول',
@@ -503,8 +503,8 @@ $messages['ar'] = array(
 	'smw_ask_printhead' => 'مطبوعات إضافية (اختياري)',
 	'searchbyproperty' => 'البحث حسب الخصائص',
 	'smw_sbv_docu' => '<p>البحث عن كل الصفحات التي لها خصائص معينة وقيمة</p>',
-	'smw_sbv_noproperty' => '<p>من فضلك أدخل خاصية.</p>',
-	'smw_sbv_novalue' => '<p>من فضلك أدخل قيمة صحيحة للخاصية، أو انظر كل قيم الخصائص ل"$1"</p>',
+	'smw_sbv_noproperty' => '<p>أدخل خاصية.</p>',
+	'smw_sbv_novalue' => '<p>أدخل قيمة صحيحة للخاصية، أو انظر كل قيم الخصائص ل"$1"</p>',
 	'smw_sbv_displayresult' => 'قائمة بكل الصفحات التي بها الخاصية "$1" بالقيمة "$2"',
 	'smw_sbv_displayresultfuzzy' => 'قائمة بكل الصفحات التي لديها الخاصية "$1" بالقيمة "$2".
 بما أنه كانت هناك فقط عدة نتائج، فالقيم المقاربة معروضة أيضا.',
@@ -520,14 +520,14 @@ $messages['ar'] = array(
 	'smw_inverse_label_property' => 'علامة خاصية معكوسة',
 	'pageproperty' => 'بحث خصائص الصفحة',
 	'smw_pp_docu' => 'البحث عن جميع قيم خاصية على صفحة معينة.
-من فضلك أدخل صفحة وخاصية.',
+أدخل صفحة وخاصية.',
 	'smw_pp_from' => 'من صفحة',
 	'smw_pp_type' => 'الخاصية',
 	'smw_pp_submit' => 'إيجاد نتائج',
 	'smw_result_prev' => 'السابق',
 	'smw_result_next' => 'التالي',
 	'smw_result_results' => 'النتائج',
-	'smw_result_noresults' => 'عذرا، لا توجد نتائج.',
+	'smw_result_noresults' => 'لا توجد نتائج.',
 	'smwadmin' => 'وظائف إدارية لسيمانتيك ميدياويكي',
 );
 
@@ -1127,6 +1127,7 @@ $messages['fi'] = array(
  * @author Pierre Matringe
  * @author Sherbrooke
  * @author Verdy p
+ * @author Zetud
  */
 $messages['fr'] = array(
 	'smw_edithelp' => "Aide à la rédaction de relations et d'attributs",
@@ -1201,7 +1202,7 @@ $messages['fr'] = array(
 	'smw_attribute_header' => "Pages utilisant l'attribut “$1”",
 	'smw_attributearticlecount' => 'Afficher $1 pages utilisant cet attribut.',
 	'smw_subproperty_header' => 'Sous-propriétés',
-	'smw_subpropertyarticlecount' => 'Cette propriété dispose de $1 sous-propriétés suivantes.',
+	'smw_subpropertyarticlecount' => 'Cette propriété dispose des $1 sous-propriétés suivantes.',
 	'smw_concept_header' => 'Page du concept « $1 »',
 	'smw_conceptarticlecount' => 'Afficher $1 pages reposant sur ce concept',
 	'smw_rss_description' => 'fil RSS $1',
@@ -1266,7 +1267,7 @@ Certaines des propriétés existantes peuvent faire être <a href="$6">inutilis�
 	'smw_sbv_noproperty' => '<p>Veuillez entrer un attribut.</p>',
 	'smw_sbv_novalue' => '<p>Veuillez entrer une valeur ou consulter toutes les valeurs des attributs pour $1.</p>',
 	'smw_sbv_displayresult' => 'Liste de toutes les pages qui ont un attribut $1 avec la valeur $2.',
-	'smw_sbv_displayresultfuzzy' => 'Une liste de toutes les pages qui ont la propriété « $1 » avec la valeur « $2 ». Depuis il y a seulement quelques résultats, les valeurs proches sont aussi affichées.',
+	'smw_sbv_displayresultfuzzy' => "Une liste de toutes les pages qui ont la propriété « $1 » avec la valeur « $2 ». Puisqu'il n'y a que quelques résultats, les valeurs proches sont également affichées.",
 	'smw_sbv_property' => 'Propriété',
 	'smw_sbv_value' => 'Valeur',
 	'smw_sbv_submit' => 'Trouver des résultats',
@@ -2368,6 +2369,8 @@ $messages['nl'] = array(
 	'smw_concept_description' => 'Beschrijving van het concept "$1"',
 	'smw_no_concept_namespace' => "Concepten kunnen alleen gedefinieerd worden op pagina's in de naamruimte Concept:",
 	'smw_multiple_concepts' => 'Iedere conceptpagina kan maar één conceptdefinitie bevatten.',
+	'smw_concept_cache_miss' => 'Het concept "$1" kan op het moment niet gebruikt worden omdat de dit volgende de instellingen van de wiki offline berekend moet worden.
+Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan om dit concept beschikbaar te maken.',
 	'smw_baduri' => "URI's uit de reeks “$1” zijn hier niet beschikbaar.",
 	'smw_csv_link' => 'CSV',
 	'smw_icalendar_link' => 'iCalendar',
@@ -3099,6 +3102,8 @@ O número de propriedades incorrectas é dada entre parênteses rectos.',
 	'smw_sbv_noproperty' => '<p>Por favor, introduza uma propriedade.</p>',
 	'smw_sbv_novalue' => '<p>Por favor, introduza um valor válido para a propriedade, ou veja todos os valores da propriedade “$1.”</p>',
 	'smw_sbv_displayresult' => 'Segue-se uma lista de todas as páginas que possuem a propriedade “$1” com valor “$2”',
+	'smw_sbv_displayresultfuzzy' => 'Uma lista de todas as páginas que têm a propriedade "$1" com o valor "$2".
+Uma vez que houve poucos resultados, valores próximos são também apresentados.',
 	'smw_sbv_property' => 'Propriedade',
 	'smw_sbv_value' => 'Valor',
 	'smw_sbv_submit' => 'Procurar resultados',
@@ -3354,6 +3359,8 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_attributearticlecount' => 'Zobrazuje sa $1 stránok, ktoré používajú túto vlastnosť.',
 	'smw_subproperty_header' => 'Podvlastnosti',
 	'smw_subpropertyarticlecount' => 'Táto vlastnosť má {{PLURAL:|nasledovnú podvlastnosť|nasledovné $1 podvlastnosti|nasledovných $1 podvlastností}}.',
+	'smw_concept_header' => 'Návrh „$1”',
+	'smw_conceptarticlecount' => 'Zobrazuje sa $1 stránok patriacich tomuto návrhu.',
 	'exportrdf' => 'Exportovať stránky do RDF',
 	'smw_exportrdf_docu' => '<p>Táto stránka vám umožňuje exportovať časti stránok do formátu RDF. Po zadaní názvov stránok do spodného textového poľa, jeden názov na riadok, môžete exportovať stránky.</p>',
 	'smw_exportrdf_recursive' => 'Rekurzívne exportovať všetky súvisiace stránky. Pozor, výsledok môže byť veľmi veľký!',
@@ -3415,6 +3422,8 @@ Vlastnosti, ktorým stále chýba stránka sa nachádzajú na <a href="$7">zozna
 	'smw_sbv_noproperty' => '<p>Nebol poskytnutý atribút. Prosím, poskytnite ho vo formulári.</p>',
 	'smw_sbv_novalue' => '<p>Nebola poskytnutá hodnota. Prosím, poskytnite ju vo formulári alebo zobrazte všetky atribúty typu $1</p>',
 	'smw_sbv_displayresult' => 'Zoznam všetkých článkov, ktoré majú atribút $1 $2.',
+	'smw_sbv_displayresultfuzzy' => 'Zoznam všetkých stránok, ktoré majú vlastnosť „$1” s hodnotou „$2”.
+Keďže výsledkov bolo len niekoľko, zobrazujú sa aj blízke hodnoty.',
 	'smw_sbv_property' => 'Atribút:',
 	'smw_sbv_value' => 'Hodnota:',
 	'smw_sbv_submit' => 'Hľadať výsledky',
@@ -3637,6 +3646,13 @@ $messages['te'] = array(
  */
 $messages['tg-cyrl'] = array(
 	'smw_sbv_value' => 'Қимат',
+);
+
+/** Thai (ไทย)
+ * @author Octahedron80
+ */
+$messages['th'] = array(
+	'smw_oi_action' => 'นำเข้า',
 );
 
 /** Vietnamese (Tiếng Việt)
