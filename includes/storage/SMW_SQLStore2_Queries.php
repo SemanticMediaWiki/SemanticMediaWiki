@@ -384,26 +384,30 @@ class SMWSQLStore2QueryEngine {
 				// keep the above query object, it yields an empty result
 				///TODO: announce an error here? (maybe not, since the query processor can check for 
 				///non-existing concept pages which is probably the main reason for finding nothing here
-			} elseif ($row->cache_date) { // cached concept, use cache!
-				$query->jointable = 'smw_conccache';
-				$query->joinfield = "$query->alias.s_id";
-				$query->where = "$query->alias.o_id=" . $this->m_dbs->addQuotes($cid);
-			} elseif ($row->concept_txt) { // parse description and process it recursively
-				global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures;
-				if ( ($smwgQConceptCaching == 2) ||
-				     ( ($smwgQConceptCaching == 1) && ( (~(~($row->concept_features+0) | $smwgQFeatures)) == 0) 
-				       && ($smwgQMaxSize >= $row->concept_size) && ($smwgQMaxDepth >= $row->concept_depth))
-				   ) {
-					$qp = new SMWQueryParser();
-					// no defaultnamespaces here; if any, these are already in the concept
-					$desc = $qp->getQueryDescription($row->concept_txt);
-					$qid = $this->compileQueries($desc);
-					$query = $this->m_queries[$qid];
-				} else {
-					wfLoadExtensionMessages('SemanticMediaWiki');
-					$this->m_errors[] = wfMsg('smw_concept_cache_miss',$description->getConcept()->getText());
-				}
-			} // else: no cache, no description (this may happen); treat like empty concept
+			} else {
+				global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
+				$may_be_computed = ($smwgQConceptCaching == 2) ||
+				    ( ($smwgQConceptCaching == 1) && ( (~(~($row->concept_features+0) | $smwgQFeatures)) == 0) && 
+				      ($smwgQMaxSize >= $row->concept_size) && ($smwgQMaxDepth >= $row->concept_depth));
+				if ($row->cache_date &&
+				    ($row->cache_date > (strtotime("now") - $smwgQConceptCacheLifetime*60) ||
+				     !$may_be_computed)) { // cached concept, use cache unless it is dead and can be revived
+					$query->jointable = 'smw_conccache';
+					$query->joinfield = "$query->alias.s_id";
+					$query->where = "$query->alias.o_id=" . $this->m_dbs->addQuotes($cid);
+				} elseif ($row->concept_txt) { // parse description and process it recursively
+					if ($may_be_computed) {
+						$qp = new SMWQueryParser();
+						// no defaultnamespaces here; if any, these are already in the concept
+						$desc = $qp->getQueryDescription($row->concept_txt);
+						$qid = $this->compileQueries($desc);
+						$query = $this->m_queries[$qid];
+					} else {
+						wfLoadExtensionMessages('SemanticMediaWiki');
+						$this->m_errors[] = wfMsg('smw_concept_cache_miss',$description->getConcept()->getText());
+					}
+				} // else: no cache, no description (this may happen); treat like empty concept
+			}
 		} else { // (e.g. SMWThingDescription, SMWValueList is also treated elswhere)
 			$qid = -1; // no condition
 		}
