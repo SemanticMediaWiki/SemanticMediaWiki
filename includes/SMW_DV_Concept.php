@@ -68,7 +68,7 @@ class SMWConceptValue extends SMWDataValue {
 	}
 
 	public function getXSDValue() {
-		return $this->m_concept;
+		return $this->getWikiValue(); // no XML encoding in DB for concepts, simplifies direct access in store
 	}
 
 	public function getWikiValue(){
