@@ -40,3 +40,17 @@ $aliases['nl'] = array(
 	'WantedProperties' => array( 'GewensteEigenschappen' ),
 );
 
+/** German (Deutsch) */
+$aliases['de'] = array(
+	'Ask' => array( 'Semantische Suche' ),
+	'Browse' => array( 'Browse' ),
+	'ExportRDF' => array( 'Exportiere RDF' ),
+	'PageProperty' => array( 'Seitenattribut' ),
+	'Properties' => array( 'Attribute' ),
+	'SMWAdmin' => array( 'SMW-Einrichtung' ),
+	'SearchByProperty' => array( 'Suche mittels Attribut' ),
+	'SemanticStatistics' => array( 'Semantische Statistik' ),
+	'Types' => array( 'Datentypen' ),
+	'UnusedProperties' => array( 'Verwaiste Attribute' ),
+	'WantedProperties' => array( 'Gewünschte Attribute' ),
+);
