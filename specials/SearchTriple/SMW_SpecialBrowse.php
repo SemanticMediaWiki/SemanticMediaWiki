@@ -138,11 +138,31 @@ class SMWSpecialBrowse extends SpecialPage {
 		$properties = $data->getProperties();
 		$noresult = true;
 		 foreach ($properties as $property) {
+			$displayline= false;
 			if ($property instanceof Title) {
-				// display property
-				$head  = "<th>\n";
-				$head .= $skin->makeLinkObj($property, $this->getPropertyLabel($property, $incoming)) . "\n"; // @todo Replace makeLinkObj with link as soon as we drop MW1.12 compatibility
-				$head .= "</th>\n";
+				$proptext = $skin->makeLinkObj($property, $this->getPropertyLabel($property, $incoming)) . "\n"; // @todo Replace makeLinkObj with link as soon as we drop MW1.12 compatibility
+				$displayline = true;
+				$special = false;
+			} else {
+				$special = true;
+				global $smwgContLang;
+				$proptext = $smwgContLang->findSpecialPropertyLabel( $property );
+				if ($proptext != '') {
+					$p = Title::newFromText($proptext, SMW_NS_PROPERTY);
+					$proptext = $skin->makeLinkObj($p, $proptext);
+					$displayline = true;
+				}
+				if (SMW_SP_INSTANCE_OF == $property) {
+					$proptext = $skin->specialLink( 'Categories' );
+					$displayline = true;
+				}
+				if (SMW_SP_REDIRECTS_TO == $property) {
+					$proptext = $skin->specialLink( 'Listredirects', 'isredirect' );
+					$displayline = true;
+				}
+			}
+			if ($displayline) {
+				$head  = "<th>" . $proptext . "</th>\n";
 				
 				// display value
 				$body  = "<td>\n";
@@ -155,7 +175,10 @@ class SMWSpecialBrowse extends SpecialPage {
 						$body .= '<a href="' . $skin->makeSpecialUrl('SearchByProperty', 'property=' . urlencode($property->getPrefixedText()) . '&value=' . urlencode($data->getSubject()->getLongWikiText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
 					} else {
 						$body .= "<span class=\"smwb-" . $inv . "value\">";
-						$body .= $this->displayValue($property, $value, $incoming);
+						if ($special)
+							$body .= $this->displaySpecialValue($property, $value, $incoming);
+						else 
+							$body .= $this->displayValue($property, $value, $incoming);
 						$body .= "</span>";
 					}
 					$count--;
@@ -172,9 +195,6 @@ class SMWSpecialBrowse extends SpecialPage {
 				}
 				$html .= "</tr>\n";
 				$noresult = false;
-			} else {
-				// @todo Add special property, Categories, Instances, ...
-				//$noresult = false;
 			}
 		} // end foreach properties
 		if ($noresult) $html .= "<tr class=\"smwb-propvalue\"><th> &nbsp; </th><td><em>" . wfMsg('smw_result_noresults') . "</em></td></th></table>\n";
@@ -204,7 +224,27 @@ class SMWSpecialBrowse extends SpecialPage {
 				$html .= $value->getInfolinkText(SMW_OUTPUT_HTML, $skin);
 		return $html; 
 	}
+
+	/**
+	 * Displays a value for a special property, including all relevant links (browse and search by property)
+	 * 
+	 * @param[in] $property int  A constant representing the special value
+	 * @param[in] $value SMWDataValue  The actual value
+	 * @param[in] $incoming bool  If this is an incoming or outgoing link
+	 * @return string  HTML with the link to the article, browse, and search pages
+	 */
+	private function displaySpecialValue($property, SMWDataValue $value, $incoming) {
+		global $wgUser;
+		$skin = $wgUser->getSkin();
+		$html = $value->getLongHTMLText($skin);
+		if ($value->getTypeID() == '_wpg')
+			$html .= "&nbsp;" . SMWInfolink::newBrowsingLink('+',$value->getLongWikiText())->getHTML($skin);
+		else
+			$html .= $value->getInfolinkText(SMW_OUTPUT_HTML, $skin);
+		return $html; 
+	}
 	
+
 	/**
 	 * Displays the subject that is currently being browsed to.
 	 * 
@@ -319,7 +359,6 @@ class SMWSpecialBrowse extends SpecialPage {
 			foreach ($values as $value) {
 				$indata->addPropertyObjectValue($property, $value);
 			}
-			// @todo Add special properties and such
 		}
 		return array($indata, $more);
 	}
@@ -379,4 +418,3 @@ class SMWSpecialBrowse extends SpecialPage {
 	}
 
 }
-
