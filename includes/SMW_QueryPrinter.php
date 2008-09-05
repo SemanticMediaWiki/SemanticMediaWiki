@@ -153,7 +153,9 @@ abstract class SMWResultPrinter {
 				} else {
 					global $wgTitle;
 					$popt = new ParserOptions();
-					$pout = $wgParser->parse($result, $wgTitle, $popt);
+					$popt->setEditSection(false);
+					$pout = $wgParser->parse($result . '__NOTOC__', $wgTitle, $popt);
+					/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
 					$result = $pout->getText();
 				}
 			} else {
