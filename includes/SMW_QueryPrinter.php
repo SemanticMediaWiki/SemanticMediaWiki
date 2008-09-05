@@ -82,8 +82,19 @@ abstract class SMWResultPrinter {
 	 *
 	 * For outputs SMW_OUTPUT_WIKI and SMW_OUTPUT_HTML, error messages or standard "further results" links
 	 * are directly generated and appended. For SMW_OUTPUT_FILE, only the plain generated text is returned.
+	 *
+	 * @note A note on recursion: some query printers may return wiki code that comes from other pages,
+	 * e.g. from templates that are used in formatting or from embedded result pages. Both kinds of pages
+	 * may contain \#ask queries that do again use new pages, so we must care about recursion. We do so
+	 * by simply counting how often this method starts a subparse and stopping at depth 2. There is one
+	 * special case: if this method is called outside parsing, and the concrete printer returns wiki text,
+	 * and wiki text is requested, then we may return wiki text with sub-queries to the caller. If the
+	 * caller parses this (which is likely) then this will again call us in parse-context and all recursion
+	 * checks catch. Only the first level of parsing is done outside and thus not counted. Thus you
+	 * effectively can get down to level 3.
 	 */
 	public function getResult($results, $params, $outputmode) {
+		global $wgParser;
 		$this->isHTML = false;
 		$this->hasTemplates = false;
 		$this->readParameters($params,$outputmode);
@@ -118,27 +129,37 @@ abstract class SMWResultPrinter {
 		}
 		$result .= $this->getErrorString($results); // append errors
 		if ( (!$this->isHTML) && ($this->hasTemplates) ) { // preprocess embedded templates if needed
-			global $wgParser;
-			SMWResultPrinter::$mRecursionDepth++;
-			if (SMWResultPrinter::$mRecursionDepth <= 2) { // restrict recursion
-				$result = '[[SMW::off]]' . $wgParser->replaceVariables($result) . '[[SMW::on]]';
+			if ( ($wgParser->getTitle() instanceof Title) && ($wgParser->getOptions() instanceof ParserOptions) ) {
+				SMWResultPrinter::$mRecursionDepth++;
+				if (SMWResultPrinter::$mRecursionDepth <= 2) { // restrict recursion
+					$result = '[[SMW::off]]' . $wgParser->replaceVariables($result) . '[[SMW::on]]';
+				} else {
+					$result = ''; /// TODO: explain problem (too much recursive parses)
+				}
+				SMWResultPrinter::$mRecursionDepth--;
+			} else { // not during parsing, no preprocessing needed, still protect the result
+				$result = '[[SMW::off]]' . $result . '[[SMW::on]]';
 			}
-			SMWResultPrinter::$mRecursionDepth--;
 		}
 
 		if ( ($this->isHTML) && ($outputmode == SMW_OUTPUT_WIKI) ) {
 			$result = array($result, 'isHTML' => true);
 		} elseif ( (!$this->isHTML) && ($outputmode == SMW_OUTPUT_HTML) ) {
-			global $wgParser;
+			SMWResultPrinter::$mRecursionDepth++;
 			// check whether we are in an existing parse, or if we should start a new parse for $wgTitle
-			if ( ($wgParser->getTitle() instanceof Title) && ($wgParser->getOptions() instanceof ParserOptions) ) {
-				$result = $wgParser->recursiveTagParse($result);
+			if (SMWResultPrinter::$mRecursionDepth <= 2) { // retrict recursion
+				if ( ($wgParser->getTitle() instanceof Title) && ($wgParser->getOptions() instanceof ParserOptions) ) {
+					$result = $wgParser->recursiveTagParse($result);
+				} else {
+					global $wgTitle;
+					$popt = new ParserOptions();
+					$pout = $wgParser->parse($result, $wgTitle, $popt);
+					$result = $pout->getText();
+				}
 			} else {
-				global $wgTitle;
-				$popt = new ParserOptions();
-				$pout = $wgParser->parse($result, $wgTitle, $popt);
-				$result = $pout->getText();
+				$result = ''; /// TODO: explain problem (too much recursive parses)
 			}
+			SMWResultPrinter::$mRecursionDepth--;
 		}
 
 		if ( ($this->mIntro) && ($results->getCount() > 0) ) {
