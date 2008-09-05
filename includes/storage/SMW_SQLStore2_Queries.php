@@ -109,7 +109,6 @@ class SMWSQLStore2QueryEngine {
 			                    ($qobj->where?" WHERE ":'') . $qobj->where . " LIMIT $smwgQMaxLimit",
 			                    'SMW::refreshConceptCache');
 			$this->m_dbs->update('smw_conc2', array('cache_date' => strtotime("now"), 'cache_count' => $this->m_dbs->affectedRows()), array('s_id' => $cid), 'SMW::refreshConceptCache');
-			//print $desc->getQueryString(); //DEBUG
 		} else { // just delete old data if there is any
 			$this->m_dbs->delete('smw_conccache', array('o_id' => $cid), 'SMW::refreshConceptCache');
 			$this->m_dbs->update('smw_conc2', array('cache_date' => NULL, 'cache_count' => NULL), array('s_id' => $cid), 'SMW::refreshConceptCache');

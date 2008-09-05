@@ -1214,23 +1214,35 @@ class SMWSQLStore2 extends SMWStore {
 	}
 
 	/**
-	 * Show status of the concept cache for the given concept.
+	 * Return status of the concept cache for the given concept as an array
+	 * with key 'status' ('empty': not cached, 'full': cached, 'no': not
+	 * cachable). If status is not 'no', the array also contains keys 'size'
+	 * (query size), 'depth' (query depth), 'features' (query features). If
+	 * status is 'full', the array also contains keys 'date' (timestamp of
+	 * cache), 'count' (number of results in cache).
 	 *
 	 * @param $concept Title
 	 */
-	public function showConceptCache($concept) {
-		wfProfileIn('SMWSQLStore2::showConceptCache (SMW)');
+	public function getConceptCacheStatus($concept) {
+		wfProfileIn('SMWSQLStore2::getConceptCacheStatus (SMW)');
 		$db =& wfGetDB( DB_SLAVE );
 		$cid = $this->getSMWPageID($concept->getDBKey(), $concept->getNamespace(), '', false);
 		$row = $db->selectRow('smw_conc2',
 		         array('concept_txt','concept_features','concept_size','concept_depth','cache_date','cache_count'),
-		         array('s_id'=>$cid), 'SMWSQLStore2::showConceptCache (SMW)');
+		         array('s_id'=>$cid), 'SMWSQLStore2::getConceptCacheStatus (SMW)');
 		if ($row !== false) {
-			$result = ($row->cache_date?"Cache created at " . date("Y-m-d H:i:s",$row->cache_date) . " ($row->cache_count elements)":'Not cached.');
+			$result = array('size' => $row->concept_size, 'depth' => $row->concept_depth, 'features' => $row->concept_features);
+			if ($row->cache_date) {
+				$result['status'] = 'full';
+				$result['date'] = $row->cache_date;
+				$result['count'] = $row->cache_count;
+			} else {
+				$result['status'] = 'empty';
+			}
 		} else {
-			$result = 'Concept not known or redirect.';
+			$result = array('status' => 'no');
 		}
-		wfProfileOut('SMWSQLStore2::showConceptCache (SMW)');
+		wfProfileOut('SMWSQLStore2::getConceptCacheStatus (SMW)');
 		return $result;
 	}
 
