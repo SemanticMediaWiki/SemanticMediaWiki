@@ -230,7 +230,7 @@ class SMWSQLStore2 extends SMWStore {
 						$sql='SELECT r.o_id AS bnode, prop.smw_title AS prop, pos.smw_title AS pos, text.value_blob AS xsd FROM ' . $db->tableName('smw_rels2') . ' AS r INNER JOIN ' . $db->tableName('smw_text2') . ' AS text ON r.o_id=text.s_id INNER JOIN ' . $db->tableName('smw_ids') . ' AS pos ON pos.smw_id=text.p_id INNER JOIN ' . $db->tableName('smw_ids') . ' AS prop ON prop.smw_id=r.p_id WHERE pos.smw_iw=' . $db->addQuotes(SMW_SQL2_SMWIW) . ' AND r.s_id=' . $db->addQuotes($sid);
 					break;
 				}
-				$res = $db->query($sql, 'SMW::getPropertyValues');
+				$res = $db->query($sql, 'SMWSQLStore2::getSemanticData-nary');
 				while($row = $db->fetchObject($res)) {
 					if ( !array_key_exists($row->prop,$properties) ) {
 						$properties[$row->prop] = Title::makeTitle(SMW_NS_PROPERTY,$row->prop);
