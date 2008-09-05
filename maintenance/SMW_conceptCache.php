@@ -143,11 +143,12 @@ outputMessage("\n\nDone.\n");
 function doAction($title, $numlines = false) {
 	global $action, $store, $select_hard, $select_old, $select_update, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures;
 	$errors = array();
-	if ($select_hard || $select_old || ($action == 'status')) {
+	$status = false;
+	if ($select_hard || $select_old || $select_update || ($action == 'status')) {
 		$status = $store->getConceptCacheStatus($title);
 	}
 	$skip = false;
-	if ($status['status'] == 'no') {
+	if (($status !== false) && ($status['status'] == 'no')) {
 		$skip = 'page not cachable (no concept description, maybe a redirect)';
 	} elseif (($select_update) && ($status['status'] != 'full')) {
 		$skip = 'page not cached yet';
