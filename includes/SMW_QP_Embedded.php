@@ -37,20 +37,13 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 	}
 
 	protected function getResultText($res,$outputmode) {
-		global $smwgEmbeddingList, $wgParser;
-		if (!is_array($smwgEmbeddingList)) { // catch recursions (sometimes more restrictive than needed, but normal usage is not affected)
-			$firstrun = true;
-			$smwgEmbeddingList = array();
-			// No page should embed itself:
-			if ($wgParser->getTitle() instanceof Title) {
-				$smwgEmbeddingList[] = $wgParser->getTitle()->getPrefixedText();
-			} else {
-				global $wgTitle;
-				$smwgEmbeddingList[] = $wgTitle->getPrefixedText();
-			}
-			$oldEmbeddingList = false;
-		} else {
-			$oldEmbeddingList = array_values($smwgEmbeddingList);
+		global $wgParser;
+		// No page should embed itself, find out who we are:
+		if ($wgParser->getTitle() instanceof Title) {
+			$title = $wgParser->getTitle()->getPrefixedText();
+		} else { // this is likely to be in vain -- this case is typical if we run on special pages
+			global $wgTitle;
+			$title = $wgTitle->getPrefixedText();
 		}
 
 		// print header
@@ -86,8 +79,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 						if ($this->m_showhead) {
 							$result .= $headstart . $text . $headend;
 						}
-						if (!in_array($object->getLongWikiText(), $smwgEmbeddingList)) { // prevent recursion!
-							$smwgEmbeddingList[] = $object->getLongWikiText();
+						if ($object->getLongWikiText() != $title) {
 							if ($object->getNamespace() == NS_MAIN) {
 								$articlename = ':' . $object->getDBkey();
 							} else {
@@ -121,11 +113,6 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		}
 		$result .= $footer;
 
-		if (is_array($oldEmbeddingList)) {
-			$smwgEmbeddingList = array_values($oldEmbeddingList);
-		} else {
-			$smwgEmbeddingList = false;
-		}
 		return $result;
 	}
 }
