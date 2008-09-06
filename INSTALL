@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.2.2]]
+[[Semantic MediaWiki 1.3]]
 
 Install instructions for the latest SMW version are also online in a more
 convenient format for reading:
@@ -14,17 +14,12 @@ Contents
   ** Testing your Installation
   ** Customising Semantic MediaWiki
   ** Running SMW on older versions of MediaWiki
-* Notes on Upgrading
-  ** General Upgrading Instructions
-  ** Upgrading from SMW 1.2 and SMW 1.2.1
-  ** Upgrading from SMW 1.0.* and SMW 1.1.*
-  ** Upgrading from 1.0 RC1, 1.0 RC2, 1.0 RC3
-  ** Upgrading from version 0.7
-  ** Upgrading from versions 0.6 and 0.5
-  ** Upgrading from 0.4.x
+* Upgrading existing installations
+  ** Changed configuration options
 * Troubleshooting
 * SMW is installed. What should I do now?
 * Contact
+
 
 == Disclaimer ==
 
@@ -36,9 +31,10 @@ the software without much risk (though no dedicated uninstall mechanism is
 provided). Every serious wiki should be subject to regular database backups!
 If you have any specific questions, please contact the authors.
 
+
 == Requirements ==
 
-* MediaWiki 1.11.* or greater (tested from 1.11.0 to 1.13alpha (r37479)).
+* MediaWiki 1.11.* or greater (tested from 1.11.0 to 1.14alpha (r40427)).
 * PHP 5.x or greater installed and working
 * MySQL >= 4.0.14 (version required by MediaWiki)
 
@@ -55,13 +51,16 @@ Notes:
   AdminSettings.php for this purpose, avoiding the need of extra rights for
   the wiki DB user.
 * SMW creates and alters temporary tables for certain semantic queries. To do
-  this, your wikidb user must have privileges for CREATE TEMPORARY TABLES. The 
-  according features can be disabled by adding the following to Localsettings.php:
+  this, your wikidb user must have privileges for CREATE TEMPORARY TABLES. The
+  according features can be disabled by adding the following to
+  Localsettings.php:
 
   $smwgQSubcategoryDepth=0;
   $smwgQPropertyDepth=0;
   $smwgQFeatures        = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
-  $smwgQConceptFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY & ~SMW_CONCEPT_QUERY;
+  $smwgQConceptFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY &
+                          ~SMW_CONCEPT_QUERY;
+
 
 == Installation ==
 
@@ -87,6 +86,9 @@ remarks in the section "Notes on Upgrading" below!
     Please consider announcing your new site to the SMW semantic wiki list by
     using the according button on "Special:SMWAdmin".
 
+    Note that this requires persmissions to alter/create database tables, as
+    explained in the above note.
+
 (4) If you already have categories in your wiki, they will not immediately be
     available for SMW queries. Category information becomes available if a
     page in a category is edited next time. To make all information available
@@ -106,7 +108,6 @@ MediaWiki.
 There is currently no working Postgres support. If you need that, please
 contact the developers and support them in adjusting SMW appropriately.
 
-
 === Testing your Installation ===
 
 If you are uncertain that everything went well, you can do some testing steps
@@ -119,8 +120,10 @@ Extension Functions.
 Create a regular wiki page named "TestSMW", and in it enter the wiki text
   Property test:  [[testproperty::Dummypage]]
 
-when you preview and save the page, the SMW "Factbox" should appear showing
-the Testproperty as a link Dummypage.
+When previewing the page before saving, you should see a Factbox at the bottom
+of the article that shows your input. After saving the page, click on the link
+"Browse properties" in the page's toolbox. This view should show Testproperty
+with value Dummypage.
 
 If you don't get these results, check the steps in the Installation section,
 consult the FAQ section, then contact the user support list (see the Contact
@@ -141,57 +144,8 @@ to have only 20 results of inline queries being shown by default. The
 parameters that are available are documented in the file SMW_Settings.php. Do
 not change this file directly, but put adoptions into your LocalSettings.php.
 
-==== Semantic MediaWiki on small wikis -- extended features ====
-
-Some features of SMW are turned off by default, since they could slow down
-larger sites. If you run a small site or have a controlled user base, then you
-may wish to enable these additional features. Suggested entries for 
-LocalSettings.php are:
-
-$smwgQComparators = '<|>|!|~'; // + pattern search comparator ~ for strings
-
-Further relaxation of default limits e.g. on query size are possible.
-See SMW_Settings.php.
-
-In controlled wikis that do not use extremely length property values, it may
-also be save to allow links in property values, as in [[area::42 [[m²]] ]].
-This is done with the setting
-
-$smwgLinksInValues = true;
-
-This may cause PHP crashes in some cases -- see SMW_Settings.php for details.
-
-==== Semantic MediaWiki on very large wikis -- improving performance ====
-
-On very large or high traffic sites, further restriction of SMW features might
-be desirable for performance reasons. Besides setting up the usual external
-caches and distributed DB-servers, you can also modify some SMW options to
-increase speed (while switching off features). Try some or all of the below in
-LocalSettings.php:
-
-$smwgQEnabled = false; // most radical -- no more semantic queries, just browsing/display features
-$smwgQSubcategoryDepth = 0; // disable subcategory reasoning in queries
-$smwgQSubpropertyDepth = 0; // disable subproperty reasoning in queries
-$smwgQFeatures        = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY; // disable disjunctions in queries
-$smwgQConceptFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY & ~SMW_CONCEPT_QUERY;
-$smwgQMaxSize  = 5; // allow only queries of 5 or fewer conditions (default 12)
-$smwgQMaxDepth = 2; // allow only queries of depth 2 or smaller (default 4)
-$smwgQMaxLimit = 100; // never ever return more than 100 results to a query (default 10000)
-$smwgQDefaultLimit = 10; // only return 10 query results by default
-$smwgRSSWithPages  = false; // do not include pages into RSS feeds, speeds up feed generation
-$smwgRSSEnabled    = false; // switch off RSS feeds completely, so as not to atttract too many queries
-
-These settings have different effects, and their effectiveness depends very
-much on the usage and content structure of your wiki. You may wish to try out
-conservative settings first and relax these step by step when things work
-reliably. You can also restrict complex queries to Concept pages (wich may be
-editable only to certain user groups) as follows:
-
-$smwgQFeatures        = SMW_CONCEPT_QUERY; // only allow queries {{#ask: [[Concept:...]] }}
-$smwgQConceptFeatures = SMW_ANY_QUERY & ~SMW_CONCEPT_QUERY;
-
-If you have continued performance issues on your *large* wiki, please do not
-hesitate to contact the SMW developers for support.
+Further options are explained at
+http://semantic-mediawiki.org/wiki/Help:Configuration
 
 === Running SMW on older versions of MediaWiki ===
 
@@ -201,163 +155,64 @@ an older MediaWiki version, additional patches/modifications might be needed.
 Download an older release of SMW and have a look at the included INSTALL
 instructions to find out whether other changes are recommended therein.
 
-== Notes on Upgrading ==
 
-This section starts with some generic upgrading instructions that may or may
-not be needed for particular upgrades. Please read upgrading instructions for
-your wiki first to see whether this is actually needed.
+== Upgrading existing installations ==
 
-=== General Upgrading Instructions ===
+SMW 1.3 does not require major steps for upgrading from SMW 1.2. You can follow
+the same steps as for new installations above (you just do not need to edit
+LocalSettings.php). Especially, you must trigger the SMW database setup via
+Special:SMWAdmin or using the script SMW_setup.php. Further actions may be
+required only if one of the following applies to you.
 
-All SMW data is extracted from wiki pages, and SMW offers an easy way of
-recreating all internal data from the current wiki pages. Basically, this
-could be done by executing Special:SMWAdmin as during the installation,
-and by newly saving all wiki pages afterwards. Since the latter would be
-rather cumbversome, SMW provides a maintenance script for refreshing all
-data: SMW_refreshData.php reads all pages and recreates their semantic data.
+If you still use a version before SMW 1.2, follow the upgrading instructions
+given at 
+http://semantic-mediawiki.org/wiki/Help:Installation_1.2#Notes_on_Upgrading,
+or SMW will not be working any more. If you have a version that is even older 
+than SMW 1.0, then read the installation steps given for your version in the
+installation instructions for SMW 1.1:
+http://semantic-mediawiki.org/wiki/Help:Installation_1.1#Notes_on_Upgrading
 
-Instructions:
-(0) Read the rest of this section first.
-(1) Install the new SMW version as described above.
-(2) Install SMW_refreshData.php as described in [SMW_path]/maintenance/README
-(3) Login to your server, and change directory to [wikipath]/maintenance
-(4) Run "php SMW_refreshData.php -ftpv" and follow its progress.
-(5) Run "php SMW_refreshData.php -v" and follow its progress.
-(6) Run "touch [wikipath]/LocalSettings.php" to make sure that no cached old
-    versions of wiki pages are used in the wiki.
+If you use imported vocabulary, you will have to re-store the data for all
+pages that use the property imported from. This can often be done manually by
+just editing those (typically few) pages. If there are many affected pages, use
+the script to repair all data at once.
 
-Since the databse updates can take a long time, it might be better to perform
-them via an SMW maintenance script as well instead of using Special:SMWAdmin.
-The according script is called SMW_setup.php. For later updates, you can leave
-away the "f" option in step (4), so that your existing database is not deleted
-before the refresh (however, deletion is the most secure way to fully update).
+If you use concepts, then it might be useful to re-store the data for the
+concept pages, but only if you are interested in using the new concept caching
+features of SMW. Otherwise concepts will also continue to work normally without
+taking any actions.
 
-Some versions of SMW also introduced incompatibilities in the wiki syntax that
-may need to be fixed. You may want to read this first.
+=== Changed configuration options ===
 
-=== Upgrtading from SMW 1.2 and SMW 1.2.1 ===
+Some configuration options (used in LocalSettings.php) have changed since SMW
+1.0. All settings are documented in detail in the file SMW_Settings.php. The
+following list gives the version in which a setting was first introduced, so it
+can be ignored if you already run this version or a more recent one.
 
-No special changes are needed, but one default setting has changed from SMW 1.2:
-SMW will no longer support nested link syntax in property values by default,
-since this requires a complex pattern match that causes PHP to crash if property
-values are very long (in the order of 3400 characters). If you have no such long
-values, you may activate the feature with the option
+* [1.3] Since SMW 1.3, the Factbox is hidden by default and will only appear.
+As a compensation, the toolbox (usually on the left below the search field)
+shows a link to Special:Browse. To use the display behaviour of the Factbox as
+it was before SMW 1.3, set $smwgShowFactbox = SMW_FACTBOX_NONEMPTY; The new
+link and the Factbox during editing can also be configured; see
+SMW_Settings.php for details.
 
+* [1.2.1] SMW will no longer support nested link syntax in property values by
+default, since this was known to cause problems. To re-enable this, set
 $smwgLinksInValues = true;
 
-=== Upgrading from SMW 1.0.* and SMW 1.1.* ===
+* [1.2] If your wiki uses <ask> syntax or the Relation: namespace, you may want
+to set $smwgSMWBetaCompatible = true; before the line including
+SMW_Settings.php in LocalSettings.php. Consider changing <ask> to #ask to be
+able to drop SMW beta compatibility.
 
-After file installation, you wiki will not show any semantic data at first! To
-use fix that temporarily, use the setting $smwgDefaultStore = 'SMWSQLStore'; 
-in your LocalSettings.php. This uses the existing old store, which is slower
-and has less features.
+* [1.2] If you had a setting $smwgQDisjunctionSupport = false, then you now
+need the following settings:
 
-To upgrade to the new store, do the following:
-(1) Login to your server, and change directory to [wikipath]/maintenance
-(2) Run "php SMW_setup.php -b SMWSQLStore2" and follow its progress.
-(3) Run "php SMW_refreshData.php -tpv -b SMWSQLStore2" and follow its progress.
-(4) Run "php SMW_refreshData.php -v -b SMWSQLStore2" and follow its progress.
+ $smwgQFeatures        = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
+ $smwgQConceptFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY & ~SMW_CONCEPT_QUERY;
 
-After completing this successfully, remove the $smwgDefaultStore setting from
-your LocalSettings.php again. Then check the whether the contents of the wiki
-is displayed properly. In case of problems, you can always go back to the old
-store again with $smwgDefaultStore. If the new store works well, you can free
-the space taken by the old store with
-
-         "php SMW_setup.php --delete -b SMWSQLStore"
-
-Changed configuration options:
-(all documented in detail in SMW_Settings.php)
-
-* If your wiki uses <ask> syntax or the Relation: namespace, you may want to
-  set $smwgSMWBetaCompatible = true; *before* including SMW_Settings.php.
-  Consider changing <ask> to #ask to be able to drop SMW beta compatibility.
-* If you had a setting $smwgQDisjunctionSupport = false, then you now need the
-  following settings:
-
-  $smwgQFeatures        = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
-  $smwgQConceptFeatures = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY & ~SMW_CONCEPT_QUERY;
-
-=== Upgrading from 1.0 RC1, 1.0 RC2, 1.0 RC3 ===
-
-Following the generic upgrading instructions above is recommended in any case.
-Moreover, some configuration options have changed slightly between release
-candidates. Currently these are:
-
-* $smwgQEqualitySupport now is no longer true/false, but one of SMW_EQ_NONE,
-  SMW_EQ_SOME, SMW_EQ_FULL
-* $smwgQDefaultNamespaces is now NULL by default, so that all namespaces are
-  queried. The old default was "array(NS_MAIN, NS_IMAGE)".
-* $smwgQDefaultLinking now defaults to 'all' such that all query results are
-  linked. This is not a performance issue any more. The old default was
-  'subject'.
-
-If you set any of these parameters in your LocalSettings.php, you need to
-update the config. Please see SMW_Settings.php for more documentation on the
-available parameters.
-
-=== Upgrading from version 0.7 ===
-
-The above generic steps are strictly necessary, and suffice to get a wiki that
-basically works.
-
-However, some further steps are strongly suggested. SMW1.0 mainly introduced
-the following incompatible changes to SMW0.7:
-
-(a) The concepts (and namespaces) "Relation" and "Attribute" are now unified
-    into "Property"
-(b) The special property "Main display unit" is obsolete, and the property
-    "display unit" shows slightly modified behaviour.
-(c) The configuration options in LocalSettings.php have changed.
-
-For (a), the namespace "Attribute:" was renamed into "Property:" -- you will
-find all your former attribute pages in the new place. All SMW-generated
-property links now point to "Property", and thus work for your former
-Attributes. But the former Relations are still in their old namespace and need
-to be moved. SMW provides the maintenance script SMW_unifyProperties.php for
-this purpose.
-
-Instructions:
-(1) Install SMW_unifyProperties.php following [SMW_path]/maintenance/README
-(2) Run "php SMW_unifyProperties" and follow its progress.
-
-The script moves all Relation pages to the according Property page. Problems
-occur if you had Attribute and Relation pages of the same title. It will report
-in which cases this occurred and leave it to you to clean up the merged pages.
-You can also run the script with option "-c" to get an overview of the
-conflicts, e.g. to delete undesired pages first. The script can be run safely
-more than once.
-
-In addition, you should run the MediaWiki maintenance script "refreshLinks.php"
-so that old links in SMW Factboxes are refreshed to point to Property: instead
-of Relation:/Attribute:.
-
-For (b), all (property) pages using properties "Main display unit" and "display
-unit" should be updated: delete these annotations and use a single annotation
-"[[display units::...]]" instead. Its value is the list of units you like to
-have diplayed, separated by ",". See the online docu for details. Running 
-SMW_refreshData.php again (once) is required to reliably propagate the updated
-property setting to all pages.
-
-For (c), please consult the file [SMW_path]/includes/SMW_Settings.php to find
-out about the current options, and use only those in your LocalSettings.php
-(using older options will not hurt, but has no effect). Note that some options
-have just changed labels, while others were added or removed.
-
-=== Upgrading from version 0.6 or 0.5 ===
-
-It should in principle be possible to delete (move away) SMW, install a fresh
-SMW version, and run all updates as in the case of SMW0.7. Patches to MediaWiki
-(known before SMW0.7) are no longer required. Note that this upgrade has not
-been tested. An alternative would be to upgrade to SMW0.7 first, and to move on
-to SMW1.0 next.
-
-=== Upgrading from 0.4.x ===
-
-Upgrading should work like for versions 0.6 and 0.5. The type "Geographic area"
-and "Geographic length" are no longer built in. But you can easily create them
-by yourself with the new type customisation features. See the docu at 
-http://semantic-mediawiki.org for details.
+Older configuration changes are found online, see
+http://semantic-mediawiki.org/wiki/Help:Installation_1.3
 
 
 == Troubleshooting ==
@@ -415,7 +270,8 @@ the Special pages for each.
 
 == Contact ==
 
-See "Contact" in the file README.
+See "Contact" in the file README, or view the current online information
+http://semantic-mediawiki.org/wiki/Contact
 
 If you have remarks or questions, please send them to
  semediawiki-user@lists.sourceforge.net
