@@ -61,7 +61,8 @@ abstract class SMWDataValue {
 		// e.g. math. In general, we are not prepared to handle such content properly, and we
 		// also have no means of obtaining the user input at this point. Hence the assignement
 		// just fails.
-		if (strpos($value,"\x7f") === false) {
+		// Note: \x07 was used in MediaWiki 1.11.0, \x7f is used now
+		if ((strpos($value,"\x7f") === false) && (strpos($value,"\x07") === false)) {
 			$this->parseUserValue($value); // may set caption if not set yet, depending on datavalue
 			$this->m_isset = true;
 		} else {
