@@ -201,9 +201,9 @@ $smwgQDefaultLinking = 'all'; // Default linking behaviour. Can be one of "none"
 # their queries.
 ##
 $smwgQConceptCaching = CONCEPT_CACHE_HARD; // Which concepts should be displayed only if available from cache?
-       // CONCEPT_CACHE_ALL   -- show concept elements anywhere only if cached
+       // CONCEPT_CACHE_ALL   -- show concept elements anywhere only if they are cached
        // CONCEPT_CACHE_HARD  -- show without cache if concept is not harder than permitted inline queries
-       // CONCEPT_CACHE_NONE  -- show all concepts without any cache
+       // CONCEPT_CACHE_NONE  -- show all concepts even without any cache
        // In any cases, caches will always be used if available.
 $smwgQConceptMaxSize = 20; // Same as $smwgQMaxSize, but for concepts
 $smwgQConceptMaxDepth = 8; // Same as $smwgQMaxDepth, but for concepts
