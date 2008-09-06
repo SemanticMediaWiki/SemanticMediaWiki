@@ -1325,7 +1325,13 @@ class SMWSQLStore extends SMWStore {
 
 	function setup($verbose = true) {
 		global $wgDBtype;
-		$this->reportProgress("Setting up standard database configuration for SMW ...\n\n",$verbose);
+		$this->reportProgress("Setting up database configuration for SMW ...\n\n",$verbose);
+		$this->reportProgress("Selected storage engine is \"SMWSQLStore\" (or an extension thereof).\n\n",$verbose);
+		$this->reportProgress("============================================================================\n", $verbose);
+		$this->reportProgress("WARNING: This store is deprecated and will loose support in future versions!\n", $verbose);
+		$this->reportProgress("Please consider switching your wiki to SQLStore2! For details, see\n",$verbose);
+		$this->reportProgress("http://semantic-mediawiki.org/wiki/Help:Installation_1.2#Notes_on_Upgrading\n",$verbose);
+		$this->reportProgress("============================================================================\n\n", $verbose);
 
 		if ($wgDBtype === 'postgres') {
 			$this->reportProgress("For Postgres, please import the file SMW_Postgres_Schema.sql manually\n",$verbose);

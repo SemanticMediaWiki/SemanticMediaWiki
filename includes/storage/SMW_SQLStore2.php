@@ -1085,6 +1085,7 @@ class SMWSQLStore2 extends SMWStore {
 	function setup($verbose = true) {
 		global $wgDBtype;
 		$this->reportProgress("Setting up standard database configuration for SMW ...\n\n",$verbose);
+		$this->reportProgress("Selected storage engine is \"SMWSQLStore2\" (or an extension thereof)\n\n",$verbose);
 		if ($wgDBtype === 'postgres') {
 			$this->reportProgress("For Postgres, please import the file SMW_Postgres_Schema_2.sql manually\n",$verbose);
 			return;
