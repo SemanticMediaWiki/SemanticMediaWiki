@@ -352,7 +352,8 @@ function smwfProcessConceptParserFunction(&$parser) {
 	// process input:
 	$params = func_get_args();
 	array_shift( $params ); // we already know the $parser ...
-	$concept_input = array_shift( $params ); // use first parameter as concept (query) string
+	$concept_input = str_replace(array('&gt;','&lt;'),array('>','<'),array_shift( $params )); // use first parameter as concept (query) string
+	/// NOTE: the str_replace above is required in MediaWiki 1.11, but not in MediaWiki 1.14
 	$query = SMWQueryProcessor::createQuery($concept_input, array('limit' => 20, 'format' => 'list'), SMWQueryProcessor::CONCEPT_DESC);
 	$concept_text = $query->getDescription()->getQueryString();
 	$concept_docu = array_shift( $params ); // second parameter, if any, might be a description
@@ -367,18 +368,11 @@ function smwfProcessConceptParserFunction(&$parser) {
 	$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink');
 	smwfRequireHeadItem(SMW_HEADER_STYLE);
 
-// 	$qresult = smwfGetStore()->getQueryResult($query);
-// 	$printer = SMWQueryProcessor::getResultPrinter('list', SMWQueryProcessor::CONCEPT_DESC, $qresult);
-// 	$printer->setShowErrors(false);
-// 	$resultlink = $printer->getResult($qresult, array('sep' => ',_'), SMW_OUTPUT_WIKI);
-
 	$result = '<div class="smwfact"><span class="smwfactboxhead">' . wfMsgForContent('smw_concept_description',$title->getText()) .
 	          (count($query->getErrors())>0?' ' . smwfEncodeMessages($query->getErrors()):'') .
 	          '</span>' . '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' . '<br />' .
 	          ($concept_docu?"<p>$concept_docu</p>":'') .
-	          '<pre>' . str_replace('[', '&#x005B;', $concept_text) . "</pre>\n" .
-// 	          $resultlink . 
-	          '</div>';
+	          '<pre>' . str_replace('[', '&#x005B;', $concept_text) . "</pre>\n</div>";
 	return $result;
 }
 
