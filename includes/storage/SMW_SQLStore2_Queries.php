@@ -386,8 +386,8 @@ class SMWSQLStore2QueryEngine {
 				///non-existing concept pages which is probably the main reason for finding nothing here
 			} else {
 				global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
-				$may_be_computed = ($smwgQConceptCaching == 2) ||
-				    ( ($smwgQConceptCaching == 1) && ( (~(~($row->concept_features+0) | $smwgQFeatures)) == 0) && 
+				$may_be_computed = ($smwgQConceptCaching == CONCEPT_CACHE_NONE) ||
+				    ( ($smwgQConceptCaching == CONCEPT_CACHE_HARD) && ( (~(~($row->concept_features+0) | $smwgQFeatures)) == 0) && 
 				      ($smwgQMaxSize >= $row->concept_size) && ($smwgQMaxDepth >= $row->concept_depth));
 				if ($row->cache_date &&
 				    ($row->cache_date > (strtotime("now") - $smwgQConceptCacheLifetime*60) ||
