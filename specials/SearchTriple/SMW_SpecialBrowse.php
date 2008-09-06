@@ -149,7 +149,7 @@ class SMWSpecialBrowse extends SpecialPage {
 				$proptext = $smwgContLang->findSpecialPropertyLabel( $property );
 				if ($proptext != '') {
 					$p = Title::newFromText($proptext, SMW_NS_PROPERTY);
-					$proptext = $skin->makeLinkObj($p, $proptext);
+					$proptext = $skin->makeLinkObj($p, $this->unbreak($proptext));
 					$displayline = true;
 				}
 				if (SMW_SP_INSTANCE_OF == $property) {
@@ -197,7 +197,14 @@ class SMWSpecialBrowse extends SpecialPage {
 				$noresult = false;
 			}
 		} // end foreach properties
-		if ($noresult) $html .= "<tr class=\"smwb-propvalue\"><th> &nbsp; </th><td><em>" . wfMsg('smw_result_noresults') . "</em></td></th></table>\n";
+		if ($noresult) {
+			if ($incoming)
+				$noresulttext = wfMsg('smw_browse_no_incoming');
+			else
+				$noresulttext = wfMsg('smw_browse_no_outgoing');
+			
+			$html .= "<tr class=\"smwb-propvalue\"><th> &nbsp; </th><td><em>" . $noresulttext . "</em></td></th></table>\n";
+		}
 		
 		$html .= "</table>\n";
 		return $html;

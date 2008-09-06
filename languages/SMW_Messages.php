@@ -233,6 +233,8 @@ Since there have been only a few results, also nearby values are displayed.',
 	'smw_browse_more'            => '…',
 	'smw_browse_show_incoming'   => 'show properties that link here',
 	'smw_browse_hide_incoming'   => 'hide properties that link here',
+	'smw_browse_no_outgoing'     => 'This page has no properties.',
+	'smw_browse_no_incoming'     => 'No properties link to this page.',
 	'smw_inverse_label_default'  => '$1 of',
 	'smw_inverse_label_property' => 'Inverse property label',
 
