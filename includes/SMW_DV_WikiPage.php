@@ -123,7 +123,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
-	 * NOTE: the getLong... functions of this class always hide the fragment. Fragments are currently
+	 * @note The getLong... functions of this class always hide the fragment. Fragments are currently
 	 * not stored, and hence should not be shown in the Factbox (where the getLongWikiText method is used).
 	 * In all other uses, values come from the store and do not have fragments anyway.
 	 */
