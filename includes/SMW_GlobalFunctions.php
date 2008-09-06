@@ -216,7 +216,7 @@ function enableSemantics($namespace = '', $complete = false) {
  */
 function smwfSetupExtension() {
 	wfProfileIn('smwfSetupExtension (SMW)');
-	global $smwgIP, $smwgStoreActive, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode;
+	global $smwgIP, $smwgStoreActive, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink;
 
 	/**
 	* Setting this to false prevents any new data from being stored in
@@ -263,6 +263,13 @@ function smwfSetupExtension() {
 			$wgParser->_unstub();
 		}
 		smwfRegisterParserFunctions( $wgParser );
+	}
+	if ($smwgToolboxBrowseLink) {
+		if (version_compare($wgVersion,'1.12','>')) {
+			$wgHooks['SkinTemplateToolboxEnd'][] = 'smwfShowBrowseLink'; // introduced only in 1.13
+		} else {
+			$wgHooks['MonoBookTemplateToolboxEnd'][] = 'smwfShowBrowseLink';
+		}
 	}
 
 	///// credits (see "Special:Version") /////
@@ -384,6 +391,21 @@ function smwfProcessInfoParserFunction(&$parser) {
 	array_shift( $params ); // we already know the $parser ...
 	$content = array_shift( $params ); // use only first parameter, ignore rest (may get meaning later)
 	return smwfEncodeMessages(array($content), 'info');
+}
+
+/**
+ * Add a link to the toobox to view the properties of the current page in Special:Browse.
+ * The links has the CSS id "t-smwbrowselink" so that it can be skinned or hidden with all
+ * standard mechanisms (also by individual users with custom CSS).
+ */
+function smwfShowBrowseLink($skintemplate) {
+	if($skintemplate->data['isarticle']) {
+		wfLoadExtensionMessages('SemanticMediaWiki');
+		$browselink = SMWInfolink::newBrowsingLink(wfMsg('smw_browselink'),
+		               $skintemplate->data['titleprefixeddbkey'],false);
+    	echo "<li id=\"t-smwbrowselink\">" . $browselink->getHTML() . "</li>";
+    }
+    return true;
 }
 
 /**********************************************/

@@ -227,6 +227,7 @@ Since there have been only a few results, also nearby values are displayed.',
 
 	// Messages for the browsing special
 	'browse'                     => 'Browse wiki',
+	'smw_browselink'             => 'Browse properties',
 	'smw_browse_article'         => 'Enter the name of the page to start browsing from.',
 	'smw_browse_go'              => 'Go',
 	'smw_browse_more'            => '…',
@@ -895,6 +896,7 @@ $messages['de'] = array(
 	'smw_sbv_value' => 'Wert',
 	'smw_sbv_submit' => 'Finde Ergebnisse',
 	'browse' => 'Wiki browsen',
+	'smw_browselink'             => 'Attribute anzeigen',
 	'smw_browse_article' => 'Bitte gib den Titel einer Seite ein.',
 	'smw_browse_go' => 'Los',
 	'smw_browse_show_incoming' => 'zeige Attribute die hierhin verlinken',
