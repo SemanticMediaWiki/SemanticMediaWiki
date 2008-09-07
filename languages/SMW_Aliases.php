@@ -25,7 +25,9 @@ $aliases['en'] = array(
 	'WantedProperties' => array( 'WantedProperties' ),
 );
 
-/** Arabic (العربية) */
+/** Arabic (العربية)
+ * @author Meno25
+ */
 $aliases['ar'] = array(
 	'Ask' => array( 'سؤال' ),
 	'Browse' => array( 'تصفح' ),
@@ -41,7 +43,9 @@ $aliases['ar'] = array(
 	'WantedProperties' => array( 'خصائص_مطلوبة' ),
 );
 
-/** Egyptian Spoken Arabic (مصرى) */
+/** Egyptian Spoken Arabic (مصرى)
+ * @author Meno25
+ */
 $aliases['arz'] = array(
 	'Ask' => array( 'سؤال' ),
 	'Browse' => array( 'تصفح' ),
