@@ -33,7 +33,7 @@ class SMWAdmin extends SpecialPage {
 	}
 
 	public function execute($par = null) {
-		global $wgOut, $wgRequest;
+		global $wgOut, $wgRequest, $smwgAdminRefreshStore;
 		global $wgServer; // "http://www.yourserver.org"
 							// (should be equal to 'http://'.$_SERVER['SERVER_NAME'])
 		global $wgScript;   // "/subdirectory/of/wiki/index.php"
@@ -69,7 +69,7 @@ class SMWAdmin extends SpecialPage {
 				flush();
 				return;
 			}
-		} elseif ($action=='refreshstore') { // not accessible via UI yet, testing
+		} elseif ($smwgAdminRefreshStore && ($action=='refreshstore')) { // not accessible via UI yet, testing
 			$dbw =& wfGetDB( DB_MASTER );
 			// delete existing iteration jobs
 			$dbw->delete( 'job', array( 'job_cmd' => 'SMWRefreshJob' ), __METHOD__ );

@@ -363,4 +363,22 @@ $smwgTranslate = false;
 //$smwgRAPPath = '/another/example/path/rdfapi-php';
 ##
 
-
+###
+# If the following is set to true, the wiki can be completely refreshed calling
+# calling the URL
+#
+# http://your.wiki.org/index.php/Special:SMWAdmin?action=refreshstore
+#
+# This will create a job that will trigger a complete refresh of the whole wiki,
+# repairing all data. The refreshing will take some time and new jobs will be
+# created again and again over the cause of the action. The only way to stop the
+# process currently is to delete all SMW jobs from the database table "job".
+# When called twice, the above *resets* the job and starts anew, so it might be
+# good to disable this setting again after the job has been created (this will
+# not stop the running job).
+#
+# This is an experimental feature that may not yet work reliably. Use at your
+# own risk, and report any problems (see INSTALL on reporting bugs).
+##
+$smwgAdminRefreshStore = false;
+##
