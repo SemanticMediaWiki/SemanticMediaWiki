@@ -14,7 +14,7 @@
  * @defgroup SMW Semantic MediaWiki
  */
 
-define('SMW_VERSION','1.3c-SVN');
+define('SMW_VERSION','1.3');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
