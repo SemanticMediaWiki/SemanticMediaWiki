@@ -76,6 +76,12 @@ $aliases['de'] = array(
 	'WantedProperties' => array( 'Gewünschte Attribute' ),
 );
 
+/** Finnish (Suomi) */
+$aliases['fi'] = array(
+	'Ask' => array( 'Kysy' ),
+	'Browse' => array( 'Selaa' ),
+);
+
 /** Luxembourgish (Lëtzebuergesch) */
 $aliases['lb'] = array(
 	'Ask' => array( 'Froen' ),
