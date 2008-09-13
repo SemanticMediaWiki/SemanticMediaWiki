@@ -74,7 +74,7 @@ class SMWTypePage extends SMWOrderedListPage {
 		$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
 
 		$r .= '<h2>' . wfMsg('smw_type_header',$ti) . "</h2>\n";
-		$r .= wfMsg('smw_typearticlecount', min($this->limit, count($this->articles))) . "\n";
+		$r .= wfMsgExt('smw_typearticlecount', array( 'parsemag' ), min($this->limit, count($this->articles))) . "\n";
 
 		$r .= $this->formatList();
 		$r .= "\n</div>" . $nav;

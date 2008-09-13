@@ -88,7 +88,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$nav = $this->getNavigationLinks();
 			if (count($this->subproperties) > 0) {
 				$r .= "<div id=\"mw-subcategories\">\n<h2>" . wfMsg('smw_subproperty_header',$ti) . "</h2>\n";
-				$r .= '<p>' . wfMsg('smw_subpropertyarticlecount', min($this->limit, count($this->subproperties))) . "</p>\n";
+				$r .= '<p>' . wfMsgExt('smw_subpropertyarticlecount', array( 'parsemag' ), min($this->limit, count($this->subproperties))) . "</p>\n";
 				if (count($this->subproperties) < 6) {
 					$r .= $this->shortList(0,count($this->subproperties), $this->subproperties);
 				} else {
@@ -98,7 +98,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			}
 			$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
 			$r .= '<h2>' . wfMsg('smw_attribute_header',$ti) . "</h2>\n";
-			$r .= '<p>' . wfMsg('smw_attributearticlecount', min($this->limit, count($this->articles))) . "</p>\n";
+			$r .= '<p>' . wfMsgExt('smw_attributearticlecount', array( 'parsemag' ), min($this->limit, count($this->articles))) . "</p>\n";
 			$r .= $this->subjectObjectList() . "\n</div>" . $nav;
 		}
 		wfProfileOut( __METHOD__ . ' (SMW)');

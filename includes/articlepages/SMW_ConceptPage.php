@@ -78,7 +78,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 		$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
 
 		$r .= '<h2>' . wfMsg('smw_concept_header',$ti) . "</h2>\n";
-		$r .= wfMsg('smw_conceptarticlecount', min($this->limit, count($this->articles))) . smwfEncodeMessages($this->m_errors) .  "\n";
+		$r .= wfMsgExt('smw_conceptarticlecount', array( 'parsemag' ), min($this->limit, count($this->articles))) . smwfEncodeMessages($this->m_errors) .  "\n";
 
 		$r .= $this->formatList();
 		$r .= "\n</div>" . $nav;

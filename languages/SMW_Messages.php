@@ -113,13 +113,13 @@ Backup your data before using it.',
 
 	// Messages for pages of types and properties
 	'smw_type_header'             => 'Properties of type "$1"',
-	'smw_typearticlecount'        => 'Showing $1 properties using this type.',
+	'smw_typearticlecount'        => 'Showing $1 {{PLURAL:$1|property|properties}} using this type.',
 	'smw_attribute_header'        => 'Pages using the property "$1"',
-	'smw_attributearticlecount'   => 'Showing $1 pages using this property.',
+	'smw_attributearticlecount'   => 'Showing $1 {{PLURAL:$1|page|pages}} using this property.',
 	'smw_subproperty_header'      => 'Subproperties',
-	'smw_subpropertyarticlecount' => 'This property has the following $1 subproperties.',
+	'smw_subpropertyarticlecount' => 'This property has the following $1 {{PLURAL:$1|subproperty|subproperties}}.',
 	'smw_concept_header'          => 'Pages of concept "$1"',
-	'smw_conceptarticlecount'     => 'Showing $1 pages belonging to that concept.',
+	'smw_conceptarticlecount'     => 'Showing $1 {{PLURAL:$1|page|pages}} belonging to that concept.',
 
 	// Messages used in RSS feeds
 	'smw_rss_description' => '$1 RSS feed',
