@@ -2009,7 +2009,7 @@ class SMWSQLStore extends SMWStore {
 			foreach ($description->getDescriptions() as $subdesc) {
 				/// TODO: this is not optimal -- we drop more table aliases than needed, but its hard to find out what is feasible in recursive calls ...
 				$nexttables = array();
-				// pull in page to prevent every child description pulling it seperately!
+				// pull in page to prevent every child description pulling it separately!
 				if ( array_key_exists('PAGE', $curtables) ) {
 					$nexttables['PAGE'] = $curtables['PAGE'];
 				}
