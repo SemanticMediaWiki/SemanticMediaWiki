@@ -295,7 +295,7 @@ Other changes for the RC1 include:
 * New output format "timeline" for inline queries that deal with dates. Available
   parameters are: timelinestart (name of start date attribute), timelineend (name 
   of end date attribute, if any), tiemlinesize (CSS-encoded height), timelinebands
-  (comma-seperated list of bands such as DAY, WEEK, MONTH, YEAR, ...), and
+  (comma-separated list of bands such as DAY, WEEK, MONTH, YEAR, ...), and
   timelineposition (one of start, end, today, middle).
 * Complete RDF export is now possible with a maintenance script, which can e.g. be
   run periodically on a server to create RDF files.
