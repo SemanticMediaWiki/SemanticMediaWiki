@@ -257,6 +257,7 @@ Enter both a page and a property.',
 );
 
 /** Message documentation (Message documentation)
+ * @author Helix84
  * @author Jon Harald Søby
  * @author Markus Krötzsch
  * @author Pietrodn
@@ -273,7 +274,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 Note that spaces and space-like HTML entities are always ignored when reading numbers, whether or not a space symbol is used here.",
 	'smw_label_latitude' => '{{Identical|Latitude}}',
 	'smw_label_longitude' => '{{Identical|Longitude}}',
-	'smw_subpropertyarticlecount' => '[[bugzilla:15393|Bug on Bugzilla about this message]]',
+	'smw_subpropertyarticlecount' => '[[bugzilla:15207|Bug on Bugzilla about this message]]',
 	'properties' => 'This is the title of the special page showing all properties.',
 	'smw_property_template' => 'Used to display information about properties on Special:Properties. The parameters have the following meaning:
 * $1: the property name
@@ -3357,6 +3358,7 @@ $messages['ro'] = array(
 );
 
 /** Russian (Русский)
+ * @author QuestPC
  * @author Александр Сигачёв
  */
 $messages['ru'] = array(
@@ -3368,6 +3370,10 @@ $messages['ru'] = array(
 	'smw_isknowntype' => 'Этот тип данных принадлежит к стандартным типам данных данного сайта.',
 	'smw_isaliastype' => 'Этот тип данных является альтернативным именем типа данных “$1”.',
 	'smw_isnotype' => 'Тип данных “$1” не был определен.',
+	'smw_concept_description' => 'Описание представления "$1"',
+	'smw_no_concept_namespace' => 'Представления могут определяться только на страницах, принадлежащих пространству имен Представление:.',
+	'smw_multiple_concepts' => 'Страница представления может содержать только одно определение представления.',
+	'smw_concept_cache_miss' => 'Представление "$1" в настоящий момент не может быть использовано, так как конфигурация вики-сайта требует, чтобы его результат определялся в фоновом режиме. Если данное сообщение не исчезнет через некоторое время, обратитесь к администратору вики-сайта для включения данного представления.',
 	'smw_baduri' => 'Извините, но ссылки из диапазона "$1" не доступны отсюда.',
 	'smw_icalendar_link' => 'iКалендарь',
 	'smw_iq_disabled' => 'Извините, но встроенные запросы отключены для этого сайта.',
@@ -3415,13 +3421,18 @@ $messages['ru'] = array(
 	'smw_badtitle' => 'Извините, но “$1” не является правильным заголовком статьи.',
 	'smw_badqueryatom' => 'Часть запроса «<nowiki>[[…]]</nowiki>» не была разобрана.',
 	'smw_propvalueproblem' => 'Ошибка: Значение свойства “$1” не разобрано.',
+	'smw_noqueryfeature' => 'Часть запроса "$1" была опущена, так как некоторые из возможностей языка запросов не поддерживаются на этом вики-сайте.',
+	'smw_noconjunctions' => 'Часть запроса "$1" была опущена, так как операция "Логическое И" не поддерживается на этом вики-сайте.',
 	'smw_nodisjunctions' => 'Ошибка: Дизъюнкции (логическое ИЛИ) не поддерживаются данным сайтом, поэтому использующая их часть запроса была проигнорирована ($1).',
 	'smw_querytoolarge' => 'Ошибка: Указанные условия запроса “$1” не могут быть выполнены из-за ограничения на глубину или размер запроса.',
 	'smw_devel_warning' => 'Эта функция в настоящее время находится в разработке. Сделайте резервную копию прежде чем её использовать.',
+	'smw_notemplategiven' => 'Чтобы данный запрос выполнялся, необходимо задать значение для параметра "template".',
 	'smw_type_header' => 'Свойства типа “$1”',
 	'smw_typearticlecount' => 'Отображается $1 свойств этого типа.',
 	'smw_attribute_header' => 'Страницы, использующие свойство “$1”',
 	'smw_attributearticlecount' => 'Отображается $1 страниц, использующих это свойство.',
+	'smw_concept_header' => 'Страницы, использующие представление "$1"',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|Показана|Показаны}} $1 {{PLURAL:$1|страница|страницы}}, {{PLURAL:$1|принадлежащая|принадлежащие}} данному представлению.',
 	'smw_rss_description' => '$1 источник RSS',
 	'exportrdf' => 'Экспорт страниц в RDF',
 	'smw_exportrdf_docu' => '<p>Эта страница позволяет экспортировать части статьи в формате RDF. Наберите заголовки необходимых статей по одному на строку.</p>',
@@ -3485,8 +3496,10 @@ $messages['ru'] = array(
 	'smw_sbv_value' => 'значение',
 	'smw_sbv_submit' => 'Найти',
 	'browse' => 'Просмотреть сайт',
+	'smw_browselink' => 'Просмотреть свойства',
 	'smw_browse_article' => 'Введите имя страницы для начала просмотра.',
 	'smw_browse_go' => 'Перейти',
+	'smw_browse_show_incoming' => 'Показать свойства, ссылающиеся сюда',
 	'pageproperty' => 'Страница поиска свойств',
 	'smw_pp_docu' => 'Искать все значения свойства на указанной странице. Пожалуйста введите имя страницы и имя свойства.',
 	'smw_pp_from' => 'Со страницы',
@@ -3570,13 +3583,13 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_devel_warning' => 'Táto vlastnosť je momentálne vo vývoji a nemusí byť celkom funkčná. Predtým, než ju použijete si zálohujte dáta.',
 	'smw_notemplategiven' => 'Aby tento formát požiadavky fungoval, poskytnite prosím hodnotu parametra „template”.',
 	'smw_type_header' => 'Vlastnosti typu „$1“',
-	'smw_typearticlecount' => 'Zobrazuje sa $1 vlastností tohto typu.',
+	'smw_typearticlecount' => '{{PLURAL:$1|Zobrazuje sa $1 vlastnosť|Zobrazujú sa $1 vlastnosti|Zobrazuje sa $1 vlastností}} tohto typu.',
 	'smw_attribute_header' => 'Stránky používajúce vlastnosť „$1“',
-	'smw_attributearticlecount' => 'Zobrazuje sa $1 stránok, ktoré používajú túto vlastnosť.',
+	'smw_attributearticlecount' => 'Zobrazuje sa $1 {{PLURAL:$1|stránka|stránky|stránok}}, ktoré používajú túto vlastnosť.',
 	'smw_subproperty_header' => 'Podvlastnosti',
 	'smw_subpropertyarticlecount' => 'Táto vlastnosť má {{PLURAL:|nasledovnú podvlastnosť|nasledovné $1 podvlastnosti|nasledovných $1 podvlastností}}.',
 	'smw_concept_header' => 'Návrh „$1”',
-	'smw_conceptarticlecount' => 'Zobrazuje sa $1 stránok patriacich tomuto návrhu.',
+	'smw_conceptarticlecount' => 'Zobrazuje sa $1 {{PLURAL:$1|stránka patriaca|stránky patriace|stránok patriacich}} tomuto návrhu.',
 	'exportrdf' => 'Exportovať stránky do RDF',
 	'smw_exportrdf_docu' => '<p>Táto stránka vám umožňuje exportovať časti stránok do formátu RDF. Po zadaní názvov stránok do spodného textového poľa, jeden názov na riadok, môžete exportovať stránky.</p>',
 	'smw_exportrdf_recursive' => 'Rekurzívne exportovať všetky súvisiace stránky. Pozor, výsledok môže byť veľmi veľký!',
