@@ -25,7 +25,7 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Страница', // name of page datatype
 	'_str' => 'Строка',  // name of the string type
 	'_txt' => 'Текст',  // name of the text type (very long strings)
-	'_cod' => 'Code',  // name of the (source) code type //TODO: translate
+	'_cod' => 'Код',  // name of the (source) code type
 	'_boo' => 'Булево',  // name of the boolean type
 	'_num' => 'Число', // name for the datatype of numbers
 	'_geo' => 'Географическая координата', // name of the geocoord type
@@ -88,8 +88,8 @@ protected $m_Namespaces = array(
 	SMW_NS_PROPERTY_TALK  => 'Обсуждение_свойства',
 	SMW_NS_TYPE           => 'Тип',
 	SMW_NS_TYPE_TALK      => 'Обсуждение_типа',
-	SMW_NS_CONCEPT        => 'Concept', // TODO: translate
-	SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
+	SMW_NS_CONCEPT        => 'Концепция',
+	SMW_NS_CONCEPT_TALK   => 'Обсуждение_концепции'
 );
 
 protected $m_NamespaceAliases = array(
