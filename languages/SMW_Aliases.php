@@ -87,6 +87,18 @@ $aliases['lb'] = array(
 	'Ask' => array( 'Froen' ),
 );
 
+/** Nedersaksisch (Nedersaksisch) */
+$aliases['nds-nl'] = array(
+	'Browse' => array( 'Bekieken' ),
+	'ExportRDF' => array( 'RDF_uutvoeren' ),
+	'PageProperty' => array( 'Pagina-eigenschap' ),
+	'SMWAdmin' => array( 'SMW-beheer' ),
+	'SearchByProperty' => array( 'Op_eigenschap_zeuken' ),
+	'SemanticStatistics' => array( 'Semantische_staotestieken' ),
+	'UnusedProperties' => array( 'Ongebruken_eigenschappen' ),
+	'WantedProperties' => array( 'Gewunste_eigenschappen' ),
+);
+
 /** Dutch (Nederlands) */
 $aliases['nl'] = array(
 	'Ask' => array( 'Vragen' ),
@@ -100,5 +112,17 @@ $aliases['nl'] = array(
 	'Types' => array( 'Typen' ),
 	'UnusedProperties' => array( 'OngebruikteEigenschappen' ),
 	'WantedProperties' => array( 'GewensteEigenschappen' ),
+);
+
+/** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬) */
+$aliases['no'] = array(
+	'ExportRDF' => array( 'Eksporter RDF' ),
+	'PageProperty' => array( 'Sideegenskaper' ),
+	'Properties' => array( 'Egenskaper' ),
+	'SearchByProperty' => array( 'Søk etter egenskap' ),
+	'SemanticStatistics' => array( 'Semantisk statistikk' ),
+	'Types' => array( 'Typer' ),
+	'UnusedProperties' => array( 'Ubrukte egenskaper' ),
+	'WantedProperties' => array( 'Ønskede egenskaper' ),
 );
 
