@@ -2453,6 +2453,13 @@ $messages['ko'] = array(
 	'smw_result_noresults' => '죄송합니다, 결과가없습니다.',
 );
 
+/** Krio (Krio)
+ * @author Jose77
+ */
+$messages['kri'] = array(
+	'smw_browse_go' => 'Go to am',
+);
+
 /** Kinaray-a (Kinaray-a)
  * @author Jose77
  */
