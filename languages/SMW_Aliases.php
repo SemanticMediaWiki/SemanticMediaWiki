@@ -85,6 +85,7 @@ $aliases['fi'] = array(
 /** Luxembourgish (Lëtzebuergesch) */
 $aliases['lb'] = array(
 	'Ask' => array( 'Froen' ),
+	'ExportRDF' => array( 'RDF exportéieren' ),
 );
 
 /** Nedersaksisch (Nedersaksisch) */
