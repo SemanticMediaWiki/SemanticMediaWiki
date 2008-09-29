@@ -246,7 +246,6 @@ function smwfSetupExtension() {
 
 	$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; // parse annotations
 	$wgHooks['ArticleSave'][] = 'smwfPreSaveHook'; // check some settings here
-	$wgHooks['ArticleUndelete'][] = 'smwfUndeleteHook'; // restore annotations
 	$wgHooks['ArticleDelete'][] = 'smwfDeleteHook'; // delete annotations
 	$wgHooks['TitleMoveComplete'][]='smwfMoveHook'; // move annotations
 	$wgHooks['ParserAfterTidy'][] = 'smwfParserAfterTidy'; // add items to HTML header during parsing

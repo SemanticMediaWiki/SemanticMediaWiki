@@ -277,17 +277,6 @@ function smwfSaveDataForTitle($title) {
 }
 
 /**
-*  Restore semantic data if articles are undeleted.
-*/
-function smwfUndeleteHook(&$title, $create) {
-	if ($create) {
-		SMWFactbox::setNewArticle();
-	}
-	SMWFactbox::storeData(smwfIsSemanticsProcessed($title->getNamespace()));
-	return true; // always return true, in order not to stop MW's hook processing!
-}
-
-/**
 *  This method will be called whenever an article is deleted so that
 *  semantic properties are cleared appropriately.
 */
