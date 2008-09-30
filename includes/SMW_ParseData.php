@@ -168,9 +168,6 @@ class SMWParseData {
 				}
 			}
 		}
-debug_zval_dump($processSemantics);		
-debug_zval_dump($semdata);
-die;
 		// Actually store semantic data, or at least clear it if needed
 		if ($processSemantics) {
 			smwfGetStore()->updateData($semdata, SMWFactbox::isNewArticle());
