@@ -13,19 +13,30 @@
  * article (subject), similar what is typically displayed in the factbox.
  * This is a light-weight data container.
  * @note: AUTOLOADED
+ * @ingroup SMW
  */
 class SMWSemanticData {
-	protected $attribvals = array(); /// text keys and arrays of datavalue objects
-	protected $attribtitles = array(); /// text keys and title objects
-	protected $hasprops = false; /// any normal properties yet?
-	protected $hasspecs = false; /// any special properties yet?
-	protected $hasvisiblespecs = false; /// any displayable special properties yet? (some are internal only withot a display name)
-	protected $m_noduplicates; /// avoid repeated values? 
-	/// NOTE: not needing (e.g. when loading from store) can safe much time, 
-	/// since objects can remain stubs until someone really acesses their value
-	static protected $m_propertyprefix = false; /// cache for the local version of "Property:"
+	/// Text keys and arrays of datavalue objects.
+	protected $attribvals = array();
+	/// Text keys and title objects.
+	protected $attribtitles = array();
+	/// Boolean, stating whether the container holds any normal properties.
+	protected $hasprops = false;
+	/// Boolean, stating whether the container holds any special properties.
+	protected $hasspecs = false;
+	/// Boolean, stating whether the container holds any displayable special properties (some are internal only without a display name).
+	protected $hasvisiblespecs = false;
+	/**
+	 *  Boolean, stating whether repeated values should be avoided. Not needing duplicte elimination
+	 *  (e.g. when loading from store) can safe much time, since objects can remain stubs until someone
+	 *  really acesses their value.
+	 */
+	protected $m_noduplicates; 
+	/// Cache for the local version of "Property:"
+	static protected $m_propertyprefix = false;
 
-	protected $subject; /// SMWWikiPageValue object
+	/// SMWWikiPageValue object that is the subject of this container.
+	protected $subject;
 
 	public function __construct(SMWWikiPageValue $subject, $noduplicates = true) {
 		$this->subject = $subject;
@@ -33,8 +44,20 @@ class SMWSemanticData {
 	}
 
 	/**
+	 * This object is added to the parser output of MediaWiki, but it is not useful to have all its data as part of the parser cache
+	 * since the data is already stored in more accessible format in SMW. Hence this implementation of __sleep() makes sure only the 
+	 * subject is serialised, yielding a minimal stub data container after unserialisation. This is a little safer than serialising
+	 * nothing: if, for any reason, SMW should ever access an unserialised parser output, then the Semdata container will at least
+	 * look as if properly initialised (though empty).
+	 * @note It might be even better to have other members with stub object data that is used for serializing, thus using much less data.
+	 */
+	public function __sleep() {
+		return array('subject');
+	}
+
+	/**
 	 * Return subject to which the stored semantic annotation refer to.
-	 * 
+	 *
 	 * @return SMWWikiPageValue subject
 	 */
 	public function getSubject() {

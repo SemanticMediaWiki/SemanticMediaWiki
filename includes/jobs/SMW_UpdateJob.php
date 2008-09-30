@@ -54,14 +54,13 @@ class SMWUpdateJob extends Job {
 		/// parser member variables, so that other parsers do not affect one parser's data.
 		$cur_headitems = $smwgHeadItems;
 		$smwgHeadItems = array();
-		$wgParser->parse($revision->getText(), $this->title, $options, true, true, $revision->getID());
+		$output = $wgParser->parse($revision->getText(), $this->title, $options, true, true, $revision->getID());
 		$smwgHeadItems = $cur_headitems;
 
 		wfProfileOut( __METHOD__.'-parse' );
 		wfProfileIn( __METHOD__.'-update' );
 
-		SMWFactbox::initStorage($this->title); // be sure we have our title, strange things happen in parsing
-		SMWFactbox::storeData(smwfIsSemanticsProcessed($this->title->getNamespace()));
+		SMWParseData::storeData($output, $this->title, false);
 		wfProfileOut( __METHOD__.'-update' );
 		wfProfileOut('SMWUpdateJob::run (SMW)');
 		return true;

@@ -57,8 +57,7 @@ function smwfDataEntry_Render( &$parser ) {
 				$subject = $parts[1];
 				// Adds the fact to the factbox, which may be problematic in case
 				// the parser gets called several times...
-				if (!SMWFactbox::$semdata) SMWFactBox::initStorage($parser->getTitle());
-				SMWFactbox::addProperty( $property, $subject, false, true );
+				SMWParseData::addProperty( $property, $subject, false, $parser, true );
 			}
 		}
 	return;

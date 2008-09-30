@@ -73,29 +73,30 @@ class SMWImportValue extends SMWDataValue {
 		}
 
 		// check whether element of correct type was found (extracts data from factbox)
-		if(SMWFactbox::$semdata instanceof SMWSemanticData) {
-			$this_ns = SMWFactbox::$semdata->getSubject()->getNamespace();
-			$error = NULL;
-			switch ($elemtype) {
-				case SMW_NS_PROPERTY: case NS_CATEGORY:	
-					if ($this_ns != $elemtype) {
-						$error = wfMsgForContent('smw_nonright_importtype',$value, $wgContLang->getNsText($elemtype));
-					}
-					break;
-				case NS_MAIN:
-					if ( (SMW_NS_PROPERTY == $this_ns) || (NS_CATEGORY == $this_ns)) {
-						$error = wfMsgForContent('smw_wrong_importtype',$value, $wgContLang->getNsText($this_ns));
-					}
-					break;
-				case -1:
-					$error = wfMsgForContent('smw_no_importelement',$value);
-			}
-
-			if (NULL != $error) {
-				$this->addError($error);
-				return true;
-			}
-		}
+		///TODO: parser needed to do that
+// 		if(SMWParseData::getSMWData($parser) instanceof SMWSemanticData) {
+// 			$this_ns = SMWParseData::getSMWData($parser)->getSubject()->getNamespace();
+// 			$error = NULL;
+// 			switch ($elemtype) {
+// 				case SMW_NS_PROPERTY: case NS_CATEGORY:	
+// 					if ($this_ns != $elemtype) {
+// 						$error = wfMsgForContent('smw_nonright_importtype',$value, $wgContLang->getNsText($elemtype));
+// 					}
+// 					break;
+// 				case NS_MAIN:
+// 					if ( (SMW_NS_PROPERTY == $this_ns) || (NS_CATEGORY == $this_ns)) {
+// 						$error = wfMsgForContent('smw_wrong_importtype',$value, $wgContLang->getNsText($this_ns));
+// 					}
+// 					break;
+// 				case -1:
+// 					$error = wfMsgForContent('smw_no_importelement',$value);
+// 			}
+// 
+// 			if (NULL != $error) {
+// 				$this->addError($error);
+// 				return true;
+// 			}
+// 		}
 
 		//create String to be returned by getShort/LongWikiText		
 		$this->m_wikilink = "[".$this->m_uri." ".$this->m_value."] (".$this->m_name.")";

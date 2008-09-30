@@ -61,19 +61,16 @@ function smwfTemplateDeclare_Render( Parser &$parser, PPFrame $frame, $args ) {
 						$objects = $matches[1];
 						if (count($objects) == 0) {
 							if (trim($valuestring) != '') {
-								if (!SMWFactbox::$semdata) SMWFactBox::initStorage($parser->getTitle());
-								SMWFactbox::addProperty( $propertystring, $valuestring, false, true );
+								SMWParseData::addProperty( $propertystring, $valuestring, false, $parser, true );
 							}
 						} else {
 							foreach ($objects as $object) {
-								if (!SMWFactbox::$semdata) SMWFactBox::initStorage($parser->getTitle());
-								SMWFactbox::addProperty( $propertystring, $object, false, true );
+								SMWParseData::addProperty( $propertystring, $object, false, $parser, true );
 							}
 						}
 					} else {
 						if (trim($valuestring) != '') {
-							if (!SMWFactbox::$semdata) SMWFactBox::initStorage($parser->getTitle());
-							SMWFactbox::addProperty( $propertystring, $valuestring, false, true );
+							SMWParseData::addProperty( $propertystring, $valuestring, false, $parser, true );
 						}
 					}
 					$value = SMWDataValueFactory::newPropertyObjectValue($property, $valuestring);

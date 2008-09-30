@@ -262,20 +262,6 @@ class SMWDataValueFactory {
 		// NOTE: all ids must start with underscores, where two underscores indicate
 		// truly internal (non user-acessible types). All others should also get a
 		// translation in the language files, or they won't be available for users.
-		$wgAutoloadClasses['SMWStringValue']      =  $smwgIP . '/includes/SMW_DV_String.php';
-		$wgAutoloadClasses['SMWWikiPageValue']    =  $smwgIP . '/includes/SMW_DV_WikiPage.php';
-		$wgAutoloadClasses['SMWURIValue']         =  $smwgIP . '/includes/SMW_DV_URI.php';
-		$wgAutoloadClasses['SMWTypesValue']       =  $smwgIP . '/includes/SMW_DV_Types.php';
-		$wgAutoloadClasses['SMWNAryValue']        =  $smwgIP . '/includes/SMW_DV_NAry.php';
-		$wgAutoloadClasses['SMWErrorValue']       =  $smwgIP . '/includes/SMW_DV_Error.php';
-		$wgAutoloadClasses['SMWNumberValue']      =  $smwgIP . '/includes/SMW_DV_Number.php';
-		$wgAutoloadClasses['SMWTemperatureValue'] =  $smwgIP . '/includes/SMW_DV_Temperature.php';
-		$wgAutoloadClasses['SMWLinearValue']      =  $smwgIP . '/includes/SMW_DV_Linear.php';
-		$wgAutoloadClasses['SMWTimeValue']        =  $smwgIP . '/includes/SMW_DV_Time.php';
-		$wgAutoloadClasses['SMWGeoCoordsValue']   =  $smwgIP . '/includes/SMW_DV_GeoCoords.php';
-		$wgAutoloadClasses['SMWBoolValue']        =  $smwgIP . '/includes/SMW_DV_Bool.php';
-		$wgAutoloadClasses['SMWConceptValue']     =  $smwgIP . '/includes/SMW_DV_Concept.php';
-		$wgAutoloadClasses['SMWImportValue']      =  $smwgIP . '/includes/SMW_DV_Import.php';
 		SMWDataValueFactory::$m_typeclasses = array(
 			'_txt'  => 'SMWStringValue',
 			'_cod'  => 'SMWStringValue',

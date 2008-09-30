@@ -14,7 +14,7 @@
  * @defgroup SMW Semantic MediaWiki
  */
 
-define('SMW_VERSION','1.4a-SVN');
+define('SMW_VERSION','1.4b-SVN');
 
 // constants for special properties, used for datatype assignment and storage
 define('SMW_SP_HAS_TYPE',1);
@@ -111,6 +111,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	///// Add "@note AUTOLOADED" to their class documentation. This avoids useless includes.
 	$wgAutoloadClasses['SMWInfolink']               = $smwgIP . '/includes/SMW_Infolink.php';
 	$wgAutoloadClasses['SMWFactbox']                = $smwgIP . '/includes/SMW_Factbox.php';
+	$wgAutoloadClasses['SMWParseData']              = $smwgIP . '/includes/SMW_ParseData.php';
 	$wgAutoloadClasses['SMWSemanticData']           = $smwgIP . '/includes/SMW_SemanticData.php';
 	$wgAutoloadClasses['SMWOrderedListPage']        = $smwgIP . '/includes/articlepages/SMW_OrderedListPage.php';
 	$wgAutoloadClasses['SMWTypePage']               = $smwgIP . '/includes/articlepages/SMW_TypePage.php';
@@ -128,13 +129,23 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWvCardResultPrinter']     = $smwgIP . '/includes/SMW_QP_vCard.php';
 	$wgAutoloadClasses['SMWCsvResultPrinter']       = $smwgIP . '/includes/SMW_QP_CSV.php';
 	//// datavalues
+	$wgAutoloadClasses['SMWDataValueFactory']       = $smwgIP . '/includes/SMW_DataValueFactory.php';
 	$wgAutoloadClasses['SMWDataValue']              = $smwgIP . '/includes/SMW_DataValue.php';
 	$wgAutoloadClasses['SMWErrorvalue']             = $smwgIP . '/includes/SMW_DV_Error.php';
-	///NOTE: other DataValues are registered for autoloading later on by the factory, use the hook
-	/// smwInitDatatypes to modify paths for datatype implementations and for registering new types.
-	$wgAutoloadClasses['SMWDataValueFactory']       = $smwgIP . '/includes/SMW_DataValueFactory.php';
-	// the builtin types are registered by SMWDataValueFactory if needed, will be reliably available
-	// to other DV-implementations that register to the factory.
+	$wgAutoloadClasses['SMWStringValue']      =  $smwgIP . '/includes/SMW_DV_String.php';
+	$wgAutoloadClasses['SMWWikiPageValue']    =  $smwgIP . '/includes/SMW_DV_WikiPage.php';
+	$wgAutoloadClasses['SMWURIValue']         =  $smwgIP . '/includes/SMW_DV_URI.php';
+	$wgAutoloadClasses['SMWTypesValue']       =  $smwgIP . '/includes/SMW_DV_Types.php';
+	$wgAutoloadClasses['SMWNAryValue']        =  $smwgIP . '/includes/SMW_DV_NAry.php';
+	$wgAutoloadClasses['SMWErrorValue']       =  $smwgIP . '/includes/SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWNumberValue']      =  $smwgIP . '/includes/SMW_DV_Number.php';
+	$wgAutoloadClasses['SMWTemperatureValue'] =  $smwgIP . '/includes/SMW_DV_Temperature.php';
+	$wgAutoloadClasses['SMWLinearValue']      =  $smwgIP . '/includes/SMW_DV_Linear.php';
+	$wgAutoloadClasses['SMWTimeValue']        =  $smwgIP . '/includes/SMW_DV_Time.php';
+	$wgAutoloadClasses['SMWGeoCoordsValue']   =  $smwgIP . '/includes/SMW_DV_GeoCoords.php';
+	$wgAutoloadClasses['SMWBoolValue']        =  $smwgIP . '/includes/SMW_DV_Bool.php';
+	$wgAutoloadClasses['SMWConceptValue']     =  $smwgIP . '/includes/SMW_DV_Concept.php';
+	$wgAutoloadClasses['SMWImportValue']      =  $smwgIP . '/includes/SMW_DV_Import.php';
 	//// export
 	$wgAutoloadClasses['SMWExporter']               = $smwgIP . '/includes/export/SMW_Exporter.php';
 	$wgAutoloadClasses['SMWExpData']                = $smwgIP . '/includes/export/SMW_Exp_Data.php';
@@ -216,21 +227,7 @@ function enableSemantics($namespace = '', $complete = false) {
  */
 function smwfSetupExtension() {
 	wfProfileIn('smwfSetupExtension (SMW)');
-	global $smwgIP, $smwgStoreActive, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink;
-
-	/**
-	* Setting this to false prevents any new data from being stored in
-	* the static SMWSemanticData store, and disables printing of the
-	* factbox, and clearing of the existing data.
-	* This is a hack to enable parsing of included articles in a save
-	* way without importing their annotations. Unfortunately, there
-	* appears to be no way for finding out whether the current parse
-	* is the "main" parse, or whether some intro, docu, or whatever
-	* text is parsed. Using the hook mechanism, we have to rely on
-	* globals/static fields -- so we cannot somehow differentiate this
-	* store between parsers.
-	*/
-	$smwgStoreActive = true;
+	global $smwgIP, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink;
 
 	$smwgMasterStore = NULL;
 	smwfInitContentLanguage($wgLanguageCode); // this really could not be done in enableSemantics()
@@ -347,7 +344,6 @@ function smwfProcessConceptParserFunction(&$parser) {
 	// The global $smwgConceptText is used to pass information to the MW hooks for storing it,
 	// $smwgPreviousConcept is used to detect if we already have a concept defined for this page.
 	$title = $parser->getTitle();
-	SMWFactbox::initStorage($title); // make sure we have the right title
 	if ($title->getNamespace() != SMW_NS_CONCEPT) {
 		return smwfEncodeMessages(array(wfMsgForContent('smw_no_concept_namespace')));
 	} elseif (isset($smwgPreviousConcept) && ($smwgPreviousConcept == $title->getText())) {
@@ -366,8 +362,8 @@ function smwfProcessConceptParserFunction(&$parser) {
 
 	$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC);
 	$dv->setValues($concept_text, $concept_docu, $query->getDescription()->getQueryFeatures(), $query->getDescription()->getSize(), $query->getDescription()->getDepth());
-	if (SMWFactbox::$semdata !== NULL) {
-		SMWFactbox::$semdata->addSpecialValue(SMW_SP_CONCEPT_DESC,$dv);
+	if (SMWParseData::getSMWData($parser) !== NULL) {
+		SMWParseData::getSMWData($parser)->addSpecialValue(SMW_SP_CONCEPT_DESC,$dv);
 	}
 
 	// display concept box:
@@ -457,9 +453,8 @@ function smwfRequireHeadItem($id, $item = '') {
  * (2) Fetch category information and other final settings from parser output.
  */
 function smwfParserAfterTidy(&$parser, &$text) {
-	global $smwgHeadItems, $smwgStoreActive;
-	SMWFactbox::initStorage($parser->getTitle()); // be sure we have our title, strange things happen in parsing
-	if (!$smwgStoreActive || (SMWFactbox::$semdata === NULL)) return true; // avoid doing this in SMW-generated sub-parsers
+	global $smwgHeadItems;
+	if (SMWParseData::getSMWData($parser) === NULL) return true;
 	// make HTML header
 	foreach ($smwgHeadItems as $key => $item) {
 		$parser->mOutput->addHeadItem("\t\t" . $item . "\n", $key);
@@ -470,13 +465,13 @@ function smwfParserAfterTidy(&$parser, &$text) {
 	foreach ($categories as $name) {
 		$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_INSTANCE_OF);
 		$dv->setValues($name,NS_CATEGORY);
-		SMWFactbox::$semdata->addSpecialValue(SMW_SP_INSTANCE_OF,$dv);
-		if (SMWFactbox::$semdata->getSubject()->getNamespace() == NS_CATEGORY) {
-			SMWFactbox::$semdata->addSpecialValue(SMW_SP_SUBCLASS_OF,$dv);
+		SMWParseData::getSMWData($parser)->addSpecialValue(SMW_SP_INSTANCE_OF,$dv);
+		if (SMWParseData::getSMWData($parser)->getSubject()->getNamespace() == NS_CATEGORY) {
+			SMWParseData::getSMWData($parser)->addSpecialValue(SMW_SP_SUBCLASS_OF,$dv);
 		}
 	}
-	$sortkey = ($parser->mDefaultSort?$parser->mDefaultSort:SMWFactbox::$semdata->getSubject()->getText());
-	SMWFactbox::$semdata->getSubject()->setSortkey($sortkey);
+	$sortkey = ($parser->mDefaultSort?$parser->mDefaultSort:SMWParseData::getSMWData($parser)->getSubject()->getText());
+	SMWParseData::getSMWData($parser)->getSubject()->setSortkey($sortkey);
 	return true;
 }
 
@@ -487,8 +482,7 @@ function smwfParserAfterTidy(&$parser, &$text) {
  * output (exploiting parser caching).
  */
 function smwfAddHTMLHeadersOutput(&$out) {
-	global $smwgHeadItems, $smwgStoreActive;
-	if (!$smwgStoreActive) return true; // avoid doing this in SMW-generated sub-parsers
+	global $smwgHeadItems;
 	// Add scripts to output if not done already (should happen only if we are
 	// not using a parser, e.g on special pages).
 	foreach ($smwgHeadItems as $key => $item) {
