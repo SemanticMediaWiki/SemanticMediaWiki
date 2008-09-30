@@ -20,7 +20,11 @@ class SMWParseData {
 	 * a new empty container if it is not initiated yet.
 	 */
 	static public function getSMWdata(Parser $parser) {
-		$output = $parser->getOutput();
+		if (method_exists($parser,'getOutput')) {
+			$output = $parser->getOutput();
+		} else {
+			$output = $parser->mOutput;
+		}
 		$title = $parser->getTitle();
 		if (!isset($output) || !isset($title)) return NULL; // no parsing, create error
 		if (!isset($output->mSMWData)) { // no data container yet
@@ -35,7 +39,11 @@ class SMWParseData {
 	 * Clear all stored data for a given parser.
 	 */
 	static public function clearStorage(Parser $parser) {
-		$output = $parser->getOutput();
+		if (method_exists($parser,'getOutput')) {
+			$output = $parser->getOutput();
+		} else {
+			$output = $parser->mOutput;
+		}
 		$title = $parser->getTitle();
 		if (!isset($output) || !isset($title)) return;
 		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
@@ -160,7 +168,9 @@ class SMWParseData {
 				}
 			}
 		}
-	
+debug_zval_dump($processSemantics);		
+debug_zval_dump($semdata);
+die;
 		// Actually store semantic data, or at least clear it if needed
 		if ($processSemantics) {
 			smwfGetStore()->updateData($semdata, SMWFactbox::isNewArticle());
