@@ -23,6 +23,7 @@ require_once( "$smwgRAPPath/RdfAPI.php");
 /**
  * Storage access class for using RAP as a triple store.
  * Most of the functions are simply forwarded to the SQL store.
+ * @deprecated Use SMWRAPStore2. This class will be last be available in SMW 1.4, and is fully functional only up to SMW 1.3.*
  */
 class SMWRAPStore extends SMWSQLStore {
 	protected $sqlstore;
@@ -32,24 +33,17 @@ class SMWRAPStore extends SMWSQLStore {
 	
 
 	/**
-	* TODO: maybe find a better nomenclatur for the model
+	* @todo Maybe find a better nomenclatur for the model
 	**/
 	public function SMWRAPStore() {
 		global $smwgRAPPath,$wgServer;
 
-	
 		$this->modeluri = SMWExporter::expandURI($wgServer."/model");
 		$this->baseuri  = SMWExporter::expandURI($wgServer."/id"); 
 	}
 
 ///// Writing methods /////
 
-	/**
-	 * Delete all semantic properties that the given subject has. This
-	 * includes relations, attributes, and special properties. This does not
-	 * delete the respective text from the wiki, but only clears the stored
-	 * data.
-	 */
 	function deleteSubject(Title $subject) {
 		
 		// Translate SMWSemanticData to a RAP Model
@@ -60,15 +54,8 @@ class SMWRAPStore extends SMWSQLStore {
 		
 		return parent::deleteSubject($subject);
 	}
-	
-	
-	/**
-	 * Update the semantic data stored for some individual. The data is given
-	 * as a SMWSemData object, which contains all semantic data for one particular
-	 * subject. The boolean $newpage specifies whether the page is stored for the
-	 * first time or not.
-	 */
-	function updateData(SMWSemanticData $data, $newpage){
+
+	function updateData(SMWSemanticData $data){
 		// Create a local memmodel
 		$model = ModelFactory::getDefaultModel();
 		
@@ -153,17 +140,9 @@ class SMWRAPStore extends SMWSQLStore {
 		$this->closeRAP();
 		
 		
-		return parent::updateData($data, $newpage);
+		return parent::updateData($data);
 	}
-	
 
-	/**
-	 * Update the store to reflect a renaming of some article. The old and new title objects
-	 * are given. Since this is typically triggered when moving articles, the ID of the title
-	 * objects is normally not affected by the change, which is reflected by the value of $keepid.
-	 * If $keepid is true, the old and new id of the title is the id of $newtitle, and not the
-	 * id of $oldtitle.
-	 */
 	function changeTitle(Title $oldtitle, Title $newtitle, $pageid, $redirid=0) {
 		
 		// Save it in parent store now!
@@ -193,17 +172,6 @@ class SMWRAPStore extends SMWSQLStore {
 
 ///// Setup store /////
 
-	/**
-	 * Setup all storage structures properly for using the store. This function performs tasks like
-	 * creation of database tables. It is called upon installation as well as on upgrade: hence it
-	 * must be able to upgrade existing storage structures if needed. It should return "true" if
-	 * successful and return a meaningful string error message otherwise.
-	 *
-	 * The parameter $verbose determines whether the procedure is allowed to report on its progress.
-	 * This is doen by just using print and possibly ob_flush/flush. This is also relevant for preventing
-	 * timeouts during long operations. All output must be valid XHTML, but should preferrably be plain
-	 * text, possibly with some linebreaks and weak markup.
-	 */
 	function setup($verbose = true) {
 		$this->reportProgress("Opening connection to DB for RAP ...\n",$verbose);
 		$rdfstore = $this->getRAPStore();

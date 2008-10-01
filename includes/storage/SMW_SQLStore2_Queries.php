@@ -19,6 +19,7 @@ define('SMW_SQL2_PROP_HIERARCHY',6); // only joinfield relevant: (disjunctive) a
 /**
  * Class for representing a single (sub)query description. Simple data
  * container.
+ * @ingroup SMWStore
  */
 class SMWSQLStore2Query {
 	public $type = SMW_SQL2_TABLE;

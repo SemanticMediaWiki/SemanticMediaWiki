@@ -33,6 +33,7 @@ define('SMW_SQL2_CONC2',256);
  * way to filter out results that may be found if an interwiki object is given but a
  * local object of the same name exists. It is currently not planned to support things
  * like interwiki reuse of properties.
+ * @ingroup SMWStore
  */
 class SMWSQLStore2 extends SMWStore {
 
@@ -690,7 +691,7 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileOut('SMWSQLStore2::deleteSubject (SMW)');
 	}
 
-	function updateData(SMWSemanticData $data, $newpage) {
+	function updateData(SMWSemanticData $data) {
 		wfProfileIn("SMWSQLStore2::updateData (SMW)");
 		$subject = $data->getSubject();
 		$this->deleteSemanticData($subject);

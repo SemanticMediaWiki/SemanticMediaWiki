@@ -27,17 +27,17 @@ require_once( "$smwgRAPPath/RdfAPI.php");
 /**
  * Storage access class for using RAP as a triple store.
  * Most of the functions are simply forwarded to the SQL store.
+ * @ingroup SMWStore
  */
 class SMWRAPStore2 extends SMWSQLStore2 {
 	protected $sqlstore;
 	protected $rapstore;
 	protected $modeluri;
 	protected $baseuri;
-	
 
 	/**
-	* TODO: maybe find a better nomenclatur for the model
-	**/
+	 * @todo Maybe find a better nomenclature for the model.
+	 */
 	public function SMWRAPStore2() {
 		global $smwgRAPPath,$wgServer;
 
@@ -48,12 +48,6 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 
 ///// Writing methods /////
 
-	/**
-	 * Delete all semantic properties that the given subject has. This
-	 * includes relations, attributes, and special properties. This does not
-	 * delete the respective text from the wiki, but only clears the stored
-	 * data.
-	 */
 	function deleteSubject(Title $subject) {
 		
 		// Translate SMWSemanticData to a RAP Model
@@ -64,15 +58,8 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		
 		return parent::deleteSubject($subject);
 	}
-	
-	
-	/**
-	 * Update the semantic data stored for some individual. The data is given
-	 * as a SMWSemData object, which contains all semantic data for one particular
-	 * subject. The boolean $newpage specifies whether the page is stored for the
-	 * first time or not.
-	 */
-	function updateData(SMWSemanticData $data, $newpage){
+
+	function updateData(SMWSemanticData $data){
 		// Create a local memmodel
 		$model = ModelFactory::getDefaultModel();
 		
@@ -157,17 +144,9 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		$this->closeRAP();
 		
 		
-		return parent::updateData($data, $newpage);
+		return parent::updateData($data);
 	}
-	
 
-	/**
-	 * Update the store to reflect a renaming of some article. The old and new title objects
-	 * are given. Since this is typically triggered when moving articles, the ID of the title
-	 * objects is normally not affected by the change, which is reflected by the value of $keepid.
-	 * If $keepid is true, the old and new id of the title is the id of $newtitle, and not the
-	 * id of $oldtitle.
-	 */
 	function changeTitle(Title $oldtitle, Title $newtitle, $pageid, $redirid=0) {
 		
 		// Save it in parent store now!
@@ -180,7 +159,6 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		$rapsubold = new Resource($nameOld);
 		$this->removeSubjectFromRAP($rdfmodel, $rapsubold);
 
-		
 		$newpage = SMWDataValueFactory::newTypeIDValue('_wpg');
 		$newpage->setValues($newtitle->getDBKey(), $newtitle->getNamespace(), $pageid);
 		$semdata = $this->getSemanticData($newpage);
