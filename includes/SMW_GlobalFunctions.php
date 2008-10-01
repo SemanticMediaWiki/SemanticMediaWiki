@@ -231,7 +231,6 @@ function smwfSetupExtension() {
 	global $smwgIP, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink;
 
 	$smwgMasterStore = NULL;
-	smwfInitContentLanguage($wgLanguageCode); // this really could not be done in enableSemantics()
 	wfLoadExtensionMessages('SemanticMediaWiki'); /// TODO: this is extremely slow; up to 10% of page display time (on a page with queries!) are consumed by loading unnecessary messages from a large file ...
 	/// Past SMW releases had an average of about 1% extension loading time per call, while we are now up at 10%!
 	/// (if no PHP caching is enabled, things become better with ACP but impact still is noticeable)
@@ -280,7 +279,7 @@ function smwfSetupExtension() {
 /**
  * Register special classes for displaying semantic content on Property/Type pages
  */
-function smwfShowListPage (&$title, &$article){
+function smwfShowListPage(&$title, &$article){
 	global $smwgIP;
 	if ($title->getNamespace() == SMW_NS_TYPE){
 		$article = new SMWTypePage($title);
@@ -350,10 +349,12 @@ function smwfRequireHeadItem($id, $item = '') {
 }
 
 /**
- * Hook function for three tasks:
+ * Hook function for two tasks:
+ *
  * (1) insert HTML headers (CSS, JavaScript, and meta tags) into parser 
  * output. This is our preferred method of working off the required scripts, since it 
  * exploits parser caching.
+ *
  * (2) Fetch category information and other final settings from parser output.
  */
 function smwfParserAfterTidy(&$parser, &$text) {
