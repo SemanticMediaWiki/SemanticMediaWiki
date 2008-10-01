@@ -15,18 +15,23 @@
  */
 class SMWParserExtensions {
 
+	/// Temporarily store parser that cannot be passed to call-back functions otherwise.
+	protected static $mTempParser;
+	/// Internal state for switchin off/on SMW link annotations during parsing
+	protected static $mTempStoreAnnotations;
+
 	/**
 	 *  This method will be called before an article is displayed or previewed.
 	 *  For display and preview we strip out the semantic properties and append them
 	 *  at the end of the article.
 	 */
 	static public function onInternalParseBeforeLinks(&$parser, &$text) {
-		global $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgLinksInValues, $smwgTempParser;
+		global $smwgStoreAnnotations, $smwgLinksInValues;
 		SMWParseData::stripMagicWords($text, $parser);
 		// store the results if enabled (we have to parse them in any case, in order to
 		// clean the wiki source for further processing)
 		$smwgStoreAnnotations = smwfIsSemanticsProcessed($parser->getTitle()->getNamespace());
-		$smwgTempStoreAnnotations = true; // used for [[SMW::on]] and [[SMW:off]]
+		SMWParserExtensions::$mTempStoreAnnotations = true; // used for [[SMW::on]] and [[SMW:off]]
 	
 		// process redirects, if any
 		// (it seems that there is indeed no more direct way of getting this info from MW)
@@ -38,7 +43,7 @@ class SMWParserExtensions {
 			}
 		}
 
-		$smwgTempParser = $parser; // only used in subsequent callbacks, forgotten afterwards
+		SMWParserExtensions::$mTempParser = $parser; // only used in subsequent callbacks, forgotten afterwards
 		// In the regexp matches below, leading ':' escapes the markup, as
 		// known for Categories.
 		// Parse links to extract semantic properties
@@ -104,7 +109,7 @@ class SMWParserExtensions {
 	 * link. Expected parameter: array(linktext, properties, value, caption)
 	 */
 	static public function parsePropertiesCallback($semanticLink) {
-		global $smwgInlineErrors, $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgTempParser;
+		global $smwgInlineErrors, $smwgStoreAnnotations;
 		wfProfileIn("smwfParsePropertiesCallback (SMW)");
 		if (array_key_exists(1,$semanticLink)) {
 			$property = $semanticLink[1];
@@ -115,8 +120,8 @@ class SMWParserExtensions {
 	
 		if ($property == 'SMW') {
 			switch ($value) {
-				case 'on': $smwgTempStoreAnnotations = true; break;
-				case 'off': $smwgTempStoreAnnotations = false; break;
+				case 'on':  SMWParserExtensions::$mTempStoreAnnotations = true;  break;
+				case 'off': SMWParserExtensions::$mTempStoreAnnotations = false; break;
 			}
 			wfProfileOut("smwfParsePropertiesCallback (SMW)");
 			return '';
@@ -129,10 +134,10 @@ class SMWParserExtensions {
 		//extract annotations and create tooltip
 		$properties = preg_split('/:[=:]/u', $property);
 		foreach($properties as $singleprop) {
-			$dv = SMWParseData::addProperty($singleprop,$value,$valueCaption, $smwgTempParser, $smwgStoreAnnotations && $smwgTempStoreAnnotations);
+			$dv = SMWParseData::addProperty($singleprop,$value,$valueCaption, SMWParserExtensions::$mTempParser, $smwgStoreAnnotations && SMWParserExtensions::$mTempStoreAnnotations);
 		}
 		$result = $dv->getShortWikitext(true);
-		if ( ($smwgInlineErrors && $smwgStoreAnnotations && $smwgTempStoreAnnotations) && (!$dv->isValid()) ) {
+		if ( ($smwgInlineErrors && $smwgStoreAnnotations && SMWParserExtensions::$mTempStoreAnnotations) && (!$dv->isValid()) ) {
 			$result .= $dv->getErrorText();
 		}
 		wfProfileOut("smwfParsePropertiesCallback (SMW)");
