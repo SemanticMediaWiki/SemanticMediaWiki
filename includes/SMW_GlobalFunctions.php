@@ -239,7 +239,6 @@ function smwfSetupExtension() {
 	$smwgIQRunningNumber = 0;
 
 	///// register hooks /////
-	require_once($smwgIP . '/includes/SMW_Hooks.php');
 	require_once($smwgIP . '/includes/SMW_RefreshTab.php');
 
 	$wgHooks['InternalParseBeforeLinks'][] = 'SMWParserExtensions::onInternalParseBeforeLinks'; // parse annotations in [[link syntax]]
