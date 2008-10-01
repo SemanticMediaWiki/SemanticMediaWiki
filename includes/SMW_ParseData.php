@@ -8,7 +8,8 @@
  */
 
 /**
- * Static class for managing semantic data collected during parsing. All methods
+ * Static class for managing semantic data collected during parsing, including some hooks
+ * that can be used for updating and storing the data for some article. All methods
  * in this class are stateless: data is stored persistently only in a given parser
  * output. There is one exception: to provide a minimal compatibility with MediaWiki
  * up to version 1.13, the class keeps track of the latest ParserOutput that was
@@ -22,39 +23,52 @@ class SMWParseData {
 	static public $mPrevOutput = NULL;
 
 	/**
+	 * Remove relevant SMW magic words from the given text and return
+	 * an array of the names of all discovered magic words. Moreover,
+	 * store this array in the current parser output, using the variable
+	 * mSMWMagicWords.
+	 */
+	static public function stripMagicWords(&$text, Parser $parser) {
+		$words = array();
+		$mw = MagicWord::get('SMW_NOFACTBOX');
+		if ($mw->matchAndRemove($text)) {
+			$words[] = 'SMW_NOFACTBOX';
+		}
+		$mw = MagicWord::get('SMW_SHOWFACTBOX');
+		if ($mw->matchAndRemove($text)) {
+			$words[] = 'SMW_SHOWFACTBOX';
+		}
+		$output = SMWParseData::getOutput($parser);
+		$output->mSMWMagicWords = $words;
+		return $words;
+	}
+
+	/**
 	 * This function retrieves the SMW data from a given parser, and creates
 	 * a new empty container if it is not initiated yet.
 	 */
 	static public function getSMWdata(Parser $parser) {
-		if (method_exists($parser,'getOutput')) {
-			SMWParseData::$mPrevOutput = $parser->getOutput();
-		} else {
-			SMWParseData::$mPrevOutput = $parser->mOutput;
-		}
+		$output = SMWParseData::getOutput($parser);
 		$title = $parser->getTitle();
-		if (!isset(SMWParseData::$mPrevOutput) || !isset($title)) return NULL; // no parsing, create error
-		if (!isset(SMWParseData::$mPrevOutput->mSMWData)) { // no data container yet
+		if (!isset($output) || !isset($title)) return NULL; // no parsing, create error
+		if (!isset($output->mSMWData)) { // no data container yet
 			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 			$dv->setValues($title->getDBkey(), $title->getNamespace());
-			SMWParseData::$mPrevOutput->mSMWData = new SMWSemanticData($dv);
+			$output->mSMWData = new SMWSemanticData($dv);
 		}
-		return SMWParseData::$mPrevOutput->mSMWData;
+		return $output->mSMWData;
 	}
 
 	/**
 	 * Clear all stored data for a given parser.
 	 */
 	static public function clearStorage(Parser $parser) {
-		if (method_exists($parser,'getOutput')) {
-			SMWParseData::$mPrevOutput = $parser->getOutput();
-		} else {
-			SMWParseData::$mPrevOutput = $parser->mOutput;
-		}
+		$output = SMWParseData::getOutput($parser);
 		$title = $parser->getTitle();
-		if (!isset(SMWParseData::$mPrevOutput) || !isset($title)) return;
+		if (!isset($output) || !isset($title)) return;
 		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 		$dv->setValues($title->getDBkey(), $title->getNamespace());
-		SMWParseData::$mPrevOutput->mSMWData = new SMWSemanticData($dv);
+		$output->mSMWData = new SMWSemanticData($dv);
 	}
 
 	/**
@@ -176,9 +190,9 @@ class SMWParseData {
 		}
 		// Actually store semantic data, or at least clear it if needed
 		if ($processSemantics) {
-			smwfGetStore()->updateData($semdata, SMWFactbox::isNewArticle());
+			smwfGetStore()->updateData($semdata);
  		} else {
-			smwfGetStore()->clearData($semdata->getSubject()->getTitle(), SMWFactbox::isNewArticle());
+			smwfGetStore()->clearData($semdata->getSubject()->getTitle());
 		}
 
 		// Finally trigger relevant Updatejobs if necessary
@@ -207,6 +221,54 @@ class SMWParseData {
 		$dv2hash = implode("___", $values);
 
 		return ($dv1hash == $dv2hash);
+	}
+
+	/**
+	 * Get the parser output from a parser object. The result is also stored
+	 * in SMWParseData::$mPrevOutput for further reference.
+	 */
+	static protected function getOutput($parser) {
+		if (method_exists($parser,'getOutput')) {
+			SMWParseData::$mPrevOutput = $parser->getOutput();
+		} else {
+			SMWParseData::$mPrevOutput = $parser->mOutput;
+		}
+		return SMWParseData::$mPrevOutput;
+	}
+
+	/**
+	 * Used to updates data after changes of templates, but also at each saving of an article.
+	 */
+	public static function onLinksUpdateConstructed($links_update) {
+		if (isset($links_update->mParserOutput)) {
+			$output = $links_update->mParserOutput;
+		} else { // MediaWiki <= 1.13 compatibility
+			$output = SMWParseData::$mPrevOutput;
+			if (!isset($output)) {
+				smwfGetStore()->clearData($links_update->mTitle, SMWFactbox::isNewArticle());
+				return true;
+			}
+		}
+		SMWParseData::storeData($output, $links_update->mTitle, true);
+		return true;
+	}
+	
+	/**
+	 *  This method will be called whenever an article is deleted so that
+	 *  semantic properties are cleared appropriately.
+	 */
+	public static function onArticleDelete(&$article, &$user, &$reason) {
+		smwfGetStore()->deleteSubject($article->getTitle());
+		return true; // always return true, in order not to stop MW's hook processing!
+	}
+	
+	/**
+	 *  This method will be called whenever an article is moved so that
+	 *  semantic properties are moved accordingly.
+	 */
+	public static function onTitleMoveComplete(&$old_title, &$new_title, &$user, $pageid, $redirid) {
+		smwfGetStore()->changeTitle($old_title, $new_title, $pageid, $redirid);
+		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
 }

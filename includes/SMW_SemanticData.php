@@ -26,6 +26,8 @@ class SMWSemanticData {
 	protected $hasspecs = false;
 	/// Boolean, stating whether the container holds any displayable special properties (some are internal only without a display name).
 	protected $hasvisiblespecs = false;
+	/// Boolean, stating whether this is a stub object. Stubbing might happen on serialisation to safe DB space
+	public $stubobject = true;
 	/**
 	 *  Boolean, stating whether repeated values should be avoided. Not needing duplicte elimination
 	 *  (e.g. when loading from store) can safe much time, since objects can remain stubs until someone
@@ -41,6 +43,7 @@ class SMWSemanticData {
 	public function __construct(SMWWikiPageValue $subject, $noduplicates = true) {
 		$this->subject = $subject;
 		$this->m_noduplicates = $noduplicates;
+		$this->stubobject = false;
 	}
 
 	/**

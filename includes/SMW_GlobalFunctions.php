@@ -241,14 +241,16 @@ function smwfSetupExtension() {
 	require_once($smwgIP . '/includes/SMW_Hooks.php');
 	require_once($smwgIP . '/includes/SMW_RefreshTab.php');
 
-	$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; // parse annotations
-	$wgHooks['ArticleSave'][] = 'smwfPreSaveHook'; // check some settings here
-	$wgHooks['ArticleDelete'][] = 'smwfDeleteHook'; // delete annotations
-	$wgHooks['TitleMoveComplete'][]='smwfMoveHook'; // move annotations
+	$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; // parse annotations in [[link syntax]]
 	$wgHooks['ParserAfterTidy'][] = 'smwfParserAfterTidy'; // add items to HTML header during parsing
 	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeadersOutput'; // add items to HTML header during output
-    $wgHooks['LinksUpdateConstructed'][] = 'smwfLinkUpdateHook'; // update data after template change and at safe
-	$wgHooks['BeforeParserrenderImageGallery'][] = 'smwfBlockFactboxFromImageGallery';
+// 	$wgHooks['ArticleSave'][] = 'smwfPreSaveHook'; // check some settings here
+	$wgHooks['ArticleDelete'][] = 'SMWParseData::onArticleDelete'; // delete annotations
+	$wgHooks['TitleMoveComplete'][]='SMWParseData::onTitleMoveComplete'; // move annotations
+    $wgHooks['LinksUpdateConstructed'][] = 'SMWParseData::onLinksUpdateConstructed'; // update data after template change and at safe
+	$wgHooks['OutputPageParserOutput'][] = 'SMWFactbox::onOutputPageParserOutput'; // copy some data for later Factbox display
+	$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
+// 	$wgHooks['OutputPageBeforeHTML'][] = 'SMWFactbox::onOutputPageBeforeHTML';// draw Factbox right below page content
 
 	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage'; // special implementations for property/type articles
 
@@ -272,6 +274,22 @@ function smwfSetupExtension() {
 	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, [http://korrekt.org Markus&nbsp;Kr&ouml;tzsch], [http://simia.net Denny&nbsp;Vrandecic], S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://semantic-mediawiki.org', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://semantic-mediawiki.org/wiki/Help:User_manual View online documentation.]');
 
 	wfProfileOut('smwfSetupExtension (SMW)');
+	return true;
+}
+
+
+/**
+ * Register special classes for displaying semantic content on Property/Type pages
+ */
+function smwfShowListPage (&$title, &$article){
+	global $smwgIP;
+	if ($title->getNamespace() == SMW_NS_TYPE){
+		$article = new SMWTypePage($title);
+	} elseif ( $title->getNamespace() == SMW_NS_PROPERTY ) {
+		$article = new SMWPropertyPage($title);
+	} elseif ( $title->getNamespace() == SMW_NS_CONCEPT ) {
+		$article = new SMWConceptPage($title);
+	}
 	return true;
 }
 

@@ -17,14 +17,10 @@
 */
 function smwfParserHook(&$parser, &$text) {
 	global $smwgStoreAnnotations, $smwgTempStoreAnnotations, $smwgLinksInValues, $smwgTempParser;
-
+	SMWParseData::stripMagicWords($text, $parser);
 	// store the results if enabled (we have to parse them in any case, in order to
 	// clean the wiki source for further processing)
-	if ( smwfIsSemanticsProcessed($parser->getTitle()->getNamespace()) ) {
-		$smwgStoreAnnotations = true;
-	} else {
-		$smwgStoreAnnotations = false;
-	}
+	$smwgStoreAnnotations = smwfIsSemanticsProcessed($parser->getTitle()->getNamespace());
 	$smwgTempStoreAnnotations = true; // used for [[SMW::on]] and [[SMW:off]]
 
 	// process redirects, if any
@@ -61,7 +57,7 @@ function smwfParserHook(&$parser, &$text) {
 		                        /xu';
 		$text = preg_replace_callback($semanticLinkPattern, 'smwfSimpleParsePropertiesCallback', $text);
 	}
-	SMWFactbox::printFactbox($text, $parser);
+// 	SMWFactbox::printFactbox($text, SMWParseData::getSMWData($parser));
 
 	// add link to RDF to HTML header
 	smwfRequireHeadItem('smw_rdf', '<link rel="alternate" type="application/rdf+xml" title="' .
@@ -139,79 +135,9 @@ function smwfParsePropertiesCallback($semanticLink) {
 	return $result;
 }
 
-/**
- * Adds a block whenever a gallery will be started, otherwise the gallery may cause
- * a factbox to be rendered. The smwgBlockFactBox is checked i
- */
-function smwfBlockFactboxFromImageGallery(  ) {
-	SMWFactbox::blockOnce();
-	return true;
-}
-
-//// Saving, deleting, and moving articles
-
-
-/**
- * Called before the article is saved. Allows us to check and remember whether an article is new.
- */
-function smwfPreSaveHook(&$article, &$user, &$text, &$summary, $minor, $watch, $sectionanchor, &$flags) {
-	if ($flags & EDIT_NEW) {
-		SMWFactbox::setNewArticle();
-	}
-	return true; // always return true, in order not to stop MW's hook processing!
-}
-
-/**
- * Used to updates data after changes of templates, but also at each saving of an article.
- */
-function smwfLinkUpdateHook($links_update) {
-	if (isset($links_update->mParserOutput)) {
-		$output = $links_update->mParserOutput;
-	} else { // MediaWiki <= 1.13 compatibility
-		$output = SMWParseData::$mPrevOutput;
-		if (!isset($output)) {
-			smwfGetStore()->clearData($links_update->mTitle, SMWFactbox::isNewArticle());
-			return true;
-		}
-	}
-	SMWParseData::storeData($output, $links_update->mTitle, true);
-	return true;
-}
-
-/**
-*  This method will be called whenever an article is deleted so that
-*  semantic properties are cleared appropriately.
-*/
-function smwfDeleteHook(&$article, &$user, &$reason) {
-	smwfGetStore()->deleteSubject($article->getTitle());
-	return true; // always return true, in order not to stop MW's hook processing!
-}
-
-/**
-*  This method will be called whenever an article is moved so that
-*  semantic properties are moved accordingly.
-*/
-function smwfMoveHook(&$old_title, &$new_title, &$user, $pageid, $redirid) {
-	smwfGetStore()->changeTitle($old_title, $new_title, $pageid, $redirid);
-	return true; // always return true, in order not to stop MW's hook processing!
-}
-
 // Special display for certain types of pages
 
-/**
- * Register special classes for displaying semantic content on Property/Type pages
- */
-function smwfShowListPage (&$title, &$article){
-	global $smwgIP;
-	if ($title->getNamespace() == SMW_NS_TYPE){
-		$article = new SMWTypePage($title);
-	} elseif ( $title->getNamespace() == SMW_NS_PROPERTY ) {
-		$article = new SMWPropertyPage($title);
-	} elseif ( $title->getNamespace() == SMW_NS_CONCEPT ) {
-		$article = new SMWConceptPage($title);
-	}
-	return true;
-}
+
 
 
 
