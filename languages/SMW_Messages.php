@@ -2525,6 +2525,7 @@ $messages['lb'] = array(
 	'smw_sbv_value' => 'Wert',
 	'smw_sbv_submit' => 'Resultater sichen',
 	'smw_browse_go' => 'Lass',
+	'smw_inverse_label_default' => '$1 vu(n)',
 	'smw_pp_from' => 'Vun der Säit',
 	'smw_pp_type' => 'Eegeschaft',
 	'smw_pp_submit' => 'Resultater sichen',
