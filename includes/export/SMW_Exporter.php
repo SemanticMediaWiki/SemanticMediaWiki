@@ -9,7 +9,7 @@
  * a format for easy serialisation in OWL or RDF.
  *
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMW
  */
 class SMWExporter {
 
@@ -260,8 +260,8 @@ class SMWExporter {
 	static public function encodeURI($uri) {
 		$uri = str_replace( '-', '-2D', $uri);
 		//$uri = str_replace( '_', '-5F', $uri); //not necessary
-		$uri = str_replace( array(':', '"','#','&',"'",'+','%'),
-		                    array('-3A', '-22','-23','-26','-27','-2B','-'),
+		$uri = str_replace( array(':','"','#','&',"'",'+','!','%'),
+		                    array('-3A', '-22','-23','-26','-27','-2B','-21','-'),
 		                    $uri);
 		return $uri;
 	}
@@ -271,8 +271,8 @@ class SMWExporter {
 	 * allows services that receive a URI to extract e.g. the according wiki page.
 	 */
 	static public function decodeURI($uri) {
-		$uri = str_replace( array('-22','-23','-26','-27','-2B','-'),
-		                    array('"','#','&',"'",'+','%'),
+		$uri = str_replace( array('-22','-23','-26','-27','-2B','-21','-'),
+		                    array('"','#','&',"'",'+','!','%'),
 		                   $uri);
 		$uri = str_replace( '-2D', '-', $uri);
 		return $uri;
