@@ -32,33 +32,4 @@ function smwfDataEntry_Magic( &$magicWords, $langCode ) {
 	return true;
 }
 
-/**
- * Parser function for data, that enables to use a parser function for annotations.
- * Using the following syntax:
- * {{#set:
- *   population = 13000
- * | area = 396 km²
- * | sea = Adria
- * }}
- * This creates annotations with the properties as stated on the left side, and the
- * values on the right side.
- * 
- * @param[in] &$parser Parser  The current parser
- * @return nothing
- */
-function smwfDataEntry_Render( &$parser ) {
-	$params = func_get_args();
-	array_shift( $params ); // we already know the $parser ...
-	foreach ($params as $p)
-		if (trim($p) != "") {
-			$parts = explode("=", trim($p));
-			if (count($parts)==2) {
-				$property = $parts[0];
-				$subject = $parts[1];
-				// Adds the fact to the factbox, which may be problematic in case
-				// the parser gets called several times...
-				SMWParseData::addProperty( $property, $subject, false, $parser, true );
-			}
-		}
-	return;
-}
+

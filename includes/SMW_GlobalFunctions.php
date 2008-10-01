@@ -109,6 +109,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	///// Set up autoloading
 	///// All classes registered for autoloading here should be tagged with this information:
 	///// Add "@note AUTOLOADED" to their class documentation. This avoids useless includes.
+	$wgAutoloadClasses['SMWParserExtensions']       = $smwgIP . '/includes/SMW_ParserExtensions.php';
 	$wgAutoloadClasses['SMWInfolink']               = $smwgIP . '/includes/SMW_Infolink.php';
 	$wgAutoloadClasses['SMWFactbox']                = $smwgIP . '/includes/SMW_Factbox.php';
 	$wgAutoloadClasses['SMWParseData']              = $smwgIP . '/includes/SMW_ParseData.php';
@@ -241,10 +242,7 @@ function smwfSetupExtension() {
 	require_once($smwgIP . '/includes/SMW_Hooks.php');
 	require_once($smwgIP . '/includes/SMW_RefreshTab.php');
 
-	$wgHooks['InternalParseBeforeLinks'][] = 'smwfParserHook'; // parse annotations in [[link syntax]]
-	$wgHooks['ParserAfterTidy'][] = 'smwfParserAfterTidy'; // add items to HTML header during parsing
-	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeadersOutput'; // add items to HTML header during output
-// 	$wgHooks['ArticleSave'][] = 'smwfPreSaveHook'; // check some settings here
+	$wgHooks['InternalParseBeforeLinks'][] = 'SMWParserExtensions::onInternalParseBeforeLinks'; // parse annotations in [[link syntax]]
 	$wgHooks['ArticleDelete'][] = 'SMWParseData::onArticleDelete'; // delete annotations
 	$wgHooks['TitleMoveComplete'][]='SMWParseData::onTitleMoveComplete'; // move annotations
     $wgHooks['LinksUpdateConstructed'][] = 'SMWParseData::onLinksUpdateConstructed'; // update data after template change and at safe
@@ -252,15 +250,17 @@ function smwfSetupExtension() {
 	$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
 // 	$wgHooks['OutputPageBeforeHTML'][] = 'SMWFactbox::onOutputPageBeforeHTML';// draw Factbox right below page content
 
+	$wgHooks['ParserAfterTidy'][] = 'smwfParserAfterTidy'; // add items to HTML header during parsing
+	$wgHooks['BeforePageDisplay'][]='smwfAddHTMLHeadersOutput'; // add items to HTML header during output
 	$wgHooks['ArticleFromTitle'][] = 'smwfShowListPage'; // special implementations for property/type articles
 
 	if( defined( 'MW_SUPPORTS_PARSERFIRSTCALLINIT' ) ) {
-		$wgHooks['ParserFirstCallInit'][] = 'smwfRegisterParserFunctions';
+		$wgHooks['ParserFirstCallInit'][] = 'SMWParserExtensions::registerParserFunctions';
 	} else {
 		if ( class_exists( 'StubObject' ) && !StubObject::isRealObject( $wgParser ) ) {
 			$wgParser->_unstub();
 		}
-		smwfRegisterParserFunctions( $wgParser );
+		SMWParserExtensions::registerParserFunctions( $wgParser );
 	}
 	if ($smwgToolboxBrowseLink) {
 		if (version_compare($wgVersion,'1.13','>')) {
@@ -291,119 +291,6 @@ function smwfShowListPage (&$title, &$article){
 		$article = new SMWConceptPage($title);
 	}
 	return true;
-}
-
-/**
- * This hook registers parser functions and hooks to the given parser.
- * Note that parser hooks are something different than MW hooks
- * in general, which explains the two-level registration.
- */
-function smwfRegisterParserFunctions( &$parser) {
-	$parser->setHook( 'ask', 'smwfProcessInlineQuery' );
-	$parser->setFunctionHook( 'ask', 'smwfProcessInlineQueryParserFunction' );
-	$parser->setFunctionHook( 'show', 'smwfProcessShowParserFunction' );
-	$parser->setFunctionHook( 'info', 'smwfProcessInfoParserFunction' );
-	$parser->setFunctionHook( 'concept', 'smwfProcessConceptParserFunction' );
-	return true; // always return true, in order not to stop MW's hook processing!
-}
-
-/**
- * The <ask> parser hook processing part.
- */
-function smwfProcessInlineQuery($querytext, $params, &$parser) {
-	global $smwgQEnabled, $smwgIQRunningNumber;
-	if ($smwgQEnabled) {
-		$smwgIQRunningNumber++;
-		return SMWQueryProcessor::getResultFromHookParams($querytext,$params,SMW_OUTPUT_HTML);
-	} else {
-		wfLoadExtensionMessages('SemanticMediaWiki');
-		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
-	}
-}
-
-/**
- * The {{#ask }} parser function processing part.
- */
-function smwfProcessInlineQueryParserFunction(&$parser) {
-	global $smwgQEnabled, $smwgIQRunningNumber;
-	if ($smwgQEnabled) {
-		$smwgIQRunningNumber++;
-		$params = func_get_args();
-		array_shift( $params ); // we already know the $parser ...
-		return SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI);
-	} else {
-		wfLoadExtensionMessages('SemanticMediaWiki');
-		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
-	}
-}
-
-/**
- * The {{#show }} parser function processing part.
- */
-function smwfProcessShowParserFunction(&$parser) {
-	global $smwgQEnabled, $smwgIQRunningNumber;
-	if ($smwgQEnabled) {
-		$smwgIQRunningNumber++;
-		$params = func_get_args();
-		array_shift( $params ); // we already know the $parser ...
-		return SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI,SMWQueryProcessor::INLINE_QUERY,true);
-	} else {
-		wfLoadExtensionMessages('SemanticMediaWiki');
-		return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
-	}
-}
-
-/**
- * The {{#concept }} parser function processing part.
- */
-function smwfProcessConceptParserFunction(&$parser) {
-	global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $smwgPreviousConcept, $wgContLang;
-	wfLoadExtensionMessages('SemanticMediaWiki');
-	// The global $smwgConceptText is used to pass information to the MW hooks for storing it,
-	// $smwgPreviousConcept is used to detect if we already have a concept defined for this page.
-	$title = $parser->getTitle();
-	if ($title->getNamespace() != SMW_NS_CONCEPT) {
-		return smwfEncodeMessages(array(wfMsgForContent('smw_no_concept_namespace')));
-	} elseif (isset($smwgPreviousConcept) && ($smwgPreviousConcept == $title->getText())) {
-		return smwfEncodeMessages(array(wfMsgForContent('smw_multiple_concepts')));
-	}
-	$smwgPreviousConcept = $title->getText();
-
-	// process input:
-	$params = func_get_args();
-	array_shift( $params ); // we already know the $parser ...
-	$concept_input = str_replace(array('&gt;','&lt;'),array('>','<'),array_shift( $params )); // use first parameter as concept (query) string
-	/// NOTE: the str_replace above is required in MediaWiki 1.11, but not in MediaWiki 1.14
-	$query = SMWQueryProcessor::createQuery($concept_input, array('limit' => 20, 'format' => 'list'), SMWQueryProcessor::CONCEPT_DESC);
-	$concept_text = $query->getDescription()->getQueryString();
-	$concept_docu = array_shift( $params ); // second parameter, if any, might be a description
-
-	$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC);
-	$dv->setValues($concept_text, $concept_docu, $query->getDescription()->getQueryFeatures(), $query->getDescription()->getSize(), $query->getDescription()->getDepth());
-	if (SMWParseData::getSMWData($parser) !== NULL) {
-		SMWParseData::getSMWData($parser)->addSpecialValue(SMW_SP_CONCEPT_DESC,$dv);
-	}
-
-	// display concept box:
-	$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink');
-	smwfRequireHeadItem(SMW_HEADER_STYLE);
-
-	$result = '<div class="smwfact"><span class="smwfactboxhead">' . wfMsgForContent('smw_concept_description',$title->getText()) .
-	          (count($query->getErrors())>0?' ' . smwfEncodeMessages($query->getErrors()):'') .
-	          '</span>' . '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' . '<br />' .
-	          ($concept_docu?"<p>$concept_docu</p>":'') .
-	          '<pre>' . str_replace('[', '&#x005B;', $concept_text) . "</pre>\n</div>";
-	return $result;
-}
-
-/**
- * The {{#info }} parser function processing part.
- */
-function smwfProcessInfoParserFunction(&$parser) {
-	$params = func_get_args();
-	array_shift( $params ); // we already know the $parser ...
-	$content = array_shift( $params ); // use only first parameter, ignore rest (may get meaning later)
-	return smwfEncodeMessages(array($content), 'info');
 }
 
 /**
@@ -579,10 +466,12 @@ function smwfAddHTMLHeadersOutput(&$out) {
 	 * Set up (possibly localised) names for SMW's parser functions.
 	 */
 	function smwfAddMagicWords(&$magicWords, $langCode) {
-		$magicWords['ask']  = array( 0, 'ask' );
-		$magicWords['show'] = array( 0, 'show' );
-		$magicWords['info'] = array( 0, 'info' );
+		$magicWords['ask']     = array( 0, 'ask' );
+		$magicWords['show']    = array( 0, 'show' );
+		$magicWords['info']    = array( 0, 'info' );
 		$magicWords['concept'] = array( 0, 'concept' );
+		$magicWords['set']     = array( 0, 'set' );
+		$magicWords['declare'] = array( 0, 'declare' );
 		$magicWords['SMW_NOFACTBOX'] = array( 0, '__NOFACTBOX__' );
 		$magicWords['SMW_SHOWFACTBOX'] = array( 0, '__SHOWFACTBOX__' );
 		return true;
