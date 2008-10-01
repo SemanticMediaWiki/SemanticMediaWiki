@@ -151,7 +151,9 @@ class SMWParserExtensions {
 		$parser->setFunctionHook( 'info', 'SMWParserExtensions::doInfo' );
 		$parser->setFunctionHook( 'concept', 'SMWParserExtensions::doConcept' );
 		$parser->setFunctionHook( 'set', 'SMWParserExtensions::doConcept' );
-		$parser->setFunctionHook( 'declare', 'SMWParserExtensions::doDeclare', SFH_OBJECT_ARGS );
+		if (defined('SFH_OBJECT_ARGS')) { // only available since MediaWiki 1.13
+			$parser->setFunctionHook( 'declare', 'SMWParserExtensions::doDeclare', SFH_OBJECT_ARGS );
+		}
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
