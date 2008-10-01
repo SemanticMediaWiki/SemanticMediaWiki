@@ -10,10 +10,16 @@
 /**
  * Static class for managing semantic data collected during parsing. All methods
  * in this class are stateless: data is stored persistently only in a given parser
- * output.
+ * output. There is one exception: to provide a minimal compatibility with MediaWiki
+ * up to version 1.13, the class keeps track of the latest ParserOutput that was
+ * accessed. In this way, the ParserOutput can be reproduced when storing, since it
+ * is not available as part of the storing LinkUpdate object in MediaWiki before 1.14.
  * @ingroup SMW
  */
 class SMWParseData {
+
+	/// ParserOutput last used. See documentation to SMWParseData.
+	static public $mPrevOutput = NULL;
 
 	/**
 	 * This function retrieves the SMW data from a given parser, and creates
@@ -21,18 +27,18 @@ class SMWParseData {
 	 */
 	static public function getSMWdata(Parser $parser) {
 		if (method_exists($parser,'getOutput')) {
-			$output = $parser->getOutput();
+			SMWParseData::$mPrevOutput = $parser->getOutput();
 		} else {
-			$output = $parser->mOutput;
+			SMWParseData::$mPrevOutput = $parser->mOutput;
 		}
 		$title = $parser->getTitle();
-		if (!isset($output) || !isset($title)) return NULL; // no parsing, create error
-		if (!isset($output->mSMWData)) { // no data container yet
+		if (!isset(SMWParseData::$mPrevOutput) || !isset($title)) return NULL; // no parsing, create error
+		if (!isset(SMWParseData::$mPrevOutput->mSMWData)) { // no data container yet
 			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 			$dv->setValues($title->getDBkey(), $title->getNamespace());
-			$output->mSMWData = new SMWSemanticData($dv);
+			SMWParseData::$mPrevOutput->mSMWData = new SMWSemanticData($dv);
 		}
-		return $output->mSMWData;
+		return SMWParseData::$mPrevOutput->mSMWData;
 	}
 
 	/**
@@ -40,15 +46,15 @@ class SMWParseData {
 	 */
 	static public function clearStorage(Parser $parser) {
 		if (method_exists($parser,'getOutput')) {
-			$output = $parser->getOutput();
+			SMWParseData::$mPrevOutput = $parser->getOutput();
 		} else {
-			$output = $parser->mOutput;
+			SMWParseData::$mPrevOutput = $parser->mOutput;
 		}
 		$title = $parser->getTitle();
-		if (!isset($output) || !isset($title)) return;
+		if (!isset(SMWParseData::$mPrevOutput) || !isset($title)) return;
 		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 		$dv->setValues($title->getDBkey(), $title->getNamespace());
-		$output->mSMWData = new SMWSemanticData($dv);
+		SMWParseData::$mPrevOutput->mSMWData = new SMWSemanticData($dv);
 	}
 
 	/**
@@ -183,9 +189,9 @@ class SMWParseData {
 	}
 
 	/**
-	 * Compares if two arrays of data values contain the same content.
-	 * Returns true if the two arrays contain the same data values,
-	 * false otherwise.
+	 * Helper function that compares two arrays of data values to check whether
+	 * they contain the same content. Returns true if the two arrays contain the
+	 * same data values (irrespective of their order), false otherwise.
 	 */
 	static public function equalDatavalues($dv1, $dv2) {
 		// The hashes of all values of both arrays are taken, then sorted

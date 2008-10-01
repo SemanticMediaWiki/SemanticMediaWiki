@@ -165,7 +165,16 @@ function smwfPreSaveHook(&$article, &$user, &$text, &$summary, $minor, $watch, $
  * Used to updates data after changes of templates, but also at each saving of an article.
  */
 function smwfLinkUpdateHook($links_update) {
-	SMWParseData::storeData($links_update->mParserOutput, $links_update->mTitle, true);
+	if (isset($links_update->mParserOutput)) {
+		$output = $links_update->mParserOutput;
+	} else { // MediaWiki <= 1.13 compatibility
+		$output = SMWParseData::$mPrevOutput;
+		if (!isset($output)) {
+			smwfGetStore()->clearData($links_update->mTitle, SMWFactbox::isNewArticle());
+			return true;
+		}
+	}
+	SMWParseData::storeData($output, $links_update->mTitle, true);
 	return true;
 }
 
