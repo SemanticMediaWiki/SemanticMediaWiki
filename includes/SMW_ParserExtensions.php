@@ -5,7 +5,7 @@
  * @file
  * @ingroup SMW
  * @author Markus Krötzsch
- * @author Denny Vrandecic 
+ * @author Denny Vrandecic
  */
 
 /**
@@ -15,7 +15,7 @@
  */
 class SMWParserExtensions {
 
-	/// Temporarily store parser that cannot be passed to call-back functions otherwise.
+	/// Temporarily store parser as it cannot be passed to call-back functions otherwise.
 	protected static $mTempParser;
 	/// Internal state for switchin off/on SMW link annotations during parsing
 	protected static $mTempStoreAnnotations;
@@ -223,21 +223,18 @@ class SMWParserExtensions {
 	* facility for defining concepts, and it displays the resulting concept description.
 	*/
 	static public function doConcept(&$parser) {
-		global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $smwgPreviousConcept, $wgContLang;
+		global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $wgContLang;
 		wfLoadExtensionMessages('SemanticMediaWiki');
-		// The global $smwgConceptText is used to pass information to the MW hooks for storing it,
-		// $smwgPreviousConcept is used to detect if we already have a concept defined for this page.
 		$title = $parser->getTitle();
 		if ($title->getNamespace() != SMW_NS_CONCEPT) {
 			$result = smwfEncodeMessages(array(wfMsgForContent('smw_no_concept_namespace')));
 			SMWOutputs::commitToParser($parser);
 			return $result;
-		} elseif (isset($smwgPreviousConcept) && ($smwgPreviousConcept == $title->getText())) {
+		} elseif (count(SMWParseData::getSMWdata($parser)->getPropertyValues(SMW_SP_CONCEPT_DESC)) > 0 ) {
 			$result = smwfEncodeMessages(array(wfMsgForContent('smw_multiple_concepts')));
 			SMWOutputs::commitToParser($parser);
 			return $result;
 		}
-		$smwgPreviousConcept = $title->getText();
 
 		// process input:
 		$params = func_get_args();
