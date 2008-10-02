@@ -124,7 +124,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 
 			$result .= $link->getText($outputmode,$this->mLinker);
 			$this->isHTML = ($outputmode == SMW_OUTPUT_HTML); // yes, our code can be viewed as HTML if requested, no more parsing needed
-			smwfRequireHeadItem('rss' . $smwgIQRunningNumber, '<link rel="alternate" type="application/rss+xml" title="' . $this->m_title . '" href="' . $link->getURL() . '" />');
+			SMWOutputs::requireHeadItem('rss' . $smwgIQRunningNumber, '<link rel="alternate" type="application/rss+xml" title="' . $this->m_title . '" href="' . $link->getURL() . '" />');
 		}
 
 		return $result;

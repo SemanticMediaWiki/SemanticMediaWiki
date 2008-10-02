@@ -122,7 +122,7 @@ class SMWNumberValue extends SMWDataValue {
 			}
 		}
 		if ($tooltip != '') {
-			smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
+			SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
 			return '<span class="smwttinline">' . $this->m_caption . '<span class="smwttcontent">' . $tooltip . '</span></span>';
 		} else {
 			return $this->m_caption;

@@ -51,7 +51,7 @@ class SMWTimelineResultPrinter extends SMWResultPrinter {
 
 	protected function getResultText($res, $outputmode) {
 		global $smwgIQRunningNumber;
-		smwfRequireHeadItem(SMW_HEADER_TIMELINE); //make sure JavaScripts are available
+		SMWOutputs::requireHeadItem(SMW_HEADER_TIMELINE); //make sure JavaScripts are available
 
 		$eventline =  ('eventline' == $this->mFormat);
 

@@ -78,10 +78,11 @@ class SMWSpecialBrowse extends SpecialPage {
 			$this->showincoming = true;
 		}
 		if (($dir == 'both')||($dir == 'in')) $this->showincoming = true;
-		if ($dir == 'in') $this->showoutgoing = false; 		
-		if ($dir == 'out') $this->showincoming = false; 		
+		if ($dir == 'in') $this->showoutgoing = false;
+		if ($dir == 'out') $this->showincoming = false;
 		
 		$wgOut->addHTML($this->displayBrowse());
+		SMWOutputs::commitToOutputPage($wgOut); // make sure locally collected output data is pushed to the output!
 	}
 	
 	/**

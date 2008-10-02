@@ -9,10 +9,12 @@
  */
 
 function smwfDoSpecialWantedProperties() {
+	global $wgOut;
 	wfProfileIn('smwfDoSpecialWantedProperties (SMW)');
 	list( $limit, $offset ) = wfCheckLimits();
 	$rep = new SMWWantedPropertiesPage();
 	$result = $rep->doQuery( $offset, $limit );
+	SMWOutputs::commitToOutputPage($wgOut); // make sure locally collected output data is pushed to the output!
 	wfProfileOut('smwfDoSpecialWantedProperties (SMW)');
 	return $result;
 }

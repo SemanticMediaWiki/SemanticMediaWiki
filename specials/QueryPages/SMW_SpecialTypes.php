@@ -14,10 +14,12 @@
  */
 
 function smwfDoSpecialTypes() {
+	global $wgOut;
 	wfProfileIn('smwfDoSpecialTypes (SMW)');
 	list( $limit, $offset ) = wfCheckLimits();
 	$rep = new TypesPage();
 	$result = $rep->doQuery( $offset, $limit );
+	SMWOutputs::commitToOutputPage($wgOut); // make sure locally collected output data is pushed to the output!
 	wfProfileOut('smwfDoSpecialTypes (SMW)');
 	return $result;
 }

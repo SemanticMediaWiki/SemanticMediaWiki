@@ -166,7 +166,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 	public function getShortWikiText($linked = NULL) {
 		if ($this->isValid() && ($linked !== NULL) && ($linked !== false)) {
 			wfLoadExtensionMessages('SemanticMediaWiki');
-			smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
+			SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
 			return '<span class="smwttinline">' . $this->m_caption . '<span class="smwttcontent">' .
 			        wfMsgForContent('smw_label_latitude') . ' ' . $this->formatAngleValues(true) . '<br />' .
 			        wfMsgForContent('smw_label_longitude') . ' ' . $this->formatAngleValues(false) .

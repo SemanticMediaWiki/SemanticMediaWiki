@@ -12,7 +12,6 @@
  */
 class SMWFactbox {
 
-
 	/**
 	 * This function creates wiki text suitable for rendering a Factbox for a given
 	 * SMWSemanticData object that holds all relevant data. It also checks whether the
@@ -42,7 +41,7 @@ class SMWFactbox {
 
 		// actually build the Factbox text:
 		wfLoadExtensionMessages('SemanticMediaWiki');
-		smwfRequireHeadItem(SMW_HEADER_STYLE);
+		SMWOutputs::requireHeadItem(SMW_HEADER_STYLE);
 		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . $semdata->getSubject()->getWikiValue(), 'rdflink');
 
 		$browselink = SMWInfolink::newBrowsingLink($semdata->getSubject()->getText(), $semdata->getSubject()->getWikiValue(), 'swmfactboxheadbrowse');
@@ -57,7 +56,7 @@ class SMWFactbox {
 					/// NOTE: the preg_replace is a slight hack to ensure that the left column does not get too narrow
 				} else { // special property
 					if ($key{0} == '_') continue; // internal special property without label
-					smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
+					SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
 					$text .= '<tr><td class="smwspecname"><span class="smwttinline"><span class="smwbuiltin">[[' .
 					          $wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $key . '|' . $key .
 					          ']]</span><span class="smwttcontent">' . wfMsgForContent('smw_isspecprop') .
@@ -88,20 +87,18 @@ class SMWFactbox {
 
 	/**
 	 * This function creates wiki text suitable for rendering a Factbox based on the
-	 * information found in a given OutputPage object. If the required custom data
-	 * is not found in the given OutputPage, then semantic data for the provided Title 
+	 * information found in a given ParserOutput object. If the required custom data
+	 * is not found in the given ParserOutput, then semantic data for the provided Title
 	 * object is retreived from the store.
-	 *
-	 * $wgParser will be invoked, so this should not be called during parsing.
 	 */
-	static public function getFactboxTextFromOutput($outputpage, $title) {
-		global $wgParser, $wgRequest, $smwgShowFactboxEdit, $smwgShowFactbox;
-		if (!isset($outputpage->mSMWData) || $outputpage->mSMWData->stubobject) {
+	static public function getFactboxTextFromOutput($parseroutput, $title) {
+		global $wgRequest, $smwgShowFactboxEdit, $smwgShowFactbox;
+		if (!isset($parseroutput->mSMWData) || $parseroutput->mSMWData->stubobject) {
 			$semdata = smwfGetStore()->getSemanticData($title);
 		} else {
-			$semdata = $outputpage->mSMWData;
+			$semdata = $parseroutput->mSMWData;
 		}
-		$mws =  (isset($outputpage->mSMWMagicWords))?$outputpage->mSMWMagicWords:array();
+		$mws =  (isset($parseroutput->mSMWMagicWords))?$parseroutput->mSMWMagicWords:array();
 		if (in_array('SMW_SHOWFACTBOX',$mws)) {
 			$showfactbox = SMW_FACTBOX_NONEMPTY;
 		} elseif (in_array('SMW_NOFACTBOX',$mws)) {
@@ -111,24 +108,23 @@ class SMWFactbox {
 		} else {
 			$showfactbox = $smwgShowFactbox;
 		}
-		$factbox = SMWFactbox::getFactboxText($semdata, $showfactbox);
-		$popts = new ParserOptions();
-		$parseroutput = $wgParser->parse( $factbox, $title, $popts );
-		return $parseroutput->getText();
+		return SMWFactbox::getFactboxText($semdata, $showfactbox);
 	}
 
 	/**
-	* This hook copies SMW's custom data from the given ParserOutput object to
-	* the given OutputPage object, since otherwise it is not possible to access
-	* it later on to build a Factbox.
-	*/
+	 * This hook copies SMW's custom data from the given ParserOutput object to
+	 * the given OutputPage object, since otherwise it is not possible to access
+	 * it later on to build a Factbox.
+	 */
 	static public function onOutputPageParserOutput($outputpage, $parseroutput) {
-		if (isset($parseroutput->mSMWData)) {
-			$outputpage->mSMWData = $parseroutput->mSMWData;
-		}
-		if (isset($parseroutput->mSMWMagicWords)) {
-			$outputpage->mSMWMagicWords = $parseroutput->mSMWMagicWords;
-		}
+		global $wgTitle, $wgParser;
+		$factbox = SMWFactbox::getFactboxTextFromOutput($parseroutput,$wgTitle);
+		$popts = new ParserOptions();
+		$po = $wgParser->parse( $factbox, $wgTitle, $popts );
+		$outputpage->mSMWFactboxText = $po->getText();
+		// do not forget to grab the outputs header items
+		SMWOutputs::requireFromParserOutput($po);
+		SMWOutputs::commitToOutputPage($outputpage);
 		return true;
 	}
 
@@ -136,8 +132,9 @@ class SMWFactbox {
 	 * This hook is used for inserting the Factbox text directly after the wiki page.
 	 */
 	static public function onOutputPageBeforeHTML($outputpage, &$text) {
-		global $wgTitle;
-		$text .= SMWFactbox::getFactboxTextFromOutput($outputpage, $wgTitle);
+		if (isset($outputpage->mSMWFactboxText)) {
+			$text .= $outputpage->mSMWFactboxText;
+		}
 		return true;
 	}
 
@@ -146,8 +143,10 @@ class SMWFactbox {
 	 * categories).
 	 */
 	static public function onSkinAfterContent(&$data) {
-		global $wgOut, $wgTitle;
-		$data .= SMWFactbox::getFactboxTextFromOutput($wgOut, $wgTitle);
+		global $wgOut;
+		if (isset($wgOut->mSMWFactboxText)) {
+			$data .= $wgOut->mSMWFactboxText;
+		}
 		return true;
 	}
 

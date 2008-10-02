@@ -69,12 +69,13 @@ class SMWParserExtensions {
 		}
 
 		// add link to RDF to HTML header
-		smwfRequireHeadItem('smw_rdf', '<link rel="alternate" type="application/rdf+xml" title="' .
+		SMWOutputs::requireHeadItem('smw_rdf', '<link rel="alternate" type="application/rdf+xml" title="' .
 		                    $parser->getTitle()->getPrefixedText() . '" href="' .
 		                    htmlspecialchars($parser->getOptions()->getSkin()->makeSpecialUrl(
 		                       'ExportRDF/' . $parser->getTitle()->getPrefixedText(), 'xmlmime=rdf'
 		                    )) . "\" />");
 
+		SMWOutputs::commitToParser($parser);
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
 
@@ -172,11 +173,13 @@ class SMWParserExtensions {
 			$smwgIQRunningNumber++;
 			$params = func_get_args();
 			array_shift( $params ); // we already know the $parser ...
-			return SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI);
+			$result = SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI);
 		} else {
 			wfLoadExtensionMessages('SemanticMediaWiki');
-			return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
+			$result = smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 		}
+		SMWOutputs::commitToParser($parser);
+		return $result;
 	}
 
 	/**
@@ -187,11 +190,13 @@ class SMWParserExtensions {
 		global $smwgQEnabled, $smwgIQRunningNumber;
 		if ($smwgQEnabled) {
 			$smwgIQRunningNumber++;
-			return SMWQueryProcessor::getResultFromHookParams($querytext,$params,SMW_OUTPUT_HTML);
+			$result = SMWQueryProcessor::getResultFromHookParams($querytext,$params,SMW_OUTPUT_HTML);
 		} else {
 			wfLoadExtensionMessages('SemanticMediaWiki');
-			return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
+			$result = smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 		}
+		SMWOutputs::commitToParser($parser);
+		return $result;
 	}
 
 	/**
@@ -204,11 +209,13 @@ class SMWParserExtensions {
 			$smwgIQRunningNumber++;
 			$params = func_get_args();
 			array_shift( $params ); // we already know the $parser ...
-			return SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI,SMWQueryProcessor::INLINE_QUERY,true);
+			$result = SMWQueryProcessor::getResultFromFunctionParams($params,SMW_OUTPUT_WIKI,SMWQueryProcessor::INLINE_QUERY,true);
 		} else {
 			wfLoadExtensionMessages('SemanticMediaWiki');
-			return smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
+			$result = smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
 		}
+		SMWOutputs::commitToParser($parser);
+		return $result;
 	}
 
 	/**
@@ -222,9 +229,13 @@ class SMWParserExtensions {
 		// $smwgPreviousConcept is used to detect if we already have a concept defined for this page.
 		$title = $parser->getTitle();
 		if ($title->getNamespace() != SMW_NS_CONCEPT) {
-			return smwfEncodeMessages(array(wfMsgForContent('smw_no_concept_namespace')));
+			$result = smwfEncodeMessages(array(wfMsgForContent('smw_no_concept_namespace')));
+			SMWOutputs::commitToParser($parser);
+			return $result;
 		} elseif (isset($smwgPreviousConcept) && ($smwgPreviousConcept == $title->getText())) {
-			return smwfEncodeMessages(array(wfMsgForContent('smw_multiple_concepts')));
+			$result = smwfEncodeMessages(array(wfMsgForContent('smw_multiple_concepts')));
+			SMWOutputs::commitToParser($parser);
+			return $result;
 		}
 		$smwgPreviousConcept = $title->getText();
 
@@ -245,13 +256,14 @@ class SMWParserExtensions {
 
 		// display concept box:
 		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink');
-		smwfRequireHeadItem(SMW_HEADER_STYLE);
+		SMWOutputs::requireHeadItem(SMW_HEADER_STYLE);
 
 		$result = '<div class="smwfact"><span class="smwfactboxhead">' . wfMsgForContent('smw_concept_description',$title->getText()) .
 				(count($query->getErrors())>0?' ' . smwfEncodeMessages($query->getErrors()):'') .
 				'</span>' . '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' . '<br />' .
 				($concept_docu?"<p>$concept_docu</p>":'') .
 				'<pre>' . str_replace('[', '&#x005B;', $concept_text) . "</pre>\n</div>";
+		SMWOutputs::commitToParser($parser);
 		return $result;
 	}
 
@@ -264,7 +276,9 @@ class SMWParserExtensions {
 		$params = func_get_args();
 		array_shift( $params ); // we already know the $parser ...
 		$content = array_shift( $params ); // use only first parameter, ignore rest (may get meaning later)
-		return smwfEncodeMessages(array($content), 'info');
+		$result = smwfEncodeMessages(array($content), 'info');
+		SMWOutputs::commitToParser($parser);
+		return $result;
 	}
 
 	/**
@@ -295,7 +309,8 @@ class SMWParserExtensions {
 					SMWParseData::addProperty( $property, $subject, false, $parser, true );
 				}
 			}
-		return;
+		SMWOutputs::commitToParser($parser); // not obviously required, but let us be sure
+		return '';
 	}
 
 	/**
@@ -349,7 +364,8 @@ class SMWParserExtensions {
 		} else {
 			// @todo Save as metadata
 		}
-		return;
+		SMWOutputs::commitToParser($parser); // not obviously required, but let us be sure
+		return '';
 	}
 
 }

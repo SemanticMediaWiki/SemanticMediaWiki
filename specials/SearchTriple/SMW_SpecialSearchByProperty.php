@@ -8,8 +8,12 @@
  * a certain value.
  * 
  * @author Denny Vrandecic
- * @autho Daniel Herzig
+ * @author Daniel Herzig
  */
+
+if( !defined( 'MEDIAWIKI' ) ) {
+	die( 'Not an entry point.' );
+}
 
 global $wgAjaxExportList;
 $wgAjaxExportList[] = "smwfGetValues";
@@ -76,7 +80,7 @@ class SMWSearchByProperty extends SpecialPage {
 			$this->propertystring = $this->property->getText();
 			$this->value = SMWDataValueFactory::newPropertyObjectValue( $this->property, $this->valuestring );
 			if ($this->value->isValid()) {
-				$this->valuestring = $this->value->getWikiValue(); 
+				$this->valuestring = $this->value->getWikiValue();
 			} else {
 				$this->value = null;
 			}
@@ -89,6 +93,7 @@ class SMWSearchByProperty extends SpecialPage {
 		
 		$wgOut->addHTML($this->displaySearchByProperty());
 		$wgOut->addHTML($this->queryForm());
+		SMWOutputs::commitToOutputPage($wgOut); // make sure locally collected output data is pushed to the output!
 	}
 	
 	/**

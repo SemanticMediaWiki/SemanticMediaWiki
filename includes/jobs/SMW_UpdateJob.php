@@ -46,16 +46,13 @@ class SMWUpdateJob extends Job {
 
 		wfProfileIn( __METHOD__.'-parse' );
 		$options = new ParserOptions;
-		//$parserOutput = $wgParser->parse( $revision->getText(), $this->title, $options, true, true, $revision->getId() );
-
-		/// NOTE: subparses will purge/mess up our globals; every such global would require similar handling here
-		/// (semdata anyone?!); this is all rather nasty and needs a unified architecture (e.g. one object to
-		/// manage/copy/restore all SMW globals). The best solution would be to have current globals moved into
-		/// parser member variables, so that other parsers do not affect one parser's data.
-		$cur_headitems = $smwgHeadItems;
-		$smwgHeadItems = array();
 		$output = $wgParser->parse($revision->getText(), $this->title, $options, true, true, $revision->getID());
-		$smwgHeadItems = $cur_headitems;
+		/// FIXME: we do not care about the parser cache here, and additional information such as the header scripts
+		/// that the above parsing might have created is simply discarded. This yields trouble: if some datatype changes
+		/// such that it now requires a stylesheet to display, then the parsercache will not be aware of this and hence
+		/// the header item will be missing!
+		/// Besides this problem, the architecture since SMW 1.4 should at least ensure that no other globals are used 
+		/// to pass around data *over long distances* and the above call thus should not disturb any other data.
 
 		wfProfileOut( __METHOD__.'-parse' );
 		wfProfileIn( __METHOD__.'-update' );

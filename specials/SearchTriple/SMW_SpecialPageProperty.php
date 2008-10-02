@@ -121,6 +121,7 @@ class SMWPageProperty extends SpecialPage {
 		$html .= '<input type="submit" value="' . wfMsg('smw_pp_submit') . "\"/>\n</form>\n";
 
 		$wgOut->addHTML($html);
+		SMWOutputs::commitToOutputPage($wgOut); // make sure locally collected output data is pushed to the output!
 	}
 
 }

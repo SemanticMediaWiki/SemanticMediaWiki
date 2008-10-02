@@ -11,10 +11,12 @@
 
 
 function smwfDoSpecialUnusedProperties() {
+	global $wgOut;
 	wfProfileIn('smwfDoSpecialUnusedProperties (SMW)');
 	list( $limit, $offset ) = wfCheckLimits();
 	$rep = new SMWUnusedPropertiesPage();
 	$result = $rep->doQuery( $offset, $limit );
+	SMWOutputs::commitToOutputPage($wgOut); // make sure locally collected output data is pushed to the output!
 	wfProfileOut('smwfDoSpecialUnusedProperties (SMW)');
 	return $result;
 }

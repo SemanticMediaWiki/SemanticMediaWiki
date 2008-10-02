@@ -35,6 +35,7 @@ class SMWAskPage extends SpecialPage {
 		wfProfileIn('doSpecialAsk (SMW)');
 		if ( ($wgRequest->getVal( 'query' ) != '') ) { // old processing
 			$this->executeSimpleAsk();
+			SMWOutputs::commitToOutputPage($wgOut); // make sure locally collected output data is pushed to the output!
 			wfProfileOut('doSpecialAsk (SMW)');
 			return;
 		}
@@ -44,6 +45,7 @@ class SMWAskPage extends SpecialPage {
 			$this->extractQueryParameters($p);
 			$this->makeHTMLResult();
 		}
+		SMWOutputs::commitToOutputPage($wgOut); // make sure locally collected output data is pushed to the output!
 		wfProfileOut('doSpecialAsk (SMW)');
 	}
 

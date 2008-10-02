@@ -133,7 +133,7 @@ class SMWTypesValue extends SMWDataValue {
 				$id = SMWDataValueFactory::findTypeID($type);
 				if ($id{0} == '_') { // builtin
 					wfLoadExtensionMessages('SemanticMediaWiki');
-					smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
+					SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
 					$result .= '<span class="smwttinline"><span class="smwbuiltin">[[' . $typenamespace . ':' . $type . '|' . $type . ']]</span><span class="smwttcontent">' . wfMsgForContent('smw_isknowntype') . '</span></span>';
 				} else {
 					$result .= '[[' . $typenamespace . ':' . $type . '|' . $type . ']]';
@@ -159,7 +159,7 @@ class SMWTypesValue extends SMWDataValue {
 				$id = SMWDataValueFactory::findTypeID($type);
 				if ($id{0} == '_') { // builtin
 					wfLoadExtensionMessages('SemanticMediaWiki');
-					smwfRequireHeadItem(SMW_HEADER_TOOLTIP);
+					SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
 					$result .= '<span class="smwttinline"><span class="smwbuiltin">' . 
 					$linker->makeLinkObj( $title, $type) . '</span><span class="smwttcontent">' .
 					wfMsgForContent('smw_isknowntype') . '</span></span>';
