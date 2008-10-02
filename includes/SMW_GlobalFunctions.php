@@ -79,6 +79,19 @@ define('SMW_CMP_GEQ',3); // matches only datavalues that are greater or equal to
 define('SMW_CMP_NEQ',4); // matches only datavalues that are unequal to the given value
 define('SMW_CMP_LIKE',5); // matches only datavalues that are LIKE the given value
 
+//constants for date formats (using binary encoding of nine bits: 3 positions x 3 interpretations)
+define('SMW_MDY',785);  //Month-Day-Year
+define('SMW_DMY',673);  //Day-Month-Year
+define('SMW_YMD',610);  //Year-Month-Day
+define('SMW_YDM',596);  //Year-Day-Month
+define('SMW_MY',97);    //Month-Year
+define('SMW_YM',76);    //Year-Month
+define('SMW_Y',9);      //Year
+define('SMW_YEAR',1);   //an entered digit can be a year
+define('SMW_MONTH',4);  //an entered digit can be a month
+define('SMW_DAY_MONTH_YEAR',7); //an entered digit can be a day, month or year
+define('SMW_DAY_YEAR',3); //an entered digit can be either a month or a year
+
 /**
  * Switch on Semantic MediaWiki. This function must be called in LocalSettings.php
  * after incldung this file. It is used to ensure that required parameters for SMW
@@ -238,7 +251,7 @@ function smwfSetupExtension() {
 
 	$wgHooks['InternalParseBeforeLinks'][] = 'SMWParserExtensions::onInternalParseBeforeLinks'; // parse annotations in [[link syntax]]
 	$wgHooks['ArticleDelete'][] = 'SMWParseData::onArticleDelete'; // delete annotations
-	$wgHooks['TitleMoveComplete'][]='SMWParseData::onTitleMoveComplete'; // move annotations
+	$wgHooks['TitleMoveComplete'][] = 'SMWParseData::onTitleMoveComplete'; // move annotations
     $wgHooks['LinksUpdateConstructed'][] = 'SMWParseData::onLinksUpdateConstructed'; // update data after template change and at safe
 	$wgHooks['OutputPageParserOutput'][] = 'SMWFactbox::onOutputPageParserOutput'; // copy some data for later Factbox display
 

@@ -25,6 +25,7 @@
  * such as "Oct 10 2007" from certain complete dates such
  * as "Oct 10 2007T00:00:00". This should change.
  *
+ * @author Fabian Howahl
  * @author Markus Krötzsch
  * @note AUTOLOADED
  */
@@ -34,12 +35,84 @@ class SMWTimeValue extends SMWDataValue {
 	protected $m_wikivalue; // a suitable wiki input value
 	protected $m_xsdvalue = false; // cache for XSD value
 	protected $m_printvalue = false; // cache for printout value
+	protected $m_day;
+	protected $m_month;
+	protected $m_newtime;
+	protected $m_year;
+	protected $m_months = array("January", "February", "March", "April" , "May" , "June" , "Juli" , "August" , "September" , "October" , "November" , "December");
+	protected $m_monthsshort = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+	protected $m_formats = array( SMW_Y => array('year'), SMW_YM => array('year','month'), SMW_MY => array('month','year'), SMW_YDM => array('year','day','month'), SMW_YMD => array('year','month','day'), SMW_DMY => array('day','month','year'), SMW_MDY => array('month','day','year'));
 
 	protected function parseUserValue($value) {
+		global $smwgContLang;
+
+		$band = false; //group of bits storing information about the possible meaning of each digit of the entered date
+		$this->m_day = false; 
+		$this->m_month = false;
+		$this->m_newtime = false;
+		$this->m_year = false;
+	
 		$this->m_wikivalue = $value;
-		$this->m_time = strtotime(trim($value));
+		$filteredvalue = $value; //value without time definition
+
+		//browse string for time value
+		if(preg_match("/[0-2]?[0-9]:[0-5][0-9](:[0-5][0-9])?([+\-][0-2]?[0-9](:(30|00))?)?/u", $value, $match)){
+			$this->m_newtime = $match[0];
+			$regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete time value and preceding and following chars
+			$filteredvalue = preg_replace($regexp,'', $value); //value without time
+		}
+
+		//split array in order to separate the date digits
+		$array = preg_split("/[\040|.|\-|\/]+/u", $filteredvalue, 3); //TODO: support &nbsp;
+
+		//the following code segment creates a band by finding out wich role each digit of the entered date can take (date, year, month)
+		//the band starts with 1 und for each digit of the entered date a binary code with three bits is attached
+		//examples: 	111 states that the digit can be interpreted as a month, a day or a year
+		//		100 digit can just be interpreted as a month
+		//	 	010 digit can just be interpreted as a day
+		//		001 digit can just be interpreted as a year  
+		//		the remaining combinations are also possible (if reasonable) 
+		//for instance a date consisting of three digits will have a 10 bit band 
+		if (count($array) != 0) {
+			$band = 1;
+			foreach ($array as $tmp) {
+				$band = $band << 3;
+				$band = $band | $this->checkDigit($tmp);
+			}
+		} else {
+			$this->addError(wfMsgForContent('smw_nodatetime',$value));
+			return true;
+		}
+
+		$dateformats = $smwgContLang->getDateFormats(); //get the language dependent date formats
+
+		$digitcount = count($array)-1; //number of digits - 1 is used as an array index for $dateformats
+		$found = false;
+
+		foreach ($dateformats[$digitcount] as $format) { //check whether created band matches dateformats
+			if (!(~$band & $format)) { //check if $format => $band
+				$i = 0;
+				foreach ($this->m_formats[$format] as $globalvar) {
+					$globalvar = 'm_'.$globalvar;
+					if (!$this->$globalvar) $this->$globalvar = $array[$i];
+					$i++;
+				}
+				$found = true;
+				break;
+			}
+		}
+
+		if (!$found) {
+			$this->addError(wfMsgForContent('smw_nodatetime',$value));
+			return true;
+		}
+
+		if (!$this->m_month) $this->m_month = 1;
+		if (!$this->m_day) $this->m_day = 1;
+		if (!$this->m_newtime) $this->m_newtime = '00:00';
+
+		$this->m_time = strtotime($this->m_year."-".$this->m_month."-".$this->m_day." ".$this->m_newtime);
 		if ( ($this->m_time == -1) || ($this->m_time === false) ) {
-			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_nodatetime',$value));
 		}
 		if ($this->m_caption === false) {
@@ -48,7 +121,38 @@ class SMWTimeValue extends SMWDataValue {
 		return true;
 	}
 
-	protected function parseXSDValue($value, $unit) {
+	protected function checkDigit($digit){
+		global $smwgContLang;
+
+		if(!is_numeric($digit)){ //check for alphanumeric month value
+			$monthnumber = $smwgContLang->findMonth($digit);
+			if ( $monthnumber !== false ) {
+				$this->m_month = $monthnumber;
+				return SMW_MONTH;
+			}
+			$monthnumber = array_search($digit, $this->m_months);
+			if ( $monthnumber !== false ) {
+				$this->m_month = $monthnumber + 1;
+				return SMW_MONTH;
+			}
+			$monthnumber = array_search($digit, $this->m_monthsshort);
+			if ( $monthnumber !== false ) {
+				$this->m_month = $monthnumber + 1;
+				return SMW_MONTH;
+			}
+			return 0;
+		} elseif ($digit >= 1 && $digit <= 12) { //number could be a month, a day or a year	(111)		
+			return SMW_DAY_MONTH_YEAR;
+		} elseif ($digit >= 1 && $digit <= 31) { //number could be a day or a year (011) 
+			return SMW_DAY_YEAR;
+		} elseif ($digit < 3000) { //number could just be a year (011)
+			return SMW_YEAR;
+		} else {
+			return 0;
+		}
+	}
+
+	protected function parseXSDValue($value, $unit) {	
 		$this->parseUserValue($value);
 		$this->makePrintoutValue();
 		$this->m_caption = $this->m_printvalue;
@@ -80,7 +184,7 @@ class SMWTimeValue extends SMWDataValue {
 	public function getXSDValue() {
 		if ($this->m_xsdvalue === false) {
 			$this->m_xsdvalue = date("Y-m-d\TH:i:s",$this->m_time);
-		}
+		}			
 		return $this->m_xsdvalue;
 	}
 
@@ -117,7 +221,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * Build a preferred value for printout, also used as a caption when setting up values
 	 * from the store.
 	 */
-	protected function makePrintoutValue() {
+	protected function makePrintoutValue() { //TODO: switch to UnixTime representation
 		if ($this->m_printvalue === false) {
 			global $wgContLang;
 			$date = date('Ymd', $this->m_time);

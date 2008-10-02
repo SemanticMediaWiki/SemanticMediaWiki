@@ -25,6 +25,16 @@ abstract class SMWLanguage {
 	protected $m_SpecialPropertyAliases = array();
 	protected $m_Namespaces;
 	protected $m_NamespaceAliases = array();
+	/// Twelve strings naming the months. English is always supported in Type:Date, so
+	/// the default is simply empty (no labels in addition to English)
+	protected $m_months = array();
+	/// Twelve strings briefly naming the months. English is always supported in Type:Date, so
+	/// the default is simply empty (no labels in addition to English)
+	protected $m_monthsshort = array();
+	/// Preferred interpretations for dates with 1, 2, and 3 components. There is an array for
+	/// each case, and the constants define the obvious order (e.g. SMW_YDM means "first Year, 
+	/// then Day, then Month). Unlisted combinations will not be accepted at all.
+	protected $m_dateformats = array(array(SMW_Y), array(SMW_MY,SMW_YM), array(SMW_DMY,SMW_MDY,SMW_YMD,SMW_YDM));
 
 
 	/**
@@ -74,6 +84,13 @@ abstract class SMWLanguage {
 	}
 
 	/**
+	 * Function that returns the preferred date formats
+	 */
+	function getDateFormats() {
+		return $this->m_dateformats;
+	}
+
+	/**
 	 * Find and return the id for the special property of the given local label.
 	 * If the label does not belong to a special property, return false.
 	 * The given label should be slightly normalised, i.e. as returned by Title
@@ -88,6 +105,21 @@ abstract class SMWLanguage {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Function looks up a month and returns the corresponding number (e.g. No
+	 */
+	function findMonth($label){
+		$id = array_search($label, $this->m_months);
+		if ($id !== false) {
+			return $id+1;
+		}
+		$id = array_search($label, $this->m_monthsshort);
+		if ($id !== false) {
+			return $id+1;
+		}
+		return false;
 	}
 
 	/**
@@ -106,7 +138,7 @@ abstract class SMWLanguage {
 	/**
 	 * Extends the array of special properties with a mapping from an $id to a
 	 * language dependent label.
-	 * NOTE: this function is provided for ad hoc compatibility with the Halo project.
+	 * @note This function is provided for ad hoc compatibility with the Halo project.
 	 * A better solution will replace it at some time.
 	 */
 	function addSpecialProperty($id, $label) {

@@ -112,4 +112,10 @@ protected $m_NamespaceAliases = array(
 	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 
+protected $m_dateformats = array(array(SMW_Y), array(SMW_MY,SMW_YM), array(SMW_DMY,SMW_MDY,SMW_YMD,SMW_YDM));
+
+protected $m_months = array("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember");
+
+protected $m_monthsshort = array("Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez");
+
 }
