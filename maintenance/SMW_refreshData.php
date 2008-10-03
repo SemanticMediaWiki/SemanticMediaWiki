@@ -155,8 +155,8 @@ for ($id = $start; $id <= $end; $id++) {
 		if ( $revision === NULL ) continue;
 		$output = $wgParser->parse($revision->getText(), $title, $options, true, true, $revision->getID());
 		SMWParseData::storeData($output, $title, false);
-		/// FIXME: as in SMWUpdateJob, this ignores changes in header items and other parser-cached data. See the
-		/// comment in SMWUpdateJob for details.
+		/// NOTE: Like SMWUpdateJob, this only updates the stored data, not the records related to page display
+		/// (such as the parser cache).
 		// sleep to be nice to the server
 		if ( ($delay !== false) && (($num_files+1) % 100 === 0) ) {
 			usleep($delay);

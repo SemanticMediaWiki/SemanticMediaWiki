@@ -1,15 +1,26 @@
 <?php
 /**
- * SMWUpdateJob updates the semantic data in the database for a given title 
- * using the MediaWiki JobQueue.
- * Update jobs are created if, when saving an article, it is detected that the
- * content of other pages must be re-parsed as well (e.g. due to some type change).
+ * File containing SMWUpdateJob.
  *
  * @author Daniel M. Herzig
+ * @author Markus Krötzsch
  * @file
  * @ingroup SMW
  */
 
+/**
+ * SMWUpdateJob updates the semantic data in the database for a given title 
+ * using the MediaWiki JobQueue. Update jobs are created if, when saving an article,
+ * it is detected that the content of other pages must be re-parsed as well (e.g. 
+ * due to some type change).
+ *
+ * @note This job does not update the page display or parser cache, so in general
+ * it might happen that part of the wiki page still displays based on old data (e.g.
+ * formatting in-page values based on a datatype thathas since been changed), whereas
+ * the Factbox and query/browsing interfaces might already show the updatd records.
+ *
+ * @ingroup SMW
+ */
 class SMWUpdateJob extends Job {
 
 	function __construct($title) {
@@ -47,12 +58,6 @@ class SMWUpdateJob extends Job {
 		wfProfileIn( __METHOD__.'-parse' );
 		$options = new ParserOptions;
 		$output = $wgParser->parse($revision->getText(), $this->title, $options, true, true, $revision->getID());
-		/// FIXME: we do not care about the parser cache here, and additional information such as the header scripts
-		/// that the above parsing might have created is simply discarded. This yields trouble: if some datatype changes
-		/// such that it now requires a stylesheet to display, then the parsercache will not be aware of this and hence
-		/// the header item will be missing!
-		/// Besides this problem, the architecture since SMW 1.4 should at least ensure that no other globals are used 
-		/// to pass around data *over long distances* and the above call thus should not disturb any other data.
 
 		wfProfileOut( __METHOD__.'-parse' );
 		wfProfileIn( __METHOD__.'-update' );
