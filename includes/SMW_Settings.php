@@ -343,6 +343,7 @@ $smwgDefaultStore = "SMWSQLStore2";
 ##
 
 ###
+# -- FEATURE IS DISABLED --
 # Setting this to true allows to translate all the labels within
 # the browser GIVEN that they have interwiki links.
 ##
