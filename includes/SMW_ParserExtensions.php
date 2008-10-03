@@ -156,7 +156,7 @@ class SMWParserExtensions {
 		$parser->setFunctionHook( 'show', array('SMWParserExtensions','doShow') );
 		$parser->setFunctionHook( 'info', array('SMWParserExtensions','doInfo') );
 		$parser->setFunctionHook( 'concept', array('SMWParserExtensions','doConcept') );
-		$parser->setFunctionHook( 'set', array('SMWParserExtensions','doConcept') );
+		$parser->setFunctionHook( 'set', array('SMWParserExtensions','doSet') );
 		if (defined('SFH_OBJECT_ARGS')) { // only available since MediaWiki 1.13
 			$parser->setFunctionHook( 'declare', array('SMWParserExtensions','doDeclare'), SFH_OBJECT_ARGS );
 		}
