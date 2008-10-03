@@ -58,14 +58,14 @@ class SMWParserExtensions {
 			                        (?:\|([^]]*))?        # Display text (like "text" in [[link|text]]), optional
 			                        \]\]                  # End of link
 			                        /xu';
-			$text = preg_replace_callback($semanticLinkPattern, 'SMWParserExtensions::parsePropertiesCallback', $text);
+			$text = preg_replace_callback($semanticLinkPattern, array('SMWParserExtensions','parsePropertiesCallback'), $text);
 		} else { // simpler regexps -- no segfaults found for those, but no links in values
 			$semanticLinkPattern = '/\[\[                 # Beginning of the link
 			                        (?:([^:][^]]*):[=:])+ # Property name (or a list of those)
 			                        ([^\[\]]*)            # content: anything but [, |, ]
 			                        \]\]                  # End of link
 			                        /xu';
-			$text = preg_replace_callback($semanticLinkPattern, 'SMWParserExtensions::simpleParsePropertiesCallback', $text);
+			$text = preg_replace_callback($semanticLinkPattern, array('SMWParserExtensions','simpleParsePropertiesCallback'), $text);
 		}
 
 		// add link to RDF to HTML header
