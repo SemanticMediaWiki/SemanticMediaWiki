@@ -127,7 +127,6 @@ class SMWParseData {
 	 *  @param $makejobs Bool stating whether jobs should be created to trigger further updates if
 	 *  this appears to be necessary after this update.
 	 *
-	 *  @bug This still refers to SMWFactbox::isNewArticle(). Move this somewhere else or find a way to kill it (the new store does not need it anyway).
 	 *  @bug Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
 	static public function storeData($parseroutput, $title, $makejobs = true) {
