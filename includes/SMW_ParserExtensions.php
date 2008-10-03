@@ -151,14 +151,14 @@ class SMWParserExtensions {
 	 * than MW hooks in general, which explains the two-level registration.
 	 */
 	public static function registerParserFunctions(&$parser) {
-		$parser->setHook( 'ask', 'SMWParserExtensions::doAskHook' );
-		$parser->setFunctionHook( 'ask', 'SMWParserExtensions::doAsk' );
-		$parser->setFunctionHook( 'show', 'SMWParserExtensions::doShow' );
-		$parser->setFunctionHook( 'info', 'SMWParserExtensions::doInfo' );
-		$parser->setFunctionHook( 'concept', 'SMWParserExtensions::doConcept' );
-		$parser->setFunctionHook( 'set', 'SMWParserExtensions::doConcept' );
+		$parser->setHook( 'ask', array('SMWParserExtensions','doAskHook') );
+		$parser->setFunctionHook( 'ask', array('SMWParserExtensions','doAsk') );
+		$parser->setFunctionHook( 'show', array('SMWParserExtensions','doShow') );
+		$parser->setFunctionHook( 'info', array('SMWParserExtensions','doInfo') );
+		$parser->setFunctionHook( 'concept', array('SMWParserExtensions','doConcept') );
+		$parser->setFunctionHook( 'set', array('SMWParserExtensions','doConcept') );
 		if (defined('SFH_OBJECT_ARGS')) { // only available since MediaWiki 1.13
-			$parser->setFunctionHook( 'declare', 'SMWParserExtensions::doDeclare', SFH_OBJECT_ARGS );
+			$parser->setFunctionHook( 'declare', array('SMWParserExtensions','doDeclare'), SFH_OBJECT_ARGS );
 		}
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
