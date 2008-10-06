@@ -23,6 +23,7 @@ abstract class SMWQueryPage extends QueryPage {
 
 	/**
 	 * Clear the cache and save new results
+	 * @todo Implement caching for SMW query pages
 	 */
 	function recache( $limit, $ignoreErrors = true ) {
 		///TODO

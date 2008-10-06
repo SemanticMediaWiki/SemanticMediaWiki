@@ -98,6 +98,9 @@ define('SMW_DAY_YEAR',3); //an entered digit can be either a month or a year
  * are really provided, without requiring the existence of a dedicated file
  * SMW_LocalSettings.php. For readability, this is the only global function that
  * does not adhere to the naming conventions.
+ *
+ * This function also sets up all autoloading, such that all SMW classes are available
+ * as early as possible. Moreover, jobs and special pages are registered.
  */
 function enableSemantics($namespace = '', $complete = false) {
 	global $smwgIP, $smwgNamespace, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles, $wgJobClasses, $wgExtensionAliasesFiles;
@@ -223,27 +226,25 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgSpecialPageGroups['Types']                   = 'pages';
 
 	///// Register Jobs
-	$wgAutoloadClasses['SMWUpdateJob']              = $smwgIP . '/includes/jobs/SMW_UpdateJob.php';
 	$wgJobClasses['SMWUpdateJob']                   = 'SMWUpdateJob';
+	$wgAutoloadClasses['SMWUpdateJob']              = $smwgIP . '/includes/jobs/SMW_UpdateJob.php';
 	$wgJobClasses['SMWRefreshJob']                  = 'SMWRefreshJob';
 	$wgAutoloadClasses['SMWRefreshJob']             = $smwgIP . '/includes/jobs/SMW_RefreshJob.php';
-
 	return true;
 }
 
 /**
- *  Do the actual intialisation of the extension. This is just a delayed init that makes sure
- *  MediaWiki is set up properly before we add our stuff.
+ * Do the actual intialisation of the extension. This is just a delayed init that makes sure
+ * MediaWiki is set up properly before we add our stuff.
+ *
+ * The main things this function does are: register all hooks, set up extension credits, and 
+ * init some globals that are not for configuration settings.
  */
 function smwfSetupExtension() {
 	wfProfileIn('smwfSetupExtension (SMW)');
 	global $smwgIP, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink;
 
 	$smwgMasterStore = NULL;
-	wfLoadExtensionMessages('SemanticMediaWiki'); /// TODO: this is extremely slow; up to 10% of page display time (on a page with queries!) are consumed by loading unnecessary messages from a large file ...
-	/// Past SMW releases had an average of about 1% extension loading time per call, while we are now up at 10%!
-	/// (if no PHP caching is enabled, things become better with ACP but impact still is noticeable)
-	/// Should we return to our earlier message management for releases?
 	$smwgIQRunningNumber = 0;
 
 	///// register hooks /////
