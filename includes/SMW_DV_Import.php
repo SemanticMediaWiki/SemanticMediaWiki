@@ -12,7 +12,7 @@
  *
  * @author Fabian Howahl
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWImportValue extends SMWDataValue {
 

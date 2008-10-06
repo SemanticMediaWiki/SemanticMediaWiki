@@ -8,7 +8,7 @@
  * This datavalue implements Error-Datavalues.
  *
  * @author Nikolas Iwan
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWErrorValue extends SMWDataValue {
 

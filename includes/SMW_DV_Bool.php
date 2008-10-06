@@ -8,7 +8,7 @@
  * This datavalue implements Boolean datavalues.
  *
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWBoolValue extends SMWDataValue {
 

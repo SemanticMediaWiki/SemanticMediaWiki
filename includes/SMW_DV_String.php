@@ -10,7 +10,7 @@
  *
  * @author Nikolas Iwan
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWStringValue extends SMWDataValue {
 

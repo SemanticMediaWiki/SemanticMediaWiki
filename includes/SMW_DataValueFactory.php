@@ -16,6 +16,8 @@
  * - newPropertyValue
  * - newPropertyObjectValue
  * - newSpecialValue
+ *
+ * @ingroup SMWDataValues
  */
 class SMWDataValueFactory {
 

@@ -16,7 +16,7 @@
  * a certain user-provided data value, especially its various
  * representations as strings, tooltips, numbers, etc.
  *
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 abstract class SMWDataValue {
 

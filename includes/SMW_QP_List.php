@@ -14,7 +14,7 @@
  * printed, the first that is printed in parentheses, or the last that will be printed.
  * Maybe one could further simplify this.
  *
- * @note AUTOLOADED
+ * @ingroup SMWQuery
  */
 class SMWListResultPrinter extends SMWResultPrinter {
 

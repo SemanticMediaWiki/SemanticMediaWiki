@@ -9,7 +9,7 @@
  * Printer class for creating iCalendar exports
  * @author Markus Krötzsch
  * @author Denny Vrandecic
- * @note AUTOLOADED
+ * @ingroup SMWQuery
  */
 class SMWiCalendarResultPrinter extends SMWResultPrinter {
 	protected $m_title = '';

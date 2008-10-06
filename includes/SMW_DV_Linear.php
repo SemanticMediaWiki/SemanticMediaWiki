@@ -11,7 +11,7 @@
  * object.
  *
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWLinearValue extends SMWNumberValue {
 

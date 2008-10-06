@@ -9,7 +9,7 @@
  * Printer class for generating CSV output
  * @author Nathan R. Yergler
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWQuery
  */
 class SMWCsvResultPrinter extends SMWResultPrinter {
 	protected $m_sep;

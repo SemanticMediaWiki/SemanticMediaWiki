@@ -12,7 +12,7 @@
  * Implementation of MediaWiki's Article that shows additional information on
  * property pages. Very simliar to CategoryPage, but with different printout 
  * that also displays values for each subject with the given property.
- * @note AUTOLOADED
+ * @ingroup SMW
  */
 class SMWPropertyPage extends SMWOrderedListPage {
 

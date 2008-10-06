@@ -10,7 +10,7 @@
 /**
  * Static class for accessing functions to generate and execute semantic queries 
  * and to serialise their results.
- * @note AUTOLOADED
+ * @ingroup SMWQuery
  */
 class SMWQueryProcessor {
 
@@ -329,6 +329,7 @@ class SMWQueryProcessor {
  * Objects of this class are in charge of parsing a query string in order
  * to create an SMWDescription. The class and methods are not static in order 
  * to more cleanly store the intermediate state and progress of the parser.
+ * @ingroup SMWQuery
  */
 class SMWQueryParser {
 

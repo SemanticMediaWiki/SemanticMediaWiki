@@ -23,7 +23,7 @@
  * Most additional query parameters (limit, sort, ascending, ...) are 
  * interpreted as in SMWRequestOptions (though the latter contains some
  * additional settings).
- * @note: AUTOLOADED
+ * @ingroup SMWQuery
  */
 class SMWQuery {
 

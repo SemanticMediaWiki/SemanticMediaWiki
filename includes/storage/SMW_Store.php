@@ -18,7 +18,7 @@
  * Small data container class for describing filtering conditions on the string
  * label of some entity. States that a given string should either be prefix, postfix,
  * or some arbitrary part of labels.
- * @note AUTOLOADED
+ * @ingroup SMWStore
  */
 class SMWStringCondition {
 	const STRCOND_PRE = 0;
@@ -48,7 +48,7 @@ class SMWStringCondition {
  * to their more complex structure.
  * Options that should not be used or where default values should be used
  * can be left as initialised.
- * @note AUTOLOADED
+ * @ingroup SMWStore
  */
 class SMWRequestOptions {
 	/**
@@ -114,6 +114,7 @@ class SMWRequestOptions {
  * semantic store. Besides the relevant interface, this class provides default
  * implementations for some optional methods, which inform the caller that
  * these methods are not implemented.
+ * @ingroup SMWStore
  */
 abstract class SMWStore {
 
@@ -286,5 +287,3 @@ abstract class SMWStore {
 	abstract function drop($verbose = true);
 
 }
-
-

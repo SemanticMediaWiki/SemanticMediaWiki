@@ -12,7 +12,7 @@
  * Abstract base class for SMW's variant of the MW QueryPage.
  * Subclasses must implement getResults() and formatResult(), as
  * well as some other standard functions of QueryPage.
- * @note AUTOLOADED
+ * @ingroup SMW
  */
 abstract class SMWQueryPage extends QueryPage {
 

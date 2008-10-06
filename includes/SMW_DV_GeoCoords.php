@@ -13,7 +13,7 @@ define('SMW_GEO_SEC','″');
  * Implementation of datavalues that are geographic coordinates.
  *
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWGeoCoordsValue extends SMWDataValue {
 

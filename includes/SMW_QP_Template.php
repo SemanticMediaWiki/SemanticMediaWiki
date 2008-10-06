@@ -10,7 +10,7 @@
  * Printer for template data. Passes a result row as anonymous parameters to
  * a given template (which might ignore them or not) and prints the result.
  *
- * @note AUTOLOADED
+ * @ingroup SMWQuery
  */
 class SMWTemplateResultPrinter extends SMWResultPrinter {
 

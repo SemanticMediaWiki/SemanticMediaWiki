@@ -9,7 +9,7 @@
 /**
  * New implementation of SMW's printer for result tables.
  *
- * @note AUTOLOADED
+ * @ingroup SMWQuery
  */
 class SMWTableResultPrinter extends SMWResultPrinter {
 

@@ -10,7 +10,7 @@
  *
  * @author Denny Vrandecic
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWQuery
  */
 class SMWRSSResultPrinter extends SMWResultPrinter {
 	protected $m_title = '';

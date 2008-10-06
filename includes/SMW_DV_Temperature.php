@@ -9,7 +9,7 @@
  * mostly an example implementation of how to realise custom unit types easily.
  *
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWTemperatureValue extends SMWNumberValue {
 

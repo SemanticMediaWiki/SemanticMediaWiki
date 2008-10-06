@@ -6,11 +6,10 @@
  * @ingroup SMWQuery
  */
 
-
 /**
  * New implementation of SMW's printer for timeline data.
  *
- * @note AUTOLOADED
+ * @ingroup SMWQuery
  */
 class SMWTimelineResultPrinter extends SMWResultPrinter {
 

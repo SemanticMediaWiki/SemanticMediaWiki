@@ -11,7 +11,7 @@
  * an issue.
  *
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWConceptValue extends SMWDataValue {
 

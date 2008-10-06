@@ -11,7 +11,7 @@
  *
  * @author Jörg Heizmann
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWNAryValue extends SMWDataValue {
 

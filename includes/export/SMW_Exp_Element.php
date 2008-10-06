@@ -17,7 +17,7 @@
  * of class SMWExpElement or any of its subclasses do represent blank node if their name
  * is empty or of the form "_id" where "id" is any identifier string. IDs are local to the
  * current context, which such as a list of triples or an SMWExpData container.
- * @note AUTOLOADED
+ * @ingroup SMW
  */
 class SMWExpElement {
 
@@ -53,7 +53,7 @@ class SMWExpElement {
 /**
  * A single resource (individual) for export. Defined by a URI, and possibly also providing
  * abbreviated forms (QNames).
- * @note AUTOLOADED
+ * @ingroup SMW
  */
 class SMWExpResource extends SMWExpElement {
 
@@ -148,7 +148,7 @@ class SMWExpResource extends SMWExpElement {
 /**
  * A single datatype literal for export. Defined by a literal value and a datatype URI.
  * Currently no support for language tags.
- * @note AUTOLOADED
+ * @ingroup SMW
  */
 class SMWExpLiteral extends SMWExpElement {
 

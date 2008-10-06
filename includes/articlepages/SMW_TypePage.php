@@ -11,7 +11,7 @@
 /**
  * Implementation of MediaWiki's Article that shows additional information on
  * Type: pages. Very simliar to CategoryPage.
- * @note AUTOLOADED
+ * @ingroup SMW
  */
 class SMWTypePage extends SMWOrderedListPage {
 

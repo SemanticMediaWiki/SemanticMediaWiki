@@ -17,7 +17,7 @@
  *
  * While the API does not require this, it is ensured that every result row 
  * returned by this object has the same number of elements (columns).
- * @note: AUTOLOADED
+ * @ingroup SMWQuery
  */
 class SMWQueryResult {
 	protected $m_content; // array (table) of arrays (rows) of arrays (fields, SMWResultArray)

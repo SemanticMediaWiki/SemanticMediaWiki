@@ -10,7 +10,7 @@
  * @author Markus Krötzsch
  * @author Denny Vrandecic
  * @author Frank Dengler
- * @note AUTOLOADED
+ * @ingroup SMWQuery
  */
 class SMWvCardResultPrinter extends SMWResultPrinter {
 	protected $m_title = '';

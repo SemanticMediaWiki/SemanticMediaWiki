@@ -27,7 +27,7 @@
  *
  * @author Fabian Howahl
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWTimeValue extends SMWDataValue {
 

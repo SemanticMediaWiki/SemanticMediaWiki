@@ -11,7 +11,6 @@
  * Container class for request for printout, as used in queries to
  * obtain additional information for the retrieved results.
  * @ingroup SMWQuery
- * @note: AUTOLOADED
  */
 class SMWPrintRequest {
 	const PRINT_CATS = 0; // print all direct cateories of the current element

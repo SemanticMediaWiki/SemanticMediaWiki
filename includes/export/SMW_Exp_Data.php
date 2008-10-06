@@ -15,7 +15,7 @@
  * again SMWExpData objects, and edges are annotated with SMWExpElements
  * specifying properties.
  *
- * @note AUTOLOADED
+ * @ingroup SMW
  */
 class SMWExpData {
 	protected $m_subject;

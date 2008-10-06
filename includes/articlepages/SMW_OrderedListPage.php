@@ -16,7 +16,7 @@
  * parameters.
  *
  * Some code adapted from CategoryPage.php
- * @note AUTOLOADED
+ * @ingroup SMW
  */
 abstract class SMWOrderedListPage extends Article {
 

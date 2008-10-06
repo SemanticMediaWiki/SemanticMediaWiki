@@ -14,7 +14,7 @@
  *   SMWDataValueFactory.
  *
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWTypesValue extends SMWDataValue {
 

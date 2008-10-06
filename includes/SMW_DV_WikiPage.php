@@ -12,7 +12,7 @@
  *
  * @author Nikolas Iwan
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  */
 class SMWWikiPageValue extends SMWDataValue {
 

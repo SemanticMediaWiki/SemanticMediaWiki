@@ -22,7 +22,7 @@
  * in HTML.
  *
  * @author Markus Krötzsch
- * @note AUTOLOADED
+ * @ingroup SMWDataValues
  *
  * @todo Wiki-HTML-conversion for unit strings must be revisited, as the current
  * solution might be unsafe.
