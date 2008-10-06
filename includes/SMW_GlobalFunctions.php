@@ -59,7 +59,6 @@ define('CONCEPT_CACHE_HARD',1); //show without cache if concept is not harder th
 define('CONCEPT_CACHE_NONE',0); //show all concepts even without any cache
 
 // constants for identifying javascripts as used in SMWOutputs
-define('SMW_HEADER_TIMELINE', 1);
 define('SMW_HEADER_TOOLTIP', 2);
 define('SMW_HEADER_SORTTABLE', 3);
 define('SMW_HEADER_STYLE', 4);
@@ -134,7 +133,6 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWResultPrinter']          = $smwgIP . '/includes/SMW_QueryPrinter.php';
 	$wgAutoloadClasses['SMWTableResultPrinter']     = $smwgIP . '/includes/SMW_QP_Table.php';
 	$wgAutoloadClasses['SMWListResultPrinter']      = $smwgIP . '/includes/SMW_QP_List.php';
-// 	$wgAutoloadClasses['SMWTimelineResultPrinter']  = $smwgIP . '/includes/SMW_QP_Timeline.php';
 	$wgAutoloadClasses['SMWEmbeddedResultPrinter']  = $smwgIP . '/includes/SMW_QP_Embedded.php';
 	$wgAutoloadClasses['SMWTemplateResultPrinter']  = $smwgIP . '/includes/SMW_QP_Template.php';
 	$wgAutoloadClasses['SMWRSSResultPrinter']       = $smwgIP . '/includes/SMW_QP_RSSlink.php';

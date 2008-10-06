@@ -58,11 +58,6 @@ class SMWOutputs {
 		if (is_numeric($id)) {
 			global $smwgScriptPath;
 			switch ($id) {
-				case SMW_HEADER_TIMELINE:
-					SMWOutputs::requireHeadItem(SMW_HEADER_STYLE);
-					SMWOutputs::$mHeadItems['smw_tl'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SimileTimeline/timeline-api.js"></script>';
-					SMWOutputs::$mHeadItems['smw_tlhelper'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_timeline.js"></script>';
-				return;
 				case SMW_HEADER_TOOLTIP:
 					SMWOutputs::requireHeadItem(SMW_HEADER_STYLE);
 					SMWOutputs::$mHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
