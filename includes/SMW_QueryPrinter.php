@@ -11,6 +11,7 @@
  * part of the former functionality of SMWInlineQuery (everything related to
  * output formatting and the correspoding parameters) and is subclassed by concrete
  * printers that provide the main formatting functionality.
+ * @ingroup SMWQuery
  */
 abstract class SMWResultPrinter {
 

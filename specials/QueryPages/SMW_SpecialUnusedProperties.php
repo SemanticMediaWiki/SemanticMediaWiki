@@ -21,6 +21,9 @@ function smwfDoSpecialUnusedProperties() {
 	return $result;
 }
 
+/**
+ * @ingroup SMW
+ */
 class SMWUnusedPropertiesPage extends SMWQueryPage {
 
 	function getName() {

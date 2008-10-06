@@ -244,6 +244,7 @@ class SMWQueryResult {
 /**
  * Container for the contents of a single result field of a query result,
  * i.e. basically an array of SMWDataValues with some additional parameters.
+ * @ingroup SMWQuery
  */
 class SMWResultArray {
 	protected $printrequest;

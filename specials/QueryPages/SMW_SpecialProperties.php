@@ -19,6 +19,11 @@ function smwfDoSpecialProperties() {
 	return $result;
 }
 
+/**
+ * This query page shows all used properties.
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
+ */
 class SMWPropertiesPage extends SMWQueryPage {
 
 	function getName() {

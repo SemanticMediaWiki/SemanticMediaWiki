@@ -16,6 +16,7 @@
  * normal operation.
  *
  * @author Markus Krötzsch
+ * @ingroup SMW
  */
 class SMWRefreshJob extends Job {
 

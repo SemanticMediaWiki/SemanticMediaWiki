@@ -19,6 +19,9 @@ function smwfDoSpecialWantedProperties() {
 	return $result;
 }
 
+/**
+ * @ingroup SMWQuery
+ */
 class SMWWantedPropertiesPage extends SMWQueryPage {
 
 	function getName() {

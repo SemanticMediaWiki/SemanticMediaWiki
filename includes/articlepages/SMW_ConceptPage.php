@@ -11,6 +11,7 @@
 /**
  * Implementation of MediaWiki's Article that shows additional information on
  * Concept: pages. Very simliar to CategoryPage.
+ * @ingroup SMW
  */
 class SMWConceptPage extends SMWOrderedListPage {
 	protected $m_errors;

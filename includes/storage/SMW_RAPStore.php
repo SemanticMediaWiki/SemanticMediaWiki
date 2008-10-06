@@ -24,6 +24,7 @@ require_once( "$smwgRAPPath/RdfAPI.php");
  * Storage access class for using RAP as a triple store.
  * Most of the functions are simply forwarded to the SQL store.
  * @deprecated Use SMWRAPStore2. This class will be last be available in SMW 1.4, and is fully functional only up to SMW 1.3.*
+ * @ingroup SMWStore
  */
 class SMWRAPStore extends SMWSQLStore {
 	protected $sqlstore;

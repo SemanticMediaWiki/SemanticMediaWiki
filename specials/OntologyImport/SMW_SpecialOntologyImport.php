@@ -75,7 +75,10 @@ function doSpecialImportOntology($par = NULL) {
 }
 
 
-/** static class to encapsulate import functions */
+/** Static class to encapsulate import functions.
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
+ */
 class SMWOntologyImport {
 	/**
 	 * Creates the label -- and thus the page title to be used -- for an entity.

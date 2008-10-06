@@ -179,6 +179,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 
 /**
  * Represents a single entry in an vCard
+ * @ingroup SMWQuery
  */
 class SMWvCardEntry {
 	private $uri;
@@ -297,6 +298,7 @@ class SMWvCardEntry {
 
 /**
  * Represents a single address entry in an vCard entry.
+ * @ingroup SMWQuery
  */
 class SMWvCardAddress{
 	private $type;
@@ -334,6 +336,7 @@ class SMWvCardAddress{
 
 /**
  * Represents a single telephone entry in an vCard entry.
+ * @ingroup SMWQuery
  */
 class SMWvCardTel{
 	private $type;
@@ -359,6 +362,7 @@ class SMWvCardTel{
 
 /**
  * Represents a single email entry in an vCard entry.
+ * @ingroup SMWQuery
  */
 class SMWvCardEmail{
 	private $type;

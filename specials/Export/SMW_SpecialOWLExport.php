@@ -116,6 +116,7 @@ function smwfDoSpecialOWLExport($page = '') {
 /**
  * Small data object holding the bare essentials of one title.
  * Used to store processed and open pages for export.
+ * @ingroup SMW
  */
 class SMWSmallTitle {
 	public $dbkey;
@@ -130,6 +131,7 @@ class SMWSmallTitle {
 
 /**
  * Class for encapsulating the methods for RDF export.
+ * @ingroup SMW
  */
 class OWLExport {
 	/**#@+

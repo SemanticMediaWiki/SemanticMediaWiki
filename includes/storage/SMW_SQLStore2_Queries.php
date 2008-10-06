@@ -40,6 +40,7 @@ class SMWSQLStore2Query {
 
 /**
  * Class that implements query answering for SMWSQLStore2.
+ * @ingroup SMWStore
  */
 class SMWSQLStore2QueryEngine {
 

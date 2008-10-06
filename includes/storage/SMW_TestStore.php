@@ -11,7 +11,8 @@
  * Storage access class for testing purposes. No persitent storage is implemented, but
  * all methods return non-empty result sets that can be used for testing purposes.
  * 
- * FIXME: this implementation requires updates for testing new storage capabilities.
+ * @bug This implementation requires updates for testing new storage capabilities.
+ * @ingroup SMWStore
  */
 class SMWTestStore extends SMWStore {
 
