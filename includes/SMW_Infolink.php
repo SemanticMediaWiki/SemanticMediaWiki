@@ -12,7 +12,7 @@
  * clean way. The class provides methods for creating source code for
  * realising them in wiki or html contexts.
  *
- * @note AUTOLOAD
+ * @ingroup SMW
  */
 class SMWInfolink {
 	private $m_target;      // the actual link target
