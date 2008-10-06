@@ -16,8 +16,9 @@ include_once($smwgIP . '/languages/SMW_Language.php');
 
 /**
  * English language labels for important SMW labels (namespaces, datatypes,...).
- * 
+ *
  * @author Markus Krötzsch
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageEn extends SMWLanguage {

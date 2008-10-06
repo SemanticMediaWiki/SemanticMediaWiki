@@ -19,6 +19,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  * contribute any corrections to the SMW project.
  *
  * @author 張致信 (Roc Michael roc.no1\@gmail.com)
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageZh_cn extends SMWLanguage {

@@ -20,6 +20,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  * found in the file SMW_LanguageEn.php may be useful as a reference.
  *
  * @author Terry A. Hurlbut
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageKo extends SMWLanguage {

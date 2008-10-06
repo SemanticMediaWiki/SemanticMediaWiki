@@ -17,6 +17,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  * 
  * @author Mahmoud Zouari  mahmoudzouari@yahoo.fr http://www.cri.ensmp.fr
  * @author Meno25
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageAr extends SMWLanguage {

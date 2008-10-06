@@ -14,6 +14,7 @@
 /**
  * Base class for all SMW language classes.
  * @author Markus Krötzsch
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 abstract class SMWLanguage {

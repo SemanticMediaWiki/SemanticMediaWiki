@@ -17,6 +17,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  * Spanish language labels for important SMW labels (namespaces, datatypes,...).
  *
  * @author Javier Calzada Prado, Carmen Jorge García-Reyes, Universidad Carlos III de Madrid, Jesús Espino García
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageEs extends SMWLanguage {

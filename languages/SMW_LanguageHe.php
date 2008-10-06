@@ -17,6 +17,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  * Hebrew language labels for important SMW labels (namespaces, datatypes,...).
  *
  * @author Udi Oron אודי אורון
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageHe extends SMWLanguage {

@@ -25,6 +25,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  * "printout statement" --> Ausgabeanweisung
  *
  * @author Markus Krötzsch
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageDe extends SMWLanguage {

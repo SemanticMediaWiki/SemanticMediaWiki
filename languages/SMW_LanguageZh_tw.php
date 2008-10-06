@@ -17,6 +17,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  * Traditional Chinese language labels for important SMW labels (namespaces, datatypes,...).
  *
  * @author 張致信 (Roc Michael roc.no1\@gmail.com)
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageZh_tw extends SMWLanguage {

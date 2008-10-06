@@ -17,6 +17,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  * Slovak language labels for important SMW labels (namespaces, datatypes,...).
  *
  * @author helix84
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageSk extends SMWLanguage {

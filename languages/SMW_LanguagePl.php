@@ -36,6 +36,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  *
  * @author Łukasz Bolikowski
  * @version 0.2
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguagePl extends SMWLanguage {

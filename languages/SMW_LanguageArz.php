@@ -17,6 +17,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  * Egyptian Arabic language labels for important SMW labels (namespaces, datatypes,...).
  *
  * @author Meno25
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageArz extends SMWLanguage {

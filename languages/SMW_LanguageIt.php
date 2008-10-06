@@ -18,6 +18,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  *
  * @author Davide Eynard
  * @author David Laniado
+ * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguageIt extends SMWLanguage {
