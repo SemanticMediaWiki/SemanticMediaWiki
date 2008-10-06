@@ -12,7 +12,6 @@
  * without the need of changing code deep in
  * MediaWiki were no hook has ever seen light.
  *
- * @note AUTOLOAD
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  */

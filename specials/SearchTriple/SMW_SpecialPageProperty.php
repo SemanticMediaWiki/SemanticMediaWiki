@@ -16,7 +16,6 @@
  * This is typically used for overflow results from other 
  * dynamic output pages.
  *
- * @note AUTOLOAD
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  */

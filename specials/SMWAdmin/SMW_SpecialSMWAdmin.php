@@ -18,7 +18,6 @@
  * that allows to execute certain functions related to the maintainance 
  * of the semantic database. It is restricted to users with siteadmin status.
  *
- * @note AUTOLOAD
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  */

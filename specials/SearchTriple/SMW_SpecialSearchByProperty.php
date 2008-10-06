@@ -26,7 +26,6 @@ $wgAjaxExportList[] = "smwfGetValues";
  * For example, it shows me all persons born in Croatia,
  * or all winners of the Academy Award for best actress.
  *
- * @note AUTOLOAD
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  */

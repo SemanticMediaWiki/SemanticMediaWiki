@@ -12,7 +12,6 @@
 /**
  * A factbox view on one specific article, showing all the Semantic data about it
  *
- * @note AUTOLOAD
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  */

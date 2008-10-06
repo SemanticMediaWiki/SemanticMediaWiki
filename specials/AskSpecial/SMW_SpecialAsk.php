@@ -11,7 +11,6 @@
  * This special page for MediaWiki implements a customisable form for
  * executing queries outside of articles.
  *
- * @note AUTOLOAD
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  */
