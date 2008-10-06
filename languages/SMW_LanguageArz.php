@@ -14,7 +14,7 @@ global $smwgIP;
 include_once($smwgIP . '/languages/SMW_Language.php');
 
 /**
- * Egyptian Arab language labels for important SMW labels (namespaces, datatypes,...).
+ * Egyptian Arabic language labels for important SMW labels (namespaces, datatypes,...).
  *
  * @author Meno25
  * @ingroup Language
@@ -69,6 +69,12 @@ protected $m_Namespaces = array(
 	SMW_NS_CONCEPT        => 'مبدأ',
 	SMW_NS_CONCEPT_TALK   => 'نقاش_المبدأ'
 );
+
+protected $m_dateformats = array(array(SMW_Y), array(SMW_MY,SMW_YM), array(SMW_MDY,SMW_DMY,SMW_YMD,SMW_YDM));
+
+protected $m_months = array("يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر");
+
+protected $m_monthsshort = array("يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر");
 
 }
 
