@@ -16,16 +16,18 @@
  */
 class SMWWikiPageValue extends SMWDataValue {
 
-	private $m_value = ''; // the raw string passed to that datavalue, rough version of prefixedtext
-	private $m_textform = ''; // the isolated title as text
-	private $m_dbkeyform = ''; // the isolated title in DB form
-	private $m_interwiki = ''; // interwiki prefix or '', actually stored in SMWSQLStore2
-	private $m_sortkey = ''; // key for alphabetical sorting
-	private $m_fragment = ''; // not stored, but kept for printout on page
-	private $m_prefixedtext = ''; // full titletext with prefixes, including interwiki prefix
-	private $m_namespace = NS_MAIN;
-	private $m_id; // false if unset
-	private $m_title = NULL;
+	protected $m_value = ''; // the raw string passed to that datavalue, rough version of prefixedtext
+	protected $m_textform = ''; // the isolated title as text
+	protected $m_dbkeyform = ''; // the isolated title in DB form
+	protected $m_interwiki = ''; // interwiki prefix or '', actually stored in SMWSQLStore2
+	protected $m_sortkey = ''; // key for alphabetical sorting
+	protected $m_fragment = ''; // not stored, but kept for printout on page
+	protected $m_prefixedtext = ''; // full titletext with prefixes, including interwiki prefix
+	protected $m_namespace = NS_MAIN;
+	protected $m_id; // false if unset
+	protected $m_title = NULL;
+
+	protected $m_fixNamespace = NS_MAIN; // if namespace other than NS_MAIN, restrict inputs to this namespace
 
 	protected function parseUserValue($value) {
 		$value = ltrim(rtrim($value,' ]'),' ['); // support inputs like " [[Test]] "
@@ -44,11 +46,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				if ($this->m_caption === false) {
 					$this->m_caption = $value;
 				}
-			} else {
-				wfLoadExtensionMessages('SemanticMediaWiki');
-				$this->addError(wfMsgForContent('smw_notitle', $value));
-				# TODO: Escape the text so users can see any punctuation problems (bug 11666).
-			}
+			} // else: no action, errors are reported by getTitle()
 		} else {
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_notitle', $value));
@@ -218,15 +216,36 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	/**
 	 * Return according Title object or NULL if no valid value was set.
+	 * If using a base value, this method also checks whether the given namespace
+	 * is appropriate. Whenever this method sets the title page, it also implements
+	 * error reporting, i.e. the object might become invalid when calling this
+	 * function.
 	 */
 	public function getTitle() {
+		global $wgContLang;
 		$this->unstub();
 		if ($this->m_title === NULL){
 			if ($this->m_dbkeyform != '') {
 				$this->m_title = Title::makeTitle($this->m_namespace, $this->m_dbkeyform);
+				if ($this->m_title === NULL) { // should not normally happen, but anyway ...
+					wfLoadExtensionMessages('SemanticMediaWiki');
+					$this->addError(wfMsgForContent('smw_notitle', $wgContLang->getNsText($this->m_namespace) . ':' . $this->m_dbkeyform));
+					$this->m_dbkeyform = '';
+				}
 			} elseif ($this->m_value != ''){
-				$this->m_title = Title::newFromText($this->m_value);
+				$this->m_title = Title::newFromText($this->m_value, $this->m_fixNamespace);
+				///TODO: Escape the text so users can see any punctuation problems (bug 11666).
+				if ($this->m_title === NULL) {
+					wfLoadExtensionMessages('SemanticMediaWiki');
+					$this->addError(wfMsgForContent('smw_notitle', $this->m_value));
+				} elseif ( ($this->m_fixNamespace != NS_MAIN) &&
+				     ($this->m_fixNamespace != $this->m_title->getNamespace()) ) {
+					wfLoadExtensionMessages('SemanticMediaWiki');
+					$this->addError(wfMsgForContent('smw_wrong_namespace', $wgContLang->getNsText($this->m_fixNamespace)));
+				}
 			} else {
+				wfLoadExtensionMessages('SemanticMediaWiki');
+				$this->addError(wfMsgForContent('smw_notitle', ''));
 				return NULL; //not possible to create title from empty string
 			}
 		}
@@ -303,10 +322,16 @@ class SMWWikiPageValue extends SMWDataValue {
 	/**
 	 * Set all basic values for this datavalue to the extent these are
 	 * available. Simplifies and speeds up creation from stored data.
+	 *
+	 * @todo Rethink our standard set interfaces for datavalues to make wikipage
+	 * fit better with the rest.
 	 */
 	public function setValues($dbkey, $namespace, $id = false, $interwiki = '', $sortkey = '') {
 		$this->setXSDValue($dbkey,''); // just used to trigger standard parent class methods!
-		/// TODO: rethink our standard set interfaces for datavalues to make wikipage fit better with the rest
+		if ( ($this->m_fixNamespace != NS_MAIN) && ( $this->m_fixNamespace != $namespace) ) {
+			wfLoadExtensionMessages('SemanticMediaWiki');
+			$this->addError(wfMsgForContent('smw_notitle', $value));
+		}
 		$this->m_stubdata = array($dbkey, $namespace, $id, $interwiki, $sortkey);
 	}
 

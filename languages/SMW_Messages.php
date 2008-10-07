@@ -57,6 +57,7 @@ $messages['en'] = array(
 	'smw_decseparator'  => '.',
 	'smw_kiloseparator' => ',',
 	'smw_notitle'       => '"$1" cannot be used as a page name in this wiki.',
+	'smw_wrong_namespace' => 'Only pages in namespace "$1" are allowed here.',
 	'smw_unknowntype'   => 'Unsupported type "$1" defined for property.',
 	'smw_manytypes'     => 'More than one type defined for property.',
 	'smw_emptystring'   => 'Empty strings are not accepted.',
