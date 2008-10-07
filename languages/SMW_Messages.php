@@ -967,6 +967,7 @@ $messages['de'] = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_notitle' => '“$1” kann nicht als Seitenname in diesem Wiki verwendet werden.',
+	'smw_wrong_namespace' => 'Nur Seiten im Namensruam „$1“ sind hier zulässig.',
 	'smw_unknowntype' => 'Dem Attribut wurde der unbekannte Datentyp „$1“ zugewiesen.',
 	'smw_manytypes' => 'Dem Attribut wurden mehrere Datentypen zugewiesen.',
 	'smw_emptystring' => 'Leere Zeichenfolgen werden nicht akzeptiert.',
