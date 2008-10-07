@@ -57,7 +57,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ( $subject instanceof Title ) {
 			$sid = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki());
 			$svalue = SMWDataValueFactory::newTypeIDValue('_wpg');
-			$svalue->setValues($subject->getDBkey(), $subject->getNamespace());;
+			$svalue->setTitle($subject);
 		} elseif ($subject instanceof SMWWikiPageValue) {
 			$sid = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki());
 			$svalue = $subject;

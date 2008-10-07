@@ -183,7 +183,7 @@ class SMWExporter {
 	static public function getResourceElement($resource) {
 		if ($resource instanceof Title) {
 			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-			$dv->setValues($resource->getDBKey(), $resource->getNamespace());
+			$dv->setTitle($resource);
 		} elseif ($resource instanceof SMWWikiPageValue) {
 			$dv = $resource;
 		} else {

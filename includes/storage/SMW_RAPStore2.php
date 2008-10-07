@@ -299,7 +299,7 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		$uri = "";
 		if($title instanceof Title){
 			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-			$dv->setValues($title->getDBKey(), $title->getNamespace()); 
+			$dv->setTitle($title);
 			$exp = $dv->getExportData(); 
 			$uri = $exp->getSubject()->getName(); 
 		}else{

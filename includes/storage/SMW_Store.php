@@ -206,7 +206,7 @@ abstract class SMWStore {
 	 */
 	function clearData(Title $subject) {
 		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-		$dv->setValues($subject->getDBkey(), $subject->getNamespace());
+		$dv->setTitle($subject);
 		$emptydata = new SMWSemanticData($dv);
 		$this->updateData($emptydata);
 	}

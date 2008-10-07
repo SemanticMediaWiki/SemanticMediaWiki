@@ -310,6 +310,13 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->m_stubdata = array($dbkey, $namespace, $id, $interwiki, $sortkey);
 	}
 
+	/**
+	 * Init this data value object based on a given Title object.
+	 */
+	public function setTitle($title) {
+		$this->setValues($title->getDBkey(), $title->getNamespace(), false, $title->getInterwiki());
+		$this->m_title = $title;
+	}
+
 }
 
-?>

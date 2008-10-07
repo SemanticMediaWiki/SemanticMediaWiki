@@ -155,8 +155,7 @@ abstract class SMWOrderedListPage extends Article {
 	 */
 	protected function getDataValue() {
 		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-		$t = $this->getTitle();
-		$dv->setValues($t->getDBkey(), $t->getNamespace());
+		$dv->setTitle($this->getTitle());
 		return $dv;
 	}
 

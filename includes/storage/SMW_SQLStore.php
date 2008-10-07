@@ -55,7 +55,7 @@ class SMWSQLStore extends SMWStore {
 		if ( $subject instanceof Title ) {
 			$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
 			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-			$dv->setValues($subject->getDBkey(), $subject->getNamespace());
+			$dv->setTitle($subject);
 			$result = new SMWSemanticData($dv);
 		} elseif ($subject instanceof SMWWikiPageValue) {
 			$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
