@@ -94,11 +94,6 @@ to translating SMW:
   and taken from http://www.kryogenix.org/code/browser/sorttable. The current
   code for sorting tables is derived from this original code.
 
-* The JavaScript upon which the Timeline format of inline queries is based is
-  provided by Simile (http://simile.mit.edu). Note that it is distributed with 
-  a BSD-style license, and not under the GPL that applies to most parts of
-  Semantic MediaWiki.
-
 * Many people have contributed to the project by providing helpful comments and
   suggestions. Among them are the members of the Semantic Wiki Interest Group
   (swikig@aifb.uni-karlsruhe.de; see semanticweb.org), the people at the project
