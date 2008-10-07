@@ -145,6 +145,7 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgAutoloadClasses['SMWErrorvalue']             = $smwgIP . '/includes/SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWStringValue']      =  $smwgIP . '/includes/SMW_DV_String.php';
 	$wgAutoloadClasses['SMWWikiPageValue']    =  $smwgIP . '/includes/SMW_DV_WikiPage.php';
+	$wgAutoloadClasses['SMWPropertyValue']    =  $smwgIP . '/includes/SMW_DV_Property.php';
 	$wgAutoloadClasses['SMWURIValue']         =  $smwgIP . '/includes/SMW_DV_URI.php';
 	$wgAutoloadClasses['SMWTypesValue']       =  $smwgIP . '/includes/SMW_DV_Types.php';
 	$wgAutoloadClasses['SMWNAryValue']        =  $smwgIP . '/includes/SMW_DV_NAry.php';
