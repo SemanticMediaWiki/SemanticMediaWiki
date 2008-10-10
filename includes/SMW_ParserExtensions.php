@@ -317,7 +317,7 @@ class SMWParserExtensions {
 	 * Usage:
 	 * {{\#declare:Author=Author\#list|Publisher=editor}}
 	 */
-	static public function doDeclare( Parser &$parser, PPFrame $frame, $args ) {
+	static public function doDeclare( &$parser, PPFrame $frame, $args ) {
 		if ($frame->isTemplate()) {
 			foreach ($args as $arg)
 				if (trim($arg) != "") {

@@ -28,7 +28,7 @@ class SMWParseData {
 	 * store this array in the current parser output, using the variable
 	 * mSMWMagicWords.
 	 */
-	static public function stripMagicWords(&$text, Parser $parser) {
+	static public function stripMagicWords(&$text, $parser) {
 		$words = array();
 		$mw = MagicWord::get('SMW_NOFACTBOX');
 		if ($mw->matchAndRemove($text)) {
@@ -47,7 +47,7 @@ class SMWParseData {
 	 * This function retrieves the SMW data from a given parser, and creates
 	 * a new empty container if it is not initiated yet.
 	 */
-	static public function getSMWdata(Parser $parser) {
+	static public function getSMWdata($parser) {
 		$output = SMWParseData::getOutput($parser);
 		$title = $parser->getTitle();
 		if (!isset($output) || !isset($title)) return NULL; // no parsing, create error
@@ -62,7 +62,7 @@ class SMWParseData {
 	/**
 	 * Clear all stored data for a given parser.
 	 */
-	static public function clearStorage(Parser $parser) {
+	static public function clearStorage($parser) {
 		$output = SMWParseData::getOutput($parser);
 		$title = $parser->getTitle();
 		if (!isset($output) || !isset($title)) return;
@@ -77,7 +77,7 @@ class SMWParseData {
 	 * strings as they might be found in a wiki. The function returns a datavalue
 	 * object that contains the result of the operation.
 	 */
-	static public function addProperty($propertyname, $value, $caption, Parser $parser, $storeannotation = true) {
+	static public function addProperty($propertyname, $value, $caption, $parser, $storeannotation = true) {
 		wfProfileIn("SMWParseData::addProperty (SMW)");
 		global $smwgContLang;
 		// See if this property is a special one, such as e.g. "has type"
