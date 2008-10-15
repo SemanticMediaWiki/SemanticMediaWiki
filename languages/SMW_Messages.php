@@ -1986,6 +1986,13 @@ Entra e un pagina e un proprietate.',
 	'smwadmin' => 'Functiones admin pro MediaWiki Semantic',
 );
 
+/** Indonesian (Bahasa Indonesia)
+ * @author Rex
+ */
+$messages['id'] = array(
+	'smw_result_noresults' => 'Tidak ada hasil yang dapat ditampilkan.',
+);
+
 /** Italian (Italiano)
  * @author Cruccone
  * @author Darth Kule
@@ -2749,6 +2756,18 @@ $messages['mr'] = array(
  */
 $messages['mt'] = array(
 	'smw_result_prev' => "Ta' qabel",
+);
+
+/** Erzya (Эрзянь)
+ * @author Botuzhaleny-sodamo
+ */
+$messages['myv'] = array(
+	'smw_abb_north' => 'Веньэльйонкс',
+	'smw_abb_east' => 'Чилисемайонкс',
+	'smw_abb_south' => 'Чиньэльйонкс',
+	'smw_abb_west' => 'Чивалгомайонкс',
+	'smw_label_latitude' => 'Келезэ:',
+	'smw_label_longitude' => 'Кувалмозо:',
 );
 
 /** Nahuatl (Nāhuatl)
