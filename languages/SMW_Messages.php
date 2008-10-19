@@ -941,6 +941,7 @@ Prosím, zadejte stránku i vlastnost.',
  * @author Denny
  * @author Markus Krötzsch
  * @author Pill
+ * @author Revolus
  */
 $messages['de'] = array(
 	'smw_edithelp' => 'Bearbeitungshilfe für Attribute',
@@ -955,6 +956,7 @@ $messages['de'] = array(
 	'smw_no_concept_namespace' => "Konzepte können nur im ''Konzept:'' Namensraum erstellt werden.",
 	'smw_multiple_concepts' => 'Jede Konzeptseite kann nur eine Konzeptdefinition beinhalten.',
 	'smw_baduri' => 'URIs der Form „$1“ sind nicht zulässig.',
+	'smw_csv_link' => 'CSV',
 	'smw_icalendar_link' => 'iCalendar',
 	'smw_vcard_link' => 'vCard',
 	'smw_iq_disabled' => 'Semantische Anfragen sind in diesem Wiki zur Zeit nicht möglich.',
