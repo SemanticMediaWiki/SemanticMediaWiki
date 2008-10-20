@@ -86,6 +86,12 @@ $aliases['fi'] = array(
 $aliases['lb'] = array(
 	'Ask' => array( 'Froen' ),
 	'ExportRDF' => array( 'RDF exportéieren' ),
+	'PageProperty' => array( 'Säiten-Eegeschaften' ),
+	'Properties' => array( 'Eegeschaften' ),
+	'SemanticStatistics' => array( 'Semantesch Statistiken' ),
+	'Types' => array( 'Datentypen' ),
+	'UnusedProperties' => array( 'Netbenotzen Eegeschaften' ),
+	'WantedProperties' => array( 'Gewënschten Eegeschaften' ),
 );
 
 /** Nedersaksisch (Nedersaksisch) */
@@ -117,6 +123,7 @@ $aliases['nl'] = array(
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬) */
 $aliases['no'] = array(
+	'Ask' => array( 'Spør' ),
 	'ExportRDF' => array( 'Eksporter RDF' ),
 	'PageProperty' => array( 'Sideegenskaper' ),
 	'Properties' => array( 'Egenskaper' ),
