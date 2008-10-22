@@ -155,9 +155,7 @@ abstract class SMWOrderedListPage extends Article {
 	 * Like Article's getTitle(), but returning a suitable SMWWikiPageValue
 	 */
 	protected function getDataValue() {
-		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-		$dv->setTitle($this->getTitle());
-		return $dv;
+		return SMWWikiPageValue::makePageFromTitle($this->getTitle());
 	}
 
 	/**

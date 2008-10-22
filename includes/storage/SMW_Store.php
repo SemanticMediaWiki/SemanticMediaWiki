@@ -194,9 +194,7 @@ abstract class SMWStore {
 	 * Clear all semantic data specified for some page.
 	 */
 	function clearData(Title $subject) {
-		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-		$dv->setTitle($subject);
-		$emptydata = new SMWSemanticData($dv);
+		$emptydata = new SMWSemanticData(SMWWikiPageValue::makePageFromTitle($subject));
 		$this->updateData($emptydata);
 	}
 

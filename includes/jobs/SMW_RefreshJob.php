@@ -65,9 +65,7 @@ class SMWRefreshJob extends Job {
 						$updatejobs[] = new SMWUpdateJob($title);
 					}
 				} elseif ($row->smw_iw != SMW_SQL2_SMWIW) { // refresh all "normal" interwiki pages
-					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-					$dv->setValues($row->smw_namespace, $row->smw_title, false, $row->smw_iw);
-					$store->deleteSemanticData($dv);
+					$store->deleteSemanticData(SMWWikiPageValue::makePage($row->smw_namespace, $row->smw_title, '', $row->smw_iw));
 				}
 			}
 			$db->freeResult($res);

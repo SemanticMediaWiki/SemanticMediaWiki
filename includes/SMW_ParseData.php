@@ -52,9 +52,7 @@ class SMWParseData {
 		$title = $parser->getTitle();
 		if (!isset($output) || !isset($title)) return NULL; // no parsing, create error
 		if (!isset($output->mSMWData)) { // no data container yet
-			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-			$dv->setTitle($title);
-			$output->mSMWData = new SMWSemanticData($dv);
+			$output->mSMWData = new SMWSemanticData(SMWWikiPageValue::makePageFromTitle($title));
 		}
 		return $output->mSMWData;
 	}
@@ -66,9 +64,7 @@ class SMWParseData {
 		$output = SMWParseData::getOutput($parser);
 		$title = $parser->getTitle();
 		if (!isset($output) || !isset($title)) return;
-		$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-		$dv->setTitle($title);
-		$output->mSMWData = new SMWSemanticData($dv);
+		$output->mSMWData = new SMWSemanticData(SMWWikiPageValue::makePageFromTitle($title));
 	}
 
 	/**
@@ -123,9 +119,7 @@ class SMWParseData {
 		$namespace = $title->getNamespace();
 		$processSemantics = smwfIsSemanticsProcessed($namespace);
 		if (!isset($semdata)) { // no data at all?
-			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-			$dv->setTitle($title);
-			$semdata = new SMWSemanticData($dv);
+			$semdata = new SMWSemanticData(SMWWikiPageValue::makePageFromTitle($title));
 		} elseif (!$processSemantics) { // data found, but do all operations as if it was empty
 			$semdata = new SMWSemanticData($semdata->getSubject());
 		}
