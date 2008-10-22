@@ -332,11 +332,10 @@ class SMWParserExtensions {
 						$propertystring = $parts[0];
 						$argumentname = $parts[1];
 					}
-					$property = Title::newFromText( $propertystring, SMW_NS_PROPERTY );
-					//if ($property == null) continue;
+					$property = SMWPropertyValue::makeUserProperty($propertystring);
 					$argument = $frame->getArgument($argumentname);
 					$valuestring = $frame->expand($argument);
-					if ($property != null) {
+					if ($property->isValid()) {
 						$type = SMWDataValueFactory::getPropertyObjectTypeID($property);
 						if ($type == "_wpg") {
 							$matches = array();
