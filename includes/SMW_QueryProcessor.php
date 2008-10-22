@@ -184,11 +184,11 @@ class SMWQueryProcessor {
 						$printmode = SMWPrintRequest::PRINT_PROP;
 						$property = SMWPropertyValue::makeProperty($title->getDBKey());
 						$data = $property;
-						$label = $property->getWikiValue();
+						$label = $showmode?'':$property->getWikiValue();
 					} elseif ($title->getNamespace() == NS_CATEGORY) {
 						$printmode = SMWPrintRequest::PRINT_CCAT;
 						$data = $title;
-						$label = $title->getText();
+						$label = $showmode?'':$title->getText();
 					} //else?
 					if (count($parts) > 1) { // no label found, use property/category name
 						$label = trim($parts[1]);
