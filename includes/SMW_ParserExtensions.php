@@ -37,9 +37,10 @@ class SMWParserExtensions {
 		// (it seems that there is indeed no more direct way of getting this info from MW)
 		$rt = Title::newFromRedirect($text);
 		if ($rt !== NULL) {
-			$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_REDIRECTS_TO,$rt->getPrefixedText());
+			$p = SMWPropertyValue::makeProperty('_REDI');
+			$dv = SMWDataValueFactory::newPropertyObjectValue($p,$rt->getPrefixedText());
 			if ($smwgStoreAnnotations) {
-				SMWParseData::getSMWData($parser)->addSpecialValue(SMW_SP_REDIRECTS_TO,$dv);
+				SMWParseData::getSMWData($parser)->addPropertyObjectValue($p,$dv);
 			}
 		}
 
@@ -226,11 +227,12 @@ class SMWParserExtensions {
 		global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $wgContLang;
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		$title = $parser->getTitle();
+		$pconc = SMWPropertyValue::makeProperty('_CONC');
 		if ($title->getNamespace() != SMW_NS_CONCEPT) {
 			$result = smwfEncodeMessages(array(wfMsgForContent('smw_no_concept_namespace')));
 			SMWOutputs::commitToParser($parser);
 			return $result;
-		} elseif (count(SMWParseData::getSMWdata($parser)->getPropertyValues(SMW_SP_CONCEPT_DESC)) > 0 ) {
+		} elseif (count(SMWParseData::getSMWdata($parser)->getPropertyValues($pconc)) > 0 ) {
 			$result = smwfEncodeMessages(array(wfMsgForContent('smw_multiple_concepts')));
 			SMWOutputs::commitToParser($parser);
 			return $result;
@@ -245,10 +247,10 @@ class SMWParserExtensions {
 		$concept_text = $query->getDescription()->getQueryString();
 		$concept_docu = array_shift( $params ); // second parameter, if any, might be a description
 
-		$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC);
+		$dv = SMWDataValueFactory::newPropertyObjectValue($pconc);
 		$dv->setValues($concept_text, $concept_docu, $query->getDescription()->getQueryFeatures(), $query->getDescription()->getSize(), $query->getDescription()->getDepth());
 		if (SMWParseData::getSMWData($parser) !== NULL) {
-			SMWParseData::getSMWData($parser)->addSpecialValue(SMW_SP_CONCEPT_DESC,$dv);
+			SMWParseData::getSMWData($parser)->addPropertyObjectValue($pconc,$dv);
 		}
 
 		// display concept box:

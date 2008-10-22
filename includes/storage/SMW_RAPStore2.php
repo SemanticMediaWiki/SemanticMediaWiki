@@ -219,7 +219,8 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 
 	/**
 	 * Returns the connection to the RAP Database store. As of now, only MySQL
-	 * is supported. TODO allow other DBs
+	 * is supported.
+	 * @todo Allow other DBs.
 	 */
 	protected function getRAPStore() {
 		// TODO only for MySQL, check for other databases!
@@ -236,16 +237,17 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 	protected function getRAPModel() {
 		$rapstore = $this->getRAPStore();
 		return $rapstore->getModel($this->modeluri);
-	} 
+	}
 	
 	/**
 	 * Closes the connection to the RAP DB. As of now, this is disabled since it
-	 * seems to close the connection to the MW DB as well (probably, because it 
-	 * is the same DB...) TODO check if this can or does loead to a resource leak
+	 * seems to close the connection to the MW DB as well (probably, because it
+	 * is the same DB...).
+	 * @todo Check if this can possibly lead to a resource leak.
 	 */
 	protected function closeRAP() {
 		//$this->rapstore->close();
-	}	
+	}
 
 	/**
 	 * Print some output to indicate progress. The output message is given by

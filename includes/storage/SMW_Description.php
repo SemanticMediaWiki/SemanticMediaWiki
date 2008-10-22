@@ -20,7 +20,7 @@ class SMWPrintRequest {
 
 	protected $m_mode; // type of print request
 	protected $m_label; // string for labelling results, contains no markup
-	protected $m_title; // title object to which print request refers (if any)
+	protected $m_data; // data entries specifyin gwhat was requested (mixed type)
 	protected $m_typeid = false; // id of the datatype of the printed objects, if applicable
 	protected $m_outputformat; // output format string for formatting results, if applicable
 
@@ -28,19 +28,19 @@ class SMWPrintRequest {
 	 * Create a print request.
 	 * @param $mode a constant defining what to printout
 	 * @param $label the string label to describe this printout
-	 * @param $title optional Title object that specifies the request (usually some property)
+	 * @param $data optional data for specifying some request, might be a property object, title, or something else; interpretation depends on $mode
 	 * @param $outputformat optional string for specifying an output format, e.g. an output unit
 	 */
-	public function SMWPrintRequest($mode, $label, $title = NULL, $outputformat = '') {
+	public function __construct($mode, $label, $data = NULL, $outputformat = '') {
 		$this->m_mode = $mode;
 		$this->m_label = $label;
-		$this->m_title = $title;
+		$this->m_data = $data;
 		$this->m_outputformat = $outputformat;
 		if ( ($mode == SMWPrintRequest::PRINT_CCAT) && ($outputformat === '') ) {
 			$this->m_outputformat = 'x'; // changed default for Boolean case
 		}
 	}
-	
+
 	public function getMode() {
 		return $this->m_mode;
 	}
@@ -59,9 +59,12 @@ class SMWPrintRequest {
 			return htmlspecialchars($this->m_label);
 		}
 		switch ($this->m_mode) {
-			case SMWPrintRequest::PRINT_CATS: return htmlspecialchars($this->m_label); // TODO: link to Special:Categories
-			case SMWPrintRequest::PRINT_PROP: case SMWPrintRequest::PRINT_CCAT:
-				return $linker->makeLinkObj($this->m_title, htmlspecialchars($this->m_label));
+			case SMWPrintRequest::PRINT_CATS: 
+				return htmlspecialchars($this->m_label); // TODO: link to Special:Categories
+			case SMWPrintRequest::PRINT_CCAT:
+				return $linker->makeLinkObj($this->m_data->getTitle(), htmlspecialchars($this->m_label));
+			case SMWPrintRequest::PRINT_PROP:
+				return $this->m_data->getLongHTMLText($linker);
 			case SMWPrintRequest::PRINT_THIS: default: return htmlspecialchars($this->m_label);
 		}
 		
@@ -76,8 +79,10 @@ class SMWPrintRequest {
 		} else {
 			switch ($this->m_mode) {
 				case SMWPrintRequest::PRINT_CATS: return $this->m_label; // TODO: link to Special:Categories
-				case SMWPrintRequest::PRINT_PROP: case SMWPrintRequest::PRINT_CCAT:
-					return '[[:' . $this->m_title->getPrefixedText() . '|' . $this->m_label . ']]';
+				case SMWPrintRequest::PRINT_PROP:
+					return $this->m_data->getLongWikiText($linked);
+				case SMWPrintRequest::PRINT_CCAT:
+				return '[[:' . $this->m_data->getPrefixedText() . '|' . $this->m_label . ']]';
 				case SMWPrintRequest::PRINT_THIS: default: return $this->m_label;
 			}
 		}
@@ -90,18 +95,36 @@ class SMWPrintRequest {
 		}
 	}
 
+	/**
+	 * @deprecated Use SMWPrintRequest::getData().
+	 */
 	public function getTitle() {
-		return $this->m_title;
+		if ($this->m_data instanceof Title) {
+			return $this->m_data;
+		} else {
+			return NULL;
+		}
+	}
+
+	/**
+	 * Return additional data related to the print request. Might be 
+	 */
+	public function getData() {
+		return $this->m_data;
 	}
 
 	public function getOutputFormat() {
 		return $this->m_outputformat;
 	}
 
+	/**
+	 * If this print request refers to some property, return the type id of this property.
+	 * Otherwise return FALSE.
+	 */
 	public function getTypeID() {
 		if ($this->m_typeid === false) {
 			if ($this->m_mode == SMWPrintRequest::PRINT_PROP) {
-				$this->m_typeid = SMWDataValueFactory::getPropertyObjectTypeID($this->m_title);
+				$this->m_typeid = SMWDataValueFactory::getPropertyObjectTypeID($this->m_data);
 			} else {
 				$this->m_typeid = '_wpg'; // return objects might be titles, but anyway
 			}
@@ -115,8 +138,10 @@ class SMWPrintRequest {
 	 */
 	public function getHash() {
 		$hash = $this->m_mode . ':';
-		if ($this->m_title !== NULL) {
-			$hash .= $this->m_title->getPrefixedText() . ':';
+		if ($this->m_data instanceof Title) {
+			$hash .= $this->m_data->getPrefixedText() . ':';
+		} elseif ($this->m_data instanceof SMWDataValue) {
+			$hash .= $this->m_data->getHash() . ':';
 		}
 		$hash .= $this->m_outputformat . ':';
 		return $hash;
@@ -126,7 +151,6 @@ class SMWPrintRequest {
 	 * Serialise this object like print requests given in \#ask.
 	 */
 	public function getSerialisation() {
-		/// TODO: do not use "= label" if label is the default anyway
 		switch ($this->m_mode) {
 			case SMWPrintRequest::PRINT_CATS:
 				global $wgContLang;
@@ -138,17 +162,19 @@ class SMWPrintRequest {
 				return $result;
 			case SMWPrintRequest::PRINT_PROP: case SMWPrintRequest::PRINT_CCAT:
 				if ($this->m_mode == SMWPrintRequest::PRINT_CCAT) {
-					$result = '?' . $this->m_title->getPrefixedText();
+					$printname = $this->m_data->getPrefixedText();
+					$result = '?' . $printname;
 					if ( $this->m_outputformat != 'x' ) {
 						$result .= '#' . $this->m_outputformat;
 					}
 				} else {
-					$result = '?' . $this->m_title->getText();
+					$printname = $this->m_data->getWikiValue();
+					$result = '?' . $printname;
 					if ( $this->m_outputformat != '' ) {
 						$result .= '#' . $this->m_outputformat;
 					}
 				}
-				if ( $this->m_title->getText() != $this->m_label ) {
+				if ( $printname != $this->m_label ) {
 					$result .= '=' . $this->m_label;
 				}
 				return $result;
@@ -374,18 +400,18 @@ class SMWClassDescription extends SMWDescription {
  * @ingroup SMWQuery
  */
 class SMWConceptDescription extends SMWDescription {
-	protected $m_title;
+	protected $m_concept;
 
-	public function __construct($concept) {
-		$this->m_title = $concept;
+	public function __construct(Title $concept) {
+		$this->m_concept = $concept;
 	}
 
 	public function getConcept() {
-		return $this->m_title;
+		return $this->m_concept;
 	}
 
 	public function getQueryString($asvalue = false) {
-		$result = '[[' . $this->m_title->getPrefixedText() . ']]';
+		$result = '[[' . $this->m_concept->getPrefixedText() . ']]';
 		if ($asvalue) {
 			return ' &lt;q&gt;' . $result . '&lt;/q&gt; ';
 		} else {
@@ -888,7 +914,7 @@ class SMWSomeProperty extends SMWDescription {
 	protected $m_description;
 	protected $m_property;
 
-	public function SMWSomeProperty(Title $property, SMWDescription $description) {
+	public function SMWSomeProperty(SMWPropertyValue $property, SMWDescription $description) {
 		$this->m_property = $property;
 		$this->m_description = $description;
 	}
@@ -905,9 +931,9 @@ class SMWSomeProperty extends SMWDescription {
 		$subdesc = $this->m_description->getQueryString(true);
 		$sep = ($this->m_description instanceof SMWSomeProperty)?'.':'::'; // use property chain syntax
 		if ($asvalue) {
-			return $this->m_property->getText() . $sep . $subdesc;
+			return $this->m_property->getWikiValue() . $sep . $subdesc;
 		} else {
-			return '[[' . $this->m_property->getText() . $sep . $subdesc . ']]';
+			return '[[' . $this->m_property->getWikiValue() . $sep . $subdesc . ']]';
 		}
 	}
 

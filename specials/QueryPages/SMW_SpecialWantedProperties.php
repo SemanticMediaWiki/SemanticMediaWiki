@@ -44,7 +44,11 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 
 	function formatResult( $skin, $result ) {
 		global $wgLang, $wgExtraNamespaces;
-		$proplink = $skin->makeLinkObj($result[0], $result[0]->getText(), 'action=view');
+		if ($result[0]->isUserDefined()) {
+			$proplink = $skin->makeLinkObj($result[0]->getWikiPageValue()->getTitle(), $result[0]->getWikiValue(), 'action=view');
+		} else {
+			$proplink = $result[0]->getLongHTMLText($skin);
+		}
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		return wfMsg('smw_wantedproperty_template', $proplink, $result[1]);
 	}

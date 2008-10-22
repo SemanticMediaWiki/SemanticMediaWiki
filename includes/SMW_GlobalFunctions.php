@@ -14,21 +14,21 @@
  * @defgroup SMW Semantic MediaWiki
  */
 
-define('SMW_VERSION','1.4b-SVN');
+define('SMW_VERSION','1.4c-SVN');
 
 // constants for special properties, used for datatype assignment and storage
-define('SMW_SP_HAS_TYPE',1);
-define('SMW_SP_HAS_URI',2);
-define('SMW_SP_INSTANCE_OF',4);
-define('SMW_SP_DISPLAY_UNITS', 7);
-define('SMW_SP_IMPORTED_FROM',8);
-define('SMW_SP_CONVERSION_FACTOR', 12);
-define('SMW_SP_SERVICE_LINK', 13);
-define('SMW_SP_POSSIBLE_VALUE', 14);
-define('SMW_SP_REDIRECTS_TO', 15);
-define('SMW_SP_SUBPROPERTY_OF',17);
-define('SMW_SP_SUBCLASS_OF',18);
-define('SMW_SP_CONCEPT_DESC',19);
+define('SMW_SP_HAS_TYPE','_TYPE');
+define('SMW_SP_HAS_URI','_URI');
+define('SMW_SP_INSTANCE_OF','_INST');
+define('SMW_SP_DISPLAY_UNITS', '_UNIT');
+define('SMW_SP_IMPORTED_FROM','_IMPO');
+define('SMW_SP_CONVERSION_FACTOR', '_CONV');
+define('SMW_SP_SERVICE_LINK', '_SERV');
+define('SMW_SP_POSSIBLE_VALUE', '_PVAL');
+define('SMW_SP_REDIRECTS_TO', '_REDI');
+define('SMW_SP_SUBPROPERTY_OF','_SUBP');
+define('SMW_SP_SUBCLASS_OF','_SUBC');
+define('SMW_SP_CONCEPT_DESC','_CONC');
 
 /** @deprecated This constant will be removed in SMW 1.4. Use SMW_SP_INSTANCE_OF or SMW_SP_SUBCLASS_OF as appropriate. */
 define('SMW_SP_HAS_CATEGORY',4); // name specific for categories, use "instance of" to distinguish from future explicit "subclass of"
@@ -325,11 +325,15 @@ function smwfOnParserAfterTidy(&$parser, &$text) {
 	if (SMWParseData::getSMWData($parser) === NULL) return true;
 	$categories = $parser->mOutput->getCategoryLinks();
 	foreach ($categories as $name) {
-		$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_INSTANCE_OF);
+		$pinst = SMWPropertyValue::makeProperty('_INST');
+		$dv = SMWDataValueFactory::newPropertyObjectValue($pinst);
 		$dv->setValues($name,NS_CATEGORY);
-		SMWParseData::getSMWData($parser)->addSpecialValue(SMW_SP_INSTANCE_OF,$dv);
+		SMWParseData::getSMWData($parser)->addPropertyObjectValue($pinst,$dv);
 		if (SMWParseData::getSMWData($parser)->getSubject()->getNamespace() == NS_CATEGORY) {
-			SMWParseData::getSMWData($parser)->addSpecialValue(SMW_SP_SUBCLASS_OF,$dv);
+			$psubc = SMWPropertyValue::makeProperty('_SUBC');
+			$dv = SMWDataValueFactory::newPropertyObjectValue($psubc);
+			$dv->setValues($name,NS_CATEGORY);
+			SMWParseData::getSMWData($parser)->addPropertyObjectValue(SMWPropertyValue::makeProperty('_SUBC'),$dv);
 		}
 	}
 	$sortkey = ($parser->mDefaultSort?$parser->mDefaultSort:SMWParseData::getSMWData($parser)->getSubject()->getText());

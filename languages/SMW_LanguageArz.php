@@ -46,18 +46,18 @@ protected $m_DatatypeAliases = array(
 
 protected $m_SpecialProperties = array(
 	//always start upper-case
-	SMW_SP_HAS_TYPE  => 'لديه نوع',
-	SMW_SP_HAS_URI   => 'معرف الموارد الموحد معادلة',
-	SMW_SP_SUBPROPERTY_OF => 'الخاصية الفرعية ل',
-	SMW_SP_DISPLAY_UNITS => 'عرض الوحدات',
-	SMW_SP_IMPORTED_FROM => 'المستوردة من',
-	SMW_SP_CONVERSION_FACTOR => 'يقابل',
-	SMW_SP_SERVICE_LINK => 'يوفر الخدمة',
-	SMW_SP_POSSIBLE_VALUE => 'يسمح بالقيمة'
+	'_TYPE'  => 'لديه نوع',
+	'_URI'   => 'معرف الموارد الموحد معادلة',
+	'_SUBP' => 'الخاصية الفرعية ل',
+	'_UNIT' => 'عرض الوحدات',
+	'_IMPO' => 'المستوردة من',
+	'_CONV' => 'يقابل',
+	'_SERV' => 'يوفر الخدمة',
+	'_PVAL' => 'يسمح بالقيمة'
 );
 
 protected $m_SpecialPropertyAliases = array(
-	'عرض الوحدة' => SMW_SP_DISPLAY_UNITS
+	'عرض الوحدة' => '_UNIT'
 );
 
 protected $m_Namespaces = array(

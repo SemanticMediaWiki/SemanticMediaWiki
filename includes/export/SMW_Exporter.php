@@ -73,7 +73,7 @@ class SMWExporter {
 				}
 				$subprop_pe = SMWExporter::getSpecialElement('rdfs','subPropertyOf');
 				$equality_pe = SMWExporter::getSpecialElement('owl','equivalentProperty');
-				$types = $semdata->getPropertyValues(SMW_SP_HAS_TYPE);
+				$types = $semdata->getPropertyValues(SMWPropertyValue::makeProperty('_TYPE'));
 				$maintype_pe = SMWExporter::getSpecialElement('owl', SMWExporter::getOWLPropertyType(end($types)));
 				$label = $subject->getText();
 			break;
@@ -108,7 +108,7 @@ class SMWExporter {
 
 		// export properties based on stored data
 		foreach($semdata->getProperties() as $key => $property) {
-			if ($property instanceof Title) { // normal property
+			if ($property->isUserDefined()) {
 				if (!$indexp) continue; // no properties for schema elements
 				$pe = SMWExporter::getResourceElement($property);
 				foreach ($semdata->getPropertyValues($property) as $dv) {
@@ -118,23 +118,23 @@ class SMWExporter {
 						$result->addPropertyObjectValue($pem, $ed);
 					}
 				}
-			} else { // special property
+			} else { // pre-defined property
 				$pe = NULL;
 				$cat_only = false; // basic namespace checking for equivalent categories
-				switch ($property) {
-					case SMW_SP_INSTANCE_OF: ///TODO: distinguish instanceof and subclassof
+				switch ($property->getXSDValue()) {
+					case '_INST': ///TODO: distinguish instanceof and subclassof
 						$pe = $category_pe;
 					break;
-					case SMW_SP_CONCEPT_DESC:
+					case '_CONC':
 						$pe = $equality_pe;
 					break;
-					case SMW_SP_HAS_URI:
+					case '_URI':
 						$pe = $equality_pe;
 					break;
-					case SMW_SP_SUBPROPERTY_OF:
+					case '_SUBP':
 						$pe = $subprop_pe;
 					break;
-					case SMW_SP_REDIRECTS_TO: /// TODO: currently no check for avoiding OWL DL illegal redirects is done
+					case '_REDI': /// TODO: currently no check for avoiding OWL DL illegal redirects is done
 						if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
 							$pe = NULL; // checking the typing here is too cumbersome, smart stores will smush the properties anyway, and the others will not handle them equivalently
 						} else {
@@ -152,7 +152,7 @@ class SMWExporter {
 						}
 						$ed = $dv->getExportData();
 						if ($ed !== NULL) {
-							if ( ($property == SMW_SP_CONCEPT_DESC) &&
+							if ( ($property->getXSDValue() == '_CONC') &&
 							     ($ed->getSubject()->getName() == '') ) {
 								// equivalent to anonymous class -> simplify description
 								foreach ($ed->getProperties() as $subp) {
@@ -182,18 +182,19 @@ class SMWExporter {
 	 */
 	static public function getResourceElement($resource) {
 		if ($resource instanceof Title) {
-			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-			$dv->setTitle($resource);
+			$dv = SMWWikiPageValue::makePageFromTitle($resource);
+		} elseif ($resource instanceof SMWPropertyValue) {
+			$dv = $resource->getWikiPageValue();
 		} elseif ($resource instanceof SMWWikiPageValue) {
 			$dv = $resource;
 		} else {
 			return NULL;
 		}
-		$uridata = smwfGetStore()->getSemanticData($dv->getTitle(), array(SMW_SP_IMPORTED_FROM));
-		if (count($uridata->getPropertyValues(SMW_SP_IMPORTED_FROM)) > 0) {
-			$namespace = current($uridata->getPropertyValues(SMW_SP_IMPORTED_FROM))->getNS();
-			$namespaceid = current($uridata->getPropertyValues(SMW_SP_IMPORTED_FROM))->getNSID();
-			$localname = current($uridata->getPropertyValues(SMW_SP_IMPORTED_FROM))->getLocalName();
+		$idvs = smwfGetStore()->getPropertyValues($dv, SMWPropertyValue::makeProperty('_IMPO'));
+		if (count($idvs) > 0) {
+			$namespace = current($idvs)->getNS();
+			$namespaceid = current($idvs)->getNSID();
+			$localname = current($idvs)->getLocalName();
 		} else {
 			$localname = '';
 			if ($dv->getNamespace() == SMW_NS_PROPERTY) {

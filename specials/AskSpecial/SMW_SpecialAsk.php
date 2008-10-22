@@ -178,7 +178,7 @@ class SMWAskPage extends SpecialPage {
 					$this->m_params[$titlekey] = $concept->getText();
 				}
 				if ( !isset($this->m_params[$desckey]) ) {
-					$dv = end(smwfGetStore()->getSpecialValues($concept, SMW_SP_CONCEPT_DESC));
+					$dv = end(smwfGetStore()->getPropertyValues(SMWWikiPageValue::makePageFromTitle($concept), SMWPropertyValue::makeProperty('_CONC')));
 					if ($dv instanceof SMWConceptValue) {
 						$this->m_params[$desckey] = $dv->getDocu();
 					}

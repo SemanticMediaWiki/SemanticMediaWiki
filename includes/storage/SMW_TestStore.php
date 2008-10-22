@@ -22,7 +22,7 @@ class SMWTestStore extends SMWStore {
 		return NULL;
 	}
 
-	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
+	function getSpecialValues($subject, $specialprop, $requestoptions = NULL) {
 		// TODO
 		if ($specialprop === SMW_SP_INSTANCE_OF) { // category membership
 			if ( ($requestoptions->limit == -1) || $requestoptions->limit > 8) {
@@ -69,7 +69,7 @@ class SMWTestStore extends SMWStore {
 		}
 	}
 
-	function getPropertyValues($subject, $property, $requestoptions = NULL, $outputformat = '') {
+	function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = NULL, $outputformat = '') {
 		$type = $this->getSpecialValues($property,SMW_SP_HAS_TYPE);
 		$type = $type[0];
 		$valarray = array();
@@ -103,18 +103,18 @@ class SMWTestStore extends SMWStore {
 		return $result;
 	}
 
-	function getPropertySubjects(Title $property, $value, $requestoptions = NULL) {
+	function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = NULL) {
 		if ( !$value->isValid() ) {
 			return array();
 		}
 		return $this->getTestTitles($requestoptions);
 	}
 
-	function getAllPropertySubjects(Title $property, $requestoptions = NULL) {
+	function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = NULL) {
 		return $this->getTestTitles($requestoptions);
 	}
 
-	function getProperties(Title $subject, $requestoptions = NULL) {
+	function getProperties($subject, $requestoptions = NULL) {
 		if ( ($requestoptions->limit == -1) || $requestoptions->limit > 8) {
 			$requestoptions->limit = 8;
 		}

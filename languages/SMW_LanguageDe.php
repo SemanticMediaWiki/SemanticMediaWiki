@@ -66,28 +66,28 @@ protected $m_DatatypeAliases = array(
 
 protected $m_SpecialProperties = array(
 	//always start upper-case
-	SMW_SP_HAS_TYPE  => 'Datentyp',
-	SMW_SP_HAS_URI   => 'Gleichwertige URI',
-	SMW_SP_SUBPROPERTY_OF => 'Unterattribut von',
-	SMW_SP_DISPLAY_UNITS => 'Einheiten',
-	SMW_SP_IMPORTED_FROM => 'Importiert aus',
-	SMW_SP_CONVERSION_FACTOR => 'Entspricht',
-	SMW_SP_SERVICE_LINK => 'Bietet Service',
-	SMW_SP_POSSIBLE_VALUE => 'Erlaubt Wert'
+	'_TYPE' => 'Datentyp',
+	'_URI'  => 'Gleichwertige URI',
+	'_SUBP' => 'Unterattribut von',
+	'_UNIT' => 'Einheiten',
+	'_IMPO' => 'Importiert aus',
+	'_CONV' => 'Entspricht',
+	'_SERV' => 'Bietet Service',
+	'_PVAL' => 'Erlaubt Wert'
 );
 
 protected $m_SpecialPropertyAliases = array(
-	'Hat Datentyp'     => SMW_SP_HAS_TYPE,
-	'Ausgabeeinheit'   => SMW_SP_DISPLAY_UNITS,
+	'Hat Datentyp'     => '_TYPE',
+	'Ausgabeeinheit'   => '_UNIT',
 	// support English aliases for special properties
-	'Has type'          => SMW_SP_HAS_TYPE,
-	'Equivalent URI'    => SMW_SP_HAS_URI,
-	'Subproperty of'    => SMW_SP_SUBPROPERTY_OF,
-	'Display units'     => SMW_SP_DISPLAY_UNITS,
-	'Imported from'     => SMW_SP_IMPORTED_FROM,
-	'Corresponds to'    => SMW_SP_CONVERSION_FACTOR,
-	'Provides service'  => SMW_SP_SERVICE_LINK,
-	'Allows value'      => SMW_SP_POSSIBLE_VALUE
+	'Has type'          => '_TYPE',
+	'Equivalent URI'    => '_URI',
+	'Subproperty of'    => '_SUBP',
+	'Display units'     => '_UNIT',
+	'Imported from'     => '_IMPO',
+	'Corresponds to'    => '_CONV',
+	'Provides service'  => '_SERV',
+	'Allows value'      => '_PVAL'
 );
 
 protected $m_Namespaces = array(

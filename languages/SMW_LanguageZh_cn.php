@@ -63,28 +63,28 @@ protected $m_DatatypeAliases = array(
 
 protected $m_SpecialProperties = array(
 	//always start upper-case
-	SMW_SP_HAS_TYPE  => '设有型态',	//'Has type',
-	SMW_SP_HAS_URI   => '对应的URI',	//'Equivalent URI',
-	SMW_SP_SUBPROPERTY_OF => '所属的子性质',	//'Subproperty of',
-    SMW_SP_DISPLAY_UNITS => '显示单位',      //Display unit
-    SMW_SP_IMPORTED_FROM => '输入来源',     //Imported from
-    SMW_SP_CONVERSION_FACTOR => '符合于',  //Corresponds to
-    SMW_SP_SERVICE_LINK => '提供服务',      //Provides service
-    SMW_SP_POSSIBLE_VALUE => '允许值'      //Allows value
+	'_TYPE' => '设有型态',	//'Has type',
+	'_URI'  => '对应的URI',	//'Equivalent URI',
+	'_SUBP' => '所属的子性质',	//'Subproperty of',
+	'_UNIT' => '显示单位',      //Display unit
+	'_IMPO' => '输入来源',     //Imported from
+	'_CONV' => '符合于',  //Corresponds to
+	'_SERV' => '提供服务',      //Provides service
+	'_PVAL' => '允许值'      //Allows value
 );
 
 
 protected $m_SpecialPropertyAliases = array(
-	'Display unit' => SMW_SP_DISPLAY_UNITS,
+	'Display unit' => '_UNIT',
 // support English aliases for special properties
-	'Has type'          => SMW_SP_HAS_TYPE,
-	'Equivalent URI'    => SMW_SP_HAS_URI,
-	'Subproperty of'    => SMW_SP_SUBPROPERTY_OF,
-	'Display units'     => SMW_SP_DISPLAY_UNITS,
-	'Imported from'     => SMW_SP_IMPORTED_FROM,
-	'Corresponds to'    => SMW_SP_CONVERSION_FACTOR,
-	'Provides service'  => SMW_SP_SERVICE_LINK,
-	'Allows value'      => SMW_SP_POSSIBLE_VALUE
+	'Has type'          => '_TYPE',
+	'Equivalent URI'    => '_URI',
+	'Subproperty of'    => '_SUBP',
+	'Display units'     => '_UNIT',
+	'Imported from'     => '_IMPO',
+	'Corresponds to'    => '_CONV',
+	'Provides service'  => '_SERV',
+	'Allows value'      => '_PVAL'
 );
 
 protected $m_Namespaces = array(

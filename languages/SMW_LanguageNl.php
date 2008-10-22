@@ -57,26 +57,26 @@ protected $m_DatatypeAliases = array(
 
 protected $m_SpecialProperties = array(
 	//always start upper-case
-	SMW_SP_HAS_TYPE  => 'Heeft type',
-	SMW_SP_HAS_URI   => 'Equivalent URI', // TODO: translate
-	SMW_SP_SUBPROPERTY_OF => 'Subeigenschap van',
-	SMW_SP_DISPLAY_UNITS => 'Display units', // TODO: translate
-	SMW_SP_IMPORTED_FROM => 'Geïmporteerd van',
-	SMW_SP_CONVERSION_FACTOR => 'Komt overeen met',
-	SMW_SP_SERVICE_LINK => 'Verleent dienst',
-	SMW_SP_POSSIBLE_VALUE => 'Geldige waarde'
+	'_TYPE' => 'Heeft type',
+	'_URI'  => 'Equivalent URI', // TODO: translate
+	'_SUBP' => 'Subeigenschap van',
+	'_UNIT' => 'Display units', // TODO: translate
+	'_IMPO' => 'Geïmporteerd van',
+	'_CONV' => 'Komt overeen met',
+	'_SERV' => 'Verleent dienst',
+	'_PVAL' => 'Geldige waarde'
 );
 
 protected $m_SpecialPropertyAliases = array(
 	// support English aliases for special properties
-	'Has type'          => SMW_SP_HAS_TYPE,
-	'Equivalent URI'    => SMW_SP_HAS_URI,
-	'Subproperty of'    => SMW_SP_SUBPROPERTY_OF,
-	'Display units'     => SMW_SP_DISPLAY_UNITS,
-	'Imported from'     => SMW_SP_IMPORTED_FROM,
-	'Corresponds to'    => SMW_SP_CONVERSION_FACTOR,
-	'Provides service'  => SMW_SP_SERVICE_LINK,
-	'Allows value'      => SMW_SP_POSSIBLE_VALUE
+	'Has type'          => '_TYPE',
+	'Equivalent URI'    => '_URI',
+	'Subproperty of'    => '_SUBP',
+	'Display units'     => '_UNIT',
+	'Imported from'     => '_IMPO',
+	'Corresponds to'    => '_CONV',
+	'Provides service'  => '_SERV',
+	'Allows value'      => '_PVAL'
 );
 
 protected $m_Namespaces = array(

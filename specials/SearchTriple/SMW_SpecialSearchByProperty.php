@@ -33,7 +33,7 @@ class SMWSearchByProperty extends SpecialPage {
 
 	/// string  Name of the property searched for
 	private $propertystring = "";
-	/// Title  The property that is searched for
+	/// SMWPropertyValue  The property that is searched for
 	private $property = null;
 	/// string  Name of the value that is searched for
 	private $valuestring = "";
@@ -72,11 +72,11 @@ class SMWSearchByProperty extends SpecialPage {
 
 		$this->valuestring = str_replace("&nbsp;", " ", $this->valuestring);
 
-		$this->property = Title::newFromText( $this->propertystring, SMW_NS_PROPERTY );
-		if (null === $this->property) {
+		$this->property = SMWPropertyValue::makeUserProperty($this->propertystring);
+		if (!$this->property->isValid()) {
 			$this->propertystring = '';
 		} else {
-			$this->propertystring = $this->property->getText();
+			$this->propertystring = $this->property->getWikiValue();
 			$this->value = SMWDataValueFactory::newPropertyObjectValue( $this->property, $this->valuestring );
 			if ($this->value->isValid()) {
 				$this->valuestring = $this->value->getWikiValue();
@@ -105,9 +105,9 @@ class SMWSearchByProperty extends SpecialPage {
 		$skin = $wgUser->getSkin();
 
 		if ('' == $this->propertystring) return wfMsg('smw_sbv_docu') . "\n";
-		if (($this->value==null) || !$this->value->isValid()) return wfMsg('smw_sbv_novalue', $skin->makeLinkObj($this->property, $this->property->getText())) . "\n";
+		if (($this->value==null) || !$this->value->isValid()) return wfMsg('smw_sbv_novalue', $this->property->getShortHMLText($skin)) . "\n";
 
-		$wgOut->setPagetitle( $this->property->getText() . ' ' . $this->value->getShortHTMLText(null) );
+		$wgOut->setPagetitle( $this->property->getWikiValue() . ' ' . $this->value->getShortHTMLText(null) );
 		$html = '';
 
 		$exact = $this->getExactResults();
@@ -134,7 +134,7 @@ class SMWSearchByProperty extends SpecialPage {
 			if (($cG + $cL + $count) == 0)
 				$html .= wfMsg( 'smw_result_noresults' );
 			else {
-				$html .= wfMsg('smw_sbv_displayresultfuzzy', $skin->makeLinkObj($this->property, $this->property->getText()), $this->value->getShortHTMLText($skin)) . "<br />\n";
+				$html .= wfMsg('smw_sbv_displayresultfuzzy', $this->property->getShortHTMLText($skin), $this->value->getShortHTMLText($skin)) . "<br />\n";
 				$html .= $this->displayResults($greater, $cG, false);
 				if ( $count == 0 ) {
 					$html .= " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em><strong><small>(" . $this->value->getLongHTMLText() . ")</small></strong></em>\n";
@@ -144,10 +144,10 @@ class SMWSearchByProperty extends SpecialPage {
 				$html .= $this->displayResults($lesser, $cL);
 			}
 		} else {
-			$html .= wfMsg('smw_sbv_displayresult', $skin->makeLinkObj($this->property, $this->property->getText()), $this->value->getShortHTMLText($skin)) . "<br />\n";
-			if (0 == $count)
+			$html .= wfMsg('smw_sbv_displayresult', $this->property->getShortHTMLText($skin), $this->value->getShortHTMLText($skin)) . "<br />\n";
+			if (0 == $count) {
 				$html .= wfMsg( 'smw_result_noresults' );
-			else {
+			} else {
 				$navi = $this->getNavigationBar($count);
 				if (($this->offset > 0) || ($count > $this->limit)) $html .= $navi;
 				$html .= $this->displayResults($exact);
@@ -204,14 +204,14 @@ class SMWSearchByProperty extends SpecialPage {
 		$skin = $wgUser->getSkin();
 
 		if ($this->offset > 0)
-			$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . max(0,$this->offset-$this->limit) . '&limit=' . $this->limit . '&property=' . urlencode($this->property->getText()) .'&value=' . urlencode($this->value->getWikiValue()))) . '">' . wfMsg('smw_result_prev') . '</a>';
+			$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . max(0,$this->offset-$this->limit) . '&limit=' . $this->limit . '&property=' . urlencode($this->property->getWikiValue()) .'&value=' . urlencode($this->value->getWikiValue()))) . '">' . wfMsg('smw_result_prev') . '</a>';
 		else
 			$navigation = wfMsg('smw_result_prev');
 
 		$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($this->offset+1) . '&ndash; ' . ($this->offset + min($count, $this->limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
 		if ($count>$this->limit) {
-			$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty', 'offset=' . ($this->offset+$this->limit) . '&limit=' . $this->limit . '&property=' . urlencode($this->property->getText()) . '&value=' . urlencode($this->value->getWikiValue())))  . '">' . wfMsg('smw_result_next') . '</a>';
+			$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty', 'offset=' . ($this->offset+$this->limit) . '&limit=' . $this->limit . '&property=' . urlencode($this->property->getWikiValue()) . '&value=' . urlencode($this->value->getWikiValue())))  . '">' . wfMsg('smw_result_next') . '</a>';
 		} else {
 			$navigation .= wfMsg('smw_result_next');
 		}
@@ -229,7 +229,7 @@ class SMWSearchByProperty extends SpecialPage {
 				$max = true;
 			}
 			if ( $this->limit != $l ) {
-				$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . $this->offset . '&limit=' . $l . '&property=' . urlencode($this->property->getText()) . '&value=' . urlencode($this->value->getWikiValue()))) . '">' . $l . '</a>';
+				$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('SearchByProperty','offset=' . $this->offset . '&limit=' . $l . '&property=' . urlencode($this->property->getWikiValue()) . '&value=' . urlencode($this->value->getWikiValue()))) . '">' . $l . '</a>';
 			} else {
 				$navigation .= '<b>' . $l . '</b>';
 			}

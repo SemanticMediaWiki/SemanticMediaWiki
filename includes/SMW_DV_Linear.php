@@ -160,9 +160,9 @@ class SMWLinearValue extends SMWNumberValue {
 		$this->m_unitids = array();
 		$this->m_unitfactors = array();
 
-		$typetitle = Title::newFromText($this->m_typeid, SMW_NS_TYPE);
-		if ($typetitle === NULL) return;
-		$factors = smwfGetStore()->getSpecialValues($typetitle, SMW_SP_CONVERSION_FACTOR);
+		$typepage = SMWWikiPageValue::makePage($this->m_typeid, SMW_NS_TYPE);
+		if (!$typepage->isValid()) return;
+		$factors = smwfGetStore()->getPropertyValues($typepage, SMWPropertyValue::makeProperty('_CONV'));
 		if (count($factors)==0) { // no custom type
 			// delete all previous errors, this is our real problem
 			/// TODO: probably we should check for this earlier, but avoid unnecessary DB requests ...
@@ -203,10 +203,8 @@ class SMWLinearValue extends SMWNumberValue {
 		if ($this->m_displayunits !== false) return;
 		$this->initConversionData(); // needed to normalise unit strings
 		$this->m_displayunits = array();
-		if (!$this->m_property) return;
-		$proptitle = Title::newFromText($this->m_property, SMW_NS_PROPERTY);
-		if ($proptitle === NULL) return;
-		$values = smwfGetStore()->getSpecialValues($proptitle, SMW_SP_DISPLAY_UNITS);
+		if ( ($this->m_property === NULL) || ($this->m_property->getWikiPageValue() === NULL) ) return;
+		$values = smwfGetStore()->getPropertyValues($this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty('_UNIT'));
 		$units = array();
 		foreach ($values as $value) { // Join all if many annotations exist. Discouraged (random order) but possible.
 			$units = $units + preg_split('/\s*,\s*/u',$value->getXSDValue());

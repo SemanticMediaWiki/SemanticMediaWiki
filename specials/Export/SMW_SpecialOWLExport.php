@@ -658,21 +658,13 @@ class OWLExport {
 	protected function printObject(/*SMWSmallTitle*/ $st, $fullexport=true, $backlinks = false) {
 		if (array_key_exists($st->getHash(), $this->element_done)) return; // do not export twice
 
-		$value = SMWDataValueFactory::newTypeIDValue('_wpg');
-		$value->setValues($st->dbkey, $st->namespace);
-		$title = $value->getTitle();
+		$value = SMWWikiPageValue::makePage($st->dbkey, $st->namespace);
 		if ( $this->date !== '' ) { // check date restriction if given
-			$rev = Revision::getTimeStampFromID($title->getLatestRevID());
+			$rev = Revision::getTimeStampFromID($value->getTitle()->getLatestRevID());
 			if ($rev < $this->date) return;
 		}
 
-		if ($fullexport) {
-			$filter = false;
-		} else { // retrieve only some core special properties
-			$filter = array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_IMPORTED_FROM);
-		}
-		$data = SMWExporter::makeExportData(smwfGetStore()->getSemanticData($title, $filter), $st->modifier);
-
+		$data = SMWExporter::makeExportData(smwfGetStore()->getSemanticData($value, $fullexport?false:array('__spu', '__typ', '__imp')), $st->modifier);
 		$this->printExpData($data); // serialise
 		$this->markAsDone($st);
 
@@ -687,44 +679,46 @@ class OWLExport {
 					$stb->dbkey = $inSub->getDBKey();
 					$stb->namespace = $inSub->getNamespace();
 					if (!array_key_exists($stb->getHash(), $this->element_done)) {
-						$semdata = smwfGetStore()->getSemanticData($inSub, array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_IMPORTED_FROM));
+						$semdata = smwfGetStore()->getSemanticData($inSub, array('__spu', '__typ', '__imp'));
 						$semdata->addPropertyObjectValue($inRel, $value);
 						$data = SMWExporter::makeExportData($semdata);
 						$this->printExpData($data);
 					}
 				}
 			}
-			if ( NS_CATEGORY === $title->getNamespace() ) { // also print elements of categories
+			if ( NS_CATEGORY === $value->getNamespace() ) { // also print elements of categories
 				$options = new SMWRequestOptions();
 				$options->limit = 100; /// Categories can be large, use limit
-				$instances = smwfGetStore()->getSpecialSubjects( SMW_SP_INSTANCE_OF, $value, $options );
+				$instances = smwfGetStore()->getPropertySubjects( SMWPropertyValue::makeProperty('_INST'), $value, $options );
+				$pinst = SMWPropertyValue::makeProperty('_INST');
 				foreach($instances as $instance) {
 					$stb = new SMWSmallTitle();
 					$stb->dbkey = $instance->getDBKey();
 					$stb->namespace = $instance->getNamespace();
 					if (!array_key_exists($stb->getHash(), $this->element_done)) {
-						$semdata = smwfGetStore()->getSemanticData($instance, array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_IMPORTED_FROM));
-						$semdata->addSpecialValue(SMW_SP_INSTANCE_OF, $value);
+						$semdata = smwfGetStore()->getSemanticData($instance, array('__spu', '__typ', '__imp'));
+						$semdata->addPropertyObjectValue($pinst, $value);
 						$data = SMWExporter::makeExportData($semdata);
 						$this->printExpData($data);
 					}
 				}
-			} elseif  ( SMW_NS_CONCEPT === $title->getNamespace() ) { // print concept members (slightly different code)
-				$desc = new SMWConceptDescription($title);
+			} elseif  ( SMW_NS_CONCEPT === $value->getNamespace() ) { // print concept members (slightly different code)
+				$desc = new SMWConceptDescription($value->getTitle());
 				$desc->addPrintRequest(new SMWPrintRequest(SMWPrintRequest::PRINT_THIS, ''));
 				$query = new SMWQuery($desc);
 				$query->setLimit(100);
 
 				$res = smwfGetStore()->getQueryResult($query);
 				$resarray = $res->getNext();
+				$pinst = SMWPropertyValue::makeProperty('_INST');
 				while ($resarray !== false) {
 					$instance = end($resarray)->getNextObject();
 					$stb = new SMWSmallTitle();
 					$stb->dbkey = $instance->getDBKey();
 					$stb->namespace = $instance->getNamespace();
 					if (!array_key_exists($stb->getHash(), $this->element_done)) {
-						$semdata = smwfGetStore()->getSemanticData($instance, array(SMW_SP_HAS_URI, SMW_SP_HAS_TYPE, SMW_SP_IMPORTED_FROM));
-						$semdata->addSpecialValue(SMW_SP_INSTANCE_OF, $value);
+						$semdata = smwfGetStore()->getSemanticData($instance,  array('__spu', '__typ', '__imp'));
+						$semdata->addPropertyObjectValue($pinst, $value);
 						$data = SMWExporter::makeExportData($semdata);
 						$this->printExpData($data);
 					}

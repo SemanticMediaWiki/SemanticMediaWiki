@@ -66,28 +66,28 @@ protected $m_DatatypeAliases = array(
 
 protected $m_SpecialProperties = array(
 	//always start upper-case
-	SMW_SP_HAS_TYPE  => '이 유형',
-	SMW_SP_HAS_URI   => '이에 상응하는 열린우리당',
-	SMW_SP_SUBPROPERTY_OF => '서브-재산',
-	SMW_SP_DISPLAY_UNITS => '디스플레이 유닛',
-	SMW_SP_IMPORTED_FROM => '수입',
-	SMW_SP_CONVERSION_FACTOR => '에 해당합니다',
-	SMW_SP_SERVICE_LINK => '제공 서비스',
-	SMW_SP_POSSIBLE_VALUE => '허용 값'
+	'_TYPE' => '이 유형',
+	'_URI'  => '이에 상응하는 열린우리당',
+	'_SUBP' => '서브-재산',
+	'_UNIT' => '디스플레이 유닛',
+	'_IMPO' => '수입',
+	'_CONV' => '에 해당합니다',
+	'_SERV' => '제공 서비스',
+	'_PVAL' => '허용 값'
 );
 
 protected $m_SpecialPropertyAliases = array(
-	'디스플레이 기기' => SMW_SP_DISPLAY_UNITS,
+	'디스플레이 기기' => '_UNIT',
 	// support English aliases for special properties
-	'Has type'          => SMW_SP_HAS_TYPE,
-	'Equivalent URI'    => SMW_SP_HAS_URI,
-	'Subproperty of'    => SMW_SP_SUBPROPERTY_OF,
-	'Display units'     => SMW_SP_DISPLAY_UNITS,
-	'Display unit'		  => SMW_SP_DISPLAY_UNITS,
-	'Imported from'     => SMW_SP_IMPORTED_FROM,
-	'Corresponds to'    => SMW_SP_CONVERSION_FACTOR,
-	'Provides service'  => SMW_SP_SERVICE_LINK,
-	'Allows value'      => SMW_SP_POSSIBLE_VALUE
+	'Has type'          => '_TYPE',
+	'Equivalent URI'    => '_URI',
+	'Subproperty of'    => '_SUBP',
+	'Display units'     => '_UNIT',
+	'Display unit'      => '_UNIT',
+	'Imported from'     => '_IMPO',
+	'Corresponds to'    => '_CONV',
+	'Provides service'  => '_SERV',
+	'Allows value'      => '_PVAL'
 );
 
 protected $m_Namespaces = array(

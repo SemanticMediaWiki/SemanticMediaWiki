@@ -124,29 +124,15 @@ abstract class SMWStore {
 	 * Retrieve all data stored about the given subject and return it as a
 	 * SMWSemanticData container. There are no options: it just returns all
 	 * available data as shown in the page's Factbox.
-	 * $filter is an array of strings that are datatype IDs or special
-	 * property ids. If given, the function will only retreive values for 
-	 * these properties/properties of this type.
+	 * $filter is an array of strings that are datatype IDs. If given, the
+	 * function will only retreive values for these properties/properties of
+	 * this type.
 	 *
-	 * Note: there is currently no guarantee that the store does not retrieve
-	 * more data than requested when a filter is used. Filtering just ensures that
+	 * @note There is no guarantee that the store does not retrieve more data
+	 * than requested when a filter is used. Filtering just ensures that
 	 * only necessary requests are made, i.e. it improves performance.
 	 */
 	abstract function getSemanticData($subject, $filter = false);
-
-	/**
-	 * Get an array of all special values stored for the given subject and special property
-	 * (identified as usual by an integer constant). The result is an array which may contain
-	 * different kinds of contents depending on the special property that was requested.
-	 */
-	abstract function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL);
-
-	/**
-	 * Get an array of all pages that have a certain special value for a given special property
-	 * (identified as usual by an integer constant). The result is an array of SMWWikiPageValue
-	 * objects. The type of the input value depends on the kind of special property that was requested.
-	 */
-	abstract function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = NULL);
 
 	/**
 	 * Get an array of all property values stored for the given subject and property. The result
@@ -156,31 +142,34 @@ abstract class SMWStore {
 	 *
 	 * If called with $subject == NULL, all values for the given property are returned.
 	 */
-	abstract function getPropertyValues($subject, $property, $requestoptions = NULL, $outputformat = '');
+	abstract function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = NULL, $outputformat = '');
 
 	/**
 	 * Get an array of all subjects that have the given value for the given property. The
 	 * result is an array of SMWWikiPageValue objects. If NULL is given as a value, all subjects having
 	 * that property are returned.
 	 */
-	abstract function getPropertySubjects(Title $property, $value, $requestoptions = NULL);
+	abstract function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = NULL);
 
 	/**
 	 * Get an array of all subjects that have some value for the given property. The
 	 * result is an array of SMWWikiPageValue objects.
 	 */
-	abstract function getAllPropertySubjects(Title $property, $requestoptions = NULL);
+	abstract function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = NULL);
 
 	/**
 	 * Get an array of all properties for which the given subject has some value. The result is an
-	 * array of Title objects.
+	 * array of SMWPropertyValue objects.
+	 * @param $subject Title or SMWWikiPageValue denoting the subject
+	 * @param $requestoptions SMWRequestOptions optionally defining further options
 	 */
-	abstract function getProperties(Title $subject, $requestoptions = NULL);
+	abstract function getProperties($subject, $requestoptions = NULL);
 
 	/**
 	 * Get an array of all properties for which there is some subject that relates to the given value.
-	 * The result is an array of Title objects.
-	 * This function might be implemented partially so that only values of type Page (_wpg) are supported.
+	 * The result is an array of SMWWikiPageValue objects.
+	 * @note In some stores, this function might be implemented partially so that only values of type Page
+	 * (_wpg) are supported.
 	 */
 	abstract function getInProperties(SMWDataValue $object, $requestoptions = NULL);
 

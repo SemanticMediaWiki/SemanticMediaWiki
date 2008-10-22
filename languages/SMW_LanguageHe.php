@@ -60,28 +60,28 @@ protected $m_DatatypeAliases = array(
 
 protected $m_SpecialProperties = array(
 	//always start upper-case
-	SMW_SP_HAS_TYPE  => 'מטיפוס',
-	SMW_SP_HAS_URI   => 'מזהה יחודי תואם',
-	SMW_SP_SUBPROPERTY_OF => 'Subproperty of', // TODO: translate
-	SMW_SP_DISPLAY_UNITS => 'יחידת הצגה', // TODO: should be plural now ("units"), singluar stays alias//
-	SMW_SP_IMPORTED_FROM => 'יובא מ',
-	SMW_SP_CONVERSION_FACTOR => 'מתורגם ל',
-	SMW_SP_SERVICE_LINK => 'מספק שירות',
-	SMW_SP_POSSIBLE_VALUE => 'ערכים אפשריים' //   TODO: check translation, should be singular value//
+	'_TYPE'  => 'מטיפוס',
+	'_URI'   => 'מזהה יחודי תואם',
+	'_SUBP' => 'Subproperty of', // TODO: translate
+	'_UNIT' => 'יחידת הצגה', // TODO: should be plural now ("units"), singluar stays alias//
+	'_IMPO' => 'יובא מ',
+	'_CONV' => 'מתורגם ל',
+	'_SERV' => 'מספק שירות',
+	'_PVAL' => 'ערכים אפשריים' //   TODO: check translation, should be singular value//
 );
 
 protected $m_SpecialPropertyAliases = array(
 	'יחידת הצגה'
-	                    => SMW_SP_DISPLAY_UNITS,
+	                    => '_UNIT',
 	// support English aliases for special properties
-	'Has type'          => SMW_SP_HAS_TYPE,
-	'Equivalent URI'    => SMW_SP_HAS_URI,
-	'Subproperty of'    => SMW_SP_SUBPROPERTY_OF,
-	'Display units'     => SMW_SP_DISPLAY_UNITS,
-	'Imported from'     => SMW_SP_IMPORTED_FROM,
-	'Corresponds to'    => SMW_SP_CONVERSION_FACTOR,
-	'Provides service'  => SMW_SP_SERVICE_LINK,
-	'Allows value'      => SMW_SP_POSSIBLE_VALUE
+	'Has type'          => '_TYPE',
+	'Equivalent URI'    => '_URI',
+	'Subproperty of'    => '_SUBP',
+	'Display units'     => '_UNIT',
+	'Imported from'     => '_IMPO',
+	'Corresponds to'    => '_CONV',
+	'Provides service'  => '_SERV',
+	'Allows value'      => '_PVAL'
 );
 
 

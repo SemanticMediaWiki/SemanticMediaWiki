@@ -81,25 +81,13 @@ class SMWParseData {
 		wfProfileIn("SMWParseData::addProperty (SMW)");
 		global $smwgContLang;
 		// See if this property is a special one, such as e.g. "has type"
-		$propertyname = smwfNormalTitleText($propertyname); //slightly normalize label
-		$special = $smwgContLang->findSpecialPropertyID($propertyname);
-
-		switch ($special) {
-			case false: // normal property
-				$result = SMWDataValueFactory::newPropertyValue($propertyname,$value,$caption);
-				if ($storeannotation && (SMWParseData::getSMWData($parser) !== NULL)) {
-					SMWParseData::getSMWData($parser)->addPropertyValue($propertyname,$result);
-				}
-				wfProfileOut("SMWParseData::addProperty (SMW)");
-				return $result;
-			default: // generic special property
-				$result = SMWDataValueFactory::newSpecialValue($special,$value,$caption);
-				if ($storeannotation && (SMWParseData::getSMWData($parser) !== NULL)) {
-					SMWParseData::getSMWData($parser)->addSpecialValue($special,$result);
-				}
-				wfProfileOut("SMWParseData::addProperty (SMW)");
-				return $result;
+		$property = SMWPropertyValue::makeUserProperty($propertyname);
+		$result = SMWDataValueFactory::newPropertyObjectValue($property,$value,$caption);
+		if ($storeannotation && (SMWParseData::getSMWData($parser) !== NULL)) {
+			SMWParseData::getSMWData($parser)->addPropertyObjectValue($property,$result);
 		}
+		wfProfileOut("SMWParseData::addProperty (SMW)");
+		return $result;
 	}
 
 
@@ -141,7 +129,7 @@ class SMWParseData {
 		} elseif (!$processSemantics) { // data found, but do all operations as if it was empty
 			$semdata = new SMWSemanticData($semdata->getSubject());
 		}
-	
+
 		// Check if the semantic data has been changed.
 		// Sets the updateflag to true if so.
 		// Careful: storage access must happen *before* the storage update;
@@ -151,38 +139,44 @@ class SMWParseData {
 		if ($makejobs && $smwgEnableUpdateJobs && ($namespace == SMW_NS_PROPERTY) ) {
 			// if it is a property, then we need to check if the type or
 			// the allowed values have been changed
-			$oldtype = smwfGetStore()->getSpecialValues($title, SMW_SP_HAS_TYPE);
-			$newtype = $semdata->getPropertyValues(SMW_SP_HAS_TYPE);
+			$ptype = SMWPropertyValue::makeProperty('_TYPE');
+			$oldtype = smwfGetStore()->getPropertyValues($title, $ptype);
+			$newtype = $semdata->getPropertyValues($ptype);
 	
 			if (!SMWParseData::equalDatavalues($oldtype, $newtype)) {
 				$updatejobflag = true;
 			} else {
-				$oldvalues = smwfGetStore()->getSpecialValues($title, SMW_SP_POSSIBLE_VALUE);
-				$newvalues = $semdata->getPropertyValues(SMW_SP_POSSIBLE_VALUE);
+				$ppval = SMWPropertyValue::makeProperty('_PVAL');
+				$oldvalues = smwfGetStore()->getPropertyValues($semdata->getSubject(), $ppval);
+				$newvalues = $semdata->getPropertyValues($ppval);
 				$updatejobflag = !SMWParseData::equalDatavalues($oldvalues, $newvalues);
 			}
-	
+
 			if ($updatejobflag) {
-				$subjects = smwfGetStore()->getAllPropertySubjects($title);
+				$prop = SMWPropertyValue::makeProperty($title->getDBkey());
+				$subjects = smwfGetStore()->getAllPropertySubjects($prop);
 				foreach ($subjects as $subject) {
 					$jobs[] = new SMWUpdateJob($subject);
 				}
 			}
 		} elseif ($makejobs && $smwgEnableUpdateJobs && ($namespace == SMW_NS_TYPE) ) {
 			// if it is a type we need to check if the conversion factors have been changed
-			$oldfactors = smwfGetStore()->getSpecialValues($title, SMW_SP_CONVERSION_FACTOR);
-			$newfactors = $semdata->getPropertyValues(SMW_SP_CONVERSION_FACTOR);
+			$pconv = SMWPropertyValue::makeProperty('_CONV');
+			$ptype = SMWPropertyValue::makeProperty('_TYPE');
+			$oldfactors = smwfGetStore()->getPropertyValues($semdata->getSubject(), $pconv);
+			$newfactors = $semdata->getPropertyValues($pconv);
 			$updatejobflag = !SMWParseData::equalDatavalues($oldfactors, $newfactors);
 			if ($updatejobflag) {
 				$store = smwfGetStore();
-				/// FIXME: this would kill large wikis! Use incremental updates!
-				$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE,$title->getDBkey());
-				$subjects = $store->getSpecialSubjects(SMW_SP_HAS_TYPE, $dv);
-				foreach ($subjects as $valueofpropertypagestoupdate) {
-					$subjectsPropertyPages = $store->getAllPropertySubjects($valueofpropertypagestoupdate->getTitle());
-					$jobs[] = new SMWUpdateJob($valueofpropertypagestoupdate->getTitle());
-					foreach ($subjectsPropertyPages as $titleOfPageToUpdate) {
-						$jobs[] = new SMWUpdateJob($titleOfPageToUpdate);
+				/// FIXME: this will kill large wikis! Use incremental updates!
+				$dv = SMWDataValueFactory::newTypeIdValue('__typ',$title->getDBkey());
+				$proppages = $store->getPropertySubjects($ptype, $dv);
+				foreach ($proppages as $proppage) {
+					$jobs[] = new SMWUpdateJob($proppage->getTitle());
+					$prop = SMWPropertyValue::makeProperty($proppage->getDBkey());
+					$propsubjects = $store->getAllPropertySubjects($prop);
+					foreach ($propsubjects as $subj) {
+						$jobs[] = new SMWUpdateJob($subj->getTitle());
 					}
 				}
 			}

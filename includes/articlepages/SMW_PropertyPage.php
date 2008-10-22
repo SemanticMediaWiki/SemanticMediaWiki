@@ -18,6 +18,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 	protected $special_prop; // code number of special property, false if not.
 	private $subproperties;  // list of sub-properties of this property
+	private $mProperty; // property object
 
 	/**
 	 * Use small $limit (property pages might become large)
@@ -39,6 +40,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * article that indicates further results).
 	 */
 	protected function doQuery() {
+		$this->mProperty = SMWPropertyValue::makeProperty($this->mTitle->getDBKey());
 		$store = smwfGetStore();
 		$options = new SMWRequestOptions();
 		$options->limit = $this->limit + 1;
@@ -55,7 +57,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$reverse = true;
 		}
 		if ($this->special_prop === false) {
-			$this->articles = $store->getAllPropertySubjects($this->mTitle, $options);
+			$this->articles = $store->getAllPropertySubjects($this->mProperty, $options);
 		} else {
 			// For now, do not attempt listings for special properties:
 			// they behave differently, have dedicated search UIs, and
@@ -70,7 +72,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$s_options = new SMWRequestOptions();
 		$s_options->sort = true;
 		$s_options->ascending = true;
-		$this->subproperties = $store->getSpecialSubjects(SMW_SP_SUBPROPERTY_OF, $this->getDataValue(), $s_options);
+		$this->subproperties = $store->getPropertySubjects(SMWPropertyValue::makeProperty('_SUBP'), $this->getDataValue(), $s_options);
 	}
 
 	/**
@@ -141,7 +143,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			// Property values
 			$ropts = new SMWRequestOptions();
 			$ropts->limit = 4;
-			$values = $store->getPropertyValues($this->articles[$index], $this->mTitle, $ropts);
+			$values = $store->getPropertyValues($this->articles[$index], $this->mProperty, $ropts);
 			$i=0;
 			foreach ($values as $value) {
 				if ($i != 0) {

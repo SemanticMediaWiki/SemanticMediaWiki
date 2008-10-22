@@ -16,7 +16,7 @@ class SMWErrorValue extends SMWDataValue {
 	
 	public function SMWErrorValue($errormsg = '', $uservalue = '', $caption = false) {
 		$this->setUserValue($uservalue, $caption);
-		$this->addError($errormsg);
+		if ($errormsg != '') $this->addError($errormsg);
 	}
 
 	protected function parseUserValue($value) {
@@ -57,8 +57,12 @@ class SMWErrorValue extends SMWDataValue {
 		return $this->getShortWikiText(); ///TODO: really? (errors are not meant to be saved, or are they?)
 	}
 
-	public function getWikiValue(){
+	public function getWikiValue() {
 		return $this->getShortWikiText(); /// FIXME: wikivalue must not be influenced by the caption
+	}
+
+	public function isValid() {
+		return false;
 	}
 
 }

@@ -29,6 +29,44 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	protected $m_fixNamespace = NS_MAIN; // if namespace other than NS_MAIN, restrict inputs to this namespace
 
+	/**
+	 * Static function for creating a new wikipage object from
+	 * data as it is typically stored internally. In particular,
+	 * the title string is supposed to be in DB key form.
+	 * @note The resulting wikipage object might be invalid if
+	 * the provided title is not allowed. An object is returned
+	 * in any case.
+	 */
+	static public function makePage($title, $namespace, $sortkey = '', $interwiki = '') {
+		$page = new SMWWikiPageValue('_wpg');
+		$page->setValues($title,$namespace,false,$interwiki,$sortkey);
+		return $page;
+	}
+
+	/**
+	 * Static function for creating a new wikipage object from a
+	 * MediaWiki Title object.
+	 */
+	static public function makePageFromTitle($titleobject) {
+		$page = new SMWWikiPageValue('_wpg');
+		$page->setTitle($titleobject);
+		return $page;
+	}
+
+	public function __construct($typeid) {
+		parent::__construct($typeid);
+		switch ($typeid) {
+			case '_wpp' : case '__sup':
+				$this->m_fixNamespace = SMW_NS_PROPERTY; 
+			break;
+			case '_wpc' : case '__suc':
+				$this->m_fixNamespace = NS_CATEGORY; 
+			break;
+			default: //case '_wpg':
+				$this->m_fixNamespace = NS_MAIN;
+		}
+	}
+
 	protected function parseUserValue($value) {
 		$value = ltrim(rtrim($value,' ]'),' ['); // support inputs like " [[Test]] "
 		if ($value != '') {
@@ -60,7 +98,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		// This method in its current for is not really useful for init, since the XSD value is just
 		// the (dbkey) title string without the namespace.
 		/// FIXME: change this to properly use a prefixed title string, in case someone wants to use this
-		$this->m_stubdata = array($value,$this->m_namespace,false,'','');
+		$this->m_stubdata = array($value,(($this->m_fixNamespace!=NS_MAIN)?$this->m_fixNamespace:$this->m_namespace),false,'','');
 	}
 
 	protected function unstub() {
@@ -162,7 +200,9 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	public function getWikiValue() {
 		$this->unstub();
-		if ($this->m_namespace == NS_CATEGORY) {
+		if ($this->m_fixNamespace != NS_MAIN) { // no explicit namespace needed!
+			return $this->getText();
+		} elseif ($this->m_namespace == NS_CATEGORY) {
 			// escape to enable use in links; todo: not generally required/suitable :-/
 			return ':' . $this->m_prefixedtext;
 		} else {
@@ -280,11 +320,13 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
-	 * Get DBKey for this value.
+	 * Get DBKey for this value. Subclasses that allow for vlaues that do not
+	 * correspond to wiki pages may choose a DB key that is not a legal title
+	 * DB key but rather another suitable internal ID. Thus it is not suitable
+	 * to use this method in places where only MediaWiki Title keys are allowed.
 	 */
 	public function getDBkey() {
-		$this->unstub();
-		return $this->m_dbkeyform;
+		return $this->getXSDValue();
 	}
 
 	/**
@@ -294,7 +336,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->unstub();
 		return str_replace('_',' ',$this->m_dbkeyform);
 	}
-	
+
 	/**
 	 * Get interwiki prefix or empty string.
 	 */
@@ -330,7 +372,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->setXSDValue($dbkey,''); // just used to trigger standard parent class methods!
 		if ( ($this->m_fixNamespace != NS_MAIN) && ( $this->m_fixNamespace != $namespace) ) {
 			wfLoadExtensionMessages('SemanticMediaWiki');
-			$this->addError(wfMsgForContent('smw_notitle', $value));
+			$this->addError(wfMsgForContent('smw_notitle', str_replace('_',' ',$dbkey)));
 		}
 		$this->m_stubdata = array($dbkey, $namespace, $id, $interwiki, $sortkey);
 	}

@@ -13,153 +13,58 @@
  * - newTypeIDValue
  * These create new DV objects, possibly with preset user values, captions and property names.
  * Further methods are used to conveniently create DVs for properties and special properties:
- * - newPropertyValue
  * - newPropertyObjectValue
- * - newSpecialValue
  *
  * @ingroup SMWDataValues
  */
 class SMWDataValueFactory {
 
-	/**
-	 * Array of type labels indexed by type ids. Used for datatype
-	 * resolution.
-	 */
+	/// Array for assigning types to predefined properties,
+	/// might later be moved to some better place.
+	static private $m_propertytypes = array(
+		'_TYPE'  =>  '__typ',
+		'_URI'   =>  '__spu',
+		'_INST'  =>  '__sin',
+		'_UNIT'  =>  '__sps',
+		'_IMPO'  =>  '__imp',
+		'_CONV'  =>  '__sps',
+		'_SERV'  =>  '__sps',
+		'_PVAL'  =>  '__sps',
+		'_REDI'  =>  '__red',
+		'_SUBP'  =>  '__sup',
+		'_SUBC'  =>  '__suc',
+		'_CONC'  =>  '__con'
+	);
+
+	/// Array of type labels indexed by type ids. Used for datatype resolution.
 	static private $m_typelabels;
-
-	/**
-	 * Array of ids indexed by type aliases. Used for datatype
-	 * resolution.
-	 */
+	/// Array of ids indexed by type aliases. Used for datatype resolution.
 	static private $m_typealiases;
-
-	/**
-	 * Array of class names for creating new SMWDataValues, indexed by
-	 * type id.
-	 */
+	/// Array of class names for creating new SMWDataValues, indexed by type id.
 	static private $m_typeclasses;
 
-	/**
-	 * Cache for type specifications (type datavalues), indexed by property name (both without namespace prefix).
-	 */
+	/// Cache for type specifications (type datavalues), indexed by property DB key
+	/// (without namespace prefix). Used to avoid DB requests when a property is
+	/// used multiple times on one page.
+	/// @todo Is this cache still useful, given that we have a cache in SMWSQLStore2?
 	static private $m_typebyproperty = array();
 
 	/**
-	 * Create a value from a string supplied by a user for a given property.
-	 * If no value is given, an empty container is created, the value of which
-	 * can be set later on.
-	 */
-	static public function newPropertyValue($propertyname, $value=false, $caption=false) {
-		global $smwgPDefaultType;
-		wfProfileIn("SMWDataValueFactory::newPropertyValue (SMW)");
-		if(array_key_exists($propertyname,SMWDataValueFactory::$m_typebyproperty)) { // use cache
-			$result = SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typebyproperty[$propertyname], $value, $caption, $propertyname);
-			wfProfileOut("SMWDataValueFactory::newPropertyValue (SMW)");
-			return $result;
-		} // else: find type for property:
-
-		$ptitle = Title::newFromText($propertyname, SMW_NS_PROPERTY);
-		if ($ptitle !== NULL) {
-			$result = SMWDataValueFactory::newPropertyObjectValue($ptitle,$value,$caption);
-		} else {
-			$type = SMWDataValueFactory::newTypeIDValue('__typ');
-			$type->setXSDValue($smwgPDefaultType);
-			SMWDataValueFactory::$m_typebyproperty[$propertyname] = $type;
-			$result = SMWDataValueFactory::newTypeIDValue($smwgPDefaultType,$value,$caption,$propertyname);
-		}
-		wfProfileOut("SMWDataValueFactory::newPropertyValue (SMW)");
-		return $result;
-	}
-
-	/**
-	 * Create a value from a string supplied by a user for a given property title.
-	 * If no value is given, an empty container is created, the value of which
-	 * can be set later on.
-	 */
-	static public function newPropertyObjectValue(Title $property, $value=false, $caption=false) {
-		global $smwgPDefaultType;
-		$propertyname = $property->getText();
-		if(array_key_exists($propertyname,SMWDataValueFactory::$m_typebyproperty)) { // use cache
-			return SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typebyproperty[$propertyname], $value, $caption, $propertyname);
-		} // else: find type for property:
-
-		$typearray = smwfGetStore()->getSpecialValues($property,SMW_SP_HAS_TYPE);
-		if (count($typearray)==1) {
-			SMWDataValueFactory::$m_typebyproperty[$propertyname] = current($typearray);
-			$result = SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typebyproperty[$propertyname], $value, $caption, $propertyname);
-			return $result;
-		} elseif (count($typearray)==0) {
-			$type = SMWDataValueFactory::newTypeIDValue('__typ');
-			$type->setXSDValue($smwgPDefaultType);
-			SMWDataValueFactory::$m_typebyproperty[$propertyname] = $type;
-			return SMWDataValueFactory::newTypeIDValue($smwgPDefaultType,$value,$caption,$propertyname);
-		} else {
-			wfLoadExtensionMessages('SemanticMediaWiki');
-			return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value, $caption);
-		}
-	}
-
-	/**
-	 * Create a value from a string supplied by a user for a given special
-	 * property, encoded as a numeric constant.
-	 * If no value is given, an empty container is created, the value of which
-	 * can be set later on.
-	 */
-	static public function newSpecialValue($specialprop, $value=false, $caption=false) {
-		switch ($specialprop) {
-			case SMW_SP_HAS_TYPE:
-				$result = SMWDataValueFactory::newTypeIDValue('__typ', $value, $caption);
-				break;
-			case SMW_SP_HAS_URI:
-				$result = SMWDataValueFactory::newTypeIDValue('_uri', $value, $caption);
-				break;
-			case SMW_SP_DISPLAY_UNITS: case SMW_SP_SERVICE_LINK:
-			case SMW_SP_CONVERSION_FACTOR: case SMW_SP_POSSIBLE_VALUE:
-				$result = SMWDataValueFactory::newTypeIDValue('_str', $value, $caption);
-				break;
-			case SMW_SP_SUBPROPERTY_OF: 
-				$result = SMWDataValueFactory::newTypeIDValue('_pro', $value, $caption);
-				break;
-			case SMW_SP_SUBCLASS_OF: case SMW_SP_REDIRECTS_TO: 
-			case SMW_SP_INSTANCE_OF:
-				$result = SMWDataValueFactory::newTypeIDValue('_wpg', $value, $caption);
-				break;
-			case SMW_SP_CONCEPT_DESC:
-				$result = SMWDataValueFactory::newTypeIDValue('__con', $value, $caption);
-				break;
-			case SMW_SP_IMPORTED_FROM:
-				$result = SMWDataValueFactory::newTypeIDValue('__imp', $value, $caption);
-				break;
-			default:
-				/// NOTE: unstable hook, future versions might have better ways of enabling extensions to add properties
-				wfRunHooks('smwNewSpecialValue', array($specialprop, $value, $caption, &$result));
-				if (!isset($result)) { // special property was created but not added here; this is bad but we still are nice
-					$result = SMWDataValueFactory::newTypeIDValue('_str', $value, $caption);
-				}
-		}
-
-		if ($value !== false) {
-			$result->setUserValue($value,$caption);
-		}
-		return $result;
-	}
-
-	/**
-	 * Create a value from a type value (basically containing strings).
-	 * If no $value is given, an empty container is created, the value of which
-	 * can be set later on.
-	 * @param $typevalue datavalue representing the type of the object
+	 * Create an SMWDataValue object that can hold values for the type that the
+	 * given SMWTypesValue object specifies. If no $value is given, an empty container 
+	 * is created, the value of which can be set later on.
+	 * @param $typevalue SMWTypesValue object representing the type of the object
 	 * @param $value user value string, or false if unknown
 	 * @param $caption user-defined caption or false if none given
-	 * @param $propertyname text name of according property, or false (may be relevant for getting further parameters)
+	 * @param $property SMWPropertyValue property object for which this value was made, or NULL
 	 */
-	static public function newTypeObjectValue(/*SMWDataValue*/ $typevalue, $value=false, $caption=false, $propertyname=false) {
+	static public function newTypeObjectValue(SMWTypesValue $typevalue, $value=false, $caption=false, $property=NULL) {
 		SMWDataValueFactory::initDatatypes();
 		$typeid = $typevalue->getXSDValue();
-		if (array_key_exists($typeid, SMWDataValueFactory::$m_typeclasses)) {
+		if (array_key_exists($typeid, SMWDataValueFactory::$m_typeclasses)) { // basic type
 			$result = new SMWDataValueFactory::$m_typeclasses[$typeid]($typeid);
-		} elseif (!$typevalue->isUnary()) { // n-ary type?
-				$result = SMWDataValueFactory::newTypeIDValue('__nry');
+		} elseif (!$typevalue->isUnary()) { // n-ary type
+				$result = new SMWDataValueFactory::$m_typeclasses['__nry']('__nry');
 				$result->setType($typevalue);
 		} elseif (($typeid != '') && ($typeid{0} != '_')) { // custom type with linear conversion
 			$result = new SMWDataValueFactory::$m_typeclasses['__lin']($typeid);
@@ -167,57 +72,91 @@ class SMWDataValueFactory {
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			return new SMWErrorValue(wfMsgForContent('smw_unknowntype', $typevalue->getWikiValue() ), $value, $caption);
 		}
-
-		if ($propertyname != false) {
-			$result->setProperty($propertyname);
-		}
-		if ($value !== false) {
-			$result->setUserValue($value,$caption);
-		}
+		if ($property !== NULL) $result->setProperty($property);
+		if ($value !== false) $result->setUserValue($value,$caption);
 		return $result;
 	}
 
 	/**
-	 * Create a value from a type id.
-	 * If no $value is given, an empty container is created, the value of which
-	 * can be set later on.
+	 * Create a value from a type id. If no $value is given, an empty container is created, the
+	 * value of which can be set later on. This function is mostly a shortcut that avoids some of
+	 * the more complex processing required for SMWDataValueFactory::newTypeObjectValue().
 	 * @param $typeid id string for the given type
 	 * @param $value user value string, or false if unknown
 	 * @param $caption user-defined caption or false if none given
-	 * @param $propertyname text name of according property, or false (may be relevant for getting further parameters)
+	 * @param $property SMWPropertyValue property object for which this value was made, or NULL
 	 */
-	static public function newTypeIDValue($typeid, $value=false, $caption=false, $propertyname=false) {
+	static public function newTypeIDValue($typeid, $value=false, $caption=false, $property=NULL) {
 		SMWDataValueFactory::initDatatypes();
-		if (array_key_exists($typeid, SMWDataValueFactory::$m_typeclasses)) {
+		if (array_key_exists($typeid, SMWDataValueFactory::$m_typeclasses)) { // direct response for basic types
 			$result = new SMWDataValueFactory::$m_typeclasses[$typeid]($typeid);
-		} else {
-			$typevalue = SMWDataValueFactory::newTypeIDValue('__typ');
+			if ($property !== NULL) $result->setProperty($property);
+			if ($value !== false) $result->setUserValue($value,$caption);
+			return $result;
+		} else { // create type value first (e.g. for n-ary type ids or user-defined types)
+			$typevalue = new SMWTypesValue('__typ');
 			$typevalue->setXSDValue($typeid);
-			return SMWDataValueFactory::newTypeObjectValue($typevalue, $value, $caption, $propertyname);
+			return SMWDataValueFactory::newTypeObjectValue($typevalue, $value, $caption, $property);
 		}
+	}
 
-		if ($propertyname != false) {
-			$result->setProperty($propertyname);
+	/**
+	 * Create a value from a string supplied by a user for a given property title.
+	 * If no value is given, an empty container is created, the value of which
+	 * can be set later on.
+	 */
+	static public function newPropertyObjectValue(SMWPropertyValue $property, $value=false, $caption=false) {
+		global $smwgPDefaultType;
+		$propertykey = $property->getXSDValue();
+		if(array_key_exists($propertykey,SMWDataValueFactory::$m_typebyproperty)) { // use cache
+			return SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typebyproperty[$propertykey], $value, $caption, $property);
+		} // else: find type for property:
+
+		if (!$property->isValid()) { // error, copy errors from property
+			$result = new SMWErrorValue();
+			$result->addError($property->getErrors());
+			return $result;
+		} elseif ($property->isUserDefined()) { // normal property
+			$typearray = smwfGetStore()->getPropertyValues($property->getWikiPageValue(),SMWPropertyValue::makeProperty('_TYPE'));
+			if (count($typearray)==1) { // unique type given
+				SMWDataValueFactory::$m_typebyproperty[$propertykey] = current($typearray);
+				$result = SMWDataValueFactory::newTypeObjectValue(SMWDataValueFactory::$m_typebyproperty[$propertykey], $value, $caption, $property);
+				return $result;
+			} elseif (count($typearray)==0) { // no type given
+				$type = SMWDataValueFactory::newTypeIDValue('__typ');
+				$type->setXSDValue($smwgPDefaultType);
+				SMWDataValueFactory::$m_typebyproperty[$propertykey] = $type;
+				return SMWDataValueFactory::newTypeIDValue($smwgPDefaultType,$value,$caption,$property);
+			} else { // many types given, error
+				wfLoadExtensionMessages('SemanticMediaWiki');
+				return new SMWErrorValue(wfMsgForContent('smw_manytypes'), $value, $caption);
+			}
+		} else { // pre-defined property
+			if (array_key_exists($property->getPropertyID(), SMWDataValueFactory::$m_propertytypes)) {
+				$result = SMWDataValueFactory::newTypeIDValue(SMWDataValueFactory::$m_propertytypes[$property->getPropertyID()], $value, $caption,  $property);
+			} else { // fixed default for special properties
+				$result = SMWDataValueFactory::newTypeIDValue('_str', $value, $caption, $property);
+			}
+			return $result;
 		}
-		if ($value !== false) {
-			$result->setUserValue($value,$caption);
-		}
-		return $result;
 	}
 
 	/**
 	 * Quickly get the type id of some property without necessarily making another datavalue.
 	 */
-	static public function getPropertyObjectTypeID(Title $property) {
-		if ($property->getNamespace() != SMW_NS_PROPERTY) { // somebody made a mistake ...
-			return false;
-		}
-		$propertyname = $property->getText();
-		if (array_key_exists($propertyname, SMWDataValueFactory::$m_typebyproperty)) {
-			if (SMWDataValueFactory::$m_typebyproperty[$propertyname]->isUnary() ) {
-				return SMWDataValueFactory::$m_typebyproperty[$propertyname]->getXSDValue();
+	static public function getPropertyObjectTypeID(SMWPropertyValue $property) {
+		$propertykey = $property->getXSDValue();
+		if (array_key_exists($propertykey, SMWDataValueFactory::$m_typebyproperty)) {
+			if (SMWDataValueFactory::$m_typebyproperty[$propertykey]->isUnary() ) {
+				return SMWDataValueFactory::$m_typebyproperty[$propertykey]->getXSDValue();
 			} else {
 				return '__nry';
+			}
+		} elseif (!$property->isUserDefined()) {
+			if (array_key_exists($property->getPropertyID(), SMWDataValueFactory::$m_propertytypes)) {
+				return SMWDataValueFactory::$m_propertytypes[$property->getPropertyID()];
+			} else { // fixed default for special properties
+				return '_str';
 			}
 		} else {
 			return SMWDataValueFactory::newPropertyObjectValue($property)->getTypeID(); // this also triggers caching
@@ -230,11 +169,11 @@ class SMWDataValueFactory {
 	 * @bug This method is not implemented efficiently.
 	 * @todo This method is mainly used in the processing of multi-valued properties. Revise all its uses.
 	 */
-	static public function getPropertyObjectTypeValue(Title $property) {
-		$propertyname = $property->getText();
+	static public function getPropertyObjectTypeValue(SMWPropertyValue $property) {
+		$propertykey = $property->getXSDValue();
 		SMWDataValueFactory::newPropertyObjectValue($property);
-		if (array_key_exists($propertyname, SMWDataValueFactory::$m_typebyproperty)) {
-			return SMWDataValueFactory::$m_typebyproperty[$propertyname];
+		if (array_key_exists($propertykey, SMWDataValueFactory::$m_typebyproperty)) {
+			return SMWDataValueFactory::$m_typebyproperty[$propertykey];
 		} else { // no type found
 			return new SMWTypesValue('__err');
 		}
@@ -242,12 +181,16 @@ class SMWDataValueFactory {
 
 	/**
 	 * Signal the class that the type of some property has changed. Clearing this
-	 * is crucial to let subsequent jobs work properly.
+	 * is crucial when many jobs are executed in one run so as to let subsequent
+	 * jobs work properly.
+	 * The parameter is an SMWWikiPageValue since usually this function is triggered
+	 * when data for a property is changed, and thus the property is used as a "subject"
+	 * not as a "property" (which would use an SMWPropertyValue object).
 	 */
-	static public function clearTypeCache(Title $property) {
-		$propertyname = $property->getText();
-		if (array_key_exists($propertyname, SMWDataValueFactory::$m_typebyproperty)) {
-			unset(SMWDataValueFactory::$m_typebyproperty[$propertyname]);
+	static public function clearTypeCache(SMWWikiPageValue $property) {
+		$propertykey = $property->getXSDValue();
+		if (array_key_exists($propertykey, SMWDataValueFactory::$m_typebyproperty)) {
+			unset(SMWDataValueFactory::$m_typebyproperty[$propertykey]);
 		}
 	}
 
@@ -268,25 +211,34 @@ class SMWDataValueFactory {
 		// truly internal (non user-acessible types). All others should also get a
 		// translation in the language files, or they won't be available for users.
 		SMWDataValueFactory::$m_typeclasses = array(
-			'_txt'  => 'SMWStringValue',
-			'_cod'  => 'SMWStringValue',
-			'_str'  => 'SMWStringValue',
-			'_ema'  => 'SMWURIValue',
-			'_uri'  => 'SMWURIValue',
-			'_anu'  => 'SMWURIValue',
-			'_wpg'  => 'SMWWikiPageValue',
-			'_pro'  => 'SMWPropertyValue',
-			'_num'  => 'SMWNumberValue',
-			'_tem'  => 'SMWTemperatureValue',
-			'_dat'  => 'SMWTimeValue',
-			'_geo'  => 'SMWGeoCoordsValue',
-			'_boo'  => 'SMWBoolValue',
-			'__typ' => 'SMWTypesValue',
-			'__lin' => 'SMWLinearValue',
-			'__nry' => 'SMWNAryValue',
-			'__err' => 'SMWErrorValue',
-			'__con' => 'SMWConceptValue',
-			'__imp'  => 'SMWImportValue',
+			'_txt'  => 'SMWStringValue', // Text type
+			'_cod'  => 'SMWStringValue', // Code type
+			'_str'  => 'SMWStringValue', // String type
+			'_ema'  => 'SMWURIValue', // Email type
+			'_uri'  => 'SMWURIValue', // URL/URI type
+			'_anu'  => 'SMWURIValue', // Annotation URI type
+			'_wpg'  => 'SMWWikiPageValue', // Page type
+			'_wpp'  => 'SMWWikiPageValue', // Property page type TODO: make available to user space
+			'_wpc'  => 'SMWWikiPageValue', // Category page type TODO: make available to user space
+			'_num'  => 'SMWNumberValue', // Number type
+			'_tem'  => 'SMWTemperatureValue', // Temperature type
+			'_dat'  => 'SMWTimeValue', // Time type
+			'_geo'  => 'SMWGeoCoordsValue', // Geographic coordinates type
+			'_boo'  => 'SMWBoolValue', // Boolean type
+			// Special types are not avaialble directly for users (and have no local language name):
+			'__typ' => 'SMWTypesValue', // Special type page type
+			'__con' => 'SMWConceptValue', // Special concept page type
+			'__sps' => 'SMWStringValue', // Special string type
+			'__spu' => 'SMWURIValue', // Special uri type
+			'__sup' => 'SMWWikiPageValue', // Special subproperty type
+			'__suc' => 'SMWWikiPageValue', // Special subcategory type
+			'__sin' => 'SMWWikiPageValue', // Special instance of type
+			'__red' => 'SMWWikiPageValue', // Special redirect type
+			'__lin' => 'SMWLinearValue', // Special linear unit conversion type
+			'__nry' => 'SMWNAryValue', // Special multi-valued type
+			'__err' => 'SMWErrorValue', // Special error type
+			'__imp' => 'SMWImportValue', // Special import vocabulary type
+			'__pro' => 'SMWPropertyValue', // Property type (pssobly predefined, no always based on a page)
 		);
 
 		wfRunHooks( 'smwInitDatatypes' );
@@ -296,7 +248,7 @@ class SMWDataValueFactory {
 	 * A function for registering/overwriting datatypes for SMW. Should be called from 
 	 * within the hook 'smwInitDatatypes'.
 	 */
-	static function registerDatatype($id, $classname, $label=false) {
+	static public function registerDatatype($id, $classname, $label=false) {
 		SMWDataValueFactory::$m_typeclasses[$id] = $classname;
 		if ($label != false) {
 			SMWDataValueFactory::$m_typelabels[$id] = $label;
@@ -308,7 +260,7 @@ class SMWDataValueFactory {
 	 * label, either provided by SMW or registered with registerDatatype. This function should be 
 	 * called from within the hook 'smwInitDatatypes'.
 	 */
-	static function registerDatatypeAlias($id, $label) {
+	static public function registerDatatypeAlias($id, $label) {
 		SMWDataValueFactory::$m_typealiases[$label] = $id;
 	}
 
@@ -364,6 +316,18 @@ class SMWDataValueFactory {
 		SMWDataValueFactory::initDatatypes();
 		return SMWDataValueFactory::$m_typelabels;
 	}
+
+
+	/**
+	 * Create a value from a string supplied by a user for a given property.
+	 * If no value is given, an empty container is created, the value of which
+	 * can be set later on.
+	 * @deprecated This function will vanish in SMW 1.5. Use SMWDataValueFactory::newPropertyObjectValue instead.
+	 */
+	static public function newPropertyValue($propertyname, $value=false, $caption=false) {
+		return SMWDataValueFactory::newPropertyObjectValue(SMWPropertyValue::makeUserProperty($propertyname),$value,$caption);
+	}
+
 
 }
 

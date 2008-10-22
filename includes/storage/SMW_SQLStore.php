@@ -284,7 +284,7 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
+	function getSpecialValues($subject, $specialprop, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore::getSpecialValues-$specialprop (SMW)");
 		// NOTE: this method currently supports no ordering or boundary. This is probably best anyway ...
 		if ($specialprop !== SMW_SP_SUBPROPERTY_OF) {
@@ -427,7 +427,7 @@ class SMWSQLStore extends SMWStore {
 	}
 
 
-	function getPropertyValues($subject, $property, $requestoptions = NULL, $outputformat = '') {
+	function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = NULL, $outputformat = '') {
 		wfProfileIn("SMWSQLStore::getPropertyValues (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		if ($subject !== NULL) {
@@ -560,7 +560,7 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getPropertySubjects(Title $property, $value, $requestoptions = NULL) {
+	function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = NULL) {
 		if ($value === NULL) {
 			return $this->getAllPropertySubjects($property,$requestoptions);
 		}
@@ -641,7 +641,7 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getAllPropertySubjects(Title $property, $requestoptions = NULL) {
+	function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore::getAllPropertySubjects (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
@@ -683,7 +683,7 @@ class SMWSQLStore extends SMWStore {
 		return $result;
 	}
 
-	function getProperties(Title $subject, $requestoptions = NULL) {
+	function getProperties($subject, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore::getProperties (SMW)");
 		$subjectid = $subject->getArticleID(); // avoid queries for nonexisting pages
 		if ($subjectid <= 0) {

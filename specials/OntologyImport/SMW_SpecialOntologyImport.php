@@ -9,6 +9,8 @@
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  * @todo The code in this file is still very very messy and undocumented. Cleanup needed!
+ * @bug This code does not work, it still calls global function that have never been available in SMW after beta (e.g. smwfGetSpecialProperties). 
+ * It needs thorough review to become functional again.
  */
 
 //ToDo: Please refactor into a real class we can autoload

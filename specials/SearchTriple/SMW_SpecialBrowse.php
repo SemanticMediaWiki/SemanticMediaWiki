@@ -138,27 +138,24 @@ class SMWSpecialBrowse extends SpecialPage {
 		$properties = $data->getProperties();
 		$noresult = true;
 		 foreach ($properties as $property) {
-			$displayline= false;
-			if ($property instanceof Title) {
-				$proptext = $skin->makeLinkObj($property, $this->getPropertyLabel($property, $incoming)) . "\n"; // @todo Replace makeLinkObj with link as soon as we drop MW1.12 compatibility
-				$displayline = true;
-				$special = false;
+			$displayline = true;
+			if ($property->isVisible()) {
+				$property->setCaption($this->getPropertyLabel($property, $incoming));
+				$proptext = $property->getLongHTMLText($skin) . "\n";
 			} else {
-				$special = true;
-				global $smwgContLang;
-				$proptext = $smwgContLang->findSpecialPropertyLabel( $property );
-				if ($proptext != '') {
-					$p = Title::newFromText($proptext, SMW_NS_PROPERTY);
-					$proptext = $skin->makeLinkObj($p, $this->unbreak($proptext));
-					$displayline = true;
-				}
-				if (SMW_SP_INSTANCE_OF == $property) {
+// 				global $smwgContLang;
+// 				$proptext = $smwgContLang->findSpecialPropertyLabel( $property );
+// 				if ($proptext != '') {
+// 					$p = Title::newFromText($proptext, SMW_NS_PROPERTY);
+// 					$proptext = $skin->makeLinkObj($p, $this->unbreak($proptext));
+// 					$displayline = true;
+// 				}
+				if ($property->getXSDValue() == '_INST') {
 					$proptext = $skin->specialLink( 'Categories' );
-					$displayline = true;
-				}
-				if (SMW_SP_REDIRECTS_TO == $property) {
+				} elseif ($property->getXSDValue() == '_REDI') {
 					$proptext = $skin->specialLink( 'Listredirects', 'isredirect' );
-					$displayline = true;
+				} else {
+					$displayline = false;
 				}
 			}
 			if ($displayline) {
@@ -175,10 +172,7 @@ class SMWSpecialBrowse extends SpecialPage {
 						$body .= '<a href="' . $skin->makeSpecialUrl('SearchByProperty', 'property=' . urlencode($property->getPrefixedText()) . '&value=' . urlencode($data->getSubject()->getLongWikiText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
 					} else {
 						$body .= "<span class=\"smwb-" . $inv . "value\">";
-						if ($special)
-							$body .= $this->displaySpecialValue($property, $value, $incoming);
-						else 
-							$body .= $this->displayValue($property, $value, $incoming);
+						$body .= $this->displayValue($property, $value, $incoming);
 						$body .= "</span>";
 					}
 					$count--;
@@ -213,44 +207,24 @@ class SMWSpecialBrowse extends SpecialPage {
 	/**
 	 * Displays a value, including all relevant links (browse and search by property)
 	 * 
-	 * @param[in] $property Title  The property this value is linked to the subject with
+	 * @param[in] $property SMWPropertyValue  The property this value is linked to the subject with
 	 * @param[in] $value SMWDataValue  The actual value
 	 * @param[in] $incoming bool  If this is an incoming or outgoing link
 	 * @return string  HTML with the link to the article, browse, and search pages
 	 */
-	private function displayValue(Title $property, SMWDataValue $value, $incoming) {
+	private function displayValue(SMWPropertyValue $property, SMWDataValue $value, $incoming) {
 		global $wgUser;
 		$skin = $wgUser->getSkin();
 		$html = $value->getLongHTMLText($skin);
-		if ($value->getTypeID() == '_wpg')
+		if ($value->getTypeID() == '_wpg') {
 			$html .= "&nbsp;" . SMWInfolink::newBrowsingLink('+',$value->getLongWikiText())->getHTML($skin);
-		else
-			if ($incoming)
-				$html .= "&nbsp;" . SMWInfolink::newInversePropertySearchLink('+', $value->getTitle(), $property->getText(), 'smwsearch')->getHTML($skin);
-			else
-				$html .= $value->getInfolinkText(SMW_OUTPUT_HTML, $skin);
-		return $html; 
-	}
-
-	/**
-	 * Displays a value for a special property, including all relevant links (browse and search by property)
-	 * 
-	 * @param[in] $property int  A constant representing the special value
-	 * @param[in] $value SMWDataValue  The actual value
-	 * @param[in] $incoming bool  If this is an incoming or outgoing link
-	 * @return string  HTML with the link to the article, browse, and search pages
-	 */
-	private function displaySpecialValue($property, SMWDataValue $value, $incoming) {
-		global $wgUser;
-		$skin = $wgUser->getSkin();
-		$html = $value->getLongHTMLText($skin);
-		if ($value->getTypeID() == '_wpg')
-			$html .= "&nbsp;" . SMWInfolink::newBrowsingLink('+',$value->getLongWikiText())->getHTML($skin);
-		else
+		} elseif ($incoming && $property->isVisible()) {
+			$html .= "&nbsp;" . SMWInfolink::newInversePropertySearchLink('+', $value->getTitle(), $property->getText(), 'smwsearch')->getHTML($skin);
+		} else {
 			$html .= $value->getInfolinkText(SMW_OUTPUT_HTML, $skin);
-		return $html; 
+		}
+		return $html;
 	}
-	
 
 	/**
 	 * Displays the subject that is currently being browsed to.
@@ -375,21 +349,22 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * the text, for incoming ones we try to figure out the inverse one if needed,
 	 * either by looking for an explicitly stated one or by creating a default one.
 	 * 
-	 * @param[in] $property Title  The property of interest
+	 * @param[in] $property SMWPropertyValue  The property of interest
 	 * @param[in] $incoming bool  If it is an incoming property
 	 * @return string  The label of the property
 	 */
-	private function getPropertyLabel(Title $property, $incoming = false) {
-		$rv = $property->getText();
+	private function getPropertyLabel(SMWPropertyValue $property, $incoming = false) {
 		global $smwgBrowseShowInverse;
 		if ($incoming && $smwgBrowseShowInverse) {
-			$oppositeproplabel = Title::newFromText(wfMsg('smw_inverse_label_property'), SMW_NS_PROPERTY);
-			$labelarray = &smwfGetStore()->getPropertyValues($property, $oppositeproplabel);
+			$oppositeprop = SMWPropertyValue::makeProperty(wfMsg('smw_inverse_label_property'));
+			$labelarray = &smwfGetStore()->getPropertyValues($property->getWikiPageValue(), $oppositeprop);
 			if (count($labelarray)>0) {
 				$rv = $labelarray[0]->getLongWikiText();
 			} else {
-				$rv = wfMsg('smw_inverse_label_default', $property->getText());
+				$rv = wfMsg('smw_inverse_label_default', $property->getWikiValue());
 			}
+		} else {
+		$rv = $property->getWikiValue();
 		}
 		return $this->unbreak($rv);
 	}

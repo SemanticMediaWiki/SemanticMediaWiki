@@ -271,13 +271,13 @@ class SMWTypesValue extends SMWDataValue {
 
 	/**
 	 * Retrieve type values.
-	 * FIXME: wildly inefficient since new id management
+	 * @bug This implementation is inefficient.
 	 */
 	public function getTypeValues() {
 		$result = array();
 		$i = 0;
 		foreach ($this->getTypeLabels() as $tl) {
-			$result[$i] = SMWDataValueFactory::newSpecialValue(SMW_SP_HAS_TYPE, $tl);
+			$result[$i] = SMWDataValueFactory::newPropertyObjectValue(SMWPropertyValue::makeProperty('_TYPE'), $tl);
 			$i++;
 		}
 		return $result;

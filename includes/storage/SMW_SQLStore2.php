@@ -7,10 +7,15 @@
  * @ingroup SMWStore
  */
 
+// The use of the following constants is explained in SMWSQLStore2::setup():
 define('SMW_SQL2_SMWIW',':smw'); // virtual "interwiki prefix" for special SMW objects
 define('SMW_SQL2_SMWREDIIW',':smw-redi'); // virtual "interwiki prefix" for SMW objects that are redirected
+define('SMW_SQL2_SMWBORDERIW',':smw-border'); // virtual "interwiki prefix" separating very important pre-defined properties from the rest
+define('SMW_SQL2_SMWPREDEFIW',':smw-preprop'); // virtual "interwiki prefix" marking predefined objects (non-movable)
+define('SMW_SQL2_SMWINTDEFIW',':smw-intprop'); // virtual "interwiki prefix" marking internal (invisible) predefined properties
 
-// Constant flags for identifying tables/retrieval types
+// Constant flags for identifying tables/retrieval types:
+define('SMW_SQL2_NONE',0);
 define('SMW_SQL2_RELS2',1);
 define('SMW_SQL2_ATTS2',2);
 define('SMW_SQL2_TEXT2',4);
@@ -47,6 +52,59 @@ class SMWSQLStore2 extends SMWStore {
 
 	protected static $in_getSemanticData = 0; /// >0 while getSemanticData runs, used to prevent nested calls from clearing the cache while another call runs and is about to fill it with data
 
+	/// Use pre-defined ids for Very Important Properties, avoiding frequent ID lookups for those
+	private static $special_ids = array(
+		'_TYPE' => 1,
+		'_URI'  => 2,
+		'_INST' => 4,
+		'_UNIT' => 7,
+		'_IMPO' => 8,
+		'_CONV' => 12,
+		'_SERV' => 13,
+		'_PVAL' => 14,
+		'_REDI' => 15,
+		'_SUBP' => 17,
+		'_SUBC' => 18,
+		'_CONC' => 19
+	);
+
+	/// This array defines how various datatypes should be handled internally. This
+	/// list usually agrees with the datatype constants given in SMWDataValueFactory,
+	/// but need not be complete: the default storage method is SMW_SQL2_ATTS2.
+	/// Note that some storage methods require datavalue objects ot support specific
+	/// APIs, so arbitrary changes in this table may not work unless the according
+	/// datavalue class in SMWDataValueFactory supports those.
+	private static $storage_mode = array(
+		'_txt'  => SMW_SQL2_TEXT2, // Text type
+		'_cod'  => SMW_SQL2_TEXT2, // Code type
+		'_str'  => SMW_SQL2_ATTS2, // String type
+		'_ema'  => SMW_SQL2_ATTS2, // Email type
+		'_uri'  => SMW_SQL2_ATTS2, // URL/URI type
+		'_anu'  => SMW_SQL2_ATTS2, // Annotation URI type
+		'_wpg'  => SMW_SQL2_RELS2, // Page type
+		'_wpp'  => SMW_SQL2_RELS2, // Property page type
+		'_wpc'  => SMW_SQL2_RELS2, // Category page type
+		'_num'  => SMW_SQL2_ATTS2, // Number type
+		'_tem'  => SMW_SQL2_ATTS2, // Temperature type
+		'_dat'  => SMW_SQL2_ATTS2, // Time type
+		'_geo'  => SMW_SQL2_ATTS2, // Geographic coordinates type
+		'_boo'  => SMW_SQL2_ATTS2, // Boolean type
+		// Special types are not avaialble directly for users (and have no local language name):
+		'__typ' => SMW_SQL2_SPEC2, // Special type page type
+		'__con' => SMW_SQL2_CONC2, // Special concept page type
+		'__sps' => SMW_SQL2_SPEC2, // Special string type
+		'__spu' => SMW_SQL2_SPEC2, // Special uri type
+		'__sup' => SMW_SQL2_SUBS2, // Special subproperty type
+		'__suc' => SMW_SQL2_SUBS2, // Special subcategory type
+		'__sin' => SMW_SQL2_INST2, // Special instance of type
+		'__red' => SMW_SQL2_REDI2, // Special redirect type
+		'__lin' => SMW_SQL2_SPEC2, // Special linear unit conversion type
+		'__nry' => SMW_SQL2_NARY2, // Special multi-valued type
+		'__err' => SMW_SQL2_NONE, // Special error type, actually this is not stored right now
+		'__imp' => SMW_SQL2_SPEC2, // Special import vocabulary type
+		'__pro'  => SMW_SQL2_NONE, // Property page type; actually this should never be stored as a value (_wpp is used there)
+	);
+
 ///// Reading methods /////
 
 	function getSemanticData($subject, $filter = false) {
@@ -56,8 +114,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		if ( $subject instanceof Title ) {
 			$sid = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki());
-			$svalue = SMWDataValueFactory::newTypeIDValue('_wpg');
-			$svalue->setTitle($subject);
+			$svalue = SMWWikiPageValue::makePageFromTitle($subject);
 		} elseif ($subject instanceof SMWWikiPageValue) {
 			$sid = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki());
 			$svalue = $subject;
@@ -66,7 +123,7 @@ class SMWSQLStore2 extends SMWStore {
 			$result = NULL;
 		}
 		if ($sid == 0) { // no data, safe our time
-		/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
+			/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
 			SMWSQLStore2::$in_getSemanticData--;
 			wfProfileOut("SMWSQLStore2::getSemanticData (SMW)");
 			return isset($svalue)?(new SMWSemanticData($svalue)):NULL;
@@ -75,24 +132,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ($filter !== false) { //array as described in docu for SMWStore
 			$tasks = 0;
 			foreach ($filter as $value) {
-				switch ($value) {
-					case '_wpg': $tasks = $tasks | SMW_SQL2_RELS2; break;
-					case '_txt': case '_cod':
-					             $tasks = $tasks | SMW_SQL2_TEXT2; break;
-					case '__nry': $tasks = $tasks | SMW_SQL2_NARY2; break;
-					case SMW_SP_INSTANCE_OF: $tasks = $tasks | SMW_SQL2_INST2; break;
-					case SMW_SP_REDIRECTS_TO: $tasks = $tasks | SMW_SQL2_REDI2; break;
-					case SMW_SP_SUBPROPERTY_OF: case SMW_SP_SUBCLASS_OF:
-						$tasks = $tasks | SMW_SQL2_SUBS2;
-					break;
-					case SMW_SP_CONCEPT_DESC: $tasks = $tasks | SMW_SQL2_CONC2; break;
-					default:
-						if (is_numeric($value)) { // some special property
-							$tasks = $tasks | SMW_SQL2_SPEC2;
-						} else { // some other "attribute"
-							$tasks = $tasks | SMW_SQL2_ATTS2;
-						}
-				}
+				$tasks = $tasks | SMWSQLStore2::getStorageMode($value);
 			}
 		} else {
 			$tasks = SMW_SQL2_RELS2 | SMW_SQL2_ATTS2 | SMW_SQL2_TEXT2| SMW_SQL2_SPEC2 | SMW_SQL2_NARY2 | SMW_SQL2_SUBS2 | SMW_SQL2_INST2 | SMW_SQL2_REDI2 | SMW_SQL2_CONC2;
@@ -139,7 +179,7 @@ class SMWSQLStore2 extends SMWStore {
 				break;
 				case SMW_SQL2_SPEC2:
 					$from = 'smw_spec2';
-					$select = 'sp_id as prop, value_string as value';
+					$select = 'p_id, value_string as value';
 					$where = 's_id=' . $db->addQuotes($sid);
 				break;
 				case SMW_SQL2_SUBS2:
@@ -147,7 +187,7 @@ class SMWSQLStore2 extends SMWStore {
 					$select = 'smw_title as value';
 					$where = 'o_id=smw_id AND s_id=' . $db->addQuotes($sid);
 					$namespace = $subject->getNamespace();
-					$specprop = ($namespace==NS_CATEGORY)?SMW_SP_SUBCLASS_OF:SMW_SP_SUBPROPERTY_OF;
+					$specprop = ($namespace==NS_CATEGORY)?'_SUBC':'_SUBP';
 				break;
 				case SMW_SQL2_REDI2:
 					$from = array('smw_redi2','smw_ids');
@@ -159,6 +199,8 @@ class SMWSQLStore2 extends SMWStore {
 					$from = array('smw_inst2','smw_ids');
 					$select = 'smw_title as value';
 					$where = 'o_id=smw_id AND s_id=' . $db->addQuotes($sid);
+					$namespace = NS_CATEGORY;
+					$specprop = '_INST';
 				break;
 				case SMW_SQL2_CONC2:
 					$from = 'smw_conc2';
@@ -168,43 +210,45 @@ class SMWSQLStore2 extends SMWStore {
 			}
 			$res = $db->select( $from, $select, $where, 'SMW::getSemanticData' );
 			while($row = $db->fetchObject($res)) {
+				$dv = NULL;
 				if ($task & (SMW_SQL2_RELS2 | SMW_SQL2_ATTS2 | SMW_SQL2_TEXT2) ) {
-					$property = Title::makeTitle(SMW_NS_PROPERTY, $row->prop);
-				}
-				if ($task == SMW_SQL2_RELS2) {
+					$property = SMWPropertyValue::makeProperty($row->prop);
 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+				}
+				// The following cases are very similar, yet different in certain details:
+				if ($task == SMW_SQL2_RELS2) {
 					if ($dv instanceof SMWWikiPagevalue) { // may fail if type was changed!
 						$dv->setValues($row->title, $row->namespace, false, $row->iw);
-						$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
+					} else {
+						$dv = NULL;
 					}
 				} elseif ($task == SMW_SQL2_ATTS2) {
-					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 					$dv->setXSDValue($row->value, $row->unit);
-					$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
 				} elseif ($task == SMW_SQL2_TEXT2) {
+					$dv->setXSDValue($row->value, '');
+				} elseif ($task == SMW_SQL2_SPEC2) {
+					$pid = array_search($row->p_id, SMWSQLStore2::$special_ids);
+					if ($pid != false) {
+						$property = SMWPropertyValue::makeProperty($pid);
+					} else { // this should be rare (only if some extension uses properties of "special" types
+						$proprow = $db->selectRow('smw_ids', array('smw_title'), array('smw_id' => $row->id), 'SMW::getSemanticData');
+						$property = SMWPropertyValue::makeProperty($proprow->smw_title);
+					}
 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 					$dv->setXSDValue($row->value, '');
-					$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
-				} elseif ($task == SMW_SQL2_SPEC2) {
-					$dv = SMWDataValueFactory::newSpecialValue($row->prop);
-					$dv->setXSDValue($row->value, '');
-					$this->m_semdata[$sid]->addSpecialValue($row->prop, $dv);
-				} elseif ($task == SMW_SQL2_SUBS2) {
-					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-					$dv->setValues($row->value, $namespace);
-					$this->m_semdata[$sid]->addSpecialValue($specprop, $dv);
+				} elseif ( ($task == SMW_SQL2_SUBS2) || ($task == SMW_SQL2_INST2) ) {
+					$property = SMWPropertyValue::makeProperty($specprop);
+					$dv = SMWWikiPageValue::makePage($row->value, $namespace);
 				} elseif ($task == SMW_SQL2_REDI2) {
-					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-					$dv->setValues($row->title, $row->namespace);
-					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_REDIRECTS_TO, $dv);
-				} elseif ($task == SMW_SQL2_INST2) {
-					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-					$dv->setValues($row->value, NS_CATEGORY);
-					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_INSTANCE_OF, $dv);
+					$property = SMWPropertyValue::makeProperty('_REDI');
+					$dv = SMWWikiPageValue::makePage($row->title, $row->namespace);
 				} elseif ($task == SMW_SQL2_CONC2) {
-					$dv = SMWDataValueFactory::newSpecialValue(SMW_SP_CONCEPT_DESC);
+					$property = SMWPropertyValue::makeProperty('_CONC');
+					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 					$dv->setValues($row->concept, $row->docu, $row->features, $row->size, $row->depth);
-					$this->m_semdata[$sid]->addSpecialValue(SMW_SP_CONCEPT_DESC, $dv);
+				}
+				if ($dv !== NULL) {
+					$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
 				}
 			}
 			$db->freeResult($res);
@@ -234,7 +278,7 @@ class SMWSQLStore2 extends SMWStore {
 				$res = $db->query($sql, 'SMWSQLStore2::getSemanticData-nary');
 				while($row = $db->fetchObject($res)) {
 					if ( !array_key_exists($row->prop,$properties) ) {
-						$properties[$row->prop] = Title::makeTitle(SMW_NS_PROPERTY,$row->prop);
+						$properties[$row->prop] = SMWPropertyValue::makeUserProperty($row->prop);
 						$type = SMWDataValueFactory::getPropertyObjectTypeValue($properties[$row->prop]);
 						$ptypes[$row->prop] = $type->getTypeValues();
 						$dvs[$row->prop] = array();
@@ -268,8 +312,10 @@ class SMWSQLStore2 extends SMWStore {
 				$pdvs = $dvs[$name];
 				foreach ($pdvs as $bnode => $values) {
 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
-					$dv->setDVs($values);
-					$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
+					if ($dv instanceof SMWNAryValue) {
+						$dv->setDVs($values);
+						$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
+					}
 				}
 			}
 		}
@@ -279,111 +325,18 @@ class SMWSQLStore2 extends SMWStore {
 		return $this->m_semdata[$sid];
 	}
 
-	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
-		wfProfileIn("SMWSQLStore2::getSpecialValues-$specialprop (SMW)");
-
-		if ($subject !== NULL) {
-			$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki());
-		}
-		if ( ($sid == 0) && ($specialprop != SMW_SP_REDIRECTS_TO)) {
-			/// NOTE: SMW_SP_REDIRECTS_TO is the only property that objects without an SMW-ID may have
-			wfProfileOut("SMWSQLStore2::getSpecialValues-$specialprop (SMW)");
-			return array();
-		}
-		$sd = $this->getSemanticData($subject,array($specialprop));
-		$result = $this->applyRequestOptions($sd->getPropertyValues($specialprop),$requestoptions);
-		wfProfileOut("SMWSQLStore2::getSpecialValues-$specialprop (SMW)");
-		return $result;
-	}
-
-	function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = NULL) {
-		wfProfileIn("SMWSQLStore2::getSpecialSubjects-$specialprop (SMW)");
-		$db =& wfGetDB( DB_SLAVE );
-
-		$result = array();
-		/// NOTE: We expect the given SMWDataValue to have the appropriate type for the special 
-		/// property that is queried. There is some dependency between the store's assumptions and
-		/// the types returned for special properties by SMWDataValueFactory. But the type alone 
-		/// would always be too little, since the store uses custom tables for many special properties.
-
-		if ($specialprop === SMW_SP_INSTANCE_OF) { // class membership
-			$oid = $this->getSMWPageID($value->getDBkey(),NS_CATEGORY,$value->getInterwiki());
-			if ( ($oid != 0) && ($value->getNamespace() == NS_CATEGORY) ) {
-				$res = $db->select( array('smw_inst2','smw_ids'), 'smw_title,smw_namespace,smw_sortkey',
-				                    's_id=smw_id AND o_id=' . $db->addQuotes($oid), 
-				                    'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
-				while($row = $db->fetchObject($res)) {
-					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-					$dv->setValues($row->smw_title, $row->smw_namespace, false, '', $row->smw_sortkey);
-					$result[] = $dv;
-				}
-				$db->freeResult($res);
-			}
-		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
-			$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki(),false);
-			/// NOTE: we do not use the canonical (redirect-aware) id here!
-			/// NOTE: we ignore sortkeys here -- this appears to be ok
-			if ($oid != 0) {
-				$res = $db->select( array('smw_redi2'), 's_title,s_namespace',
-				                    'o_id=' . $db->addQuotes($oid),
-				                    'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
-				while($row = $db->fetchObject($res)) {
-					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-					$dv->setValues($row->s_title, $row->s_namespace);
-					$result[] = $dv;
-				}
-				$db->freeResult($res);
-			}
-		} elseif ( ($specialprop === SMW_SP_SUBPROPERTY_OF) || ($specialprop === SMW_SP_SUBCLASS_OF) ) { 
-			// subproperties/subclasses
-			$namespace = ($specialprop === SMW_SP_SUBCLASS_OF)?NS_CATEGORY:SMW_NS_PROPERTY;
-			$oid = $this->getSMWPageID($value->getDBkey(),$namespace,$value->getInterwiki());
-			if ( ($oid != 0) && ($value->getNamespace() == $namespace) ) {
-				$res = $db->select( array('smw_subs2','smw_ids'), array('smw_title','smw_sortkey'),
-				                    's_id=smw_id AND o_id=' . $db->addQuotes($oid) . $this->getSQLConditions($requestoptions, 'smw_sortkey', 'smw_sortkey'),
-				                    'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions, 'smw_sortkey') );
-				while($row = $db->fetchObject($res)) {
-					$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-					$dv->setValues($row->smw_title, $namespace, false, '', $row->smw_sortkey);
-					$result[] = $dv;
-				}
-				$db->freeResult($res);
-			}
-		} elseif ($specialprop === SMW_SP_CONCEPT_DESC) {
-			// no inverse search for concept descriptions (blobs)
-		} else {
-			if ($value->getXSDValue() !== false) { // filters out error-values etc.
-				$stringvalue = $value->getXSDValue();
-			} else {
-				wfProfileOut("SMWSQLStore2::getSpecialSubjects-$specialprop (SMW)");
-				return array();
-			}
-			$sql = 'smw_id=s_id AND sp_id=' . $db->addQuotes($specialprop) .
-			       ' AND value_string=' . $db->addQuotes($stringvalue) .
-			       $this->getSQLConditions($requestoptions,'smw_sortkey','smw_sortkey');
-			$res = $db->select( array('smw_spec2','smw_ids'), 'DISTINCT smw_title,smw_namespace,smw_sortkey',
-			                    $sql, 'SMW::getSpecialSubjects', 
-			                    $this->getSQLOptions($requestoptions,'smw_sortkey') );
-			while($row = $db->fetchObject($res)) {
-				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-				$dv->setValues($row->smw_title, $row->smw_namespace, false, '', $row->smw_sortkey);
-				$result[] = $dv;
-			}
-			$db->freeResult($res);
-		}
-		wfProfileOut("SMWSQLStore2::getSpecialSubjects-$specialprop (SMW)");
-		return $result;
-	}
-
-
-	function getPropertyValues($subject, $property, $requestoptions = NULL, $outputformat = '') {
+	/**
+	 * @todo While the function can retrieve all values of a given property (i.e. values occurring for any subject),
+	 * it currently will only do this for user-defined properties that are not multi-valued.
+	 */
+	function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = NULL, $outputformat = '') {
 		wfProfileIn("SMWSQLStore2::getPropertyValues (SMW)");
 		if ($subject !== NULL) {
 			$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki());
 		} else {
 			$sid = 0;
 		}
-		$pid = $this->getSMWPageID($property->getDBkey(), SMW_NS_PROPERTY, $property->getInterwiki());
+		$pid = $this->getSMWPropertyID($property);
 		if ( ( ($sid == 0) && ($subject !== NULL) ) || ($pid == 0)) {
 			wfProfileOut("SMWSQLStore2::getPropertyValues (SMW)");
 			return array();
@@ -404,9 +357,9 @@ class SMWSQLStore2 extends SMWStore {
 		} else { // no subject given, get all values for the given property
 			$db =& wfGetDB( DB_SLAVE );
 			$result = array();
-			$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
-			switch ($id) {
-				case '_txt': case '_cod':
+			$mode = SMWSQLStore2::getStorageMode(SMWDataValueFactory::getPropertyObjectTypeID($property));
+			switch ($mode) {
+				case SMW_SQL2_TEXT2:
 					$res = $db->select( 'smw_text2', 'value_blob',
 										'p_id=' . $db->addQuotes($pid),
 										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions) );
@@ -418,7 +371,7 @@ class SMWSQLStore2 extends SMWStore {
 					}
 					$db->freeResult($res);
 				break;
-				case '_wpg':
+				case SMW_SQL2_RELS2:
 					$res = $db->select( array('smw_rels2', 'smw_ids'),
 										'smw_namespace, smw_title, smw_iw',
 										'p_id=' . $db->addQuotes($pid) . ' AND o_id=smw_id' .
@@ -432,7 +385,28 @@ class SMWSQLStore2 extends SMWStore {
 					}
 					$db->freeResult($res);
 				break;
-				case '__nry': ///TODO: currently disabled
+				case SMW_SQL2_ATTS2:
+					if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) &&
+						($requestoptions->boundary->isNumeric()) ) {
+						$value_column = 'value_num';
+					} else {
+						$value_column = 'value_xsd';
+					}
+					$sql = 'p_id=' . $db->addQuotes($pid) .
+						$this->getSQLConditions($requestoptions,$value_column,'value_xsd');
+					$res = $db->select( 'smw_atts2', 'value_unit, value_xsd',
+										'p_id=' . $db->addQuotes($pid) .
+										$this->getSQLConditions($requestoptions,$value_column,'value_xsd'),
+										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,$value_column) );
+					while($row = $db->fetchObject($res)) {
+						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+						$dv->setOutputFormat($outputformat);
+						$dv->setXSDValue($row->value_xsd, $row->value_unit);
+						$result[] = $dv;
+					}
+					$db->freeResult($res);
+				break;
+				case SMW_SQL2_NARY2: ///TODO: currently disabled
 // 					$type = SMWDataValueFactory::getPropertyObjectTypeValue($property);
 // 					$subtypes = $type->getTypeValues();
 // 					$res = $db->select( $db->tableName('smw_nary'),
@@ -493,64 +467,82 @@ class SMWSQLStore2 extends SMWStore {
 // 					}
 // 					$db->freeResult($res);
 				break;
-				default:
-					if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) &&
-						($requestoptions->boundary->isNumeric()) ) {
-						$value_column = 'value_num';
-					} else {
-						$value_column = 'value_xsd';
-					}
-					$sql = 'p_id=' . $db->addQuotes($pid) .
-						$this->getSQLConditions($requestoptions,$value_column,'value_xsd');
-					$res = $db->select( 'smw_atts2', 'value_unit, value_xsd',
-										'p_id=' . $db->addQuotes($pid) .
-										$this->getSQLConditions($requestoptions,$value_column,'value_xsd'),
-										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,$value_column) );
-					while($row = $db->fetchObject($res)) {
-						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
-						$dv->setOutputFormat($outputformat);
-						$dv->setXSDValue($row->value_xsd, $row->value_unit);
-						$result[] = $dv;
-					}
-					$db->freeResult($res);
 			}
 		}
 		wfProfileOut("SMWSQLStore2::getPropertyValues (SMW)");
 		return $result;
 	}
 
-	function getPropertySubjects(Title $property, $value, $requestoptions = NULL) {
+	function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = NULL) {
 		/// TODO: should we share code with #ask query computation here? Just use queries?
 		wfProfileIn("SMWSQLStore2::getPropertySubjects (SMW)");
 		$result = array();
-		$pid = $this->getSMWPageID($property->getDBkey(), $property->getNamespace(),$property->getInterwiki());
+		$pid = $this->getSMWPropertyID($property);
 		if ( ($pid == 0) || ( ($value !== NULL) && (!$value->isValid()) ) ) {
 			wfProfileOut("SMWSQLStore2::getPropertySubjects (SMW)");
 			return $result;
 		}
 		$db =& wfGetDB( DB_SLAVE );
+		// The following DB calls are all very similar, so we try to share a much code as possible.
+		// If the $table parameter is set, a standard query is used in the end. Only n-aries and
+		// redirects work differently.
 		$table = '';
 		$sql = 'p_id=' . $db->addQuotes($pid);
 		if ($value === NULL) {
-			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
+			$mode = SMWSQLStore2::getStorageMode(SMWDataValueFactory::getPropertyObjectTypeID($property));
 		} else {
-			$typeid = $value->getTypeID();
+			$mode = SMWSQLStore2::getStorageMode($value->getTypeID());
 		}
 
-		switch ($typeid) {
-		case '_txt': case '_cod':
-			$table = 'smw_text2'; // ignore value condition in any case
+		switch ($mode) {
+		case SMW_SQL2_TEXT2:
+			$table = 'smw_text2'; // ignore value condition in this case
 		break;
-		case '_wpg': // wikipage
+		case SMW_SQL2_CONC2:
+			$table = 'smw_conc2'; // ignore value condition in this case
+		break;
+		case SMW_SQL2_RELS2: case SMW_SQL2_INST2: case SMW_SQL2_SUBS2:
 			if ($value !== NULL) {
 				$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki());
-				$sql .= ' AND o_id=' . $db->addQuotes($oid);
+				$sql = (($mode==SMW_SQL2_RELS2)?"$sql AND ":'') . 'o_id=' . $db->addQuotes($oid);
 			}
 			if ( ($value === NULL) || ($oid != 0) ) {
-				$table = 'smw_rels2';
+				switch ($mode) {
+					case SMW_SQL2_RELS2: $table = 'smw_rels2'; break;
+					case SMW_SQL2_INST2: $table = 'smw_inst2'; break;
+					case SMW_SQL2_SUBS2: $table = 'smw_subs2'; break;
+				}
 			}
 		break;
-		case '__nry':
+		case SMW_SQL2_ATTS2:
+			$table = 'smw_atts2';
+			if ($value !== NULL) {
+				$sql .= ' AND value_xsd=' . $db->addQuotes($value->getXSDValue()) .
+				        ' AND value_unit=' . $db->addQuotes($value->getUnit());
+			}
+		break;
+		case SMW_SQL2_SPEC2:
+			$table = 'smw_spec2';
+			if ($value !== NULL) {
+				$sql .= ' AND value_string=' . $db->addQuotes($value->getXSDValue());
+			}
+		break;
+		case SMW_SQL2_REDI2:
+			$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki(),false);
+			/// NOTE: we do not use the canonical (redirect-aware) id here!
+			/// NOTE: we ignore sortkeys here -- this should be ok
+			if ($oid != 0) {
+				$res = $db->select( array('smw_redi2'), 's_title,s_namespace',
+				                    'o_id=' . $db->addQuotes($oid),
+				                    'SMW::getSpecialSubjects', $this->getSQLOptions($requestoptions) );
+				while($row = $db->fetchObject($res)) {
+					$dv = SMWWikiPageValue::makePage($row->s_title, $row->s_namespace);
+					$result[] = $dv;
+				}
+				$db->freeResult($res);
+			}
+		break;
+		case SMW_SQL2_NARY2:
 			if ($value === NULL) { // no value -- handled just like for wikipage
 				$table = 'smw_rels2';
 				break;
@@ -567,38 +559,29 @@ class SMWSQLStore2 extends SMWStore {
 					$count++;
 					continue;
 				}
-				$npid = $this->makeSMWPageID(strval($count),SMW_NS_PROPERTY,SMW_SQL2_SMWIW); // might be cached
-				switch ($dv->getTypeID()) {
-				case '_txt': case '_cod': break; // not supported
-				case '_wpg':
+				$npid = $this->makeSMWPageID(strval($count),SMW_NS_PROPERTY,SMW_SQL2_SMWIW); // might be cached; FIXME: make some of those predefined + important!
+				switch (SMWSQLStore2::getStorageMode($dv->getTypeID())) {
+				case SMW_SQL2_RELS2:
 					$from .= " INNER JOIN $smw_rels2 AS t$count ON t.o_id=t$count.s_id INNER JOIN $smw_ids AS i$count ON t$count.o_id=i$count.smw_id";
 					$where .= " AND t$count.p_id=" . $db->addQuotes($npid) .
-					          " AND i$count.smw_title=" . $db->addQuotes($dv->getDBkey()) .
+					          " AND i$count.smw_title=" . $db->addQuotes($dv->getXSDValue()) .
 					          " AND i$count.smw_namespace=" . $db->addQuotes($dv->getNamespace()) .
 					          " AND i$count.smw_iw=" . $db->addQuotes('');
 				break;
-				default:
+				case SMW_SQL2_ATTS2:
 					$from .= ' INNER JOIN ' . $db->tableName('smw_atts2') . " AS t$count ON t.o_id=t$count.s_id";
 					$where .= " AND t$count.p_id=" . $db->addQuotes($npid) .
 					          " AND t$count.value_xsd=" . $db->addQuotes($dv->getXSDValue()) .
 					          " AND t$count.value_unit=" . $db->addQuotes($dv->getUnit());
 				}
 				$count++;
+				// default: not supported (including text and code)
 			}
 			$res = $db->query("SELECT DISTINCT i.smw_title AS title,i.smw_namespace AS namespace,i.smw_sortkey AS sortkey FROM $from WHERE $where", 'SMW::getPropertySubjects', $this->getSQLOptions($requestoptions,'smw_sortkey'));
 			while($row = $db->fetchObject($res)) {
-				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-				$dv->setValues($row->title, $row->namespace, false, '', $row->sortkey);
-				$result[] = $dv;
+				$result[] = SMWWikiPageValue::makePage($row->title, $row->namespace, $row->sortkey);
 			}
 			$db->freeResult($res);
-		break;
-		default:
-			$table = 'smw_atts2';
-			if ($value !== NULL) {
-				$sql .= ' AND value_xsd=' . $db->addQuotes($value->getXSDValue()) .
-				        ' AND value_unit=' . $db->addQuotes($value->getUnit());
-			}
 		break;
 		}
 
@@ -607,9 +590,8 @@ class SMWSQLStore2 extends SMWStore {
 			                    'DISTINCT smw_title,smw_namespace,smw_sortkey',
 			                    's_id=smw_id AND ' . $sql . $this->getSQLConditions($requestoptions,'smw_sortkey','smw_sortkey'), 'SMW::getPropertySubjects',
 			                    $this->getSQLOptions($requestoptions,'smw_sortkey') );
-			while($row = $db->fetchObject($res)) {
-				$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
-				$dv->setValues($row->smw_title, $row->smw_namespace, false, '', $row->smw_sortkey);
+			while ($row = $db->fetchObject($res)) {
+				$dv = SMWWikiPageValue::makePage($row->smw_title, $row->smw_namespace, $row->smw_sortkey);
 				$result[] = $dv;
 			}
 			$db->freeResult($res);
@@ -618,14 +600,14 @@ class SMWSQLStore2 extends SMWStore {
 		return $result;
 	}
 
-	function getAllPropertySubjects(Title $property, $requestoptions = NULL) {
+	function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore2::getAllPropertySubjects (SMW)");
 		$result = $this->getPropertySubjects($property, NULL, $requestoptions);
 		wfProfileOut("SMWSQLStore2::getAllPropertySubjects (SMW)");
 		return $result;
 	}
 
-	function getProperties(Title $subject, $requestoptions = NULL) {
+	function getProperties($subject, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore2::getProperties (SMW)");
 		$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki());
 		if ($sid == 0) {
@@ -637,14 +619,12 @@ class SMWSQLStore2 extends SMWStore {
 		$sql = 's_id=' . $db->addQuotes($sid) . ' AND p_id=smw_id' . $this->getSQLConditions($requestoptions,'smw_sortkey','smw_sortkey');
 
 		$result = array();
-		// NOTE: the following also includes naries, which are now kept in smw_rels2
-		foreach (array('smw_atts2','smw_text2','smw_rels2') as $table) {
+		/// NOTE: the following also includes naries, which are now kept in smw_rels2
+		foreach (array('smw_atts2','smw_text2','smw_rels2','smw_spec2') as $table) {
 			$res = $db->select( array($table,'smw_ids'), 'DISTINCT smw_title',
 			                    $sql, 'SMW::getProperties', $this->getSQLOptions($requestoptions,'smw_sortkey') );
-			if ($db->numRows( $res ) > 0) {
-				while($row = $db->fetchObject($res)) {
-					$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->smw_title);
-				}
+			while($row = $db->fetchObject($res)) {
+				$result[] = SMWPropertyValue::makeProperty($row->smw_title);
 			}
 			$db->freeResult($res);
 		}
@@ -652,11 +632,14 @@ class SMWSQLStore2 extends SMWStore {
 		return $result;
 	}
 
+	/**
+	 * @todo This function is currently implemented only for values of type Page ('_wpg').
+	 */
 	function getInProperties(SMWDataValue $value, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore2::getInProperties (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
-		if ($value->getTypeID() == '_wpg') {
+		if (SMWSQLStore2::getStorageMode($value->getTypeID()) == SMW_SQL2_RELS2) {
 			$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki());
 			$sql = 'p_id=smw_id AND o_id=' . $db->addQuotes($oid) .
 			       ' AND smw_iw=' . $db->addQuotes('') . // only local, non-internal properties
@@ -664,7 +647,7 @@ class SMWSQLStore2 extends SMWStore {
 			$res = $db->select( array('smw_rels2','smw_ids'), 'DISTINCT smw_title',
 			                    $sql, 'SMW::getInProperties', $this->getSQLOptions($requestoptions,'smw_sortkey') );
 			while($row = $db->fetchObject($res)) {
-				$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->smw_title);
+				$result[] = SMWPropertyValue::makeProperty($row->smw_title);
 			}
 			$db->freeResult($res);
 		}
@@ -676,7 +659,7 @@ class SMWSQLStore2 extends SMWStore {
 
 	function deleteSubject(Title $subject) {
 		wfProfileIn('SMWSQLStore2::deleteSubject (SMW)');
-		$this->deleteSemanticData($subject);
+		$this->deleteSemanticData(SMWWikiPageValue::makePageFromTitle($subject));
 		$this->updateRedirects($subject->getDBkey(), $subject->getNamespace()); // also delete redirects, may trigger update jobs!
 		if ($subject->getNamespace() == SMW_NS_CONCEPT) { // make sure to clear caches
 			$db =& wfGetDB( DB_MASTER );
@@ -695,14 +678,14 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn("SMWSQLStore2::updateData (SMW)");
 		$subject = $data->getSubject();
 		$this->deleteSemanticData($subject);
-		$redirects = $data->getPropertyValues(SMW_SP_REDIRECTS_TO);
+		$redirects = $data->getPropertyValues(SMWPropertyValue::makeProperty('_REDI'));
 		if (count($redirects) > 0) {
 			$redirect = end($redirects); // at most one redirect per page
-			$this->updateRedirects($subject->getDBKey(), $subject->getNamespace(), $redirect->getDBKey(), $redirect->getNameSpace());
+			$this->updateRedirects($subject->getDBkey(), $subject->getNamespace(), $redirect->getDBkey(), $redirect->getNameSpace());
 			wfProfileOut("SMWSQLStore2::updateData (SMW)");
 			return; // stop here -- no support for annotations on redirect pages!
 		} else {
-			$this->updateRedirects($subject->getDBKey(),$subject->getNamespace());
+			$this->updateRedirects($subject->getDBkey(),$subject->getNamespace());
 		}
 		// always make an ID (pages without ID cannot be in query results, not even in fixed value queries!):
 		$sid = $this->makeSMWPageID($subject->getDBkey(),$subject->getNamespace(),'',true,$subject->getSortkey());
@@ -712,107 +695,88 @@ class SMWSQLStore2 extends SMWStore {
 		$up_rels2 = array();  $up_atts2 = array();
 		$up_text2 = array();  $up_spec2 = array();
 		$up_subs2 = array();  $up_inst2 = array();
+		$concept_desc = NULL; // this gets a special treatment
 
-		$concept_desc = NULL;
-
-		//properties
-		foreach($data->getProperties() as $key => $property) {
+		foreach($data->getProperties() as $property) {
 			$propertyValueArray = $data->getPropertyValues($property);
-			if ($property instanceof Title) { // normal property
-				foreach($propertyValueArray as $value) {
-					if ($value->isValid()) {
-						if ( ($value->getTypeID() == '_txt') || ($value->getTypeID() == '_cod') ){
-							$up_text2[] =
-								array( 's_id' => $sid,
-								       'p_id' => $this->makeSMWPageID($property->getDBkey(),SMW_NS_PROPERTY,''),
-								       'value_blob' => $value->getXSDValue() );
-						} elseif ($value->getTypeID() == '_wpg') {
-							$up_rels2[] =
-								array( 's_id' => $sid,
-								       'p_id' => $this->makeSMWPageID($property->getDBkey(),SMW_NS_PROPERTY,''),
-								       'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki()) );
-						} elseif ($value->getTypeID() == '__nry') {
-							$bnode = $this->makeSMWBnodeID($sid);
-							$up_rels2[] =
-								array( 's_id' => $sid,
-								       'p_id' => $this->makeSMWPageID($property->getDBkey(),SMW_NS_PROPERTY,''),
-								       'o_id' => $bnode );
-							$npos = 0;
-							foreach ($value->getDVs() as $dv) {
-								if ( ($dv !== NULL) && ($dv->isValid()) ) {
-									$pid = $this->makeSMWPageID(strval($npos),SMW_NS_PROPERTY,SMW_SQL2_SMWIW);
-									switch ($dv->getTypeID()) {
-									case '_wpg':
-										$up_rels2[] =
-											array( 's_id' => $bnode,
-											       'p_id' => $pid,
-											       'o_id' => $this->makeSMWPageID($dv->getDBkey(),$dv->getNamespace(),$dv->getInterwiki()) );
-									break;
-									case '_txt': case '_cod':
-										$up_text2[] =
-											array( 's_id' => $bnode,
-											       'p_id' => $pid,
-											       'value_blob' => $dv->getXSDValue() );
-									break;
-									default:
-										$up_atts2[] =
-											array( 's_id' => $bnode,
-											       'p_id' => $pid,
-											       'value_unit' => $dv->getUnit(),
-											       'value_xsd' => $dv->getXSDValue(),
-											       'value_num' => $dv->getNumericValue() );
-									}
-								}
-								$npos++;
-							}
-						} else {
-							$up_atts2[] =
-								array( 's_id' => $sid,
-								       'p_id' => $this->makeSMWPageID($property->getDBkey(),SMW_NS_PROPERTY,''),
-								       'value_unit' => $value->getUnit(),
-								       'value_xsd' => $value->getXSDValue(),
-								       'value_num' => $value->getNumericValue() );
-						}
-					}
-				}
-			} else { // special property
-				switch ($property) {
-					case SMW_SP_REDIRECTS_TO: // handled above
+			foreach($propertyValueArray as $value) {
+				if (!$value->isValid()) continue;
+				switch (SMWSQLStore2::getStorageMode($value->getTypeID())) {
+					case SMW_SQL2_REDI2: break; // handled above
+					case SMW_SQL2_INST2:
+						$up_inst2[] = array(
+						  's_id' => $sid,
+						  'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),''));
 					break;
-					case SMW_SP_INSTANCE_OF:
-						foreach($propertyValueArray as $value) {
-							if ( ($value->isValid()) && ($value->getNamespace() == NS_CATEGORY) )  {
-								$up_inst2[] =
-								array('s_id' => $sid,
-								      'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),''));
-							}
-						}
+					case SMW_SQL2_SUBS2:
+						$up_subs2[] = array(
+						  's_id' => $sid,
+						  'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),''));
 					break;
-					case SMW_SP_SUBPROPERTY_OF: case SMW_SP_SUBCLASS_OF:
-						$namespace = ($property==SMW_SP_SUBPROPERTY_OF)?SMW_NS_PROPERTY:NS_CATEGORY;
-						if ( $subject->getNamespace() != $namespace ) {
-							break;
-						}
-						foreach($propertyValueArray as $value) {
-							if ( ($value->isValid()) && ($value->getNamespace() == $namespace) )  {
-								$up_subs2[] =
-								array('s_id' => $sid,
-								      'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),''));
-							}
-						}
-					break;
-					case SMW_SP_CONCEPT_DESC: // textual concept description
+					case SMW_SQL2_CONC2:
 						$concept_desc = end($propertyValueArray); // only one value per page!
 					break;
-					default: // normal special value
-						foreach($propertyValueArray as $value) {
-							if ($value->isValid()) { // filters out error-values etc.
-								$stringvalue = $value->getXSDValue();
-								$up_spec2[] =
-								array('s_id' => $sid,
-								      'sp_id' => $property,
-								      'value_string' => $stringvalue);
+					case SMW_SQL2_SPEC2:
+						$up_spec2[] = array(
+						  's_id' => $sid,
+						  'p_id' => $this->makeSMWPropertyID($property),
+						  'value_string' => $value->getXSDValue());
+					break;
+					case SMW_SQL2_TEXT2:
+						$up_text2[] = array(
+						  's_id' => $sid,
+						  'p_id' => $this->makeSMWPropertyID($property),
+						  'value_blob' => $value->getXSDValue() );
+					break;
+					case SMW_SQL2_RELS2:
+						$up_rels2[] = array(
+						  's_id' => $sid,
+						  'p_id' => $this->makeSMWPropertyID($property),
+						  'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki()) );
+					break;
+					case SMW_SQL2_ATTS2:
+						$up_atts2[] = array(
+						  's_id' => $sid,
+						  'p_id' => $this->makeSMWPropertyID($property),
+						  'value_unit' => $value->getUnit(),
+						  'value_xsd' => $value->getXSDValue(),
+						  'value_num' => $value->getNumericValue() );
+					break;
+					case SMW_SQL2_NARY2:
+						$bnode = $this->makeSMWBnodeID($sid);
+						$up_rels2[] = array(
+						  's_id' => $sid,
+						  'p_id' => $this->makeSMWPropertyID($property),
+						  'o_id' => $bnode );
+						$npos = 0;
+						foreach ($value->getDVs() as $dv) {
+							if ( ($dv !== NULL) && ($dv->isValid()) ) {
+								$pid = $this->makeSMWPageID(strval($npos),SMW_NS_PROPERTY,SMW_SQL2_SMWIW); // TODO: predefine some of those (
+								switch (SMWSQLStore2::getStorageMode($dv->getTypeID())) {
+								case SMW_SQL2_RELS2:
+									$up_rels2[] = array(
+									  's_id' => $bnode,
+									  'p_id' => $pid,
+									  'o_id' => $this->makeSMWPageID($dv->getDBkey(),$dv->getNamespace(),$dv->getInterwiki()) );
+								break;
+								case SMW_SQL2_TEXT2:
+									$up_text2[] = array(
+									  's_id' => $bnode,
+									  'p_id' => $pid,
+									  'value_blob' => $dv->getXSDValue() );
+								break;
+								case SMW_SQL2_ATTS2:
+									$up_atts2[] = array(
+									  's_id' => $bnode,
+									  'p_id' => $pid,
+									  'value_unit' => $dv->getUnit(),
+									  'value_xsd' => $dv->getXSDValue(),
+									  'value_num' => $dv->getNumericValue() );
+								break;
+								}
+								//default: no other cases expected/supported
 							}
+							$npos++;
 						}
 					break;
 				}
@@ -870,7 +834,7 @@ class SMWSQLStore2 extends SMWStore {
 		$this->m_semdata[$sid] = clone $data; // update cache, important if jobs are directly following this call
 		$this->m_sdstate[$sid] = 0xFFFFFFFF; // everything that one can know
 		if ($subject->getNamespace() == SMW_NS_PROPERTY) { // be sure that this is not invalid after update
-			SMWDataValueFactory::clearTypeCache($subject->getTitle());
+			SMWDataValueFactory::clearTypeCache($subject);
 		}
 
 		wfProfileOut("SMWSQLStore2::updateData (SMW)");
@@ -880,10 +844,10 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn("SMWSQLStore2::changeTitle (SMW)");
 		///NOTE: this function ignores the given MediaWiki IDs (this store has its own IDs)
 		///NOTE: this function assumes input titles to be local (no interwiki). Anything else would be too gross.
-		$sid_c = $this->getSMWPageID($oldtitle->getDBKey(),$oldtitle->getNamespace(),'');
-		$sid = $this->getSMWPageID($oldtitle->getDBKey(),$oldtitle->getNamespace(),'',false);
-		$tid_c = $this->getSMWPageID($newtitle->getDBKey(),$newtitle->getNamespace(),'');
-		$tid = $this->getSMWPageID($newtitle->getDBKey(),$newtitle->getNamespace(),'',false);
+		$sid_c = $this->getSMWPageID($oldtitle->getDBKkey(),$oldtitle->getNamespace(),'');
+		$sid = $this->getSMWPageID($oldtitle->getDBkey(),$oldtitle->getNamespace(),'',false);
+		$tid_c = $this->getSMWPageID($newtitle->getDBkey(),$newtitle->getNamespace(),'');
+		$tid = $this->getSMWPageID($newtitle->getDBkey(),$newtitle->getNamespace(),'',false);
 
 		$db =& wfGetDB( DB_MASTER );
 
@@ -895,9 +859,9 @@ class SMWSQLStore2 extends SMWStore {
 				                     'smw_namespace' => $newtitle->getNamespace());
 				$db->update('smw_ids', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
 			} else { // make new (target) id for use in redirect table
-				$sid = $this->makeSMWPageID($newtitle->getDBKey(),$newtitle->getNamespace(),''); // make target id
+				$sid = $this->makeSMWPageID($newtitle->getDBkey(),$newtitle->getNamespace(),''); // make target id
 			} // at this point, $sid is the id of the target page (according to smw_ids)
-			$this->makeSMWPageID($oldtitle->getDBKey(),$oldtitle->getNamespace(),SMW_SQL2_SMWREDIIW); // make redirect id for oldtitle
+			$this->makeSMWPageID($oldtitle->getDBkey(),$oldtitle->getNamespace(),SMW_SQL2_SMWREDIIW); // make redirect id for oldtitle
 			// update redirects
 			/// NOTE: there is the (bad) case that the moved page is a redirect. As chains of
 			/// redirects are not supported by MW or SMW, the below is maximally correct there too.
@@ -907,7 +871,7 @@ class SMWSQLStore2 extends SMWStore {
 			/// a bad behaviour: everything will continue to work until the old redirect is updated, which 
 			/// will hopefully be to fix the double redirect.
 		} else {
-			$this->deleteSemanticData($newtitle); // should not have much effect, but let's be sure
+			$this->deleteSemanticData(SMWWikiPageValue::makePageFromTitle($newtitle)); // should not have much effect, but let's be sure
 			$this->updateRedirects($newtitle->getDBkey(), $newtitle->getNamespace()); // delete these redirects, may trigger update jobs!
 			$this->updateRedirects($oldtitle->getDBkey(), $oldtitle->getNamespace(), $newtitle->getDBkey(), $newtitle->getNamespace());
 			// also move subject data along (updateRedirects only cares about changes in objects/properties)
@@ -960,7 +924,7 @@ class SMWSQLStore2 extends SMWStore {
 	function getPropertiesSpecial($requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore2::getPropertiesSpecial (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
-		$options = ' ORDER BY smw_title';
+		$options = ' ORDER BY smw_sortkey';
 		if ($requestoptions->limit > 0) {
 			$options .= ' LIMIT ' . $requestoptions->limit;
 		}
@@ -968,17 +932,22 @@ class SMWSQLStore2 extends SMWStore {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
 		// NOTE: the query needs to do the fitlering of internal properties, else LIMIT is wrong
-		$res = $db->query('(SELECT smw_title, COUNT(*) as count FROM ' .
-		                  $db->tableName('smw_rels2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' . $db->addQuotes('') . ' GROUP BY p_id) UNION ' .
-		                  '(SELECT smw_title, COUNT(*) as count FROM ' .
-		                  $db->tableName('smw_atts2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' . $db->addQuotes('') . ' GROUP BY p_id) UNION ' .
-		                  '(SELECT smw_title, COUNT(*) as count FROM ' .
-		                  $db->tableName('smw_text2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' . $db->addQuotes('') . ' GROUP BY p_id)' . $options,
+		$res = $db->query('(SELECT smw_title, COUNT(*) as count, smw_sortkey FROM ' .
+		                  $db->tableName('smw_rels2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' .
+		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY p_id) UNION ' .
+		                  '(SELECT smw_title, COUNT(*) as count, smw_sortkey FROM ' .
+		                  $db->tableName('smw_spec2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' .
+		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY p_id) UNION ' .
+		                  '(SELECT smw_title, COUNT(*) as count, smw_sortkey FROM ' .
+		                  $db->tableName('smw_atts2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' .
+		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY p_id) UNION ' .
+		                  '(SELECT smw_title, COUNT(*) as count, smw_sortkey FROM ' .
+		                  $db->tableName('smw_text2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' .
+		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY p_id)' . $options,
 		                  'SMW::getPropertySubjects');
 		$result = array();
 		while($row = $db->fetchObject($res)) {
-			$title = Title::makeTitle(SMW_NS_PROPERTY, $row->smw_title);
-			$result[] = array($title, $row->count);
+			$result[] = array(SMWPropertyValue::makeProperty($row->smw_title), $row->count);
 		}
 		$db->freeResult($res);
 		wfProfileOut("SMWSQLStore2::getPropertiesSpecial (SMW)");
@@ -1007,17 +976,16 @@ class SMWSQLStore2 extends SMWStore {
 			$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops, $table INNER JOIN $smw_ids ON p_id=smw_id WHERE title=smw_title AND smw_iw=" . $db->addQuotes(''), 'SMW::getUnusedPropertySubjects');
 		}
 		$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops, $smw_subs2 INNER JOIN $smw_ids ON o_id=smw_id WHERE title=smw_title", 'SMW::getUnusedPropertySubjects');
+		$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops, $smw_ids WHERE title=smw_title AND smw_namespace=" . $db->addQuotes(SMW_NS_PROPERTY) . ' AND smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW), 'SMW::getUnusedPropertySubjects');
 		// assume any property redirecting to some property to be used here:
 		// (a stricter and more costy approach would be to delete only redirects to active properties;
 		//  this would need to be done with an addtional query in the above loop)
 		$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops, $smw_redi2 INNER JOIN $smw_ids ON (s_title=smw_title AND s_namespace=" . $db->addQuotes(SMW_NS_PROPERTY) . ") WHERE title=smw_title", 'SMW::getUnusedPropertySubjects');
 		$res = $db->query("SELECT title FROM $smw_tmp_unusedprops " . $options, 'SMW::getUnusedPropertySubjects');
-		/// FIXME: $res still includes builtin properties, but this might change when these are managed 
-		/// differently in this store
 
 		$result = array();
 		while($row = $db->fetchObject($res)) {
-			$result[] = Title::makeTitle(SMW_NS_PROPERTY, $row->title);
+			$result[] = SMWPropertyValue::makeProperty($row->title);
 		}
 		$db->freeResult($res);
 		$db->query("DROP TEMPORARY table $smw_tmp_unusedprops", 'SMW::getUnusedPropertySubjects');
@@ -1026,7 +994,16 @@ class SMWSQLStore2 extends SMWStore {
 	}
 
 	function getWantedPropertiesSpecial($requestoptions = NULL) {
+		global $smwgPDefaultType;
 		wfProfileIn("SMWSQLStore2::getWantedPropertiesSpecial (SMW)");
+		switch (SMWSQLStore2::getStorageMode($smwgPDefaultType)) {
+			case SMW_SQL2_RELS2: $table = 'smw_rels2'; break;
+			case SMW_SQL2_ATTS2: $table = 'smw_atts2'; break;
+			case SMW_SQL2_TEXT2: $table = 'smw_text2'; break;
+			default: // nothing else is plausible enough to justify more lines
+				wfProfileOut("SMWSQLStore2::getWantedPropertiesSpecial (SMW)");
+				return array();
+		}
 		$db =& wfGetDB( DB_SLAVE );
 		$options = ' ORDER BY count DESC';
 		if ($requestoptions->limit > 0) {
@@ -1036,15 +1013,14 @@ class SMWSQLStore2 extends SMWStore {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
 		$res = $db->query('SELECT smw_title, COUNT(*) as count FROM ' .
-		                  $db->tableName('smw_rels2') . ' INNER JOIN ' . $db->tableName('smw_ids') . 
+		                  $db->tableName($table) . ' INNER JOIN ' . $db->tableName('smw_ids') . 
 		                  ' ON p_id=smw_id LEFT JOIN ' . $db->tableName('page') .
 		                  ' ON (page_namespace=' . SMW_NS_PROPERTY .
-		                  ' AND page_title=smw_title) WHERE page_id IS NULL GROUP BY smw_title' . $options,
+		                  ' AND page_title=smw_title) WHERE smw_id > 50 AND page_id IS NULL GROUP BY smw_title' . $options,
 		                  'SMW::getWantedPropertiesSpecial');
 		$result = array();
 		while($row = $db->fetchObject($res)) {
-			$title = Title::makeTitle(SMW_NS_PROPERTY, $row->smw_title);
-			$result[] = array($title, $row->count);
+			$result[] = array(SMWPropertyValue::makeProperty($row->smw_title), $row->count);
 		}
 		wfProfileOut("SMWSQLStore2::getWantedPropertiesSpecial (SMW)");
 		return $result;
@@ -1072,7 +1048,7 @@ class SMWSQLStore2 extends SMWStore {
 		$result['PROPUSES'] = $propuses;
 		$result['USEDPROPS'] = $usedprops;
 
-		$res = $db->query("SELECT COUNT(s_id) AS count FROM $smw_spec2 WHERE sp_id=" . $db->addQuotes(SMW_SP_HAS_TYPE), 'SMW::getStatistics');
+		$res = $db->query("SELECT COUNT(s_id) AS count FROM $smw_spec2 WHERE p_id=" . $db->addQuotes(SMWSQLStore2::$special_ids['_TYPE']), 'SMW::getStatistics');
 		$row = $db->fetchObject( $res );
 		$result['DECLPROPS'] = $row->count;
 		$db->freeResult( $res );
@@ -1088,7 +1064,7 @@ class SMWSQLStore2 extends SMWStore {
 		$this->reportProgress("Setting up standard database configuration for SMW ...\n\n",$verbose);
 		$this->reportProgress("Selected storage engine is \"SMWSQLStore2\" (or an extension thereof)\n\n",$verbose);
 		if ($wgDBtype === 'postgres') {
-			$this->reportProgress("For Postgres, please import the file SMW_Postgres_Schema_2.sql manually\n",$verbose);
+			$this->reportProgress("Sorry, Postgres is currently not supported. Please contact the\ndevelopers if you wish to help fixing this.\n",$verbose);
 			return;
 		}
 		$db =& wfGetDB( DB_MASTER );
@@ -1104,6 +1080,22 @@ class SMWSQLStore2 extends SMWStore {
 		                    'smw_sortkey'   => 'VARCHAR(255) binary NOT NULL'
 		                    ), $db, $verbose);
 		$this->setupIndex($smw_ids, array('smw_id','smw_title,smw_namespace,smw_iw', 'smw_sortkey'), $db);
+		// NOTE: smw_ids is normally used to store references to wiki pages (possibly with some external
+		// interwiki prefix). There are, however, some special objects that are also stored therein. These
+		// are marked by special interwiki prefixes (iw) that cannot occcur in real life:
+		// * Rows with iw SMW_SQL2_SMWIW describe "virtual" objects that have no page or other reference in the wiki.
+		//   These are specifically the auxilliary objects ("bnodes") required to encode multi-valued properties,
+		//   which are recognised by their empty title field. As a namespace, they use the id of the object that
+		//   "owns" them, so that the can be reused/maintained more easily.
+		//   A second object type that can occur in SMW_SQL2_SMWIW rows are the internal properties used to
+		//   refer to some position in a multivalued property value. They have titles like "1", "2", "3", ...
+		//   and occur only once (i.e. there is just one such property for the whoel wiki, and it has no type).
+		//   The namespace of those entries is the usual property namespace.
+		// * Rows with iw SMW_SQL2_SMWREDIIW are similar to normal entries for (internal) wiki pages, but the iw
+		//   indicates that the page is a redirect, the target of whihc should be sought using the smw_redi2 table.
+		// * The (unique) row with iw SMW_SQL2_SMWBORDERIW just marks the border between predefined ids (rows that
+		//   are reserved for hardcoded ids built into SMW) and normal entries. It is no object, but makes sure that
+		//   SQL's auto increment counter is high enough to not add any objects before that marked "border".
 
 		$this->setupTable($smw_redi2, // fast redirect resolution
 		              array('s_title'     => 'VARCHAR(255) binary NOT NULL',
@@ -1131,11 +1123,15 @@ class SMWSQLStore2 extends SMWStore {
 		                    'value_blob'        => 'MEDIUMBLOB'), $db, $verbose);
 		$this->setupIndex($smw_text2, array('s_id','p_id'), $db);
 
-		$this->setupTable($smw_spec2, // (generic builtin) special properties
+		// field renaming between SMW 1.3 and SMW 1.4:
+		if ( ($db->tableExists($smw_spec2)) && ($db->fieldExists($smw_spec2, 'sp_id', 'SMWSQLStore2::setup')) ) {
+			$db->query("ALTER TABLE $smw_spec2 CHANGE `sp_id` `p_id` INT(8) UNSIGNED NOT NULL", 'SMWSQLStore2::setup');
+		}
+		$this->setupTable($smw_spec2, // very important special properties, for faster access
 		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL',
-		                    'sp_id'       => 'SMALLINT(6) NOT NULL',
+		                    'p_id'        => 'INT(8) UNSIGNED NOT NULL',
 		                    'value_string'      => 'VARCHAR(255) binary NOT NULL'), $db, $verbose);
-		$this->setupIndex($smw_spec2, array('s_id', 'sp_id', 's_id,sp_id'), $db);
+		$this->setupIndex($smw_spec2, array('s_id', 'p_id', 's_id,p_id'), $db);
 
 		$this->setupTable($smw_subs2, // subproperty/subclass relationships
 		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL',
@@ -1163,7 +1159,30 @@ class SMWSQLStore2 extends SMWStore {
 		                    'o_id'        => 'INT(8) UNSIGNED NOT NULL'), $db, $verbose);
 		$this->setupIndex($smw_conccache, array('o_id'), $db);
 
-		$this->reportProgress("Database initialised successfully.\n",$verbose);
+		$this->reportProgress("Database initialised successfully.\n\n",$verbose);
+		$this->reportProgress("Setting up internal property indices ...\n",$verbose);
+		// Check if we already have this structure
+		$borderiw = $db->selectField($smw_ids, 'smw_iw', 'smw_id=' . $db->addQuotes(50));
+		if ($borderiw != SMW_SQL2_SMWBORDERIW) {
+			$this->reportProgress("   ... allocate space for internal properties\n",$verbose);
+			$this->moveID(50); // make sure position 50 is empty
+			$db->insert('smw_ids', array('smw_id' => 50, 'smw_title' => '', 'smw_namespace' => 0, 'smw_iw' => SMW_SQL2_SMWBORDERIW, 'smw_sortkey' => ''), 'SMW::setup'); //put dummy "border element" on index 50
+			$this->reportProgress("   ",$verbose);
+			for ($i=0; $i<50; $i++) { // make way for built-in ids
+				$this->moveID($i);
+				$this->reportProgress(".",$verbose);
+			}
+			$this->reportProgress("done\n",$verbose);
+		} else {
+			$this->reportProgress("   ... space for internal properties already allocated.\n",$verbose);
+		}
+		// now write actual properties; do that each time, it is cheap enough and we can update sortkeys by current language
+		$this->reportProgress("   ... writing entries for internal properties.\n",$verbose);
+		foreach (SMWSQLStore2::$special_ids as $prop => $id) {
+			$p = SMWPropertyValue::makeProperty($prop);
+			$db->replace('smw_ids', array(), array('smw_id' => $id, 'smw_title' => $p->getXSDValue(), 'smw_namespace' => SMW_NS_PROPERTY, 'smw_iw' => $this->getPropertyInterwiki($p), 'smw_sortkey' => $p->getXSDValue()), 'SMW::setup');
+		}
+		$this->reportProgress("Internal properties initialised successfully.\n",$verbose);
 		return true;
 	}
 
@@ -1223,12 +1242,12 @@ class SMWSQLStore2 extends SMWStore {
 	 * status is 'full', the array also contains keys 'date' (timestamp of
 	 * cache), 'count' (number of results in cache).
 	 *
-	 * @param $concept Title
+	 * @param $concept Title or SMWWikiPageValue
 	 */
 	public function getConceptCacheStatus($concept) {
 		wfProfileIn('SMWSQLStore2::getConceptCacheStatus (SMW)');
 		$db =& wfGetDB( DB_SLAVE );
-		$cid = $this->getSMWPageID($concept->getDBKey(), $concept->getNamespace(), '', false);
+		$cid = $this->getSMWPageID($concept->getDBkey(), $concept->getNamespace(), '', false);
 		$row = $db->selectRow('smw_conc2',
 		         array('concept_txt','concept_features','concept_size','concept_depth','cache_date','cache_count'),
 		         array('s_id'=>$cid), 'SMWSQLStore2::getConceptCacheStatus (SMW)');
@@ -1535,6 +1554,19 @@ class SMWSQLStore2 extends SMWStore {
 	}
 
 	/**
+	 * Retrieve a constant that defines how values of the given type should be stored. The constant refers
+	 * to the internal storage details of this class (which table, which mapping from datavalue features to
+	 * table cells, ...).
+	 */
+	public static function getStorageMode($typeid) {
+		if (array_key_exists($typeid, SMWSQLStore2::$storage_mode)) {
+			return SMWSQLStore2::$storage_mode[$typeid];
+		} else {
+			return SMW_SQL2_ATTS2;
+		}
+	}
+
+	/**
 	 * Find the numeric ID used for the page of the given title and namespace.
 	 * If $canonical is set to true, redirects are taken into account to find the
 	 * canonical alias ID for the given page.
@@ -1544,7 +1576,7 @@ class SMWSQLStore2 extends SMWStore {
 		$sort = '';
 		return $this->getSMWPageIDandSort($title, $namespace, $iw, $sort, $canonical);
 	}
-	
+
 	/**
 	 * Like getSMWPageID, but also sets the Call-By-Ref parameter $sort to the current
 	 * sortkey.
@@ -1638,6 +1670,43 @@ class SMWSQLStore2 extends SMWStore {
 	}
 
 	/**
+	 * Properties have a mechanisms for being predefined (i.e. in PHP instead of in wiki). Special
+	 * "interwiki" prefixes are separate the ids of such predefined properties from the ids for the
+	 * current pages (which may, e.g. be moved, while the predefined object is not movable!).
+	 */
+	private function getPropertyInterwiki(SMWPropertyValue $property) {
+		if ($property->isUserDefined()) {
+			return '';
+		} elseif ($property->isVisible()) {
+			return SMW_SQL2_SMWPREDEFIW;
+		} else {
+			return SMW_SQL2_SMWINTDEFIW;
+		}
+	}
+
+	/**
+	 * Like getSMWPageID but taking into account that properties might be predefined.
+	 */
+	public function getSMWPropertyID(SMWPropertyValue $property) {
+		if ( (!$property->isUserDefined()) && (array_key_exists($property->getPropertyID(), SMWSQLStore2::$special_ids))) { // very important property?
+			return SMWSQLStore2::$special_ids[$property->getPropertyID()];
+		} else {
+			return $this->getSMWPageID($property->getXSDValue(),SMW_NS_PROPERTY,$this->getPropertyInterwiki($property),true);
+		}
+	}
+
+	/**
+	 * Like makeSMWPageID but taking into account that properties might be predefined.
+	 */
+	protected function makeSMWPropertyID(SMWPropertyValue $property) {
+		if ( (!$property->isUserDefined()) && (array_key_exists($property->getPropertyID(), SMWSQLStore2::$special_ids))) { // very important property?
+			return SMWSQLStore2::$special_ids[$property->getPropertyID()];
+		} else {
+			return $this->makeSMWPageID($property->getXSDValue(),SMW_NS_PROPERTY,$this->getPropertyInterwiki($property),true);
+		}
+	}
+
+	/**
 	 * Extend the ID cache as specified. This is called in places where IDs are retrieved
 	 * by SQL queries and it would be a pity to throw them away. This function expects to
 	 * get the contents of a line in smw_ids, i.e. possibly with iw being SMW_SQL2_SMWREDIIW.
@@ -1663,7 +1732,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * (the id of the page that uses the Bnode). Unused Bnodes are not deleted but
 	 * marked as available by setting smw_namespace to 0. This method then tries to 
 	 * reuse an unused bnode before making a new one.
-	 * NOTE: every call to this function, even if the same parameter id is used, returns
+	 * @note Every call to this function, even if the same parameter id is used, returns
 	 * a new bnode id!
 	 */
 	protected function makeSMWBnodeID($sid) {
@@ -1689,23 +1758,72 @@ class SMWSQLStore2 extends SMWStore {
 		return $id;
 	}
 
+	/**
+	 * Change an internal id to another value. If no target value is given, the value is changed
+	 * to become the last id entry (based on the automatic id increment of the database). Whatever
+	 * currently occupies this id will be moved consistently in all relevant tables. Whatever
+	 * currently occupies the target id will be ignored (it should be ensured that nothing is moved
+	 * to an id that is still in use somewhere).
+	 */
+	protected function moveID($curid, $targetid = 0) {
+		$db =& wfGetDB( DB_MASTER );
+		$row = $db->selectRow('smw_ids', array('smw_id', 'smw_namespace', 'smw_title', 'smw_iw', 'smw_sortkey'), array('smw_id' => $curid), 'SMWSQLStore2::moveID');
+		if ($row === false) return; // no id at current position, ignore
+		if ($targetid == 0) {
+			$db->insert('smw_ids', array('smw_id' => 0, 'smw_title' => $row->smw_title, 'smw_namespace' => $row->smw_namespace, 'smw_iw' => $row->smw_iw, 'smw_sortkey' => $row->smw_sortkey), 'SMW::moveID');
+			$targetid = $db->insertId();
+		} else {
+			$db->insert('smw_ids', array('smw_id' => $targetid, 'smw_title' => $row->smw_title, 'smw_namespace' => $row->smw_namespace, 'smw_iw' => $row->smw_iw, 'smw_sortkey' => $row->smw_sortkey), 'SMW::moveID');
+		}
+		$db->delete('smw_ids', array('smw_id'=>$curid), 'SMWSQLStore2::moveID');
+		// Bnode references use namespace field to store ids:
+		$db->update('smw_ids', array('smw_namespace' => $targetid), array('smw_title' => '', 'smw_namespace' => $curid, 'smw_iw' => SMW_SQL2_SMWIW), 'SMW::moveID');
+		// now change all id entries in all other tables:
+		$cond_array = array( 's_id' => $curid );
+		$val_array  = array( 's_id' => $targetid );
+		$db->update('smw_rels2', $val_array, $cond_array, 'SMW::moveID');
+		$db->update('smw_atts2', $val_array, $cond_array, 'SMW::moveID');
+		$db->update('smw_text2', $val_array, $cond_array, 'SMW::moveID');
+		$db->update('smw_spec2', $val_array, $cond_array, 'SMW::moveID');
+		$db->update('smw_subs2', $val_array, $cond_array, 'SMW::moveID');
+		$db->update('smw_inst2', $val_array, $cond_array, 'SMW::moveID');
+		if ($row->smw_namespace == SMW_NS_CONCEPT) {
+			$db->update('smw_conc2', $val_array, $cond_array, 'SMW::moveID');
+		}
+		$db->update('smw_conccache', $val_array, $cond_array, 'SMW::moveID');
+		if ($row->smw_namespace == SMW_NS_PROPERTY) {
+			$cond_array = array( 'p_id' => $curid );
+			$val_array  = array( 'p_id' => $targetid );
+			$db->update('smw_rels2', $val_array, $cond_array, 'SMW::moveID');
+			$db->update('smw_atts2', $val_array, $cond_array, 'SMW::moveID');
+			$db->update('smw_text2', $val_array, $cond_array, 'SMW::moveID');
+			$db->update('smw_spec2', $val_array, $cond_array, 'SMW::moveID');
+		}
+		$cond_array = array( 'o_id' => $curid );
+		$val_array  = array( 'o_id' => $targetid );
+		$db->update('smw_redi2', $val_array, $cond_array, 'SMW::moveID');
+		$db->update('smw_rels2', $val_array, $cond_array, 'SMW::moveID');
+		$db->update('smw_subs2', $val_array, $cond_array, 'SMW::moveID');
+		$db->update('smw_inst2', $val_array, $cond_array, 'SMW::moveID');
+		$db->update('smw_conccache', $val_array, $cond_array, 'SMW::moveID');
+	}
 
 	/**
 	 * Delete all semantic data stored for the given subject.
 	 * Used for update purposes.
 	 */
-	public function deleteSemanticData($subject) {
+	public function deleteSemanticData(SMWWikiPageValue $subject) {
 		$db =& wfGetDB( DB_MASTER );
 		/// NOTE: redirects are handled by updateRedirects(), not here!
 			//$db->delete('smw_redi2', array('s_title' => $subject->getDBkey(),'s_namespace' => $subject->getNamespace()), 'SMW::deleteSubject::Redi2');
-		$id = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki(),false);
+		$id = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki(),false);
 		if ($id == 0) return; // not (directly) used anywhere yet, maybe a redirect but we do not care here
 		$db->delete('smw_rels2', array('s_id' => $id), 'SMW::deleteSubject::Rels2');
 		$db->delete('smw_atts2', array('s_id' => $id), 'SMW::deleteSubject::Atts2');
 		$db->delete('smw_text2', array('s_id' => $id), 'SMW::deleteSubject::Text2');
 		$db->delete('smw_spec2', array('s_id' => $id), 'SMW::deleteSubject::Spec2');
 		$db->delete('smw_inst2', array('s_id' => $id), 'SMW::deleteSubject::Inst2');
-		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
+		if ( ($subject->getNamespace() == SMW_NS_PROPERTY) || ($subject->getNamespace() == NS_CATEGORY) ) {
 			$db->delete('smw_subs2', array('s_id' => $id), 'SMW::deleteSubject::Subs2');
 		}
 
@@ -1722,10 +1840,9 @@ class SMWSQLStore2 extends SMWStore {
 		$db->update('smw_ids', array('smw_namespace' => 0), array('smw_title' => '', 'smw_namespace' => $id, 'smw_iw' => SMW_SQL2_SMWIW), 'SMW::deleteSubject::NaryIds');
 	}
 
-
 	/**
 	 * Trigger all necessary updates for redirect structure on creation, change, and deletion
-	 * of redirects. The title+namespace of the affected page and of its updated redirect 
+	 * of redirects. The title+namespace of the affected page and of its updated redirect
 	 * target are given. The target can be empty ('') if none is specified.
 	 * Returns the canonical ID that is now to be used for the subject, or 0 if the subject did
 	 * not occur anywhere yet.
@@ -1840,6 +1957,22 @@ class SMWSQLStore2 extends SMWStore {
 		unset($this->m_semdata[$sid]); unset($this->m_semdata[$new_tid]); unset($this->m_semdata[$old_tid]);
 		unset($this->m_sdstate[$sid]); unset($this->m_sdstate[$new_tid]); unset($this->m_sdstate[$old_tid]);
 		return ($new_tid==0)?$sid:$new_tid;
+	}
+
+
+
+	/**
+	 * @deprecated Will vanish before SMW 1.4, use getPropertyValues
+	 */
+	function getSpecialValues($subject, $specialprop, $requestoptions = NULL) {
+		return $this->getPropertyValues($subject,SMWPropertyValue::makeProperty($specialprop),$requestoptions);
+	}
+
+	/**
+	 * @deprecated Will vanish before SMW 1.4, use getPropertySubject
+	 */
+	function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = NULL) {
+		return $this->getPropertySubjects(SMWPropertyValue::makeProperty($specialprop),$value,$requestoptions);
 	}
 
 }

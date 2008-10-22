@@ -143,7 +143,7 @@ class SMWQueryProcessor {
 	}
 
 	/**
-	 * Preprocess a query as given by an array of parameters as is  typically
+	 * Preprocess a query as given by an array of parameters as is typically
 	 * produced by the #ask parser function. The parsing results in a querystring,
 	 * an array of additional parameters, and an array of additional SMWPrintRequest
 	 * objects, which are filled into call-by-ref parameters.
@@ -169,7 +169,7 @@ class SMWQueryProcessor {
 						$parts[] = '';
 					}
 					$title = NULL;
-				} elseif ($wgContLang->getNsText(NS_CATEGORY) == ucfirst(trim($propparts[0]))) { // print category
+				} elseif ($wgContLang->getNsText(NS_CATEGORY) == ucfirst(trim($propparts[0]))) { // print categories
 					$title = NULL;
 					$printmode = SMWPrintRequest::PRINT_CATS;
 					if (count($parts) == 1) { // no label found, use category label
@@ -177,22 +177,27 @@ class SMWQueryProcessor {
 					}
 				} else { // print property or check category
 					$title = Title::newFromText(trim($propparts[0]), SMW_NS_PROPERTY); // trim needed for \n
-					if ($title === NULL) { // too bad, this is no legal property name, ignore
+					if ($title === NULL) { // too bad, this is no legal property/category name, ignore
 						continue;
 					}
 					if ($title->getNamespace() == SMW_NS_PROPERTY) {
 						$printmode = SMWPrintRequest::PRINT_PROP;
+						$property = SMWPropertyValue::makeProperty($title->getDBKey());
+						$data = $property;
+						$label = $property->getWikiValue();
 					} elseif ($title->getNamespace() == NS_CATEGORY) {
 						$printmode = SMWPrintRequest::PRINT_CCAT;
+						$data = $title;
+						$label = $title->getText();
 					} //else?
-					if (count($parts) == 1) { // no label found, use property/category name
-						$parts[] = $showmode?'':$title->getText();
+					if (count($parts) > 1) { // no label found, use property/category name
+						$label = trim($parts[1]);
 					}
 				}
 				if (count($propparts) == 1) { // no outputformat found, leave empty
 					$propparts[] = '';
 				}
-				$printouts[] = new SMWPrintRequest($printmode, trim($parts[1]), $title, trim($propparts[1]));
+				$printouts[] = new SMWPrintRequest($printmode, $label, $data, trim($propparts[1]));
 			} else { // parameter or query
 				$parts = explode('=',$param,2);
 				if (count($parts) >= 2) {
@@ -639,9 +644,9 @@ class SMWQueryParser {
 				$this->m_errors[] .= wfMsgForContent('smw_valuesubquery', end($name));
 				return NULL; ///TODO: read some more chunks and try to finish [[ ]]
 			}
-			$property = Title::newFromText($name, SMW_NS_PROPERTY);
-			if ($property === NULL) { // illegal title
-				$this->m_errors[] .= wfMsgForContent('smw_badtitle', htmlspecialchars($name));
+			$property = SMWPropertyValue::makeUserProperty($name);
+			if (!$property->isValid()) { // illegal property identifier
+				$this->m_errors = array_merge($this->m_errors, $property->getErrors());
 				return NULL; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
@@ -720,7 +725,7 @@ class SMWQueryParser {
 									$chunk = ']]';
 								}
 							} else {
-								$printlabel = $property->getText();
+								$printlabel = $property->getWikiValue();
 							}
 							if ($chunk == ']]') {
 								return new SMWPrintRequest(SMWPrintRequest::PRINT_PROP, $printlabel, $property, $pm);

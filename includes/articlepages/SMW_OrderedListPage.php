@@ -53,6 +53,7 @@ abstract class SMWOrderedListPage extends Article {
 		$this->until = $wgRequest->getVal( 'until' );
 		if ($this->initParameters()) {
 			$wgOut->addHTML( $this->getHTML() );
+			SMWOutputs::commitToOutputPage($wgOut); // Flush required CSS to output
 		}
 		wfProfileOut( __METHOD__ . ' (SMW)');
 	}

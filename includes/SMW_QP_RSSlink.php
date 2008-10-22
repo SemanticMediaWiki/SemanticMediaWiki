@@ -116,8 +116,8 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			}
 
 			foreach ($res->getPrintRequests() as $printout) {
-				if ((strtolower($printout->getLabel()) == "date") && ($printout->getTypeID() == "_dat")) {
-					$link->setParameter($printout->getTitle()->getText(),'sort');
+				if (($printout->getMode() == SMWPrintRequest::PRINT_PROP) && (strtolower($printout->getLabel()) == "date") && ($printout->getTypeID() == "_dat")) {
+					$link->setParameter($printout->getData()->getWikiValue(),'sort');
 					$link->setParameter('DESC','order');
 				}
 			}

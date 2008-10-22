@@ -49,9 +49,9 @@ class SMWPageProperty extends SpecialPage {
 		}
 		$subject = Title::newFromText( $from );
 		if (NULL != $subject) { $from = $subject->getText(); } else { $from = ''; }
-		$relation = Title::newFromText( $type, SMW_NS_PROPERTY );
-		if (NULL != $relation) {
-			$type = $relation->getText();
+		$property = SMWPropertyValue::makeUserProperty($type);
+		if ($property->isvalid()) {
+			$type = $property->getWikiValue();
 		} else {
 			$type = '';
 		}
@@ -68,13 +68,13 @@ class SMWPageProperty extends SpecialPage {
 		if (('' == $type) || ('' == $from)) { // No relation or subject given.
 			$html .= wfMsg('smw_pp_docu') . "\n";
 		} else { // everything is given
-			$wgOut->setPagetitle($subject->getFullText() . ' ' . $relation->getText());
+			$wgOut->setPagetitle($subject->getFullText() . ' ' . $property->getWikiValue());
 			$options = new SMWRequestOptions();
 			$options->limit = $limit+1;
 			$options->offset = $offset;
 			$options->sort = true;
 			// get results (get one more, to see if we have to add a link to more)
-			$results = &smwfGetStore()->getPropertyValues($subject, $relation, $options);
+			$results = &smwfGetStore()->getPropertyValues($subject, $property, $options);
 
 			// prepare navigation bar
 			if ($offset > 0)

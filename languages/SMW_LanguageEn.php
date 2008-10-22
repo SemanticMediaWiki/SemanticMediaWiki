@@ -47,18 +47,18 @@ protected $m_DatatypeAliases = array(
 
 protected $m_SpecialProperties = array(
 	//always start upper-case
-	SMW_SP_HAS_TYPE  => 'Has type',
-	SMW_SP_HAS_URI   => 'Equivalent URI',
-	SMW_SP_SUBPROPERTY_OF => 'Subproperty of',
-	SMW_SP_DISPLAY_UNITS => 'Display units',
-	SMW_SP_IMPORTED_FROM => 'Imported from',
-	SMW_SP_CONVERSION_FACTOR => 'Corresponds to',
-	SMW_SP_SERVICE_LINK => 'Provides service',
-	SMW_SP_POSSIBLE_VALUE => 'Allows value'
+	'_TYPE' => 'Has type',
+	'_URI'  => 'Equivalent URI',
+	'_SUBP' => 'Subproperty of',
+	'_UNIT' => 'Display units',
+	'_IMPO' => 'Imported from',
+	'_CONV' => 'Corresponds to',
+	'_SERV' => 'Provides service',
+	'_PVAL' => 'Allows value'
 );
 
 protected $m_SpecialPropertyAliases = array(
-	'Display unit' => SMW_SP_DISPLAY_UNITS
+	'Display unit' => '_UNIT'
 );
 
 protected $m_Namespaces = array(

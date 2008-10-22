@@ -5,7 +5,8 @@
  */
 
 /**
- * This datavalue implements datavalues used by special property SMW_SP_IMPORTED_FROM.
+ * This datavalue implements datavalues used by special property '_IMPO' used for assigning
+ * imported vocabulary to some page of the wiki.
  * It looks up a MediaWiki message to find out whether a user-supplied vocabulary name
  * can be imported in the wiki, and whether its declaration is correct (to the extend
  * that this can be checked).

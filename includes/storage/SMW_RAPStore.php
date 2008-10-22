@@ -223,7 +223,7 @@ class SMWRAPStore extends SMWSQLStore {
 	protected function getRAPModel() {
 		$rapstore = $this->getRAPStore();
 		return $rapstore->getModel($this->modeluri);
-	} 
+	}
 	
 	/**
 	 * Closes the connection to the RAP DB. As of now, this is disabled since it
@@ -232,57 +232,6 @@ class SMWRAPStore extends SMWSQLStore {
 	 */
 	protected function closeRAP() {
 		//$this->rapstore->close();
-	}	
-		
-///// Reading methods -- All forwarded /////
-	function getSpecialValues(Title $subject, $specialprop, $requestoptions = NULL) {
-		return parent::getSpecialValues($subject, $specialprop, $requestoptions);
-	}
-	function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = NULL) {
-		return parent::getSpecialSubjects($specialprop, $value, $requestoptions);
-	}
-
-	function getPropertyValues($subject, $property, $requestoptions = NULL, $outputformat = '') {
-		return parent::getPropertyValues($subject, $property, $requestoptions, $outputformat);
-	}
-	function getPropertySubjects(Title $property, $value, $requestoptions = NULL) {
-		return parent::getPropertySubjects($property, $value, $requestoptions);
-	}
-	function getAllPropertySubjects(Title $property, $requestoptions = NULL) {
-		return parent::getAllPropertySubjects($property, $requestoptions);
-	}
-	function getProperties(Title $subject, $requestoptions = NULL) {
-		return parent::getProperties($subject, $requestoptions);
-	}
-	function getInProperties(SMWDataValue $object, $requestoptions = NULL) {
-		return parent::getInProperties($object, $requestoptions);	
-	}
-	/**
-	* This one returns semantic data from the parent store (RAP is only made for writing, reading is ALL handles by the SQL store)
-	**/
-	function getSemanticData($subject, $filter = false){
-		return parent::getSemanticData($subject, $filter);
-	}
-
-///// Query answering -- all forwarded /////
-
-	function getQueryResult(SMWQuery $query) {
-		return parent::getQueryResult($query);
-	}
-
-///// Special page functions -- all forwarded /////
-
-	function getPropertiesSpecial($requestoptions = NULL) {
-		return parent::getPropertiesSpecial($requestoptions);
-	}
-	function getUnusedPropertiesSpecial($requestoptions = NULL) {
-		return parent::getUnusedPropertiesSpecial($requestoptions);
-	}
-	function getWantedPropertiesSpecial($requestoptions = NULL) {
-		return parent::getWantedPropertiesSpecial($requestoptions);
-	}
-	function getStatistics() {
-		return parent::getStatistics();
 	}
 
 	/**

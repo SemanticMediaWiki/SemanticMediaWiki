@@ -31,7 +31,7 @@ class SMWFactbox {
 				}
 			break;
 			case SMW_FACTBOX_NONEMPTY: // show only if non-empty
-				if ( (!$semdata->hasProperties()) && (!$semdata->hasVisibleSpecialProperties()) ) {
+				if ( !$semdata->hasVisibleProperties() ) {
 					wfProfileOut("SMWFactbox::printFactbox (SMW)");
 					return;
 				}
@@ -49,36 +49,32 @@ class SMWFactbox {
 		        '<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
 		        '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
 		        '<table class="smwfacttable">' . "\n";
-		if ($semdata->hasProperties()  || $semdata->hasSpecialProperties()) {
-			foreach($semdata->getProperties() as $key => $property) {
-				if ($property instanceof Title) {
-					$text .= '<tr><td class="smwpropname">[[' . $property->getPrefixedText() . '|' . preg_replace('/[ ]/u','&nbsp;',$property->getText(),2) . ']] </td><td class="smwprops">';
-					/// NOTE: the preg_replace is a slight hack to ensure that the left column does not get too narrow
-				} else { // special property
-					if ($key{0} == '_') continue; // internal special property without label
-					SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
-					$text .= '<tr><td class="smwspecname"><span class="smwttinline"><span class="smwbuiltin">[[' .
-					          $wgContLang->getNsText(SMW_NS_PROPERTY) . ':' . $key . '|' . $key .
-					          ']]</span><span class="smwttcontent">' . wfMsgForContent('smw_isspecprop') .
-					          '</span></span></td><td class="smwspecs">';
-				}
-
-				$propvalues = $semdata->getPropertyValues($property);
-				$l = count($propvalues);
-				$i=0;
-				foreach ($propvalues as $propvalue) {
-					if ($i!=0) {
-						if ($i>$l-2) {
-							$text .= wfMsgForContent('smw_finallistconjunct') . ' ';
-						} else {
-							$text .= ', ';
-						}
-					}
-					$i+=1;
-					$text .= $propvalue->getLongWikiText(true) . $propvalue->getInfolinkText(SMW_OUTPUT_WIKI);
-				}
-				$text .= '</td></tr>';
+		foreach($semdata->getProperties() as $property) {
+			if ($property->isUserDefined()) { // user defined property
+				$property->setCaption(preg_replace('/[ ]/u','&nbsp;',$property->getWikiValue(),2));
+				/// NOTE: the preg_replace is a slight hack to ensure that the left column does not get too narrow
+				$text .= '<tr><td class="smwpropname">' . $property->getLongWikiText(true) . '</td><td class="smwprops">';
+			} elseif ($property->isVisible()) { // predefined property
+				$text .= '<tr><td class="smwspecname">' . $property->getLongWikiText(true) . '</td><td class="smwspecs">';
+			} else { // predefined, internal property
+				continue;
 			}
+
+			$propvalues = $semdata->getPropertyValues($property);
+			$l = count($propvalues);
+			$i=0;
+			foreach ($propvalues as $propvalue) {
+				if ($i!=0) {
+					if ($i>$l-2) {
+						$text .= wfMsgForContent('smw_finallistconjunct') . ' ';
+					} else {
+						$text .= ', ';
+					}
+				}
+				$i+=1;
+				$text .= $propvalue->getLongWikiText(true) . $propvalue->getInfolinkText(SMW_OUTPUT_WIKI);
+			}
+			$text .= '</td></tr>';
 		}
 		$text .= '</table></div>';
 		wfProfileOut("SMWFactbox::printFactbox (SMW)");

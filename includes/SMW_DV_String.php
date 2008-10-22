@@ -21,7 +21,7 @@ class SMWStringValue extends SMWDataValue {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		if ($value!='') {
 			$this->m_value = smwfXMLContentEncode($value);
-			if ( (strlen($this->m_value) > 255) && ($this->m_typeid == '_str') ) { // limit size (for DB indexing)
+			if ( (strlen($this->m_value) > 255) && ($this->m_typeid != '_txt') && ($this->m_typeid != '_cod') ) { // limit size (for DB indexing)
 				$this->addError(wfMsgForContent('smw_maxstring', mb_substr($value, 0, 42) . ' <span class="smwwarning">[&hellip;]</span> ' . mb_substr($value, mb_strlen($this->m_value) - 42)));
 			}
 		} else {
@@ -68,7 +68,7 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getInfolinks() {
-		if ($this->m_typeid == '_str') {
+		if ( ($this->m_typeid != '_txt') && ($this->m_typeid != '_cod') ) {
 			return SMWDataValue::getInfolinks();
 		}
 		return $this->m_infolinks;
@@ -78,10 +78,10 @@ class SMWStringValue extends SMWDataValue {
 		// Create links to mapping services based on a wiki-editable message. The parameters 
 		// available to the message are:
 		// $1: urlencoded string
-		if ($this->m_typeid != '_str') {
-			return false; // no services for Type:Text and Type:Code
-		} else {
+		if ( ($this->m_typeid != '_txt') && ($this->m_typeid != '_cod') ){
 			return array(rawurlencode($this->m_value));
+		} else {
+			return false; // no services for Type:Text and Type:Code
 		}
 	}
 

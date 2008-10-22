@@ -131,7 +131,7 @@ abstract class SMWLanguage {
 	public function findSpecialPropertyLabel($id) {
 		if (array_key_exists($id, $this->m_SpecialProperties)) {
 			return $this->m_SpecialProperties[$id];
-		} else { // language bug, incomplete translation
+		} else { // incomplete translation (language bug) or deliberately invisible property
 			return false;
 		}
 	}
