@@ -641,7 +641,7 @@ class SMWQueryParser {
 		$typeid = '_wpg';
 		foreach ($propertynames as $name) {
 			if ($typeid != '_wpg') { // non-final property in chain was no wikipage: not allowed
-				$this->m_errors[] .= wfMsgForContent('smw_valuesubquery', end($name));
+				$this->m_errors[] = wfMsgForContent('smw_valuesubquery', $prevname);
 				return NULL; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 			$property = SMWPropertyValue::makeUserProperty($name);
@@ -650,6 +650,7 @@ class SMWQueryParser {
 				return NULL; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
+			$prevname = $name;
 			$properties[] = $property;
 		} ///NOTE: after iteration, $property and $typeid correspond to last value
 
