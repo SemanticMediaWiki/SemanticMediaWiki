@@ -124,6 +124,12 @@ class SMWParseData {
 			$semdata = new SMWSemanticData($semdata->getSubject());
 		}
 
+// 		global $wgContLang;
+// 		$pmdat = SMWPropertyValue::makeProperty('_MDAT');
+// 		$timestamp = Revision::getTimeStampFromID($title->getLatestRevID());
+// 		$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$timestamp));
+// 		$semdata->addPropertyObjectValue($pmdat,$dv);
+
 		// Check if the semantic data has been changed.
 		// Sets the updateflag to true if so.
 		// Careful: storage access must happen *before* the storage update;
@@ -224,9 +230,39 @@ class SMWParseData {
 	}
 
 	/**
+	 * Hook function fetches category information and other final settings from parser output,
+	 * so that they are also replicated in SMW for more efficient querying.
+	 */
+	static public function onParserAfterTidy(&$parser, &$text) {
+		if (SMWParseData::getSMWData($parser) === NULL) return true;
+		$categories = $parser->mOutput->getCategoryLinks();
+		foreach ($categories as $name) {
+			$pinst = SMWPropertyValue::makeProperty('_INST');
+			$dv = SMWDataValueFactory::newPropertyObjectValue($pinst);
+			$dv->setValues($name,NS_CATEGORY);
+			SMWParseData::getSMWData($parser)->addPropertyObjectValue($pinst,$dv);
+			if (SMWParseData::getSMWData($parser)->getSubject()->getNamespace() == NS_CATEGORY) {
+				$psubc = SMWPropertyValue::makeProperty('_SUBC');
+				$dv = SMWDataValueFactory::newPropertyObjectValue($psubc);
+				$dv->setValues($name,NS_CATEGORY);
+				SMWParseData::getSMWData($parser)->addPropertyObjectValue($psubc,$dv);
+			}
+		}
+	// 	global $wgContLang;
+	// 	$pmdat = SMWPropertyValue::makeProperty('_MDAT');
+	// 	$timestamp = Revision::getTimeStampFromID($parser->getTitle()->getLatestRevID());
+	// 	$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$timestamp));
+	// 	SMWParseData::getSMWData($parser)->addPropertyObjectValue($pmdat,$dv);
+
+		$sortkey = ($parser->mDefaultSort?$parser->mDefaultSort:SMWParseData::getSMWData($parser)->getSubject()->getText());
+		SMWParseData::getSMWData($parser)->getSubject()->setSortkey($sortkey);
+		return true;
+	}
+
+	/**
 	 * Used to updates data after changes of templates, but also at each saving of an article.
 	 */
-	public static function onLinksUpdateConstructed($links_update) {
+	static public function onLinksUpdateConstructed($links_update) {
 		if (isset($links_update->mParserOutput)) {
 			$output = $links_update->mParserOutput;
 		} else { // MediaWiki <= 1.13 compatibility
@@ -244,7 +280,7 @@ class SMWParseData {
 	 *  This method will be called whenever an article is deleted so that
 	 *  semantic properties are cleared appropriately.
 	 */
-	public static function onArticleDelete(&$article, &$user, &$reason) {
+	static public function onArticleDelete(&$article, &$user, &$reason) {
 		smwfGetStore()->deleteSubject($article->getTitle());
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
@@ -253,7 +289,7 @@ class SMWParseData {
 	 *  This method will be called whenever an article is moved so that
 	 *  semantic properties are moved accordingly.
 	 */
-	public static function onTitleMoveComplete(&$old_title, &$new_title, &$user, $pageid, $redirid) {
+	static public function onTitleMoveComplete(&$old_title, &$new_title, &$user, $pageid, $redirid) {
 		smwfGetStore()->changeTitle($old_title, $new_title, $pageid, $redirid);
 		return true; // always return true, in order not to stop MW's hook processing!
 	}

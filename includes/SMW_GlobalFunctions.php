@@ -252,10 +252,10 @@ function smwfSetupExtension() {
 	$wgHooks['InternalParseBeforeLinks'][] = 'SMWParserExtensions::onInternalParseBeforeLinks'; // parse annotations in [[link syntax]]
 	$wgHooks['ArticleDelete'][] = 'SMWParseData::onArticleDelete'; // delete annotations
 	$wgHooks['TitleMoveComplete'][] = 'SMWParseData::onTitleMoveComplete'; // move annotations
-    $wgHooks['LinksUpdateConstructed'][] = 'SMWParseData::onLinksUpdateConstructed'; // update data after template change and at safe
+	$wgHooks['LinksUpdateConstructed'][] = 'SMWParseData::onLinksUpdateConstructed'; // update data after template change and at safe
+	$wgHooks['ParserAfterTidy'][] = 'SMWParseData::onParserAfterTidy'; // fetch some MediaWiki data for replication in SMW's store
 	$wgHooks['OutputPageParserOutput'][] = 'SMWFactbox::onOutputPageParserOutput'; // copy some data for later Factbox display
 
-	$wgHooks['ParserAfterTidy'][] = 'smwfOnParserAfterTidy'; // fetch some MediaWiki data for replication in SMW's store
 	$wgHooks['ArticleFromTitle'][] = 'smwfOnArticleFromTitle'; // special implementations for property/type articles
 
 	if( defined( 'MW_SUPPORTS_PARSERFIRSTCALLINIT' ) ) {
@@ -315,30 +315,6 @@ function smwfShowBrowseLink($skintemplate) {
     	echo "<li id=\"t-smwbrowselink\">" . $browselink->getHTML() . "</li>";
     }
     return true;
-}
-
-/**
- * Hook function fetches category information and other final settings from parser output,
- * so that they are also replicated in SMW for more efficient querying.
- */
-function smwfOnParserAfterTidy(&$parser, &$text) {
-	if (SMWParseData::getSMWData($parser) === NULL) return true;
-	$categories = $parser->mOutput->getCategoryLinks();
-	foreach ($categories as $name) {
-		$pinst = SMWPropertyValue::makeProperty('_INST');
-		$dv = SMWDataValueFactory::newPropertyObjectValue($pinst);
-		$dv->setValues($name,NS_CATEGORY);
-		SMWParseData::getSMWData($parser)->addPropertyObjectValue($pinst,$dv);
-		if (SMWParseData::getSMWData($parser)->getSubject()->getNamespace() == NS_CATEGORY) {
-			$psubc = SMWPropertyValue::makeProperty('_SUBC');
-			$dv = SMWDataValueFactory::newPropertyObjectValue($psubc);
-			$dv->setValues($name,NS_CATEGORY);
-			SMWParseData::getSMWData($parser)->addPropertyObjectValue(SMWPropertyValue::makeProperty('_SUBC'),$dv);
-		}
-	}
-	$sortkey = ($parser->mDefaultSort?$parser->mDefaultSort:SMWParseData::getSMWData($parser)->getSubject()->getText());
-	SMWParseData::getSMWData($parser)->getSubject()->setSortkey($sortkey);
-	return true;
 }
 
 /**********************************************/
