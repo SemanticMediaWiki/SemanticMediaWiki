@@ -443,26 +443,30 @@ class SMWSQLStore2QueryEngine {
 		$query->joinfield = "$query->alias.s_id";
 		if ($property instanceof SMWPropertyValue) {
 			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
+			$mode = SMWSQLStore2::getStorageMode($typeid);
 			$pid = $this->m_store->getSMWPropertyID($property);
 			$sortkey = $property->getXSDValue();
-			// also make property hierarchy
-			$pqid = SMWSQLStore2Query::$qnum;
-			$pquery = new SMWSQLStore2Query();
-			$pquery->type = SMW_SQL2_PROP_HIERARCHY;
-			$pquery->joinfield = array($pid);
-			$query->components[$pqid] = "$query->alias.p_id";
-			$this->m_queries[$pqid] = $pquery;
+			if ($mode != SMW_SQL2_SUBS2) { // also make property hierarchy (though not for all properties)
+				$pqid = SMWSQLStore2Query::$qnum;
+				$pquery = new SMWSQLStore2Query();
+				$pquery->type = SMW_SQL2_PROP_HIERARCHY;
+				$pquery->joinfield = array($pid);
+				$query->components[$pqid] = "$query->alias.p_id";
+				$this->m_queries[$pqid] = $pquery;
+			}
 		} else {
 			$pid = $property;
 			$sortkey = false;
-			// no property hierarchy
-			$query->where = "$query->alias.p_id=" . $this->m_dbs->addQuotes($pid);
+			$mode = SMWSQLStore2::getStorageMode($typeid);
+			if ($mode != SMW_SQL2_SUBS2) { // no property hierarchy, but normal query (not for all properties)
+				$query->where = "$query->alias.p_id=" . $this->m_dbs->addQuotes($pid);
+			}
 		}
 		$mode = SMWSQLStore2::getStorageMode($typeid);
 		$sortfield = ''; // used if we should sort by this property
 		switch ($mode) {
-			case SMW_SQL2_RELS2: // subconditions as subqueries (compiled)
-				$query->jointable = 'smw_rels2';
+			case SMW_SQL2_RELS2: case SMW_SQL2_SUBS2: // subconditions as subqueries (compiled)
+				$query->jointable = ($mode==SMW_SQL2_RELS2)?'smw_rels2':'smw_subs2';
 				$sub = $this->compileQueries($valuedesc);
 				if ($sub >= 0) {
 					$query->components[$sub] = "$query->alias.o_id";
@@ -503,24 +507,18 @@ class SMWSQLStore2QueryEngine {
 			case SMW_SQL2_TEXT2: // no subconditions
 				$query->jointable = 'smw_text2';
 			break;
-			case SMW_SQL2_ATTS2: // subquery only conj/disj of values, compile to single "where"
-				$query->jointable = 'smw_atts2';
+			case SMW_SQL2_ATTS2: case SMW_SQL2_SPEC2: // subquery only conj/disj of values, compile to single "where"
+				$query->jointable = ($mode==SMW_SQL2_ATTS2)?'smw_atts2':'smw_spec2';
 				$aw = $this->compileAttributeWhere($valuedesc,"$query->alias");
 				if ($aw != '') {
 					$query->where .= ($query->where?' AND ':'') . $aw;
 				}
 				if ( $sortkey && array_key_exists($sortkey, $this->m_sortkeys) ) {
-					$sortfield = "$query->alias." .  (SMWDataValueFactory::newTypeIDValue($typeid)->isNumeric()?'value_num':'value_xsd');
-				}
-			break;
-			case SMW_SQL2_SPEC2: // subquery only conj/disj of values, compile to single "where"
-				$query->jointable = 'smw_spec2';
-				$aw = $this->compileAttributeWhere($valuedesc,"$query->alias");
-				if ($aw != '') {
-					$query->where .= ($query->where?' AND ':'') . $aw;
-				}
-				if ( $sortkey && array_key_exists($sortkey, $this->m_sortkeys) ) {
-					$sortfield = "$query->alias.value_string";
+					if ($mode==SMW_SQL2_ATTS2) {
+						$sortfield = "$query->alias." .  (SMWDataValueFactory::newTypeIDValue($typeid)->isNumeric()?'value_num':'value_xsd');
+					} else {
+						$sortfield = "$query->alias.value_string";
+					}
 				}
 			break;
 			default: // drop this query
