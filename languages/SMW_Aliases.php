@@ -82,6 +82,13 @@ $aliases['fi'] = array(
 	'Browse' => array( 'Selaa' ),
 );
 
+/** Khmer (ភាសាខ្មែរ) */
+$aliases['km'] = array(
+	'Browse' => array( 'រាវរក' ),
+	'Properties' => array( 'លក្ខណៈ' ),
+	'Types' => array( 'ប្រភេទ' ),
+);
+
 /** Luxembourgish (Lëtzebuergesch) */
 $aliases['lb'] = array(
 	'Ask' => array( 'Froen' ),

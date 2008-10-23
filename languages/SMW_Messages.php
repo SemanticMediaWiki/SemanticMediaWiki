@@ -1760,6 +1760,7 @@ $messages['hil'] = array(
  * @author Dalibor Bosits
  */
 $messages['hr'] = array(
+	'smw_oi_action' => 'Uvezi',
 	'smw_browse_go' => 'Kreni',
 );
 
@@ -2334,6 +2335,8 @@ $messages['km'] = array(
 	'smw_sbv_value' => 'តំលៃ',
 	'browse' => 'រាវរកវិគី',
 	'smw_browse_go' => 'ទៅ',
+	'smw_pp_from' => 'ពីទំព័រ',
+	'smw_pp_submit' => 'ស្វែងរកលទ្ធផល',
 	'smw_result_prev' => 'មុន',
 	'smw_result_next' => 'បន្ទាប់',
 	'smw_result_results' => 'លទ្ធផល',
@@ -3960,6 +3963,7 @@ $messages['sv'] = array(
 	'smw_no_importelement' => 'Elementet "$1" är inte tillgänglig för importering.',
 	'smw_parseerror' => 'Det angivna värdet förståddes inte.',
 	'smw_notitle' => '"$1" kan inte användas som sidnamn på den här wikin.',
+	'smw_wrong_namespace' => 'Endast sidor i namnrymden "$1" tillåts här.',
 	'smw_unknowntype' => 'Typen "$1" som är definierad för egenskapen stödjs inte.',
 	'smw_manytypes' => 'Mer än en typ definierad för egenskapen.',
 	'smw_emptystring' => 'Tomma stränger accepteras inte.',
@@ -4005,9 +4009,9 @@ Gör backup på din data innan du använder den.',
 	'smw_type_header' => 'Egenskaper av typen “$1”',
 	'smw_typearticlecount' => 'Visar $1 {{PLURAL:$1|egenskap|egenskaper}} som använder den här typen.',
 	'smw_attribute_header' => 'Sidor som använder egenskapen "$1"',
-	'smw_attributearticlecount' => 'Visar $1 sidor som använder denna egenskapen.',
+	'smw_attributearticlecount' => 'Visar $1 {{PLURAL:$1|sida|sidor}} som använder den här egenskapen.',
 	'smw_subproperty_header' => 'Underegenskaper',
-	'smw_subpropertyarticlecount' => 'Denna egenskap har följande $1 underegenskaper.',
+	'smw_subpropertyarticlecount' => 'Denna egenskap har följande $1 {{PLURAL:$1|underegenskap|underegenskaper}}.',
 	'exportrdf' => 'Exportera sidor till RDF',
 	'smw_exportrdf_docu' => '<p>Den här sidan låter dig hämta data från en sida i RDF-format.
 Skriv sidtitlar i textrutan härunder för att exportera sidor (en titel per rad).</p>',
@@ -4081,6 +4085,8 @@ Antalet felaktiga egenskaper visas inom parenteserna.',
 	'browse' => 'Bläddra igenom wikin',
 	'smw_browse_article' => 'Skriv namnet på sidan du vill börja bläddra från.',
 	'smw_browse_go' => 'Gå',
+	'smw_browse_no_incoming' => 'Inga egenskaper länkar till den här sidan.',
+	'smw_inverse_label_default' => '$1 av',
 	'pageproperty' => 'Sidegenskapssökning',
 	'smw_pp_docu' => 'Sök efter allt innehåll för en egenskap på en given sida.
 Skriv in både en sida och en egenskap.',
@@ -4091,6 +4097,7 @@ Skriv in både en sida och en egenskap.',
 	'smw_result_next' => 'Nästa',
 	'smw_result_results' => 'Resultat',
 	'smw_result_noresults' => 'Beklagar, inga resultat.',
+	'smwadmin' => 'Administratörsfunktioner för Semantic MediaWiki',
 );
 
 /** Telugu (తెలుగు)
