@@ -156,10 +156,17 @@ class SMWSQLStore2QueryEngine {
 		wfProfileIn('SMWSQLStore2Queries::compileMainQuery (SMW)');
 		$qid = $this->compileQueries($query->getDescription()); // compile query, build query "plan"
 		wfProfileOut('SMWSQLStore2Queries::compileMainQuery (SMW)');
-		if ($qid >= 0) { // append to root
-			$qobj->components = array($qid => "$qobj->alias.smw_id");
-			$qobj->sortfields = $this->m_queries[$qid]->sortfields;
+		if ($qid < 0) { // no valid/supported condition; ensure that at least only proper pages are delivered
+			$qid = SMWSQLStore2Query::$qnum;
+			$q = new SMWSQLStore2Query();
+			$q->jointable = 'smw_ids';
+			$q->joinfield = "$q->alias.smw_id";
+			$q->where = "$q->alias.smw_iw!=" . $this->m_dbs->addQuotes(SMW_SQL2_SMWIW) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes(SMW_SQL2_SMWREDIIW) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes(SMW_SQL2_SMWBORDERIW) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes(SMW_SQL2_SMWINTDEFIW);
+			$this->m_queries[$qid] = $q;
 		}
+		// append query to root:
+		$qobj->components = array($qid => "$qobj->alias.smw_id");
+		$qobj->sortfields = $this->m_queries[$qid]->sortfields;
 		$this->m_queries[$rootid] = $qobj;
 
 		$this->applyOrderConditions($query,$rootid); // may extend query if needed for sorting
@@ -506,6 +513,16 @@ class SMWSQLStore2QueryEngine {
 					$sortfield = "$query->alias." .  (SMWDataValueFactory::newTypeIDValue($typeid)->isNumeric()?'value_num':'value_xsd');
 				}
 			break;
+			case SMW_SQL2_SPEC2: // subquery only conj/disj of values, compile to single "where"
+				$query->jointable = 'smw_spec2';
+				$aw = $this->compileAttributeWhere($valuedesc,"$query->alias");
+				if ($aw != '') {
+					$query->where .= ($query->where?' AND ':'') . $aw;
+				}
+				if ( $sortkey && array_key_exists($sortkey, $this->m_sortkeys) ) {
+					$sortfield = "$query->alias.value_string";
+				}
+			break;
 			default: // drop this query
 				$query->type = SMW_SQL2_NOQUERY;
 				$sortfield = false;
@@ -522,8 +539,13 @@ class SMWSQLStore2QueryEngine {
 	protected function compileAttributeWhere(SMWDescription $description, $jointable) {
 		if ($description instanceof SMWValueDescription) {
 			$dv = $description->getDatavalue();
-			$value = $dv->isNumeric() ? $dv->getNumericValue() : $dv->getXSDValue();
-			$field = $dv->isNumeric() ? "$jointable.value_num" : "$jointable.value_xsd";
+			if (SMWSQLStore2::getStorageMode($dv->getTypeID()) == SMW_SQL2_SPEC2) {
+				$value = $dv->getXSDValue();
+				$field = "$jointable.value_string";
+			} else { //should be SMW_SQL2_ATTS2
+				$value = $dv->isNumeric() ? $dv->getNumericValue() : $dv->getXSDValue();
+				$field = $dv->isNumeric() ? "$jointable.value_num" : "$jointable.value_xsd";
+			}
 			switch ($description->getComparator()) {
 				case SMW_CMP_LEQ: $comp = '<='; break;
 				case SMW_CMP_GEQ: $comp = '>='; break;
