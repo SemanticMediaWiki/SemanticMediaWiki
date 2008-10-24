@@ -82,6 +82,20 @@ $aliases['fi'] = array(
 	'Browse' => array( 'Selaa' ),
 );
 
+/** Upper Sorbian (Hornjoserbsce) */
+$aliases['hsb'] = array(
+	'Ask' => array( 'Semantiske pytanje' ),
+	'Browse' => array( 'Přepytać' ),
+	'ExportRDF' => array( 'RDF eksportować' ),
+	'PageProperty' => array( 'Kajkosć strony' ),
+	'Properties' => array( 'Kajkosće' ),
+	'SearchByProperty' => array( 'Pytanje po kajkosći' ),
+	'SemanticStatistics' => array( 'Semantiska statistika' ),
+	'Types' => array( 'Typy' ),
+	'UnusedProperties' => array( 'Njewužiwane kajkosće' ),
+	'WantedProperties' => array( 'Falowace kajkosće' ),
+);
+
 /** Khmer (ភាសាខ្មែរ) */
 $aliases['km'] = array(
 	'Browse' => array( 'រាវរក' ),
