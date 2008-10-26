@@ -260,6 +260,7 @@ class SMWPropertyValue extends SMWDataValue {
 			return $text;
 		} else {
 			SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
+			wfLoadExtensionMessages('SemanticMediaWiki');
 			return '<span class="smwttinline"><span class="smwbuiltin">' . $text .
 			'</span><span class="smwttcontent">' . wfMsgForContent('smw_isspecprop') . '</span></span>';
 		}
