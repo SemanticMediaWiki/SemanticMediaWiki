@@ -100,7 +100,7 @@ class SMWDataValueFactory {
 			return; //init happened before
 		}
 
-		global $smwgContLang, $smwgIP, $wgAutoloadClasses;
+		global $smwgContLang;
 		SMWDataValueFactory::$m_typelabels = $smwgContLang->getDatatypeLabels();
 		SMWDataValueFactory::$m_typealiases = $smwgContLang->getDatatypeAliases();
 		// Setup built-in datatypes.
