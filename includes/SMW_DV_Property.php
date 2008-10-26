@@ -314,7 +314,7 @@ class SMWPropertyValue extends SMWDataValue {
 		SMWPropertyValue::$m_propertyaliases = $smwgContLang->getPropertyAliases();
 		// Setup built-in predefined properties.
 		// NOTE: all ids must start with underscores, where two underscores informally indicate
-		// truly internal (non user-acessible properties). All others should also get a
+		// truly internal (non user-accessible properties). All others should also get a
 		// translation in the language files, or they won't be available for users.
 		SMWPropertyValue::$m_propertytypes = array(
 				'_TYPE'  =>  array('__typ',true),
