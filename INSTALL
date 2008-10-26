@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.3]]
+[[Semantic MediaWiki 1.4d Version for Alpha-Testers!]]
 
 Install instructions for the latest SMW version are also online in a more
 convenient format for reading:
@@ -164,10 +164,11 @@ LocalSettings.php). Especially, you must trigger the SMW database setup via
 Special:SMWAdmin or using the script SMW_setup.php. Further actions may be
 required only if one of the following applies to you.
 
-If you still use a version before SMW 1.2, follow the upgrading instructions
-given at 
+If you still use a version before SMW 1.2, or if you use SMW 1.3 manually set
+to use the old store "SMWSQLStore" or "SMWRAPStore", then follow the upgrading
+instructions given at
 http://semantic-mediawiki.org/wiki/Help:Installation_1.2#Notes_on_Upgrading,
-or SMW will not be working any more. If you have a version that is even older 
+or SMW will not be working any more. If you have a version that is even older
 than SMW 1.0, then read the installation steps given for your version in the
 installation instructions for SMW 1.1:
 http://semantic-mediawiki.org/wiki/Help:Installation_1.1#Notes_on_Upgrading

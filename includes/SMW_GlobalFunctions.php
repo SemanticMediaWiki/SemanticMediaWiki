@@ -30,9 +30,6 @@ define('SMW_SP_SUBPROPERTY_OF','_SUBP');
 define('SMW_SP_SUBCLASS_OF','_SUBC');
 define('SMW_SP_CONCEPT_DESC','_CONC');
 
-/** @deprecated This constant will be removed in SMW 1.4. Use SMW_SP_INSTANCE_OF or SMW_SP_SUBCLASS_OF as appropriate. */
-define('SMW_SP_HAS_CATEGORY',4); // name specific for categories, use "instance of" to distinguish from future explicit "subclass of"
-
 // constants for displaying the factbox
 define('SMW_FACTBOX_HIDDEN', 1);
 define('SMW_FACTBOX_SPECIAL', 2);
