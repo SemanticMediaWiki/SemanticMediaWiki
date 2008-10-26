@@ -40,45 +40,48 @@ class SMWFactbox {
 		}
 
 		// actually build the Factbox text:
-		wfLoadExtensionMessages('SemanticMediaWiki');
-		SMWOutputs::requireHeadItem(SMW_HEADER_STYLE);
-		$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . $semdata->getSubject()->getWikiValue(), 'rdflink');
+		$text = '';
+		if (wfRunHooks( 'smwShowFactbox', array(&$text, $semdata))) {
+			wfLoadExtensionMessages('SemanticMediaWiki');
+			SMWOutputs::requireHeadItem(SMW_HEADER_STYLE);
+			$rdflink = SMWInfolink::newInternalLink(wfMsgForContent('smw_viewasrdf'), $wgContLang->getNsText(NS_SPECIAL) . ':ExportRDF/' . $semdata->getSubject()->getWikiValue(), 'rdflink');
 
-		$browselink = SMWInfolink::newBrowsingLink($semdata->getSubject()->getText(), $semdata->getSubject()->getWikiValue(), 'swmfactboxheadbrowse');
-		$text = '<div class="smwfact">' .
-		        '<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
-		        '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
-		        '<table class="smwfacttable">' . "\n";
-		foreach($semdata->getProperties() as $property) {
-			if (!$property->isShown()) { // showing this is not desired, hide
-				continue;
-			} elseif ($property->isUserDefined()) { // user defined property
-				$property->setCaption(preg_replace('/[ ]/u','&nbsp;',$property->getWikiValue(),2));
-				/// NOTE: the preg_replace is a slight hack to ensure that the left column does not get too narrow
-				$text .= '<tr><td class="smwpropname">' . $property->getLongWikiText(true) . '</td><td class="smwprops">';
-			} elseif ($property->isVisible()) { // predefined property
-				$text .= '<tr><td class="smwspecname">' . $property->getLongWikiText(true) . '</td><td class="smwspecs">';
-			} else { // predefined, internal property
-				continue;
-			}
-
-			$propvalues = $semdata->getPropertyValues($property);
-			$l = count($propvalues);
-			$i=0;
-			foreach ($propvalues as $propvalue) {
-				if ($i!=0) {
-					if ($i>$l-2) {
-						$text .= wfMsgForContent('smw_finallistconjunct') . ' ';
-					} else {
-						$text .= ', ';
-					}
+			$browselink = SMWInfolink::newBrowsingLink($semdata->getSubject()->getText(), $semdata->getSubject()->getWikiValue(), 'swmfactboxheadbrowse');
+			$text .= '<div class="smwfact">' .
+						'<span class="smwfactboxhead">' . wfMsgForContent('smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
+					'<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
+					'<table class="smwfacttable">' . "\n";
+			foreach($semdata->getProperties() as $property) {
+				if (!$property->isShown()) { // showing this is not desired, hide
+					continue;
+				} elseif ($property->isUserDefined()) { // user defined property
+					$property->setCaption(preg_replace('/[ ]/u','&nbsp;',$property->getWikiValue(),2));
+					/// NOTE: the preg_replace is a slight hack to ensure that the left column does not get too narrow
+					$text .= '<tr><td class="smwpropname">' . $property->getLongWikiText(true) . '</td><td class="smwprops">';
+				} elseif ($property->isVisible()) { // predefined property
+					$text .= '<tr><td class="smwspecname">' . $property->getLongWikiText(true) . '</td><td class="smwspecs">';
+				} else { // predefined, internal property
+					continue;
 				}
-				$i+=1;
-				$text .= $propvalue->getLongWikiText(true) . $propvalue->getInfolinkText(SMW_OUTPUT_WIKI);
+
+				$propvalues = $semdata->getPropertyValues($property);
+				$l = count($propvalues);
+				$i=0;
+				foreach ($propvalues as $propvalue) {
+					if ($i!=0) {
+						if ($i>$l-2) {
+							$text .= wfMsgForContent('smw_finallistconjunct') . ' ';
+						} else {
+							$text .= ', ';
+						}
+					}
+					$i+=1;
+					$text .= $propvalue->getLongWikiText(true) . $propvalue->getInfolinkText(SMW_OUTPUT_WIKI);
+				}
+				$text .= '</td></tr>';
 			}
-			$text .= '</td></tr>';
+			$text .= '</table></div>';
 		}
-		$text .= '</table></div>';
 		wfProfileOut("SMWFactbox::printFactbox (SMW)");
 		return $text;
 	}
