@@ -16,7 +16,6 @@
  */
 class SMWPropertyPage extends SMWOrderedListPage {
 
-	protected $special_prop; // code number of special property, false if not.
 	private $subproperties;  // list of sub-properties of this property
 	private $mProperty; // property object
 
@@ -26,7 +25,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	protected function initParameters() {
 		global $smwgContLang, $smwgPropertyPagingLimit;
 		$this->limit = $smwgPropertyPagingLimit;
-		$this->special_prop = $smwgContLang->findSpecialPropertyID($this->mTitle->getText(), false);
+		$this->mProperty = SMWPropertyValue::makeProperty($this->mTitle->getDBKey());
 		return true;
 	}
 
@@ -40,7 +39,6 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * article that indicates further results).
 	 */
 	protected function doQuery() {
-		$this->mProperty = SMWPropertyValue::makeProperty($this->mTitle->getDBKey());
 		$store = smwfGetStore();
 		$options = new SMWRequestOptions();
 		$options->limit = $this->limit + 1;
@@ -56,14 +54,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$options->include_boundary = false;
 			$reverse = true;
 		}
-		if ($this->special_prop === false) {
-			$this->articles = $store->getAllPropertySubjects($this->mProperty, $options);
-		} else {
-			// For now, do not attempt listings for special properties:
-			// they behave differently, have dedicated search UIs, and
-			// might even be unsearchable by design
-			return;
-		}
+		$this->articles = $store->getAllPropertySubjects($this->mProperty, $options);
 		if ($reverse) {
 			$this->articles = array_reverse($this->articles);
 		}
@@ -84,25 +75,29 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		$r = '';
 		$ti = htmlspecialchars( $this->mTitle->getText() );
-		if ($this->special_prop !== false) {
-			$r .= '<p>' .wfMsg('smw_isspecprop') . "</p>\n";
-		} else {
-			$nav = $this->getNavigationLinks();
-			if (count($this->subproperties) > 0) {
-				$r .= "<div id=\"mw-subcategories\">\n<h2>" . wfMsg('smw_subproperty_header',$ti) . "</h2>\n";
-				$r .= '<p>' . wfMsgExt('smw_subpropertyarticlecount', array( 'parsemag' ), min($this->limit, count($this->subproperties))) . "</p>\n";
-				if (count($this->subproperties) < 6) {
-					$r .= $this->shortList(0,count($this->subproperties), $this->subproperties);
-				} else {
-					$r .= $this->columnList(0,count($this->subproperties), $this->subproperties);
-				}
-				$r .= "\n</div>";
+		$nav = $this->getNavigationLinks();
+		if (count($this->subproperties) > 0) {
+			$r .= "<div id=\"mw-subcategories\">\n<h2>" . wfMsg('smw_subproperty_header',$ti) . "</h2>\n";
+			$r .= '<p>';
+			if (!$this->mProperty->isUserDefined()) {
+				$r .= wfMsg('smw_isspecprop') . ' ';
 			}
-			$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
-			$r .= '<h2>' . wfMsg('smw_attribute_header',$ti) . "</h2>\n";
-			$r .= '<p>' . wfMsgExt('smw_attributearticlecount', array( 'parsemag' ), min($this->limit, count($this->articles))) . "</p>\n";
-			$r .= $this->subjectObjectList() . "\n</div>" . $nav;
+			$r .= wfMsgExt('smw_subpropertyarticlecount', array( 'parsemag' ), min($this->limit, count($this->subproperties))) . "</p>\n";
+			if (count($this->subproperties) < 6) {
+				$r .= $this->shortList(0,count($this->subproperties), $this->subproperties);
+			} else {
+				$r .= $this->columnList(0,count($this->subproperties), $this->subproperties);
+			}
+			$r .= "\n</div>";
 		}
+		$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
+		$r .= '<h2>' . wfMsg('smw_attribute_header',$ti) . "</h2>\n";
+		$r .= '<p>';
+		if (!$this->mProperty->isUserDefined()) {
+			$r .= wfMsg('smw_isspecprop') . ' ';
+		}
+		$r .= wfMsgExt('smw_attributearticlecount', array( 'parsemag' ), min($this->limit, count($this->articles))) . "</p>\n";
+		$r .= $this->subjectObjectList() . "\n</div>" . $nav;
 		wfProfileOut( __METHOD__ . ' (SMW)');
 		return $r;
 	}
