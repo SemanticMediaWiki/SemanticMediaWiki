@@ -114,22 +114,22 @@ class SMWParseData {
 	 *  @bug Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
 	static public function storeData($parseroutput, $title, $makejobs = true) {
-		global $smwgEnableUpdateJobs;
+		global $smwgEnableUpdateJobs, $wgContLang;
 		$semdata = $parseroutput->mSMWData;
 		$namespace = $title->getNamespace();
 		$processSemantics = smwfIsSemanticsProcessed($namespace);
 		if (!isset($semdata)) { // no data at all?
 			$semdata = new SMWSemanticData(SMWWikiPageValue::makePageFromTitle($title));
-		} elseif (!$processSemantics) { // data found, but do all operations as if it was empty
-			$semdata = new SMWSemanticData($semdata->getSubject());
 		}
-
-		global $wgContLang;
-		$pmdat = SMWPropertyValue::makeProperty('_MDAT');
-		if ( count($semdata->getPropertyValues($pmdat)) == 0  ) { // no article data present yet, add it here
-			$timestamp = Revision::getTimeStampFromID($title->getLatestRevID());
-			$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$timestamp));
-			$semdata->addPropertyObjectValue($pmdat,$dv);
+		if ($processSemantics) {
+			$pmdat = SMWPropertyValue::makeProperty('_MDAT');
+			if ( count($semdata->getPropertyValues($pmdat)) == 0  ) { // no article data present yet, add it here
+				$timestamp = Revision::getTimeStampFromID($title->getLatestRevID());
+				$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$timestamp));
+				$semdata->addPropertyObjectValue($pmdat,$dv);
+			}
+		} else { // data found, but do all operations as if it was empty
+			$semdata = new SMWSemanticData($semdata->getSubject());
 		}
 
 		// Check if the semantic data has been changed.
@@ -250,12 +250,6 @@ class SMWParseData {
 				SMWParseData::getSMWData($parser)->addPropertyObjectValue($psubc,$dv);
 			}
 		}
-	// 	global $wgContLang;
-	// 	$pmdat = SMWPropertyValue::makeProperty('_MDAT');
-	// 	$timestamp = Revision::getTimeStampFromID($parser->getTitle()->getLatestRevID());
-	// 	$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$timestamp));
-	// 	SMWParseData::getSMWData($parser)->addPropertyObjectValue($pmdat,$dv);
-
 		$sortkey = ($parser->mDefaultSort?$parser->mDefaultSort:SMWParseData::getSMWData($parser)->getSubject()->getText());
 		SMWParseData::getSMWData($parser)->getSubject()->setSortkey($sortkey);
 		return true;
