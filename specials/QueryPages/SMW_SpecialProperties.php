@@ -62,7 +62,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 			$errors[] = wfMsg('smw_propertylackspage');
 			$proplink = $skin->makeBrokenLinkObj( $result[0]->getWikiPageValue()->getTitle(), $result[0]->getWikiValue(), 'action=view');
 		} else { // predefined property
-			$type = SMWDataValueFactory::getPropertyObjectTypeValue($result[0]);
+			$type = $result[0]->getTypesValue();
 			$typestring = $type->getLongHTMLText($skin);
 			if ($typestring == '') $typestring = '&ndash;'; /// FIXME some types o fbuiltin props have no name, and another message should be used then
 			$proplink = $result[0]->getLongHTMLText($skin);

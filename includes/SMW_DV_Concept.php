@@ -142,7 +142,7 @@ class SMWConceptValue extends SMWDataValue {
 				$result->addPropertyObjectValue(SMWExporter::getSpecialElement('owl', 'hasValue'), $subdata);
 			} else {
 				if ($subdata === false) {
-					$owltype = SMWExporter::getOWLPropertyType(SMWDataValueFactory::getPropertyObjectTypeID($desc->getProperty()));
+					$owltype = SMWExporter::getOWLPropertyType($desc->getProperty()->getTypeID());
 					if ($owltype == 'ObjectProperty') {
 						$subdata = new SMWExpData(SMWExporter::getSpecialElement('owl','Thing'));
 					} elseif ($owltype == 'DatatypeProperty') {

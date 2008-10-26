@@ -54,7 +54,8 @@ protected $m_SpecialProperties = array(
 	'_IMPO' => 'Imported from',
 	'_CONV' => 'Corresponds to',
 	'_SERV' => 'Provides service',
-	'_PVAL' => 'Allows value'
+	'_PVAL' => 'Allows value',
+	'_MDAT' => 'Modification date'
 );
 
 protected $m_SpecialPropertyAliases = array(

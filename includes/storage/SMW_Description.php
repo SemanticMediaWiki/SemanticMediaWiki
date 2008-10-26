@@ -124,7 +124,7 @@ class SMWPrintRequest {
 	public function getTypeID() {
 		if ($this->m_typeid === false) {
 			if ($this->m_mode == SMWPrintRequest::PRINT_PROP) {
-				$this->m_typeid = SMWDataValueFactory::getPropertyObjectTypeID($this->m_data);
+				$this->m_typeid = $this->m_data->getTypeID();
 			} else {
 				$this->m_typeid = '_wpg'; // return objects might be titles, but anyway
 			}

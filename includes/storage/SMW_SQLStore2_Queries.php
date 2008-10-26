@@ -442,7 +442,7 @@ class SMWSQLStore2QueryEngine {
 	protected function compilePropertyCondition(&$query, $property, SMWDescription $valuedesc, $typeid=false) {
 		$query->joinfield = "$query->alias.s_id";
 		if ($property instanceof SMWPropertyValue) {
-			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
+			$typeid = $property->getTypeID();
 			$mode = SMWSQLStore2::getStorageMode($typeid);
 			$pid = $this->m_store->getSMWPropertyID($property);
 			$sortkey = $property->getXSDValue();
@@ -479,7 +479,7 @@ class SMWSQLStore2QueryEngine {
 			case SMW_SQL2_NARY2:
 				$query->jointable = 'smw_rels2';
 				if ($valuedesc instanceof SMWValueList) { // anything else is ignored!
-					$typevalue = SMWDataValueFactory::getPropertyObjectTypeValue($property);
+					$typevalue = $property->getTypesValue();
 					$typelabels = $typevalue->getTypeLabels();
 					reset($typelabels);
 					$subqid = SMWSQLStore2Query::$qnum;

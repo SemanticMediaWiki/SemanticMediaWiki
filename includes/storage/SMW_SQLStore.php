@@ -171,7 +171,7 @@ class SMWSQLStore extends SMWStore {
 			///TODO: presumably slow. Try to do less SQL queries by making a join with smw_nary
 			while($row = $db->fetchObject($res)) {
 				$property = Title::makeTitle(SMW_NS_PROPERTY, $row->attribute_title);
-				$type = SMWDataValueFactory::getPropertyObjectTypeValue($property);
+				$type = $property->getTypesValue();
 				$subtypes = $type->getTypeValues();
 				$values = array();
 				for ($i=0; $i < count($subtypes); $i++) { // init array
@@ -444,7 +444,7 @@ class SMWSQLStore extends SMWStore {
 		}
 
 		$result = array();
-		$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
+		$id = $property->getTypeID();
 		switch ($id) {
 			case '_txt': case '_cod':
 				$res = $db->select( $db->tableName('smw_longstrings'),
@@ -476,7 +476,7 @@ class SMWSQLStore extends SMWStore {
 				$db->freeResult($res);
 			break;
 			case '__nry':
-				$type = SMWDataValueFactory::getPropertyObjectTypeValue($property);
+				$type = $property->getTypesValue();
 				$subtypes = $type->getTypeValues();
 				$res = $db->select( $db->tableName('smw_nary'),
 									'nary_key',
@@ -644,7 +644,7 @@ class SMWSQLStore extends SMWStore {
 	function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = NULL) {
 		wfProfileIn("SMWSQLStore::getAllPropertySubjects (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
-		$id = SMWDataValueFactory::getPropertyObjectTypeID($property);
+		$id = $property->getTypeID();
 		switch ($id) {
 			case '_txt': case '_cod':
 				$tablename = 'smw_longstrings';
@@ -1881,7 +1881,7 @@ class SMWSQLStore extends SMWStore {
 				}
 			}
 		} elseif ($description instanceof SMWSomeProperty) {
-			$id = SMWDataValueFactory::getPropertyObjectTypeID($description->getProperty());
+			$id = $description->getProperty()->getTypeID();
 			$sortfield = false;
 			$sortkey = false;
 			switch ($id) {

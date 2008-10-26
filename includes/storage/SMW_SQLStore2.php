@@ -279,7 +279,7 @@ class SMWSQLStore2 extends SMWStore {
 				while($row = $db->fetchObject($res)) {
 					if ( !array_key_exists($row->prop,$properties) ) {
 						$properties[$row->prop] = SMWPropertyValue::makeUserProperty($row->prop);
-						$type = SMWDataValueFactory::getPropertyObjectTypeValue($properties[$row->prop]);
+						$type = $properties[$row->prop]->getTypesValue();
 						$ptypes[$row->prop] = $type->getTypeValues();
 						$dvs[$row->prop] = array();
 					}
@@ -343,7 +343,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		if ($sid != 0) { // subject given, use semantic data cache:
-			$sd = $this->getSemanticData($subject,array(SMWDataValueFactory::getPropertyObjectTypeID($property)));
+			$sd = $this->getSemanticData($subject,array($property->getTypeID()));
 			$result = $this->applyRequestOptions($sd->getPropertyValues($property),$requestoptions);
 			if ($outputformat != '') { // reformat cached values
 				$newres = array();
@@ -357,7 +357,7 @@ class SMWSQLStore2 extends SMWStore {
 		} else { // no subject given, get all values for the given property
 			$db =& wfGetDB( DB_SLAVE );
 			$result = array();
-			$mode = SMWSQLStore2::getStorageMode(SMWDataValueFactory::getPropertyObjectTypeID($property));
+			$mode = SMWSQLStore2::getStorageMode($property->getTypeID());
 			switch ($mode) {
 				case SMW_SQL2_TEXT2:
 					$res = $db->select( 'smw_text2', 'value_blob',
@@ -407,7 +407,7 @@ class SMWSQLStore2 extends SMWStore {
 					$db->freeResult($res);
 				break;
 				case SMW_SQL2_NARY2: ///TODO: currently disabled
-// 					$type = SMWDataValueFactory::getPropertyObjectTypeValue($property);
+// 					$type = $property->getTypesValue();
 // 					$subtypes = $type->getTypeValues();
 // 					$res = $db->select( $db->tableName('smw_nary'),
 // 										'nary_key',
@@ -489,7 +489,7 @@ class SMWSQLStore2 extends SMWStore {
 		$table = '';
 		$sql = 'p_id=' . $db->addQuotes($pid);
 		if ($value === NULL) {
-			$mode = SMWSQLStore2::getStorageMode(SMWDataValueFactory::getPropertyObjectTypeID($property));
+			$mode = SMWSQLStore2::getStorageMode($property->getTypeID());
 		} else {
 			$mode = SMWSQLStore2::getStorageMode($value->getTypeID());
 		}
@@ -833,10 +833,6 @@ class SMWSQLStore2 extends SMWStore {
 
 		$this->m_semdata[$sid] = clone $data; // update cache, important if jobs are directly following this call
 		$this->m_sdstate[$sid] = 0xFFFFFFFF; // everything that one can know
-		if ($subject->getNamespace() == SMW_NS_PROPERTY) { // be sure that this is not invalid after update
-			SMWDataValueFactory::clearTypeCache($subject);
-		}
-
 		wfProfileOut("SMWSQLStore2::updateData (SMW)");
 	}
 

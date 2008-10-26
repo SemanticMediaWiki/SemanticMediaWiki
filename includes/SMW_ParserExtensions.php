@@ -336,7 +336,7 @@ class SMWParserExtensions {
 					$argument = $frame->getArgument($argumentname);
 					$valuestring = $frame->expand($argument);
 					if ($property->isValid()) {
-						$type = SMWDataValueFactory::getPropertyObjectTypeID($property);
+						$type = $property->getTypeID();
 						if ($type == "_wpg") {
 							$matches = array();
 							preg_match_all("/\[\[([^\[\]]*)\]\]/", $valuestring, $matches);

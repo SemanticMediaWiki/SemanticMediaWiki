@@ -30,6 +30,32 @@
  */
 class SMWPropertyValue extends SMWDataValue {
 
+	/** Array for assigning types to predefined properties. Each
+	 * property is associated with an array with the following
+	 * elements:
+	 *
+	 * * ID of datatype to be used for this property
+	 *
+	 * * Boolean, stating if this property is shown in Factbox, Browse, and similar interfaces;
+	 *   (note that this is only relevant if the property can be displayed at all, i.e. has an
+	 *   translated label in the given language; we still set invisible properties to false here)
+	 */
+	static private $m_propertytypes = array(
+		'_TYPE'  =>  array('__typ',true),
+		'_URI'   =>  array('__spu',true),
+		'_INST'  =>  array('__sin',false),
+		'_UNIT'  =>  array('__sps',true),
+		'_IMPO'  =>  array('__imp',true),
+		'_CONV'  =>  array('__sps',true),
+		'_SERV'  =>  array('__sps',true),
+		'_PVAL'  =>  array('__sps',true),
+		'_REDI'  =>  array('__red',true),
+		'_SUBP'  =>  array('__sup',true),
+		'_SUBC'  =>  array('__suc',false),
+		'_CONC'  =>  array('__con',false),
+		'_MDAT'  =>  array('_dat',false)
+	);
+
 	/// If the property is predefined, its internal key is stored here. Otherwise FALSE.
 	protected $m_propertyid;
 	/// If the property is associated with a wikipage, it is stored here. Otherwise NULL.
@@ -137,6 +163,22 @@ class SMWPropertyValue extends SMWDataValue {
 		return ($this->m_wikipage !== NULL);
 	}
 
+	/**
+	 * Specifies whether values of this property should be shown in typical browsing
+	 * interfaces. A property may wish to prevent this if either (1) its information is
+	 * really dull, e.g. being a mere copy of information that is obvious from other
+	 * things that are shown, or (2) the property is set in a hook after parsing, so that
+	 * it is not reliably available when Factboxes are displayed. Properties that are
+	 * internal so that they should never be observed by users, then it is better to just
+	 * not associate any translated label with them, so they never appear anywhere.
+	 */
+	public function isShown() {
+		$this->unstub();
+		return (($this->m_propertyid == '') ||
+		        (array_key_exists($this->m_propertyid, SMWPropertyvalue::$m_propertytypes) &&
+		         SMWPropertyvalue::$m_propertytypes[$this->m_propertyid][1]) );
+	}
+
 	public function getShortWikiText($linked = NULL) {
 		return $this->isVisible()?$this->highlightText($this->m_wikipage->getShortWikiText($linked)):'';
 	}
@@ -184,6 +226,47 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
+	 * Return an SMWTypesValue object representing the datatype of this property.
+	 */
+	public function getTypesValue() {
+		global $smwgPDefaultType;
+		if (!$this->isValid()) { // errors in property, return invalid types value with same errors
+			$result = SMWDataValueFactory::newTypeIDValue('__typ');
+			$result->setXSDValue('__err');
+			$result->addError($this->getErrors());
+		} elseif ($this->isUserDefined()) { // normal property
+			$typearray = smwfGetStore()->getPropertyValues($this->getWikiPageValue(),SMWPropertyValue::makeProperty('_TYPE'));
+			if (count($typearray)==1) { // unique type given
+				$result = current($typearray);
+			} elseif (count($typearray)==0) { // no type given
+				$result = SMWDataValueFactory::newTypeIDValue('__typ');
+				$result->setXSDValue($smwgPDefaultType);
+			} else { // many types given, error
+				wfLoadExtensionMessages('SemanticMediaWiki');
+				$result = SMWDataValueFactory::newTypeIDValue('__typ');
+				$result->setXSDValue('__err');
+				$result->addError(wfMsgForContent('smw_manytypes'));
+			}
+		} else { // pre-defined property
+			$result = SMWDataValueFactory::newTypeIDValue('__typ');
+			if (array_key_exists($this->m_propertyid, SMWPropertyValue::$m_propertytypes)) {
+				$result->setXSDValue(SMWPropertyValue::$m_propertytypes[$this->m_propertyid][0]);
+			} else { // fixed default for special properties
+				$result->setXSDValue('_str');
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Quickly get the type id of some property without necessarily making another datavalue.
+	 */
+	public function getTypeID() {
+		$type = $this->getTypesValue();
+		return $type->isUnary()?$type->getXSDValue():'__nry';
+	}
+
+	/**
 	 * Create special highlighting for hinting at special properties.
 	 */
 	protected function highlightText($text) {
@@ -191,8 +274,8 @@ class SMWPropertyValue extends SMWDataValue {
 			return $text;
 		} else {
 			SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
-			return '<span class="smwttinline"><span class="smwbuiltin">' . $text . '</span><span class="smwttcontent">' . 
-			       wfMsgForContent('smw_isspecprop') . '</span></span>';
+			return '<span class="smwttinline"><span class="smwbuiltin">' . $text .
+			'</span><span class="smwttcontent">' . wfMsgForContent('smw_isspecprop') . '</span></span>';
 		}
 	}
 

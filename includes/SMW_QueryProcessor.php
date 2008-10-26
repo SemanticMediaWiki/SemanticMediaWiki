@@ -649,7 +649,7 @@ class SMWQueryParser {
 				$this->m_errors = array_merge($this->m_errors, $property->getErrors());
 				return NULL; ///TODO: read some more chunks and try to finish [[ ]]
 			}
-			$typeid = SMWDataValueFactory::getPropertyObjectTypeID($property);
+			$typeid = $property->getTypeID();
 			$prevname = $name;
 			$properties[] = $property;
 		} ///NOTE: after iteration, $property and $typeid correspond to last value

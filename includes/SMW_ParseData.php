@@ -124,11 +124,13 @@ class SMWParseData {
 			$semdata = new SMWSemanticData($semdata->getSubject());
 		}
 
-// 		global $wgContLang;
-// 		$pmdat = SMWPropertyValue::makeProperty('_MDAT');
-// 		$timestamp = Revision::getTimeStampFromID($title->getLatestRevID());
-// 		$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$timestamp));
-// 		$semdata->addPropertyObjectValue($pmdat,$dv);
+		global $wgContLang;
+		$pmdat = SMWPropertyValue::makeProperty('_MDAT');
+		if ( count($semdata->getPropertyValues($pmdat)) == 0  ) { // no article data present yet, add it here
+			$timestamp = Revision::getTimeStampFromID($title->getLatestRevID());
+			$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$timestamp));
+			$semdata->addPropertyObjectValue($pmdat,$dv);
+		}
 
 		// Check if the semantic data has been changed.
 		// Sets the updateflag to true if so.
@@ -256,6 +258,34 @@ class SMWParseData {
 
 		$sortkey = ($parser->mDefaultSort?$parser->mDefaultSort:SMWParseData::getSMWData($parser)->getSubject()->getText());
 		SMWParseData::getSMWData($parser)->getSubject()->setSortkey($sortkey);
+		return true;
+	}
+
+	/**
+	 * Fetch additional information that is related to the saving that has just happened,
+	 * e.g. regarding the last edit date. In runs where this hook is not triggered, the
+	 * last DB entry (of MW) will be used to fill such properties.
+	 *
+	 * @note This method directly accesses a member of Article that is informally declared to
+	 * be private. However, there is no way to otherwise access an article's parseroutput for
+	 * the purpose of adding information there. If the private access ever becomes a problem,
+	 * a global/static variable appears to be the only way to get more article data to
+	 * LinksUpdate.
+	 */
+	static public function onNewRevisionFromEditComplete($article, $rev, $baseID) {
+		global $wgContLang;
+		if ( ($article->mPreparedEdit) && ($article->mPreparedEdit->output instanceof ParserOutput)) {
+			$output = $article->mPreparedEdit->output;
+			$title = $article->getTitle();
+			if (!isset($title)) return true; // nothing we can do
+			if (!isset($output->mSMWData)) { // no data container yet, make one
+				$output->mSMWData = new SMWSemanticData(SMWWikiPageValue::makePageFromTitle($title));
+			}
+			$semdata = $output->mSMWData;
+		}
+		$pmdat = SMWPropertyValue::makeProperty('_MDAT');
+		$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$article->getTimestamp()));
+		$semdata->addPropertyObjectValue($pmdat,$dv);
 		return true;
 	}
 
