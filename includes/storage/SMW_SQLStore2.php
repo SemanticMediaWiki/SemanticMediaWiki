@@ -1955,20 +1955,4 @@ class SMWSQLStore2 extends SMWStore {
 		return ($new_tid==0)?$sid:$new_tid;
 	}
 
-
-
-	/**
-	 * @deprecated Will vanish before SMW 1.4, use getPropertyValues
-	 */
-	function getSpecialValues($subject, $specialprop, $requestoptions = NULL) {
-		return $this->getPropertyValues($subject,SMWPropertyValue::makeProperty($specialprop),$requestoptions);
-	}
-
-	/**
-	 * @deprecated Will vanish before SMW 1.4, use getPropertySubject
-	 */
-	function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = NULL) {
-		return $this->getPropertySubjects(SMWPropertyValue::makeProperty($specialprop),$value,$requestoptions);
-	}
-
 }
