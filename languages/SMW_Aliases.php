@@ -155,3 +155,12 @@ $aliases['no'] = array(
 	'WantedProperties' => array( 'Ønskede egenskaper' ),
 );
 
+/** Occitan (Occitan) */
+$aliases['oc'] = array(
+	'Browse' => array( 'Percórrer' ),
+	'Properties' => array( 'Proprietats' ),
+	'Types' => array( 'Tipes' ),
+	'UnusedProperties' => array( 'Proprietats inutilizadas', 'ProprietatsInutilizadas' ),
+	'WantedProperties' => array( 'Proprietats demandadas', 'ProprietatsDemandadas' ),
+);
+
