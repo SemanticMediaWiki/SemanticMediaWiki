@@ -656,11 +656,12 @@ class OWLExport {
 	 * should be included.
 	 */
 	protected function printObject(/*SMWSmallTitle*/ $st, $fullexport=true, $backlinks = false) {
+		global $smwgMW_1_14;
 		if (array_key_exists($st->getHash(), $this->element_done)) return; // do not export twice
 
 		$value = SMWWikiPageValue::makePage($st->dbkey, $st->namespace);
 		if ( $this->date !== '' ) { // check date restriction if given
-			$rev = Revision::getTimeStampFromID($value->getTitle()->getLatestRevID());
+			$rev = $smwgMW_1_14?Revision::getTimeStampFromID($value->getTitle(),$value->getTitle()->getLatestRevID()):Revision::getTimeStampFromID($value->getTitle()->getLatestRevID());
 			if ($rev < $this->date) return;
 		}
 

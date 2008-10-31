@@ -114,7 +114,7 @@ class SMWParseData {
 	 *  @bug Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
 	static public function storeData($parseroutput, Title $title, $makejobs = true) {
-		global $smwgEnableUpdateJobs, $wgContLang, $smwgForMW_1_14;
+		global $smwgEnableUpdateJobs, $wgContLang, $smwgMW_1_14;
 		$semdata = $parseroutput->mSMWData;
 		$namespace = $title->getNamespace();
 		$processSemantics = smwfIsSemanticsProcessed($namespace);
@@ -124,7 +124,7 @@ class SMWParseData {
 		if ($processSemantics) {
 			$pmdat = SMWPropertyValue::makeProperty('_MDAT');
 			if ( count($semdata->getPropertyValues($pmdat)) == 0  ) { // no article data present yet, add it here
-				$timestamp =  $smwgForMW_1_14?Revision::getTimeStampFromID($title, $title->getLatestRevID()):Revision::getTimeStampFromID($title->getLatestRevID());
+				$timestamp =  $smwgMW_1_14?Revision::getTimeStampFromID($title, $title->getLatestRevID()):Revision::getTimeStampFromID($title->getLatestRevID());
 				$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$timestamp));
 				$semdata->addPropertyObjectValue($pmdat,$dv);
 			}

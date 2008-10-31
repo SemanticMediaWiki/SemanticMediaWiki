@@ -223,7 +223,7 @@ function enableSemantics($namespace = '', $complete = false) {
  */
 function smwfSetupExtension() {
 	wfProfileIn('smwfSetupExtension (SMW)');
-	global $smwgIP, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink, $smwgForMW_1_14;
+	global $smwgIP, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink, $smwgMW_1_14;
 
 	$smwgMasterStore = NULL;
 	$smwgIQRunningNumber = 0;
@@ -258,10 +258,10 @@ function smwfSetupExtension() {
 	}
 	if (version_compare($wgVersion,'1.14alpha','>=')) {
 		$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
-		$smwgForMW_1_14 = true; // assume latest 1.14 API
+		$smwgMW_1_14 = true; // assume latest 1.14 API
 	} else {
 		$wgHooks['OutputPageBeforeHTML'][] = 'SMWFactbox::onOutputPageBeforeHTML'; // draw Factbox right below page content
-		$smwgForMW_1_14 = false; // assume <= 1.13 API
+		$smwgMW_1_14 = false; // assume <= 1.13 API
 	}
 
 	///// credits (see "Special:Version") /////
