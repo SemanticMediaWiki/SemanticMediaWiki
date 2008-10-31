@@ -106,6 +106,13 @@ abstract class SMWLanguage {
 		return false;
 	}
 
+	/**
+	 * Return the name of the month with the given number.
+	 */
+	function getMonthLabel($number) {
+		return $this->m_months[(int)$number];
+	}
+
 }
 
 
