@@ -14,21 +14,7 @@
  * @defgroup SMW Semantic MediaWiki
  */
 
-define('SMW_VERSION','1.4d-SVN');
-
-// constants for special properties, used for datatype assignment and storage
-define('SMW_SP_HAS_TYPE','_TYPE');
-define('SMW_SP_HAS_URI','_URI');
-define('SMW_SP_INSTANCE_OF','_INST');
-define('SMW_SP_DISPLAY_UNITS', '_UNIT');
-define('SMW_SP_IMPORTED_FROM','_IMPO');
-define('SMW_SP_CONVERSION_FACTOR', '_CONV');
-define('SMW_SP_SERVICE_LINK', '_SERV');
-define('SMW_SP_POSSIBLE_VALUE', '_PVAL');
-define('SMW_SP_REDIRECTS_TO', '_REDI');
-define('SMW_SP_SUBPROPERTY_OF','_SUBP');
-define('SMW_SP_SUBCLASS_OF','_SUBC');
-define('SMW_SP_CONCEPT_DESC','_CONC');
+define('SMW_VERSION','1.4e-SVN');
 
 // constants for displaying the factbox
 define('SMW_FACTBOX_HIDDEN', 1);
@@ -237,7 +223,7 @@ function enableSemantics($namespace = '', $complete = false) {
  */
 function smwfSetupExtension() {
 	wfProfileIn('smwfSetupExtension (SMW)');
-	global $smwgIP, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink;
+	global $smwgIP, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink, $smwgForMW_1_14;
 
 	$smwgMasterStore = NULL;
 	$smwgIQRunningNumber = 0;
@@ -272,8 +258,10 @@ function smwfSetupExtension() {
 	}
 	if (version_compare($wgVersion,'1.14alpha','>=')) {
 		$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
+		$smwgForMW_1_14 = true; // assume latest 1.14 API
 	} else {
 		$wgHooks['OutputPageBeforeHTML'][] = 'SMWFactbox::onOutputPageBeforeHTML'; // draw Factbox right below page content
+		$smwgForMW_1_14 = false; // assume <= 1.13 API
 	}
 
 	///// credits (see "Special:Version") /////

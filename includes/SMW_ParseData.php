@@ -113,8 +113,8 @@ class SMWParseData {
 	 *
 	 *  @bug Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
-	static public function storeData($parseroutput, $title, $makejobs = true) {
-		global $smwgEnableUpdateJobs, $wgContLang;
+	static public function storeData($parseroutput, Title $title, $makejobs = true) {
+		global $smwgEnableUpdateJobs, $wgContLang, $smwgForMW_1_14;
 		$semdata = $parseroutput->mSMWData;
 		$namespace = $title->getNamespace();
 		$processSemantics = smwfIsSemanticsProcessed($namespace);
@@ -124,7 +124,7 @@ class SMWParseData {
 		if ($processSemantics) {
 			$pmdat = SMWPropertyValue::makeProperty('_MDAT');
 			if ( count($semdata->getPropertyValues($pmdat)) == 0  ) { // no article data present yet, add it here
-				$timestamp = Revision::getTimeStampFromID($title->getLatestRevID());
+				$timestamp =  $smwgForMW_1_14?Revision::getTimeStampFromID($title, $title->getLatestRevID()):Revision::getTimeStampFromID($title->getLatestRevID());
 				$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$timestamp));
 				$semdata->addPropertyObjectValue($pmdat,$dv);
 			}
@@ -158,7 +158,7 @@ class SMWParseData {
 				$prop = SMWPropertyValue::makeProperty($title->getDBkey());
 				$subjects = smwfGetStore()->getAllPropertySubjects($prop);
 				foreach ($subjects as $subject) {
-					$jobs[] = new SMWUpdateJob($subject);
+					$jobs[] = new SMWUpdateJob($subject->getTitle());
 				}
 			}
 		} elseif ($makejobs && $smwgEnableUpdateJobs && ($namespace == SMW_NS_TYPE) ) {
