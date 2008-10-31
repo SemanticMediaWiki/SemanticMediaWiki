@@ -840,7 +840,7 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn("SMWSQLStore2::changeTitle (SMW)");
 		///NOTE: this function ignores the given MediaWiki IDs (this store has its own IDs)
 		///NOTE: this function assumes input titles to be local (no interwiki). Anything else would be too gross.
-		$sid_c = $this->getSMWPageID($oldtitle->getDBKkey(),$oldtitle->getNamespace(),'');
+		$sid_c = $this->getSMWPageID($oldtitle->getDBkey(),$oldtitle->getNamespace(),'');
 		$sid = $this->getSMWPageID($oldtitle->getDBkey(),$oldtitle->getNamespace(),'',false);
 		$tid_c = $this->getSMWPageID($newtitle->getDBkey(),$newtitle->getNamespace(),'');
 		$tid = $this->getSMWPageID($newtitle->getDBkey(),$newtitle->getNamespace(),'',false);
