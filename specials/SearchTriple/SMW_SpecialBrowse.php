@@ -121,7 +121,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	
 	/**
 	 * Creates the HTML displaying the data of one subject.
-	 * 
+	 *
 	 * @param[in] $data SMWSemanticData  The data to be displayed
 	 * @param[in] $left bool  Should properties be displayed on the left side?
 	 * @param[in] $incoming bool  Is this an incoming? Or an outgoing?
@@ -169,7 +169,7 @@ class SMWSpecialBrowse extends SpecialPage {
 				foreach ($values as $value) {
 					if (($count==1) && $more && $incoming) {
 						// If there are more incoming values than a certain treshold, display a link to the rest instead
-						$body .= '<a href="' . $skin->makeSpecialUrl('SearchByProperty', 'property=' . urlencode($property->getPrefixedText()) . '&value=' . urlencode($data->getSubject()->getLongWikiText())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
+						$body .= '<a href="' . $skin->makeSpecialUrl('SearchByProperty', 'property=' . urlencode($property->getWikiValue()) . '&value=' . urlencode($data->getSubject()->getWikiValue())) . '">' . wfMsg("smw_browse_more") . "</a>\n";
 					} else {
 						$body .= "<span class=\"smwb-" . $inv . "value\">";
 						$body .= $this->displayValue($property, $value, $incoming);
