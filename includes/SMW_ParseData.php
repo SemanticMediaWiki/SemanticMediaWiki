@@ -276,6 +276,8 @@ class SMWParseData {
 				$output->mSMWData = new SMWSemanticData(SMWWikiPageValue::makePageFromTitle($title));
 			}
 			$semdata = $output->mSMWData;
+		} else { // give up, just keep the old data
+			return true;
 		}
 		$pmdat = SMWPropertyValue::makeProperty('_MDAT');
 		$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$article->getTimestamp()));
