@@ -61,6 +61,14 @@ $aliases['arz'] = array(
 	'WantedProperties' => array( 'خصائص_مطلوبة' ),
 );
 
+/** Breton (Brezhoneg) */
+$aliases['br'] = array(
+	'Ask' => array( 'Goulenn' ),
+	'Browse' => array( 'Furchal' ),
+	'Properties' => array( 'Perzhioù' ),
+	'Types' => array( 'Seurtoù' ),
+);
+
 /** German (Deutsch) */
 $aliases['de'] = array(
 	'Ask' => array( 'Semantische Suche' ),
