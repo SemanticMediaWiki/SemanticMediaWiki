@@ -106,10 +106,12 @@ class SMWQueryProcessor {
 			$orders = explode( ',', $params['order'] );
 			foreach ($orders as $key => $order) { // normalise
 				$order = strtolower(trim($order));
-				if ( ('descending' != $order) && ('reverse' != $order) && ('desc' != $order) ) {
-					$orders[$key] = 'ASC';
-				} else {
+				if ( ('descending' == $order) || ('reverse' == $order) || ('desc' == $order) ) {
 					$orders[$key] = 'DESC';
+				} elseif ( ('random' == $order) || ('rand' == $order) ) {
+					$orders[$key] = 'RAND()';
+				} else {
+					$orders[$key] = 'ASC';
 				}
 			}
 		} else {

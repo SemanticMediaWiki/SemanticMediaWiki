@@ -155,6 +155,7 @@ $smwgQEqualitySupport = SMW_EQ_SOME; // Evaluate #redirects as equality between 
   //$smwgQEqualitySupport = SMW_EQ_FULL; // Evaluate #redirects as equality between page names in all cases
   //$smwgQEqualitySupport = SMW_EQ_NONE; // Never evaluate #redirects as equality between page names
 $smwgQSortingSupport    = true; // (De)activate sorting of results.
+$smwgQRandSortingSupport = true; // (De)activate random sorting of results.
 $smwgQDefaultNamespaces = NULL; // Which namespaces should be searched by default?
                                 // (value NULL switches off default restrictions on searching -- this is faster)
                                 // Example with namespaces: $smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE);

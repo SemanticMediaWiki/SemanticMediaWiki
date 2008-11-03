@@ -809,7 +809,7 @@ class SMWSQLStore2QueryEngine {
 	 * Get a SQL option array for the given query and preprocessed query object at given id.
 	 */
 	protected function getSQLOptions($query,$rootid) {
-		global $smwgQSortingSupport;
+		global $smwgQSortingSupport, $smwgQRandSortingSupport;
 		$result = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
 		// build ORDER BY options using discovered sorting fields:
 		if ($smwgQSortingSupport) {
@@ -821,7 +821,12 @@ class SMWSQLStore2QueryEngine {
 					} else {
 						$result['ORDER BY'] .= ', ';
 					}
-					$result['ORDER BY'] .= $qobj->sortfields[$propkey] . " $order ";
+                    if ('RAND()' == $order){
+					    $result['ORDER BY'] .= " $order ";
+                    } else {
+                    	$result['ORDER BY'] .= $qobj->sortfields[$propkey] . " $order ";
+                    }
+
 				}
 			}
 		}
