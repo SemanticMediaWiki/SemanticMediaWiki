@@ -2327,6 +2327,8 @@ $messages['ka'] = array(
  */
 $messages['km'] = array(
 	'smw_finallistconjunct' => 'និង',
+	'smw_label_latitude' => 'រយះទទឹង៖',
+	'smw_label_longitude' => 'រយះបណ្តោយ៖',
 	'smw_oi_action' => 'នាំចូល',
 	'types' => 'ប្រភេទ',
 	'smw_ask_ascorder' => 'លំដាប់ឡើង',
