@@ -70,6 +70,7 @@ define('SMW_MY',97);    //Month-Year
 define('SMW_YM',76);    //Year-Month
 define('SMW_Y',9);      //Year
 define('SMW_YEAR',1);   //an entered digit can be a year
+define('SMW_DAY',2);   //an entered digit can be a year
 define('SMW_MONTH',4);  //an entered digit can be a month
 define('SMW_DAY_MONTH_YEAR',7); //an entered digit can be a day, month or year
 define('SMW_DAY_YEAR',3); //an entered digit can be either a month or a year
