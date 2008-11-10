@@ -105,7 +105,7 @@ class SMWSearchByProperty extends SpecialPage {
 		$skin = $wgUser->getSkin();
 
 		if ('' == $this->propertystring) return wfMsg('smw_sbv_docu') . "\n";
-		if (($this->value==null) || !$this->value->isValid()) return wfMsg('smw_sbv_novalue', $this->property->getShortHMLText($skin)) . "\n";
+		if (($this->value==null) || !$this->value->isValid()) return wfMsg('smw_sbv_novalue', $this->property->getShortHTMLText($skin)) . "\n";
 
 		$wgOut->setPagetitle( $this->property->getWikiValue() . ' ' . $this->value->getShortHTMLText(null) );
 		$html = '';
