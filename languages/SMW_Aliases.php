@@ -90,6 +90,11 @@ $aliases['fi'] = array(
 	'Browse' => array( 'Selaa' ),
 );
 
+/** Galician (Galego) */
+$aliases['gl'] = array(
+	'Types' => array( 'Tipos' ),
+);
+
 /** Upper Sorbian (Hornjoserbsce) */
 $aliases['hsb'] = array(
 	'Ask' => array( 'Semantiske pytanje' ),
