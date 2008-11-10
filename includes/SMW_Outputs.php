@@ -68,9 +68,9 @@ class SMWOutputs {
 				return;
 				case SMW_HEADER_STYLE:
 					global $wgContLang;
-					SMWOutputs::$mHeadItems['smw_css'] = '<link rel="stylesheet" type="text/css" media="screen, projection" href="' . $smwgScriptPath . '/skins/SMW_custom.css" />';
+					SMWOutputs::$mHeadItems['smw_css'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom.css" />';
 					if ($wgContLang->isRTL()) { // right-to-left support
-						SMWOutputs::$mHeadItems['smw_cssrtl'] = '<link rel="stylesheet" type="text/css" media="screen, projection" href="' . $smwgScriptPath . '/skins/SMW_custom_rtl.css" />';
+						SMWOutputs::$mHeadItems['smw_cssrtl'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom_rtl.css" />';
 					}
 				return;
 			}
