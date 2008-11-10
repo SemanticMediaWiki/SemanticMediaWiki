@@ -115,10 +115,9 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 				$link->setParameter(10,'limit');
 			}
 
-			foreach ($res->getPrintRequests() as $printout) {
+			foreach ($res->getPrintRequests() as $printout) { // overwrite given "sort" parameter with printout of label "date"
 				if (($printout->getMode() == SMWPrintRequest::PRINT_PROP) && (strtolower($printout->getLabel()) == "date") && ($printout->getTypeID() == "_dat")) {
 					$link->setParameter($printout->getData()->getWikiValue(),'sort');
-					$link->setParameter('DESC','order');
 				}
 			}
 
