@@ -1197,6 +1197,52 @@ class SMWSQLStore2 extends SMWStore {
 		return true;
 	}
 
+	public function refreshData(&$index, $count) {
+		$updatejobs = array();
+		$emptyrange = true; // was nothing found in this run?
+
+		// update by MediaWiki page id --> make sure we get all pages
+		$tids = array();
+		for ($i = $index; $i < $index + $count; $i++) { // array of ids
+			$tids[] = $i;
+		}
+		$titles = Title::newFromIDs($tids);
+		foreach ($titles as $title) {
+			$updatejobs[] = new SMWUpdateJob($title);
+			$emptyrange = false;
+		}
+
+		// update by internal SMW id --> make sure we get all objects in SMW
+		$db =& wfGetDB( DB_SLAVE );
+		$res = $db->select('smw_ids', array('smw_id', 'smw_title','smw_namespace','smw_iw'),
+		                   "smw_id >= $index AND smw_id < " . $db->addQuotes($index+$count), __METHOD__);
+		foreach ($res as $row) {
+			$emptyrange = false; // note this even if no jobs were created
+			if ( ($row->smw_iw == '') || ($row->smw_iw == SMW_SQL2_SMWREDIIW) ) { // objects representing pages in the wiki, even special pages
+				// TODO: special treament of redirects needed, since the store will not act on redirects that did not change according to its records
+				$title = Title::makeTitle($row->smw_namespace, $row->smw_title);
+				if ( !$title->exists() ) {
+					$updatejobs[] = new SMWUpdateJob($title);
+				}
+			} elseif ($row->smw_iw{0} != ':') { // refresh all "normal" interwiki pages by just clearing their content
+				$this->deleteSemanticData(SMWWikiPageValue::makePage($row->smw_namespace, $row->smw_title, '', $row->smw_iw));
+			}
+		}
+		$db->freeResult($res);
+
+		Job::batchInsert($updatejobs);
+		$nextpos = $index + $count;
+		if ($emptyrange) { // nothing found, check if there will be more pages later on
+			$next1 = $db->selectField('page', 'page_id', "page_id >= $nextpos", __METHOD__, array('ORDER BY' => "page_id ASC"));
+			$next2 = $db->selectField('smw_ids', 'smw_id', "smw_id >= $nextpos", __METHOD__, array('ORDER BY' => "smw_id ASC"));
+			$nextpos = ( ($next2 != 0) && ($next2<$next1) )?$next2:$next1;
+		}
+		$max1 = $db->selectField('page', 'MAX(page_id)', '', __METHOD__);
+		$max2 = $db->selectField('smw_ids', 'MAX(smw_id)', '', __METHOD__);
+		$index = $nextpos?$nextpos:-1;
+		return ($index>0) ? $index/max($max1,$max2) : 1;
+	}
+
 
 ///// Concept caching /////
 

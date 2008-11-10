@@ -273,4 +273,15 @@ abstract class SMWStore {
 	 */
 	abstract function drop($verbose = true);
 
+	/**
+	 * Refresh some objects in the store, addressed by numerical ids. The meaning of the ids is
+	 * private to the store, and does not need to reflect the use of IDs elsewhere (e.g. page ids).
+	 * The store is to refresh $count objects starting from the given $index. Typically, updates
+	 * are achieved by generating update jobs. After the operation, $index is set to the next
+	 * index that should be used for continuing refreshing, or to -1 for signaling that no objects
+	 * of higher index require refresh. The method returns a decimal number between 0 and 1 to
+	 * indicate the overall progress of the refreshing (e.g. 0.7 if 70% of all objects were refreshed).
+	 */
+	abstract function refreshData(&$index, $count);
+
 }

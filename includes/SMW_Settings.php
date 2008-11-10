@@ -380,5 +380,5 @@ $smwgTranslate = false;
 # This is an experimental feature that may not yet work reliably. Use at your
 # own risk, and report any problems (see INSTALL on reporting bugs).
 ##
-$smwgAdminRefreshStore = false;
+$smwgAdminRefreshStore = true;
 ##
