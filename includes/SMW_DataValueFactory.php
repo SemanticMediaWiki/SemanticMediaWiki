@@ -135,7 +135,7 @@ class SMWDataValueFactory {
 			'__nry' => 'SMWNAryValue', // Special multi-valued type
 			'__err' => 'SMWErrorValue', // Special error type
 			'__imp' => 'SMWImportValue', // Special import vocabulary type
-			'__pro' => 'SMWPropertyValue', // Property type (pssobly predefined, no always based on a page)
+			'__pro' => 'SMWPropertyValue', // Property type (possibly predefined, no always based on a page)
 		);
 
 		wfRunHooks( 'smwInitDatatypes' );
