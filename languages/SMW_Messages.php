@@ -776,6 +776,13 @@ $messages['bg'] = array(
 	'smw_result_noresults' => 'Съжаляваме, няма резултати.',
 );
 
+/** Bosnian (Bosanski)
+ * @author CERminator
+ */
+$messages['bs'] = array(
+	'smw_browse_go' => 'Idi',
+);
+
 /** Chamorro (Chamoru)
  * @author Jatrobat
  */
@@ -2345,7 +2352,9 @@ $messages['km'] = array(
 	'smw_result_noresults' => 'សូមអភ័យទោស! មិនមានលទ្ធផលទេ។',
 );
 
-/** Korean (한국어) */
+/** Korean (한국어)
+ * @author Albamhandae
+ */
 $messages['ko'] = array(
 	'smw_edithelp' => '도움말을 수정하려면 속성을',
 	'smw_viewasrdf' => '으로 볼 rdf',
@@ -2375,7 +2384,7 @@ $messages['ko'] = array(
 	'smw_nofloat' => '“$1” 이 아닌 숫자입니다.',
 	'smw_infinite' => '숫자와 대형으로 “$1” 는 지원되지 않습니다이 사이트에서.',
 	'smw_infinite_unit' => '전환으로 단위를 “$1” 결과는이 사이트에 대한 숫자가 너무 큽니다.',
-	'smw_unsupportedprefix' => '접두사에 대한 숫자 (“$1”) 는 지원되지 않습니다.',
+	'smw_unsupportedprefix' => '접두사에 대한 숫자("$1")는 지원되지 않습니다.',
 	'smw_unsupportedunit' => '단위 변환에 대한 단위를 “$1” 이 지원되지 않습니다.',
 	'smw_lonely_unit' => '전에 번호를 찾을 수 없음을 상징 “$1”.',
 	'smw_bad_latlong' => '위도와 경도를 한 번만 부여해야합니다, 그리고 올바른 좌표와 함께합니다.',
@@ -2510,10 +2519,13 @@ $messages['ksh'] = array(
 $messages['lb'] = array(
 	'smw_finallistconjunct' => ', an',
 	'smw_factbox_head' => 'Fakten iwwer $1',
+	'smw_csv_link' => 'CSV',
 	'smw_icalendar_link' => 'iKalenner',
 	'smw_iq_moreresults' => '… weider Resultater',
 	'smw_iq_nojs' => 'Benotzt w.e.g e Browser matt JavaScript fir dëst Element ze gesinn',
+	'smw_no_importelement' => 'D\'Element "$1" kann net importéiert ginn.',
 	'smw_notitle' => '"$1" kann net als Numm vun enger Säit op dëser Wiki benotzt ginn.',
+	'smw_wrong_namespace' => 'Nëmme Säiten aus dem Nummraum "$1" sinn hei erlaabt.',
 	'smw_emptystring' => 'Eidel Zeeche ginn net akzeptéiert.',
 	'smw_true_words' => 'wouer,w,jo,j',
 	'smw_false_words' => 'falsch,f,neen,n',
