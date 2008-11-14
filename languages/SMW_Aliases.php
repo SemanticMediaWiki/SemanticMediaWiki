@@ -177,3 +177,8 @@ $aliases['oc'] = array(
 	'WantedProperties' => array( 'Proprietats demandadas', 'ProprietatsDemandadas' ),
 );
 
+/** Romanian (Română) */
+$aliases['ro'] = array(
+	'Browse' => array( 'Răsfoieşte' ),
+);
+
