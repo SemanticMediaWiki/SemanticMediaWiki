@@ -323,7 +323,9 @@ function smwfShowBrowseLink($skintemplate) {
 		define('SMW_NS_PROPERTY_TALK',  $smwgNamespaceIndex+3);
 		define('SMW_NS_TYPE',           $smwgNamespaceIndex+4);
 		define('SMW_NS_TYPE_TALK',      $smwgNamespaceIndex+5);
-		// 106 and 107 are occupied by the Semantic Forms
+		// 106 and 107 are occupied by the Semantic Forms, we define them here to offer some (easy but useful) support to SF
+		define('SF_NS_FORM',            $smwgNamespaceIndex+6);
+		define('SF_NS_FORM_TALK',       $smwgNamespaceIndex+7);
 		define('SMW_NS_CONCEPT',        $smwgNamespaceIndex+8);
 		define('SMW_NS_CONCEPT_TALK',   $smwgNamespaceIndex+9);
 

@@ -57,10 +57,13 @@ class SMWWikiPageValue extends SMWDataValue {
 		parent::__construct($typeid);
 		switch ($typeid) {
 			case '_wpp' : case '__sup':
-				$this->m_fixNamespace = SMW_NS_PROPERTY; 
+				$this->m_fixNamespace = SMW_NS_PROPERTY;
 			break;
 			case '_wpc' : case '__suc':
-				$this->m_fixNamespace = NS_CATEGORY; 
+				$this->m_fixNamespace = NS_CATEGORY;
+			break;
+			case '_wpf' : case '__spf':
+				$this->m_fixNamespace = SF_NS_FORM;
 			break;
 			default: //case '_wpg':
 				$this->m_fixNamespace = NS_MAIN;

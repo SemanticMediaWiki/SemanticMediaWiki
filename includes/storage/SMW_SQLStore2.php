@@ -65,7 +65,9 @@ class SMWSQLStore2 extends SMWStore {
 		'_REDI' => 15,
 		'_SUBP' => 17,
 		'_SUBC' => 18,
-		'_CONC' => 19
+		'_CONC' => 19,
+		'_SF_DF' => 20, // Semantic Form's default form property
+		'_SF_AF' => 21  // Semantic Form's alternate form property
 	);
 
 	/// This array defines how various datatypes should be handled internally. This
@@ -84,6 +86,7 @@ class SMWSQLStore2 extends SMWStore {
 		'_wpg'  => SMW_SQL2_RELS2, // Page type
 		'_wpp'  => SMW_SQL2_RELS2, // Property page type
 		'_wpc'  => SMW_SQL2_RELS2, // Category page type
+		'_wpf'  => SMW_SQL2_RELS2, // Form page type (for Semantic Forms)
 		'_num'  => SMW_SQL2_ATTS2, // Number type
 		'_tem'  => SMW_SQL2_ATTS2, // Temperature type
 		'_dat'  => SMW_SQL2_ATTS2, // Time type
@@ -96,6 +99,7 @@ class SMWSQLStore2 extends SMWStore {
 		'__spu' => SMW_SQL2_SPEC2, // Special uri type
 		'__sup' => SMW_SQL2_SUBS2, // Special subproperty type
 		'__suc' => SMW_SQL2_SUBS2, // Special subcategory type
+		'__spf' => SMW_SQL2_SPEC2, // Special form type (for Semantic Forms)
 		'__sin' => SMW_SQL2_INST2, // Special instance of type
 		'__red' => SMW_SQL2_REDI2, // Special redirect type
 		'__lin' => SMW_SQL2_SPEC2, // Special linear unit conversion type
