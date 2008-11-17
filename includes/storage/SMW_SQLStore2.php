@@ -235,7 +235,7 @@ class SMWSQLStore2 extends SMWStore {
 					if ($pid != false) {
 						$property = SMWPropertyValue::makeProperty($pid);
 					} else { // this should be rare (only if some extension uses properties of "special" types
-						$proprow = $db->selectRow('smw_ids', array('smw_title'), array('smw_id' => $row->id), 'SMW::getSemanticData');
+						$proprow = $db->selectRow('smw_ids', array('smw_title'), array('smw_id' => $row->p_id), 'SMW::getSemanticData');
 						$property = SMWPropertyValue::makeProperty($proprow->smw_title);
 					}
 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
