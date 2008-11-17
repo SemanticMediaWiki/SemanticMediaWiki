@@ -131,6 +131,13 @@ class SMWPropertyValue extends SMWDataValue {
 		}
 	}
 
+	public function setCaption($caption) {
+		parent::setCaption($caption);
+		if ($this->m_wikipage instanceof SMWDataValue) { // pass caption to embedded datavalue (used for printout)
+			$this->m_wikipage->setCaption($caption);
+		}
+	}
+
 	/**
 	 * Return TRUE if this is a usual wiki property that is defined by a wiki page, as
 	 * opposed to a property that is pre-defined in the wiki.

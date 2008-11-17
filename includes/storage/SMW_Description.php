@@ -39,6 +39,9 @@ class SMWPrintRequest {
 		if ( ($mode == SMWPrintRequest::PRINT_CCAT) && ($outputformat === '') ) {
 			$this->m_outputformat = 'x'; // changed default for Boolean case
 		}
+		if ($this->m_data instanceof SMWDataValue) {
+			$this->m_data->setCaption($label);
+		}
 	}
 
 	public function getMode() {
@@ -64,7 +67,7 @@ class SMWPrintRequest {
 			case SMWPrintRequest::PRINT_CCAT:
 				return $linker->makeLinkObj($this->m_data->getTitle(), htmlspecialchars($this->m_label));
 			case SMWPrintRequest::PRINT_PROP:
-				return $this->m_data->getLongHTMLText($linker);
+				return $this->m_data->getShortHTMLText($linker);
 			case SMWPrintRequest::PRINT_THIS: default: return htmlspecialchars($this->m_label);
 		}
 		
@@ -80,7 +83,7 @@ class SMWPrintRequest {
 			switch ($this->m_mode) {
 				case SMWPrintRequest::PRINT_CATS: return $this->m_label; // TODO: link to Special:Categories
 				case SMWPrintRequest::PRINT_PROP:
-					return $this->m_data->getLongWikiText($linked);
+					return $this->m_data->getShortWikiText($linked);
 				case SMWPrintRequest::PRINT_CCAT:
 				return '[[:' . $this->m_data->getPrefixedText() . '|' . $this->m_label . ']]';
 				case SMWPrintRequest::PRINT_THIS: default: return $this->m_label;
