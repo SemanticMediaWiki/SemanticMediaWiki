@@ -32,7 +32,7 @@ class SMWTimeValue extends SMWDataValue {
 	protected $m_jdn = ''; //numerical time representation similiar to Julian Day Number
 	protected $m_timeoffset; //contains offset (e.g. timezone) 
 	protected $m_timeannotation; //contains am or pm
-	protected $m_timeisset = true;
+	protected $m_timeisset;
 	protected $m_yearbc; //true if year is BC
 	protected $m_months = array("January", "February", "March", "April" , "May" , "June" , "Juli" , "August" , "September" , "October" , "November" , "December");
 	protected $m_monthsshort = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
@@ -51,15 +51,16 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_timeoffset = 0;
 		$this->m_timepm = false;
 		$this->m_timeisset = false;
+		$this->m_timeannotation = false;
 	
 		$this->m_wikivalue = $value;
 		$filteredvalue = $value; //value without time definition and further abbreviations like PM or BC
 
 		//browse string for special abbreviations referring to time like am, pm
 		if(preg_match("/([Aa]|[Pp])[Mm]/u", $filteredvalue, $match)){
-			$this->m_timeannotation = strtolower($match[0]);	
-			$regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete pm/am, preceding and following chars
-			$filteredvalue = preg_replace($regexp,'', $filteredvalue); //value without am/pm
+		  $this->m_timeannotation = strtolower($match[0]);	
+		  $regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete pm/am, preceding and following chars
+		  $filteredvalue = preg_replace($regexp,'', $filteredvalue); //value without am/pm
 		}
 
 		//browse string for special abbreviations referring to year like AD, BC
@@ -78,25 +79,24 @@ class SMWTimeValue extends SMWDataValue {
 			
 			//timezone handling
 			if(preg_match("/([+\-][0-2]?[0-9](:(30|00))?)/u", $time, $match2)){ //get timezone definition
-				$offset = $this->normalizeTimeValue($match2[0]);
-				$sign = 1;
-				if($offset[0] == '-') $sign = -1;
-				$offset = substr($offset,1);
-				list ($offhours, $offminutes, $offseconds) = explode(':',$offset,3);
-				$offset = $sign * (($offhours / 24) + ($offminutes / (60*24)) + ($offseconds / (3600*24)));
-				$this->m_timeoffset = $this->m_timeoffset + $offset;
-				$time = str_replace($match2[0],'',$time);
+			  $offset = $this->normalizeTimeValue($match2[0]);
+			  $sign = 1;
+			  if($offset[0] == '-') $sign = -1;
+			  $offset = substr($offset,1);
+			  list ($offhours, $offminutes, $offseconds) = explode(':',$offset,3);
+			  $offset = $sign * (($offhours / 24) + ($offminutes / (60*24)) + ($offseconds / (3600*24)));
+    			  $this->m_timeoffset = $this->m_timeoffset + $offset;
+			  $time = str_replace($match2[0],'',$time);
 			}
 
 			list($hours,$minutes,$seconds) = explode(':',$this->normalizeTimeValue($time),3);
 
 			//am/pm handling
-			if($this->m_timeannotation != ''){
-				
-				if(!strcmp($this->m_timeannotation,'am') && $hours == 12) $hours = 0;
-				if(!strcmp($this->m_timeannotation,'pm') && $hours <= 11){
-					$this->m_timeoffset = 0.5;
-				}
+			if($this->m_timeannotation != false){
+			  if(!strcmp($this->m_timeannotation,'am') && $hours == 12) $hours = 0;
+			  if(!strcmp($this->m_timeannotation,'pm') && $hours <= 11){
+			    $this->m_timeoffset = $this->m_timeoffset +  0.5;
+			  }
 			}
 						
 			$this->m_time = $this->normalizeValue($hours).":".$this->normalizeValue($minutes).":".$this->normalizeValue($seconds);
@@ -171,7 +171,7 @@ class SMWTimeValue extends SMWDataValue {
 			$this->m_year = -$this->m_year;
 		}
 
-		//handle offset		
+		//handle offset	
 		if($this->m_timeoffset != 0){
 			$this->createJDN();
 			$this->m_jdn = $this->m_jdn + $this->m_timeoffset;
@@ -181,6 +181,7 @@ class SMWTimeValue extends SMWDataValue {
 		if ($this->m_caption === false) {
 			$this->m_caption = $value;
 		}
+		
 		return true;
 	}
 
@@ -278,10 +279,11 @@ class SMWTimeValue extends SMWDataValue {
 
 	public function getExportData() {
 		if ($this->isValid()) {
-			$lit = new SMWExpLiteral($this->getXSDValue(), $this, 'http://www.w3.org/2001/XMLSchema#dateTime');
-			return new SMWExpData($lit);
+		  $xml = $this->m_year.'-'.$this->normalizeValue($this->m_month).'-'.$this->normalizeValue($this->m_day).'T'.$this->m_time;
+		  $lit = new SMWExpLiteral($xml, $this, 'http://www.w3.org/2001/XMLSchema#dateTime');
+		  return new SMWExpData($lit);
 		} else {
-			return NULL;
+		  return NULL;
 		}
 	}
 
@@ -292,9 +294,9 @@ class SMWTimeValue extends SMWDataValue {
 	protected function makePrintoutValue() {
 		global $smwgContLang;
 		if ($this->m_printvalue === false) {
-			$time = '';
-			if($this->m_timeisset) $time = $this->m_time;
-			$this->m_printvalue = $this->m_day." ".$smwgContLang->getMonthLabel($this->m_month)." ".$this->m_year." ".$time; //MediaWiki date function is not applicable any more (no support for BC Dates...)
+		  if($this->m_timeisset || !(!$this->m_timeisset && $this->m_time=="00:00:00")) $time = $this->m_time;	  
+		  if((int)$this->m_day>0) $day = (int)$this->m_day;
+		  $this->m_printvalue = $day." ".$smwgContLang->getMonthLabel($this->m_month)." ".$this->m_year." ".$time; //MediaWiki date function is not applicable any more (no support for BC Dates...)
 		}
 	}
 

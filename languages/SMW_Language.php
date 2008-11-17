@@ -110,7 +110,7 @@ abstract class SMWLanguage {
 	 * Return the name of the month with the given number.
 	 */
 	function getMonthLabel($number) {
-		return $this->m_months[(int)$number];
+	  return $this->m_months[(int)($number-1)];
 	}
 
 }
