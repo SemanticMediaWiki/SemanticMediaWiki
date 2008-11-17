@@ -111,6 +111,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	protected function unstub() {
 		if (is_array($this->m_stubdata)) {
+			SMWPropertyValue::initProperties();
 			if ($this->m_stubdata[0]{0} == '_') { // internal id, use as is (and hope it is still known)
 				$this->m_propertyid = $this->m_stubdata[0];
 			} else { // possibly name of special property
