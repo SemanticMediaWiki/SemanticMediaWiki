@@ -25,7 +25,8 @@ $messages['en'] = array(
 	'smw_concept_description' => 'Description of concept "$1"', // used in the namespace "Concept:"
 	'smw_no_concept_namespace'=> 'Concepts can only be defined on pages in the Concept: namespace.',
 	'smw_multiple_concepts'   => 'Each concept page can have only one concept definition.',
-	'smw_concept_cache_miss'  => 'The concept "$1" can not be used at the moment, since the wiki configuration requires it to be computed off-line. If the problem does not go away after some time, ask your site administrator to make this concept available.',
+	'smw_concept_cache_miss'  => 'The concept "$1" can not be used at the moment, since the wiki configuration requires it to be computed off-line.
+If the problem does not go away after some time, ask your site administrator to make this concept available.',
 
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
@@ -277,7 +278,8 @@ Either grant this user additional persmissions to create and delete tables, temp
 	'smw_smwadmin_dbbutton' => 'Initialise or upgrade tables',
 	'smw_smwadmin_announce' => 'Announce your wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki has a web service for announcing new semantic wiki sites.
-This is used to maintain a list of public sites that use Semantic MediaWiki, mainly to help the <a href="http://semantic-mediawiki.org/wiki/SMW_Project">SMW project</a> to get an overview of typical uses of SMW. See the SMW homepage for <a href="http://semantic-mediawiki.org/wiki/Registry">further information about this service</a>.',
+This is used to maintain a list of public sites that use Semantic MediaWiki, mainly to help the <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki project</a> to get an overview of typical uses of Semantic MediaWiki.
+See the Semantic MediaWiki homepage for <a href="http://semantic-mediawiki.org/wiki/Registry">further information about this service</a>.',
 	'smw_smwadmin_announcebutton' => 'Press the following button to submit your wiki URL to that service.
 The service will not register wikis that are not publicly accessible, and it will only store publicly accessible information.',
 	'smw_smwadmin_datarefresh' => 'Data repair and upgrade',
@@ -324,13 +326,21 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1: the property name
 * $2: the name of the type of the property
 * $3: the number of occurrences of this property in the wiki',
-	'ontologyimport' => "''Ontology import'' (this message is the title of that special page) is a feature to import certain metadata files into the wiki. This administrative function is still rather preliminary, and probably useful only to users with prior knowledge of metadata formats like RDF and OWL. It is likely that most of those are able to speak English anyway, so the translation of all \"oi\" messages in SMW has low priority.
+	'ontologyimport' => "''Ontology import'' (this message is the title of that special page) is a feature to import certain metadata files into the wiki.
+This administrative function is still rather preliminary, and probably useful only to users with prior knowledge of metadata formats like RDF and OWL.
+It is likely that most of those are able to speak English anyway, so the translation of all \"oi\" messages in Semantic MediaWiki has low priority.
 
 Also note that the messages sometimes use technical terms related to the metadata standards, and that these terms may have special translations (or maybe are used in English) in any given language.",
 	'smw_oi_action' => '{{Identical|Import}}',
 	'smw_typeunits' => 'This message is used in the tooltip on Special:Types when a property supports custom units of measurement. The parameter $1 then is the type name, and $2 is a list of unit names.',
-	'flawedattributes' => 'The "flawed properties" special is currently disabled. The messages were kept here since some translations already existed. This gives this message and "smw_fattributes" a very low priority for translation.',
-	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page. It probably does not need translation in most cases. The special page as such is used in all URIs used by SMW. When somebody resolves such a URI, the special page will redirect to the according wiki page or to the according metadata export (OWL/RDF/XML). This is controlled by the HTTP request header. Semantic Web crawlers and browsers can thus request more metadata on a particular subject, while humans are referred to readable pages. This method is called ''content negotiation''.",
+	'flawedattributes' => 'The "flawed properties" special is currently disabled.
+The messages were kept here since some translations already existed.
+This gives this message and "smw_fattributes" a very low priority for translation.',
+	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
+It probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.
+When somebody resolves such a URI, the special page will redirect to the according wiki page or to the according metadata export (OWL/RDF/XML).
+This is controlled by the HTTP request header. Semantic Web crawlers and browsers can thus request more metadata on a particular subject, while humans are referred to readable pages.
+This method is called ''content negotiation''.",
 	'smw_ask_submit' => '{{Identical|Find results}}',
 	'smw_sbv_property' => '{{Identical|Property}}',
 	'smw_sbv_value' => '{{Identical|Value}}',
