@@ -782,11 +782,13 @@ $messages['bg'] = array(
 	'smw_factbox_head' => 'Факти за $1',
 	'smw_iq_disabled' => 'Съжаляваме. Семантичните заявки са изключени в това уики.',
 	'smw_iq_nojs' => 'За преглед на този елемент е необходимо използването на браузър с включена поддръжка на Джаваскрипт.',
+	'smw_iq_altresults' => 'Директно разглеждане на списъка с резултатите.',
 	'smw_unknown_importns' => 'Функциите за внасяне са недостъпни за именно пространство „$1“.',
 	'smw_nonright_importtype' => '$1 може да се използва само за страници от именното пространство „$2“.',
 	'smw_wrong_importtype' => '$1 не може да се използва за страници от именното пространство „$2“.',
 	'smw_no_importelement' => 'Елементът „$1“ не е наличен за внасяне.',
 	'smw_notitle' => '„$1“ не може да се използва като име на страница в това уики.',
+	'smw_wrong_namespace' => 'Тук са позволени само страници от именното пространство „$1“.',
 	'smw_emptystring' => 'Празните низове са неприемливи.',
 	'smw_nofloat' => '„$1“ не е число.',
 	'smw_abb_north' => 'С',
@@ -1739,6 +1741,19 @@ Por favor, insira ambas, a páxina e mais a propiedade.',
 	'smw_result_results' => 'Resultados',
 	'smw_result_noresults' => 'Sentímolo, non hai resultados.',
 	'smwadmin' => 'Funcións do administrador Semantic MediaWiki',
+	'smw_smwadmin_return' => 'Voltar a "$1"',
+	'smw_smwadmin_datarefreshbutton' => 'Comezar a actualizar os datos',
+	'smw_smwadmin_datarefreshstop' => 'Deter esta actualización',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Si, estou seguro.',
+	'smw_smwadmin_support' => 'Obtendo asistencia',
+);
+
+/** Ancient Greek (Ἀρχαία ἑλληνικὴ)
+ * @author Crazymadlover
+ */
+$messages['grc'] = array(
+	'smw_oi_action' => 'Εἰσάγειν',
+	'smw_browse_go' => 'Ἱέναι',
 );
 
 /** Hebrew (עברית)
@@ -3038,6 +3053,50 @@ Voer zowel een pagina als een eigenschap in.',
 	'smw_result_results' => 'Resultaten',
 	'smw_result_noresults' => 'Geen resultaten.',
 	'smwadmin' => 'Administratieve functies voor Semantic MediaWiki',
+	'smw_smwadmin_settingup' => 'Opslag instellen voor Semantic MediaWiki',
+	'smw_smwadmin_setupsuccess' => 'De opslag is ingesteld.',
+	'smw_smwadmin_return' => 'Terug naar $1',
+	'smw_smwadmin_updatestarted' => 'Er is een proces gestart voor het bijwerken van de semantische gegevens.
+Alle opgeslagen gegevens worden opnieuw opgebouwd of gerepareerd als dat nodig is.
+U kunt de voortgang volgen via deze speciale pagina.',
+	'smw_smwadmin_updatenotstarted' => 'Er loopt al een bijwerkproces.
+Er wordt geen nieuw proces gestart.',
+	'smw_smwadmin_updatestopped' => 'Alle lopende bijwerkprocessen zijn afgebroken.',
+	'smw_smwadmin_updatenotstopped' => 'Om de lopende processes te stoppen, moet u het vinkje inschakelen om aan te geven dat u het zeker weet.',
+	'smw_smwadmin_docu' => 'Deze speciale pagina assisteert u tijdens de installatie en het bijwerken van <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Denk eraan een back-up te maken van uw waardevolle gegevens voordat u beheershandelingen uitvoert.',
+	'smw_smwadmin_db' => 'Database installeren en bijwerken',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki heeft een aantal uitbreidingen aan de database van MediaWiki nodig om de semantische gegevens op te kunnen slaan.
+De onderstaande functionaliteit zorgt ervoor dat uw database juist is ingesteld.
+De wijzigingen die in deze stap worden gemaakt, hebben geen invloed op de bestaande database van MediaWiki, en zijn eventueel eenvoudig ongedaan te maken.
+Deze instelfunctie kan meerdere keren worden uitgevoerd zonder schade aan te richten, hoewel het uiteraard slechts noodzakelijk is deze een keer uit te voeren per installatie of upgrade.',
+	'smw_smwadmin_permissionswarn' => 'Als de handeling faalt met SQL-fouten, heeft de databasegebruiker van uw wiki (zie LocalSettings.php) waarschijnlijk onvoldoende rechten.
+Geef deze gebruiker de benodigde extra rechten om tabellen aan te maken en te verwijderen, geef tijdelijk de aanmeldgegevens van de hoofdgebruiker van uw databasesysteem aan in LocalSettings.php, of gebruik het beheerscript <tt>SMW_setup.php</tt> dat de instellingen van AdminSettings.php kan gebruiken.',
+	'smw_smwadmin_dbbutton' => 'Tabellen initialiseren of bijwerken',
+	'smw_smwadmin_announce' => 'Uw wiki aankondigen',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki heeft een webservice voor het aankondigen van nieuwe semantische wikisites.
+Deze dienst wordt gebruikt om een lijst bij te houden van publiek toegankelijke sites die Semantic MediaWiki gebruiken, voornamelijk om het <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki-project</a> inzicht te geven in het typische gebruik van Semantic MediaWiki.
+Op de homepage van Semantic MediaWiki staat <a href="http://semantic-mediawiki.org/wiki/Registry">meer informatie over deze dienst</a>.',
+	'smw_smwadmin_announcebutton' => "Klik op de knop om de URL van uw wiki naar de dienst te sturen.
+De dienst registreert geen wiki's die niet publiek toegankelijk zijn en slaat alleen publiek toegankelijke informatie op.",
+	'smw_smwadmin_datarefresh' => 'Gegevens repareren en bijwerken',
+	'smw_smwadmin_datarefreshdocu' => 'Het is mogelijk om alle gegevens van Semantic MediaWiki opnieuw te genereren op basis van de huidige inhoud van de wiki.
+Dit kan handig zijn om gegevens te repareren of de gegevens te verversen als de interne opmaak gewijzigd is bij een softwareupdate.
+De gegevens worden pagina voor pagina bijgewerkt en het kan enige tijd duren voor de taak is afgerond.
+Hieronder wordt weergegeven of er op dit moment een taak loopt en stelt u in staat een taak te stoppen of te starten (tenzij deze mogelijkheid door de sitebeheerder is uitgeschaked).',
+	'smw_smwadmin_datarefreshprogress' => "Er loopt een bijwerktaak</b>
+Het is normaal dat de voortgang langzaam is omdat de gegevens ververst worden in kleine porties iedere keer als een gebruiker de wiki raadpleegt.
+Om het bijwerken sneller te laten verlopen, kunt u het beheerscript <tt>runJobs.php</tt> draaien. Gebruik de optie <tt>--maxjobs 1000</tt> om aan het aantal bij te werken pagina's per handeling te beperken.
+Geschatte voortgang van de huidige taak:",
+	'smw_smwadmin_datarefreshbutton' => 'Gegevens bijwerken',
+	'smw_smwadmin_datarefreshstop' => 'Bijwerken afbreken',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, ik weet het zeker.',
+	'smw_smwadmin_support' => 'Ondersteuning krijgen',
+	'smw_smwadmin_supportdocu' => 'Een aantal bronnen kunnen u ondersteunen als u problemen ondervindt:',
+	'smw_smwadmin_installfile' => 'Als u problemen ondervindt bij uw installatie, controleer dan de richlijnen in het bestand <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'De volledige gebruikersdocumentatie voor Semantic MediaWiki is te vinden op <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Bugs en suggesties kunt u rapporteren in <a href="http://bugzilla.wikimedia.org/">MediaZilla</a>.',
+	'smw_smwadmin_questions' => 'Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
 );
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
