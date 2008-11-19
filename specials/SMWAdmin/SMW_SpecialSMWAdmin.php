@@ -44,7 +44,19 @@ class SMWAdmin extends SpecialPage {
 		}
 
 		$this->setHeaders();
-		
+
+		/**** Get status of refresh job, if any ****/
+		if ($smwgAdminRefreshStore) {
+			$dbr =& wfGetDB( DB_SLAVE );
+			$row = $dbr->selectRow( 'job', '*', array( 'job_cmd' => 'SMWRefreshJob' ), __METHOD__ );
+			if ($row !== false) { // similar to Job::pop_type, but without deleting the job
+				$title = Title::makeTitleSafe( $row->job_namespace, $row->job_title);
+				$refreshjob = Job::factory( $row->job_cmd, $title, Job::extractBlob( $row->job_params ), $row->job_id );
+			} else {
+				$refreshjob = NULL;
+			}
+		}
+
 		/**** Execute actions if any ****/
 
 		$action = $wgRequest->getText( 'action' );
@@ -68,17 +80,25 @@ class SMWAdmin extends SpecialPage {
 				flush();
 				return;
 			}
-		} elseif ($smwgAdminRefreshStore && ($action=='refreshstore')) { // not accessible via UI yet, testing
-			$dbw =& wfGetDB( DB_MASTER );
-			// delete existing iteration jobs
-			$dbw->delete( 'job', array( 'job_cmd' => 'SMWRefreshJob' ), __METHOD__ );
-			$affected = $dbw->affectedRows();
-			$warning = ($affected > 0)?' Existing refresh jobs were stopped when the new job was created; please be patient to let refreshing finish or use the MediaWiki script runJobs.php to finish all jobs at once.':'';
-			// and make a new one
-			$title = Title::makeTitle(NS_SPECIAL, 'SMWAdmin');
-			$newjob = new SMWRefreshJob($title, array('spos'=>1));
-			$newjob->insert();
-			$wgOut->addHTML("<p>Added new job for refreshing the semantic data. All stored data will be rebuilt or repaired where needed.$warning</p>");
+		} elseif ($smwgAdminRefreshStore && ($action=='refreshstore')) { // managing refresh jobs for the store
+			$sure = $wgRequest->getText( 'rfsure' );
+			if ($sure == 'yes') {
+				if ($refreshjob === NULL) { // careful, there might be race conditions here
+					$title = Title::makeTitle(NS_SPECIAL, 'SMWAdmin');
+					$newjob = new SMWRefreshJob($title, array('spos'=>1));
+					$newjob->insert();
+					$wgOut->addHTML("<p>A new update process for refreshing the semantic data was started. All stored data will be rebuilt or repaired where needed.</p>");
+				} else {
+					$wgOut->addHTML("<p>There is already an update process running. Not creating another one.</p>");
+				}
+			} elseif ($sure == 'stop') {
+				$dbw =& wfGetDB( DB_MASTER );
+				// delete (all) existing iteration jobs
+				$dbw->delete( 'job', array( 'job_cmd' => 'SMWRefreshJob' ), __METHOD__ );
+				$wgOut->addHTML("<p>All existing update processes have been stopped.</p>");
+			} else {
+				$wgOut->addHTML("<p>To stop the running update process, you must activate the checkbox to indicate that you are really sure.</p>");
+			}
 			return;
 		}
 
@@ -91,26 +111,49 @@ class SMWAdmin extends SpecialPage {
 		$html .= '<form name="buildtables" action="" method="POST">' . "\n" .
 				'<input type="hidden" name="action" value="updatetables" />' . "\n";
 		$html .= '<h2>Preparing database for Semantic MediaWiki</h2>' . "\n" .
-				'<p>Semantic MediaWiki requires some minor extensions to the MediaWiki database in 
+				'<p>Semantic MediaWiki requires some extensions to the MediaWiki database in 
 				order to store the semantic data. The below function ensures that your database is
 				set up properly. The changes made in this step do not affect the rest of the 
 				MediaWiki database, and can easily be undone if desired. This setup function
 				can be executed multiple times without doing any harm, but it is needed only once on
 				installation or upgrade.<p/>' . "\n";
-		$html .= '<p>If the operation fails with obscure SQL errors, the database user employed 
+		$html .= '<p>If the operation fails with SQL errors, the database user employed 
 				by your wiki (check your LocalSettings.php) probably does not have sufficient 
 				permissions. Either grant this user additional persmissions to create and delete 
-				tables, or temporarily enter the login of your database root in LocalSettings.php.<p/>' .
+				tables, temporarily enter the login of your database root in LocalSettings.php, or use the maintenance script <tt>SMW_setup.php</tt> which can use the credentials of AdminSettings.php.<p/>' .
 				"\n" . '<input type="hidden" name="udsure" value="yes"/>' .
 				'<input type="submit" value="Initialise or upgrade tables"/></form>' . "\n";
 
 		$html .= '<h2>Announce your wiki</h2>' . "\n" . 
-				'<p>SMW has a web service for announcing new semantic wiki sites. This is used to maintain a list of public sites that use SMW, mainly to help the <a href="http://semantic-mediawiki.org/wiki/SMW_Project">SMW project</a> to get an overview of typical uses of SMW. See the SMW homepage for <a href="http://semantic-mediawiki.org/wiki/Registry">further information about this service.</a>' .
+				'<p>SMW has a web service for announcing new semantic wiki sites. This is used to maintain a list of public sites that use SMW, mainly to help the <a href="http://semantic-mediawiki.org/wiki/SMW_Project">SMW project</a> to get an overview of typical uses of SMW. See the SMW homepage for <a href="http://semantic-mediawiki.org/wiki/Registry">further information about this service.</a></p>' .
 				'<p>Press the following button to submit your wiki URL to that service. The service will not register wikis that are not publicly accessible, and it will only store publicly accessible information.</p>
 				 <form name="announcewiki" action="http://semantic-mediawiki.org/wiki/Special:SMWRegistry" method="GET">' .
 				 '<input type="hidden" name="url" value="' . SMWExporter::expandURI('&wikiurl;') . '" />' .
 				 '<input type="hidden" name="return" value="Special:SMWAdmin" />' .
 				 '<input type="submit" value="Announce wiki"/></form>' . "\n";
+
+		if ($smwgAdminRefreshStore) {
+			$html .= '<h2>Repair and Upgrade</h2>' . "\n" .
+					'<p>It is possible to restore all SMW data based on the current contents of the wiki. This can be useful to repair broken data or to refresh the data if the internal format has changed due to some software upgrade. The update is executed page by page and will not be completed immediately. The following control shows if an update is in progress and allows you to start or stop upates.</p>' .
+					'<form name="refreshwiki" action="" method="POST">';
+			if ($refreshjob !== NULL) {
+				$prog = $refreshjob->getProgress();
+				$html .= "<p><b>An update is already in progress.</b> It is normal that the update progresses only slowly. This reduces server load. To finish an update more quickly, you can use the MediaWiki maintenance script <tt>runJobs.php</tt> (use the option <tt>--maxjobs 2000</tt> to restrict the number of updates done at once). Estimated progress of current update:</p> " .
+					'<p><div style="float: left; background: #DDDDDD; border: 1px solid grey; width: 300px; "><div style="background: #AAF; width: ' .
+					round($prog*300) . 'px; height: 20px; "> </div></div> &nbsp;' . round($prog*100,4) . '%</p><br /><br />' .
+					'<input type="hidden" name="action" value="refreshstore" />' .
+					'<input type="submit" value="Stop ongoing update"/> ' .
+					' <input type="checkbox" name="rfsure" value="stop"/> Yes, I am sure. ' .
+					'</form>' . "\n";
+			} else {
+				$html .=
+					'<input type="hidden" name="action" value="refreshstore" />' .
+					'<input type="hidden" name="rfsure" value="yes"/>' .
+					'<input type="submit" value="Start updating data"/>' .
+					'</form>' . "\n";
+			}
+		}
+
 
 		$html .= '<h2>Getting support</h2>' . "\n" . 
 				'<p>Various resources might help you in case of problems:</p>

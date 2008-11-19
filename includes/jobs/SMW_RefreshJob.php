@@ -20,7 +20,7 @@
  */
 class SMWRefreshJob extends Job {
 
-	function __construct($title, $params = array('spos'=>1) ) {
+	function __construct($title, $params = array('spos'=>1, 'prog'=>0) ) {
 		parent::__construct( 'SMWRefreshJob', $title, $params);
 	}
 
@@ -44,5 +44,13 @@ class SMWRefreshJob extends Job {
 		}
 		wfProfileOut('SMWRefreshJob::run (SMW)');
 		return true;
+	}
+
+	/**
+	 * Report the estimated progress status of this job as a number between 0 and 1 (0% to 100%).
+	 * The progress refers to the state before processing this job.
+	 */
+	public function getProgress() {
+		return array_key_exists('prog',$this->params)?$this->params['prog']:0;
 	}
 }
