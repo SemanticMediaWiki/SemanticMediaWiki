@@ -87,7 +87,7 @@ class SMWAdmin extends SpecialPage {
 					$title = Title::makeTitle(NS_SPECIAL, 'SMWAdmin');
 					$newjob = new SMWRefreshJob($title, array('spos'=>1));
 					$newjob->insert();
-					$wgOut->addHTML("<p>A new update process for refreshing the semantic data was started. All stored data will be rebuilt or repaired where needed.</p>");
+					$wgOut->addHTML("<p>A new update process for refreshing the semantic data was started. All stored data will be rebuilt or repaired where needed. You can follow the progress of the update on this special page.</p>");
 				} else {
 					$wgOut->addHTML("<p>There is already an update process running. Not creating another one.</p>");
 				}
@@ -138,7 +138,7 @@ class SMWAdmin extends SpecialPage {
 					'<form name="refreshwiki" action="" method="POST">';
 			if ($refreshjob !== NULL) {
 				$prog = $refreshjob->getProgress();
-				$html .= "<p><b>An update is already in progress.</b> It is normal that the update progresses only slowly. This reduces server load. To finish an update more quickly, you can use the MediaWiki maintenance script <tt>runJobs.php</tt> (use the option <tt>--maxjobs 2000</tt> to restrict the number of updates done at once). Estimated progress of current update:</p> " .
+				$html .= "<p><b>An update is already in progress.</b> It is normal that the update progresses only slowly since it only refreshes data in small chunks each time a user accesses the wiki. To finish an update more quickly, you can use the MediaWiki maintenance script <tt>runJobs.php</tt> (use the option <tt>--maxjobs 2000</tt> to restrict the number of updates done at once). Estimated progress of current update:</p> " .
 					'<p><div style="float: left; background: #DDDDDD; border: 1px solid grey; width: 300px; "><div style="background: #AAF; width: ' .
 					round($prog*300) . 'px; height: 20px; "> </div></div> &nbsp;' . round($prog*100,4) . '%</p><br /><br />' .
 					'<input type="hidden" name="action" value="refreshstore" />' .
