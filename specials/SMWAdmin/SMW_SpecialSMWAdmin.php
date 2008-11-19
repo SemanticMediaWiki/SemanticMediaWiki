@@ -85,7 +85,8 @@ class SMWAdmin extends SpecialPage {
 					$title = Title::makeTitle(NS_SPECIAL, 'SMWAdmin');
 					$newjob = new SMWRefreshJob($title, array('spos'=>1, 'prog'=>0, 'rc'=>2));
 					$newjob->insert();
-					$wgOut->addHTML("<p>A new update process for refreshing the semantic data was started. All stored data will be rebuilt or repaired where needed. You can follow the progress of the update on this special page.</p>");
+					$returntitle = Title::makeTitle(NS_SPECIAL, 'SMWAdmin');
+					$wgOut->addHTML("<p>A new update process for refreshing the semantic data was started. All stored data will be rebuilt or repaired where needed. Return to <a href=\"" . htmlspecialchars($returntitle->getFullURL()) . '">Special:SMWAdmin</a> to follow the progress of this operation.</p>');
 				} else {
 					$wgOut->addHTML("<p>There is already an update process running. Not creating another one.</p>");
 				}
