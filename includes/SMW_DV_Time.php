@@ -294,9 +294,18 @@ class SMWTimeValue extends SMWDataValue {
 	protected function makePrintoutValue() {
 		global $smwgContLang;
 		if ($this->m_printvalue === false) {
-		  if($this->m_timeisset || !(!$this->m_timeisset && $this->m_time=="00:00:00")) $time = $this->m_time;	  
-		  if((int)$this->m_day>0) $day = (int)$this->m_day;
-		  $this->m_printvalue = $day." ".$smwgContLang->getMonthLabel($this->m_month)." ".$this->m_year." ".$time; //MediaWiki date function is not applicable any more (no support for BC Dates...)
+			if ($this->m_timeisset || !(!$this->m_timeisset && $this->m_time=="00:00:00")) {
+				$time = ' ' . $this->m_time;
+			} else {
+				$time = '';
+			}
+			if ((int)$this->m_day>0) {
+				$day = (int)$this->m_day . ' ';
+			} else {
+				$day = '';
+			}
+			//MediaWiki date function is not applicable any more (no support for BC Dates)
+			$this->m_printvalue = $day . $smwgContLang->getMonthLabel($this->m_month) . " " . $this->m_year . $time;
 		}
 	}
 
