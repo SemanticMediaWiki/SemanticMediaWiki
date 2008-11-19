@@ -288,13 +288,44 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
+	 * Return the year as a number or false if the value is not set.
+	 */
+	public function getYear() {
+		return ($this->isValid())?$this->m_year:false;
+	}
+
+	/**
+	 * Return the month as a number (between 1 and 12) or false if the value is not set.
+	 */
+	public function getMonth() {
+		return ($this->isValid())?$this->m_month:false;
+	}
+
+	/**
+	 * Return the day as a number or false if the value is not set.
+	 */
+	public function getDay() {
+		return ($this->isValid())?$this->m_day:false;
+	}
+
+	/**
+	 * Return the time as a string or false if the value is not set.
+	 * The time string has the format HH:MM:SS, without any timezone
+	 * information.
+	 */
+	public function getTimeString() {
+		return ($this->isValid())?$this->m_times:false;
+	}
+
+
+	/**
 	 * Build a preferred value for printout, also used as a caption when setting up values
 	 * from the store.
 	 */
 	protected function makePrintoutValue() {
 		global $smwgContLang;
 		if ($this->m_printvalue === false) {
-			if ($this->m_timeisset || !(!$this->m_timeisset && $this->m_time=="00:00:00")) {
+			if ($this->m_timeisset || ($this->m_time!="00:00:00")) {
 				$time = ' ' . $this->m_time;
 			} else {
 				$time = '';
