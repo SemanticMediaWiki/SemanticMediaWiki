@@ -50,7 +50,7 @@ class SMWUpdateJob extends Job {
 
 		$revision = Revision::newFromTitle( $this->title );
 		if ( !$revision ) {
-			$this->error = 'SMWUpdateJob: Article not found "' . $this->title->getPrefixedDBkey() . '"';
+			$this->error = 'SMWUpdateJob: Page exists but no revision was found "' . $this->title->getPrefixedDBkey() . '"';
 			wfProfileOut('SMWUpdateJob::run (SMW)');
 			return false;
 		}
