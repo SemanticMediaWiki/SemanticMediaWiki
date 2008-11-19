@@ -308,30 +308,4 @@ abstract class SMWResultPrinter {
 		return ($this->mInline && $results->hasFurtherResults() && ($this->mSearchlabel !== ''));
 	}
 
-
-	/**
-	 * @deprecated Use SMWResultPrinter::getResult() in SMW >1.0.  This method will last be available in SMW 1.3 and vanish thereafter.
-	 */
-	public function getResultHTML($results, $params) {
-		return $this->getResult($results,$params,SMW_OUTPUT_HTML);
-	}
-
-	/**
-	 * Return HTML version of serialised results.
-	 * @deprecated Use SMWResultPrinter::getResultText() since SMW >1.0.  This method will last be available in SMW 1.3 and vanish thereafter.
-	 */
-	protected function getHTML($res) {
-		return $this->getResultText($res,SMW_OUTPUT_HTML);
-	}
-
-	/**
-	 * Generate a link to further results of the given query, using syntactic encoding
-	 * as appropriate for $outputmode.
-	 * @deprecated Since SMW>1.1 this function no longer does anything interesting. Intelligence moved to SMWInfolink. Directly use the code of this method instead of calling it!  This method will last be available in SMW 1.3 and vanish thereafter.
-	 */
-	protected function getFurtherResultsLink($outputmode, $res, $label) {
-		$link = $res->getQueryLink($label);
-		return $link->getText($outputmode,$this->mLinker);
-	}
-
 }

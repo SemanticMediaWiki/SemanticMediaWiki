@@ -172,73 +172,6 @@ class SMWQueryResult {
 		return $result;
 	}
 
-
-	/**
-	 * Return URL of a page that displays those search results
-	 * (and enables browsing results, and is accessible even without
-	 * JavaScript enabled browsers).
-	 * @deprecated Use SMWQueryResult::getQueryLink() in SMW >1.1. This method will last be available in SMW 1.3 and vanish thereafter.
-	 */
-	public function getQueryURL() {
-		$title = Title::makeTitle(NS_SPECIAL, 'ask');
-		$params['query'] = $this->m_querystring;
-		if ( count($this->m_query->sortkeys)>0 ) {
-			$psort  = '';
-			$porder = '';
-			$first = true;
-			foreach ( $this->m_query->sortkeys as $sortkey => $order ) {
-				if ( $first ) {
-					$first = false;
-				} else {
-					$psort  .= ',';
-					$porder .= ',';
-				}
-				$psort .= $sortkey;
-				$porder .= $order;
-			}
-			$params['sort'] = $psort;
-			$params['order'] = $porder;
-		}
-		return $title->getFullURL(SMWInfolink::encodeParameters($params,false));
-	}
-	
-	/**
-	 * Return titlestring of a page that displays those search results
-	 * (and enables browsing results, and is accessible even without
-	 * JavaScript enabled browsers).
-	 * @deprecated use SMWQueryResult::getQueryLink() in SMW >1.1. This method will last be available in SMW 1.3 and vanish thereafter.
-	 */
-	public function getQueryTitle($prefixed = true) {
-		if ($prefixed) {
-			$title = Title::makeTitle(NS_SPECIAL, 'ask');
-			$titlestring = ':' . $title->getPrefixedText() . '/';
-		} else { // useful for further processing
-			$titlestring = '';
-		}
-		$params = array($this->m_querystring);
-		foreach ($this->m_extraprintouts as $printout) {
-			$params[] = $printout->getSerialisation();
-		}
-		if ( count($this->m_query->sortkeys)>0 ) {
-			$psort  = '';
-			$porder = '';
-			$first = true;
-			foreach ( $this->m_query->sortkeys as $sortkey => $order ) {
-				if ( $first ) {
-					$first = false;
-				} else {
-					$psort  .= ',';
-					$porder .= ',';
-				}
-				$psort .= $sortkey;
-				$porder .= $order;
-			}
-			$params['sort'] = $psort;
-			$params['order'] = $porder;
-		}
-		$titlestring .= SMWInfolink::encodeParameters($params);
-		return $titlestring;
-	}
 }
 
 /**
@@ -312,49 +245,6 @@ class SMWResultArray {
 	 */
 	public function getPrintRequest() {
 		return $this->printrequest;
-	}
-
-	/**
-	 * Return the main text representation of the next result object 
-	 * (Title or SMWDataValue) as HTML.
-	 *
-	 * The parameter $linker controls linking of title values and should
-	 * be some Linker object (or NULL for no linking).
-	 * @deprecated Use SMWResultArray::getNextText().  This method will last be available in SMW 1.3 and vanish thereafter.
-	 */
-	public function getNextHTMLText($linker = NULL) {
-		$object = current($this->content);
-		next($this->content);
-		if ($object instanceof SMWDataValue) { //print data values
-			if ($object->getTypeID() == '_wpg') { // prefer "long" text for page-values
-				return $object->getLongHTMLText($linker);
-			} else {
-				return $object->getShortHTMLText($linker);
-			}
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Return the main text representation of the next result object 
-	 * (Title or SMWDataValue) as Wikitext. The parameter $linked controls 
-	 * linking of title values and should be non-NULL and non-false if this 
-	 * is desired.
-	 * @deprecated Use SMWResultArray::getNextText().  This method will last be available in SMW 1.3 and vanish thereafter.
-	 */
-	public function getNextWikiText($linked = NULL) {
-		$object = current($this->content);
-		next($this->content);
-		if ($object instanceof SMWDataValue) { //print data values
-			if ($object->getTypeID() == '_wpg') { // prefer "long" text for page-values
-				return $object->getLongWikiText($linked);
-			} else {
-				return $object->getShortWikiText($linked);
-			}
-		} else {
-			return false;
-		}
 	}
 
 }
