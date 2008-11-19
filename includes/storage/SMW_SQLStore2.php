@@ -1202,7 +1202,7 @@ class SMWSQLStore2 extends SMWStore {
 		return true;
 	}
 
-	public function refreshData(&$index, $count) {
+	public function refreshData(&$index, $count, $namespaces = false, $usejobs = true) {
 		$updatejobs = array();
 		$emptyrange = true; // was nothing found in this run?
 
@@ -1213,8 +1213,10 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		$titles = Title::newFromIDs($tids);
 		foreach ($titles as $title) {
-			$updatejobs[] = new SMWUpdateJob($title);
-			$emptyrange = false;
+			if ( ($namespaces == false) || (in_array($title->getNamespace(),$namespaces)) ) {
+				$updatejobs[] = new SMWUpdateJob($title);
+				$emptyrange = false;
+			}
 		}
 
 		// update by internal SMW id --> make sure we get all objects in SMW
@@ -1223,6 +1225,7 @@ class SMWSQLStore2 extends SMWStore {
 		                   "smw_id >= $index AND smw_id < " . $db->addQuotes($index+$count), __METHOD__);
 		foreach ($res as $row) {
 			$emptyrange = false; // note this even if no jobs were created
+			if ( ($namespaces != false) && (!in_array($row->smw_namespace,$namespaces)) ) continue;
 			if ( ($row->smw_iw == '') || ($row->smw_iw == SMW_SQL2_SMWREDIIW) ) { // objects representing pages in the wiki, even special pages
 				// TODO: special treament of redirects needed, since the store will not act on redirects that did not change according to its records
 				$title = Title::makeTitle($row->smw_namespace, $row->smw_title);
@@ -1235,7 +1238,13 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		$db->freeResult($res);
 
-		Job::batchInsert($updatejobs);
+		if ($usejobs) {
+			Job::batchInsert($updatejobs);
+		} else {
+			foreach ($updatejobs as $job) {
+				$job->run();
+			}
+		}
 		$nextpos = $index + $count;
 		if ($emptyrange) { // nothing found, check if there will be more pages later on
 			$next1 = $db->selectField('page', 'page_id', "page_id >= $nextpos", __METHOD__, array('ORDER BY' => "page_id ASC"));

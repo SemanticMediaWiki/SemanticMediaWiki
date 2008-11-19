@@ -281,7 +281,13 @@ abstract class SMWStore {
 	 * index that should be used for continuing refreshing, or to -1 for signaling that no objects
 	 * of higher index require refresh. The method returns a decimal number between 0 and 1 to
 	 * indicate the overall progress of the refreshing (e.g. 0.7 if 70% of all objects were refreshed).
+	 *
+	 * The optional parameter $namespaces may contain an array of namespace constants. If given,
+	 * only objects from those namespaces will be refreshed. The default value FALSE disables this feature.
+	 *
+	 * The optional parameter $usejobs indicates whether updates should be processed later using
+	 * MediaWiki jobs, instead of doing all updates immediately. The default is TRUE.
 	 */
-	abstract function refreshData(&$index, $count);
+	abstract function refreshData(&$index, $count, $namespaces = false, $usejobs = true);
 
 }

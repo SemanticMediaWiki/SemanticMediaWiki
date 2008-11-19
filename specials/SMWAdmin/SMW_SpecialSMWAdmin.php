@@ -83,7 +83,7 @@ class SMWAdmin extends SpecialPage {
 			if ($sure == 'yes') {
 				if ($refreshjob === NULL) { // careful, there might be race conditions here
 					$title = Title::makeTitle(NS_SPECIAL, 'SMWAdmin');
-					$newjob = new SMWRefreshJob($title, array('spos'=>1));
+					$newjob = new SMWRefreshJob($title, array('spos'=>1, 'prog'=>0, 'rc'=>2));
 					$newjob->insert();
 					$wgOut->addHTML("<p>A new update process for refreshing the semantic data was started. All stored data will be rebuilt or repaired where needed. You can follow the progress of the update on this special page.</p>");
 				} else {
@@ -141,7 +141,7 @@ class SMWAdmin extends SpecialPage {
 				$html .=
 				'<form name="refreshwiki" action="" method="POST">' .
 				'<input type="hidden" name="action" value="refreshstore" />' .
-				'<input type="submit" value="Stop ongoing update"/> ' .
+				'<input type="submit" value="Stop this update"/> ' .
 				' <input type="checkbox" name="rfsure" value="stop"/> Yes, I am sure. ' .
 				'</form>' . "\n";
 			}

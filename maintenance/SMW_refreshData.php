@@ -46,8 +46,6 @@ if ( isset( $options['server'] ) ) {
 	$wgServer = $options['server'];
 }
 
-$dbr =& wfGetDB( DB_MASTER );
-
 if ( array_key_exists( 'd', $options ) ) {
 	$delay = intval($options['d']) * 100000; // sleep 100 times the given time, but do so only each 100 pages
 } else {
@@ -55,13 +53,14 @@ if ( array_key_exists( 'd', $options ) ) {
 }
 
 if ( array_key_exists( 's', $options ) ) {
-	$start = intval($options['s']);
+	$start = max(1,intval($options['s']));
 } else {
-	$start = 0;
+	$start = 1;
 }
-$end = $dbr->selectField( 'page', 'max(page_id)', false, 'SMW_refreshData' );
-if ( array_key_exists( 'e', $options ) ) {
-	$end = min(intval($options['e']), $end);
+if ( array_key_exists( 'e', $options ) ) { // Note: this might reasonably be larger than the page count
+	$end = intval($options['e']);
+} else {
+	$end = false;
 }
 
 if ( array_key_exists( 'b', $options ) ) {
@@ -70,30 +69,19 @@ if ( array_key_exists( 'b', $options ) ) {
 	print "\nSelected storage $smwgDefaultStore for update!\n\n";
 }
 
-if (  array_key_exists( 'v', $options ) ) {
-	$verbose = true;
-} else {
-	$verbose = false;
-}
+$verbose = array_key_exists( 'v', $options );
 
-$filter = false;
-$categories = false;
-$properties = false;
-$types = false;
-$articles = false;
-
+$filterarray = array();
 if (  array_key_exists( 'c', $options ) ) {
-	$filter = true;
-	$categories = true;
+	$filterarray[] = NS_CATEGORY;
 }
 if (  array_key_exists( 'p', $options ) ) {
-	$filter = true;
-	$properties = true;
+	$filterarray[] = SMW_NS_PROPERTY;
 }
 if (  array_key_exists( 't', $options ) ) {
-	$filter = true;
-	$types = true;
+	$filterarray[] = SMW_NS_TYPE;
 }
+$filter = count($filterarray)>0?$filterarray:false;
 
 if (  array_key_exists( 'f', $options ) ) {
 	print "\n  Deleting all stored data completely and rebuilding it again later!\n  Semantic data in the wiki might be incomplete for some time while this operation runs.\n\n  NOTE: It is usually necessary to run this script ONE MORE TIME after this operation,\n  since some properties' types are not stored yet in the first run.\n  The first run can normally use the parameter -p to refresh only properties.\n\n";
@@ -119,60 +107,27 @@ if (  array_key_exists( 'f', $options ) ) {
 	echo "\nAll storage structures have been deleted and recreated.\n\n";
 }
 
-global $wgParser;
-
 print "Refreshing all semantic data in the database!\n---\n" .
 " Some versions of PHP suffer from memory leaks in long-running scripts.\n" .
 " If your machine gets very slow after many pages (typically more than\n" .
 " 1000) were refreshed, please abort with CTRL-C and resume this script\n" .
 " at the last processed page id using the parameter -s (use -v to display\n" .
 " page ids during refresh). Continue this until all pages were refreshed.\n---\n";
-print "Processing pages from ID $start to ID $end ...\n";
-
-$num_files = 0;
-$options = new ParserOptions();
+print "Processing all IDs from $start to " . ($end?"$end":"last ID") . " ...\n";
 
 $linkCache =& LinkCache::singleton();
-for ($id = $start; $id <= $end; $id++) {
-	$title = Title::newFromID($id);
-	if ( ($title === NULL) ) continue;
-	if ($filter) {
-		$ns = $title->getNamespace();
-		$doit = false;
-		if (($categories) && ($ns == NS_CATEGORY))
-			$doit = true;
-		if (($properties) && ($ns == SMW_NS_PROPERTY))
-			$doit = true;
-		if (($types) && ($ns == SMW_NS_TYPE))
-			$doit = true;
-		if (!$doit) continue;
-	}
+$id = $start;
+$num_files = 0;
+while ( ((!$end) || ($id <= $end)) && ($id > 0) ) {
 	if ($verbose) {
-		print "($num_files) Processing page with ID " . $id . " ...\n";
-	}
-	if ( smwfIsSemanticsProcessed($title->getNamespace()) ) {
-		$revision = Revision::newFromTitle( $title );
-		if ( $revision === NULL ) continue;
-		$output = $wgParser->parse($revision->getText(), $title, $options, true, true, $revision->getID());
-		SMWParseData::storeData($output, $title, false);
-		/// NOTE: Like SMWUpdateJob, this only updates the stored data, not the records related to page display
-		/// (such as the parser cache).
-		// sleep to be nice to the server
-		if ( ($delay !== false) && (($num_files+1) % 100 === 0) ) {
-			usleep($delay);
-		}
-	} else {
-		smwfGetStore()->deleteSubject($title);
-		// sleep to be nice to the server
-		// (for this case, sleep only every 1000 pages, so that large chunks of e.g. messages are processed more quickly)
-		if ( ($delay !== false) && (($num_files+1) % 1000 === 0) ) {
-			usleep($delay);
-		}
+ 		print "($num_files) Processing ID " . $id . " ...\n";
+ 	}
+	smwfGetStore()->refreshData($id, 1, $filter, false);
+	if ( ($delay !== false) && (($num_files+1) % 100 === 0) ) {
+		usleep($delay);
 	}
 	$num_files++;
 	$linkCache->clear(); // avoid memory leaks
 }
 
-print "$num_files pages refreshed.\n";
-
-
+print "$num_files IDs refreshed.\n";
