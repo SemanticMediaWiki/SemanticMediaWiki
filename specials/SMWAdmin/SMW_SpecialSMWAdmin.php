@@ -46,15 +46,13 @@ class SMWAdmin extends SpecialPage {
 		$this->setHeaders();
 
 		/**** Get status of refresh job, if any ****/
-		if ($smwgAdminRefreshStore) {
-			$dbr =& wfGetDB( DB_SLAVE );
-			$row = $dbr->selectRow( 'job', '*', array( 'job_cmd' => 'SMWRefreshJob' ), __METHOD__ );
-			if ($row !== false) { // similar to Job::pop_type, but without deleting the job
-				$title = Title::makeTitleSafe( $row->job_namespace, $row->job_title);
-				$refreshjob = Job::factory( $row->job_cmd, $title, Job::extractBlob( $row->job_params ), $row->job_id );
-			} else {
-				$refreshjob = NULL;
-			}
+		$dbr =& wfGetDB( DB_SLAVE );
+		$row = $dbr->selectRow( 'job', '*', array( 'job_cmd' => 'SMWRefreshJob' ), __METHOD__ );
+		if ($row !== false) { // similar to Job::pop_type, but without deleting the job
+			$title = Title::makeTitleSafe( $row->job_namespace, $row->job_title);
+			$refreshjob = Job::factory( $row->job_cmd, $title, Job::extractBlob( $row->job_params ), $row->job_id );
+		} else {
+			$refreshjob = NULL;
 		}
 
 		/**** Execute actions if any ****/
@@ -132,26 +130,28 @@ class SMWAdmin extends SpecialPage {
 				 '<input type="hidden" name="return" value="Special:SMWAdmin" />' .
 				 '<input type="submit" value="Announce wiki"/></form>' . "\n";
 
-		if ($smwgAdminRefreshStore) {
-			$html .= '<h2>Repair and Upgrade</h2>' . "\n" .
-					'<p>It is possible to restore all SMW data based on the current contents of the wiki. This can be useful to repair broken data or to refresh the data if the internal format has changed due to some software upgrade. The update is executed page by page and will not be completed immediately. The following control shows if an update is in progress and allows you to start or stop upates.</p>' .
-					'<form name="refreshwiki" action="" method="POST">';
-			if ($refreshjob !== NULL) {
-				$prog = $refreshjob->getProgress();
-				$html .= "<p><b>An update is already in progress.</b> It is normal that the update progresses only slowly since it only refreshes data in small chunks each time a user accesses the wiki. To finish this update more quickly, you can invoke the MediaWiki maintenance script <tt>runJobs.php</tt> (use the option <tt>--maxjobs 2000</tt> to restrict the number of updates done at once). Estimated progress of current update:</p> " .
-					'<p><div style="float: left; background: #DDDDDD; border: 1px solid grey; width: 300px; "><div style="background: #AAF; width: ' .
-					round($prog*300) . 'px; height: 20px; "> </div></div> &nbsp;' . round($prog*100,4) . '%</p><br /><br />' .
-					'<input type="hidden" name="action" value="refreshstore" />' .
-					'<input type="submit" value="Stop ongoing update"/> ' .
-					' <input type="checkbox" name="rfsure" value="stop"/> Yes, I am sure. ' .
-					'</form>' . "\n";
-			} else {
+		$html .= '<h2>Repair and Upgrade</h2>' . "\n" .
+				'<p>It is possible to restore all SMW data based on the current contents of the wiki. This can be useful to repair broken data or to refresh the data if the internal format has changed due to some software upgrade. The update is executed page by page and will not be completed immediately. The following shows if an update is in progress and allows you to start or stop upates (unless this feature was disabled by the site administrator).</p>';
+		if ($refreshjob !== NULL) {
+			$prog = $refreshjob->getProgress();
+			$html .= "<p><b>An update is already in progress.</b> It is normal that the update progresses only slowly since it only refreshes data in small chunks each time a user accesses the wiki. To finish this update more quickly, you can invoke the MediaWiki maintenance script <tt>runJobs.php</tt> (use the option <tt>--maxjobs 2000</tt> to restrict the number of updates done at once). Estimated progress of current update:</p> " .
+			'<p><div style="float: left; background: #DDDDDD; border: 1px solid grey; width: 300px; "><div style="background: #AAF; width: ' .
+				round($prog*300) . 'px; height: 20px; "> </div></div> &nbsp;' . round($prog*100,4) . '%</p><br /><br />';
+			if ($smwgAdminRefreshStore) {
 				$html .=
-					'<input type="hidden" name="action" value="refreshstore" />' .
-					'<input type="hidden" name="rfsure" value="yes"/>' .
-					'<input type="submit" value="Start updating data"/>' .
-					'</form>' . "\n";
+				'<form name="refreshwiki" action="" method="POST">' .
+				'<input type="hidden" name="action" value="refreshstore" />' .
+				'<input type="submit" value="Stop ongoing update"/> ' .
+				' <input type="checkbox" name="rfsure" value="stop"/> Yes, I am sure. ' .
+				'</form>' . "\n";
 			}
+		} elseif ($smwgAdminRefreshStore) {
+			$html .=
+				'<form name="refreshwiki" action="" method="POST">' .
+				'<input type="hidden" name="action" value="refreshstore" />' .
+				'<input type="hidden" name="rfsure" value="yes"/>' .
+				'<input type="submit" value="Start updating data"/>' .
+				'</form>' . "\n";
 		}
 
 
