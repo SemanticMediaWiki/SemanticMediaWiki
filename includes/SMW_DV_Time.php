@@ -376,21 +376,21 @@ class SMWTimeValue extends SMWDataValue {
 	//otherwise XXXX is the number of years BC and YYYY represents the elapsed days of the year as fraction of 1
 	protected function createJDN(){
 	  $this->m_jdn = 0;
-	  if($this->m_year >= -4713){		
-	    $a = intval((14-$this->m_month)/12);
+	  if($this->m_year >= -4713){
+	    $a = intval((14-$this->getMonth())/12);
 	    $y = $this->m_year + 4800 - $a;
-	    $m = $this->m_month + 12 * $a - 3;
+	    $m = $this->getMonth() + 12 * $a - 3;
 
-	    if($this->m_time != false){//just calculate fraction if time is set
-	      list ($hours, $minutes, $seconds) = explode(':',$this->m_time,3);
+	    if($this->m_time != false) {//just calculate fraction if time is set
+	      list ($hours, $minutes, $seconds) = explode(':',$this->getTimeString(),3);
 	      $time = ($hours/24) + ($minutes / (60*24)) + ($seconds / (3600*24));
 	      $this->m_jdn +=  $time;
 	    }
 
-	    $this->m_jdn += $this->m_day + intval((153*$m+2)/5) + 365*$y + intval($y/4) - intval($y/100) + intval($y/400) - 32045;
+	    $this->m_jdn += $this->getDay() + intval((153*$m+2)/5) + 365*$y + intval($y/4) - intval($y/100) + intval($y/400) - 32045;
 	  }
 	  else{
-	    $time = 1 - (($this->m_month / 12) + ($this->m_day / 365));
+	    $time = 1 - (($this->getMonth() / 12) + ($this->getDay() / 365));
 	    $this->m_jdn = $this->m_year - $time;
 	  }
 	}
