@@ -10,6 +10,12 @@
  * refers to by common conventions. For export, times are given without timezone
  * information. However, time offsets to that local time are supported (see below).
  *
+ * There is currently no support for different calendar models or conversion between
+ * them. All dates are supposed to refer to Georgian calendar (or its extension to
+ * the past). Attention: this may change in future versions, and historical dates
+ * may be treated as Julian calendar dates in certain ranges. Consider historical dates
+ * to be experimental.
+ *
  * It is able to handle dates accross history with full precision for storing, and
  * substantial precision for sorting and querying. The range of supported past dates
  * should encompass the Beginning of Time according to most of today's theories. The
