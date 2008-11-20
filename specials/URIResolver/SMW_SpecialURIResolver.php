@@ -25,7 +25,7 @@ class SMWURIResolver extends SpecialPage {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 	}
 
-	function execute($query = '') {
+	function execute( $query ) {
 		global $wgOut, $smwgIP;
 		wfProfileIn('SpecialURIResolver::execute (SMW)');
 		if ('' == $query) {

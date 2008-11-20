@@ -57,7 +57,7 @@ class SMWSearchByProperty extends SpecialPage {
 	 * 
 	 * @param[in] $query string  Given by MediaWiki
 	 */
-	public function execute($query = '') {
+	public function execute( $query ) {
 		global $wgRequest, $wgOut;
 		$this->setHeaders();
 

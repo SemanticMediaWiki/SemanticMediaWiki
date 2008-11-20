@@ -29,7 +29,7 @@ class SMWAskPage extends SpecialPage {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 	}
 
-	function execute($p = '') {
+	function execute( $p ) {
 		global $wgOut, $wgRequest, $smwgQEnabled, $smwgRSSEnabled;
 		wfProfileIn('doSpecialAsk (SMW)');
 		if ( ($wgRequest->getVal( 'query' ) != '') ) { // old processing

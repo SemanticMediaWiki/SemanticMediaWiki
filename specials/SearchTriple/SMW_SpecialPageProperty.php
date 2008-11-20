@@ -29,7 +29,7 @@ class SMWPageProperty extends SpecialPage {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 	}
 
-	public function execute($query = '') {
+	public function execute( $query ) {
 		global $wgRequest, $wgOut, $wgUser;
 
 		$skin = $wgUser->getSkin();

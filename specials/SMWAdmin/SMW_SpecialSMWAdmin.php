@@ -31,14 +31,14 @@ class SMWAdmin extends SpecialPage {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 	}
 
-	public function execute($par = null) {
+	public function execute( $par ) {
 		global $wgOut, $wgRequest, $smwgAdminRefreshStore;
 		global $wgServer; // "http://www.yourserver.org"
 							// (should be equal to 'http://'.$_SERVER['SERVER_NAME'])
 		global $wgScript;   // "/subdirectory/of/wiki/index.php"
 		global $wgUser;
 	
-		if ( ! $wgUser->isAllowed('delete') ) {
+		if ( !$wgUser->isAllowed( 'delete' ) ) {
 			$wgOut->permissionRequired('delete');
 			return;
 		}

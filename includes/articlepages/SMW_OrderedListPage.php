@@ -104,7 +104,7 @@ abstract class SMWOrderedListPage extends Article {
 	 */
 	protected function getNavigationLinks($query = array()) {
 		global $wgUser, $wgLang;
-		$sk =& $this->getSkin();
+		$sk = $this->getSkin();
 		$limitText = $wgLang->formatNum( $this->limit );
 		
 		$ac = count($this->articles);
