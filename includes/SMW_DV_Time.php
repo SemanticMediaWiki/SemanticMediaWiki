@@ -5,16 +5,38 @@
  */
 
 /**
- * This datavalue captures values of dates and times.
- * The implementation uses a format similiar to Julian Day Number to represent time values.
- * Times internally are stored as XSD-conformant strings, see 
- * http://www.w3.org/TR/xmlschema-2/#dateTime
+ * This datavalue captures values of dates and times. All dates and times refer to
+ * the "local time" of the server (or the wiki). A wiki may define what timezone this
+ * refers to by common conventions. For export, times are given without timezone
+ * information. However, time offsets to that local time are supported (see below).
  *
- * This implementation might change in the future. For maximum
- * compatibility, use no relative dates ("... + 10 days"),
- * no dates referring to current time ("next Tuesday"), no
- * weekdays in your values, and use ":" between hours, minutes,
- * and seconds (i.e. no "1230" as 12:30).
+ * It is able to handle dates accross history with full precision for storing, and
+ * substantial precision for sorting and querying. The range of supported past dates
+ * should encompass the Beginning of Time according to most of today's theories. The
+ * range of supported future dates is limited more strictly, but it does also allow
+ * year numbers in the order of 10^9.
+ *
+ * Years before common era (aka BC) can be denoted using "BC" in a date. The internal
+ * nummeric date model supports the year 0, and considers it to be the same as "1 BC".
+ * The year "0 BC" is accepted to refer to the same year, but its use is discouraged.
+ * According to this convention, e.g., the year "-100" is the same as "101 BC". This
+ * convention agrees with ISO 6801 and the remarks in XML Schema Datatypes 2nd Edition,
+ * (the latter uses a different convention that disallows year 0, but it explicitly
+ * endorses the ISO convention and announces the future use of this in XML).
+ * Note that the implementation currently does not support the specification of negative
+ * year numbers as input; negative numbers are only used internally.
+ *
+ * The implementation notices and stores whether parts of a date/time have been
+ * omitted (as in "2008" or "May 2007"). For all exporting and sorting purposes,
+ * incomplete dates are completed wiht defaults (usually using the earliest possible
+ * time, i.e. interpreting "2008" as "Jan 1 2008 00:00:00"). But the information
+ * on what was unspecified is kept internally for improving behaviour e.g. for
+ * outputs (defaults are not printed when querying for a value). Functions are
+ * provided to access the individual time components (getYear, getMonth, getDay,
+ * getTimeString), and those can also be used to find out what was unspecified.
+ *
+ * Time offests are supported (e.g. "1 1 2008 12:00-2:00"). As explained above, those
+ * refer to the local time.
  *
  * @author Fabian Howahl
  * @author Markus Krötzsch
@@ -29,10 +51,9 @@ class SMWTimeValue extends SMWDataValue {
 	protected $m_month = false; //Gregorian month, remains false if unspecified
 	protected $m_year = false; //Gregorian year, remains false if unspecified
 	protected $m_time = false; //time, remains false if unspecified
-	protected $m_jdn = ''; //numerical time representation similiar to Julian Day Number
+	protected $m_jdn = ''; //numerical time representation similiar to Julian Day Number, for ancient times, a more compressed number is used (preserving ordering but not distance of time points)
 	protected $m_timeoffset; //contains offset (e.g. timezone) 
 	protected $m_timeannotation; //contains am or pm
-	protected $m_yearbc; //true if year is BC
 	// The following are constant (array-valued constants are not supported, hence the decalration as variable):
 	protected $m_months = array("January", "February", "March", "April" , "May" , "June" , "Juli" , "August" , "September" , "October" , "November" , "December");
 	protected $m_monthsshort = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
@@ -63,9 +84,10 @@ class SMWTimeValue extends SMWDataValue {
 		}
 
 		//browse string for special abbreviations referring to year like AD, BC
+		$is_yearbc = false;
 		if(preg_match("/[ABab][DCdc]/u", $filteredvalue, $match)){
-			if(!strcasecmp($match[0],'bc')){
-				$this->m_yearbc = true;
+			if ( strtoupper($match[0]) == 'BC' ) {
+				$is_yearbc = true;
 			}
 			$regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete ad/bc value and preceding and following chars
 			$filteredvalue = preg_replace($regexp,'', $filteredvalue); //value without ad/bc
@@ -158,8 +180,10 @@ class SMWTimeValue extends SMWDataValue {
 			return true;
 		}
 
-		if ($this->m_yearbc) {
-			$this->m_year = -$this->m_year;
+		if ($is_yearbc) {
+			if ($this->m_year > 0) { // see class documentation on BC, "year 0", and ISO conformance ...
+				$this->m_year = -($this->m_year-1);
+			}
 		}
 
 		//handle offset
@@ -349,7 +373,20 @@ class SMWTimeValue extends SMWDataValue {
 		global $smwgContLang;
 		if ($this->m_printvalue === false) {
 			//MediaWiki date function is not applicable any more (no support for BC Dates)
-		  $this->m_printvalue = $this->m_day . " " . $smwgContLang->getMonthLabel($this->m_month) . " " . $this->m_year . " " . $this->m_time;
+			if ($this->m_year > 0) {
+				$this->m_printvalue = $this->m_year;
+			} else {
+				$this->m_printvalue = -($this->m_year-1) . ' BC';
+			}
+			if ($this->m_month) {
+				$this->m_printvalue =  $smwgContLang->getMonthLabel($this->m_month) . " " . $this->m_printvalue;
+			}
+			if ($this->m_day) {
+				$this->m_printvalue =  $this->m_day . " " . $this->m_printvalue;
+			}
+			if ($this->m_time) {
+				$this->m_printvalue .= " " . $this->m_time;
+			}
 		}
 	}
 
@@ -376,22 +413,22 @@ class SMWTimeValue extends SMWDataValue {
 	//otherwise XXXX is the number of years BC and YYYY represents the elapsed days of the year as fraction of 1
 	protected function createJDN(){
 	  $this->m_jdn = 0;
+	  if (!$this->isValid()) return;
 	  if($this->m_year >= -4713){
-	    $a = intval((14-$this->getMonth())/12);
-	    $y = $this->m_year + 4800 - $a;
-	    $m = $this->getMonth() + 12 * $a - 3;
+		$a = intval((14-$this->getMonth())/12);
+		$y = $this->m_year + 4800 - $a;
+		$m = $this->getMonth() + 12 * $a - 3;
 
-	    if($this->m_time != false) {//just calculate fraction if time is set
-	      list ($hours, $minutes, $seconds) = explode(':',$this->getTimeString(),3);
-	      $time = ($hours/24) + ($minutes / (60*24)) + ($seconds / (3600*24));
-	      $this->m_jdn +=  $time;
+		if($this->m_time != false) {//just calculate fraction if time is set
+			list ($hours, $minutes, $seconds) = explode(':',$this->getTimeString(),3);
+			$time = ($hours/24) + ($minutes / (60*24)) + ($seconds / (3600*24));
+			$this->m_jdn += $time;
 	    }
-
 	    $this->m_jdn += $this->getDay() + intval((153*$m+2)/5) + 365*$y + intval($y/4) - intval($y/100) + intval($y/400) - 32045;
 	  }
-	  else{
-	    $time = 1 - (($this->getMonth() / 12) + ($this->getDay() / 365));
-	    $this->m_jdn = $this->m_year - $time;
+	  else {
+		  $time = 1 - (($this->getMonth() / 12) + ($this->getDay() / 365));
+		  $this->m_jdn = $this->m_year - $time;
 	  }
 	}
 
