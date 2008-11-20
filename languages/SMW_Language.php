@@ -94,7 +94,7 @@ abstract class SMWLanguage {
 	/**
 	 * Function looks up a month and returns the corresponding number (e.g. No
 	 */
-	function findMonth($label){
+	function findMonth($label) {
 		$id = array_search($label, $this->m_months);
 		if ($id !== false) {
 			return $id+1;
@@ -110,7 +110,7 @@ abstract class SMWLanguage {
 	 * Return the name of the month with the given number.
 	 */
 	function getMonthLabel($number) {
-	  return $this->m_months[(int)($number-1)];
+	  return (($number>=1)&&($number<=12))?$this->m_months[(int)($number-1)]:'';
 	}
 
 }

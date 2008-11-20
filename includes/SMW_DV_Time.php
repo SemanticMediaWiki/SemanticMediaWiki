@@ -25,15 +25,15 @@ class SMWTimeValue extends SMWDataValue {
 	protected $m_wikivalue; // a suitable wiki input value
 	protected $m_xsdvalue = false; // cache for XSD value
 	protected $m_printvalue = false; // cache for printout value
-	protected $m_day = false; //Gregorian day
-	protected $m_month = false; //Gregorian month
-	protected $m_year = false; //Gregorian year
-	protected $m_time = "00:00:00"; //time
+	protected $m_day = false; //Gregorian day, remains false if unspecified
+	protected $m_month = false; //Gregorian month, remains false if unspecified
+	protected $m_year = false; //Gregorian year, remains false if unspecified
+	protected $m_time = false; //time, remains false if unspecified
 	protected $m_jdn = ''; //numerical time representation similiar to Julian Day Number
 	protected $m_timeoffset; //contains offset (e.g. timezone) 
 	protected $m_timeannotation; //contains am or pm
-	protected $m_timeisset;
 	protected $m_yearbc; //true if year is BC
+	// The following are constant (array-valued constants are not supported, hence the decalration as variable):
 	protected $m_months = array("January", "February", "March", "April" , "May" , "June" , "Juli" , "August" , "September" , "October" , "November" , "December");
 	protected $m_monthsshort = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
 	protected $m_formats = array( SMW_Y => array('year'), SMW_YM => array('year','month'), SMW_MY => array('month','year'), SMW_YDM => array('year','day','month'), SMW_YMD => array('year','month','day'), SMW_DMY => array('day','month','year'), SMW_MDY => array('month','day','year'));
@@ -43,22 +43,21 @@ class SMWTimeValue extends SMWDataValue {
 		global $smwgContLang;
 
 		$band = false; //group of bits storing information about the possible meaning of each digit of the entered date
-		$this->m_day = false; 
+		$this->m_day = false;
 		$this->m_month = false;
 		$this->m_year = false;
 		$this->m_jdn = false;
-		$this->m_time = "00:00:00";
+		$this->m_time = false;
 		$this->m_timeoffset = 0;
 		$this->m_timepm = false;
-		$this->m_timeisset = false;
 		$this->m_timeannotation = false;
-	
+
 		$this->m_wikivalue = $value;
 		$filteredvalue = $value; //value without time definition and further abbreviations like PM or BC
 
 		//browse string for special abbreviations referring to time like am, pm
 		if(preg_match("/([Aa]|[Pp])[Mm]/u", $filteredvalue, $match)){
-		  $this->m_timeannotation = strtolower($match[0]);	
+		  $this->m_timeannotation = strtolower($match[0]);
 		  $regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete pm/am, preceding and following chars
 		  $filteredvalue = preg_replace($regexp,'', $filteredvalue); //value without am/pm
 		}
@@ -75,8 +74,7 @@ class SMWTimeValue extends SMWDataValue {
 		//browse string for time value
 		if(preg_match("/[0-2]?[0-9]:[0-5][0-9](:[0-5][0-9])?([+\-][0-2]?[0-9](:(30|00))?)?/u", $filteredvalue, $match)){
 			$time = $match[0];
-			$this->m_timeisset = true;
-			
+
 			//timezone handling
 			if(preg_match("/([+\-][0-2]?[0-9](:(30|00))?)/u", $time, $match2)){ //get timezone definition
 			  $offset = $this->normalizeTimeValue($match2[0]);
@@ -98,7 +96,7 @@ class SMWTimeValue extends SMWDataValue {
 			    $this->m_timeoffset = $this->m_timeoffset +  0.5;
 			  }
 			}
-						
+
 			$this->m_time = $this->normalizeValue($hours).":".$this->normalizeValue($minutes).":".$this->normalizeValue($seconds);
 			$regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete time value and preceding and following chars
 			$filteredvalue = preg_replace($regexp,'', $filteredvalue); //value without time
@@ -107,15 +105,15 @@ class SMWTimeValue extends SMWDataValue {
 		//split array in order to separate the date digits
 		$array = preg_split("/[\040|.|,|\-|\/]+/u", $filteredvalue, 3); //TODO: support &nbsp and - again;
 
-		//the following code segment creates a band by finding out wich role each digit of the entered date can take (date, year, month)
-		//the band starts with 1 und for each digit of the entered date a binary code with three bits is attached
-		//examples:
+		// The following code segment creates a band by finding out wich role each digit of the entered date can take
+		// (date, year, month). The band starts with 1 and for each digit of the entered date a binary code with three
+		// bits is attached. Examples:
 		//		111 states that the digit can be interpreted as a month, a day or a year
 		//		100 digit can just be interpreted as a month
 		//		010 digit can just be interpreted as a day
-		//		001 digit can just be interpreted as a year  
-		//		the remaining combinations are also possible (if reasonable) 
-		//for instance a date consisting of three digits will have a 10 bit band
+		//		001 digit can just be interpreted as a year
+		//		the remaining combinations are also possible (if reasonable)
+		// A date consisting of three digits therefore will have a 10 bit band.
 		if (count($array) != 0) {
 			$band = 1;
 			foreach ($array as $tmp) {
@@ -132,12 +130,11 @@ class SMWTimeValue extends SMWDataValue {
 
 		$digitcount = count($array)-1; //number of digits - 1 is used as an array index for $dateformats
 		$found = false;
-
 		foreach ($dateformats[$digitcount] as $format) { //check whether created band matches dateformats
-			if (!(~$band & $format)) { //check if $format => $band
+			if (!(~$band & $format)) { //check if $format => $band ("the detected band supports the current format")
 				$i = 0;
-				foreach ($this->m_formats[$format] as $globalvar) {
-					$globalvar = 'm_'.$globalvar;
+				foreach ($this->m_formats[$format] as $globalvar) { // map format digits to internal variables
+					$globalvar = 'm_'.$globalvar; // (for searching this file) this is one of: m_year, m_month, m_day
 					if (!$this->$globalvar) $this->$globalvar = $array[$i];
 					$i++;
 				}
@@ -151,45 +148,38 @@ class SMWTimeValue extends SMWDataValue {
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_nodatetime',$value));
 			return true;
-		}
-		elseif ($this->m_day > 0 && $this->m_day > $this->m_daysofmonths[$this->m_month]){ //date does not exist in Gregorian calendar
+		} elseif ( ($this->m_day > 0) && ($this->m_day > $this->m_daysofmonths[$this->m_month]) ) { //date does not exist in Gregorian calendar
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_nodatetime',$value));
 			return true;
-		}
-		elseif ($this->m_year < -4713 && $this->m_timeoffset != 0) { //no support for time offsets if year < -4713
+		} elseif ( ($this->m_year < -4713) && ($this->m_timeoffset != 0) ) { //no support for time offsets if year < -4713
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_nodatetime',$value));
 			return true;
 		}
 
-		//prepare values for storing
-		$this->m_day = $this->normalizeValue($this->m_day);
-		$this->m_month = $this->normalizeValue($this->m_month);
-
-		if($this->m_yearbc){
+		if ($this->m_yearbc) {
 			$this->m_year = -$this->m_year;
 		}
 
-		//handle offset	
-		if($this->m_timeoffset != 0){
+		//handle offset
+		if ($this->m_timeoffset != 0) {
 			$this->createJDN();
 			$this->m_jdn = $this->m_jdn + $this->m_timeoffset;
 			$this->JDN2Date();
 		}
-		
+
 		if ($this->m_caption === false) {
 			$this->m_caption = $value;
 		}
-		
 		return true;
 	}
 
 	protected function checkDigit($digit){
 		global $smwgContLang;
-		if(!is_numeric($digit)){ //check for alphanumeric day or month value 				
-			if(preg_match("/[0-3]?[0-9](st|nd|th)/u", $digit)){ //look for day value terminated by st/nd/th
-				$this->m_day = substr($digit,0,strlen($digit)-2); //remove st/nd/th			
+		if(!is_numeric($digit)){ //check for alphanumeric day or month value
+			if(preg_match("/[0-3]?[0-9](st|nd|rd|th)/u", $digit)) { //look for day value terminated by st/nd/th
+				$this->m_day = substr($digit,0,strlen($digit)-2); //remove st/nd/th
 				return SMW_DAY;
 			}
 			$monthnumber = $smwgContLang->findMonth($digit);
@@ -208,11 +198,11 @@ class SMWTimeValue extends SMWDataValue {
 				return SMW_MONTH;
 			}
 			return 0;
-		} elseif ($digit >= 1 && $digit <= 12) { //number could be a month, a day or a year	(111)		
+		} elseif ($digit >= 1 && $digit <= 12) { //number can be a month, a day or a year	(111)		
 			return SMW_DAY_MONTH_YEAR;
-		} elseif (($digit >= 1 && $digit <= 31)) { //number could be a day or a year (011) 
+		} elseif (($digit >= 1 && $digit <= 31)) { //number can be a day or a year (011) 
 			return SMW_DAY_YEAR;
-		} elseif (is_numeric($digit)) { //number could just be a year (011)
+		} elseif (is_numeric($digit)) { //number can just be a year (011)
 			return SMW_YEAR;
 		} else {
 			return 0;
@@ -279,7 +269,9 @@ class SMWTimeValue extends SMWDataValue {
 
 	public function getExportData() {
 		if ($this->isValid()) {
-		  $xml = $this->m_year.'-'.$this->normalizeValue($this->m_month).'-'.$this->normalizeValue($this->m_day).'T'.$this->m_time;
+		  if(!$this->m_day) $this->m_day = 1; //if day is not set assume 1
+		  if(!$this->m_month) $this->m_month = 1; //if month is not set assume 1
+		  $xml = $this->m_year.'-'.$this->normalizeValue((int)$this->m_month).'-'.$this->normalizeValue((int)$this->m_day).'T'.$this->normalizeTimeValue($this->normalizeValue((int)$this->m_time));
 		  $lit = new SMWExpLiteral($xml, $this, 'http://www.w3.org/2001/XMLSchema#dateTime');
 		  return new SMWExpData($lit);
 		} else {
@@ -325,18 +317,8 @@ class SMWTimeValue extends SMWDataValue {
 	protected function makePrintoutValue() {
 		global $smwgContLang;
 		if ($this->m_printvalue === false) {
-			if ($this->m_timeisset || ($this->m_time!="00:00:00")) {
-				$time = ' ' . $this->m_time;
-			} else {
-				$time = '';
-			}
-			if ((int)$this->m_day>0) {
-				$day = (int)$this->m_day . ' ';
-			} else {
-				$day = '';
-			}
 			//MediaWiki date function is not applicable any more (no support for BC Dates)
-			$this->m_printvalue = $day . $smwgContLang->getMonthLabel($this->m_month) . " " . $this->m_year . $time;
+		  $this->m_printvalue = $this->m_day . " " . $smwgContLang->getMonthLabel($this->m_month) . " " . $this->m_year . " " . $this->m_time;
 		}
 	}
 
@@ -350,9 +332,9 @@ class SMWTimeValue extends SMWDataValue {
 	protected function normalizeTimeValue($value){
 		$parts = explode(":",$value);	
 		switch (count($parts)) {
-			case 1: return $this->$parts[0].":00:00";
-			case 2: return $parts[0].":".$parts[1].":00";
-			default: return $value;
+		case 1: return $parts[0].":00:00";
+		case 2: return $parts[0].":".$parts[1].":00";
+		default: return $value;
 		}
 	}
 
@@ -361,18 +343,24 @@ class SMWTimeValue extends SMWDataValue {
 	//XXXX.YYYY where XXXX is the days having elapsed since 4713 BC and YYYY is the elapsed time of the day as fraction of 1
 	//otherwise XXXX is the number of years BC and YYYY represents the elapsed days of the year as fraction of 1
 	protected function createJDN(){
-		if($this->m_year >= -4713){		
-			$a = intval((14-$this->m_month)/12);
-			$y = $this->m_year + 4800 - $a;
-			$m = $this->m_month + 12 * $a - 3;
-			list ($hours, $minutes, $seconds) = explode(':',$this->m_time,3);
-			$time = ($hours/24) + ($minutes / (60*24)) + ($seconds / (3600*24));
-			$this->m_jdn = $this->m_day + intval((153*$m+2)/5) + 365*$y + intval($y/4) - intval($y/100) + intval($y/400) - 32045 + $time;		
-		}
-		else{
-			$time = 1 - (($this->m_month / 12) + ($this->m_day / 365));
-			$this->m_jdn = $this->m_year - $time;
-		}
+	  $this->m_jdn = 0;
+	  if($this->m_year >= -4713){		
+	    $a = intval((14-$this->m_month)/12);
+	    $y = $this->m_year + 4800 - $a;
+	    $m = $this->m_month + 12 * $a - 3;
+
+	    if($this->m_time != false){//just calculate fraction if time is set
+	      list ($hours, $minutes, $seconds) = explode(':',$this->m_time,3);
+	      $time = ($hours/24) + ($minutes / (60*24)) + ($seconds / (3600*24));
+	      $this->m_jdn +=  $time;
+	    }
+
+	    $this->m_jdn += $this->m_day + intval((153*$m+2)/5) + 365*$y + intval($y/4) - intval($y/100) + intval($y/400) - 32045;
+	  }
+	  else{
+	    $time = 1 - (($this->m_month / 12) + ($this->m_day / 365));
+	    $this->m_jdn = $this->m_year - $time;
+	  }
 	}
 
 	/// Convert JDN back to Gregorian date.
