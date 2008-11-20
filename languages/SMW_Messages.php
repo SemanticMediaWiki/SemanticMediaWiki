@@ -4069,6 +4069,27 @@ Prosím, zadajte stránku aj vlastnosť.',
 	'smw_result_results' => 'Výsledky',
 	'smw_result_noresults' => 'Prepáčte, žiadne výsledky.',
 	'smwadmin' => 'Správcovské funkcie Semantic MediaWiki',
+	'smw_smwadmin_settingup' => 'Nastavenie úložiska pre Semantic MediaWiki',
+	'smw_smwadmin_setupsuccess' => 'Úložisko bolo úspešne nastavené.',
+	'smw_smwadmin_return' => 'Späť na $1',
+	'smw_smwadmin_updatestarted' => 'Začal sa nový proces aktualizácie sémantických údajov.
+Všetky uložené údaje budú znova zostavené alebo opravené tam, kde je to potrebné.
+Na tejto špeciálnej stránke môžete sledovať priebeh aktualizácie.',
+	'smw_smwadmin_updatenotstarted' => 'Už beží proces aktualizácie.
+Nespustí sa ďalší.',
+	'smw_smwadmin_updatestopped' => 'Všetky bežiace procesy aktualizácie boli zastavené.',
+	'smw_smwadmin_updatenotstopped' => 'Bežiaci proces aktualizácie môžete zastaviť označením zaškrtávacieho poľa, čím potvrdíte, že ste si naozaj istý.',
+	'smw_smwadmin_docu' => 'Táto špeciálna stránka vám pomôže počas inštalácie a aktualizácie <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Pamätajte na zálohovanie dôležitých údajov pred vykonávaním správcovských funkcií.',
+	'smw_smwadmin_db' => 'Inštalácia a aktualizácia databázy',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki vyžaduje niektoré rozšírenia databázy MediaWiki, aby molo ukladať sémantické údaje.
+Funkcia nižšie zabezpečuje správne nastavenie databázy.
+Zmeny vykonané v tomto kroku neovplyvňujú zvyšok databázy MediaWiki a ak je to potrebné, je ich možno jednoducho vrátiť.
+Túto funkcia nastavenia možno vykonať viacnásobne bez akejkoľvek ujmy, ale je potrebná iba raz počas inštalácie či aktualizácie.',
+	'smw_smwadmin_permissionswarn' => 'Ak táto operácia zlyhá na chybách SQL, používateľ databázy, ktorého využíva vaša wiki (pozrite sa do LocalSettings.php) pravdepodobne nemá dostatočné privilégiá.
+Buď udeľte tomuto používateľovi ďalšie privilégiá na vytváranie a mazanie tabuliek, dočasne zadajte prihlasovacie údaje používateľa root databázy do LocalSettings.php alebo použite skript na údržbu t>SMW_setup.php</tt>, ktorý dokáže využiť oprávnenia z AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'Inicializovať alebo aktualizovať tabuľky',
+	'smw_smwadmin_announce' => 'Oznámiť vašu wiki',
 );
 
 /** Swedish (Svenska)
