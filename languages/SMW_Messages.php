@@ -298,7 +298,7 @@ Estimated progress of current update:',
 	'smw_smwadmin_supportdocu' => 'Various resources might help you in case of problems:',
 	'smw_smwadmin_installfile' => 'If you experience problems with your installation, start by checking the guidelines in the <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL file</a>.',
 	'smw_smwadmin_smwhomepage' => 'The complete user documentation to Semantic MediaWiki is at <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Bugs can be reported to <a href="http://bugzilla.wikimedia.org/">MediaZilla</a>.',
+	'smw_smwadmin_mediazilla' => 'Bugs can be reported to <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
 	'smw_smwadmin_questions' => 'If you have further questions or suggestions, join the discussion on <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.'
 );
 
