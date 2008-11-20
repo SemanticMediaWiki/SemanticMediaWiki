@@ -269,13 +269,10 @@ class SMWTimeValue extends SMWDataValue {
 
 	public function getExportData() {
 		if ($this->isValid()) {
-		  if(!$this->m_day) $this->m_day = 1; //if day is not set assume 1
-		  if(!$this->m_month) $this->m_month = 1; //if month is not set assume 1
-		  $xml = $this->m_year.'-'.$this->normalizeValue((int)$this->m_month).'-'.$this->normalizeValue((int)$this->m_day).'T'.$this->normalizeTimeValue($this->normalizeValue((int)$this->m_time));
-		  $lit = new SMWExpLiteral($xml, $this, 'http://www.w3.org/2001/XMLSchema#dateTime');
-		  return new SMWExpData($lit);
+			$lit = new SMWExpLiteral($this->getXMLSchemaDate(), $this, 'http://www.w3.org/2001/XMLSchema#dateTime');
+			return new SMWExpData($lit);
 		} else {
-		  return NULL;
+			return NULL;
 		}
 	}
 
@@ -288,27 +285,61 @@ class SMWTimeValue extends SMWDataValue {
 
 	/**
 	 * Return the month as a number (between 1 and 12) or false if the value is not set.
+	 * The parameter $default optionally specifies the value returned
+	 * if the date is valid but has no explicitly specified month. It can
+	 * also be set to FALSE to detect this situation.
 	 */
-	public function getMonth() {
-		return ($this->isValid())?$this->m_month:false;
+	public function getMonth($default = 1) {
+		if (!$this->isValid()) return false;
+		return ($this->m_month != false)?$this->m_month:$default;
 	}
 
 	/**
 	 * Return the day as a number or false if the value is not set.
+	 * The parameter $default optionally specifies the value returned
+	 * if the date is valid but has no explicitly specified date. It can
+	 * also be set to FALSE to detect this situation.
 	 */
-	public function getDay() {
-		return ($this->isValid())?$this->m_day:false;
+	public function getDay($default = 1) {
+		if (!$this->isValid()) return false;
+		return ($this->m_day != false)?$this->m_day:$default;
 	}
 
 	/**
 	 * Return the time as a string or false if the value is not set.
 	 * The time string has the format HH:MM:SS, without any timezone
 	 * information.
+	 * The parameter $default optionally specifies the value returned
+	 * if the date is valid but has no explicitly specified time. It can
+	 * also be set to FALSE to detect this situation.
 	 */
-	public function getTimeString() {
-		return ($this->isValid())?$this->m_times:false;
+	public function getTimeString($default = '00:00:00') {
+		if (!$this->isValid()) return false;
+		return ($this->m_time != false)?$this->normalizeTimeValue($this->m_time):$default;
 	}
 
+	/**
+	 * Return a representation of this date in canonical dateTime format without timezone, as
+	 * specified in XML Schema Part 2: Datatypes Second Edition (W3C Recommendation, 28 October 2004,
+	 * http://www.w3.org/TR/xmlschema-2). An example would be "2008-01-02T14:30:10". BC(E) years
+	 * are represented by a leading "-" as in "-123-01-02T14:30:10", the 2nd January of the year
+	 * 123 BC(E) at 2:30pm and 10 seconds.
+	 *
+	 * If the date was not fully specified, then the function will use defaults for the omitted values.
+	 * The boolean parameter $mindefault controls if those defaults are chosen minimally. If false, then
+	 * the latest possible value will be chosen instead.
+	 */
+	public function getXMLSchemaDate($mindefault = true) {
+		if ($this->isValid()) {
+			if ($mindefault) {
+				return $this->m_year.'-'.$this->normalizeValue($this->getMonth()).'-'.$this->normalizeValue($this->getDay()).'T'.$this->getTimeString();
+			} else {
+				return $this->m_year.'-'.$this->normalizeValue($this->getMonth(12)).'-'.$this->normalizeValue($this->getDay(31)).'T'.$this->getTimeString('23:59:59');
+			}
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Build a preferred value for printout, also used as a caption when setting up values
@@ -326,11 +357,12 @@ class SMWTimeValue extends SMWDataValue {
 		if(strlen($value) == 1) {
 			$value = "0".$value;
 		}
-		return $value; 
+		return $value;
 	}
 
 	protected function normalizeTimeValue($value){
-		$parts = explode(":",$value);	
+		$value = $this->normalizeValue($value);
+		$parts = explode(":",$value);
 		switch (count($parts)) {
 		case 1: return $parts[0].":00:00";
 		case 2: return $parts[0].":".$parts[1].":00";
