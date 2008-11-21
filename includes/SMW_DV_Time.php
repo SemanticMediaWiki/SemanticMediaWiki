@@ -11,8 +11,8 @@
  * information. However, time offsets to that local time are supported (see below).
  *
  * There is currently no support for different calendar models or conversion between
- * them. All dates are supposed to refer to Georgian calendar (or its extension to
- * the past, the proleptic Georgian claendar). Attention: this may change in future
+ * them. All dates are supposed to refer to Gregorian calendar (or its extension to
+ * the past, the proleptic Gregorian claendar). Attention: this may change in future
  * versions, and historical dates may be treated as Julian calendar dates in certain
  * ranges. Consider historical dates to be experimental.
  *
@@ -308,7 +308,7 @@ class SMWTimeValue extends SMWDataValue {
 
 	/**
 	 * Return the year as a number corresponding to the year in the proleptic
-	 * Georgian calendar and using the astronomical year numbering (0 means 1 BC).
+	 * Gregorian calendar and using the astronomical year numbering (0 means 1 BC).
 	 */
 	public function getYear() {
 		return $this->m_year;
@@ -316,7 +316,7 @@ class SMWTimeValue extends SMWDataValue {
 
 	/**
 	 * Return the month as a number (between 1 and 12) based on the proleptic
-	 * Georgian calendar.
+	 * Gregorian calendar.
 	 * The parameter $default optionally specifies the value returned
 	 * if the date is valid but has no explicitly specified month. It can
 	 * also be set to FALSE to detect this situation.
@@ -326,7 +326,7 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return the day as a number based on the proleptic Georgian calendar.
+	 * Return the day as a number based on the proleptic Gregorian calendar.
 	 * The parameter $default optionally specifies the value returned
 	 * if the date is valid but has no explicitly specified date. It can
 	 * also be set to FALSE to detect this situation.
@@ -424,7 +424,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @note The result of this function is used only internally and should not be assumed to be the
 	 * exact JD, even for dates after 4713 BC. The reason is that the time information used in this number is
 	 * based on the local timezone of the wiki (see class documentation), and not necessarily normalized
-	 * to Greenwhich noon. The JD computation, however, is based on proleptic Georgian calendar, and hence
+	 * to Greenwhich noon. The JD computation, however, is based on proleptic Gregorian calendar, and hence
 	 * is precise for the current input conventions.
 	 */
 	protected function createJD(){
@@ -446,7 +446,7 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	/// Convert Julian Day (see createJD) back to a proleptic Georgian date.
+	/// Convert Julian Day (see createJD) back to a proleptic Gregorian date.
 	protected function JD2Date() {
 		$j = intval($this->m_jd) + 32044;
 		$g = intval($j / 146097);
