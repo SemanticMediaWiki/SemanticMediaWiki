@@ -493,11 +493,8 @@ class SMWSQLStore2 extends SMWStore {
 		// redirects work differently.
 		$table = '';
 		$sql = 'p_id=' . $db->addQuotes($pid);
-		if ($value === NULL) {
-			$mode = SMWSQLStore2::getStorageMode($property->getTypeID());
-		} else {
-			$mode = SMWSQLStore2::getStorageMode($value->getTypeID());
-		}
+		$typeid = ($value === NULL)?$property->getTypeID():$value->getTypeID();
+		$mode = SMWSQLStore2::getStorageMode($typeid);
 
 		switch ($mode) {
 		case SMW_SQL2_TEXT2:
@@ -507,9 +504,13 @@ class SMWSQLStore2 extends SMWStore {
 			$table = 'smw_conc2'; // ignore value condition in this case
 		break;
 		case SMW_SQL2_RELS2: case SMW_SQL2_INST2: case SMW_SQL2_SUBS2:
+			if ($mode!=SMW_SQL2_RELS2) $sql = ''; // no property column here
+			if ($mode==SMW_SQL2_SUBS2) { // this table is shared, filter the relevant case
+				$sql = 'smw_namespace=' . (($typeid == '__sup')?$db->addQuotes(SMW_NS_PROPERTY):$db->addQuotes(NS_CATEGORY));
+			}
 			if ($value !== NULL) {
 				$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki());
-				$sql = (($mode==SMW_SQL2_RELS2)?"$sql AND ":'') . 'o_id=' . $db->addQuotes($oid);
+				$sql .= ($sql?" AND ":'') . 'o_id=' . $db->addQuotes($oid);
 			}
 			if ( ($value === NULL) || ($oid != 0) ) {
 				switch ($mode) {
@@ -593,7 +594,8 @@ class SMWSQLStore2 extends SMWStore {
 		if ($table != '') {
 			$res = $db->select( array($table,'smw_ids'),
 			                    'DISTINCT smw_title,smw_namespace,smw_sortkey',
-			                    's_id=smw_id AND ' . $sql . $this->getSQLConditions($requestoptions,'smw_sortkey','smw_sortkey'), 'SMW::getPropertySubjects',
+			                    's_id=smw_id' . ($sql?' AND ':'') . $sql . $this->getSQLConditions($requestoptions,'smw_sortkey','smw_sortkey'),
+								'SMW::getPropertySubjects',
 			                    $this->getSQLOptions($requestoptions,'smw_sortkey') );
 			while ($row = $db->fetchObject($res)) {
 				$dv = SMWWikiPageValue::makePage($row->smw_title, $row->smw_namespace, $row->smw_sortkey);
