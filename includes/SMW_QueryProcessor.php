@@ -784,7 +784,7 @@ class SMWQueryParser {
 			} else {
 				$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
 			}
-			$this->m_errors[] = wfMsgForContent('smw_propvalueproblem', $property->getText());
+			$this->m_errors[] = wfMsgForContent('smw_propvalueproblem', $property->getWikiValue());
 		}
 		$properties = array_reverse($properties);
 		foreach ($properties as $property) {
