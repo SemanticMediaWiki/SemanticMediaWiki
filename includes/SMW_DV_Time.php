@@ -259,7 +259,7 @@ class SMWTimeValue extends SMWDataValue {
 		list($this->m_year,$this->m_month,$this->m_day) = explode('/',$date,3);
 		$this->makePrintoutValue();
 		$this->m_caption = $this->m_printvalue;
-		$this->m_wikivalue = $value;
+		$this->m_wikivalue = $this->m_printvalue;
 	}
 
 	public function getShortWikiText($linked = NULL) {

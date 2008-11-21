@@ -57,8 +57,8 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 			$row = $res->getNext();
 			while ( $row !== false ) {
 				$wikipage = $row[0]->getNextObject(); // get the object
-				$startdate = '';
-				$enddate = '';
+				$startdate = false;
+				$enddate = false;
 				$location = '';
 				$description = '';
 				foreach ($row as $field) {
@@ -67,16 +67,10 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 					// could include funny things like geo, description etc. though
 					$req = $field->getPrintRequest();
 					if ( (strtolower($req->getLabel()) == "start") && ($req->getTypeID() == "_dat") ) {
-						$value = current($field->getContent()); // save only the first
-						if ($value !== false) {
-							$startdate = $value->getXSDValue(); 
-						}
+						$startdate = current($field->getContent()); // save only the first
 					}
 					if ( (strtolower($req->getLabel()) == "end") && ($req->getTypeID() == "_dat") ) {
-						$value = current($field->getContent()); // save only the first
-						if ($value !== false) {
-							$enddate = $value->getXSDValue();
-						}
+						$enddate = current($field->getContent()); // save only the first
 					}
 					if (strtolower($req->getLabel()) == "location") {
 						$value = current($field->getContent()); // save only the first
@@ -98,11 +92,12 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 				$result .= "SUMMARY:" . $wikipage->getShortWikiText() . "\r\n";
 				$result .= "URL:$url\r\n";
 				$result .= "UID:$url\r\n";
-				if ($startdate != "") $result .= "DTSTART:" . $this->parsedate($startdate,$enddate) . "\r\n";
-				if ($enddate != "")   $result .= "DTEND:" . $this->parsedate($enddate,$startdate,true) . "\r\n";
+				if ($startdate != false) $result .= "DTSTART:" . $this->parsedate($startdate) . "\r\n";
+				if ($enddate != false)   $result .= "DTEND:" . $this->parsedate($enddate,true) . "\r\n";
 				if ($location != "")  $result .= "LOCATION:$location\r\n";
 				if ($description != "")  $result .= "DESCRIPTION:$description\r\n";
-				$result .= "DTSTAMP:" . $this->parsedate($article->getTimestamp()) . "\r\n";
+				$t = strtotime(str_replace('T', ' ', $article->getTimestamp()));
+				$result .= "DTSTAMP:" . date("Ymd", $t) . "T" . date("His", $t) . "\r\n";
 				$result .= "SEQUENCE:" . $title->getLatestRevID() . "\r\n";
 				$result .= "END:VEVENT\r\n";
 				$row = $res->getNext();
@@ -137,26 +132,23 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 	}
 
 	/**
-	 * Parses a date string (XSD or MediaWiki output) and returns the appropriate
-	 * formatting for iCalendar.
-	 * If the second parameter is false, the time is always included. If the second
-	 * parameter is set, it is assumed to be another date string. If both times are 
-	 * on midnight, we assume that only the date, not a date+time should be returned.
-	 * This heuristic tries to go circumvent the problem that SMW saves only
-	 * datetimes, but not just days, and thus it has trouble to display
-	 * multi-day events and anniversaries and such.
+	 * Extract a date string formatted for iCalendar from a SMWTimeValue object.
 	 */
-	static private function parsedate($d, $check = false, $isend=false) {
-		if ($d=='') return '';
-		$t = strtotime(str_replace('T', ' ', $d));
-		if ($check) {
-			$t2 = strtotime(str_replace('T', ' ', $check));
-			if ( (date("His", $t)=="000000") && (date("His", $t2)=="000000") )  {
-				if ($isend) $t = $t + 60*60*24;
-				return date("Ymd", $t);
-			}
+	static private function parsedate(SMWTimeValue $dv, $isend=false) {
+		$year = $dv->getYear();
+		if ( ($year > 9999) || ($year<-9998) ) return ''; // ISO range is limited to four digits
+		$year = number_format($year, 0, '.', '');
+		$time = str_replace(':','', $dv->getTimeString(false));
+		if ( ($time == false) && ($isend) ) { // increment by one day, compute date to cover leap years etc.
+			$dv = SMWDataValueFactory::newTypeIDValue('_dat',$dv->getWikiValue() . 'T00:00:00+24:00');
 		}
-		return date("Ymd", $t) . "T" . date("His", $t);
+		$month = $dv->getMonth();
+		if (strlen($month) == 1) $month = '0' . $month;
+		$day = $dv->getDay();
+		if (strlen($day) == 1) $day = '0' . $day;
+		$result = $year . $month . $day;
+		if ($time != false) $result .= "T$time";
+		return $result;
 	}
 
 }
