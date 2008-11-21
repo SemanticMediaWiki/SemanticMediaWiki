@@ -307,44 +307,41 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return the year as a number or false if the value is not set.
+	 * Return the year as a number.
 	 */
 	public function getYear() {
-		return ($this->isValid())?$this->m_year:false;
+		return $this->m_year;
 	}
 
 	/**
-	 * Return the month as a number (between 1 and 12) or false if the value is not set.
+	 * Return the month as a number (between 1 and 12).
 	 * The parameter $default optionally specifies the value returned
 	 * if the date is valid but has no explicitly specified month. It can
 	 * also be set to FALSE to detect this situation.
 	 */
 	public function getMonth($default = 1) {
-		if (!$this->isValid()) return false;
 		return ($this->m_month != false)?$this->m_month:$default;
 	}
 
 	/**
-	 * Return the day as a number or false if the value is not set.
+	 * Return the day as a number.
 	 * The parameter $default optionally specifies the value returned
 	 * if the date is valid but has no explicitly specified date. It can
 	 * also be set to FALSE to detect this situation.
 	 */
 	public function getDay($default = 1) {
-		if (!$this->isValid()) return false;
 		return ($this->m_day != false)?$this->m_day:$default;
 	}
 
 	/**
-	 * Return the time as a string or false if the value is not set.
-	 * The time string has the format HH:MM:SS, without any timezone
-	 * information.
+	 * Return the time as a string. The time string has the format HH:MM:SS,
+	 * without any timezone information (see class documentaion for details
+	 * on current timezone handling).
 	 * The parameter $default optionally specifies the value returned
 	 * if the date is valid but has no explicitly specified time. It can
 	 * also be set to FALSE to detect this situation.
 	 */
 	public function getTimeString($default = '00:00:00') {
-		if (!$this->isValid()) return false;
 		return ($this->m_time != false)?$this->normalizeTimeValue($this->m_time):$default;
 	}
 
@@ -419,7 +416,6 @@ class SMWTimeValue extends SMWDataValue {
 	//otherwise XXXX is the number of years BC and YYYY represents the elapsed days of the year as fraction of 1
 	protected function createJDN(){
 	  $this->m_jdn = 0;
-	  if (!$this->isValid()) return;
 	  if($this->m_year >= -4713){
 		$a = intval((14-$this->getMonth())/12);
 		$y = $this->m_year + 4800 - $a;
@@ -431,8 +427,7 @@ class SMWTimeValue extends SMWDataValue {
 			$this->m_jdn += $time;
 	    }
 	    $this->m_jdn += $this->getDay() + intval((153*$m+2)/5) + 365*$y + intval($y/4) - intval($y/100) + intval($y/400) - 32045;
-	  }
-	  else {
+	  } else {
 		  $time = 1 - (($this->getMonth() / 12) + ($this->getDay() / 365));
 		  $this->m_jdn = $this->m_year - $time;
 	  }
