@@ -22,17 +22,17 @@
  * versions, and historical dates may be treated as Julian calendar dates in certain
  * ranges. Consider historical dates to be experimental.
  *
- * It is able to handle dates accross history with full precision for storing, and
+ * It is able to handle dates across history with full precision for storing, and
  * substantial precision for sorting and querying. The range of supported past dates
  * should encompass the Beginning of Time according to most of today's theories. The
  * range of supported future dates is limited more strictly, but it does also allow
  * year numbers in the order of 10^9.
  *
  * Years before common era (aka BC) can be denoted using "BC" in a date. The internal
- * nummeric date model supports the year 0, and considers it to be the same as "1 BC".
+ * numeric date model supports the year 0, and considers it to be the same as "1 BC".
  * The year "0 BC" is accepted to refer to the same year, but its use is discouraged.
  * According to this convention, e.g., the year "-100" is the same as "101 BC". This
- * convention agrees with ISO 6801 and the remarks in XML Schema Datatypes 2nd Edition,
+ * convention agrees with ISO 6801 and the remarks in XML Schema Datatypes 2nd Edition
  * (the latter uses a different convention that disallows year 0, but it explicitly
  * endorses the ISO convention and announces the future use of this in XML).
  * Note that the implementation currently does not support the specification of negative
@@ -40,7 +40,7 @@
  *
  * The implementation notices and stores whether parts of a date/time have been
  * omitted (as in "2008" or "May 2007"). For all exporting and sorting purposes,
- * incomplete dates are completed wiht defaults (usually using the earliest possible
+ * incomplete dates are completed with defaults (usually using the earliest possible
  * time, i.e. interpreting "2008" as "Jan 1 2008 00:00:00"). But the information
  * on what was unspecified is kept internally for improving behaviour e.g. for
  * outputs (defaults are not printed when querying for a value). Functions are
