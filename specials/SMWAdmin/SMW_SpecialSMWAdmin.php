@@ -112,14 +112,6 @@ class SMWAdmin extends SpecialPage {
 				'<input type="hidden" name="udsure" value="yes"/>' .
 				'<input type="submit" value="' . wfMsg('smw_smwadmin_dbbutton') . '"/></form>' . "\n";
 
-		$html .= '<br /><h2>' . wfMsg('smw_smwadmin_announce') . "</h2>\n" .
-				'<p>' . wfMsg('smw_smwadmin_announcedocu') . "</p>\n" . 
-				'<p>' . wfMsg('smw_smwadmin_announcebutton') . "</p>\n" . 
-				 '<form name="announcewiki" action="http://semantic-mediawiki.org/wiki/Special:SMWRegistry" method="GET">' .
-				 '<input type="hidden" name="url" value="' . SMWExporter::expandURI('&wikiurl;') . '" />' .
-				 '<input type="hidden" name="return" value="Special:SMWAdmin" />' .
-				 '<input type="submit" value="Announce wiki"/></form>' . "\n";
-
 		$html .= '<br /><h2>' . wfMsg('smw_smwadmin_datarefresh') . "</h2>\n" .
 				'<p>' . wfMsg('smw_smwadmin_datarefreshdocu') . "</p>\n";
 		if ($refreshjob !== NULL) {
@@ -144,6 +136,13 @@ class SMWAdmin extends SpecialPage {
 				'</form>' . "\n";
 		}
 
+		$html .= '<br /><h2>' . wfMsg('smw_smwadmin_announce') . "</h2>\n" .
+				'<p>' . wfMsg('smw_smwadmin_announcedocu') . "</p>\n" . 
+				'<p>' . wfMsg('smw_smwadmin_announcebutton') . "</p>\n" . 
+				 '<form name="announcewiki" action="http://semantic-mediawiki.org/wiki/Special:SMWRegistry" method="GET">' .
+				 '<input type="hidden" name="url" value="' . SMWExporter::expandURI('&wikiurl;') . '" />' .
+				 '<input type="hidden" name="return" value="Special:SMWAdmin" />' .
+				 '<input type="submit" value="Announce wiki"/></form>' . "\n";
 
 		$html .= '<br /><h2>' . wfMsg('smw_smwadmin_support') . "</h2>\n" . 
 				'<p>' . wfMsg('smw_smwadmin_supportdocu') . "</p>\n" .
