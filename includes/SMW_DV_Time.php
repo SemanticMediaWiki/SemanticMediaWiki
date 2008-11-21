@@ -372,13 +372,15 @@ class SMWTimeValue extends SMWDataValue {
 	 * If the date was not fully specified, then the function will use defaults for the omitted values.
 	 * The boolean parameter $mindefault controls if those defaults are chosen minimally. If false, then
 	 * the latest possible value will be chosen instead.
+	 *
+	 * @note This function may return year numbers with less or more than 4 digits.
 	 */
 	public function getXMLSchemaDate($mindefault = true) {
 		if ($this->isValid()) {
 			if ($mindefault) {
-				return $this->m_year.'-'.$this->normalizeValue($this->getMonth()).'-'.$this->normalizeValue($this->getDay()).'T'.$this->getTimeString();
+				return number_format($this->m_year, 0, '.', '').'-'.$this->normalizeValue($this->getMonth()).'-'.$this->normalizeValue($this->getDay()).'T'.$this->getTimeString();
 			} else {
-				return $this->m_year.'-'.$this->normalizeValue($this->getMonth(12)).'-'.$this->normalizeValue($this->getDay(31)).'T'.$this->getTimeString('23:59:59');
+				return number_format($this->m_year, 0, '.', '').'-'.$this->normalizeValue($this->getMonth(12)).'-'.$this->normalizeValue($this->getDay(31)).'T'.$this->getTimeString('23:59:59');
 			}
 		} else {
 			return false;
@@ -394,9 +396,9 @@ class SMWTimeValue extends SMWDataValue {
 		if ($this->m_printvalue === false) {
 			//MediaWiki date function is not applicable any more (no support for BC Dates)
 			if ($this->m_year > 0) {
-				$this->m_printvalue = $this->m_year;
+				$this->m_printvalue = number_format($this->m_year, 0, '.', ''); // note: there should be no digits after the comma anyway
 			} else {
-				$this->m_printvalue = -($this->m_year-1) . ' BC';
+				$this->m_printvalue = number_format(-($this->m_year-1), 0, '.', '') . ' BC'; // note: there should be no digits after the comma anyway
 			}
 			if ($this->m_month) {
 				$this->m_printvalue =  $smwgContLang->getMonthLabel($this->m_month) . " " . $this->m_printvalue;
