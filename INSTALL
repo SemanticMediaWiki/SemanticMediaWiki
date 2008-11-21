@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.4d Version for Alpha-Testers!]]
+[[Semantic MediaWiki 1.4.0]]
 
 Install instructions for the latest SMW version are also online in a more
 convenient format for reading:
@@ -34,12 +34,12 @@ If you have any specific questions, please contact the authors.
 
 == Requirements ==
 
-* MediaWiki 1.11.* or greater (tested from 1.11.0 to 1.14alpha (r40427)).
+* MediaWiki 1.11.* or greater (tested from 1.11.0 to 1.14alpha (r43727)).
 * PHP 5.x or greater installed and working
 * MySQL >= 4.0.14 (version required by MediaWiki)
 
 Notes:
-* SMW 1.2 currently has no Postgres support. It could be done if someone cares
+* SMW 1.4 currently has no Postgres support. It could be done if someone cares
   to support this action.
 * SMW uses the PHP mb_*() multibyte functions such as mb_strpos in the 
   php_mbstring.dll extension. This is standard but not enabled by default on 
@@ -81,29 +81,25 @@ remarks in the section "Notes on Upgrading" below!
     It is no problem to access a site by more than one servername in any case.
     If you have custom namespaces (such as "Portal"), read the note below.
 (3) In your wiki, log in as a user with admin status and go to the page
-    "Special:SMWAdmin" to do the final setup steps. This can also be done with
-    a command-line php script. See [SMW_path]/maintenance/README for details.
-    Please consider announcing your new site to the SMW semantic wiki list by
-    using the according button on "Special:SMWAdmin".
+    "Special:SMWAdmin" to do the final setup steps. Two steps are needed: at
+    first, trigger the database setup ("Database installation and upgrade").
+    Afterwards, activate the automatic data update ("Data repair and upgrade").
+    Note that the first step requires persmissions to alter/create database
+    tables, as explained in the above note. The second step takes some time;
+	go to Special:SMWAdmin to follow its progress.
 
-    Note that this requires persmissions to alter/create database tables, as
-    explained in the above note.
-
-(4) If you already have categories in your wiki, they will not immediately be
-    available for SMW queries. Category information becomes available if a
-    page in a category is edited next time. To make all information available
-    immediately, run the script [SMW_path]/maintenance/SMW_refreshData.php
-    as described in [SMW_path]/maintenance/README.
+	Both of those actions can also be accomplished with the command-line PHP
+	scripts SMW_setup.php and SMW_refreshData.php. Read the documentation in
+	[SMW_path]/maintenance/README for details on how to run such scripts.
 
 '''Remark:'''  Semantic MediaWiki uses ten additional namespace indexes (see
 http://meta.wikimedia.org/wiki/Help:Custom_namespaces), in the range from
 100 to 109. 100 and 101 are only needed if $smwgSMWBetaCompatible is set.
-106 and 107 are reserved for the SemanticForms extension and not used by SMW.
-If you have your own custom namespaces, you have to set the parameter
-$smwgNamespaceIndex before including SMW_Settings.php. See the documentation
-$within SMW_Settings.php for details. If you add more namespaces later on,
-then you have to assign them to higher numbers than those used by Semantic
-MediaWiki.
+106 and 107 are reserved for the SemanticForms extension. If you have your own
+custom namespaces, you have to set the parameter $smwgNamespaceIndex before
+including SMW_Settings.php. See the documentation $within SMW_Settings.php for
+details. If you add more namespaces later on, then you have to assign them to
+higher numbers than those used by Semantic MediaWiki.
 
 There is currently no working Postgres support. If you need that, please
 contact the developers and support them in adjusting SMW appropriately.
@@ -131,21 +127,8 @@ section).
 
 === Customising Semantic MediaWiki ===
 
-Semantic MediaWiki can be customised by a number of settings. To do so, you
-can set respective parameters somewhere below the line
-"include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');"
-in your LocalSetting.php. For example, one can write
-
- include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');
- $smwgQDefaultLimit = 20;
- enableSemantics('example.org');
-
-to have only 20 results of inline queries being shown by default. The
-parameters that are available are documented in the file SMW_Settings.php. Do
-not change this file directly, but put adoptions into your LocalSettings.php.
-
-Further options are explained at
-http://semantic-mediawiki.org/wiki/Help:Configuration
+Semantic MediaWiki can be customised by a number of settings. The available
+options are detailed in http://semantic-mediawiki.org/wiki/Help:Configuration
 
 === Running SMW on older versions of MediaWiki ===
 
@@ -158,30 +141,32 @@ instructions to find out whether other changes are recommended therein.
 
 == Upgrading existing installations ==
 
-SMW 1.3 does not require major steps for upgrading from SMW 1.2. You can follow
-the same steps as for new installations above (you just do not need to edit
-LocalSettings.php). Especially, you must trigger the SMW database setup via
-Special:SMWAdmin or using the script SMW_setup.php. Further actions may be
-required only if one of the following applies to you.
+(Please read all of this before upgrading)
 
-If you still use a version before SMW 1.2, or if you use SMW 1.3 manually set
-to use the old store "SMWSQLStore" or "SMWRAPStore", then follow the upgrading
-instructions given at
-http://semantic-mediawiki.org/wiki/Help:Installation_1.2#Notes_on_Upgrading,
-or SMW will not be working any more. If you have a version that is even older
-than SMW 1.0, then read the installation steps given for your version in the
-installation instructions for SMW 1.1:
-http://semantic-mediawiki.org/wiki/Help:Installation_1.1#Notes_on_Upgrading
+Existing SMW installations that already use the default store (SMWSQLStore2)
+can simply follow the above installation steps. This covers all sites with SMW
+1.2 to 1.3 that do not use a special setting to switch back to the old store
+("SMWSQLStore" or "SMWRAPStore"). In these cases the new data upgrade feature
+("will ensure that your data is refreshed to the new version. To speed up the
+update, use MediaWiki's script runJobs.php.
 
-If you use imported vocabulary, you will have to re-store the data for all
-pages that use the property imported from. This can often be done manually by
-just editing those (typically few) pages. If there are many affected pages, use
-the script to repair all data at once.
+Older SMW versions or SMW versions that use the old store can upgrade in the
+same fashion, but first need to remove any setting that configures SMW to
+use the old store. Again, all data will immediately be availabel when the data
+upgrade has finished.
 
-If you use concepts, then it might be useful to re-store the data for the
-concept pages, but only if you are interested in using the new concept caching
-features of SMW. Otherwise concepts will also continue to work normally without
-taking any actions.
+Directly after enabling SMW 1.4.0, it can potentially happen that the site
+shows SQL errors due to background jobs trying to access the new DB structure
+even before you intialised it. This can even block you from reaching SMWAdmin.
+In this case, either use the script SMW_setup.php from the command-line, or
+access your database and delete all entries in the table "job". After this, no
+errors should show up while accessing the special page for initalisation.
+
+Extensions of SMW (e.g. Semantic Forms) need to be updated to a version that is
+compatible with SMW 1.4. See your extension homepage for details. If you use
+format timeline (or eventline) in inline queries, then you need to install the
+new extension SemanticResultFormats (SRF). Timeline has been migrated to this
+extension package.
 
 === Changed configuration options ===
 
@@ -190,7 +175,7 @@ Some configuration options (used in LocalSettings.php) have changed since SMW
 following list gives the version in which a setting was first introduced, so it
 can be ignored if you already run this version or a more recent one.
 
-* [1.3] Since SMW 1.3, the Factbox is hidden by default and will only appear.
+* [1.3] Since SMW 1.3, the Factbox is hidden by default and will not appear.
 As a compensation, the toolbox (usually on the left below the search field)
 shows a link to Special:Browse. To use the display behaviour of the Factbox as
 it was before SMW 1.3, set $smwgShowFactbox = SMW_FACTBOX_NONEMPTY; The new
