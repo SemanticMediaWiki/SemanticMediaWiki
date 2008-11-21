@@ -14,7 +14,7 @@
  * @defgroup SMW Semantic MediaWiki
  */
 
-define('SMW_VERSION','1.4e-SVN');
+define('SMW_VERSION','1.4f-SVN');
 
 // constants for displaying the factbox
 define('SMW_FACTBOX_HIDDEN', 1);
