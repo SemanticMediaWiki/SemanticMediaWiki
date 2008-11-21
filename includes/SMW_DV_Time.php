@@ -10,6 +10,12 @@
  * refers to by common conventions. For export, times are given without timezone
  * information. However, time offsets to that local time are supported (see below).
  *
+ * Dates can be given in many formats, using numbers, month names, and abbreviated
+ * month names. The preferred interpretation of ambiguous dates ("1 2 2008" or even
+ * "1 2 3 BC") is controlled by the language file, as is the local naming of months.
+ * English month names are always supported. Currently, the additions "AM", "PM", "BC",
+ * and "AD" are supported, but not localised to other languages.
+ *
  * There is currently no support for different calendar models or conversion between
  * them. All dates are supposed to refer to Gregorian calendar (or its extension to
  * the past, the proleptic Gregorian claendar). Attention: this may change in future
@@ -42,7 +48,9 @@
  * getTimeString), and those can also be used to find out what was unspecified.
  *
  * Time offests are supported (e.g. "1 1 2008 12:00-2:00"). As explained above, those
- * refer to the local time.
+ * refer to the local time. Time offsets take leap years into account, e.g. the date
+ * "Feb 28 2004 23:00+2:00" is equivalent to "29 February 2004 01:00:00", while
+ * "Feb 28 1900 23:00+2:00" is equivalent to "1 March 1900 01:00:00".
  *
  * @author Fabian Howahl
  * @author Markus Krötzsch
