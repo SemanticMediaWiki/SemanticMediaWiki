@@ -52,6 +52,13 @@
  * "Feb 28 2004 23:00+2:00" is equivalent to "29 February 2004 01:00:00", while
  * "Feb 28 1900 23:00+2:00" is equivalent to "1 March 1900 01:00:00".
  *
+ * @todo Add support for different calendar models (mainly requires to settle how this
+ * should be specified in various languages).
+ * @todo Internationalise the treatment of AD, BC, PM, AM. Add more formats (p.m. or BCE).
+ * @todo Try to reuse more of MediaWiki's records, e.g. to obtain month names or to
+ * format dates. The problem is that MW is based on SIO timestamps that don't extend to
+ * very ancient or future dates, and that MW uses PHP functions that are bound to UNIX time.
+ *
  * @author Fabian Howahl
  * @author Markus Krötzsch
  * @ingroup SMWDataValues

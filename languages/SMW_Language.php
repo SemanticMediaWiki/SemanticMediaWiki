@@ -33,7 +33,7 @@ abstract class SMWLanguage {
 	/// the default is simply empty (no labels in addition to English)
 	protected $m_monthsshort = array();
 	/// Preferred interpretations for dates with 1, 2, and 3 components. There is an array for
-	/// each case, and the constants define the obvious order (e.g. SMW_YDM means "first Year, 
+	/// each case, and the constants define the obvious order (e.g. SMW_YDM means "first Year,
 	/// then Day, then Month). Unlisted combinations will not be accepted at all.
 	protected $m_dateformats = array(array(SMW_Y), array(SMW_MY,SMW_YM), array(SMW_DMY,SMW_MDY,SMW_YMD,SMW_YDM));
 
