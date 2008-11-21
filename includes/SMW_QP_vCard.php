@@ -102,7 +102,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 					if ( (strtolower($req->getLabel()) == "birthday") && ($req->getTypeID() == "_dat") ) {
 						$value = current($field->getContent()); // save only the first
 						if ($value !== false) {
-							$birthday =  $value->getXSDValue();
+							$birthday =  $value->getXMLSchemaDate();
 						}
 					}
 					if ( (strtolower($req->getLabel()) == "homepage") && ($req->getTypeID() == "_uri") ) {
