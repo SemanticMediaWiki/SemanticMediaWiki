@@ -12,9 +12,9 @@
  *
  * There is currently no support for different calendar models or conversion between
  * them. All dates are supposed to refer to Georgian calendar (or its extension to
- * the past). Attention: this may change in future versions, and historical dates
- * may be treated as Julian calendar dates in certain ranges. Consider historical dates
- * to be experimental.
+ * the past, the proleptic Georgian claendar). Attention: this may change in future
+ * versions, and historical dates may be treated as Julian calendar dates in certain
+ * ranges. Consider historical dates to be experimental.
  *
  * It is able to handle dates accross history with full precision for storing, and
  * substantial precision for sorting and querying. The range of supported past dates
@@ -57,7 +57,7 @@ class SMWTimeValue extends SMWDataValue {
 	protected $m_month = false; //Gregorian month, remains false if unspecified
 	protected $m_year = false; //Gregorian year, remains false if unspecified
 	protected $m_time = false; //time, remains false if unspecified
-	protected $m_jdn = ''; //numerical time representation similiar to Julian Day Number, for ancient times, a more compressed number is used (preserving ordering but not distance of time points)
+	protected $m_jd = ''; //numerical time representation similiar to Julian Day; for ancient times, a more compressed number is used (preserving ordering of time points)
 	protected $m_timeoffset; //contains offset (e.g. timezone) 
 	protected $m_timeannotation; //contains am or pm
 	// The following are constant (array-valued constants are not supported, hence the decalration as variable):
@@ -73,7 +73,7 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_day = false;
 		$this->m_month = false;
 		$this->m_year = false;
-		$this->m_jdn = false;
+		$this->m_jd = false;
 		$this->m_time = false;
 		$this->m_timeoffset = 0;
 		$this->m_timepm = false;
@@ -194,9 +194,9 @@ class SMWTimeValue extends SMWDataValue {
 
 		//handle offset
 		if ($this->m_timeoffset != 0) {
-			$this->createJDN();
-			$this->m_jdn = $this->m_jdn + $this->m_timeoffset;
-			$this->JDN2Date();
+			$this->createJD();
+			$this->m_jd = $this->m_jd + $this->m_timeoffset;
+			$this->JD2Date();
 		}
 
 		if ($this->m_caption === false) {
@@ -276,8 +276,8 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	public function getNumericValue() {
-		$this->createJDN();
-		return $this->m_jdn;
+		$this->createJD();
+		return $this->m_jd;
 	}
 
 	public function getWikiValue(){
@@ -286,8 +286,8 @@ class SMWTimeValue extends SMWDataValue {
 
 	public function getHash() {
 		if ($this->isValid()) {
-			$this->createJDN();
-			return strval($this->m_jdn);
+			$this->createJD();
+			return strval($this->m_jd);
 		} else {
 			return implode("\t", $this->m_errors);
 		}
@@ -307,14 +307,16 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return the year as a number.
+	 * Return the year as a number corresponding to the year in the proleptic
+	 * Georgian calendar and using the astronomical year numbering (0 means 1 BC).
 	 */
 	public function getYear() {
 		return $this->m_year;
 	}
 
 	/**
-	 * Return the month as a number (between 1 and 12).
+	 * Return the month as a number (between 1 and 12) based on the proleptic
+	 * Georgian calendar.
 	 * The parameter $default optionally specifies the value returned
 	 * if the date is valid but has no explicitly specified month. It can
 	 * also be set to FALSE to detect this situation.
@@ -324,7 +326,7 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return the day as a number.
+	 * Return the day as a number based on the proleptic Georgian calendar.
 	 * The parameter $default optionally specifies the value returned
 	 * if the date is valid but has no explicitly specified date. It can
 	 * also be set to FALSE to detect this situation.
@@ -410,32 +412,43 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	//time representation:
-	//if year >= -4713 date is represented as follows:
-	//XXXX.YYYY where XXXX is the days having elapsed since 4713 BC and YYYY is the elapsed time of the day as fraction of 1
-	//otherwise XXXX is the number of years BC and YYYY represents the elapsed days of the year as fraction of 1
-	protected function createJDN(){
-	  $this->m_jdn = 0;
-	  if($this->m_year >= -4713){
-		$a = intval((14-$this->getMonth())/12);
-		$y = $this->m_year + 4800 - $a;
-		$m = $this->getMonth() + 12 * $a - 3;
+	/**
+	 * This function computes a numerical value based on the currently set date. If the year is
+	 * grater or equal to -4712 (4713 BC), then (something that is closely inspired by) the Julian Day
+	 * (JD) is computed. The JD has the form XXXX.YYYY where XXXX is the number of days having elapsed since
+	 * 4713 BC and YYYY is the elapsed time of the day as fraction of 1. See http://en.wikipedia.org/wiki/Julian_day
+	 * If the year is before -4713, then the computed number XXXX.YYYY has the following form: XXXX is 
+	 * the number of years BC and YYYY represents the elapsed days of the year as fraction of 1. This
+	 * enables even large negative dates using 32bit floats.
+	 *
+	 * @note The result of this function is used only internally and should not be assumed to be the
+	 * exact JD, even for dates after 4713 BC. The reason is that the time information used in this number is
+	 * based on the local timezone of the wiki (see class documentation), and not necessarily normalized
+	 * to Greenwhich noon. The JD computation, however, is based on proleptic Georgian calendar, and hence
+	 * is precise for the current input conventions.
+	 */
+	protected function createJD(){
+		$this->m_jd = 0;
+		if ($this->m_year >= -4712) {
+			$a = intval((14-$this->getMonth())/12);
+			$y = $this->m_year + 4800 - $a;
+			$m = $this->getMonth() + 12 * $a - 3;
 
-		if($this->m_time != false) {//just calculate fraction if time is set
-			list ($hours, $minutes, $seconds) = explode(':',$this->getTimeString(),3);
-			$time = ($hours/24) + ($minutes / (60*24)) + ($seconds / (3600*24));
-			$this->m_jdn += $time;
-	    }
-	    $this->m_jdn += $this->getDay() + intval((153*$m+2)/5) + 365*$y + intval($y/4) - intval($y/100) + intval($y/400) - 32045;
-	  } else {
-		  $time = 1 - (($this->getMonth() / 12) + ($this->getDay() / 365));
-		  $this->m_jdn = $this->m_year - $time;
-	  }
+			if ($this->m_time != false) { //just calculate fraction if time is set -- the default time is 0 anyway
+				list ($hours, $minutes, $seconds) = explode(':',$this->getTimeString(),3);
+				$time = ($hours/24) + ($minutes / (60*24)) + ($seconds / (3600*24));
+				$this->m_jd += $time;
+			}
+			$this->m_jd += $this->getDay() + intval((153*$m+2)/5) + 365*$y + intval($y/4) - intval($y/100) + intval($y/400) - 32045;
+		} else { // starting from the time when JD would be negative, use our own "stretched" representation, currently this just ignores local time
+			$time = 1 - (($this->getMonth() / 12) + ($this->getDay() / 365));
+			$this->m_jd = $this->m_year - $time;
+		}
 	}
 
-	/// Convert JDN back to Gregorian date.
-	protected function JDN2Date() {
-		$j = intval($this->m_jdn) + 32044;
+	/// Convert Julian Day (see createJD) back to a proleptic Georgian date.
+	protected function JD2Date() {
+		$j = intval($this->m_jd) + 32044;
 		$g = intval($j / 146097);
 		$dg = $j % 146097;
 		$c = intval(((intval($dg / 36524) + 1) * 3) / 4);
@@ -451,7 +464,7 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_month = ($m + 2) % 12 + 1;
 		$this->m_day = $d + 1;
 
-		$fraction = $this->m_jdn - intval($this->m_jdn);
+		$fraction = $this->m_jd - intval($this->m_jd);
 		$time = round($fraction * 3600 * 24);
 		$hours = intval($time / 3600);
 		$time = $time - $hours * 3600;
