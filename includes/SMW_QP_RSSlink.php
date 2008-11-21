@@ -61,7 +61,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 						}
 					} elseif ( (strtolower($req->getLabel()) == "date") && ($req->getTypeID() == "_dat") ) {
 						foreach ($field->getContent() as $entry) {
-							$dates[] = $entry->getXSDvalue();
+							$dates[] = $entry->getXMLSchemaDate();
 						}
 					}
 				}
