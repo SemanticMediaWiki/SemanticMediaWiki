@@ -99,7 +99,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			
 			$html .= $this->displayHead();
 			if ($this->showoutgoing) {
-				$data = &smwfGetStore()->getSemanticData($this->subject->getTitle());
+				$data = smwfGetStore()->getSemanticData($this->subject->getTitle());
 				$html .= $this->displayData($data, $leftside);
 				$html .= $this->displayCenter();
 			}
@@ -197,7 +197,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			else
 				$noresulttext = wfMsg('smw_browse_no_outgoing');
 			
-			$html .= "<tr class=\"smwb-propvalue\"><th> &nbsp; </th><td><em>" . $noresulttext . "</em></td></th></table>\n";
+			$html .= "<tr class=\"smwb-propvalue\"><th> &nbsp; </th><td><em>" . $noresulttext . "</em></td></tr>\n";
 		}
 		
 		$html .= "</table>\n";
@@ -329,14 +329,14 @@ class SMWSpecialBrowse extends SpecialPage {
 		$options->sort = true;
 		$options->limit = SMWSpecialBrowse::$incomingpropertiescount;
 		if ($this->offset > 0) $options->offset = $this->offset;
-		$inproperties = &smwfGetStore()->getInProperties($this->subject, $options);
+		$inproperties = smwfGetStore()->getInProperties($this->subject, $options);
 		$more = (count($inproperties) == SMWSpecialBrowse::$incomingpropertiescount);
 		if ($more) array_pop($inproperties); // drop the last one
 		foreach ($inproperties as $property) {
 			$valoptions = new SMWRequestOptions();
 			$valoptions->sort = true;
 			$valoptions->limit = SMWSpecialBrowse::$incomingvaluescount;
-			$values = &smwfGetStore()->getPropertySubjects($property, $this->subject, $valoptions);
+			$values = smwfGetStore()->getPropertySubjects($property, $this->subject, $valoptions);
 			foreach ($values as $value) {
 				$indata->addPropertyObjectValue($property, $value);
 			}
