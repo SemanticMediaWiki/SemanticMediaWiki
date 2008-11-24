@@ -76,7 +76,7 @@ class SMWTimeValue extends SMWDataValue {
 	protected $m_timeoffset; //contains offset (e.g. timezone) 
 	protected $m_timeannotation; //contains am or pm
 	// The following are constant (array-valued constants are not supported, hence the decalration as variable):
-	protected $m_months = array("January", "February", "March", "April" , "May" , "June" , "Juli" , "August" , "September" , "October" , "November" , "December");
+	protected $m_months = array("January", "February", "March", "April" , "May" , "June" , "July" , "August" , "September" , "October" , "November" , "December");
 	protected $m_monthsshort = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
 	protected $m_formats = array( SMW_Y => array('year'), SMW_YM => array('year','month'), SMW_MY => array('month','year'), SMW_YDM => array('year','day','month'), SMW_YMD => array('year','month','day'), SMW_DMY => array('day','month','year'), SMW_MDY => array('month','day','year'));
 	protected $m_daysofmonths = array ( 1 => 31, 2 => 28, 3 => 31, 4 => 30, 5 => 31, 6 => 30, 7 => 31, 8 => 31, 9 => 30, 10 => 31, 11 => 30, 12 => 31 );
