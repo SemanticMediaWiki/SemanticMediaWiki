@@ -109,6 +109,11 @@ $aliases['hsb'] = array(
 	'WantedProperties' => array( 'Falowace kajkosće' ),
 );
 
+/** Hungarian (Magyar) */
+$aliases['hu'] = array(
+	'Ask' => array( 'Kérdez' ),
+);
+
 /** Khmer (ភាសាខ្មែរ) */
 $aliases['km'] = array(
 	'Browse' => array( 'រាវរក' ),

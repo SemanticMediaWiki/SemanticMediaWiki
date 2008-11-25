@@ -836,7 +836,12 @@ $messages['bg'] = array(
  * @author CERminator
  */
 $messages['bs'] = array(
+	'smw_finallistconjunct' => ' i',
+	'smw_factbox_head' => 'Činjenice o $1',
+	'smw_iq_moreresults' => '...ostali rezultati',
+	'smw_parseerror' => 'Navedena vrijednost nije razumljiva.',
 	'smw_browse_go' => 'Idi',
+	'smw_result_noresults' => 'Nema rezultata.',
 );
 
 /** Chamorro (Chamoru)
@@ -1256,6 +1261,9 @@ $messages['eo'] = array(
 	'smw_result_results' => 'Rezultoj',
 	'smw_result_noresults' => 'Bedaŭrinde, neniuj rezultoj',
 	'smwadmin' => 'Administradaj funkcioj por Semantic MediaWiki',
+	'smw_smwadmin_announce' => 'Anonci vian vikion',
+	'smw_smwadmin_datarefreshstop' => 'Halti ĉi tiun ĝisdatigon',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Jes, mi certas.',
 );
 
 /** Spanish (Español)
@@ -2674,6 +2682,7 @@ $messages['lb'] = array(
 	'smw_oi_thisissubcategoryof' => 'Ënnerkategorie vu(n)',
 	'smw_oi_thishascategory' => 'Ass een Deel vu(n)',
 	'types' => 'Typen',
+	'smw_typeunits' => 'Moosseenheete vum Typ "$1": $2',
 	'semanticstatistics' => 'Semantesch Statistiken',
 	'ask' => 'Semantesch Sich',
 	'smw_ask_submit' => 'Resultater sichen',
@@ -4695,6 +4704,7 @@ $messages['zh-tw'] = array(
 	'smw_no_importelement' => '無法匯入“$1”元素',
 	'smw_parseerror' => '所賦予的值無法被理解',
 	'smw_notitle' => '在此wiki內，是無法用“$1”來當作頁面名稱的',
+	'smw_wrong_namespace' => '此處僅允許名字空間為「$1」的頁面。',
 	'smw_unknowntype' => '不支援為性質所定義的“$1”形態。',
 	'smw_manytypes' => '定義此性質的型態已超過了一種以上。',
 	'smw_emptystring' => '不接受空白字串。',
@@ -4735,6 +4745,7 @@ $messages['zh-tw'] = array(
 	'smw_attributearticlecount' => '以此性質顯示$1頁面.',
 	'smw_subproperty_header' => '子性質',
 	'smw_subpropertyarticlecount' => '此性質具有如下的$1子性質',
+	'smw_concept_header' => '「$1」概念的頁面',
 	'exportrdf' => '輸出頁面至RDF 。',
 	'smw_exportrdf_docu' => '<p>此一頁面可讓您獲取RDF格式頁面的資料，要輸出頁面，請在下方的文字框內鍵入頁面的抬頭，一項一行。</p>',
 	'smw_exportrdf_recursive' => '逐項輸出所有的相關的頁面，請注意輸出的結果可能頗為龐大。',
@@ -4795,8 +4806,13 @@ $messages['zh-tw'] = array(
 	'smw_sbv_value' => '值',
 	'smw_sbv_submit' => '搜尋的結果',
 	'browse' => '瀏覽wiki',
+	'smw_browselink' => '瀏覽性質',
 	'smw_browse_article' => '在開始瀏覽的表單中輸入頁面名稱',
 	'smw_browse_go' => '前往',
+	'smw_browse_show_incoming' => '顯示連結至此處的性質',
+	'smw_browse_hide_incoming' => '隱藏連結至此處的性質',
+	'smw_browse_no_outgoing' => '此頁並無任何的性質',
+	'smw_browse_no_incoming' => '無性質連結至此頁面',
 	'pageproperty' => '頁面性質搜尋',
 	'smw_pp_docu' => '搜尋某一頁面全部性質的過濾條件，請同時輸入頁面及性質',
 	'smw_pp_from' => '開始頁面(From page)',
@@ -4807,5 +4823,17 @@ $messages['zh-tw'] = array(
 	'smw_result_results' => '結果',
 	'smw_result_noresults' => '抱歉，無您所要的結果。',
 	'smwadmin' => '管理員使用的語意維基功能',
+	'smw_smwadmin_return' => '返回至$1',
+	'smw_smwadmin_docu' => '此特殊頁面協助您在安裝及升級<a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>的期間。請記得在執行管理功能(administrative functions)之前須備份重要的資料。',
+	'smw_smwadmin_db' => '資料庫安裝及升級',
+	'smw_smwadmin_announce' => '公佈您的wiki',
+	'smw_smwadmin_datarefresh' => '資料修理及升級',
+	'smw_smwadmin_datarefreshbutton' => '開始更新資料',
+	'smw_smwadmin_datarefreshstop' => '停止此次的更新',
+	'smw_smwadmin_datarefreshstopconfirm' => '是的，我確定。',
+	'smw_smwadmin_support' => '取得支援',
+	'smw_smwadmin_smwhomepage' => '完整的Semantic MediaWiki用戶文件在<b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>。',
+	'smw_smwadmin_mediazilla' => '臭蟲(程式的缺陷)可回報至<a href="https://bugzilla.wikimedia.org/">MediaZilla</a>。',
+	'smw_smwadmin_questions' => '如果您有進一步的問題或建議，請參與在<a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>此處的討論。',
 );
 
