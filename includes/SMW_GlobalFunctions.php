@@ -99,6 +99,8 @@ function enableSemantics($namespace = '', $complete = false) {
 	$wgHooks['LanguageGetMagic'][] = 'smwfAddMagicWords'; // setup names for parser functions (needed here)
 	$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . '/languages/SMW_Messages.php'; // register messages (requires MW=>1.11)
 
+	$wgHooks['ParserTestTables'][] = 'smwfOnParserTestTables';
+
 	// Register special pages aliases file
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . '/languages/SMW_Aliases.php';
 
@@ -285,6 +287,16 @@ function smwfOnArticleFromTitle(&$title, &$article){
 	} elseif ( $title->getNamespace() == SMW_NS_CONCEPT ) {
 		$article = new SMWConceptPage($title);
 	}
+	return true;
+}
+
+/**
+ * Register tables to be added to temporary tables for parser tests
+ */
+function smwfOnParserTestTables( &$tables ){
+	$tables[] = 'smw_ids';
+	$tables[] = 'smw_redi2';
+	$tables[] = 'smw_atts2';
 	return true;
 }
 
