@@ -256,7 +256,10 @@ class SMWTimeValue extends SMWDataValue {
 
 	protected function parseXSDValue($value, $unit) {
 		list($date,$this->m_time) = explode('T',$value,2);
-		list($this->m_year,$this->m_month,$this->m_day) = explode('/',$date,3);
+		$d = explode('/',$date,3);
+		if (count($d)==3) list($this->m_year,$this->m_month,$this->m_day) = $d;
+		elseif (count($d)==2) list($this->m_year,$this->m_month) = $d;
+		elseif (count($d)==1) list($this->m_year) = $d;
 		$this->makePrintoutValue();
 		$this->m_caption = $this->m_printvalue;
 		$this->m_wikivalue = $this->m_printvalue;
