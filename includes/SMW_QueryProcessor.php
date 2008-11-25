@@ -174,9 +174,13 @@ class SMWQueryProcessor {
 					if (count($parts) == 1) { // no label found, use empty label
 						$parts[] = '';
 					}
+					$label = '';
 					$title = NULL;
+					$data = NULL;
 				} elseif ($wgContLang->getNsText(NS_CATEGORY) == ucfirst(trim($propparts[0]))) { // print categories
 					$title = NULL;
+					$data = NULL;
+					$label = '';
 					$printmode = SMWPrintRequest::PRINT_CATS;
 					if (count($parts) == 1) { // no label found, use category label
 						$parts[] = $showmode?'':$wgContLang->getNSText(NS_CATEGORY);
