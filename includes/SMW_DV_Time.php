@@ -94,6 +94,7 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_timepm = false;
 		$this->m_timeannotation = false;
 
+		$value = trim($value); // ignore whitespace
 		$this->m_wikivalue = $value;
 		$filteredvalue = $value; //value without time definition and further abbreviations like PM or BC
 
@@ -178,7 +179,7 @@ class SMWTimeValue extends SMWDataValue {
 				$i = 0;
 				foreach ($this->m_formats[$format] as $globalvar) { // map format digits to internal variables
 					$globalvar = 'm_'.$globalvar; // (for searching this file) this is one of: m_year, m_month, m_day
-					if (!$this->$globalvar) $this->$globalvar = $array[$i];
+					if (!$this->$globalvar) $this->$globalvar = intval($array[$i]);
 					$i++;
 				}
 				$found = true;
@@ -224,7 +225,7 @@ class SMWTimeValue extends SMWDataValue {
 		global $smwgContLang;
 		if(!is_numeric($digit)){ //check for alphanumeric day or month value
 			if(preg_match("/[0-3]?[0-9](st|nd|rd|th)/u", $digit)) { //look for day value terminated by st/nd/th
-				$this->m_day = substr($digit,0,strlen($digit)-2); //remove st/nd/th
+				$this->m_day = intval(substr($digit,0,strlen($digit)-2)); //remove st/nd/th
 				return SMW_DAY;
 			}
 			$monthnumber = $smwgContLang->findMonth($digit);
@@ -243,9 +244,9 @@ class SMWTimeValue extends SMWDataValue {
 				return SMW_MONTH;
 			}
 			return 0;
-		} elseif ($digit >= 1 && $digit <= 12) { //number can be a month, a day or a year	(111)		
+		} elseif (intval($digit) >= 1 && intval($digit) <= 12) { //number can be a month, a day or a year	(111)
 			return SMW_DAY_MONTH_YEAR;
-		} elseif (($digit >= 1 && $digit <= 31)) { //number can be a day or a year (011) 
+		} elseif ((intval($digit) >= 1 && intval($digit) <= 31)) { //number can be a day or a year (011)
 			return SMW_DAY_YEAR;
 		} elseif (is_numeric($digit)) { //number can just be a year (011)
 			return SMW_YEAR;
