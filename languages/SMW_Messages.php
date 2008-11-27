@@ -774,6 +774,25 @@ $messages['arz'] = array(
 	'smwadmin' => 'وظائف إدارية لسيمانتيك ميدياويكي',
 );
 
+/** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
+ * @author EugeneZelenko
+ */
+$messages['be-tarask'] = array(
+	'smw_abb_north' => 'пн.',
+	'smw_abb_east' => 'у.',
+	'smw_abb_south' => 'пд.',
+	'smw_abb_west' => 'з.',
+	'smw_label_latitude' => 'Шырата:',
+	'smw_label_longitude' => 'Даўгата:',
+	'properties' => 'Уласьцівасьці',
+	'types' => 'Тыпы',
+	'semanticstatistics' => 'Сэмантычная статыстыка',
+	'ask' => 'Сэмантычны пошук',
+	'smw_sbv_property' => 'Уласьцівасьць',
+	'smw_pp_type' => 'Уласьцівасьць',
+	'smw_result_results' => 'Вынікі',
+);
+
 /** Bulgarian (Български)
  * @author DCLXVI
  */

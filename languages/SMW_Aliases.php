@@ -187,3 +187,10 @@ $aliases['ro'] = array(
 	'Browse' => array( 'Răsfoieşte' ),
 );
 
+/** Swahili (Kiswahili) */
+$aliases['sw'] = array(
+	'Ask' => array( 'Uliza' ),
+	'Browse' => array( 'Fungua' ),
+	'Types' => array( 'Aina' ),
+);
+
