@@ -42,11 +42,9 @@
  */
 $optionsWithArgs = array( 'b', 'user', 'password');
 
-$dir = dirname(__FILE__) . '/';
-
 require_once ( getenv('MW_INSTALL_PATH') !== false
     ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
-    : $dir . '../../../maintenance/commandLine.inc' );
+    : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 require_once("$IP/maintenance/counter.php");
 
 global $smwgDefaultStore;
@@ -77,7 +75,7 @@ if ( array_key_exists( 'b', $options ) ) {
 
 global $smwgIP;
 if (! isset($smwgIP)) 
-     $smwgIP = $dir . '..';
+     $smwgIP = dirname(__FILE__) . '/..';
 
 require_once($smwgIP . '/includes/SMW_GlobalFunctions.php');
 

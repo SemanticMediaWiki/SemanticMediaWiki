@@ -14,11 +14,9 @@
 
 $optionsWithArgs = array( 'concept', 'old', 's', 'e');
 
-$dir = dirname(__FILE__) . '/';
-
 require_once ( getenv('MW_INSTALL_PATH') !== false
     ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
-    : $dir . '../../../maintenance/commandLine.inc' );
+    : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 require_once("$IP/maintenance/counter.php");
 
 $output_level  = array_key_exists('quiet', $options)?0:
@@ -96,7 +94,7 @@ ENDS
 
 global $smwgIP;
 if (! isset($smwgIP)) 
-     $smwgIP = $dir . '..';
+     $smwgIP = dirname(__FILE__) . '/..';
 
 require_once($smwgIP . '/includes/SMW_GlobalFunctions.php');
 
