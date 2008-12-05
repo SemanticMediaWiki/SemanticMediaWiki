@@ -13,7 +13,7 @@
  * @ingroup SMWQuery
  */
 class SMWPrintRequest {
-	const PRINT_CATS = 0; // print all direct cateories of the current element
+	const PRINT_CATS = 0; // print all direct categories of the current element
 	const PRINT_PROP = 1; // print all property values of a certain attribute of the current element
 	const PRINT_THIS = 2;  // print the current element
 	const PRINT_CCAT = 3;  // check whether current element is in given category	
@@ -62,7 +62,7 @@ class SMWPrintRequest {
 			return htmlspecialchars($this->m_label);
 		}
 		switch ($this->m_mode) {
-			case SMWPrintRequest::PRINT_CATS: 
+			case SMWPrintRequest::PRINT_CATS:
 				return htmlspecialchars($this->m_label); // TODO: link to Special:Categories
 			case SMWPrintRequest::PRINT_CCAT:
 				return $linker->makeLinkObj($this->m_data->getTitle(), htmlspecialchars($this->m_label));
@@ -81,7 +81,8 @@ class SMWPrintRequest {
 			return $this->m_label;
 		} else {
 			switch ($this->m_mode) {
-				case SMWPrintRequest::PRINT_CATS: return $this->m_label; // TODO: link to Special:Categories
+				case SMWPrintRequest::PRINT_CATS: 
+					return $this->m_label; // TODO: link to Special:Categories
 				case SMWPrintRequest::PRINT_PROP:
 					return $this->m_data->getShortWikiText($linked);
 				case SMWPrintRequest::PRINT_CCAT:
@@ -99,7 +100,7 @@ class SMWPrintRequest {
 	}
 
 	/**
-	 * @deprecated Use SMWPrintRequest::getData().
+	 * @deprecated Use SMWPrintRequest::getData(). This method will vanish in SMW 1.5.
 	 */
 	public function getTitle() {
 		if ($this->m_data instanceof Title) {
@@ -140,7 +141,7 @@ class SMWPrintRequest {
 	 * print requests.
 	 */
 	public function getHash() {
-		$hash = $this->m_mode . ':';
+		$hash = $this->m_mode . ':' . $this->m_label . ':';
 		if ($this->m_data instanceof Title) {
 			$hash .= $this->m_data->getPrefixedText() . ':';
 		} elseif ($this->m_data instanceof SMWDataValue) {

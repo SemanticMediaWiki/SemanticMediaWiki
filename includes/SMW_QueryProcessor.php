@@ -171,20 +171,14 @@ class SMWQueryProcessor {
 				$propparts = explode('#',$parts[0],2);
 				if (trim($propparts[0]) == '') { // print "this"
 					$printmode = SMWPrintRequest::PRINT_THIS;
-					if (count($parts) == 1) { // no label found, use empty label
-						$parts[] = '';
-					}
-					$label = '';
+					$label = ''; // default
 					$title = NULL;
 					$data = NULL;
 				} elseif ($wgContLang->getNsText(NS_CATEGORY) == ucfirst(trim($propparts[0]))) { // print categories
 					$title = NULL;
 					$data = NULL;
-					$label = '';
 					$printmode = SMWPrintRequest::PRINT_CATS;
-					if (count($parts) == 1) { // no label found, use category label
-						$parts[] = $showmode?'':$wgContLang->getNSText(NS_CATEGORY);
-					}
+					$label = $showmode?'':$wgContLang->getNSText(NS_CATEGORY); // default
 				} else { // print property or check category
 					$title = Title::newFromText(trim($propparts[0]), SMW_NS_PROPERTY); // trim needed for \n
 					if ($title === NULL) { // too bad, this is no legal property/category name, ignore
@@ -194,18 +188,18 @@ class SMWQueryProcessor {
 						$printmode = SMWPrintRequest::PRINT_PROP;
 						$property = SMWPropertyValue::makeProperty($title->getDBKey());
 						$data = $property;
-						$label = $showmode?'':$property->getWikiValue();
+						$label = $showmode?'':$property->getWikiValue();  // default
 					} elseif ($title->getNamespace() == NS_CATEGORY) {
 						$printmode = SMWPrintRequest::PRINT_CCAT;
 						$data = $title;
-						$label = $showmode?'':$title->getText();
+						$label = $showmode?'':$title->getText();  // default
 					} //else?
-					if (count($parts) > 1) { // no label found, use property/category name
-						$label = trim($parts[1]);
-					}
 				}
 				if (count($propparts) == 1) { // no outputformat found, leave empty
 					$propparts[] = '';
+				}
+				if (count($parts) > 1) { // label found, use this instead of default
+					$label = trim($parts[1]);
 				}
 				$printouts[] = new SMWPrintRequest($printmode, $label, $data, trim($propparts[1]));
 			} else { // parameter or query
