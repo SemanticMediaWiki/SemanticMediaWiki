@@ -13,10 +13,14 @@
  * @ingroup SMWQuery
  */
 class SMWPrintRequest {
-	const PRINT_CATS = 0; // print all direct categories of the current element
-	const PRINT_PROP = 1; // print all property values of a certain attribute of the current element
-	const PRINT_THIS = 2;  // print the current element
-	const PRINT_CCAT = 3;  // check whether current element is in given category	
+	/// Query mode to print all direct categories of the current element.
+	const PRINT_CATS = 0;
+	/// Query mode to print all property values of a certain attribute of the current element.
+	const PRINT_PROP = 1;
+	/// Query mode to print the current element (page in result set).
+	const PRINT_THIS = 2;
+	/// Query mode to print whether current element is in given category (Boolean printout).
+	const PRINT_CCAT = 3;
 
 	protected $m_mode; // type of print request
 	protected $m_label; // string for labelling results, contains no markup
@@ -70,7 +74,6 @@ class SMWPrintRequest {
 				return $this->m_data->getShortHTMLText($linker);
 			case SMWPrintRequest::PRINT_THIS: default: return htmlspecialchars($this->m_label);
 		}
-		
 	}
 
 	/**
@@ -81,7 +84,7 @@ class SMWPrintRequest {
 			return $this->m_label;
 		} else {
 			switch ($this->m_mode) {
-				case SMWPrintRequest::PRINT_CATS: 
+				case SMWPrintRequest::PRINT_CATS:
 					return $this->m_label; // TODO: link to Special:Categories
 				case SMWPrintRequest::PRINT_PROP:
 					return $this->m_data->getShortWikiText($linked);
@@ -92,6 +95,9 @@ class SMWPrintRequest {
 		}
 	}
 
+	/**
+	 * Convenience method for accessing the text in either HTML or Wiki format.
+	 */
 	public function getText($outputmode, $linker = NULL) {
 		switch ($outputmode) {
 			case SMW_OUTPUT_WIKI: return $this->getWikiText($linker);
@@ -100,18 +106,9 @@ class SMWPrintRequest {
 	}
 
 	/**
-	 * @deprecated Use SMWPrintRequest::getData(). This method will vanish in SMW 1.5.
-	 */
-	public function getTitle() {
-		if ($this->m_data instanceof Title) {
-			return $this->m_data;
-		} else {
-			return NULL;
-		}
-	}
-
-	/**
-	 * Return additional data related to the print request. Might be 
+	 * Return additional data related to the print request. The result might be
+	 * an object of class SMWPropertyValue or Title, or simply NULL if no data
+	 * is required for the given type of printout.
 	 */
 	public function getData() {
 		return $this->m_data;
@@ -138,7 +135,9 @@ class SMWPrintRequest {
 
 	/**
 	 * Return a hash string that is used to eliminate duplicate
-	 * print requests.
+	 * print requests. The hash also includes the chosen label,
+	 * so it is possible to print the same date with different
+	 * labels.
 	 */
 	public function getHash() {
 		$hash = $this->m_mode . ':' . $this->m_label . ':';
@@ -184,6 +183,13 @@ class SMWPrintRequest {
 				return $result;
 			case SMWPrintRequest::PRINT_THIS: default: return ''; // no current serialisation
 		}
+	}
+
+	/**
+	 * @deprecated Use SMWPrintRequest::getData(). This method will vanish in SMW 1.5.
+	 */
+	public function getTitle() {
+		return ($this->m_data instanceof Title)?$this->m_data:NULL;
 	}
 }
 
@@ -532,7 +538,7 @@ class SMWValueDescription extends SMWDescription {
 			return false;
 		}
 	}
-	
+
 	public function getSize() {
 		return 1;
 	}
@@ -969,4 +975,3 @@ class SMWSomeProperty extends SMWDescription {
 		return $result;
 	}
 }
-
