@@ -73,8 +73,8 @@ remarks in the section "Notes on Upgrading" below!
     We abbreviate "[wikipath]/extensions/SemanticMediaWiki" as "[SMW_path]".
 (2) Insert the following two lines into "[wikipath]/LocalSettings.php":
 
-       include_once('extensions/SemanticMediaWiki/includes/SMW_Settings.php');
-       enableSemantics('example.org');
+    include_once("$IP/extensions/SemanticMediaWiki/includes/SMW_Settings.php");
+    enableSemantics('example.org');
 
     where example.org should be replaced by your server's name (or IP address).
     The latter is needed only once, using the "preferred" name of your server.
