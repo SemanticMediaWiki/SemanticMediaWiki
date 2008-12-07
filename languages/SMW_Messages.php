@@ -866,8 +866,10 @@ $messages['bs'] = array(
 	'smw_finallistconjunct' => ' i',
 	'smw_factbox_head' => 'Činjenice o $1',
 	'smw_isknowntype' => 'Ovaj tip je u sklopu standardnih tipova podataka na ovoj wiki.',
+	'smw_concept_description' => 'Opis koncepta "$1"',
 	'smw_iq_moreresults' => '...ostali rezultati',
 	'smw_iq_altresults' => 'Pregledaj spisak rezultata direktno.',
+	'smw_unknown_importns' => 'Funkcije uvoza nisu dostupne za imenski prostor "$1".',
 	'smw_parseerror' => 'Navedena vrijednost nije razumljiva.',
 	'smw_nofloat' => '"$1" nije broj.',
 	'smw_abb_north' => 'S',
@@ -1844,12 +1846,39 @@ Por favor, insira ambas, a páxina e mais a propiedade.',
 	'smw_result_results' => 'Resultados',
 	'smw_result_noresults' => 'Sentímolo, non hai resultados.',
 	'smwadmin' => 'Funcións do administrador Semantic MediaWiki',
+	'smw_smwadmin_settingup' => 'Configurando o almacenamento para Semantic MediaWiki',
+	'smw_smwadmin_setupsuccess' => 'O motor de almacenamento foi configurado con éxito.',
 	'smw_smwadmin_return' => 'Voltar a "$1"',
+	'smw_smwadmin_updatestarted' => 'Comezou un novo proceso de actualización para refrescar os datos semánticos.
+Todos os datos almacenados serán reconstruídos ou reparados onde sexa necesario.
+Pode seguir o proceso da actualización nesta páxina especial.',
+	'smw_smwadmin_updatenotstarted' => 'Xa hai un proceso de actualización en curso.
+Non se pode crear outro.',
+	'smw_smwadmin_updatestopped' => 'Todos os procesos de actualización existentes foron detidos.',
+	'smw_smwadmin_updatenotstopped' => 'Para deter os procesos de actualización actuais, debe activar a caixa de verificación para indicar que está seguro de facelo.',
+	'smw_smwadmin_docu' => 'Esta páxina especial axúdarao durante a instalación e actualización do <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Lembre facer unha copia de seguranza dos datos antes de executar funcións administrativas.',
+	'smw_smwadmin_db' => 'Instalación e actualización da base de datos',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki require algunhas extensións da base de datos MediaWiki para almacenar os datos semánticos.
+A función de embaixo asegúrase de que a súa base de datos está configurada apropiadamente.
+Os cambios feitos neste paso non afectarán ao resto da base de datos MediaWiki, e poden ser desfeitos de xeito sinxelo se se desexa.
+Esta función de configuración pode ser executada múltiples veces sen facer ningún dano, pero só é necesaria unha vez na instalación ou actualización.',
+	'smw_smwadmin_permissionswarn' => 'Se a operación falla con erros SQL, probablemente a base de datos empregada polo seu wiki (comprobe o seu LocalSettings.php) non teña os permisos suficientes.
+Fai falla conceder a este usuario os permisos para crear e eliminar táboas; temporalmente insira o rexistro da súa base de datos en LocalSettings.php ou use a escritura de mantemento <tt>SMW_setup.php</tt>, que pode usar os credenciais de AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'Inicialice ou actualice as táboas',
+	'smw_smwadmin_announce' => 'Anunciar o seu wiki',
+	'smw_smwadmin_announcebutton' => 'Prema o seguinte botón para enviar o enderezo URL do seu wiki a ese servizo.
+O servizo non rexistrará wikis que non sexan publicamente accesibles e só almacenará información publicamente accesible.',
+	'smw_smwadmin_datarefresh' => 'Reparación e actualización dos datos',
 	'smw_smwadmin_datarefreshbutton' => 'Comezar a actualizar os datos',
 	'smw_smwadmin_datarefreshstop' => 'Deter esta actualización',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Si, estou seguro.',
 	'smw_smwadmin_support' => 'Obtendo asistencia',
+	'smw_smwadmin_supportdocu' => 'Diversas fontes poden axudalo en caso de problemas:',
+	'smw_smwadmin_installfile' => 'Se experimenta problemas durante a súa instalación, comece comprobando a guía no <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ficheiro INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'A documentación do usuario completa de Semantic MediaWiki está en <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Pode informar dos erros en <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
+	'smw_smwadmin_questions' => 'Se ten máis preguntas ou suxestións, únase á conversa en <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
@@ -3533,6 +3562,50 @@ $messages['oc'] = array(
 	'smw_result_results' => 'Resultats',
 	'smw_result_noresults' => 'O planhèm, pas de resultats.',
 	'smwadmin' => "Foncions d'administrator per Semantic MediaWiki",
+	'smw_smwadmin_settingup' => "Installa l'estocatge per Semantic MediaWiki",
+	'smw_smwadmin_setupsuccess' => "Lo motir d'estocatge es estat installat amb succès.",
+	'smw_smwadmin_return' => 'Tornar cap a $1',
+	'smw_smwadmin_updatestarted' => 'Un processús novèl pel refrescament de semantic data a començat.
+Totas las donadas estocadas seràn reconstruchas o quitament reparadas se necessari.
+Podètz seguir la progression de la mesa a jorn sus aquesta pagina especiala.',
+	'smw_smwadmin_updatenotstarted' => 'Un processús de mesa a jorn ja es en cors d’execucion.
+Ne creetz pas un autre.',
+	'smw_smwadmin_updatestopped' => 'Totes los processús de mesa a jorn son estats arrestats.',
+	'smw_smwadmin_updatenotstopped' => 'Per arrestar lo processús en cors de mesa a jorn, vos cal marcar la casa per indicar que ne sètz vertadièrament segur(a).',
+	'smw_smwadmin_docu' => 'Aquesta pagina especiala vos ajuda pendent l’installacion e la mesa a nivèl de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Doblidetz pas de salvar las donadas abans las foncions d’administracion del sit.',
+	'smw_smwadmin_db' => 'Installacion e mesa a nivèl de la banca de donadas',
+	'smw_smwadmin_dbdocu' => "Semantic MediaWiki requerís maitas extensions per la banca de donadas MediaWiki en òrdre per estocar las donadas de semantica.
+La foncion çaijós verifica que vòstra banca de donadas es estada installada corrèctament.
+Las modificacions fachas al moment d'aquesta etapa afectaràn pas la rèsta de la banca de donadas Mediawiki, e pòt èsser desfacha a volontat.
+Aquesta foncion d’installacion pòt èsser aviada mantun còp sens causar lo mendre degalh, mas una sola installacion o mesa e nivèl es necessària.",
+	'smw_smwadmin_permissionswarn' => "Se l’operacion fracassa amb d'errors SQL, l’utilizaire de la banca de donadas utilizada per vòstre wiki, (agachatz vòstre LocalSettings.php) risca probablament d'aver pas las permissions sufisentas.
+Cal siá permetre a aqueste utilizaire de dispausar de las permissions per crear e suprimir las taulas, siá entrar temporàriament la connexion en root a vòstra banca de donadas dins lo LocalSettings.php, siá utilizar l'escript de mantenença <tt>SMW_setup.php</tt> lo qual pòt utilizar las acreditacions de AdminSettings.php.",
+	'smw_smwadmin_dbbutton' => 'Inicializa las taulas de mesa a nivèl',
+	'smw_smwadmin_announce' => 'Anonciar vòstre wiki',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispausa d’un servici internet per anonciar de sits wiki semantics novèls.
+Aquò es utilizat per manténer una lista dels sits publics qu\'utilizan Semantic MediaWiki, principalament per ajudar <a href="http://semantic-mediawiki.org/wiki/SMW_Project">lo projècte Semantic MediaWiki</a> per obténer una vista d’ensemble dels usatges tipics d\'aqueste projècte.
+Vejatz la pagina d’acuèlh de Semantic MediaWiki <a href="http://semantic-mediawiki.org/wiki/Registry">mai d\'entresenhas a prepaus d\'aqueste servici</a>.',
+	'smw_smwadmin_announcebutton' => 'Quichatz sul boton seguent per sometre l’adreça internet de vòstre wiki a aqueste servici.
+Lo servici enregistrarà pas los wiki que son pas accessibles al public, e estocarà pas que las informacions publicament accessiblas.',
+	'smw_smwadmin_datarefresh' => 'Reparacion e mesa a nivèl de las donadas',
+	'smw_smwadmin_datarefreshdocu' => "Es possible de restablir totas las donadas Semantic MediaWiki basadas suls contenguts corrents d'aqueste wiki.
+Aquò pòt èsser util per reparar de donadas rompudas o per refrescar las donadas se lo format intèrn a cambiat al moment de las remesas a nivèl.
+La mesa a jorn es executada pagina per pagina e se serà pas acabada immediatament.
+La pagina seguenta aficha se una mesa a jorn es en cors d’execucion e vos permet de començar o d’arrestar aquestas (levat s'aquesta foncionalitat est desactivada per l’administrator del sit).",
+	'smw_smwadmin_datarefreshprogress' => "Una mesa a jorn es en cors d’execucion.</b>
+Es normal qu’una mesa a jorn progresse lentament dempuèi que refresca unicament las donadas dins de troces pichons a cada còp qu’un utilizaire accedís al wiki.
+Per acabar aquesta mesa a jorn mai rapidament, podètz invocar l'escript de mantenença Mediawiki <tt>runJobs.php</tt> (utilizatz l’opcion <tt>--maxjobs 1000</tt> per restrénher lo nombre de las mesas a jorn per escript aviat).
+Progression estimada de la mesa a jorn actuala :",
+	'smw_smwadmin_datarefreshbutton' => 'Començar la mesa a jorn de las donadas',
+	'smw_smwadmin_datarefreshstop' => 'Arrestar aquesta mesa a jorn',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Òc, ne soi segur(a).',
+	'smw_smwadmin_support' => 'Obtencion d’un supòrt',
+	'smw_smwadmin_supportdocu' => 'De ressorsas divèrsas vos poiriàn ajudar en cas de problèmas :',
+	'smw_smwadmin_installfile' => 'S\'experimentatz de problèmas amb vòstra installacion, començatz per agachar lo guida en linha dins lo <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">fichièr INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'La documentacion complèta de l’utilizaire de Semantic MediaWiki se tròba sus <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Los bògs pòdon èsser someses sus <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
+	'smw_smwadmin_questions' => 'Avètz d’autras questions o de suggestions, rejonhètz la discussion sus <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
 );
 
 /** Polish (Polski)
@@ -4236,18 +4309,27 @@ $messages['sr-ec'] = array(
 	'smw_isaliastype' => 'Овај тип је надимак за тип података "$1".',
 	'smw_isnotype' => 'Овај тип "$1" није стандардни тип података на викију, и још није дефинисан.',
 	'smw_concept_description' => 'Опис концепта "$1"',
-	'smw_no_concept_namespace' => 'Концепте је једино могуће дефинисати на страницама у Concept: именском простору.',
-	'smw_multiple_concepts' => 'На свакој страници концепта, могуће је само дефинисати један концепт.',
-	'smw_baduri' => 'URI-ији облика "$1", нису прихватљиви.',
+	'smw_no_concept_namespace' => 'Концепте је једино могуће дефинисати на страницама у именском простору Concept:',
+	'smw_multiple_concepts' => 'На свакој страници концепта, могуће је дефинисати само један концепт.',
+	'smw_concept_cache_miss' => 'Концепт "$1" се тренутно не може користити, пошто конфигурација викија захтева да буде компутован офлајн.
+Ако проблем не нестане за неко време, затражите од администратора сајта да учини овај концепт доступним.',
+	'smw_baduri' => 'URI-ји облика "$1", нису прихватљиви.',
+	'smw_csv_link' => 'CSV',
+	'smw_icalendar_link' => 'iCalendar',
+	'smw_vcard_link' => 'vCard',
 	'smw_iq_disabled' => 'Семантички упити су онемогућени на овом викију.',
 	'smw_iq_moreresults' => '... више резултата',
 	'smw_iq_nojs' => 'Користите прегледач који подржава JavaScript-у како би могли да видите овај елеменат.',
-	'smw_iq_altresults' => 'Директно прегледај списак резултата.',
-	'smw_unknown_importns' => 'Увожење функција није могуће у именском простору "$1".',
+	'smw_iq_altresults' => 'Прегледај директно списак резултата.',
+	'smw_unknown_importns' => 'Увожење функција није могуће за именски простор "$1".',
 	'smw_nonright_importtype' => '$1 се једино може користити за странице у именском простору "$2".',
 	'smw_wrong_importtype' => '$1 се не може користити за странице у именском простору "$2".',
+	'smw_no_importelement' => 'Елемент "$1" није расположив за увоз.',
 	'smw_parseerror' => 'Дата вредност није схваћена.',
+	'smw_decseparator' => ',',
+	'smw_kiloseparator' => '.',
 	'smw_notitle' => '"$1" се не може користити за име странице на овом викију.',
+	'smw_wrong_namespace' => 'Само странице из именског простора "$1" су дозвољене овде.',
 	'smw_unknowntype' => 'Неподржан тип "$1" је дефинисан за особину.',
 	'smw_manytypes' => 'Више од једног типа је дефинисано за ову особину.',
 	'smw_emptystring' => 'Празни стрингови нису прихватљиви.',
@@ -4271,11 +4353,12 @@ $messages['sr-ec'] = array(
 	'smw_label_longitude' => 'Географска дужина:',
 	'smw_nodatetime' => 'Формат датума "$1" није разумљив.',
 	'smw_toomanyclosing' => 'Изгледа да је превише случајева типа "$1" у упиту.',
-	'smw_misplacedsymbol' => 'Симбол "$1" је искориштен на месту где није од користи.',
+	'smw_noclosingbrackets' => 'Неке искоришћене "<nowiki>[[</nowiki>" у вашем упиту нису затворене одговарајућим "]]".',
+	'smw_misplacedsymbol' => 'Симбол "$1" је искоришћен на месту где није од користи.',
 	'smw_unexpectedpart' => 'Део упита "$1" није схваћен.
 Резултати могу бити неочекивани.',
 	'smw_emptysubquery' => 'Неки подупити не садрже ваљане услове.',
-	'smw_misplacedsubquery' => 'Неки подупити су кориштени на месту где подупити нису дозвољени.',
+	'smw_misplacedsubquery' => 'Неки подупити су коришћени на месту где подупити нису дозвољени.',
 	'smw_valuesubquery' => 'За вредности особине "$1", подупити нису подржани.',
 	'smw_overprintoutlimit' => 'Упит садржи превише захтева за излазне резултате.',
 	'smw_badprintout' => 'Неки параметри за упит су погрешно обликовани.',
@@ -4287,8 +4370,8 @@ $messages['sr-ec'] = array(
 	'smw_nodisjunctions' => 'Дисјункције у упитима нису подржане на овом викију, те је део упита изостављен ($1).',
 	'smw_querytoolarge' => 'Следеће услове упита није могуће разматрати због рестрикција викија за дужину и обим упита: $1.',
 	'smw_devel_warning' => 'Ова карактеристика је тренутно још у развоју, те је могуће да није потпуно функционална.
-Направите резервну копију ваших података пре њеног кориштења.',
-	'smw_notemplategiven' => 'Унесите вредност параметра ”шаблон”, како би овај формат упита дао резултат.',
+Направите резервну копију ваших података пре њеног коришћења.',
+	'smw_notemplategiven' => 'Понудите вредност за параметар ”шаблон”, како би овај формат упита дао резултат.',
 	'smw_type_header' => 'Особине типа "$1"',
 	'smw_typearticlecount' => 'Приказ $1 {{PLURAL:$1|особине|особина}} за овај тип.',
 	'smw_attribute_header' => 'Странице које користе особину "$1"',
@@ -4298,7 +4381,7 @@ $messages['sr-ec'] = array(
 	'smw_concept_header' => 'Странице концепта "$1"',
 	'smw_conceptarticlecount' => 'Приказ $1 {{PLURAL:$1|странице|страница}} које припадају том концепту.',
 	'smw_rss_description' => '$1 RSS добављач',
-	'specialpages-group-smw_group' => 'Семантички Медијавики',
+	'specialpages-group-smw_group' => 'Семантички медијавики',
 	'exportrdf' => 'Извези странице у RDF',
 	'smw_exportrdf_docu' => '<p>Ова страница омогућава добијање података из странице у RDF формату.
 Како би извезли странице, унесите наслове у доњи формулар, по принципу један наслов за сваки ред.</p>',
@@ -4306,7 +4389,7 @@ $messages['sr-ec'] = array(
 Обратите пажњу да резултат може бити веома обиман!',
 	'smw_exportrdf_backlinks' => 'Такође извези све странице које вежу на већ извезене странице.
 Генерише RDF који је могуће прегледати.',
-	'smw_exportrdf_lastdate' => 'Не извози странице које нису мењане од одређеног момента.',
+	'smw_exportrdf_lastdate' => 'Не извози странице које нису мењане од датог момента.',
 	'properties' => 'Особине',
 	'smw_properties_docu' => 'Следеће особине се користе на викију.',
 	'smw_property_template' => '$1 типа $2 ($3)',
@@ -4314,11 +4397,11 @@ $messages['sr-ec'] = array(
 	'smw_propertylackstype' => 'Нема дефинисаног типа за ову особину (за сада усвајам тип $1).',
 	'smw_propertyhardlyused' => 'Ова особина једва да се користи на овом  викију!',
 	'unusedproperties' => 'Неискоришћене особине',
-	'smw_unusedproperties_docu' => 'Постоје следеће особине иако нема других страница које их користе.',
+	'smw_unusedproperties_docu' => 'Следеће особине постоје иако нема других страница које их користе.',
 	'smw_unusedproperty_template' => '$1 типа $2',
 	'wantedproperties' => 'Тражене особине',
-	'smw_wantedproperties_docu' => 'Следеће особине се користе на викију, али још увек немају странице које их описују.',
-	'smw_wantedproperty_template' => '$1 ($2 кориштења)',
+	'smw_wantedproperties_docu' => 'Следеће особине се користе на викију, али још увек немају своју страницу са описом.',
+	'smw_wantedproperty_template' => '$1 ($2 коришћења)',
 	'tooltip-purge' => 'Кликните овде за чишћење кеша свих упита и шаблона на овој страници',
 	'smw_purge' => 'Очисти кеш',
 	'ontologyimport' => 'Увези онтологију',
@@ -4331,6 +4414,7 @@ $messages['sr-ec'] = array(
 	'smw_oi_textforall' => 'Насловни текст који се додаје у сва увожења (може бити празан):',
 	'smw_oi_selectall' => 'Обележите или одбележите све исказе',
 	'smw_oi_statementsabout' => 'Искази о',
+	'smw_oi_mapto' => 'Усмери ентитет према',
 	'smw_oi_comment' => 'Додај следећи текст:',
 	'smw_oi_thisissubcategoryof' => 'Поткатегорија од',
 	'smw_oi_thishascategory' => 'Је део категорије',
@@ -4340,6 +4424,10 @@ $messages['sr-ec'] = array(
 Сваки тип података има своју страницу где је могуће додати додатне информације.',
 	'smw_typeunits' => 'Мерне јединице типа "$1": $2',
 	'semanticstatistics' => 'Семантичке статистике',
+	'smw_semstats_text' => 'Овај вики садржи <b>$1</b> вредности особина за укупно <b>$2</b> различитих <a href="$3">особина</a>.
+<b>$4</b> особина поседује своју властиту страницу и намењени типови података су убележени за њих <b>$5</b>.
+Неке од постојећих особина су можда<a href="$6">неискоришћене особине</a>.
+Особине које још увек немају своју страницу, могу се наћи на <a href="$7">списку тражених особинаs</a>.',
 	'flawedattributes' => 'Покварене особине',
 	'smw_fattributes' => 'Странице са доњег списка садрже погрешно дефинисане особине.
 Број погрешно дефинисаних особина је дат у заградама.',
@@ -4352,6 +4440,7 @@ $messages['sr-ec'] = array(
 	'smw_ask_editquery' => '[Уреди упит]',
 	'smw_add_sortcondition' => '[Додај услове сортирања]',
 	'smw_ask_hidequery' => 'Сакриј упит',
+	'smw_ask_help' => 'Упит у странице помоћи',
 	'smw_ask_queryhead' => 'Упит',
 	'smw_ask_printhead' => 'Додатни излазни резултати (опционо)',
 	'searchbyproperty' => 'Претражи по особинама',
@@ -4359,8 +4448,11 @@ $messages['sr-ec'] = array(
 	'smw_sbv_noproperty' => '<p>Унеси особину.</p>',
 	'smw_sbv_novalue' => '<p>Унесите ваљану вредност за ову особину, или погледајте све вредности особине за "$1".</p>',
 	'smw_sbv_displayresult' => 'Списак свих страница које садрже особину "$1" са вредношћу "$2"',
+	'smw_sbv_displayresultfuzzy' => 'Списак свих страница које садрже особину "$1" са вредношћу "$2".
+Пошто је пронађено само неколико резултата, такође су приказане приближне вредности.',
 	'smw_sbv_property' => 'Особина',
 	'smw_sbv_value' => 'Вредност',
+	'smw_sbv_submit' => 'Пронађи резултате',
 	'browse' => 'Претражи вики',
 	'smw_browselink' => 'Прегледај особине',
 	'smw_browse_article' => 'Унесите име почетне странице за претрагу.',
@@ -4372,13 +4464,18 @@ $messages['sr-ec'] = array(
 	'smw_inverse_label_default' => '$1 од',
 	'smw_inverse_label_property' => 'Инверзна етикета особине',
 	'pageproperty' => 'Страница за претрагу особина',
+	'smw_pp_docu' => 'Претраживање свега што испуњава особину на датој страници.
+Унесите обоје, и страницу и особину,',
 	'smw_pp_from' => 'Од странице',
+	'smw_pp_type' => 'Особина',
 	'smw_pp_submit' => 'Пронађени резултати',
 	'smw_result_prev' => 'Претходни',
-	'smw_result_next' => 'Следећи',
+	'smw_result_next' => 'Наредни',
 	'smw_result_results' => 'Резултати',
 	'smw_result_noresults' => 'Нема резултата.',
-	'smwadmin' => 'Управљачке функције за Семантички Медијавики',
+	'smwadmin' => 'Управљачке функције за Семантички медијавики',
+	'smw_smwadmin_settingup' => 'Покрећем складиште за Семантички медијавики.',
+	'smw_smwadmin_setupsuccess' => 'Машина за складиштење је успешно покренута.',
 	'smw_smwadmin_return' => 'Повратак на $1',
 	'smw_smwadmin_updatestarted' => 'Започет је нови процес за обнављање семантичких података.
 Сви сачувани подаци ће бити поново обновљени или поправљени по потреби.
@@ -4387,28 +4484,147 @@ $messages['sr-ec'] = array(
 Не покрећите други.',
 	'smw_smwadmin_updatestopped' => 'Сви постојећи процеси ажурирања су обустављени.',
 	'smw_smwadmin_updatenotstopped' => 'Како бисте обуставили покренути процес ажурирања, морате активирати контролни оквир да потврдите да сте сигурни.',
-	'smw_smwadmin_docu' => 'Ова посебна страница вам помаже приликом инсталирања и ажурирања <a href="http://semantic-mediawiki.org">Семантичког Медијавикија</a>.
+	'smw_smwadmin_docu' => 'Ова посебна страница вам помаже приликом инсталирања и ажурирања <a href="http://semantic-mediawiki.org">Семантичког медијавикија</a>.
 Не заборавите да направите копију вредних података пре него покренете функције администрације.',
 	'smw_smwadmin_db' => 'Инсталирање и ажурирање базе података',
-	'smw_smwadmin_dbdocu' => 'Семантички Медијавики захтева неке екстензије у бази података Медијавикија, како би се могли чувати семантички подаци.
-Доња функција потврђује да је ваша база података исправно инсталирани.
-Промене које ће се сада извести немају последица за остали део базе података Медијавикија, и по потреби се могу врло лако поништити.
+	'smw_smwadmin_dbdocu' => 'Семантички медијавики захтева неке додатке у бази података Медијавикија, како би се могли чувати семантички подаци.
+Доња функција потврђује да је ваша база података исправно инсталирана.
+Промене које ће се сада извести немају последица за остали део базе података Медијавикија, а по потреби се могу врло лако поништити.
 Ова функција инсталирања се може покретати више пута без бојазни да ће нанети неку штету, али је неопходна само једном приликом инсталирања или ажурирања.',
+	'smw_smwadmin_permissionswarn' => 'Ако се операција заврши са SQL грешкама, корисник базе података (погледајте ваш LocalSettings.php) вероватно нема довољно дозвола за извршавање неопходних операција. 
+Или дајте неопходне дозволе том кориснику како би могао да прави и брише табеле у бази, темпорално се улогујте као root у LocalSettings.php, или користите скрипту за одржавање <tt>SMW_setup.php</tt>, која може користити акредитиве из скрипте AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Покретање или ажурирање табела базе података',
 	'smw_smwadmin_announce' => 'Дојавите о постојању вашег викија',
+	'smw_smwadmin_announcedocu' => 'Семантички медијавики има веб сервиз за дојаву о постојању нових викија.
+Тај сајт се користи за одржавање списка јавно доступних сајтова који користе Семантички медијавики, углавном ради помоћи <a href="http://semantic-mediawiki.org/wiki/SMW_Project">пројекту Семантички медијавики</a> да прикупи информације о типичним коришћењима Семантичког медијавикија.
+Погледајте главну страну Семаничког медијавикија за <a href="http://semantic-mediawiki.org/wiki/Registry">више информација о овом сервизу</a>.',
+	'smw_smwadmin_announcebutton' => 'Кликните на следеће дугме за слање URL-а вашег викија том сервизу.
+Сервиз неће регистровати викије који нису јавно доступни, и једино ће сачувати јавно доступне информације,',
 	'smw_smwadmin_datarefresh' => 'Поправљање података и ажурирање',
+	'smw_smwadmin_datarefreshdocu' => 'Могуће је рестаурирати све податке Семантичког медијавикија, базирајући се на садржају викија.
+То може бити корисно за репарацију података или обнављање података у случају да су се извршиле неке измене у унутрашњем формату због надоградње софтвера.
+Ажурирање ће се обавити страницу по страницу и неће се одмах завршити. 
+Следећи приказ служи за надгледање ажурирања у прогресу и омогућава вам да их покренете или обуставите (осим ако администратор сајта није искључио ову могућност).',
 	'smw_smwadmin_datarefreshprogress' => 'Једно ажурирање је већ у току. </b>
 Нормално је да ажурирање напредује споро, пошто се само освежавају мали делови података сваки пут када корисник приступи викију.
-Како би се ово ажурирање брже завршили, можете покренути Медијавикијеву скрипту за одржавање <tt>runJobs.php</tt> (користите опцију <tt>--maxjobs 1000</tt> за рестрикцију броја ажурирања у једном пакету).
+Да би се ово ажурирање брже завршило, можете покренути Медијавикијеву скрипту за одржавање <tt>runJobs.php</tt> (користите опцију <tt>--maxjobs 1000</tt> за рестрикцију броја ажурирања у једном пакету).
 Процена напредовања тренутног ажурирања:',
 	'smw_smwadmin_datarefreshbutton' => 'Почни ажурирање података',
 	'smw_smwadmin_datarefreshstop' => 'Обустави ово ажурирање',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Да, сигуран сам.',
 	'smw_smwadmin_support' => 'Добијање подршке',
 	'smw_smwadmin_supportdocu' => 'Постоји више места која могу бити од помоћи у случају проблема:',
-	'smw_smwadmin_smwhomepage' => 'Потпуна корисничка документација за Семантички Медијавики, налази се на сајту <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Багови се могу пријављивати <a href="https://bugzilla.wikimedia.org/">Медијазилу</a>.',
+	'smw_smwadmin_installfile' => 'Ако се нађете у проблемима са вашом инсталацијом, погледајте водич у <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">фајлу INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'Потпуна корисничка документација за Семантички медијавики, налази се на сајту <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Багови се могу пријављивати на <a href="https://bugzilla.wikimedia.org/">Медијазилу</a>.',
 	'smw_smwadmin_questions' => 'Ако имате даљих питања и сугестија, укључите се у дискусију на листи <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+);
+
+/** latinica (latinica)
+ * @author Slaven Kosanovic
+ */
+$messages['sr-el'] = array(
+	'smw_edithelp' => 'Uređivanje pomoći osobina',
+	'smw_viewasrdf' => 'RDF dobavljač',
+	'smw_finallistconjunct' => ', i',
+	'smw_factbox_head' => 'Činjenice o $1',
+	'smw_isspecprop' => 'Ova osobina je specijalna osobina na ovom vikiju.',
+	'smw_isknowntype' => 'Ovaj tip pripada standardnim tipovima podataka na ovom vikiju.',
+	'smw_isaliastype' => 'Ovaj tip je nadimak za tip podataka "$1".',
+	'smw_isnotype' => 'Ovaj tip "$1" nije standardni tip podataka na vikiju, i još nije definisan.',
+	'smw_concept_description' => 'Opis koncepta "$1"',
+	'smw_no_concept_namespace' => 'Koncepte je jedino moguće definisati na stranicama u imenskom prostoru Concept:',
+	'smw_multiple_concepts' => 'Na svakoj stranici koncepta, moguće je definisati samo jedan koncept.',
+	'smw_concept_cache_miss' => 'Koncept "$1" se trenutno ne može koristiti, pošto konfiguracija vikija zahteva da bude komputovan oflajn.
+Ako problem ne nestane za neko vreme, zatražite od administratora sajta da učini ovaj koncept dostupnim.',
+	'smw_baduri' => 'URI-ji oblika "$1", nisu prihvatljivi.',
+	'smw_rss_link' => 'RSS',
+	'smw_csv_link' => 'CSV',
+	'smw_icalendar_link' => 'iCalendar',
+	'smw_vcard_link' => 'vCard',
+	'smw_iq_disabled' => 'Semantički upiti su onemogućeni na ovom vikiju.',
+	'smw_iq_moreresults' => '... više rezultata',
+	'smw_iq_nojs' => 'Koristite pregledač koji podržava JavaScript-u kako bi mogli da vidite ovaj elemenat.',
+	'smw_iq_altresults' => 'Pregledaj direktno spisak rezultata.',
+	'smw_unknown_importns' => 'Uvoženje funkcija nije moguće za imenski prostor "$1".',
+	'smw_nonright_importtype' => '$1 se jedino može koristiti za stranice u imenskom prostoru "$2".',
+	'smw_wrong_importtype' => '$1 se ne može koristiti za stranice u imenskom prostoru "$2".',
+	'smw_no_importelement' => 'Element "$1" nije raspoloživ za uvoz.',
+	'smw_parseerror' => 'Data vrednost nije shvaćena.',
+	'smw_decseparator' => ',',
+	'smw_kiloseparator' => '.',
+	'smw_notitle' => '"$1" se ne može koristiti za ime stranice na ovom vikiju.',
+	'smw_wrong_namespace' => 'Samo stranice iz imenskog prostora "$1" su dozvoljene ovde.',
+	'smw_unknowntype' => 'Nepodržan tip "$1" je definisan za osobinu.',
+	'smw_manytypes' => 'Više od jednog tipa je definisano za ovu osobinu.',
+	'smw_emptystring' => 'Prazni stringovi nisu prihvatljivi.',
+	'smw_maxstring' => 'Predstavljeni string $1 je predugačak za {{SITENAME}}.',
+	'smw_notinenum' => '"$1" nije na spisku mogućih vrednosti ($2) za ovu osobinu.',
+	'smw_noboolean' => '"$1" nije prepoznat kao Bolova vrednost (istinito/neistinito).',
+	'smw_true_words' => 'istinito, i, da, d',
+	'smw_false_words' => 'neistinito, n, ne, n',
+	'smw_nofloat' => '"$1" nije broj.',
+	'smw_infinite' => 'Brojevi dužine kao "$1" nisu podržani na {{SITENAME}}.',
+	'smw_infinite_unit' => 'Konverzija u jedinicu "$1" je dala kao rezultat predugačak broj za {{SITENAME}}.',
+	'smw_unsupportedprefix' => 'Prefiksi za brojeve ("$1") nisu podržani.',
+	'smw_unsupportedunit' => 'Konverzija jedinica za jedinicu "$1" nije podržana.',
+	'smw_lonely_unit' => 'Nije pronađen broj pre simbola "$1".',
+	'smw_bad_latlong' => 'Geografska širina i dužina moraju biti date samo jednom i sa valjanim koordinatama.',
+	'smw_abb_north' => 'S',
+	'smw_abb_east' => 'I',
+	'smw_abb_south' => 'J',
+	'smw_abb_west' => 'Z',
+	'smw_label_latitude' => 'Geografska širina:',
+	'smw_label_longitude' => 'Geografska dužina:',
+	'smw_nodatetime' => 'Format datuma "$1" nije razumljiv.',
+	'smw_toomanyclosing' => 'Izgleda da je previše slučajeva tipa "$1" u upitu.',
+	'smw_noclosingbrackets' => 'Neke iskorišćene "<nowiki>[[</nowiki>" u vašem upitu nisu zatvorene odgovarajućim "]]".',
+	'smw_misplacedsymbol' => 'Simbol "$1" je iskorišćen na mestu gde nije od koristi.',
+	'smw_unexpectedpart' => 'Deo upita "$1" nije shvaćen.
+Rezultati mogu biti neočekivani.',
+	'smw_emptysubquery' => 'Neki podupiti ne sadrže valjane uslove.',
+	'smw_misplacedsubquery' => 'Neki podupiti su korišćeni na mestu gde podupiti nisu dozvoljeni.',
+	'smw_valuesubquery' => 'Za vrednosti osobine "$1", podupiti nisu podržani.',
+	'smw_overprintoutlimit' => 'Upit sadrži previše zahteva za izlazne rezultate.',
+	'smw_badprintout' => 'Neki parametri za upit su pogrešno oblikovani.',
+	'smw_badtitle' => '"$1" nije valjan naslov za stranicu.',
+	'smw_badqueryatom' => 'Jedan deo "<nowiki>[[…]]</nowiki>" upita nije shvaćen.',
+	'smw_propvalueproblem' => 'Vrednost za osobinu "$1" nije shvaćena.',
+	'smw_noqueryfeature' => 'Neki delovi ovog upita nisu podržani na ovom vikiju, te je deo upita izostavljen ($1).',
+	'smw_noconjunctions' => 'Konjukcije u upitima nisu podržane na ovom vikiju, te je deo upita izostavljen ($1).',
+	'smw_nodisjunctions' => 'Disjunkcije u upitima nisu podržane na ovom vikiju, te je deo upita izostavljen ($1).',
+	'smw_querytoolarge' => 'Sledeće uslove upita nije moguće razmatrati zbog restrikcija vikija za dužinu i obim upita: $1.',
+	'smw_devel_warning' => 'Ova karakteristika je trenutno još u razvoju, te je moguće da nije potpuno funkcionalna.
+Napravite rezervnu kopiju vaših podataka pre njenog korišćenja.',
+	'smw_notemplategiven' => 'Ponudite vrednost za parametar ”šablon”, kako bi ovaj format upita dao rezultat.',
+	'smw_type_header' => 'Osobine tipa "$1"',
+	'smw_typearticlecount' => 'Prikaz $1 {{PLURAL:$1|osobine|osobina}} za ovaj tip.',
+	'smw_attribute_header' => 'Stranice koje koriste osobinu "$1"',
+	'smw_attributearticlecount' => 'Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje koriste ovu osobinu.',
+	'smw_subproperty_header' => 'Podosobine',
+	'smw_subpropertyarticlecount' => 'Ova osobina sadrži $1 {{PLURAL:$1|podosobinu|podosobine}}',
+	'smw_concept_header' => 'Stranice koncepta "$1"',
+	'smw_conceptarticlecount' => 'Prikaz $1 {{PLURAL:$1|stranice|stranica}} koje pripadaju tom konceptu.',
+	'smw_rss_description' => '$1 RSS dobavljač',
+	'specialpages-group-smw_group' => 'Semantički medijaviki',
+	'exportrdf' => 'Izvezi stranice u RDF',
+	'smw_exportrdf_docu' => '<p>Ova stranica omogućava dobijanje podataka iz stranice u RDF formatu.
+Kako bi izvezli stranice, unesite naslove u donji formular, po principu jedan naslov za svaki red.</p>',
+	'smw_exportrdf_recursive' => 'Rekurzivno izvezi sve povezane stranice. 
+Obratite pažnju da rezultat može biti veoma obiman!',
+	'smw_exportrdf_backlinks' => 'Takođe izvezi sve stranice koje vežu na već izvezene stranice. 
+Generiše RDF koji je moguće pregledati.',
+	'smw_exportrdf_lastdate' => 'Ne izvozi stranice koje nisu menjane od datog momenta.',
+	'properties' => 'Osobine',
+	'smw_properties_docu' => 'Sledeće osobine se koriste na vikiju.',
+	'smw_property_template' => '$1 tipa $2 ($3)',
+	'smw_propertylackspage' => 'Sve osobine trebaju imati opisnu stranicu!',
+	'smw_propertylackstype' => 'Nema definisanog tipa za ovu osobinu (za sada usvajam tip $1).',
+	'smw_propertyhardlyused' => 'Ova osobina jedva da se koristi na ovom vikiju!',
+	'unusedproperties' => 'Neiskorišćene osobine',
+	'smw_unusedproperties_docu' => 'Sledeće osobine postoje iako nema drugih stranica koje ih koriste.',
+	'smw_unusedproperty_template' => '$1 tipa $2',
+	'wantedproperties' => 'Tražene osobine',
 );
 
 /** Swedish (Svenska)
