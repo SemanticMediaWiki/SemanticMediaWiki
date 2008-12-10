@@ -95,6 +95,21 @@ $aliases['gl'] = array(
 	'Types' => array( 'Tipos' ),
 );
 
+/** Swiss German (Alemannisch) */
+$aliases['gsw'] = array(
+	'Ask' => array( 'Semantischi Suech' ),
+	'Browse' => array( 'Browse' ),
+	'ExportRDF' => array( 'Exportier ADF' ),
+	'PageProperty' => array( 'Syteattribut' ),
+	'Properties' => array( 'Attribut' ),
+	'SMWAdmin' => array( 'SMW-Yyrichtig' ),
+	'SearchByProperty' => array( 'Suech no Attribut' ),
+	'SemanticStatistics' => array( 'Semantischi Statischtik' ),
+	'Types' => array( 'Datetype' ),
+	'UnusedProperties' => array( 'Verwaisti Attribut' ),
+	'WantedProperties' => array( 'Gwinschti Attribut' ),
+);
+
 /** Upper Sorbian (Hornjoserbsce) */
 $aliases['hsb'] = array(
 	'Ask' => array( 'Semantiske pytanje' ),
