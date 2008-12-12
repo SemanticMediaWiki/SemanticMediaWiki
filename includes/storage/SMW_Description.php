@@ -69,7 +69,7 @@ class SMWPrintRequest {
 			case SMWPrintRequest::PRINT_CATS:
 				return htmlspecialchars($this->m_label); // TODO: link to Special:Categories
 			case SMWPrintRequest::PRINT_CCAT:
-				return $linker->makeLinkObj($this->m_data->getTitle(), htmlspecialchars($this->m_label));
+				return $linker->makeLinkObj($this->m_data, htmlspecialchars($this->m_label));
 			case SMWPrintRequest::PRINT_PROP:
 				return $this->m_data->getShortHTMLText($linker);
 			case SMWPrintRequest::PRINT_THIS: default: return htmlspecialchars($this->m_label);
