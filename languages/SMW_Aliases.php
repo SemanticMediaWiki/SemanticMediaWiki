@@ -127,6 +127,13 @@ $aliases['hsb'] = array(
 /** Hungarian (Magyar) */
 $aliases['hu'] = array(
 	'Ask' => array( 'Kérdez' ),
+	'Browse' => array( 'Böngészés' ),
+	'Properties' => array( 'Tulajdonságok' ),
+	'SemanticStatistics' => array( 'Szemantikus statisztika' ),
+	'Types' => array( 'Típusok' ),
+	'URIResolver' => array( 'URI-feloldó' ),
+	'UnusedProperties' => array( 'Nem használt tulajdonságok' ),
+	'WantedProperties' => array( 'Keresett tulajdonságok' ),
 );
 
 /** Khmer (ភាសាខ្មែរ) */

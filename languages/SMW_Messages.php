@@ -1886,7 +1886,10 @@ O servizo non rexistrará wikis que non sexan publicamente accesibles e só alma
  */
 $messages['grc'] = array(
 	'smw_oi_action' => 'Εἰσάγειν',
+	'smw_sbv_value' => 'Τιμή',
 	'smw_browse_go' => 'Ἱέναι',
+	'smw_result_prev' => 'Προηγουμέναι',
+	'smw_result_next' => 'Ἑπομέναι',
 );
 
 /** Hebrew (עברית)
