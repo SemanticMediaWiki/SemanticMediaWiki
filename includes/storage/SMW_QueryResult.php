@@ -15,7 +15,7 @@
  * provide access to the query result and printed data, and to some
  * relevant query parameters that were used.
  *
- * While the API does not require this, it is ensured that every result row 
+ * While the API does not require this, it is ensured that every result row
  * returned by this object has the same number of elements (columns).
  * @ingroup SMWQuery
  */
@@ -91,7 +91,7 @@ class SMWQueryResult {
 	}
 
 	/**
-	 * Return the number of columns of result values that each row 
+	 * Return the number of columns of result values that each row
 	 * in this result set contains.
 	 */
 	public function getColumnCount() {
@@ -99,7 +99,7 @@ class SMWQueryResult {
 	}
 
 	/**
-	 * Return array of print requests (needed for printout since they contain 
+	 * Return array of print requests (needed for printout since they contain
 	 * property labels).
 	 */
 	public function getPrintRequests() {
@@ -115,7 +115,7 @@ class SMWQueryResult {
 	}
 
 	/**
-	 * Would there be more query results that were 
+	 * Would there be more query results that were
 	 * not shown due to a limit?
 	 */
 	public function hasFurtherResults() {
@@ -160,8 +160,10 @@ class SMWQueryResult {
 				$psort .= $sortkey;
 				$porder .= $order;
 			}
-			$params['sort'] = $psort;
-			$params['order'] = $porder;
+			if (($psort != '')||($porder != 'ASC')) { // do not mention default sort (main column, ascending)
+				$params['sort'] = $psort;
+				$params['order'] = $porder;
+			}
 		}
 		if ($caption == false) {
 			wfLoadExtensionMessages('SemanticMediaWiki');
@@ -192,7 +194,7 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Returns an array of objects. Depending on the type of 
+	 * Returns an array of objects. Depending on the type of
 	 * results, they are either Titles or SMWDataValues.
 	 */
 	public function getContent() {
@@ -209,11 +211,11 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Return the main text representation of the next result object 
+	 * Return the main text representation of the next result object
 	 * (Title or SMWDataValue) in the specified format.
 	 *
 	 * The parameter $linker controls linking of title values and should
-	 * be some Linker object (or NULL for no linking). At some stage its 
+	 * be some Linker object (or NULL for no linking). At some stage its
 	 * interpretation should be part of the generalised SMWDataValue.
 	 */
 	public function getNextText($outputmode, $linker = NULL) {
@@ -232,7 +234,7 @@ class SMWResultArray {
 
 
 	/**
-	 * Would there be more query results that were 
+	 * Would there be more query results that were
 	 * not shown due to a limit?
 	 */
 	public function hasFurtherResults() {
