@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.4.0]]
+[[Semantic MediaWiki 1.4.1]]
 
 Install instructions for the latest SMW version are also online in a more
 convenient format for reading:
@@ -41,8 +41,8 @@ If you have any specific questions, please contact the authors.
 Notes:
 * SMW 1.4 currently has no Postgres support. It could be done if someone cares
   to support this action.
-* SMW uses the PHP mb_*() multibyte functions such as mb_strpos in the 
-  php_mbstring.dll extension. This is standard but not enabled by default on 
+* SMW uses the PHP mb_*() multibyte functions such as mb_strpos in the
+  php_mbstring.dll extension. This is standard but not enabled by default on
   some distributions of PHP.
   See http://php.net/manual/en/ref.mbstring.php#mbstring.installation
 * For installation and upgrade, SMW needs the rights to create new tables
@@ -143,12 +143,13 @@ instructions to find out whether other changes are recommended therein.
 
 (Please read all of this before upgrading)
 
-Existing SMW installations that already use the default store (SMWSQLStore2)
-can simply follow the above installation steps. This covers all sites with SMW
-1.2 to 1.3 that do not use a special setting to switch back to the old store
-("SMWSQLStore" or "SMWRAPStore"). In these cases the new data upgrade feature
-will ensure that your data is refreshed to the new version. To speed up the
-update, use MediaWiki's script runJobs.php.
+Existing SMW 1.4.1 installations and all SMW installations that already use the
+default store (SMWSQLStore2) can simply follow the above installation steps.
+The latter covers all sites with SMW SMW 1.2 to 1.3 that do not use a special
+setting to switch back to the old store ("SMWSQLStore" or "SMWRAPStore"). In
+these cases the new data upgrade feature will ensure that your data is
+refreshed to the new version. To speed up the update, use MediaWiki's script
+runJobs.php.
 
 Older SMW versions or SMW versions that use the old store can upgrade in the
 same fashion, but first need to remove any setting that configures SMW to
@@ -203,7 +204,7 @@ http://semantic-mediawiki.org/wiki/Help:Installation_1.3
 
 == Troubleshooting ==
 
-Some technical problems are well known and have easy fixes. Please view the 
+Some technical problems are well known and have easy fixes. Please view the
 online manual: http://semantic-mediawiki.org/wiki/Help:Troubleshooting
 
 See http://semantic-mediawiki.org/wiki/Help:Reporting_bugs for reporting and
@@ -215,15 +216,15 @@ http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user)
 == SMW is installed. What should I do now? ==
 
 Semantic MediaWiki is there to help you to structure your data, so that you
-can browse and search it easier. Typically, you should first add semantic 
+can browse and search it easier. Typically, you should first add semantic
 markup to articles that cover a topic that is typical for your wiki. A single
 article, semantic or not, will not improve your search capabilities.
 
 Start with a kind of article that occurs often in your wiki, possibly with
 some type of articles that is already collected in some category, such as
 cities, persons, or software projects. For these articles, introduce a few
-properties, and annotate many of the articles with the property. As with 
-categories, less is often more in semantic annotation: do not use overly 
+properties, and annotate many of the articles with the property. As with
+categories, less is often more in semantic annotation: do not use overly
 specific properties. A property that is not applicable to at least ten
 articles is hardly useful.
 
