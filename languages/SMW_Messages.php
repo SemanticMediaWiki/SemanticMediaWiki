@@ -1322,6 +1322,7 @@ $messages['eo'] = array(
 /** Spanish (Español)
  * @author Carmen Jorge García-Reyes
  * @author Javier Calzada Prado
+ * @author Sanbec
  */
 $messages['es'] = array(
 	'smw_edithelp' => 'Ayuda a la redacción de relaciones y atributos',
@@ -1357,9 +1358,9 @@ $messages['es'] = array(
 	'smw_nodatetime' => 'La fecha "$1" no ha sido comprendida.',
 	'smw_devel_warning' => 'Esta función está aún en desarrollo y quizá aun no sea operativa. Es quizá recomendable hacer una copia de seguridad del wiki antes de utilizar esta función.',
 	'smw_type_header' => 'Atributos de tipo “$1”',
-	'smw_typearticlecount' => 'Mostrando $1 atributos usando este tipo.',
+	'smw_typearticlecount' => 'Mostrando {{PLURAL:$1|un atributo|$1 atributos}} usando este tipo.',
 	'smw_attribute_header' => 'Paginas usando el atributo “$1”',
-	'smw_attributearticlecount' => 'Mostrando $1 páginas usando este atributo.',
+	'smw_attributearticlecount' => 'Mostrando {{PLURAL:$1|una página|$1 páginas}} que {{PLURAL:$1|usa|usan}} esta propiedad.',
 	'exportrdf' => 'Exportar el artículo como RDF',
 	'smw_exportrdf_docu' => '<p> En esta página, las partes de contenido de un artículo pueden ser exportadas a formato RDF. Introduzca el nombre de las páginas deseadas en el cuadro de texto que se encuentra debajo, <i>un nombre por línea </i>.<p/>',
 	'smw_exportrdf_recursive' => 'Exportar igualmente todas las páginas pertinentes de forma recurrente. Esta posibilidad puede conseguir un gran número de resultados !',
@@ -2535,6 +2536,7 @@ $messages['ka'] = array(
 
 /** Khmer (ភាសាខ្មែរ)
  * @author Lovekhmer
+ * @author Thearith
  * @author គីមស៊្រុន
  */
 $messages['km'] = array(
@@ -2546,7 +2548,7 @@ $messages['km'] = array(
 	'smw_ask_ascorder' => 'លំដាប់ឡើង',
 	'smw_ask_descorder' => 'លំដាប់ចុះ',
 	'smw_ask_submit' => 'ស្វែងរកលទ្ធផល',
-	'smw_sbv_value' => 'តំលៃ',
+	'smw_sbv_value' => 'តម្លៃ',
 	'browse' => 'រាវរកវិគី',
 	'smw_browse_go' => 'ទៅ',
 	'smw_pp_from' => 'ពីទំព័រ',
@@ -2555,6 +2557,7 @@ $messages['km'] = array(
 	'smw_result_next' => 'បន្ទាប់',
 	'smw_result_results' => 'លទ្ធផល',
 	'smw_result_noresults' => 'សូមអភ័យទោស! មិនមានលទ្ធផលទេ។',
+	'smw_smwadmin_datarefreshstopconfirm' => 'បាទ/ចាស, ខ្ញុំ​ប្រាកដ​ហើយ​។',
 );
 
 /** Korean (한국어)
