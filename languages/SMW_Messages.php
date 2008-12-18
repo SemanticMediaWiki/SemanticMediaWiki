@@ -1673,6 +1673,14 @@ $messages['fy'] = array(
 	'smw_oi_action' => 'Ymportearje',
 );
 
+/** Irish (Gaeilge)
+ * @author Alison
+ */
+$messages['ga'] = array(
+	'smw_oi_action' => 'Iompórtaigh',
+	'smw_oi_importedfromontology' => 'Iompórtaigh as ointeolaíocht',
+);
+
 /** Galician (Galego)
  * @author Toliño
  */
@@ -2373,6 +2381,13 @@ Siccome ci sono solo pochi risultati, sono visualizzati anche i valori vicini.',
 	'smw_result_results' => 'Risultati',
 	'smw_result_noresults' => 'Spiacenti, nessun risultato.',
 	'smwadmin' => 'Funzioni amministrative per Semantic MediaWiki',
+);
+
+/** Japanese (日本語)
+ * @author Fryed-peach
+ */
+$messages['ja'] = array(
+	'smw_sbv_value' => '値',
 );
 
 /** Javanese (Basa Jawa)
