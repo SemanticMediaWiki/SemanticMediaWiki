@@ -17,10 +17,16 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 
 	protected function readParameters($params,$outputmode) {
 		SMWResultPrinter::readParameters($params,$outputmode);
-		if (array_key_exists('icalendartitle', $this->m_params)) {
+		if (array_key_exists('title', $this->m_params)) {
+			$this->m_title = trim($this->m_params['title']);
+		// for backward compatibility
+		} elseif (array_key_exists('icalendartitle', $this->m_params)) {
 			$this->m_title = trim($this->m_params['icalendartitle']);
 		}
-		if (array_key_exists('icalendardescription', $this->m_params)) {
+		if (array_key_exists('description', $this->m_params)) {
+			$this->m_description = trim($this->m_params['description']);
+		// for backward compatibility
+		} elseif (array_key_exists('icalendardescription', $this->m_params)) {
 			$this->m_description = trim($this->m_params['icalendardescription']);
 		}
 	}
@@ -113,10 +119,10 @@ class SMWiCalendarResultPrinter extends SMWResultPrinter {
 			$link = $res->getQueryLink($label);
 			$link->setParameter('icalendar','format');
 			if ($this->m_title !== '') {
-				$link->setParameter($this->m_title,'icalendartitle');
+				$link->setParameter($this->m_title,'title');
 			}
 			if ($this->m_description !== '') {
-				$link->setParameter($this->m_description,'icalendardescription');
+				$link->setParameter($this->m_description,'description');
 			}
 			if (array_key_exists('limit', $this->m_params)) {
 				$link->setParameter($this->m_params['limit'],'limit');

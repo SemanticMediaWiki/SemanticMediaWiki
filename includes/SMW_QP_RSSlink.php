@@ -18,10 +18,16 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 
 	protected function readParameters($params,$outputmode) {
 		SMWResultPrinter::readParameters($params,$outputmode);
-		if (array_key_exists('rsstitle', $this->m_params)) {
+		if (array_key_exists('title', $this->m_params)) {
+			$this->m_title = trim($this->m_params['title']);
+		// for backward compatibiliy
+		} elseif (array_key_exists('rsstitle', $this->m_params)) {
 			$this->m_title = trim($this->m_params['rsstitle']);
 		}
-		if (array_key_exists('rssdescription', $this->m_params)) {
+		if (array_key_exists('description', $this->m_params)) {
+			$this->m_description = trim($this->m_params['description']);
+		// for backward compatibiliy
+		} elseif (array_key_exists('rssdescription', $this->m_params)) {
 			$this->m_description = trim($this->m_params['rssdescription']);
 		}
 	}
@@ -104,10 +110,10 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			$link = $res->getQueryLink($label);
 			$link->setParameter('rss','format');
 			if ($this->m_title !== '') {
-				$link->setParameter($this->m_title,'rsstitle');
+				$link->setParameter($this->m_title,'title');
 			}
 			if ($this->m_description !== '') {
-				$link->setParameter($this->m_description,'rssdescription');
+				$link->setParameter($this->m_description,'description');
 			}
 			if (array_key_exists('limit', $this->m_params)) {
 				$link->setParameter($this->m_params['limit'],'limit');
