@@ -1679,6 +1679,8 @@ $messages['fy'] = array(
 $messages['ga'] = array(
 	'smw_oi_action' => 'Iompórtaigh',
 	'smw_oi_importedfromontology' => 'Iompórtaigh as ointeolaíocht',
+	'smw_sbv_property' => 'Airí',
+	'smw_pp_type' => 'Airí',
 );
 
 /** Galician (Galego)
@@ -2764,6 +2766,7 @@ $messages['lb'] = array(
 	'smw_abb_west' => 'W',
 	'smw_label_latitude' => 'Geografesch Breet:',
 	'smw_label_longitude' => 'Geografesch Längt:',
+	'smw_nodatetime' => 'Den Datum "$1" gouf net verstan.',
 	'smw_misplacedsymbol' => 'D\'Symbol "$1" gouf op ener Plaz benotzt wou et net nëtzlech ass.',
 	'smw_badtitle' => 'Pardon, awer "$1" ass kee gëltegen Titel vun enger Säit.',
 	'smw_attribute_header' => 'Säiten déi d\'Eegeschaft "$1" benotzen',
@@ -2806,8 +2809,11 @@ $messages['lb'] = array(
 	'smw_result_results' => 'Resultater',
 	'smw_result_noresults' => 'Pardon, et gouf näischt fonnt.',
 	'smw_smwadmin_return' => 'Zréck op $1',
+	'smw_smwadmin_datarefresh' => 'Donnéeë gi gefléckt an aktualiséiert',
+	'smw_smwadmin_datarefreshbutton' => "Ufänken Daten z'aktualiséieren",
 	'smw_smwadmin_datarefreshstop' => 'Dësn Update stoppen',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jo, ech si sécher.',
+	'smw_smwadmin_support' => 'Ënnerstetzung kréien',
 );
 
 /** Malayalam (മലയാളം)
@@ -3934,7 +3940,9 @@ $messages['rif'] = array(
  * @author KlaudiuMihaila
  */
 $messages['ro'] = array(
+	'smw_sbv_property' => 'Proprietate',
 	'smw_sbv_value' => 'Valoare',
+	'smw_pp_type' => 'Proprietate',
 	'smw_result_noresults' => 'Ne pare rău, nici un rezultat.',
 );
 
