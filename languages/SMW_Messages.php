@@ -1878,9 +1878,20 @@ Esta función de configuración pode ser executada múltiples veces sen facer ni
 Fai falla conceder a este usuario os permisos para crear e eliminar táboas; temporalmente insira o rexistro da súa base de datos en LocalSettings.php ou use a escritura de mantemento <tt>SMW_setup.php</tt>, que pode usar os credenciais de AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Inicialice ou actualice as táboas',
 	'smw_smwadmin_announce' => 'Anunciar o seu wiki',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki ten un servizo web para anunciar novos wikis semánticos.
+Isto é usado para manter unha lista de sitios públicos que usan Semantic MediaWiki, principalmente para axudar ao <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proxecto Semantic MediaWiki</a> para obter unha vista xeral dos usos típicos de Semantic MediaWiki.
+Vaia á páxina principal de Semantic MediaWiki para <a href="http://semantic-mediawiki.org/wiki/Registry">obter máis información acerca deste servizo</a>.',
 	'smw_smwadmin_announcebutton' => 'Prema o seguinte botón para enviar o enderezo URL do seu wiki a ese servizo.
 O servizo non rexistrará wikis que non sexan publicamente accesibles e só almacenará información publicamente accesible.',
 	'smw_smwadmin_datarefresh' => 'Reparación e actualización dos datos',
+	'smw_smwadmin_datarefreshdocu' => 'É posible restaurar todos os datos de Semantic MediaWiki baseados nos contidos actuais do wiki.
+Isto pode ser útil para reparar datos rotos ou para refrescar os datos se o formato interno cambiou debido a actualizacións do software.
+Esta actualización é executada páxina a páxina e non será completada inmediatamente.
+O seguinte amosa se unha actualización está en curso e permítelle comezalas ou detelas (a non ser que esta característica fose deshabilitada polo administrador do sitio).',
+	'smw_smwadmin_datarefreshprogress' => 'Xa hai unha actualización en curso.</b>
+É normal que os progresos de actualización vaian lentos, xa que só se refrescan os datos nos pequenos anacos nos que un usuario accede ao wiki.
+Para finalizar esta actualización máis rápido, pode invocar o guión <tt>runJobs.php</tt> de mantemento de MediaWiki (use a opción <tt>--maxjobs 1000</tt> para restrinxir o número de actualizacións feitas nunha tanda).
+Progreso estimado da actualización actual:',
 	'smw_smwadmin_datarefreshbutton' => 'Comezar a actualizar os datos',
 	'smw_smwadmin_datarefreshstop' => 'Deter esta actualización',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Si, estou seguro.',
