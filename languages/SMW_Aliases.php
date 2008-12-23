@@ -155,6 +155,18 @@ $aliases['lb'] = array(
 	'WantedProperties' => array( 'Gewënschten Eegeschaften' ),
 );
 
+/** Macedonian (Македонски) */
+$aliases['mk'] = array(
+	'Ask' => array( 'Прашај' ),
+	'Browse' => array( 'Прелистај' ),
+	'ExportRDF' => array( 'ИзвезиRDF' ),
+	'PageProperty' => array( 'СвојстваНаСтраница' ),
+	'Properties' => array( 'Својства' ),
+	'Types' => array( 'Типови' ),
+	'UnusedProperties' => array( 'НекористениСвојства' ),
+	'WantedProperties' => array( 'БараниСвојства' ),
+);
+
 /** Nedersaksisch (Nedersaksisch) */
 $aliases['nds-nl'] = array(
 	'Browse' => array( 'Bekieken' ),
