@@ -4877,17 +4877,21 @@ $messages['te'] = array(
 	'smw_abb_west' => 'ప',
 	'smw_label_latitude' => 'అక్షాంశం:',
 	'smw_label_longitude' => 'రేఖాంశం:',
+	'smw_nodatetime' => '"$1" అనే తేదీ ఏమిటో అర్థంకాలేదు.',
+	'smw_badtitle' => '"$1" అన్నది సరైన పేజీ శీర్షిక కాదు.',
 	'properties' => 'లక్షణాలు',
 	'smw_wantedproperty_template' => '$1 ($2 వాడుకలు)',
 	'types' => 'రకాలు',
 	'smw_ask_ascorder' => 'ఆరోహణ',
 	'smw_ask_descorder' => 'అవరోహణ',
+	'smw_sbv_property' => 'లక్షణం',
 	'smw_sbv_value' => 'విలువ',
 	'smw_browse_go' => 'వెళ్ళు',
 	'smw_result_prev' => 'గత',
 	'smw_result_next' => 'తదుపరి',
 	'smw_result_results' => 'ఫలితాలు',
 	'smw_result_noresults' => 'క్షమించండి, ఫలితాలేమీ లేవు.',
+	'smw_smwadmin_announce' => 'మీ వికీని ప్రకటించండి',
 );
 
 /** Tajik (Cyrillic) (Тоҷикӣ (Cyrillic))
