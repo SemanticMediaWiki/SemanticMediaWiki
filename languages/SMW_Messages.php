@@ -423,6 +423,7 @@ $messages['an'] = array(
 /** Arabic (العربية)
  * @author Mahmoud Zouari  mahmoudzouari@yahoo.fr http://www.cri.ensmp.fr
  * @author Meno25
+ * @author Ouda
  */
 $messages['ar'] = array(
 	'smw_edithelp' => 'تعديل المساعدة على الخصائص',
@@ -599,6 +600,13 @@ $messages['ar'] = array(
 	'smw_result_results' => 'النتائج',
 	'smw_result_noresults' => 'لا توجد نتائج.',
 	'smwadmin' => 'وظائف إدارية لسيمانتيك ميدياويكي',
+	'smw_smwadmin_return' => 'أرجع إلى $1',
+	'smw_smwadmin_db' => 'تثبيت و تحديث قاعدة البيانات',
+	'smw_smwadmin_announce' => 'أعلن عن الويكي الخاص بك',
+	'smw_smwadmin_datarefreshbutton' => 'أبدا تحديث البيانات',
+	'smw_smwadmin_datarefreshstop' => 'أوقف هذا التحديث',
+	'smw_smwadmin_datarefreshstopconfirm' => 'نعم، أنا متأكد',
+	'smw_smwadmin_support' => 'أحصل على دعم',
 );
 
 /** Egyptian Spoken Arabic (مصرى)
@@ -1053,6 +1061,7 @@ Prosím, zadejte stránku i vlastnost.',
 /** German (Deutsch)
  * @author DaSch
  * @author Denny
+ * @author Imre
  * @author Markus Krötzsch
  * @author Melancholie
  * @author Pill
@@ -1223,9 +1232,14 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 	'smw_result_noresults' => 'Keine Ergebnisse gefunden.',
 	'smwadmin' => 'Admin-Funktionen für Semantic MediaWiki',
 	'smw_smwadmin_settingup' => 'Speicherplatz für Semantic MediaWiki einstellen',
+	'smw_smwadmin_setupsuccess' => 'Die Speichereinheit wurde erfolgreich eingerichtet.',
 	'smw_smwadmin_return' => 'Zurück zu $1',
+	'smw_smwadmin_updatenotstarted' => 'Es läuft bereits ein Update-Prozess.
+Es wird kein Neuer begonnen.',
 	'smw_smwadmin_updatestopped' => 'Alle existierenden Aktualisierungsprozesse wurden gestoppt.',
 	'smw_smwadmin_updatenotstopped' => 'Um laufende Prozesse zu stoppen, musst du das Kontrollkästchen aktivieren, wenn du dir wirklich sicher bist.',
+	'smw_smwadmin_docu' => 'Diese Spezialseite hilft während der Installation und dem Upgrade von <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Denke daran, wichtige Daten vor der Ausführung administrativer Funktionen zu sichern.',
 	'smw_smwadmin_db' => 'Datenbankinstallation und -aktualisierung',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualiseren',
 	'smw_smwadmin_announce' => 'Dein Wiki ankündigen',
@@ -1237,6 +1251,7 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 	'smw_smwadmin_supportdocu' => 'Verschiedene Mittel/Quellen helfen dir vielleicht bei einem Problemfall:',
 	'smw_smwadmin_smwhomepage' => 'Die komplette Benutzerdokumentation von Semantic MediaWiki findest du auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Fehler können bei <a href="https://bugzilla.wikimedia.org/">MediaZilla</a> berichtet werden.',
+	'smw_smwadmin_questions' => 'Wenn du weitere Fragen oder Vorschläge hast, beteilige dich an der Diskussion auf <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
 );
 
 /** German (formal address) (Deutsch (Sie-Form))
@@ -1432,12 +1447,14 @@ $messages['es'] = array(
 /** Finnish (Suomi)
  * @author Cimon Avaro
  * @author Nike
+ * @author Str4nd
  */
 $messages['fi'] = array(
 	'smw_edithelp' => 'Muokkausohjeita ominaisuuksista',
 	'smw_viewasrdf' => 'RDF-syöte',
 	'smw_finallistconjunct' => ' ja',
 	'smw_iq_moreresults' => '… lisää tuloksia',
+	'smw_iq_altresults' => 'Selaa tuloslistaa suoraan.',
 	'smw_parseerror' => 'Tarjottua arvoa ei ymmärretty.',
 	'smw_emptystring' => 'Tyhjiä merkkijonoja ei hyväksytä.',
 	'smw_noboolean' => '”$1” ei ole tunnistettavissa totuusarvoksi.',
@@ -1474,6 +1491,11 @@ $messages['fi'] = array(
 	'smw_result_next' => 'Seuraava',
 	'smw_result_results' => 'Tulokset',
 	'smw_result_noresults' => 'Ei hakutuloksia.',
+	'smw_smwadmin_db' => 'Tietokannan asennus ja päivitys',
+	'smw_smwadmin_datarefreshbutton' => 'Aloita tietojen päivitys',
+	'smw_smwadmin_datarefreshstop' => 'Lopeta tämä päivitys',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Kyllä, olen varma.',
+	'smw_smwadmin_support' => 'Tuen hankkiminen',
 );
 
 /** French (Français)
@@ -4005,10 +4027,45 @@ $messages['rif'] = array(
  * @author KlaudiuMihaila
  */
 $messages['ro'] = array(
+	'smw_finallistconjunct' => 'şi',
+	'smw_concept_description' => 'Descrierea conceptului "$1"',
+	'smw_iq_disabled' => 'Interogările semantice au fost dezactivate pe acest wiki.',
+	'smw_parseerror' => 'Valoarea oferită nu este înţeleasă.',
+	'smw_nofloat' => '"$1" nu este număr.',
+	'smw_abb_north' => 'N',
+	'smw_abb_east' => 'E',
+	'smw_abb_south' => 'S',
+	'smw_abb_west' => 'V',
+	'smw_label_latitude' => 'Latitudine:',
+	'smw_label_longitude' => 'Longitudine:',
+	'smw_nodatetime' => 'Data "$1" nu a fost înţeleasă.',
+	'smw_badtitle' => '"$1" nu este titlu de pagină corect.',
+	'smw_propvalueproblem' => 'Valoarea proprietăţii "$1" nu a fost înţeleasă.',
+	'properties' => 'Proprietăţi',
+	'smw_properties_docu' => 'Următoarele proprietăţi sunt folosite în wiki.',
+	'smw_property_template' => '$1 de tipul $2 ($3)',
+	'smw_propertylackstype' => 'Nici un tip nu a fost specificat pentru această proprietate (presupunem deocamdată tipul $1).',
+	'smw_propertyhardlyused' => 'Această proprietate este puţin folosită în wiki!',
+	'unusedproperties' => 'Proprietăţi neutilizate',
+	'smw_unusedproperties_docu' => 'Următoarele proprietăţi există, deşi nici o altă pagină nu le foloseşte.',
+	'smw_unusedproperty_template' => '$1 de tipul $2',
+	'wantedproperties' => 'Proprietăţi dorite',
+	'smw_wantedproperty_template' => '$1 ($2 utilizări)',
+	'ontologyimport' => 'Importă ontologie',
+	'smw_oi_action' => 'Importă',
+	'types' => 'Tipuri',
+	'smw_ask_submit' => 'Găseşte rezultate',
+	'smw_ask_hidequery' => 'Ascunde interogare',
+	'smw_ask_queryhead' => 'Interogare',
 	'smw_sbv_property' => 'Proprietate',
 	'smw_sbv_value' => 'Valoare',
+	'smw_sbv_submit' => 'Găseşte rezultate',
 	'smw_pp_type' => 'Proprietate',
+	'smw_pp_submit' => 'Găseşte rezultate',
+	'smw_result_results' => 'Rezultate',
 	'smw_result_noresults' => 'Ne pare rău, nici un rezultat.',
+	'smw_smwadmin_return' => 'Înapoi la $1',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Da, sunt sigur.',
 );
 
 /** Russian (Русский)
