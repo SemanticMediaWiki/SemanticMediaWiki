@@ -84,6 +84,11 @@ $aliases['de'] = array(
 	'WantedProperties' => array( 'Gewünschte Attribute' ),
 );
 
+/** Divehi (ދިވެހިބަސް) */
+$aliases['dv'] = array(
+	'Ask' => array( 'އައްސަވާ' ),
+);
+
 /** Finnish (Suomi) */
 $aliases['fi'] = array(
 	'Ask' => array( 'Kysy' ),

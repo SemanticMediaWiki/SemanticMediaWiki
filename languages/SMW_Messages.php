@@ -1054,6 +1054,7 @@ Prosím, zadejte stránku i vlastnost.',
  * @author DaSch
  * @author Denny
  * @author Markus Krötzsch
+ * @author Melancholie
  * @author Pill
  * @author Revolus
  * @author Umherirrender
@@ -1070,6 +1071,8 @@ $messages['de'] = array(
 	'smw_concept_description' => 'Beschreibung des Konzepts „$1“',
 	'smw_no_concept_namespace' => "Konzepte können nur im ''Konzept:'' Namensraum erstellt werden.",
 	'smw_multiple_concepts' => 'Jede Konzeptseite kann nur eine Konzeptdefinition beinhalten.',
+	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht angewendet werden, da die Wiki-Konfiguration offline berechnet werden muss.
+Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwalter, dieses Konzept zu ermöglichen.',
 	'smw_baduri' => 'URIs der Form „$1“ sind nicht zulässig.',
 	'smw_csv_link' => 'CSV',
 	'smw_icalendar_link' => 'iCalendar',
@@ -1121,6 +1124,8 @@ $messages['de'] = array(
 	'smw_badtitle' => 'Leider ist „$1“ als Seitentitel nicht zulässig.',
 	'smw_badqueryatom' => 'Ein Teil „<nowiki>[[…]]</nowiki>“ der Anfrage wurde nicht verstanden.',
 	'smw_propvalueproblem' => 'Der Wert des Attributs „$1“ wurde nicht verstanden.',
+	'smw_noqueryfeature' => 'Einige Anfrage-Features sind derzeit mit diesem Wiki nicht möglich und der entsprechende Teil der Frage wurde gelöscht ($1).',
+	'smw_noconjunctions' => 'UND-Verknüpfungen in den Anfragen werden von diesem Wiki nicht unterstützt und der entsprechende Teil der Anfrage wurde gelöscht ($1).',
 	'smw_nodisjunctions' => 'Disjunktionen (ODER) in Anfragen sind in diesem Wiki nicht zulässig und ein Teil der Anfrage muss daher ignoriert werden ($1).',
 	'smw_querytoolarge' => 'Die folgenden Anfragebedingungen konnten wegen den in diesem Wiki gültigen Beschränkungen für größe und Tiefe von Anfragen nicht berücksichtigt werden: $1.',
 	'smw_devel_warning' => 'Diese Funktion befindet sich zur Zeit in Entwicklung und ist eventuell noch nicht voll einsatzfähig. Eventuell ist es ratsam, den Inhalt des Wikis vor der Benutzung dieser Funktion zu sichern.',
@@ -1192,6 +1197,8 @@ $messages['de'] = array(
 	'smw_sbv_noproperty' => '<p>Bitte den Namen eines Attributs eingeben</p>',
 	'smw_sbv_novalue' => '<p>Bitte den gewünschten Wert eingeben oder alle Werte für das Attribut $1 ansehen.</p>',
 	'smw_sbv_displayresult' => 'Eine Liste aller Seiten, die ein Attribut $1 mit dem Wert $2 haben.',
+	'smw_sbv_displayresultfuzzy' => 'Eine Liste aller Seiten, die das Eigenschaft „$1“ mit dem Wert „$2“ haben.
+Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelistet.',
 	'smw_sbv_property' => 'Attribut',
 	'smw_sbv_value' => 'Wert',
 	'smw_sbv_submit' => 'Finde Ergebnisse',
@@ -1215,8 +1222,31 @@ $messages['de'] = array(
 	'smw_result_results' => 'Ergebnisse',
 	'smw_result_noresults' => 'Keine Ergebnisse gefunden.',
 	'smwadmin' => 'Admin-Funktionen für Semantic MediaWiki',
+	'smw_smwadmin_settingup' => 'Speicherplatz für Semantic MediaWiki einstellen',
 	'smw_smwadmin_return' => 'Zurück zu $1',
+	'smw_smwadmin_updatestopped' => 'Alle existierenden Aktualisierungsprozesse wurden gestoppt.',
+	'smw_smwadmin_updatenotstopped' => 'Um laufende Prozesse zu stoppen, musst du das Kontrollkästchen aktivieren, wenn du dir wirklich sicher bist.',
+	'smw_smwadmin_db' => 'Datenbankinstallation und -aktualisierung',
+	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualiseren',
+	'smw_smwadmin_announce' => 'Dein Wiki ankündigen',
+	'smw_smwadmin_datarefresh' => 'Datenreparatur und -aktualiserung',
+	'smw_smwadmin_datarefreshbutton' => 'Datenaktualisierung beginnen',
+	'smw_smwadmin_datarefreshstop' => 'Diese Aktualisierung beenden',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, ich bin mir sicher.',
+	'smw_smwadmin_support' => 'Unterstützung erhalten',
+	'smw_smwadmin_supportdocu' => 'Verschiedene Mittel/Quellen helfen dir vielleicht bei einem Problemfall:',
+	'smw_smwadmin_smwhomepage' => 'Die komplette Benutzerdokumentation von Semantic MediaWiki findest du auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Fehler können bei <a href="https://bugzilla.wikimedia.org/">MediaZilla</a> berichtet werden.',
+);
+
+/** German (formal address) (Deutsch (Sie-Form))
+ * @author Revolus
+ */
+$messages['de-formal'] = array(
+	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht angewendet werden, da die Wiki-Konfiguration offline berechnet werden muss.
+Falls das Problem nicht nach einiger Zeit verschwindet, bitten Sie Ihren Seitenverwalter, dieses Konzept zu ermöglichen.',
+	'smw_smwadmin_updatenotstopped' => 'Um laufende Prozesse zu stoppen, müssen Sie das Kontrollkästchen aktivieren, wenn Sie sich wirklich sicher sind.',
+	'smw_smwadmin_smwhomepage' => 'Die komplette Benutzerdokumentation von Semantic MediaWiki finden Sie auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 );
 
 /** Greek (Ελληνικά)
@@ -4866,7 +4896,9 @@ Skriv in både en sida och en egenskap.',
  * @author Veeven
  */
 $messages['te'] = array(
+	'smw_edithelp' => 'లక్షణాల మార్పుకి సహాయం',
 	'smw_finallistconjunct' => ', మరియు',
+	'smw_isspecprop' => 'ఈ లక్షణం ఈ వికీలో ప్రత్యేకం',
 	'smw_iq_moreresults' => '… మరిన్ని ఫలితాలు',
 	'smw_true_words' => 'true,t,yes,y,అవును,సత్యం',
 	'smw_false_words' => 'false,f,no,n,కాదు,అసత్యం',
@@ -5202,6 +5234,19 @@ $messages['zh-cn'] = array(
 	'smw_result_next' => '下一页',
 	'smw_result_results' => '结果',
 	'smw_result_noresults' => '抱歉，无您所要的结果。',
+);
+
+/** Traditional Chinese (‪中文(繁體)‬)
+ * @author Wrightbus
+ */
+$messages['zh-hant'] = array(
+	'smw_abb_north' => '北',
+	'smw_abb_east' => '東',
+	'smw_abb_south' => '南',
+	'smw_abb_west' => '西',
+	'smw_label_latitude' => '緯度:',
+	'smw_label_longitude' => '經度',
+	'smw_pp_submit' => '搜尋結果',
 );
 
 /** Chinese (Taiwan) (‪中文(台灣)‬)
