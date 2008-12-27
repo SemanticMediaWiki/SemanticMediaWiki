@@ -413,6 +413,13 @@ $messages['af'] = array(
 	'smw_result_next' => 'Volgende',
 );
 
+/** Amharic (አማርኛ)
+ * @author Codex Sinaiticus
+ */
+$messages['am'] = array(
+	'smw_result_next' => 'ቀጥሎ',
+);
+
 /** Aragonese (Aragonés)
  * @author Juanpabl
  */
@@ -1243,6 +1250,8 @@ Denke daran, wichtige Daten vor der Ausführung administrativer Funktionen zu si
 	'smw_smwadmin_db' => 'Datenbankinstallation und -aktualisierung',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualiseren',
 	'smw_smwadmin_announce' => 'Dein Wiki ankündigen',
+	'smw_smwadmin_announcebutton' => 'Drücke den folgenden Knopf um die URL deines Wikis zu diesem Dienst hinzuzufügen.
+Dieser Dienst wird keine Wikis aufnehmen, die nicht öffentlich zugänglich sind und er wird nur öffentlich zugängliche Informationen speichern.',
 	'smw_smwadmin_datarefresh' => 'Datenreparatur und -aktualiserung',
 	'smw_smwadmin_datarefreshbutton' => 'Datenaktualisierung beginnen',
 	'smw_smwadmin_datarefreshstop' => 'Diese Aktualisierung beenden',
@@ -1366,6 +1375,7 @@ $messages['eo'] = array(
 
 /** Spanish (Español)
  * @author Carmen Jorge García-Reyes
+ * @author Imre
  * @author Javier Calzada Prado
  * @author Sanbec
  */
@@ -1438,10 +1448,12 @@ $messages['es'] = array(
 	'browse' => 'Explorar artículos',
 	'smw_browse_article' => 'Introduzca el nombre de la página para empezar a explorar.',
 	'smw_browse_go' => 'Ir',
+	'smw_inverse_label_default' => '$1 de',
 	'smw_result_prev' => 'Anterior',
 	'smw_result_next' => 'Siguiente',
 	'smw_result_results' => 'Resultados',
 	'smw_result_noresults' => 'Lo siento, no hay resultados.',
+	'smw_smwadmin_return' => 'Regresar a $1',
 );
 
 /** Finnish (Suomi)
@@ -1692,7 +1704,7 @@ Les modifications faites lors de cette étape n’affecteront pas le reste de la
 Cette fonction d’installation peut être lancée plusieurs fois sans causer le moindre dégats, mais une seule installation ou mise à niveau est nécessaire.',
 	'smw_smwadmin_permissionswarn' => 'Si l’opération échoue avec des erreurs SQL, l’utilisateur de la base donnée utilisée par votre wiki, (regarder votre LocalSettings.php) risque probablement de ne pas avoir les permissions suffisantes.
 Il faut soit permettre à cet utilisateur de disposer des permissions pour créer et supprimer les tables, soit entrer temporairement la connection en root à votre base de données dans le LocalSettings.php, soit utiliser le script de maintenance <tt>SMW_setup.php</tt> lequel peut utiliser les accréditations de AdminSettings.php.',
-	'smw_smwadmin_dbbutton' => 'Initialise les tables de mise à niveau',
+	'smw_smwadmin_dbbutton' => 'Initialiser ou mettre à niveau les tables',
 	'smw_smwadmin_announce' => 'Annoncer votre wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispose d’un service internet pour annoncer des nouveaux sites wiki sémantiques.
 Ceci est utilisé pour maintenir une liste des sites publiques utilisant Semantic MediaWiki, principalement pour aider <a href="http://semantic-mediawiki.org/wiki/SMW_Project">le projet Semantic MediaWiki</a> afin d’obtenir une vue d’ensemble des usages typiques de celui-ci.
@@ -2150,6 +2162,7 @@ $messages['ia'] = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '&nbsp;',
 	'smw_notitle' => '"$1" non pote esser usate como nomine de pagina in iste wiki.',
+	'smw_wrong_namespace' => 'Solmente le paginas in le spatio de nomines "$1" es permittite hic.',
 	'smw_unknowntype' => 'Typo non supportate "$1" definite pro proprietate.',
 	'smw_manytypes' => 'Plus de un typo definite pro proprietate.',
 	'smw_emptystring' => 'Series de characteres vacue non es acceptate.',
@@ -2297,6 +2310,50 @@ Entra e un pagina e un proprietate.',
 	'smw_result_results' => 'Resultatos',
 	'smw_result_noresults' => 'Nulle resultato.',
 	'smwadmin' => 'Functiones admin pro MediaWiki Semantic',
+	'smw_smwadmin_settingup' => 'Installation de spatio de immagazinage pro Semantic MediaWiki',
+	'smw_smwadmin_setupsuccess' => 'Le motor de immagazinage ha essite installate con successo.',
+	'smw_smwadmin_return' => 'Retornar a $1',
+	'smw_smwadmin_updatestarted' => 'Un nove processo de actualisation pro le refrescamento del datos semantic ha essite comenciate.
+Tote le datos immagazinate essera reconstruite o reparate ubi necessari.
+Tu pote sequer le progresso del actualisation in iste pagina special.',
+	'smw_smwadmin_updatenotstarted' => 'Il ha ja un processo de actualisation in curso de execution.
+Non es create un altere.',
+	'smw_smwadmin_updatestopped' => 'Tote le processos de actualisation existente ha essite stoppate.',
+	'smw_smwadmin_updatenotstopped' => 'Pro stoppar le processo de actualisation in curso, tu debe marcar le quadrato pro indicar que tu es absolutemente secur de voler facer isto.',
+	'smw_smwadmin_docu' => 'Iste pagina special te adjuta durante le installation e actualisation de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Non oblida facer un copia de reserva del datos de valor ante de executar un function administrative.',
+	'smw_smwadmin_db' => 'Installation e actualisation del base de datos',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki require alcun extensiones al base de datos de MediaWiki a fin de poter immagazinar le datos semantic.
+Le function infra assecura que tu base de datos es configurate correctemente.
+Le cambiamentos facite durante iste passo non afficera le resto del base de datos de MediaWiki, e pote esser facilemente disfacite si desirate.
+Iste function de installation pote esser executate plure vices sin causar alcun damno, sed es necessari solmente un vice post cata installation o actualisation.',
+	'smw_smwadmin_permissionswarn' => 'Si le operation falle con errores SQL, le usator de base de datos que tu wiki usa (verifica tu <tt>LocalSettings.php</tt>) probabilemente non ha permissiones sufficiente.
+O da a iste usator le permissiones additional de crear e deler tabulas, o entra temporarimente le nomine e contrasigno del usator <tt>root</tt> de tu base de datos in <tt>LocalSettings.php</tt>, o usa le script de mantenentia <tt>SMW_setup.php</tt> le qual pote usar le credentiales de AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'Initialisar u actualisar tabulas',
+	'smw_smwadmin_announce' => 'Annunciar tu wiki',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki dispone de un servicio web pro annunciar nove sitos de wiki semantic.
+Iste es usate pro mantener un lista de sitos public que usa Semantic MediaWiki, principalmente pro adjutar le <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projecto Semantic MediaWiki</a> a obtener un impression general del usos typic de Semantic MediaWiki.
+Vide le pagina principal de Semantic MediaWiki pro <a href="http://semantic-mediawiki.org/wiki/Registry">ulterior informationes a proposito de iste servicio</a>.',
+	'smw_smwadmin_announcebutton' => 'Preme le sequente button pro submitter le adresse URL de tu wiki a iste servicio.
+Le servicio non registrara wikis que non es aperte al publico, e illo retenera solmente le informationes publicamente accessibile.',
+	'smw_smwadmin_datarefresh' => 'Reparation e actualisation de datos',
+	'smw_smwadmin_datarefreshdocu' => 'Es possibile restaurar tote le datos de Semantic MediaWiki a base del conento actual del wiki.
+Isto pote esser utile pro reparar datos corrumpite o pro refrescar le datos si le formato interne ha cambiate a causa de alcun actualisation de software.
+Le actualisation es executate pagina a pagina e non essera completate immediatemente.
+Lo sequente monstra si un actualisation es in progresso e permitte comenciar o stoppar le actualisationes (a minus que iste function ha essite disactivate per le administrator del sito).',
+	'smw_smwadmin_datarefreshprogress' => 'Un actualisation es ja in curso.</b>
+Es normal que le actualisation progrede lentemente post que illo refresca datos solmente in micre pecias cata vice que un usator accede al wiki.
+Pro completar iste actualisation plus rapidemente, tu pote invocar le script de mantenentia de MediaWiki <tt>runJobs.php</tt> (usa le option <tt>--maxjobs 1000</tt> pro restringer le numero de actualisationes facite in un lot).
+Progresso estimate del actualisation currente:',
+	'smw_smwadmin_datarefreshbutton' => 'Comenciar le actualisation del datos',
+	'smw_smwadmin_datarefreshstop' => 'Stoppar iste actualisation',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Si, io es secur.',
+	'smw_smwadmin_support' => 'Obtener supporto',
+	'smw_smwadmin_supportdocu' => 'Plure ressources poterea adjutar te in caso de problemas:',
+	'smw_smwadmin_installfile' => 'Si tu incontra problemas con tu installation, comencia per verificar le directivas in le <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">file INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'Le documentation de usator complete de Semantic MediaWiki se trova a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Le defectos pote esser reportate in <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
+	'smw_smwadmin_questions' => 'Si tu ha ulterior questiones o suggestiones, participa in le discussion a <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
 );
 
 /** Indonesian (Bahasa Indonesia)
@@ -2474,9 +2531,15 @@ Siccome ci sono solo pochi risultati, sono visualizzati anche i valori vicini.',
 
 /** Japanese (日本語)
  * @author Fryed-peach
+ * @author Hosiryuhosi
  */
 $messages['ja'] = array(
+	'smw_oi_action' => 'インポート',
+	'types' => 'タイプ',
+	'smw_ask_queryhead' => 'クエリー',
+	'smw_sbv_property' => 'プロパティ',
 	'smw_sbv_value' => '値',
+	'smw_pp_type' => 'プロパティ',
 );
 
 /** Javanese (Basa Jawa)
@@ -3128,14 +3191,18 @@ $messages['myv'] = array(
  * @author Fluence
  */
 $messages['nah'] = array(
+	'smw_finallistconjunct' => ' īhuān',
+	'smw_nofloat' => '"$1" ahmo tlapōhualli.',
 	'smw_abb_north' => 'M',
 	'smw_abb_east' => 'T',
 	'smw_abb_south' => 'H',
 	'smw_abb_west' => 'C',
+	'smw_purge' => 'Ticyancuīyāz',
 	'smw_oi_action' => 'Tiquicōhuāz',
 	'smw_browse_go' => 'Yāuh',
 	'smw_result_prev' => 'Achtopa',
 	'smw_result_next' => 'Niman',
+	'smw_smwadmin_return' => 'Titocuepāz īhuīc $1',
 );
 
 /** Dutch (Nederlands)
@@ -5293,7 +5360,21 @@ $messages['zh-cn'] = array(
 	'smw_result_noresults' => '抱歉，无您所要的结果。',
 );
 
+/** Simplified Chinese (‪中文(简体)‬)
+ * @author Gzdavidwong
+ */
+$messages['zh-hans'] = array(
+	'smw_abb_north' => '北',
+	'smw_abb_east' => '东',
+	'smw_abb_south' => '南',
+	'smw_abb_west' => '西',
+	'smw_label_latitude' => '纬度：',
+	'smw_label_longitude' => '经度：',
+	'smw_pp_submit' => '搜索结果',
+);
+
 /** Traditional Chinese (‪中文(繁體)‬)
+ * @author Gzdavidwong
  * @author Wrightbus
  */
 $messages['zh-hant'] = array(
@@ -5301,8 +5382,8 @@ $messages['zh-hant'] = array(
 	'smw_abb_east' => '東',
 	'smw_abb_south' => '南',
 	'smw_abb_west' => '西',
-	'smw_label_latitude' => '緯度:',
-	'smw_label_longitude' => '經度',
+	'smw_label_latitude' => '緯度：',
+	'smw_label_longitude' => '經度：',
 	'smw_pp_submit' => '搜尋結果',
 );
 
