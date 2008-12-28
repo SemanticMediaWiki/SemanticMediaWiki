@@ -274,7 +274,7 @@ The below function ensures that your database is set up properly.
 The changes made in this step do not affect the rest of the MediaWiki database, and can easily be undone if desired.
 This setup function can be executed multiple times without doing any harm, but it is needed only once on installation or upgrade.',
 	'smw_smwadmin_permissionswarn' => 'If the operation fails with SQL errors, the database user employed by your wiki (check your LocalSettings.php) probably does not have sufficient permissions.
-Either grant this user additional persmissions to create and delete tables, temporarily enter the login of your database root in LocalSettings.php, or use the maintenance script <tt>SMW_setup.php</tt> which can use the credentials of AdminSettings.php.',
+Either grant this user additional pemissions to create and delete tables, temporarily enter the login of your database root in LocalSettings.php, or use the maintenance script <tt>SMW_setup.php</tt> which can use the credentials of AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Initialise or upgrade tables',
 	'smw_smwadmin_announce' => 'Announce your wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki has a web service for announcing new semantic wiki sites.
