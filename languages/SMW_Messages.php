@@ -607,7 +607,11 @@ $messages['ar'] = array(
 	'smw_result_results' => 'النتائج',
 	'smw_result_noresults' => 'لا توجد نتائج.',
 	'smwadmin' => 'وظائف إدارية لسيمانتيك ميدياويكي',
+	'smw_smwadmin_setupsuccess' => 'تم تنصيب محرك التخزين بنجاح',
 	'smw_smwadmin_return' => 'أرجع إلى $1',
+	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية 
+<br>لا تنشئ واحدة أخرى
+<br />',
 	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
 	'smw_smwadmin_db' => 'تثبيت و تحديث قاعدة البيانات',
 	'smw_smwadmin_announce' => 'أعلن عن الويكي الخاص بك',
@@ -616,10 +620,12 @@ $messages['ar'] = array(
 	'smw_smwadmin_datarefreshstop' => 'أوقف هذا التحديث',
 	'smw_smwadmin_datarefreshstopconfirm' => 'نعم، أنا متأكد',
 	'smw_smwadmin_support' => 'أحصل على دعم',
+	'smw_smwadmin_supportdocu' => ':مصادر متعددة يمكن أن تساعدة في حالة مشاكل',
 );
 
 /** Egyptian Spoken Arabic (مصرى)
  * @author Meno25
+ * @author Ouda
  */
 $messages['arz'] = array(
 	'smw_edithelp' => 'تعديل المساعدة على الخصائص',
@@ -796,6 +802,8 @@ $messages['arz'] = array(
 	'smw_result_results' => 'النتائج',
 	'smw_result_noresults' => 'لا توجد نتائج.',
 	'smwadmin' => 'وظائف إدارية لسيمانتيك ميدياويكي',
+	'smw_smwadmin_return' => 'أرجع إلى $1',
+	'smw_smwadmin_datarefreshstopconfirm' => 'نعم، أنا متأكد',
 );
 
 /** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
@@ -1071,6 +1079,7 @@ Prosím, zadejte stránku i vlastnost.',
  * @author DaSch
  * @author Denny
  * @author Imre
+ * @author MF-Warburg
  * @author Markus Krötzsch
  * @author Melancholie
  * @author Pill
@@ -1243,6 +1252,9 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 	'smw_smwadmin_settingup' => 'Speicherplatz für Semantic MediaWiki einstellen',
 	'smw_smwadmin_setupsuccess' => 'Die Speichereinheit wurde erfolgreich eingerichtet.',
 	'smw_smwadmin_return' => 'Zurück zu $1',
+	'smw_smwadmin_updatestarted' => 'Ein neuer Update-Prozess zur Aktualisierung der semantischen Daten wurde gestartet.
+Alle gespeicherten Daten werden neu erstellt oder repariert, sofern nötig.
+Du kannst den Fortschritt des Updates auf dieser Spezialseite verfolgen.',
 	'smw_smwadmin_updatenotstarted' => 'Es läuft bereits ein Update-Prozess.
 Es wird kein Neuer begonnen.',
 	'smw_smwadmin_updatestopped' => 'Alle existierenden Aktualisierungsprozesse wurden gestoppt.',
@@ -1250,16 +1262,27 @@ Es wird kein Neuer begonnen.',
 	'smw_smwadmin_docu' => 'Diese Spezialseite hilft während der Installation und dem Upgrade von <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Denke daran, wichtige Daten vor der Ausführung administrativer Funktionen zu sichern.',
 	'smw_smwadmin_db' => 'Datenbankinstallation und -aktualisierung',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki benötigt einige Erweiterungen an der MediaWiki-Datenbank um die semantischen Daten zu speichern.
+Die folgende Funktion gewährleistet, dass die Datenbank richtig eingerichtet ist.
+Die Änderungen, die in diesem Schritt gemacht werden, beeinträchtigen den Rest der MediaWiki-Datenbank nicht und können einfach zurückgesetzt werden, wenn gewünscht.
+Diese Setup-Funktion kann mehrere Male ausgeführt werden ohne Schaden zu verursachen, es ist aber nur einmal bei Installation oder Update nötig.',
+	'smw_smwadmin_permissionswarn' => 'Wenn die Aktion mit einem SQL-Fehler abbricht, könnte es sein, dass der Datenbankbenutzer, durch den das Wiki auf die Datenbank zugreift (siehe die Datei LocalSettings.php), keine ausreichenden Rechte hat.
+Um das Problem zu lösen, ist es möglich, dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Tabellen einzuräumen, den Datenbank-Administrator zeitweilig in die LocalSettings.php einzutragen, oder das Wartungsskript <tt>SMW_setup.php</tt> zu benutzen, das die Benutzerdaten aus AdminSettings.php benutzen kann.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualiseren',
 	'smw_smwadmin_announce' => 'Dein Wiki ankündigen',
 	'smw_smwadmin_announcebutton' => 'Drücke den folgenden Knopf um die URL deines Wikis zu diesem Dienst hinzuzufügen.
 Dieser Dienst wird keine Wikis aufnehmen, die nicht öffentlich zugänglich sind und er wird nur öffentlich zugängliche Informationen speichern.',
 	'smw_smwadmin_datarefresh' => 'Datenreparatur und -aktualiserung',
+	'smw_smwadmin_datarefreshprogress' => 'Ein Update läuft bereits.</b>
+Ein Update geht normalerweise nur langsam voran, da die Daten nur in kleinen Portionen aktualisiert werden, und zwar jedesmal, wenn jemand auf das Wiki zugreift.
+Um dieses Update schneller zu beenden, kann man das MediaWiki-Wartungsskript <tt>runJobs.php</tt> (mit dem Parameter <tt>--maxjobs 1000</tt> kann die Anzahl der Updates, die in einem Rutsch durchgeführt werden, beschränkt werden) benutzen.
+Geschätzter Fortschritt des laufenden Updates:',
 	'smw_smwadmin_datarefreshbutton' => 'Datenaktualisierung beginnen',
 	'smw_smwadmin_datarefreshstop' => 'Diese Aktualisierung beenden',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, ich bin mir sicher.',
 	'smw_smwadmin_support' => 'Unterstützung erhalten',
 	'smw_smwadmin_supportdocu' => 'Verschiedene Mittel/Quellen helfen dir vielleicht bei einem Problemfall:',
+	'smw_smwadmin_installfile' => 'Wenn es Probleme mit der Installation gibt, könnte die Datei <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a> weiterhelfen.',
 	'smw_smwadmin_smwhomepage' => 'Die komplette Benutzerdokumentation von Semantic MediaWiki findest du auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Fehler können bei <a href="https://bugzilla.wikimedia.org/">MediaZilla</a> berichtet werden.',
 	'smw_smwadmin_questions' => 'Wenn du weitere Fragen oder Vorschläge hast, beteilige dich an der Diskussion auf <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
@@ -1320,6 +1343,7 @@ $messages['eo'] = array(
 	'smw_true_words' => 'vera,v,jes,j',
 	'smw_false_words' => 'falsa,f,ne,n',
 	'smw_nofloat' => '"$1" ne estas nombro.',
+	'smw_unsupportedprefix' => 'Prefiksoj por nombroj ("$1") ne estas subtenata.',
 	'smw_lonely_unit' => 'Nombro mankas antaŭ simbolo "$1".',
 	'smw_bad_latlong' => 'Latitudo kaj longitudo devas esti donata nur unufoje, kaj kun validaj koordinatoj.',
 	'smw_abb_east' => 'O',
@@ -1327,8 +1351,13 @@ $messages['eo'] = array(
 	'smw_label_latitude' => 'Latitudo:',
 	'smw_label_longitude' => 'Longitudo:',
 	'smw_nodatetime' => 'La dato "$1" ne estis komprenita.',
+	'smw_emptysubquery' => 'Iu submendo havas neniun validan kondiĉon.',
+	'smw_overprintoutlimit' => 'La mendo enhavas tro da printadajn petojn.',
 	'smw_badtitle' => 'Bedaŭrinde, "$1" ne estas valida paĝa titolo.',
 	'smw_propvalueproblem' => 'La valuto de eco "$1" ne estis komprenita.',
+	'smw_type_header' => 'Atributoj de tipo "$1"',
+	'smw_typearticlecount' => 'Montrante $1 {{PLURAL:$1|atributon|atributojn}} uzante ĉi tiun tipon.',
+	'smw_attribute_header' => 'Paĝoj uzantaj atrubuton "$1"',
 	'smw_subproperty_header' => 'Subatributoj',
 	'smw_subpropertyarticlecount' => 'Ĉi tiu atributo havas la $1 {{PLURAL:$1|jenan subatributon|jenajn subatributojn}}.',
 	'exportrdf' => 'Eksportu paĝojn al RDF',
@@ -1341,10 +1370,12 @@ $messages['eo'] = array(
 	'smw_wantedproperty_template' => '$1 ($2 uzoj)',
 	'smw_purge' => 'Refreŝigu',
 	'smw_oi_action' => 'Importu',
+	'smw_oi_noontology' => 'Neniu ontologio estis donita, aŭ ne eblis ŝarĝi ontologion.',
 	'smw_oi_statementsabout' => 'Komentoj pri',
 	'smw_oi_comment' => 'Aldonu la jenan tekston:',
 	'smw_oi_thisissubcategoryof' => 'Subkategorio de',
 	'smw_oi_thishascategory' => 'Estas parto de',
+	'smw_oi_importedfromontology' => 'Importi de ontologio',
 	'types' => 'Datumtipoj',
 	'smw_types_docu' => 'Jen listo de ĉiuj datentipoj kiu povas esti asignitaj al ecoj.
 Ĉiu datentipo havas paĝon kie plua informo povas esti aldonita.',
@@ -2727,6 +2758,7 @@ $messages['ka'] = array(
 $messages['km'] = array(
 	'smw_finallistconjunct' => 'និង',
 	'smw_factbox_head' => 'ហេតុការណ៍ពិត​អំពី $1',
+	'smw_isspecprop' => 'លក្ខណៈសម្បត្តិ​នេះ គឺជា​លក្ខណៈសម្បត្តិ​ពិសេស​នៅក្នុង​វិគី​នេះ​។',
 	'smw_baduri' => 'URIs នៃ​ទម្រង់ "$1" មិន​ត្រូវ​បាន​អនុញ្ញាត​ទេ​។',
 	'smw_iq_moreresults' => '... លទ្ធផល​ខាងមុខ​ទៀត',
 	'smw_iq_nojs' => 'ប្រើប្រាស់ JavaScript ដើម្បី​ឱ្យ​កម្មវិធីរុករក​មើល​ធាតុ​នេះ​បាន​។',
@@ -2744,10 +2776,10 @@ $messages['km'] = array(
 	'smw_nofloat' => '"$1" មិនមែន​ជា​លេខ​ទេ​។',
 	'smw_lonely_unit' => 'គ្មាន​លេខ​បាន​រកឃើញ​មុន​និមិត្តសញ្ញា "$1" ទេ​។',
 	'smw_bad_latlong' => 'រយៈទទឹង និង​រយៈបណ្ដោយ ត្រូវតែ​ផ្ដល់ឱ្យ​ក្នុង​ពេល​តែមួយ ព្រមទាំង​ជាមួយ​កូអរដោនេ​ត្រឹមត្រូវ​។',
-	'smw_abb_north' => 'ជ.',
-	'smw_abb_east' => 'ក.',
-	'smw_abb_south' => 'ត្ប.',
-	'smw_abb_west' => 'ល.',
+	'smw_abb_north' => 'ជ',
+	'smw_abb_east' => 'ក',
+	'smw_abb_south' => 'ត្ប',
+	'smw_abb_west' => 'ល',
 	'smw_label_latitude' => 'រយះទទឹង៖',
 	'smw_label_longitude' => 'រយះបណ្តោយ៖',
 	'smw_nodatetime' => 'កាលបរិច្ឆេទ "$1" មិន​អាច​យល់​បាន​ទេ​។',
@@ -2767,20 +2799,37 @@ $messages['km'] = array(
 	'properties' => 'លក្ខណៈសម្បត្តិ',
 	'smw_properties_docu' => 'លក្ខណៈសម្បត្តិ​ដូច​ខាងក្រោម​ត្រូវ​បាន​ប្រើប្រាស់​នៅ​ក្នុង​វិគី​។',
 	'smw_property_template' => '$1 នៃ​គំរូ $2 ($3)',
+	'smw_propertylackspage' => 'លក្ខណៈសម្បត្តិ​ទាំងអស់ គួរតែ​ត្រូវ​បាន​ពីពណ៌នា​ដោយ​ទំព័រ​មួយ​!',
+	'smw_propertyhardlyused' => 'លក្ខណៈសម្បត្តិ ស្ទើរតែ​មិនត្រូវ​បាន​ប្រើប្រាស់​ជាមួយ​វិគី​!',
+	'unusedproperties' => 'លក្ខណៈសម្បត្តិ​មិន​ប្រើប្រាស់',
 	'smw_unusedproperty_template' => '$1 នៃ​គំរូ $2',
 	'wantedproperties' => 'លក្ខណៈសម្បត្តិ​ដែល​ចង់បាន',
+	'smw_wantedproperties_docu' => 'លក្ខណៈសម្បត្តិ​ដូចតទៅនេះ ត្រូវ​បាន​ប្រើប្រាស់​នោក្នុង​វិគី ប៉ុន្ដែ​នៅ​មិនទាំន់​មាន​ទំព័រ​ណាមួយ​សម្រាប់​ពិពណ៌នា​ពួកវា​ឡើយ​។',
+	'smw_wantedproperty_template' => '$1 ($2 ប្រើប្រាស់)',
 	'smw_purge' => 'ធ្វើឱ្យស្រស់',
 	'ontologyimport' => 'នាំចូល​ប្រាណវិទ្យា',
 	'smw_oi_action' => 'នាំចូល',
 	'smw_oi_return' => 'ត្រឡប់​​ទៅកាន់ <a href="$1">ពិសេសេ:ការនាំចូល​ប្រាណវិទ្យា</a>.',
+	'smw_oi_selectall' => 'ជ្រើស ឬ មិនជ្រើស​សេចក្ដីថ្លែងការណ៍​ទាំងអស់',
+	'smw_oi_statementsabout' => 'សេចក្ដីថ្លែងការណ៍​ស្ដីអំពី',
+	'smw_oi_comment' => 'បន្ថែម​អក្សរ​ដូចតទៅ​នេះ:',
 	'smw_oi_thisissubcategoryof' => 'ចំណាត់ថ្នាក់ក្រុមរង​នៃ',
 	'smw_oi_thishascategory' => 'គឺជា​ផ្នែក​នៃ',
 	'smw_oi_importedfromontology' => 'នាំចូល​ពី​ប្រាណវិទ្យា',
 	'types' => 'ប្រភេទ',
 	'semanticstatistics' => 'ស្ថិតិ​និឃណ្ដសាស្ត្រ',
+	'uriresolver' => 'អ្នកដោះស្រាយ URI',
+	'smw_ask_sortby' => 'តម្រៀប​តាម​ជួរឈរ (តាមបំណង)',
 	'smw_ask_ascorder' => 'លំដាប់ឡើង',
 	'smw_ask_descorder' => 'លំដាប់ចុះ',
 	'smw_ask_submit' => 'ស្វែងរកលទ្ធផល',
+	'searchbyproperty' => 'ស្វែងរក​តាម​រយៈ​លក្ខណៈសម្បត្តិ',
+	'smw_sbv_docu' => '<p>ស្វែងរក​គ្រប់​ទំព័រ​ទាំងអស់ ដែល​ត្រូវ​បាន​ផ្ដល់​លក្ខណៈសម្បត្តិ និង​តម្លៃ​។</p>',
+	'smw_sbv_noproperty' => '<p>បញ្ចូល​លក្ខណៈសម្បត្តិ​។</p>',
+	'smw_sbv_novalue' => '<p>បញ្ចូល​តម្លៃ​ត្រឹមត្រូវ​សម្រាប់​លក្ខណៈសម្បត្តិ ឬ​ក៏ មើល​គ្រប់​លក្ខណៈសម្បត្តិ​ទាំងអស់​សម្រាប់ "$1"​។</p>',
+	'smw_sbv_displayresult' => 'បញ្ជី​មួយ​នៃ​ទំព័រ​ទាំងអស់ ដែល​មានន​លក្ខណៈសម្បត្តិ "$1" ជាមួយ​តម្លៃ "$2"',
+	'smw_sbv_displayresultfuzzy' => 'បញ្ជី​មួយ​នៃ​ទំព័រ​ទាំងអស់ ដែល​មានន​លក្ខណៈសម្បត្តិ "$1" ជាមួយ​តម្លៃ "$2"​។
+ដោុហេតុតែ មាន​លទ្ធផល​តិចតួច​ប៉ុណ្ណោះ ក៏ប្រហាក់ប្រហែល​ជាមួយ​តម្លៃ​ដែល​ត្រូវ​បាន​បង្ហាញ​ផងដែរ​។',
 	'smw_sbv_property' => 'លក្ខណៈសម្បត្តិ',
 	'smw_sbv_value' => 'តម្លៃ',
 	'smw_sbv_submit' => 'ស្វែងរក​លទ្ធផល',
@@ -2793,6 +2842,7 @@ $messages['km'] = array(
 	'smw_browse_no_outgoing' => 'ទំព័រ​នេះ​មិនមាន​លក្ខណៈសម្បត្តិ​ទេ​។',
 	'smw_browse_no_incoming' => 'គ្មាន​លក្ខណៈសម្បត្តិ ដែល​ភ្ជាប់ទៅ​ទំព័រ​នេះ​ទេ​។',
 	'smw_inverse_label_default' => '$1 នៃ',
+	'pageproperty' => 'ស្វែងរក​លក្ខណៈសម្បត្តិ​ទំព័រ',
 	'smw_pp_from' => 'ពីទំព័រ',
 	'smw_pp_type' => 'លក្ខណៈសម្បត្តិ',
 	'smw_pp_submit' => 'ស្វែងរកលទ្ធផល',
