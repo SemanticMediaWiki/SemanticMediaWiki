@@ -803,7 +803,14 @@ $messages['arz'] = array(
 	'smw_result_noresults' => 'لا توجد نتائج.',
 	'smwadmin' => 'وظائف إدارية لسيمانتيك ميدياويكي',
 	'smw_smwadmin_return' => 'أرجع إلى $1',
+	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
+	'smw_smwadmin_announce' => 'أعلن عن الويكي الخاص بك',
+	'smw_smwadmin_datarefresh' => 'إصلاح البيانات وتحديثها',
+	'smw_smwadmin_datarefreshbutton' => 'أبدا تحديث البيانات',
+	'smw_smwadmin_datarefreshstop' => 'أوقف هذا التحديث',
 	'smw_smwadmin_datarefreshstopconfirm' => 'نعم، أنا متأكد',
+	'smw_smwadmin_support' => 'أحصل على دعم',
+	'smw_smwadmin_supportdocu' => ':مصادر متعددة يمكن أن تساعدة في حالة مشاكل',
 );
 
 /** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
@@ -1360,6 +1367,7 @@ $messages['eo'] = array(
 	'smw_attribute_header' => 'Paĝoj uzantaj atrubuton "$1"',
 	'smw_subproperty_header' => 'Subatributoj',
 	'smw_subpropertyarticlecount' => 'Ĉi tiu atributo havas la $1 {{PLURAL:$1|jenan subatributon|jenajn subatributojn}}.',
+	'smw_concept_header' => 'Paĝoj de koncepto "$1"',
 	'exportrdf' => 'Eksportu paĝojn al RDF',
 	'properties' => 'Ecoj',
 	'smw_properties_docu' => 'La jenaj ecoj estas uzataj en la vikio.',
@@ -1417,6 +1425,7 @@ $messages['eo'] = array(
 	'smw_smwadmin_datarefreshstop' => 'Halti ĉi tiun ĝisdatigon',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jes, mi certas.',
 	'smw_smwadmin_support' => 'Teni subtenon',
+	'smw_smwadmin_mediazilla' => 'Cimoj povas esti raportitaj al <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
 );
 
 /** Spanish (Español)
@@ -4280,6 +4289,22 @@ $messages['ro'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'Da, sunt sigur.',
 );
 
+/** Tarandíne (Tarandíne)
+ * @author Joetaras
+ */
+$messages['roa-tara'] = array(
+	'smw_viewasrdf' => 'Feed RDF',
+	'smw_finallistconjunct' => ', e',
+	'smw_abb_north' => 'N',
+	'smw_abb_east' => 'E',
+	'smw_abb_south' => 'S',
+	'smw_abb_west' => 'O',
+	'smw_label_latitude' => 'Latitudine:',
+	'smw_label_longitude' => 'Longitudine:',
+	'smw_unusedproperty_template' => '$1 de tipe $2',
+	'smw_oi_thishascategory' => "Jè 'nu stuezze de",
+);
+
 /** Russian (Русский)
  * @author QuestPC
  * @author Александр Сигачёв
@@ -5215,6 +5240,18 @@ $messages['te'] = array(
 	'smw_result_noresults' => 'క్షమించండి, ఫలితాలేమీ లేవు.',
 	'smw_smwadmin_announce' => 'మీ వికీని ప్రకటించండి',
 	'smw_smwadmin_datarefreshbutton' => 'భోగట్టాని తాజాకరించడం ఆపివేయి',
+);
+
+/** Tetum (Tetun)
+ * @author MF-Warburg
+ */
+$messages['tet'] = array(
+	'smw_true_words' => 'loos,l,sin,s',
+	'smw_false_words' => 'sala,s,lae,la',
+	'smw_abb_north' => 'N',
+	'smw_abb_east' => "Lorosa'e",
+	'smw_abb_south' => 'S',
+	'smw_abb_west' => 'Loromonu',
 );
 
 /** Tajik (Cyrillic) (Тоҷикӣ (Cyrillic))
