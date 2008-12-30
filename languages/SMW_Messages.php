@@ -3017,7 +3017,14 @@ $messages['krj'] = array(
  * @author Purodha
  */
 $messages['ksh'] = array(
+	'smw_edithelp' => 'Hölp beim Ändere vun Eijeschaffte',
+	'smw_viewasrdf' => 'RDF Kannaal',
 	'smw_finallistconjunct' => ', un',
+	'smw_factbox_head' => 'Tatsaache övver $1',
+	'smw_isspecprop' => 'Die Eijeschaff es en spezijelle Eijeschaff en hee dämm Wiki.',
+	'smw_isknowntype' => 'Dä Datetüp es ein vun de standattmääßejje Datetüpe en hee däm Wiki.',
+	'smw_isaliastype' => 'Hee dä Datetüp es ene andere Name för dä Datetüp „$1“.',
+	'smw_isnotype' => 'Dä Datetüp „$1“ es keine vun dä standattmääßejje Datetüpe en hee däm Wiki, un hä hät och kein öönlijje Deffinizjuhn krääje.',
 	'smw_csv_link' => 'CSV',
 	'smw_true_words' => 'wohr,wor,woo,woh,wo,w,j,jo,joh,true,t,yes,y',
 	'smw_false_words' => 'verkiehrt,verkihrt,verkirt,verkeht,verkeet,verket,vokiehrt,vokihrt,vokirt,vokeht,vokeet,voket,ferkiehrt,ferkihrt,ferkirt,ferkeht,ferkeet,ferket,fokiehrt,fokihrt,fokirt,fokeht,fokeet,foket,fallsch,falsch,näh,nää,nä,false,f,no,n',
@@ -3100,6 +3107,7 @@ $messages['lb'] = array(
 	'smw_result_results' => 'Resultater',
 	'smw_result_noresults' => 'Pardon, et gouf näischt fonnt.',
 	'smw_smwadmin_return' => 'Zréck op $1',
+	'smw_smwadmin_announce' => 'Är wiki ukënnegen',
 	'smw_smwadmin_datarefresh' => 'Donnéeë gi gefléckt an aktualiséiert',
 	'smw_smwadmin_datarefreshbutton' => "Ufänken Daten z'aktualiséieren",
 	'smw_smwadmin_datarefreshstop' => 'Dësn Update stoppen',
@@ -3558,7 +3566,46 @@ Geschatte voortgang van de huidige taak:",
 	'smw_smwadmin_questions' => 'Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
 );
 
+/** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
+ * @author Harald Khan
+ */
+$messages['nn'] = array(
+	'smw_edithelp' => 'Endringshjelp for eigenskapar',
+	'smw_viewasrdf' => 'RDF-kjelda',
+	'smw_finallistconjunct' => ' og',
+	'smw_factbox_head' => 'Fakta om $1',
+	'smw_isspecprop' => 'Denne eigenskapen er ein spesialeigenskap på denne wikien',
+	'smw_isknowntype' => 'Denne datatypen er mellom standardtypane på denne wikien.',
+	'smw_isaliastype' => 'Denne datatypen er den same som «$1».',
+	'smw_isnotype' => 'Datatypen «$1» er ikkje ein standarddatatype på denne wikien og har heller ikkje blitt gjeven ein brukardefinsjon.',
+	'smw_concept_description' => 'Skildring av konseptet «$1»',
+	'smw_no_concept_namespace' => 'Konsept kan berre bli definerte frå sider i Concept:-namnerommet.',
+	'smw_multiple_concepts' => 'Kvar konseptsida kan berre ha éin konseptdefinisjon.',
+	'smw_concept_cache_miss' => 'Konseptet «$1» kan ikkje bli nytta for augneblinken, då wikikonfigurasjonen krev at det blir sett saman fråkopla.
+Om problemet ikkje går vekk etter noko tid, be sideadministratoren om å gjera dette konseptet tilgjengleg.',
+	'smw_baduri' => 'URI-ar på forma «$1» er ikkje tillatne.',
+	'smw_iq_disabled' => 'Semantiske spørjingar har blitt slegne av på denne wikien.',
+	'smw_iq_moreresults' => '… fleire resultat',
+	'smw_iq_nojs' => 'Nytt ein nettlesar med støtta for JavaScript for å syna dette elementet.',
+	'smw_iq_altresults' => 'Gå igjennom resultatlista direkte.',
+	'smw_unknown_importns' => 'Importeringsfunksjonar er ikkje tilgjengelege for namnerommet «$1».',
+	'smw_nonright_importtype' => '$1 kan berre bli nytta for sider i namnerommet «$2».',
+	'smw_wrong_importtype' => '$1 kan ikkje bli nytta for sider i namnerommet «$2».',
+	'smw_no_importelement' => 'Elementet «$1» er ikkje tilgjengeleg for importering.',
+	'smw_parseerror' => 'Den gjevne verdien blei ikkje forstått.',
+	'smw_decseparator' => ',',
+	'smw_kiloseparator' => '.',
+	'smw_notitle' => '«$1» kan ikkje bli nytta som sidenamn på denne wikien.',
+	'smw_wrong_namespace' => 'Berre sider i namnerommet «$1» er tillatne her.',
+	'smw_unknowntype' => 'Typen «$1» som er definert for eigenskapen er ikkje støtta.',
+	'smw_manytypes' => 'Meir enn éin type definert for eigenskapen.',
+	'smw_emptystring' => 'Tomme strenger blir ikkje godtekne.',
+	'smw_maxstring' => 'Strengerepresenteringa $1 er for lang for {{SITENAME}}.',
+	'smw_notinenum' => '«$1» er ikkje i lista over moglege verdiar ($2) for denne eigenskapen.',
+);
+
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
+ * @author Harald Khan
  * @author Jon Harald Søby
  */
 $messages['no'] = array(
@@ -3582,7 +3629,7 @@ $messages['no'] = array(
 	'smw_iq_nojs' => 'Bruk en nettleser med JavaScript-støtte for å vise dette elementet.',
 	'smw_iq_altresults' => 'Gå gjennom resultatlisten direkte.',
 	'smw_unknown_importns' => 'Importeringsfunksjoner er ikke tilgjengelige for navnerommet «$1».',
-	'smw_nonright_importtype' => '$1 kun kun brukes for sider i navnerommet «$2».',
+	'smw_nonright_importtype' => '$1 kan kun brukes for sider i navnerommet «$2».',
 	'smw_wrong_importtype' => '$1 kan ikke brukes for sider i navnerommet «$2».',
 	'smw_no_importelement' => 'Elementet «$1» er ikke tilgjengelig for importering.',
 	'smw_parseerror' => 'Den gitte verdien ble ikke forstått.',
@@ -4295,14 +4342,21 @@ $messages['ro'] = array(
 $messages['roa-tara'] = array(
 	'smw_viewasrdf' => 'Feed RDF',
 	'smw_finallistconjunct' => ', e',
+	'smw_true_words' => 'vere,true,t,sine,si,yes,y',
+	'smw_false_words' => 'fause,false,f,none,no,n',
 	'smw_abb_north' => 'N',
 	'smw_abb_east' => 'E',
 	'smw_abb_south' => 'S',
 	'smw_abb_west' => 'O',
 	'smw_label_latitude' => 'Latitudine:',
 	'smw_label_longitude' => 'Longitudine:',
+	'properties' => 'Proprietà',
+	'smw_property_template' => '$1 de tipe $2 ($3)',
 	'smw_unusedproperty_template' => '$1 de tipe $2',
+	'smw_wantedproperty_template' => '$1 ($2 ause)',
+	'smw_oi_action' => "'Mborte",
 	'smw_oi_thishascategory' => "Jè 'nu stuezze de",
+	'types' => 'Tipe',
 );
 
 /** Russian (Русский)
@@ -5252,6 +5306,7 @@ $messages['tet'] = array(
 	'smw_abb_east' => "Lorosa'e",
 	'smw_abb_south' => 'S',
 	'smw_abb_west' => 'Loromonu',
+	'smw_result_prev' => 'Molok',
 );
 
 /** Tajik (Cyrillic) (Тоҷикӣ (Cyrillic))
