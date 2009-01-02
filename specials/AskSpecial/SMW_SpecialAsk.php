@@ -258,7 +258,7 @@ class SMWAskPage extends SpecialPage {
 				$result .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes&sc=1')) . '">' . wfMsg('smw_add_sortcondition') . '</a>'; // note that $urltail uses a , separated list for sorting, so setting sc to 1 always adds one new condition
 			}
 			$result .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
-			           '<input type="hidden" name="eq" value="yes"/>' . 
+			           '<input type="hidden" name="eq" value="yes"/>' .
 			           ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '">' . wfMsg('smw_ask_hidequery') . '</a> | <a href="' . htmlspecialchars(wfMsg('smw_ask_doculink')) . '">' . wfMsg('smw_ask_help') . '</a>' .
 			           "\n</form><br />";
 		} else {
@@ -284,7 +284,7 @@ class SMWAskPage extends SpecialPage {
 
 		$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $res->getCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
-		if ($res->hasFurtherResults()) 
+		if ($res->hasFurtherResults())
 			$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . $urltail)) . '">' . wfMsg('smw_result_next') . '</a>';
 		else $navigation .= wfMsg('smw_result_next');
 
@@ -332,7 +332,7 @@ class SMWAskPage extends SpecialPage {
 		$html = '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
 		$html .= '<textarea name="query" cols="40" rows="6">' . htmlspecialchars($query) . '</textarea><br />' . "\n";
-		
+
 		if ($smwgQSortingSupport) {
 			$html .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort" value="' .
 			          htmlspecialchars($sort) . '"/> <select name="order"><option ';
@@ -342,23 +342,23 @@ class SMWAskPage extends SpecialPage {
 			$html .=  'value="DESC">' . wfMsg('smw_ask_descorder') . '</option></select> <br />';
 		}
 		$html .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/> <a href="' . $docutitle->getFullURL() . '">' . wfMsg('smw_ask_help') . "</a>\n</form>";
-		
+
 		// print results if any
 		if ($smwgQEnabled && ('' != $query) ) {
 			$params = array('offset' => $offset, 'limit' => $limit, 'format' => 'broadtable', 'mainlabel' => ' ', 'link' => 'all', 'default' => wfMsg('smw_result_noresults'), 'sort' => $sort, 'order' => $order);
 			$queryobj = SMWQueryProcessor::createQuery($query, $params, false);
 			$res = smwfGetStore()->getQueryResult($queryobj);
 			$printer = new SMWTableResultPrinter('broadtable',false);
-			$result = $printer->getResultHTML($res, $params);
+			$result = $printer->getResult($res, $params, SMW_OUTPUT_HTML);
 
 			// prepare navigation bar
-			if ($offset > 0) 
+			if ($offset > 0)
 				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '">' . wfMsg('smw_result_prev') . '</a>';
 			else $navigation = wfMsg('smw_result_prev');
 
 			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $res->getCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
 
-			if ($res->hasFurtherResults()) 
+			if ($res->hasFurtherResults())
 				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '">' . wfMsg('smw_result_next') . '</a>';
 			else $navigation .= wfMsg('smw_result_next');
 
