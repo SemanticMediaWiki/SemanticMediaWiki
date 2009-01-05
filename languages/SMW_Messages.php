@@ -624,8 +624,10 @@ $messages['ar'] = array(
 );
 
 /** Egyptian Spoken Arabic (مصرى)
+ * @author Ghaly
  * @author Meno25
  * @author Ouda
+ * @author Ramsis II
  */
 $messages['arz'] = array(
 	'smw_edithelp' => 'تعديل المساعدة على الخصائص',
@@ -678,7 +680,7 @@ $messages['arz'] = array(
 	'smw_abb_west' => 'غرب',
 	'smw_label_latitude' => 'دوائر العرض:',
 	'smw_label_longitude' => 'خطوط الطول:',
-	'smw_nodatetime' => 'التاريخ "$1" لم يفهم (الدعم للتواريخ مازال تجريبيا).',
+	'smw_nodatetime' => 'التاريخ "$1" ماتفهمش .',
 	'smw_toomanyclosing' => 'يبدو أنه هناك الكثير من "$1" فى الاستعلام.',
 	'smw_noclosingbrackets' => '"]]" فى استعلامك لم تكن مغلقة باستخدام "<nowiki>[[</nowiki>" بعض استخدام',
 	'smw_misplacedsymbol' => 'الرمز "$1" تم استخدامه فى مكان حيث هو ليس مفيدا.',
@@ -804,6 +806,7 @@ $messages['arz'] = array(
 	'smwadmin' => 'وظائف إدارية لسيمانتيك ميدياويكي',
 	'smw_smwadmin_return' => 'أرجع إلى $1',
 	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
+	'smw_smwadmin_db' => 'تنزيل و تحديث قاعدة البيانات',
 	'smw_smwadmin_announce' => 'أعلن عن الويكي الخاص بك',
 	'smw_smwadmin_datarefresh' => 'إصلاح البيانات وتحديثها',
 	'smw_smwadmin_datarefreshbutton' => 'أبدا تحديث البيانات',
@@ -945,6 +948,7 @@ $messages['cs'] = array(
 	'smw_concept_description' => 'Popis pojmu „$1”',
 	'smw_no_concept_namespace' => 'Pojmy je možné definovat pouze na stránkách ve jmenném prostoru Concept:',
 	'smw_multiple_concepts' => 'Každá stránka konceptu může mít jen jednu definici.',
+	'smw_concept_cache_miss' => 'Koncept „$1” není možné momentálně použít, protože konfigurace wiki vyžaduje, aby se vypočítal až dodatečně. Pokud problém přetrvává delší dobu, požádejte správce, aby tento koncept zpřístupnil.',
 	'smw_baduri' => 'Promiňte, URI z rozsahu „$1“ na tomto místě nejsou dostupné.',
 	'smw_icalendar_link' => 'iCalendar',
 	'smw_iq_disabled' => 'Promiňtě, semantické dotazy byly pro tuto wiki zakázány.',
@@ -957,6 +961,7 @@ $messages['cs'] = array(
 	'smw_no_importelement' => 'Prvek „$1“ není dostupný pro import.',
 	'smw_parseerror' => 'Zadaná hodnota nebyla pochopená.',
 	'smw_notitle' => '„$1“ není možné použít na této wiki jako název stránky.',
+	'smw_wrong_namespace' => 'Zde jsou povoleny jen stránky ze jmenného prostoru "$1"',
 	'smw_unknowntype' => 'Pro vlastnost je definován nepodporovaný typ „$1“.',
 	'smw_manytypes' => 'Pro vlastnost byl definován více než jeden typ.',
 	'smw_emptystring' => 'Prázdné řetězce nejsou povolené.',
@@ -990,18 +995,20 @@ Výsledky pravděpodobně nesplní očekávání.',
 	'smw_badtitle' => 'Promiňte, ale „$1” není platný název stránky.',
 	'smw_badqueryatom' => 'Některá část „<nowiki>[[…]]</nowiki>“ nebyla srozumitelná.',
 	'smw_propvalueproblem' => 'Hodnota vlastnosti „$1“ nedávala smysl.',
-	'smw_noqueryfeature' => 'Určitá část dotazu není na této wiki podporovaná a bude proto ignorována.',
-	'smw_noconjunctions' => 'Konjunkce v dotazu není na této wiki podporována a bude proto ignorována.',
+	'smw_noqueryfeature' => 'Určitá část dotazu není na této wiki podporovaná a bude proto ignorována ($1).',
+	'smw_noconjunctions' => 'Konjunkce v dotazu není na této wiki podporována a bude proto ignorována ($1).',
 	'smw_nodisjunctions' => 'Disjunkce nejsou v dotazech na této wiki podporované a část dotazu byla ignorována ($1).',
 	'smw_querytoolarge' => 'Následující podmínky dotazu nebudou zohledněné z důvodu omezení této wiki na délku nebo hĺoubku dotazu: $1.',
 	'smw_devel_warning' => 'Tato vlastnost je momentálně ve vývoji a nemusí být zcela funkční. Předtím, než jí použijete si zazálohujte data.',
 	'smw_notemplategiven' => 'Aby tento formát dotazu fungoval, uveďte hodnotu parametru „template”.',
 	'smw_type_header' => 'Vlastností typu „$1“',
-	'smw_typearticlecount' => 'Zobrazeno je $1 vlastností tohoto typu.',
+	'smw_typearticlecount' => 'Zobrazeno je $1 {{PLURAL:$1|vlastnost|vlastnosti|vlastností}} tohoto typu.',
 	'smw_attribute_header' => 'Stránek používajících vlastnost „$1“',
-	'smw_attributearticlecount' => 'Zobrazeno je $1 stránek, které používají tuto vlastnost.',
+	'smw_attributearticlecount' => 'Zobrazeno je $1 {{PLURAL:$1|stránka používající|stránky používající|stránek používajících}} tuto vlastnost.',
 	'smw_subproperty_header' => 'Podvlastnosti',
-	'smw_subpropertyarticlecount' => 'Této vlastnosti náleží $1 podvlastností',
+	'smw_subpropertyarticlecount' => 'Této vlastnosti náleží $1 {{PLURAL:$1|podvlastnost|podvlastností}}.',
+	'smw_concept_header' => 'Stran konceptu "$1"',
+	'smw_conceptarticlecount' => '{{PLURAL:$1|zobrazena je|zobrazeny jsou|zobrazeno je}} $1 {{PLURAL:$1|stránka náležející|stránky náležející|stránek náležejících}} tomuto konceptu.',
 	'exportrdf' => 'Export stránek do RDF',
 	'smw_exportrdf_docu' => '<p>Tato stránka vám umožňuje exportovat části stránek do formátu RDF. Po zadaní názvů stránek do spodního textového pole (jeden název na řádek) můžete exportovat stránky.</p>',
 	'smw_exportrdf_recursive' => 'Rekurzívně exportovat všechny související stránky. Pozor, výsledek může být velmi rozsáhlý!',
@@ -1067,6 +1074,7 @@ Vlastnosti, kterým stále chybí stránka se nacházejí na <a href="$7">seznam
 	'smw_sbv_value' => 'Hodnota:',
 	'smw_sbv_submit' => 'Hledat výsledky',
 	'browse' => 'Prohledat wiki',
+	'smw_browselink' => 'Projít vlastnosti',
 	'smw_browse_article' => 'Zadejte název stránky, od které chcete začít prohledávat.',
 	'smw_browse_go' => 'Provést',
 	'pageproperty' => 'Hledání vlastností stránky',
@@ -1080,6 +1088,7 @@ Prosím, zadejte stránku i vlastnost.',
 	'smw_result_results' => 'Výsledky',
 	'smw_result_noresults' => 'Bohužel nejsou žádné výsledky.',
 	'smwadmin' => 'Funkce pro administraci Sémantické wiki',
+	'smw_smwadmin_return' => 'Zpět na $1',
 );
 
 /** German (Deutsch)
@@ -1509,6 +1518,47 @@ $messages['es'] = array(
 	'smw_result_results' => 'Resultados',
 	'smw_result_noresults' => 'Lo siento, no hay resultados.',
 	'smw_smwadmin_return' => 'Regresar a $1',
+);
+
+/** Basque (Euskara)
+ * @author An13sa
+ */
+$messages['eu'] = array(
+	'smw_finallistconjunct' => ', eta',
+	'smw_true_words' => 'egia,e,bai,b',
+	'smw_false_words' => 'gezurra,g,ez,e',
+	'smw_nofloat' => '"$1" ez da zenbakia.',
+	'smw_abb_north' => 'I',
+	'smw_abb_east' => 'E',
+	'smw_abb_south' => 'H',
+	'smw_abb_west' => 'M',
+	'smw_label_latitude' => 'Latitudea:',
+	'smw_label_longitude' => 'Longitudea:',
+	'smw_badtitle' => '"$1" ez da izenburu zuzena.',
+	'smw_subproperty_header' => 'Azpipropietateak',
+	'properties' => 'Propietateak',
+	'unusedproperties' => 'Erabili gabeko propietateak',
+	'wantedproperties' => 'Eskatutako propietateak',
+	'smw_purge' => 'Freskatu',
+	'smw_oi_action' => 'Inportatu',
+	'smw_oi_comment' => 'Ondorengo testua gehitu:',
+	'types' => 'Motak',
+	'smw_ask_sortby' => 'Zutabeka sailkatu (hautazkoa)',
+	'smw_ask_ascorder' => 'Gorantz',
+	'smw_ask_descorder' => 'Beherantz',
+	'smw_ask_submit' => 'Emaitzak bilatu',
+	'searchbyproperty' => 'Propietateen arabera bilatu',
+	'smw_sbv_property' => 'Propietatea',
+	'smw_sbv_value' => 'Balioa',
+	'smw_sbv_submit' => 'Emaitzak bilatu',
+	'smw_pp_type' => 'Propietatea',
+	'smw_pp_submit' => 'Emaitzak bilatu',
+	'smw_result_prev' => 'Aurrekoa',
+	'smw_result_next' => 'Hurrengoa',
+	'smw_result_results' => 'Emaitzak',
+	'smw_result_noresults' => 'Ez dago emaitzarik.',
+	'smw_smwadmin_return' => '$1-(e)ra itzuli',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Bai, ziur nago.',
 );
 
 /** Finnish (Suomi)
@@ -2089,14 +2139,29 @@ $messages['he'] = array(
 	'smw_nodatetime' => 'התאריך "$1" אינו מובן.',
 	'smw_toomanyclosing' => 'נראה כי ישנם מופעים רבים מדי של "$1" בשאילתה.',
 	'smw_noclosingbrackets' => 'בכמה מהפעמים בהם השתמשתם ב־"<nowiki>[[</nowiki>" בשאילתה לא דאגתם להציב "]]" תואם לסגירה.',
-	'smw_misplacedsymbol' => 'בסימן "$1" נעשה שימוש במקום בו אינו יעיל.',
+	'smw_misplacedsymbol' => 'נעשה שימוש בסימן "$1" במקום בו אינו מועיל.',
 	'smw_unexpectedpart' => 'החלק "$1" מהשאילתה לא הובן.
-יתכן כי לא יופיעו כל התוצאות המצופות.',
-	'smw_emptysubquery' => 'לאחת מתת־השאילתות אין תנאים תקפים.',
-	'smw_misplacedsubquery' => 'בכמה מתת־השאילתות נעשה שימוש במקום בו תת־שאילתות אינן מורשות.',
-	'smw_valuesubquery' => 'תת־שאילתות אינן נתמכות עבור ערכי המאפיין "$1".',
+ייתכן שהתוצאות לא יתאימו למצופה.',
+	'smw_emptysubquery' => 'לאחת משאילתות המשנה אין תנאים תקינים.',
+	'smw_misplacedsubquery' => 'בכמה משאילתות המשנה נעשה שימוש במקום בו שאילתות משנה אינן מורשות.',
+	'smw_valuesubquery' => 'שאילתות משנה אינן נתמכות עבור ערכי המאפיין "$1".',
+	'smw_badtitle' => '"$1" אינה כותרת תקינה לדף.',
+	'smw_badqueryatom' => 'כמה חלקים "<nowiki>[[…]]</nowiki>" מהשאילתה לא הובנו.',
+	'smw_propvalueproblem' => 'ערך המאפיין "$1" לא הובן.',
+	'smw_noqueryfeature' => 'חלק מהתכונות שבשאילתה אינן נתמכות באתר ויקי זה וחלקים מהשאילתה הושמטו ($1).',
+	'smw_exportrdf_lastdate' => 'אין לייצא דפים שלא שונו מאז נקודת הזמן שצוינה.',
+	'properties' => 'מאפיינים',
+	'smw_properties_docu' => 'בוויקי נעשה שימוש במאפיינים הבאים.',
+	'smw_property_template' => '$1 מסוג $2 ($3)',
+	'smw_propertylackspage' => 'פרטי כל המאפיינים אמורים להופיע בדף!',
+	'smw_propertylackstype' => 'לא צוין סוג עבור מאפיין זה (בינתיים נעשה שימוש בסוג $1).',
+	'smw_propertyhardlyused' => 'בקושי נעשה שימוש במאפיין זה בוויקי!',
+	'unusedproperties' => 'מאפיינים שאינם בשימוש',
+	'smw_unusedproperties_docu' => 'המאפיינים הבאים קיימים למרות ששום דף אחר אינו משתמש בהם.',
 	'tooltip-purge' => 'לחץ כאן הכדי לרענן את כל התבניות והשאילתות בדף זה',
 	'smw_purge' => 'רענן תבניות ושאילתות',
+	'smw_oi_action' => 'ייבוא',
+	'smw_oi_return' => 'חזרה ל־<a href="$1">Special:OntologyImport</a>.',
 	'types' => 'טיפוסים',
 	'smw_types_docu' => 'ברשימה זו מופיעים כל טיפוסי המידע שתכונות יכולות להשתמש בהם . לכל טיפוס מידע יש דף המסביר על אודותיו.',
 	'ask' => 'חיפוש סמנטי',
@@ -2104,10 +2169,67 @@ $messages['he'] = array(
 	'smw_ask_ascorder' => 'בסדר עולה',
 	'smw_ask_descorder' => 'בסדר יורד',
 	'smw_ask_submit' => 'חפש תוצאות',
+	'smw_sbv_property' => 'מאפיין',
+	'smw_sbv_value' => 'ערך',
+	'smw_sbv_submit' => 'חיפוש תוצאות',
+	'browse' => 'עיון בוויקי',
+	'smw_browselink' => 'עיון במאפיינים',
+	'smw_browse_article' => 'כתבו את שם הדף ממנו יתחיל העיון.',
+	'smw_browse_go' => 'הצגה',
+	'smw_browse_show_incoming' => 'הצגת מאפיינים המקשרים לכאן',
+	'smw_browse_hide_incoming' => 'הסתרת מאפיינים המקשרים לכאן',
+	'smw_browse_no_outgoing' => 'לדף זה אין מאפיינים.',
+	'smw_browse_no_incoming' => 'אין מאפיינים המקשרים לדף זה.',
+	'smw_inverse_label_default' => '$1 מתוך',
+	'pageproperty' => 'חיפוש במאפייני דף',
+	'smw_pp_from' => 'מהדף',
+	'smw_pp_type' => 'מאפיין',
+	'smw_pp_submit' => 'חיפוש תוצאות',
 	'smw_result_prev' => 'הקודם',
 	'smw_result_next' => 'הבא',
 	'smw_result_results' => 'תוצאות',
 	'smw_result_noresults' => 'מצטערת, אין תוצאות',
+	'smwadmin' => 'תכונות ניהוליות עבור המדיה־ויקי הסמנטי',
+	'smw_smwadmin_settingup' => 'הגדרת איחסון עבור המדיה־ויקי הסמנטי',
+	'smw_smwadmin_setupsuccess' => 'מנוע האיחסון הוגדר בהצלחה.',
+	'smw_smwadmin_return' => 'חזרה אל $1',
+	'smw_smwadmin_updatestarted' => 'הותחל תהליך עדכון חדש לרענון הנתונים הסמנטיים.
+כל הנתונים המאוחסנים ייבנו מחדש או יתוקנו היכן שיש צורך.
+תוכלו לעקוב אחר תהליך העדכון בדף מיוחד זה.',
+	'smw_smwadmin_updatenotstarted' => 'יש כבר תהליך עדכון פעיל.
+לא יווצר אחד נוסף.',
+	'smw_smwadmin_updatestopped' => 'כל תהליכי העדכון הקיימים נעצרו.',
+	'smw_smwadmin_updatenotstopped' => 'כדי לעצור תהליך עדכון פעיל, עליכם לסמן את תיבת הסימון כדי לציין שאתם בטוחים בכך.',
+	'smw_smwadmin_docu' => 'דף מיוחד זה יעזור לכם במהלך ההתקנה והשידרוג של <a href="http://semantic-mediawiki.org">המדיה־ויקי הסמנטי</a>.
+זכרו לגבות את הנתונים החיוניים לכם בטרם הפעלת התכונות הניהוליות.',
+	'smw_smwadmin_db' => 'התקנת ושדרוג בסיס הנתונים',
+	'smw_smwadmin_permissionswarn' => 'במידה שהפעולה נכשלת עם שגיאות SQL, לבסיס נתוני המשתמשים בו הוויקי שלכם עושה שימוש (בדקו את קובץ ה־LocalSettings.php שלכם) אין את ההרשאות המתאימות.
+אנא הוסיפו למשתמש זה הרשאות נוספות ליצירת ומחיקת טבלאות, כתבו את פרטי גישת העל לבסיס הנתונים לקובץ LocalSetting.php באופן זמני, או השתמשו בסקריפט התחזוקה <tt>SMW_setup.php</tt> שלו יש את היכולת להשתמש בהרשאות של הקובץ AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'אתחול או שדרוג טבלאות',
+	'smw_smwadmin_announce' => 'הכריזו על הוויקי שלכם',
+	'smw_smwadmin_announcedocu' => 'למדיה־ויקי הסמנטי ישנו שירות מקוון להכרזה על אתרי ויקי סמנטיים חדשים.
+שירות זה משמש לאיחסון רשימת אתרים ציבוריים המשתמשים במדיה־ויקי הסמנטי, לרוב כדי לעזור ל<a href="http://semantic-mediawiki.org/wiki/SMW_Project">מיזם המדיה־ויקי הסמנטי</a> לקבל סקירה של שימושים טיפוסיים במדיה־ויקי הסמנטי.
+עיינו בדף הבית של המדיה־ויקי הסמנטי ל<a href="http://semantic-mediawiki.org/wiki/Registry">מידע נוסף אודות שירות זה</a>.',
+	'smw_smwadmin_announcebutton' => 'לחצו על הכפתור הבא כדי לשלוח את כתובת הויקי שלכם לשירות זה.
+השירות לא ירשום אתרי ויקי שאינם נגישים לכלל, והמידע שיישמר יהיה מידע הזמין לכלל בלבד.',
+	'smw_smwadmin_datarefresh' => 'תיקון ושידרוג נתונים',
+	'smw_smwadmin_datarefreshdocu' => 'ניתן לשחזר את כל נתוני המדיה־ויקי הסמנטי בהתבסס על התוכן הנוכחי של הוויקי.
+פעולה זו עשויה להיות שימושית לתיקון נתונים שגויים או כדי לעדכן את הנתונים במידה שהמבנה הפנימי שונה לאור שידרוג התוכנה.
+העדכון מופעל במתכונת דף לאחר דף והוא לא יושלם מיידית.
+המידע שלהלן מציג האם העדכון מתבצע כעת ומאפשר לכם להתחיל או להפסיק את העדכונים (אלא אם כן תכונה זו בוטלה על ידי מנהל האתר).',
+	'smw_smwadmin_datarefreshprogress' => 'כבר מתבצע תהליך עדכון.</b>
+מצב בו העדכון מתקדם לאט הוא מצב נורמלי, מאחר שהנתונים מתעדכנים בחלקים קטנים בכל פעם שמשתמש ניגש לוויקי.
+כדי לסיים את העדכון מהר יותר, תוכלו להפעיל את סקריפט התחזוקה <tt>runJobs.php</tt> (השתמשו באפשרות <tt>--maxjobs 1000</tt> כדי להגביל את מספר העדכונים שמתבצעים בבת אחת).
+התקדמות משוערת של העדכון הנוכחי:',
+	'smw_smwadmin_datarefreshbutton' => 'התחלת עדכון הנתונים',
+	'smw_smwadmin_datarefreshstop' => 'עצירת עדכון זה',
+	'smw_smwadmin_datarefreshstopconfirm' => 'כן, אנו בטוחים.',
+	'smw_smwadmin_support' => 'קבלת תמיכה',
+	'smw_smwadmin_supportdocu' => 'מגוון משאבים עומדים לרשותכם במקרה של תקלה:',
+	'smw_smwadmin_installfile' => 'אם יש לכם בעיות בהתקנה, התחילו בבדיקת ההנחיות המופיעות בקובץ <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'התיעוד המלא למשתמשי המדיה־ויקי הסמנטי נמצא בכתובת <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'ניתן לדווח על באגים ב<a href="https://bugzilla.wikimedia.org/">באגזילה של מדיה־ויקי</a>.',
+	'smw_smwadmin_questions' => 'אם יש לכם הצעות או שאלות נוספות, הצטרפו לדיון שנערך ב־<a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
 );
 
 /** Hindi (हिन्दी)
@@ -4270,6 +4392,7 @@ Podaj zarówno stronę, jak i właściwość.',
 	'smw_result_next' => 'Następne',
 	'smw_result_results' => 'Wyniki',
 	'smw_result_noresults' => 'Niestety, brak wyników.',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Tak, jestem pewien.',
 );
 
 /** Pashto (پښتو)
@@ -5513,6 +5636,227 @@ $messages['tg-cyrl'] = array(
  */
 $messages['th'] = array(
 	'smw_oi_action' => 'นำเข้า',
+);
+
+/** Tagalog (Tagalog)
+ * @author AnakngAraw
+ */
+$messages['tl'] = array(
+	'smw_edithelp' => 'Tulong sa paggawa ng pagbabago sa mga pag-aari',
+	'smw_viewasrdf' => 'Pasubo/pakaing RDF',
+	'smw_finallistconjunct' => ', at',
+	'smw_factbox_head' => 'Totoong mga bagay hinggil sa $1',
+	'smw_isspecprop' => 'Ang pag-aaring ito ay isang natatanging pag-aari sa wiking ito.',
+	'smw_isknowntype' => 'Ang uring ito ay kabilang sa pampantayang mga uri ng dato ng wiking ito.',
+	'smw_isaliastype' => 'Ang uring ito ay isang iba pang pangalan/katawagan para sa uri ng datong "$1".',
+	'smw_isnotype' => 'Ang uring "$1" ay hindi isang pamantayang uri ng dato sa loob ng wiki, at hindi rin nabigyang isang kahulugang pantagagamit.',
+	'smw_concept_description' => 'Paglalarawan ng diwa/konseptong "$1"',
+	'smw_no_concept_namespace' => 'Mabibigyang kahulugan lamang ang mga diwa (konsepto) sa ibabaw ng mga pahinang nasa loob ng Diwa: espasyo ng pangalan.',
+	'smw_multiple_concepts' => 'Magkakaroon lamang ng isang kahulugang pangkonsepto ang bawat isang pahina ng diwa.',
+	'smw_concept_cache_miss' => 'Hindi magagamit sa sandaling ito ang diwang "$1", dahil sa kinakailangan ng pagkakaayos ng wiki na tuusin ito habang hindi nakaugnay sa internet.
+Kapag hindi nawala/naalis ang suliranin makalipas ang ilang panahon, pakihiling sa iyong tagapangasiwa na gawing makukuha ang diwang ito.',
+	'smw_baduri' => 'Hindi pinapahintulutan ang mga URI ng pormularyong "$1".',
+	'smw_rss_link' => 'RSS',
+	'smw_csv_link' => 'CSV',
+	'smw_iq_disabled' => 'Hindi pinagana ang mga katanungang hinggil sa kahulugan ng salita (semantiko) para sa wiking ito.',
+	'smw_iq_moreresults' => '… karagdagang mga resulta/kinalabasan',
+	'smw_iq_nojs' => "Gumamit ng isang pantingin-tingin (''browser'') na pinagana ng JavaScript ipang matingnan ang langkap (elemento) na ito.",
+	'smw_iq_altresults' => 'Tuwirang tumitingin-tingin sa talaan ng kinalabasan/resulta.',
+	'smw_unknown_importns' => 'Hindi makukuha ang mga tungkuling pang-angkat para sa espasyo ng pangalang "$1".',
+	'smw_nonright_importtype' => 'Magagamit lamang ang $1 para sa mga pahinang may espasyo ng pangalang "$2".',
+	'smw_wrong_importtype' => 'Hindi magagamit ang $1 para sa mga pahinang nasa loob ng espasyo ng pangalang "$2".',
+	'smw_no_importelement' => 'Hindi makukuha ang langkap (elemento) na "$1" upang maangkat.',
+	'smw_parseerror' => 'Hindi naunawaan ang ibinigay na halaga.',
+	'smw_notitle' => 'Hindi magagamit sa loob ng wiking ito ang "$1" bilang isang pangalan ng pahina.',
+	'smw_wrong_namespace' => 'Tanging mga pahinang nasa espasyo ng pangalang "$1" ang pinapahintulutan dito.',
+	'smw_unknowntype' => 'Binigyang kahulugan para sa pag-aari ang hindi tinatangkilik na uring "$1".',
+	'smw_manytypes' => 'Mahigit sa isang uri ang binigyang kahulugan para sa pag-aari.',
+	'smw_emptystring' => 'Hindi tinatanggap ang mga bagting na walang laman.',
+	'smw_maxstring' => 'Ang pangangatawang pambagting na $1 ay napakahaba para sa {{SITENAME}}.',
+	'smw_notinenum' => 'Ang "$1" ay wala sa loob ng talaan ng maaaring maging mga halaga ($2) para sa pag-aaring ito.',
+	'smw_noboolean' => "Ang \"\$1\" ay hindi kinikilala bilang isang halaga ng ''Boolean'' (tama/mali).",
+	'smw_true_words' => 'totoo,t,oo,o',
+	'smw_false_words' => 'mali,m,hindi,h',
+	'smw_nofloat' => 'Hindi isang bilang ang "$1".',
+	'smw_infinite' => 'Hindi tinatangkilik sa {{SITENAME}} ang mga bilang na kasinlaki ng "$1".',
+	'smw_infinite_unit' => 'Naglabas/nagresulta ng isang bilang na napakalaki para sa {{SITENAME}} ang pagpapalit patungo sa yunit na "$1".',
+	'smw_unsupportedprefix' => 'Hindi tinatangkilik ang mga unlapi para sa mga bilang ("$1").',
+	'smw_unsupportedunit' => 'Hindi tinatangkilik ang pagpapalit ng yunit para sa bahaging "$1".',
+	'smw_lonely_unit' => 'Walang natagpuang bilang bago ang sagisag na "$1".',
+	'smw_bad_latlong' => 'Isang ulit lamang dapat ibigay ang latitud at longhitud, at may tanggap na mga tugmaang pampook.',
+	'smw_abb_north' => 'H',
+	'smw_abb_east' => 'S',
+	'smw_abb_south' => 'T',
+	'smw_abb_west' => 'K',
+	'smw_label_latitude' => 'Latitud:',
+	'smw_label_longitude' => 'Longhitud:',
+	'smw_nodatetime' => 'Hindi naunawaan ang petsang "$1".',
+	'smw_toomanyclosing' => 'Tila mayroong napakaraming mga kaganapan ng "$1" sa loob ng katanungan.',
+	'smw_noclosingbrackets' => 'Ilang mga paggamit ng "<nowiki>[[</nowiki>" sa loob ng iyong katanungan ang hindi naisara sa pamamagitan ng isang tumutugmang "]]".',
+	'smw_misplacedsymbol' => 'Ginamit ang sagisag na "$1" sa loob ng isang pook na hindi naman ito magagamit (walang pakinabang).',
+	'smw_unexpectedpart' => 'Hindi naunawaan ang bahaging "$1" ng katanungan.
+Maaaring hindi inaasahan ang magiging mga kinalabasan.',
+	'smw_emptysubquery' => 'Walang tanggap na kalagayan (kalakaran) ang kabahaging katanungan.',
+	'smw_misplacedsubquery' => 'Hindi ginamit ang ilang kabahaging mga katanungan sa loob ng isang pook kung saan hindi pinapahintulutan ang mga kabahaging katanungan.',
+	'smw_valuesubquery' => 'Hindi tinatangkilik ang kabahaging mga katanungan para sa mga halaga ng pag-aaring "$1".',
+	'smw_overprintoutlimit' => 'Naglalaman ang katanungan ng napakaraming mga kahilingan ng paglilimbag.',
+	'smw_badprintout' => 'Ilan sa mga panlimbag na pahayag sa loob ng katanungan ay may maling hugis.',
+	'smw_badtitle' => 'Ang "$1" ay hindi isang tanggap na pamagat ng pahina.',
+	'smw_badqueryatom' => 'Hindi naunawaan ang ilang bahaging "<nowiki>[[…]]</nowiki>" ng katanungan.',
+	'smw_propvalueproblem' => 'Hindi naunawaan ang halaga ng pag-aaring "$1".',
+	'smw_noqueryfeature' => 'Ilang katangiang-kasangkapan ng katanungan ay hindi tinatangkilik sa wiking ito at inilaglag na ang bahagi ng katanungan ($1).',
+	'smw_noconjunctions' => 'Hindi tinatangkilik sa wiking ito ang mga pangatnig at inilaglag na ang bahagi ng katanungan ($1).',
+	'smw_nodisjunctions' => 'Hindi tinatangkilik sa wiking ito ang pagkakakalas-kalas sa mga katanungan at inilaglag na ang bahgi ng katanungan ($1).',
+	'smw_querytoolarge' => 'Hindi maisasaalang-alang ang sumusunod na mga kalagayan ng katanungan dahil sa mga hangganan ng mga wiki sa sukat o lalim ng katanungan: $1.',
+	'smw_devel_warning' => 'Kasalukuyang pinauunlad pa ang katangiang-kasangkapang ito, at maaaring hindi pa ganap na gumagana/umaandar.
+Magtabi/magdagdag ng pamalit na kopya/sipi ng dato mo bago ito gamitin.',
+	'smw_notemplategiven' => 'Magbigay ng isang halaga para sa parametrong "suleras" upang gumana/maganap ang ganitong anyo/pormat ng katanungan.',
+	'smw_type_header' => 'Mga pag-aari ng uring "$1"',
+	'smw_typearticlecount' => 'Nagpapakita ng $1 na {{PLURAL:$1|pag-aari|mga pag-aari}}ng ginagamitan ng ganitong uri.',
+	'smw_attribute_header' => 'Mga pahinang gumagamit na pag-aaring "$1"',
+	'smw_attributearticlecount' => 'Nagpapakita ng $1 {{PLURAL:$1|pahina|mga pahina}}ng ginagamitan ng ganitong ari-arian.',
+	'smw_subproperty_header' => 'Kabahaging mga pag-aari',
+	'smw_subpropertyarticlecount' => 'Ang pag-aaring ito ay mayroong sumusunod na $1 {{PLURAL:$1|kabahaging ari-arian|kabahaging mga ari-arian}}.',
+	'smw_concept_header' => 'Mga pahina ng diwang "$1"',
+	'smw_conceptarticlecount' => 'Nagpapakita ng $1 {{PLURAL:$1|pahina|mga pahina}}ng kasali sa ganyang diwa.',
+	'exportrdf' => 'Iluwas/Ipadala ang mga pahina patungo sa RDF',
+	'smw_exportrdf_docu' => '<p>Ipinapahintulot ng pahinang ito na makakuha ka ng dato mula sa isang pahinang nasa anyong RDF.
+Upang makapagluwas ng mga pahina, ipasok ang mga pamagat sa loob ng kahong pangtekstong nasa ibaba, isang pamagat bawat guhit/hanay.</p>',
+	'smw_exportrdf_recursive' => 'Tumatawag sa sarili na angkatin ang lahat ng kaugnay na mga pahina.
+Tandaan lamang na maaaring malaki ang kinalabasan/resulta!',
+	'smw_exportrdf_backlinks' => 'Nagluluwas din ng lahat ng mga pahinang tumutukoy sa iniluwas na mga pahina.
+Gumagawa ng matitingnan-tingnang RDF.',
+	'smw_exportrdf_lastdate' => 'Huwag iluwas ang mga pahinang hindi nabago mula sa isang ibinigay na sandali sa loob ng panahon/oras.',
+	'properties' => 'Mga pag-aari',
+	'smw_properties_docu' => 'Ginagamit sa wiki ang sumusunod na mga pahina ng pag-aari.',
+	'smw_property_template' => '$1 ng uring $2 ($3)',
+	'smw_propertylackspage' => 'Lahat ng mga pag-aari ay dapat na nilalarawan ng isang pahina!',
+	'smw_propertylackstype' => 'Walang uring tinukoy para sa pag-aaring ito (ipapalagay na nasa uring $1 muna sa ngayon).',
+	'smw_propertyhardlyused' => 'Madalang gamitin ang ganitong pag-aari sa loob ng wiking ito!',
+	'unusedproperties' => 'Mga pag-aaring hindi pa nagagamit',
+	'smw_unusedproperties_docu' => 'Umiiral ang sumusunod na mga pag-aari bagaman wala namang ibang pahinang gumagamit ng mga ito.',
+	'smw_unusedproperty_template' => '$1 ng uring $2',
+	'wantedproperties' => 'Ninanais na mga ari-arian',
+	'smw_wantedproperties_docu' => 'Ginagamit sa loob ng wiki ang sumusunod na mga pag-aari ngunit wala pang isang pahinang naglalarawan sa kanila.',
+	'smw_wantedproperty_template' => '$1 ($2 mga gamit)',
+	'tooltip-purge' => 'Pindutin dito upang masariwa ang lahat ng mga katanungan at mga suleras na nasa pahinang ito',
+	'smw_purge' => 'Sariwain',
+	'ontologyimport' => 'Angkatin ang ontolohiya',
+	'smw_oi_docu' => 'Nagpapahintulot ang natatanging pahinang ito upang makapag-angkat ng mga ontolohiya.
+Kinakailangang sumunod ang mga ontolohiya sa isang tiyak na anyo/pormat, na tinutukoy sa <a href="http://semantic-mediawiki.org/wiki/Help:Ontology_import">pahina ng tulong sa pag-angkat ng ontolohiya</a>.',
+	'smw_oi_action' => 'Angkatin',
+	'smw_oi_return' => 'Bumalik sa <a href="$1">Special:OntologyImport</a>.',
+	'smw_oi_noontology' => 'Walang naibigay na ontolohiya, o hindi maikarga ang ontolohiya.',
+	'smw_oi_select' => 'Piliin ang mga pagpapahayag na aangkatin, at pagkaraan pindutin ang pindutang pang-angkat.',
+	'smw_oi_textforall' => 'Teksto ng paulong idaragdag sa lahat ng mga inangkat (maaaring walang laman):',
+	'smw_oi_selectall' => 'Piliin o huwag piliin ang lahat ng mga pagpapahayag',
+	'smw_oi_statementsabout' => 'Mga pagpapahayag tungkol sa',
+	'smw_oi_mapto' => 'Gawing mapa/isamapa ang kabuoan sa',
+	'smw_oi_comment' => 'Idagdag ang sumusunod na teksto:',
+	'smw_oi_thisissubcategoryof' => 'Isang kabahaging kaurian (subkategorya) ng',
+	'smw_oi_thishascategory' => 'Ay bahagi ng',
+	'smw_oi_importedfromontology' => 'Angkatin mula sa ontolohiya',
+	'types' => 'Mga uri',
+	'smw_types_docu' => 'Ang sumusunod ay isang talaan ng lahat ng mga uri ng datong maaaring italaga sa mga pag-aari.
+Mayroong isang pahina ang bawat uri ng dato kung saan maaaring makapagbigay ng karagdagang kabatiran.',
+	'smw_typeunits' => 'Mga yunit ng sukat ng uring "$1": $2',
+	'semanticstatistics' => 'Mga estadistika ng Semantiko (hinggil sa kahulugan ng mga salita)',
+	'smw_semstats_text' => 'Naglalaman ang wiking ito ng <b>$1</b> mga halaga ng ari-ariang may kabuoang <b>$2</b> iba\'t ibang <a href="$3">mga pag-aari</a>.
+<b>$4</b> mga pag-aari ang may sariling pahina na, at ang inilalaang uri ng dato ay tinukoy para sa <b>$5</b> ng mga iyon.
+Ilan sa umiiral na mga ari-arian ay maaaring <a href="$6">hindi ginagamit na mga pag-aari</a>.
+Ang mga ari-ariang wala pa ring isang pahina ay matatagpuan sa <a href="$7">talaan ng ninanais na mga pag-aari</a>.',
+	'flawedattributes' => 'Mga ari-ariang may gawak/sira',
+	'smw_fattributes' => 'Ang mga pahinang nakatala sa ibaba ay isang pag-aaring may maling kahulugan.
+Ang bilang ng maling mga ari-arian ay ibinigay sa loob ng mga kasingay (brakete).',
+	'uriresolver' => 'tagalutas ng URI',
+	'smw_uri_doc' => '<p>Ipinatutupad ng tagapaglutas na URI ang <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">Paghahanap ng W3C TAG sa httpRange-14</a>.
+Pinag-iingatan nitong huwag maging mga sityo ng web (websayt) ang mga tao.</p>',
+	'ask' => 'Paghahanap hinggil sa kahulugan ng mga salita (semantiko)',
+	'smw_ask_sortby' => 'Pagpangkat-pangkating ayon sa pahabang kahanayan (maaaring wala nito)',
+	'smw_ask_ascorder' => 'Tumataas',
+	'smw_ask_descorder' => 'Bumababa',
+	'smw_ask_submit' => 'Hanapin ang mga kinalabasan/resulta',
+	'smw_ask_editquery' => '[Baguhin ang katanungan]',
+	'smw_add_sortcondition' => '[Idagdag ang kalagayang pampagpapangkat-pangkat]',
+	'smw_ask_hidequery' => 'Itago ang katanungan',
+	'smw_ask_help' => 'Tulong sa pagtatanong',
+	'smw_ask_queryhead' => 'Katanungan',
+	'smw_ask_printhead' => 'Karagdagang mga paglilimbag (maaaring wala nito)',
+	'searchbyproperty' => 'Maghanap ayon sa pag-aari',
+	'smw_sbv_docu' => '<p>Hanapin ang lahat ng mga pahinang may isang ibinigay na pag-aari at halaga.</p>',
+	'smw_sbv_noproperty' => '<p>Maglagay/magpasok ng isang pag-aari.</p>',
+	'smw_sbv_novalue' => '<p>Maglagay/magpasok ng isang tanggap na halaga para sa pag-aari, o tingnan ang lahat ng mga halaga ng ari-arian para sa "$1".</p>',
+	'smw_sbv_displayresult' => 'Isang talaan ng lahat ng mga pahinang may pag-aaring "$1" na may halagang "$2"',
+	'smw_sbv_displayresultfuzzy' => 'Isang talaan ng lahat ng mga pahinang may pag-aaring "$1" na may halagang "$2".
+Dahil mayroong mangilan-ngilang mga kinalabasan lamang, ipinakikita rin ang kalapit na mga halaga.',
+	'smw_sbv_property' => 'Pag-aari',
+	'smw_sbv_value' => 'Halaga',
+	'smw_sbv_submit' => 'Hanapin ang mga kinalabasan',
+	'browse' => 'Tumingin-tingin sa wiki',
+	'smw_browselink' => 'Tumingin-tingin sa mga pag-aari',
+	'smw_browse_article' => 'Ipasok/ilagay ang pangalan ng pahinang pagsisimulan ng pagtingin-tingin.',
+	'smw_browse_go' => 'Gawin na',
+	'smw_browse_show_incoming' => 'ipakita ang mga pag-aaring kumakawing (umuugnay) dito',
+	'smw_browse_hide_incoming' => 'itago ang mga pag-aaring kumakawing (umuugnay) dito',
+	'smw_browse_no_outgoing' => 'Walang mga pag-aari ang pahinang ito.',
+	'smw_browse_no_incoming' => 'Walang mga pag-aaring nakakawing (umuugnay) patungo sa pahinang ito.',
+	'smw_inverse_label_default' => '$1 ng',
+	'smw_inverse_label_property' => 'Ibinaligtad na tatak para sa pag-aari',
+	'pageproperty' => 'Paghahanap sa pag-aari ng pahina',
+	'smw_pp_docu' => 'Hanapin ang lahat ng mga pampuno ng isang pag-aari sa isang ibinigay na pahina.
+Kapwa ipasok ang isang pahina at isang pag-aari.',
+	'smw_pp_from' => 'Mula sa pahina',
+	'smw_pp_type' => 'Pag-aari',
+	'smw_pp_submit' => 'Hanapin ang mga resulta',
+	'smw_result_prev' => 'Sinundan',
+	'smw_result_next' => 'Susunod',
+	'smw_result_results' => 'Mga kinalabasan (resulta)',
+	'smw_result_noresults' => 'Walang mga kinalabasan/resulta.',
+	'smwadmin' => 'Mga tungkulin ng tagapangasiwa para sa Semantikong MediaWiki',
+	'smw_smwadmin_settingup' => 'Inihahanda ang taguan para sa Semantikong MediaWiki',
+	'smw_smwadmin_setupsuccess' => 'Matagumpay na naihanda ang makina ng pagtatago.',
+	'smw_smwadmin_return' => 'Magbalik sa $1',
+	'smw_smwadmin_updatestarted' => 'Sinimulan na ang isang bagong pagpapatakbo/proseso ng pagsasapanahon para sa pagsasariwa ng datong semantiko (hinggil sa kahulugan ng salita).
+Lahat ng nakatabing mga dato ay muling bubuoin o kukumpunihin/iaayos kung saan kailangan.
+Masusundan mo ang pagsulong/progreso ng pagsasapanahon sa natatanging pahinang ito.',
+	'smw_smwadmin_updatenotstarted' => 'Mayroon nang isang umaandar na pagpapatakbo ng pagsasapanahon.
+Hindi na lilikha ng isa pa.',
+	'smw_smwadmin_updatestopped' => 'Inihinto ang lahat ng umiiral na mga pagpapatakbong pangpagsasapanahon.',
+	'smw_smwadmin_updatenotstopped' => 'Upang mapahinto ang pagpapaandar ng pagpapatakbo ng pagsasapanahon, dapat mong pasiglahin ang kahong lagayan ng tsek para maipahayag na nakatitiyak kang talaga.',
+	'smw_smwadmin_docu' => 'Tumutulong ang natatanging pahinang ito sa iyo sa panahon ng pagluluklok at pagtataas ng uri ng <a href="http://semantic-mediawiki.org">Semantikong MediaWiki</a>.  
+Huwag kalimutang gumawa ng karagdagang sipi ng mahalagang dato bago isagawa ang mga tungkuling pangtagapangasiwa.',
+	'smw_smwadmin_db' => 'Pagluluklok (instalasyon) at pagtataas ng uri (grado/klase) ng kalipunan ng dato',
+	'smw_smwadmin_dbdocu' => 'Nangangailangan ang Semantikong Mediawiki ng ilang mga karugtong sa kalipunan ng dato ng MediaWiki upang maitabi ang datong hinggil sa kahulugan ng mga salita.
+Tinitiyak ng tungkuling nasa ibaba na tama ang pagkakahanda ng kalipunan ng dato mo.
+Hindi nakakaapekto ang mga pagbabagong ginawa sa hakbang na ito sa iba pang mga bahagi ng kalipunan ng dato ng MediaWiki, at madaling/maginhawang maibabalik kung nanaisin.
+Maaaring isagawa ng maramihang ulit ang tungkulin ng paghahandang ito na hindi nakapagdurulot ng anumang pinsala, subalit isang ulit lamang itong kailangan sa pagluluklok/instalasyon o pagtataas ng uri/grado.',
+	'smw_smwadmin_permissionswarn' => 'Kapag nabigo ang pagsasagawa na may mga kamaliang pang-SQL, maaaring walang sapat na mga kapahintulutan ang tagagamit ng kalipunan ng dato na hinirang ng iyong wiki (suriin/tingnan ang iyong LocalSettings.php).
+Maaaring bigyan ang tagagamit na ito ng karagdagang mga kapahintulutan upang makalikha at makapagbura ng mga tabla, pansamantalang ipasok ang panglagda ng iyong ugat ng kalipunan ng dato sa LocalSettings.php, o gamitin ang panitik na pampagpapanatiling <tt>SMW_setup.php</tt> na makagagamit ng mga kredensyal (katibayan ng kapangyarihan at pagtitiwala) ng AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'Umpisahan o itaas ang uri (klase) ng mga tabla',
+	'smw_smwadmin_announce' => 'Ipahayag ang wiki mo',
+	'smw_smwadmin_announcedocu' => 'Ang Semantikong Mediawiki ay mayroong isang palingkurang pangweb para sa pagpapahayag ng bagong mga sayt ng bagong wiking semantiko (hinggil sa kahulugan ng mga salita).
+Ginagamit ito upang makapagpanatili ng isang talaan ng mga sityong pangmadala/pampublikong gumagamit ng Semantikong MediaWiki, pangunahin na upang tulungan ang <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proyektong Semantikong MediaWiki</a> upang makakuha ng pang-ibabaw/pangunahing paglalarawan ng karaniwang mga paggamit ng Semantikong MediaWiki.
+Tingnan ang tahanang pahina ng Semantikong MediaWiki para sa <a href="http://semantic-mediawiki.org/wiki/Registry">karagdagan pang kabatiran hinggil sa serbisyong ito</a>.',
+	'smw_smwadmin_announcebutton' => 'Pindutin ang sumusunod na pindutan upang maipasa/maipadala ang URL mong pangwiki patungo sa palingkurang iyan.
+Hindi itatala ng palingkuran ang mga wiki na hindi mapupuntahan ng madla, at itatago lamang nito ang kabatiran napupuntahan ng publiko.',
+	'smw_smwadmin_datarefresh' => 'Pagkukumpuni at pagtataas ng uri (grado/klase) ng dato',
+	'smw_smwadmin_datarefreshdocu' => 'Maaaring maibalik muli ang lahat ng dato ng Semantikong MediaWiki batay sa pangkasalukuyang mga nilalaman ng wiki.
+Magiging gamitin ito sa pagaayos/pagkukumpuni ng nasirang dato o upang masariwa ang dato kung nabago ang panloob na kaanyuan/pormat dahil sa ilang mga pagtataas ng uri ng sopwer.
+Isinasakatuparan ang pagsasapanahon ng pahina sa pahina at hindi agad-agarang mabubuo.
+Ipinapakita ng sumusunod kung sumusulong na ang isang pagsasapanahon at magpapahintulot sa iyo upang simulan o pahintuin ang mga pagsasapanahon (maliban na lamang kung hindi pinagana/pinaandar ng tagapangasiwa ng sityo/sayt ang katangiang-kasangkapang ito).',
+	'smw_smwadmin_datarefreshprogress' => 'Sumusulong na ang isang pagsasapanahon.</b>
+Pangkaraniwan lamang na mabagal ang pagsulong ng pagsasapanahon dahil sinasariwa lamang nito ang maliliit na tipak ng dato sa bawat panahon/oras na pumupunta sa wiki ang isang tagagamit.
+Upang mas mabilisang matapos ang pagsasapanahong ito, maaari mong banggitin/tawagin ang panitik na pangpagpapanatiling <tt>runJobs.php</tt> (gamitin ang pagpipiliang <tt>--maxjobs 1000</tt> upang mabigyan ng hangganan ang bilang mga pagsasapanahong ginagawa sa bawat isang bungkos).
+Tinatayang pagsulong/progreso ng pangkasalukuyang pagsasapanahon:',
+	'smw_smwadmin_datarefreshbutton' => 'Umpisahang isapanahon ang dato',
+	'smw_smwadmin_datarefreshstop' => 'Ihinto ang pagsasapanahong ito',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Oo, nakatitiyak ako.',
+	'smw_smwadmin_support' => 'Pagkuha ng suporta',
+	'smw_smwadmin_supportdocu' => 'Maaaring makatulong sa iyo ang sari-saring kapakipakinabang na mga bagay-bagay kung sakaling magkaroon ng mga suliranin:',
+	'smw_smwadmin_installfile' => 'Kung sakaling makaranas ka ng mga suliranin hinggil sa iyong pag-iinstala/gawaing panluluklok, magsimula sa pagsusuri ng mga pamamatnubay na nasa loob ng <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ILUKLOK ang talaksan</a>.',
+	'smw_smwadmin_smwhomepage' => 'Ang buong kasulatang pantagagamit ng Semantikong Mediawiki ay nasa <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => "Maaaring iulat ang mga depekto/sira (''bug'') sa <a href=\"https://bugzilla.wikimedia.org/\">MediaZilla</a>.",
+	'smw_smwadmin_questions' => 'Kung mayroon ka pang karagdagang mga katanungan at mga mungkahi, makilahok sa usapang nasa <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
 );
 
 /** Vietnamese (Tiếng Việt)
