@@ -6015,13 +6015,35 @@ Xin nhập vào cả một trang và một thuộc tính.',
 
 /** Volapük (Volapük)
  * @author Malafaya
+ * @author Smeira
  */
 $messages['vo'] = array(
+	'smw_finallistconjunct' => ', e',
+	'smw_factbox_head' => 'Jenöfots dö $1',
+	'smw_iq_moreresults' => '... seks pluik',
+	'smw_parseerror' => 'Völad pegivöl no pesuemon.',
+	'smw_wrong_namespace' => 'Te pades se nemaspad: „$1“ padälons ad binön is.',
+	'smw_emptystring' => 'Vödems vagik no pelasumons.',
+	'smw_nofloat' => '„$1“ no binon num.',
 	'smw_abb_north' => 'N',
 	'smw_abb_east' => 'L',
 	'smw_abb_south' => 'S',
 	'smw_abb_west' => 'V',
+	'smw_label_latitude' => 'Videt:',
+	'smw_label_longitude' => 'Lunet:',
+	'smw_nodatetime' => 'Dät: „$1“ no pesuemon.',
+	'smw_badtitle' => '„$1“ no binon padatiäd lonöföl.',
+	'smw_oi_action' => 'Nüveigön',
+	'types' => 'Sots',
+	'smw_ask_submit' => 'Tuvön sekis',
 	'smw_sbv_value' => 'Völad',
+	'smw_sbv_submit' => 'Tuvön sekis',
+	'smw_pp_submit' => 'Tuvön sekis',
+	'smw_result_prev' => 'Büik',
+	'smw_result_next' => 'Sököl',
+	'smw_result_results' => 'Seks.',
+	'smw_result_noresults' => 'Seks nonik.',
+	'smw_smwadmin_return' => 'Geikön lü pad: $1',
 );
 
 /** Chinese (China) (‪中文(中国大陆)‬)
