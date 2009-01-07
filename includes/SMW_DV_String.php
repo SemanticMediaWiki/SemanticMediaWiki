@@ -75,7 +75,7 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	protected function getServiceLinkParams() {
-		// Create links to mapping services based on a wiki-editable message. The parameters 
+		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded string
 		if ( ($this->m_typeid != '_txt') && ($this->m_typeid != '_cod') ){
@@ -117,7 +117,7 @@ class SMWStringValue extends SMWDataValue {
 	 * Special features for Type:Code formating.
 	 */
 	protected function getCodeDisplay($value, $scroll = false) {
-		$result = str_replace( array('<', '>', ' ', '://', '=', "'"), array('&lt;', '&gt;', '&nbsp;', '<!-- -->://<!-- -->', '&#x003D;', '&#x0027;'), $value);
+		$result = str_replace( array('<', '>', ' ', '://', '=', "'"), array('&lt;', '&gt;', '&nbsp;', '://<i></i>', '&#x003D;', '&#x0027;'), $value);
 		if ($scroll) {
 			$result = "<div style=\"height:5em; overflow:auto;\">$result</div>";
 		}
