@@ -4,6 +4,18 @@ span.smwbuiltin, span.smwttactiveinline span.smwbuiltin { /* highlighting for bu
 	font-style: italic;
 }
 
+div.pre { /* make divs look like <pre> */
+    white-space: pre;
+	font-family: monospace;
+	padding: 1em;
+	border: 1px dashed #2f6fab;
+	color: black;
+	background-color: #f9f9f9;
+	line-height: 1.1em;
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+}
+
 /* tables for inline queries */
 
 table.smwtable{

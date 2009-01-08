@@ -14,13 +14,13 @@
  */
 class SMWStringValue extends SMWDataValue {
 
-	protected $m_value = ''; // XML-safe, HTML-safe, Wiki-compatible value representation
+	protected $m_value = ''; // Wiki-compatible value representation, possibly unsafe for plain HTML
 	                         // however, this string might contain HTML entities such as &amp;
 
 	protected function parseUserValue($value) {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		if ($value!='') {
-			$this->m_value = smwfXMLContentEncode($value);
+			$this->m_value = $value;
 			if ( (strlen($this->m_value) > 255) && ($this->m_typeid != '_txt') && ($this->m_typeid != '_cod') ) { // limit size (for DB indexing)
 				$this->addError(wfMsgForContent('smw_maxstring', mb_substr($value, 0, 42) . ' <span class="smwwarning">[&hellip;]</span> ' . mb_substr($value, mb_strlen($this->m_value) - 42)));
 			}
@@ -43,20 +43,30 @@ class SMWStringValue extends SMWDataValue {
 		return $this->m_caption;
 	}
 
+	/**
+	 * @todo Rather parse input to obtain properly formatted HTML.
+	 */
 	public function getShortHTMLText($linker = NULL) {
-		return $this->getShortWikiText($linker); // should be save (based on xsdvalue)
+		return smwfXMLContentEncode($this->getShortWikiText($linker));
 	}
 
 	public function getLongWikiText($linked = NULL) {
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		} else {
-			return $this->getAbbValue($linked);
+			return $this->getAbbValue($linked,$this->m_value);
 		}
 	}
 
+	/**
+	 * @todo Rather parse input to obtain properly formatted HTML.
+	 */
 	public function getLongHTMLText($linker = NULL) {
-		return $this->getLongWikiText($linker); // should be save (based on xsdvalue)
+		if (!$this->isValid()) {
+			return $this->getErrorText();
+		} else {
+			return $this->getAbbValue($linker,smwfXMLContentEncode($this->m_value));
+		}
 	}
 
 	public function getXSDValue() {
@@ -96,20 +106,26 @@ class SMWStringValue extends SMWDataValue {
 
 	/**
 	 * Make a possibly shortened printout string for displaying the value.
+	 * The value must be specified as an input since necessary HTML escaping
+	 * must be applied to it first, if desired. The result of getAbbValue()
+	 * may contain wiki-compatible HTML mark-up that should not be escaped.
+	 * @todo The method abbreviates very long strings for display by simply
+	 * taking substrings. This is not in all cases a good idea, since it may
+	 * break XML entities and mark-up.
 	 */
-	protected function getAbbValue($linked) {
-		$len = mb_strlen($this->m_value);
+	protected function getAbbValue($linked, $value) {
+		$len = mb_strlen($value);
 		if ( ($len > 255) && ($this->m_typeid != '_cod') ) {
 			if ( ($linked === NULL)||($linked === false) ) {
-				return mb_substr($this->m_value, 0, 42) . ' <span class="smwwarning">&hellip;</span> ' . mb_substr($this->m_value, $len - 42);
+				return mb_substr($value, 0, 42) . ' <span class="smwwarning">&hellip;</span> ' . mb_substr($value, $len - 42);
 			} else {
 				SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
-				return mb_substr($this->m_value, 0, 42) . ' <span class="smwttpersist"> &hellip; <span class="smwttcontent">' . $this->m_value . '</span></span> ' . mb_substr($this->m_value, $len - 42);
+				return mb_substr($value, 0, 42) . ' <span class="smwttpersist"> &hellip; <span class="smwttcontent">' . $value . '</span></span> ' . mb_substr($value, $len - 42);
 			}
 		} elseif ($this->m_typeid == '_cod') {
-			return $this->getCodeDisplay($this->m_value,true);
+			return $this->getCodeDisplay($value,true);
 		} else {
-			return $this->m_value;
+			return $value;
 		}
 	}
 
@@ -117,11 +133,12 @@ class SMWStringValue extends SMWDataValue {
 	 * Special features for Type:Code formating.
 	 */
 	protected function getCodeDisplay($value, $scroll = false) {
-		$result = str_replace( array('<', '>', ' ', '://', '=', "'"), array('&lt;', '&gt;', '&nbsp;', '://<i></i>', '&#x003D;', '&#x0027;'), $value);
+		SMWOutputs::requireHeadItem(SMW_HEADER_STYLE);
+		$result = str_replace( array('<', '>', ' ', '=', "'", ':',"\n"), array('&lt;', '&gt;', '&nbsp;', '&#x003D;', '&#x0027;', '&#58;',"<br />"), $value);
 		if ($scroll) {
 			$result = "<div style=\"height:5em; overflow:auto;\">$result</div>";
 		}
-		return "<pre>$result</pre>";
+		return "<div class=\"pre\">$result</div>";
 	}
 
 }
