@@ -4,7 +4,7 @@ span.smwbuiltin, span.smwttactiveinline span.smwbuiltin { /* highlighting for bu
 	font-style: italic;
 }
 
-div.pre { /* make divs look like <pre> */
+div.smwpre { /* make divs look like <pre> */
     white-space: pre;
 	font-family: monospace;
 	padding: 1em;
