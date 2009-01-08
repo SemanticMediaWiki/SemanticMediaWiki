@@ -138,7 +138,7 @@ class SMWStringValue extends SMWDataValue {
 		if ($scroll) {
 			$result = "<div style=\"height:5em; overflow:auto;\">$result</div>";
 		}
-		return "<div class=\"pre\">$result</div>";
+		return "<div class=\"smwpre\">$result</div>";
 	}
 
 }
