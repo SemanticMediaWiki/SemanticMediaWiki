@@ -52,7 +52,7 @@ class SMWAskPage extends SpecialPage {
 		// This code rather hacky since there are many ways to call that special page, the most involved of
 		// which is the way that this page calls itself when data is submitted via the form (since the shape
 		// of the parameters then is governed by the UI structure, as opposed to being governed by reason).
-		global $wgRequest;
+		global $wgRequest, $smwgQMaxInlineLimit;
 
 		// First make all inputs into a simple parameter list that can again be parsed into components later.
 
@@ -132,6 +132,7 @@ class SMWAskPage extends SpecialPage {
 				 $this->m_params['limit'] = ($this->m_params['format'] == 'rss')?10:20; // standard limit for RSS
 			}
 		}
+		$this->m_params['limit'] = min($this->m_params['limit'], $smwgQMaxInlineLimit);
 
 		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) != '' ) || ('' == $this->m_querystring );
 	}
