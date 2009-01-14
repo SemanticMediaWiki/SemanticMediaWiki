@@ -71,10 +71,9 @@ class SMWParserExtensions {
 
 		// add link to RDF to HTML header
 		SMWOutputs::requireHeadItem('smw_rdf', '<link rel="alternate" type="application/rdf+xml" title="' .
-		                    $parser->getTitle()->getPrefixedText() . '" href="' .
-		                    htmlspecialchars($parser->getOptions()->getSkin()->makeSpecialUrl(
-		                       'ExportRDF/' . $parser->getTitle()->getPrefixedText(), 'xmlmime=rdf'
-		                    )) . "\" />");
+		                    htmlspecialchars( $parser->getTitle()->getPrefixedText() ) . '" href="' .
+		                    htmlspecialchars(
+		                    	SpecialPage::getTitleFor( 'ExportRDF', $parser->getTitle()->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' ) ) . "\" />");
 
 		SMWOutputs::commitToParser($parser);
 		return true; // always return true, in order not to stop MW's hook processing!
