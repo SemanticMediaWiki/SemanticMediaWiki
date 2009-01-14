@@ -271,7 +271,7 @@ class SMWAskPage extends SpecialPage {
 	 * Build the navigation for some given query result, reuse url-tail parameters
 	 */
 	protected function getNavigationBar($res, $urltail) {
-		global $wgUser, $smwgQMaxLimit;
+		global $wgUser, $smwgQMaxInlineLimit;
 		$skin = $wgUser->getSkin();
 		$offset = $this->m_params['offset'];
 		$limit  = $this->m_params['limit'];
@@ -290,7 +290,7 @@ class SMWAskPage extends SpecialPage {
 
 		$first=true;
 		foreach (array(20,50,100,250,500) as $l) {
-			if ($l > $smwgQMaxLimit) break;
+			if ($l > $smwgQMaxInlineLimit) break;
 			if ($first) {
 				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
 				$first = false;
