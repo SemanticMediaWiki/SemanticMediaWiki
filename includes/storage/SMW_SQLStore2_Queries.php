@@ -284,19 +284,25 @@ class SMWSQLStore2QueryEngine {
 		$result = new SMWQueryResult($prs, $query, ($count > $query->getLimit()) );
 		foreach ($qr as $qt) {
 			$row = array();
+			$cats = false;
 			foreach ($prs as $pr) {
 				switch ($pr->getMode()) {
 				case SMWPrintRequest::PRINT_THIS:
 					$row[] = new SMWResultArray(array($qt), $pr);
 				break;
 				case SMWPrintRequest::PRINT_CATS:
-					$row[] = new SMWResultArray($this->m_store->getPropertyValues($qt,SMWPropertyValue::makeProperty('_INST')), $pr);
+					if ($cats === false) {
+						$cats = $this->m_store->getPropertyValues($qt,SMWPropertyValue::makeProperty('_INST'));
+					}
+					$row[] = new SMWResultArray($cats, $pr);
 				break;
 				case SMWPrintRequest::PRINT_PROP:
 					$row[] = new SMWResultArray($this->m_store->getPropertyValues($qt,$pr->getData(), NULL, $pr->getOutputFormat()), $pr);
 				break;
 				case SMWPrintRequest::PRINT_CCAT:
-					$cats = $this->m_store->getPropertyValues($qt,SMWPropertyValue::makeProperty('_INST'));
+					if ($cats === false) {
+						$cats = $this->m_store->getPropertyValues($qt,SMWPropertyValue::makeProperty('_INST'));
+					}
 					$found = '0';
 					foreach ($cats as $cat) {
 						if ($cat->getDBkey() == $pr->getData()->getDBkey()) {
@@ -391,12 +397,12 @@ class SMWSQLStore2QueryEngine {
 			         array('s_id'=>$cid), 'SMWSQLStore2Queries::compileQueries');
 			if ( $row === false ) { // no description found, concept does not exist
 				// keep the above query object, it yields an empty result
-				///TODO: announce an error here? (maybe not, since the query processor can check for 
+				///TODO: announce an error here? (maybe not, since the query processor can check for
 				///non-existing concept pages which is probably the main reason for finding nothing here
 			} else {
 				global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
 				$may_be_computed = ($smwgQConceptCaching == CONCEPT_CACHE_NONE) ||
-				    ( ($smwgQConceptCaching == CONCEPT_CACHE_HARD) && ( (~(~($row->concept_features+0) | $smwgQFeatures)) == 0) && 
+				    ( ($smwgQConceptCaching == CONCEPT_CACHE_HARD) && ( (~(~($row->concept_features+0) | $smwgQFeatures)) == 0) &&
 				      ($smwgQMaxSize >= $row->concept_size) && ($smwgQMaxDepth >= $row->concept_depth));
 				if ($row->cache_date &&
 				    ($row->cache_date > (strtotime("now") - $smwgQConceptCacheLifetime*60) ||
@@ -654,7 +660,7 @@ class SMWSQLStore2QueryEngine {
 						$sql = "INSERT IGNORE INTO " . $this->m_dbs->tableName($query->alias) . " SELECT $subquery->joinfield FROM " .
 						$this->m_dbs->tableName($subquery->jointable) . " AS $subquery->alias $subquery->from" . ($subquery->where?" WHERE $subquery->where":'');
 					} elseif ($subquery->joinfield !== '') {
-						/// NOTE: this works only for single "unconditional" values without further 
+						/// NOTE: this works only for single "unconditional" values without further
 						/// WHERE or FROM. The execution must take care of not creating any others.
 						$values = '';
 						foreach ($subquery->joinfield as $value) {
@@ -680,7 +686,7 @@ class SMWSQLStore2QueryEngine {
 			case SMW_SQL2_VALUE: break; // nothing to do
 		}
 	}
-	
+
 	/**
 	 * Find subproperties or subcategories. This may require iterative computation,
 	 * and temporary tables are used in many cases.
@@ -732,7 +738,7 @@ class SMWSQLStore2QueryEngine {
 
 		/// NOTE: we use two helper tables. One holds the results of each new iteration, one holds the
 		/// results of the previous iteration. One could of course do with only the above result table,
-		/// but then every iteration would use all elements of this table, while only the new ones 
+		/// but then every iteration would use all elements of this table, while only the new ones
 		/// obtained in the previous step are relevant. So this is a performance measure.
 		$tmpnew = 'smw_new';
 		$tmpres = 'smw_res';
@@ -767,8 +773,8 @@ class SMWSQLStore2QueryEngine {
 	}
 
 	/**
-	 * This function modifies the given query object at $qid to account for all ordering conditions 
-	 * in the SMWQuery $query. It is always required that $qid is the id of a query that joins with 
+	 * This function modifies the given query object at $qid to account for all ordering conditions
+	 * in the SMWQuery $query. It is always required that $qid is the id of a query that joins with
 	 * smw_ids so that the field alias.smw_title is $available for default sorting.
 	 */
 	protected function applyOrderConditions($query, $qid) {
