@@ -33,7 +33,7 @@ define('SMW_SQL2_CONC2',256);
  *
  * @note Regarding the use of interwiki links in the store, there is currently
  * no support for storing semantic data about interwiki objects, and hence queries
- * that involve interwiki objects really make sense only for them occurring in 
+ * that involve interwiki objects really make sense only for them occurring in
  * object positions. Most methods still use the given input interwiki text as a simple
  * way to filter out results that may be found if an interwiki object is given but a
  * local object of the same name exists. It is currently not planned to support things
@@ -49,8 +49,8 @@ class SMWSQLStore2 extends SMWStore {
 	protected $m_semdata = array();
 	/// Like SMWSQLStore2::m_semdata, but containing flags indicating completeness of the SMWSemanticData objs
 	protected $m_sdstate = array();
-
-	protected static $in_getSemanticData = 0; /// >0 while getSemanticData runs, used to prevent nested calls from clearing the cache while another call runs and is about to fill it with data
+	/// >0 while getSemanticData runs, used to prevent nested calls from clearing the cache while another call runs and is about to fill it with data
+	protected static $in_getSemanticData = 0;
 
 	/// Use pre-defined ids for Very Important Properties, avoiding frequent ID lookups for those
 	private static $special_ids = array(
@@ -156,8 +156,10 @@ class SMWSQLStore2 extends SMWStore {
 			$this->m_sdstate[$sid] = $this->m_sdstate[$sid] | $tasks;
 			$tasks = $newtasks;
 		}
-		if ( (count($this->m_semdata) > 1000) && (SMWSQLStore2::$in_getSemanticData == 0) ) {
-			// prevent memory leak on very long PHP runs
+		if ( (count($this->m_semdata) > 20) && (SMWSQLStore2::$in_getSemanticData == 1) ) {
+			// prevent memory leak;
+			// It is not so easy to find the sweet spot between cache size and performance gains (both memory and time),
+			// The value of 20 was chosen by profiling runtimes for large inline queries and heavily annotated pages.
 			$this->m_semdata = array($sid => $this->m_semdata[$sid]);
 			$this->m_sdstate = array($sid => $this->m_sdstate[$sid]);
 		}
@@ -214,46 +216,64 @@ class SMWSQLStore2 extends SMWStore {
 			}
 			$res = $db->select( $from, $select, $where, 'SMW::getSemanticData' );
 			while($row = $db->fetchObject($res)) {
-				$dv = NULL;
+// 				$dv = NULL;
+				$valuekeys = false;
 				if ($task & (SMW_SQL2_RELS2 | SMW_SQL2_ATTS2 | SMW_SQL2_TEXT2) ) {
-					$property = SMWPropertyValue::makeProperty($row->prop);
-					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+// 					$property = SMWPropertyValue::makeProperty($row->prop);
+					$propertyname = $row->prop;
+// 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 				}
 				// The following cases are very similar, yet different in certain details:
 				if ($task == SMW_SQL2_RELS2) {
-					if ($dv instanceof SMWWikiPagevalue) { // may fail if type was changed!
-						$dv->setValues($row->title, $row->namespace, false, $row->iw);
-					} else {
-						$dv = NULL;
+					if ( ($row->iw === '') || ($row->iw{0} != ':') ) { // filter "special" iws that mark internal objects
+						$valuekeys = array($row->title, $row->namespace,$row->iw,'');
 					}
+// 					if ($dv instanceof SMWWikiPagevalue) { // may fail if type was changed!
+// 						$dv->setValues($row->title, $row->namespace, false, $row->iw);
+// 					} else {
+// 						$dv = NULL;
+// 					}
 				} elseif ($task == SMW_SQL2_ATTS2) {
-					$dv->setXSDValue($row->value, $row->unit);
+// 					$dv->setXSDValue($row->value, $row->unit);
+					$valuekeys = array($row->value, $row->unit);
 				} elseif ($task == SMW_SQL2_TEXT2) {
-					$dv->setXSDValue($row->value, '');
+// 					$dv->setXSDValue($row->value, '');
+					$valuekeys = array($row->value);
 				} elseif ($task == SMW_SQL2_SPEC2) {
 					$pid = array_search($row->p_id, SMWSQLStore2::$special_ids);
 					if ($pid != false) {
-						$property = SMWPropertyValue::makeProperty($pid);
+// 						$property = SMWPropertyValue::makeProperty($pid);
+						$propertyname = $pid;
 					} else { // this should be rare (only if some extension uses properties of "special" types)
 						$proprow = $db->selectRow('smw_ids', array('smw_title'), array('smw_id' => $row->p_id), 'SMW::getSemanticData');
 						/// TODO: $proprow may be false (inconsistent DB but anyway); maybe check and be gentle in some way
-						$property = SMWPropertyValue::makeProperty($proprow->smw_title);
+// 						$property = SMWPropertyValue::makeProperty($proprow->smw_title);
+						$propertyname = $proprow->smw_title;
 					}
-					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
-					$dv->setXSDValue($row->value, '');
+// 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+// 					$dv->setXSDValue($row->value, '');
+					$valuekeys = array($row->value);
 				} elseif ( ($task == SMW_SQL2_SUBS2) || ($task == SMW_SQL2_INST2) ) {
-					$property = SMWPropertyValue::makeProperty($specprop);
-					$dv = SMWWikiPageValue::makePage($row->value, $namespace);
+// 					$property = SMWPropertyValue::makeProperty($specprop);
+					$propertyname = $specprop;
+// 					$dv = SMWWikiPageValue::makePage($row->value, $namespace);
+					$valuekeys = array($row->value,$namespace,'','');
 				} elseif ($task == SMW_SQL2_REDI2) {
-					$property = SMWPropertyValue::makeProperty('_REDI');
-					$dv = SMWWikiPageValue::makePage($row->title, $row->namespace);
+// 					$property = SMWPropertyValue::makeProperty('_REDI');
+					$propertyname = '_REDI';
+// 					$dv = SMWWikiPageValue::makePage($row->title, $row->namespace);
+					$valuekeys = array($row->title, $row->namespace,'','');
 				} elseif ($task == SMW_SQL2_CONC2) {
-					$property = SMWPropertyValue::makeProperty('_CONC');
-					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
-					$dv->setValues($row->concept, $row->docu, $row->features, $row->size, $row->depth);
+// 					$property = SMWPropertyValue::makeProperty('_CONC');
+					$propertyname = '_CONC';
+// 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+// 					$dv->setValues($row->concept, $row->docu, $row->features, $row->size, $row->depth);
+					$valuekeys = array($row->concept, $row->docu, $row->features, $row->size, $row->depth);
 				}
-				if ($dv !== NULL) {
-					$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
+// 				if ($dv !== NULL) {
+				if ($valuekeys !== false) {
+// 					$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
+					$this->m_semdata[$sid]->addPropertyStubValue($propertyname, $valuekeys);
 				}
 			}
 			$db->freeResult($res);
@@ -312,7 +332,7 @@ class SMWSQLStore2 extends SMWStore {
 				}
 				$db->freeResult($res);
 			}
-			
+
 			foreach ($properties as $name => $property) {
 				$pdvs = $dvs[$name];
 				foreach ($pdvs as $bnode => $values) {
@@ -871,7 +891,7 @@ class SMWSQLStore2 extends SMWStore {
 			$db->insert( 'smw_redi2', array('s_title'=>$oldtitle->getDBkey(), 's_namespace'=>$oldtitle->getNamespace(), 'o_id'=>$sid), 'SMWSQLStore2::changeTitle');
 			/// NOTE: this temporarily leaves existing redirects to oldtitle point to newtitle as well, which
 			/// will be lost after the next update. Since double redirects are an error anyway, this is not
-			/// a bad behaviour: everything will continue to work until the old redirect is updated, which 
+			/// a bad behaviour: everything will continue to work until the old redirect is updated, which
 			/// will hopefully be to fix the double redirect.
 		} else {
 			$this->deleteSemanticData(SMWWikiPageValue::makePageFromTitle($newtitle)); // should not have much effect, but let's be sure
@@ -885,17 +905,17 @@ class SMWSQLStore2 extends SMWStore {
 				$db->update('smw_atts2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
 				$db->update('smw_text2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
 				$db->update('smw_inst2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
-				if ( ( $oldtitle->getNamespace() == SMW_NS_PROPERTY ) && 
+				if ( ( $oldtitle->getNamespace() == SMW_NS_PROPERTY ) &&
 				     ( $newtitle->getNamespace() == SMW_NS_PROPERTY ) ) {
 					$db->update('smw_subs2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
 				} elseif ($oldtitle->getNamespace() == SMW_NS_PROPERTY) {
 					$db->delete('smw_subs2', $cond_array, 'SMWSQLStore2::changeTitle');
-				} elseif ( ( $oldtitle->getNamespace() == NS_CATEGORY ) && 
+				} elseif ( ( $oldtitle->getNamespace() == NS_CATEGORY ) &&
 				           ( $newtitle->getNamespace() == NS_CATEGORY ) ) {
 					$db->update('smw_subs2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
 				} elseif ($oldtitle->getNamespace() == NS_CATEGORY) {
 					$db->delete('smw_subs2', $cond_array, 'SMWSQLStore2::changeTitle');
-				} elseif ( ( $oldtitle->getNamespace() == SMW_NS_CONCEPT ) && 
+				} elseif ( ( $oldtitle->getNamespace() == SMW_NS_CONCEPT ) &&
 				           ( $newtitle->getNamespace() == SMW_NS_CONCEPT ) ) {
 					$db->update('smw_conc2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
 					$db->update('smw_conccache', array('o_id' => $tid), array('o_id' => $sid), 'SMWSQLStore2::changeTitle');
@@ -1016,7 +1036,7 @@ class SMWSQLStore2 extends SMWStore {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
 		$res = $db->query('SELECT smw_title, COUNT(*) as count FROM ' .
-		                  $db->tableName($table) . ' INNER JOIN ' . $db->tableName('smw_ids') . 
+		                  $db->tableName($table) . ' INNER JOIN ' . $db->tableName('smw_ids') .
 		                  ' ON p_id=smw_id LEFT JOIN ' . $db->tableName('page') .
 		                  ' ON (page_namespace=' . SMW_NS_PROPERTY .
 		                  ' AND page_title=smw_title) WHERE smw_id > 50 AND page_id IS NULL GROUP BY smw_title' . $options,
@@ -1192,7 +1212,7 @@ class SMWSQLStore2 extends SMWStore {
 	function drop($verbose = true) {
 		$this->reportProgress("Deleting all database content and tables generated by SMW ...\n\n",$verbose);
 		$db =& wfGetDB( DB_MASTER );
-		$tables = array('smw_rels2', 'smw_atts2', 'smw_text2', 'smw_spec2', 
+		$tables = array('smw_rels2', 'smw_atts2', 'smw_text2', 'smw_spec2',
 		                'smw_subs2', 'smw_redi2', 'smw_ids', 'smw_inst2',
 		                'smw_conc2');
 		foreach ($tables as $table) {
@@ -1700,7 +1720,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * If $canonical is set to true, redirects are taken into account to find the
 	 * canonical alias ID for the given page.
 	 * If no such ID exists, a new ID is created and returned.
-	 * In any case, the current sortkey is set to the given one unless $sortkey 
+	 * In any case, the current sortkey is set to the given one unless $sortkey
 	 * is empty.
 	 * @note Using this with $canonical==false may make sense, especially when
 	 * the title is a redirect target (we do not want chains of redirects).
@@ -1788,7 +1808,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * n-ary property. Bnodes are managed through the smw_ids table but will always
 	 * have an empty smw_title, and smw_namespace being set to the parent object
 	 * (the id of the page that uses the Bnode). Unused Bnodes are not deleted but
-	 * marked as available by setting smw_namespace to 0. This method then tries to 
+	 * marked as available by setting smw_namespace to 0. This method then tries to
 	 * reuse an unused bnode before making a new one.
 	 * @note Every call to this function, even if the same parameter id is used, returns
 	 * a new bnode id!

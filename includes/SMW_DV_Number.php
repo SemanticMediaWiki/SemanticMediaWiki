@@ -14,7 +14,7 @@
  * Units work as follows: a unit is a string, but many such strings might
  * refer to the same unit of measurement. There is always one string, that
  * canonically represents the unit, and we will call this version of writing
- * the unit the /unit id/. IDs for units are needed for tasks like duplicate 
+ * the unit the /unit id/. IDs for units are needed for tasks like duplicate
  * avoidance. If no conversion information is given, any unit is its own ID.
  * In any case, units are /normalised/, i.e. given a more standardised meaning
  * before being processed. All units, IDs or otherwise, should be suitable for
@@ -74,20 +74,18 @@ class SMWNumberValue extends SMWDataValue {
 		return true;
 	}
 
-	protected function parseXSDValue($value, $unit) {
-		// very lazy processing, lets store implementations prefetch more data, even if not needed
-		$this->m_stubdata = array($value, $unit);
-	}
+// 	protected function parseXSDValue($value, $unit) {
+// 		// very lazy processing, lets store implementations prefetch more data, even if not needed
+// 		$this->m_stubdata = array($value, $unit);
+// 	}
 
-	protected function unstub() {
-		if (is_array($this->m_stubdata)) {
-			$this->m_value = $this->m_stubdata[0];
-			$this->m_unit = $this->m_stubdata[1];
-			$this->m_unitin = false;
-			$this->m_stubdata = false;
-			$this->makeUserValue();
-			$this->m_unitvalues = false;
-		}
+	protected function parseDBkeys($args) {
+		$this->m_value = $args[0];
+		$this->m_unit = array_key_exists(1,$args)?$args[1]:'';
+		$this->m_unitin = false;
+		$this->m_stubdata = false;
+		$this->makeUserValue();
+		$this->m_unitvalues = false;
 	}
 
 	public function setOutputFormat($formatstring) {
@@ -164,10 +162,16 @@ class SMWNumberValue extends SMWDataValue {
 		return $this->getLongWikiText($linker);
 	}
 
-	public function getXSDValue() {
+// 	public function getXSDValue() {
+// 		$this->unstub();
+// 		$this->convertToMainUnit();
+// 		return $this->m_value;
+// 	}
+
+	public function getDBkeys() {
 		$this->unstub();
 		$this->convertToMainUnit();
-		return $this->m_value;
+		return array($this->m_value, $this->m_unit);
 	}
 
 	public function getWikiValue(){
@@ -182,9 +186,8 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	public function getUnit() {
-		$this->unstub();
-		$this->convertToMainUnit();
-		return $this->m_unit;
+		$values = $this->getDBkeys();
+		return $values[1];
 	}
 
 	public function getHash() {
@@ -199,7 +202,7 @@ class SMWNumberValue extends SMWDataValue {
 
 	protected function getServiceLinkParams() {
 		$this->unstub();
-		// Create links to mapping services based on a wiki-editable message. The parameters 
+		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: string of numerical value in English punctuation
 		// $2: string of integer version of value, in English punctuation
@@ -237,7 +240,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * Converts the current m_value and m_unit to the main unit, if possible.
 	 * This means, it changes the fileds m_value and m_unit accordingly, and
 	 * that it stores the ID of the originally given unit in $this->m_unitin.
-	 * This should obviously not be done more than once, so it is advisable to 
+	 * This should obviously not be done more than once, so it is advisable to
 	 * first check if m_unitin is non-false. Also, it should be checked if the
 	 * value is valid before trying to calculate with its contents.
 	 *
@@ -253,8 +256,8 @@ class SMWNumberValue extends SMWDataValue {
 	 * The result is stored in $this->m_unitvalues. Again, any class that
 	 * requires effort for doing this should first check whether the array
 	 * is already set (i.e. not false) before doing any work.
-	 * Note that the values should be plain numbers. Output formatting is done 
-	 * later when needed.  Also, it should be checked if the value is valid 
+	 * Note that the values should be plain numbers. Output formatting is done
+	 * later when needed.  Also, it should be checked if the value is valid
 	 * before trying to calculate with its contents.
 	 * This method also must call or implement convertToMainUnit().
 	 *
@@ -285,7 +288,7 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return an array of major unit strings (ids only recommended) supported by 
+	 * Return an array of major unit strings (ids only recommended) supported by
 	 * this datavalue.
 	 *
 	 * Overwritten by subclasses that support units.

@@ -16,13 +16,13 @@
  * if they are used only internally and never specified by or shown to
  * the user. Those will use their internal ID as "XSD value", and
  * empty texts for most printouts. All other proeprties use their
- * canonical DB key as "XSD value" (even if they are predefined and 
+ * canonical DB key as "XSD value" (even if they are predefined and
  * have an id). Functions are provided to check whether a property
  * is visible or user-defined, and to get the internal ID, if any.
  *
  * @note This datavalue is used only for representing properties and,
  * possibly objects/values, but never for subjects (pages as such). Hence
- * it does not rpvide a complete Title-like interface, or support for
+ * it does not provide a complete Title-like interface, or support for
  * things like sortkey.
  *
  * @author Markus Krötzsch
@@ -49,6 +49,8 @@ class SMWPropertyValue extends SMWDataValue {
 	/// If the property is associated with a wikipage, it is stored here. Otherwise NULL.
 	protected $m_wikipage;
 
+	private $m_typevalue; // once calculated, remember the type of this property
+
 	/**
 	 * Static function for creating a new property object from a
 	 * propertyname (string) as a user might enter it.
@@ -73,7 +75,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	static public function makeProperty($propertyid) {
 		$property = new SMWPropertyValue('__pro');
-		$property->setXSDValue($propertyid);
+		$property->setDBkeys(array($propertyid));
 		return $property;
 	}
 
@@ -83,6 +85,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @todo Accept/enforce property namespace.
 	 */
 	protected function parseUserValue($value) {
+		$this->m_typevalue = NULL;
 		if ($this->m_caption === false) { // always use this as caption
 			$this->m_caption = $value;
 		}
@@ -100,34 +103,28 @@ class SMWPropertyValue extends SMWDataValue {
 		}
 	}
 
-	protected function parseXSDValue($value, $unit) { // (ignore "unit")
-		$this->m_stubdata = array($value);
-	}
-
 	/**
 	 * Extended parsing function to first check whether value is the id of a
 	 * pre-defined property, to resolve property names and aliases, and to set
 	 * internal property id accordingly.
 	 */
-	protected function unstub() {
-		if (is_array($this->m_stubdata)) {
-			SMWPropertyValue::initProperties();
-			if ($this->m_stubdata[0]{0} == '_') { // internal id, use as is (and hope it is still known)
-				$this->m_propertyid = $this->m_stubdata[0];
-			} else { // possibly name of special property
-				$this->m_propertyid = SMWPropertyValue::findPropertyID(str_replace('_',' ',$this->m_stubdata[0]));
-			}
-			$label = ($this->m_propertyid !== false)?SMWPropertyValue::findPropertyLabel($this->m_propertyid):$this->m_stubdata[0];
-			if ($label != '') {
-				$this->m_wikipage = SMWDataValueFactory::newTypeIDValue('_wpp');
-				$this->m_wikipage->setValues(str_replace(' ', '_',$label),SMW_NS_PROPERTY);
-				$this->m_caption = $label;
-				$this->addError($this->m_wikipage->getErrors()); // NOTE: this unstubs the wikipage, should we rather ignore errors here to prevent this?
-			} else { // predefined property without label
-				$this->m_wikipage = NULL;
-				$this->m_caption = $this->m_propertyid;
-			}
-			$this->m_stubdata = false;
+	protected function parseDBkeys($args) {
+		$this->m_typevalue = NULL;
+		SMWPropertyValue::initProperties();
+		if ($args[0]{0} == '_') { // internal id, use as is (and hope it is still known)
+			$this->m_propertyid = $args[0];
+		} else { // possibly name of special property
+			$this->m_propertyid = SMWPropertyValue::findPropertyID(str_replace('_',' ',$args[0]));
+		}
+		$label = ($this->m_propertyid !== false)?SMWPropertyValue::findPropertyLabel($this->m_propertyid):$args[0];
+		if ($label != '') {
+			$this->m_wikipage = SMWDataValueFactory::newTypeIDValue('_wpp');
+			$this->m_wikipage->setDBkeys(array(str_replace(' ', '_',$label),SMW_NS_PROPERTY,'',''));
+			$this->m_caption = $label;
+			$this->addError($this->m_wikipage->getErrors()); // NOTE: this unstubs the wikipage, should we rather ignore errors here to prevent this?
+		} else { // predefined property without label
+			$this->m_wikipage = NULL;
+			$this->m_caption = $this->m_propertyid;
 		}
 	}
 
@@ -190,11 +187,11 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return internal property id as the main way of storing property references.
+	 * Return internal property id or page DBkey, either of which is sufficient for storing property references.
 	 */
-	public function getXSDValue() {
-		$this->unstub();
-		return $this->isVisible()?$this->m_wikipage->getXSDValue():$this->m_propertyid;
+	public function getDBkeys() {
+ 		$this->unstub();
+ 		return $this->isVisible()?array($this->m_wikipage->getDBkey()):array($this->m_propertyid);
 	}
 
 	public function getWikiValue() {
@@ -224,6 +221,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function getTypesValue() {
 		global $smwgPDefaultType;
+		if ($this->m_typevalue !== NULL) return $this->m_typevalue;
 		if (!$this->isValid()) { // errors in property, return invalid types value with same errors
 			$result = SMWDataValueFactory::newTypeIDValue('__typ');
 			$result->setXSDValue('__err');
@@ -249,6 +247,7 @@ class SMWPropertyValue extends SMWDataValue {
 				$result->setXSDValue('_str');
 			}
 		}
+		$this->m_typevalue = $result;
 		return $result;
 	}
 
@@ -356,7 +355,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * Add a new alias label to an existing datatype id. Note that every ID should have a primary
-	 * label, either provided by SMW or registered with registerDatatype. This function should be 
+	 * label, either provided by SMW or registered with registerDatatype. This function should be
 	 * called from within the hook 'smwInitDatatypes'.
 	 */
 	static public function registerPropertyAlias($id, $label) {

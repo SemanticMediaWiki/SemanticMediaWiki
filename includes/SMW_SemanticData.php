@@ -9,7 +9,7 @@
  */
 
 /**
- * Class for representing chunks of semantic data for one given 
+ * Class for representing chunks of semantic data for one given
  * article (subject), similar what is typically displayed in the factbox.
  * This is a light-weight data container.
  * @ingroup SMW
@@ -19,6 +19,10 @@ class SMWSemanticData {
 	protected $propvals = array();
 	/// Text keys and title objects.
 	protected $properties = array();
+	/// Stub property data that is not part of $propvals and $properties yet. Entries use
+	/// property DB keys as keys. The value is an array of DBkey-arrays that define individual
+	/// datavalues. The stubs will be set up when first accessed.
+	protected $stubpropvals = array();
 	/// Boolean, stating whether the container holds any normal properties.
 	protected $hasvisibleprops = false;
 	/// Boolean, stating whether the container holds any displayable special properties (some are internal only without a display name).
@@ -45,7 +49,7 @@ class SMWSemanticData {
 
 	/**
 	 * This object is added to the parser output of MediaWiki, but it is not useful to have all its data as part of the parser cache
-	 * since the data is already stored in more accessible format in SMW. Hence this implementation of __sleep() makes sure only the 
+	 * since the data is already stored in more accessible format in SMW. Hence this implementation of __sleep() makes sure only the
 	 * subject is serialised, yielding a minimal stub data container after unserialisation. This is a little safer than serialising
 	 * nothing: if, for any reason, SMW should ever access an unserialised parser output, then the Semdata container will at least
 	 * look as if properly initialised (though empty).
@@ -67,6 +71,7 @@ class SMWSemanticData {
 	 * Get the array of all properties that have stored values.
 	 */
 	public function getProperties() {
+		$this->unstubProperties();
 		ksort($this->properties,SORT_STRING);
 		return $this->properties;
 	}
@@ -75,6 +80,19 @@ class SMWSemanticData {
 	 * Get the array of all stored values for some property.
 	 */
 	public function getPropertyValues(SMWPropertyValue $property) {
+		if (array_key_exists($property->getXSDValue(), $this->stubpropvals)) { // unstub those entries completely
+			$this->unstubProperty($property->getXSDValue(), $property);
+			foreach ( $this->stubpropvals[$property->getXSDValue()] as $dbkeys ) {
+				$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+				$dv->setDBkeys($dbkeys);
+				if ($this->m_noduplicates) {
+					$this->propvals[$property->getXSDValue()][$dv->getHash()] = $dv;
+				} else {
+					$this->propvals[$property->getXSDValue()][] = $dv;
+				}
+			}
+			unset($this->stubpropvals[$property->getXSDValue()]);
+		}
 		if (array_key_exists($property->getXSDValue(), $this->propvals)) {
 			return $this->propvals[$property->getXSDValue()];
 		} else {
@@ -86,6 +104,7 @@ class SMWSemanticData {
 	 * Return true if there are any visible properties.
 	 */
 	public function hasVisibleProperties() {
+		$this->unstubProperties();
 		return $this->hasvisibleprops;
 	}
 
@@ -94,12 +113,13 @@ class SMWSemanticData {
 	 * be displayed.
 	 */
 	public function hasVisibleSpecialProperties() {
+		$this->unstubProperties();
 		return $this->hasvisiblespecs;
 	}
 
 	/**
-	 * Store a value for an property identified by its title object. Duplicate 
-	 * value entries are ignored.
+	 * Store a value for a property identified by its title object. Duplicate
+	 * value entries are usually ignored.
 	 * @note Attention: there is no check whether the type of the given datavalue agrees
 	 * with what SMWDataValueFactory is producing (based on predefined property records and
 	 * the current DB content). Always use SMWDataValueFactory to produce fitting values!
@@ -127,7 +147,7 @@ class SMWSemanticData {
 
 	/**
 	 * Store a value for a given property identified by its text label (without
-	 * namespace prefix). Duplicate value entries are ignored.
+	 * namespace prefix). Duplicate value entries are usually ignored.
 	 */
 	public function addPropertyValue($propertyname, SMWDataValue $value) {
 		$propertykey = smwfNormalTitleDBKey($propertyname);
@@ -147,13 +167,60 @@ class SMWSemanticData {
 	}
 
 	/**
+	 * Add data in abbreviated form so that it is only expanded if needed. The property key
+	 * is the DB key (string) of a property value, whereas valuekeys is an array of DBkeys for
+	 * the added value that will be used to initialize the value if needed at some point.
+	 */
+	public function addPropertyStubValue($propertykey, $valuekeys) {
+		// catch built-in properties, since their internal key is not what is used as a key elsewhere in SMWSemanticData
+		if ($propertykey{0} == '_') {
+			$property = SMWPropertyValue::makeProperty($propertykey);
+			$propertykey = $property->getXSDValue();
+			$this->unstubProperty($propertykey, $property);
+		}
+		$this->stubpropvals[$propertykey][] = $valuekeys;
+	}
+
+	/**
 	 * Delete all data other than the subject.
 	 */
 	public function clear() {
 		$this->propvals = array();
 		$this->properties = array();
+		$this->stubpropvals = array();
 		$this->hasvisibleprops = false;
 		$this->hasvisiblespecs = false;
+	}
+
+	/**
+	 * Process all properties that have been added as stubs. Associated data may remain in stub form.
+	 */
+	protected function unstubProperties() {
+		foreach ($this->stubpropvals as $pname => $values) { // unstub property values only, the value lists are still kept as stubs
+			$this->unstubProperty($pname);
+		}
+	}
+
+	/**
+	 * Unstub a single property from the stub data array. If available, an existing object
+	 * for that property might be provided, so we do not need to make a new one. It is not
+	 * checked if the object matches the property name.
+	 */
+	protected function unstubProperty($pname, $propertyobj = NULL) {
+		if (!array_key_exists($pname, $this->properties)) {
+			if ($propertyobj === NULL) {
+				$propertyobj = SMWPropertyValue::makeProperty($pname);
+			}
+			$this->properties[$pname] = $propertyobj;
+			if (!$propertyobj->isUserDefined()) {
+				if ($propertyobj->isVisible()) {
+					 $this->hasvisiblespecs = true;
+					 $this->hasvisibleprops = true;
+				}
+			} else {
+				$this->hasvisibleprops = true;
+			}
+		}
 	}
 
 }

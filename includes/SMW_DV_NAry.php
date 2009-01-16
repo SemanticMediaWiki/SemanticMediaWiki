@@ -94,26 +94,22 @@ class SMWNAryValue extends SMWDataValue {
 		}
 	}
 
-	protected function parseXSDValue($value, $unit) {
-		$types = $this->m_type->getTypeValues();
-		// Note: we can always assume this to be the form that getXSDValue returns,
-		// unless it is complete junk. So be strict in parsing.
-		$values = explode(';', $value, $this->m_count);
-		$units = explode(';', $unit, $this->m_count);
+	public function setDBkeys($args) {
+		wfLoadExtensionMessages('SemanticMediaWiki');
+		$this->addError(wfMsgForContent('smw_parseerror'));
+// 		trigger_error("setDBkeys() cannot be used for initializing n-ary datavalues (SMWNAryValue). Use SMWNAryValue->setDVs() instead.", E_USER_WARNING);
+//  		debug_print_backtrace();
+// 		die;
+	}
 
-		if (count($values) != $this->m_count) {
-			$this->addError('This is not an nary value.');
-			return;
-		}
+	/// Parsing from a value array is not supported for this datatype. Use setDVs() to initialize this datatype.
+	protected function parseDBkeys($args) {
+// 		 trigger_error("parseDBkeys() cannot be used for initializing n-ary datavalues (SMWNAryValue). Use SMWNAryValue->setDVs() instead.", E_USER_WARNING);
+// 		 debug_print_backtrace();
+	}
 
-		$this->m_values = array();
-		for ($i = 0; $i < $this->m_count; $i++) {
-			if ($values[$i] == '') {
-				$this->m_values[$i] = NULL;
-			} else {
-				$this->m_values[$i] = SMWDataValueFactory::newTypeObjectValue($types[$i], $values[$i]);
-			}
-		}
+	/// No unstubbing required for this datatype. Contained data will be unstubbed if needed.
+	protected function unstub() {
 	}
 
 	public function getShortWikiText($linked = NULL) {
@@ -170,20 +166,25 @@ class SMWNAryValue extends SMWDataValue {
 		}
 	}
 
-	public function getXSDValue() {
-		$first = true;
-		$result = '';
-		foreach ($this->m_values as $value) {
-			if ($first) {
-				$first = false;
-			} else {
-				$result .= ';';
-			}
-			if ($value !== NULL) {
-				$result .= $value->getXSDValue();
-			}
-		}
-		return $result;
+// 	public function getXSDValue() {
+// 		$first = true;
+// 		$result = '';
+// 		foreach ($this->m_values as $value) {
+// 			if ($first) {
+// 				$first = false;
+// 			} else {
+// 				$result .= ';';
+// 			}
+// 			if ($value !== NULL) {
+// 				$result .= $value->getXSDValue();
+// 			}
+// 		}
+// 		return $result;
+// 	}
+
+	/// @note This function does not return a useful result for n-ary values. Use getDVs() to access the individual values of this n-ary.
+	public function getDBkeys() {
+		return array();
 	}
 
 	public function getWikiValue() {
@@ -204,28 +205,28 @@ class SMWNAryValue extends SMWDataValue {
 		return $result;
 	}
 
-	public function getUnit() {
-		$first = true;
-		$result = '';
-		$hasunit = false;
-		foreach ($this->m_values as $value) {
-			if ($first) {
-				$first = false;
-			} else {
-				$result .= ';';
-			}
-			if ($value !== NULL) {
-				$result .= $value->getUnit();
-				if ( (!$hasunit) && ($value->getUnit() != '') ) {
-					$hasunit = true;
-				}
-			}
-		}
-		if (!$hasunit) {
-			$result = '';
-		}
-		return $result;
-	}
+// 	public function getUnit() {
+// 		$first = true;
+// 		$result = '';
+// 		$hasunit = false;
+// 		foreach ($this->m_values as $value) {
+// 			if ($first) {
+// 				$first = false;
+// 			} else {
+// 				$result .= ';';
+// 			}
+// 			if ($value !== NULL) {
+// 				$result .= $value->getUnit();
+// 				if ( (!$hasunit) && ($value->getUnit() != '') ) {
+// 					$hasunit = true;
+// 				}
+// 			}
+// 		}
+// 		if (!$hasunit) {
+// 			$result = '';
+// 		}
+// 		return $result;
+// 	}
 
 	public function getHash() {
 		$first = true;

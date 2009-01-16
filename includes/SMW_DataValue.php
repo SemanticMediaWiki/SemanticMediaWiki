@@ -20,15 +20,15 @@
  */
 abstract class SMWDataValue {
 
-	protected $m_property = NULL;    /// The text label of the respective property or false if none given
+	protected $m_property = NULL;     /// The text label of the respective property or false if none given
 	protected $m_caption;             /// The text label to be used for output or false if none given
 	protected $m_errors = array();    /// Array of error text messages
 	protected $m_isset = false;       /// True if a value was set.
 	protected $m_typeid;              /// The type id for this value object
 	protected $m_infolinks = array(); /// Array of infolink objects
 	protected $m_outformat = false;   /// output formatting string, see setOutputFormat()
-	protected $m_stubdata = false;    /// usually unstub() checks if this contains useful content, 
-	                                  /// and inits the value if this is the case; false while unused
+	protected $m_stubvalues = false;  /// usually unstub() checks if this contains useful content,
+	                                  /// and inits the value with setDBkeys() in this case; false while unused
 
 	private $m_hasssearchlink;        /// used to control the addition of the standard search link
 	private $m_hasservicelinks;       /// used to control service link creation
@@ -52,6 +52,7 @@ abstract class SMWDataValue {
 		$this->m_isset = false;
 		$this->m_hasssearchlink = false;
 		$this->m_hasservicelinks = false;
+		$this->m_stubvalues = false;
 		if ( is_string($caption) ) {
 			$this->m_caption = trim($caption);
 		} else {
@@ -79,17 +80,48 @@ abstract class SMWDataValue {
 	 * Set the xsd value (and compute other representations if possible).
 	 * The given value is a string that was provided by getXSDValue() (all
 	 * implementations should support round-tripping).
+	 * @deprecated Use setDBkeys().
 	 */
 	public function setXSDValue($value, $unit = '') {
-		wfProfileIn('SMWDataValue::setXSDValue (SMW)');
+		$this->setDBkeys(array($value, $unit));
+	}
+
+	/**
+	 * Initialise this object based on an array of values. The contents
+	 * of the array depends on the given datatype. All implementations
+	 * should support round-tripping between this function and getDBkeys().
+	 */
+	public function setDBkeys($args) {
+// 		wfProfileIn('SMWDataValue::setXSDValue-' . $this->m_typeid . ' (SMW)');
 		$this->m_errors = array(); // clear errors
 		$this->m_infolinks = array(); // clear links
 		$this->m_hasssearchlink = false;
 		$this->m_hasservicelinks = false;
 		$this->m_caption = false;
-		$this->parseXSDValue($value, $unit);
+		$this->m_stubvalues = $args;
 		$this->m_isset = true;
-		wfProfileOut('SMWDataValue::setXSDValue (SMW)');
+// 		global $bugcount; // DEBUGGING
+// 		if (!isset($bugcount)) $bugcount = 0;// DEBUGGING
+// 		print "Set ($bugcount): $value\n---\n";// DEBUGGING
+// 		$bugcount++;// DEBUGGING
+// 		wfProfileOut('SMWDataValue::setXSDValue-' . $this->m_typeid . ' (SMW)');
+	}
+
+	/**
+	 * This function does the acutal processing for loading a datavalue's
+	 * contents from a value array. setDBkeys() merely stores the given
+	 * values, whereas unstub() actually parses and processes them. This
+	 * function usually needs to be called before any outputs can be returned.
+	 * It takes only very little effort if unstubbing is not needed.
+	 */
+	protected function unstub() {
+		if ($this->m_stubvalues !== false) {
+			wfProfileIn('SMWDataValue::unstub-' . $this->m_typeid . ' (SMW)');
+			$args = $this->m_stubvalues;
+			$this->m_stubvalues = false; // careful to avoid recursive unstubbing
+			$this->parseDBkeys($args);
+			wfProfileOut('SMWDataValue::unstub-' . $this->m_typeid . ' (SMW)');
+		}
 	}
 
 	/**
@@ -119,7 +151,7 @@ abstract class SMWDataValue {
 	 * depending on the datatype, and the service link message is usually crafted with a
 	 * particular datatype in mind.
 	 */
-	function addServiceLinks() {
+	public function addServiceLinks() {
 		if ($this->m_hasservicelinks) return;
 		if ( ($this->m_property === NULL) || ($this->m_property->getWikiPageValue() === NULL) ) return; // no property known
 		$args = $this->getServiceLinkParams();
@@ -155,7 +187,7 @@ abstract class SMWDataValue {
 
 	/**
 	 * Add a new error string or array of such strings to the error list.
-	 * @note All error string must be wiki and html-safe! No further escaping
+	 * @note All error strings must be wiki and html-safe! No further escaping
 	 * will happen!
 	 */
 	public function addError($error) {
@@ -179,18 +211,18 @@ abstract class SMWDataValue {
 	 * Initialise the datavalue from the given value string and unit.
 	 * The format of both strings strictly corresponds to the output
 	 * of this implementation for getXSDValue() and getUnit().
+	 * @deprecated Use parseDBkeys()
 	 */
-	abstract protected function parseXSDValue($value, $unit);
+	protected function parseXSDValue($value, $unit) {
+		$this->parserDBkeys(array($value, $unit));
+	}
 
 	/**
-	 * It makes sense for datavalues to have a stubbing mechanism, especially when
-	 * initialised by parseXSDValue. Such a mechanism quickly stores the initialisation
-	 * parameters and prevents to do any work on them. Each function that requires
-	 * values to be set then first calls unstub() to trigger the required processing.
-	 * This is especially useful for datatypes where this processing may take some time.
+	 * Initialise the datavalue from the given value string and unit.
+	 * The format of both strings strictly corresponds to the output
+	 * of this implementation for getDBkeys().
 	 */
-	protected function unstub() {
-	}
+	abstract protected function parseDBkeys($args);
 
 ///// Get methods /////
 
@@ -271,7 +303,7 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Return text serialisation of info links. Ensures more uniform layout 
+	 * Return text serialisation of info links. Ensures more uniform layout
 	 * throughout wiki (Factbox, Property pages, ...).
 	 */
 	public function getInfolinkText($outputformat, $linker=NULL) {
@@ -308,11 +340,29 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Return the XSD compliant version of the value, or FALSE if parsing the 
-	 * value failed and no XSD version is available. If the datatype has units, 
+	 * Return the XSD compliant version of the value, or FALSE if parsing the
+	 * value failed and no XSD version is available. If the datatype has units,
 	 * then this value is given in the unit provided by getUnit().
+	 * @deprecated Use getDBkeys()
 	 */
-	abstract public function getXSDValue();
+	public function getXSDValue() {
+		$keys = $this->getDBkeys();
+		return array_key_exists(0,$keys)?$keys[0]:'';
+	}
+
+	/**
+	 * Return an array of values that characterize the given datavalue completely,
+	 * and that are sufficient to reproduce a value of identical content using the
+	 * function setDBkeys(). The value array must use number keys that agree with
+	 * the array's natural order (in which the data was added).
+	 * Moreover, each entry of the array must be of a basic type, typically string
+	 * or int. Do not use arrays or objects!
+	 * The array should only contain components required for storing, but no derived
+	 * versions of the value. It should provide a compact form for the data that is
+	 * still easy to unserialize into a new object. Many datatypes will use arrays
+	 * with only one entry here.
+	 */
+	abstract public function getDBkeys();
 
 	/**
 	 * Return the plain wiki version of the value, or
@@ -340,6 +390,7 @@ abstract class SMWDataValue {
 	 * This string is a plain UTF-8 string without wiki or html markup.
 	 * Returns the empty string if no unit is given for the value.
 	 * Possibly overwritten by subclasses.
+	 * @deprecated Use getDBkeys()
 	 */
 	public function getUnit() {
 		return ''; // empty unit
@@ -374,7 +425,7 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Overwritten by callers to supply an array of parameters that can be used for 
+	 * Overwritten by callers to supply an array of parameters that can be used for
 	 * creating servicelinks. The number and content of values in the parameter array
 	 * may vary, depending on the concrete datatype.
 	 */

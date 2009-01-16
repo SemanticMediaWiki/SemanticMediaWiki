@@ -13,7 +13,7 @@
 class SMWErrorValue extends SMWDataValue {
 
 	private $m_value;
-	
+
 	public function SMWErrorValue($errormsg = '', $uservalue = '', $caption = false) {
 		$this->setUserValue($uservalue, $caption);
 		if ($errormsg != '') $this->addError($errormsg);
@@ -27,8 +27,8 @@ class SMWErrorValue extends SMWDataValue {
 		return true;
 	}
 
-	protected function parseXSDValue($value, $unit) {
-		$this->setUserValue($value); // no units, compatible syntax
+	protected function parseDBkeys($args) {
+		$this->setUserValue($args[0]); // compatible syntax
 	}
 
 	public function setOutputFormat($formatstring){
@@ -36,6 +36,7 @@ class SMWErrorValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText($linked = NULL) {
+		$this->unstub();
 		//TODO: support linking?
 		return $this->m_caption;
 	}
@@ -46,15 +47,17 @@ class SMWErrorValue extends SMWDataValue {
 
 	public function getLongWikiText($linked = NULL) {
 		//TODO: support linking?
+		$this->unstub();
 		return $this->getErrorText();
 	}
 
 	public function getLongHTMLText($linker = NULL) {
+		$this->unstub();
 		return $this->getErrorText();
 	}
 
-	public function getXSDValue() {
-		return $this->getShortWikiText(); ///TODO: really? (errors are not meant to be saved, or are they?)
+	public function getDBkeys() {
+		return array($this->getShortWikiText()); ///TODO: really? (errors are not meant to be saved, or are they?)
 	}
 
 	public function getWikiValue() {

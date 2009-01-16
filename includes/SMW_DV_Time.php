@@ -73,7 +73,7 @@ class SMWTimeValue extends SMWDataValue {
 	protected $m_year = false; //Gregorian year, remains false if unspecified
 	protected $m_time = false; //time, remains false if unspecified
 	protected $m_jd = ''; //numerical time representation similiar to Julian Day; for ancient times, a more compressed number is used (preserving ordering of time points)
-	protected $m_timeoffset; //contains offset (e.g. timezone) 
+	protected $m_timeoffset; //contains offset (e.g. timezone)
 	protected $m_timeannotation; //contains am or pm
 	// The following are constant (array-valued constants are not supported, hence the decalration as variable):
 	protected $m_months = array("January", "February", "March", "April" , "May" , "June" , "July" , "August" , "September" , "October" , "November" , "December");
@@ -255,8 +255,19 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	protected function parseXSDValue($value, $unit) {
-		list($date,$this->m_time) = explode('T',$value,2);
+// 	protected function parseXSDValue($value, $unit) {
+// 		list($date,$this->m_time) = explode('T',$value,2);
+// 		$d = explode('/',$date,3);
+// 		if (count($d)==3) list($this->m_year,$this->m_month,$this->m_day) = $d;
+// 		elseif (count($d)==2) list($this->m_year,$this->m_month) = $d;
+// 		elseif (count($d)==1) list($this->m_year) = $d;
+// 		$this->makePrintoutValue();
+// 		$this->m_caption = $this->m_printvalue;
+// 		$this->m_wikivalue = $this->m_printvalue;
+// 	}
+
+	protected function parseDBkeys($args) {
+		list($date,$this->m_time) = explode('T',$args[0],2);
 		$d = explode('/',$date,3);
 		if (count($d)==3) list($this->m_year,$this->m_month,$this->m_day) = $d;
 		elseif (count($d)==2) list($this->m_year,$this->m_month) = $d;
@@ -267,6 +278,7 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText($linked = NULL) {
+		$this->unstub();
 		return $this->m_caption;
 	}
 
@@ -287,19 +299,29 @@ class SMWTimeValue extends SMWDataValue {
 		return $this->getLongWikiText($linker);
 	}
 
-	public function getXSDValue() {
+// 	public function getXSDValue() {
+// 		if ($this->m_xsdvalue === false) {
+// 			$this->m_xsdvalue = $this->m_year."/".$this->m_month."/".$this->m_day."T".$this->m_time;
+// 		}
+// 		return $this->m_xsdvalue;
+// 	}
+
+	public function getDBkeys() {
+		$this->unstub();
 		if ($this->m_xsdvalue === false) {
 			$this->m_xsdvalue = $this->m_year."/".$this->m_month."/".$this->m_day."T".$this->m_time;
 		}
-		return $this->m_xsdvalue;
+		return array($this->m_xsdvalue);
 	}
 
 	public function getNumericValue() {
+		$this->unstub();
 		$this->createJD();
 		return $this->m_jd;
 	}
 
-	public function getWikiValue(){
+	public function getWikiValue() {
+		$this->unstub();
 		return $this->m_wikivalue;
 	}
 
@@ -330,6 +352,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * Gregorian calendar and using the astronomical year numbering (0 means 1 BC).
 	 */
 	public function getYear() {
+		$this->unstub();
 		return $this->m_year;
 	}
 
@@ -341,6 +364,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * also be set to FALSE to detect this situation.
 	 */
 	public function getMonth($default = 1) {
+		$this->unstub();
 		return ($this->m_month != false)?$this->m_month:$default;
 	}
 
@@ -351,6 +375,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * also be set to FALSE to detect this situation.
 	 */
 	public function getDay($default = 1) {
+		$this->unstub();
 		return ($this->m_day != false)?$this->m_day:$default;
 	}
 
@@ -363,6 +388,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * also be set to FALSE to detect this situation.
 	 */
 	public function getTimeString($default = '00:00:00') {
+		$this->unstub();
 		return ($this->m_time != false)?$this->normalizeTimeValue($this->m_time):$default;
 	}
 
@@ -438,7 +464,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * grater or equal to -4712 (4713 BC), then (something that is closely inspired by) the Julian Day
 	 * (JD) is computed. The JD has the form XXXX.YYYY where XXXX is the number of days having elapsed since
 	 * 4713 BC and YYYY is the elapsed time of the day as fraction of 1. See http://en.wikipedia.org/wiki/Julian_day
-	 * If the year is before -4713, then the computed number XXXX.YYYY has the following form: XXXX is 
+	 * If the year is before -4713, then the computed number XXXX.YYYY has the following form: XXXX is
 	 * the number of years BC and YYYY represents the elapsed days of the year as fraction of 1. This
 	 * enables even large negative dates using 32bit floats.
 	 *
@@ -492,7 +518,7 @@ class SMWTimeValue extends SMWDataValue {
 		$minutes = intval($time / 60);
 		$seconds = intval($time - $minutes * 60);
 
-		$this->m_time = $this->normalizeValue($hours).":".$this->normalizeValue($minutes).":".$this->normalizeValue($seconds);		
+		$this->m_time = $this->normalizeValue($hours).":".$this->normalizeValue($minutes).":".$this->normalizeValue($seconds);
 	}
 
 }

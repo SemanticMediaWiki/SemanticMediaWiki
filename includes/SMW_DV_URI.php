@@ -51,7 +51,7 @@ class SMWURIValue extends SMWDataValue {
 						$value = 'http://' . $value;
 						$parts[1] = $parts[0];
 						$parts[0] = 'http';
-					} elseif ( (count($parts) < 1) || ($parts[0] == '') || ($parts[1] == '') || (preg_match('/[^a-zA-Z]/u',$parts[0]) )) { 
+					} elseif ( (count($parts) < 1) || ($parts[0] == '') || ($parts[1] == '') || (preg_match('/[^a-zA-Z]/u',$parts[0]) )) {
 						$this->addError(wfMsgForContent('smw_baduri', $value));
 						return true;
 					}
@@ -72,7 +72,7 @@ class SMWURIValue extends SMWDataValue {
 // 						break;
 // 					}
 /// TODO: the remaining checks need improvement
-// 					// validate last part of URI (after #) if provided 
+// 					// validate last part of URI (after #) if provided
 // 					$uri_ex = explode('#',$value);
 // 					$check2 = "@^[a-zA-Z0-9-_\%]+$@u"; ///FIXME: why only ascii symbols?
 // 					if(sizeof($uri_ex)>2 ){ // URI should only contain at most one '#'
@@ -125,18 +125,30 @@ class SMWURIValue extends SMWDataValue {
 		return true;
 	}
 
-	protected function parseXSDValue($value, $unit) {
-		$this->m_value = $value;
-		$this->m_caption = $value;
+// 	protected function parseXSDValue($value, $unit) {
+// 		$this->m_value = $value;
+// 		$this->m_caption = $value;
+// 		if ($this->m_mode == SMW_URI_MODE_EMAIL) {
+// 			$this->m_url = 'mailto:' . $value;
+// 		} else {
+// 			$this->m_url = $value;
+// 		}
+// 		$this->m_uri = $this->m_url;
+// 	}
+
+	protected function parseDBkeys($args) {
+		$this->m_value = $args[0];
+		$this->m_caption = $this->m_value;
 		if ($this->m_mode == SMW_URI_MODE_EMAIL) {
-			$this->m_url = 'mailto:' . $value;
+			$this->m_url = 'mailto:' . $this->m_value;
 		} else {
-			$this->m_url = $value;
+			$this->m_url = $this->m_value;
 		}
 		$this->m_uri = $this->m_url;
 	}
 
 	public function getShortWikiText($linked = NULL) {
+		$this->unstub();
 		if ( ($linked === NULL) || ($linked === false) || ($this->m_url == '') || ($this->m_caption == '') ) {
 			return $this->m_caption;
 		} else {
@@ -145,6 +157,7 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText($linker = NULL) {
+		$this->unstub();
 		if (($linker === NULL) || (!$this->isValid()) || ($this->m_url == '') || ($this->m_caption == '')) {
 			return $this->m_caption;
 		} else {
@@ -174,16 +187,23 @@ class SMWURIValue extends SMWDataValue {
 		}
 	}
 
-	public function getXSDValue() {
-		return $this->m_value;
+// 	public function getXSDValue() {
+// 		return $this->m_value;
+// 	}
+
+	public function getDBkeys() {
+		$this->unstub();
+		return array($this->m_value);
 	}
 
 	public function getWikiValue(){
+		$this->unstub();
 		return $this->m_value;
 	}
 
 	protected function getServiceLinkParams() {
-		// Create links to mapping services based on a wiki-editable message. The parameters 
+		$this->unstub();
+		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded version of URI/URL value (includes mailto: for emails)
 		return array(rawurlencode($this->m_uri));

@@ -33,12 +33,18 @@ class SMWStringValue extends SMWDataValue {
 		return true;
 	}
 
-	protected function parseXSDValue($value, $unit) {
-		$this->parseUserValue($value); // no units, XML compatible syntax
+// 	protected function parseXSDValue($value, $unit) {
+// 		$this->parseUserValue($value); // no units, XML compatible syntax
+// 		$this->m_caption = $this->m_value; // this is our output text
+// 	}
+
+	protected function parseDBkeys($args) {
+		$this->parseUserValue($args[0]);
 		$this->m_caption = $this->m_value; // this is our output text
 	}
 
 	public function getShortWikiText($linked = NULL) {
+		$this->unstub();
 		//TODO: Support linking?
 		return $this->m_caption;
 	}
@@ -69,15 +75,22 @@ class SMWStringValue extends SMWDataValue {
 		}
 	}
 
-	public function getXSDValue() {
-		return $this->m_value;
+// 	public function getXSDValue() {
+// 		return $this->m_value;
+// 	}
+
+	public function getDBkeys() {
+		$this->unstub();
+		return array($this->m_value);
 	}
 
 	public function getWikiValue(){
+		$this->unstub();
 		return $this->m_value;
 	}
 
 	public function getInfolinks() {
+		$this->unstub();
 		if ( ($this->m_typeid != '_txt') && ($this->m_typeid != '_cod') ) {
 			return SMWDataValue::getInfolinks();
 		}
@@ -85,6 +98,7 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	protected function getServiceLinkParams() {
+		$this->unstub();
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded string

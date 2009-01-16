@@ -139,7 +139,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 			$this->setAngleValues('E',$angles);
 		}
 		if ( ($angles[0] !== false)||($curnum !== false)) { // unprocessed chunk, error
-			
+
 		}
 
 		if ($this->m_caption === false) {
@@ -148,19 +148,15 @@ class SMWGeoCoordsValue extends SMWDataValue {
 		return true;
 	}
 
-	protected function parseXSDValue($value, $unit) {
+	protected function parseDBkeys($args) {
 		$this->m_lat = false;
 		$this->m_long = false;
 		$this->m_latparts = false;
 		$this->m_longparts = false;
 
-		list($this->m_lat, $this->m_long) = split(',', $value);
-		if ( !is_numeric($this->m_lat) || !is_numeric($this->m_long) ) { // maybe legacy value, try user parsing
-			$this->setUserValue($value);
-		} else {
-			$this->m_caption = $this->formatAngleValues(true) . ', ' . $this->formatAngleValues(false); // this is our output text
-			$this->m_wikivalue = $this->m_caption;
-		}
+		list($this->m_lat, $this->m_long) = split(',', $args[0]);
+		$this->m_caption = $this->formatAngleValues(true) . ', ' . $this->formatAngleValues(false); // this is our output text
+		$this->m_wikivalue = $this->m_caption;
 	}
 
 	public function getShortWikiText($linked = NULL) {
@@ -192,11 +188,13 @@ class SMWGeoCoordsValue extends SMWDataValue {
 		return $this->getLongWikiText($linker);
 	}
 
-	public function getXSDValue() {
-		return $this->m_lat . ',' . $this->m_long;
+	public function getDBkeys() {
+		$this->unstub();
+		return array($this->m_lat . ',' . $this->m_long);
 	}
 
 	public function getWikiValue(){
+		$this->unstub();
 		return $this->m_wikivalue;
 	}
 
@@ -247,7 +245,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 			case 'E': $this->m_long = $res; break;
 			case 'W': $this->m_long = -1 * $res; break;
 		}
-		if ( (($direction == 'E') || ($direction == 'W')) && 
+		if ( (($direction == 'E') || ($direction == 'W')) &&
 		     (($this->m_long > 180) || ($this->m_long <= -180)) ) { // bring values back into [180, -180)
 			$this->m_long += ($this->m_long<0)?(round(abs($this->m_long)/360)*360):(round($this->m_long/360)*-360);
 		}
@@ -313,7 +311,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 	}
 
 	protected function getServiceLinkParams() {
-		// Create links to mapping services based on a wiki-editable message. The parameters 
+		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: latitude integer degrees, $2: longitude integer degrees
 		// $3: latitude integer minutes, $4: longitude integer minutes
@@ -324,7 +322,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 		$latvals = $this->getAngleValues(true);
 		$longvals = $this->getAngleValues(false);
 		return array($latvals[0], $longvals[0],
-		             $latvals[1], $longvals[1], 
+		             $latvals[1], $longvals[1],
 		             round($latvals[2]), round($longvals[2]),
 		             $latvals[3], $longvals[3],
 		             abs($this->m_lat), abs($this->m_long),
