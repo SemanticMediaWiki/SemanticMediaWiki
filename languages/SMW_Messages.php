@@ -5560,6 +5560,7 @@ Generiše RDF koji je moguće pregledati.',
  * @author Leo Johannes
  * @author M.M.S.
  * @author Najami
+ * @author Sannab
  */
 $messages['sv'] = array(
 	'smw_edithelp' => 'Redigeringshjälp för egenskaper',
@@ -5569,7 +5570,7 @@ $messages['sv'] = array(
 	'smw_isspecprop' => 'Den här egenskapen är en specialegenskap på den här wikin.',
 	'smw_isknowntype' => 'Den här datatypen är bland standardtyperna på den här wikin.',
 	'smw_isaliastype' => 'Den här datatypen är ett alias för typen "$1".',
-	'smw_isnotype' => 'Datatypen "$1" är inte en standardtyp på den här wikin, och har inte blivit givet en användardefinition.',
+	'smw_isnotype' => 'Datatypen "$1" är inte en standardtyp på den här wikin, och har inte heller givits en användardefinition.',
 	'smw_concept_description' => 'Beskrivning av konceptet "$1"',
 	'smw_no_concept_namespace' => 'Koncept kan endast defineras på sidor i namnrymden Concept:',
 	'smw_multiple_concepts' => 'Varje konceptsida kan endast ha en konceptdefinition.',
