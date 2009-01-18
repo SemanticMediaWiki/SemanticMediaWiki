@@ -925,6 +925,13 @@ $messages['bs'] = array(
 	'smw_result_noresults' => 'Nema rezultata.',
 );
 
+/** Catalan (Català)
+ * @author Loupeter
+ */
+$messages['ca'] = array(
+	'smw_nodatetime' => 'No s\'ha entès la data "$1".',
+);
+
 /** Chamorro (Chamoru)
  * @author Jatrobat
  */

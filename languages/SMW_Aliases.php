@@ -97,7 +97,16 @@ $aliases['fi'] = array(
 
 /** Galician (Galego) */
 $aliases['gl'] = array(
+	'Ask' => array( 'Preguntar' ),
+	'Browse' => array( 'Navegar' ),
+	'ExportRDF' => array( 'Exportar RDF' ),
+	'PageProperty' => array( 'Propiedades da páxina' ),
+	'Properties' => array( 'Propiedades' ),
+	'SearchByProperty' => array( 'Procurar por propiedades' ),
+	'SemanticStatistics' => array( 'Estatísticas semánticas' ),
 	'Types' => array( 'Tipos' ),
+	'UnusedProperties' => array( 'Propiedades sen uso' ),
+	'WantedProperties' => array( 'Propiedades requiridas' ),
 );
 
 /** Swiss German (Alemannisch) */
