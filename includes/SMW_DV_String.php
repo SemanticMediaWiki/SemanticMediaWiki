@@ -14,8 +14,8 @@
  */
 class SMWStringValue extends SMWDataValue {
 
-	protected $m_value = ''; // Wiki-compatible value representation, possibly unsafe for plain HTML
-	                         // however, this string might contain HTML entities such as &amp;
+	/// Wiki-compatible value representation, possibly unsafe for plain HTML.
+	protected $m_value = '';
 
 	protected function parseUserValue($value) {
 		wfLoadExtensionMessages('SemanticMediaWiki');
@@ -32,11 +32,6 @@ class SMWStringValue extends SMWDataValue {
 		}
 		return true;
 	}
-
-// 	protected function parseXSDValue($value, $unit) {
-// 		$this->parseUserValue($value); // no units, XML compatible syntax
-// 		$this->m_caption = $this->m_value; // this is our output text
-// 	}
 
 	protected function parseDBkeys($args) {
 		$this->parseUserValue($args[0]);
@@ -74,10 +69,6 @@ class SMWStringValue extends SMWDataValue {
 			return $this->getAbbValue($linker,smwfXMLContentEncode($this->m_value));
 		}
 	}
-
-// 	public function getXSDValue() {
-// 		return $this->m_value;
-// 	}
 
 	public function getDBkeys() {
 		$this->unstub();

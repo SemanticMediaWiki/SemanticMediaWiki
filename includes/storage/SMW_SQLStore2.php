@@ -216,63 +216,40 @@ class SMWSQLStore2 extends SMWStore {
 			}
 			$res = $db->select( $from, $select, $where, 'SMW::getSemanticData' );
 			while($row = $db->fetchObject($res)) {
-// 				$dv = NULL;
 				$valuekeys = false;
 				if ($task & (SMW_SQL2_RELS2 | SMW_SQL2_ATTS2 | SMW_SQL2_TEXT2) ) {
-// 					$property = SMWPropertyValue::makeProperty($row->prop);
 					$propertyname = $row->prop;
-// 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 				}
 				// The following cases are very similar, yet different in certain details:
 				if ($task == SMW_SQL2_RELS2) {
 					if ( ($row->iw === '') || ($row->iw{0} != ':') ) { // filter "special" iws that mark internal objects
 						$valuekeys = array($row->title, $row->namespace,$row->iw,'');
 					}
-// 					if ($dv instanceof SMWWikiPagevalue) { // may fail if type was changed!
-// 						$dv->setValues($row->title, $row->namespace, false, $row->iw);
-// 					} else {
-// 						$dv = NULL;
-// 					}
 				} elseif ($task == SMW_SQL2_ATTS2) {
-// 					$dv->setXSDValue($row->value, $row->unit);
 					$valuekeys = array($row->value, $row->unit);
 				} elseif ($task == SMW_SQL2_TEXT2) {
-// 					$dv->setXSDValue($row->value, '');
 					$valuekeys = array($row->value);
 				} elseif ($task == SMW_SQL2_SPEC2) {
 					$pid = array_search($row->p_id, SMWSQLStore2::$special_ids);
 					if ($pid != false) {
-// 						$property = SMWPropertyValue::makeProperty($pid);
 						$propertyname = $pid;
 					} else { // this should be rare (only if some extension uses properties of "special" types)
 						$proprow = $db->selectRow('smw_ids', array('smw_title'), array('smw_id' => $row->p_id), 'SMW::getSemanticData');
 						/// TODO: $proprow may be false (inconsistent DB but anyway); maybe check and be gentle in some way
-// 						$property = SMWPropertyValue::makeProperty($proprow->smw_title);
 						$propertyname = $proprow->smw_title;
 					}
-// 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
-// 					$dv->setXSDValue($row->value, '');
 					$valuekeys = array($row->value);
 				} elseif ( ($task == SMW_SQL2_SUBS2) || ($task == SMW_SQL2_INST2) ) {
-// 					$property = SMWPropertyValue::makeProperty($specprop);
 					$propertyname = $specprop;
-// 					$dv = SMWWikiPageValue::makePage($row->value, $namespace);
 					$valuekeys = array($row->value,$namespace,'','');
 				} elseif ($task == SMW_SQL2_REDI2) {
-// 					$property = SMWPropertyValue::makeProperty('_REDI');
 					$propertyname = '_REDI';
-// 					$dv = SMWWikiPageValue::makePage($row->title, $row->namespace);
 					$valuekeys = array($row->title, $row->namespace,'','');
 				} elseif ($task == SMW_SQL2_CONC2) {
-// 					$property = SMWPropertyValue::makeProperty('_CONC');
 					$propertyname = '_CONC';
-// 					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
-// 					$dv->setValues($row->concept, $row->docu, $row->features, $row->size, $row->depth);
 					$valuekeys = array($row->concept, $row->docu, $row->features, $row->size, $row->depth);
 				}
-// 				if ($dv !== NULL) {
 				if ($valuekeys !== false) {
-// 					$this->m_semdata[$sid]->addPropertyObjectValue($property, $dv);
 					$this->m_semdata[$sid]->addPropertyStubValue($propertyname, $valuekeys);
 				}
 			}

@@ -17,19 +17,11 @@ class SMWNAryValue extends SMWDataValue {
 
 	private $m_count = 0;
 
-	/**
-	 * The array of the data values within this container value
-	 */
+	///The array of the data values within this container value
 	private $m_values = array();
-
-	/**
-	 * TypeObject as we received them when datafactory called us
-	 */
+	/// TypeObject as we received them when datafactory called us
 	private $m_type;
-
-	/**
-	 * Should this DV operate on query syntax (special mode for parsing queries in a compatible fashion)
-	 */
+	/// Should this DV operate on query syntax (special mode for parsing queries in a compatible fashion)
 	private $m_querysyntax = false;
 
 	private $m_comparators;
@@ -103,14 +95,10 @@ class SMWNAryValue extends SMWDataValue {
 	}
 
 	/// Parsing from a value array is not supported for this datatype. Use setDVs() to initialize this datatype.
-	protected function parseDBkeys($args) {
-// 		 trigger_error("parseDBkeys() cannot be used for initializing n-ary datavalues (SMWNAryValue). Use SMWNAryValue->setDVs() instead.", E_USER_WARNING);
-// 		 debug_print_backtrace();
-	}
+	protected function parseDBkeys($args) {}
 
 	/// No unstubbing required for this datatype. Contained data will be unstubbed if needed.
-	protected function unstub() {
-	}
+	protected function unstub() {}
 
 	public function getShortWikiText($linked = NULL) {
 		if ($this->m_caption !== false) {
@@ -166,25 +154,9 @@ class SMWNAryValue extends SMWDataValue {
 		}
 	}
 
-// 	public function getXSDValue() {
-// 		$first = true;
-// 		$result = '';
-// 		foreach ($this->m_values as $value) {
-// 			if ($first) {
-// 				$first = false;
-// 			} else {
-// 				$result .= ';';
-// 			}
-// 			if ($value !== NULL) {
-// 				$result .= $value->getXSDValue();
-// 			}
-// 		}
-// 		return $result;
-// 	}
-
 	/// @note This function does not return a useful result for n-ary values. Use getDVs() to access the individual values of this n-ary.
 	public function getDBkeys() {
-		return array();
+		return array('');
 	}
 
 	public function getWikiValue() {
@@ -204,29 +176,6 @@ class SMWNAryValue extends SMWDataValue {
 		}
 		return $result;
 	}
-
-// 	public function getUnit() {
-// 		$first = true;
-// 		$result = '';
-// 		$hasunit = false;
-// 		foreach ($this->m_values as $value) {
-// 			if ($first) {
-// 				$first = false;
-// 			} else {
-// 				$result .= ';';
-// 			}
-// 			if ($value !== NULL) {
-// 				$result .= $value->getUnit();
-// 				if ( (!$hasunit) && ($value->getUnit() != '') ) {
-// 					$hasunit = true;
-// 				}
-// 			}
-// 		}
-// 		if (!$hasunit) {
-// 			$result = '';
-// 		}
-// 		return $result;
-// 	}
 
 	public function getHash() {
 		$first = true;
@@ -352,9 +301,8 @@ class SMWNAryValue extends SMWDataValue {
 		return $result;
 	}
 
-	protected function checkAllowedValues() {
-		return; // not implemented yet
-	}
+	/// @todo Allowed values for multi-valued properties are not supported yet.
+	protected function checkAllowedValues() {}
 
 }
 

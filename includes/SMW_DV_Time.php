@@ -255,17 +255,6 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-// 	protected function parseXSDValue($value, $unit) {
-// 		list($date,$this->m_time) = explode('T',$value,2);
-// 		$d = explode('/',$date,3);
-// 		if (count($d)==3) list($this->m_year,$this->m_month,$this->m_day) = $d;
-// 		elseif (count($d)==2) list($this->m_year,$this->m_month) = $d;
-// 		elseif (count($d)==1) list($this->m_year) = $d;
-// 		$this->makePrintoutValue();
-// 		$this->m_caption = $this->m_printvalue;
-// 		$this->m_wikivalue = $this->m_printvalue;
-// 	}
-
 	protected function parseDBkeys($args) {
 		list($date,$this->m_time) = explode('T',$args[0],2);
 		$d = explode('/',$date,3);
@@ -298,13 +287,6 @@ class SMWTimeValue extends SMWDataValue {
 	public function getLongHTMLText($linker = NULL) {
 		return $this->getLongWikiText($linker);
 	}
-
-// 	public function getXSDValue() {
-// 		if ($this->m_xsdvalue === false) {
-// 			$this->m_xsdvalue = $this->m_year."/".$this->m_month."/".$this->m_day."T".$this->m_time;
-// 		}
-// 		return $this->m_xsdvalue;
-// 	}
 
 	public function getDBkeys() {
 		$this->unstub();

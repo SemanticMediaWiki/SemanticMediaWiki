@@ -28,13 +28,6 @@ class SMWConceptValue extends SMWDataValue {
 		return true;
 	}
 
-// 	protected function parseXSDValue($value, $unit) {
-// 		// normally not used, store should use setDBkeys
-// 		$this->clear();
-// 		$this->m_concept = $value;
-// 		$this->m_caption = $this->m_concept; // this is our output text
-// 	}
-
 	protected function parseDBkeys($args) {
 		$this->m_concept = $args[0];
 		$this->m_caption = $args[0]; // is this useful?
@@ -76,10 +69,6 @@ class SMWConceptValue extends SMWDataValue {
 			return $this->m_caption; // should be save (based on xsdvalue)
 		}
 	}
-
-// 	public function getXSDValue() {
-// 		return $this->getWikiValue(); // no XML encoding in DB for concepts, simplifies direct access in store
-// 	}
 
 	public function getDBkeys() {
 		$this->unstub();
@@ -185,16 +174,6 @@ class SMWConceptValue extends SMWDataValue {
 		return $result;
 	}
 
-	/// @deprecated Use setDBkeys().
-	public function setValues($concept, $docu, $queryfeatures, $size, $depth) {
-		$this->setDBkeys(array($concept, $docu, $queryfeatures, $size, $depth));
-// 		$this->setUserValue($concept); // must be called to make object valid (parent implementation)
-// 		$this->m_docu = $docu?smwfXMLContentEncode($docu):'';
-// 		$this->m_queryfeatures = $queryfeatures;
-// 		$this->m_size = $size;
-// 		$this->m_depth = $depth;
-	}
-
 	public function getDocu() {
 		$this->unstub();
 		return $this->m_docu;
@@ -213,6 +192,11 @@ class SMWConceptValue extends SMWDataValue {
 	public function getQueryFeatures() {
 		$this->unstub();
 		return $this->m_queryfeatures;
+	}
+
+	/// @deprecated Use setDBkeys(). This method will vanish before SMW 1.6
+	public function setValues($concept, $docu, $queryfeatures, $size, $depth) {
+		$this->setDBkeys(array($concept, $docu, $queryfeatures, $size, $depth));
 	}
 
 }

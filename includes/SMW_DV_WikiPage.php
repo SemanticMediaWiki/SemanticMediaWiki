@@ -6,9 +6,13 @@
 
 /**
  * This datavalue implements special processing suitable for defining
- * wikipages as values of properties. This value container currently
- * behaves somewhat special in that its xsdvalue is not contained all
- * relevant information (it just gives the DB-Key, not the namespace).
+ * wikipages as values of properties. In contrast to most other types
+ * of values, wiki pages are determined by multiple components, as
+ * retruned by their getDBkeys() method: DBkey, namespace, interwiki
+ * prefix and sortkey. The last of those has a somewhat nonstandard
+ * behaviour, since it is not attached to every wiki page value, but
+ * only to those that represent page subjects, which define the sortkey
+ * globally for all places where this page value occurs.
  *
  * @author Nikolas Iwan
  * @author Markus Krötzsch
@@ -97,13 +101,6 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 	}
 
-// 	protected function parseXSDValue($value, $unit) { // (ignore "unit")
-// 		// This method in its current for is not really useful for init, since the XSD value is just
-// 		// the (dbkey) title string without the namespace.
-// 		/// FIXME: change this to properly use a prefixed title string, in case someone wants to use this
-// 		$this->m_stubdata = array($value,(($this->m_fixNamespace!=NS_MAIN)?$this->m_fixNamespace:$this->m_namespace),false,'','');
-// 	}
-
 	protected function parseDBkeys($args) {
 		global $wgContLang;
 		$this->m_dbkeyform = $args[0];
@@ -128,40 +125,6 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->addError(wfMsgForContent('smw_notitle', $this->m_caption));
 		}
 	}
-
-// 	protected function unstub() {
-// 		if (is_array($this->m_stubdata)) {
-// 			global $wgContLang;
-// 			$this->m_dbkeyform = $this->m_stubdata[0];
-// 			$this->m_namespace = $this->m_stubdata[1];
-// 			$this->m_interwiki = $this->m_stubdata[3];
-// 			$this->m_sortkey   = $this->m_stubdata[4];
-// 			$this->m_textform = str_replace('_', ' ', $this->m_dbkeyform);
-// 			if ($this->m_interwiki == '') {
-// 				$this->m_title = Title::makeTitle($this->m_namespace, $this->m_dbkeyform);
-// 				$this->m_prefixedtext = $this->m_title->getPrefixedText();
-// 			} else { // interwiki title objects must be built from full input texts
-// 				$nstext = $wgContLang->getNSText($this->m_namespace);
-// 				$this->m_prefixedtext = $this->m_interwiki . ($this->m_interwiki != ''?':':'') .
-// 				                        $nstext . ($nstext != ''?':':'') . $this->m_textform;
-// 				$this->m_title = Title::newFromText($this->m_prefixedtext);
-// 			}
-// 			$this->m_caption = $this->m_prefixedtext;
-// 			$this->m_value = $this->m_prefixedtext;
-// 			if ($this->m_stubdata[2] === NULL) {
-// 				$this->m_id = 0;
-// 				$linkCache =& LinkCache::singleton();
-// 				$linkCache->addBadLinkObj($this->m_title); // prefill link cache, save lookups
-// 			} elseif ($this->m_stubdata[2] === false) {
-// 				$this->m_id = false;
-// 			} else {
-// 				$this->m_id = $this->m_stubdata[2];
-// 				$linkCache =& LinkCache::singleton();
-// 				$linkCache->addGoodLinkObj($this->m_id, $this->m_title); // prefill link cache, save lookups
-// 			}
-// 			$this->m_stubdata = false;
-// 		}
-// 	}
 
 	public function getShortWikiText($linked = NULL) {
 		$this->unstub();
@@ -220,11 +183,6 @@ class SMWWikiPageValue extends SMWDataValue {
 			}
 		}
 	}
-
-// 	public function getXSDValue() {
-// 		$this->unstub();
-// 		return $this->m_dbkeyform;
-// 	}
 
 	public function getDBkeys() {
 		$this->unstub();
@@ -395,29 +353,18 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
-	 * Set all basic values for this datavalue to the extent these are
-	 * available. Simplifies and speeds up creation from stored data.
-	 *
-	 * @todo Rethink our standard set interfaces for datavalues to make wikipage
-	 * fit better with the rest.
-	 * @deprecated Use setDBkeys()
-	 */
-	public function setValues($dbkey, $namespace, $id = false, $interwiki = '', $sortkey = '') {
-		$this->setDBkeys(array($dbkey,$namespace,$interwiki,$sortkey));
-// 		$this->setXSDValue($dbkey,''); // just used to trigger standard parent class methods!
-// 		if ( ($this->m_fixNamespace != NS_MAIN) && ( $this->m_fixNamespace != $namespace) ) {
-// 			wfLoadExtensionMessages('SemanticMediaWiki');
-// 			$this->addError(wfMsgForContent('smw_notitle', str_replace('_',' ',$dbkey)));
-// 		}
-// 		$this->m_stubdata = array($dbkey, $namespace, $id, $interwiki, $sortkey);
-	}
-
-	/**
 	 * Init this data value object based on a given Title object.
 	 */
 	public function setTitle($title) {
 		$this->setDBkeys(array($title->getDBkey(), $title->getNamespace(), $title->getInterwiki(), ''));
 		$this->m_title = $title;
+	}
+
+	/**
+	 * @deprecated Use setDBkeys()
+	 */
+	public function setValues($dbkey, $namespace, $id = false, $interwiki = '', $sortkey = '') {
+		$this->setDBkeys(array($dbkey,$namespace,$interwiki,$sortkey));
 	}
 
 }

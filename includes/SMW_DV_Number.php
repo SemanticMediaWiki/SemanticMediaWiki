@@ -74,11 +74,6 @@ class SMWNumberValue extends SMWDataValue {
 		return true;
 	}
 
-// 	protected function parseXSDValue($value, $unit) {
-// 		// very lazy processing, lets store implementations prefetch more data, even if not needed
-// 		$this->m_stubdata = array($value, $unit);
-// 	}
-
 	protected function parseDBkeys($args) {
 		$this->m_value = $args[0];
 		$this->m_unit = array_key_exists(1,$args)?$args[1]:'';
@@ -161,12 +156,6 @@ class SMWNumberValue extends SMWDataValue {
 	public function getLongHTMLText($linker = NULL) {
 		return $this->getLongWikiText($linker);
 	}
-
-// 	public function getXSDValue() {
-// 		$this->unstub();
-// 		$this->convertToMainUnit();
-// 		return $this->m_value;
-// 	}
 
 	public function getDBkeys() {
 		$this->unstub();

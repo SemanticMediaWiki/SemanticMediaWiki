@@ -110,22 +110,6 @@ class SMWImportValue extends SMWDataValue {
 		return true;
 	}
 
-// 	protected function parseXSDValue($value, $unit) {
-// 		$parts = explode(' ', $value, 3);
-// 		if (array_key_exists(0,$parts)) {
-// 			$this->m_namespace = $parts[0];
-// 		}
-// 		if (array_key_exists(1,$parts)) {
-// 			$this->m_section = $parts[1];
-// 		}
-// 		if (array_key_exists(2,$parts)) {
-// 			$this->m_uri = $parts[2];
-// 		}
-// 		$this->m_value = $this->m_namespace . ':' . $this->m_section;
-// 		$this->m_caption = $this->m_value; // not as pretty as on input, don't care
-// 		$this->m_wikilink = $this->m_value; // not as pretty as on input, don't care
-// 	}
-
 	protected function parseDBkeys($args) {
 		$parts = explode(' ', $args[0], 3);
 		if (array_key_exists(0,$parts)) {
@@ -165,10 +149,6 @@ class SMWImportValue extends SMWDataValue {
 			return htmlspecialchars($this->m_value);
 		}
 	}
-
-// 	public function getXSDValue() {
-// 		return $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri;
-// 	}
 
 	public function getDBkeys() {
 		return array($this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri);

@@ -41,11 +41,6 @@ class SMWTypesValue extends SMWDataValue {
 		}
 	}
 
-// 	protected function parseXSDValue($value, $unit) {
-// 		$this->m_xsdvalue = $value; // lazy parsing
-// 		$this->m_isalias = false;
-// 	}
-
 	protected function parseDBkeys($args) {
 		$this->m_xsdvalue = $args[0]; // lazy parsing
 		$this->m_isalias = false;
@@ -199,26 +194,6 @@ class SMWTypesValue extends SMWDataValue {
 			return array(false);
 		}
 	}
-
-// 	public function getXSDValue() {
-// 		if ($this->isValid()) {
-// 			if ($this->m_xsdvalue === false) {
-// 				$first = true;
-// 				$this->m_xsdvalue = '';
-// 				foreach ($this->m_typelabels as $label) {
-// 					if ($first) {
-// 						$first = false;
-// 					} else {
-// 						$this->m_xsdvalue .= ';';
-// 					}
-// 					$this->m_xsdvalue .= SMWDataValueFactory::findTypeID($label);
-// 				}
-// 			}
-// 			return $this->m_xsdvalue;
-// 		} else {
-// 			return false;
-// 		}
-// 	}
 
 	public function getWikiValue() {
 		return implode('; ', $this->getTypeLabels());

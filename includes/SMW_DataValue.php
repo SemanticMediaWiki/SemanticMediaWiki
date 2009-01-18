@@ -12,9 +12,32 @@
  */
 
 /**
- * Objects of this type represent all that is known about
- * a certain user-provided data value, especially its various
- * representations as strings, tooltips, numbers, etc.
+ * Objects of this type represent all that is known about a certain user-provided
+ * data value, especially its various representations as strings, tooltips,
+ * numbers, etc.  Objects can be created as "emtpy" containers of a certain type,
+ * but are then usually filled with data to present one particular data value.
+ *
+ * Data values have two chief representation forms: the user-facing syntax and the
+ * internal representation. In user syntax, every value is (necessarily) a single
+ * string, however complex the value is. For example, a string such as "Help:editing"
+ * may represent a wiki page called "Editing" in the namespace for "Help". The
+ * internal representation may be any numerical array of strings and numbers. In the
+ * example, it might be array("Editing",12), where 12 is the number used for identifying
+ * the namespace "Help:". Of course, the internal representation could also use a single
+ * string value, such as in array("Help:Editing"), but this might be less useful for
+ * certain operations (e.g. filterng by namespace). Moreover, all values that are
+ * restored from the database are given in the internal format, so it wise to choose a
+ * format that allows for very fast and easy processing without unnecessary parsing.
+ *
+ * The main functions of data value objects are:
+ * - setUserValue() which triggers parseUserValue() to process a user-level string.
+ * - getDBkeys() which provides an array that represents the current value for internal
+ *   processing
+ * - setDBkeys() which triggers parseDBkeys() to process an array with the internal
+ *   representation
+ *
+ * In addition, there are a number of get-functions that provide useful output versions
+ * for displaying and serializing the value.
  *
  * @ingroup SMWDataValues
  */
@@ -77,22 +100,11 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Set the xsd value (and compute other representations if possible).
-	 * The given value is a string that was provided by getXSDValue() (all
-	 * implementations should support round-tripping).
-	 * @deprecated Use setDBkeys().
-	 */
-	public function setXSDValue($value, $unit = '') {
-		$this->setDBkeys(array($value, $unit));
-	}
-
-	/**
 	 * Initialise this object based on an array of values. The contents
 	 * of the array depends on the given datatype. All implementations
 	 * should support round-tripping between this function and getDBkeys().
 	 */
 	public function setDBkeys($args) {
-// 		wfProfileIn('SMWDataValue::setXSDValue-' . $this->m_typeid . ' (SMW)');
 		$this->m_errors = array(); // clear errors
 		$this->m_infolinks = array(); // clear links
 		$this->m_hasssearchlink = false;
@@ -100,11 +112,6 @@ abstract class SMWDataValue {
 		$this->m_caption = false;
 		$this->m_stubvalues = $args;
 		$this->m_isset = true;
-// 		global $bugcount; // DEBUGGING
-// 		if (!isset($bugcount)) $bugcount = 0;// DEBUGGING
-// 		print "Set ($bugcount): $value\n---\n";// DEBUGGING
-// 		$bugcount++;// DEBUGGING
-// 		wfProfileOut('SMWDataValue::setXSDValue-' . $this->m_typeid . ' (SMW)');
 	}
 
 	/**
@@ -206,16 +213,6 @@ abstract class SMWDataValue {
 	 * and especially includes the output of getWikiValue().
 	 */
 	abstract protected function parseUserValue($value);
-
-	/**
-	 * Initialise the datavalue from the given value string and unit.
-	 * The format of both strings strictly corresponds to the output
-	 * of this implementation for getXSDValue() and getUnit().
-	 * @deprecated Use parseDBkeys()
-	 */
-	protected function parseXSDValue($value, $unit) {
-		$this->parserDBkeys(array($value, $unit));
-	}
 
 	/**
 	 * Initialise the datavalue from the given value string and unit.
@@ -340,17 +337,6 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Return the XSD compliant version of the value, or FALSE if parsing the
-	 * value failed and no XSD version is available. If the datatype has units,
-	 * then this value is given in the unit provided by getUnit().
-	 * @deprecated Use getDBkeys()
-	 */
-	public function getXSDValue() {
-		$keys = $this->getDBkeys();
-		return array_key_exists(0,$keys)?$keys[0]:'';
-	}
-
-	/**
 	 * Return an array of values that characterize the given datavalue completely,
 	 * and that are sufficient to reproduce a value of identical content using the
 	 * function setDBkeys(). The value array must use number keys that agree with
@@ -374,26 +360,18 @@ abstract class SMWDataValue {
 	abstract public function getWikiValue();
 
 	/**
-	 * Return the numeric representation of the value, or FALSE
-	 * is none is available. This representation is used to
-	 * compare values of scalar types more efficiently, especially
-	 * for sorting queries. If the datatype has units, then this
-	 * value is to be interpreted wrt. the unit provided by getUnit().
-	 * Possibly overwritten by subclasses.
+	 * Return the numeric representation of the value that can be
+	 * used for ordering values of this datatype. The given number
+	 * can be approximate and need not completely reflect the contents
+	 * of a data value. It merely is used for comparing two such
+	 * values. NULL is returned if no such number is provided, but
+	 * it is recommended to use isNumeric() to check for this case.
+	 * @note Storage implementations can assume numerical values to
+	 * be completely determined from the given datavalue (i.e. from the
+	 * vector returned by getDBkeys().
 	 */
 	public function getNumericValue() {
 		return NULL;
-	}
-
-	/**
-	 * Return the unit in which the returned value is to be interpreted.
-	 * This string is a plain UTF-8 string without wiki or html markup.
-	 * Returns the empty string if no unit is given for the value.
-	 * Possibly overwritten by subclasses.
-	 * @deprecated Use getDBkeys()
-	 */
-	public function getUnit() {
-		return ''; // empty unit
 	}
 
 	/**
@@ -449,7 +427,8 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Return TRUE if values of the given type generally have a numeric version.
+	 * Return TRUE if values of the given type generally have a numeric version,
+	 * i.e. if getNumericValue returns a meaningful numeric sortkey.
 	 * Possibly overwritten by subclasses.
 	 */
 	public function isNumeric() {
@@ -527,6 +506,49 @@ abstract class SMWDataValue {
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_notinenum', $this->getWikiValue(), $valuestring));
 		}
+	}
+
+
+	/**
+	 * Set the xsd value (and compute other representations if possible).
+	 * The given value is a string that was provided by getXSDValue() (all
+	 * implementations should support round-tripping).
+	 * @deprecated Use setDBkeys(). This function will vanish before SMW 1.6.
+	 */
+	public function setXSDValue($value, $unit = '') {
+		$this->setDBkeys(array($value, $unit));
+	}
+
+	/**
+	 * Initialise the datavalue from the given value string and unit.
+	 * The format of both strings strictly corresponds to the output
+	 * of this implementation for getXSDValue() and getUnit().
+	 * @deprecated Use parseDBkeys(). This function will vanish before SMW 1.6.
+	 */
+	protected function parseXSDValue($value, $unit) {
+		$this->parserDBkeys(array($value, $unit));
+	}
+
+	/**
+	 * Return the XSD compliant version of the value, or FALSE if parsing the
+	 * value failed and no XSD version is available. If the datatype has units,
+	 * then this value is given in the unit provided by getUnit().
+	 * @deprecated Use getDBkeys(). This function will vanish before SMW 1.6.
+	 */
+	public function getXSDValue() {
+		$keys = $this->getDBkeys();
+		return array_key_exists(0,$keys)?$keys[0]:'';
+	}
+
+	/**
+	 * Return the unit in which the returned value is to be interpreted.
+	 * This string is a plain UTF-8 string without wiki or html markup.
+	 * Returns the empty string if no unit is given for the value.
+	 * Possibly overwritten by subclasses.
+	 * @deprecated Use getDBkeys(). This function will vanish before SMW 1.6.
+	 */
+	public function getUnit() {
+		return ''; // empty unit
 	}
 
 }

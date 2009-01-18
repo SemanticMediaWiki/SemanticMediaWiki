@@ -57,11 +57,6 @@ class SMWBoolValue extends SMWDataValue {
 		return true;
 	}
 
-// 	protected function parseXSDValue($value, $unit) {
-// 		$this->parseUserValue($value); // no units, XML compatible syntax
-// 		$this->m_caption = $this->m_stdcaption; // use default for this language
-// 	}
-
 	protected function parseDBkeys($args) {
 		$this->parseUserValue($args[0]);
 		$this->m_caption = $this->m_stdcaption; // use default for this language
@@ -111,10 +106,6 @@ class SMWBoolValue extends SMWDataValue {
 			return $this->m_stdcaption;
 		}
 	}
-
-// 	public function getXSDValue() {
-// 		return $this->m_value?'1':'0';
-// 	}
 
 	public function getDBkeys() {
 		$this->unstub();

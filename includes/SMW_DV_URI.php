@@ -125,17 +125,6 @@ class SMWURIValue extends SMWDataValue {
 		return true;
 	}
 
-// 	protected function parseXSDValue($value, $unit) {
-// 		$this->m_value = $value;
-// 		$this->m_caption = $value;
-// 		if ($this->m_mode == SMW_URI_MODE_EMAIL) {
-// 			$this->m_url = 'mailto:' . $value;
-// 		} else {
-// 			$this->m_url = $value;
-// 		}
-// 		$this->m_uri = $this->m_url;
-// 	}
-
 	protected function parseDBkeys($args) {
 		$this->m_value = $args[0];
 		$this->m_caption = $this->m_value;
@@ -186,10 +175,6 @@ class SMWURIValue extends SMWDataValue {
 			return $linker->makeExternalLink($this->m_url, $this->m_value);
 		}
 	}
-
-// 	public function getXSDValue() {
-// 		return $this->m_value;
-// 	}
 
 	public function getDBkeys() {
 		$this->unstub();
