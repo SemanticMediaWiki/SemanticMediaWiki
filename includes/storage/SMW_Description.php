@@ -27,6 +27,7 @@ class SMWPrintRequest {
 	protected $m_data; // data entries specifyin gwhat was requested (mixed type)
 	protected $m_typeid = false; // id of the datatype of the printed objects, if applicable
 	protected $m_outputformat; // output format string for formatting results, if applicable
+	protected $m_hash = false; // cache your hash (currently useful since SMWQueryResult accesses the hash many times, might be dropped at some point)
 
 	/**
 	 * Create a print request.
@@ -140,14 +141,16 @@ class SMWPrintRequest {
 	 * labels.
 	 */
 	public function getHash() {
-		$hash = $this->m_mode . ':' . $this->m_label . ':';
-		if ($this->m_data instanceof Title) {
-			$hash .= $this->m_data->getPrefixedText() . ':';
-		} elseif ($this->m_data instanceof SMWDataValue) {
-			$hash .= $this->m_data->getHash() . ':';
+		if ($this->m_hash === false) {
+			$this->m_hash = $this->m_mode . ':' . $this->m_label . ':';
+			if ($this->m_data instanceof Title) {
+				$this->m_hash .= $this->m_data->getPrefixedText() . ':';
+			} elseif ($this->m_data instanceof SMWDataValue) {
+				$this->m_hash .= $this->m_data->getHash() . ':';
+			}
+			$this->m_hash .= $this->m_outputformat . ':';
 		}
-		$hash .= $this->m_outputformat . ':';
-		return $hash;
+		return $this->m_hash;
 	}
 
 	/**
@@ -297,8 +300,8 @@ abstract class SMWDescription {
 /**
  * A dummy description that describes any object. Corresponds to
  * owl:thing, the class of all abstract objects. Note that it is
- * not used for datavalues of attributes in order to support type 
- * hinting in the API: descriptions of data are always 
+ * not used for datavalues of attributes in order to support type
+ * hinting in the API: descriptions of data are always
  * SMWValueDescription objects.
  * @ingroup SMWQuery
  */
@@ -322,7 +325,7 @@ class SMWThingDescription extends SMWDescription {
 
 /**
  * Description of a single class as given by a wiki category, or of a disjunction
- * of such classes. Corresponds to (disjunctions of) atomic classes in OWL and 
+ * of such classes. Corresponds to (disjunctions of) atomic classes in OWL and
  * to (unions of) classes in RDF.
  * @ingroup SMWQuery
  */
@@ -405,7 +408,7 @@ class SMWClassDescription extends SMWDescription {
 
 
 /**
- * Description of a single class as described by a concept page in the wiki. Corresponds to 
+ * Description of a single class as described by a concept page in the wiki. Corresponds to
  * classes in (the EL fragment of) OWL DL, and to some extent to tree-shaped queries in SPARQL.
  * @ingroup SMWQuery
  */
@@ -486,10 +489,10 @@ class SMWNamespaceDescription extends SMWDescription {
 /**
  * Description of one data value, or of a range of data values.
  *
- * Technically this usually corresponds to nominal predicates or to unary 
- * concrete domain predicates in OWL which are parametrised by one constant 
+ * Technically this usually corresponds to nominal predicates or to unary
+ * concrete domain predicates in OWL which are parametrised by one constant
  * from the concrete domain.
- * In RDF, concrete domain predicates that define ranges (like "greater or 
+ * In RDF, concrete domain predicates that define ranges (like "greater or
  * equal to") are not directly available.
  * @ingroup SMWQuery
  */
@@ -548,8 +551,8 @@ class SMWValueDescription extends SMWDescription {
 
 /**
  * Description of an ordered list of SMWDescription objects, used as
- * values for some n-ary property. NULL values are to be used for 
- * unspecifed values. Corresponds to the built-in support for n-ary 
+ * values for some n-ary property. NULL values are to be used for
+ * unspecifed values. Corresponds to the built-in support for n-ary
  * properties, i.e. can be viewed as a macro in OWL and RDF.
  * @ingroup SMWQuery
  */
@@ -916,7 +919,7 @@ class SMWDisjunction extends SMWDescription {
  * fits another (sub)description.
  *
  * Corresponds to existential quatification ("some" restriction) on concrete properties
- * in OWL. In conjunctive queries (OWL) and SPARQL (RDF), it is represented by using 
+ * in OWL. In conjunctive queries (OWL) and SPARQL (RDF), it is represented by using
  * variables in the object part of such properties.
  * @ingroup SMWQuery
  */

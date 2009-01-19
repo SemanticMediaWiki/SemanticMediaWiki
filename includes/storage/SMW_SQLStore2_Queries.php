@@ -304,8 +304,9 @@ class SMWSQLStore2QueryEngine {
 						$cats = $this->m_store->getPropertyValues($qt,SMWPropertyValue::makeProperty('_INST'));
 					}
 					$found = '0';
+					$prkey = $pr->getData()->getDBkey();
 					foreach ($cats as $cat) {
-						if ($cat->getDBkey() == $pr->getData()->getDBkey()) {
+						if ($cat->getDBkey() == $prkey) {
 							$found = '1';
 							break;
 						}

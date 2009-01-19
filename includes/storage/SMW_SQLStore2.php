@@ -114,7 +114,6 @@ class SMWSQLStore2 extends SMWStore {
 	function getSemanticData($subject, $filter = false) {
 		wfProfileIn("SMWSQLStore2::getSemanticData (SMW)");
 		SMWSQLStore2::$in_getSemanticData++;
-		$db =& wfGetDB( DB_SLAVE );
 
 		if ( $subject instanceof Title ) {
 			$sid = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki());
@@ -155,6 +154,10 @@ class SMWSQLStore2 extends SMWStore {
 			$newtasks = $tasks & ~$this->m_sdstate[$sid];
 			$this->m_sdstate[$sid] = $this->m_sdstate[$sid] | $tasks;
 			$tasks = $newtasks;
+		}
+
+		if ($tasks != 0) { // fetch DB handler only when really needed!
+			$db =& wfGetDB( DB_SLAVE );
 		}
 		if ( (count($this->m_semdata) > 20) && (SMWSQLStore2::$in_getSemanticData == 1) ) {
 			// prevent memory leak;
@@ -333,18 +336,7 @@ class SMWSQLStore2 extends SMWStore {
 	 */
 	function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = NULL, $outputformat = '') {
 		wfProfileIn("SMWSQLStore2::getPropertyValues (SMW)");
-		if ($subject !== NULL) {
-			$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki());
-		} else {
-			$sid = 0;
-		}
-		$pid = $this->getSMWPropertyID($property);
-		if ( ( ($sid == 0) && ($subject !== NULL) ) || ($pid == 0)) {
-			wfProfileOut("SMWSQLStore2::getPropertyValues (SMW)");
-			return array();
-		}
-
-		if ($sid != 0) { // subject given, use semantic data cache:
+		if ($subject !== NULL) { // subject given, use semantic data cache:
 			$sd = $this->getSemanticData($subject,array($property->getTypeID()));
 			$result = $this->applyRequestOptions($sd->getPropertyValues($property),$requestoptions);
 			if ($outputformat != '') { // reformat cached values
@@ -357,6 +349,11 @@ class SMWSQLStore2 extends SMWStore {
 				$result = $newres;
 			}
 		} else { // no subject given, get all values for the given property
+			$pid = $this->getSMWPropertyID($property);
+			if ( $pid == 0 ) {
+				wfProfileOut("SMWSQLStore2::getPropertyValues (SMW)");
+				return array();
+			}
 			$db =& wfGetDB( DB_SLAVE );
 			$result = array();
 			$mode = SMWSQLStore2::getStorageMode($property->getTypeID());

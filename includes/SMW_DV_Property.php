@@ -49,7 +49,8 @@ class SMWPropertyValue extends SMWDataValue {
 	/// If the property is associated with a wikipage, it is stored here. Otherwise NULL.
 	protected $m_wikipage;
 
-	private $m_typevalue; // once calculated, remember the type of this property
+	private $prop_typevalue; // once calculated, remember the type of this property
+	private $prop_typeid; // once calculated, remember the type of this property
 
 	/**
 	 * Static function for creating a new property object from a
@@ -85,7 +86,8 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @todo Accept/enforce property namespace.
 	 */
 	protected function parseUserValue($value) {
-		$this->m_typevalue = NULL;
+		$this->prop_typevalue = NULL;
+		$this->prop_typeid = NULL;
 		if ($this->m_caption === false) { // always use this as caption
 			$this->m_caption = $value;
 		}
@@ -109,7 +111,8 @@ class SMWPropertyValue extends SMWDataValue {
 	 * internal property id accordingly.
 	 */
 	protected function parseDBkeys($args) {
-		$this->m_typevalue = NULL;
+		$this->prop_typevalue = NULL;
+		$this->prop_typeid = NULL;
 		SMWPropertyValue::initProperties();
 		if ($args[0]{0} == '_') { // internal id, use as is (and hope it is still known)
 			$this->m_propertyid = $args[0];
@@ -221,7 +224,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function getTypesValue() {
 		global $smwgPDefaultType;
-		if ($this->m_typevalue !== NULL) return $this->m_typevalue;
+		if ($this->prop_typevalue !== NULL) return $this->prop_typevalue;
 		if (!$this->isValid()) { // errors in property, return invalid types value with same errors
 			$result = SMWDataValueFactory::newTypeIDValue('__typ');
 			$result->setXSDValue('__err');
@@ -247,7 +250,7 @@ class SMWPropertyValue extends SMWDataValue {
 				$result->setXSDValue('_str');
 			}
 		}
-		$this->m_typevalue = $result;
+		$this->prop_typevalue = $result;
 		return $result;
 	}
 
@@ -255,8 +258,11 @@ class SMWPropertyValue extends SMWDataValue {
 	 * Quickly get the type id of some property without necessarily making another datavalue.
 	 */
 	public function getTypeID() {
-		$type = $this->getTypesValue();
-		return $type->isUnary()?$type->getXSDValue():'__nry';
+		if ($this->prop_typeid === NULL) {
+			$type = $this->getTypesValue();
+			$this->prop_typeid = $type->isUnary()?end($type->getDBkeys()):'__nry';
+		}
+		return $this->prop_typeid;
 	}
 
 	/**
