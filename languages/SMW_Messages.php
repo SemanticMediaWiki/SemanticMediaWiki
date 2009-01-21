@@ -3082,13 +3082,14 @@ $messages['km'] = array(
 
 /** Korean (한국어)
  * @author Albamhandae
+ * @author Kwj2772
  */
 $messages['ko'] = array(
 	'smw_edithelp' => '도움말을 수정하려면 속성을',
-	'smw_viewasrdf' => '으로 볼 rdf',
+	'smw_viewasrdf' => 'RDF 피드',
 	'smw_finallistconjunct' => ', 그리고',
-	'smw_factbox_head' => '사실에 대한 $1',
-	'smw_isspecprop' => '이 속성은이 위키는 특별한 속성입니다.',
+	'smw_factbox_head' => '$1에 대한 사실',
+	'smw_isspecprop' => '이 속성은 이 위키의 특별한 속성입니다.',
 	'smw_isknowntype' => '이 유형은 표준 데이터 형식의들 사이에이 위키.',
 	'smw_isaliastype' => '이 유형은 데이터의 별칭을 “$1”.',
 	'smw_isnotype' => '이 유형이 “$1” 아닌 표준 데이터 형식은 위키가, 그리고 사용자 정의를 부여하지 않았습니다.',
@@ -3142,7 +3143,7 @@ $messages['ko'] = array(
 	'smw_typearticlecount' => '이 유형을 사용하여 보여주 $1 의 등록 정보를합니다.',
 	'smw_attribute_header' => '페이지를 사용하여 속성이 “$1”',
 	'smw_attributearticlecount' => '이 속성을 사용하여 보여주 $1 페이지입니다.',
-	'exportrdf' => '수출에 페이지를 RDF',
+	'exportrdf' => 'RDF로 문서 내보내기',
 	'smw_exportrdf_docu' => '<p>이 페이지를 사용하면 RDF 포맷의 페이지에서 데이터를 구하려합니다. 을 수출 페이지, 아래 텍스트 상자에 제목을 입력을 한 줄에 제목입니다.</p>',
 	'smw_exportrdf_recursive' => '재귀적으로 모든 관련 페이지에 수출합니다. 참고 사항이 될 결과에 큰!',
 	'smw_exportrdf_backlinks' => '또한 내보낸 페이지를 참조하는 모든 페이지 내보내기합니다. 일람 RDF를 생성합니다.',
