@@ -62,14 +62,14 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_unknowntype'   => 'Unsupported type "$1" defined for property.',
 	'smw_manytypes'     => 'More than one type defined for property.',
 	'smw_emptystring'   => 'Empty strings are not accepted.',
-	'smw_maxstring'     => 'String representation $1 is too long for {{SITENAME}}.',
+	'smw_maxstring'     => 'String representation $1 is too long.',
 	'smw_notinenum'     => '"$1" is not in the list of possible values ($2) for this property.',
 	'smw_noboolean'     => '"$1" is not recognized as a Boolean (true/false) value.',
 	'smw_true_words'    => 'true,t,yes,y', // comma-separated synonyms for Boolean TRUE besides '1', primary value first
 	'smw_false_words'   => 'false,f,no,n', // comma-separated synonyms for Boolean FALSE besides '0', primary value first
 	'smw_nofloat'       => '"$1" is not a number.',
-	'smw_infinite'      => 'Numbers as large as "$1" are not supported on {{SITENAME}}.',
-	'smw_infinite_unit' => 'Conversion into unit "$1" resulted in a number that is too large for {{SITENAME}}.',
+	'smw_infinite'      => 'Numbers as large as "$1" are not supported.',
+	'smw_infinite_unit' => 'Conversion into unit "$1" resulted in a number that is too large.',
 
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this property supports no unit conversion',
 	'smw_unsupportedprefix' => 'Prefixes for numbers ("$1") are not supported.',
