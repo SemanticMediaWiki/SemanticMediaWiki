@@ -235,6 +235,12 @@ $aliases['ro'] = array(
 	'Browse' => array( 'Răsfoieşte' ),
 );
 
+/** Albanian (Shqip) */
+$aliases['sq'] = array(
+	'Ask' => array( 'Pyet' ),
+	'Browse' => array( 'Sille' ),
+);
+
 /** Swahili (Kiswahili) */
 $aliases['sw'] = array(
 	'Ask' => array( 'Uliza' ),
