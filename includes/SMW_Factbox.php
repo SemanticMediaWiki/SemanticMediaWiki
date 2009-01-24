@@ -131,9 +131,7 @@ class SMWFactbox {
 			// do not forget to grab the outputs header items
 			SMWOutputs::requireFromParserOutput($po);
 			SMWOutputs::commitToOutputPage($outputpage);
-		} else {
-			$outputpage->mSMWFactboxText = '';
-		}
+		} //else: nothing shown, don't even set any text
 		return true;
 	}
 
