@@ -23,17 +23,17 @@ class SMWFactbox {
 		switch ($showfactbox) {
 			case SMW_FACTBOX_HIDDEN: // show never
 				wfProfileOut("SMWFactbox::printFactbox (SMW)");
-			return;
+			return '';
 			case SMW_FACTBOX_SPECIAL: // show only if there are special properties
 				if (!$semdata->hasVisibleSpecialProperties()) {
 					wfProfileOut("SMWFactbox::printFactbox (SMW)");
-					return;
+					return '';
 				}
 			break;
 			case SMW_FACTBOX_NONEMPTY: // show only if non-empty
 				if ( !$semdata->hasVisibleProperties() ) {
 					wfProfileOut("SMWFactbox::printFactbox (SMW)");
-					return;
+					return '';
 				}
 			break;
 		// case SMW_FACTBOX_SHOWN: // just show ...
@@ -94,11 +94,6 @@ class SMWFactbox {
 	 */
 	static public function getFactboxTextFromOutput($parseroutput, $title) {
 		global $wgRequest, $smwgShowFactboxEdit, $smwgShowFactbox;
-		if (!isset($parseroutput->mSMWData) || $parseroutput->mSMWData->stubobject) {
-			$semdata = smwfGetStore()->getSemanticData($title);
-		} else {
-			$semdata = $parseroutput->mSMWData;
-		}
 		$mws =  (isset($parseroutput->mSMWMagicWords))?$parseroutput->mSMWMagicWords:array();
 		if (in_array('SMW_SHOWFACTBOX',$mws)) {
 			$showfactbox = SMW_FACTBOX_NONEMPTY;
@@ -108,6 +103,15 @@ class SMWFactbox {
 			$showfactbox = $smwgShowFactboxEdit;
 		} else {
 			$showfactbox = $smwgShowFactbox;
+		}
+		if ($showfactbox == SMW_FACTBOX_HIDDEN) { // use shortcut
+			return '';
+		}
+		// deal with complete dataset only if needed:
+		if (!isset($parseroutput->mSMWData) || $parseroutput->mSMWData->stubobject) {
+			$semdata = smwfGetStore()->getSemanticData($title);
+		} else {
+			$semdata = $parseroutput->mSMWData;
 		}
 		return SMWFactbox::getFactboxText($semdata, $showfactbox);
 	}
@@ -120,12 +124,16 @@ class SMWFactbox {
 	static public function onOutputPageParserOutput($outputpage, $parseroutput) {
 		global $wgTitle, $wgParser;
 		$factbox = SMWFactbox::getFactboxTextFromOutput($parseroutput,$wgTitle);
-		$popts = new ParserOptions();
-		$po = $wgParser->parse( $factbox, $wgTitle, $popts );
-		$outputpage->mSMWFactboxText = $po->getText();
-		// do not forget to grab the outputs header items
-		SMWOutputs::requireFromParserOutput($po);
-		SMWOutputs::commitToOutputPage($outputpage);
+		if ($factbox != '') {
+			$popts = new ParserOptions();
+			$po = $wgParser->parse( $factbox, $wgTitle, $popts );
+			$outputpage->mSMWFactboxText = $po->getText();
+			// do not forget to grab the outputs header items
+			SMWOutputs::requireFromParserOutput($po);
+			SMWOutputs::commitToOutputPage($outputpage);
+		} else {
+			$outputpage->mSMWFactboxText = '';
+		}
 		return true;
 	}
 
