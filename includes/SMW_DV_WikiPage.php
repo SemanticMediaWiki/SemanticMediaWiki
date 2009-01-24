@@ -74,6 +74,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	protected function parseUserValue($value) {
+		global $wgContLang;
 		$value = ltrim(rtrim($value,' ]'),' ['); // support inputs like " [[Test]] "
 		if ($value != '') {
 			$this->m_title = Title::newFromText($value, $this->m_fixNamespace);
