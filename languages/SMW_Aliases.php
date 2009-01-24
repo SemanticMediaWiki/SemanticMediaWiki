@@ -150,6 +150,22 @@ $aliases['hu'] = array(
 	'WantedProperties' => array( 'Keresett tulajdonságok' ),
 );
 
+/** Japanese (日本語) */
+$aliases['ja'] = array(
+	'Ask' => array( '問い合わせ' ),
+	'Browse' => array( '閲覧' ),
+	'ExportRDF' => array( 'RDFエクスポート' ),
+	'PageProperty' => array( 'ページプロパティ' ),
+	'Properties' => array( 'プロパティ' ),
+	'SMWAdmin' => array( 'SMW管理' ),
+	'SearchByProperty' => array( 'プロパティによる検索' ),
+	'SemanticStatistics' => array( 'セマンティック統計' ),
+	'Types' => array( '型' ),
+	'URIResolver' => array( 'URIリゾルバー' ),
+	'UnusedProperties' => array( '使われていないプロパティ' ),
+	'WantedProperties' => array( '望まれているプロパティ' ),
+);
+
 /** Khmer (ភាសាខ្មែរ) */
 $aliases['km'] = array(
 	'Browse' => array( 'រាវរក' ),
