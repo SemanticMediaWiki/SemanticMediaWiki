@@ -1763,7 +1763,7 @@ $messages['fr'] = array(
 	'smw_oi_textforall' => "Texte d'en-tête à ajouter à toutes les importations (peut être vide) :",
 	'smw_oi_selectall' => 'Sélectionner ou désélectionner tous les textes',
 	'smw_oi_statementsabout' => 'Textes sur $1',
-	'smw_oi_mapto' => "Carte de l'entité sur $1",
+	'smw_oi_mapto' => "Cartographier l'entité sur $1",
 	'smw_oi_comment' => 'Ajouter le texte suivant :',
 	'smw_oi_thisissubcategoryof' => 'Sous-catégorie de $1',
 	'smw_oi_thishascategory' => 'Fait partie de $1',
@@ -2980,6 +2980,8 @@ $messages['ja'] = array(
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki は意味データを格納するため、MediaWiki のデータベースに対していくつかの拡張を必要とします。以下の機能はあなたのデータベースが適切に構築されていることを確実にするものです。この作業でなされた変更は MediaWiki のデータベースのその他の部分には影響を与えず、必要なら簡単に取り消しができます。この機能は複数回実行したとしてもなんの害もありませんが、インストールもしくはアップグレード時に一度だけ実行すれば十分です。',
 	'smw_smwadmin_permissionswarn' => 'SQLエラーを出して処理が失敗したとすると、それはおそらくあなたのウィキのデータベースユーザー（LocalSettings.php を確認してください）が必要な権限をもっていないためです。一時的に LocalSettings.php でデータベースのルートとしてログインして、そのユーザーにテーブルを作成および削除するための追加権限を与えるか、あるいは AdminSettings.php の設定情報を利用できるメンテナンススクリプト <tt>SMW_setup.php</tt> を使用してください。',
 	'smw_smwadmin_dbbutton' => 'テーブルを初期化またはアップグレード',
+	'smw_smwadmin_support' => '支援を得る',
+	'smw_smwadmin_supportdocu' => '問題が起きたときに種々のリソースが助けとなるかもしれません:',
 );
 
 /** Javanese (Basa Jawa)
