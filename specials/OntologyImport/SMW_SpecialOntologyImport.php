@@ -188,7 +188,8 @@ class SMWOntologyImport {
 			} else {
 				$classnew = 'class="new" ';
 			}
-			$s['HUMAN'] = wfMsg( 'smw_oi_thishascategory' ) . ' <a href="'. $t->getLocalURL() .'" '. $classnew .'title="'. $t->getPrefixedText() .'">'. $t->getPrefixedText() .'</a>' . "\n";
+			$thishascategoryLink = '<a href="'. $t->getLocalURL() .'" '. $classnew .'title="'. $t->getPrefixedText() .'">'. $t->getPrefixedText() .'</a>';
+			$s['HUMAN'] = wfMsg( 'smw_oi_thishascategory', $thishascategoryLink ) . "\n";
 			$s['WIKI'] = "[[" . $t->getPrefixedText() . "]]" . "\n";
 			$statements[] = $s;
 		}
@@ -222,7 +223,8 @@ class SMWOntologyImport {
 			} else {
 				$classnew = 'class="new" ';
 			}
-			$s['HUMAN'] = wfMsg( 'smw_oi_thisissubcategoryof' ) . ' <a href="'. $t->getLocalURL() .'" '. $classnew .'title="'. $t->getPrefixedText() .'">'. $t->getPrefixedText() .'</a>' . "\n";
+			$thisissubcategoryofLink = '<a href="'. $t->getLocalURL() .'" '. $classnew .'title="'. $t->getPrefixedText() .'">'. $t->getPrefixedText() .'</a>';
+			$s['HUMAN'] = wfMsg( 'smw_oi_thisissubcategoryof', $thisissubcategoryofLink ) . "\n";
 			$s['WIKI'] = "[[" . $t->getPrefixedText() . "]]" . "\n";
 			$statements[] = $s;
 		}
@@ -340,12 +342,14 @@ class SMWOntologyImport {
 
 		// TODO $message .= '<input type="checkbox" />'; one click to click all statements about an entity
 		wfLoadExtensionMessages('SemanticMediaWiki');
-		$message .= wfMsg( 'smw_oi_statementsabout' ) . ' <a href="'. $t->getLocalURL() .'" '. $classnew .'title="'. $t->getPrefixedText() .'">'. $t->getPrefixedText() .'</a> <br />' . "\n";
+		$statementsaboutLink = ' <a href="'. $t->getLocalURL() .'" '. $classnew .'title="'. $t->getPrefixedText() .'">'. $t->getPrefixedText() .'</a> <br />';
+		$message .= wfMsg( 'smw_oi_statementsabout', $statementsaboutLink ) . "\n";
 
 		$snr = 0;
 		if ($need_to_map) {
 			$value = $ns . ':' . $t->getDBkey() . '::[[equivalent URI:=' . $entity->getURI() . '| ]]'; // TODO internationalize equivalent URI
-			$message .= '&nbsp; <input type="checkbox" name="s' . $enr . '_' . $snr++ . '" value="' . $value . '" />' . wfMsg( 'smw_oi_mapto' ) . ' <em><a href="' . $entity->getURI() . '" title="' . $entity->getURI() . '">' . $entity->getURI() . '</a></em> <br />' . "\n";
+			$maptoLink = '<em><a href="' . $entity->getURI() . '" title="' . $entity->getURI() . '">' . $entity->getURI() . '</a></em> <br />';
+			$message .= '&nbsp; <input type="checkbox" name="s' . $enr . '_' . $snr++ . '" value="' . $value . '" />' . wfMsg( 'smw_oi_mapto', $maptoLink ) . "\n";
 		}
 
 		foreach ($statements as $statement) {

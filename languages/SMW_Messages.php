@@ -171,11 +171,11 @@ The ontologies have to follow a certain format, specified at the <a href="http:/
 	'smw_oi_select'               => 'Select the statements to import, and then click the import button.',
 	'smw_oi_textforall'           => 'Header text to add to all imports (may be empty):',
 	'smw_oi_selectall'            => 'Select or unselect all statements',
-	'smw_oi_statementsabout'      => 'Statements about',
-	'smw_oi_mapto'                => 'Map entity to',
+	'smw_oi_statementsabout'      => 'Statements about $1',
+	'smw_oi_mapto'                => 'Map entity to $1',
 	'smw_oi_comment'              => 'Add the following text:',
-	'smw_oi_thisissubcategoryof'  => 'A subcategory of',
-	'smw_oi_thishascategory'      => 'Is part of',
+	'smw_oi_thisissubcategoryof'  => 'A subcategory of $1',
+	'smw_oi_thishascategory'      => 'Is part of $1',
 	'smw_oi_importedfromontology' => 'Import from ontology',
 
 	// Messages for (data)Types Special
