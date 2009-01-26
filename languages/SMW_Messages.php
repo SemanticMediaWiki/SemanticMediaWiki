@@ -322,6 +322,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_label_latitude' => '{{Identical|Latitude}}',
 	'smw_label_longitude' => '{{Identical|Longitude}}',
 	'smw_subpropertyarticlecount' => '[[bugzilla:15207|Bug on Bugzilla about this message]] has been fixed at [[mw:Special:Code/MediaWiki/40793|r40793]].',
+	'specialpages-group-smw_group' => '{{optional}}',
 	'properties' => 'This is the title of the special page showing all properties.',
 	'smw_property_template' => 'Used to display information about properties on Special:Properties. The parameters have the following meaning:
 * $1: the property name
@@ -2113,6 +2114,46 @@ $messages['grc'] = array(
 	'smw_result_next' => 'Ἑπομέναι',
 );
 
+/** Swiss German (Alemannisch)
+ * @author Als-Holder
+ */
+$messages['gsw'] = array(
+	'smw_edithelp' => 'Bearbeitigshilf fir Attribut',
+	'smw_viewasrdf' => 'RDF-Feed',
+	'smw_finallistconjunct' => ' un',
+	'smw_factbox_head' => 'Fakte zue $1',
+	'smw_isspecprop' => 'Des Attribut isch e Spezialattribut in däm Wiki.',
+	'smw_isknowntype' => 'Dää Datentyp ghert zue dr Standardtype in däm Wiki.',
+	'smw_isaliastype' => 'Dää Datetyp isch e Alias fir dr Typ „$1“.',
+	'smw_isnotype' => 'Dr Datetyp „$1“ isch kei Standardtyp in däm Wiki un het au kei Definition uf syynere Syte, wu tet länge.',
+	'smw_concept_description' => 'Bschryybig vum Konzäpt „$1“',
+	'smw_no_concept_namespace' => "Konzäpt chenne nume im ''Konzäpt:'' Namensruum aagleit wäre.",
+	'smw_multiple_concepts' => 'In jedwädere Konzäptsyte cha s nume ei Konzäptdefinition din haa.',
+	'smw_concept_cache_miss' => 'S Konzäpt „$1“ cha im Momänt nit aagwändet wäre, wel d Wiki-Konfiguration offline grächnet muess wäre.
+Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalter, des Konzäpt megli z mache.',
+	'smw_baduri' => 'URI mit dr Form „$1“ sin nit zuelässig.',
+	'smw_iq_disabled' => 'Semantischi Aafroge sin in däm Wiki zur Zyt nit megli.',
+	'smw_iq_moreresults' => '… meh Ergebniss',
+	'smw_iq_nojs' => 'Dr Inhalt vu däm Elemänt cha mit eme Browser mit JavaScript-Unterstitzig bschaut wäre.',
+	'smw_iq_altresults' => 'Suechergebnis as Lischt aazeige.',
+	'smw_unknown_importns' => 'Fir dr Namensruum „$1“ sin leider kei Importfunktione verfiegbar.',
+	'smw_nonright_importtype' => 'S Elemänt „$1“ cha nume fir Syte im Namensruum „$2“ bruucht wäre.',
+	'smw_wrong_importtype' => 'S Elemänt „$1“ cha nit fir Syte im Namensruum „$2“ bruucht wäre.',
+	'smw_no_importelement' => 'S Elemänt „$1“ stoht leider nit zum Importiere z Verfiegig.',
+	'smw_parseerror' => 'Dr Wärt, wu Du yygee hesch, isch nit verstande wore.',
+	'smw_notitle' => '„$1“ cha nit as Sytename in däm Wiki bruucht wäre.',
+	'smw_wrong_namespace' => 'Nume Syten im Namensruum „$1“ sin doo zuelässig.',
+	'smw_unknowntype' => 'Im Attribut isch dr nit bekannt Datetyp „$1“ zuegwise wore.',
+	'smw_manytypes' => 'Im Attribut sin e paar Datetype zuegwise wore.',
+	'smw_emptystring' => 'Lääri Zeichefolge wäre nit akzeptiert.',
+	'smw_maxstring' => 'D Zeichechette „$1“ isch z lang.',
+	'smw_notinenum' => '„$1“ ghert nit zue dr meglige Wärt vu däm Attribut ($2).',
+	'smw_noboolean' => '„$1“ isch kei Wohretswärt (wohr/falsch).',
+	'smw_true_words' => 'wohr,w,jo,j',
+	'smw_false_words' => 'falsch,f,nei,n',
+	'smw_nofloat' => '„$1“ isch kei Zahl.',
+);
+
 /** Hebrew (עברית)
  * @author Rotemliss
  * @author Udi Oron אודי אורון
@@ -2890,6 +2931,7 @@ $messages['ja'] = array(
 	'smw_concept_header' => '概念「$1」のページ',
 	'smw_conceptarticlecount' => 'この概念に属する $1個のページを表示しています。',
 	'smw_rss_description' => '$1 RSSフィード',
+	'specialpages-group-smw_group' => 'セマンティック・メディアウィキ',
 	'exportrdf' => 'ページをRDFにエクスポート',
 	'smw_exportrdf_docu' => '<p>このページを使うとページからデータをRDF形式で取得できます。ページをエクスポートするには、下のテキストボックスにページ名を一行に一つずつ入力してください。</p>',
 	'smw_exportrdf_recursive' => 'すべての関連ページを再帰的にエクスポートする。結果は大きくなることがあるので注意してください。',
@@ -2917,7 +2959,11 @@ $messages['ja'] = array(
 	'smw_oi_select' => 'インポートする文を選択し、インポートボタンを押してください。',
 	'smw_oi_textforall' => 'すべてのインポートに追加するヘッダーテキスト (空でも可):',
 	'smw_oi_selectall' => 'すべての文を選択または選択解除',
+	'smw_oi_statementsabout' => '$1 に関する文',
+	'smw_oi_mapto' => '実体を $1 に写像する',
 	'smw_oi_comment' => '次のテキストを追加:',
+	'smw_oi_thisissubcategoryof' => '$1 のサブカテゴリ',
+	'smw_oi_thishascategory' => '$1 の一部',
 	'smw_oi_importedfromontology' => 'オントロジーからインポート',
 	'types' => '型',
 	'smw_types_docu' => '以下はプロパティに割り当てられているすべてのデータ型の一覧です。各データ型は追加情報が載ったページをもっています。',
@@ -2980,8 +3026,26 @@ $messages['ja'] = array(
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki は意味データを格納するため、MediaWiki のデータベースに対していくつかの拡張を必要とします。以下の機能はあなたのデータベースが適切に構築されていることを確実にするものです。この作業でなされた変更は MediaWiki のデータベースのその他の部分には影響を与えず、必要なら簡単に取り消しができます。この機能は複数回実行したとしてもなんの害もありませんが、インストールもしくはアップグレード時に一度だけ実行すれば十分です。',
 	'smw_smwadmin_permissionswarn' => 'SQLエラーを出して処理が失敗したとすると、それはおそらくあなたのウィキのデータベースユーザー（LocalSettings.php を確認してください）が必要な権限をもっていないためです。一時的に LocalSettings.php でデータベースのルートとしてログインして、そのユーザーにテーブルを作成および削除するための追加権限を与えるか、あるいは AdminSettings.php の設定情報を利用できるメンテナンススクリプト <tt>SMW_setup.php</tt> を使用してください。',
 	'smw_smwadmin_dbbutton' => 'テーブルを初期化またはアップグレード',
+	'smw_smwadmin_announce' => 'あなたのウィキの発表',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki には新しいセマンティック・ウィキのサイトを発表するためのウェブサービスがあります。
+このサービスは Semantic MediaWiki を使用するサイトのリストを保守するために用いられており、主に <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki プロジェクト</a>が Semantic MediaWiki の典型的な使用法を把握するために利用されています。
+Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.org/wiki/Registry">このサービスについてのさらなる情報</a>を確認してください。',
+	'smw_smwadmin_announcebutton' => '次のボタンを押して、あなたのウィキのURLをこのサービスに提出します。このサービスは、公開されていないウィキは登録せず、公開されている情報のみを保管します。',
+	'smw_smwadmin_datarefresh' => 'データの修復とアップグレード',
+	'smw_smwadmin_datarefreshdocu' => 'ウィキの現在の内容に基づいて、Semantic MediaWiki の全データを復旧することができます。この機能は破損したデータを修復する場合や、ソフトウェアのアップグレードによって内部形式が変わった際にデータを移行する場合などに有用です。この更新は1ページずつ実行され、直ちには完了しません。以下では、更新が進行中か否かを示し、更新を開始または停止することができます (この機能がサイト管理者によって無効化されていない場合に限る)。',
+	'smw_smwadmin_datarefreshprogress' => '更新が既に進行中です。</b>
+利用者がウィキにアクセスするたびに少量の塊のデータを更新するだけなので、更新がゆっくりとしか進まないのは正常なことです。
+この更新をより速く終えたい場合は、MediaWiki のメンテナンススクリプト <tt>runJobs.php</tt> を起動できます (1つのバッチでなされる更新の数を制限するために <tt>--maxjobs 1000</tt> オプションを用いてください)。
+現在の更新の推定進捗:',
+	'smw_smwadmin_datarefreshbutton' => 'データの更新を開始',
+	'smw_smwadmin_datarefreshstop' => 'この更新を停止',
+	'smw_smwadmin_datarefreshstopconfirm' => 'はい、もちろんです。',
 	'smw_smwadmin_support' => '支援を得る',
 	'smw_smwadmin_supportdocu' => '問題が起きたときに種々のリソースが助けとなるかもしれません:',
+	'smw_smwadmin_installfile' => 'インストールに問題を発見した場合、<a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL ファイル</a>にある指針を確認することから始めてください。',
+	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki の完全な利用者用ドキュメントは <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
+	'smw_smwadmin_mediazilla' => 'バグは <a href="https://bugzilla.wikimedia.org/">MediaZilla</a> で報告できます。',
+	'smw_smwadmin_questions' => 'さらに質問や提案がある場合は、<a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a> での議論に参加してください。',
 );
 
 /** Javanese (Basa Jawa)
@@ -3250,6 +3314,35 @@ $messages['km'] = array(
 	'smw_smwadmin_datarefreshbutton' => 'ចាប់ផ្ដើម​បន្ទាន់សម័យ​ទិន្នន័យ',
 	'smw_smwadmin_datarefreshstop' => 'បញ្ឈប់​ការ​បន្ទាន់សម័យ​នេះ',
 	'smw_smwadmin_datarefreshstopconfirm' => 'បាទ/ចាស, ខ្ញុំ​ប្រាកដ​ហើយ​។',
+);
+
+/** Korean (한국어)
+ * @author Albamhandae
+ * @author Kwj2772
+ */
+$messages['ko'] = array(
+	'smw_edithelp' => '도움말을 수정하려면 속성을',
+	'smw_viewasrdf' => 'RDF 피드',
+	'smw_factbox_head' => '$1에 대한 사실',
+	'smw_isspecprop' => '이 속성은 이 위키의 특별한 속성입니다.',
+	'smw_isaliastype' => '이 유형은 데이터의 별칭을 “$1”.',
+	'smw_baduri' => '죄송합니다, uri의 범위에서 “$1” 해당 장소에서 사용할 수 없다.',
+	'smw_no_importelement' => '원소 “$1” 에 사용할 수없습니다 져올.',
+	'smw_unknowntype' => '지원되지 않는 종류 “$1” 정의에 대한 속성을.',
+	'smw_maxstring' => '문자열 표현 $1 이 너무 긴이 사이트에 대한.',
+	'smw_infinite' => '숫자와 대형으로 “$1” 는 지원되지 않습니다이 사이트에서.',
+	'smw_infinite_unit' => '전환으로 단위를 “$1” 결과는이 사이트에 대한 숫자가 너무 큽니다.',
+	'smw_unsupportedprefix' => '접두사에 대한 숫자("$1")는 지원되지 않습니다.',
+	'smw_nodatetime' => '의 날짜 “$1” 는 이해할 수 없다.',
+	'smw_badprintout' => '검색어에 인쇄 성명 커보였다.',
+	'smw_typearticlecount' => '이 유형을 사용하여 보여주 $1 의 등록 정보를합니다.',
+	'smw_attributearticlecount' => '이 속성을 사용하여 보여주 $1 페이지입니다.',
+	'exportrdf' => 'RDF로 문서 내보내기',
+	'smw_oi_statementsabout' => '제표에 대한 $1',
+	'smw_oi_mapto' => '지도 사업체에 $1',
+	'smw_oi_thisissubcategoryof' => '하위 카테고리 중 $1',
+	'smw_oi_thishascategory' => '의 일부인 $1',
+	'smw_pp_type' => '부동산',
 );
 
 /** Krio (Krio)
@@ -4888,6 +4981,7 @@ $messages['roa-tara'] = array(
 	'smw_unusedproperty_template' => '$1 de tipe $2',
 	'smw_wantedproperty_template' => '$1 ($2 ause)',
 	'smw_oi_action' => "'Mborte",
+	'smw_oi_thisissubcategoryof' => "'Na sottecategorije de $1",
 	'smw_oi_thishascategory' => "Jè 'nu stuezze de $1",
 	'types' => 'Tipe',
 );
