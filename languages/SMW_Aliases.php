@@ -152,14 +152,14 @@ $aliases['hu'] = array(
 
 /** Japanese (日本語) */
 $aliases['ja'] = array(
-	'Ask' => array( '問い合わせ', '意味検索' ),
+	'Ask' => array( '問い合わせ', '意味的検索' ),
 	'Browse' => array( '閲覧' ),
 	'ExportRDF' => array( 'RDFエクスポート' ),
 	'PageProperty' => array( 'ページプロパティ' ),
 	'Properties' => array( 'プロパティ' ),
 	'SMWAdmin' => array( 'SMW管理' ),
 	'SearchByProperty' => array( 'プロパティによる検索' ),
-	'SemanticStatistics' => array( '意味統計' ),
+	'SemanticStatistics' => array( '意味的統計' ),
 	'Types' => array( '型' ),
 	'URIResolver' => array( 'URIリゾルバー' ),
 	'UnusedProperties' => array( '使われていないプロパティ' ),
