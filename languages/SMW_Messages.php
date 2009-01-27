@@ -161,23 +161,6 @@ Generates browsable RDF.',
 	'tooltip-purge' => 'Click here to refresh all queries and templates on this page',
 	'smw_purge'     => 'Refresh',
 
-	// Messages for Import Ontology Special
-	'ontologyimport'              => 'Import ontology',
-	'smw_oi_docu'                 => 'This special page allows to import ontologies.
-The ontologies have to follow a certain format, specified at the <a href="http://semantic-mediawiki.org/wiki/Help:Ontology_import">ontology import help page</a>.',
-	'smw_oi_action'               => 'Import',
-	'smw_oi_return'               => 'Return to <a href="$1">Special:OntologyImport</a>.',
-	'smw_oi_noontology'           => 'No ontology supplied, or could not load ontology.',
-	'smw_oi_select'               => 'Select the statements to import, and then click the import button.',
-	'smw_oi_textforall'           => 'Header text to add to all imports (may be empty):',
-	'smw_oi_selectall'            => 'Select or unselect all statements',
-	'smw_oi_statementsabout'      => 'Statements about $1',
-	'smw_oi_mapto'                => 'Map entity to $1',
-	'smw_oi_comment'              => 'Add the following text:',
-	'smw_oi_thisissubcategoryof'  => 'A subcategory of $1',
-	'smw_oi_thishascategory'      => 'Is part of $1',
-	'smw_oi_importedfromontology' => 'Import from ontology',
-
 	// Messages for (data)Types Special
 	'types'          => 'Types',
 	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to properties.
