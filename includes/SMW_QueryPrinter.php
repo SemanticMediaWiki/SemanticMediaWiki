@@ -17,10 +17,14 @@ abstract class SMWResultPrinter {
 
 	protected $m_params;
 
-	/** Text to print before the output in case it is *not* empty; assumed to be wikitext.
+	/** Text to print *before* the output in case it is *not* empty; assumed to be wikitext.
 	  * Normally this is handled in SMWResultPrinter and can be ignored by subclasses. */
 	protected $mIntro = '';
-	
+
+	/** Text to print *after* the output in case it is *not* empty; assumed to be wikitext.
+	  * Normally this is handled in SMWResultPrinter and can be ignored by subclasses. */
+	protected $mOutro = '';
+
 	/** Text to use for link to further results, or empty if link should not be shown.
 	 *  Unescaped! Use SMWResultPrinter::getSearchLabel() and SMWResultPrinter::linkFurtherResults()
 	 *  instead of accessing this directly. */
@@ -41,7 +45,7 @@ abstract class SMWResultPrinter {
 	/**
 	 * If set, treat result as plain HTML. Can be used by printer classes if wiki mark-up is not enough.
 	 * This setting is used only after the result text was generated.
-	 * @note HTML query results cannot be used as parameters for other templates or in any other way 
+	 * @note HTML query results cannot be used as parameters for other templates or in any other way
 	 * in combination with other wiki text. The result will be inserted on the page literally.
 	 */
 	protected $isHTML = false;
@@ -179,6 +183,16 @@ abstract class SMWResultPrinter {
 				$result = $this->mIntro . $result;
 			}
 		}
+
+		if ( ($this->mOutro) && ($results->getCount() > 0) ) {
+			if ($outputmode == SMW_OUTPUT_HTML) {
+				global $wgParser;
+				$result = $result . $wgParser->recursiveTagParse($this->mOutro);
+			} else {
+				$result = $result . $this->mOutro;
+			}
+		}
+
 		return $result;
 	}
 
@@ -191,6 +205,9 @@ abstract class SMWResultPrinter {
 		$this->m_params = $params;
 		if (array_key_exists('intro', $params)) {
 			$this->mIntro = str_replace('_',' ',$params['intro']);
+		}
+		if (array_key_exists('outro', $params)) {
+			$this->mOutro = str_replace('_',' ',$params['outro']);
 		}
 		if (array_key_exists('searchlabel', $params)) {
 			$this->mSearchlabel = $params['searchlabel'];
@@ -245,8 +262,8 @@ abstract class SMWResultPrinter {
 
 	/**
 	 * Some printers do not mainly produce embeddable HTML or Wikitext, but
-	 * produce stand-alone files. An example is RSS or iCalendar. This function 
-	 * returns the mimetype string that this file would have, or FALSE if no 
+	 * produce stand-alone files. An example is RSS or iCalendar. This function
+	 * returns the mimetype string that this file would have, or FALSE if no
 	 * standalone files are produced.
 	 *
 	 * If this function returns something other than FALSE, then the printer will
