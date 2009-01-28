@@ -60,7 +60,26 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 				$birthday = ''; // a date
 				$url =''; // homepage, a legal URL
 				$note =''; // any text
-
+				$workaddress = false; 
+				$homeaddress = false;
+			
+				$workpostofficebox ='';
+				$workextendedaddress ='';
+				$workstreet ='';
+				$worklocality ='';
+				$workregion ='';
+				$workpostalcode ='';
+				$workcountry ='';
+				
+				
+				$homepostofficebox ='';
+				$homeextendedaddress ='';
+				$homestreet ='';
+				$homelocality ='';
+				$homeregion ='';
+				$homepostalcode ='';
+				$homecountry ='';
+				
 				foreach ($row as $field) {
 					// later we may add more things like a generic
 					// mechanism to add non-standard vCard properties as well
@@ -143,9 +162,108 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 							$organization = $value->getShortWikiText();
 						}
 					}
-
+					if ( (strtolower($req->getLabel()) == "workpostofficebox")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$workpostofficebox = $value->getShortWikiText();
+							$workaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "workextendedaddress")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$workextendedaddress = $value->getShortWikiText();
+							$workaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "workstreet")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$workstreet = $value->getShortWikiText();
+							$workaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "worklocality")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$worklocality = $value->getShortWikiText();
+							$workaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "workregion")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$workregion = $value->getShortWikiText();
+							$workaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "workpostalcode")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$workpostalcode = $value->getShortWikiText();
+							$workaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "workcountry")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$workcountry = $value->getShortWikiText();
+							$workaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "homepostofficebox")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$homepostofficebox = $value->getShortWikiText();
+							$homeaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "homeextendedaddress")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$homeextendedaddress = $value->getShortWikiText();
+							$homeaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "homestreet")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$homestreet = $value->getShortWikiText();
+							$homeaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "homelocality")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$homelocality = $value->getShortWikiText();
+							$homeaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "homeregion")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$homeregion = $value->getShortWikiText();
+							$homeaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "homepostalcode")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$homepostalcode = $value->getShortWikiText();
+							$homeaddress = true;
+						}
+					}
+					if ( (strtolower($req->getLabel()) == "homecountry")) {
+						$value = current($field->getContent()); // save only the first
+						if ($value !== false) {
+							$homecountry = $value->getShortWikiText();
+							$homeaddress = true;
+						}
+					}
 				}
 				$pagetitle = $wikipage->getTitle();
+				if ($workaddress) $addresses[] = new SMWvCardAddress ('WORK', $workpostofficebox, $workextendedaddress, $workstreet, $worklocality, $workregion, $workpostalcode, $workcountry);
+				if ($homeaddress) $addresses[] = new SMWvCardAddress ('HOME', $homepostofficebox, $homeextendedaddress, $homestreet, $homelocality, $homeregion, $homepostalcode, $homecountry);
 				$items[] = new SMWvCardEntry($pagetitle, $prefix, $firstname, $lastname, $additionalname, $suffix, $fullname, $tels, $addresses, $emails, $birthday, $jobtitle, $role, $organization, $department, $category, $url, $note);
             	$row = $res->getNext();
 			}
