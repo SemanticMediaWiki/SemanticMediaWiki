@@ -60,9 +60,9 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 				$birthday = ''; // a date
 				$url =''; // homepage, a legal URL
 				$note =''; // any text
-				$workaddress = false; 
+				$workaddress = false;
 				$homeaddress = false;
-			
+
 				$workpostofficebox ='';
 				$workextendedaddress ='';
 				$workstreet ='';
@@ -70,8 +70,8 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 				$workregion ='';
 				$workpostalcode ='';
 				$workcountry ='';
-				
-				
+
+
 				$homepostofficebox ='';
 				$homeextendedaddress ='';
 				$homestreet ='';
@@ -79,7 +79,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 				$homeregion ='';
 				$homepostalcode ='';
 				$homecountry ='';
-				
+
 				foreach ($row as $field) {
 					// later we may add more things like a generic
 					// mechanism to add non-standard vCard properties as well
@@ -93,51 +93,51 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$fullname = $value->getShortWikiText();
 							}
 						break;
-					
+
 						case "prefix":
 							foreach ($field->getContent() as $value) {
 								$prefix .= ($prefix?',':'') . $value->getShortWikiText();
 							}
 						break;
-						
+
 						case "suffix":
 							foreach ($field->getContent() as $value) {
 								$suffix .= ($suffix?',':'') . $value->getShortWikiText();
 							}
 						break;
-						
+
 						case "firstname":
 						$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
 								$firstname = $value->getShortWikiText();
 							}
 						break;
-						
+
 						case "extraname":
 							foreach ($field->getContent() as $value) {
 								$additionalname .= ($additionalname?',':'') . $value->getShortWikiText();
 							}
 						break;
-						
+
 						case "lastname":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
 								$lastname = $value->getShortWikiText();
 							}
 						break;
-						
+
 						case "note":
 							foreach ($field->getContent() as $value) {
 								$note .= ($note?', ':'') . $value->getShortWikiText();
 							}
 						break;
-						
+
 						case "email":
 							foreach ($field->getContent() as $entry) {
 								$emails[] = new SMWvCardEmail('internet', $entry->getShortWikiText());
 							}
 					 	break;
-					 	
+
 						case "workphone":
 							foreach ($field->getContent() as $entry) {
 								$tels[] = new SMWvCardTel('WORK',$entry->getShortWikiText());
@@ -149,20 +149,20 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$tels[] = new SMWvCardTel('CELL',$entry->getShortWikiText());
 							}
 						break;
-						
+
 						case "homephone":
 							foreach ($field->getContent() as $entry) {
 								$tels[] = new SMWvCardTel('HOME',$entry->getShortWikiText());
 							}
 						break;
-					
+
 						case "organization":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
 								$organization = $value->getShortWikiText();
 							}
 						break;
-					
+
 						case "workpostofficebox":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -170,7 +170,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$workaddress = true;
 							}
 						break;
-						
+
 						case "workextendedaddress":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -178,7 +178,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$workaddress = true;
 							}
 						break;
-						
+
 						case "workstreet":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -186,7 +186,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$workaddress = true;
 							}
 						break;
-						
+
 						case "worklocality":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -194,7 +194,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$workaddress = true;
 							}
 						break;
-						
+
 						case "workregion":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -202,7 +202,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$workaddress = true;
 							}
 						break;
-						
+
 						case "workpostalcode":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -210,7 +210,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$workaddress = true;
 							}
 						break;
-						
+
 						case "workcountry":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -218,7 +218,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$workaddress = true;
 							}
 						break;
-						
+
 						case "homepostofficebox":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -226,7 +226,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$homeaddress = true;
 							}
 						break;
-						
+
 						case "homeextendedaddress":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -234,7 +234,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$homeaddress = true;
 							}
 						break;
-						
+
 						case "homestreet":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -242,7 +242,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$homeaddress = true;
 							}
 						break;
-						
+
 						case "homelocality":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -250,7 +250,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$homeaddress = true;
 							}
 						break;
-						
+
 						case "homeregion":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -258,7 +258,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$homeaddress = true;
 							}
 						break;
-						
+
 						case "homepostalcode":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -266,7 +266,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$homeaddress = true;
 							}
 						break;
-						
+
 						case "homecountry":
 							$value = current($field->getContent()); // save only the first
 							if ($value !== false) {
@@ -274,7 +274,7 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								$homeaddress = true;
 							}
 						break;
-						
+
 						case "birthday":
 							if ($req->getTypeID() == "_dat")  {
 								$value = current($field->getContent()); // save only the first
@@ -283,12 +283,12 @@ class SMWvCardResultPrinter extends SMWResultPrinter {
 								}
 							}
 						break;
-						
+
 						case "homepage":
 							if ($req->getTypeID() == "_uri")  {
 								$value = current($field->getContent()); // save only the first
 								if ($value !== false) {
-									$url =  $value->getXSDValue();
+									$url =  $value->getWikiValue();
 								}
 							}
 						break;

@@ -37,7 +37,7 @@ class SMWExporter {
 		}
 
 		// The article name must be the last part of wiki URLs for proper OWL/RDF export:
-		SMWExporter::$m_ent_wikiurl  = $wgServer . str_replace('$1', '', $wgArticlePath); 
+		SMWExporter::$m_ent_wikiurl  = $wgServer . str_replace('$1', '', $wgArticlePath);
 		SMWExporter::$m_ent_wiki     = $smwgNamespace;
 		SMWExporter::$m_ent_property = SMWExporter::$m_ent_wiki .
 		          SMWExporter::encodeURI(urlencode(str_replace(' ', '_', $wgContLang->getNsText(SMW_NS_PROPERTY) . ':')));
@@ -121,7 +121,7 @@ class SMWExporter {
 			} else { // pre-defined property
 				$pe = NULL;
 				$cat_only = false; // basic namespace checking for equivalent categories
-				switch ($property->getXSDValue()) {
+				switch ($property->getPropertyID()) {
 					case '_INST': ///TODO: distinguish instanceof and subclassof
 						$pe = $category_pe;
 					break;
@@ -152,7 +152,7 @@ class SMWExporter {
 						}
 						$ed = $dv->getExportData();
 						if ($ed !== NULL) {
-							if ( ($property->getXSDValue() == '_CONC') &&
+							if ( ($property->getPropertyID() == '_CONC') &&
 							     ($ed->getSubject()->getName() == '') ) {
 								// equivalent to anonymous class -> simplify description
 								foreach ($ed->getProperties() as $subp) {
@@ -223,7 +223,7 @@ class SMWExporter {
 	static public function getOWLPropertyType($type = '') {
 		/// TODO: improved mechanism for selecting property types is needed.
 		if ($type instanceof SMWTypesValue) {
-			$type = ($type->isUnary())?$type->getXSDValue():'__nry';
+			$type = ($type->isUnary())?$type->getDBkey():'__nry';
 		} elseif ($type == false) {
 			$type = '';
 		} // else keep $type

@@ -174,21 +174,31 @@ class SMWConceptValue extends SMWDataValue {
 		return $result;
 	}
 
+	/// Return the concept's defining text (in SMW query syntax)
+	public function getConceptText() {
+		$this->unstub();
+		return $this->m_concept;
+	}
+
+	/// Return the optional concept documentation.
 	public function getDocu() {
 		$this->unstub();
 		return $this->m_docu;
 	}
 
+	/// Return the concept's size (a metric used to estimate computation complexity).
 	public function getSize() {
 		$this->unstub();
 		return $this->m_size;
 	}
 
+	/// Return the concept's depth (a metric used to estimate computation complexity).
 	public function getDepth() {
 		$this->unstub();
 		return $this->m_depth;
 	}
 
+	/// Return the concept's query feature bit field (a metric used to estimate computation complexity).
 	public function getQueryFeatures() {
 		$this->unstub();
 		return $this->m_queryfeatures;

@@ -24,7 +24,7 @@ class SMWLinearValue extends SMWNumberValue {
 	 * Converts the current m_value and m_unit to the main unit, if possible.
 	 * This means, it changes the fileds m_value and m_unit accordingly, and
 	 * that it stores the ID of the originally given unit in $this->m_unitin.
-	 * This should obviously not be done more than once, so it is advisable to 
+	 * This should obviously not be done more than once, so it is advisable to
 	 * first check if m_unitin is non-false. Also, it should be checked if the
 	 * value is valid before trying to calculate with its contents.
 	 */
@@ -56,8 +56,8 @@ class SMWLinearValue extends SMWNumberValue {
 	 * The result is stored in $this->m_unitvalues. Again, any class that
 	 * requires effort for doing this should first check whether the array
 	 * is already set (i.e. not false) before doing any work.
-	 * Note that the values should be plain numbers. Output formatting is done 
-	 * later when needed. Also, it should be checked if the value is valid 
+	 * Note that the values should be plain numbers. Output formatting is done
+	 * later when needed. Also, it should be checked if the value is valid
 	 * before trying to calculate with its contents.
 	 * This method also must call or implement convertToMainUnit().
 	 */
@@ -140,7 +140,7 @@ class SMWLinearValue extends SMWNumberValue {
 	}
 
 	/**
-	 * Return an array of major unit strings (ids only recommended) supported by 
+	 * Return an array of major unit strings (ids only recommended) supported by
 	 * this datavalue.
 	 */
 	public function getUnitList() {
@@ -148,7 +148,7 @@ class SMWLinearValue extends SMWNumberValue {
 		return array_keys($this->m_unitfactors);
 	}
 
-/// The remaining functions are relatively "private" but are kept protected since 
+/// The remaining functions are relatively "private" but are kept protected since
 /// subclasses might exploit this to, e.g., "fake" conversion factors instead of
 /// getting them from the database. A cheap way of making built-in types.
 
@@ -172,7 +172,7 @@ class SMWLinearValue extends SMWNumberValue {
 		}
 		$numdv = SMWDataValueFactory::newTypeIDValue('_num'); // used for parsing the factors
 		foreach ($factors as $dv) {
-			$numdv->setUserValue($dv->getXSDValue());
+			$numdv->setUserValue($dv->getWikiValue());
 			if (!$numdv->isValid() || ($numdv->getNumericValue() === 0)) {
 				continue; // ignore problematic conversions
 			}
@@ -207,7 +207,7 @@ class SMWLinearValue extends SMWNumberValue {
 		$values = smwfGetStore()->getPropertyValues($this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty('_UNIT'));
 		$units = array();
 		foreach ($values as $value) { // Join all if many annotations exist. Discouraged (random order) but possible.
-			$units = $units + preg_split('/\s*,\s*/u',$value->getXSDValue());
+			$units = $units + preg_split('/\s*,\s*/u',$value->getWikiValue());
 		}
 		foreach ($units as $unit) {
 			$unit = $this->normalizeUnit($unit);

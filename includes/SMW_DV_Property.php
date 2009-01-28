@@ -14,11 +14,11 @@
  * asking for a printout text, a link to the according page is produced).
  * It is possible that predefined properties have no visible label at all,
  * if they are used only internally and never specified by or shown to
- * the user. Those will use their internal ID as "XSD value", and
+ * the user. Those will use their internal ID as DB key, and
  * empty texts for most printouts. All other proeprties use their
- * canonical DB key as "XSD value" (even if they are predefined and
- * have an id). Functions are provided to check whether a property
- * is visible or user-defined, and to get the internal ID, if any.
+ * canonical DB key (even if they are predefined and have an id).
+ * Functions are provided to check whether a property is visible or
+ * user-defined, and to get the internal ID, if any.
  *
  * @note This datavalue is used only for representing properties and,
  * possibly objects/values, but never for subjects (pages as such). Hence
@@ -227,7 +227,7 @@ class SMWPropertyValue extends SMWDataValue {
 		if ($this->prop_typevalue !== NULL) return $this->prop_typevalue;
 		if (!$this->isValid()) { // errors in property, return invalid types value with same errors
 			$result = SMWDataValueFactory::newTypeIDValue('__typ');
-			$result->setXSDValue('__err');
+			$result->setDBkeys(array('__err'));
 			$result->addError($this->getErrors());
 		} elseif ($this->isUserDefined()) { // normal property
 			$typearray = smwfGetStore()->getPropertyValues($this->getWikiPageValue(),SMWPropertyValue::makeProperty('_TYPE'));
@@ -235,19 +235,19 @@ class SMWPropertyValue extends SMWDataValue {
 				$result = current($typearray);
 			} elseif (count($typearray)==0) { // no type given
 				$result = SMWDataValueFactory::newTypeIDValue('__typ');
-				$result->setXSDValue($smwgPDefaultType);
+				$result->setDBkeys(array($smwgPDefaultType));
 			} else { // many types given, error
 				wfLoadExtensionMessages('SemanticMediaWiki');
 				$result = SMWDataValueFactory::newTypeIDValue('__typ');
-				$result->setXSDValue('__err');
+				$result->setDBkeys(array('__err'));
 				$result->addError(wfMsgForContent('smw_manytypes'));
 			}
 		} else { // pre-defined property
 			$result = SMWDataValueFactory::newTypeIDValue('__typ');
 			if (array_key_exists($this->m_propertyid, SMWPropertyValue::$m_propertytypes)) {
-				$result->setXSDValue(SMWPropertyValue::$m_propertytypes[$this->m_propertyid][0]);
+				$result->setDBkeys(array(SMWPropertyValue::$m_propertytypes[$this->m_propertyid][0]));
 			} else { // fixed default for special properties
-				$result->setXSDValue('_str');
+				$result->setDBkeys(array('_str'));
 			}
 		}
 		$this->prop_typevalue = $result;
@@ -260,9 +260,18 @@ class SMWPropertyValue extends SMWDataValue {
 	public function getTypeID() {
 		if ($this->prop_typeid === NULL) {
 			$type = $this->getTypesValue();
-			$this->prop_typeid = $type->isUnary()?end($type->getDBkeys()):'__nry';
+			$this->prop_typeid = $type->isUnary()?$type->getDBkey():'__nry';
 		}
 		return $this->prop_typeid;
+	}
+
+	/**
+	 * Return a DB-key-like string: for visible properties, it is the actual DB key,
+	 * for internal (invisible) properties, it is the property ID. The value agrees
+	 * with the first component of getDBkeys() and it can be used in its place.
+	 */
+	public function getDBkey() {
+		return $this->isVisible()?$this->m_wikipage->getDBkey():$this->m_propertyid;
 	}
 
 	/**

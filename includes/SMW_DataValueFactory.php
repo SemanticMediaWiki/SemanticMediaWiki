@@ -28,7 +28,7 @@ class SMWDataValueFactory {
 
 	/**
 	 * Create an SMWDataValue object that can hold values for the type that the
-	 * given SMWTypesValue object specifies. If no $value is given, an empty container 
+	 * given SMWTypesValue object specifies. If no $value is given, an empty container
 	 * is created, the value of which can be set later on.
 	 * @param $typevalue SMWTypesValue object representing the type of the object
 	 * @param $value user value string, or false if unknown
@@ -42,7 +42,7 @@ class SMWDataValueFactory {
 			return $result;
 		}
 		SMWDataValueFactory::initDatatypes();
-		$typeid = $typevalue->getXSDValue();
+		$typeid = $typevalue->getDBkey();
 		if (array_key_exists($typeid, SMWDataValueFactory::$m_typeclasses)) { // basic type
 			$result = new SMWDataValueFactory::$m_typeclasses[$typeid]($typeid);
 		} elseif (!$typevalue->isUnary()) { // n-ary type
@@ -77,7 +77,7 @@ class SMWDataValueFactory {
 			return $result;
 		} else { // create type value first (e.g. for n-ary type ids or user-defined types)
 			$typevalue = new SMWTypesValue('__typ');
-			$typevalue->setXSDValue($typeid);
+			$typevalue->setDBkeys(array($typeid));
 			return SMWDataValueFactory::newTypeObjectValue($typevalue, $value, $caption, $property);
 		}
 	}
@@ -92,7 +92,7 @@ class SMWDataValueFactory {
 	}
 
 	/**
-	 * Gather all available datatypes and label<=>id<=>datatype associations. This method 
+	 * Gather all available datatypes and label<=>id<=>datatype associations. This method
 	 * is called before most methods of this factory.
 	 */
 	static protected function initDatatypes() {
@@ -144,7 +144,7 @@ class SMWDataValueFactory {
 	}
 
 	/**
-	 * A function for registering/overwriting datatypes for SMW. Should be called from 
+	 * A function for registering/overwriting datatypes for SMW. Should be called from
 	 * within the hook 'smwInitDatatypes'.
 	 */
 	static public function registerDatatype($id, $classname, $label=false) {
@@ -156,7 +156,7 @@ class SMWDataValueFactory {
 
 	/**
 	 * Add a new alias label to an existing datatype id. Note that every ID should have a primary
-	 * label, either provided by SMW or registered with registerDatatype. This function should be 
+	 * label, either provided by SMW or registered with registerDatatype. This function should be
 	 * called from within the hook 'smwInitDatatypes'.
 	 */
 	static public function registerDatatypeAlias($id, $label) {
@@ -166,11 +166,11 @@ class SMWDataValueFactory {
 	/**
 	 * Look up the ID that identifies the datatype of the given label internally.
 	 * This id is used for all internal operations. Compound types are not supported
-	 * by this method (decomposition happens earlier). Custom types get their DBkeyed 
-	 * label as id. All ids are prefixed by an underscore in order to distinguish them 
+	 * by this method (decomposition happens earlier). Custom types get their DBkeyed
+	 * label as id. All ids are prefixed by an underscore in order to distinguish them
 	 * from custom types.
 	 *
-	 * This method may or may not take aliases into account. For unknown labels, the 
+	 * This method may or may not take aliases into account. For unknown labels, the
 	 * normalised (DB-version) label is used as an ID.
 	 */
 	static public function findTypeID($label, $useAlias = true) {

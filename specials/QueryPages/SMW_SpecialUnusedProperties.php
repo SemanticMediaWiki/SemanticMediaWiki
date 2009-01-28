@@ -35,7 +35,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 		return false; /// disables caching for now
 	}
 
-	function isSyndicated() { 
+	function isSyndicated() {
 		return false; ///TODO: why not?
 	}
 
@@ -54,7 +54,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 			$typestring = current($types)->getLongHTMLText($skin);
 		} else {
 			$type = SMWDataValueFactory::newPropertyObjectValue(SMWPropertyValue::makeProperty('_TYPE'));
-			$type->setXSDValue('_wpg');
+			$type->setDBkeys(array('_wpg'));
 			$typestring = $type->getLongHTMLText($skin);
 			$errors[] = wfMsg('smw_propertylackstype', $type->getLongHTMLText());
 		}

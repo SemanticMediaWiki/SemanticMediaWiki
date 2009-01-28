@@ -10,7 +10,7 @@
 /**
  * Storage access class for testing purposes. No persitent storage is implemented, but
  * all methods return non-empty result sets that can be used for testing purposes.
- * 
+ *
  * @bug This implementation requires updates for testing new storage capabilities.
  * @ingroup SMWStore
  */
@@ -97,7 +97,7 @@ class SMWTestStore extends SMWStore {
 		foreach ($valarray as $val) {
 			$dv = SMWDataValueFactory::newTypeObjectValue($type);
 			$dv->setAttribute($property->getText());
-			$dv->setXSDValue($val,'');
+			$dv->setDBkeys(array($val));
 			$result[] = $dv;
 		}
 		return $result;

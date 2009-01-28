@@ -201,7 +201,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	public function getHash() {
 		$this->unstub();
-		if ($this->isValid()) { // assume that XSD value + unit say all
+		if ($this->isValid()) {
 			return $this->getPrefixedText();
 		} else {
 			return implode("\t", $this->m_errors);

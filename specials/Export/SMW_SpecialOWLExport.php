@@ -122,7 +122,7 @@ class SMWSmallTitle {
 	public $dbkey;
 	public $namespace; //MW namespace constant
 	public $modifier = ''; // e.g. a unit string
-	
+
 	public function getHash() {
 		return $this->dbkey . ' ' . $this->namespace . ' ' . $this->modifier;
 	}
@@ -178,7 +178,7 @@ class OWLExport {
 	 * namespace that is already given in every RDF export).
 	 */
 	private $global_namespaces;
-	
+
 	/**
 	 * Array of references to the SWIVT schema. Will be added at the end of the
 	 * export.
@@ -225,7 +225,7 @@ class OWLExport {
 
 	/**
 	 * Sets a date as a filter. Any page that has not been changed since that date
-	 * will not be exported. The date has to be a string in XSD format.
+	 * will not be exported. The date has to be a string in XML Schema format.
 	 */
 	public function setDate($date) {
 		$timeint = strtotime($date);
@@ -414,7 +414,7 @@ class OWLExport {
 	 */
 	public function printPageList($offset = 0, $limit = 30) {
 		wfProfileIn("RDF::PrintPageList");
-		
+
 		$db = & wfGetDB( DB_MASTER );
 		$this->pre_ns_buffer = '';
 		$this->post_ns_buffer = '';
@@ -473,7 +473,7 @@ class OWLExport {
 	public function printWikiInfo() {
 		wfProfileIn("RDF::PrintWikiInfo");
 		global $wgSitename, $wgLanguageCode;
-		
+
 		$db = & wfGetDB( DB_MASTER );
 		$this->pre_ns_buffer = '';
 		$this->post_ns_buffer = '';
@@ -615,8 +615,8 @@ class OWLExport {
 						if ($object->getDatatype() != '') {
 							$this->post_ns_buffer .= ' rdf:datatype="' . $object->getDatatype() . '"';
 						}
-						$this->post_ns_buffer .= '>' . 
-							str_replace(array('&', '>', '<'), array('&amp;', '&gt;', '&lt;'), $object->getName()) . 
+						$this->post_ns_buffer .= '>' .
+							str_replace(array('&', '>', '<'), array('&amp;', '&gt;', '&lt;'), $object->getName()) .
 							'</' . $property->getQName() . ">\n";
 					} else { // bnode or resource, may have subdescriptions
 						$collection = $value->getCollection();
@@ -650,7 +650,7 @@ class OWLExport {
 	 * They get printed in the printFooter-function.
 	 *
 	 * @param $st The SMWSmallTitle wrapping the page to be exported
-	 * @param $fullexport Boolean to define whether all the data for the page should 
+	 * @param $fullexport Boolean to define whether all the data for the page should
 	 * be exported, or whether just a definition of the given title.
 	 * @param $backlinks Boolean specifying if properties linking to the exported title
 	 * should be included.
@@ -775,10 +775,10 @@ class OWLExport {
 	 * Adds a reference to the SWIVT schema. This will make sure that at the end of the page,
 	 * all required schema references will be defined and point to the appropriate ontology.
 	 *
-	 * @param $name The fragmend identifier of the entity to be referenced. The SWIVT namespace 
+	 * @param $name The fragmend identifier of the entity to be referenced. The SWIVT namespace
 	 * is added.
 	 * @param $type The type of the referenced identifier, i.e. is it an annotation property, an
-	 * object property, a class, etc. Should be given as a QName (i.e. in the form "owl:Class", 
+	 * object property, a class, etc. Should be given as a QName (i.e. in the form "owl:Class",
 	 * etc.)
 	 */
 	public function addSchemaRef( $name,  $type ) {

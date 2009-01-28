@@ -69,7 +69,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 		}
 		if ($typestring == '') {
 			$type = SMWDataValueFactory::newPropertyObjectValue(SMWPropertyValue::makeProperty('_TYPE'));
-			$type->setXSDValue('_wpg');
+			$type->setDBkeys(array('_wpg'));
 			$typestring = $type->getLongHTMLText($skin);
 			if ($result[0]->getWikiPageValue()->getTitle()->exists()) { // print only when we did not print a "nopage" warning yet
 				$errors[] = wfMsg('smw_propertylackstype', $type->getLongHTMLText());
@@ -77,7 +77,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 		}
 		return wfMsg('smw_property_template', $proplink, $typestring, $result[1]) . ' ' . smwfEncodeMessages($errors);
 	}
-	
+
 	function getResults($requestoptions) {
 		return smwfGetStore()->getPropertiesSpecial($requestoptions);
 	}

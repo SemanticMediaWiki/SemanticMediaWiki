@@ -66,7 +66,7 @@
 class SMWTimeValue extends SMWDataValue {
 
 	protected $m_wikivalue; // a suitable wiki input value
-	protected $m_xsdvalue = false; // cache for XSD value
+	protected $m_xsdvalue = false; // cache for DB key
 	protected $m_printvalue = false; // cache for printout value
 	protected $m_day = false; //Gregorian day, remains false if unspecified
 	protected $m_month = false; //Gregorian month, remains false if unspecified

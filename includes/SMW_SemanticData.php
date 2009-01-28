@@ -80,21 +80,21 @@ class SMWSemanticData {
 	 * Get the array of all stored values for some property.
 	 */
 	public function getPropertyValues(SMWPropertyValue $property) {
-		if (array_key_exists($property->getXSDValue(), $this->stubpropvals)) { // unstub those entries completely
-			$this->unstubProperty($property->getXSDValue(), $property);
-			foreach ( $this->stubpropvals[$property->getXSDValue()] as $dbkeys ) {
+		if (array_key_exists($property->getDBkey(), $this->stubpropvals)) { // unstub those entries completely
+			$this->unstubProperty($property->getDBkey(), $property);
+			foreach ( $this->stubpropvals[$property->getDBkey()] as $dbkeys ) {
 				$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 				$dv->setDBkeys($dbkeys);
 				if ($this->m_noduplicates) {
-					$this->propvals[$property->getXSDValue()][$dv->getHash()] = $dv;
+					$this->propvals[$property->getDBkey()][$dv->getHash()] = $dv;
 				} else {
-					$this->propvals[$property->getXSDValue()][] = $dv;
+					$this->propvals[$property->getDBkey()][] = $dv;
 				}
 			}
-			unset($this->stubpropvals[$property->getXSDValue()]);
+			unset($this->stubpropvals[$property->getDBkey()]);
 		}
-		if (array_key_exists($property->getXSDValue(), $this->propvals)) {
-			return $this->propvals[$property->getXSDValue()];
+		if (array_key_exists($property->getDBkey(), $this->propvals)) {
+			return $this->propvals[$property->getDBkey()];
 		} else {
 			return array();
 		}
@@ -126,14 +126,14 @@ class SMWSemanticData {
 	 */
 	public function addPropertyObjectValue(SMWPropertyValue $property, SMWDataValue $value) {
 		if (!$property->isValid()) return; // nothing we can do
-		if (!array_key_exists($property->getXSDValue(), $this->propvals)) {
-			$this->propvals[$property->getXSDValue()] = array();
-			$this->properties[$property->getXSDValue()] = $property;
+		if (!array_key_exists($property->getDBkey(), $this->propvals)) {
+			$this->propvals[$property->getDBkey()] = array();
+			$this->properties[$property->getDBkey()] = $property;
 		}
 		if ($this->m_noduplicates) {
-			$this->propvals[$property->getXSDValue()][$value->getHash()] = $value;
+			$this->propvals[$property->getDBkey()][$value->getHash()] = $value;
 		} else {
-			$this->propvals[$property->getXSDValue()][] = $value;
+			$this->propvals[$property->getDBkey()][] = $value;
 		}
 		if (!$property->isUserDefined()) {
 			if ($property->isVisible()) {
@@ -175,7 +175,7 @@ class SMWSemanticData {
 		// catch built-in properties, since their internal key is not what is used as a key elsewhere in SMWSemanticData
 		if ($propertykey{0} == '_') {
 			$property = SMWPropertyValue::makeProperty($propertykey);
-			$propertykey = $property->getXSDValue();
+			$propertykey = $property->getDBkey();
 			$this->unstubProperty($propertykey, $property);
 		}
 		$this->stubpropvals[$propertykey][] = $valuekeys;

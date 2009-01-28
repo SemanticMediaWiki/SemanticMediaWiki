@@ -9,7 +9,7 @@
  * types of properties (n-ary or binary).
  * Two main use-cases exist for this class:
  * - to parse and format a use-provided string in a rather tolerant way
- * - to efficiently be generated from XSD values and to provide according
+ * - to efficiently be generated from DB keys and to provide according
  *   wiki values, in order to support speedy creation of datavalues in
  *   SMWDataValueFactory.
  *
@@ -176,23 +176,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getDBkeys() {
-		if ($this->isValid()) {
-			if ($this->m_xsdvalue === false) {
-				$first = true;
-				$this->m_xsdvalue = '';
-				foreach ($this->m_typelabels as $label) {
-					if ($first) {
-						$first = false;
-					} else {
-						$this->m_xsdvalue .= ';';
-					}
-					$this->m_xsdvalue .= SMWDataValueFactory::findTypeID($label);
-				}
-			}
-			return array($this->m_xsdvalue);
-		} else {
-			return array(false);
-		}
+		return ($this->isValid())?array($this->getDBkey()):array(false);
 	}
 
 	public function getWikiValue() {
@@ -200,7 +184,28 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getHash() {
-		return implode('[]', $this->getTypeLabels());
+		return implode("\t", $this->getTypeLabels());
+	}
+
+	/**
+	 * Convenience method to obtain the (single) DB key as a string (not in an array).
+	 * Provided since many callers can use this hash for type recognition and registry.
+	 *
+	 */
+	public function getDBkey() {
+		if ($this->m_xsdvalue === false) {
+			$first = true;
+			$this->m_xsdvalue = '';
+			foreach ($this->m_typelabels as $label) {
+				if ($first) {
+					$first = false;
+				} else {
+					$this->m_xsdvalue .= ';';
+				}
+				$this->m_xsdvalue .= SMWDataValueFactory::findTypeID($label);
+			}
+		}
+		return $this->m_xsdvalue;
 	}
 
 	/**
@@ -211,7 +216,7 @@ class SMWTypesValue extends SMWDataValue {
 		if ($this->m_typelabels !== false) {
 			return (count($this->m_typelabels) == 1);
 		} elseif ($this->m_xsdvalue !== false) {
-			return (count(explode(';', $this->getXSDValue(),2)) == 1);
+			return (count(explode(';', $this->getDBkey(),2)) == 1);
 		} else { //invalid
 			return false;
 		}
@@ -222,8 +227,8 @@ class SMWTypesValue extends SMWDataValue {
 	 * (Alternatively it would be a user-defined derived datatype.)
 	 */
 	public function isBuiltIn() {
-		$v = $this->getXSDValue();
-		return ( ($this->isUnary()) && ($v[0] == '_') );
+		$v = $this->getDBkey();
+		return ( ($this->isUnary()) && ($v{0} == '_') );
 	}
 
 	/**
@@ -261,7 +266,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	/**
-	 * Internal method to extract data from XSD-representation. Called lazily.
+	 * Internal method to extract data from DB representation. Called lazily.
 	 */
 	protected function initTypeData() {
 		$this->unstub();

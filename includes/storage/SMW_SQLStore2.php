@@ -299,13 +299,13 @@ class SMWSQLStore2 extends SMWStore {
 					$dv = SMWDataValueFactory::newTypeObjectValue($ptypes[$row->prop][$pos]);
 					switch ($table) {
 						case 'smw_rels2':
-							$dv->setValues($row->title, $row->namespace);
+							$dv->setDBkeys(array($row->title, $row->namespace));
 						break;
 						case 'smw_atts2':
-							$dv->setXSDValue($row->xsd, $row->unit);
+							$dv->setDBkeys(array($row->xsd, $row->unit));
 						break;
 						case 'smw_text2':
-							$dv->setXSDValue($row->xsd, '');
+							$dv->setDBkeys(array($row->xsd));
 						break;
 					}
 					$dvs[$row->prop][$row->bnode][$pos] = $dv;
@@ -365,7 +365,7 @@ class SMWSQLStore2 extends SMWStore {
 					while($row = $db->fetchObject($res)) {
 						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 						$dv->setOutputFormat($outputformat);
-						$dv->setXSDValue($row->value_blob, '');
+						$dv->setDBkeys(array($row->value_blob));
 						$result[] = $dv;
 					}
 					$db->freeResult($res);
@@ -379,7 +379,7 @@ class SMWSQLStore2 extends SMWStore {
 					while($row = $db->fetchObject($res)) {
 						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 						$dv->setOutputFormat($outputformat);
-						$dv->setValues($row->smw_title, $row->smw_namespace, false, $row->smw_iw);
+						$dv->setDBkeys(array($row->smw_title, $row->smw_namespace, $row->smw_iw));
 						$result[] = $dv;
 					}
 					$db->freeResult($res);
@@ -400,7 +400,7 @@ class SMWSQLStore2 extends SMWStore {
 					while($row = $db->fetchObject($res)) {
 						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 						$dv->setOutputFormat($outputformat);
-						$dv->setXSDValue($row->value_xsd, $row->value_unit);
+						$dv->setDBkeys(array($row->value_xsd, $row->value_unit));
 						$result[] = $dv;
 					}
 					$db->freeResult($res);
@@ -427,7 +427,7 @@ class SMWSQLStore2 extends SMWStore {
 // 						while($row2 = $db->fetchObject($res2)) {
 // 							if ($row2->nary_pos < count($subtypes)) {
 // 								$dv = SMWDataValueFactory::newTypeObjectValue($subtypes[$row2->nary_pos]);
-// 								$dv->setXSDValue($row2->value_xsd, $row2->value_unit);
+// 								$dv->setDBkeys(array($row2->value_xsd, $row2->value_unit));
 // 								$values[$row2->nary_pos] = $dv;
 // 							}
 // 						}
@@ -440,7 +440,7 @@ class SMWSQLStore2 extends SMWStore {
 // 						while($row2 = $db->fetchObject($res2)) {
 // 							if ( $row2->nary_pos < count($subtypes) ) {
 // 								$dv = SMWDataValueFactory::newTypeObjectValue($subtypes[$row2->nary_pos]);
-// 								$dv->setXSDValue($row2->value_blob, '');
+// 								$dv->setDBkeys(array($row2->value_blob));
 // 								$values[$row2->nary_pos] = $dv;
 // 							}
 // 						}
@@ -452,7 +452,7 @@ class SMWSQLStore2 extends SMWStore {
 // 										'SMW::getPropertyValues');
 // 						while($row2 = $db->fetchObject($res2)) {
 // 							if ( ($row2->nary_pos < count($subtypes)) &&
-// 								($subtypes[$row2->nary_pos]->getXSDValue() == '_wpg') ) {
+// 								($subtypes[$row2->nary_pos]->getDBkey() == '_wpg') ) {
 // 								$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 // 								$dv->setValues($row2->object_title, $row2->object_namespace, $row2->object_id);
 // 								$values[$row2->nary_pos] = $dv;
@@ -517,14 +517,16 @@ class SMWSQLStore2 extends SMWStore {
 		case SMW_SQL2_ATTS2:
 			$table = 'smw_atts2';
 			if ($value !== NULL) {
-				$sql .= ' AND value_xsd=' . $db->addQuotes($value->getXSDValue()) .
+				$keys = $value->getDBkeys();
+				$sql .= ' AND value_xsd=' . $db->addQuotes($keys[0]) .
 				        ' AND value_unit=' . $db->addQuotes($value->getUnit());
 			}
 		break;
 		case SMW_SQL2_SPEC2:
 			$table = 'smw_spec2';
 			if ($value !== NULL) {
-				$sql .= ' AND value_string=' . $db->addQuotes($value->getXSDValue());
+				$keys = $value->getDBkeys();
+				$sql .= ' AND value_string=' . $db->addQuotes($keys[0]);
 			}
 		break;
 		case SMW_SQL2_REDI2:
@@ -564,14 +566,15 @@ class SMWSQLStore2 extends SMWStore {
 				case SMW_SQL2_RELS2:
 					$from .= " INNER JOIN $smw_rels2 AS t$count ON t.o_id=t$count.s_id INNER JOIN $smw_ids AS i$count ON t$count.o_id=i$count.smw_id";
 					$where .= " AND t$count.p_id=" . $db->addQuotes($npid) .
-					          " AND i$count.smw_title=" . $db->addQuotes($dv->getXSDValue()) .
+					          " AND i$count.smw_title=" . $db->addQuotes($dv->getDBkey()) .
 					          " AND i$count.smw_namespace=" . $db->addQuotes($dv->getNamespace()) .
 					          " AND i$count.smw_iw=" . $db->addQuotes('');
 				break;
 				case SMW_SQL2_ATTS2:
+					$keys = $dv->getDBkeys();
 					$from .= ' INNER JOIN ' . $db->tableName('smw_atts2') . " AS t$count ON t.o_id=t$count.s_id";
 					$where .= " AND t$count.p_id=" . $db->addQuotes($npid) .
-					          " AND t$count.value_xsd=" . $db->addQuotes($dv->getXSDValue()) .
+					          " AND t$count.value_xsd=" . $db->addQuotes($keys[0]) .
 					          " AND t$count.value_unit=" . $db->addQuotes($dv->getUnit());
 				}
 				$count++;
@@ -718,16 +721,18 @@ class SMWSQLStore2 extends SMWStore {
 						$concept_desc = end($propertyValueArray); // only one value per page!
 					break;
 					case SMW_SQL2_SPEC2:
+						$keys = $value->getDBkeys();
 						$up_spec2[] = array(
 						  's_id' => $sid,
 						  'p_id' => $this->makeSMWPropertyID($property),
-						  'value_string' => $value->getXSDValue());
+						  'value_string' => $keys[0]);
 					break;
 					case SMW_SQL2_TEXT2:
+						$keys = $value->getDBkeys();
 						$up_text2[] = array(
 						  's_id' => $sid,
 						  'p_id' => $this->makeSMWPropertyID($property),
-						  'value_blob' => $value->getXSDValue() );
+						  'value_blob' => $keys[0] );
 					break;
 					case SMW_SQL2_RELS2:
 						$up_rels2[] = array(
@@ -736,11 +741,12 @@ class SMWSQLStore2 extends SMWStore {
 						  'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki()) );
 					break;
 					case SMW_SQL2_ATTS2:
+						$keys = $value->getDBkeys();
 						$up_atts2[] = array(
 						  's_id' => $sid,
 						  'p_id' => $this->makeSMWPropertyID($property),
 						  'value_unit' => $value->getUnit(),
-						  'value_xsd' => $value->getXSDValue(),
+						  'value_xsd' => $keys[0],
 						  'value_num' => $value->getNumericValue() );
 					break;
 					case SMW_SQL2_NARY2:
@@ -761,17 +767,19 @@ class SMWSQLStore2 extends SMWStore {
 									  'o_id' => $this->makeSMWPageID($dv->getDBkey(),$dv->getNamespace(),$dv->getInterwiki()) );
 								break;
 								case SMW_SQL2_TEXT2:
+									$keys = $dv->getDBkeys();
 									$up_text2[] = array(
 									  's_id' => $bnode,
 									  'p_id' => $pid,
-									  'value_blob' => $dv->getXSDValue() );
+									  'value_blob' => $keys[0] );
 								break;
 								case SMW_SQL2_ATTS2:
+									$keys = $dv->getDBkeys();
 									$up_atts2[] = array(
 									  's_id' => $bnode,
 									  'p_id' => $pid,
 									  'value_unit' => $dv->getUnit(),
-									  'value_xsd' => $dv->getXSDValue(),
+									  'value_xsd' => $dv[0],
 									  'value_num' => $dv->getNumericValue() );
 								break;
 								}
@@ -808,7 +816,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) {
 			if ( ($concept_desc !== NULL) && ($concept_desc->isValid()) )  {
 				$up_conc2 = array(
-				     'concept_txt'   => $concept_desc->getXSDValue(),
+				     'concept_txt'   => $concept_desc->getConceptText(),
 				     'concept_docu'  => $concept_desc->getDocu(),
 				     'concept_features' => $concept_desc->getQueryFeatures(),
 				     'concept_size'  => $concept_desc->getSize(),
@@ -1177,7 +1185,7 @@ class SMWSQLStore2 extends SMWStore {
 		$this->reportProgress("   ... writing entries for internal properties.\n",$verbose);
 		foreach (SMWSQLStore2::$special_ids as $prop => $id) {
 			$p = SMWPropertyValue::makeProperty($prop);
-			$db->replace('smw_ids', array(), array('smw_id' => $id, 'smw_title' => $p->getXSDValue(), 'smw_namespace' => SMW_NS_PROPERTY, 'smw_iw' => $this->getPropertyInterwiki($p), 'smw_sortkey' => $p->getXSDValue()), 'SMW::setup');
+			$db->replace('smw_ids', array(), array('smw_id' => $id, 'smw_title' => $p->getDBkey(), 'smw_namespace' => SMW_NS_PROPERTY, 'smw_iw' => $this->getPropertyInterwiki($p), 'smw_sortkey' => $p->getDBkey()), 'SMW::setup');
 		}
 		$this->reportProgress("Internal properties initialised successfully.\n",$verbose);
 		return true;
@@ -1400,7 +1408,8 @@ class SMWSQLStore2 extends SMWStore {
 				$label = $item->getSortkey();
 				$value = $label;
 			} elseif ($item instanceof SMWDataValue) {
-				$label = $item->getXSDValue();
+				$keys = $item->getDBkeys(); // use DB keys since we need to mimic the behaviour of direct SQL conditions (which also use the DB key)
+				$label = $keys[0];
 				if ($item->isNumeric()) {
 					$value = $item->getNumericValue();
 					$numeric = true;
@@ -1743,7 +1752,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ( (!$property->isUserDefined()) && (array_key_exists($property->getPropertyID(), SMWSQLStore2::$special_ids))) { // very important property?
 			return SMWSQLStore2::$special_ids[$property->getPropertyID()];
 		} else {
-			return $this->getSMWPageID($property->getXSDValue(),SMW_NS_PROPERTY,$this->getPropertyInterwiki($property),true);
+			return $this->getSMWPageID($property->getDBkey(),SMW_NS_PROPERTY,$this->getPropertyInterwiki($property),true);
 		}
 	}
 
@@ -1754,7 +1763,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ( (!$property->isUserDefined()) && (array_key_exists($property->getPropertyID(), SMWSQLStore2::$special_ids))) { // very important property?
 			return SMWSQLStore2::$special_ids[$property->getPropertyID()];
 		} else {
-			return $this->makeSMWPageID($property->getXSDValue(),SMW_NS_PROPERTY,$this->getPropertyInterwiki($property),true);
+			return $this->makeSMWPageID($property->getDBkey(),SMW_NS_PROPERTY,$this->getPropertyInterwiki($property),true);
 		}
 	}
 

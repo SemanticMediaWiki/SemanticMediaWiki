@@ -313,7 +313,7 @@ class SMWSQLStore2QueryEngine {
 					}
 					$dv = SMWDataValueFactory::newTypeIDValue('_boo');
 					$dv->setOutputFormat($pr->getOutputFormat());
-					$dv->setXSDValue($found);
+					$dv->setDBkeys(array($found));
 					$row[] = new SMWResultArray(array($dv), $pr);
 				break;
 				}
@@ -452,7 +452,7 @@ class SMWSQLStore2QueryEngine {
 			$typeid = $property->getTypeID();
 			$mode = SMWSQLStore2::getStorageMode($typeid);
 			$pid = $this->m_store->getSMWPropertyID($property);
-			$sortkey = $property->getXSDValue();
+			$sortkey = $property->getDBkey(); /// TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
 			if ($mode != SMW_SQL2_SUBS2) { // also make property hierarchy (though not for all properties)
 				$pqid = SMWSQLStore2Query::$qnum;
 				$pquery = new SMWSQLStore2Query();
@@ -545,11 +545,18 @@ class SMWSQLStore2QueryEngine {
 		if ($description instanceof SMWValueDescription) {
 			$dv = $description->getDatavalue();
 			if (SMWSQLStore2::getStorageMode($dv->getTypeID()) == SMW_SQL2_SPEC2) {
-				$value = $dv->getXSDValue();
+				$keys = $dv->getDBkeys();
+				$value = $keys[0];
 				$field = "$jointable.value_string";
 			} else { //should be SMW_SQL2_ATTS2
-				$value = $dv->isNumeric() ? $dv->getNumericValue() : $dv->getXSDValue();
-				$field = $dv->isNumeric() ? "$jointable.value_num" : "$jointable.value_xsd";
+				if ($dv->isNumeric()) {
+					$value = $dv->getNumericValue();
+					$field = "$jointable.value_num";
+				} else {
+					$keys = $dv->getDBkeys();
+					$value = $keys[0];
+					$field = "$jointable.value_xsd";
+				}
 			}
 			switch ($description->getComparator()) {
 				case SMW_CMP_LEQ: $comp = '<='; break;
