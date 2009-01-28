@@ -9,7 +9,7 @@
  */
 
 /**
- * Static class to collect all functions related to parsing wiki text in SMW. 
+ * Static class to collect all functions related to parsing wiki text in SMW.
  * It includes all parser function declarations and hooks.
  * @ingroup SMW
  */
@@ -32,7 +32,7 @@ class SMWParserExtensions {
 		// clean the wiki source for further processing)
 		$smwgStoreAnnotations = smwfIsSemanticsProcessed($parser->getTitle()->getNamespace());
 		SMWParserExtensions::$mTempStoreAnnotations = true; // used for [[SMW::on]] and [[SMW:off]]
-	
+
 		// process redirects, if any
 		// (it seems that there is indeed no more direct way of getting this info from MW)
 		$rt = Title::newFromRedirect($text);
@@ -118,7 +118,7 @@ class SMWParserExtensions {
 		if (array_key_exists(2,$semanticLink)) {
 			$value = $semanticLink[2];
 		} else { $value = ''; }
-	
+
 		if ($property == 'SMW') {
 			switch ($value) {
 				case 'on':  SMWParserExtensions::$mTempStoreAnnotations = true;  break;
@@ -127,11 +127,11 @@ class SMWParserExtensions {
 			wfProfileOut("smwfParsePropertiesCallback (SMW)");
 			return '';
 		}
-	
+
 		if (array_key_exists(3,$semanticLink)) {
 			$valueCaption = $semanticLink[3];
 		} else { $valueCaption = false; }
-	
+
 		//extract annotations and create tooltip
 		$properties = preg_split('/:[=:]/u', $property);
 		foreach($properties as $singleprop) {
@@ -183,7 +183,7 @@ class SMWParserExtensions {
 	}
 
 	/**
-	 * The \<ask\> parser hook processing part. This has been replaced by the 
+	 * The \<ask\> parser hook processing part. This has been replaced by the
 	 * parser function \#ask and should no longer be used.
 	 */
 	static public function doAskHook($querytext, $params, &$parser) {
@@ -335,7 +335,7 @@ class SMWParserExtensions {
 					$argument = $frame->getArgument($argumentname);
 					$valuestring = $frame->expand($argument);
 					if ($property->isValid()) {
-						$type = $property->getTypeID();
+						$type = $property->getPropertyTypeID();
 						if ($type == "_wpg") {
 							$matches = array();
 							preg_match_all("/\[\[([^\[\]]*)\]\]/", $valuestring, $matches);

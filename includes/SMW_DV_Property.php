@@ -256,8 +256,10 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * Quickly get the type id of some property without necessarily making another datavalue.
+	 * Note that this is not the same as getTypeID(), which returns the id of this property
+	 * datavalue.
 	 */
-	public function getTypeID() {
+	public function getPropertyTypeID() {
 		if ($this->prop_typeid === NULL) {
 			$type = $this->getTypesValue();
 			$this->prop_typeid = $type->isUnary()?$type->getDBkey():'__nry';

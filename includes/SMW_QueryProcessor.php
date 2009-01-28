@@ -8,7 +8,7 @@
  */
 
 /**
- * Static class for accessing functions to generate and execute semantic queries 
+ * Static class for accessing functions to generate and execute semantic queries
  * and to serialise their results.
  * @ingroup SMWQuery
  */
@@ -29,11 +29,11 @@ class SMWQueryProcessor {
 	 * An object of type SMWQuery is returned.
 	 *
 	 * The format string is used to specify the output format if already
-	 * known. Otherwise it will be determined from the parameters when 
+	 * known. Otherwise it will be determined from the parameters when
 	 * needed. This parameter is just for optimisation in a common case.
 	 *
-	 * @todo This method contains too many special cases for certain 
-	 * printouts. Especially the case of rss, icalendar, etc. (no query) 
+	 * @todo This method contains too many special cases for certain
+	 * printouts. Especially the case of rss, icalendar, etc. (no query)
 	 * should be specified differently.
 	 */
 	static public function createQuery($querystring, $params, $context = SMWQueryProcessor::INLINE_QUERY, $format = '', $extraprintouts = array()) {
@@ -69,8 +69,8 @@ class SMWQueryProcessor {
 		}
 		if ( ($querymode == SMWQuery::MODE_NONE) ||
 		     ( ( !$desc->isSingleton() ||
-		         (count($desc->getPrintRequests()) + count($extraprintouts) == 0) 
-		       ) && ($mainlabel != '-') 
+		         (count($desc->getPrintRequests()) + count($extraprintouts) == 0)
+		       ) && ($mainlabel != '-')
 		     )
 		   ) {
 			$desc->prependPrintRequest(new SMWPrintRequest(SMWPrintRequest::PRINT_THIS, $mainlabel));
@@ -138,7 +138,7 @@ class SMWQueryProcessor {
 				$query->sortkeys[''] = current($orders);
 			}
 		} elseif ($format == 'rss') { // unsorted RSS: use *descending* default order
-			///TODO: the default sort field should be "modification date" (now it is the title, but 
+			///TODO: the default sort field should be "modification date" (now it is the title, but
 			///likely to be overwritten by printouts with label "date").
 			$query->sortkeys[''] = (current($orders) != false)?current($orders):'DESC';
 		} else { // sort by page title (main column) by default
@@ -216,9 +216,9 @@ class SMWQueryProcessor {
 	}
 
 	/**
-	 * Process and answer a query as given by an array of parameters as is 
+	 * Process and answer a query as given by an array of parameters as is
 	 * typically produced by the #ask parser function. The result is formatted
-	 * according to the specified $outputformat. The parameter $context defines 
+	 * according to the specified $outputformat. The parameter $context defines
 	 * in what context the query is used, which affects ceretain general settings.
 	 *
 	 * The main task of this function is to preprocess the raw parameters to
@@ -231,9 +231,9 @@ class SMWQueryProcessor {
 	}
 
 	/**
-	 * Process and answer a query as given by a string and an array of parameters 
+	 * Process and answer a query as given by a string and an array of parameters
 	 * as is typically produced by the <ask> parser hook. The result is formatted
-	 * according to the specified $outputformat. The parameter $context defines in 
+	 * according to the specified $outputformat. The parameter $context defines in
 	 * what context the query is used, which affects certain general settings.
 	 */
 	static public function getResultFromHookParams($querystring, $params, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY) {
@@ -265,10 +265,10 @@ class SMWQueryProcessor {
 
 	/**
 	 * Process a query string in SMW's query language and return a formatted
-	 * result set as specified by $outputmode. A parameter array of key-value-pairs 
-	 * constrains the query and determines the serialisation mode for results. The 
-	 * parameter $context defines in what context the query is used, which affects 
-	 * certain general settings. Finally, $extraprintouts supplies additional 
+	 * result set as specified by $outputmode. A parameter array of key-value-pairs
+	 * constrains the query and determines the serialisation mode for results. The
+	 * parameter $context defines in what context the query is used, which affects
+	 * certain general settings. Finally, $extraprintouts supplies additional
 	 * printout requests for the query results.
 	 */
 	static public function getResultFromQueryString($querystring, $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY) {
@@ -336,7 +336,7 @@ class SMWQueryProcessor {
 
 /**
  * Objects of this class are in charge of parsing a query string in order
- * to create an SMWDescription. The class and methods are not static in order 
+ * to create an SMWDescription. The class and methods are not static in order
  * to more cleanly store the intermediate state and progress of the parser.
  * @ingroup SMWQuery
  */
@@ -347,11 +347,11 @@ class SMWQueryParser {
 	protected $m_errors; // empty array if all went right, array of strings otherwise
 	protected $m_label; //label of the main query result
 	protected $m_defaultns; //description of the default namespace restriction, or NULL if not used
-	
+
 	protected $m_categoryprefix; // cache label of category namespace . ':'
 	protected $m_conceptprefix; // cache label of concept namespace . ':'
 	protected $m_queryfeatures; // query features to be supported, format similar to $smwgQFeatures
-	
+
 	public function SMWQueryParser($queryfeatures = false) {
 		global $wgContLang, $smwgQFeatures;
 		$this->m_categoryprefix = $wgContLang->getNsText(NS_CATEGORY) . ':';
@@ -423,21 +423,21 @@ class SMWQueryParser {
 	 * Compute an SMWDescription for current part of a query, which should
 	 * be a standalone query (the main query or a subquery enclosed within
 	 * "\<q\>...\</q\>". Recursively calls similar methods and returns NULL upon error.
-	 * 
+	 *
 	 * The call-by-ref parameter $setNS is a boolean. Its input specifies whether
 	 * the query should set the current default namespace if no namespace restrictions
-	 * were given. If false, the calling super-query is happy to set the required 
+	 * were given. If false, the calling super-query is happy to set the required
 	 * NS-restrictions by itself if needed. Otherwise the subquery has to impose the defaults.
 	 * This is so, since outermost queries and subqueries of disjunctions will have to set
 	 * their own default restrictions.
-	 * 
+	 *
 	 * The return value of $setNS specifies whether or not the subquery has a namespace
 	 * specification in place. This might happen automatically if the query string imposes
 	 * such restrictions. The return value is important for those callers that otherwise
 	 * set up their own restrictions.
-	 * 
+	 *
 	 * Note that $setNS is no means to switch on or off default namespaces in general,
-	 * but just controls query generation. For general effect, the default namespaces 
+	 * but just controls query generation. For general effect, the default namespaces
 	 * should be set to NULL.
 	 *
 	 * The call-by-ref parameter $label is used to append any label strings found.
@@ -478,7 +478,7 @@ class SMWQueryParser {
 								$newdisjuncts[] = $this->addDescription($conj, $this->m_defaultns);
 							}
 							$disjuncts = $newdisjuncts;
-						} elseif ( !$hasNamespaces && $mustSetNS) { 
+						} elseif ( !$hasNamespaces && $mustSetNS) {
 							// add ns restriction to current result
 							$conjunction = $this->addDescription($conjunction, $this->m_defaultns);
 						}
@@ -653,7 +653,7 @@ class SMWQueryParser {
 				$this->m_errors = array_merge($this->m_errors, $property->getErrors());
 				return NULL; ///TODO: read some more chunks and try to finish [[ ]]
 			}
-			$typeid = $property->getTypeID();
+			$typeid = $property->getPropertyTypeID();
 			$prevname = $name;
 			$properties[] = $property;
 		} ///NOTE: after iteration, $property and $typeid correspond to last value
@@ -837,7 +837,7 @@ class SMWQueryParser {
 			}
 		}
 	}
-	
+
 	/**
 	 * Parse an article description (the part of an inline query that
 	 * is in between "[[" and the closing "]]" assuming it is not specifying
@@ -884,7 +884,7 @@ class SMWQueryParser {
 
 		return $this->finishLinkDescription($chunk, true, $result, $setNS, $label);
 	}
-	
+
 	protected function finishLinkDescription($chunk, $hasNamespaces, $result, &$setNS, &$label) {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		if ($result === NULL) { // no useful information or concrete error found
@@ -907,7 +907,7 @@ class SMWQueryParser {
 		}
 		if ($chunk != ']]') {
 			// What happended? We found some chunk that could not be processed as
-			// link content (as in [[Category:Test<q>]]) and there was no label to 
+			// link content (as in [[Category:Test<q>]]) and there was no label to
 			// eat it. Or the closing ]] are just missing entirely.
 			if ($chunk != '') {
 				$this->m_errors[] = wfMsgForContent('smw_misplacedsymbol', htmlspecialchars($chunk));
@@ -923,21 +923,21 @@ class SMWQueryParser {
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * Get the next unstructured string chunk from the query string.
 	 * Chunks are delimited by any of the special strings used in inline queries
 	 * (such as [[, ]], <q>, ...). If the string starts with such a delimiter,
-	 * this delimiter is returned. Otherwise the first string in front of such a 
+	 * this delimiter is returned. Otherwise the first string in front of such a
 	 * delimiter is returned.
 	 * Trailing and initial spaces are ignored if $trim is true, and chunks
 	 * consisting only of spaces are not returned.
 	 * If there is no more qurey string left to process, the empty string is
 	 * returned (and in no other case).
-	 * 
-	 * The stoppattern can be used to customise the matching, especially in order to 
+	 *
+	 * The stoppattern can be used to customise the matching, especially in order to
 	 * overread certain special symbols.
-	 * 
+	 *
 	 * $consume specifies whether the returned chunk should be removed from the
 	 * query string.
 	 */
@@ -1046,4 +1046,4 @@ class SMWQueryParser {
 		}
 	}
 }
- 
+

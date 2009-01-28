@@ -337,7 +337,7 @@ class SMWSQLStore2 extends SMWStore {
 	function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = NULL, $outputformat = '') {
 		wfProfileIn("SMWSQLStore2::getPropertyValues (SMW)");
 		if ($subject !== NULL) { // subject given, use semantic data cache:
-			$sd = $this->getSemanticData($subject,array($property->getTypeID()));
+			$sd = $this->getSemanticData($subject,array($property->getPropertyTypeID()));
 			$result = $this->applyRequestOptions($sd->getPropertyValues($property),$requestoptions);
 			if ($outputformat != '') { // reformat cached values
 				$newres = array();
@@ -356,7 +356,7 @@ class SMWSQLStore2 extends SMWStore {
 			}
 			$db =& wfGetDB( DB_SLAVE );
 			$result = array();
-			$mode = SMWSQLStore2::getStorageMode($property->getTypeID());
+			$mode = SMWSQLStore2::getStorageMode($property->getPropertyTypeID());
 			switch ($mode) {
 				case SMW_SQL2_TEXT2:
 					$res = $db->select( 'smw_text2', 'value_blob',
@@ -487,7 +487,7 @@ class SMWSQLStore2 extends SMWStore {
 		// redirects work differently.
 		$table = '';
 		$sql = 'p_id=' . $db->addQuotes($pid);
-		$typeid = ($value === NULL)?$property->getTypeID():$value->getTypeID();
+		$typeid = ($value === NULL)?$property->getPropertyTypeID():$value->getTypeID();
 		$mode = SMWSQLStore2::getStorageMode($typeid);
 
 		switch ($mode) {

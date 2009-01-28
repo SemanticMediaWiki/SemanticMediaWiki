@@ -449,7 +449,7 @@ class SMWSQLStore2QueryEngine {
 	protected function compilePropertyCondition(&$query, $property, SMWDescription $valuedesc, $typeid=false) {
 		$query->joinfield = "$query->alias.s_id";
 		if ($property instanceof SMWPropertyValue) {
-			$typeid = $property->getTypeID();
+			$typeid = $property->getPropertyTypeID();
 			$mode = SMWSQLStore2::getStorageMode($typeid);
 			$pid = $this->m_store->getSMWPropertyID($property);
 			$sortkey = $property->getDBkey(); /// TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
