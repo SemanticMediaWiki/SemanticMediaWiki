@@ -16,11 +16,11 @@
  */
 
 /**
- * Representation of queries in SMW, each consisting of a query 
- * description and various parameters. Some settings might also lead to 
+ * Representation of queries in SMW, each consisting of a query
+ * description and various parameters. Some settings might also lead to
  * changes in the query description.
  *
- * Most additional query parameters (limit, sort, ascending, ...) are 
+ * Most additional query parameters (limit, sort, ascending, ...) are
  * interpreted as in SMWRequestOptions (though the latter contains some
  * additional settings).
  * @ingroup SMWQuery
@@ -118,13 +118,17 @@ class SMWQuery {
 	}
 
 	/**
-	 * Set an offset for the returned query results. The current limit is taken into
-	 * account such that the offset cannot be so large that no results are can ever 
-	 * be returned at all.
+	 * Set an offset for the returned query results. No offset beyond the maximal query
+	 * limit will be set, and the current query limit might be reduced in order to ensure
+	 * that no results beyond the maximal limit are returned.
 	 * The function returns the chosen offset.
+	 * @todo The function should be extended to take into account whether or not we
+	 * are in inline mode (not critical, since offsets are usually not applicable inline).
 	 */
 	public function setOffset($offset) {
-		$this->m_offset = min($this->m_limit - 1, $offset); //select integer between 0 and current limit -1;
+		global $smwgQMaxLimit;
+ 		$this->m_offset = min($smwgQMaxLimit, $offset); //select integer between 0 and maximal limit;
+		$this->m_limit = min($smwgQMaxLimit - $this->m_offset, $this->m_limit); // note that limit might become 0 here
 		return $this->m_offset;
 	}
 
