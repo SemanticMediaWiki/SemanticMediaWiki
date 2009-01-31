@@ -572,19 +572,48 @@ $messages['ar'] = array(
 	'smw_smwadmin_settingup' => 'ضبط التخزين لسيمانتيك ميدياويكي',
 	'smw_smwadmin_setupsuccess' => 'تم تنصيب محرك التخزين بنجاح',
 	'smw_smwadmin_return' => 'أرجع إلى $1',
+	'smw_smwadmin_updatestarted' => 'عملية تحديث جديدة لتحديث بيانات سيمانتيك بدأت.
+كل البيانات المخزنة ستتم إعادة بنائها أو إصلاحها عند الحاجة.
+أنت يمكنك متابعة تطور التحديث على هذه الصفحة الخاصة.',
 	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية 
 <br>لا تنشئ واحدة أخرى
 <br />',
 	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
+	'smw_smwadmin_updatenotstopped' => 'لوقف عملية التحديث الجارية، يجب عليك تفعيل الصندوق لتعبر عن أنك متأكد حقا.',
+	'smw_smwadmin_docu' => 'هذه الصفحة الخاصة تساعدك خلال تنصيب وترقية <a href="http://semantic-mediawiki.org">سيمانتيك ميدياويكي</a>.
+تذكر أن تخزن احتياطيا البيانات القيمة قبل تنفيذ وظائف إدارية.',
 	'smw_smwadmin_db' => 'تثبيت و تحديث قاعدة البيانات',
+	'smw_smwadmin_dbdocu' => 'سيمانتيك ميدياويكي يتطلب بعض الامتدادات لقاعدة بيانات ميدياويكي حتى يخزن البيانات السيمانتيك.
+الوظيفة التالية تؤكد أن قاعدة بياناتك منصبة بشكل صحيح.
+التغييرات المعمولة في هذه الخطوة لا تؤثر على بقية قاعدة بيانات ميدياويكي، ويمكن استرجاعها بسهولة في حالة الرغبة في ذلك.
+وظيفة التنصيب هذه يمكن تنفيذها عدة مرات بدون عمل أي ضرر، لكنها مطلوبة مرة واحدة عند التنصيب أو الترقية.',
+	'smw_smwadmin_permissionswarn' => 'لو أن العملية فشلت مع أخطاء SQL، فقاعدة البيانات التي طبقها المستخدم بواسطة الويكي الخاص بك (تحقق من LocalSettings.php الخاص بك) على الأرجح لا تمتلك سماحات كافية.
+إما أن تمنح هذا المستخدم سماحات إضافية لإنشاء وحذف الجداول، مؤقتا أدخل تسجيل الدخول للroot الخاص بقاعدة بياناتك في LocalSettings.php، أو استخدم سكريبت الصيانة <tt>SMW_setup.php</tt> الذي يمكنه استخدام تأكيدات AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'جداول البدء أو الترقية',
 	'smw_smwadmin_announce' => 'أعلن عن الويكي الخاص بك',
+	'smw_smwadmin_announcedocu' => 'سيمانتيك ميدياويكي لديه خدمة ويب لإعلان مواقع الويكي السيمانتيك الجديدة.
+هذا يستخدم للاعتناء بقائمة من المواقع العلنية التي تستخدم سيمانتيك ميدياويكي، أساسا لمساعدة <a href="http://semantic-mediawiki.org/wiki/SMW_Project">مشروع سيمانتيك ميدياويكي</a> للحصول على عرض عام للاستخدامات النمطية لسيمانتيك ميدياويكي.
+انظر الصفحة الرئيسية لسيمانتيك ميدياويكي ل<a href="http://semantic-mediawiki.org/wiki/Registry">مزيد من المعلومات حول هذه الخدمة</a>.',
+	'smw_smwadmin_announcebutton' => 'اضغط على الزر التالي لإرسال مسار الويكي الخاص بك إلى تلك الخدمة.
+الخدمة لن تسجل الويكيات التي لا يمكن الوصول إليها بشكل علني، وستخزن فقط البيانات التي يمكن الوصول إليها بشكل علني.',
 	'smw_smwadmin_datarefresh' => 'إصلاح البيانات وتحديثها',
+	'smw_smwadmin_datarefreshdocu' => 'من الممكن استرجاع كل بيانات سيمانتيك ميدياويكي بناء على المحتويات الحالية للويكي.
+هذا يمكن أن يكون مفيدا لإصلاح البيانات المكسورة أو لتحديث البيانات لو أن الصيغة الداخلية تغيرت بسبب ترقية برنامج.
+التحديث يتم تنفيذه صفحة بصفحة ولن يتم إكماله حالا.
+التالي يعرض ما إذا كان التحديث يجري ويسمح لك ببدء أو إنهاء التحديثات (إلا لو كانت هذه الخاصية تم تعطيلها بواسطة إداري الموقع).',
+	'smw_smwadmin_datarefreshprogress' => 'تحديث يجرب بالفعل.</b>
+من الطبيعي أن تتقدم عمليات التحديث ببطء فقط بما أنها تحدث البيانات فقط في كميات صغيرة كل مرة مستخدم ما يصل إلى الويكي.
+للانتهاء من هذا التحديث سريعا، يمكنك تشغيل سكريبت صيانة ميدياويكي <tt>runJobs.php</tt> (استخدم الخيار <tt>--maxjobs 1000</tt> لتحديد عدد التحديثات المعمولة كل مرة).
+التقدم المقدر للتحديث الحالي:',
 	'smw_smwadmin_datarefreshbutton' => 'أبدا تحديث البيانات',
 	'smw_smwadmin_datarefreshstop' => 'أوقف هذا التحديث',
 	'smw_smwadmin_datarefreshstopconfirm' => 'نعم، أنا متأكد',
 	'smw_smwadmin_support' => 'أحصل على دعم',
 	'smw_smwadmin_supportdocu' => ':مصادر متعددة يمكن أن تساعدة في حالة مشاكل',
+	'smw_smwadmin_installfile' => 'لو انك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات في <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ملف INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لسيمانتيك ميدياويكي موجودة في <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'العلل يمكن إبلاغها إلى <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
+	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش في <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
 );
 
 /** Egyptian Spoken Arabic (مصرى)
@@ -1492,6 +1521,22 @@ $messages['eu'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'Bai, ziur nago.',
 );
 
+/** Persian (فارسی)
+ * @author Momeni
+ */
+$messages['fa'] = array(
+	'smw_edithelp' => 'ویرایش راهنما روی ویژگی‌ها',
+	'smw_finallistconjunct' => '، و',
+	'smw_isspecprop' => 'این خصوصیت یک خصوصیت ویژه در این ویکی است.',
+	'smw_isknowntype' => 'این نوع از جمله انواع داده استاندارد در این ویکی است.',
+	'smw_isaliastype' => 'این نوع یک نام مستعار برای نوع داده "$1" است.',
+	'smw_concept_description' => 'توصیف مفهوم "$1"',
+	'smw_no_concept_namespace' => 'مفاهیم فقط می‌توانند در صفحات داخل فضای‌نام مفهوم: تعریف شوند.',
+	'smw_multiple_concepts' => 'هر صفحه مفهوم فقط می‌تواند شامل یک تعریف مفهوم باشد.',
+	'smw_concept_cache_miss' => 'مفهوم "$1" نمی‌تواند در حال حاضر استفاده شود، زیرا تنظیمات ویکی نیاز به محاسبه آن به‌صورت برون‌خط دارد.
+اگر این مشکل پس از مدتی از بین نرفت، از مدیر سایت بخواهید تا این مفهوم را در دسترس قرار دهد.',
+);
+
 /** Finnish (Suomi)
  * @author Cimon Avaro
  * @author Nike
@@ -2141,6 +2186,17 @@ Die Setup-Funktion cha e paar Mol uusgfiert wäre ohni Schade z verursache, s is
 Go des Probläm lese  isch s megli, em Benutzer zuesätzligi Rächt fir s Aalege und Lesche vu Tabälle z gee, dr  Datebank-Adminischtrator zytwyys in d LocalSettings.php yyztrage oder s Wartigsskript <tt>SMW_setup.php</tt> z verwände, wu d Benutzerdate us AdminSettings.php cha verwände.',
 	'smw_smwadmin_dbbutton' => 'Tabällen initialisiere oder aktualisere',
 	'smw_smwadmin_announce' => 'Dyy Wiki aachinde',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki het e Netzservice zum neji semantischi Wikisyte bekannt gee.
+Dää Service wird bruucht go ne Lischt kriege, weli effentligi Syte Semantic MediaWiki bruuche, in dr Hauptsach aber zum im <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic-MediaWiki-Projäkt</a> e Iberbick iber typischi Aawändige vu  Semantic MediaWiki z gee.
+Lueg d Semantic-MediaWiki-Homepage fir <a href="http://semantic-mediawiki.org/wiki/Registry">meh Informatione iber dää Service</a>.',
+	'smw_smwadmin_datarefreshdocu' => 'S isch megli alli Datebanke vu Semantic MediaWiki uf dr Grundlag vum aktuälle Inhalt vum Wiki widerhärzstelle.
+Des cha hälfe, ne kaputti Datebank nej z lade oder Date z aktualisiere, wänn wägen eme Softwareupgrade d Datebankstruktur gänderet wore isch.
+S Update wird fir jedi Syte uusgfiert un wird e Wyyli bruuche.
+Doo wird zeigt, eb e Update lauft un Di wird erlaubt e Update z starte oder z stoppe (usser wänn die Funktion vum Sytebetryyber deaktiviert woren isch).',
+	'smw_smwadmin_datarefreshprogress' => 'E Update lauft scho.</b>
+E Update bruucht nromalerwyys lang, wel d Date nume in chleine Prtione aktualisiert wäre, jedes Mol wänn eber uf s Wiki zuegryft.
+Go des Update schnäller z beände, cha mer s MediaWiki-Wartigsskript <tt>runJobs.php</tt> bruuche (mit em Parameter <tt>--maxjobs 1000</tt> cha d Aazahl vu dr Updates, wu uf eimol durgfiert wäre, bschränkt wäre).
+Gschätzte Fortschritt vum Update, wu grad lauft:',
 );
 
 /** Hebrew (עברית)
