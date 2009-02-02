@@ -246,6 +246,15 @@ $aliases['oc'] = array(
 	'WantedProperties' => array( 'Proprietats demandadas', 'ProprietatsDemandadas' ),
 );
 
+/** Pashto (پښتو) */
+$aliases['ps'] = array(
+	'Ask' => array( 'پوښتل' ),
+	'PageProperty' => array( 'د مخ ځانتياوې' ),
+	'Properties' => array( 'ځانتياوې' ),
+	'Types' => array( 'ډولونه' ),
+	'UnusedProperties' => array( 'ناکارېدلې ځانتياوې' ),
+);
+
 /** Romanian (Română) */
 $aliases['ro'] = array(
 	'Browse' => array( 'Răsfoieşte' ),
