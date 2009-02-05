@@ -1713,7 +1713,7 @@ $messages['fr'] = array(
 	'smw_badtitle' => "Désolé, mais « $1 » n'est pas un titre de page valable.",
 	'smw_badqueryatom' => "Les parties « <nowiki>[[…]]</nowiki> » de la requête n'ont pas été comprises.",
 	'smw_propvalueproblem' => "La valeur de la propriété « $1 » n'a pas été comprise.",
-	'smw_noqueryfeature' => 'Quelques fonctionnalité de requêtes ne sont pas supportés sur ce wiki et une partie d’entre elles ont été retirées ($1).',
+	'smw_noqueryfeature' => 'Quelques fonctionnalités de requêtes ne sont pas supportées sur ce wiki et une partie d’entre elles ont été retirées ($1).',
 	'smw_noconjunctions' => 'Les conjonctions dans les requêtes ne sont pas supportées sur ce wiki et une parties d’entres elles ont été retirées ($1).',
 	'smw_nodisjunctions' => 'Les disjonctions dans les requêtes ne sont pas supportées sur ce wiki et des parties de la requête ont été ignorées ($1).',
 	'smw_querytoolarge' => "Les conditions suivantes de la requête n'ont pu être évaluées en raison des restrictions de ce wiki à la taille ou à la profondeur des requêtes : $1.",
@@ -1752,8 +1752,8 @@ $messages['fr'] = array(
 	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a sa propre page, dans laquelle peuvent figurer des informations plus précises.',
 	'smw_typeunits' => 'Unités de mesure de type « $1 » : $2',
 	'semanticstatistics' => 'Statistiques sémantiques',
-	'smw_semstats_text' => 'Ce wiki contient <b>$1</b> valeurs de propriété pour un total de <b>$2</b> <a href="$3">propriétés</a> différentes.
-<b>$4</b> propriétés ont leur propre page, et le type de données voulu est spécifié pour <b>$5</b> de celles-ci.
+	'smw_semstats_text' => 'Ce wiki contient <b>$1</b> valeurs de propriété pour un total de <b>$2</b> <a href="$3">propriétés</a> différentes. 
+<b>$4</b> propriétés ont leur propre page, et le type de données voulu est spécifié pour <b>$5</b> de celles-ci. 
 Certaines des propriétés existantes peuvent faire être <a href="$6">inutilisées</a>. Les propriétés qui n\'ont pas encore de page se trouvent dans la <a href="$7">liste des propriétés demandées</a>.',
 	'flawedattributes' => 'Attributs défectueux',
 	'smw_fattributes' => "Les pages ci-dessous ont un attribut qui n'est pas défini correctement. Le nombre d'attributs incorrects est donné entre les parenthèses.",
