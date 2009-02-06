@@ -4,7 +4,7 @@
  * SMW SQL 2 Store for everything SMW does, but it decorates all edits to
  * the store with calls to a RAP store, so it keeps in parallel a second
  * store with all the semantic data. This allows for a SPARQL endpoint.
- * 
+ *
  * @todo It is not good that SMW_RAPStore2 is basically
  * a copy of SMW_RAPStore. The architecture of these two stores need to be
  * rethought so that code duplication can be avoided.
@@ -41,48 +41,48 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 	public function SMWRAPStore2() {
 		global $smwgRAPPath,$wgServer;
 
-	
+
 		$this->modeluri = SMWExporter::expandURI($wgServer."/model");
-		$this->baseuri  = SMWExporter::expandURI($wgServer."/id"); 
+		$this->baseuri  = SMWExporter::expandURI($wgServer."/id");
 	}
 
 ///// Writing methods /////
 
 	function deleteSubject(Title $subject) {
-		
+
 		// Translate SMWSemanticData to a RAP Model
 		$rdfmodel = $this->getRAPModel();
-		
+
 		$rapsub = new Resource(SMWExporter::expandURI($this->getURI($subject)));
 		$this->removeSubjectFromRAP($rdfmodel, $rapsub);
-		
+
 		return parent::deleteSubject($subject);
 	}
 
 	function updateData(SMWSemanticData $data){
 		// Create a local memmodel
 		$model = ModelFactory::getDefaultModel();
-		
+
 		// Get DB-Model
 		$rdfmodel = $this->getRAPModel();
 
 		$ed = SMWExporter::makeExportData($data); //ExpData
-		
+
 		// Delete all we know about the subject!
 		$rapsub = new Resource(SMWExporter::expandURI($ed->getSubject()->getName()));
 		$this->removeSubjectFromRAP($rdfmodel, $rapsub);
-		
+
 		$tl = $ed->getTripleList(); // list of tenary arrays
-		
+
 		// Temporary List of all Blank Nodes in this dataobject
 		$blankNodes = array();
-		
+
 		foreach ($tl as $triple) {
 			$s = $triple[0]->getName();	// Subject
 			$p = $triple[1]->getName();	// Predicate
 			$o = $triple[2]->getName(); // Object
-			
-			
+
+
 			// -------------------------------------------------------------------
 			// Subject
 			// -------------------------------------------------------------------
@@ -103,14 +103,14 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 					$rap_subj = $blankNodes[$bNodeId];
 				}
 			}
-			
+
 			// -------------------------------------------------------------------
 			// Predicate
 			// -------------------------------------------------------------------
 			$rap_pred = new Resource(SMWExporter::expandURI($triple[1]->getName()));
-			
+
 			// -------------------------------------------------------------------
-			// Object 
+			// Object
 			// -------------------------------------------------------------------
 			$rap_obj  = new Resource(SMWExporter::expandURI($triple[2]->getName()));
 			if($triple[2] instanceof SMWExpLiteral){
@@ -128,31 +128,31 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 					$blankNodes[$bNodeId] = $rap_obj;
 				}
 			}
-			
+
 			// now add the new Statement
-			$statement = new Statement($rap_subj, $rap_pred, $rap_obj); 
+			$statement = new Statement($rap_subj, $rap_pred, $rap_obj);
 			$model->add($statement);
 		}
-		
+
 		// Add the mem-model to the store
 		$rdfmodel->addModel($model);
 
-			
+
 		// Close connections
 		$model->close();
 		$rdfmodel->close();
 		$this->closeRAP();
-		
-		
+
+
 		return parent::updateData($data);
 	}
 
 	function changeTitle(Title $oldtitle, Title $newtitle, $pageid, $redirid=0) {
-		
+
 		// Save it in parent store now!
 		// We need that so we get all information correctly!
 		$result = parent::changeTitle($oldtitle, $newtitle, $pageid, $redirid);
-		
+
 		// Delete the old stuff
 		$nameOld = SMWExporter::expandURI($this->getURI($oldtitle));
 		$rdfmodel = $this->getRAPModel();
@@ -169,7 +169,7 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		$oldpage->setValues($oldtitle->getDBKey(), $oldtitle->getNamespace(), $redirid);
 		$semdata = $this->getSemanticData($oldpage);
 		$this->updateData($semdata,false);
-		
+
 		return $result;
 	}
 
@@ -199,7 +199,7 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		}
 		$this->reportProgress("Checking RAP model...\n",$verbose);
 		if ($rdfstore->modelExists($this->modeluri)) {
-			$this->reportProgress("RAP model exiists.\n",$verbose);			
+			$this->reportProgress("RAP model exiists.\n",$verbose);
 		} else {
 			$this->reportProgress("Creating RAP model...\n",$verbose);
 			$rdfstore->getNewModel($this->modeluri, $this->baseuri);
@@ -230,7 +230,7 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		$this->rapstore = ModelFactory::getDbStore('MySQL', $smwgRapDBserver, $smwgRapDBname, $smwgRapDBuser, $smwgRapDBpassword);
 		return $this->rapstore;
 	}
-		
+
 	/**
 	 * Returns the actual model where all the triples are saved.
 	 */
@@ -238,7 +238,7 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		$rapstore = $this->getRAPStore();
 		return $rapstore->getModel($this->modeluri);
 	}
-	
+
 	/**
 	 * Closes the connection to the RAP DB. As of now, this is disabled since it
 	 * seems to close the connection to the MW DB as well (probably, because it
@@ -249,27 +249,10 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		//$this->rapstore->close();
 	}
 
-	/**
-	 * Print some output to indicate progress. The output message is given by
-	 * $msg, while $verbose indicates whether or not output is desired at all.
-	 * Copied from SMW_SQLStore.
-	 */
-	protected function reportProgress($msg, $verbose) {
-		if (!$verbose) {
-			return;
-		}
-		if (ob_get_level() == 0) { // be sure to have some buffer, otherwise some PHPs complain
-			ob_start();
-		}
-		print $msg;
-		ob_flush();
-		flush();
-	}
-
 ///// Additional helpers
 	/**
 	* Deletes all relations for the given subject from RAP.
-	* This especially also handles n-ary relations recursevly as we would lose them 
+	* This especially also handles n-ary relations recursevly as we would lose them
 	**/
 	protected function removeSubjectFromRAP($rdfmodel, Resource $subject){
 		$oldmodel = $rdfmodel->find($subject, null, null);
@@ -277,21 +260,21 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		$i->moveFirst();
 		while ($i->current() != null) {
 			$stmt = $i->current();
-			
+
 			$rdfmodel->remove($stmt);
-			
+
 			$obj = $stmt->object();
 			if($obj instanceof BlankNode){
 				// It's a blank node in the object, this means a n-ary relation has been saved
 				// So delete everything for this blank node as well!
 				$this->removeSubjectFromRAP($rdfmodel, $obj);
 			}
-			
+
 			$i->next();
 		}
 		// TODO Delete More Stuff, if we save more stuff
 	}
-	
+
 	/**
 	 * Having a title of a page, what is the URI that is described by that page?
 	 *
@@ -302,12 +285,12 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		if($title instanceof Title){
 			$dv = SMWDataValueFactory::newTypeIDValue('_wpg');
 			$dv->setTitle($title);
-			$exp = $dv->getExportData(); 
-			$uri = $exp->getSubject()->getName(); 
+			$exp = $dv->getExportData();
+			$uri = $exp->getSubject()->getName();
 		}else{
 			// There could be other types as well that we do NOT handle here
 		}
-		
+
 		return $uri; // still requires expandURI()
 	}
 }
