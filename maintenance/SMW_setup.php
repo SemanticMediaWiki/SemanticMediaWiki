@@ -95,7 +95,7 @@ if (  array_key_exists( 'delete', $options ) ) {
 		sleep(1);
 	}
 	echo "\n";
-	smwfGetStore()->drop($verbose);
+	smwfGetStore()->drop(true);
 	wfRunHooks('smwDropTables');
 	print "\n";
 	while (ob_get_level() > 0) { // be sure to have some buffer, otherwise some PHPs complain
