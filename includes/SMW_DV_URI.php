@@ -42,8 +42,9 @@ class SMWURIValue extends SMWDataValue {
 	protected function parseUserValue($value) {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		$value = trim($value);
+		$this->m_url = '';
+		$this->m_value = '';
 		if ($value!='') { //do not accept empty strings
-			$this->m_value = $value;
 			switch ($this->m_mode) {
 				case SMW_URI_MODE_URI: case SMW_URI_MODE_ANNOURI:
 					$parts = explode(':', $value, 2); // try to split "schema:rest"
@@ -112,9 +113,10 @@ class SMWURIValue extends SMWDataValue {
 						$this->addError(wfMsgForContent('smw_baduri', $value));
 						break;
 					}
-					$this->m_url = 'mailto:' . rawurlencode($value);
+					$this->m_url = 'mailto:' . str_replace(array('%3A','%2F','%23','%40','%3F','%3D','%26','%25'), array(':','/','#','@','?','=','&','%'),rawurlencode($value));
 					$this->m_uri = $this->m_url;
 			}
+			$this->m_value = $this->m_uri;
 		} else {
 			$this->addError(wfMsgForContent('smw_emptystring'));
 		}
@@ -127,11 +129,20 @@ class SMWURIValue extends SMWDataValue {
 
 	protected function parseDBkeys($args) {
 		$this->m_value = $args[0];
+		$this->m_uri = $this->m_value;
 		$this->m_caption = $this->m_value;
 		if ($this->m_mode == SMW_URI_MODE_EMAIL) {
-			$this->m_url = 'mailto:' . $this->m_value;
-		} else {
 			$this->m_url = $this->m_value;
+		} else {
+			$parts = explode(':', $this->m_value, 2); // try to split "schema:rest"
+			global $wgUrlProtocols;
+			$this->m_url = '';
+			foreach ($wgUrlProtocols as $prot) { // only set URL if wiki-enabled protocol
+				if ( ($prot == $parts[0] . ':') || ($prot == $parts[0] . '://') ) {
+					$this->m_url = $this->m_value;
+					break;
+				}
+			}
 		}
 		$this->m_uri = $this->m_url;
 	}
