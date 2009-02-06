@@ -13,13 +13,16 @@
  *
  * -d <delay>   Wait for this many milliseconds after processing an article, useful for limiting server load.
  * -s <startid> Start refreshing at given article ID, useful for partial refreshing
- * -e <endid>   Stop refreshing at given article ID, useful for partial refreshing 
- * -b <backend> Execute the operation for the storage backend of the given name 
+ * -e <endid>   Stop refreshing at given article ID, useful for partial refreshing
+ * -b <backend> Execute the operation for the storage backend of the given name
  *              (default is to use the current backend)
  * -v           Be verbose about the progress.
  * -c           Will refresh only category pages (and other explicitly named namespaces)
  * -p           Will refresh only property pages (and other explicitly named namespaces)
  * -t           Will refresh only type pages (and other explicitly named namespaces)
+ * --page=<pagelist> will refresh only the pages of the given names, with | used as a separator.
+ *              Example: --page="Page 1|Page 2" refreshes Page 1 and Page 2
+ *              Options -s, -e, -c, -p, -t are ignored if --page is given.
  * -f           Fully delete all content instead of just refreshing relevant entries. This will also
  *              rebuild the whole storage structure. May leave the wiki temporarily incomplete.
  * --server=<server> The protocol and server name to as base URLs, e.g.
@@ -32,7 +35,7 @@
  * @ingroup SMWMaintenance
  */
 
-$optionsWithArgs = array( 'd', 's', 'e', 'b', 'server'); // -d <delay>, -s <startid>, -e <endid>, -b <backend>
+$optionsWithArgs = array( 'd', 's', 'e', 'b', 'server','page'); // -d <delay>, -s <startid>, -e <endid>, -b <backend>
 
 require_once ( getenv('MW_INSTALL_PATH') !== false
     ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
@@ -50,6 +53,12 @@ if ( array_key_exists( 'd', $options ) ) {
 	$delay = intval($options['d']) * 100000; // sleep 100 times the given time, but do so only each 100 pages
 } else {
 	$delay = false;
+}
+
+if ( isset( $options['page'] ) ) {
+	$pages = explode('|',$options['page']);
+} else {
+	$pages = false;
 }
 
 if ( array_key_exists( 's', $options ) ) {
@@ -107,27 +116,42 @@ if (  array_key_exists( 'f', $options ) ) {
 	echo "\nAll storage structures have been deleted and recreated.\n\n";
 }
 
-print "Refreshing all semantic data in the database!\n---\n" .
-" Some versions of PHP suffer from memory leaks in long-running scripts.\n" .
-" If your machine gets very slow after many pages (typically more than\n" .
-" 1000) were refreshed, please abort with CTRL-C and resume this script\n" .
-" at the last processed page id using the parameter -s (use -v to display\n" .
-" page ids during refresh). Continue this until all pages were refreshed.\n---\n";
-print "Processing all IDs from $start to " . ($end?"$end":"last ID") . " ...\n";
-
 $linkCache =& LinkCache::singleton();
-$id = $start;
 $num_files = 0;
-while ( ((!$end) || ($id <= $end)) && ($id > 0) ) {
-	if ($verbose) {
- 		print "($num_files) Processing ID " . $id . " ...\n";
- 	}
-	smwfGetStore()->refreshData($id, 1, $filter, false);
-	if ( ($delay !== false) && (($num_files+1) % 100 === 0) ) {
-		usleep($delay);
-	}
-	$num_files++;
-	$linkCache->clear(); // avoid memory leaks
-}
+if ($pages == false) {
+	print "Refreshing all semantic data in the database!\n---\n" .
+	" Some versions of PHP suffer from memory leaks in long-running scripts.\n" .
+	" If your machine gets very slow after many pages (typically more than\n" .
+	" 1000) were refreshed, please abort with CTRL-C and resume this script\n" .
+	" at the last processed page id using the parameter -s (use -v to display\n" .
+	" page ids during refresh). Continue this until all pages were refreshed.\n---\n";
+	print "Processing all IDs from $start to " . ($end?"$end":"last ID") . " ...\n";
 
-print "$num_files IDs refreshed.\n";
+	$id = $start;
+	while ( ((!$end) || ($id <= $end)) && ($id > 0) ) {
+		if ($verbose) {
+			print "($num_files) Processing ID " . $id . " ...\n";
+		}
+		smwfGetStore()->refreshData($id, 1, $filter, false);
+		if ( ($delay !== false) && (($num_files+1) % 100 === 0) ) {
+			usleep($delay);
+		}
+		$num_files++;
+		$linkCache->clear(); // avoid memory leaks
+	}
+	print "$num_files IDs refreshed.\n";
+} else {
+	print "Refreshing specified pages!\n\n";
+	foreach ($pages as $page) {
+		if ($verbose) {
+			print "($num_files) Processing page " . $page . " ...\n";
+		}
+		$title = Title::newFromText($page);
+		if ( $title !== NULL ) {
+			$updatejob = new SMWUpdateJob($title);
+			$updatejob->run();
+		}
+		$num_files++;
+	}
+	print "$num_files pages refreshed.\n";
+}
