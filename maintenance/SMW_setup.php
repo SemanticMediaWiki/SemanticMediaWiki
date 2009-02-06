@@ -13,7 +13,7 @@
  * Usage:
  * php SMW_refreshData.php [options...]
  *
- * -b        <backend>    Execute the operation for the storage backend of the given name 
+ * -b        <backend>    Execute the operation for the storage backend of the given name
  * -user     <dbuser>     Database user account to use for chaning DB layout
  * -password <dbpassword> Password for user account
  * NOTE: specifying user credentials in a command line call will usually store them
@@ -23,7 +23,7 @@
  *
  * --delete   Delete all SMW data, uninstall the selected storage backend. This is useful
  *            when moving to a new storage engine, and in the rare case of unsinstalling
- *            SMW. Deleted data can be recreated using this script (setup) and 
+ *            SMW. Deleted data can be recreated using this script (setup) and
  *            SMW_refreshData.php but this may take some time.
  * @author Markus Krötzsch
  * @file
@@ -62,11 +62,10 @@ if( isset( $options['password'] ) ) {
 	$wgDBpassword = $options['password'];
 }
 
+$alternativestore = false;
 if ( array_key_exists( 'b', $options ) ) {
 	if ($smwgDefaultStore != $options['b']) {
 		$alternativestore = true;
-	} else {
-		$alternativestore = false;
 	}
 	$smwgDefaultStore = $options['b'];
 	print "\nSelected storage " . $smwgDefaultStore . " for update!\n\n";
@@ -74,7 +73,7 @@ if ( array_key_exists( 'b', $options ) ) {
 
 
 global $smwgIP;
-if (! isset($smwgIP)) 
+if (! isset($smwgIP))
      $smwgIP = dirname(__FILE__) . '/..';
 
 require_once($smwgIP . '/includes/SMW_GlobalFunctions.php');
