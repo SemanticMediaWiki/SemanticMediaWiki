@@ -779,7 +779,7 @@ class SMWSQLStore2 extends SMWStore {
 									  's_id' => $bnode,
 									  'p_id' => $pid,
 									  'value_unit' => $dv->getUnit(),
-									  'value_xsd' => $dv[0],
+									  'value_xsd' => $keys[0],
 									  'value_num' => $dv->getNumericValue() );
 								break;
 								}
@@ -1068,23 +1068,25 @@ class SMWSQLStore2 extends SMWStore {
 		global $wgDBtype;
 		$this->reportProgress("Setting up standard database configuration for SMW ...\n\n",$verbose);
 		$this->reportProgress("Selected storage engine is \"SMWSQLStore2\" (or an extension thereof)\n\n",$verbose);
-		if ($wgDBtype === 'postgres') {
-			$this->reportProgress("Sorry, Postgres is currently not supported. Please contact the\ndevelopers if you wish to help fixing this.\n",$verbose);
-			return;
-		}
 		$db =& wfGetDB( DB_MASTER );
 		extract( $db->tableNames('smw_ids','smw_rels2','smw_atts2','smw_text2',
 		                         'smw_spec2','smw_subs2','smw_redi2','smw_inst2',
 		                         'smw_conc2','smw_conccache') );
+		$reportTo = $verbose?$this:NULL; // use $this to report back from static SMWSQLHelpers
+		// repeatedly used DB field types defined here for convenience
+		$dbt_id        = SMWSQLHelpers::getStandardDBType('id');
+		$dbt_namespace = SMWSQLHelpers::getStandardDBType('namespace');
+		$dbt_title     = SMWSQLHelpers::getStandardDBType('title');
+		$dbt_iw        = SMWSQLHelpers::getStandardDBType('iw');
+		$dbt_blob      = SMWSQLHelpers::getStandardDBType('blob');
 
-		$this->setupTable($smw_ids, // internal IDs used in this store
-		              array('smw_id'        => 'INT(8) UNSIGNED NOT NULL KEY AUTO_INCREMENT',
-		                    'smw_namespace' => 'INT(11) NOT NULL',
-		                    'smw_title'     => 'VARCHAR(255) binary NOT NULL',
-		                    'smw_iw'        => 'CHAR(32)',
-		                    'smw_sortkey'   => 'VARCHAR(255) binary NOT NULL'
-		                    ), $db, $verbose);
-		$this->setupIndex($smw_ids, array('smw_id','smw_title,smw_namespace,smw_iw', 'smw_sortkey'), $db);
+		SMWSQLHelpers::setupTable($smw_ids, // internal IDs used in this store
+		              array('smw_id'        => $dbt_id . ' NOT NULL' . ($wgDBtype=='postgres'?' PRIMARY KEY':' KEY AUTO_INCREMENT'),
+		                    'smw_namespace' => $dbt_namespace . ' NOT NULL',
+		                    'smw_title'     => $dbt_title . ' NOT NULL',
+		                    'smw_iw'        => $dbt_iw,
+		                    'smw_sortkey'   => $dbt_title  . ' NOT NULL'), $db, $reportTo);
+		SMWSQLHelpers::setupIndex($smw_ids, array('smw_id','smw_title,smw_namespace,smw_iw', 'smw_sortkey'), $db);
 		// NOTE: smw_ids is normally used to store references to wiki pages (possibly with some external
 		// interwiki prefix). There are, however, some special objects that are also stored therein. These
 		// are marked by special interwiki prefixes (iw) that cannot occcur in real life:
@@ -1102,67 +1104,71 @@ class SMWSQLStore2 extends SMWStore {
 		//   are reserved for hardcoded ids built into SMW) and normal entries. It is no object, but makes sure that
 		//   SQL's auto increment counter is high enough to not add any objects before that marked "border".
 
-		$this->setupTable($smw_redi2, // fast redirect resolution
-		              array('s_title'     => 'VARCHAR(255) binary NOT NULL',
-		                    's_namespace' => 'INT(11) NOT NULL',
-		                    'o_id'        => 'INT(8) UNSIGNED NOT NULL',), $db, $verbose);
-		$this->setupIndex($smw_redi2, array('s_title,s_namespace','o_id'), $db);
+		SMWSQLHelpers::setupTable($smw_redi2, // fast redirect resolution
+		              array('s_title'     => $dbt_title . ' NOT NULL',
+		                    's_namespace' => $dbt_namespace . ' NOT NULL',
+		                    'o_id'        => $dbt_id . ' NOT NULL'), $db, $reportTo);
+		SMWSQLHelpers::setupIndex($smw_redi2, array('s_title,s_namespace','o_id'), $db);
 
-		$this->setupTable($smw_rels2, // properties with other pages as values ("relations")
-		              array('s_id' => 'INT(8) UNSIGNED NOT NULL',
-		                    'p_id' => 'INT(8) UNSIGNED NOT NULL',
-		                    'o_id' => 'INT(8) UNSIGNED NOT NULL'), $db, $verbose);
-		$this->setupIndex($smw_rels2, array('s_id','p_id','o_id'), $db);
+		SMWSQLHelpers::setupTable($smw_rels2, // properties with other pages as values ("relations")
+		              array('s_id' => $dbt_id . ' NOT NULL',
+		                    'p_id' => $dbt_id . ' NOT NULL',
+		                    'o_id' => $dbt_id . ' NOT NULL'), $db, $reportTo);
+		SMWSQLHelpers::setupIndex($smw_rels2, array('s_id','p_id','o_id'), $db);
 
-		$this->setupTable($smw_atts2, // most standard properties ("attributes")
-		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL',
-		                    'p_id'        => 'INT(8) UNSIGNED NOT NULL',
-		                    'value_unit'        => 'VARCHAR(63) binary',
-		                    'value_xsd'         => 'VARCHAR(255) binary NOT NULL',
-		                    'value_num'         => 'DOUBLE'), $db, $verbose);
-		$this->setupIndex($smw_atts2, array('s_id','p_id','value_num','value_xsd'), $db);
+		SMWSQLHelpers::setupTable($smw_atts2, // most standard properties ("attributes")
+		              array('s_id'        => $dbt_id . ' NOT NULL',
+		                    'p_id'        => $dbt_id . ' NOT NULL',
+		                    'value_unit'  => ($wgDBtype=='postgres'?'TEXT':'VARCHAR(63) binary'),
+		                    'value_xsd'   => $dbt_title . ' NOT NULL',
+		                    'value_num'   => ($wgDBtype=='postgres'?'DOUBLE PRECISION':'DOUBLE')), $db, $reportTo);
+		SMWSQLHelpers::setupIndex($smw_atts2, array('s_id','p_id','value_num','value_xsd'), $db);
 
-		$this->setupTable($smw_text2, // properties with long strings as values
-		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL',
-		                    'p_id'        => 'INT(8) UNSIGNED NOT NULL',
-		                    'value_blob'        => 'MEDIUMBLOB'), $db, $verbose);
-		$this->setupIndex($smw_text2, array('s_id','p_id'), $db);
+		SMWSQLHelpers::setupTable($smw_text2, // properties with long strings as values
+		              array('s_id'        => $dbt_id . ' NOT NULL',
+		                    'p_id'        => $dbt_id . ' NOT NULL',
+		                    'value_blob'  => $dbt_blob), $db, $reportTo);
+		SMWSQLHelpers::setupIndex($smw_text2, array('s_id','p_id'), $db);
 
 		// field renaming between SMW 1.3 and SMW 1.4:
 		if ( ($db->tableExists($smw_spec2)) && ($db->fieldExists($smw_spec2, 'sp_id', 'SMWSQLStore2::setup')) ) {
-			$db->query("ALTER TABLE $smw_spec2 CHANGE `sp_id` `p_id` INT(8) UNSIGNED NOT NULL", 'SMWSQLStore2::setup');
+			if ($wgDBtype=='postgres') {
+				$db->query("ALTER TABLE $smw_spec2 ALTER COLUMN sp_id RENAME TO p_id", 'SMWSQLStore2::setup');
+			} else {
+				$db->query("ALTER TABLE $smw_spec2 CHANGE `sp_id` `p_id` $dbt_id NOT NULL", 'SMWSQLStore2::setup');
+			}
 		}
-		$this->setupTable($smw_spec2, // very important special properties, for faster access
-		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL',
-		                    'p_id'        => 'INT(8) UNSIGNED NOT NULL',
-		                    'value_string'      => 'VARCHAR(255) binary NOT NULL'), $db, $verbose);
-		$this->setupIndex($smw_spec2, array('s_id', 'p_id', 's_id,p_id'), $db);
+		SMWSQLHelpers::setupTable($smw_spec2, // very important special properties, for faster access
+		              array('s_id'         => $dbt_id . ' NOT NULL',
+		                    'p_id'         => $dbt_id . ' NOT NULL',
+		                    'value_string' => $dbt_title . ' NOT NULL'), $db, $reportTo);
+		SMWSQLHelpers::setupIndex($smw_spec2, array('s_id', 'p_id', 's_id,p_id'), $db);
 
-		$this->setupTable($smw_subs2, // subproperty/subclass relationships
-		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL',
-		                    'o_id'        => 'INT(8) UNSIGNED NOT NULL',), $db, $verbose);
-		$this->setupIndex($smw_subs2, array('s_id', 'o_id'), $db);
+		SMWSQLHelpers::setupTable($smw_subs2, // subproperty/subclass relationships
+		              array('s_id'        => $dbt_id . ' NOT NULL',
+		                    'o_id'        => $dbt_id . ' NOT NULL'), $db, $reportTo);
+		SMWSQLHelpers::setupIndex($smw_subs2, array('s_id', 'o_id'), $db);
 
-		$this->setupTable($smw_inst2, // class instances (s_id the element, o_id the class)
-		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL',
-		                    'o_id'        => 'INT(8) UNSIGNED NOT NULL',), $db, $verbose);
-		$this->setupIndex($smw_inst2, array('s_id', 'o_id'), $db);
+		SMWSQLHelpers::setupTable($smw_inst2, // class instances (s_id the element, o_id the class)
+		              array('s_id'        => $dbt_id . ' NOT NULL',
+		                    'o_id'        => $dbt_id . ' NOT NULL',), $db, $reportTo);
+		SMWSQLHelpers::setupIndex($smw_inst2, array('s_id', 'o_id'), $db);
 
-		$this->setupTable($smw_conc2, // concept descriptions
-		              array('s_id'             => 'INT(8) UNSIGNED NOT NULL KEY',
-		                    'concept_txt'      => 'MEDIUMBLOB',
-		                    'concept_docu'     => 'MEDIUMBLOB',
-		                    'concept_features' => 'INT(8)',
-		                    'concept_size'     => 'INT(8)',
-		                    'concept_depth'    => 'INT(8)',
-		                    'cache_date'       => 'INT(8) UNSIGNED',
-		                    'cache_count'      => 'INT(8) UNSIGNED' ), $db, $verbose);
-		$this->setupIndex($smw_conc2, array('s_id'), $db);
+		SMWSQLHelpers::setupTable($smw_conc2, // concept descriptions
+		              array('s_id'             => $dbt_id . ' NOT NULL' . ($wgDBtype=='postgres'?' PRIMARY KEY':' KEY'),
+		                    'concept_txt'      => $dbt_blob,
+		                    'concept_docu'     => $dbt_blob,
+		                    'concept_features' => ($wgDBtype=='postgres'?'INTEGER':'INT(8)'),
+		                    'concept_size'     => ($wgDBtype=='postgres'?'INTEGER':'INT(8)'),
+		                    'concept_depth'    => ($wgDBtype=='postgres'?'INTEGER':'INT(8)'),
+		                    'cache_date'       => ($wgDBtype=='postgres'?'INTEGER':'INT(8) UNSIGNED'),
+		                    'cache_count'      => ($wgDBtype=='postgres'?'INTEGER':'INT(8) UNSIGNED'), ), $db, $reportTo);
+		SMWSQLHelpers::setupIndex($smw_conc2, array('s_id'), $db);
 
-		$this->setupTable($smw_conccache, // concept cache: member elements (s)->concepts (o)
-		              array('s_id'        => 'INT(8) UNSIGNED NOT NULL',
-		                    'o_id'        => 'INT(8) UNSIGNED NOT NULL'), $db, $verbose);
-		$this->setupIndex($smw_conccache, array('o_id'), $db);
+		SMWSQLHelpers::setupTable($smw_conccache, // concept cache: member elements (s)->concepts (o)
+		              array('s_id'        => $dbt_id . ' NOT NULL',
+		                    'o_id'        => $dbt_id . ' NOT NULL'), $db, $reportTo);
+		SMWSQLHelpers::setupIndex($smw_conccache, array('o_id'), $db);
 
 		$this->reportProgress("Database initialised successfully.\n\n",$verbose);
 		$this->reportProgress("Setting up internal property indices ...\n",$verbose);
@@ -1185,13 +1191,14 @@ class SMWSQLStore2 extends SMWStore {
 		$this->reportProgress("   ... writing entries for internal properties.\n",$verbose);
 		foreach (SMWSQLStore2::$special_ids as $prop => $id) {
 			$p = SMWPropertyValue::makeProperty($prop);
-			$db->replace('smw_ids', array(), array('smw_id' => $id, 'smw_title' => $p->getDBkey(), 'smw_namespace' => SMW_NS_PROPERTY, 'smw_iw' => $this->getPropertyInterwiki($p), 'smw_sortkey' => $p->getDBkey()), 'SMW::setup');
+			$db->replace('smw_ids', array('smw_id'), array('smw_id' => $id, 'smw_title' => $p->getDBkey(), 'smw_namespace' => SMW_NS_PROPERTY, 'smw_iw' => $this->getPropertyInterwiki($p), 'smw_sortkey' => $p->getDBkey()), 'SMW::setup');
 		}
 		$this->reportProgress("Internal properties initialised successfully.\n",$verbose);
 		return true;
 	}
 
 	function drop($verbose = true) {
+		global $wgDBtype;
 		$this->reportProgress("Deleting all database content and tables generated by SMW ...\n\n",$verbose);
 		$db =& wfGetDB( DB_MASTER );
 		$tables = array('smw_rels2', 'smw_atts2', 'smw_text2', 'smw_spec2',
@@ -1199,7 +1206,7 @@ class SMWSQLStore2 extends SMWStore {
 		                'smw_conc2');
 		foreach ($tables as $table) {
 			$name = $db->tableName($table);
-			$db->query("DROP TABLE IF EXISTS $name", 'SMWSQLStore2::drop');
+			$db->query('DROP TABLE' . ($wgDBtype=='postgres'?'':' IF EXISTS'). $name, 'SMWSQLStore2::drop');
 			$this->reportProgress(" ... dropped table $name.\n", $verbose);
 		}
 		$this->reportProgress("All data removed successfully.\n",$verbose);
@@ -1478,131 +1485,11 @@ class SMWSQLStore2 extends SMWStore {
 		return $result;
 	}
 
-
-	/**
-	 * Make sure the table of the given name has the given fields, provided
-	 * as an array with entries fieldname => typeparams. typeparams should be
-	 * in a normalised form and order to match to existing values.
-	 *
-	 * The function returns an array that includes all columns that have been
-	 * changed. For each such column, the array contains an entry
-	 * columnname => action, where action is one of 'up', 'new', or 'del'
-	 * If the table was already fine or was created completely anew, an empty
-	 * array is returned (assuming that both cases require no action).
-	 *
-	 * @note The function partly ignores the order in which fields are set up.
-	 * Only if the type of some field changes will its order be adjusted explicitly.
-	 */
-	protected function setupTable($table, $fields, $db, $verbose) {
-		global $wgDBname;
-		$this->reportProgress("Setting up table $table ...\n",$verbose);
-		if ($db->tableExists($table) === false) { // create new table
-			$sql = 'CREATE TABLE `' . $wgDBname . '`.' . $table . ' (';
-			$first = true;
-			foreach ($fields as $name => $type) {
-				if ($first) {
-					$first = false;
-				} else {
-					$sql .= ',';
-				}
-				$sql .= $name . '  ' . $type;
-			}
-			$sql .= ') TYPE=innodb';
-			$db->query( $sql, 'SMWSQLStore2::setupTable' );
-			$this->reportProgress("   ... new table created\n",$verbose);
-			return array();
-		} else { // check table signature
-			$this->reportProgress("   ... table exists already, checking structure ...\n",$verbose);
-			$res = $db->query( 'DESCRIBE ' . $table, 'SMWSQLStore2::setupTable' );
-			$curfields = array();
-			$result = array();
-			while ($row = $db->fetchObject($res)) {
-				$type = strtoupper($row->Type);
-				if (substr($type,0,8) == 'VARCHAR(') {
-					$type .= ' binary'; // just assume this to be the case for VARCHAR, avoid collation checks
-				}
-				if ($row->Null != 'YES') {
-					$type .= ' NOT NULL';
-				}
-				if ($row->Key == 'PRI') { /// FIXME: updating "KEY" is not possible, the below query will fail in this case.
-					$type .= ' KEY';
-				}
-				if ($row->Extra == 'auto_increment') {
-					$type .= ' AUTO_INCREMENT';
-				}
-				$curfields[$row->Field] = $type;
-			}
-			$position = 'FIRST';
-			foreach ($fields as $name => $type) {
-				if ( !array_key_exists($name,$curfields) ) {
-					$this->reportProgress("   ... creating column $name ... ",$verbose);
-					$db->query("ALTER TABLE $table ADD `$name` $type $position", 'SMWSQLStore2::setupTable');
-					$result[$name] = 'new';
-					$this->reportProgress("done \n",$verbose);
-				} elseif ($curfields[$name] != $type) {
-					$this->reportProgress("   ... changing type of column $name from '$curfields[$name]' to '$type' ... ",$verbose);
-					$db->query("ALTER TABLE $table CHANGE `$name` `$name` $type $position", 'SMWSQLStore2::setupTable');
-					$result[$name] = 'up';
-					$curfields[$name] = false;
-					$this->reportProgress("done.\n",$verbose);
-				} else {
-					$this->reportProgress("   ... column $name is fine\n",$verbose);
-					$curfields[$name] = false;
-				}
-				$position = "AFTER $name";
-			}
-			foreach ($curfields as $name => $value) {
-				if ($value !== false) { // not encountered yet --> delete
-					$this->reportProgress("   ... deleting obsolete column $name ... ",$verbose);
-					$db->query("ALTER TABLE $table DROP COLUMN `$name`", 'SMWSQLStore2::setupTable');
-					$result[$name] = 'del';
-					$this->reportProgress("done.\n",$verbose);
-				}
-			}
-			$this->reportProgress("   ... table $table set up successfully.\n",$verbose);
-			return $result;
-		}
-	}
-
-	/**
-	 * Make sure that each of the column descriptions in the given array is indexed by *one* index
-	 * in the given DB table.
-	 */
-	protected function setupIndex($table, $columns, $db) {
-		$table = $db->tableName($table);
-		$res = $db->query( 'SHOW INDEX FROM ' . $table , 'SMW::SetupIndex');
-		if ( !$res ) {
-			return false;
-		}
-		$indexes = array();
-		while ( $row = $db->fetchObject( $res ) ) {
-			if (!array_key_exists($row->Key_name, $indexes)) {
-				$indexes[$row->Key_name] = array();
-			}
-			$indexes[$row->Key_name][$row->Seq_in_index] = $row->Column_name;
-		}
-		foreach ($indexes as $key => $index) { // clean up existing indexes
-			$id = array_search(implode(',', $index), $columns );
-			if ( $id !== false ) {
-				$columns[$id] = false;
-			} else { // duplicate or unrequired index
-				$db->query( 'DROP INDEX ' . $key . ' ON ' . $table, 'SMW::SetupIndex');
-			}
-		}
-
-		foreach ($columns as $key => $column) { // add remaining indexes
-			if ($column != false) {
-				$db->query( "ALTER TABLE $table ADD INDEX ( $column )", 'SMW::SetupIndex');
-			}
-		}
-		return true;
-	}
-
 	/**
 	 * Print some output to indicate progress. The output message is given by
 	 * $msg, while $verbose indicates whether or not output is desired at all.
 	 */
-	protected function reportProgress($msg, $verbose) {
+	public function reportProgress($msg, $verbose = true) {
 		if (!$verbose) {
 			return;
 		}
@@ -1709,13 +1596,14 @@ class SMWSQLStore2 extends SMWStore {
 	 * the title is a redirect target (we do not want chains of redirects).
 	 */
 	protected function makeSMWPageID($title, $namespace, $iw, $canonical=true, $sortkey = '') {
+		global $wgDBtype;
 		wfProfileIn('SMWSQLStore2::makeSMWPageID (SMW)');
 		$oldsort = '';
 		$id = $this->getSMWPageIDandSort($title, $namespace, $iw, $oldsort, $canonical);
 		if ($id == 0) {
 			$db =& wfGetDB( DB_MASTER );
 			$sortkey = $sortkey?$sortkey:(str_replace('_',' ',$title));
-			$db->insert('smw_ids', array('smw_id' => 0, 'smw_title' => $title, 'smw_namespace' => $namespace, 'smw_iw' => $iw, 'smw_sortkey' => $sortkey), 'SMW::makeSMWPageID');
+			$db->insert('smw_ids', array('smw_id' =>  (($wgDBtype=='postgres')?($db->nextSequenceValue('smw_ids_smw_id_seq')):0), 'smw_title' => $title, 'smw_namespace' => $namespace, 'smw_iw' => $iw, 'smw_sortkey' => $sortkey), 'SMW::makeSMWPageID');
 			$id = $db->insertId();
 			$this->m_ids["$iw $namespace $title -"] = $id; // fill that cache, even if canonical was given
 			// This ID is also authorative for the canonical version.
@@ -1797,6 +1685,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * a new bnode id!
 	 */
 	protected function makeSMWBnodeID($sid) {
+		global $wgDBtype;
 		$db =& wfGetDB( DB_MASTER );
 		$id = 0;
 		// check if there is an unused bnode to take:
@@ -1813,7 +1702,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		// if no node was found yet, make a new one:
 		if ($id == 0) {
-			$db->insert('smw_ids', array('smw_id' => 0, 'smw_title' => '', 'smw_namespace' => $sid, 'smw_iw' => SMW_SQL2_SMWIW), 'SMW::makeSMWBnodeID');
+			$db->insert('smw_ids', array('smw_id' =>  (($wgDBtype=='postgres')?($db->nextSequenceValue('smw_ids_smw_id_seq')):0), 'smw_title' => '', 'smw_namespace' => $sid, 'smw_iw' => SMW_SQL2_SMWIW), 'SMW::makeSMWBnodeID');
 			$id = $db->insertId();
 		}
 		return $id;
@@ -1827,11 +1716,12 @@ class SMWSQLStore2 extends SMWStore {
 	 * to an id that is still in use somewhere).
 	 */
 	protected function moveID($curid, $targetid = 0) {
+		global $wgDBtype;
 		$db =& wfGetDB( DB_MASTER );
 		$row = $db->selectRow('smw_ids', array('smw_id', 'smw_namespace', 'smw_title', 'smw_iw', 'smw_sortkey'), array('smw_id' => $curid), 'SMWSQLStore2::moveID');
 		if ($row === false) return; // no id at current position, ignore
 		if ($targetid == 0) {
-			$db->insert('smw_ids', array('smw_id' => 0, 'smw_title' => $row->smw_title, 'smw_namespace' => $row->smw_namespace, 'smw_iw' => $row->smw_iw, 'smw_sortkey' => $row->smw_sortkey), 'SMW::moveID');
+			$db->insert('smw_ids', array('smw_id' => (($wgDBtype=='postgres')?($db->nextSequenceValue('smw_ids_smw_id_seq')):0), 'smw_title' => $row->smw_title, 'smw_namespace' => $row->smw_namespace, 'smw_iw' => $row->smw_iw, 'smw_sortkey' => $row->smw_sortkey), 'SMW::moveID');
 			$targetid = $db->insertId();
 		} else {
 			$db->insert('smw_ids', array('smw_id' => $targetid, 'smw_title' => $row->smw_title, 'smw_namespace' => $row->smw_namespace, 'smw_iw' => $row->smw_iw, 'smw_sortkey' => $row->smw_sortkey), 'SMW::moveID');
