@@ -9,7 +9,7 @@ Notes on installing Semantic MediaWiki are found in the file INSTALL.
 == Contact ==
 
 If you have remarks, questions, or suggestions, please send them to
-semediawiki-users@lists.sourceforge.net. You can subscribe to this 
+semediawiki-users@lists.sourceforge.net. You can subscribe to this
 list at
 http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user.
 
@@ -37,7 +37,7 @@ by ontoprise GmbH, Karlsruhe, Germany.
 
 * S Page has contributed code, and currently coordinates user support.
 
-* Heiko Haller and Max Völkel contributed to the initial design and basic 
+* Heiko Haller and Max Völkel contributed to the initial design and basic
   architectural decisions.
 
 * The German company Doccheck (doccheck.com) helped to get the implementation
@@ -47,16 +47,16 @@ by ontoprise GmbH, Karlsruhe, Germany.
 * Code has been contributed by (in no particular order) Kai Hüner, Fernando Correia,
   Yaron Koren, Nick Grandy, Jörg Heizmann, Daniel Herzig, Nikolas Iwan, Tobias Matzner,
   Thomas Bleher, Felix Kratzer, Frank Dengler, Nathan R. Yergler, Daniel Friesen,
-  Fabian Howahl.
+  Fabian Howahl, Jie Bao, Marcel Gsteiger
 
-* The new logo and related artwork for Semantic MediaWiki (see semanticweb.org) 
+* The new logo and related artwork for Semantic MediaWiki (see semanticweb.org)
   has been designed and realised by Rozana Vrandecic.
 
 == Translations ==
 
 Translations to various languages are provided and maintained by many people.
 In general, main contributors can be found in the message file. Special thanks
-are due to Siebrand Mazeland and the Betawiki project for their excellent 
+are due to Siebrand Mazeland and the Betawiki project for their excellent
 support in that matter.
 
 Before moving to Betawiki, the following people already contributed significantly

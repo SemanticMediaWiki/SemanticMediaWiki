@@ -1,5 +1,17 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
+== SMW 1.4.2 ==
+
+See http://semantic-mediawiki.org/wiki/SMW_1.4.2
+
+* Improved performance. Significantly improved memory usage on common
+  operations.
+* Support for running SMW on PostgresQL (testing needed).
+* SMW_refreshData.php now supports parameter --page to specify one or more
+  pages to be updated (instead of using ID ranges)
+* Various bugfixes
+* Extended translations
+
 == SMW 1.4.1 ==
 
 See http://semantic-mediawiki.org/wiki/SMW_1.4.1
