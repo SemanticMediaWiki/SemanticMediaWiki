@@ -144,7 +144,6 @@ class SMWURIValue extends SMWDataValue {
 				}
 			}
 		}
-		$this->m_uri = $this->m_url;
 	}
 
 	public function getShortWikiText($linked = NULL) {
