@@ -4792,6 +4792,7 @@ Uma vez que houve poucos resultados, valores próximos são também apresentados
 	'smw_browse_no_outgoing' => 'Esta página não possui propriedades.',
 	'smw_browse_no_incoming' => 'Nenhuma propriedade linca para esta página.',
 	'smw_inverse_label_default' => '$1 de',
+	'smw_inverse_label_property' => 'Etiqueta de propriedade inversa',
 	'pageproperty' => 'Busca de propriedades de página',
 	'smw_pp_docu' => 'Buscar todos os conteúdos de uma propriedade numa dada página.
 Por favor, introduza ambas a página e a propriedade.',
