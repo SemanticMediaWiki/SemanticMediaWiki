@@ -4804,12 +4804,20 @@ Por favor, introduza ambas a página e a propriedade.',
 	'smw_result_results' => 'Resultados',
 	'smw_result_noresults' => 'Desculpe, não há resultados.',
 	'smwadmin' => 'Funções administrativas do Semantic MediaWiki',
+	'smw_smwadmin_settingup' => 'A configurar armazenamento para Semantic MediaWiki',
+	'smw_smwadmin_setupsuccess' => 'O motor de armazenamento foi configurado com sucesso.',
 	'smw_smwadmin_return' => 'Voltar a $1',
+	'smw_smwadmin_updatenotstarted' => 'Já existe um processo de atualização em execução.
+Não foi criado outro.',
+	'smw_smwadmin_updatestopped' => 'Todos os processos de atualização existentes foram parados.',
+	'smw_smwadmin_db' => 'Instalação e evolução da base de dados',
 	'smw_smwadmin_dbbutton' => 'Inicializar ou evoluir tabelas',
 	'smw_smwadmin_datarefreshbutton' => 'Iniciar a atualização dos dados',
 	'smw_smwadmin_datarefreshstop' => 'Parar esta atualização',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sim, tenho a certeza.',
 	'smw_smwadmin_support' => 'Obtendo suporte',
+	'smw_smwadmin_supportdocu' => 'Vários recursos poderão ajudá-lo em caso de problemas:',
+	'smw_smwadmin_mediazilla' => 'Defeitos podem ser reportados no <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
 );
 
 /** Tarifit (Tarifit)
