@@ -270,7 +270,7 @@ The service will not register wikis that are not publicly accessible, and it wil
 This can be useful to repair broken data or to refresh the data if the internal format has changed due to some software upgrade.
 The update is executed page by page and will not be completed immediately.
 The following shows if an update is in progress and allows you to start or stop updates (unless this feature was disabled by the site administrator).',
-	'smw_smwadmin_datarefreshprogress' => 'An update is already in progress.</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>An update is already in progress.</strong>
 It is normal that the update progresses only slowly since it only refreshes data in small chunks each time a user accesses the wiki.
 To finish this update more quickly, you can invoke the MediaWiki maintenance script <tt>runJobs.php</tt> (use the option <tt>--maxjobs 1000</tt> to restrict the number of updates done in one batch).
 Estimated progress of current update:',
