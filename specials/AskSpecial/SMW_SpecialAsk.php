@@ -222,7 +222,7 @@ class SMWAskPage extends SpecialPage {
 
 
 	protected function getInputForm($printoutstring, $urltail) {
-		global $wgUser, $smwgQSortingSupport;
+		global $wgUser, $smwgQSortingSupport, $wgLang;
 		$skin = $wgUser->getSkin();
 		$result = '';
 
@@ -259,9 +259,12 @@ class SMWAskPage extends SpecialPage {
 				$result .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes&sc=1')) . '" rel="nofollow">' . wfMsg('smw_add_sortcondition') . '</a>'; // note that $urltail uses a , separated list for sorting, so setting sc to 1 always adds one new condition
 			}
 			$result .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
-			           '<input type="hidden" name="eq" value="yes"/>' .
-			           ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '" rel="nofollow">' . wfMsg('smw_ask_hidequery') . '</a> | <a href="' . htmlspecialchars(wfMsg('smw_ask_doculink')) . '">' . wfMsg('smw_ask_help') . '</a>' .
-			           "\n</form><br />";
+				'<input type="hidden" name="eq" value="yes"/>' .
+				$wgLang->pipeList( array(
+					' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '" rel="nofollow">' . wfMsg('smw_ask_hidequery') . '</a>',
+					'<a href="' . htmlspecialchars(wfMsg('smw_ask_doculink')) . '">' . wfMsg('smw_ask_help') . '</a>'
+				) ) .
+				"\n</form><br />";
 		} else {
 			$result .= '<p><a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes')) . '" rel="nofollow">' . wfMsg('smw_ask_editquery') . '</a></p>';
 		}
@@ -295,7 +298,7 @@ class SMWAskPage extends SpecialPage {
 			if ($first) {
 				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
 				$first = false;
-			} else $navigation .= ' | ';
+			} else $navigation .= wfMsgExt( 'pipe-separator' , 'escapenoentities' );
 			if ( $limit != $l ) {
 				$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . $offset . '&limit=' . $l . $urltail)) . '" rel="nofollow">' . $l . '</a>';
 			} else {
@@ -365,7 +368,7 @@ class SMWAskPage extends SpecialPage {
 				if ($first) {
 					$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
 					$first = false;
-				} else $navigation .= ' | ';
+				} else $navigation .= wfMsgExt( 'pipe-separator' , 'escapenoentities' );
 				if ($l > $smwgQMaxLimit) {
 					$l = $smwgQMaxLimit;
 					$max = true;
