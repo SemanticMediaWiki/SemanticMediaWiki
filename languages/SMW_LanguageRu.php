@@ -47,6 +47,7 @@ protected $m_DatatypeAliases = array(
 	'Page'                  => '_wpg',
 	'String'                => '_str',
 	'Text'                  => '_txt',
+	'Code'                  => '_cod',
 	'Boolean'               => '_boo',
 	'Number'                => '_num',
 	'Geographic coordinate' => '_geo',
@@ -69,6 +70,7 @@ protected $m_SpecialProperties = array(
 );
 
 protected $m_SpecialPropertyAliases = array(
+	'Тип данных'				=> '_TYPE',
 	'Отображаемая единица' => '_UNIT',
 	// support English aliases for special properties
 	'Has type'          => '_TYPE',
@@ -104,5 +106,11 @@ protected $m_NamespaceAliases = array(
 	'Concept'       => SMW_NS_CONCEPT,
 	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
+
+protected $m_dateformats = array(array(SMW_Y), array(SMW_MY,SMW_YM), array(SMW_DMY,SMW_MDY,SMW_YMD,SMW_YDM));
+
+protected $m_months = array("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря");
+
+protected $m_monthsshort = array("январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь");
 
 }
