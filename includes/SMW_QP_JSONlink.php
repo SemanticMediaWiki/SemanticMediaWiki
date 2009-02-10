@@ -113,6 +113,9 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 			if(array_key_exists('callback', $this->m_params)) {
 				$link->setParameter(htmlspecialchars($this->m_params['callback']),'callback');
 			}
+			if ($this->getSearchLabel(SMW_OUTPUT_WIKI) != '') { // used as a file name
+				$link->setParameter($this->getSearchLabel(SMW_OUTPUT_WIKI),'searchlabel');
+			}
 			if(array_key_exists('limit', $this->m_params)) {
 				$link->setParameter(htmlspecialchars($this->m_params['limit']),'limit');
 			}
