@@ -290,12 +290,17 @@ Estimated progress of current update:',
  * @author Helix84
  * @author Jon Harald Søby
  * @author Markus Krötzsch
+ * @author Meno25
  * @author Pietrodn
  */
 $messages['qqq'] = array(
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
 
 {{Identical|And}}',
+	'smw_rss_link' => '{{optional}}',
+	'smw_csv_link' => '{{optional}}',
+	'smw_icalendar_link' => '{{optional}}',
+	'smw_vcard_link' => '{{optional}}',
 	'smw_decseparator' => "This message is as a separator symbol for decimal digits in numbers, like \".\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
 
 Note that spaces and space-like HTML entities are always ignored when reading numbers.",
@@ -311,7 +316,6 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1: the property name
 * $2: the name of the type of the property
 * $3: the number of occurrences of this property in the wiki',
-	'ontologyimport' => "This message has been the title of a special page. The feature has been disabled for a longer time, and it is now completely removed from SMW. If it will be spported in future releases, this will be done in a dedicated extension, possibly using web APIs to import data. Remaining \"oi\" messages should be deleted/ignored.",
 	'smw_typeunits' => 'This message is used in the tooltip on Special:Types when a property supports custom units of measurement. The parameter $1 then is the type name, and $2 is a list of unit names.',
 	'flawedattributes' => 'The "flawed properties" special is currently disabled.
 The messages were kept here since some translations already existed.
@@ -601,7 +605,7 @@ $messages['ar'] = array(
 هذا يمكن أن يكون مفيدا لإصلاح البيانات المكسورة أو لتحديث البيانات لو أن الصيغة الداخلية تغيرت بسبب ترقية برنامج.
 التحديث يتم تنفيذه صفحة بصفحة ولن يتم إكماله حالا.
 التالي يعرض ما إذا كان التحديث يجري ويسمح لك ببدء أو إنهاء التحديثات (إلا لو كانت هذه الخاصية تم تعطيلها بواسطة إداري الموقع).',
-	'smw_smwadmin_datarefreshprogress' => 'تحديث يجرب بالفعل.</b>
+	'smw_smwadmin_datarefreshprogress' => 'تحديث يجري بالفعل.</b>
 من الطبيعي أن تتقدم عمليات التحديث ببطء فقط بما أنها تحدث البيانات فقط في كميات صغيرة كل مرة مستخدم ما يصل إلى الويكي.
 للانتهاء من هذا التحديث سريعا، يمكنك تشغيل سكريبت صيانة ميدياويكي <tt>runJobs.php</tt> (استخدم الخيار <tt>--maxjobs 1000</tt> لتحديد عدد التحديثات المعمولة كل مرة).
 التقدم المقدر للتحديث الحالي:',
@@ -610,7 +614,7 @@ $messages['ar'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'نعم، أنا متأكد',
 	'smw_smwadmin_support' => 'أحصل على دعم',
 	'smw_smwadmin_supportdocu' => ':مصادر متعددة يمكن أن تساعدة في حالة مشاكل',
-	'smw_smwadmin_installfile' => 'لو انك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات في <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ملف INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات في <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ملف INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لسيمانتيك ميدياويكي موجودة في <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'العلل يمكن إبلاغها إلى <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
 	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش في <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
@@ -655,14 +659,14 @@ $messages['arz'] = array(
 	'smw_unknowntype' => 'نوع غير مدعوم "$1" لتعريف الممتلكات.',
 	'smw_manytypes' => 'أكثر من نوع واحد لتعريف الخاصية.',
 	'smw_emptystring' => 'السلاسل الفارغة غير مقبولة.',
-	'smw_maxstring' => 'تمثيل السلسلة $1 طويل جدا ل{{SITENAME}}.',
+	'smw_maxstring' => 'تمثيل السلسلة $1 طويل جدا.',
 	'smw_notinenum' => '"$1" ليس ضمن قائمة القيم الممكنة ($2) لهذه الخاصية.',
 	'smw_noboolean' => '"$1" غير متعرف عليها كقيمة بووليان (صواب/خطأ).',
 	'smw_true_words' => 'صحيح،ص،نعم،ن',
 	'smw_false_words' => 'خطأ،خ،لا،ل',
 	'smw_nofloat' => 'ليس عددا "$1".',
-	'smw_infinite' => 'الأرقام الكبيرة مثل "$1" غير مدعومة فى {{SITENAME}}.',
-	'smw_infinite_unit' => 'التحويل إلى الوحدة "$1" نتج عنه رقم كبير جدا ل{{SITENAME}}.',
+	'smw_infinite' => 'الأرقام الكبيرة مثل "$1" غير مدعومة.',
+	'smw_infinite_unit' => 'التحويل إلى الوحدة "$1" نتج عنه رقم كبير جدا.',
 	'smw_unsupportedprefix' => 'غير مدعوم ("$1") البادئات لأرقام.',
 	'smw_unsupportedunit' => 'غير مدعوم "$1" تحويل الوحدة للوحدة.',
 	'smw_lonely_unit' => 'لم يتم العثور على رقم قبل الرمز "$1".',
@@ -782,16 +786,51 @@ $messages['arz'] = array(
 	'smw_result_results' => 'النتائج',
 	'smw_result_noresults' => 'لا توجد نتائج.',
 	'smwadmin' => 'وظائف إدارية لسيمانتيك ميدياويكي',
+	'smw_smwadmin_settingup' => 'ضبط التخزين لسيمانتيك ميدياويكى',
+	'smw_smwadmin_setupsuccess' => 'تم تنصيب محرك التخزين بنجاح',
 	'smw_smwadmin_return' => 'أرجع إلى $1',
+	'smw_smwadmin_updatestarted' => 'عملية تحديث جديدة لتحديث بيانات سيمانتيك بدأت.
+كل البيانات المخزنة ستتم إعادة بنائها أو إصلاحها عند الحاجة.
+أنت يمكنك متابعة تطور التحديث على هذه الصفحة الخاصة.',
+	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية  
+<br>لا تنشئ واحدة أخرى
+<br />',
 	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
+	'smw_smwadmin_updatenotstopped' => 'لوقف عملية التحديث الجارية، يجب عليك تفعيل الصندوق لتعبر عن أنك متأكد حقا.',
+	'smw_smwadmin_docu' => 'هذه الصفحة الخاصة تساعدك خلال تنصيب وترقية <a href="http://semantic-mediawiki.org">سيمانتيك ميدياويكى</a>.
+تذكر أن تخزن احتياطيا البيانات القيمة قبل تنفيذ وظائف إدارية.',
 	'smw_smwadmin_db' => 'تنزيل و تحديث قاعدة البيانات',
+	'smw_smwadmin_dbdocu' => 'سيمانتيك ميدياويكى يتطلب بعض الامتدادات لقاعدة بيانات ميدياويكى حتى يخزن البيانات السيمانتيك.
+الوظيفة التالية تؤكد أن قاعدة بياناتك منصبة بشكل صحيح.
+التغييرات المعمولة في هذه الخطوة لا تؤثر على بقية قاعدة بيانات ميدياويكى، ويمكن استرجاعها بسهولة في حالة الرغبة في ذلك.
+وظيفة التنصيب هذه يمكن تنفيذها عدة مرات بدون عمل أي ضرر، لكنها مطلوبة مرة واحدة عند التنصيب أو الترقية.',
+	'smw_smwadmin_permissionswarn' => 'لو أن العملية فشلت مع أخطاء SQL، فقاعدة البيانات التي طبقها المستخدم بواسطة الويكى الخاص بك (تحقق من LocalSettings.php الخاص بك) على الأرجح لا تمتلك سماحات كافية.
+إما أن تمنح هذا المستخدم سماحات إضافية لإنشاء وحذف الجداول، مؤقتا أدخل تسجيل الدخول للroot الخاص بقاعدة بياناتك فى LocalSettings.php، أو استخدم سكريبت الصيانة <tt>SMW_setup.php</tt> الذي يمكنه استخدام تأكيدات AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'جداول البدء أو الترقية',
 	'smw_smwadmin_announce' => 'أعلن عن الويكي الخاص بك',
+	'smw_smwadmin_announcedocu' => 'سيمانتيك ميدياويكى لديه خدمة ويب لإعلان مواقع الويكى السيمانتيك الجديدة.
+هذا يستخدم للاعتناء بقائمة من المواقع العلنية التي تستخدم سيمانتيك ميدياويكى، أساسا لمساعدة <a href="http://semantic-mediawiki.org/wiki/SMW_Project">مشروع سيمانتيك ميدياويكي</a> للحصول على عرض عام للاستخدامات النمطية لسيمانتيك ميدياويكى.
+انظر الصفحة الرئيسية لسيمانتيك ميدياويكى ل<a href="http://semantic-mediawiki.org/wiki/Registry">مزيد من المعلومات حول هذه الخدمة</a>.',
+	'smw_smwadmin_announcebutton' => 'اضغط على الزر التالى لإرسال مسار الويكى الخاص بك إلى تلك الخدمة.
+الخدمة لن تسجل الويكيات التى لا يمكن الوصول إليها بشكل علنى، وستخزن فقط البيانات التي يمكن الوصول إليها بشكل علنى.',
 	'smw_smwadmin_datarefresh' => 'إصلاح البيانات وتحديثها',
+	'smw_smwadmin_datarefreshdocu' => 'من الممكن استرجاع كل بيانات سيمانتيك ميدياويكى بناء على المحتويات الحالية للويكى.
+هذا يمكن أن يكون مفيدا لإصلاح البيانات المكسورة أو لتحديث البيانات لو أن الصيغة الداخلية تغيرت بسبب ترقية برنامج.
+التحديث يتم تنفيذه صفحة بصفحة ولن يتم إكماله حالا.
+التالى يعرض ما إذا كان التحديث يجرى ويسمح لك ببدء أو إنهاء التحديثات (إلا لو كانت هذه الخاصية تم تعطيلها بواسطة إدارى الموقع).',
+	'smw_smwadmin_datarefreshprogress' => 'تحديث يجرى بالفعل.</b>
+من الطبيعى أن تتقدم عمليات التحديث ببطء فقط بما أنها تحدث البيانات فقط فى كميات صغيرة كل مرة مستخدم ما يصل إلى الويكى.
+للانتهاء من هذا التحديث سريعا، يمكنك تشغيل سكريبت صيانة ميدياويكى <tt>runJobs.php</tt> (استخدم الخيار <tt>--maxjobs 1000</tt> لتحديد عدد التحديثات المعمولة كل مرة).
+التقدم المقدر للتحديث الحالى:',
 	'smw_smwadmin_datarefreshbutton' => 'أبدا تحديث البيانات',
 	'smw_smwadmin_datarefreshstop' => 'أوقف هذا التحديث',
 	'smw_smwadmin_datarefreshstopconfirm' => 'نعم، أنا متأكد',
 	'smw_smwadmin_support' => 'أحصل على دعم',
 	'smw_smwadmin_supportdocu' => ':مصادر متعددة يمكن أن تساعدة في حالة مشاكل',
+	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات في <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ملف INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لسيمانتيك ميدياويكى موجودة فى <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'العلل يمكن إبلاغها إلى <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
+	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش فى <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
 );
 
 /** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
@@ -1064,6 +1103,7 @@ Prosím, zadejte stránku i vlastnost.',
  * @author MF-Warburg
  * @author Markus Krötzsch
  * @author Melancholie
+ * @author Michawiki
  * @author Pill
  * @author Purodha
  * @author Revolus
@@ -1249,7 +1289,7 @@ Dieser Dienst wird keine Wikis aufnehmen, die nicht öffentlich zugänglich sind
 Dies kann hilfreich sein, um eine zerstörte Datenbank zu erneuern oder um Daten zu aktualisieren, wenn Aufgrund eines Softwareupgrade die Datenbankstruktur geändert wurde.
 Das Update wird für jede Seite ausgeführt und wird einige Zeit in Anspruch nehmen.
 Nachfolgend wird gezeigt, ob ein Update läuft und es wird dir erlaubt ein Update zu starten oder zu stoppen (außer wenn diese Funktion vom Seitenbetreiber deaktiviert wurde).',
-	'smw_smwadmin_datarefreshprogress' => 'Ein Update läuft bereits.</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>Ein Update läuft bereits.</strong>
 Ein Update geht normalerweise nur langsam voran, da die Daten nur in kleinen Portionen aktualisiert werden, und zwar jedesmal, wenn jemand auf das Wiki zugreift.
 Um dieses Update schneller zu beenden, kann man das MediaWiki-Wartungsskript <tt>runJobs.php</tt> (mit dem Parameter <tt>--maxjobs 1000</tt> kann die Anzahl der Updates, die in einem Rutsch durchgeführt werden, beschränkt werden) benutzen.
 Geschätzter Fortschritt des laufenden Updates:',
@@ -4667,7 +4707,7 @@ $messages['pt'] = array(
 	'smw_csv_link' => 'CSV',
 	'smw_icalendar_link' => 'iCalendário',
 	'smw_vcard_link' => 'vCard',
-	'smw_iq_disabled' => 'Desculpe. Pesquisas semânticas foram desactivadas neste wiki.',
+	'smw_iq_disabled' => 'Consultas semânticas foram desativadas neste wiki.',
 	'smw_iq_moreresults' => '… mais resultados',
 	'smw_iq_nojs' => 'Por favor, use um navegador com JavaScript activado para visualizar este elemento.',
 	'smw_iq_altresults' => 'Navegar pela lista de resultados directamente.',
@@ -4700,23 +4740,26 @@ $messages['pt'] = array(
 	'smw_label_latitude' => 'Latitude:',
 	'smw_label_longitude' => 'Longitude:',
 	'smw_nodatetime' => 'A data “$1” não foi compreendida.',
-	'smw_toomanyclosing' => 'Parece haver demasiadas ocorrências de “$1” na pesquisa.',
-	'smw_noclosingbrackets' => 'Um uso de “<nowiki>[[</nowiki>” na sua pesquisa não foi fechada por um “]]” correspondente.',
+	'smw_toomanyclosing' => 'Parece haver demasiadas ocorrências de "$1" na consulta.',
+	'smw_noclosingbrackets' => 'Um uso de "<nowiki>[[</nowiki>" na sua consulta não foi fechada por um "]]" correspondente.',
 	'smw_misplacedsymbol' => 'O símbolo “$1” foi usado num sítio onde não é útil.',
-	'smw_unexpectedpart' => 'A parte “$1” da pesquisa não foi compreendida.
+	'smw_unexpectedpart' => 'A parte "$1" da consulta não foi compreendida.
 Os resultados podem não ser os esperados.',
-	'smw_emptysubquery' => 'Uma subpesquisa tem uma condição inválida.',
-	'smw_misplacedsubquery' => 'Uma subpesquisa foi usada num local onde não são permitidas subpesquisas.',
-	'smw_valuesubquery' => 'Subpesquisas não suportadas para valores da propriedade “$1”.',
-	'smw_overprintoutlimit' => 'Esta pesquisa contém demasiados pedidos de saídas.',
-	'smw_badprintout' => 'Uma frase de saída na pesquisa estava mal formada.',
+	'smw_emptysubquery' => 'Uma subconsulta tem uma condição inválida.',
+	'smw_misplacedsubquery' => 'Uma subconsulta foi usada num local onde não são permitidas subconsultas.',
+	'smw_valuesubquery' => 'Subconsultas não suportadas para valores da propriedade "$1".',
+	'smw_overprintoutlimit' => 'Esta consulta contém demasiados pedidos de saídas.',
+	'smw_badprintout' => 'Uma frase de saída na consulta estava mal formada.',
 	'smw_badtitle' => 'Desculpe, mas “$1” não é um título de página válido.',
-	'smw_badqueryatom' => 'Uma parte “<nowiki>[[…]]</nowiki>” da pesquisa não foi compreendida.',
+	'smw_badqueryatom' => 'Uma parte "<nowiki>[[…]]</nowiki>" da consulta não foi compreendida.',
 	'smw_propvalueproblem' => 'O valor da propriedade “$1” não foi compreendido.',
-	'smw_nodisjunctions' => 'Disjunções em pesquisas não são suportadas neste wiki e parte da pesquisa foi descartada ($1).',
-	'smw_querytoolarge' => 'As seguintes condições da pesquisa não puderam ser consideradas devido às restrições dos wikis em tamanho ou profundidade de pesquisa: $1.',
+	'smw_noqueryfeature' => 'Alguma funcionalidade da consulta não foi suportada neste wiki e parte da consulta foi descartada ($1).',
+	'smw_noconjunctions' => 'Conjunções em consultas não são suportadas neste wiki e parte da consulta foi descartada ($1).',
+	'smw_nodisjunctions' => 'Disjunções em consultas não são suportadas neste wiki e parte da consulta foi descartada ($1).',
+	'smw_querytoolarge' => 'As seguintes condições da consulta não puderam ser consideradas devido às restrições dos wikis em tamanho ou profundidade de consulta: $1.',
 	'smw_devel_warning' => 'Esta funcionalidade está neste momento em desenvolvimento, e pode não estar totalmente funcional.
 Faça uma cópia de segurança dos seus dados antes de a usar.',
+	'smw_notemplategiven' => 'Providencie um valor para o parâmetro "template" para o formato desta consulta funcionar.',
 	'smw_type_header' => 'Propriedades do tipo “$1”',
 	'smw_typearticlecount' => 'Exibindo $1 {{PLURAL:$1|propriedade que usa|propriedades que usam}} este tipo.',
 	'smw_attribute_header' => 'Páginas que usam a propriedade “$1”',
@@ -4746,7 +4789,7 @@ Gera RDF navegável.',
 	'wantedproperties' => 'Propriedades em falta',
 	'smw_wantedproperties_docu' => 'As seguintes propriedades são usadas no wiki mas ainda não têm uma página que as descreva.',
 	'smw_wantedproperty_template' => '$1 ($2 usos)',
-	'tooltip-purge' => 'Carregue aqui para refrescar todas as pesquisas e predefinições nesta página',
+	'tooltip-purge' => 'Carregue aqui para refrescar todas as consultar e predefinições nesta página',
 	'smw_purge' => 'Refrescar',
 	'types' => 'Tipos',
 	'smw_types_docu' => 'As seguinte lista contém todos os tipos de dados que podem ser atribuídos a propriedades.
@@ -4767,11 +4810,11 @@ O número de propriedades incorrectas é dada entre parênteses rectos.',
 	'smw_ask_ascorder' => 'Ascendente',
 	'smw_ask_descorder' => 'Descendente',
 	'smw_ask_submit' => 'Procurar resultados',
-	'smw_ask_editquery' => '[Editar pesquisa]',
+	'smw_ask_editquery' => '[Editar consulta]',
 	'smw_add_sortcondition' => '[Adicionar condição de ordenação]',
-	'smw_ask_hidequery' => 'Esconder pesquisa',
-	'smw_ask_help' => 'Ajuda sobre pesquisas',
-	'smw_ask_queryhead' => 'Pesquisa',
+	'smw_ask_hidequery' => 'Esconder consulta',
+	'smw_ask_help' => 'Ajuda sobre consultas',
+	'smw_ask_queryhead' => 'Consulta',
 	'smw_ask_printhead' => 'Saídas adicionais (opcional)',
 	'searchbyproperty' => 'Procurar por propriedade',
 	'smw_sbv_docu' => '<p>Buscar todas as páginas que possuem uma determinada propriedade e valor.</p>',
@@ -4802,22 +4845,52 @@ Por favor, introduza ambas a página e a propriedade.',
 	'smw_result_prev' => 'Anterior',
 	'smw_result_next' => 'Seguinte',
 	'smw_result_results' => 'Resultados',
-	'smw_result_noresults' => 'Desculpe, não há resultados.',
+	'smw_result_noresults' => 'Não há resultados.',
 	'smwadmin' => 'Funções administrativas do Semantic MediaWiki',
 	'smw_smwadmin_settingup' => 'A configurar armazenamento para Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'O motor de armazenamento foi configurado com sucesso.',
 	'smw_smwadmin_return' => 'Voltar a $1',
+	'smw_smwadmin_updatestarted' => 'Um novo processo de atualização para refrescar os dados semânticos foi iniciado.
+Todos os dados armazenados serão reconstruídos ou reparados onde necessário.
+Você pode seguir o progresso da atualização nesta página especial.',
 	'smw_smwadmin_updatenotstarted' => 'Já existe um processo de atualização em execução.
 Não foi criado outro.',
 	'smw_smwadmin_updatestopped' => 'Todos os processos de atualização existentes foram parados.',
+	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de atualização em execução, você deverá ativar a caixa de seleção para indicar que tem realmente a certeza.',
+	'smw_smwadmin_docu' => 'Esta página especial auxilia-o durante a instalação ou evolução do <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Lembre-se de efetuar cópias de segurança dos dados importantes antes de executar funções administrativas.',
 	'smw_smwadmin_db' => 'Instalação e evolução da base de dados',
+	'smw_smwadmin_dbdocu' => 'O Semantic MediaWiki requer algumas extensões à base de dados MediaWiki por forma a armazenar os dados semânticos.
+A função abaixo assegura que a sua base de dados está devidamente preparada.
+As alterações feitas neste passo não afetam o resto da base de dados MediaWiki, e podem ser facilmente desfeitas se desejado.
+Esta função de preparação pode ser executada múltiplas vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou evolução.',
+	'smw_smwadmin_permissionswarn' => 'Se a operação falhar com erros de SQL, provavelmente o utilizador de base de dados usado pelo seu wiki (consulte o seu LocalSettings.php) não possui permissões suficientes.
+Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu super-utilizador (<i>root</i>) da base de dados em LocalSettings.php, ou use o script de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais presentes em AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Inicializar ou evoluir tabelas',
+	'smw_smwadmin_announce' => 'Anuncie o seu wiki',
+	'smw_smwadmin_announcedocu' => 'O Semantic MediaWiki tem um serviço web para anunciar novos sítios wiki semânticos.
+Este é usado para manter uma lista de sítios públicos que usam o Semantic MediaWiki, principalmente para auxiliar o <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projeto Semantic MediaWiki</a> a obter um ideia geral das utilizações típicas do Semantic MediaWiki.
+Veja a página inicial do Semantic MediaWiki para <a href="http://semantic-mediawiki.org/wiki/Registry">mais informações sobre este serviço</a>.',
+	'smw_smwadmin_announcebutton' => 'Prima o seguinte botão para submeter a URL do seu wiki àquele serviço.
+O serviço não registará wikis que não estejam publicamente acessíveis, e apenas armazenará informação publicamente acessível.',
+	'smw_smwadmin_datarefresh' => 'Reparação de dados e evolução',
+	'smw_smwadmin_datarefreshdocu' => 'É possível restaurar todos os dados do Semantic MediaWiki baseado no conteúdo atual do wiki.
+Isto pode ser útil para reparar dados corrompidos ou para refrescar os dados se o formato interno tiver sido alterado devido a alguma evolução do software.
+A atualização é executada página a página e não completará de imediato.
+O seguinte mostra se uma atualização está a decorrer e permite-lhe iniciar ou parar atualizações (a menos que esta funcionalidade tenha sido desativada por um administrador do sítio).',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Uma atualização já se encontra a decorrer.</strong>
+É normal que a atualização progrida lentamente já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acede ao wiki.
+Para terminar esta atualização mais rapidamente, você pode executar o script de manutenção do MediaWiki <tt>runJobs.php</tt> (use a opção <tt>--maxjobs 1000</tt> para restringir o número de atualizações feitas num bloco).
+Progresso estimado da atualização corrente:',
 	'smw_smwadmin_datarefreshbutton' => 'Iniciar a atualização dos dados',
 	'smw_smwadmin_datarefreshstop' => 'Parar esta atualização',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sim, tenho a certeza.',
 	'smw_smwadmin_support' => 'Obtendo suporte',
 	'smw_smwadmin_supportdocu' => 'Vários recursos poderão ajudá-lo em caso de problemas:',
+	'smw_smwadmin_installfile' => 'Se tiver problemas com a sua instalação, comece por rever as linhas orientadoras no <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ficheiro INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'A documentação completa para o utilizador do Semantic MediaWiki está em <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Defeitos podem ser reportados no <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
+	'smw_smwadmin_questions' => 'Se você tem mais questões ou sugestões, junte-se à discussão em <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
 );
 
 /** Tarifit (Tarifit)
