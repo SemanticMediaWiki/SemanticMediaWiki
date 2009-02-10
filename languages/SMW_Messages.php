@@ -572,7 +572,7 @@ $messages['ar'] = array(
 	'smw_smwadmin_updatestarted' => 'عملية تحديث جديدة لتحديث بيانات سيمانتيك بدأت.
 كل البيانات المخزنة ستتم إعادة بنائها أو إصلاحها عند الحاجة.
 أنت يمكنك متابعة تطور التحديث على هذه الصفحة الخاصة.',
-	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية
+	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية 
 <br>لا تنشئ واحدة أخرى
 <br />',
 	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
@@ -598,7 +598,7 @@ $messages['ar'] = array(
 هذا يمكن أن يكون مفيدا لإصلاح البيانات المكسورة أو لتحديث البيانات لو أن الصيغة الداخلية تغيرت بسبب ترقية برنامج.
 التحديث يتم تنفيذه صفحة بصفحة ولن يتم إكماله حالا.
 التالي يعرض ما إذا كان التحديث يجري ويسمح لك ببدء أو إنهاء التحديثات (إلا لو كانت هذه الخاصية تم تعطيلها بواسطة إداري الموقع).',
-	'smw_smwadmin_datarefreshprogress' => 'تحديث يجري بالفعل.</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>تحديث يجري بالفعل.</strong>
 من الطبيعي أن تتقدم عمليات التحديث ببطء فقط بما أنها تحدث البيانات فقط في كميات صغيرة كل مرة مستخدم ما يصل إلى الويكي.
 للانتهاء من هذا التحديث سريعا، يمكنك تشغيل سكريبت صيانة ميدياويكي <tt>runJobs.php</tt> (استخدم الخيار <tt>--maxjobs 1000</tt> لتحديد عدد التحديثات المعمولة كل مرة).
 التقدم المقدر للتحديث الحالي:',
@@ -783,7 +783,7 @@ $messages['arz'] = array(
 	'smw_smwadmin_updatestarted' => 'عملية تحديث جديدة لتحديث بيانات سيمانتيك بدأت.
 كل البيانات المخزنة ستتم إعادة بنائها أو إصلاحها عند الحاجة.
 أنت يمكنك متابعة تطور التحديث على هذه الصفحة الخاصة.',
-	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية
+	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية  
 <br>لا تنشئ واحدة أخرى
 <br />',
 	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
@@ -793,23 +793,23 @@ $messages['arz'] = array(
 	'smw_smwadmin_db' => 'تنزيل و تحديث قاعدة البيانات',
 	'smw_smwadmin_dbdocu' => 'سيمانتيك ميدياويكى يتطلب بعض الامتدادات لقاعدة بيانات ميدياويكى حتى يخزن البيانات السيمانتيك.
 الوظيفة التالية تؤكد أن قاعدة بياناتك منصبة بشكل صحيح.
-التغييرات المعمولة في هذه الخطوة لا تؤثر على بقية قاعدة بيانات ميدياويكى، ويمكن استرجاعها بسهولة في حالة الرغبة في ذلك.
-وظيفة التنصيب هذه يمكن تنفيذها عدة مرات بدون عمل أي ضرر، لكنها مطلوبة مرة واحدة عند التنصيب أو الترقية.',
-	'smw_smwadmin_permissionswarn' => 'لو أن العملية فشلت مع أخطاء SQL، فقاعدة البيانات التي طبقها المستخدم بواسطة الويكى الخاص بك (تحقق من LocalSettings.php الخاص بك) على الأرجح لا تمتلك سماحات كافية.
-إما أن تمنح هذا المستخدم سماحات إضافية لإنشاء وحذف الجداول، مؤقتا أدخل تسجيل الدخول للroot الخاص بقاعدة بياناتك فى LocalSettings.php، أو استخدم سكريبت الصيانة <tt>SMW_setup.php</tt> الذي يمكنه استخدام تأكيدات AdminSettings.php.',
+التغييرات المعمولة فى هذه الخطوة لا تؤثر على بقية قاعدة بيانات ميدياويكى، ويمكن استرجاعها بسهولة فى حالة الرغبة فى ذلك.
+وظيفة التنصيب هذه يمكن تنفيذها عدة مرات بدون عمل أى ضرر، لكنها مطلوبة مرة واحدة عند التنصيب أو الترقية.',
+	'smw_smwadmin_permissionswarn' => 'لو أن العملية فشلت مع أخطاء SQL، فقاعدة البيانات التى طبقها المستخدم بواسطة الويكى الخاص بك (تحقق من LocalSettings.php الخاص بك) على الأرجح لا تمتلك سماحات كافية.
+إما أن تمنح هذا المستخدم سماحات إضافية لإنشاء وحذف الجداول، مؤقتا أدخل تسجيل الدخول للroot الخاص بقاعدة بياناتك فى LocalSettings.php، أو استخدم سكريبت الصيانة <tt>SMW_setup.php</tt> الذى يمكنه استخدام تأكيدات AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'جداول البدء أو الترقية',
-	'smw_smwadmin_announce' => 'أعلن عن الويكي الخاص بك',
+	'smw_smwadmin_announce' => 'أعلن عن الويكى الخاص بك',
 	'smw_smwadmin_announcedocu' => 'سيمانتيك ميدياويكى لديه خدمة ويب لإعلان مواقع الويكى السيمانتيك الجديدة.
-هذا يستخدم للاعتناء بقائمة من المواقع العلنية التي تستخدم سيمانتيك ميدياويكى، أساسا لمساعدة <a href="http://semantic-mediawiki.org/wiki/SMW_Project">مشروع سيمانتيك ميدياويكي</a> للحصول على عرض عام للاستخدامات النمطية لسيمانتيك ميدياويكى.
+هذا يستخدم للاعتناء بقائمة من المواقع العلنية التى تستخدم سيمانتيك ميدياويكى، أساسا لمساعدة <a href="http://semantic-mediawiki.org/wiki/SMW_Project">مشروع سيمانتيك ميدياويكي</a> للحصول على عرض عام للاستخدامات النمطية لسيمانتيك ميدياويكى.
 انظر الصفحة الرئيسية لسيمانتيك ميدياويكى ل<a href="http://semantic-mediawiki.org/wiki/Registry">مزيد من المعلومات حول هذه الخدمة</a>.',
 	'smw_smwadmin_announcebutton' => 'اضغط على الزر التالى لإرسال مسار الويكى الخاص بك إلى تلك الخدمة.
-الخدمة لن تسجل الويكيات التى لا يمكن الوصول إليها بشكل علنى، وستخزن فقط البيانات التي يمكن الوصول إليها بشكل علنى.',
+الخدمة لن تسجل الويكيات التى لا يمكن الوصول إليها بشكل علنى، وستخزن فقط البيانات التى يمكن الوصول إليها بشكل علنى.',
 	'smw_smwadmin_datarefresh' => 'إصلاح البيانات وتحديثها',
 	'smw_smwadmin_datarefreshdocu' => 'من الممكن استرجاع كل بيانات سيمانتيك ميدياويكى بناء على المحتويات الحالية للويكى.
 هذا يمكن أن يكون مفيدا لإصلاح البيانات المكسورة أو لتحديث البيانات لو أن الصيغة الداخلية تغيرت بسبب ترقية برنامج.
 التحديث يتم تنفيذه صفحة بصفحة ولن يتم إكماله حالا.
 التالى يعرض ما إذا كان التحديث يجرى ويسمح لك ببدء أو إنهاء التحديثات (إلا لو كانت هذه الخاصية تم تعطيلها بواسطة إدارى الموقع).',
-	'smw_smwadmin_datarefreshprogress' => 'تحديث يجرى بالفعل.</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>تحديث يجرى بالفعل.</strong>
 من الطبيعى أن تتقدم عمليات التحديث ببطء فقط بما أنها تحدث البيانات فقط فى كميات صغيرة كل مرة مستخدم ما يصل إلى الويكى.
 للانتهاء من هذا التحديث سريعا، يمكنك تشغيل سكريبت صيانة ميدياويكى <tt>runJobs.php</tt> (استخدم الخيار <tt>--maxjobs 1000</tt> لتحديد عدد التحديثات المعمولة كل مرة).
 التقدم المقدر للتحديث الحالى:',
@@ -817,8 +817,8 @@ $messages['arz'] = array(
 	'smw_smwadmin_datarefreshstop' => 'أوقف هذا التحديث',
 	'smw_smwadmin_datarefreshstopconfirm' => 'نعم، أنا متأكد',
 	'smw_smwadmin_support' => 'أحصل على دعم',
-	'smw_smwadmin_supportdocu' => ':مصادر متعددة يمكن أن تساعدة في حالة مشاكل',
-	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات في <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ملف INSTALL</a>.',
+	'smw_smwadmin_supportdocu' => ':مصادر متعددة يمكن أن تساعدة فى حالة مشاكل',
+	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات فى <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ملف INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لسيمانتيك ميدياويكى موجودة فى <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'العلل يمكن إبلاغها إلى <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
 	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش فى <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
@@ -1777,8 +1777,8 @@ $messages['fr'] = array(
 	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a sa propre page, dans laquelle peuvent figurer des informations plus précises.',
 	'smw_typeunits' => 'Unités de mesure de type « $1 » : $2',
 	'semanticstatistics' => 'Statistiques sémantiques',
-	'smw_semstats_text' => 'Ce wiki contient <b>$1</b> valeurs de propriété pour un total de <b>$2</b> <a href="$3">propriétés</a> différentes.
-<b>$4</b> propriétés ont leur propre page, et le type de données voulu est spécifié pour <b>$5</b> de celles-ci.
+	'smw_semstats_text' => 'Ce wiki contient <b>$1</b> valeurs de propriété pour un total de <b>$2</b> <a href="$3">propriétés</a> différentes. 
+<b>$4</b> propriétés ont leur propre page, et le type de données voulu est spécifié pour <b>$5</b> de celles-ci. 
 Certaines des propriétés existantes peuvent faire être <a href="$6">inutilisées</a>. Les propriétés qui n\'ont pas encore de page se trouvent dans la <a href="$7">liste des propriétés demandées</a>.',
 	'flawedattributes' => 'Attributs défectueux',
 	'smw_fattributes' => "Les pages ci-dessous ont un attribut qui n'est pas défini correctement. Le nombre d'attributs incorrects est donné entre les parenthèses.",
@@ -1855,7 +1855,7 @@ Le service n’enregistrera pas les wiki qui ne sont pas accessibles au public, 
 Ceci peut être utile pour réparer des données cassées ou pour rafraichir les données si le format interne a changé lors des remises à niveau.
 La mise à jour est exécutée page par page et se sera pas achevée immédiatement.
 La page suivante affiche si une mise à jour est en cours d’exécution et vous permet de commencer ou d’arrêter celles-ci (à moins que cette fonctionnalié soit désactivée par l’administrateur du site).',
-	'smw_smwadmin_datarefreshprogress' => 'Une mise à jour est en cours d’exécution.</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>Une mise à jour est en cours d’exécution.</strong>
 C’est normal qu’une mise à jour ne progresse lentement depuis qu’il rafraichit uniquement les données dans petits tronçons à chaque fois qu’un utilisateur accède au wiki.
 Pour terminer cette mise à jour plus rapidement, vous pouvez invoquer le script de maintenance Mediawiki <tt>runJobs.php</tt> (utiliser l’option <tt>--maxjobs 1000</tt> pour restreindre le nombre des mises à jours par script lancé).
 Progression estimée de la mise à jour actuelle :',
@@ -2066,9 +2066,9 @@ O servizo non rexistrará wikis que non sexan publicamente accesibles e só alma
 Isto pode ser útil para reparar datos rotos ou para refrescar os datos se o formato interno cambiou debido a actualizacións do software.
 Esta actualización é executada páxina a páxina e non será completada inmediatamente.
 O seguinte amosa se unha actualización está en curso e permítelle comezalas ou detelas (a non ser que esta característica fose deshabilitada polo administrador do sitio).',
-	'smw_smwadmin_datarefreshprogress' => 'Xa hai unha actualización en curso.</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>Xa hai unha actualización en curso.</strong>
 É normal que os progresos de actualización vaian lentos, xa que só se refrescan os datos nos pequenos anacos nos que un usuario accede ao wiki.
-Para finalizar esta actualización máis rápido, pode invocar o guión <tt>runJobs.php</tt> de mantemento de MediaWiki (use a opción <tt>--maxjobs 1000</tt> para restrinxir o número de actualizacións feitas nunha tanda).
+Para finalizar esta actualización máis rápido, pode invocar a escritura <tt>runJobs.php</tt> de mantemento de MediaWiki (use a opción <tt>--maxjobs 1000</tt> para restrinxir o número de actualizacións feitas nunha quenda).
 Progreso estimado da actualización actual:',
 	'smw_smwadmin_datarefreshbutton' => 'Comezar a actualizar os datos',
 	'smw_smwadmin_datarefreshstop' => 'Deter esta actualización',
@@ -2268,7 +2268,7 @@ Dää Dienscht nimmt kei Wiki uf, wu nit efffentlig zuegängig sin. Gspycheret w
 Des cha hälfe, ne kaputti Datebank nej z lade oder Date z aktualisiere, wänn wägen eme Softwareupgrade d Datebankstruktur gänderet wore isch.
 S Update wird fir jedi Syte uusgfiert un wird e Wyyli bruuche.
 Doo wird zeigt, eb e Update lauft un Di wird erlaubt e Update z starte oder z stoppe (usser wänn die Funktion vum Sytebetryyber deaktiviert woren isch).',
-	'smw_smwadmin_datarefreshprogress' => 'E Update lauft scho.</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>E Update lauft scho.</strong>
 E Update bruucht nromalerwyys lang, wel d Date nume in chleine Prtione aktualisiert wäre, jedes Mol wänn eber uf s Wiki zuegryft.
 Go des Update schnäller z beände, cha mer s MediaWiki-Wartigsskript <tt>runJobs.php</tt> bruuche (mit em Parameter <tt>--maxjobs 1000</tt> cha d Aazahl vu dr Updates, wu uf eimol durgfiert wäre, bschränkt wäre).
 Gschätzte Fortschritt vum Update, wu grad lauft:',
@@ -3102,7 +3102,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw_smwadmin_announcebutton' => '次のボタンを押して、あなたのウィキのURLをこのサービスに提出します。このサービスは、公開されていないウィキは登録せず、公開されている情報のみを保管します。',
 	'smw_smwadmin_datarefresh' => 'データの修復とアップグレード',
 	'smw_smwadmin_datarefreshdocu' => 'ウィキの現在の内容に基づいて、Semantic MediaWiki の全データを復旧することができます。この機能は破損したデータを修復する場合や、ソフトウェアのアップグレードによって内部形式が変わった際にデータを移行する場合などに有用です。この更新は1ページずつ実行され、直ちには完了しません。以下では、更新が進行中か否かを示し、更新を開始または停止することができます (この機能がサイト管理者によって無効化されていない場合に限る)。',
-	'smw_smwadmin_datarefreshprogress' => '更新が既に進行中です。</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>更新が既に進行中です。</strong>
 利用者がウィキにアクセスするたびに少量の塊のデータを更新するだけなので、更新がゆっくりとしか進まないのは正常なことです。
 この更新をより速く終えたい場合は、MediaWiki のメンテナンススクリプト <tt>runJobs.php</tt> を起動できます (1つのバッチでなされる更新の数を制限するために <tt>--maxjobs 1000</tt> オプションを用いてください)。
 現在の更新の推定進捗:',
@@ -3975,7 +3975,7 @@ De dienst registreert geen wiki's die niet publiek toegankelijk zijn en slaat al
 Dit kan handig zijn om gegevens te repareren of de gegevens te verversen als de interne opmaak gewijzigd is bij een softwareupdate.
 De gegevens worden pagina voor pagina bijgewerkt en het kan enige tijd duren voor de taak is afgerond.
 Hieronder wordt weergegeven of er op dit moment een taak loopt en stelt u in staat een taak te stoppen of te starten (tenzij deze mogelijkheid door de sitebeheerder is uitgeschaked).',
-	'smw_smwadmin_datarefreshprogress' => "Er loopt een bijwerktaak</b>
+	'smw_smwadmin_datarefreshprogress' => "<strong>Er loopt een bijwerktaak</strong>
 Het is normaal dat de voortgang langzaam is omdat de gegevens ververst worden in kleine porties iedere keer als een gebruiker de wiki raadpleegt.
 Om het bijwerken sneller te laten verlopen, kunt u het beheerscript <tt>runJobs.php</tt> draaien. Gebruik de optie <tt>--maxjobs 1000</tt> om aan het aantal bij te werken pagina's per handeling te beperken.
 Geschatte voortgang van de huidige taak:",
@@ -4106,7 +4106,7 @@ Eigenskapar som framleis ikkje har ei eiga sida finst på <a href="$7">lista ove
 	'smw_fattributes' => 'Sidene som er lista opp nedanfor har ein feildefinert eigenskap.
 Talet på feildefinerte eigenskaper er oppgjeve i parentes.',
 	'uriresolver' => 'URI-løysar',
-	'smw_uri_doc' => "<p>URI-løysaren implementerer ''<a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">finning av W3C TAG-ar på «httpRange-14»</a>''.
+	'smw_uri_doc' => "<p>URI-løysaren implementerer ''<a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">finning av W3C TAG-ar på «httpRange-14»</a>''. 
 Han syter for at menneske ikkje vert til nettsider.</p>",
 	'ask' => 'Semantisk søk',
 	'smw_ask_sortby' => 'Sorter etter kolonne (valfritt)',
@@ -4181,9 +4181,9 @@ Tenesta vil ikkje registrera wikiar som ikkje er opne offentleg, og ho vil berre
 Dette kan vera nyttig for å reparera øydelagde data eller for å oppfriska dataa om det interne formatet har blitt endra grunna programvareoppdatering.
 Oppdateringa blir utført sida for sida og vil ikkje vera ferdig med ein gong.
 Det fylgjande syner om ei oppdatering er på gong og lèt deg byrja eller stoppa oppdateringar (viss ikkje denne moglegheita er deaktivert av sideadministratoren).',
-	'smw_smwadmin_datarefreshprogress' => 'Ei oppdatering held allereie på.</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>Ei oppdatering held allereie på.</strong>
 Det er normalt at oppdateringa går sakte då ho berre oppfriskar data i små bitar kvar gong ein brukar er innom wikien.
-For å fullføra denne oppdateringa på ein kjappare måte kan du setja i gang MediaWiki-vedlikehaldsskriptet <tt>runJobs.php</tt> (nytt valet <tt>--maxjobs 1000</tt> for å avgrensa talet på oppdetaringar som blir gjort i eitt stykke).
+For å fullføra denne oppdateringa på ein kjappare måte, kan du setja i gang MediaWiki-vedlikehaldsskriptet <tt>runJobs.php</tt> (nytt valet <tt>--maxjobs 1000</tt> for å avgrensa talet på oppdetaringar som blir gjort i eitt stykke).
 Estimert framdrift på den noverande oppdateringa:',
 	'smw_smwadmin_datarefreshbutton' => 'Start oppdatering',
 	'smw_smwadmin_datarefreshstop' => 'Stopp denne oppdateringa',
@@ -5272,9 +5272,9 @@ Služba nebude registrovať wiki, ktoré nie sú verejne prístupné a bude ukla
 To sa hodí na opravu poškodených údajov alebo obnovu údajov ak sa pri aktualizácii softvéru zmenil vnútorný formát ukladania údajov.
 Aktualizáciu je možné spustiť na špeciálnej stránke a nebude dokočená okamžite.
 Tu sa zobrazuje priebeh aktualizácie a môžete tu spustiť alebo zastaviť aktualizácie (ak túto funkciu správca nevypol).',
-	'smw_smwadmin_datarefreshprogress' => 'Aktualizácia už prebieha.</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizácia už prebieha.</strong>
 Je normálne, že aktualizácie prebieha pomaly, pretože obnovuje údaje iba po malých kúskoch naraz, keď používateľ zobrazí stránku wiki.
-Rýchlejšie dokončenie tejto aktualizácie môžete dosiahnuť vyvolaním údržbového skriptu MediaWiki <tt>runJobs.php</tt> (použite voľbu <tt>--maxjobs 1000</tt> na obmedzenie počtu aktualizácii v jednej dávke).
+Rýchlejšie dokončenie tejto aktualizácie môžete dosiahnuť vyvolaním údržbového skriptu MediaWiki <tt>runJobs.php</tt> (použite voľbu <tt>--maxjobs 1000</tt> na obmedzenie počtu aktualizácií v jednej dávke).
 Odhadovaný priebeh aktualizácie:',
 	'smw_smwadmin_datarefreshbutton' => 'Spustiť aktualizáciu údajov',
 	'smw_smwadmin_datarefreshstop' => 'Zastaviť túto aktualizáciu',
@@ -5465,7 +5465,7 @@ $messages['sr-ec'] = array(
 Доња функција потврђује да је ваша база података исправно инсталирана.
 Промене које ће се сада извести немају последица за остали део базе података Медијавикија, а по потреби се могу врло лако поништити.
 Ова функција инсталирања се може покретати више пута без бојазни да ће нанети неку штету, али је неопходна само једном приликом инсталирања или ажурирања.',
-	'smw_smwadmin_permissionswarn' => 'Ако се операција заврши са SQL грешкама, корисник базе података (погледајте ваш LocalSettings.php) вероватно нема довољно дозвола за извршавање неопходних операција.
+	'smw_smwadmin_permissionswarn' => 'Ако се операција заврши са SQL грешкама, корисник базе података (погледајте ваш LocalSettings.php) вероватно нема довољно дозвола за извршавање неопходних операција. 
 Или дајте неопходне дозволе том кориснику како би могао да прави и брише табеле у бази, темпорално се улогујте као root у LocalSettings.php, или користите скрипту за одржавање <tt>SMW_setup.php</tt>, која може користити акредитиве из скрипте AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Покретање или ажурирање табела базе података',
 	'smw_smwadmin_announce' => 'Дојавите о постојању вашег викија',
@@ -5477,7 +5477,7 @@ $messages['sr-ec'] = array(
 	'smw_smwadmin_datarefresh' => 'Поправљање података и ажурирање',
 	'smw_smwadmin_datarefreshdocu' => 'Могуће је рестаурирати све податке Семантичког медијавикија, базирајући се на садржају викија.
 То може бити корисно за репарацију података или обнављање података у случају да су се извршиле неке измене у унутрашњем формату због надоградње софтвера.
-Ажурирање ће се обавити страницу по страницу и неће се одмах завршити.
+Ажурирање ће се обавити страницу по страницу и неће се одмах завршити. 
 Следећи приказ служи за надгледање ажурирања у прогресу и омогућава вам да их покренете или обуставите (осим ако администратор сајта није искључио ову могућност).',
 	'smw_smwadmin_datarefreshprogress' => 'Једно ажурирање је већ у току. </b>
 Нормално је да ажурирање напредује споро, пошто се само освежавају мали делови података сваки пут када корисник приступи викију.
@@ -6007,7 +6007,7 @@ Masusundan mo ang pagsulong/progreso ng pagsasapanahon sa natatanging pahinang i
 Hindi na lilikha ng isa pa.',
 	'smw_smwadmin_updatestopped' => 'Inihinto ang lahat ng umiiral na mga pagpapatakbong pangpagsasapanahon.',
 	'smw_smwadmin_updatenotstopped' => 'Upang mapahinto ang pagpapaandar ng pagpapatakbo ng pagsasapanahon, dapat mong pasiglahin ang kahong lagayan ng tsek para maipahayag na nakatitiyak kang talaga.',
-	'smw_smwadmin_docu' => 'Tumutulong ang natatanging pahinang ito sa iyo sa panahon ng pagluluklok at pagtataas ng uri ng <a href="http://semantic-mediawiki.org">Semantikong MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Tumutulong ang natatanging pahinang ito sa iyo sa panahon ng pagluluklok at pagtataas ng uri ng <a href="http://semantic-mediawiki.org">Semantikong MediaWiki</a>.  
 Huwag kalimutang gumawa ng karagdagang sipi ng mahalagang dato bago isagawa ang mga tungkuling pangtagapangasiwa.',
 	'smw_smwadmin_db' => 'Pagluluklok (instalasyon) at pagtataas ng uri (grado/klase) ng kalipunan ng dato',
 	'smw_smwadmin_dbdocu' => 'Nangangailangan ang Semantikong Mediawiki ng ilang mga karugtong sa kalipunan ng dato ng MediaWiki upang maitabi ang datong hinggil sa kahulugan ng mga salita.
@@ -6028,10 +6028,10 @@ Hindi itatala ng palingkuran ang mga wiki na hindi mapupuntahan ng madla, at ita
 Magiging gamitin ito sa pagaayos/pagkukumpuni ng nasirang dato o upang masariwa ang dato kung nabago ang panloob na kaanyuan/pormat dahil sa ilang mga pagtataas ng uri ng sopwer.
 Isinasakatuparan ang pagsasapanahon ng pahina sa pahina at hindi agad-agarang mabubuo.
 Ipinapakita ng sumusunod kung sumusulong na ang isang pagsasapanahon at magpapahintulot sa iyo upang simulan o pahintuin ang mga pagsasapanahon (maliban na lamang kung hindi pinagana/pinaandar ng tagapangasiwa ng sityo/sayt ang katangiang-kasangkapang ito).',
-	'smw_smwadmin_datarefreshprogress' => 'Sumusulong na ang isang pagsasapanahon.</b>
-Pangkaraniwan lamang na mabagal ang pagsulong ng pagsasapanahon dahil sinasariwa lamang nito ang maliliit na tipak ng dato sa bawat panahon/oras na pumupunta sa wiki ang isang tagagamit.
-Upang mas mabilisang matapos ang pagsasapanahong ito, maaari mong banggitin/tawagin ang panitik na pangpagpapanatiling <tt>runJobs.php</tt> (gamitin ang pagpipiliang <tt>--maxjobs 1000</tt> upang mabigyan ng hangganan ang bilang mga pagsasapanahong ginagawa sa bawat isang bungkos).
-Tinatayang pagsulong/progreso ng pangkasalukuyang pagsasapanahon:',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Sumusulong na ang isang pagsasapanahon.</b>
+Pangkaraniwan lamang na mabagal ang pagsulong ng pagsasapanahon dahil sinasariwa lamang nito ang maliliit na tipak ng dato sa bawat panahong pumupunta sa wiki ang isang tagagamit.
+Upang mas mabilisang matapos ang pagsasapanahong ito, maaari mong tawagin ang panitik na pangpagpapanatiling <tt>runJobs.php</tt> (gamitin ang pagpipiliang <tt>--maxjobs 1000</tt> ng MediaWiki upang mabigyan ng hangganan ang bilang ng mga pagsasapanahong ginagawa sa bawat isang bungkos).
+Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_smwadmin_datarefreshbutton' => 'Umpisahang isapanahon ang dato',
 	'smw_smwadmin_datarefreshstop' => 'Ihinto ang pagsasapanahong ito',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Oo, nakatitiyak ako.',
