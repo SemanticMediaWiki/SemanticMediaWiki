@@ -77,7 +77,7 @@ class SMWSQLStore2QueryEngine {
 	 * @param $concept Title
 	 */
 	public function refreshConceptCache($concept) {
-		global $smwgQMaxLimit, $smwgQConceptFeatures;
+		global $smwgQMaxLimit, $smwgQConceptFeatures, $wgDBtype;
 		$cid = $this->m_store->getSMWPageID($concept->getDBKey(), SMW_NS_CONCEPT, '');
 		$cid_c = $this->m_store->getSMWPageID($concept->getDBKey(), SMW_NS_CONCEPT, '', false);
 		if ($cid != $cid_c) {
@@ -106,10 +106,18 @@ class SMWSQLStore2QueryEngine {
 			}
 			// Update database:
 			$this->m_dbs->delete('smw_conccache', array('o_id' => $cid), 'SMW::refreshConceptCache');
-			$this->m_dbs->query("INSERT IGNORE INTO " . $this->m_dbs->tableName('smw_conccache') .
+			if ($wgDBtype=='postgres') { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
+				$where = $qobj->where . ($qobj->where?' AND ':'') .
+				         'NOT EXISTS (SELECT NULL FROM ' . $this->m_dbs->tableName('smw_conccache') .
+			             ' WHERE ' . $this->m_dbs->tablename('smw_conccache') . '.s_id = ' . $qobj->alias . '.s_id ' .
+			             ' AND   ' . $this->m_dbs->tablename('smw_conccache') . '.o_id = ' . $qobj->alias . '.o_id )';
+			} else { // MySQL just uses INSERT IGNORE, no extra conditions
+				$where = $qobj->where;
+			}
+			$this->m_dbs->query("INSERT " . (($wgDBtype=='postgres')?"":"IGNORE ") . "INTO " . $this->m_dbs->tableName('smw_conccache') .
 			                    " SELECT DISTINCT $qobj->joinfield AS s_id, $cid AS o_id FROM " .
 			                    $this->m_dbs->tableName($qobj->jointable) . " AS $qobj->alias" . $qobj->from .
-			                    ($qobj->where?" WHERE ":'') . $qobj->where . " LIMIT $smwgQMaxLimit",
+			                    ($where?" WHERE ":'') . $where . " LIMIT $smwgQMaxLimit",
 			                    'SMW::refreshConceptCache');
 			$this->m_dbs->update('smw_conc2', array('cache_date' => strtotime("now"), 'cache_count' => $this->m_dbs->affectedRows()), array('s_id' => $cid), 'SMW::refreshConceptCache');
 		} else { // just delete old data if there is any
@@ -263,7 +271,10 @@ class SMWSQLStore2QueryEngine {
 			return $result;
 		}
 		$sql_options = $this->getSQLOptions($query,$rootid);
-		$res = $this->m_dbs->select($this->m_dbs->tableName($qobj->jointable) . " AS $qobj->alias" . $qobj->from, "DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw", $qobj->where, 'SMW::getQueryResult', $sql_options);
+		$sortfields = implode($qobj->sortfields,','); // also select those, required in standard SQL (though MySQL is quite about it)
+		$res = $this->m_dbs->select($this->m_dbs->tableName($qobj->jointable) . " AS $qobj->alias" . $qobj->from,
+			"DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw"
+			. ($sortfields?',':'') . $sortfields, $qobj->where, 'SMW::getQueryResult', $sql_options);
 
 		$qr = array();
 		$count = 0;
@@ -592,6 +603,7 @@ class SMWSQLStore2QueryEngine {
 	 * the actual result.
 	 */
 	protected function executeQueries(SMWSQLStore2Query &$query) {
+		global $wgDBtype;
 		switch ($query->type) {
 			case SMW_SQL2_TABLE: // normal query with conjunctive subcondition
 				foreach ($query->components as $qid => $joinfield) {
@@ -656,8 +668,7 @@ class SMWSQLStore2QueryEngine {
 			break;
 			case SMW_SQL2_DISJUNCTION:
 				if ($this->m_qmode !== SMWQuery::MODE_DEBUG) {
-					$this->m_dbs->query( "CREATE TEMPORARY TABLE " . $this->m_dbs->tableName($query->alias) .
-					                     ' ( id INT UNSIGNED KEY ) TYPE=MEMORY', 'SMW::executeQueries' );
+					$this->m_dbs->query($this->getCreateTempIDTableSQL($this->m_dbs->tableName($query->alias)), 'SMW::executeQueries');
 				}
 				$this->m_querylog[$query->alias] = array();
 				foreach ($query->components as $qid => $joinfield) {
@@ -665,8 +676,10 @@ class SMWSQLStore2QueryEngine {
 					$this->executeQueries($subquery);
 					$sql = '';
 					if ($subquery->jointable != '') {
-						$sql = "INSERT IGNORE INTO " . $this->m_dbs->tableName($query->alias) . " SELECT $subquery->joinfield FROM " .
-						$this->m_dbs->tableName($subquery->jointable) . " AS $subquery->alias $subquery->from" . ($subquery->where?" WHERE $subquery->where":'');
+						$sql = 'INSERT ' . (($wgDBtype=='postgres')?'':'IGNORE ') . 'INTO ' .
+						       $this->m_dbs->tableName($query->alias) .
+							   " SELECT $subquery->joinfield FROM " . $this->m_dbs->tableName($subquery->jointable) .
+							   " AS $subquery->alias $subquery->from" . ($subquery->where?" WHERE $subquery->where":'');
 					} elseif ($subquery->joinfield !== '') {
 						/// NOTE: this works only for single "unconditional" values without further
 						/// WHERE or FROM. The execution must take care of not creating any others.
@@ -674,7 +687,7 @@ class SMWSQLStore2QueryEngine {
 						foreach ($subquery->joinfield as $value) {
 							$values .= ($values?',':'') . '(' . $this->m_dbs->addQuotes($value) . ')';
 						}
-						$sql = "INSERT IGNORE INTO " . $this->m_dbs->tableName($query->alias) . " (id) VALUES $values";
+						$sql = 'INSERT ' . (($wgDBtype=='postgres')?'':'IGNORE ') .  'INTO ' . $this->m_dbs->tableName($query->alias) . " (id) VALUES $values";
 					} // else: // interpret empty joinfields as impossible condition (empty result), ignore
 					if ($sql) {
 						$this->m_querylog[$query->alias][] = $sql;
@@ -700,6 +713,7 @@ class SMWSQLStore2QueryEngine {
 	 * and temporary tables are used in many cases.
 	 */
 	protected function executeHierarchyQuery(&$query) {
+		global $wgDBtype;
 		$fname = "SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)";
 		wfProfileIn($fname);
 		global $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
@@ -733,13 +747,12 @@ class SMWSQLStore2QueryEngine {
 			wfProfileOut($fname);
 			return; // no real queries in debug mode
 		}
+		$this->m_dbs->query($this->getCreateTempIDTableSQL($tablename), 'SMW::executeHierarchyQuery');
 
-		$this->m_dbs->query( "CREATE TEMPORARY TABLE $tablename " .
-								'( id INT UNSIGNED NOT NULL KEY) TYPE=MEMORY', 'SMW::executeQueries' );
 		if (array_key_exists($values, $this->m_hierarchies)) { // just copy known result
 			$this->m_dbs->query("INSERT INTO $tablename (id) SELECT id" .
 								' FROM ' . $this->m_hierarchies[$values],
-								'SMW::executeQueries');
+								'SMW::executeHierarchyQuery');
 			wfProfileOut($fname);
 			return;
 		}
@@ -750,33 +763,31 @@ class SMWSQLStore2QueryEngine {
 		/// obtained in the previous step are relevant. So this is a performance measure.
 		$tmpnew = 'smw_new';
 		$tmpres = 'smw_res';
-		$this->m_dbs->query( "CREATE TEMPORARY TABLE $tmpnew " .
-					'( id INT UNSIGNED ) TYPE=MEMORY', 'SMW::executeQueries' );
-		$this->m_dbs->query( "CREATE TEMPORARY TABLE $tmpres " .
-					'( id INT UNSIGNED ) TYPE=MEMORY', 'SMW::executeQueries' );
-
-		$this->m_dbs->query("INSERT IGNORE INTO $tablename (id) VALUES $values", 'SMW::executeQueries');
-		$this->m_dbs->query("INSERT IGNORE INTO $tmpnew (id) VALUES $values", 'SMW::executeQueries');
+		$this->m_dbs->query($this->getCreateTempIDTableSQL($tmpnew), 'SMW::executeQueries');
+		$this->m_dbs->query($this->getCreateTempIDTableSQL($tmpres), 'SMW::executeQueries');
+		$this->m_dbs->query("INSERT " . (($wgDBtype=='postgres')?"":"IGNORE") . " INTO $tablename (id) VALUES $values", 'SMW::executeHierarchyQuery');
+		$this->m_dbs->query("INSERT " . (($wgDBtype=='postgres')?"":"IGNORE") . " INTO $tmpnew (id) VALUES $values", 'SMW::executeHierarchyQuery');
 
 		for ($i=0; $i<$depth; $i++) {
-			$this->m_dbs->query("INSERT INTO $tmpres (id) SELECT s_id FROM $smw_subs2, $tmpnew WHERE o_id=id",
-						'SMW::executeQueries');
+			$this->m_dbs->query("INSERT INTO $tmpres (id) SELECT s_id" . ($wgDBtype=='postgres'?'::integer':'') . " FROM $smw_subs2, $tmpnew WHERE o_id=id",
+						'SMW::executeHierarchyQuery');
 			if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
 				break;
 			}
-			$this->m_dbs->query("INSERT IGNORE INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
-						'SMW::executeQueries');
+			$this->m_dbs->query("INSERT " . (($wgDBtype=='postgres')?'':'IGNORE ') . "INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
+						'SMW::executeHierarchyQuery');
 			if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
 				break;
 			}
-			$this->m_dbs->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::executeQueries'); // empty "new" table
+			/// TODO Why does PostgreSQL CASCADE here?
+			$this->m_dbs->query('TRUNCATE TABLE ' . $tmpnew . (($wgDBtype=='postgres')?' CASCADE':'') , 'SMW::executeHierarchyQuery'); // empty "new" table
 			$tmpname = $tmpnew;
 			$tmpnew = $tmpres;
 			$tmpres = $tmpname;
 		}
 		$this->m_hierarchies[$values] = $tablename;
-		$this->m_dbs->query('DROP TEMPORARY TABLE smw_new', 'SMW::executeQueries');
-		$this->m_dbs->query('DROP TEMPORARY TABLE smw_res', 'SMW::executeQueries');
+		$this->m_dbs->query((($wgDBtype=='postgres')?'DROP TABLE IF EXISTS smw_new':'DROP TEMPORARY TABLE smw_new'), 'SMW::executeHierarchyQuery');
+		$this->m_dbs->query((($wgDBtype=='postgres')?'DROP TABLE IF EXISTS smw_res':'DROP TEMPORARY TABLE smw_res'), 'SMW::executeHierarchyQuery');
 		wfProfileOut($fname);
 	}
 
@@ -849,12 +860,43 @@ class SMWSQLStore2QueryEngine {
 
 	/**
 	 * After querying, make sure no temporary database tables are left.
+	 * Postgres will eventually clean up everything at the end of the transaction (" ON COMMIT DROP ").
 	 */
 	protected function cleanUp() {
+		global $wgDBtype;
 		if ($this->m_qmode !== SMWQuery::MODE_DEBUG) {
 			foreach ($this->m_querylog as $table => $log) {
-				$this->m_dbs->query("DROP TEMPORARY TABLE " . $this->m_dbs->tableName($table), 'SMW::getQueryResult');
+				$this->m_dbs->query((($wgDBtype=='postgres')?"DROP TABLE IF EXISTS ":"DROP TEMPORARY TABLE ") . $this->m_dbs->tableName($table), 'SMW::getQueryResult');
 			}
+		}
+	}
+
+	/**
+	 * Get SQL code suitable to create a temporary table of the given name, used to store ids.
+	 * MySQL can do that simply by creating new temporary tables. PostgreSQL first checks if such
+	 * a table exists. Also, PostgreSQL tables will use a RULE to achieve built-in duplicate
+	 * elimination. The latter is done using INSERT IGNORE in MySQL.
+	 * @todo Should the check for table existence in PostgreSQL be otptional? Is it really needed?
+	 */
+	protected function getCreateTempIDTableSQL($tablename) {
+		global $wgDBtype;
+		if ($wgDBtype=='postgres') { // PostgreSQL: no memory tables, use RULE to emulate INSERT IGNORE
+			return "CREATE OR REPLACE FUNCTION create_" . $tablename . "() RETURNS void AS "
+			."$$ "
+			."BEGIN "
+			." IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='" . $tablename . "' AND schemaname = ANY (current_schemas(true))) "
+			." THEN DELETE FROM " . $tablename ."; "
+			." ELSE "
+			."  CREATE TEMPORARY TABLE " . $tablename . " (id INTEGER PRIMARY KEY); "
+			."    CREATE RULE " . $tablename . "_ignore AS ON INSERT TO " . $tablename . " WHERE  (EXISTS (SELECT NULL FROM " . $tablename
+			."	 WHERE (" . $tablename . ".id = new.id))) DO INSTEAD NOTHING; "
+			." END IF; "
+			."END; "
+			."$$ "
+			."LANGUAGE 'plpgsql'; "
+			."SELECT create_" . $tablename . "(); ";
+		} else { // MySQL_ just a temporary table, use INSERT IGNORE later
+			return "CREATE TEMPORARY TABLE " . $tablename . "( id INT UNSIGNED KEY ) TYPE=MEMORY";
 		}
 	}
 
