@@ -648,7 +648,7 @@ class SMWSQLStore2 extends SMWStore {
 			$sql = 'p_id=smw_id AND o_id=' . $db->addQuotes($oid) .
 			       ' AND smw_iw=' . $db->addQuotes('') . // only local, non-internal properties
 			       $this->getSQLConditions($requestoptions,'smw_sortkey','smw_sortkey');
-			$res = $db->select( array('smw_rels2','smw_ids'), 'DISTINCT smw_title',
+			$res = $db->select( array('smw_rels2','smw_ids'), 'DISTINCT smw_title, smw_sortkey',
 			                    $sql, 'SMW::getInProperties', $this->getSQLOptions($requestoptions,'smw_sortkey') );
 			while($row = $db->fetchObject($res)) {
 				$result[] = SMWPropertyValue::makeProperty($row->smw_title);
@@ -937,18 +937,18 @@ class SMWSQLStore2 extends SMWStore {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
 		// NOTE: the query needs to do the fitlering of internal properties, else LIMIT is wrong
-		$res = $db->query('(SELECT smw_title, COUNT(*) as count, smw_sortkey FROM ' .
+		$res = $db->query('(SELECT smw_id, smw_title, COUNT(*) as count, smw_sortkey FROM ' .
 		                  $db->tableName('smw_rels2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' .
-		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY p_id) UNION ' .
-		                  '(SELECT smw_title, COUNT(*) as count, smw_sortkey FROM ' .
+		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY smw_id) UNION ' .
+		                  '(SELECT smw_id, smw_title, COUNT(*) as count, smw_sortkey FROM ' .
 		                  $db->tableName('smw_spec2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' .
-		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY p_id) UNION ' .
-		                  '(SELECT smw_title, COUNT(*) as count, smw_sortkey FROM ' .
+		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY smw_id) UNION ' .
+		                  '(SELECT smw_id, smw_title, COUNT(*) as count, smw_sortkey FROM ' .
 		                  $db->tableName('smw_atts2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' .
-		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY p_id) UNION ' .
-		                  '(SELECT smw_title, COUNT(*) as count, smw_sortkey FROM ' .
+		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY smw_id) UNION ' .
+		                  '(SELECT smw_id, smw_title, COUNT(*) as count, smw_sortkey FROM ' .
 		                  $db->tableName('smw_text2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' .
-		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY p_id)' . $options,
+		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY smw_id) ' . $options,
 		                  'SMW::getPropertySubjects');
 		$result = array();
 		while($row = $db->fetchObject($res)) {
@@ -960,6 +960,7 @@ class SMWSQLStore2 extends SMWStore {
 	}
 
 	function getUnusedPropertiesSpecial($requestoptions = NULL) {
+		global $wgDBtype;
 		wfProfileIn("SMWSQLStore2::getUnusedPropertiesSpecial (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		/// TODO: some db-calls in here can use better wrapper functions,
@@ -973,8 +974,23 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		extract( $db->tableNames('page', 'smw_rels2', 'smw_atts2', 'smw_text2', 'smw_subs2', 'smw_ids', 'smw_tmp_unusedprops', 'smw_redi2') );
 
-		$db->query( "CREATE TEMPORARY TABLE $smw_tmp_unusedprops" .
-		            ' ( title VARCHAR(255) ) TYPE=MEMORY', 'SMW::getUnusedPropertiesSpecial' );
+		if ($wgDBtype=='postgres') { // PostgresQL: no in-memory tables available
+			$sql = "CREATE OR REPLACE FUNCTION create_" . $smw_tmp_unusedprops . "() RETURNS void AS "
+				   ."$$ "
+				   ."BEGIN "
+				   ." IF EXISTS(SELECT NULL FROM pg_tables WHERE tablename='" . $smw_tmp_unusedprops . "' AND schemaname = ANY (current_schemas(true))) "
+				   ." THEN DELETE FROM " . $smw_tmp_unusedprops ."; "
+				   ." ELSE "
+				   ."  CREATE TEMPORARY TABLE " . $smw_tmp_unusedprops . " ( title text ); "
+				   ." END IF; "
+				   ."END; "
+				   ."$$ "
+				   ."LANGUAGE 'plpgsql'; "
+				   ."SELECT create_" . $smw_tmp_unusedprops . "(); ";
+		} else { // MySQL: use temporary in-memory table
+			$sql = "CREATE TEMPORARY TABLE " . $smw_tmp_unusedprops . "( title VARCHAR(255) ) TYPE=MEMORY";
+		}
+		$db->query($sql, 'SMW::getUnusedPropertiesSpecial');
 		$db->query( "INSERT INTO $smw_tmp_unusedprops SELECT page_title FROM $page" .
 		            " WHERE page_namespace=" . SMW_NS_PROPERTY , 'SMW::getUnusedPropertySubjects');
 		foreach (array($smw_rels2,$smw_atts2,$smw_text2) as $table) {
