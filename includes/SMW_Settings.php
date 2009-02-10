@@ -238,8 +238,6 @@ $smwgResultFormats = array(
 	'count'      => 'SMWListResultPrinter',
 	'debug'      => 'SMWListResultPrinter',
 	'rss'        => 'SMWRSSResultPrinter',
-	'icalendar'  => 'SMWiCalendarResultPrinter',
-	'vcard'      => 'SMWvCardResultPrinter',
 	'csv'        => 'SMWCsvResultPrinter',
 	'json'       => 'SMWJSONResultPrinter'
 );
