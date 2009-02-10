@@ -36,6 +36,8 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_rss_link' => 'RSS',
 	// Link to CSV feeds
 	'smw_csv_link' => 'CSV',
+	// Link to JSON feeds
+	'smw_json_link' => 'JSON',
 
 	// Link to iCalendar and vCard files
 	'smw_icalendar_link' => 'iCalendar',
@@ -579,7 +581,7 @@ $messages['ar'] = array(
 	'smw_smwadmin_updatestarted' => 'عملية تحديث جديدة لتحديث بيانات سيمانتيك بدأت.
 كل البيانات المخزنة ستتم إعادة بنائها أو إصلاحها عند الحاجة.
 أنت يمكنك متابعة تطور التحديث على هذه الصفحة الخاصة.',
-	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية 
+	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية
 <br>لا تنشئ واحدة أخرى
 <br />',
 	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
@@ -792,7 +794,7 @@ $messages['arz'] = array(
 	'smw_smwadmin_updatestarted' => 'عملية تحديث جديدة لتحديث بيانات سيمانتيك بدأت.
 كل البيانات المخزنة ستتم إعادة بنائها أو إصلاحها عند الحاجة.
 أنت يمكنك متابعة تطور التحديث على هذه الصفحة الخاصة.',
-	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية  
+	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية
 <br>لا تنشئ واحدة أخرى
 <br />',
 	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
@@ -1792,8 +1794,8 @@ $messages['fr'] = array(
 	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a sa propre page, dans laquelle peuvent figurer des informations plus précises.',
 	'smw_typeunits' => 'Unités de mesure de type « $1 » : $2',
 	'semanticstatistics' => 'Statistiques sémantiques',
-	'smw_semstats_text' => 'Ce wiki contient <b>$1</b> valeurs de propriété pour un total de <b>$2</b> <a href="$3">propriétés</a> différentes. 
-<b>$4</b> propriétés ont leur propre page, et le type de données voulu est spécifié pour <b>$5</b> de celles-ci. 
+	'smw_semstats_text' => 'Ce wiki contient <b>$1</b> valeurs de propriété pour un total de <b>$2</b> <a href="$3">propriétés</a> différentes.
+<b>$4</b> propriétés ont leur propre page, et le type de données voulu est spécifié pour <b>$5</b> de celles-ci.
 Certaines des propriétés existantes peuvent faire être <a href="$6">inutilisées</a>. Les propriétés qui n\'ont pas encore de page se trouvent dans la <a href="$7">liste des propriétés demandées</a>.',
 	'flawedattributes' => 'Attributs défectueux',
 	'smw_fattributes' => "Les pages ci-dessous ont un attribut qui n'est pas défini correctement. Le nombre d'attributs incorrects est donné entre les parenthèses.",

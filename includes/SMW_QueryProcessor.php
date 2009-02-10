@@ -56,7 +56,7 @@ class SMWQueryProcessor {
 			$querymode = SMWQuery::MODE_COUNT;
 		} elseif ($format == 'debug') {
 			$querymode = SMWQuery::MODE_DEBUG;
-		} elseif (in_array($format, array('rss','icalendar','vcard','csv'))) {
+		} elseif (in_array($format, array('rss','icalendar','vcard','csv','json'))) {
 			$querymode = SMWQuery::MODE_NONE;
 		} else {
 			$querymode = SMWQuery::MODE_INSTANCES;

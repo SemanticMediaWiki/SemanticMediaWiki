@@ -66,8 +66,8 @@ smwfInitNamespaces();
 
 ###
 # This setting allows you to select in which cases you want to have a factbox
-# appear below an article. Note that the Magic Words __SHOWFACTBOX__ and 
-# __HIDEFACTBOX__ can be used to control Factbox display for individual pages. 
+# appear below an article. Note that the Magic Words __SHOWFACTBOX__ and
+# __HIDEFACTBOX__ can be used to control Factbox display for individual pages.
 # Other options for this setting include:
 ##
 //$smwgShowFactbox = SMW_FACTBOX_NONEMPTY; # show only those factboxes that have some content
@@ -104,7 +104,7 @@ $smwgInlineErrors = true;
 # values. This is due to limitations in the library PCRE that PHP uses for
 # pattern matching. The provoked PHP crashes will prevent requests from being
 # completed -- usually clients will receive server errors ("invalid response")
-# or be offered to download "index.php". It might be okay to enable this if 
+# or be offered to download "index.php". It might be okay to enable this if
 # such problems are not observed in your wiki.
 ##
 $smwgLinksInValues = false;
@@ -240,7 +240,8 @@ $smwgResultFormats = array(
 	'rss'        => 'SMWRSSResultPrinter',
 	'icalendar'  => 'SMWiCalendarResultPrinter',
 	'vcard'      => 'SMWvCardResultPrinter',
-	'csv'        => 'SMWCsvResultPrinter'
+	'csv'        => 'SMWCsvResultPrinter',
+	'json'       => 'SMWJSONResultPrinter'
 );
 ##
 
@@ -269,10 +270,10 @@ $smwgOWLFullExport = false; // decides, if the RDF export will export, by defaul
                             // OWL Full or rather nice OWL DL.
                             // Can be overriden in the RDF export class.
 // global $smwgNamespace;                     // The Namespace of exported URIs.
-// $smwgNamespace = "http://example.org/id/"; // Will be set automatically if 
+// $smwgNamespace = "http://example.org/id/"; // Will be set automatically if
 // nothing is given, but in order to make pretty URIs you will need to set this
 // to something nice and adapt your Apache configuration appropriately. This is
-// done, e.g., on semanticweb.org, where URIs are of the form 
+// done, e.g., on semanticweb.org, where URIs are of the form
 // http://semanticweb.org/id/FOAF
 ##
 
