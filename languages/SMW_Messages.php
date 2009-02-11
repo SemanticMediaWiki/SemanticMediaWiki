@@ -4521,7 +4521,7 @@ Lo servici enregistrarà pas los wiki que son pas accessibles al public, e estoc
 Aquò pòt èsser util per reparar de donadas rompudas o per refrescar las donadas se lo format intèrn a cambiat al moment de las remesas a nivèl.
 La mesa a jorn es executada pagina per pagina e se serà pas acabada immediatament.
 La pagina seguenta aficha se una mesa a jorn es en cors d’execucion e vos permet de començar o d’arrestar aquestas (levat s'aquesta foncionalitat est desactivada per l’administrator del sit).",
-	'smw_smwadmin_datarefreshprogress' => "Una mesa a jorn es en cors d’execucion.</b>
+	'smw_smwadmin_datarefreshprogress' => "<strong>Una mesa a jorn es en cors d’execucion.</strong>
 Es normal qu’una mesa a jorn progresse lentament dempuèi que refresca unicament las donadas dins de troces pichons a cada còp qu’un utilizaire accedís al wiki.
 Per acabar aquesta mesa a jorn mai rapidament, podètz invocar l'escript de mantenença Mediawiki <tt>runJobs.php</tt> (utilizatz l’opcion <tt>--maxjobs 1000</tt> per restrénher lo nombre de las mesas a jorn per escript aviat).
 Progression estimada de la mesa a jorn actuala :",
