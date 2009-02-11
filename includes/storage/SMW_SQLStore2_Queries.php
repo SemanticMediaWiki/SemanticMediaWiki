@@ -769,7 +769,7 @@ class SMWSQLStore2QueryEngine {
 		$this->m_dbs->query("INSERT " . (($wgDBtype=='postgres')?"":"IGNORE") . " INTO $tmpnew (id) VALUES $values", 'SMW::executeHierarchyQuery');
 
 		for ($i=0; $i<$depth; $i++) {
-			$this->m_dbs->query("INSERT INTO $tmpres (id) SELECT s_id" . ($wgDBtype=='postgres'?'::integer':'') . " FROM $smw_subs2, $tmpnew WHERE o_id=id",
+			$this->m_dbs->query("INSERT " . (($wgDBtype=='postgres')?'':'IGNORE ') .  "INTO $tmpres (id) SELECT s_id" . ($wgDBtype=='postgres'?'::integer':'') . " FROM $smw_subs2, $tmpnew WHERE o_id=id",
 						'SMW::executeHierarchyQuery');
 			if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
 				break;
