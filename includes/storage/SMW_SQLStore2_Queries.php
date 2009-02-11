@@ -779,8 +779,7 @@ class SMWSQLStore2QueryEngine {
 			if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
 				break;
 			}
-			/// TODO Why does PostgreSQL CASCADE here?
-			$this->m_dbs->query('TRUNCATE TABLE ' . $tmpnew . (($wgDBtype=='postgres')?' CASCADE':'') , 'SMW::executeHierarchyQuery'); // empty "new" table
+			$this->m_dbs->query('TRUNCATE TABLE ' . $tmpnew, 'SMW::executeHierarchyQuery'); // empty "new" table
 			$tmpname = $tmpnew;
 			$tmpnew = $tmpres;
 			$tmpres = $tmpname;
@@ -860,7 +859,8 @@ class SMWSQLStore2QueryEngine {
 
 	/**
 	 * After querying, make sure no temporary database tables are left.
-	 * Postgres will eventually clean up everything at the end of the transaction (" ON COMMIT DROP ").
+	 * @todo I might be better to keep the tables and possibly reuse them later
+	 * on. Being temporary, the tables will vanish with the session anyway.
 	 */
 	protected function cleanUp() {
 		global $wgDBtype;
@@ -874,9 +874,9 @@ class SMWSQLStore2QueryEngine {
 	/**
 	 * Get SQL code suitable to create a temporary table of the given name, used to store ids.
 	 * MySQL can do that simply by creating new temporary tables. PostgreSQL first checks if such
-	 * a table exists. Also, PostgreSQL tables will use a RULE to achieve built-in duplicate
-	 * elimination. The latter is done using INSERT IGNORE in MySQL.
-	 * @todo Should the check for table existence in PostgreSQL be otptional? Is it really needed?
+	 * a table exists, so the code is ready to reuse existing tables if the code was modified to
+	 * keep them after query answering. Also, PostgreSQL tables will use a RULE to achieve built-in
+	 * duplicate elimination. The latter is done using INSERT IGNORE in MySQL.
 	 */
 	protected function getCreateTempIDTableSQL($tablename) {
 		global $wgDBtype;
