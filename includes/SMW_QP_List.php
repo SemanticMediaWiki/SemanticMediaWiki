@@ -9,8 +9,8 @@
 /**
  * New implementation of SMW's printer for results in lists.
  *
- * Somewhat confusing code, since one has to iterate through lists, inserting texts 
- * in between their elements depending on whether the element is the first that is 
+ * Somewhat confusing code, since one has to iterate through lists, inserting texts
+ * in between their elements depending on whether the element is the first that is
  * printed, the first that is printed in parentheses, or the last that will be printed.
  * Maybe one could further simplify this.
  *
@@ -42,7 +42,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		if ( ('ul' == $this->mFormat) || ('ol' == $this->mFormat) ) {
 			$header = '<' . $this->mFormat . '>';
 			$footer = '</' . $this->mFormat . '>';
-			$rowstart = "\n\t<li>";
+			$rowstart = '<li>';
 			$rowend = '</li>';
 			$plainlist = false;
 		} else {
