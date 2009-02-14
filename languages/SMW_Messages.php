@@ -826,9 +826,29 @@ $messages['arz'] = array(
 
 /** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
  * @author EugeneZelenko
+ * @author Jim-by
  */
 $messages['be-tarask'] = array(
+	'smw_edithelp' => 'Рэдагаваць даведку па ўстаноўкам',
+	'smw_viewasrdf' => 'RDF крыніца',
 	'smw_finallistconjunct' => ' і',
+	'smw_factbox_head' => 'Факты аб $1',
+	'smw_isspecprop' => 'Гэта ўстаноўка зьяўляецца спэцыяльнай у гэтай вікі.',
+	'smw_isknowntype' => 'Гэты тып належыць да стандартных тыпаў зьвестак у гэтай вікі.',
+	'smw_isaliastype' => 'Гэты тып зьяўляецца альтэрнатыўным для тыпаў зьвестаў «$1».',
+	'smw_isnotype' => 'Гэты тып «$1» не зьяўляецца стандартным тыпам зьвестак у вікі, і ня быў выбраны ўдзельнікам.',
+	'smw_concept_description' => 'Апісаньне канцэпцыі «$1»',
+	'smw_no_concept_namespace' => 'Канцэпцыі могуць быць толькі вызначаны на старонках прасторы назваў «Канцэпныя:».',
+	'smw_multiple_concepts' => 'Кожная старонка канцэпцыі можа мець толькі адно апісаньне канцэпцыі.',
+	'smw_concept_cache_miss' => 'Канцэпцыя «$1» не можа быць выкарыстана ў гэты момант, з-за таго, што канфігурацыя вікі патрабуе каб яна вылічалася аф-лайн. Калі гэта праблема ня зьнікне праз некаторы час, паспытайце Вашага адміністратара сайта ўключыць гэту канцэпцыю.',
+	'smw_baduri' => 'Спасылкі формы «$1» не даступныя.',
+	'smw_iq_disabled' => 'Сымантычныя запыты былі выключаны ў гэтай вікі.',
+	'smw_iq_moreresults' => '… наступныя вынікі',
+	'smw_iq_nojs' => 'Карыстайцеся браўзэрам з падтрымкай JavaScript каб паглядзець гэты элемэнт.',
+	'smw_iq_altresults' => 'Праглядзець непасрэдны сьпіс вынікаў.',
+	'smw_unknown_importns' => 'Функцыі імпарту не даступныя для прасторы назваў «$1».',
+	'smw_nonright_importtype' => '$1 можа выкарыстоўвацца выключна для старонак з прасторы назваў «$2».',
+	'smw_wrong_importtype' => '$1 ня можа выкарыстоўвацца для старонак з прасторы назваў «$2».',
 	'smw_abb_north' => 'пн.',
 	'smw_abb_east' => 'у.',
 	'smw_abb_south' => 'пд.',
@@ -3507,9 +3527,11 @@ Mer donn jetz nit noch ein aanshtüße!',
  * @author Robby
  */
 $messages['lb'] = array(
+	'smw_edithelp' => "D'Hellëf vun den Eegeschaften änneren",
 	'smw_finallistconjunct' => ', an',
 	'smw_factbox_head' => 'Fakten iwwer $1',
 	'smw_concept_description' => 'Beschreiwung vum Konzept "$1"',
+	'smw_multiple_concepts' => 'Op jidfer Konzeptsäit ka just eng Definitioun vun engem Konzept stoen.',
 	'smw_csv_link' => 'CSV',
 	'smw_iq_moreresults' => '… weider Resultater',
 	'smw_iq_nojs' => 'Benotzt w.e.g e Browser matt JavaScript fir dëst Element ze gesinn',
@@ -3568,12 +3590,15 @@ $messages['lb'] = array(
 	'smw_result_results' => 'Resultater',
 	'smw_result_noresults' => 'Pardon, et gouf näischt fonnt.',
 	'smw_smwadmin_return' => 'Zréck op $1',
+	'smw_smwadmin_dbbutton' => 'Tabellen initialiséieren oder aktualiséieren',
 	'smw_smwadmin_announce' => 'Är wiki ukënnegen',
 	'smw_smwadmin_datarefresh' => 'Donnéeë gi gefléckt an aktualiséiert',
 	'smw_smwadmin_datarefreshbutton' => "Ufänken Daten z'aktualiséieren",
 	'smw_smwadmin_datarefreshstop' => 'Dësn Update stoppen',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jo, ech si sécher.',
 	'smw_smwadmin_support' => 'Ënnerstetzung kréien',
+	'smw_smwadmin_smwhomepage' => 'Déi komplett Benotzerdokumentatioun vu Semantic MediaWiki fannt Dir op b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Feeler kënnen op <a href="https://bugzilla.wikimedia.org/">MediaZilla</a> gemellt ginn.',
 );
 
 /** Malayalam (മലയാളം)
