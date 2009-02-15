@@ -223,7 +223,7 @@ class SMWSearchByProperty extends SpecialPage {
 				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
 				$first = false;
 			} else {
-				$navigation .= $smwgMW_1_14?wfMsgExt( 'pipe-separator' , 'escapenoentities' ):'|';
+				$navigation .= ' ' . ($smwgMW_1_14?wfMsgExt( 'pipe-separator' , 'escapenoentities' ):'|') . ' ';
 			}
 			if ($l > $smwgQMaxInlineLimit) {
 				$l = $smwgQMaxInlineLimit;

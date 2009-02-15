@@ -303,7 +303,7 @@ class SMWAskPage extends SpecialPage {
 			if ($first) {
 				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
 				$first = false;
-			} else $navigation .= SMWAskPage::$pipeseparator;
+			} else $navigation .= ' ' . SMWAskPage::$pipeseparator . ' ';
 			if ( $limit != $l ) {
 				$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . $offset . '&limit=' . $l . $urltail)) . '" rel="nofollow">' . $l . '</a>';
 			} else {
@@ -373,7 +373,7 @@ class SMWAskPage extends SpecialPage {
 				if ($first) {
 					$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
 					$first = false;
-				} else $navigation .= SMWAskPage::$pipeseparator;
+				} else $navigation .= ' ' . SMWAskPage::$pipeseparator . ' ';
 				if ($l > $smwgQMaxLimit) {
 					$l = $smwgQMaxLimit;
 					$max = true;
