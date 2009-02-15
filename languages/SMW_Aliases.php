@@ -273,3 +273,26 @@ $aliases['sw'] = array(
 	'Types' => array( 'Aina' ),
 );
 
+/** Tagalog (Tagalog) */
+$aliases['tl'] = array(
+	'Ask' => array( 'Magtanong' ),
+	'Browse' => array( 'Tumingin-tingin' ),
+	'ExportRDF' => array( 'Iluwas ang RDF' ),
+	'PageProperty' => array( 'Pag-aari ng pahina' ),
+	'Properties' => array( 'Mga pag-aari' ),
+	'SMWAdmin' => array( 'Tagapangasiwa ng SMW' ),
+	'SearchByProperty' => array( 'Maghanap ayon sa pag-aari' ),
+	'SemanticStatistics' => array( 'Mga estadistika ng semantiko' ),
+	'Types' => array( 'Mga uri' ),
+	'URIResolver' => array( 'Tagapaglutas ng URI' ),
+	'UnusedProperties' => array( 'Mga pag-aaring hindi ginagamit' ),
+	'WantedProperties' => array( 'Mga pag-aaring ninanais' ),
+);
+
+/** Vèneto (Vèneto) */
+$aliases['vec'] = array(
+	'Browse' => array( 'Sfója' ),
+	'Properties' => array( 'Proprietà' ),
+	'Types' => array( 'Tipi' ),
+);
+

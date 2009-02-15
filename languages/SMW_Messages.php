@@ -572,9 +572,8 @@ $messages['ar'] = array(
 	'smw_smwadmin_updatestarted' => 'عملية تحديث جديدة لتحديث بيانات سيمانتيك بدأت.
 كل البيانات المخزنة ستتم إعادة بنائها أو إصلاحها عند الحاجة.
 أنت يمكنك متابعة تطور التحديث على هذه الصفحة الخاصة.',
-	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية 
-<br>لا تنشئ واحدة أخرى
-<br />',
+	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية.
+لا تنشئ واحدة أخرى.',
 	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
 	'smw_smwadmin_updatenotstopped' => 'لوقف عملية التحديث الجارية، يجب عليك تفعيل الصندوق لتعبر عن أنك متأكد حقا.',
 	'smw_smwadmin_docu' => 'هذه الصفحة الخاصة تساعدك خلال تنصيب وترقية <a href="http://semantic-mediawiki.org">سيمانتيك ميدياويكي</a>.
@@ -783,9 +782,8 @@ $messages['arz'] = array(
 	'smw_smwadmin_updatestarted' => 'عملية تحديث جديدة لتحديث بيانات سيمانتيك بدأت.
 كل البيانات المخزنة ستتم إعادة بنائها أو إصلاحها عند الحاجة.
 أنت يمكنك متابعة تطور التحديث على هذه الصفحة الخاصة.',
-	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية  
-<br>لا تنشئ واحدة أخرى
-<br />',
+	'smw_smwadmin_updatenotstarted' => 'يوجد بالفعل عملية تحديث جارية.
+لا تنشئ واحدة أخرى.',
 	'smw_smwadmin_updatestopped' => 'كل عمليات التحديث الموجودة تم إيقافها',
 	'smw_smwadmin_updatenotstopped' => 'لوقف عملية التحديث الجارية، يجب عليك تفعيل الصندوق لتعبر عن أنك متأكد حقا.',
 	'smw_smwadmin_docu' => 'هذه الصفحة الخاصة تساعدك خلال تنصيب وترقية <a href="http://semantic-mediawiki.org">سيمانتيك ميدياويكى</a>.
@@ -829,32 +827,53 @@ $messages['arz'] = array(
  * @author Jim-by
  */
 $messages['be-tarask'] = array(
-	'smw_edithelp' => 'Рэдагаваць даведку па ўстаноўкам',
+	'smw_edithelp' => 'Рэдагаваць дапамогу па ўласьцівасьцям',
 	'smw_viewasrdf' => 'RDF крыніца',
 	'smw_finallistconjunct' => ' і',
 	'smw_factbox_head' => 'Факты аб $1',
-	'smw_isspecprop' => 'Гэта ўстаноўка зьяўляецца спэцыяльнай у гэтай вікі.',
-	'smw_isknowntype' => 'Гэты тып належыць да стандартных тыпаў зьвестак у гэтай вікі.',
-	'smw_isaliastype' => 'Гэты тып зьяўляецца альтэрнатыўным для тыпаў зьвестаў «$1».',
-	'smw_isnotype' => 'Гэты тып «$1» не зьяўляецца стандартным тыпам зьвестак у вікі, і ня быў выбраны ўдзельнікам.',
+	'smw_isspecprop' => 'Гэтая ўласьцівасьць зьяўляецца спэцыяльнай у {{GRAMMAR:месны|{{SITENAME}}}}.',
+	'smw_isknowntype' => 'Гэты тып належыць да стандартных тыпаў зьвестак у {{GRAMMAR:месны|{{SITENAME}}}}.',
+	'smw_isaliastype' => 'Гэты тып зьяўляецца псэўданімам для тыпаў зьвестак «$1».',
+	'smw_isnotype' => 'Гэты тып «$1» не зьяўляецца стандартным тыпам зьвестак у {{GRAMMAR:месны|{{SITENAME}}}}, і ня быў вызначаны ўдзельнікам.',
 	'smw_concept_description' => 'Апісаньне канцэпцыі «$1»',
-	'smw_no_concept_namespace' => 'Канцэпцыі могуць быць толькі вызначаны на старонках прасторы назваў «Канцэпныя:».',
-	'smw_multiple_concepts' => 'Кожная старонка канцэпцыі можа мець толькі адно апісаньне канцэпцыі.',
-	'smw_concept_cache_miss' => 'Канцэпцыя «$1» не можа быць выкарыстана ў гэты момант, з-за таго, што канфігурацыя вікі патрабуе каб яна вылічалася аф-лайн. Калі гэта праблема ня зьнікне праз некаторы час, паспытайце Вашага адміністратара сайта ўключыць гэту канцэпцыю.',
-	'smw_baduri' => 'Спасылкі формы «$1» не даступныя.',
-	'smw_iq_disabled' => 'Сымантычныя запыты былі выключаны ў гэтай вікі.',
+	'smw_no_concept_namespace' => 'Канцэпцыі могуць быць вызначаны толькі на старонках прасторы назваў «Канцэпныя:».',
+	'smw_multiple_concepts' => 'Кожная старонка канцэпцыі можа мець толькі адно вызначэньне канцэпцыі.',
+	'smw_concept_cache_miss' => 'Канцэпцыя «$1» не можа быць выкарыстаная ў гэты момант, таму што канфігурацыя {{GRAMMAR:родны|{{SITENAME}}}} патрабуе, каб яна вылічалася аф-лайн. Калі гэта праблема ня зьнікне праз некаторы час, запытайце Вашага адміністратара сайта ўключыць гэту канцэпцыю.',
+	'smw_baduri' => 'Спасылкі на форму «$1» не дазволеныя.',
+	'smw_iq_disabled' => 'Сэмантычныя запыты былі выключаны ў {{GRAMMAR:месны|{{SITENAME}}}}.',
 	'smw_iq_moreresults' => '… наступныя вынікі',
-	'smw_iq_nojs' => 'Карыстайцеся браўзэрам з падтрымкай JavaScript каб паглядзець гэты элемэнт.',
+	'smw_iq_nojs' => 'Карыстайцеся браўзэрам з падтрымкай JavaScript, каб паглядзець гэты элемэнт.',
 	'smw_iq_altresults' => 'Праглядзець непасрэдны сьпіс вынікаў.',
 	'smw_unknown_importns' => 'Функцыі імпарту не даступныя для прасторы назваў «$1».',
 	'smw_nonright_importtype' => '$1 можа выкарыстоўвацца выключна для старонак з прасторы назваў «$2».',
 	'smw_wrong_importtype' => '$1 ня можа выкарыстоўвацца для старонак з прасторы назваў «$2».',
+	'smw_no_importelement' => 'Элемэнт «$1» не можа быць імпартаваны.',
+	'smw_parseerror' => 'Пададзенае значэньне не было распазнанае.',
+	'smw_notitle' => '«$1» не можа выкарыстоўвацца як назва старонкі ў {{GRAMMAR:месны|{{SITENAME}}}}.',
+	'smw_wrong_namespace' => 'Тут дазволены толькі старонкі з прасторы назваў «$1».',
+	'smw_unknowntype' => 'Тып «$1» не падтрымліваецца для гэтай ўласьцівасьці.',
+	'smw_manytypes' => 'Для ўласьцівасьці вызначана болей аднаго тыпу.',
+	'smw_emptystring' => 'Пустыя радкі не дазволены.',
+	'smw_maxstring' => 'Радковае прадстаўленьне «$1» занадта доўгае.',
+	'smw_notinenum' => '«$1» ня ўваходзіць у сьпіс магчымых значэньняў ($2) для гэтай ўласьцівасьці.',
+	'smw_noboolean' => '«$1» не зьяўляецца лягічным значэньнем (праўда/няпраўда).',
+	'smw_true_words' => 'праўда,п,так,т',
+	'smw_false_words' => 'няпраўда,н,не',
+	'smw_nofloat' => '«$1» не зьяўляецца лікам.',
+	'smw_infinite' => 'Лікі, большыя за «$1», не падтрымліваюцца.',
+	'smw_infinite_unit' => 'Пераўтварэньне ў адзінку «$1» стварыла лік, які зьяўляецца занадта вялікім.',
+	'smw_unsupportedprefix' => 'Прэфіксы для лікаў («$1») не падтрымліваюцца.',
+	'smw_unsupportedunit' => 'Пераўтварэньне адзінак для адзінкі «$1» не падтрымліваецца.',
+	'smw_lonely_unit' => 'Няма ліку перад сымбалем «$1».',
+	'smw_bad_latlong' => 'Шырата і даўгата павінны быць пададзеныя толькі адзін раз са слушнымі каардынатамі.',
 	'smw_abb_north' => 'пн.',
 	'smw_abb_east' => 'у.',
 	'smw_abb_south' => 'пд.',
 	'smw_abb_west' => 'з.',
 	'smw_label_latitude' => 'Шырата:',
 	'smw_label_longitude' => 'Даўгата:',
+	'smw_nodatetime' => 'Дата «$1» не была распазнаная.',
+	'smw_toomanyclosing' => 'Зашмат уваходжаньняў «$1» у запыце.',
 	'properties' => 'Уласьцівасьці',
 	'types' => 'Тыпы',
 	'semanticstatistics' => 'Сэмантычная статыстыка',
@@ -948,9 +967,17 @@ $messages['bs'] = array(
 );
 
 /** Catalan (Català)
+ * @author Dvdgmz
  * @author Loupeter
  */
 $messages['ca'] = array(
+	'smw_isspecprop' => 'Aquesta propietat és una propietat especial en aquest wiki',
+	'smw_isknowntype' => "Aquest tipus està entre els els tipus de dades estàndards d'aquest wiki",
+	'smw_isaliastype' => 'Aquest tipus és un alias per el tipus de dada "$1".',
+	'smw_isnotype' => 'Aquest tipus "$1" no és un tipus de dada estàndard en el wiki, i tampoc no s\'ha donat una definició d\'usuari.',
+	'smw_concept_description' => 'Descripció del concepte "$1".',
+	'smw_no_concept_namespace' => "Els conceptes només poden ser definits en pàgines dins l'espai de noms (''namespace'') Concepte:",
+	'smw_multiple_concepts' => 'Cada pàgina de concepte només pot tenir una definició de concepte.',
 	'smw_nodatetime' => 'No s\'ha entès la data "$1".',
 );
 
