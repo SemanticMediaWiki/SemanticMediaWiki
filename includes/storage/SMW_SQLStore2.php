@@ -937,7 +937,7 @@ class SMWSQLStore2 extends SMWStore {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
 		// NOTE: the query needs to do the fitlering of internal properties, else LIMIT is wrong
-		$res = $db->query('(SELECT smw_id, smw_title, smw_sortkey, COUNT(*) as count FROM ' .
+		$res = $db->query('(SELECT smw_id, smw_title, COUNT(*) as count, smw_sortkey FROM ' .
 		                  $db->tableName('smw_rels2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' .
 		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY smw_id,smw_title,smw_sortkey) UNION ' .
 		                  '(SELECT smw_id, smw_title, COUNT(*) as count, smw_sortkey FROM ' .
