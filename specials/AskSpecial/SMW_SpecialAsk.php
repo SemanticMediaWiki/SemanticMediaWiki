@@ -21,6 +21,9 @@ class SMWAskPage extends SpecialPage {
 	protected $m_printouts = array();
 	protected $m_editquery = false;
 
+	// MW 1.13 compatibilty
+	private static $pipeseparator = '|';
+
 	/**
 	 * Constructor
 	 */
@@ -30,8 +33,11 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	function execute( $p ) {
-		global $wgOut, $wgRequest, $smwgQEnabled, $smwgRSSEnabled;
+		global $wgOut, $wgRequest, $smwgQEnabled, $smwgRSSEnabled, $smwgMW_1_14;
 		wfProfileIn('doSpecialAsk (SMW)');
+		if ($smwgMW_1_14) { // since MW 1.14.0 this is governed by a message
+			SMWAskPage::$pipeseparator = wfMsgExt( 'pipe-separator' , 'escapenoentities' );
+		}
 		if ( ($wgRequest->getVal( 'query' ) != '') ) { // old processing
 			$this->executeSimpleAsk();
 			SMWOutputs::commitToOutputPage($wgOut); // make sure locally collected output data is pushed to the output!
@@ -261,7 +267,7 @@ class SMWAskPage extends SpecialPage {
 			$result .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
 				'<input type="hidden" name="eq" value="yes"/>' .
 					' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '" rel="nofollow">' . wfMsg('smw_ask_hidequery') . '</a> ' .
-					wfMsgExt( 'pipe-separator' , 'escapenoentities' ) .
+					SMWAskPage::$pipeseparator .
 					' <a href="' . htmlspecialchars(wfMsg('smw_ask_doculink')) . '">' . wfMsg('smw_ask_help') . '</a>' .
 				"\n</form><br />";
 		} else {
@@ -297,7 +303,7 @@ class SMWAskPage extends SpecialPage {
 			if ($first) {
 				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
 				$first = false;
-			} else $navigation .= wfMsgExt( 'pipe-separator' , 'escapenoentities' );
+			} else $navigation .= SMWAskPage::$pipeseparator;
 			if ( $limit != $l ) {
 				$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . $offset . '&limit=' . $l . $urltail)) . '" rel="nofollow">' . $l . '</a>';
 			} else {
@@ -367,7 +373,7 @@ class SMWAskPage extends SpecialPage {
 				if ($first) {
 					$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
 					$first = false;
-				} else $navigation .= wfMsgExt( 'pipe-separator' , 'escapenoentities' );
+				} else $navigation .= SMWAskPage::$pipeseparator;
 				if ($l > $smwgQMaxLimit) {
 					$l = $smwgQMaxLimit;
 					$max = true;

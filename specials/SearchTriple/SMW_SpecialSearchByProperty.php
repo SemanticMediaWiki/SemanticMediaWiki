@@ -3,10 +3,10 @@
  * @file
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
- * 
+ *
  * A special page to search for entities that have a certain property with
  * a certain value.
- * 
+ *
  * @author Denny Vrandecic
  * @author Daniel Herzig
  */
@@ -54,7 +54,7 @@ class SMWSearchByProperty extends SpecialPage {
 
 	/**
 	 * Main entry point for Special Pages. Gets all required parameters.
-	 * 
+	 *
 	 * @param[in] $query string  Given by MediaWiki
 	 */
 	public function execute( $query ) {
@@ -89,17 +89,17 @@ class SMWSearchByProperty extends SpecialPage {
 		if (is_numeric($limitstring)) $this->limit =  intval($limitstring);
 		$offsetstring = $wgRequest->getVal( 'offset' );
 		if (is_numeric($offsetstring)) $this->offset = intval($offsetstring);
-		
+
 		$wgOut->addHTML($this->displaySearchByProperty());
 		$wgOut->addHTML($this->queryForm());
 		SMWOutputs::commitToOutputPage($wgOut); // make sure locally collected output data is pushed to the output!
 	}
-	
+
 	/**
 	 * Returns the HTML for the complete search by property.
-	 * 
+	 *
 	 * @return string  HTML of the search by property function
-	 */	
+	 */
 	private function displaySearchByProperty() {
 		global $wgUser, $wgOut, $smwgSearchByPropertyFuzzy;
 		$skin = $wgUser->getSkin();
@@ -139,7 +139,7 @@ class SMWSearchByProperty extends SpecialPage {
 				if ( $count == 0 ) {
 					$html .= " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em><strong><small>(" . $this->value->getLongHTMLText() . ")</small></strong></em>\n";
 				} else {
-					$html .= $this->displayResults($exact, $count, true, true);					
+					$html .= $this->displayResults($exact, $count, true, true);
 				}
 				$html .= $this->displayResults($lesser, $cL);
 			}
@@ -154,14 +154,14 @@ class SMWSearchByProperty extends SpecialPage {
 				if (($this->offset > 0) || ($count > $this->limit)) $html .= $navi;
 			}
 		}
-	
+
 		$html .= '<p>&nbsp;</p>';
 		return $html;
 	}
 
 	/**
 	 * Creates the HTML for a bullet list with all the results of the set query.
-	 * 
+	 *
 	 * @param[in] $results array of array of SMWWikiPageValue, SMWDataValue  The entity and its datavalue
 	 * @param[in] $number int  How many results should be displayed? -1 for all
 	 * @param[in] $first bool  If less results should be displayed than given, should they show the first $number results, or the last $number results?
@@ -173,8 +173,8 @@ class SMWSearchByProperty extends SpecialPage {
 		$skin = $wgUser->getSkin();
 
 		$html  = "<ul>\n";
-		
-		if (!$first && ($number > 0)) while ( count($results) > $number ) array_pop($results); 
+
+		if (!$first && ($number > 0)) while ( count($results) > $number ) array_pop($results);
 		while ( $results && $number != 0) {
 			$result = array_pop( $results );
 			$thing = $skin->makeKnownLinkObj( $result[0]->getTitle(), $result[0]->getText() );
@@ -191,16 +191,16 @@ class SMWSearchByProperty extends SpecialPage {
 
 		return $html;
 	}
-	
+
 	/**
 	 * Creates the HTML for a Navigation bar for too many results.
 	 * Most of the parameters are taken from the object members.
-	 * 
+	 *
 	 * @param[in] $count int  How many results are currently displayed?
 	 * @return string  HTML with the navigation bar
 	 */
 	private function getNavigationBar($count) {
-		global $wgUser, $smwgQMaxInlineLimit;
+		global $wgUser, $smwgQMaxInlineLimit, $smwgMW_1_14;
 		$skin = $wgUser->getSkin();
 
 		if ($this->offset > 0)
@@ -222,8 +222,9 @@ class SMWSearchByProperty extends SpecialPage {
 			if ($first) {
 				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
 				$first = false;
-			} else
-				$navigation .= wfMsgExt( 'pipe-separator' , 'escapenoentities' );
+			} else {
+				$navigation .= $smwgMW_1_14?wfMsgExt( 'pipe-separator' , 'escapenoentities' ):'|';
+			}
 			if ($l > $smwgQMaxInlineLimit) {
 				$l = $smwgQMaxInlineLimit;
 				$max = true;
@@ -237,10 +238,10 @@ class SMWSearchByProperty extends SpecialPage {
 		$navigation .= ')';
 		return $navigation;
 	}
-	
+
 	/**
 	 * Returns all results that have exactly the value on the property.
-	 * 
+	 *
 	 * @return array of array of SMWWikiPageValue, SMWDataValue with the first being the entity, and the second the value
 	 */
 	private function getExactResults() {
@@ -251,7 +252,7 @@ class SMWSearchByProperty extends SpecialPage {
 
 		$res = &smwfGetStore()->getPropertySubjects( $this->property, $this->value, $options );
 		$results = array();
-		foreach ( $res as $result ) 
+		foreach ( $res as $result )
 			array_push( $results, array( $result, $this->value ));
 
 		return $results;
@@ -260,9 +261,9 @@ class SMWSearchByProperty extends SpecialPage {
 	/**
 	 * Returns all results that have a value near to the searched for value
 	 * on the property, ordered, and sorted by ending with the smallest one.
-	 * 
+	 *
 	 * @param[in] $count int  How many entities have the exact same value on the property?
-	 * @param[in] $greater bool  Should the values be bigger? Set false for smaller values 
+	 * @param[in] $greater bool  Should the values be bigger? Set false for smaller values
 	 * @return array of array of SMWWikiPageValue, SMWDataValue with the first being the entity, and the second the value
 	 */
 	private function getNearbyResults( $count, $greater = true ) {
@@ -303,7 +304,7 @@ class SMWSearchByProperty extends SpecialPage {
 
 	/**
 	 * Creates the HTML for the query form for this special page.
-	 * 
+	 *
 	 * @return string  HTML for the query form
 	 */
 	private function queryForm() {
@@ -313,7 +314,7 @@ class SMWSearchByProperty extends SpecialPage {
 		$html .= wfMsg('smw_sbv_property') . ' <input type="text" name="property" value="' . htmlspecialchars($this->propertystring) . '" />' . "&nbsp;&nbsp;&nbsp;\n";
 		$html .= wfMsg('smw_sbv_value') . ' <input type="text" name="value" value="' . htmlspecialchars($this->valuestring) . '" />' . "\n";
 		$html .= '<input type="submit" value="' . wfMsg('smw_sbv_submit') . "\"/>\n</form>\n";
-		
+
 		return $html;
 	}
 
