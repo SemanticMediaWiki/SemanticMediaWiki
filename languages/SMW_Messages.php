@@ -825,10 +825,11 @@ $messages['arz'] = array(
 /** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
  * @author EugeneZelenko
  * @author Jim-by
+ * @author Red Winged Duck
  */
 $messages['be-tarask'] = array(
-	'smw_edithelp' => 'Рэдагаваць дапамогу па ўласьцівасьцям',
-	'smw_viewasrdf' => 'RDF крыніца',
+	'smw_edithelp' => 'Рэдагаваць дапамогу па ўласьцівасьцях',
+	'smw_viewasrdf' => 'RDF-крыніца',
 	'smw_finallistconjunct' => ' і',
 	'smw_factbox_head' => 'Факты аб $1',
 	'smw_isspecprop' => 'Гэтая ўласьцівасьць зьяўляецца спэцыяльнай у {{GRAMMAR:месны|{{SITENAME}}}}.',
@@ -836,9 +837,9 @@ $messages['be-tarask'] = array(
 	'smw_isaliastype' => 'Гэты тып зьяўляецца псэўданімам для тыпаў зьвестак «$1».',
 	'smw_isnotype' => 'Гэты тып «$1» не зьяўляецца стандартным тыпам зьвестак у {{GRAMMAR:месны|{{SITENAME}}}}, і ня быў вызначаны ўдзельнікам.',
 	'smw_concept_description' => 'Апісаньне канцэпцыі «$1»',
-	'smw_no_concept_namespace' => 'Канцэпцыі могуць быць вызначаны толькі на старонках прасторы назваў «Канцэпныя:».',
+	'smw_no_concept_namespace' => 'Канцэпцыі могуць быць вызначаныя толькі на старонках прасторы назваў «Канцэпцыя:».',
 	'smw_multiple_concepts' => 'Кожная старонка канцэпцыі можа мець толькі адно вызначэньне канцэпцыі.',
-	'smw_concept_cache_miss' => 'Канцэпцыя «$1» не можа быць выкарыстаная ў гэты момант, таму што канфігурацыя {{GRAMMAR:родны|{{SITENAME}}}} патрабуе, каб яна вылічалася аф-лайн. Калі гэта праблема ня зьнікне праз некаторы час, запытайце Вашага адміністратара сайта ўключыць гэту канцэпцыю.',
+	'smw_concept_cache_miss' => 'Канцэпцыя «$1» ня можа быць выкарыстаная ў гэты момант, таму што канфігурацыя {{GRAMMAR:родны|{{SITENAME}}}} патрабуе, каб яна вылічалася аф-лайн. Калі гэта праблема ня зьнікне празь некаторы час, запытайце Вашага адміністратара сайта ўключыць гэтую канцэпцыю.',
 	'smw_baduri' => 'Спасылкі на форму «$1» не дазволеныя.',
 	'smw_iq_disabled' => 'Сэмантычныя запыты былі выключаны ў {{GRAMMAR:месны|{{SITENAME}}}}.',
 	'smw_iq_moreresults' => '… наступныя вынікі',
@@ -847,15 +848,15 @@ $messages['be-tarask'] = array(
 	'smw_unknown_importns' => 'Функцыі імпарту не даступныя для прасторы назваў «$1».',
 	'smw_nonright_importtype' => '$1 можа выкарыстоўвацца выключна для старонак з прасторы назваў «$2».',
 	'smw_wrong_importtype' => '$1 ня можа выкарыстоўвацца для старонак з прасторы назваў «$2».',
-	'smw_no_importelement' => 'Элемэнт «$1» не можа быць імпартаваны.',
+	'smw_no_importelement' => 'Элемэнт «$1» ня можа быць імпартаваны.',
 	'smw_parseerror' => 'Пададзенае значэньне не было распазнанае.',
-	'smw_notitle' => '«$1» не можа выкарыстоўвацца як назва старонкі ў {{GRAMMAR:месны|{{SITENAME}}}}.',
+	'smw_notitle' => '«$1» ня можа выкарыстоўвацца як назва старонкі ў {{GRAMMAR:месны|{{SITENAME}}}}.',
 	'smw_wrong_namespace' => 'Тут дазволены толькі старонкі з прасторы назваў «$1».',
-	'smw_unknowntype' => 'Тып «$1» не падтрымліваецца для гэтай ўласьцівасьці.',
+	'smw_unknowntype' => 'Тып «$1» не падтрымліваецца для гэтай уласьцівасьці.',
 	'smw_manytypes' => 'Для ўласьцівасьці вызначана болей аднаго тыпу.',
 	'smw_emptystring' => 'Пустыя радкі не дазволены.',
 	'smw_maxstring' => 'Радковае прадстаўленьне «$1» занадта доўгае.',
-	'smw_notinenum' => '«$1» ня ўваходзіць у сьпіс магчымых значэньняў ($2) для гэтай ўласьцівасьці.',
+	'smw_notinenum' => '«$1» не ўваходзіць у сьпіс магчымых значэньняў ($2) для гэтай уласьцівасьці.',
 	'smw_noboolean' => '«$1» не зьяўляецца лягічным значэньнем (праўда/няпраўда).',
 	'smw_true_words' => 'праўда,п,так,т',
 	'smw_false_words' => 'няпраўда,н,не',
@@ -880,7 +881,25 @@ $messages['be-tarask'] = array(
 Вынікі могуць быць нечаканымі.',
 	'smw_emptysubquery' => 'Нейкі падзапыт ня мае слушных умоваў.',
 	'smw_misplacedsubquery' => 'Нейкі падзапыт быў выкарыстаны ў месцы, дзе выкарыстаньне падзапытаў не дазволена.',
-	'smw_valuesubquery' => 'Падзапыты не падтрымліваюцца для значэньняў ўласьцівасьці «$1».',
+	'smw_valuesubquery' => 'Падзапыты не падтрымліваюцца для значэньняў уласьцівасьці «$1».',
+	'smw_overprintoutlimit' => 'Запыт утрымлівае зашмат патрабаваньняў вываду.',
+	'smw_badprintout' => 'Некаторыя фармулёўкі вываду ў запыце маюць памылкі.',
+	'smw_badtitle' => '«$1» зьяўляецца няслушнай назвай старонкі.',
+	'smw_badqueryatom' => 'Частка запыту «<nowiki>[[…]]</nowiki>» не была распазнаная.',
+	'smw_propvalueproblem' => 'Значэньне ўласьцівасьці «$1» не было распазнанае.',
+	'smw_noqueryfeature' => 'Нейкая ўласьцівасьць не падтрымліваецца ў {{GRAMMAR:месны|{{SITENAME}}}}, і частка запыту была ігнараваная ($1).',
+	'smw_noconjunctions' => 'Злучэньні ў запытах не падтрымліваюцца ў {{GRAMMAR:месны|{{SITENAME}}}}, і частка запыту была ігнараваная ($1).',
+	'smw_nodisjunctions' => 'Падзяленьні ў запытах не падтрымліваюцца ў {{GRAMMAR:месны|{{SITENAME}}}}, і частка запыту была ігнараваная ($1).',
+	'smw_querytoolarge' => 'Наступныя ўмовы запыту ня могуць улічвацца з-за абмежаваньняў {{GRAMMAR:родны|{{SITENAME}}}} на глыбіню і памер запыту: $1.',
+	'smw_devel_warning' => 'Гэта магчымасьць знаходзіцца ў распрацоўцы і можа мець абмежаваньні ў функцыянальнасьці.
+Зрабіце рэзэрвовую копію Вашы зьвестак перад яе выкарыстаньнем захавайце.',
+	'smw_notemplategiven' => 'Для выкананьня гэтага запыту, неабходна ўвесьці значэньне парамэтру «template».',
+	'smw_type_header' => 'Уласьцівасьці тыпу «$1»',
+	'smw_typearticlecount' => '{{PLURAL:$1|Паказаная $1 уласьцівасьць, якая выкарыстоўвае|Паказаныя $1 уласьцівасьці, якія выкарыстоўваюць|Паказаныя $1 уласьцівасьцяў, якія выкарыстоўваюць}} гэты тып.',
+	'smw_attribute_header' => 'Старонкі, якія выкарыстоўваюць уласьцівасьць «$1»',
+	'smw_attributearticlecount' => '{{PLURAL:$1|Паказаная $1 старонка, якая выкарыстоўвае|Паказаныя $1 старонкі, якія выкарыстоўваюць|Паказаныя $1 старонак, якія выкарыстоўваюць}} гэтую ўласьцівасьць.',
+	'smw_subproperty_header' => 'Падуласьцівасьці',
+	'smw_subpropertyarticlecount' => 'Гэта ўласьцівасьць мае $1 {{PLURAL:$1|падуласьцівасьць|падуласьцівасьці|падуласьцівасьці}}.',
 	'properties' => 'Уласьцівасьці',
 	'types' => 'Тыпы',
 	'semanticstatistics' => 'Сэмантычная статыстыка',
@@ -1347,11 +1366,13 @@ Geschätzter Fortschritt des laufenden Updates:',
 );
 
 /** German (formal address) (Deutsch (Sie-Form))
+ * @author Dst
  * @author Revolus
  */
 $messages['de-formal'] = array(
 	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht angewendet werden, da die Wiki-Konfiguration offline berechnet werden muss.
 Falls das Problem nicht nach einiger Zeit verschwindet, bitten Sie Ihren Seitenverwalter, dieses Konzept zu ermöglichen.',
+	'smw_browse_article' => 'Bitte geben Sie den Titel einer Seite ein.',
 	'smw_smwadmin_updatenotstopped' => 'Um laufende Prozesse zu stoppen, müssen Sie das Kontrollkästchen aktivieren, wenn Sie sich wirklich sicher sind.',
 	'smw_smwadmin_smwhomepage' => 'Die komplette Benutzerdokumentation von Semantic MediaWiki finden Sie auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 );
@@ -2811,7 +2832,7 @@ Le servicio non registrara wikis que non es aperte al publico, e illo retenera s
 Isto pote esser utile pro reparar datos corrumpite o pro refrescar le datos si le formato interne ha cambiate a causa de alcun actualisation de software.
 Le actualisation es executate pagina a pagina e non essera completate immediatemente.
 Lo sequente monstra si un actualisation es in progresso e permitte comenciar o stoppar le actualisationes (a minus que iste function ha essite disactivate per le administrator del sito).',
-	'smw_smwadmin_datarefreshprogress' => 'Un actualisation es ja in curso.</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>Un actualisation es ja in curso.</strong>
 Es normal que le actualisation progrede lentemente post que illo refresca datos solmente in micre pecias cata vice que un usator accede al wiki.
 Pro completar iste actualisation plus rapidemente, tu pote invocar le script de mantenentia de MediaWiki <tt>runJobs.php</tt> (usa le option <tt>--maxjobs 1000</tt> pro restringer le numero de actualisationes facite in un lot).
 Progresso estimate del actualisation currente:',
