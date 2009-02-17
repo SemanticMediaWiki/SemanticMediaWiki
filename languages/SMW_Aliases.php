@@ -150,6 +150,22 @@ $aliases['hu'] = array(
 	'WantedProperties' => array( 'Keresett tulajdonságok' ),
 );
 
+/** Interlingua (Interlingua) */
+$aliases['ia'] = array(
+	'Ask' => array( 'Consultar' ),
+	'Browse' => array( 'Percurrer' ),
+	'ExportRDF' => array( 'Exportar RDF' ),
+	'PageProperty' => array( 'Proprietate de pagina' ),
+	'Properties' => array( 'Proprietates' ),
+	'SMWAdmin' => array( 'Admin SMW' ),
+	'SearchByProperty' => array( 'Cercar per proprietate' ),
+	'SemanticStatistics' => array( 'Statisticas semantic' ),
+	'Types' => array( 'Typos' ),
+	'URIResolver' => array( 'Resolvitor de URIs' ),
+	'UnusedProperties' => array( 'Proprietates non usate' ),
+	'WantedProperties' => array( 'Proprietates dsesirate' ),
+);
+
 /** Japanese (日本語) */
 $aliases['ja'] = array(
 	'Ask' => array( '問い合わせ', '意味的検索' ),
