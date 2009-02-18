@@ -831,7 +831,12 @@ class SMWSQLStore2 extends SMWStore {
 				     'concept_depth' => -1
 				);
 			}
-			$row = $db->selectRow('smw_conc2', array('cache_date','cache_count'), array('s_id'=>$sid), 'SMWSQLStore2Queries::updateConst2Data');
+			$row = $db->selectRow(
+				'smw_conc2',
+				array( 'cache_date', 'cache_count' ),
+				array( 's_id' => $sid ),
+				'SMWSQLStore2Queries::updateConst2Data'
+			);
 			if ( ($row === false) && ($up_conc2['concept_txt'] != '') ) { // insert newly given data
 				$up_conc2['s_id'] = $sid;
 				$db->insert( 'smw_conc2', $up_conc2, 'SMW::updateConc2Data');
@@ -870,7 +875,11 @@ class SMWSQLStore2 extends SMWStore {
 			// update redirects
 			/// NOTE: there is the (bad) case that the moved page is a redirect. As chains of
 			/// redirects are not supported by MW or SMW, the below is maximally correct there too.
-			$db->insert( 'smw_redi2', array('s_title'=>$oldtitle->getDBkey(), 's_namespace'=>$oldtitle->getNamespace(), 'o_id'=>$sid), 'SMWSQLStore2::changeTitle');
+			$db->insert(
+				'smw_redi2',
+				array( 's_title' => $oldtitle->getDBkey(), 's_namespace' => $oldtitle->getNamespace(), 'o_id'=>$sid ),
+				'SMWSQLStore2::changeTitle'
+			);
 			/// NOTE: this temporarily leaves existing redirects to oldtitle point to newtitle as well, which
 			/// will be lost after the next update. Since double redirects are an error anyway, this is not
 			/// a bad behaviour: everything will continue to work until the old redirect is updated, which
@@ -1193,11 +1202,21 @@ class SMWSQLStore2 extends SMWStore {
 		if ($borderiw != SMW_SQL2_SMWBORDERIW) {
 			$this->reportProgress("   ... allocate space for internal properties\n",$verbose);
 			$this->moveID(50); // make sure position 50 is empty
-			$db->insert('smw_ids', array('smw_id' => 50, 'smw_title' => '', 'smw_namespace' => 0, 'smw_iw' => SMW_SQL2_SMWBORDERIW, 'smw_sortkey' => ''), 'SMW::setup'); //put dummy "border element" on index 50
+			$db->insert(
+				'smw_ids',
+				array(
+					'smw_id' => 50,
+					'smw_title' => '',
+					'smw_namespace' => 0,
+					'smw_iw' => SMW_SQL2_SMWBORDERIW,
+					'smw_sortkey' => ''
+				), 'SMW::setup'
+			); //put dummy "border element" on index 50
+
 			$this->reportProgress("   ",$verbose);
-			for ($i=0; $i<50; $i++) { // make way for built-in ids
-				$this->moveID($i);
-				$this->reportProgress(".",$verbose);
+			for ( $i=0; $i<50; $i++ ) { // make way for built-in ids
+				$this->moveID( $i );
+				$this->reportProgress( ".", $verbose );
 			}
 			$this->reportProgress("done\n",$verbose);
 		} else {
@@ -1205,9 +1224,26 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		// now write actual properties; do that each time, it is cheap enough and we can update sortkeys by current language
 		$this->reportProgress("   ... writing entries for internal properties.\n",$verbose);
-		foreach (SMWSQLStore2::$special_ids as $prop => $id) {
+		foreach ( SMWSQLStore2::$special_ids as $prop => $id ) {
 			$p = SMWPropertyValue::makeProperty($prop);
-			$db->replace('smw_ids', array('smw_id'), array('smw_id' => $id, 'smw_title' => $p->getDBkey(), 'smw_namespace' => SMW_NS_PROPERTY, 'smw_iw' => $this->getPropertyInterwiki($p), 'smw_sortkey' => $p->getDBkey()), 'SMW::setup');
+			$db->replace(
+				'smw_ids',
+				array( 'smw_id' ),
+				array(
+					'smw_id' => $id,
+					'smw_title' => $p->getDBkey(),
+					'smw_namespace' => SMW_NS_PROPERTY,
+					'smw_iw' => $this->getPropertyInterwiki( $p ),
+					'smw_sortkey' => $p->getDBkey()
+				),
+				'SMW::setup'
+			);
+		}
+		if( $wgDBtype == 'postgres' ) {
+			$this->reportProgress("   ... updating smw_ids_smw_id_seq sequence accordingly.\n",$verbose);
+			$max = $db->selectField( 'smw_ids', 'max(smw_id)', array(), __METHOD__ );
+			$max += 1;
+			$db->query( "ALTER SEQUENCE smw_ids_smw_id_seq RESTART WITH {$max}", __METHOD__ );
 		}
 		$this->reportProgress("Internal properties initialised successfully.\n",$verbose);
 		return true;
@@ -1587,9 +1623,21 @@ class SMWSQLStore2 extends SMWStore {
 		if ($redirect) { // get redirect alias
 			if ($namespace == SMW_NS_PROPERTY) { // redirect properties only to properties
 				/// FIXME: Shouldn't this condition be ensured during writing?
-				$res = $db->select(array('smw_redi2','smw_ids'), 'o_id', 'o_id=smw_id AND smw_namespace=s_namespace AND s_title=' . $db->addQuotes($title) . ' AND s_namespace=' . $db->addQuotes($namespace), 'SMW::getSMWPageID', array('LIMIT'=>1) );
+				$res = $db->select(
+					array( 'smw_redi2', 'smw_ids' ),
+					'o_id',
+					'o_id=smw_id AND smw_namespace=s_namespace AND s_title=' . $db->addQuotes($title) . ' AND s_namespace=' . $db->addQuotes($namespace),
+					'SMW::getSMWPageID',
+					array( 'LIMIT'=>1 )
+				);
 			} else {
-				$res = $db->select('smw_redi2', 'o_id', 's_title=' . $db->addQuotes($title) . ' AND s_namespace=' . $db->addQuotes($namespace), 'SMW::getSMWPageID', array('LIMIT'=>1) );
+				$res = $db->select(
+					'smw_redi2',
+					'o_id',
+					's_title=' . $db->addQuotes($title) . ' AND s_namespace=' . $db->addQuotes($namespace),
+					'SMW::getSMWPageID',
+					array( 'LIMIT' => 1 )
+				);
 			}
 			if ($row = $db->fetchObject($res)) {
 				$id = $row->o_id;
@@ -1612,14 +1660,21 @@ class SMWSQLStore2 extends SMWStore {
 	 * the title is a redirect target (we do not want chains of redirects).
 	 */
 	protected function makeSMWPageID($title, $namespace, $iw, $canonical=true, $sortkey = '') {
-		global $wgDBtype;
 		wfProfileIn('SMWSQLStore2::makeSMWPageID (SMW)');
 		$oldsort = '';
 		$id = $this->getSMWPageIDandSort($title, $namespace, $iw, $oldsort, $canonical);
 		if ($id == 0) {
 			$db =& wfGetDB( DB_MASTER );
 			$sortkey = $sortkey?$sortkey:(str_replace('_',' ',$title));
-			$db->insert('smw_ids', array('smw_id' =>  (($wgDBtype=='postgres')?($db->nextSequenceValue('smw_ids_smw_id_seq')):0), 'smw_title' => $title, 'smw_namespace' => $namespace, 'smw_iw' => $iw, 'smw_sortkey' => $sortkey), 'SMW::makeSMWPageID');
+			$db->insert('smw_ids',
+				array(
+					'smw_id' => $db->nextSequenceValue('smw_ids_smw_id_seq'),
+					'smw_title' => $title,
+					'smw_namespace' => $namespace,
+					'smw_iw' => $iw,
+					'smw_sortkey' => $sortkey
+				),
+				'SMW::makeSMWPageID');
 			$id = $db->insertId();
 			$this->m_ids["$iw $namespace $title -"] = $id; // fill that cache, even if canonical was given
 			// This ID is also authorative for the canonical version.
@@ -1701,24 +1756,45 @@ class SMWSQLStore2 extends SMWStore {
 	 * a new bnode id!
 	 */
 	protected function makeSMWBnodeID($sid) {
-		global $wgDBtype;
 		$db =& wfGetDB( DB_MASTER );
 		$id = 0;
 		// check if there is an unused bnode to take:
-		$res = $db->select('smw_ids', 'smw_id', 'smw_title=' . $db->addQuotes('') . ' AND ' . 'smw_namespace=' . $db->addQuotes(0) . ' AND smw_iw=' . $db->addQuotes(SMW_SQL2_SMWIW), 'SMW::makeSMWBnodeID', array('LIMIT'=>1));
+		$res = $db->select(
+			'smw_ids',
+			'smw_id',
+			'smw_title=' . $db->addQuotes('') . ' AND ' . 'smw_namespace=' . $db->addQuotes(0) . ' AND smw_iw=' . $db->addQuotes(SMW_SQL2_SMWIW),
+			'SMW::makeSMWBnodeID',
+			array( 'LIMIT' => 1 )
+		);
 		if ($row = $db->fetchObject($res)) {
 			$id = $row->smw_id;
 		}
 		// claim that bnode:
 		if ($id != 0) {
-			$db->update('smw_ids', array('smw_namespace' => $sid), array('smw_id'=>$id, 'smw_title' => '', 'smw_namespace' => 0, 'smw_iw' => SMW_SQL2_SMWIW), 'SMW::makeSMWBnodeID', array('LIMIT'=>1));
+			$db->update(
+				'smw_ids',
+				array( 'smw_namespace' => $sid ),
+				array(
+					'smw_id'=>$id,
+					'smw_title' => '',
+					'smw_namespace' => 0,
+					'smw_iw' => SMW_SQL2_SMWIW
+				),
+				'SMW::makeSMWBnodeID',
+				array( 'LIMIT'=>1 )
+			);
 			if ($db->affectedRows() == 0) { // Oops, someone was faster (collisions are possible here, no locks)
 				$id = 0; // fallback: make a new node (TODO: we could also repeat to try another ID)
 			}
 		}
 		// if no node was found yet, make a new one:
 		if ($id == 0) {
-			$db->insert('smw_ids', array('smw_id' =>  (($wgDBtype=='postgres')?($db->nextSequenceValue('smw_ids_smw_id_seq')):0), 'smw_title' => '', 'smw_namespace' => $sid, 'smw_iw' => SMW_SQL2_SMWIW), 'SMW::makeSMWBnodeID');
+			$db->insert('smw_ids', array(
+				'smw_id' => $db->nextSequenceValue('smw_ids_smw_id_seq'),
+				'smw_title' => '',
+				'smw_namespace' => $sid,
+				'smw_iw' => SMW_SQL2_SMWIW), 'SMW::makeSMWBnodeID'
+			);
 			$id = $db->insertId();
 		}
 		return $id;
@@ -1732,19 +1808,46 @@ class SMWSQLStore2 extends SMWStore {
 	 * to an id that is still in use somewhere).
 	 */
 	protected function moveID($curid, $targetid = 0) {
-		global $wgDBtype;
 		$db =& wfGetDB( DB_MASTER );
-		$row = $db->selectRow('smw_ids', array('smw_id', 'smw_namespace', 'smw_title', 'smw_iw', 'smw_sortkey'), array('smw_id' => $curid), 'SMWSQLStore2::moveID');
+		$row = $db->selectRow(
+			'smw_ids',
+			array( 'smw_id', 'smw_namespace', 'smw_title', 'smw_iw', 'smw_sortkey' ),
+			array( 'smw_id' => $curid ),
+			'SMWSQLStore2::moveID'
+		);
 		if ($row === false) return; // no id at current position, ignore
 		if ($targetid == 0) {
-			$db->insert('smw_ids', array('smw_id' => (($wgDBtype=='postgres')?($db->nextSequenceValue('smw_ids_smw_id_seq')):0), 'smw_title' => $row->smw_title, 'smw_namespace' => $row->smw_namespace, 'smw_iw' => $row->smw_iw, 'smw_sortkey' => $row->smw_sortkey), 'SMW::moveID');
+			$db->insert('smw_ids',
+				array(
+					'smw_id' => $db->nextSequenceValue('smw_ids_smw_id_seq'),
+					'smw_title' => $row->smw_title,
+					'smw_namespace' => $row->smw_namespace,
+					'smw_iw' => $row->smw_iw,
+					'smw_sortkey' => $row->smw_sortkey
+				),
+				'SMW::moveID'
+			);
 			$targetid = $db->insertId();
 		} else {
-			$db->insert('smw_ids', array('smw_id' => $targetid, 'smw_title' => $row->smw_title, 'smw_namespace' => $row->smw_namespace, 'smw_iw' => $row->smw_iw, 'smw_sortkey' => $row->smw_sortkey), 'SMW::moveID');
+			$db->insert('smw_ids',
+				array(
+					'smw_id' => $targetid,
+					'smw_title' => $row->smw_title,
+					'smw_namespace' => $row->smw_namespace,
+					'smw_iw' => $row->smw_iw,
+					'smw_sortkey' => $row->smw_sortkey
+				),
+				'SMW::moveID'
+			);
 		}
 		$db->delete('smw_ids', array('smw_id'=>$curid), 'SMWSQLStore2::moveID');
 		// Bnode references use namespace field to store ids:
-		$db->update('smw_ids', array('smw_namespace' => $targetid), array('smw_title' => '', 'smw_namespace' => $curid, 'smw_iw' => SMW_SQL2_SMWIW), 'SMW::moveID');
+		$db->update('smw_ids',
+			array('smw_namespace' => $targetid),
+			array('smw_title' => '', 'smw_namespace' => $curid, 'smw_iw' => SMW_SQL2_SMWIW),
+			'SMW::moveID'
+		);
+
 		// now change all id entries in all other tables:
 		$cond_array = array( 's_id' => $curid );
 		$val_array  = array( 's_id' => $targetid );
@@ -1795,7 +1898,11 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		// find bnodes used by this ID ...
-		$res = $db->select('smw_ids', 'smw_id','smw_title=' . $db->addQuotes('') . ' AND smw_namespace=' . $db->addQuotes($id) . ' AND smw_iw=' . $db->addQuotes(SMW_SQL2_SMWIW), 'SMW::deleteSubject::Nary');
+		$res = $db->select(
+			'smw_ids',
+			'smw_id','smw_title=' . $db->addQuotes('') . ' AND smw_namespace=' . $db->addQuotes($id) . ' AND smw_iw=' . $db->addQuotes(SMW_SQL2_SMWIW),
+			'SMW::deleteSubject::Nary'
+		);
 		// ... and delete them as well
 		while ($row = $db->fetchObject($res)) {
 			$db->delete('smw_rels2', array('s_id' => $row->smw_id), 'SMW::deleteSubject::NaryRels2');
@@ -1804,7 +1911,12 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		$db->freeResult($res);
 		// free all affected bnodes in one call:
-		$db->update('smw_ids', array('smw_namespace' => 0), array('smw_title' => '', 'smw_namespace' => $id, 'smw_iw' => SMW_SQL2_SMWIW), 'SMW::deleteSubject::NaryIds');
+		$db->update(
+			'smw_ids',
+			array( 'smw_namespace' => 0 ),
+			array( 'smw_title' => '', 'smw_namespace' => $id, 'smw_iw' => SMW_SQL2_SMWIW ),
+			'SMW::deleteSubject::NaryIds'
+		);
 	}
 
 	/**
