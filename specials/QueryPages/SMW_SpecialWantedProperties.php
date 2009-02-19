@@ -33,7 +33,7 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 		return false; /// disables caching for now
 	}
 
-	function isSyndicated() { 
+	function isSyndicated() {
 		return false; ///TODO: why not?
 	}
 
@@ -50,12 +50,10 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 			$proplink = $result[0]->getLongHTMLText($skin);
 		}
 		wfLoadExtensionMessages('SemanticMediaWiki');
-		return wfMsg('smw_wantedproperty_template', $proplink, $result[1]);
+		return wfMsgExt( 'smw_wantedproperty_template', array( 'parsemag' ), $proplink, $result[1]);
 	}
-	
+
 	function getResults($requestoptions) {
 		return smwfGetStore()->getWantedPropertiesSpecial($requestoptions);
 	}
-
 }
-

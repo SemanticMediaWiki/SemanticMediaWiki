@@ -153,7 +153,7 @@ Generates browsable RDF.',
 	// Messages for Wanted Properties Special
 	'wantedproperties'            => 'Wanted properties',
 	'smw_wantedproperties_docu'   => 'The following properties are used in the wiki but do not yet have a page for describing them.',
-	'smw_wantedproperty_template' => '$1 ($2 uses)', // <propname> (<count> uses)
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|use|uses}})', // <propname> (<count> uses)
 
 	// Messages for the refresh button
 	'tooltip-purge' => 'Click here to refresh all queries and templates on this page',
