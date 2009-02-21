@@ -167,7 +167,7 @@ Each datatype has a page where additional information can be provided.',
 
 	/*Messages for SemanticStatistics Special*/
 	'semanticstatistics' => 'Semantic statistics',
-	'smw_semstats_text'  => 'This wiki contains \'\'\'$1\'\'\' property {{PLURAL:$1|value|values}} for a total of \'\'\'$2\'\'\' [[Special:Properties|{{PLURAL:$2|property|different properties}}].
+	'smw_semstats_text'  => 'This wiki contains \'\'\'$1\'\'\' property {{PLURAL:$1|value|values}} for a total of \'\'\'$2\'\'\' [[Special:Properties|{{PLURAL:$2|property|different properties}}]].
 \'\'\'$3\'\'\' {{PLURAL:$3|property has|properties have}} an own page, and the intended datatype is specified for \'\'\'$4\'\'\' of those.
 Some of the existing properties might be [[Special:UnusedProperties|unused properties]].
 Properties that still lack a page are found on the [[Special:WantedProperties|list of wanted properties]].',
