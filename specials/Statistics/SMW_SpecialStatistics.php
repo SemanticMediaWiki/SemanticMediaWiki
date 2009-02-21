@@ -35,14 +35,11 @@ function smwfExecuteSemanticStatistics() {
 	$wpurl = $sp->getFullURL();
 	$sp = Title::makeTitle( NS_SPECIAL, 'UnusedProperties');
 	$upurl = $sp->getFullURL();
-	wfLoadExtensionMessages('SemanticMediaWiki');
-	$out = wfMsg('smw_semstats_text',
-	             $wgLang->formatNum($semstats['PROPUSES']), $wgLang->formatNum($semstats['USEDPROPS']),
-	             $purl, $wgLang->formatNum($property_pages), $wgLang->formatNum($semstats['DECLPROPS']),
-	             $upurl, $wpurl);
+	wfLoadExtensionMessages( 'SemanticMediaWiki' );
+	$out = wfMsgExt( 'smw_semstats_text', array( 'parsemag' ),
+	             $wgLang->formatNum( $semstats['PROPUSES'] ), $wgLang->formatNum( $semstats['USEDPROPS'] ),
+	             $purl, $wgLang->formatNum( $property_pages ), $wgLang->formatNum( $semstats['DECLPROPS'] ),
+	             $upurl, $wpurl );
 
 	$wgOut->addHTML( $out );
 }
-
-
-
