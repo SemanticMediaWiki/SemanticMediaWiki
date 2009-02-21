@@ -2,7 +2,7 @@
 /**
  * @author Daniel M. Herzig
  *
- * This special page of the Semantic MediaWiki extension displays some 
+ * This special page of the Semantic MediaWiki extension displays some
  * statistics about properties.
  * @file
  * @ingroup SMWSpecialPage
@@ -13,13 +13,6 @@ function smwfExecuteSemanticStatistics() {
 	global $wgOut, $wgLang;
 	$dbr =& wfGetDB( DB_SLAVE );
 
-	// Do not give these statistics here. They are quite unrelated.
-	// 		$views = SiteStats::views();
-	// 		$edits = SiteStats::edits();
-	// 		$good = SiteStats::articles();
-	// 		$images = SiteStats::images();
-	// 		$users = SiteStats::users();
-
 	$semstats = smwfGetStore()->getStatistics();
 
 	$page_table = $dbr->tableName( 'page' );
@@ -29,17 +22,12 @@ function smwfExecuteSemanticStatistics() {
 	$property_pages = $row->count;
 	$dbr->freeResult( $res );
 
-	$sp = Title::makeTitle( NS_SPECIAL, 'Properties');
-	$purl = $sp->getFullURL();
-	$sp = Title::makeTitle( NS_SPECIAL, 'WantedProperties');
-	$wpurl = $sp->getFullURL();
-	$sp = Title::makeTitle( NS_SPECIAL, 'UnusedProperties');
-	$upurl = $sp->getFullURL();
 	wfLoadExtensionMessages( 'SemanticMediaWiki' );
+
 	$out = wfMsgExt( 'smw_semstats_text', array( 'parsemag' ),
-	             $wgLang->formatNum( $semstats['PROPUSES'] ), $wgLang->formatNum( $semstats['USEDPROPS'] ),
-	             $purl, $wgLang->formatNum( $property_pages ), $wgLang->formatNum( $semstats['DECLPROPS'] ),
-	             $upurl, $wpurl );
+		$wgLang->formatNum( $semstats['PROPUSES'] ), $wgLang->formatNum( $semstats['USEDPROPS'] ),
+		$wgLang->formatNum( $property_pages ), $wgLang->formatNum( $semstats['DECLPROPS'] )
+	);
 
 	$wgOut->addHTML( $out );
 }

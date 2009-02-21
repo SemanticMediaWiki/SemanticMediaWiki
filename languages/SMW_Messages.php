@@ -167,10 +167,10 @@ Each datatype has a page where additional information can be provided.',
 
 	/*Messages for SemanticStatistics Special*/
 	'semanticstatistics' => 'Semantic statistics',
-	'smw_semstats_text'  => 'This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>.
-<b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those.
-Some of the existing properties might be <a href="$6">unused properties</a>.
-Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.',
+	'smw_semstats_text'  => 'This wiki contains \'\'\'$1\'\'\' property {{PLURAL:$1|value|values}} for a total of \'\'\'$2\'\'\' [[Special:Properties|{{PLURAL:$2|property|different properties}}].
+\'\'\'$3\'\'\' {{PLURAL:$3|property has|properties have}} an own page, and the intended datatype is specified for \'\'\'$4\'\'\' of those.
+Some of the existing properties might be [[Special:UnusedProperties|unused properties]].
+Properties that still lack a page are found on the [[Special:WantedProperties|list of wanted properties]].',
 
 	/*Messages for Flawed Attributes Special --disabled--*/
 	'flawedattributes' => 'Flawed properties',
@@ -515,10 +515,6 @@ $messages['ar'] = array(
 كل نوع بيانات له صفحة حيث يمكن توفير معلومات إضافية.',
 	'smw_typeunits' => 'وحدات القياس من النوع "$1": $2',
 	'semanticstatistics' => 'إحصاءات سيمانتيك',
-	'smw_semstats_text' => 'هذا الويكي يحتوي على <b>$1</b> قيمة خاصية لإجمالي <b>$2</b> different <a href="$3">خاصية</a>.
-<b>$4</b> الخصائص لها صفة خاصة، ونوع البيانات المقصود محدد ل<b>$5</b> منها.
-بعض الخصائص الموجودة ربما تكون <a href="$6">خصائص غير مستخدمة</a>.
-الخصائص التي مازالت تفتقد صفحة موجودة في <a href="$7">قائمة الخصائص المطلوبة</a>.',
 	'flawedattributes' => 'خصائص معيوبة',
 	'smw_fattributes' => 'الصفحات المعروضة بالأسفل بها خاصية غير معرفة بشكل صحيح.
 عدد الخصائص غير الصحيحة معطى في الاقواس.',
@@ -725,10 +721,6 @@ $messages['arz'] = array(
 كل نوع بيانات له صفحة حيث يمكن توفير معلومات إضافية.',
 	'smw_typeunits' => 'وحدات القياس من النوع "$1": $2',
 	'semanticstatistics' => 'إحصاءات سيمانتيك',
-	'smw_semstats_text' => 'هذا الويكى يحتوى على <b>$1</b> قيمة خاصية لإجمالى <b>$2</b> different <a href="$3">خاصية</a>.
-<b>$4</b> الخصائص لها صفة خاصة، ونوع البيانات المقصود محدد ل<b>$5</b> منها.
-بعض الخصائص الموجودة ربما تكون <a href="$6">خصائص غير مستخدمة</a>.
-الخصائص التى مازالت تفتقد صفحة موجودة فى <a href="$7">قائمة الخصائص المطلوبة</a>.',
 	'flawedattributes' => 'خصائص معيوبة',
 	'smw_fattributes' => 'الصفحات المعروضة بالأسفل بها خاصية غير معرفة بشكل صحيح.
 عدد الخصائص غير الصحيحة معطى فى الاقواس.',
@@ -929,10 +921,6 @@ $messages['be-tarask'] = array(
 Кожны тып зьвестак мае старонку, дзе можа знаходзіцца дадатковая інфармацыя.',
 	'smw_typeunits' => 'Адзінкі вымярэньня тыпу «$1»: $2',
 	'semanticstatistics' => 'Сэмантычная статыстыка',
-	'smw_semstats_text' => '{{SITENAME}} ўтрымлівае <b>$1</b> {{PLURAL:$1|значэньне ўласьцівасьцяў|значэньні ўласьцівасьцяў|значэньняў ўласьцівасьцяў}} для <b>$2</b> <a href="$3">{{PLURAL:$1|уласьцівасьці|уласьцівасьцяў|ўласьцівасьцяў}}</a>.
-<b>$4</b> {{PLURAL:$1|уласьцівасьць мае|уласьцівасьці маюць|уласьцівасьцяў маюць}} асобныя старонкі, і пазначаны тып зьвестак падыходзіць для <b>$5</b> зь іх.
-Некаторыя з існуючых уласьцівасьцяў могуць <a href="$6">не выкарыстоўвацца</a>.
-Уласьцівасьці, якія яшчэ ня маюць асобных старонак, знаходзяцца ў <a href="$7">сьпісе старонак, якія патрабуюць апісаньня</a>.',
 	'flawedattributes' => 'Няслушныя ўласьцівасьці',
 	'smw_fattributes' => 'Старонкі, пададзеныя ніжэй, маюць няслушна вызначаныя ўласьцівасьці.
 Колькасьць няслушных уласьцівасьцяў пададзеная ў дужках.',
@@ -1171,10 +1159,6 @@ Výsledky pravděpodobně nesplní očekávání.',
 	'smw_types_docu' => 'Následuje seznam všech údajových typů, které je možné přiřadit vlastnostem. Každý údajový typ má stránku, kde je možné uvést dodatečné informace.',
 	'smw_typeunits' => 'Jednotky typu „$1“: $2',
 	'semanticstatistics' => 'Statistika sémantik',
-	'smw_semstats_text' => 'Tato wiki obsahuje <b>$1</b> hodnot vlastností celkem <b>$2</b> rozličných <a href="$3">vlastností</a>.
-<b>$4</b> vlastností nemá vlastní stránku a zamýšlený datový typ má uvedený <b>$5</b> z nich.
-Některé z existujících vlastností mohou být <a href="$6">nepoužívané</a>.
-Vlastnosti, kterým stále chybí stránka se nacházejí na <a href="$7">seznamu požadovaných vlastností</a>.',
 	'flawedattributes' => 'Chybných atributů',
 	'smw_fattributes' => 'Níže uvedené stránky mají nesprávně definovanou vlastnost. Počet nesprávných vlastností udává číslo v závorkách.',
 	'uriresolver' => 'Překladač URI',
@@ -1331,7 +1315,6 @@ Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwa
 	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden. Jeder Datentyp hat eine eigene Seite, auf der genauere Informationen eingetragen werden können.',
 	'smw_typeunits' => 'Maßeinheiten des Datentyps „$1“: $2',
 	'semanticstatistics' => 'Statistik über semantische Daten',
-	'smw_semstats_text' => 'In diesem Wiki wurden <b>$1</b> Werte für insgesamt <b>$2</b> verschiedene <a href="$3">Attribute</a> eingegeben. <b>$4</b> Attribute haben eine eigene Seite und der gewünschte Datentyp ist für <b>$5</b> von diesen angegeben worden. Einige der existierenden Attribute können <a href="$6">verwaiste Attribute</a> sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der <a href="$7">Liste der gewünschten Attribute</a> aufgeführt.',
 	'flawedattributes' => 'Fehlerhafte Attribute',
 	'smw_fattributes' => 'Die unten aufgeführten Seiten enthalten fehlerhafte Attribute. Die Anzahl der fehlerhaften Attribute ist in den Klammern angegeben.',
 	'uriresolver' => 'URI-Auflöser',
@@ -1910,9 +1893,6 @@ $messages['fr'] = array(
 	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a sa propre page, dans laquelle peuvent figurer des informations plus précises.',
 	'smw_typeunits' => 'Unités de mesure de type « $1 » : $2',
 	'semanticstatistics' => 'Statistiques sémantiques',
-	'smw_semstats_text' => 'Ce wiki contient <b>$1</b> valeurs de propriété pour un total de <b>$2</b> <a href="$3">propriétés</a> différentes. 
-<b>$4</b> propriétés ont leur propre page, et le type de données voulu est spécifié pour <b>$5</b> de celles-ci. 
-Certaines des propriétés existantes peuvent faire être <a href="$6">inutilisées</a>. Les propriétés qui n\'ont pas encore de page se trouvent dans la <a href="$7">liste des propriétés demandées</a>.',
 	'flawedattributes' => 'Attributs défectueux',
 	'smw_fattributes' => "Les pages ci-dessous ont un attribut qui n'est pas défini correctement. Le nombre d'attributs incorrects est donné entre les parenthèses.",
 	'uriresolver' => "Résolveur d'URI",
@@ -2117,10 +2097,6 @@ Xera un RDF que se pode navegar.',
 Cada tipo de datos ten unha páxina onde vén proporcionada información adicional sobre el.',
 	'smw_typeunits' => 'Unidades de medida do tipo “$1”: $2',
 	'semanticstatistics' => 'Estatísticas semánticas',
-	'smw_semstats_text' => 'Este wiki contén <b>$1</b> valores de propiedade, dun total de <b>$2</b> <a href="$3">propiedades</a> diferentes.
-<b>$4</b> propiedades teñen unha páxina propia e o tipo de datos desexado está especificado para <b>$5</b> de elas.
-Algunhas das propiedades existentes poden <a href="$6">non ser usadas</a>.
-As propiedades ás que aínda lles falta unha páxina atópanse na <a href="$7">lista de propiedades desexadas</a>.',
 	'flawedattributes' => 'Propiedades defectuosas',
 	'smw_fattributes' => 'As páxinas listadas embaixo teñen propiedades definidas incorrectamente.
 O númeor de propiedades incorrectas está dado entre parénteses.',
@@ -2324,7 +2300,6 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_types_docu' => 'Die Datetype chenne Eigeschafte zuegwise wäre. E jede Datetyp het e eigeni Syte, wu gnaueri Informatione druf chenne yytrage wäre.',
 	'smw_typeunits' => 'Maßeinheite vum Datetyp „$1“: $2',
 	'semanticstatistics' => 'Statischtik iber semantischi Date',
-	'smw_semstats_text' => 'In däm Wiki sin <b>$1</b> Wärt fir insgsamt <b>$2</b> verschiideni <a href="$3">Eigeschafte</a> yygee wore. <b>$4</b> Eigeschafte hän e eigeni Syte un dr gwinscht Datetyp isch fir <b>$5</b> vu däne aagee wore. E paar vo dr Eigeschafte, wu s het, chenne <a href="$6">verwaisti Eigeschafte</a> syy. Eigeschafte, wu no ne Syte sott aagleit wäre derfir, sin in dr <a href="$7">Lischt vu dr gwinschte Eigeschafte</a> ufgfiert.',
 	'flawedattributes' => 'Fählerhafti Eigeschafte',
 	'smw_fattributes' => 'In dr Syte, wu unte ufgfiert sin, het s fählerhafti Eigeschafte. D Aazahl vu dr fählerhafte Eigeschafte isch in dr Chlammere aagee.',
 	'uriresolver' => 'URI-Ufleser',
@@ -2521,10 +2496,6 @@ $messages['he'] = array(
 	'smw_types_docu' => 'ברשימה זו מופיעים כל טיפוסי המידע שתכונות יכולות להשתמש בהם . לכל טיפוס מידע יש דף המסביר על אודותיו.',
 	'smw_typeunits' => 'יחידות מידה מסוג "$1": $2',
 	'semanticstatistics' => 'סטטיסטיקה סמנטית',
-	'smw_semstats_text' => 'אתר ויקי זה מכיל <b>$1</b> ערכי מאפיינים עבור סך כולל של <b>$2</b> <a href="$3">מאפיינים</a> שונים.
-ל־<b>$4</b> מאפיינים יש דף משלהם, וסוג הנתונים המיועד צוין עבור <b>$5</b> מאלה.
-ייתכן שכמה ממהמאפיינים הקיימים הם <a href="$6">מאפיינים שאינם בשימוש</a>.
-מאפיינים שעדיין חסר להם דף נמצאים ב<a href="$7">רשימת המאפיינים המבוקשים</a>.',
 	'flawedattributes' => 'מאפיינים שגויים',
 	'smw_fattributes' => 'לדפים המופיעים ברשימה שלהלן ישנם מאפיינים שלא הוגדרו כראוי.
 מספר המאפיינים שאינם נכונים נתון בסוגריים.',
@@ -2806,10 +2777,6 @@ Genera un RDF navigabile.',
 Cata typo de datos ha un pagina ubi informationes additional pote esser fornite.',
 	'smw_typeunits' => 'Unitates de mesura del typo "$1": $2',
 	'semanticstatistics' => 'Statisticas semantic',
-	'smw_semstats_text' => 'Iste wiki contine <b>$1</b> valores de proprietate pro un total de <b>$2</b> diverse <a href="$3">proprietates</a>.
-<b>$4</b> proprietates ha lor proprie paginas, e le typo de datos intendite es specificate pro <b>$5</b> de illos.
-Alcunes del proprietates existente pote esser <a href="$6">proprietates non usate</a>.
-Le proprietates al quales manca ancora un pagina se trova in le <a href="$7">lista de proprietates desirate</a>.',
 	'flawedattributes' => 'Proprietates problematic',
 	'smw_fattributes' => 'Le paginas listate infra ha un proprietate incorrectemente definite.
 Le numero de proprietates incorrecte es date inter parentheses.',
@@ -3021,7 +2988,6 @@ $messages['it'] = array(
 	'smw_types_docu' => 'La seguente &egrave; una lista di tutti i tipi di dati che possono essere assegnati alle propiet&agrave;. Ogni tipo di dato ha una pagina dove si possono trovare informazioni aggiuntive.',
 	'smw_typeunits' => 'Unit&agrave; di misura di tipo “$1”: $2',
 	'semanticstatistics' => 'Statistiche Semantiche',
-	'smw_semstats_text' => 'Questo wiki contiene <b>$1</b> valori di propriet&agrave; per un totale di <b>$2</b> differenti <a href="$3">propriet&agrave;</a>. <b>$4</b> propriet&agrave; hanno una propria pagina, e il tipo di dato inteso &egrave; specificato per <b>$5</b> di queste. Alcune delle propriet&agrave; esistenti possono essere <a href="$6">propriet&agrave; non utilizzate</a>.  Le propriet&agrave; che ancora non hanno una pagina si possono trovare nella <a href="$7">lista delle propriet&agrave; senza descrizione</a>.',
 	'flawedattributes' => 'Propriet&agrave; scorrette',
 	'smw_fattributes' => 'Le pagine elencate di seguito hanno una propriet&agrave; definita in modo non corretto. Il numero di propriet&agrave; incorrette &egrave; indicato fra parentesi.',
 	'uriresolver' => 'Risolutore di URI',
@@ -3171,7 +3137,6 @@ $messages['ja'] = array(
 	'smw_types_docu' => '以下はプロパティに割り当てられているすべてのデータ型の一覧です。各データ型は追加情報が載ったページをもっています。',
 	'smw_typeunits' => '型「$1」の単位: $2',
 	'semanticstatistics' => '意味的統計',
-	'smw_semstats_text' => 'このウィキには計<b>$2</b>種の<a href="$3">プロパティ</a>と<b>$1</b>個のプロパティ値があります。<b>$4</b>個のプロパティには専用のページがあり、うち<b>$5</b>個にはデータ型が指定されています。既存のプロパティには<a href="$6">使われていないプロパティ</a>があるかもしれません。解説ページがまだ存在しないプロパティは<a href="$7">望まれているプロパティ一覧</a>に載っています。',
 	'flawedattributes' => '欠陥のあるプロパティ',
 	'smw_fattributes' => '以下に載せているページは定義が誤ったプロパティをもっています。誤ったプロパティの数は角括弧内に表示します。',
 	'uriresolver' => 'URIリゾルバー',
@@ -3343,10 +3308,6 @@ Nggawé berkas RDF sing bisa dijlajah.',
 Saben jenis data duwé kaca ing ngendi informasi tambahan bisa diwènèhaké.',
 	'smw_typeunits' => 'Unit-unit pangukuran jenis “$1”: $2',
 	'semanticstatistics' => 'Statistik sémantik',
-	'smw_semstats_text' => 'Wiki iki ngemot <b>$1</b> bijih-bijih sifat kanggo gunggungé <b>$2</b> <a href="$3">sifat-sifat</a> sing béda-béda.
-<b>$4</b> sifat duwé kaca dhéwé, lan jenis data sing dimaksud iku dispésifikasi kanggo <b>$5</b> saka iku.
-Sawetara saka sifat sing ana mbok-menawa <a href="$6">sifat sing ora dienggo</a>.
-Sifat-sifat sing isih ora duwé kaca ditemokaké ing <a href="$7">daftar sifat-sifat sing dipèngèni</a>.',
 	'flawedattributes' => 'Sifat-sifaté Ora Pepak',
 	'smw_fattributes' => 'Kaca-kaca sing kapacak ing ngisor iki duwé sifat sing didéfinisi ora bener.
 Cacahé sifat sing ora bener iki diwènèhaké antara tandha kurung.',
@@ -3862,10 +3823,6 @@ $messages['mr'] = array(
 प्रत्येक डाटा प्रकाराचे एक पाने आहे जिथे जास्तीची माहिती देता येईल.',
 	'smw_typeunits' => '“$1” प्रकारची मापनाची एकके: $2',
 	'semanticstatistics' => 'सिमँटिक सांख्यिकी',
-	'smw_semstats_text' => 'ह्या विकिमध्ये <b>$1</b> गुणधर्मांच्या किंमती आहेत ज्या एकूण <b>$2</b> वेगवेगळ्या <a href="$3">गुणधर्म</a> दर्शवितात.
-<b>$4</b> गुणधर्मांना स्वत:ची पाने आहेत, व त्यापैकी <b>$5</b> गुणधर्मांना जुळणारे डाटा प्रकार दिलेले आहेत.
-यातील काही गुणधर्म हे <a href="$6">न वापरलेले गुणधर्म</a> असण्याची शक्यता आहे.
-ज्या गुणधर्मांना स्वत:चे पान नाही असे गुणधर्म <a href="$7">पाहिजे असलेल्या गुणधर्मांची यादी</a> मध्ये सापडतील.',
 	'flawedattributes' => 'चुकीचे गुणधर्म',
 	'smw_fattributes' => 'खाली दिलेल्या यादीतील पानांना चुकीचे गुणधर्म आहेत.
 चुकीच्या गुणधर्मांची संख्या कंसात दिलेली आहे.',
@@ -4044,10 +4001,6 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw_types_docu' => 'Hieronder staat een lijst van alle datatypen die aan eigenschappen kunnen worden toegewezen. Ieder datatype heeft een pagina waar aanvullende informatie opgegeven kan worden.',
 	'smw_typeunits' => 'Eenheden van type "$1": $2',
 	'semanticstatistics' => 'Semantische statistieken',
-	'smw_semstats_text' => 'Deze wiki bevat <b>$1</b> eigenschapwaarden voor <b>$2</b> verschillende <a href="$3">eigenschappen</a>.
-<b>$4</b> eigenschappen hebben een eigen pagina en het gegevenstype is voor <b>$5</b> daarvan aangegeven.
-Een aantal van de bestaande eigenschappen is wellicht <a href="$6">ongebruikt</a>.
-Eigenschappen waar nog geen pagina voor is zijn te vinden op de <a href="$7">lijst met gewenste eigenschappen</a>.',
 	'flawedattributes' => 'Incomplete eigenschappen',
 	'smw_fattributes' => 'De onderstaande pagina\\s hebben een onjuist gedefinieerde eigenschap. Het aantal onjuiste eigenschappen staat tussen de haakjes.',
 	'uriresolver' => 'URI-resolver',
@@ -4248,10 +4201,6 @@ Lagar ein RDF som ein kan gå gjennom.',
 Kvar datatype har ei sida der ekstra informasjon kan verta oppgjeven.',
 	'smw_typeunits' => 'Måleiningar av typen «$1»: $2',
 	'semanticstatistics' => 'Semantisk statistikk',
-	'smw_semstats_text' => 'Denne wikien inneheld <b>$1</b> eigenskapsverdiar for totalt <b>$2</b> einskilde <a href="$3">eigenskapar</a>.
-<b>$4</b> eigenskapar har ei eiga sida, og den meinte datatypen er oppgjeven for <b>$5</b> av desse.
-Somme av dei eksisterande eigenskapane kan vera <a href="$6">unytta eigenskapar</a>.
-Eigenskapar som framleis ikkje har ei eiga sida finst på <a href="$7">lista over ynskte eigenskapar</a>.',
 	'flawedattributes' => 'Ugyldige eigenskapar',
 	'smw_fattributes' => 'Sidene som er lista opp nedanfor har ein feildefinert eigenskap.
 Talet på feildefinerte eigenskaper er oppgjeve i parentes.',
@@ -4449,10 +4398,6 @@ Lager en RDF som kan gås gjennom.',
 Hver datatype har en side der ekstra informasjon kan oppgis.',
 	'smw_typeunits' => 'Måleenheter av typen «$1»: $2',
 	'semanticstatistics' => 'Semantisk statistikk',
-	'smw_semstats_text' => 'Denne wikien inneholder <b>$1</b> egenskapsverdier for totalt <b>$2</b> forskjellige <a href="$3">egenskaper</a>.
-<b>$4</b> egenskaper har en egen side, og den mente datatypen er oppgitt for <b>$5</b> av disse.
-Noen av de eksisterende egenskapene kan være <a href="$6">ubrukte egenskaper</a>.
-Egenskaper som fortsatt ikke har en egen side finnes på <a href="$7">listen over ønskede egenskaper</a>.',
 	'flawedattributes' => 'Ugyldige egenskaper',
 	'smw_fattributes' => 'Sidene som listes opp nedenfor har en ukorrekt definert egenskap.
 Antallet ukorrekte egenskaper gis i parentes.',
@@ -4595,7 +4540,6 @@ $messages['oc'] = array(
 	'smw_types_docu' => "Los tipes de donadas seguents pòdon èsser assignadas als atributs. Cada tipe de donadas a son pròpri article, dins lo qual pòdon figurar d'entresenhas mai precisas.",
 	'smw_typeunits' => 'Unitats de mesura de tipe “$1” : $2',
 	'semanticstatistics' => 'Estatisticas semanticas',
-	'smw_semstats_text' => 'Aqueste wiki conten <b>$1</b> valors de proprietat per una soma de <b>$2</b> <a href="$3">proprietats</a> diferentas. <b>$4</b> proprietats an lor pagina pròpria, e lo tipe de donadas volgut es especifica per <b>$5</b> d\'aquestas. D\'unas de las proprietats existentas pòdon far partida de las <a href="$6">proprietats inutilizadas</a>. Las proprietats qu\'an pas encara de pagina se tròban sus la <a href="$7">lista de las proprietats demandadas</a>.',
 	'flawedattributes' => 'Atributs defectuoses',
 	'smw_fattributes' => "Las paginas çaijós an un atribut qu'es pas definit corrèctament. Lo nombre d'atributs incorrèctes es donat entre las parentèsis.",
 	'uriresolver' => "Resolveire d'URI",
@@ -4909,10 +4853,6 @@ Gera RDF navegável.',
 Cada tipo de dados tem uma página onde informação adicional pode ser providenciada.',
 	'smw_typeunits' => 'Unidades de medida de tipo “$1”: $2',
 	'semanticstatistics' => 'Estatísticas de semântica',
-	'smw_semstats_text' => 'Este wiki contém <b>$1</b> valores de propriedades num total de <b>$2</b> <a href="$3">propriedades</a> diferentes.
-<b>$4</b> propriedades têm uma página própria, e o tipo de dados pretendido é especificado por b>$5</b> delas.
-Algumas das propriedades existentes poderão ser <a href="$6">propriedades não usadas</a>.
-As propriedades a que faltam uma página poderão ser encontradas na <a href="$7">lista de propriedades em falta</a>.',
 	'flawedattributes' => 'Propriedades Problemáticas',
 	'smw_fattributes' => 'As páginas listadas abaixo contêm uma propriedade incorrectamente definida.
 O número de propriedades incorrectas é dada entre parênteses rectos.',
@@ -5192,7 +5132,6 @@ $messages['ru'] = array(
 	'smw_types_docu' => 'Список поддерживаемых типов свойств. Каждый тип имеет страницу, на которую можно поместить его расширенное описание.',
 	'smw_typeunits' => 'Единицы измерения типа “$1”: $2',
 	'semanticstatistics' => 'Семантическая статистика',
-	'smw_semstats_text' => 'Данный сайт содержит <b>$1</b> значений свойств, общее количество различных <a href="$3">свойств</a> равно <b>$2</b>. <b>$4</b> свойств имеют страницу описания. Определенный тип данных задан на соответствующей странице описания для <b>$5</b> из общего числа свойств. Некоторые из существующих свойств могут <a href="$6">не использоваться</a>. Свойства, для которых не созданы страницы описания, могут быть найдены по специальной ссылке <a href="$7">список неописанных свойств</a>.',
 	'flawedattributes' => 'Поврежденные свойства',
 	'smw_fattributes' => 'Статьи, указанные ниже, содержат неправильно определенные свойства. Количество неверных свойств указано в скобках.',
 	'uriresolver' => 'Преобразователь URI',
@@ -5341,10 +5280,6 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_types_docu' => 'Nasleduje zoznam všetkých údajových typov, ktoré je možné priradiť atribútom. Každý údajový typ má stránku, kde je možné poskytnúť dodatočné informácie.',
 	'smw_typeunits' => 'Jednotky typu „$1“: $2',
 	'semanticstatistics' => 'Sémantická štatistika',
-	'smw_semstats_text' => 'Táto wiki obsahuje <b>$1</b> hodnôt vlastností celkom <b>$2</b> rozličných <a href="$3">vlastností</a>.
-<b>$4</b> vlastností nemá vlastnú stránku a zamýšľaný údajový typ má uvedený <b>$5</b> z nich.
-Niektoré z existujúcich vlastností môžu byť <a href="$6">nepoužité</a>.
-Vlastnosti, ktorým stále chýba stránka sa nachádzajú na <a href="$7">zozname žiadaných vlastností</a>.',
 	'flawedattributes' => 'Chybných atribútov',
 	'smw_fattributes' => 'Nižšie uvedené stránky majú nesprávne definovaný atribút. Počet nesprávnych atribútov udáva číslo v zátvorkách.',
 	'uriresolver' => 'Prekladač URI',
@@ -5548,10 +5483,6 @@ $messages['sr-ec'] = array(
 Сваки тип података има своју страницу где је могуће додати додатне информације.',
 	'smw_typeunits' => 'Мерне јединице типа "$1": $2',
 	'semanticstatistics' => 'Семантичке статистике',
-	'smw_semstats_text' => 'Овај вики садржи <b>$1</b> вредности особина за укупно <b>$2</b> различитих <a href="$3">особина</a>.
-<b>$4</b> особина поседује своју властиту страницу и намењени типови података су убележени за њих <b>$5</b>.
-Неке од постојећих особина су можда<a href="$6">неискоришћене особине</a>.
-Особине које још увек немају своју страницу, могу се наћи на <a href="$7">списку тражених особинаs</a>.',
 	'flawedattributes' => 'Покварене особине',
 	'smw_fattributes' => 'Странице са доњег списка садрже погрешно дефинисане особине.
 Број погрешно дефинисаних особина је дат у заградама.',
@@ -5858,10 +5789,6 @@ Skapar en RDF som kan gås igenom.',
 Varje datatyp har en sida där ytterligare information kan uppges.',
 	'smw_typeunits' => 'Mätenhet för typ “$1”: $2',
 	'semanticstatistics' => 'Semantisk statistik',
-	'smw_semstats_text' => 'Denna wikin innehåller <b>$1</b> egenskapsvärden för totalt <b>$2</b> olika <a href="$3">egenskaper</a>.
-<b>$4</b> egenskaper har en egen sida, och den avsedda datatypen är specificerad för <b>$5</b> av dessa.
-Några av de existerande egenskaperna kan vara <a href="$6">oanvända egenskaper</a>.
-Egenskaper som fortfarande saknar en egen sida finns på <a href="$7">listan över önskede egenskaper</a>.',
 	'flawedattributes' => 'Ogiltiga Egenskaper',
 	'smw_fattributes' => 'Sidorna som listas nedan har en felaktigt definerad egenskap.
 Antalet felaktiga egenskaper visas inom parenteserna.',
@@ -6095,10 +6022,6 @@ Gumagawa ng matitingnan-tingnang RDF.',
 Mayroong isang pahina ang bawat uri ng dato kung saan maaaring makapagbigay ng karagdagang kabatiran.',
 	'smw_typeunits' => 'Mga yunit ng sukat ng uring "$1": $2',
 	'semanticstatistics' => 'Mga estadistika ng Semantiko (hinggil sa kahulugan ng mga salita)',
-	'smw_semstats_text' => 'Naglalaman ang wiking ito ng <b>$1</b> mga halaga ng ari-ariang may kabuoang <b>$2</b> iba\'t ibang <a href="$3">mga pag-aari</a>.
-<b>$4</b> mga pag-aari ang may sariling pahina na, at ang inilalaang uri ng dato ay tinukoy para sa <b>$5</b> ng mga iyon.
-Ilan sa umiiral na mga ari-arian ay maaaring <a href="$6">hindi ginagamit na mga pag-aari</a>.
-Ang mga ari-ariang wala pa ring isang pahina ay matatagpuan sa <a href="$7">talaan ng ninanais na mga pag-aari</a>.',
 	'flawedattributes' => 'Mga ari-ariang may gawak/sira',
 	'smw_fattributes' => 'Ang mga pahinang nakatala sa ibaba ay isang pag-aaring may maling kahulugan.
 Ang bilang ng maling mga ari-arian ay ibinigay sa loob ng mga kasingay (brakete).',
@@ -6288,10 +6211,6 @@ Tạo ra RDF có thể duyệt được.',
 Mỗi kiểu dữ liệu có một trang tại đó có thông tin bổ sung.',
 	'smw_typeunits' => 'Đơn vị đo lường thuộc loại “$1”: $2',
 	'semanticstatistics' => 'Thống kê ngữ nghĩa',
-	'smw_semstats_text' => 'Wiki này có chứa <b>$1</b> giá trị thuộc tính cho tổng cộng <b>$2</b> <a href="$3">thuộc tính</a> khác nhau.
-<b>$4</b> thuộc tính có trang riêng, và kiểu dữ liệu dự tính được chỉ định cho <b>$5</b> trong số đó.
-Một số thuộc tính hiện có có thể là <a href="$6">thuộc tính chưa sử dụng</a>.
-Các thuộc tính còn thiếu một trang có thể tìm thấy tại <a href="$7">danh sách các thuộc tính cần có</a>.',
 	'flawedattributes' => 'Thuộc tính hỏng',
 	'smw_fattributes' => 'Những trang liệt kê phía dưới có thuộc tính được định nghĩa không chính xác.
 Số thuộc tính không đúng được ghi trong ngoặc đơn.',
@@ -6514,7 +6433,6 @@ $messages['zh-cn'] = array(
 	'smw_types_docu' => '以下为所有资料型态的列表，资料型态可用于指定性质，每项资料型态皆有提供附加信息的页面。',
 	'smw_typeunits' => '“$1＂型态的量测单位：$2',
 	'semanticstatistics' => '语意统计(Semantic Statistics)',
-	'smw_semstats_text' => '此wiki含有<b>$1</b>性质的值以用于总计<b>$2</b> 不同于 <a href="$3">性质</a>。 <b>$4</b>性质有着专属的专面，且预期所需的资料型态因着<b>$5</b>，而已被指定了，有些现有的性质也许为<a href="$6">未使用的性质</a>。您可在 <a href="$7">待建立的性质列表</a>中，找到那些尚未建立专属页面的性质。(译注原文为：This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.)',
 	'flawedattributes' => '错误的性质',
 	'smw_fattributes' => '在下方处被列出的页面有着一项非正确定义的属性，非正确的属性的数量置于中括号内',
 	'ask' => '语意搜寻',
@@ -6666,7 +6584,6 @@ $messages['zh-tw'] = array(
 	'smw_types_docu' => '以下為所有資料型態的清單，資料型態可用於指定性質，每項資料型態皆有提供附加資訊的頁面。',
 	'smw_typeunits' => '“$1”型態的量測單位：$2',
 	'semanticstatistics' => '語意統計(Semantic Statistics)',
-	'smw_semstats_text' => '此wiki含有<b>$1</b>性質的值以用於總計<b>$2</b> 不同於 <a href="$3">性質</a>。 <b>$4</b>性質有著專屬的專面，且預期所需的資料型態因著<b>$5</b>，而已被指定了，有些現有的性質也許為<a href="$6">未使用的性質</a>。您可在 <a href="$7">待建立的性質清單</a>中，找到那些尚未建立專屬頁面的性質。(譯註原文為：This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.)',
 	'flawedattributes' => '錯誤的性質',
 	'smw_fattributes' => '在下方處被列出的頁面有著一項非正確定義的屬性，非正確的屬性的數量置於中括號內',
 	'ask' => '語意搜尋',
