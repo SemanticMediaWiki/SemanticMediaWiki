@@ -515,6 +515,10 @@ $messages['ar'] = array(
 كل نوع بيانات له صفحة حيث يمكن توفير معلومات إضافية.',
 	'smw_typeunits' => 'وحدات القياس من النوع "$1": $2',
 	'semanticstatistics' => 'إحصاءات سيمانتيك',
+	'smw_semstats_text' => "هذا الويكي يحتوي على '''$1''' {{PLURAL:$1|قيمة|قيمة}} خاصية بإجمالي '''$2''' [[Special:Properties|{{PLURAL:$2|خاصية|خاصية مختلفة}}].
+'''$3''' {{PLURAL:$3|خاصية تمتلك|خاصية تمتلك}} صفحتها الخاصة، ونوع البيانات المقصود محدد ل'''$4''' من هؤلاء.
+بعض الخواص الموجودة ربما تكون [[Special:UnusedProperties|خواص غير مستخدمة]].
+الخواص التي مازالت تفتقد صفحة موجودة في [[Special:WantedProperties|قائمة الخواص المطلوبة]].",
 	'flawedattributes' => 'خصائص معيوبة',
 	'smw_fattributes' => 'الصفحات المعروضة بالأسفل بها خاصية غير معرفة بشكل صحيح.
 عدد الخصائص غير الصحيحة معطى في الاقواس.',
@@ -721,6 +725,10 @@ $messages['arz'] = array(
 كل نوع بيانات له صفحة حيث يمكن توفير معلومات إضافية.',
 	'smw_typeunits' => 'وحدات القياس من النوع "$1": $2',
 	'semanticstatistics' => 'إحصاءات سيمانتيك',
+	'smw_semstats_text' => 'هذا الويكى يحتوى على <b>$1</b> قيمة خاصية لإجمالى <b>$2</b> different <a href="$3">خاصية</a>.
+<b>$4</b> الخصائص لها صفة خاصة، ونوع البيانات المقصود محدد ل<b>$5</b> منها.
+بعض الخصائص الموجودة ربما تكون <a href="$6">خصائص غير مستخدمة</a>.
+الخصائص التى مازالت تفتقد صفحة موجودة فى <a href="$7">قائمة الخصائص المطلوبة</a>.',
 	'flawedattributes' => 'خصائص معيوبة',
 	'smw_fattributes' => 'الصفحات المعروضة بالأسفل بها خاصية غير معرفة بشكل صحيح.
 عدد الخصائص غير الصحيحة معطى فى الاقواس.',
@@ -921,6 +929,10 @@ $messages['be-tarask'] = array(
 Кожны тып зьвестак мае старонку, дзе можа знаходзіцца дадатковая інфармацыя.',
 	'smw_typeunits' => 'Адзінкі вымярэньня тыпу «$1»: $2',
 	'semanticstatistics' => 'Сэмантычная статыстыка',
+	'smw_semstats_text' => "{{SITENAME}} ўтрымлівае '''$1''' {{PLURAL:$1|значэньне|значэньні|значэньняў}} для '''$2''' [[Special:Properties|{{PLURAL:$1|уласьцівасьці|уласьцівасьцяў|ўласьцівасьцяў}}]].
+<b>$3</b> {{PLURAL:$3|уласьцівасьць мае|уласьцівасьці маюць|уласьцівасьцяў маюць}} асабістыя старонкі, і пазначаны тып зьвестак падыходзіць для <b>$4</b> зь іх.
+Некаторыя з існуючых уласьцівасьцяў могуць [[Special:UnusedProperties|не выкарыстоўвацца]].
+Уласьцівасьці, якія яшчэ ня маюць асобных старонак, знаходзяцца ў [[Special:WantedProperties|сьпісе старонак, якія патрабуюць апісаньня]].",
 	'flawedattributes' => 'Няслушныя ўласьцівасьці',
 	'smw_fattributes' => 'Старонкі, пададзеныя ніжэй, маюць няслушна вызначаныя ўласьцівасьці.
 Колькасьць няслушных уласьцівасьцяў пададзеная ў дужках.',
@@ -1315,6 +1327,7 @@ Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwa
 	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden. Jeder Datentyp hat eine eigene Seite, auf der genauere Informationen eingetragen werden können.',
 	'smw_typeunits' => 'Maßeinheiten des Datentyps „$1“: $2',
 	'semanticstatistics' => 'Statistik über semantische Daten',
+	'smw_semstats_text' => "In diesem Wiki {{PLURAL:$1|wurde '''1''' Wert|wurden '''$1''' Werte}} für insgesamt '''$2''' [[Special:Properties|{{PLURAL:$2|Attribut|verschiedene Attribute}}]] eingegeben. '''$3''' {{PLURAL:$3|Attribut hat|Attribute haben}} eine eigene Seite und der gewünschte Datentyp ist für '''$4''' von diesen angegeben worden. Einige der existierenden Attribute können [[Special:UnusedProperties|verwaiste Attribute]] sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der [[Special:WantedProperties|Liste der gewünschten Attribute]] aufgeführt.",
 	'flawedattributes' => 'Fehlerhafte Attribute',
 	'smw_fattributes' => 'Die unten aufgeführten Seiten enthalten fehlerhafte Attribute. Die Anzahl der fehlerhaften Attribute ist in den Klammern angegeben.',
 	'uriresolver' => 'URI-Auflöser',
@@ -1403,7 +1416,7 @@ Geschätzter Fortschritt des laufenden Updates:',
 	'smw_smwadmin_installfile' => 'Wenn es Probleme mit der Installation gibt, könnte die Datei <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a> weiterhelfen.',
 	'smw_smwadmin_smwhomepage' => 'Die komplette Benutzerdokumentation von Semantic MediaWiki findest du auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Fehler können bei <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> berichtet werden.',
-	'smw_smwadmin_questions' => 'Wenn du weitere Fragen oder Vorschläge hast, beteilige dich an der Diskussion auf <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'Wenn du weitere Fragen oder Vorschläge hast, beteilige dich an der Diskussion im <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">„Semantic MediaWiki“-Benutzerforum</a>.',
 );
 
 /** German (formal address) (Deutsch (Sie-Form))
@@ -1893,6 +1906,10 @@ $messages['fr'] = array(
 	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a sa propre page, dans laquelle peuvent figurer des informations plus précises.',
 	'smw_typeunits' => 'Unités de mesure de type « $1 » : $2',
 	'semanticstatistics' => 'Statistiques sémantiques',
+	'smw_semstats_text' => "Ce wiki contient '''$1''' {{PLURAL:$1|valeur|valeurs}} de propriété pour un total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriété différente|propriétés différentes}}]].
+'''$3''' {{PLURAL:$3|propriété a sa|propriétés ont leur}} propre page, et le type de données voulu est spécifié pour '''$4''' de celles-ci. 
+Certaines des propriétés existantes peuvent en faite être [[Special:UnusedProperties|inutilisées]].
+Les propriétés qui n'ont pas encore de page se trouvent dans la [[Special:WantedProperties|liste des propriétés demandées]].",
 	'flawedattributes' => 'Attributs défectueux',
 	'smw_fattributes' => "Les pages ci-dessous ont un attribut qui n'est pas défini correctement. Le nombre d'attributs incorrects est donné entre les parenthèses.",
 	'uriresolver' => "Résolveur d'URI",
@@ -1980,7 +1997,7 @@ Progression estimée de la mise à jour actuelle :',
 	'smw_smwadmin_installfile' => 'Si vous expérimentez des problème avec votre installation, commencer par regarder le guide en ligne dans le <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">fichier INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'La documentation complète de l’utilisateur de Semantic MediaWiki se trouve sur <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Les bogues peuvent être soumis sur <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
-	'smw_smwadmin_questions' => 'Vous avez d’autres questions ou des suggestion, rejoignez la discussion sur <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'Vous avez d’autres questions ou des suggestion, rejoignez la discussion sur <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">le forum des utilisateurs de Semantic MediaWiki</a>.',
 );
 
 /** Irish (Gaeilge)
@@ -2097,6 +2114,10 @@ Xera un RDF que se pode navegar.',
 Cada tipo de datos ten unha páxina onde vén proporcionada información adicional sobre el.',
 	'smw_typeunits' => 'Unidades de medida do tipo “$1”: $2',
 	'semanticstatistics' => 'Estatísticas semánticas',
+	'smw_semstats_text' => "Este wiki contén '''$1''' {{PLURAL:$1|valor|valores}} de propiedade, dun total {{PLURAL:$2|'''dunha'''|de '''$2'''}} [[Special:Properties|{{PLURAL:$2|propiedade|propiedades diferentes}}]].
+'''$3''' {{PLURAL:$3|propiedade ten|propiedades teñen}} unha páxina propia e o tipo de datos desexado está especificado para '''$4''' de elas.
+Algunhas das propiedades existentes poden [[Special:UnusedProperties|non ser usadas]].
+As propiedades ás que aínda lles falta unha páxina atópanse na [[Special:WantedProperties|lista de propiedades desexadas]].",
 	'flawedattributes' => 'Propiedades defectuosas',
 	'smw_fattributes' => 'As páxinas listadas embaixo teñen propiedades definidas incorrectamente.
 O númeor de propiedades incorrectas está dado entre parénteses.',
@@ -2988,6 +3009,10 @@ $messages['it'] = array(
 	'smw_types_docu' => 'La seguente &egrave; una lista di tutti i tipi di dati che possono essere assegnati alle propiet&agrave;. Ogni tipo di dato ha una pagina dove si possono trovare informazioni aggiuntive.',
 	'smw_typeunits' => 'Unit&agrave; di misura di tipo “$1”: $2',
 	'semanticstatistics' => 'Statistiche Semantiche',
+	'smw_semstats_text' => "Questo sito contiene '''$1''' {{PLURAL:$1|valore|valori}} di proprietà per un totale di '''$2''' [[Special:Properties|{{PLURAL:$2|proprietà|differenti proprietà}}]]. 
+'''$3''' proprietà {{PLURAL:$3|ha|hanno}} una propria pagina e il tipo di dato inteso è specificato per '''$4''' di queste.
+Alcune delle proprietà esistenti possono essere [[Special:UnusedProperties|proprietà non utilizzate]].
+Le proprietà che ancora non hanno una pagina si possono trovare nell'[[Special:WantedProperties|elenco delle proprietà senza descrizione]].",
 	'flawedattributes' => 'Propriet&agrave; scorrette',
 	'smw_fattributes' => 'Le pagine elencate di seguito hanno una propriet&agrave; definita in modo non corretto. Il numero di propriet&agrave; incorrette &egrave; indicato fra parentesi.',
 	'uriresolver' => 'Risolutore di URI',
@@ -3137,6 +3162,7 @@ $messages['ja'] = array(
 	'smw_types_docu' => '以下はプロパティに割り当てられているすべてのデータ型の一覧です。各データ型は追加情報が載ったページをもっています。',
 	'smw_typeunits' => '型「$1」の単位: $2',
 	'semanticstatistics' => '意味的統計',
+	'smw_semstats_text' => "このウィキには、計 '''$2'''種の[[Special:Properties|プロパティ]]と '''$1'''個のプロパティ値があります。'''$3'''個のプロパティには専用のページがあり、うち '''$4'''個にはデータ型が指定されています。既存のプロパティには[[Special:UnusedProperties|使われていないプロパティ]]があるかもしれません。解説ページがまだ存在しないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
 	'flawedattributes' => '欠陥のあるプロパティ',
 	'smw_fattributes' => '以下に載せているページは定義が誤ったプロパティをもっています。誤ったプロパティの数は角括弧内に表示します。',
 	'uriresolver' => 'URIリゾルバー',
@@ -3212,7 +3238,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw_smwadmin_installfile' => 'インストールに問題を発見した場合、<a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL ファイル</a>にある指針を確認することから始めてください。',
 	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki の完全な利用者用ドキュメントは <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
 	'smw_smwadmin_mediazilla' => 'バグは <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> で報告できます。',
-	'smw_smwadmin_questions' => 'さらに質問や提案がある場合は、<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a> での議論に参加してください。',
+	'smw_smwadmin_questions' => 'さらなる質問や提案がある場合は、<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki 利用者フォーラム</a>での議論に参加してください。',
 );
 
 /** Javanese (Basa Jawa)
@@ -3647,7 +3673,7 @@ $messages['lb'] = array(
 	'unusedproperties' => 'Onbenotzen Eegeschaften',
 	'smw_unusedproperty_template' => '$1 vum Typ $2',
 	'wantedproperties' => 'Gewënschten Eegeschaften',
-	'smw_wantedproperty_template' => '$1 ($2 mol benotzt)',
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|mol benotzt|mol benotzt}})',
 	'smw_purge' => 'Aktualiséieren',
 	'types' => 'Typen',
 	'smw_typeunits' => 'Moosseenheete vum Typ "$1": $2',
@@ -4001,6 +4027,10 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw_types_docu' => 'Hieronder staat een lijst van alle datatypen die aan eigenschappen kunnen worden toegewezen. Ieder datatype heeft een pagina waar aanvullende informatie opgegeven kan worden.',
 	'smw_typeunits' => 'Eenheden van type "$1": $2',
 	'semanticstatistics' => 'Semantische statistieken',
+	'smw_semstats_text' => "Deze wiki bevat '''$1''' {{PLURAL:$1|eigenschapwaarde|eigenschapwaarden}} voor '''$2''' verschillende [[Special:Properties|{{PLURAL:$2|eigenschap|verschillende eigenschappen}}]].
+'''$3''' {{PLURAL:$3|eigenschap heeft|eigenschappen hebben}} een eigen pagina en het gegevenstype is voor '''$4''' daarvan aangegeven.
+Een aantal van de bestaande eigenschappen is wellicht [[Special:UnusedProperties|ongebruikt]].
+Eigenschappen waar nog geen pagina voor is zijn te vinden op de [[Special:WantedProperties|lijst met gewenste eigenschappen]].",
 	'flawedattributes' => 'Incomplete eigenschappen',
 	'smw_fattributes' => 'De onderstaande pagina\\s hebben een onjuist gedefinieerde eigenschap. Het aantal onjuiste eigenschappen staat tussen de haakjes.',
 	'uriresolver' => 'URI-resolver',
@@ -4090,7 +4120,7 @@ Geschatte voortgang van de huidige taak:",
 	'smw_smwadmin_installfile' => 'Als u problemen ondervindt bij uw installatie, controleer dan de richlijnen in het bestand <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'De volledige gebruikersdocumentatie voor Semantic MediaWiki is te vinden op <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Bugs en suggesties kunt u rapporteren in <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
-	'smw_smwadmin_questions' => 'Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op het <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki gebruikersforum</a>.',
 );
 
 /** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
@@ -5273,7 +5303,7 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_unusedproperty_template' => '$1 typu $2',
 	'wantedproperties' => 'Žiadané vlastnosti',
 	'smw_wantedproperties_docu' => 'Nasledovné vlastnosti, ktoré existujú na tejto wiki, zatiaľ nemajú popisnú stránku.',
-	'smw_wantedproperty_template' => '$1 (použité $2-krát)',
+	'smw_wantedproperty_template' => '$1 (použité {{PLURAL:$2|raz|$2-krát}})',
 	'tooltip-purge' => 'Kliknutím sem obnovíte všetky dotazy a šablóny na tejto stránke',
 	'smw_purge' => 'Obnoviť',
 	'types' => 'Typy',
@@ -6116,6 +6146,12 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_smwadmin_questions' => 'Kung mayroon ka pang karagdagang mga katanungan at mga mungkahi, makilahok sa usapang nasa <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
+/** Uighur (Latin) (Uyghurche‎ / ئۇيغۇرچە (Latin))
+ * @author Jose77
+ */
+$messages['ug-latn'] = array(
+	'smw_browse_go' => 'Köchüsh',
+);
 /** Vietnamese (Tiếng Việt)
  * @author Minh Nguyen
  * @author Vinhtantran
