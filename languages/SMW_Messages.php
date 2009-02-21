@@ -279,8 +279,8 @@ Estimated progress of current update:',
 	'smw_smwadmin_supportdocu' => 'Various resources might help you in case of problems:',
 	'smw_smwadmin_installfile' => 'If you experience problems with your installation, start by checking the guidelines in the <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL file</a>.',
 	'smw_smwadmin_smwhomepage' => 'The complete user documentation to Semantic MediaWiki is at <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Bugs can be reported to <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
-	'smw_smwadmin_questions' => 'If you have further questions or suggestions, join the discussion on <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.'
+	'smw_smwadmin_mediazilla' => 'Bugs can be reported to <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'If you have further questions or suggestions, join the discussion on <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.'
 );
 
 /** Message documentation (Message documentation)
@@ -605,7 +605,7 @@ $messages['ar'] = array(
 	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات في <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ملف INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لسيمانتيك ميدياويكي موجودة في <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'العلل يمكن إبلاغها إلى <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
-	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش في <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش في <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Egyptian Spoken Arabic (مصرى)
@@ -811,7 +811,7 @@ $messages['arz'] = array(
 	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات فى <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ملف INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لسيمانتيك ميدياويكى موجودة فى <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'العلل يمكن إبلاغها إلى <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
-	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش فى <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش فى <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
@@ -1402,8 +1402,8 @@ Geschätzter Fortschritt des laufenden Updates:',
 	'smw_smwadmin_supportdocu' => 'Verschiedene Mittel/Quellen helfen dir vielleicht bei einem Problemfall:',
 	'smw_smwadmin_installfile' => 'Wenn es Probleme mit der Installation gibt, könnte die Datei <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a> weiterhelfen.',
 	'smw_smwadmin_smwhomepage' => 'Die komplette Benutzerdokumentation von Semantic MediaWiki findest du auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Fehler können bei <a href="https://bugzilla.wikimedia.org/">MediaZilla</a> berichtet werden.',
-	'smw_smwadmin_questions' => 'Wenn du weitere Fragen oder Vorschläge hast, beteilige dich an der Diskussion auf <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_mediazilla' => 'Fehler können bei <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> berichtet werden.',
+	'smw_smwadmin_questions' => 'Wenn du weitere Fragen oder Vorschläge hast, beteilige dich an der Diskussion auf <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** German (formal address) (Deutsch (Sie-Form))
@@ -1530,7 +1530,7 @@ $messages['eo'] = array(
 	'smw_smwadmin_datarefreshstop' => 'Halti ĉi tiun ĝisdatigon',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jes, mi certas.',
 	'smw_smwadmin_support' => 'Teni subtenon',
-	'smw_smwadmin_mediazilla' => 'Cimoj povas esti raportitaj al <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
+	'smw_smwadmin_mediazilla' => 'Cimoj povas esti raportitaj al <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 );
 
 /** Spanish (Español)
@@ -1979,8 +1979,8 @@ Progression estimée de la mise à jour actuelle :',
 	'smw_smwadmin_supportdocu' => 'Diverses ressources pourraient vous aider en cas de problèmes :',
 	'smw_smwadmin_installfile' => 'Si vous expérimentez des problème avec votre installation, commencer par regarder le guide en ligne dans le <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">fichier INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'La documentation complète de l’utilisateur de Semantic MediaWiki se trouve sur <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Les bogues peuvent être soumis sur <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
-	'smw_smwadmin_questions' => 'Vous avez d’autres questions ou des suggestion, rejoignez la discussion sur <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_mediazilla' => 'Les bogues peuvent être soumis sur <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Vous avez d’autres questions ou des suggestion, rejoignez la discussion sur <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Irish (Gaeilge)
@@ -2186,8 +2186,8 @@ Progreso estimado da actualización actual:',
 	'smw_smwadmin_supportdocu' => 'Diversas fontes poden axudalo en caso de problemas:',
 	'smw_smwadmin_installfile' => 'Se experimenta problemas durante a súa instalación, comece comprobando a guía no <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ficheiro INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'A documentación do usuario completa de Semantic MediaWiki está en <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Pode informar dos erros en <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
-	'smw_smwadmin_questions' => 'Se ten máis preguntas ou suxestións, únase á conversa en <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_mediazilla' => 'Pode informar dos erros en <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Se ten máis preguntas ou suxestións, únase á conversa en <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
@@ -2387,8 +2387,8 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
 	'smw_smwadmin_supportdocu' => 'Verschideni Quälle hälfe Dir villicht bi me Problämfall:',
 	'smw_smwadmin_installfile' => 'Wänn s Probläm mit dr Inschtallation git, chennt d Datei <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a> villicht wyterhälfe.',
 	'smw_smwadmin_smwhomepage' => 'Di vollständig Benutzerdokumentation vu Semantic MediaWiki findsch uf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Fähler chennte bi <a href="https://bugzilla.wikimedia.org/">MediaZilla</a> berichtet wäre.',
-	'smw_smwadmin_questions' => 'Wänn Du meh Frogen oder Vorschleg hesch, mach mit an dr Diskussion uf <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_mediazilla' => 'Fähler chennte bi <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> berichtet wäre.',
+	'smw_smwadmin_questions' => 'Wänn Du meh Frogen oder Vorschleg hesch, mach mit an dr Diskussion uf <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Hebrew (עברית)
@@ -2582,7 +2582,7 @@ $messages['he'] = array(
 	'smw_smwadmin_installfile' => 'אם יש לכם בעיות בהתקנה, התחילו בבדיקת ההנחיות המופיעות בקובץ <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'התיעוד המלא למשתמשי המדיה־ויקי הסמנטי נמצא בכתובת <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'ניתן לדווח על באגים ב<a href="https://bugzilla.wikimedia.org/">באגזילה של מדיה־ויקי</a>.',
-	'smw_smwadmin_questions' => 'אם יש לכם הצעות או שאלות נוספות, הצטרפו לדיון שנערך ב־<a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_questions' => 'אם יש לכם הצעות או שאלות נוספות, הצטרפו לדיון שנערך ב־<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Hindi (हिन्दी)
@@ -2868,8 +2868,8 @@ Progresso estimate del actualisation currente:',
 	'smw_smwadmin_supportdocu' => 'Plure ressources poterea adjutar te in caso de problemas:',
 	'smw_smwadmin_installfile' => 'Si tu incontra problemas con tu installation, comencia per verificar le directivas in le <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">file INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Le documentation de usator complete de Semantic MediaWiki se trova a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Le defectos pote esser reportate in <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
-	'smw_smwadmin_questions' => 'Si tu ha ulterior questiones o suggestiones, participa in le discussion a <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_mediazilla' => 'Le defectos pote esser reportate in <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Si tu ha ulterior questiones o suggestiones, participa in le discussion a <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Indonesian (Bahasa Indonesia)
@@ -3211,8 +3211,8 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw_smwadmin_supportdocu' => '問題が起きたときに種々のリソースが助けとなるかもしれません:',
 	'smw_smwadmin_installfile' => 'インストールに問題を発見した場合、<a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL ファイル</a>にある指針を確認することから始めてください。',
 	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki の完全な利用者用ドキュメントは <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
-	'smw_smwadmin_mediazilla' => 'バグは <a href="https://bugzilla.wikimedia.org/">MediaZilla</a> で報告できます。',
-	'smw_smwadmin_questions' => 'さらに質問や提案がある場合は、<a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a> での議論に参加してください。',
+	'smw_smwadmin_mediazilla' => 'バグは <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> で報告できます。',
+	'smw_smwadmin_questions' => 'さらに質問や提案がある場合は、<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a> での議論に参加してください。',
 );
 
 /** Javanese (Basa Jawa)
@@ -3603,7 +3603,7 @@ Mer donn jetz nit noch ein aanshtüße!',
 	'smw_smwadmin_datarefresh' => 'Date repareere un op der neuste Shtand bränge',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Joh, esch ben mer sescher, esch well dat han.',
 	'smw_smwadmin_supportdocu' => 'Bei Probleme kriss De velleich Hölp övver en Aanzahl vun Müjjeleschkeite:',
-	'smw_smwadmin_mediazilla' => 'Fähler kanns De övver <a href="https://bugzilla.wikimedia.org/" lang="en">MediaZilla</a> melde.',
+	'smw_smwadmin_mediazilla' => 'Fähler kanns De övver <a href="https://bugzilla.wikimedia.org/" lang="en">Bugzilla</a> melde.',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
@@ -3681,7 +3681,7 @@ $messages['lb'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jo, ech si sécher.',
 	'smw_smwadmin_support' => 'Ënnerstetzung kréien',
 	'smw_smwadmin_smwhomepage' => 'Déi komplett Benotzerdokumentatioun vu Semantic MediaWiki fannt Dir op b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Feeler kënnen op <a href="https://bugzilla.wikimedia.org/">MediaZilla</a> gemellt ginn.',
+	'smw_smwadmin_mediazilla' => 'Feeler kënnen op <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> gemellt ginn.',
 );
 
 /** Malayalam (മലയാളം)
@@ -4089,8 +4089,8 @@ Geschatte voortgang van de huidige taak:",
 	'smw_smwadmin_supportdocu' => 'Een aantal bronnen kunnen u ondersteunen als u problemen ondervindt:',
 	'smw_smwadmin_installfile' => 'Als u problemen ondervindt bij uw installatie, controleer dan de richlijnen in het bestand <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'De volledige gebruikersdocumentatie voor Semantic MediaWiki is te vinden op <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Bugs en suggesties kunt u rapporteren in <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
-	'smw_smwadmin_questions' => 'Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_mediazilla' => 'Bugs en suggesties kunt u rapporteren in <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
@@ -4291,8 +4291,8 @@ Estimert framdrift på den noverande oppdateringa:',
 	'smw_smwadmin_supportdocu' => 'Diverse ressursar kan kanskje hjelpa deg om du skulle få problem:',
 	'smw_smwadmin_installfile' => 'Om du møter på problem under installeringa, start med å studera retningslinene i <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL-fila</a>.',
 	'smw_smwadmin_smwhomepage' => 'Den komplette brukardokumentasjonen for Semantic MediaWiki finn du på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Feil kan bli rapporterte til <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
-	'smw_smwadmin_questions' => 'Om du har fleire spørsmål eller forslag, bli med i diskusjonen på <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_mediazilla' => 'Feil kan bli rapporterte til <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Om du har fleire spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
@@ -4626,8 +4626,8 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_smwadmin_supportdocu' => 'De ressorsas divèrsas vos poiriàn ajudar en cas de problèmas :',
 	'smw_smwadmin_installfile' => 'S\'experimentatz de problèmas amb vòstra installacion, començatz per agachar lo guida en linha dins lo <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">fichièr INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'La documentacion complèta de l’utilizaire de Semantic MediaWiki se tròba sus <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Los bògs pòdon èsser someses sus <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
-	'smw_smwadmin_questions' => 'Avètz d’autras questions o de suggestions, rejonhètz la discussion sus <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_mediazilla' => 'Los bògs pòdon èsser someses sus <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Avètz d’autras questions o de suggestions, rejonhètz la discussion sus <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Polish (Polski)
@@ -4942,8 +4942,8 @@ Progresso estimado da atualização corrente:',
 	'smw_smwadmin_supportdocu' => 'Vários recursos poderão ajudá-lo em caso de problemas:',
 	'smw_smwadmin_installfile' => 'Se tiver problemas com a sua instalação, comece por rever as linhas orientadoras no <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ficheiro INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'A documentação completa para o utilizador do Semantic MediaWiki está em <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Defeitos podem ser reportados no <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
-	'smw_smwadmin_questions' => 'Se você tem mais questões ou sugestões, junte-se à discussão em <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_mediazilla' => 'Defeitos podem ser reportados no <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Se você tem mais questões ou sugestões, junte-se à discussão em <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Tarifit (Tarifit)
@@ -5368,8 +5368,8 @@ Odhadovaný priebeh aktualizácie:',
 	'smw_smwadmin_supportdocu' => 'V prípade problémov vám môžu pomôcť rozličné zdroje:',
 	'smw_smwadmin_installfile' => 'Ak budete mať s inštaláciou problém, začnite kontrolou smerníc <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">v súbore INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Úplná používateľská dokumentácia Semantic MediaWiki sa nachádza na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Chyby môžete oznamovať v systéme <a href="https://bugzilla.wikimedia.org/">MediaZilla</a>.',
-	'smw_smwadmin_questions' => 'Ak máte ďalšie otázky alebo návrhy, zapojte sa do konferencie <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_mediazilla' => 'Chyby môžete oznamovať v systéme <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Ak máte ďalšie otázky alebo návrhy, zapojte sa do konferencie <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Serbian Cyrillic ekavian (ћирилица)
@@ -5572,7 +5572,7 @@ $messages['sr-ec'] = array(
 	'smw_smwadmin_installfile' => 'Ако се нађете у проблемима са вашом инсталацијом, погледајте водич у <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">фајлу INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Потпуна корисничка документација за Семантички медијавики, налази се на сајту <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Багови се могу пријављивати на <a href="https://bugzilla.wikimedia.org/">Медијазилу</a>.',
-	'smw_smwadmin_questions' => 'Ако имате даљих питања и сугестија, укључите се у дискусију на листи <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_questions' => 'Ако имате даљих питања и сугестија, укључите се у дискусију на листи <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** latinica (latinica)
@@ -6112,8 +6112,8 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_smwadmin_supportdocu' => 'Maaaring makatulong sa iyo ang sari-saring kapakipakinabang na mga bagay-bagay kung sakaling magkaroon ng mga suliranin:',
 	'smw_smwadmin_installfile' => 'Kung sakaling makaranas ka ng mga suliranin hinggil sa iyong pag-iinstala/gawaing panluluklok, magsimula sa pagsusuri ng mga pamamatnubay na nasa loob ng <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ILUKLOK ang talaksan</a>.',
 	'smw_smwadmin_smwhomepage' => 'Ang buong kasulatang pantagagamit ng Semantikong Mediawiki ay nasa <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => "Maaaring iulat ang mga depekto/sira (''bug'') sa <a href=\"https://bugzilla.wikimedia.org/\">MediaZilla</a>.",
-	'smw_smwadmin_questions' => 'Kung mayroon ka pang karagdagang mga katanungan at mga mungkahi, makilahok sa usapang nasa <a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>.',
+	'smw_smwadmin_mediazilla' => "Maaaring iulat ang mga depekto/sira (''bug'') sa <a href=\"https://bugzilla.wikimedia.org/\">Bugzilla</a>.",
+	'smw_smwadmin_questions' => 'Kung mayroon ka pang karagdagang mga katanungan at mga mungkahi, makilahok sa usapang nasa <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 );
 
 /** Vietnamese (Tiếng Việt)
@@ -6633,7 +6633,7 @@ $messages['zh-tw'] = array(
 	'smw_smwadmin_datarefreshstopconfirm' => '是的，我確定。',
 	'smw_smwadmin_support' => '取得支援',
 	'smw_smwadmin_smwhomepage' => '完整的Semantic MediaWiki用戶文件在<b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>。',
-	'smw_smwadmin_mediazilla' => '臭蟲(程式的缺陷)可回報至<a href="https://bugzilla.wikimedia.org/">MediaZilla</a>。',
-	'smw_smwadmin_questions' => '如果您有進一步的問題或建議，請參與在<a href="mailto:semediawiki-user@lists.sourceforge.net">semediawiki-user@lists.sourceforge.net</a>此處的討論。',
+	'smw_smwadmin_mediazilla' => '臭蟲(程式的缺陷)可回報至<a href="https://bugzilla.wikimedia.org/">Bugzilla</a>。',
+	'smw_smwadmin_questions' => '如果您有進一步的問題或建議，請參與在<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>此處的討論。',
 );
 
