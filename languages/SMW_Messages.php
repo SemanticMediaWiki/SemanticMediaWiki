@@ -609,7 +609,7 @@ $messages['ar'] = array(
 	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات في <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ملف INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لسيمانتيك ميدياويكي موجودة في <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'العلل يمكن إبلاغها إلى <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
-	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش في <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش في <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">منتدى مستخدمي سيمانتيك ميدياويكي</a>.',
 );
 
 /** Egyptian Spoken Arabic (مصرى)
@@ -964,8 +964,26 @@ $messages['be-tarask'] = array(
 	'smw_browselink' => 'Праглядзець уласьцівасьці',
 	'smw_browse_article' => 'Увядзіце назву старонкі для пачатку прагляду.',
 	'smw_browse_go' => 'Перайсьці',
+	'smw_browse_show_incoming' => 'паказаць уласьцівасьці, якія спасылаюцца сюды',
+	'smw_browse_hide_incoming' => 'схаваць уласьцівасьці, якія спасылаюцца сюды',
+	'smw_browse_no_outgoing' => 'Гэта старонка ня мае ўласьцівасьцяў.',
+	'smw_browse_no_incoming' => 'На гэту старонку не спасылаюцца ніякія ўласьцівасьці.',
+	'smw_inverse_label_default' => '$1 з',
+	'smw_inverse_label_property' => 'Паметка адваротнай уласьцівасьці',
+	'pageproperty' => 'Старонка пошуку ўласьцівасьцяў',
+	'smw_pp_docu' => 'Пошук усіх значэньняў уласьцівасьцяў на пададзенай старонцы.
+Увядзіце назвы старонкі і ўласьцівасьці.',
+	'smw_pp_from' => 'Са старонкі',
 	'smw_pp_type' => 'Уласьцівасьць',
+	'smw_pp_submit' => 'Шукаць',
+	'smw_result_prev' => 'Папярэднія',
+	'smw_result_next' => 'Наступныя',
 	'smw_result_results' => 'Вынікі',
+	'smw_result_noresults' => 'Вынікаў няма.',
+	'smwadmin' => 'Адміністраваньне Semantic MediaWiki',
+	'smw_smwadmin_settingup' => 'Устаноўкі сховішча Semantic MediaWiki',
+	'smw_smwadmin_setupsuccess' => 'Сховішча былі настроенае пасьпяхова.',
+	'smw_smwadmin_return' => 'Вярнуцца да $1',
 );
 
 /** Bulgarian (Български)
@@ -2208,7 +2226,7 @@ Progreso estimado da actualización actual:',
 	'smw_smwadmin_installfile' => 'Se experimenta problemas durante a súa instalación, comece comprobando a guía no <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ficheiro INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'A documentación do usuario completa de Semantic MediaWiki está en <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Pode informar dos erros en <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
-	'smw_smwadmin_questions' => 'Se ten máis preguntas ou suxestións, únase á conversa en <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'Se ten máis preguntas ou suxestións, únase á conversa no <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">foro de usuarios de Semantic MediaWiki</a>.',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
@@ -2321,6 +2339,7 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_types_docu' => 'Die Datetype chenne Eigeschafte zuegwise wäre. E jede Datetyp het e eigeni Syte, wu gnaueri Informatione druf chenne yytrage wäre.',
 	'smw_typeunits' => 'Maßeinheite vum Datetyp „$1“: $2',
 	'semanticstatistics' => 'Statischtik iber semantischi Date',
+	'smw_semstats_text' => "In däm Wiki {{PLURAL:$1|isch '''1''' Wert|sin '''$1''' Wärt}} fir insgsamt '''$2''' [[Special:Properties|{{PLURAL:$2|Eigeschaft|verschideni Eigeschafte}}]] yygee wore. '''$3''' {{PLURAL:$3|Eigeschaft het|Eigeschafte hän}} e eigeni Syte un dr gwischt Datetyp isch fir '''$4''' vu däne aagee wore. E paar vo dr Eigeschafte, wu s het, chenne [[Special:UnusedProperties|verwaisti Eigeschafte]] syy. Eigeschafte, wu no ne Syte sott aagleit wäre derfir, sin in dr [[Special:WantedProperties|Lischt vu dr gwinschte Eigeschafte]] ufgfiert.",
 	'flawedattributes' => 'Fählerhafti Eigeschafte',
 	'smw_fattributes' => 'In dr Syte, wu unte ufgfiert sin, het s fählerhafti Eigeschafte. D Aazahl vu dr fählerhafte Eigeschafte isch in dr Chlammere aagee.',
 	'uriresolver' => 'URI-Ufleser',
@@ -4231,6 +4250,10 @@ Lagar ein RDF som ein kan gå gjennom.',
 Kvar datatype har ei sida der ekstra informasjon kan verta oppgjeven.',
 	'smw_typeunits' => 'Måleiningar av typen «$1»: $2',
 	'semanticstatistics' => 'Semantisk statistikk',
+	'smw_semstats_text' => 'Denne wikien inneheld <b>$1</b> eigenskapsverdiar for totalt <b>$2</b> einskilde <a href="$3">eigenskapar</a>.
+<b>$4</b> eigenskapar har ei eiga sida, og den meinte datatypen er oppgjeven for <b>$5</b> av desse.
+Somme av dei eksisterande eigenskapane kan vera <a href="$6">unytta eigenskapar</a>.
+Eigenskapar som framleis ikkje har ei eiga sida finst på <a href="$7">lista over ynskte eigenskapar</a>.',
 	'flawedattributes' => 'Ugyldige eigenskapar',
 	'smw_fattributes' => 'Sidene som er lista opp nedanfor har ein feildefinert eigenskap.
 Talet på feildefinerte eigenskaper er oppgjeve i parentes.',
@@ -4322,7 +4345,7 @@ Estimert framdrift på den noverande oppdateringa:',
 	'smw_smwadmin_installfile' => 'Om du møter på problem under installeringa, start med å studera retningslinene i <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL-fila</a>.',
 	'smw_smwadmin_smwhomepage' => 'Den komplette brukardokumentasjonen for Semantic MediaWiki finn du på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feil kan bli rapporterte til <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
-	'smw_smwadmin_questions' => 'Om du har fleire spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'Om du har fleire spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki-brukarforumet</a>.',
 );
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
@@ -4563,13 +4586,17 @@ $messages['oc'] = array(
 	'smw_unusedproperty_template' => '$1 de tipe $2',
 	'wantedproperties' => 'Proprietats demandadas',
 	'smw_wantedproperties_docu' => 'Las proprietats seguentas son utilizadas sus aqueste wiki mas an pas encara de pagina per las descriure.',
-	'smw_wantedproperty_template' => '$1 ($2 utilizacions)',
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|utilizacion|utilizacions}})',
 	'tooltip-purge' => "Reactualizar totas las recèrcas e totes los borrolhons d'aquesta pagina.",
 	'smw_purge' => 'Reactualizar',
 	'types' => 'Tipes',
 	'smw_types_docu' => "Los tipes de donadas seguents pòdon èsser assignadas als atributs. Cada tipe de donadas a son pròpri article, dins lo qual pòdon figurar d'entresenhas mai precisas.",
 	'smw_typeunits' => 'Unitats de mesura de tipe “$1” : $2',
 	'semanticstatistics' => 'Estatisticas semanticas',
+	'smw_semstats_text' => "Aqueste wiki conten '''$1''' {{PLURAL:$1|valor|valors}} de proprietat per una soma de '''$2''' [[Special:Properties|{{PLURAL:$2|proprietat diferenta|proprietats diferentas}}]].
+'''$3''' {{PLURAL:$3|proprietat a sa|proprietats an lor}} pagina pròprie, e lo tipe de donadas volgut es especificat per '''$4''' d'aquesta. 
+Unas de las proprietats existentas pòdon en fach èsser [[Special:UnusedProperties|inutilizadas]].
+Las proprietats qu'an pas encara de pagina se tròban dins la [[Special:WantedProperties|lista de las proprietats demandadas]].",
 	'flawedattributes' => 'Atributs defectuoses',
 	'smw_fattributes' => "Las paginas çaijós an un atribut qu'es pas definit corrèctament. Lo nombre d'atributs incorrèctes es donat entre las parentèsis.",
 	'uriresolver' => "Resolveire d'URI",
@@ -4657,7 +4684,7 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_smwadmin_installfile' => 'S\'experimentatz de problèmas amb vòstra installacion, començatz per agachar lo guida en linha dins lo <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">fichièr INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'La documentacion complèta de l’utilizaire de Semantic MediaWiki se tròba sus <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Los bògs pòdon èsser someses sus <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
-	'smw_smwadmin_questions' => 'Avètz d’autras questions o de suggestions, rejonhètz la discussion sus <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'Avètz d’autras questions o de suggestions, rejonhètz la discussion sul <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum dels utilizaires de Semantic MediaWiki</a>.',
 );
 
 /** Polish (Polski)
@@ -6052,6 +6079,10 @@ Gumagawa ng matitingnan-tingnang RDF.',
 Mayroong isang pahina ang bawat uri ng dato kung saan maaaring makapagbigay ng karagdagang kabatiran.',
 	'smw_typeunits' => 'Mga yunit ng sukat ng uring "$1": $2',
 	'semanticstatistics' => 'Mga estadistika ng Semantiko (hinggil sa kahulugan ng mga salita)',
+	'smw_semstats_text' => "Naglalaman ang wiking ito ng '''$1''' {{PLURAL:$1|halaga|mga halaga}} ng ari-ariang may kabuoang '''$2''' [[Special:Properties|{{PLURAL:$2|ari-arian|iba't ibang ari-arian}}]].
+'''$3''' {{PLURAL:$3|pag-aari ang may|mga pag-aari ang may mga}} sariling pahina na, at ang inilalaang uri ng dato ay tinukoy para sa '''$4''' ng mga iyon.
+Ilan sa umiiral na mga ari-arian ay maaaring [[Special:UnusedProperties|hindi ginagamit na mga pag-aari]].
+Ang mga ari-ariang wala pa ring isang pahina ay matatagpuan sa [[Special:WantedProperties|talaan ng ninanais na mga pag-aari]].",
 	'flawedattributes' => 'Mga ari-ariang may gawak/sira',
 	'smw_fattributes' => 'Ang mga pahinang nakatala sa ibaba ay isang pag-aaring may maling kahulugan.
 Ang bilang ng maling mga ari-arian ay ibinigay sa loob ng mga kasingay (brakete).',
@@ -6143,7 +6174,7 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_smwadmin_installfile' => 'Kung sakaling makaranas ka ng mga suliranin hinggil sa iyong pag-iinstala/gawaing panluluklok, magsimula sa pagsusuri ng mga pamamatnubay na nasa loob ng <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ILUKLOK ang talaksan</a>.',
 	'smw_smwadmin_smwhomepage' => 'Ang buong kasulatang pantagagamit ng Semantikong Mediawiki ay nasa <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => "Maaaring iulat ang mga depekto/sira (''bug'') sa <a href=\"https://bugzilla.wikimedia.org/\">Bugzilla</a>.",
-	'smw_smwadmin_questions' => 'Kung mayroon ka pang karagdagang mga katanungan at mga mungkahi, makilahok sa usapang nasa <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'Kung mayroon ka pang karagdagang mga katanungan o mga mungkahi, makilahok sa usapang nasa <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Pangmadlang talakayan ng tagagamit ng MediaWiking Semantiko</a>.',
 );
 
 /** Uighur (Latin) (Uyghurche‎ / ئۇيغۇرچە (Latin))
