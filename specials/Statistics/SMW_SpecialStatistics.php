@@ -24,7 +24,7 @@ function smwfExecuteSemanticStatistics() {
 
 	wfLoadExtensionMessages( 'SemanticMediaWiki' );
 
-	$out = wfMsgExt( 'smw_semstats_text', array( 'parsemag' ),
+	$out = wfMsgExt( 'smw_semstats_text', array( 'parse' ),
 		$wgLang->formatNum( $semstats['PROPUSES'] ), $wgLang->formatNum( $semstats['USEDPROPS'] ),
 		$wgLang->formatNum( $property_pages ), $wgLang->formatNum( $semstats['DECLPROPS'] )
 	);
