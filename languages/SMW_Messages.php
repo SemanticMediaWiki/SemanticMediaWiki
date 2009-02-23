@@ -204,8 +204,8 @@ It takes care that humans don\'t turn into websites.</p>',
 	'smw_sbv_displayresult' => 'A list of all pages that have property "$1" with value "$2"',
 	'smw_sbv_displayresultfuzzy' => 'A list of all pages that have property "$1" with value "$2".
 Since there have been only a few results, also nearby values are displayed.',
-	'smw_sbv_property'      => 'Property',
-	'smw_sbv_value'         => 'Value',
+	'smw_sbv_property'      => 'Property:',
+	'smw_sbv_value'         => 'Value:',
 	'smw_sbv_submit'        => 'Find results',
 
 	// Messages for the browsing special
