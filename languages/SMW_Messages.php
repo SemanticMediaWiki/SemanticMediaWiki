@@ -542,8 +542,8 @@ $messages['ar'] = array(
 	'smw_sbv_displayresult' => 'قائمة بكل الصفحات التي بها الخاصية "$1" بالقيمة "$2"',
 	'smw_sbv_displayresultfuzzy' => 'قائمة بكل الصفحات التي لديها الخاصية "$1" بالقيمة "$2".
 بما أنه كانت هناك فقط عدة نتائج، فالقيم المقاربة معروضة أيضا.',
-	'smw_sbv_property' => 'خاصية',
-	'smw_sbv_value' => 'قيمة',
+	'smw_sbv_property' => 'خاصية:',
+	'smw_sbv_value' => 'قيمة:',
 	'smw_sbv_submit' => 'إيجاد نتائج',
 	'browse' => 'استعرض يكي',
 	'smw_browselink' => 'خصائص التصفح',
@@ -929,7 +929,7 @@ $messages['be-tarask'] = array(
 Кожны тып зьвестак мае старонку, дзе можа знаходзіцца дадатковая інфармацыя.',
 	'smw_typeunits' => 'Адзінкі вымярэньня тыпу «$1»: $2',
 	'semanticstatistics' => 'Сэмантычная статыстыка',
-	'smw_semstats_text' => "{{SITENAME}} ўтрымлівае '''$1''' {{PLURAL:$1|значэньне|значэньні|значэньняў}} для '''$2''' [[Special:Properties|{{PLURAL:$1|уласьцівасьці|уласьцівасьцяў|ўласьцівасьцяў}}]].
+	'smw_semstats_text' => "{{SITENAME}} утрымлівае '''$1''' {{PLURAL:$1|значэньне|значэньні|значэньняў}} для '''$2''' [[Special:Properties|{{PLURAL:$1|уласьцівасьці|уласьцівасьцяў|ўласьцівасьцяў}}]].
 <b>$3</b> {{PLURAL:$3|уласьцівасьць мае|уласьцівасьці маюць|уласьцівасьцяў маюць}} асабістыя старонкі, і пазначаны тып зьвестак падыходзіць для <b>$4</b> зь іх.
 Некаторыя з існуючых уласьцівасьцяў могуць [[Special:UnusedProperties|не выкарыстоўвацца]].
 Уласьцівасьці, якія яшчэ ня маюць асобных старонак, знаходзяцца ў [[Special:WantedProperties|сьпісе старонак, якія патрабуюць апісаньня]].",
@@ -982,7 +982,7 @@ $messages['be-tarask'] = array(
 	'smw_result_noresults' => 'Вынікаў няма.',
 	'smwadmin' => 'Адміністраваньне Semantic MediaWiki',
 	'smw_smwadmin_settingup' => 'Устаноўкі сховішча Semantic MediaWiki',
-	'smw_smwadmin_setupsuccess' => 'Сховішча былі настроенае пасьпяхова.',
+	'smw_smwadmin_setupsuccess' => 'Сховішча было настроенае пасьпяхова.',
 	'smw_smwadmin_return' => 'Вярнуцца да $1',
 	'smw_smwadmin_updatestarted' => 'Быў распачаты новы працэс абнаўленьня сэмантычных зьвестак.
 Усе зьвесткі будуць пераўтвораны, ці зьменены калі гэта будзе неабходна.
@@ -991,6 +991,20 @@ $messages['be-tarask'] = array(
 Не стварайце новы.',
 	'smw_smwadmin_updatestopped' => 'Усе існуючыя працэсы абнаўленьня былі спынены.',
 	'smw_smwadmin_updatenotstopped' => 'Каб спыніць працэс абнаўленьня, Вам неабходна паставіць паметку ў полі, каб пацьвердзіць Вашыя намеры.',
+	'smw_smwadmin_docu' => 'Гэта спэцыяльная старонка дапамагае Вам пад час усталяваньня і абнаўленьня <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Не забывайце захоўваць каштоўныя зьвесткі перад выкананьнем адміністратарскіх функцыяй.',
+	'smw_smwadmin_db' => 'Усталяваньне і абнаўленьне базы зьвестак',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki патрабуе некаторыя пашырэньні, каб база зьвестак MediaWiki змагла захоўваць сэмантычныя зьвесткі.
+Наступная функцыя гарантуе, што Вашая база зьвестак усталяваная правільна.
+Зьмены, зробленыя на гэтым этапе, не паўплываюць на астатнія базы зьвестак MediaWiki, і могуць быць лёгка адмененыя па жаданьні.
+Гэта ўсталёвачная функцыя можа быць выкананая некалькі разоў без аніякай шкоды, але для усталяваньня ці абнаўленьня дастаткова будзе аднаго разу.',
+	'smw_smwadmin_permissionswarn' => 'Калі адбываюцца SQL-памылкі пад час выкананьня апэрацыі, то гэта азначае, што рахунак базы зьвестак, які выкарыстоўвае {{SITENAME}} (праверце Вашыя LocalSettings.php), магчыма ня мае адпаведных правоў.
+Надайце рахунак дадатковыя правы на стварэньне і выдаленьне табліцаў, часова ўвядзіце рахунак адміністратара базы зьвестак у LocalSettings.php, ці карыстайцеся скрыптом падтрымкі <tt>SMW_setup.php</tt>, які можа выкарыстоўваць рахунак з AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'Усталяваць ці абнавіць табліцы',
+	'smw_smwadmin_announce' => 'Анансуйце {{GRAMMAR:вінавальны|{{SITENAME}}}}',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki мае сэрвіс для анансаваньня новых сэмантычных вікі-сайтаў.
+Яна выкарыстоўваецца для падтрымкі сьпісу публічных сайтаў, якія выкарыстоўваюць Semantic MediaWiki, у асноўным для таго, каб дапамагчы <a href="http://semantic-mediawiki.org/wiki/SMW_Project">праекту Semantic MediaWiki</a> атрымаць агляд тыповых выкарыстаньняў Semantic MediaWiki.
+Глядзіце хатнюю старонку Semantic MediaWiki для <a href="http://semantic-mediawiki.org/wiki/Registry">атрыманьня дадатковай інфармацыі пра гэты сэрвіс</a>.',
 );
 
 /** Bulgarian (Български)
@@ -2241,9 +2255,10 @@ Progreso estimado da actualización actual:',
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
  * @author Crazymadlover
+ * @author Omnipaedista
  */
 $messages['grc'] = array(
-	'smw_sbv_value' => 'Τιμή',
+	'smw_sbv_value' => 'Τιμή:',
 	'smw_browse_go' => 'Ἱέναι',
 	'smw_result_prev' => 'Προηγουμέναι',
 	'smw_result_next' => 'Ἑπομέναι',
@@ -2372,8 +2387,8 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_sbv_displayresult' => 'E Lischt vu allene Syte, wu e Eigeschaft $1 mit em Wärt $2 hän.',
 	'smw_sbv_displayresultfuzzy' => 'E Lischt vu allene Syte, wu d Eigeschaft „$1“ mit em Wärt „$2“ hän.
 Wel nume wenig Ergebnis gfunde wore sin, wäre au ähnligi Wärt ufglischtet.',
-	'smw_sbv_property' => 'Eigeschaft',
-	'smw_sbv_value' => 'Wärt',
+	'smw_sbv_property' => 'Eigeschaft:',
+	'smw_sbv_value' => 'Wärt:',
 	'smw_sbv_submit' => 'Ergebnis finde',
 	'browse' => 'Wiki browse',
 	'smw_browselink' => 'Eigeschaften aazeige',
@@ -2819,7 +2834,7 @@ Genera un RDF navigabile.',
 	'smw_unusedproperty_template' => '$1 del typo $2',
 	'wantedproperties' => 'Proprietates desirate',
 	'smw_wantedproperties_docu' => 'Le sequente proprietates es uate in le wiki sed non ha ancora un pagina pro describer los.',
-	'smw_wantedproperty_template' => '$1 ($2 usos)',
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|uso|usos}})',
 	'tooltip-purge' => 'Clicca hic pro refrescar tote le consultas e patronos in iste pagina',
 	'smw_purge' => 'Refrescar',
 	'types' => 'Typos',
@@ -2827,6 +2842,11 @@ Genera un RDF navigabile.',
 Cata typo de datos ha un pagina ubi informationes additional pote esser fornite.',
 	'smw_typeunits' => 'Unitates de mesura del typo "$1": $2',
 	'semanticstatistics' => 'Statisticas semantic',
+	'smw_semstats_text' => "Iste wiki contine '''$1''' {{PLURAL:$1|valor|valores}} de proprietate pro un total de '''$2'''
+[[Special:Properties|{{PLURAL:$2|proprietate|proprietates distincte}}]].
+<b>$3</b> {{PLURAL:$3|proprietate ha su proprie pagina|proprietates ha lor proprie paginas}}, e le typo de datos intendite es specificate pro '''$4''' de {{PLURAL:$3|illo|illos}}.
+Alcunes del proprietates existente pote esser [[Special:UnusedProperties|proprietates non usate]].
+Le proprietates al quales manca ancora un pagina se trova in le [[Special:WantedProperties|lista de proprietates desirate]].",
 	'flawedattributes' => 'Proprietates problematic',
 	'smw_fattributes' => 'Le paginas listate infra ha un proprietate incorrectemente definite.
 Le numero de proprietates incorrecte es date inter parentheses.',
@@ -2851,8 +2871,8 @@ Illo assecura que le humanos non se transforma in sitos web.</p>',
 	'smw_sbv_displayresult' => 'Un lista de tote le paginas que ha le proprietate "$1" con valor "$2"',
 	'smw_sbv_displayresultfuzzy' => 'Un lista de tote le paginas que ha le proprietate "$1" con valor "$2".
 Post que il ha pauc resultatos, le valores proxime es equalmente monstrate.',
-	'smw_sbv_property' => 'Proprietate',
-	'smw_sbv_value' => 'Valor',
+	'smw_sbv_property' => 'Proprietate:',
+	'smw_sbv_value' => 'Valor:',
 	'smw_sbv_submit' => 'Cercar resultatos',
 	'browse' => 'Percurrer le wiki',
 	'smw_browselink' => 'Percurrer proprietates',
@@ -2919,7 +2939,7 @@ Progresso estimate del actualisation currente:',
 	'smw_smwadmin_installfile' => 'Si tu incontra problemas con tu installation, comencia per verificar le directivas in le <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">file INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Le documentation de usator complete de Semantic MediaWiki se trova a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Le defectos pote esser reportate in <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
-	'smw_smwadmin_questions' => 'Si tu ha ulterior questiones o suggestiones, participa in le discussion a <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'Si tu ha ulterior questiones o suggestiones, participa in le discussion al <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">foro del usatores de Semantic MediaWiki</a>.',
 );
 
 /** Indonesian (Bahasa Indonesia)
