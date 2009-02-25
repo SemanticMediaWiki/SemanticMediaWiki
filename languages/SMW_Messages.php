@@ -1005,6 +1005,13 @@ $messages['be-tarask'] = array(
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki мае сэрвіс для анансаваньня новых сэмантычных вікі-сайтаў.
 Яна выкарыстоўваецца для падтрымкі сьпісу публічных сайтаў, якія выкарыстоўваюць Semantic MediaWiki, у асноўным для таго, каб дапамагчы <a href="http://semantic-mediawiki.org/wiki/SMW_Project">праекту Semantic MediaWiki</a> атрымаць агляд тыповых выкарыстаньняў Semantic MediaWiki.
 Глядзіце хатнюю старонку Semantic MediaWiki для <a href="http://semantic-mediawiki.org/wiki/Registry">атрыманьня дадатковай інфармацыі пра гэты сэрвіс</a>.',
+	'smw_smwadmin_announcebutton' => 'Націсьніце наступную кнопку, каб дадаць спасылку на {{GRAMMAR:вінавальны|{{SITENAME}}}} да гэтага сэрвісу.
+Сэрвіс не регіструе вікі, якія ня маюць публічнага доступу, таму што ён захоўвае толькі агульнадаступную інфармацыю.',
+	'smw_smwadmin_datarefresh' => 'Выпраўленьне і абнаўленьне зьвестак',
+	'smw_smwadmin_datarefreshbutton' => 'Пачаць абнаўленьне зьвестак',
+	'smw_smwadmin_datarefreshstop' => 'Спыніць гэта абнаўленьне',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Так, я ўпэўнены.',
+	'smw_smwadmin_support' => 'Падтрымка',
 );
 
 /** Bulgarian (Български)
@@ -1146,12 +1153,12 @@ $messages['cs'] = array(
 	'smw_unknowntype' => 'Pro vlastnost je definován nepodporovaný typ „$1“.',
 	'smw_manytypes' => 'Pro vlastnost byl definován více než jeden typ.',
 	'smw_emptystring' => 'Prázdné řetězce nejsou povolené.',
-	'smw_maxstring' => 'Reprezentace řetězce $1 je pro tuto wiki příliš dlouhá.',
+	'smw_maxstring' => 'Reprezentace řetězce $1 je příliš dlouhá.',
 	'smw_notinenum' => '„$1“ není v seznamu možných hodnot ($2) této vlastnosti.',
 	'smw_noboolean' => '„$1“ nebylo rozpoznáno jako platná hodnota typu boolean (ano/ne).',
 	'smw_nofloat' => '“$1” není číslem.',
-	'smw_infinite' => 'Tak dlouhá čísla jako $1 nejsou na této stránce podporovaná.',
-	'smw_infinite_unit' => 'Konverze na jednotky $1 dala jako výsledek číslo, které je pro tuto stránku příliš dlouhé.',
+	'smw_infinite' => 'Tak dlouhá čísla jako $1 nejsou podporována.',
+	'smw_infinite_unit' => 'Konverze na jednotky $1 dala jako výsledek číslo, které je příliš dlouhé.',
 	'smw_unsupportedprefix' => 'Předpony pro čísla („$1“) nejsou podporované.',
 	'smw_unsupportedunit' => 'Konverze pro jednotku "$1" není podporována.',
 	'smw_lonely_unit' => 'Před symbolem „$1“ se nenachází číslo.',
@@ -1213,6 +1220,10 @@ Výsledky pravděpodobně nesplní očekávání.',
 	'smw_types_docu' => 'Následuje seznam všech údajových typů, které je možné přiřadit vlastnostem. Každý údajový typ má stránku, kde je možné uvést dodatečné informace.',
 	'smw_typeunits' => 'Jednotky typu „$1“: $2',
 	'semanticstatistics' => 'Statistika sémantik',
+	'smw_semstats_text' => 'Tato wiki obsahuje <b>$1</b> hodnot vlastností celkem <b>$2</b> rozličných <a href="$3">vlastností</a>.
+<b>$4</b> vlastností nemá vlastní stránku a zamýšlený datový typ má uvedený <b>$5</b> z nich.
+Některé z existujících vlastností mohou být <a href="$6">nepoužívané</a>.
+Vlastnosti, kterým stále chybí stránka se nacházejí na <a href="$7">seznamu požadovaných vlastností</a>.',
 	'flawedattributes' => 'Chybných atributů',
 	'smw_fattributes' => 'Níže uvedené stránky mají nesprávně definovanou vlastnost. Počet nesprávných vlastností udává číslo v závorkách.',
 	'uriresolver' => 'Překladač URI',
@@ -1252,6 +1263,8 @@ Prosím, zadejte stránku i vlastnost.',
 	'smw_result_noresults' => 'Bohužel nejsou žádné výsledky.',
 	'smwadmin' => 'Funkce pro administraci Sémantické wiki',
 	'smw_smwadmin_return' => 'Zpět na $1',
+	'smw_smwadmin_updatestopped' => 'Všechny procesy aktualizace byly zastaveny.',
+	'smw_smwadmin_updatenotstopped' => 'Abyste zastavili běžící proces aktualizace, musíte zaškrtnout políčko, čímž potvrdíte, že si jste jisti.',
 );
 
 /** German (Deutsch)
@@ -2990,7 +3003,7 @@ $messages['it'] = array(
 	'smw_unknowntype' => '&Egrave; stato definito un tipo non supportato “$1” per la propriet&agrave;.',
 	'smw_manytypes' => '&Egrave; stato definito pi&ugrave; di un tipo per la propriet&agrave;.',
 	'smw_emptystring' => 'Le stringhe vuote non sono accettate.',
-	'smw_maxstring' => 'La stringa $1 &egrave; troppo lunga per {{SITENAME}}.',
+	'smw_maxstring' => 'La stringa $1 è troppo lunga.',
 	'smw_notinenum' => '“$1” non &egrave; nella lista dei valori possibili ($2) per questa propriet&agrave;.',
 	'smw_noboolean' => '“$1” non &egrave; riconosciuto come valore Booleano (vero/falso).',
 	'smw_true_words' => 'vero,v,si,s,true,t,yes,y',
@@ -3084,8 +3097,8 @@ Le proprietà che ancora non hanno una pagina si possono trovare nell'[[Special:
 	'smw_sbv_displayresult' => 'Lista di tutte le pagine che hanno propriet&agrave; “$1” con valore “$2”',
 	'smw_sbv_displayresultfuzzy' => 'Una lista di tutte le pagine che hanno la proprietà "$1" col valore "$2".
 Siccome ci sono solo pochi risultati, sono visualizzati anche i valori vicini.',
-	'smw_sbv_property' => 'Propriet&agrave;',
-	'smw_sbv_value' => 'Valore',
+	'smw_sbv_property' => 'Proprietà:',
+	'smw_sbv_value' => 'Valore:',
 	'smw_sbv_submit' => 'Trova risultati',
 	'browse' => 'Esplora il wiki',
 	'smw_browselink' => 'Sfoglia le proprietà',
@@ -4649,8 +4662,8 @@ Las proprietats qu'an pas encara de pagina se tròban dins la [[Special:WantedPr
 	'smw_sbv_novalue' => '<p>Picatz una valor o consultatz totas las valors dels atributs per $1.</p>',
 	'smw_sbv_displayresult' => "Lista de totas las paginas qu'an un atribut $1 amb la valor $2.",
 	'smw_sbv_displayresultfuzzy' => 'Una lista de totas las paginas que son la proprietat « $1 » amb la valor « $2 ». Perque i a pas que qualques resultats, las valors pròchas tanben son afichadas.',
-	'smw_sbv_property' => 'Proprietat',
-	'smw_sbv_value' => 'Valor',
+	'smw_sbv_property' => 'Proprietat :',
+	'smw_sbv_value' => 'Valor :',
 	'smw_sbv_submit' => 'Trobar de resultats',
 	'browse' => 'Percórrer lo wiki',
 	'smw_browselink' => 'Cercar las proprietats',
@@ -5374,6 +5387,9 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_types_docu' => 'Nasleduje zoznam všetkých údajových typov, ktoré je možné priradiť atribútom. Každý údajový typ má stránku, kde je možné poskytnúť dodatočné informácie.',
 	'smw_typeunits' => 'Jednotky typu „$1“: $2',
 	'semanticstatistics' => 'Sémantická štatistika',
+	'smw_semstats_text' => "Táto wiki obsahuje '''$1''' {{PLURAL:$1|hodnotu|hodnoty|hodnôt}} vlastností celkom {{PLURAL:$2|'''jednej''' vlastnosti|'''$2''' rozličných vlastností|'''$2''' rozličných vlastností}}. {{PLURAL:$3|'''Jedna''' vlastnosť má|'''$3''' vlastnosti majú|'''$3''' vlastností má}} vlastnú stránku a zamýšľaný údajový typ {{PLURAL:$4|má uvedený '''$4''' z nich|majú uvedené '''$4''' z nich|má uvedených '''$4''' z nich}}.
+Niektoré z existujúcich vlastností môžu byť [[Special:UnusedProperties|nepoužité]].
+Vlastnosti, ktorým stále chýba stránka sa nachádzajú na [[Special:WantedProperties|zozname žiadaných vlastností]].",
 	'flawedattributes' => 'Chybných atribútov',
 	'smw_fattributes' => 'Nižšie uvedené stránky majú nesprávne definovaný atribút. Počet nesprávnych atribútov udáva číslo v zátvorkách.',
 	'uriresolver' => 'Prekladač URI',
@@ -5463,7 +5479,7 @@ Odhadovaný priebeh aktualizácie:',
 	'smw_smwadmin_installfile' => 'Ak budete mať s inštaláciou problém, začnite kontrolou smerníc <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">v súbore INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Úplná používateľská dokumentácia Semantic MediaWiki sa nachádza na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Chyby môžete oznamovať v systéme <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
-	'smw_smwadmin_questions' => 'Ak máte ďalšie otázky alebo návrhy, zapojte sa do konferencie <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'Ak máte ďalšie otázky alebo návrhy, zapojte sa do diskusie <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">na používateľskom fóre Semantic MediaWiki</a>.',
 );
 
 /** Serbian Cyrillic ekavian (ћирилица)
@@ -6144,8 +6160,8 @@ Pinag-iingatan nitong huwag maging mga sityo ng web (websayt) ang mga tao.</p>',
 	'smw_sbv_displayresult' => 'Isang talaan ng lahat ng mga pahinang may pag-aaring "$1" na may halagang "$2"',
 	'smw_sbv_displayresultfuzzy' => 'Isang talaan ng lahat ng mga pahinang may pag-aaring "$1" na may halagang "$2".
 Dahil mayroong mangilan-ngilang mga kinalabasan lamang, ipinakikita rin ang kalapit na mga halaga.',
-	'smw_sbv_property' => 'Pag-aari',
-	'smw_sbv_value' => 'Halaga',
+	'smw_sbv_property' => 'Pag-aari:',
+	'smw_sbv_value' => 'Halaga:',
 	'smw_sbv_submit' => 'Hanapin ang mga kinalabasan',
 	'browse' => 'Tumingin-tingin sa wiki',
 	'smw_browselink' => 'Tumingin-tingin sa mga pag-aari',
