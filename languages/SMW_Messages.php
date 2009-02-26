@@ -992,26 +992,39 @@ $messages['be-tarask'] = array(
 	'smw_smwadmin_updatestopped' => 'Усе існуючыя працэсы абнаўленьня былі спынены.',
 	'smw_smwadmin_updatenotstopped' => 'Каб спыніць працэс абнаўленьня, Вам неабходна паставіць паметку ў полі, каб пацьвердзіць Вашыя намеры.',
 	'smw_smwadmin_docu' => 'Гэта спэцыяльная старонка дапамагае Вам пад час усталяваньня і абнаўленьня <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
-Не забывайце захоўваць каштоўныя зьвесткі перад выкананьнем адміністратарскіх функцыяй.',
+Не забывайце захоўваць каштоўныя зьвесткі перад выкананьнем адміністратарскіх функцыяў.',
 	'smw_smwadmin_db' => 'Усталяваньне і абнаўленьне базы зьвестак',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki патрабуе некаторыя пашырэньні, каб база зьвестак MediaWiki змагла захоўваць сэмантычныя зьвесткі.
 Наступная функцыя гарантуе, што Вашая база зьвестак усталяваная правільна.
 Зьмены, зробленыя на гэтым этапе, не паўплываюць на астатнія базы зьвестак MediaWiki, і могуць быць лёгка адмененыя па жаданьні.
-Гэта ўсталёвачная функцыя можа быць выкананая некалькі разоў без аніякай шкоды, але для усталяваньня ці абнаўленьня дастаткова будзе аднаго разу.',
+Гэта ўсталёвачная функцыя можа быць выкананая некалькі разоў без аніякай шкоды, але для ўсталяваньня ці абнаўленьня дастаткова будзе аднаго разу.',
 	'smw_smwadmin_permissionswarn' => 'Калі адбываюцца SQL-памылкі пад час выкананьня апэрацыі, то гэта азначае, што рахунак базы зьвестак, які выкарыстоўвае {{SITENAME}} (праверце Вашыя LocalSettings.php), магчыма ня мае адпаведных правоў.
-Надайце рахунак дадатковыя правы на стварэньне і выдаленьне табліцаў, часова ўвядзіце рахунак адміністратара базы зьвестак у LocalSettings.php, ці карыстайцеся скрыптом падтрымкі <tt>SMW_setup.php</tt>, які можа выкарыстоўваць рахунак з AdminSettings.php.',
+Надайце рахунку дадатковыя правы на стварэньне і выдаленьне табліцаў, часова ўвядзіце рахунак адміністратара базы зьвестак у LocalSettings.php, ці карыстайцеся скрыптом падтрымкі <tt>SMW_setup.php</tt>, які можа выкарыстоўваць рахунак з AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Усталяваць ці абнавіць табліцы',
 	'smw_smwadmin_announce' => 'Анансуйце {{GRAMMAR:вінавальны|{{SITENAME}}}}',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki мае сэрвіс для анансаваньня новых сэмантычных вікі-сайтаў.
 Яна выкарыстоўваецца для падтрымкі сьпісу публічных сайтаў, якія выкарыстоўваюць Semantic MediaWiki, у асноўным для таго, каб дапамагчы <a href="http://semantic-mediawiki.org/wiki/SMW_Project">праекту Semantic MediaWiki</a> атрымаць агляд тыповых выкарыстаньняў Semantic MediaWiki.
 Глядзіце хатнюю старонку Semantic MediaWiki для <a href="http://semantic-mediawiki.org/wiki/Registry">атрыманьня дадатковай інфармацыі пра гэты сэрвіс</a>.',
 	'smw_smwadmin_announcebutton' => 'Націсьніце наступную кнопку, каб дадаць спасылку на {{GRAMMAR:вінавальны|{{SITENAME}}}} да гэтага сэрвісу.
-Сэрвіс не регіструе вікі, якія ня маюць публічнага доступу, таму што ён захоўвае толькі агульнадаступную інфармацыю.',
+Сэрвіс не рэгіструе вікі, якія ня маюць публічнага доступу, таму што ён захоўвае толькі агульнадаступную інфармацыю.',
 	'smw_smwadmin_datarefresh' => 'Выпраўленьне і абнаўленьне зьвестак',
+	'smw_smwadmin_datarefreshdocu' => 'Існуе магчымасьць аднаўленьня ўсіх зьвестак Semantic MediaWiki на аснове цяперашняга зьместу {{GRAMMAR:родны|{{SITENAME}}}}.
+Гэта можа быць карысным для аднаўленьня парушаных зьвестак ці абнаўленьня зьвестак, калі ўнутраны фармат зьмяняецца пры абнаўленьні праграмнага забесьпячэньня.
+Абнаўленьне будзе выконвацца старонка за старонкай і можа заняць пэўны час.
+Ніжэй паказваецца інфармацыя, ці адбываецца абнаўленьне, якая дазваляе Вам пачынаць ці спыняць абнаўленьне (за выключэньнем выпадкаў, калі гэта магчымасьць забароненая адміністратарам сайта).',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Ідзе працэс абнаўленьня.</strong>
+Гэта нармальна, што працэс абнаўленьня запавольваецца, і зьвесткі абнаўляюцца невялікімі кавалкамі.
+Каб скончыць абнаўленьне хутчэй, Вы можаце скарыстацца скрыптом падтрымкі МэдыяВікі <tt>runJobs.php</tt> (карыстайцеся ўстаноўкай <tt>--maxjobs 1000</tt>, каб абмежаваць колькасьць выкананых абнаўленьняў у адным пакеце).
+Прыкладны час сканчэньня цяперашняга абнаўленьня:',
 	'smw_smwadmin_datarefreshbutton' => 'Пачаць абнаўленьне зьвестак',
 	'smw_smwadmin_datarefreshstop' => 'Спыніць гэта абнаўленьне',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Так, я ўпэўнены.',
 	'smw_smwadmin_support' => 'Падтрымка',
+	'smw_smwadmin_supportdocu' => 'Вы можаце знайсьці дапамогу ў розных крыніцах у выпадку праблемаў:',
+	'smw_smwadmin_installfile' => 'Калі ўзьнікнуць выпадковыя праблемы з Вашым усталяваньнем, пачніце з рэкамэндацыяў у <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">файле INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'Поўная дакумэнтацыя Semantic MediaWiki знаходзіцца на <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Можна паведамляць пра памылкі ў <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Калі Вы маеце пытаньні ці прапановы, далучайцеся да дыскусіі на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форуме карыстальнікаў Semantic MediaWiki</a>.',
 );
 
 /** Bulgarian (Български)
@@ -6228,6 +6241,15 @@ Tinatayang progreso ng pangkasalukuyang pagsasapanahon:',
 	'smw_smwadmin_smwhomepage' => 'Ang buong kasulatang pantagagamit ng Semantikong Mediawiki ay nasa <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => "Maaaring iulat ang mga depekto/sira (''bug'') sa <a href=\"https://bugzilla.wikimedia.org/\">Bugzilla</a>.",
 	'smw_smwadmin_questions' => 'Kung mayroon ka pang karagdagang mga katanungan o mga mungkahi, makilahok sa usapang nasa <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Pangmadlang talakayan ng tagagamit ng MediaWiking Semantiko</a>.',
+);
+
+/** Turkish (Türkçe)
+ * @author Karduelis
+ */
+$messages['tr'] = array(
+	'smw_result_prev' => 'Önceki',
+	'smw_result_next' => 'sonraki',
+	'smw_result_results' => 'Sonuçlar',
 );
 
 /** Uighur (Latin) (Uyghurche‎ / ئۇيغۇرچە (Latin))
