@@ -1290,6 +1290,7 @@ Prosím, zadejte stránku i vlastnost.',
  * @author Markus Krötzsch
  * @author Melancholie
  * @author Michawiki
+ * @author Omnipaedista
  * @author Pill
  * @author Purodha
  * @author Revolus
@@ -1378,6 +1379,7 @@ Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwa
 	'smw_exportrdf_recursive' => 'Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr großen Ergebnissen führen!',
 	'smw_exportrdf_backlinks' => 'Exportiere auch alle Seiten, die auf exportierte Seiten verweisen. Erzeugt RDF, das leichter durchsucht werden kann.',
 	'smw_exportrdf_lastdate' => 'Exportiere keine Seiten, die seit dem angegebenen Zeitpunkt unverändert geblieben sind.',
+	'smw_exportrdf_submit' => 'Exportieren',
 	'properties' => 'Attribute',
 	'smw_properties_docu' => 'In diesem Wiki gibt es die folgenden Attribute:',
 	'smw_property_template' => '$1 mit Datentyp $2 ($3)',
@@ -1502,9 +1504,10 @@ Falls das Problem nicht nach einiger Zeit verschwindet, bitten Sie Ihren Seitenv
 
 /** Greek (Ελληνικά)
  * @author Consta
+ * @author Omnipaedista
  */
 $messages['el'] = array(
-	'smw_sbv_property' => 'Ιδιότητα',
+	'smw_sbv_property' => 'Ιδιότητα:',
 	'smw_pp_type' => 'Ιδιότητα',
 	'smw_result_results' => 'Αποτελέσματα',
 	'smw_result_noresults' => 'Συγνώμη, δεν υπάρχουν αποτελέσματα.',
@@ -1869,6 +1872,7 @@ $messages['fi'] = array(
  * @author IAlex
  * @author McDutchie
  * @author Meithal
+ * @author PieRRoMaN
  * @author Pierre Matringe
  * @author Sherbrooke
  * @author Verdy p
@@ -1957,6 +1961,7 @@ $messages['fr'] = array(
 	'smw_exportrdf_recursive' => 'Exporter également toutes les pages pertinentes de manière récursive. Cette possibilité peut aboutir à un très grand nombre de résultats !',
 	'smw_exportrdf_backlinks' => 'Exporter également toutes les pages qui renvoient à des pages exportées. Produit un RDF dans lequel la navigation est facilitée.',
 	'smw_exportrdf_lastdate' => 'Ne pas exporter les pages non modifiées depuis le moment indiqué.',
+	'smw_exportrdf_submit' => 'Exporter',
 	'properties' => 'Propriétés',
 	'smw_properties_docu' => 'Sur ce wiki, sont utilisées les propriétés suivantes.',
 	'smw_property_template' => '$1 du type $2 ($3)',
@@ -2164,6 +2169,7 @@ Déase conta de que o resultado pode ser longo!',
 	'smw_exportrdf_backlinks' => 'Exportar tamén todas as páxinas que se refiren ás páxinas exportadas.
 Xera un RDF que se pode navegar.',
 	'smw_exportrdf_lastdate' => 'Non exportar páxina que non tiveron cambios desde a data dada.',
+	'smw_exportrdf_submit' => 'Exportar',
 	'properties' => 'Propiedades',
 	'smw_properties_docu' => 'As seguintes propiedades son usadas neste wiki.',
 	'smw_property_template' => '$1 de tipo $2 ($3)',
@@ -2285,6 +2291,7 @@ Progreso estimado da actualización actual:',
  * @author Omnipaedista
  */
 $messages['grc'] = array(
+	'smw_sbv_property' => 'Ἰδιότης:',
 	'smw_sbv_value' => 'Τιμή:',
 	'smw_browse_go' => 'Ἱέναι',
 	'smw_result_prev' => 'Προηγουμέναι',
@@ -2373,6 +2380,7 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_exportrdf_recursive' => 'Exportier au alli relevante Syte rekursiv. Dänk dra, ass d Ergebnis chenne arg groß syy!',
 	'smw_exportrdf_backlinks' => 'Exportier au alli Syte, wu uf exportierti Syte verwyye. Leit e RDF aa, wu lyychter cha dursuecht wäre.',
 	'smw_exportrdf_lastdate' => 'Exportier keini Syte, wu nimi gänderet wore sin syt em Zytpunkt, wu aagee isch.',
+	'smw_exportrdf_submit' => 'Exportiere',
 	'properties' => 'Eigeschafte',
 	'smw_properties_docu' => 'In däm Wiki git s die Eigeschafte:',
 	'smw_property_template' => '$1 mit Datetyp $2 ($3)',
@@ -4289,6 +4297,7 @@ Merk at resultatet kan vera stort.',
 	'smw_exportrdf_backlinks' => 'Eksporter òg alle sider som refererer til dei eksporterte sidene.
 Lagar ein RDF som ein kan gå gjennom.',
 	'smw_exportrdf_lastdate' => 'Ikkje eksporter sider som ikkje blei endra sia oppgjeve tidspunkt.',
+	'smw_exportrdf_submit' => 'Eksport',
 	'properties' => 'Eigenskapar',
 	'smw_properties_docu' => 'Følgjande eigenskapar er nytta på wikien.',
 	'smw_property_template' => '$1 av typen $2 ($3)',
@@ -4949,6 +4958,7 @@ Note que o resultado poderá ser grande!',
 	'smw_exportrdf_backlinks' => 'Também exporta todas as páginas que referem as páginas exportadas.
 Gera RDF navegável.',
 	'smw_exportrdf_lastdate' => 'Não exporte páginas que não foram alteradas desde o tempo dado.',
+	'smw_exportrdf_submit' => 'Exportar',
 	'properties' => 'Propriedades',
 	'smw_properties_docu' => 'As seguintes propriedades são usadas neste wiki.',
 	'smw_property_template' => '$1 de tipo $2 ($3)',
@@ -5607,6 +5617,10 @@ $messages['sr-ec'] = array(
 Сваки тип података има своју страницу где је могуће додати додатне информације.',
 	'smw_typeunits' => 'Мерне јединице типа "$1": $2',
 	'semanticstatistics' => 'Семантичке статистике',
+	'smw_semstats_text' => 'Овај вики садржи <b>$1</b> вредности особина за укупно <b>$2</b> различитих <a href="$3">особина</a>.
+<b>$4</b> особина поседује своју властиту страницу и намењени типови података су убележени за њих <b>$5</b>.
+Неке од постојећих особина су можда<a href="$6">неискоришћене особине</a>.
+Особине које још увек немају своју страницу, могу се наћи на <a href="$7">списку тражених особинаs</a>.',
 	'flawedattributes' => 'Покварене особине',
 	'smw_fattributes' => 'Странице са доњег списка садрже погрешно дефинисане особине.
 Број погрешно дефинисаних особина је дат у заградама.',
