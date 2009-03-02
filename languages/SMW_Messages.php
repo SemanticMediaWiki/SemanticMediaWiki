@@ -136,6 +136,7 @@ Note that the result could be large!',
 	'smw_exportrdf_backlinks' => 'Also export all pages that refer to the exported pages.
 Generates browsable RDF.',
 	'smw_exportrdf_lastdate'  => 'Do not export pages that were not changed since the given point in time.',
+	'smw_exportrdf_submit'  => 'Export',
 
 	// Messages for Properties Special
 	'properties'             => 'Properties',
@@ -1975,7 +1976,7 @@ $messages['fr'] = array(
 	'smw_typeunits' => 'Unités de mesure de type « $1 » : $2',
 	'semanticstatistics' => 'Statistiques sémantiques',
 	'smw_semstats_text' => "Ce wiki contient '''$1''' {{PLURAL:$1|valeur|valeurs}} de propriété pour un total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriété différente|propriétés différentes}}]].
-'''$3''' {{PLURAL:$3|propriété a sa|propriétés ont leur}} propre page, et le type de données voulu est spécifié pour '''$4''' de celles-ci. 
+'''$3''' {{PLURAL:$3|propriété a sa|propriétés ont leur}} propre page, et le type de données voulu est spécifié pour '''$4''' de celles-ci.
 Certaines des propriétés existantes peuvent en faite être [[Special:UnusedProperties|inutilisées]].
 Les propriétés qui n'ont pas encore de page se trouvent dans la [[Special:WantedProperties|liste des propriétés demandées]].",
 	'flawedattributes' => 'Attributs défectueux',
@@ -3084,7 +3085,7 @@ $messages['it'] = array(
 	'smw_types_docu' => 'La seguente &egrave; una lista di tutti i tipi di dati che possono essere assegnati alle propiet&agrave;. Ogni tipo di dato ha una pagina dove si possono trovare informazioni aggiuntive.',
 	'smw_typeunits' => 'Unit&agrave; di misura di tipo “$1”: $2',
 	'semanticstatistics' => 'Statistiche Semantiche',
-	'smw_semstats_text' => "Questo sito contiene '''$1''' {{PLURAL:$1|valore|valori}} di proprietà per un totale di '''$2''' [[Special:Properties|{{PLURAL:$2|proprietà|differenti proprietà}}]]. 
+	'smw_semstats_text' => "Questo sito contiene '''$1''' {{PLURAL:$1|valore|valori}} di proprietà per un totale di '''$2''' [[Special:Properties|{{PLURAL:$2|proprietà|differenti proprietà}}]].
 '''$3''' proprietà {{PLURAL:$3|ha|hanno}} una propria pagina e il tipo di dato inteso è specificato per '''$4''' di queste.
 Alcune delle proprietà esistenti possono essere [[Special:UnusedProperties|proprietà non utilizzate]].
 Le proprietà che ancora non hanno una pagina si possono trovare nell'[[Special:WantedProperties|elenco delle proprietà senza descrizione]].",
@@ -4315,7 +4316,7 @@ Eigenskapar som framleis ikkje har ei eiga sida finst på [[Special:WantedProper
 	'smw_fattributes' => 'Sidene som er lista opp nedanfor har ein feildefinert eigenskap.
 Talet på feildefinerte eigenskaper er oppgjeve i parentes.',
 	'uriresolver' => 'URI-løysar',
-	'smw_uri_doc' => "<p>URI-løysaren implementerer ''<a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">finning av W3C TAG-ar på «httpRange-14»</a>''. 
+	'smw_uri_doc' => "<p>URI-løysaren implementerer ''<a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">finning av W3C TAG-ar på «httpRange-14»</a>''.
 Han syter for at menneske ikkje vert til nettsider.</p>",
 	'ask' => 'Semantisk søk',
 	'smw_ask_sortby' => 'Sorter etter kolonne (valfritt)',
@@ -4651,7 +4652,7 @@ $messages['oc'] = array(
 	'smw_typeunits' => 'Unitats de mesura de tipe “$1” : $2',
 	'semanticstatistics' => 'Estatisticas semanticas',
 	'smw_semstats_text' => "Aqueste wiki conten '''$1''' {{PLURAL:$1|valor|valors}} de proprietat per una soma de '''$2''' [[Special:Properties|{{PLURAL:$2|proprietat diferenta|proprietats diferentas}}]].
-'''$3''' {{PLURAL:$3|proprietat a sa|proprietats an lor}} pagina pròprie, e lo tipe de donadas volgut es especificat per '''$4''' d'aquesta. 
+'''$3''' {{PLURAL:$3|proprietat a sa|proprietats an lor}} pagina pròprie, e lo tipe de donadas volgut es especificat per '''$4''' d'aquesta.
 Unas de las proprietats existentas pòdon en fach èsser [[Special:UnusedProperties|inutilizadas]].
 Las proprietats qu'an pas encara de pagina se tròban dins la [[Special:WantedProperties|lista de las proprietats demandadas]].",
 	'flawedattributes' => 'Atributs defectuoses',
@@ -5669,7 +5670,7 @@ $messages['sr-ec'] = array(
 Доња функција потврђује да је ваша база података исправно инсталирана.
 Промене које ће се сада извести немају последица за остали део базе података Медијавикија, а по потреби се могу врло лако поништити.
 Ова функција инсталирања се може покретати више пута без бојазни да ће нанети неку штету, али је неопходна само једном приликом инсталирања или ажурирања.',
-	'smw_smwadmin_permissionswarn' => 'Ако се операција заврши са SQL грешкама, корисник базе података (погледајте ваш LocalSettings.php) вероватно нема довољно дозвола за извршавање неопходних операција. 
+	'smw_smwadmin_permissionswarn' => 'Ако се операција заврши са SQL грешкама, корисник базе података (погледајте ваш LocalSettings.php) вероватно нема довољно дозвола за извршавање неопходних операција.
 Или дајте неопходне дозволе том кориснику како би могао да прави и брише табеле у бази, темпорално се улогујте као root у LocalSettings.php, или користите скрипту за одржавање <tt>SMW_setup.php</tt>, која може користити акредитиве из скрипте AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Покретање или ажурирање табела базе података',
 	'smw_smwadmin_announce' => 'Дојавите о постојању вашег викија',
@@ -5681,7 +5682,7 @@ $messages['sr-ec'] = array(
 	'smw_smwadmin_datarefresh' => 'Поправљање података и ажурирање',
 	'smw_smwadmin_datarefreshdocu' => 'Могуће је рестаурирати све податке Семантичког медијавикија, базирајући се на садржају викија.
 То може бити корисно за репарацију података или обнављање података у случају да су се извршиле неке измене у унутрашњем формату због надоградње софтвера.
-Ажурирање ће се обавити страницу по страницу и неће се одмах завршити. 
+Ажурирање ће се обавити страницу по страницу и неће се одмах завршити.
 Следећи приказ служи за надгледање ажурирања у прогресу и омогућава вам да их покренете или обуставите (осим ако администратор сајта није искључио ову могућност).',
 	'smw_smwadmin_datarefreshprogress' => 'Једно ажурирање је већ у току. </b>
 Нормално је да ажурирање напредује споро, пошто се само освежавају мали делови података сваки пут када корисник приступи викију.
@@ -6207,7 +6208,7 @@ Masusundan mo ang pagsulong/progreso ng pagsasapanahon sa natatanging pahinang i
 Hindi na lilikha ng isa pa.',
 	'smw_smwadmin_updatestopped' => 'Inihinto ang lahat ng umiiral na mga pagpapatakbong pangpagsasapanahon.',
 	'smw_smwadmin_updatenotstopped' => 'Upang mapahinto ang pagpapaandar ng pagpapatakbo ng pagsasapanahon, dapat mong pasiglahin ang kahong lagayan ng tsek para maipahayag na nakatitiyak kang talaga.',
-	'smw_smwadmin_docu' => 'Tumutulong ang natatanging pahinang ito sa iyo sa panahon ng pagluluklok at pagtataas ng uri ng <a href="http://semantic-mediawiki.org">Semantikong MediaWiki</a>.  
+	'smw_smwadmin_docu' => 'Tumutulong ang natatanging pahinang ito sa iyo sa panahon ng pagluluklok at pagtataas ng uri ng <a href="http://semantic-mediawiki.org">Semantikong MediaWiki</a>.
 Huwag kalimutang gumawa ng karagdagang sipi ng mahalagang dato bago isagawa ang mga tungkuling pangtagapangasiwa.',
 	'smw_smwadmin_db' => 'Pagluluklok (instalasyon) at pagtataas ng uri (grado/klase) ng kalipunan ng dato',
 	'smw_smwadmin_dbdocu' => 'Nangangailangan ang Semantikong Mediawiki ng ilang mga karugtong sa kalipunan ng dato ng MediaWiki upang maitabi ang datong hinggil sa kahulugan ng mga salita.

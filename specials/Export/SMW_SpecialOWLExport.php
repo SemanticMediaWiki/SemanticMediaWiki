@@ -109,7 +109,7 @@ function smwfDoSpecialOWLExport($page = '') {
 		$html .= '<br />';
 		$html .= '<input type="text" name="date" value="'.date(DATE_W3C, mktime(0, 0, 0, 1, 1, 2000)).'" id="date">&nbsp;<label for="ea">' . wfMsg('smw_exportrdf_lastdate') . '</label></input><br />' . "\n";
 	}
-	$html .= "<br /><input type=\"submit\"/>\n</form>";
+	$html .= "<br /><input type=\"submit\"  value=\"" . wfMsg('smw_exportrdf_submit') ."\"/>\n</form>";
 	$wgOut->addHTML($html);
 }
 
