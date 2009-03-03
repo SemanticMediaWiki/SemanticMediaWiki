@@ -34,7 +34,7 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 	protected function getResultText($res, $outputmode) {
 		$result = '';
 		if ($outputmode == SMW_OUTPUT_FILE) { // make CSV file
-			$csv = fopen('php://memory', 'r+');
+			$csv = fopen('php://temp', 'r+');
 			if ( $this->mShowHeaders == true ) {
 				$header_items = array();
 				foreach ($res->getPrintRequests() as $pr) {
