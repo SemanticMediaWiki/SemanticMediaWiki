@@ -285,6 +285,7 @@ Estimated progress of current update:',
 );
 
 /** Message documentation (Message documentation)
+ * @author EugeneZelenko
  * @author Fryed-peach
  * @author Helix84
  * @author Jon Harald Søby
@@ -308,6 +309,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_label_longitude' => '{{Identical|Longitude}}',
 	'smw_subpropertyarticlecount' => '[[bugzilla:15207|Bug on Bugzilla about this message]] has been fixed at [[mw:Special:Code/MediaWiki/40793|r40793]].',
 	'specialpages-group-smw_group' => '{{optional}}',
+	'smw_exportrdf_submit' => '{{Identical|Export}}',
 	'properties' => 'This is the title of the special page showing all properties.',
 	'smw_property_template' => 'Used to display information about properties on Special:Properties. The parameters have the following meaning:
 * $1: the property name
@@ -911,6 +913,7 @@ $messages['be-tarask'] = array(
 	'smw_exportrdf_backlinks' => 'Таксама экспартаваць усе старонкі, якія спасылаюцца на экспартаваныя старонкі.
 Стварае RDF з поўнай навігацыяй.',
 	'smw_exportrdf_lastdate' => 'Не экспартаваць старонкі, якія не зьмяняліся з пададзенага часу.',
+	'smw_exportrdf_submit' => 'Экспартаваць',
 	'properties' => 'Уласьцівасьці',
 	'smw_properties_docu' => 'Наступныя ўласьцівасьці выкарыстоўваюцца ў {{GRAMMAR:месны|{{SITENAME}}}}.',
 	'smw_property_template' => '$1 тыпу $2 ($3)',
@@ -2858,6 +2861,7 @@ Nota que le resultato pote esser grande!',
 	'smw_exportrdf_backlinks' => 'Exportar equalmente tote le paginas con referentias al paginas exportate.
 Genera un RDF navigabile.',
 	'smw_exportrdf_lastdate' => 'Non exportar paginas que non esseva cambiate post le momento specificate.',
+	'smw_exportrdf_submit' => 'Exportar',
 	'properties' => 'Proprietates',
 	'smw_properties_docu' => 'Le sequente proprietates es usate in le wiki.',
 	'smw_property_template' => '$1 del typo $2 ($3)',
@@ -3228,6 +3232,7 @@ $messages['ja'] = array(
 	'smw_exportrdf_recursive' => 'すべての関連ページを再帰的にエクスポートする。結果は大きくなることがあるので注意してください。',
 	'smw_exportrdf_backlinks' => 'エクスポートされたページを参照するすべてのページをさらにエクスポートする。閲覧が可能なRDFを生成します。',
 	'smw_exportrdf_lastdate' => '指定した時点以降に変更がされていないページをエクスポートしない。',
+	'smw_exportrdf_submit' => 'エクスポート',
 	'properties' => 'プロパティ',
 	'smw_properties_docu' => '以下のプロパティがこのウィキでは使われています。',
 	'smw_property_template' => '$1: 型 $2 ($3件)',
@@ -4093,6 +4098,7 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw_exportrdf_recursive' => "Exporteer alle gerelateerde pagina's recursief. Het resultaat kan groot zijn!",
 	'smw_exportrdf_backlinks' => "Exporteer ook alle pagina's die verwijzen naar de te exporteren pagina's. Genereert door te bladeren RDF.",
 	'smw_exportrdf_lastdate' => "Exporteer geen pagina's die sinds het opgegeven punt niet gewijzigd zijn.",
+	'smw_exportrdf_submit' => 'Exporteren',
 	'properties' => 'Eigenschappen',
 	'smw_properties_docu' => 'De volgende eigenschappen worden in de wiki gebruikt.',
 	'smw_property_template' => '$1 van type $2 ($3)',
@@ -4642,6 +4648,7 @@ $messages['oc'] = array(
 	'smw_exportrdf_recursive' => "Exportar tanben totas las paginas pertinentas d'un biais recursiu. Aquesta possibilitat pòt abotir a un fòrt grand nombre de resultats !",
 	'smw_exportrdf_backlinks' => 'Exportar tanben totas las paginas que renvian a de paginas exportadas. Produsís un RDF dins lo qual la navigacion es mai aisida.',
 	'smw_exportrdf_lastdate' => 'Exportar pas las paginas pas modificadas dempuèi lo moment indicat.',
+	'smw_exportrdf_submit' => 'Exportar',
 	'properties' => 'Proprietats',
 	'smw_properties_docu' => 'Sus aqueste wiki, son utilizadas las proprietats seguentas.',
 	'smw_property_template' => '$1 del tipe $2 ($3)',
@@ -5393,6 +5400,7 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_exportrdf_recursive' => 'Rekurzívne exportovať všetky súvisiace stránky. Pozor, výsledok môže byť veľmi veľký!',
 	'smw_exportrdf_backlinks' => 'Tieť exportovať všetky stránky, ktoré odkazujú na exportované stránky. Vytvorí prehliadateľné RDF.',
 	'smw_exportrdf_lastdate' => 'Neexportovať stránky, ktoré neboli zmenené od zadaného času.',
+	'smw_exportrdf_submit' => 'Export',
 	'properties' => 'Vlastnosti',
 	'smw_properties_docu' => 'Na tejto wiki sa používajú nasledovné vlastnosti.',
 	'smw_property_template' => '$1 typu $2 ($3)',
@@ -6141,6 +6149,7 @@ Tandaan lamang na maaaring malaki ang kinalabasan/resulta!',
 	'smw_exportrdf_backlinks' => 'Nagluluwas din ng lahat ng mga pahinang tumutukoy sa iniluwas na mga pahina.
 Gumagawa ng matitingnan-tingnang RDF.',
 	'smw_exportrdf_lastdate' => 'Huwag iluwas ang mga pahinang hindi nabago mula sa isang ibinigay na sandali sa loob ng panahon/oras.',
+	'smw_exportrdf_submit' => 'Iluwas',
 	'properties' => 'Mga pag-aari',
 	'smw_properties_docu' => 'Ginagamit sa wiki ang sumusunod na mga pahina ng pag-aari.',
 	'smw_property_template' => '$1 ng uring $2 ($3)',
