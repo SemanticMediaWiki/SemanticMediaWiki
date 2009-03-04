@@ -32,7 +32,7 @@
  * numeric date model supports the year 0, and considers it to be the same as "1 BC".
  * The year "0 BC" is accepted to refer to the same year, but its use is discouraged.
  * According to this convention, e.g., the year "-100" is the same as "101 BC". This
- * convention agrees with ISO 6801 and the remarks in XML Schema Datatypes 2nd Edition
+ * convention agrees with ISO 8601 and the remarks in XML Schema Datatypes 2nd Edition
  * (the latter uses a different convention that disallows year 0, but it explicitly
  * endorses the ISO convention and announces the future use of this in XML).
  * Note that the implementation currently does not support the specification of negative
