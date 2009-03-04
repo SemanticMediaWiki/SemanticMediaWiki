@@ -111,8 +111,8 @@ class SMWTimeValue extends SMWDataValue {
 			if ( strtoupper($match[0]) == 'BC' ) {
 				$is_yearbc = true;
 			}
-			$regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete ad/bc value and preceding and following chars
-			$filteredvalue = preg_replace($regexp,'', $filteredvalue); //value without ad/bc
+			$regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete ad/bc value and preceding and following chars, but keep some space there
+			$filteredvalue = preg_replace($regexp,' ', $filteredvalue); //value without ad/bc
 		}
 
 		//browse string for time value
@@ -256,19 +256,34 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	protected function parseDBkeys($args) {
+		$this->m_printvalue = false;
+		$this->m_caption = false;
 		list($date,$this->m_time) = explode('T',$args[0],2);
 		$d = explode('/',$date,3);
 		if (count($d)==3) list($this->m_year,$this->m_month,$this->m_day) = $d;
 		elseif (count($d)==2) list($this->m_year,$this->m_month) = $d;
 		elseif (count($d)==1) list($this->m_year) = $d;
 		$this->makePrintoutValue();
-		$this->m_caption = $this->m_printvalue;
 		$this->m_wikivalue = $this->m_printvalue;
+	}
+
+	/// make sure that existing values are updated
+	public function setOutputFormat($formatstring) {
+		if ($formatstring != $this->m_outformat) {
+			$this->m_outformat = $formatstring;
+			$this->m_printvalue = false;
+
+		}
 	}
 
 	public function getShortWikiText($linked = NULL) {
 		$this->unstub();
-		return $this->m_caption;
+		if ($this->m_caption !== false) {
+			return $this->m_caption;
+		} else {
+			$this->makePrintoutValue();
+			return $this->m_printvalue;
+		}
 	}
 
 	public function getShortHTMLText($linker = NULL) {
@@ -407,19 +422,31 @@ class SMWTimeValue extends SMWDataValue {
 		global $smwgContLang;
 		if ($this->m_printvalue === false) {
 			//MediaWiki date function is not applicable any more (no support for BC Dates)
-			if ($this->m_year > 0) {
-				$this->m_printvalue = number_format($this->m_year, 0, '.', ''); // note: there should be no digits after the comma anyway
-			} else {
-				$this->m_printvalue = number_format(-($this->m_year-1), 0, '.', '') . ' BC'; // note: there should be no digits after the comma anyway
-			}
-			if ($this->m_month) {
-				$this->m_printvalue =  $smwgContLang->getMonthLabel($this->m_month) . " " . $this->m_printvalue;
-			}
-			if ($this->m_day) {
-				$this->m_printvalue =  $this->m_day . " " . $this->m_printvalue;
-			}
-			if ($this->m_time) {
-				$this->m_printvalue .= " " . $this->m_time;
+			if ( strtoupper($this->m_outformat) == 'ISO') { // ISO8601 date formatting
+				if ($this->m_year > 0) {
+					$this->m_printvalue = str_pad($this->m_year, 4, "0", STR_PAD_LEFT);
+				} else {
+					$this->m_printvalue = '-' . str_pad((-($this->m_year)), 4, "0", STR_PAD_LEFT);
+				}
+				$this->m_printvalue .= '-'
+				   . ($this->m_month?str_pad($this->m_month, 2, "0", STR_PAD_LEFT):'01') . '-'
+				   . ($this->m_day?str_pad($this->m_day, 2, "0", STR_PAD_LEFT):'01')
+				   . ($this->m_time?'T' . $this->m_time:'');
+			} else { // default
+				if ($this->m_year > 0) {
+					$this->m_printvalue = number_format($this->m_year, 0, '.', ''); // note: there should be no digits after the comma anyway
+				} else {
+					$this->m_printvalue = number_format(-($this->m_year-1), 0, '.', '') . ' BC'; // note: there should be no digits after the comma anyway
+				}
+				if ($this->m_month) {
+					$this->m_printvalue =  $smwgContLang->getMonthLabel($this->m_month) . " " . $this->m_printvalue;
+				}
+				if ($this->m_day) {
+					$this->m_printvalue =  $this->m_day . " " . $this->m_printvalue;
+				}
+				if ($this->m_time) {
+					$this->m_printvalue .= " " . $this->m_time;
+				}
 			}
 		}
 	}
