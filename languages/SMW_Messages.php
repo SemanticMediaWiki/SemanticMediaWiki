@@ -518,7 +518,7 @@ $messages['ar'] = array(
 كل نوع بيانات له صفحة حيث يمكن توفير معلومات إضافية.',
 	'smw_typeunits' => 'وحدات القياس من النوع "$1": $2',
 	'semanticstatistics' => 'إحصاءات سيمانتيك',
-	'smw_semstats_text' => "هذا الويكي يحتوي على '''$1''' {{PLURAL:$1|قيمة|قيمة}} خاصية بإجمالي '''$2''' [[Special:Properties|{{PLURAL:$2|خاصية|خاصية مختلفة}}].
+	'smw_semstats_text' => "هذا الويكي يحتوي على '''$1''' {{PLURAL:$1|قيمة|قيمة}} خاصية بإجمالي '''$2''' [[Special:Properties|{{PLURAL:$2|خاصية|خاصية مختلفة}}]].
 '''$3''' {{PLURAL:$3|خاصية تمتلك|خاصية تمتلك}} صفحتها الخاصة، ونوع البيانات المقصود محدد ل'''$4''' من هؤلاء.
 بعض الخواص الموجودة ربما تكون [[Special:UnusedProperties|خواص غير مستخدمة]].
 الخواص التي مازالت تفتقد صفحة موجودة في [[Special:WantedProperties|قائمة الخواص المطلوبة]].",
@@ -2581,6 +2581,7 @@ $messages['he'] = array(
 	'smw_exportrdf_backlinks' => 'כמו כן, יתבצע ייצוא של כל הדפים המפנים לדפים המיוצאים.
 ייווצר RDF הניתן לעיון.',
 	'smw_exportrdf_lastdate' => 'אין לייצא דפים שלא שונו מאז נקודת הזמן שצוינה.',
+	'smw_exportrdf_submit' => 'ייצוא',
 	'properties' => 'מאפיינים',
 	'smw_properties_docu' => 'בוויקי נעשה שימוש במאפיינים הבאים.',
 	'smw_property_template' => '$1 מסוג $2 ($3)',
@@ -2592,13 +2593,17 @@ $messages['he'] = array(
 	'smw_unusedproperty_template' => '$1 מסוג $2',
 	'wantedproperties' => 'מאפיינים מבוקשים',
 	'smw_wantedproperties_docu' => 'באתר הוויקי נעשה שימוש במאפיינים אלה, אין להם עדיין דף שיתאר אותם.',
-	'smw_wantedproperty_template' => '$1 (בשימוש $2 פעמים)',
+	'smw_wantedproperty_template' => '$1 (בשימוש {{PLURAL:$2|פעם אחת|$2 פעמים}})',
 	'tooltip-purge' => 'לחצו כאן כדי לרענן את כל התבניות והשאילתות בדף זה',
 	'smw_purge' => 'רענון תבניות ושאילתות',
 	'types' => 'טיפוסים',
 	'smw_types_docu' => 'ברשימה זו מופיעים כל טיפוסי המידע שתכונות יכולות להשתמש בהם . לכל טיפוס מידע יש דף המסביר על אודותיו.',
 	'smw_typeunits' => 'יחידות מידה מסוג "$1": $2',
 	'semanticstatistics' => 'סטטיסטיקה סמנטית',
+	'smw_semstats_text' => 'אתר ויקי זה מכיל <b>$1</b> ערכי מאפיינים עבור סך כולל של <b>$2</b> <a href="$3">מאפיינים</a> שונים.
+ל־<b>$4</b> מאפיינים יש דף משלהם, וסוג הנתונים המיועד צוין עבור <b>$5</b> מאלה.
+ייתכן שכמה ממהמאפיינים הקיימים הם <a href="$6">מאפיינים שאינם בשימוש</a>.
+מאפיינים שעדיין חסר להם דף נמצאים ב<a href="$7">רשימת המאפיינים המבוקשים</a>.',
 	'flawedattributes' => 'מאפיינים שגויים',
 	'smw_fattributes' => 'לדפים המופיעים ברשימה שלהלן ישנם מאפיינים שלא הוגדרו כראוי.
 מספר המאפיינים שאינם נכונים נתון בסוגריים.',
@@ -2619,8 +2624,8 @@ $messages['he'] = array(
 	'smw_sbv_displayresult' => 'רשימת כל הדפים שיש להם את המאפיין "$1" עם הערך "$2"',
 	'smw_sbv_displayresultfuzzy' => 'רשימת כל הדפים שיש להם את המאפיין "$1" עם הערך "$2".
 מאחר שיש רק מעט תוצאות, יוצגו גם ערכים סמוכים.',
-	'smw_sbv_property' => 'מאפיין',
-	'smw_sbv_value' => 'ערך',
+	'smw_sbv_property' => 'מאפיין:',
+	'smw_sbv_value' => 'ערך:',
 	'smw_sbv_submit' => 'חיפוש תוצאות',
 	'browse' => 'עיון בוויקי',
 	'smw_browselink' => 'עיון במאפיינים',
@@ -2673,7 +2678,7 @@ $messages['he'] = array(
 פעולה זו עשויה להיות שימושית לתיקון נתונים שגויים או כדי לעדכן את הנתונים במידה שהמבנה הפנימי שונה לאור שידרוג התוכנה.
 העדכון מופעל במתכונת דף לאחר דף והוא לא יושלם מיידית.
 המידע שלהלן מציג האם העדכון מתבצע כעת ומאפשר לכם להתחיל או להפסיק את העדכונים (אלא אם כן תכונה זו בוטלה על ידי מנהל האתר).',
-	'smw_smwadmin_datarefreshprogress' => 'כבר מתבצע תהליך עדכון.</b>
+	'smw_smwadmin_datarefreshprogress' => '<strong>כבר מתבצע תהליך עדכון.</strong>
 מצב בו העדכון מתקדם לאט הוא מצב נורמלי, מאחר שהנתונים מתעדכנים בחלקים קטנים בכל פעם שמשתמש ניגש לוויקי.
 כדי לסיים את העדכון מהר יותר, תוכלו להפעיל את סקריפט התחזוקה <tt>runJobs.php</tt> (השתמשו באפשרות <tt>--maxjobs 1000</tt> כדי להגביל את מספר העדכונים שמתבצעים בבת אחת).
 התקדמות משוערת של העדכון הנוכחי:',
@@ -2685,7 +2690,7 @@ $messages['he'] = array(
 	'smw_smwadmin_installfile' => 'אם יש לכם בעיות בהתקנה, התחילו בבדיקת ההנחיות המופיעות בקובץ <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'התיעוד המלא למשתמשי המדיה־ויקי הסמנטי נמצא בכתובת <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'ניתן לדווח על באגים ב<a href="https://bugzilla.wikimedia.org/">באגזילה של מדיה־ויקי</a>.',
-	'smw_smwadmin_questions' => 'אם יש לכם הצעות או שאלות נוספות, הצטרפו לדיון שנערך ב־<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'אם יש לכם הצעות או שאלות נוספות, הצטרפו לדיון שנערך ב<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">פורום המשתמשים של מדיהוויקי הסמנטי</a>.',
 );
 
 /** Hindi (हिन्दी)
