@@ -2690,7 +2690,7 @@ $messages['he'] = array(
 	'smw_smwadmin_installfile' => 'אם יש לכם בעיות בהתקנה, התחילו בבדיקת ההנחיות המופיעות בקובץ <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'התיעוד המלא למשתמשי המדיה־ויקי הסמנטי נמצא בכתובת <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'ניתן לדווח על באגים ב<a href="https://bugzilla.wikimedia.org/">באגזילה של מדיה־ויקי</a>.',
-	'smw_smwadmin_questions' => 'אם יש לכם הצעות או שאלות נוספות, הצטרפו לדיון שנערך ב<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">פורום המשתמשים של מדיהוויקי הסמנטי</a>.',
+	'smw_smwadmin_questions' => 'אם יש לכם הצעות או שאלות נוספות, הצטרפו לדיון שנערך ב<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">פורום המשתמשים של Semantic MediaWiki</a>.',
 );
 
 /** Hindi (हिन्दी)
@@ -3741,6 +3741,7 @@ $messages['lb'] = array(
 	'smw_nonright_importtype' => '$1 kann nëmme fir Säiten am Nummraum "$2" benotzt ginn.',
 	'smw_wrong_importtype' => '$1 kann net fir Säiten am Nummraum "$2" benotzt ginn.',
 	'smw_no_importelement' => 'D\'Element "$1" kann net importéiert ginn.',
+	'smw_parseerror' => 'De Wert deen dir aginn hutt gouf net verstan.',
 	'smw_notitle' => '"$1" kann net als Numm vun enger Säit op dëser Wiki benotzt ginn.',
 	'smw_wrong_namespace' => 'Nëmme Säiten aus dem Nummraum "$1" sinn hei erlaabt.',
 	'smw_emptystring' => 'Eidel Zeeche ginn net akzeptéiert.',
@@ -3758,9 +3759,11 @@ $messages['lb'] = array(
 	'smw_nodatetime' => 'Den Datum "$1" gouf net verstan.',
 	'smw_misplacedsymbol' => 'D\'Symbol "$1" gouf op ener Plaz benotzt wou et net nëtzlech ass.',
 	'smw_badtitle' => 'Pardon, awer "$1" ass kee gëltegen Titel vun enger Säit.',
+	'smw_propvalueproblem' => 'De Wert vun der eegeschaft "$1" gouf net verstan.',
 	'smw_attribute_header' => 'Säiten déi d\'Eegeschaft "$1" benotzen',
 	'smw_concept_header' => 'Säite vum Konzept "$1"',
 	'exportrdf' => 'Säiten als RDF exportéieren',
+	'smw_exportrdf_submit' => 'Exportéieren',
 	'properties' => 'Eegeschaften',
 	'smw_properties_docu' => 'Dës Eegeschafte ginn op dëser Wiki benotzt.',
 	'smw_property_template' => '$1 vum Typ $2 ($3)',
