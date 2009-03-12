@@ -499,6 +499,7 @@ $messages['ar'] = array(
 	'smw_exportrdf_backlinks' => 'أيضا تصدير كل الصفحات التي تشير إلى الصفحات تم تصديرها.
 يولد آر دي إف قابل للتصفح.',
 	'smw_exportrdf_lastdate' => 'لا تصدر الصفحات التي لم تتغير منذ نقطة زمنية محددة.',
+	'smw_exportrdf_submit' => 'تصدير',
 	'properties' => 'الخصائص',
 	'smw_properties_docu' => 'الخصائص التالية تستخدم في الويكي.',
 	'smw_property_template' => '$1 من نوع $2 ($3)',
@@ -1635,10 +1636,12 @@ $messages['es'] = array(
 	'smw_factbox_head' => 'Hechos relativos a à $1 — Búsqueda de páginas similares con <span class="smwsearchicon">+</span>.',
 	'smw_isspecprop' => 'Esta propiedad en una propiedad especial en este wiki.',
 	'smw_concept_description' => 'Descripción del concepto "$1"',
+	'smw_multiple_concepts' => 'Cada página de concepto solamente puede tener una definición de concepto.',
 	'smw_baduri' => 'Lo sentimos. Las URIs del dominio $1 no están disponibles en este emplazamiento',
 	'smw_iq_disabled' => 'Lo sentimos. Las búsquedas en los artículos de este wiki no están autorizadas.',
 	'smw_iq_moreresults' => '&hellip; siguientes resultados',
 	'smw_iq_nojs' => 'Use un navegador con JavaScript habilitado para ver este elemento.',
+	'smw_iq_altresults' => 'Explorar la lista de resultados directamente.',
 	'smw_unknown_importns' => 'Ninguna función de importación está disponible para el espacio de nombres "$1".',
 	'smw_nonright_importtype' => 'El elemento "$1" no puede ser empleado más que para los artículos del espacio de nombres "$2".',
 	'smw_wrong_importtype' => 'El elemento "$1" no puede ser utilizado para los artículos del espacio de nombres dominio "$2".',
@@ -1676,14 +1679,23 @@ $messages['es'] = array(
 	'smw_exportrdf_docu' => '<p> En esta página, las partes de contenido de un artículo pueden ser exportadas a formato RDF. Introduzca el nombre de las páginas deseadas en el cuadro de texto que se encuentra debajo, <i>un nombre por línea </i>.<p/>',
 	'smw_exportrdf_recursive' => 'Exportar igualmente todas las páginas pertinentes de forma recurrente. Esta posibilidad puede conseguir un gran número de resultados !',
 	'smw_exportrdf_backlinks' => 'Exportar igualmente todas las páginas que reenvían a páginas exportadas. Resulta un RDF en el que se facilita la navegación.',
+	'smw_exportrdf_submit' => 'Exportar',
 	'properties' => 'Propiedades',
 	'smw_properties_docu' => 'Las siguientes propiedades son usadas en el Wiki.',
+	'smw_property_template' => '$1 de tipo $2 ($3)',
+	'smw_propertylackspage' => 'Todas las propiedades deberían ser descritas por una página!',
+	'smw_propertyhardlyused' => 'Esta propiedad es dificilmente usada dentro del wiki!',
 	'unusedproperties' => 'Propiedades no usadas',
+	'smw_unusedproperties_docu' => 'Las siguientes propiedades existen a pesar que ninguna otra página haga uso de ellas.',
+	'smw_unusedproperty_template' => '$1 de tipo $2',
 	'wantedproperties' => 'Propiedades no usadas',
+	'smw_wantedproperties_docu' => 'Las siguientes propiedades son usadas en el wiki pero no tienen aún una página para describirlas.',
 	'tooltip-purge' => 'Volver a actualizar todas las búsquedas y borradores de esta página.',
 	'smw_purge' => 'Volver a actualizar',
 	'types' => 'Tipos de datos',
 	'smw_types_docu' => 'Los tipos de datos siguientes pueden ser asignados a los atributos. Cada tipo de datos tiene su propio artículo, en el que puede figurar información más precisa.',
+	'smw_typeunits' => 'Unidades de medida de tipo "$1": $2',
+	'semanticstatistics' => 'Estadísticas de semántica',
 	'flawedattributes' => 'Flawed Attributes',
 	'smw_fattributes' => 'The pages listed below have an incorrectly defined attribute. The number of incorrect attributes is given in the brackets.',
 	'uriresolver' => 'Traductor de URI',
@@ -1693,6 +1705,7 @@ $messages['es'] = array(
 	'smw_ask_ascorder' => 'Ascendente',
 	'smw_ask_descorder' => 'Descendente',
 	'smw_ask_submit' => 'Buscar resultados',
+	'smw_ask_hidequery' => 'Ocultar pregunta',
 	'searchbyproperty' => 'Buscar por atributo',
 	'smw_sbv_docu' => '<p>Buscar por todas las páginas que tiene un atributo y valor dado.</p>',
 	'smw_sbv_noproperty' => '<p>Por favor introduzca un atributo.</p>',
@@ -1710,6 +1723,11 @@ $messages['es'] = array(
 	'smw_result_results' => 'Resultados',
 	'smw_result_noresults' => 'Lo siento, no hay resultados.',
 	'smw_smwadmin_return' => 'Regresar a $1',
+	'smw_smwadmin_datarefreshbutton' => 'Comenzar actualización de datos',
+	'smw_smwadmin_datarefreshstop' => 'Detener esta actualización',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Sí, estoy seguro.',
+	'smw_smwadmin_support' => 'Obteniendo ayuda',
+	'smw_smwadmin_supportdocu' => 'Varios recursos podrían ayudarlo en caso de problemas:',
 );
 
 /** Basque (Euskara)
@@ -6790,9 +6808,11 @@ $messages['zh-hans'] = array(
 
 /** Traditional Chinese (‪中文(繁體)‬)
  * @author Gzdavidwong
+ * @author Sheepy
  * @author Wrightbus
  */
 $messages['zh-hant'] = array(
+	'smw_finallistconjunct' => ', 和',
 	'smw_abb_north' => '北',
 	'smw_abb_east' => '東',
 	'smw_abb_south' => '南',
@@ -6804,6 +6824,7 @@ $messages['zh-hant'] = array(
 
 /** Chinese (Taiwan) (‪中文(台灣)‬)
  * @author Roc michael
+ * @author Sheepy
  */
 $messages['zh-tw'] = array(
 	'smw_edithelp' => '與關聯(relations)及屬性(attributes)有關的編輯協助',
@@ -6843,6 +6864,10 @@ $messages['zh-tw'] = array(
 	'smw_unsupportedunit' => '單位轉換無法適用於“$1”此一單位',
 	'smw_lonely_unit' => '在“$1”此一單位之前並無數目字',
 	'smw_bad_latlong' => '緯度和經度只能以有效的座標值標示一次',
+	'smw_abb_north' => '北',
+	'smw_abb_east' => '東',
+	'smw_abb_south' => '南',
+	'smw_abb_west' => '西',
 	'smw_label_latitude' => '緯度：',
 	'smw_label_longitude' => '經度：',
 	'smw_nodatetime' => '日期值“$1”無法被識別，對日期值的支援目前尚屬實驗性質。',
@@ -6892,6 +6917,7 @@ $messages['zh-tw'] = array(
 	'smw_types_docu' => '以下為所有資料型態的清單，資料型態可用於指定性質，每項資料型態皆有提供附加資訊的頁面。',
 	'smw_typeunits' => '“$1”型態的量測單位：$2',
 	'semanticstatistics' => '語意統計(Semantic Statistics)',
+	'smw_semstats_text' => '此wiki含有<b>$1</b>性質的值以用於總計<b>$2</b> 不同於 <a href="$3">性質</a>。 <b>$4</b>性質有著專屬的專面，且預期所需的資料型態因著<b>$5</b>，而已被指定了，有些現有的性質也許為<a href="$6">未使用的性質</a>。您可在 <a href="$7">待建立的性質清單</a>中，找到那些尚未建立專屬頁面的性質。(譯註原文為：This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.)',
 	'flawedattributes' => '錯誤的性質',
 	'smw_fattributes' => '在下方處被列出的頁面有著一項非正確定義的屬性，非正確的屬性的數量置於中括號內',
 	'ask' => '語意搜尋',
