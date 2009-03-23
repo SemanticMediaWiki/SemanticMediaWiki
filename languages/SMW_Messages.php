@@ -4868,6 +4868,7 @@ $messages['pl'] = array(
 	'smw_sbv_value' => 'Wartość',
 	'smw_sbv_submit' => 'Znajdź wyniki',
 	'browse' => 'Przeglądaj artykuły',
+	'smw_browselink' => 'Przeglądaj właściwości',
 	'smw_browse_article' => 'Wpisz nazwę artykułu, od którego chcesz rozpocząć przeglądanie.',
 	'smw_browse_go' => 'Idź',
 	'pageproperty' => 'Szukanie własności stron',
