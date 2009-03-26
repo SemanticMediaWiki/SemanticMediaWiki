@@ -3814,6 +3814,7 @@ $messages['lb'] = array(
 	'smw_result_results' => 'Resultater',
 	'smw_result_noresults' => 'Pardon, et gouf näischt fonnt.',
 	'smw_smwadmin_return' => 'Zréck op $1',
+	'smw_smwadmin_updatestopped' => 'All Aktualisatiouns-Prozesser goufe gestoppt.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialiséieren oder aktualiséieren',
 	'smw_smwadmin_announce' => 'Är wiki ukënnegen',
 	'smw_smwadmin_datarefresh' => 'Donnéeë gi gefléckt an aktualiséiert',
