@@ -228,7 +228,7 @@ class SMWAskPage extends SpecialPage {
 
 
 	protected function getInputForm($printoutstring, $urltail) {
-		global $wgUser, $smwgQSortingSupport, $wgLang;
+		global $wgUser, $smwgQSortingSupport, $wgLang, $smwgResultFormats;
 		$skin = $wgUser->getSkin();
 		$result = '';
 
@@ -264,7 +264,22 @@ class SMWAskPage extends SpecialPage {
 				$result .= '<input type="hidden" name="sc" value="' . $i . '"/>';
 				$result .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes&sc=1')) . '" rel="nofollow">' . wfMsg('smw_add_sortcondition') . '</a>'; // note that $urltail uses a , separated list for sorting, so setting sc to 1 always adds one new condition
 			}
-			$result .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
+
+			$result .= '<div>'.wfMsg('smw_ask_format_as').' <input type="hidden" name="eq" value="yes"/>' .
+				'<select name="p">' .
+				'<option value="format=broadtable"'.($this->m_params['format'] == 'broadtable' ? ' selected' : '').'>broadtable ('.wfMsg('smw_ask_defaultformat').')</option>'."\n";
+
+			foreach (array_keys($smwgResultFormats) as $format)
+			{
+				if ($format != 'broadtable')
+				{
+					$result .= '<option value="format='.$format.'"'.($this->m_params['format'] == $format ? ' selected' : '').'>'.$format."</option>\n";
+				}
+			}
+
+			$result .= '</select></div>';
+
+			$result .= '<input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
 				'<input type="hidden" name="eq" value="yes"/>' .
 					' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '" rel="nofollow">' . wfMsg('smw_ask_hidequery') . '</a> ' .
 					SMWAskPage::$pipeseparator .
