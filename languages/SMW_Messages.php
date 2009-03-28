@@ -196,7 +196,7 @@ It takes care that humans don\'t turn into websites.</p>',
 	'smw_ask_help'          => 'Querying help',
 	'smw_ask_queryhead'     => 'Query',
 	'smw_ask_printhead'     => 'Additional printouts (optional)',
-	'smw_ask_format_as'	=> 'Format as',
+	'smw_ask_format_as'	=> 'Format as:',
 	'smw_ask_defaultformat'	=> 'default',
 
 	// Messages for the search by property special
