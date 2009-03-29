@@ -2765,6 +2765,7 @@ $messages['hr'] = array(
  * @author Michawiki
  */
 $messages['hsb'] = array(
+	'smw_viewasrdf' => 'RDF-kanal',
 	'smw_finallistconjunct' => 'a',
 	'smw_factbox_head' => 'Fakty wo $1',
 	'smw_iq_moreresults' => '... dalše wuslědki',
@@ -2785,6 +2786,10 @@ $messages['hsb'] = array(
 	'types' => 'Typy',
 	'semanticstatistics' => 'Semantiska statistika',
 	'smw_ask_submit' => 'Wuslědki namakać',
+	'smw_ask_format_as' => 'Formatować jako:',
+	'smw_ask_defaultformat' => 'standard',
+	'searchbyproperty' => 'Po kajkosći pytać',
+	'smw_sbv_noproperty' => '<p>Zapodaj prošu kajkosć.</p>',
 	'smw_sbv_property' => 'Kajkosć:',
 	'smw_sbv_value' => 'Hódnota:',
 	'smw_sbv_submit' => 'Wuslědki namakać',
