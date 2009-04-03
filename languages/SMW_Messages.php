@@ -2323,9 +2323,11 @@ Progreso estimado da actualización actual:',
  * @author Omnipaedista
  */
 $messages['grc'] = array(
+	'smw_ask_defaultformat' => 'προκαθωρισμένη',
 	'smw_sbv_property' => 'Ἰδιότης:',
 	'smw_sbv_value' => 'Τιμή:',
 	'smw_browse_go' => 'Ἱέναι',
+	'smw_pp_type' => 'Ἰδιότης',
 	'smw_result_prev' => 'Προηγουμέναι',
 	'smw_result_next' => 'Ἑπομέναι',
 );
@@ -3838,6 +3840,7 @@ $messages['lb'] = array(
 	'smw_attribute_header' => 'Säiten déi d\'Eegeschaft "$1" benotzen',
 	'smw_concept_header' => 'Säite vum Konzept "$1"',
 	'exportrdf' => 'Säiten als RDF exportéieren',
+	'smw_exportrdf_lastdate' => 'Keng Säiten exportéieren déi zënter dem Zäitpunkt deen uginn ass net geännert goufen.',
 	'smw_exportrdf_submit' => 'Exportéieren',
 	'properties' => 'Eegeschaften',
 	'smw_properties_docu' => 'Dës Eegeschafte ginn op dëser Wiki benotzt.',
@@ -3855,11 +3858,14 @@ $messages['lb'] = array(
 	'smw_ask_editquery' => '[Ufro änneren]',
 	'smw_ask_hidequery' => 'Ufro verstoppen',
 	'smw_ask_queryhead' => 'Ufro',
+	'smw_ask_format_as' => 'Formatéieren als:',
+	'smw_ask_defaultformat' => 'Standard',
 	'searchbyproperty' => 'No Eegeschafte sichen',
 	'smw_sbv_property' => 'Eegeschaft:',
 	'smw_sbv_value' => 'Wert:',
 	'smw_sbv_submit' => 'Resultater sichen',
 	'smw_browse_go' => 'Lass',
+	'smw_browse_hide_incoming' => 'Eegeschafte verstoppen déi hei hi linken',
 	'smw_browse_no_outgoing' => 'Dës Säit huet keng Eegeschaften',
 	'smw_inverse_label_default' => '$1 vu(n)',
 	'pageproperty' => 'An den Eegeschafte vun der Säit sichen',
@@ -4832,7 +4838,7 @@ Vejatz la pagina d’acuèlh de Semantic MediaWiki <a href="http://semantic-medi
 Lo servici enregistrarà pas los wiki que son pas accessibles al public, e estocarà pas que las informacions publicament accessiblas.',
 	'smw_smwadmin_datarefresh' => 'Reparacion e mesa a nivèl de las donadas',
 	'smw_smwadmin_datarefreshdocu' => "Es possible de restablir totas las donadas Semantic MediaWiki basadas suls contenguts corrents d'aqueste wiki.
-Aquò pòt èsser util per reparar de donadas rompudas o per refrescar las donadas se lo format intèrn a cambiat al moment de las remesas a nivèl.
+Aquò pòt èsser util per reparar de donadas rompudas o per refrescar las donadas se lo format intèrne a cambiat al moment de las remesas a nivèl.
 La mesa a jorn es executada pagina per pagina e se serà pas acabada immediatament.
 La pagina seguenta aficha se una mesa a jorn es en cors d’execucion e vos permet de començar o d’arrestar aquestas (levat s'aquesta foncionalitat est desactivada per l’administrator del sit).",
 	'smw_smwadmin_datarefreshprogress' => "<strong>Una mesa a jorn es en cors d’execucion.</strong>
@@ -5095,6 +5101,8 @@ O número de propriedades incorrectas é dada entre parênteses rectos.',
 	'smw_ask_help' => 'Ajuda sobre consultas',
 	'smw_ask_queryhead' => 'Consulta',
 	'smw_ask_printhead' => 'Saídas adicionais (opcional)',
+	'smw_ask_format_as' => 'Formatar como:',
+	'smw_ask_defaultformat' => 'padrão',
 	'searchbyproperty' => 'Procurar por propriedade',
 	'smw_sbv_docu' => '<p>Buscar todas as páginas que possuem uma determinada propriedade e valor.</p>',
 	'smw_sbv_noproperty' => '<p>Por favor, introduza uma propriedade.</p>',
