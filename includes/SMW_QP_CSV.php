@@ -31,6 +31,10 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 		return 'result.csv';
 	}
 
+	public function getQueryMode($context) {
+		return ($context==SMWQueryProcessor::SPECIAL_PAGE)?SMWQuery::MODE_INSTANCES:SMWQuery::MODE_NONE;
+	}
+
 	protected function getResultText($res, $outputmode) {
 		$result = '';
 		if ($outputmode == SMW_OUTPUT_FILE) { // make CSV file

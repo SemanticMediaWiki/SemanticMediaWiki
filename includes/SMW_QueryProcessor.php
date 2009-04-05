@@ -31,10 +31,6 @@ class SMWQueryProcessor {
 	 * The format string is used to specify the output format if already
 	 * known. Otherwise it will be determined from the parameters when
 	 * needed. This parameter is just for optimisation in a common case.
-	 *
-	 * @todo This method contains too many special cases for certain
-	 * printouts. Especially the case of rss, icalendar, etc. (no query)
-	 * should be specified differently.
 	 */
 	static public function createQuery($querystring, $params, $context = SMWQueryProcessor::INLINE_QUERY, $format = '', $extraprintouts = array()) {
 		global $smwgQDefaultNamespaces, $smwgQFeatures, $smwgQConceptFeatures;
@@ -56,10 +52,9 @@ class SMWQueryProcessor {
 			$querymode = SMWQuery::MODE_COUNT;
 		} elseif ($format == 'debug') {
 			$querymode = SMWQuery::MODE_DEBUG;
-		} elseif (in_array($format, array('rss','icalendar','vcard','csv','json'))) {
-			$querymode = SMWQuery::MODE_NONE;
 		} else {
-			$querymode = SMWQuery::MODE_INSTANCES;
+			$printer = SMWQueryProcessor::getResultPrinter($format, $context);
+			$querymode = $printer->getQueryMode($context);
 		}
 
 		if (array_key_exists('mainlabel', $params)) {
@@ -282,12 +277,12 @@ class SMWQueryProcessor {
 
 	static public function getResultFromQuery($query, $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY, $format = '') {
 		wfProfileIn('SMWQueryProcessor::getResultFromQuery (SMW)');
-		if ($format == '') {
-			$format = SMWQueryProcessor::getResultFormat($params);
-		}
 		$res = smwfGetStore()->getQueryResult($query);
 		if ( ($query->querymode == SMWQuery::MODE_INSTANCES) || ($query->querymode == SMWQuery::MODE_NONE) ) {
 			wfProfileIn('SMWQueryProcessor::getResultFromQuery-printout (SMW)');
+			if ($format == '') {
+				$format = SMWQueryProcessor::getResultFormat($params);
+			}
 			$printer = SMWQueryProcessor::getResultPrinter($format, $context, $res);
 			$result = $printer->getResult($res, $params, $outputmode);
 			wfProfileOut('SMWQueryProcessor::getResultFromQuery-printout (SMW)');
@@ -315,19 +310,13 @@ class SMWQueryProcessor {
 	}
 
 	/**
-	 * Find suitable SMWResultPrinter for the given format.
+	 * Find suitable SMWResultPrinter for the given format. The context in which the query is to be
+	 * used determines some basic settings of the returned printer object. Possible contexts are
+	 * SMWQueryProcessor::SPECIAL_PAGE, SMWQueryProcessor::INLINE_QUERY, SMWQueryProcessor::CONCEPT_DESC.
 	 */
-	static public function getResultPrinter($format,$context,$res) {
-		if ( 'auto' == $format ) {
-			if ( ($res->getColumnCount()>1) && ($res->getColumnCount()>0) )
-				$format = 'table';
-			else $format = 'list';
-		}
+	static public function getResultPrinter($format, $context = SMWQueryProcessor::SPECIAL_PAGE) {
 		global $smwgResultFormats;
-		if (array_key_exists($format, $smwgResultFormats))
-			$formatclass = $smwgResultFormats[$format];
-		else
-			$formatclass = "SMWListResultPrinter";
+		$formatclass = (array_key_exists($format, $smwgResultFormats))?$smwgResultFormats[$format]:'SMWAutoResultPrinter';
 		return new $formatclass($format, ($context != SMWQueryProcessor::SPECIAL_PAGE));
 	}
 

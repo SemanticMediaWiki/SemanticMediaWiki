@@ -267,13 +267,28 @@ abstract class SMWResultPrinter {
 	 * standalone files are produced.
 	 *
 	 * If this function returns something other than FALSE, then the printer will
-	 * not be regarded as a printer that displays in-line results. In in-line mode,
-	 * queries to that printer will not be executed, but behave as if the user
-	 * would have set limit=-1. This saves effort for printers that do not show
-	 * results in-line anyway, even if they would be part of the result.
+	 * not be regarded as a printer that displays in-line results. This is used to
+	 * determine if a file output should be generated in Special:Ask.
 	 */
 	public function getMimeType($res) {
 		return false;
+	}
+
+	/**
+	 * This function determines the query mode that is to be used for this printer in
+	 * various contexts. The query mode influences how queries to that printer should
+	 * be processed to obtain a result. Possible values are SMWQuery::MODE_INSTANCES
+	 * (retrieve instances), SMWQuery::MODE_NONE (do nothing), SMWQuery::MODE_COUNT
+	 * (get number of results), SMWQuery::MODE_DEBUG (return debugging text).
+	 * Possible values for context are SMWQueryProcessor::SPECIAL_PAGE,
+	 * SMWQueryProcessor::INLINE_QUERY, SMWQueryProcessor::CONCEPT_DESC.
+	 *
+	 * The default implementation always returns SMWQuery::MODE_INSTANCES. File exports
+	 * like RSS will use MODE_INSTANCES on special pages (so that instances are
+	 * retrieved for the export) and MODE_NONE otherwise (displaying just a download link).
+	 */
+	public function getQueryMode($context) {
+		return SMWQuery::MODE_INSTANCES;
 	}
 
 	/**

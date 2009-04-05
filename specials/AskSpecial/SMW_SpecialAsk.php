@@ -167,8 +167,7 @@ class SMWAskPage extends SpecialPage {
 		if ('' != $this->m_params['order']) $urltail .= '&order=' . $this->m_params['order'];
 
 		if ($this->m_querystring != '') {
-			$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, false, '', $this->m_printouts);
-			$queryobj->querymode = SMWQuery::MODE_INSTANCES; ///TODO: Somewhat hacky (just as the query mode computation in SMWQueryProcessor::createQuery!)
+			$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, SMWQueryProcessor::SPECIAL_PAGE , $this->m_params['format'], $this->m_printouts);
 			$res = smwfGetStore()->getQueryResult($queryobj);
 			// try to be smart for rss/ical if no description/title is given and we have a concept query:
 			if ($this->m_params['format'] == 'rss') {
@@ -191,7 +190,7 @@ class SMWAskPage extends SpecialPage {
 					}
 				}
 			}
-			$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE, $res);
+			$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE);
 			$result_mime = $printer->getMimeType($res);
 			if ($result_mime == false) {
 				if ($res->getCount() > 0) {
@@ -220,7 +219,7 @@ class SMWAskPage extends SpecialPage {
 			$wgOut->disable();
 			header( "Content-type: $result_mime; charset=UTF-8" );
 			if ($result_name !== false) {
-				header( "Content-Disposition: attachment; filename=$result_name");
+				header( "content-disposition: attachment; filename=$result_name");
 			}
 			print $result;
 		}
