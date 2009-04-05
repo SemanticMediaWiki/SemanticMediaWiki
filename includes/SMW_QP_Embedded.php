@@ -38,7 +38,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 	public function getName() {
 		wfLoadExtensionMessages('SemanticMediaWiki');
-		return wfMsgForContent('smw_printername_embedded');
+		return wfMsg('smw_printername_embedded');
 	}
 
 	protected function getResultText($res,$outputmode) {

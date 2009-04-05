@@ -32,7 +32,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 
 	public function getName() {
 		wfLoadExtensionMessages('SemanticMediaWiki');
-		return wfMsgForContent('smw_printername_json');
+		return wfMsg('smw_printername_json');
 	}
 
 	protected function getResultText($res, $outputmode) {

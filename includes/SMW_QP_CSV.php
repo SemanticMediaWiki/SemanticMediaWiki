@@ -37,7 +37,7 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 
 	public function getName() {
 		wfLoadExtensionMessages('SemanticMediaWiki');
-		return wfMsgForContent('smw_printername_csv');
+		return wfMsg('smw_printername_csv');
 	}
 
 	protected function getResultText($res, $outputmode) {

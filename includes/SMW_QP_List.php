@@ -38,7 +38,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 
 	public function getName() {
 		wfLoadExtensionMessages('SemanticMediaWiki');
-		return wfMsgForContent('smw_printername_' . $this->mFormat);
+		return wfMsg('smw_printername_' . $this->mFormat);
 	}
 
 	protected function getResultText($res,$outputmode) {

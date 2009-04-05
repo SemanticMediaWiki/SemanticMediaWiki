@@ -42,7 +42,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 
 	public function getName() {
 		wfLoadExtensionMessages('SemanticMediaWiki');
-		return wfMsgForContent('smw_printername_rss');
+		return wfMsg('smw_printername_rss');
 	}
 
 	protected function getResultText($res, $outputmode) {
