@@ -30,4 +30,9 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 		return ''; // acutally not needed in this implementation
 	}
 
+	public function getName() {
+		wfLoadExtensionMessages('SemanticMediaWiki');
+		return wfMsgForContent('smw_printername_auto');
+	}
+
 }

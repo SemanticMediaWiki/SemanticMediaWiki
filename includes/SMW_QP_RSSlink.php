@@ -40,6 +40,11 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		return ($context==SMWQueryProcessor::SPECIAL_PAGE)?SMWQuery::MODE_INSTANCES:SMWQuery::MODE_NONE;
 	}
 
+	public function getName() {
+		wfLoadExtensionMessages('SemanticMediaWiki');
+		return wfMsgForContent('smw_printername_rss');
+	}
+
 	protected function getResultText($res, $outputmode) {
 		global $smwgIQRunningNumber, $wgSitename, $wgServer, $smwgRSSEnabled, $wgRequest;
 		$result = '';

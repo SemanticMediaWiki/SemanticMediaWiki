@@ -35,6 +35,11 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 		return ($context==SMWQueryProcessor::SPECIAL_PAGE)?SMWQuery::MODE_INSTANCES:SMWQuery::MODE_NONE;
 	}
 
+	public function getName() {
+		wfLoadExtensionMessages('SemanticMediaWiki');
+		return wfMsgForContent('smw_printername_csv');
+	}
+
 	protected function getResultText($res, $outputmode) {
 		$result = '';
 		if ($outputmode == SMW_OUTPUT_FILE) { // make CSV file

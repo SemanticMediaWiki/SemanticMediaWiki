@@ -39,6 +39,21 @@ If the problem does not go away after some time, ask your site administrator to 
 	// Link to JSON feeds
 	'smw_json_link' => 'JSON',
 
+	// Names for result formats:
+	'smw_printername_auto' => 'Automatic',
+	'smw_printername_count' => 'Count results',
+	'smw_printername_csv' => 'CSV export',
+	'smw_printername_debug' => 'Debug query (for experts)',
+	'smw_printername_embedded' => 'Embed page contents',
+	'smw_printername_json' => 'JSON export',
+	'smw_printername_list' => 'List',
+	'smw_printername_ol' => 'Enumeration',
+	'smw_printername_ul' => 'Itemization',
+	'smw_printername_rss' => 'RSS export',
+	'smw_printername_table' => 'Table',
+	'smw_printername_broadtable' => 'Broad table',
+	'smw_printername_template' => 'Template',
+
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
 	'smw_iq_moreresults' => '… further results',

@@ -33,6 +33,11 @@ class SMWTemplateResultPrinter extends SMWResultPrinter {
 		}
 	}
 
+	public function getName() {
+		wfLoadExtensionMessages('SemanticMediaWiki');
+		return wfMsgForContent('smw_printername_template');
+	}
+
 	protected function getResultText($res, $outputmode) {
 		// print all result rows
 		if ($this->m_template == false) {

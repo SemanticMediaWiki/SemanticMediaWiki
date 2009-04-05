@@ -13,6 +13,12 @@
  */
 class SMWTableResultPrinter extends SMWResultPrinter {
 
+	public function getName() {
+		wfLoadExtensionMessages('SemanticMediaWiki');
+		return wfMsgForContent('smw_printername_' . $this->mFormat);
+	}
+
+
 	protected function getResultText($res, $outputmode) {
 		global $smwgIQRunningNumber;
 		SMWOutputs::requireHeadItem(SMW_HEADER_SORTTABLE);

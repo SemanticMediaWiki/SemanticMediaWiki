@@ -305,6 +305,17 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
+	 * Get a human readable label for this printer. The default is to
+	 * return just the format identifier. Concrete implementations may
+	 * refer to messages here. The format name is normally not used in
+	 * wiki text but only in forms etc. hence the user language should be
+	 * used when retrieving messages.
+	 */
+	public function getName() {
+		return $this->mFormat;
+	}
+
+	/**
 	 * Provides a simple formatted string of all the error messages that occurred.
 	 * Can be used if not specific error formatting is desired. Compatible with HTML
 	 * and Wiki.

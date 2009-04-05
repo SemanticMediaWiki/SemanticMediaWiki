@@ -193,7 +193,7 @@ class SMWAskPage extends SpecialPage {
 			$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE);
 			$result_mime = $printer->getMimeType($res);
 			if ($result_mime == false) {
-				if ($res->getCount() > 0) {
+				if ( $res->getCount() > 0 ) {
 					$navigation = $this->getNavigationBar($res, $urltail);
 					$result = '<div style="text-align: center;">' . $navigation;
 					$result .= '</div>' . $printer->getResult($res, $this->m_params,SMW_OUTPUT_HTML);
@@ -264,21 +264,27 @@ class SMWAskPage extends SpecialPage {
 				$result .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes&sc=1')) . '" rel="nofollow">' . wfMsg('smw_add_sortcondition') . '</a>'; // note that $urltail uses a , separated list for sorting, so setting sc to 1 always adds one new condition
 			}
 
-			$result .= '<div>'.wfMsg('smw_ask_format_as').' <input type="hidden" name="eq" value="yes"/>' .
+			$printer = SMWQueryProcessor::getResultPrinter('broadtable',SMWQueryProcessor::SPECIAL_PAGE);
+			$result .= '<br /><br />' . wfMsg('smw_ask_format_as').' <input type="hidden" name="eq" value="yes"/>' .
 				'<select name="p">' .
-				'<option value="format=broadtable"'.($this->m_params['format'] == 'broadtable' ? ' selected' : '').'>broadtable ('.wfMsg('smw_ask_defaultformat').')</option>'."\n";
+				'<option value="format=broadtable"'.($this->m_params['format'] == 'broadtable' ? ' selected' : ''). '>' .
+				$printer->getName() . ' ('.wfMsg('smw_ask_defaultformat').')</option>'."\n";
 
-			foreach (array_keys($smwgResultFormats) as $format)
-			{
-				if ($format != 'broadtable')
-				{
-					$result .= '<option value="format='.$format.'"'.($this->m_params['format'] == $format ? ' selected' : '').'>'.$format."</option>\n";
+			$formats = array();
+			foreach (array_keys($smwgResultFormats) as $format) {
+				if ( ($format != 'broadtable') && ($format != 'count') && ($format != 'debug') ) { // special formats "count" and "debug" currently not supported
+					$printer = SMWQueryProcessor::getResultPrinter($format,SMWQueryProcessor::SPECIAL_PAGE);
+					$formats[$format] = $printer->getName();
 				}
 			}
+			natcasesort($formats);
+			foreach ($formats as $format => $name) {
+				$result .= '<option value="format='.$format.'"'.($this->m_params['format'] == $format ? ' selected' : '').'>'.$name."</option>\n";
+			}
 
-			$result .= '</select></div>';
+			$result .= '</select><br />';
 
-			$result .= '<input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
+			$result .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
 				'<input type="hidden" name="eq" value="yes"/>' .
 					' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '" rel="nofollow">' . wfMsg('smw_ask_hidequery') . '</a> ' .
 					SMWAskPage::$pipeseparator .
