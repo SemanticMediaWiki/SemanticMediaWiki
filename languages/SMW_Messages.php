@@ -213,6 +213,9 @@ It takes care that humans don\'t turn into websites.</p>',
 	'smw_ask_printhead'     => 'Additional printouts (optional)',
 	'smw_ask_format_as'	=> 'Format as:',
 	'smw_ask_defaultformat'	=> 'default',
+	'smw_ask_show_embed'	=> 'Show embed code',
+	'smw_ask_hide_embed'	=> 'Hide embed code',
+	'smw_ask_embed_instr'	=> 'To embed this query inline into a wiki page use the code below.',
 
 	// Messages for the search by property special
 	'searchbyproperty'      => 'Search by property',

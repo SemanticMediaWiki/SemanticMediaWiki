@@ -287,13 +287,44 @@ class SMWAskPage extends SpecialPage {
 			$result .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
 				'<input type="hidden" name="eq" value="yes"/>' .
 					' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '" rel="nofollow">' . wfMsg('smw_ask_hidequery') . '</a> ' .
+					SMWAskPage::$pipeseparator .' '.SMWAskPage::getEmbedToggle() .
 					SMWAskPage::$pipeseparator .
 					' <a href="' . htmlspecialchars(wfMsg('smw_ask_doculink')) . '">' . wfMsg('smw_ask_help') . '</a>' .
-				"\n</form><br />";
+				"\n</form>";
 		} else {
-			$result .= '<p><a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes')) . '" rel="nofollow">' . wfMsg('smw_ask_editquery') . '</a></p>';
+			$result .= '<p><a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes')) . '" rel="nofollow">' . wfMsg('smw_ask_editquery') . '</a> '.
+				SMWAskPage::$pipeseparator.' '.SMWAskPage::getEmbedToggle().'</p>';
 		}
+
+		$result .= '<div id="inlinequeryembed" style="display: none"><div id="inlinequeryembedinstruct">'.wfMsg('smw_ask_embed_instr').'</div><textarea id="inlinequeryembedarea" readonly="yes" cols="20" rows="6" onclick="this.select()">'.
+			'{{#ask:'.htmlspecialchars($this->m_querystring)."\n";
+
+		foreach ($this->m_printouts as $printout) {
+			$result .= '|'.$printout->getSerialisation() . "\n";
+		}
+
+		foreach ($this->m_params as $param_name => $param_value) {
+			$result .= '|'.htmlspecialchars($param_name).'='.htmlspecialchars($param_value)."\n";
+		}
+
+		$result .= '}}</textarea></div><br/>';
+
 		return $result;
+	}
+
+	private static function getEmbedToggle()
+	{
+		return '<span id="embed_show"><a href="#" rel="nofollow" onclick="' .
+			"document.getElementById('inlinequeryembed').style.display='block';" .
+			"document.getElementById('embed_hide').style.display='inline';" .
+			"document.getElementById('embed_show').style.display='none';" .
+			"document.getElementById('inlinequeryembedarea').select();".
+			'">' . wfMsg('smw_ask_show_embed') . '</a></span>' .
+			'<span id="embed_hide" style="display: none"><a href="#" rel="nofollow" onclick="' .
+			"document.getElementById('inlinequeryembed').style.display='none';" .
+			"document.getElementById('embed_show').style.display='inline';" .
+			"document.getElementById('embed_hide').style.display='none';".
+			'">' . wfMsg('smw_ask_hide_embed') . '</a></span>';
 	}
 
 	/**
