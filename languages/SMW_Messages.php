@@ -3658,6 +3658,10 @@ Nggawé berkas RDF sing bisa dijlajah.',
 Saben jenis data duwé kaca ing ngendi informasi tambahan bisa diwènèhaké.',
 	'smw_typeunits' => 'Unit-unit pangukuran jenis “$1”: $2',
 	'semanticstatistics' => 'Statistik sémantik',
+	'smw_semstats_text' => 'Wiki iki ngemot <b>$1</b> bijih-bijih sifat kanggo gunggungé <b>$2</b> <a href="$3">sifat-sifat</a> sing béda-béda.
+<b>$4</b> sifat duwé kaca dhéwé, lan jenis data sing dimaksud iku dispésifikasi kanggo <b>$5</b> saka iku.
+Sawetara saka sifat sing ana mbok-menawa <a href="$6">sifat sing ora dienggo</a>.
+Sifat-sifat sing isih ora duwé kaca ditemokaké ing <a href="$7">daftar sifat-sifat sing dipèngèni</a>.',
 	'flawedattributes' => 'Sifat-sifaté Ora Pepak',
 	'smw_fattributes' => 'Kaca-kaca sing kapacak ing ngisor iki duwé sifat sing didéfinisi ora bener.
 Cacahé sifat sing ora bener iki diwènèhaké antara tandha kurung.',
@@ -3867,9 +3871,12 @@ Aanforderung dorschjeiht, dann froch Dinge Wiki-Köbes donoh, noh dämm Kunzäp.
 	'smw_csv_link' => '<i lang="en">CSV</i>',
 	'smw_iq_disabled' => 'Semantesche Frore sem em Wiki em Momang afjeschaldt.',
 	'smw_iq_moreresults' => '…&nbsp;mieh vun däm, wat jefonge woodt',
+	'smw_iq_nojs' => 'Dat Denge hee kanns De met enen Brauser, dä JavaScrip kann, beloore.',
 	'smw_iq_altresults' => 'Direk en de Leß bläddere.',
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '&nbsp;',
+	'smw_notitle' => '„$1“ kam_mer en hee däm Wiki nit als ene Siggename bruche.',
+	'smw_emptystring' => 'De jonn kei Reihe uß Boochstabe un Zeishe, woh nit ens ei dofun dren shteiht. Alsu nit leddesch lohße.',
 	'smw_noboolean' => '„$1“ es keine vun dä Wääte för „wohr“ un „verkeeht“.',
 	'smw_true_words' => 'wohr,wor,woo,woh,wo,w,j,jo,joh,true,t,yes,y',
 	'smw_false_words' => 'verkiehrt,verkihrt,verkirt,verkeht,verkeet,verket,vokiehrt,vokihrt,vokirt,vokeht,vokeet,voket,ferkiehrt,ferkihrt,ferkirt,ferkeht,ferkeet,ferket,fokiehrt,fokihrt,fokirt,fokeht,fokeet,foket,fallsch,falsch,näh,nää,nä,false,f,no,n',
@@ -3886,6 +3893,7 @@ Aanforderung dorschjeiht, dann froch Dinge Wiki-Köbes donoh, noh dämm Kunzäp.
 	'smw_abb_west' => 'W',
 	'smw_label_latitude' => 'Breed (om Jlobus):',
 	'smw_label_longitude' => 'Läng (om Jlobus):',
+	'smw_nodatetime' => 'Dat Dattum „$1“ künne mer nit vershtonn.',
 	'smw_badtitle' => '„$1“ es keine jöltejje Tittel för en Sigk.',
 	'smw_badqueryatom' => 'Ene Aandeil „<nowiki>[[…]]</nowiki>“ en dä Anfrooch es nit ze vershtonn.',
 	'smw_propvalueproblem' => 'Dä Eijeschaff „$1“ ier Wäät es nit ze vershtonn.',
@@ -3899,6 +3907,8 @@ müjjelesch, un dä Aandeil ($1) es dröm us dä Frooch eruß jenumme woode.',
 	'smw_attribute_header' => 'Sigge met dä Eijeschaff „$1“',
 	'smw_rss_description' => '<i lang="en">RSS</i> Kanaal $1',
 	'specialpages-group-smw_group' => 'Semantesch MediaWiki',
+	'exportrdf' => 'Sigge em Fommaat RDF expoteere',
+	'smw_exportrdf_submit' => 'Loß Jonn!',
 	'smw_propertylackstype' => 'För die Eijeschaff es bes jetz kei Date-Aat aanjejovve, mer nämme för der Momang ens „$1“.',
 	'smw_propertyhardlyused' => 'Die Eijeschaff weed em Wiki koum jebruch!',
 	'unusedproperties' => 'Eijeschaffte, die nit jebruch wääde',
@@ -3916,6 +3926,8 @@ Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.',
 	'flawedattributes' => 'Kappodde Eijeschafte',
 	'smw_fattributes' => 'Die Sigge en dä Leß hee unge han en Definizjun Eijeschafte met Fähler dren.
 De Aanzahl kappodde Eijeschafte shteiht en Kalammere do bei.',
+	'smw_uri_doc' => '<p>Dä <i lang="en">URI resolver</i> hät dä Vörschlaach <<i lang="en">a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a></i> opjenumme
+(-: un sorresch esu doför, dat uß Minsche kei Websigge wääde :-)</p>',
 	'ask' => 'Semantesch Söke',
 	'smw_ask_sortby' => 'Noh de Spallde zotteere (moß ävver nit)',
 	'smw_ask_ascorder' => 'Nomaal eröm zotteere',
@@ -3925,6 +3937,7 @@ De Aanzahl kappodde Eijeschafte shteiht en Kalammere do bei.',
 	'smw_add_sortcondition' => '[Zoteere dobeidonn]',
 	'smw_ask_hidequery' => 'Opdrach nit aanzeije',
 	'smw_ask_help' => 'Hölp',
+	'smw_ask_printhead' => 'Zosäzlijje Ußdröcker (kanns De fott lohße)',
 	'smw_sbv_displayresult' => 'Leß met alle Sigge met dä Eijeschaff „$1“, die do dä Wäät „$2“ hät.',
 	'smw_sbv_displayresultfuzzy' => 'Leß met alle Sigge met dä Eijeschaff „$1“, die do dä Wäät „$2“ hät.<br />
 (Weil nur winnisch dovun do sin, dom_mer de ähnlesche Wääte metzeije)',
@@ -3936,6 +3949,7 @@ De Aanzahl kappodde Eijeschafte shteiht en Kalammere do bei.',
 	'smw_browse_article' => 'Beß esu joot, un jif dä Tittel vun dä Sigg aan, wo De met däm Bläddere aanfange wells.',
 	'smw_browse_go' => 'Loß Jonn!',
 	'smw_browse_more' => '&nbsp;…',
+	'smw_pp_submit' => 'Loß Jonn!',
 	'smw_result_prev' => 'Vörijje',
 	'smw_result_next' => 'Wigger',
 	'smw_result_noresults' => 'Nix jefonge.',
@@ -3950,8 +3964,10 @@ Mer donn jetz nit noch ein aanshtüße!',
 	'smw_smwadmin_db' => 'Datebangk inshtalleere un op der neuste Shatnd bränge',
 	'smw_smwadmin_dbbutton' => 'Tabelle aanlääje udder op der neuste Shatnd bränge',
 	'smw_smwadmin_announce' => 'Donn Ding Wiki annongßeere un bikannt maache',
+	'smw_smwadmin_announcebutton' => 'Met dämm Knopp hee deihs De Dingem Wiki sing <i lang="en">URL</i> aan dä Deens schecke. Dä deiht bloß öffentlesch oproofbaare Wikis opnämme, un bloß öffentlesch oproofbaare Enfomazjuhne övvernämme.',
 	'smw_smwadmin_datarefresh' => 'Date repareere un op der neuste Shtand bränge',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Joh, esch ben mer sescher, esch well dat han.',
+	'smw_smwadmin_support' => 'Hölp krijje',
 	'smw_smwadmin_supportdocu' => 'Bei Probleme kriss De velleich Hölp övver en Aanzahl vun Müjjeleschkeite:',
 	'smw_smwadmin_mediazilla' => 'Fähler kanns De övver <a href="https://bugzilla.wikimedia.org/" lang="en">Bugzilla</a> melde.',
 );
@@ -4189,6 +4205,10 @@ $messages['mr'] = array(
 प्रत्येक डाटा प्रकाराचे एक पाने आहे जिथे जास्तीची माहिती देता येईल.',
 	'smw_typeunits' => '“$1” प्रकारची मापनाची एकके: $2',
 	'semanticstatistics' => 'सिमँटिक सांख्यिकी',
+	'smw_semstats_text' => 'ह्या विकिमध्ये <b>$1</b> गुणधर्मांच्या किंमती आहेत ज्या एकूण <b>$2</b> वेगवेगळ्या <a href="$3">गुणधर्म</a> दर्शवितात.
+<b>$4</b> गुणधर्मांना स्वत:ची पाने आहेत, व त्यापैकी <b>$5</b> गुणधर्मांना जुळणारे डाटा प्रकार दिलेले आहेत.
+यातील काही गुणधर्म हे <a href="$6">न वापरलेले गुणधर्म</a> असण्याची शक्यता आहे.
+ज्या गुणधर्मांना स्वत:चे पान नाही असे गुणधर्म <a href="$7">पाहिजे असलेल्या गुणधर्मांची यादी</a> मध्ये सापडतील.',
 	'flawedattributes' => 'चुकीचे गुणधर्म',
 	'smw_fattributes' => 'खाली दिलेल्या यादीतील पानांना चुकीचे गुणधर्म आहेत.
 चुकीच्या गुणधर्मांची संख्या कंसात दिलेली आहे.',
@@ -4805,6 +4825,10 @@ Lager en RDF som kan gås gjennom.',
 Hver datatype har en side der ekstra informasjon kan oppgis.',
 	'smw_typeunits' => 'Måleenheter av typen «$1»: $2',
 	'semanticstatistics' => 'Semantisk statistikk',
+	'smw_semstats_text' => 'Denne wikien inneholder <b>$1</b> egenskapsverdier for totalt <b>$2</b> forskjellige <a href="$3">egenskaper</a>.
+<b>$4</b> egenskaper har en egen side, og den mente datatypen er oppgitt for <b>$5</b> av disse.
+Noen av de eksisterende egenskapene kan være <a href="$6">ubrukte egenskaper</a>.
+Egenskaper som fortsatt ikke har en egen side finnes på <a href="$7">listen over ønskede egenskaper</a>.',
 	'flawedattributes' => 'Ugyldige egenskaper',
 	'smw_fattributes' => 'Sidene som listes opp nedenfor har en ukorrekt definert egenskap.
 Antallet ukorrekte egenskaper gis i parentes.',
@@ -6279,6 +6303,10 @@ Skapar en RDF som kan gås igenom.',
 Varje datatyp har en sida där ytterligare information kan uppges.',
 	'smw_typeunits' => 'Mätenhet för typ “$1”: $2',
 	'semanticstatistics' => 'Semantisk statistik',
+	'smw_semstats_text' => 'Denna wikin innehåller <b>$1</b> egenskapsvärden för totalt <b>$2</b> olika <a href="$3">egenskaper</a>.
+<b>$4</b> egenskaper har en egen sida, och den avsedda datatypen är specificerad för <b>$5</b> av dessa.
+Några av de existerande egenskaperna kan vara <a href="$6">oanvända egenskaper</a>.
+Egenskaper som fortfarande saknar en egen sida finns på <a href="$7">listan över önskede egenskaper</a>.',
 	'flawedattributes' => 'Ogiltiga Egenskaper',
 	'smw_fattributes' => 'Sidorna som listas nedan har en felaktigt definerad egenskap.
 Antalet felaktiga egenskaper visas inom parenteserna.',
@@ -6396,12 +6424,6 @@ $messages['tet'] = array(
  */
 $messages['tg-cyrl'] = array(
 	'smw_sbv_value' => 'Қимат',
-);
-
-/** Thai (ไทย)
- * @author Octahedron80
- */
-$messages['th'] = array(
 );
 
 /** Tagalog (Tagalog)
@@ -6622,144 +6644,49 @@ $messages['tr'] = array(
 	'smw_result_results' => 'Sonuçlar',
 );
 
+/** ئۇيغۇرچە (ئۇيغۇرچە)
+ * @author Alfredie
+ */
+$messages['ug-arab'] = array(
+	'smw_browse_go' => 'كۆچۈش',
+);
+
 /** Uighur (Latin) (Uyghurche‎ / ئۇيغۇرچە (Latin))
  * @author Jose77
+ * @author Minh Nguyen
+ * @author Vinhtantran
  */
 $messages['ug-latn'] = array(
 	'smw_browse_go' => 'Köchüsh',
 );
-/** Vietnamese (Tiếng Việt)
- * @author Minh Nguyen
- * @author Vinhtantran
+
+/** Veps (Vepsan kel')
+ * @author Игорь Бродский
  */
-$messages['vi'] = array(
-	'smw_edithelp' => 'Trợ giúp sửa đổi tại thuộc tính',
-	'smw_viewasrdf' => 'Tin RDF',
-	'smw_finallistconjunct' => ', và',
-	'smw_factbox_head' => 'Sự thật về $1',
-	'smw_isspecprop' => 'Thuộc tính này là thuộc tính đặc biệt trong wiki này.',
-	'smw_isknowntype' => 'Kiểu này là một trong những kiểu dữ liệu chuẩn của wiki này.',
-	'smw_isaliastype' => 'Kiểu này là tên hiệu của kiểu dữ liệu “$1”.',
-	'smw_isnotype' => 'Kiểu “$1” này không phải là kiểu dữ liệu chuẩn trên wiki, và cũng chưa được cung cấp định nghĩa người dùng.',
-	'smw_baduri' => 'Rất tiếc, không cho phép URI có dạng “$1”.',
-	'smw_iq_disabled' => 'Rất tiếc. Chức năng truy vấn ngữ nghĩa đã bị tắt tại wiki này.',
-	'smw_iq_moreresults' => '… kết quả khác',
-	'smw_iq_nojs' => 'Xin hãy dùng trình duyệt có kích hoạt JavaScript để xem thành phần này.',
-	'smw_iq_altresults' => 'Xem qua trực tiếp danh sách kết quả.',
-	'smw_unknown_importns' => 'Nhập các hàm chưa có tại không gian tên “$1”.',
-	'smw_nonright_importtype' => '$1 chỉ dùng được tại những trang thuộc không gian tên “$2”.',
-	'smw_wrong_importtype' => '$1 không thể dùng được tại những trang thuộc không gian tên “$2”.',
-	'smw_no_importelement' => 'Thành phần “$1” không có để nhập.',
-	'smw_parseerror' => 'Không hiểu giá trị cung cấp.',
-	'smw_notitle' => 'Không thể dùng “$1” làm tên trang trên wiki này.',
-	'smw_unknowntype' => 'Không hỗ trợ kiểu “$1” trong thuộc tính.',
-	'smw_manytypes' => 'Thuộc tính này có nhiều hơn một kiểu',
-	'smw_emptystring' => 'Không chấp nhận chuỗi trống.',
-	'smw_maxstring' => 'Đại diện chuỗi $1 quá dài đối với {{SITENAME}}.',
-	'smw_notinenum' => '“$1” không nằm trong danh sách các giá trị khả dĩ ($2) cho thuộc tính này.',
-	'smw_noboolean' => '“$1” không phải là giá trị Boole (đúng/sai).',
-	'smw_true_words' => 'true,t,yes,y,đúng,đ,có,c',
-	'smw_false_words' => 'false,f,no,n,sai,s,không,k',
-	'smw_nofloat' => '“$1” không phải là số.',
-	'smw_infinite' => '{{SITENAME}} không hỗ trợ các số lớn như “$1”.',
-	'smw_infinite_unit' => 'Chuyển đổi thành đơn vị “$1” đẫn tới một con số quá lớn đối với {{SITENAME}}.',
-	'smw_unsupportedprefix' => 'Không hỗ trợ tiền tố cho các số (“$1”).',
-	'smw_unsupportedunit' => 'Không hỗ trợ chuyển đổi đơn vị cho đơn vị “$1”.',
-	'smw_lonely_unit' => 'Không tìm thấy số trước ký hiệu “$1”.',
-	'smw_bad_latlong' => 'Vĩ độ và kinh độ phải được cung cấp chỉ một lần, và với giá trị tọa độ hợp lệ.',
-	'smw_abb_north' => 'B',
-	'smw_abb_east' => 'Đ',
-	'smw_abb_south' => 'N',
-	'smw_abb_west' => 'T',
-	'smw_label_latitude' => 'Vĩ độ:',
-	'smw_label_longitude' => 'Kinh độ:',
-	'smw_nodatetime' => 'Không hiểu ngày “$1”.',
-	'smw_toomanyclosing' => 'Dường có quá nhiều lần xuất hiện “$1” trong câu truy vấn.',
-	'smw_noclosingbrackets' => 'Lần sử dụng “<nowiki>[[</nowiki>” nào đó trong câu truy vấn của bạn không được đóng bằng “]]”.',
-	'smw_misplacedsymbol' => 'Ký hiệu “$1” được dùng tại nơi nó không hữu ích.',
-	'smw_unexpectedpart' => 'Phần “$1” của câu truy vấn không hiểu được.
-Kết quả có thể không như mong đợi.',
-	'smw_emptysubquery' => 'Một truy vấn con nào đó không có điều kiện hợp lệ.',
-	'smw_misplacedsubquery' => 'Một truy vấn con nào đó được dùng tại nơi không cho phép dùng truy vấn con.',
-	'smw_valuesubquery' => 'Truy vấn con không hỗ trợ các giá trị của tham số “$1”.',
-	'smw_overprintoutlimit' => 'Câu truy vấn chứa quá nhiều yêu cầu trang in.',
-	'smw_badprintout' => 'Lệnh yêu cầu in nào đó trong câu truy vấn có dạng sai.',
-	'smw_badtitle' => 'Tên trang “$1” không hợp lệ.',
-	'smw_badqueryatom' => 'Phần “<nowiki>[[…]]</nowiki>” nào đó của câu truy vấn không hiểu được.',
-	'smw_propvalueproblem' => 'Không hiểu giá trị của thuộc tính “$1”.',
-	'smw_nodisjunctions' => 'Phân tách trong câu truy vấn không hỗ trợ trong wiki này và một phần câu truy vấn bị bỏ qua ($1).',
-	'smw_querytoolarge' => 'Các điều kiện truy vấn sau đây không được xem xét do hạn chế của wiki trong độ dài hoặc độ sâu truy vấn: $1.',
-	'smw_devel_warning' => 'Tính năng này hiện đang được phát triển, và có thể không hoạt động đầy đủ.
-Hãy sao lưu dữ liệu của bạn trước khi dùng nó.',
-	'smw_notemplategiven' => 'Xin hãy cung cấp giá trị cho tham số “template” để đinh dạng truy vấn này có thể hoạt động.',
-	'smw_type_header' => 'Tính chất của loại “$1”',
-	'smw_typearticlecount' => 'Hiển thị $1 thuộc tính sử dụng kiểu này.',
-	'smw_attribute_header' => 'Những trang dùng thuộc tính “$1”',
-	'smw_attributearticlecount' => 'Hiển thị $1 trang dùng thuộc tính này.',
-	'exportrdf' => 'Xuất trang ra RDF',
-	'smw_exportrdf_docu' => '<p>Trang này cho phép bạn lấy dữ liệu từ trang theo dạng RDF.
-Để xuất trang, gõ vào tựa đề trong khung dưới đây, một dòng một tựa đề.</p>',
-	'smw_exportrdf_recursive' => 'Xuất đệ quy tất cả các trang liên quan.
-Chú ý rằng kết quả không thể quá lớn!',
-	'smw_exportrdf_backlinks' => 'Cũng xuất tất cả các trang chỉ đến trang được xuất.
-Tạo ra RDF có thể duyệt được.',
-	'smw_exportrdf_lastdate' => 'Đừng xuất trang không thay đổi từ một thời điểm cho trước.',
-	'properties' => 'Thuộc tính',
-	'smw_properties_docu' => 'Các thuộc tính được dùng trong wiki.',
-	'smw_property_template' => '$1 thuộc loại $2 ($3)',
-	'smw_propertylackspage' => 'Tất cả các thuộc tính nên được mô tả bằng một trang!',
-	'smw_propertylackstype' => 'Không có loại này được chỉ định cho thuộc tính này (từ giờ giả thiết loại $1).',
-	'smw_propertyhardlyused' => 'Thuộc tính này khó sử dụng trong wiki!',
-	'unusedproperties' => 'Thuộc tính không sử dụng',
-	'smw_unusedproperties_docu' => 'Các thuộc tính sau tồn tại mặc dù không có trang nào dùng chúng.',
-	'smw_unusedproperty_template' => '$1 thuộc loại $2',
-	'wantedproperties' => 'Thuộc tính cần nhất',
-	'smw_wantedproperties_docu' => 'Các thuộc tính sau được dùng trong wiki nhưng chưa có trang nào mô tả chúng.',
-	'smw_wantedproperty_template' => '$1 ($2 lần sử dụng)',
-	'tooltip-purge' => 'Nhấn vào đây để làm tươi tất cả các truy vấn và tiêu bản trên trang này',
-	'smw_purge' => 'Làm tươi',
-	'types' => 'Các dạng',
-	'smw_types_docu' => 'Sau đây là danh sách tất cả các kiểu dữ liệu có thể gán vào thuộc tính.
-Mỗi kiểu dữ liệu có một trang tại đó có thông tin bổ sung.',
-	'smw_typeunits' => 'Đơn vị đo lường thuộc loại “$1”: $2',
-	'semanticstatistics' => 'Thống kê ngữ nghĩa',
-	'flawedattributes' => 'Thuộc tính hỏng',
-	'smw_fattributes' => 'Những trang liệt kê phía dưới có thuộc tính được định nghĩa không chính xác.
-Số thuộc tính không đúng được ghi trong ngoặc đơn.',
-	'uriresolver' => 'Bộ giải URI',
-	'smw_uri_doc' => '<p>Bộ giải URI hiện thực <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">THẺ W3C tìm thấy tại httpRange-14</a>. Nó lo việc con người không quay lại trang web.</p>',
-	'ask' => 'Tìm kiếm ngữ nghĩa',
-	'smw_ask_sortby' => 'Sắp xếp theo cột (tùy chọn)',
-	'smw_ask_ascorder' => 'Tăng dần',
-	'smw_ask_descorder' => 'Giảm dần',
-	'smw_ask_submit' => 'Kết quả tìm kiếm',
-	'smw_ask_editquery' => '[Sửa truy vấn]',
-	'smw_add_sortcondition' => '[Thêm điều kiện sắp xếp]',
-	'smw_ask_hidequery' => 'Ẩn truy vấn',
-	'smw_ask_help' => 'Trợ giúp truy vấn',
-	'smw_ask_queryhead' => 'Truy vấn',
-	'smw_ask_printhead' => 'Trang in bổ sung (tùy chọn)',
-	'searchbyproperty' => 'Tìm theo thuộc tính',
-	'smw_sbv_docu' => '<p>Tìm tất cả các trang có thuộc tính và giá trị cho trước.</p>',
-	'smw_sbv_noproperty' => '<p>Xin nhập một thuộc tính.</p>',
-	'smw_sbv_novalue' => '<p>Xin nhập vào một giá trị hợp lệ cho thuộc tính, hoặc xem tất cả các giá trị thuộc tính của “$1.”</p>',
-	'smw_sbv_displayresult' => 'Danh sách tất cả các trang có thuộc tính “$1” có giá trị “$2”',
-	'smw_sbv_property' => 'Thuộc tính',
-	'smw_sbv_value' => 'Giá trị',
-	'smw_sbv_submit' => 'Kết quả tìm kiếm',
-	'browse' => 'Duyệt wiki',
-	'smw_browse_article' => 'Gõ vào tên trang để bắt đầu duyệt.',
-	'smw_browse_go' => 'Xem',
-	'pageproperty' => 'Tìm kiếm thuộc tính trang',
-	'smw_pp_docu' => 'Tìm tất cả các lấp chỗ trống của một thuộc tính tại một trang cho trước.
-Xin nhập vào cả một trang và một thuộc tính.',
-	'smw_pp_from' => 'Từ trang',
-	'smw_pp_type' => 'Thuộc tính',
-	'smw_pp_submit' => 'Kết quả tìm kiếm',
-	'smw_result_prev' => 'Trước',
-	'smw_result_next' => 'Sau',
-	'smw_result_results' => 'Kết quả',
-	'smw_result_noresults' => 'Không có kết quả nào.',
+$messages['vep'] = array(
+	'smw_viewasrdf' => 'RDF-purde',
+	'smw_finallistconjunct' => ' da',
+	'smw_factbox_head' => 'Faktad $1:n polhe',
+	'smw_abb_north' => 'Pohj.',
+	'smw_abb_east' => 'Päivl.',
+	'smw_abb_south' => 'Suvi',
+	'smw_abb_west' => 'Päivn.',
+	'smw_label_latitude' => 'Leveduz:',
+	'smw_label_longitude' => 'Piduz:',
+	'smw_exportrdf_submit' => 'Eksport',
+	'properties' => 'Ičendad',
+	'semanticstatistics' => 'Semantine statistik',
+	'smw_ask_submit' => "Löuta rezul'tatad",
+	'smw_ask_editquery' => '[Redaktiruida küzund]',
+	'smw_browse_go' => 'Mäne',
+	'smw_pp_from' => 'Lehtpolelpäi',
+	'smw_pp_type' => 'Ičend',
+	'smw_pp_submit' => "Löuta rezul'tatad",
+	'smw_result_prev' => 'Edeline',
+	'smw_result_next' => "Jäl'ghine",
+	'smw_result_results' => "Rezul'tatad",
+	'smw_result_noresults' => "Ei ole rezul'tatoid.",
+	'smwadmin' => 'Redaktiruida Semantic MediaWiki',
 );
 
 /** Vietnamese (Tiếng Việt)
@@ -6857,6 +6784,10 @@ Tạo ra RDF có thể duyệt được.',
 Mỗi kiểu dữ liệu có một trang tại đó có thông tin bổ sung.',
 	'smw_typeunits' => 'Đơn vị đo lường thuộc loại “$1”: $2',
 	'semanticstatistics' => 'Thống kê ngữ nghĩa',
+	'smw_semstats_text' => 'Wiki này có chứa <b>$1</b> giá trị thuộc tính cho tổng cộng <b>$2</b> <a href="$3">thuộc tính</a> khác nhau.
+<b>$4</b> thuộc tính có trang riêng, và kiểu dữ liệu dự tính được chỉ định cho <b>$5</b> trong số đó.
+Một số thuộc tính hiện có có thể là <a href="$6">thuộc tính chưa sử dụng</a>.
+Các thuộc tính còn thiếu một trang có thể tìm thấy tại <a href="$7">danh sách các thuộc tính cần có</a>.',
 	'flawedattributes' => 'Thuộc tính hỏng',
 	'smw_fattributes' => 'Những trang liệt kê phía dưới có thuộc tính được định nghĩa không chính xác.
 Số thuộc tính không đúng được ghi trong ngoặc đơn.',
@@ -7079,6 +7010,7 @@ $messages['zh-cn'] = array(
 	'smw_types_docu' => '以下为所有资料型态的列表，资料型态可用于指定性质，每项资料型态皆有提供附加信息的页面。',
 	'smw_typeunits' => '“$1＂型态的量测单位：$2',
 	'semanticstatistics' => '语意统计(Semantic Statistics)',
+	'smw_semstats_text' => '此wiki含有<b>$1</b>性质的值以用于总计<b>$2</b> 不同于 <a href="$3">性质</a>。 <b>$4</b>性质有着专属的专面，且预期所需的资料型态因着<b>$5</b>，而已被指定了，有些现有的性质也许为<a href="$6">未使用的性质</a>。您可在 <a href="$7">待建立的性质列表</a>中，找到那些尚未建立专属页面的性质。(译注原文为：This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.)',
 	'flawedattributes' => '错误的性质',
 	'smw_fattributes' => '在下方处被列出的页面有着一项非正确定义的属性，非正确的属性的数量置于中括号内',
 	'ask' => '语意搜寻',
