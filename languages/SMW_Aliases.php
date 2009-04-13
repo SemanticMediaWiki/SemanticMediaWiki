@@ -166,6 +166,20 @@ $aliases['ia'] = array(
 	'WantedProperties' => array( 'Proprietates dsesirate' ),
 );
 
+/** Italian (Italiano) */
+$aliases['it'] = array(
+	'Ask' => array( 'Chiedi' ),
+	'Browse' => array( 'Esplora' ),
+	'ExportRDF' => array( 'EsportaRDF' ),
+	'PageProperty' => array( 'ProprietàPagina' ),
+	'Properties' => array( 'Proprietà' ),
+	'SearchByProperty' => array( 'CercaPerProprietà' ),
+	'SemanticStatistics' => array( 'StatisticheSemantiche' ),
+	'Types' => array( 'Tipi' ),
+	'UnusedProperties' => array( 'ProprietàNonUtilizzate' ),
+	'WantedProperties' => array( 'ProprietàRichieste' ),
+);
+
 /** Japanese (日本語) */
 $aliases['ja'] = array(
 	'Ask' => array( '問い合わせ', '意味的検索' ),
