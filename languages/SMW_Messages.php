@@ -2950,13 +2950,17 @@ $messages['hsb'] = array(
 	'smw_label_longitude' => 'Geografiska dołhosć:',
 	'smw_nodatetime' => 'Datum "$1" njebu zrozumjeny.',
 	'smw_toomanyclosing' => 'Zda so, zo "$1" w tutym naprašowanju přehusto wustupuje.',
+	'smw_noclosingbrackets' => 'Wustupowanje pora róžkatych spinkow "<nowiki>[[</nowiki>" w twojim naprašowanju njeje přez wotpowědny "]]" wukónčene.',
 	'smw_misplacedsymbol' => 'Symbol "$1" so na městnje wužiwa, hdźež wužitny njeje.',
+	'smw_unexpectedpart' => 'Dźěl "$1" naprašowanja njebu zrozumjeny.
+Wuslědki snano kaž wočakowane njejsu.',
 	'smw_emptysubquery' => 'Někajke podnaprašowanje nima płaćiwe wuměnjenje.',
 	'smw_misplacedsubquery' => 'Někajke podnaprašowanje so na městnje wužiwa, hdźež podnaprašowanja njejsu dowolene.',
 	'smw_valuesubquery' => 'Podnaprašowanja so za hódnoty kajkosće "$1" njepodpěruja.',
 	'smw_badtitle' => '"$1" płaćiwy titul strony njeje.',
 	'smw_badqueryatom' => 'Dźěl "<nowiki>[[…]]</nowiki>" naprašowanja njebu zrozumjeny.',
 	'smw_propvalueproblem' => 'Hódnota kajkosće "$1" njebu zrozumjena.',
+	'smw_notemplategiven' => 'Podaj hódnotu za parameter "template", zo by tutón naprašowanski format fungował.',
 	'smw_type_header' => 'Kajkosće typa "$1"',
 	'smw_typearticlecount' => '{{PLURAL:$1|Pokazuje so kajkosć, kotraž tutón typ wužiwa|Pokazujetej so $1 kajkosći, kotrejž tutón typ wužiwatej|Pokazuja so $1 kajkosće, kotrež tutón typ wužiwaja|Pokazuje so $1 kajkosćow, kotrež tutón typ wužiwa}}.',
 	'smw_attribute_header' => 'Strony, kotrež kajkosć "$1" wužiwaja',
@@ -2980,11 +2984,16 @@ $messages['hsb'] = array(
 	'wantedproperties' => 'Požadane kajkosće',
 	'smw_wantedproperties_docu' => 'Slědowace kajkosće so we wikiju wužiwaja, ale nimaja stronu, kotraž je wopisuje.',
 	'smw_wantedproperty_template' => '$1 ({{PLURAL:$2|jónu wužity|dwójce wužitej|$2 razy wužite|$2 razow wužite}})',
+	'tooltip-purge' => 'Klikń tu, zo by wšě naprašowanja a předłohi na tutej stronje aktualizował',
 	'smw_purge' => 'Aktualizować',
 	'types' => 'Typy',
+	'smw_types_docu' => 'Deleka je lisćina wšěch datowych typow, kotrež dadźa so kajkosćam připokazać.
+Kóždy datowy typ ma stronu, hdźež móžeš přidatne informacije namakać.',
 	'smw_typeunits' => 'Měrjenske jednotki typa "$1": $2',
 	'semanticstatistics' => 'Semantiska statistika',
 	'flawedattributes' => 'Zmylne kajkosće',
+	'smw_fattributes' => 'Strony, kotrež su deleka nalistowane, maja wopak definowanu kajkosć.
+Ličba wopačnych kajkosćow so w wuzhibowanych spinkach podawa.',
 	'uriresolver' => 'Rezolwer URI',
 	'ask' => 'Semantiske pytanje',
 	'smw_ask_sortby' => 'Po špalće sortěrować (opcionalny)',
@@ -3002,6 +3011,7 @@ $messages['hsb'] = array(
 	'searchbyproperty' => 'Po kajkosći pytać',
 	'smw_sbv_docu' => '<p>Wšě strrony pytać, kotrež maja wěstu kajkosć a hódnotu.</p>',
 	'smw_sbv_noproperty' => '<p>Zapodaj prošu kajkosć.</p>',
+	'smw_sbv_novalue' => '<p>Zapodaj płaćiwu hódnotu za kajkosć abo wobhladaj sej wšě hódnoty kajkosće za "$1".</p>',
 	'smw_sbv_displayresult' => 'Lisćina wšěch stronow, kotrež maja kajkosć "$1" z hódnotu "$2"',
 	'smw_sbv_displayresultfuzzy' => 'Lisćina wšěch stronow, kotrež maja kajkosć "$1" z hódnotu "$2".
 Dokelž je jenož mało wuslědkow, so tež podobne hódnoty nalistuja.',
@@ -3017,6 +3027,7 @@ Dokelž je jenož mało wuslědkow, so tež podobne hódnoty nalistuja.',
 	'smw_browse_no_outgoing' => 'Tuta strona nima kajkosće.',
 	'smw_browse_no_incoming' => 'Žane kajkosće k tutej stronje njewotkazuja.',
 	'smw_inverse_label_default' => '$1 z',
+	'smw_inverse_label_property' => 'Nawopačne pomjenowanje kajkosće',
 	'pageproperty' => 'Pytanje kajkosćow strony',
 	'smw_pp_from' => 'Ze strony',
 	'smw_pp_type' => 'Kajkosć',
@@ -4381,6 +4392,9 @@ $messages['myv'] = array(
 	'smw_abb_west' => 'Чивалгомайонкс',
 	'smw_label_latitude' => 'Келезэ:',
 	'smw_label_longitude' => 'Кувалмозо:',
+	'smw_sbv_property' => 'Уликсчись:',
+	'smw_browse_go' => 'Адя',
+	'smw_pp_type' => 'Уликсчи',
 );
 
 /** Nahuatl (Nāhuatl)
@@ -6003,6 +6017,7 @@ Odhadovaný priebeh aktualizácie:',
 
 /** Serbian Cyrillic ekavian (ћирилица)
  * @author Slaven Kosanovic
+ * @author Михајло Анђелковић
  */
 $messages['sr-ec'] = array(
 	'smw_edithelp' => 'Уређивање помоћи особина',
@@ -6036,14 +6051,14 @@ $messages['sr-ec'] = array(
 	'smw_unknowntype' => 'Неподржан тип "$1" је дефинисан за особину.',
 	'smw_manytypes' => 'Више од једног типа је дефинисано за ову особину.',
 	'smw_emptystring' => 'Празни стрингови нису прихватљиви.',
-	'smw_maxstring' => 'Представљени стринг $1 је предугачак за {{SITENAME}}.',
+	'smw_maxstring' => 'Текстуална репрезентација $1 је предуга.',
 	'smw_notinenum' => '"$1" није на списку могућих вредности ($2) за ову особину.',
 	'smw_noboolean' => '"$1" није препознат као Болова вредност (истинито/неистинито).',
 	'smw_true_words' => 'истинито, и, да, д',
 	'smw_false_words' => 'неистинито, н, не, н',
 	'smw_nofloat' => '"$1" није број.',
-	'smw_infinite' => 'Бројеви дужине као "$1" нису подржани на {{SITENAME}}.',
-	'smw_infinite_unit' => 'Конверзија у јединицу "$1" је дала као резултат предугачак број за {{SITENAME}}.',
+	'smw_infinite' => 'Бројеви дуги као "$1" нису подржани.',
+	'smw_infinite_unit' => 'Конверзија у јединице "$1" разултира бројем који је предугачак.',
 	'smw_unsupportedprefix' => 'Префикси за бројеве ("$1") нису подржани.',
 	'smw_unsupportedunit' => 'Конверзија јединица за јединицу "$1" није подржана.',
 	'smw_lonely_unit' => 'Није пронађен број пре симбола "$1".',
@@ -6104,7 +6119,7 @@ $messages['sr-ec'] = array(
 	'smw_unusedproperty_template' => '$1 типа $2',
 	'wantedproperties' => 'Тражене особине',
 	'smw_wantedproperties_docu' => 'Следеће особине се користе на викију, али још увек немају своју страницу са описом.',
-	'smw_wantedproperty_template' => '$1 ($2 коришћења)',
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|употреба|употреба}})',
 	'tooltip-purge' => 'Кликните овде за чишћење кеша свих упита и шаблона на овој страници',
 	'smw_purge' => 'Очисти кеш',
 	'types' => 'Типови',
@@ -6138,8 +6153,8 @@ $messages['sr-ec'] = array(
 	'smw_sbv_displayresult' => 'Списак свих страница које садрже особину "$1" са вредношћу "$2"',
 	'smw_sbv_displayresultfuzzy' => 'Списак свих страница које садрже особину "$1" са вредношћу "$2".
 Пошто је пронађено само неколико резултата, такође су приказане приближне вредности.',
-	'smw_sbv_property' => 'Особина',
-	'smw_sbv_value' => 'Вредност',
+	'smw_sbv_property' => 'Особина:',
+	'smw_sbv_value' => 'Вредност:',
 	'smw_sbv_submit' => 'Пронађи резултате',
 	'browse' => 'Претражи вики',
 	'smw_browselink' => 'Прегледај особине',
