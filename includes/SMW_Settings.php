@@ -233,6 +233,7 @@ $smwgResultFormats = array(
 	'ol'         => 'SMWListResultPrinter',
 	'ul'         => 'SMWListResultPrinter',
 	'broadtable' => 'SMWTableResultPrinter',
+	'category'   => 'SMWCategoryResultPrinter',
 	'embedded'   => 'SMWEmbeddedResultPrinter',
 	'template'   => 'SMWTemplateResultPrinter',
 	'count'      => 'SMWListResultPrinter',
