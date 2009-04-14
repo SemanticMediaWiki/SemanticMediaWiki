@@ -273,14 +273,14 @@ class SMWSQLStore2QueryEngine {
 		$sql_options = $this->getSQLOptions($query,$rootid);
 		$sortfields = implode($qobj->sortfields,','); // also select those, required in standard SQL (though MySQL is quite about it)
 		$res = $this->m_dbs->select($this->m_dbs->tableName($qobj->jointable) . " AS $qobj->alias" . $qobj->from,
-			"DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw"
+			"DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw,$qobj->alias.smw_sortkey AS sortkey"
 			. ($sortfields?',':'') . $sortfields, $qobj->where, 'SMW::getQueryResult', $sql_options);
 
 		$qr = array();
 		$count = 0;
 		while ( ($count < $query->getLimit()) && ($row = $this->m_dbs->fetchObject($res)) ) {
 			$count++;
-			$v = SMWWikiPageValue::makePage($row->t, $row->ns);
+			$v = SMWWikiPageValue::makePage($row->t, $row->ns, $row->sortkey);
 			$qr[] = $v;
 			$this->m_store->cacheSMWPageID($row->id,$row->t,$row->ns,$row->iw);
 		}
