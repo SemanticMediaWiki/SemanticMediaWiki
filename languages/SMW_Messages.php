@@ -6331,6 +6331,7 @@ Generiše RDF koji je moguće pregledati.',
 /** Swedish (Svenska)
  * @author Boivie
  * @author Flrn
+ * @author Gabbe.g
  * @author Lejonel
  * @author Leo Johannes
  * @author M.M.S.
@@ -6351,6 +6352,7 @@ $messages['sv'] = array(
 	'smw_multiple_concepts' => 'Varje konceptsida kan endast ha en konceptdefinition.',
 	'smw_baduri' => 'Beklagar, URI-er på formen "$1" är inte tillåtet.',
 	'smw_csv_link' => 'CSV',
+	'smw_printername_auto' => 'Automatisk',
 	'smw_iq_disabled' => 'Beklagar. Semantiska efterfrågningar har slagits av på den här wikin.',
 	'smw_iq_moreresults' => '… mer resultat',
 	'smw_iq_nojs' => 'Var god använd en webbläsare som stödjer JavaScript för att visa det här elementet.',
@@ -6418,6 +6420,7 @@ Observera att resultatet kan bli stort!',
 	'smw_exportrdf_backlinks' => 'Exportera också alla sidor som refererar till de exporterade sidorna.
 Skapar en RDF som kan gås igenom.',
 	'smw_exportrdf_lastdate' => 'Exportera inte sidor som inte ändrats efter den uppgivna tidpunkten.',
+	'smw_exportrdf_submit' => 'Exportera',
 	'properties' => 'Egenskaper',
 	'smw_properties_docu' => 'Följande egenskaper används i wikin',
 	'smw_property_template' => '$1 av typen $2 ($3)',
