@@ -132,7 +132,7 @@ Backup your data before using it.',
 	'smw_attribute_header'        => 'Pages using the property "$1"',
 	'smw_attributearticlecount'   => 'Showing $1 {{PLURAL:$1|page|pages}} using this property.',
 	'smw_subproperty_header'      => 'Subproperties',
-	'smw_subpropertyarticlecount' => 'This property has the following $1 {{PLURAL:$1|subproperty|subproperties}}.',
+	'smw_subpropertyarticlecount' => 'This property has the following $1 {{PLURAL:$1|subproperty|subproperties}}:',
 	'smw_concept_header'          => 'Pages of concept "$1"',
 	'smw_conceptarticlecount'     => 'Showing $1 {{PLURAL:$1|page|pages}} belonging to that concept.',
 
