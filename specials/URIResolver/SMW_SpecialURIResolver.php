@@ -33,7 +33,7 @@ class SMWURIResolver extends SpecialPage {
 				$wgOut->redirect(SpecialPage::getTitleFor('ExportRDF')->getFullURL('stats=1'), 303);
 			} else {
 				$this->setHeaders();
-				$wgOut->addHTML(wfMsg('smw_uri_doc'));
+				$wgOut->addHTML( '<p>' . wfMsg('smw_uri_doc') . "</p>" );
 			}
 		} else {
 			$query = SMWExporter::decodeURI($query);

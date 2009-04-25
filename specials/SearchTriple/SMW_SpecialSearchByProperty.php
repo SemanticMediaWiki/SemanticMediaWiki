@@ -104,8 +104,12 @@ class SMWSearchByProperty extends SpecialPage {
 		global $wgUser, $wgOut, $smwgSearchByPropertyFuzzy;
 		$skin = $wgUser->getSkin();
 
-		if ('' == $this->propertystring) return wfMsg('smw_sbv_docu') . "\n";
-		if (($this->value==null) || !$this->value->isValid()) return wfMsg('smw_sbv_novalue', $this->property->getShortHTMLText($skin)) . "\n";
+		if ('' == $this->propertystring) {
+			return '<p>' . wfMsg('smw_sbv_docu') . "</p>\n";
+		}
+		if (($this->value==null) || !$this->value->isValid()) {
+			return '<p>' . wfMsg( 'smw_sbv_novalue', $this->property->getShortHTMLText( $skin ) ) . "</p>\n";
+		}
 
 		$wgOut->setPagetitle( $this->property->getWikiValue() . ' ' . $this->value->getShortHTMLText(null) );
 		$html = '';

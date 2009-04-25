@@ -96,7 +96,7 @@ function smwfDoSpecialOWLExport($page = '') {
 
 	// nothing exported yet; show user interface:
 	$html = '<form name="tripleSearch" action="" method="POST">' . "\n" .
-	        wfMsg('smw_exportrdf_docu') . "\n" .
+	        '<p>' . wfMsg('smw_exportrdf_docu') . "</p>\n" .
 	        '<input type="hidden" name="postform" value="1"/>' . "\n" .
 	        '<textarea name="pages" cols="40" rows="10"></textarea><br />' . "\n";
 	if ( $wgUser->isAllowed('delete') || $smwgAllowRecursiveExport) {
