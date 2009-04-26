@@ -84,6 +84,20 @@ $aliases['de'] = array(
 	'WantedProperties' => array( 'Gewünschte Attribute' ),
 );
 
+/** Lower Sorbian (Dolnoserbski) */
+$aliases['dsb'] = array(
+	'Ask' => array( 'Semantiske pytanhje' ),
+	'Browse' => array( 'Pśepytaś' ),
+	'ExportRDF' => array( 'RDF eksportěrowaś' ),
+	'PageProperty' => array( 'Bokowa kakosć' ),
+	'Properties' => array( 'Kakosći' ),
+	'SearchByProperty' => array( 'Z kakosću pytaś' ),
+	'SemanticStatistics' => array( 'Semantiska statistika' ),
+	'Types' => array( 'Datowe typy' ),
+	'UnusedProperties' => array( 'Njewužywane kakosći' ),
+	'WantedProperties' => array( 'Póžedane kakosći' ),
+);
+
 /** Divehi (ދިވެހިބަސް) */
 $aliases['dv'] = array(
 	'Ask' => array( 'އައްސަވާ' ),
@@ -133,7 +147,7 @@ $aliases['hsb'] = array(
 	'Properties' => array( 'Kajkosće' ),
 	'SearchByProperty' => array( 'Pytanje po kajkosći' ),
 	'SemanticStatistics' => array( 'Semantiska statistika' ),
-	'Types' => array( 'Typy' ),
+	'Types' => array( 'Datowe typy' ),
 	'UnusedProperties' => array( 'Njewužiwane kajkosće' ),
 	'WantedProperties' => array( 'Falowace kajkosće' ),
 );
