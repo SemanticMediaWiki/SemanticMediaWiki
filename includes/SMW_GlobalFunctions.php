@@ -270,7 +270,7 @@ function smwfSetupExtension() {
 	}
 
 	///// credits (see "Special:Version") /////
-	$wgExtensionCredits['parserhook'][]= array('name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, [http://korrekt.org Markus&nbsp;Kr&ouml;tzsch], [http://simia.net Denny&nbsp;Vrandecic], S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://semantic-mediawiki.org', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://semantic-mediawiki.org/wiki/Help:User_manual View online documentation.]');
+	$wgExtensionCredits['parserhook'][]= array('path' => __FILE__, 'name'=>'Semantic&nbsp;MediaWiki', 'version'=>SMW_VERSION, 'author'=>"Klaus&nbsp;Lassleben, [http://korrekt.org Markus&nbsp;Kr&ouml;tzsch], [http://simia.net Denny&nbsp;Vrandecic], S&nbsp;Page, and others. Maintained by [http://www.aifb.uni-karlsruhe.de/Forschungsgruppen/WBS/english AIFB Karlsruhe].", 'url'=>'http://semantic-mediawiki.org', 'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://semantic-mediawiki.org/wiki/Help:User_manual View online documentation.]');
 
 	wfProfileOut('smwfSetupExtension (SMW)');
 	return true;
