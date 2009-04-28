@@ -95,6 +95,14 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_timeannotation = false;
 
 		$value = trim($value); // ignore whitespace
+
+		// if it's a number, treat it as a Julian day
+		if (is_numeric($value)) {
+			$this->m_jd = $value;
+			$this->JD2Date();
+			return true;
+		}
+
 		$this->m_wikivalue = $value;
 		$filteredvalue = $value; //value without time definition and further abbreviations like PM or BC
 
@@ -469,19 +477,24 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * This function computes a numerical value based on the currently set date. If the year is
-	 * grater or equal to -4712 (4713 BC), then (something that is closely inspired by) the Julian Day
-	 * (JD) is computed. The JD has the form XXXX.YYYY where XXXX is the number of days having elapsed since
-	 * 4713 BC and YYYY is the elapsed time of the day as fraction of 1. See http://en.wikipedia.org/wiki/Julian_day
-	 * If the year is before -4713, then the computed number XXXX.YYYY has the following form: XXXX is
-	 * the number of years BC and YYYY represents the elapsed days of the year as fraction of 1. This
+	 * This function computes a numerical value based on the currently set
+	 * date. If the year is greater than or equal to -4712 (4713 BC), then
+	 * (something that is closely inspired by) the Julian Day (JD) is
+	 * computed. The JD has the form XXXX.YYYY where XXXX is the number of
+	 * days having elapsed since 4713 BC and YYYY is the elapsed time of
+	 * the day as fraction of 1. See http://en.wikipedia.org/wiki/Julian_day
+	 * If the year is before -4713, then the computed number XXXX.YYYY has
+	 * the following form: XXXX is the number of years BC and YYYY
+	 * represents the elapsed days of the year as fraction of 1. This
 	 * enables even large negative dates using 32bit floats.
 	 *
-	 * @note The result of this function is used only internally and should not be assumed to be the
-	 * exact JD, even for dates after 4713 BC. The reason is that the time information used in this number is
-	 * based on the local timezone of the wiki (see class documentation), and not necessarily normalized
-	 * to Greenwhich noon. The JD computation, however, is based on proleptic Gregorian calendar, and hence
-	 * is precise for the current input conventions.
+	 * @note The result of this function is used only internally and should
+	 * not be assumed to be the exact JD, even for dates after 4713 BC. The
+	 * reason is that the time information used in this number is based on
+	 * the local timezone of the wiki (see class documentation), and not
+	 * necessarily normalized to Greenwich noon. The JD computation,
+	 * however, is based on proleptic Gregorian calendar, and hence is
+	 * precise for the current input conventions.
 	 */
 	protected function createJD(){
 		$this->m_jd = 0;
