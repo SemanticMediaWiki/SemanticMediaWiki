@@ -111,6 +111,15 @@ $smwgLinksInValues = false;
 ##
 
 ###
+# Settings for recurring events, created with the #set_recurring_event parser
+# function: the default number of instances defined, if no end date is set;
+# and the maximum number that can be defined, regardless of end date.
+##
+$smwgDefaultNumRecurringEvents = 100;
+$smwgMaxNumRecurringEvents = 500;
+##
+
+###
 # Should the browse view for incoming links show the incoming links via its
 # inverses, or shall they be displayed on the other side?
 ##
@@ -123,8 +132,8 @@ $smwgBrowseShowInverse = false;
 $smwgBrowseShowAll = true;
 
 ###
-# Should the search by property special page dipslay nearby results when there
-# are only few results with the exact value? Switch this off if this page has
+# Should the search by property special page display nearby results when there
+# are only a few results with the exact value? Switch this off if this page has
 # performance problems.
 ##
 $smwgSearchByPropertyFuzzy = true;
