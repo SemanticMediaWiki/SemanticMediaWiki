@@ -17,7 +17,7 @@ class SMWParserExtensions {
 
 	/// Temporarily store parser as it cannot be passed to call-back functions otherwise.
 	protected static $mTempParser;
-	/// Internal state for switchin off/on SMW link annotations during parsing
+	/// Internal state for switching off/on SMW link annotations during parsing
 	protected static $mTempStoreAnnotations;
 
 	/**
@@ -157,6 +157,7 @@ class SMWParserExtensions {
 		$parser->setFunctionHook( 'info', array('SMWParserExtensions','doInfo') );
 		$parser->setFunctionHook( 'concept', array('SMWParserExtensions','doConcept') );
 		$parser->setFunctionHook( 'set', array('SMWParserExtensions','doSet') );
+		$parser->setFunctionHook( 'set_recurring_event', array('SMWParserExtensions','doSetRecurringEvent') );
 		if (defined('SFH_OBJECT_ARGS')) { // only available since MediaWiki 1.13
 			$parser->setFunctionHook( 'declare', array('SMWParserExtensions','doDeclare'), SFH_OBJECT_ARGS );
 		}
@@ -303,12 +304,134 @@ class SMWParserExtensions {
 				$parts = explode("=", trim($p));
 				if (count($parts)==2) {
 					$property = $parts[0];
-					$subject = $parts[1];
-					SMWParseData::addProperty( $property, $subject, false, $parser, true );
+					$object = $parts[1];
+					SMWParseData::addProperty( $property, $object, false, $parser, true );
 				}
 			}
 		SMWOutputs::commitToParser($parser); // not obviously required, but let us be sure
 		return '';
+	}
+
+	/**
+	 * Function for handling the {{\#set_recurring_event }} parser function.
+	 * This is used for defining a set of date values for a page that
+	 * represents a recurring event.
+	 * Like with the #set function, all annotations happen silently.
+	 *
+	 * Usage:
+	 * {{\#set_recurring_event:
+	 *   property = Has date
+	 * | start = January 4, 2010
+	 * | end = June 7, 2010
+	 * | unit = week
+	 * | period = 1
+	 * | include = March 16, 2010;March 23, 2010
+	 * | exclude = March 15, 2010;March 22, 2010
+	 * }}
+	 * This sets a "Has date" value for every Monday within the specified
+	 * six-month period, except for two Mondays which are excluded and
+	 * two Tuesdays that are saved in their place.
+	 *
+	 * @param[in] &$parser Parser  The current parser
+	 * @return nothing
+	 */
+	static public function doSetRecurringEvent( &$parser ) {
+		$params = func_get_args();
+		array_shift( $params ); // we already know the $parser ...
+		// initialize variables
+		$property_name = $start_date = $end_date = $unit = $period = null;
+		$included_dates = array();
+		$excluded_dates_jd = array();
+		// set values from the parameters
+		foreach ($params as $p) {
+			if (trim($p) != "") {
+				$parts = explode("=", trim($p));
+				if (count($parts)==2) {
+					list($arg, $value) = $parts;
+					if ($arg === 'property') {
+						$property_name = $value;
+					} elseif ($arg === 'start') {
+						$start_date = SMWDataValueFactory::newTypeIDValue('_dat', $value);
+					} elseif ($arg === 'end') {
+						$end_date = SMWDataValueFactory::newTypeIDValue('_dat', $value);
+					} elseif ($arg === 'unit') {
+						$unit = $value;
+					} elseif ($arg === 'period') {
+						$period = (int)$value;
+					} elseif ($arg === 'include') {
+						$included_dates = explode(';', $value);
+					} elseif ($arg === 'exclude') {
+						$excluded_dates = explode(';', $value);
+						foreach ($excluded_dates as $date_str) {
+							$date = SMWDataValueFactory::newTypeIDValue('_dat', $date_str);
+							$excluded_dates_jd[] = $date->getNumericValue();
+						}
+					}
+				}
+			}
+		}
+		// we need at least a property and start date - if either one
+		// is null, exit here
+		if (is_null($property_name) || is_null($start_date))
+			return;
+
+		// if the period is null, or outside of normal bounds, set it to 1
+		if (is_null($period) || $period < 1 || $period > 500)
+			$period = 1;
+		// get the Julian day value for both the start and end date
+		$start_date_jd = $start_date->getNumericValue();
+		if (! is_null($end_date))
+			$end_date_jd = $end_date->getNumericValue();
+		$cur_date = $start_date;
+		$cur_date_jd = $start_date->getNumericValue();
+		$i = 0;
+		$reached_end_date = false;
+		do {
+			$i++;
+			$exclude_date = (in_array($cur_date_jd, $excluded_dates_jd));
+			if (! $exclude_date) {
+				$cur_date_str = $cur_date->getLongWikiText();
+				SMWParseData::addProperty( $property_name, $cur_date_str, false, $parser, true );
+			}
+			// now get the next date
+			// handling is different depending on whether it's
+			// month/year or week/day, since the latter is a
+			// set number of days while the former isn't
+			if ($unit === 'year' || $unit == 'month') {
+				$cur_year = $cur_date->getYear();
+				$cur_month = $cur_date->getMonth();
+				$cur_day = $cur_date->getDay();
+				$cur_time = $cur_date->getTimeString();
+				if ($unit == 'year') {
+					$cur_year += $period;
+				} else { // $unit === 'month'
+					$cur_month += $period;
+					$cur_year += (int)($cur_month / 12);
+					$cur_month %= 12;
+				}
+				$date_str = "$cur_year-$cur_month-$cur_day $cur_time";
+				$cur_date = SMWDataValueFactory::newTypeIDValue('_dat', $date_str);
+				$cur_date_jd = $cur_date->getNumericValue();
+			} else { // $unit == 'day' or 'week'
+				// assume 'day' if it's none of the above
+				$cur_date_jd += ($unit === 'week') ? 7 * $period : $period;
+				$cur_date = SMWDataValueFactory::newTypeIDValue('_dat', $cur_date_jd);
+			}
+
+			// should we stop?
+			if (is_null($end_date)) {
+				global $smwgDefaultNumRecurringEvents;
+				$reached_end_date = $i > $smwgDefaultNumRecurringEvents;
+			} else {
+				global $smwgMaxNumRecurringEvents;
+				$reached_end_date = ($cur_date_jd > $end_date_jd) || ($i > $smwgMaxNumRecurringEvents);
+			}
+		} while (! $reached_end_date);
+
+		// handle the 'include' dates as well
+		foreach ($included_dates as $date_str)
+			SMWParseData::addProperty( $property_name, $date_str, false, $parser, true );
+		SMWOutputs::commitToParser($parser); // not obviously required, but let us be sure
 	}
 
 	/**
