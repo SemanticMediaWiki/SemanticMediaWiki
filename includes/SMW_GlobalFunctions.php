@@ -393,6 +393,7 @@ function smwfShowBrowseLink($skintemplate) {
 		$magicWords['info']    = array( 0, 'info' );
 		$magicWords['concept'] = array( 0, 'concept' );
 		$magicWords['set']     = array( 0, 'set' );
+		$magicWords['set_recurring_event']     = array( 0, 'set_recurring_event' );
 		$magicWords['declare'] = array( 0, 'declare' );
 		$magicWords['SMW_NOFACTBOX'] = array( 0, '__NOFACTBOX__' );
 		$magicWords['SMW_SHOWFACTBOX'] = array( 0, '__SHOWFACTBOX__' );
