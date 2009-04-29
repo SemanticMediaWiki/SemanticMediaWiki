@@ -96,8 +96,9 @@ class SMWTimeValue extends SMWDataValue {
 
 		$value = trim($value); // ignore whitespace
 
-		// if it's a number, treat it as a Julian day
-		if (is_numeric($value)) {
+		// if it's a number, and it's sufficiently high, so we know
+		// it's not a year, treat it as a Julian day
+		if (is_numeric($value) && $value > 100000) {
 			$this->m_jd = $value;
 			$this->JD2Date();
 			return true;
