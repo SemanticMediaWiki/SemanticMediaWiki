@@ -92,8 +92,8 @@ protected $m_Namespaces = array(
 	SMW_NS_PROPERTY_TALK  => '性質討論',	//'Property_talk',
 	SMW_NS_TYPE           => '型態',	//'Type',
 	SMW_NS_TYPE_TALK      => '型態討論',	//'Type_talk'
-	SMW_NS_CONCEPT        => 'Concept', // TODO: translate
-	SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
+	SMW_NS_CONCEPT        => '概念',	 //'Concept'
+	SMW_NS_CONCEPT_TALK   => '概念討論',	//'Concept_talk'
 );
 
 protected $m_NamespaceAliases = array(
