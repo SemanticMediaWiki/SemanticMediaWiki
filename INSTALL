@@ -107,9 +107,8 @@ higher numbers than those used by Semantic MediaWiki.
 If you are uncertain that everything went well, you can do some testing steps
 to check if SMW is set up properly.
 
-Go to the Special:Version page and you should see Semantic MediaWiki (version
-nn) listed as a Parser Hook and several wfSMWXxxx functions listed as
-Extension Functions.
+Go to the Special:Version page. You should see Semantic MediaWiki (version nn)
+listed as a Parser Hook there.
 
 Create a regular wiki page named "TestSMW", and in it enter the wiki text
   Property test:  [[testproperty::Dummypage]]
