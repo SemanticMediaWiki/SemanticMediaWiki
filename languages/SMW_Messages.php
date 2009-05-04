@@ -1153,9 +1153,12 @@ $messages['bs'] = array(
 	'smw_concept_description' => 'Opis koncepta "$1"',
 	'smw_printername_auto' => 'Automatsko',
 	'smw_printername_count' => 'Rezultati brojanja',
+	'smw_printername_csv' => 'CSV izvoz',
 	'smw_printername_list' => 'Spisak',
+	'smw_printername_rss' => 'RSS izvoz',
 	'smw_printername_table' => 'Tabela',
 	'smw_printername_template' => 'Šablon',
+	'smw_iq_disabled' => 'Semantički upiti su onemogućeni na ovoj wiki.',
 	'smw_iq_moreresults' => '...ostali rezultati',
 	'smw_iq_altresults' => 'Pregledaj spisak rezultata direktno.',
 	'smw_unknown_importns' => 'Funkcije uvoza nisu dostupne za imenski prostor "$1".',
@@ -1168,6 +1171,7 @@ $messages['bs'] = array(
 	'smw_abb_west' => 'Z',
 	'smw_label_latitude' => 'Širina:',
 	'smw_label_longitude' => 'Geografska dužina:',
+	'smw_nodatetime' => 'Datum "$1" nije razumljiv.',
 	'smw_badtitle' => '"$1" nije validan naslov stranice.',
 	'properties' => 'Svojstva',
 	'unusedproperties' => 'Neiskorištene osobine',
@@ -1354,6 +1358,7 @@ Prosím, zadejte stránku i vlastnost.',
  * @author DaSch
  * @author Denny
  * @author Imre
+ * @author Jan Luca
  * @author MF-Warburg
  * @author Markus Krötzsch
  * @author Melancholie
@@ -1380,6 +1385,18 @@ $messages['de'] = array(
 Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwalter, dieses Konzept zu ermöglichen.',
 	'smw_baduri' => 'URIs der Form „$1“ sind nicht zulässig.',
 	'smw_csv_link' => 'CSV',
+	'smw_printername_auto' => 'Automatisch',
+	'smw_printername_count' => 'Ergebnisse zählen',
+	'smw_printername_csv' => 'CSV-Export',
+	'smw_printername_debug' => 'Debug query (für Experten)',
+	'smw_printername_embedded' => 'Eingebetteter Seiteninhalt',
+	'smw_printername_json' => 'JSON-Export',
+	'smw_printername_list' => 'Liste',
+	'smw_printername_ol' => 'Aufzählung',
+	'smw_printername_ul' => 'Aufzählung',
+	'smw_printername_rss' => 'RSS-Export',
+	'smw_printername_table' => 'Tabelle',
+	'smw_printername_template' => 'Vorlage',
 	'smw_iq_disabled' => 'Semantische Anfragen sind in diesem Wiki zur Zeit nicht möglich.',
 	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung betrachtet werden.',
@@ -1484,6 +1501,9 @@ Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwa
 	'smw_ask_printhead' => 'Zusätzliche Ausgaben (optional)',
 	'smw_ask_format_as' => 'Formatiert als:',
 	'smw_ask_defaultformat' => 'Standard',
+	'smw_ask_show_embed' => 'Eingebetteten Code zeigen',
+	'smw_ask_hide_embed' => 'Eingebetteten Code verstecken',
+	'smw_ask_embed_instr' => 'Um diese Abfrage in eine Wiki-Seite einzubauen, nutze den unten stehenden Code.',
 	'searchbyproperty' => 'Suche mittels Attribut',
 	'smw_sbv_docu' => 'Diese Spezialseite findet alle Seiten, die einen bestimmten Wert für das angegebene Attribut haben.',
 	'smw_sbv_novalue' => 'Bitte den gewünschten Wert eingeben oder alle Werte für das Attribut $1 ansehen.',
