@@ -198,14 +198,14 @@ $aliases['it'] = array(
 $aliases['ja'] = array(
 	'Ask' => array( '問い合わせ', '意味的検索' ),
 	'Browse' => array( '閲覧' ),
-	'ExportRDF' => array( 'RDFエクスポート' ),
+	'ExportRDF' => array( 'RDFエクスポート', 'ＲＤＦエクスポート' ),
 	'PageProperty' => array( 'ページプロパティ' ),
 	'Properties' => array( 'プロパティ' ),
 	'SMWAdmin' => array( 'SMW管理' ),
 	'SearchByProperty' => array( 'プロパティによる検索' ),
 	'SemanticStatistics' => array( '意味的統計' ),
 	'Types' => array( '型' ),
-	'URIResolver' => array( 'URIリゾルバー' ),
+	'URIResolver' => array( 'URIリゾルバー', 'ＵＲＩリゾルバー' ),
 	'UnusedProperties' => array( '使われていないプロパティ' ),
 	'WantedProperties' => array( '望まれているプロパティ' ),
 );
@@ -215,6 +215,21 @@ $aliases['km'] = array(
 	'Browse' => array( 'រាវរក' ),
 	'Properties' => array( 'លក្ខណៈ' ),
 	'Types' => array( 'ប្រភេទ' ),
+);
+
+/** Ripoarisch (Ripoarisch) */
+$aliases['ksh'] = array(
+	'Ask' => array( 'Froore' ),
+	'Browse' => array( 'Bläddere' ),
+	'ExportRDF' => array( 'RDF', 'RDF Äxpotteere' ),
+	'PageProperty' => array( 'Eijeschaffte vun Sigge' ),
+	'Properties' => array( 'Eijeschaffte' ),
+	'SMWAdmin' => array( 'Semantesch MediaWiki Ennreschte' ),
+	'SearchByProperty' => array( 'Noh Eijeschaffte söke' ),
+	'SemanticStatistics' => array( 'Semantesch Shtatistike' ),
+	'Types' => array( 'Zoote vun Daate' ),
+	'UnusedProperties' => array( 'Eijeschaffte', 'di nit jebruch wääde' ),
+	'WantedProperties' => array( 'Eijeschaffte', 'di noch jebruch wääde' ),
 );
 
 /** Luxembourgish (Lëtzebuergesch) */
