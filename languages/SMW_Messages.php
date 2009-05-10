@@ -3129,6 +3129,7 @@ Nowy so njezapočnje.',
 	'smw_smwadmin_supportdocu' => 'Wšelake resursy móhli ći w problemowych padach pomhać:',
 	'smw_smwadmin_smwhomepage' => 'Kompletna wužiwarska dokumentacija za Semantic MediaWiki je na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Zmylki móžeš w systemje <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> zdźělić.',
+	'smw_smwadmin_questions' => 'Jeli maš dalše prašenja abo namjety, wobdźěl so na diskusiji na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">wužiwarskim forumje Semantic MediaWiki</a>.',
 );
 
 /** Haitian (Kreyòl ayisyen)
@@ -3177,6 +3178,7 @@ $messages['ht'] = array(
  * @author McDutchie
  */
 $messages['ia'] = array(
+	'smw-desc' => "Pro render tu wiki plus accessibile – a machinas '''e''' a humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentation in linea])",
 	'smw_edithelp' => 'Adjuta super le modification del proprietates',
 	'smw_viewasrdf' => 'Syndication RDF',
 	'smw_finallistconjunct' => ', e',
@@ -4577,6 +4579,7 @@ $messages['nah'] = array(
  * @author Siebrand
  */
 $messages['nl'] = array(
+	'smw-desc' => "Maakt uw wiki toegankelijker - voor machines ''en'' mensen ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
 	'smw_edithelp' => 'Bewerkingshulp bij eigenschappen',
 	'smw_viewasrdf' => 'RDF-feed',
 	'smw_finallistconjunct' => ', en',
@@ -5723,20 +5726,59 @@ $messages['pt-br'] = array(
 	'smw_concept_description' => 'Descrição do conceito "$1"',
 	'smw_no_concept_namespace' => 'Conceitos só podem ser definidos em páginas no domínio Conceito:.',
 	'smw_multiple_concepts' => 'Cada página de conceito pode ter apenas uma definição de conceito.',
+	'smw_concept_cache_miss' => 'O conceito "$1" não poderá ser utilizado neste momento, uma vez que a configuração deste wiki necessita ser refeita off-line. Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça a um administrador deste wiki que este conceito seja disponibilizado.',
 	'smw_baduri' => 'URIs na forma de "$1" não são permitidos.',
 	'smw_printername_auto' => 'Automático',
 	'smw_printername_count' => 'Contar resultados',
 	'smw_printername_csv' => 'Exportação em CSV',
+	'smw_printername_debug' => 'Depurar consulta (para peritos)',
+	'smw_printername_embedded' => 'Incorporar conteúdo da página',
 	'smw_printername_json' => 'Exportação em JSON',
 	'smw_printername_list' => 'Lista',
 	'smw_printername_ol' => 'Enumeração',
+	'smw_printername_ul' => 'Discriminação',
 	'smw_printername_rss' => 'Exportação em RSS',
+	'smw_printername_table' => 'Tabela',
+	'smw_printername_broadtable' => 'Tabela ampla',
+	'smw_printername_template' => 'Predefinição',
+	'smw_iq_disabled' => 'Consultas semânticas foram desativadas neste wiki.',
+	'smw_iq_moreresults' => '… mais resultados',
 	'smw_iq_nojs' => 'Por favor, use um navegador com JavaScript ativado para visualizar este elemento.',
+	'smw_iq_altresults' => 'Navegar pela lista de resultados diretamente.',
+	'smw_unknown_importns' => 'As funções de importação não estão disponíveis para o espaço nominal “$1”.',
+	'smw_nonright_importtype' => '$1 só pode ser usado com páginas no espaço nominal “$2”.',
+	'smw_wrong_importtype' => '$1 não pode ser usado com páginas no espaço nominal “$2”.',
+	'smw_no_importelement' => 'Elemento “$1” não disponível para importação.',
+	'smw_parseerror' => 'O valor fornecido não foi compreendido.',
+	'smw_notitle' => '"$1" não pode ser usado como nome de página neste wiki.',
+	'smw_wrong_namespace' => 'Apenas páginas no espaço nominal "$1" são permitidas aqui.',
+	'smw_unknowntype' => 'Tipo "$1" definido para propriedade não é suportado.',
+	'smw_manytypes' => 'Mais do que um tipo definido para a propriedade.',
+	'smw_emptystring' => 'Cadeias de caracteres vazias não são aceitas.',
+	'smw_maxstring' => 'Representação de cadeia de caracteres $1 é longa demais.',
+	'smw_notinenum' => '"$1" não está na lista de valores possíveis ($2) para esta propriedade.',
+	'smw_noboolean' => '"$1" não é reconhecido como um valor Booleano (verdadeiro/falso).',
+	'smw_true_words' => 'verdadeiro,v,sim,s',
+	'smw_false_words' => 'falso,f,não,nao,n',
 	'smw_nofloat' => '“$1” não é um número.',
+	'smw_infinite' => 'Números tão grandes como "$1" não são suportados.',
+	'smw_infinite_unit' => 'A conversão para a unidade "$1" resultou num número grande demais.',
+	'smw_unsupportedprefix' => 'Prefixos em números ("$1") não são suportados.',
+	'smw_unsupportedunit' => 'Conversão de unidade para unidade "$1" não suportada.',
+	'smw_lonely_unit' => 'Nenhum número encontrado antes do símbolo "$1".',
+	'smw_bad_latlong' => 'A latitude e a longitude só podem ser fornecidas uma vez, e com coordenadas válidas.',
 	'smw_abb_north' => 'N',
 	'smw_abb_east' => 'L',
 	'smw_abb_south' => 'S',
 	'smw_abb_west' => 'O',
+	'smw_label_latitude' => 'Latitude:',
+	'smw_label_longitude' => 'Longitude:',
+	'smw_nodatetime' => 'A data “$1” não foi compreendida.',
+	'smw_toomanyclosing' => 'Parece haver ocorrências demais de "$1" na consulta.',
+	'smw_noclosingbrackets' => 'Um uso de "<nowiki>[[</nowiki>" na sua consulta não foi fechada por um "]]" correspondente.',
+	'smw_misplacedsymbol' => 'O símbolo "$1" foi usado num local onde não é útil.',
+	'smw_unexpectedpart' => 'A parte "$1" da consulta não foi compreendida.
+Os resultados podem não ser os esperados.',
 );
 
 /** Tarifit (Tarifit)
