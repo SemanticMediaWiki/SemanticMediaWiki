@@ -14,6 +14,7 @@ $messages = array();
  *  @author Markus Krötzsch
  */
 $messages['en'] = array(
+	'smw-desc'              => 'Making your wiki more accessible - for machines \'\'and\'\' humans ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation)]',
 	'smw_edithelp'          => 'Editing help on properties',
 	'smw_viewasrdf'         => 'RDF feed',
 	'smw_finallistconjunct' => ', and', //used in "A, B, and C"
