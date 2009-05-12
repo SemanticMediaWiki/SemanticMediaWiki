@@ -317,6 +317,7 @@ Estimated progress of current update:',
  * @author Purodha
  */
 $messages['qqq'] = array(
+	'smw-desc' => 'Short description of this extension, shown on [[Special:Version]]. Do not translate or change links.',
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
 
 {{Identical|And}}',
@@ -1373,6 +1374,7 @@ Prosím, zadejte stránku i vlastnost.',
  * @author Umherirrender
  */
 $messages['de'] = array(
+	'smw-desc' => "Das Wiki erreichbarer machen - für Maschinen ''und'' Menschen ([http://semantic-mediawiki.org/wiki/Help:User_manual Online-Dokumentation])",
 	'smw_edithelp' => 'Bearbeitungshilfe für Attribute',
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und',
@@ -2057,6 +2059,7 @@ $messages['fi'] = array(
  * @author Zetud
  */
 $messages['fr'] = array(
+	'smw-desc' => "Rendre le wiki plus accessible - pour les machines ''et'' les humains ([http://semantic-mediawiki.org/wiki/Help:User_manual documentation en ligne])",
 	'smw_edithelp' => 'Aide à la rédaction de relations et d’attributs',
 	'smw_viewasrdf' => 'Voir comme RDF',
 	'smw_finallistconjunct' => ' et',
@@ -2281,6 +2284,7 @@ $messages['ga'] = array(
  * @author Toliño
  */
 $messages['gl'] = array(
+	'smw-desc' => "Fai o seu wiki máis accesible; para máquinas ''e'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentación en liña])",
 	'smw_edithelp' => 'Axuda de edición nas propiedades',
 	'smw_viewasrdf' => 'Fonte de noticias RDF',
 	'smw_finallistconjunct' => 'e',
@@ -2516,6 +2520,7 @@ $messages['grc'] = array(
  * @author Als-Holder
  */
 $messages['gsw'] = array(
+	'smw-desc' => "Dyy Wiki zuegängliger mache - fir Maschine ''un'' Mänsche ([http://semantic-mediawiki.org/wiki/Help:User_manual online-Dokumäntation])",
 	'smw_edithelp' => 'Bearbeitigshilf fir Eigeschafte',
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' un',
@@ -3576,6 +3581,7 @@ Siccome ci sono solo pochi risultati, sono visualizzati anche i valori vicini.',
  * @author 青子守歌
  */
 $messages['ja'] = array(
+	'smw-desc' => 'あなたのウィキを機械および、人間にとってより利用しやすいものにします ([http://semantic-mediawiki.org/wiki/Help:User_manual オンラインドキュメント])',
 	'smw_edithelp' => 'プロパティの編集ヘルプ',
 	'smw_viewasrdf' => 'RDFフィード',
 	'smw_finallistconjunct' => ', および',
@@ -4054,6 +4060,7 @@ $messages['krj'] = array(
  * @author Purodha
  */
 $messages['ksh'] = array(
+	'smw-desc' => 'Määt Ding Wiki besser ze bruche - för Minsche un Maschiene. ([http://semantic-mediawiki.org/wiki/Help:User_manual Handbooch])',
 	'smw_edithelp' => 'Hölp beim Ändere vun Eijeschaffte',
 	'smw_viewasrdf' => 'RDF Kannaal',
 	'smw_finallistconjunct' => ', un',
@@ -4179,6 +4186,7 @@ Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.',
 	'flawedattributes' => 'Kappodde Eijeschafte',
 	'smw_fattributes' => 'Die Sigge en dä Leß hee unge han en Definizjun Eijeschafte met Fähler dren.
 De Aanzahl kappodde Eijeschafte shteiht en Kalammere do bei.',
+	'uriresolver' => 'Oplööser för <i lang="en">URIs</i>',
 	'smw_uri_doc' => 'Dä <i lang="en">URI resolver</i> hät dä Vörschlaach <<i lang="en">a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a></i> opjenumme
 (-: un sorresch esu doför, dat uß Minsche kei Websigge wääde :-)',
 	'ask' => 'Semantesch Söke',
@@ -4216,7 +4224,7 @@ De Aanzahl kappodde Eijeschafte shteiht en Kalammere do bei.',
 	'smw_browse_no_outgoing' => 'Die Sigg hee hät kei Eijeschaffte.',
 	'smw_browse_no_incoming' => 'Mer han kein Eijeschaffte em Wiki, di ene Lengk noh hee han.',
 	'smw_inverse_label_default' => '$1 vun',
-	'smw_inverse_label_property' => 'Ömjedrieht Zeddelsche för de Eijeschaff',
+	'smw_inverse_label_property' => ' Zeddelsche för de Eijeschaff, wann dä ier Reschtung ömjedrieht weed',
 	'pageproperty' => 'Söke noh Eijeschaffte vun Sigge',
 	'smw_pp_docu' => 'Söhk noh all dä Wääte, di en beshtemmpte Eijeschaff för de aanjejovve Sigg hät. Donn en Sigg aanjevve und och en Eijeschaff.',
 	'smw_pp_from' => 'Vun Sigg',
@@ -5162,6 +5170,7 @@ Skriv inn både sidenavn og egenskap.',
  * @author Cedric31
  */
 $messages['oc'] = array(
+	'smw-desc' => "Rendre lo wiki mai accessible - per las maquinas ''e'' los umans ([http://semantic-mediawiki.org/wiki/Help:User_manual documentacion en linha])",
 	'smw_edithelp' => "Ajuda a la redaccion de relacions e d'atributs",
 	'smw_viewasrdf' => 'Veire coma RDF',
 	'smw_finallistconjunct' => ' e',
@@ -6028,6 +6037,7 @@ $messages['sh'] = array(
  * @author Helix84
  */
 $messages['sk'] = array(
+	'smw-desc' => "Sprístupnenie vašej wiki pre stroje ''aj'' ľudí ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentácia])",
 	'smw_edithelp' => 'Pomoc pri upravovaní vzťahov a atribútov',
 	'smw_viewasrdf' => 'RDF kanál',
 	'smw_finallistconjunct' => ' a',
