@@ -360,6 +360,8 @@ This method is called ''content negotiation''.",
 	'smw_sbv_value' => '{{Identical|Value}}',
 	'smw_sbv_submit' => '{{Identical|Find results}}',
 	'smw_browse_go' => '{{Identical|Go}}',
+	'smw_inverse_label_property' => 'Can as well be translated as "Name of", or "Denomination of the inverse propery". The inverse property is one having both its direction, and its source/target sets inverted. For example, the property "is child of" is the inverse propery of "is parent of".',
+	'smw_pp_docu' => '"fillers" can be translated as "values", if you so wish.',
 	'smw_pp_type' => '{{Identical|Property}}',
 	'smw_pp_submit' => '{{Identical|Find results}}',
 	'smw_result_prev' => '{{Identical|Previous}}',
@@ -877,6 +879,7 @@ $messages['arz'] = array(
  * @author Red Winged Duck
  */
 $messages['be-tarask'] = array(
+	'smw-desc' => "Робіць {{GRAMMAR:вінавальны|{{SITENAME}}}} больш зручнай для кампутараў ''і'' людзей ([http://semantic-mediawiki.org/wiki/Help:User_manual дакумэнтацыя])",
 	'smw_edithelp' => 'Рэдагаваць дапамогу па ўласьцівасьцях',
 	'smw_viewasrdf' => 'RDF-крыніца',
 	'smw_finallistconjunct' => ' і',
@@ -1092,6 +1095,9 @@ $messages['be-tarask'] = array(
 	'smw_smwadmin_smwhomepage' => 'Поўная дакумэнтацыя Semantic MediaWiki знаходзіцца на <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Можна паведамляць пра памылкі ў <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Калі Вы маеце пытаньні ці прапановы, далучайцеся да дыскусіі на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форуме карыстальнікаў Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'Структура зьвестак',
+	'smw_adminlinks_displayingdata' => 'Паказ зьвестак',
+	'smw_adminlinks_inlinequerieshelp' => 'Дапамога па ўбудаваным запытам',
 );
 
 /** Bulgarian (Български)
@@ -2172,14 +2178,14 @@ $messages['fr'] = array(
 	'smw_unusedproperty_template' => '$1 de type $2',
 	'wantedproperties' => 'Propriétés demandées',
 	'smw_wantedproperties_docu' => 'Les propriétés suivantes sont utilisées sur ce wiki mais n’ont pas encore de page pour les décrire.',
-	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|utilisation|utilisations}})',
+	'smw_wantedproperty_template' => '$1 ($2 utilisation{{PLURAL:$2||s}})',
 	'tooltip-purge' => 'Réactualiser toutes les recherches et tous les brouillons de cette page.',
 	'smw_purge' => 'Réactualiser',
 	'types' => 'Types de données',
 	'smw_types_docu' => 'Les types de données suivants peuvent être assignées aux attributs. Chaque type de données a sa propre page, dans laquelle peuvent figurer des informations plus précises.',
 	'smw_typeunits' => 'Unités de mesure de type « $1 » : $2',
 	'semanticstatistics' => 'Statistiques sémantiques',
-	'smw_semstats_text' => "Ce wiki contient '''$1''' {{PLURAL:$1|valeur|valeurs}} de propriété pour un total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriété différente|propriétés différentes}}]].
+	'smw_semstats_text' => "Ce wiki contient '''$1''' valeur{{PLURAL:$1||s}} de propriété pour un total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriété différente|propriétés différentes}}]].
 '''$3''' {{PLURAL:$3|propriété a sa|propriétés ont leur}} propre page, et le type de données voulu est spécifié pour '''$4''' de celles-ci.
 Certaines des propriétés existantes peuvent en faite être [[Special:UnusedProperties|inutilisées]].
 Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:WantedProperties|liste des propriétés demandées]].",
@@ -2275,6 +2281,9 @@ Progression estimée de la mise à jour actuelle :',
 	'smw_smwadmin_smwhomepage' => 'La documentation complète de l’utilisateur de Semantic MediaWiki se trouve sur <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Les bogues peuvent être soumis sur <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Vous avez d’autres questions ou des suggestion, rejoignez la discussion sur <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">le forum des utilisateurs de Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'Structure des données',
+	'smw_adminlinks_displayingdata' => 'Affichage des données',
+	'smw_adminlinks_inlinequerieshelp' => 'Aide sur les requêtes',
 );
 
 /** Irish (Gaeilge)
@@ -2505,6 +2514,9 @@ Progreso estimado da actualización actual:',
 	'smw_smwadmin_smwhomepage' => 'A documentación do usuario completa de Semantic MediaWiki está en <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Pode informar dos erros en <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Se ten máis preguntas ou suxestións, únase á conversa no <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">foro de usuarios de Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'Estrutura dos datos',
+	'smw_adminlinks_displayingdata' => 'Mostrando os datos',
+	'smw_adminlinks_inlinequerieshelp' => 'Axuda sobre as pescudas',
 );
 
 /** Ancient Greek (Ἀρχαία ἑλληνικὴ)
@@ -2730,6 +2742,9 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
 	'smw_smwadmin_smwhomepage' => 'Di vollständig Benutzerdokumentation vu Semantic MediaWiki findsch uf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Fähler chennte bi <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> berichtet wäre.',
 	'smw_smwadmin_questions' => 'Wänn Du meh Frogen oder Vorschleg hesch, mach mit an dr Diskussion uf <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_adminlinks_datastructure' => 'Datestruktur',
+	'smw_adminlinks_displayingdata' => 'Date abbilde',
+	'smw_adminlinks_inlinequerieshelp' => 'Hilf fir Inline-Abfroge',
 );
 
 /** Hebrew (עברית)
@@ -2973,6 +2988,8 @@ $messages['hr'] = array(
  * @author Michawiki
  */
 $messages['hsb'] = array(
+	'smw-desc' => "Twój wiki přistupniši činić - za mašiny ''a'' ludźi
+([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
 	'smw_edithelp' => 'Wobźěłowanska pomoc za kajkosće',
 	'smw_viewasrdf' => 'RDF-kanal',
 	'smw_finallistconjunct' => 'a',
@@ -3054,6 +3071,10 @@ Wuslědki snano kaž wočakowane njejsu.',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|Pokazuje so $1 strona, kotraž|Pokazujetej so $1 stronje, kotrejž|Pokazuja so $1, kotrež|Pokazuje so $1 stronow, kotrež}} k tutomu konceptej {{PLURAL:$1|słuša|słušatej|słušeja|słuša}}.',
 	'exportrdf' => 'Do RDF eksportować',
 	'smw_exportrdf_docu' => 'Tuta strona ći zmóžnja daty ze strony we formaće RDF wotwołać. Zo by strony eksportował, zapodaj titule w slědowacym kašćiku, jedyn titul na linku.',
+	'smw_exportrdf_recursive' => 'Eksportuj wšě piwuzne strony.
+Wobkedźbuj, zo wuslědk móhł wulki być!',
+	'smw_exportrdf_backlinks' => 'Eksportuj tež wšě strony, kotrež so na eksportowane strony poćahuja.
+Płodźi přepytujomny RDF.',
 	'smw_exportrdf_lastdate' => 'Njeeksportuj strony, kotrež njejsu so wot podateho časoweho dypka změnili.',
 	'smw_exportrdf_submit' => 'Eksportować',
 	'properties' => 'Kajkosće',
@@ -3075,6 +3096,9 @@ Wuslědki snano kaž wočakowane njejsu.',
 Kóždy datowy typ ma stronu, hdźež móžeš přidatne informacije namakać.',
 	'smw_typeunits' => 'Měrjenske jednotki typa "$1": $2',
 	'semanticstatistics' => 'Semantiska statistika',
+	'smw_semstats_text' => "Tutón wiki wobsahuje '''$1''' {{PLURAL:$1|kajkostnu hódnotu|kajkostnej hódnoće|kajkostne hódnoty|kajkostnych hódnotow}} za dohromady '''$2''' [[Special:Properties|{{PLURAL:$2|kajkosć|rozdźělnej kajkosći|rozdźělne kajkosće|rozdźělnych kajkosćow}}]].
+'''$3''' {{PLURAL:$3|kajkosć ma|kajkosći matej|kajkosće maja|kajkosćow ma}} swójsku stronu, a požadany datowy typ je za '''$4''' z nich podaty.
+Někotre z eksistowacych kajkosćow móhli [[Special:UnusedProperties|njewužiwane kajkosće]] być. Kajkosće, kotrež stronu nimaja, su na [[Special:WantedProperties|lisćinje požadanych kajkosćow]].",
 	'flawedattributes' => 'Zmylne kajkosće',
 	'smw_fattributes' => 'Strony, kotrež su deleka nalistowane, maja wopak definowanu kajkosć.
 Ličba wopačnych kajkosćow so w wuzhibowanych spinkach podawa.',
@@ -3094,6 +3118,7 @@ Ličba wopačnych kajkosćow so w wuzhibowanych spinkach podawa.',
 	'smw_ask_defaultformat' => 'standard',
 	'smw_ask_show_embed' => 'Zasadźeny kod pokazać',
 	'smw_ask_hide_embed' => 'Zasadźeny kod schować',
+	'smw_ask_embed_instr' => 'Wužij slědowacy kod, zo by tute wotprašowanje do wikijoweje strony zasadźił.',
 	'searchbyproperty' => 'Po kajkosći pytać',
 	'smw_sbv_docu' => 'Wšě strrony pytać, kotrež maja wěstu kajkosć a hódnotu.',
 	'smw_sbv_novalue' => 'Zapodaj płaćiwu hódnotu za kajkosć abo wobhladaj sej wšě hódnoty kajkosće za "$1".',
@@ -3128,6 +3153,8 @@ Zapodaj stronu kaž tež kajkosć.',
 	'smw_smwadmin_updatenotstarted' => 'Proces aktualizacije hižo běži.
 Nowy so njezapočnje.',
 	'smw_smwadmin_updatestopped' => 'Wšě eksistowace aktualizaciske procesy su so zastajili.',
+	'smw_smwadmin_docu' => 'Tuta specialna strona ći za instalaciju a akutalizaciju <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a> pomha.
+Njezabudź hódnotne daty zawěsćić, prjedy hač administratiwne funkcije wuwjedźeš.',
 	'smw_smwadmin_db' => 'Instalacija a aktualizacija datoweje banki',
 	'smw_smwadmin_dbbutton' => 'Tabele inicializować abo aktualizować',
 	'smw_smwadmin_announce' => 'Twój wiki připowědźić',
@@ -3140,6 +3167,9 @@ Nowy so njezapočnje.',
 	'smw_smwadmin_smwhomepage' => 'Kompletna wužiwarska dokumentacija za Semantic MediaWiki je na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Zmylki móžeš w systemje <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> zdźělić.',
 	'smw_smwadmin_questions' => 'Jeli maš dalše prašenja abo namjety, wobdźěl so na diskusiji na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">wužiwarskim forumje Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'Struktura datow',
+	'smw_adminlinks_displayingdata' => 'Zwobraznjenje datow',
+	'smw_adminlinks_inlinequerieshelp' => 'Pomoc za rjadowe wotprašowanja',
 );
 
 /** Haitian (Kreyòl ayisyen)
@@ -3412,6 +3442,9 @@ Progresso estimate del actualisation currente:',
 	'smw_smwadmin_smwhomepage' => 'Le documentation de usator complete de Semantic MediaWiki se trova a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Le defectos pote esser reportate in <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Si tu ha ulterior questiones o suggestiones, participa in le discussion al <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">foro del usatores de Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'Structura de datos',
+	'smw_adminlinks_displayingdata' => 'Monstrar datos',
+	'smw_adminlinks_inlinequerieshelp' => 'Adjuta super consultas incorporate',
 );
 
 /** Indonesian (Bahasa Indonesia)
@@ -3779,6 +3812,9 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 	'smw_smwadmin_smwhomepage' => 'Semantic MediaWiki の完全な利用者用ドキュメントは <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> にあります。',
 	'smw_smwadmin_mediazilla' => 'バグは <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> で報告できます。',
 	'smw_smwadmin_questions' => 'さらなる質問や提案がある場合は、<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki 利用者フォーラム</a>での議論に参加してください。',
+	'smw_adminlinks_datastructure' => 'データ構造',
+	'smw_adminlinks_displayingdata' => 'データ表示',
+	'smw_adminlinks_inlinequerieshelp' => 'インラインクエリーのヘルプ',
 );
 
 /** Javanese (Basa Jawa)
@@ -4229,9 +4265,9 @@ De Aanzahl kappodde Eijeschafte shteiht en Kalammere do bei.',
 	'smw_browse_no_outgoing' => 'Die Sigg hee hät kei Eijeschaffte.',
 	'smw_browse_no_incoming' => 'Mer han kein Eijeschaffte em Wiki, di ene Lengk noh hee han.',
 	'smw_inverse_label_default' => '$1 vun',
-	'smw_inverse_label_property' => ' Zeddelsche för de Eijeschaff, wann dä ier Reschtung ömjedrieht weed',
+	'smw_inverse_label_property' => 'Dä Name för di Eijeschaff, wann dä ier Reschtung ömjedrieht weed',
 	'pageproperty' => 'Söke noh Eijeschaffte vun Sigge',
-	'smw_pp_docu' => 'Söhk noh all dä Wääte, di en beshtemmpte Eijeschaff för de aanjejovve Sigg hät. Donn en Sigg aanjevve und och en Eijeschaff.',
+	'smw_pp_docu' => 'Söhk noh all dä Wääte, di en beshtemmpte Eijeschaff en dä aanjejovve Sigg hät. Donn sowohl en Sigg aanjevve als och en Eijeschaff.',
 	'smw_pp_from' => 'Vun Sigg',
 	'smw_pp_type' => 'Eijeschaff',
 	'smw_pp_submit' => 'Loß Jonn!',
@@ -4268,12 +4304,16 @@ Mer donn jetz nit noch ein aanshtüße!',
 	'smw_smwadmin_smwhomepage' => 'De kumplätte Dokku för et <i lang="en">Semantic Mediawiki</i> es op <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> ze fenge.',
 	'smw_smwadmin_mediazilla' => 'Fähler kanns De övver <a href="https://bugzilla.wikimedia.org/" lang="en">Bugzilla</a> melde.',
 	'smw_smwadmin_questions' => 'Wann De noch Froore häß odder Vörschlääsch maache odder klaafe wells, jangk op et <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user"><i lang="en">Semantic MediaWiki</i> Metmaacher Forum</a> un donn doh metschwaade.',
+	'smw_adminlinks_datastructure' => 'De Daateshtruktur',
+	'smw_adminlinks_displayingdata' => 'Daate aanzeije',
+	'smw_adminlinks_inlinequerieshelp' => 'Hölp övver de em Wiki sing Sigge enjeboute Froore',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
  * @author Robby
  */
 $messages['lb'] = array(
+	'smw-desc' => "Är Wiki méi accessibel machen - fir Maschinnen ''a'' Menschen ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	'smw_edithelp' => "D'Hellëf vun den Eegeschaften änneren",
 	'smw_finallistconjunct' => ', an',
 	'smw_factbox_head' => 'Fakten iwwer $1',
@@ -4286,11 +4326,13 @@ $messages['lb'] = array(
 	'smw_printername_json' => 'Export als JSON',
 	'smw_printername_list' => 'Lëscht',
 	'smw_printername_ol' => 'Opzielung',
+	'smw_printername_ul' => 'Opzielung',
 	'smw_printername_rss' => 'Export als RSS',
 	'smw_printername_table' => 'Tabell',
 	'smw_printername_template' => 'Schabloun',
 	'smw_iq_moreresults' => '… weider Resultater',
 	'smw_iq_nojs' => 'Benotzt w.e.g e Browser matt JavaScript fir dëst Element ze gesinn',
+	'smw_unknown_importns' => 'Importfonctioune si fir den Nummraum "$1" net disponibel.',
 	'smw_nonright_importtype' => '$1 kann nëmme fir Säiten am Nummraum "$2" benotzt ginn.',
 	'smw_wrong_importtype' => '$1 kann net fir Säiten am Nummraum "$2" benotzt ginn.',
 	'smw_no_importelement' => 'D\'Element "$1" kann net importéiert ginn.',
@@ -4314,6 +4356,7 @@ $messages['lb'] = array(
 	'smw_misplacedsymbol' => 'D\'Symbol "$1" gouf op ener Plaz benotzt wou et net nëtzlech ass.',
 	'smw_badtitle' => 'Pardon, awer "$1" ass kee gëltegen Titel vun enger Säit.',
 	'smw_propvalueproblem' => 'De Wert vun der eegeschaft "$1" gouf net verstan.',
+	'smw_type_header' => 'Eegeschafte vum Typ "$1"',
 	'smw_attribute_header' => 'Säiten déi d\'Eegeschaft "$1" benotzen',
 	'smw_concept_header' => 'Säite vum Konzept "$1"',
 	'exportrdf' => 'Säiten als RDF exportéieren',
@@ -4331,6 +4374,7 @@ $messages['lb'] = array(
 	'smw_typeunits' => 'Moosseenheete vum Typ "$1": $2',
 	'semanticstatistics' => 'Semantesch Statistiken',
 	'ask' => 'Semantesch Sich',
+	'smw_ask_sortby' => 'No der Colonne sortéieren (optional)',
 	'smw_ask_submit' => 'Resultater sichen',
 	'smw_ask_editquery' => '[Ufro änneren]',
 	'smw_ask_hidequery' => 'Ufro verstoppen',
@@ -4354,7 +4398,10 @@ $messages['lb'] = array(
 	'smw_result_next' => 'Nächst',
 	'smw_result_results' => 'Resultater',
 	'smw_result_noresults' => 'Pardon, et gouf näischt fonnt.',
+	'smwadmin' => 'Admin-Fonctiounen fir Semantic MediaWiki',
 	'smw_smwadmin_return' => 'Zréck op $1',
+	'smw_smwadmin_updatenotstarted' => 'Et ass schonn een Aktualiséiereungs-Prozess amgaang.
+Et ka keen neien ugefaang ginn.',
 	'smw_smwadmin_updatestopped' => 'All Aktualisatiouns-Prozesser goufe gestoppt.',
 	'smw_smwadmin_db' => 'Datebankinstallatioun and -aktualiséierung',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialiséieren oder aktualiséieren',
@@ -4366,6 +4413,7 @@ $messages['lb'] = array(
 	'smw_smwadmin_support' => 'Ënnerstetzung kréien',
 	'smw_smwadmin_smwhomepage' => 'Déi komplett Benotzerdokumentatioun vu Semantic MediaWiki fannt Dir op b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feeler kënnen op <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> gemellt ginn.',
+	'smw_smwadmin_questions' => 'Wann dir nach Froen oder Propositiounen hutt, da bedeelegt Iech un der Diskussioun op dem <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki Benotzer-Forum</a>.',
 );
 
 /** Malayalam (മലയാളം)
@@ -6251,6 +6299,9 @@ Odhadovaný priebeh aktualizácie:',
 	'smw_smwadmin_smwhomepage' => 'Úplná používateľská dokumentácia Semantic MediaWiki sa nachádza na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Chyby môžete oznamovať v systéme <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Ak máte ďalšie otázky alebo návrhy, zapojte sa do diskusie <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">na používateľskom fóre Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'Štruktúra údajov',
+	'smw_adminlinks_displayingdata' => 'Zobrazenie údajov',
+	'smw_adminlinks_inlinequerieshelp' => 'Pomoc k inline požiadavkám',
 );
 
 /** Serbian Cyrillic ekavian (ћирилица)
