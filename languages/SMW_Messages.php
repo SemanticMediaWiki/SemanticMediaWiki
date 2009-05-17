@@ -1594,6 +1594,9 @@ Geschätzter Fortschritt des laufenden Updates:',
 	'smw_smwadmin_smwhomepage' => 'Die komplette Benutzerdokumentation von Semantic MediaWiki findest du auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Fehler können bei <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> berichtet werden.',
 	'smw_smwadmin_questions' => 'Wenn du weitere Fragen oder Vorschläge hast, beteilige dich an der Diskussion im <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">„Semantic MediaWiki“-Benutzerforum</a>.',
+	'smw_adminlinks_datastructure' => 'Datenstruktur',
+	'smw_adminlinks_displayingdata' => 'Daten anzeigen',
+	'smw_adminlinks_inlinequerieshelp' => 'Inline-Abfragen-Hilfe',
 );
 
 /** German (formal address) (Deutsch (Sie-Form))
@@ -4356,6 +4359,8 @@ $messages['lb'] = array(
 	'smw_misplacedsymbol' => 'D\'Symbol "$1" gouf op ener Plaz benotzt wou et net nëtzlech ass.',
 	'smw_badtitle' => 'Pardon, awer "$1" ass kee gëltegen Titel vun enger Säit.',
 	'smw_propvalueproblem' => 'De Wert vun der eegeschaft "$1" gouf net verstan.',
+	'smw_devel_warning' => 'Dës Fonctioun ass elo eréischt an der Entwécklung a fonctionnéiert eventuell net korrekt.
+Séchert Är Donnéeën (Backup) ier Dir dës Fonctioun benotzt.',
 	'smw_type_header' => 'Eegeschafte vum Typ "$1"',
 	'smw_attribute_header' => 'Säiten déi d\'Eegeschaft "$1" benotzen',
 	'smw_concept_header' => 'Säite vum Konzept "$1"',
@@ -4852,6 +4857,9 @@ Geschatte voortgang van de huidige taak:",
 	'smw_smwadmin_smwhomepage' => 'De volledige gebruikersdocumentatie voor Semantic MediaWiki is te vinden op <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Bugs en suggesties kunt u rapporteren in <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Als u verdere vragen of suggesties hebt, neem dan deel aan het overleg op het <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki gebruikersforum</a>.',
+	'smw_adminlinks_datastructure' => 'Gegevensstructuur',
+	'smw_adminlinks_displayingdata' => 'Gegevens weergeven',
+	'smw_adminlinks_inlinequerieshelp' => 'Hulp bij inline zoekopdrachten',
 );
 
 /** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
