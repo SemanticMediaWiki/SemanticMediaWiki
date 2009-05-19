@@ -228,8 +228,8 @@ $aliases['ksh'] = array(
 	'SearchByProperty' => array( 'Noh Eijeschaffte söke' ),
 	'SemanticStatistics' => array( 'Semantesch Shtatistike' ),
 	'Types' => array( 'Zoote vun Daate' ),
-	'UnusedProperties' => array( 'Eijeschaffte', 'di nit jebruch wääde' ),
-	'WantedProperties' => array( 'Eijeschaffte', 'di noch jebruch wääde' ),
+	'UnusedProperties' => array( 'Eijeschaffte di nit jebruch wääde' ),
+	'WantedProperties' => array( 'Eijeschaffte di noch jebruch wääde' ),
 );
 
 /** Luxembourgish (Lëtzebuergesch) */

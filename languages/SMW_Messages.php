@@ -1203,6 +1203,7 @@ $messages['bs'] = array(
  * @author Dvdgmz
  * @author Loupeter
  * @author SMP
+ * @author Solde
  */
 $messages['ca'] = array(
 	'smw_isspecprop' => 'Aquesta propietat és una propietat especial en aquest wiki',
@@ -1213,6 +1214,8 @@ $messages['ca'] = array(
 	'smw_no_concept_namespace' => "Els conceptes només poden ser definits en pàgines dins l'espai de noms (''namespace'') Concept:",
 	'smw_multiple_concepts' => 'Cada pàgina de concepte només pot tenir una definició de concepte.',
 	'smw_nodatetime' => 'No s\'ha entès la data "$1".',
+	'smw_sbv_value' => 'Valor:',
+	'smw_browse_go' => 'Vés-hi',
 );
 
 /** Chamorro (Chamoru)
@@ -5440,6 +5443,9 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_smwadmin_smwhomepage' => 'La documentacion complèta de l’utilizaire de Semantic MediaWiki se tròba sus <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Los bògs pòdon èsser someses sus <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Avètz d’autras questions o de suggestions, rejonhètz la discussion sul <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum dels utilizaires de Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'Estructura de las donadas',
+	'smw_adminlinks_displayingdata' => 'Afichatge de las donadas',
+	'smw_adminlinks_inlinequerieshelp' => 'Ajuda sus las requèstas',
 );
 
 /** Polish (Polski)
