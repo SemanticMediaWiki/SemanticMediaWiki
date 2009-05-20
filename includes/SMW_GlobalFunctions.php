@@ -635,7 +635,7 @@ function smwfShowBrowseLink($skintemplate) {
 		$smw_row->addItem(AlItem::newFromExternalLink("http://semantic-mediawiki.org/wiki/Help:Inline_queries", wfMsg('smw_adminlinks_inlinequerieshelp')));
 		$displaying_data_section->addRow($smw_row);
 		$admin_links_tree->addSection($displaying_data_section, wfMsg('adminlinks_browsesearch'));
-		$browse_search_section = $admin_links_tree->getSection('Browsing and searching');
+		$browse_search_section = $admin_links_tree->getSection(wfMsg('adminlinks_browsesearch'));
 		$smw_row = new ALRow('smw');
 		$smw_row->addItem(ALItem::newFromSpecialPage('Browse'));
 		$smw_row->addItem(ALItem::newFromSpecialPage('Ask'));
