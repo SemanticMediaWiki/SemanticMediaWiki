@@ -78,8 +78,8 @@ class SMWSQLStore2QueryEngine {
 	 */
 	public function refreshConceptCache($concept) {
 		global $smwgQMaxLimit, $smwgQConceptFeatures, $wgDBtype;
-		$cid = $this->m_store->getSMWPageID($concept->getDBKey(), SMW_NS_CONCEPT, '');
-		$cid_c = $this->m_store->getSMWPageID($concept->getDBKey(), SMW_NS_CONCEPT, '', false);
+		$cid = $this->m_store->getSMWPageID($concept->getDBkey(), SMW_NS_CONCEPT, '');
+		$cid_c = $this->m_store->getSMWPageID($concept->getDBkey(), SMW_NS_CONCEPT, '', false);
 		if ($cid != $cid_c) {
 			$this->m_errors[] = "Skipping redirect concept.";
 			return $this->m_errors;
@@ -135,7 +135,7 @@ class SMWSQLStore2QueryEngine {
 	 * @param $concept Title
 	 */
 	public function deleteConceptCache($concept) {
-		$cid = $this->m_store->getSMWPageID($concept->getDBKey(), SMW_NS_CONCEPT, '', false);
+		$cid = $this->m_store->getSMWPageID($concept->getDBkey(), SMW_NS_CONCEPT, '', false);
 		$this->m_dbs->delete('smw_conccache', array('o_id' => $cid), 'SMW::refreshConceptCache');
 		$this->m_dbs->update('smw_conc2', array('cache_date' => NULL, 'cache_count' => NULL), array('s_id' => $cid), 'SMW::refreshConceptCache');
 	}
@@ -403,7 +403,7 @@ class SMWSQLStore2QueryEngine {
 				}
 			}
 		} elseif ($description instanceof SMWConceptDescription) { // fetch concept definition and insert it here
-			$cid = $this->m_store->getSMWPageID($description->getConcept()->getDBKey(), SMW_NS_CONCEPT, '');
+			$cid = $this->m_store->getSMWPageID($description->getConcept()->getDBkey(), SMW_NS_CONCEPT, '');
 			$row = $this->m_dbs->selectRow('smw_conc2',
 			         array('concept_txt','concept_features','concept_size','concept_depth','cache_date'),
 			         array('s_id'=>$cid), 'SMWSQLStore2Queries::compileQueries');

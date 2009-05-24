@@ -262,7 +262,7 @@ class OWLExport {
 			$title = Title::newFromText($page);
 			if (NULL === $title) continue; //invalid title name given
 			$st = new SMWSmallTitle();
-			$st->dbkey = $title->getDBKey();
+			$st->dbkey = $title->getDBkey();
 			$st->namespace = $title->getNamespace();
 			$cur_queue[] = $st;
 		}
@@ -343,7 +343,7 @@ class OWLExport {
 			if ( ($title === NULL) || !smwfIsSemanticsProcessed($title->getNamespace()) ) continue;
 			if ( !OWLExport::fitsNsRestriction($ns_restriction, $title->getNamespace()) ) continue;
 			$st = new SMWSmallTitle();
-			$st->dbkey = $title->getDBKey();
+			$st->dbkey = $title->getDBkey();
 			$st->namespace = $title->getNamespace();
 			$cur_queue = array($st);
 			$a_count++; //DEBUG
@@ -677,7 +677,7 @@ class OWLExport {
 				$inSubs = smwfGetStore()->getPropertySubjects( $inRel, $value );
 				foreach($inSubs as $inSub) {
 					$stb = new SMWSmallTitle();
-					$stb->dbkey = $inSub->getDBKey();
+					$stb->dbkey = $inSub->getDBkey();
 					$stb->namespace = $inSub->getNamespace();
 					if (!array_key_exists($stb->getHash(), $this->element_done)) {
 						$semdata = smwfGetStore()->getSemanticData($inSub, array('__spu', '__typ', '__imp'));
@@ -694,7 +694,7 @@ class OWLExport {
 				$pinst = SMWPropertyValue::makeProperty('_INST');
 				foreach($instances as $instance) {
 					$stb = new SMWSmallTitle();
-					$stb->dbkey = $instance->getDBKey();
+					$stb->dbkey = $instance->getDBkey();
 					$stb->namespace = $instance->getNamespace();
 					if (!array_key_exists($stb->getHash(), $this->element_done)) {
 						$semdata = smwfGetStore()->getSemanticData($instance, array('__spu', '__typ', '__imp'));
@@ -715,7 +715,7 @@ class OWLExport {
 				while ($resarray !== false) {
 					$instance = end($resarray)->getNextObject();
 					$stb = new SMWSmallTitle();
-					$stb->dbkey = $instance->getDBKey();
+					$stb->dbkey = $instance->getDBkey();
 					$stb->namespace = $instance->getNamespace();
 					if (!array_key_exists($stb->getHash(), $this->element_done)) {
 						$semdata = smwfGetStore()->getSemanticData($instance,  array('__spu', '__typ', '__imp'));
@@ -795,7 +795,7 @@ class OWLExport {
 		if ($title instanceof SMWWikiPageValue) {
 			$spt = new SMWSmallTitle();
 			$title = $title->getTitle();
-			$spt->dbkey = $title->getDBKey();
+			$spt->dbkey = $title->getDBkey();
 			$spt->namespace = $title->getNamespace();
 			$spt->modifier = $element->getModifier();
 			if ( !array_key_exists($spt->getHash(), $this->element_done) ) {

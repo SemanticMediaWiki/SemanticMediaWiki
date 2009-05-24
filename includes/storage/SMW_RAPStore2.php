@@ -160,13 +160,13 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		$this->removeSubjectFromRAP($rdfmodel, $rapsubold);
 
 		$newpage = SMWDataValueFactory::newTypeIDValue('_wpg');
-		$newpage->setValues($newtitle->getDBKey(), $newtitle->getNamespace(), $pageid);
+		$newpage->setValues($newtitle->getDBkey(), $newtitle->getNamespace(), $pageid);
 		$semdata = $this->getSemanticData($newpage);
 		$this->updateData($semdata,false);
 
 		// Save the old page
 		$oldpage = SMWDataValueFactory::newTypeIDValue('_wpg');
-		$oldpage->setValues($oldtitle->getDBKey(), $oldtitle->getNamespace(), $redirid);
+		$oldpage->setValues($oldtitle->getDBkey(), $oldtitle->getNamespace(), $redirid);
 		$semdata = $this->getSemanticData($oldpage);
 		$this->updateData($semdata,false);
 
