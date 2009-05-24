@@ -2533,6 +2533,7 @@ Progreso estimado da actualización actual:',
  * @author Omnipaedista
  */
 $messages['grc'] = array(
+	'smw_finallistconjunct' => ', καὶ',
 	'smw_ask_defaultformat' => 'προκαθωρισμένη',
 	'smw_sbv_property' => 'Ἰδιότης:',
 	'smw_sbv_value' => 'Τιμή:',
@@ -5102,6 +5103,7 @@ Estimert framdrift på den noverande oppdateringa:',
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
  * @author Harald Khan
  * @author Jon Harald Søby
+ * @author Nghtwlkr
  */
 $messages['no'] = array(
 	'smw_edithelp' => 'Redigeringshjelp for egenskaper',
@@ -5117,6 +5119,10 @@ $messages['no'] = array(
 	'smw_multiple_concepts' => 'Hver konseptside kan kun ha én konseptdefinisjon.',
 	'smw_baduri' => 'Beklager, URI-er på formen «$1» er ikke tillatt.',
 	'smw_csv_link' => 'CSV',
+	'smw_printername_auto' => 'Automatisk',
+	'smw_printername_count' => 'Tell opp resultat',
+	'smw_printername_csv' => 'CSV-eksport',
+	'smw_printername_debug' => 'Feilsøkspørring (for eksperter)',
 	'smw_iq_disabled' => 'Beklager. Semantiske spørringer er slått av på denne wikien.',
 	'smw_iq_moreresults' => '… flere resultater',
 	'smw_iq_nojs' => 'Bruk en nettleser med JavaScript-støtte for å vise dette elementet.',
@@ -5127,17 +5133,18 @@ $messages['no'] = array(
 	'smw_no_importelement' => 'Elementet «$1» er ikke tilgjengelig for importering.',
 	'smw_parseerror' => 'Den gitte verdien ble ikke forstått.',
 	'smw_notitle' => '«$1» kan ikke brukes som sidenavn på denne wikien.',
+	'smw_wrong_namespace' => 'Kun sider i navnerommet «$1» er tillatte her.',
 	'smw_unknowntype' => 'Typen «$1» som er definert for egenskapen støttes ikke.',
 	'smw_manytypes' => 'Mer enn én type definert for egenskapen.',
 	'smw_emptystring' => 'Tomme strenger godtas ikke.',
-	'smw_maxstring' => 'Strengrepresenteringen $1 er for lang for {{SITENAME}}.',
+	'smw_maxstring' => 'Strengrepresentasjonen $1 er for lang.',
 	'smw_notinenum' => '«$1» er ikke i listen over mulige verdier ($2) for denne egenskapen.',
 	'smw_noboolean' => '«$1» gjenkjennes ikke som en Boolean-verdi (true/false).',
 	'smw_true_words' => 'true,t,yes,y,ja,j,sant,s',
 	'smw_false_words' => 'false,f,no,n,nei,usant,u',
 	'smw_nofloat' => '«$1» er ikke et tall.',
-	'smw_infinite' => 'Tall så store som «$1» støttes ikke på {{SITENAME}}.',
-	'smw_infinite_unit' => 'Konvertering til enheten «$1» resulterte i et tall som er for stort for {{SITENAME}}.',
+	'smw_infinite' => 'Tall så store som «$1» støttes ikke.',
+	'smw_infinite_unit' => 'Konvertering til enheten «$1» resulterte i et tall som er for stort.',
 	'smw_unsupportedprefix' => 'Prefiks for tall («$1») støttes ikke.',
 	'smw_unsupportedunit' => 'Enhetskonvertering for enheten «$1» støttes ikke.',
 	'smw_lonely_unit' => 'Intet tall funnet foran symbolet «$1».',
@@ -5170,11 +5177,13 @@ Resultatene kan være uventede.',
 Ta en kopi av dataene før du bruker den.',
 	'smw_notemplategiven' => 'Oppgi en verdi for parameteret «mal» for at dette spørringsformatet skal fungere.',
 	'smw_type_header' => 'Egenskaper av typen «$1»',
-	'smw_typearticlecount' => 'Viser $1 egenskaper av denne typen.',
+	'smw_typearticlecount' => 'Viser {{PLURAL:$1|én egenskap|$1 egenskaper}} som bruker denne typen.',
 	'smw_attribute_header' => 'Sider som bruker egenskapen «$1»',
-	'smw_attributearticlecount' => 'Viser $1 sider som bruker denne egenskapen.',
+	'smw_attributearticlecount' => 'Viser {{PLURAL:$1|én side|$1 sider}} som bruker denne egenskapen.',
 	'smw_subproperty_header' => 'Underegenskaper',
 	'smw_subpropertyarticlecount' => 'Denne egenskapen har følgende {{PLURAL:$|underegenskap|$1 underegenskaper}}:',
+	'smw_concept_header' => 'Sider av konseptet «$1»',
+	'smw_conceptarticlecount' => 'Viser {{PLURAL:$1|én side|$1 sider}} som hører til det konseptet.',
 	'exportrdf' => 'Eksporter sider til RDF',
 	'smw_exportrdf_docu' => 'Denne siden lar deg skaffe data fra en side i RDF-format.
 Skriv inn titler i tekstboksten nedenfor for å eksportere sider, én tittel per linje.',
@@ -5183,6 +5192,7 @@ Merk at resultatet kan være stort.',
 	'smw_exportrdf_backlinks' => 'Eksporter også alle sider som refererer til de eksporterte sidene.
 Lager en RDF som kan gås gjennom.',
 	'smw_exportrdf_lastdate' => 'Ikke eksporter sider som ikke ble endret siden gitte tidspunkt.',
+	'smw_exportrdf_submit' => 'Eksporter',
 	'properties' => 'Egenskaper',
 	'smw_properties_docu' => 'Følgende egenskaper brukes på wikien.',
 	'smw_property_template' => '$1 av type $2 ($3)',
@@ -5194,7 +5204,7 @@ Lager en RDF som kan gås gjennom.',
 	'smw_unusedproperty_template' => '$1 av type $2',
 	'wantedproperties' => 'Ønskede egenskaper',
 	'smw_wantedproperties_docu' => 'Følgende egenskaper brukes på wikien, men har ikke en side med forklaring.',
-	'smw_wantedproperty_template' => '$1 (brukt $2 ganger)',
+	'smw_wantedproperty_template' => '$1 (brukt {{PLURAL:$2|én gang|$2 ganger}})',
 	'tooltip-purge' => 'Klikk her for å gjenoppfriske alle spørringer og maler på denne siden',
 	'smw_purge' => 'Gjenoppfrisk',
 	'types' => 'Typer',
@@ -5202,10 +5212,10 @@ Lager en RDF som kan gås gjennom.',
 Hver datatype har en side der ekstra informasjon kan oppgis.',
 	'smw_typeunits' => 'Måleenheter av typen «$1»: $2',
 	'semanticstatistics' => 'Semantisk statistikk',
-	'smw_semstats_text' => 'Denne wikien inneholder <b>$1</b> egenskapsverdier for totalt <b>$2</b> forskjellige <a href="$3">egenskaper</a>.
-<b>$4</b> egenskaper har en egen side, og den mente datatypen er oppgitt for <b>$5</b> av disse.
-Noen av de eksisterende egenskapene kan være <a href="$6">ubrukte egenskaper</a>.
-Egenskaper som fortsatt ikke har en egen side finnes på <a href="$7">listen over ønskede egenskaper</a>.',
+	'smw_semstats_text' => "Denne wikien inneholder {{PLURAL:$1|'''én''' egenskapsverdi|'''$1''' egenskapsverdier}}} for totalt [[Special:Properties|{{PLURAL:$2|'''én''' egenskap|'''$2''' forskjellige egenskaper}}]].
+{{PLURAL:$3|'''Én''' egenskap|'''$3''' egenskaper}} har en egen side, og den mente datatypen er spesifisert for '''$4''' av disse.
+Enkelte av de eksisterende egenskapene kan være [[Special:UnusedProperties|ubrukte egenskaper]].
+Egenskaper som fortsatt mangler en egen side finnes på [[Special:WantedProperties|listen over ønskede egenskaper]].",
 	'flawedattributes' => 'Ugyldige egenskaper',
 	'smw_fattributes' => 'Sidene som listes opp nedenfor har en ukorrekt definert egenskap.
 Antallet ukorrekte egenskaper gis i parentes.',
@@ -5222,16 +5232,27 @@ Antallet ukorrekte egenskaper gis i parentes.',
 	'smw_ask_help' => 'Spørringshjelp',
 	'smw_ask_queryhead' => 'Spørring',
 	'smw_ask_printhead' => 'Ekstra utskrifter (valgfritt)',
+	'smw_ask_format_as' => 'Formater som:',
+	'smw_ask_defaultformat' => 'standard',
 	'searchbyproperty' => 'Søk etter egenskap',
 	'smw_sbv_docu' => 'Søk etter alle sider som har en gitt egenskap og verdi.',
 	'smw_sbv_novalue' => 'Skriv inn en gyldig verdi for egenskapen, eller vis alle egenskapsverdier for «$1».',
 	'smw_sbv_displayresult' => 'En liste over alle sider som har egenskapen «$1» med verdien «$2»',
-	'smw_sbv_property' => 'Egenskap',
-	'smw_sbv_value' => 'Verdi',
+	'smw_sbv_displayresultfuzzy' => 'En liste over alle sider som har egenskapen «$1» med verdien «$2».
+Siden det bare ble noen få resultater, vises også nære verdier.',
+	'smw_sbv_property' => 'Egenskap:',
+	'smw_sbv_value' => 'Verdi:',
 	'smw_sbv_submit' => 'Finn resultater',
 	'browse' => 'Bla gjennom wikien',
+	'smw_browselink' => 'Bla gjennom egenskaper',
 	'smw_browse_article' => 'Skriv inn navnet på siden du vil starte å bla fra.',
 	'smw_browse_go' => 'Gå',
+	'smw_browse_show_incoming' => 'vis egenskaper som lenker hit',
+	'smw_browse_hide_incoming' => 'gjem egenskaper som lenker hit',
+	'smw_browse_no_outgoing' => 'Denne siden har ingen egenskaper.',
+	'smw_browse_no_incoming' => 'Ingen egenskaper lenker til denne siden.',
+	'smw_inverse_label_default' => '$1 av',
+	'smw_inverse_label_property' => 'Inversegenskapsmerke',
 	'pageproperty' => 'Sideegenskapsøk',
 	'smw_pp_docu' => 'Søk etter all egenskapstekst på en gitt side.
 Skriv inn både sidenavn og egenskap.',
@@ -5243,6 +5264,27 @@ Skriv inn både sidenavn og egenskap.',
 	'smw_result_results' => 'Resultater',
 	'smw_result_noresults' => 'Beklager, ingen resultater',
 	'smwadmin' => 'Administratorfunksjoner for Semantic MediaWiki',
+	'smw_smwadmin_settingup' => 'Setter opp lagringsplass for Semantic MediaWiki',
+	'smw_smwadmin_setupsuccess' => 'Lagringsmotoren ble satt upp.',
+	'smw_smwadmin_return' => 'Gå tilbake til $1',
+	'smw_smwadmin_updatestarted' => 'En ny oppdateringsprosess for oppfriskning av de semantiske dataene ble startet.
+Alle lagrede data vil bli bygd på nytt eller reparert der det trengs.
+Du kan følge med på fremgangen til oppdateringen på denne spesialsiden.',
+	'smw_smwadmin_updatenotstarted' => 'Det kjører allerede en oppdateringsprosess.
+Starter ikke en ny en.',
+	'smw_smwadmin_updatestopped' => 'Alle eksisterende oppdateringsprosesser har blitt stoppet.',
+	'smw_smwadmin_updatenotstopped' => 'For å stoppe den kjørende oppdateringsprosessen må du markere boksen for å vise at du er helt sikker.',
+	'smw_smwadmin_docu' => 'Denne spesialsiden hjelper deg under innstallasjon og oppgradering av <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Husk å ta sikkerhetskopier av viktige data før du starter administrerende funksjoner.',
+	'smw_smwadmin_db' => 'Databaseinnstallasjon og -oppgradering',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki krever noen utvidelser i MediaWiki-databasen for å kunne lagre semantiske data.
+Funksjonen uner sikrer at databasen din blir satt opp riktig.
+Endringene gjort i dette steget har ingen effekt på resten av MediaWiki-databasen og kan enkelt gjøres om om ønskelig.
+Denne oppsettsfunksjonen kan bli kjørt flere ganger uten skadevirkning, men den trenger kun kjøres en gang ved installasjon eller oppgradering.',
+	'smw_smwadmin_permissionswarn' => 'Dersom operasjonen mislykkes med SQL-feil, har sannsynligvis ikke databasebrukeren brukt av din wiki tilstrekkelige rettigheter (sjekk LocalSettings.php).
+Enten gi denne brukeren de riktige rettighetene til å opprette og slette tabeller, midlertidig skriv inn innloggingsinformasjonen til database-roten i LocalSettings.php eller bruk vedlikeholdsskriptet <tt>SMW_setup.php</tt> som kan bruke rettighetene til AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'Initialiser eller oppgrader tabeller',
+	'smw_smwadmin_announce' => 'Kunngjør din wiki',
 );
 
 /** Occitan (Occitan)
