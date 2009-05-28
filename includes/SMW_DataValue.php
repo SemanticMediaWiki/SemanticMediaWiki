@@ -532,7 +532,7 @@ abstract class SMWDataValue {
 	 * @deprecated Use parseDBkeys(). This function will vanish before SMW 1.6.
 	 */
 	protected function parseXSDValue($value, $unit) {
-		$this->parserDBkeys(array($value, $unit));
+		$this->parseDBkeys(array($value, $unit));
 	}
 
 	/**
