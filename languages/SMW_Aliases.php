@@ -256,6 +256,12 @@ $aliases['mk'] = array(
 	'WantedProperties' => array( 'БараниСвојства' ),
 );
 
+/** Maltese (Malti) */
+$aliases['mt'] = array(
+	'Ask' => array( 'Staqsi' ),
+	'Browse' => array( 'Esplora' ),
+);
+
 /** Nedersaksisch (Nedersaksisch) */
 $aliases['nds-nl'] = array(
 	'Browse' => array( 'Bekieken' ),
