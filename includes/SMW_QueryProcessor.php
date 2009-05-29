@@ -22,6 +22,27 @@ class SMWQueryProcessor {
 	const CONCEPT_DESC = 2; // query for concept definition
 
 	/**
+	 * Handle the 'distance' parameter, used for location-based queries
+	 */
+	static function setQueryDistance($distance, &$query) {
+		$dist_components = explode(' ', $distance);
+		if (count($dist_components) != 2) return;
+		$dist_num = $dist_components[0]; //str_replace(",", "", $dist2[0]);
+		if (! is_numeric($dist_num) || $dist_num < 0) return;
+		$dist_unit = $dist_components[1];
+		$metric_units = array("km", "kms", "kilometer", "kilometers", "kilometre", "kilometres", "KM", "KMS", "Kilometer", "Kilometers", "Kilometre", "Kilometres");
+		$english_units = array("mile", "mi", "miles", "mis", "Mile", "Miles", "MI", "MIS");
+		if (! in_array($dist_unit, $metric_units) && ! in_array($dist_unit, $english_units))
+			return;
+		// if we're still here, set the distance - it's computed as
+		// a number of miles
+		if (in_array($dist_unit, $metric_units)) {
+			$dist_num *= .621371192;
+		}
+		$query->setDistance($dist_num);
+	}
+
+	/**
 	 * Parse a query string given in SMW's query language to create
 	 * an SMWQuery. Parameters are given as key-value-pairs in the
 	 * given array. The parameter $context defines in what context the
@@ -113,6 +134,12 @@ class SMWQueryProcessor {
 			$orders = Array();
 		}
 		reset($orders);
+		// get distance to search for location-based queries
+		if ( array_key_exists('distance', $params) ) {
+			$distance = trim($params['distance']);
+			self::setQueryDistance( $distance, &$query );
+		}
+
 		if ( array_key_exists('sort', $params) ) {
 			$query->sort = true;
 			$query->sortkeys = Array();

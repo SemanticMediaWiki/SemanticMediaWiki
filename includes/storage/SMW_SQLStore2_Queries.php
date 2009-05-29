@@ -153,6 +153,7 @@ class SMWSQLStore2QueryEngine {
 		$this->m_hierarchies = array();
 		$this->m_querylog = array();
 		$this->m_errors = array();
+		$this->m_distance = $query->getDistance();
 		SMWSQLStore2Query::$qnum = 0;
 		$this->m_sortkeys = $query->sortkeys;
 		// manually make final root query (to retrieve namespace,title):
@@ -577,7 +578,12 @@ class SMWSQLStore2QueryEngine {
 					if ($dv->getTypeID() == '_str') {
 						$comp = ' LIKE ';
 						$value =  str_replace(array('%', '_', '*', '?'), array('\%', '\_', '%', '_'), $value);
-					} else { // LIKE only supported for strings
+					} elseif ($dv->getTypeID() == '_geo') {
+						$comp = '<=';
+						$geoarray = explode(",", $value);
+						$field = "ROUND(((ACOS( SIN($geoarray[0] * PI()/180 ) * SIN(SUBSTRING_INDEX($field, ',',1) * PI()/180 ) + COS($geoarray[0] * PI()/180 ) * COS(SUBSTRING_INDEX($field, ',',1) * PI()/180 ) * COS(($geoarray[1] - SUBSTRING_INDEX($field, ',',-1)) * PI()/180))*180/PI())*60*1.1515),6)";
+						$value = $this->m_distance;
+					} else { // LIKE only supported for strings and coordinates
 						$comp = '=';
 					}
 				break;

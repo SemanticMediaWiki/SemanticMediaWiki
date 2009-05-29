@@ -44,6 +44,7 @@ class SMWQuery {
 	protected $m_inline; // query used inline? (required for finding right default parameters)
 	protected $m_concept; // query used in concept? (required for finding right default parameters)
 	protected $m_extraprintouts = array(); // SMWPrintoutRequest objects supplied outside querystring
+	protected $m_distance = 5; // default is 5 miles
 
 	/**
 	 * Constructor.
@@ -152,6 +153,15 @@ class SMWQuery {
 		}
 		$this->m_limit = min($maxlimit - $this->m_offset, $limit);
 		return $this->m_limit;
+	}
+
+	public function setDistance($distance) {
+		$this->m_distance = $distance;
+		return $this->m_distance;
+	}
+
+	public function getDistance() {
+		return $this->m_distance;
 	}
 
 	/**
