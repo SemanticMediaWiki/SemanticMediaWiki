@@ -85,11 +85,16 @@ define('SMW_DAY_YEAR',3); //an entered digit can be either a month or a year
  * This function also sets up all autoloading, such that all SMW classes are available
  * as early as possible. Moreover, jobs and special pages are registered.
  */
-function enableSemantics($namespace = '', $complete = false) {
+function enableSemantics($namespace = null, $complete = false) {
 	global $smwgIP, $smwgNamespace, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles, $wgJobClasses, $wgExtensionAliasesFiles;
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
+	if ($namespace === null)
+	{
+		$namespace = $wgServerName;
+	}	
+
 	if ( !$complete && ($smwgNamespace !== '') ) {
 		$smwgNamespace = '.' . $namespace;
 	} else {
