@@ -1618,6 +1618,8 @@ Falls das Problem nicht nach einiger Zeit verschwindet, bitten Sie Ihren Seitenv
  * @author Michawiki
  */
 $messages['dsb'] = array(
+	'smw-desc' => "Twój wiki pśistupnjejšy cyniś - za mašiny ''a'' luźi
+([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
 	'smw_edithelp' => 'Wobźěłowańska pomoc za kakosći',
 	'smw_viewasrdf' => 'Kanal RDF',
 	'smw_finallistconjunct' => 'a',
@@ -1642,6 +1644,7 @@ $messages['dsb'] = array(
 	'smw_printername_broadtable' => 'Šyroka tabela',
 	'smw_printername_template' => 'Pśedłoga',
 	'smw_iq_moreresults' => '... dalšne wuslědki',
+	'smw_iq_nojs' => 'Wužyj wobglědowak z pódperu za JavaScript, aby se toś ten element woglědał.',
 	'smw_iq_altresults' => 'Lisćinu wuslědkow direktnje pśepytaś.',
 	'smw_unknown_importns' => 'Importěrowańske funkcije njestoje k dispoziciji za mjenjowy rum "$1".',
 	'smw_nonright_importtype' => '$1 dajo se jano za boki z mjenjowym rumom "$2" wužywaś.',
@@ -1661,6 +1664,7 @@ $messages['dsb'] = array(
 	'smw_nofloat' => '"$1" njejo licba.',
 	'smw_infinite' => 'Licby, kótarež su dłujke ako "$1", se njepódpěraju.',
 	'smw_unsupportedprefix' => 'Prefikse za licby ("$1") se njepodpěraju.',
+	'smw_unsupportedunit' => 'Konwertěrowanje jadnotki "$1" se njepódpěra.',
 	'smw_lonely_unit' => 'Pśed symbolom "$1" njejo se žedna licba namakała.',
 	'smw_abb_north' => 'PN',
 	'smw_abb_east' => 'PZ',
@@ -1671,6 +1675,7 @@ $messages['dsb'] = array(
 	'smw_nodatetime' => 'Datum "$1" njejo se rozměł.',
 	'smw_misplacedsymbol' => 'Symbol "$1" jo se na městnje wužył, źož njejo wužytny,',
 	'smw_badtitle' => '"$1" njejo płaśiwy bokowy titel.',
+	'smw_propvalueproblem' => 'Gódnota kakosći "$1" njejo se rozměła.',
 	'smw_type_header' => 'Kakosći typa "$1"',
 	'smw_typearticlecount' => '$1 {{PLURAL:$1|kakosć pokazujo|kakosći pokazujotej|kakosći pokazuju|kakosćow pokazujo}} se z pomocu toś togo typa.',
 	'smw_attribute_header' => 'Boki, kótarež wužywaju kakosć "$1"',
@@ -1678,16 +1683,20 @@ $messages['dsb'] = array(
 	'smw_subproperty_header' => 'Pódkakosći',
 	'smw_subpropertyarticlecount' => 'Toś ta kakosć ma {{PLURAL:$1|slědujucu pódkakosć|slědujucej $1 pódkakosći|slědujuce $1 pódkakosći|slědujucych $1 pódkakosćow}}:',
 	'smw_concept_header' => 'Boki koncepta "$1"',
+	'smw_conceptarticlecount' => '$1 {{PLURAL:$|bok se pokazujo|boka se pokazujotej|boki se pokazuju|bokow se pokazujo}}, {{PLURAL:$1|kótaryž słuša|kótarejž słušatej|kótarež słušaju|kótarež słušaju}} k tomu konceptoju.',
 	'exportrdf' => 'Boki ako RDF eksportěrowaś',
 	'smw_exportrdf_submit' => 'Eksportěrowaś',
 	'properties' => 'Kakosći',
 	'smw_properties_docu' => 'Slědujuce kakosći wužywaju se we wikiju.',
 	'smw_property_template' => '$1 typa $2 ($3)',
 	'smw_propertylackspage' => 'Wše kakosći měli se pśez bok wopisaś!',
+	'smw_propertylackstype' => 'Za toś tu kakosć njejo se žeden typ pódał (mysli se tuchylu typ $1).',
 	'smw_propertyhardlyused' => 'Toś ta kakosć se lěbda we wikiju wužywa!',
 	'unusedproperties' => 'Njewužywane kakosći',
+	'smw_unusedproperties_docu' => 'Slědujuce kakosći eksistěruju, lěcrownož žeden drugi bok je njewužywa.',
 	'smw_unusedproperty_template' => '$1 typa $2',
 	'wantedproperties' => 'Póžedane kakosći',
+	'smw_wantedproperties_docu' => 'Slědujuce kakosći se we wikiju wužywaju, ale hyšći njamaju  bok, kótaryž je wopisujo.',
 	'smw_wantedproperty_template' => '$1 ({{PLURAL:$2|raz|dwójcy|$2 raze|$2 raz}} wužyta)',
 	'smw_purge' => 'Aktualizěrowaś',
 	'types' => 'Typy',
@@ -4359,7 +4368,7 @@ Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.',
 	'smw_typeunits' => 'De Mooßeinheit för dä Datte-Tüp „$1“ es: $2',
 	'semanticstatistics' => 'Shtatistik övver de semantesche Date',
 	'smw_semstats_text' => "Dat Wiki hät {{PLURAL:$1|'''eine''' Wäät|'''$1''' Wääte|'''nit eine''' Wäät}} för ensjesamp '''{{PLURAL:$2|ein|$2|keine}}''' ongerscheedlijje [[Special:Properties|{{PLURAL:$2|Eijeschaff|Eijeschaffte|Eijeschaff}}]].
-{{PLURAL:$3|'''Ein''' Eijeschaff hät|'''$3''' Eijeschaffte han|'''Kein''' Eijeschaff hät}} en eije Sigg, un en Zoot (dä Datetyp) es för '''{{PLURAL:$4|eine|$4|keine}}'''  dovun aanjejovve. Et künne och [[{{lcfirst:{{#special:UnusedProperties}}}}]] dronger sinn. Eijeschaffte ohne eije Sigg sin op dä Sigg met de [[{{lcfirst:{{#special:WantedProperties}}}}]] opjeleß.",
+{{PLURAL:$3|'''Ein''' Eijeschaff hät|'''$3''' Eijeschaffte han|'''Kein''' Eijeschaff hät}} en eije Sigg, un en Zoot (dä Datetyp) es för '''{{PLURAL:$4|eine|$4|keine}}'''  dovun aanjejovve. Et künne och [[Special:UnusedProperties|{{lcfirst:{{#special:UnusedProperties}}}}]] dronger sinn. Eijeschaffte ohne eije Sigg sin op dä Sigg met de [[Special:WantedProperties|{{lcfirst:{{#special:WantedProperties}}}}]] opjeleß.",
 	'flawedattributes' => 'Kappodde Eijeschafte',
 	'smw_fattributes' => 'Die Sigge en dä Leß hee unge han en Definizjun Eijeschafte met Fähler dren.
 De Aanzahl kappodde Eijeschafte shteiht en Kalammere do bei.',
@@ -7276,6 +7285,13 @@ $messages['tr'] = array(
 	'smw_result_prev' => 'Önceki',
 	'smw_result_next' => 'sonraki',
 	'smw_result_results' => 'Sonuçlar',
+);
+
+/** Tatar (Cyrillic) (Tatarça/Татарча (Cyrillic))
+ * @author Ерней
+ */
+$messages['tt-cyrl'] = array(
+	'smw_ask_defaultformat' => 'килешү буенча',
 );
 
 /** ئۇيغۇرچە (ئۇيغۇرچە)
