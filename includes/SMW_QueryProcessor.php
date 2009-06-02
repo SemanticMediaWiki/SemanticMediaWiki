@@ -137,7 +137,7 @@ class SMWQueryProcessor {
 		// get distance to search for location-based queries
 		if ( array_key_exists('distance', $params) ) {
 			$distance = trim($params['distance']);
-			self::setQueryDistance( $distance, &$query );
+			self::setQueryDistance( $distance, $query );
 		}
 
 		if ( array_key_exists('sort', $params) ) {
