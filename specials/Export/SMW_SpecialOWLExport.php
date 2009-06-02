@@ -326,7 +326,6 @@ class OWLExport {
 				print "\nCannot open \"$outfile\" for writing.\n";
 				return false;
 			}
-			print "\nWriting OWL/RDF dump to file \"$outfile\" ...\n";
 			$this->delay_flush = -1; // never flush, we flush in another way
 		}
 		$this->extra_namespaces = array();
