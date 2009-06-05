@@ -1742,6 +1742,7 @@ Dokulaž jo jano mało wuslědkow było, zwobraznjuju se pódobne gódnoty.',
 	'smw_browse_no_outgoing' => 'Toś ten bok njama kakosći.',
 	'smw_browse_no_incoming' => 'Žedne kakosći njewótkazuju k toś tomu bokoju.',
 	'smw_inverse_label_default' => '$1 wót',
+	'smw_inverse_label_property' => 'Nawopacne pomjenjenje kakosći',
 	'pageproperty' => 'Pytanje za bokoweju kakosću',
 	'smw_pp_docu' => 'Wše gódnoty kakosći na pódanem boku pytaś.
 Zapódaj ako bok tak teke kakosć.',
@@ -1756,7 +1757,10 @@ Zapódaj ako bok tak teke kakosć.',
 	'smw_smwadmin_settingup' => 'Składowański rum za Semantic MediaWiki nastajiś',
 	'smw_smwadmin_setupsuccess' => 'Składowańska jadnotka jo se wuspěšnje nastajiła.',
 	'smw_smwadmin_return' => 'Slědk k $1',
+	'smw_smwadmin_updatenotstarted' => 'Proces aktualizacije južo běžy.
+Nowy se njestartujo.',
 	'smw_smwadmin_updatestopped' => 'Wše eksistěrujuce aktualizěrowańske procese su se zastajili.',
+	'smw_smwadmin_updatenotstopped' => 'Aby běžecy proces zastajił, musyš kontrolowy kašćik aktiwěrowaś, aby pódał, až sy napšawdu wěsty.',
 	'smw_smwadmin_db' => 'Instalacija a aktualizacija datoweje banki',
 	'smw_smwadmin_dbbutton' => 'Tabele inicializěrowaś abo aktualizěrowaś',
 	'smw_smwadmin_datarefreshbutton' => 'Aktualizaciju datow zachopiś',
@@ -5263,11 +5267,13 @@ Estimert framdrift på den noverande oppdateringa:',
 );
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
+ * @author Audun
  * @author Harald Khan
  * @author Jon Harald Søby
  * @author Nghtwlkr
  */
 $messages['no'] = array(
+	'smw-desc' => "Gjøre wikien din mer tilgjengelig - for maskiner ''og'' mennesker ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	'smw_edithelp' => 'Redigeringshjelp for egenskaper',
 	'smw_viewasrdf' => 'RDF-kilde',
 	'smw_finallistconjunct' => ' og',
@@ -5279,12 +5285,23 @@ $messages['no'] = array(
 	'smw_concept_description' => 'Beskrivelse av konseptet «$1»',
 	'smw_no_concept_namespace' => 'Konsepter kan kun defineres på sider i Concept:-navnerommet.',
 	'smw_multiple_concepts' => 'Hver konseptside kan kun ha én konseptdefinisjon.',
+	'smw_concept_cache_miss' => 'Konseptet "$1" kan ikke brukes for øyeblikket da wikiens konfigurasjon krever at den blir satt opp frakoplet.
+Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om å gjøre konseptet tilgjengelig.',
 	'smw_baduri' => 'Beklager, URI-er på formen «$1» er ikke tillatt.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatisk',
 	'smw_printername_count' => 'Tell opp resultat',
 	'smw_printername_csv' => 'CSV-eksport',
 	'smw_printername_debug' => 'Feilsøkspørring (for eksperter)',
+	'smw_printername_embedded' => 'Innkapselert sideinnhold',
+	'smw_printername_json' => 'JSON eksport',
+	'smw_printername_list' => 'Liste',
+	'smw_printername_ol' => 'Nummerering',
+	'smw_printername_ul' => 'Objektsering',
+	'smw_printername_rss' => 'RSS eksport',
+	'smw_printername_table' => 'Tabell',
+	'smw_printername_broadtable' => 'Bred tabell',
+	'smw_printername_template' => 'Mal',
 	'smw_iq_disabled' => 'Beklager. Semantiske spørringer er slått av på denne wikien.',
 	'smw_iq_moreresults' => '… flere resultater',
 	'smw_iq_nojs' => 'Bruk en nettleser med JavaScript-støtte for å vise dette elementet.',
@@ -5396,6 +5413,8 @@ Antallet ukorrekte egenskaper gis i parentes.',
 	'smw_ask_printhead' => 'Ekstra utskrifter (valgfritt)',
 	'smw_ask_format_as' => 'Formater som:',
 	'smw_ask_defaultformat' => 'standard',
+	'smw_ask_show_embed' => 'Vis innkapslet kode',
+	'smw_ask_hide_embed' => 'Skjul innkapslet kode',
 	'searchbyproperty' => 'Søk etter egenskap',
 	'smw_sbv_docu' => 'Søk etter alle sider som har en gitt egenskap og verdi.',
 	'smw_sbv_novalue' => 'Skriv inn en gyldig verdi for egenskapen, eller vis alle egenskapsverdier for «$1».',
@@ -5447,6 +5466,28 @@ Denne oppsettsfunksjonen kan bli kjørt flere ganger uten skadevirkning, men den
 Enten gi denne brukeren de riktige rettighetene til å opprette og slette tabeller, midlertidig skriv inn innloggingsinformasjonen til database-roten i LocalSettings.php eller bruk vedlikeholdsskriptet <tt>SMW_setup.php</tt> som kan bruke rettighetene til AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Initialiser eller oppgrader tabeller',
 	'smw_smwadmin_announce' => 'Kunngjør din wiki',
+	'smw_smwadmin_announcebutton' => 'Trykk på følgende knapp for å oppgi din wikis URL til den tjenesten.
+Tjenesten vil ikke registrere wikier som ikke er offentlig tilgjengelig, og den vil bare lagre offentlig tilgjengelig informasjon.',
+	'smw_smwadmin_datarefresh' => 'Datareparasjon og -oppgradering',
+	'smw_smwadmin_datarefreshdocu' => 'Det er mulig å gjenopprette all Semantic MediaWiki-data basert på det nåværende innholdet på wikien.
+Dette kan være nyttig for å reparere ødelagt data eller for å oppfriske data hvis det interne formatet har blitt endret på grunn av programvareoppdateringer.
+Oppdateringen blir utført side for side og vil ikke bli fullført umiddelbart.
+Det følgende viser om en oppdatering er i gang og lar deg starte eller stoppe oppdateringer (ved mindre denne muligheten er gjort utilgjengelig av sidens administratorer).',
+	'smw_smwadmin_datarefreshprogress' => '<strong>En oppdatering er allerede i gang.</strong>
+Det er normalt at oppdateringen går tregt fremover siden den bare oppdaterer data i små biter hver gang en bruker besøker wikien.
+For å fullføre denne oppdateringen raskere kan du starte MediaWiki vedlikeholdsskriptet <tt>runJobs.php</tt> (bruk valget <tt>--maxjobs 1000</tt> for å avgrense antallet oppdateringer som kan gjøres samtidig).
+Anslått fremdrift for gjeldende oppdatering:',
+	'smw_smwadmin_datarefreshbutton' => 'Start oppdatering av data',
+	'smw_smwadmin_datarefreshstop' => 'Stopp denne oppdateringen',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, jeg er sikker.',
+	'smw_smwadmin_support' => 'Få støtte',
+	'smw_smwadmin_supportdocu' => 'Forskjellige ressurser kan kanskje hjelpe deg om du skulle ha problemer:',
+	'smw_smwadmin_installfile' => 'Hvis du opplever problemer med installasjonen, start med å sjekke retningslinjene i <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL-filen</a>.',
+	'smw_smwadmin_smwhomepage' => 'Den komplette brukerdokumentasjonen til Semantic MediaWiki finnes på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Feil kan bli rapportert til <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Hvis du har ytterligere spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki brukerforum</a>.',
+	'smw_adminlinks_datastructure' => 'Datastruktur',
+	'smw_adminlinks_displayingdata' => 'Viser data',
 );
 
 /** Occitan (Occitan)
