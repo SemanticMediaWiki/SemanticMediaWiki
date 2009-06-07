@@ -1712,6 +1712,9 @@ $messages['dsb'] = array(
 	'types' => 'Typy',
 	'smw_typeunits' => 'Měrjeńske jadnotki typa "$1": $2',
 	'semanticstatistics' => 'Semantiska statistika',
+	'smw_semstats_text' => "Toś ten wiki wopśimujo '''$1''' {{PLURAL:$1|kakosćowu gódnotu|kakosćowej gódnośe|kakosćowe gódnoty|kakosćowych gódnotow}} za dogromady '''$2''' [[Special:Properties|{{PLURAL:$2|kakosć|rozdźělnej kakosći|rozdźělne kakosći|rozdźělnych kakosćow}}]].
+'''$3''' {{PLURAL:$3|kakosć ma|kakosći matej|kakosći maju|kakosćow ma}} swójski bok a póžedany datowy typ je za '''$4''' z nich pódany.
+Někotare eksistěrowacych kakosćow by mógli [[Special:UnusedProperties|njewužywane kakosći]] byś. Kakosći, kótarež njamaju bok, su se na [[Special:WantedProperties|lisćinje póžedanych kakosćow]] namakali.",
 	'smw_fattributes' => 'Slědujuce boki maju wopaki definěrowanu kakosć.
 Licba wopacnych kakosćow jo w rožkatyma spinkoma.',
 	'ask' => 'Semantiske pytanje',
