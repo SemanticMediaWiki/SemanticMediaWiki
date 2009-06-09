@@ -127,10 +127,12 @@ class SMWImportValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText($linked = NULL) {
+		$this->unstub();
 		return $this->m_caption;
 	}
 
 	public function getShortHTMLText($linker = NULL) {
+		$this->unstub();
 		return htmlspecialchars($this->m_value);
 	}
 
@@ -151,22 +153,27 @@ class SMWImportValue extends SMWDataValue {
 	}
 
 	public function getDBkeys() {
+		$this->unstub();
 		return array($this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri);
 	}
 
 	public function getWikiValue(){
+		$this->unstub();
 		return $this->m_value;
 	}
 
 	public function getNS(){
+		$this->unstub();
 		return $this->m_uri;
 	}
 
 	public function getNSID(){
+		$this->unstub();
 		return $this->m_namespace;
 	}
 
 	public function getLocalName(){
+		$this->unstub();
 		return $this->m_section;
 	}
 }
