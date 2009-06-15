@@ -5737,6 +5737,13 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_adminlinks_inlinequerieshelp' => 'Ajuda sus las requèstas',
 );
 
+/** Deitsch (Deitsch)
+ * @author Xqt
+ */
+$messages['pdc'] = array(
+	'smw_finallistconjunct' => ' unn',
+);
+
 /** Polish (Polski)
  * @author Maikking
  * @author Sp5uhe
