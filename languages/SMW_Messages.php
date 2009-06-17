@@ -5742,6 +5742,7 @@ Progression estimada de la mesa a jorn actuala :",
  */
 $messages['pdc'] = array(
 	'smw_finallistconjunct' => ' unn',
+	'smw_result_next' => 'vaerschich',
 );
 
 /** Polish (Polski)
