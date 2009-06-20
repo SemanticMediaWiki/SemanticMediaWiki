@@ -3828,6 +3828,7 @@ Siccome ci sono solo pochi risultati, sono visualizzati anche i valori vicini.',
 );
 
 /** Japanese (日本語)
+ * @author Aotake
  * @author Fryed-peach
  * @author Hosiryuhosi
  * @author 青子守歌
@@ -3875,7 +3876,7 @@ $messages['ja'] = array(
 	'smw_manytypes' => '複数の型がプロパティに対して定義されました。',
 	'smw_emptystring' => '空文字列は受け入れられません。',
 	'smw_maxstring' => '文字列表現 $1 は長すぎます。',
-	'smw_notinenum' => '「$1」はこのプロパティが取りうる値 ($2) のリストには含まれません。',
+	'smw_notinenum' => '「$1」はこのプロパティが取りうる値 ($2) 一覧にありません。',
 	'smw_noboolean' => '「$1」はブール値 (真または偽) として認識されません。',
 	'smw_true_words' => 'true,t,yes,y,真,はい',
 	'smw_false_words' => 'false,f,no,n,偽,いいえ',
@@ -3912,13 +3913,13 @@ $messages['ja'] = array(
 	'smw_devel_warning' => 'この機能は現在開発中であり、完全には機能しない可能性があります。使用前にあなたのデータをバックアップしてください。',
 	'smw_notemplategiven' => 'このクエリー形式が実行されるためには「テンプレート」引数の値を指定してください。',
 	'smw_type_header' => '型「$1」のプロパティ',
-	'smw_typearticlecount' => 'この型を使っている $1個のプロパティを表示しています。',
+	'smw_typearticlecount' => 'この型を使っている $1個の{{PLURAL:$1|プロパティ}}を表示しています。',
 	'smw_attribute_header' => 'プロパティ「$1」を使っているページ',
-	'smw_attributearticlecount' => 'このプロパティを使っている $1個のページを表示しています。',
+	'smw_attributearticlecount' => 'このプロパティを使っている $1個の{{PLURAL:$1|ページ}}を表示しています。',
 	'smw_subproperty_header' => 'サブプロパティ',
-	'smw_subpropertyarticlecount' => 'このプロパティには次の $1個のサブプロパティがあります:',
+	'smw_subpropertyarticlecount' => 'このプロパティには次の $1個の{{PLURAL:$1|サブプロパティ}}があります:',
 	'smw_concept_header' => '概念「$1」のページ',
-	'smw_conceptarticlecount' => 'この概念に属する $1個のページを表示しています。',
+	'smw_conceptarticlecount' => 'この概念に属する $1個の{{PLURAL:$1|ページ}}を表示しています。',
 	'smw_rss_description' => '$1 RSSフィード',
 	'specialpages-group-smw_group' => 'セマンティック・メディアウィキ',
 	'exportrdf' => 'ページをRDFにエクスポート',
@@ -3938,14 +3939,14 @@ $messages['ja'] = array(
 	'smw_unusedproperty_template' => '$1: 型 $2',
 	'wantedproperties' => '望まれているプロパティ',
 	'smw_wantedproperties_docu' => '以下のプロパティはこのウィキ内で使われていますが、プロパティを解説するページがまだ存在しません。',
-	'smw_wantedproperty_template' => '$1 ($2件)',
+	'smw_wantedproperty_template' => '$1 ($2{{PLURAL:$2|件}})',
 	'tooltip-purge' => 'ここをクリックして、このページ上のすべてのクエリーとテンプレートを最新の状態にします',
 	'smw_purge' => '更新',
 	'types' => '型',
 	'smw_types_docu' => '以下はプロパティに割り当てられているすべてのデータ型の一覧です。各データ型は追加情報が載ったページをもっています。',
 	'smw_typeunits' => '型「$1」の単位: $2',
 	'semanticstatistics' => '意味的統計',
-	'smw_semstats_text' => "このウィキには、計 '''$2'''種の[[Special:Properties|プロパティ]]と '''$1'''個のプロパティ値があります。'''$3'''個のプロパティには専用のページがあり、うち '''$4'''個にはデータ型が指定されています。既存のプロパティには[[Special:UnusedProperties|使われていないプロパティ]]があるかもしれません。解説ページがまだ存在しないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
+	'smw_semstats_text' => "このウィキには、計 '''$2'''種の[[Special:Properties|{{PLURAL:$2|プロパティ}}]]と '''$1'''個の{{PLURAL:$1|プロパティ値}}があります。'''$3'''個の{{PLURAL:$3|プロパティ}}には専用のページがあり、うち '''$4'''個にはデータ型が指定されています。既存のプロパティには[[Special:UnusedProperties|使われていないプロパティ]]があるかもしれません。解説ページがまだ存在しないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
 	'flawedattributes' => '欠陥のあるプロパティ',
 	'smw_fattributes' => '以下に載せているページは定義が誤ったプロパティをもっています。誤ったプロパティの数は角括弧内に表示します。',
 	'uriresolver' => 'URIリゾルバー',
@@ -4008,7 +4009,7 @@ $messages['ja'] = array(
 	'smw_smwadmin_dbbutton' => 'テーブルを初期化またはアップグレード',
 	'smw_smwadmin_announce' => 'あなたのウィキの発表',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki には新しいセマンティック・ウィキのサイトを発表するためのウェブサービスがあります。
-このサービスは Semantic MediaWiki を使用するサイトのリストを保守するために用いられており、主に <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki プロジェクト</a>が Semantic MediaWiki の典型的な使用法を把握するために利用されています。
+このサービスは Semantic MediaWiki を使用するサイト一覧を保守するために用いられており、主に <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki プロジェクト</a>が Semantic MediaWiki の典型的な使用法を把握するために利用されています。
 Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.org/wiki/Registry">このサービスについてのさらなる情報</a>を確認してください。',
 	'smw_smwadmin_announcebutton' => '次のボタンを押して、あなたのウィキのURLをこのサービスに提出します。このサービスは、公開されていないウィキは登録せず、公開されている情報のみを保管します。',
 	'smw_smwadmin_datarefresh' => 'データの修復とアップグレード',
@@ -6255,6 +6256,7 @@ $messages['roa-tara'] = array(
  * @author Александр Сигачёв
  */
 $messages['ru'] = array(
+	'smw-desc' => "Делает вашу вики более доступной — для машин ''и'' людей ([http://semantic-mediawiki.org/wiki/Help:User_manual документация в сети])",
 	'smw_edithelp' => 'Редактирование справки по свойствам',
 	'smw_viewasrdf' => 'RDF источник',
 	'smw_finallistconjunct' => ' и',
@@ -6273,10 +6275,12 @@ $messages['ru'] = array(
 	'smw_printername_count' => 'Результаты подсчёта',
 	'smw_printername_csv' => 'Экспорт CSV',
 	'smw_printername_debug' => 'Отладка запросов (для экспертов)',
+	'smw_printername_embedded' => 'Включаемое содержимое страниц',
 	'smw_printername_json' => 'Экспорт JSON',
 	'smw_printername_list' => 'Список',
 	'smw_printername_rss' => 'Экспорт RSS',
 	'smw_printername_table' => 'Таблица',
+	'smw_printername_broadtable' => 'Широкая таблица',
 	'smw_printername_template' => 'Шаблон',
 	'smw_iq_disabled' => 'Извините, но встроенные запросы отключены для этого сайта.',
 	'smw_iq_moreresults' => '&hellip; следующие результаты',
