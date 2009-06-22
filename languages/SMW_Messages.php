@@ -6432,7 +6432,7 @@ $messages['ru'] = array(
 	'smw_smwadmin_datarefreshstop' => 'Остановить это обновление',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Да, я уверен.',
 	'smw_smwadmin_support' => 'Получить поддержку',
-	'smw_smwadmin_installfile' => 'Если Вы испытываете затруднения при установке, прочтите руководство в <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">файле INSTALL</a>.',
+	'smw_smwadmin_installfile' => 'Если вы испытываете затруднения при установке, прочтите руководство в <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">файле INSTALL</a>.',
 	'smw_adminlinks_datastructure' => 'Структура данных',
 	'smw_adminlinks_displayingdata' => 'Отображение данных',
 );
