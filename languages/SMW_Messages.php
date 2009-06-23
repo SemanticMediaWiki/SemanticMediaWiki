@@ -443,6 +443,7 @@ $messages['an'] = array(
 /** Arabic (العربية)
  * @author Mahmoud Zouari  mahmoudzouari@yahoo.fr http://www.cri.ensmp.fr
  * @author Meno25
+ * @author OsamaK
  * @author Ouda
  */
 $messages['ar'] = array(
@@ -527,13 +528,13 @@ $messages['ar'] = array(
 احفظ بياناتك قبل استخدامها.',
 	'smw_notemplategiven' => 'وفر قيمة للمحدد "template" لتعمل صيغة الاستعلام هذه.',
 	'smw_type_header' => 'خصائص النوع "$1"',
-	'smw_typearticlecount' => 'تستخدم هذا النوع {{PLURAL:$1|خاصية|خاصية}} عرض.',
+	'smw_typearticlecount' => 'عرض {{PLURAL:$1||خاصية واحدة تستخدم|خاصيتين تستخدمان|$1 خصائص تستخدم|$1 خاصية تستخدم}} هذا النوع.',
 	'smw_attribute_header' => 'الصفحات التي تستخدم الخاصية "$1"',
 	'smw_attributearticlecount' => 'عرض $1 {{PLURAL:$1|صفحة|صفحة}} تستخدم هذه الخاصية.',
 	'smw_subproperty_header' => 'خواص فرعية',
 	'smw_subpropertyarticlecount' => 'هذه الخاصية لديها $1 {{PLURAL:$1|خاصية فرعية|خاصية فرعية}} تالية:',
 	'smw_concept_header' => 'صفحات المبدأ "$1"',
-	'smw_conceptarticlecount' => 'عرض $1 {{PLURAL:$1|صفحة|صفحة}} تنتمي إلى هذا المبدأ.',
+	'smw_conceptarticlecount' => 'عرض {{PLURAL:$1||صفحة واحدة تنتمي|صفحتين تنتميان|$1 صفحات تنتمي|$1 صفحة تنتمي}} إلى هذا المبدأ.',
 	'smw_rss_description' => '$1 تلقيم آر إس إس',
 	'specialpages-group-smw_group' => 'سيمانتيك ميدياويكي',
 	'exportrdf' => 'آر دی‌ إف إلى صفحات تصدير',
@@ -3369,6 +3370,9 @@ Njezabudź hódnotne daty zawěsćić, prjedy hač administratiwne funkcije wuwj
 	'smw_smwadmin_db' => 'Instalacija a aktualizacija datoweje banki',
 	'smw_smwadmin_dbbutton' => 'Tabele inicializować abo aktualizować',
 	'smw_smwadmin_announce' => 'Twój wiki připowědźić',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki ma websłužbu za wozjewjenje nowych semantiskich wikisydłow.
+To so wužiwa, zo by so lisćina zjawnych sydłow wothladowała, kotrež Semantic MediaWiki wužiwaja, hłownje, zo by <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projektej Semantic MediaWiki</a> pomhała, zo by přehlad wo typiskich wužiwanskich móžnosćach Semantic MediaWiki dóstał.
+Hlej startowu stronu Semantic MediaWiki za <a href="http://semantic-mediawiki.org/wiki/Registry">dalše informacije wo tutej słužbje</a>.',
 	'smw_smwadmin_announcebutton' => 'Klikń na slědowace tłóčatko, zo by swój wikijowy URL tutej słužbje pósłał.
 Słužba njebudźe wikije registrować, kotrež zjawnje přistupnje njejsu, a budźe jenož zjawnje přistupne informacije składować.',
 	'smw_smwadmin_datarefresh' => 'Porjedźenje a aktualizacija datow',
@@ -6279,6 +6283,8 @@ $messages['ru'] = array(
 	'smw_printername_embedded' => 'Включаемое содержимое страниц',
 	'smw_printername_json' => 'Экспорт JSON',
 	'smw_printername_list' => 'Список',
+	'smw_printername_ol' => 'Перечисление',
+	'smw_printername_ul' => 'Список',
 	'smw_printername_rss' => 'Экспорт RSS',
 	'smw_printername_table' => 'Таблица',
 	'smw_printername_broadtable' => 'Широкая таблица',
@@ -6317,17 +6323,17 @@ $messages['ru'] = array(
 	'smw_abb_west' => 'З',
 	'smw_label_latitude' => 'Широта:',
 	'smw_label_longitude' => 'Долгота:',
-	'smw_nodatetime' => 'Дата "$1" не распознана.',
+	'smw_nodatetime' => 'Дата «$1» не распознана.',
 	'smw_toomanyclosing' => 'Ошибка: Слишком много вхождений “$1” в данном запросе.',
 	'smw_noclosingbrackets' => 'Открывающаяся пара скобок «<nowiki>[[</nowiki>» не была закрыта парой соответствующих ей закрывающих скобок «]]» в данном запросе.',
 	'smw_misplacedsymbol' => 'Ошибка: Использование символа “$1” в данном месте лишено смысла.',
 	'smw_unexpectedpart' => 'Ошибка: Часть “$1” запроса не была распознана. Результаты могут отличаться от ожидаемых.',
 	'smw_emptysubquery' => 'Ошибка: В одном из подзапросов не указано правильного знака условия.',
 	'smw_misplacedsubquery' => 'Ошибка: Подзапрос используется в месте, где подзапросы не разрешены.',
-	'smw_valuesubquery' => 'Ошибка: Подзапросы не поддерживаются для значений свойства “$1”.',
+	'smw_valuesubquery' => 'Подзапросы не поддерживаются для значений свойства «$1».',
 	'smw_overprintoutlimit' => 'Ошибка: Запрос содержит слишком много требований вывода.',
 	'smw_badprintout' => 'Ошибка: Некоторое выражение вывода в запросе неправильно составлено.',
-	'smw_badtitle' => 'Извините, но “$1” не является правильным заголовком статьи.',
+	'smw_badtitle' => '«$1» не является правильным заголовком статьи.',
 	'smw_badqueryatom' => 'Часть запроса «<nowiki>[[…]]</nowiki>» не была разобрана.',
 	'smw_propvalueproblem' => 'Ошибка: Значение свойства “$1” не разобрано.',
 	'smw_noqueryfeature' => 'Часть запроса была опущена, так как некоторые из возможностей языка запросов не поддерживаются на этом вики-сайте ($1).',
@@ -6392,6 +6398,7 @@ $messages['ru'] = array(
 	'smw_ask_defaultformat' => 'по умолчанию',
 	'smw_ask_show_embed' => 'Показать встроенный код',
 	'smw_ask_hide_embed' => 'Скрыть встроенный код',
+	'smw_ask_embed_instr' => 'Для линейного встраивания этого запроса в вики-страницу, используйте код ниже.',
 	'searchbyproperty' => 'Искать по свойству',
 	'smw_sbv_docu' => 'Искать все страницы, которые содержат указаннок свойство и значение.',
 	'smw_sbv_novalue' => 'Укажите значение или просмотрите все значения свойства $1.',
@@ -6422,8 +6429,17 @@ $messages['ru'] = array(
 	'smw_result_noresults' => 'Извините, но ничего не найдено.',
 	'smwadmin' => 'Администрирование Semantic MediaWiki',
 	'smw_smwadmin_settingup' => 'Создание хранилища для Semantic MediaWiki',
+	'smw_smwadmin_setupsuccess' => 'Система хранения была успешно установлена.',
 	'smw_smwadmin_return' => 'Вернуться к $1',
+	'smw_smwadmin_updatestarted' => 'Запущен новый процесс обновления семантических данных.
+Все сохранённые данные будут перестроены и восстановлены, где это необходимо.
+Вы можете следить за ходом обновления на этой служебной странице.',
+	'smw_smwadmin_updatenotstarted' => 'Уже запущен один процесс обновления.
+Второй не создаётся.',
 	'smw_smwadmin_updatestopped' => 'Все существующие процессы обновления остановлены.',
+	'smw_smwadmin_updatenotstopped' => 'Чтобы остановить запущенный процесс обновления, вы должны поставить отметку, подтверждающую, что вы действительно уверены в этом решении.',
+	'smw_smwadmin_docu' => 'Эта служебная страница поможет Вам в процессе установки и обновления <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Не забудьте произвести резервное копирование значимых данных перед выполнением административных действий.',
 	'smw_smwadmin_db' => 'Установка и обновление базы данных',
 	'smw_smwadmin_dbbutton' => 'Инициализация или обновление таблиц',
 	'smw_smwadmin_announce' => 'Объявление вашей вики',
@@ -6432,9 +6448,14 @@ $messages['ru'] = array(
 	'smw_smwadmin_datarefreshstop' => 'Остановить это обновление',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Да, я уверен.',
 	'smw_smwadmin_support' => 'Получить поддержку',
+	'smw_smwadmin_supportdocu' => 'Различные ресурсы, которые могут помочь в случае проблем:',
 	'smw_smwadmin_installfile' => 'Если вы испытываете затруднения при установке, прочтите руководство в <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">файле INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'Полная документация пользователя Semantic MediaWiki на <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Ошибки могут быть сообщены в <a href="https://bugzilla.wikimedia.org/">Багзиллу</a>.',
+	'smw_smwadmin_questions' => 'Если у вас есть дополнительные вопросы или предложения, присоединяйтесь к обсуждению на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форуме пользователей Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Структура данных',
 	'smw_adminlinks_displayingdata' => 'Отображение данных',
+	'smw_adminlinks_inlinequerieshelp' => 'Справка по встроенным запросам',
 );
 
 /** Serbo-Croatian (Srpskohrvatski / Српскохрватски)
