@@ -3670,8 +3670,21 @@ Progresso estimate del actualisation currente:',
  * @author Rex
  */
 $messages['id'] = array(
+	'smw_finallistconjunct' => ', dan',
+	'smw_printername_template' => 'Templat',
+	'smw_label_latitude' => 'Lintang:',
+	'smw_label_longitude' => 'Bujur:',
+	'smw_exportrdf_submit' => 'Ekspor',
+	'smw_ask_submit' => 'Temukan hasil',
 	'smw_ask_defaultformat' => 'baku',
+	'smw_sbv_property' => 'Properti:',
+	'smw_sbv_value' => 'Nilai:',
+	'smw_sbv_submit' => 'Temukan hasil',
 	'smw_browse_go' => 'Tuju ke',
+	'smw_pp_type' => 'Properti',
+	'smw_pp_submit' => 'Temukan hasil',
+	'smw_result_prev' => 'Sebelumnya',
+	'smw_result_next' => 'Selanjutnya',
 	'smw_result_noresults' => 'Tidak ada hasil yang dapat ditampilkan.',
 );
 
