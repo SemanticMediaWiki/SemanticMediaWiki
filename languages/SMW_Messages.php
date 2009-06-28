@@ -5686,7 +5686,7 @@ Las proprietats qu'an pas encara de pagina se tròban dins la [[Special:WantedPr
 	'smw_ask_printhead' => 'Condicions suplementàrias (facultatiu)',
 	'smw_ask_format_as' => 'Formatar en :',
 	'smw_ask_defaultformat' => 'defaut',
-	'smw_ask_show_embed' => 'Mostrar lo còde incrustat',
+	'smw_ask_show_embed' => 'Far veire lo còde incrustat',
 	'smw_ask_hide_embed' => 'Amagar lo còde incrustat',
 	'smw_ask_embed_instr' => 'Per incrustar aquesta requèsta dins una pagina wiki, utilizatz lo còde çaijós.',
 	'searchbyproperty' => 'Recercar per atribut',
