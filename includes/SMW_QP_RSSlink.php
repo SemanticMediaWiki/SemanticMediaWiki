@@ -80,7 +80,10 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 						}
 					}
 				}
-				$items[] = new SMWRSSItem($wikipage->getTitle(), $creators, $dates);
+				if ($wikipage instanceof SMWWikiPageValue) { // this should rarely fail, but better be carful
+					///TODO: It would be more elegant to have type chekcs initially
+					$items[] = new SMWRSSItem($wikipage->getTitle(), $creators, $dates);
+				}
 				$row = $res->getNext();
 			}
 
