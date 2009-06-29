@@ -3685,7 +3685,7 @@ $messages['id'] = array(
 	'smw_pp_submit' => 'Temukan hasil',
 	'smw_result_prev' => 'Sebelumnya',
 	'smw_result_next' => 'Selanjutnya',
-	'smw_result_noresults' => 'Tidak ada hasil yang dapat ditampilkan.',
+	'smw_result_noresults' => 'Tidak ada hasilnya.',
 );
 
 /** Ido (Ido)
@@ -4591,6 +4591,7 @@ $messages['lb'] = array(
 	'smw_label_latitude' => 'Geografesch Breet:',
 	'smw_label_longitude' => 'Geografesch Längt:',
 	'smw_nodatetime' => 'Den Datum "$1" gouf net verstan.',
+	'smw_noclosingbrackets' => 'Eng oder méi "<nowiki>[[</nowiki>" an Ärer Ufro war net zou duerch eng entspriechent "]]".',
 	'smw_misplacedsymbol' => 'D\'Symbol "$1" gouf op ener Plaz benotzt wou et net nëtzlech ass.',
 	'smw_badtitle' => 'Pardon, awer "$1" ass kee gëltegen Titel vun enger Säit.',
 	'smw_propvalueproblem' => 'De Wert vun der eegeschaft "$1" gouf net verstan.',
@@ -5328,6 +5329,7 @@ Estimert framdrift på den noverande oppdateringa:',
  * @author Audun
  * @author Harald Khan
  * @author Jon Harald Søby
+ * @author Laaknor
  * @author Nghtwlkr
  */
 $messages['no'] = array(
@@ -7167,7 +7169,7 @@ Antalet felaktiga egenskaper visas inom parenteserna.',
 	'smw_sbv_docu' => 'Sök efter alla sidor som har en given egenskap och värde.',
 	'smw_sbv_novalue' => 'Skriv in ett giltigt värde för egenskapen, eller visa alla egenskapsvärden för “$1.”',
 	'smw_sbv_displayresult' => 'En lista över alla sidor som har egenskapen “$1” med värdet “$2”',
-	'smw_sbv_property' => 'Egenskap',
+	'smw_sbv_property' => 'Egenskap:',
 	'smw_sbv_value' => 'Värde',
 	'smw_sbv_submit' => 'Hitta resultat',
 	'browse' => 'Bläddra igenom wikin',
