@@ -253,7 +253,12 @@ class OWLExport {
 		$this->delay_flush = 10; //flush only after (fully) printing 11 objects
 		$this->extra_namespaces = array();
 
-		$this->printHeader(); // also inits global namespaces
+		if (count($pages) == 1) { // ensure that ontologies that are retrieved as linked data are not confused with their subject!
+			$ontologyuri=SMWExporter::expandURI('&export;') . '/' . urlencode(end($pages));
+		} else { // use empty URI, i.e. "location" as URI otherwise
+			$ontologyuri='';
+		}
+		$this->printHeader($ontologyuri); // also inits global namespaces
 
 		wfProfileIn("RDF::PrintPages::PrepareQueue");
 		// transform pages into queued export titles
@@ -286,20 +291,20 @@ class OWLExport {
 		}
 
 		// for pages not processed recursively, print at least basic declarations
-		wfProfileIn("RDF::PrintPages::Auxilliary");
+		wfProfileIn("RDF::PrintPages::Auxiliary");
 		$this->date = ''; // no date restriction for the rest!
 		if (!empty($this->element_queue)) {
 			if ( '' != $this->pre_ns_buffer ) {
-				$this->post_ns_buffer .= "\t<!-- auxilliary definitions -->\n";
+				$this->post_ns_buffer .= "\t<!-- auxiliary definitions -->\n";
 			} else {
-				print "\t<!-- auxilliary definitions -->\n"; // just print this comment, so that later outputs still find the empty pre_ns_buffer!
+				print "\t<!-- auxiliary definitions -->\n"; // just print this comment, so that later outputs still find the empty pre_ns_buffer!
 			}
 			while (!empty($this->element_queue)) {
 				$st = array_pop($this->element_queue);
 				$this->printObject($st,false,false);
 			}
 		}
-		wfProfileOut("RDF::PrintPages::Auxilliary");
+		wfProfileOut("RDF::PrintPages::Auxiliary");
 		$this->printFooter();
 		$this->flushBuffers(true);
 		wfProfileOut("RDF::PrintPages");
@@ -535,7 +540,7 @@ class OWLExport {
 
 	/* Functions for exporting RDF */
 
-	protected function printHeader() {
+	protected function printHeader($ontologyuri = '') {
 		global $wgContLang;
 
 		$this->pre_ns_buffer .=
@@ -561,7 +566,7 @@ class OWLExport {
 
 		$this->post_ns_buffer .=
 			">\n\t<!-- Ontology header -->\n" .
-			"\t<owl:Ontology rdf:about=\"\">\n" .
+			"\t<owl:Ontology rdf:about=\"$ontologyuri\">\n" .
 			"\t\t<swivt:creationDate rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">" . date(DATE_W3C) . "</swivt:creationDate>\n" .
 			"\t\t<owl:imports rdf:resource=\"http://semantic-mediawiki.org/swivt/1.0\" />\n" .
 			"\t</owl:Ontology>\n" .
