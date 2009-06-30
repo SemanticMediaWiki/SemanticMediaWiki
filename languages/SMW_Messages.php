@@ -2720,6 +2720,13 @@ Progreso estimado da actualización actual:',
 $messages['grc'] = array(
 	'smw_finallistconjunct' => ', καὶ',
 	'smw_printername_template' => 'Πρότυπον',
+	'smw_abb_north' => 'Β',
+	'smw_abb_east' => 'Α',
+	'smw_abb_south' => 'Ν',
+	'smw_abb_west' => 'Δ',
+	'smw_label_latitude' => 'Πλάτος γεωγραφικόν:',
+	'smw_label_longitude' => 'Μῆκος γεωγραφικόν:',
+	'types' => 'Τύποι',
 	'smw_ask_defaultformat' => 'προκαθωρισμένη',
 	'smw_sbv_property' => 'Ἰδιότης:',
 	'smw_sbv_value' => 'Τιμή:',
@@ -4054,6 +4061,7 @@ Semantic MediaWiki のホームページで<a href="http://semantic-mediawiki.or
 
 /** Javanese (Basa Jawa)
  * @author Meursault2004
+ * @author Pras
  */
 $messages['jv'] = array(
 	'smw_edithelp' => 'Pitulung panyuntingan ing sifat-sifat',
@@ -4078,14 +4086,14 @@ $messages['jv'] = array(
 	'smw_unknowntype' => 'Jenis “$1” sing ora disengkuyung, didéfinisi kanggo sifat.',
 	'smw_manytypes' => 'Sifaté didéfinisi luwih saka sajenis.',
 	'smw_emptystring' => 'Rangkéan kosong ora ditampa.',
-	'smw_maxstring' => 'Réprésèntasi string $1 kedawan kanggo {{SITENAME}}.',
+	'smw_maxstring' => 'Répresèntasi string $1 kedawan.',
 	'smw_notinenum' => '“$1” ora ana ing daftar bijih-bijih sing mungkin ($2) kanggo sifat iki.',
 	'smw_noboolean' => '“$1” ora ditepungi minangka sawijining bijih Boolean (bener/salah).',
 	'smw_true_words' => 'bener,t,ya,y',
 	'smw_false_words' => 'salah,s,ora,o',
 	'smw_nofloat' => '“$1” iku dudu angka.',
-	'smw_infinite' => 'Angka sing gedhéné kaya "$1" ora disengkuyung ing {{SITENAME}}.',
-	'smw_infinite_unit' => 'Konvèrsi menyang sijian utawa unit “$1” mituwasaké angka sing kegedhèn kanggo {{SITENAME}}.',
+	'smw_infinite' => 'Angka sing gedhéné nganti "$1" ora didhukung.',
+	'smw_infinite_unit' => 'Konvèrsi menyang unit "$1" ngasilaké angka sing kagedhèn.',
 	'smw_unsupportedprefix' => 'Préfiks kanggo angka-angka (“$1”) ora disengkuyung.',
 	'smw_unsupportedunit' => 'Konvèrsi unit kanggo unit “$1” ora disengkuyung.',
 	'smw_lonely_unit' => 'Ora ditemokaké angka sangarepé simbul “$1”.',
@@ -4115,9 +4123,9 @@ Pituwasé bisa-bisa ora kaya sing diarepaké.',
 	'smw_devel_warning' => "Fitur iki saiki isih dikembangaké, lan mbok-menawa durung sakabèhé fungsional.
 ''Backup'' dhisik data panjenengan sadurungé nganggo fitur iki.",
 	'smw_type_header' => 'Sifat-sifat saka jenis "$1"',
-	'smw_typearticlecount' => 'Nuduhaké $1 sifat nganggo jenis iki.',
+	'smw_typearticlecount' => 'Nuduhaké $1 {{PLURAL:$1|sifat|sifat}} nganggo jinis iki.',
 	'smw_attribute_header' => 'Kaca-kaca sing nganggo sifat “$1”',
-	'smw_attributearticlecount' => 'Nuduhaké $1 kaca nganggo sifat iki.',
+	'smw_attributearticlecount' => 'Nuduhaké $1 {{PLURAL:$1|kaca|kaca}} nganggo sifat iki.',
 	'exportrdf' => 'Èkspor kaca-kaca menyang RDF',
 	'smw_exportrdf_docu' => 'Kaca iki marengaké panjenengan kanggo olèh data saka sawijining kaca ing format RDF.
 Kanggo ngèkspor kaca-kaca, mangga lebokna irah-irahan ing kothak tèks ing ngisor iki, sairah-irahan per baris.',
@@ -4137,7 +4145,7 @@ Nggawé berkas RDF sing bisa dijlajah.',
 	'smw_unusedproperty_template' => '$1 saka jenis $2',
 	'wantedproperties' => 'Sifat sing dipéngini',
 	'smw_wantedproperties_docu' => 'Sifat-sifat iki dienggo ing wiki, nanging durung duwé kaca sing ndéskripsi.',
-	'smw_wantedproperty_template' => '$1 (dienggo kaping $2)',
+	'smw_wantedproperty_template' => '$1 ({{PLURAL:$2|dianggo kaping|dianggo kaping }}$2)',
 	'tooltip-purge' => 'Kliken ing kéné kanggo nganyari kabèh kwéri lan cithakan ing kaca iki',
 	'smw_purge' => 'Anyarana',
 	'types' => 'Jenis-jenis',
@@ -4145,10 +4153,10 @@ Nggawé berkas RDF sing bisa dijlajah.',
 Saben jenis data duwé kaca ing ngendi informasi tambahan bisa diwènèhaké.',
 	'smw_typeunits' => 'Unit-unit pangukuran jenis “$1”: $2',
 	'semanticstatistics' => 'Statistik sémantik',
-	'smw_semstats_text' => 'Wiki iki ngemot <b>$1</b> bijih-bijih sifat kanggo gunggungé <b>$2</b> <a href="$3">sifat-sifat</a> sing béda-béda.
-<b>$4</b> sifat duwé kaca dhéwé, lan jenis data sing dimaksud iku dispésifikasi kanggo <b>$5</b> saka iku.
-Sawetara saka sifat sing ana mbok-menawa <a href="$6">sifat sing ora dienggo</a>.
-Sifat-sifat sing isih ora duwé kaca ditemokaké ing <a href="$7">daftar sifat-sifat sing dipèngèni</a>.',
+	'smw_semstats_text' => "Wiki iki ngandhut '''$1''' {{PLURAL:$1|aji|aji}} sifat nganti gunggung '''$2''' [[Special:Properties|{{PLURAL:$2|sifat|sifat}}]].
+'''$3''' {{PLURAL:$3|sifat nduwèni|sifat nduwèni}} kaca dhéwé, lan jinis-data sing dimaksudaké kanggo '''$4'''.
+Sawetara sifat sing ana mbokmanawa [[Special:UnusedProperties|ora dipigunakaké]].
+Sifat-sifat sing isih ora duwé kaca bisa ditemokaké ing [[Special:WantedProperties|dhaptar sifat-sifat sing dikarepaké]].",
 	'flawedattributes' => 'Sifat-sifaté Ora Pepak',
 	'smw_fattributes' => 'Kaca-kaca sing kapacak ing ngisor iki duwé sifat sing didéfinisi ora bener.
 Cacahé sifat sing ora bener iki diwènèhaké antara tandha kurung.',
@@ -4169,8 +4177,8 @@ Cacahé sifat sing ora bener iki diwènèhaké antara tandha kurung.',
 	'smw_sbv_docu' => 'Golèk kabèh kaca sing duwé sifat lan bijih tartamtu.',
 	'smw_sbv_novalue' => 'Mangga lebokna bijih absah kanggo sifat iki, utawa tuduhna kabèh bijih-bijihé sifat kanggo “$1.”',
 	'smw_sbv_displayresult' => 'Sawijining daftar kabèh kaca sing duwé sifat “$1” mawa bijih “$2”',
-	'smw_sbv_property' => 'Sifat',
-	'smw_sbv_value' => 'Bijih (nilai)',
+	'smw_sbv_property' => 'Sifat/properti:',
+	'smw_sbv_value' => 'Aji:',
 	'smw_sbv_submit' => 'Golèk pituwas (kasil)',
 	'browse' => 'Jlajaha wiki',
 	'smw_browse_article' => 'Lebokna irah-irahan kaca sing arep didadèkaké kaca awal olèhé panjenengan njlajah-njlajah.',
