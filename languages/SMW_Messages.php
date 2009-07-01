@@ -1934,6 +1934,7 @@ $messages['eo'] = array(
  * @author Crazymadlover
  * @author Imre
  * @author Javier Calzada Prado
+ * @author Locos epraix
  * @author Sanbec
  */
 $messages['es'] = array(
@@ -2048,6 +2049,8 @@ Los resultados podrían no ser como esperabas.',
 	'smw_ask_queryhead' => 'consulta',
 	'smw_ask_format_as' => 'Formatear como:',
 	'smw_ask_defaultformat' => 'por defecto',
+	'smw_ask_show_embed' => 'Mostrar código embebido',
+	'smw_ask_hide_embed' => 'Ocultar código embebido',
 	'searchbyproperty' => 'Buscar por atributo',
 	'smw_sbv_docu' => 'Buscar por todas las páginas que tiene un atributo y valor dado.',
 	'smw_sbv_novalue' => 'Por favor introduzca un valor, o ver todos los valores de atributo para $1.',
