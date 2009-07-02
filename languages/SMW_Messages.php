@@ -6123,6 +6123,8 @@ Progresso estimado da atualização corrente:',
 	'smw_smwadmin_smwhomepage' => 'A documentação completa para o utilizador do Semantic MediaWiki está em <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Defeitos podem ser reportados no <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Se você tem mais questões ou sugestões, junte-se à discussão em <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_adminlinks_datastructure' => 'Estrutura de dados',
+	'smw_adminlinks_displayingdata' => 'Mostrando os dados',
 );
 
 /** Brazilian Portuguese (Português do Brasil)
