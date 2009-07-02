@@ -35,33 +35,37 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  *   on this site = w tym miejscu
  *
  * @author Łukasz Bolikowski
- * @version 0.2
+ * @version 0.3
  * @ingroup SMWLanguage
  * @ingroup Language
  */
 class SMWLanguagePl extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(
-	'_wpg' => 'Page', // name of page datatype  //TODO translate
+	'_wpg' => 'Strona', // name of page datatype
 	'_str' => 'Łańcuch znaków',  // name of the string type
-	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
-	'_cod' => 'Code',  // name of the (source) code type //TODO: translate
+	'_txt' => 'Tekst',  // name of the text type (very long strings)
+	'_cod' => 'Kod',  // name of the (source) code type
 	'_boo' => 'Wartość logiczna',  // name of the boolean type
-	'_num' => 'Liczba', // name for the datatype of numbers // TODO: check translation (done by pattern matching. mak)
+	'_num' => 'Liczba', // name for the datatype of numbers
 	'_geo' => 'Współrzędne geograficzne', // name of the geocoord type
 	'_tem' => 'Temperatura',  // name of the temperature type
 	'_dat' => 'Data',  // name of the datetime (calendar) type
 	'_ema' => 'Email',  // name of the email type
 	'_uri' => 'URL',  // name of the URL type
-	'_anu' => 'Annotation URI'  // name of the annotation URI type (OWL annotation property) //TODO: translate
+	'_anu' => 'URI adnotacji'  // name of the annotation URI type (OWL annotation property)
 );
 
 protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
-	'Liczba całkowita'      => '_num',
 	'Liczba zmiennoprzecinkowa' => '_num',
+	'Liczba całkowita'      => '_num',
 	'Wyliczenie'            => '_str',
 	// support English aliases:
+	'URI'                   => '_uri',
+	'Float'                 => '_num',
+	'Integer'               => '_num',
+	'Enumeration'           => '_str',
 	'Page'                  => '_wpg',
 	'String'                => '_str',
 	'Text'                  => '_txt',
@@ -78,8 +82,8 @@ protected $m_SpecialProperties = array(
 	//always start upper-case
 	'_TYPE' => 'Ma typ',
 	'_URI'  => 'Równoważne URI',
-	'_SUBP' => 'Subproperty of', // TODO: translate
-	'_UNIT' => 'Wyświetlana jednostka', // TODO: should be plural now ("units"), singluar stays alias
+	'_SUBP' => 'Jest podwłasnością',
+	'_UNIT' => 'Wyświetlane jednostki',
 	'_IMPO' => 'Zaimportowane z',
 	'_CONV' => 'Odpowiada',
 	'_SERV' => 'Zapewnia usługę',
@@ -107,8 +111,8 @@ protected $m_Namespaces = array(
 	SMW_NS_PROPERTY_TALK  => 'Dyskusja_atrybutu',
 	SMW_NS_TYPE           => 'Typ',
 	SMW_NS_TYPE_TALK      => 'Dyskusja_typu',
-	SMW_NS_CONCEPT        => 'Concept', // TODO: translate
-	SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
+	SMW_NS_CONCEPT        => 'Pojęcie',
+	SMW_NS_CONCEPT_TALK   => 'Dyskusja pojęcia'
 );
 
 protected $m_NamespaceAliases = array(
@@ -130,5 +134,4 @@ protected $m_months = array("styczeń", "luty", "marsz", "kwiecień", "maj", "cz
 protected $m_monthsshort = array("sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "paź", "lis", "gru");
 
 }
-
 

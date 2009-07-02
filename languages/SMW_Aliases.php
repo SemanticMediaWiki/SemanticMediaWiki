@@ -311,6 +311,22 @@ $aliases['oc'] = array(
 	'WantedProperties' => array( 'Proprietats demandadas', 'ProprietatsDemandadas' ),
 );
 
+/** Polish (Polski) */
+$aliases['en'] = array(
+	'Ask' => array( 'Pytanie' ),
+	'Browse' => array( 'Przegląd' ),
+	'ExportRDF' => array( 'EksportRDF' ),
+	'PageProperty' => array( 'WłasnośćStrony' ),
+	'Properties' => array( 'Własności' ),
+	'SMWAdmin' => array( 'AdminSMW' ),
+	'SearchByProperty' => array( 'SzukanieWgWłasności' ),
+	'SemanticStatistics' => array( 'StatystykiSemantyczne' ),
+	'Types' => array( 'Typy' ),
+	'URIResolver' => array( 'ResolverURI' ),
+	'UnusedProperties' => array( 'NieużywaneWłasności' ),
+	'WantedProperties' => array( 'PotrzebneWłasności' ),
+);
+
 /** Pashto (پښتو) */
 $aliases['ps'] = array(
 	'Ask' => array( 'پوښتل' ),
