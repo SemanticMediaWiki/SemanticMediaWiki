@@ -665,6 +665,14 @@ $messages['ar'] = array(
 	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش في <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">منتدى مستخدمي سيمانتيك ميدياويكي</a>.',
 );
 
+/** Aramaic (ܐܪܡܝܐ)
+ * @author Basharh
+ */
+$messages['arc'] = array(
+	'exportrdf' => 'ܐܦܩ ܦܐܬܘܬ̈ܐ ܠ RDF',
+	'smw_exportrdf_submit' => 'ܐܦܩ',
+);
+
 /** Egyptian Spoken Arabic (مصرى)
  * @author Ghaly
  * @author Meno25
@@ -1951,9 +1959,11 @@ $messages['es'] = array(
 	'smw_baduri' => 'Lo sentimos. Las URIs del dominio $1 no están disponibles en este emplazamiento',
 	'smw_printername_auto' => 'Automático',
 	'smw_printername_count' => 'Contar resultados',
+	'smw_printername_json' => 'Exportar JSON',
 	'smw_printername_list' => 'Lista',
 	'smw_printername_ol' => 'enumeración',
 	'smw_printername_ul' => 'Itemización',
+	'smw_printername_rss' => 'Exportar RSS',
 	'smw_printername_table' => 'Tabla',
 	'smw_printername_template' => 'Plantilla',
 	'smw_iq_disabled' => 'Lo sentimos. Las búsquedas en los artículos de este wiki no están autorizadas.',
@@ -2082,7 +2092,9 @@ Los resultados podrían no ser como esperabas.',
 No crear otro más.',
 	'smw_smwadmin_updatestopped' => 'Todos los procesos de actualización existentes han sido detenidos.',
 	'smw_smwadmin_updatenotstopped' => 'Para detener el proceso de actualización en ejecución, debes activar la tabla de verificación para indicar que estás realmente seguro.',
+	'smw_smwadmin_db' => 'Instalación de la base de datos y actualización',
 	'smw_smwadmin_announce' => 'Anunciar tu wiki',
+	'smw_smwadmin_datarefresh' => 'Reparación de datos y actualización',
 	'smw_smwadmin_datarefreshbutton' => 'Comenzar actualización de datos',
 	'smw_smwadmin_datarefreshstop' => 'Detener esta actualización',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sí, estoy seguro.',
