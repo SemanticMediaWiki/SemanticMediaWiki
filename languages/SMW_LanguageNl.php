@@ -66,7 +66,7 @@ protected $m_SpecialProperties = array(
 	'_IMPO' => 'Geïmporteerd uit',
 	'_CONV' => 'Komt overeen met',
 	'_SERV' => 'Verleent dienst',
-	'_PVAL' => 'Geldige waarde'
+	'_PVAL' => 'Geldige waarde',
 	'_MDAT' => 'Wijzigingsdatum'
 );
 
