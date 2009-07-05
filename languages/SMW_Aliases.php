@@ -312,7 +312,7 @@ $aliases['oc'] = array(
 );
 
 /** Polish (Polski) */
-$aliases['en'] = array(
+$aliases['pl'] = array(
 	'Ask' => array( 'Pytanie' ),
 	'Browse' => array( 'Przegląd' ),
 	'ExportRDF' => array( 'EksportRDF' ),

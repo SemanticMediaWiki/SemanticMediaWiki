@@ -2985,6 +2985,12 @@ $messages['he'] = array(
 	'smw_concept_cache_miss' => 'לא ניתן להשתמש ברעיון "$1" כרגע, כיוון שתצורת הוויקי דורשת את עיבודו באופן לא מקוון.
 אם התקלה אינה נעלמת לאחר זמן מה, בקשו ממנהל האתר להפוך רעיון זה לזמין.',
 	'smw_baduri' => 'כתובות מהצורה "$1" אינן מורשות.',
+	'smw_printername_list' => 'רשימה',
+	'smw_printername_ol' => 'ספירה',
+	'smw_printername_rss' => 'ייצוא ל־RSS',
+	'smw_printername_table' => 'טבלה',
+	'smw_printername_broadtable' => 'טבלה רחבה',
+	'smw_printername_template' => 'תבנית',
 	'smw_iq_disabled' => 'שאילתות סמנטיות בוטלו באתר ויקי זה.',
 	'smw_iq_moreresults' => '&hellip; תוצאות נוספות',
 	'smw_iq_nojs' => 'השתמשו בדפדפן התומך ב־JavaScript לצפיה ברכיב זה.',
