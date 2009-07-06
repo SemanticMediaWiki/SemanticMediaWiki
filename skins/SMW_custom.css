@@ -16,6 +16,10 @@ div.smwpre { /* make divs look like <pre> */
 	margin-top: 0.5em;
 }
 
+#smwfootbr { /* terminate page contents when inserting stuff below a page, typically used in <br> */
+	clear: both;
+}
+
 /* tables for inline queries */
 
 table.smwtable{

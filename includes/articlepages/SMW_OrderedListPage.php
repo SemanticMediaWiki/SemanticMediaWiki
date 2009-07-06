@@ -76,7 +76,7 @@ abstract class SMWOrderedListPage extends Article {
 		global $wgOut;
 		$this->clearPageState();
 		$this->doQuery();
-		$r = "<br style=\"clear:both;\"/>\n" . $this->getPages();
+		$r = "<br id=\"smwfootbr\"/>\n" . $this->getPages();
 		return $r;
 	}
 
@@ -94,7 +94,7 @@ abstract class SMWOrderedListPage extends Article {
 	protected abstract function doQuery();
 
 	/**
-	 * Generates the headline for the page list and the HTML encoded list of pages which 
+	 * Generates the headline for the page list and the HTML encoded list of pages which
 	 * shall be shown.
 	 */
 	protected abstract function getPages();
@@ -106,7 +106,7 @@ abstract class SMWOrderedListPage extends Article {
 		global $wgUser, $wgLang;
 		$sk = $this->getSkin();
 		$limitText = $wgLang->formatNum( $this->limit );
-		
+
 		$ac = count($this->articles);
 		if ($this->until != '') {
 			if ($ac > $this->limit) { // (we assume that limit is at least 1)
