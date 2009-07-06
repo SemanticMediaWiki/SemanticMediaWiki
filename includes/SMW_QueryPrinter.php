@@ -213,7 +213,7 @@ abstract class SMWResultPrinter {
 			$this->mSearchlabel = $params['searchlabel'];
 		}
 		if (array_key_exists('link', $params)) {
-			switch (strtolower($params['link'])) {
+			switch (strtolower(trim($params['link']))) {
 			case 'head': case 'subject':
 				$this->mLinkFirst = true;
 				$this->mLinkOthers  = false;
