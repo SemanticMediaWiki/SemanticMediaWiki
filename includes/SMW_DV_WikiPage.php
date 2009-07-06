@@ -136,6 +136,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	public function getShortHTMLText($linker = NULL) {
 		$this->unstub();
+		if ( ($linker !== NULL) && ($this->m_caption !== '') ) { $this->getTitle(); } // init the Title object, may reveal hitherto unnoticed errors
 		if ( ($linker === NULL) || (!$this->isValid()) || ($this->m_caption === '') ) {
 			return htmlspecialchars($this->getCaption());
 		} else {
@@ -168,6 +169,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	public function getLongHTMLText($linker = NULL) {
 		$this->unstub();
+		if ($linker !== NULL) { $this->getTitle(); } // init the Title object, may reveal hitherto unnoticed errors
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		}
@@ -245,10 +247,15 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	/**
 	 * Return according Title object or NULL if no valid value was set.
+	 * NULL can be returned even if this object returns TRUE for isValue(),
+	 * since the latter function does not check whether MediaWiki can really
+	 * make a Title out of the given data.
+	 * However, isValid() will return FALSE *after* this function failed in
+	 * trying to create a title.
 	 */
 	public function getTitle() {
 		$this->unstub();
-		if ($this->m_title === NULL) {
+		if ( ($this->isValid()) && ($this->m_title === NULL) ) {
 			if ($this->m_interwiki == '') {
 				$this->m_title = Title::makeTitle($this->m_namespace, $this->m_dbkeyform);
 			} else { // interwiki title objects must be built from full input texts
