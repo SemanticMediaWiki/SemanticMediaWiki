@@ -133,6 +133,11 @@ class SMWURIValue extends SMWDataValue {
 		$this->m_caption = $this->m_value;
 		if ($this->m_mode == SMW_URI_MODE_EMAIL) {
 			$this->m_url = $this->m_value;
+			if (strpos($this->m_value,'mailto:') === 0) { // this check is just to be wary
+				$this->m_caption = substr($this->m_value, 7);
+			} else { // this case is only for backwards compatibility/repair; may vanish at some point
+				$this->m_url = 'mailto:' . $this->m_value;
+			}
 		} else {
 			$parts = explode(':', $this->m_value, 2); // try to split "schema:rest"
 			global $wgUrlProtocols;
