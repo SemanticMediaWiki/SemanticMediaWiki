@@ -669,7 +669,7 @@ $messages['ar'] = array(
  * @author Basharh
  */
 $messages['arc'] = array(
-	'exportrdf' => 'ܐܦܩ ܦܐܬܘܬ̈ܐ ܠ RDF',
+	'exportrdf' => 'ܐܦܩ ܦܐܬܬ̈ܐ ܠ RDF',
 	'smw_exportrdf_submit' => 'ܐܦܩ',
 );
 
@@ -2985,6 +2985,7 @@ $messages['he'] = array(
 	'smw_concept_cache_miss' => 'לא ניתן להשתמש ברעיון "$1" כרגע, כיוון שתצורת הוויקי דורשת את עיבודו באופן לא מקוון.
 אם התקלה אינה נעלמת לאחר זמן מה, בקשו ממנהל האתר להפוך רעיון זה לזמין.',
 	'smw_baduri' => 'כתובות מהצורה "$1" אינן מורשות.',
+	'smw_printername_csv' => 'ייצוא ל־CVS',
 	'smw_printername_list' => 'רשימה',
 	'smw_printername_ol' => 'ספירה',
 	'smw_printername_rss' => 'ייצוא ל־RSS',
@@ -4581,6 +4582,7 @@ $messages['lb'] = array(
 	'smw_edithelp' => "D'Hellëf vun den Eegeschaften änneren",
 	'smw_finallistconjunct' => ', an',
 	'smw_factbox_head' => 'Fakten iwwer $1',
+	'smw_isspecprop' => 'Dëse Eegeschaft ass eng Spezial-Eegschaft an dëser Wiki.',
 	'smw_isaliastype' => 'Dësen Typ vun donnéeën ass keen Alias fir den Typ vun Donnéeën "$1".',
 	'smw_concept_description' => 'Beschreiwung vum Konzept "$1"',
 	'smw_multiple_concepts' => 'Op jidfer Konzeptsäit ka just eng Definitioun vun engem Konzept stoen.',
@@ -4651,6 +4653,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_ask_submit' => 'Resultater sichen',
 	'smw_ask_editquery' => '[Ufro änneren]',
 	'smw_ask_hidequery' => 'Ufro verstoppen',
+	'smw_ask_help' => 'Hëllef ufroen',
 	'smw_ask_queryhead' => 'Ufro',
 	'smw_ask_format_as' => 'Formatéieren als:',
 	'smw_ask_defaultformat' => 'Standard',
