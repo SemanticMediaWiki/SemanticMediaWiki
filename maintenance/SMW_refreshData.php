@@ -40,7 +40,6 @@ $optionsWithArgs = array( 'd', 's', 'e', 'b', 'server','page'); // -d <delay>, -
 require_once ( getenv('MW_INSTALL_PATH') !== false
     ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
     : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
-require_once("$IP/maintenance/counter.php");
 
 global $smwgEnableUpdateJobs, $wgServer;
 $smwgEnableUpdateJobs = false; // do not fork additional update jobs while running this script
@@ -100,11 +99,30 @@ if (  array_key_exists( 'f', $options ) ) {
 
 	print "Abort with control-c in the next five seconds ...  ";
 
-	for ($i = 6; $i >= 1;) {
-		print_c($i, --$i);
-		sleep(1);
+	// TODO
+	// Remove the following section and replace it with a simple
+	// wfCountDown as soon as we switch to MediaWiki 1.16. 
+	// Currently, wfCountDown is only supported from
+	// revision 51650 (Jun 9 2009) onward.
+	$n = 6;
+	if (function_exists("wfCountDown")) {
+		wfCountDown( $n );	
+	} else {
+    	for ( $i = $n; $i >= 0; $i-- ) {
+        	if ( $i != $n ) {
+            	echo str_repeat( "\x08", strlen( $i + 1 ) );
+        	} 
+        	echo $i;
+        	flush();
+        	if ( $i ) {
+            	sleep( 1 );
+        	}
+    	}
+    	echo "\n";		
 	}
-	echo "\n";
+	// Remove up to here and just uncomment the following line:
+	// wfCountDown( 6 );
+
 	smwfGetStore()->drop($verbose);
 	wfRunHooks('smwDropTables');
 	print "\n";

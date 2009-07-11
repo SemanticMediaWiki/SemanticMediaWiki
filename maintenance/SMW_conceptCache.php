@@ -17,7 +17,6 @@ $optionsWithArgs = array( 'concept', 'old', 's', 'e');
 require_once ( getenv('MW_INSTALL_PATH') !== false
     ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
     : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
-require_once("$IP/maintenance/counter.php");
 
 $output_level  = array_key_exists('quiet', $options)?0:
                  (array_key_exists('verbose', $options)?2:1);
@@ -36,11 +35,28 @@ if (array_key_exists( 'help', $options )) {
 	outputMessage("\nDeleting concept caches. Use CTRL-C to abort.\n\n");
 	$delay = 5;
 	if (outputMessage(print "Waiting for $delay seconds ...  ")) {
-		for ($i = $delay+1; $i >= 1;) {
-			print_c($i, --$i);
-			sleep(1);
+		// TODO
+		// Remove the following section and replace it with a simple
+		// wfCountDown as soon as we switch to MediaWiki 1.16. 
+		// Currently, wfCountDown is only supported from
+		// revision 51650 (Jun 9 2009) onward.
+		if (function_exists("wfCountDown")) {
+			wfCountDown( $delay );	
+		} else {
+    		for ( $i = $delay; $i >= 0; $i-- ) {
+	        	if ( $i != $delay ) {
+    	        	echo str_repeat( "\x08", strlen( $i + 1 ) );
+        		} 
+        		echo $i;
+	        	flush();
+    	    	if ( $i ) {
+        	    	sleep( 1 );
+        		}
+    		}
+	    	echo "\n";		
 		}
-		print "\n";
+		// Remove up to here and just uncomment the following line:
+		// wfCountDown( $delay );
 	}
 } else {
 	$action = 'help';
