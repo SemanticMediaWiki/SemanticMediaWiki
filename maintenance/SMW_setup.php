@@ -14,7 +14,7 @@
  * php SMW_refreshData.php [options...]
  *
  * -b        <backend>    Execute the operation for the storage backend of the given name
- * -user     <dbuser>     Database user account to use for chaning DB layout
+ * -user     <dbuser>     Database user account to use for changing DB layout
  * -password <dbpassword> Password for user account
  * NOTE: specifying user credentials in a command line call will usually store them
  * within the shell history file. For security, provide credentials in Adminssetings.php
@@ -45,7 +45,6 @@ $optionsWithArgs = array( 'b', 'user', 'password');
 require_once ( getenv('MW_INSTALL_PATH') !== false
     ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
     : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
-require_once("$IP/maintenance/counter.php");
 
 global $smwgDefaultStore;
 
@@ -90,11 +89,29 @@ if (  array_key_exists( 'delete', $options ) ) {
 
 	print "Abort with CTRL-C in the next $delay seconds ...  ";
 
-	for ($i = $delay+1; $i >= 1;) {
-		print_c($i, --$i);
-		sleep(1);
+	// TODO
+	// Remove the following section and replace it with a simple
+	// wfCountDown as soon as we switch to MediaWiki 1.16. 
+	// Currently, wfCountDown is only supported from
+	// revision 51650 (Jun 9 2009) onward.
+	if (function_exists("wfCountDown")) {
+		wfCountDown( $delay );	
+	} else {
+    	for ( $i = $delay; $i >= 0; $i-- ) {
+        	if ( $i != $delay ) {
+            	echo str_repeat( "\x08", strlen( $i + 1 ) );
+        	} 
+        	echo $i;
+        	flush();
+        	if ( $i ) {
+            	sleep( 1 );
+        	}
+    	}
+    	echo "\n";		
 	}
-	echo "\n";
+	// Remove up to here and just uncomment the following line:
+	// wfCountDown( $delay );
+	
 	smwfGetStore()->drop(true);
 	wfRunHooks('smwDropTables');
 	print "\n";
