@@ -29,7 +29,7 @@ class SMWSQLHelpers {
 		switch ($input) {
 			case 'id': return $wgDBtype=='postgres'?'SERIAL':'INT(8) UNSIGNED'; // like page_id in MW page table
 			case 'namespace': return $wgDBtype=='postgres'?'BIGINT':'INT(11)'; // like page_namespace in MW page table
-			case 'title': return $wgDBtype=='postgres'?'TEXT':'VARCHAR(255) binary'; // like page_title in MW page table
+			case 'title': return $wgDBtype=='postgres'?'TEXT':'VARBINARY(255)'; // like page_title in MW page table
 			case 'iw': return $wgDBtype=='postgres'?'TEXT':'VARCHAR(32) binary'; // like iw_prefix in MW interwiki table
 			case 'blob': return $wgDBtype=='postgres'?'BYTEA':'MEDIUMBLOB'; // larger blobs of character data, usually not subject to SELECT conditions
 		}
