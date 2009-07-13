@@ -158,6 +158,8 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 		}
 
 		$result .= "				</ul>\n			</div> <!-- end column -->";
+		// clear all the CSS floats
+		$result .= "\n" . '<br style="clear: both;"/>';
 		return $result;
 	}
 
