@@ -669,8 +669,21 @@ $messages['ar'] = array(
  * @author Basharh
  */
 $messages['arc'] = array(
+	'smw_printername_auto' => 'ܝܬܐܝܬ',
+	'smw_printername_table' => 'ܠܘܚܝܬܐ',
+	'smw_printername_template' => 'ܩܠܒܐ',
+	'smw_true_words' => 'ܬܪܝܨܐ,ܬ,ܐܝܢ,ܐ',
+	'smw_false_words' => 'ܦܘܕܐ,ܦ,ܠܐ,ܠ',
+	'smw_abb_north' => 'ܓܪܒܝܐ',
+	'smw_abb_east' => 'ܡܕܢܚܐ',
+	'smw_abb_south' => 'ܬܝܡܢܐ',
+	'smw_abb_west' => 'ܡܥܪܒܐ',
 	'exportrdf' => 'ܐܦܩ ܦܐܬܬ̈ܐ ܠ RDF',
 	'smw_exportrdf_submit' => 'ܐܦܩ',
+	'types' => 'ܐܕܫ̈ܐ',
+	'smw_sbv_value' => 'ܛܝܡܐ:',
+	'smw_result_results' => 'ܦܠܛ̈ܐ',
+	'smw_result_noresults' => 'ܠܐ ܦܠܛ̈ܐ.',
 );
 
 /** Egyptian Spoken Arabic (مصرى)
@@ -1965,6 +1978,7 @@ $messages['es'] = array(
 	'smw_printername_ul' => 'Itemización',
 	'smw_printername_rss' => 'Exportar RSS',
 	'smw_printername_table' => 'Tabla',
+	'smw_printername_broadtable' => 'Tabla ancha',
 	'smw_printername_template' => 'Plantilla',
 	'smw_iq_disabled' => 'Lo sentimos. Las búsquedas en los artículos de este wiki no están autorizadas.',
 	'smw_iq_moreresults' => '&hellip; siguientes resultados',
