@@ -21,6 +21,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	protected $mSep = '';
 	protected $mTemplate = '';
 	protected $mUserParam = '';
+	protected $mColumns = 1;
 
 	protected function readParameters($params,$outputmode) {
 		SMWResultPrinter::readParameters($params,$outputmode);
@@ -33,6 +34,14 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		}
 		if (array_key_exists('userparam', $params)) {
 			$this->mUserParam = trim($params['userparam']);
+		}
+		if (array_key_exists('columns', $params)) {
+			if ( ('ul' == $this->mFormat) || ('ol' == $this->mFormat) ) {
+				$columns = trim($params['columns']);
+				// allow a maximum of 10 columns
+				if ($columns > 1 && $columns <= 10)
+					$this->mColumns = (int)$columns;
+			}
 		}
 	}
 
@@ -64,17 +73,35 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rowend = '';
 			$plainlist = true;
 		}
-
-		// Print header:
+		// Print header
 		$result = $header;
 
-		// Print all result rows:
-		$first_row = true;
-		$row = $res->getNext();
-		while ( $row !== false ) {
-			$nextrow = $res->getNext(); // look ahead
-			if ( !$first_row && $plainlist )  {
-				$result .=  ($nextrow !== false)?$listsep:$finallistsep; // the comma between "rows" other than the last one
+		// put all result rows into an array, for easier handling
+		$rows = array();
+		while ($row = $res->getNext()) {
+			$rows[] = $row;
+		}
+
+		// set up floating divs, if there's more than one column
+		if ($this->mColumns > 1) {
+			$column_width = floor(100 / $this->mColumns);
+			$result .= '<div style="float: left; width: ' . $column_width . '%">' . "\n";
+			$rows_per_column = ceil(count($rows) / $this->mColumns);
+			$rows_in_cur_column = 0;
+		}
+
+		// now print each row
+		foreach ($rows as $i => $row) {
+			if ($this->mColumns > 1) {
+				if ($rows_in_cur_column == $rows_per_column) {
+					$result .= "\n</div>";
+					$result .= '<div style="float: left; width: ' . $column_width . '%">' . "\n";
+					$rows_in_cur_column = 0;
+				}
+				$rows_in_cur_column++;
+			}
+			if ( $i > 0 && $plainlist )  {
+				$result .=  ($i <= count($rows)) ? $listsep : $finallistsep; // the comma between "rows" other than the last one
 			} else {
 				$result .= $rowstart;
 			}
@@ -120,9 +147,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				}
 				if ($found_values) $result .= ')';
 			}
-			$result .= $rowend;
-			$first_row = false;
-			$row = $nextrow;
+			// </li> tag is not necessary in MediaWiki
+			//$result .= $rowend;
 		}
 
 		// Make label for finding further results
@@ -140,11 +166,16 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					$link->setParameter($this->m_params['link'],'link');
 				}
 			}
-			$result .= $rowstart . $link->getText(SMW_OUTPUT_WIKI,$this->mLinker) . $rowend;
+			// </li> tag is not necessary in MediaWiki
+			$result .= $rowstart . $link->getText(SMW_OUTPUT_WIKI,$this->mLinker);// . $rowend;
 		}
+		if ($this->mColumns > 1)
+			$result .= '</div>' . "\n";
 
-		// Print footer:
+		// Print footer
 		$result .= $footer;
+		if ($this->mColumns > 1)
+			$result .= '<br style="clear: both">' . "\n";
 		return $result;
 	}
 
