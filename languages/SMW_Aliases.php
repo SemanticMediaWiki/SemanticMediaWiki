@@ -341,6 +341,21 @@ $aliases['ro'] = array(
 	'Browse' => array( 'Răsfoieşte' ),
 );
 
+/** Slovak (Slovenčina) */
+$aliases['sk'] = array(
+	'Ask' => array( 'SpýtaťSa' ),
+	'Browse' => array( 'Prehliadať' ),
+	'PageProperty' => array( 'VlastnostiStránky' ),
+	'Properties' => array( 'Vlastnosti' ),
+	'SMWAdmin' => array( 'SprávcaSMW' ),
+	'SearchByProperty' => array( 'HľadaniePodľaVlastností' ),
+	'SemanticStatistics' => array( 'SémantickéŠtatistiky' ),
+	'Types' => array( 'Typy' ),
+	'URIResolver' => array( 'PrekladURI' ),
+	'UnusedProperties' => array( 'NepoužívanéVlastnosti' ),
+	'WantedProperties' => array( 'ŽiadanéVlastnosti' ),
+);
+
 /** Albanian (Shqip) */
 $aliases['sq'] = array(
 	'Ask' => array( 'Pyet' ),
