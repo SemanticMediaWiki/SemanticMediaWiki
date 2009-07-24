@@ -322,7 +322,7 @@ Estimated progress of current update:',
  * @author Purodha
  */
 $messages['qqq'] = array(
-	'smw-desc' => 'Short description of this extension, shown on [[Special:Version]]. Do not translate or change links.',
+	'smw-desc' => '{{desc}}',
 	'smw_finallistconjunct' => 'The last separator in a list. For example a list could look like this: "A, B, and C". The comma might not be appropriate in your language.
 
 {{Identical|And}}',
@@ -4640,6 +4640,7 @@ $messages['lb'] = array(
 	'smw_noclosingbrackets' => 'Eng oder méi "<nowiki>[[</nowiki>" an Ärer Ufro war net zou duerch eng entspriechent "]]".',
 	'smw_misplacedsymbol' => 'D\'Symbol "$1" gouf op ener Plaz benotzt wou et net nëtzlech ass.',
 	'smw_badtitle' => 'Pardon, awer "$1" ass kee gëltegen Titel vun enger Säit.',
+	'smw_badqueryatom' => 'Een Deel "<nowiki>[[…]]</nowiki>" vun der Ufro gouf net verstan.',
 	'smw_propvalueproblem' => 'De Wert vun der eegeschaft "$1" gouf net verstan.',
 	'smw_devel_warning' => 'Dës Fonctioun ass elo eréischt an der Entwécklung a fonctionnéiert eventuell net korrekt.
 Séchert Är Donnéeën (Backup) ier Dir dës Fonctioun benotzt.',
