@@ -487,7 +487,7 @@ class SMWSQLStore2 extends SMWStore {
 		// redirects work differently.
 		$table = '';
 		$sql = 'p_id=' . $db->addQuotes($pid);
-		$typeid = ($value === NULL)?$property->getPropertyTypeID():$value->getTypeID();
+		$typeid = $property->getPropertyTypeID();
 		$mode = SMWSQLStore2::getStorageMode($typeid);
 
 		switch ($mode) {
@@ -703,9 +703,10 @@ class SMWSQLStore2 extends SMWStore {
 
 		foreach($data->getProperties() as $property) {
 			$propertyValueArray = $data->getPropertyValues($property);
+			$mode = SMWSQLStore2::getStorageMode($property->getPropertyTypeID());
 			foreach($propertyValueArray as $value) {
 				if (!$value->isValid()) continue;
-				switch (SMWSQLStore2::getStorageMode($value->getTypeID())) {
+				switch ($mode) {
 					case SMW_SQL2_REDI2: break; // handled above
 					case SMW_SQL2_INST2:
 						$up_inst2[] = array(
