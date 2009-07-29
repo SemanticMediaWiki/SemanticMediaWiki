@@ -10,7 +10,7 @@
 
 /**
  * Implementation of MediaWiki's Article that shows additional information on
- * property pages. Very simliar to CategoryPage, but with different printout 
+ * property pages. Very similar to CategoryPage, but with different printout
  * that also displays values for each subject with the given property.
  * @ingroup SMW
  */
