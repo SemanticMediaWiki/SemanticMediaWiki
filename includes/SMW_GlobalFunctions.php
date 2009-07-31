@@ -536,7 +536,7 @@ function smwfShowBrowseLink($skintemplate) {
 		//The "$value!=0" is relevant: we want to scientify numbers that are close to 0, but never 0!
 		if ( ($decplaces > 0) && ($value != 0) ) {
 			$absValue = abs($value);
-			if ($absValue >= 1000000000) {
+			if ($absValue >= 1000000000000000) {
 				$doScientific = true;
 			} elseif ($absValue <= pow(10,-$decplaces)) {
 				$doScientific = true;
