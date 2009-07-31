@@ -192,6 +192,14 @@ abstract class SMWDataValue {
 	 * a desired output unit. In other cases, the output format might be built-in
 	 * and subject to internationalisation (which the datavalue has to implement).
 	 * In any case, an empty string resets the output format to the default.
+	 *
+	 * There is one predeeind output format that all datavalues should respect: the
+	 * format '-' indicates "plain" output that is most useful for further processing
+	 * the value in a template. It should not use any wiki markup or beautification,
+	 * and it should also avoid localization to the current language. When users
+	 * explicitly specify an empty format string in a query, it is normalized to "-"
+	 * to avoid confusion. Note that empty format strings are not interpreted in
+	 * this way when directly passed to this function.
 	 */
 	public function setOutputFormat($formatstring) {
 		$this->m_outformat = $formatstring; // just store it, subclasses may or may not use this

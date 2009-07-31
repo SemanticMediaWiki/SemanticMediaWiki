@@ -300,6 +300,9 @@ class SMWSQLStore2QueryEngine {
 			foreach ($prs as $pr) {
 				switch ($pr->getMode()) {
 				case SMWPrintRequest::PRINT_THIS:
+					if ($pr->getOutputFormat()) {
+						$qt->setOutputFormat($pr->getOutputFormat());
+					}
 					$row[] = new SMWResultArray(array($qt), $pr);
 				break;
 				case SMWPrintRequest::PRINT_CATS:

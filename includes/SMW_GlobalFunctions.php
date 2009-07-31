@@ -93,7 +93,7 @@ function enableSemantics($namespace = null, $complete = false) {
 	if ($namespace === null)
 	{
 		$namespace = $wgServerName;
-	}	
+	}
 
 	if ( !$complete && ($smwgNamespace !== '') ) {
 		$smwgNamespace = '.' . $namespace;

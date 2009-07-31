@@ -430,8 +430,8 @@ class SMWTimeValue extends SMWDataValue {
 	protected function makePrintoutValue() {
 		global $smwgContLang;
 		if ($this->m_printvalue === false) {
-			//MediaWiki date function is not applicable any more (no support for BC Dates)
-			if ( strtoupper($this->m_outformat) == 'ISO') { // ISO8601 date formatting
+			//MediaWiki date function is not applicable any more (no support for BC dates)
+			if ( (strtoupper($this->m_outformat) == 'ISO') || ($this->m_outformat == '-')) { // ISO8601 date formatting
 				if ($this->m_year > 0) {
 					$this->m_printvalue = str_pad($this->m_year, 4, "0", STR_PAD_LEFT);
 				} else {

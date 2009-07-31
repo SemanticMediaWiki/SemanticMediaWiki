@@ -17,7 +17,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 	 * Converts the current m_value and m_unit to the main unit, if possible.
 	 * This means, it changes the fileds m_value and m_unit accordingly, and
 	 * that it stores the ID of the originally given unit in $this->m_unitin.
-	 * This should obviously not be done more than once, so it is advisable to 
+	 * This should obviously not be done more than once, so it is advisable to
 	 * first check if m_unitin is non-false. Also, it should be checked if the
 	 * value is valid before trying to calculate with its contents.
 	 */
@@ -62,8 +62,8 @@ class SMWTemperatureValue extends SMWNumberValue {
 	 * The result is stored in $this->m_unitvalues. Again, any class that
 	 * requires effort for doing this should first check whether the array
 	 * is already set (i.e. not false) before doing any work.
-	 * Note that the values should be plain numbers. Output formatting is done 
-	 * later when needed. Also, it should be checked if the value is valid 
+	 * Note that the values should be plain numbers. Output formatting is done
+	 * later when needed. Also, it should be checked if the value is valid
 	 * before trying to calculate with its contents.
 	 * This method also must call or implement convertToMainUnit().
 	 */
@@ -89,7 +89,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 		$this->convertToMainUnit();
 
 		$value = false;
-		if (($this->m_unit === 'K') && $this->m_outformat) { // try given output unit (only if conversion worked)
+		if (($this->m_unit === 'K') && $this->m_outformat && ($this->m_outformat != '-') ) { // try given output unit (only if conversion worked)
 			$unit = $this->getUnitID($this->normalizeUnit($this->m_outformat));
 			$printunit = $this->m_outformat;
 			switch ($unit) {
@@ -150,7 +150,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 	}
 
 	/**
-	 * Return an array of major unit strings (ids only recommended) supported by 
+	 * Return an array of major unit strings (ids only recommended) supported by
 	 * this datavalue.
 	 */
 	public function getUnitList() {

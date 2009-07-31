@@ -47,7 +47,7 @@ class SMWPropertyValue extends SMWDataValue {
 	/// If the property is predefined, its internal key is stored here. Otherwise FALSE.
 	protected $m_propertyid;
 	/// If the property is associated with a wikipage, it is stored here. Otherwise NULL.
-	protected $m_wikipage;
+	protected $m_wikipage = NULL;
 
 	private $prop_typevalue; // once calculated, remember the type of this property
 	private $prop_typeid; // once calculated, remember the type of this property
@@ -123,6 +123,7 @@ class SMWPropertyValue extends SMWDataValue {
 		if ($label != '') {
 			$this->m_wikipage = SMWDataValueFactory::newTypeIDValue('_wpp');
 			$this->m_wikipage->setDBkeys(array(str_replace(' ', '_',$label),SMW_NS_PROPERTY,'',''));
+			$this->m_wikipage->setOutputFormat($this->m_outformat);
 			$this->m_caption = $label;
 			$this->addError($this->m_wikipage->getErrors()); // NOTE: this unstubs the wikipage, should we rather ignore errors here to prevent this?
 		} else { // predefined property without label
@@ -171,6 +172,13 @@ class SMWPropertyValue extends SMWDataValue {
 		return (($this->m_propertyid == '') ||
 		        (array_key_exists($this->m_propertyid, SMWPropertyvalue::$m_propertytypes) &&
 		         SMWPropertyvalue::$m_propertytypes[$this->m_propertyid][1]) );
+	}
+
+	public function setOutputFormat($formatstring) {
+		$this->m_outformat = $formatstring;
+		if ($this->m_wikipage !== NULL) { // do not unstub if not needed
+			$this->m_wikipage->setOutputFormat($formatstring);
+		}
 	}
 
 	public function getShortWikiText($linked = NULL) {

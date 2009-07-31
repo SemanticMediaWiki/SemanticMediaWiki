@@ -103,7 +103,7 @@ class SMWLinearValue extends SMWNumberValue {
 
 		$value = false;
 		if ($this->m_unit === $this->m_mainunit) { // only try if conversion worked
-			if ( ($value === false) && $this->m_outformat) { // first try given output unit
+			if ( ($value === false) && ($this->m_outformat) && ($this->m_outformat != '-') ) { // first try given output unit
 				$unit = $this->normalizeUnit($this->m_outformat);
 				$printunit = $unit;
 				if (array_key_exists($unit, $this->m_unitids)) { // find id for output unit

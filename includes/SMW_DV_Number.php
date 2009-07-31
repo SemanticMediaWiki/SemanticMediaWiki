@@ -94,7 +94,7 @@ class SMWNumberValue extends SMWDataValue {
 
 	public function getShortWikiText($linked = NULL) {
 		$this->unstub();
-		if (($linked === NULL) || ($linked === false)) {
+		if (($linked === NULL) || ($linked === false) || ($this->m_outformat == '-') ) {
 			return $this->m_caption;
 		}
 		$this->makeConversionValues();
@@ -140,11 +140,14 @@ class SMWNumberValue extends SMWDataValue {
 				} elseif ($i > 1) {
 					$result .= ', ';
 				}
-				$result .= smwfNumberFormat($value);
+				$result .= ($this->m_outformat != '-'?smwfNumberFormat($value):$value);
 				if ($unit != '') {
 					$result .= '&nbsp;' . $unit;
 				}
 				$i++;
+				if ($this->m_outformat == '-') { // no further conversions for plain output format
+					break;
+				}
 			}
 			if ($i > 1) {
 				$result .= ')';
@@ -268,7 +271,7 @@ class SMWNumberValue extends SMWDataValue {
 	 */
 	protected function makeUserValue() {
 		$this->convertToMainUnit();
-		$this->m_caption = smwfNumberFormat($this->m_value);
+		$this->m_caption = ($this->m_outformat != '-'?smwfNumberFormat($this->m_value):$this->m_value);
 		if ($this->m_unit != '') {
 			$this->m_caption .= '&nbsp;' . $this->m_unit;
 		}

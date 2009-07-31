@@ -36,12 +36,12 @@ class SMWPrintRequest {
 	 * @param $data optional data for specifying some request, might be a property object, title, or something else; interpretation depends on $mode
 	 * @param $outputformat optional string for specifying an output format, e.g. an output unit
 	 */
-	public function __construct($mode, $label, $data = NULL, $outputformat = '') {
+	public function __construct($mode, $label, $data = NULL, $outputformat = false) {
 		$this->m_mode = $mode;
 		$this->m_label = $label;
 		$this->m_data = $data;
 		$this->m_outputformat = $outputformat;
-		if ( ($mode == SMWPrintRequest::PRINT_CCAT) && ($outputformat === '') ) {
+		if ( ($mode == SMWPrintRequest::PRINT_CCAT) && ($outputformat == false) ) {
 			$this->m_outputformat = 'x'; // changed default for Boolean case
 		}
 		if ($this->m_data instanceof SMWDataValue) {
