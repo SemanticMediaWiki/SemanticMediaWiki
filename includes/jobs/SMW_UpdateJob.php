@@ -9,9 +9,9 @@
  */
 
 /**
- * SMWUpdateJob updates the semantic data in the database for a given title 
+ * SMWUpdateJob updates the semantic data in the database for a given title
  * using the MediaWiki JobQueue. Update jobs are created if, when saving an article,
- * it is detected that the content of other pages must be re-parsed as well (e.g. 
+ * it is detected that the content of other pages must be re-parsed as well (e.g.
  * due to some type change).
  *
  * @note This job does not update the page display or parser cache, so in general
@@ -23,7 +23,7 @@
  */
 class SMWUpdateJob extends Job {
 
-	function __construct(Title $title) {
+	function __construct($title) {
 		parent::__construct( 'SMWUpdateJob', $title);
 	}
 
