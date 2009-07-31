@@ -200,11 +200,11 @@ $aliases['ja'] = array(
 	'Browse' => array( '閲覧' ),
 	'ExportRDF' => array( 'RDFエクスポート', 'ＲＤＦエクスポート' ),
 	'PageProperty' => array( 'ページプロパティ' ),
-	'Properties' => array( 'プロパティ' ),
+	'Properties' => array( 'プロパティ一覧' ),
 	'SMWAdmin' => array( 'SMW管理' ),
 	'SearchByProperty' => array( 'プロパティによる検索' ),
 	'SemanticStatistics' => array( '意味的統計' ),
-	'Types' => array( '型' ),
+	'Types' => array( '型一覧' ),
 	'URIResolver' => array( 'URIリゾルバー', 'ＵＲＩリゾルバー' ),
 	'UnusedProperties' => array( '使われていないプロパティ' ),
 	'WantedProperties' => array( '望まれているプロパティ' ),
@@ -232,16 +232,28 @@ $aliases['ksh'] = array(
 	'WantedProperties' => array( 'Eijeschaffte di noch jebruch wääde' ),
 );
 
+/** Cornish (Kernewek) */
+$aliases['kw'] = array(
+	'Ask' => array( 'Govyn' ),
+	'Browse' => array( 'Peuri' ),
+);
+
 /** Luxembourgish (Lëtzebuergesch) */
 $aliases['lb'] = array(
 	'Ask' => array( 'Froen' ),
 	'ExportRDF' => array( 'RDF exportéieren' ),
 	'PageProperty' => array( 'Säiten-Eegeschaften' ),
 	'Properties' => array( 'Eegeschaften' ),
+	'SearchByProperty' => array( 'No Eegeschaft sichen' ),
 	'SemanticStatistics' => array( 'Semantesch Statistiken' ),
 	'Types' => array( 'Datentypen' ),
 	'UnusedProperties' => array( 'Netbenotzen Eegeschaften' ),
 	'WantedProperties' => array( 'Gewënschten Eegeschaften' ),
+);
+
+/** Lumbaart (Lumbaart) */
+$aliases['lmo'] = array(
+	'Ask' => array( 'Ciama' ),
 );
 
 /** Macedonian (Македонски) */
