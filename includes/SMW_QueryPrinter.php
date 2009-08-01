@@ -6,6 +6,11 @@
  * @ingroup SMWQuery
  */
 
+// constants that define how/if headers should be displayed
+define('SMW_HEADERS_SHOW', 2);
+define('SMW_HEADERS_PLAIN', 1);
+define('SMW_HEADERS_HIDE', 0); // used to be "false" hence use "0" to support extensions that still assume this
+
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements
  * part of the former functionality of SMWInlineQuery (everything related to
@@ -37,7 +42,7 @@ abstract class SMWResultPrinter {
 	protected $mFormat;  // a string identifier describing a valid format
 	protected $mLinkFirst; // should article names of the first column be linked?
 	protected $mLinkOthers; // should article names of other columns (besides the first) be linked?
-	protected $mShowHeaders = true; // should the headers (property names) be printed?
+	protected $mShowHeaders = SMW_HEADERS_SHOW; // should the headers (property names) be printed?
 	protected $mShowErrors = true; // should errors possibly be printed?
 	protected $mInline; // is this query result "inline" in some page (only then a link to unshown results is created, error handling may also be affected)
 	protected $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
@@ -233,9 +238,11 @@ abstract class SMWResultPrinter {
 		}
 		if (array_key_exists('headers', $params)) {
 			if ( 'hide' == strtolower(trim($params['headers']))) {
-				$this->mShowHeaders = false;
+				$this->mShowHeaders = SMW_HEADERS_HIDE;
+			} elseif ( 'plain' == strtolower(trim($params['headers']))) {
+				$this->mShowHeaders = SMW_HEADERS_PLAIN;
 			} else {
-				$this->mShowHeaders = true;
+				$this->mShowHeaders = SMW_HEADERS_SHOW;
 			}
 		}
 	}

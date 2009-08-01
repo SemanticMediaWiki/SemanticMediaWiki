@@ -137,8 +137,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 						}
 						if ($first_value) { // first value in any column, print header
 							$first_value = false;
-							if ( $this->mShowHeaders && ('' != $field->getPrintRequest()->getLabel()) ) {
-								$result .= $field->getPrintRequest()->getText(SMW_OUTPUT_WIKI, $this->mLinker) . ' ';
+							if ( ($this->mShowHeaders != SMW_HEADERS_HIDE) && ('' != $field->getPrintRequest()->getLabel()) ) {
+								$result .= $field->getPrintRequest()->getText(SMW_OUTPUT_WIKI, ($this->mShowHeaders == SMW_HEADERS_PLAIN?NULL:$this->mLinker)) . ' ';
 							}
 						}
 						$result .= $text; // actual output value
