@@ -92,7 +92,9 @@ abstract class SMWLanguage {
 	}
 
 	/**
-	 * Function looks up a month and returns the corresponding number (e.g. No
+	 * Function looks up a month and returns the corresponding number.
+	 * @todo Should we add functionality to ignore case here?
+	 * @todo Should there be prefix string matching instead of two arrays for full and short names?
 	 */
 	function findMonth($label) {
 		$id = array_search($label, $this->m_months);
