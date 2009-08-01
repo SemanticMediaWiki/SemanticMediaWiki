@@ -107,7 +107,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * one column and object articles/values in the other one.
 	 */
 	private function subjectObjectList() {
-		global $wgContLang;
+		global $wgContLang, $smwgMaxPropertyValues;
 		$store = smwfGetStore();
 
 		$ac = count($this->articles);
@@ -137,7 +137,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			      '&nbsp;' . $searchlink->getHTML($this->getSkin()) . '</td><td class="smwprops">';
 			// Property values
 			$ropts = new SMWRequestOptions();
-			$ropts->limit = 4;
+			$ropts->limit = $smwgMaxPropertyValues + 1;
 			$values = $store->getPropertyValues($this->articles[$index], $this->mProperty, $ropts);
 			$i=0;
 			foreach ($values as $value) {
@@ -145,7 +145,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 					$r .= ', ';
 				}
 				$i++;
-				if ($i < 4) {
+				if ($i < $smwgMaxPropertyValues + 1) {
 					$r .= $value->getLongHTMLText($this->getSkin()) . $value->getInfolinkText(SMW_OUTPUT_HTML, $this->getSkin());
 				} else {
 					$searchlink = SMWInfolink::newInversePropertySearchLink('&hellip;', $this->articles[$index]->getWikiValue(), $this->mTitle->getText());

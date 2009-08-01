@@ -148,6 +148,12 @@ $smwgPropertyPagingLimit = 25; // use smaller value since property lists need mo
 ##
 
 ###
+# How many values should at most be displayed for a page on the Property page?
+##
+$smwgMaxPropertyValues = 3; // if large values are desired, consider reducing $smwgPropertyPagingLimit for unchanged performance
+##
+
+###
 # Settings for inline queries ({{#ask:...}}) and for semantic queries in
 # general. This can especially  be used to prevent overly high server-load by
 # complex queries. The following settings affect all queries, wherever they
