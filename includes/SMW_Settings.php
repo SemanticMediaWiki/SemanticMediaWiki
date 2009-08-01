@@ -286,6 +286,14 @@ $smwgOWLFullExport = false; // decides, if the RDF export will export, by defaul
 ##
 
 ###
+# The maximal number that SMW will normally display without using scientific exp
+# notation. The deafult is rather large since some users have problems understanding
+# exponents. Scineitfic applications may prefer a smaller value for concise display.
+##
+$smwgMaxNonExpNumber = 1000000000000000;
+##
+
+###
 # SMW defers some tasks until after a page was edited by using the MediaWiki
 # job queueing system (see http://www.mediawiki.org/wiki/Manual:Job_queue).
 # For example, when the type of a property is changed, all affected pages will
