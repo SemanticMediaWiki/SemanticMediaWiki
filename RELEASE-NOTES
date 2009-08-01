@@ -11,6 +11,8 @@ See http://semantic-mediawiki.org/wiki/SMW_1.4.3
 * New configuration parameter $smwgMaxNonExpNumber to set the maximal number that
   SMW will normally display without using scientific exp notation. Defaults to
   1000000000000000.
+* The #ask parameter "headers" can now be given the value "plain" to get query
+  results that show the printout label (e.g. property name) but without a link.
 * Numerous bugfixes
 
 == SMW 1.4.2 ==
