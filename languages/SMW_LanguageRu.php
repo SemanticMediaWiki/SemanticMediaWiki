@@ -66,7 +66,8 @@ protected $m_SpecialProperties = array(
 	'_IMPO' => 'Импортировано из',
 	'_CONV' => 'Относится к',
 	'_SERV' => 'Предоставляет сервис',
-	'_PVAL' => 'Допустимое значение'
+	'_PVAL' => 'Допустимое значение',
+	'_MDAT' => 'Modification date' // TODO: translate
 );
 
 protected $m_SpecialPropertyAliases = array(
@@ -80,7 +81,8 @@ protected $m_SpecialPropertyAliases = array(
 	'Imported from'     => '_IMPO',
 	'Corresponds to'    => '_CONV',
 	'Provides service'  => '_SERV',
-	'Allows value'      => '_PVAL'
+	'Allows value'      => '_PVAL',
+	'Modification date' => '_MDAT'
 );
 
 

@@ -57,9 +57,11 @@ protected $m_SpecialProperties = array(
 	'_CONV' => 'Corrisponde a ', // 'Corresponds to',
 	'_SERV' => 'Fornisce servizio', // 'Provides service',
 	'_PVAL' => 'Ammette valore', //'Allows value'
+	'_MDAT' => 'Modification date' // TODO: translate
 );
 
 protected $m_SpecialPropertyAliases = array(
+	'Modification date' => '_MDAT',
 	'Display unit' => '_UNIT'
 );
 

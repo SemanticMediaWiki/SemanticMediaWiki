@@ -65,6 +65,7 @@ protected $m_SpecialProperties = array(
 	'_CONV' => 'Corresponde a',
 	'_SERV' => 'Provee servicio',
 	'_PVAL' => 'Permite el valor'
+	'_MDAT' => 'Modification date' // TODO: translate
 );
 
 protected $m_SpecialPropertyAliases = array(
@@ -77,7 +78,8 @@ protected $m_SpecialPropertyAliases = array(
 	'Imported from'     => '_IMPO',
 	'Corresponds to'    => '_CONV',
 	'Provides service'  => '_SERV',
-	'Allows value'      => '_PVAL'
+	'Allows value'      => '_PVAL',
+	'Modification date' => '_MDAT'
 );
 
 protected $m_Namespaces = array(

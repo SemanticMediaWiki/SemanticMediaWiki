@@ -14,7 +14,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
 
 /**
  * Arabic language labels for important SMW labels (namespaces, datatypes,...).
- * 
+ *
  * @author Mahmoud Zouari  mahmoudzouari@yahoo.fr http://www.cri.ensmp.fr
  * @author Meno25
  * @ingroup SMWLanguage
@@ -53,10 +53,12 @@ protected $m_SpecialProperties = array(
 	'_IMPO' => 'المستوردة من',
 	'_CONV' => 'يقابل',
 	'_SERV' => 'يوفر الخدمة',
-	'_PVAL' => 'يسمح بالقيمة'
+	'_PVAL' => 'يسمح بالقيمة',
+	'_MDAT' => 'Modification date' // TODO: translate
 );
 
 protected $m_SpecialPropertyAliases = array(
+	'Modification date' => '_MDAT',
 	'عرض الوحدة' => '_UNIT'
 );
 

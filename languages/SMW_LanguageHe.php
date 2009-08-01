@@ -67,10 +67,12 @@ protected $m_SpecialProperties = array(
 	'_IMPO' => 'יובא מ',
 	'_CONV' => 'מתורגם ל',
 	'_SERV' => 'מספק שירות',
-	'_PVAL' => 'ערכים אפשריים' //   TODO: check translation, should be singular value//
+	'_PVAL' => 'ערכים אפשריים', //   TODO: check translation, should be singular value//
+	'_MDAT' => 'Modification date' // TODO: translate
 );
 
 protected $m_SpecialPropertyAliases = array(
+	'Modification date' => '_MDAT',
 	'יחידת הצגה'
 	                    => '_UNIT',
 	// support English aliases for special properties
