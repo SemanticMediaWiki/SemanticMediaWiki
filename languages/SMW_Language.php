@@ -26,9 +26,9 @@ abstract class SMWLanguage {
 	protected $m_SpecialPropertyAliases = array();
 	protected $m_Namespaces;
 	protected $m_NamespaceAliases = array();
-	/// Twelve strings naming the months. English is always supported in Type:Date, so
-	/// the default is simply empty (no labels in addition to English)
-	protected $m_months = array();
+	/// Twelve strings naming the months. English is always supported in Type:Date, but
+	/// we still need the English defaults to ensure that labels are returned by getMonthLabel()
+	protected $m_months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 	/// Twelve strings briefly naming the months. English is always supported in Type:Date, so
 	/// the default is simply empty (no labels in addition to English)
 	protected $m_monthsshort = array();
@@ -54,7 +54,7 @@ abstract class SMWLanguage {
 
 	/**
 	 * Return all labels that are available as names for built-in datatypes. Those
-	 * are the types that users can access via [[has type::...]] (more built-in 
+	 * are the types that users can access via [[has type::...]] (more built-in
 	 * types may exist for internal purposes but the user won't need to
 	 * know this). The returned array is indexed by (internal) type ids.
 	 */
