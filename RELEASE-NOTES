@@ -1,5 +1,18 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
+== SMW 1.4.3 ==
+
+See http://semantic-mediawiki.org/wiki/SMW_1.4.3
+
+* Using "-" as an output format for query printouts, or leaving the formatting
+  string empty now leads to printout values being returned as plain, unformatted
+  values. Recall that the general format for printouts in #ask is as follows:
+   ?propertyname # format = label
+* New configuration parameter $smwgMaxNonExpNumber to set the maximal number that
+  SMW will normally display without using scientific exp notation. Defaults to
+  1000000000000000.
+* Numerous bugfixes
+
 == SMW 1.4.2 ==
 
 See http://semantic-mediawiki.org/wiki/SMW_1.4.2
