@@ -4590,6 +4590,7 @@ Mer donn jetz nit noch ein aanshtüße!',
 );
 
 /** Luxembourgish (Lëtzebuergesch)
+ * @author Les Meloures
  * @author Robby
  */
 $messages['lb'] = array(
@@ -4600,7 +4601,7 @@ $messages['lb'] = array(
 	'smw_isspecprop' => 'Dëse Eegeschaft ass eng Spezial-Eegschaft an dëser Wiki.',
 	'smw_isaliastype' => 'Dësen Typ vun donnéeën ass keen Alias fir den Typ vun Donnéeën "$1".',
 	'smw_concept_description' => 'Beschreiwung vum Konzept "$1"',
-	'smw_multiple_concepts' => 'Op jidfer Konzeptsäit ka just eng Definitioun vun engem Konzept stoen.',
+	'smw_multiple_concepts' => 'Op jiddwer Konzeptsäit ka just eng Definitioun vun engem Konzept stoen.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatesch',
 	'smw_printername_count' => 'Resultater zielen',
@@ -4628,7 +4629,7 @@ $messages['lb'] = array(
 	'smw_true_words' => 'wouer,w,jo,j',
 	'smw_false_words' => 'falsch,f,neen,n',
 	'smw_nofloat' => '"$1" ass keng Zuel.',
-	'smw_infinite' => 'Zuelen esou grouss wéi "$1" ginn net ënnerstetzt.',
+	'smw_infinite' => 'Zuelen esou grouss wéi "$1" ginn net ënnerstëtzt.',
 	'smw_lonely_unit' => 'Virum Symbol "$1" gouf keng Zuel fonnt.',
 	'smw_abb_north' => 'N',
 	'smw_abb_east' => 'O',
@@ -6791,6 +6792,14 @@ $messages['sr-ec'] = array(
 Ако проблем не нестане за неко време, затражите од администратора сајта да учини овај концепт доступним.',
 	'smw_baduri' => 'URI-ји облика "$1", нису прихватљиви.',
 	'smw_csv_link' => 'CSV',
+	'smw_printername_auto' => 'Аутоматски',
+	'smw_printername_csv' => 'CSV извоз',
+	'smw_printername_json' => 'JSON извоз',
+	'smw_printername_list' => 'Списак',
+	'smw_printername_ol' => 'Енумерација',
+	'smw_printername_rss' => 'RSS извоз',
+	'smw_printername_table' => 'Табела',
+	'smw_printername_template' => 'Шаблон',
 	'smw_iq_disabled' => 'Семантички упити су онемогућени на овом викију.',
 	'smw_iq_moreresults' => '... више резултата',
 	'smw_iq_nojs' => 'Користите прегледач који подржава JavaScript-у како би могли да видите овај елеменат.',
@@ -6902,6 +6911,8 @@ $messages['sr-ec'] = array(
 	'smw_ask_help' => 'Упит у странице помоћи',
 	'smw_ask_queryhead' => 'Упит',
 	'smw_ask_printhead' => 'Додатни излазни резултати (опционо)',
+	'smw_ask_format_as' => 'Форматирај као:',
+	'smw_ask_defaultformat' => 'подразумевано',
 	'searchbyproperty' => 'Претражи по особинама',
 	'smw_sbv_docu' => 'Претражи све странице које поседују дату особину и вредност.',
 	'smw_sbv_novalue' => 'Унесите ваљану вредност за ову особину, или погледајте све вредности особине за "$1".',
@@ -6976,6 +6987,8 @@ $messages['sr-ec'] = array(
 	'smw_smwadmin_smwhomepage' => 'Потпуна корисничка документација за Семантички медијавики, налази се на сајту <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Багови се могу пријављивати на <a href="https://bugzilla.wikimedia.org/">Медијазилу</a>.',
 	'smw_smwadmin_questions' => 'Ако имате даљих питања и сугестија, укључите се у дискусију на листи <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_adminlinks_datastructure' => 'Структура података',
+	'smw_adminlinks_displayingdata' => 'Приказивање података',
 );
 
 /** latinica (latinica)
