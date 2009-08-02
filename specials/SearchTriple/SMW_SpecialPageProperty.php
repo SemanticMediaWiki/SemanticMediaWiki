@@ -13,7 +13,7 @@
  * This special page for Semantic MediaWiki implements a
  * view on a object-relation pair, i.e. a page that shows
  * all the fillers of a property for a certain page.
- * This is typically used for overflow results from other 
+ * This is typically used for overflow results from other
  * dynamic output pages.
  *
  * @ingroup SMWSpecialPage
@@ -65,10 +65,10 @@ class SMWPageProperty extends SpecialPage {
 
 		wfLoadExtensionMessages('SemanticMediaWiki');
 
-		if (('' == $type) || ('' == $from)) { // No relation or subject given.
+		if (('' == $type)) { // No relation or subject given.
 			$html .= wfMsg('smw_pp_docu') . "\n";
 		} else { // everything is given
-			$wgOut->setPagetitle($subject->getFullText() . ' ' . $property->getWikiValue());
+			$wgOut->setPagetitle( ($subject === NULL?'':$subject->getFullText() . ' ') . $property->getWikiValue());
 			$options = new SMWRequestOptions();
 			$options->limit = $limit+1;
 			$options->offset = $offset;
