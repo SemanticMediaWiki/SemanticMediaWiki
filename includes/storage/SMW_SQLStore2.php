@@ -385,11 +385,11 @@ class SMWSQLStore2 extends SMWStore {
 					$db->freeResult($res);
 				break;
 				case SMW_SQL2_ATTS2:
-					if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) &&
-						($requestoptions->boundary->isNumeric()) ) {
-						$value_column = 'value_num';
-					} else {
-						$value_column = 'value_xsd';
+					if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) ) { // the quick way to find out if this is a numeric type
+						$value_column = $requestoptions->boundary->isNumeric()?'value_num':'value_xsd';
+					} else { // need to do more work to find out if this is a numeric type
+						$testval = SMWDatavalueFactory::newTypeIDValue($property->getPropertyTypeID());
+						$value_column = $testval->isNumeric()?'value_num':'value_xsd';
 					}
 					$sql = 'p_id=' . $db->addQuotes($pid) .
 						$this->getSQLConditions($requestoptions,$value_column,'value_xsd');
