@@ -96,6 +96,10 @@ class SMWTimeValue extends SMWDataValue {
 
 		$value = trim($value); // ignore whitespace
 
+		if ($this->m_caption === false) {
+			$this->m_caption = $value;
+		}
+
 		// if it's a number, and it's sufficiently high, so we know
 		// it's not a year, treat it as a Julian day
 		if (is_numeric($value) && $value > 100000) {
@@ -121,7 +125,7 @@ class SMWTimeValue extends SMWDataValue {
 				$is_yearbc = true;
 			}
 			$regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete ad/bc value and preceding and following chars, but keep some space there
-			$filteredvalue = preg_replace($regexp,' ', $filteredvalue); //value without ad/bc
+			$filteredvalue = trim(preg_replace($regexp,' ', $filteredvalue)); //value without ad/bc
 		}
 
 		//browse string for time value
@@ -158,7 +162,7 @@ class SMWTimeValue extends SMWDataValue {
 		//split array in order to separate the date digits
 		$array = preg_split("/[\040|.|,|\-|\/]+/u", $filteredvalue, 3); //TODO: support &nbsp and - again;
 
-		// The following code segment creates a band by finding out wich role each digit of the entered date can take
+		// The following code segment creates a band by finding out which role each digit of the entered date can take
 		// (date, year, month). The band starts with 1 and for each digit of the entered date a binary code with three
 		// bits is attached. Examples:
 		//		111 states that the digit can be interpreted as a month, a day or a year
@@ -184,6 +188,7 @@ class SMWTimeValue extends SMWDataValue {
 		$digitcount = count($array)-1; //number of digits - 1 is used as an array index for $dateformats
 		$found = false;
 		foreach ($dateformats[$digitcount] as $format) { //check whether created band matches dateformats
+			// Note: sprintf can be used for debugging, e.g. print " checkformat: " . sprintf("%b",$format) . "\n";
 			if (!(~$band & $format)) { //check if $format => $band ("the detected band supports the current format")
 				$i = 0;
 				foreach ($this->m_formats[$format] as $globalvar) { // map format digits to internal variables
@@ -202,10 +207,12 @@ class SMWTimeValue extends SMWDataValue {
 			$this->addError(wfMsgForContent('smw_nodatetime',$value));
 			return true;
 		} elseif ( ($this->m_day > 0) && ($this->m_day > $this->m_daysofmonths[$this->m_month]) ) { //date does not exist in Gregorian calendar
+			///TODO: Return a more suitable error
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_nodatetime',$value));
 			return true;
 		} elseif ( ($this->m_year < -4713) && ($this->m_timeoffset != 0) ) { //no support for time offsets if year < -4713
+			///TODO: Return a more suitable error
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_nodatetime',$value));
 			return true;
@@ -224,9 +231,6 @@ class SMWTimeValue extends SMWDataValue {
 			$this->JD2Date();
 		}
 
-		if ($this->m_caption === false) {
-			$this->m_caption = $value;
-		}
 		return true;
 	}
 
