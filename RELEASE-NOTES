@@ -15,6 +15,7 @@ See http://semantic-mediawiki.org/wiki/SMW_1.4.3
   that are shown for each page in the listing on Property pages. Defaults to 3.
 * The #ask parameter "headers" can now be given the value "plain" to get query
   results that show the printout label (e.g. property name) but without a link.
+* Special:PageProperty now shows all values of a property when omitting the subject.
 * Numerous bugfixes
 
 == SMW 1.4.2 ==
