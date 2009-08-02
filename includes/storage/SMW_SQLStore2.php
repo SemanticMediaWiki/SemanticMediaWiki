@@ -361,7 +361,7 @@ class SMWSQLStore2 extends SMWStore {
 				case SMW_SQL2_TEXT2:
 					$res = $db->select( 'smw_text2', 'value_blob',
 										'p_id=' . $db->addQuotes($pid),
-										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions) );
+										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions) ); ///NOTE: Do not add DISTINCT here for performance reasons
 					while($row = $db->fetchObject($res)) {
 						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 						$dv->setOutputFormat($outputformat);
@@ -375,7 +375,7 @@ class SMWSQLStore2 extends SMWStore {
 										'smw_namespace, smw_title, smw_iw',
 										'p_id=' . $db->addQuotes($pid) . ' AND o_id=smw_id' .
 										$this->getSQLConditions($requestoptions,'smw_sortkey','smw_sortkey'),
-										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,'smw_sortkey') );
+										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,'smw_sortkey') + array('DISTINCT') );
 					while($row = $db->fetchObject($res)) {
 						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 						$dv->setOutputFormat($outputformat);
@@ -396,7 +396,7 @@ class SMWSQLStore2 extends SMWStore {
 					$res = $db->select( 'smw_atts2', 'value_unit, value_xsd',
 										'p_id=' . $db->addQuotes($pid) .
 										$this->getSQLConditions($requestoptions,$value_column,'value_xsd'),
-										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,$value_column) );
+										'SMW::getPropertyValues', $this->getSQLOptions($requestoptions,$value_column) + array('DISTINCT') );
 					while($row = $db->fetchObject($res)) {
 						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 						$dv->setOutputFormat($outputformat);
