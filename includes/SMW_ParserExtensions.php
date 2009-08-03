@@ -118,6 +118,10 @@ class SMWParserExtensions {
 		if (array_key_exists(2,$semanticLink)) {
 			$value = $semanticLink[2];
 		} else { $value = ''; }
+		if ($value == '') { // silently ignore empty values
+			wfProfileOut("smwfParsePropertiesCallback (SMW)");
+			return '';
+		}
 
 		if ($property == 'SMW') {
 			switch ($value) {
