@@ -163,6 +163,10 @@ class SMWParseData {
 				foreach ($subjects as $subject) {
 					$jobs[] = new SMWUpdateJob($subject->getTitle());
 				}
+				$subjects = smwfGetStore()->getPropertySubjects(SMWPropertyValue::makeProperty('_ERRP'), $prop->getWikiPageValue());
+				foreach ($subjects as $subject) {
+					$jobs[] = new SMWUpdateJob($subject->getTitle());
+				}
 			}
 		} elseif ($makejobs && $smwgEnableUpdateJobs && ($namespace == SMW_NS_TYPE) ) {
 			// if it is a type we need to check if the conversion factors have been changed
@@ -179,9 +183,13 @@ class SMWParseData {
 				foreach ($proppages as $proppage) {
 					$jobs[] = new SMWUpdateJob($proppage->getTitle());
 					$prop = SMWPropertyValue::makeProperty($proppage->getDBkey());
-					$propsubjects = $store->getAllPropertySubjects($prop);
-					foreach ($propsubjects as $subj) {
-						$jobs[] = new SMWUpdateJob($subj->getTitle());
+					$subjects = $store->getAllPropertySubjects($prop);
+					foreach ($propsubjects as $subject) {
+						$jobs[] = new SMWUpdateJob($subject->getTitle());
+					}
+					$subjects = smwfGetStore()->getPropertySubjects(SMWPropertyValue::makeProperty('_ERRP'), $prop->getWikiPageValue());
+					foreach ($propsubjects as $subject) {
+						$jobs[] = new SMWUpdateJob($subject->getTitle());
 					}
 				}
 			}
