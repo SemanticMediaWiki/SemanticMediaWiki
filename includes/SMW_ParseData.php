@@ -102,12 +102,6 @@ class SMWParseData {
 	 * conversion factors have changed. If so, it triggers SMWUpdateJobs for the relevant articles,
 	 * which then asynchronously update the semantic data in the database.
 	 *
-	 *  @todo Known bug/limitation:  Updatejobs are triggered when a property or type
-	 *  definition has  changed, so that all affected pages get updated. However, if a
-	 *  page uses a property but the given value caused an error, then there is no record
-	 *  of that page using the property, so that it will not be updated. To fix this, one
-	 *  would need to store errors as well.
-	 *
 	 *  @param $parseroutput ParserOutput object that contains the results of parsing which will
 	 *  be stored.
 	 *  @param $title Title object specifying the page that should be safed.
