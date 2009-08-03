@@ -81,6 +81,9 @@ class SMWParseData {
 		$result = SMWDataValueFactory::newPropertyObjectValue($property,$value,$caption);
 		if ($storeannotation && (SMWParseData::getSMWData($parser) !== NULL)) {
 			SMWParseData::getSMWData($parser)->addPropertyObjectValue($property,$result);
+			if (!$result->isValid()) { // take note of the error for storage (do this here and not in storage, thus avoiding duplicates)
+				SMWParseData::getSMWData($parser)->addPropertyObjectValue(SMWPropertyValue::makeProperty('_ERRP'),$property->getWikiPageValue());
+			}
 		}
 		wfProfileOut("SMWParseData::addProperty (SMW)");
 		return $result;
@@ -95,14 +98,14 @@ class SMWParseData {
 	 *
 	 * Optionally, this function also takes care of triggering indirect updates that might be
 	 * needed for overall database consistency. If the saved page describes a property or data type,
-	 * the method checks whether the property type, the data type, the allowed values, or the 
+	 * the method checks whether the property type, the data type, the allowed values, or the
 	 * conversion factors have changed. If so, it triggers SMWUpdateJobs for the relevant articles,
 	 * which then asynchronously update the semantic data in the database.
 	 *
 	 *  @todo Known bug/limitation:  Updatejobs are triggered when a property or type
 	 *  definition has  changed, so that all affected pages get updated. However, if a
 	 *  page uses a property but the given value caused an error, then there is no record
-	 *  of that page using the property, so that it will not be updated. To fix this, one 
+	 *  of that page using the property, so that it will not be updated. To fix this, one
 	 *  would need to store errors as well.
 	 *
 	 *  @param $parseroutput ParserOutput object that contains the results of parsing which will
@@ -144,7 +147,7 @@ class SMWParseData {
 			$ptype = SMWPropertyValue::makeProperty('_TYPE');
 			$oldtype = smwfGetStore()->getPropertyValues($title, $ptype);
 			$newtype = $semdata->getPropertyValues($ptype);
-	
+
 			if (!SMWParseData::equalDatavalues($oldtype, $newtype)) {
 				$updatejobflag = true;
 			} else {
@@ -301,7 +304,7 @@ class SMWParseData {
 		SMWParseData::storeData($output, $links_update->mTitle, true);
 		return true;
 	}
-	
+
 	/**
 	 *  This method will be called whenever an article is deleted so that
 	 *  semantic properties are cleared appropriately.
@@ -310,7 +313,7 @@ class SMWParseData {
 		smwfGetStore()->deleteSubject($article->getTitle());
 		return true; // always return true, in order not to stop MW's hook processing!
 	}
-	
+
 	/**
 	 *  This method will be called whenever an article is moved so that
 	 *  semantic properties are moved accordingly.

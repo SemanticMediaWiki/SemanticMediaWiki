@@ -67,7 +67,8 @@ class SMWSQLStore2 extends SMWStore {
 		'_SUBC' => 18,
 		'_CONC' => 19,
 		'_SF_DF' => 20, // Semantic Form's default form property
-		'_SF_AF' => 21  // Semantic Form's alternate form property
+		'_SF_AF' => 21,  // Semantic Form's alternate form property
+		'_ERRP' => 22
 	);
 
 	/// This array defines how various datatypes should be handled internally. This
@@ -705,7 +706,7 @@ class SMWSQLStore2 extends SMWStore {
 			$propertyValueArray = $data->getPropertyValues($property);
 			$mode = SMWSQLStore2::getStorageMode($property->getPropertyTypeID());
 			foreach($propertyValueArray as $value) {
-				if (!$value->isValid()) continue;
+				if (!$value->isValid()) continue; // errors are already recorded in valid values, no need to store them here
 				switch ($mode) {
 					case SMW_SQL2_REDI2: break; // handled above
 					case SMW_SQL2_INST2:

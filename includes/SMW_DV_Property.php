@@ -361,7 +361,8 @@ class SMWPropertyValue extends SMWDataValue {
 				'_SUBP'  =>  array('__sup',true),
 				'_SUBC'  =>  array('__suc',false),
 				'_CONC'  =>  array('__con',false),
-				'_MDAT'  =>  array('_dat',false)
+				'_MDAT'  =>  array('_dat',false),
+				'_ERRP'  =>  array('_wpp',false),
 			);
 		wfRunHooks( 'smwInitProperties' );
 	}
