@@ -2126,9 +2126,11 @@ No crear otro más.',
 
 /** Basque (Euskara)
  * @author An13sa
+ * @author Kobazulo
  */
 $messages['eu'] = array(
 	'smw_finallistconjunct' => ', eta',
+	'smw_printername_auto' => 'Automatikoa',
 	'smw_true_words' => 'egia,e,bai,b',
 	'smw_false_words' => 'gezurra,g,ez,e',
 	'smw_nofloat' => '"$1" ez da zenbakia.',
