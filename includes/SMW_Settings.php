@@ -259,6 +259,19 @@ $smwgResultFormats = array(
 );
 ##
 
+### Predefined sources for queries
+# Array of available sources for answering queries. Can be redefined in
+# the settings to register new sources (usually an extension will do so
+# on installation). Unknown source will be rerouted to the local wiki.
+# Note that the basic installation comes with no additional source besides
+# the local source (which in turn cannot be disabled or set explicitly).
+# Set a new store like this: $smwgQuerySources['freebase'] = "SMWFreebaseStore";
+##
+$smwgQuerySources = array(
+//	'local'      => '',
+);
+##
+
 ### Default property type
 # Undefined properties (those without pages or whose pages have no "has type"
 # statement) will be assumed to be of this type. This is an internal type id.

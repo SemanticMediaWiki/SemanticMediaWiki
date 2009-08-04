@@ -306,7 +306,17 @@ class SMWQueryProcessor {
 
 	static public function getResultFromQuery($query, $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY, $format = '') {
 		wfProfileIn('SMWQueryProcessor::getResultFromQuery (SMW)');
-		$res = smwfGetStore()->getQueryResult($query);
+
+		# Query routing
+		# TODO: case-insensitive
+		$store = smwfGetStore(); # default store
+		global $smwgQuerySources;
+		if ( array_key_exists ("source", $params) and array_key_exists ($params["source"], $smwgQuerySources) ) {
+			$store = &new $smwgQuerySources[$params["source"]]();
+			$query->params = $params;
+		}
+		$res = $store->getQueryResult($query);
+		
 		if ( ($query->querymode == SMWQuery::MODE_INSTANCES) || ($query->querymode == SMWQuery::MODE_NONE) ) {
 			wfProfileIn('SMWQueryProcessor::getResultFromQuery-printout (SMW)');
 			if ($format == '') {
