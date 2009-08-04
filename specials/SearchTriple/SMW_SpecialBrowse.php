@@ -141,7 +141,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			$displayline = true;
 			if ($property->isVisible()) {
 				$property->setCaption($this->getPropertyLabel($property, $incoming));
-				$proptext = $property->getLongHTMLText($skin) . "\n";
+				$proptext = $property->getShortHTMLText($skin) . "\n";
 			} else {
 // 				global $smwgContLang;
 // 				$proptext = $smwgContLang->findSpecialPropertyLabel( $property );
@@ -364,7 +364,7 @@ class SMWSpecialBrowse extends SpecialPage {
 				$rv = wfMsg('smw_inverse_label_default', $property->getWikiValue());
 			}
 		} else {
-		$rv = $property->getWikiValue();
+			$rv = $property->getWikiValue();
 		}
 		return $this->unbreak($rv);
 	}
