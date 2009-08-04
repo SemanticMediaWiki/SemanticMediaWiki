@@ -64,7 +64,7 @@ protected $m_SpecialProperties = array(
 	'_IMPO' => 'Importado de',
 	'_CONV' => 'Corresponde a',
 	'_SERV' => 'Provee servicio',
-	'_PVAL' => 'Permite el valor'
+	'_PVAL' => 'Permite el valor',
 	'_MDAT' => 'Modification date' // TODO: translate
 );
 
