@@ -67,7 +67,8 @@ protected $m_SpecialProperties = array(
 	'_CONV' => 'Komt overeen met',
 	'_SERV' => 'Verleent dienst',
 	'_PVAL' => 'Geldige waarde',
-	'_MDAT' => 'Wijzigingsdatum'
+	'_MDAT' => 'Wijzigingsdatum',
+	'_ERRP' => 'Has improper value for' // TODO: translate
 );
 
 protected $m_SpecialPropertyAliases = array(
@@ -80,7 +81,8 @@ protected $m_SpecialPropertyAliases = array(
 	'Corresponds to'    => '_CONV',
 	'Provides service'  => '_SERV',
 	'Allows value'      => '_PVAL',
-	'Modification date' => '_MDAT'
+	'Modification date' => '_MDAT',
+	'Has improper value for' => '_ERRP'
 );
 
 protected $m_Namespaces = array(

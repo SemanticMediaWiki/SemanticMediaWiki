@@ -74,7 +74,8 @@ protected $m_SpecialProperties = array(
 	'_CONV' => 'Entspricht',
 	'_SERV' => 'Bietet Service',
 	'_PVAL' => 'Erlaubt Wert',
-	'_MDAT' => 'Zuletzt geändert'
+	'_MDAT' => 'Zuletzt geändert',
+	'_ERRP' => 'Hat unpassenden Wert für'
 );
 
 protected $m_SpecialPropertyAliases = array(
@@ -89,7 +90,8 @@ protected $m_SpecialPropertyAliases = array(
 	'Corresponds to'    => '_CONV',
 	'Provides service'  => '_SERV',
 	'Allows value'      => '_PVAL',
-	'Modification date' => '_MDAT'
+	'Modification date' => '_MDAT',
+	'Has improper value for' => '_ERRP'
 );
 
 protected $m_Namespaces = array(

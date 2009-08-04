@@ -56,7 +56,7 @@ protected $m_SpecialProperties = array(
 	'_SERV' => 'Provides service',
 	'_PVAL' => 'Allows value',
 	'_MDAT' => 'Modification date',
-	'_ERRP' => 'Error on property'
+	'_ERRP' => 'Has improper value for'
 );
 
 protected $m_SpecialPropertyAliases = array(

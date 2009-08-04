@@ -88,7 +88,8 @@ protected $m_SpecialProperties = array(
 	'_CONV' => 'Odpowiada',
 	'_SERV' => 'Zapewnia usługę',
 	'_PVAL' => 'Dopuszcza wartość',
-	'_MDAT' => 'Modification date' // TODO: translate
+	'_MDAT' => 'Modification date',  // TODO: translate
+	'_ERRP' => 'Has improper value for' // TODO: translate
 );
 
 protected $m_SpecialPropertyAliases = array(
@@ -102,7 +103,8 @@ protected $m_SpecialPropertyAliases = array(
 	'Corresponds to'    => '_CONV',
 	'Provides service'  => '_SERV',
 	'Allows value'      => '_PVAL',
-	'Modification date' => '_MDAT'
+	'Modification date' => '_MDAT',
+	'Has improper value for' => '_ERRP'
 );
 
 

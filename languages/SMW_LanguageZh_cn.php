@@ -71,7 +71,8 @@ protected $m_SpecialProperties = array(
 	'_CONV' => '符合于',  //Corresponds to
 	'_SERV' => '提供服务',      //Provides service
 	'_PVAL' => '允许值',      //Allows value
-	'_MDAT' => 'Modification date' // TODO: translate
+	'_MDAT' => 'Modification date',  // TODO: translate
+	'_ERRP' => 'Has improper value for' // TODO: translate
 );
 
 
@@ -86,7 +87,8 @@ protected $m_SpecialPropertyAliases = array(
 	'Corresponds to'    => '_CONV',
 	'Provides service'  => '_SERV',
 	'Allows value'      => '_PVAL',
-	'Modification date' => '_MDAT'
+	'Modification date' => '_MDAT',
+	'Has improper value for' => '_ERRP'
 );
 
 protected $m_Namespaces = array(
