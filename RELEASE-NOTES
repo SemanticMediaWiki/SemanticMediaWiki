@@ -13,6 +13,10 @@ See http://semantic-mediawiki.org/wiki/SMW_1.4.3
   1000000000000000.
 * New configuration parameter $smwgMaxPropertyValues to control number of values
   that are shown for each page in the listing on Property pages. Defaults to 3.
+* Now a set of stores can be added, e.g. virtual stores, and then the new #ask
+  parameter "source" is used to rout to a specific store.
+* Labels for inverse properties can be used to improve the output of the Browse
+  special page.
 * The #ask parameter "headers" can now be given the value "plain" to get query
   results that show the printout label (e.g. property name) but without a link.
 * Special:PageProperty now shows all values of a property when omitting the subject.
