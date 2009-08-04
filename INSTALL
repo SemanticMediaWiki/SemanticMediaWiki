@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.4.2]]
+[[Semantic MediaWiki 1.4.3]]
 
 Install instructions for the latest SMW version are also online in a more
 convenient format for reading:
@@ -34,7 +34,7 @@ If you have any specific questions, please contact the authors.
 
 == Requirements ==
 
-* MediaWiki 1.11.* or greater (tested from 1.11.0 to 1.15alpha (r47833)).
+* MediaWiki 1.11.* or greater (tested from 1.11.0 to 1.156alpha (r54352)).
 * PHP 5.x or greater installed and working
 * MySQL >= 4.0.14 (version required by MediaWiki) OR PostgreSQL >= 8.3
   Note that Postgres support is still preliminary and might require special
@@ -140,7 +140,7 @@ instructions to find out whether other changes are recommended therein.
 
 (Please read all of this before upgrading)
 
-Existing SMW 1.4.1 installations and all SMW installations that already use the
+Existing SMW 1.4.* installations and all SMW installations that already use the
 default store (SMWSQLStore2) can simply follow the above installation steps.
 The latter covers all sites with SMW 1.2 to 1.3 that do not use a special
 setting to switch back to the old store ("SMWSQLStore" or "SMWRAPStore"). In
@@ -153,7 +153,7 @@ same fashion, but first need to remove any setting that configures SMW to
 use the old store. Again, all data will immediately be available when the data
 upgrade has finished.
 
-Directly after enabling SMW 1.4.2, it can potentially happen that the site
+Directly after enabling SMW 1.4.3, it can potentially happen that the site
 shows SQL errors due to background jobs trying to access the new DB structure
 even before you intialised it. This can even block you from reaching SMWAdmin.
 In this case, either use the script SMW_setup.php from the command-line, or
@@ -162,10 +162,10 @@ errors should show up while accessing the special page for initialisation.
 
 Especially when upgrading from SMW 1.3 or older, extensions of SMW (e.g.
 Semantic Forms) need to be updated to a version that is compatible with
-SMW 1.4.2. See your extension's homepage for details. If you use one of the
+SMW 1.4.3. See your extension's homepage for details. If you use one of the
 formats timeline (or eventline), icalendar, or vcard in inline queries, then
 you need to install/upgrade the extension SemanticResultFormats (SRF) in
-version 1.4.2 or greater. The formats have been migrated to this extension
+version 1.4.6 or greater. The formats have been migrated to this extension
 package and are enabled there by default after installation.
 
 === Changed configuration options ===
