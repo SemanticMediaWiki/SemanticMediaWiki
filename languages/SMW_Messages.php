@@ -1784,7 +1784,7 @@ Dokulaž jo jano mało wuslědkow było, zwobraznjuju se pódobne gódnoty.',
 	'smw_browse_no_outgoing' => 'Toś ten bok njama kakosći.',
 	'smw_browse_no_incoming' => 'Žedne kakosći njewótkazuju k toś tomu bokoju.',
 	'smw_inverse_label_default' => '$1 wót',
-	'smw_inverse_label_property' => 'Nawopacne pomjenjenje kakosći',
+	'smw_inverse_label_property' => 'Pomjenjenje nawopacneje kakosći',
 	'pageproperty' => 'Pytanje za bokoweju kakosću',
 	'smw_pp_docu' => 'Wše gódnoty kakosći na pódanem boku pytaś.
 Zapódaj ako bok tak teke kakosć.',
@@ -2452,7 +2452,7 @@ Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:Wa
 	'smw_browse_no_outgoing' => 'Cette page n’a aucune propriété.',
 	'smw_browse_no_incoming' => 'Aucune propriété ne pointe vers cette page.',
 	'smw_inverse_label_default' => '$1 de',
-	'smw_inverse_label_property' => 'Inverser le label de propriété',
+	'smw_inverse_label_property' => 'Inverse du label de la propriété',
 	'pageproperty' => 'Rechercher dans les propriétés de la page',
 	'smw_pp_docu' => 'Rechercher toutes les valeurs d’une propriété dans une page donnée. Veuillez entrer la page et une propriété.',
 	'smw_pp_from' => 'De la page',
@@ -3389,7 +3389,7 @@ Dokelž je jenož mało wuslědkow, so tež podobne hódnoty nalistuja.',
 	'smw_browse_no_outgoing' => 'Tuta strona nima kajkosće.',
 	'smw_browse_no_incoming' => 'Žane kajkosće k tutej stronje njewotkazuja.',
 	'smw_inverse_label_default' => '$1 z',
-	'smw_inverse_label_property' => 'Nawopačne pomjenowanje kajkosće',
+	'smw_inverse_label_property' => 'Pomjenowanje nawopačneje kajkosće',
 	'pageproperty' => 'Pytanje kajkosćow strony',
 	'smw_pp_docu' => 'Pytaj wšě hódnoty kajkosće na datej stronje.
 Zapodaj stronu kaž tež kajkosć.',
@@ -5760,7 +5760,7 @@ Las proprietats qu'an pas encara de pagina se tròban dins la [[Special:WantedPr
 	'smw_browse_no_outgoing' => 'Aquesta pagina a pas cap de proprietat.',
 	'smw_browse_no_incoming' => 'Cap de proprietat punta pas cap a aquesta pagina.',
 	'smw_inverse_label_default' => '$1 de',
-	'smw_inverse_label_property' => 'Inversar lo label de proprietat',
+	'smw_inverse_label_property' => 'Inversar lo labèl de proprietat',
 	'pageproperty' => 'Recercar dins las proprietats de la pagina',
 	'smw_pp_docu' => "Recercar totas las valors d'una proprietat dins una pagina donada. Picatz la pagina e una proprietat.",
 	'smw_pp_from' => 'De la pagina',
@@ -5782,7 +5782,7 @@ Ne creetz pas un autre.',
 	'smw_smwadmin_updatestopped' => 'Totes los processús de mesa a jorn son estats arrestats.',
 	'smw_smwadmin_updatenotstopped' => 'Per arrestar lo processús en cors de mesa a jorn, vos cal marcar la casa per indicar que ne sètz vertadièrament segur(a).',
 	'smw_smwadmin_docu' => 'Aquesta pagina especiala vos ajuda pendent l’installacion e la mesa a nivèl de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
-Doblidetz pas de salvar las donadas abans las foncions d’administracion del sit.',
+Doblidetz pas de salvar las donadas abans las foncions d’administracion del site.',
 	'smw_smwadmin_db' => 'Installacion e mesa a nivèl de la banca de donadas',
 	'smw_smwadmin_dbdocu' => "Semantic MediaWiki requerís maitas extensions per la banca de donadas MediaWiki en òrdre per estocar las donadas de semantica.
 La foncion çaijós verifica que vòstra banca de donadas es estada installada corrèctament.
@@ -5801,7 +5801,7 @@ Lo servici enregistrarà pas los wiki que son pas accessibles al public, e estoc
 	'smw_smwadmin_datarefreshdocu' => "Es possible de restablir totas las donadas Semantic MediaWiki basadas suls contenguts corrents d'aqueste wiki.
 Aquò pòt èsser util per reparar de donadas rompudas o per refrescar las donadas se lo format intèrne a cambiat al moment de las remesas a nivèl.
 La mesa a jorn es executada pagina per pagina e se serà pas acabada immediatament.
-La pagina seguenta aficha se una mesa a jorn es en cors d’execucion e vos permet de començar o d’arrestar aquestas (levat s'aquesta foncionalitat est desactivada per l’administrator del sit).",
+La pagina seguenta aficha se una mesa a jorn es en cors d’execucion e vos permet de començar o d’arrestar aquestas (levat s'aquesta foncionalitat est desactivada per l’administrator del site).",
 	'smw_smwadmin_datarefreshprogress' => "<strong>Una mesa a jorn es en cors d’execucion.</strong>
 Es normal qu’una mesa a jorn progresse lentament dempuèi que refresca unicament las donadas dins de troces pichons a cada còp qu’un utilizaire accedís al wiki.
 Per acabar aquesta mesa a jorn mai rapidament, podètz invocar l'escript de mantenença Mediawiki <tt>runJobs.php</tt> (utilizatz l’opcion <tt>--maxjobs 1000</tt> per restrénher lo nombre de las mesas a jorn per escript aviat).
