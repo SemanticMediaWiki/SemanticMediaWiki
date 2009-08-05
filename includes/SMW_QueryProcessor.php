@@ -306,17 +306,18 @@ class SMWQueryProcessor {
 
 	static public function getResultFromQuery($query, $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY, $format = '') {
 		wfProfileIn('SMWQueryProcessor::getResultFromQuery (SMW)');
-
-		# Query routing
-		# TODO: case-insensitive
-		$store = smwfGetStore(); # default store
+		// Query routing allows extensions to provide alternative stores as data sources
+		// The while feature is experimental and is not properly integrated with most of SMW's architecture. For instance, some query printers just fetch their own store.
+		///TODO: case-insensitive
 		global $smwgQuerySources;
-		if ( array_key_exists ("source", $params) and array_key_exists ($params["source"], $smwgQuerySources) ) {
-			$store = &new $smwgQuerySources[$params["source"]]();
-			$query->params = $params;
+		if ( array_key_exists( "source", $params ) && array_key_exists( $params["source"], $smwgQuerySources ) ) {
+			$store = new $smwgQuerySources[$params["source"]]();
+			$query->params = $params; // this is a hack
+		} else {
+			$store = smwfGetStore(); // default store
 		}
 		$res = $store->getQueryResult($query);
-		
+
 		if ( ($query->querymode == SMWQuery::MODE_INSTANCES) || ($query->querymode == SMWQuery::MODE_NONE) ) {
 			wfProfileIn('SMWQueryProcessor::getResultFromQuery-printout (SMW)');
 			if ($format == '') {
