@@ -313,6 +313,7 @@ function smwfOnParserTestTables( &$tables ){
 	$tables[] = 'smw_ids';
 	$tables[] = 'smw_redi2';
 	$tables[] = 'smw_atts2';
+	$tables[] = 'smw_rels2';
 	return true;
 }
 
