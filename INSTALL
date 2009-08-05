@@ -162,11 +162,10 @@ errors should show up while accessing the special page for initialisation.
 
 Especially when upgrading from SMW 1.3 or older, extensions of SMW (e.g.
 Semantic Forms) need to be updated to a version that is compatible with
-SMW 1.4.3. See your extension's homepage for details. If you use one of the
-formats timeline (or eventline), icalendar, or vcard in inline queries, then
-you need to install/upgrade the extension SemanticResultFormats (SRF) in
-version 1.4.6 or greater. The formats have been migrated to this extension
-package and are enabled there by default after installation.
+SMW 1.4.3. See your extension's homepage for details. If used, it is suggested
+to update to SemanticResultFormats (SRF) in version 1.4.6 or greater. The
+formats have been migrated to this extension package and are enabled there by
+default after installation.
 
 === Changed configuration options ===
 
