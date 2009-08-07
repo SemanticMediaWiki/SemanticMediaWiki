@@ -2129,6 +2129,7 @@ No crear otro más.',
  * @author Kobazulo
  */
 $messages['eu'] = array(
+	'smw_viewasrdf' => 'RDF jarioa',
 	'smw_finallistconjunct' => ', eta',
 	'smw_printername_auto' => 'Automatikoa',
 	'smw_true_words' => 'egia,e,bai,b',
