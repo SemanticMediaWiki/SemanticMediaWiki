@@ -80,6 +80,21 @@ class SMWTimeValue extends SMWDataValue {
 	protected $m_monthsshort = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
 	protected $m_formats = array( SMW_Y => array('year'), SMW_YM => array('year','month'), SMW_MY => array('month','year'), SMW_YDM => array('year','day','month'), SMW_YMD => array('year','month','day'), SMW_DMY => array('day','month','year'), SMW_MDY => array('month','day','year'));
 	protected $m_daysofmonths = array ( 1 => 31, 2 => 29, 3 => 31, 4 => 30, 5 => 31, 6 => 30, 7 => 31, 8 => 31, 9 => 30, 10 => 31, 11 => 30, 12 => 31 );
+	// Time zone monikers and their associated offsets in hours and fractions of hours
+	protected $m_tz = array("A" => 1, "ACDT" => 10.5, "ACST" => 9.5, "ADT" => -3, "AEDT" => 11,
+		"AEST" => 10, "AKDT" => -8, "AKST" => -9, "AST" => -4, "AWDT" => 9, "AWST" => 8,
+		"B" => 2, "BST" => 1, "C" => 3, "CDT" => -5, "CEDT" => 2, "CEST" => 2,
+		"CET" => 1, "CST" => -6, "CXT" => 7, "D" => 4, "E" => 5, "EDT" => -4,
+		"EEDT" => 3, "EEST" => 3, "EET" => 2, "EST" => -5, "F" => 6, "G" => 7,
+		"GMT" => 0, "H" => 8, "HAA" => -3, "HAC" => -5, "HADT" => -9, "HAE" => -4,
+		"HAP" => -7, "HAR" => -6, "HAST" => -10, "HAT" => -2.5, "HAY" => -8,
+		"HNA" => -4, "HNC" => -6, "HNE" => -5, "HNP" => -8, "HNR" => -7, "HNT" => -3.5,
+		"HNY" => -9, "I" => 9, "IST" => 1, "K" => 10, "L" => 11, "M" => 12,
+		"MDT" => -6, "MESZ" => 2, "MEZ" => 1, "MSD" => 4, "MSK" => 3, "MST" => -7,
+		"N" => -1, "NDT" => -2.5, "NFT" => 11.5, "NST" => -3.5, "O" => -2, "P" => -3,
+		"PDT" => -7, "PST" => -8, "Q" => -4, "R" => -5, "S" => -6, "T" => -7,
+		"U" => -8, "UTC" => 0, "V" => -9, "W" => -10, "WDT" => 9, "WEDT" => 1,
+		"WEST" => 1, "WET" => 0, "WST" => 8, "X" => -11, "Y" => -12, "Z" => 0);
 
 	protected function parseUserValue($value) {
 		global $smwgContLang;
@@ -128,7 +143,17 @@ class SMWTimeValue extends SMWDataValue {
 			$filteredvalue = trim(preg_replace($regexp,' ', $filteredvalue)); //value without ad/bc
 		}
 
-		//browse string for time value
+		//browse string in advance for timezone monikers ("EST", "WET", "MESZ", etc.)
+		$regexptz = "/A[CEKW]?[DS]T|BST|CXT|[CEW]([DES]|E[DS])T|" .
+			"GMT|H(A[DS]T|[AN][ACEPRTY])|IST|M(DT|E(S)?Z|S[DKT])|N[DFS]T|P[DS]T|UTC/u";
+		if(preg_match($regexptz, $filteredvalue, $match)) {
+			// Retrieve the offset and store it as the initial time offset value.
+			$this->m_timeoffset = $this->m_timeoffset + $this->m_tz[$match[0]]/24;
+			$regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete tz moniker and preceding and following chars
+			$filteredvalue = preg_replace($regexp,'', $filteredvalue); //value without the tz moniker
+		}
+
+		//browse string for civilian time value
 		if(preg_match("/[0-2]?[0-9]:[0-5][0-9](:[0-5][0-9])?([+\-][0-2]?[0-9](:(30|00))?)?/u", $filteredvalue, $match)){
 			$time = $match[0];
 
@@ -150,10 +175,26 @@ class SMWTimeValue extends SMWDataValue {
 			if($this->m_timeannotation != false){
 			  if(!strcmp($this->m_timeannotation,'am') && $hours == 12) $hours = 0;
 			  if(!strcmp($this->m_timeannotation,'pm') && $hours <= 11){
-			    $this->m_timeoffset = $this->m_timeoffset +  0.5;
+			    $this->m_timeoffset = $this->m_timeoffset -  0.5;
 			  }
 			}
 
+			$this->m_time = $this->normalizeValue($hours).":".$this->normalizeValue($minutes).":".$this->normalizeValue($seconds);
+			$regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete time value and preceding and following chars
+			$filteredvalue = preg_replace($regexp,'', $filteredvalue); //value without time
+		}
+
+		//browse string for military time value
+		if(preg_match("/([0-1][0-9]|2[0-3])[0-5][0-9]([0-5][0-9])?[A-IK-Z]/u",$filteredvalue, $match)){
+			$time = $match[0];
+			//timezone handling (Zulu, Romeo, Sierra, etc.)
+			if(preg_match("/[A-IK-Z]/u",$time, $match2)){//get military timezone offset
+				$this->m_timeoffset = $this->m_timeoffset + $this->m_tz[$match2[0]]/24;
+				$time = str_replace($match2[0],'',$time);//strip away the one-letter moniker
+			}
+			$hours = substr($time,0,2);
+			$minutes = substr($time,2,2);
+			$seconds = (strlen($time) > 4) ? substr($time,4,2) : '00';
 			$this->m_time = $this->normalizeValue($hours).":".$this->normalizeValue($minutes).":".$this->normalizeValue($seconds);
 			$regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete time value and preceding and following chars
 			$filteredvalue = preg_replace($regexp,'', $filteredvalue); //value without time
@@ -227,7 +268,7 @@ class SMWTimeValue extends SMWDataValue {
 		//handle offset
 		if ($this->m_timeoffset != 0) {
 			$this->createJD();
-			$this->m_jd = $this->m_jd + $this->m_timeoffset;
+			$this->m_jd = $this->m_jd - $this->m_timeoffset;
 			$this->JD2Date();
 		}
 
