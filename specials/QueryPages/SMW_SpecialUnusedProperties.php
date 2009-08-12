@@ -45,7 +45,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	}
 
 	function formatResult( $skin, $result ) {
-		global $wgLang, $wgExtraNamespaces;
+		global $wgLang;
 		$proplink = $skin->makeKnownLinkObj( $result->getWikiPageValue()->getTitle(), $result->getWikiValue() );
 		$types = smwfGetStore()->getPropertyValues($result->getWikiPageValue(), SMWPropertyValue::makeProperty('_TYPE')); // TODO: do not bypass SMWDataValueFactory!
 		$errors = array();

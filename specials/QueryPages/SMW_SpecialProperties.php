@@ -45,7 +45,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 	}
 
 	function formatResult( $skin, $result ) {
-		global $wgLang, $wgExtraNamespaces;
+		global $wgLang;
 		$typestring = '';
 		$errors = array();
 		wfLoadExtensionMessages('SemanticMediaWiki');

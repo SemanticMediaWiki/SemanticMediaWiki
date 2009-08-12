@@ -43,7 +43,7 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	}
 
 	function formatResult( $skin, $result ) {
-		global $wgLang, $wgExtraNamespaces;
+		global $wgLang;
 		if ($result[0]->isUserDefined()) {
 			$proplink = $skin->makeLinkObj($result[0]->getWikiPageValue()->getTitle(), $result[0]->getWikiValue(), 'action=view');
 		} else {
