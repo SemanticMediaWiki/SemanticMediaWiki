@@ -8,6 +8,9 @@
  * @ingroup SMWLanguage
  */
 
+// FIXME: Can be enabled when new style magic words are used (introduced in r52503)
+// require_once( dirname( __FILE__ ) . '/SMW_Magic.php' );
+
 $messages = array();
 
 /** English

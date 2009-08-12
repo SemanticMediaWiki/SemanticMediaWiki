@@ -101,6 +101,7 @@ function enableSemantics($namespace = null, $complete = false) {
 		$smwgNamespace = $namespace;
 	}
 	$wgExtensionFunctions[] = 'smwfSetupExtension';
+	// FIXME: Can be removed when new style magic words are used (introduced in r52503)
 	$wgHooks['LanguageGetMagic'][] = 'smwfAddMagicWords'; // setup names for parser functions (needed here)
 	$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . '/languages/SMW_Messages.php'; // register messages (requires MW=>1.11)
 
@@ -403,6 +404,7 @@ function smwfShowBrowseLink($skintemplate) {
 /***** language settings                  *****/
 /**********************************************/
 
+	// FIXME: Can be removed when new style magic words are used (introduced in r52503)
 	/**
 	 * Set up (possibly localised) names for SMW's parser functions.
 	 */
