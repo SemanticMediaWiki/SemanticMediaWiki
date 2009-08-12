@@ -1861,6 +1861,7 @@ $messages['el'] = array(
 	'smw_exportrdf_submit' => 'Εξαγωγή',
 	'properties' => 'Ιδιότητες',
 	'smw_property_template' => '$1 του τύπου $2 ($3)',
+	'unusedproperties' => 'Αχρησιμοποίητες ιδιότητες',
 	'smw_unusedproperty_template' => '$1 του τύπου $2',
 	'wantedproperties' => 'Επιθυμητές ιδιότητες',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|χρήση|χρήσεις}})',
@@ -1875,7 +1876,9 @@ $messages['el'] = array(
 	'smw_ask_hidequery' => 'Απόκρυψη αιτήματος',
 	'smw_ask_help' => 'Βοήθεια σχετικά με αίτημα',
 	'smw_ask_queryhead' => 'Αίτημα',
+	'smw_ask_format_as' => 'Μορφοποίηση ως:',
 	'smw_ask_defaultformat' => 'Προεπιλογή',
+	'searchbyproperty' => 'Αναζήτηση κατά ιδιότητα',
 	'smw_sbv_property' => 'Ιδιότητα:',
 	'smw_sbv_value' => 'Τιμή:',
 	'smw_sbv_submit' => 'Αναζήτηση αποτελεσμάτων',
@@ -2624,6 +2627,24 @@ Progression estimée de la mise à jour actuelle :',
 	'smw_adminlinks_datastructure' => 'Structure des données',
 	'smw_adminlinks_displayingdata' => 'Affichage des données',
 	'smw_adminlinks_inlinequerieshelp' => 'Aide sur les requêtes',
+);
+
+/** Franco-Provençal (Arpetan)
+ * @author Cedric31
+ */
+$messages['frp'] = array(
+	'smw_abb_north' => 'N',
+	'smw_abb_east' => 'E',
+	'smw_abb_south' => 'S',
+	'smw_abb_west' => 'W',
+	'smw_label_latitude' => 'Latituda :',
+	'smw_label_longitude' => 'Longituda :',
+	'smw_ask_defaultformat' => 'dèfôt',
+	'smw_browse_go' => 'Alar',
+	'smw_result_prev' => 'Devant',
+	'smw_result_next' => 'Aprés',
+	'smw_result_results' => 'Rèsultats',
+	'smw_result_noresults' => 'Dèsolâ, gins de rèsultat.',
 );
 
 /** Irish (Gaeilge)
@@ -4479,6 +4500,13 @@ $messages['km'] = array(
 	'smw_smwadmin_datarefreshbutton' => 'ចាប់ផ្ដើម​បន្ទាន់សម័យ​ទិន្នន័យ',
 	'smw_smwadmin_datarefreshstop' => 'បញ្ឈប់​ការ​បន្ទាន់សម័យ​នេះ',
 	'smw_smwadmin_datarefreshstopconfirm' => 'បាទ/ចាស, ខ្ញុំ​ប្រាកដ​ហើយ​។',
+);
+
+/** Kannada (ಕನ್ನಡ)
+ * @author Nayvik
+ */
+$messages['kn'] = array(
+	'smw_browse_go' => 'ಹೋಗು',
 );
 
 /** Korean (한국어)
@@ -6421,17 +6449,70 @@ Para exportar páginas, introduza os seus títulos na caixa de texto abaixo, um 
 	'smw_purge' => 'Atualizar',
 	'types' => 'Tipos',
 	'flawedattributes' => 'Propriedades problemáticas',
+	'ask' => 'Pesquisa semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
 	'smw_ask_ascorder' => 'Ascendente',
+	'smw_ask_descorder' => 'Descendente',
+	'smw_ask_submit' => 'Procurar resultados',
+	'smw_ask_editquery' => '[Editar consulta]',
+	'smw_add_sortcondition' => '[Adicionar condição de ordenação]',
+	'smw_ask_hidequery' => 'Esconder consulta',
+	'smw_ask_help' => 'Ajuda sobre consultas',
+	'smw_ask_queryhead' => 'Consulta',
+	'smw_ask_printhead' => 'Saídas adicionais (opcional)',
+	'smw_ask_format_as' => 'Formatar como:',
 	'smw_ask_defaultformat' => 'Padrão',
+	'smw_ask_show_embed' => 'Mostrar código embutido',
+	'smw_ask_hide_embed' => 'Ocultar código embutido',
+	'smw_ask_embed_instr' => 'Para embutir esta consulta em uma página wiki, use o código abaixo.',
+	'searchbyproperty' => 'Pesquisar por propriedade',
+	'smw_sbv_docu' => 'Pesquisar todas as páginas que possuem uma propriedade e um valor dados.',
+	'smw_sbv_novalue' => 'Introduza um valor válido para a propriedade, ou veja todos os valores da propriedade "$1".',
+	'smw_sbv_displayresult' => 'Segue-se uma lista de todas as páginas que possuem a propriedade "$1" com valor "$2"',
+	'smw_sbv_displayresultfuzzy' => 'Uma lista de todas as páginas que têm a propriedade "$1" com o valor "$2".
+Uma vez que houve poucos resultados, também são apresentados valores próximos.',
+	'smw_sbv_property' => 'Propriedade:',
+	'smw_sbv_value' => 'Valor:',
+	'smw_sbv_submit' => 'Procurar resultados',
+	'browse' => 'Navegar pela wiki',
+	'smw_browselink' => 'Navegar pelas propriedades',
+	'smw_browse_article' => 'Introduza o nome da página a partir da qual deseja começar a navegar.',
+	'smw_browse_go' => 'Ir',
+	'smw_browse_show_incoming' => 'exibir propriedades que apontem para cá',
+	'smw_browse_hide_incoming' => 'ocultar propriedades que apontem para cá',
+	'smw_browse_no_outgoing' => 'Esta página não possui propriedades.',
+	'smw_browse_no_incoming' => 'Nenhuma propriedade aponta para esta página.',
+	'pageproperty' => 'Pesquisa de propriedade de página',
 	'smw_pp_docu' => 'Pesquise todos os conteúdos de uma propriedade em uma página dada.
 Por favor, inclua tanto a página quanto a propriedade.',
 	'smw_pp_from' => 'Da página',
 	'smw_pp_type' => 'Propriedade',
 	'smw_pp_submit' => 'Procurar resultados',
+	'smw_result_prev' => 'Anterior',
+	'smw_result_next' => 'Posterior',
+	'smw_result_results' => 'Resultados',
+	'smw_result_noresults' => 'Não há resultados.',
+	'smwadmin' => 'Funções administrativas do Semantic MediaWiki',
+	'smw_smwadmin_settingup' => 'Configurando armazenamento para Semantic MediaWiki',
+	'smw_smwadmin_setupsuccess' => 'O mecanismo de armazenamento foi configurado com sucesso.',
+	'smw_smwadmin_return' => 'Voltar a $1',
+	'smw_smwadmin_updatestarted' => 'Um novo processo de atualização para atualizar os dados semânticos foi iniciado.
+Todos os dados armazenados serão reconstruídos ou reparados onde necessário.
+Você pode seguir o progresso da atualização nesta página especial.',
+	'smw_smwadmin_updatenotstarted' => 'Já existe um processo de atualização em execução.
+Não foi criado outro.',
+	'smw_smwadmin_updatestopped' => 'Todos os processos de atualização existentes foram parados.',
+	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de atualização em execução, você deverá ativar a caixa de seleção para indicar que tem realmente a certeza.',
+	'smw_smwadmin_docu' => 'Esta página especial ajuda-o durante a instalação ou atualização do <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Lembre-se de efetuar cópias de segurança dos dados importantes antes de executar funções administrativas.',
+	'smw_smwadmin_db' => 'Instalação e atualização da base de dados',
+	'smw_smwadmin_announce' => 'Anuncie a sua wiki',
+	'smw_smwadmin_datarefresh' => 'Reparação de dados e atualização',
 	'smw_smwadmin_datarefreshbutton' => 'Iniciar a atualização dos dados',
 	'smw_smwadmin_datarefreshstop' => 'Parar esta atualização',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sim, eu tenho certeza.',
+	'smw_smwadmin_support' => 'Obtendo suporte',
+	'smw_smwadmin_supportdocu' => 'Vários recursos poderão ajudá-lo em caso de problemas:',
 );
 
 /** Tarifit (Tarifit)
