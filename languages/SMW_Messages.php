@@ -1829,15 +1829,21 @@ Nowy se njestartujo.',
  * @author ZaDiak
  */
 $messages['el'] = array(
+	'smw_viewasrdf' => 'Ροή RDF',
 	'smw_finallistconjunct' => ', και',
+	'smw_factbox_head' => 'Γεγονότα για $1',
 	'smw_printername_auto' => 'Αυτόματα',
 	'smw_printername_count' => 'Αποτελέσματα μέτρησης',
 	'smw_printername_csv' => 'Εξαγωγή CSV',
 	'smw_printername_json' => 'Εξαγωγή JSON',
 	'smw_printername_list' => 'Λίστα',
+	'smw_printername_ol' => 'Αριθμοποίηση',
+	'smw_printername_ul' => 'Αντικειμενοποίηση',
 	'smw_printername_rss' => 'Εξαγωγή RSS',
 	'smw_printername_table' => 'Πίνακας',
+	'smw_printername_broadtable' => 'Πίνακας Επιτροπής',
 	'smw_printername_template' => 'Πρότυπο',
+	'smw_iq_moreresults' => '... περισσότερα αποτελέσματα',
 	'smw_true_words' => 'αλήθεια,α,ναι,ν',
 	'smw_false_words' => 'σφάλμα,σ,όχι,ο',
 	'smw_nofloat' => 'Το "$1" δεν είναι αριθμός',
@@ -1847,15 +1853,27 @@ $messages['el'] = array(
 	'smw_abb_west' => 'Δ',
 	'smw_label_latitude' => 'Γεωγραφικό πλάτος:',
 	'smw_label_longitude' => 'Γεωγραφικό μήκος:',
+	'smw_nodatetime' => 'Η ημερομηνία "$1" δεν έγινε κατανοητή.',
+	'smw_badtitle' => 'Ο "$1" δεν είναι έγκυρος τίτλος σελίδας.',
+	'smw_type_header' => 'Ιδιότητες του τύπου "$1"',
+	'smw_subproperty_header' => 'Υποϊδιότητες',
+	'exportrdf' => 'Εξαγωγή σελίδων στο RDF',
 	'smw_exportrdf_submit' => 'Εξαγωγή',
 	'properties' => 'Ιδιότητες',
+	'smw_property_template' => '$1 του τύπου $2 ($3)',
+	'smw_unusedproperty_template' => '$1 του τύπου $2',
 	'wantedproperties' => 'Επιθυμητές ιδιότητες',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|χρήση|χρήσεις}})',
 	'smw_purge' => 'Ανανέωση',
 	'types' => 'Τύποι',
+	'semanticstatistics' => 'Σημασιολογικά στατιστικά',
+	'ask' => 'Σημασιολογική αναζήτηση',
+	'smw_ask_ascorder' => 'Αύξουσα',
+	'smw_ask_descorder' => 'Φθίνουσα',
 	'smw_ask_submit' => 'Αναζήτηση αποτελεσμάτων',
 	'smw_ask_editquery' => '[Επεξεργασία αιτήματος]',
 	'smw_ask_hidequery' => 'Απόκρυψη αιτήματος',
+	'smw_ask_help' => 'Βοήθεια σχετικά με αίτημα',
 	'smw_ask_queryhead' => 'Αίτημα',
 	'smw_ask_defaultformat' => 'Προεπιλογή',
 	'smw_sbv_property' => 'Ιδιότητα:',
@@ -1864,6 +1882,8 @@ $messages['el'] = array(
 	'browse' => 'Πλοήγηση στο βίκι',
 	'smw_browselink' => 'Πλοήγηση στις ιδιότητες',
 	'smw_browse_go' => 'Πήγαινε',
+	'smw_browse_show_incoming' => 'εμφάνιση ιδιοτήτων που συνδέουν εδώ',
+	'smw_browse_hide_incoming' => 'απόκρυψη ιδιοτήτων που συνδέουν εδώ',
 	'smw_inverse_label_default' => '$1 από',
 	'smw_pp_from' => 'Από τη σελίδα',
 	'smw_pp_type' => 'Ιδιότητα',
@@ -1875,9 +1895,12 @@ $messages['el'] = array(
 	'smw_smwadmin_return' => 'Επιστροφή στην $1',
 	'smw_smwadmin_announce' => 'Ανακοίνωση του βίκι σας',
 	'smw_smwadmin_datarefresh' => 'Επιδιόρθωση και αναβάθμιση δεδομένων',
+	'smw_smwadmin_datarefreshbutton' => 'Έναρξη ενημέρωσης δεδομένων',
 	'smw_smwadmin_datarefreshstop' => 'Σταμάτα αυτή την ενημέρωση',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ναι, είμαι σίγουρος.',
 	'smw_smwadmin_support' => 'Παίρνοντας υποστήριξη',
+	'smw_adminlinks_datastructure' => 'Δομή δεδομένων',
+	'smw_adminlinks_displayingdata' => 'Προβαλλόμενα δεδομένα',
 );
 
 /** Esperanto (Esperanto)
@@ -6305,9 +6328,11 @@ Progresso estimado da atualização corrente:',
 /** Brazilian Portuguese (Português do Brasil)
  * @author Eduardo.mps
  * @author GKnedo
+ * @author Heldergeovane
  * @author Waldir
  */
 $messages['pt-br'] = array(
+	'smw-desc' => "Fazendo sua wiki mais acessível - para máquinas ''e'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
 	'smw_edithelp' => 'Ajuda de edição sobre propriedades',
 	'smw_viewasrdf' => 'Feed RDF',
 	'smw_finallistconjunct' => ' e',
@@ -6372,6 +6397,41 @@ $messages['pt-br'] = array(
 	'smw_misplacedsymbol' => 'O símbolo "$1" foi usado num local onde não é útil.',
 	'smw_unexpectedpart' => 'A parte "$1" da consulta não foi compreendida.
 Os resultados podem não ser os esperados.',
+	'smw_emptysubquery' => 'Alguma subconsulta não tem uma condição válida.',
+	'smw_misplacedsubquery' => 'Uma subconsulta foi usada em um local onde não são permitidas subconsultas.',
+	'smw_valuesubquery' => 'Subconsultas não suportadas para valores da propriedade "$1".',
+	'smw_overprintoutlimit' => 'Esta consulta contém pedidos de saídas em excesso.',
+	'smw_badprintout' => 'Alguma frase de saída na consulta estava mal formada.',
+	'smw_badtitle' => 'Desculpe, mas "$1" não é um título de página válido.',
+	'smw_badqueryatom' => 'Alguma parte "<nowiki>[[…]]</nowiki>" da consulta não foi compreendida.',
+	'smw_propvalueproblem' => 'O valor da propriedade "$1" não foi compreendido.',
+	'smw_type_header' => 'Propriedades do tipo "$1"',
+	'smw_typearticlecount' => 'Exibindo $1 {{PLURAL:$1|propriedade que usa|propriedades que usam}} este tipo.',
+	'smw_attribute_header' => 'Páginas que usam a propriedade "$1"',
+	'smw_attributearticlecount' => 'Exibindo $1 {{PLURAL:$1|página que usa|páginas que usam}} esta propriedade.',
+	'smw_subproperty_header' => 'Subpropriedades',
+	'smw_subpropertyarticlecount' => 'Esta propriedade possui {{PLURAL:$1|a seguinte subpropriedade|as seguintes $1 subpropriedades}}:',
+	'smw_concept_header' => 'Páginas do conceito "$1"',
+	'smw_conceptarticlecount' => 'Exibindo {{PLURAL:$1|uma página pertencente|$1 páginas pertencentes}} à este conceito.',
+	'exportrdf' => 'Exportar páginas para RDF',
+	'smw_exportrdf_docu' => 'Esta página permite que você obtenha dados de uma página no formato RDF.
+Para exportar páginas, introduza os seus títulos na caixa de texto abaixo, um título por linha.',
+	'smw_exportrdf_submit' => 'Exportar',
+	'properties' => 'Propriedades',
+	'smw_purge' => 'Atualizar',
+	'types' => 'Tipos',
+	'flawedattributes' => 'Propriedades problemáticas',
+	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
+	'smw_ask_ascorder' => 'Ascendente',
+	'smw_ask_defaultformat' => 'Padrão',
+	'smw_pp_docu' => 'Pesquise todos os conteúdos de uma propriedade em uma página dada.
+Por favor, inclua tanto a página quanto a propriedade.',
+	'smw_pp_from' => 'Da página',
+	'smw_pp_type' => 'Propriedade',
+	'smw_pp_submit' => 'Procurar resultados',
+	'smw_smwadmin_datarefreshbutton' => 'Iniciar a atualização dos dados',
+	'smw_smwadmin_datarefreshstop' => 'Parar esta atualização',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Sim, eu tenho certeza.',
 );
 
 /** Tarifit (Tarifit)
@@ -8289,6 +8349,7 @@ $messages['zh-hans'] = array(
  */
 $messages['zh-hant'] = array(
 	'smw_finallistconjunct' => ', 和',
+	'smw_nofloat' => '「$1」不是一個數字。',
 	'smw_abb_north' => '北',
 	'smw_abb_east' => '東',
 	'smw_abb_south' => '南',
