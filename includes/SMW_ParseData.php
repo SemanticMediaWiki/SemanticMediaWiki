@@ -178,11 +178,11 @@ class SMWParseData {
 					$jobs[] = new SMWUpdateJob($proppage->getTitle());
 					$prop = SMWPropertyValue::makeProperty($proppage->getDBkey());
 					$subjects = $store->getAllPropertySubjects($prop);
-					foreach ($propsubjects as $subject) {
+					foreach ($subjects as $subject) {
 						$jobs[] = new SMWUpdateJob($subject->getTitle());
 					}
 					$subjects = smwfGetStore()->getPropertySubjects(SMWPropertyValue::makeProperty('_ERRP'), $prop->getWikiPageValue());
-					foreach ($propsubjects as $subject) {
+					foreach ($subjects as $subject) {
 						$jobs[] = new SMWUpdateJob($subject->getTitle());
 					}
 				}
