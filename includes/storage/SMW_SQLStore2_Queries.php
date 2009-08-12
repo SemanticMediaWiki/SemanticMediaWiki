@@ -584,7 +584,9 @@ class SMWSQLStore2QueryEngine {
 					} elseif ($dv->getTypeID() == '_geo') {
 						$comp = '<=';
 						$geoarray = explode(",", $value);
-						$field = "ROUND(((ACOS( SIN($geoarray[0] * PI()/180 ) * SIN(SUBSTRING_INDEX($field, ',',1) * PI()/180 ) + COS($geoarray[0] * PI()/180 ) * COS(SUBSTRING_INDEX($field, ',',1) * PI()/180 ) * COS(($geoarray[1] - SUBSTRING_INDEX($field, ',',-1)) * PI()/180))*180/PI())*60*1.1515),6)";
+						if ((count($geoarray) == 2) && ($geoarray[0] != '') && ($geoarray[1] != '')) {
+							$field = "ROUND(((ACOS( SIN($geoarray[0] * PI()/180 ) * SIN(SUBSTRING_INDEX($field, ',',1) * PI()/180 ) + COS($geoarray[0] * PI()/180 ) * COS(SUBSTRING_INDEX($field, ',',1) * PI()/180 ) * COS(($geoarray[1] - SUBSTRING_INDEX($field, ',',-1)) * PI()/180))*180/PI())*60*1.1515),6)";
+						}
 						$value = $this->m_distance;
 					} else { // LIKE only supported for strings and coordinates
 						$comp = '=';
