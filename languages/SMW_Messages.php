@@ -1630,14 +1630,26 @@ Geschätzter Fortschritt des laufenden Updates:',
 
 /** German (formal address) (Deutsch (Sie-Form))
  * @author Dst
+ * @author Imre
  * @author Revolus
  */
 $messages['de-formal'] = array(
 	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht angewendet werden, da die Wiki-Konfiguration offline berechnet werden muss.
 Falls das Problem nicht nach einiger Zeit verschwindet, bitten Sie Ihren Seitenverwalter, dieses Konzept zu ermöglichen.',
+	'smw_exportrdf_docu' => 'Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte geben Sie die Namen der gewünschten Seiten <i>zeilenweise</i> ein.',
 	'smw_browse_article' => 'Bitte geben Sie den Titel einer Seite ein.',
+	'smw_smwadmin_updatestarted' => 'Ein neuer Update-Prozess zur Aktualisierung der semantischen Daten wurde gestartet.
+Alle gespeicherten Daten werden neu erstellt oder repariert, sofern nötig.
+Sie können den Fortschritt des Updates auf dieser Spezialseite verfolgen.',
 	'smw_smwadmin_updatenotstopped' => 'Um laufende Prozesse zu stoppen, müssen Sie das Kontrollkästchen aktivieren, wenn Sie sich wirklich sicher sind.',
+	'smw_smwadmin_docu' => 'Diese Spezialseite hilft während der Installation und dem Upgrade von <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Denken Sie daran, wichtige Daten vor der Ausführung administrativer Funktionen zu sichern.',
+	'smw_smwadmin_announce' => 'Ihr Wiki ankündigen',
+	'smw_smwadmin_announcebutton' => 'Drücken Sie den folgenden Knopf, um die URL Ihres Wikis zu diesem Dienst hinzuzufügen.
+Dieser Dienst wird keine Wikis aufnehmen, die nicht öffentlich zugänglich sind und er wird nur öffentlich zugängliche Informationen speichern.',
+	'smw_smwadmin_supportdocu' => 'Verschiedene Mittel/Quellen helfen Ihnen vielleicht bei einem Problemfall:',
 	'smw_smwadmin_smwhomepage' => 'Die komplette Benutzerdokumentation von Semantic MediaWiki finden Sie auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_questions' => 'Wenn Sie weitere Fragen oder Vorschläge haben, beteiligen Sie sich an der Diskussion im <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">„Semantic MediaWiki“-Benutzerforum</a>.',
 );
 
 /** Lower Sorbian (Dolnoserbski)
@@ -3149,7 +3161,10 @@ $messages['he'] = array(
 	'smw_concept_cache_miss' => 'לא ניתן להשתמש ברעיון "$1" כרגע, כיוון שתצורת הוויקי דורשת את עיבודו באופן לא מקוון.
 אם התקלה אינה נעלמת לאחר זמן מה, בקשו ממנהל האתר להפוך רעיון זה לזמין.',
 	'smw_baduri' => 'כתובות מהצורה "$1" אינן מורשות.',
+	'smw_printername_count' => 'ספירת התוצאות',
 	'smw_printername_csv' => 'ייצוא ל־CVS',
+	'smw_printername_embedded' => 'הטמעת תכני הדף',
+	'smw_printername_json' => 'ייצוא JSON',
 	'smw_printername_list' => 'רשימה',
 	'smw_printername_ol' => 'ספירה',
 	'smw_printername_rss' => 'ייצוא ל־RSS',
@@ -6362,6 +6377,7 @@ Progresso estimado da atualização corrente:',
  * @author Eduardo.mps
  * @author GKnedo
  * @author Heldergeovane
+ * @author Rafael Vargas
  * @author Waldir
  */
 $messages['pt-br'] = array(
@@ -6518,6 +6534,13 @@ Lembre-se de efetuar cópias de segurança dos dados importantes antes de execut
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sim, eu tenho certeza.',
 	'smw_smwadmin_support' => 'Obtendo suporte',
 	'smw_smwadmin_supportdocu' => 'Vários recursos poderão ajudá-lo em caso de problemas:',
+	'smw_smwadmin_installfile' => 'Se tiver problemas com a sua instalação, comece por rever as orientações no <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">arquivo INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'A documentação completa para o utilizador do Semantic MediaWiki está em <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Defeitos podem ser reportados no <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'Se você tem mais questões ou sugestões, junte-se à discussão em <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Fórum de usuários Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'Estrutura de dados',
+	'smw_adminlinks_displayingdata' => 'Mostrando os dados',
+	'smw_adminlinks_inlinequerieshelp' => 'Ajuda para consultas inline',
 );
 
 /** Tarifit (Tarifit)
