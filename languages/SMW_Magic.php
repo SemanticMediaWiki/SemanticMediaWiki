@@ -24,3 +24,13 @@ $magicWords['ar'] = array(
 	'SMW_NOFACTBOX'         => array( '0', '__لا_صندوق_حقيقة__', '__NOFACTBOX__' ),
 	'SMW_SHOWFACTBOX'       => array( '0', '__عرض_صندوق_الحقيقة__', '__SHOWFACTBOX__' ),
 );
+
+$magicWords['nl'] = array(
+	'ask'                   => array( '0', 'vragen', 'ask' ),
+	'show'                  => array( '0', 'weergeven', 'show' ),
+	'set'                   => array( '0', 'instellen', 'set' ),
+	'set_recurring_event'   => array( '0', 'herhalende_gebeurtenis_instellen', 'set_recurring_event' ),
+	'declare'               => array( '0', 'declareren', 'declare' ),
+	'SMW_NOFACTBOX'         => array( '0', '__GEENFEITENKADER__', '__NOFACTBOX__' ),
+	'SMW_SHOWFACTBOX'       => array( '0', '__FEITENKADERWEERGEVEN__', '__SHOWFACTBOX__' ),
+);
