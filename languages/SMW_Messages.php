@@ -1841,6 +1841,7 @@ Nowy se njestartujo.',
  * @author ZaDiak
  */
 $messages['el'] = array(
+	'smw_edithelp' => 'Επεξεργασία βοήθειας στις ιδιότητες',
 	'smw_viewasrdf' => 'Ροή RDF',
 	'smw_finallistconjunct' => ', και',
 	'smw_factbox_head' => 'Γεγονότα για $1',
@@ -2367,7 +2368,7 @@ $messages['fi'] = array(
 	'smw_misplacedsymbol' => 'Symbolia "$1" käytettiin yhteydessä johon se ei soveltunut.',
 	'smw_emptysubquery' => 'Jollakin alikyselyllä ei ole kelvollista ehtoa.',
 	'smw_overprintoutlimit' => 'Hakukysely sisältää liian monta tulostuspyyntöä.',
-	'smw_badprintout' => 'Jokin tulostus käsky hakukyselyssä oli huonosti muotoiltu.',
+	'smw_badprintout' => 'Jokin tulostuskäsky oli huonosti muotoiltu hakukyselyssä.',
 	'smw_badtitle' => '”$1” ei ole kelvollinen sivun nimi.',
 	'smw_devel_warning' => 'Tämä ominaisuutta kehitetään aktiivisesti, eikä välttämättä ole kaikin osin toimiva. Varmuuskopioi tietosi ennen käyttöä.',
 	'smw_attribute_header' => 'Ominaisuutta ”$1” käyttävät sivut',
@@ -4826,6 +4827,7 @@ $messages['lb'] = array(
 	'smw_printername_template' => 'Schabloun',
 	'smw_iq_moreresults' => '… weider Resultater',
 	'smw_iq_nojs' => 'Benotzt w.e.g e Browser matt JavaScript fir dëst Element ze gesinn',
+	'smw_iq_altresults' => "D'Lëscht mat de Resultater weisen.",
 	'smw_unknown_importns' => 'Importfonctioune si fir den Nummraum "$1" net disponibel.',
 	'smw_nonright_importtype' => '$1 kann nëmme fir Säiten am Nummraum "$2" benotzt ginn.',
 	'smw_wrong_importtype' => '$1 kann net fir Säiten am Nummraum "$2" benotzt ginn.',
@@ -6113,7 +6115,7 @@ $messages['pl'] = array(
 	'uriresolver' => 'Resolver URI',
 	'smw_uri_doc' => 'Resolver URI implementuje <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Dzięki temu ludzie nie zamieniają się w strony WWW.',
 	'ask' => 'Szukanie semantyczne',
-	'smw_ask_sortby' => 'Sortuj po kolumnie',
+	'smw_ask_sortby' => 'Sortuj według kolumny (opcjonalnie)',
 	'smw_ask_ascorder' => 'Rosnąco',
 	'smw_ask_descorder' => 'Malejąco',
 	'smw_ask_submit' => 'Szukaj wyników',
