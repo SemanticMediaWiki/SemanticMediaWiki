@@ -1281,8 +1281,8 @@ class SMWSQLStore2 extends SMWStore {
 			// set $wgTitle, in case semantic data is set based
 			// on values not originating from the page (such as
 			// via the External Data extension)
-                        global $wgTitle;
-                        $wgTitle = $title;
+			global $wgTitle;
+			$wgTitle = $title;
 			if ( ($namespaces == false) || (in_array($title->getNamespace(),$namespaces)) ) {
 				$updatejobs[] = new SMWUpdateJob($title);
 				$emptyrange = false;
@@ -1924,6 +1924,7 @@ class SMWSQLStore2 extends SMWStore {
 			array( 'smw_title' => '', 'smw_namespace' => $id, 'smw_iw' => SMW_SQL2_SMWIW ),
 			'SMW::deleteSubject::NaryIds'
 		);
+		wfRunHooks('smwDeleteSemanticData', array($subject));
 	}
 
 	/**
