@@ -403,7 +403,7 @@ $messages['af'] = array(
 	'smw_abb_south' => 'S',
 	'smw_abb_west' => 'W',
 	'smw_label_latitude' => 'Breedtegraad',
-	'smw_label_longitude' => 'Lengtegraad',
+	'smw_label_longitude' => 'Lengtegraad:',
 	'smw_emptysubquery' => "'n Sub-navraag het geen geldige kondisie.",
 	'smw_propertyhardlyused' => 'Hierdie eienskap word skaars gebruik in hierdie wiki!',
 	'smw_unusedproperty_template' => '$1 van tipe $2',
@@ -419,6 +419,7 @@ $messages['af'] = array(
 	'smw_ask_help' => 'Navraag hulp',
 	'smw_ask_queryhead' => 'Navraag',
 	'smw_ask_printhead' => 'Addisionele uitdrukke (optioneel)',
+	'smw_ask_defaultformat' => 'standaard',
 	'searchbyproperty' => 'Soek volgens eienskap',
 	'smw_sbv_property' => 'Eienskap',
 	'smw_sbv_value' => 'Waarde',
@@ -426,8 +427,10 @@ $messages['af'] = array(
 	'smw_browse_go' => 'Gaan',
 	'smw_pp_from' => 'Vanaf bladsy',
 	'smw_pp_type' => 'Eienskap',
+	'smw_pp_submit' => 'Vind resultate',
 	'smw_result_prev' => 'Vorige',
 	'smw_result_next' => 'Volgende',
+	'smw_result_noresults' => 'Geen resultate.',
 );
 
 /** Amharic (አማርኛ)
@@ -2122,6 +2125,7 @@ $messages['es'] = array(
 	'smw_label_latitude' => 'Latitud :',
 	'smw_label_longitude' => 'Longitud :',
 	'smw_nodatetime' => 'La fecha «$1» no ha sido comprendida.',
+	'smw_toomanyclosing' => 'Parece haber demasiadas coincidencias de "$1" en la solicitud.',
 	'smw_misplacedsymbol' => 'El símbolo "$1" se ha usado en un lugar donde no es de utilidad.',
 	'smw_unexpectedpart' => 'La parte "$1" de la consulta no fue entendida.
 Los resultados podrían no ser como esperabas.',
@@ -2141,6 +2145,7 @@ Los resultados podrían no ser como esperabas.',
 	'smw_subproperty_header' => 'Subpropiedades',
 	'smw_subpropertyarticlecount' => 'Esta propiedad tiene las siguientes $1 {{PLURAL:$1|subpropiedad|subpropiedades}}:',
 	'smw_concept_header' => 'Páginas de concepto "$1"',
+	'smw_conceptarticlecount' => 'Mostrando $1 {{PLURAL:$1|página|páginas}} pertenecientes al concepto.',
 	'exportrdf' => 'Exportar el artículo como RDF',
 	'smw_exportrdf_docu' => ' En esta página, las partes de contenido de un artículo pueden ser exportadas a formato RDF. Introduzca el nombre de las páginas deseadas en el cuadro de texto que se encuentra debajo, <i>un nombre por línea </i>.<p/>',
 	'smw_exportrdf_recursive' => 'Exportar igualmente todas las páginas pertinentes de forma recurrente. Esta posibilidad puede conseguir un gran número de resultados !',
@@ -2200,6 +2205,8 @@ Los resultados podrían no ser como esperabas.',
 	'smw_browse_no_incoming' => 'Ninguna propiedad vincula aquí.',
 	'smw_inverse_label_default' => '$1 de',
 	'smw_inverse_label_property' => 'Etiqueta de propiedad inversa',
+	'smw_pp_docu' => 'Busca todos los valores de una propiedad en una determinada página.
+Ingrese la página y la propiedad.',
 	'smw_pp_from' => 'De página',
 	'smw_pp_type' => 'Propiedad',
 	'smw_pp_submit' => 'Encontrar resultados',
@@ -2215,9 +2222,17 @@ No crear otro más.',
 	'smw_smwadmin_updatestopped' => 'Todos los procesos de actualización existentes han sido detenidos.',
 	'smw_smwadmin_updatenotstopped' => 'Para detener el proceso de actualización en ejecución, debes activar la tabla de verificación para indicar que estás realmente seguro.',
 	'smw_smwadmin_db' => 'Instalación de la base de datos y actualización',
+	'smw_smwadmin_permissionswarn' => 'Si la operación falla con errores SQL, la base de datos de usuarios empleada por su wiki (revise LocalSettings.php) probablemente no tiene permisos suficientes.
+Ud puede conceder estos permisos adicionales de usuario para crear y borrar tablas, ingresando temporariamente la clave de acceso de su base de datos raíz en LocalSettings.php, o bien usar el script de mantenimiento <tt>SMW_setup.php</tt>, que puede acceder a las credenciales de AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Inicializar o actualizar tablas',
 	'smw_smwadmin_announce' => 'Anunciar tu wiki',
+	'smw_smwadmin_announcebutton' => 'Presione el botón siguiente para enviar la URL de su wiki al servicio.
+El servicio no registrará wikis que no sean de acceso público, y solamente guardará información públicamente accesible.',
 	'smw_smwadmin_datarefresh' => 'Reparación de datos y actualización',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Actualización en progreso.</strong>
+Es normal que el proceso de actualización se retrase ya que sólo actualiza datos en porciones pequeñas cada vez que un usuario ingresa a la wiki.
+Para finalizar esta actualización en forma mas rápida, Ud. puede invocar el script de matenimiento MediaWiki <tt>runJobs.php</tt> (use la opción <tt>--maxjobs 1000</tt>  para restringir el número de actualizaciones hechas en cada paquete).
+Progeso estimado de la actualización:',
 	'smw_smwadmin_datarefreshbutton' => 'Comenzar actualización de datos',
 	'smw_smwadmin_datarefreshstop' => 'Detener esta actualización',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sí, estoy seguro.',
