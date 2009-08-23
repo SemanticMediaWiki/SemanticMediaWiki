@@ -405,6 +405,7 @@ $messages['af'] = array(
 	'smw_label_latitude' => 'Breedtegraad',
 	'smw_label_longitude' => 'Lengtegraad:',
 	'smw_emptysubquery' => "'n Sub-navraag het geen geldige kondisie.",
+	'smw_exportrdf_submit' => 'Eksporteer',
 	'smw_propertyhardlyused' => 'Hierdie eienskap word skaars gebruik in hierdie wiki!',
 	'smw_unusedproperty_template' => '$1 van tipe $2',
 	'smw_wantedproperty_template' => '$1 ($2 gebruike)',
@@ -421,7 +422,7 @@ $messages['af'] = array(
 	'smw_ask_printhead' => 'Addisionele uitdrukke (optioneel)',
 	'smw_ask_defaultformat' => 'standaard',
 	'searchbyproperty' => 'Soek volgens eienskap',
-	'smw_sbv_property' => 'Eienskap',
+	'smw_sbv_property' => 'Eienskap:',
 	'smw_sbv_value' => 'Waarde',
 	'smw_sbv_submit' => 'Vind resultate',
 	'smw_browse_go' => 'Gaan',
@@ -2649,7 +2650,7 @@ Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:Wa
 	'smw_browse_no_outgoing' => 'Cette page n’a aucune propriété.',
 	'smw_browse_no_incoming' => 'Aucune propriété ne pointe vers cette page.',
 	'smw_inverse_label_default' => '$1 de',
-	'smw_inverse_label_property' => 'Inverse du label de la propriété',
+	'smw_inverse_label_property' => 'Label de la propriété inverse',
 	'pageproperty' => 'Rechercher dans les propriétés de la page',
 	'smw_pp_docu' => 'Rechercher toutes les valeurs d’une propriété dans une page donnée. Veuillez entrer la page et une propriété.',
 	'smw_pp_from' => 'De la page',
@@ -7273,7 +7274,7 @@ Odhadovaný priebeh aktualizácie:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc k inline požiadavkám',
 );
 
-/** Serbian Cyrillic ekavian (ћирилица)
+/** Serbian Cyrillic ekavian (Српски (ћирилица))
  * @author Slaven Kosanovic
  * @author Михајло Анђелковић
  */
@@ -7492,7 +7493,7 @@ $messages['sr-ec'] = array(
 	'smw_adminlinks_displayingdata' => 'Приказивање података',
 );
 
-/** latinica (latinica)
+/** Serbian Latin ekavian (Srpski (latinica))
  * @author Michaello
  * @author Slaven Kosanovic
  */
@@ -8174,7 +8175,7 @@ $messages['tr'] = array(
 	'smw_result_results' => 'Sonuçlar',
 );
 
-/** Tatar (Cyrillic) (Tatarça/Татарча (Cyrillic))
+/** Tatar (Cyrillic) (Татарча/Tatarça (Cyrillic))
  * @author Ерней
  */
 $messages['tt-cyrl'] = array(
