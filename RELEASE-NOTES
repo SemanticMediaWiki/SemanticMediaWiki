@@ -1,5 +1,11 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
+== SMW 1.5.? ==
+
+* Support for inverse properties: use "-" in front of property names anywhere to
+  refer to the inverse direction of a property. Works in browsing interfaces,
+  queries, and query output directives. In queries only for properties of Type:Page.
+
 == SMW 1.4.3 ==
 
 See http://semantic-mediawiki.org/wiki/SMW_1.4.3
