@@ -463,9 +463,11 @@ class SMWSQLStore2QueryEngine {
 	 */
 	protected function compilePropertyCondition(&$query, $property, SMWDescription $valuedesc, $typeid=false) {
 		$query->joinfield = "$query->alias.s_id";
+		$isinverse = false;
 		if ($property instanceof SMWPropertyValue) {
 			$typeid = $property->getPropertyTypeID();
 			$mode = SMWSQLStore2::getStorageMode($typeid);
+			$isinverse = $property->isInverse();
 			$pid = $this->m_store->getSMWPropertyID($property);
 			$sortkey = $property->getDBkey(); /// TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
 			if ($mode != SMW_SQL2_SUBS2) { // also make property hierarchy (though not for all properties)
@@ -484,21 +486,27 @@ class SMWSQLStore2QueryEngine {
 				$query->where = "$query->alias.p_id=" . $this->m_dbs->addQuotes($pid);
 			}
 		}
-		$mode = SMWSQLStore2::getStorageMode($typeid);
+// 		$mode = SMWSQLStore2::getStorageMode($typeid);
 		$sortfield = ''; // used if we should sort by this property
 		switch ($mode) {
 			case SMW_SQL2_RELS2: case SMW_SQL2_SUBS2: // subconditions as subqueries (compiled)
+				if ($isinverse) { $s='o'; $o='s'; } else { $s='s'; $o='o'; }
+				$query->joinfield = "$query->alias.$s" . "_id";
 				$query->jointable = ($mode==SMW_SQL2_RELS2)?'smw_rels2':'smw_subs2';
 				$sub = $this->compileQueries($valuedesc);
 				if ($sub >= 0) {
-					$query->components[$sub] = "$query->alias.o_id";
+					$query->components[$sub] = "$query->alias.$o" . "_id";
 				}
 				if ( $sortkey && array_key_exists($sortkey, $this->m_sortkeys) ) {
-					$query->from = ' INNER JOIN ' . $this->m_dbs->tableName('smw_ids') . " AS ids$query->alias ON ids$query->alias.smw_id=$query->alias.o_id";
+					$query->from = ' INNER JOIN ' . $this->m_dbs->tableName('smw_ids') . " AS ids$query->alias ON ids$query->alias.smw_id=$query->alias.$o" . "_id";
 					$sortfield = "ids$query->alias.smw_title"; /// TODO: as below, smw_ids here is possibly duplicated! Can we prevent that? (PERFORMANCE)
 				}
 			break;
 			case SMW_SQL2_NARY2:
+				if ($isinverse) { // empty query -- inverses not supported here
+					$query->joinfield = '';
+					break;
+				}
 				$query->jointable = 'smw_rels2';
 				if ($valuedesc instanceof SMWValueList) { // anything else is ignored!
 					$typevalue = $property->getTypesValue();
@@ -527,9 +535,17 @@ class SMWSQLStore2QueryEngine {
 				}
 			break;
 			case SMW_SQL2_TEXT2: // no subconditions
+				if ($isinverse) { // empty query -- inverses not supported here
+					$query->joinfield = '';
+					break;
+				}
 				$query->jointable = 'smw_text2';
 			break;
 			case SMW_SQL2_ATTS2: case SMW_SQL2_SPEC2: // subquery only conj/disj of values, compile to single "where"
+				if ($isinverse) { // empty query -- inverses not supported here
+					$query->joinfield = '';
+					break;
+				}
 				$query->jointable = ($mode==SMW_SQL2_ATTS2)?'smw_atts2':'smw_spec2';
 				$aw = $this->compileAttributeWhere($valuedesc,"$query->alias");
 				if ($aw != '') {

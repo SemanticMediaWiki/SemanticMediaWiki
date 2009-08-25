@@ -208,7 +208,7 @@ class SMWQueryProcessor {
 					}
 					if ($title->getNamespace() == SMW_NS_PROPERTY) {
 						$printmode = SMWPrintRequest::PRINT_PROP;
-						$property = SMWPropertyValue::makeProperty($title->getDBkey());
+						$property = SMWPropertyValue::makeUserProperty(trim($propparts[0]));
 						$data = $property;
 						$label = $showmode?'':$property->getWikiValue();  // default
 					} elseif ($title->getNamespace() == NS_CATEGORY) {

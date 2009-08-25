@@ -47,8 +47,9 @@ class SMWPageProperty extends SpecialPage {
 				$type = implode('::', array_slice($queryparts, 1));
 			}
 		}
-		$subject = Title::newFromText( $from );
-		if (NULL != $subject) { $from = $subject->getText(); } else { $from = ''; }
+
+		$subject = SMWDataValueFactory::newTypeIDValue('_wpg', $from );
+		$from = $subject->isValid()?$subject->getText():'';
 		$property = SMWPropertyValue::makeUserProperty($type);
 		if ($property->isvalid()) {
 			$type = $property->getWikiValue();
@@ -68,7 +69,7 @@ class SMWPageProperty extends SpecialPage {
 		if (('' == $type)) { // No relation or subject given.
 			$html .= wfMsg('smw_pp_docu') . "\n";
 		} else { // everything is given
-			$wgOut->setPagetitle( ($subject === NULL?'':$subject->getFullText() . ' ') . $property->getWikiValue());
+			$wgOut->setPagetitle( ($subject->isValid()?'':$subject->getPrefixedText() . ' ') . $property->getWikiValue());
 			$options = new SMWRequestOptions();
 			$options->limit = $limit+1;
 			$options->offset = $offset;

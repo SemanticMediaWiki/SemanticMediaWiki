@@ -337,7 +337,13 @@ class SMWSQLStore2 extends SMWStore {
 	 */
 	function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = NULL, $outputformat = '') {
 		wfProfileIn("SMWSQLStore2::getPropertyValues (SMW)");
-		if ($subject !== NULL) { // subject given, use semantic data cache:
+		if ($property->isInverse()) { // inverses are working differently
+			$noninverse = clone $property;
+			$noninverse->setInverse(false);
+			$result = $this->getPropertySubjects($noninverse,$subject,$requestoptions);
+			wfProfileOut("SMWSQLStore2::getPropertyValues (SMW)");
+			return $result;
+		} elseif ($subject !== NULL) { // subject given, use semantic data cache:
 			$sd = $this->getSemanticData($subject,array($property->getPropertyTypeID()));
 			$result = $this->applyRequestOptions($sd->getPropertyValues($property),$requestoptions);
 			if ($outputformat != '') { // reformat cached values
@@ -476,6 +482,13 @@ class SMWSQLStore2 extends SMWStore {
 	function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = NULL) {
 		/// TODO: should we share code with #ask query computation here? Just use queries?
 		wfProfileIn("SMWSQLStore2::getPropertySubjects (SMW)");
+		if ($property->isInverse()) { // inverses are working differently
+			$noninverse = clone $property;
+			$noninverse->setInverse(false);
+			$result = $this->getPropertyValues($value,$noninverse,$requestoptions);
+			wfProfileOut("SMWSQLStore2::getPropertySubjects (SMW)");
+			return $result;
+		}
 		$result = array();
 		$pid = $this->getSMWPropertyID($property);
 		if ( ($pid == 0) || ( ($value !== NULL) && (!$value->isValid()) ) ) {

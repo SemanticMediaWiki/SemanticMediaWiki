@@ -48,6 +48,8 @@ class SMWPropertyValue extends SMWDataValue {
 	protected $m_propertyid;
 	/// If the property is associated with a wikipage, it is stored here. Otherwise NULL.
 	protected $m_wikipage = NULL;
+	/// Store if this property is an inverse
+	protected $m_inv = false;
 
 	private $prop_typevalue; // once calculated, remember the type of this property
 	private $prop_typeid; // once calculated, remember the type of this property
@@ -88,10 +90,15 @@ class SMWPropertyValue extends SMWDataValue {
 	protected function parseUserValue($value) {
 		$this->prop_typevalue = NULL;
 		$this->prop_typeid = NULL;
+		$this->m_inv = false;
 		if ($this->m_caption === false) { // always use this as caption
 			$this->m_caption = $value;
 		}
 		$value = smwfNormalTitleText(ltrim(rtrim($value,' ]'),' [')); //slightly normalise label
+		if ( ($value !== '') && ($value{0} == '-') ) { // check if this property refers to an inverse
+			$value = substr($value,1);
+			$this->m_inv = true;
+		}
 		$this->m_propertyid = SMWPropertyValue::findPropertyID($value);
 		if ($this->m_propertyid !== false) {
 			$value = SMWPropertyValue::findPropertyLabel($this->m_propertyid);
@@ -113,6 +120,11 @@ class SMWPropertyValue extends SMWDataValue {
 	protected function parseDBkeys($args) {
 		$this->prop_typevalue = NULL;
 		$this->prop_typeid = NULL;
+		$this->m_inv = false;
+		if ( $args[0]{0} == '-' ) { // check if this property refers to an inverse
+			$args[0] = substr($args[0],1);
+			$this->m_inv = true;
+		}
 		SMWPropertyValue::initProperties();
 		if ($args[0]{0} == '_') { // internal id, use as is (and hope it is still known)
 			$this->m_propertyid = $args[0];
@@ -137,6 +149,11 @@ class SMWPropertyValue extends SMWDataValue {
 		if ($this->m_wikipage instanceof SMWDataValue) { // pass caption to embedded datavalue (used for printout)
 			$this->m_wikipage->setCaption($caption);
 		}
+	}
+
+
+	public function setInverse($isinverse) {
+		return $this->m_inv = ($isinverse == true);
 	}
 
 	/**
@@ -174,6 +191,14 @@ class SMWPropertyValue extends SMWDataValue {
 		         SMWPropertyvalue::$m_propertytypes[$this->m_propertyid][1]) );
 	}
 
+	/**
+	 * Return TRUE if this property is an inverse.
+	 */
+	public function isInverse() {
+		$this->unstub();
+		return $this->m_inv;
+	}
+
 	public function setOutputFormat($formatstring) {
 		$this->m_outformat = $formatstring;
 		if ($this->m_wikipage !== NULL) { // do not unstub if not needed
@@ -206,7 +231,7 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-		return $this->isVisible()?$this->m_wikipage->getWikiValue():'';
+		return $this->isVisible()?(($this->isInverse()?'-':'') . $this->m_wikipage->getWikiValue()):'';
 	}
 
 	/**
@@ -282,6 +307,10 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function getDBkey() {
 		return $this->isVisible()?$this->m_wikipage->getDBkey():$this->m_propertyid;
+	}
+
+	public function getText() {
+		return $this->isVisible()?$this->m_wikipage->getWikiValue():'';
 	}
 
 	/**
