@@ -79,7 +79,10 @@ class SMWParseData {
 		// See if this property is a special one, such as e.g. "has type"
 		$property = SMWPropertyValue::makeUserProperty($propertyname);
 		$result = SMWDataValueFactory::newPropertyObjectValue($property,$value,$caption);
-		if ($storeannotation && (SMWParseData::getSMWData($parser) !== NULL)) {
+		if ($property->isInverse()) {
+			wfLoadExtensionMessages('SemanticMediaWiki');
+			$result->addError(wfMsgForContent('smw_noinvannot'));
+		} elseif ($storeannotation && (SMWParseData::getSMWData($parser) !== NULL)) {
 			SMWParseData::getSMWData($parser)->addPropertyObjectValue($property,$result);
 			if (!$result->isValid()) { // take note of the error for storage (do this here and not in storage, thus avoiding duplicates)
 				SMWParseData::getSMWData($parser)->addPropertyObjectValue(SMWPropertyValue::makeProperty('_ERRP'),$property->getWikiPageValue());

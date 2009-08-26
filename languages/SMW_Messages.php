@@ -31,6 +31,7 @@ $messages['en'] = array(
 	'smw_multiple_concepts'   => 'Each concept page can have only one concept definition.',
 	'smw_concept_cache_miss'  => 'The concept "$1" can not be used at the moment, since the wiki configuration requires it to be computed off-line.
 If the problem does not go away after some time, ask your site administrator to make this concept available.',
+	'smw_noinvannot'        => 'Values cannot be assigned to inverse properties.',
 
 	// URIs that should not be used in objects in cases where users can provide URIs
 	'smw_uri_blacklist' => " http://www.w3.org/1999/02/22-rdf-syntax-ns#\n http://www.w3.org/2000/01/rdf-schema#\n http://www.w3.org/2002/07/owl#",
@@ -6948,8 +6949,8 @@ $messages['ru'] = array(
 	'smw_typeunits' => 'Единицы измерения типа “$1”: $2',
 	'semanticstatistics' => 'Семантическая статистика',
 	'smw_semstats_text' => "Данный сайт содержит '''$1''' {{PLURAL:$1|значение|значения|значений}} свойств, общее число которых составляет '''$2''' [[Special:Properties|{{PLURAL:$2|свойство|различных свойства|различных свойств}}]].
-'''$3''' {{PLURAL:$3|свойство|свойства|свойств}} имеют страницу описания, а определённый тип данных задан для '''$4''' из них. 
-Некоторые из существующих свойств могут [[Special:UnusedProperties|не использоваться]]. 
+'''$3''' {{PLURAL:$3|свойство|свойства|свойств}} имеют страницу описания, а определённый тип данных задан для '''$4''' из них.
+Некоторые из существующих свойств могут [[Special:UnusedProperties|не использоваться]].
 Свойства, для которых не созданы страницы описания, перечислены в [[Special:WantedProperties|списке неописанных свойств]].",
 	'flawedattributes' => 'Поврежденные свойства',
 	'smw_fattributes' => 'Статьи, указанные ниже, содержат неправильно определенные свойства. Количество неверных свойств указано в скобках.',
