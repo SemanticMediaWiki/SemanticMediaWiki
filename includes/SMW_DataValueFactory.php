@@ -88,7 +88,11 @@ class SMWDataValueFactory {
 	 * set later on.
 	 */
 	static public function newPropertyObjectValue(SMWPropertyValue $property, $value=false, $caption=false) {
-		return SMWDataValueFactory::newTypeObjectValue($property->getTypesValue(), $value, $caption, $property);
+		if ($property->isInverse()) {
+			return SMWDataValueFactory::newTypeIdValue('_wpg', $value, $caption, $property);
+		} else {
+			return SMWDataValueFactory::newTypeObjectValue($property->getTypesValue(), $value, $caption, $property);
+		}
 	}
 
 	/**
