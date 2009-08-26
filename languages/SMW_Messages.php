@@ -1212,6 +1212,8 @@ $messages['bs'] = array(
 	'smw_unknown_importns' => 'Funkcije uvoza nisu dostupne za imenski prostor "$1".',
 	'smw_no_importelement' => 'Element "$1" nije dostupan za uvoz.',
 	'smw_parseerror' => 'Navedena vrijednost nije razumljiva.',
+	'smw_emptystring' => 'Prazni izrazi nisu prihvatljivi.',
+	'smw_maxstring' => 'Prikazivanje izraza $1 je predugačko.',
 	'smw_nofloat' => '"$1" nije broj.',
 	'smw_abb_north' => 'S',
 	'smw_abb_east' => 'I',
@@ -1229,6 +1231,7 @@ $messages['bs'] = array(
 	'semanticstatistics' => 'Statistike semantike',
 	'smw_sbv_property' => 'Svojstvo:',
 	'smw_sbv_value' => 'Vrijednost:',
+	'smw_browselink' => 'Pregled svojstava',
 	'smw_browse_go' => 'Idi',
 	'smw_result_noresults' => 'Nema rezultata.',
 );
@@ -2902,7 +2905,7 @@ Como houbo só uns poucos resultados, tamén os resultados próximos son amosado
 	'smw_browse_no_outgoing' => 'Esta páxina non ten propiedades.',
 	'smw_browse_no_incoming' => 'Ningunha propiedade liga con esta páxina.',
 	'smw_inverse_label_default' => '$1 de',
-	'smw_inverse_label_property' => 'Lapela de propiedade inversa',
+	'smw_inverse_label_property' => 'Lapela da propiedade inversa',
 	'pageproperty' => 'Procura de páxinas de propiedades',
 	'smw_pp_docu' => 'Procurar por todos os filtros dunha propiedade nunha páxina dada.
 Por favor, insira ambas, a páxina e mais a propiedade.',
@@ -4163,6 +4166,7 @@ $messages['ja'] = array(
 	'smw_no_concept_namespace' => '概念は Concept: 名前空間のページでのみ定義できます。',
 	'smw_multiple_concepts' => '各概念ページはただ1つの概念定義をもつことができます。',
 	'smw_concept_cache_miss' => '概念「$1」は、ウィキの設定によりオフラインでの処理が必要なため、ただいま利用することができません。しばらく経っても問題が消えない場合、サイト管理者にこの概念を利用できるよう問い合わせてください。',
+	'smw_noinvannot' => '逆プロパティに値を割り当てることはできません。',
 	'smw_baduri' => '「$1」という形式のURIは認められていません。',
 	'smw_printername_auto' => '自動',
 	'smw_printername_count' => '集計結果',
@@ -6242,14 +6246,14 @@ Liczba błędnych własności jest podana w nawiasach.',
 	'smw_ask_printhead' => 'Dodatkowe wydruki (opcjonalnie)',
 	'smw_ask_format_as' => 'Formatuj jako',
 	'smw_ask_defaultformat' => 'domyślny',
-	'smw_ask_show_embed' => 'Pokaż zagnieżdżony kod',
+	'smw_ask_show_embed' => 'Pokaż kod zagnieżdżony',
 	'smw_ask_hide_embed' => 'Ukryj zagnieżdżony kod',
-	'smw_ask_embed_instr' => 'Aby zagnieździć to zapytanie w stronie wiki, użyj poniższego kodu.',
+	'smw_ask_embed_instr' => 'Aby zagnieździć to zapytanie na stronie wiki, użyj poniższego kodu.',
 	'searchbyproperty' => 'Szukaj po atrybucie',
 	'smw_sbv_docu' => 'Szukanie wszystkich stron, które mają dany atrybut i wartość.',
 	'smw_sbv_novalue' => 'Wpisz wartość, lub zobacz wszystkie wartości atrybutów dla $1.',
 	'smw_sbv_displayresult' => 'Lista wszystkich stron, które mają atrybut $1 z wartością $2.',
-	'smw_sbv_displayresultfuzzy' => 'Lista wszystkich stron, które posiadają własność "$1" z wartością "$2".
+	'smw_sbv_displayresultfuzzy' => 'Lista wszystkich stron, które posiadają własność „$1” o wartości „$2”.
 Ponieważ znaleziono tylko kilka wyników, pokazano również wyniki podobne.',
 	'smw_sbv_property' => 'Atrybut',
 	'smw_sbv_value' => 'Wartość',
@@ -6289,11 +6293,11 @@ Możesz śledzić stan procesu aktualizacji na tej specjalnej stronie.',
 	'smw_smwadmin_datarefreshstop' => 'Zatrzymaj aktualizację danych',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Tak, jestem pewien.',
 	'smw_smwadmin_support' => 'Jak otrzymać wsparcie',
-	'smw_smwadmin_supportdocu' => 'Różne źródła mogą pomóc w razie problemów:',
+	'smw_smwadmin_supportdocu' => 'Różnorodne źródła informacji mogą okazać się przydatne jeśli wystąpią problemy:',
 	'smw_smwadmin_installfile' => 'Jeśli doświadczysz problemów z instalacją, zacznij od sprawdzenia wskazówek w <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">pliku INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Kompletna dokumentacja Semantic MediaWiki znajduje się na stronie <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Błędy możesz zgłaszać na <a href="https://bugzilla.wikimedia.org/">Bugzillę</a>.',
-	'smw_smwadmin_questions' => 'W razie dalszych pytań lub sugestii przyłącz się do dyskusji na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum użytkowników Semantic MediaWiki</a>.',
+	'smw_smwadmin_mediazilla' => 'Błędy możesz zgłaszać w <a href="https://bugzilla.wikimedia.org/">Bugzilli</a>.',
+	'smw_smwadmin_questions' => 'Jeśli nadal masz pytania lub sugestie przyłącz się do dyskusji na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum użytkowników Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Struktura danych',
 	'smw_adminlinks_displayingdata' => 'Pokaż dane',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc dotycząca wewnętrznych zapytań',
@@ -8609,8 +8613,10 @@ $messages['zh-cn'] = array(
 
 /** Simplified Chinese (‪中文(简体)‬)
  * @author Gzdavidwong
+ * @author PhiLiP
  */
 $messages['zh-hans'] = array(
+	'smw_finallistconjunct' => '和',
 	'smw_abb_north' => '北',
 	'smw_abb_east' => '东',
 	'smw_abb_south' => '南',
