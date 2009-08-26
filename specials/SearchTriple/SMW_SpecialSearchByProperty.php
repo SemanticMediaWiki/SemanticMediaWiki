@@ -181,11 +181,11 @@ class SMWSearchByProperty extends SpecialPage {
 		if (!$first && ($number > 0)) while ( count($results) > $number ) array_pop($results);
 		while ( $results && $number != 0) {
 			$result = array_pop( $results );
-			$thing = $skin->makeKnownLinkObj( $result[0]->getTitle(), $result[0]->getText() );
-			$browselink = SMWInfolink::newBrowsingLink('+', $result[0]->getShortHTMLText())->getHTML($skin);
-			$val = $result[1]->getLongHTMLText( $skin );
-			$html .= '<li>' . $thing . '&nbsp;&nbsp;' . $browselink;
-			if (($this->value != $result[1]) || $highlight) $html .= " <em><small>(" . $val . ")</small></em>";
+			$thing = $result[0]->getLongHTMLText($skin);
+			$browselink = ($result[0]->getTypeId() == '_wpg')?
+			              '&nbsp;&nbsp;' . SMWInfolink::newBrowsingLink('+', $result[0]->getShortHTMLText())->getHTML($skin):'';
+			$html .= '<li>' . $thing . $browselink;
+			if (($this->value != $result[1]) || $highlight) $html .= " <em><small>(" . $result[1]->getLongHTMLText($skin) . ")</small></em>";
 			$html .= "</li>";
 			if ($highlight) $html = "<strong>" . $html . "</strong>";
 			$html .= "\n";
