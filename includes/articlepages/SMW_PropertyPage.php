@@ -26,6 +26,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		global $smwgContLang, $smwgPropertyPagingLimit;
 		$this->limit = $smwgPropertyPagingLimit;
 		$this->mProperty = SMWPropertyValue::makeProperty($this->mTitle->getDBkey());
+		$this->mProperty->setInverse(false);
 		return true;
 	}
 
