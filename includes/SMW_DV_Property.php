@@ -153,6 +153,7 @@ class SMWPropertyValue extends SMWDataValue {
 
 
 	public function setInverse($isinverse) {
+		$this->unstub(); // make sure later unstubbing does not overwrite this
 		return $this->m_inv = ($isinverse == true);
 	}
 
