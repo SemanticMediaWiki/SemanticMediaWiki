@@ -925,6 +925,7 @@ $messages['be-tarask'] = array(
 	'smw_no_concept_namespace' => 'Канцэпцыі могуць быць вызначаныя толькі на старонках прасторы назваў «Канцэпцыя:».',
 	'smw_multiple_concepts' => 'Кожная старонка канцэпцыі можа мець толькі адно вызначэньне канцэпцыі.',
 	'smw_concept_cache_miss' => 'Канцэпцыя «$1» ня можа быць выкарыстаная ў гэты момант, таму што канфігурацыя {{GRAMMAR:родны|{{SITENAME}}}} патрабуе, каб яна вылічалася аф-лайн. Калі гэта праблема ня зьнікне празь некаторы час, запытайце Вашага адміністратара сайта ўключыць гэтую канцэпцыю.',
+	'smw_noinvannot' => 'Значэньні ня можа быць прызначаныя ў адваротныя уласьцівасьці.',
 	'smw_baduri' => 'Спасылкі на форму «$1» не дазволеныя.',
 	'smw_printername_auto' => 'Аўтаматычна',
 	'smw_printername_count' => 'Падлік вынікаў',
@@ -2511,6 +2512,7 @@ $messages['fr'] = array(
 	'smw_no_concept_namespace' => 'Les concepts peuvent uniquement être définis dans les pages dans l’espace de noms Concept:.',
 	'smw_multiple_concepts' => 'Chaque page de concept ne peut avoir qu’une seule définition.',
 	'smw_concept_cache_miss' => 'Le concept « $1 » ne peut être utilisé en ce moment, puisque la configuration du wiki requiert qu’il soit lancé hors-ligne. Si le problème persiste après quelques instants, demander à votre administrateur du site de rendre disponible ce concept.',
+	'smw_noinvannot' => 'Les valeurs ne peuvent pas être allouées pour inverser des propriétés.',
 	'smw_baduri' => 'Désolé. Les URIs du domaine « $1 » ne sont pas disponible à cet emplacement.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatique',
@@ -2758,6 +2760,7 @@ $messages['gl'] = array(
 	'smw_no_concept_namespace' => 'O conceptos só poden ser definidos nas páxinas que están no espazo de nomes Concepto:.',
 	'smw_multiple_concepts' => 'Cada páxina de conceptos só pode conter unha definición dun concepto.',
 	'smw_concept_cache_miss' => 'O concepto "$1" non pode ser usado desde que a configuración do wiki o require para calcular a desconexión. Se o problema non se resolve en breve, pregúntelle ao administrador do wiki para que o concepto poida estar dispoñible.',
+	'smw_noinvannot' => 'Non se poden asignar os valores para inverter as propiedades.',
 	'smw_baduri' => 'Sentímolo, os URIs da forma “$1” non están permitidos.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automático',
@@ -3014,6 +3017,7 @@ $messages['gsw'] = array(
 	'smw_multiple_concepts' => 'In jedwädere Konzäptsyte cha s nume ei Konzäptdefinition din haa.',
 	'smw_concept_cache_miss' => 'S Konzäpt „$1“ cha im Momänt nit aagwändet wäre, wel d Wiki-Konfiguration offline grächnet muess wäre.
 Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalter, des Konzäpt megli z mache.',
+	'smw_noinvannot' => 'Wärt chenne nit mit umgchehrte Eigeschafte gchännzeichnet wäre',
 	'smw_baduri' => 'URI mit dr Form „$1“ sin nit zuelässig.',
 	'smw_printername_auto' => 'Automatisch',
 	'smw_printername_count' => 'Zellerergebnis',
@@ -3479,6 +3483,7 @@ $messages['hsb'] = array(
 	'smw_multiple_concepts' => 'Kóžda konceptowa strona móže jenož jednu konceptowu definiciju měć.',
 	'smw_concept_cache_miss' => 'Koncept "$1" njeda so tuchwilu wužiwać, dokelž wikijowa konfiguracija jón za předźěłowanje offline trjeba.
 Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administratora, zo by wón tutón koncept k dispoziciji stajił.',
+	'smw_noinvannot' => 'Hódnoty njedadźa so nawopačnym kajkosćam připokazać.',
 	'smw_baduri' => 'URI formy "$1" njejsu dowolene.',
 	'smw_printername_auto' => 'Awtomatiski',
 	'smw_printername_count' => 'Wuslědki ličić',
@@ -5224,6 +5229,7 @@ $messages['nl'] = array(
 	'smw_multiple_concepts' => 'Iedere conceptpagina kan maar één conceptdefinitie bevatten.',
 	'smw_concept_cache_miss' => 'Het concept "$1" kan op het moment niet gebruikt worden omdat de dit volgende de instellingen van de wiki offline berekend moet worden.
 Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan om dit concept beschikbaar te maken.',
+	'smw_noinvannot' => 'Waarden kunnen niet toegekend worden aan omgekeerde eigenschappen.',
 	'smw_baduri' => "URI's uit de reeks “$1” zijn hier niet beschikbaar.",
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatisch',
@@ -6322,6 +6328,7 @@ $messages['ps'] = array(
 
 /** Portuguese (Português)
  * @author 555
+ * @author Crazymadlover
  * @author Lijealso
  * @author Malafaya
  * @author Waldir
@@ -6486,7 +6493,7 @@ Uma vez que houve poucos resultados, valores próximos são também apresentados
 	'smw_browse_no_outgoing' => 'Esta página não possui propriedades.',
 	'smw_browse_no_incoming' => 'Nenhuma propriedade linca para esta página.',
 	'smw_inverse_label_default' => '$1 de',
-	'smw_inverse_label_property' => 'Etiqueta de propriedade inversa',
+	'smw_inverse_label_property' => 'Etiqueta propriedade inversa',
 	'pageproperty' => 'Busca de propriedades de página',
 	'smw_pp_docu' => 'Buscar todos os conteúdos de uma propriedade numa dada página.
 Por favor, introduza ambas a página e a propriedade.',
@@ -6851,6 +6858,7 @@ $messages['ru'] = array(
 	'smw_no_concept_namespace' => 'Представления могут определяться только на страницах, принадлежащих пространству имён «Представление:» («Concept:»).',
 	'smw_multiple_concepts' => 'Страница представления может содержать только одно определение представления.',
 	'smw_concept_cache_miss' => 'Представление «$1» в настоящий момент не может быть использовано, так как настройка вики-сайта требует, чтобы его результат определялся в фоновом режиме. Если данное сообщение не исчезнет через некоторое время, обратитесь к администратору вики-сайта для включения данного представления.',
+	'smw_noinvannot' => 'Обратным свойствам не могут быть присвоены значения.',
 	'smw_baduri' => 'Извините, но ссылки из диапазона "$1" не доступны отсюда.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Автоматически',
