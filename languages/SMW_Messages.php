@@ -2075,6 +2075,7 @@ $messages['eo'] = array(
  * @author Sanbec
  */
 $messages['es'] = array(
+	'smw-desc' => "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
 	'smw_edithelp' => 'Ayuda a la redacción de relaciones y atributos',
 	'smw_viewasrdf' => 'Ver como RDF',
 	'smw_finallistconjunct' => ' y',
@@ -2628,7 +2629,7 @@ Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:Wa
 	'smw_ask_ascorder' => 'Croissant',
 	'smw_ask_descorder' => 'Décroissant',
 	'smw_ask_submit' => 'Trouver des résultats',
-	'smw_ask_editquery' => '[Éditer la requête]',
+	'smw_ask_editquery' => '[Modifier la requête]',
 	'smw_add_sortcondition' => '[Ajoute les conditions de tri]',
 	'smw_ask_hidequery' => 'Masquer la requête',
 	'smw_ask_help' => 'Aide à la requête',
@@ -4665,6 +4666,7 @@ $messages['ksh'] = array(
 Dem Wiki sing Kumfijurazjuhn fordert, dat dat offline ußjeräshent weed.
 Wann dat nit noh en jeweße Zick nit fun sellfs jedonn es, un hee di
 Aanforderung dorschjeiht, dann froch Dinge Wiki-Köbes donoh, noh dämm Kunzäp.',
+	'smw_noinvannot' => 'För Eijeschaffte met ömjedriehte Reschtung künne kei Wääte verjovve wääde.',
 	'smw_baduri' => 'URIs met dämm Opbou „$1“ sin nit zojelohße.',
 	'smw_rss_link' => '<i lang="en">RSS</i>',
 	'smw_csv_link' => '<i lang="en">CSV</i>',
