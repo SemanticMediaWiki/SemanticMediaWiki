@@ -370,6 +370,7 @@ This method is called ''content negotiation''.",
 	'smw_pp_submit' => '{{Identical|Find results}}',
 	'smw_result_prev' => '{{Identical|Previous}}',
 	'smw_result_next' => '{{identical|Next}}',
+	'smw_result_results' => '{{Identical|Result}}',
 	'smw_result_noresults' => '{{Identical|Sorry, no results}}',
 	'smw_smwadmin_announcedocu' => 'Do not alter or translate link targets',
 );
@@ -432,6 +433,7 @@ $messages['af'] = array(
 	'smw_pp_submit' => 'Vind resultate',
 	'smw_result_prev' => 'Vorige',
 	'smw_result_next' => 'Volgende',
+	'smw_result_results' => 'Resultate',
 	'smw_result_noresults' => 'Geen resultate.',
 );
 
@@ -3748,6 +3750,7 @@ $messages['ia'] = array(
 	'smw_no_concept_namespace' => 'Le conceptos pote solmente esser definite in paginas in le spatio de nomines Concept:.',
 	'smw_multiple_concepts' => 'Cata pagina de concepto pote haber un sol definition de concepto.',
 	'smw_concept_cache_miss' => 'Le concepto "$1" non pote esser usate al momento, post que le configuration del wiki require que illo sia computate foras de linea. Si le problema non dispare post alcun tempore, demanda al administrator de tu sito de render disponibile iste concepto.',
+	'smw_noinvannot' => 'Le valores non pote esser assignate al proprietates inverse.',
 	'smw_baduri' => 'Le adresses URI del forma "$1" non es permittite.',
 	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
@@ -5899,6 +5902,7 @@ $messages['oc'] = array(
 	'smw_no_concept_namespace' => 'Los concèptes pòt unicament èsser definits dins la pagina dins lo Concèpte : espaci de nom.',
 	'smw_multiple_concepts' => 'Cada pagina de concèpte pòt pas aver qu’una sola definicion.',
 	'smw_concept_cache_miss' => 'Lo concèpte « $1 » pòt pas èsser utilizat pel moment, perque la configuracion del wiki requerís que siá aviat fòra linha. Se lo problèma persistís aprèp qualques instants, demandatz a vòstre administrator del site de rendre disponible aqueste concèpte.',
+	'smw_noinvannot' => 'Las valors pòdon pas èsser allogadas per inversar de proprietats.',
 	'smw_baduri' => 'O planhèm. Las URIs del domeni $1 son pas disponiblas a aqueste emplaçament',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatic',
