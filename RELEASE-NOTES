@@ -10,6 +10,12 @@ For a documentation of all features, see http://semantic-mediawiki.org
 
 See http://semantic-mediawiki.org/wiki/SMW_1.4.3
 
+* A new query format, 'category', that displays values in the style of a
+  MediaWiki category page
+* A new 'columns' parameter for the 'ol' and 'ul' formats
+* The 'csv' format now prints a header row by default
+* The "::~" comparator in queries can now also be used for properties of type
+  Geographical coordinate, to find points within a certain distance
 * Using "-" as an output format for query printouts, or leaving the formatting
   string empty now leads to printout values being returned as plain, unformatted
   values. Recall that the general format for printouts in #ask is as follows:
