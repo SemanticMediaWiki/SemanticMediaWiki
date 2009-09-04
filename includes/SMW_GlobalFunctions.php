@@ -250,17 +250,9 @@ function smwfSetupExtension() {
 	$wgHooks['ParserAfterTidy'][] = 'SMWParseData::onParserAfterTidy'; // fetch some MediaWiki data for replication in SMW's store
 	$wgHooks['NewRevisionFromEditComplete'][] = 'SMWParseData::onNewRevisionFromEditComplete'; // fetch some MediaWiki data for replication in SMW's store
 	$wgHooks['OutputPageParserOutput'][] = 'SMWFactbox::onOutputPageParserOutput'; // copy some data for later Factbox display
-
 	$wgHooks['ArticleFromTitle'][] = 'smwfOnArticleFromTitle'; // special implementations for property/type articles
+	$wgHooks['ParserFirstCallInit'][] = 'SMWParserExtensions::registerParserFunctions';
 
-	if( defined( 'MW_SUPPORTS_PARSERFIRSTCALLINIT' ) ) {
-		$wgHooks['ParserFirstCallInit'][] = 'SMWParserExtensions::registerParserFunctions';
-	} else {
-		if ( class_exists( 'StubObject' ) && !StubObject::isRealObject( $wgParser ) ) {
-			$wgParser->_unstub();
-		}
-		SMWParserExtensions::registerParserFunctions( $wgParser );
-	}
 	if ($smwgToolboxBrowseLink) {
 		if (version_compare($wgVersion,'1.13','>')) {
 			$wgHooks['SkinTemplateToolboxEnd'][] = 'smwfShowBrowseLink'; // introduced only in 1.13
