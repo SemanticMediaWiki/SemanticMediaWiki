@@ -1865,6 +1865,7 @@ $messages['el'] = array(
 	'smw_printername_auto' => 'Αυτόματα',
 	'smw_printername_count' => 'Αποτελέσματα μέτρησης',
 	'smw_printername_csv' => 'Εξαγωγή CSV',
+	'smw_printername_debug' => 'Αίτημα εκσφαλμάτωσης (για ειδικούς)',
 	'smw_printername_embedded' => 'Ενσωμάτωση περιεχομένων σελίδων',
 	'smw_printername_json' => 'Εξαγωγή JSON',
 	'smw_printername_list' => 'Λίστα',

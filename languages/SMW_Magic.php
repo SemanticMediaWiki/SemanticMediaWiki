@@ -25,6 +25,12 @@ $magicWords['ar'] = array(
 	'SMW_SHOWFACTBOX'       => array( '0', '__عرض_صندوق_الحقيقة__', '__SHOWFACTBOX__' ),
 );
 
+$magicWords['br'] = array(
+	'ask'                   => array( '0', 'goulenn', 'ask' ),
+	'show'                  => array( '0', 'diskouez', 'show' ),
+	'info'                  => array( '0', 'keloù', 'info' ),
+);
+
 $magicWords['nl'] = array(
 	'ask'                   => array( '0', 'vragen', 'ask' ),
 	'show'                  => array( '0', 'weergeven', 'show' ),
