@@ -343,7 +343,7 @@ function smwfShowBrowseLink($skintemplate) {
 		if (!isset($smwgNamespaceIndex)) {
 			$smwgNamespaceIndex = 100;
 		}
-
+		// 100 and 101 used to be occupied by SMW's now obsolete namespaces "Relation" and "Relation_Talk"
 		define('SMW_NS_PROPERTY',       $smwgNamespaceIndex+2);
 		define('SMW_NS_PROPERTY_TALK',  $smwgNamespaceIndex+3);
 		define('SMW_NS_TYPE',           $smwgNamespaceIndex+4);
@@ -378,9 +378,9 @@ function smwfShowBrowseLink($skintemplate) {
 /***** language settings                  *****/
 /**********************************************/
 
-	// FIXME: Can be removed when new style magic words are used (introduced in r52503)
 	/**
 	 * Set up (possibly localised) names for SMW's parser functions.
+	 * @todo Can be removed when new style magic words are used (introduced in r52503)
 	 */
 	function smwfAddMagicWords(&$magicWords, $langCode) {
 		$magicWords['ask']     = array( 0, 'ask' );
