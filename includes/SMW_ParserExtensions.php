@@ -189,19 +189,12 @@ class SMWParserExtensions {
 
 	/**
 	 * The \<ask\> parser hook processing part. This has been replaced by the
-	 * parser function \#ask and should no longer be used.
+	 * parser function \#ask and is no longer supported.
+	 * @todo Remove this function entirely, one could have an extension for those who
+	 * wish to have some intelligent behaviour here.
 	 */
 	static public function doAskHook($querytext, $params, &$parser) {
-		global $smwgQEnabled, $smwgIQRunningNumber;
-		if ($smwgQEnabled) {
-			$smwgIQRunningNumber++;
-			$result = SMWQueryProcessor::getResultFromHookParams($querytext,$params,SMW_OUTPUT_HTML);
-		} else {
-			wfLoadExtensionMessages('SemanticMediaWiki');
-			$result = smwfEncodeMessages(array(wfMsgForContent('smw_iq_disabled')));
-		}
-		SMWOutputs::commitToParser($parser);
-		return $result;
+		return '&lt;ask&gt; no longer supported. See SMW documentation on how to do inline queries now.';
 	}
 
 	/**
