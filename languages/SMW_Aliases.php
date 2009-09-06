@@ -232,7 +232,7 @@ $aliases['ksh'] = array(
 	'WantedProperties' => array( 'Eijeschaffte di noch jebruch wääde' ),
 );
 
-/** Cornish (Kernewek) */
+/** Cornish (Kernowek) */
 $aliases['kw'] = array(
 	'Ask' => array( 'Govyn' ),
 	'Browse' => array( 'Peuri' ),
