@@ -36,26 +36,6 @@ $smwgIP = $IP . '/extensions/SemanticMediaWiki';
 require_once('SMW_GlobalFunctions.php');
 
 ###
-# SMW has changed a lot since version 0.1 and some additional settings are
-# needed to preserve old functions on sites that have been using beta versions
-# of SMW (any version prior to 1.0). Sites still using obsolete SMW beta
-# features should set the following to "true". All others can safely keep the
-# default here.
-#
-# Setting this option to true has the following effect:
-# * The obsolete namespace "Relation" will still be created (maybe some sites
-#   have content there).
-# * Statements like [[property::*]] in queries will be interpreted as printout
-#   statements (like ?property in the current #ask query syntax).
-# This option must be set before including this file, or otherwise the old
-# Relation namespaces will not be available.
-##
-if (!isset($smwgSMWBetaCompatible)) {
-	$smwgSMWBetaCompatible = false;
-}
-##
-
-###
 # If you already have custom namespaces on your site, insert
 #    $smwgNamespaceIndex = ???;
 # into your LocalSettings.php *before* including this file. The number ??? must

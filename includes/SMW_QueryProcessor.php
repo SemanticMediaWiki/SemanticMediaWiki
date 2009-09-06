@@ -611,7 +611,6 @@ class SMWQueryParser {
 	 * suitable description.
 	 */
 	protected function getClassDescription(&$setNS, &$label, $category=true) {
-		global $smwgSMWBetaCompatible; // * printouts only for this old version
 		// note: no subqueries allowed here, inline disjunction allowed, wildcards allowed
 		$result = NULL;
 		$continue = true;
@@ -619,26 +618,6 @@ class SMWQueryParser {
 			$chunk = $this->readChunk();
 			if ($chunk == '+') {
 				//wildcard, ignore for categories (semantically meaningless, everything is in some class)
-			} elseif ( ($chunk == '+') && $category && $smwgSMWBetaCompatible) { // print statement
-				$chunk = $this->readChunk('\]\]|\|');
-				if ($chunk == '|') {
-					$printlabel = $this->readChunk('\]\]');
-					if ($printlabel != ']]') {
-						$chunk = $this->readChunk('\]\]');
-					} else {
-						$printlabel = '';
-						$chunk = ']]';
-					}
-				} else {
-					global $wgContLang;
-					$printlabel = $wgContLang->getNSText(NS_CATEGORY);
-				}
-				if ($chunk == ']]') {
-					return new SMWPrintRequest(SMWPrintRequest::PRINT_CATS, $printlabel);
-				} else {
-					$this->m_errors[] = wfMsgForContent('smw_badprintout');
-					return NULL;
-				}
 			} else { //assume category/concept title
 				/// NOTE: use m_c...prefix to prevent problems with, e.g., [[Category:Template:Test]]
 				$class = Title::newFromText(($category?$this->m_categoryprefix:$this->m_conceptprefix) . $chunk);
@@ -661,7 +640,6 @@ class SMWQueryParser {
 	 * string.
 	 */
 	protected function getPropertyDescription($propertyname, &$setNS, &$label) {
-		global $smwgSMWBetaCompatible; // support for old * printouts of beta
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		$this->readChunk(); // consume separator ":=" or "::"
 		// first process property chain syntax (e.g. "property1.property2::value"):
@@ -772,34 +750,14 @@ class SMWQueryParser {
 						$comparator = SMW_CMP_EQ;
 						$printmodifier = '';
 						SMWQueryParser::prepareValue($value, $comparator, $printmodifier);
-						if ( ($value == '*') && $smwgSMWBetaCompatible ) {
-							if ($chunk == '|') {
-								$printlabel = $this->readChunk('\]\]');
-								if ($printlabel != ']]') {
-									$chunk = $this->readChunk('\]\]');
-								} else {
-									$printlabel = '';
-									$chunk = ']]';
-								}
-							} else {
-								$printlabel = $property->getWikiValue();
-							}
-							if ($chunk == ']]') {
-								return new SMWPrintRequest(SMWPrintRequest::PRINT_PROP, $printlabel, $property, $printmodifier);
-							} else {
-								$this->m_errors[] = wfMsgForContent('smw_badprintout');
-								return NULL;
-							}
+						$dv = SMWDataValueFactory::newPropertyObjectValue($property, $value);
+						if (!$dv->isValid()) {
+							$this->m_errors = $this->m_errors + $dv->getErrors();
+							$vd = new SMWThingDescription();
 						} else {
-							$dv = SMWDataValueFactory::newPropertyObjectValue($property, $value);
-							if (!$dv->isValid()) {
-								$this->m_errors = $this->m_errors + $dv->getErrors();
-								$vd = new SMWThingDescription();
-							} else {
-								$vd = new SMWValueDescription($dv, $comparator);
-							}
-							$innerdesc = $this->addDescription($innerdesc, $vd, false);
+							$vd = new SMWValueDescription($dv, $comparator);
 						}
+						$innerdesc = $this->addDescription($innerdesc, $vd, false);
 					}
 			}
 			$continue = ($chunk == '||');
@@ -828,20 +786,7 @@ class SMWQueryParser {
 	 * effective value string, or of "*" for print statements.
 	 */
 	static public function prepareValue(&$value, &$comparator, &$printmodifier) {
-		global $smwgQComparators, $smwgSMWBetaCompatible; // support for old * printouts of beta
-		// get print modifier behind *
-		if ($smwgSMWBetaCompatible) {
-			$list = preg_split('/^\*/',$value,2);
-			if (count($list) == 2) { //hit
-				$value = '*';
-				$printmodifier = $list[1];
-			} else {
-				$printmodifier = '';
-			}
-			if ($value == '*') { // printout statement
-				return;
-			}
-		}
+		global $smwgQComparators;
 		$list = preg_split('/^(' . $smwgQComparators . ')/u',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
 		$comparator = SMW_CMP_EQ;
 		if (count($list) == 3) { // initial comparator found ($list[1] should be empty)
