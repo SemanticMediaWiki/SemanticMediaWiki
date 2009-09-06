@@ -43,19 +43,30 @@
  */
 abstract class SMWDataValue {
 
-	protected $m_property = NULL;     /// The text label of the respective property or false if none given
-	protected $m_caption;             /// The text label to be used for output or false if none given
-	protected $m_errors = array();    /// Array of error text messages
-	protected $m_isset = false;       /// True if a value was set.
-	protected $m_typeid;              /// The type id for this value object
-	protected $m_infolinks = array(); /// Array of infolink objects
-	protected $m_outformat = false;   /// output formatting string, see setOutputFormat()
-	protected $m_stubvalues = false;  /// usually unstub() checks if this contains useful content,
-	                                  /// and inits the value with setDBkeys() in this case; false while unused
+	/// The text label of the respective property or false if none given
+	protected $m_property = NULL;
+	/// The text label to be used for output or false if none given
+	protected $m_caption;
+	/// True if a value was set.
+	protected $m_isset = false;
+	/// The type id for this value object
+	protected $m_typeid;
+	/// Array of infolink objects
+	protected $m_infolinks = array();
+	/// output formatting string, see setOutputFormat()
+	protected $m_outformat = false;
+	/// usually unstub() checks if this contains useful content,
+	/// and inits the value with setDBkeys() in this case; false while unused
+	protected $m_stubvalues = false;
 
-	private $m_hasssearchlink;        /// used to control the addition of the standard search link
-	private $m_hasservicelinks;       /// used to control service link creation
-
+    /// used to control the addition of the standard search link
+	private $m_hasssearchlink;
+	/// used to control service link creation
+	private $m_hasservicelinks;
+	/// Array of error text messages, private to allow us to track error insertion (PHP's count() is too slow when called often)
+	private $m_errors = array();
+	/// True if there were any errors
+	private $m_haserrors = false;
 
 	public function __construct($typeid) {
 		$this->m_typeid = $typeid;
@@ -71,6 +82,7 @@ abstract class SMWDataValue {
 	public function setUserValue($value, $caption = false) {
 		wfProfileIn('SMWDataValue::setUserValue (SMW)');
 		$this->m_errors = array(); // clear errors
+		$this->m_haserrors = false;
 		$this->m_infolinks = array(); // clear links
 		$this->m_isset = false;
 		$this->m_hasssearchlink = false;
@@ -111,6 +123,7 @@ abstract class SMWDataValue {
 	 */
 	public function setDBkeys($args) {
 		$this->m_errors = array(); // clear errors
+		$this->m_haserrors = false;
 		$this->m_infolinks = array(); // clear links
 		$this->m_hasssearchlink = false;
 		$this->m_hasservicelinks = false;
@@ -213,8 +226,10 @@ abstract class SMWDataValue {
 	public function addError($error) {
 		if (is_array($error)) {
 			$this->m_errors = array_merge($this->m_errors, $error);
+			$this->m_haserrors = $this->m_haserrors || (count($error)>0);
 		} else {
 			$this->m_errors[] = $error;
+			$this->m_haserrors = true;
 		}
 	}
 
@@ -455,7 +470,7 @@ abstract class SMWDataValue {
 	 */
 	public function isValid() {
 		$this->unstub();
-		return ( (count($this->m_errors) == 0) && $this->m_isset );
+		return ( (!$this->m_haserrors) && $this->m_isset );
 	}
 
 	/**
