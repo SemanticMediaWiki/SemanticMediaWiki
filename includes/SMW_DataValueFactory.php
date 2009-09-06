@@ -220,17 +220,5 @@ class SMWDataValueFactory {
 		return SMWDataValueFactory::$m_typelabels;
 	}
 
-
-	/**
-	 * Create a value from a string supplied by a user for a given property.
-	 * If no value is given, an empty container is created, the value of which
-	 * can be set later on.
-	 * @deprecated This function will vanish in SMW 1.5. Use SMWDataValueFactory::newPropertyObjectValue instead.
-	 */
-	static public function newPropertyValue($propertyname, $value=false, $caption=false) {
-		return SMWDataValueFactory::newPropertyObjectValue(SMWPropertyValue::makeUserProperty($propertyname),$value,$caption);
-	}
-
-
 }
 
