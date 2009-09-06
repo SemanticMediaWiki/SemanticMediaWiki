@@ -122,7 +122,7 @@ class SMWTestStore extends SMWStore {
 	}
 
 	function getInProperties(SMWDataValue $object, $requestoptions = NULL) {
-		return $this->getTestTitles($requestoptions, SMW_NS_RELATION);
+		return $this->getTestTitles($requestoptions, SMW_NS_PROPERTY);
 	}
 
 ///// Writing methods /////

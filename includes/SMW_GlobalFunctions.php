@@ -338,7 +338,7 @@ function smwfShowBrowseLink($skintemplate) {
 	 * greater or equal to 100.
 	 */
 	function smwfInitNamespaces() {
-		global $smwgNamespaceIndex, $wgExtraNamespaces, $wgNamespaceAliases, $wgNamespacesWithSubpages, $wgLanguageCode, $smwgContLang, $smwgSMWBetaCompatible;
+		global $smwgNamespaceIndex, $wgExtraNamespaces, $wgNamespaceAliases, $wgNamespacesWithSubpages, $wgLanguageCode, $smwgContLang;
 
 		if (!isset($smwgNamespaceIndex)) {
 			$smwgNamespaceIndex = 100;
@@ -354,29 +354,12 @@ function smwfShowBrowseLink($skintemplate) {
 		define('SMW_NS_CONCEPT',        $smwgNamespaceIndex+8);
 		define('SMW_NS_CONCEPT_TALK',   $smwgNamespaceIndex+9);
 
-		/// For backwards compatibility. The namespaces are only registered if $smwgSMWBetaCompatible.
-		define('SMW_NS_RELATION',       $smwgNamespaceIndex);
-		define('SMW_NS_RELATION_TALK',  $smwgNamespaceIndex+1);
-
 		smwfInitContentLanguage($wgLanguageCode);
 
 		// Register namespace identifiers
 		if (!is_array($wgExtraNamespaces)) { $wgExtraNamespaces=array(); }
-		$namespaces = $smwgContLang->getNamespaces();
-		$namespacealiases = $smwgContLang->getNamespaceAliases();
-		if (!$smwgSMWBetaCompatible) { // redirect obsolete namespaces to new ones
-			$namespacealiases[$namespaces[SMW_NS_RELATION]] = SMW_NS_PROPERTY;
-			$namespacealiases[$namespaces[SMW_NS_RELATION_TALK]] = SMW_NS_PROPERTY_TALK;
-			unset($namespaces[SMW_NS_RELATION]);
-			unset($namespaces[SMW_NS_RELATION_TALK]);
-			foreach ($namespacealiases as $alias => $namespace) { // without this, links using aliases break
-				if ( ($namespace == SMW_NS_RELATION) || ($namespace == SMW_NS_RELATION_TALK) ) {
-					$namespacealiases[$alias] = $namespace+2;
-				}
-			}
-		}
-		$wgExtraNamespaces = $wgExtraNamespaces + $namespaces;
-		$wgNamespaceAliases = $wgNamespaceAliases + $namespacealiases;
+		$wgExtraNamespaces = $wgExtraNamespaces + $smwgContLang->getNamespaces();
+		$wgNamespaceAliases = $wgNamespaceAliases + $smwgContLang->getNamespaceAliases();
 
 		// Support subpages only for talk pages by default
 		$wgNamespacesWithSubpages = $wgNamespacesWithSubpages + array(

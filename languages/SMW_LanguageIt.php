@@ -77,14 +77,22 @@ protected $m_SpecialPropertyAliases = array(
 );
 
 protected $m_Namespaces = array( // TODO: translate (English aliases can be kept, see other language files
-	SMW_NS_RELATION       => 'Relation',
-	SMW_NS_RELATION_TALK  => 'Relation_talk',
 	SMW_NS_PROPERTY       => 'Property',
 	SMW_NS_PROPERTY_TALK  => 'Property_talk',
 	SMW_NS_TYPE           => 'Type',
 	SMW_NS_TYPE_TALK      => 'Type_talk',
 	SMW_NS_CONCEPT        => 'Concept',
 	SMW_NS_CONCEPT_TALK   => 'Concept_talk'
+);
+
+protected $m_NamespaceAliases = array(
+	// support English aliases for namespaces
+	'Property'      => SMW_NS_PROPERTY,
+	'Property_talk' => SMW_NS_PROPERTY_TALK,
+	'Type'          => SMW_NS_TYPE,
+	'Type_talk'     => SMW_NS_TYPE_TALK,
+	'Concept'       => SMW_NS_CONCEPT,
+	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 
 }

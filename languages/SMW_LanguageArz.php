@@ -65,8 +65,6 @@ protected $m_SpecialPropertyAliases = array(
 );
 
 protected $m_Namespaces = array(
-	SMW_NS_RELATION       => 'علاقة',
-	SMW_NS_RELATION_TALK  => 'نقاش_العلاقة',
 	SMW_NS_PROPERTY       => 'خاصية',
 	SMW_NS_PROPERTY_TALK  => 'نقاش_الخاصية',
 	SMW_NS_TYPE           => 'نوع',

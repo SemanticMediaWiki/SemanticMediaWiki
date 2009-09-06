@@ -109,8 +109,6 @@ protected $m_SpecialPropertyAliases = array(
 
 
 protected $m_Namespaces = array(
-	SMW_NS_RELATION       => 'Relacja',
-	SMW_NS_RELATION_TALK  => 'Dyskusja_relacji',
 	SMW_NS_PROPERTY       => 'Atrybut',
 	SMW_NS_PROPERTY_TALK  => 'Dyskusja_atrybutu',
 	SMW_NS_TYPE           => 'Typ',
@@ -121,8 +119,6 @@ protected $m_Namespaces = array(
 
 protected $m_NamespaceAliases = array(
 	// support English aliases for namespaces
-	'Relation'      => SMW_NS_RELATION,
-	'Relation_talk' => SMW_NS_RELATION_TALK,
 	'Property'      => SMW_NS_PROPERTY,
 	'Property_talk' => SMW_NS_PROPERTY_TALK,
 	'Type'          => SMW_NS_TYPE,

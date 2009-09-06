@@ -92,8 +92,6 @@ protected $m_SpecialPropertyAliases = array(
 );
 
 protected $m_Namespaces = array(
-	SMW_NS_RELATION       => '关联',	//'Relation',
-	SMW_NS_RELATION_TALK  => '关联讨论',	//'Relation_talk',
 	SMW_NS_PROPERTY       => '性质',	//'Property',
 	SMW_NS_PROPERTY_TALK  => '性质讨论',	//'Property_talk',
 	SMW_NS_TYPE           => '型态',	//'Type',
@@ -104,8 +102,6 @@ protected $m_Namespaces = array(
 
 protected $m_NamespaceAliases = array(
 	// support English aliases for namespaces
-	'Relation'      => SMW_NS_RELATION,
-	'Relation_talk' => SMW_NS_RELATION_TALK,
 	'Property'      => SMW_NS_PROPERTY,
 	'Property_talk' => SMW_NS_PROPERTY_TALK,
 	'Type'          => SMW_NS_TYPE,
