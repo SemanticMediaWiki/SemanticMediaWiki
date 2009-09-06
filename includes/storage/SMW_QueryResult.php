@@ -25,9 +25,6 @@ class SMWQueryResult {
 	protected $m_furtherres; // are there more results than the ones given?
 	// The following are not part of the result, but specify the input query (needed for further results link):
 	protected $m_query; // the query object, must be set on create and is our fallback for all other data
-	protected $m_querystring; // string (inline query) version of query
-	protected $m_extraprintouts; // the additional SMWPrintRequest objects specified outside $m_querystring
-	  // Note: these may differ from m_printrequests, since they do not involve requests given in the querystring
 
 	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
@@ -38,8 +35,6 @@ class SMWQueryResult {
 		$this->m_printrequests = $printrequests;
 		$this->m_furtherres = $furtherres;
 		$this->m_query = $query;
-		$this->m_querystring = $query->getQueryString();
-		$this->m_extraprintouts = $query->getExtraPrintouts();
 	}
 
 	/**
@@ -74,8 +69,7 @@ class SMWQueryResult {
 
 
 	/**
-	 * Return the next result row as an array of
-	 * SMWResultArray objects.
+	 * Return the next result row as an array of SMWResultArray objects.
 	 */
 	public function getNext() {
 		$result = current($this->m_content);
@@ -111,7 +105,7 @@ class SMWQueryResult {
 	 * returned.
 	 */
 	public function getQueryString() {
-		return $this->m_querystring;
+		return $this->m_query->getQueryString();
 	}
 
 	/**
@@ -142,8 +136,8 @@ class SMWQueryResult {
 	 * message 'smw_iq_moreresults' is used as a caption.
 	 */
 	public function getQueryLink($caption = false) {
-		$params = array(trim($this->m_querystring));
-		foreach ($this->m_extraprintouts as $printout) {
+		$params = array(trim($this->m_query->getQueryString()));
+		foreach ($this->m_query->getExtraPrintouts() as $printout) {
 			$params[] = $printout->getSerialisation();
 		}
 		if ( count($this->m_query->sortkeys)>0 ) {
@@ -234,8 +228,7 @@ class SMWResultArray {
 
 
 	/**
-	 * Would there be more query results that were
-	 * not shown due to a limit?
+	 * Would there be more query results that were not shown due to a limit?
 	 */
 	public function hasFurtherResults() {
 		return $this->furtherres;
