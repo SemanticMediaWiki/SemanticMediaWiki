@@ -20,68 +20,51 @@
  * @ingroup SMWQuery
  */
 class SMWQueryResult {
-	protected $m_content; // array (table) of arrays (rows) of arrays (fields, SMWResultArray)
-	protected $m_printrequests; // array of SMWPrintRequest objects, indexed by their natural hash keys
-	protected $m_furtherres; // are there more results than the ones given?
-	// The following are not part of the result, but specify the input query (needed for further results link):
-	protected $m_query; // the query object, must be set on create and is our fallback for all other data
+	/// Array of SMWWikiPageValue objects that are the basis for this result
+	protected $m_results;
+	/// Array of SMWPrintRequest objects, indexed by their natural hash keys
+	protected $m_printrequests;
+	/// Are there more results than the ones given?
+	protected $m_furtherres;
+	/// The query object for which this is a result, must be set on create and is the source of
+	/// data needed to create further result links.
+	protected $m_query;
+	/// The SMWStore object used to retrieve further data on demand.
+	protected $m_store;
 
 	/**
 	 * Initialise the object with an array of SMWPrintRequest objects, which
 	 * define the structure of the result "table" (one for each column).
+	 * @todo Update documentation
 	 */
-	public function SMWQueryResult($printrequests, $query, $furtherres=false) {
-		$this->m_content = array();
+	public function SMWQueryResult($printrequests, $query, $results, $store, $furtherres=false) {
+		$this->m_results = $results;
+		reset($this->m_results);
 		$this->m_printrequests = $printrequests;
 		$this->m_furtherres = $furtherres;
 		$this->m_query = $query;
+		$this->m_store = $store;
 	}
-
-	/**
-	 * Checks whether it conforms to the given schema of print requests, adds the
-	 * row to the result, and returns true. Otherwise returns false.
-	 * @todo Should we just skip the checks and trust our callers?
-	 */
-	public function addRow($row) {
-		reset($row);
-		reset($this->m_printrequests);
-		$pr = current($this->m_printrequests);
-		$ra = current($row);
-
-		while ( $pr !== false ) {
-			if (!($ra instanceof SMWResultArray)) {
-				return false;
-			}
-			//compare print-request signatures:
-			if ($pr->getHash() !== $ra->getPrintRequest()->getHash()) {
-				return false;
-			}
-			$pr = next($this->m_printrequests);
-			$ra = next($row);
-		}
-		if ($ra !== false) {
-			return false;
-		}
-		$this->m_content[] = $row;
-		reset($this->m_content);
-		return true;
-	}
-
 
 	/**
 	 * Return the next result row as an array of SMWResultArray objects.
 	 */
 	public function getNext() {
-		$result = current($this->m_content);
-		next($this->m_content);
-		return $result;
+		$page = current($this->m_results);
+		next($this->m_results);
+		if ($page === false) return false;
+		$row = array();
+		foreach ($this->m_printrequests as $p) {
+			$row[] = new SMWResultArray($page, $p, $this->m_store);
+		}
+		return $row;
 	}
 
 	/**
 	 * Return number of available results.
 	 */
 	public function getCount() {
-		return count($this->m_content);
+		return count($this->m_results);
 	}
 
 	/**
@@ -101,7 +84,7 @@ class SMWQueryResult {
 	}
 
 	/**
-	 * Returns the query string, that sets the conditions for the entities to be
+	 * Returns the query string defining the conditions for the entities to be
 	 * returned.
 	 */
 	public function getQueryString() {
@@ -109,8 +92,7 @@ class SMWQueryResult {
 	}
 
 	/**
-	 * Would there be more query results that were
-	 * not shown due to a limit?
+	 * Would there be more query results that were not shown due to a limit?
 	 */
 	public function hasFurtherResults() {
 		return $this->m_furtherres;
@@ -177,14 +159,18 @@ class SMWQueryResult {
  */
 class SMWResultArray {
 	protected $printrequest;
-	protected $content;
-	protected $furtherres;
+	protected $m_result;
+	protected $m_store;
+	protected $m_content;
 
-	public function SMWResultArray($content, SMWPrintRequest $printrequest, $furtherres = false) {
-		$this->content = $content;
-		reset($this->content);
+	static protected $catcacheobj = false;
+	static protected $catcache = false;
+
+	public function SMWResultArray(SMWWikiPageValue $resultpage, SMWPrintRequest $printrequest, SMWStore $store) {
+		$this->m_result = $resultpage;
 		$this->printrequest = $printrequest;
-		$this->furtherres = $furtherres;
+		$this->m_store = $store;
+		$this->m_content = false;
 	}
 
 	/**
@@ -192,15 +178,63 @@ class SMWResultArray {
 	 * results, they are either Titles or SMWDataValues.
 	 */
 	public function getContent() {
-		return $this->content;
+		$this->loadContent();
+		return $this->m_content;
+	}
+
+	protected function loadContent() {
+		if ($this->m_content !== false) return;
+		wfProfileIn('SMWQueryResult::loadContent (SMW)');
+		switch ($this->printrequest->getMode()) {
+			case SMWPrintRequest::PRINT_THIS:
+				if ($this->printrequest->getOutputFormat()) {
+					$res = clone $this->m_result;
+					$res->setOutputFormat($this->printrequest->getOutputFormat());
+				} else {
+					$res = $this->m_result;
+				}
+				$this->m_content = array($res);
+			break;
+			case SMWPrintRequest::PRINT_CATS:
+				if ( SMWResultArray::$catcacheobj != $this->m_result->getHash() ) {
+					SMWResultArray::$catcache = $this->m_store->getPropertyValues($this->m_result,SMWPropertyValue::makeProperty('_INST'));
+					SMWResultArray::$catcacheobj = $this->m_result->getHash();
+				}
+				$this->m_content = SMWResultArray::$catcache;
+			case SMWPrintRequest::PRINT_PROP:
+				$this->m_content = $this->m_store->getPropertyValues($this->m_result,$this->printrequest->getData(), NULL, $this->printrequest->getOutputFormat());
+			break;
+			case SMWPrintRequest::PRINT_CCAT:
+				if ( SMWResultArray::$catcacheobj != $this->m_result->getHash() ) {
+					SMWResultArray::$catcache = $this->m_store->getPropertyValues($this->m_result,SMWPropertyValue::makeProperty('_INST'));
+					SMWResultArray::$catcacheobj = $this->m_result->getHash();
+				}
+				$found = '0';
+				$prkey = $this->printrequest->getData()->getDBkey();
+				foreach (SMWResultArray::$catcache as $cat) {
+					if ($cat->getDBkey() == $prkey) {
+						$found = '1';
+						break;
+					}
+				}
+				$dv = SMWDataValueFactory::newTypeIDValue('_boo');
+				$dv->setOutputFormat($this->printrequest->getOutputFormat());
+				$dv->setDBkeys(array($found));
+				$this->m_content = array($dv);
+			break;
+			default: $this->m_content = array(); // unknown print request
+		}
+		reset($this->m_content);
+		wfProfileOut('SMWQueryResult::loadContent (SMW)');
 	}
 
 	/**
 	 * Return the next result object (Title or SMWDataValue).
 	 */
 	public function getNextObject() {
-		$result = current($this->content);
-		next($this->content);
+		$this->loadContent();
+		$result = current($this->m_content);
+		next($this->m_content);
 		return $result;
 	}
 
@@ -213,8 +247,9 @@ class SMWResultArray {
 	 * interpretation should be part of the generalised SMWDataValue.
 	 */
 	public function getNextText($outputmode, $linker = NULL) {
-		$object = current($this->content);
-		next($this->content);
+		$this->loadContent();
+		$object = current($this->m_content);
+		next($this->m_content);
 		if ($object instanceof SMWDataValue) { //print data values
 			if ($object->getTypeID() == '_wpg') { // prefer "long" text for page-values
 				return $object->getLongText($outputmode, $linker);
@@ -224,14 +259,6 @@ class SMWResultArray {
 		} else {
 			return false;
 		}
-	}
-
-
-	/**
-	 * Would there be more query results that were not shown due to a limit?
-	 */
-	public function hasFurtherResults() {
-		return $this->furtherres;
 	}
 
 	/**

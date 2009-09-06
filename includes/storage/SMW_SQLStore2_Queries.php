@@ -279,6 +279,7 @@ class SMWSQLStore2QueryEngine {
 
 		$qr = array();
 		$count = 0;
+		$prs = $query->getDescription()->getPrintrequests();
 		while ( ($count < $query->getLimit()) && ($row = $this->m_dbs->fetchObject($res)) ) {
 			$count++;
 			$v = SMWWikiPageValue::makePage($row->t, $row->ns, $row->sortkey);
@@ -289,52 +290,7 @@ class SMWSQLStore2QueryEngine {
 			$count++;
 		}
 		$this->m_dbs->freeResult($res);
-
-		// Create result by executing print statements for everything that was fetched
-		///TODO: limit (and offset?) values for printouts?
-		$prs = $query->getDescription()->getPrintrequests();
-		$result = new SMWQueryResult($prs, $query, ($count > $query->getLimit()) );
-		foreach ($qr as $qt) {
-			$row = array();
-			$cats = false;
-			foreach ($prs as $pr) {
-				switch ($pr->getMode()) {
-				case SMWPrintRequest::PRINT_THIS:
-					if ($pr->getOutputFormat()) {
-						$qt->setOutputFormat($pr->getOutputFormat());
-					}
-					$row[] = new SMWResultArray(array($qt), $pr);
-				break;
-				case SMWPrintRequest::PRINT_CATS:
-					if ($cats === false) {
-						$cats = $this->m_store->getPropertyValues($qt,SMWPropertyValue::makeProperty('_INST'));
-					}
-					$row[] = new SMWResultArray($cats, $pr);
-				break;
-				case SMWPrintRequest::PRINT_PROP:
-					$row[] = new SMWResultArray($this->m_store->getPropertyValues($qt,$pr->getData(), NULL, $pr->getOutputFormat()), $pr);
-				break;
-				case SMWPrintRequest::PRINT_CCAT:
-					if ($cats === false) {
-						$cats = $this->m_store->getPropertyValues($qt,SMWPropertyValue::makeProperty('_INST'));
-					}
-					$found = '0';
-					$prkey = $pr->getData()->getDBkey();
-					foreach ($cats as $cat) {
-						if ($cat->getDBkey() == $prkey) {
-							$found = '1';
-							break;
-						}
-					}
-					$dv = SMWDataValueFactory::newTypeIDValue('_boo');
-					$dv->setOutputFormat($pr->getOutputFormat());
-					$dv->setDBkeys(array($found));
-					$row[] = new SMWResultArray(array($dv), $pr);
-				break;
-				}
-			}
-			$result->addRow($row);
-		}
+		$result = new SMWQueryResult($prs, $query, $qr, $this->m_store, ($count > $query->getLimit()) );
 		wfProfileOut('SMWSQLStore2Queries::getInstanceQueryResult (SMW)');
 		return $result;
 	}
