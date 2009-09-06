@@ -256,18 +256,6 @@ class SMWQueryProcessor {
 
 	/**
 	 * Process a query string in SMW's query language and return a formatted
-	 * result set as HTML text. A parameter array of key-value-pairs constrains
-	 * the query and determines the serialisation mode for results. The parameter
-	 * $context defines in what context the query is used, which affects ceretain
-	 * general settings.
-	 * @deprecated use SMWQueryProcessor::getResult()
-	 */
-	static public function getResultHTML($querystring, $params, $context = SMWQueryProcessor::INLINE_QUERY) {
-		return SMWQueryProcessor::getResultFromQueryString($querystring, $params, array(), SMW_OUTPUT_HTML, $context);
-	}
-
-	/**
-	 * Process a query string in SMW's query language and return a formatted
 	 * result set as specified by $outputmode. A parameter array of key-value-pairs
 	 * constrains the query and determines the serialisation mode for results. The
 	 * parameter $context defines in what context the query is used, which affects
