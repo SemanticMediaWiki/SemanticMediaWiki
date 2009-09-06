@@ -94,7 +94,7 @@ remarks in the section "Notes on Upgrading" below!
 
 '''Remark:'''  Semantic MediaWiki uses ten additional namespace indexes (see
 http://meta.wikimedia.org/wiki/Help:Custom_namespaces), in the range from
-100 to 109. 100 and 101 are only needed if $smwgSMWBetaCompatible is set.
+100 to 109. 100 and 101 are not used (they were used in early beta versions).
 106 and 107 are reserved for the SemanticForms extension. If you have your own
 custom namespaces, you have to set the parameter $smwgNamespaceIndex before
 including SMW_Settings.php. See the documentation $within SMW_Settings.php for
@@ -174,6 +174,11 @@ Some configuration options (used in LocalSettings.php) have changed since SMW
 following list gives the version in which a setting was first introduced, so it
 can be ignored if you already run this version or a more recent one.
 
+* [1.4] Version 1.4 still supported a setting $smwgSMWBetaCompatible to enable
+the old <ask> query syntax and the Relation namespace. This backwards
+compatibility has now been dropped and the setting is no longer used. Please
+update your wiki to not use the outdated (and now undocumented) features.
+
 * [1.3] Since SMW 1.3, the Factbox is hidden by default and will not appear.
 As a compensation, the toolbox (usually on the left below the search field)
 shows a link to Special:Browse. To use the display behaviour of the Factbox as
@@ -185,10 +190,9 @@ SMW_Settings.php for details.
 default, since this was known to cause problems. To re-enable this, set
 $smwgLinksInValues = true;
 
-* [1.2] If your wiki uses <ask> syntax or the Relation: namespace, you may want
-to set $smwgSMWBetaCompatible = true; before the line including
-SMW_Settings.php in LocalSettings.php. Consider changing <ask> to #ask to be
-able to drop SMW beta compatibility.
+* [1.2] The <ask> syntax and the Relation: namespace have still been officially
+supported in SMW 1.2, and were optionally available until SMW 1.4.*. Both are
+now disabled and can no longer be used.
 
 * [1.2] If you had a setting $smwgQDisjunctionSupport = false, then you now
 need the following settings:
