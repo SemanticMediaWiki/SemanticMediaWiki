@@ -129,7 +129,6 @@ function enableSemantics($namespace = null, $complete = false) {
 	$wgAutoloadClasses['SMWListResultPrinter']      = $smwgIP . '/includes/SMW_QP_List.php';
 	$wgAutoloadClasses['SMWCategoryResultPrinter']  = $smwgIP . '/includes/SMW_QP_Category.php';
 	$wgAutoloadClasses['SMWEmbeddedResultPrinter']  = $smwgIP . '/includes/SMW_QP_Embedded.php';
-	$wgAutoloadClasses['SMWTemplateResultPrinter']  = $smwgIP . '/includes/SMW_QP_Template.php';
 	$wgAutoloadClasses['SMWRSSResultPrinter']       = $smwgIP . '/includes/SMW_QP_RSSlink.php';
 	$wgAutoloadClasses['SMWCsvResultPrinter']       = $smwgIP . '/includes/SMW_QP_CSV.php';
 	$wgAutoloadClasses['SMWJSONResultPrinter']      = $smwgIP . '/includes/SMW_QP_JSONlink.php';

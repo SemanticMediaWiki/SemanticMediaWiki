@@ -51,6 +51,11 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	}
 
 	protected function getResultText($res,$outputmode) {
+		if ( ('template' == $this->mFormat) && ($this->mTemplate == false) ) {
+			wfLoadExtensionMessages('SemanticMediaWiki');
+			$res->addErrors(array(wfMsgForContent('smw_notemplategiven')));
+			return '';
+		}
 		// Determine mark-up strings used around list items:
 		if ( ('ul' == $this->mFormat) || ('ol' == $this->mFormat) ) {
 			$header = '<' . $this->mFormat . '>';
@@ -58,31 +63,34 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rowstart = '<li>';
 			$rowend = '</li>';
 			$plainlist = false;
-		} else {
-			if ($this->mSep != '') {
-				$listsep = $this->mSep;
-				$finallistsep = $listsep;
-			} else {  // default list ", , , and "
-				wfLoadExtensionMessages('SemanticMediaWiki');
-				$listsep = ', ';
-				$finallistsep = wfMsgForContent('smw_finallistconjunct') . ' ';
-			}
+		} else { // "list" and "tempalte" format
 			$header = '';
 			$footer = '';
 			$rowstart = '';
 			$rowend = '';
 			$plainlist = true;
+			if ($this->mSep != '') { // always respect custom separator
+				$listsep = $this->mSep;
+				$finallistsep = $listsep;
+			} elseif ('list' == $this->mFormat)  {  // make default list ", , , and "
+				wfLoadExtensionMessages('SemanticMediaWiki');
+				$listsep = ', ';
+				$finallistsep = wfMsgForContent('smw_finallistconjunct') . ' ';
+			} else { // no default separators for format "template"
+				$listsep = '';
+				$finallistsep = '';
+			}
 		}
 		// Print header
 		$result = $header;
 
-		// put all result rows into an array, for easier handling
+		// Put all result rows into an array, for easier handling
 		$rows = array();
 		while ($row = $res->getNext()) {
 			$rows[] = $row;
 		}
 
-		// set up floating divs, if there's more than one column
+		// Set up floating divs, if there's more than one column
 		if ($this->mColumns > 1) {
 			$column_width = floor(100 / $this->mColumns);
 			$result .= '<div style="float: left; width: ' . $column_width . '%">' . "\n";
@@ -90,7 +98,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rows_in_cur_column = 0;
 		}
 
-		// now print each row
+		// Now print each row
 		foreach ($rows as $i => $row) {
 			if ($this->mColumns > 1) {
 				if ($rows_in_cur_column == $rows_per_column) {
@@ -132,7 +140,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 							$result .= ' (';
 							$found_values = true;
 						} elseif ($found_values || !$first_value) {
-						// any value after '(' or non-first values on first column
+							// any value after '(' or non-first values on first column
 							$result .= ', ';
 						}
 						if ($first_value) { // first value in any column, print header
@@ -157,9 +165,10 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			if ($this->getSearchLabel(SMW_OUTPUT_WIKI)) {
 				$link->setCaption($this->getSearchLabel(SMW_OUTPUT_WIKI));
 			}
-			/// NOTE: passing the parameter sep is not needed, since we use format=ul
-
-			$link->setParameter('ul','format'); // always use ul, other formats hardly work as search page output
+			if ($this->mSep != '') {
+				$link->setParameter($this->mSep,'sep');
+			}
+			$link->setParameter($this->mFormat,'format');
 			if ($this->mTemplate != '') {
 				$link->setParameter($this->mTemplate,'template');
 				if (array_key_exists('link', $this->m_params)) { // linking may interfere with templates
