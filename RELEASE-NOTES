@@ -20,6 +20,8 @@ See http://semantic-mediawiki.org/wiki/SMW_1.4.3
   string empty now leads to printout values being returned as plain, unformatted
   values. Recall that the general format for printouts in #ask is as follows:
    ?propertyname # format = label
+* New special property "Has improper value for" can be used to track input errors
+  (links pages where error happened to properties for which improper data was given).
 * New configuration parameter $smwgMaxNonExpNumber to set the maximal number that
   SMW will normally display without using scientific exp notation. Defaults to
   1000000000000000.
