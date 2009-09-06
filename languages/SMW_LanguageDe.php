@@ -50,18 +50,6 @@ protected $m_DatatypeAliases = array(
 	'Ganze Zahl'            => '_num',
 	'Dezimalzahl'           => '_num',
 	'Aufzählung'            => '_str',
-	// support English aliases:
-	'Page'                  => '_wpg',
-	'String'                => '_str',
-	'Text'                  => '_txt',
-	'Code'                  => '_cod',
-	'Boolean'               => '_boo',
-	'Number'                => '_num',
-	'Geographic coordinate' => '_geo',
-	'Temperature'           => '_tem',
-	'Date'                  => '_dat',
-	'Email'                 => '_ema',
-	'Annotation URI'        => '_anu'
 );
 
 protected $m_SpecialProperties = array(
@@ -80,18 +68,7 @@ protected $m_SpecialProperties = array(
 
 protected $m_SpecialPropertyAliases = array(
 	'Hat Datentyp'     => '_TYPE',
-	'Ausgabeeinheit'   => '_UNIT',
-	// support English aliases for special properties
-	'Has type'          => '_TYPE',
-	'Equivalent URI'    => '_URI',
-	'Subproperty of'    => '_SUBP',
-	'Display units'     => '_UNIT',
-	'Imported from'     => '_IMPO',
-	'Corresponds to'    => '_CONV',
-	'Provides service'  => '_SERV',
-	'Allows value'      => '_PVAL',
-	'Modification date' => '_MDAT',
-	'Has improper value for' => '_ERRP'
+	'Ausgabeeinheit'   => '_UNIT'
 );
 
 protected $m_Namespaces = array(
@@ -101,16 +78,6 @@ protected $m_Namespaces = array(
 	SMW_NS_TYPE_TALK      => "Datentyp_Diskussion",
 	SMW_NS_CONCEPT        => 'Konzept',
 	SMW_NS_CONCEPT_TALK   => 'Konzept_Diskussion'
-);
-
-protected $m_NamespaceAliases = array(
-	// support English aliases for namespaces
-	'Property'      => SMW_NS_PROPERTY,
-	'Property_talk' => SMW_NS_PROPERTY_TALK,
-	'Type'          => SMW_NS_TYPE,
-	'Type_talk'     => SMW_NS_TYPE_TALK,
-	'Concept'       => SMW_NS_CONCEPT,
-	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 
 protected $m_dateformats = array(array(SMW_Y), array(SMW_MY,SMW_YM), array(SMW_DMY,SMW_MDY,SMW_YMD,SMW_YDM));

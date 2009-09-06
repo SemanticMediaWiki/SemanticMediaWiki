@@ -23,6 +23,8 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  */
 class SMWLanguageEn extends SMWLanguage {
 
+protected $m_useEnDefaultAliases = false; //not needed for English, obviously
+
 protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype
 	'_str' => 'String',  // name of the string type

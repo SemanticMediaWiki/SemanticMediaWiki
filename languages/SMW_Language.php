@@ -36,6 +36,45 @@ abstract class SMWLanguage {
 	/// each case, and the constants define the obvious order (e.g. SMW_YDM means "first Year,
 	/// then Day, then Month). Unlisted combinations will not be accepted at all.
 	protected $m_dateformats = array(array(SMW_Y), array(SMW_MY,SMW_YM), array(SMW_DMY,SMW_MDY,SMW_YMD,SMW_YDM));
+	/// Should English default aliases be used in this language?
+	protected $m_useEnDefaultAliases = true;
+	/// Default English aliases for namespaces (typically used in all languages)
+	static protected $enNamespaceAliases = array(
+		'Property'      => SMW_NS_PROPERTY,
+		'Property_talk' => SMW_NS_PROPERTY_TALK,
+		'Type'          => SMW_NS_TYPE,
+		'Type_talk'     => SMW_NS_TYPE_TALK,
+		'Concept'       => SMW_NS_CONCEPT,
+		'Concept_talk'  => SMW_NS_CONCEPT_TALK
+	);
+	/// Default English aliases for namespaces (typically used in all languages)
+	static protected $enDatatypeAliases = array(
+		'URL'                   => '_uri',
+		'Page'                  => '_wpg',
+		'String'                => '_str',
+		'Text'                  => '_txt',
+		'Code'                  => '_cod',
+		'Boolean'               => '_boo',
+		'Number'                => '_num',
+		'Geographic coordinate' => '_geo',
+		'Temperature'           => '_tem',
+		'Date'                  => '_dat',
+		'Email'                 => '_ema',
+		'Annotation URI'        => '_anu'
+	);
+	/// Default English aliases for special property names (typically used in all languages)
+	static protected $enPropertyAliases = array(
+		'Has type'          => '_TYPE',
+		'Equivalent URI'    => '_URI',
+		'Subproperty of'    => '_SUBP',
+		'Display units'     => '_UNIT',
+		'Imported from'     => '_IMPO',
+		'Corresponds to'    => '_CONV',
+		'Provides service'  => '_SERV',
+		'Allows value'      => '_PVAL',
+		'Modification date' => '_MDAT',
+		'Has improper value for' => '_ERRP'
+	);
 
 
 	/**
@@ -49,7 +88,9 @@ abstract class SMWLanguage {
 	 * Function that returns an array of namespace aliases, if any.
 	 */
 	function getNamespaceAliases() {
-		return $this->m_NamespaceAliases;
+		return $this->m_useEnDefaultAliases?
+		       $this->m_NamespaceAliases + SMWLanguage::$enNamespaceAliases:
+			   $this->m_NamespaceAliases;
 	}
 
 	/**
@@ -67,7 +108,9 @@ abstract class SMWLanguage {
 	 * should also have a primary label defined in m_DatatypeLabels.
 	 */
 	function getDatatypeAliases() {
-		return $this->m_DatatypeAliases;
+		return $this->m_useEnDefaultAliases?
+		       $this->m_DatatypeAliases + SMWLanguage::$enDatatypeAliases:
+			   $this->m_DatatypeAliases;
 	}
 
 	/**
@@ -81,7 +124,9 @@ abstract class SMWLanguage {
 	 * Aliases for predefined properties, if any.
 	 */
 	function getPropertyAliases() {
-		return $this->m_SpecialPropertyAliases;
+		return $this->m_useEnDefaultAliases?
+		       $this->m_SpecialPropertyAliases + SMWLanguage::$enPropertyAliases:
+			   $this->m_SpecialPropertyAliases;
 	}
 
 	/**

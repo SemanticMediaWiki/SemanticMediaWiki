@@ -63,17 +63,6 @@ protected $m_SpecialProperties = array(
 
 protected $m_SpecialPropertyAliases = array(
 	'Display unit' => '_UNIT',
-	// support English aliases for special properties
-	'Has type'          => '_TYPE',
-	'Equivalent URI'    => '_URI',
-	'Subproperty of'    => '_SUBP',
-	'Display units'     => '_UNIT',
-	'Imported from'     => '_IMPO',
-	'Corresponds to'    => '_CONV',
-	'Provides service'  => '_SERV',
-	'Allows value'      => '_PVAL',
-	'Modification date' => '_MDAT',
-	'Has improper value for' => '_ERRP'
 );
 
 protected $m_Namespaces = array( // TODO: translate (English aliases can be kept, see other language files
@@ -83,16 +72,6 @@ protected $m_Namespaces = array( // TODO: translate (English aliases can be kept
 	SMW_NS_TYPE_TALK      => 'Type_talk',
 	SMW_NS_CONCEPT        => 'Concept',
 	SMW_NS_CONCEPT_TALK   => 'Concept_talk'
-);
-
-protected $m_NamespaceAliases = array(
-	// support English aliases for namespaces
-	'Property'      => SMW_NS_PROPERTY,
-	'Property_talk' => SMW_NS_PROPERTY_TALK,
-	'Type'          => SMW_NS_TYPE,
-	'Type_talk'     => SMW_NS_TYPE_TALK,
-	'Concept'       => SMW_NS_CONCEPT,
-	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 
 }

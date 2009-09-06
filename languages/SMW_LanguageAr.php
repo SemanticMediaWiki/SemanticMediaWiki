@@ -59,8 +59,6 @@ protected $m_SpecialProperties = array(
 );
 
 protected $m_SpecialPropertyAliases = array(
-	'Modification date' => '_MDAT',
-	'Has improper value for' => '_ERRP',
 	'عرض الوحدة' => '_UNIT'
 );
 

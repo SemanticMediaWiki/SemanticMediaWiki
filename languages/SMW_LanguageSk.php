@@ -40,18 +40,7 @@ protected $m_DatatypeLabels = array(
 protected $m_DatatypeAliases = array(
 	'URI'                   => '_uri',
 	'Celé číslo'            => '_num',
-	'Desatinné číslo'       => '_num',
-	// support English aliases:
-	'Page'                  => '_wpg',
-	'String'                => '_str',
-	'Text'                  => '_txt',
-	'Boolean'               => '_boo',
-	'Number'                => '_num',
-	'Geographic coordinate' => '_geo',
-	'Temperature'           => '_tem',
-	'Date'                  => '_dat',
-	'Email'                 => '_ema',
-	'Annotation URI'        => '_anu'
+	'Desatinné číslo'       => '_num'
 );
 
 protected $m_SpecialProperties = array(
@@ -69,20 +58,8 @@ protected $m_SpecialProperties = array(
 );
 
 protected $m_SpecialPropertyAliases = array(
-	'Zobrazovacia jednotka' => '_UNIT',
-	// support English aliases for special properties
-	'Has type'          => '_TYPE',
-	'Equivalent URI'    => '_URI',
-	'Subproperty of'    => '_SUBP',
-	'Display units'     => '_UNIT',
-	'Imported from'     => '_IMPO',
-	'Corresponds to'    => '_CONV',
-	'Provides service'  => '_SERV',
-	'Allows value'      => '_PVAL',
-	'Modification date' => '_MDAT',
-	'Has improper value for' => '_ERRP'
+	'Zobrazovacia jednotka' => '_UNIT'
 );
-
 
 protected $m_Namespaces = array(
 	SMW_NS_PROPERTY       => 'Atribút',
@@ -91,16 +68,6 @@ protected $m_Namespaces = array(
 	SMW_NS_TYPE_TALK      => 'Diskusia o type',
 	SMW_NS_CONCEPT        => 'Concept', // TODO: translate
 	SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
-);
-
-protected $m_NamespaceAliases = array(
-	// support English aliases for namespaces
-	'Property'      => SMW_NS_PROPERTY,
-	'Property_talk' => SMW_NS_PROPERTY_TALK,
-	'Type'          => SMW_NS_TYPE,
-	'Type_talk'     => SMW_NS_TYPE_TALK,
-	'Concept'       => SMW_NS_CONCEPT,
-	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 
 }

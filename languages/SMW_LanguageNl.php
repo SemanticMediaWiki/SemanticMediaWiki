@@ -44,17 +44,6 @@ protected $m_DatatypeAliases = array(
 	'Integer'               => '_num',
 	'Float'                 => '_num',
 	'Opsomming'             => '_str',
-	// support English aliases:
-	'Page'                  => '_wpg',
-	'String'                => '_str',
-	'Text'                  => '_txt',
-	'Boolean'               => '_boo',
-	'Number'                => '_num',
-	'Geographic coordinate' => '_geo',
-	'Temperature'           => '_tem',
-	'Date'                  => '_dat',
-	'Email'                 => '_ema',
-	'Annotation URI'        => '_anu'
 );
 
 protected $m_SpecialProperties = array(
@@ -71,20 +60,6 @@ protected $m_SpecialProperties = array(
 	'_ERRP' => 'Has improper value for' // TODO: translate
 );
 
-protected $m_SpecialPropertyAliases = array(
-	// support English aliases for special properties
-	'Has type'          => '_TYPE',
-	'Equivalent URI'    => '_URI',
-	'Subproperty of'    => '_SUBP',
-	'Display units'     => '_UNIT',
-	'Imported from'     => '_IMPO',
-	'Corresponds to'    => '_CONV',
-	'Provides service'  => '_SERV',
-	'Allows value'      => '_PVAL',
-	'Modification date' => '_MDAT',
-	'Has improper value for' => '_ERRP'
-);
-
 protected $m_Namespaces = array(
 	SMW_NS_PROPERTY       => 'Eigenschap',
 	SMW_NS_PROPERTY_TALK  => 'Overleg_eigenschap',
@@ -92,16 +67,6 @@ protected $m_Namespaces = array(
 	SMW_NS_TYPE_TALK      => 'Overleg_type',
 	SMW_NS_CONCEPT        => 'Concept',
 	SMW_NS_CONCEPT_TALK   => 'Overleg_concept'
-);
-
-protected $m_NamespaceAliases = array(
-	// support English aliases for namespaces
-	'Property'      => SMW_NS_PROPERTY,
-	'Property_talk' => SMW_NS_PROPERTY_TALK,
-	'Type'          => SMW_NS_TYPE,
-	'Type_talk'     => SMW_NS_TYPE_TALK,
-	'Concept'       => SMW_NS_CONCEPT,
-	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 
 protected $m_months = array('januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december');

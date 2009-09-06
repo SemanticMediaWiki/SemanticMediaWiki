@@ -61,21 +61,6 @@ protected $m_DatatypeAliases = array(
 	'Liczba zmiennoprzecinkowa' => '_num',
 	'Liczba całkowita'      => '_num',
 	'Wyliczenie'            => '_str',
-	// support English aliases:
-	'URI'                   => '_uri',
-	'Float'                 => '_num',
-	'Integer'               => '_num',
-	'Enumeration'           => '_str',
-	'Page'                  => '_wpg',
-	'String'                => '_str',
-	'Text'                  => '_txt',
-	'Boolean'               => '_boo',
-	'Number'                => '_num',
-	'Geographic coordinate' => '_geo',
-	'Temperature'           => '_tem',
-	'Date'                  => '_dat',
-	'Email'                 => '_ema',
-	'Annotation URI'        => '_anu'
 );
 
 protected $m_SpecialProperties = array(
@@ -94,17 +79,6 @@ protected $m_SpecialProperties = array(
 
 protected $m_SpecialPropertyAliases = array(
 	'Wyświetlana jednostka' => '_UNIT',
-	// support English aliases for special properties
-	'Has type'          => '_TYPE',
-	'Equivalent URI'    => '_URI',
-	'Subproperty of'    => '_SUBP',
-	'Display units'     => '_UNIT',
-	'Imported from'     => '_IMPO',
-	'Corresponds to'    => '_CONV',
-	'Provides service'  => '_SERV',
-	'Allows value'      => '_PVAL',
-	'Modification date' => '_MDAT',
-	'Has improper value for' => '_ERRP'
 );
 
 
@@ -115,16 +89,6 @@ protected $m_Namespaces = array(
 	SMW_NS_TYPE_TALK      => 'Dyskusja_typu',
 	SMW_NS_CONCEPT        => 'Pojęcie',
 	SMW_NS_CONCEPT_TALK   => 'Dyskusja pojęcia'
-);
-
-protected $m_NamespaceAliases = array(
-	// support English aliases for namespaces
-	'Property'      => SMW_NS_PROPERTY,
-	'Property_talk' => SMW_NS_PROPERTY_TALK,
-	'Type'          => SMW_NS_TYPE,
-	'Type_talk'     => SMW_NS_TYPE_TALK,
-	'Concept'       => SMW_NS_CONCEPT,
-	'Concept_talk'  => SMW_NS_CONCEPT_TALK
 );
 
 protected $m_dateformats = array(array(SMW_Y), array(SMW_MY,SMW_YM), array(SMW_MDY,SMW_DMY,SMW_YMD,SMW_YDM));
