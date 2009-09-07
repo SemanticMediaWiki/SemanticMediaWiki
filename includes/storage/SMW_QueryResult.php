@@ -15,8 +15,11 @@
  * provide access to the query result and printed data, and to some
  * relevant query parameters that were used.
  *
- * While the API does not require this, it is ensured that every result row
- * returned by this object has the same number of elements (columns).
+ * Standard access is provided through the iterator function getNext(),
+ * which returns an array ("table row") of SMWResultArray objects ("table cells").
+ * It is also possible to access the set of result pages directly using
+ * getResults(). This is useful for printers that disregard printouts and
+ * only are interested in the actual list of pages.
  * @ingroup SMWQuery
  */
 class SMWQueryResult {
@@ -47,7 +50,8 @@ class SMWQueryResult {
 	}
 
 	/**
-	 * Return the next result row as an array of SMWResultArray objects.
+	 * Return the next result row as an array of SMWResultArray objects, and
+	 * advance the internal pointer.
 	 */
 	public function getNext() {
 		$page = current($this->m_results);
@@ -65,6 +69,14 @@ class SMWQueryResult {
 	 */
 	public function getCount() {
 		return count($this->m_results);
+	}
+
+	/**
+	 * Return an array of SMWWikiPageValue objects that make up the
+	 * results stored in this object.
+	 */
+	public function getResults() {
+		return $this->m_results;
 	}
 
 	/**
@@ -155,6 +167,7 @@ class SMWQueryResult {
 /**
  * Container for the contents of a single result field of a query result,
  * i.e. basically an array of SMWDataValues with some additional parameters.
+ * The content of the array is fetched on demand only.
  * @ingroup SMWQuery
  */
 class SMWResultArray {
@@ -175,6 +188,8 @@ class SMWResultArray {
 
 	/**
 	 * Returns the SMWWikiPageValue object to which this SMWResultArray refers.
+	 * If you only care for those objects, consider using SMWQueryResult::getResults()
+	 * directly.
 	 */
 	public function getResultSubject() {
 		return $this->m_result;
