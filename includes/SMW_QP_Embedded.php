@@ -9,9 +9,10 @@
 /**
  * Printer for embedded data.
  * Embeds in the page output the contents of the pages in the query result set.
- * Only the first column of the query is considered. If it is a page reference then that page's contents is embedded.
- * The optional "titlestyle" formatting parameter can be used to apply a format to the headings for the page titles.
- * If "titlestyle" is not specified, a <h1> tag is used.
+ * Printouts are ignored: it only matters which pages were returned by the query.
+ * The optional "titlestyle" formatting parameter can be used to apply a format to
+ * the headings for the page titles. If "titlestyle" is not specified, a <h1> tag is
+ * used.
  * @author Fernando Correia
  * @author Markus Krötzsch
  * @ingroup SMWQuery
@@ -74,30 +75,20 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		}
 
 		// Print all result rows:
-		while (  $row = $res->getNext() ) {
-			$first_col = true;
-			foreach ($row as $field) {
-				if ( $field->getPrintRequest()->getTypeID() == '_wpg' ) { // ensure that we deal with title-likes
-					while ( ($object = $field->getNextObject()) !== false ) {
-						$result .= $embstart;
-						$text= $object->getLongText(SMW_OUTPUT_WIKI,$this->getLinker(true));
-						if ($this->m_showhead) {
-							$result .= $headstart . $text . $headend;
-						}
-						if ($object->getLongWikiText() != $title) {
-							if ($object->getNamespace() == NS_MAIN) {
-								$articlename = ':' . $object->getDBkey();
-							} else {
-								$articlename = $object->getLongWikiText();
-							}
-							$result .= '{{' . $articlename . '}}';
-						} else {
-							$result .= '<b>' . $object->getLongWikiText() . '</b>';
-						}
-						$result .= $embend;
-					}
+		foreach ($res->getResults() as $page) {
+			if ( $page->getTypeID() == '_wpg' ) { // ensure that we deal with title-likes
+				$result .= $embstart;
+				if ($this->m_showhead) {
+					$result .= $headstart . $page->getLongWikiText($this->mLinker) . $headend;
 				}
-				break;  // only use first column for now
+				if ($page->getLongWikiText() != $title) {
+					$result .= '{{' . ( ($page->getNamespace() == NS_MAIN)?
+					            ':' . $page->getDBkey():$page->getLongWikiText() ) .
+								'}}';
+				} else {
+					$result .= '<b>' . $page->getLongWikiText() . '</b>';
+				}
+				$result .= $embend;
 			}
 		}
 
@@ -108,8 +99,8 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 				$link->setCaption($this->getSearchLabel(SMW_OUTPUT_WIKI));
 			}
 			$link->setParameter('embedded','format');
-			$format = $this->m_embedformat;
-			if ($format=='ol') $format = 'ul'; // ordered lists confusing in paged output
+			// ordered lists confusing in paged output
+			$format = ($this->m_embedformat == 'ol')?'ul':$this->m_embedformat;
 			$link->setParameter($format,'embedformat');
 			if (!$this->m_showhead) {
 				$link->setParameter('1','embedonly');
