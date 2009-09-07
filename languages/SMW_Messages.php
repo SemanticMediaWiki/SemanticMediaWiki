@@ -193,11 +193,6 @@ Each datatype has a page where additional information can be provided.',
 Some of the existing properties might be [[Special:UnusedProperties|unused properties]].
 Properties that still lack a page are found on the [[Special:WantedProperties|list of wanted properties]].',
 
-	/*Messages for Flawed Attributes Special --disabled--*/
-	'flawedattributes' => 'Flawed properties',
-	'smw_fattributes'  => 'The pages listed below have an incorrectly defined property.
-The number of incorrect properties is given in the brackets.',
-
 	// Name of the URI Resolver Special (no content)
 	'uriresolver' => 'URI resolver',
 	'smw_uri_doc' => 'The URI resolver implements the <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>.
@@ -350,9 +345,6 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $2: the name of the type of the property
 * $3: the number of occurrences of this property in the wiki',
 	'smw_typeunits' => 'This message is used in the tooltip on Special:Types when a property supports custom units of measurement. The parameter $1 then is the type name, and $2 is a list of unit names.',
-	'flawedattributes' => 'The "flawed properties" special is currently disabled.
-The messages were kept here since some translations already existed.
-This gives this message and "smw_fattributes" a very low priority for translation.',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
 It probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.
 When somebody resolves such a URI, the special page will redirect to the according wiki page or to the according metadata export (OWL/RDF/XML).
@@ -580,9 +572,6 @@ $messages['ar'] = array(
 '''$3''' {{PLURAL:$3|خاصية تمتلك|خاصية تمتلك}} صفحتها الخاصة، ونوع البيانات المقصود محدد ل'''$4''' من هؤلاء.
 بعض الخواص الموجودة ربما تكون [[Special:UnusedProperties|خواص غير مستخدمة]].
 الخواص التي مازالت تفتقد صفحة موجودة في [[Special:WantedProperties|قائمة الخواص المطلوبة]].",
-	'flawedattributes' => 'خصائص معيوبة',
-	'smw_fattributes' => 'الصفحات المعروضة بالأسفل بها خاصية غير معرفة بشكل صحيح.
-عدد الخصائص غير الصحيحة معطى في الاقواس.',
 	'uriresolver' => 'محلل URI',
 	'smw_uri_doc' => 'محلل URI ينفذ <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C على httpRange-14</a>. إنه يتأكد من أن البشر لا يتحولون إلى مواقع ويب.',
 	'ask' => 'بحث سيمانتيك',
@@ -816,9 +805,6 @@ $messages['arz'] = array(
 <b>$4</b> الخصائص لها صفة خاصة، ونوع البيانات المقصود محدد ل<b>$5</b> منها.
 بعض الخصائص الموجودة ربما تكون <a href="$6">خصائص غير مستخدمة</a>.
 الخصائص التى مازالت تفتقد صفحة موجودة فى <a href="$7">قائمة الخصائص المطلوبة</a>.',
-	'flawedattributes' => 'خصائص معيوبة',
-	'smw_fattributes' => 'الصفحات المعروضة بالأسفل بها خاصية غير معرفة بشكل صحيح.
-عدد الخصائص غير الصحيحة معطى فى الاقواس.',
 	'uriresolver' => 'محلل URI',
 	'smw_uri_doc' => 'محلل URI ينفذ <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C على httpRange-14</a>. إنه يتأكد من أن البشر لا يتحولون إلى مواقع ويب.',
 	'ask' => 'بحث سيمانتيك',
@@ -1035,9 +1021,6 @@ $messages['be-tarask'] = array(
 <b>$3</b> {{PLURAL:$3|уласьцівасьць мае|уласьцівасьці маюць|уласьцівасьцяў маюць}} асабістыя старонкі, і пазначаны тып зьвестак падыходзіць для <b>$4</b> зь іх.
 Некаторыя з існуючых уласьцівасьцяў могуць [[Special:UnusedProperties|не выкарыстоўвацца]].
 Уласьцівасьці, якія яшчэ ня маюць асобных старонак, знаходзяцца ў [[Special:WantedProperties|сьпісе старонак, якія патрабуюць апісаньня]].",
-	'flawedattributes' => 'Няслушныя ўласьцівасьці',
-	'smw_fattributes' => 'Старонкі, пададзеныя ніжэй, маюць няслушна вызначаныя ўласьцівасьці.
-Колькасьць няслушных уласьцівасьцяў пададзеная ў дужках.',
 	'uriresolver' => 'Пераўтваральнік URI',
 	'smw_uri_doc' => 'Пераўтваральнік URI ажыцьцяўляе <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">пошук W3C TAG у httpRange-14</a>.
 Гэта забясьпечвае ўпэўненасьць, што людзі не заходзяць на сайты.',
@@ -1369,8 +1352,6 @@ Výsledky pravděpodobně nesplní očekávání.',
 <b>$4</b> vlastností nemá vlastní stránku a zamýšlený datový typ má uvedený <b>$5</b> z nich.
 Některé z existujících vlastností mohou být <a href="$6">nepoužívané</a>.
 Vlastnosti, kterým stále chybí stránka se nacházejí na <a href="$7">seznamu požadovaných vlastností</a>.',
-	'flawedattributes' => 'Chybných atributů',
-	'smw_fattributes' => 'Níže uvedené stránky mají nesprávně definovanou vlastnost. Počet nesprávných vlastností udává číslo v závorkách.',
 	'uriresolver' => 'Překladač URI',
 	'smw_uri_doc' => 'URI resolver se stará o implementaci <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG hledání na httpRange-14</a>. Stará se o to, aby se lidé nestali webstránkami.',
 	'ask' => 'Sémantické vyhledávání',
@@ -1545,8 +1526,6 @@ Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwa
 	'smw_typeunits' => 'Maßeinheiten des Datentyps „$1“: $2',
 	'semanticstatistics' => 'Statistik über semantische Daten',
 	'smw_semstats_text' => "In diesem Wiki {{PLURAL:$1|wurde '''1''' Wert|wurden '''$1''' Werte}} für insgesamt '''$2''' [[Special:Properties|{{PLURAL:$2|Attribut|verschiedene Attribute}}]] eingegeben. '''$3''' {{PLURAL:$3|Attribut hat|Attribute haben}} eine eigene Seite und der gewünschte Datentyp ist für '''$4''' von diesen angegeben worden. Einige der existierenden Attribute können [[Special:UnusedProperties|verwaiste Attribute]] sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der [[Special:WantedProperties|Liste der gewünschten Attribute]] aufgeführt.",
-	'flawedattributes' => 'Fehlerhafte Attribute',
-	'smw_fattributes' => 'Die unten aufgeführten Seiten enthalten fehlerhafte Attribute. Die Anzahl der fehlerhaften Attribute ist in den Klammern angegeben.',
 	'uriresolver' => 'URI-Auflöser',
 	'smw_uri_doc' => 'Der URI-Auflöser setzt die Empfehlungen »<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>« um. Er sorgt dafür, dass Menschen nicht zu Webseiten werden.',
 	'ask' => 'Semantische Suche',
@@ -1782,8 +1761,6 @@ Kuždy datowy typ ma bok, źož daju se pśidatne informacije pódaś.',
 	'smw_semstats_text' => "Toś ten wiki wopśimujo '''$1''' {{PLURAL:$1|kakosćowu gódnotu|kakosćowej gódnośe|kakosćowe gódnoty|kakosćowych gódnotow}} za dogromady '''$2''' [[Special:Properties|{{PLURAL:$2|kakosć|rozdźělnej kakosći|rozdźělne kakosći|rozdźělnych kakosćow}}]].
 '''$3''' {{PLURAL:$3|kakosć ma|kakosći matej|kakosći maju|kakosćow ma}} swójski bok a póžedany datowy typ je za '''$4''' z nich pódany.
 Někotare eksistěrowacych kakosćow by mógli [[Special:UnusedProperties|njewužywane kakosći]] byś. Kakosći, kótarež njamaju bok, su se na [[Special:WantedProperties|lisćinje póžedanych kakosćow]] namakali.",
-	'smw_fattributes' => 'Slědujuce boki maju wopaki definěrowanu kakosć.
-Licba wopacnych kakosćow jo w rožkatyma spinkoma.',
 	'ask' => 'Semantiske pytanje',
 	'smw_ask_sortby' => 'Pó słupje sortěrowaś (opcionalny)',
 	'smw_ask_ascorder' => 'Stupajucy',
@@ -2026,7 +2003,6 @@ $messages['eo'] = array(
 	'smw_types_docu' => 'Jen listo de ĉiuj datentipoj kiu povas esti asignitaj al ecoj.
 Ĉiu datentipo havas paĝon kie plua informo povas esti aldonita.',
 	'semanticstatistics' => 'Semantikaj Statistikoj',
-	'flawedattributes' => 'Fuŝaj Ecoj',
 	'ask' => 'Semantika serĉo',
 	'smw_ask_submit' => 'Trovu rezultojn',
 	'smw_ask_editquery' => '[Redaktu serĉomendo]',
@@ -2194,8 +2170,6 @@ Los resultados podrían no ser como esperabas.',
 '''$3''' {{PLURAL:$3|propiedad tiene|propiedades tienen}} su propia página, y el tipo de datos previstos se ha especificado para '''$4''' de ellas.
 Algunas de las propiedades existentes pueden estar [[Special:UnusedProperties|sin uso]].
 Las propiedades faltantes pueden encontrarse en la [[Special:WantedProperties|lista de propiedades requeridas]].",
-	'flawedattributes' => 'Flawed Attributes',
-	'smw_fattributes' => 'The pages listed below have an incorrectly defined attribute. The number of incorrect attributes is given in the brackets.',
 	'uriresolver' => 'Traductor de URI',
 	'smw_uri_doc' => 'El traductor de URI implementa <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Esto se preocupa de cosas que los humanos no lo hacen en los sitios web..',
 	'ask' => 'Búsqueda semántica',
@@ -2360,9 +2334,6 @@ $messages['fa'] = array(
 هر نوع‌داده یک صفحه دارد که اطلاعات اضافه می‌تواند در آن فراهم آورده شود.',
 	'smw_typeunits' => 'واحدهای اندازه‌گیری از نوع "$1" : $2',
 	'semanticstatistics' => 'آمار معنایی',
-	'flawedattributes' => 'خصوصیت‌های عیب‌دار',
-	'smw_fattributes' => 'صفحه‌های لیست‌شده در پایین یک خصوصیت تعریف‌شده ناصحیح دارند.
-تعداد خصوصیت‌های ناصحیح در داخل براکت داده شده است.',
 	'ask' => 'جستجوی معنایی',
 	'smw_ask_sortby' => 'مرتب‌سازی با ستون (اختیاری)',
 	'smw_ask_ascorder' => 'صعودی',
@@ -2642,8 +2613,6 @@ $messages['fr'] = array(
 '''$3''' {{PLURAL:$3|propriété a sa|propriétés ont leur}} propre page, et le type de données voulu est spécifié pour '''$4''' de celles-ci.
 Certaines des propriétés existantes peuvent en faite être [[Special:UnusedProperties|inutilisées]].
 Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:WantedProperties|liste des propriétés demandées]].",
-	'flawedattributes' => 'Attributs défectueux',
-	'smw_fattributes' => 'Les pages ci-dessous ont un attribut qui n’est pas défini correctement. Le nombre d’attributs incorrects est donné entre les parenthèses.',
 	'uriresolver' => 'Résolveur d’URI',
 	'smw_uri_doc' => 'Le résolveur d’URI implémente la <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">Conclusion du TAG du W3C à propos du httpRange-14</a>. Il peut veiller à ce que les humains ne deviennent pas des sites web.',
 	'ask' => 'Recherche sémantique',
@@ -2892,9 +2861,6 @@ Cada tipo de datos ten unha páxina onde vén proporcionada información adicion
 '''$3''' {{PLURAL:$3|propiedade ten|propiedades teñen}} unha páxina propia e o tipo de datos desexado está especificado para '''$4''' de elas.
 Algunhas das propiedades existentes poden [[Special:UnusedProperties|non ser usadas]].
 As propiedades ás que aínda lles falta unha páxina atópanse na [[Special:WantedProperties|lista de propiedades desexadas]].",
-	'flawedattributes' => 'Propiedades defectuosas',
-	'smw_fattributes' => 'As páxinas listadas embaixo teñen propiedades definidas incorrectamente.
-O númeor de propiedades incorrectas está dado entre parénteses.',
 	'uriresolver' => 'Solucionador de URI',
 	'smw_uri_doc' => 'O solucionador de URI pon en práctica o <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descubrimento da ETIQUETA de W3C en httpRange-14</a>. Vixía que os humanos non entren en sitios web.',
 	'ask' => 'Procura semántica',
@@ -3139,8 +3105,6 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_typeunits' => 'Maßeinheite vum Datetyp „$1“: $2',
 	'semanticstatistics' => 'Statischtik iber semantischi Date',
 	'smw_semstats_text' => "In däm Wiki {{PLURAL:$1|isch '''1''' Wert|sin '''$1''' Wärt}} fir insgsamt '''$2''' [[Special:Properties|{{PLURAL:$2|Eigeschaft|verschideni Eigeschafte}}]] yygee wore. '''$3''' {{PLURAL:$3|Eigeschaft het|Eigeschafte hän}} e eigeni Syte un dr gwischt Datetyp isch fir '''$4''' vu däne aagee wore. E paar vo dr Eigeschafte, wu s het, chenne [[Special:UnusedProperties|verwaisti Eigeschafte]] syy. Eigeschafte, wu no ne Syte sott aagleit wäre derfir, sin in dr [[Special:WantedProperties|Lischt vu dr gwinschte Eigeschafte]] ufgfiert.",
-	'flawedattributes' => 'Fählerhafti Eigeschafte',
-	'smw_fattributes' => 'In dr Syte, wu unte ufgfiert sin, het s fählerhafti Eigeschafte. D Aazahl vu dr fählerhafte Eigeschafte isch in dr Chlammere aagee.',
 	'uriresolver' => 'URI-Ufleser',
 	'smw_uri_doc' => 'Dr URI-Ufleser setzt d Empfählige »<a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>« um. Är sorgt defir, ass Mänsche nit zue Netzsyte wäre.',
 	'ask' => 'Semantischi Suechi',
@@ -3357,9 +3321,6 @@ $messages['he'] = array(
 ל־<b>$4</b> מאפיינים יש דף משלהם, וסוג הנתונים המיועד צוין עבור <b>$5</b> מאלה.
 ייתכן שכמה ממהמאפיינים הקיימים הם <a href="$6">מאפיינים שאינם בשימוש</a>.
 מאפיינים שעדיין חסר להם דף נמצאים ב<a href="$7">רשימת המאפיינים המבוקשים</a>.',
-	'flawedattributes' => 'מאפיינים שגויים',
-	'smw_fattributes' => 'לדפים המופיעים ברשימה שלהלן ישנם מאפיינים שלא הוגדרו כראוי.
-מספר המאפיינים שאינם נכונים נתון בסוגריים.',
 	'ask' => 'חיפוש סמנטי',
 	'smw_ask_sortby' => 'מיון לפי טור (אופציונאלי)',
 	'smw_ask_ascorder' => 'בסדר עולה',
@@ -3611,9 +3572,6 @@ Kóždy datowy typ ma stronu, hdźež móžeš přidatne informacije namakać.',
 	'smw_semstats_text' => "Tutón wiki wobsahuje '''$1''' {{PLURAL:$1|kajkostnu hódnotu|kajkostnej hódnoće|kajkostne hódnoty|kajkostnych hódnotow}} za dohromady '''$2''' [[Special:Properties|{{PLURAL:$2|kajkosć|rozdźělnej kajkosći|rozdźělne kajkosće|rozdźělnych kajkosćow}}]].
 '''$3''' {{PLURAL:$3|kajkosć ma|kajkosći matej|kajkosće maja|kajkosćow ma}} swójsku stronu, a požadany datowy typ je za '''$4''' z nich podaty.
 Někotre z eksistowacych kajkosćow móhli [[Special:UnusedProperties|njewužiwane kajkosće]] być. Kajkosće, kotrež stronu nimaja, su na [[Special:WantedProperties|lisćinje požadanych kajkosćow]].",
-	'flawedattributes' => 'Zmylne kajkosće',
-	'smw_fattributes' => 'Strony, kotrež su deleka nalistowane, maja wopak definowanu kajkosć.
-Ličba wopačnych kajkosćow so w wuzhibowanych spinkach podawa.',
 	'uriresolver' => 'Rezolwer URI',
 	'smw_uri_doc' => 'Rozpušćak URI implementuje <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>.
 Stara so wo to, zo so ludźo z websydłami njestanu.',
@@ -3885,9 +3843,6 @@ Cata typo de datos ha un pagina ubi informationes additional pote esser fornite.
 <b>$3</b> {{PLURAL:$3|proprietate ha su proprie pagina|proprietates ha lor proprie paginas}}, e le typo de datos intendite es specificate pro '''$4''' de {{PLURAL:$3|illo|illos}}.
 Alcunes del proprietates existente pote esser [[Special:UnusedProperties|proprietates non usate]].
 Le proprietates al quales manca ancora un pagina se trova in le [[Special:WantedProperties|lista de proprietates desirate]].",
-	'flawedattributes' => 'Proprietates problematic',
-	'smw_fattributes' => 'Le paginas listate infra ha un proprietate incorrectemente definite.
-Le numero de proprietates incorrecte es date inter parentheses.',
 	'uriresolver' => 'Resolvitor de URI',
 	'smw_uri_doc' => 'Le resolvitor de URL implementa le <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">conclusion del Gruppo de Architectura Technic del W3C a proposito de httpRange-14</a>.
 Illo assecura que le humanos non se transforma in sitos web.',
@@ -4128,8 +4083,6 @@ $messages['it'] = array(
 '''$3''' proprietà {{PLURAL:$3|ha|hanno}} una propria pagina e il tipo di dato inteso è specificato per '''$4''' di queste.
 Alcune delle proprietà esistenti possono essere [[Special:UnusedProperties|proprietà non utilizzate]].
 Le proprietà che ancora non hanno una pagina si possono trovare nell'[[Special:WantedProperties|elenco delle proprietà senza descrizione]].",
-	'flawedattributes' => 'Proprietà scorrette',
-	'smw_fattributes' => 'Le pagine elencate di seguito hanno una proprietà definita in modo non corretto. Il numero di proprietà incorrette è indicato fra parentesi.',
 	'uriresolver' => 'Risolutore di URI',
 	'smw_uri_doc' => 'Il risolutore di URI implementa il <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Fa in modo che gli esseri umani non diventino siti Web.',
 	'ask' => 'Ricerca semantica',
@@ -4296,8 +4249,6 @@ $messages['ja'] = array(
 	'smw_typeunits' => '型「$1」の単位: $2',
 	'semanticstatistics' => '意味的統計',
 	'smw_semstats_text' => "このウィキには、計 '''$2'''種の[[Special:Properties|{{PLURAL:$2|プロパティ}}]]と '''$1'''個の{{PLURAL:$1|プロパティ値}}があります。'''$3'''個の{{PLURAL:$3|プロパティ}}には専用のページがあり、うち '''$4'''個にはデータ型が指定されています。既存のプロパティには[[Special:UnusedProperties|使われていないプロパティ]]があるかもしれません。解説ページがまだ存在しないプロパティは[[Special:WantedProperties|望まれているプロパティ一覧]]に載っています。",
-	'flawedattributes' => '欠陥のあるプロパティ',
-	'smw_fattributes' => '以下に載せているページは定義が誤ったプロパティをもっています。誤ったプロパティの数は角括弧内に表示します。',
 	'uriresolver' => 'URIリゾルバー',
 	'smw_uri_doc' => 'URIリゾルバーは <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG での httpRange-14 に関する議論成果</a>を実装しています。これは人間がウェブサイトに向かわないように取り計らいます。',
 	'ask' => '意味的検索',
@@ -4479,9 +4430,6 @@ Saben jenis data duwé kaca ing ngendi informasi tambahan bisa diwènèhaké.',
 '''$3''' {{PLURAL:$3|sifat nduwèni|sifat nduwèni}} kaca dhéwé, lan jinis-data sing dimaksudaké kanggo '''$4'''.
 Sawetara sifat sing ana mbokmanawa [[Special:UnusedProperties|ora dipigunakaké]].
 Sifat-sifat sing isih ora duwé kaca bisa ditemokaké ing [[Special:WantedProperties|dhaptar sifat-sifat sing dikarepaké]].",
-	'flawedattributes' => 'Sifat-sifaté Ora Pepak',
-	'smw_fattributes' => 'Kaca-kaca sing kapacak ing ngisor iki duwé sifat sing didéfinisi ora bener.
-Cacahé sifat sing ora bener iki diwènèhaké antara tandha kurung.',
 	'uriresolver' => 'URI Resolver',
 	'smw_uri_doc' => "''URI resolver''-é ngimplèmèntasi <a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">W3C TAG finding on httpRange-14</a>. Iku ngurusi supaya manungsa ora owah lan dadi situs-situs wèb.",
 	'ask' => 'Panggolèkan sémantik',
@@ -4797,9 +4745,6 @@ Jede Tüp hät en eije Sigg, woh mer zosäzlesch Enfommazjuhne enndraare kann.',
 	'semanticstatistics' => 'Shtatistik övver de semantesche Date',
 	'smw_semstats_text' => "Dat Wiki hät {{PLURAL:$1|'''eine''' Wäät|'''$1''' Wääte|'''nit eine''' Wäät}} för ensjesamp '''{{PLURAL:$2|ein|$2|keine}}''' ongerscheedlijje [[Special:Properties|{{PLURAL:$2|Eijeschaff|Eijeschaffte|Eijeschaff}}]].
 {{PLURAL:$3|'''Ein''' Eijeschaff hät|'''$3''' Eijeschaffte han|'''Kein''' Eijeschaff hät}} en eije Sigg, un en Zoot (dä Datetyp) es för '''{{PLURAL:$4|eine|$4|keine}}'''  dovun aanjejovve. Et künne och [[Special:UnusedProperties|{{lcfirst:{{#special:UnusedProperties}}}}]] dronger sinn. Eijeschaffte ohne eije Sigg sin op dä Sigg met de [[Special:WantedProperties|{{lcfirst:{{#special:WantedProperties}}}}]] opjeleß.",
-	'flawedattributes' => 'Kappodde Eijeschafte',
-	'smw_fattributes' => 'Die Sigge en dä Leß hee unge han en Definizjun Eijeschafte met Fähler dren.
-De Aanzahl kappodde Eijeschafte shteiht en Kalammere do bei.',
 	'uriresolver' => 'Oplööser för <i lang="en">URIs</i>',
 	'smw_uri_doc' => 'Dä <i lang="en">URI resolver</i> hät dä Vörschlaach <<i lang="en">a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a></i> opjenumme
 (-: un sorresch esu doför, dat uß Minsche kei Websigge wääde :-)',
@@ -5159,9 +5104,6 @@ $messages['mr'] = array(
 <b>$4</b> गुणधर्मांना स्वत:ची पाने आहेत, व त्यापैकी <b>$5</b> गुणधर्मांना जुळणारे डाटा प्रकार दिलेले आहेत.
 यातील काही गुणधर्म हे <a href="$6">न वापरलेले गुणधर्म</a> असण्याची शक्यता आहे.
 ज्या गुणधर्मांना स्वत:चे पान नाही असे गुणधर्म <a href="$7">पाहिजे असलेल्या गुणधर्मांची यादी</a> मध्ये सापडतील.',
-	'flawedattributes' => 'चुकीचे गुणधर्म',
-	'smw_fattributes' => 'खाली दिलेल्या यादीतील पानांना चुकीचे गुणधर्म आहेत.
-चुकीच्या गुणधर्मांची संख्या कंसात दिलेली आहे.',
 	'uriresolver' => 'URI रिजल्व्हर',
 	'smw_uri_doc' => 'URI रिझॉल्वर मध्ये एक <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C टॅग आहे जो httpRange-14 शोधण्यास मदत करतो</a>. हा मनुष्यप्राणी संकेतस्थळामध्ये बदलणार नाही याची काळजी घेतो.',
 	'ask' => 'सिमंटिक शोध',
@@ -5362,8 +5304,6 @@ Het resultaat kan groot zijn!",
 '''$3''' {{PLURAL:$3|eigenschap heeft|eigenschappen hebben}} een eigen pagina en het gegevenstype is voor '''$4''' daarvan aangegeven.
 Een aantal van de bestaande eigenschappen is wellicht [[Special:UnusedProperties|ongebruikt]].
 Eigenschappen waar nog geen pagina voor is zijn te vinden op de [[Special:WantedProperties|lijst met gewenste eigenschappen]].",
-	'flawedattributes' => 'Incomplete eigenschappen',
-	'smw_fattributes' => 'De onderstaande pagina\\s hebben een onjuist gedefinieerde eigenschap. Het aantal onjuiste eigenschappen staat tussen de haakjes.',
 	'uriresolver' => 'URI-resolver',
 	'smw_uri_doc' => 'De URI-resolver implementeert de <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Het zorgt ervoor dat mensen niet veranderen in websites.',
 	'ask' => 'Semantisch zoeken',
@@ -5585,9 +5525,6 @@ Kvar datatype har ei sida der ekstra informasjon kan verta oppgjeven.',
 '''$3''' {{PLURAL:$3|eigenskap|eigenskapar}} har ei eiga sida, og den meinte datatypen er oppgjeven for <b>$4</b> av desse.
 Somme av dei eksisterande eigenskapane kan vera [[Special:UnusedProperties|unytta eigenskapar]].
 Eigenskapar som framleis ikkje har ei eiga sida finst på [[Special:WantedProperties|lista over ynskte eigenskapar]].",
-	'flawedattributes' => 'Ugyldige eigenskapar',
-	'smw_fattributes' => 'Sidene som er lista opp nedanfor har ein feildefinert eigenskap.
-Talet på feildefinerte eigenskaper er oppgjeve i parentes.',
 	'uriresolver' => 'URI-løysar',
 	'smw_uri_doc' => "URI-løysaren implementerer ''<a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">finning av W3C TAG-ar på «httpRange-14»</a>''.
 Han syter for at menneske ikkje vert til nettsider.",
@@ -5810,9 +5747,6 @@ Hver datatype har en side der ekstra informasjon kan oppgis.',
 {{PLURAL:$3|'''Én''' egenskap|'''$3''' egenskaper}} har en egen side, og den mente datatypen er spesifisert for '''$4''' av disse.
 Enkelte av de eksisterende egenskapene kan være [[Special:UnusedProperties|ubrukte egenskaper]].
 Egenskaper som fortsatt mangler en egen side finnes på [[Special:WantedProperties|listen over ønskede egenskaper]].",
-	'flawedattributes' => 'Ugyldige egenskaper',
-	'smw_fattributes' => 'Sidene som listes opp nedenfor har en ukorrekt definert egenskap.
-Antallet ukorrekte egenskaper gis i parentes.',
 	'uriresolver' => 'URI-løser',
 	'smw_uri_doc' => "<b>URI-løseren implementerer ''<a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">W3C TAG finding on httpRange-14</a>''. Den gjør så mennesker ikke blir til nettsider.",
 	'ask' => 'Semantisk søk',
@@ -6027,8 +5961,6 @@ $messages['oc'] = array(
 '''$3''' {{PLURAL:$3|proprietat a sa|proprietats an lor}} pagina pròprie, e lo tipe de donadas volgut es especificat per '''$4''' d'aquesta.
 Unas de las proprietats existentas pòdon en fach èsser [[Special:UnusedProperties|inutilizadas]].
 Las proprietats qu'an pas encara de pagina se tròban dins la [[Special:WantedProperties|lista de las proprietats demandadas]].",
-	'flawedattributes' => 'Atributs defectuoses',
-	'smw_fattributes' => "Las paginas çaijós an un atribut qu'es pas definit corrèctament. Lo nombre d'atributs incorrèctes es donat entre las parentèsis.",
 	'uriresolver' => "Resolveire d'URI",
 	'smw_uri_doc' => 'Lo resolveire d\'URI implementa la <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">conclusion del TAG del W3C a prepaus del httpRange-14</a>. Se pòt assegurar que los umans vengan pas de sites web.',
 	'ask' => 'Recèrca semantica',
@@ -6260,9 +6192,6 @@ Wyniki mogą być inne od oczekiwanych.',
 	'smw_types_docu' => 'Poniżej znajduje się lista wszystkich typów które mogą być przypisane atrybutom.  Każdy typ posiada artykuł, w którym mogą znajdować się dodatkowe informacje.',
 	'smw_typeunits' => 'Jednostka danych typu „$1” to $2',
 	'semanticstatistics' => 'Statystyka semantyczna',
-	'flawedattributes' => 'Błędne własności',
-	'smw_fattributes' => 'Poniższe strony mają błędnie zdefiniowane własności.
-Liczba błędnych własności jest podana w nawiasach.',
 	'uriresolver' => 'Resolver URI',
 	'smw_uri_doc' => 'Resolver URI implementuje <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Dzięki temu ludzie nie zamieniają się w strony WWW.',
 	'ask' => 'Szukanie semantyczne',
@@ -6480,9 +6409,6 @@ Cada tipo de dados tem uma página onde informação adicional pode ser providen
 '''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} uma página própria, e o tipo de dados pretendido está especificado para '''$4''' delas.
 Algumas das propriedades existentes poderão ser [[Special:UnusedProperties|propriedades não usadas]].
 As propriedades que não possuem uma página poderão ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
-	'flawedattributes' => 'Propriedades Problemáticas',
-	'smw_fattributes' => 'As páginas listadas abaixo contêm uma propriedade incorrectamente definida.
-O número de propriedades incorrectas é dada entre parênteses rectos.',
 	'uriresolver' => 'Resolvedor de URIs',
 	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>. Trata que humanos não se tornem em sítios web.',
 	'ask' => 'Pesquisa semântica',
@@ -6675,7 +6601,6 @@ Para exportar páginas, introduza os seus títulos na caixa de texto abaixo, um 
 	'properties' => 'Propriedades',
 	'smw_purge' => 'Atualizar',
 	'types' => 'Tipos',
-	'flawedattributes' => 'Propriedades problemáticas',
 	'ask' => 'Pesquisa semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
 	'smw_ask_ascorder' => 'Ascendente',
@@ -6990,8 +6915,6 @@ $messages['ru'] = array(
 '''$3''' {{PLURAL:$3|свойство|свойства|свойств}} имеют страницу описания, а определённый тип данных задан для '''$4''' из них.
 Некоторые из существующих свойств могут [[Special:UnusedProperties|не использоваться]].
 Свойства, для которых не созданы страницы описания, перечислены в [[Special:WantedProperties|списке неописанных свойств]].",
-	'flawedattributes' => 'Поврежденные свойства',
-	'smw_fattributes' => 'Статьи, указанные ниже, содержат неправильно определенные свойства. Количество неверных свойств указано в скобках.',
 	'uriresolver' => 'Преобразователь URI',
 	'smw_uri_doc' => 'Преобразователь URI осуществляет <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C поиск http тэгов с использованием Range-14</a>. Данная возможность упрощает поиск семантической информации.',
 	'ask' => 'Семантический поиск',
@@ -7215,8 +7138,6 @@ Výsledky nemusia byť podľa očakávaní.',
 	'smw_semstats_text' => "Táto wiki obsahuje '''$1''' {{PLURAL:$1|hodnotu|hodnoty|hodnôt}} vlastností celkom {{PLURAL:$2|'''jednej''' vlastnosti|'''$2''' rozličných vlastností|'''$2''' rozličných vlastností}}. {{PLURAL:$3|'''Jedna''' vlastnosť má|'''$3''' vlastnosti majú|'''$3''' vlastností má}} vlastnú stránku a zamýšľaný údajový typ {{PLURAL:$4|má uvedený '''$4''' z nich|majú uvedené '''$4''' z nich|má uvedených '''$4''' z nich}}.
 Niektoré z existujúcich vlastností môžu byť [[Special:UnusedProperties|nepoužité]].
 Vlastnosti, ktorým stále chýba stránka sa nachádzajú na [[Special:WantedProperties|zozname žiadaných vlastností]].",
-	'flawedattributes' => 'Chybných atribútov',
-	'smw_fattributes' => 'Nižšie uvedené stránky majú nesprávne definovaný atribút. Počet nesprávnych atribútov udáva číslo v zátvorkách.',
 	'uriresolver' => 'Prekladač URI',
 	'smw_uri_doc' => 'URI resolver sa stará o implementáciu <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG hľadanie na httpRange-14</a>. Stará sa o to, aby sa ľudia nestali webstránkami.',
 	'ask' => 'Sémantické vyhľadávanie',
@@ -7438,9 +7359,6 @@ $messages['sr-ec'] = array(
 <b>$4</b> особина поседује своју властиту страницу и намењени типови података су убележени за њих <b>$5</b>.
 Неке од постојећих особина су можда<a href="$6">неискоришћене особине</a>.
 Особине које још увек немају своју страницу, могу се наћи на <a href="$7">списку тражених особинаs</a>.',
-	'flawedattributes' => 'Покварене особине',
-	'smw_fattributes' => 'Странице са доњег списка садрже погрешно дефинисане особине.
-Број погрешно дефинисаних особина је дат у заградама.',
 	'uriresolver' => 'URI резолвер',
 	'ask' => 'Семантичка претрага',
 	'smw_ask_sortby' => 'Сортирај у колоне (опционо)',
@@ -7654,9 +7572,6 @@ Generiše RDF koji je moguće pregledati.',
 Svaki tip podataka ima svoju stranicu gde je moguće dodati dodatne informacije.',
 	'smw_typeunits' => 'Merne jedinice tipa "$1": $2',
 	'semanticstatistics' => 'Semantičke statistike',
-	'flawedattributes' => 'Pokvarene osobine',
-	'smw_fattributes' => 'Stranice sa donjeg spiska sadrže pogrešno definisane osobine.
-Broj pogrešno definisanih osobina je dat u zagradama.',
 	'uriresolver' => 'URI rezolver',
 	'ask' => 'Semantička pretraga',
 	'smw_ask_sortby' => 'Sortiraj u kolone (opciono)',
@@ -7860,9 +7775,6 @@ Varje datatyp har en sida där ytterligare information kan uppges.',
 <b>$4</b> egenskaper har en egen sida, och den avsedda datatypen är specificerad för <b>$5</b> av dessa.
 Några av de existerande egenskaperna kan vara <a href="$6">oanvända egenskaper</a>.
 Egenskaper som fortfarande saknar en egen sida finns på <a href="$7">listan över önskede egenskaper</a>.',
-	'flawedattributes' => 'Ogiltiga Egenskaper',
-	'smw_fattributes' => 'Sidorna som listas nedan har en felaktigt definerad egenskap.
-Antalet felaktiga egenskaper visas inom parenteserna.',
 	'uriresolver' => 'URI-lösare',
 	'smw_uri_doc' => "<b>URI-lösaren implementerar ''<a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">W3C TAG fynden i httpRange-14</a>''. Den ser till så att människor inte blir webbsidor.",
 	'ask' => 'Semantisk sökning',
@@ -8108,9 +8020,6 @@ Mayroong isang pahina ang bawat uri ng dato kung saan maaaring makapagbigay ng k
 '''$3''' {{PLURAL:$3|pag-aari ang may|mga pag-aari ang may mga}} sariling pahina na, at ang inilalaang uri ng dato ay tinukoy para sa '''$4''' ng mga iyon.
 Ilan sa umiiral na mga ari-arian ay maaaring [[Special:UnusedProperties|hindi ginagamit na mga pag-aari]].
 Ang mga ari-ariang wala pa ring isang pahina ay matatagpuan sa [[Special:WantedProperties|talaan ng ninanais na mga pag-aari]].",
-	'flawedattributes' => 'Mga ari-ariang may gawak/sira',
-	'smw_fattributes' => 'Ang mga pahinang nakatala sa ibaba ay isang pag-aaring may maling kahulugan.
-Ang bilang ng maling mga ari-arian ay ibinigay sa loob ng mga kasingay (brakete).',
 	'uriresolver' => 'tagalutas ng URI',
 	'smw_uri_doc' => 'Ipinatutupad ng tagapaglutas na URI ang <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">Paghahanap ng W3C TAG sa httpRange-14</a>.
 Pinag-iingatan nitong huwag maging mga sityo ng web (websayt) ang mga tao.',
@@ -8378,9 +8287,6 @@ Mỗi kiểu dữ liệu có một trang tại đó có thông tin bổ sung.',
 '''$3''' thuộc tính có trang riêng, và kiểu dữ liệu dự tính được chỉ định cho '''$4''' trong số đó.
 Một số thuộc tính hiện có có thể [[Special:UnusedProperties|chưa được sử dụng]].
 Có thể tìm thấy thuộc tính còn thiếu trang tại [[Special:WantedProperties|danh sách các thuộc tính cần có]].",
-	'flawedattributes' => 'Thuộc tính hỏng',
-	'smw_fattributes' => 'Những trang liệt kê phía dưới có thuộc tính được định nghĩa không chính xác.
-Số thuộc tính không đúng được ghi trong ngoặc đơn.',
 	'uriresolver' => 'Bộ giải URI',
 	'smw_uri_doc' => 'Bộ giải URI hiện thực <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">THẺ W3C tìm thấy tại httpRange-14</a>. Nó lo việc con người không quay lại trang web.',
 	'ask' => 'Tìm kiếm ngữ nghĩa',
@@ -8613,8 +8519,6 @@ $messages['zh-cn'] = array(
 	'smw_typeunits' => '“$1＂型态的量测单位：$2',
 	'semanticstatistics' => '语意统计(Semantic Statistics)',
 	'smw_semstats_text' => '此wiki含有<b>$1</b>性质的值以用于总计<b>$2</b> 不同于 <a href="$3">性质</a>。 <b>$4</b>性质有着专属的专面，且预期所需的资料型态因着<b>$5</b>，而已被指定了，有些现有的性质也许为<a href="$6">未使用的性质</a>。您可在 <a href="$7">待建立的性质列表</a>中，找到那些尚未建立专属页面的性质。(译注原文为：This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.)',
-	'flawedattributes' => '错误的性质',
-	'smw_fattributes' => '在下方处被列出的页面有着一项非正确定义的属性，非正确的属性的数量置于中括号内',
 	'ask' => '语意搜寻',
 	'smw_ask_sortby' => '依栏位排序',
 	'smw_ask_ascorder' => '升幂',
@@ -8780,8 +8684,6 @@ $messages['zh-tw'] = array(
 	'smw_typeunits' => '“$1”型態的量測單位：$2',
 	'semanticstatistics' => '語意統計(Semantic Statistics)',
 	'smw_semstats_text' => '此wiki含有<b>$1</b>性質的值以用於總計<b>$2</b> 不同於 <a href="$3">性質</a>。 <b>$4</b>性質有著專屬的專面，且預期所需的資料型態因著<b>$5</b>，而已被指定了，有些現有的性質也許為<a href="$6">未使用的性質</a>。您可在 <a href="$7">待建立的性質清單</a>中，找到那些尚未建立專屬頁面的性質。(譯註原文為：This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.This wiki contains <b>$1</b> property values for a total of <b>$2</b> different <a href="$3">properties</a>. <b>$4</b> properties have an own page, and the intended datatype is specified for <b>$5</b> of those. Some of the existing properties might by <a href="$6">unused properties</a>. Properties that still lack a page are found on the <a href="$7">list of wanted properties</a>.)',
-	'flawedattributes' => '錯誤的性質',
-	'smw_fattributes' => '在下方處被列出的頁面有著一項非正確定義的屬性，非正確的屬性的數量置於中括號內',
 	'ask' => '語意搜尋',
 	'smw_ask_sortby' => '依欄位排序',
 	'smw_ask_ascorder' => '升冪',
