@@ -23,10 +23,9 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		SMWOutputs::requireHeadItem(SMW_HEADER_SORTTABLE);
 
 		// print header
-		if ('broadtable' == $this->mFormat)
-			$widthpara = ' width="100%"';
-		else $widthpara = '';
-		$result = "<table class=\"smwtable\"$widthpara id=\"querytable" . $smwgIQRunningNumber . "\">\n";
+		$result = '<table class="smwtable"' .
+		          ('broadtable' == $this->mFormat?' width="100%"':'') .
+				  " id=\"querytable$smwgIQRunningNumber\">\n";
 		if ($this->mShowHeaders != SMW_HEADERS_HIDE) { // building headers
 			$result .= "\t<tr>\n";
 			foreach ($res->getPrintRequests() as $pr) {
@@ -43,11 +42,6 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 				$result .= "\t\t<td>";
 				$first = true;
 				while ( ($object = $field->getNextObject()) !== false ) {
-					if ($object->getTypeID() == '_wpg') { // use shorter "LongText" for wikipage
-						$text = $object->getLongText($outputmode,$this->getLinker($firstcol));
-					} else {
-						$text = $object->getShortText($outputmode,$this->getLinker($firstcol));
-					}
 					if ($first) {
 						if ($object->isNumeric()) { // use numeric sortkey
 							$result .= '<span class="smwsortkey">' . $object->getNumericValue() . '</span>';
@@ -56,7 +50,10 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 					} else {
 						$result .= '<br />';
 					}
-					$result .= $text;
+					// use shorter "LongText" for wikipage
+					$result .= ($object->getTypeID() == '_wpg')?
+					           $object->getLongText($outputmode,$this->getLinker($firstcol)):
+					           $object->getShortText($outputmode,$this->getLinker($firstcol));
 				}
 				$result .= "</td>\n";
 				$firstcol = false;

@@ -233,11 +233,9 @@ class SMWResultArray {
 	public function getNextText($outputmode, $linker = NULL) {
 		$object = $this->getNextObject();
 		if ($object instanceof SMWDataValue) { //print data values
-			if ($object->getTypeID() == '_wpg') { // prefer "long" text for page-values
-				return $object->getLongText($outputmode, $linker);
-			} else {
-				return $object->getShortText($outputmode, $linker);
-			}
+			return ($object->getTypeID() == '_wpg')?  // prefer "long" text for page-values
+			       $object->getLongText($outputmode, $linker):
+				   $object->getShortText($outputmode, $linker);
 		} else {
 			return false;
 		}
