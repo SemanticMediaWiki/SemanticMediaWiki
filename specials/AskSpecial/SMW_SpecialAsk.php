@@ -38,12 +38,6 @@ class SMWAskPage extends SpecialPage {
 		if ($smwgMW_1_14) { // since MW 1.14.0 this is governed by a message
 			SMWAskPage::$pipeseparator = wfMsgExt( 'pipe-separator' , 'escapenoentities' );
 		}
-		if ( ($wgRequest->getVal( 'query' ) != '') ) { // old processing
-			$this->executeSimpleAsk();
-			SMWOutputs::commitToOutputPage($wgOut); // make sure locally collected output data is pushed to the output!
-			wfProfileOut('doSpecialAsk (SMW)');
-			return;
-		}
 		if (!$smwgQEnabled) {
 			$wgOut->addHTML('<br />' . wfMsg('smw_iq_disabled'));
 		} else {
@@ -240,7 +234,7 @@ class SMWAskPage extends SpecialPage {
 			         '<td><textarea name="po" cols="20" rows="6">' . htmlspecialchars($printoutstring) . '</textarea></td></tr></table>' . "\n";
 			if ($smwgQSortingSupport) {
 				if ( $this->m_params['sort'] . $this->m_params['order'] == '') {
-					$orders = Array(); // do not even show one sort input here
+					$orders = array(); // do not even show one sort input here
 				} else {
 					$sorts = explode(',', $this->m_params['sort']);
 					$orders = explode(',', $this->m_params['order']);
@@ -363,87 +357,6 @@ class SMWAskPage extends SpecialPage {
 		}
 		$navigation .= ')';
 		return $navigation;
-	}
-
-	/**
-	 * Exectues ask-interface as done in SMW<=0.7, using a simple textbox interface and supporting only
-	 * certain parameters.
-	 */
-	protected function executeSimpleAsk() {
-		global $wgRequest, $wgOut, $smwgQEnabled, $smwgQMaxLimit, $wgUser, $smwgQSortingSupport;
-
-		$skin = $wgUser->getSkin();
-
-		$query = $wgRequest->getVal( 'query' );
-		$sort  = $wgRequest->getVal( 'sort' );
-		$order = $wgRequest->getVal( 'order' );
-		$limit = $wgRequest->getVal( 'limit' );
-		if ('' == $limit) $limit =  20;
-		$offset = $wgRequest->getVal( 'offset' );
-		if ('' == $offset) $offset = 0;
-
-		// display query form
-		$spectitle = Title::makeTitle( NS_SPECIAL, 'Ask' );
-		$docutitle = Title::newFromText(wfMsg('smw_ask_doculink'), NS_HELP);
-		$html = '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
-		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
-		$html .= '<textarea name="query" cols="40" rows="6">' . htmlspecialchars($query) . '</textarea><br />' . "\n";
-
-		if ($smwgQSortingSupport) {
-			$html .=  wfMsg('smw_ask_sortby') . ' <input type="text" name="sort" value="' .
-			          htmlspecialchars($sort) . '"/> <select name="order"><option ';
-			if ($order == 'ASC') $html .= 'selected="selected" ';
-			$html .=  'value="ASC">' . wfMsg('smw_ask_ascorder') . '</option><option ';
-			if ($order == 'DESC') $html .= 'selected="selected" ';
-			$html .=  'value="DESC">' . wfMsg('smw_ask_descorder') . '</option></select> <br />';
-		}
-		$html .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/> <a href="' . $docutitle->getFullURL() . '">' . wfMsg('smw_ask_help') . "</a>\n</form>";
-
-		// print results if any
-		if ($smwgQEnabled && ('' != $query) ) {
-			$params = array('offset' => $offset, 'limit' => $limit, 'format' => 'broadtable', 'mainlabel' => ' ', 'link' => 'all', 'default' => wfMsg('smw_result_noresults'), 'sort' => $sort, 'order' => $order);
-			$queryobj = SMWQueryProcessor::createQuery($query, $params, false);
-			$res = smwfGetStore()->getQueryResult($queryobj);
-			$printer = new SMWTableResultPrinter('broadtable',false);
-			$result = $printer->getResult($res, $params, SMW_OUTPUT_HTML);
-
-			// prepare navigation bar
-			if ($offset > 0)
-				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '" rel="nofollow">' . wfMsg('smw_result_prev') . '</a>';
-			else $navigation = wfMsg('smw_result_prev');
-
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + $res->getCount()) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
-
-			if ($res->hasFurtherResults())
-				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . ($offset+$limit) . '&limit=' . $limit . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '" rel="nofollow">' . wfMsg('smw_result_next') . '</a>';
-			else $navigation .= wfMsg('smw_result_next');
-
-			$max = false; $first=true;
-			foreach (array(20,50,100,250,500) as $l) {
-				if ($max) continue;
-				if ($first) {
-					$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
-					$first = false;
-				} else $navigation .= ' ' . SMWAskPage::$pipeseparator . ' ';
-				if ($l > $smwgQMaxLimit) {
-					$l = $smwgQMaxLimit;
-					$max = true;
-				}
-				if ( $limit != $l ) {
-					$navigation .= '<a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask','offset=' . $offset . '&limit=' . $l . '&query=' . urlencode($query) . '&sort=' . urlencode($sort) .'&order=' . urlencode($order))) . '" rel="nofollow">' . $l . '</a>';
-				} else {
-					$navigation .= '<b>' . $l . '</b>';
-				}
-			}
-			$navigation .= ')';
-
-			$html .= '<br /><div style="text-align: center;">' . $navigation;
-			$html .= '<br />' . $result;
-			$html .= '<br />' . $navigation . '</div>';
-		} elseif (!$smwgQEnabled) {
-			$html .= '<br />' . wfMsg('smw_iq_disabled');
-		}
-		$wgOut->addHTML($html);
 	}
 
 }
