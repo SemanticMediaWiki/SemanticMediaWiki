@@ -3944,11 +3944,15 @@ Progresso estimate del actualisation currente:',
 
 /** Indonesian (Bahasa Indonesia)
  * @author Bennylin
+ * @author Irwangatot
  * @author Rex
  */
 $messages['id'] = array(
 	'smw_finallistconjunct' => ', dan',
+	'smw_printername_list' => 'Daftar',
+	'smw_printername_table' => 'Tabel',
 	'smw_printername_template' => 'Templat',
+	'smw_nofloat' => '"$1" bukan angka.',
 	'smw_abb_north' => 'U',
 	'smw_abb_east' => 'T',
 	'smw_abb_south' => 'S',
