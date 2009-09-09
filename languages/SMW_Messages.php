@@ -1665,6 +1665,7 @@ $messages['dsb'] = array(
 	'smw_multiple_concepts' => 'Kuždy konceptowy bok móžo jano jadnu konceptowu definiciju měś.',
 	'smw_concept_cache_miss' => 'Koncept "$1" njedajo se we wokugnuśu wužywaś, dokulaž wikijowa konfiguracija trjeba jón za pśeźěłowanje off-line.
 Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administratora, aby wón toś ten koncept k dispoziciji stajił.',
+	'smw_noinvannot' => 'Gódnoty njedaju se nawopacnym kakosćam pśipokazaś.',
 	'smw_baduri' => 'URI formy "$1" njejsu dowólone.',
 	'smw_printername_auto' => 'Awtomatiski',
 	'smw_printername_count' => 'Wuslědki licyś',
@@ -1713,12 +1714,14 @@ Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administ
 	'smw_label_longitude' => 'Dlinina:',
 	'smw_nodatetime' => 'Datum "$1" njejo se rozměł.',
 	'smw_toomanyclosing' => 'Zda se, až jo pśewjele wustupowanjow "$1" w napšašowanju.',
+	'smw_noclosingbrackets' => 'Jadne wustupowanje "<nowiki>[[</nowiki>" w twójom napšašanju njejo se pśez wótpowědnej "]]" wótzamknuło.',
 	'smw_misplacedsymbol' => 'Symbol "$1" jo se na městnje wužył, źož njejo wužytny,',
 	'smw_unexpectedpart' => 'Źěl "$1" wótpšašanja njejo se rozměł.
 Wuslědki snaź njejsu ako wócakowane.',
 	'smw_emptysubquery' => 'Pódwótpšašanje njama płaśiwe wuměnjenje.',
 	'smw_misplacedsubquery' => 'Pódwótpšašanje wužywa se na městnje, źož pódwótpšašanja njejsu dowólone.',
 	'smw_valuesubquery' => 'Pódwótpšašanja njepódpěraju se za gódnoty kakosći "$1".',
+	'smw_overprintoutlimit' => 'Napšašanje wopśimujo pśewjele śišćarskich nadawkow.',
 	'smw_badtitle' => '"$1" njejo płaśiwy bokowy titel.',
 	'smw_badqueryatom' => 'Źěl wótpšašanja "<nowiki>[[…]]</nowiki>" njejo se rozměł.',
 	'smw_propvalueproblem' => 'Gódnota kakosći "$1" njejo se rozměła.',
@@ -1761,6 +1764,7 @@ Kuždy datowy typ ma bok, źož daju se pśidatne informacije pódaś.',
 	'smw_semstats_text' => "Toś ten wiki wopśimujo '''$1''' {{PLURAL:$1|kakosćowu gódnotu|kakosćowej gódnośe|kakosćowe gódnoty|kakosćowych gódnotow}} za dogromady '''$2''' [[Special:Properties|{{PLURAL:$2|kakosć|rozdźělnej kakosći|rozdźělne kakosći|rozdźělnych kakosćow}}]].
 '''$3''' {{PLURAL:$3|kakosć ma|kakosći matej|kakosći maju|kakosćow ma}} swójski bok a póžedany datowy typ je za '''$4''' z nich pódany.
 Někotare eksistěrowacych kakosćow by mógli [[Special:UnusedProperties|njewužywane kakosći]] byś. Kakosći, kótarež njamaju bok, su se na [[Special:WantedProperties|lisćinje póžedanych kakosćow]] namakali.",
+	'uriresolver' => 'Rezolwer URI',
 	'ask' => 'Semantiske pytanje',
 	'smw_ask_sortby' => 'Pó słupje sortěrowaś (opcionalny)',
 	'smw_ask_ascorder' => 'Stupajucy',
@@ -1771,8 +1775,11 @@ Někotare eksistěrowacych kakosćow by mógli [[Special:UnusedProperties|njewu�
 	'smw_ask_hidequery' => '[Wótpšašanje schowaś]',
 	'smw_ask_help' => 'Wótpšašowańska pomoc',
 	'smw_ask_queryhead' => 'Wótpšašanje',
+	'smw_ask_printhead' => 'Pśidatne wuśišće (opcionalny)',
 	'smw_ask_format_as' => 'Formatěrowaś ako:',
 	'smw_ask_defaultformat' => 'standard',
+	'smw_ask_show_embed' => 'Zasajźony kod pokazaś',
+	'smw_ask_hide_embed' => 'Zasajźony kod schowaś',
 	'searchbyproperty' => 'Pó kakosći pytaś',
 	'smw_sbv_docu' => 'Wšykne boki pytaś, kótarež maju wěstu kakosć a gódnotu.',
 	'smw_sbv_novalue' => 'Zapódaj płaśiwu gódnotu za kakosć abo woglědaj se wšykne gódnoty za kakosć "$1".',
@@ -1806,13 +1813,22 @@ Zapódaj ako bok tak teke kakosć.',
 	'smw_smwadmin_settingup' => 'Składowański rum za Semantic MediaWiki nastajiś',
 	'smw_smwadmin_setupsuccess' => 'Składowańska jadnotka jo se wuspěšnje nastajiła.',
 	'smw_smwadmin_return' => 'Slědk k $1',
+	'smw_smwadmin_updatestarted' => 'Nowy aktualizěrowański proces za wótnowjenje semantiskich datow jo se startował.
+Wšykne skłaźone daty budu se znowego natwarjaś abo pórěźaś, źož trjeba.
+Móžoš póstupoju aktualizacije na toś tom specialnem boku slědowaś.',
 	'smw_smwadmin_updatenotstarted' => 'Proces aktualizacije južo běžy.
 Nowy se njestartujo.',
 	'smw_smwadmin_updatestopped' => 'Wše eksistěrujuce aktualizěrowańske procese su se zastajili.',
 	'smw_smwadmin_updatenotstopped' => 'Aby běžecy proces zastajił, musyš kontrolowy kašćik aktiwěrowaś, aby pódał, až sy napšawdu wěsty.',
+	'smw_smwadmin_docu' => 'Toś ten specialny bok śi pomaga za instalaciju a aktualizaciju a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Mysli se na zawěsćenje gódnotnych datow, nježli až wuwjeźoš administratiwne funkcije.',
 	'smw_smwadmin_db' => 'Instalacija a aktualizacija datoweje banki',
 	'smw_smwadmin_dbbutton' => 'Tabele inicializěrowaś abo aktualizěrowaś',
 	'smw_smwadmin_announce' => 'Twój wiki pśipowěźeś',
+	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki ma websłužbu za wuzjawjenje nowych semantiskich wikisedłow.
+To se wužywa, aby wuźaržowało lisćinu zjawnych sedłow, kótarež wužywaju Semantic MediaWiki, głownje aby  pomagało <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projektoju Semantic MediaWiki</a> pśeglěd typiskich wužywanjow Semantic MediaWiki daś.
+Glědaj startowy bok Semantic MediaWiki za <a href="http://semantic-mediawiki.org/wiki/Registry">dalšne informacije wó toś tej słužbje</a>.',
+	'smw_smwadmin_announcebutton' => 'Tłoc na slědujucy tłocašk, aby pósłał swój wikiijowy URL k tej słužbje.
+Słužba njebuźo wikije registrěrowaś, kótarež njejsu zjawnje pśistupne a buźo pśistupne informacije jano zjawnje składowaś.',
 	'smw_smwadmin_datarefresh' => 'Reparatura a aktualizacija datow',
 	'smw_smwadmin_datarefreshbutton' => 'Aktualizaciju datow zachopiś',
 	'smw_smwadmin_datarefreshstop' => 'Toś tu aktualizaciju zastajiś',
@@ -3221,6 +3237,7 @@ $messages['he'] = array(
 	'smw_concept_cache_miss' => 'לא ניתן להשתמש ברעיון "$1" כרגע, כיוון שתצורת הוויקי דורשת את עיבודו באופן לא מקוון.
 אם התקלה אינה נעלמת לאחר זמן מה, בקשו ממנהל האתר להפוך רעיון זה לזמין.',
 	'smw_baduri' => 'כתובות מהצורה "$1" אינן מורשות.',
+	'smw_printername_auto' => 'אוטומטי',
 	'smw_printername_count' => 'ספירת התוצאות',
 	'smw_printername_csv' => 'ייצוא ל־CVS',
 	'smw_printername_embedded' => 'הטמעת תוכן הדף',
