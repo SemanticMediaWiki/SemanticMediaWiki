@@ -1722,9 +1722,13 @@ Wuslědki snaź njejsu ako wócakowane.',
 	'smw_misplacedsubquery' => 'Pódwótpšašanje wužywa se na městnje, źož pódwótpšašanja njejsu dowólone.',
 	'smw_valuesubquery' => 'Pódwótpšašanja njepódpěraju se za gódnoty kakosći "$1".',
 	'smw_overprintoutlimit' => 'Napšašanje wopśimujo pśewjele śišćarskich nadawkow.',
+	'smw_badprintout' => 'Někaki śišćarski pśikaz we wótpšašaanju jo skazony był.',
 	'smw_badtitle' => '"$1" njejo płaśiwy bokowy titel.',
 	'smw_badqueryatom' => 'Źěl wótpšašanja "<nowiki>[[…]]</nowiki>" njejo se rozměł.',
 	'smw_propvalueproblem' => 'Gódnota kakosći "$1" njejo se rozměła.',
+	'smw_noqueryfeature' => 'Někaka wótpšašowańska funkcije njejo se pódprěła a źěl wótpšašanja jo se wótpórał ($1).',
+	'smw_noconjunctions' => 'Konjunkcije (zwězanja A) we wótpšašanjach njepódpěraju se w toś tom wikiju a źěl wótpšašanja jo se wótpórał ($1).',
+	'smw_nodisjunctions' => 'Disjunkcije (zwězanja ABO) we wótpšašanjach njepódpěraju se w toś tom wikiju a źěl wótpšašanja jo se wótpórał ($1).',
 	'smw_querytoolarge' => 'Dla wikijowych wobgranicowanjow we wjelikosći abo dłymokosći njejo było móžno slědujuce wótpšašańske wuměnjenja zapśimjeś: $1',
 	'smw_devel_warning' => 'Toś ta funkcija se tuchylu hyšći wuwija a by było móžno, až hyšći połnje njefunkcioněrujo.
 Zawěsćć swóje daty, nježli až ju wužywaš.',
@@ -1740,6 +1744,10 @@ Zawěsćć swóje daty, nježli až ju wužywaš.',
 	'exportrdf' => 'Boki ako RDF eksportěrowaś',
 	'smw_exportrdf_docu' => 'Toś ten bok śi dowólujo, daty z boka w formaśe RDF dobyś.
 Aby boki eksportěrował, zapódaj titele do slědujucego tekstowego póla, jaden titel na smužku.',
+	'smw_exportrdf_recursive' => 'Wšykne pśiwuzne boki rekursiwnje eksportěrowaś.
+Źiwaj na to, až wuslědk by mógł wjeliki byś!',
+	'smw_exportrdf_backlinks' => 'Teke wšykne boki eksportěrowaś, kótarež póśěgaju se na eksportěrowane boki.
+Napórajo RDF, kótaryž dajo se pśepytaś.',
 	'smw_exportrdf_lastdate' => 'Boki njeeksportěrowaś, kótarež njejsu se změnili wót pódanego casa.',
 	'smw_exportrdf_submit' => 'Eksportěrowaś',
 	'properties' => 'Kakosći',
@@ -1765,6 +1773,8 @@ Kuždy datowy typ ma bok, źož daju se pśidatne informacije pódaś.',
 '''$3''' {{PLURAL:$3|kakosć ma|kakosći matej|kakosći maju|kakosćow ma}} swójski bok a póžedany datowy typ je za '''$4''' z nich pódany.
 Někotare eksistěrowacych kakosćow by mógli [[Special:UnusedProperties|njewužywane kakosći]] byś. Kakosći, kótarež njamaju bok, su se na [[Special:WantedProperties|lisćinje póžedanych kakosćow]] namakali.",
 	'uriresolver' => 'Rezolwer URI',
+	'smw_uri_doc' => 'Rezolwer URI implementěrujo <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>.
+Stara se za to, až luźe njebudu websedła.',
 	'ask' => 'Semantiske pytanje',
 	'smw_ask_sortby' => 'Pó słupje sortěrowaś (opcionalny)',
 	'smw_ask_ascorder' => 'Stupajucy',
@@ -1780,6 +1790,7 @@ Někotare eksistěrowacych kakosćow by mógli [[Special:UnusedProperties|njewu�
 	'smw_ask_defaultformat' => 'standard',
 	'smw_ask_show_embed' => 'Zasajźony kod pokazaś',
 	'smw_ask_hide_embed' => 'Zasajźony kod schowaś',
+	'smw_ask_embed_instr' => 'Aby toś to wótpšašanje do wikiboka zasajźił, wužyj slědujucy kod.',
 	'searchbyproperty' => 'Pó kakosći pytaś',
 	'smw_sbv_docu' => 'Wšykne boki pytaś, kótarež maju wěstu kakosć a gódnotu.',
 	'smw_sbv_novalue' => 'Zapódaj płaśiwu gódnotu za kakosć abo woglědaj se wšykne gódnoty za kakosć "$1".',
@@ -1830,16 +1841,22 @@ Glědaj startowy bok Semantic MediaWiki za <a href="http://semantic-mediawiki.or
 	'smw_smwadmin_announcebutton' => 'Tłoc na slědujucy tłocašk, aby pósłał swój wikiijowy URL k tej słužbje.
 Słužba njebuźo wikije registrěrowaś, kótarež njejsu zjawnje pśistupne a buźo pśistupne informacije jano zjawnje składowaś.',
 	'smw_smwadmin_datarefresh' => 'Reparatura a aktualizacija datow',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacija se rowno wótměwa.</strong>
+Jo normalne, až aktualizacija jano pómałem póstupujo, dokulaž aktualizěrujo daty jano w małych porcijach kuždy raz, gaž wužywaŕ ma pśistup na wiki.
+Aby skóńcył toś tu aktualizaciju malsnjeje, móžoš wótwardowański skript MediaWiki <tt>runJobs.php</tt> zawołaś (wužyj opciju <tt>--maxjobs 1000</tt>, aby wobgranicował licbu aktualizacijow, kótarež se naraz pśewjadu).
+Licony póstup aktualneje aktualizacije:',
 	'smw_smwadmin_datarefreshbutton' => 'Aktualizaciju datow zachopiś',
 	'smw_smwadmin_datarefreshstop' => 'Toś tu aktualizaciju zastajiś',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jo, som se wěsty.',
 	'smw_smwadmin_support' => 'Pódpěru wobstaraś',
 	'smw_smwadmin_supportdocu' => 'Wšake resurse mógli śi w paźe problemow pomagaś:',
+	'smw_smwadmin_installfile' => 'Joli maš problemy ze swójeju instalaciju, pśecytaj směrnice w dataji <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'Dopołna wužywarska dokumentacija za Semantic MediaWiki jo na <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Zmólki daju se na <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> k wěsći daś.',
 	'smw_smwadmin_questions' => 'Jolic maš dalšne pšašanja abo naraźenja, pśizamkni se diskusiji na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">wužywarskem forumje Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Datowa struktura',
 	'smw_adminlinks_displayingdata' => 'Daty zwobrazniś',
+	'smw_adminlinks_inlinequerieshelp' => 'Pomoc k wótpšašanjam',
 );
 
 /** Greek (Ελληνικά)
@@ -3469,8 +3486,7 @@ $messages['hr'] = array(
  * @author Michawiki
  */
 $messages['hsb'] = array(
-	'smw-desc' => "Twój wiki přistupniši činić - za mašiny ''a'' ludźi
-([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
+	'smw-desc' => "Twój wiki přistupniši činić - za mašiny ''a'' ludźi ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija online])",
 	'smw_edithelp' => 'Wobźěłowanska pomoc za kajkosće',
 	'smw_viewasrdf' => 'RDF-kanal',
 	'smw_finallistconjunct' => 'a',
