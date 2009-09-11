@@ -2251,6 +2251,7 @@ Ingrese la página y la propiedad.',
 	'smw_result_results' => 'Resultados',
 	'smw_result_noresults' => 'Lo siento, no hay resultados.',
 	'smwadmin' => 'Funciones de administración para Semantic Mediawiki',
+	'smw_smwadmin_settingup' => 'Configurando almacenamiento para Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'El motor de almacenamiento fue configurado con éxito.',
 	'smw_smwadmin_return' => 'Regresar a $1',
 	'smw_smwadmin_updatenotstarted' => 'Ya hay un proceso de actualización ejecutándose.
