@@ -14,6 +14,14 @@ $magicWords['en'] = array(
 	'SMW_SHOWFACTBOX'     => array( 0, '__SHOWFACTBOX__' )
 );
 
+$magicWords['af'] = array(
+	'ask'                   => array( '0', 'vra', 'ask' ),
+	'show'                  => array( '0', 'wys', 'show' ),
+	'concept'               => array( '0', 'konsep', 'concept' ),
+	'set'                   => array( '0', 'stel', 'set' ),
+	'declare'               => array( '0', 'verklaar', 'declare' ),
+);
+
 $magicWords['ar'] = array(
 	'ask'                   => array( '0', 'سؤال', 'ask' ),
 	'show'                  => array( '0', 'عرض', 'show' ),
