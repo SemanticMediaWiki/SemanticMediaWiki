@@ -116,15 +116,16 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn("SMWSQLStore2::getSemanticData (SMW)");
 		SMWSQLStore2::$in_getSemanticData++;
 
-		if ( $subject instanceof Title ) {
+		if ( $subject instanceof Title ) { ///TODO: can this still occur?
 			$sid = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki());
 			$svalue = SMWWikiPageValue::makePageFromTitle($subject);
 		} elseif ($subject instanceof SMWWikiPageValue) {
-			$sid = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki());
+			$sid =  $subject->isValid()?
+			        $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki()):
+					0;
 			$svalue = $subject;
 		} else {
 			$sid = 0;
-			$result = NULL;
 		}
 		if ($sid == 0) { // no data, safe our time
 			/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
