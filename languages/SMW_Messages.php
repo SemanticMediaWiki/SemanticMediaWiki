@@ -7895,6 +7895,7 @@ $messages['te'] = array(
 	'types' => 'రకాలు',
 	'smw_ask_ascorder' => 'ఆరోహణ',
 	'smw_ask_descorder' => 'అవరోహణ',
+	'smw_ask_printhead' => 'అదనపు ముద్రణలు (ఐచ్చికం)',
 	'smw_sbv_property' => 'లక్షణం:',
 	'smw_sbv_value' => 'విలువ:',
 	'smw_browse_go' => 'వెళ్ళు',
