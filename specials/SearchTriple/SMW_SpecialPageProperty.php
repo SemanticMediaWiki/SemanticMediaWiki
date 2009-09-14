@@ -31,74 +31,72 @@ class SMWPageProperty extends SpecialPage {
 
 	public function execute( $query ) {
 		global $wgRequest, $wgOut, $wgUser;
-
 		$skin = $wgUser->getSkin();
 		$this->setHeaders();
 
-		// get the GET parameters
-		$from = $wgRequest->getVal( 'from' );
-		$type = $wgRequest->getVal( 'type' );
-		// no GET parameters? Then try the URL
-		if (('' == $type) && ('' == $from)) {
-			$queryparts = explode('::', $query);
-			$type = $query;
-			if (count($queryparts) > 1) {
-				$from = $queryparts[0];
-				$type = implode('::', array_slice($queryparts, 1));
-			}
-		}
-
-		$subject = SMWDataValueFactory::newTypeIDValue('_wpg', $from );
-		$from = $subject->isValid()?$subject->getText():'';
-		$property = SMWPropertyValue::makeUserProperty($type);
-		if ($property->isvalid()) {
-			$type = $property->getWikiValue();
-		} else {
-			$type = '';
-		}
-
+		// Get parameters
+		$pagename = $wgRequest->getVal( 'from' );
+		$propname = $wgRequest->getVal( 'type' );
 		$limit = $wgRequest->getVal( 'limit' );
 		if ('' == $limit) $limit =  20;
 		$offset = $wgRequest->getVal( 'offset' );
 		if ('' == $offset) $offset = 0;
+		if ('' == $propname) { // No GET parameters? Try the URL:
+			$queryparts = explode('::', $query);
+			$propname = $query;
+			if (count($queryparts) > 1) {
+				$pagename = $queryparts[0];
+				$propname = implode('::', array_slice($queryparts, 1));
+			}
+		}
+
+		$subject = SMWDataValueFactory::newTypeIDValue('_wpg', $pagename );
+		$pagename = $subject->isValid()?$subject->getText():'';
+		$property = SMWPropertyValue::makeUserProperty($propname);
+		$propname = $property->isvalid()?$property->getWikiValue():'';
+
+		// Produce output
 		$html = '';
-		$spectitle = Title::makeTitle( NS_SPECIAL, 'PageProperty' );
-
 		wfLoadExtensionMessages('SemanticMediaWiki');
-
-		if (('' == $type)) { // No relation or subject given.
+		if (('' == $propname)) { // no property given, show a message
 			$html .= wfMsg('smw_pp_docu') . "\n";
-		} else { // everything is given
-			$wgOut->setPagetitle( ($subject->isValid()?'':$subject->getPrefixedText() . ' ') . $property->getWikiValue());
+		} else { // property given, find and display results
+			$wgOut->setPagetitle( ($pagename!=''?$pagename . ' ':'') . $property->getWikiValue() );
+
+			// get results (get one more, to see if we have to add a link to more)
 			$options = new SMWRequestOptions();
 			$options->limit = $limit+1;
 			$options->offset = $offset;
 			$options->sort = true;
-			// get results (get one more, to see if we have to add a link to more)
-			$results = &smwfGetStore()->getPropertyValues($subject, $property, $options);
+			$results = &smwfGetStore()->getPropertyValues($pagename!=''?$subject:NULL, $property, $options);
 
-			// prepare navigation bar
-			if ($offset > 0)
-				$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('PageProperty','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&type=' . urlencode($type) .'&from=' . urlencode($from))) . '">' . wfMsg('smw_result_prev') . '</a>';
-			else
-				$navigation = wfMsg('smw_result_prev');
+			// prepare navigation bar if needed
+			if ( ($offset>0) || (count($results)>$limit) ) {
+				if ($offset > 0) {
+					$navigation = '<a href="' . htmlspecialchars($skin->makeSpecialUrl('PageProperty','offset=' . max(0,$offset-$limit) . '&limit=' . $limit . '&type=' . urlencode($propname) .'&from=' . urlencode($pagename))) . '">' . wfMsg('smw_result_prev') . '</a>';
+				} else {
+					$navigation = wfMsg('smw_result_prev');
+				}
 
-			$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($results), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg('smw_result_results') . ' ' . ($offset+1) . '&ndash; ' . ($offset + min(count($results), $limit)) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+				if ( count($results)==($limit+1) ) {
+					$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('PageProperty', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&type=' . urlencode($propname) . '&from=' . urlencode($pagename)))  . '">' . wfMsg('smw_result_next') . '</a>';
+				} else {
+					$navigation .= wfMsg('smw_result_next');
+				}
+			} else {
+				$navigation = '';
+			}
 
-			if (count($results)==($limit+1))
-				$navigation .= ' <a href="' . htmlspecialchars($skin->makeSpecialUrl('PageProperty', 'offset=' . ($offset+$limit) . '&limit=' . $limit . '&type=' . urlencode($type) . '&from=' . urlencode($from)))  . '">' . wfMsg('smw_result_next') . '</a>';
-			else
-				$navigation .= wfMsg('smw_result_next');
-
-			// no need to show the navigation bars when there is not enough to navigate
-			if (($offset>0) || (count($results)>$limit)) $html .= '<br />' . $navigation;
+			// display results
+			$html .= '<br />' . $navigation;
 			if (count($results) == 0) {
 				$html .= wfMsg( 'smw_result_noresults' );
 			} else {
 				$html .= "<ul>\n";
 				$count = $limit+1;
 				foreach ($results as $result) {
-					$count -= 1;
+					$count--;
 					if ($count < 1) continue;
 					$html .= '<li>' . $result->getLongHTMLText($skin); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
 					if ($result->getTypeID() == '_wpg') {
@@ -109,15 +107,16 @@ class SMWPageProperty extends SpecialPage {
 				}
 				$html .= "</ul>\n";
 			}
-			if (($offset>0) || (count($results)>$limit)) $html .= $navigation;
+			$html .= $navigation;
 		}
 
-		// display query form
+		// Display query form
+		$spectitle = Title::makeTitle( NS_SPECIAL, 'PageProperty' );
 		$html .= '<p>&nbsp;</p>';
 		$html .= '<form name="pageproperty" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
-		$html .= wfMsg('smw_pp_from') . ' <input type="text" name="from" value="' . htmlspecialchars($from) . '" />' . "&nbsp;&nbsp;&nbsp;\n";
-		$html .= wfMsg('smw_pp_type') . ' <input type="text" name="type" value="' . htmlspecialchars($type) . '" />' . "\n";
+		$html .= wfMsg('smw_pp_from') . ' <input type="text" name="from" value="' . htmlspecialchars($pagename) . '" />' . "&nbsp;&nbsp;&nbsp;\n";
+		$html .= wfMsg('smw_pp_type') . ' <input type="text" name="type" value="' . htmlspecialchars($propname) . '" />' . "\n";
 		$html .= '<input type="submit" value="' . wfMsg('smw_pp_submit') . "\"/>\n</form>\n";
 
 		$wgOut->addHTML($html);
