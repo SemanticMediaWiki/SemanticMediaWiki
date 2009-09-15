@@ -181,6 +181,7 @@ class SMWQueryProcessor {
 		global $wgContLang;
 		$querystring = '';
 		$printouts = array();
+		$lastprintout = NULL;
 		$params = array();
 		foreach ($rawparams as $name => $param) {
 			if ( is_string($name) && ($name != '') ) { // accept 'name' => 'value' just as '' => 'name=value'
@@ -225,7 +226,14 @@ class SMWQueryProcessor {
 				if (count($parts) > 1) { // label found, use this instead of default
 					$label = trim($parts[1]);
 				}
-				$printouts[] = new SMWPrintRequest($printmode, $label, $data, trim($propparts[1]));
+				$lastprintout = new SMWPrintRequest($printmode, $label, $data, trim($propparts[1]));
+				$printouts[] = $lastprintout;
+			} elseif ($param[0] == '+') { // print request parameter
+				if ($lastprintout != NULL) {
+					$param = substr($param,1);
+					$parts = explode('=',$param,2);
+					$lastprintout->setParam($parts[0], $parts[1]);
+				}
 			} else { // parameter or query
 				$parts = explode('=',$param,2);
 				if (count($parts) >= 2) {

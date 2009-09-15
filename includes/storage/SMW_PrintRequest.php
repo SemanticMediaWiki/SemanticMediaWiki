@@ -28,15 +28,17 @@ class SMWPrintRequest {
 	protected $m_typeid = false; // id of the datatype of the printed objects, if applicable
 	protected $m_outputformat; // output format string for formatting results, if applicable
 	protected $m_hash = false; // cache your hash (currently useful since SMWQueryResult accesses the hash many times, might be dropped at some point)
-
+	protected $m_params = array();
+	
 	/**
 	 * Create a print request.
 	 * @param $mode a constant defining what to printout
 	 * @param $label the string label to describe this printout
 	 * @param $data optional data for specifying some request, might be a property object, title, or something else; interpretation depends on $mode
 	 * @param $outputformat optional string for specifying an output format, e.g. an output unit
+	 * @param $params optional array of further, named parameters for the print request
 	 */
-	public function __construct($mode, $label, $data = NULL, $outputformat = false) {
+	public function __construct($mode, $label, $data = NULL, $outputformat = false, $params = NULL) {
 		$this->m_mode = $mode;
 		$this->m_label = $label;
 		$this->m_data = $data;
@@ -47,6 +49,7 @@ class SMWPrintRequest {
 		if ($this->m_data instanceof SMWDataValue) {
 			$this->m_data->setCaption($label);
 		}
+		if (NULL != $params) $m_params = $params;
 	}
 
 	public function getMode() {
@@ -139,6 +142,9 @@ class SMWPrintRequest {
 	 * print requests. The hash also includes the chosen label,
 	 * so it is possible to print the same date with different
 	 * labels.
+	 * TODO: For now, the params are not part of the Hash, but
+	 * maybe they should? But the hash is used for some things,
+	 * check that first!
 	 */
 	public function getHash() {
 		if ($this->m_hash === false) {
@@ -155,8 +161,14 @@ class SMWPrintRequest {
 
 	/**
 	 * Serialise this object like print requests given in \#ask.
+	 * @param $params boolean that sets if the serialization should
+	 *                include the extra print request parameters
 	 */
-	public function getSerialisation() {
+	public function getSerialisation($showparams = false) {
+		$parameters = '';
+		if ($showparams) foreach ( $this->m_params as $key => $value ) {
+			$parameters .= "|+" . $key . "=" . $value;
+		}
 		switch ($this->m_mode) {
 			case SMWPrintRequest::PRINT_CATS:
 				global $wgContLang;
@@ -165,7 +177,7 @@ class SMWPrintRequest {
 				if ($this->m_label != $catlabel) {
 					$result .= '=' . $this->m_label;
 				}
-				return $result;
+				return $result . $parameters;
 			case SMWPrintRequest::PRINT_PROP: case SMWPrintRequest::PRINT_CCAT:
 				if ($this->m_mode == SMWPrintRequest::PRINT_CCAT) {
 					$printname = $this->m_data->getPrefixedText();
@@ -183,9 +195,46 @@ class SMWPrintRequest {
 				if ( $printname != $this->m_label ) {
 					$result .= '=' . $this->m_label;
 				}
-				return $result;
+				return $result . $parameters;
 			case SMWPrintRequest::PRINT_THIS: default: return ''; // no current serialisation
 		}
 	}
 
+	/**
+	 * Returns the value of a named parameter. 
+	 * @param $key string the name of the parameter key
+	 * @return string Value of the paramer, if set (else '')
+	 */
+	public function getParam($key) {
+		if (array_key_exists($key, $this->m_params))
+			return $this->m_params[$key];
+		else
+			return '';
+	}
+
+	/**
+	 * Returns if a named parameter is set. 
+	 * @param $key string the name of the parameter
+	 * @return boolean True if the parameter is set, false otherwise
+	 */
+	public function hasParam($key) {
+		return array_key_exists($key, $this->m_params);
+	}
+	
+	/**
+	 * Returns the array of parameters, where a string is mapped to a string. 
+	 * @return array Map of parameter names to values.
+	 */
+	public function getParams() {
+		return $this->m_params;
+	}
+	
+	/**
+	 * Sets a print request parameter.
+	 * @param $key string Name of the parameter
+	 * @param $value string Value for the parameter 
+	 */
+	public function setParam($key, $value) {
+		$this->m_params[$key] = $value;
+	}
 }
