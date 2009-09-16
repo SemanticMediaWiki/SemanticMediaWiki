@@ -188,7 +188,7 @@ class SMWNumberValue extends SMWDataValue {
 			$this->convertToMainUnit();
 			return $this->m_value . $this->m_unit;
 		} else {
-			return implode("\t", $this->m_errors);
+			return implode("\t", $this->getErrors());
 		}
 	}
 

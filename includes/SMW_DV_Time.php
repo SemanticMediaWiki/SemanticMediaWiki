@@ -381,7 +381,7 @@ class SMWTimeValue extends SMWDataValue {
 			$this->createJD();
 			return strval($this->m_jd);
 		} else {
-			return implode("\t", $this->m_errors);
+			return implode("\t", $this->getErrors());
 		}
 	}
 

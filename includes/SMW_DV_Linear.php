@@ -167,7 +167,7 @@ class SMWLinearValue extends SMWNumberValue {
 			// delete all previous errors, this is our real problem
 			/// TODO: probably we should check for this earlier, but avoid unnecessary DB requests ...
 			wfLoadExtensionMessages('SemanticMediaWiki');
-			$this->m_errors = array(wfMsgForContent('smw_unknowntype', SMWDataValueFactory::findTypeLabel($this->getTypeID())));
+			$this->addError(wfMsgForContent('smw_unknowntype', SMWDataValueFactory::findTypeLabel($this->getTypeID())));
 			return;
 		}
 		$numdv = SMWDataValueFactory::newTypeIDValue('_num'); // used for parsing the factors

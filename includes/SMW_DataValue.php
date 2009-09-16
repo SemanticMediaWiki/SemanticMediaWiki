@@ -233,6 +233,17 @@ abstract class SMWDataValue {
 		}
 	}
 
+	/**
+	 * Clear error messages. This function is provided temporarily to allow
+	 * n-ary to do this. Eventually, n-ary should implement its setDBkeys()
+	 * properly so that this function will vanish again.
+	 * @note Do not use this function in external code.
+	 */
+	protected function clearErrors() {
+		$this->m_errors = array();
+		$this->m_haserrors = false;
+	}
+
 ///// Abstract processing methods /////
 
 	/**

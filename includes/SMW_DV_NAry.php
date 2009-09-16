@@ -229,7 +229,7 @@ class SMWNAryValue extends SMWDataValue {
 	 * NULL as an indication for omitted values.
 	 */
 	public function setDVs($datavalues) {
-		$this->m_errors = array(); // clear errors
+		$this->clearErrors(); // clear errors
 		$this->m_infolinks = array(); // clear links
 		$this->m_hasssearchlink = false;
 		$this->m_caption = false;

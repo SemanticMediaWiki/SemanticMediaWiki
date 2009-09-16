@@ -206,7 +206,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ($this->isValid()) {
 			return $this->getPrefixedText();
 		} else {
-			return implode("\t", $this->m_errors);
+			return implode("\t", $this->getErrors());
 		}
 	}
 
