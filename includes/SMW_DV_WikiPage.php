@@ -139,12 +139,10 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( ($linker !== NULL) && ($this->m_caption !== '') && ($this->m_outformat != '-') ) { $this->getTitle(); } // init the Title object, may reveal hitherto unnoticed errors
 		if ( ($linker === NULL) || (!$this->isValid()) || ($this->m_outformat == '-') || ($this->m_caption === '') ) {
 			return htmlspecialchars($this->getCaption());
+		} elseif ($this->getNamespace() == NS_MEDIA) { /// NOTE: this extra case is indeed needed
+			return $linker->makeMediaLinkObj($this->getTitle(), $this->getCaption());
 		} else {
-			if ($this->getNamespace() == NS_MEDIA) { /// NOTE: this extra case is indeed needed
-				return $linker->makeMediaLinkObj($this->getTitle(), $this->getCaption());
-			} else {
-				return $linker->makeLinkObj($this->getTitle(), $this->getCaption());
-			}
+			return $linker->makeLinkObj($this->getTitle(), $this->getCaption());
 		}
 	}
 
@@ -175,12 +173,10 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 		if ( ($linker === NULL) || ($this->m_outformat == '-') ) {
 			return htmlspecialchars($this->getPrefixedText());
-		} else {
-			if ($this->getNamespace() == NS_MEDIA) { // this extra case is really needed
-				return $linker->makeMediaLinkObj($this->getTitle(), $this->m_textform);
-			} else { // all others use default linking, no embedding of images here
-				return $linker->makeLinkObj($this->getTitle(), $this->m_textform);
-			}
+		} elseif ($this->getNamespace() == NS_MEDIA) { // this extra case is really needed
+			return $linker->makeMediaLinkObj($this->getTitle(), $this->m_textform);
+		} else { // all others use default linking, no embedding of images here
+			return $linker->makeLinkObj($this->getTitle(), $this->m_textform);
 		}
 	}
 
@@ -202,12 +198,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	public function getHash() {
-		$this->unstub();
-		if ($this->isValid()) {
-			return $this->getPrefixedText();
-		} else {
-			return implode("\t", $this->getErrors());
-		}
+		return $this->isValid()?$this->getPrefixedText():implode("\t", $this->getErrors());
 	}
 
 	protected function getServiceLinkParams() {
@@ -219,7 +210,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	public function getExportData() {
-		$this->unstub();
 		if (!$this->isValid()) return NULL;
 		switch ($this->getNamespace()) {
 			case NS_MEDIA: // special handling for linking media files directly
@@ -247,14 +237,13 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	/**
 	 * Return according Title object or NULL if no valid value was set.
-	 * NULL can be returned even if this object returns TRUE for isValue(),
+	 * NULL can be returned even if this object returns TRUE for isValid(),
 	 * since the latter function does not check whether MediaWiki can really
 	 * make a Title out of the given data.
 	 * However, isValid() will return FALSE *after* this function failed in
 	 * trying to create a title.
 	 */
 	public function getTitle() {
-		$this->unstub();
 		if ( ($this->isValid()) && ($this->m_title === NULL) ) {
 			if ($this->m_interwiki == '') {
 				$this->m_title = Title::makeTitle($this->m_namespace, $this->m_dbkeyform);
@@ -276,11 +265,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	public function getArticleID() {
 		$this->unstub();
 		if ($this->m_id === false) {
-			if ($this->getTitle() !== NULL) {
-				$this->m_id = $this->m_title->getArticleID();
-			} else {
-				$this->m_id = 0;
-			}
+			$this->m_id = ($this->getTitle() !== NULL)?$this->m_title->getArticleID():0;
 		}
 		return $this->m_id;
 	}
@@ -290,11 +275,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * return FALSE.
 	 */
 	public function getNamespace() {
-		$this->unstub();
-		if (!$this->isValid()) {
-			return false;
-		}
-		return $this->m_namespace;
+		return $this->isValid()?$this->m_namespace:false;
 	}
 
 	/**

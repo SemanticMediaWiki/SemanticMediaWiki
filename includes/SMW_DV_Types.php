@@ -245,11 +245,8 @@ class SMWTypesValue extends SMWDataValue {
 	 */
 	public function getTypeLabels() {
 		$this->initTypeData();
-		if ($this->m_typelabels === false) {
-			return array(); // fallback for unary callers
-		} else {
-			return $this->m_typelabels;
-		}
+		// fallback to array() for unary callers
+		return ($this->m_typelabels === false)?array():$this->m_typelabels;
 	}
 
 	/**
@@ -258,11 +255,8 @@ class SMWTypesValue extends SMWDataValue {
 	 */
 	public function getTypeCaptions() {
 		$this->initTypeData();
-		if ($this->m_typecaptions === false) {
-			return array(); // fallback for unary callers
-		} else {
-			return $this->m_typecaptions;
-		}
+		// fallback to array() for unary callers
+		return ($this->m_typecaptions === false)?array():$this->m_typecaptions;
 	}
 
 	/**

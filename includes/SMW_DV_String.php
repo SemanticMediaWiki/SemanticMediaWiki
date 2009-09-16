@@ -21,7 +21,7 @@ class SMWStringValue extends SMWDataValue {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		if ($value!='') {
 			$this->m_value = $value;
-			if ( (strlen($this->m_value) > 255) && ($this->m_typeid != '_txt') && ($this->m_typeid != '_cod') ) { // limit size (for DB indexing)
+			if ( ($this->m_typeid != '_txt') && ($this->m_typeid != '_cod') && (strlen($this->m_value) > 255) ) { // limit size (for DB indexing)
 				$this->addError(wfMsgForContent('smw_maxstring', mb_substr($value, 0, 42) . ' <span class="smwwarning">[&hellip;]</span> ' . mb_substr($value, mb_strlen($this->m_value) - 42)));
 			}
 		} else {
@@ -52,22 +52,14 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getLongWikiText($linked = NULL) {
-		if (!$this->isValid()) {
-			return $this->getErrorText();
-		} else {
-			return $this->getAbbValue($linked,$this->m_value);
-		}
+		return $this->isValid()?$this->getAbbValue($linked,$this->m_value):$this->getErrorText();
 	}
 
 	/**
 	 * @todo Rather parse input to obtain properly formatted HTML.
 	 */
 	public function getLongHTMLText($linker = NULL) {
-		if (!$this->isValid()) {
-			return $this->getErrorText();
-		} else {
-			return $this->getAbbValue($linker,smwfXMLContentEncode($this->m_value));
-		}
+		return $this->isValid()?$this->getAbbValue($linker,smwfXMLContentEncode($this->m_value)):$this->getErrorText();
 	}
 
 	public function getDBkeys() {
@@ -84,8 +76,9 @@ class SMWStringValue extends SMWDataValue {
 		$this->unstub();
 		if ( ($this->m_typeid != '_txt') && ($this->m_typeid != '_cod') ) {
 			return SMWDataValue::getInfolinks();
+		} else {
+			return $this->m_infolinks;
 		}
-		return $this->m_infolinks;
 	}
 
 	protected function getServiceLinkParams() {
