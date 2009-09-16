@@ -3745,6 +3745,13 @@ $messages['ht'] = array(
 	'smw_abb_west' => 'W',
 );
 
+/** Hungarian (Magyar)
+ * @author Glanthor Reviol
+ */
+$messages['hu'] = array(
+	'smw_browse_go' => 'Menj',
+);
+
 /** Interlingua (Interlingua)
  * @author McDutchie
  */
