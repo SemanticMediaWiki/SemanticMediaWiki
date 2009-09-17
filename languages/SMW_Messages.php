@@ -3749,7 +3749,43 @@ $messages['ht'] = array(
  * @author Glanthor Reviol
  */
 $messages['hu'] = array(
+	'smw_viewasrdf' => 'RDF hírcsatorna',
+	'smw_finallistconjunct' => ', és',
+	'smw_printername_auto' => 'Automatikus',
+	'smw_printername_count' => 'Eredmények megszámlálása',
+	'smw_printername_csv' => 'CSV exportálás',
+	'smw_printername_json' => 'JSON exportálás',
+	'smw_printername_list' => 'Lista',
+	'smw_printername_rss' => 'RSS exportálás',
+	'smw_printername_table' => 'Táblázat',
+	'smw_printername_template' => 'Sablon',
+	'smw_iq_moreresults' => '… további eredmények',
+	'smw_true_words' => 'igaz,igen,i',
+	'smw_false_words' => 'hamis,nem,n',
+	'smw_abb_north' => 'É',
+	'smw_abb_east' => 'K',
+	'smw_abb_south' => 'D',
+	'smw_abb_west' => 'Ny',
+	'smw_label_latitude' => 'Földrajzi szélesség:',
+	'smw_label_longitude' => 'Földrajzi hosszúság:',
+	'smw_exportrdf_submit' => 'Exportálás',
+	'properties' => 'Tulajdonságok',
+	'types' => 'Típusok',
+	'smw_ask_editquery' => '[Lekérdezés szerkesztése]',
+	'smw_add_sortcondition' => '[Rendezési feltétel hozzáadása]',
+	'smw_ask_hidequery' => 'Lekérdezés elrejtése',
+	'smw_ask_help' => 'Lekérdezések súgója',
+	'smw_ask_queryhead' => 'Lekérdezés',
+	'smw_ask_format_as' => 'Formázás mint:',
+	'smw_sbv_value' => 'Érték:',
+	'browse' => 'Wiki tallózása',
 	'smw_browse_go' => 'Menj',
+	'smw_result_prev' => 'Előző',
+	'smw_result_next' => 'Következő',
+	'smw_result_results' => 'Eredmények',
+	'smw_smwadmin_datarefreshbutton' => 'Adatok frissítésének megkezdése',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Igen, biztos vagyok benne.',
+	'smw_adminlinks_datastructure' => 'Adatstruktúra',
 );
 
 /** Interlingua (Interlingua)
@@ -6099,6 +6135,13 @@ Progression estimada de la mesa a jorn actuala :",
 	'smw_adminlinks_datastructure' => 'Estructura de las donadas',
 	'smw_adminlinks_displayingdata' => 'Afichatge de las donadas',
 	'smw_adminlinks_inlinequerieshelp' => 'Ajuda sus las requèstas',
+);
+
+/** Ossetic (Иронау)
+ * @author Amikeco
+ */
+$messages['os'] = array(
+	'smw_printername_template' => 'Шаблон',
 );
 
 /** Deitsch (Deitsch)
