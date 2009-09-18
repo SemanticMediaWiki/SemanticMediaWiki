@@ -39,6 +39,14 @@ $magicWords['br'] = array(
 	'info'                  => array( '0', 'keloù', 'info' ),
 );
 
+$magicWords['ml'] = array(
+	'ask'                   => array( '0', 'ചോദിക്കുക', 'ask' ),
+	'show'                  => array( '0', 'കാട്ടുക', 'show' ),
+	'info'                  => array( '0', 'വിവരം', 'info' ),
+	'concept'               => array( '0', 'ആശയം', 'concept' ),
+	'set'                   => array( '0', 'ഗണം', 'set' ),
+);
+
 $magicWords['nl'] = array(
 	'ask'                   => array( '0', 'vragen', 'ask' ),
 	'show'                  => array( '0', 'weergeven', 'show' ),
