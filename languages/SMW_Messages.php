@@ -4946,6 +4946,7 @@ $messages['lb'] = array(
 	'smw_notitle' => '"$1" kann net als Numm vun enger Säit op dëser Wiki benotzt ginn.',
 	'smw_wrong_namespace' => 'Nëmme Säiten aus dem Nummraum "$1" sinn hei erlaabt.',
 	'smw_emptystring' => 'Eidel Zeeche ginn net akzeptéiert.',
+	'smw_maxstring' => "D'Zeecheketten $1 ass ze laang.",
 	'smw_notinenum' => '"$1" ass net an der Lëscht vun de méiglech Werter ($2) fir dës Eegeschaft.',
 	'smw_true_words' => 'wouer,w,jo,j',
 	'smw_false_words' => 'falsch,f,neen,n',
