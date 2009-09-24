@@ -339,17 +339,14 @@ class SMWSpecialBrowse extends SpecialPage {
 	}
 
 	/**
-	 * Replace the last two space characters with unbreakable spaces
+	 * Replace the last two space characters with unbreakable spaces for beautification.
 	 *
 	 * @param[in] $text string  Text to be transformed. Does not need to have spaces
 	 * @return string  Transformed text
 	 */
 	private function unbreak($text) {
-		// replace the last two whitespaces in the relation name with
-		// non-breaking spaces. Since there seems to be no PHP-replacer
-		// for the last two, a strrev ist done twice to turn it around.
-		// That's why nbsp is written backwards.
-		return strrev(preg_replace('/[\s]/u', ';psbn&', strrev($text), 2) );
+ 		$text = preg_replace('/[\s]/u', '&nbsp;', $text, -1, $count);
+ 		return $count>2?preg_replace('/(&nbsp;)/u', ' ', $text, max(0,$count-2)):$text;
 	}
 
 }
