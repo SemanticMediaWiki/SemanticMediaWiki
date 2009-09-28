@@ -23,16 +23,12 @@ class SMWNAryValue extends SMWDataValue {
 	private $m_type;
 	/// Should this DV operate on query syntax (special mode for parsing queries in a compatible fashion)
 	private $m_querysyntax = false;
-
+	/// Array of comparators as might be found in query strings (based on inputs like >, <, etc.)
 	private $m_comparators;
-	private $m_printstatement = false;
-	private $m_outputmodifiers;
 
 	protected function parseUserValue($value) {
 		$this->m_values = array();
 		$this->m_comparators = array(); // only for query mode
-		$this->m_printstatement = false; // only for query mode
-		$this->m_outputmodifiers = array();  // only for query mode
 		if ($value == '') {
 			$this->addError('No values specified.');
 			return;
@@ -46,15 +42,7 @@ class SMWNAryValue extends SMWDataValue {
 			// special handling for supporting query parsing
 			if ($this->m_querysyntax) {
 				$comparator = SMW_CMP_EQ;
-				$printmodifier = '';
-				SMWQueryParser::prepareValue($values[$vi], $comparator, $printmodifier);
-				if ($values[$vi] == '*') { // print statement, treat as omission
-					$this->m_printstatement = true;
-					$values[$vi] = '';
-					$printmodifiers[$vi] = $printmodifier;
-				} else {
-					$printmodifiers[$vi] = '';
-				}
+				SMWQueryParser::prepareValue($values[$vi], $comparator);
 			}
 			// generating the DVs:
 			if ( (count($values) > $vi) &&
@@ -262,18 +250,6 @@ class SMWNAryValue extends SMWDataValue {
 			}
 		}
 		return $vl;
-	}
-
-	/**
-	 * If in querymode, return all printmodifiers given or false if no print request
-	 * was specified. This requires the input to be given to setUserValue().
-	 * Otherwise bad things will happen.
-	 */
-	public function getPrintModifier() {
-		if (!$this->m_printstatement || !$this->m_querysyntax) {
-			return false;
-		}
-		return implode(';', $this->m_outputmodifiers);
 	}
 
 	public function getExportData() {

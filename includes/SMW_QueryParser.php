@@ -115,11 +115,9 @@ class SMWQueryParser {
 	 * The call-by-ref parameter $label is used to append any label strings found.
 	 */
 	protected function getSubqueryDescription(&$setNS, &$label) {
-		global $smwgQPrintoutLimit;
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		$conjunction = NULL;      // used for the current inner conjunction
 		$disjuncts = array();     // (disjunctive) array of subquery conjunctions
-		$printrequests = array(); // the printrequests found for this query level
 		$hasNamespaces = false;   // does the current $conjnuction have its own namespace restrictions?
 		$mustSetNS = $setNS;      // must ns restrictions be set? (may become true even if $setNS is false)
 
@@ -129,9 +127,7 @@ class SMWQueryParser {
 			switch ($chunk) {
 				case '[[': // start new link block
 					$ld = $this->getLinkDescription($setsubNS, $label);
-					if ($ld instanceof SMWPrintRequest) {
-						$printrequests[] = $ld;
-					} elseif ($ld instanceof SMWDescription) {
+					if ($ld !== NULL) {
 						$conjunction = $this->addDescription($conjunction,$ld);
 					}
 				break;
@@ -202,31 +198,18 @@ class SMWQueryParser {
 		}
 		$setNS = $mustSetNS; // NOTE: also false if namespaces were given but no default NS descs are available
 
-		$prcount = 0;
-		foreach ($printrequests as $pr) { // add printrequests
-			if ($prcount < $smwgQPrintoutLimit) {
-				$result->addPrintRequest($pr);
-				$prcount++;
-			} else {
-				$this->m_errors[] = wfMsgForContent('smw_overprintoutlimit');
-				break;
-			}
-		}
 		return $result;
 	}
 
 	/**
 	 * Compute an SMWDescription for current part of a query, which should
-	 * be the content of "[[ ... ]]". Alternatively, if the current syntax
-	 * specifies a print request, return the print request object.
-	 * Returns NULL upon error.
+	 * be the content of "[[ ... ]]". Returns NULL upon error.
 	 *
 	 * Parameters $setNS and $label have the same use as in getSubqueryDescription().
 	 */
 	protected function getLinkDescription(&$setNS, &$label) {
 		// This method is called when we encountered an opening '[['. The following
-		// block could be a Category-statement, fixed object, property statements,
-		// or according print statements.
+		// block could be a Category-statement, fixed object, or property statement.
 		$chunk = $this->readChunk('',true,false); // NOTE: untrimmed, initial " " escapes prop. chains
 		if ( (smwfNormalTitleText($chunk) == $this->m_categoryprefix) ||  // category statement or
 		     (smwfNormalTitleText($chunk) == $this->m_conceptprefix) ) {  // concept statement
@@ -284,12 +267,8 @@ class SMWQueryParser {
 	protected function getPropertyDescription($propertyname, &$setNS, &$label) {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		$this->readChunk(); // consume separator ":=" or "::"
-		// first process property chain syntax (e.g. "property1.property2::value"):
-		if ($propertyname{0} == ' ') { // escape
-			$propertynames = array($propertyname);
-		} else {
-			$propertynames = explode('.', $propertyname);
-		}
+		// first process property chain syntax (e.g. "property1.property2::value"), escaped by initial " ":
+		$propertynames = ($propertyname{0} == ' ')?array($propertyname):explode('.', $propertyname);
 		$properties = array();
 		$typeid = '_wpg';
 		foreach ($propertynames as $name) {
@@ -332,7 +311,7 @@ class SMWQueryParser {
 					}
 					$chunk = $this->readChunk();
 				break;
-				default: //normal object value or print statement
+				default: //normal object value
 					// read value(s), possibly with inner [[...]]
 					$open = 1;
 					$value = $chunk;
@@ -366,32 +345,12 @@ class SMWQueryParser {
 						$dv->acceptQuerySyntax();
 						$dv->setUserValue($value);
 						$vl = $dv->getValueList();
-						$pm = $dv->getPrintModifier();
-						if ($vl !== NULL) { // prefer conditions over print statements (only one possible right now)
+						if ($vl !== NULL) {
 							$innerdesc = $this->addDescription($innerdesc, $vl, false);
-						} elseif ($pm !== false) {
-							if ($chunk == '|') {
-								$printlabel = $this->readChunk('\]\]');
-								if ($printlabel != ']]') {
-									$chunk = $this->readChunk('\]\]');
-								} else {
-									$printlabel = '';
-									$chunk = ']]';
-								}
-							} else {
-								$printlabel = $property->getWikiValue();
-							}
-							if ($chunk == ']]') {
-								return new SMWPrintRequest(SMWPrintRequest::PRINT_PROP, $printlabel, $property, $pm);
-							} else {
-								$this->m_errors[] = wfMsgForContent('smw_badprintout');
-								return NULL;
-							}
 						}
 					} else { // unary value
 						$comparator = SMW_CMP_EQ;
-						$printmodifier = '';
-						SMWQueryParser::prepareValue($value, $comparator, $printmodifier);
+						SMWQueryParser::prepareValue($value, $comparator);
 						$dv = SMWDataValueFactory::newPropertyObjectValue($property, $value);
 						if (!$dv->isValid()) {
 							$this->m_errors = $this->m_errors + $dv->getErrors();
@@ -406,11 +365,9 @@ class SMWQueryParser {
 		}
 
 		if ($innerdesc === NULL) { // make a wildcard search
-			if ( ($this->m_defaultns !== NULL) && ($typeid == '_wpg') ) {
-				$innerdesc = $this->addDescription($innerdesc, $this->m_defaultns, false);
-			} else {
-				$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
-			}
+			$innerdesc = ( ($this->m_defaultns !== NULL) && ($typeid == '_wpg') )?
+			              $this->addDescription($innerdesc, $this->m_defaultns, false):
+			              $this->addDescription($innerdesc, new SMWThingDescription(), false);
 			$this->m_errors[] = wfMsgForContent('smw_propvalueproblem', $property->getWikiValue());
 		}
 		$properties = array_reverse($properties);
@@ -423,31 +380,28 @@ class SMWQueryParser {
 
 
 	/**
-	 * Prepare a single value string, possibly extracting comparators and
-	 * printmodifier. $value is changed to consist only of the remaining
-	 * effective value string, or of "*" for print statements.
+	 * Prepare a single value string, possibly extracting comparators. $value is
+	 * changed to consist only of the remaining effective value string (without the
+	 * comparator).
 	 */
-	static public function prepareValue(&$value, &$comparator, &$printmodifier) {
+	static public function prepareValue(&$value, &$comparator) {
 		global $smwgQComparators;
 		$list = preg_split('/^(' . $smwgQComparators . ')/u',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
 		$comparator = SMW_CMP_EQ;
-		if (count($list) == 3) { // initial comparator found ($list[1] should be empty)
+		if (count($list) == 3) { // initial comparator found ($list[0] should be empty)
+			$value = $list[2];
 			switch ($list[1]) {
 				case '<':
 					$comparator = SMW_CMP_LEQ;
-					$value = $list[2];
 				break;
 				case '>':
 					$comparator = SMW_CMP_GEQ;
-					$value = $list[2];
 				break;
 				case '!':
 					$comparator = SMW_CMP_NEQ;
-					$value = $list[2];
 				break;
 				case '~':
 					$comparator = SMW_CMP_LIKE;
-					$value = $list[2];
 				break;
 				//default: not possible
 			}
