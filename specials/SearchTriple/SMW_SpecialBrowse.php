@@ -93,7 +93,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 			$html .= $this->displayHead();
 			if ($this->showoutgoing) {
-				$data = smwfGetStore()->getSemanticData($this->subject->getTitle());
+				$data = smwfGetStore()->getSemanticData($this->subject);
 				$html .= $this->displayData($data, $leftside);
 				$html .= $this->displayCenter();
 			}
