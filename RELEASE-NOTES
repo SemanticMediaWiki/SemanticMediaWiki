@@ -5,6 +5,7 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Support for inverse properties: use "-" in front of property names anywhere to
   refer to the inverse direction of a property. Works in browsing interfaces,
   queries, and query output directives. In queries only for properties of Type:Page.
+* Compatibility to new MediaWiki skin "vector"
 * Removed support for backwards compatibility to SMW <1.0 ($smwgSMWBetaCompatible).
 
 == SMW 1.4.3 ==
