@@ -84,22 +84,18 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		// Print header
 		$result = $header;
 
-		// Put all result rows into an array, for easier handling
-		$rows = array();
-		while ($row = $res->getNext()) {
-			$rows[] = $row;
-		}
-
 		// Set up floating divs, if there's more than one column
 		if ($this->mColumns > 1) {
 			$column_width = floor(100 / $this->mColumns);
 			$result .= '<div style="float: left; width: ' . $column_width . '%">' . "\n";
-			$rows_per_column = ceil(count($rows) / $this->mColumns);
+			$rows_per_column = ceil($res->getCount() / $this->mColumns);
 			$rows_in_cur_column = 0;
 		}
 
 		// Now print each row
-		foreach ($rows as $i => $row) {
+		$rownum = -1;
+		while ( $row = $res->getNext() ) {
+			$rownum++;
 			if ($this->mColumns > 1) {
 				if ($rows_in_cur_column == $rows_per_column) {
 					$result .= "\n</div>";
@@ -108,8 +104,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				}
 				$rows_in_cur_column++;
 			}
-			if ( $i > 0 && $plainlist )  {
-				$result .=  ($i <= count($rows)) ? $listsep : $finallistsep; // the comma between "rows" other than the last one
+			if ( $rownum > 0 && $plainlist )  {
+				$result .=  ($rownum <= $res->getCount()) ? $listsep : $finallistsep; // the comma between "rows" other than the last one
 			} else {
 				$result .= $rowstart;
 			}
