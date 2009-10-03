@@ -23,18 +23,18 @@ include_once($smwgIP . '/languages/SMW_Language.php');
 class SMWLanguageHe extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(
-	'_wpg' => 'Page', // name of page datatype  //TODO translate
+	'_wpg' => 'עמוד', // name of page datatype
 	'_str' => 'מחרוזת',  // name of the string type
-	'_txt' => 'Text',  // name of the text type (very long strings) //TODO: translate
-	'_cod' => 'Code',  // name of the (source) code type //TODO: translate
+	'_txt' => 'טקסט',  // name of the text type (very long strings)
+	'_cod' => 'קוד',  // name of the (source) code type
 	'_boo' => 'נכוןלאנכון',  // name of the boolean type
-	'_num' => 'Number', // name for the datatype of numbers //TODO: translate
+	'_num' => 'מספר', // name for the datatype of numbers
 	'_geo' => 'קורדינטות גיאוגרפיות', // name of the geocoord type
 	'_tem' => 'טמפרטורה',  // name of the temperature type
 	'_dat' => 'תאריך',  // name of the datetime (calendar) type
 	'_ema' => 'דואל',  // name of the email (URI) type
-	'_uri' => 'URL',  // name of the URL type
-	'_anu' => 'Annotation URI'  // name of the annotation URI type (OWL annotation property)
+	'_uri' => 'כתובת כללית',  // name of the URL type
+	'_anu' => 'מזהה יחודי לפירוש'  // name of the annotation URI type (OWL annotation property)
 );
 
 protected $m_DatatypeAliases = array(
@@ -48,16 +48,16 @@ protected $m_DatatypeAliases = array(
 
 protected $m_SpecialProperties = array(
 	//always start upper-case
-	'_TYPE'  => 'מטיפוס',
-	'_URI'   => 'מזהה יחודי תואם',
-	'_SUBP' => 'Subproperty of', // TODO: translate
-	'_UNIT' => 'יחידת הצגה', // TODO: should be plural now ("units"), singluar stays alias//
+	'_TYPE' => 'מטיפוס',
+	'_URI'  => 'מזהה יחודי תואם',
+	'_SUBP' => 'רכוש כפוף ל',
+	'_UNIT' => 'יחידות מידה',
 	'_IMPO' => 'יובא מ',
 	'_CONV' => 'מתורגם ל',
 	'_SERV' => 'מספק שירות',
-	'_PVAL' => 'ערכים אפשריים', //   TODO: check translation, should be singular value//
-	'_MDAT' => 'Modification date',  // TODO: translate
-	'_ERRP' => 'Has improper value for' // TODO: translate
+	'_PVAL' => 'ערך אפשרי',
+	'_MDAT' => 'תאריך לשינוי',
+	'_ERRP' => 'יש ערך תקין בשביל'
 );
 
 protected $m_SpecialPropertyAliases = array(
@@ -71,9 +71,15 @@ protected $m_Namespaces = array(
 	SMW_NS_PROPERTY_TALK  => 'שיחת_תכונה',
 	SMW_NS_TYPE           => 'טיפוס',
 	SMW_NS_TYPE_TALK      => 'שיחת_טיפוס',
-	SMW_NS_CONCEPT        => 'Concept', // TODO: translate
-	SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
+	SMW_NS_CONCEPT        => 'רעיון',
+	SMW_NS_CONCEPT_TALK   => 'שיחת_רעיון'
 );
 
+
+protected $m_dateformats = array(array(SMW_Y), array(SMW_MY,SMW_YM), array(SMW_MDY,SMW_DMY,SMW_YMD,SMW_YDM));
+
+protected $m_months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
+protected $m_monthsshort = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
 
 }
