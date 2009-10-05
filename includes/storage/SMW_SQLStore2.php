@@ -1271,7 +1271,7 @@ class SMWSQLStore2 extends SMWStore {
 		$db =& wfGetDB( DB_MASTER );
 		$tables = array('smw_rels2', 'smw_atts2', 'smw_text2', 'smw_spec2',
 		                'smw_subs2', 'smw_redi2', 'smw_ids', 'smw_inst2',
-		                'smw_conc2');
+		                'smw_conc2', 'smw_conccache');
 		foreach ($tables as $table) {
 			$name = $db->tableName($table);
 			$db->query('DROP TABLE' . ($wgDBtype=='postgres'?'':' IF EXISTS'). $name, 'SMWSQLStore2::drop');
