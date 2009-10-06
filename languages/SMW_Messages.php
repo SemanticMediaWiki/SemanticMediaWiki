@@ -1939,6 +1939,11 @@ Nowy se njestartujo.',
 	'smw_smwadmin_updatenotstopped' => 'Aby běžecy proces zastajił, musyš kontrolowy kašćik aktiwěrowaś, aby pódał, až sy napšawdu wěsty.',
 	'smw_smwadmin_docu' => 'Toś ten specialny bok śi pomaga za instalaciju a aktualizaciju a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Mysli se na zawěsćenje gódnotnych datow, nježli až wuwjeźoš administratiwne funkcije.',
 	'smw_smwadmin_db' => 'Instalacija a aktualizacija datoweje banki',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki trjeba rozšyrjenja za datowu banku MediaWiki, aby semantiske daty składował. Slědujuca funkcija zawěsćijo, až twója datowa banka se pórědnje zarědujo.
+Změny, kótarež cynje se w toś tom kšacu, njewobwliwuju zbytk datoweje banki MediaWiki a daju se lažko anulěrowaś, jolic póžedane.
+Toś te zarědowańska funkcija móžo se někotare razy wugbaś, mimo až zawinuju škódu, ale jo trěbna jano jaden raz pśi instalaciji abo aktualizaciji.',
+	'smw_smwadmin_permissionswarn' => 'Jolic operacija raźi se z SQL-zmólkami, wužywaŕ datoweje banki, kótaregož twój wiki wužywa (skontrolěruj twóju dataja LocalSettings.php), nejskerjej njama dosegajuce pšawa.
+Pak zwól toś tomu wužywarjeju pśidatne pšawa za napóranje a lašowanje tabelow, zapódaj nachylu twójo admininistratorowe wužywarske mě w LocalSettings.php, pak wužyj wótglědowański skript <tt>SMW_setup.php</tt>, kótarež mógu wósobinske pódaśa z dataje AdminSettings.php wužywaś.',
 	'smw_smwadmin_dbbutton' => 'Tabele inicializěrowaś abo aktualizěrowaś',
 	'smw_smwadmin_announce' => 'Twój wiki pśipowěźeś',
 	'smw_smwadmin_announcedocu' => 'Semantic Mediawiki ma websłužbu za wuzjawjenje nowych semantiskich wikisedłow.
@@ -1947,6 +1952,10 @@ Glědaj startowy bok Semantic MediaWiki za <a href="http://semantic-mediawiki.or
 	'smw_smwadmin_announcebutton' => 'Tłoc na slědujucy tłocašk, aby pósłał swój wikiijowy URL k tej słužbje.
 Słužba njebuźo wikije registrěrowaś, kótarež njejsu zjawnje pśistupne a buźo pśistupne informacije jano zjawnje składowaś.',
 	'smw_smwadmin_datarefresh' => 'Reparatura a aktualizacija datow',
+	'smw_smwadmin_datarefreshdocu' => 'Jo móžno, wšykne daty Semantic MediaWiki wótnowiś, kótarež bazěruju na aktualnem wopśimjeśu wikija.
+To móžo wužytne byś, aby se wobškóźone daty pórěźili abo daty aktualizěrowali, jolic interny format jo se změnił pśez aktualizaciju softwara.
+Aktualizacija pśewjedujo se bok pó boku a njebuźo se ned kóńcyś.
+Slědujuce pokazujo, lěc aktualizacija rowno wótběgujo a dowólujo śi aktualizacije startowaś abo zastajiś (snaźkuli toś ta funkcija jo se wót administratora sedła znjemóžniła).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacija se rowno wótměwa.</strong>
 Jo normalne, až aktualizacija jano pómałem póstupujo, dokulaž aktualizěrujo daty jano w małych porcijach kuždy raz, gaž wužywaŕ ma pśistup na wiki.
 Aby skóńcył toś tu aktualizaciju malsnjeje, móžoš wótwardowański skript MediaWiki <tt>runJobs.php</tt> zawołaś (wužyj opciju <tt>--maxjobs 1000</tt>, aby wobgranicował licbu aktualizacijow, kótarež se naraz pśewjadu).
@@ -4156,10 +4165,19 @@ Progresso estimate del actualisation currente:',
 /** Indonesian (Bahasa Indonesia)
  * @author Bennylin
  * @author Irwangatot
+ * @author IvanLanin
  * @author Rex
  */
 $messages['id'] = array(
+	'smw-desc' => "Membuat wiki Anda lebih mudah diakses - oleh mesin ''dan'' manusia ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentasi daring])",
+	'smw_edithelp' => 'Bantuan penyuntingan sifat',
+	'smw_viewasrdf' => 'Umpan RDF',
 	'smw_finallistconjunct' => ', dan',
+	'smw_factbox_head' => 'Fakta tentang $1',
+	'smw_isspecprop' => 'Sifat ini adalah sifat khusus di wiki ini.',
+	'smw_isknowntype' => 'Tipe ini antara tipe data standar dari wiki ini.',
+	'smw_isaliastype' => 'Tipe ini adalah suatu alias bagi tipe data "$1".',
+	'smw_isnotype' => 'Tipe ini "$1" bukan tipe data standar di wiki ini, dan juga belum mendapat suatu definisi pengguna.',
 	'smw_printername_list' => 'Daftar',
 	'smw_printername_table' => 'Tabel',
 	'smw_printername_template' => 'Templat',
