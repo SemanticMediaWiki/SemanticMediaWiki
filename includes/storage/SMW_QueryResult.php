@@ -260,7 +260,7 @@ class SMWResultArray {
 			break;
 			case SMWPrintRequest::PRINT_CATS:
 				if ( SMWResultArray::$catcacheobj != $this->m_result->getHash() ) {
-					SMWResultArray::$catcache = $this->m_store->getPropertyValues($this->m_result,SMWPropertyValue::makeProperty('_INST'));
+					SMWResultArray::$catcache = $this->m_store->getPropertyValues($this->m_result,SMWPropertyValue::makeProperty('_INST'), NULL, $this->m_printrequest->getOutputFormat());
 					SMWResultArray::$catcacheobj = $this->m_result->getHash();
 				}
 				$this->m_content = SMWResultArray::$catcache;
