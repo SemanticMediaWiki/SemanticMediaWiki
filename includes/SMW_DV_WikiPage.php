@@ -62,7 +62,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			case '_wpp' : case '__sup':
 				$this->m_fixNamespace = SMW_NS_PROPERTY;
 			break;
-			case '_wpc' : case '__suc':
+			case '_wpc' : case '__suc': case '__sin':
 				$this->m_fixNamespace = NS_CATEGORY;
 			break;
 			case '_wpf' : case '__spf':
@@ -157,7 +157,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 		if ( ($linked === NULL) || ($linked === false) || ($this->m_outformat == '-') ) {
-			return $this->getPrefixedText();
+			return $this->m_fixNamespace == NS_MAIN?$this->getPrefixedText():$this->getText();
 		} elseif ($this->m_namespace == NS_IMAGE) { // embed images instead of linking to their page
 			 return '[[' . str_replace("'", '&#x0027;', $this->getPrefixedText()) . '|' . $this->m_textform . '|frameless|border|text-top]]';
 		} else { // this takes care of all other cases, esp. it is right for Media:
@@ -172,7 +172,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			return $this->getErrorText();
 		}
 		if ( ($linker === NULL) || ($this->m_outformat == '-') ) {
-			return htmlspecialchars($this->getPrefixedText());
+			return htmlspecialchars($this->m_fixNamespace == NS_MAIN?$this->getPrefixedText():$this->getText());
 		} elseif ($this->getNamespace() == NS_MEDIA) { // this extra case is really needed
 			return $linker->makeMediaLinkObj($this->getTitle(), $this->m_textform);
 		} else { // all others use default linking, no embedding of images here
@@ -339,9 +339,13 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->m_title = $title;
 	}
 
-	/// Get the (default) caption for this value.
+	/**
+	 * Get the (default) caption for this value.
+	 * If a fixed namespace is set, we do not return the namespace prefix explicitly.
+	 */
 	protected function getCaption() {
-		return $this->m_caption !== false?$this->m_caption:$this->getPrefixedText();
+		return $this->m_caption !== false?$this->m_caption:
+		       ($this->m_fixNamespace == NS_MAIN?$this->getPrefixedText():$this->getText());
 	}
 
 	/**
