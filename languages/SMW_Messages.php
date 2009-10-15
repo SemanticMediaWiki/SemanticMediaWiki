@@ -1530,6 +1530,7 @@ $messages['de'] = array(
 	'smw_multiple_concepts' => 'Jede Konzeptseite kann nur eine Konzeptdefinition beinhalten.',
 	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht angewendet werden, da die Wiki-Konfiguration offline berechnet werden muss.
 Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwalter, dieses Konzept zu ermöglichen.',
+	'smw_noinvannot' => 'Werte können keiner inversen Eigenschaft zugewiesen werden.',
 	'smw_baduri' => 'URIs der Form „$1“ sind nicht zulässig.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatisch',
