@@ -25,7 +25,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		$printrequestparameters = array();
 		foreach ($res->getPrintRequests() as $pr)
 			$printrequestparameters[] = $pr->getParams();
-		
+
 		// print header
 		$result = '<table class="smwtable"' .
 		          ('broadtable' == $this->mFormat?' width="100%"':'') .
@@ -45,12 +45,12 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			$fieldcount = -1;
 			foreach ($row as $field) {
 				$fieldcount = $fieldcount + 1;
-				
+
 				$result .= "\t\t<td";
 				if (array_key_exists('align', $printrequestparameters[$fieldcount])) {
 					$alignment = $printrequestparameters[$fieldcount]['align'];
 					// check the content, otherwise evil people could inject here anything they wanted
-					if (($alignment == 'right') || ($alignment == 'left'))   
+					if (($alignment == 'right') || ($alignment == 'left'))
 						$result .= " style=\"text-align:" . $printrequestparameters[$fieldcount]['align'] . ";\"";
 				}
 				$result .= ">";
@@ -66,7 +66,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 						$result .= '<br />';
 					}
 					// use shorter "LongText" for wikipage
-					$result .= ($object->getTypeID() == '_wpg')?
+					$result .= ( ($object->getTypeID() == '_wpg')||($object->getTypeID() == '__sin') )?
 					           $object->getLongText($outputmode,$this->getLinker($firstcol)):
 					           $object->getShortText($outputmode,$this->getLinker($firstcol));
 				}
