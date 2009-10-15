@@ -264,6 +264,7 @@ class SMWResultArray {
 					SMWResultArray::$catcacheobj = $this->m_result->getHash();
 				}
 				$this->m_content = SMWResultArray::$catcache;
+			break;
 			case SMWPrintRequest::PRINT_PROP:
 				$this->m_content = $this->m_store->getPropertyValues($this->m_result,$this->m_printrequest->getData(), NULL, $this->m_printrequest->getOutputFormat());
 			break;
