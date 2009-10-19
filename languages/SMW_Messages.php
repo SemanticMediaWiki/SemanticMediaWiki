@@ -3891,6 +3891,7 @@ $messages['hu'] = array(
 	'smw_iq_moreresults' => '… további eredmények',
 	'smw_iq_nojs' => 'Használj JavaScript képes böngészőt ennek az elemnek a megjelenítéséhez.',
 	'smw_iq_altresults' => 'Az eredménylista közvetlen böngészése.',
+	'smw_parseerror' => 'A megadott érték nem érthető.',
 	'smw_emptystring' => 'Üres sztringek nem elfogadhatóak.',
 	'smw_noboolean' => '„$1” nem értelmezhető mint logikai (igaz/hamis) érték',
 	'smw_true_words' => 'igaz,igen,i',
