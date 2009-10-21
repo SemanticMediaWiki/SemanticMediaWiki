@@ -6292,7 +6292,7 @@ Ne creetz pas un autre.',
 	'smw_smwadmin_docu' => 'Aquesta pagina especiala vos ajuda pendent l’installacion e la mesa a nivèl de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Doblidetz pas de salvar las donadas abans las foncions d’administracion del site.',
 	'smw_smwadmin_db' => 'Installacion e mesa a nivèl de la banca de donadas',
-	'smw_smwadmin_dbdocu' => "Semantic MediaWiki requerís maitas extensions per la banca de donadas MediaWiki en òrdre per estocar las donadas de semantica.
+	'smw_smwadmin_dbdocu' => "Semantic MediaWiki requerís maitas extensions per la banca de donadas MediaWiki en òrdre per emmagazinar las donadas de semantica.
 La foncion çaijós verifica que vòstra banca de donadas es estada installada corrèctament.
 Las modificacions fachas al moment d'aquesta etapa afectaràn pas la rèsta de la banca de donadas Mediawiki, e pòt èsser desfacha a volontat.
 Aquesta foncion d’installacion pòt èsser aviada mantun còp sens causar lo mendre degalh, mas una sola installacion o mesa e nivèl es necessària.",
