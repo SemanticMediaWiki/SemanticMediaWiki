@@ -7951,6 +7951,7 @@ Sledeći prikaz služi za nadgledanje ažuriranja u progresu i omogućava vam da
 
 /** Swedish (Svenska)
  * @author Boivie
+ * @author Eliasb
  * @author Flrn
  * @author Gabbe.g
  * @author Lejonel
@@ -8087,8 +8088,10 @@ Egenskaper som fortfarande saknar en egen sida finns på <a href="$7">listan öv
 	'smw_sbv_value' => 'Värde',
 	'smw_sbv_submit' => 'Hitta resultat',
 	'browse' => 'Bläddra igenom wikin',
+	'smw_browselink' => 'Se egenskaper',
 	'smw_browse_article' => 'Skriv namnet på sidan du vill börja bläddra från.',
 	'smw_browse_go' => 'Gå',
+	'smw_browse_no_outgoing' => 'Denna sida har inga egenskaper.',
 	'smw_browse_no_incoming' => 'Inga egenskaper länkar till den här sidan.',
 	'smw_inverse_label_default' => '$1 av',
 	'pageproperty' => 'Sidegenskapssökning',
