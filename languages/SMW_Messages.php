@@ -2202,6 +2202,7 @@ $messages['eo'] = array(
  * @author Javier Calzada Prado
  * @author Locos epraix
  * @author Sanbec
+ * @author Translationista
  */
 $messages['es'] = array(
 	'smw-desc' => "Haciendo tu wiki más accesible - para máquinas ''y'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentación en línea])",
@@ -2383,6 +2384,10 @@ Ud puede conceder estos permisos adicionales de usuario para crear y borrar tabl
 	'smw_smwadmin_announcebutton' => 'Presione el botón siguiente para enviar la URL de su wiki al servicio.
 El servicio no registrará wikis que no sean de acceso público, y solamente guardará información públicamente accesible.',
 	'smw_smwadmin_datarefresh' => 'Reparación de datos y actualización',
+	'smw_smwadmin_datarefreshdocu' => 'Es posible restaurar toda la información de MediaWiki Semántica basándose en los contenidos actuales de la wiki.
+Esto puede ser útil para reparar la información destruida o para volver a cargar la información si el formato interno ha cambiado a causa de alguna actualización de software.
+La actualización se ejecuta página a página y no se completará de inmediato.
+Lo siguiente muestra es hay una actualización en progreso y le permite iniciar o detener actualizaciones (a menos que esta característica haya sido inhabilitada por el administrador del sitio).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Actualización en progreso.</strong>
 Es normal que el proceso de actualización se retrase ya que sólo actualiza datos en porciones pequeñas cada vez que un usuario ingresa a la wiki.
 Para finalizar esta actualización en forma mas rápida, Ud. puede invocar el script de matenimiento MediaWiki <tt>runJobs.php</tt> (use la opción <tt>--maxjobs 1000</tt>  para restringir el número de actualizaciones hechas en cada paquete).
@@ -7962,6 +7967,7 @@ Sledeći prikaz služi za nadgledanje ažuriranja u progresu i omogućava vam da
  * @author Sannab
  */
 $messages['sv'] = array(
+	'smw-desc' => "Gör din wiki mer tillgänglig - för maskiner ''och'' människor ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	'smw_edithelp' => 'Redigeringshjälp för egenskaper',
 	'smw_viewasrdf' => 'RDF-matning',
 	'smw_finallistconjunct' => ', och',
