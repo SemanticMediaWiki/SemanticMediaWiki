@@ -2213,9 +2213,12 @@ $messages['es'] = array(
 	'smw_isspecprop' => 'Esta propiedad en una propiedad especial en este wiki.',
 	'smw_isknowntype' => 'Este tipo está entre los tipos de datos standar de este wiki.',
 	'smw_isaliastype' => 'Este tipo es un alias para el tipo de datos "$1".',
+	'smw_isnotype' => 'El tipo "$1" no es un tipo de datos estándar en el wiki y tampoco se le ha otorgado una definición de usuario.',
 	'smw_concept_description' => 'Descripción del concepto "$1"',
 	'smw_no_concept_namespace' => 'Conceptos solo pueden ser definidos en páginas en el Concept: espacio de nombre.',
 	'smw_multiple_concepts' => 'Cada página de concepto solamente puede tener una definición de concepto.',
+	'smw_concept_cache_miss' => 'El concepto "$1" no puede ser utilizado en este momento, ya que la configuración wiki exige que sea computado sin conexión.
+Si el problema persiste después de pasado algún tiempo, solicita al administrador de tu sitio que haga este concepto disponible.',
 	'smw_noinvannot' => 'Los valores no pueden asignarse a propiedades inversas.',
 	'smw_baduri' => 'Lo sentimos. Las URIs del dominio $1 no están disponibles en este emplazamiento',
 	'smw_printername_auto' => 'Automático',
@@ -2372,6 +2375,9 @@ Ingrese la página y la propiedad.',
 	'smw_smwadmin_settingup' => 'Configurando almacenamiento para Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'El motor de almacenamiento fue configurado con éxito.',
 	'smw_smwadmin_return' => 'Regresar a $1',
+	'smw_smwadmin_updatestarted' => 'Se ha iniciado un nuevo proceso de actualización para volver a cargar los datos semánticos.
+Todos los datos almacenados serán reconstruidos o reparados donde sea necesario.
+Puedes hacer un seguimiento del progreso de la actualización en esta página especial.',
 	'smw_smwadmin_updatenotstarted' => 'Ya hay un proceso de actualización ejecutándose.
 No crear otro más.',
 	'smw_smwadmin_updatestopped' => 'Todos los procesos de actualización existentes han sido detenidos.',
