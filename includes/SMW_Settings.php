@@ -239,6 +239,15 @@ $smwgResultFormats = array(
 );
 ##
 
+### Predefined aliases for result formats
+# Array of available aliases for result formats. Can be redefined in
+# the settings to disallow certain aliases or to register extension aliases.
+# To disable an alias, do "unset($smwgResultAliases['alias']);" Disabled
+# aliases will be treated like if the alias parameter had been omitted. 
+##
+$smwgResultAliases = array();
+##
+
 ### Predefined sources for queries
 # Array of available sources for answering queries. Can be redefined in
 # the settings to register new sources (usually an extension will do so

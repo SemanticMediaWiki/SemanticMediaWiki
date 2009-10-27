@@ -313,12 +313,24 @@ class SMWQueryProcessor {
 	 * Determine format label from parameters.
 	 */
 	static protected function getResultFormat($params) {
+		global $smwgResultAliases;
+		
 		$format = 'auto';
 		if (array_key_exists('format', $params)) {
 			$format = strtolower(trim($params['format']));
 			global $smwgResultFormats;
+
 			if ( !array_key_exists($format, $smwgResultFormats) ) {
-				$format = 'auto'; // If it is an unknown format, defaults to list/table again
+				
+				foreach($smwgResultAliases as $mainFormat => $aliases) {
+					if (in_array($format, $aliases)) {
+						$format = $mainFormat;
+						$isAlias = true;
+						continue;
+					}
+				}
+				
+				if (! $isAlias) $format = 'auto';  // If it is an unknown format, defaults to list/table again
 			}
 		}
 		return $format;
