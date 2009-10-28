@@ -2384,11 +2384,19 @@ Puedes hacer un seguimiento del progreso de la actualización en esta página es
 No crear otro más.',
 	'smw_smwadmin_updatestopped' => 'Todos los procesos de actualización existentes han sido detenidos.',
 	'smw_smwadmin_updatenotstopped' => 'Para detener el proceso de actualización en ejecución, debes activar la tabla de verificación para indicar que estás realmente seguro.',
+	'smw_smwadmin_docu' => 'Esta página especial te ayudará durante la instalación y actualización de <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Recuerda respaldar cualquier información importante antes de ejecutar funciones administrativas.',
 	'smw_smwadmin_db' => 'Instalación de la base de datos y actualización',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki necesita algunas extensiones en la base de datos de MediaWiki para poder almacenar la información semántica.
+La función indicada abajo asegura que tu base de datos está configurada correctamente.
+Los cambios realizados en este paso no afectan el resto de la base de datos de MediaWiki y pueden ser revertidos fácilmente si así se desea.
+Esta función de configuración puede ejecutarse varias veces sin hacer ningún daño, pero es necesaria sólo una vez para la instalación o actualización.',
 	'smw_smwadmin_permissionswarn' => 'Si la operación falla con errores SQL, la base de datos de usuarios empleada por su wiki (revise LocalSettings.php) probablemente no tiene permisos suficientes.
 Ud puede conceder estos permisos adicionales de usuario para crear y borrar tablas, ingresando temporariamente la clave de acceso de su base de datos raíz en LocalSettings.php, o bien usar el script de mantenimiento <tt>SMW_setup.php</tt>, que puede acceder a las credenciales de AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Inicializar o actualizar tablas',
 	'smw_smwadmin_announce' => 'Anunciar tu wiki',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki cuenta con un servicio Web para anunciar nuevos sitios wiki semánticos, que es usado para mantener un listado de sitios Web públicos que usan Semantic MediaWiki, principalmente para ayudar al <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proyecto Semantic MediaWiki</a>, para tener una visión general de los usos típicos de Semantic MediaWiki.
+See the Semantic MediaWiki homepage for <a href="http://semantic-mediawiki.org/wiki/Registry">further information about this service</a>.',
 	'smw_smwadmin_announcebutton' => 'Presione el botón siguiente para enviar la URL de su wiki al servicio.
 El servicio no registrará wikis que no sean de acceso público, y solamente guardará información públicamente accesible.',
 	'smw_smwadmin_datarefresh' => 'Reparación de datos y actualización',
@@ -3930,6 +3938,7 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_infinite' => 'Ilyen nagy számok („$1”) nem támogatottak.',
 	'smw_infinite_unit' => 'A(z) „$1” egységre konvertálás eredménye túl nagy szám.',
 	'smw_unsupportedprefix' => 'Előtagok számokhoz („$1”) nem támogatottak.',
+	'smw_lonely_unit' => 'Nem található szám a(z) „$1” szimbólum előtt.',
 	'smw_abb_north' => 'É',
 	'smw_abb_east' => 'K',
 	'smw_abb_south' => 'D',
@@ -3944,7 +3953,9 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'exportrdf' => 'Lapok exportálása RDF-be',
 	'smw_exportrdf_submit' => 'Exportálás',
 	'properties' => 'Tulajdonságok',
+	'smw_properties_docu' => 'A wikiben az alábbi tulajdonságok használatosak.',
 	'smw_property_template' => '$2 típusú $1 ($3)',
+	'smw_propertylackspage' => 'Minden tulajdonságnak kell hogy legyen leírólapja!',
 	'unusedproperties' => 'Nem használt tulajdonságok',
 	'smw_unusedproperty_template' => '$2 típusú $1',
 	'wantedproperties' => 'Keresett tulajdonságok',
