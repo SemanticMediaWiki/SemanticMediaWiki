@@ -400,6 +400,7 @@ $messages['af'] = array(
 	'smw_abb_west' => 'W',
 	'smw_label_latitude' => 'Breedtegraad',
 	'smw_label_longitude' => 'Lengtegraad:',
+	'smw_nodatetime' => 'Die datum "$1" kon nie verwerk word nie.',
 	'smw_emptysubquery' => "'n Sub-navraag het geen geldige kondisie.",
 	'smw_exportrdf_submit' => 'Eksporteer',
 	'smw_propertyhardlyused' => 'Hierdie eienskap word skaars gebruik in hierdie wiki!',
