@@ -142,7 +142,7 @@ class SMWPrintRequest {
 	 * print requests. The hash also includes the chosen label,
 	 * so it is possible to print the same date with different
 	 * labels.
-	 * TODO: For now, the params are not part of the Hash, but
+	 * @todo For now, the params are not part of the Hash, but
 	 * maybe they should? But the hash is used for some things,
 	 * check that first!
 	 */
