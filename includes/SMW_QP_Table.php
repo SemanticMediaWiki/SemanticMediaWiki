@@ -22,10 +22,6 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		global $smwgIQRunningNumber;
 		SMWOutputs::requireHeadItem(SMW_HEADER_SORTTABLE);
 
-		$printrequestparameters = array();
-		foreach ($res->getPrintRequests() as $pr)
-			$printrequestparameters[] = $pr->getParams();
-
 		// print header
 		$result = '<table class="smwtable"' .
 		          ('broadtable' == $this->mFormat?' width="100%"':'') .
@@ -47,11 +43,9 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 				$fieldcount = $fieldcount + 1;
 
 				$result .= "\t\t<td";
-				if (array_key_exists('align', $printrequestparameters[$fieldcount])) {
-					$alignment = $printrequestparameters[$fieldcount]['align'];
-					// check the content, otherwise evil people could inject here anything they wanted
-					if (($alignment == 'right') || ($alignment == 'left'))
-						$result .= " style=\"text-align:" . $printrequestparameters[$fieldcount]['align'] . ";\"";
+				$alignment = trim($field->getPrintRequest()->getParameter('align'));
+				if (($alignment == 'right') || ($alignment == 'left') || ($alignment == 'center')) {
+					$result .= ' style="text-align:' . $alignment . ';"';
 				}
 				$result .= ">";
 

@@ -229,10 +229,10 @@ class SMWQueryProcessor {
 				$lastprintout = new SMWPrintRequest($printmode, $label, $data, trim($propparts[1]));
 				$printouts[] = $lastprintout;
 			} elseif ($param[0] == '+') { // print request parameter
-				if ($lastprintout != NULL) {
+				if ($lastprintout !== NULL) {
 					$param = substr($param,1);
 					$parts = explode('=',$param,2);
-					$lastprintout->setParam($parts[0], $parts[1]);
+					if (count($parts) == 2) $lastprintout->setParameter(trim($parts[0]), $parts[1]);
 				}
 			} else { // parameter or query
 				$parts = explode('=',$param,2);
@@ -314,14 +314,14 @@ class SMWQueryProcessor {
 	 */
 	static protected function getResultFormat($params) {
 		global $smwgResultAliases;
-		
+
 		$format = 'auto';
 		if (array_key_exists('format', $params)) {
 			$format = strtolower(trim($params['format']));
 			global $smwgResultFormats;
 
 			if ( !array_key_exists($format, $smwgResultFormats) ) {
-				
+
 				foreach($smwgResultAliases as $mainFormat => $aliases) {
 					if (in_array($format, $aliases)) {
 						$format = $mainFormat;
@@ -329,7 +329,7 @@ class SMWQueryProcessor {
 						continue;
 					}
 				}
-				
+
 				if (! $isAlias) $format = 'auto';  // If it is an unknown format, defaults to list/table again
 			}
 		}

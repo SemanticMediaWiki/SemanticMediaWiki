@@ -29,7 +29,7 @@ class SMWPrintRequest {
 	protected $m_outputformat; // output format string for formatting results, if applicable
 	protected $m_hash = false; // cache your hash (currently useful since SMWQueryResult accesses the hash many times, might be dropped at some point)
 	protected $m_params = array();
-	
+
 	/**
 	 * Create a print request.
 	 * @param $mode a constant defining what to printout
@@ -201,40 +201,28 @@ class SMWPrintRequest {
 	}
 
 	/**
-	 * Returns the value of a named parameter. 
+	 * Returns the value of a named parameter.
 	 * @param $key string the name of the parameter key
-	 * @return string Value of the paramer, if set (else '')
+	 * @return string Value of the paramer, if set (else FALSE)
 	 */
-	public function getParam($key) {
-		if (array_key_exists($key, $this->m_params))
-			return $this->m_params[$key];
-		else
-			return '';
+	public function getParameter($key) {
+		return (array_key_exists($key, $this->m_params))?$this->m_params[$key]:false;
 	}
 
 	/**
-	 * Returns if a named parameter is set. 
-	 * @param $key string the name of the parameter
-	 * @return boolean True if the parameter is set, false otherwise
-	 */
-	public function hasParam($key) {
-		return array_key_exists($key, $this->m_params);
-	}
-	
-	/**
-	 * Returns the array of parameters, where a string is mapped to a string. 
+	 * Returns the array of parameters, where a string is mapped to a string.
 	 * @return array Map of parameter names to values.
 	 */
-	public function getParams() {
+	public function getParameters() {
 		return $this->m_params;
 	}
-	
+
 	/**
 	 * Sets a print request parameter.
 	 * @param $key string Name of the parameter
-	 * @param $value string Value for the parameter 
+	 * @param $value string Value for the parameter
 	 */
-	public function setParam($key, $value) {
+	public function setParameter($key, $value) {
 		$this->m_params[$key] = $value;
 	}
 }
