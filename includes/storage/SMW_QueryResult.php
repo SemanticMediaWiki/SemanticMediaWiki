@@ -248,7 +248,6 @@ class SMWResultArray {
 	protected function loadContent() {
 		if ($this->m_content !== false) return;
 		wfProfileIn('SMWQueryResult::loadContent (SMW)');
-		$limit = $this->m_printrequest->getParameter('limit');
 		switch ($this->m_printrequest->getMode()) {
 			case SMWPrintRequest::PRINT_THIS: ///NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
 				if ($this->m_printrequest->getOutputFormat()) {
@@ -263,10 +262,25 @@ class SMWResultArray {
 				// Always recompute cache here to ensure output format is respected
 				SMWResultArray::$catcache = $this->m_store->getPropertyValues($this->m_result,SMWPropertyValue::makeProperty('_INST'), $this->getRequestOptions(false), $this->m_printrequest->getOutputFormat());
 				SMWResultArray::$catcacheobj = $this->m_result->getHash();
+				$limit = $this->m_printrequest->getParameter('limit');
 				$this->m_content = ($limit===false)?(SMWResultArray::$catcache):array_slice(SMWResultArray::$catcache,0,$limit);
 			break;
 			case SMWPrintRequest::PRINT_PROP:
 				$this->m_content = $this->m_store->getPropertyValues($this->m_result,$this->m_printrequest->getData(), $this->getRequestOptions(), $this->m_printrequest->getOutputFormat());
+				// Print one component of a multi-valued string.
+				// Known limitation: the printrequest still is of type __nry, so if printers check
+				// for this then they will not recognize that it returns some more concrete type
+				if (($this->m_printrequest->getTypeID() == '__nry') && ($this->m_printrequest->getParameter('index') !== false)) {
+					$pos = $this->m_printrequest->getParameter('index')-1;
+					$newcontent = array();
+					foreach ($this->m_content as $naryval) {
+						$dvs = $naryval->getDVs();
+						if ( (array_key_exists($pos,$dvs)) && ($dvs[$pos] !== NULL) ) {
+							$newcontent[] = $dvs[$pos];
+						}
+					}
+					$this->m_content = $newcontent;
+				}
 			break;
 			case SMWPrintRequest::PRINT_CCAT: ///NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
 				if ( SMWResultArray::$catcacheobj != $this->m_result->getHash() ) {
