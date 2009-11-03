@@ -142,9 +142,6 @@ class SMWPrintRequest {
 	 * print requests. The hash also includes the chosen label,
 	 * so it is possible to print the same date with different
 	 * labels.
-	 * @todo For now, the params are not part of the Hash, but
-	 * maybe they should? But the hash is used for some things,
-	 * check that first!
 	 */
 	public function getHash() {
 		if ($this->m_hash === false) {
@@ -154,7 +151,7 @@ class SMWPrintRequest {
 			} elseif ($this->m_data instanceof SMWDataValue) {
 				$this->m_hash .= $this->m_data->getHash() . ':';
 			}
-			$this->m_hash .= $this->m_outputformat . ':';
+			$this->m_hash .= $this->m_outputformat . ':' . implode($this->m_params,'|');
 		}
 		return $this->m_hash;
 	}
