@@ -77,8 +77,8 @@ class SMWNumberValue extends SMWDataValue {
 	protected function parseDBkeys($args) {
 		$this->m_value = $args[0];
 		$this->m_unit = array_key_exists(1,$args)?$args[1]:'';
+		$this->m_caption = false;
 		$this->m_unitin = false;
-		$this->m_stubdata = false;
 		$this->makeUserValue();
 		$this->m_unitvalues = false;
 	}
@@ -88,7 +88,7 @@ class SMWNumberValue extends SMWDataValue {
 		$this->m_outformat = $formatstring;
 		if ( ($formatstring != $oldformat) && $this->isValid() ) {
 			// recompute conversion if outputformat is changed after initialisation
-			$this->m_stubdata = array($this->m_value, $this->m_unit);
+			$this->m_stubvalues = array($this->m_value, $this->m_unit);
 		}
 	}
 
