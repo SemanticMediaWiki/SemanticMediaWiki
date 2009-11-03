@@ -248,8 +248,9 @@ class SMWResultArray {
 	protected function loadContent() {
 		if ($this->m_content !== false) return;
 		wfProfileIn('SMWQueryResult::loadContent (SMW)');
+		$limit = $this->m_printrequest->getParameter('limit');
 		switch ($this->m_printrequest->getMode()) {
-			case SMWPrintRequest::PRINT_THIS:
+			case SMWPrintRequest::PRINT_THIS: ///NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
 				if ($this->m_printrequest->getOutputFormat()) {
 					$res = clone $this->m_result;
 					$res->setOutputFormat($this->m_printrequest->getOutputFormat());
@@ -259,16 +260,15 @@ class SMWResultArray {
 				$this->m_content = array($res);
 			break;
 			case SMWPrintRequest::PRINT_CATS:
-				if ( SMWResultArray::$catcacheobj != $this->m_result->getHash() ) {
-					SMWResultArray::$catcache = $this->m_store->getPropertyValues($this->m_result,SMWPropertyValue::makeProperty('_INST'), NULL, $this->m_printrequest->getOutputFormat());
-					SMWResultArray::$catcacheobj = $this->m_result->getHash();
-				}
-				$this->m_content = SMWResultArray::$catcache;
+				// Always recompute cache here to ensure output format is respected
+				SMWResultArray::$catcache = $this->m_store->getPropertyValues($this->m_result,SMWPropertyValue::makeProperty('_INST'), $this->getRequestOptions(false), $this->m_printrequest->getOutputFormat());
+				SMWResultArray::$catcacheobj = $this->m_result->getHash();
+				$this->m_content = ($limit===false)?(SMWResultArray::$catcache):array_slice(SMWResultArray::$catcache,0,$limit);
 			break;
 			case SMWPrintRequest::PRINT_PROP:
-				$this->m_content = $this->m_store->getPropertyValues($this->m_result,$this->m_printrequest->getData(), NULL, $this->m_printrequest->getOutputFormat());
+				$this->m_content = $this->m_store->getPropertyValues($this->m_result,$this->m_printrequest->getData(), $this->getRequestOptions(), $this->m_printrequest->getOutputFormat());
 			break;
-			case SMWPrintRequest::PRINT_CCAT:
+			case SMWPrintRequest::PRINT_CCAT: ///NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
 				if ( SMWResultArray::$catcacheobj != $this->m_result->getHash() ) {
 					SMWResultArray::$catcache = $this->m_store->getPropertyValues($this->m_result,SMWPropertyValue::makeProperty('_INST'));
 					SMWResultArray::$catcacheobj = $this->m_result->getHash();
@@ -290,6 +290,31 @@ class SMWResultArray {
 		}
 		reset($this->m_content);
 		wfProfileOut('SMWQueryResult::loadContent (SMW)');
+	}
+
+	/**
+	 * Make a request option object based on the given parameters, and
+	 * return NULL if no such object is required. The parameter defines
+	 * if the limit should be taken into account, which is not always desired
+	 * (especially if results are to be cached for future use).
+	 */
+	protected function getRequestOptions($uselimit=true) {
+		$limit = $uselimit?$this->m_printrequest->getParameter('limit'):false;
+		$order = trim($this->m_printrequest->getParameter('order'));
+		if ( ($limit !== false) || ($order != false) ) { // Important: use "!=" for order, since trim() above does never return "false", use "!==" for limit since "0" is meaningful here
+			$options = new SMWRequestOptions();
+			if ($limit !== false) $options->limit = trim($limit);
+			if ( ('descending' == $order) || ('reverse' == $order) || ('desc' == $order) ) {
+				$options->sort = true;
+				$options->ascending = false;
+			} elseif ( ('ascending' == $order) || ('asc' == $order) ) {
+				$options->sort = true;
+				$options->ascending = true;
+			}
+		} else {
+			$options = NULL;
+		}
+		return $options;
 	}
 
 }
