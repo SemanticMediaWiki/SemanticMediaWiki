@@ -1175,6 +1175,43 @@ $messages['bg'] = array(
 	'smwadmin' => 'Администраторски функции за Semantic MediaWiki',
 );
 
+/** Breton (Brezhoneg)
+ * @author Fohanno
+ * @author Y-M D
+ */
+$messages['br'] = array(
+	'smw_finallistconjunct' => ', ha',
+	'smw_printername_auto' => 'Emgefre',
+	'smw_printername_list' => 'Roll',
+	'smw_printername_table' => 'Taolenn',
+	'smw_printername_template' => 'Patrom',
+	'smw_iq_moreresults' => "... disoc'hoù all",
+	'smw_true_words' => 'gwir,g,ya,true',
+	'smw_false_words' => 'gaou,faos,f,nann,n,false',
+	'smw_nofloat' => '"$1" n\'eo ket un niver.',
+	'smw_lonely_unit' => 'N\'eo bet kavet niver ebet a-raok an arouez "$1".',
+	'smw_label_latitude' => 'Ledred :',
+	'smw_label_longitude' => 'Hedred :',
+	'smw_nodatetime' => 'An deiziad « $1 » n’eo ket bet komprenet.',
+	'smw_exportrdf_submit' => 'Ezporzhiañ',
+	'properties' => 'Perzhioù',
+	'smw_purge' => 'Freskaat',
+	'smw_ask_submit' => "Kavout disoc'hoù",
+	'smw_ask_defaultformat' => 'dre ziouer',
+	'smw_sbv_value' => 'Talvoud :',
+	'smw_sbv_submit' => "Kavout disoc'hoù",
+	'browse' => 'Furchal ar wiki',
+	'smw_inverse_label_default' => '$1 eus',
+	'smw_pp_submit' => "Kavout disoc'hoù",
+	'smw_result_prev' => 'A-raok',
+	'smw_result_next' => 'Da heul',
+	'smw_result_results' => "Disoc'hoù",
+	'smw_result_noresults' => "Digarezit n'eus disoc'h ebet.",
+	'smw_smwadmin_return' => 'Distreiñ da $1',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Ya, sur on.',
+	'smw_adminlinks_displayingdata' => 'Diskwel roadennoù',
+);
+
 /** Bosnian (Bosanski)
  * @author CERminator
  */
@@ -3885,6 +3922,7 @@ $messages['ht'] = array(
 );
 
 /** Hungarian (Magyar)
+ * @author Dani
  * @author Glanthor Reviol
  */
 $messages['hu'] = array(
@@ -3931,6 +3969,7 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_unknowntype' => 'A megadott „$1” típus nem támogatott a tulajdonságnál.',
 	'smw_manytypes' => 'Egynél több megadott típus a tulajdonsághoz.',
 	'smw_emptystring' => 'Üres sztringek nem elfogadhatóak.',
+	'smw_maxstring' => 'A(z) „$1” szöveges reprezentáció túl hosszú.',
 	'smw_notinenum' => '„$1” nincs a lehetséges értékek listájában ($2) ehhez a tulajdonsághoz.',
 	'smw_noboolean' => '„$1” nem értelmezhető mint logikai (igaz/hamis) érték',
 	'smw_true_words' => 'igaz,igen,i',
@@ -3949,20 +3988,36 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_label_latitude' => 'Földrajzi szélesség:',
 	'smw_label_longitude' => 'Földrajzi hosszúság:',
 	'smw_nodatetime' => 'A(z) „$1” dátum nem értelmezhető.',
+	'smw_toomanyclosing' => 'A(z) „$1” túl sokszor fordul elő a lekérdezésben.',
 	'smw_noclosingbrackets' => 'A lekérdezésben szerepelnek nyitó szögletes zárójelek „(<nowiki>[[</nowiki>)” a lezáró párjuk („]]”) nélkül.',
+	'smw_misplacedsymbol' => 'A(z) „$1” szimbólum egy olyan helyen volt használva, ahol nincs haszna.',
 	'smw_unexpectedpart' => 'A lekérdezés „$1” része nem értelmezhető.
 Az eredmények eltérhetnek a várttól.',
 	'smw_emptysubquery' => 'Valamely allekérdezés nem tartalmaz érvényes feltételt.',
+	'smw_misplacedsubquery' => 'Allekérdezés volt egy olyan helyen, ahol nem engedélyezettek az allekérdezések.',
+	'smw_valuesubquery' => 'A(z) „$1” tulajdonság értékeinél nem támogatottak az allekérdezések.',
 	'smw_overprintoutlimit' => 'A lekérdezésben túl sok kiírási kérelem van.',
 	'smw_badtitle' => 'A(z) „$1” nem egy érvényes lapcím.',
 	'smw_propvalueproblem' => 'A(z) „$1” tulajdonság értéke nem értelmezhető.',
+	'smw_noqueryfeature' => 'A lekérdezés egyes részei nem támogatottak ebben a wikiben, így a lekérdezés egy része el lett dobva ($1).',
+	'smw_noconjunctions' => 'A konjunkció a lekérdezésekben nem támogatott ebben a wikiben, így a lekérdezés egy része el lett dobva ($1).',
+	'smw_nodisjunctions' => 'A diszjunkció a lekérdezésekben nem támogatott ebben a wikiben, így a lekérdezés egy része el lett dobva ($1).',
+	'smw_querytoolarge' => 'A következő lekérdezés-feltételek nem lettek figyelembe véve a wikin érvényes lekérdezésméret vagy -mélység-korlátozások miatt: $1',
+	'smw_devel_warning' => 'Ez a funkció fejlesztés alatt áll, így nem biztos, hogy tökéletesen működik.
+Készíts biztonsági másolatot az adataidról, mielőtt használod.',
 	'smw_type_header' => 'A(z) „$1” típus tulajdonságai',
+	'smw_typearticlecount' => '{{PLURAL:$1|Egy|$1}} tulajdonság megjelenítése ezen típus használatával.',
 	'smw_attribute_header' => 'A(z) „$1” tulajdonságot használó lapok',
+	'smw_attributearticlecount' => '{{PLURAL:$1|Egy|$1}} lap megjelenítése ezen tulajdonság használatával.',
+	'smw_subproperty_header' => 'Altulajdonságok',
+	'smw_subpropertyarticlecount' => 'Ez a tulajdonság a következő {{PLURAL:$1|egy|$1}} altulajdonsággal rendelkezik:',
 	'exportrdf' => 'Lapok exportálása RDF-be',
 	'smw_exportrdf_docu' => 'Ez a lap lehetőséget teremt adatok beszerzésére egy lapról RDF formátumban.
 A lapok exportálásához írd be a címeiket az alábbi szövegdobozba, soronként egyet.',
 	'smw_exportrdf_recursive' => 'Az összes kapcsolódó lap rekurzív exportálása.
 Az eredmény elég nagy lehet!',
+	'smw_exportrdf_backlinks' => 'Kimenti az összes lapot, ami hivatkozik az exportált lapokra.
+Böngészhető RDF-et készít.',
 	'smw_exportrdf_lastdate' => 'Ne exportáljon lapokat, amelyek nem változtak mióta a megadott időpont óta.',
 	'smw_exportrdf_submit' => 'Exportálás',
 	'properties' => 'Tulajdonságok',
@@ -3972,10 +4027,14 @@ Az eredmény elég nagy lehet!',
 	'smw_propertylackstype' => 'Nincs típus megadva ehhez a tulajdonsághoz ($1 típus feltételezése).',
 	'smw_propertyhardlyused' => 'Ez a tulajdonság aligha használatos a wikiben!',
 	'unusedproperties' => 'Nem használt tulajdonságok',
+	'smw_unusedproperties_docu' => 'A következő tulajdonságok habár léteznek, de egyetlen lap sem használja őket.',
 	'smw_unusedproperty_template' => '$2 típusú $1',
 	'wantedproperties' => 'Keresett tulajdonságok',
+	'smw_wantedproperties_docu' => 'A következő tulajdonságok használva vannak a wikiben, azoban még nem rendelkeznek leíró lappal.',
 	'smw_purge' => 'Frissítés',
 	'types' => 'Típusok',
+	'smw_types_docu' => 'Alább azon adattípusok listája látható, melyek hozzárendelhetőek a tulajdonságokhoz.
+Minden egyes adattípus rendelkezik egy lappal, ahol további információkat lehet megadni.',
 	'smw_typeunits' => '„$1” típusú mérési egységek: $2',
 	'semanticstatistics' => 'Szemantikus statisztika',
 	'uriresolver' => 'URI feloldó',
@@ -4015,7 +4074,9 @@ Az eredmény elég nagy lehet!',
 	'smw_result_noresults' => 'Nincs találat.',
 	'smw_smwadmin_return' => 'Vissza ide: $1',
 	'smw_smwadmin_updatestopped' => 'Minden futó frissítési folyamat leállítva.',
+	'smw_smwadmin_db' => 'Adatbázistelepítés és -frissítés',
 	'smw_smwadmin_dbbutton' => 'Táblák inicializálása vagy frissítése',
+	'smw_smwadmin_announce' => 'Wiki bejelentése',
 	'smw_smwadmin_datarefresh' => 'Adatok javítása és aktualizálása',
 	'smw_smwadmin_datarefreshbutton' => 'Adatok frissítésének megkezdése',
 	'smw_smwadmin_datarefreshstop' => 'Frissítés megszakítása',
@@ -4024,6 +4085,7 @@ Az eredmény elég nagy lehet!',
 	'smw_smwadmin_supportdocu' => 'Különböző források, amelyek segíthetnek problémák esetén:',
 	'smw_adminlinks_datastructure' => 'Adatstruktúra',
 	'smw_adminlinks_displayingdata' => 'Adatok megjelenítése',
+	'smw_adminlinks_inlinequerieshelp' => 'Szövegbeli lekérdezés-súgó',
 );
 
 /** Interlingua (Interlingua)
@@ -4303,6 +4365,9 @@ Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs u
 	'smw_sbv_property' => 'Properti:',
 	'smw_sbv_value' => 'Nilai:',
 	'smw_sbv_submit' => 'Temukan hasil',
+	'browse' => 'Jelajahi wiki',
+	'smw_browselink' => 'Jelajahi properti',
+	'smw_browse_article' => 'Masukkan nama halaman untuk memulai penelusuran',
 	'smw_browse_go' => 'Tuju ke',
 	'smw_pp_type' => 'Properti',
 	'smw_pp_submit' => 'Temukan hasil',
@@ -8576,6 +8641,14 @@ $messages['ug-arab'] = array(
  */
 $messages['ug-latn'] = array(
 	'smw_browse_go' => 'Köchüsh',
+);
+
+/** Ukrainian (Українська)
+ * @author Prima klasy4na
+ */
+$messages['uk'] = array(
+	'smw_result_prev' => 'Попередня',
+	'smw_result_next' => 'Наступна',
 );
 
 /** Veps (Vepsan kel')
