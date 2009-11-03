@@ -89,7 +89,7 @@ class SMWRequestOptions {
 	 * An array of string conditions that are applied if the result has a string
 	 * label that can be subject to those patterns.
 	 */
-	private $stringcond = Array();
+	private $stringcond = array();
 
 	/**
 	 * Set a new string condition applied to labels of results (if available).
@@ -137,7 +137,7 @@ abstract class SMWStore {
 	/**
 	 * Get an array of all property values stored for the given subject and property. The result
 	 * is an array of SMWDataValue objects. The provided outputformat is a string identifier that
-	 * may be used by the datavalues to modify their output behaviour, e.g. when interpreted as a 
+	 * may be used by the datavalues to modify their output behaviour, e.g. when interpreted as a
 	 * desired unit to convert the output to.
 	 *
 	 * If called with $subject == NULL, all values for the given property are returned.
