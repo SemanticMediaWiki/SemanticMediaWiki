@@ -271,6 +271,7 @@ class SMWQueryParser {
 		$propertynames = ($propertyname{0} == ' ')?array($propertyname):explode('.', $propertyname);
 		$properties = array();
 		$typeid = '_wpg';
+		$inverse = false;
 		foreach ($propertynames as $name) {
 			if ($typeid != '_wpg') { // non-final property in chain was no wikipage: not allowed
 				$this->m_errors[] = wfMsgForContent('smw_valuesubquery', $prevname);
@@ -282,6 +283,7 @@ class SMWQueryParser {
 				return NULL; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 			$typeid = $property->getPropertyTypeID();
+			$inverse = $property->isInverse();
 			$prevname = $name;
 			$properties[] = $property;
 		} ///NOTE: after iteration, $property and $typeid correspond to last value
@@ -292,7 +294,7 @@ class SMWQueryParser {
 			$chunk = $this->readChunk();
 			switch ($chunk) {
 				case '+': // wildcard, add namespaces for page-type properties
-					if ( ($this->m_defaultns !== NULL) && ($typeid == '_wpg') ) {
+					if ( ($this->m_defaultns !== NULL) && ( ($typeid == '_wpg') || $inverse ) ) {
 						$innerdesc = $this->addDescription($innerdesc, $this->m_defaultns, false);
 					} else {
 						$innerdesc = $this->addDescription($innerdesc, new SMWThingDescription(), false);
@@ -300,7 +302,7 @@ class SMWQueryParser {
 					$chunk = $this->readChunk();
 				break;
 				case '<q>': // subquery, set default namespaces
-					if ($typeid == '_wpg') {
+					if ( ($typeid == '_wpg') || $inverse ) {
 						$this->pushDelimiter('</q>');
 						$setsubNS = true;
 						$sublabel = '';
@@ -340,7 +342,7 @@ class SMWQueryParser {
 						}
 					} ///NOTE: at this point, we normally already read one more chunk behind the value
 
-					if ($typeid == '__nry') { // nary value
+					if ( ($typeid == '__nry') && !$inverse ) { // nary value
 						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
 						$dv->acceptQuerySyntax();
 						$dv->setUserValue($value);
