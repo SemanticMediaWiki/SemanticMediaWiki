@@ -16,7 +16,6 @@
  */
 class SMWCategoryResultPrinter extends SMWResultPrinter {
 
-	protected $mSep = '';
 	protected $mDelim = ',';
 	protected $mTemplate = '';
 	protected $mUserParam = '';
@@ -25,9 +24,6 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 	protected function readParameters($params,$outputmode) {
 		SMWResultPrinter::readParameters($params,$outputmode);
 
-		if (array_key_exists('sep', $params)) {
-			$this->mSep = str_replace('_',' ',$params['sep']);
-		}
 		if (array_key_exists('delim', $params)) {
 			$this->mDelim = str_replace('_',' ',$params['delim']);
 		}
@@ -113,7 +109,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 							$result .= ' (';
 							$found_values = true;
 						} elseif ($found_values || !$first_value) {
-						// any value after '(' or non-first values on first column
+							// any value after '(' or non-first values on first column
 							$result .= ', ';
 						}
 						if ($first_value) { // first value in any column, print header
@@ -145,9 +141,8 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 			if ($this->getSearchLabel(SMW_OUTPUT_WIKI)) {
 				$link->setCaption($this->getSearchLabel(SMW_OUTPUT_WIKI));
 			}
-			/// NOTE: passing the parameter sep is not needed, since we use format=ul
-
-			$link->setParameter('ul','format'); // always use ul, other formats hardly work as search page output
+			$link->setParameter('category','format');
+			if ($this->mNumColumns != 3) $link->setParameter($this->mNumColumns,'columns');
 			if ($this->mTemplate != '') {
 				$link->setParameter($this->mTemplate,'template');
 				if (array_key_exists('link', $this->m_params)) { // linking may interfere with templates
