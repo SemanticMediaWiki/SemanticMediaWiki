@@ -1255,6 +1255,7 @@ $messages['bs'] = array(
 	'smw_purge' => 'Osvježi',
 	'types' => 'Tipovi',
 	'semanticstatistics' => 'Statistike semantike',
+	'smw_ask_hidequery' => 'Sakrij upit',
 	'smw_sbv_property' => 'Svojstvo:',
 	'smw_sbv_value' => 'Vrijednost:',
 	'smw_browselink' => 'Pregled svojstava',
