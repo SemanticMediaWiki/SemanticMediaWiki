@@ -3955,7 +3955,7 @@ $messages['hu'] = array(
 	'smw_edithelp' => 'Szerkesztési segítség a tulajdonságokhoz',
 	'smw_viewasrdf' => 'RDF hírcsatorna',
 	'smw_finallistconjunct' => ', és',
-	'smw_factbox_head' => '$1 tények',
+	'smw_factbox_head' => '$1-tények',
 	'smw_isspecprop' => 'Ez a tulajdonság különleges ebben a wikiben.',
 	'smw_isknowntype' => 'Ez a típus ennek a wikinek az alapvető adattípusai közé tartozik.',
 	'smw_isaliastype' => 'Ez a típus egy a(z) „$1” adattípus alternatív neve',
@@ -4022,7 +4022,9 @@ Az eredmények eltérhetnek a várttól.',
 	'smw_misplacedsubquery' => 'Allekérdezés volt egy olyan helyen, ahol nem engedélyezettek az allekérdezések.',
 	'smw_valuesubquery' => 'A(z) „$1” tulajdonság értékeinél nem támogatottak az allekérdezések.',
 	'smw_overprintoutlimit' => 'A lekérdezésben túl sok kiírási kérelem van.',
+	'smw_badprintout' => 'Valamelyik kiíró utasítás hibásan lett formázva a lekérdezésben.',
 	'smw_badtitle' => 'A(z) „$1” nem egy érvényes lapcím.',
+	'smw_badqueryatom' => 'A lekérdezés egy részét („<nowiki>[[…]]</nowiki>”) nem sikerült értelmezni.',
 	'smw_propvalueproblem' => 'A(z) „$1” tulajdonság értéke nem értelmezhető.',
 	'smw_noqueryfeature' => 'A lekérdezés egyes részei nem támogatottak ebben a wikiben, így a lekérdezés egy része el lett dobva ($1).',
 	'smw_noconjunctions' => 'A konjunkció a lekérdezésekben nem támogatott ebben a wikiben, így a lekérdezés egy része el lett dobva ($1).',
@@ -4030,12 +4032,15 @@ Az eredmények eltérhetnek a várttól.',
 	'smw_querytoolarge' => 'A következő lekérdezés-feltételek nem lettek figyelembe véve a wikin érvényes lekérdezésméret vagy -mélység-korlátozások miatt: $1',
 	'smw_devel_warning' => 'Ez a funkció fejlesztés alatt áll, így nem biztos, hogy tökéletesen működik.
 Készíts biztonsági másolatot az adataidról, mielőtt használod.',
+	'smw_notemplategiven' => 'Adj értéket a lekérdezés „paramétersablonjának”, hogy működjön ez a lekérdezésformátum.',
 	'smw_type_header' => 'A(z) „$1” típus tulajdonságai',
 	'smw_typearticlecount' => '{{PLURAL:$1|Egy|$1}} tulajdonság megjelenítése ezen típus használatával.',
 	'smw_attribute_header' => 'A(z) „$1” tulajdonságot használó lapok',
 	'smw_attributearticlecount' => '{{PLURAL:$1|Egy|$1}} lap megjelenítése ezen tulajdonság használatával.',
 	'smw_subproperty_header' => 'Altulajdonságok',
 	'smw_subpropertyarticlecount' => 'Ez a tulajdonság a következő {{PLURAL:$1|egy|$1}} altulajdonsággal rendelkezik:',
+	'smw_concept_header' => 'A(z) „$1” koncepcióhoz tartozó lapok',
+	'smw_conceptarticlecount' => 'A koncepcióhoz tartozó $1 lap megjelenítése.',
 	'exportrdf' => 'Lapok exportálása RDF-be',
 	'smw_exportrdf_docu' => 'Ez a lap lehetőséget teremt adatok beszerzésére egy lapról RDF formátumban.
 A lapok exportálásához írd be a címeiket az alábbi szövegdobozba, soronként egyet.',
@@ -4056,13 +4061,21 @@ Böngészhető RDF-et készít.',
 	'smw_unusedproperty_template' => '$2 típusú $1',
 	'wantedproperties' => 'Keresett tulajdonságok',
 	'smw_wantedproperties_docu' => 'A következő tulajdonságok használva vannak a wikiben, azoban még nem rendelkeznek leíró lappal.',
+	'smw_wantedproperty_template' => '$1 ($2 helyen használva)',
+	'tooltip-purge' => 'Kattints ide a lapon lévő összes lekérdezés és sablon frissítéséhez',
 	'smw_purge' => 'Frissítés',
 	'types' => 'Típusok',
 	'smw_types_docu' => 'Alább azon adattípusok listája látható, melyek hozzárendelhetőek a tulajdonságokhoz.
 Minden egyes adattípus rendelkezik egy lappal, ahol további információkat lehet megadni.',
 	'smw_typeunits' => '„$1” típusú mérési egységek: $2',
 	'semanticstatistics' => 'Szemantikus statisztika',
+	'smw_semstats_text' => "Ez a wiki '''$1''' tulajdonságértéket tartalmaz '''$2''' [[Special:Properties|különböző tulajdonsághoz]].
+'''$3''' tulajdonság rendelkezik saját lappal, és '''$4''' adattípusa van megadva.
+A létező tulajdonságok egy része [[Special:UnusedProperties|használaton kívüli]] lehet.
+A lappal nélküli tulajdonságok a [[Special:WantedProperties|keresett tulajdonságok listáján]] tekinthetőek meg.",
 	'uriresolver' => 'URI feloldó',
+	'smw_uri_doc' => 'Az URI-feloldó implementálja a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>-ben meghatározottakat.
+Biztosítja, hogy az emberek ne váljanak weboldalakká.',
 	'ask' => 'Szemantikus keresés',
 	'smw_ask_sortby' => 'Rendezés oszlopok szerint (nem kötelező)',
 	'smw_ask_ascorder' => 'Növekvő',
@@ -4073,23 +4086,34 @@ Minden egyes adattípus rendelkezik egy lappal, ahol további információkat le
 	'smw_ask_hidequery' => 'Lekérdezés elrejtése',
 	'smw_ask_help' => 'Lekérdezések súgója',
 	'smw_ask_queryhead' => 'Lekérdezés',
+	'smw_ask_printhead' => 'További kiíratások (nem kötelező)',
 	'smw_ask_format_as' => 'Formázás mint:',
 	'smw_ask_defaultformat' => 'alapértelmezett',
 	'smw_ask_show_embed' => 'Beágyazási kód megjelenítése',
 	'smw_ask_hide_embed' => 'Beágyazási kód elrejtése',
+	'smw_ask_embed_instr' => 'Ha egy wikilapra szeretnéd beilleszteni ezt a lekérdezést, másold be az alábbi kódot.',
 	'searchbyproperty' => 'Keresés tulajdonság szerint',
+	'smw_sbv_docu' => 'Az összes olyan lap megkeresése, ami a megadott tulajdonsággal és értékkel rendelkezik.',
+	'smw_sbv_novalue' => 'Add meg a tulajdonság egy érvényes értékét, vagy nézd meg a(z) „$1” összes tulajdonság-értékét.',
 	'smw_sbv_displayresult' => 'Az össze lap listája, amelyeknek vagy van „$1” tulajdonsága „$2” értékkel',
+	'smw_sbv_displayresultfuzzy' => 'Az összes olyan lap listája, melyeknél a(z) „$1” tulajdonság a(z) „$2” értéket veszi fel.
+Mivel csak néhány találat van, a közeli értékek is meg vannak jelenítve.',
 	'smw_sbv_property' => 'Tulajdonság:',
 	'smw_sbv_value' => 'Érték:',
 	'smw_sbv_submit' => 'Eredmények keresése',
 	'browse' => 'Wiki tallózása',
 	'smw_browselink' => 'Tulajdonságok böngészése',
+	'smw_browse_article' => 'Add meg a lap nevét, ahonnan el szeretnéd kezdeni a böngészést.',
 	'smw_browse_go' => 'Menj',
 	'smw_browse_show_incoming' => 'ide hivatkozó tulajdonságok megjelenítése',
 	'smw_browse_hide_incoming' => 'ide hivatkozó tulajdonságok elrejtése',
 	'smw_browse_no_outgoing' => 'Ehhez a laphoz nem tartoznak tulajdonságok.',
 	'smw_browse_no_incoming' => 'Egy tulajdonság sem hivatkozik erre a lapra.',
+	'smw_inverse_label_default' => '$1',
+	'smw_inverse_label_property' => 'Tulajdonság címkéjének felcserélése',
 	'pageproperty' => 'Laptulajdonság keresés',
+	'smw_pp_docu' => 'Egy tulajdonság összes értékének keresése egy adott oldalon.
+Add meg a lapot és a tulajdonságot is.',
 	'smw_pp_from' => 'Ettől a laptól:',
 	'smw_pp_type' => 'Tulajdonság',
 	'smw_pp_submit' => 'Eredmények keresése',
@@ -4097,17 +4121,51 @@ Minden egyes adattípus rendelkezik egy lappal, ahol további információkat le
 	'smw_result_next' => 'Következő',
 	'smw_result_results' => 'Eredmények',
 	'smw_result_noresults' => 'Nincs találat.',
+	'smwadmin' => 'A Szemantikus MediaWiki adminisztrációs funkciói',
+	'smw_smwadmin_settingup' => 'A Szemantikus MediaWiki tárolómotorjának beállítása',
+	'smw_smwadmin_setupsuccess' => 'A tárolómotor sikeresen be lett állítva.',
 	'smw_smwadmin_return' => 'Vissza ide: $1',
+	'smw_smwadmin_updatestarted' => 'Egy új frissítő folyamat indult a szemantikus adatok frissítése céljából.
+Minden tárolt adat újra elő lesz állítva, és javítva lesz, ahol szükséges.
+A frissítési folyamat előrehaladását ezen a speciális lapon követheted figyelemmel.',
+	'smw_smwadmin_updatenotstarted' => 'Már fut egy frissítő folyamat.
+Nem kell újat készíteni.',
 	'smw_smwadmin_updatestopped' => 'Minden futó frissítési folyamat leállítva.',
+	'smw_smwadmin_updatenotstopped' => 'Az éppen futó frissítési folyamat megszakításához aktiválnod kell a dobozt, hogy jelezd, tényleg biztos vagy benne.',
+	'smw_smwadmin_docu' => 'Ez a speciális lap segít a <a href="http://semantic-mediawiki.org">Szemantikus MediaWiki</a> telepítése és frissítése során.
+Ne felejts el másolatot készíteni az értékes adatokról az adminisztratív funkciók használata előtt.',
 	'smw_smwadmin_db' => 'Adatbázistelepítés és -frissítés',
+	'smw_smwadmin_dbdocu' => 'A Szemantikus MediaWikinek szüksége van néhány kiterjesztésre az adatbázison a szemantikus adatok tárolásához.
+Az alábbi funkció ellenőrzi, hogy az adatbázis megfelelően be van-e állítva.
+Az ezen lépés során végrehajtott változások nincsenek hatással a MediaWiki adatbázisának többi részére, és egyszerűen visszavonható, amennyiben szükséges.
+Ez a telepítési lépés többször is végrehajtható, anékül, hogy bármilyen kárt tenne, de csak egyszer szükséges a telepítés vagy frissítés során.',
+	'smw_smwadmin_permissionswarn' => 'Ha a művelet SQL-hibákkal leáll, a wikid által használt adatbázis-felhasználó (amit a LocalSettings.php-ben adtál meg) valószínűleg nem rendelkezik a megfelelő jogosultságokkal.
+Adj a felhasználó számára táblák készítéséhez és törléséhez jogosultságot, ideiglenesen add meg a root fiók adatait, vagy használd az <tt>SMW_setup.php</tt> karbantartó szkriptet, ami az AdminSettings.php-ben megadott adatokkal lép be.',
 	'smw_smwadmin_dbbutton' => 'Táblák inicializálása vagy frissítése',
 	'smw_smwadmin_announce' => 'Wiki bejelentése',
+	'smw_smwadmin_announcedocu' => 'A Szemantikus MediaWikinek van egy webes szolgáltatása az új szemantikus wikioldalak jelzésére.
+Ezt arra használjuk, hogy karbantartsuk azon nyilvános oldalak listáját, melyek Szemantikus MediaWikit használnak, főként azért, hogy segítsük a <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Szemantikus MediaWiki-projektet</a>, így nyerve áttekintést arról, hogy mire használják általában ezt a kiegészítőt.
+A szolgáltatásról további információkat <a href="http://semantic-mediawiki.org/wiki/Registry">a Szemantikus MediaWiki honlapján</a> találsz.',
+	'smw_smwadmin_announcebutton' => 'Kattints a következő gombra, ha el szeretnéd küldeni a wikid URL-címét ennek a szolgáltatásnak.
+A szolgáltatás nem rögzít olyan wikiket, melyek nem érhetőek el nyilvánosan, és csak mindenki számára elérhető információkat gyűjt.',
 	'smw_smwadmin_datarefresh' => 'Adatok javítása és aktualizálása',
+	'smw_smwadmin_datarefreshdocu' => 'A wiki jelenlegi tartalma alapján lehetőség van az összes Szemantikus MediaWiki-adat helyreállítására.
+Ez hasznos lehet a sérült adatok javításakor, vagy az adatok frissítésekor, ha a belső formátum megváltozott szoftverfrissítés miatt.
+A frissítés oldalról oldalra van végrehajtva, és nem lesz azonnal kész.
+Alább látható, hogy jelenleg folyamatban van-e ilyen frissítés, és elindíthatod vagy leállíthatod a frissítéseket (kivéve, ha az oldal adminisztrátora letiltotta ezt a lehetőséget).',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Frissítés folyamatban.</strong>
+Normális, ha a frissítés lassan halad, hiszen az adatok csak egy kis részét frissíti minden alkalommal, ha egy felhasználó hozzáfér a wikihez.
+Ha gyorsabban be szeretnéd fejezni a frissítést, hívd meg a <tt>runJobs.php</tt> karbantartó szkriptet (használd a <tt>--maxjobs 1000</tt> kapcsolót az egy menetben végrehajtott frissítések korlátozásához).
+A jelenlegi frissítés becsült előrehaladása:',
 	'smw_smwadmin_datarefreshbutton' => 'Adatok frissítésének megkezdése',
 	'smw_smwadmin_datarefreshstop' => 'Frissítés megszakítása',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Igen, biztos vagyok benne.',
 	'smw_smwadmin_support' => 'Segítséget kérek',
 	'smw_smwadmin_supportdocu' => 'Különböző források, amelyek segíthetnek problémák esetén:',
+	'smw_smwadmin_installfile' => 'Ha problémákat észlelsz a telepítéssel, ellenőrizd az útmutatót az <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL fájlban</a>.',
+	'smw_smwadmin_smwhomepage' => 'A Szemantikus MediaWiki teljes felhasználói dokumentációja a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> címen található.',
+	'smw_smwadmin_mediazilla' => 'A hibákat a <a href="https://bugzilla.wikimedia.org/">Bugzillán</a> lehet jelenteni.',
+	'smw_smwadmin_questions' => 'Ha további kérdéseid vagy javaslataid vannak, csatlakozz a <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Szemantikus MediaWiki felhasználói fórumán</a> folyó beszélgetéshez.',
 	'smw_adminlinks_datastructure' => 'Adatstruktúra',
 	'smw_adminlinks_displayingdata' => 'Adatok megjelenítése',
 	'smw_adminlinks_inlinequerieshelp' => 'Szövegbeli lekérdezés-súgó',
