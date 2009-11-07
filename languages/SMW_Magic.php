@@ -59,6 +59,13 @@ $magicWords['mr'] = array(
 	'SMW_SHOWFACTBOX'       => array( '0', '__फॅक्टबॉक्सदाखवा__', '__SHOWFACTBOX__' ),
 );
 
+$magicWords['nds-nl'] = array(
+	'concept'               => array( '0', 'concep', 'concept' ),
+	'set_recurring_event'   => array( '0', 'herhaolende_gebeurtenisse_instellen', 'herhalende_gebeurtenis_instellen', 'set_recurring_event' ),
+	'SMW_NOFACTBOX'         => array( '0', '__GIENFEITENKAODER__', '__GEENFEITENKADER__', '__NOFACTBOX__' ),
+	'SMW_SHOWFACTBOX'       => array( '0', '__FEITENKAODERWEERGEVEN__', '__FEITENKADERWEERGEVEN__', '__SHOWFACTBOX__' ),
+);
+
 $magicWords['nl'] = array(
 	'ask'                   => array( '0', 'vragen', 'ask' ),
 	'show'                  => array( '0', 'weergeven', 'show' ),
