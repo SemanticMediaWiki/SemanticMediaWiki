@@ -606,7 +606,7 @@ $messages['ar'] = array(
 	'smw_browse_article' => 'أدخل اسم الصفحة لبدء التصفح منها.',
 	'smw_browse_go' => 'اذهب',
 	'smw_browse_show_incoming' => 'أظهر الخواص التي تصل هنا',
-	'smw_browse_hide_incoming' => 'أخف الخواص التي تصل هنا',
+	'smw_browse_hide_incoming' => 'أخفِ الخواص التي تصل هنا',
 	'smw_browse_no_outgoing' => 'هذه الصفحة ليس لديها خصائص.',
 	'smw_browse_no_incoming' => 'لا خصائص تصل إلى هذه الصفحة.',
 	'smw_inverse_label_default' => '$1 من',
@@ -1177,6 +1177,7 @@ $messages['bg'] = array(
 
 /** Breton (Brezhoneg)
  * @author Fohanno
+ * @author Fulup
  * @author Y-M D
  */
 $messages['br'] = array(
@@ -1192,9 +1193,9 @@ $messages['br'] = array(
 	'smw_iq_moreresults' => "... disoc'hoù all",
 	'smw_notitle' => "« $1 » ne c'hall ket bezañ implijet da anv pajenn er wiki-mañ.",
 	'smw_true_words' => 'gwir,g,ya,true',
-	'smw_false_words' => 'gaou,faos,f,nann,n,false',
+	'smw_false_words' => 'gaou,g,nann,n,false',
 	'smw_nofloat' => '"$1" n\'eo ket un niver.',
-	'smw_lonely_unit' => 'N\'eo bet kavet niver ebet a-raok an arouez "$1".',
+	'smw_lonely_unit' => 'Niver ebet kavet a-raok an arouez "$1".',
 	'smw_abb_north' => 'N',
 	'smw_abb_east' => 'R',
 	'smw_abb_south' => 'S',
@@ -1224,10 +1225,10 @@ $messages['br'] = array(
 	'smw_inverse_label_default' => '$1 eus',
 	'smw_pp_type' => 'Perzh',
 	'smw_pp_submit' => "Kavout disoc'hoù",
-	'smw_result_prev' => 'A-raok',
-	'smw_result_next' => 'Da heul',
+	'smw_result_prev' => 'Kent',
+	'smw_result_next' => "War-lerc'h",
 	'smw_result_results' => "Disoc'hoù",
-	'smw_result_noresults' => "Digarezit n'eus disoc'h ebet.",
+	'smw_result_noresults' => "Disoc'h ebet.",
 	'smw_smwadmin_return' => 'Distreiñ da $1',
 	'smw_smwadmin_announce' => 'Brudañ ho wiki',
 	'smw_smwadmin_datarefreshstop' => 'Paouez gant an hizivadenn-mañ',
@@ -2144,6 +2145,7 @@ $messages['el'] = array(
 );
 
 /** Esperanto (Esperanto)
+ * @author Michawiki
  * @author Yekrats
  */
 $messages['eo'] = array(
@@ -2172,14 +2174,14 @@ $messages['eo'] = array(
 	'smw_nonright_importtype' => '$1 nur eblas esti uzata por paĝoj en nomspaco "$2".',
 	'smw_wrong_importtype' => '$1 ne eblas esti uzata por paĝoj en nomspaco "$2".',
 	'smw_no_importelement' => 'Elemento "$1" ne estas havebla por importi.',
-	'smw_parseerror' => 'La donata valuto ne estis komprenita.',
+	'smw_parseerror' => 'La donata valoro ne estas komprenita.',
 	'smw_notitle' => '"$1" ne eblas esti uzata kiel paĝnomo en ĉi tiu vikio.',
 	'smw_unknowntype' => 'Nesubtenita datumtipo "$1" difinita por eco.',
 	'smw_manytypes' => 'Pli ol unu tipo estas difinita por atributo.',
 	'smw_emptystring' => 'Malplenaj ĉenoj ne estas akceptitaj.',
-	'smw_maxstring' => 'Ĉena reprezentado $1 estas tro longa por {{SITENAME}}.',
-	'smw_notinenum' => '"$1" ne estas en la listo de eblaj valutoj ($2) por ĉi tiu atributo.',
-	'smw_noboolean' => '"$1" ne estas agnoskita kiel Bulea (vera/falsa) valuto.',
+	'smw_maxstring' => 'Ĉena reprezentado $1 estas tro longa.',
+	'smw_notinenum' => '"$1" ne estas en la listo de eblaj valoroj ($2) por ĉi tiu atributo.',
+	'smw_noboolean' => '"$1" ne estas agnoskita kiel Bulea (vera/falsa) valoro.',
 	'smw_true_words' => 'vera,v,jes,j',
 	'smw_false_words' => 'falsa,f,ne,n',
 	'smw_nofloat' => '"$1" ne estas nombro.',
@@ -2196,7 +2198,7 @@ $messages['eo'] = array(
 	'smw_emptysubquery' => 'Iu submendo havas neniun validan kondiĉon.',
 	'smw_overprintoutlimit' => 'La mendo enhavas tro da printadajn petojn.',
 	'smw_badtitle' => 'Bedaŭrinde, "$1" ne estas valida paĝa titolo.',
-	'smw_propvalueproblem' => 'La valuto de eco "$1" ne estis komprenita.',
+	'smw_propvalueproblem' => 'La valoro de atributo "$1" ne estas komprenita.',
 	'smw_type_header' => 'Atributoj de tipo "$1"',
 	'smw_typearticlecount' => 'Montrante $1 {{PLURAL:$1|atributon|atributojn}} uzante ĉi tiun tipon.',
 	'smw_attribute_header' => 'Paĝoj uzantaj atrubuton "$1"',
@@ -2239,7 +2241,7 @@ $messages['eo'] = array(
 	'smw_browse_no_outgoing' => 'Ĉi tiu paĝo havas neniujn atributojn.',
 	'smw_browse_no_incoming' => 'Neniuj atributojn ligas al ĉi tiun paĝon.',
 	'smw_inverse_label_default' => '$1 el',
-	'smw_inverse_label_property' => 'Inversigi atributan etikedon',
+	'smw_inverse_label_property' => 'Inversa atributa etikedo',
 	'pageproperty' => 'Serĉo de paĝaj ecoj',
 	'smw_pp_from' => 'De paĝo',
 	'smw_pp_type' => 'Eco',
@@ -4140,7 +4142,7 @@ Az alábbi funkció ellenőrzi, hogy az adatbázis megfelelően be van-e állít
 Az ezen lépés során végrehajtott változások nincsenek hatással a MediaWiki adatbázisának többi részére, és egyszerűen visszavonható, amennyiben szükséges.
 Ez a telepítési lépés többször is végrehajtható, anékül, hogy bármilyen kárt tenne, de csak egyszer szükséges a telepítés vagy frissítés során.',
 	'smw_smwadmin_permissionswarn' => 'Ha a művelet SQL-hibákkal leáll, a wikid által használt adatbázis-felhasználó (amit a LocalSettings.php-ben adtál meg) valószínűleg nem rendelkezik a megfelelő jogosultságokkal.
-Adj a felhasználó számára táblák készítéséhez és törléséhez jogosultságot, ideiglenesen add meg a root fiók adatait, vagy használd az <tt>SMW_setup.php</tt> karbantartó szkriptet, ami az AdminSettings.php-ben megadott adatokkal lép be.',
+Adj a felhasználó számára táblák készítéséhez és törléséhez jogosultságot, ideiglenesen add meg a root fiók adatait, vagy használd az <tt>SMW_setup.php</tt> karbantartó parancsfájlt, ami az AdminSettings.php-ben megadott adatokkal lép be.',
 	'smw_smwadmin_dbbutton' => 'Táblák inicializálása vagy frissítése',
 	'smw_smwadmin_announce' => 'Wiki bejelentése',
 	'smw_smwadmin_announcedocu' => 'A Szemantikus MediaWikinek van egy webes szolgáltatása az új szemantikus wikioldalak jelzésére.
@@ -4155,7 +4157,7 @@ A frissítés oldalról oldalra van végrehajtva, és nem lesz azonnal kész.
 Alább látható, hogy jelenleg folyamatban van-e ilyen frissítés, és elindíthatod vagy leállíthatod a frissítéseket (kivéve, ha az oldal adminisztrátora letiltotta ezt a lehetőséget).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Frissítés folyamatban.</strong>
 Normális, ha a frissítés lassan halad, hiszen az adatok csak egy kis részét frissíti minden alkalommal, ha egy felhasználó hozzáfér a wikihez.
-Ha gyorsabban be szeretnéd fejezni a frissítést, hívd meg a <tt>runJobs.php</tt> karbantartó szkriptet (használd a <tt>--maxjobs 1000</tt> kapcsolót az egy menetben végrehajtott frissítések korlátozásához).
+Ha gyorsabban be szeretnéd fejezni a frissítést, hívd meg a <tt>runJobs.php</tt> karbantartó parancsfájlt (használd a <tt>--maxjobs 1000</tt> kapcsolót az egy menetben végrehajtott frissítések korlátozásához).
 A jelenlegi frissítés becsült előrehaladása:',
 	'smw_smwadmin_datarefreshbutton' => 'Adatok frissítésének megkezdése',
 	'smw_smwadmin_datarefreshstop' => 'Frissítés megszakítása',
@@ -6954,6 +6956,7 @@ $messages['ps'] = array(
 /** Portuguese (Português)
  * @author 555
  * @author Crazymadlover
+ * @author Hamilton Abreu
  * @author Lijealso
  * @author Malafaya
  * @author Waldir
@@ -7039,13 +7042,13 @@ Os resultados podem não ser os esperados.',
 Faça uma cópia de segurança dos seus dados antes de a usar.',
 	'smw_notemplategiven' => 'Providencie um valor para o parâmetro "template" para o formato desta consulta funcionar.',
 	'smw_type_header' => 'Propriedades do tipo “$1”',
-	'smw_typearticlecount' => 'Exibindo $1 {{PLURAL:$1|propriedade que usa|propriedades que usam}} este tipo.',
+	'smw_typearticlecount' => 'Apresentando {{PLURAL:$1|uma propriedade que usa|$1 propriedades que usam}} este tipo.',
 	'smw_attribute_header' => 'Páginas que usam a propriedade “$1”',
-	'smw_attributearticlecount' => 'Exibindo $1 {{PLURAL:$1|página que usa|páginas que usam}} esta propriedade.',
+	'smw_attributearticlecount' => 'A apresentar {{PLURAL:$1|uma página que usa|$1 páginas que usam}} esta propriedade.',
 	'smw_subproperty_header' => 'Subpropriedades',
 	'smw_subpropertyarticlecount' => 'Esta propriedade possui {{PLURAL:$1|a seguinte subpropriedade|as seguintes $1 subpropriedades}}:',
 	'smw_concept_header' => 'Páginas do conceito "$1"',
-	'smw_conceptarticlecount' => 'Exibindo {{PLURAL:$1|uma página pertencente|$1 páginas pertencentes}} à este conceito.',
+	'smw_conceptarticlecount' => 'A apresentar {{PLURAL:$1|uma página pertencente|$1 páginas pertencentes}} ao conceito.',
 	'smw_rss_description' => 'Feed RSS de $1',
 	'exportrdf' => 'Exportar páginas para RDF',
 	'smw_exportrdf_docu' => 'Esta página permite-lhe obter dados de uma página no formato RDF.
@@ -7110,7 +7113,7 @@ Uma vez que houve poucos resultados, valores próximos são também apresentados
 	'smw_browselink' => 'Navegar pelas propriedades',
 	'smw_browse_article' => 'Introduza o nome da página a partir da qual deseja começar a navegar.',
 	'smw_browse_go' => 'Ir',
-	'smw_browse_show_incoming' => 'exibir propriedades que apontem para cá',
+	'smw_browse_show_incoming' => 'mostrar propriedades que apontem para cá',
 	'smw_browse_hide_incoming' => 'ocultar propriedades que apontem para cá',
 	'smw_browse_no_outgoing' => 'Esta página não possui propriedades.',
 	'smw_browse_no_incoming' => 'Nenhuma propriedade linca para esta página.',
