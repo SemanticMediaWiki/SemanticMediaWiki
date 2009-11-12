@@ -6962,18 +6962,19 @@ $messages['ps'] = array(
  * @author Waldir
  */
 $messages['pt'] = array(
+	'smw-desc' => "Tornando a sua wiki mais acessível - a máquinas ''e'' seres humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
 	'smw_edithelp' => 'Ajuda de edição sobre propriedades',
 	'smw_viewasrdf' => 'Feed RDF',
 	'smw_finallistconjunct' => 'e',
 	'smw_factbox_head' => 'Dados acerca $1',
-	'smw_isspecprop' => 'Esta propriedade é uma propriedade especial neste wiki.',
-	'smw_isknowntype' => 'Este tipo está entre os tipos de dados padrão deste wiki.',
-	'smw_isaliastype' => 'Este tipo é um alias do tipo de dados “$1”.',
-	'smw_isnotype' => 'Este tipo “$1” não é um tipo de dados padrão no wiki, e também não lhe foi dada uma definição de utilizador.',
+	'smw_isspecprop' => 'Esta propriedade é uma propriedade especial nesta wiki.',
+	'smw_isknowntype' => 'Este tipo de dados é um dos tipos padrão desta wiki.',
+	'smw_isaliastype' => "Este tipo de dados é um ''alias'' do tipo “$1”.",
+	'smw_isnotype' => 'Este tipo de dados “$1” não é um tipo padrão da wiki, nem não lhe foi dada uma definição de utilizador.',
 	'smw_concept_description' => 'Descrição do conceito "$1"',
 	'smw_no_concept_namespace' => 'Conceitos podem ser definidos apenas através das páginas do espaço nominal Concept:.',
 	'smw_multiple_concepts' => 'Cada página de conceito pode possuir apenas uma definição de conceito.',
-	'smw_concept_cache_miss' => 'O conceito "$1" não poderá ser utilizado neste momento, uma vez que a configuração deste wiki necessita ser refeita off-line. Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça a um administrador deste wiki que este conceito seja disponibilizado.',
+	'smw_concept_cache_miss' => "O conceito \"\$1\" não pode ser usado neste momento, porque a configuração da wiki requer que ele seja calculado ''off-line''. Caso o problema não seja resolvido dentro de algum tempo, peça a um administrador da wiki que disponibilize este conceito.",
 	'smw_baduri' => 'Desculpe, URIs da forma “$1” não são permitidos.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automático',
@@ -6988,7 +6989,7 @@ $messages['pt'] = array(
 	'smw_printername_table' => 'Tabela',
 	'smw_printername_broadtable' => 'Tabela ampla',
 	'smw_printername_template' => 'Predefinição',
-	'smw_iq_disabled' => 'Consultas semânticas foram desativadas neste wiki.',
+	'smw_iq_disabled' => 'Consultas semânticas foram impossibilitadas nesta wiki.',
 	'smw_iq_moreresults' => '… mais resultados',
 	'smw_iq_nojs' => 'Por favor, use um navegador com JavaScript activado para visualizar este elemento.',
 	'smw_iq_altresults' => 'Navegar pela lista de resultados directamente.',
@@ -6997,7 +6998,7 @@ $messages['pt'] = array(
 	'smw_wrong_importtype' => '$1 não pode ser usado com páginas no espaço nominal “$2”.',
 	'smw_no_importelement' => 'Elemento “$1” não disponível para importação.',
 	'smw_parseerror' => 'O valor fornecido não foi compreendido.',
-	'smw_notitle' => '“$1” não pode ser usado como nome de página neste wiki.',
+	'smw_notitle' => '“$1” não pode ser usado como nome de página nesta wiki.',
 	'smw_wrong_namespace' => 'Apenas páginas no espaço nominal "$1" são permitidas aqui.',
 	'smw_unknowntype' => 'Tipo não suportado “$1”  definido para propriedade.',
 	'smw_manytypes' => 'Mais do que um tipo definido para a propriedade.',
@@ -7034,10 +7035,10 @@ Os resultados podem não ser os esperados.',
 	'smw_badtitle' => 'Desculpe, mas “$1” não é um título de página válido.',
 	'smw_badqueryatom' => 'Uma parte "<nowiki>[[…]]</nowiki>" da consulta não foi compreendida.',
 	'smw_propvalueproblem' => 'O valor da propriedade “$1” não foi compreendido.',
-	'smw_noqueryfeature' => 'Alguma funcionalidade da consulta não foi suportada neste wiki e parte da consulta foi descartada ($1).',
-	'smw_noconjunctions' => 'Conjunções em consultas não são suportadas neste wiki e parte da consulta foi descartada ($1).',
-	'smw_nodisjunctions' => 'Disjunções em consultas não são suportadas neste wiki e parte da consulta foi descartada ($1).',
-	'smw_querytoolarge' => 'As seguintes condições da consulta não puderam ser consideradas devido às restrições dos wikis em tamanho ou profundidade de consulta: $1.',
+	'smw_noqueryfeature' => 'Uma característica da consulta não é suportada nesta wiki e parte da consulta foi descartada ($1).',
+	'smw_noconjunctions' => 'Conjunções em consultas não são suportadas nesta wiki e parte da consulta foi descartada ($1).',
+	'smw_nodisjunctions' => 'Disjunções em consultas não são suportadas nesta wiki e parte da consulta foi descartada ($1).',
+	'smw_querytoolarge' => 'Não foi possível considerar as seguintes condições da consulta, devido às restrições no tamanho e profundidade de consulta das wikis: $1.',
 	'smw_devel_warning' => 'Esta funcionalidade está neste momento em desenvolvimento, e pode não estar totalmente funcional.
 Faça uma cópia de segurança dos seus dados antes de a usar.',
 	'smw_notemplategiven' => 'Providencie um valor para o parâmetro "template" para o formato desta consulta funcionar.',
@@ -7060,16 +7061,16 @@ Gera RDF navegável.',
 	'smw_exportrdf_lastdate' => 'Não exporte páginas que não foram alteradas desde o tempo dado.',
 	'smw_exportrdf_submit' => 'Exportar',
 	'properties' => 'Propriedades',
-	'smw_properties_docu' => 'As seguintes propriedades são usadas neste wiki.',
+	'smw_properties_docu' => 'As seguintes propriedades são usadas nesta wiki.',
 	'smw_property_template' => '$1 de tipo $2 ($3)',
 	'smw_propertylackspage' => 'Todas as propriedades devem ser descritas por uma página!',
 	'smw_propertylackstype' => 'Nenhum tipo foi especificado para esta propriedade (assumindo tipo $1 por agora).',
-	'smw_propertyhardlyused' => 'Esta propriedade dificilmente é usada neste wiki!',
+	'smw_propertyhardlyused' => 'Esta propriedade é muito pouco usada nesta wiki!',
 	'unusedproperties' => 'Propriedades não usadas',
 	'smw_unusedproperties_docu' => 'As seguintes propriedade existem apesar de nenhuma página fazer uso delas.',
 	'smw_unusedproperty_template' => '$1 de tipo $2',
 	'wantedproperties' => 'Propriedades em falta',
-	'smw_wantedproperties_docu' => 'As seguintes propriedades são usadas no wiki mas ainda não têm uma página que as descreva.',
+	'smw_wantedproperties_docu' => 'As seguintes propriedades são usadas na wiki mas ainda não têm uma página que as descreva.',
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|uso|usos}})',
 	'tooltip-purge' => 'Carregue aqui para refrescar todas as consultar e predefinições nesta página',
 	'smw_purge' => 'Refrescar',
@@ -7078,7 +7079,7 @@ Gera RDF navegável.',
 Cada tipo de dados tem uma página onde informação adicional pode ser providenciada.',
 	'smw_typeunits' => 'Unidades de medida de tipo “$1”: $2',
 	'semanticstatistics' => 'Estatísticas de semântica',
-	'smw_semstats_text' => "Este wiki contém '''$1''' {{PLURAL:$1|valor|valores}} de propriedades num total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriedade diferente|propriedades diferentes}}]].
+	'smw_semstats_text' => "Esta wiki contém '''$1''' {{PLURAL:$1|valor|valores}} de propriedades num total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriedade diferente|propriedades diferentes}}]].
 '''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} uma página própria, e o tipo de dados pretendido está especificado para '''$4''' delas.
 Algumas das propriedades existentes poderão ser [[Special:UnusedProperties|propriedades não usadas]].
 As propriedades que não possuem uma página poderão ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
@@ -7147,20 +7148,20 @@ Lembre-se de efetuar cópias de segurança dos dados importantes antes de execut
 A função abaixo assegura que a sua base de dados está devidamente preparada.
 As alterações feitas neste passo não afetam o resto da base de dados MediaWiki, e podem ser facilmente desfeitas se desejado.
 Esta função de preparação pode ser executada múltiplas vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou evolução.',
-	'smw_smwadmin_permissionswarn' => 'Se a operação falhar com erros de SQL, provavelmente o utilizador de base de dados usado pelo seu wiki (consulte o seu LocalSettings.php) não possui permissões suficientes.
-Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu super-utilizador (<i>root</i>) da base de dados em LocalSettings.php, ou use o script de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais presentes em AdminSettings.php.',
+	'smw_smwadmin_permissionswarn' => "Se a operação falhar com erros de SQL, provavelmente o utilizador de base de dados usado pela sua wiki (consulte o seu LocalSettings.php) não possui permissões suficientes.
+Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu super-utilizador (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais presentes em AdminSettings.php.",
 	'smw_smwadmin_dbbutton' => 'Inicializar ou evoluir tabelas',
-	'smw_smwadmin_announce' => 'Anuncie o seu wiki',
+	'smw_smwadmin_announce' => 'Anuncie a sua wiki',
 	'smw_smwadmin_announcedocu' => 'O Semantic MediaWiki tem um serviço web para anunciar novos sítios wiki semânticos.
 Este é usado para manter uma lista de sítios públicos que usam o Semantic MediaWiki, principalmente para auxiliar o <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projeto Semantic MediaWiki</a> a obter um ideia geral das utilizações típicas do Semantic MediaWiki.
 Veja a página inicial do Semantic MediaWiki para <a href="http://semantic-mediawiki.org/wiki/Registry">mais informações sobre este serviço</a>.',
-	'smw_smwadmin_announcebutton' => 'Prima o seguinte botão para submeter a URL do seu wiki àquele serviço.
-O serviço não registará wikis que não estejam publicamente acessíveis, e apenas armazenará informação publicamente acessível.',
+	'smw_smwadmin_announcebutton' => 'Clique o seguinte botão para submeter a URL da sua wiki ao serviço.
+O serviço não registará wikis que não estejam publicamente acessíveis e apenas armazenará informação publicamente acessível.',
 	'smw_smwadmin_datarefresh' => 'Reparação de dados e evolução',
-	'smw_smwadmin_datarefreshdocu' => 'É possível restaurar todos os dados do Semantic MediaWiki baseado no conteúdo atual do wiki.
+	'smw_smwadmin_datarefreshdocu' => 'É possível restaurar todos os dados do Semantic MediaWiki baseado no conteúdo actual da wiki.
 Isto pode ser útil para reparar dados corrompidos ou para refrescar os dados se o formato interno tiver sido alterado devido a alguma evolução do software.
-A atualização é executada página a página e não completará de imediato.
-O seguinte mostra se uma atualização está a decorrer e permite-lhe iniciar ou parar atualizações (a menos que esta funcionalidade tenha sido desativada por um administrador do sítio).',
+A actualização é executada página a página e não ficará completa de imediato.
+Abaixo é mostrado se uma actualização está a decorrer e permite-lhe iniciar ou parar actualizações (a menos que esta funcionalidade tenha sido desactivada por um administrador do sítio).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Uma atualização já se encontra a decorrer.</strong>
 É normal que a atualização progrida lentamente já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acede ao wiki.
 Para terminar esta atualização mais rapidamente, você pode executar o script de manutenção do MediaWiki <tt>runJobs.php</tt> (use a opção <tt>--maxjobs 1000</tt> para restringir o número de atualizações feitas num bloco).
