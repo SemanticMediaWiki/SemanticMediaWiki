@@ -6962,7 +6962,7 @@ $messages['ps'] = array(
  * @author Waldir
  */
 $messages['pt'] = array(
-	'smw-desc' => "Tornando a sua wiki mais acessível - a máquinas ''e'' seres humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
+	'smw-desc' => "Tornando a sua wiki mais acessível - a máquinas ''e'' a seres humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
 	'smw_edithelp' => 'Ajuda de edição sobre propriedades',
 	'smw_viewasrdf' => 'Feed RDF',
 	'smw_finallistconjunct' => 'e',
@@ -6975,6 +6975,7 @@ $messages['pt'] = array(
 	'smw_no_concept_namespace' => 'Conceitos podem ser definidos apenas através das páginas do espaço nominal Concept:.',
 	'smw_multiple_concepts' => 'Cada página de conceito pode possuir apenas uma definição de conceito.',
 	'smw_concept_cache_miss' => "O conceito \"\$1\" não pode ser usado neste momento, porque a configuração da wiki requer que ele seja calculado ''off-line''. Caso o problema não seja resolvido dentro de algum tempo, peça a um administrador da wiki que disponibilize este conceito.",
+	'smw_noinvannot' => 'Valores não podem ser atribuídos a propriedades inversas.',
 	'smw_baduri' => 'Desculpe, URIs da forma “$1” não são permitidos.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automático',
@@ -6985,6 +6986,7 @@ $messages['pt'] = array(
 	'smw_printername_json' => 'Exportação JSON',
 	'smw_printername_list' => 'Lista',
 	'smw_printername_ol' => 'Enumeração',
+	'smw_printername_ul' => 'Especificação',
 	'smw_printername_rss' => 'Exportação RSS',
 	'smw_printername_table' => 'Tabela',
 	'smw_printername_broadtable' => 'Tabela ampla',
@@ -7005,7 +7007,7 @@ $messages['pt'] = array(
 	'smw_emptystring' => 'Cadeias de caracteres vazias não são aceites.',
 	'smw_maxstring' => 'Representação de cadeia de caracteres $1 é demasiado longa.',
 	'smw_notinenum' => '“$1” não está na lista de valores possíveis ($2) para esta propriedade.',
-	'smw_noboolean' => '“$1” não é reconhecido como um valor boleano (verdadeiro/falso).',
+	'smw_noboolean' => '“$1” não é reconhecido como um valor booleano (verdadeiro/falso).',
 	'smw_true_words' => 'verdadeiro,v,sim,s',
 	'smw_false_words' => 'falso,f,não,nao,n',
 	'smw_nofloat' => '“$1” não é um número.',
@@ -7177,6 +7179,7 @@ Progresso estimado da atualização corrente:',
 	'smw_smwadmin_questions' => 'Se você tem mais questões ou sugestões, junte-se à discussão em <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
 	'smw_adminlinks_datastructure' => 'Estrutura de dados',
 	'smw_adminlinks_displayingdata' => 'Mostrando os dados',
+	'smw_adminlinks_inlinequerieshelp' => "Ajuda para consultas dinâmicas ''(inline queries)''",
 );
 
 /** Brazilian Portuguese (Português do Brasil)
