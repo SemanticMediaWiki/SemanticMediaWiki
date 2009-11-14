@@ -149,7 +149,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 					$link->setParameter($this->m_params['link'],'link');
 				}
 			}
-			$result .= '<br/><li>' . $link->getText(SMW_OUTPUT_WIKI,$this->mLinker) . '</li>';
+			$result .= '<br /><li>' . $link->getText(SMW_OUTPUT_WIKI,$this->mLinker) . '</li>';
 		}
 
 		$result .= "				</ul>\n			</div> <!-- end column -->";

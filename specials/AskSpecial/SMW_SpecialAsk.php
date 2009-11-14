@@ -301,7 +301,7 @@ class SMWAskPage extends SpecialPage {
 			$result .= '|'.htmlspecialchars($param_name).'='.htmlspecialchars($param_value)."\n";
 		}
 
-		$result .= '}}</textarea></div><br/>';
+		$result .= '}}</textarea></div><br />';
 
 		return $result;
 	}
