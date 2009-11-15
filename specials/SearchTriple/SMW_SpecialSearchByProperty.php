@@ -139,13 +139,13 @@ class SMWSearchByProperty extends SpecialPage {
 				$html .= wfMsg( 'smw_result_noresults' );
 			else {
 				$html .= wfMsg('smw_sbv_displayresultfuzzy', $this->property->getShortHTMLText($skin), $this->value->getShortHTMLText($skin)) . "<br />\n";
-				$html .= $this->displayResults($greater, $cG, false);
+				$html .= $this->displayResults($lesser, $cL, false);
 				if ( $count == 0 ) {
 					$html .= " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em><strong><small>(" . $this->value->getLongHTMLText() . ")</small></strong></em>\n";
 				} else {
 					$html .= $this->displayResults($exact, $count, true, true);
 				}
-				$html .= $this->displayResults($lesser, $cL);
+				$html .= $this->displayResults($greater, $cG);
 			}
 		} else {
 			$html .= wfMsg('smw_sbv_displayresult', $this->property->getShortHTMLText($skin), $this->value->getShortHTMLText($skin)) . "<br />\n";
@@ -154,7 +154,7 @@ class SMWSearchByProperty extends SpecialPage {
 			} else {
 				$navi = $this->getNavigationBar($count);
 				if (($this->offset > 0) || ($count > $this->limit)) $html .= $navi;
-				$html .= $this->displayResults($exact);
+				$html .= $this->displayResults($exact, $this->limit);
 				if (($this->offset > 0) || ($count > $this->limit)) $html .= $navi;
 			}
 		}
@@ -178,9 +178,9 @@ class SMWSearchByProperty extends SpecialPage {
 
 		$html  = "<ul>\n";
 
-		if (!$first && ($number > 0)) while ( count($results) > $number ) array_pop($results);
+		if (!$first && ($number > 0)) while ( count($results) > $number ) array_shift($results);
 		while ( $results && $number != 0) {
-			$result = array_pop( $results );
+			$result = array_shift( $results );
 			$thing = $result[0]->getLongHTMLText($skin);
 			$browselink = ($result[0]->getTypeId() == '_wpg')?
 			              '&nbsp;&nbsp;' . SMWInfolink::newBrowsingLink('+', $result[0]->getShortHTMLText())->getHTML($skin):'';
