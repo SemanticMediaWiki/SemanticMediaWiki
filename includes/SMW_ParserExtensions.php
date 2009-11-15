@@ -193,7 +193,7 @@ class SMWParserExtensions {
 	 * @todo Remove this function entirely, one could have an extension for those who
 	 * wish to have some intelligent behaviour here.
 	 */
-	static public function doAskHook($querytext, $params, &$parser) {
+	static public function doAskHook($querytext, $params, $parser) {
 		return '&lt;ask&gt; no longer supported. See SMW documentation on how to do inline queries now.';
 	}
 
