@@ -321,6 +321,8 @@ class SMWQueryProcessor {
 			global $smwgResultFormats;
 
 			if ( !array_key_exists($format, $smwgResultFormats) ) {
+				
+				$isAlias = false;
 
 				foreach($smwgResultAliases as $mainFormat => $aliases) {
 					if (in_array($format, $aliases)) {
