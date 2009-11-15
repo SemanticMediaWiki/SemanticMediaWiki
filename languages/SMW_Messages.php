@@ -7365,6 +7365,7 @@ $messages['rif'] = array(
 $messages['ro'] = array(
 	'smw_finallistconjunct' => 'şi',
 	'smw_concept_description' => 'Descrierea conceptului "$1"',
+	'smw_printername_count' => 'Numără rezultatele',
 	'smw_printername_csv' => 'Export CSV',
 	'smw_printername_json' => 'Export JSON',
 	'smw_printername_list' => 'Listă',
