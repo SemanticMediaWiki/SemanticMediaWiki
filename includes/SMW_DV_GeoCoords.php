@@ -154,7 +154,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 		$this->m_latparts = false;
 		$this->m_longparts = false;
 
-		list($this->m_lat, $this->m_long) = split(',', $args[0]);
+		list($this->m_lat, $this->m_long) = explode(',', $args[0]);
 		$this->m_caption = $this->formatAngleValues(true) . ', ' . $this->formatAngleValues(false); // this is our output text
 		$this->m_wikivalue = $this->m_caption;
 	}
