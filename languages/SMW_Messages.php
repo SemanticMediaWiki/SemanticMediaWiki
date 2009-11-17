@@ -4635,6 +4635,7 @@ Perkiraan kemajuan pembaruan saat ini:',
  * @author Malafaya
  */
 $messages['io'] = array(
+	'smw_printername_template' => 'Shablono',
 	'smw_result_next' => 'Sequanta',
 );
 
@@ -6091,6 +6092,7 @@ Om problemet ikkje går vekk etter noko tid, be sideadministratoren om å gjera 
 	'smw_printername_json' => 'JSON eksport',
 	'smw_printername_list' => 'Liste',
 	'smw_printername_ol' => 'Nummerering',
+	'smw_printername_ul' => 'Objektisering',
 	'smw_printername_rss' => 'RSS eksport',
 	'smw_printername_table' => 'Tabell',
 	'smw_printername_broadtable' => 'Brei tabell',
