@@ -30,7 +30,7 @@ class SMWURIResolver extends SpecialPage {
 		wfProfileIn('SpecialURIResolver::execute (SMW)');
 		if ('' == $query) {
 			if (stristr($_SERVER['HTTP_ACCEPT'], 'RDF')) {
-				$wgOut->redirect(SpecialPage::getTitleFor('ExportRDF')->getFullURL('stats=1'), 303);
+				$wgOut->redirect(SpecialPage::getTitleFor('ExportRDF')->getFullURL('stats=1'), '303');
 			} else {
 				$this->setHeaders();
 				$wgOut->addHTML( '<p>' . wfMsg('smw_uri_doc') . "</p>" );
@@ -43,7 +43,7 @@ class SMWURIResolver extends SpecialPage {
 
 			$wgOut->redirect( stristr($_SERVER['HTTP_ACCEPT'], 'RDF')
 				? SpecialPage::getTitleFor('ExportRDF', $title->getPrefixedText())->getFullURL('xmlmime=rdf')
-				: $title->getFullURL(), 303);
+				: $title->getFullURL(), '303');
 		}
 		wfProfileOut('SpecialURIResolver::execute (SMW)');
 	}
