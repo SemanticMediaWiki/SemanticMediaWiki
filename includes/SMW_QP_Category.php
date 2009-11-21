@@ -97,6 +97,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 					}
 					$first_col = false;
 				}
+				$wikitext .= "|#=$rowindex";
 				$result .= '{{' . $this->mTemplate . $wikitext . '}}';
 				//str_replace('|', '&#x007C;', // encode '|' for use in templates (templates fail otherwise) -- this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
 			} else {  // build simple list
