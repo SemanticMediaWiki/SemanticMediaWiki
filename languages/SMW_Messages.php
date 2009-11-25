@@ -59,6 +59,23 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_printername_broadtable' => 'Broad table',
 	'smw_printername_template' => 'Template',
 
+	// Messages for query parameter descriptions
+	'smw_paramdesc_limit'	=> 'The maximum number of results to return',
+	'smw_paramdesc_headers'	=> 'Whether or not to display the headers/property names',
+	'smw_paramdesc_mainlabel'	=> 'The label to give to the main page name',
+	'smw_paramdesc_link'	=> 'Whether or not to show values as links',
+	'smw_paramdesc_intro'	=> 'The text to display before the query results, if there are any',
+	'smw_paramdesc_outro'	=> 'The text to display after the query results, if there are any',
+	'smw_paramdesc_default'	=> 'The text to display if there are no query results',
+	'smw_paramdesc_searchlabel'	=> 'The text in the link to results',
+	'smw_paramdesc_sep'	=> 'The separator for values',
+	'smw_paramdesc_template'	=> 'The name of a template with which to display the printouts',
+	'smw_paramdesc_columns'	=> 'The number of columns in which to display results (default is 3)',
+	'smw_paramdesc_embedformat'	=> 'The HTML tag used to define headings',
+	'smw_paramdesc_embedonly'	=> 'Display no headings',
+	'smw_paramdesc_rsstitle'	=> 'The text to be used as the title of the feed',
+	'smw_paramdesc_rssdescription'	=> 'The text to be used as the description of the feed',
+
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
 	'smw_iq_moreresults' => '… further results',
