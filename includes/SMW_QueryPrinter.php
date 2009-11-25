@@ -383,7 +383,7 @@ abstract class SMWResultPrinter {
 	protected function exportFormatParameters() {
 		return array(
 			array('name' => 'limit', 'type' => 'int', 'description' => wfMsg('smw_paramdesc_limit')),
-			array('name' => 'headers', 'type' => 'enumeration', 'description' => wfMsg('smw_paramdesc_headers'), 'values' => array('show', 'hide')),
+			array('name' => 'headers', 'type' => 'enumeration', 'description' => wfMsg('smw_paramdesc_headers'), 'values' => array('show', 'hide', 'plain')),
 			array('name' => 'mainlabel', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_mainlabel')),
 			array('name' => 'searchlabel', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_searchlabel')),
 		);
@@ -397,7 +397,7 @@ abstract class SMWResultPrinter {
 	public function getParameters() {
 		return array(
 			array('name' => 'limit', 'type' => 'int', 'description' => wfMsg('smw_paramdesc_limit')),
-			array('name' => 'headers', 'type' => 'enumeration', 'description' => wfMsg('smw_paramdesc_headers'), 'values' => array('show', 'hide')),
+			array('name' => 'headers', 'type' => 'enumeration', 'description' => wfMsg('smw_paramdesc_headers'), 'values' => array('show', 'hide', 'plain')),
 			array('name' => 'mainlabel', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_mainlabel')),
 			array('name' => 'link', 'type' => 'enumeration', 'description' => wfMsg('smw_paramdesc_link'), 'values' => array('all', 'subject', 'none')),
 		);
