@@ -363,4 +363,44 @@ abstract class SMWResultPrinter {
 		return ($this->mInline && $results->hasFurtherResults() && ($this->mSearchlabel !== ''));
 	}
 
+	/**
+	 * Return an array describing the parameters of specifically text-based
+	 * formats, like 'list' and 'table', for use in their getParameters()
+	 * functions
+	 */
+	protected function textDisplayParameters() {
+		return array(
+			array('name' => 'intro', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_intro')),
+			array('name' => 'outro', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_outro')),
+			array('name' => 'default', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_default')),
+		);
+	}
+
+	/**
+	 * Return an array describing the parameters of the export formats
+	 * like 'rss' and 'csv', for use in their getParameters() functions
+	 */
+	protected function exportFormatParameters() {
+		return array(
+			array('name' => 'limit', 'type' => 'int', 'description' => wfMsg('smw_paramdesc_limit')),
+			array('name' => 'headers', 'type' => 'enumeration', 'description' => wfMsg('smw_paramdesc_headers'), 'values' => array('show', 'hide')),
+			array('name' => 'mainlabel', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_mainlabel')),
+			array('name' => 'searchlabel', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_searchlabel')),
+		);
+	}
+
+	/**
+	 * A function to describe the allowed parameters of a query using
+	 * any specific format - most query printers should override this
+	 * function
+	 */
+	public function getParameters() {
+		return array(
+			array('name' => 'limit', 'type' => 'int', 'description' => wfMsg('smw_paramdesc_limit')),
+			array('name' => 'headers', 'type' => 'enumeration', 'description' => wfMsg('smw_paramdesc_headers'), 'values' => array('show', 'hide')),
+			array('name' => 'mainlabel', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_mainlabel')),
+			array('name' => 'link', 'type' => 'enumeration', 'description' => wfMsg('smw_paramdesc_link'), 'values' => array('all', 'subject', 'none')),
+		);
+	}
+
 }
