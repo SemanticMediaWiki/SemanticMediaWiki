@@ -36,11 +36,9 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$this->mUserParam = trim($params['userparam']);
 		}
 		if (array_key_exists('columns', $params)) {
-			if ( ('ul' == $this->mFormat) || ('ol' == $this->mFormat) ) {
-				$columns = trim($params['columns']);
-				// allow a maximum of 10 columns
-				if ($columns > 1 && $columns <= 10)
-					$this->mColumns = (int)$columns;
+			$columns = trim($params['columns']);
+			if ($columns > 1 && $columns <= 10) { // allow a maximum of 10 columns
+				$this->mColumns = (int)$columns;
 			}
 		}
 	}
