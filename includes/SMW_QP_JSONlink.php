@@ -151,7 +151,8 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 		return $result;
 	}
 
+	public function getParameters() {
+		return parent::exportFormatParameters();
+	}
+
 }
-
-
-

@@ -148,6 +148,13 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		return $result;
 	}
 
+	public function getParameters() {
+		$params = parent::exportFormatParameters();
+		$params[] = array('name' => 'title', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_rsstitle'));
+		$params[] = array('name' => 'description', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_rssdescription'));
+		return $params;
+	}
+
 }
 
 
@@ -246,5 +253,5 @@ class SMWRSSItem {
 		return trim(smwfXMLContentEncode($t));
 		//return trim(str_replace(array('&','<','>'), array('&amp;','&lt;','&gt;'), strip_tags(html_entity_decode($t, null, 'UTF-8'))));
 	}
-}
 
+}

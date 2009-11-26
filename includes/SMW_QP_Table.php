@@ -24,7 +24,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 		// print header
 		$result = '<table class="smwtable"' .
-		          ('broadtable' == $this->mFormat?' width="100%"':'') .
+			  ('broadtable' == $this->mFormat?' width="100%"':'') .
 				  " id=\"querytable$smwgIQRunningNumber\">\n";
 		if ($this->mShowHeaders != SMW_HEADERS_HIDE) { // building headers
 			$result .= "\t<tr>\n";
@@ -61,8 +61,8 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 					}
 					// use shorter "LongText" for wikipage
 					$result .= ( ($object->getTypeID() == '_wpg')||($object->getTypeID() == '__sin') )?
-					           $object->getLongText($outputmode,$this->getLinker($firstcol)):
-					           $object->getShortText($outputmode,$this->getLinker($firstcol));
+						   $object->getLongText($outputmode,$this->getLinker($firstcol)):
+						   $object->getShortText($outputmode,$this->getLinker($firstcol));
 				}
 				$result .= "</td>\n";
 				$firstcol = false;
@@ -81,6 +81,12 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		$result .= "</table>\n"; // print footer
 		$this->isHTML = ($outputmode == SMW_OUTPUT_HTML); // yes, our code can be viewed as HTML if requested, no more parsing needed
 		return $result;
+	}
+
+	public function getParameters() {
+		$params = parent::getParameters();
+		$params = array_merge($params, parent::textDisplayParameters());
+		return $params;
 	}
 
 }

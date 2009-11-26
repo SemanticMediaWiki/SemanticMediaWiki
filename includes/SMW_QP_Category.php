@@ -159,4 +159,11 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 		return $result;
 	}
 
+	public function getParameters() {
+		$params = parent::getParameters();
+		$params = array_merge($params, parent::textDisplayParameters());
+		$params[] = array('name' => 'columns', 'type' => 'int', 'description' => wfMsg('smw_paramdesc_columns'));
+		return $params;
+	}
+
 }

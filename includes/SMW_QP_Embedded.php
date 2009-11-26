@@ -111,4 +111,12 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 		return $result;
 	}
+
+        public function getParameters() {
+                $params = parent::getParameters();
+                $params[] = array('name' => 'embedformat', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_embedformat'));
+                $params[] = array('name' => 'embedonly', 'type' => 'boolean', 'description' => wfMsg('smw_paramdesc_embedonly'));
+                return $params;
+        }
+
 }

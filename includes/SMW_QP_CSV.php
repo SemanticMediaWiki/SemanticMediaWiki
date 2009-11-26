@@ -95,4 +95,8 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 		return $result;
 	}
 
+	public function getParameters() {
+		return parent::exportFormatParameters();
+	}
+
 }
