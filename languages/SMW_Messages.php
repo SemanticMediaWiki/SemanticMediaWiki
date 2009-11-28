@@ -1898,6 +1898,21 @@ Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administ
 	'smw_printername_table' => 'Tabela',
 	'smw_printername_broadtable' => 'Šyroka tabela',
 	'smw_printername_template' => 'Pśedłoga',
+	'smw_paramdesc_limit' => 'Maksimalna licba wuslědkow, kótarež maju se wrośiś',
+	'smw_paramdesc_headers' => 'Jolic mjenja głowow resp. atributow maju se zwobrazniś abo nic',
+	'smw_paramdesc_mainlabel' => 'Pomjenjenje, kótarež ma se głownemu bokoju daś',
+	'smw_paramdesc_link' => 'Jolic gódnoty maju se ako wótkaze pokazaś abo nic',
+	'smw_paramdesc_intro' => 'Tekst, kótaryž ma se pśed napšašowańskimi wuslědkami zwobrazniś, jolic take su',
+	'smw_paramdesc_outro' => 'Tekst, kótaryž ma se za napšašowańskimi wuslědkami zwobrazniś, jolic take su',
+	'smw_paramdesc_default' => 'Tekst, kótaryž ma se zwobrazniś, jolic napšašowańske wuslědki njejsu',
+	'smw_paramdesc_searchlabel' => 'Tekst wótkaza do wuslědkow',
+	'smw_paramdesc_sep' => 'Źěleńske znamuško za gódnoty',
+	'smw_paramdesc_template' => 'Mjenja pśedłogi, z kótarejuž wuśišće maju se zwobrazniś',
+	'smw_paramdesc_columns' => 'Licba słupow, w kótarychž maju se wuslědki zwobrazniś (standard jo 3)',
+	'smw_paramdesc_embedformat' => 'HTML-toflicka, kótaraž wužywa se, aby definěrowała nadpisma',
+	'smw_paramdesc_embedonly' => 'Žedne nadpisma zwobraznis',
+	'smw_paramdesc_rsstitle' => 'Tekst, kótaryž ma se ako titel kanala wužywaś',
+	'smw_paramdesc_rssdescription' => 'Tekst, kótaryž ma se ako wopisanje kanala wužywaś',
 	'smw_iq_disabled' => 'Semantiske wótpšašanja su se znjemóžnili za toś ten wiki.',
 	'smw_iq_moreresults' => '... dalšne wuslědki',
 	'smw_iq_nojs' => 'Wužyj wobglědowak z pódperu za JavaScript, aby se toś ten element woglědał.',
@@ -4072,6 +4087,10 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_printername_table' => 'Táblázat',
 	'smw_printername_broadtable' => 'Széles táblázat',
 	'smw_printername_template' => 'Sablon',
+	'smw_paramdesc_limit' => 'Legfeljebb ennyi eredmény megjelenítése',
+	'smw_paramdesc_embedonly' => 'Fejlécek kikapcsolása',
+	'smw_paramdesc_rsstitle' => 'A hírcsatorna címeként használt szöveg',
+	'smw_paramdesc_rssdescription' => 'A hírcsatorna leírásaként használt szöveg',
 	'smw_iq_disabled' => 'A szemantikus lekérdezések le vannak tiltva ezen a wikin.',
 	'smw_iq_moreresults' => '… további eredmények',
 	'smw_iq_nojs' => 'Használj JavaScript képes böngészőt ennek az elemnek a megjelenítéséhez.',
@@ -7209,7 +7228,7 @@ Os resultados podem não ser os esperados.',
 	'smw_querytoolarge' => 'Não foi possível considerar as seguintes condições da consulta, devido às restrições no tamanho e profundidade de consulta das wikis: $1.',
 	'smw_devel_warning' => 'Esta funcionalidade está neste momento em desenvolvimento, e pode não estar totalmente funcional.
 Faça uma cópia de segurança dos seus dados antes de a usar.',
-	'smw_notemplategiven' => 'Providencie um valor para o parâmetro "template" para o formato desta consulta funcionar.',
+	'smw_notemplategiven' => 'Forneça um valor para o parâmetro "template" para que este formato de consulta funcione.',
 	'smw_type_header' => 'Propriedades do tipo “$1”',
 	'smw_typearticlecount' => 'Apresentando {{PLURAL:$1|uma propriedade que usa|$1 propriedades que usam}} este tipo.',
 	'smw_attribute_header' => 'Páginas que usam a propriedade “$1”',
@@ -7243,8 +7262,8 @@ Gera RDF navegável.',
 	'tooltip-purge' => 'Carregue aqui para refrescar todas as consultar e predefinições nesta página',
 	'smw_purge' => 'Refrescar',
 	'types' => 'Tipos',
-	'smw_types_docu' => 'As seguinte lista contém todos os tipos de dados que podem ser atribuídos a propriedades.
-Cada tipo de dados tem uma página onde informação adicional pode ser providenciada.',
+	'smw_types_docu' => 'A seguinte lista contém todos os tipos de dados que podem ser atribuídos a propriedades.
+Cada tipo de dados tem uma página onde pode ser fornecida informação adicional.',
 	'smw_typeunits' => 'Unidades de medida de tipo “$1”: $2',
 	'semanticstatistics' => 'Estatísticas de semântica',
 	'smw_semstats_text' => "Esta wiki contém '''$1''' {{PLURAL:$1|valor|valores}} de propriedades num total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriedade diferente|propriedades diferentes}}]].
@@ -7351,6 +7370,7 @@ Progresso estimado da atualização corrente:',
 /** Brazilian Portuguese (Português do Brasil)
  * @author Eduardo.mps
  * @author GKnedo
+ * @author Hamilton Abreu
  * @author Heldergeovane
  * @author Rafael Vargas
  * @author Waldir
@@ -7429,6 +7449,7 @@ Os resultados podem não ser os esperados.',
 	'smw_badtitle' => 'Desculpe, mas "$1" não é um título de página válido.',
 	'smw_badqueryatom' => 'Alguma parte "<nowiki>[[…]]</nowiki>" da consulta não foi compreendida.',
 	'smw_propvalueproblem' => 'O valor da propriedade "$1" não foi compreendido.',
+	'smw_notemplategiven' => 'Providencie um valor para o parâmetro "template" para o formato desta consulta funcionar.',
 	'smw_type_header' => 'Propriedades do tipo "$1"',
 	'smw_typearticlecount' => 'Exibindo $1 {{PLURAL:$1|propriedade que usa|propriedades que usam}} este tipo.',
 	'smw_attribute_header' => 'Páginas que usam a propriedade "$1"',
@@ -7444,6 +7465,8 @@ Para exportar páginas, introduza os seus títulos na caixa de texto abaixo, um 
 	'properties' => 'Propriedades',
 	'smw_purge' => 'Atualizar',
 	'types' => 'Tipos',
+	'smw_types_docu' => 'A seguinte lista contém todos os tipos de dados que podem ser atribuídos a propriedades.
+Cada tipo de dados tem uma página onde informação adicional pode ser providenciada.',
 	'ask' => 'Pesquisa semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
 	'smw_ask_ascorder' => 'Ascendente',
