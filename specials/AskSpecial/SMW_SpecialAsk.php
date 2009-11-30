@@ -109,10 +109,6 @@ class SMWAskPage extends SpecialPage {
 				$this->m_params['format'] = 'broadtable';
 			}
 		}
-		$sortcount = $wgRequest->getVal( 'sc' );
-		if (!is_numeric($sortcount)) {
-			$sortcount = 0;
-		}
 		if ( !array_key_exists('order',$this->m_params) ) {
 			$order_values = $wgRequest->getArray('order');
 			if (is_array($order_values)) {
@@ -139,6 +135,7 @@ class SMWAskPage extends SpecialPage {
 			}
 		}
 		// Find implicit ordering for RSS -- needed for downwards compatibility with SMW <=1.1
+		/*
 		if ( ($this->m_params['format'] == 'rss') && ($this->m_params['sort'] == '') && ($sortcount==0)) {
 			foreach ($this->m_printouts as $printout) {
 				if ((strtolower($printout->getLabel()) == "date") && ($printout->getTypeID() == "_dat")) {
@@ -147,6 +144,7 @@ class SMWAskPage extends SpecialPage {
 				}
 			}
 		}
+		*/
 		if ( !array_key_exists('offset',$this->m_params) ) {
 			$this->m_params['offset'] = $wgRequest->getVal( 'offset' );
 			if ($this->m_params['offset'] == '')  $this->m_params['offset'] = 0;
@@ -261,8 +259,8 @@ END;
 			$printoutstring .= $printout->getSerialisation() . "\n";
 		}
 		if ('' != $printoutstring)          $urltail .= '&po=' . urlencode($printoutstring);
-		if ('' != $this->m_params['sort'])  $urltail .= '&sort=' . $this->m_params['sort'];
-		if ('' != $this->m_params['order']) $urltail .= '&order=' . $this->m_params['order'];
+		if (array_key_exists('sort', $this->m_params))  $urltail .= '&sort=' . $this->m_params['sort'];
+		if (array_key_exists('order', $this->m_params)) $urltail .= '&order=' . $this->m_params['order'];
 
 		if ($this->m_querystring != '') {
 			$queryobj = SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params, SMWQueryProcessor::SPECIAL_PAGE , $this->m_params['format'], $this->m_printouts);
@@ -347,7 +345,7 @@ END;
 
 			// sorting inputs
 			if ($smwgQSortingSupport) {
-				if ( $this->m_params['sort'] . $this->m_params['order'] == '') {
+				if (! array_key_exists('sort', $this->m_params) || ! array_key_exists('order', $this->m_params)) {
 					$orders = array(); // do not even show one sort input here
 				} else {
 					$sorts = explode(',', $this->m_params['sort']);
@@ -371,7 +369,6 @@ END;
 				$result .= "</div>\n";
 				$result .= '<div id="sorting_main"></div>' . "\n";
 				$result .= '<a href="javascript:addInstance(\'sorting_starter\', \'sorting_main\')">' . wfMsg('smw_add_sortcondition') . '</a>'. "\n";
-				$result .= '<input type="hidden" name="sc" value="' . $i . '"/>';
 			}
 
 			$printer = SMWQueryProcessor::getResultPrinter('broadtable',SMWQueryProcessor::SPECIAL_PAGE);
@@ -505,6 +502,7 @@ END;
 			$param_name = $param['name'];
 			$type = $param['type'];
 			$desc = $param['description'];
+			$cur_value = (array_key_exists($param_name, $param_values)) ? $param_values[$param_name] : "";
 			// 3 values per row, with alternating colors for rows
 			if ($i % 3 == 0) {
 				$bgcolor = ($i % 6) == 0 ? '#dddddd' : 'white';
@@ -513,17 +511,17 @@ END;
 			$text .= "<div style=\"width: 30%; padding: 5px; float: left;\">$param_name:\n";
 			switch ($type) {
 			case 'int':
-				$text .= "<input type=\"text\" name=\"p[$param_name]\" size=\"6\" value=\"" . $param_values[$param_name] . "\" />";
+				$text .= "<input type=\"text\" name=\"p[$param_name]\" size=\"6\" value=\"$cur_value\" />";
 				break;
 			case 'string':
-				$text .= "<input type=\"text\" name=\"p[$param_name]\" size=\"32\" value=\"" . $param_values[$param_name] . "\" />";
+				$text .= "<input type=\"text\" name=\"p[$param_name]\" size=\"32\" value=\"$cur_value\" />";
 				break;
 			case 'enumeration':
 				$values = $param['values'];
 				$text .= "<select name=\"p[$param_name]\">\n";
 				$text .= "	<option value='' $selected_str></option>\n";
 				foreach ($values as $val) {
-					if ($param_values[$param_name] == $val)
+					if ($cur_value == $val)
 						$selected_str = 'selected';
 					else
 						$selected_str = '';
@@ -533,7 +531,7 @@ END;
 				break;
 			case 'enum-list':
 				$all_values = $param['values'];
-				$cur_values = explode(',', $param_values[$param_name]);
+				$cur_values = explode(',', $cur_value);
 				foreach ($all_values as $val) {
 					$checked_str = (in_array($val, $cur_values)) ? "checked" : "";
 					$text .= "<span style=\"white-space: nowrap; padding-right: 5px;\"><input type=\"checkbox\" name=\"p[$param_name][$val]\" value=\"true\" $checked_str /> <tt>$val</tt></span>\n";
