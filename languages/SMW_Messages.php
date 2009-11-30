@@ -61,9 +61,9 @@ If the problem does not go away after some time, ask your site administrator to 
 
 	// Messages for query parameter descriptions
 	'smw_paramdesc_limit'	=> 'The maximum number of results to return',
-	'smw_paramdesc_headers'	=> 'Whether or not to display the headers/property names',
+	'smw_paramdesc_headers'	=> 'Display the headers/property names',
 	'smw_paramdesc_mainlabel'	=> 'The label to give to the main page name',
-	'smw_paramdesc_link'	=> 'Whether or not to show values as links',
+	'smw_paramdesc_link'	=> 'Show values as links',
 	'smw_paramdesc_intro'	=> 'The text to display before the query results, if there are any',
 	'smw_paramdesc_outro'	=> 'The text to display after the query results, if there are any',
 	'smw_paramdesc_default'	=> 'The text to display if there are no query results',
