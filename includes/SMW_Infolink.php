@@ -316,7 +316,9 @@ class SMWInfolink {
 				unset($result['x']);
 			}
 		}
-		if ($titleparam != '') {
+		if (is_array($titleparam)) {
+			return $titleparam;
+		} elseif ($titleparam != '') {
 			// unescape $p; escaping scheme: all parameters rawurlencoded, "-" and "/" urlencoded, all "%" replaced by "-", parameters then joined with /
 			$ps = explode('/', $titleparam); // params separated by / here (compatible with wiki link syntax)
 			foreach ($ps as $p) {
