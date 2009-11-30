@@ -519,7 +519,7 @@ END;
 			case 'enumeration':
 				$values = $param['values'];
 				$text .= "<select name=\"p[$param_name]\">\n";
-				$text .= "	<option value='' $selected_str></option>\n";
+				$text .= "	<option value=''></option>\n";
 				foreach ($values as $val) {
 					if ($cur_value == $val)
 						$selected_str = 'selected';
