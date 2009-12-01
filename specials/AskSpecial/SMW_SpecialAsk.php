@@ -158,6 +158,7 @@ class SMWAskPage extends SpecialPage {
 		$this->m_params['limit'] = min($this->m_params['limit'], $smwgQMaxInlineLimit);
 
 		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) != '' ) || ('' == $this->m_querystring );
+$this->m_editquery = true;
 	}
 
 	protected function makeHTMLResult() {
@@ -287,7 +288,7 @@ END;
 				}
 			}
 			$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE);
-			$result_mime = ! $this->m_editquery; //$printer->getMimeType($res);
+			$result_mime = $printer->getMimeType($res);
 			if ($result_mime == false) {
 				if ( $res->getCount() > 0 ) {
 					$navigation = $this->getNavigationBar($res, $urltail);
@@ -372,7 +373,7 @@ END;
 			}
 
 			$printer = SMWQueryProcessor::getResultPrinter('broadtable',SMWQueryProcessor::SPECIAL_PAGE);
-			$url = "\"/wiki/Special:Ask?showformatoptions=\" + this.value + \"";
+			$url = htmlspecialchars($skin->makeSpecialUrl('Ask', "?showformatoptions=\" + this.value + \""));
 			foreach ($this->m_params as $param => $value) {
 				if ($param !== 'format')
 					$url .= "&params[$param]=$value";
