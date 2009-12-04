@@ -1268,16 +1268,19 @@ $messages['br'] = array(
 	'smw_propertyhardlyused' => 'Ar perzh-mañ a vez implijet a-boan er wiki !',
 	'unusedproperties' => 'Perzhioù dizimplij',
 	'wantedproperties' => "Perzhioù c'hoantaet",
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|implij|implijoù}})',
 	'tooltip-purge' => 'Klikit amañ da freskaat an holl rekedoù hag an holl batromoù war ar bajenn-mañ',
 	'smw_purge' => 'Freskaat',
 	'types' => 'Seurtoù roadennoù',
 	'smw_ask_ascorder' => 'War gresk',
 	'smw_ask_descorder' => 'War zigresk',
 	'smw_ask_submit' => "Kavout disoc'hoù",
+	'smw_ask_editquery' => '[Kemmañ ar reked]',
 	'smw_ask_hidequery' => 'Kuzhat ar reked',
 	'smw_ask_queryhead' => 'Reked',
 	'smw_ask_format_as' => 'Furmadiñ evel :',
 	'smw_ask_defaultformat' => 'dre ziouer',
+	'smw_ask_otheroptions' => 'Dibaboù all',
 	'searchbyproperty' => 'Klask dre berzh',
 	'smw_sbv_property' => 'Perzh :',
 	'smw_sbv_value' => 'Talvoud :',
@@ -1779,6 +1782,7 @@ Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwa
 	'smw_ask_printhead' => 'Zusätzliche Daten zur Anzeige',
 	'smw_ask_format_as' => 'Formatiert als:',
 	'smw_ask_defaultformat' => 'Standard',
+	'smw_ask_otheroptions' => 'Andere Optionen',
 	'smw_ask_show_embed' => 'Eingebetteten Code zeigen',
 	'smw_ask_hide_embed' => 'Eingebetteten Code verstecken',
 	'smw_ask_embed_instr' => 'Um diese Abfrage in eine Wiki-Seite einzubauen, nutze den unten stehenden Code.',
@@ -7308,7 +7312,7 @@ $messages['pt'] = array(
 	'smw_edithelp' => 'Ajuda de edição sobre propriedades',
 	'smw_viewasrdf' => 'Feed RDF',
 	'smw_finallistconjunct' => 'e',
-	'smw_factbox_head' => 'Dados acerca $1',
+	'smw_factbox_head' => 'Factos sobre $1',
 	'smw_isspecprop' => 'Esta propriedade é uma propriedade especial nesta wiki.',
 	'smw_isknowntype' => 'Este tipo de dados é um dos tipos padrão desta wiki.',
 	'smw_isaliastype' => "Este tipo de dados é um ''alias'' do tipo “$1”.",
@@ -7495,13 +7499,13 @@ Por favor, introduza ambas a página e a propriedade.',
 	'smw_smwadmin_settingup' => 'A configurar armazenamento para Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'O motor de armazenamento foi configurado com sucesso.',
 	'smw_smwadmin_return' => 'Voltar a $1',
-	'smw_smwadmin_updatestarted' => 'Um novo processo de atualização para refrescar os dados semânticos foi iniciado.
+	'smw_smwadmin_updatestarted' => 'Foi iniciado um novo processo de actualização para refrescar os dados semânticos.
 Todos os dados armazenados serão reconstruídos ou reparados onde necessário.
-Você pode seguir o progresso da atualização nesta página especial.',
-	'smw_smwadmin_updatenotstarted' => 'Já existe um processo de atualização em execução.
+Pode seguir o progresso da actualização nesta página especial.',
+	'smw_smwadmin_updatenotstarted' => 'Já existe um processo de actualização em curso.
 Não foi criado outro.',
-	'smw_smwadmin_updatestopped' => 'Todos os processos de atualização existentes foram parados.',
-	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de atualização em execução, você deverá ativar a caixa de seleção para indicar que tem realmente a certeza.',
+	'smw_smwadmin_updatestopped' => 'Todos os processos de actualização existentes foram parados.',
+	'smw_smwadmin_updatenotstopped' => 'Para parar o processo de actualização em curso, deve marcar a caixa de selecção para indicar que tem realmente a certeza.',
 	'smw_smwadmin_docu' => 'Esta página especial auxilia-o durante a instalação ou evolução do <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Lembre-se de efetuar cópias de segurança dos dados importantes antes de executar funções administrativas.',
 	'smw_smwadmin_db' => 'Instalação e evolução da base de dados',
@@ -7523,12 +7527,12 @@ O serviço não registará wikis que não estejam publicamente acessíveis e ape
 Isto pode ser útil para reparar dados corrompidos ou para refrescar os dados se o formato interno tiver sido alterado devido a alguma evolução do software.
 A actualização é executada página a página e não ficará completa de imediato.
 Abaixo é mostrado se uma actualização está a decorrer e permite-lhe iniciar ou parar actualizações (a menos que esta funcionalidade tenha sido desactivada por um administrador do sítio).',
-	'smw_smwadmin_datarefreshprogress' => '<strong>Uma atualização já se encontra a decorrer.</strong>
-É normal que a atualização progrida lentamente já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acede ao wiki.
-Para terminar esta atualização mais rapidamente, você pode executar o script de manutenção do MediaWiki <tt>runJobs.php</tt> (use a opção <tt>--maxjobs 1000</tt> para restringir o número de atualizações feitas num bloco).
-Progresso estimado da atualização corrente:',
-	'smw_smwadmin_datarefreshbutton' => 'Iniciar a atualização dos dados',
-	'smw_smwadmin_datarefreshstop' => 'Parar esta atualização',
+	'smw_smwadmin_datarefreshprogress' => "<strong>Já se encontra a decorrer uma actualização.</strong>
+É normal que a actualização progrida lentamente já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acede à wiki.
+Para terminar esta actualização mais rapidamente, pode executar o ''script'' de manutenção do MediaWiki <tt>runJobs.php</tt> (use a opção <tt>--maxjobs 1000</tt> para restringir o número de actualizações feitas em cada bloco).
+Progresso estimado da actualização em curso:",
+	'smw_smwadmin_datarefreshbutton' => 'Iniciar a actualização dos dados',
+	'smw_smwadmin_datarefreshstop' => 'Parar esta actualização',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sim, tenho a certeza.',
 	'smw_smwadmin_support' => 'Obtendo suporte',
 	'smw_smwadmin_supportdocu' => 'Vários recursos poderão ajudá-lo em caso de problemas:',
@@ -7700,6 +7704,10 @@ Lembre-se de efetuar cópias de segurança dos dados importantes antes de execut
 	'smw_smwadmin_db' => 'Instalação e atualização da base de dados',
 	'smw_smwadmin_announce' => 'Anuncie a sua wiki',
 	'smw_smwadmin_datarefresh' => 'Reparação de dados e atualização',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Uma atualização já se encontra a decorrer.</strong>
+É normal que a atualização progrida lentamente já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acede ao wiki.
+Para terminar esta atualização mais rapidamente, você pode executar o script de manutenção do MediaWiki <tt>runJobs.php</tt> (use a opção <tt>--maxjobs 1000</tt> para restringir o número de atualizações feitas num bloco).
+Progresso estimado da atualização corrente:',
 	'smw_smwadmin_datarefreshbutton' => 'Iniciar a atualização dos dados',
 	'smw_smwadmin_datarefreshstop' => 'Parar esta atualização',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Sim, eu tenho certeza.',
