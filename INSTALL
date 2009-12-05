@@ -93,7 +93,7 @@ remarks in the section "Notes on Upgrading" below!
 	[SMW_path]/maintenance/README for details on how to run such scripts.
 
 '''Remark:'''  Semantic MediaWiki uses ten additional namespace indexes (see
-http://meta.wikimedia.org/wiki/Help:Custom_namespaces), in the range from
+http://www.mediawiki.org/wiki/Manual:Using_custom_namespaces), in the range from
 100 to 109. 100 and 101 are not used (they were used in early beta versions).
 106 and 107 are reserved for the SemanticForms extension. If you have your own
 custom namespaces, you have to set the parameter $smwgNamespaceIndex before
