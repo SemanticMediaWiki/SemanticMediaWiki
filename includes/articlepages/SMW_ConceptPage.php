@@ -30,42 +30,46 @@ class SMWConceptPage extends SMWOrderedListPage {
 	 * article that indicates further results).
 	 */
 	protected function doQuery() {
-		$store = smwfGetStore();
+		if ($this->limit > 0) {
+			$store = smwfGetStore();
+			$desc = new SMWConceptDescription($this->mTitle);
+			if ($this->from != '') {
+				$dv = SMWWikiPageValue::makePage($this->from, NS_MAIN); // make a dummy wiki page as boundary
+				$fromdesc = new SMWValueDescription($dv, SMW_CMP_GEQ);
+				$desc = new SMWConjunction(array($desc,$fromdesc));
+				$order = 'ASC';
+			} elseif ($this->until != '') {
+				$dv = SMWWikiPageValue::makePage($this->until, NS_MAIN); // make a dummy wiki page as boundary
+				$fromdesc = new SMWValueDescription($dv, SMW_CMP_LEQ);
+				$neqdesc = new SMWValueDescription($dv, SMW_CMP_NEQ); // do not include boundary in this case
+				$desc = new SMWConjunction(array($desc,$fromdesc,$neqdesc));
+				$order = 'DESC';
+			} else {
+				$order = 'ASC';
+			}
+			$desc->addPrintRequest(new SMWPrintRequest(SMWPrintRequest::PRINT_THIS, ''));
+			$query = new SMWQuery($desc);
+			$query->sortkeys[''] = $order;
+			$query->setLimit($this->limit+1);
 
-		$desc = new SMWConceptDescription($this->mTitle);
-		if ($this->from != '') {
-			$dv = SMWWikiPageValue::makePage($this->from, NS_MAIN); // make a dummy wiki page as boundary
-			$fromdesc = new SMWValueDescription($dv, SMW_CMP_GEQ);
-			$desc = new SMWConjunction(array($desc,$fromdesc));
-			$order = 'ASC';
-		} elseif ($this->until != '') {
-			$dv = SMWWikiPageValue::makePage($this->until, NS_MAIN); // make a dummy wiki page as boundary
-			$fromdesc = new SMWValueDescription($dv, SMW_CMP_LEQ);
-			$neqdesc = new SMWValueDescription($dv, SMW_CMP_NEQ); // do not include boundary in this case
-			$desc = new SMWConjunction(array($desc,$fromdesc,$neqdesc));
-			$order = 'DESC';
-		} else {
-			$order = 'ASC';
-		}
-		$desc->addPrintRequest(new SMWPrintRequest(SMWPrintRequest::PRINT_THIS, ''));
-		$query = new SMWQuery($desc);
-		$query->sortkeys[''] = $order;
-		$query->setLimit($this->limit+1);
-
-		$result = $store->getQueryResult($query);
-		$row = $result->getNext();
-		while ( $row !== false ) {
-			$this->articles[] = end($row)->getNextObject();
+			$result = $store->getQueryResult($query);
 			$row = $result->getNext();
+			while ( $row !== false ) {
+				$this->articles[] = end($row)->getNextObject();
+				$row = $result->getNext();
+			}
+			if ($order == 'DESC') {
+				$this->articles = array_reverse($this->articles);
+			}
+			$this->m_errors = $query->getErrors();
+		} else {
+			$this->articles = array();
+			$this->errors = array();
 		}
-		if ($order == 'DESC') {
-			$this->articles = array_reverse($this->articles);
-		}
-		$this->m_errors = $query->getErrors();
 	}
 
 	/**
-	 * Generates the headline for the page list and the HTML encoded list of pages which 
+	 * Generates the headline for the page list and the HTML encoded list of pages which
 	 * shall be shown.
 	 */
 	protected function getPages() {

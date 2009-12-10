@@ -41,23 +41,27 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function doQuery() {
 		$store = smwfGetStore();
-		$options = new SMWRequestOptions();
-		$options->limit = $this->limit + 1;
-		$options->sort = true;
-		$reverse = false;
-		if ($this->from != '') {
-			$options->boundary = $this->from;
-			$options->ascending = true;
-			$options->include_boundary = true;
-		} elseif ($this->until != '') {
-			$options->boundary = $this->until;
-			$options->ascending = false;
-			$options->include_boundary = false;
-			$reverse = true;
-		}
-		$this->articles = $store->getAllPropertySubjects($this->mProperty, $options);
-		if ($reverse) {
-			$this->articles = array_reverse($this->articles);
+		if ($this->limit > 0) { // for limit==0 there is no paging, and no query
+			$options = new SMWRequestOptions();
+			$options->limit = $this->limit + 1;
+			$options->sort = true;
+			$reverse = false;
+			if ($this->from != '') {
+				$options->boundary = $this->from;
+				$options->ascending = true;
+				$options->include_boundary = true;
+			} elseif ($this->until != '') {
+				$options->boundary = $this->until;
+				$options->ascending = false;
+				$options->include_boundary = false;
+				$reverse = true;
+			}
+			$this->articles = $store->getAllPropertySubjects($this->mProperty, $options);
+			if ($reverse) {
+				$this->articles = array_reverse($this->articles);
+			}
+		} else {
+			$this->articles = array();
 		}
 
 		// retrieve all subproperties of this property
@@ -76,29 +80,27 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		$r = '';
 		$ti = htmlspecialchars( $this->mTitle->getText() );
-		$nav = $this->getNavigationLinks();
 		if (count($this->subproperties) > 0) {
-			$r .= "<div id=\"mw-subcategories\">\n<h2>" . wfMsg('smw_subproperty_header',$ti) . "</h2>\n";
-			$r .= '<p>';
+			$r .= "<div id=\"mw-subcategories\">\n<h2>" . wfMsg('smw_subproperty_header',$ti) . "</h2>\n<p>";
 			if (!$this->mProperty->isUserDefined()) {
 				$r .= wfMsg('smw_isspecprop') . ' ';
 			}
-			$r .= wfMsgExt('smw_subpropertyarticlecount', array( 'parsemag' ), min($this->limit, count($this->subproperties))) . "</p>\n";
-			if (count($this->subproperties) < 6) {
-				$r .= $this->shortList(0,count($this->subproperties), $this->subproperties);
-			} else {
-				$r .= $this->columnList(0,count($this->subproperties), $this->subproperties);
-			}
+			$r .= wfMsgExt('smw_subpropertyarticlecount', array( 'parsemag' ), count($this->subproperties)) . "</p>\n";
+			$r .= (count($this->subproperties) < 6)?
+			      $this->shortList(0,count($this->subproperties), $this->subproperties):
+				  $this->columnList(0,count($this->subproperties), $this->subproperties);
 			$r .= "\n</div>";
 		}
-		$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
-		$r .= '<h2>' . wfMsg('smw_attribute_header',$ti) . "</h2>\n";
-		$r .= '<p>';
-		if (!$this->mProperty->isUserDefined()) {
-			$r .= wfMsg('smw_isspecprop') . ' ';
+		if (count($this->articles) > 0) {
+			$nav = $this->getNavigationLinks();
+			$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n" .
+			      '<h2>' . wfMsg('smw_attribute_header',$ti) . "</h2>\n<p>";
+			if (!$this->mProperty->isUserDefined()) {
+				$r .= wfMsg('smw_isspecprop') . ' ';
+			}
+			$r .= wfMsgExt('smw_attributearticlecount', array( 'parsemag' ), min($this->limit, count($this->articles))) . "</p>\n" .
+			      $this->subjectObjectList() . "\n</div>" . $nav;
 		}
-		$r .= wfMsgExt('smw_attributearticlecount', array( 'parsemag' ), min($this->limit, count($this->articles))) . "</p>\n";
-		$r .= $this->subjectObjectList() . "\n</div>" . $nav;
 		wfProfileOut( __METHOD__ . ' (SMW)');
 		return $r;
 	}

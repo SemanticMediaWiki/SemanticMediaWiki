@@ -120,7 +120,8 @@ $smwgSearchByPropertyFuzzy = true;
 
 ###
 # Number results shown in the listings on pages in the namespaces Property,
-# Type, and Concept.
+# Type, and Concept. If a value of 0 is given, the respective listings are
+# hidden completely.
 ##
 $smwgTypePagingLimit = 200;    // same number as for categories
 $smwgConceptPagingLimit = 200; // same number as for categories
@@ -130,7 +131,7 @@ $smwgPropertyPagingLimit = 25; // use smaller value since property lists need mo
 ###
 # How many values should at most be displayed for a page on the Property page?
 ##
-$smwgMaxPropertyValues = 3; // if large values are desired, consider reducing $smwgPropertyPagingLimit for unchanged performance
+$smwgMaxPropertyValues = 3; // if large values are desired, consider reducing $smwgPropertyPagingLimit for better performance
 ##
 
 ###
@@ -243,7 +244,7 @@ $smwgResultFormats = array(
 # Array of available aliases for result formats. Can be redefined in
 # the settings to disallow certain aliases or to register extension aliases.
 # To disable an alias, do "unset($smwgResultAliases['alias']);" Disabled
-# aliases will be treated like if the alias parameter had been omitted. 
+# aliases will be treated like if the alias parameter had been omitted.
 ##
 $smwgResultAliases = array();
 ##

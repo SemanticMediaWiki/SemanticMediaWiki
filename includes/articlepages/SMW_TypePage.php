@@ -31,29 +31,33 @@ class SMWTypePage extends SMWOrderedListPage {
 	 * article that indicates further results).
 	 */
 	protected function doQuery() {
-		$store = smwfGetStore();
-		$options = new SMWRequestOptions();
-		$options->limit = $this->limit + 1;
-		$options->sort = true;
-		$typevalue = SMWDataValueFactory::newTypeIDValue('__typ', $this->mTitle->getText());
-		$this->m_typevalue = $typevalue;
-		if ($this->from != '') {
-			$options->boundary = $this->from;
-			$options->ascending = true;
-			$options->include_boundary = true;
-			$this->articles = $store->getPropertySubjects(SMWPropertyValue::makeProperty('_TYPE'), $typevalue, $options);
-		} elseif ($this->until != '') {
-			$options->boundary = $this->until;
-			$options->ascending = false;
-			$options->include_boundary = false;
-			$this->articles = array_reverse($store->getPropertySubjects(SMWPropertyValue::makeProperty('_TYPE'), $typevalue, $options));
+		if ($this->limit > 0) {
+			$store = smwfGetStore();
+			$options = new SMWRequestOptions();
+			$options->limit = $this->limit + 1;
+			$options->sort = true;
+			$typevalue = SMWDataValueFactory::newTypeIDValue('__typ', $this->mTitle->getText());
+			$this->m_typevalue = $typevalue;
+			if ($this->from != '') {
+				$options->boundary = $this->from;
+				$options->ascending = true;
+				$options->include_boundary = true;
+				$this->articles = $store->getPropertySubjects(SMWPropertyValue::makeProperty('_TYPE'), $typevalue, $options);
+			} elseif ($this->until != '') {
+				$options->boundary = $this->until;
+				$options->ascending = false;
+				$options->include_boundary = false;
+				$this->articles = array_reverse($store->getPropertySubjects(SMWPropertyValue::makeProperty('_TYPE'), $typevalue, $options));
+			} else {
+				$this->articles = $store->getPropertySubjects(SMWPropertyValue::makeProperty('_TYPE'), $typevalue, $options);
+			}
 		} else {
-			$this->articles = $store->getPropertySubjects(SMWPropertyValue::makeProperty('_TYPE'), $typevalue, $options);
+			$this->articles = array();
 		}
 	}
 
 	/**
-	 * Generates the headline for the page list and the HTML encoded list of pages which 
+	 * Generates the headline for the page list and the HTML encoded list of pages which
 	 * shall be shown.
 	 */
 	protected function getPages() {
@@ -65,8 +69,8 @@ class SMWTypePage extends SMWOrderedListPage {
 			$r .= '<p style="font-style: italic; ">' .wfMsg('smw_isknowntype') . "</p>\n";
 		}
 		/*
-		 * TODO: also detect isAlias()? 
-		 * But smw_isaliastype message requires determining alias target; 
+		 * TODO: also detect isAlias()?
+		 * But smw_isaliastype message requires determining alias target;
 		 * code is in SMW_SpecialTypes, not SMW_DV_Types.
 		 */
 		$ti = htmlspecialchars( $this->mTitle->getText() );
