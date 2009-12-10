@@ -5845,6 +5845,7 @@ $messages['lb'] = array(
 	'smw_paramdesc_link' => "D'Werter als Linke weisen",
 	'smw_paramdesc_searchlabel' => "Den Text am Link op d'Resultater",
 	'smw_paramdesc_template' => "Den Numm vun enger Schabloun mat däer d'Drockversiounen gewise ginn",
+	'smw_paramdesc_embedformat' => "Den HTML-Tag dee benotzt gëtt fir d'Iwwerschrëften ze definéieren",
 	'smw_paramdesc_embedonly' => 'Keng Iwwerschrëfte weisen',
 	'smw_iq_moreresults' => '… weider Resultater',
 	'smw_iq_nojs' => 'Benotzt w.e.g e Browser matt JavaScript fir dëst Element ze gesinn',
