@@ -5957,6 +5957,44 @@ Et ka keen neien ugefaang ginn.',
 	'smw_adminlinks_displayingdata' => 'Donnéeë weisen',
 );
 
+/** Macedonian (Македонски)
+ * @author Bjankuloski06
+ */
+$messages['mk'] = array(
+	'smw-desc' => "Го прави вашето вики подостапно - за машини ''и'' луѓе ([http://semantic-mediawiki.org/wiki/Help:User_manual документација])",
+	'smw_viewasrdf' => 'RDF емитување',
+	'smw_finallistconjunct' => ' и',
+	'smw_factbox_head' => 'Факти за $1',
+	'smw_printername_csv' => 'CSV извоз',
+	'smw_printername_debug' => 'Поправање грешки во барања (за експерти)',
+	'smw_printername_json' => 'JSON извоз',
+	'smw_printername_list' => 'Листа',
+	'smw_printername_ol' => 'Набројување',
+	'smw_printername_ul' => 'Список',
+	'smw_printername_rss' => 'RSS извоз',
+	'smw_printername_table' => 'Табела',
+	'smw_printername_broadtable' => 'Широка табела',
+	'smw_printername_template' => 'Шаблон',
+	'smw_true_words' => 'вистина,да,в,д,true,t,yes,y',
+	'smw_false_words' => 'лага,л,невистина,н,не,false,f,no,n',
+	'smw_abb_north' => 'С',
+	'smw_abb_east' => 'И',
+	'smw_abb_south' => 'Ј',
+	'smw_abb_west' => 'З',
+	'smw_label_latitude' => 'Геог. ширина',
+	'smw_label_longitude' => 'Геог. должина',
+	'smw_subproperty_header' => 'Потсвојства',
+	'smw_exportrdf_submit' => 'Извези',
+	'properties' => 'Својства',
+	'smw_purge' => 'Превчитај',
+	'smw_ask_ascorder' => 'Нагорен',
+	'smw_ask_descorder' => 'Надолен',
+	'smw_browse_go' => 'Оди',
+	'smw_result_prev' => 'Претходно',
+	'smw_result_next' => 'Следно',
+	'smw_adminlinks_datastructure' => 'Структура на податоците',
+);
+
 /** Malayalam (മലയാളം)
  * @author Shijualex
  */
