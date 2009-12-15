@@ -47,6 +47,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 	}
 
 	protected function getResultText($res,$outputmode) {
+		global $wgContLang;
 
 		// <H3> will generate TOC entries otherwise.  Probably need another way
 		// to accomplish this -- user might still want TOC for other page content.
@@ -67,7 +68,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 
 			$content = $row[0]->getContent();
 			$sortkey = $content[0]->getSortkey();
-			$cur_first_char = $sortkey{0};
+			$cur_first_char = $wgContLang->firstChar($sortkey);
 			if ($rowindex % $rows_per_column == 0) {
 				$result .= "\n			<div style=\"float: left; width: $column_width%;\">\n";
 				if ($cur_first_char == $prev_first_char)
