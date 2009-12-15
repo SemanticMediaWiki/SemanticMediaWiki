@@ -2491,7 +2491,7 @@ Las propiedades faltantes pueden encontrarse en la [[Special:WantedProperties|li
 	'smw_ask_hidequery' => 'Ocultar pregunta',
 	'smw_ask_help' => 'Consultando ayuda',
 	'smw_ask_queryhead' => 'consulta',
-	'smw_ask_printhead' => 'Impresiones adicionales (opcional)',
+	'smw_ask_printhead' => 'Datos adicionales a mostrar',
 	'smw_ask_format_as' => 'Formatear como:',
 	'smw_ask_defaultformat' => 'por defecto',
 	'smw_ask_show_embed' => 'Mostrar código embebido',
