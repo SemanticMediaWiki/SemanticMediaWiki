@@ -28,8 +28,11 @@ $smwgScriptPath = $wgScriptPath . '/extensions/SemanticMediaWiki';
 ###
 # This is the path to your installation of Semantic MediaWiki as seen on your
 # local filesystem. Used against some PHP file path issues.
+# If needed, you can also change this path in LocalSettings.php after including
+# this file.
 ##
-$smwgIP = $IP . '/extensions/SemanticMediaWiki';
+$smwgIP = dirname(__FILE__) . '/..';
+// $smwgIP = $IP . '/extensions/SemanticMediaWiki';
 ##
 
 // load global functions
@@ -79,6 +82,27 @@ $smwgInlineErrors = true;
 ##
 
 ###
+# Should SMW consider MediaWiki's subcategory hierarchy in querying? If set to
+# true, subcategories will always be interpreted like subclasses. For example,
+# if A is a subcategory of B then a query for all elements of B will also yield
+# all elements of A. If this setting is disabled, then subclass relationships
+# can still be given explicitly by using the property "subcategory of" on some
+# category page. Only if the setting is false will such annotations be shown in
+# the factbox (if enabled).
+##
+$smwgUseCategoryHierarchy = true;
+##
+
+###
+# Should category pages that use some [[Category:Foo]] statement be treated as
+# elements of the category Foo? If disabled, then it is not possible to make
+# category pages elements of other catgories. See also the above setting
+# $smwgUseCategoryHierarchy.
+##
+$smwgCategoriesAsInstances = true;
+##
+
+###
 # Should SMW accept inputs like [[property::Some [[link]] in value]]? If
 # enabled, this may lead to PHP crashes (!) when very long texts are used as
 # values. This is due to limitations in the library PCRE that PHP uses for
@@ -104,12 +128,14 @@ $smwgMaxNumRecurringEvents = 500;
 # inverses, or shall they be displayed on the other side?
 ##
 $smwgBrowseShowInverse = false;
+##
 
 ###
 # Should the browse view always show the incoming links as well, and more of
 # the incoming values?
 ##
 $smwgBrowseShowAll = true;
+##
 
 ###
 # Should the search by property special page display nearby results when there
@@ -136,12 +162,14 @@ $smwgMaxPropertyValues = 3; // if large values are desired, consider reducing $s
 
 ###
 # Settings for inline queries ({{#ask:...}}) and for semantic queries in
-# general. This can especially  be used to prevent overly high server-load by
-# complex queries. The following settings affect all queries, wherever they
+# general. This can especially be used to prevent overly high server-load due
+# to complex queries. The following settings affect all queries, wherever they
 # occur.
 ##
 $smwgQEnabled = true;   // (De)activates all query related features and interfaces
-$smwgQMaxLimit = 10000; // Max number of results ever retrieved, even when using special query pages.
+$smwgQMaxLimit = 10000; // Max number of results *ever* retrieved, even when using special query pages.
+$smwgIgnoreQueryErrors = true; // Should queries be executed even if some errors were detected?
+                               // A hint that points out errors is shown in any case.
 
 $smwgQSubcategoryDepth = 10;  // Restrict level of sub-category inclusion (steps within category hierarchy)
 $smwgQSubpropertyDepth = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)
