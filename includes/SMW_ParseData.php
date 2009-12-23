@@ -244,14 +244,17 @@ class SMWParseData {
 	 * so that they are also replicated in SMW for more efficient querying.
 	 */
 	static public function onParserAfterTidy(&$parser, &$text) {
+		global $smwgUseCategoryHierarchy,$smwgCategoriesAsInstances;
 		if (SMWParseData::getSMWData($parser) === NULL) return true;
 		$categories = $parser->mOutput->getCategoryLinks();
 		foreach ($categories as $name) {
-			$pinst = SMWPropertyValue::makeProperty('_INST');
-			$dv = SMWDataValueFactory::newPropertyObjectValue($pinst);
-			$dv->setValues($name,NS_CATEGORY);
-			SMWParseData::getSMWData($parser)->addPropertyObjectValue($pinst,$dv);
-			if (SMWParseData::getSMWData($parser)->getSubject()->getNamespace() == NS_CATEGORY) {
+			if ($smwgCategoriesAsInstances && (SMWParseData::getSMWData($parser)->getSubject()->getNamespace() != NS_CATEGORY) ) {
+				$pinst = SMWPropertyValue::makeProperty('_INST');
+				$dv = SMWDataValueFactory::newPropertyObjectValue($pinst);
+				$dv->setValues($name,NS_CATEGORY);
+				SMWParseData::getSMWData($parser)->addPropertyObjectValue($pinst,$dv);
+			}
+			if ($smwgUseCategoryHierarchy && (SMWParseData::getSMWData($parser)->getSubject()->getNamespace() == NS_CATEGORY) ) {
 				$psubc = SMWPropertyValue::makeProperty('_SUBC');
 				$dv = SMWDataValueFactory::newPropertyObjectValue($psubc);
 				$dv->setValues($name,NS_CATEGORY);

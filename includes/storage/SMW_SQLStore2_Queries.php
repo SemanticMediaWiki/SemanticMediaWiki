@@ -144,7 +144,12 @@ class SMWSQLStore2QueryEngine {
 	 * The new SQL store's implementation of query answering.
 	 */
 	public function getQueryResult(SMWQuery $query) {
-		if ($query->querymode == SMWQuery::MODE_NONE) { // don't query, but return something to printer
+		global $smwgIgnoreQueryErrors;
+		if (!$smwgIgnoreQueryErrors && ($query->querymode != SMWQuery::MODE_DEBUG) && (count($query->getErrors()) > 0)) {
+			$result = new SMWQueryResult($query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false);
+			return $result;
+			/// NOTE: We currently check this only once since the below steps do not create further errors
+		} elseif ($query->querymode == SMWQuery::MODE_NONE) { // don't query, but return something to printer
 			$result = new SMWQueryResult($query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, true);
 			return $result;
 		}
@@ -156,11 +161,6 @@ class SMWSQLStore2QueryEngine {
 		$this->m_distance = $query->getDistance();
 		SMWSQLStore2Query::$qnum = 0;
 		$this->m_sortkeys = $query->sortkeys;
-		// manually make final root query (to retrieve namespace,title):
-		$rootid = SMWSQLStore2Query::$qnum;
-		$qobj = new SMWSQLStore2Query();
-		$qobj->jointable = 'smw_ids';
-		$qobj->joinfield = "$qobj->alias.smw_id";
 		// build query dependency tree:
 		wfProfileIn('SMWSQLStore2Queries::compileMainQuery (SMW)');
 		$qid = $this->compileQueries($query->getDescription()); // compile query, build query "plan"
@@ -174,9 +174,18 @@ class SMWSQLStore2QueryEngine {
 			$this->m_queries[$qid] = $q;
 		}
 		// append query to root:
-		$qobj->components = array($qid => "$qobj->alias.smw_id");
-		$qobj->sortfields = $this->m_queries[$qid]->sortfields;
-		$this->m_queries[$rootid] = $qobj;
+		if ($this->m_queries[$qid]->jointable != 'smw_ids') {
+		// manually make final root query (to retrieve namespace,title):
+			$rootid = SMWSQLStore2Query::$qnum;
+			$qobj = new SMWSQLStore2Query();
+			$qobj->jointable = 'smw_ids';
+			$qobj->joinfield = "$qobj->alias.smw_id";
+			$qobj->components = array($qid => "$qobj->alias.smw_id");
+			$qobj->sortfields = $this->m_queries[$qid]->sortfields;
+			$this->m_queries[$rootid] = $qobj;
+		} else { // not such a common case, but it is worth avoiding the additional inner join here
+			$rootid = $qid;
+		}
 
 		$this->applyOrderConditions($query,$rootid); // may extend query if needed for sorting
 		wfProfileIn('SMWSQLStore2Queries::executeMainQuery (SMW)');
@@ -426,7 +435,7 @@ class SMWSQLStore2QueryEngine {
 			$isinverse = $property->isInverse();
 			$pid = $this->m_store->getSMWPropertyID($property);
 			$sortkey = $property->getDBkey(); /// TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
-			if ($mode != SMW_SQL2_SUBS2) { // also make property hierarchy (though not for all properties)
+			if ( ($mode != SMW_SQL2_SUBS2) && ($mode != SMW_SQL2_SUBP2) ) { // also make property hierarchy (though not for all properties)
 				$pqid = SMWSQLStore2Query::$qnum;
 				$pquery = new SMWSQLStore2Query();
 				$pquery->type = SMW_SQL2_PROP_HIERARCHY;
@@ -438,17 +447,18 @@ class SMWSQLStore2QueryEngine {
 			$pid = $property;
 			$sortkey = false;
 			$mode = SMWSQLStore2::getStorageMode($typeid);
-			if ($mode != SMW_SQL2_SUBS2) { // no property hierarchy, but normal query (not for all properties)
+			if ( ($mode != SMW_SQL2_SUBS2) && ($mode != SMW_SQL2_SUBP2) ) { // no property hierarchy, but normal query (not for all properties)
 				$query->where = "$query->alias.p_id=" . $this->m_dbs->addQuotes($pid);
 			}
 		}
 // 		$mode = SMWSQLStore2::getStorageMode($typeid);
 		$sortfield = ''; // used if we should sort by this property
 		switch ($mode) {
-			case SMW_SQL2_RELS2: case SMW_SQL2_SUBS2: // subconditions as subqueries (compiled)
+			case SMW_SQL2_RELS2: case SMW_SQL2_SUBS2: case SMW_SQL2_SUBP2: // subconditions as subqueries (compiled)
 				if ($isinverse) { $s='o'; $o='s'; } else { $s='s'; $o='o'; }
 				$query->joinfield = "$query->alias.$s" . "_id";
-				$query->jointable = ($mode==SMW_SQL2_RELS2)?'smw_rels2':'smw_subs2';
+				$query->jointable = ($mode==SMW_SQL2_RELS2)?'smw_rels2':
+				                     ( ($mode==SMW_SQL2_SUBS2)?'smw_subs2':'smw_subp2' );
 				$sub = $this->compileQueries($valuedesc);
 				if ($sub >= 0) {
 					$query->components[$sub] = "$query->alias.$o" . "_id";
@@ -712,9 +722,9 @@ class SMWSQLStore2QueryEngine {
 			$values .= ($values?',':'') . '(' . $this->m_dbs->addQuotes($value) . ')';
 			$valuecond .= ($valuecond?' OR ':'') . 'o_id=' . $this->m_dbs->addQuotes($value);
 		}
-		$smw_subs2 = $this->m_dbs->tableName('smw_subs2');
+		$smwtable = $this->m_dbs->tableName(($query->type == SMW_SQL2_PROP_HIERARCHY)?'smw_subp2':'smw_subs2');
 		// try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
-		$res = $this->m_dbs->select($smw_subs2,'s_id',$valuecond, array('LIMIT'=>1));
+		$res = $this->m_dbs->select($smwtable,'s_id',$valuecond, array('LIMIT'=>1));
 		if (!$this->m_dbs->fetchObject($res)) { // no subobjects, we are done!
 			$this->m_dbs->freeResult($res);
 			$query->type = SMW_SQL2_VALUE;
@@ -752,7 +762,7 @@ class SMWSQLStore2QueryEngine {
 		$this->m_dbs->query("INSERT " . (($wgDBtype=='postgres')?"":"IGNORE") . " INTO $tmpnew (id) VALUES $values", 'SMW::executeHierarchyQuery');
 
 		for ($i=0; $i<$depth; $i++) {
-			$this->m_dbs->query("INSERT " . (($wgDBtype=='postgres')?'':'IGNORE ') .  "INTO $tmpres (id) SELECT s_id" . ($wgDBtype=='postgres'?'::integer':'') . " FROM $smw_subs2, $tmpnew WHERE o_id=id",
+			$this->m_dbs->query("INSERT " . (($wgDBtype=='postgres')?'':'IGNORE ') .  "INTO $tmpres (id) SELECT s_id" . ($wgDBtype=='postgres'?'::integer':'') . " FROM $smwtable, $tmpnew WHERE o_id=id",
 						'SMW::executeHierarchyQuery');
 			if ($this->m_dbs->affectedRows() == 0) { // no change, exit loop
 				break;

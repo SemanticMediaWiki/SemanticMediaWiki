@@ -103,6 +103,8 @@ class SMWSemanticData {
 
 	/**
 	 * Return true if there are any visible properties.
+	 * @note While called "visible" this check actually refers to the function
+	 * SMWPropertyValue::isShown(). The name is kept for compatibility.
 	 */
 	public function hasVisibleProperties() {
 		$this->unstubProperties();
@@ -112,6 +114,8 @@ class SMWSemanticData {
 	/**
 	 * Return true if there are any special properties that can
 	 * be displayed.
+	 * @note While called "visible" this check actually refers to the function
+	 * SMWPropertyValue::isShown(). The name is kept for compatibility.
 	 */
 	public function hasVisibleSpecialProperties() {
 		$this->unstubProperties();
@@ -137,7 +141,7 @@ class SMWSemanticData {
 			$this->propvals[$property->getDBkey()][] = $value;
 		}
 		if (!$property->isUserDefined()) {
-			if ($property->isVisible()) {
+			if ($property->isShown()) {
 				 $this->hasvisiblespecs = true;
 				 $this->hasvisibleprops = true;
 			}
@@ -214,7 +218,7 @@ class SMWSemanticData {
 			}
 			$this->properties[$pname] = $propertyobj;
 			if (!$propertyobj->isUserDefined()) {
-				if ($propertyobj->isVisible()) {
+				if ($propertyobj->isShown()) {
 					 $this->hasvisiblespecs = true;
 					 $this->hasvisibleprops = true;
 				}

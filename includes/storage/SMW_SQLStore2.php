@@ -22,9 +22,10 @@ define('SMW_SQL2_TEXT2',4);
 define('SMW_SQL2_SPEC2',8);
 define('SMW_SQL2_REDI2',16);
 define('SMW_SQL2_NARY2',32); // not really a table, but a retrieval type
-define('SMW_SQL2_SUBS2',64);
+define('SMW_SQL2_SUBS2',64); // subcategory table (formerly subcategories+subproperties)
 define('SMW_SQL2_INST2',128);
 define('SMW_SQL2_CONC2',256);
+define('SMW_SQL2_SUBP2',512); // subproperty table
 
 
 /**
@@ -74,7 +75,7 @@ class SMWSQLStore2 extends SMWStore {
 	/// This array defines how various datatypes should be handled internally. This
 	/// list usually agrees with the datatype constants given in SMWDataValueFactory,
 	/// but need not be complete: the default storage method is SMW_SQL2_ATTS2.
-	/// Note that some storage methods require datavalue objects ot support specific
+	/// Note that some storage methods require datavalue objects to support specific
 	/// APIs, so arbitrary changes in this table may not work unless the according
 	/// datavalue class in SMWDataValueFactory supports those.
 	private static $storage_mode = array(
@@ -98,16 +99,16 @@ class SMWSQLStore2 extends SMWStore {
 		'__con' => SMW_SQL2_CONC2, // Special concept page type
 		'__sps' => SMW_SQL2_SPEC2, // Special string type
 		'__spu' => SMW_SQL2_SPEC2, // Special uri type
-		'__sup' => SMW_SQL2_SUBS2, // Special subproperty type
+		'__sup' => SMW_SQL2_SUBP2, // Special subproperty type
 		'__suc' => SMW_SQL2_SUBS2, // Special subcategory type
 		'__spf' => SMW_SQL2_SPEC2, // Special form type (for Semantic Forms)
 		'__sin' => SMW_SQL2_INST2, // Special instance of type
 		'__red' => SMW_SQL2_REDI2, // Special redirect type
 		'__lin' => SMW_SQL2_SPEC2, // Special linear unit conversion type
 		'__nry' => SMW_SQL2_NARY2, // Special multi-valued type
-		'__err' => SMW_SQL2_NONE, // Special error type, actually this is not stored right now
+		'__err' => SMW_SQL2_NONE,  // Special error type, actually this is not stored right now
 		'__imp' => SMW_SQL2_SPEC2, // Special import vocabulary type
-		'__pro'  => SMW_SQL2_NONE, // Property page type; actually this should never be stored as a value (_wpp is used there)
+		'__pro' => SMW_SQL2_NONE,  // Property page type; actually this should never be stored as a value (_wpp is used there)
 	);
 
 ///// Reading methods /////
@@ -140,10 +141,13 @@ class SMWSQLStore2 extends SMWStore {
 				$tasks = $tasks | SMWSQLStore2::getStorageMode($value);
 			}
 		} else {
-			$tasks = SMW_SQL2_RELS2 | SMW_SQL2_ATTS2 | SMW_SQL2_TEXT2| SMW_SQL2_SPEC2 | SMW_SQL2_NARY2 | SMW_SQL2_SUBS2 | SMW_SQL2_INST2 | SMW_SQL2_REDI2 | SMW_SQL2_CONC2;
+			$tasks = SMW_SQL2_RELS2 | SMW_SQL2_ATTS2 | SMW_SQL2_TEXT2| SMW_SQL2_SPEC2 | SMW_SQL2_NARY2 | SMW_SQL2_SUBS2 | SMW_SQL2_SUBP2 | SMW_SQL2_INST2 | SMW_SQL2_REDI2 | SMW_SQL2_CONC2;
 		}
-		if ( ($subject->getNamespace() != SMW_NS_PROPERTY) && ($subject->getNamespace() != NS_CATEGORY) ) {
+		if ($subject->getNamespace() != NS_CATEGORY) {
 			$tasks = $tasks & ~SMW_SQL2_SUBS2;
+		}
+		if ($subject->getNamespace() != SMW_NS_PROPERTY) {
+			$tasks = $tasks & ~SMW_SQL2_SUBP2;
 		}
 		if ($subject->getNamespace() != SMW_NS_CONCEPT) {
 			$tasks = $tasks & ~SMW_SQL2_CONC2;
@@ -170,7 +174,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		// most types of data suggest rather similar code
-		foreach (array(SMW_SQL2_RELS2, SMW_SQL2_ATTS2, SMW_SQL2_TEXT2, SMW_SQL2_INST2, SMW_SQL2_SUBS2, SMW_SQL2_SPEC2, SMW_SQL2_REDI2, SMW_SQL2_CONC2) as $task) {
+		foreach (array(SMW_SQL2_RELS2, SMW_SQL2_ATTS2, SMW_SQL2_TEXT2, SMW_SQL2_INST2, SMW_SQL2_SUBS2, SMW_SQL2_SUBP2, SMW_SQL2_SPEC2, SMW_SQL2_REDI2, SMW_SQL2_CONC2) as $task) {
 			if ( !($tasks & $task) ) continue;
 			wfProfileIn("SMWSQLStore2::getSemanticData-task$task (SMW)");
 			$where = 'p_id=smw_id AND s_id=' . $db->addQuotes($sid);
@@ -197,8 +201,15 @@ class SMWSQLStore2 extends SMWStore {
 					$from = array('smw_subs2','smw_ids');
 					$select = 'smw_title as value';
 					$where = 'o_id=smw_id AND s_id=' . $db->addQuotes($sid);
-					$namespace = $subject->getNamespace();
-					$specprop = ($namespace==NS_CATEGORY)?'_SUBC':'_SUBP';
+					$namespace = NS_CATEGORY;
+					$specprop = '_SUBC';
+				break;
+				case SMW_SQL2_SUBP2:
+					$from = array('smw_subp2','smw_ids');
+					$select = 'smw_title as value';
+					$where = 'o_id=smw_id AND s_id=' . $db->addQuotes($sid);
+					$namespace = SMW_NS_PROPERTY;
+					$specprop = '_SUBP';
 				break;
 				case SMW_SQL2_REDI2:
 					$from = array('smw_redi2','smw_ids');
@@ -244,7 +255,7 @@ class SMWSQLStore2 extends SMWStore {
 						$propertyname = $proprow->smw_title;
 					}
 					$valuekeys = array($row->value);
-				} elseif ( ($task == SMW_SQL2_SUBS2) || ($task == SMW_SQL2_INST2) ) {
+				} elseif ( ($task == SMW_SQL2_SUBS2) || ($task == SMW_SQL2_SUBP2) || ($task == SMW_SQL2_INST2) ) {
 					$propertyname = $specprop;
 					$valuekeys = array($row->value,$namespace,'','');
 				} elseif ($task == SMW_SQL2_REDI2) {
@@ -512,11 +523,11 @@ class SMWSQLStore2 extends SMWStore {
 		case SMW_SQL2_CONC2:
 			$table = 'smw_conc2'; // ignore value condition in this case
 		break;
-		case SMW_SQL2_RELS2: case SMW_SQL2_INST2: case SMW_SQL2_SUBS2:
+		case SMW_SQL2_RELS2: case SMW_SQL2_INST2: case SMW_SQL2_SUBS2: case SMW_SQL2_SUBP2:
 			if ($mode!=SMW_SQL2_RELS2) $sql = ''; // no property column here
-			if ($mode==SMW_SQL2_SUBS2) { // this table is shared, filter the relevant case
-				$sql = 'smw_namespace=' . (($typeid == '__sup')?$db->addQuotes(SMW_NS_PROPERTY):$db->addQuotes(NS_CATEGORY));
-			}
+// 			if ($mode==SMW_SQL2_SUBS2) { // this table is shared, filter the relevant case
+// 				$sql = 'smw_namespace=' . (($typeid == '__sup')?$db->addQuotes(SMW_NS_PROPERTY):$db->addQuotes(NS_CATEGORY));
+// 			}
 			if ($value !== NULL) {
 				$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki());
 				$sql .= ($sql?" AND ":'') . 'o_id=' . $db->addQuotes($oid);
@@ -526,6 +537,7 @@ class SMWSQLStore2 extends SMWStore {
 					case SMW_SQL2_RELS2: $table = 'smw_rels2'; break;
 					case SMW_SQL2_INST2: $table = 'smw_inst2'; break;
 					case SMW_SQL2_SUBS2: $table = 'smw_subs2'; break;
+					case SMW_SQL2_SUBP2: $table = 'smw_subp2'; break;
 				}
 			}
 		break;
@@ -714,6 +726,7 @@ class SMWSQLStore2 extends SMWStore {
 		$up_rels2 = array();  $up_atts2 = array();
 		$up_text2 = array();  $up_spec2 = array();
 		$up_subs2 = array();  $up_inst2 = array();
+		$up_subp2 = array();
 		$concept_desc = NULL; // this gets a special treatment
 
 		foreach($data->getProperties() as $property) {
@@ -730,6 +743,11 @@ class SMWSQLStore2 extends SMWStore {
 					break;
 					case SMW_SQL2_SUBS2:
 						$up_subs2[] = array(
+						  's_id' => $sid,
+						  'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),''));
+					break;
+					case SMW_SQL2_SUBP2:
+						$up_subp2[] = array(
 						  's_id' => $sid,
 						  'o_id' => $this->makeSMWPageID($value->getDBkey(),$value->getNamespace(),''));
 					break;
@@ -824,6 +842,9 @@ class SMWSQLStore2 extends SMWStore {
 		if (count($up_subs2) > 0) {
 			$db->insert( 'smw_subs2', $up_subs2, 'SMW::updateSubs2Data');
 		}
+		if (count($up_subp2) > 0) {
+			$db->insert( 'smw_subp2', $up_subp2, 'SMW::updateSubp2Data');
+		}
 		if (count($up_inst2) > 0) {
 			$db->insert( 'smw_inst2', $up_inst2, 'SMW::updateInst2Data');
 		}
@@ -914,9 +935,9 @@ class SMWSQLStore2 extends SMWStore {
 				$db->update('smw_inst2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
 				if ( ( $oldtitle->getNamespace() == SMW_NS_PROPERTY ) &&
 				     ( $newtitle->getNamespace() == SMW_NS_PROPERTY ) ) {
-					$db->update('smw_subs2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
+					$db->update('smw_subp2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
 				} elseif ($oldtitle->getNamespace() == SMW_NS_PROPERTY) {
-					$db->delete('smw_subs2', $cond_array, 'SMWSQLStore2::changeTitle');
+					$db->delete('smw_subp2', $cond_array, 'SMWSQLStore2::changeTitle');
 				} elseif ( ( $oldtitle->getNamespace() == NS_CATEGORY ) &&
 				           ( $newtitle->getNamespace() == NS_CATEGORY ) ) {
 					$db->update('smw_subs2', $val_array, $cond_array, 'SMWSQLStore2::changeTitle');
@@ -997,7 +1018,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ($requestoptions->offset > 0) {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
-		extract( $db->tableNames('page', 'smw_rels2', 'smw_atts2', 'smw_text2', 'smw_subs2', 'smw_ids', 'smw_tmp_unusedprops', 'smw_redi2') );
+		extract( $db->tableNames('page', 'smw_rels2', 'smw_atts2', 'smw_text2', 'smw_subp2', 'smw_ids', 'smw_tmp_unusedprops', 'smw_redi2') );
 
 		if ($wgDBtype=='postgres') { // PostgresQL: no in-memory tables available
 			$sql = "CREATE OR REPLACE FUNCTION create_" . $smw_tmp_unusedprops . "() RETURNS void AS "
@@ -1021,7 +1042,7 @@ class SMWSQLStore2 extends SMWStore {
 		foreach (array($smw_rels2,$smw_atts2,$smw_text2) as $table) {
 			$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops, $table INNER JOIN $smw_ids ON p_id=smw_id WHERE title=smw_title AND smw_iw=" . $db->addQuotes(''), 'SMW::getUnusedPropertySubjects');
 		}
-		$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops, $smw_subs2 INNER JOIN $smw_ids ON o_id=smw_id WHERE title=smw_title", 'SMW::getUnusedPropertySubjects');
+		$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops, $smw_subp2 INNER JOIN $smw_ids ON o_id=smw_id WHERE title=smw_title", 'SMW::getUnusedPropertySubjects');
 		$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops, $smw_ids WHERE title=smw_title AND smw_namespace=" . $db->addQuotes(SMW_NS_PROPERTY) . ' AND smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW), 'SMW::getUnusedPropertySubjects');
 		// assume any property redirecting to some property to be used here:
 		// (a stricter and more costy approach would be to delete only redirects to active properties;
@@ -1112,7 +1133,7 @@ class SMWSQLStore2 extends SMWStore {
 		$db =& wfGetDB( DB_MASTER );
 		extract( $db->tableNames('smw_ids','smw_rels2','smw_atts2','smw_text2',
 		                         'smw_spec2','smw_subs2','smw_redi2','smw_inst2',
-		                         'smw_conc2','smw_conccache') );
+		                         'smw_subp2','smw_conc2','smw_conccache') );
 		$reportTo = $verbose?$this:NULL; // use $this to report back from static SMWSQLHelpers
 		// repeatedly used DB field types defined here for convenience
 		$dbt_id        = SMWSQLHelpers::getStandardDBType('id');
@@ -1185,10 +1206,15 @@ class SMWSQLStore2 extends SMWStore {
 		                    'value_string' => $dbt_title . ' NOT NULL'), $db, $reportTo);
 		SMWSQLHelpers::setupIndex($smw_spec2, array('s_id', 'p_id', 's_id,p_id'), $db);
 
-		SMWSQLHelpers::setupTable($smw_subs2, // subproperty/subclass relationships
+		SMWSQLHelpers::setupTable($smw_subs2, // subclass relationships
 		              array('s_id'        => $dbt_id . ' NOT NULL',
 		                    'o_id'        => $dbt_id . ' NOT NULL'), $db, $reportTo);
 		SMWSQLHelpers::setupIndex($smw_subs2, array('s_id', 'o_id'), $db);
+
+		SMWSQLHelpers::setupTable($smw_subp2, // subproperty relationships
+		              array('s_id'        => $dbt_id . ' NOT NULL',
+		                    'o_id'        => $dbt_id . ' NOT NULL'), $db, $reportTo);
+		SMWSQLHelpers::setupIndex($smw_subp2, array('s_id', 'o_id'), $db);
 
 		SMWSQLHelpers::setupTable($smw_inst2, // class instances (s_id the element, o_id the class)
 		              array('s_id'        => $dbt_id . ' NOT NULL',
@@ -1271,7 +1297,7 @@ class SMWSQLStore2 extends SMWStore {
 		$db =& wfGetDB( DB_MASTER );
 		$tables = array('smw_rels2', 'smw_atts2', 'smw_text2', 'smw_spec2',
 		                'smw_subs2', 'smw_redi2', 'smw_ids', 'smw_inst2',
-		                'smw_conc2', 'smw_conccache');
+		                'smw_subp2', 'smw_conc2', 'smw_conccache');
 		foreach ($tables as $table) {
 			$name = $db->tableName($table);
 			$db->query('DROP TABLE' . ($wgDBtype=='postgres'?'':' IF EXISTS'). $name, 'SMWSQLStore2::drop');
@@ -1877,6 +1903,7 @@ class SMWSQLStore2 extends SMWStore {
 		$db->update('smw_text2', $val_array, $cond_array, 'SMW::moveID');
 		$db->update('smw_spec2', $val_array, $cond_array, 'SMW::moveID');
 		$db->update('smw_subs2', $val_array, $cond_array, 'SMW::moveID');
+		$db->update('smw_subp2', $val_array, $cond_array, 'SMW::moveID');
 		$db->update('smw_inst2', $val_array, $cond_array, 'SMW::moveID');
 		if ($row->smw_namespace == SMW_NS_CONCEPT) {
 			$db->update('smw_conc2', $val_array, $cond_array, 'SMW::moveID');
@@ -1895,6 +1922,7 @@ class SMWSQLStore2 extends SMWStore {
 		$db->update('smw_redi2', $val_array, $cond_array, 'SMW::moveID');
 		$db->update('smw_rels2', $val_array, $cond_array, 'SMW::moveID');
 		$db->update('smw_subs2', $val_array, $cond_array, 'SMW::moveID');
+		$db->update('smw_subp2', $val_array, $cond_array, 'SMW::moveID');
 		$db->update('smw_inst2', $val_array, $cond_array, 'SMW::moveID');
 		$db->update('smw_conccache', $val_array, $cond_array, 'SMW::moveID');
 	}
@@ -1914,8 +1942,10 @@ class SMWSQLStore2 extends SMWStore {
 		$db->delete('smw_text2', array('s_id' => $id), 'SMW::deleteSubject::Text2');
 		$db->delete('smw_spec2', array('s_id' => $id), 'SMW::deleteSubject::Spec2');
 		$db->delete('smw_inst2', array('s_id' => $id), 'SMW::deleteSubject::Inst2');
-		if ( ($subject->getNamespace() == SMW_NS_PROPERTY) || ($subject->getNamespace() == NS_CATEGORY) ) {
+		if ($subject->getNamespace() == NS_CATEGORY) {
 			$db->delete('smw_subs2', array('s_id' => $id), 'SMW::deleteSubject::Subs2');
+		} elseif ($subject->getNamespace() == SMW_NS_PROPERTY) {
+			$db->delete('smw_subp2', array('s_id' => $id), 'SMW::deleteSubject::Subp2');
 		}
 
 		// find bnodes used by this ID ...
@@ -1977,12 +2007,12 @@ class SMWSQLStore2 extends SMWStore {
 				$db->update('smw_rels2', $val_array, $cond_array, 'SMW::updateRedirects');
 				$db->update('smw_atts2', $val_array, $cond_array, 'SMW::updateRedirects');
 				$db->update('smw_text2', $val_array, $cond_array, 'SMW::updateRedirects');
-				$db->update('smw_subs2', array( 'o_id' => $new_tid ), array( 'o_id' => $sid ), 'SMW::updateRedirects');
+				$db->update('smw_subp2', array( 'o_id' => $new_tid ), array( 'o_id' => $sid ), 'SMW::updateRedirects');
 			} elseif ($subject_ns == SMW_NS_PROPERTY) { // delete triples that are only allowed for properties
 				$db->delete('smw_rels2', array( 'p_id' => $sid ), 'SMW::updateRedirects');
 				$db->delete('smw_atts2', array( 'p_id' => $sid ), 'SMW::updateRedirects');
 				$db->delete('smw_text2', array( 'p_id' => $sid ), 'SMW::updateRedirects');
-				$db->delete('smw_subs2', array( 'o_id' => $sid ), 'SMW::updateRedirects');
+				$db->delete('smw_subp2', array( 'o_id' => $sid ), 'SMW::updateRedirects');
 			} elseif ( ( $subject_ns == NS_CATEGORY ) && ( $curtarget_ns == NS_CATEGORY ) ) {
 				$db->update('smw_subs2', array( 'o_id' => $new_tid ), array( 'o_id' => $sid ), 'SMW::updateRedirects');
 				$db->update('smw_inst2', array( 'o_id' => $new_tid ), array( 'o_id' => $sid ), 'SMW::updateRedirects');
@@ -2017,7 +2047,7 @@ class SMWSQLStore2 extends SMWStore {
 							$jobs[] = new SMWUpdateJob($t);
 						}
 					}
-					$res = $db->select( array('smw_subs2','smw_ids'),'DISTINCT smw_title,smw_namespace',
+					$res = $db->select( array('smw_subp2','smw_ids'),'DISTINCT smw_title,smw_namespace',
 					                    's_id=smw_id AND o_id=' . $db->addQuotes($old_tid),
 					                    'SMW::updateRedirects');
 					while ($row = $db->fetchObject($res)) {

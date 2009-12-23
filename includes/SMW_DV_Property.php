@@ -371,7 +371,7 @@ class SMWPropertyValue extends SMWDataValue {
 			return; //init happened before
 		}
 
-		global $smwgContLang;
+		global $smwgContLang,$smwgUseCategoryHierarchy;
 		SMWPropertyValue::$m_propertylabels = $smwgContLang->getPropertyLabels();
 		SMWPropertyValue::$m_propertyaliases = $smwgContLang->getPropertyAliases();
 		// Setup built-in predefined properties.
@@ -389,7 +389,7 @@ class SMWPropertyValue extends SMWDataValue {
 				'_PVAL'  =>  array('__sps',true),
 				'_REDI'  =>  array('__red',true),
 				'_SUBP'  =>  array('__sup',true),
-				'_SUBC'  =>  array('__suc',false),
+				'_SUBC'  =>  array('__suc',!$smwgUseCategoryHierarchy),
 				'_CONC'  =>  array('__con',false),
 				'_MDAT'  =>  array('_dat',false),
 				'_ERRP'  =>  array('_wpp',false),

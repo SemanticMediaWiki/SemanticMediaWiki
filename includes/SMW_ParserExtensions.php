@@ -298,12 +298,12 @@ class SMWParserExtensions {
 		array_shift( $params ); // we already know the $parser ...
 		foreach ($params as $p)
 			if (trim($p) != "") {
-				$parts = explode("=", trim($p));
+				$parts = explode("=", trim($p), 2);
 				if (count($parts)==2) {
 					$property = $parts[0];
 					$object = $parts[1];
 					SMWParseData::addProperty( $property, $object, false, $parser, true );
-				}
+				} // else: no "=" given, ignore
 			}
 		SMWOutputs::commitToParser($parser); // not obviously required, but let us be sure
 		return '';
