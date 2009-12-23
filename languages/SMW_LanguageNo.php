@@ -56,6 +56,7 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'Har type',
 	'_URI'  => 'Ekvivalent URI',
 	'_SUBP' => 'Underkategori av',
+	'_SUBC' => 'Subcategory of', // TODO: translate
 	'_UNIT' => 'Visningsenhet',
 	'_IMPO' => 'Importert fra',
 	'_CONV' => 'Svarer til',

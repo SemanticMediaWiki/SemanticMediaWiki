@@ -49,6 +49,7 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'Tiene tipo de datos',
 	'_URI'  => 'URI equivalente',
 	'_SUBP' => 'Subproperty of', // TODO: translate
+	'_SUBC' => 'Subcategory of', // TODO: translate
 	'_UNIT' => 'Unidad de medida', // TODO: should be plural now ("units"), singluar stays alias
 	'_IMPO' => 'Importado de',
 	'_CONV' => 'Corresponde a',

@@ -49,6 +49,7 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'Tem o tipo',
 	'_URI'  => 'URI equivalente',
 	'_SUBP' => 'Sub-propriedade de',
+	'_SUBC' => 'Subcategory of', // TODO: translate
 	'_UNIT' => 'Unidades de amostra',
 	'_IMPO' => 'Importado de',
 	'_CONV' => 'Corresponde a',

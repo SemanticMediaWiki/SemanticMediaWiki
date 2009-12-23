@@ -68,6 +68,7 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'Ma typ',
 	'_URI'  => 'Równoważne URI',
 	'_SUBP' => 'Jest podwłasnością',
+	'_SUBC' => 'Subcategory of', // TODO: translate
 	'_UNIT' => 'Wyświetlane jednostki',
 	'_IMPO' => 'Zaimportowane z',
 	'_CONV' => 'Odpowiada',

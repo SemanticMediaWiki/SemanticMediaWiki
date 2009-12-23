@@ -48,6 +48,7 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'Má typ',
 	'_URI'  => 'Ekvivalent URI',
 	'_SUBP' => 'Subproperty of', // TODO: translate
+	'_SUBC' => 'Subcategory of', // TODO: translate
 	'_UNIT' => 'Zobrazovacia jednotka', // TODO: should be plural now ("units"), singluar stays alias
 	'_IMPO' => 'Importovaný z',
 	'_CONV' => 'Zodpovedá',

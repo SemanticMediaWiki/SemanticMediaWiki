@@ -57,6 +57,7 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'Datentyp',
 	'_URI'  => 'Gleichwertige URI',
 	'_SUBP' => 'Unterattribut von',
+	'_SUBC' => 'Unterkategorie von',
 	'_UNIT' => 'Einheiten',
 	'_IMPO' => 'Importiert aus',
 	'_CONV' => 'Entspricht',

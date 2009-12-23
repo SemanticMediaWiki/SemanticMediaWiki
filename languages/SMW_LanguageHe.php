@@ -51,6 +51,7 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'מטיפוס',
 	'_URI'  => 'מזהה יחודי תואם',
 	'_SUBP' => 'רכוש כפוף ל',
+	'_SUBC' => 'Subcategory of', // TODO: translate
 	'_UNIT' => 'יחידות מידה',
 	'_IMPO' => 'יובא מ',
 	'_CONV' => 'מתורגם ל',

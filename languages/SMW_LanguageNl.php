@@ -51,6 +51,7 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'Heeft type',
 	'_URI'  => 'Equivalent URI',
 	'_SUBP' => 'Subeigenschap van',
+	'_SUBC' => 'Subcategory of', // TODO: translate
 	'_UNIT' => 'Weergaveeenheden',
 	'_IMPO' => 'Geïmporteerd uit',
 	'_CONV' => 'Komt overeen met',

@@ -50,6 +50,7 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'Имеет тип',
 	'_URI'  => 'Эквивалентный URI',
 	'_SUBP' => 'Подчиненное свойству',
+	'_SUBC' => 'Subcategory of', // TODO: translate
 	'_UNIT' => 'Отображаемые единицы',
 	'_IMPO' => 'Импортировано из',
 	'_CONV' => 'Относится к',

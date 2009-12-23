@@ -52,6 +52,7 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'Has type',
 	'_URI'  => 'Equivalent URI',
 	'_SUBP' => 'Subproperty of',
+	'_SUBC' => 'Subcategory of',
 	'_UNIT' => 'Display units',
 	'_IMPO' => 'Imported from',
 	'_CONV' => 'Corresponds to',

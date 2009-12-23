@@ -52,13 +52,14 @@ protected $m_SpecialProperties = array(
 	'_TYPE'  => 'Ha tipo', //'Has type',
 	'_URI'   => 'URI equivalente', //'Equivalent URI',
 	'_SUBP' => 'Sottopropriet&agrave; di', // 'Subproperty of',
-	'_UNIT' => 'Visualizza unit&agrave;', //TODO
+	'_SUBC' => 'Subcategory of', // TODO: translate
+	'_UNIT' => 'Visualizza unit&agrave;',
 	'_IMPO' => 'Importato da', // 'Imported from',
 	'_CONV' => 'Corrisponde a ', // 'Corresponds to',
 	'_SERV' => 'Fornisce servizio', // 'Provides service',
 	'_PVAL' => 'Ammette valore', //'Allows value'
-	'_MDAT' => 'Data di modifica',  // TODO: translate
-	'_ERRP' => 'Ha un valore improprio per' // TODO: translate
+	'_MDAT' => 'Data di modifica',
+	'_ERRP' => 'Ha un valore improprio per'
 );
 
 protected $m_SpecialPropertyAliases = array(

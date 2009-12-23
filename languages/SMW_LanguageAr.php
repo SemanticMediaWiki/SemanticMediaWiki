@@ -49,6 +49,7 @@ protected $m_SpecialProperties = array(
 	'_TYPE'  => 'لديه نوع',
 	'_URI'   => 'معرف الموارد الموحد معادلة',
 	'_SUBP' => 'الخاصية الفرعية ل',
+	'_SUBC' => 'Subcategory of', // TODO: translate
 	'_UNIT' => 'عرض الوحدات',
 	'_IMPO' => 'المستوردة من',
 	'_CONV' => 'يقابل',
