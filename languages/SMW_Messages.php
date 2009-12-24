@@ -810,7 +810,7 @@ $messages['arz'] = array(
 	'smw_attribute_header' => 'الصفحات التى تستخدم الخاصية "$1"',
 	'smw_attributearticlecount' => 'عرض $1 {{PLURAL:$1|صفحة|صفحة}} تستخدم هذه الخاصية.',
 	'smw_subproperty_header' => 'خواص فرعية',
-	'smw_subpropertyarticlecount' => 'هذه الخاصية لديها $1 {{PLURAL:$1|خاصية فرعية|خاصية فرعية}} تالية.',
+	'smw_subpropertyarticlecount' => 'لهذه الخاصية {{PLURAL:$1||الخاصية الفرعية التالية|الخاصيتين الفرعيتين التاليتين|الخصائص الفرعية التالية}}:',
 	'smw_concept_header' => 'صفحات المبدأ "$1"',
 	'smw_conceptarticlecount' => 'عرض $1 {{PLURAL:$1|صفحة|صفحة}} تنتمى إلى هذا المبدأ.',
 	'smw_rss_description' => '$1 تلقيم آر إس إس',
@@ -834,7 +834,7 @@ $messages['arz'] = array(
 	'smw_unusedproperty_template' => '$1 من نوع $2',
 	'wantedproperties' => 'خصائص مطلوبة',
 	'smw_wantedproperties_docu' => 'الخصائص التالية مستخدمة فى الويكى ولكن ليس لديها حتى الآن صفحة لوصفها.',
-	'smw_wantedproperty_template' => '$1 ($2 استخدام)',
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|استخدام|استخدام}})',
 	'tooltip-purge' => 'اضغط هنا لتحديث كافة الاستفسارات والقوالب على هذه الصفحة',
 	'smw_purge' => 'تحديث',
 	'types' => 'أنواع',
@@ -842,10 +842,10 @@ $messages['arz'] = array(
 كل نوع بيانات له صفحة حيث يمكن توفير معلومات إضافية.',
 	'smw_typeunits' => 'وحدات القياس من النوع "$1": $2',
 	'semanticstatistics' => 'إحصاءات سيمانتيك',
-	'smw_semstats_text' => 'هذا الويكى يحتوى على <b>$1</b> قيمة خاصية لإجمالى <b>$2</b> different <a href="$3">خاصية</a>.
-<b>$4</b> الخصائص لها صفة خاصة، ونوع البيانات المقصود محدد ل<b>$5</b> منها.
-بعض الخصائص الموجودة ربما تكون <a href="$6">خصائص غير مستخدمة</a>.
-الخصائص التى مازالت تفتقد صفحة موجودة فى <a href="$7">قائمة الخصائص المطلوبة</a>.',
+	'smw_semstats_text' => "هذا الويكي يحتوي على '''$1''' {{PLURAL:$1|قيمة|قيمة}} خاصية بإجمالي '''$2''' [[Special:Properties|{{PLURAL:$2|خاصية|خاصية مختلفة}}]].
+'''$3''' {{PLURAL:$3|خاصية تمتلك|خاصية تمتلك}} صفحتها الخاصة، ونوع البيانات المقصود محدد ل'''$4''' من هؤلاء.
+بعض الخواص الموجودة ربما تكون [[Special:UnusedProperties|خواص غير مستخدمة]].
+الخواص التي مازالت تفتقد صفحة موجودة في [[Special:WantedProperties|قائمة الخواص المطلوبة]].",
 	'uriresolver' => 'محلل URI',
 	'smw_uri_doc' => 'محلل URI ينفذ <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C على httpRange-14</a>. إنه يتأكد من أن البشر لا يتحولون إلى مواقع ويب.',
 	'ask' => 'بحث سيمانتيك',
@@ -858,15 +858,15 @@ $messages['arz'] = array(
 	'smw_ask_hidequery' => 'إخفاء الاستعلام',
 	'smw_ask_help' => 'مساعدة الاستعلام',
 	'smw_ask_queryhead' => 'استعلام',
-	'smw_ask_printhead' => 'مطبوعات إضافية (اختياري)',
+	'smw_ask_printhead' => 'بيانات إضافية للعرض',
 	'searchbyproperty' => 'البحث حسب الخصائص',
 	'smw_sbv_docu' => 'البحث عن كل الصفحات التى لها خصائص معينة وقيمة',
 	'smw_sbv_novalue' => 'أدخل قيمة صحيحة للخاصية، أو انظر كل قيم الخصائص ل"$1"',
 	'smw_sbv_displayresult' => 'قائمة بكل الصفحات التى بها الخاصية "$1" بالقيمة "$2"',
 	'smw_sbv_displayresultfuzzy' => 'قائمة بكل الصفحات التى لديها الخاصية "$1" بالقيمة "$2".
 بما أنه كانت هناك فقط عدة نتائج، فالقيم المقاربة معروضة أيضا.',
-	'smw_sbv_property' => 'خاصية',
-	'smw_sbv_value' => 'قيمة',
+	'smw_sbv_property' => 'خاصية:',
+	'smw_sbv_value' => 'قيمة:',
 	'smw_sbv_submit' => 'إيجاد نتائج',
 	'browse' => 'استعرض يكي',
 	'smw_browselink' => 'خصائص التصفح',
@@ -877,7 +877,7 @@ $messages['arz'] = array(
 	'smw_browse_no_outgoing' => 'هذه الصفحة ليس لديها خصائص.',
 	'smw_browse_no_incoming' => 'لا خصائص تصل إلى هذه الصفحة.',
 	'smw_inverse_label_default' => '$1 من',
-	'smw_inverse_label_property' => 'علامة خاصية معكوسة',
+	'smw_inverse_label_property' => 'اعكس علامة الخاصية',
 	'pageproperty' => 'بحث خصائص الصفحة',
 	'smw_pp_docu' => 'البحث عن جميع قيم خاصية على صفحة معينة.
 أدخل صفحة وخاصية.',
@@ -932,7 +932,7 @@ $messages['arz'] = array(
 	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات فى <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ملف INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لسيمانتيك ميدياويكى موجودة فى <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'العلل يمكن إبلاغها إلى <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
-	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش فى <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>.',
+	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش في <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">منتدى مستخدمي سيمانتيك ميدياويكي</a>.',
 );
 
 /** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
@@ -2165,6 +2165,7 @@ $messages['el'] = array(
 	'smw_printername_table' => 'Πίνακας',
 	'smw_printername_broadtable' => 'Πίνακας Επιτροπής',
 	'smw_printername_template' => 'Πρότυπο',
+	'smw_paramdesc_embedonly' => 'Μη εμφάνιση επικεφαλίδων',
 	'smw_iq_moreresults' => '... περισσότερα αποτελέσματα',
 	'smw_true_words' => 'αλήθεια,α,ναι,ν',
 	'smw_false_words' => 'σφάλμα,σ,όχι,ο',
@@ -2206,6 +2207,7 @@ $messages['el'] = array(
 	'smw_ask_printhead' => 'Πρόσθετα δεδομένα προς εμφάνιση',
 	'smw_ask_format_as' => 'Μορφοποίηση ως:',
 	'smw_ask_defaultformat' => 'Προεπιλογή',
+	'smw_ask_otheroptions' => 'Άλλες επιλογές',
 	'smw_ask_show_embed' => 'Εμφάνιση ενσωματωμένου κώδικα',
 	'smw_ask_hide_embed' => 'Απόκρυψη ενσωματωμένου κώδικα',
 	'searchbyproperty' => 'Αναζήτηση κατά ιδιότητα',
@@ -5927,8 +5929,11 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_ask_hidequery' => 'Ufro verstoppen',
 	'smw_ask_help' => 'Hëllef ufroen',
 	'smw_ask_queryhead' => 'Ufro',
+	'smw_ask_printhead' => 'Zousätzlech Date weisen',
+	'smw_ask_printdesc' => '(eng Eegeschaft pro Linn derbäisetzen)',
 	'smw_ask_format_as' => 'Formatéieren als:',
 	'smw_ask_defaultformat' => 'Standard',
+	'smw_ask_otheroptions' => 'Aner Optiounen',
 	'searchbyproperty' => 'No Eegeschafte sichen',
 	'smw_sbv_docu' => 'Sich no alle Säiten déi eng bestëmmten Eegeschaft mat engem bestëmmete Wert hunn.',
 	'smw_sbv_displayresult' => 'Eng Lëscht vun alle Säiten déi d\'Eegeschaft "$1" mam Wert "$2" hunn',
@@ -6719,6 +6724,7 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw_printername_table' => 'Tabell',
 	'smw_printername_broadtable' => 'Bred tabell',
 	'smw_printername_template' => 'Mal',
+	'smw_paramdesc_link' => 'Vis verdier som lenker',
 	'smw_iq_disabled' => 'Beklager. Semantiske spørringer er slått av på denne wikien.',
 	'smw_iq_moreresults' => '… flere resultater',
 	'smw_iq_nojs' => 'Bruk en nettleser med JavaScript-støtte for å vise dette elementet.',
@@ -6808,7 +6814,7 @@ Lager en RDF som kan gås gjennom.',
 Hver datatype har en side der ekstra informasjon kan oppgis.',
 	'smw_typeunits' => 'Måleenheter av typen «$1»: $2',
 	'semanticstatistics' => 'Semantisk statistikk',
-	'smw_semstats_text' => "Denne wikien inneholder {{PLURAL:$1|'''én''' egenskapsverdi|'''$1''' egenskapsverdier}}} for totalt [[Special:Properties|{{PLURAL:$2|'''én''' egenskap|'''$2''' forskjellige egenskaper}}]].
+	'smw_semstats_text' => "Denne wikien inneholder {{PLURAL:$1|'''én''' egenskapsverdi|'''$1''' egenskapsverdier}} for totalt [[Special:Properties|{{PLURAL:$2|'''én''' egenskap|'''$2''' forskjellige egenskaper}}]].
 {{PLURAL:$3|'''Én''' egenskap|'''$3''' egenskaper}} har en egen side, og den mente datatypen er spesifisert for '''$4''' av disse.
 Enkelte av de eksisterende egenskapene kan være [[Special:UnusedProperties|ubrukte egenskaper]].
 Egenskaper som fortsatt mangler en egen side finnes på [[Special:WantedProperties|listen over ønskede egenskaper]].",
@@ -6824,9 +6830,11 @@ Egenskaper som fortsatt mangler en egen side finnes på [[Special:WantedProperti
 	'smw_ask_hidequery' => 'Skjul spørring',
 	'smw_ask_help' => 'Spørringshjelp',
 	'smw_ask_queryhead' => 'Spørring',
-	'smw_ask_printhead' => 'Ekstra utskrifter (valgfritt)',
+	'smw_ask_printhead' => 'Tilleggsdata kan vises',
+	'smw_ask_printdesc' => '(legg til et egenskapsnavn per linje)',
 	'smw_ask_format_as' => 'Formater som:',
 	'smw_ask_defaultformat' => 'standard',
+	'smw_ask_otheroptions' => 'Andre alternativ',
 	'smw_ask_show_embed' => 'Vis innkapslet kode',
 	'smw_ask_hide_embed' => 'Skjul innkapslet kode',
 	'searchbyproperty' => 'Søk etter egenskap',
