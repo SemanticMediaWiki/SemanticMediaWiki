@@ -500,6 +500,7 @@ $messages['ar'] = array(
 	'smw_no_concept_namespace' => 'المبادئ يمكن تعريفها فقط في الصفحات في نطاق Concept:',
 	'smw_multiple_concepts' => 'كل صفحة مبدأ يمكن أن تحتوي على تعريف مبدأ واحد.',
 	'smw_concept_cache_miss' => 'المبدأ "$1" لا يمكن استخدامه حاليا، بما أن ضبط الويكي يحتاجه إلى أن يتم حسابه خارجيا. لو أن المشكلة لم تنته بعد بعض الوقت، سل إداري موقعك ليجعل هذا المبدأ متوفرا.',
+	'smw_noinvannot' => 'القيم لا يمكن تعيينها لخصائص معكوسة.',
 	'smw_baduri' => 'URIs من النوع "$1" غير مسموح بها.',
 	'smw_rss_link' => 'آر إس إس',
 	'smw_csv_link' => 'سي في إس',
@@ -511,10 +512,27 @@ $messages['ar'] = array(
 	'smw_printername_embedded' => 'تضمين محتويات الصفحة',
 	'smw_printername_json' => 'تصدير JSON',
 	'smw_printername_list' => 'قائمة',
+	'smw_printername_ol' => 'ترقيم',
+	'smw_printername_ul' => 'ترتيب في عناصر',
 	'smw_printername_rss' => 'تصدير RSS',
 	'smw_printername_table' => 'جدول',
 	'smw_printername_broadtable' => 'جدول عريض',
 	'smw_printername_template' => 'قالب',
+	'smw_paramdesc_limit' => 'الرقم الأقصى للعناصر المُرجعة',
+	'smw_paramdesc_headers' => 'اعرض العناوين/أسماء الخصائص',
+	'smw_paramdesc_mainlabel' => 'العلامة للإعطاء لاسم الصفحة الرئيسية',
+	'smw_paramdesc_link' => 'أظهر القيم كوصلات',
+	'smw_paramdesc_intro' => 'النص للعرض قبل نتائج الاستعلام، لو كانت هناك أي',
+	'smw_paramdesc_outro' => 'النص المطلوب عرضه بعد نتائج الاستعلام، إن وُجدت',
+	'smw_paramdesc_default' => 'النص المطلوب عرضه إذا لم تتوفر نتائج للاستعلام',
+	'smw_paramdesc_searchlabel' => 'نص وصلة النتائج',
+	'smw_paramdesc_sep' => 'فاصل القيم',
+	'smw_paramdesc_template' => 'اسم القالب لعرض الخرج به',
+	'smw_paramdesc_columns' => 'رقم الأعمدة لعرض النتائج بها (افتراضيا 3)',
+	'smw_paramdesc_embedformat' => 'وسم HTML المستخدم لتعريف الترويسة',
+	'smw_paramdesc_embedonly' => 'لا تظهر الترويسات',
+	'smw_paramdesc_rsstitle' => 'النص المستخدم كعنوان للتغذية',
+	'smw_paramdesc_rssdescription' => 'النص المستخدم لوصف التغذية',
 	'smw_iq_disabled' => 'استعلامات السيمانتيك تم تعطيلها في هذا الويكي.',
 	'smw_iq_moreresults' => '… مزيد من النتائج',
 	'smw_iq_nojs' => 'استخدم متصفحا يُمكّن جافاسكربت لرؤية هذا العنصر.',
@@ -624,11 +642,13 @@ $messages['ar'] = array(
 	'smw_ask_help' => 'مساعدة الاستعلام',
 	'smw_ask_queryhead' => 'استعلام',
 	'smw_ask_printhead' => 'بيانات إضافية للعرض',
+	'smw_ask_printdesc' => '(أضف اسمًا مناسبًا واحدًا في كل سطر)',
 	'smw_ask_format_as' => 'صياغة ك:',
 	'smw_ask_defaultformat' => 'افتراضي',
 	'smw_ask_otheroptions' => 'خيارات أخرى',
 	'smw_ask_show_embed' => 'عرض الكود المضمن',
 	'smw_ask_hide_embed' => 'إخفاء الكود المضمن',
+	'smw_ask_embed_instr' => 'لتضمين هذا الاستعلام في صفحة ويكي، استخدم الكود أدناه',
 	'searchbyproperty' => 'البحث حسب الخصائص',
 	'smw_sbv_docu' => 'البحث عن كل الصفحات التي لها خصائص معينة وقيمة',
 	'smw_sbv_novalue' => 'أدخل قيمة صحيحة للخاصية، أو انظر كل قيم الخصائص ل"$1"',
@@ -740,10 +760,10 @@ $messages['arz'] = array(
 	'smw_viewasrdf' => 'تلقيم RDF',
 	'smw_finallistconjunct' => '، و',
 	'smw_factbox_head' => 'حقائق عن $1',
-	'smw_isspecprop' => 'هذه الخاصية هى خاصية خاصة فى هذا الويكي.',
-	'smw_isknowntype' => 'هذا النوع هو من بين أنواع البيانات الموحدة من هذا الويكي.',
+	'smw_isspecprop' => 'هذه الخاصية هى خاصية خاصة فى هذا الويكى.',
+	'smw_isknowntype' => 'هذا النوع هو من بين أنواع البيانات الموحدة من هذا الويكى.',
 	'smw_isaliastype' => 'هذا النوع هو الاسم المستعار لنوع البيانات "$1".',
-	'smw_isnotype' => 'هذا النوع "$1" هو ليس معيار البيانات فى الويكي، ولم يعط تعريفا من قبل المستخدمين.',
+	'smw_isnotype' => 'هذا النوع "$1" هو ليس معيار البيانات فى الويكى، ولم يعط تعريفا من قبل المستخدمين.',
 	'smw_concept_description' => 'وصف المبدأ "$1"',
 	'smw_no_concept_namespace' => 'المبادئ يمكن تعريفها فقط فى الصفحات فى نطاق Concept:',
 	'smw_multiple_concepts' => 'كل صفحة مبدأ يمكن أن تحتوى على تعريف مبدأ واحد.',
@@ -751,7 +771,7 @@ $messages['arz'] = array(
 	'smw_baduri' => 'URIs من النوع "$1" غير مسموح بها.',
 	'smw_rss_link' => 'آر إس إس',
 	'smw_csv_link' => 'سى فى إس',
-	'smw_iq_disabled' => 'استعلامات السيمانتيك تم تعطيلها فى هذا الويكي.',
+	'smw_iq_disabled' => 'استعلامات السيمانتيك تم تعطيلها فى هذا الويكى.',
 	'smw_iq_moreresults' => '… مزيد من النتائج',
 	'smw_iq_nojs' => 'استخدم متصفحا يمكن جافا سكريبت لرؤية هذا العنصر.',
 	'smw_iq_altresults' => 'استعرض قائمة النتائج مباشرة.',
@@ -761,7 +781,7 @@ $messages['arz'] = array(
 	'smw_no_importelement' => 'العنصر "$1" غير متوفر للاستيراد.',
 	'smw_parseerror' => 'القيمة المعطاة لم يتم فهمها.',
 	'smw_kiloseparator' => '،',
-	'smw_notitle' => '"$1" لا يمكن أن تستخدم مثل هذا الاسم فى صفحة ويكي.',
+	'smw_notitle' => '"$1" لا يمكن أن تستخدم مثل هذا الاسم فى صفحة ويكى.',
 	'smw_wrong_namespace' => 'فقط الصفحات فى النطاق "$1" مسموح بها هنا.',
 	'smw_unknowntype' => 'نوع غير مدعوم "$1" لتعريف الممتلكات.',
 	'smw_manytypes' => 'أكثر من نوع واحد لتعريف الخاصية.',
@@ -818,13 +838,13 @@ $messages['arz'] = array(
 	'exportrdf' => 'آر دی‌ إف إلى صفحات تصدير',
 	'smw_exportrdf_docu' => ' هذه الصفحة تتيح لك الحصول على بيانات من صفحة فى شكل آر دی‌ إف.
 التصدير إلى صفحات، أدخل العناوين فى مربع النص أدناه، عنوان واحد لكل سطر.',
-	'smw_exportrdf_recursive' => 'تصدير جميع الصفحات ذات الصلة بشكل تكراري.
+	'smw_exportrdf_recursive' => 'تصدير جميع الصفحات ذات الصلة بشكل تكرارى.
 علما أنه يمكن أن تكون النتيجة كبيرة!',
 	'smw_exportrdf_backlinks' => 'أيضا تصدير كل الصفحات التى تشير إلى الصفحات تم تصديرها.
 يولد آر دى إف قابل للتصفح.',
 	'smw_exportrdf_lastdate' => 'لا تصدر الصفحات التى لم تتغير منذ نقطة زمنية محددة.',
 	'properties' => 'الخصائص',
-	'smw_properties_docu' => 'الخصائص التالية تستخدم فى الويكي.',
+	'smw_properties_docu' => 'الخصائص التالية تستخدم فى الويكى.',
 	'smw_property_template' => '$1 من نوع $2 ($3)',
 	'smw_propertylackspage' => 'جميع الخصائص ينبغى أن توصف بصفحة!',
 	'smw_propertylackstype' => 'لا نوع تم تحديده لهذه الخاصية (افتراض النوع $1 حاليا).',
@@ -842,10 +862,10 @@ $messages['arz'] = array(
 كل نوع بيانات له صفحة حيث يمكن توفير معلومات إضافية.',
 	'smw_typeunits' => 'وحدات القياس من النوع "$1": $2',
 	'semanticstatistics' => 'إحصاءات سيمانتيك',
-	'smw_semstats_text' => "هذا الويكي يحتوي على '''$1''' {{PLURAL:$1|قيمة|قيمة}} خاصية بإجمالي '''$2''' [[Special:Properties|{{PLURAL:$2|خاصية|خاصية مختلفة}}]].
+	'smw_semstats_text' => "هذا الويكى يحتوى على '''$1''' {{PLURAL:$1|قيمة|قيمة}} خاصية بإجمالى '''$2''' [[Special:Properties|{{PLURAL:$2|خاصية|خاصية مختلفة}}]].
 '''$3''' {{PLURAL:$3|خاصية تمتلك|خاصية تمتلك}} صفحتها الخاصة، ونوع البيانات المقصود محدد ل'''$4''' من هؤلاء.
 بعض الخواص الموجودة ربما تكون [[Special:UnusedProperties|خواص غير مستخدمة]].
-الخواص التي مازالت تفتقد صفحة موجودة في [[Special:WantedProperties|قائمة الخواص المطلوبة]].",
+الخواص التى مازالت تفتقد صفحة موجودة فى [[Special:WantedProperties|قائمة الخواص المطلوبة]].",
 	'uriresolver' => 'محلل URI',
 	'smw_uri_doc' => 'محلل URI ينفذ <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C على httpRange-14</a>. إنه يتأكد من أن البشر لا يتحولون إلى مواقع ويب.',
 	'ask' => 'بحث سيمانتيك',
@@ -932,7 +952,7 @@ $messages['arz'] = array(
 	'smw_smwadmin_installfile' => 'لو أنك تواجه مشاكل مع تنصيبك، ابدأ بالتحقق من الإرشادات فى <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">ملف INSTALL</a>.',
 	'smw_smwadmin_smwhomepage' => 'وثائق المستخدم الكاملة لسيمانتيك ميدياويكى موجودة فى <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'العلل يمكن إبلاغها إلى <a href="https://bugzilla.wikimedia.org/">ميديازيللا</a>.',
-	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش في <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">منتدى مستخدمي سيمانتيك ميدياويكي</a>.',
+	'smw_smwadmin_questions' => 'لو لديك أسئلة أو اقتراحات أخرى، انضم إلى النقاش فى <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">منتدى مستخدمى سيمانتيك ميدياويكي</a>.',
 );
 
 /** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
@@ -1337,6 +1357,8 @@ $messages['bs'] = array(
 	'smw_printername_rss' => 'RSS izvoz',
 	'smw_printername_table' => 'Tabela',
 	'smw_printername_template' => 'Šablon',
+	'smw_paramdesc_link' => 'Prikaži vrijednosti kao linkove',
+	'smw_paramdesc_embedonly' => 'Ne prikazuj zaglavlja',
 	'smw_iq_disabled' => 'Semantički upiti su onemogućeni na ovoj wiki.',
 	'smw_iq_moreresults' => '...ostali rezultati',
 	'smw_iq_altresults' => 'Pregledaj spisak rezultata direktno.',
@@ -1692,6 +1714,11 @@ Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwa
 	'smw_printername_table' => 'Tabelle',
 	'smw_printername_broadtable' => 'Breite Tabelle',
 	'smw_printername_template' => 'Vorlage',
+	'smw_paramdesc_limit' => 'Die maximale Anzahl der auszugebenden Ergebnisse',
+	'smw_paramdesc_link' => 'Werte als Links anzeigen',
+	'smw_paramdesc_columns' => 'Die Anzahl der Säulen in denen Ergebnisse angezeigt werden (standardmäßig 3)',
+	'smw_paramdesc_embedformat' => 'Das HTML-Tag um Überschriften festzulegen',
+	'smw_paramdesc_embedonly' => 'Keine Überschriften anzeigen',
 	'smw_iq_disabled' => 'Semantische Anfragen sind in diesem Wiki zurzeit nicht möglich.',
 	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung betrachtet werden.',
@@ -2783,11 +2810,14 @@ Huomioi, että tulos saattaa olla suuri.',
 	'smw_ask_printhead' => 'Lisätulosteet (valinnainen)',
 	'smw_ask_defaultformat' => 'oletus',
 	'smw_ask_otheroptions' => 'Muut valinnat',
+	'smw_ask_show_embed' => 'Näytä upotettava koodi',
+	'smw_ask_hide_embed' => 'Piilota upotettava koodi',
 	'smw_sbv_displayresult' => 'Lista kaikista sivuista, joilla ominaisuuden ”$1” arvona on ”$2”',
 	'smw_sbv_displayresultfuzzy' => 'Lista kaikista sivuista, joilla ominaisuuden ”$1” arvona on ”$2”.
 Koska tuloksia on vain vähän, myös lähellä olevat arvot näytetään.',
 	'smw_sbv_property' => 'Ominaisuus:',
 	'smw_sbv_value' => 'Arvo:',
+	'smw_sbv_submit' => 'Etsi tuloksia',
 	'browse' => 'Selaa wikiä',
 	'smw_browselink' => 'Selaa ominaisuuksia',
 	'smw_browse_go' => 'Siirry',
@@ -3622,6 +3652,8 @@ $messages['he'] = array(
 	'smw_printername_table' => 'טבלה',
 	'smw_printername_broadtable' => 'טבלה רחבה',
 	'smw_printername_template' => 'תבנית',
+	'smw_paramdesc_embedonly' => 'לא יוצגו כותרות',
+	'smw_paramdesc_rssdescription' => 'הטקסט שישמש לתיאור ההזנה',
 	'smw_iq_disabled' => 'שאילתות סמנטיות בוטלו באתר ויקי זה.',
 	'smw_iq_moreresults' => '&hellip; תוצאות נוספות',
 	'smw_iq_nojs' => 'השתמשו בדפדפן התומך ב־JavaScript לצפיה ברכיב זה.',
@@ -3712,6 +3744,7 @@ $messages['he'] = array(
 ל{{PLURAL:מאפיין '''אחד'''|־'''$3''' מאפיינים}} יש דף משלהם, וסוג הנתונים המיועד צוין עבור '''$4''' מאלה.
 ייתכן שכמה ממהמאפיינים הקיימים הם [[Special:UnusedProperties|מאפיינים שאינם בשימוש]].
 מאפיינים שעדיין חסר להם דף נמצאים ב[[Special:WantedProperties|רשימת המאפיינים המבוקשים]].",
+	'uriresolver' => 'פותר הכתובות',
 	'ask' => 'חיפוש סמנטי',
 	'smw_ask_sortby' => 'מיון לפי טור (אופציונאלי)',
 	'smw_ask_ascorder' => 'בסדר עולה',
@@ -3722,7 +3755,11 @@ $messages['he'] = array(
 	'smw_ask_hidequery' => 'הסתרת השאילתה',
 	'smw_ask_help' => 'עזרה בכתיבת שאילתות',
 	'smw_ask_queryhead' => 'שאילתה',
+	'smw_ask_printhead' => 'נתונים נוספים להצגה',
+	'smw_ask_printdesc' => '(יש להוסיף כל שם מאפיין בשורה נפרדת)',
+	'smw_ask_format_as' => 'עיצוב בתור:',
 	'smw_ask_defaultformat' => 'ברירת מחדל',
+	'smw_ask_otheroptions' => 'אפשרויות אחרות',
 	'smw_ask_show_embed' => 'הצגת קוד הטמעה',
 	'smw_ask_hide_embed' => 'הסתרת קוד הטמעה',
 	'searchbyproperty' => 'חיפוש לפי מאפיין',
@@ -3798,6 +3835,8 @@ $messages['he'] = array(
 	'smw_smwadmin_smwhomepage' => 'התיעוד המלא למשתמשי המדיה־ויקי הסמנטי נמצא בכתובת <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'ניתן לדווח על באגים ב<a href="https://bugzilla.wikimedia.org/">באגזילה של מדיה־ויקי</a>.',
 	'smw_smwadmin_questions' => 'אם יש לכם הצעות או שאלות נוספות, הצטרפו לדיון שנערך ב<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">פורום המשתמשים של Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'מבנה הנתונים',
+	'smw_adminlinks_displayingdata' => 'הצגת נתונים',
 );
 
 /** Hindi (हिन्दी)
@@ -5560,6 +5599,7 @@ $messages['km'] = array(
  * @author Nayvik
  */
 $messages['kn'] = array(
+	'smw_finallistconjunct' => ', ಮತ್ತು',
 	'smw_browse_go' => 'ಹೋಗು',
 );
 
@@ -6724,7 +6764,17 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw_printername_table' => 'Tabell',
 	'smw_printername_broadtable' => 'Bred tabell',
 	'smw_printername_template' => 'Mal',
+	'smw_paramdesc_limit' => 'Maksimalt antall resultat som skal returneres',
 	'smw_paramdesc_link' => 'Vis verdier som lenker',
+	'smw_paramdesc_intro' => 'Tekst som skal vises før spørringsresultat, dersom det er noen',
+	'smw_paramdesc_outro' => 'Tekst som skal vises etter spørringsresultat, dersom det er noen',
+	'smw_paramdesc_default' => 'Tekst som skal vises dersom det ikke er noen resultat for spørringen',
+	'smw_paramdesc_searchlabel' => 'Tekst i lenken til resultat',
+	'smw_paramdesc_sep' => 'Separatorverdier',
+	'smw_paramdesc_template' => 'Navnet på malen som skal vise frem utskriftene',
+	'smw_paramdesc_columns' => 'Antall kolonner som resultatene skal vises i (standard er 3)',
+	'smw_paramdesc_rsstitle' => 'Tekst som skal brukes som tittel på matingen',
+	'smw_paramdesc_rssdescription' => 'Tekst som skal brukes som beskrivelse av matingen',
 	'smw_iq_disabled' => 'Beklager. Semantiske spørringer er slått av på denne wikien.',
 	'smw_iq_moreresults' => '… flere resultater',
 	'smw_iq_nojs' => 'Bruk en nettleser med JavaScript-støtte for å vise dette elementet.',
@@ -9813,17 +9863,25 @@ $messages['zh-cn'] = array(
 
 /** Simplified Chinese (‪中文(简体)‬)
  * @author Gzdavidwong
+ * @author Liangent
  * @author PhiLiP
  */
 $messages['zh-hans'] = array(
 	'smw_finallistconjunct' => '和',
+	'smw_nofloat' => '「$1」不是一个数字。',
 	'smw_abb_north' => '北',
 	'smw_abb_east' => '东',
 	'smw_abb_south' => '南',
 	'smw_abb_west' => '西',
 	'smw_label_latitude' => '纬度：',
 	'smw_label_longitude' => '经度：',
+	'smw_exportrdf_submit' => '汇出',
 	'smw_pp_submit' => '搜索结果',
+	'smw_result_results' => '结果',
+	'smw_result_noresults' => '没有结果。',
+	'smw_smwadmin_datarefreshbutton' => '开始更新数据',
+	'smw_smwadmin_mediazilla' => '臭虫可到<a href="https://bugzilla.wikimedia.org/">Bugzilla</a>报告。',
+	'smw_adminlinks_datastructure' => '数据结构',
 );
 
 /** Traditional Chinese (‪中文(繁體)‬)
