@@ -485,8 +485,8 @@ function smwfShowBrowseLink($skintemplate) {
 	}
 
 	/**
-	 * Escapes text in a way that allows it to be used as XML
-	 * content (e.g. as a string value for some property).
+	 * Decodes character references and inserts Unicode characters instead,
+	 * using the MediaWiki Sanitizer.
 	 */
 	function smwfHTMLtoUTF8($text) {
 		return Sanitizer::decodeCharReferences($text);
