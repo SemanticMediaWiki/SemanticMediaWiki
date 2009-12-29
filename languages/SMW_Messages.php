@@ -1715,10 +1715,20 @@ Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwa
 	'smw_printername_broadtable' => 'Breite Tabelle',
 	'smw_printername_template' => 'Vorlage',
 	'smw_paramdesc_limit' => 'Die maximale Anzahl der auszugebenden Ergebnisse',
+	'smw_paramdesc_headers' => 'Überschriften/Eigenschaftsnamen anzeigen',
+	'smw_paramdesc_mainlabel' => 'Das Label für den Namen der Hauptseite',
 	'smw_paramdesc_link' => 'Werte als Links anzeigen',
+	'smw_paramdesc_intro' => 'Der anzuzeigende Text vor etwaigen Abfrageergebnissen',
+	'smw_paramdesc_outro' => 'Der anzuzeigende Text hinter etwaigen Abfrageergebnissen',
+	'smw_paramdesc_default' => 'Der anzuzeigende Text wenn keine Abfrageergebnisse vorhanden sind',
+	'smw_paramdesc_searchlabel' => 'Der Text im Link zu den Ergebnissen',
+	'smw_paramdesc_sep' => 'Das Trennzeichen für Werte',
+	'smw_paramdesc_template' => 'Der Name der Vorlage um Ausdrucke anzuzeigen',
 	'smw_paramdesc_columns' => 'Die Anzahl der Säulen in denen Ergebnisse angezeigt werden (standardmäßig 3)',
 	'smw_paramdesc_embedformat' => 'Das HTML-Tag um Überschriften festzulegen',
 	'smw_paramdesc_embedonly' => 'Keine Überschriften anzeigen',
+	'smw_paramdesc_rsstitle' => 'Der Text, der als Titel für den Feed benutzt wird',
+	'smw_paramdesc_rssdescription' => 'Der Text, der als Beschreibung für den Feed benutzt wird',
 	'smw_iq_disabled' => 'Semantische Anfragen sind in diesem Wiki zurzeit nicht möglich.',
 	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung betrachtet werden.',
@@ -1819,6 +1829,7 @@ Falls das Problem nicht nach einiger Zeit verschwindet, bitte deinen Seitenverwa
 	'smw_ask_help' => 'Hilfe',
 	'smw_ask_queryhead' => 'Anfrage',
 	'smw_ask_printhead' => 'Zusätzliche Daten zur Anzeige',
+	'smw_ask_printdesc' => '(einen Eigenschaftsnamen pro Zeile hinzufügen)',
 	'smw_ask_format_as' => 'Formatiert als:',
 	'smw_ask_defaultformat' => 'Standard',
 	'smw_ask_otheroptions' => 'Andere Optionen',
@@ -2533,6 +2544,7 @@ Las propiedades faltantes pueden encontrarse en la [[Special:WantedProperties|li
 	'smw_ask_printhead' => 'Datos adicionales a mostrar',
 	'smw_ask_format_as' => 'Formatear como:',
 	'smw_ask_defaultformat' => 'por defecto',
+	'smw_ask_otheroptions' => 'Otras opciones',
 	'smw_ask_show_embed' => 'Mostrar código embebido',
 	'smw_ask_hide_embed' => 'Ocultar código embebido',
 	'smw_ask_embed_instr' => 'Para incluír esta consulta en línea dentro de una wiki use el código siguiente:',
@@ -3627,6 +3639,7 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
  * @author YaronSh
  */
 $messages['he'] = array(
+	'smw-desc' => 'הופכת את הוויקי שלכם לנגיש יותר - עבור מכונות "וגם" עבור בני אדם ([http://semantic-mediawiki.org/wiki/Help:User_manual תיעוד מקוון])',
 	'smw_edithelp' => 'עזרה בנושא עריכת יחסים ותכונות',
 	'smw_viewasrdf' => 'הזנת RDF',
 	'smw_finallistconjunct' => ', וגם',
@@ -3653,8 +3666,15 @@ $messages['he'] = array(
 	'smw_printername_broadtable' => 'טבלה רחבה',
 	'smw_printername_template' => 'תבנית',
 	'smw_paramdesc_limit' => 'מספר התוצאות המרבי להחזרה',
+	'smw_paramdesc_headers' => 'הצגת הכותרות/שמות המאפיינים',
 	'smw_paramdesc_link' => 'הצגת ערכים כקישורים',
+	'smw_paramdesc_intro' => 'הטקסט להצגה לפני תוצאות התשאול, אם יש כאלו',
+	'smw_paramdesc_outro' => 'הטקסט להצגה לאחר תוצאות התשאול, אם יש כאלו',
+	'smw_paramdesc_default' => 'הטקסט להצגה אם אין תוצאות תשאול',
 	'smw_paramdesc_searchlabel' => 'הטקסט בקישור אל התוצאות',
+	'smw_paramdesc_sep' => 'המפריד בין הערכים',
+	'smw_paramdesc_columns' => 'מספר העמודות להצגת התוצאות (ברירת המחדל היא 3)',
+	'smw_paramdesc_embedformat' => 'תגית ה־HTML המשמשת להגדרת כותרות',
 	'smw_paramdesc_embedonly' => 'לא יוצגו כותרות',
 	'smw_paramdesc_rsstitle' => 'הטקסט שישמש ככותרת ההזנה',
 	'smw_paramdesc_rssdescription' => 'הטקסט שישמש לתיאור ההזנה',
@@ -9214,6 +9234,13 @@ $messages['tet'] = array(
  */
 $messages['tg-cyrl'] = array(
 	'smw_sbv_value' => 'Қимат',
+);
+
+/** Turkmen (Türkmençe)
+ * @author Hanberke
+ */
+$messages['tk'] = array(
+	'smw_browse_go' => 'Git',
 );
 
 /** Tagalog (Tagalog)
