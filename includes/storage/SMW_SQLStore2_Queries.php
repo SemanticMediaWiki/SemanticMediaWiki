@@ -838,12 +838,7 @@ class SMWSQLStore2QueryEngine {
 					} else {
 						$result['ORDER BY'] .= ', ';
 					}
-                    if ('RAND()' == $order){
-					    $result['ORDER BY'] .= " $order ";
-                    } else {
-                    	$result['ORDER BY'] .= $qobj->sortfields[$propkey] . " $order ";
-                    }
-
+				    $result['ORDER BY'] .= ('RANDOM' == $order)?' RAND() ':($qobj->sortfields[$propkey] . " $order ");
 				}
 			}
 		}

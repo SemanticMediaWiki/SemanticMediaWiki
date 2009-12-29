@@ -125,13 +125,13 @@ class SMWQueryProcessor {
 				if ( ('descending' == $order) || ('reverse' == $order) || ('desc' == $order) ) {
 					$orders[$key] = 'DESC';
 				} elseif ( ('random' == $order) || ('rand' == $order) ) {
-					$orders[$key] = 'RAND()';
+					$orders[$key] = 'RANDOM';
 				} else {
 					$orders[$key] = 'ASC';
 				}
 			}
 		} else {
-			$orders = Array();
+			$orders = array();
 		}
 		reset($orders);
 		// get distance to search for location-based queries
@@ -142,7 +142,7 @@ class SMWQueryProcessor {
 
 		if ( array_key_exists('sort', $params) ) {
 			$query->sort = true;
-			$query->sortkeys = Array();
+			$query->sortkeys = array();
 			foreach ( explode( ',', trim($params['sort']) ) as $sort ) {
 				$sort = smwfNormalTitleDBKey( trim($sort) ); // slight normalisation
 				$order = current($orders);
