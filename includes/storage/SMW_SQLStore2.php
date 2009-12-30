@@ -407,7 +407,7 @@ class SMWSQLStore2 extends SMWStore {
 					if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) ) { // the quick way to find out if this is a numeric type
 						$value_column = $requestoptions->boundary->isNumeric()?'value_num':'value_xsd';
 					} else { // need to do more work to find out if this is a numeric type
-						$testval = SMWDatavalueFactory::newTypeIDValue($property->getPropertyTypeID());
+						$testval = SMWDataValueFactory::newTypeIDValue($property->getPropertyTypeID());
 						$value_column = $testval->isNumeric()?'value_num':'value_xsd';
 					}
 					$sql = 'p_id=' . $db->addQuotes($pid) .
@@ -982,7 +982,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ($requestoptions->offset > 0) {
 			$options .= ' OFFSET ' . $requestoptions->offset;
 		}
-		// NOTE: the query needs to do the fitlering of internal properties, else LIMIT is wrong
+		// NOTE: the query needs to do the filtering of internal properties, else LIMIT is wrong
 		$res = $db->query('(SELECT smw_id, smw_title, COUNT(*) as count, smw_sortkey FROM ' .
 		                  $db->tableName('smw_rels2') . ' INNER JOIN ' . $db->tableName('smw_ids') . ' ON p_id=smw_id WHERE smw_iw=' .
 		                  $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY smw_id,smw_title,smw_sortkey) UNION ' .
@@ -1161,7 +1161,7 @@ class SMWSQLStore2 extends SMWStore {
 		//   and occur only once (i.e. there is just one such property for the whoel wiki, and it has no type).
 		//   The namespace of those entries is the usual property namespace.
 		// * Rows with iw SMW_SQL2_SMWREDIIW are similar to normal entries for (internal) wiki pages, but the iw
-		//   indicates that the page is a redirect, the target of whihc should be sought using the smw_redi2 table.
+		//   indicates that the page is a redirect, the target of which should be sought using the smw_redi2 table.
 		// * The (unique) row with iw SMW_SQL2_SMWBORDERIW just marks the border between predefined ids (rows that
 		//   are reserved for hardcoded ids built into SMW) and normal entries. It is no object, but makes sure that
 		//   SQL's auto increment counter is high enough to not add any objects before that marked "border".
@@ -1589,15 +1589,14 @@ class SMWSQLStore2 extends SMWStore {
 	 * $msg, while $verbose indicates whether or not output is desired at all.
 	 */
 	public function reportProgress($msg, $verbose = true) {
-		if (!$verbose) {
-			return;
+		if ($verbose) {
+			if (ob_get_level() == 0) { // be sure to have some buffer, otherwise some PHPs complain
+				ob_start();
+			}
+			print $msg;
+			ob_flush();
+			flush();
 		}
-		if (ob_get_level() == 0) { // be sure to have some buffer, otherwise some PHPs complain
-			ob_start();
-		}
-		print $msg;
-		ob_flush();
-		flush();
 	}
 
 	/**
@@ -1608,8 +1607,16 @@ class SMWSQLStore2 extends SMWStore {
 	public static function getStorageMode($typeid) {
 		if (array_key_exists($typeid, SMWSQLStore2::$storage_mode)) {
 			return SMWSQLStore2::$storage_mode[$typeid];
-		} else {
-			return SMW_SQL2_ATTS2;
+		} else { // maybe an extension type; make an effort to guess suitable storage mode
+			$dv = SMWDataValueFactory::newTypeIDValue($typeid);
+			///TODO: More could be done here, this is just educated guessing; but better control of
+			/// storage modes suggests to do a general rewrite of the store as a first step (based on
+			/// data-level "table descriptions" instead of inline code)
+			if ($dv instanceof SMWWikiPageValue) {
+				return SMWSQLStore2::$storage_mode['_wpg'];
+			} else {
+				return SMW_SQL2_ATTS2;
+			}
 		}
 	}
 
