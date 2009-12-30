@@ -2,6 +2,10 @@ For a documentation of all features, see http://semantic-mediawiki.org
 
 == SMW 1.5.? ==
 
+* A new datatype "Telephone number" has been introduced for validating phone
+  numbers based on RFC 3966. Only global phone numbers are accepted, and no
+  vanity numbers (those containing letters) are allowed. Use Type:String if
+  you want to store more general strings as telephone numbers.
 * Support for additional parameters for ?printouts in inline queries, specified
   by |+parameter=value after the printout. Currently supported are
   *  limit: set the maximum number of values for this printout
