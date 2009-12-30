@@ -2,6 +2,12 @@ For a documentation of all features, see http://semantic-mediawiki.org
 
 == SMW 1.5.? ==
 
+* Support for additional parameters for ?printouts in inline queries, specified
+  by |+parameter=value after the printout. Currently supported are
+  *  limit: set the maximum number of values for this printout
+  *	 order: order values ascending or descending
+  *  align: right/center/left alignment for printouts in tables
+  *  index: directly address one value of a multi-valued (n-ary) property
 * Support for inverse properties: use "-" in front of property names anywhere to
   refer to the inverse direction of a property. Works in browsing interfaces,
   queries, and query output directives. In queries only for properties of Type:Page.
