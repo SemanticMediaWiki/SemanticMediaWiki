@@ -34,7 +34,8 @@ protected $m_DatatypeLabels = array(
 	'_dat' => 'תאריך',  // name of the datetime (calendar) type
 	'_ema' => 'דואל',  // name of the email (URI) type
 	'_uri' => 'כתובת כללית',  // name of the URL type
-	'_anu' => 'מזהה יחודי לפירוש'  // name of the annotation URI type (OWL annotation property)
+	'_anu' => 'מזהה יחודי לפירוש',  // name of the annotation URI type (OWL annotation property)
+	'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
 );
 
 protected $m_DatatypeAliases = array(

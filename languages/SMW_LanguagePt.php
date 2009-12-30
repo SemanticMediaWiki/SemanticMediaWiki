@@ -34,7 +34,8 @@ protected $m_DatatypeLabels = array(
 	'_dat' => 'Data',  // name of the datetime (calendar) type
 	'_ema' => 'Email',  // name of the email type (Portuguese does not have another word for this)
 	'_uri' => 'URL',  // name of the URI type
-	'_anu' => 'Anotação-URI'  // name of the annotation URI type (OWL annotation property)
+	'_anu' => 'Anotação-URI',  // name of the annotation URI type (OWL annotation property)
+	'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
 );
 
 protected $m_DatatypeAliases = array(

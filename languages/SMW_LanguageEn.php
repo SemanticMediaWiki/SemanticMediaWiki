@@ -37,14 +37,16 @@ protected $m_DatatypeLabels = array(
 	'_dat' => 'Date',  // name of the datetime (calendar) type
 	'_ema' => 'Email',  // name of the email type
 	'_uri' => 'URL',  // name of the URL type
-	'_anu' => 'Annotation URI'  // name of the annotation URI type (OWL annotation property)
+	'_anu' => 'Annotation URI',  // name of the annotation URI type (OWL annotation property)
+	'_tel' => 'Telephone number',  // name of the telephone (URI) type
 );
 
 protected $m_DatatypeAliases = array(
 	'URI'         => '_uri',
 	'Float'       => '_num',
 	'Integer'     => '_num',
-	'Enumeration' => '_str'
+	'Enumeration' => '_str',
+	'Phone number'=> '_tel',
 );
 
 protected $m_SpecialProperties = array(

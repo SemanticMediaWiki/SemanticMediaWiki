@@ -53,7 +53,8 @@ protected $m_DatatypeLabels = array(
 	'_dat' => 'Data',  // name of the datetime (calendar) type
 	'_ema' => 'Email',  // name of the email type
 	'_uri' => 'URL',  // name of the URL type
-	'_anu' => 'URI adnotacji'  // name of the annotation URI type (OWL annotation property)
+	'_anu' => 'URI adnotacji',  // name of the annotation URI type (OWL annotation property)
+	'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
 );
 
 protected $m_DatatypeAliases = array(
