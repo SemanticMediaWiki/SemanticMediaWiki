@@ -304,6 +304,8 @@ class SMWQueryProcessor {
 			wfProfileOut('SMWQueryProcessor::getResultFromQuery (SMW)');
 			return $result;
 		} else { // result for counting or debugging is just a string
+			if (array_key_exists( 'intro', $params ))  $res = str_replace('_',' ',$params['intro']) . $res;
+			if (array_key_exists( 'outro', $params ))  $res .= str_replace('_',' ',$params['outro']);
 			wfProfileOut('SMWQueryProcessor::getResultFromQuery (SMW)');
 			return $res . smwfEncodeMessages($query->getErrors());
 		}
