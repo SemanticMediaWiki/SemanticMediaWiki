@@ -182,7 +182,7 @@ class SMWURIValue extends SMWDataValue {
 				$this->m_url = $this->m_uri;
 			}
 		} elseif ($this->m_mode == SMW_URI_MODE_TEL) {
-			$this->m_url = $this->m_value;
+			$this->m_url = '';
 			if (strpos($this->m_uri,'tel:') === 0) { // catch inconsistencies in DB, should usually be the case
 				$this->m_caption = substr($this->m_value, 4);
 				$this->m_value = $this->m_caption;
