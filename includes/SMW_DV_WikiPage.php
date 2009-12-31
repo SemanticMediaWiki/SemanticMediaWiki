@@ -252,6 +252,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			}
 		}
 		if ($this->m_title === NULL) { // should not normally happen, but anyway ...
+			global $wgContLang;
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_notitle', $wgContLang->getNsText($this->m_namespace) . ':' . $this->m_dbkeyform));
 			$this->m_dbkeyform = '';
