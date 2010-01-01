@@ -1965,6 +1965,7 @@ $messages['de-formal'] = array(
 	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht angewendet werden, da die Wiki-Konfiguration offline berechnet werden muss.
 Falls das Problem nicht nach einiger Zeit verschwindet, bitten Sie Ihren Seitenverwalter, dieses Konzept zu ermöglichen.',
 	'smw_exportrdf_docu' => 'Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte geben Sie die Namen der gewünschten Seiten <i>zeilenweise</i> ein.',
+	'smw_ask_embed_instr' => 'Um diese Abfrage in eine Wiki-Seite einzubauen, nutzen Sie den unten stehenden Code.',
 	'smw_browse_article' => 'Bitte geben Sie den Titel einer Seite ein.',
 	'smw_smwadmin_updatestarted' => 'Ein neuer Update-Prozess zur Aktualisierung der semantischen Daten wurde gestartet.
 Alle gespeicherten Daten werden neu erstellt oder repariert, sofern nötig.
@@ -9503,6 +9504,7 @@ $messages['tg-cyrl'] = array(
  */
 $messages['tk'] = array(
 	'smw_browse_go' => 'Git',
+	'smw_result_prev' => 'Öňki',
 );
 
 /** Tagalog (Tagalog)
@@ -9816,6 +9818,7 @@ $messages['tr'] = array(
 	'smw_browse_show_incoming' => 'buraya bağlantı veren özellikleri göster',
 	'smw_browse_hide_incoming' => 'buraya bağlantı veren özellikleri gizle',
 	'smw_browse_no_outgoing' => 'Bu sayfa özelliğe sahip değil.',
+	'smw_browse_no_incoming' => 'Bu sayfaya bağlantı veren özellik yok.',
 	'pageproperty' => 'Sayfa özelliği arama',
 	'smw_pp_from' => 'Şu sayfadan:',
 	'smw_pp_type' => 'Özellik',
@@ -9827,6 +9830,9 @@ $messages['tr'] = array(
 	'smwadmin' => 'Anlamsal MediaWiki için hizmetlilik fonksiyonları',
 	'smw_smwadmin_settingup' => 'Anlamsal MediaWiki için saklama ayarlanıyor',
 	'smw_smwadmin_setupsuccess' => 'Saklama motoru başarıyla ayarlandı.',
+	'smw_smwadmin_updatenotstarted' => 'Yürürlükte olan bir güncelleme işlemi mevcut.
+Bir diğeri oluşturulmuyor.',
+	'smw_smwadmin_updatestopped' => 'Tüm mevcut güncelleme işlemleri durduruldu.',
 	'smw_smwadmin_announce' => 'Vikinizi duyurun',
 	'smw_smwadmin_datarefresh' => 'Veri onarımı ve yükseltmesi',
 	'smw_smwadmin_datarefreshbutton' => 'Veri güncellemesini başlat',
