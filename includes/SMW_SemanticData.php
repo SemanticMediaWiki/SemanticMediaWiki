@@ -39,9 +39,10 @@ class SMWSemanticData {
 	static protected $m_propertyprefix = false;
 
 	/// SMWWikiPageValue object that is the subject of this container.
+	/// Subjects that are NULL are used to represent "internal objects" only.
 	protected $subject;
 
-	public function __construct(SMWWikiPageValue $subject, $noduplicates = true) {
+	public function __construct($subject, $noduplicates = true) {
 		$this->subject = $subject;
 		$this->m_noduplicates = $noduplicates;
 		$this->stubobject = false;
@@ -99,6 +100,25 @@ class SMWSemanticData {
 		} else {
 			return array();
 		}
+	}
+
+	/**
+	 * Generate a hash value to simplify the comparison of this data container with other
+	 * containers. The hash uses PHP's md5 implementation, which is among the fastest hash
+	 * algorithms that PHP offers.
+	 */
+	public function getHash() {
+		$ctx = hash_init('md5');
+		if ($this->subject !== NULL) { // here and below, use "_#_" to separate values; really not much care needed here
+			hash_update($ctx, '_#_' . $this->subject->getHash());
+		}
+		foreach ($this->getProperties() as $property) {
+			hash_update($ctx, '_#_' . $property->getHash() . '##');
+			foreach ($this->getPropertyValues($property) as $dv) {
+				hash_update($ctx, '_#_' . $dv->getHash());
+			}
+		}
+		return hash_final($ctx);
 	}
 
 	/**
