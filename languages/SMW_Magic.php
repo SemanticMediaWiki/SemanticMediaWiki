@@ -28,6 +28,19 @@ $magicWords['ar'] = array(
 	'info'                  => array( '0', 'معلومات', 'info' ),
 	'concept'               => array( '0', 'مبدأ', 'concept' ),
 	'set'                   => array( '0', 'مجموعة', 'set' ),
+	'set_recurring_event'   => array( '0', 'ضبط_حدث_جاري', 'set_recurring_event' ),
+	'declare'               => array( '0', 'إعلان', 'declare' ),
+	'SMW_NOFACTBOX'         => array( '0', '__لا_صندوق_حقيقة__', '__NOFACTBOX__' ),
+	'SMW_SHOWFACTBOX'       => array( '0', '__عرض_صندوق_الحقيقة__', '__SHOWFACTBOX__' ),
+);
+
+$magicWords['arz'] = array(
+	'ask'                   => array( '0', 'سؤال', 'ask' ),
+	'show'                  => array( '0', 'عرض', 'show' ),
+	'info'                  => array( '0', 'معلومات', 'info' ),
+	'concept'               => array( '0', 'مبدأ', 'concept' ),
+	'set'                   => array( '0', 'مجموعة', 'set' ),
+	'set_recurring_event'   => array( '0', 'ضبط_حدث_جاري', 'set_recurring_event' ),
 	'declare'               => array( '0', 'إعلان', 'declare' ),
 	'SMW_NOFACTBOX'         => array( '0', '__لا_صندوق_حقيقة__', '__NOFACTBOX__' ),
 	'SMW_SHOWFACTBOX'       => array( '0', '__عرض_صندوق_الحقيقة__', '__SHOWFACTBOX__' ),
@@ -45,6 +58,7 @@ $magicWords['ml'] = array(
 	'info'                  => array( '0', 'വിവരം', 'info' ),
 	'concept'               => array( '0', 'ആശയം', 'concept' ),
 	'set'                   => array( '0', 'ഗണം', 'set' ),
+	'declare'               => array( '0', 'പ്രഖ്യാപിക്കുക', 'declare' ),
 );
 
 $magicWords['mr'] = array(
