@@ -271,8 +271,18 @@ class SMWSQLStore2QueryEngine {
 	/**
 	 * Using a preprocessed internal query description referenced by $rootid, compute
 	 * the proper result instance output for the given query.
+	 * @todo The SQL standard requires us to select all fields by which we sort, leading
+	 * to wrong results regarding the given limit: the user expects limit to be applied to
+	 * the number of distinct pages, but we can use DISTINCT only to whole rows. Thus, if
+	 * rows contain sortfields, then pages with multiple values for that field are distinct
+	 * and appear multiple times in the result. Filtering duplicates in post processing
+	 * would still allow such duplicates to push aside wanted values, leading to less than
+	 * "limit" results although there would have been "limit" really distinct results. For
+	 * this reason, we select sortfields only for POSTGRES. MySQL is able to perform what
+	 * we want here. It would be nice if we could eliminate the bug in POSTGRES as well.
 	 */
 	protected function getInstanceQueryResult($query,$rootid) {
+		global $wgDBtype;
 		wfProfileIn('SMWSQLStore2Queries::getInstanceQueryResult (SMW)');
 		$qobj = $this->m_queries[$rootid];
 		if ($qobj->joinfield === '') { // empty result, no query needed
@@ -281,10 +291,11 @@ class SMWSQLStore2QueryEngine {
 			return $result;
 		}
 		$sql_options = $this->getSQLOptions($query,$rootid);
-		$sortfields = implode($qobj->sortfields,','); // also select those, required in standard SQL (though MySQL is quite about it)
+		$sortfields = implode($qobj->sortfields,','); // selecting those is required in standard SQL (but MySQL does not require it)
 		$res = $this->m_dbs->select($this->m_dbs->tableName($qobj->jointable) . " AS $qobj->alias" . $qobj->from,
-			"DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw,$qobj->alias.smw_sortkey AS sortkey"
-			. ($sortfields?',':'') . $sortfields, $qobj->where, 'SMW::getQueryResult', $sql_options);
+			"DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw,$qobj->alias.smw_sortkey AS sortkey" .
+			  ($wgDBtype=='postgres'?( ($sortfields?',':'') . $sortfields ) : ''),
+			$qobj->where, 'SMW::getQueryResult', $sql_options);
 
 		$qr = array();
 		$count = 0;
