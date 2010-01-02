@@ -47,6 +47,7 @@ class SMWPrintRequest {
 			$this->m_outputformat = 'x'; // changed default for Boolean case
 		}
 		if ($this->m_data instanceof SMWDataValue) {
+			//$this->m_data = clone $data; // we assume that the caller denotes the object ot us; else he needs provide us with a clone
 			$this->m_data->setCaption($label);
 		}
 		if (NULL != $params) $m_params = $params;

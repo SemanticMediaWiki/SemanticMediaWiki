@@ -275,7 +275,9 @@ class SMWSearchByProperty extends SpecialPage {
 		$options->limit = $this->limit+1;
 		$options->sort = true;
 
-		$printrequest = new SMWPrintRequest(SMWPrintRequest::PRINT_PROP, "", $this->property);
+		// Note: printrequests change the caption of properties they get (they expect properties to be given to them)
+		// Since we want to continue using the property for our purposes, we give a clone to the print request.
+		$printrequest = new SMWPrintRequest(SMWPrintRequest::PRINT_PROP, '', clone $this->property);
 
 		$params = array();
 		$params['format'] = 'ul';

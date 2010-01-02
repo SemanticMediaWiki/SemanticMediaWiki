@@ -83,6 +83,15 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
+	 * We use the internal wikipage object to store some of this objects data.
+	 * Clone it to make sure that data can be modified independelty from the
+	 * original object's content.
+	 */
+	public function __clone() {
+		if ($this->m_wikipage !== NULL) $this->m_wikipage = clone $this->m_wikipage;
+	}
+
+	/**
 	 * Extended parsing function to first check whether value refers to pre-defined
 	 * property, resolve aliases, and set internal property id accordingly.
 	 * @todo Accept/enforce property namespace.
@@ -393,6 +402,13 @@ class SMWPropertyValue extends SMWDataValue {
 				'_CONC'  =>  array('__con',false),
 				'_MDAT'  =>  array('_dat',false),
 				'_ERRP'  =>  array('_wpp',false),
+				'_LIST'  =>  array('__typ',true),
+				// "virtual" properties for encoding lists in n-ary datatypes (their type must never be used, hence use __err)
+				'_1'     =>  array('__err',false),
+				'_2'     =>  array('__err',false),
+				'_3'     =>  array('__err',false),
+				'_4'     =>  array('__err',false),
+				'_5'     =>  array('__err',false),
 			);
 		wfRunHooks( 'smwInitProperties' );
 	}
