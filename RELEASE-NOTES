@@ -4,7 +4,7 @@ For a documentation of all features, see http://semantic-mediawiki.org
 
 * The "like" comparator ~ in inline queries is now enabled by default. To use
   the former setting, use $smwgQComparators = '<|>|!'; in your LocalSettings.php.
-* A new datatype "Telephone number" has been introduced for validating phone
+* A new datatype, "Telephone number", has been introduced for validating phone
   numbers based on RFC 3966. Only global phone numbers are accepted, and no
   vanity numbers (those containing letters) are allowed. Use Type:String if
   you want to store more general strings as telephone numbers.
@@ -17,8 +17,12 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Support for inverse properties: use "-" in front of property names anywhere to
   refer to the inverse direction of a property. Works in browsing interfaces,
   queries, and query output directives. In queries only for properties of Type:Page.
-* Compatibility to new MediaWiki skin "vector"
+* Compatibility with new MediaWiki skin "Vector"
 * Removed support for backwards compatibility to SMW <1.0 ($smwgSMWBetaCompatible).
+* The page Special:Ask was overhauled to include inputs for entering values
+for the selected format's parameters, and to use Ajax where possible
+* To that end, each format's query printer now includes a getParameters()
+function that supplies the name and attributes of each the format's parameters
 
 == SMW 1.4.3 ==
 
