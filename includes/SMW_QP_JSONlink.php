@@ -146,6 +146,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 			}
 			$link->setParameter('json','format');
 			$result = $link->getText($outputmode,$this->mLinker);
+			$this->isHTML = ($outputmode == SMW_OUTPUT_HTML); // yes, our code can be viewed as HTML if requested, no more parsing needed
 		}
 
 		return $result;
