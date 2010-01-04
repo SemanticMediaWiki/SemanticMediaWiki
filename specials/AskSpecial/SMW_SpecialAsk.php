@@ -157,8 +157,7 @@ class SMWAskPage extends SpecialPage {
 		}
 		$this->m_params['limit'] = min($this->m_params['limit'], $smwgQMaxInlineLimit);
 
-		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) != '' ) || ('' == $this->m_querystring );
-$this->m_editquery = true;
+		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) == 'yes' ) || ('' == $this->m_querystring );
 	}
 
 	protected function makeHTMLResult() {
@@ -289,8 +288,20 @@ END;
 			}
 			$printer = SMWQueryProcessor::getResultPrinter($this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE);
 			$result_mime = $printer->getMimeType($res);
+			global $wgRequest;
+			$hidequery = $wgRequest->getVal( 'eq' ) == 'no';
+			// if it's an export format (like CSV, JSON, etc.), 
+			// don't actually export the data if 'eq' is set to
+			// either 'yes' or 'no' in the query string - just
+			// show the link instead
+			if ($this->m_editquery || $hidequery)
+				$result_mime = false;
 			if ($result_mime == false) {
 				if ( $res->getCount() > 0 ) {
+					if ($this->m_editquery)
+						$urltail .= '&eq=yes';
+					if ($hidequery)
+						$urltail .= '&eq=no';
 					$navigation = $this->getNavigationBar($res, $urltail);
 					$result .= '<div style="text-align: center;">' . "\n" . $navigation . "\n</div>\n";
 					$query_result = $printer->getResult($res, $this->m_params,SMW_OUTPUT_HTML);
@@ -399,16 +410,18 @@ END;
 			$result .= '<fieldset><legend>' . wfMsg('smw_ask_otheroptions') . "</legend>\n";
 			$result .= "<div id=\"other_options\">" . self::showFormatOptions($this->m_params['format'], $this->m_params) . "</div>";
 			$result .= "</fieldset>\n";
+			$urltail = str_replace('&eq=yes', '', $urltail) . '&eq=no';
 
 			$result .= '<br /><input type="submit" value="' . wfMsg('smw_ask_submit') . '"/>' .
 				'<input type="hidden" name="eq" value="yes"/>' .
-					' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '" rel="nofollow">' . wfMsg('smw_ask_hidequery') . '</a> ' .
+					' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask', $urltail)) . '" rel="nofollow">' . wfMsg('smw_ask_hidequery') . '</a> ' .
 					SMWAskPage::$pipeseparator .' '.SMWAskPage::getEmbedToggle() .
 					SMWAskPage::$pipeseparator .
 					' <a href="' . htmlspecialchars(wfMsg('smw_ask_doculink')) . '">' . wfMsg('smw_ask_help') . '</a>' .
 				"\n</form>";
 		} else { // if $this->m_editquery == false
-			$result .= '<p><a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail . '&eq=yes')) . '" rel="nofollow">' . wfMsg('smw_ask_editquery') . '</a> '.
+			$urltail = str_replace('&eq=no', '', $urltail) . '&eq=yes';
+			$result .= '<p><a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask', $urltail)) . '" rel="nofollow">' . wfMsg('smw_ask_editquery') . '</a> '.
 				SMWAskPage::$pipeseparator.' '.SMWAskPage::getEmbedToggle().'</p>';
 				'<input type="hidden" name="eq" value="yes"/>' .
 					' <a href="' . htmlspecialchars($skin->makeSpecialUrl('Ask',$urltail)) . '" rel="nofollow">' . wfMsg('smw_ask_hidequery') . '</a> ' .
