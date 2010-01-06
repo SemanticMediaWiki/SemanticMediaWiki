@@ -5775,7 +5775,7 @@ Aanforderung dorschjeiht, dann froch Dinge Wiki-Köbes donoh, noh dämm Kunzäp.
 	'smw_paramdesc_searchlabel' => 'Dä Täx för em Lengk för wat eruß kütt',
 	'smw_paramdesc_sep' => 'Wat zwesche de Wääte schtonn sull',
 	'smw_paramdesc_template' => 'Dä Name vun ene Schabloon, för de Ußjabe met aanzzeije',
-	'smw_paramdesc_columns' => 'De Aanzahl Schpallde för aanzezije, wad eruß kütt — der Schtandatt wöhr 3',
+	'smw_paramdesc_columns' => 'De Aanzahl Schpallde för aanzezije, wad eruß kütt — der Schtandatt wöhr $1',
 	'smw_paramdesc_embedformat' => 'De <i lang="en">html</i>-Befähle för de Övverschreffte ze makeere',
 	'smw_paramdesc_embedonly' => 'Kein Övverschreffte aanzeije',
 	'smw_paramdesc_rsstitle' => 'Dä Täx met dämm dä Kannaal beschrevve wääde sull',
