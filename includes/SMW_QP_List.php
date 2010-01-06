@@ -192,7 +192,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		}
 		$params[] = array('name' => 'template', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_template'));
 		if (! $plainlist) {
-			$params[] = array('name' => 'columns', 'type' => 'int', 'description' => wfMsg('smw_paramdesc_columns'));
+			$params[] = array('name' => 'columns', 'type' => 'int', 'description' => wfMsg('smw_paramdesc_columns', 1));
 		}
 		return $params;
 	}
