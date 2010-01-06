@@ -342,26 +342,10 @@ class SMWQueryParser {
 						}
 					} ///NOTE: at this point, we normally already read one more chunk behind the value
 
-					if ( ($typeid == '__nry') && !$inverse ) { // nary value
-						$dv = SMWDataValueFactory::newPropertyObjectValue($property);
-						$dv->acceptQuerySyntax();
-						$dv->setUserValue($value);
-						$vl = $dv->getValueList();
-						if ($vl !== null) {
-							$innerdesc = $this->addDescription($innerdesc, $vl, false);
-						}
-					} else { // unary value
-						$comparator = SMW_CMP_EQ;
-						SMWQueryParser::prepareValue($value, $comparator);
-						$dv = SMWDataValueFactory::newPropertyObjectValue($property, $value);
-						if (!$dv->isValid()) {
-							$this->m_errors = $this->m_errors + $dv->getErrors();
-							$vd = new SMWThingDescription();
-						} else {
-							$vd = new SMWValueDescription($dv, $comparator);
-						}
-						$innerdesc = $this->addDescription($innerdesc, $vd, false);
-					}
+					$dv = SMWDataValueFactory::newPropertyObjectValue($property);
+					$vd = $dv->getQueryDescription($value);
+					$innerdesc = $this->addDescription($innerdesc, $vd, false);
+					$this->m_errors = $this->m_errors + $dv->getErrors();
 			}
 			$continue = ($chunk == '||');
 		}
@@ -378,36 +362,6 @@ class SMWQueryParser {
 		}
 		$result = $innerdesc;
 		return $this->finishLinkDescription($chunk, false, $result, $setNS, $label);
-	}
-
-
-	/**
-	 * Prepare a single value string, possibly extracting comparators. $value is
-	 * changed to consist only of the remaining effective value string (without the
-	 * comparator).
-	 */
-	static public function prepareValue(&$value, &$comparator) {
-		global $smwgQComparators;
-		$list = preg_split('/^(' . $smwgQComparators . ')/u',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
-		$comparator = SMW_CMP_EQ;
-		if (count($list) == 3) { // initial comparator found ($list[0] should be empty)
-			$value = $list[2];
-			switch ($list[1]) {
-				case '<':
-					$comparator = SMW_CMP_LEQ;
-				break;
-				case '>':
-					$comparator = SMW_CMP_GEQ;
-				break;
-				case '!':
-					$comparator = SMW_CMP_NEQ;
-				break;
-				case '~':
-					$comparator = SMW_CMP_LIKE;
-				break;
-				//default: not possible
-			}
-		}
 	}
 
 	/**

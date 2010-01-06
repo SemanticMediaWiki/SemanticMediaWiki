@@ -256,6 +256,58 @@ abstract class SMWDataValue {
 	 */
 	abstract protected function parseDBkeys($args);
 
+///// Query support /////
+
+	/**
+	 * Create an SMWDescription object based on a value string that was entered
+	 * in a query. Turning inputs that a user enters in place of a value within
+	 * a query string into query conditions is often a standard procedure. The
+	 * processing must take comparators like "<" into account, but otherwise
+	 * the normal parsing function can be used. However, there can be datatypes
+	 * where processing is more complicated, e.g. if the input string contains
+	 * more than one value, each of which may have comparators, as in
+	 * SMWListValue. In this case, it makes sense to overwrite this method.
+	 * Another reason to do this is to add new forms of comparators or new ways
+	 * of entering query conditions.
+	 *
+	 * The resulting SMWDescription may or may not make use of the datavalue
+	 * object that this function was called on, so it must be ensured that this
+	 * value is not used elsewhere when calling this method. The function can
+	 * return SMWThingDescription to not impose any condition, e.g. if parsing
+	 * failed. Error messages of this SMWDataValue object are propagated.
+	 */
+	public function getQueryDescription($value) {
+		$comparator = SMW_CMP_EQ;
+		SMWDataValue::prepareValue($value, $comparator);
+		$this->setUserValue($value);
+		if (!$this->isValid()) {
+			return new SMWThingDescription();
+		} else {
+			return new SMWValueDescription($this, $comparator);
+		}
+	}
+
+	/**
+	 * Helper function for getQueryDescription() that prepares a single value
+	 * string, possibly extracting comparators. $value is changed to consist
+	 * only of the remaining effective value string (without the comparator).
+	 */
+	static protected function prepareValue(&$value, &$comparator) {
+		global $smwgQComparators;
+		$list = preg_split('/^(' . $smwgQComparators . ')/u',$value, 2, PREG_SPLIT_DELIM_CAPTURE);
+		$comparator = SMW_CMP_EQ;
+		if (count($list) == 3) { // initial comparator found ($list[0] should be empty)
+			$value = $list[2];
+			switch ($list[1]) {
+				case '<': $comparator = SMW_CMP_LEQ; break;
+				case '>': $comparator = SMW_CMP_GEQ; break;
+				case '!': $comparator = SMW_CMP_NEQ; break;
+				case '~': $comparator = SMW_CMP_LIKE; break;
+				//default: not possible
+			}
+		}
+	}
+
 ///// Get methods /////
 
 

@@ -18,28 +18,28 @@ class SMWListValue extends SMWContainerValue {
 
 	/// cache for datavalues of types belonging to this object
 	private $m_typevalues = null;
-	/// Should this DV operate on query syntax (special mode for parsing queries in a compatible fashion)
-	private $m_querysyntax = false;
-	/// Array of comparators as might be found in query strings (based on inputs like >, <, etc.)
-	private $m_comparators;
 
 	protected function parseUserValue($value) {
 		$this->m_data->clear();
-		$this->m_comparators = array(); // only for query mode
+		$this->parseUserValueOrQuery($value,false);
+	}
+
+	protected function parseUserValueOrQuery($value,$querymode) {
 		if ($value == '') { /// TODO internalionalize
 			$this->addError('No values specified.');
-			return;
+			return $querymode?new SMWThingDescription():$this->m_data;
 		}
 
+		$subdescriptions = array(); // only used for query mode
 		$types = $this->getTypeValues();
 		$values = preg_split('/[\s]*;[\s]*/u', trim($value));
 		$vi = 0; // index in value array
 		$empty = true;
 		for ($i = 0; $i < max(5,count($types)); $i++) { // iterate over slots
 			// special handling for supporting query parsing
-			if ($this->m_querysyntax) {
+			if ($querymode) {
 				$comparator = SMW_CMP_EQ;
-				SMWQueryParser::prepareValue($values[$vi], $comparator);
+				SMWDataValue::prepareValue($values[$vi], $comparator);
 			}
 			// generating the DVs:
 			if ( (count($values) > $vi) &&
@@ -48,12 +48,14 @@ class SMWListValue extends SMWContainerValue {
 			} elseif (array_key_exists($vi,$values) && array_key_exists($i,$types)) { // some values left, try next slot
 				$dv = SMWDataValueFactory::newTypeObjectValue($types[$i], $values[$vi]);
 				if ($dv->isValid()) { // valid DV: keep
-					$this->m_data->addPropertyObjectValue(SMWPropertyValue::makeProperty('_' . ($i+1)), $dv);
+					$property = SMWPropertyValue::makeProperty('_' . ($i+1));
+					if ($querymode) {
+						$subdescriptions[] = new SMWSomeProperty($property, new SMWValueDescription($dv,$comparator));
+					} else {
+						$this->m_data->addPropertyObjectValue($property, $dv);
+					}
 					$vi++;
 					$empty = false;
-					if ($this->m_querysyntax) { // keep comparator for later querying
-						$this->m_comparators[$i] = $comparator;
-					}
 				} elseif ( (count($values)-$vi) == (count($types)-$i) ) {
 					// too many errors: keep this one to have enough slots left
 					$this->m_data->addPropertyObjectValue(SMWPropertyValue::makeProperty('_' . ($i+1)), $dv);
@@ -64,6 +66,9 @@ class SMWListValue extends SMWContainerValue {
 		}
 		if ($empty) { /// TODO internalionalize
 			$this->addError('No values specified.');
+		}
+		if ($querymode) {
+			return $empty?new SMWThingDescription():new SMWConjunction($subdescriptions);
 		}
 	}
 
@@ -89,6 +94,14 @@ class SMWListValue extends SMWContainerValue {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Overwrite SMWDataValue::getQueryDescription() to be able to process
+	 * comparators between all values.
+	 */
+	public function getQueryDescription($value) {
+		return $this->parseUserValueOrQuery($value,true);
 	}
 
 	public function getShortWikiText($linked = null) {
@@ -178,6 +191,7 @@ class SMWListValue extends SMWContainerValue {
 			$dv = reset($this->m_data->getPropertyValues($property));
 			$result[$i-1] = ($dv instanceof SMWDataValue)?$dv:null;
 		}
+		return $result;
 	}
 
 ////// Internal helper functions
@@ -212,13 +226,6 @@ class SMWListValue extends SMWContainerValue {
 	}
 
 ////// Custom functions for old n-aries; may become obsolete.
-
-	/**
-	 * Change to query syntax mode.
-	 */
-	public function acceptQuerySyntax() {
-		$this->m_querysyntax = true;
-	}
 
 	/**
 	 * Return the array (list) of datatypes that the individual entries of this datatype consist of.
