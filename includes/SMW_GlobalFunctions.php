@@ -14,7 +14,7 @@
  * @defgroup SMW Semantic MediaWiki
  */
 
-define('SMW_VERSION','1.5g-SVN');
+define('SMW_VERSION','1.5h-SVN');
 
 // constants for displaying the factbox
 define('SMW_FACTBOX_HIDDEN', 1);
@@ -133,15 +133,16 @@ function enableSemantics($namespace = null, $complete = false) {
 	$wgAutoloadClasses['SMWCsvResultPrinter']       = $smwgIP . '/includes/SMW_QP_CSV.php';
 	$wgAutoloadClasses['SMWJSONResultPrinter']      = $smwgIP . '/includes/SMW_QP_JSONlink.php';
 	//// datavalues
-	$wgAutoloadClasses['SMWDataValueFactory']       = $smwgIP . '/includes/SMW_DataValueFactory.php';
-	$wgAutoloadClasses['SMWDataValue']              = $smwgIP . '/includes/SMW_DataValue.php';
-	$wgAutoloadClasses['SMWErrorvalue']             = $smwgIP . '/includes/SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWDataValueFactory'] =  $smwgIP . '/includes/SMW_DataValueFactory.php';
+	$wgAutoloadClasses['SMWDataValue']        =  $smwgIP . '/includes/SMW_DataValue.php';
+	$wgAutoloadClasses['SMWContainerValue']   =  $smwgIP . '/includes/SMW_DV_Container.php';
+	$wgAutoloadClasses['SMWListValue']        =  $smwgIP . '/includes/SMW_DV_List.php';
+	$wgAutoloadClasses['SMWErrorvalue']       =  $smwgIP . '/includes/SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWStringValue']      =  $smwgIP . '/includes/SMW_DV_String.php';
 	$wgAutoloadClasses['SMWWikiPageValue']    =  $smwgIP . '/includes/SMW_DV_WikiPage.php';
 	$wgAutoloadClasses['SMWPropertyValue']    =  $smwgIP . '/includes/SMW_DV_Property.php';
 	$wgAutoloadClasses['SMWURIValue']         =  $smwgIP . '/includes/SMW_DV_URI.php';
 	$wgAutoloadClasses['SMWTypesValue']       =  $smwgIP . '/includes/SMW_DV_Types.php';
-	$wgAutoloadClasses['SMWNAryValue']        =  $smwgIP . '/includes/SMW_DV_NAry.php';
 	$wgAutoloadClasses['SMWErrorValue']       =  $smwgIP . '/includes/SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWNumberValue']      =  $smwgIP . '/includes/SMW_DV_Number.php';
 	$wgAutoloadClasses['SMWTemperatureValue'] =  $smwgIP . '/includes/SMW_DV_Temperature.php';
