@@ -219,17 +219,19 @@ class SMWExporter {
 	/**
 	 * Determine what kind of OWL property some SMW property should be exported as.
 	 * The input is an SMWTypesValue object, a typeid string, or empty (use default)
+	 * @todo An improved mechanism for selecting property types here is needed.
 	 */
 	static public function getOWLPropertyType($type = '') {
-		/// TODO: improved mechanism for selecting property types is needed.
 		if ($type instanceof SMWTypesValue) {
-			$type = ($type->isUnary())?$type->getDBkey():'__nry';
+			$type = $type->getDBkey();
 		} elseif ($type == false) {
 			$type = '';
 		} // else keep $type
 		switch ($type) {
 			case '_anu': return 'AnnotationProperty';
-			case '': case '_wpg': case '_uri': case '_ema': case '__nry':
+			case '': case '_wpg': case '_wpp': case '_wpc': case '_wpf':
+			case '_uri': case '_ema': case '_tel': case '_lst': case '__typ':
+			case '__red': case '__spf': case '__spu':
 				return 'ObjectProperty';
 			default: return 'DatatypeProperty';
 		}
