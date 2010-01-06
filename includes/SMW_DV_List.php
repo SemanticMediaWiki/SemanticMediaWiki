@@ -18,7 +18,6 @@ class SMWListValue extends SMWContainerValue {
 
 	/// cache for datavalues of types belonging to this object
 	private $m_typevalues = NULL;
-
 	/// Should this DV operate on query syntax (special mode for parsing queries in a compatible fashion)
 	private $m_querysyntax = false;
 	/// Array of comparators as might be found in query strings (based on inputs like >, <, etc.)
@@ -131,7 +130,11 @@ class SMWListValue extends SMWContainerValue {
 		$this->m_typevalues = NULL;
 	}
 
-	///@todo Update (implementation below still from SMWNAryValue)
+	/**
+	 * @todo Since containers are always exported in a similar fashion, it
+	 * would be preferrable to have their export controlled where it happens,
+	 * and minimize the below special code.
+	 */
 	public function getExportData() {
 		if (!$this->isValid()) return NULL;
 
@@ -139,7 +142,7 @@ class SMWListValue extends SMWContainerValue {
 		$ed = new SMWExpData(SMWExporter::getSpecialElement('swivt','Container'));
 		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf','type'), $ed);
 		$count = 0;
-		foreach ($this->m_values as $value) {
+		foreach ($this->getDVs() as $value) {
 			$count++;
 			if ( ($value === NULL) || (!$value->isValid()) ) {
 				continue;
@@ -236,6 +239,24 @@ class SMWListValue extends SMWContainerValue {
 			}
 		}
 		return $this->m_typevalues;
+	}
+
+	/**
+	 * If valid and in querymode, build a suitable SMWValueList description from the
+	 * given input or return NULL if no such description was given. This requires the
+	 * input to be given to setUserValue(). Otherwise bad things will happen.
+	 */
+	public function getValueList() {
+		$vl = new SMWValueList();
+		if (!$this->isValid() || !$this->m_querysyntax) {
+			return NULL;
+		}
+		for ($i=0; $i < $this->m_count; $i++) {
+			if ($this->m_values[$i] !== NULL) {
+				$vl->setDescription($i,new SMWValueDescription($this->m_values[$i], $this->m_comparators[$i]));
+			}
+		}
+		return $vl;
 	}
 
 }
