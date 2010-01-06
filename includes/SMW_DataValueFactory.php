@@ -62,7 +62,7 @@ class SMWDataValueFactory {
 			$result = new SMWDataValueFactory::$m_typeclasses['__lin']($typeid);
 		} else { // type really unknown
 			wfLoadExtensionMessages('SemanticMediaWiki');
-			return new SMWErrorValue(wfMsgForContent('smw_unknowntype', $typevalue->getWikiValue() ), $value, $caption);
+			return new SMWErrorValue(wfMsgForContent('smw_unknowntype', $typeid ), $value, $caption);
 		}
 		if ($property !== NULL) $result->setProperty($property);
 		if ($value !== false) $result->setUserValue($value,$caption);
