@@ -289,7 +289,7 @@ class SMWPropertyValue extends SMWDataValue {
 			$result = SMWDataValueFactory::newTypeIDValue('__typ');
 			if (array_key_exists($this->m_propertyid, SMWPropertyValue::$m_propertytypes)) {
 				$result->setDBkeys(array(SMWPropertyValue::$m_propertytypes[$this->m_propertyid][0]));
-			} else { // fixed default for special properties
+			} else { // fixed default type (should rarely matter)
 				$result->setDBkeys(array('_str'));
 			}
 		}
@@ -298,14 +298,14 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * Quickly get the type id of some property without necessarily making another datavalue.
-	 * Note that this is not the same as getTypeID(), which returns the id of this property
-	 * datavalue.
+	 * Quickly get the type id of some property without necessarily making
+	 * another datavalue. Note that this is not the same as getTypeID(), which
+	 * returns the id of this property datavalue.
 	 */
 	public function getPropertyTypeID() {
 		if ($this->prop_typeid === NULL) {
 			$type = $this->getTypesValue();
-			$this->prop_typeid = $type->isUnary()?$type->getDBkey():'__nry';
+			$this->prop_typeid = $type->getDBkey();
 		}
 		return $this->prop_typeid;
 	}

@@ -13,6 +13,8 @@
  *   wiki values, in order to support speedy creation of datavalues in
  *   SMWDataValueFactory.
  *
+ * @todo This class has an own stubbing mechanism that is older than the
+ * current one used in SMWDataValue. It is confusing to have two.
  * @author Markus Krötzsch
  * @ingroup SMWDataValues
  */
@@ -190,10 +192,9 @@ class SMWTypesValue extends SMWDataValue {
 	/**
 	 * Convenience method to obtain the (single) DB key as a string (not in an array).
 	 * Provided since many callers can use this hash for type recognition and registry.
-	 *
 	 */
 	public function getDBkey() {
-		if ($this->m_xsdvalue === false) {
+		if ( $this->isvalid() && ($this->m_xsdvalue === false) ) {
 			$first = true;
 			$this->m_xsdvalue = '';
 			foreach ($this->m_typelabels as $label) {

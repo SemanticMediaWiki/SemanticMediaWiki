@@ -268,13 +268,13 @@ class SMWResultArray {
 			case SMWPrintRequest::PRINT_PROP:
 				$this->m_content = $this->m_store->getPropertyValues($this->m_result,$this->m_printrequest->getData(), $this->getRequestOptions(), $this->m_printrequest->getOutputFormat());
 				// Print one component of a multi-valued string.
-				// Known limitation: the printrequest still is of type __nry, so if printers check
+				// Known limitation: the printrequest still is of type _lst, so if printers check
 				// for this then they will not recognize that it returns some more concrete type
-				if (($this->m_printrequest->getTypeID() == '__nry') && ($this->m_printrequest->getParameter('index') !== false)) {
+				if (($this->m_printrequest->getTypeID() == '_lst') && ($this->m_printrequest->getParameter('index') !== false)) {
 					$pos = $this->m_printrequest->getParameter('index')-1;
 					$newcontent = array();
-					foreach ($this->m_content as $naryval) {
-						$dvs = $naryval->getDVs();
+					foreach ($this->m_content as $listdv) {
+						$dvs = $listdv->getDVs();
 						if ( (array_key_exists($pos,$dvs)) && ($dvs[$pos] !== NULL) ) {
 							$newcontent[] = $dvs[$pos];
 						}
