@@ -118,6 +118,67 @@ class SMWListValue extends SMWContainerValue {
 		return $this->makeOutputText(4);
 	}
 
+	/// @todo Allowed values for multi-valued properties are not supported yet.
+	protected function checkAllowedValues() {}
+
+	/**
+	 * Make sure that the content is reset in this case.
+	 * @todo This is not a full reset yet (the case that property is changed after a value
+	 * was set does not occur in the normal flow of things, hence this has low priority).
+	 */
+	public function setProperty(SMWPropertyValue $property) {
+		parent::setProperty($property);
+		$this->m_typevalues = NULL;
+	}
+
+	///@todo Update (implementation below still from SMWNAryValue)
+	public function getExportData() {
+		if (!$this->isValid()) return NULL;
+
+		$result = new SMWExpData(new SMWExpElement('', $this)); // bnode
+		$ed = new SMWExpData(SMWExporter::getSpecialElement('swivt','Container'));
+		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf','type'), $ed);
+		$count = 0;
+		foreach ($this->m_values as $value) {
+			$count++;
+			if ( ($value === NULL) || (!$value->isValid()) ) {
+				continue;
+			}
+			if (($value->getTypeID() == '_wpg') || ($value->getTypeID() == '_uri') || ($value->getTypeID() == '_ema')) {
+				$result->addPropertyObjectValue(
+				      SMWExporter::getSpecialElement('swivt','object' . $count),
+				      $value->getExportData());
+			} else {
+				$result->addPropertyObjectValue(
+				      SMWExporter::getSpecialElement('swivt','value' . $count),
+				      $value->getExportData());
+			}
+		}
+		return $result;
+	}
+
+////// Additional API for value lists
+
+	/**
+	 * Create a list (array with numeric keys) containing the datavalue objects
+	 * that this SMWListValue object holds. Values that are not present are set
+	 * to NULL, but the array still contains keys for each index from 0 through
+	 * 4. Note that the first index in the array is 0, not 1, and that the
+	 * declared length of the list is not taken into account: the size of the
+	 * result array is always 5.
+	 */
+	public function getDVs() {
+		if (!$this->isValid()) return array(0=>NULL,1=>NULL,2=>NULL,3=>NULL,4=>NULL);
+		$result = array();
+		for ($i=1; $i<6; $i++) {
+			$property = SMWPropertyValue::makeProperty("_$i");
+			$dv = reset($this->m_data->getPropertyValues($property));
+			$result[$i-1] = ($dv instanceof SMWDataValue)?$dv:NULL;
+		}
+	}
+
+////// Internal helper functions
+
 	private function makeOutputText($type = 0, $linker = NULL) {
 		if (!$this->isValid()) {
 			return ( ($type == 0)||($type == 1) )? '' : $this->getErrorText();
@@ -147,45 +208,7 @@ class SMWListValue extends SMWContainerValue {
 		}
 	}
 
-	/// @todo Allowed values for multi-valued properties are not supported yet.
-	protected function checkAllowedValues() {}
-
-	/**
-	 * Make sure that the content is reset in this case.
-	 * @todo This is not a full reset yet (the case that property is changed after a value
-	 * was set does not occur in the normal flow of things, hence thishas low priority).
-	 */
-	public function setProperty(SMWPropertyValue $property) {
-		parent::setProperty($property);
-		$this->m_typevalues = NULL;
-	}
-
-	public function getExportData() {
-		if (!$this->isValid()) return NULL;
-
-		$result = new SMWExpData(new SMWExpElement('', $this)); // bnode
-		$ed = new SMWExpData(SMWExporter::getSpecialElement('swivt','Container'));
-		$result->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf','type'), $ed);
-		$count = 0;
-		foreach ($this->m_values as $value) {
-			$count++;
-			if ( ($value === NULL) || (!$value->isValid()) ) {
-				continue;
-			}
-			if (($value->getTypeID() == '_wpg') || ($value->getTypeID() == '_uri') || ($value->getTypeID() == '_ema')) {
-				$result->addPropertyObjectValue(
-				      SMWExporter::getSpecialElement('swivt','object' . $count),
-				      $value->getExportData());
-			} else {
-				$result->addPropertyObjectValue(
-				      SMWExporter::getSpecialElement('swivt','value' . $count),
-				      $value->getExportData());
-			}
-		}
-		return $result;
-	}
-
-////// Custom functions for n-ary attributes
+////// Custom functions for old n-aries; may become obsolete.
 
 	/**
 	 * Change to query syntax mode.
