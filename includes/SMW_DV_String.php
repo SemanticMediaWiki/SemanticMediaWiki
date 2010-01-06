@@ -67,6 +67,18 @@ class SMWStringValue extends SMWDataValue {
 		return array($this->m_value);
 	}
 
+	public function getSignature() {
+		return 't';
+	}
+
+	public function getValueIndex() {
+		return 0;
+	}
+
+	public function getLabelIndex() {
+		return 0;
+	}
+
 	public function getWikiValue(){
 		$this->unstub();
 		return $this->m_value;

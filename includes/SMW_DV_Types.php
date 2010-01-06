@@ -181,6 +181,18 @@ class SMWTypesValue extends SMWDataValue {
 		return ($this->isValid())?array($this->getDBkey()):array(false);
 	}
 
+	public function getSignature() {
+		return 't';
+	}
+
+	public function getValueIndex() {
+		return 0;
+	}
+
+	public function getLabelIndex() {
+		return 0;
+	}
+
 	public function getWikiValue() {
 		return implode('; ', $this->getTypeLabels());
 	}

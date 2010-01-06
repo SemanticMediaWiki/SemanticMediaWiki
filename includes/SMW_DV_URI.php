@@ -245,6 +245,18 @@ class SMWURIValue extends SMWDataValue {
 		return array($this->m_uri);
 	}
 
+	public function getSignature() {
+		return 't';
+	}
+
+	public function getValueIndex() {
+		return 0;
+	}
+
+	public function getLabelIndex() {
+		return 0;
+	}
+
 	public function getWikiValue(){
 		$this->unstub();
 		return $this->m_value;

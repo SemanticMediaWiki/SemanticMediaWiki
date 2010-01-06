@@ -76,7 +76,7 @@ class SMWNumberValue extends SMWDataValue {
 
 	protected function parseDBkeys($args) {
 		$this->m_value = $args[0];
-		$this->m_unit = array_key_exists(1,$args)?$args[1]:'';
+		$this->m_unit = array_key_exists(2,$args)?$args[2]:'';
 		$this->m_caption = false;
 		$this->m_unitin = false;
 		$this->makeUserValue();
@@ -88,7 +88,7 @@ class SMWNumberValue extends SMWDataValue {
 		$this->m_outformat = $formatstring;
 		if ( ($formatstring != $oldformat) && $this->isValid() ) {
 			// recompute conversion if outputformat is changed after initialisation
-			$this->m_stubvalues = array($this->m_value, $this->m_unit);
+			$this->m_stubvalues = array($this->m_value, $this->m_value, $this->m_unit);
 		}
 	}
 
@@ -163,7 +163,19 @@ class SMWNumberValue extends SMWDataValue {
 	public function getDBkeys() {
 		$this->unstub();
 		$this->convertToMainUnit();
-		return array($this->m_value, $this->m_unit);
+		return array($this->m_value, intval($this->m_value), $this->m_unit);
+	}
+
+	public function getSignature() {
+		return 'tfu';
+	}
+
+	public function getValueIndex() {
+		return 1;
+	}
+
+	public function getLabelIndex() {
+		return 0;
 	}
 
 	public function getWikiValue(){
@@ -179,7 +191,7 @@ class SMWNumberValue extends SMWDataValue {
 
 	public function getUnit() {
 		$values = $this->getDBkeys();
-		return $values[1];
+		return $values[2];
 	}
 
 	public function getHash() {

@@ -362,7 +362,20 @@ class SMWTimeValue extends SMWDataValue {
 		if ($this->m_xsdvalue === false) {
 			$this->m_xsdvalue = $this->m_year."/".$this->m_month."/".$this->m_day."T".$this->m_time;
 		}
-		return array($this->m_xsdvalue);
+		$this->createJD();
+		return array($this->m_xsdvalue,$this->m_jd);
+	}
+
+	public function getSignature() {
+		return 'tf';
+	}
+
+	public function getValueIndex() {
+		return 1;
+	}
+
+	public function getLabelIndex() {
+		return 0;
 	}
 
 	public function getNumericValue() {

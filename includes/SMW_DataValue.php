@@ -258,6 +258,79 @@ abstract class SMWDataValue {
 
 ///// Get methods /////
 
+
+	/**
+	 * Return an array of values that characterize the given datavalue
+	 * completely, and that are sufficient to reproduce a value of identical
+	 * content using the function setDBkeys(). The value array must use number
+	 * keys that agree with the array's natural order (in which the data was
+	 * added), and the array MUST contain at least one value in any case.
+	 * Moreover, the order and type of the array's entries must be as described
+	 * in by getSignature(); see its documentation for details. The only
+	 * exception are classes that inherit from SMWContainerValue which must
+	 * adhere to the special format of this class.
+	 *
+	 * The array should only contain components required for storing and
+	 * sorting. It should provide a compact form for the data that is still
+	 * easy to unserialize into a new object. Many datatypes will use arrays
+	 * with only one entry here.
+	 */
+	abstract public function getDBkeys();
+
+	/**
+	 * Return a signature string that encodes the order and type of the data
+	 * that is contained in the array given by getDBkeys(). Single letters are
+	 * used to encode different datatypes. The signature is used to determine
+	 * how to store data of this kind. The available type letters are:
+	 * - t for strings of the same maximal length as MediaWiki title names,
+	 * - l for arbitrarily long strings; searching/sorting with such data may
+	 *     be limited for performance reasons,
+	 * - w for strings as used in MediaWiki for encoding interwiki prefixes
+	 * - u for short ("unit") strings; used for units of measurement in SMW
+	 * - n for namespace numbers (or other similar integers)
+	 * - f for floating point numbers of double precision
+	 * - c for the special container format used by SMWContainerValue; if used
+	 *     then the signature must be 'c' without any other fields.
+	 *
+	 * Do not use any other letters in signatures of datavalues. For example,
+	 * a wiki page consists of a title, namespace, interwiki prefix, and a
+	 * sortkey for ordering it, so its signature is "tnwt". The below default
+	 * definition provides a workable fallback, but it is recommended to
+	 * define the signature explicitly in all datavalues that implement
+	 * getDBkeys() anew.
+	 */
+	public function getSignature() {
+		return 't';
+	}
+
+	/**
+	 * This function specifies the index of the DB key that should be used for
+	 * sorting values of this type. It refers to the array that is returned by
+	 * getDBkeys() and specified by getSignature(), where the first index is 0.
+	 * For example, a wiki page type with signature "tnwt" would set this value
+	 * to 3 so that page are ordered by their sortkey (the second "t" field).
+	 * The order that is used (e.g. numeric or lexicographic) is determined by
+	 * the type of the resepctive field. If no ordering is supported for this
+	 * data value, then -1 can be returned here.
+	 */
+	public function getValueIndex() {
+		return 0;
+	}
+
+	/**
+	 * This function specifies the index of the DB key that should be used for
+	 * string-matching values of this type. SMW supports some query conditions
+	 * that involve string patterns. Since numerical sort fields cannot be used
+	 * for this, this index might differ from getValueIndex(). Otherwise, all
+	 * documentation of getValueIndex() applies.
+	 * @note Any given storage implementation might decide to not support
+	 * string matching conditions for the specified value if not available for
+	 * its type.
+	 */
+	public function getLabelIndex() {
+		return 0;
+	}
+
 	/**
 	 * Returns a short textual representation for this data value. If the value
 	 * was initialised from a user supplied string, then this original string
@@ -370,21 +443,6 @@ abstract class SMWDataValue {
 		}
 		return $result;
 	}
-
-	/**
-	 * Return an array of values that characterize the given datavalue completely,
-	 * and that are sufficient to reproduce a value of identical content using the
-	 * function setDBkeys(). The value array must use number keys that agree with
-	 * the array's natural order (in which the data was added), and the array MUST
-	 * contain at least one value in any case.
-	 * Moreover, each entry of the array must be of a basic type, typically string
-	 * or int. Do not use arrays or objects!
-	 * The array should only contain components required for storing, but no derived
-	 * versions of the value. It should provide a compact form for the data that is
-	 * still easy to unserialize into a new object. Many datatypes will use arrays
-	 * with only one entry here.
-	 */
-	abstract public function getDBkeys();
 
 	/**
 	 * Return the plain wiki version of the value, or

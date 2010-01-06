@@ -92,24 +92,28 @@ class SMWBoolValue extends SMWDataValue {
 	}
 
 	public function getLongWikiText($linked = NULL) {
-		if (!$this->isValid()) {
-			return $this->getErrorText();
-		} else {
-			return $this->m_stdcaption;
-		}
+		return $this->isValid()?$this->m_stdcaption:$this->getErrorText();
 	}
 
 	public function getLongHTMLText($linker = NULL) {
-		if (!$this->isValid()) {
-			return $this->getErrorText();
-		} else {
-			return $this->m_stdcaption;
-		}
+		return $this->isValid()?$this->m_stdcaption:$this->getErrorText();
 	}
 
 	public function getDBkeys() {
 		$this->unstub();
-		return $this->m_value?array('1'):array('0');
+		return $this->m_value?array('1',1):array('0',0);
+	}
+
+	public function getSignature() {
+		return 'tn';
+	}
+
+	public function getValueIndex() {
+		return 1;
+	}
+
+	public function getLabelIndex() {
+		return 0;
 	}
 
 	public function getWikiValue(){

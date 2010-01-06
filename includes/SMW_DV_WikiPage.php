@@ -185,6 +185,18 @@ class SMWWikiPageValue extends SMWDataValue {
 		return array($this->m_dbkeyform, $this->m_namespace, $this->m_interwiki, $this->getSortkey());
 	}
 
+	public function getSignature() {
+		return 'tnwt';
+	}
+
+	public function getValueIndex() {
+		return 3;
+	}
+
+	public function getLabelIndex() {
+		return 3;
+	}
+
 	public function getWikiValue() {
 		$this->unstub();
 		if ($this->m_fixNamespace != NS_MAIN) { // no explicit namespace needed!

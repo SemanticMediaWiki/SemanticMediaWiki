@@ -75,6 +75,18 @@ class SMWConceptValue extends SMWDataValue {
 		return array($this->m_concept, $this->m_docu, $this->m_queryfeatures, $this->m_size, $this->m_depth);
 	}
 
+	public function getSignature() {
+		return 'tllnnn';
+	}
+
+	public function getValueIndex() {
+		return 0;
+	}
+
+	public function getLabelIndex() {
+		return 0;
+	}
+
 	public function getWikiValue(){
 		$this->unstub();
 		return str_replace(array('&lt;','&gt;','&amp;'),array('<','>','&'), $this->m_concept);

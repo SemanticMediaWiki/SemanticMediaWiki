@@ -240,6 +240,18 @@ class SMWPropertyValue extends SMWDataValue {
  		return $this->isVisible()?array($this->m_wikipage->getDBkey()):array($this->m_propertyid);
 	}
 
+	public function getSignature() {
+		return 't';
+	}
+
+	public function getValueIndex() {
+		return 0;
+	}
+
+	public function getLabelIndex() {
+		return 0;
+	}
+
 	public function getWikiValue() {
 		return $this->isVisible()?(($this->isInverse()?'-':'') . $this->m_wikipage->getWikiValue()):'';
 	}
