@@ -165,7 +165,7 @@ if ($pages == false) {
 			print "($num_files) Processing page " . $page . " ...\n";
 		}
 		$title = Title::newFromText($page);
-		if ( $title !== NULL ) {
+		if ( $title !== null ) {
 			$updatejob = new SMWUpdateJob($title);
 			$updatejob->run();
 		}

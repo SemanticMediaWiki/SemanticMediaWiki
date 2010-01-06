@@ -265,7 +265,7 @@ class OWLExport {
 		$cur_queue = array();
 		foreach ($pages as $page) {
 			$title = Title::newFromText($page);
-			if (NULL === $title) continue; //invalid title name given
+			if (null === $title) continue; //invalid title name given
 			$st = new SMWSmallTitle();
 			$st->dbkey = $title->getDBkey();
 			$st->namespace = $title->getNamespace();
@@ -344,7 +344,7 @@ class OWLExport {
 		$delaycount = $delayeach;
 		for ($id = $start; $id <= $end; $id++) {
 			$title = Title::newFromID($id);
-			if ( ($title === NULL) || !smwfIsSemanticsProcessed($title->getNamespace()) ) continue;
+			if ( ($title === null) || !smwfIsSemanticsProcessed($title->getNamespace()) ) continue;
 			if ( !OWLExport::fitsNsRestriction($ns_restriction, $title->getNamespace()) ) continue;
 			$st = new SMWSmallTitle();
 			$st->dbkey = $title->getDBkey();
@@ -443,7 +443,7 @@ class OWLExport {
 		while($row = $db->fetchObject($res)) {
 			$foundpages = true;
 			//$t = Title::makeTitle($row->page_namespace, $row->page_title);
-			//if ($t === NULL) continue;
+			//if ($t === null) continue;
 			//$et = new SMWExportTitle($t, $this);
 			$st = new SMWSmallTitle();
 			$st->dbkey = $row->page_title;
@@ -488,33 +488,33 @@ class OWLExport {
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('rdf','type'), $ed);
 		$ed = new SMWExpData(new SMWExpLiteral($wgSitename));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('rdfs','label'), $ed);
-		$ed = new SMWExpData(new SMWExpLiteral($wgSitename, NULL, 'http://www.w3.org/2001/XMLSchema#string'));
+		$ed = new SMWExpData(new SMWExpLiteral($wgSitename, null, 'http://www.w3.org/2001/XMLSchema#string'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','siteName'), $ed);
-		$ed = new SMWExpData(new SMWExpLiteral(SMWExporter::expandURI('&wikiurl;'), NULL, 'http://www.w3.org/2001/XMLSchema#string'));
+		$ed = new SMWExpData(new SMWExpLiteral(SMWExporter::expandURI('&wikiurl;'), null, 'http://www.w3.org/2001/XMLSchema#string'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','pagePrefix'), $ed);
-		$ed = new SMWExpData(new SMWExpLiteral(SMW_VERSION, NULL, 'http://www.w3.org/2001/XMLSchema#string'));
+		$ed = new SMWExpData(new SMWExpLiteral(SMW_VERSION, null, 'http://www.w3.org/2001/XMLSchema#string'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','smwVersion'), $ed);
-		$ed = new SMWExpData(new SMWExpLiteral($wgLanguageCode, NULL, 'http://www.w3.org/2001/XMLSchema#string'));
+		$ed = new SMWExpData(new SMWExpLiteral($wgLanguageCode, null, 'http://www.w3.org/2001/XMLSchema#string'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','langCode'), $ed);
 
 		// stats
-		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::pages(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::pages(), null, 'http://www.w3.org/2001/XMLSchema#int'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','pageCount'), $ed);
-		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::articles(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::articles(), null, 'http://www.w3.org/2001/XMLSchema#int'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','contentPageCount'), $ed);
-		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::images(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::images(), null, 'http://www.w3.org/2001/XMLSchema#int'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','mediaCount'), $ed);
-		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::edits(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::edits(), null, 'http://www.w3.org/2001/XMLSchema#int'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','editCount'), $ed);
-		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::views(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::views(), null, 'http://www.w3.org/2001/XMLSchema#int'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','viewCount'), $ed);
-		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::users(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::users(), null, 'http://www.w3.org/2001/XMLSchema#int'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','userCount'), $ed);
-		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::admins(), NULL, 'http://www.w3.org/2001/XMLSchema#int'));
+		$ed = new SMWExpData(new SMWExpLiteral(SiteStats::admins(), null, 'http://www.w3.org/2001/XMLSchema#int'));
 		$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','adminCount'), $ed);
 
 		$mainpage = Title::newMainPage();
-		if ($mainpage !== NULL) {
+		if ($mainpage !== null) {
 			$ed = new SMWExpData(new SMWExpResource($mainpage->getFullURL()));
 			$data->addPropertyObjectValue(SMWExporter::getSpecialElement('swivt','mainPage'), $ed);
 		}

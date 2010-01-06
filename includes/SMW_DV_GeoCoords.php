@@ -159,8 +159,8 @@ class SMWGeoCoordsValue extends SMWDataValue {
 		$this->m_wikivalue = $this->m_caption;
 	}
 
-	public function getShortWikiText($linked = NULL) {
-		if ($this->isValid() && ($linked !== NULL) && ($linked !== false)) {
+	public function getShortWikiText($linked = null) {
+		if ($this->isValid() && ($linked !== null) && ($linked !== false)) {
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
 			return '<span class="smwttinline">' . $this->m_caption . '<span class="smwttcontent">' .
@@ -172,11 +172,11 @@ class SMWGeoCoordsValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		return $this->getShortWikiText($linker); // should be save (based on xsdvalue)
 	}
 
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		} else {
@@ -184,7 +184,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 		}
 	}
 
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		return $this->getLongWikiText($linker);
 	}
 
@@ -215,7 +215,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 			$lit = new SMWExpLiteral($this->formatAngleValues(true, false) . ', ' . $this->formatAngleValues(false, false), $this, 'http://www.w3.org/2001/XMLSchema#string');
 			return new SMWExpData($lit);
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 

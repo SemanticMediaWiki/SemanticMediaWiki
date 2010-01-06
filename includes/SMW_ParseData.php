@@ -20,7 +20,7 @@
 class SMWParseData {
 
 	/// ParserOutput last used. See documentation to SMWParseData.
-	static public $mPrevOutput = NULL;
+	static public $mPrevOutput = null;
 
 	/**
 	 * Remove relevant SMW magic words from the given text and return
@@ -50,7 +50,7 @@ class SMWParseData {
 	static public function getSMWdata($parser) {
 		$output = SMWParseData::getOutput($parser);
 		$title = $parser->getTitle();
-		if (!isset($output) || !isset($title)) return NULL; // no parsing, create error
+		if (!isset($output) || !isset($title)) return null; // no parsing, create error
 		if (!isset($output->mSMWData)) { // no data container yet
 			$output->mSMWData = new SMWSemanticData(SMWWikiPageValue::makePageFromTitle($title));
 		}
@@ -82,7 +82,7 @@ class SMWParseData {
 		if ($property->isInverse()) {
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			$result->addError(wfMsgForContent('smw_noinvannot'));
-		} elseif ($storeannotation && (SMWParseData::getSMWData($parser) !== NULL)) {
+		} elseif ($storeannotation && (SMWParseData::getSMWData($parser) !== null)) {
 			SMWParseData::getSMWData($parser)->addPropertyObjectValue($property,$result);
 			if (!$result->isValid()) { // take note of the error for storage (do this here and not in storage, thus avoiding duplicates)
 				SMWParseData::getSMWData($parser)->addPropertyObjectValue(SMWPropertyValue::makeProperty('_ERRP'),$property->getWikiPageValue());
@@ -245,7 +245,7 @@ class SMWParseData {
 	 */
 	static public function onParserAfterTidy(&$parser, &$text) {
 		global $smwgUseCategoryHierarchy,$smwgCategoriesAsInstances;
-		if (SMWParseData::getSMWData($parser) === NULL) return true;
+		if (SMWParseData::getSMWData($parser) === null) return true;
 		$categories = $parser->mOutput->getCategoryLinks();
 		foreach ($categories as $name) {
 			if ($smwgCategoriesAsInstances && (SMWParseData::getSMWData($parser)->getSubject()->getNamespace() != NS_CATEGORY) ) {

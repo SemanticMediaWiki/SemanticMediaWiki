@@ -36,7 +36,7 @@ class SMWParserExtensions {
 		// process redirects, if any
 		// (it seems that there is indeed no more direct way of getting this info from MW)
 		$rt = Title::newFromRedirect($text);
-		if ($rt !== NULL) {
+		if ($rt !== null) {
 			$p = SMWPropertyValue::makeProperty('_REDI');
 			$dv = SMWDataValueFactory::newPropertyObjectValue($p,$rt->getPrefixedText());
 			if ($smwgStoreAnnotations) {
@@ -246,7 +246,7 @@ class SMWParserExtensions {
 
 		$dv = SMWDataValueFactory::newPropertyObjectValue($pconc);
 		$dv->setValues($concept_text, $concept_docu, $query->getDescription()->getQueryFeatures(), $query->getDescription()->getSize(), $query->getDescription()->getDepth());
-		if (SMWParseData::getSMWData($parser) !== NULL) {
+		if (SMWParseData::getSMWData($parser) !== null) {
 			SMWParseData::getSMWData($parser)->addPropertyObjectValue($pconc,$dv);
 		}
 

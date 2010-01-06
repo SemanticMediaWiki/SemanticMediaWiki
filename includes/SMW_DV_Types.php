@@ -34,7 +34,7 @@ class SMWTypesValue extends SMWDataValue {
 			$type = ltrim($type, ' [');
 			$type = rtrim($type, ' ]');
 			$ttype = Title::newFromText($type,SMW_NS_TYPE);
-			if ( ($ttype !== NULL) && ($ttype->getNamespace() == SMW_NS_TYPE) ) {
+			if ( ($ttype !== null) && ($ttype->getNamespace() == SMW_NS_TYPE) ) {
 				$this->m_typecaptions[] = $type;
 				$label = SMWDataValueFactory::findTypeLabel(SMWDataValueFactory::findTypeID($ttype->getText()));
 				$this->m_typelabels[] = $label;
@@ -48,9 +48,9 @@ class SMWTypesValue extends SMWDataValue {
 		$this->m_isalias = false;
 	}
 
-	public function getShortWikiText($linked = NULL) {
+	public function getShortWikiText($linked = null) {
 		$this->unstub();
-		if ( ($linked === NULL) || ($linked === false) || ($this->m_caption === '') ) {
+		if ( ($linked === null) || ($linked === false) || ($this->m_caption === '') ) {
 			if ($this->m_caption !== false) {
 				return $this->m_caption;
 			} else {
@@ -84,9 +84,9 @@ class SMWTypesValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		$this->unstub();
-		if ( ($linker === NULL) || ($linker === false) || ($this->m_caption === '') ) {
+		if ( ($linker === null) || ($linker === false) || ($this->m_caption === '') ) {
 			if ($this->m_caption !== false) {
 				return htmlspecialchars($this->m_caption);
 			} else {
@@ -120,9 +120,9 @@ class SMWTypesValue extends SMWDataValue {
 		}
 	}
 
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		$this->unstub();
-		if ( ($linked === NULL) || ($linked === false) ) {
+		if ( ($linked === null) || ($linked === false) ) {
 			return str_replace('_',' ',implode(', ', $this->getTypeLabels()));
 		} else {
 			global $wgContLang;
@@ -148,9 +148,9 @@ class SMWTypesValue extends SMWDataValue {
 		}
 	}
 
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		$this->unstub();
-		if ( ($linker === NULL) || ($linker === false) ) {
+		if ( ($linker === null) || ($linker === false) ) {
 			return str_replace('_',' ',implode(', ', $this->getTypeLabels()));
 		} else {
 			$result = '';

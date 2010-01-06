@@ -330,7 +330,7 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortWikiText($linked = NULL) {
+	public function getShortWikiText($linked = null) {
 		$this->unstub();
 		if ($this->m_caption !== false) {
 			return $this->m_caption;
@@ -340,11 +340,11 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		return $this->getShortWikiText($linker); // should be save (based on xsdvalue)
 	}
 
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		} else {
@@ -353,7 +353,7 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		return $this->getLongWikiText($linker);
 	}
 
@@ -407,7 +407,7 @@ class SMWTimeValue extends SMWDataValue {
 			$lit = new SMWExpLiteral($this->getXMLSchemaDate(), $this, 'http://www.w3.org/2001/XMLSchema#dateTime');
 			return new SMWExpData($lit);
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 

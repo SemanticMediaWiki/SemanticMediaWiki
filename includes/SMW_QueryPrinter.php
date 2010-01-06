@@ -33,7 +33,7 @@ abstract class SMWResultPrinter {
 	/** Text to use for link to further results, or empty if link should not be shown.
 	 *  Unescaped! Use SMWResultPrinter::getSearchLabel() and SMWResultPrinter::linkFurtherResults()
 	 *  instead of accessing this directly. */
-	protected $mSearchlabel = NULL;
+	protected $mSearchlabel = null;
 
 	/** Default return value for empty queries. Unescaped. Normally not used in sub-classes! */
 	protected $mDefault = '';
@@ -122,7 +122,7 @@ abstract class SMWResultPrinter {
 				return $this->escapeText($this->mDefault,$outputmode) . $this->getErrorString($results);
 			} elseif ($this->mInline) {
 				$label = $this->mSearchlabel;
-				if ($label === NULL) { //apply defaults
+				if ($label === null) { //apply defaults
 					wfLoadExtensionMessages('SemanticMediaWiki');
 					$label = wfMsgForContent('smw_iq_moreresults');
 				}
@@ -263,7 +263,7 @@ abstract class SMWResultPrinter {
 		if ( ($firstcol && $this->mLinkFirst) || (!$firstcol && $this->mLinkOthers) ) {
 			return $this->mLinker;
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 

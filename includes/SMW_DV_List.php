@@ -17,7 +17,7 @@
 class SMWListValue extends SMWContainerValue {
 
 	/// cache for datavalues of types belonging to this object
-	private $m_typevalues = NULL;
+	private $m_typevalues = null;
 	/// Should this DV operate on query syntax (special mode for parsing queries in a compatible fashion)
 	private $m_querysyntax = false;
 	/// Array of comparators as might be found in query strings (based on inputs like >, <, etc.)
@@ -91,25 +91,25 @@ class SMWListValue extends SMWContainerValue {
 		}
 	}
 
-	public function getShortWikiText($linked = NULL) {
+	public function getShortWikiText($linked = null) {
 		if ($this->m_caption !== false) {
 			return $this->m_caption;
 		}
 		return $this->makeOutputText(0, $linked);
 	}
 
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		if ($this->m_caption !== false) {
 			return $this->m_caption;
 		}
 		return $this->makeOutputText(1, $linker);
 	}
 
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		return $this->makeOutputText(2, $linked);
 	}
 
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		return $this->makeOutputText(3, $linker);
 	}
 
@@ -127,7 +127,7 @@ class SMWListValue extends SMWContainerValue {
 	 */
 	public function setProperty(SMWPropertyValue $property) {
 		parent::setProperty($property);
-		$this->m_typevalues = NULL;
+		$this->m_typevalues = null;
 	}
 
 	/**
@@ -136,7 +136,7 @@ class SMWListValue extends SMWContainerValue {
 	 * and minimize the below special code.
 	 */
 	public function getExportData() {
-		if (!$this->isValid()) return NULL;
+		if (!$this->isValid()) return null;
 
 		$result = new SMWExpData(new SMWExpElement('', $this)); // bnode
 		$ed = new SMWExpData(SMWExporter::getSpecialElement('swivt','Container'));
@@ -144,7 +144,7 @@ class SMWListValue extends SMWContainerValue {
 		$count = 0;
 		foreach ($this->getDVs() as $value) {
 			$count++;
-			if ( ($value === NULL) || (!$value->isValid()) ) {
+			if ( ($value === null) || (!$value->isValid()) ) {
 				continue;
 			}
 			if (($value->getTypeID() == '_wpg') || ($value->getTypeID() == '_uri') || ($value->getTypeID() == '_ema')) {
@@ -171,18 +171,18 @@ class SMWListValue extends SMWContainerValue {
 	 * result array is always 5.
 	 */
 	public function getDVs() {
-		if (!$this->isValid()) return array(0=>NULL,1=>NULL,2=>NULL,3=>NULL,4=>NULL);
+		if (!$this->isValid()) return array(0=>null,1=>null,2=>null,3=>null,4=>null);
 		$result = array();
 		for ($i=1; $i<6; $i++) {
 			$property = SMWPropertyValue::makeProperty("_$i");
 			$dv = reset($this->m_data->getPropertyValues($property));
-			$result[$i-1] = ($dv instanceof SMWDataValue)?$dv:NULL;
+			$result[$i-1] = ($dv instanceof SMWDataValue)?$dv:null;
 		}
 	}
 
 ////// Internal helper functions
 
-	private function makeOutputText($type = 0, $linker = NULL) {
+	private function makeOutputText($type = 0, $linker = null) {
 		if (!$this->isValid()) {
 			return ( ($type == 0)||($type == 1) )? '' : $this->getErrorText();
 		}
@@ -226,8 +226,8 @@ class SMWListValue extends SMWContainerValue {
 	 * variant of the SMWTypesValue).
 	 */
 	public function getTypeValues() {
-		if ($this->m_typevalues !== NULL) return $this->m_typevalues; // local cache
-		if ( ($this->m_property === NULL) || ($this->m_property->getWikiPageValue() === NULL) ) {
+		if ($this->m_typevalues !== null) return $this->m_typevalues; // local cache
+		if ( ($this->m_property === null) || ($this->m_property->getWikiPageValue() === null) ) {
 			$this->m_typevalues = array(); // no property known -> no types
 		} else { // query for type values
 			$typelist = smwfGetStore()->getPropertyValues($this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty('_LIST'));
@@ -249,10 +249,10 @@ class SMWListValue extends SMWContainerValue {
 	public function getValueList() {
 		$vl = new SMWValueList();
 		if (!$this->isValid() || !$this->m_querysyntax) {
-			return NULL;
+			return null;
 		}
 		for ($i=0; $i < $this->m_count; $i++) {
-			if ($this->m_values[$i] !== NULL) {
+			if ($this->m_values[$i] !== null) {
 				$vl->setDescription($i,new SMWValueDescription($this->m_values[$i], $this->m_comparators[$i]));
 			}
 		}

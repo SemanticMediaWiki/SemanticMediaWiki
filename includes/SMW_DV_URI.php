@@ -200,40 +200,40 @@ class SMWURIValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortWikiText($linked = NULL) {
+	public function getShortWikiText($linked = null) {
 		$this->unstub();
-		if ( ($linked === NULL) || ($linked === false) || ($this->m_outformat == '-') || ($this->m_url == '') || ($this->m_caption == '') ) {
+		if ( ($linked === null) || ($linked === false) || ($this->m_outformat == '-') || ($this->m_url == '') || ($this->m_caption == '') ) {
 			return $this->m_caption;
 		} else {
 			return '[' . $this->m_url . ' ' . $this->m_caption . ']';
 		}
 	}
 
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		$this->unstub();
-		if (($linker === NULL) || (!$this->isValid()) || ($this->m_outformat == '-') || ($this->m_url == '') || ($this->m_caption == '')) {
+		if (($linker === null) || (!$this->isValid()) || ($this->m_outformat == '-') || ($this->m_url == '') || ($this->m_caption == '')) {
 			return $this->m_caption;
 		} else {
 			return $linker->makeExternalLink($this->m_url, $this->m_caption);
 		}
 	}
 
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		}
-		if ( ($linked === NULL) || ($linked === false) || ($this->m_outformat == '-') || ($this->m_url == '') ) {
+		if ( ($linked === null) || ($linked === false) || ($this->m_outformat == '-') || ($this->m_url == '') ) {
 			return $this->m_value;
 		} else {
 			return '[' . $this->m_url . ' ' . $this->m_value . ']';
 		}
 	}
 
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		}
-		if (($linker === NULL) || ($this->m_outformat == '-') || ($this->m_url == '') ) {
+		if (($linker === null) || ($this->m_outformat == '-') || ($this->m_url == '') ) {
 			return htmlspecialchars($this->m_value);
 		} else {
 			return $linker->makeExternalLink($this->m_url, $this->m_value);
@@ -275,7 +275,7 @@ class SMWURIValue extends SMWDataValue {
 			$res = new SMWExpResource(str_replace('&','&amp;', $this->m_uri), $this);
 			return new SMWExpData($res);
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 

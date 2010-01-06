@@ -181,7 +181,7 @@ class SMWQueryProcessor {
 		global $wgContLang;
 		$querystring = '';
 		$printouts = array();
-		$lastprintout = NULL;
+		$lastprintout = null;
 		$params = array();
 		foreach ($rawparams as $name => $param) {
 			if ( is_string($name) && ($name != '') ) { // accept 'name' => 'value' just as '' => 'name=value'
@@ -195,16 +195,16 @@ class SMWQueryProcessor {
 				if (trim($propparts[0]) == '') { // print "this"
 					$printmode = SMWPrintRequest::PRINT_THIS;
 					$label = ''; // default
-					$title = NULL;
-					$data = NULL;
+					$title = null;
+					$data = null;
 				} elseif ($wgContLang->getNsText(NS_CATEGORY) == ucfirst(trim($propparts[0]))) { // print categories
-					$title = NULL;
-					$data = NULL;
+					$title = null;
+					$data = null;
 					$printmode = SMWPrintRequest::PRINT_CATS;
 					$label = $showmode?'':$wgContLang->getNSText(NS_CATEGORY); // default
 				} else { // print property or check category
 					$title = Title::newFromText(trim($propparts[0]), SMW_NS_PROPERTY); // trim needed for \n
-					if ($title === NULL) { // too bad, this is no legal property/category name, ignore
+					if ($title === null) { // too bad, this is no legal property/category name, ignore
 						continue;
 					}
 					if ($title->getNamespace() == SMW_NS_PROPERTY) {
@@ -229,7 +229,7 @@ class SMWQueryProcessor {
 				$lastprintout = new SMWPrintRequest($printmode, $label, $data, trim($propparts[1]));
 				$printouts[] = $lastprintout;
 			} elseif ($param[0] == '+') { // print request parameter
-				if ($lastprintout !== NULL) {
+				if ($lastprintout !== null) {
 					$param = substr($param,1);
 					$parts = explode('=',$param,2);
 					if (count($parts) == 2) $lastprintout->setParameter(trim($parts[0]), $parts[1]);

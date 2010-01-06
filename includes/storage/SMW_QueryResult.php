@@ -230,7 +230,7 @@ class SMWResultArray {
 	 * be some Linker object (or NULL for no linking). At some stage its
 	 * interpretation should be part of the generalised SMWDataValue.
 	 */
-	public function getNextText($outputmode, $linker = NULL) {
+	public function getNextText($outputmode, $linker = null) {
 		$object = $this->getNextObject();
 		if ($object instanceof SMWDataValue) { //print data values
 			return ( ($object->getTypeID() == '_wpg')||($object->getTypeID() == '__sin') )?  // prefer "long" text for page-values
@@ -275,7 +275,7 @@ class SMWResultArray {
 					$newcontent = array();
 					foreach ($this->m_content as $listdv) {
 						$dvs = $listdv->getDVs();
-						if ( (array_key_exists($pos,$dvs)) && ($dvs[$pos] !== NULL) ) {
+						if ( (array_key_exists($pos,$dvs)) && ($dvs[$pos] !== null) ) {
 							$newcontent[] = $dvs[$pos];
 						}
 					}
@@ -326,7 +326,7 @@ class SMWResultArray {
 				$options->ascending = true;
 			}
 		} else {
-			$options = NULL;
+			$options = null;
 		}
 		return $options;
 	}

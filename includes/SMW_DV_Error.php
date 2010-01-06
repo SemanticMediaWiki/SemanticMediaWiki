@@ -35,23 +35,23 @@ class SMWErrorValue extends SMWDataValue {
 		// no output formats
 	}
 
-	public function getShortWikiText($linked = NULL) {
+	public function getShortWikiText($linked = null) {
 		$this->unstub();
 		//TODO: support linking?
 		return $this->m_caption;
 	}
 
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		return htmlspecialchars($this->getShortWikiText($linker));
 	}
 
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		//TODO: support linking?
 		$this->unstub();
 		return $this->getErrorText();
 	}
 
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		$this->unstub();
 		return $this->getErrorText();
 	}

@@ -109,7 +109,7 @@ class SMWSemanticData {
 	 */
 	public function getHash() {
 		$ctx = hash_init('md5');
-		if ($this->subject !== NULL) { // here and below, use "_#_" to separate values; really not much care needed here
+		if ($this->subject !== null) { // here and below, use "_#_" to separate values; really not much care needed here
 			hash_update($ctx, '_#_' . $this->subject->getHash());
 		}
 		foreach ($this->getProperties() as $property) {
@@ -231,9 +231,9 @@ class SMWSemanticData {
 	 * for that property might be provided, so we do not need to make a new one. It is not
 	 * checked if the object matches the property name.
 	 */
-	protected function unstubProperty($pname, $propertyobj = NULL) {
+	protected function unstubProperty($pname, $propertyobj = null) {
 		if (!array_key_exists($pname, $this->properties)) {
-			if ($propertyobj === NULL) {
+			if ($propertyobj === null) {
 				$propertyobj = SMWPropertyValue::makeProperty($pname);
 			}
 			$this->properties[$pname] = $propertyobj;

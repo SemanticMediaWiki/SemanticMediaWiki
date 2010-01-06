@@ -132,7 +132,7 @@ class SMWSQLStore2 extends SMWStore {
 			/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
 			SMWSQLStore2::$in_getSemanticData--;
 			wfProfileOut("SMWSQLStore2::getSemanticData (SMW)");
-			return isset($svalue)?(new SMWSemanticData($svalue)):NULL;
+			return isset($svalue)?(new SMWSemanticData($svalue)):null;
 		}
 
 		if ($filter !== false) { //array as described in docu for SMWStore
@@ -306,7 +306,7 @@ class SMWSQLStore2 extends SMWStore {
 					if (!array_key_exists($row->bnode,$dvs[$row->prop])) {
 						$dvs[$row->prop][$row->bnode] = array();
 						for ($i=0; $i < count($ptypes[$row->prop]); $i++) { // init array
-							$dvs[$row->prop][$row->bnode][$i] = NULL;
+							$dvs[$row->prop][$row->bnode][$i] = null;
 						}
 					}
 					$dv = SMWDataValueFactory::newTypeObjectValue($ptypes[$row->prop][$pos]);
@@ -347,7 +347,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * @todo While the function can retrieve all values of a given property (i.e. values occurring for any subject),
 	 * it currently will only do this for user-defined properties that are not multi-valued.
 	 */
-	function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = NULL, $outputformat = '') {
+	function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = null, $outputformat = '') {
 		wfProfileIn("SMWSQLStore2::getPropertyValues (SMW)");
 		if ($property->isInverse()) { // inverses are working differently
 			$noninverse = clone $property;
@@ -355,7 +355,7 @@ class SMWSQLStore2 extends SMWStore {
 			$result = $this->getPropertySubjects($noninverse,$subject,$requestoptions);
 			wfProfileOut("SMWSQLStore2::getPropertyValues (SMW)");
 			return $result;
-		} elseif ($subject !== NULL) { // subject given, use semantic data cache:
+		} elseif ($subject !== null) { // subject given, use semantic data cache:
 			$sd = $this->getSemanticData($subject,array($property->getPropertyTypeID()));
 			$result = $this->applyRequestOptions($sd->getPropertyValues($property),$requestoptions);
 			if ($outputformat != '') { // reformat cached values
@@ -404,7 +404,7 @@ class SMWSQLStore2 extends SMWStore {
 					$db->freeResult($res);
 				break;
 				case SMW_SQL2_ATTS2:
-					if ( ($requestoptions !== NULL) && ($requestoptions->boundary !== NULL) ) { // the quick way to find out if this is a numeric type
+					if ( ($requestoptions !== null) && ($requestoptions->boundary !== null) ) { // the quick way to find out if this is a numeric type
 						$value_column = $requestoptions->boundary->isNumeric()?'value_num':'value_xsd';
 					} else { // need to do more work to find out if this is a numeric type
 						$testval = SMWDataValueFactory::newTypeIDValue($property->getPropertyTypeID());
@@ -436,7 +436,7 @@ class SMWSQLStore2 extends SMWStore {
 // 					while($row = $db->fetchObject($res)) {
 // 						$values = array();
 // 						for ($i=0; $i < count($subtypes); $i++) { // init array
-// 							$values[$i] = NULL;
+// 							$values[$i] = null;
 // 						}
 // 						$res2 = $db->select( $db->tableName('smw_nary_attributes'),
 // 										'nary_pos, value_unit, value_xsd',
@@ -491,7 +491,7 @@ class SMWSQLStore2 extends SMWStore {
 		return $result;
 	}
 
-	function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = NULL) {
+	function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = null) {
 		/// TODO: should we share code with #ask query computation here? Just use queries?
 		wfProfileIn("SMWSQLStore2::getPropertySubjects (SMW)");
 		if ($property->isInverse()) { // inverses are working differently
@@ -503,7 +503,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		$result = array();
 		$pid = $this->getSMWPropertyID($property);
-		if ( ($pid == 0) || ( ($value !== NULL) && (!$value->isValid()) ) ) {
+		if ( ($pid == 0) || ( ($value !== null) && (!$value->isValid()) ) ) {
 			wfProfileOut("SMWSQLStore2::getPropertySubjects (SMW)");
 			return $result;
 		}
@@ -528,11 +528,11 @@ class SMWSQLStore2 extends SMWStore {
 // 			if ($mode==SMW_SQL2_SUBS2) { // this table is shared, filter the relevant case
 // 				$sql = 'smw_namespace=' . (($typeid == '__sup')?$db->addQuotes(SMW_NS_PROPERTY):$db->addQuotes(NS_CATEGORY));
 // 			}
-			if ($value !== NULL) {
+			if ($value !== null) {
 				$oid = $this->getSMWPageID($value->getDBkey(),$value->getNamespace(),$value->getInterwiki());
 				$sql .= ($sql?" AND ":'') . 'o_id=' . $db->addQuotes($oid);
 			}
-			if ( ($value === NULL) || ($oid != 0) ) {
+			if ( ($value === null) || ($oid != 0) ) {
 				switch ($mode) {
 					case SMW_SQL2_RELS2: $table = 'smw_rels2'; break;
 					case SMW_SQL2_INST2: $table = 'smw_inst2'; break;
@@ -543,7 +543,7 @@ class SMWSQLStore2 extends SMWStore {
 		break;
 		case SMW_SQL2_ATTS2:
 			$table = 'smw_atts2';
-			if ($value !== NULL) {
+			if ($value !== null) {
 				$keys = $value->getDBkeys();
 				$sql .= ' AND value_xsd=' . $db->addQuotes($keys[0]) .
 				        ' AND value_unit=' . $db->addQuotes($value->getUnit());
@@ -551,7 +551,7 @@ class SMWSQLStore2 extends SMWStore {
 		break;
 		case SMW_SQL2_SPEC2:
 			$table = 'smw_spec2';
-			if ($value !== NULL) {
+			if ($value !== null) {
 				$keys = $value->getDBkeys();
 				$sql .= ' AND value_string=' . $db->addQuotes($keys[0]);
 			}
@@ -572,7 +572,7 @@ class SMWSQLStore2 extends SMWStore {
 			}
 		break;
 		case SMW_SQL2_NARY2:
-			if ($value === NULL) { // no value -- handled just like for wikipage
+			if ($value === null) { // no value -- handled just like for wikipage
 				$table = 'smw_rels2';
 				break;
 			}
@@ -584,7 +584,7 @@ class SMWSQLStore2 extends SMWStore {
 			$from = "$smw_rels2 AS t INNER JOIN $smw_ids AS i ON t.s_id=i.smw_id";
 			$count = 0;
 			foreach ($values as $dv) {
-				if ( ($dv === NULL) || (!$dv->isValid()) ) {
+				if ( ($dv === null) || (!$dv->isValid()) ) {
 					$count++;
 					continue;
 				}
@@ -631,14 +631,14 @@ class SMWSQLStore2 extends SMWStore {
 		return $result;
 	}
 
-	function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = NULL) {
+	function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = null) {
 		wfProfileIn("SMWSQLStore2::getAllPropertySubjects (SMW)");
-		$result = $this->getPropertySubjects($property, NULL, $requestoptions);
+		$result = $this->getPropertySubjects($property, null, $requestoptions);
 		wfProfileOut("SMWSQLStore2::getAllPropertySubjects (SMW)");
 		return $result;
 	}
 
-	function getProperties($subject, $requestoptions = NULL) {
+	function getProperties($subject, $requestoptions = null) {
 		wfProfileIn("SMWSQLStore2::getProperties (SMW)");
 		$sid = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki());
 		if ($sid == 0) {
@@ -666,7 +666,7 @@ class SMWSQLStore2 extends SMWStore {
 	/**
 	 * @todo This function is currently implemented only for values of type Page ('_wpg').
 	 */
-	function getInProperties(SMWDataValue $value, $requestoptions = NULL) {
+	function getInProperties(SMWDataValue $value, $requestoptions = null) {
 		wfProfileIn("SMWSQLStore2::getInProperties (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
@@ -727,7 +727,7 @@ class SMWSQLStore2 extends SMWStore {
 		$up_text2 = array();  $up_spec2 = array();
 		$up_subs2 = array();  $up_inst2 = array();
 		$up_subp2 = array();
-		$concept_desc = NULL; // this gets a special treatment
+		$concept_desc = null; // this gets a special treatment
 
 		foreach($data->getProperties() as $property) {
 			$propertyValueArray = $data->getPropertyValues($property);
@@ -791,7 +791,7 @@ class SMWSQLStore2 extends SMWStore {
 						  'o_id' => $bnode );
 						$npos = 0;
 						foreach ($value->getDVs() as $dv) {
-							if ( ($dv !== NULL) && ($dv->isValid()) ) {
+							if ( ($dv !== null) && ($dv->isValid()) ) {
 								$pid = $this->makeSMWPageID(strval($npos),SMW_NS_PROPERTY,SMW_SQL2_SMWIW); // TODO: predefine some of those (
 								switch (SMWSQLStore2::getStorageMode($dv->getTypeID())) {
 								case SMW_SQL2_RELS2:
@@ -851,7 +851,7 @@ class SMWSQLStore2 extends SMWStore {
 		// Concepts are not just written but carefully updated,
 		// preserving existing metadata (cache ...) for a concept:
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) {
-			if ( ($concept_desc !== NULL) && ($concept_desc->isValid()) )  {
+			if ( ($concept_desc !== null) && ($concept_desc->isValid()) )  {
 				$up_conc2 = array(
 				     'concept_txt'   => $concept_desc->getConceptText(),
 				     'concept_docu'  => $concept_desc->getDocu(),
@@ -972,7 +972,7 @@ class SMWSQLStore2 extends SMWStore {
 
 ///// Special page functions /////
 
-	function getPropertiesSpecial($requestoptions = NULL) {
+	function getPropertiesSpecial($requestoptions = null) {
 		wfProfileIn("SMWSQLStore2::getPropertiesSpecial (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$options = ' ORDER BY smw_sortkey';
@@ -1005,7 +1005,7 @@ class SMWSQLStore2 extends SMWStore {
 		return $result;
 	}
 
-	function getUnusedPropertiesSpecial($requestoptions = NULL) {
+	function getUnusedPropertiesSpecial($requestoptions = null) {
 		global $wgDBtype;
 		wfProfileIn("SMWSQLStore2::getUnusedPropertiesSpecial (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
@@ -1060,7 +1060,7 @@ class SMWSQLStore2 extends SMWStore {
 		return $result;
 	}
 
-	function getWantedPropertiesSpecial($requestoptions = NULL) {
+	function getWantedPropertiesSpecial($requestoptions = null) {
 		global $smwgPDefaultType;
 		wfProfileIn("SMWSQLStore2::getWantedPropertiesSpecial (SMW)");
 		switch (SMWSQLStore2::getStorageMode($smwgPDefaultType)) {
@@ -1134,7 +1134,7 @@ class SMWSQLStore2 extends SMWStore {
 		extract( $db->tableNames('smw_ids','smw_rels2','smw_atts2','smw_text2',
 		                         'smw_spec2','smw_subs2','smw_redi2','smw_inst2',
 		                         'smw_subp2','smw_conc2','smw_conccache') );
-		$reportTo = $verbose?$this:NULL; // use $this to report back from static SMWSQLHelpers
+		$reportTo = $verbose?$this:null; // use $this to report back from static SMWSQLHelpers
 		// repeatedly used DB field types defined here for convenience
 		$dbt_id        = SMWSQLHelpers::getStandardDBType('id');
 		$dbt_namespace = SMWSQLHelpers::getStandardDBType('namespace');
@@ -1441,16 +1441,16 @@ class SMWSQLStore2 extends SMWStore {
 	 * The parameter $valuecol defines the string name of the column to which
 	 * sorting requests etc. are to be applied.
 	 */
-	protected function getSQLOptions($requestoptions, $valuecol = NULL) {
+	protected function getSQLOptions($requestoptions, $valuecol = null) {
 		$sql_options = array();
-		if ($requestoptions !== NULL) {
+		if ($requestoptions !== null) {
 			if ($requestoptions->limit > 0) {
 				$sql_options['LIMIT'] = $requestoptions->limit;
 			}
 			if ($requestoptions->offset > 0) {
 				$sql_options['OFFSET'] = $requestoptions->offset;
 			}
-			if ( ($valuecol !== NULL) && ($requestoptions->sort) ) {
+			if ( ($valuecol !== null) && ($requestoptions->sort) ) {
 				$sql_options['ORDER BY'] = $requestoptions->ascending ? $valuecol : $valuecol . ' DESC';
 			}
 		}
@@ -1465,11 +1465,11 @@ class SMWSQLStore2 extends SMWStore {
 	 * @param $valuecol name of SQL column to which conditions apply
 	 * @param $labelcol name of SQL column to which string conditions apply, if any
 	 */
-	protected function getSQLConditions($requestoptions, $valuecol, $labelcol = NULL) {
+	protected function getSQLConditions($requestoptions, $valuecol, $labelcol = null) {
 		$sql_conds = '';
-		if ($requestoptions !== NULL) {
+		if ($requestoptions !== null) {
 			$db =& wfGetDB( DB_SLAVE );
-			if ($requestoptions->boundary !== NULL) { // apply value boundary
+			if ($requestoptions->boundary !== null) { // apply value boundary
 				if ($requestoptions->ascending) {
 					$op = $requestoptions->include_boundary?' >= ':' > ';
 				} else {
@@ -1477,7 +1477,7 @@ class SMWSQLStore2 extends SMWStore {
 				}
 				$sql_conds .= ' AND ' . $valuecol . $op . $db->addQuotes($requestoptions->boundary);
 			}
-			if ($labelcol !== NULL) { // apply string conditions
+			if ($labelcol !== null) { // apply string conditions
 				foreach ($requestoptions->getStringConditions() as $strcond) {
 					$string = str_replace('_', '\_', $strcond->string);
 					switch ($strcond->condition) {
@@ -1503,7 +1503,7 @@ class SMWSQLStore2 extends SMWStore {
 		$result = array();
 		$sortres = array();
 		$key = 0;
-		if ( (count($data) == 0) || ($requestoptions === NULL) ) {
+		if ( (count($data) == 0) || ($requestoptions === null) ) {
 			wfProfileOut("SMWSQLStore2::applyRequestOptions (SMW)");
 			return $data;
 		}
@@ -1526,7 +1526,7 @@ class SMWSQLStore2 extends SMWStore {
 				$label = $item->getText(); /// NOTE: no prefixed text, since only Text is used in SQL operations
 				$value = $label;
 			}
-			if ($requestoptions->boundary !== NULL) { // apply value boundary
+			if ($requestoptions->boundary !== null) { // apply value boundary
 				$strc = $numeric?0:strcmp($value,$requestoptions->boundary);
 				if ($requestoptions->ascending) {
 					if ($requestoptions->include_boundary) {

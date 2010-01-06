@@ -37,7 +37,7 @@ class SMWDataValueFactory {
 	 * @param $caption user-defined caption or false if none given
 	 * @param $property SMWPropertyValue property object for which this value was made, or NULL
 	 */
-	static public function newTypeObjectValue(SMWTypesValue $typevalue, $value=false, $caption=false, $property=NULL) {
+	static public function newTypeObjectValue(SMWTypesValue $typevalue, $value=false, $caption=false, $property=null) {
 		if (!$typevalue->isValid()) { // just return the error, pass it through
 			$result = SMWDataValueFactory::newTypeIDValue('__err');
 			$result->addError($typevalue->getErrors());
@@ -54,7 +54,7 @@ class SMWDataValueFactory {
 	 * @param $caption user-defined caption or false if none given
 	 * @param $property SMWPropertyValue property object for which this value was made, or NULL
 	 */
-	static public function newTypeIDValue($typeid, $value=false, $caption=false, $property=NULL) {
+	static public function newTypeIDValue($typeid, $value=false, $caption=false, $property=null) {
 		SMWDataValueFactory::initDatatypes();
 		if (array_key_exists($typeid, SMWDataValueFactory::$m_typeclasses)) { // direct response for basic types
 			$result = new SMWDataValueFactory::$m_typeclasses[$typeid]($typeid);
@@ -64,7 +64,7 @@ class SMWDataValueFactory {
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			return new SMWErrorValue(wfMsgForContent('smw_unknowntype', $typeid ), $value, $caption);
 		}
-		if ($property !== NULL) $result->setProperty($property);
+		if ($property !== null) $result->setProperty($property);
 		if ($value !== false) $result->setUserValue($value,$caption);
 		return $result;
 	}

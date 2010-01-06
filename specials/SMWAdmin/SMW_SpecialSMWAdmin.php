@@ -52,7 +52,7 @@ class SMWAdmin extends SpecialPage {
 			$title = Title::makeTitleSafe( $row->job_namespace, $row->job_title);
 			$refreshjob = Job::factory( $row->job_cmd, $title, Job::extractBlob( $row->job_params ), $row->job_id );
 		} else {
-			$refreshjob = NULL;
+			$refreshjob = null;
 		}
 
 		/**** Execute actions if any ****/
@@ -81,7 +81,7 @@ class SMWAdmin extends SpecialPage {
 		} elseif ($smwgAdminRefreshStore && ($action=='refreshstore')) { // managing refresh jobs for the store
 			$sure = $wgRequest->getText( 'rfsure' );
 			if ($sure == 'yes') {
-				if ($refreshjob === NULL) { // careful, there might be race conditions here
+				if ($refreshjob === null) { // careful, there might be race conditions here
 					$title = Title::makeTitle(NS_SPECIAL, 'SMWAdmin');
 					$newjob = new SMWRefreshJob($title, array('spos'=>1, 'prog'=>0, 'rc'=>2));
 					$newjob->insert();
@@ -114,7 +114,7 @@ class SMWAdmin extends SpecialPage {
 
 		$html .= '<br /><h2>' . wfMsg('smw_smwadmin_datarefresh') . "</h2>\n" .
 				'<p>' . wfMsg('smw_smwadmin_datarefreshdocu') . "</p>\n";
-		if ($refreshjob !== NULL) {
+		if ($refreshjob !== null) {
 			$prog = $refreshjob->getProgress();
 			$html .= '<p>' . wfMsg('smw_smwadmin_datarefreshprogress') . "</p>\n" .
 			'<p><div style="float: left; background: #DDDDDD; border: 1px solid grey; width: 300px; "><div style="background: #AAF; width: ' .

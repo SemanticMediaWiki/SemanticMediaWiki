@@ -122,7 +122,7 @@ class SMWSQLStore2QueryEngine {
 			$this->m_dbs->update('smw_conc2', array('cache_date' => strtotime("now"), 'cache_count' => $this->m_dbs->affectedRows()), array('s_id' => $cid), 'SMW::refreshConceptCache');
 		} else { // just delete old data if there is any
 			$this->m_dbs->delete('smw_conccache', array('o_id' => $cid), 'SMW::refreshConceptCache');
-			$this->m_dbs->update('smw_conc2', array('cache_date' => NULL, 'cache_count' => NULL), array('s_id' => $cid), 'SMW::refreshConceptCache');
+			$this->m_dbs->update('smw_conc2', array('cache_date' => null, 'cache_count' => null), array('s_id' => $cid), 'SMW::refreshConceptCache');
 			$this->m_errors[] = "No concept description found.";
 		}
 		$this->cleanUp();
@@ -137,7 +137,7 @@ class SMWSQLStore2QueryEngine {
 	public function deleteConceptCache($concept) {
 		$cid = $this->m_store->getSMWPageID($concept->getDBkey(), SMW_NS_CONCEPT, '', false);
 		$this->m_dbs->delete('smw_conccache', array('o_id' => $cid), 'SMW::refreshConceptCache');
-		$this->m_dbs->update('smw_conc2', array('cache_date' => NULL, 'cache_count' => NULL), array('s_id' => $cid), 'SMW::refreshConceptCache');
+		$this->m_dbs->update('smw_conc2', array('cache_date' => null, 'cache_count' => null), array('s_id' => $cid), 'SMW::refreshConceptCache');
 	}
 
 	/**
@@ -496,7 +496,7 @@ class SMWSQLStore2QueryEngine {
 					$this->m_queries[$subqid] = $subquery;
 					for ($i=0; $i<$valuedesc->getCount(); $i++) {
 						$desc = $valuedesc->getDescription($i);
-						if ($desc !== NULL) {
+						if ($desc !== null) {
 							$stypeid = SMWDataValueFactory::findTypeID(current($typelabels));
 							$valpid = $this->m_store->getSMWPageID(strval($i),SMW_NS_PROPERTY,SMW_SQL2_SMWIW);
 							$valqid = SMWSQLStore2Query::$qnum;

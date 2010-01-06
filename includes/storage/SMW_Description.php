@@ -326,7 +326,7 @@ class SMWValueDescription extends SMWDescription {
 	}
 
 	public function getQueryString($asvalue = false) {
-		if ($this->m_datavalue !== NULL) {
+		if ($this->m_datavalue !== null) {
 			switch ($this->m_comparator) {
 				case SMW_CMP_LEQ:  $comparator = '<'; break;
 				case SMW_CMP_GEQ:  $comparator = '>'; break;
@@ -389,7 +389,7 @@ class SMWValueList extends SMWDescription {
 		$this->m_descriptions[$index] = $description;
 		if ($index >= $this->m_size) { // fill other places with NULL
 			for ($i=$this->m_size; $i<$index; $i++) {
-				$this->m_descriptions[$i] = NULL;
+				$this->m_descriptions[$i] = null;
 			}
 			$this->m_size = $index+1;
 		}
@@ -399,7 +399,7 @@ class SMWValueList extends SMWDescription {
 		if ($index < $this->m_size) {
 			return $this->m_descriptions[$index];
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 
@@ -413,7 +413,7 @@ class SMWValueList extends SMWDescription {
 			} else {
 				$result .= ';';
 			}
-			if ($this->m_descriptions[$i] !== NULL) {
+			if ($this->m_descriptions[$i] !== null) {
 				$nonempty = true;
 				$result .= $this->m_descriptions[$i]->getQueryString();
 			}
@@ -432,7 +432,7 @@ class SMWValueList extends SMWDescription {
 	public function getSize() {
 		$size = 1;
 		foreach ($this->m_descriptions as $desc) {
-			if ($desc !== NULL) {
+			if ($desc !== null) {
 				$size += $desc->getSize();
 			}
 		}
@@ -442,7 +442,7 @@ class SMWValueList extends SMWDescription {
 	public function getDepth() {
 		$depth = 0;
 		foreach ($this->m_descriptions as $desc) {
-			if ($desc !== NULL) {
+			if ($desc !== null) {
 				$depth = max($depth, $desc->getDepth());
 			}
 		}
@@ -460,12 +460,12 @@ class SMWValueList extends SMWDescription {
 		$result = new SMWValueList();
 		$result->setPrintRequests($this->getPrintRequests());
 		for ($i=0; $i<$this->m_size; $i++) {
-			if ($this->m_descriptions[$i] !== NULL) {
+			if ($this->m_descriptions[$i] !== null) {
 				$restdepth = $maxdepth;
 				$result->setDescription($i, $this->m_descriptions[$i]->prune($maxsize, $restdepth, $prunelog));
 				$newdepth = min($newdepth, $restdepth);
 			} else {
-				$result->setDescription($i, NULL);
+				$result->setDescription($i, null);
 			}
 		}
 		$log = array_merge($log, $prunelog);
@@ -594,7 +594,7 @@ class SMWConjunction extends SMWDescription {
  */
 class SMWDisjunction extends SMWDescription {
 	protected $m_descriptions;
-	protected $m_classdesc = NULL; // contains a single class description if any such disjunct was given;
+	protected $m_classdesc = null; // contains a single class description if any such disjunct was given;
 	                               // disjunctive classes are aggregated therein
 	protected $m_true = false; // used if disjunction is trivially true already
 
@@ -612,11 +612,11 @@ class SMWDisjunction extends SMWDescription {
 		if ($description instanceof SMWThingDescription) {
 			$this->m_true = true;
 			$this->m_descriptions = array(); // no conditions any more
-			$this->m_catdesc = NULL;
+			$this->m_catdesc = null;
 		}
 		if (!$this->m_true) {
 			if ($description instanceof SMWClassDescription) { // combine class descriptions
-				if ($this->m_classdesc === NULL) { // first class description
+				if ($this->m_classdesc === null) { // first class description
 					$this->m_classdesc = $description;
 					$this->m_descriptions[] = $description;
 				} else {

@@ -131,7 +131,7 @@ if( isset( $options['concept'] ) ) { // single concept mode
 	// 	$concept->setValues('African_countries',SMW_NS_CONCEPT);
 	global $wgContLang;
 	$concept = Title::newFromText($wgContLang->getNsText(SMW_NS_CONCEPT) . ':' . $options['concept']);
-	if ($concept !== NULL) {
+	if ($concept !== null) {
 		doAction($concept);
 	}
 } else { // iterate over concepts
@@ -148,7 +148,7 @@ if( isset( $options['concept'] ) ) { // single concept mode
 
 	for ($id = $start; $id <= $end; $id++) {
 		$title = Title::newFromID($id);
-		if (($title === NULL) || ($title->getNamespace() != SMW_NS_CONCEPT)) continue;
+		if (($title === null) || ($title->getNamespace() != SMW_NS_CONCEPT)) continue;
 		$num_lines += doAction($title, $num_lines);
 	}
 }

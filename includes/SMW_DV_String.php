@@ -38,7 +38,7 @@ class SMWStringValue extends SMWDataValue {
 		$this->m_caption = $this->m_value; // this is our output text
 	}
 
-	public function getShortWikiText($linked = NULL) {
+	public function getShortWikiText($linked = null) {
 		$this->unstub();
 		//TODO: Support linking?
 		return $this->m_caption;
@@ -47,18 +47,18 @@ class SMWStringValue extends SMWDataValue {
 	/**
 	 * @todo Rather parse input to obtain properly formatted HTML.
 	 */
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		return smwfXMLContentEncode($this->getShortWikiText($linker));
 	}
 
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		return $this->isValid()?$this->getAbbValue($linked,$this->m_value):$this->getErrorText();
 	}
 
 	/**
 	 * @todo Rather parse input to obtain properly formatted HTML.
 	 */
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		return $this->isValid()?$this->getAbbValue($linker,smwfXMLContentEncode($this->m_value)):$this->getErrorText();
 	}
 
@@ -110,7 +110,7 @@ class SMWStringValue extends SMWDataValue {
 			$lit = new SMWExpLiteral(smwfHTMLtoUTF8($this->m_value), $this, 'http://www.w3.org/2001/XMLSchema#string');
 			return new SMWExpData($lit);
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 
@@ -126,7 +126,7 @@ class SMWStringValue extends SMWDataValue {
 	protected function getAbbValue($linked, $value) {
 		$len = mb_strlen($value);
 		if ( ($len > 255) && ($this->m_typeid != '_cod') ) {
-			if ( ($linked === NULL)||($linked === false) ) {
+			if ( ($linked === null)||($linked === false) ) {
 				return mb_substr($value, 0, 42) . ' <span class="smwwarning">&hellip;</span> ' . mb_substr($value, $len - 42);
 			} else {
 				SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);

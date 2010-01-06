@@ -98,7 +98,7 @@ class SMWExpData {
 	 */
 	public function getSpecialValues($namespace, $localname) {
 		$pe = SMWExporter::getSpecialElement($namespace, $localname);
-		if ($pe !== NULL) {
+		if ($pe !== null) {
 			return $this->getValues($pe);
 		} else {
 			return array();

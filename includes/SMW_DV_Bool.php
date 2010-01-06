@@ -12,16 +12,16 @@
  */
 class SMWBoolValue extends SMWDataValue {
 
-	protected $m_value = NULL; // true, false, or NULL (unset)
+	protected $m_value = null; // true, false, or NULL (unset)
 	protected $m_stdcaption = ''; // a localised standard label for that value (if value is not NULL)
-	protected $m_truecaption = NULL; // a desired label for "true" if given
-	protected $m_falsecaption = NULL; // a desired label for "false" if given
+	protected $m_truecaption = null; // a desired label for "true" if given
+	protected $m_falsecaption = null; // a desired label for "false" if given
 
 	protected function parseUserValue($value) {
 		wfLoadExtensionMessages('SemanticMediaWiki');
 		$value = trim($value);
 		$lcv = strtolower($value);
-		$this->m_value = NULL;
+		$this->m_value = null;
 		if ($lcv === '1') { // note: if English "true" should be possible, specify in smw_true_words
 			$this->m_value = true;
 		} elseif ($lcv === '0') { // note: English "false" may be added to smw_true_words
@@ -38,14 +38,14 @@ class SMWBoolValue extends SMWDataValue {
 			$this->m_caption = $value;
 		}
 		if ($this->m_value === true) {
-			if ($this->m_truecaption !== NULL) {
+			if ($this->m_truecaption !== null) {
 				$this->m_stdcaption = $this->m_truecaption;
 			} else {
 				$vals = explode(',', wfMsgForContent('smw_true_words'));
 				$this->m_stdcaption = $vals[0];
 			}
 		} elseif ($this->m_value === false) {
-			if ($this->m_falsecaption !== NULL) {
+			if ($this->m_falsecaption !== null) {
 				$this->m_stdcaption = $this->m_falsecaption;
 			} else {
 				$vals = explode(',', wfMsgForContent('smw_false_words'));
@@ -75,27 +75,27 @@ class SMWBoolValue extends SMWDataValue {
 				$this->m_falsecaption = htmlspecialchars(trim($captions[1]));
 			} // else ignore
 		}
-		if ( ($formatstring != $this->m_outformat) && $this->isValid() && ($this->m_truecaption !== NULL) ) { // also adjust display
+		if ( ($formatstring != $this->m_outformat) && $this->isValid() && ($this->m_truecaption !== null) ) { // also adjust display
 			$this->m_caption = $this->m_stdcaption = ($this->m_value?$this->m_truecaption:$this->m_falsecaption);
 		}
 		$this->m_outformat = $formatstring;
 	}
 
-	public function getShortWikiText($linked = NULL) {
+	public function getShortWikiText($linked = null) {
 		$this->unstub();
 		return $this->m_caption;
 	}
 
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		$this->unstub();
 		return $this->m_caption;
 	}
 
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		return $this->isValid()?$this->m_stdcaption:$this->getErrorText();
 	}
 
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		return $this->isValid()?$this->m_stdcaption:$this->getErrorText();
 	}
 
@@ -136,7 +136,7 @@ class SMWBoolValue extends SMWDataValue {
 			$lit = new SMWExpLiteral($xsdvalue, $this, 'http://www.w3.org/2001/XMLSchema#boolean');
 			return new SMWExpData($lit);
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 

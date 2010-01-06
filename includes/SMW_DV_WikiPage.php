@@ -28,7 +28,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	protected $m_prefixedtext = ''; // full titletext with prefixes, including interwiki prefix
 	protected $m_namespace = NS_MAIN;
 	protected $m_id; // false if unset
-	protected $m_title = NULL;
+	protected $m_title = null;
 
 	protected $m_fixNamespace = NS_MAIN; // if namespace other than NS_MAIN, restrict inputs to this namespace
 
@@ -79,7 +79,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ($value != '') {
 			$this->m_title = Title::newFromText($value, $this->m_fixNamespace);
 			///TODO: Escape the text so users can see any punctuation problems (bug 11666).
-			if ($this->m_title === NULL) {
+			if ($this->m_title === null) {
 				wfLoadExtensionMessages('SemanticMediaWiki');
 				$this->addError(wfMsgForContent('smw_notitle', $value));
 			} elseif ( ($this->m_fixNamespace != NS_MAIN) &&
@@ -87,7 +87,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				wfLoadExtensionMessages('SemanticMediaWiki');
 				$this->addError(wfMsgForContent('smw_wrong_namespace', $wgContLang->getNsText($this->m_fixNamespace)));
 			}
-			if ($this->m_title !== NULL) {
+			if ($this->m_title !== null) {
 				$this->m_textform = $this->m_title->getText();
 				$this->m_dbkeyform = $this->m_title->getDBkey();
 				$this->m_interwiki = $this->m_title->getInterwiki();
@@ -115,7 +115,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->m_sortkey   = array_key_exists(3,$args)?$args[3]:'';
 		$this->m_textform = str_replace('_', ' ', $this->m_dbkeyform);
 		$this->m_id = false;
-		$this->m_title = NULL;
+		$this->m_title = null;
 		$this->m_prefixedtext = false;
 		$this->m_caption = false;
 		if ( ($this->m_fixNamespace != NS_MAIN) && ( $this->m_fixNamespace != $this->m_namespace) ) {
@@ -124,9 +124,9 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortWikiText($linked = NULL) {
+	public function getShortWikiText($linked = null) {
 		$this->unstub();
-		if ( ($linked === NULL) || ($linked === false) || ($this->m_outformat == '-') || (!$this->isValid()) || ($this->m_caption === '') ) {
+		if ( ($linked === null) || ($linked === false) || ($this->m_outformat == '-') || (!$this->isValid()) || ($this->m_caption === '') ) {
 			return $this->getCaption();
 		} else {
 			return '[[:' . str_replace("'", '&#x0027;', $this->getPrefixedText()) .
@@ -134,10 +134,10 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		$this->unstub();
-		if ( ($linker !== NULL) && ($this->m_caption !== '') && ($this->m_outformat != '-') ) { $this->getTitle(); } // init the Title object, may reveal hitherto unnoticed errors
-		if ( ($linker === NULL) || (!$this->isValid()) || ($this->m_outformat == '-') || ($this->m_caption === '') ) {
+		if ( ($linker !== null) && ($this->m_caption !== '') && ($this->m_outformat != '-') ) { $this->getTitle(); } // init the Title object, may reveal hitherto unnoticed errors
+		if ( ($linker === null) || (!$this->isValid()) || ($this->m_outformat == '-') || ($this->m_caption === '') ) {
 			return htmlspecialchars($this->getCaption());
 		} elseif ($this->getNamespace() == NS_MEDIA) { /// NOTE: this extra case is indeed needed
 			return $linker->makeMediaLinkObj($this->getTitle(), $this->getCaption());
@@ -151,12 +151,12 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * not stored, and hence should not be shown in the Factbox (where the getLongWikiText method is used).
 	 * In all other uses, values come from the store and do not have fragments anyway.
 	 */
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		$this->unstub();
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		}
-		if ( ($linked === NULL) || ($linked === false) || ($this->m_outformat == '-') ) {
+		if ( ($linked === null) || ($linked === false) || ($this->m_outformat == '-') ) {
 			return $this->m_fixNamespace == NS_MAIN?$this->getPrefixedText():$this->getText();
 		} elseif ($this->m_namespace == NS_IMAGE) { // embed images instead of linking to their page
 			 return '[[' . str_replace("'", '&#x0027;', $this->getPrefixedText()) . '|' . $this->m_textform . '|frameless|border|text-top]]';
@@ -165,13 +165,13 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 	}
 
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		$this->unstub();
-		if ( ($linker !== NULL) && ($this->m_outformat != '-') ) { $this->getTitle(); } // init the Title object, may reveal hitherto unnoticed errors
+		if ( ($linker !== null) && ($this->m_outformat != '-') ) { $this->getTitle(); } // init the Title object, may reveal hitherto unnoticed errors
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		}
-		if ( ($linker === NULL) || ($this->m_outformat == '-') ) {
+		if ( ($linker === null) || ($this->m_outformat == '-') ) {
 			return htmlspecialchars($this->m_fixNamespace == NS_MAIN?$this->getPrefixedText():$this->getText());
 		} elseif ($this->getNamespace() == NS_MEDIA) { // this extra case is really needed
 			return $linker->makeMediaLinkObj($this->getTitle(), $this->m_textform);
@@ -222,7 +222,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	public function getExportData() {
-		if (!$this->isValid()) return NULL;
+		if (!$this->isValid()) return null;
 		switch ($this->getNamespace()) {
 			case NS_MEDIA: // special handling for linking media files directly
 				$file = wfFindFile( $this->getTitle() );
@@ -236,7 +236,7 @@ class SMWWikiPageValue extends SMWDataValue {
 					}
 					return new SMWExpData(new SMWExpResource($uri, $this));
 				} else { // Medialink to non-existing file :-/
-					return NULL;
+					return null;
 				}
 			break;
 			default: // some true wiki page
@@ -256,14 +256,14 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * trying to create a title.
 	 */
 	public function getTitle() {
-		if ( ($this->isValid()) && ($this->m_title === NULL) ) {
+		if ( ($this->isValid()) && ($this->m_title === null) ) {
 			if ($this->m_interwiki == '') {
 				$this->m_title = Title::makeTitle($this->m_namespace, $this->m_dbkeyform);
 			} else { // interwiki title objects must be built from full input texts
 				$this->m_title = Title::newFromText($this->getPrefixedText());
 			}
 		}
-		if ($this->m_title === NULL) { // should not normally happen, but anyway ...
+		if ($this->m_title === null) { // should not normally happen, but anyway ...
 			global $wgContLang;
 			wfLoadExtensionMessages('SemanticMediaWiki');
 			$this->addError(wfMsgForContent('smw_notitle', $wgContLang->getNsText($this->m_namespace) . ':' . $this->m_dbkeyform));
@@ -278,7 +278,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	public function getArticleID() {
 		$this->unstub();
 		if ($this->m_id === false) {
-			$this->m_id = ($this->getTitle() !== NULL)?$this->m_title->getArticleID():0;
+			$this->m_id = ($this->getTitle() !== null)?$this->m_title->getArticleID():0;
 		}
 		return $this->m_id;
 	}

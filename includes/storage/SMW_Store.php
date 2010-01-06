@@ -79,7 +79,7 @@ class SMWRequestOptions {
 	 * Whether it is lower or upper is specified by the parameter "ascending"
 	 * (true->lower, false->upper).
 	 */
-	public $boundary = NULL;
+	public $boundary = null;
 	/**
 	 * Specifies whether or not the requested boundary should be returned
 	 * as a result.
@@ -142,20 +142,20 @@ abstract class SMWStore {
 	 *
 	 * If called with $subject == NULL, all values for the given property are returned.
 	 */
-	abstract function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = NULL, $outputformat = '');
+	abstract function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = null, $outputformat = '');
 
 	/**
 	 * Get an array of all subjects that have the given value for the given property. The
 	 * result is an array of SMWWikiPageValue objects. If NULL is given as a value, all subjects having
 	 * that property are returned.
 	 */
-	abstract function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = NULL);
+	abstract function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = null);
 
 	/**
 	 * Get an array of all subjects that have some value for the given property. The
 	 * result is an array of SMWWikiPageValue objects.
 	 */
-	abstract function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = NULL);
+	abstract function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = null);
 
 	/**
 	 * Get an array of all properties for which the given subject has some value. The result is an
@@ -163,7 +163,7 @@ abstract class SMWStore {
 	 * @param $subject Title or SMWWikiPageValue denoting the subject
 	 * @param $requestoptions SMWRequestOptions optionally defining further options
 	 */
-	abstract function getProperties($subject, $requestoptions = NULL);
+	abstract function getProperties($subject, $requestoptions = null);
 
 	/**
 	 * Get an array of all properties for which there is some subject that relates to the given value.
@@ -171,7 +171,7 @@ abstract class SMWStore {
 	 * @note In some stores, this function might be implemented partially so that only values of type Page
 	 * (_wpg) are supported.
 	 */
-	abstract function getInProperties(SMWDataValue $object, $requestoptions = NULL);
+	abstract function getInProperties(SMWDataValue $object, $requestoptions = null);
 
 ///// Writing methods /////
 
@@ -225,7 +225,7 @@ abstract class SMWStore {
 	 * of arrays, each containing a property title and a count. The expected order is
 	 * alphabetical w.r.t. to property title texts.
 	 */
-	abstract function getPropertiesSpecial($requestoptions = NULL);
+	abstract function getPropertiesSpecial($requestoptions = null);
 
 	/**
 	 * Return all properties that have been declared in the wiki but that
@@ -233,7 +233,7 @@ abstract class SMWStore {
 	 * that have been given a type if they have no efficient means of accessing
 	 * the set of all pages in the property namespace.
 	 */
-	abstract function getUnusedPropertiesSpecial($requestoptions = NULL);
+	abstract function getUnusedPropertiesSpecial($requestoptions = null);
 
 	/**
 	 * Return all properties that are used on some page but that do not have any
@@ -241,7 +241,7 @@ abstract class SMWStore {
 	 * set of all existing pages can extend this list to all properties that are
 	 * used but do not have a type assigned to them.
 	 */
-	abstract function getWantedPropertiesSpecial($requestoptions = NULL);
+	abstract function getWantedPropertiesSpecial($requestoptions = null);
 
 	/**
 	 * Return statistical information as an associative array with the following

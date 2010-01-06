@@ -64,7 +64,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 					if($count==0){
 						$values = '';
 						foreach($field->getContent() as $value){
-							$values = $value->getShortText($outputmode,NULL); //assign last value to label
+							$values = $value->getShortText($outputmode,null); //assign last value to label
 							$prefixedtext = $value->getPrefixedText();
 						}
 						$valuestack[] = 'label: "'.$values.'"';
@@ -85,7 +85,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 									$values[] = "\"".$value->getYear()."-".str_pad($value->getMonth(),2,'0',STR_PAD_LEFT)."-".str_pad($value->getDay(),2,'0',STR_PAD_LEFT)." ".$value->getTimeString()."\"";
 									break;
 								default:
-									$values[] = '"'.$value->getShortText($outputmode,NULL).'"';
+									$values[] = '"'.$value->getShortText($outputmode,null).'"';
 							}
 
 							if(sizeof($values)>1){

@@ -19,10 +19,10 @@ class SMWTestStore extends SMWStore {
 ///// Reading methods /////
 
 	function getSemanticData($subject, $filter = false) {
-		return NULL;
+		return null;
 	}
 
-	function getSpecialValues($subject, $specialprop, $requestoptions = NULL) {
+	function getSpecialValues($subject, $specialprop, $requestoptions = null) {
 		// TODO
 		if ($specialprop === SMW_SP_INSTANCE_OF) { // category membership
 			if ( ($requestoptions->limit == -1) || $requestoptions->limit > 8) {
@@ -54,7 +54,7 @@ class SMWTestStore extends SMWStore {
 		}
 	}
 
-	function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = NULL) {
+	function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = null) {
 		if ($specialprop === SMW_SP_INSTANCE_OF) { // category membership
 			if ( !($value instanceof Title) || ($value->getNamespace() != NS_CATEGORY) ) {
 				return array();
@@ -69,7 +69,7 @@ class SMWTestStore extends SMWStore {
 		}
 	}
 
-	function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = NULL, $outputformat = '') {
+	function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = null, $outputformat = '') {
 		$type = $this->getSpecialValues($property,SMW_SP_HAS_TYPE);
 		$type = $type[0];
 		$valarray = array();
@@ -103,25 +103,25 @@ class SMWTestStore extends SMWStore {
 		return $result;
 	}
 
-	function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = NULL) {
+	function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = null) {
 		if ( !$value->isValid() ) {
 			return array();
 		}
 		return $this->getTestTitles($requestoptions);
 	}
 
-	function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = NULL) {
+	function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = null) {
 		return $this->getTestTitles($requestoptions);
 	}
 
-	function getProperties($subject, $requestoptions = NULL) {
+	function getProperties($subject, $requestoptions = null) {
 		if ( ($requestoptions->limit == -1) || $requestoptions->limit > 8) {
 			$requestoptions->limit = 8;
 		}
 		return $this->getTestTitles($requestoptions, SMW_NS_PROPERTY);
 	}
 
-	function getInProperties(SMWDataValue $object, $requestoptions = NULL) {
+	function getInProperties(SMWDataValue $object, $requestoptions = null) {
 		return $this->getTestTitles($requestoptions, SMW_NS_PROPERTY);
 	}
 
@@ -173,15 +173,15 @@ class SMWTestStore extends SMWStore {
 
 ///// Special page functions /////
 
-	function getPropertiesSpecial($requestoptions = NULL) {
+	function getPropertiesSpecial($requestoptions = null) {
 		return array();
 	}
 
-	function getUnusedPropertiesSpecial($requestoptions = NULL) {
+	function getUnusedPropertiesSpecial($requestoptions = null) {
 		return array();
 	}
 
-	function getWantedPropertiesSpecial($requestoptions = NULL) {
+	function getWantedPropertiesSpecial($requestoptions = null) {
 		return array();
 	}
 
@@ -240,8 +240,8 @@ class SMWTestStore extends SMWStore {
 			$result[$key] = Title::newFromText($text, $ns);
 		}
 		// the order of applying the following is crucial:
-		if ($requestoptions !== NULL) {
-			if ($requestoptions->boundary !== NULL) {
+		if ($requestoptions !== null) {
+			if ($requestoptions->boundary !== null) {
 				$newresult = array();
 				foreach ($result as $key => $r) {
 					if ($requestoptions->ascending) {
@@ -288,12 +288,12 @@ class SMWTestStore extends SMWStore {
 	 * @param $valuecol name of SQL column to which conditions apply
 	 * @param $labelcol name of SQL column to which string conditions apply, if any
 	 */
-// 	protected function getSQLConditions($requestoptions, $valuecol, $labelcol = NULL) {
+// 	protected function getSQLConditions($requestoptions, $valuecol, $labelcol = null) {
 // 		$sql_conds = '';
-// 		if ($requestoptions !== NULL) {
+// 		if ($requestoptions !== null) {
 // 			$db =& wfGetDB( DB_MASTER ); // TODO: use slave?
 // 			// <snip>
-// 			if ($labelcol !== NULL) { // apply string conditions
+// 			if ($labelcol !== null) { // apply string conditions
 // 				foreach ($requestoptions->getStringConditions() as $strcond) {
 // 					$string = str_replace(array('_', ' '), array('\_', '\_'), $strcond->string);
 // 					switch ($strcond->condition) {

@@ -47,7 +47,7 @@ class SMWPropertyValue extends SMWDataValue {
 	/// If the property is predefined, its internal key is stored here. Otherwise FALSE.
 	protected $m_propertyid;
 	/// If the property is associated with a wikipage, it is stored here. Otherwise NULL.
-	protected $m_wikipage = NULL;
+	protected $m_wikipage = null;
 	/// Store if this property is an inverse
 	protected $m_inv = false;
 
@@ -88,7 +88,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * original object's content.
 	 */
 	public function __clone() {
-		if ($this->m_wikipage !== NULL) $this->m_wikipage = clone $this->m_wikipage;
+		if ($this->m_wikipage !== null) $this->m_wikipage = clone $this->m_wikipage;
 	}
 
 	/**
@@ -97,8 +97,8 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @todo Accept/enforce property namespace.
 	 */
 	protected function parseUserValue($value) {
-		$this->prop_typevalue = NULL;
-		$this->prop_typeid = NULL;
+		$this->prop_typevalue = null;
+		$this->prop_typeid = null;
 		$this->m_inv = false;
 		if ($this->m_caption === false) { // always use this as caption
 			$this->m_caption = $value;
@@ -117,7 +117,7 @@ class SMWPropertyValue extends SMWDataValue {
 			$this->m_wikipage->setUserValue($value, $this->m_caption);
 			$this->addError($this->m_wikipage->getErrors());
 		} else { // should rarely happen ($value is only changed if the input $value really was a label for a predefined prop)
-			$this->m_wikipage = NULL;
+			$this->m_wikipage = null;
 		}
 	}
 
@@ -127,8 +127,8 @@ class SMWPropertyValue extends SMWDataValue {
 	 * internal property id accordingly.
 	 */
 	protected function parseDBkeys($args) {
-		$this->prop_typevalue = NULL;
-		$this->prop_typeid = NULL;
+		$this->prop_typevalue = null;
+		$this->prop_typeid = null;
 		$this->m_inv = false;
 		if ( $args[0]{0} == '-' ) { // check if this property refers to an inverse
 			$args[0] = substr($args[0],1);
@@ -148,7 +148,7 @@ class SMWPropertyValue extends SMWDataValue {
 			$this->m_caption = $label;
 			$this->addError($this->m_wikipage->getErrors()); // NOTE: this unstubs the wikipage, should we rather ignore errors here to prevent this?
 		} else { // predefined property without label
-			$this->m_wikipage = NULL;
+			$this->m_wikipage = null;
 			$this->m_caption = $this->m_propertyid;
 		}
 	}
@@ -182,7 +182,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function isVisible() {
 		$this->unstub();
-		return ($this->m_wikipage !== NULL);
+		return ($this->m_wikipage !== null);
 	}
 
 	/**
@@ -211,24 +211,24 @@ class SMWPropertyValue extends SMWDataValue {
 
 	public function setOutputFormat($formatstring) {
 		$this->m_outformat = $formatstring;
-		if ($this->m_wikipage !== NULL) { // do not unstub if not needed
+		if ($this->m_wikipage !== null) { // do not unstub if not needed
 			$this->m_wikipage->setOutputFormat($formatstring);
 		}
 	}
 
-	public function getShortWikiText($linked = NULL) {
+	public function getShortWikiText($linked = null) {
 		return $this->isVisible()?$this->highlightText($this->m_wikipage->getShortWikiText($linked)):'';
 	}
 
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		return $this->isVisible()?$this->highlightText($this->m_wikipage->getShortHTMLText($linker)):'';
 	}
 
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		return $this->isVisible()?$this->highlightText($this->m_wikipage->getLongWikiText($linked)):'';
 	}
 
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		return $this->isVisible()?$this->highlightText($this->m_wikipage->getLongHTMLText($linker)):'';
 	}
 
@@ -279,7 +279,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function getTypesValue() {
 		global $smwgPDefaultType;
-		if ($this->prop_typevalue !== NULL) return $this->prop_typevalue;
+		if ($this->prop_typevalue !== null) return $this->prop_typevalue;
 		if (!$this->isValid()) { // errors in property, return invalid types value with same errors
 			$result = SMWDataValueFactory::newTypeIDValue('__typ');
 			$result->setDBkeys(array('__err'));
@@ -315,7 +315,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * returns the id of this property datavalue.
 	 */
 	public function getPropertyTypeID() {
-		if ($this->prop_typeid === NULL) {
+		if ($this->prop_typeid === null) {
 			$type = $this->getTypesValue();
 			$this->prop_typeid = $type->getDBkey();
 		}

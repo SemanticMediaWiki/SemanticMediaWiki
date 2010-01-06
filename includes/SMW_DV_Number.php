@@ -92,9 +92,9 @@ class SMWNumberValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortWikiText($linked = NULL) {
+	public function getShortWikiText($linked = null) {
 		$this->unstub();
-		if (($linked === NULL) || ($linked === false) || ($this->m_outformat == '-') ) {
+		if (($linked === null) || ($linked === false) || ($this->m_outformat == '-') ) {
 			return $this->m_caption;
 		}
 		$this->makeConversionValues();
@@ -122,11 +122,11 @@ class SMWNumberValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		return $this->getShortWikiText($linker);
 	}
 
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		$this->unstub();
 		if (!$this->isValid()) {
 			return $this->getErrorText();
@@ -156,7 +156,7 @@ class SMWNumberValue extends SMWDataValue {
 		}
 	}
 
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		return $this->getLongWikiText($linker);
 	}
 
@@ -224,7 +224,7 @@ class SMWNumberValue extends SMWDataValue {
 			$lit = new SMWExpLiteral($this->m_value, $this, 'http://www.w3.org/2001/XMLSchema#double');
 			return new SMWExpData($lit);
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 

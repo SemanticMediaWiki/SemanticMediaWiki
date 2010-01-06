@@ -87,14 +87,14 @@ class SMWInfolink {
 	}
 
 	/**
-	 * Get the value of some named parameter, or NULL if no parameter of
+	 * Get the value of some named parameter, or null if no parameter of
 	 * that name exists.
 	 */
 	public function getParameter($key) {
 		if ( array_key_exists($key,$this->m_params) ) {
 			return $this->m_params[$key];
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 
@@ -120,7 +120,7 @@ class SMWInfolink {
 	 * be some Linker object (for HTML output). Some default linker will be created
 	 * if needed and not provided.
 	 */
-	public function getText($outputformat, $linker = NULL) {
+	public function getText($outputformat, $linker = null) {
 		if ($this->m_style !== false) {
 			SMWOutputs::requireHeadItem(SMW_HEADER_STYLE); // make SMW styles available
 			$start = "<span class=\"$this->m_style\">";
@@ -136,7 +136,7 @@ class SMWInfolink {
 				$titletext = $this->m_target;
 			}
 			$title = Title::newFromText($titletext);
-			if ($title !== NULL) {
+			if ($title !== null) {
 				if ($outputformat == SMW_OUTPUT_WIKI) {
 					$link = "[[$titletext|$this->m_caption]]";
 				} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
@@ -147,7 +147,7 @@ class SMWInfolink {
 			         //  that can be separated from title text,
 			         //  e.g. as in Special:Bla/il<leg>al -> Special:Bla&p=il&lt;leg&gt;al)
 				$title = Title::newFromText($this->m_target);
-				if ($title !== NULL) {
+				if ($title !== null) {
 					if ($outputformat == SMW_OUTPUT_WIKI) {
 						$link = "[" . $title->getFullURL(SMWInfolink::encodeParameters($this->m_params,false)) . " $this->m_caption]";
 					} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
@@ -172,14 +172,14 @@ class SMWInfolink {
 	/**
 	 * Return hyperlink for this infolink in HTML format.
 	 */
-	public function getHTML($linker = NULL) {
+	public function getHTML($linker = null) {
 		return $this->getText(SMW_OUTPUT_HTML, $linker);
 	}
 
 	/**
 	 * Return hyperlink for this infolink in wiki format.
 	 */
-	public function getWikiText($linker = NULL) {
+	public function getWikiText($linker = null) {
 		return $this->getText(SMW_OUTPUT_WIKI, $linker);
 	}
 
@@ -191,7 +191,7 @@ class SMWInfolink {
 	public function getURL() {
 		if ($this->m_internal) {
 			$title = Title::newFromText($this->m_target);
-			if ($title !== NULL) {
+			if ($title !== null) {
 				return $title->getFullURL(SMWInfolink::encodeParameters($this->m_params,false));
 			} else {
 				return ''; // the title was bad, normally this would indicate a software bug
@@ -212,12 +212,12 @@ class SMWInfolink {
 
 
 	/**
-	 * Return a Linker object, using the parameter $linker if not NULL, and creatng a new one
+	 * Return a Linker object, using the parameter $linker if not null, and creatng a new one
 	 * otherwise. $linker is usually a user skin object, while the fallback linker object is
 	 * not customised to user settings.
 	 */
-	protected function getLinker(&$linker = NULL) {
-		if ($linker === NULL) {
+	protected function getLinker(&$linker = null) {
+		if ($linker === null) {
 			$linker = new Linker();
 		}
 		return $linker;

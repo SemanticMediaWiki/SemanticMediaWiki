@@ -29,7 +29,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		if ($this->mShowHeaders != SMW_HEADERS_HIDE) { // building headers
 			$result .= "\t<tr>\n";
 			foreach ($res->getPrintRequests() as $pr) {
-				$result .= "\t\t<th>" . $pr->getText($outputmode, ($this->mShowHeaders == SMW_HEADERS_PLAIN?NULL:$this->mLinker) ) . "</th>\n";
+				$result .= "\t\t<th>" . $pr->getText($outputmode, ($this->mShowHeaders == SMW_HEADERS_PLAIN?null:$this->mLinker) ) . "</th>\n";
 			}
 			$result .= "\t</tr>\n";
 		}

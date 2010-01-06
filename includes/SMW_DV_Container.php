@@ -18,7 +18,7 @@ abstract class SMWContainerValue extends SMWDataValue {
 
 	public function __construct($typeid) {
 		parent::__construct($typeid);
-		$this->m_data = new SMWSemanticData(NULL);
+		$this->m_data = new SMWSemanticData(null);
 	}
 
 	/**
@@ -86,10 +86,10 @@ abstract class SMWContainerValue extends SMWDataValue {
 	}
 
 	// Methods for parsing, serialisation, and display are not defined in this abstract class:
-		// public function getShortWikiText($linked = NULL);
-		// public function getShortHTMLText($linker = NULL);
-		// public function getLongWikiText($linked = NULL);
-		// public function getLongHTMLText($linker = NULL);
+		// public function getShortWikiText($linked = null);
+		// public function getShortHTMLText($linker = null);
+		// public function getLongWikiText($linked = null);
+		// public function getLongHTMLText($linker = null);
 		// protected function parseUserValue($value);
 		// public function getWikiValue();
 

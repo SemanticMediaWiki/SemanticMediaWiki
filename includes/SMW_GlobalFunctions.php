@@ -237,7 +237,7 @@ function smwfSetupExtension() {
 	wfProfileIn('smwfSetupExtension (SMW)');
 	global $smwgIP, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink, $smwgMW_1_14;
 
-	$smwgMasterStore = NULL;
+	$smwgMasterStore = null;
 	$smwgIQRunningNumber = 0;
 
 	///// register hooks /////
@@ -451,7 +451,7 @@ function smwfShowBrowseLink($skintemplate) {
 		return str_replace(' ', '_', $text);
 		///// The long and secure way. Use if problems occur.
 		// 		$t = Title::newFromText( $text );
-		// 		if ($t != NULL) {
+		// 		if ($t != null) {
 		// 			return $t->getDBkey();
 		// 		}
 		// 		return $text;
@@ -471,7 +471,7 @@ function smwfShowBrowseLink($skintemplate) {
 		return str_replace('_', ' ', $text);
 		///// The long and secure way. Use if problems occur.
 		// 		$t = Title::newFromText( $text );
-		// 		if ($t != NULL) {
+		// 		if ($t != null) {
 		// 			return $t->getText();
 		// 		}
 		// 		return $text;
@@ -591,7 +591,7 @@ function smwfShowBrowseLink($skintemplate) {
 		if ($smwgDefaultStore == 'SMWRAPStore2') { // no autoloading for RAP store, since autoloaded classes are in rare cases loaded by MW even if not used in code -- this is not possible for RAPstore, which depends on RAP being installed
 			include_once($smwgIP . '/includes/storage/SMW_RAPStore2.php');
 		}
-		if ($smwgMasterStore === NULL) {
+		if ($smwgMasterStore === null) {
 			$smwgMasterStore = new $smwgDefaultStore();
 		}
 		return $smwgMasterStore;

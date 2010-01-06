@@ -28,7 +28,7 @@ class SMWExpElement {
 	 * Constructor. $dv is the SMWDataValue from which this object was created,
 	 * if any.
 	 */
-	public function __construct($name, $dv = NULL) {
+	public function __construct($name, $dv = null) {
 		$this->m_name = $name;
 		$this->m_dv = $dv;
 	}
@@ -69,7 +69,7 @@ class SMWExpResource extends SMWExpElement {
 	 * be the local name and they are used to build a QName. Otherwise $name is
 	 * assumed to be the full URI.
 	 */
-	public function __construct($name, $dv = NULL, $namespace=false, $namespaceid=false) {
+	public function __construct($name, $dv = null, $namespace=false, $namespaceid=false) {
 		if ($namespace !== false) {
 			$this->m_namespace = $namespace;
 			$this->m_namespaceid = $namespaceid;
@@ -161,7 +161,7 @@ class SMWExpLiteral extends SMWExpElement {
 	 * witout any escape sequences whatsoever. Note that it may be required to escape
 	 * some symbols in some contexts, especially <, >, & in XML and HTML.
 	 */
-	public function __construct($name, $dv = NULL, $datatype = false) {
+	public function __construct($name, $dv = null, $datatype = false) {
 		$this->m_datatype = $datatype;
 		SMWExpElement::__construct($name, $dv);
 	}

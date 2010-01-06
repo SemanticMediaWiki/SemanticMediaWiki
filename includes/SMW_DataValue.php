@@ -44,7 +44,7 @@
 abstract class SMWDataValue {
 
 	/// The text label of the respective property or false if none given
-	protected $m_property = NULL;
+	protected $m_property = null;
 	/// The text label to be used for output or false if none given
 	protected $m_caption;
 	/// True if a value was set.
@@ -174,7 +174,7 @@ abstract class SMWDataValue {
 	 */
 	public function addServiceLinks() {
 		if ($this->m_hasservicelinks) return;
-		if ( ($this->m_property === NULL) || ($this->m_property->getWikiPageValue() === NULL) ) return; // no property known
+		if ( ($this->m_property === null) || ($this->m_property->getWikiPageValue() === null) ) return; // no property known
 		$args = $this->getServiceLinkParams();
 		if ($args === false) return; // no services supported
 		array_unshift($args, ''); // add a 0 element as placeholder
@@ -341,7 +341,7 @@ abstract class SMWDataValue {
 	 * The parameter $linked controls linking of values such as titles and should
 	 * be non-NULL and non-false if this is desired.
 	 */
-	abstract public function getShortWikiText($linked = NULL);
+	abstract public function getShortWikiText($linked = null);
 
 	/**
 	 * Returns a short textual representation for this data value. If the value
@@ -353,7 +353,7 @@ abstract class SMWDataValue {
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (or NULL for no linking).
 	 */
-	abstract public function getShortHTMLText($linker = NULL);
+	abstract public function getShortHTMLText($linker = null);
 
 	/**
 	 * Return the long textual description of the value, as printed for
@@ -363,7 +363,7 @@ abstract class SMWDataValue {
 	 * The parameter $linked controls linking of values such as titles and should
 	 * be non-NULL and non-false if this is desired.
 	 */
-	abstract public function getLongWikiText($linked = NULL);
+	abstract public function getLongWikiText($linked = null);
 
 	/**
 	 * Return the long textual description of the value, as printed for
@@ -373,7 +373,7 @@ abstract class SMWDataValue {
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (or NULL for no linking).
 	 */
-	abstract public function getLongHTMLText($linker = NULL);
+	abstract public function getLongHTMLText($linker = null);
 
 	/**
 	 * Returns a short textual representation for this data value. If the value
@@ -385,7 +385,7 @@ abstract class SMWDataValue {
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (for HTML output), or NULL for no linking.
 	 */
-	public function getShortText($outputformat, $linker = NULL) {
+	public function getShortText($outputformat, $linker = null) {
 		switch ($outputformat) {
 			case SMW_OUTPUT_WIKI: return $this->getShortWikiText($linker);
 			case SMW_OUTPUT_HTML: case SMW_OUTPUT_FILE: default: return $this->getShortHTMLText($linker);
@@ -400,7 +400,7 @@ abstract class SMWDataValue {
 	 * The parameter $linker controls linking of values such as titles and should
 	 * be some Linker object (for HTML output), or NULL for no linking.
 	 */
-	public function getLongText($outputformat, $linker = NULL) {
+	public function getLongText($outputformat, $linker = null) {
 		switch ($outputformat) {
 			case SMW_OUTPUT_WIKI: return $this->getLongWikiText($linker);
 			case SMW_OUTPUT_HTML: case SMW_OUTPUT_FILE: default: return $this->getLongHTMLText($linker);
@@ -411,7 +411,7 @@ abstract class SMWDataValue {
 	 * Return text serialisation of info links. Ensures more uniform layout
 	 * throughout wiki (Factbox, Property pages, ...).
 	 */
-	public function getInfolinkText($outputformat, $linker=NULL) {
+	public function getInfolinkText($outputformat, $linker=null) {
 		$result = '';
 		$first = true;
 		$extralinks = array();
@@ -465,7 +465,7 @@ abstract class SMWDataValue {
 	 * vector returned by getDBkeys().
 	 */
 	public function getNumericValue() {
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -484,7 +484,7 @@ abstract class SMWDataValue {
 	 * text, but no more. Result might have no entries but is always an array.
 	 */
 	public function getInfolinks() {
-		if ($this->isValid() && ($this->m_property !== NULL) && ($this->m_property->getWikiPageValue() !== NULL) ) {
+		if ($this->isValid() && ($this->m_property !== null) && ($this->m_property->getWikiPageValue() !== null) ) {
 			if (!$this->m_hasssearchlink) { // add default search link
 				$this->m_hasssearchlink = true;
 				$this->m_infolinks[] = SMWInfolink::newPropertySearchLink('+', $this->m_property->getWikiValue(), $this->getWikiValue());
@@ -562,7 +562,7 @@ abstract class SMWDataValue {
 			$lit = new SMWExpLiteral(smwfHTMLtoUTF8(implode(';',$this->getDBkeys())), $this);
 			return new SMWExpData($lit);
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 
@@ -571,7 +571,7 @@ abstract class SMWDataValue {
 	 * Creates an error if the value is illegal.
 	 */
 	protected function checkAllowedValues() {
-		if ( ($this->m_property === NULL) || ($this->m_property->getWikiPageValue() === NULL) ) return; // no property known
+		if ( ($this->m_property === null) || ($this->m_property->getWikiPageValue() === null) ) return; // no property known
 		$allowedvalues = smwfGetStore()->getPropertyValues($this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty('_PVAL'));
 		if (count($allowedvalues) == 0) return;
 		$hash = $this->getHash();

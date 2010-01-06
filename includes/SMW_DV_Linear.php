@@ -203,7 +203,7 @@ class SMWLinearValue extends SMWNumberValue {
 		if ($this->m_displayunits !== false) return;
 		$this->initConversionData(); // needed to normalise unit strings
 		$this->m_displayunits = array();
-		if ( ($this->m_property === NULL) || ($this->m_property->getWikiPageValue() === NULL) ) return;
+		if ( ($this->m_property === null) || ($this->m_property->getWikiPageValue() === null) ) return;
 		$values = smwfGetStore()->getPropertyValues($this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty('_UNIT'));
 		$units = array();
 		foreach ($values as $value) { // Join all if many annotations exist. Discouraged (random order) but possible.

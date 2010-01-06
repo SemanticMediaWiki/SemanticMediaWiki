@@ -59,7 +59,7 @@ class SMWSQLHelpers {
 	 * @note The function partly ignores the order in which fields are set up.
 	 * Only if the type of some field changes will its order be adjusted explicitly.
 	 */
-	public static function setupTable($table, $fields, $db, $reportTo = NULL) {
+	public static function setupTable($table, $fields, $db, $reportTo = null) {
 		global $wgDBname, $wgDBtype;
 		$fname = 'SMWSQLHelpers::setupTable';
 
@@ -214,7 +214,7 @@ class SMWSQLHelpers {
 	 * Make sure that each of the column descriptions in the given array is indexed by *one* index
 	 * in the given DB table.
 	 */
-	public static function setupIndex($table, $columns, $db, $reportTo = NULL) {
+	public static function setupIndex($table, $columns, $db, $reportTo = null) {
 		global $wgDBtype,$verbose;
 		$table = $db->tableName($table);
 		$fname = 'SMWSQLHelpers::setupIndex';
@@ -280,8 +280,8 @@ class SMWSQLHelpers {
 	}
 
 	/// If a receiver is given, report the given message to its reportProgress method.
-	protected static function reportProgress($msg, $receiver = NULL) {
-		if ($receiver !== NULL) $receiver->reportProgress($msg);
+	protected static function reportProgress($msg, $receiver = null) {
+		if ($receiver !== null) $receiver->reportProgress($msg);
 	}
 
 }

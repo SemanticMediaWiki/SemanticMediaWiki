@@ -45,16 +45,16 @@ class SMWConceptValue extends SMWDataValue {
 		$this->m_depth = -1;
 	}
 
-	public function getShortWikiText($linked = NULL) {
+	public function getShortWikiText($linked = null) {
 		$this->unstub();
 		return $this->m_caption;
 	}
 
-	public function getShortHTMLText($linker = NULL) {
+	public function getShortHTMLText($linker = null) {
 		return $this->getShortWikiText($linker); // should be save (based on xsdvalue)
 	}
 
-	public function getLongWikiText($linked = NULL) {
+	public function getLongWikiText($linked = null) {
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		} else {
@@ -62,7 +62,7 @@ class SMWConceptValue extends SMWDataValue {
 		}
 	}
 
-	public function getLongHTMLText($linker = NULL) {
+	public function getLongHTMLText($linker = null) {
 		if (!$this->isValid()) {
 			return $this->getErrorText();
 		} else {
@@ -111,7 +111,7 @@ class SMWConceptValue extends SMWDataValue {
 				return $owldesc;
 			}
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 

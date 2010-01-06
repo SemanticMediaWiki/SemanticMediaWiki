@@ -38,7 +38,7 @@ class SMWPrintRequest {
 	 * @param $outputformat optional string for specifying an output format, e.g. an output unit
 	 * @param $params optional array of further, named parameters for the print request
 	 */
-	public function __construct($mode, $label, $data = NULL, $outputformat = false, $params = NULL) {
+	public function __construct($mode, $label, $data = null, $outputformat = false, $params = null) {
 		$this->m_mode = $mode;
 		$this->m_label = $label;
 		$this->m_data = $data;
@@ -50,7 +50,7 @@ class SMWPrintRequest {
 			//$this->m_data = clone $data; // we assume that the caller denotes the object ot us; else he needs provide us with a clone
 			$this->m_data->setCaption($label);
 		}
-		if (NULL != $params) $m_params = $params;
+		if (null != $params) $m_params = $params;
 	}
 
 	public function getMode() {
@@ -66,8 +66,8 @@ class SMWPrintRequest {
 	 * The $linker is a Linker object used for generating hyperlinks.
 	 * If it is NULL, no links will be created.
 	 */
-	public function getHTMLText($linker = NULL) {
-		if ( ($linker === NULL) || ($this->m_label == '') ) {
+	public function getHTMLText($linker = null) {
+		if ( ($linker === null) || ($this->m_label == '') ) {
 			return htmlspecialchars($this->m_label);
 		}
 		switch ($this->m_mode) {
@@ -85,7 +85,7 @@ class SMWPrintRequest {
 	 * Obtain a Wiki-formatted representation of the label.
 	 */
 	public function getWikiText($linked = false) {
-		if ( ($linked === NULL) || ($linked === false) || ($this->m_label == '') ) {
+		if ( ($linked === null) || ($linked === false) || ($this->m_label == '') ) {
 			return $this->m_label;
 		} else {
 			switch ($this->m_mode) {
@@ -103,7 +103,7 @@ class SMWPrintRequest {
 	/**
 	 * Convenience method for accessing the text in either HTML or Wiki format.
 	 */
-	public function getText($outputmode, $linker = NULL) {
+	public function getText($outputmode, $linker = null) {
 		switch ($outputmode) {
 			case SMW_OUTPUT_WIKI: return $this->getWikiText($linker);
 			case SMW_OUTPUT_HTML: case SMW_OUTPUT_FILE: default: return $this->getHTMLText($linker);
