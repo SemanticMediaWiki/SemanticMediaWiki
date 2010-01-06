@@ -1313,6 +1313,8 @@ $messages['br'] = array(
 	'smw_printername_broadtable' => 'Taolenn ledan',
 	'smw_printername_template' => 'Patrom',
 	'smw_paramdesc_link' => 'Diskouez an talvoudoù evel liammoù',
+	'smw_paramdesc_sep' => 'An disranner evit an talvoudoù',
+	'smw_paramdesc_embedonly' => 'Na ziskwel talbenn ebet',
 	'smw_iq_moreresults' => "... disoc'hoù all",
 	'smw_no_importelement' => "An elfenn « $1 » ne c'hall ket bezañ ezporzhiet.",
 	'smw_parseerror' => "An talvoud merket n'eo ket bet komprenet.",
@@ -1343,6 +1345,7 @@ $messages['br'] = array(
 	'tooltip-purge' => 'Klikit amañ da freskaat an holl rekedoù hag an holl batromoù war ar bajenn-mañ',
 	'smw_purge' => 'Freskaat',
 	'types' => 'Seurtoù roadennoù',
+	'smw_ask_sortby' => 'Urzhiañ dre vannoù (diret)',
 	'smw_ask_ascorder' => 'War gresk',
 	'smw_ask_descorder' => 'War zigresk',
 	'smw_ask_submit' => "Kavout disoc'hoù",
@@ -1352,7 +1355,10 @@ $messages['br'] = array(
 	'smw_ask_format_as' => 'Furmadiñ evel :',
 	'smw_ask_defaultformat' => 'dre ziouer',
 	'smw_ask_otheroptions' => 'Dibarzhioù all',
+	'smw_ask_show_embed' => "Diskouez ar c'hod enframmet",
+	'smw_ask_hide_embed' => "Kuzhat ar c'hod enframmet",
 	'searchbyproperty' => 'Klask dre berzh',
+	'smw_sbv_displayresult' => 'Roll eus an holl bajennoù gant ar perzh « $1 » gant an talvoud « $2 ».',
 	'smw_sbv_property' => 'Perzh :',
 	'smw_sbv_value' => 'Talvoud :',
 	'smw_sbv_submit' => "Kavout disoc'hoù",
@@ -1377,6 +1383,7 @@ $messages['br'] = array(
 	'smw_smwadmin_support' => 'Kaout ur skor',
 	'smw_adminlinks_datastructure' => 'Framm ar roadennoù',
 	'smw_adminlinks_displayingdata' => 'Diskwel roadennoù',
+	'smw_adminlinks_inlinequerieshelp' => 'Skoazell evit ar rekedoù enlinenn',
 );
 
 /** Bosnian (Bosanski)
