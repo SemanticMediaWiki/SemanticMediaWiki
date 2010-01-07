@@ -63,7 +63,7 @@ protected $m_SpecialProperties = array(
 	'_PVAL' => 'Allows value',
 	'_MDAT' => 'Modification date',
 	'_ERRP' => 'Has improper value for',
-	'_LIST' => 'Type list', // temporary name (experimental feature for replacing n-aries), may still change
+	'_LIST' => 'Has fields', // temporary name (experimental feature for replacing n-aries), may still change
 );
 
 protected $m_SpecialPropertyAliases = array(
