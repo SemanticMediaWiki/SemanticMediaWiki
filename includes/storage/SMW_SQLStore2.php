@@ -1790,6 +1790,7 @@ class SMWSQLStore2 extends SMWStore {
 	 */
 	protected function changeSMWPageID($oldid,$newid,$oldnamespace=-1,$newnamespace=-1, $sdata=true, $podata=true) {
 		$fname = 'SMW::changeSMWPageID';
+		$db =& wfGetDB( DB_MASTER );
 		// Update bnode references that use namespace field to store ids:
 		if ($sdata) { // bnodes are part of the data of a subject
 			$db->update('smw_ids', array('smw_namespace' => $newid),
