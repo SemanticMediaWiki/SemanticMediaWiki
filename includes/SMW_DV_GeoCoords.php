@@ -244,7 +244,7 @@ class SMWGeoCoordsValue extends SMWDataValue {
 			if ($angles[$i] !== false) {
 				$numvalue->setUserValue($angles[$i]);
 				if ($numvalue->isValid() && ($numvalue->getUnit() == '')) {
-					$res += $numvalue->getNumericValue() / $factor;
+					$res += $numvalue->getValueKey() / $factor;
 				} else {
 					$this->addError(wfMsgForContent('smw_nofloat', $angles[$i]));
 				}

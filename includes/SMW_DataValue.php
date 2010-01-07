@@ -506,21 +506,6 @@ abstract class SMWDataValue {
 	abstract public function getWikiValue();
 
 	/**
-	 * Return the numeric representation of the value that can be
-	 * used for ordering values of this datatype. The given number
-	 * can be approximate and need not completely reflect the contents
-	 * of a data value. It merely is used for comparing two such
-	 * values. NULL is returned if no such number is provided, but
-	 * it is recommended to use isNumeric() to check for this case.
-	 * @note Storage implementations can assume numerical values to
-	 * be completely determined from the given datavalue (i.e. from the
-	 * vector returned by getDBkeys().
-	 */
-	public function getNumericValue() {
-		return null;
-	}
-
-	/**
 	 * Return a short string that unambiguously specify the type of this value.
 	 * This value will globally be used to identify the type of a value (in spite
 	 * of the class it actually belongs to, which can still implement various types).
@@ -568,12 +553,31 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * Return TRUE if values of the given type generally have a numeric version,
-	 * i.e. if getNumericValue returns a meaningful numeric sortkey.
-	 * Possibly overwritten by subclasses.
+	 * Convenience method that checks if the value that is used to sort data of
+	 * this type is numeric.
 	 */
 	public function isNumeric() {
-		return false;
+		$sig = $this->getSignature();
+		$validx = $this->getValueIndex();
+		if ( ($validx >= 0) && ($validx < strlen($sig)) ) {
+			return ( ( $sig{$validx} == 'n' ) || ( $sig{$validx} == 'f' ) );
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Convenience method that returns the DB key that holds the value that is
+	 * to be used for sorting data of this kind. If this datatype does not
+	 * support sorting, then null is returned here.
+	 */
+	public function getValueKey() {
+		$dbkeys = $this->getDBkeys();
+		if ( array_key_exists($this->getValueIndex(), $dbkeys) ) {
+			return $dbkeys[$this->getValueIndex()];
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -689,6 +693,16 @@ abstract class SMWDataValue {
 	 */
 	public function getUnit() {
 		return ''; // empty unit
+	}
+
+	/**
+	 * Alias for getValueKey(). If you use this function and test if its result
+	 * is null, then use isNumeric() instead to check this. If this is done,
+	 * getValueKey() can be used instead.
+	 * @deprecated This function will vanish before SMW 1.6.
+	 */
+	public function getNumericValue() {
+		return $this->getValueKey();
 	}
 
 }

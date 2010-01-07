@@ -52,8 +52,8 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 				$first = true;
 				while ( ($object = $field->getNextObject()) !== false ) {
 					if ($first) {
-						if ($object->isNumeric()) { // use numeric sortkey
-							$result .= '<span class="smwsortkey">' . $object->getNumericValue() . '</span>';
+						if ($object->isNumeric()) { // additional hidden sortkey for numeric entries
+							$result .= '<span class="smwsortkey">' . $object->getValueKey() . '</span>';
 						}
 						$first = false;
 					} else {

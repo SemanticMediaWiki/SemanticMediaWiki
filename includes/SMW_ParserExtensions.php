@@ -361,7 +361,7 @@ class SMWParserExtensions {
 						$excluded_dates = explode(';', $value);
 						foreach ($excluded_dates as $date_str) {
 							$date = SMWDataValueFactory::newTypeIDValue('_dat', $date_str);
-							$excluded_dates_jd[] = $date->getNumericValue();
+							$excluded_dates_jd[] = $date->getValueKey();
 						}
 					}
 				}
@@ -376,11 +376,11 @@ class SMWParserExtensions {
 		if (is_null($period) || $period < 1 || $period > 500)
 			$period = 1;
 		// get the Julian day value for both the start and end date
-		$start_date_jd = $start_date->getNumericValue();
+		$start_date_jd = $start_date->getValueKey();
 		if (! is_null($end_date))
-			$end_date_jd = $end_date->getNumericValue();
+			$end_date_jd = $end_date->getValueKey();
 		$cur_date = $start_date;
-		$cur_date_jd = $start_date->getNumericValue();
+		$cur_date_jd = $start_date->getValueKey();
 		$i = 0;
 		$reached_end_date = false;
 		do {
@@ -408,7 +408,7 @@ class SMWParserExtensions {
 				}
 				$date_str = "$cur_year-$cur_month-$cur_day $cur_time";
 				$cur_date = SMWDataValueFactory::newTypeIDValue('_dat', $date_str);
-				$cur_date_jd = $cur_date->getNumericValue();
+				$cur_date_jd = $cur_date->getValueKey();
 			} else { // $unit == 'day' or 'week'
 				// assume 'day' if it's none of the above
 				$cur_date_jd += ($unit === 'week') ? 7 * $period : $period;

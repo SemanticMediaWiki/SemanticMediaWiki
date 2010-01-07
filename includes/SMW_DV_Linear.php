@@ -173,7 +173,7 @@ class SMWLinearValue extends SMWNumberValue {
 		$numdv = SMWDataValueFactory::newTypeIDValue('_num'); // used for parsing the factors
 		foreach ($factors as $dv) {
 			$numdv->setUserValue($dv->getWikiValue());
-			if (!$numdv->isValid() || ($numdv->getNumericValue() === 0)) {
+			if (!$numdv->isValid() || ($numdv->getValueKey() === 0)) {
 				continue; // ignore problematic conversions
 			}
 			$unit_aliases = preg_split('/\s*,\s*/u', $numdv->getUnit());
@@ -182,11 +182,11 @@ class SMWLinearValue extends SMWNumberValue {
 				$unit = $this->normalizeUnit($unit);
 				if ($first) {
 					$unitid = $unit;
-					if ( $numdv->getNumericValue() == 1 ) { // add main unit to front of array (displyed first)
+					if ( $numdv->getValueKey() == 1 ) { // add main unit to front of array (displyed first)
 						$this->m_mainunit = $unit;
-						$this->m_unitfactors = array( $unit => $numdv->getNumericValue() ) + $this->m_unitfactors;
+						$this->m_unitfactors = array( $unit => $numdv->getValueKey() ) + $this->m_unitfactors;
 					} else { // non-main units are not ordered -- they might come out in any way the DB likes (can be modified via display units)
-						$this->m_unitfactors[$unit] = $numdv->getNumericValue();
+						$this->m_unitfactors[$unit] = $numdv->getValueKey();
 					}
 					$first = false;
 				}

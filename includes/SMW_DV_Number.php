@@ -163,7 +163,7 @@ class SMWNumberValue extends SMWDataValue {
 	public function getDBkeys() {
 		$this->unstub();
 		$this->convertToMainUnit();
-		return array($this->m_value, intval($this->m_value), $this->m_unit);
+		return array($this->m_value, floatval($this->m_value), $this->m_unit);
 	}
 
 	public function getSignature() {
@@ -181,12 +181,6 @@ class SMWNumberValue extends SMWDataValue {
 	public function getWikiValue(){
 		$this->unstub();
 		return $this->m_wikivalue;
-	}
-
-	public function getNumericValue() {
-		$this->unstub();
-		$this->convertToMainUnit();
-		return $this->m_value;
 	}
 
 	public function getUnit() {
@@ -212,10 +206,6 @@ class SMWNumberValue extends SMWDataValue {
 		// $2: string of integer version of value, in English punctuation
 		// $3: string of unit (if any)
 		return array((string)$this->m_value, (string)round($this->m_value), $this->m_unit);
-	}
-
-	public function isNumeric() {
-		return true;
 	}
 
 	public function getExportData() {

@@ -79,7 +79,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 									$values[] = '"'.$value->getXSDValue().'"';
 									break;
 								case '_num':
-									$values[] = $value->getNumericValue($outputmode,$this->getLinker(0));
+									$values[] = $value->getValueKey();
 									break;
 								case '_dat':
 									$values[] = "\"".$value->getYear()."-".str_pad($value->getMonth(),2,'0',STR_PAD_LEFT)."-".str_pad($value->getDay(),2,'0',STR_PAD_LEFT)." ".$value->getTimeString()."\"";
@@ -99,7 +99,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 					$count++;
 				}
 				$valuestack[] = '"uri" : "'.$wgServer.$wgScriptPath.'/index.php?title='.$prefixedtext.'"';
-				
+
 				//try to determine type/category
 				$catlist = array();
 				$dbr  = &wfGetDB(DB_SLAVE);

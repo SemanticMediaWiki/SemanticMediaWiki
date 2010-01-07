@@ -378,12 +378,6 @@ class SMWTimeValue extends SMWDataValue {
 		return 0;
 	}
 
-	public function getNumericValue() {
-		$this->unstub();
-		$this->createJD();
-		return $this->m_jd;
-	}
-
 	public function getWikiValue() {
 		$this->unstub();
 		return $this->m_wikivalue;
@@ -396,10 +390,6 @@ class SMWTimeValue extends SMWDataValue {
 		} else {
 			return implode("\t", $this->getErrors());
 		}
-	}
-
-	public function isNumeric() {
-		return true;
 	}
 
 	public function getExportData() {

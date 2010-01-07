@@ -121,15 +121,6 @@ class SMWBoolValue extends SMWDataValue {
 		return $this->m_stdcaption;
 	}
 
-	public function getNumericValue() {
-		$this->unstub();
-		return $this->m_value?'1':'0';
-	}
-
-	public function isNumeric() {
-		return true;
-	}
-
 	public function getExportData() {
 		if ($this->isValid()) {
 			$xsdvalue =  $this->m_value?'true':'false';
