@@ -194,6 +194,27 @@ class SMWListValue extends SMWContainerValue {
 		return $result;
 	}
 
+	/**
+	 * Return the array (list) of datatypes that the individual entries of this datatype consist of.
+	 * @todo Add some check to account for maximal number of list entries (maybe this should go to a
+	 * variant of the SMWTypesValue).
+	 */
+	public function getTypeValues() {
+		if ($this->m_typevalues !== null) return $this->m_typevalues; // local cache
+		if ( ($this->m_property === null) || ($this->m_property->getWikiPageValue() === null) ) {
+			$this->m_typevalues = array(); // no property known -> no types
+		} else { // query for type values
+			$typelist = smwfGetStore()->getPropertyValues($this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty('_LIST'));
+			if (count($typelist) == 1) {
+				$this->m_typevalues = reset($typelist)->getTypeValues();
+			} else { ///TODO internalionalize
+				$this->addError('List type not properly specified for this property.');
+				$this->m_typevalues = array();
+			}
+		}
+		return $this->m_typevalues;
+	}
+
 ////// Internal helper functions
 
 	private function makeOutputText($type = 0, $linker = null) {
@@ -223,47 +244,6 @@ class SMWListValue extends SMWContainerValue {
 			case 3: return $datavalue->getShortHTMLText($linker);
 			case 4: return $datavalue->getWikiValue();
 		}
-	}
-
-////// Custom functions for old n-aries; may become obsolete.
-
-	/**
-	 * Return the array (list) of datatypes that the individual entries of this datatype consist of.
-	 * @todo Add some check to account for maximal number of list entries (maybe this should go to a
-	 * variant of the SMWTypesValue).
-	 */
-	public function getTypeValues() {
-		if ($this->m_typevalues !== null) return $this->m_typevalues; // local cache
-		if ( ($this->m_property === null) || ($this->m_property->getWikiPageValue() === null) ) {
-			$this->m_typevalues = array(); // no property known -> no types
-		} else { // query for type values
-			$typelist = smwfGetStore()->getPropertyValues($this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty('_LIST'));
-			if (count($typelist) == 1) {
-				$this->m_typevalues = reset($typelist)->getTypeValues();
-			} else { ///TODO internalionalize
-				$this->addError('List type not properly specified for this property.');
-				$this->m_typevalues = array();
-			}
-		}
-		return $this->m_typevalues;
-	}
-
-	/**
-	 * If valid and in querymode, build a suitable SMWValueList description from the
-	 * given input or return NULL if no such description was given. This requires the
-	 * input to be given to setUserValue(). Otherwise bad things will happen.
-	 */
-	public function getValueList() {
-		$vl = new SMWValueList();
-		if (!$this->isValid() || !$this->m_querysyntax) {
-			return null;
-		}
-		for ($i=0; $i < $this->m_count; $i++) {
-			if ($this->m_values[$i] !== null) {
-				$vl->setDescription($i,new SMWValueDescription($this->m_values[$i], $this->m_comparators[$i]));
-			}
-		}
-		return $vl;
 	}
 
 }

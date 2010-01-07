@@ -84,6 +84,16 @@ abstract class SMWDescription {
 	}
 
 	/**
+	 * Determine the datatype of the values that are described by this object.
+	 * Most descriptins can only describe wiki pages, so this is the default,
+	 * but some descriptions may refer to other datatypes, and overwrite this
+	 * function accordingly.
+	 */
+	public function getTypeID() {
+		return '_wpg';
+	}
+
+	/**
 	 * Recursively restrict query to a maximal size and depth as given.
 	 * Returns a possibly changed description that should be used as a replacement.
 	 * Reduce values of parameters to account for the returned descriptions size.
@@ -118,6 +128,7 @@ abstract class SMWDescription {
  * @ingroup SMWQuery
  */
 class SMWThingDescription extends SMWDescription {
+
 	public function getQueryString($asvalue = false) {
 		return '+';
 	}
@@ -133,6 +144,17 @@ class SMWThingDescription extends SMWDescription {
 	public function prune(&$maxsize, &$maxdepth, &$log) {
 		return $this;
 	}
+
+	/**
+	 * Return an empty type id since we cannot know the datatype of values that
+	 * are described by this description. This type should not be relevant in
+	 * any place, since description types are currently only necessary for
+	 * processing an SMWSomeProperty object where the property does not specify
+	 * the type.
+	 */
+	public function getTypeID() {
+		return '';
+	}
 }
 
 /**
@@ -144,7 +166,7 @@ class SMWThingDescription extends SMWDescription {
 class SMWClassDescription extends SMWDescription {
 	protected $m_titles;
 
-	public function SMWClassDescription($content) {
+	public function __construct($content) {
 		if ($content instanceof Title) {
 			$this->m_titles = array($content);
 		} elseif (is_array($content)) {
@@ -271,7 +293,7 @@ class SMWConceptDescription extends SMWDescription {
 class SMWNamespaceDescription extends SMWDescription {
 	protected $m_namespace;
 
-	public function SMWNamespaceDescription($namespace) {
+	public function __construct($namespace) {
 		$this->m_namespace = $namespace;
 	}
 
@@ -312,7 +334,7 @@ class SMWValueDescription extends SMWDescription {
 	protected $m_datavalue;
 	protected $m_comparator;
 
-	public function SMWValueDescription(SMWDataValue $datavalue, $comparator = SMW_CMP_EQ) {
+	public function __construct(SMWDataValue $datavalue, $comparator = SMW_CMP_EQ) {
 		$this->m_datavalue = $datavalue;
 		$this->m_comparator = $comparator;
 	}
@@ -358,121 +380,12 @@ class SMWValueDescription extends SMWDescription {
 		return 1;
 	}
 
+	public function getTypeID() {
+		return $this->m_datavalue->getTypeID();
+	}
+
 }
 
-
-/**
- * Description of an ordered list of SMWDescription objects, used as
- * values for some n-ary property. NULL values are to be used for
- * unspecifed values. Corresponds to the built-in support for n-ary
- * properties, i.e. can be viewed as a macro in OWL and RDF.
- * @ingroup SMWQuery
- */
-class SMWValueList extends SMWDescription {
-	protected $m_descriptions;
-	protected $m_size;
-
-	public function SMWValueList($descriptions = array()) {
-		$this->m_descriptions = array_values($descriptions);
-		$this->m_size = count($descriptions);
-	}
-
-	public function getCount() {
-		return $this->m_size;
-	}
-
-	public function getDescriptions() {
-		return $this->m_descriptions;
-	}
-
-	public function setDescription($index, $description) {
-		$this->m_descriptions[$index] = $description;
-		if ($index >= $this->m_size) { // fill other places with NULL
-			for ($i=$this->m_size; $i<$index; $i++) {
-				$this->m_descriptions[$i] = null;
-			}
-			$this->m_size = $index+1;
-		}
-	}
-
-	public function getDescription($index) {
-		if ($index < $this->m_size) {
-			return $this->m_descriptions[$index];
-		} else {
-			return null;
-		}
-	}
-
-	public function getQueryString($asvalue = false) {
-		$result = '';
-		$first = true;
-		$nonempty = false;
-		for ($i=0; $i<$this->m_size; $i++) {
-			if ($first) {
-				$first = false;
-			} else {
-				$result .= ';';
-			}
-			if ($this->m_descriptions[$i] !== null) {
-				$nonempty = true;
-				$result .= $this->m_descriptions[$i]->getQueryString();
-			}
-		}
-		if (!$nonempty) {
-			return '+';
-		} else {
-			return $result;
-		}
-	}
-
-	public function isSingleton() {
-		return false;
-	}
-
-	public function getSize() {
-		$size = 1;
-		foreach ($this->m_descriptions as $desc) {
-			if ($desc !== null) {
-				$size += $desc->getSize();
-			}
-		}
-		return $size;
-	}
-
-	public function getDepth() {
-		$depth = 0;
-		foreach ($this->m_descriptions as $desc) {
-			if ($desc !== null) {
-				$depth = max($depth, $desc->getDepth());
-			}
-		}
-		return $depth;
-	}
-
-	public function prune(&$maxsize, &$maxdepth, &$log) {
-		if ($maxsize <= 0) {
-			$log[] = $this->getQueryString();
-			return new SMWThingDescription();
-		}
-		$maxsize--;
-		$prunelog = array();
-		$newdepth = $maxdepth;
-		$result = new SMWValueList();
-		$result->setPrintRequests($this->getPrintRequests());
-		for ($i=0; $i<$this->m_size; $i++) {
-			if ($this->m_descriptions[$i] !== null) {
-				$restdepth = $maxdepth;
-				$result->setDescription($i, $this->m_descriptions[$i]->prune($maxsize, $restdepth, $prunelog));
-				$newdepth = min($newdepth, $restdepth);
-			} else {
-				$result->setDescription($i, null);
-			}
-		}
-		$log = array_merge($log, $prunelog);
-		$maxdepth = $newdepth;
-		return $result;
-	}
-}
 
 /**
  * Description of a collection of many descriptions, all of which
@@ -484,7 +397,7 @@ class SMWValueList extends SMWDescription {
 class SMWConjunction extends SMWDescription {
 	protected $m_descriptions;
 
-	public function SMWConjunction($descriptions = array()) {
+	public function __construct($descriptions = array()) {
 		$this->m_descriptions = $descriptions;
 	}
 
@@ -547,6 +460,14 @@ class SMWConjunction extends SMWDescription {
 		return $depth;
 	}
 
+	public function getTypeID() {
+		if (count($this->m_descriptions) > 0) { // all subdescriptions should have the same type!
+			return reset($this->m_descriptions)->getTypeID();
+		} else {
+			return ''; // unknown
+		}
+	}
+
 	public function getQueryFeatures() {
 		$result = SMW_CONJUNCTION_QUERY;
 		foreach ($this->m_descriptions as $desc) {
@@ -598,7 +519,7 @@ class SMWDisjunction extends SMWDescription {
 	                               // disjunctive classes are aggregated therein
 	protected $m_true = false; // used if disjunction is trivially true already
 
-	public function SMWDisjunction($descriptions = array()) {
+	public function __construct($descriptions = array()) {
 		foreach ($descriptions as $desc) {
 			$this->addDescription($desc);
 		}
@@ -612,7 +533,7 @@ class SMWDisjunction extends SMWDescription {
 		if ($description instanceof SMWThingDescription) {
 			$this->m_true = true;
 			$this->m_descriptions = array(); // no conditions any more
-			$this->m_catdesc = null;
+			$this->m_classdesc = null;
 		}
 		if (!$this->m_true) {
 			if ($description instanceof SMWClassDescription) { // combine class descriptions
@@ -663,8 +584,7 @@ class SMWDisjunction extends SMWDescription {
 	}
 
 	public function isSingleton() {
-		// NOTE: this neglects the case where several disjuncts describe the same object.
-		// I think I cannot really make myself care about this issue ... -- mak
+		/// NOTE: this neglects the unimportant case where several disjuncts describe the same object.
 		if (count($this->m_descriptions) != 1) {
 			return false;
 		} else {
@@ -686,6 +606,14 @@ class SMWDisjunction extends SMWDescription {
 			$depth = max($depth, $desc->getDepth());
 		}
 		return $depth;
+	}
+
+	public function getTypeID() {
+		if (count($this->m_descriptions) > 0) { // all subdescriptions should have the same type!
+			return reset($this->m_descriptions)->getTypeID();
+		} else {
+			return ''; // unknown
+		}
 	}
 
 	public function getQueryFeatures() {
@@ -739,7 +667,7 @@ class SMWSomeProperty extends SMWDescription {
 	protected $m_description;
 	protected $m_property;
 
-	public function SMWSomeProperty(SMWPropertyValue $property, SMWDescription $description) {
+	public function __construct(SMWPropertyValue $property, SMWDescription $description) {
 		$this->m_property = $property;
 		$this->m_description = $description;
 	}
@@ -790,3 +718,4 @@ class SMWSomeProperty extends SMWDescription {
 		return $result;
 	}
 }
+
