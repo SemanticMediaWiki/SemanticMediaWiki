@@ -585,6 +585,7 @@ class SMWSQLStore2 extends SMWStore {
 
 	public function deleteSubject(Title $subject) {
 		wfProfileIn('SMWSQLStore2::deleteSubject (SMW)');
+		wfRunHooks( 'SMWSQLStore2::deleteSubjectBefore', array( $this, $subject ) );
 		$this->deleteSemanticData(SMWWikiPageValue::makePageFromTitle($subject));
 		$this->updateRedirects($subject->getDBkey(), $subject->getNamespace()); // also delete redirects, may trigger update jobs!
 		if ($subject->getNamespace() == SMW_NS_CONCEPT) { // make sure to clear caches
@@ -597,11 +598,13 @@ class SMWSQLStore2 extends SMWStore {
 		///TODO: who is responsible for these updates? Some update jobs are currently created in SMW_Hooks, some internally in the store
 		///TODO: Possibly delete ID here (at least for non-properties/categories, if not used in any place in rels2)
 		///FIXME: clean internal caches here
+		wfRunHooks( 'SMWSQLStore2::deleteSubjectAfter', array( $this, $subject ) );
 		wfProfileOut('SMWSQLStore2::deleteSubject (SMW)');
 	}
 
 	public function updateData(SMWSemanticData $data) {
 		wfProfileIn("SMWSQLStore2::updateData (SMW)");
+		wfRunHooks( 'SMWSQLStore2::updateDataBefore', array( $this, $data ) );
 		$subject = $data->getSubject();
 		$this->deleteSemanticData($subject);
 		$redirects = $data->getPropertyValues(SMWPropertyValue::makeProperty('_REDI'));
@@ -662,6 +665,7 @@ class SMWSQLStore2 extends SMWStore {
 		// Finally update caches (may be important if jobs are directly following this call)
 		$this->m_semdata[$sid] = clone $data;
 		$this->m_sdstate[$sid] = array_keys(SMWSQLStore2::getPropertyTables()); // everything that one can know
+		wfRunHooks( 'SMWSQLStore2::updateDataAfter', array( $this, $data ) );
 		wfProfileOut("SMWSQLStore2::updateData (SMW)");
 	}
 
