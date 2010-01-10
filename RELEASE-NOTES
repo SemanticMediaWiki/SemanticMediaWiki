@@ -20,10 +20,10 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Compatibility with new MediaWiki skin "Vector"
 * Removed support for backwards compatibility to SMW <1.0 ($smwgSMWBetaCompatible).
 * The page Special:Ask was overhauled to include inputs for entering values
-for the selected format's parameters, and to use Ajax where possible
+  for the selected format's parameters, and to use Ajax where possible
 * To that end, each format's query printer now includes a getParameters()
-function that supplies the name and attributes of each the format's parameters
-* "before" and "after" hooks for updateData and deleteSubject were added.
+  function that supplies the name and attributes of each the format's parameters
+* "before" and "after" hooks for updateData and deleteSubject were added
 
 == SMW 1.4.3 ==
 
