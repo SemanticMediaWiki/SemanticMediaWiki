@@ -548,7 +548,7 @@ class SMWSQLStore2QueryEngine {
 			$fieldname = $smwidjoinfield = false;
 			$this->getDBFieldsForDVIndex($objectfields,$valueindex,$fieldname,$smwidjoinfield);
 			if ($fieldname) {
-				if ($smwjoinfield) {
+				if ($smwidjoinfield) {
 					/// TODO: is this smw_ids possibly duplicated in the query? Can we prevent that? (PERFORMANCE)
 					$query->from = ' INNER JOIN ' . $this->m_dbs->tableName('smw_ids') .
 									" AS ids{$query->alias} ON ids{$query->alias}.smw_id={$query->alias}.{$smwidjoinfield}";

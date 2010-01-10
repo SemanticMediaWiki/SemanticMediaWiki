@@ -506,7 +506,7 @@ class SMWSQLStore2 extends SMWStore {
 					$oid = $this->getSMWPageID($dbkeys[$i],$dbkeys[$i+1],$dbkeys[$i+2]);
 					$i += 3; // skip these additional values (sortkey not needed here)
 					$where .= ($where?' AND ':'') . "t$tableindex.$fieldname=" . $db->addQuotes($oid);
-				} elseif ($typeif != 'l') { // plain value, but not a text blob
+				} elseif ($typeid != 'l') { // plain value, but not a text blob
 					$where .= ($where?' AND ':'') . "t$tableindex.$fieldname=" . $db->addQuotes($dbkeys[$i]);
 				}
 				$i++;
