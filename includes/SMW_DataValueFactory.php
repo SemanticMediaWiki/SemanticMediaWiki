@@ -43,7 +43,7 @@ class SMWDataValueFactory {
 			$result->addError($typevalue->getErrors());
 			return $result;
 		}
-		return SMWDataValueFactory::newTypeIDValue($typevalue->getDBkey(),$value,$vaption,$property);
+		return SMWDataValueFactory::newTypeIDValue($typevalue->getDBkey(),$value,$caption,$property);
 	}
 
 	/**
