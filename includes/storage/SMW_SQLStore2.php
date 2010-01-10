@@ -575,6 +575,7 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn("SMWSQLStore2::getInProperties (SMW)");
 		$db =& wfGetDB( DB_SLAVE );
 		$result = array();
+		$typeid = $value->getTypeID();
 
 		if ($requestoptions !== null) { // potentially need to get more results, since options apply to union
 			$suboptions = clone $requestoptions;
@@ -584,6 +585,7 @@ class SMWSQLStore2 extends SMWStore {
 			$suboptions = null;
 		}
 		foreach (SMWSQLStore2::getPropertyTables() as $tid => $proptable) {
+			if (!$this->tableFitsType($tid,$typeid)) continue;
 			$select = $where = $from = '';
 			if ($proptable->fixedproperty == false) { // join smw_ids to get property titles
 				$from = $db->tableName('smw_ids') . " INNER JOIN " . $db->tableName($proptable->name) . " AS t1 ON t1.p_id=smw_id";
