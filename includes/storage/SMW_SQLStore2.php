@@ -109,7 +109,6 @@ class SMWSQLStore2 extends SMWStore {
 		'_lst'  => 'smw_rels2', // Value list type (internal object)
 		// Special types are not avaialble directly for users (and have no local language name):
 		'__typ' => 'smw_spec2', // Special type page type
-// 		'__con' => 'smw_conc2', // Special concept page type
 		'__sps' => 'smw_spec2', // Special string type
 		'__spu' => 'smw_spec2', // Special uri type
 		'__sup' => 'smw_subp2', // Special subproperty type
@@ -144,7 +143,6 @@ class SMWSQLStore2 extends SMWStore {
 		'_lst'  => array('tnwt',0,-1),// Value list type (internal object)
 		// Special types are not avaialble directly for users (and have no local language name):
 		'__typ' => array('t',0,0),    // Special type page type
-// 		'__con' => 'smw_conc2', // Special concept page type
 		'__sps' => array('t',0,0),    // Special string type
 		'__spu' => array('t',0,0),    // Special uri type
 		'__sup' => array('tnwt',3,3), // Special subproperty type
