@@ -14,13 +14,38 @@ define('SMW_SQL2_SMWBORDERIW',':smw-border'); // virtual "interwiki prefix" sepa
 define('SMW_SQL2_SMWPREDEFIW',':smw-preprop'); // virtual "interwiki prefix" marking predefined objects (non-movable)
 define('SMW_SQL2_SMWINTDEFIW',':smw-intprop'); // virtual "interwiki prefix" marking internal (invisible) predefined properties
 
-/// @todo Document.
+/**
+ * Simple data container for storing information about property tables. A
+ * property table is a DB table that is used to store subject-property-value
+ * records about data in SMW. Tables mostly differ in the composition of the
+ * value, but also in whether the property is explicitly named (or fixed),
+ * and in the way subject pages are referred to.
+ * @ingroup SMWStore
+ */
 class SMWSQLStore2Table {
+	/// Name of the table in the DB.
 	public $name;
+	/// Array with entries "fieldname => typeid" where the types are as given
+	/// for SMWSQLStore::getPropertyTables().
 	public $objectfields;
+	/// If the table is only for one property, this field holds its name.
+	/// Empty otherwise. Tables without a fixed property have a column "p_id"
+	/// for storing the SMW page id of the property.
 	public $fixedproperty;
+	/// Strings of the form "field1,...,fieldN" for extra indexes that are to
+	/// be built for this table. All tables have indexes on subject column(s)
+	/// and property column (if any).
 	public $indexes;
+	/// Boolean that states how subjects are stored. If true, a column "s_id"
+	/// with an SMW page id is used. If false, two columns "s_title" and
+	/// "s_namespace" are used. The latter de-normalized form cannot store
+	/// sortkeys and interwiki prefixes, and is used only for the redirect
+	/// table. New tables should really keep the default "true" here.
 	public $idsubject = true;
+	/// State if a table is reserved for "special properties" (properties that
+	/// are pre-defined in SMW). This is mainly for optimization, since we do
+	/// not want to join with the SMW page id table to find the property for an
+	/// ID when it is likely that the ID is fixed and cached.
 	public $specpropsonly = false;
 
 	public function __construct($name, $objectfields, $indexes = array(), $fixedproperty = false) {
@@ -61,8 +86,11 @@ class SMWSQLStore2 extends SMWStore {
 	/// >0 while getSemanticData runs, used to prevent nested calls from clearing the cache while another call runs and is about to fill it with data
 	protected static $in_getSemanticData = 0;
 
+	/// Array for keeping property table table data, indexed by table id.
+	/// Access this only by calling getPropertyTables().
 	private static $prop_tables = array();
-	private static $fixed_prop_tables = null; // used as a cache "propkey => propid" but built only when needed
+	/// Array to cache "propkey => propid" associations. Built only when needed.
+	private static $fixed_prop_tables = null;
 
 	/// Use pre-defined ids for Very Important Properties, avoiding frequent ID lookups for those
 	private static $special_ids = array(
@@ -89,7 +117,9 @@ class SMWSQLStore2 extends SMWStore {
 		'_LIST' => 28,
 	);
 
-	///@todo Decide what to do with the forms type: it cannot have a page sig *and* live in the special table.
+	/// Array to cache ids of tables for storing known built-in types. Having
+	/// this data here shortcuts the search in findTypeTableID() below.
+	/// @todo Decide what to do with the forms type: it cannot have a page sig *and* live in the special table.
 	private static $property_table_ids = array(
 		'_txt'  => 'smw_text2', // Text type
 		'_cod'  => 'smw_text2', // Code type
@@ -122,8 +152,8 @@ class SMWSQLStore2 extends SMWStore {
 		//'__pro' => SMW_SQL2_NONE,  // Property page type; actually this should never be stored as a value (_wpp is used there)
 	);
 
-	///@todo Document.
-	///@todo Make sure that respective DV objects agree with this cache.
+	/// Array to cache signatures of known built-in types. Having this data
+	/// here safes us from creating datavalue instances in getTypeSignature().
 	private static $type_signatures = array(
 		'_txt'  => array('l',-1,-1),  // Text type
 		'_cod'  => array('l',-1,-1),  // Code type
@@ -1970,10 +2000,32 @@ class SMWSQLStore2 extends SMWStore {
 		return ($new_tid==0)?$sid:$new_tid;
 	}
 
-	/// @todo Document.
+	/**
+	 * Return the array of predefined property table declarations, initialising
+	 * it if necessary. The result is an array of SMWSQLStore2Table objects
+	 * indexed by table ids. Note that the ids are only for accessing the data
+	 * and should not be assumed to agree with the table name.
+	 *
+	 * Most function in this class are independent of the available property
+	 * tables, although the store might not be able to handle proeprty data for
+	 * which no suitable table is given. Note that the cached tables of
+	 * SMWSQLStore2::$property_table_ids refer to IDs that should be available.
+	 * The only other table that must always be available is smw_redi2 for
+	 * managing redirects.
+	 *
+	 * Tables declare value columns ("object fields") by specifying their name
+	 * and type. Types are given using letters as documented for
+	 * SMWDataValue::getSignature(), or the additional letter:
+	 * - p for a reference to an SMW ID as stored in the smw_ids table; this
+	 *   corresponds to a data entry of ID "tnwt".
+	 *
+	 * This letter is specific to this store's ID referencing and must not be
+	 * used in SMWDataValue::getSignature()!
+	 *
+	 * @todo Add a hook for registering additional or modifying given tables.
+	 */
 	public static function getPropertyTables() {
 		if (count(SMWSQLStore2::$prop_tables) > 0) return SMWSQLStore2::$prop_tables; // don't initialise twice
-		// type constants: t (title string), u (unit string), l (long string), 'f' (float), 'i' (integer), 'j' (unsigned integer), 'p' (page id)
 		SMWSQLStore2::$prop_tables['smw_rels2'] = new SMWSQLStore2Table('smw_rels2',
 		                                          array('o_id' => 'p'),
 			                                      array('o_id'));
