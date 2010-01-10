@@ -452,7 +452,7 @@ class SMWSQLStore2 extends SMWStore {
 							'SMW::getPropertySubjects',
 		                    $this->getSQLOptions($requestoptions,'smw_sortkey') );
 		while ($row = $db->fetchObject($res)) {
-			$result[] = SMWWikiPageValue::makePage($row->title, $row->namespace, $row->sortkey);
+			$result[] = SMWWikiPageValue::makePage($row->title, $row->namespace, $row->smw_sortkey);
 		}
 		$db->freeResult($res);
 		wfProfileOut("SMWSQLStore2::getPropertySubjects (SMW)");
