@@ -902,9 +902,9 @@ class SMWSQLStore2QueryEngine {
 			$qobj = $this->m_queries[$rootid];
 			foreach ($this->m_sortkeys as $propkey => $order) {
 				if ( ('RANDOM' != $order) && array_key_exists($propkey,$qobj->sortfields) ) { // field successfully added
-					$result['ORDER BY'] .= (array_key_exists('ORDER BY', $result)?', ':'') . $qobj->sortfields[$propkey] . " $order ";
+					$result['ORDER BY'] = (array_key_exists('ORDER BY', $result)?$result['ORDER BY'] . ', ':'') . $qobj->sortfields[$propkey] . " $order ";
 				} elseif ( ('RANDOM' == $order) && $smwgQRandSortingSupport ) {
-					$result['ORDER BY'] .= (array_key_exists('ORDER BY', $result)?', ':'') . ' RAND() ';
+					$result['ORDER BY'] = (array_key_exists('ORDER BY', $result)?$result['ORDER BY'] . ', ':'') . ' RAND() ';
 				}
 			}
 		}
