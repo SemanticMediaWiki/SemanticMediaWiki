@@ -383,7 +383,7 @@ class SMWSQLStore2 extends SMWStore {
 			for ($i=0; $i<$valuecount; $i++) { // read the value fields from the current row
 				$fieldname = "v$i";
 				$newvalue = $row->$fieldname;
-				if ($i == current($pagevalues)) { // special check for pages to filter out internal objects
+				if ($i === current($pagevalues)) { // special check for pages to filter out internal objects
 					$iwfield = 'v' . ($i+2);
 					$iw = $row->$iwfield;
 					if ( ($iw == SMW_SQL2_SMWIW) && ($valuecount == 4) && ($object !== null) ) {
@@ -395,7 +395,7 @@ class SMWSQLStore2 extends SMWStore {
 						foreach (SMWSQLStore2::getPropertyTables() as $tid => $pt) { // just read all
 							$newvalue = array_merge($newvalue,$this->fetchSemanticData($row->$oidfield, null,$pt));
 						}
-					} elseif ($iw{0} == ':') { // other internal object, maybe a DB inconsistency; ignore row
+					} elseif ( ($iw != '') && ($iw{0} == ':') ) { // other internal object, maybe a DB inconsistency; ignore row
 						$propertyname = '';
 					}
 					next($pagevalues);
