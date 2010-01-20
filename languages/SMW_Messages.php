@@ -9950,6 +9950,7 @@ $messages['ug-latn'] = array(
 $messages['uk'] = array(
 	'smw_result_prev' => 'Попередня',
 	'smw_result_next' => 'Наступна',
+	'smw_result_results' => 'Результати',
 );
 
 /** Veps (Vepsan kel')
