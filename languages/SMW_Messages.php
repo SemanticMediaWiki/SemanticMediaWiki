@@ -1493,7 +1493,12 @@ $messages['bs'] = array(
 	'smw_sbv_value' => 'Vrijednost:',
 	'smw_browselink' => 'Pregled svojstava',
 	'smw_browse_go' => 'Idi',
+	'smw_inverse_label_default' => '$1 od',
+	'smw_result_prev' => 'Prethodno',
+	'smw_result_next' => 'Slijedeće',
 	'smw_result_noresults' => 'Nema rezultata.',
+	'smw_smwadmin_return' => 'Natrag na $1',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Da, siguran sam.',
 );
 
 /** Catalan (Català)
