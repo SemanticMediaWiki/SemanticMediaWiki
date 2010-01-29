@@ -23,7 +23,8 @@ For a documentation of all features, see http://semantic-mediawiki.org
   for the selected format's parameters, and to use Ajax where possible
 * To that end, each format's query printer now includes a getParameters()
   function that supplies the name and attributes of each the format's parameters
-* "before" and "after" hooks for updateData and deleteSubject were added
+* "before" and "after" hooks for updateData() and deleteSubject() were added
+* A hook was added for deleteSemanticData() as well
 
 == SMW 1.4.3 ==
 
