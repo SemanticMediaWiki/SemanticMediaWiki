@@ -5050,6 +5050,19 @@ Perkiraan kemajuan pembaruan saat ini:',
 	'smw_adminlinks_inlinequerieshelp' => 'Bantuan query sisip',
 );
 
+/** Igbo (Igbo)
+ * @author Ukabia
+ */
+$messages['ig'] = array(
+	'smw_viewasrdf' => 'ntá RDF',
+	'smw_finallistconjunct' => ', na',
+	'smw_factbox_head' => 'Ómárí maka $1',
+	'smw_printername_count' => 'güó ihe futárá',
+	'smw_printername_list' => 'Ndetu',
+	'smw_printername_table' => 'Agada',
+	'smw_printername_template' => 'Nkpurụ ihü',
+);
+
 /** Ido (Ido)
  * @author Malafaya
  */
