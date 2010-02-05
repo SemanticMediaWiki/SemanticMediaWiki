@@ -7290,7 +7290,7 @@ Siden det bare ble noen få resultater, vises også nære verdier.',
 	'smw_browse_no_outgoing' => 'Denne siden har ingen egenskaper.',
 	'smw_browse_no_incoming' => 'Ingen egenskaper lenker til denne siden.',
 	'smw_inverse_label_default' => '$1 av',
-	'smw_inverse_label_property' => 'Inversegenskapsmerke',
+	'smw_inverse_label_property' => 'Invers egenskapmerkelapp',
 	'pageproperty' => 'Sideegenskapsøk',
 	'smw_pp_docu' => 'Søk etter all egenskapstekst på en gitt side.
 Skriv inn både sidenavn og egenskap.',
