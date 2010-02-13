@@ -291,7 +291,7 @@ class SMWTestStore extends SMWStore {
 // 	protected function getSQLConditions($requestoptions, $valuecol, $labelcol = null) {
 // 		$sql_conds = '';
 // 		if ($requestoptions !== null) {
-// 			$db =& wfGetDB( DB_MASTER ); // TODO: use slave?
+// 			$db = wfGetDB( DB_MASTER ); // TODO: use slave?
 // 			// <snip>
 // 			if ($labelcol !== null) { // apply string conditions
 // 				foreach ($requestoptions->getStringConditions() as $strcond) {

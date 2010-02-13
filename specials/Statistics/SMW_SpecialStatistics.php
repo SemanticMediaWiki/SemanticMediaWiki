@@ -11,7 +11,7 @@
 
 function smwfExecuteSemanticStatistics() {
 	global $wgOut, $wgLang;
-	$dbr =& wfGetDB( DB_SLAVE );
+	$dbr = wfGetDB( DB_SLAVE );
 
 	$semstats = smwfGetStore()->getStatistics();
 

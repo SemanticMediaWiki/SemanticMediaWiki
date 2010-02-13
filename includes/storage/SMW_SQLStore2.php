@@ -314,7 +314,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ( ($id == 0) || ( ($object === null) && (!$issubject || !$proptable->idsubject) ) ) return array();
 		wfProfileIn("SMWSQLStore2::fetchSemanticData-" . $proptable->name .  " (SMW)");
 		$result = array();
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 
 		//***  First build $from, $select, and $where for the DB query  ***//
 		$from   = $db->tableName($proptable->name); // always use actual table
@@ -432,7 +432,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		$proptables = SMWSQLStore2::getPropertyTables();
 		$proptable = $proptables[$tableid];
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 		if ($proptable->idsubject) { // join in smw_ids to get title data
 			$from = $db->tableName('smw_ids') . " INNER JOIN " . $db->tableName($proptable->name) . " AS t1 ON t1.s_id=smw_id";
 			$select = 'smw_title AS title, smw_namespace AS namespace, smw_sortkey';
@@ -472,7 +472,7 @@ class SMWSQLStore2 extends SMWStore {
 			///NOTE: we do not use the canonical (redirect-aware) id here!
 	 */
 	protected function prepareValueQuery(&$from, &$where, $proptable, $value, $tableindex=1) {
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 		if ($value instanceof SMWContainerValue) { // recursive handling of containers
 			$joinfield = "t$tableindex." . reset(array_keys($proptable->objectfields)); // this must be a type 'p' object
 			$proptables = SMWSQLStore2::getPropertyTables();
@@ -532,7 +532,7 @@ class SMWSQLStore2 extends SMWStore {
 			return array();
 		}
 
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 		$result = array();
 		if ($requestoptions !== null) { // potentially need to get more results, since options apply to union
 			$suboptions = clone $requestoptions;
@@ -583,7 +583,7 @@ class SMWSQLStore2 extends SMWStore {
 	 */
 	public function getInProperties(SMWDataValue $value, $requestoptions = null) {
 		wfProfileIn("SMWSQLStore2::getInProperties (SMW)");
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 		$result = array();
 		$typeid = $value->getTypeID();
 
@@ -629,7 +629,7 @@ class SMWSQLStore2 extends SMWStore {
 		$this->deleteSemanticData(SMWWikiPageValue::makePageFromTitle($subject));
 		$this->updateRedirects($subject->getDBkey(), $subject->getNamespace()); // also delete redirects, may trigger update jobs!
 		if ($subject->getNamespace() == SMW_NS_CONCEPT) { // make sure to clear caches
-			$db =& wfGetDB( DB_MASTER );
+			$db = wfGetDB( DB_MASTER );
 			$id = $this->getSMWPageID($subject->getDBkey(), $subject->getNamespace(),$subject->getInterwiki(),false);
 			$db->delete('smw_conc2', array('s_id' => $id), 'SMW::deleteSubject::Conc2');
 			$db->delete('smw_conccache', array('o_id' => $id), 'SMW::deleteSubject::Conccache');
@@ -661,7 +661,7 @@ class SMWSQLStore2 extends SMWStore {
 		$updates = array(); // collect data for bulk updates; format: tableid => updatearray
 		$this->prepareDBUpdates($updates,$data,$sid);
 
-		$db =& wfGetDB( DB_MASTER );
+		$db = wfGetDB( DB_MASTER );
 		foreach ($updates as $tablename => $uvals) {
  			$db->insert( $tablename, $uvals, "SMW::updateData$tablename");
 		}
@@ -802,7 +802,7 @@ class SMWSQLStore2 extends SMWStore {
 		// get IDs but do not resolve redirects:
 		$sid = $this->getSMWPageID($oldtitle->getDBkey(),$oldtitle->getNamespace(),'',false);
 		$tid = $this->getSMWPageID($newtitle->getDBkey(),$newtitle->getNamespace(),'',false);
-		$db =& wfGetDB( DB_MASTER );
+		$db = wfGetDB( DB_MASTER );
 
 		if ( ($tid == 0) && ($smwgQEqualitySupport != SMW_EQ_NONE) ) { // target not used anywhere yet, just hijack its title for our current id
 			// This condition may not hold even if $newtitle is currently unused/non-existing since we keep old IDs.
@@ -861,7 +861,7 @@ class SMWSQLStore2 extends SMWStore {
 	 */
 	public function getPropertiesSpecial($requestoptions = null) {
 		wfProfileIn("SMWSQLStore2::getPropertiesSpecial (SMW)");
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong
 		$queries = array();
 		foreach (SMWSQLStore2::getPropertyTables() as $proptable) {
@@ -895,7 +895,7 @@ class SMWSQLStore2 extends SMWStore {
 	public function getUnusedPropertiesSpecial($requestoptions = null) {
 		global $wgDBtype;
 		wfProfileIn("SMWSQLStore2::getUnusedPropertiesSpecial (SMW)");
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 		$fname = 'SMW::getUnusedPropertySubjects';
 
 		// we use a temporary table for executing this costly operation on the DB side
@@ -970,7 +970,7 @@ class SMWSQLStore2 extends SMWStore {
 		$proptable = $proptables[SMWSQLStore2::findTypeTableID($smwgPDefaultType)];
 		$result = array();
 		if ($proptable->fixedproperty == false) { // anything else would be crazy, but let's fail gracefully even if the whole world is crazy
-			$db =& wfGetDB( DB_SLAVE );
+			$db = wfGetDB( DB_SLAVE );
 			$options = $this->getSQLOptions($requestoptions,'title');
 			$options['ORDER BY'] = 'count DESC';
 			$res = $db->select($db->tableName($proptable->name) . ' INNER JOIN ' . $db->tableName('smw_ids') .
@@ -988,7 +988,7 @@ class SMWSQLStore2 extends SMWStore {
 
 	public function getStatistics() {
 		wfProfileIn('SMWSQLStore2::getStatistics (SMW)');
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 		$result = array();
 		$proptables = SMWSQLStore2::getPropertyTables();
 		// count number of declared properties by counting "has type" annotations
@@ -1029,7 +1029,7 @@ class SMWSQLStore2 extends SMWStore {
 	public function setup($verbose = true) {
 		$this->reportProgress("Setting up standard database configuration for SMW ...\n\n",$verbose);
 		$this->reportProgress("Selected storage engine is \"SMWSQLStore2\" (or an extension thereof)\n\n",$verbose);
-		$db =& wfGetDB( DB_MASTER );
+		$db = wfGetDB( DB_MASTER );
 		$this->setupTables($verbose, $db);
 		$this->setupPredefinedProperties($verbose, $db);
 		return true;
@@ -1191,7 +1191,7 @@ class SMWSQLStore2 extends SMWStore {
 	public function drop($verbose = true) {
 		global $wgDBtype;
 		$this->reportProgress("Deleting all database content and tables generated by SMW ...\n\n",$verbose);
-		$db =& wfGetDB( DB_MASTER );
+		$db = wfGetDB( DB_MASTER );
 		$tables = array('smw_ids', 'smw_conc2', 'smw_conccache');
 		foreach (SMWSQLStore2::getPropertyTables() as $proptable) {
 			$tables[] = $proptable->name;
@@ -1228,7 +1228,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		// update by internal SMW id --> make sure we get all objects in SMW
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 		$res = $db->select('smw_ids', array('smw_id', 'smw_title','smw_namespace','smw_iw'),
 		                   "smw_id >= $index AND smw_id < " . $db->addQuotes($index+$count), __METHOD__);
 		foreach ($res as $row) {
@@ -1310,7 +1310,7 @@ class SMWSQLStore2 extends SMWStore {
 	 */
 	public function getConceptCacheStatus($concept) {
 		wfProfileIn('SMWSQLStore2::getConceptCacheStatus (SMW)');
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 		$cid = $this->getSMWPageID($concept->getDBkey(), $concept->getNamespace(), '', false);
 		$row = $db->selectRow('smw_conc2',
 		         array('concept_txt','concept_features','concept_size','concept_depth','cache_date','cache_count'),
@@ -1367,7 +1367,7 @@ class SMWSQLStore2 extends SMWStore {
 	protected function getSQLConditions($requestoptions, $valuecol = '', $labelcol = '', $addand = true) {
 		$sql_conds = '';
 		if ($requestoptions !== null) {
-			$db =& wfGetDB( DB_SLAVE ); /// TODO avoid doing this here again, all callers should have one
+			$db = wfGetDB( DB_SLAVE ); /// TODO avoid doing this here again, all callers should have one
 			if ( ($valuecol != '') && ($requestoptions->boundary !== null) ) { // apply value boundary
 				if ($requestoptions->ascending) {
 					$op = $requestoptions->include_boundary?' >= ':' > ';
@@ -1600,7 +1600,7 @@ class SMWSQLStore2 extends SMWStore {
 		if (count($this->m_ids)>1500) { // prevent memory leak in very long PHP runs
 			$this->m_ids = array();
 		}
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 		$id = 0;
 		if ($iw != '') { // external page; no need to think about redirects
 			$res = $db->select('smw_ids', array('smw_id','smw_sortkey'),
@@ -1661,7 +1661,7 @@ class SMWSQLStore2 extends SMWStore {
 		$oldsort = '';
 		$id = $this->getSMWPageIDandSort($title, $namespace, $iw, $oldsort, $canonical);
 		if ($id == 0) {
-			$db =& wfGetDB( DB_MASTER );
+			$db = wfGetDB( DB_MASTER );
 			$sortkey = $sortkey?$sortkey:(str_replace('_',' ',$title));
 			$db->insert('smw_ids',
 			            array( 'smw_id' => $db->nextSequenceValue('smw_ids_smw_id_seq'),
@@ -1676,7 +1676,7 @@ class SMWSQLStore2 extends SMWStore {
 			// smw_ids either, hence the object just did not exist at all.
 			$this->m_ids["$iw $namespace $title C"] = $id;
 		} elseif ( ($sortkey != '') && ($sortkey != $oldsort) ) {
-			$db =& wfGetDB( DB_MASTER );
+			$db = wfGetDB( DB_MASTER );
 			$db->update('smw_ids', array('smw_sortkey' => $sortkey), array('smw_id' => $id), 'SMW::makeSMWPageID');
 		}
 		wfProfileOut('SMWSQLStore2::makeSMWPageID (SMW)');
@@ -1752,7 +1752,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * used, returns a new bnode id!
 	 */
 	protected function makeSMWBnodeID($sid) {
-		$db =& wfGetDB( DB_MASTER );
+		$db = wfGetDB( DB_MASTER );
 		// check if there is an unused bnode to take:
 		$res = $db->select(	'smw_ids', 'smw_id', array('smw_title' => '', 'smw_namespace' => 0, 'smw_iw' => SMW_SQL2_SMWIW),
 			                'SMW::makeSMWBnodeID', array( 'LIMIT' => 1 ) );
@@ -1792,7 +1792,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * be effected by the caller.
 	 */
 	protected function moveSMWPageID($curid, $targetid = 0) {
-		$db =& wfGetDB( DB_MASTER );
+		$db = wfGetDB( DB_MASTER );
 		$row = $db->selectRow( 'smw_ids',
 		                       array( 'smw_id', 'smw_namespace', 'smw_title', 'smw_iw', 'smw_sortkey' ),
 		                       array( 'smw_id' => $curid ),	'SMWSQLStore2::moveSMWPageID' );
@@ -1834,7 +1834,7 @@ class SMWSQLStore2 extends SMWStore {
 	 */
 	protected function changeSMWPageID($oldid,$newid,$oldnamespace=-1,$newnamespace=-1, $sdata=true, $podata=true) {
 		$fname = 'SMW::changeSMWPageID';
-		$db =& wfGetDB( DB_MASTER );
+		$db = wfGetDB( DB_MASTER );
 		// Update bnode references that use namespace field to store ids:
 		if ($sdata) { // bnodes are part of the data of a subject
 			$db->update('smw_ids', array('smw_namespace' => $newid),
@@ -1880,7 +1880,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * purposes.
 	 */
 	protected function deleteSemanticData(SMWWikiPageValue $subject) {
-		$db =& wfGetDB( DB_MASTER );
+		$db = wfGetDB( DB_MASTER );
 		$fname = 'SMW::deleteSemanticData';
 		$id = $this->getSMWPageID($subject->getDBkey(),$subject->getNamespace(),$subject->getInterwiki(),false);
 		if ($id == 0) return; // not (directly) used anywhere yet, maybe a redirect but we do not care here
@@ -1931,7 +1931,7 @@ class SMWSQLStore2 extends SMWStore {
 		$sid = $this->getSMWPageID($subject_t, $subject_ns, '', false); // find real id of subject, if any
 		/// NOTE: $sid can be 0 here; this is useful to know since it means that fewer table updates are needed
 		$new_tid = $curtarget_t?($this->makeSMWPageID($curtarget_t, $curtarget_ns, '', false)):0; // real id of new target, if given
-		$db =& wfGetDB( DB_SLAVE );
+		$db = wfGetDB( DB_SLAVE );
 		$res = $db->select( array('smw_redi2'),'o_id', array('s_title' => $subject_t, 's_namespace' => $subject_ns ), $fname, array('LIMIT' => 1) );
 		$old_tid = ($row = $db->fetchObject($res))?$row->o_id:0; // real id of old target, if any
 		$db->freeResult($res);
@@ -1942,7 +1942,7 @@ class SMWSQLStore2 extends SMWStore {
 		} // note that this means $old_tid!=$new_tid in all cases below
 
 		//*** Make relevant changes in property tables (don't write the new redirect yet) ***//
-		$db =& wfGetDB( DB_MASTER ); // now we need to write something
+		$db = wfGetDB( DB_MASTER ); // now we need to write something
 		if ( ($old_tid == 0) && ($sid != 0) && ($smwgQEqualitySupport != SMW_EQ_NONE) ) { // new redirect
 			// $smwgQEqualitySupport requires us to change all tables' page references from $sid to $new_tid.
 			// Since references must not be 0, we don't have to do this is $sid == 0.
