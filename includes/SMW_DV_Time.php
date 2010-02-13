@@ -479,13 +479,11 @@ class SMWTimeValue extends SMWDataValue {
 
 	public function getShortWikiText($linked = NULL) {
 		$this->unstub();
-		if ($this->isValid() && ($linked !== NULL) && ($linked !== false)) {
-			$this->makePrintoutValue();
-			SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
-			return '<span class="smwttinline">' . $this->m_caption . '<span class="smwttcontent">' .
-			        $this->m_gregvalue . '</span></span>';
-		} else {
+		if ($this->m_caption !== false) {
 			return $this->m_caption;
+		} else {
+			$this->makePrintoutValue();
+			return $this->m_gregvalue;
 		}
 	}
 
