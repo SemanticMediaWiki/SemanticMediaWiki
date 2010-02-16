@@ -52,6 +52,16 @@ $magicWords['br'] = array(
 	'info'                  => array( '0', 'keloù', 'info' ),
 );
 
+$magicWords['es'] = array(
+	'ask'                   => array( '0', 'preguntar', 'pregunta', 'ask' ),
+	'show'                  => array( '0', 'muestra', 'mostrar', 'show' ),
+	'info'                  => array( '0', 'informacion', 'información', 'info' ),
+	'concept'               => array( '0', 'concepto', 'concept' ),
+	'set'                   => array( '0', 'establecer', 'determinar', 'set' ),
+	'set_recurring_event'   => array( '0', 'establecer_evento_recurrente', 'determinar_evento_recurrente', 'set_recurring_event' ),
+	'declare'               => array( '0', 'declarar', 'declara', 'declare' ),
+);
+
 $magicWords['ml'] = array(
 	'ask'                   => array( '0', 'ചോദിക്കുക', 'ask' ),
 	'show'                  => array( '0', 'കാട്ടുക', 'show' ),
@@ -88,4 +98,10 @@ $magicWords['nl'] = array(
 	'declare'               => array( '0', 'declareren', 'declare' ),
 	'SMW_NOFACTBOX'         => array( '0', '__GEENFEITENKADER__', '__NOFACTBOX__' ),
 	'SMW_SHOWFACTBOX'       => array( '0', '__FEITENKADERWEERGEVEN__', '__SHOWFACTBOX__' ),
+);
+
+$magicWords['ps'] = array(
+	'ask'                   => array( '0', 'پوښتل', 'ask' ),
+	'show'                  => array( '0', 'کتل', 'show' ),
+	'info'                  => array( '0', 'مالومات', 'info' ),
 );
