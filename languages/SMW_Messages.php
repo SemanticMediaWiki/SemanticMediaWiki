@@ -1506,11 +1506,12 @@ $messages['bs'] = array(
  * @author Loupeter
  * @author SMP
  * @author Solde
+ * @author Toniher
  */
 $messages['ca'] = array(
 	'smw-desc' => "Fent el vostre wiki més accessible - per les màquines ''i també'' pels humans ([http://semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])",
 	'smw_edithelp' => "Ajuda d'edició en propietats",
-	'smw_viewasrdf' => 'feed RDF',
+	'smw_viewasrdf' => 'Canal RDF',
 	'smw_finallistconjunct' => ', i',
 	'smw_factbox_head' => 'Dades sobre $1',
 	'smw_isspecprop' => 'Aquesta propietat és una propietat especial en aquest wiki',
@@ -1539,6 +1540,7 @@ Si el problema persisteix passat cert temps, demana a l'administrador del teu wi
 	'smw_printername_template' => 'Plantilla',
 	'smw_paramdesc_limit' => 'El nombre màxim de resultats a retornar',
 	'smw_paramdesc_headers' => 'Mostrar les capçaleres / noms de les propietats',
+	'smw_paramdesc_mainlabel' => "L'etiqueta que es donarà al nom de la pàgina principal",
 	'smw_paramdesc_link' => 'Mostra els valors com a enllaços',
 	'smw_paramdesc_intro' => "El text que apareixerà abans que el resultat de la consulta, si n'hi hagués",
 	'smw_paramdesc_outro' => "El text que apareixerà després que els resultats de la consulta, si n'hi hagués",
@@ -1547,7 +1549,8 @@ Si el problema persisteix passat cert temps, demana a l'administrador del teu wi
 	'smw_paramdesc_sep' => 'El separador entre valors',
 	'smw_paramdesc_template' => "El nom d'una plantilla amb la qual mostrar els llistats",
 	'smw_paramdesc_columns' => 'El nombre de columnes amb les quals mostrar els resultats (per defecte és $1)',
-	'smw_paramdesc_rsstitle' => "El text a fer servir com a títol del ''feed''",
+	'smw_paramdesc_rsstitle' => "El text que s'utilitzarà com a títol del canal",
+	'smw_paramdesc_rssdescription' => "El text que s'utilitzarà com a descripció del canal",
 	'smw_iq_disabled' => 'Les peticions semàntiques estan deshabilitades per aquest wiki',
 	'smw_iq_moreresults' => '... més resultats',
 	'smw_iq_nojs' => 'Habilita JavaScript al teu navegador per veure aquest element.',
@@ -1565,7 +1568,7 @@ Si el problema persisteix passat cert temps, demana a l'administrador del teu wi
 	'smw_maxstring' => 'La representació de cadena $1 és massa llarga',
 	'smw_notinenum' => '"$1" no està a la llista de valors possibles ($2) per aquesta propietat.',
 	'smw_noboolean' => '"$1" no es pot reconèixer com un valor Booleà (verdader/fals).',
-	'smw_true_words' => 'verdader,t,sí,s,true',
+	'smw_true_words' => 'verdader,vertader,veritat,cert,true,t,sí,s,yes,y',
 	'smw_false_words' => 'fals,f,no,n,false',
 	'smw_nofloat' => '"$1" no és un nombre.',
 	'smw_infinite' => 'No són soportats nombres tant llargs com "$1".',
@@ -1609,11 +1612,13 @@ Fes un bolcat de les teves dades (''backup'') abans de fer-la servir.",
 	'smw_subpropertyarticlecount' => 'Aquesta propietat té {{PLURAL:$1|la subpropietat següent|les $1 subpropietats següents}}:',
 	'smw_concept_header' => 'Pàgines del concepte "$1"',
 	'smw_conceptarticlecount' => 'Es {{PLURAL:$1|mostra|mostren}} $1 {{PLURAL:$1|pàgina|pàgines}} que pertanyen a aquest concepte.',
-	'exportrdf' => 'Exportar pàgines a RDF',
+	'exportrdf' => 'Exporta les pàgines a RDF',
 	'smw_exportrdf_docu' => "Aquesta pàgina permet obtenir dades en format RDF d'una pàgina del wiki.
 Per exportar pàgines, entra els títols a la caixa de text següent, un títol per línia.",
+	'smw_exportrdf_submit' => 'Exporta',
 	'properties' => 'Propietats',
 	'smw_purge' => 'Actualitzar',
+	'types' => 'Tipus',
 	'semanticstatistics' => 'Estadístiques semàntiques',
 	'ask' => 'Cerca semàntica',
 	'smw_ask_queryhead' => 'Consulta',
