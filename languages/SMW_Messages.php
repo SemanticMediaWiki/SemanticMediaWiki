@@ -7797,6 +7797,22 @@ Możesz śledzić stan procesu aktualizacji na tej specjalnej stronie.',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc dotycząca wewnętrznych zapytań',
 );
 
+/** Piedmontese (Piemontèis)
+ * @author Borichèt
+ */
+$messages['pms'] = array(
+	'smw-desc' => "Rende soa wiki pì acessìbil - për le màchine ''e'' j'uman ([http://semantic-mediawiki.org/wiki/Help:User_manual documentassion an linia])",
+	'smw_edithelp' => 'Agiut për modifiché le propietà',
+	'smw_viewasrdf' => 'Fluss RDF',
+	'smw_finallistconjunct' => 'e',
+	'smw_factbox_head' => 'Fàit a propòsit ëd $1',
+	'smw_isspecprop' => "Costa propietà a l'é na propietà special ëd costa wiki.",
+	'smw_isknowntype' => 'Costa sòrt-sì a fa part ëd le sòrt ëd dàit ëstàndard ëd costa wiki.',
+	'smw_isaliastype' => "Costa sòrt a l'é 'n sobrichet për la sòrt ëd dàit «$1».",
+	'smw_isnotype' => "La sòrt «$1» a l'é pa na sòrt ëd dàit ëstàndard an sla wiki, e a l'ha gnanca arseivù na definission da n'utent.",
+	'smw_concept_description' => 'Descrission dël concet «$1»',
+);
+
 /** Pashto (پښتو)
  * @author Ahmed-Najib-Biabani-Ibrahimkhel
  */
