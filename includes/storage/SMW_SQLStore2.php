@@ -1141,7 +1141,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * make sure that DB-based functions work as with all other properties.
 	 */
 	protected function setupPredefinedProperties($verbose, $db) {
-		global $wgDBType;
+		global $wgDBtype;
 		$this->reportProgress("Setting up internal property indices ...\n",$verbose);
 		// Check if we already have this structure
 		$borderiw = $db->selectField('smw_ids', 'smw_iw', 'smw_id=' . $db->addQuotes(50));
