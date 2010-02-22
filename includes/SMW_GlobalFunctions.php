@@ -274,7 +274,6 @@ function smwfSetupExtension() {
 		'version' => SMW_VERSION,
 		'author'=> "Klaus&nbsp;Lassleben, [http://korrekt.org Markus&nbsp;Kr&ouml;tzsch], [http://simia.net Denny&nbsp;Vrandecic], S&nbsp;Page, and others. Maintained by [http://www.aifb.kit.edu/web/Wissensmanagement/en AIFB Karlsruhe].",
 		'url' => 'http://semantic-mediawiki.org',
-		'description' => 'Making your wiki more accessible&nbsp;&ndash; for machines \'\'and\'\' humans. [http://semantic-mediawiki.org/wiki/Help:User_manual View online documentation]',
 		'descriptionmsg' => 'smw-desc'
 	);
 
