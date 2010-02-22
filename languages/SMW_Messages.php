@@ -7272,7 +7272,8 @@ Hver datatype har en side der ekstra informasjon kan oppgis.',
 Enkelte av de eksisterende egenskapene kan være [[Special:UnusedProperties|ubrukte egenskaper]].
 Egenskaper som fortsatt mangler en egen side finnes på [[Special:WantedProperties|listen over ønskede egenskaper]].",
 	'uriresolver' => 'URI-løser',
-	'smw_uri_doc' => "<b>URI-løseren implementerer ''<a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">W3C TAG finding on httpRange-14</a>''. Den gjør så mennesker ikke blir til nettsider.",
+	'smw_uri_doc' => 'URI-løseren implementerer <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">finning av W3C TAG-er på «httpRange-14»</a>.
+Den sørger for at mennesker ikke blir til nettsteder.',
 	'ask' => 'Semantisk søk',
 	'smw_ask_sortby' => 'Sorter etter kolonne (valgfritt)',
 	'smw_ask_ascorder' => 'Stigende',
