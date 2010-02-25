@@ -7342,6 +7342,9 @@ Denne oppsettsfunksjonen kan bli kjørt flere ganger uten skadevirkning, men den
 Enten gi denne brukeren de riktige rettighetene til å opprette og slette tabeller, midlertidig skriv inn innloggingsinformasjonen til database-roten i LocalSettings.php eller bruk vedlikeholdsskriptet <tt>SMW_setup.php</tt> som kan bruke rettighetene til AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Initialiser eller oppgrader tabeller',
 	'smw_smwadmin_announce' => 'Kunngjør din wiki',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki har en nettjeneste for kunngjøring av nye semantiske wikisider.
+Dette er brukt for å opprettholde en liste over offentlige nettsteder som bruker Semantic MediaWiki, hovedsaklig for å hjelpe <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki</a> med å få et overblikk over typiske bruksområder av Semantic MediaWiki.
+Se hjemmesiden til Semantic MediaWiki for <a href="http://semantic-mediawiki.org/wiki/Registry">mer informasjon om denne tjenesten</a>.',
 	'smw_smwadmin_announcebutton' => 'Trykk på følgende knapp for å oppgi din wikis URL til den tjenesten.
 Tjenesten vil ikke registrere wikier som ikke er offentlig tilgjengelig, og den vil bare lagre offentlig tilgjengelig informasjon.',
 	'smw_smwadmin_datarefresh' => 'Datareparasjon og -oppgradering',
@@ -7812,6 +7815,10 @@ $messages['pms'] = array(
 	'smw_isaliastype' => "Costa sòrt a l'é 'n sobrichet për la sòrt ëd dàit «$1».",
 	'smw_isnotype' => "La sòrt «$1» a l'é pa na sòrt ëd dàit ëstàndard an sla wiki, e a l'ha gnanca arseivù na definission da n'utent.",
 	'smw_concept_description' => 'Descrission dël concet «$1»',
+	'smw_no_concept_namespace' => 'Ij concet a peulo mach esse definì ant le pàgine dlë spassi nominal Concept:.',
+	'smw_multiple_concepts' => 'Minca pàgina ëd concet a peul avèj mach na definission.',
+	'smw_concept_cache_miss' => "Ël concet «$1» a peul pa esse dovrà ant ës moment, përchè la configurassion ëd la wiki a ciama ch'a sia calcolà fòra ëd linia.
+Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò sit ëd rende 's concet disponìbil.",
 );
 
 /** Pashto (پښتو)
