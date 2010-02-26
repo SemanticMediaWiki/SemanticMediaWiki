@@ -148,7 +148,6 @@ function enableSemantics($namespace = null, $complete = false) {
 	$wgAutoloadClasses['SMWTemperatureValue'] =  $smwgIP . '/includes/SMW_DV_Temperature.php';
 	$wgAutoloadClasses['SMWLinearValue']      =  $smwgIP . '/includes/SMW_DV_Linear.php';
 	$wgAutoloadClasses['SMWTimeValue']        =  $smwgIP . '/includes/SMW_DV_Time.php';
-	$wgAutoloadClasses['SMWGeoCoordsValue']   =  $smwgIP . '/includes/SMW_DV_GeoCoords.php';
 	$wgAutoloadClasses['SMWBoolValue']        =  $smwgIP . '/includes/SMW_DV_Bool.php';
 	$wgAutoloadClasses['SMWConceptValue']     =  $smwgIP . '/includes/SMW_DV_Concept.php';
 	$wgAutoloadClasses['SMWImportValue']      =  $smwgIP . '/includes/SMW_DV_Import.php';

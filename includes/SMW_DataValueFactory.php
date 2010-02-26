@@ -112,7 +112,6 @@ class SMWDataValueFactory {
 			'_num'  => 'SMWNumberValue', // Number type
 			'_tem'  => 'SMWTemperatureValue', // Temperature type
 			'_dat'  => 'SMWTimeValue', // Time type
-			'_geo'  => 'SMWGeoCoordsValue', // Geographic coordinates type
 			'_boo'  => 'SMWBoolValue', // Boolean type
 			'_lst'  => 'SMWListValue', // Value list type (replacing former nary properties)
 			// Special types are not avaialble directly for users (and have no local language name):
