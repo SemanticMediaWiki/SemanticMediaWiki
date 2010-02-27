@@ -1546,18 +1546,30 @@ Fes un bolcat de les teves dades (''backup'') abans de fer-la servir.",
 Per exportar pàgines, entra els títols a la caixa de text següent, un títol per línia.",
 	'smw_exportrdf_submit' => 'Exporta',
 	'properties' => 'Propietats',
+	'smw_properties_docu' => "S'utilitzen les propietats següents al wiki.",
+	'smw_propertyhardlyused' => 'Propietats pràcticament no utilitzades al llarg del wiki!',
+	'unusedproperties' => 'Propietats no utilitzades',
+	'wantedproperties' => 'Propietats per definir',
 	'smw_purge' => 'Actualitzar',
 	'types' => 'Tipus',
 	'semanticstatistics' => 'Estadístiques semàntiques',
 	'ask' => 'Cerca semàntica',
+	'smw_ask_sortby' => 'Ordena per columna (opcional)',
+	'smw_ask_ascorder' => 'Ascendent',
+	'smw_ask_descorder' => 'Descendent',
+	'smw_add_sortcondition' => "Afegeix una condició d'ordenació",
+	'smw_ask_hidequery' => 'Amaga la consulta',
 	'smw_ask_queryhead' => 'Consulta',
 	'smw_ask_defaultformat' => 'per defecte',
+	'smw_ask_otheroptions' => 'Altres opcions',
 	'searchbyproperty' => 'Cerca per propietat',
 	'smw_sbv_property' => 'Propietat:',
 	'smw_sbv_value' => 'Valor:',
 	'browse' => 'Explorar el wiki',
 	'smw_browselink' => 'Explorar propietats',
 	'smw_browse_go' => 'Vés-hi',
+	'smw_browse_no_outgoing' => 'La pàgina no té cap propietat.',
+	'smw_browse_no_incoming' => 'No enllaça cap propietat a la pàgina.',
 	'smw_inverse_label_default' => '$1 de',
 	'smw_pp_type' => 'Propietat',
 	'smw_pp_submit' => 'Trobar resultats',
@@ -1566,9 +1578,11 @@ Per exportar pàgines, entra els títols a la caixa de text següent, un títol 
 	'smw_result_results' => 'Resultats',
 	'smw_result_noresults' => 'Sense resultats.',
 	'smw_smwadmin_announce' => 'Anuncia el teu wiki',
+	'smw_smwadmin_datarefresh' => 'Reparació de les dades i actualització',
 	'smw_smwadmin_datarefreshbutton' => "Començar l'actualització de dades",
 	'smw_smwadmin_datarefreshstop' => 'Aturar aquesta actualització',
 	'smw_smwadmin_datarefreshstopconfirm' => "Sí, n'estic segur.",
+	'smw_adminlinks_datastructure' => 'Estructura de dades',
 );
 
 /** Chamorro (Chamoru)
@@ -4177,12 +4191,14 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_printername_template' => 'Sablon',
 	'smw_paramdesc_limit' => 'Legfeljebb ennyi eredmény megjelenítése',
 	'smw_paramdesc_headers' => 'Fejlécek/tulajdonságnevek megjelenítése',
+	'smw_paramdesc_mainlabel' => 'A kezdőlap nevének címkéje',
 	'smw_paramdesc_link' => 'Az értékek hivatkozásként jelenjenek meg',
 	'smw_paramdesc_intro' => 'A lekérdezés eredményei előtt megjelenő szöveg',
 	'smw_paramdesc_outro' => 'A lekérdezés eredményei után megjelenő szöveg',
 	'smw_paramdesc_default' => 'Megjelenítendő szöveg, ha a lekérdezésnek nincs eredménye',
 	'smw_paramdesc_searchlabel' => 'Az eredményekre mutató hivatkozás szövege',
 	'smw_paramdesc_sep' => 'Az értékek közötti elválasztó',
+	'smw_paramdesc_template' => 'Egy sablon neve, amellyel megjelenítendő a kiírás',
 	'smw_paramdesc_columns' => 'A keresési eredmények oszlopainak száma (az alapértelmezett $1)',
 	'smw_paramdesc_embedformat' => 'A címsorokhoz használt HTML-tag',
 	'smw_paramdesc_embedonly' => 'Fejlécek kikapcsolása',
@@ -7465,6 +7481,7 @@ Możesz śledzić stan procesu aktualizacji na tej specjalnej stronie.',
 
 /** Piedmontese (Piemontèis)
  * @author Borichèt
+ * @author Dragonòt
  */
 $messages['pms'] = array(
 	'smw-desc' => "Rende soa wiki pì acessìbil - për le màchine ''e'' j'uman ([http://semantic-mediawiki.org/wiki/Help:User_manual documentassion an linia])",
@@ -7481,6 +7498,9 @@ $messages['pms'] = array(
 	'smw_multiple_concepts' => 'Minca pàgina ëd concet a peul avèj mach na definission.',
 	'smw_concept_cache_miss' => "Ël concet «$1» a peul pa esse dovrà ant ës moment, përchè la configurassion ëd la wiki a ciama ch'a sia calcolà fòra ëd linia.
 Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò sit ëd rende 's concet disponìbil.",
+	'smw_noinvannot' => 'Ij valor a peulo pa esse assignà a le proprietà anverse.',
+	'smw_baduri' => 'URI dla forma "$1" a son pa përmëttù.',
+	'smw_printername_auto' => 'Automàtich',
 );
 
 /** Pashto (پښتو)
@@ -7492,7 +7512,7 @@ $messages['ps'] = array(
 	'properties' => 'ځانتياوې',
 	'unusedproperties' => 'ناکارېدلې ځانتياوې',
 	'wantedproperties' => 'غوښتل شوې ځانتياوې',
-	'smw_sbv_value' => 'ارزښت',
+	'smw_sbv_value' => 'ارزښت:',
 	'smw_browse_go' => 'ورځه',
 	'smw_result_prev' => 'پخواني',
 	'smw_result_next' => 'راتلونکي',
