@@ -160,6 +160,7 @@ class SMWParseData {
 				foreach ($subjects as $subject) {
 					$jobs[] = new SMWUpdateJob($subject->getTitle());
 				}
+				wfRunHooks('smwUpdatePropertySubjects', array(&$jobs));
 				$subjects = smwfGetStore()->getPropertySubjects(SMWPropertyValue::makeProperty('_ERRP'), $prop->getWikiPageValue());
 				foreach ($subjects as $subject) {
 					$jobs[] = new SMWUpdateJob($subject->getTitle());
