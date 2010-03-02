@@ -49,7 +49,7 @@ protected $m_SpecialProperties = array(
 	//always start upper-case
 	'_TYPE' => 'A le type',
 	'_URI'  => 'URI équivalente',
-	'_SUBP' => 'Sous^-propriété de',
+	'_SUBP' => 'Sous-propriété de',
 	'_SUBC' => 'Subcategory of', // TODO: translate
 	'_UNIT' => 'Unités de mesure',
 	'_IMPO' => 'Importé de',
