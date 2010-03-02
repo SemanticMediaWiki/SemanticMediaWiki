@@ -111,7 +111,7 @@ class SMWTimeValue extends SMWDataValue {
 	protected $m_jd = 0; //numerical time representation similiar to Julian Day; for ancient times, a more compressed number is used (preserving ordering of time points)
 	protected $m_format = false; // number of parts of the date that were specified
 	protected $m_outformat = false; // A special code governing printout formats.
-	protected $m_timeoffset; //contains offset (e.g. timezone) 
+	protected $m_timeoffset; //contains offset (e.g. timezone)
 	protected $m_timeannotation; //contains am or pm
 	protected $m_dayj = false; // Julian day, remains false if unspecified
 	protected $m_monthj = false; // Julian month, remains false if unspecified
@@ -163,7 +163,7 @@ class SMWTimeValue extends SMWDataValue {
 		if ($this->m_caption === false) { // Store the caption now.
 			$this->m_caption = $value;
 		}
-		
+
 		// if the value is a number, and it has at least six places left of decimal, we know
 		// it's not a year, so treat it as a Julian day, but leave it as the caption and wikivalue.
 		if (is_numeric($value) && $value >= 100000) {
@@ -173,7 +173,7 @@ class SMWTimeValue extends SMWDataValue {
 			$this->m_wikivalue = $value;
 			return true;
 		}
-		
+
 		$this->m_wikivalue = $value;
 		$filteredvalue = $value; //value without time definition and further abbreviations like PM or BC
 
@@ -185,14 +185,14 @@ class SMWTimeValue extends SMWDataValue {
 		}
 
 		//browse string in advance for timezone monikers ("EST", "WET", "MESZ", etc.)
-		$regexptz = "/A[CEKW]?[DS]T|BST|CXT|[CEW]([DES]|E[DS])T|" . 
+		$regexptz = "/A[CEKW]?[DS]T|BST|CXT|[CEW]([DES]|E[DS])T|" .
 			"GMT|H(A[DS]T|[AN][ACEPRTY])|IST|M(DT|E(S)?Z|S[DKT])|N[DFS]T|P[DS]T|UTC/u";
 		if(preg_match($regexptz, $filteredvalue, $match)) {
 			// Retrieve the offset and store it as the initial time offset value.
 			$this->m_timeoffset = $this->m_timeoffset + self::$m_tz[$match[0]]/24;
 			$regexp = "/(\040|T){0,1}".str_replace("+", "\+", $match[0])."(\040){0,1}/u"; //delete tz moniker and preceding and following chars
 			$filteredvalue = preg_replace($regexp,'', $filteredvalue); //value without the tz moniker
-		} 
+		}
 
 		//browse string for special abbreviations referring to year like AD, BC, and OS
 		$is_yearbc = false;
@@ -303,7 +303,7 @@ class SMWTimeValue extends SMWDataValue {
 					$globalvar = 'm_'.$globalvar; // (for searching this file) this is one of: m_year, m_month, m_day
 					if($prelimModel == 'Jl') {
 						$globalvar = $globalvar . 'j';
-					} 
+					}
 					if (!$this->$globalvar) $this->$globalvar = intval($array[$i]);
 					$i++;
 				}
@@ -335,7 +335,7 @@ class SMWTimeValue extends SMWDataValue {
 		if ($this->m_pref == 'OS') {
 			if(($this->m_monthj < 3) || (($this->m_monthj == 3) && ($this->m_dayj < 25))) {
 				$this->m_yearj++;
-			} 
+			}
 		}
 
 		// Handle BC: the year is negative.
@@ -445,7 +445,7 @@ class SMWTimeValue extends SMWDataValue {
 
 	protected function parseDBkeys($args) {
 		$this->m_caption = false;
-		$this->m_pref = array_key_exists(1,$args)?$args[1]:'';
+		$this->m_pref = array_key_exists(2,$args)?$args[2]:'';
 		list($date,$this->m_time) = explode('T',$args[0],2);
 		$d = explode('/',$date,3);
 		if (count($d)==3) list($this->m_year,$this->m_month,$this->m_day) = $d;
@@ -488,7 +488,7 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText($linker = NULL) {
-		return $this->getShortWikiText($linker); // should be save (based on xsdvalue)
+		return $this->getShortWikiText($linker); // should be safe (based on xsdvalue)
 	}
 
 	public function getLongWikiText($linked = NULL) {
@@ -509,17 +509,19 @@ class SMWTimeValue extends SMWDataValue {
 		if ($this->m_xsdvalue === false) {
 			$this->m_xsdvalue = $this->m_year."/".$this->m_month."/".$this->m_day."T".$this->m_time;
 		}
-		return array($this->m_xsdvalue, $this->m_pref);
+		return array($this->m_xsdvalue, $this->m_jd, $this->m_pref);
 	}
 
-	public function getNumericValue() {
-		$this->unstub();
-		return $this->m_jd;
+	public function getSignature() {
+		return 'tfu';
 	}
 
-	public function getUnit() {
-		$values = $this->getDBkeys();
-		return $values[1];
+	public function getValueIndex() {
+		return 1;
+	}
+
+	public function getLabelIndex() {
+		return 0;
 	}
 
 	public function getWikiValue(){
@@ -742,7 +744,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * (JD) is computed. The JD has the form XXXX.YYYY where XXXX is the number of days having elapsed since
 	 * noon on 1 January 4713 BC and YYYY is the elapsed time of the day as fraction of 1.
 	 * See http://en.wikipedia.org/wiki/Julian_day
-	 * If the year is before -4713, then the computed number XXXX.YYYY has the following form: XXXX is 
+	 * If the year is before -4713, then the computed number XXXX.YYYY has the following form: XXXX is
 	 * the number of years BC and YYYY represents the elapsed days of the year as fraction of 1. This
 	 * enables even large negative dates using 32bit floats.
 	 *
@@ -832,7 +834,7 @@ class SMWTimeValue extends SMWDataValue {
 				$this->m_month = 1;
 				$this->m_year++;
 			}
-		} 
+		}
 	}
 
 	/// Convert Julian Day back to a Julian date.
@@ -848,4 +850,3 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_dayj = ($this->m_format == 3) ? ($b - $d - intval(30.6001 * $e)) : false;
 	}
 }
- 
