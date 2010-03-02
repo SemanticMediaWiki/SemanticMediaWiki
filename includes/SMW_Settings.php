@@ -389,11 +389,6 @@ $smwgNamespacesWithSemanticLinks = array(
 ##
 $smwgDefaultStore = "SMWSQLStore2";
 ##
-## The following is for backwards compatibility of LocalSettings.php only
- define('SMW_STORE_MWDB',"SMWSQLStore"); // uses the MediaWiki database, needs initialisation via Special:SMWAdmin.
- define('SMW_STORE_TESTING',"SMWTestStore"); // dummy store for testing
- define('SMW_STORE_RAP',"SMWRAPStore"); // layers RAP between the MW db, needs initialisation via Special:SMWAdmin.
-##
 
 ###
 # -- FEATURE IS DISABLED --
