@@ -2,6 +2,9 @@ For a documentation of all features, see http://semantic-mediawiki.org
 
 == SMW 1.5.? ==
 
+* The Type:Geographic_coordinates has been moved from SMW to the SemanticMaps
+  extension. Wikis that use this datatype need to install this extension to get
+  it back.
 * The "like" comparator ~ in inline queries is now enabled by default. To use
   the former setting, use $smwgQComparators = '<|>|!'; in your LocalSettings.php.
 * A new datatype, "Telephone number", has been introduced for validating phone
