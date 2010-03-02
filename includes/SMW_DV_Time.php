@@ -445,7 +445,6 @@ class SMWTimeValue extends SMWDataValue {
 
 	protected function parseDBkeys($args) {
 		$this->m_caption = false;
-		$this->m_pref = array_key_exists(2,$args)?$args[2]:'';
 		list($date,$this->m_time) = explode('T',$args[0],2);
 		$d = explode('/',$date,3);
 		if (count($d)==3) list($this->m_year,$this->m_month,$this->m_day) = $d;
@@ -509,11 +508,11 @@ class SMWTimeValue extends SMWDataValue {
 		if ($this->m_xsdvalue === false) {
 			$this->m_xsdvalue = $this->m_year."/".$this->m_month."/".$this->m_day."T".$this->m_time;
 		}
-		return array($this->m_xsdvalue, $this->m_jd, $this->m_pref);
+		return array($this->m_xsdvalue, $this->m_jd);
 	}
 
 	public function getSignature() {
-		return 'tfu';
+		return 'tf';
 	}
 
 	public function getValueIndex() {
