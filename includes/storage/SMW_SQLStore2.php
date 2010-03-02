@@ -871,7 +871,9 @@ class SMWSQLStore2 extends SMWStore {
 		                     $db->addQuotes('') . ' OR smw_iw=' . $db->addQuotes(SMW_SQL2_SMWPREDEFIW) . ' GROUP BY smw_id,smw_title,smw_sortkey';
 			} // else: properties with special tables are ignored for now; maybe fix in the future
 		}
-		$query = $db->unionQueries($queries, false) . ' ORDER BY smw_sortkey'; // should probably use $db->makeSelectOptions()
+		$query = '(' . implode( ') UNION (', $queries ) . ') ORDER BY smw_sortkey';
+		// The following line is possible in MW 1.6 and above only:
+		//$query = $db->unionQueries($queries, false) . ' ORDER BY smw_sortkey'; // should probably use $db->makeSelectOptions()
 		if ($requestoptions->limit > 0) {
 			$query = $db->limitResult($query,$requestoptions->limit,($requestoptions->offset > 0 )?$requestoptions->offset:0);
 		}
