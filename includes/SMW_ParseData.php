@@ -278,7 +278,7 @@ class SMWParseData {
 	 * LinksUpdate.
 	 */
 	static public function onNewRevisionFromEditComplete($article, $rev, $baseID) {
-		global $wgContLang;
+		global $wgContLang, $smwgContLang;
 		if ( ($article->mPreparedEdit) && ($article->mPreparedEdit->output instanceof ParserOutput)) {
 			$output = $article->mPreparedEdit->output;
 			$title = $article->getTitle();
@@ -291,7 +291,12 @@ class SMWParseData {
 			return true;
 		}
 		$pmdat = SMWPropertyValue::makeProperty('_MDAT');
-		$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$article->getTimestamp()));
+		// create a date string that is certainly parsable in the current language:
+		$timestamp = $article->getTimestamp();
+		$date = $wgContLang->sprintfDate('d ',$timestamp) . $smwgContLang->getMonthLabel(($wgContLang->sprintfDate('m',$timestamp) + 0)) . $wgContLang->sprintfDate(' Y G:i:s',$timestamp);
+		$dv = SMWDataValueFactory::newPropertyObjectValue($pmdat, $date);
+		// The below method is not safe, since "M" as used in MW may not be the month label as used in SMW if SMW falls back to some other language:
+		//   $dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$article->getTimestamp()));
 		$semdata->addPropertyObjectValue($pmdat,$dv);
 		return true;
 	}
