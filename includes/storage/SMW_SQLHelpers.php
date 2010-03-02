@@ -60,7 +60,7 @@ class SMWSQLHelpers {
 	 * Only if the type of some field changes will its order be adjusted explicitly.
 	 */
 	public static function setupTable($table, $fields, $db, $reportTo = null) {
-		global $wgDBname, $wgDBtype;
+		global $wgDBname, $wgDBtype, $wgDBTableOptions;
 		$fname = 'SMWSQLHelpers::setupTable';
 
 		SMWSQLHelpers::reportProgress("Setting up table $table ...\n",$reportTo);
@@ -75,7 +75,7 @@ class SMWSQLHelpers {
 				}
 				$sql .= $name . '  ' . $type;
 			}
-			$sql .= ') ' . ($wgDBtype=='postgres'?'':'TYPE=innodb');
+			$sql .= ') ' . ($wgDBtype=='postgres'?'':$wgDBTableOptions);
 			$db->query( $sql, $fname );
 			SMWSQLHelpers::reportProgress("   ... new table created\n",$reportTo);
 			return array();
