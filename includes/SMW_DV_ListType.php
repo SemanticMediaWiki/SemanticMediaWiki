@@ -6,13 +6,13 @@
 
 /**
  * This datavalue implements special processing suitable for defining the list
- * of types that is required for SMW_ListValue objects. The input is a plain
+ * of types that is required for SMWRecordValue objects. The input is a plain
  * semicolon-separated list of type labels.
  *
  * @author Markus Krötzsch
  * @ingroup SMWDataValues
  */
-class SMWListTypesValue extends SMWDataValue {
+class SMWTypeListValue extends SMWDataValue {
 
 	private $m_typevalues = false;
 

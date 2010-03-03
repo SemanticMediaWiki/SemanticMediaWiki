@@ -136,7 +136,7 @@ function enableSemantics($namespace = null, $complete = false) {
 	$wgAutoloadClasses['SMWDataValueFactory']    =  $smwgIP . '/includes/SMW_DataValueFactory.php';
 	$wgAutoloadClasses['SMWDataValue']           =  $smwgIP . '/includes/SMW_DataValue.php';
 	$wgAutoloadClasses['SMWContainerValue']      =  $smwgIP . '/includes/SMW_DV_Container.php';
-	$wgAutoloadClasses['SMWListValue']           =  $smwgIP . '/includes/SMW_DV_List.php';
+	$wgAutoloadClasses['SMWRecordValue']         =  $smwgIP . '/includes/SMW_DV_List.php';
 	$wgAutoloadClasses['SMWErrorvalue']          =  $smwgIP . '/includes/SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWStringValue']         =  $smwgIP . '/includes/SMW_DV_String.php';
 	$wgAutoloadClasses['SMWWikiPageValue']       =  $smwgIP . '/includes/SMW_DV_WikiPage.php';
@@ -144,7 +144,7 @@ function enableSemantics($namespace = null, $complete = false) {
 	$wgAutoloadClasses['SMWPropertyValue']       =  $smwgIP . '/includes/SMW_DV_Property.php';
 	$wgAutoloadClasses['SMWURIValue']            =  $smwgIP . '/includes/SMW_DV_URI.php';
 	$wgAutoloadClasses['SMWTypesValue']          =  $smwgIP . '/includes/SMW_DV_Types.php';
-	$wgAutoloadClasses['SMWListTypesValue']      =  $smwgIP . '/includes/SMW_DV_ListType.php';
+	$wgAutoloadClasses['SMWTypeListValue']       =  $smwgIP . '/includes/SMW_DV_ListType.php';
 	$wgAutoloadClasses['SMWErrorValue']          =  $smwgIP . '/includes/SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWNumberValue']         =  $smwgIP . '/includes/SMW_DV_Number.php';
 	$wgAutoloadClasses['SMWTemperatureValue']    =  $smwgIP . '/includes/SMW_DV_Temperature.php';

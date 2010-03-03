@@ -36,6 +36,7 @@ protected $m_DatatypeLabels = array(
 	'_uri' => 'כתובת כללית',  // name of the URL type
 	'_anu' => 'מזהה יחודי לפירוש',  // name of the annotation URI type (OWL annotation property)
 	'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
+	'_rec' => 'Record', // name of record data type //TODO: translate
 );
 
 protected $m_DatatypeAliases = array(
@@ -59,7 +60,8 @@ protected $m_SpecialProperties = array(
 	'_SERV' => 'מספק שירות',
 	'_PVAL' => 'ערך אפשרי',
 	'_MDAT' => 'תאריך לשינוי',
-	'_ERRP' => 'יש ערך תקין בשביל'
+	'_ERRP' => 'יש ערך תקין בשביל',
+	'_LIST' => 'Has fields', // TODO: translate
 );
 
 protected $m_SpecialPropertyAliases = array(

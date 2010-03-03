@@ -230,7 +230,7 @@ class SMWExporter {
 		switch ($type) {
 			case '_anu': return 'AnnotationProperty';
 			case '': case '_wpg': case '_wpp': case '_wpc': case '_wpf':
-			case '_uri': case '_ema': case '_tel': case '_lst': case '__typ':
+			case '_uri': case '_ema': case '_tel': case '_rec': case '__typ':
 			case '__red': case '__spf': case '__spu':
 				return 'ObjectProperty';
 			default: return 'DatatypeProperty';

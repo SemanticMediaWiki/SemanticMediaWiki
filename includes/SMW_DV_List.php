@@ -14,7 +14,7 @@
  * @author Markus Krötzsch
  * @ingroup SMWDataValues
  */
-class SMWListValue extends SMWContainerValue {
+class SMWRecordValue extends SMWContainerValue {
 
 	/// cache for datavalues of types belonging to this object
 	private $m_typevalues = null;
@@ -177,11 +177,11 @@ class SMWListValue extends SMWContainerValue {
 
 	/**
 	 * Create a list (array with numeric keys) containing the datavalue objects
-	 * that this SMWListValue object holds. Values that are not present are set
-	 * to NULL, but the array still contains keys for each index from 0 through
-	 * 4. Note that the first index in the array is 0, not 1, and that the
-	 * declared length of the list is not taken into account: the size of the
-	 * result array is always 5.
+	 * that this SMWRecordValue object holds. Values that are not present are
+	 * set to NULL, but the array still contains keys for each index from 0
+	 * through 4. Note that the first index in the array is 0, not 1, and that
+	 * the declared length of the list is not taken into account: the size of
+	 * the result array is always 5.
 	 */
 	public function getDVs() {
 		if (!$this->isValid()) return array(0=>null,1=>null,2=>null,3=>null,4=>null);

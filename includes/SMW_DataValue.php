@@ -266,7 +266,7 @@ abstract class SMWDataValue {
 	 * the normal parsing function can be used. However, there can be datatypes
 	 * where processing is more complicated, e.g. if the input string contains
 	 * more than one value, each of which may have comparators, as in
-	 * SMWListValue. In this case, it makes sense to overwrite this method.
+	 * SMWRecordValue. In this case, it makes sense to overwrite this method.
 	 * Another reason to do this is to add new forms of comparators or new ways
 	 * of entering query conditions.
 	 *

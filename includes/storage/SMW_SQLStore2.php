@@ -135,10 +135,10 @@ class SMWSQLStore2 extends SMWStore {
 		'_dat'  => 'smw_atts2', // Time type
 		'_geo'  => 'smw_atts2', // Geographic coordinates type
 		'_boo'  => 'smw_atts2', // Boolean type
-		'_lst'  => 'smw_rels2', // Value list type (internal object)
+		'_rec'  => 'smw_rels2', // Value list type (internal object)
 		// Special types are not avaialble directly for users (and have no local language name):
 		'__typ' => 'smw_spec2', // Special type page type
-		'__tls' => 'smw_spec2', // Special type list for _lst properties
+		'__tls' => 'smw_spec2', // Special type list for _rec properties
 		'__sps' => 'smw_spec2', // Special string type
 		'__spu' => 'smw_spec2', // Special uri type
 		'__sup' => 'smw_subp2', // Special subproperty type
@@ -170,7 +170,7 @@ class SMWSQLStore2 extends SMWStore {
 		'_dat'  => array('tf',1,0),   // Time type
 		'_geo'  => array('t',0,0),    // Geographic coordinates type
 		'_boo'  => array('t',0,0),    // Boolean type
-		'_lst'  => array('tnwt',0,-1),// Value list type (internal object)
+		'_rec'  => array('tnwt',0,-1),// Value list type (internal object)
 		// Special types are not avaialble directly for users (and have no local language name):
 		'__typ' => array('t',0,0),    // Special type page type
 		'__tls' => array('t',0,0),    // Special type page type

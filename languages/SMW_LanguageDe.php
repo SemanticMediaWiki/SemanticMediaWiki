@@ -44,7 +44,7 @@ protected $m_DatatypeLabels = array(
 	'_uri' => 'URL',  // name of the URL type
 	'_anu' => 'URI-Annotation',  // name of the annotation URI type (OWL annotation property)
 	'_tel' => 'Telefonnummer', // name of the telephone number URI datatype
-	'_lst' => 'Verbund', // name of record (SMWValueList) data type
+	'_rec' => 'Verbund', // name of record data type
 );
 
 protected $m_DatatypeAliases = array(

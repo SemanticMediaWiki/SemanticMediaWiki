@@ -113,10 +113,10 @@ class SMWDataValueFactory {
 			'_tem'  => 'SMWTemperatureValue', // Temperature type
 			'_dat'  => 'SMWTimeValue', // Time type
 			'_boo'  => 'SMWBoolValue', // Boolean type
-			'_lst'  => 'SMWListValue', // Value list type (replacing former nary properties)
+			'_rec'  => 'SMWRecordValue', // Value list type (replacing former nary properties)
 			// Special types are not avaialble directly for users (and have no local language name):
 			'__typ' => 'SMWTypesValue', // Special type page type
-			'__tls' => 'SMWListTypesValue', // Special type list for decalring _lst properties
+			'__tls' => 'SMWTypeListValue', // Special type list for decalring _rec properties
 			'__con' => 'SMWConceptValue', // Special concept page type
 			'__sps' => 'SMWStringValue', // Special string type
 			'__spu' => 'SMWURIValue', // Special uri type
