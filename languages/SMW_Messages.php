@@ -7501,6 +7501,10 @@ Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò
 	'smw_noinvannot' => 'Ij valor a peulo pa esse assignà a le proprietà anverse.',
 	'smw_baduri' => 'URI dla forma "$1" a son pa përmëttù.',
 	'smw_printername_auto' => 'Automàtich',
+	'smw_printername_count' => "Conta dj'arzultà",
+	'smw_printername_csv' => 'esportassion an CSV',
+	'smw_printername_debug' => "Arcesta d'eliminassion dij bigat (për gent pràtica)",
+	'smw_printername_embedded' => 'Contù dle pàgine mojà',
 );
 
 /** Pashto (پښتو)
