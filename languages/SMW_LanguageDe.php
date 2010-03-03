@@ -44,6 +44,7 @@ protected $m_DatatypeLabels = array(
 	'_uri' => 'URL',  // name of the URL type
 	'_anu' => 'URI-Annotation',  // name of the annotation URI type (OWL annotation property)
 	'_tel' => 'Telefonnummer', // name of the telephone number URI datatype
+	'_lst' => 'Verbund', // name of record (SMWValueList) data type
 );
 
 protected $m_DatatypeAliases = array(
@@ -65,7 +66,8 @@ protected $m_SpecialProperties = array(
 	'_SERV' => 'Bietet Service',
 	'_PVAL' => 'Erlaubt Wert',
 	'_MDAT' => 'Zuletzt geändert',
-	'_ERRP' => 'Hat unpassenden Wert für'
+	'_ERRP' => 'Hat unpassenden Wert für',
+	'_LIST' => 'Hat Komponenten',
 );
 
 protected $m_SpecialPropertyAliases = array(

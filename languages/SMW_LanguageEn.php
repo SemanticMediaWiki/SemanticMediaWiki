@@ -39,7 +39,7 @@ protected $m_DatatypeLabels = array(
 	'_uri' => 'URL',  // name of the URL type
 	'_anu' => 'Annotation URI',  // name of the annotation URI type (OWL annotation property)
 	'_tel' => 'Telephone number',  // name of the telephone (URI) type
-	'_lst' => 'Value list', // temporary name (experimental feature for replacing n-aries), may still change
+	'_lst' => 'Record', // name of record (SMWValueList) data type
 );
 
 protected $m_DatatypeAliases = array(
@@ -63,7 +63,7 @@ protected $m_SpecialProperties = array(
 	'_PVAL' => 'Allows value',
 	'_MDAT' => 'Modification date',
 	'_ERRP' => 'Has improper value for',
-	'_LIST' => 'Has fields', // temporary name (experimental feature for replacing n-aries), may still change
+	'_LIST' => 'Has fields',
 );
 
 protected $m_SpecialPropertyAliases = array(
