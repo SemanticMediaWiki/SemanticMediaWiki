@@ -1,7 +1,11 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
-== SMW 1.5.? ==
+== SMW 1.5.0 ==
 
+* The former multi-valued/n-ary properties are now supported by a dedicated
+  datatype Record. Wikis that use the old style of these properties need to
+  update affected property pages as described at
+  http://semantic-mediawiki.org/wiki/SMW_1.5.0
 * The Type:Geographic_coordinates has been moved from SMW to the SemanticMaps
   extension. Wikis that use this datatype need to install this extension to get
   it back.
