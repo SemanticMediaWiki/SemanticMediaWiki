@@ -317,7 +317,11 @@ class SMWPropertyValue extends SMWDataValue {
 	public function getPropertyTypeID() {
 		if ($this->prop_typeid === null) {
 			$type = $this->getTypesValue();
-			$this->prop_typeid = $type->getDBkey();
+			if ($type instanceof SMWTypesValue) {
+				$this->prop_typeid = $type->getDBkey();
+			} else {
+				$this->prop_typeid = '__err';
+			}
 		}
 		return $this->prop_typeid;
 	}
@@ -414,7 +418,7 @@ class SMWPropertyValue extends SMWDataValue {
 				'_CONC'  =>  array('__con',false),
 				'_MDAT'  =>  array('_dat',false),
 				'_ERRP'  =>  array('_wpp',false),
-				'_LIST'  =>  array('__typ',true),
+				'_LIST'  =>  array('__tls',true),
 				// "virtual" properties for encoding lists in n-ary datatypes (their type must never be used, hence use __err)
 				'_1'     =>  array('__err',false),
 				'_2'     =>  array('__err',false),

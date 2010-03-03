@@ -59,6 +59,9 @@ class SMWWikiPageValue extends SMWDataValue {
 	public function __construct($typeid) {
 		parent::__construct($typeid);
 		switch ($typeid) {
+			case '__typ':
+				$this->m_fixNamespace = SMW_NS_TYPE;
+			break;
 			case '_wpp' : case '__sup':
 				$this->m_fixNamespace = SMW_NS_PROPERTY;
 			break;

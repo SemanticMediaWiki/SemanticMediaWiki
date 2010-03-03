@@ -119,7 +119,6 @@ class SMWSQLStore2 extends SMWStore {
 
 	/// Array to cache ids of tables for storing known built-in types. Having
 	/// this data here shortcuts the search in findTypeTableID() below.
-	/// @todo Decide what to do with the forms type: it cannot have a page sig *and* live in the special table.
 	private static $property_table_ids = array(
 		'_txt'  => 'smw_text2', // Text type
 		'_cod'  => 'smw_text2', // Code type
@@ -139,6 +138,7 @@ class SMWSQLStore2 extends SMWStore {
 		'_lst'  => 'smw_rels2', // Value list type (internal object)
 		// Special types are not avaialble directly for users (and have no local language name):
 		'__typ' => 'smw_spec2', // Special type page type
+		'__tls' => 'smw_spec2', // Special type list for _lst properties
 		'__sps' => 'smw_spec2', // Special string type
 		'__spu' => 'smw_spec2', // Special uri type
 		'__sup' => 'smw_subp2', // Special subproperty type
@@ -173,11 +173,12 @@ class SMWSQLStore2 extends SMWStore {
 		'_lst'  => array('tnwt',0,-1),// Value list type (internal object)
 		// Special types are not avaialble directly for users (and have no local language name):
 		'__typ' => array('t',0,0),    // Special type page type
+		'__tls' => array('t',0,0),    // Special type page type
 		'__sps' => array('t',0,0),    // Special string type
 		'__spu' => array('t',0,0),    // Special uri type
 		'__sup' => array('tnwt',3,3), // Special subproperty type
 		'__suc' => array('tnwt',3,3), // Special subcategory type
-		'__spf' => array('tnwt',3,3), // Special form type (for Semantic Forms)
+		'__spf' => array('t',0,0),    // Special form type (for Semantic Forms)
 		'__sin' => array('tnwt',3,3), // Special instance of type
 		'__red' => array('tnwt',3,3), // Special redirect type
 		'__lin' => array('tfu',1,0),  // Special linear unit conversion type

@@ -62,7 +62,7 @@ class SMWDataValueFactory {
 			$result = new SMWDataValueFactory::$m_typeclasses['__lin']($typeid);
 		} else { // type really unknown
 			wfLoadExtensionMessages('SemanticMediaWiki');
-			return new SMWErrorValue(wfMsgForContent('smw_unknowntype', $typeid ), $value, $caption);
+			return new SMWErrorValue(wfMsgForContent('smw_unknowntype', $typeid), $value, $caption);
 		}
 		if ($property !== null) $result->setProperty($property);
 		if ($value !== false) $result->setUserValue($value,$caption);
@@ -116,6 +116,7 @@ class SMWDataValueFactory {
 			'_lst'  => 'SMWListValue', // Value list type (replacing former nary properties)
 			// Special types are not avaialble directly for users (and have no local language name):
 			'__typ' => 'SMWTypesValue', // Special type page type
+			'__tls' => 'SMWListTypesValue', // Special type list for decalring _lst properties
 			'__con' => 'SMWConceptValue', // Special concept page type
 			'__sps' => 'SMWStringValue', // Special string type
 			'__spu' => 'SMWURIValue', // Special uri type

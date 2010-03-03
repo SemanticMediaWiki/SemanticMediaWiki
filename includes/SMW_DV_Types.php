@@ -5,175 +5,68 @@
  */
 
 /**
- * This datavalue implements special processing suitable for defining
- * types of properties (n-ary or binary).
- * Two main use-cases exist for this class:
- * - to parse and format a use-provided string in a rather tolerant way
- * - to efficiently be generated from DB keys and to provide according
- *   wiki values, in order to support speedy creation of datavalues in
- *   SMWDataValueFactory.
+ * This datavalue implements special processing suitable for defining types of
+ * properties. Types behave largely like values of type SMWSimpleWikiPageValue
+ * with three main differnces. First, they actively check if a value is an
+ * alias for another type, modifying the internal representation accordingly.
+ * Second, they have a modified display for emphasizing if some type is defined
+ * in SMW (built-in). Third, they use type ids for storing data (DB keys)
+ * instead of using page titles.
  *
- * @todo This class has an own stubbing mechanism that is older than the
- * current one used in SMWDataValue. It is confusing to have two.
  * @author Markus Krötzsch
  * @ingroup SMWDataValues
  */
-class SMWTypesValue extends SMWDataValue {
+class SMWTypesValue extends SMWSimpleWikiPageValue {
 
-	private $m_typelabels = false;
-	private $m_typecaptions = false;
-	private $m_xsdvalue = false;
-	private $m_isalias = false; // record whether this is an alias to another type, used to avoid duplicates when listing page types
+	private $m_isalias; // record whether this is an alias to another type, used to avoid duplicates when listing page types
+	protected $m_reallabel;
 
 	protected function parseUserValue($value) {
-		// no use for being lazy here: plain user values are never useful
-		$this->m_typelabels = array();
-		$this->m_typecaptions = array();
-		$types = explode(';', $value);
-		foreach ($types as $type) {
-			$type = ltrim($type, ' [');
-			$type = rtrim($type, ' ]');
-			$ttype = Title::newFromText($type,SMW_NS_TYPE);
-			if ( ($ttype !== null) && ($ttype->getNamespace() == SMW_NS_TYPE) ) {
-				$this->m_typecaptions[] = $type;
-				$label = SMWDataValueFactory::findTypeLabel(SMWDataValueFactory::findTypeID($ttype->getText()));
-				$this->m_typelabels[] = $label;
-				$this->m_isalias = ($label === $ttype->getText())?false:true;
-			} // else: wrong namespace or invalid title given -- what now? TODO
-		}
+		parent::parseUserValue($value);
+		$this->m_reallabel = SMWDataValueFactory::findTypeLabel(SMWDataValueFactory::findTypeID($this->m_textform));
+		$this->m_isalias = ($this->m_reallabel === $this->m_textform)?false:true;
 	}
 
 	protected function parseDBkeys($args) {
-		$this->m_xsdvalue = $args[0]; // lazy parsing
+		parent::parseDBkeys( array(str_replace(' ', '_', SMWDataValueFactory::findTypeLabel($args[0]))) );
+		$this->m_reallabel = $this->m_textform;
 		$this->m_isalias = false;
-	}
-
-	public function getShortWikiText($linked = null) {
-		$this->unstub();
-		if ( ($linked === null) || ($linked === false) || ($this->m_caption === '') ) {
-			if ($this->m_caption !== false) {
-				return $this->m_caption;
-			} else {
-				return str_replace('_',' ',implode(', ', $this->getTypeCaptions()));
-			}
-		} else {
-			global $wgContLang;
-			$typenamespace = $wgContLang->getNsText(SMW_NS_TYPE);
-			if ($this->m_caption !== false) {
-				if ($this->isUnary()) {
-					return '[[' . $typenamespace . ':' . $this->getWikiValue() . '|' . $this->m_caption . ']]';
-				} else {
-					return $this->m_caption;
-				}
-			}
-			$result = '';
-			$first = true;
-			$captions = $this->getTypeCaptions();
-			reset($captions);
-			foreach ($this->getTypeLabels() as $type) {
-				$caption = current($captions);
-				if ($first) {
-					$first = false;
-				} else {
-					$result .= ', ';
-				}
-				$result .= '[[' . $typenamespace . ':' . $type . '|' . $caption . ']]';
-				next($captions);
-			}
-			return $result;
-		}
-	}
-
-	public function getShortHTMLText($linker = null) {
-		$this->unstub();
-		if ( ($linker === null) || ($linker === false) || ($this->m_caption === '') ) {
-			if ($this->m_caption !== false) {
-				return htmlspecialchars($this->m_caption);
-			} else {
-				return str_replace('_',' ',implode(', ', $this->getTypeCaptions()));
-			}
-		} else {
-			if ($this->m_caption !== false) {
-				if ($this->isUnary()) {
-					$title = Title::newFromText($this->getWikiValue(), SMW_NS_TYPE);
-					return $linker->makeLinkObj($title, $this->m_caption);
-				} else {
-					return htmlspecialchars($this->m_caption);
-				}
-			}
-			$result = '';
-			$first = true;
-			$captions = $this->getTypeCaptions();
-			reset($captions);
-			foreach ($this->getTypeLabels() as $type) {
-				$caption = current($captions);
-				if ($first) {
-					$first = false;
-				} else {
-					$result .= ', ';
-				}
-				$title = Title::newFromText($type, SMW_NS_TYPE);
-				$result .= $linker->makeLinkObj( $title, $caption);
-				next($captions);
-			}
-			return $result;
-		}
 	}
 
 	public function getLongWikiText($linked = null) {
 		$this->unstub();
 		if ( ($linked === null) || ($linked === false) ) {
-			return str_replace('_',' ',implode(', ', $this->getTypeLabels()));
+			return $this->m_reallabel;
 		} else {
 			global $wgContLang;
-			$result = '';
 			$typenamespace = $wgContLang->getNsText(SMW_NS_TYPE);
-			$first = true;
-			foreach ($this->getTypeLabels() as $type) {
-				if ($first) {
-					$first = false;
-				} else {
-					$result .= ', ';
-				}
-				$id = SMWDataValueFactory::findTypeID($type);
-				if ($id{0} == '_') { // builtin
-					wfLoadExtensionMessages('SemanticMediaWiki');
-					SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
-					$result .= '<span class="smwttinline"><span class="smwbuiltin">[[' . $typenamespace . ':' . $type . '|' . $type . ']]</span><span class="smwttcontent">' . wfMsgForContent('smw_isknowntype') . '</span></span>';
-				} else {
-					$result .= '[[' . $typenamespace . ':' . $type . '|' . $type . ']]';
-				}
+			$id = SMWDataValueFactory::findTypeID($this->m_reallabel);
+			if ($id{0} == '_') { // builtin
+				wfLoadExtensionMessages('SemanticMediaWiki');
+				SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
+				return '<span class="smwttinline"><span class="smwbuiltin">[[' . $typenamespace . ':' . $this->m_reallabel . '|' . $this->m_reallabel . ']]</span><span class="smwttcontent">' . wfMsgForContent('smw_isknowntype') . '</span></span>';
+			} else {
+				return '[[' . $typenamespace . ':' . $this->m_reallabel . '|' . $this->m_reallabel . ']]';
 			}
-			return $result;
 		}
 	}
 
 	public function getLongHTMLText($linker = null) {
 		$this->unstub();
 		if ( ($linker === null) || ($linker === false) ) {
-			return str_replace('_',' ',implode(', ', $this->getTypeLabels()));
+			return $this->m_reallabel;
 		} else {
-			$result = '';
-			$first = true;
-			foreach ($this->getTypeLabels() as $type) {
-				if ($first) {
-					$first = false;
-				} else {
-					$result .= ', ';
-				}
-				$title = Title::newFromText($type, SMW_NS_TYPE);
-				$id = SMWDataValueFactory::findTypeID($type);
-				if ($id{0} == '_') { // builtin
-					wfLoadExtensionMessages('SemanticMediaWiki');
-					SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
-					$result .= '<span class="smwttinline"><span class="smwbuiltin">' .
-					$linker->makeLinkObj( $title, $type) . '</span><span class="smwttcontent">' .
-					wfMsgForContent('smw_isknowntype') . '</span></span>';
-				} else {
-					$result .= $linker->makeLinkObj( $title, $type);
-				}
+			$title = $this->m_isalias ? Title::newFromText($this->m_reallabel, SMW_NS_TYPE) : $this->getTitle();
+			$id = SMWDataValueFactory::findTypeID($this->m_reallabel);
+			if ($id{0} == '_') { // builtin
+				wfLoadExtensionMessages('SemanticMediaWiki');
+				SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
+				return '<span class="smwttinline"><span class="smwbuiltin">' .
+				$linker->makeLinkObj( $title, $this->m_reallabel) . '</span><span class="smwttcontent">' .
+				wfMsgForContent('smw_isknowntype') . '</span></span>';
+			} else {
+				return $linker->makeLinkObj( $title, $this->m_reallabel);
 			}
-			return $result;
 		}
 	}
 
@@ -202,37 +95,10 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	/**
-	 * Convenience method to obtain the (single) DB key as a string (not in an array).
-	 * Provided since many callers can use this hash for type recognition and registry.
+	 * This class uses type ids as DB keys.
 	 */
 	public function getDBkey() {
-		if ( $this->isvalid() && ($this->m_xsdvalue === false) ) {
-			$first = true;
-			$this->m_xsdvalue = '';
-			foreach ($this->m_typelabels as $label) {
-				if ($first) {
-					$first = false;
-				} else {
-					$this->m_xsdvalue .= ';';
-				}
-				$this->m_xsdvalue .= SMWDataValueFactory::findTypeID($label);
-			}
-		}
-		return $this->m_xsdvalue;
-	}
-
-	/**
-	 * Is this a simple unary type or some composed n-ary type?
-	 */
-	public function isUnary() {
-		$this->unstub();
-		if ($this->m_typelabels !== false) {
-			return (count($this->m_typelabels) == 1);
-		} elseif ($this->m_xsdvalue !== false) {
-			return (count(explode(';', $this->getDBkey(),2)) == 1);
-		} else { //invalid
-			return false;
-		}
+		return ($this->isValid())?SMWDataValueFactory::findTypeID($this->m_reallabel):'';
 	}
 
 	/**
@@ -257,9 +123,8 @@ class SMWTypesValue extends SMWDataValue {
 	 * Retrieve type labels if needed. Can be done lazily.
 	 */
 	public function getTypeLabels() {
-		$this->initTypeData();
-		// fallback to array() for unary callers
-		return ($this->m_typelabels === false)?array():$this->m_typelabels;
+		$this->unstub();
+		return array($this->m_reallabel);
 	}
 
 	/**
@@ -267,39 +132,24 @@ class SMWTypesValue extends SMWDataValue {
 	 * are different from the labels if type aliases are used.
 	 */
 	public function getTypeCaptions() {
-		$this->initTypeData();
-		// fallback to array() for unary callers
-		return ($this->m_typecaptions === false)?array():$this->m_typecaptions;
-	}
-
-	/**
-	 * Internal method to extract data from DB representation. Called lazily.
-	 */
-	protected function initTypeData() {
 		$this->unstub();
-		if ( ($this->m_typelabels === false) && ($this->m_xsdvalue !== false) ) {
-			$this->m_typelabels = array();
-			$ids = explode(';', $this->m_xsdvalue);
-			foreach ($ids as $id) {
-				$label = SMWDataValueFactory::findTypeLabel($id);
-				$this->m_typelabels[] = $label;
-				$this->m_typecaptions[] = $label;
-			}
-		}
+		return array($this->m_textform);
 	}
 
 	/**
 	 * Retrieve type values.
-	 * @bug This implementation is inefficient.
+	 * @deprecated This method is no longer meaningful and will vanish before SMW 1.6
 	 */
 	public function getTypeValues() {
-		$result = array();
-		$i = 0;
-		foreach ($this->getTypeLabels() as $tl) {
-			$result[$i] = SMWDataValueFactory::newPropertyObjectValue(SMWPropertyValue::makeProperty('_TYPE'), $tl);
-			$i++;
-		}
-		return $result;
+		return array($this);
+	}
+
+	/**
+	 * Is this a simple unary type or some composed n-ary type?
+	 * @deprecated This method is no longer meaningful and will vanish before SMW 1.6
+	 */
+	public function isUnary() {
+		return true;
 	}
 
 }
