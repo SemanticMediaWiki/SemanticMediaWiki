@@ -7505,6 +7505,9 @@ Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò
 	'smw_printername_csv' => 'esportassion an CSV',
 	'smw_printername_debug' => "Arcesta d'eliminassion dij bigat (për gent pràtica)",
 	'smw_printername_embedded' => 'Contù dle pàgine mojà',
+	'smw_printername_json' => 'esportassion an JSON',
+	'smw_printername_list' => 'Lista',
+	'smw_printername_ol' => 'Enumerassion',
 );
 
 /** Pashto (پښتو)
