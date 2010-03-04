@@ -436,7 +436,7 @@ class SMWParserExtensions {
 	 * that should automagically be annotated when the template is used.
 	 *
 	 * Usage:
-	 * {{\#declare:Author=Author\#list|Publisher=editor}}
+	 * {{\#declare:Author|Publisher=editor}}
 	 */
 	static public function doDeclare( &$parser, PPFrame $frame, $args ) {
 		if ($frame->isTemplate()) {
