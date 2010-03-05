@@ -179,7 +179,6 @@ class SMWSQLStore2QueryEngine {
 		$this->m_hierarchies = array();
 		$this->m_querylog = array();
 		$this->m_errors = array();
-		$this->m_distance = $query->getDistance();
 		SMWSQLStore2Query::$qnum = 0;
 		$this->m_sortkeys = $query->sortkeys;
 
@@ -596,7 +595,6 @@ class SMWSQLStore2QueryEngine {
 	 * Given an SMWDescription that is just a conjunction or disjunction of
 	 * SMWValueDescription objects, create and return a plain WHERE condition
 	 * string for it.
-	 * @bug The geo distance code is not secure. Disabled for now.
 	 */
 	protected function compileAttributeWhere($query, SMWDescription $description, $proptable, $valueindex, $operator = 'AND') {
 		$where = '';
@@ -616,20 +614,16 @@ class SMWSQLStore2QueryEngine {
 						case SMW_CMP_GEQ: $comp = '>='; break;
 						case SMW_CMP_NEQ: $comp = '!='; break;
 						case SMW_CMP_LIKE:
-							if ($dv->getTypeID() == '_geo') { ///FIXME Insecure code that uses DB contents unescaped in SQL. Disabled for now.
-// 								$comp = '<=';
-// 								$geoarray = explode(",", $value);
-// 								if ((count($geoarray) == 2) && ($geoarray[0] != '') && ($geoarray[1] != '')) {
-// 									$field = "ROUND(((ACOS( SIN($geoarray[0] * PI()/180 ) * SIN(SUBSTRING_INDEX($field, ',',1) * PI()/180 ) + COS($geoarray[0] * PI()/180 ) * COS(SUBSTRING_INDEX($field, ',',1) * PI()/180 ) * COS(($geoarray[1] - SUBSTRING_INDEX($field, ',',-1)) * PI()/180))*180/PI())*60*1.1515),6)";
-// 								}
-// 								$value = $this->m_distance;
-							} elseif ( ($fieldtype == 't') || ($fieldtype == 'l') ) { // string data allows pattern matches
+							/// TODO: explicitly excluding _geo here is a temporary workaround. Future versions will use peronalised comparators for extensions and not LIKE (requires synchronisation with SemanticMaps to work)
+							if ( ($dv->getTypeID() != '_geo') && ( ($fieldtype == 't') || ($fieldtype == 'l') ) ) { // string data allows pattern matches
 								$comp = ' LIKE ';
 								$value =  str_replace(array('%', '_', '*', '?'), array('\%', '\_', '%', '_'), $value); // translate pattern
 							}
 						break;
 					}
-					if ($comp != '') {
+					if ($comp == '') { // allow extensions to define their own query conditions
+						wfRunHooks( 'smwGetSQLConditionForValue', array(&$where, $description, $query->alias, $fieldname, $this->m_dbs) );
+					} else {
 						$where = "{$query->alias}.{$fieldname}{$comp}" . $this->m_dbs->addQuotes($value);
 					}
 				}
