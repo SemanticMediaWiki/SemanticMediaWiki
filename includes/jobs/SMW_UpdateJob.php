@@ -35,7 +35,7 @@ class SMWUpdateJob extends Job {
 		wfProfileIn('SMWUpdateJob::run (SMW)');
 		global $wgParser, $smwgHeadItems;
 
-		$linkCache =& LinkCache::singleton();
+		$linkCache = LinkCache::singleton();
 		$linkCache->clear();
 
 		if ( is_null( $this->title ) ) {
