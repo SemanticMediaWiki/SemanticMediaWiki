@@ -374,8 +374,15 @@ class SMWSQLStore2 extends SMWStore {
 			if (!$issubject) {
 				$propertyname = 'fixed'; // irrelevant, but use this to check if the data is good
 			} elseif (!$proptable->fixedproperty) { // use joined or predefined property name
-				$propertyname = ($proptable->specpropsonly) ?
-				                array_search($row->p_id, SMWSQLStore2::$special_ids) : $row->prop;
+				if ($proptable->specpropsonly) {
+					$propertyname = array_search($row->p_id, SMWSQLStore2::$special_ids);
+					if ($propertyname === false) { // unknown property that uses a special type, maybe by some extension; look it up in the DB
+						// NOTE: this is just an emergency fallback but not a fast solution; extensions may prefer to use non-special datatypes for new properties!
+						$propertyname = $db->selectField('smw_ids', 'smw_title',array('smw_id'=>$row->p_id), 'SMW::getSemanticData-LatePropertyFetch');
+					}
+				} else {
+					$propertyname = $row->prop;
+				}
 			} else { // use fixed property name
 				$propertyname = $proptable->fixedproperty;
 			}
