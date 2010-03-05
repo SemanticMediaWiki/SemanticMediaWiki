@@ -379,7 +379,17 @@ $smwgNamespacesWithSemanticLinks = array(
 );
 ##
 
-
+###
+# Properties (usually given as internal ids or DB key versions of property
+# titles) that are relevant for declaring the behaviour of a property P on a
+# property page in the sense that changing their values requires that all
+# pages that use P must be processed again. For example, if _PVAL (allowed
+# values) for a property change, then pages must be processed again. This
+# setting is not normally changed by users but by extensions that add new
+# types that have their own additional declaration properties.
+##
+$smwgDeclarationProperties = array('_PVAL','_LIST');
+##
 
 // some default settings which usually need no modification
 

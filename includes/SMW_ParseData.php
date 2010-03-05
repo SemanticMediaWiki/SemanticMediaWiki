@@ -114,7 +114,7 @@ class SMWParseData {
 	 *  @bug Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
 	static public function storeData($parseroutput, Title $title, $makejobs = true) {
-		global $smwgEnableUpdateJobs, $wgContLang, $smwgMW_1_14;
+		global $smwgEnableUpdateJobs, $wgContLang, $smwgMW_1_14, $smwgDeclarationProperties;
 		$semdata = $parseroutput->mSMWData;
 		$namespace = $title->getNamespace();
 		$processSemantics = smwfIsSemanticsProcessed($namespace);
@@ -148,10 +148,12 @@ class SMWParseData {
 			if (!SMWParseData::equalDatavalues($oldtype, $newtype)) {
 				$updatejobflag = true;
 			} else {
-				$ppval = SMWPropertyValue::makeProperty('_PVAL');
-				$oldvalues = smwfGetStore()->getPropertyValues($semdata->getSubject(), $ppval);
-				$newvalues = $semdata->getPropertyValues($ppval);
-				$updatejobflag = !SMWParseData::equalDatavalues($oldvalues, $newvalues);
+				foreach ($smwgDeclarationProperties as $prop) {
+					$pv = SMWPropertyValue::makeProperty($prop);
+					$oldvalues = smwfGetStore()->getPropertyValues($semdata->getSubject(), $pv);
+					$newvalues = $semdata->getPropertyValues($pv);
+					$updatejobflag = !SMWParseData::equalDatavalues($oldvalues, $newvalues);
+				}
 			}
 
 			if ($updatejobflag) {
