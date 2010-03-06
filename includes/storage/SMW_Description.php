@@ -158,9 +158,9 @@ class SMWThingDescription extends SMWDescription {
 }
 
 /**
- * Description of a single class as given by a wiki category, or of a disjunction
- * of such classes. Corresponds to (disjunctions of) atomic classes in OWL and
- * to (unions of) classes in RDF.
+ * Description of a single class as given by a wiki category, or of a
+ * disjunction of such classes. Corresponds to (disjunctions of) atomic classes
+ * in OWL and to (unions of) classes in RDF.
  * @ingroup SMWQuery
  */
 class SMWClassDescription extends SMWDescription {
@@ -242,8 +242,9 @@ class SMWClassDescription extends SMWDescription {
 
 
 /**
- * Description of a single class as described by a concept page in the wiki. Corresponds to
- * classes in (the EL fragment of) OWL DL, and to some extent to tree-shaped queries in SPARQL.
+ * Description of a single class as described by a concept page in the wiki.
+ * Corresponds to classes in (the EL fragment of) OWL DL, and to some extent to
+ * tree-shaped queries in SPARQL.
  * @ingroup SMWQuery
  */
 class SMWConceptDescription extends SMWDescription {
@@ -283,11 +284,10 @@ class SMWConceptDescription extends SMWDescription {
 
 
 /**
- * Description of all pages within a given wiki namespace,
- * given by a numerical constant.
- * Corresponds to a class restriction with a special class
- * that characterises the given namespace (or at least that
- * is how one could map this to OWL etc.).
+ * Description of all pages within a given wiki namespace, given by a numerical
+ * constant. Corresponds to a class restriction with a special class that
+ * characterises the given namespace (or at least that is how one could map
+ * this to OWL etc.).
  * @ingroup SMWQuery
  */
 class SMWNamespaceDescription extends SMWDescription {
@@ -304,7 +304,7 @@ class SMWNamespaceDescription extends SMWDescription {
 	public function getQueryString($asvalue = false) {
 		global $wgContLang;
 		if ($asvalue) {
-			return ' &lt;q&gt;[[' . $wgContLang->getNSText($this->m_namespace) . ':+]]&lt;/q&gt; ';;
+			return ' &lt;q&gt;[[' . $wgContLang->getNSText($this->m_namespace) . ':+]]&lt;/q&gt; ';
 		} else {
 			return '[[' . $wgContLang->getNSText($this->m_namespace) . ':+]]';
 		}
