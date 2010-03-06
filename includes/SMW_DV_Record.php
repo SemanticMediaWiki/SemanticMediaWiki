@@ -48,7 +48,6 @@ class SMWRecordValue extends SMWContainerValue {
 			} elseif (array_key_exists($vi,$values) && array_key_exists($i,$types)) { // some values left, try next slot
 				$dv = SMWDataValueFactory::newTypeObjectValue($types[$i], $values[$vi]);
 				if ($dv->isValid()) { // valid DV: keep
-					//$property = SMWPropertyValue::makeProperty('_' . ($i+1));
 					if ($querymode) {
 						$subdescriptions[] = new SMWRecordFieldDescription($i, new SMWValueDescription($dv,$comparator));
 					} else {
@@ -179,18 +178,17 @@ class SMWRecordValue extends SMWContainerValue {
 	/**
 	 * Create a list (array with numeric keys) containing the datavalue objects
 	 * that this SMWRecordValue object holds. Values that are not present are
-	 * set to NULL, but the array still contains keys for each index from 0
-	 * through 4. Note that the first index in the array is 0, not 1, and that
-	 * the declared length of the list is not taken into account: the size of
-	 * the result array is always 5.
+	 * set to null. Note that the first index in the array is 0, not 1.
 	 */
 	public function getDVs() {
-		if (!$this->isValid()) return array(0=>null,1=>null,2=>null,3=>null,4=>null);
+		if (!$this->isValid()) return array();
 		$result = array();
-		for ($i=1; $i<6; $i++) {
-			$property = SMWPropertyValue::makeProperty("_$i");
-			$dv = reset($this->m_data->getPropertyValues($property));
-			$result[$i-1] = ($dv instanceof SMWDataValue)?$dv:null;
+		foreach ($this->m_data->getProperties() as $prop) {
+			$propname = $prop->getPropertyID();
+			$propnum = substr($propname,1);
+			if ( ($propname != false) && (is_numeric($propnum)) ) {
+				$result[($propnum-1)] = reset($this->m_data->getPropertyValues($prop));
+			}
 		}
 		return $result;
 	}
