@@ -186,13 +186,14 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * Specifies whether values of this property should be shown in typical browsing
-	 * interfaces. A property may wish to prevent this if either (1) its information is
-	 * really dull, e.g. being a mere copy of information that is obvious from other
-	 * things that are shown, or (2) the property is set in a hook after parsing, so that
-	 * it is not reliably available when Factboxes are displayed. Properties that are
-	 * internal so that they should never be observed by users, then it is better to just
-	 * not associate any translated label with them, so they never appear anywhere.
+	 * Specifies whether values of this property should be shown in typical
+	 * browsing interfaces. A property may wish to prevent this if either
+	 * (1) its information is really dull, e.g. being a mere copy of
+	 * information that is obvious from other things that are shown, or (2) the
+	 * property is set in a hook after parsing, so that it is not reliably
+	 * available when Factboxes are displayed. If a property is internal so it
+	 * should never be observed by users, then it is better to just not
+	 * associate any translated label with it, so it never appears anywhere.
 	 */
 	public function isShown() {
 		$this->unstub();
@@ -301,8 +302,8 @@ class SMWPropertyValue extends SMWDataValue {
 			$result = SMWDataValueFactory::newTypeIDValue('__typ');
 			if (array_key_exists($this->m_propertyid, SMWPropertyValue::$m_propertytypes)) {
 				$result->setDBkeys(array(SMWPropertyValue::$m_propertytypes[$this->m_propertyid][0]));
-			} else { // fixed default type (should rarely matter)
-				$result->setDBkeys(array('_str'));
+			} else { // unknown type; it may still be that the property is "type-polymorphic" (like _1, _2, ... for Records)
+				$result->setDBkeys(array('__err')); // use "__err" to make sure that it gets noticed if this information is really used to create values
 			}
 		}
 		$this->prop_typevalue = $result;
@@ -420,11 +421,11 @@ class SMWPropertyValue extends SMWDataValue {
 				'_ERRP'  =>  array('_wpp',false),
 				'_LIST'  =>  array('__tls',true),
 				// "virtual" properties for encoding lists in n-ary datatypes (their type must never be used, hence use __err)
-				'_1'     =>  array('__err',false),
-				'_2'     =>  array('__err',false),
-				'_3'     =>  array('__err',false),
-				'_4'     =>  array('__err',false),
-				'_5'     =>  array('__err',false),
+// 				'_1'     =>  array('__err',false),
+// 				'_2'     =>  array('__err',false),
+// 				'_3'     =>  array('__err',false),
+// 				'_4'     =>  array('__err',false),
+// 				'_5'     =>  array('__err',false),
 			);
 		wfRunHooks( 'smwInitProperties' );
 	}
