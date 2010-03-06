@@ -96,7 +96,7 @@ $smwgUseCategoryHierarchy = true;
 ###
 # Should category pages that use some [[Category:Foo]] statement be treated as
 # elements of the category Foo? If disabled, then it is not possible to make
-# category pages elements of other catgories. See also the above setting
+# category pages elements of other categories. See also the above setting
 # $smwgUseCategoryHierarchy.
 ##
 $smwgCategoriesAsInstances = true;
