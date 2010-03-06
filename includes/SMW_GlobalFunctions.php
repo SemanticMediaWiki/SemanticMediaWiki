@@ -177,6 +177,8 @@ function enableSemantics($namespace = null, $complete = false) {
 	$wgAutoloadClasses['SMWConjunction']            = $smwgIP . '/includes/storage/SMW_Description.php';
 	$wgAutoloadClasses['SMWDisjunction']            = $smwgIP . '/includes/storage/SMW_Description.php';
 	$wgAutoloadClasses['SMWSomeProperty']           = $smwgIP . '/includes/storage/SMW_Description.php';
+	$wgAutoloadClasses['SMWRecordDescription']      = $smwgIP . '/includes/SMW_Record_Descriptions.php';
+	$wgAutoloadClasses['SMWRecordFieldDescription'] = $smwgIP . '/includes/SMW_Record_Descriptions.php';
 	$wgAutoloadClasses['SMWSQLStore2']              = $smwgIP . '/includes/storage/SMW_SQLStore2.php';
 	$wgAutoloadClasses['SMWSQLHelpers']             = $smwgIP . '/includes/storage/SMW_SQLHelpers.php';
 	// Do not autoload RAPStore, since some special pages load all autoloaded classes, which causes

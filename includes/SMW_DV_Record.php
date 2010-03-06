@@ -48,10 +48,11 @@ class SMWRecordValue extends SMWContainerValue {
 			} elseif (array_key_exists($vi,$values) && array_key_exists($i,$types)) { // some values left, try next slot
 				$dv = SMWDataValueFactory::newTypeObjectValue($types[$i], $values[$vi]);
 				if ($dv->isValid()) { // valid DV: keep
-					$property = SMWPropertyValue::makeProperty('_' . ($i+1));
+					//$property = SMWPropertyValue::makeProperty('_' . ($i+1));
 					if ($querymode) {
-						$subdescriptions[] = new SMWSomeProperty($property, new SMWValueDescription($dv,$comparator));
+						$subdescriptions[] = new SMWRecordFieldDescription($i, new SMWValueDescription($dv,$comparator));
 					} else {
+						$property = SMWPropertyValue::makeProperty('_' . ($i+1));
 						$this->m_data->addPropertyObjectValue($property, $dv);
 					}
 					$vi++;
@@ -68,7 +69,7 @@ class SMWRecordValue extends SMWContainerValue {
 			$this->addError('No values specified.');
 		}
 		if ($querymode) {
-			return $empty?new SMWThingDescription():new SMWConjunction($subdescriptions);
+			return $empty?new SMWThingDescription():new SMWRecordDescription($subdescriptions);
 		}
 	}
 

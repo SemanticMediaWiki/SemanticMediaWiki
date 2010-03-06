@@ -428,10 +428,8 @@ class SMWConjunction extends SMWDescription {
 		}
 		if ($result == '') {
 			return $asvalue?'+':'';
-		} elseif ($asvalue) { // <q> not needed for stand-alone conjunctions (AND binds stronger than OR)
-			return ' &lt;q&gt;' . $result . '&lt;/q&gt; ';
-		} else {
-			return $result;
+		} else { // <q> not needed for stand-alone conjunctions (AND binds stronger than OR)
+			return $asvalue ? " &lt;q&gt;{$result}&lt;/q&gt; " : $result;
 		}
 	}
 
@@ -655,12 +653,12 @@ class SMWDisjunction extends SMWDescription {
 }
 
 /**
- * Description of a set of instances that have an attribute with some value that
- * fits another (sub)description.
+ * Description of a set of instances that have an attribute with some value
+ * that fits another (sub)description.
  *
- * Corresponds to existential quatification ("some" restriction) on concrete properties
- * in OWL. In conjunctive queries (OWL) and SPARQL (RDF), it is represented by using
- * variables in the object part of such properties.
+ * Corresponds to existential quatification ("SomeValuesFrom" restriction) on
+ * properties in OWL. In conjunctive queries (OWL) and SPARQL (RDF), it is
+ * represented by using variables in the object part of such properties.
  * @ingroup SMWQuery
  */
 class SMWSomeProperty extends SMWDescription {
@@ -681,12 +679,20 @@ class SMWSomeProperty extends SMWDescription {
 	}
 
 	public function getQueryString($asvalue = false) {
-		$subdesc = $this->m_description->getQueryString(true);
-		$sep = ($this->m_description instanceof SMWSomeProperty)?'.':'::'; // use property chain syntax
+		$subdesc = $this->m_description;
+		$propertychain = $this->m_property->getWikiValue();
+		$propertyname = 'loop ...';
+		while ( ($propertyname != '') && ($subdesc instanceof SMWSomeProperty)) { // try to use property chain syntax
+			$propertyname = $subdesc->getProperty()->getWikiValue();
+			if ($propertyname != '') {
+				$propertychain .= '.' . $propertyname;
+				$subdesc = $subdesc->getDescription();
+			}
+		}
 		if ($asvalue) {
-			return $this->m_property->getWikiValue() . $sep . $subdesc;
+			return '&lt;q&gt;[[' . $propertychain . '::' . $subdesc->getQueryString(true) . ']]&lt;/q&gt;';
 		} else {
-			return '[[' . $this->m_property->getWikiValue() . $sep . $subdesc . ']]';
+			return '[[' . $propertychain . '::' . $subdesc->getQueryString(true) . ']]';
 		}
 	}
 
