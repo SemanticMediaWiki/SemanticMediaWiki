@@ -24,7 +24,9 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Support for inverse properties: use "-" in front of property names anywhere to
   refer to the inverse direction of a property. Works in browsing interfaces,
   queries, and query output directives. In queries only for properties of Type:Page.
-* Compatibility with new MediaWiki skin "Vector"
+* New configuration options $smwgUseCategoryHierarchy and $smwgCategoriesAsInstances
+  to configure how MediaWiki categories should be interpreted by SMW.
+* Compatibility with new MediaWiki skin "Vector" and with MediaWiki 1.16.
 * Removed support for backwards compatibility to SMW <1.0 ($smwgSMWBetaCompatible).
 * The page Special:Ask was overhauled to include inputs for entering values
   for the selected format's parameters, and to use Ajax where possible
