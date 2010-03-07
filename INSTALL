@@ -169,10 +169,8 @@ errors should show up while accessing the special page for initialisation.
 
 When upgrading from SMW 1.4.* or older, extensions of SMW (e.g. Semantic Forms)
 need to be updated to a version that is compatible with SMW 1.5.0. See your
-extension's homepage for details. If used, it is suggested to update to
-SemanticResultFormats (SRF) in version 1.4.6 or greater. The formats have been
-migrated to this extension package and are enabled there by default after
-installation.
+extension's homepage for details. If used, it is suggested to update to a
+more recent version of SemanticResultFormats (SRF).
 
 === Upgrading geographic coordinates ===
 
