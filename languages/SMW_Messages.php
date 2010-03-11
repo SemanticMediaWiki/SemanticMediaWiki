@@ -5899,7 +5899,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_property_template' => '$1 vum Typ $2 ($3)',
 	'smw_propertylackspage' => 'All Eegeschafte sollen op enger Säit beschriwwe sinn!',
 	'smw_propertyhardlyused' => 'Dës Eegeschaft gëtt an dëser Wiki kaum benotzt!',
-	'unusedproperties' => 'Onbenotzen Eegeschaften',
+	'unusedproperties' => 'Onbenotzten Eegeschaften',
 	'smw_unusedproperties_docu' => 'Dës Eegeschafte gëtt et och wa keng aner Säit se benotzt.',
 	'smw_unusedproperty_template' => '$1 vum Typ $2',
 	'wantedproperties' => 'Gewënschten Eegeschaften',
@@ -7509,6 +7509,11 @@ Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò
 	'smw_printername_json' => 'esportassion an JSON',
 	'smw_printername_list' => 'Lista',
 	'smw_printername_ol' => 'Enumerassion',
+	'smw_printername_ul' => 'Detaj',
+	'smw_printername_rss' => 'Esportassion RSS',
+	'smw_printername_table' => 'Tàula',
+	'smw_printername_broadtable' => 'Tàula estèisa',
+	'smw_printername_template' => 'Stamp',
 );
 
 /** Pashto (پښتو)
