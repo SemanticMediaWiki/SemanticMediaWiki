@@ -20,14 +20,14 @@ $messages['en'] = array(
 	'smw-desc'              => 'Making your wiki more accessible - for machines \'\'and\'\' humans ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])',
 	'smw_edithelp'          => 'Editing help on properties',
 	'smw_viewasrdf'         => 'RDF feed',
-	'smw_finallistconjunct' => ', and', //used in "A, B, and C"
+	'smw_finallistconjunct' => ', and', // used in "A, B, and C"
 	'smw_factbox_head'      => 'Facts about $1',
 	'smw_isspecprop'        => 'This property is a special property in this wiki.',
 	'smw_isknowntype'       => 'This type is among the standard datatypes of this wiki.',
 	'smw_isaliastype'       => 'This type is an alias for the datatype "$1".',
 	'smw_isnotype'          => 'This type "$1" is not a standard datatype in the wiki, and has not been given a user definition either.',
 	'smw_concept_description' => 'Description of concept "$1"', // used in the namespace "Concept:"
-	'smw_no_concept_namespace'=> 'Concepts can only be defined on pages in the Concept: namespace.',
+	'smw_no_concept_namespace' => 'Concepts can only be defined on pages in the Concept: namespace.',
 	'smw_multiple_concepts'   => 'Each concept page can have only one concept definition.',
 	'smw_concept_cache_miss'  => 'The concept "$1" can not be used at the moment, since the wiki configuration requires it to be computed off-line.
 If the problem does not go away after some time, ask your site administrator to make this concept available.',
@@ -155,7 +155,7 @@ Backup your data before using it.',
 	'specialpages-group-smw_group' => 'Semantic MediaWiki',
 
 	// Messages for Export RDF Special
-	'exportrdf'               => 'Export pages to RDF', //name of this special
+	'exportrdf'               => 'Export pages to RDF', // name of this special
 	'smw_exportrdf_docu'      => 'This page allows you to obtain data from a page in RDF format.
 To export pages, enter the titles in the text box below, one title per line.',
 	'smw_exportrdf_recursive' => 'Recursively export all related pages.

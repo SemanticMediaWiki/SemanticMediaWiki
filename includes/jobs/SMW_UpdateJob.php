@@ -23,8 +23,8 @@
  */
 class SMWUpdateJob extends Job {
 
-	function __construct($title) {
-		parent::__construct( 'SMWUpdateJob', $title);
+	function __construct( $title ) {
+		parent::__construct( 'SMWUpdateJob', $title );
 	}
 
 	/**
@@ -32,7 +32,7 @@ class SMWUpdateJob extends Job {
 	 * @return boolean success
 	 */
 	function run() {
-		wfProfileIn('SMWUpdateJob::run (SMW)');
+		wfProfileIn( 'SMWUpdateJob::run (SMW)' );
 		global $wgParser, $smwgHeadItems;
 
 		$linkCache = LinkCache::singleton();
@@ -40,31 +40,31 @@ class SMWUpdateJob extends Job {
 
 		if ( is_null( $this->title ) ) {
 			$this->error = "SMWUpdateJob: Invalid title";
-			wfProfileOut('SMWUpdateJob::run (SMW)');
+			wfProfileOut( 'SMWUpdateJob::run (SMW)' );
 			return false;
-		} elseif (!$this->title->exists()) {
-			smwfGetStore()->deleteSubject($this->title); // be sure to clear the data
-			wfProfileOut('SMWUpdateJob::run (SMW)');
+		} elseif ( !$this->title->exists() ) {
+			smwfGetStore()->deleteSubject( $this->title ); // be sure to clear the data
+			wfProfileOut( 'SMWUpdateJob::run (SMW)' );
 			return true;
 		}
 
 		$revision = Revision::newFromTitle( $this->title );
 		if ( !$revision ) {
 			$this->error = 'SMWUpdateJob: Page exists but no revision was found for "' . $this->title->getPrefixedDBkey() . '"';
-			wfProfileOut('SMWUpdateJob::run (SMW)');
+			wfProfileOut( 'SMWUpdateJob::run (SMW)' );
 			return false;
 		}
 
-		wfProfileIn( __METHOD__.'-parse' );
+		wfProfileIn( __METHOD__ . '-parse' );
 		$options = new ParserOptions;
-		$output = $wgParser->parse($revision->getText(), $this->title, $options, true, true, $revision->getID());
+		$output = $wgParser->parse( $revision->getText(), $this->title, $options, true, true, $revision->getID() );
 
-		wfProfileOut( __METHOD__.'-parse' );
-		wfProfileIn( __METHOD__.'-update' );
+		wfProfileOut( __METHOD__ . '-parse' );
+		wfProfileIn( __METHOD__ . '-update' );
 
-		SMWParseData::storeData($output, $this->title, false);
-		wfProfileOut( __METHOD__.'-update' );
-		wfProfileOut('SMWUpdateJob::run (SMW)');
+		SMWParseData::storeData( $output, $this->title, false );
+		wfProfileOut( __METHOD__ . '-update' );
+		wfProfileOut( 'SMWUpdateJob::run (SMW)' );
 		return true;
 	}
 
@@ -76,7 +76,7 @@ class SMWUpdateJob extends Job {
 	 */
 	function insert() {
 		global $smwgEnableUpdateJobs;
-		if ($smwgEnableUpdateJobs) {
+		if ( $smwgEnableUpdateJobs ) {
 			parent::insert();
 		}
 	}

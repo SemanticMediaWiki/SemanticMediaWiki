@@ -27,8 +27,8 @@ class SMWRefreshJob extends Job {
 	 * one run is done, then the first run will restrict to properties and types.
 	 * The progress indication refers to the current run, not to the overall job.
 	 */
-	function __construct($title, $params = array('spos'=>1, 'prog'=>0, 'rc'=>1) ) {
-		parent::__construct( 'SMWRefreshJob', $title, $params);
+	function __construct( $title, $params = array( 'spos' => 1, 'prog' => 0, 'rc' => 1 ) ) {
+		parent::__construct( 'SMWRefreshJob', $title, $params );
 	}
 
 	/**
@@ -36,25 +36,25 @@ class SMWRefreshJob extends Job {
 	 * @return boolean success
 	 */
 	function run() {
-		wfProfileIn('SMWRefreshJob::run (SMW)');
-		if (!array_key_exists('spos',$this->params)) {
+		wfProfileIn( 'SMWRefreshJob::run (SMW)' );
+		if ( !array_key_exists( 'spos', $this->params ) ) {
 			return true;
-			wfProfileOut('SMWRefreshJob::run (SMW)');
+			wfProfileOut( 'SMWRefreshJob::run (SMW)' );
 		}
-		$run = array_key_exists('run',$this->params)?$this->params['run']:1;
+		$run = array_key_exists( 'run', $this->params ) ? $this->params['run']:1;
 		$spos = $this->params['spos'];
 		$store = smwfGetStore();
-		$namespaces = (($this->params['rc'] > 1)&&($run==1))?array(SMW_NS_PROPERTY, SMW_NS_TYPE):false;
-		$progress = smwfGetStore()->refreshData($spos, 20, $namespaces);
+		$namespaces = ( ( $this->params['rc'] > 1 ) && ( $run == 1 ) ) ? array( SMW_NS_PROPERTY, SMW_NS_TYPE ):false;
+		$progress = smwfGetStore()->refreshData( $spos, 20, $namespaces );
 
-		if ($spos > 0) {
-			$nextjob = new SMWRefreshJob($this->title, array('spos' => $spos, 'prog' => $progress, 'rc'=>$this->params['rc'], 'run'=>$run));
+		if ( $spos > 0 ) {
+			$nextjob = new SMWRefreshJob( $this->title, array( 'spos' => $spos, 'prog' => $progress, 'rc' => $this->params['rc'], 'run' => $run ) );
 			$nextjob->insert();
-		} elseif ($this->params['rc'] > $run) { // do another run from the beginning
-			$nextjob = new SMWRefreshJob($this->title, array('spos'=>1, 'prog'=>0, 'rc'=>$this->params['rc'], 'run'=>$run+1));
+		} elseif ( $this->params['rc'] > $run ) { // do another run from the beginning
+			$nextjob = new SMWRefreshJob( $this->title, array( 'spos' => 1, 'prog' => 0, 'rc' => $this->params['rc'], 'run' => $run + 1 ) );
 			$nextjob->insert();
 		}
-		wfProfileOut('SMWRefreshJob::run (SMW)');
+		wfProfileOut( 'SMWRefreshJob::run (SMW)' );
 		return true;
 	}
 
@@ -63,8 +63,8 @@ class SMWRefreshJob extends Job {
 	 * The progress refers to the state before processing this job.
 	 */
 	public function getProgress() {
-		$prog = array_key_exists('prog',$this->params)?$this->params['prog']:0;
-		$run = array_key_exists('run',$this->params)?$this->params['run']:1;
-		return ($run-1+$prog)/$this->params['rc'];
+		$prog = array_key_exists( 'prog', $this->params ) ? $this->params['prog']:0;
+		$run = array_key_exists( 'run', $this->params ) ? $this->params['run']:1;
+		return ( $run - 1 + $prog ) / $this->params['rc'];
 	}
 }

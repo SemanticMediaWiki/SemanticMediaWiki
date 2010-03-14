@@ -19,14 +19,14 @@ abstract class SMWQueryPage extends QueryPage {
 	/**
 	 * Implemented by subclasses to provide concrete functions.
 	 */
-	abstract function getResults($requestoptions);
+	abstract function getResults( $requestoptions );
 
 	/**
 	 * Clear the cache and save new results
 	 * @todo Implement caching for SMW query pages
 	 */
 	function recache( $limit, $ignoreErrors = true ) {
-		///TODO
+		// /TODO
 	}
 
 	/**
@@ -39,30 +39,30 @@ abstract class SMWQueryPage extends QueryPage {
 	 * @param $limit database query limit
 	 * @param $shownavigation show navigation like "next 200"?
 	 */
-	function doQuery( $offset, $limit, $shownavigation=true ) {
+	function doQuery( $offset, $limit, $shownavigation = true ) {
 		global $wgUser, $wgOut, $wgLang, $wgContLang;
 
 		$options = new SMWRequestOptions();
 		$options->limit = $limit;
 		$options->offset = $offset;
 		$options->sort = true;
-		$res = $this->getResults($options);
-		$num = count($res);
+		$res = $this->getResults( $options );
+		$num = count( $res );
 
 		$sk = $wgUser->getSkin();
 		$sname = $this->getName();
 
-		if($shownavigation) {
+		if ( $shownavigation ) {
 			$wgOut->addHTML( $this->getPageHeader() );
 
 			// if list is empty, show it
-			if( $num == 0 ) {
-				wfLoadExtensionMessages('SemanticMediaWiki');
-				$wgOut->addHTML( '<p>' . wfMsgHTML('specialpage-empty') . '</p>' );
+			if ( $num == 0 ) {
+				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				$wgOut->addHTML( '<p>' . wfMsgHTML( 'specialpage-empty' ) . '</p>' );
 				return;
 			}
 
-			$top = wfShowingResults( $offset, $num);
+			$top = wfShowingResults( $offset, $num );
 			$wgOut->addHTML( "<p>{$top}\n" );
 
 			// often disable 'next' link when we reach the end
@@ -78,7 +78,7 @@ abstract class SMWQueryPage extends QueryPage {
 			if ( ! $this->listoutput )
 				$s[] = $this->openList( $offset );
 
-			foreach ($res as $r) {
+			foreach ( $res as $r ) {
 				$format = $this->formatResult( $sk, $r );
 				if ( $format ) {
 					$s[] = $this->listoutput ? $format : "<li>{$format}</li>\n";
@@ -90,7 +90,7 @@ abstract class SMWQueryPage extends QueryPage {
 			$str = $this->listoutput ? $wgContLang->listToText( $s ) : implode( '', $s );
 			$wgOut->addHTML( $str );
 		}
-		if($shownavigation) {
+		if ( $shownavigation ) {
 			$wgOut->addHTML( "<p>{$sl}</p>\n" );
 		}
 		return $num;

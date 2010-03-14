@@ -22,30 +22,30 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 	protected $m_showhead;
 	protected $m_embedformat;
 
-	protected function readParameters($params,$outputmode) {
-		SMWResultPrinter::readParameters($params,$outputmode);
+	protected function readParameters( $params, $outputmode ) {
+		SMWResultPrinter::readParameters( $params, $outputmode );
 
-		if (array_key_exists('embedonly', $params)) {
+		if ( array_key_exists( 'embedonly', $params ) ) {
 			$this->m_showhead = false;
 		} else {
 			$this->m_showhead = true;
 		}
-		if (array_key_exists('embedformat', $params)) {
-			$this->m_embedformat = trim($params['embedformat']);
+		if ( array_key_exists( 'embedformat', $params ) ) {
+			$this->m_embedformat = trim( $params['embedformat'] );
 		} else {
 			$this->m_embedformat = 'h1';
 		}
 	}
 
 	public function getName() {
-		wfLoadExtensionMessages('SemanticMediaWiki');
-		return wfMsg('smw_printername_embedded');
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		return wfMsg( 'smw_printername_embedded' );
 	}
 
-	protected function getResultText($res,$outputmode) {
+	protected function getResultText( $res, $outputmode ) {
 		global $wgParser;
 		// No page should embed itself, find out who we are:
-		if ($wgParser->getTitle() instanceof Title) {
+		if ( $wgParser->getTitle() instanceof Title ) {
 			$title = $wgParser->getTitle()->getPrefixedText();
 		} else { // this is likely to be in vain -- this case is typical if we run on special pages
 			global $wgTitle;
@@ -56,7 +56,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		$result = '';
 		$this->hasTemplates = true;
 
-		switch ($this->m_embedformat) {
+		switch ( $this->m_embedformat ) {
 			case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
 				$footer = '';
 				$embstart = '';
@@ -75,14 +75,14 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		}
 
 		// Print all result rows:
-		foreach ($res->getResults() as $page) {
+		foreach ( $res->getResults() as $page ) {
 			if ( $page->getTypeID() == '_wpg' ) { // ensure that we deal with title-likes
 				$result .= $embstart;
-				if ($this->m_showhead) {
-					$result .= $headstart . $page->getLongWikiText($this->mLinker) . $headend;
+				if ( $this->m_showhead ) {
+					$result .= $headstart . $page->getLongWikiText( $this->mLinker ) . $headend;
 				}
-				if ($page->getLongWikiText() != $title) {
-					$result .= '{{' . ( ($page->getNamespace() == NS_MAIN)?
+				if ( $page->getLongWikiText() != $title ) {
+					$result .= '{{' . ( ( $page->getNamespace() == NS_MAIN ) ?
 					            ':' . $page->getDBkey():$page->getLongWikiText() ) .
 								'}}';
 				} else {
@@ -93,19 +93,19 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		}
 
 		// show link to more results
-		if ( $this->linkFurtherResults($res) ) {
+		if ( $this->linkFurtherResults( $res ) ) {
 			$link = $res->getQueryLink();
-			if ($this->getSearchLabel(SMW_OUTPUT_WIKI)) {
-				$link->setCaption($this->getSearchLabel(SMW_OUTPUT_WIKI));
+			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) {
+				$link->setCaption( $this->getSearchLabel( SMW_OUTPUT_WIKI ) );
 			}
-			$link->setParameter('embedded','format');
+			$link->setParameter( 'embedded', 'format' );
 			// ordered lists confusing in paged output
-			$format = ($this->m_embedformat == 'ol')?'ul':$this->m_embedformat;
-			$link->setParameter($format,'embedformat');
-			if (!$this->m_showhead) {
-				$link->setParameter('1','embedonly');
+			$format = ( $this->m_embedformat == 'ol' ) ? 'ul':$this->m_embedformat;
+			$link->setParameter( $format, 'embedformat' );
+			if ( !$this->m_showhead ) {
+				$link->setParameter( '1', 'embedonly' );
 			}
-			$result .= $embstart . $link->getText(SMW_OUTPUT_WIKI,$this->mLinker) . $embend;
+			$result .= $embstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $embend;
 		}
 		$result .= $footer;
 
@@ -114,8 +114,8 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
         public function getParameters() {
                 $params = parent::getParameters();
-                $params[] = array('name' => 'embedformat', 'type' => 'string', 'description' => wfMsg('smw_paramdesc_embedformat'));
-                $params[] = array('name' => 'embedonly', 'type' => 'boolean', 'description' => wfMsg('smw_paramdesc_embedonly'));
+                $params[] = array( 'name' => 'embedformat', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_embedformat' ) );
+                $params[] = array( 'name' => 'embedonly', 'type' => 'boolean', 'description' => wfMsg( 'smw_paramdesc_embedonly' ) );
                 return $params;
         }
 

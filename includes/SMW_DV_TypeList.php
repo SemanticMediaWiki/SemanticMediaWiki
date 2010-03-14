@@ -16,20 +16,20 @@ class SMWTypeListValue extends SMWDataValue {
 
 	private $m_typevalues = false;
 
-	protected function parseUserValue($value) {
+	protected function parseUserValue( $value ) {
 		$this->m_typevalues = array();
-		$types = explode(';', $value);
-		foreach ($types as $type) {
-			$tval = SMWDataValueFactory::newTypeIDValue('__typ',$type);
+		$types = explode( ';', $value );
+		foreach ( $types as $type ) {
+			$tval = SMWDataValueFactory::newTypeIDValue( '__typ', $type );
 			$this->m_typevalues[] = $tval;
 		}
 	}
 
-	protected function parseDBkeys($args) {
+	protected function parseDBkeys( $args ) {
 		$this->m_typevalues = array();
-		$ids = explode(';', $args[0]);
-		foreach ($ids as $id) {
-			$this->m_typevalues[] = SMWDataValueFactory::newTypeIDValue('__typ',SMWDataValueFactory::findTypeLabel($id));
+		$ids = explode( ';', $args[0] );
+		foreach ( $ids as $id ) {
+			$this->m_typevalues[] = SMWDataValueFactory::newTypeIDValue( '__typ', SMWDataValueFactory::findTypeLabel( $id ) );
 		}
 	}
 
@@ -44,13 +44,13 @@ class SMWTypeListValue extends SMWDataValue {
 	public function getDBkeys() {
 		if ( $this->isvalid() ) {
 			$result = '';
-			foreach ($this->m_typevalues as $tv) {
-				if ($result != '') $result .= ';';
+			foreach ( $this->m_typevalues as $tv ) {
+				if ( $result != '' ) $result .= ';';
 				$result .= $tv->getDBkey();
 			}
-			return array($result);
+			return array( $result );
 		} else {
-			return array(false);
+			return array( false );
 		}
 	}
 
@@ -66,24 +66,24 @@ class SMWTypeListValue extends SMWDataValue {
 		return 0;
 	}
 
-	public function getShortWikiText($linked = null) {
-		return ($this->m_caption !== false) ?  $this->m_caption : $this->makeOutputText(0, $linked);
+	public function getShortWikiText( $linked = null ) {
+		return ( $this->m_caption !== false ) ?  $this->m_caption : $this->makeOutputText( 0, $linked );
 	}
 
-	public function getShortHTMLText($linker = null) {
-		return ($this->m_caption !== false) ? $this->m_caption : $this->makeOutputText(1, $linker);
+	public function getShortHTMLText( $linker = null ) {
+		return ( $this->m_caption !== false ) ? $this->m_caption : $this->makeOutputText( 1, $linker );
 	}
 
-	public function getLongWikiText($linked = null) {
-		return $this->makeOutputText(2, $linked);
+	public function getLongWikiText( $linked = null ) {
+		return $this->makeOutputText( 2, $linked );
 	}
 
-	public function getLongHTMLText($linker = null) {
-		return $this->makeOutputText(3, $linker);
+	public function getLongHTMLText( $linker = null ) {
+		return $this->makeOutputText( 3, $linker );
 	}
 
 	public function getWikiValue() {
-		return $this->makeOutputText(4);
+		return $this->makeOutputText( 4 );
 	}
 
 	public function getTypeValues() {
@@ -91,27 +91,27 @@ class SMWTypeListValue extends SMWDataValue {
 		return $this->m_typevalues;
 	}
 
-////// Internal helper functions
+// //// Internal helper functions
 
-	private function makeOutputText($type = 0, $linker = null) {
-		if (!$this->isValid()) {
-			return ( ($type == 0)||($type == 1) )? '' : $this->getErrorText();
+	private function makeOutputText( $type = 0, $linker = null ) {
+		if ( !$this->isValid() ) {
+			return ( ( $type == 0 ) || ( $type == 1 ) ) ? '' : $this->getErrorText();
 		}
 		$result = '';
 		$sep = ( $type == 4 ) ? '; ' : ', ';
-		foreach ($this->m_typevalues as $tv) {
-			if ($result != '') $result .= $sep;
-			$result .= $this->makeValueOutputText($type, $tv, $linker);
+		foreach ( $this->m_typevalues as $tv ) {
+			if ( $result != '' ) $result .= $sep;
+			$result .= $this->makeValueOutputText( $type, $tv, $linker );
 		}
 		return $result;
 	}
 
-	private function makeValueOutputText($type, $datavalue, $linker) {
-		switch ($type) {
-			case 0: return $datavalue->getShortWikiText($linker);
-			case 1: return $datavalue->getShortHTMLText($linker);
-			case 2: return $datavalue->getLongWikiText($linker);
-			case 3: return $datavalue->getLongHTMLText($linker);
+	private function makeValueOutputText( $type, $datavalue, $linker ) {
+		switch ( $type ) {
+			case 0: return $datavalue->getShortWikiText( $linker );
+			case 1: return $datavalue->getShortHTMLText( $linker );
+			case 2: return $datavalue->getLongWikiText( $linker );
+			case 3: return $datavalue->getLongHTMLText( $linker );
 			case 4: return $datavalue->getWikiValue();
 		}
 	}

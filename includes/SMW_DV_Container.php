@@ -16,9 +16,9 @@ abstract class SMWContainerValue extends SMWDataValue {
 
 	protected $m_data;
 
-	public function __construct($typeid) {
-		parent::__construct($typeid);
-		$this->m_data = new SMWSemanticData(null);
+	public function __construct( $typeid ) {
+		parent::__construct( $typeid );
+		$this->m_data = new SMWSemanticData( null );
 	}
 
 	/**
@@ -37,12 +37,12 @@ abstract class SMWContainerValue extends SMWDataValue {
 	 * that correspond to the input arguments of SMWSemanticData::addPropertyStubValue():
 	 * a property DB key (string), and a value DB key array (array).
 	 */
-	protected function parseDBkeys($args) {
+	protected function parseDBkeys( $args ) {
 		$this->m_data->clear();
-		if (count($args)>0) {
-			foreach (reset($args) as $value) {
-				if (is_array($value) && (count($value)==2)) {
-					$this->m_data->addPropertyStubValue(reset($value), end($value));
+		if ( count( $args ) > 0 ) {
+			foreach ( reset( $args ) as $value ) {
+				if ( is_array( $value ) && ( count( $value ) == 2 ) ) {
+					$this->m_data->addPropertyStubValue( reset( $value ), end( $value ) );
 				}
 			}
 		}
@@ -57,12 +57,12 @@ abstract class SMWContainerValue extends SMWDataValue {
 	 */
 	public function getDBkeys() {
 		$data = array();
-		foreach ($this->m_data->getProperties() as $property) {
-			foreach ($this->m_data->getPropertyValues($property) as $dv) {
-				$data[] = array($property->getDBkey(), $dv->getDBkeys());
+		foreach ( $this->m_data->getProperties() as $property ) {
+			foreach ( $this->m_data->getPropertyValues( $property ) as $dv ) {
+				$data[] = array( $property->getDBkey(), $dv->getDBkeys() );
 			}
 		}
-		return array($data);
+		return array( $data );
 	}
 
 	public function getSignature() {
@@ -70,18 +70,18 @@ abstract class SMWContainerValue extends SMWDataValue {
 	}
 
 	public function getValueIndex() {
-		return -1;
+		return - 1;
 	}
 
 	public function getLabelIndex() {
-		return -1;
+		return - 1;
 	}
 
 	public function getHash() {
 		if ( $this->isValid() ) {
 			return $this->m_data->getHash();
 		} else {
-			return implode("\t", $this->getErrors());
+			return implode( "\t", $this->getErrors() );
 		}
 	}
 

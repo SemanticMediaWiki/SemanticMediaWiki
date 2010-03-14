@@ -40,10 +40,10 @@
  * no guarantees, but look in the usual place for commandLine.inc, so this
  * so it will work most of the time
  */
-$optionsWithArgs = array( 'b', 'user', 'password');
+$optionsWithArgs = array( 'b', 'user', 'password' );
 
-require_once ( getenv('MW_INSTALL_PATH') !== false
-    ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
+require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
+    ? getenv( 'MW_INSTALL_PATH' ) . "/maintenance/commandLine.inc"
     : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 
 global $smwgDefaultStore;
@@ -52,18 +52,18 @@ global $smwgDefaultStore;
  * so allow override
  * Note: the preferred method is to use AdminSettings.php to provide such credentials
  */
-if( isset( $options['user'] ) ) {
+if ( isset( $options['user'] ) ) {
 	global $wgDBuser;
 	$wgDBuser = $options['user'];
 }
-if( isset( $options['password'] ) ) {
+if ( isset( $options['password'] ) ) {
 	global $wgDBuser;
 	$wgDBpassword = $options['password'];
 }
 
 $alternativestore = false;
 if ( array_key_exists( 'b', $options ) ) {
-	if ($smwgDefaultStore != $options['b']) {
+	if ( $smwgDefaultStore != $options['b'] ) {
 		$alternativestore = true;
 	}
 	$smwgDefaultStore = $options['b'];
@@ -72,19 +72,19 @@ if ( array_key_exists( 'b', $options ) ) {
 
 
 global $smwgIP;
-if (! isset($smwgIP))
-     $smwgIP = dirname(__FILE__) . '/..';
+if ( ! isset( $smwgIP ) )
+     $smwgIP = dirname( __FILE__ ) . '/..';
 
-require_once($smwgIP . '/includes/SMW_GlobalFunctions.php');
+require_once( $smwgIP . '/includes/SMW_GlobalFunctions.php' );
 
 if (  array_key_exists( 'delete', $options ) ) {
 	print "\n  Deleting all stored data for $smwgDefaultStore completely!\n  \n\n";
 	if ( $alternativestore ) {
 		print "  This store is currently not used by SMW. Deleting it\n  should not cause problems in the wiki.\n\n";
-		$delay=5;
+		$delay = 5;
 	} else {
 		print "  WARNING: This store is currently used by SMW! Deleting it\n           will cause problems in the wiki if SMW is enabled.\n\n";
-		$delay=20;
+		$delay = 20;
 	}
 
 	print "Abort with CTRL-C in the next $delay seconds ...  ";
@@ -94,34 +94,34 @@ if (  array_key_exists( 'delete', $options ) ) {
 	// wfCountDown as soon as we switch to MediaWiki 1.16. 
 	// Currently, wfCountDown is only supported from
 	// revision 51650 (Jun 9 2009) onward.
-	if (function_exists("wfCountDown")) {
-		wfCountDown( $delay );	
+	if ( function_exists( "wfCountDown" ) ) {
+		wfCountDown( $delay );
 	} else {
     	for ( $i = $delay; $i >= 0; $i-- ) {
         	if ( $i != $delay ) {
             	echo str_repeat( "\x08", strlen( $i + 1 ) );
-        	} 
+        	}
         	echo $i;
         	flush();
         	if ( $i ) {
             	sleep( 1 );
         	}
     	}
-    	echo "\n";		
+    	echo "\n";
 	}
 	// Remove up to here and just uncomment the following line:
 	// wfCountDown( $delay );
-	
-	smwfGetStore()->drop(true);
-	wfRunHooks('smwDropTables');
+
+	smwfGetStore()->drop( true );
+	wfRunHooks( 'smwDropTables' );
 	print "\n";
-	while (ob_get_level() > 0) { // be sure to have some buffer, otherwise some PHPs complain
+	while ( ob_get_level() > 0 ) { // be sure to have some buffer, otherwise some PHPs complain
 		ob_end_flush();
 	}
 	echo "\n  All storage structures for $smwgDefaultStore have been deleted.\n  You can recreate them with this script, and then use\n  SMW_refreshData.php to rebuild their contents.";
 } else {
 	smwfGetStore()->setup();
-	wfRunHooks('smwInitializeTables');
+	wfRunHooks( 'smwInitializeTables' );
 }
 
 print "\n\nDone.\n";

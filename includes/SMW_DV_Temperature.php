@@ -22,15 +22,15 @@ class SMWTemperatureValue extends SMWNumberValue {
 	 * value is valid before trying to calculate with its contents.
 	 */
 	protected function convertToMainUnit() {
-		if ($this->m_unitin !== false) return;
-		if (!$this->isValid()) { // give up, avoid calculations with non-numbers
+		if ( $this->m_unitin !== false ) return;
+		if ( !$this->isValid() ) { // give up, avoid calculations with non-numbers
 			$this->m_unitin = $this->m_unit;
 			return;
 		}
 
 		// Find current ID and covert main values to Kelvin, if possible
 		// Note: there is no error when unknown units are used.
-		$this->m_unitin = $this->getUnitID($this->m_unit);
+		$this->m_unitin = $this->getUnitID( $this->m_unit );
 		switch ( $this->m_unitin ) {
 			case 'K':
 				$this->m_unit = 'K';
@@ -41,16 +41,16 @@ class SMWTemperatureValue extends SMWNumberValue {
 			break;
 			case '°F':
 				$this->m_unit = 'K';
-				$this->m_value = ($this->m_value - 32) /1.8 + 273.15;
+				$this->m_value = ( $this->m_value - 32 ) / 1.8 + 273.15;
 			break;
 			case '°R':
 				$this->m_unit = 'K';
-				$this->m_value = ($this->m_value) /1.8;
+				$this->m_value = ( $this->m_value ) / 1.8;
 			break;
-			default: //unsupported unit
+			default: // unsupported unit
 				// create error here, assuming that our temperature units should not be augmented by unknown units
-				wfLoadExtensionMessages('SemanticMediaWiki');
-				$this->addError(wfMsgForContent('smw_unsupportedunit',$this->m_unit));
+				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				$this->addError( wfMsgForContent( 'smw_unsupportedunit', $this->m_unit ) );
 				$this->m_unit = $this->m_unitin;
 			break;
 		}
@@ -68,13 +68,13 @@ class SMWTemperatureValue extends SMWNumberValue {
 	 * This method also must call or implement convertToMainUnit().
 	 */
 	protected function makeConversionValues() {
-		if ($this->m_unitvalues !== false) return;
+		if ( $this->m_unitvalues !== false ) return;
 		$this->convertToMainUnit();
-		$this->m_unitvalues = array($this->m_unit => $this->m_value);
-		if ($this->isValid() && ($this->m_unit == 'K')) {
+		$this->m_unitvalues = array( $this->m_unit => $this->m_value );
+		if ( $this->isValid() && ( $this->m_unit == 'K' ) ) {
 			$this->m_unitvalues['°C'] = $this->m_value - 273.15;
-			$this->m_unitvalues['°F'] = ($this->m_value - 273.15) * 1.8 + 32;
-			$this->m_unitvalues['°R'] = ($this->m_value) * 1.8;
+			$this->m_unitvalues['°F'] = ( $this->m_value - 273.15 ) * 1.8 + 32;
+			$this->m_unitvalues['°R'] = ( $this->m_value ) * 1.8;
 		}
 	}
 
@@ -89,10 +89,10 @@ class SMWTemperatureValue extends SMWNumberValue {
 		$this->convertToMainUnit();
 
 		$value = false;
-		if (($this->m_unit === 'K') && $this->m_outformat && ($this->m_outformat != '-') ) { // try given output unit (only if conversion worked)
-			$unit = $this->getUnitID($this->normalizeUnit($this->m_outformat));
+		if ( ( $this->m_unit === 'K' ) && $this->m_outformat && ( $this->m_outformat != '-' ) ) { // try given output unit (only if conversion worked)
+			$unit = $this->getUnitID( $this->normalizeUnit( $this->m_outformat ) );
 			$printunit = $this->m_outformat;
-			switch ($unit) {
+			switch ( $unit ) {
 				case 'K':
 					$value = $this->m_value;
 				break; // nothing to do
@@ -100,22 +100,22 @@ class SMWTemperatureValue extends SMWNumberValue {
 					$value = $this->m_value - 273.15;
 				break;
 				case '°F':
-					$value = ($this->m_value - 273.15) * 1.8 + 32;
+					$value = ( $this->m_value - 273.15 ) * 1.8 + 32;
 				break;
 				case '°R':
-					$value = ($this->m_value) * 1.8;
+					$value = ( $this->m_value ) * 1.8;
 				break;
 				// default: unit not supported
 			}
 		}
-		if ($value === false) { // finally fallback to current value
+		if ( $value === false ) { // finally fallback to current value
 			$value = $this->m_value;
 			$unit = $this->m_unit;
 			$printunit = $unit;
 		}
 
-		$this->m_caption = smwfNumberFormat($value);
-		if ($printunit != '') {
+		$this->m_caption = smwfNumberFormat( $value );
+		if ( $printunit != '' ) {
 			$this->m_caption .= '&nbsp;' . $printunit;
 		}
 		$this->m_wikivalue = $this->m_caption;
@@ -127,8 +127,8 @@ class SMWTemperatureValue extends SMWNumberValue {
 	/**
 	 * Helper method to find the main representation of a certain unit.
 	 */
-	protected function getUnitID($unit) {
-		/// TODO possibly localise some of those strings
+	protected function getUnitID( $unit ) {
+		// / TODO possibly localise some of those strings
 		switch ( $unit ) {
 			case '': case 'K': case 'Kelvin': case 'kelvin': case 'kelvins':
 				return 'K';
@@ -143,7 +143,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 			case '°R': case 'Rankine':
 				return '°R';
 			break;
-			default: //unsupported unit
+			default: // unsupported unit
 				return $unit;
 			break;
 		}
@@ -154,7 +154,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 	 * this datavalue.
 	 */
 	public function getUnitList() {
-		return array('K', '°C', '°F', '°R');
+		return array( 'K', '°C', '°F', '°R' );
 	}
 
 }

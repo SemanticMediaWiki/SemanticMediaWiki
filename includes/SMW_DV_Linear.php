@@ -29,25 +29,25 @@ class SMWLinearValue extends SMWNumberValue {
 	 * value is valid before trying to calculate with its contents.
 	 */
 	protected function convertToMainUnit() {
-		if ($this->m_unitin !== false) return;
+		if ( $this->m_unitin !== false ) return;
 		$this->initConversionData();
-		if (!$this->isValid()) { // give up, avoid calculations with non-numbers
+		if ( !$this->isValid() ) { // give up, avoid calculations with non-numbers
 			$this->m_unitin = $this->m_unit;
 			return;
 		}
 
 		// Find ID for current unit
-		if (array_key_exists($this->m_unit, $this->m_unitids)) {
+		if ( array_key_exists( $this->m_unit, $this->m_unitids ) ) {
 			$this->m_unitin = $this->m_unitids[$this->m_unit];
 		} else { // already unit id (possibly of an unknown unit)
 			$this->m_unitin = $this->m_unit;
 		}
 
 		// Do conversion
-		if ( (array_key_exists($this->m_unitin, $this->m_unitfactors)) && ($this->m_mainunit !== false) ) {
+		if ( ( array_key_exists( $this->m_unitin, $this->m_unitfactors ) ) && ( $this->m_mainunit !== false ) ) {
 			$this->m_unit = $this->m_mainunit;
-			$this->m_value = $this->m_value/$this->m_unitfactors[$this->m_unitin];
-		} //else: unsupported unit, keep all as it is
+			$this->m_value = $this->m_value / $this->m_unitfactors[$this->m_unitin];
+		} // else: unsupported unit, keep all as it is
 	}
 
 	/**
@@ -62,31 +62,31 @@ class SMWLinearValue extends SMWNumberValue {
 	 * This method also must call or implement convertToMainUnit().
 	 */
 	protected function makeConversionValues() {
-		if ($this->m_unitvalues !== false) return;
+		if ( $this->m_unitvalues !== false ) return;
 		$this->convertToMainUnit();
-		if ($this->m_unit !== $this->m_mainunit) { // conversion failed, no choice for us
-			$this->m_unitvalues = array($this->m_unit => $this->m_value);
+		if ( $this->m_unit !== $this->m_mainunit ) { // conversion failed, no choice for us
+			$this->m_unitvalues = array( $this->m_unit => $this->m_value );
 			return;
 		}
 		$this->initDisplayData();
 
 		$this->m_unitvalues = array();
-		if (count($this->m_displayunits) == 0) { // no display units, just show all
-			foreach ($this->m_unitfactors as $unit => $factor) {
-				$this->m_unitvalues[$unit] = $this->m_value*$factor;
+		if ( count( $this->m_displayunits ) == 0 ) { // no display units, just show all
+			foreach ( $this->m_unitfactors as $unit => $factor ) {
+				$this->m_unitvalues[$unit] = $this->m_value * $factor;
 			}
 		} else {
-			foreach ($this->m_displayunits as $unit) { // do not use unit ids here (requires a small hack below, but allows to select representation of unit via displayunits)
-				if (array_key_exists($this->m_unitids[$unit], $this->m_unitfactors)) {
-					$this->m_unitvalues[$unit] = $this->m_value*$this->m_unitfactors[$this->m_unitids[$unit]];
-					if ($this->m_unitids[$unit] == $this->m_unitin) { // use the display unit version of the input unit as id
+			foreach ( $this->m_displayunits as $unit ) { // do not use unit ids here (requires a small hack below, but allows to select representation of unit via displayunits)
+				if ( array_key_exists( $this->m_unitids[$unit], $this->m_unitfactors ) ) {
+					$this->m_unitvalues[$unit] = $this->m_value * $this->m_unitfactors[$this->m_unitids[$unit]];
+					if ( $this->m_unitids[$unit] == $this->m_unitin ) { // use the display unit version of the input unit as id
 						$this->m_unitin = $unit;
 					}
 				}
 			}
-			if (count($this->m_unitvalues) == 0) { // none of the desired units matches
+			if ( count( $this->m_unitvalues ) == 0 ) { // none of the desired units matches
 				// display just the current one (so one can disable unit tooltips by setting a nonunit for display)
-				$this->m_unitvalues = array($this->m_unit => $this->m_value);
+				$this->m_unitvalues = array( $this->m_unit => $this->m_value );
 			}
 		}
 	}
@@ -102,22 +102,22 @@ class SMWLinearValue extends SMWNumberValue {
 		$this->convertToMainUnit();
 
 		$value = false;
-		if ($this->m_unit === $this->m_mainunit) { // only try if conversion worked
-			if ( ($value === false) && ($this->m_outformat) && ($this->m_outformat != '-') ) { // first try given output unit
-				$unit = $this->normalizeUnit($this->m_outformat);
+		if ( $this->m_unit === $this->m_mainunit ) { // only try if conversion worked
+			if ( ( $value === false ) && ( $this->m_outformat ) && ( $this->m_outformat != '-' ) ) { // first try given output unit
+				$unit = $this->normalizeUnit( $this->m_outformat );
 				$printunit = $unit;
-				if (array_key_exists($unit, $this->m_unitids)) { // find id for output unit
+				if ( array_key_exists( $unit, $this->m_unitids ) ) { // find id for output unit
 					$unit = $this->m_unitids[$unit];
-					if (array_key_exists($unit, $this->m_unitfactors)) { // find factor for this id
+					if ( array_key_exists( $unit, $this->m_unitfactors ) ) { // find factor for this id
 						$value = $this->m_value * $this->m_unitfactors[$unit];
 					}
 				}
 			}
-			if ($value === false) { // next look for the first given display unit
+			if ( $value === false ) { // next look for the first given display unit
 				$this->initDisplayData();
-				if (count($this->m_displayunits) > 0) {
+				if ( count( $this->m_displayunits ) > 0 ) {
 					$unit = $this->m_unitids[$this->m_displayunits[0]]; // was already verified to exist before
-					if (array_key_exists($unit, $this->m_unitfactors)) { // find factor for this id
+					if ( array_key_exists( $unit, $this->m_unitfactors ) ) { // find factor for this id
 						$value = $this->m_value * $this->m_unitfactors[$unit];
 						$printunit = $this->m_displayunits[0];
 					}
@@ -125,14 +125,14 @@ class SMWLinearValue extends SMWNumberValue {
 			}
 		}
 
-		if ($value === false) { // finally fallback to current value
+		if ( $value === false ) { // finally fallback to current value
 			$value = $this->m_value;
 			$unit = $this->m_unit;
 			$printunit = $unit;
 		}
 
-		$this->m_caption = smwfNumberFormat($value);
-		if ($printunit != '') {
+		$this->m_caption = smwfNumberFormat( $value );
+		if ( $printunit != '' ) {
 			$this->m_caption .= '&nbsp;' . $printunit;
 		}
 		$this->m_wikivalue = $this->m_caption;
@@ -145,42 +145,42 @@ class SMWLinearValue extends SMWNumberValue {
 	 */
 	public function getUnitList() {
 		$this->initConversionData();
-		return array_keys($this->m_unitfactors);
+		return array_keys( $this->m_unitfactors );
 	}
 
-/// The remaining functions are relatively "private" but are kept protected since
-/// subclasses might exploit this to, e.g., "fake" conversion factors instead of
-/// getting them from the database. A cheap way of making built-in types.
+// / The remaining functions are relatively "private" but are kept protected since
+// / subclasses might exploit this to, e.g., "fake" conversion factors instead of
+// / getting them from the database. A cheap way of making built-in types.
 
 	/**
 	 * This method fills $m_unitfactors and $m_unitids with required values.
 	 */
 	protected function initConversionData() {
-		if ($this->m_unitids !== false) return;
+		if ( $this->m_unitids !== false ) return;
 		$this->m_unitids = array();
 		$this->m_unitfactors = array();
 
-		$typepage = SMWWikiPageValue::makePage($this->m_typeid, SMW_NS_TYPE);
-		if (!$typepage->isValid()) return;
-		$factors = smwfGetStore()->getPropertyValues($typepage, SMWPropertyValue::makeProperty('_CONV'));
-		if (count($factors)==0) { // no custom type
+		$typepage = SMWWikiPageValue::makePage( $this->m_typeid, SMW_NS_TYPE );
+		if ( !$typepage->isValid() ) return;
+		$factors = smwfGetStore()->getPropertyValues( $typepage, SMWPropertyValue::makeProperty( '_CONV' ) );
+		if ( count( $factors ) == 0 ) { // no custom type
 			// delete all previous errors, this is our real problem
-			/// TODO: probably we should check for this earlier, but avoid unnecessary DB requests ...
-			wfLoadExtensionMessages('SemanticMediaWiki');
-			$this->addError(wfMsgForContent('smw_unknowntype', SMWDataValueFactory::findTypeLabel($this->getTypeID())));
+			// / TODO: probably we should check for this earlier, but avoid unnecessary DB requests ...
+			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			$this->addError( wfMsgForContent( 'smw_unknowntype', SMWDataValueFactory::findTypeLabel( $this->getTypeID() ) ) );
 			return;
 		}
-		$numdv = SMWDataValueFactory::newTypeIDValue('_num'); // used for parsing the factors
-		foreach ($factors as $dv) {
-			$numdv->setUserValue($dv->getWikiValue());
-			if (!$numdv->isValid() || ($numdv->getValueKey() === 0)) {
+		$numdv = SMWDataValueFactory::newTypeIDValue( '_num' ); // used for parsing the factors
+		foreach ( $factors as $dv ) {
+			$numdv->setUserValue( $dv->getWikiValue() );
+			if ( !$numdv->isValid() || ( $numdv->getValueKey() === 0 ) ) {
 				continue; // ignore problematic conversions
 			}
-			$unit_aliases = preg_split('/\s*,\s*/u', $numdv->getUnit());
+			$unit_aliases = preg_split( '/\s*,\s*/u', $numdv->getUnit() );
 			$first = true;
-			foreach ($unit_aliases as $unit) {
-				$unit = $this->normalizeUnit($unit);
-				if ($first) {
+			foreach ( $unit_aliases as $unit ) {
+				$unit = $this->normalizeUnit( $unit );
+				if ( $first ) {
 					$unitid = $unit;
 					if ( $numdv->getValueKey() == 1 ) { // add main unit to front of array (displyed first)
 						$this->m_mainunit = $unit;
@@ -200,18 +200,18 @@ class SMWLinearValue extends SMWNumberValue {
 	 * This method fills $m_displayunits.
 	 */
 	protected function initDisplayData() {
-		if ($this->m_displayunits !== false) return;
+		if ( $this->m_displayunits !== false ) return;
 		$this->initConversionData(); // needed to normalise unit strings
 		$this->m_displayunits = array();
-		if ( ($this->m_property === null) || ($this->m_property->getWikiPageValue() === null) ) return;
-		$values = smwfGetStore()->getPropertyValues($this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty('_UNIT'));
+		if ( ( $this->m_property === null ) || ( $this->m_property->getWikiPageValue() === null ) ) return;
+		$values = smwfGetStore()->getPropertyValues( $this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty( '_UNIT' ) );
 		$units = array();
-		foreach ($values as $value) { // Join all if many annotations exist. Discouraged (random order) but possible.
-			$units = $units + preg_split('/\s*,\s*/u',$value->getWikiValue());
+		foreach ( $values as $value ) { // Join all if many annotations exist. Discouraged (random order) but possible.
+			$units = $units + preg_split( '/\s*,\s*/u', $value->getWikiValue() );
 		}
-		foreach ($units as $unit) {
-			$unit = $this->normalizeUnit($unit);
-			if (array_key_exists($unit, $this->m_unitids)) {
+		foreach ( $units as $unit ) {
+			$unit = $this->normalizeUnit( $unit );
+			if ( array_key_exists( $unit, $this->m_unitids ) ) {
 				$this->m_displayunits[] = $unit; // avoid duplicates
 			} // note: we ignore unsuppported units, as they are printed anyway for lack of alternatives
 		}

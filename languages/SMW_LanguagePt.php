@@ -8,10 +8,10 @@
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
-if (!defined('MEDIAWIKI')) die();
+if ( !defined( 'MEDIAWIKI' ) ) die();
 
 global $smwgIP;
-include_once($smwgIP . '/languages/SMW_Language.php');
+include_once( $smwgIP . '/languages/SMW_Language.php' );
 
 /**
  * Portuguese language labels for important SMW labels (namespaces, datatypes,...).
@@ -47,7 +47,7 @@ protected $m_DatatypeAliases = array(
 );
 
 protected $m_SpecialProperties = array(
-	//always start upper-case
+	// always start upper-case
 	'_TYPE' => 'Tem o tipo',
 	'_URI'  => 'URI equivalente',
 	'_SUBP' => 'Sub-propriedade de',
@@ -75,11 +75,11 @@ protected $m_Namespaces = array(
 	SMW_NS_CONCEPT_TALK   => 'Discussão_conceito'
 );
 
-protected $m_dateformats = array(array(SMW_Y), array(SMW_MY,SMW_YM), array(SMW_MDY,SMW_DMY,SMW_YMD,SMW_YDM));
+protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
 
-protected $m_months = array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro");
+protected $m_months = array( "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" );
 
-protected $m_monthsshort = array("Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez");
+protected $m_monthsshort = array( "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez" );
 
 }
 

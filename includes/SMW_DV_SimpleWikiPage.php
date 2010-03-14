@@ -19,12 +19,12 @@
  */
 class SMWSimpleWikiPageValue extends SMWWikiPageValue {
 
-	protected function parseDBkeys($args) {
+	protected function parseDBkeys( $args ) {
 		$this->m_dbkeyform = $args[0];
 		$this->m_namespace = $this->m_fixNamespace;
 		$this->m_interwiki = '';
 		$this->m_sortkey   = $this->m_dbkeyform;
-		$this->m_textform = str_replace('_', ' ', $this->m_dbkeyform);
+		$this->m_textform = str_replace( '_', ' ', $this->m_dbkeyform );
 		$this->m_id = false;
 		$this->m_title = null;
 		$this->m_prefixedtext = false;
@@ -33,7 +33,7 @@ class SMWSimpleWikiPageValue extends SMWWikiPageValue {
 
 	public function getDBkeys() {
 		$this->unstub();
-		return array($this->m_dbkeyform);
+		return array( $this->m_dbkeyform );
 	}
 
 	public function getSignature() {

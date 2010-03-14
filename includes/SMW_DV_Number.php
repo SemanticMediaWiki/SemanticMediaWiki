@@ -36,134 +36,134 @@ class SMWNumberValue extends SMWDataValue {
 	protected $m_unitin; // if set, specifies the originally given input unit in a standard writing
 	protected $m_unitvalues; // array with entries unit=>value
 
-	protected function parseUserValue($value) {
+	protected function parseUserValue( $value ) {
 		$this->m_wikivalue = $value;
 		$this->m_unitin = false;
 		$this->m_unitvalues = false;
 
-		wfLoadExtensionMessages('SemanticMediaWiki');
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 
 		// Parse to find value and unit
-		$decseparator = wfMsgForContent('smw_decseparator');
-		$kiloseparator = wfMsgForContent('smw_kiloseparator');
+		$decseparator = wfMsgForContent( 'smw_decseparator' );
+		$kiloseparator = wfMsgForContent( 'smw_kiloseparator' );
 
-		$parts = preg_split('/([-+]?\s*\d+(?:\\' . $kiloseparator . '\d\d\d)*' .
+		$parts = preg_split( '/([-+]?\s*\d+(?:\\' . $kiloseparator . '\d\d\d)*' .
 		                      '(?:\\' . $decseparator . '\d+)?\s*(?:[eE][-+]?\d+)?)/u',
-		                      trim(str_replace(array('&nbsp;','&thinsp;', ' '), '', $value)),
-		                      2, PREG_SPLIT_DELIM_CAPTURE);
+		                      trim( str_replace( array( '&nbsp;', '&thinsp;', ' ' ), '', $value ) ),
+		                      2, PREG_SPLIT_DELIM_CAPTURE );
 
-		if (count($parts) >= 2) {
-			$numstring = str_replace($kiloseparator, '', preg_replace('/\s*/u', '', $parts[1])); // simplify
-			if ($decseparator != '.') {
-				$numstring = str_replace($decseparator, '.', $numstring);
+		if ( count( $parts ) >= 2 ) {
+			$numstring = str_replace( $kiloseparator, '', preg_replace( '/\s*/u', '', $parts[1] ) ); // simplify
+			if ( $decseparator != '.' ) {
+				$numstring = str_replace( $decseparator, '.', $numstring );
 			}
-			list($this->m_value) = sscanf($numstring, "%f");
+			list( $this->m_value ) = sscanf( $numstring, "%f" );
 		}
-		if (count($parts) >= 3) $this->m_unit = $this->normalizeUnit($parts[2]);
+		if ( count( $parts ) >= 3 ) $this->m_unit = $this->normalizeUnit( $parts[2] );
 
-		if ( (count($parts) == 1) || ($numstring == '') ) { // no number found
-			$this->addError(wfMsgForContent('smw_nofloat', $value));
-		} elseif (is_infinite($this->m_value)) {
-			 wfMsgForContent('smw_infinite', $value);
+		if ( ( count( $parts ) == 1 ) || ( $numstring == '' ) ) { // no number found
+			$this->addError( wfMsgForContent( 'smw_nofloat', $value ) );
+		} elseif ( is_infinite( $this->m_value ) ) {
+			 wfMsgForContent( 'smw_infinite', $value );
 		}
 
 		// Set caption
-		if ($this->m_caption === false) {
+		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
 		return true;
 	}
 
-	protected function parseDBkeys($args) {
+	protected function parseDBkeys( $args ) {
 		$this->m_value = $args[0];
-		$this->m_unit = array_key_exists(2,$args)?$args[2]:'';
+		$this->m_unit = array_key_exists( 2, $args ) ? $args[2]:'';
 		$this->m_caption = false;
 		$this->m_unitin = false;
 		$this->makeUserValue();
 		$this->m_unitvalues = false;
 	}
 
-	public function setOutputFormat($formatstring) {
+	public function setOutputFormat( $formatstring ) {
 		$oldformat = $this->m_outformat;
 		$this->m_outformat = $formatstring;
-		if ( ($formatstring != $oldformat) && $this->isValid() ) {
+		if ( ( $formatstring != $oldformat ) && $this->isValid() ) {
 			// recompute conversion if outputformat is changed after initialisation
-			$this->m_stubvalues = array($this->m_value, $this->m_value, $this->m_unit);
+			$this->m_stubvalues = array( $this->m_value, $this->m_value, $this->m_unit );
 		}
 	}
 
-	public function getShortWikiText($linked = null) {
+	public function getShortWikiText( $linked = null ) {
 		$this->unstub();
-		if (($linked === null) || ($linked === false) || ($this->m_outformat == '-') ) {
+		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) ) {
 			return $this->m_caption;
 		}
 		$this->makeConversionValues();
 		$tooltip = '';
 		$i = 0;
 		$sep = '';
-		foreach ($this->m_unitvalues as $unit => $value) {
+		foreach ( $this->m_unitvalues as $unit => $value ) {
 			if ( $unit != $this->m_unitin ) {
-				$tooltip .= $sep . smwfNumberFormat($value);
-				if ($unit != '') {
+				$tooltip .= $sep . smwfNumberFormat( $value );
+				if ( $unit != '' ) {
 					$tooltip .= '&nbsp;' . $unit;
 				}
 				$sep = ' <br />';
 				$i++;
-				if ($i >= 5) { // limit number of printouts in tooltip
+				if ( $i >= 5 ) { // limit number of printouts in tooltip
 					break;
 				}
 			}
 		}
-		if ($tooltip != '') {
-			SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
+		if ( $tooltip != '' ) {
+			SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
 			return '<span class="smwttinline">' . $this->m_caption . '<span class="smwttcontent">' . $tooltip . '</span></span>';
 		} else {
 			return $this->m_caption;
 		}
 	}
 
-	public function getShortHTMLText($linker = null) {
-		return $this->getShortWikiText($linker);
+	public function getShortHTMLText( $linker = null ) {
+		return $this->getShortWikiText( $linker );
 	}
 
-	public function getLongWikiText($linked = null) {
+	public function getLongWikiText( $linked = null ) {
 		$this->unstub();
-		if (!$this->isValid()) {
+		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		} else {
 			$this->makeConversionValues();
 			$result = '';
 			$i = 0;
-			foreach ($this->m_unitvalues as $unit => $value) {
-				if ($i == 1) {
+			foreach ( $this->m_unitvalues as $unit => $value ) {
+				if ( $i == 1 ) {
 					$result .= ' (';
-				} elseif ($i > 1) {
+				} elseif ( $i > 1 ) {
 					$result .= ', ';
 				}
-				$result .= ($this->m_outformat != '-'?smwfNumberFormat($value):$value);
-				if ($unit != '') {
+				$result .= ( $this->m_outformat != '-' ? smwfNumberFormat( $value ):$value );
+				if ( $unit != '' ) {
 					$result .= '&nbsp;' . $unit;
 				}
 				$i++;
-				if ($this->m_outformat == '-') { // no further conversions for plain output format
+				if ( $this->m_outformat == '-' ) { // no further conversions for plain output format
 					break;
 				}
 			}
-			if ($i > 1) {
+			if ( $i > 1 ) {
 				$result .= ')';
 			}
 			return $result;
 		}
 	}
 
-	public function getLongHTMLText($linker = null) {
-		return $this->getLongWikiText($linker);
+	public function getLongHTMLText( $linker = null ) {
+		return $this->getLongWikiText( $linker );
 	}
 
 	public function getDBkeys() {
 		$this->unstub();
 		$this->convertToMainUnit();
-		return array($this->m_value, floatval($this->m_value), $this->m_unit);
+		return array( $this->m_value, floatval( $this->m_value ), $this->m_unit );
 	}
 
 	public function getSignature() {
@@ -178,7 +178,7 @@ class SMWNumberValue extends SMWDataValue {
 		return 0;
 	}
 
-	public function getWikiValue(){
+	public function getWikiValue() {
 		$this->unstub();
 		return $this->m_wikivalue;
 	}
@@ -190,11 +190,11 @@ class SMWNumberValue extends SMWDataValue {
 
 	public function getHash() {
 		$this->unstub();
-		if ($this->isValid()) {
+		if ( $this->isValid() ) {
 			$this->convertToMainUnit();
 			return $this->m_value . $this->m_unit;
 		} else {
-			return implode("\t", $this->getErrors());
+			return implode( "\t", $this->getErrors() );
 		}
 	}
 
@@ -205,14 +205,14 @@ class SMWNumberValue extends SMWDataValue {
 		// $1: string of numerical value in English punctuation
 		// $2: string of integer version of value, in English punctuation
 		// $3: string of unit (if any)
-		return array((string)$this->m_value, (string)round($this->m_value), $this->m_unit);
+		return array( (string)$this->m_value, (string)round( $this->m_value ), $this->m_unit );
 	}
 
 	public function getExportData() {
 		$this->unstub();
-		if ($this->isValid()) {
-			$lit = new SMWExpLiteral($this->m_value, $this, 'http://www.w3.org/2001/XMLSchema#double');
-			return new SMWExpData($lit);
+		if ( $this->isValid() ) {
+			$lit = new SMWExpLiteral( $this->m_value, $this, 'http://www.w3.org/2001/XMLSchema#double' );
+			return new SMWExpData( $lit );
 		} else {
 			return null;
 		}
@@ -223,11 +223,11 @@ class SMWNumberValue extends SMWDataValue {
 	 * so that, e.g., "km²" and "km<sup>2</sup>" do not need to be
 	 * distinguished.
 	 */
-	protected function normalizeUnit($unit) {
-		$unit = str_replace(array('[[',']]'), '', trim($unit)); // allow simple links to be used inside annotations
-		$unit = str_replace(array('²','<sup>2</sup>'), '&sup2;', $unit);
-		$unit = str_replace(array('³','<sup>3</sup>'), '&sup3;', $unit);
-		return smwfXMLContentEncode($unit);
+	protected function normalizeUnit( $unit ) {
+		$unit = str_replace( array( '[[', ']]' ), '', trim( $unit ) ); // allow simple links to be used inside annotations
+		$unit = str_replace( array( '²', '<sup>2</sup>' ), '&sup2;', $unit );
+		$unit = str_replace( array( '³', '<sup>3</sup>' ), '&sup3;', $unit );
+		return smwfXMLContentEncode( $unit );
 	}
 
 	/**
@@ -259,7 +259,7 @@ class SMWNumberValue extends SMWDataValue {
 	 */
 	protected function makeConversionValues() {
 		$this->convertToMainUnit();
-		$this->m_unitvalues = array($this->m_unit => $this->m_value);
+		$this->m_unitvalues = array( $this->m_unit => $this->m_value );
 	}
 
 	/**
@@ -273,8 +273,8 @@ class SMWNumberValue extends SMWDataValue {
 	 */
 	protected function makeUserValue() {
 		$this->convertToMainUnit();
-		$this->m_caption = ($this->m_outformat != '-'?smwfNumberFormat($this->m_value):$this->m_value);
-		if ($this->m_unit != '') {
+		$this->m_caption = ( $this->m_outformat != '-' ? smwfNumberFormat( $this->m_value ):$this->m_value );
+		if ( $this->m_unit != '' ) {
 			$this->m_caption .= '&nbsp;' . $this->m_unit;
 		}
 		$this->m_wikivalue = $this->m_caption;

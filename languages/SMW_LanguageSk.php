@@ -8,10 +8,10 @@
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
-if (!defined('MEDIAWIKI')) die();
+if ( !defined( 'MEDIAWIKI' ) ) die();
 
 global $smwgIP;
-include_once($smwgIP . '/languages/SMW_Language.php');
+include_once( $smwgIP . '/languages/SMW_Language.php' );
 
 /**
  * Slovak language labels for important SMW labels (namespaces, datatypes,...).
@@ -46,7 +46,7 @@ protected $m_DatatypeAliases = array(
 );
 
 protected $m_SpecialProperties = array(
-	//always start upper-case
+	// always start upper-case
 	'_TYPE' => 'Má typ',
 	'_URI'  => 'Ekvivalent URI',
 	'_SUBP' => 'Subproperty of', // TODO: translate
@@ -55,7 +55,7 @@ protected $m_SpecialProperties = array(
 	'_IMPO' => 'Importovaný z',
 	'_CONV' => 'Zodpovedá',
 	'_SERV' => 'Poskytuje službu',
-	'_PVAL' => 'Allowed value',	//TODO translate
+	'_PVAL' => 'Allowed value',	// TODO translate
 	'_MDAT' => 'Modification date',  // TODO: translate
 	'_ERRP' => 'Has improper value for', // TODO: translate
 	'_LIST' => 'Has fields', // TODO: translate

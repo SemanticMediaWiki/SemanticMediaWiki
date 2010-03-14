@@ -8,10 +8,10 @@
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
-if (!defined('MEDIAWIKI')) die();
+if ( !defined( 'MEDIAWIKI' ) ) die();
 
 global $smwgIP;
-include_once($smwgIP . '/languages/SMW_Language.php');
+include_once( $smwgIP . '/languages/SMW_Language.php' );
 
 /**
  * Italian language labels for important SMW labels (namespaces, datatypes,...).
@@ -25,7 +25,7 @@ class SMWLanguageIt extends SMWLanguage {
 
 protected $m_DatatypeLabels = array(
 	'_wpg' => 'Pagina',  // name of page datatypee
-	'_str' => 'Stringa',  //name of the string type
+	'_str' => 'Stringa',  // name of the string type
 	'_txt' => 'Testo',   // name of the text type
 	'_cod' => 'Code',  // name of the (source) code type //TODO: translate
 	'_boo' => 'Booleano',  // name of the boolean type
@@ -46,20 +46,20 @@ protected $m_DatatypeAliases = array(
 	'Integer'     => '_num',
 	'Intero'      => '_num',
 	'Enumeration' => '_str',
-	'Enumerazione'=> '_str'
+	'Enumerazione' => '_str'
 );
 
 protected $m_SpecialProperties = array(
-	//always start upper-case
-	'_TYPE'  => 'Ha tipo', //'Has type',
-	'_URI'   => 'URI equivalente', //'Equivalent URI',
+	// always start upper-case
+	'_TYPE'  => 'Ha tipo', // 'Has type',
+	'_URI'   => 'URI equivalente', // 'Equivalent URI',
 	'_SUBP' => 'Sottopropriet&agrave; di', // 'Subproperty of',
 	'_SUBC' => 'Subcategory of', // TODO: translate
 	'_UNIT' => 'Visualizza unit&agrave;',
 	'_IMPO' => 'Importato da', // 'Imported from',
 	'_CONV' => 'Corrisponde a ', // 'Corresponds to',
 	'_SERV' => 'Fornisce servizio', // 'Provides service',
-	'_PVAL' => 'Ammette valore', //'Allows value'
+	'_PVAL' => 'Ammette valore', // 'Allows value'
 	'_MDAT' => 'Data di modifica',
 	'_ERRP' => 'Ha un valore improprio per',
 	'_LIST' => 'Has fields', // TODO: translate
@@ -78,8 +78,8 @@ protected $m_Namespaces = array( // TODO: translate (English aliases can be kept
 	SMW_NS_CONCEPT_TALK   => 'Discussione concetto'
 );
 
-protected $m_months = array("gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre");
+protected $m_months = array( "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre" );
 
-protected $m_monthsshort = array("gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic");
+protected $m_monthsshort = array( "gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic" );
 
 }

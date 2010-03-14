@@ -8,10 +8,10 @@
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
-if (!defined('MEDIAWIKI')) die();
+if ( !defined( 'MEDIAWIKI' ) ) die();
 
 global $smwgIP;
-include_once($smwgIP . '/languages/SMW_Language.php');
+include_once( $smwgIP . '/languages/SMW_Language.php' );
 
 
 /**
@@ -23,7 +23,7 @@ include_once($smwgIP . '/languages/SMW_Language.php');
  */
 class SMWLanguageEn extends SMWLanguage {
 
-protected $m_useEnDefaultAliases = false; //not needed for English, obviously
+protected $m_useEnDefaultAliases = false; // not needed for English, obviously
 
 protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype
@@ -47,11 +47,11 @@ protected $m_DatatypeAliases = array(
 	'Float'       => '_num',
 	'Integer'     => '_num',
 	'Enumeration' => '_str',
-	'Phone number'=> '_tel',
+	'Phone number' => '_tel',
 );
 
 protected $m_SpecialProperties = array(
-	//always start upper-case
+	// always start upper-case
 	'_TYPE' => 'Has type',
 	'_URI'  => 'Equivalent URI',
 	'_SUBP' => 'Subproperty of',
@@ -79,11 +79,11 @@ protected $m_Namespaces = array(
 	SMW_NS_CONCEPT_TALK   => 'Concept_talk'
 );
 
-protected $m_dateformats = array(array(SMW_Y), array(SMW_MY,SMW_YM), array(SMW_MDY,SMW_DMY,SMW_YMD,SMW_YDM));
+protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
 
-protected $m_months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+protected $m_months = array( "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" );
 
-protected $m_monthsshort = array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+protected $m_monthsshort = array( "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" );
 
 }
 

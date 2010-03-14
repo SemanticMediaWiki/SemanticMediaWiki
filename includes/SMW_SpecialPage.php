@@ -18,9 +18,9 @@ class SMWSpecialPage extends SpecialPage {
 	/**
 	 * Constructor
 	 */
-	public function __construct($name, $function, $file = 'default', $listed=true, $restriction='', $group='' /*depreciated*/) {
-		wfLoadExtensionMessages('SemanticMediaWiki');
-		parent::__construct($name, $restriction, $listed, $function, $file);
+	public function __construct( $name, $function, $file = 'default', $listed = true, $restriction = '', $group = '' /*depreciated*/ ) {
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		parent::__construct( $name, $restriction, $listed, $function, $file );
 	}
 
 }

@@ -31,7 +31,7 @@
  */
 class SMWOutputs {
 
-	/// Protected member function for temporarily storing header items
+	// / Protected member function for temporarily storing header items
 	static protected $mHeadItems = array();
 
 	/**
@@ -54,22 +54,22 @@ class SMWOutputs {
 	 * @param $item string containing a complete HTML-compatibly text snippet that
 	 * should go into the HTML header; only required if $id is no built-in constant.
 	 */
-	static public function requireHeadItem($id, $item = '') {
-		if (is_numeric($id)) {
+	static public function requireHeadItem( $id, $item = '' ) {
+		if ( is_numeric( $id ) ) {
 			global $smwgScriptPath;
-			switch ($id) {
+			switch ( $id ) {
 				case SMW_HEADER_TOOLTIP:
-					SMWOutputs::requireHeadItem(SMW_HEADER_STYLE);
+					SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
 					SMWOutputs::$mHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
 				return;
 				case SMW_HEADER_SORTTABLE:
-					SMWOutputs::requireHeadItem(SMW_HEADER_STYLE);
+					SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
 					SMWOutputs::$mHeadItems['smw_st'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
 				return;
 				case SMW_HEADER_STYLE:
 					global $wgContLang;
 					SMWOutputs::$mHeadItems['smw_css'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom.css" />';
-					if ($wgContLang->isRTL()) { // right-to-left support
+					if ( $wgContLang->isRTL() ) { // right-to-left support
 						SMWOutputs::$mHeadItems['smw_cssrtl'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom_rtl.css" />';
 					}
 				return;
@@ -92,7 +92,7 @@ class SMWOutputs {
 	 * MediaWiki, but there are cases where the output is discarded and only its text
 	 * is used.
 	 */
-	static public function requireFromParserOutput($parseroutput) {
+	static public function requireFromParserOutput( $parseroutput ) {
 		SMWOutputs::$mHeadItems = array_merge( (array)SMWOutputs::$mHeadItems, (array)$parseroutput->mHeadItems );
 	}
 
@@ -105,22 +105,22 @@ class SMWOutputs {
 	 * also become part of the page cache so that they will correctly be added to all page
 	 * outputs built from this cache later on.
 	 */
-	static public function commitToParser($parser) {
-		if (method_exists($parser,'getOutput')) {
+	static public function commitToParser( $parser ) {
+		if ( method_exists( $parser, 'getOutput' ) ) {
 			$po = $parser->getOutput();
 		} else {
 			$po = $parser->mOutput;
 		}
-		if (isset($po)) SMWOutputs::commitToParserOutput($po);
+		if ( isset( $po ) ) SMWOutputs::commitToParserOutput( $po );
 	}
 
 	/**
 	 * Similar to SMWOutputs::commitToParser() but acting on a ParserOutput object.
 	 */
-	static public function commitToParserOutput($parseroutput) {
-		//debug_zval_dump(SMWOutputs::$mItems);
-		foreach (SMWOutputs::$mHeadItems as $key => $item) {
-			$parseroutput->addHeadItem("\t\t" . $item . "\n", $key);
+	static public function commitToParserOutput( $parseroutput ) {
+		// debug_zval_dump(SMWOutputs::$mItems);
+		foreach ( SMWOutputs::$mHeadItems as $key => $item ) {
+			$parseroutput->addHeadItem( "\t\t" . $item . "\n", $key );
 		}
 		SMWOutputs::$mHeadItems = array();
 	}
@@ -133,9 +133,9 @@ class SMWOutputs {
 	 * that run during page parsing, since these would not run next time when the page
 	 * is produced from parser cache.
 	 */
-	static public function commitToOutputPage($output) {
-		foreach (SMWOutputs::$mHeadItems as $key => $item) {
-			$output->addHeadItem($key, "\t\t" . $item . "\n");
+	static public function commitToOutputPage( $output ) {
+		foreach ( SMWOutputs::$mHeadItems as $key => $item ) {
+			$output->addHeadItem( $key, "\t\t" . $item . "\n" );
 		}
 		SMWOutputs::$mHeadItems = array();
 	}

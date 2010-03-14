@@ -8,7 +8,7 @@
  * Protect against register_globals vulnerabilities.
  * This line must be present before any global variable is referenced.
  */
-if (!defined('MEDIAWIKI')) die();
+if ( !defined( 'MEDIAWIKI' ) ) die();
 global $wgHooks;
 $wgHooks[ 'SkinTemplateTabs' ][] = 'smwfAddRefreshTab'; // basic tab addition
 $wgHooks[ 'SkinTemplateNavigation' ][] = 'smwfAddStructuredRefreshTab'; // structured version for "Vector"-type skins
@@ -17,13 +17,13 @@ $wgHooks[ 'SkinTemplateNavigation' ][] = 'smwfAddStructuredRefreshTab'; // struc
  * Extends the provided array of content actions with an action that refreshes the article,
  * i.e. it purges the article from the cache and thus refreshes the inline queries.
  */
-function smwfAddRefreshTab($skin, &$content_actions) {
+function smwfAddRefreshTab( $skin, &$content_actions ) {
 	global $wgUser;
- 	if($wgUser->isAllowed('delete')){
-		wfLoadExtensionMessages('SemanticMediaWiki');
+ 	if ( $wgUser->isAllowed( 'delete' ) ) {
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$content_actions['purge'] = array(
 			'class' => false,
-			'text' => wfMsg('smw_purge'),
+			'text' => wfMsg( 'smw_purge' ),
 			'href' => $skin->mTitle->getLocalUrl( 'action=purge' )
 		);
  	}
@@ -34,9 +34,9 @@ function smwfAddRefreshTab($skin, &$content_actions) {
  * Adds the refresh action like smwfAddRefreshTab(), but places it into
  * the structure of actions as used in new "Vector"-type skins
  */
-function smwfAddStructuredRefreshTab($skin, &$links) {
+function smwfAddStructuredRefreshTab( $skin, &$links ) {
 	$actions = $links['actions'];
-	smwfAddRefreshTab($skin, $actions);
+	smwfAddRefreshTab( $skin, $actions );
 	$links['actions'] = $actions;
 	return true;
 }

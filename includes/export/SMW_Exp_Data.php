@@ -26,24 +26,24 @@ class SMWExpData {
 	 * Constructor. $subject is the SMWExpElement for the 
 	 * subject about which this SMWExpData is.
 	 */
-	public function __construct(SMWExpElement $subject) {
+	public function __construct( SMWExpElement $subject ) {
 		$this->m_subject = $subject;
 	}
 
 	/**
 	 * Turn an array of SMWElements into an RDF collection.
 	 */
-	public static function makeCollection($elements) {
-		if (count($elements) == 0) {
-			return new SMWExpData(SMWExporter::getSpecialElement('rdf', 'nil'));
+	public static function makeCollection( $elements ) {
+		if ( count( $elements ) == 0 ) {
+			return new SMWExpData( SMWExporter::getSpecialElement( 'rdf', 'nil' ) );
 		} else {
-			$rdftype  = SMWExporter::getSpecialElement('rdf', 'type');
-			$rdffirst = SMWExporter::getSpecialElement('rdf', 'first');
-			$rdfrest  = SMWExporter::getSpecialElement('rdf', 'rest');
-			$result = new SMWExpData(new SMWExpElement('')); // bnode
-			$result->addPropertyObjectValue($rdftype, new SMWExpData(SMWExporter::getSpecialElement('rdf', 'List')));
-			$result->addPropertyObjectValue($rdffirst, array_shift($elements));
-			$result->addPropertyObjectValue($rdfrest, SMWExpData::makeCollection($elements));
+			$rdftype  = SMWExporter::getSpecialElement( 'rdf', 'type' );
+			$rdffirst = SMWExporter::getSpecialElement( 'rdf', 'first' );
+			$rdfrest  = SMWExporter::getSpecialElement( 'rdf', 'rest' );
+			$result = new SMWExpData( new SMWExpElement( '' ) ); // bnode
+			$result->addPropertyObjectValue( $rdftype, new SMWExpData( SMWExporter::getSpecialElement( 'rdf', 'List' ) ) );
+			$result->addPropertyObjectValue( $rdffirst, array_shift( $elements ) );
+			$result->addPropertyObjectValue( $rdfrest, SMWExpData::makeCollection( $elements ) );
 			return $result;
 		}
 	}
@@ -58,7 +58,7 @@ class SMWExpData {
 	/**
 	 * Set the subject element.
 	 */
-	public function setSubject(SMWExpElement $subject) {
+	public function setSubject( SMWExpElement $subject ) {
 		$this->m_subject = $subject;
 	}
 
@@ -66,8 +66,8 @@ class SMWExpData {
 	 * Store a value for a property identified by its title object. No duplicate elimination as this
 	 * is usually done in SMWSemanticData already (which is typically used to generate this object)
 	 */
-	public function addPropertyObjectValue(SMWExpElement $property, SMWExpData $child) {
-		if (!array_key_exists($property->getName(), $this->m_edges)) {
+	public function addPropertyObjectValue( SMWExpElement $property, SMWExpData $child ) {
+		if ( !array_key_exists( $property->getName(), $this->m_edges ) ) {
 			$this->m_children[$property->getName()] = array();
 			$this->m_edges[$property->getName()] = $property;
 		}
@@ -84,8 +84,8 @@ class SMWExpData {
 	/**
 	 * Return the list of SMWExpData values associated to some property (element)
 	 */
-	public function getValues(/*SMWExpElement*/ $property) {
-		if (array_key_exists($property->getName(), $this->m_children)) {
+	public function getValues( /*SMWExpElement*/ $property ) {
+		if ( array_key_exists( $property->getName(), $this->m_children ) ) {
 			return $this->m_children[$property->getName()];
 		} else {
 			return array();
@@ -96,10 +96,10 @@ class SMWExpData {
 	 * Return the list of SMWExpData values associated to some property that is
 	 * specifed by a standard namespace id and local name.
 	 */
-	public function getSpecialValues($namespace, $localname) {
-		$pe = SMWExporter::getSpecialElement($namespace, $localname);
-		if ($pe !== null) {
-			return $this->getValues($pe);
+	public function getSpecialValues( $namespace, $localname ) {
+		$pe = SMWExporter::getSpecialElement( $namespace, $localname );
+		if ( $pe !== null ) {
+			return $this->getValues( $pe );
 		} else {
 			return array();
 		}
@@ -111,16 +111,16 @@ class SMWExpData {
 	 * removes the according type assignement from the data.
 	 */
 	public function extractMainType() {
-		$pe = SMWExporter::getSpecialElement('rdf', 'type');
-		if (array_key_exists($pe->getName(), $this->m_children)) {
-			$result = array_shift($this->m_children[$pe->getName()]);
-			if (count($this->m_children[$pe->getName()]) == 0) {
-				unset($this->m_edges[$pe->getName()]);
-				unset($this->m_children[$pe->getName()]);
+		$pe = SMWExporter::getSpecialElement( 'rdf', 'type' );
+		if ( array_key_exists( $pe->getName(), $this->m_children ) ) {
+			$result = array_shift( $this->m_children[$pe->getName()] );
+			if ( count( $this->m_children[$pe->getName()] ) == 0 ) {
+				unset( $this->m_edges[$pe->getName()] );
+				unset( $this->m_children[$pe->getName()] );
 			}
 			return $result->getSubject();
 		} else {
-			return SMWExporter::getSpecialElement('rdf', 'Resource');
+			return SMWExporter::getSpecialElement( 'rdf', 'Resource' );
 		}
 	}
 
@@ -130,39 +130,39 @@ class SMWExpData {
 	 * elements in the specified order. Otherwise return false.
 	 */
 	public function getCollection() {
-		$rdftype  = SMWExporter::getSpecialElement('rdf', 'type');
-		$rdffirst = SMWExporter::getSpecialElement('rdf', 'first');
-		$rdfrest  = SMWExporter::getSpecialElement('rdf', 'rest');
-		$rdfnil   = SMWExporter::getSpecialElement('rdf', 'nil');
+		$rdftype  = SMWExporter::getSpecialElement( 'rdf', 'type' );
+		$rdffirst = SMWExporter::getSpecialElement( 'rdf', 'first' );
+		$rdfrest  = SMWExporter::getSpecialElement( 'rdf', 'rest' );
+		$rdfnil   = SMWExporter::getSpecialElement( 'rdf', 'nil' );
 		$name = $this->getSubject()->getName();
 		// first check if we are basically an rdf List:
-		if ( ( ($name == '') || ($name{0} == '_') ) && //bnode
-		     (array_key_exists($rdftype->getName(), $this->m_children)) &&
-		     (count($this->m_children[$rdftype->getName()]) == 1) &&
-		     (array_key_exists($rdffirst->getName(), $this->m_children)) &&
-		     (count($this->m_children[$rdffirst->getName()]) == 1) &&
-		     (array_key_exists($rdfrest->getName(), $this->m_children)) &&
-		     !(end($this->m_children[$rdffirst->getName()]) instanceof SMWExpLiteral) &&
+		if ( ( ( $name == '' ) || ( $name { 0 } == '_' ) ) && // bnode
+		     ( array_key_exists( $rdftype->getName(), $this->m_children ) ) &&
+		     ( count( $this->m_children[$rdftype->getName()] ) == 1 ) &&
+		     ( array_key_exists( $rdffirst->getName(), $this->m_children ) ) &&
+		     ( count( $this->m_children[$rdffirst->getName()] ) == 1 ) &&
+		     ( array_key_exists( $rdfrest->getName(), $this->m_children ) ) &&
+		     !( end( $this->m_children[$rdffirst->getName()] ) instanceof SMWExpLiteral ) &&
 		     // (parseType collection in RDF not possible with literals :-/)
-		     (count($this->m_children[$rdfrest->getName()]) == 1) &&
-		     (count($this->m_children) == 3) ) {
-			$typedata = end($this->m_children[$rdftype->getName()]);
-			$rdflist = SMWExporter::getSpecialElement('rdf', 'List');
-			if ($typedata->getSubject()->getName() == $rdflist->getName()) {
-				$first = end($this->m_children[$rdffirst->getName()]);
-				$rest  = end($this->m_children[$rdfrest->getName()]);
+		     ( count( $this->m_children[$rdfrest->getName()] ) == 1 ) &&
+		     ( count( $this->m_children ) == 3 ) ) {
+			$typedata = end( $this->m_children[$rdftype->getName()] );
+			$rdflist = SMWExporter::getSpecialElement( 'rdf', 'List' );
+			if ( $typedata->getSubject()->getName() == $rdflist->getName() ) {
+				$first = end( $this->m_children[$rdffirst->getName()] );
+				$rest  = end( $this->m_children[$rdfrest->getName()] );
 				$restlist = $rest->getCollection();
-				if ($restlist === false) {
+				if ( $restlist === false ) {
 					return false;
 				} else {
-					array_unshift($restlist,$first);
+					array_unshift( $restlist, $first );
 					return $restlist;
 				}
 			} else {
 				return $false;
 			}
-		} elseif ( (!array_key_exists($rdftype->getName(),$this->m_children)) &&
-		           ($name == $rdfnil->getName()) ) {
+		} elseif ( ( !array_key_exists( $rdftype->getName(), $this->m_children ) ) &&
+		           ( $name == $rdfnil->getName() ) ) {
 			return array();
 		} else {
 			return false;
@@ -175,20 +175,20 @@ class SMWExpData {
 	 */
 	public function getTripleList() {
 		global $smwgBnodeCount;
-		if (!isset($smwgBnodeCount)) {
+		if ( !isset( $smwgBnodeCount ) ) {
 			$smwgBnodeCount = 0;
 		}
 		$result = array();
-		foreach ($this->m_edges as $key => $edge) {
-			foreach ($this->m_children[$key] as $child) {
+		foreach ( $this->m_edges as $key => $edge ) {
+			foreach ( $this->m_children[$key] as $child ) {
 				$name = $child->getSubject()->getName();
-				if ( ($name == '') || ($name[0] == '_') ) { // bnode, distribute ID
+				if ( ( $name == '' ) || ( $name[0] == '_' ) ) { // bnode, distribute ID
 					$child = clone $child;
-					$subject = new SMWExpElement('_' . $smwgBnodeCount++,$child->getSubject()->getDataValue());
-					$child->setSubject($subject);
+					$subject = new SMWExpElement( '_' . $smwgBnodeCount++, $child->getSubject()->getDataValue() );
+					$child->setSubject( $subject );
 				}
-				$result[] = array($this->m_subject, $edge, $child->getSubject());
-				$result = array_merge($result, $child->getTripleList()); //recursively generate all children of childs.
+				$result[] = array( $this->m_subject, $edge, $child->getSubject() );
+				$result = array_merge( $result, $child->getTripleList() ); // recursively generate all children of childs.
 			}
 		}
 		return $result;

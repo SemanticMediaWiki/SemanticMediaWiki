@@ -28,13 +28,13 @@
  * @ingroup SMWMaintenance
  */
 
-$optionsWithArgs = array( 'o', 'd', 'e', 'server');
+$optionsWithArgs = array( 'o', 'd', 'e', 'server' );
 
-require_once ( getenv('MW_INSTALL_PATH') !== false
-    ? getenv('MW_INSTALL_PATH')."/maintenance/commandLine.inc"
+require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
+    ? getenv( 'MW_INSTALL_PATH' ) . "/maintenance/commandLine.inc"
     : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 global $smwgIP, $wgServer;
-require_once( "$smwgIP/specials/Export/SMW_SpecialOWLExport.php");
+require_once( "$smwgIP/specials/Export/SMW_SpecialOWLExport.php" );
 
 if ( !empty( $options['o'] ) ) {
 	$outfile = $options['o'];
@@ -42,12 +42,12 @@ if ( !empty( $options['o'] ) ) {
 	$outfile = false;
 }
 if ( !empty( $options['d'] ) ) {
-	$delay = intval($options['d']) * 1000;
+	$delay = intval( $options['d'] ) * 1000;
 } else {
 	$delay = 0;
 }
 if ( !empty( $options['e'] ) ) {
-	$delayeach = intval($options['e']);
+	$delayeach = intval( $options['e'] );
 } else {
 	$delayeach = ( $delay === 0 ) ? 0 : 1;
 }
@@ -58,13 +58,13 @@ if ( array_key_exists( 'categories' , $options ) ) {
 } elseif ( array_key_exists( 'concepts' , $options ) ) {
 	$export_ns = SMW_NS_CONCEPT;
 } elseif ( array_key_exists( 'classes' , $options ) ) {
-	$export_ns = array(NS_CATEGORY, SMW_NS_CONCEPT);
+	$export_ns = array( NS_CATEGORY, SMW_NS_CONCEPT );
 } elseif ( array_key_exists( 'properties' , $options ) ) {
 	$export_ns = SMW_NS_PROPERTY;
 } elseif ( array_key_exists( 'types' , $options ) ) {
 	$export_ns = SMW_NS_TYPE;
 } elseif ( array_key_exists( 'individuals' , $options ) ) {
-	$export_ns = -1;
+	$export_ns = - 1;
 } else {
 	$export_ns = false;
 }
@@ -78,4 +78,4 @@ if ( $outfile && empty( $options['q'] ) ) {
 }
 
 $exRDF = new OWLExport();
-$exRDF->printAll($outfile, $export_ns, $delay, $delayeach);
+$exRDF->printAll( $outfile, $export_ns, $delay, $delayeach );

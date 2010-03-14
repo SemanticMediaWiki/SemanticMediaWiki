@@ -4,10 +4,10 @@
  * @ingroup SMWDataValues
  */
 
-define('SMW_URI_MODE_EMAIL',1);
-define('SMW_URI_MODE_URI',3);
-define('SMW_URI_MODE_ANNOURI',4);
-define('SMW_URI_MODE_TEL',5);
+define( 'SMW_URI_MODE_EMAIL', 1 );
+define( 'SMW_URI_MODE_URI', 3 );
+define( 'SMW_URI_MODE_ANNOURI', 4 );
+define( 'SMW_URI_MODE_TEL', 5 );
 
 /**
  * This datavalue implements URL/URI/ANNURI/PHONE/EMAIL-Datavalues suitable for defining
@@ -20,18 +20,18 @@ define('SMW_URI_MODE_TEL',5);
  */
 class SMWURIValue extends SMWDataValue {
 
-	/// Value; usually a human readable version of the URI (esp. "mailto:" might be ommitted)
+	// / Value; usually a human readable version of the URI (esp. "mailto:" might be ommitted)
 	private $m_value = '';
-	/// Only set if a link should be created in the wiki.
+	// / Only set if a link should be created in the wiki.
 	private $m_url = '';
-	/// Canonical URI for identifying the object
+	// / Canonical URI for identifying the object
 	private $m_uri = '';
-	/// Distinguish different modes (emails, URL, ...)
+	// / Distinguish different modes (emails, URL, ...)
 	private $m_mode = '';
 
-	public function SMWURIValue($typeid) {
-		SMWDataValue::__construct($typeid);
-		switch ($typeid) {
+	public function SMWURIValue( $typeid ) {
+		SMWDataValue::__construct( $typeid );
+		switch ( $typeid ) {
 			case '_ema':
 				$this->m_mode = SMW_URI_MODE_EMAIL;
 				break;
@@ -47,34 +47,34 @@ class SMWURIValue extends SMWDataValue {
 		}
 	}
 
-	protected function parseUserValue($value) {
-		wfLoadExtensionMessages('SemanticMediaWiki');
-		$value = trim($value);
+	protected function parseUserValue( $value ) {
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		$value = trim( $value );
 		$this->m_url = '';
 		$this->m_uri = '';
 		$this->m_value = $value;
-		if ($this->m_caption === false) {
+		if ( $this->m_caption === false ) {
 			$this->m_caption = $this->m_value;
 		}
-		if ($value!='') { //do not accept empty strings
-			switch ($this->m_mode) {
+		if ( $value != '' ) { // do not accept empty strings
+			switch ( $this->m_mode ) {
 				case SMW_URI_MODE_URI: case SMW_URI_MODE_ANNOURI:
-					$parts = explode(':', $value, 2); // try to split "schema:rest"
-					if (count($parts) == 1) { // take "http" as default
+					$parts = explode( ':', $value, 2 ); // try to split "schema:rest"
+					if ( count( $parts ) == 1 ) { // take "http" as default
 						$value = 'http://' . $value;
 						$parts[1] = $parts[0];
 						$parts[0] = 'http';
-					} elseif ( (count($parts) < 1) || ($parts[0] == '') || ($parts[1] == '') || (preg_match('/[^a-zA-Z]/u',$parts[0]) )) {
-						$this->addError(wfMsgForContent('smw_baduri', $value));
+					} elseif ( ( count( $parts ) < 1 ) || ( $parts[0] == '' ) || ( $parts[1] == '' ) || ( preg_match( '/[^a-zA-Z]/u', $parts[0] ) ) ) {
+						$this->addError( wfMsgForContent( 'smw_baduri', $value ) );
 						return true;
 					}
 
 					// check against blacklist
-					$uri_blacklist = explode("\n",wfMsgForContent('smw_uri_blacklist'));
-					foreach ($uri_blacklist as $uri) {
-						$uri = trim($uri);
-						if ($uri == mb_substr($value,0,mb_strlen($uri))) { //disallowed URI!
-							$this->addError(wfMsgForContent('smw_baduri', $uri));
+					$uri_blacklist = explode( "\n", wfMsgForContent( 'smw_uri_blacklist' ) );
+					foreach ( $uri_blacklist as $uri ) {
+						$uri = trim( $uri );
+						if ( $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) { // disallowed URI!
+							$this->addError( wfMsgForContent( 'smw_baduri', $uri ) );
 							return true;
 						}
 					}
@@ -84,7 +84,7 @@ class SMWURIValue extends SMWDataValue {
 // 						$this->addError(wfMsgForContent('smw_baduri', $value));
 // 						break;
 // 					}
-/// TODO: the remaining checks need improvement
+// / TODO: the remaining checks need improvement
 // 					// validate last part of URI (after #) if provided
 // 					$uri_ex = explode('#',$value);
 // 					$check2 = "@^[a-zA-Z0-9-_\%]+$@u"; ///FIXME: why only ascii symbols?
@@ -105,53 +105,53 @@ class SMWURIValue extends SMWDataValue {
 // 					}
 
 					// encode most characters, but leave special symbols as given by user:
-					$this->m_uri = str_replace(array('%3A','%2F','%23','%40','%3F','%3D','%26','%25'), array(':','/','#','@','?','=','&','%'),rawurlencode($value));
-					/// NOTE: we do not support raw [ (%5D) and ] (%5E), although they are needed for ldap:// (but rarely in a wiki)
-					/// NOTE: we do not check the validity of the use of the raw symbols -- does RFC 3986 as such care?
-					/// NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
-					///       this prevents tel: from working directly, but we should have a datatype for this anyway.
+					$this->m_uri = str_replace( array( '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ), array( ':', '/', '#', '@', '?', '=', '&', '%' ), rawurlencode( $value ) );
+					// / NOTE: we do not support raw [ (%5D) and ] (%5E), although they are needed for ldap:// (but rarely in a wiki)
+					// / NOTE: we do not check the validity of the use of the raw symbols -- does RFC 3986 as such care?
+					// / NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
+					// /       this prevents tel: from working directly, but we should have a datatype for this anyway.
 					global $wgUrlProtocols;
-					foreach ($wgUrlProtocols as $prot) { // only set URL if wiki-enabled protocol
-						if ( ($prot == $parts[0] . ':') || ($prot == $parts[0] . '://') ) {
+					foreach ( $wgUrlProtocols as $prot ) { // only set URL if wiki-enabled protocol
+						if ( ( $prot == $parts[0] . ':' ) || ( $prot == $parts[0] . '://' ) ) {
 							$this->m_url = $this->m_uri;
 							break;
 						}
 					}
 					break;
 				case SMW_URI_MODE_TEL:
-					if (substr($value, 0, 4) === 'tel:') {
-						$value = substr($value, 4);
+					if ( substr( $value, 0, 4 ) === 'tel:' ) {
+						$value = substr( $value, 4 );
 						$this->m_value = $value;
 					}
-					$value = preg_replace('/(?<=[0-9]) (?=[0-9])/', '\1-\2', $value);
-					$value = str_replace(' ', '', $value);
-					if (substr($value, 0, 2) == '00') {
-						$value = '+' . substr($value, 2);
+					$value = preg_replace( '/(?<=[0-9]) (?=[0-9])/', '\1-\2', $value );
+					$value = str_replace( ' ', '', $value );
+					if ( substr( $value, 0, 2 ) == '00' ) {
+						$value = '+' . substr( $value, 2 );
 					}
 					$value = 'tel:' . $value;
-					if ( (strlen(preg_replace('/[^0-9]/', '', $value)) < 6) ||
-						 (preg_match('<[-+./][-./]>', $value)) ||
-						 (!SMWURIValue::isValidTelURI($value)) ) { ///TODO: introduce error-message for "bad" phone number
-						 $this->addError(wfMsgForContent('smw_baduri', $this->m_value));
+					if ( ( strlen( preg_replace( '/[^0-9]/', '', $value ) ) < 6 ) ||
+						 ( preg_match( '<[-+./][-./]>', $value ) ) ||
+						 ( !SMWURIValue::isValidTelURI( $value ) ) ) { // /TODO: introduce error-message for "bad" phone number
+						 $this->addError( wfMsgForContent( 'smw_baduri', $this->m_value ) );
 					}
 					$this->m_uri = $value;
 					break;
 				case SMW_URI_MODE_EMAIL:
-					if (strpos($value,'mailto:') === 0) { // accept optional "mailto"
-						$value = substr($value, 7);
+					if ( strpos( $value, 'mailto:' ) === 0 ) { // accept optional "mailto"
+						$value = substr( $value, 7 );
 						$this->m_value = $value;
 					}
 					$check = "#^([_a-zA-Z0-9-]+)((\.[_a-zA-Z0-9-]+)*)@([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*)\.([a-zA-Z]{2,6})$#u";
-					if (!preg_match($check, $value)) {
-						///TODO: introduce error-message for "bad" email
-						$this->addError(wfMsgForContent('smw_baduri', $value));
+					if ( !preg_match( $check, $value ) ) {
+						// /TODO: introduce error-message for "bad" email
+						$this->addError( wfMsgForContent( 'smw_baduri', $value ) );
 						break;
 					}
-					$this->m_url = 'mailto:' . str_replace(array('%3A','%2F','%23','%40','%3F','%3D','%26','%25'), array(':','/','#','@','?','=','&','%'),rawurlencode($value));
+					$this->m_url = 'mailto:' . str_replace( array( '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ), array( ':', '/', '#', '@', '?', '=', '&', '%' ), rawurlencode( $value ) );
 					$this->m_uri = $this->m_url;
 			}
 		} else {
-			$this->addError(wfMsgForContent('smw_emptystring'));
+			$this->addError( wfMsgForContent( 'smw_emptystring' ) );
 		}
 
 		return true;
@@ -162,37 +162,37 @@ class SMWURIValue extends SMWDataValue {
 	 * Only global phone numbers are supported, and no full validation
 	 * of parameters (appended via ;param=value) is performed.
 	 */
-	protected static function isValidTelURI($s) {
+	protected static function isValidTelURI( $s ) {
 		$tel_uri_regex = '<^tel:\+[0-9./-]*[0-9][0-9./-]*(;[0-9a-zA-Z-]+=(%[0-9a-zA-Z][0-9a-zA-Z]|[0-9a-zA-Z._~:/?#[\]@!$&\'()*+,;=-])*)*$>';
-		return (bool) preg_match($tel_uri_regex, $s);
+		return (bool) preg_match( $tel_uri_regex, $s );
 	}
 
 
-	protected function parseDBkeys($args) {
+	protected function parseDBkeys( $args ) {
 		$this->m_uri = $args[0];
 		$this->m_value = $this->m_uri;
 		$this->m_caption = $this->m_value;
-		if ($this->m_mode == SMW_URI_MODE_EMAIL) {
+		if ( $this->m_mode == SMW_URI_MODE_EMAIL ) {
 			$this->m_url = $this->m_value;
-			if (strpos($this->m_uri,'mailto:') === 0) { // catch inconsistencies in DB, should usually be the case
-				$this->m_caption = substr($this->m_value, 7);
+			if ( strpos( $this->m_uri, 'mailto:' ) === 0 ) { // catch inconsistencies in DB, should usually be the case
+				$this->m_caption = substr( $this->m_value, 7 );
 				$this->m_value = $this->m_caption;
 			} else { // this case is only for backwards compatibility/repair; may vanish at some point
 				$this->m_uri = 'mailto:' . $this->m_value;
 				$this->m_url = $this->m_uri;
 			}
-		} elseif ($this->m_mode == SMW_URI_MODE_TEL) {
+		} elseif ( $this->m_mode == SMW_URI_MODE_TEL ) {
 			$this->m_url = '';
-			if (strpos($this->m_uri,'tel:') === 0) { // catch inconsistencies in DB, should usually be the case
-				$this->m_caption = substr($this->m_value, 4);
+			if ( strpos( $this->m_uri, 'tel:' ) === 0 ) { // catch inconsistencies in DB, should usually be the case
+				$this->m_caption = substr( $this->m_value, 4 );
 				$this->m_value = $this->m_caption;
 			}
 		} else {
-			$parts = explode(':', $this->m_uri, 2); // try to split "schema:rest"
+			$parts = explode( ':', $this->m_uri, 2 ); // try to split "schema:rest"
 			global $wgUrlProtocols;
 			$this->m_url = '';
-			foreach ($wgUrlProtocols as $prot) { // only set URL if wiki-enabled protocol
-				if ( ($prot == $parts[0] . ':') || ($prot == $parts[0] . '://') ) {
+			foreach ( $wgUrlProtocols as $prot ) { // only set URL if wiki-enabled protocol
+				if ( ( $prot == $parts[0] . ':' ) || ( $prot == $parts[0] . '://' ) ) {
 					$this->m_url = $this->m_uri;
 					break;
 				}
@@ -200,49 +200,49 @@ class SMWURIValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortWikiText($linked = null) {
+	public function getShortWikiText( $linked = null ) {
 		$this->unstub();
-		if ( ($linked === null) || ($linked === false) || ($this->m_outformat == '-') || ($this->m_url == '') || ($this->m_caption == '') ) {
+		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_url == '' ) || ( $this->m_caption == '' ) ) {
 			return $this->m_caption;
 		} else {
 			return '[' . $this->m_url . ' ' . $this->m_caption . ']';
 		}
 	}
 
-	public function getShortHTMLText($linker = null) {
+	public function getShortHTMLText( $linker = null ) {
 		$this->unstub();
-		if (($linker === null) || (!$this->isValid()) || ($this->m_outformat == '-') || ($this->m_url == '') || ($this->m_caption == '')) {
+		if ( ( $linker === null ) || ( !$this->isValid() ) || ( $this->m_outformat == '-' ) || ( $this->m_url == '' ) || ( $this->m_caption == '' ) ) {
 			return $this->m_caption;
 		} else {
-			return $linker->makeExternalLink($this->m_url, $this->m_caption);
+			return $linker->makeExternalLink( $this->m_url, $this->m_caption );
 		}
 	}
 
-	public function getLongWikiText($linked = null) {
-		if (!$this->isValid()) {
+	public function getLongWikiText( $linked = null ) {
+		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
-		if ( ($linked === null) || ($linked === false) || ($this->m_outformat == '-') || ($this->m_url == '') ) {
+		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_url == '' ) ) {
 			return $this->m_value;
 		} else {
 			return '[' . $this->m_url . ' ' . $this->m_value . ']';
 		}
 	}
 
-	public function getLongHTMLText($linker = null) {
-		if (!$this->isValid()) {
+	public function getLongHTMLText( $linker = null ) {
+		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		}
-		if (($linker === null) || ($this->m_outformat == '-') || ($this->m_url == '') ) {
-			return htmlspecialchars($this->m_value);
+		if ( ( $linker === null ) || ( $this->m_outformat == '-' ) || ( $this->m_url == '' ) ) {
+			return htmlspecialchars( $this->m_value );
 		} else {
-			return $linker->makeExternalLink($this->m_url, $this->m_value);
+			return $linker->makeExternalLink( $this->m_url, $this->m_value );
 		}
 	}
 
 	public function getDBkeys() {
 		$this->unstub();
-		return array($this->m_uri);
+		return array( $this->m_uri );
 	}
 
 	public function getSignature() {
@@ -257,7 +257,7 @@ class SMWURIValue extends SMWDataValue {
 		return 0;
 	}
 
-	public function getWikiValue(){
+	public function getWikiValue() {
 		$this->unstub();
 		return $this->m_value;
 	}
@@ -267,13 +267,13 @@ class SMWURIValue extends SMWDataValue {
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded version of URI/URL value (includes mailto: for emails)
-		return array(rawurlencode($this->m_uri));
+		return array( rawurlencode( $this->m_uri ) );
 	}
 
 	public function getExportData() {
-		if ($this->isValid()) {
-			$res = new SMWExpResource(str_replace('&','&amp;', $this->m_uri), $this);
-			return new SMWExpData($res);
+		if ( $this->isValid() ) {
+			$res = new SMWExpResource( str_replace( '&', '&amp;', $this->m_uri ), $this );
+			return new SMWExpData( $res );
 		} else {
 			return null;
 		}

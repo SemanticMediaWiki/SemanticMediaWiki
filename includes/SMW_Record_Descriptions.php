@@ -18,52 +18,52 @@
  */
 class SMWRecordDescription extends SMWConjunction {
 
-	public function getQueryString($asvalue = false) {
-		if (!$asvalue) return ''; // give up; SMWRecordDescriptions must always be values
+	public function getQueryString( $asvalue = false ) {
+		if ( !$asvalue ) return ''; // give up; SMWRecordDescriptions must always be values
 		$fields = array();
-		$maxpos = -1;
-		foreach ($this->m_descriptions as $desc) {
-			if ($desc instanceof SMWRecordFieldDescription) { // everything else would be a bug; ignore
-				$fields[$desc->getPosition()] = $desc->getDescription()->getQueryString(true);
-				if ($maxpos < $desc->getPosition()) $maxpos = $desc->getPosition();
+		$maxpos = - 1;
+		foreach ( $this->m_descriptions as $desc ) {
+			if ( $desc instanceof SMWRecordFieldDescription ) { // everything else would be a bug; ignore
+				$fields[$desc->getPosition()] = $desc->getDescription()->getQueryString( true );
+				if ( $maxpos < $desc->getPosition() ) $maxpos = $desc->getPosition();
 			}
 		}
-		if ($maxpos < 0) {
+		if ( $maxpos < 0 ) {
 			return '+';
 		} else {
 			$result = '';
-			for ($i=0; $i<=$maxpos; $i++) {
-				$result .= ($result != '' ? '; ' : '') . (array_key_exists($i,$fields) ? $fields[$i] : '?');
+			for ( $i = 0; $i <= $maxpos; $i++ ) {
+				$result .= ( $result != '' ? '; ' : '' ) . ( array_key_exists( $i, $fields ) ? $fields[$i] : '?' );
 			}
 			return $result;
 		}
 	}
 
-	public function prune(&$maxsize, &$maxdepth, &$log) {
-		if ($maxsize <= 0) {
+	public function prune( &$maxsize, &$maxdepth, &$log ) {
+		if ( $maxsize <= 0 ) {
 			$log[] = $this->getQueryString();
 			return new SMWThingDescription();
 		}
 		$prunelog = array();
 		$newdepth = $maxdepth;
 		$result = new SMWRecordDescription();
-		foreach ($this->m_descriptions as $desc) {
+		foreach ( $this->m_descriptions as $desc ) {
 			$restdepth = $maxdepth;
-			$result->addDescription($desc->prune($maxsize, $restdepth, $prunelog));
-			$newdepth = min($newdepth, $restdepth);
+			$result->addDescription( $desc->prune( $maxsize, $restdepth, $prunelog ) );
+			$newdepth = min( $newdepth, $restdepth );
 		}
-		if (count($result->getDescriptions()) > 0) {
-			$log = array_merge($log, $prunelog);
+		if ( count( $result->getDescriptions() ) > 0 ) {
+			$log = array_merge( $log, $prunelog );
 			$maxdepth = $newdepth;
-			if (count($result->getDescriptions()) == 1) { // simplify unary conjunctions!
-				$result = array_shift($result->getDescriptions());
+			if ( count( $result->getDescriptions() ) == 1 ) { // simplify unary conjunctions!
+				$result = array_shift( $result->getDescriptions() );
 			}
-			$result->setPrintRequests($this->getPrintRequests());
+			$result->setPrintRequests( $this->getPrintRequests() );
 			return $result;
 		} else {
 			$log[] = $this->getQueryString();
 			$result = new SMWThingDescription();
-			$result->setPrintRequests($this->getPrintRequests());
+			$result->setPrintRequests( $this->getPrintRequests() );
 			return $result;
 		}
 	}
@@ -72,8 +72,8 @@ class SMWRecordDescription extends SMWConjunction {
 class SMWRecordFieldDescription extends SMWSomeProperty {
 	protected $m_position;
 
-	public function __construct($position, SMWDescription $description) {
-		parent::__construct(SMWPropertyValue::makeProperty('_' . ($position+1)),$description);
+	public function __construct( $position, SMWDescription $description ) {
+		parent::__construct( SMWPropertyValue::makeProperty( '_' . ( $position + 1 ) ), $description );
 		$this->m_position = $position;
 	}
 
@@ -81,24 +81,24 @@ class SMWRecordFieldDescription extends SMWSomeProperty {
 		return $this->m_position;
 	}
 
-	public function getQueryString($asvalue = false) {
-		if (!$asvalue) return '';  // give up; SMWRecordFieldDescriptions must always be values
+	public function getQueryString( $asvalue = false ) {
+		if ( !$asvalue ) return '';  // give up; SMWRecordFieldDescriptions must always be values
 		$prefix = '';
-		for ($i=0; $i<$this->m_position; $i++) {
+		for ( $i = 0; $i < $this->m_position; $i++ ) {
 			$prefix .= '?; ';
 		}
-		return $prefix . $this->m_description->getQueryString(true);
+		return $prefix . $this->m_description->getQueryString( true );
 	}
 
-	public function prune(&$maxsize, &$maxdepth, &$log) {
-		if (($maxsize <= 0)||($maxdepth <= 0)) {
+	public function prune( &$maxsize, &$maxdepth, &$log ) {
+		if ( ( $maxsize <= 0 ) || ( $maxdepth <= 0 ) ) {
 			$log[] = $this->getQueryString();
 			return new SMWThingDescription();
 		}
 		$maxsize--;
 		$maxdepth--;
-		$result = new SMWRecordFieldDescription($this->m_position, $this->m_description->prune($maxsize,$maxdepth,$log));
-		$result->setPrintRequests($this->getPrintRequests());
+		$result = new SMWRecordFieldDescription( $this->m_position, $this->m_description->prune( $maxsize, $maxdepth, $log ) );
+		$result->setPrintRequests( $this->getPrintRequests() );
 		return $result;
 	}
 }

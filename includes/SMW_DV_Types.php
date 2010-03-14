@@ -21,57 +21,57 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 	private $m_isalias; // record whether this is an alias to another type, used to avoid duplicates when listing page types
 	protected $m_reallabel;
 
-	protected function parseUserValue($value) {
-		parent::parseUserValue($value);
-		$this->m_reallabel = SMWDataValueFactory::findTypeLabel(SMWDataValueFactory::findTypeID($this->m_textform));
-		$this->m_isalias = ($this->m_reallabel === $this->m_textform)?false:true;
+	protected function parseUserValue( $value ) {
+		parent::parseUserValue( $value );
+		$this->m_reallabel = SMWDataValueFactory::findTypeLabel( SMWDataValueFactory::findTypeID( $this->m_textform ) );
+		$this->m_isalias = ( $this->m_reallabel === $this->m_textform ) ? false:true;
 	}
 
-	protected function parseDBkeys($args) {
-		parent::parseDBkeys( array(str_replace(' ', '_', SMWDataValueFactory::findTypeLabel($args[0]))) );
+	protected function parseDBkeys( $args ) {
+		parent::parseDBkeys( array( str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $args[0] ) ) ) );
 		$this->m_reallabel = $this->m_textform;
 		$this->m_isalias = false;
 	}
 
-	public function getLongWikiText($linked = null) {
+	public function getLongWikiText( $linked = null ) {
 		$this->unstub();
-		if ( ($linked === null) || ($linked === false) ) {
+		if ( ( $linked === null ) || ( $linked === false ) ) {
 			return $this->m_reallabel;
 		} else {
 			global $wgContLang;
-			$typenamespace = $wgContLang->getNsText(SMW_NS_TYPE);
-			$id = SMWDataValueFactory::findTypeID($this->m_reallabel);
-			if ($id{0} == '_') { // builtin
-				wfLoadExtensionMessages('SemanticMediaWiki');
-				SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
-				return '<span class="smwttinline"><span class="smwbuiltin">[[' . $typenamespace . ':' . $this->m_reallabel . '|' . $this->m_reallabel . ']]</span><span class="smwttcontent">' . wfMsgForContent('smw_isknowntype') . '</span></span>';
+			$typenamespace = $wgContLang->getNsText( SMW_NS_TYPE );
+			$id = SMWDataValueFactory::findTypeID( $this->m_reallabel );
+			if ( $id { 0 } == '_' ) { // builtin
+				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
+				return '<span class="smwttinline"><span class="smwbuiltin">[[' . $typenamespace . ':' . $this->m_reallabel . '|' . $this->m_reallabel . ']]</span><span class="smwttcontent">' . wfMsgForContent( 'smw_isknowntype' ) . '</span></span>';
 			} else {
 				return '[[' . $typenamespace . ':' . $this->m_reallabel . '|' . $this->m_reallabel . ']]';
 			}
 		}
 	}
 
-	public function getLongHTMLText($linker = null) {
+	public function getLongHTMLText( $linker = null ) {
 		$this->unstub();
-		if ( ($linker === null) || ($linker === false) ) {
+		if ( ( $linker === null ) || ( $linker === false ) ) {
 			return $this->m_reallabel;
 		} else {
-			$title = $this->m_isalias ? Title::newFromText($this->m_reallabel, SMW_NS_TYPE) : $this->getTitle();
-			$id = SMWDataValueFactory::findTypeID($this->m_reallabel);
-			if ($id{0} == '_') { // builtin
-				wfLoadExtensionMessages('SemanticMediaWiki');
-				SMWOutputs::requireHeadItem(SMW_HEADER_TOOLTIP);
+			$title = $this->m_isalias ? Title::newFromText( $this->m_reallabel, SMW_NS_TYPE ) : $this->getTitle();
+			$id = SMWDataValueFactory::findTypeID( $this->m_reallabel );
+			if ( $id { 0 } == '_' ) { // builtin
+				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
 				return '<span class="smwttinline"><span class="smwbuiltin">' .
-				$linker->makeLinkObj( $title, $this->m_reallabel) . '</span><span class="smwttcontent">' .
-				wfMsgForContent('smw_isknowntype') . '</span></span>';
+				$linker->makeLinkObj( $title, $this->m_reallabel ) . '</span><span class="smwttcontent">' .
+				wfMsgForContent( 'smw_isknowntype' ) . '</span></span>';
 			} else {
-				return $linker->makeLinkObj( $title, $this->m_reallabel);
+				return $linker->makeLinkObj( $title, $this->m_reallabel );
 			}
 		}
 	}
 
 	public function getDBkeys() {
-		return ($this->isValid())?array($this->getDBkey()):array(false);
+		return ( $this->isValid() ) ? array( $this->getDBkey() ):array( false );
 	}
 
 	public function getSignature() {
@@ -87,18 +87,18 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 	}
 
 	public function getWikiValue() {
-		return implode('; ', $this->getTypeLabels());
+		return implode( '; ', $this->getTypeLabels() );
 	}
 
 	public function getHash() {
-		return implode("\t", $this->getTypeLabels());
+		return implode( "\t", $this->getTypeLabels() );
 	}
 
 	/**
 	 * This class uses type ids as DB keys.
 	 */
 	public function getDBkey() {
-		return ($this->isValid())?SMWDataValueFactory::findTypeID($this->m_reallabel):'';
+		return ( $this->isValid() ) ? SMWDataValueFactory::findTypeID( $this->m_reallabel ):'';
 	}
 
 	/**
@@ -107,7 +107,7 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 	 */
 	public function isBuiltIn() {
 		$v = $this->getDBkey();
-		return ( ($this->isUnary()) && ($v{0} == '_') );
+		return ( ( $this->isUnary() ) && ( $v { 0 } == '_' ) );
 	}
 
 	/**
@@ -124,7 +124,7 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 	 */
 	public function getTypeLabels() {
 		$this->unstub();
-		return array($this->m_reallabel);
+		return array( $this->m_reallabel );
 	}
 
 	/**
@@ -133,7 +133,7 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 	 */
 	public function getTypeCaptions() {
 		$this->unstub();
-		return array($this->m_textform);
+		return array( $this->m_textform );
 	}
 
 	/**
@@ -141,7 +141,7 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 	 * @deprecated This method is no longer meaningful and will vanish before SMW 1.6
 	 */
 	public function getTypeValues() {
-		return array($this);
+		return array( $this );
 	}
 
 	/**

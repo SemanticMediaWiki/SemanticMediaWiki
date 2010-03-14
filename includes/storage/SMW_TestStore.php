@@ -16,268 +16,268 @@
  */
 class SMWTestStore extends SMWStore {
 
-///// Reading methods /////
+// /// Reading methods /////
 
-	function getSemanticData($subject, $filter = false) {
+	function getSemanticData( $subject, $filter = false ) {
 		return null;
 	}
 
-	function getSpecialValues($subject, $specialprop, $requestoptions = null) {
+	function getSpecialValues( $subject, $specialprop, $requestoptions = null ) {
 		// TODO
-		if ($specialprop === SMW_SP_INSTANCE_OF) { // category membership
-			if ( ($requestoptions->limit == -1) || $requestoptions->limit > 8) {
+		if ( $specialprop === SMW_SP_INSTANCE_OF ) { // category membership
+			if ( ( $requestoptions->limit == - 1 ) || $requestoptions->limit > 8 ) {
 				$requestoptions->limit = 5;
 			}
-			return $this->getTestTitles($requestoptions, NS_CATEGORY);
-		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) {
+			return $this->getTestTitles( $requestoptions, NS_CATEGORY );
+		} elseif ( $specialprop === SMW_SP_REDIRECTS_TO ) {
 			return array(); // TODO: any better idea?
-		} elseif ($specialprop === SMW_SP_HAS_TYPE) {
+		} elseif ( $specialprop === SMW_SP_HAS_TYPE ) {
 			global $smwgContLang;
-			$name = mb_strtoupper($subject->getText());
-			if ( mb_substr_count($name,'INT') > 0 ) {
-				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'Integer'));
-			} elseif ( mb_substr_count($name,'FLOAT') > 0 ) {
-				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'Float'));
-			} elseif ( mb_substr_count($name,'DATE') > 0 ) {
-				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'Date'));
-			} elseif ( mb_substr_count($name,'COORD') > 0 ) {
-				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'Geographic coordinate'));
-			} elseif ( mb_substr_count($name,'ENUM') > 0 ) {
-				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'Enumeration'));
+			$name = mb_strtoupper( $subject->getText() );
+			if ( mb_substr_count( $name, 'INT' ) > 0 ) {
+				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Integer' ) );
+			} elseif ( mb_substr_count( $name, 'FLOAT' ) > 0 ) {
+				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Float' ) );
+			} elseif ( mb_substr_count( $name, 'DATE' ) > 0 ) {
+				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Date' ) );
+			} elseif ( mb_substr_count( $name, 'COORD' ) > 0 ) {
+				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Geographic coordinate' ) );
+			} elseif ( mb_substr_count( $name, 'ENUM' ) > 0 ) {
+				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Enumeration' ) );
 			} else {
-				return array(SMWDataValueFactory::newTypeIDValue('__typ', 'String'));
+				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'String' ) );
 			}
-		} elseif ($specialprop === SMW_SP_POSSIBLE_VALUE) {
-			return array('enum_val1', 'enum_val5', 'enum_val3', 'enum_val2', 'enum_val4');
+		} elseif ( $specialprop === SMW_SP_POSSIBLE_VALUE ) {
+			return array( 'enum_val1', 'enum_val5', 'enum_val3', 'enum_val2', 'enum_val4' );
 		} else {
 			return array();
 		}
 	}
 
-	function getSpecialSubjects($specialprop, SMWDataValue $value, $requestoptions = null) {
-		if ($specialprop === SMW_SP_INSTANCE_OF) { // category membership
-			if ( !($value instanceof Title) || ($value->getNamespace() != NS_CATEGORY) ) {
+	function getSpecialSubjects( $specialprop, SMWDataValue $value, $requestoptions = null ) {
+		if ( $specialprop === SMW_SP_INSTANCE_OF ) { // category membership
+			if ( !( $value instanceof Title ) || ( $value->getNamespace() != NS_CATEGORY ) ) {
 				return array();
 			}
-			return $this->getTestTitles($requestoptions);
-		} elseif ($specialprop === SMW_SP_REDIRECTS_TO) { // redirections
+			return $this->getTestTitles( $requestoptions );
+		} elseif ( $specialprop === SMW_SP_REDIRECTS_TO ) { // redirections
 			return array(); // TODO: any better idea?
-		} elseif ($specialprop === SMW_SP_HAS_TYPE) { // redirections
-			return $this->getTestTitles($requestoptions, SMW_NS_PROPERTY);
+		} elseif ( $specialprop === SMW_SP_HAS_TYPE ) { // redirections
+			return $this->getTestTitles( $requestoptions, SMW_NS_PROPERTY );
 		} else {
-			return $this->getTestTitles($requestoptions);
+			return $this->getTestTitles( $requestoptions );
 		}
 	}
 
-	function getPropertyValues($subject, SMWPropertyValue $property, $requestoptions = null, $outputformat = '') {
-		$type = $this->getSpecialValues($property,SMW_SP_HAS_TYPE);
+	function getPropertyValues( $subject, SMWPropertyValue $property, $requestoptions = null, $outputformat = '' ) {
+		$type = $this->getSpecialValues( $property, SMW_SP_HAS_TYPE );
 		$type = $type[0];
 		$valarray = array();
-		switch ($th->getID()) {
+		switch ( $th->getID() ) {
 			case 'int':
-				$valarray = array('10', '5000000000000','0','-1234','12','17','42');
+				$valarray = array( '10', '5000000000000', '0', '-1234', '12', '17', '42' );
 			break;
 			case 'float':
-				$valarray = array('1.23', '5.234e+30','-0.000001','4','12.1','17.1','42.1');
+				$valarray = array( '1.23', '5.234e+30', '-0.000001', '4', '12.1', '17.1', '42.1' );
 			break;
 			case 'datetime':
-				$valarray = array('2007-04-01', '2007-12-31T18:25:21');
+				$valarray = array( '2007-04-01', '2007-12-31T18:25:21' );
 			break;
 			case 'enum':
-				$valarray = array('enum_val1', 'enum_val3', 'enum_val2');
+				$valarray = array( 'enum_val1', 'enum_val3', 'enum_val2' );
 			break;
 			case 'geocoords':
-				$valarray = array('38&#176;1&#8242;12&#8243; N, 122&#176;1&#8242;1.2&#8243; W');
+				$valarray = array( '38&#176;1&#8242;12&#8243; N, 122&#176;1&#8242;1.2&#8243; W' );
 			break;
 			case 'string':
-				$valarray = array('Test', 'Some longer string','Üničode','Some [[markup]]','&lt;b&gt;Bug if bold!&lt;/b&gt;');
+				$valarray = array( 'Test', 'Some longer string', 'Üničode', 'Some [[markup]]', '&lt;b&gt;Bug if bold!&lt;/b&gt;' );
 			break;
 		}
 		$result = Array();
-		foreach ($valarray as $val) {
-			$dv = SMWDataValueFactory::newTypeObjectValue($type);
-			$dv->setAttribute($property->getText());
-			$dv->setDBkeys(array($val));
+		foreach ( $valarray as $val ) {
+			$dv = SMWDataValueFactory::newTypeObjectValue( $type );
+			$dv->setAttribute( $property->getText() );
+			$dv->setDBkeys( array( $val ) );
 			$result[] = $dv;
 		}
 		return $result;
 	}
 
-	function getPropertySubjects(SMWPropertyValue $property, $value, $requestoptions = null) {
+	function getPropertySubjects( SMWPropertyValue $property, $value, $requestoptions = null ) {
 		if ( !$value->isValid() ) {
 			return array();
 		}
-		return $this->getTestTitles($requestoptions);
+		return $this->getTestTitles( $requestoptions );
 	}
 
-	function getAllPropertySubjects(SMWPropertyValue $property, $requestoptions = null) {
-		return $this->getTestTitles($requestoptions);
+	function getAllPropertySubjects( SMWPropertyValue $property, $requestoptions = null ) {
+		return $this->getTestTitles( $requestoptions );
 	}
 
-	function getProperties($subject, $requestoptions = null) {
-		if ( ($requestoptions->limit == -1) || $requestoptions->limit > 8) {
+	function getProperties( $subject, $requestoptions = null ) {
+		if ( ( $requestoptions->limit == - 1 ) || $requestoptions->limit > 8 ) {
 			$requestoptions->limit = 8;
 		}
-		return $this->getTestTitles($requestoptions, SMW_NS_PROPERTY);
+		return $this->getTestTitles( $requestoptions, SMW_NS_PROPERTY );
 	}
 
-	function getInProperties(SMWDataValue $object, $requestoptions = null) {
-		return $this->getTestTitles($requestoptions, SMW_NS_PROPERTY);
+	function getInProperties( SMWDataValue $object, $requestoptions = null ) {
+		return $this->getTestTitles( $requestoptions, SMW_NS_PROPERTY );
 	}
 
-///// Writing methods /////
+// /// Writing methods /////
 
-	function deleteSubject(Title $subject) {
+	function deleteSubject( Title $subject ) {
 	}
 
-	function updateData(SMWSemanticData $data) {
+	function updateData( SMWSemanticData $data ) {
 	}
 
-	function changeTitle(Title $oldtitle, Title $newtitle, $pageid, $redirid=0) {
+	function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 	}
 
-///// Query answering /////
+// /// Query answering /////
 
-	function getQueryResult(SMWQuery $query) {
+	function getQueryResult( SMWQuery $query ) {
 		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deepder levels
 
 		// Here, the actual SQL query building and execution must happen. Loads of work.
 		// For testing purposes, we assume that the outcome is the following array of titles
 		// (the eventual query result format is quite certainly different)
-		$qr = array(Title::newFromText('Angola'), Title::newFromText('Namibia'));
+		$qr = array( Title::newFromText( 'Angola' ), Title::newFromText( 'Namibia' ) );
 
 		// create result by executing print statements for everything that was fetched
-		///TODO: use limit and offset values
-		$result = new SMWQueryResult($prs);
-		foreach ($qr as $qt) {
+		// /TODO: use limit and offset values
+		$result = new SMWQueryResult( $prs );
+		foreach ( $qr as $qt ) {
 			$row = array();
-			foreach ($prs as $pr) {
-				switch ($pr->getMode()) {
+			foreach ( $prs as $pr ) {
+				switch ( $pr->getMode() ) {
 					case SMWPrintRequest::PRINT_THIS:
-						$row[] = new SMWResultArray(array($qt), $pr);
+						$row[] = new SMWResultArray( array( $qt ), $pr );
 						break;
 					case SMWPrintRequest::PRINT_CATS:
-						$row[] = new SMWResultArray($this->getSpecialValues($qt,SMW_SP_INSTANCE_OF), $pr);
+						$row[] = new SMWResultArray( $this->getSpecialValues( $qt, SMW_SP_INSTANCE_OF ), $pr );
 						break;
 					case SMWPrintRequest::PRINT_PROP:
-						///TODO: respect given datavalue (desired unit), needs extension of getAttributeValues()
-						$row[] = new SMWResultArray($this->getAttributeValues($qt,$pr->getTitle()), $pr);
+						// /TODO: respect given datavalue (desired unit), needs extension of getAttributeValues()
+						$row[] = new SMWResultArray( $this->getAttributeValues( $qt, $pr->getTitle() ), $pr );
 						break;
 				}
 			}
-			$result->addRow($row);
+			$result->addRow( $row );
 		}
 
 		return $result;
 	}
 
-///// Special page functions /////
+// /// Special page functions /////
 
-	function getPropertiesSpecial($requestoptions = null) {
+	function getPropertiesSpecial( $requestoptions = null ) {
 		return array();
 	}
 
-	function getUnusedPropertiesSpecial($requestoptions = null) {
+	function getUnusedPropertiesSpecial( $requestoptions = null ) {
 		return array();
 	}
 
-	function getWantedPropertiesSpecial($requestoptions = null) {
+	function getWantedPropertiesSpecial( $requestoptions = null ) {
 		return array();
 	}
 
 	function getStatistics() {
-		return array('PROPUSES' => 0, 'USEDPROPS' => 0, 'DECLPROPS' => 0);
+		return array( 'PROPUSES' => 0, 'USEDPROPS' => 0, 'DECLPROPS' => 0 );
 	}
 
-///// Setup store /////
+// /// Setup store /////
 
-	function setup($verbose = true) {
+	function setup( $verbose = true ) {
 		return true;
 	}
 
-	function drop($verbose = true) {
+	function drop( $verbose = true ) {
 		return true;
 	}
 
-	function refreshData(&$index, $count, $namespaces = false, $usejobs = true) {
-		$index = -1;
+	function refreshData( &$index, $count, $namespaces = false, $usejobs = true ) {
+		$index = - 1;
 		return 1;
 	}
 
 
-///// Private methods /////
+// /// Private methods /////
 
 	/**
 	 * Return a set of titles as a (random) answer to some request,
 	 * but adhere to the given options (limit, sorting)
 	 */
-	private function getTestTitles($requestoptions, $namespace = -1) {
+	private function getTestTitles( $requestoptions, $namespace = - 1 ) {
 		$result = Array();
 		$initarray = Array();
-		if ($namespace == SMW_NS_PROPERTY) {
-			$initarray = array( 'Teststring','Testint','Testfloat','Testcoords','Testdate','Testenum');
+		if ( $namespace == SMW_NS_PROPERTY ) {
+			$initarray = array( 'Teststring', 'Testint', 'Testfloat', 'Testcoords', 'Testdate', 'Testenum' );
 		}
-		for ($i=0; $i<300; $i++) {
+		for ( $i = 0; $i < 300; $i++ ) {
 			global $wgContLang;
-			if ($namespace < 0) {
-				$ns = (($i%5)*2);
+			if ( $namespace < 0 ) {
+				$ns = ( ( $i % 5 ) * 2 );
 			} else {
 				$ns = $namespace;
 			}
 
-			if ($i < count($initarray)) {
+			if ( $i < count( $initarray ) ) {
 				$text = $initarray[$i];
 				$key = $initarray[$i];
 			} else {
-				$firstchar = chr(65+($i*17)%25);
+				$firstchar = chr( 65 + ( $i * 17 ) % 25 );
 				$key = $firstchar . $i;
-				if ($ns == 0) {
+				if ( $ns == 0 ) {
 					$text = $firstchar . $i . '_(Test)';
 				} else {
-					$text = $firstchar . $i . '_(Test' . $wgContLang->getNsText($ns) . ')';
+					$text = $firstchar . $i . '_(Test' . $wgContLang->getNsText( $ns ) . ')';
 				}
 			}
-			$result[$key] = Title::newFromText($text, $ns);
+			$result[$key] = Title::newFromText( $text, $ns );
 		}
 		// the order of applying the following is crucial:
-		if ($requestoptions !== null) {
-			if ($requestoptions->boundary !== null) {
+		if ( $requestoptions !== null ) {
+			if ( $requestoptions->boundary !== null ) {
 				$newresult = array();
-				foreach ($result as $key => $r) {
-					if ($requestoptions->ascending) {
-						if ($requestoptions->include_boundary) {
-							$ok = ($r->getText() >= $requestoptions->boundary);
+				foreach ( $result as $key => $r ) {
+					if ( $requestoptions->ascending ) {
+						if ( $requestoptions->include_boundary ) {
+							$ok = ( $r->getText() >= $requestoptions->boundary );
 						} else {
-							$ok = ($r->getText() > $requestoptions->boundary);
+							$ok = ( $r->getText() > $requestoptions->boundary );
 						}
 					} else {
-						if ($requestoptions->include_boundary) {
-							$ok = ($r->getText() <= $requestoptions->boundary);
+						if ( $requestoptions->include_boundary ) {
+							$ok = ( $r->getText() <= $requestoptions->boundary );
 						} else {
-							$ok = ($r->getText() < $requestoptions->boundary);
+							$ok = ( $r->getText() < $requestoptions->boundary );
 						}
 					}
-					if ($ok) {
+					if ( $ok ) {
 						$newresult[$key] = $r;
 					}
 				}
 				$result = $newresult;
 			}
-			if ($requestoptions->sort) {
-				if ($requestoptions->ascending) {
-					ksort($result);
+			if ( $requestoptions->sort ) {
+				if ( $requestoptions->ascending ) {
+					ksort( $result );
 				} else {
-					krsort($result);
+					krsort( $result );
 				}
 			}
-			if ($requestoptions->offset > 0) {
-				$result = array_slice($result, $requestoptions->offset);
+			if ( $requestoptions->offset > 0 ) {
+				$result = array_slice( $result, $requestoptions->offset );
 			}
-			if ($requestoptions->limit >= 0) {
-				$result = array_slice($result, 0, $requestoptions->limit);
+			if ( $requestoptions->limit >= 0 ) {
+				$result = array_slice( $result, 0, $requestoptions->limit );
 			}
 		}
-		return array_values($result);
+		return array_values( $result );
 	}
 
 	/**

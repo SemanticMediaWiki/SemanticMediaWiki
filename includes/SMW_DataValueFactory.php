@@ -21,11 +21,11 @@
  */
 class SMWDataValueFactory {
 
-	/// Array of type labels indexed by type ids. Used for datatype resolution.
+	// / Array of type labels indexed by type ids. Used for datatype resolution.
 	static private $m_typelabels;
-	/// Array of ids indexed by type aliases. Used for datatype resolution.
+	// / Array of ids indexed by type aliases. Used for datatype resolution.
 	static private $m_typealiases;
-	/// Array of class names for creating new SMWDataValues, indexed by type id.
+	// / Array of class names for creating new SMWDataValues, indexed by type id.
 	static private $m_typeclasses;
 
 	/**
@@ -37,13 +37,13 @@ class SMWDataValueFactory {
 	 * @param $caption user-defined caption or false if none given
 	 * @param $property SMWPropertyValue property object for which this value was made, or NULL
 	 */
-	static public function newTypeObjectValue(SMWTypesValue $typevalue, $value=false, $caption=false, $property=null) {
-		if (!$typevalue->isValid()) { // just return the error, pass it through
-			$result = SMWDataValueFactory::newTypeIDValue('__err');
-			$result->addError($typevalue->getErrors());
+	static public function newTypeObjectValue( SMWTypesValue $typevalue, $value = false, $caption = false, $property = null ) {
+		if ( !$typevalue->isValid() ) { // just return the error, pass it through
+			$result = SMWDataValueFactory::newTypeIDValue( '__err' );
+			$result->addError( $typevalue->getErrors() );
 			return $result;
 		}
-		return SMWDataValueFactory::newTypeIDValue($typevalue->getDBkey(),$value,$caption,$property);
+		return SMWDataValueFactory::newTypeIDValue( $typevalue->getDBkey(), $value, $caption, $property );
 	}
 
 	/**
@@ -54,18 +54,18 @@ class SMWDataValueFactory {
 	 * @param $caption user-defined caption or false if none given
 	 * @param $property SMWPropertyValue property object for which this value was made, or NULL
 	 */
-	static public function newTypeIDValue($typeid, $value=false, $caption=false, $property=null) {
+	static public function newTypeIDValue( $typeid, $value = false, $caption = false, $property = null ) {
 		SMWDataValueFactory::initDatatypes();
-		if (array_key_exists($typeid, SMWDataValueFactory::$m_typeclasses)) { // direct response for basic types
-			$result = new SMWDataValueFactory::$m_typeclasses[$typeid]($typeid);
-		} elseif (($typeid != '') && ($typeid{0} != '_')) { // custom type with linear conversion
-			$result = new SMWDataValueFactory::$m_typeclasses['__lin']($typeid);
+		if ( array_key_exists( $typeid, SMWDataValueFactory::$m_typeclasses ) ) { // direct response for basic types
+			$result = new SMWDataValueFactory::$m_typeclasses[$typeid]( $typeid );
+		} elseif ( ( $typeid != '' ) && ( $typeid { 0 } != '_' ) ) { // custom type with linear conversion
+			$result = new SMWDataValueFactory::$m_typeclasses['__lin']( $typeid );
 		} else { // type really unknown
-			wfLoadExtensionMessages('SemanticMediaWiki');
-			return new SMWErrorValue(wfMsgForContent('smw_unknowntype', $typeid), $value, $caption);
+			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			return new SMWErrorValue( wfMsgForContent( 'smw_unknowntype', $typeid ), $value, $caption );
 		}
-		if ($property !== null) $result->setProperty($property);
-		if ($value !== false) $result->setUserValue($value,$caption);
+		if ( $property !== null ) $result->setProperty( $property );
+		if ( $value !== false ) $result->setUserValue( $value, $caption );
 		return $result;
 	}
 
@@ -74,11 +74,11 @@ class SMWDataValueFactory {
 	 * object. If no value is given, an empty container is created, the value
 	 * of which can be set later on.
 	 */
-	static public function newPropertyObjectValue(SMWPropertyValue $property, $value=false, $caption=false) {
-		if ($property->isInverse()) {
-			return SMWDataValueFactory::newTypeIdValue('_wpg', $value, $caption, $property);
+	static public function newPropertyObjectValue( SMWPropertyValue $property, $value = false, $caption = false ) {
+		if ( $property->isInverse() ) {
+			return SMWDataValueFactory::newTypeIdValue( '_wpg', $value, $caption, $property );
 		} else {
-			return SMWDataValueFactory::newTypeIDValue($property->getPropertyTypeID(), $value, $caption, $property);
+			return SMWDataValueFactory::newTypeIDValue( $property->getPropertyTypeID(), $value, $caption, $property );
 		}
 	}
 
@@ -88,8 +88,8 @@ class SMWDataValueFactory {
 	 */
 	static protected function initDatatypes() {
 		global $smwgContLang;
-		if (is_array(SMWDataValueFactory::$m_typelabels)) {
-			return; //init happened before
+		if ( is_array( SMWDataValueFactory::$m_typelabels ) ) {
+			return; // init happened before
 		}
 		SMWDataValueFactory::$m_typelabels = $smwgContLang->getDatatypeLabels();
 		SMWDataValueFactory::$m_typealiases = $smwgContLang->getDatatypeAliases();
@@ -137,9 +137,9 @@ class SMWDataValueFactory {
 	 * A function for registering/overwriting datatypes for SMW. Should be
 	 * called from within the hook 'smwInitDatatypes'.
 	 */
-	static public function registerDatatype($id, $classname, $label=false) {
+	static public function registerDatatype( $id, $classname, $label = false ) {
 		SMWDataValueFactory::$m_typeclasses[$id] = $classname;
-		if ($label != false) {
+		if ( $label != false ) {
 			SMWDataValueFactory::$m_typelabels[$id] = $label;
 		}
 	}
@@ -150,7 +150,7 @@ class SMWDataValueFactory {
 	 * registerDatatype(). This function should be called from within the hook
 	 * 'smwInitDatatypes'.
 	 */
-	static public function registerDatatypeAlias($id, $label) {
+	static public function registerDatatypeAlias( $id, $label ) {
 		SMWDataValueFactory::$m_typealiases[$label] = $id;
 	}
 
@@ -164,15 +164,15 @@ class SMWDataValueFactory {
 	 * This method may or may not take aliases into account. For unknown
 	 * labels, the normalised (DB-version) label is used as an ID.
 	 */
-	static public function findTypeID($label, $useAlias = true) {
+	static public function findTypeID( $label, $useAlias = true ) {
 		SMWDataValueFactory::initDatatypes();
-		$id = array_search($label, SMWDataValueFactory::$m_typelabels);
-		if ($id !== false) {
+		$id = array_search( $label, SMWDataValueFactory::$m_typelabels );
+		if ( $id !== false ) {
 			return $id;
-		} elseif ( ($useAlias) && (array_key_exists($label, SMWDataValueFactory::$m_typealiases)) ) {
+		} elseif ( ( $useAlias ) && ( array_key_exists( $label, SMWDataValueFactory::$m_typealiases ) ) ) {
 			return SMWDataValueFactory::$m_typealiases[$label];
 		} else {
-			return str_replace(' ', '_', $label);
+			return str_replace( ' ', '_', $label );
 		}
 	}
 
@@ -181,18 +181,18 @@ class SMWDataValueFactory {
 	 * not have a label associated with it in the current language, the ID
 	 * itself is transformed into a label (appropriate for user defined types).
 	 */
-	static public function findTypeLabel($id) {
+	static public function findTypeLabel( $id ) {
 		SMWDataValueFactory::initDatatypes();
-		if ($id{0} === '_') {
-			if (array_key_exists($id, SMWDataValueFactory::$m_typelabels)) {
+		if ( $id { 0 } === '_' ) {
+			if ( array_key_exists( $id, SMWDataValueFactory::$m_typelabels ) ) {
 				return SMWDataValueFactory::$m_typelabels[$id];
-			} else { //internal type without translation to user space;
-			    //might also happen for historic types after an upgrade --
-			    //alas, we have no idea what the former label would have been
-				return str_replace('_', ' ', $id);
+			} else { // internal type without translation to user space;
+			    // might also happen for historic types after an upgrade --
+			    // alas, we have no idea what the former label would have been
+				return str_replace( '_', ' ', $id );
 			}
 		} else { // non-builtin type, use id as label
-			return str_replace('_', ' ', $id);
+			return str_replace( '_', ' ', $id );
 		}
 	}
 

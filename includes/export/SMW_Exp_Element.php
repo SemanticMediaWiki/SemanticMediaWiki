@@ -28,7 +28,7 @@ class SMWExpElement {
 	 * Constructor. $dv is the SMWDataValue from which this object was created,
 	 * if any.
 	 */
-	public function __construct($name, $dv = null) {
+	public function __construct( $name, $dv = null ) {
 		$this->m_name = $name;
 		$this->m_dv = $dv;
 	}
@@ -69,14 +69,14 @@ class SMWExpResource extends SMWExpElement {
 	 * be the local name and they are used to build a QName. Otherwise $name is
 	 * assumed to be the full URI.
 	 */
-	public function __construct($name, $dv = null, $namespace=false, $namespaceid=false) {
-		if ($namespace !== false) {
+	public function __construct( $name, $dv = null, $namespace = false, $namespaceid = false ) {
+		if ( $namespace !== false ) {
 			$this->m_namespace = $namespace;
 			$this->m_namespaceid = $namespaceid;
 			$this->m_localname = $name;
-			SMWExpElement::__construct($namespace . $name, $dv);
+			SMWExpElement::__construct( $namespace . $name, $dv );
 		} else {
-			SMWExpElement::__construct($name, $dv);
+			SMWExpElement::__construct( $name, $dv );
 		}
 	}
 
@@ -86,21 +86,21 @@ class SMWExpResource extends SMWExpElement {
 	 * creates such a variant based on a given string label (e.g. unit) and returns a stuitable
 	 * SMWExpResource.
 	 */
-	public function makeVariant($modifier) {
-		if ($this->m_namespace != false) {
-			$result = new SMWExpResource($this->m_localname . SMWExporter::encodeURI(urlencode(str_replace(' ', '_', '#' . $modifier))),
-			                             $this->m_dv, $this->m_namespace, $this->m_namespaceid);
+	public function makeVariant( $modifier ) {
+		if ( $this->m_namespace != false ) {
+			$result = new SMWExpResource( $this->m_localname . SMWExporter::encodeURI( urlencode( str_replace( ' ', '_', '#' . $modifier ) ) ),
+			                             $this->m_dv, $this->m_namespace, $this->m_namespaceid );
 		} else {
-			$result = new SMWExpResource($this->m_name . SMWExporter::encodeURI(urlencode(str_replace(' ', '_', '#' . $modifier))), $this->m_dv);
+			$result = new SMWExpResource( $this->m_name . SMWExporter::encodeURI( urlencode( str_replace( ' ', '_', '#' . $modifier ) ) ), $this->m_dv );
 		}
-		$result->setModifier($modifier);
+		$result->setModifier( $modifier );
 		return $result;
 	}
 
 	/**
 	 * See comment for SMWExpResource::m_modifier and SMWExpResource::makeVariant().
 	 */
-	public function setModifier($modifier) {
+	public function setModifier( $modifier ) {
 		$this->m_modifier = $modifier;
 	}
 
@@ -115,7 +115,7 @@ class SMWExpResource extends SMWExpElement {
 	 * Return a qualitifed name for the element, or false if no such name could be found.
 	 */
 	public function getQName() {
-		if ($this->m_namespace != false) {
+		if ( $this->m_namespace != false ) {
 			return $this->m_namespaceid . ':' . $this->m_localname;
 		} else {
 			return false;
@@ -161,9 +161,9 @@ class SMWExpLiteral extends SMWExpElement {
 	 * witout any escape sequences whatsoever. Note that it may be required to escape
 	 * some symbols in some contexts, especially <, >, & in XML and HTML.
 	 */
-	public function __construct($name, $dv = null, $datatype = false) {
+	public function __construct( $name, $dv = null, $datatype = false ) {
 		$this->m_datatype = $datatype;
-		SMWExpElement::__construct($name, $dv);
+		SMWExpElement::__construct( $name, $dv );
 	}
 
 	/**

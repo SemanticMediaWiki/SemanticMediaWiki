@@ -23,16 +23,16 @@
  * @ingroup SMWQuery
  */
 class SMWQueryResult {
-	/// Array of SMWWikiPageValue objects that are the basis for this result
+	// / Array of SMWWikiPageValue objects that are the basis for this result
 	protected $m_results;
-	/// Array of SMWPrintRequest objects, indexed by their natural hash keys
+	// / Array of SMWPrintRequest objects, indexed by their natural hash keys
 	protected $m_printrequests;
-	/// Are there more results than the ones given?
+	// / Are there more results than the ones given?
 	protected $m_furtherres;
-	/// The query object for which this is a result, must be set on create and is the source of
-	/// data needed to create further result links.
+	// / The query object for which this is a result, must be set on create and is the source of
+	// / data needed to create further result links.
 	protected $m_query;
-	/// The SMWStore object used to retrieve further data on demand.
+	// / The SMWStore object used to retrieve further data on demand.
 	protected $m_store;
 
 	/**
@@ -40,9 +40,9 @@ class SMWQueryResult {
 	 * define the structure of the result "table" (one for each column).
 	 * @todo Update documentation
 	 */
-	public function SMWQueryResult($printrequests, $query, $results, $store, $furtherres=false) {
+	public function SMWQueryResult( $printrequests, $query, $results, $store, $furtherres = false ) {
 		$this->m_results = $results;
-		reset($this->m_results);
+		reset( $this->m_results );
 		$this->m_printrequests = $printrequests;
 		$this->m_furtherres = $furtherres;
 		$this->m_query = $query;
@@ -54,12 +54,12 @@ class SMWQueryResult {
 	 * advance the internal pointer.
 	 */
 	public function getNext() {
-		$page = current($this->m_results);
-		next($this->m_results);
-		if ($page === false) return false;
+		$page = current( $this->m_results );
+		next( $this->m_results );
+		if ( $page === false ) return false;
 		$row = array();
-		foreach ($this->m_printrequests as $p) {
-			$row[] = new SMWResultArray($page, $p, $this->m_store);
+		foreach ( $this->m_printrequests as $p ) {
+			$row[] = new SMWResultArray( $page, $p, $this->m_store );
 		}
 		return $row;
 	}
@@ -68,7 +68,7 @@ class SMWQueryResult {
 	 * Return number of available results.
 	 */
 	public function getCount() {
-		return count($this->m_results);
+		return count( $this->m_results );
 	}
 
 	/**
@@ -84,7 +84,7 @@ class SMWQueryResult {
 	 * in this result set contains.
 	 */
 	public function getColumnCount() {
-		return count($this->m_printrequests);
+		return count( $this->m_printrequests );
 	}
 
 	/**
@@ -118,8 +118,8 @@ class SMWQueryResult {
 		return $this->m_query->getErrors();
 	}
 
-	public function addErrors($errors) {
-		$this->m_query->addErrors($errors);
+	public function addErrors( $errors ) {
+		$this->m_query->addErrors( $errors );
 	}
 
 	/**
@@ -129,12 +129,12 @@ class SMWQueryResult {
 	 * can also be changed afterwards with SMWInfolink::setCaption()). If empty, the
 	 * message 'smw_iq_moreresults' is used as a caption.
 	 */
-	public function getQueryLink($caption = false) {
-		$params = array(trim($this->m_query->getQueryString()));
-		foreach ($this->m_query->getExtraPrintouts() as $printout) {
+	public function getQueryLink( $caption = false ) {
+		$params = array( trim( $this->m_query->getQueryString() ) );
+		foreach ( $this->m_query->getExtraPrintouts() as $printout ) {
 			$params[] = $printout->getSerialisation();
 		}
-		if ( count($this->m_query->sortkeys)>0 ) {
+		if ( count( $this->m_query->sortkeys ) > 0 ) {
 			$psort  = '';
 			$porder = '';
 			$first = true;
@@ -148,16 +148,16 @@ class SMWQueryResult {
 				$psort .= $sortkey;
 				$porder .= $order;
 			}
-			if (($psort != '')||($porder != 'ASC')) { // do not mention default sort (main column, ascending)
+			if ( ( $psort != '' ) || ( $porder != 'ASC' ) ) { // do not mention default sort (main column, ascending)
 				$params['sort'] = $psort;
 				$params['order'] = $porder;
 			}
 		}
-		if ($caption == false) {
-			wfLoadExtensionMessages('SemanticMediaWiki');
-			$caption = ' ' . wfMsgForContent('smw_iq_moreresults'); // the space is right here, not in the QPs!
+		if ( $caption == false ) {
+			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			$caption = ' ' . wfMsgForContent( 'smw_iq_moreresults' ); // the space is right here, not in the QPs!
 		}
-		$result = SMWInfolink::newInternalLink($caption,':Special:Ask', false, $params);
+		$result = SMWInfolink::newInternalLink( $caption, ':Special:Ask', false, $params );
 		// Note: the initial : prevents SMW from reparsing :: in the query string
 		return $result;
 	}
@@ -179,7 +179,7 @@ class SMWResultArray {
 	static protected $catcacheobj = false;
 	static protected $catcache = false;
 
-	public function SMWResultArray(SMWWikiPageValue $resultpage, SMWPrintRequest $printrequest, SMWStore $store) {
+	public function SMWResultArray( SMWWikiPageValue $resultpage, SMWPrintRequest $printrequest, SMWStore $store ) {
 		$this->m_result = $resultpage;
 		$this->m_printrequest = $printrequest;
 		$this->m_store = $store;
@@ -217,8 +217,8 @@ class SMWResultArray {
 	 */
 	public function getNextObject() {
 		$this->loadContent();
-		$result = current($this->m_content);
-		next($this->m_content);
+		$result = current( $this->m_content );
+		next( $this->m_content );
 		return $result;
 	}
 
@@ -230,12 +230,12 @@ class SMWResultArray {
 	 * be some Linker object (or NULL for no linking). At some stage its
 	 * interpretation should be part of the generalised SMWDataValue.
 	 */
-	public function getNextText($outputmode, $linker = null) {
+	public function getNextText( $outputmode, $linker = null ) {
 		$object = $this->getNextObject();
-		if ($object instanceof SMWDataValue) { //print data values
-			return ( ($object->getTypeID() == '_wpg')||($object->getTypeID() == '__sin') )?  // prefer "long" text for page-values
-			       $object->getLongText($outputmode, $linker):
-				   $object->getShortText($outputmode, $linker);
+		if ( $object instanceof SMWDataValue ) { // print data values
+			return ( ( $object->getTypeID() == '_wpg' ) || ( $object->getTypeID() == '__sin' ) ) ?  // prefer "long" text for page-values
+			       $object->getLongText( $outputmode, $linker ):
+				   $object->getShortText( $outputmode, $linker );
 		} else {
 			return false;
 		}
@@ -246,64 +246,64 @@ class SMWResultArray {
 	 * done when needed.
 	 */
 	protected function loadContent() {
-		if ($this->m_content !== false) return;
-		wfProfileIn('SMWQueryResult::loadContent (SMW)');
-		switch ($this->m_printrequest->getMode()) {
-			case SMWPrintRequest::PRINT_THIS: ///NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
-				if ($this->m_printrequest->getOutputFormat()) {
+		if ( $this->m_content !== false ) return;
+		wfProfileIn( 'SMWQueryResult::loadContent (SMW)' );
+		switch ( $this->m_printrequest->getMode() ) {
+			case SMWPrintRequest::PRINT_THIS: // /NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
+				if ( $this->m_printrequest->getOutputFormat() ) {
 					$res = clone $this->m_result;
-					$res->setOutputFormat($this->m_printrequest->getOutputFormat());
+					$res->setOutputFormat( $this->m_printrequest->getOutputFormat() );
 				} else {
 					$res = $this->m_result;
 				}
-				$this->m_content = array($res);
+				$this->m_content = array( $res );
 			break;
 			case SMWPrintRequest::PRINT_CATS:
 				// Always recompute cache here to ensure output format is respected
-				SMWResultArray::$catcache = $this->m_store->getPropertyValues($this->m_result,SMWPropertyValue::makeProperty('_INST'), $this->getRequestOptions(false), $this->m_printrequest->getOutputFormat());
+				SMWResultArray::$catcache = $this->m_store->getPropertyValues( $this->m_result, SMWPropertyValue::makeProperty( '_INST' ), $this->getRequestOptions( false ), $this->m_printrequest->getOutputFormat() );
 				SMWResultArray::$catcacheobj = $this->m_result->getHash();
-				$limit = $this->m_printrequest->getParameter('limit');
-				$this->m_content = ($limit===false)?(SMWResultArray::$catcache):array_slice(SMWResultArray::$catcache,0,$limit);
+				$limit = $this->m_printrequest->getParameter( 'limit' );
+				$this->m_content = ( $limit === false ) ? ( SMWResultArray::$catcache ):array_slice( SMWResultArray::$catcache, 0, $limit );
 			break;
 			case SMWPrintRequest::PRINT_PROP:
-				$this->m_content = $this->m_store->getPropertyValues($this->m_result,$this->m_printrequest->getData(), $this->getRequestOptions(), $this->m_printrequest->getOutputFormat());
+				$this->m_content = $this->m_store->getPropertyValues( $this->m_result, $this->m_printrequest->getData(), $this->getRequestOptions(), $this->m_printrequest->getOutputFormat() );
 				// Print one component of a multi-valued string.
 				// Known limitation: the printrequest still is of type _rec, so if printers check
 				// for this then they will not recognize that it returns some more concrete type
-				if (($this->m_printrequest->getTypeID() == '_rec') && ($this->m_printrequest->getParameter('index') !== false)) {
-					$pos = $this->m_printrequest->getParameter('index')-1;
+				if ( ( $this->m_printrequest->getTypeID() == '_rec' ) && ( $this->m_printrequest->getParameter( 'index' ) !== false ) ) {
+					$pos = $this->m_printrequest->getParameter( 'index' ) - 1;
 					$newcontent = array();
-					foreach ($this->m_content as $listdv) {
+					foreach ( $this->m_content as $listdv ) {
 						$dvs = $listdv->getDVs();
-						if ( (array_key_exists($pos,$dvs)) && ($dvs[$pos] !== null) ) {
+						if ( ( array_key_exists( $pos, $dvs ) ) && ( $dvs[$pos] !== null ) ) {
 							$newcontent[] = $dvs[$pos];
 						}
 					}
 					$this->m_content = $newcontent;
 				}
 			break;
-			case SMWPrintRequest::PRINT_CCAT: ///NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
+			case SMWPrintRequest::PRINT_CCAT: // /NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
 				if ( SMWResultArray::$catcacheobj != $this->m_result->getHash() ) {
-					SMWResultArray::$catcache = $this->m_store->getPropertyValues($this->m_result,SMWPropertyValue::makeProperty('_INST'));
+					SMWResultArray::$catcache = $this->m_store->getPropertyValues( $this->m_result, SMWPropertyValue::makeProperty( '_INST' ) );
 					SMWResultArray::$catcacheobj = $this->m_result->getHash();
 				}
 				$found = '0';
 				$prkey = $this->m_printrequest->getData()->getDBkey();
-				foreach (SMWResultArray::$catcache as $cat) {
-					if ($cat->getDBkey() == $prkey) {
+				foreach ( SMWResultArray::$catcache as $cat ) {
+					if ( $cat->getDBkey() == $prkey ) {
 						$found = '1';
 						break;
 					}
 				}
-				$dv = SMWDataValueFactory::newTypeIDValue('_boo');
-				$dv->setOutputFormat($this->m_printrequest->getOutputFormat());
-				$dv->setDBkeys(array($found));
-				$this->m_content = array($dv);
+				$dv = SMWDataValueFactory::newTypeIDValue( '_boo' );
+				$dv->setOutputFormat( $this->m_printrequest->getOutputFormat() );
+				$dv->setDBkeys( array( $found ) );
+				$this->m_content = array( $dv );
 			break;
 			default: $this->m_content = array(); // unknown print request
 		}
-		reset($this->m_content);
-		wfProfileOut('SMWQueryResult::loadContent (SMW)');
+		reset( $this->m_content );
+		wfProfileOut( 'SMWQueryResult::loadContent (SMW)' );
 	}
 
 	/**
@@ -312,16 +312,16 @@ class SMWResultArray {
 	 * if the limit should be taken into account, which is not always desired
 	 * (especially if results are to be cached for future use).
 	 */
-	protected function getRequestOptions($uselimit=true) {
-		$limit = $uselimit?$this->m_printrequest->getParameter('limit'):false;
-		$order = trim($this->m_printrequest->getParameter('order'));
-		if ( ($limit !== false) || ($order != false) ) { // Important: use "!=" for order, since trim() above does never return "false", use "!==" for limit since "0" is meaningful here
+	protected function getRequestOptions( $uselimit = true ) {
+		$limit = $uselimit ? $this->m_printrequest->getParameter( 'limit' ):false;
+		$order = trim( $this->m_printrequest->getParameter( 'order' ) );
+		if ( ( $limit !== false ) || ( $order != false ) ) { // Important: use "!=" for order, since trim() above does never return "false", use "!==" for limit since "0" is meaningful here
 			$options = new SMWRequestOptions();
-			if ($limit !== false) $options->limit = trim($limit);
-			if ( ('descending' == $order) || ('reverse' == $order) || ('desc' == $order) ) {
+			if ( $limit !== false ) $options->limit = trim( $limit );
+			if ( ( 'descending' == $order ) || ( 'reverse' == $order ) || ( 'desc' == $order ) ) {
 				$options->sort = true;
 				$options->ascending = false;
-			} elseif ( ('ascending' == $order) || ('asc' == $order) ) {
+			} elseif ( ( 'ascending' == $order ) || ( 'asc' == $order ) ) {
 				$options->sort = true;
 				$options->ascending = true;
 			}
