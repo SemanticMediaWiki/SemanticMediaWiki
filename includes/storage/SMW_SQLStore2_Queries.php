@@ -464,9 +464,6 @@ class SMWSQLStore2QueryEngine {
 	 * the given property. If it is not possible to generate a query for the
 	 * given data, the query type is changed to SMW_SQL2_NOQUERY. Callers need
 	 * to check for this and discard the query in this case.
-	 * @todo Type-polymorphic properties are not taken into account yet. Needs
-	 * a getTypeID() function for descriptions that finds out if they apply to
-	 * wiki pages or to something else.
 	 * @todo Check if hierarchy queries work as expected.
 	 */
 	protected function compilePropertyCondition($query, $property, SMWDescription $valuedesc) {
