@@ -7518,6 +7518,7 @@ Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò
 	'smw_printername_table' => 'Tàula',
 	'smw_printername_broadtable' => 'Tàula estèisa',
 	'smw_printername_template' => 'Stamp',
+	'smw_paramdesc_limit' => "Ël màssim nùmer d'arzultà da artorné",
 );
 
 /** Pashto (پښتو)
