@@ -1256,6 +1256,8 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		$db->freeResult( $res );
 
+		wfRunHooks('smwRefreshDataJobs', array(&$updatejobs));
+
 		if ( $usejobs ) {
 			Job::batchInsert( $updatejobs );
 		} else {
