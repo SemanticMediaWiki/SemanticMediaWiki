@@ -40,7 +40,7 @@ class SMWTestStore extends SMWStore {
 				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Float' ) );
 			} elseif ( mb_substr_count( $name, 'DATE' ) > 0 ) {
 				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Date' ) );
-			} elseif ( mb_substr_count( $name, 'COORD' ) > 0 ) {
+			} elseif ( mb_substr_count( $name, 'COORD' ) > 0 ) { // TODO: Move this to Semantic Maps?
 				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Geographic coordinate' ) );
 			} elseif ( mb_substr_count( $name, 'ENUM' ) > 0 ) {
 				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Enumeration' ) );

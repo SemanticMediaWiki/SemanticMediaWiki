@@ -105,6 +105,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_nofloat'       => '"$1" is not a number.',
 	'smw_infinite'      => 'Numbers as large as "$1" are not supported.',
 	'smw_infinite_unit' => 'Conversion into unit "$1" resulted in a number that is too large.',
+	'smw_novalues'		=> 'No values specified.',
 
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this property supports no unit conversion',
 	'smw_unsupportedprefix' => 'Prefixes for numbers ("$1") are not supported.',

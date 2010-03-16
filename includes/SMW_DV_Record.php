@@ -25,8 +25,8 @@ class SMWRecordValue extends SMWContainerValue {
 	}
 
 	protected function parseUserValueOrQuery( $value, $querymode ) {
-		if ( $value == '' ) { // / TODO internalionalize
-			$this->addError( 'No values specified.' );
+		if ( $value == '' ) {
+			$this->addError( wfMsg( 'smw_novalues' ) );
 			return $querymode ? new SMWThingDescription():$this->m_data;
 		}
 
@@ -64,8 +64,8 @@ class SMWRecordValue extends SMWContainerValue {
 				}
 			}
 		}
-		if ( $empty ) { // / TODO internalionalize
-			$this->addError( 'No values specified.' );
+		if ( $empty ) {
+			$this->addError( wfMsg( 'smw_novalues' ) );
 		}
 		if ( $querymode ) {
 			return $empty ? new SMWThingDescription():new SMWRecordDescription( $subdescriptions );

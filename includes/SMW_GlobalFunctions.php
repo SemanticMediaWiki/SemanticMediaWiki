@@ -106,8 +106,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 
 	$wgHooks['ParserTestTables'][] = 'smwfOnParserTestTables';
 	$wgHooks['AdminLinks'][] = 'smwfAddToAdminLinks';
-	// this will move to Semantic Maps in future releases:
-	$wgHooks['smwGetSQLConditionForValue'][] = 'smwfGetGeoProximitySQLCondition';
 
 	// Register special pages aliases file
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . '/languages/SMW_Aliases.php';
@@ -329,28 +327,6 @@ function smwfShowBrowseLink( $skintemplate ) {
     	echo "<li id=\"t-smwbrowselink\">" . $browselink->getHTML() . "</li>";
     }
     return true;
-}
-
-/**
- * Custom SQL query extension for matching geographic coordinates.
- * This hook will be moved to Semantic Maps in the next release.
- * @todo Parsing latitude and longitude from the DB key of the coordinates
- * value is cleary not a good approach. Instead, the geographic coordinate
- * value object should provide functions to access this data directly.
- */
-function smwfGetGeoProximitySQLCondition( &$where, $description, $tablename, $fieldname, $dbs ) {
-	$where = '';
-	$dv = $description->getDatavalue();
-	if ( ( $dv->getTypeID() != '_geo' ) || ( !$dv->isValid() ) || ( $description->getComparator() != SMW_CMP_LIKE ) ) return true; // only act on certain query conditions
-	$keys = $dv->getDBkeys();
-	$geoarray = explode( ",", $keys[0] );
-	if ( ( count( $geoarray ) != 2 ) || ( $geoarray[0] == '' ) || ( $geoarray[1] == '' ) ) return true; // something went wrong
-	$latitude = $dbs->addQuotes( $geoarray[0] );
-	$longitude = $dbs->addQuotes( $geoarray[1] );
-	// compute distances in miles:
-	$distance = "ROUND(((ACOS( SIN({$latitude} * PI()/180 ) * SIN(SUBSTRING_INDEX({$tablename}.{$fieldname}, ',',1) * PI()/180 ) + COS({$latitude} * PI()/180 ) * COS(SUBSTRING_INDEX({$tablename}.{$fieldname}, ',',1) * PI()/180 ) * COS(({$longitude} - SUBSTRING_INDEX({$tablename}.{$fieldname}, ',',-1)) * PI()/180))*180/PI())*60*1.1515),6)";
-	$where = "{$distance} <= " . $dbs->addQuotes( "5" );
-	return true;
 }
 
 /**********************************************/
