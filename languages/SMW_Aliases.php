@@ -241,7 +241,7 @@ $aliases['km'] = array(
 	'Types' => array( 'ប្រភេទ' ),
 );
 
-/** Ripoarisch (Ripoarisch) */
+/** Colognian (Ripoarisch) */
 $aliases['ksh'] = array(
 	'Ask' => array( 'Froore' ),
 	'Browse' => array( 'Bläddere' ),
