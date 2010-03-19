@@ -168,6 +168,7 @@ class SMWTimeValue extends SMWDataValue {
 		// it's not a year, so treat it as a Julian day, but leave it as the caption and wikivalue.
 		if ( is_numeric( $value ) && $value >= 100000 ) {
 			$this->m_jd = $value;
+			$this->m_format = 3;
 			$this->JD2Date();
 			$this->fracToTime();
 			$this->m_wikivalue = $value;
