@@ -3234,6 +3234,7 @@ $messages['gl'] = array(
 	'smw_nofloat' => '“$1” non é un número.',
 	'smw_infinite' => 'Os números tan longos como "$1" non están soportados.',
 	'smw_infinite_unit' => 'A conversión na unidade "$1" deu como resultado un número que é demasiado grande.',
+	'smw_novalues' => 'Non se especificou ningún valor.',
 	'smw_unsupportedprefix' => 'Os prefixos para os números (“$1”) non están soportados.',
 	'smw_unsupportedunit' => 'Non está soportada a unidade de conversión para a unidade “$1”.',
 	'smw_nodatetime' => 'A data “$1” non foi entendida.',
@@ -7687,6 +7688,44 @@ It peule trové l'andament ëd la modìfica an sta pàgina special sì.",
 	'smw_smwadmin_updatenotstarted' => "A-i é già un process ëd modìfica an mente.
 Pa creane n'àutr.",
 	'smw_smwadmin_updatestopped' => 'Tùit ij process ëd modìfica esistent a son ëstàit fërmà.',
+	'smw_smwadmin_updatenotstopped' => "Për fërmé ël process ëd modìfica ch'a gira, it deuve ativé la casela për indiché ch'it ses pròpi sicur.",
+	'smw_smwadmin_docu' => 'Sta pàgina special sì at giuta an mente ëd l\'instalassion e l\'agiornament ëd <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Arcòrda ëd salvé ij dat ëd valor prima ëd fé funsion aministrative.',
+	'smw_smwadmin_db' => 'Anstalassion e agiornament dël database',
+	'smw_smwadmin_dbdocu' => "Semantic MediaWiki a l'ha dabzògn ëd cheiche estension al database MediaWiki për memorisé ij dat semàntich.
+La funsion sota a assicura che tò database a l'é ampostà da bin.
+Ij cambe fàit an cost pass-sì a toco pa ël rest dël database mediaWiki, e a l'é bel fé torné andré s'as veul.
+Sta funsion d'ampostassion-sì a peul esse fàita vàire vire sensa fé gnun dann, ma a-i n'a-i é dabzògn mach na vira për anstalassion o agiornament.",
+	'smw_smwadmin_permissionswarn' => "Se l'operassion a faliss con eror SQL, l'utent dël database dovrà da toa wiki (contròla tò LocalSettings.php) probabilment a l'ha pa basta përmess.
+Daje a sto utent sia përmess adissionaj për creé e scanselé tabele, temporaneament ansëriss ël login ëd l'utent root an  LocalSettings.php, sia dovra lë script ëd manteniment <tt>SMW_setup.php</tt> ch'a peul dovré le credensiaj d'AdminSettings.php.",
+	'smw_smwadmin_dbbutton' => 'Inissialisa o agiorna tabele',
+	'smw_smwadmin_announce' => 'Anonsia toa wiki',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki a l\'ha un web service për nonsié sit neuv ëd wiki semantica.
+Sòn sì a l\'é dovrà për manten-e na lista ëd sit pùblich che a dòvro Semantic MediaWiki, pi che àutr për giuté ël <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proget Semantic MediaWiki</a> a avèj na vision dj\'usagi tìpich ëd Semantic MediaWiki.
+Varda la pàgina ëd Semantic MediaWiki për <a href="http://semantic-mediawiki.org/wiki/Registry">àutre anformassion su sto servissi</a>.',
+	'smw_smwadmin_announcebutton' => "Sgnaca ël boton sota për mandé URL wiki a col sërvissi là.
+Ël sërvissi a registrerà pa wiki ch'a son pa acessìbij pùblicament, e a memoriserà mach anformassion acessìbij publicament.",
+	'smw_smwadmin_datarefresh' => 'Reparassion ëd dat e agiornament',
+	'smw_smwadmin_datarefreshdocu' => "A l'é possìbil ripristiné tùit ij dat Semantic MediaWiki basà dzora al contnù corent ëd la wiki.
+Sòn sì a peul esse ùtil për riparé dat rot o për rinfrësché dat se ël formà antern a l'é cangià për cheich agiornament software.
+La modìfica a l'é fàita pàgina për pàgina e a sarà pa completa sùbit.
+Lòn ch'a-i é sota a mosta se na modìfica a l'é an mente e at përmëtt ëd fé parte o fërmé le modìfiche (a men che sta possibilità a sia stàita disabilità da l'aministrador dël sit).",
+	'smw_smwadmin_datarefreshprogress' => "<strong>na modìfica a l'é già an mente.</strong>
+A l'é normal che la modìfica a von-a anans mach pian përchè a rinfrësca dat an cite partìe minca vira n'utent a intra ant la wiki.
+Për fé  finì sta modìfica pi an pressa, it peule ciamé lë script ëd manteniment MediaWiki <tt>runJobs.php</tt> (dòvra l'opsion <tt>--maxjobs 1000</tt> për strenze ël nùmer ëd modìfiche fàite ant un lòt).
+Avansament stimà dla modìfica corenta:",
+	'smw_smwadmin_datarefreshbutton' => 'Ancamin-a a agiorné ij dat',
+	'smw_smwadmin_datarefreshstop' => 'Ferma sto agiornament-sì',
+	'smw_smwadmin_datarefreshstopconfirm' => 'É!, i son sicur.',
+	'smw_smwadmin_support' => 'Pijé apògg',
+	'smw_smwadmin_supportdocu' => 'Vàire arzorse a peulo giutete an cas ëd problem:',
+	'smw_smwadmin_installfile' => 'S\'it treuve ëd problen con toa anstalassion, ancamin-a a controlé le linie guida ant ël <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL file</a>.',
+	'smw_smwadmin_smwhomepage' => 'La documentassion utent completa ëd Semantich WikiMedia a l\'é a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Eror a peulo esse arportà a <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => 'S\'it l\'as àutre custion o sugeriment, va a la discussion an dzora a <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum utent ëd Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'Strutura dat',
+	'smw_adminlinks_displayingdata' => 'Visualisé dat',
+	'smw_adminlinks_inlinequerieshelp' => 'Agiut an sle query an linia',
 );
 
 /** Pashto (پښتو)
