@@ -409,6 +409,15 @@ class SMWParserExtensions {
 				$date_str = "$cur_year-$cur_month-$cur_day $cur_time";
 				$cur_date = SMWDataValueFactory::newTypeIDValue( '_dat', $date_str );
 				$cur_date_jd = $cur_date->getValueKey();
+                       } elseif($unit == 'dayofweekinmonth') {
+				// e.g., "3rd Monday of every month"
+                               $check_month = $cur_date->getMonth();
+                               $cur_date_jd += 28 * $period;
+                               $cur_date = SMWDataValueFactory::newTypeIDValue('_dat', $cur_date_jd);
+                               if ($cur_date->getMonth() != (($check_month + $period) % 12 )){
+                                       $cur_date_jd += 7;      // add another week
+                                       $cur_date = SMWDataValueFactory::newTypeIDValue('_dat', $cur_date_jd);
+                               }
 			} else { // $unit == 'day' or 'week'
 				// assume 'day' if it's none of the above
 				$cur_date_jd += ( $unit === 'week' ) ? 7 * $period : $period;
