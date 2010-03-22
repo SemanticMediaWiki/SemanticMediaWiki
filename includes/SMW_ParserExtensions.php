@@ -403,10 +403,11 @@ class SMWParserExtensions {
 					$cur_year += $period;
 				} else { // $unit === 'month'
 					$cur_month += $period;
-					$cur_year += (int)( $cur_month / 12 );
+					$cur_year += (int)( ( $cur_month - 1 ) / 12 );
 					$cur_month %= 12;
+					$display_month = ( $cur_month == 0 ) ? 12 : $cur_month;
 				}
-				$date_str = "$cur_year-$cur_month-$cur_day $cur_time";
+				$date_str = "$cur_year-$display_month-$cur_day $cur_time";
 				$cur_date = SMWDataValueFactory::newTypeIDValue( '_dat', $date_str );
 				$cur_date_jd = $cur_date->getValueKey();
                        } elseif($unit == 'dayofweekinmonth') {
