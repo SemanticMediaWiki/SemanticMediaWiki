@@ -1823,6 +1823,7 @@ Falls sich das Problem nicht nach einiger Zeit von selbst erledigt, bitte Deinen
 	'smw_nofloat' => '„$1“ ist keine Zahl.',
 	'smw_infinite' => 'Die Zahl „$1“ ist zu lang.',
 	'smw_infinite_unit' => 'Die Umrechnung in Einheit „$1“ ist nicht möglich: die Zahl ist zu lang.',
+	'smw_novalues' => 'Es wurden keine Werte angegeben.',
 	'smw_unsupportedprefix' => 'Vorangestellte Zeichen bei Dezimalzahlen („$1“) werden nicht unterstützt.',
 	'smw_unsupportedunit' => 'Umrechnung der Einheit „$1“ nicht unterstützt.',
 	'smw_nodatetime' => 'Das Datum „$1“ wurde nicht verstanden.',
@@ -2072,6 +2073,7 @@ Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administ
 	'smw_nofloat' => '"$1" njejo licba.',
 	'smw_infinite' => 'Licby, kótarež su dłujke ako "$1", se njepódpěraju.',
 	'smw_infinite_unit' => 'Konwertěrowanje do jadnotki "$1" jo pśinjasło licbu, kótaraž jo pśedłujka.',
+	'smw_novalues' => 'Žedne gódnoty pódane',
 	'smw_unsupportedprefix' => 'Prefikse za licby ("$1") se njepodpěraju.',
 	'smw_unsupportedunit' => 'Konwertěrowanje jadnotki "$1" se njepódpěra.',
 	'smw_nodatetime' => 'Datum "$1" njejo se rozměł.',
@@ -2235,6 +2237,7 @@ Licony póstup aktualneje aktualizacije:',
 /** Greek (Ελληνικά)
  * @author Consta
  * @author Crazymadlover
+ * @author Lou
  * @author Omnipaedista
  * @author ZaDiak
  */
@@ -2260,6 +2263,7 @@ $messages['el'] = array(
 	'smw_printername_template' => 'Πρότυπο',
 	'smw_paramdesc_embedonly' => 'Μη εμφάνιση επικεφαλίδων',
 	'smw_iq_moreresults' => '... περισσότερα αποτελέσματα',
+	'smw_emptystring' => 'Κενές συμβολοσειρές δεν γίνονται δεκτές.',
 	'smw_true_words' => 'αλήθεια,α,ναι,ν',
 	'smw_false_words' => 'σφάλμα,σ,όχι,ο',
 	'smw_nofloat' => 'Το "$1" δεν είναι αριθμός',
@@ -4238,6 +4242,7 @@ Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminis
 	'smw_nofloat' => '„$1” nem egy szám.',
 	'smw_infinite' => 'Ilyen nagy számok („$1”) nem támogatottak.',
 	'smw_infinite_unit' => 'A(z) „$1” egységre konvertálás eredménye túl nagy szám.',
+	'smw_novalues' => 'Nincsenek megadva értékek.',
 	'smw_unsupportedprefix' => 'Előtagok számokhoz („$1”) nem támogatottak.',
 	'smw_unsupportedunit' => 'Egység konvertálás a(z) „$1” egységhez nem támogatott.',
 	'smw_nodatetime' => 'A(z) „$1” dátum nem értelmezhető.',
@@ -7607,125 +7612,125 @@ A génera RDF navigàbij.",
 	'smw_exportrdf_lastdate' => 'Espòrta pa pàgine che a son pa stàite cangià dal moment specificà.',
 	'smw_exportrdf_submit' => 'Esporté',
 	'properties' => 'Proprietà',
-	'smw_properties_docu' => 'Le proprietà sota a son dovrà ant la wiki.',
+	'smw_properties_docu' => 'Le proprietà sì-sota a son dovrà ant la wiki.',
 	'smw_property_template' => '$1 ëd tipo $2 ($3)',
 	'smw_propertylackspage' => 'Tute le proprietà a dovrìo esse descrivùe da na pàgina!',
-	'smw_propertylackstype' => "Pa gnun tipo a son ëstàit specificà për sta proprietà-sì (a s'assum tipo $1 për adess).",
-	'smw_propertyhardlyused' => "Sta proprietà-sì a l'é dovrà fòrt ant la wiki!",
+	'smw_propertylackstype' => "Gnun tipo a l'é stàit specificà për sta proprietà-sì (as fa cont ch'a sia ëd tipo $1, për adess).",
+	'smw_propertyhardlyused' => "Sta proprietà-sì a l'é dovrà apen-a ant la wiki!",
 	'unusedproperties' => 'Proprietà pa dovrà',
-	'smw_unusedproperties_docu' => 'Le proprietà sota a esisto ëdcò se pa gnun-e àutre pàgine a fan usagi ëd lor.',
+	'smw_unusedproperties_docu' => 'Le proprietà sì-sota a esisto, bele che gnun-e àutre pàgine a-j deuvro.',
 	'smw_unusedproperty_template' => '$1 ëd tipo $2',
 	'wantedproperties' => 'Proprietà vorsùe',
-	'smw_wantedproperties_docu' => "Le proprietà sota a son dovrà ant la wiki ma a l'han ancó pa na pàgina për dëscrivje.",
+	'smw_wantedproperties_docu' => "Le proprietà sì-sota a son dovrà ant la wiki ma a l'han ancó pa na pàgina për descrivje.",
 	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|usagi|usagi}})',
-	'tooltip-purge' => 'Sgnaca sì për rinfrësché tute le query e stamp su sta pàgina-sì',
+	'tooltip-purge' => "Sgnaché ambelessì për rinfresché tute j'arceste e jë stamp dë sta pàgina-sì",
 	'smw_purge' => 'Rinfrësca',
 	'types' => 'Tipo',
-	'smw_types_docu' => "Cola sota a l'é na lista ëd tùit ij tipo dat che a peulo esse assignà a la proprietà.
-Minca tipo dat a l'ha na pàgina andoa anformassion adissionaj a peulo esse dàite.",
-	'smw_typeunits' => 'Unità ëd misura dël tipo "$1": $2',
+	'smw_types_docu' => "Cola sì-sota a l'é na lista ëd tùit ij tipo ëd dat che a peulo esse assignà a la proprietà.
+Minca tipo ëd dat a l'ha na pàgina andoa d'anformassion adissionaj a peulo esse smonùe.",
+	'smw_typeunits' => 'Unità dë mzura dël tipo "$1": $2',
 	'semanticstatistics' => 'Statìstiche semàntiche',
 	'smw_semstats_text' => "Sta wiki-sì a conten '''$1''' {{PLURAL:$1|valor|valor}} ëd proprietà për un total ëd '''$2''' [[Special:Properties|{{PLURAL:$2|proprietà|proprietà diferente}}]].
-'''$3''' {{PLURAL:$3|proprietà a l'ha|proprietà a l'han}} na soa pàgina, e ël tipo ëd dat a l'é specificà pëd '''$4''' ëd lor.
+'''$3''' {{PLURAL:$3|proprietà a l'ha|proprietà a l'han}} na soa pàgina, e ël tipo ëd dat a l'é specificà për '''$4''' ëd lor.
 Cheidun-e dle proprietà esistente a peulo esse [[Special:UnusedProperties|proprietà pa dovrà]].
-Proprietà che a l'han pa ancó na pàgina a peulo esse trovà an dzora a la [[Special:WantedProperties|lista dle proprietà vorsùe]].",
+Proprietà che a l'han pa ancó na pàgina a peulo esse trovà dzora a la [[Special:WantedProperties|lista dle proprietà vorsùe]].",
 	'uriresolver' => "Arzolvidor d'URI",
-	'smw_uri_doc' => "L'arzolvidor d'URI a amplementa la <a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">W3C TAG finding on httpRange-14</a>.
-A fa an manera che j'uman a ven-a pa sit ëd la Ragnà.",
+	'smw_uri_doc' => "L'arzolvidor d'URI a realisa la <a href=\"http://www.w3.org/2001/tag/issues.html#httpRange-14\">W3C TAG finding on httpRange-14</a>.
+A fa an manera che j'uman a dvento pa ëd sit ëd la Ragnà.",
 	'ask' => 'Arserca semàntica',
-	'smw_ask_sortby' => 'Órdina për colona (opsional)',
+	'smw_ask_sortby' => 'Órdina për colòna (opsional)',
 	'smw_ask_ascorder' => 'Chërsent',
 	'smw_ask_descorder' => 'Calant',
-	'smw_ask_submit' => 'Treuva arzultà',
-	'smw_ask_editquery' => '[Modìfica query]',
+	'smw_ask_submit' => "Trové d'arzultà",
+	'smw_ask_editquery' => "[Modifiché l'arcesta]",
 	'smw_add_sortcondition' => "[Gionta condission d'órdin]",
-	'smw_ask_hidequery' => 'Stërma query',
-	'smw_ask_help' => 'Agiut an sle query',
+	'smw_ask_hidequery' => "Stërmé l'arcesta",
+	'smw_ask_help' => "Agiut an sj'arceste",
 	'smw_ask_queryhead' => 'Anterogassion',
-	'smw_ask_printhead' => 'Dat adissionaj da mosté',
+	'smw_ask_printhead' => 'Dat adissionaj da smon-e',
 	'smw_ask_printdesc' => '(gionta un nòm ëd proprietà për linia);',
-	'smw_ask_format_as' => 'Formata com:',
-	'smw_ask_defaultformat' => 'default',
+	'smw_ask_format_as' => 'Ampaginé com:',
+	'smw_ask_defaultformat' => 'stàndard',
 	'smw_ask_otheroptions' => 'Àutre opsion',
-	'smw_ask_show_embed' => 'Mosta còdes antern',
-	'smw_ask_hide_embed' => 'Stërma còdes antern',
-	'smw_ask_embed_instr' => 'Për anclude sta query-sì an linia ant un-a pàgina wiki dòvra ël còdes sota.',
+	'smw_ask_show_embed' => 'Smon-e ël còdes antern',
+	'smw_ask_hide_embed' => 'Stërmé ël còdes antern',
+	'smw_ask_embed_instr' => "Për anclude costa anterogassion an linia ant na pàgina wiki, ch'a deuvra ël còdes sì-sota.",
 	'searchbyproperty' => 'Serca për proprietà',
 	'smw_sbv_docu' => "Serca për tute le pàgine che a l'han proprietà e valor dàit.",
-	'smw_sbv_novalue' => 'Ansëriss un valor bon për la proprietà, o varda tùit ij valor ëd proprietà për "$1".',
+	'smw_sbv_novalue' => 'Ch\'a anserissa un valor bon për la proprietà, o ch\'a varda tùit ij valor ëd le proprietà për "$1".',
 	'smw_sbv_displayresult' => 'Na lista ëd tute le pàgine che a l\'han la proprietà "$1" con valor "$2"',
 	'smw_sbv_displayresultfuzzy' => 'Na lista ëd tute le pàgine che a l\'han la proprietà "$1" con valor "$2".
-Da già ch\'a l\'é stàit-ie mach pòchi arzultà, a son mostà ëdcò ij valor vzin.',
+Dagià ch\'a-i son ëstàje mach pòchi arzultà, a son smonù ëdcò ij valor davzin.',
 	'smw_sbv_property' => 'Propietà:',
 	'smw_sbv_value' => 'Valor:',
-	'smw_sbv_submit' => 'Treuva arzultà',
+	'smw_sbv_submit' => "Trové dj'arzultà",
 	'browse' => 'Varda wiki',
 	'smw_browselink' => 'Varda propietà',
-	'smw_browse_article' => 'Ansëriss ël nòm ëd la pàgina da andoa ancaminé a vardé.',
+	'smw_browse_article' => "Ch'a anseriss ël nòm ëd la pàgina da andoa ancaminé a vardé.",
 	'smw_browse_go' => 'Va',
-	'smw_browse_show_incoming' => 'mosta propietà che a colego ambelessì',
-	'smw_browse_hide_incoming' => "stërma propietà ch'a colego ambelessì",
+	'smw_browse_show_incoming' => 'smon-e le propietà che a colego ambelessì',
+	'smw_browse_hide_incoming' => "stërmé le propietà ch'a colego ambelessì",
 	'smw_browse_no_outgoing' => "Sta pàgina-sì a l'ha pa ëd propietà.",
-	'smw_browse_no_incoming' => 'Pa gnun-e propietà as colego a sta pàgina-sì.',
+	'smw_browse_no_incoming' => 'Gnun-a propietà a colega a sta pàgina-sì.',
 	'smw_inverse_label_default' => '$1 ëd',
 	'smw_inverse_label_property' => 'Etichëtta dla propietà anversa',
 	'pageproperty' => 'Serca propietà dla pàgina',
 	'smw_pp_docu' => 'Serca tùit ij valor ëd na propietà su na pàgina dàita.',
 	'smw_pp_from' => 'Da pàgina',
 	'smw_pp_type' => 'Propietà',
-	'smw_pp_submit' => 'Treuva arzultà',
+	'smw_pp_submit' => "Smon-e j'arzultà",
 	'smw_result_prev' => 'Prima',
-	'smw_result_next' => "D'apress",
+	'smw_result_next' => 'Apress',
 	'smw_result_results' => 'Arzultà',
 	'smw_result_noresults' => 'Pa gnun arzultà.',
-	'smwadmin' => "Funsion d'aministrador për Semantic MediaWiki",
+	'smwadmin' => "Funsion d'aministrator për Semantic MediaWiki",
 	'smw_smwadmin_settingup' => 'Anstalassion ëd memòria për Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => "Ël motor ëd memorisassion a l'é stàit anstalà da bin.",
 	'smw_smwadmin_return' => 'Torna a $1',
 	'smw_smwadmin_updatestarted' => "Un process ëd modìfica neuv për rinfrësché ij dat semàntich a l'é stàit fàit parte.
 Tùit ij dat memorisà a saran rifàit o riparà andoa a-i é dabzògn.
-It peule trové l'andament ëd la modìfica an sta pàgina special sì.",
-	'smw_smwadmin_updatenotstarted' => "A-i é già un process ëd modìfica an mente.
-Pa creane n'àutr.",
+A peul trové l'andament ëd la modìfica an sta pàgina special-sì.",
+	'smw_smwadmin_updatenotstarted' => "A-i é già un process ëd modìfica an camin.
+Creene nen n'àutr.",
 	'smw_smwadmin_updatestopped' => 'Tùit ij process ëd modìfica esistent a son ëstàit fërmà.',
-	'smw_smwadmin_updatenotstopped' => "Për fërmé ël process ëd modìfica ch'a gira, it deuve ativé la casela për indiché ch'it ses pròpi sicur.",
-	'smw_smwadmin_docu' => 'Sta pàgina special sì at giuta an mente ëd l\'instalassion e l\'agiornament ëd <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
-Arcòrda ëd salvé ij dat ëd valor prima ëd fé funsion aministrative.',
-	'smw_smwadmin_db' => 'Anstalassion e agiornament dël database',
-	'smw_smwadmin_dbdocu' => "Semantic MediaWiki a l'ha dabzògn ëd cheiche estension al database MediaWiki për memorisé ij dat semàntich.
-La funsion sota a assicura che tò database a l'é ampostà da bin.
-Ij cambe fàit an cost pass-sì a toco pa ël rest dël database mediaWiki, e a l'é bel fé torné andré s'as veul.
-Sta funsion d'ampostassion-sì a peul esse fàita vàire vire sensa fé gnun dann, ma a-i n'a-i é dabzògn mach na vira për anstalassion o agiornament.",
-	'smw_smwadmin_permissionswarn' => "Se l'operassion a faliss con eror SQL, l'utent dël database dovrà da toa wiki (contròla tò LocalSettings.php) probabilment a l'ha pa basta përmess.
-Daje a sto utent sia përmess adissionaj për creé e scanselé tabele, temporaneament ansëriss ël login ëd l'utent root an  LocalSettings.php, sia dovra lë script ëd manteniment <tt>SMW_setup.php</tt> ch'a peul dovré le credensiaj d'AdminSettings.php.",
-	'smw_smwadmin_dbbutton' => 'Inissialisa o agiorna tabele',
+	'smw_smwadmin_updatenotstopped' => "Për fërmé ël process ëd modìfica an cors, a deuv ativé la casela për indiché ch'a l'é pròpi sicur.",
+	'smw_smwadmin_docu' => "Sta pàgina special-sì a lo giuta durant l'instalassion e l'agiornament ëd <a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a>.
+Ch'as visa ëd salvé ij dat ëd valor prima ëd fé le funsion aministrative.",
+	'smw_smwadmin_db' => 'Anstalassion e agiornament dla base ëd dàit',
+	'smw_smwadmin_dbdocu' => "Semantic MediaWiki a l'ha dabzògn ëd chèiche estension a la base ëd dàit MediaWiki për memorisé ij dat semàntich.
+La funsion sì-sota a assicura che soa base ëd dàit a l'é ampostà për da bin.
+Ij cangiament fàit an cost pass-sì a toco pa ël rest dla bse ëd dàit mediaWiki, e a l'é bel fé torné andré s'as veul.
+Sta funsion d'ampostassion-sì a peul esse fàita vàire vire sensa fé gnun dann, ma a-i n'a j'é dabzògn mach na vira për l'anstalassion o l'agiornament.",
+	'smw_smwadmin_permissionswarn' => "Se l'operassion a faliss con dj'eror SQL, l'utent dla base ëd dàit dovrà da soa wiki (ch'a contròla sò LocalSettings.php) probabilment a l'ha pa basta 'd përmess.
+O bin ch'a-j daga a st'utent dij përmess adissionaj për creé e scancelé 'd tabele, temporaneament ch'a anserissa lë stranòm ëd l'utent ris an  LocalSettings.php, opura ch'a deuvra ël senari ëd manteniment <tt>SMW_setup.php</tt> ch'a peul dovré le credensiaj d'AdminSettings.php.",
+	'smw_smwadmin_dbbutton' => 'Inissialisé o agiorné le tàule',
 	'smw_smwadmin_announce' => 'Anonsia toa wiki',
-	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki a l\'ha un web service për nonsié sit neuv ëd wiki semantica.
-Sòn sì a l\'é dovrà për manten-e na lista ëd sit pùblich che a dòvro Semantic MediaWiki, pi che àutr për giuté ël <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proget Semantic MediaWiki</a> a avèj na vision dj\'usagi tìpich ëd Semantic MediaWiki.
-Varda la pàgina ëd Semantic MediaWiki për <a href="http://semantic-mediawiki.org/wiki/Registry">àutre anformassion su sto servissi</a>.',
-	'smw_smwadmin_announcebutton' => "Sgnaca ël boton sota për mandé URL wiki a col sërvissi là.
-Ël sërvissi a registrerà pa wiki ch'a son pa acessìbij pùblicament, e a memoriserà mach anformassion acessìbij publicament.",
-	'smw_smwadmin_datarefresh' => 'Reparassion ëd dat e agiornament',
+	'smw_smwadmin_announcedocu' => "Semantic MediaWiki a l'ha un servissi an grija për nonsié ëd sit neuv ëd wiki semàntiche.
+Sòn a l'é dovrà për manten-e na lista ëd sit pùblich che a deuvro Semantic MediaWiki, pi che d'àutr për giuté ël <a href=\"http://semantic-mediawiki.org/wiki/SMW_Project\">proget Semantic MediaWiki</a> a avèj na vision dj'usagi tìpich ëd Semantic MediaWiki.
+Ch'a bèica la pàgina ëd Semantic MediaWiki për <a href=\"http://semantic-mediawiki.org/wiki/Registry\">d'àutre anformassion su 's servissi</a>.",
+	'smw_smwadmin_announcebutton' => "Ch'a sgnaca ël boton sì-sota për mandé adrësse dl'aragnà wiki a col servissi là.
+Ël servissi a registrërà pa le wiki ch'a son pa acessìbij pùblicament, e a memorisërà mach j'anformassion acessìbij publicament.",
+	'smw_smwadmin_datarefresh' => 'Riparassion ëd dat e agiornament',
 	'smw_smwadmin_datarefreshdocu' => "A l'é possìbil ripristiné tùit ij dat Semantic MediaWiki basà dzora al contnù corent ëd la wiki.
-Sòn sì a peul esse ùtil për riparé dat rot o për rinfrësché dat se ël formà antern a l'é cangià për cheich agiornament software.
+Sòn a peul ven-e a taj për riparé dat rot o për rinfrësché dat se ël formà antern a l'é cangià për chèich agiornament dël programa.
 La modìfica a l'é fàita pàgina për pàgina e a sarà pa completa sùbit.
-Lòn ch'a-i é sota a mosta se na modìfica a l'é an mente e at përmëtt ëd fé parte o fërmé le modìfiche (a men che sta possibilità a sia stàita disabilità da l'aministrador dël sit).",
-	'smw_smwadmin_datarefreshprogress' => "<strong>na modìfica a l'é già an mente.</strong>
-A l'é normal che la modìfica a von-a anans mach pian përchè a rinfrësca dat an cite partìe minca vira n'utent a intra ant la wiki.
-Për fé  finì sta modìfica pi an pressa, it peule ciamé lë script ëd manteniment MediaWiki <tt>runJobs.php</tt> (dòvra l'opsion <tt>--maxjobs 1000</tt> për strenze ël nùmer ëd modìfiche fàite ant un lòt).
+Lòn ch'a-i é sì-sota a mostra se na modìfica a l'é an cors e a-j përmët ëd fé parte o fërmé le modìfiche (gavà che sta possibilità a sia stàita disabilità da l'aministrator dël sit).",
+	'smw_smwadmin_datarefreshprogress' => "<strong>na modìfica a l'é già an cors.</strong>
+A l'é normal che la modìfica a von-a anans mach pian përchè a rinfrësca dat an cite partìe minca vira che n'utent a intra ant la wiki.
+Për fé finì sta modìfica pi an pressa, a peul ciamé ël senari ëd manteniment MediaWiki <tt>runJobs.php</tt> (ch'a deuvra l'opsion <tt>--maxjobs 1000</tt> për strenze ël nùmer ëd modìfiche fàite ant un lòt).
 Avansament stimà dla modìfica corenta:",
 	'smw_smwadmin_datarefreshbutton' => 'Ancamin-a a agiorné ij dat',
 	'smw_smwadmin_datarefreshstop' => 'Ferma sto agiornament-sì',
-	'smw_smwadmin_datarefreshstopconfirm' => 'É!, i son sicur.',
-	'smw_smwadmin_support' => 'Pijé apògg',
-	'smw_smwadmin_supportdocu' => 'Vàire arzorse a peulo giutete an cas ëd problem:',
-	'smw_smwadmin_installfile' => 'S\'it treuve ëd problen con toa anstalassion, ancamin-a a controlé le linie guida ant ël <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL file</a>.',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Bò, i son sicur.',
+	'smw_smwadmin_support' => "Oteniment ëd n'agiut",
+	'smw_smwadmin_supportdocu' => 'Vàire arsorse a peulo giutelo an cas ëd problema:',
+	'smw_smwadmin_installfile' => "S'a treuva ëd problema con soa anstalassion, ch'a ancamin-a a controlé le linie guida ant l'<a href=\"http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL\">archivi INSTALL</a>.",
 	'smw_smwadmin_smwhomepage' => 'La documentassion utent completa ëd Semantich WikiMedia a l\'é a <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Eror a peulo esse arportà a <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
-	'smw_smwadmin_questions' => 'S\'it l\'as àutre custion o sugeriment, va a la discussion an dzora a <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">forum utent ëd Semantic MediaWiki</a>.',
-	'smw_adminlinks_datastructure' => 'Strutura dat',
-	'smw_adminlinks_displayingdata' => 'Visualisé dat',
-	'smw_adminlinks_inlinequerieshelp' => 'Agiut an sle query an linia',
+	'smw_smwadmin_mediazilla' => 'Ij bigat a peulo esse arportà a <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_questions' => "S'a l'ha d'àutre chestion o sugeriment, ch'a vada a la discussion dzora a la <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">piassa dj'utent ëd Semantic MediaWiki</a>.",
+	'smw_adminlinks_datastructure' => 'Strutura dij dat',
+	'smw_adminlinks_displayingdata' => 'Visualisé ij dat',
+	'smw_adminlinks_inlinequerieshelp' => "Agiut an sj'anterogassion an linia",
 );
 
 /** Pashto (پښتو)
