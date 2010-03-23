@@ -32,16 +32,13 @@ class SMWAdmin extends SpecialPage {
 	}
 
 	public function execute( $par ) {
-		global $wgOut, $wgRequest, $smwgAdminRefreshStore;
-		global $wgServer; // "http://www.yourserver.org"
-							// (should be equal to 'http://'.$_SERVER['SERVER_NAME'])
-		global $wgScript;   // "/subdirectory/of/wiki/index.php"
-		global $wgUser;
+		global $wgOut, $wgRequest, $wgServer, $wgScript, $wgUser, $smwgAdminRefreshStore;
 	
-		if ( !$wgUser->isAllowed( 'delete' ) ) {
-			$wgOut->permissionRequired( 'delete' );
+		if ( !$this->userCanExecute( $wgUser ) ) {
+			// If the user is not authorized, show an error.
+			$this->displayRestrictionError();
 			return;
-		}
+		}		
 
 		$this->setHeaders();
 
@@ -56,7 +53,6 @@ class SMWAdmin extends SpecialPage {
 		}
 
 		/**** Execute actions if any ****/
-
 		$action = $wgRequest->getText( 'action' );
 		if ( $action == 'updatetables' ) {
 			$sure = $wgRequest->getText( 'udsure' );
