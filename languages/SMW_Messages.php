@@ -2531,6 +2531,7 @@ Si el problema persiste después de pasado algún tiempo, solicita al administra
 	'smw_nofloat' => '"$1" no es un número.',
 	'smw_infinite' => 'números tan largos como $1 no son soportados.',
 	'smw_infinite_unit' => 'La conversión en la unidad $1 resultó en un número que es demasiado largo.',
+	'smw_novalues' => 'No se ha especificado valores.',
 	'smw_unsupportedprefix' => 'prefijos ("$1") no esta soportados actualmente',
 	'smw_unsupportedunit' => 'La conversión de la unidad "$1" no está soportada',
 	'smw_nodatetime' => 'La fecha «$1» no ha sido comprendida.',
