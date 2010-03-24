@@ -45,15 +45,15 @@ class SMWSQLStore2Query {
  */
 class SMWSQLStore2QueryEngine {
 
-	// / Database slave to be used
-	protected $m_dbs; // / TODO: should temporary tables be created on the master DB?
-	// / Parent SMWSQLStore2.
+	/** Database slave to be used */
+	protected $m_dbs; // TODO: should temporary tables be created on the master DB?
+	/** Parent SMWSQLStore2. */
 	protected $m_store;
-	// / Query mode copied from given query. Some submethods act differently when in SMWQuery::MODE_DEBUG.
+	/** Query mode copied from given query. Some submethods act differently when in SMWQuery::MODE_DEBUG. */
 	protected $m_qmode;
-	// / Array of generated SMWSQLStore2Query query descriptions (index => object).
+	/** Array of generated SMWSQLStore2Query query descriptions (index => object). */
 	protected $m_queries = array();
-	// / Array of arrays of executed queries, indexed by the temporary table names results were fed into.
+	/** Array of arrays of executed queries, indexed by the temporary table names results were fed into. */
 	protected $m_querylog = array();
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
@@ -61,9 +61,9 @@ class SMWSQLStore2QueryEngine {
 	 * conditions).
 	 */
 	protected $m_sortkeys;
-	// / Cache of computed hierarchy queries for reuse ("catetgory/property value string" => "tablename").
+	/** Cache of computed hierarchy queries for reuse ("catetgory/property value string" => "tablename"). */
 	protected $m_hierarchies = array();
-	// / Local collection of error strings, passed on to callers if possible.
+	/** Local collection of error strings, passed on to callers if possible. */
 	protected $m_errors = array();
 
 	public function __construct( &$parentstore, &$dbslave ) {
@@ -170,7 +170,7 @@ class SMWSQLStore2QueryEngine {
 		global $smwgIgnoreQueryErrors;
 		if ( !$smwgIgnoreQueryErrors && ( $query->querymode != SMWQuery::MODE_DEBUG ) && ( count( $query->getErrors() ) > 0 ) ) {
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
-			// / NOTE: We currently check this only once since the below steps do not create further errors
+			// NOTE: We currently check this only once since the below steps do not create further errors
 		} elseif ( $query->querymode == SMWQuery::MODE_NONE ) { // don't query, but return something to printer
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, true );
 		}
@@ -354,7 +354,7 @@ class SMWSQLStore2QueryEngine {
 			$this->compilePropertyCondition( $query, $description->getProperty(), $description->getDescription() );
 			if ( $query->type == SMW_SQL2_NOQUERY ) $qid = - 1; // compilation has set type to NOQUERY: drop condition
 		} elseif ( $description instanceof SMWNamespaceDescription ) {
-			// / TODO: One instance of smw_ids on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
+			// TODO: One instance of smw_ids on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
 			$query->jointable = 'smw_ids';
 			$query->joinfield = "$query->alias.smw_id";
 			$query->where = "$query->alias.smw_namespace=" . $this->m_dbs->addQuotes( $description->getNamespace() );
@@ -417,8 +417,8 @@ class SMWSQLStore2QueryEngine {
 			         array( 's_id' => $cid ), 'SMWSQLStore2Queries::compileQueries' );
 			if ( $row === false ) { // no description found, concept does not exist
 				// keep the above query object, it yields an empty result
-				// /TODO: announce an error here? (maybe not, since the query processor can check for
-				// /non-existing concept pages which is probably the main reason for finding nothing here
+				//TODO: announce an error here? (maybe not, since the query processor can check for
+				//non-existing concept pages which is probably the main reason for finding nothing here
 			} else {
 				global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
 				$may_be_computed = ( $smwgQConceptCaching == CONCEPT_CACHE_NONE ) ||
@@ -485,7 +485,7 @@ class SMWSQLStore2QueryEngine {
 			return;
 		}
 		list( $sig, $valueindex, $labelindex ) = SMWSQLStore2::getTypeSignature( $typeid );
-		$sortkey = $property->getDBkey(); // / TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
+		$sortkey = $property->getDBkey(); // TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
 
 		// *** Basic settings: table, joinfield, and objectfields ***//
 		$query->jointable = $proptable->name;
@@ -545,7 +545,7 @@ class SMWSQLStore2QueryEngine {
 			$this->getDBFieldsForDVIndex( $objectfields, $valueindex, $fieldname, $smwidjoinfield );
 			if ( $fieldname ) {
 				if ( $smwidjoinfield ) {
-					// / TODO: is this smw_ids possibly duplicated in the query? Can we prevent that? (PERFORMANCE)
+					// TODO: is this smw_ids possibly duplicated in the query? Can we prevent that? (PERFORMANCE)
 					$query->from = ' INNER JOIN ' . $this->m_dbs->tableName( 'smw_ids' ) .
 									" AS ids{$query->alias} ON ids{$query->alias}.smw_id={$query->alias}.{$smwidjoinfield}";
 					$query->sortfields[$sortkey] = "ids{$query->alias}.{$fieldname}";
@@ -611,7 +611,7 @@ class SMWSQLStore2QueryEngine {
 						case SMW_CMP_GEQ: $comp = '>='; break;
 						case SMW_CMP_NEQ: $comp = '!='; break;
 						case SMW_CMP_LIKE:
-							// / TODO: explicitly excluding _geo here is a temporary workaround. Future versions will use peronalised comparators for extensions and not LIKE (requires synchronisation with SemanticMaps to work)
+							// TODO: explicitly excluding _geo here is a temporary workaround. Future versions will use personalised comparators for extensions and not LIKE (requires synchronisation with SemanticMaps to work)
 							if ( ( $dv->getTypeID() != '_geo' ) && ( ( $fieldtype == 't' ) || ( $fieldtype == 'l' ) ) ) { // string data allows pattern matches
 								$comp = ' LIKE ';
 								$value =  str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value ); // translate pattern
@@ -681,7 +681,7 @@ class SMWSQLStore2QueryEngine {
 						break;
 					}
 					if ( $subquery->where != '' ) {
-						$query->where .= ( ( $query->where == '' ) ? '':' AND ' ) . $subquery->where;
+						$query->where .= ( ( $query->where == '' ) ? '':' AND ' ) . '(' . $subquery->where . ')';
 					}
 					$query->from .= $subquery->from;
 				}
@@ -734,8 +734,8 @@ class SMWSQLStore2QueryEngine {
 							   " SELECT $subquery->joinfield FROM " . $this->m_dbs->tableName( $subquery->jointable ) .
 							   " AS $subquery->alias $subquery->from" . ( $subquery->where ? " WHERE $subquery->where":'' );
 					} elseif ( $subquery->joinfield !== '' ) {
-						// / NOTE: this works only for single "unconditional" values without further
-						// / WHERE or FROM. The execution must take care of not creating any others.
+						// NOTE: this works only for single "unconditional" values without further
+						// WHERE or FROM. The execution must take care of not creating any others.
 						$values = '';
 						foreach ( $subquery->joinfield as $value ) {
 							$values .= ( $values ? ',':'' ) . '(' . $this->m_dbs->addQuotes( $value ) . ')';
@@ -752,7 +752,7 @@ class SMWSQLStore2QueryEngine {
 				$query->jointable = $query->alias;
 				$query->joinfield = "$query->alias.id";
 				$query->sortfields = array(); // make sure we got no sortfields
-				// / TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
+				// TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
 			break;
 			case SMW_SQL2_PROP_HIERARCHY: case SMW_SQL2_CLASS_HIERARCHY: // make a saturated hierarchy
 				$this->executeHierarchyQuery( $query );
@@ -810,10 +810,10 @@ class SMWSQLStore2QueryEngine {
 			return;
 		}
 
-		// / NOTE: we use two helper tables. One holds the results of each new iteration, one holds the
-		// / results of the previous iteration. One could of course do with only the above result table,
-		// / but then every iteration would use all elements of this table, while only the new ones
-		// / obtained in the previous step are relevant. So this is a performance measure.
+		// NOTE: we use two helper tables. One holds the results of each new iteration, one holds the
+		// results of the previous iteration. One could of course do with only the above result table,
+		// but then every iteration would use all elements of this table, while only the new ones
+		// obtained in the previous step are relevant. So this is a performance measure.
 		$tmpnew = 'smw_new';
 		$tmpres = 'smw_res';
 		$this->m_dbs->query( $this->getCreateTempIDTableSQL( $tmpnew ), 'SMW::executeQueries' );
