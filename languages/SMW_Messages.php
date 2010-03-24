@@ -1271,6 +1271,7 @@ $messages['br'] = array(
 	'smw_printername_template' => 'Patrom',
 	'smw_paramdesc_limit' => "An niver uhelañ a zisoc'hoù da adkas",
 	'smw_paramdesc_headers' => 'Diskwel an talbennoù / anvioù ar perzhioù',
+	'smw_paramdesc_mainlabel' => 'Al label hag a ro anv ar bajenn degemer',
 	'smw_paramdesc_link' => 'Diskouez an talvoudoù evel liammoù',
 	'smw_paramdesc_default' => "An destenn da ziskwel ma n'eus disoc'h ebet d'ar reked",
 	'smw_paramdesc_searchlabel' => "An destenn war al liamm davet an disoc'hoù",
@@ -1285,6 +1286,7 @@ $messages['br'] = array(
 	'smw_no_importelement' => "An elfenn « $1 » ne c'hall ket bezañ ezporzhiet.",
 	'smw_parseerror' => "An talvoud merket n'eo ket bet komprenet.",
 	'smw_notitle' => "« $1 » ne c'hall ket bezañ implijet da anv pajenn er wiki-mañ.",
+	'smw_wrong_namespace' => 'N\'eo aotreet amañ nemet ar pajennoù eus an esaouenn "$1".',
 	'smw_manytypes' => 'Ouzhpenn ur seurt zo bet termenet evit ar perzh.',
 	'smw_emptystring' => 'Ne zegemerer ket an neudennadoù goullo.',
 	'smw_maxstring' => 'Re hir eo an neudennad $1.',
@@ -2919,6 +2921,7 @@ Uutta ei käynnistetä.',
  * @author PieRRoMaN
  * @author Pierre Matringe
  * @author Sherbrooke
+ * @author Urhixidur
  * @author Verdy p
  * @author Zetud
  */
@@ -3065,7 +3068,7 @@ Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:Wa
 	'smw_ask_queryhead' => 'Requête',
 	'smw_ask_printhead' => 'Données supplémentaires à afficher',
 	'smw_ask_printdesc' => '(ajouter un nom de propriété par ligne)',
-	'smw_ask_format_as' => 'Formatter en :',
+	'smw_ask_format_as' => 'Formater en :',
 	'smw_ask_defaultformat' => 'défaut',
 	'smw_ask_otheroptions' => 'Autres options',
 	'smw_ask_show_embed' => 'Montrer le code incrusté',
