@@ -23,7 +23,7 @@ define( 'SMW_SQL2_SMWINTDEFIW', ':smw-intprop' ); // virtual "interwiki prefix" 
  * @ingroup SMWStore
  */
 class SMWSQLStore2Table {
-	// / Name of the table in the DB.
+	/// Name of the table in the DB.
 	public $name;
 	/// Array with entries "fieldname => typeid" where the types are as given
 	/// for SMWSQLStore::getPropertyTables().

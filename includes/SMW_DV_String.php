@@ -14,7 +14,7 @@
  */
 class SMWStringValue extends SMWDataValue {
 
-	// / Wiki-compatible value representation, possibly unsafe for plain HTML.
+	/// Wiki-compatible value representation, possibly unsafe for plain HTML.
 	protected $m_value = '';
 
 	protected function parseUserValue( $value ) {

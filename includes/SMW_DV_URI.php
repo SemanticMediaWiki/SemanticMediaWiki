@@ -20,9 +20,9 @@ define( 'SMW_URI_MODE_TEL', 5 );
  */
 class SMWURIValue extends SMWDataValue {
 
-	// / Value; usually a human readable version of the URI (esp. "mailto:" might be ommitted)
+	/// Value; usually a human readable version of the URI (esp. "mailto:" might be ommitted)
 	private $m_value = '';
-	// / Only set if a link should be created in the wiki.
+	/// Only set if a link should be created in the wiki.
 	private $m_url = '';
 	/// Canonical URI for identifying the object
 	private $m_uri = '';

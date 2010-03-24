@@ -148,9 +148,9 @@ class SMWLinearValue extends SMWNumberValue {
 		return array_keys( $this->m_unitfactors );
 	}
 
-// / The remaining functions are relatively "private" but are kept protected since
-// / subclasses might exploit this to, e.g., "fake" conversion factors instead of
-// / getting them from the database. A cheap way of making built-in types.
+/// The remaining functions are relatively "private" but are kept protected since
+/// subclasses might exploit this to, e.g., "fake" conversion factors instead of
+/// getting them from the database. A cheap way of making built-in types.
 
 	/**
 	 * This method fills $m_unitfactors and $m_unitids with required values.
@@ -165,7 +165,7 @@ class SMWLinearValue extends SMWNumberValue {
 		$factors = smwfGetStore()->getPropertyValues( $typepage, SMWPropertyValue::makeProperty( '_CONV' ) );
 		if ( count( $factors ) == 0 ) { // no custom type
 			// delete all previous errors, this is our real problem
-			// / TODO: probably we should check for this earlier, but avoid unnecessary DB requests ...
+			/// TODO: probably we should check for this earlier, but avoid unnecessary DB requests ...
 			wfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_unknowntype', SMWDataValueFactory::findTypeLabel( $this->getTypeID() ) ) );
 			return;

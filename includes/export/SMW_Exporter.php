@@ -86,7 +86,7 @@ class SMWExporter {
 
 		// export standard properties
 		if ( $modifier != '' ) {
-			$modifier = smwfHTMLtoUTF8( $modifier ); // /TODO: check if this is needed anymore
+			$modifier = smwfHTMLtoUTF8( $modifier ); ///TODO: check if this is needed anymore
 			$label .= ' (' . $modifier . ')';
 		}
 		$ed = new SMWExpData( new SMWExpLiteral( $label ) );

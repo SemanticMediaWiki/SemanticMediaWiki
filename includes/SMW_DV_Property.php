@@ -44,11 +44,11 @@ class SMWPropertyValue extends SMWDataValue {
 	static private $m_propertylabels;
 	static private $m_propertyaliases;
 
-	// / If the property is predefined, its internal key is stored here. Otherwise FALSE.
+	/// If the property is predefined, its internal key is stored here. Otherwise FALSE.
 	protected $m_propertyid;
-	// / If the property is associated with a wikipage, it is stored here. Otherwise NULL.
+	/// If the property is associated with a wikipage, it is stored here. Otherwise NULL.
 	protected $m_wikipage = null;
-	// / Store if this property is an inverse
+	/// Store if this property is an inverse
 	protected $m_inv = false;
 
 	private $prop_typevalue; // once calculated, remember the type of this property

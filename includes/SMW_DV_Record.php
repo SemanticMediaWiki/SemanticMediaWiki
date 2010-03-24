@@ -16,7 +16,7 @@
  */
 class SMWRecordValue extends SMWContainerValue {
 
-	// / cache for datavalues of types belonging to this object
+	/// cache for datavalues of types belonging to this object
 	private $m_typevalues = null;
 
 	protected function parseUserValue( $value ) {

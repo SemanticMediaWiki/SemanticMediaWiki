@@ -245,7 +245,7 @@ class SMWInfolink {
 				// Escape certain problematic values. Use SMW-escape
 				// (like URLencode but - instead of % to prevent double encoding by later MW actions)
 				//
-				// / : SMW's parameter separator, must not occur within params
+				/// : SMW's parameter separator, must not occur within params
 				// - : used in SMW-encoding strings, needs escaping too
 				// [ ] < > &lt; &gt; '' |: problematic in MW titles
 				// & : sometimes problematic in MW titles ([[&amp;]] is OK, [[&test]] is OK, [[&test;]] is not OK)

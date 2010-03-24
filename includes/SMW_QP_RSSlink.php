@@ -81,7 +81,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 					}
 				}
 				if ( $wikipage instanceof SMWWikiPageValue ) { // this should rarely fail, but better be carful
-					// /TODO: It would be more elegant to have type chekcs initially
+					///TODO: It would be more elegant to have type chekcs initially
 					$items[] = new SMWRSSItem( $wikipage->getTitle(), $creators, $dates );
 				}
 				$row = $res->getNext();
@@ -236,7 +236,7 @@ class SMWRSSItem {
 			$parserOutput = $wgParser->parse( '{{' . $this->articlename . '}}', $this->title, $parser_options );
 			$content = $parserOutput->getText();
 			// Make absolute URLs out of the local ones:
-			// /TODO is there maybe a way in the parser options to make the URLs absolute?
+			///TODO is there maybe a way in the parser options to make the URLs absolute?
 			$content = str_replace( '<a href="/', '<a href="' . $wgServer . '/', $content );
 			$text .= "\t\t<description>" . $this->clean( $content ) . "</description>\n";
 			$text .= "\t\t<content:encoded  rdf:datatype=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral\"><![CDATA[$content]]></content:encoded>\n";

@@ -21,7 +21,7 @@
  */
 class SMWDataValueFactory {
 
-	// / Array of type labels indexed by type ids. Used for datatype resolution.
+	/// Array of type labels indexed by type ids. Used for datatype resolution.
 	static private $m_typelabels;
 	/// Array of ids indexed by type aliases. Used for datatype resolution.
 	static private $m_typealiases;

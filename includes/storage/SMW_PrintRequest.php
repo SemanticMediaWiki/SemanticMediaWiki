@@ -13,13 +13,13 @@
  * @ingroup SMWQuery
  */
 class SMWPrintRequest {
-	// / Query mode to print all direct categories of the current element.
+	/// Query mode to print all direct categories of the current element.
 	const PRINT_CATS = 0;
-	// / Query mode to print all property values of a certain attribute of the current element.
+	/// Query mode to print all property values of a certain attribute of the current element.
 	const PRINT_PROP = 1;
-	// / Query mode to print the current element (page in result set).
+	/// Query mode to print the current element (page in result set).
 	const PRINT_THIS = 2;
-	// / Query mode to print whether current element is in given category (Boolean printout).
+	/// Query mode to print whether current element is in given category (Boolean printout).
 	const PRINT_CCAT = 3;
 
 	protected $m_mode; // type of print request

@@ -19,7 +19,7 @@
  */
 class SMWParseData {
 
-	// / ParserOutput last used. See documentation to SMWParseData.
+	/// ParserOutput last used. See documentation to SMWParseData.
 	static public $mPrevOutput = null;
 
 	/**
