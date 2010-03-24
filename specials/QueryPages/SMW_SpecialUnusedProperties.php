@@ -1,42 +1,78 @@
 <?php
+
 /**
- * @author Markus Krötzsch
+ * File holding the SMWSpecialUnusedProperties class for the Special:UnusedProperties page. 
  *
- * This page shows all unused properties.
- *
- * @file
+ * @file SMW_SpecialUnusedProperties.php
+ * 
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
+ *
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
  */
 
-
-function smwfDoSpecialUnusedProperties() {
-	global $wgOut;
-	wfProfileIn( 'smwfDoSpecialUnusedProperties (SMW)' );
-	list( $limit, $offset ) = wfCheckLimits();
-	$rep = new SMWUnusedPropertiesPage();
-	$result = $rep->doQuery( $offset, $limit );
-	SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
-	wfProfileOut( 'smwfDoSpecialUnusedProperties (SMW)' );
-	return $result;
+if ( !defined( 'MEDIAWIKI' ) ) {
+	die( 'Not an entry point.' );
 }
 
 /**
- * @ingroup SMW
+ * This special page for MediaWiki shows all unused properties.
+ * 
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
+ * 
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
+ */
+class SMWSpecialUnusedProperties extends SpecialPage {
+	
+	public function __construct() {
+		parent::__construct( 'UnusedProperties' );
+	}
+
+	public function execute( $param ) {
+		wfProfileIn( 'smwfDoSpecialUnusedProperties (SMW)' );
+			
+		global $wgOut;
+		
+		$wgOut->setPageTitle( wfMsg( 'unusedproperties' ) );
+		
+		$rep = new SMWUnusedPropertiesPage();
+		
+		list( $limit, $offset ) = wfCheckLimits();
+		$rep->doQuery( $offset, $limit );
+		
+		// Ensure locally collected output data is pushed to the output!
+		SMWOutputs::commitToOutputPage( $wgOut );
+		
+		wfProfileOut( 'smwfDoSpecialUnusedProperties (SMW)' );
+	}
+}
+
+/**
+ * This query page shows all unused properties.
+ * 
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
+ * 
+ * @author Markus Krötzsch
+ * 
+ * TODO: A delete button that removes all non-used property pages would be quite usefull.
  */
 class SMWUnusedPropertiesPage extends SMWQueryPage {
 
 	function getName() {
-		// / TODO: should probably use SMW prefix
+		// TODO: should probably use SMW prefix
 		return "UnusedProperties";
 	}
 
 	function isExpensive() {
-		return false; // / disables caching for now
+		return false; // Disables caching for now
 	}
 
 	function isSyndicated() {
-		return false; // /TODO: why not?
+		return false; // TODO: why not?
 	}
 
 	function getPageHeader() {

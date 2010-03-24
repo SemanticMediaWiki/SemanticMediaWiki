@@ -1,42 +1,76 @@
 <?php
+
 /**
- * @author Markus Krötzsch
- * @file
+ * File holding the SMWSpecialProperties class for the Special:Properties page. 
+ *
+ * @file SMW_SpecialProperties.php
+ * 
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  *
- * This page shows all used properties.
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
  */
 
-function smwfDoSpecialProperties() {
-	global $wgOut;
-	wfProfileIn( 'smwfDoSpecialProperties (SMW)' );
-	list( $limit, $offset ) = wfCheckLimits();
-	$rep = new SMWPropertiesPage();
-	$result = $rep->doQuery( $offset, $limit );
-	SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
-	wfProfileOut( 'smwfDoSpecialProperties (SMW)' );
-	return $result;
+if ( !defined( 'MEDIAWIKI' ) ) {
+	die( 'Not an entry point.' );
+}
+
+/**
+ * This special page for MediaWiki shows all used properties.
+ * 
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
+ * 
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
+ */
+class SMWSpecialProperties extends SpecialPage {
+	
+	public function __construct() {
+		parent::__construct( 'Properties' );
+	}
+
+	public function execute( $param ) {	
+		wfProfileIn( 'smwfDoSpecialProperties (SMW)' );
+		
+		global $wgOut;
+		
+		$wgOut->setPageTitle( wfMsg( 'properties' ) );
+		
+		$rep = new SMWPropertiesPage();
+		
+		list( $limit, $offset ) = wfCheckLimits();
+		$rep->doQuery( $offset, $limit );
+		
+		// Ensure locally collected output data is pushed to the output!
+		SMWOutputs::commitToOutputPage( $wgOut );
+		
+		wfProfileOut( 'smwfDoSpecialProperties (SMW)' );
+	}
 }
 
 /**
  * This query page shows all used properties.
+ * 
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
+ * 
+ * @author Markus Krötzsch
  */
 class SMWPropertiesPage extends SMWQueryPage {
 
 	function getName() {
-		// / TODO: should probably use SMW prefix
+		// TODO: should probably use SMW prefix
 		return "Properties";
 	}
 
 	function isExpensive() {
-		return false; // / disables caching for now
+		return false; // Disables caching for now
 	}
 
 	function isSyndicated() {
-		return false; // /TODO: why not?
+		return false; // TODO: why not?
 	}
 
 	function getPageHeader() {

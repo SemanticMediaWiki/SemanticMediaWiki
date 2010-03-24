@@ -1,27 +1,59 @@
 <?php
+
 /**
- * @author S Page
- * @author Markus Krötzsch
+ * File holding the SMWSpecialTypes class for the Special:Types page. 
  *
- * This special page for MediaWiki provides information about types.
- * Type information is  stored in the smw_attributes database table, 
- * some global variables managed by SMWTypeHandlerFactory,
- * and in Type: Wiki pages.
- * This only reports on the Type: Wiki pages.
- * @file
+ * @file SMW_SpecialTypes.php
+ * 
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
+ *
+ * @author S Page
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
  */
 
-function smwfDoSpecialTypes() {
-	global $wgOut;
-	wfProfileIn( 'smwfDoSpecialTypes (SMW)' );
-	list( $limit, $offset ) = wfCheckLimits();
-	$rep = new TypesPage();
-	$result = $rep->doQuery( $offset, $limit );
-	SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
-	wfProfileOut( 'smwfDoSpecialTypes (SMW)' );
-	return $result;
+if ( !defined( 'MEDIAWIKI' ) ) {
+	die( 'Not an entry point.' );
+}
+
+/**
+ * This special page for MediaWiki provides information about types. Type information is 
+ * stored in the smw_attributes database table, gathered both from the annotations in
+ * articles, and from metadata already some global variables managed by SMWTypeHandlerFactory,
+ * and in Type: Wiki pages. This only reports on the Type: Wiki pages.
+ * 
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
+ * 
+ * @author S Page
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
+ */
+class SMWSpecialTypes extends SpecialPage {
+	
+	public function __construct() {
+		parent::__construct( 'Types' );
+	}
+
+	public function execute( $param ) {	
+		wfProfileIn( 'smwfDoSpecialTypes (SMW)' );
+		
+		global $wgOut;
+		
+		$wgOut->setPageTitle( wfMsg( 'types' ) );
+		
+		$rep = new TypesPage();
+		
+		list( $limit, $offset ) = wfCheckLimits();
+		$rep->doQuery( $offset, $limit );
+		
+		// Ensure locally collected output data is pushed to the output!
+		SMWOutputs::commitToOutputPage( $wgOut );
+		
+		wfProfileOut( 'smwfDoSpecialTypes (SMW)' );	
+	}
+	
 }
 
 class TypesPage extends QueryPage {

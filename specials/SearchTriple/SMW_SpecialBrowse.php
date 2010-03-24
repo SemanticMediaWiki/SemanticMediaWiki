@@ -43,7 +43,6 @@ class SMWSpecialBrowse extends SpecialPage {
 			SMWSpecialBrowse::$incomingvaluescount = 21;
 			SMWSpecialBrowse::$incomingpropertiescount = - 1;
 		}
-
 	}
 
 	/**

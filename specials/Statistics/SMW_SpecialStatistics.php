@@ -1,33 +1,52 @@
 <?php
+
 /**
- * @author Daniel M. Herzig
+ * File holding the SMWSpecialSemanticStatistics class for the Special:SemanticStatistics page. 
  *
- * This special page of the Semantic MediaWiki extension displays some
- * statistics about properties.
- * @file
+ * @file SMW_SpecialStatistics.php
+ * 
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
+ *
+ * @author Daniel M. Herzig
+ * @author Jeroen De Dauw
  */
 
-function smwfExecuteSemanticStatistics() {
-	global $wgOut, $wgLang;
-	$dbr = wfGetDB( DB_SLAVE );
+if ( !defined( 'MEDIAWIKI' ) ) {
+	die( 'Not an entry point.' );
+}
 
-	$semstats = smwfGetStore()->getStatistics();
+class SMWSpecialSemanticStatistics extends SpecialPage {
 
-	$page_table = $dbr->tableName( 'page' );
-	$sql = "SELECT Count(page_id) AS count FROM $page_table WHERE page_namespace=" . SMW_NS_PROPERTY;
-	$res = $dbr->query( $sql );
-	$row = $dbr->fetchObject( $res );
-	$property_pages = $row->count;
-	$dbr->freeResult( $res );
+	public function __construct() {
+		parent::__construct( 'SemanticStatistics' );
+	}
 
-	wfLoadExtensionMessages( 'SemanticMediaWiki' );
-
-	$out = wfMsgExt( 'smw_semstats_text', array( 'parse' ),
-		$wgLang->formatNum( $semstats['PROPUSES'] ), $wgLang->formatNum( $semstats['USEDPROPS'] ),
-		$wgLang->formatNum( $property_pages ), $wgLang->formatNum( $semstats['DECLPROPS'] )
-	);
-
-	$wgOut->addHTML( $out );
+	public function execute( $param ) {
+		global $wgOut, $wgLang;
+		
+		$wgOut->setPageTitle( wfMsg( 'semanticstatistics' ) );
+		
+		$semanticStatistics = smwfGetStore()->getStatistics();
+	
+		$dbr = wfGetDB( DB_SLAVE );
+		
+		$propertyPageAmount = $dbr->estimateRowCount(
+			'page',
+			'*',
+			array(
+				'page_namespace' => SMW_NS_PROPERTY
+			)
+		);
+	
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+	
+		$out = wfMsgExt( 'smw_semstats_text', array( 'parse' ),
+			$wgLang->formatNum( $semanticStatistics['PROPUSES'] ), $wgLang->formatNum( $semanticStatistics['USEDPROPS'] ),
+			$wgLang->formatNum( $propertyPageAmount ), $wgLang->formatNum( $semanticStatistics['DECLPROPS'] )
+		);
+	
+		$wgOut->addHTML( $out );
+	}
+	
 }

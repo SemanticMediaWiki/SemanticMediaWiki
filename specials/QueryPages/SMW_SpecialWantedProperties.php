@@ -1,26 +1,62 @@
 <?php
+
 /**
- * @author Markus Krötzsch
+ * File holding the SMWSpecialWantedProperties class for the Special:WantedProperties page. 
  *
- * This page shows all wanted properties (used but not having a page).
- * @file
+ * @file SMW_SpecialWantedProperties.php
+ * 
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
+ *
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
  */
 
-function smwfDoSpecialWantedProperties() {
-	global $wgOut;
-	wfProfileIn( 'smwfDoSpecialWantedProperties (SMW)' );
-	list( $limit, $offset ) = wfCheckLimits();
-	$rep = new SMWWantedPropertiesPage();
-	$result = $rep->doQuery( $offset, $limit );
-	SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
-	wfProfileOut( 'smwfDoSpecialWantedProperties (SMW)' );
-	return $result;
+if ( !defined( 'MEDIAWIKI' ) ) {
+	die( 'Not an entry point.' );
 }
 
 /**
- * @ingroup SMWQuery
+ * This special page for MediaWiki shows all wanted properties (used but not having a page).
+ * 
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
+ * 
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
+ */
+class SMWSpecialWantedProperties extends SpecialPage {
+	
+	public function __construct() {
+		parent::__construct( 'WantedProperties' );
+	}
+	
+	public function execute( $param ) {
+		wfProfileIn( 'smwfDoSpecialWantedProperties (SMW)' );
+		
+		global $wgOut;
+		
+		$wgOut->setPageTitle( wfMsg( 'wantedproperties' ) );
+		
+		$rep = new SMWWantedPropertiesPage();
+		
+		list( $limit, $offset ) = wfCheckLimits();
+		$rep->doQuery( $offset, $limit );
+		
+		// Ensure locally collected output data is pushed to the output!
+		SMWOutputs::commitToOutputPage( $wgOut );
+		
+		wfProfileOut( 'smwfDoSpecialWantedProperties (SMW)' );	
+	}
+}
+
+/**
+ * This query page shows all wanted properties.
+ * 
+ * @ingroup SMWSpecialPage
+ * @ingroup SpecialPage
+ * 
+ * @author Markus Krötzsch
  */
 class SMWWantedPropertiesPage extends SMWQueryPage {
 
