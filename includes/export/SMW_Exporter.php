@@ -122,7 +122,7 @@ class SMWExporter {
 				$pe = null;
 				$cat_only = false; // basic namespace checking for equivalent categories
 				switch ( $property->getPropertyID() ) {
-					case '_INST': // /TODO: distinguish instanceof and subclassof
+					case '_INST': ///TODO: distinguish instanceof and subclassof
 						$pe = $category_pe;
 					break;
 					case '_CONC':
@@ -134,7 +134,7 @@ class SMWExporter {
 					case '_SUBP':
 						$pe = $subprop_pe;
 					break;
-					case '_REDI': // / TODO: currently no check for avoiding OWL DL illegal redirects is done
+					case '_REDI': /// TODO: currently no check for avoiding OWL DL illegal redirects is done
 						if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
 							$pe = null; // checking the typing here is too cumbersome, smart stores will smush the properties anyway, and the others will not handle them equivalently
 						} else {

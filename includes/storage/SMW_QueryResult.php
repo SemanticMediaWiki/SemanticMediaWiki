@@ -23,16 +23,16 @@
  * @ingroup SMWQuery
  */
 class SMWQueryResult {
-	// / Array of SMWWikiPageValue objects that are the basis for this result
+	/// Array of SMWWikiPageValue objects that are the basis for this result
 	protected $m_results;
-	// / Array of SMWPrintRequest objects, indexed by their natural hash keys
+	/// Array of SMWPrintRequest objects, indexed by their natural hash keys
 	protected $m_printrequests;
-	// / Are there more results than the ones given?
+	/// Are there more results than the ones given?
 	protected $m_furtherres;
-	// / The query object for which this is a result, must be set on create and is the source of
-	// / data needed to create further result links.
+	/// The query object for which this is a result, must be set on create and is the source of
+	/// data needed to create further result links.
 	protected $m_query;
-	// / The SMWStore object used to retrieve further data on demand.
+	/// The SMWStore object used to retrieve further data on demand.
 	protected $m_store;
 
 	/**
@@ -249,7 +249,7 @@ class SMWResultArray {
 		if ( $this->m_content !== false ) return;
 		wfProfileIn( 'SMWQueryResult::loadContent (SMW)' );
 		switch ( $this->m_printrequest->getMode() ) {
-			case SMWPrintRequest::PRINT_THIS: // /NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
+			case SMWPrintRequest::PRINT_THIS: ///NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
 				if ( $this->m_printrequest->getOutputFormat() ) {
 					$res = clone $this->m_result;
 					$res->setOutputFormat( $this->m_printrequest->getOutputFormat() );
@@ -282,7 +282,7 @@ class SMWResultArray {
 					$this->m_content = $newcontent;
 				}
 			break;
-			case SMWPrintRequest::PRINT_CCAT: // /NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
+			case SMWPrintRequest::PRINT_CCAT: ///NOTE: limit is ignored here: limit=0 is irrelevant, and no other limit matters
 				if ( SMWResultArray::$catcacheobj != $this->m_result->getHash() ) {
 					SMWResultArray::$catcache = $this->m_store->getPropertyValues( $this->m_result, SMWPropertyValue::makeProperty( '_INST' ) );
 					SMWResultArray::$catcacheobj = $this->m_result->getHash();

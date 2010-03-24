@@ -468,8 +468,8 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_wikivalue = $this->m_gregvalue;
 	}
 
-	// / make sure that existing values are updated: set the format string and force
-	// / a reconfiguration of all printouts.
+	/// make sure that existing values are updated: set the format string and force
+	/// a reconfiguration of all printouts.
 	public function setOutputFormat( $formatstring ) {
 		if ( $formatstring != $this->m_outformat ) {
 			$this->m_outformat = $formatstring;
@@ -764,7 +764,7 @@ class SMWTimeValue extends SMWDataValue {
 		$this->createTime();
 	}
 
-	// / Calculate a Julian day according to Gregorian calendar rules
+	/// Calculate a Julian day according to Gregorian calendar rules
 	protected function gregorian2JD() {
 		$this->m_jd = 0;
 		$a = intval( ( 14 - $this->getMonth( 'Gr' ) ) / 12 );
@@ -774,7 +774,7 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_format = ( $this->m_day != false ) ? 3 : ( ( $this->m_month != false ) ? 2 : 1 );
 	}
 
-	// / Calculate a Julian day according to Julian calendar rules
+	/// Calculate a Julian day according to Julian calendar rules
 	protected function julian2JD() {
 		if ( $this->m_yearj >= - 4713 ) {
 			$this->m_jd = 0;
@@ -790,7 +790,7 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_format = ( $this->m_dayj != false ) ? 3 : ( ( $this->m_monthj != false ) ? 2 : 1 );
 	}
 
-	// / Convert the Julian Day fraction to the time string.
+	/// Convert the Julian Day fraction to the time string.
 	protected function fracToTime() {
 		$wjd = $this->m_jd + 0.5;
 		$fraction = $wjd - intval( $wjd );
@@ -802,8 +802,8 @@ class SMWTimeValue extends SMWDataValue {
 		$this->m_time = SMWTimeValue::normalizeValue( $hours ) . ":" . SMWTimeValue::normalizeValue( $minutes ) . ":" . SMWTimeValue::normalizeValue( $seconds );
 	}
 
-	// / Convert Julian Day to m_year, m_month, and m_day according to the proper model.
-	// / Do NOT invoke AM or Hillel conversion functions if the JD is less than their respective epochs.
+	/// Convert Julian Day to m_year, m_month, and m_day according to the proper model.
+	/// Do NOT invoke AM or Hillel conversion functions if the JD is less than their respective epochs.
 	protected function JD2Date() {
 		$this->JD2Julian();
 		$this->JD2Gregorian();
@@ -812,7 +812,7 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	// / Convert Julian Day (see createJD) back to a Gregorian date.
+	/// Convert Julian Day (see createJD) back to a Gregorian date.
 	protected function JD2Gregorian() {
 		$j = intval( $this->m_jd + 0.5 ) + 32044;
 		$g = intval( $j / 146097 );
@@ -838,7 +838,7 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	// / Convert Julian Day back to a Julian date.
+	/// Convert Julian Day back to a Julian date.
 	protected function JD2Julian() {
 		$b = intval( $this->m_jd + 0.5 ) + 1524;
 		$c = intval( ( $b - 122.1 ) / 365.25 );

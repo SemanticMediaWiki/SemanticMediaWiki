@@ -244,7 +244,7 @@ class SMWQueryParser {
 			if ( $chunk == '+' ) {
 				// wildcard, ignore for categories (semantically meaningless, everything is in some class)
 			} else { // assume category/concept title
-				// / NOTE: use m_c...prefix to prevent problems with, e.g., [[Category:Template:Test]]
+				/// NOTE: use m_c...prefix to prevent problems with, e.g., [[Category:Template:Test]]
 				$class = Title::newFromText( ( $category ? $this->m_categoryprefix:$this->m_conceptprefix ) . $chunk );
 				if ( $class !== null ) {
 					$desc = $category ? new SMWClassDescription( $class ):new SMWConceptDescription( $class );
@@ -275,18 +275,18 @@ class SMWQueryParser {
 		foreach ( $propertynames as $name ) {
 			if ( $typeid != '_wpg' ) { // non-final property in chain was no wikipage: not allowed
 				$this->m_errors[] = wfMsgForContent( 'smw_valuesubquery', $prevname );
-				return null; // /TODO: read some more chunks and try to finish [[ ]]
+				return null; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 			$property = SMWPropertyValue::makeUserProperty( $name );
 			if ( !$property->isValid() ) { // illegal property identifier
 				$this->m_errors = array_merge( $this->m_errors, $property->getErrors() );
-				return null; // /TODO: read some more chunks and try to finish [[ ]]
+				return null; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 			$typeid = $property->getPropertyTypeID();
 			$inverse = $property->isInverse();
 			$prevname = $name;
 			$properties[] = $property;
-		} // /NOTE: after iteration, $property and $typeid correspond to last value
+		} ///NOTE: after iteration, $property and $typeid correspond to last value
 
 		$innerdesc = null;
 		$continue = true;
@@ -333,14 +333,14 @@ class SMWQueryParser {
 									$open = 0;
 								}
 							break;
-							case '': // /TODO: report error; this is not good right now
+							case '': ///TODO: report error; this is not good right now
 								$continue2 = false;
 							break;
 						}
 						if ( $open != 0 ) {
 							$value .= $chunk;
 						}
-					} // /NOTE: at this point, we normally already read one more chunk behind the value
+					} ///NOTE: at this point, we normally already read one more chunk behind the value
 
 					$dv = SMWDataValueFactory::newPropertyObjectValue( $property );
 					$vd = $dv->getQueryDescription( $value );

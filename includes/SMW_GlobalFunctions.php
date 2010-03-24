@@ -184,7 +184,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	// $wgAutoloadClasses['SMWRAPStore']             = $smwgIP . '/includes/storage/SMW_RAPStore.php';
 	$wgAutoloadClasses['SMWTestStore']              = $smwgIP . '/includes/storage/SMW_TestStore.php';
 
-	// /// Register specials, do that early on in case some other extension calls "addPage" /////
+	///// Register specials, do that early on in case some other extension calls "addPage" /////
 	$wgAutoloadClasses['SMWQueryPage']              = $smwgIP . '/specials/QueryPages/SMW_QueryPage.php';
 	$wgAutoloadClasses['SMWAskPage']                = $smwgIP . '/specials/AskSpecial/SMW_SpecialAsk.php';
 	$wgSpecialPages['Ask']                          = array( 'SMWAskPage' );
@@ -257,7 +257,7 @@ function smwfSetupExtension() {
 	$smwgMasterStore = null;
 	$smwgIQRunningNumber = 0;
 
-	// /// register hooks /////
+	///// register hooks /////
 	require_once( $smwgIP . '/includes/SMW_RefreshTab.php' );
 
 	$wgHooks['InternalParseBeforeLinks'][] = 'SMWParserExtensions::onInternalParseBeforeLinks'; // parse annotations in [[link syntax]]
@@ -285,7 +285,7 @@ function smwfSetupExtension() {
 		$smwgMW_1_14 = false; // assume <= 1.13 API
 	}
 
-	// /// credits (see "Special:Version") /////
+	///// credits (see "Special:Version") /////
 	$wgExtensionCredits['parserhook'][] = array(
 		'path' => __FILE__,
 		'name' => 'Semantic&nbsp;MediaWiki',
@@ -465,7 +465,7 @@ function smwfShowBrowseLink( $skintemplate ) {
 			$text = ucfirst( $text );
 		}
 		return str_replace( ' ', '_', $text );
-		// /// The long and secure way. Use if problems occur.
+		///// The long and secure way. Use if problems occur.
 		// 		$t = Title::newFromText( $text );
 		// 		if ($t != null) {
 		// 			return $t->getDBkey();
@@ -485,7 +485,7 @@ function smwfShowBrowseLink( $skintemplate ) {
 			$text = ucfirst( $text );
 		}
 		return str_replace( '_', ' ', $text );
-		// /// The long and secure way. Use if problems occur.
+		///// The long and secure way. Use if problems occur.
 		// 		$t = Title::newFromText( $text );
 		// 		if ($t != null) {
 		// 			return $t->getText();

@@ -62,11 +62,11 @@ class SMWErrorValue extends SMWDataValue {
 	}
 
 	public function getDBkeys() {
-		return array( $this->getShortWikiText() ); // /TODO: really? (errors are not meant to be saved, or are they?)
+		return array( $this->getShortWikiText() ); ///TODO: really? (errors are not meant to be saved, or are they?)
 	}
 
 	public function getWikiValue() {
-		return $this->getShortWikiText(); // / FIXME: wikivalue must not be influenced by the caption
+		return $this->getShortWikiText(); /// FIXME: wikivalue must not be influenced by the caption
 	}
 
 	public function isValid() {

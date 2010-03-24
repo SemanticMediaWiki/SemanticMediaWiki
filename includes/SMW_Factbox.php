@@ -56,7 +56,7 @@ class SMWFactbox {
 					continue;
 				} elseif ( $property->isUserDefined() ) { // user defined property
 					$property->setCaption( preg_replace( '/[ ]/u', '&nbsp;', $property->getWikiValue(), 2 ) );
-					// / NOTE: the preg_replace is a slight hack to ensure that the left column does not get too narrow
+					/// NOTE: the preg_replace is a slight hack to ensure that the left column does not get too narrow
 					$text .= '<tr><td class="smwpropname">' . $property->getLongWikiText( true ) . '</td><td class="smwprops">';
 				} elseif ( $property->isVisible() ) { // predefined property
 					$text .= '<tr><td class="smwspecname">' . $property->getLongWikiText( true ) . '</td><td class="smwspecs">';

@@ -275,11 +275,11 @@ class SMWConceptDescription extends SMWDescription {
 		return SMW_CONCEPT_QUERY;
 	}
 
-	// /NOTE: getSize and getDepth /could/ query the store to find the real size
-	// / of the concept. But it is not clear if this is desirable anyway, given that
-	// / caching structures may be established for retrieving concepts more quickly.
-	// / Inspecting those would require future requests to the store, and be very
-	// / store specific.
+	///NOTE: getSize and getDepth /could/ query the store to find the real size
+	/// of the concept. But it is not clear if this is desirable anyway, given that
+	/// caching structures may be established for retrieving concepts more quickly.
+	/// Inspecting those would require future requests to the store, and be very
+	/// store specific.
 }
 
 
@@ -415,7 +415,7 @@ class SMWConjunction extends SMWDescription {
 				$this->m_descriptions[] = $description;
 			}
 			// move print descriptions downwards
-			// /TODO: This may not be a good solution, since it does modify $description and since it does not react to future changes
+			///TODO: This may not be a good solution, since it does modify $description and since it does not react to future changes
 			$this->m_printreqs = array_merge( $this->m_printreqs, $description->getPrintRequests() );
 			$description->setPrintRequests( array() );
 		}
@@ -546,13 +546,13 @@ class SMWDisjunction extends SMWDescription {
 					$this->m_descriptions[] = $subdesc;
 				}
 			// } elseif ($description instanceof SMWSomeProperty) {
-			   // /TODO: use subdisjunct. for multiple SMWSomeProperty descs with same property
+			   ///TODO: use subdisjunct. for multiple SMWSomeProperty descs with same property
 			} else {
 				$this->m_descriptions[] = $description;
 			}
 		}
 		// move print descriptions downwards
-		// /TODO: This may not be a good solution, since it does modify $description and since it does not react to future cahges
+		///TODO: This may not be a good solution, since it does modify $description and since it does not react to future cahges
 		$this->m_printreqs = array_merge( $this->m_printreqs, $description->getPrintRequests() );
 		$description->setPrintRequests( array() );
 	}
@@ -582,7 +582,7 @@ class SMWDisjunction extends SMWDescription {
 	}
 
 	public function isSingleton() {
-		// / NOTE: this neglects the unimportant case where several disjuncts describe the same object.
+		/// NOTE: this neglects the unimportant case where several disjuncts describe the same object.
 		if ( count( $this->m_descriptions ) != 1 ) {
 			return false;
 		} else {

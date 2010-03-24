@@ -26,19 +26,19 @@ abstract class SMWLanguage {
 	protected $m_SpecialPropertyAliases = array();
 	protected $m_Namespaces;
 	protected $m_NamespaceAliases = array();
-	// / Twelve strings naming the months. English is always supported in Type:Date, but
-	// / we still need the English defaults to ensure that labels are returned by getMonthLabel()
+	/// Twelve strings naming the months. English is always supported in Type:Date, but
+	/// we still need the English defaults to ensure that labels are returned by getMonthLabel()
 	protected $m_months = array( "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" );
-	// / Twelve strings briefly naming the months. English is always supported in Type:Date, so
-	// / the default is simply empty (no labels in addition to English)
+	/// Twelve strings briefly naming the months. English is always supported in Type:Date, so
+	/// the default is simply empty (no labels in addition to English)
 	protected $m_monthsshort = array();
-	// / Preferred interpretations for dates with 1, 2, and 3 components. There is an array for
-	// / each case, and the constants define the obvious order (e.g. SMW_YDM means "first Year,
-	// / then Day, then Month). Unlisted combinations will not be accepted at all.
+	/// Preferred interpretations for dates with 1, 2, and 3 components. There is an array for
+	/// each case, and the constants define the obvious order (e.g. SMW_YDM means "first Year,
+	/// then Day, then Month). Unlisted combinations will not be accepted at all.
 	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_DMY, SMW_MDY, SMW_YMD, SMW_YDM ) );
-	// / Should English default aliases be used in this language?
+	/// Should English default aliases be used in this language?
 	protected $m_useEnDefaultAliases = true;
-	// / Default English aliases for namespaces (typically used in all languages)
+	/// Default English aliases for namespaces (typically used in all languages)
 	static protected $enNamespaceAliases = array(
 		'Property'      => SMW_NS_PROPERTY,
 		'Property_talk' => SMW_NS_PROPERTY_TALK,
@@ -47,7 +47,7 @@ abstract class SMWLanguage {
 		'Concept'       => SMW_NS_CONCEPT,
 		'Concept_talk'  => SMW_NS_CONCEPT_TALK
 	);
-	// / Default English aliases for namespaces (typically used in all languages)
+	/// Default English aliases for namespaces (typically used in all languages)
 	static protected $enDatatypeAliases = array(
 		'URL'                   => '_uri',
 		'Page'                  => '_wpg',
@@ -62,7 +62,7 @@ abstract class SMWLanguage {
 		'Email'                 => '_ema',
 		'Annotation URI'        => '_anu'
 	);
-	// / Default English aliases for special property names (typically used in all languages)
+	/// Default English aliases for special property names (typically used in all languages)
 	static protected $enPropertyAliases = array(
 		'Has type'          => '_TYPE',
 		'Equivalent URI'    => '_URI',

@@ -91,7 +91,7 @@ class SMWTypeListValue extends SMWDataValue {
 		return $this->m_typevalues;
 	}
 
-// //// Internal helper functions
+////// Internal helper functions
 
 	private function makeOutputText( $type = 0, $linker = null ) {
 		if ( !$this->isValid() ) {

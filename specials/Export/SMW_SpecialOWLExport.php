@@ -716,7 +716,7 @@ class OWLExport {
 			}
 			if ( NS_CATEGORY === $value->getNamespace() ) { // also print elements of categories
 				$options = new SMWRequestOptions();
-				$options->limit = 100; // / Categories can be large, use limit
+				$options->limit = 100; /// Categories can be large, use limit
 				$instances = smwfGetStore()->getPropertySubjects( SMWPropertyValue::makeProperty( '_INST' ), $value, $options );
 				$pinst = SMWPropertyValue::makeProperty( '_INST' );
 				foreach ( $instances as $instance ) {

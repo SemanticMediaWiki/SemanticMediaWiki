@@ -130,7 +130,7 @@ class SMWRecordValue extends SMWContainerValue {
 		return $this->makeOutputText( 4 );
 	}
 
-	// / @todo Allowed values for multi-valued properties are not supported yet.
+	/// @todo Allowed values for multi-valued properties are not supported yet.
 	protected function checkAllowedValues() { }
 
 	/**
@@ -173,7 +173,7 @@ class SMWRecordValue extends SMWContainerValue {
 		return $result;
 	}
 
-// //// Additional API for value lists
+////// Additional API for value lists
 
 	/**
 	 * Create a list (array with numeric keys) containing the datavalue objects
@@ -206,7 +206,7 @@ class SMWRecordValue extends SMWContainerValue {
 			$typelist = smwfGetStore()->getPropertyValues( $this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty( '_LIST' ) );
 			if ( count( $typelist ) == 1 ) {
 				$this->m_typevalues = reset( $typelist )->getTypeValues();
-			} else { // /TODO internalionalize
+			} else { ///TODO internalionalize
 				$this->addError( 'List type not properly specified for this property.' );
 				$this->m_typevalues = array();
 			}
@@ -214,7 +214,7 @@ class SMWRecordValue extends SMWContainerValue {
 		return $this->m_typevalues;
 	}
 
-// //// Internal helper functions
+////// Internal helper functions
 
 	private function makeOutputText( $type = 0, $linker = null ) {
 		if ( !$this->isValid() ) {

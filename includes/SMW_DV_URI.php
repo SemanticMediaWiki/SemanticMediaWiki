@@ -24,9 +24,9 @@ class SMWURIValue extends SMWDataValue {
 	private $m_value = '';
 	// / Only set if a link should be created in the wiki.
 	private $m_url = '';
-	// / Canonical URI for identifying the object
+	/// Canonical URI for identifying the object
 	private $m_uri = '';
-	// / Distinguish different modes (emails, URL, ...)
+	/// Distinguish different modes (emails, URL, ...)
 	private $m_mode = '';
 
 	public function SMWURIValue( $typeid ) {
@@ -84,7 +84,7 @@ class SMWURIValue extends SMWDataValue {
 // 						$this->addError(wfMsgForContent('smw_baduri', $value));
 // 						break;
 // 					}
-// / TODO: the remaining checks need improvement
+/// TODO: the remaining checks need improvement
 // 					// validate last part of URI (after #) if provided
 // 					$uri_ex = explode('#',$value);
 // 					$check2 = "@^[a-zA-Z0-9-_\%]+$@u"; ///FIXME: why only ascii symbols?
@@ -96,7 +96,7 @@ class SMWURIValue extends SMWDataValue {
 // 						break;
 // 					}
 // 					// validate protocol + domain part of URI
-// // 					$check3 = "@^([a-zA-Z]{0,6}:)[a-zA-Z0-9\.\/%]+$@";  //simple regexp for protocol+domain part of URI
+//// 					$check3 = "@^([a-zA-Z]{0,6}:)[a-zA-Z0-9\.\/%]+$@";  //simple regexp for protocol+domain part of URI
 // 					$check3 = "@^([a-zA-Z]:)[a-zA-Z0-9\.\/%]+$@";  //simple regexp for protocol+domain part of URI
 // 					/// FIXME: why {0,6}?
 // 					if (!preg_match($check3, $uri_ex[0],$matches)){
@@ -106,10 +106,10 @@ class SMWURIValue extends SMWDataValue {
 
 					// encode most characters, but leave special symbols as given by user:
 					$this->m_uri = str_replace( array( '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ), array( ':', '/', '#', '@', '?', '=', '&', '%' ), rawurlencode( $value ) );
-					// / NOTE: we do not support raw [ (%5D) and ] (%5E), although they are needed for ldap:// (but rarely in a wiki)
-					// / NOTE: we do not check the validity of the use of the raw symbols -- does RFC 3986 as such care?
-					// / NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
-					// /       this prevents tel: from working directly, but we should have a datatype for this anyway.
+					/// NOTE: we do not support raw [ (%5D) and ] (%5E), although they are needed for ldap:// (but rarely in a wiki)
+					/// NOTE: we do not check the validity of the use of the raw symbols -- does RFC 3986 as such care?
+					/// NOTE: "+" gets encoded, as it is interpreted as space by most browsers when part of a URL;
+					///       this prevents tel: from working directly, but we should have a datatype for this anyway.
 					global $wgUrlProtocols;
 					foreach ( $wgUrlProtocols as $prot ) { // only set URL if wiki-enabled protocol
 						if ( ( $prot == $parts[0] . ':' ) || ( $prot == $parts[0] . '://' ) ) {
@@ -131,7 +131,7 @@ class SMWURIValue extends SMWDataValue {
 					$value = 'tel:' . $value;
 					if ( ( strlen( preg_replace( '/[^0-9]/', '', $value ) ) < 6 ) ||
 						 ( preg_match( '<[-+./][-./]>', $value ) ) ||
-						 ( !SMWURIValue::isValidTelURI( $value ) ) ) { // /TODO: introduce error-message for "bad" phone number
+						 ( !SMWURIValue::isValidTelURI( $value ) ) ) { ///TODO: introduce error-message for "bad" phone number
 						 $this->addError( wfMsgForContent( 'smw_baduri', $this->m_value ) );
 					}
 					$this->m_uri = $value;
@@ -143,7 +143,7 @@ class SMWURIValue extends SMWDataValue {
 					}
 					$check = "#^([_a-zA-Z0-9-]+)((\.[_a-zA-Z0-9-]+)*)@([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*)\.([a-zA-Z]{2,6})$#u";
 					if ( !preg_match( $check, $value ) ) {
-						// /TODO: introduce error-message for "bad" email
+						///TODO: introduce error-message for "bad" email
 						$this->addError( wfMsgForContent( 'smw_baduri', $value ) );
 						break;
 					}

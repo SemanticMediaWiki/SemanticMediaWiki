@@ -177,7 +177,7 @@ class SMWParseData {
 			$updatejobflag = !SMWParseData::equalDatavalues( $oldfactors, $newfactors );
 			if ( $updatejobflag ) {
 				$store = smwfGetStore();
-				// / FIXME: this will kill large wikis! Use incremental updates!
+				/// FIXME: this will kill large wikis! Use incremental updates!
 				$dv = SMWDataValueFactory::newTypeIdValue( '__typ', $title->getDBkey() );
 				$proppages = $store->getPropertySubjects( $ptype, $dv );
 				foreach ( $proppages as $proppage ) {
@@ -203,7 +203,7 @@ class SMWParseData {
 
 		// Finally trigger relevant Updatejobs if necessary
 		if ( $updatejobflag ) {
-			Job::batchInsert( $jobs ); // /NOTE: this only happens if $smwgEnableUpdateJobs was true above
+			Job::batchInsert( $jobs ); ///NOTE: this only happens if $smwgEnableUpdateJobs was true above
 		}
 		return true;
 	}

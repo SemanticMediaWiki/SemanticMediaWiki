@@ -128,7 +128,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 	 * Helper method to find the main representation of a certain unit.
 	 */
 	protected function getUnitID( $unit ) {
-		// / TODO possibly localise some of those strings
+		/// TODO possibly localise some of those strings
 		switch ( $unit ) {
 			case '': case 'K': case 'Kelvin': case 'kelvin': case 'kelvins':
 				return 'K';

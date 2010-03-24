@@ -124,7 +124,7 @@ class SMWSQLHelpers {
 					if ( $row->Null != 'YES' ) {
 						$type .= ' NOT NULL';
 					}
-					if ( $row->Key == 'PRI' ) { // / FIXME: updating "KEY" is not possible, the below query will fail in this case.
+					if ( $row->Key == 'PRI' ) { /// FIXME: updating "KEY" is not possible, the below query will fail in this case.
 						$type .= ' KEY';
 					}
 					if ( $row->Extra == 'auto_increment' ) {
@@ -279,7 +279,7 @@ class SMWSQLHelpers {
 		return true;
 	}
 
-	// / If a receiver is given, report the given message to its reportProgress method.
+	/// If a receiver is given, report the given message to its reportProgress method.
 	protected static function reportProgress( $msg, $receiver = null ) {
 		if ( $receiver !== null ) $receiver->reportProgress( $msg );
 	}

@@ -43,36 +43,36 @@
  */
 abstract class SMWDataValue {
 
-	// / The text label of the respective property or false if none given
+	/// The text label of the respective property or false if none given
 	protected $m_property = null;
-	// / The text label to be used for output or false if none given
+	/// The text label to be used for output or false if none given
 	protected $m_caption;
-	// / True if a value was set.
+	/// True if a value was set.
 	protected $m_isset = false;
-	// / The type id for this value object
+	/// The type id for this value object
 	protected $m_typeid;
-	// / Array of infolink objects
+	/// Array of infolink objects
 	protected $m_infolinks = array();
-	// / output formatting string, see setOutputFormat()
+	/// output formatting string, see setOutputFormat()
 	protected $m_outformat = false;
-	// / usually unstub() checks if this contains useful content,
-	// / and inits the value with setDBkeys() in this case; false while unused
+	/// usually unstub() checks if this contains useful content,
+	/// and inits the value with setDBkeys() in this case; false while unused
 	protected $m_stubvalues = false;
 
-    // / used to control the addition of the standard search link
+    /// used to control the addition of the standard search link
 	private $m_hasssearchlink;
-	// / used to control service link creation
+	/// used to control service link creation
 	private $m_hasservicelinks;
-	// / Array of error text messages, private to allow us to track error insertion (PHP's count() is too slow when called often)
+	/// Array of error text messages, private to allow us to track error insertion (PHP's count() is too slow when called often)
 	private $m_errors = array();
-	// / True if there were any errors
+	/// True if there were any errors
 	private $m_haserrors = false;
 
 	public function __construct( $typeid ) {
 		$this->m_typeid = $typeid;
 	}
 
-// /// Set methods /////
+///// Set methods /////
 
 	/**
 	 * Set the user value (and compute other representations if possible).
@@ -240,7 +240,7 @@ abstract class SMWDataValue {
 		$this->m_haserrors = false;
 	}
 
-// /// Abstract processing methods /////
+///// Abstract processing methods /////
 
 	/**
 	 * Initialise the datavalue from the given value string.
@@ -256,7 +256,7 @@ abstract class SMWDataValue {
 	 */
 	abstract protected function parseDBkeys( $args );
 
-// /// Query support /////
+///// Query support /////
 
 	/**
 	 * Create an SMWDescription object based on a value string that was entered
@@ -308,7 +308,7 @@ abstract class SMWDataValue {
 		}
 	}
 
-// /// Get methods /////
+///// Get methods /////
 
 
 	/**

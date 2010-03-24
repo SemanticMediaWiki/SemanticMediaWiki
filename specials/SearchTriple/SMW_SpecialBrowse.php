@@ -17,19 +17,19 @@
  */
 class SMWSpecialBrowse extends SpecialPage {
 
-	// / int How  many incoming values should be asked for
+	/// int How  many incoming values should be asked for
 	static public $incomingvaluescount = 8;
-	// / int  How many incoming properties should be asked for
+	/// int  How many incoming properties should be asked for
 	static public $incomingpropertiescount = 21;
-	// / SMWDataValue  Topic of this page
+	/// SMWDataValue  Topic of this page
 	private $subject = null;
-	// / Text to be set in the query form
+	/// Text to be set in the query form
 	private $articletext = "";
-	// / bool  To display outgoing values?
+	/// bool  To display outgoing values?
 	private $showoutgoing = true;
-	// / bool  To display incoming values?
+	/// bool  To display incoming values?
 	private $showincoming = false;
-	// / int  At which incoming property are we currently?
+	/// int  At which incoming property are we currently?
 	private $offset = 0;
 
 	/**

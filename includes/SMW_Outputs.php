@@ -31,7 +31,7 @@
  */
 class SMWOutputs {
 
-	// / Protected member function for temporarily storing header items
+	/// Protected member function for temporarily storing header items
 	static protected $mHeadItems = array();
 
 	/**

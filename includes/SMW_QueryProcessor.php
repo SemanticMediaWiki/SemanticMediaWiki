@@ -134,8 +134,8 @@ class SMWQueryProcessor {
 				$query->sortkeys[''] = current( $orders );
 			}
 		} elseif ( $format == 'rss' ) { // unsorted RSS: use *descending* default order
-			// /TODO: the default sort field should be "modification date" (now it is the title, but
-			// /likely to be overwritten by printouts with label "date").
+			///TODO: the default sort field should be "modification date" (now it is the title, but
+			///likely to be overwritten by printouts with label "date").
 			$query->sortkeys[''] = ( current( $orders ) != false ) ? current( $orders ):'DESC';
 		} else { // sort by page title (main column) by default
 			$query->sortkeys[''] = ( current( $orders ) != false ) ? current( $orders ):'ASC';
@@ -257,7 +257,7 @@ class SMWQueryProcessor {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
 		// Query routing allows extensions to provide alternative stores as data sources
 		// The while feature is experimental and is not properly integrated with most of SMW's architecture. For instance, some query printers just fetch their own store.
-		// /TODO: case-insensitive
+		///TODO: case-insensitive
 		global $smwgQuerySources;
 		if ( array_key_exists( "source", $params ) && array_key_exists( $params["source"], $smwgQuerySources ) ) {
 			$store = new $smwgQuerySources[$params["source"]]();

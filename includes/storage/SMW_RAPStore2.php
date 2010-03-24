@@ -46,7 +46,7 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		$this->baseuri  = SMWExporter::expandURI( $wgServer . "/id" );
 	}
 
-// /// Writing methods /////
+///// Writing methods /////
 
 	function deleteSubject( Title $subject ) {
 
@@ -173,7 +173,7 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		return $result;
 	}
 
-// /// Setup store /////
+///// Setup store /////
 
 	/**
 	 * Setup all storage structures properly for using the store. This function performs tasks like
@@ -211,9 +211,9 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 	}
 
 	function drop( $verbose = true ) {
-		// / TODO: undo all DB changes introduced by setup()
-		// / Well, not all, just delete the created model. The database tables must retain, since
-		// / there are only one set of tables for several models.
+		/// TODO: undo all DB changes introduced by setup()
+		/// Well, not all, just delete the created model. The database tables must retain, since
+		/// there are only one set of tables for several models.
 		return parent::drop();
 	}
 
@@ -249,7 +249,7 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		// $this->rapstore->close();
 	}
 
-// /// Additional helpers
+///// Additional helpers
 	/**
 	* Deletes all relations for the given subject from RAP.
 	* This especially also handles n-ary relations recursevly as we would lose them

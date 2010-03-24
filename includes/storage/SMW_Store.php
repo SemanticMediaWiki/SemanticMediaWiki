@@ -118,7 +118,7 @@ class SMWRequestOptions {
  */
 abstract class SMWStore {
 
-// /// Reading methods /////
+///// Reading methods /////
 
 	/**
 	 * Retrieve all data stored about the given subject and return it as a
@@ -173,7 +173,7 @@ abstract class SMWStore {
 	 */
 	abstract function getInProperties( SMWDataValue $object, $requestoptions = null );
 
-// /// Writing methods /////
+///// Writing methods /////
 
 	/**
 	 * Delete all semantic properties that the given subject has. This
@@ -208,7 +208,7 @@ abstract class SMWStore {
 	 */
 	abstract function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 );
 
-// /// Query answering /////
+///// Query answering /////
 
 	/**
 	 * Execute the provided query and return the result as an SMWQueryResult if the query
@@ -218,7 +218,7 @@ abstract class SMWStore {
 	 */
 	abstract function getQueryResult( SMWQuery $query );
 
-// /// Special page functions /////
+///// Special page functions /////
 
 	/**
 	 * Return all properties that have been used on pages in the wiki. The result is an array
@@ -252,7 +252,7 @@ abstract class SMWStore {
 	 */
 	abstract function getStatistics();
 
-// /// Setup store /////
+///// Setup store /////
 
 	/**
 	 * Setup all storage structures properly for using the store. This function performs tasks like

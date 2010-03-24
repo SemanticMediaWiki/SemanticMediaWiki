@@ -15,9 +15,9 @@
  */
 class SMWParserExtensions {
 
-	// / Temporarily store parser as it cannot be passed to call-back functions otherwise.
+	/// Temporarily store parser as it cannot be passed to call-back functions otherwise.
 	protected static $mTempParser;
-	// / Internal state for switching off/on SMW link annotations during parsing
+	/// Internal state for switching off/on SMW link annotations during parsing
 	protected static $mTempStoreAnnotations;
 
 	/**

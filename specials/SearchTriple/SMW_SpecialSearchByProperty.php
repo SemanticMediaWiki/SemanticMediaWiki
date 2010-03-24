@@ -31,17 +31,17 @@ $wgAjaxExportList[] = "smwfGetValues";
  */
 class SMWSearchByProperty extends SpecialPage {
 
-	// / string  Name of the property searched for
+	/// string  Name of the property searched for
 	private $propertystring = "";
-	// / SMWPropertyValue  The property that is searched for
+	/// SMWPropertyValue  The property that is searched for
 	private $property = null;
-	// / string  Name of the value that is searched for
+	/// string  Name of the value that is searched for
 	private $valuestring = "";
-	// / SMWDataValue  The value that is searched for
+	/// SMWDataValue  The value that is searched for
 	private $value = null;
-	// / How many results should be displayed
+	/// How many results should be displayed
 	private $limit = 20;
-	// / At what position are we currently
+	/// At what position are we currently
 	private $offset = 0;
 
 	/**

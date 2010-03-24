@@ -81,7 +81,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		$value = ltrim( rtrim( $value, ' ]' ), ' [' ); // support inputs like " [[Test]] "
 		if ( $value != '' ) {
 			$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
-			// /TODO: Escape the text so users can see any punctuation problems (bug 11666).
+			///TODO: Escape the text so users can see any punctuation problems (bug 11666).
 			if ( $this->m_title === null ) {
 				wfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
@@ -95,7 +95,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->m_dbkeyform = $this->m_title->getDBkey();
 				$this->m_interwiki = $this->m_title->getInterwiki();
 				$this->m_fragment = $this->m_title->getFragment();
-				$this->m_prefixedtext = $this->m_title->getPrefixedText(); // /NOTE: may include interwiki prefix
+				$this->m_prefixedtext = $this->m_title->getPrefixedText(); ///NOTE: may include interwiki prefix
 				$this->m_namespace = $this->m_title->getNamespace();
 				$this->m_id = false; // unset id
 				if ( $this->m_caption === false ) {
@@ -142,7 +142,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( ( $linker !== null ) && ( $this->m_caption !== '' ) && ( $this->m_outformat != '-' ) ) { $this->getTitle(); } // init the Title object, may reveal hitherto unnoticed errors
 		if ( ( $linker === null ) || ( !$this->isValid() ) || ( $this->m_outformat == '-' ) || ( $this->m_caption === '' ) ) {
 			return htmlspecialchars( $this->getCaption() );
-		} elseif ( $this->getNamespace() == NS_MEDIA ) { // / NOTE: this extra case is indeed needed
+		} elseif ( $this->getNamespace() == NS_MEDIA ) { /// NOTE: this extra case is indeed needed
 			return $linker->makeMediaLinkObj( $this->getTitle(), $this->getCaption() );
 		} else {
 			return $linker->makeLinkObj( $this->getTitle(), $this->getCaption() );
@@ -231,7 +231,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				$file = wfFindFile( $this->getTitle() );
 				if ( $file ) {
 					// $name = $file->getFullURL();
-					// / TODO: the following just emulates getFullURL() which is not yet available in MW1.11:
+					/// TODO: the following just emulates getFullURL() which is not yet available in MW1.11:
 					$uri = $file->getUrl();
 					if ( substr( $uri, 0, 1 ) == '/' ) {
 						global $wgServer;
@@ -248,7 +248,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 	}
 
-// /// special interface for wiki page values
+///// special interface for wiki page values
 
 	/**
 	 * Return according Title object or NULL if no valid value was set.
@@ -305,13 +305,13 @@ class SMWWikiPageValue extends SMWDataValue {
 		return $this->m_dbkeyform;
 	}
 
-	// / Get text label for this value.
+	/// Get text label for this value.
 	public function getText() {
 		$this->unstub();
 		return str_replace( '_', ' ', $this->m_dbkeyform );
 	}
 
-	// / Get the prefixed text for this value, including a localised namespace prefix.
+	/// Get the prefixed text for this value, including a localised namespace prefix.
 	public function getPrefixedText() {
 		global $wgContLang;
 		$this->unstub();

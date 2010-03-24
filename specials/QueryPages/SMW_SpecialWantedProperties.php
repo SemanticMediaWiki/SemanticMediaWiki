@@ -61,16 +61,16 @@ class SMWSpecialWantedProperties extends SpecialPage {
 class SMWWantedPropertiesPage extends SMWQueryPage {
 
 	function getName() {
-		// / TODO: should probably use SMW prefix
+		/// TODO: should probably use SMW prefix
 		return "WantedProperties";
 	}
 
 	function isExpensive() {
-		return false; // / disables caching for now
+		return false; /// disables caching for now
 	}
 
 	function isSyndicated() {
-		return false; // /TODO: why not?
+		return false; ///TODO: why not?
 	}
 
 	function getPageHeader() {

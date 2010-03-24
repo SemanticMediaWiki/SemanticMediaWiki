@@ -125,7 +125,7 @@ class SMWTestStore extends SMWStore {
 		return $this->getTestTitles( $requestoptions, SMW_NS_PROPERTY );
 	}
 
-// /// Writing methods /////
+///// Writing methods /////
 
 	function deleteSubject( Title $subject ) {
 	}
@@ -136,7 +136,7 @@ class SMWTestStore extends SMWStore {
 	function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 	}
 
-// /// Query answering /////
+///// Query answering /////
 
 	function getQueryResult( SMWQuery $query ) {
 		$prs = $query->getDescription()->getPrintrequests(); // ignore print requests at deepder levels
@@ -147,7 +147,7 @@ class SMWTestStore extends SMWStore {
 		$qr = array( Title::newFromText( 'Angola' ), Title::newFromText( 'Namibia' ) );
 
 		// create result by executing print statements for everything that was fetched
-		// /TODO: use limit and offset values
+		///TODO: use limit and offset values
 		$result = new SMWQueryResult( $prs );
 		foreach ( $qr as $qt ) {
 			$row = array();
@@ -160,7 +160,7 @@ class SMWTestStore extends SMWStore {
 						$row[] = new SMWResultArray( $this->getSpecialValues( $qt, SMW_SP_INSTANCE_OF ), $pr );
 						break;
 					case SMWPrintRequest::PRINT_PROP:
-						// /TODO: respect given datavalue (desired unit), needs extension of getAttributeValues()
+						///TODO: respect given datavalue (desired unit), needs extension of getAttributeValues()
 						$row[] = new SMWResultArray( $this->getAttributeValues( $qt, $pr->getTitle() ), $pr );
 						break;
 				}
@@ -171,7 +171,7 @@ class SMWTestStore extends SMWStore {
 		return $result;
 	}
 
-// /// Special page functions /////
+///// Special page functions /////
 
 	function getPropertiesSpecial( $requestoptions = null ) {
 		return array();
@@ -189,7 +189,7 @@ class SMWTestStore extends SMWStore {
 		return array( 'PROPUSES' => 0, 'USEDPROPS' => 0, 'DECLPROPS' => 0 );
 	}
 
-// /// Setup store /////
+///// Setup store /////
 
 	function setup( $verbose = true ) {
 		return true;
@@ -205,7 +205,7 @@ class SMWTestStore extends SMWStore {
 	}
 
 
-// /// Private methods /////
+///// Private methods /////
 
 	/**
 	 * Return a set of titles as a (random) answer to some request,

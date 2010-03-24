@@ -15,19 +15,19 @@
  * @ingroup SMW
  */
 class SMWSemanticData {
-	// / Text keys and arrays of datavalue objects.
+	/// Text keys and arrays of datavalue objects.
 	protected $propvals = array();
-	// / Text keys and title objects.
+	/// Text keys and title objects.
 	protected $properties = array();
-	// / Stub property data that is not part of $propvals and $properties yet. Entries use
-	// / property DB keys as keys. The value is an array of DBkey-arrays that define individual
-	// / datavalues. The stubs will be set up when first accessed.
+	/// Stub property data that is not part of $propvals and $properties yet. Entries use
+	/// property DB keys as keys. The value is an array of DBkey-arrays that define individual
+	/// datavalues. The stubs will be set up when first accessed.
 	protected $stubpropvals = array();
-	// / Boolean, stating whether the container holds any normal properties.
+	/// Boolean, stating whether the container holds any normal properties.
 	protected $hasvisibleprops = false;
-	// / Boolean, stating whether the container holds any displayable special properties (some are internal only without a display name).
+	/// Boolean, stating whether the container holds any displayable special properties (some are internal only without a display name).
 	protected $hasvisiblespecs = false;
-	// / Boolean, stating whether this is a stub object. Stubbing might happen on serialisation to safe DB space
+	/// Boolean, stating whether this is a stub object. Stubbing might happen on serialisation to safe DB space
 	public $stubobject = true;
 	/**
 	 *  Boolean, stating whether repeated values should be avoided. Not needing duplicte elimination
@@ -35,11 +35,11 @@ class SMWSemanticData {
 	 *  really acesses their value.
 	 */
 	protected $m_noduplicates;
-	// / Cache for the local version of "Property:"
+	/// Cache for the local version of "Property:"
 	static protected $m_propertyprefix = false;
 
-	// / SMWWikiPageValue object that is the subject of this container.
-	// / Subjects that are NULL are used to represent "internal objects" only.
+	/// SMWWikiPageValue object that is the subject of this container.
+	/// Subjects that are NULL are used to represent "internal objects" only.
 	protected $subject;
 
 	public function __construct( $subject, $noduplicates = true ) {

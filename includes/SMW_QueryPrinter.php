@@ -64,10 +64,10 @@ abstract class SMWResultPrinter {
 	 * parameter for further parser functions. Use only if required.
 	 */
 	protected $hasTemplates = false;
-	// / Incremented while expanding templates inserted during printout; stop expansion at some point
+	/// Incremented while expanding templates inserted during printout; stop expansion at some point
 	private static $mRecursionDepth = 0;
-	// / This public variable can be set to higher values to allow more recursion; do this at your own risk!
-	// / This can be set in LocalSettings.php, but only after enableSemantics().
+	/// This public variable can be set to higher values to allow more recursion; do this at your own risk!
+	/// This can be set in LocalSettings.php, but only after enableSemantics().
 	public static $maxRecursionDepth = 2;
 
 	/**
@@ -80,7 +80,7 @@ abstract class SMWResultPrinter {
 		$this->mInline = $inline;
 		$this->mLinkFirst = ( $smwgQDefaultLinking != 'none' );
 		$this->mLinkOthers = ( $smwgQDefaultLinking == 'all' );
-		$this->mLinker = new Linker(); // /TODO: how can we get the default or user skin here (depending on context)?
+		$this->mLinker = new Linker(); ///TODO: how can we get the default or user skin here (depending on context)?
 	}
 
 	/**
@@ -149,7 +149,7 @@ abstract class SMWResultPrinter {
 				if ( SMWResultPrinter::$mRecursionDepth <= SMWResultPrinter::$maxRecursionDepth ) { // restrict recursion
 					$result = '[[SMW::off]]' . $wgParser->replaceVariables( $result ) . '[[SMW::on]]';
 				} else {
-					$result = ''; // / TODO: explain problem (too much recursive parses)
+					$result = ''; /// TODO: explain problem (too much recursive parses)
 				}
 				SMWResultPrinter::$mRecursionDepth--;
 			} else { // not during parsing, no preprocessing needed, still protect the result
@@ -170,12 +170,12 @@ abstract class SMWResultPrinter {
 					$popt = new ParserOptions();
 					$popt->setEditSection( false );
 					$pout = $wgParser->parse( $result . '__NOTOC__', $wgTitle, $popt );
-					// / NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
+					/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
 					SMWOutputs::requireFromParserOutput( $pout );
 					$result = $pout->getText();
 				}
 			} else {
-				$result = ''; // / TODO: explain problem (too much recursive parses)
+				$result = ''; /// TODO: explain problem (too much recursive parses)
 			}
 			SMWResultPrinter::$mRecursionDepth--;
 		}
