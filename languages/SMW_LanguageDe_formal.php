@@ -11,7 +11,7 @@
 if ( !defined( 'MEDIAWIKI' ) ) die();
 
 global $smwgIP;
-include_once( $smwgIP . '/languages/SMW_LanguageDe.php' );
+include_once( $smwgIP . 'languages/SMW_LanguageDe.php' );
 
 /**
  * Translations for formal German are just the same as for German regarding

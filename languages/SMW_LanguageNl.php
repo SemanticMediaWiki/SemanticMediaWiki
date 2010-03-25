@@ -13,7 +13,7 @@
 if ( !defined( 'MEDIAWIKI' ) ) die();
 
 global $smwgIP;
-include_once( $smwgIP . '/languages/SMW_Language.php' );
+include_once( $smwgIP . 'languages/SMW_Language.php' );
 
 /**
  * Dutch language labels for important SMW labels (namespaces, datatypes,...).

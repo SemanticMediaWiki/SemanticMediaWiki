@@ -31,8 +31,8 @@ $smwgScriptPath = $wgScriptPath . '/extensions/SemanticMediaWiki';
 # If needed, you can also change this path in LocalSettings.php after including
 # this file.
 # #
-$smwgIP = dirname( __FILE__ ) . '/..';
-// $smwgIP = $IP . '/extensions/SemanticMediaWiki';
+$smwgIP = dirname( __FILE__ ) . '/../';
+// $smwgIP = $IP . '/extensions/SemanticMediaWiki/';
 # #
 
 // load global functions
@@ -418,7 +418,7 @@ $smwgTranslate = false;
 # highly experimental at the moment, and may not do what you
 # extect.
 # #
-// $smwgRAPPath = $smwgIP . '/libs/rdfapi-php';
+// $smwgRAPPath = $smwgIP . 'libs/rdfapi-php';
 // $smwgRAPPath = '/another/example/path/rdfapi-php';
 # #
 

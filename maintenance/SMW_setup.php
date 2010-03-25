@@ -73,9 +73,9 @@ if ( array_key_exists( 'b', $options ) ) {
 
 global $smwgIP;
 if ( ! isset( $smwgIP ) )
-     $smwgIP = dirname( __FILE__ ) . '/..';
+     $smwgIP = dirname( __FILE__ ) . '/../';
 
-require_once( $smwgIP . '/includes/SMW_GlobalFunctions.php' );
+require_once( $smwgIP . 'includes/SMW_GlobalFunctions.php' );
 
 if (  array_key_exists( 'delete', $options ) ) {
 	print "\n  Deleting all stored data for $smwgDefaultStore completely!\n  \n\n";

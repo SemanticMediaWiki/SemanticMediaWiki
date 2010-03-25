@@ -110,9 +110,9 @@ ENDS
 
 global $smwgIP;
 if ( ! isset( $smwgIP ) )
-     $smwgIP = dirname( __FILE__ ) . '/..';
+     $smwgIP = dirname( __FILE__ ) . '/../';
 
-require_once( $smwgIP . '/includes/SMW_GlobalFunctions.php' );
+require_once( $smwgIP . 'includes/SMW_GlobalFunctions.php' );
 
 $store = smwfGetStore();
 $db = wfGetDB( DB_SLAVE );
