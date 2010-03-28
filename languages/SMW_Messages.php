@@ -5896,6 +5896,7 @@ $messages['lb'] = array(
 	'smw_nofloat' => '"$1" ass keng Zuel.',
 	'smw_infinite' => 'Zuelen esou grouss wéi "$1" ginn net ënnerstëtzt.',
 	'smw_infinite_unit' => 'D\'Ëmrechnen an d\'Eenheet "$1" huet eng Zuel erginn géi ze grouss ass.',
+	'smw_novalues' => 'Keng Wäerter spezifizéiert.',
 	'smw_unsupportedunit' => 'Umrechnung vun der Eenheet "$1" gëtt net ënnerstëtzt.',
 	'smw_nodatetime' => 'Den Datum "$1" gouf net verstan.',
 	'smw_noclosingbrackets' => 'Eng oder méi "<nowiki>[[</nowiki>" an Ärer Ufro war net zou duerch eng entspriechent "]]".',
