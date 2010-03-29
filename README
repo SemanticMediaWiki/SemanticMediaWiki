@@ -16,7 +16,7 @@ http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user.
 Bugs should be filed at MediaZilla, http://bugzilla.wikimedia.org/.
 
 People who want to contribute work to the project should subscribe to
-the developers list semediawiki-devel@lists.sourceforge.net.
+the developers list, semediawiki-devel@lists.sourceforge.net.
 
 Specific inquiries (e.g. for press releases) should go to Markus Krötzsch,
 markus@semantic-mediawiki.org. Do not contact Markus directly if you just need
@@ -26,8 +26,8 @@ free technical support -- that is what the user list is for.
 
 Development is coordinated by Markus Krötzsch and Denny Vrandecic.
 
-Semantic MediaWiki development is funded by Institut AIFB of
-Universität Karlsruhe, Germany; see http://www.aifb.uni-karlsruhe.de
+Semantic MediaWiki development is partially funded by Institut AIFB of the
+Karlsruhe Institute of Technology in Germany; see http://www.aifb.kit.edu
 Specific development tasks have been supported by the European Union under the
 projects SEKT, NeOn, and Active. SMW has also been supported in the
 Halo project funded by Vulcan Inc., where development is coordinated
@@ -35,56 +35,28 @@ by ontoprise GmbH, Karlsruhe, Germany.
 
 == Contributors ==
 
-* S Page has contributed code, and currently coordinates user support.
-
 * Heiko Haller and Max Völkel contributed to the initial design and basic
   architectural decisions.
 
 * The German company Doccheck (doccheck.com) helped to get the implementation
   going at the early stages of the project, and set up the first testing wiki.
-  The first implementation has been done by Klaus Lassleben.
+  The first implementation was done by Klaus Lassleben.
 
-* Code has been contributed by (in no particular order) Kai Hüner, Fernando Correia,
-  Yaron Koren, Nick Grandy, Jörg Heizmann, Daniel Herzig, Nikolas Iwan, Tobias Matzner,
-  Thomas Bleher, Felix Kratzer, Frank Dengler, Nathan R. Yergler, Daniel Friesen,
-  Fabian Howahl, Jie Bao, Marcel Gsteiger, Roi Avinoam, Richard Cyganiak
+* Code has been contributed by (in no particular order) S Page, Kai Hüner,
+  Fernando Correia, Yaron Koren, Nick Grandy, Jörg Heizmann, Daniel Herzig,
+  Nikolas Iwan, Tobias Matzner, Thomas Bleher, Felix Kratzer, Frank Dengler,
+  Nathan R. Yergler, Daniel Friesen, Fabian Howahl, Jie Bao, Marcel Gsteiger,
+  Roi Avinoam, Richard Cyganiak
 
-* The new logo and related artwork for Semantic MediaWiki (see semanticweb.org)
-  has been designed and realised by Rozana Vrandecic.
+* The logo and related artwork for Semantic MediaWiki (see semanticweb.org)
+  were designed and realised by Rozana Vrandecic.
 
 == Translations ==
 
 Translations to various languages are provided and maintained by many people.
-In general, main contributors can be found in the message file. Special thanks
-are due to Siebrand Mazeland and the Betawiki project for their excellent
-support in that matter.
-
-Before moving to Betawiki, the following people already contributed significantly
-to translating SMW:
-
-* The Jurispedia project (www.jurispedia.org) has initiated and supported
-  some of the translations:
-
-** Translation to Arabic has been contributed by Mahmoud Zouari.
-
-** Translation to French has been contributed by Pierre Matringe.
-
-** Translation to Spanish has been contributed by Javier Calzada Prado and
-   Carmen Jorge García-Reyes of Universidad Carlos III de Madrid.
-
-* Slovak translation has been provided by user helix84.
-
-* Hebrew translation has been provided by Udi Oron.
-
-* Polish translation has been provided by Łukasz Bolikowski.
-
-* Russian translation has been provided by Дмитрий Хорошев (Dmitry Khoroshev)
-
-* Dutch translation has been provided by Siebrand Mazeland
-
-* Chinese translations have been provided by 張致信 (Michael Chang)
-
-* Italian translation has been provided by Davide Eynard and David Laniado
+In general, main contributors can be found in the message files. Special thanks
+are due to Siebrand Mazeland and the translatewiki.net project for the
+excellent translation service they provide.
 
 == Credits to other projects ==
 
@@ -98,5 +70,5 @@ to translating SMW:
 * Many people have contributed to the project by providing helpful comments and
   suggestions. Among them are the members of the Semantic Wiki Interest Group
   (swikig@aifb.uni-karlsruhe.de; see semanticweb.org), the people at the project
-  mailing lists, and, of course, a number of anonymous reviewers. Thanks a lot!
+  mailing lists, and a number of anonymous reviewers. Thanks a lot!
 
