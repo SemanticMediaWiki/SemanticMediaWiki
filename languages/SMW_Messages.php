@@ -7830,6 +7830,7 @@ $messages['pt'] = array(
 	'smw_nofloat' => '“$1” não é um número.',
 	'smw_infinite' => 'Números tão grandes como “$1” não são suportados.',
 	'smw_infinite_unit' => 'A conversão para a unidade “$1” resultou num número demasiado grande.',
+	'smw_novalues' => 'Não foram especificados valores.',
 	'smw_unsupportedprefix' => 'Prefixos em números (“$1”) não são suportados.',
 	'smw_unsupportedunit' => 'Conversão de unidade para unidade “$1” não suportada.',
 	'smw_nodatetime' => 'A data “$1” não foi compreendida.',
