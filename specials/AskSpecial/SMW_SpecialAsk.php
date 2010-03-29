@@ -345,7 +345,7 @@ END;
 		$result = '';
 
 		if ( $this->m_editquery ) {
-			$spectitle = Title::makeTitle( NS_SPECIAL, 'Ask' );
+			$spectitle = $this->getTitleFor( 'Ask' );
 			$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 			           '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
 
