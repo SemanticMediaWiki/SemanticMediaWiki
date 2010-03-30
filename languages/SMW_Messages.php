@@ -7743,6 +7743,7 @@ Avansament stimà dla modìfica corenta:",
  */
 $messages['ps'] = array(
 	'smw_finallistconjunct' => '، او',
+	'smw_printername_list' => 'لړليک',
 	'smw_nodatetime' => 'دا "$1" نېټه و نه پېژندل شوه.',
 	'properties' => 'ځانتياوې',
 	'unusedproperties' => 'ناکارېدلې ځانتياوې',
@@ -7753,6 +7754,7 @@ $messages['ps'] = array(
 	'smw_result_next' => 'راتلونکي',
 	'smw_result_results' => 'پايلې',
 	'smw_result_noresults' => 'اوبښۍ، هېڅ کومه پايله نشته.',
+	'smw_smwadmin_datarefreshstopconfirm' => 'هو، زه ډاډه يم.',
 );
 
 /** Portuguese (Português)
