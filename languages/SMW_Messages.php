@@ -5858,6 +5858,7 @@ $messages['lb'] = array(
 	'smw_printername_auto' => 'Automatesch',
 	'smw_printername_count' => 'Resultater zielen',
 	'smw_printername_csv' => 'Export als CSV',
+	'smw_printername_debug' => 'Debug-Ufro (fir Experten)',
 	'smw_printername_embedded' => 'Säiteninhalter abannen',
 	'smw_printername_json' => 'Export als JSON',
 	'smw_printername_list' => 'Lëscht',
