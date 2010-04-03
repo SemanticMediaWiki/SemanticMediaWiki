@@ -438,7 +438,7 @@ $messages['af'] = array(
 	'smw_ask_defaultformat' => 'standaard',
 	'searchbyproperty' => 'Soek volgens eienskap',
 	'smw_sbv_property' => 'Eienskap:',
-	'smw_sbv_value' => 'Waarde',
+	'smw_sbv_value' => 'Waarde:',
 	'smw_sbv_submit' => 'Vind resultate',
 	'smw_browse_go' => 'Laat waai',
 	'smw_pp_from' => 'Vanaf bladsy',
@@ -1455,14 +1455,14 @@ $messages['bs'] = array(
  * @author Toniher
  */
 $messages['ca'] = array(
-	'smw-desc' => "Fent el vostre wiki més accessible - per les màquines ''i també'' pels humans ([http://semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])",
+	'smw-desc' => 'Fent el vostre wiki més accessible - per a les màquines «i també» per als humans ([http://semantic-mediawiki.org/wiki/Help:User_manual documentació en línia])',
 	'smw_edithelp' => "Ajuda d'edició en propietats",
 	'smw_viewasrdf' => 'Canal RDF',
 	'smw_finallistconjunct' => ', i',
 	'smw_factbox_head' => 'Dades sobre $1',
 	'smw_isspecprop' => 'Aquesta propietat és una propietat especial en aquest wiki',
 	'smw_isknowntype' => "Aquest tipus està entre els els tipus de dades estàndards d'aquest wiki",
-	'smw_isaliastype' => 'Aquest tipus és un àlies per el tipus de dada «$1».',
+	'smw_isaliastype' => 'Aquest tipus és un àlies per al tipus de dada «$1».',
 	'smw_isnotype' => "Aquest tipus «$1» no és un tipus de dada estàndard en el wiki, i tampoc no s'ha donat una definició d'usuari.",
 	'smw_concept_description' => 'Descripció del concepte «$1».',
 	'smw_no_concept_namespace' => "Els conceptes només poden ser definits en pàgines dins l'espai de noms (''namespace'') Concept:",
@@ -1470,22 +1470,22 @@ $messages['ca'] = array(
 	'smw_concept_cache_miss' => "El concepte \"\$1\" no pot ser utilitzat per ara, donat que la configuració del wiki s'ha de computar ''off-line''.
 Si el problema persisteix passat cert temps, demana a l'administrador del teu wiki que posi disponible aquest concepte.",
 	'smw_noinvannot' => 'No es poden assignar valors a propietats inverses.',
-	'smw_baduri' => 'Les URIs del formulari "$1" no són permeses.',
+	'smw_baduri' => 'Les URI del formulari «$1» no són permeses.',
 	'smw_printername_auto' => 'Automàtic',
-	'smw_printername_count' => 'Resultats del compte',
+	'smw_printername_count' => 'Resultats del recompte',
 	'smw_printername_csv' => 'exportació a CSV',
-	'smw_printername_debug' => "Petició de ''debugat'' (per experts)",
+	'smw_printername_debug' => 'Consulta de depuració (per a experts)',
 	'smw_printername_embedded' => 'Continguts de pàgina incrustada',
-	'smw_printername_json' => 'exportar a JSON',
+	'smw_printername_json' => 'exportació a JSON',
 	'smw_printername_list' => 'Llista',
 	'smw_printername_ol' => 'Enumeració',
-	'smw_printername_ul' => 'Ítemització',
-	'smw_printername_rss' => 'Exportar a RSS',
+	'smw_printername_ul' => 'Itemització',
+	'smw_printername_rss' => 'exportació a RSS',
 	'smw_printername_table' => 'Taula',
 	'smw_printername_broadtable' => 'Taula ampla',
 	'smw_printername_template' => 'Plantilla',
 	'smw_paramdesc_limit' => 'El nombre màxim de resultats a retornar',
-	'smw_paramdesc_headers' => 'Mostrar les capçaleres / noms de les propietats',
+	'smw_paramdesc_headers' => 'Mostra les capçaleres / noms de les propietats',
 	'smw_paramdesc_mainlabel' => "L'etiqueta que es donarà al nom de la pàgina principal",
 	'smw_paramdesc_link' => 'Mostra els valors com a enllaços',
 	'smw_paramdesc_intro' => "El text que apareixerà abans que el resultat de la consulta, si n'hi hagués",
@@ -1495,6 +1495,8 @@ Si el problema persisteix passat cert temps, demana a l'administrador del teu wi
 	'smw_paramdesc_sep' => 'El separador entre valors',
 	'smw_paramdesc_template' => "El nom d'una plantilla amb la qual mostrar els llistats",
 	'smw_paramdesc_columns' => 'El nombre de columnes amb les quals mostrar els resultats (per defecte és $1)',
+	'smw_paramdesc_embedformat' => "L'etiqueta HTML que s'utilitza per a definir les capçaleres",
+	'smw_paramdesc_embedonly' => 'No mostris capçaleres',
 	'smw_paramdesc_rsstitle' => "El text que s'utilitzarà com a títol del canal",
 	'smw_paramdesc_rssdescription' => "El text que s'utilitzarà com a descripció del canal",
 	'smw_iq_disabled' => 'Les peticions semàntiques estan deshabilitades per aquest wiki',
@@ -1519,6 +1521,7 @@ Si el problema persisteix passat cert temps, demana a l'administrador del teu wi
 	'smw_nofloat' => '"$1" no és un nombre.',
 	'smw_infinite' => 'No són soportats nombres tant llargs com "$1".',
 	'smw_infinite_unit' => 'La conversió en la unitat "$1" ha donat un nombre massa llarg.',
+	'smw_novalues' => "No s'ha especificat cap valor.",
 	'smw_unsupportedprefix' => 'No són suportats prefixes per nombres ("$1").',
 	'smw_unsupportedunit' => 'La conversió d\'unitats per la unitat "$1" no està suportada.',
 	'smw_nodatetime' => 'No s\'ha entès la data "$1".',
@@ -1553,14 +1556,23 @@ Fes un bolcat de les teves dades (''backup'') abans de fer-la servir.",
 	'exportrdf' => 'Exporta les pàgines a RDF',
 	'smw_exportrdf_docu' => "Aquesta pàgina permet obtenir dades en format RDF d'una pàgina del wiki.
 Per exportar pàgines, entra els títols a la caixa de text següent, un títol per línia.",
+	'smw_exportrdf_lastdate' => "No exportis pàgines que no s'han canviat des del punt donat  en el temps.",
 	'smw_exportrdf_submit' => 'Exporta',
 	'properties' => 'Propietats',
 	'smw_properties_docu' => "S'utilitzen les propietats següents al wiki.",
+	'smw_property_template' => '$1 de tipus $2 ($3)',
+	'smw_propertylackspage' => 'Cal descriure totes les propietats amb una pàgina!',
+	'smw_propertylackstype' => "No s'ha especificat cap tipus per a la propietat (s'assumeix el tipus $1 per ara).",
 	'smw_propertyhardlyused' => 'Propietats pràcticament no utilitzades al llarg del wiki!',
 	'unusedproperties' => 'Propietats no utilitzades',
+	'smw_unusedproperty_template' => '$1 del tipus $2',
 	'wantedproperties' => 'Propietats per definir',
-	'smw_purge' => 'Actualitzar',
+	'smw_wantedproperties_docu' => "Les propietats següents s'utilitzen en el wiki però encara no tenen cap pàgina per a descriure-les.",
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|ús|usos}})',
+	'tooltip-purge' => 'Feu clic ací per a actualitzar totes les consultes i plantilles de la pàgina.',
+	'smw_purge' => 'Refresca',
 	'types' => 'Tipus',
+	'smw_typeunits' => 'Unitats de mesura del tipus «$1»: $2',
 	'semanticstatistics' => 'Estadístiques semàntiques',
 	'ask' => 'Cerca semàntica',
 	'smw_ask_sortby' => 'Ordena per columna (opcional)',
@@ -1569,29 +1581,39 @@ Per exportar pàgines, entra els títols a la caixa de text següent, un títol 
 	'smw_add_sortcondition' => "Afegeix una condició d'ordenació",
 	'smw_ask_hidequery' => 'Amaga la consulta',
 	'smw_ask_queryhead' => 'Consulta',
+	'smw_ask_format_as' => 'Formata com:',
 	'smw_ask_defaultformat' => 'per defecte',
 	'smw_ask_otheroptions' => 'Altres opcions',
 	'searchbyproperty' => 'Cerca per propietat',
 	'smw_sbv_property' => 'Propietat:',
 	'smw_sbv_value' => 'Valor:',
-	'browse' => 'Explorar el wiki',
-	'smw_browselink' => 'Explorar propietats',
+	'smw_sbv_submit' => 'Troba els resultats',
+	'browse' => 'Explora el wiki',
+	'smw_browselink' => 'Explora les propietats',
 	'smw_browse_go' => 'Vés-hi',
 	'smw_browse_no_outgoing' => 'La pàgina no té cap propietat.',
 	'smw_browse_no_incoming' => 'No enllaça cap propietat a la pàgina.',
 	'smw_inverse_label_default' => '$1 de',
+	'pageproperty' => 'Cerca de les propietats de la pàgina',
+	'smw_pp_from' => 'De la pàgina',
 	'smw_pp_type' => 'Propietat',
-	'smw_pp_submit' => 'Trobar resultats',
+	'smw_pp_submit' => 'Troba els resultats',
 	'smw_result_prev' => 'Anterior',
 	'smw_result_next' => 'Següent',
 	'smw_result_results' => 'Resultats',
 	'smw_result_noresults' => 'Sense resultats.',
-	'smw_smwadmin_announce' => 'Anuncia el teu wiki',
+	'smw_smwadmin_return' => 'Torna a $1',
+	'smw_smwadmin_db' => 'Instal·lació de la base de dades i actualització',
+	'smw_smwadmin_announce' => 'Feu conèixer el vostre wiki',
 	'smw_smwadmin_datarefresh' => 'Reparació de les dades i actualització',
-	'smw_smwadmin_datarefreshbutton' => "Començar l'actualització de dades",
-	'smw_smwadmin_datarefreshstop' => 'Aturar aquesta actualització',
+	'smw_smwadmin_datarefreshbutton' => "Inicia l'actualització de dades",
+	'smw_smwadmin_datarefreshstop' => "Atura l'actualització",
 	'smw_smwadmin_datarefreshstopconfirm' => "Sí, n'estic segur.",
+	'smw_smwadmin_support' => 'Com obtenir assistència',
+	'smw_smwadmin_mediazilla' => 'Es poden enviar informes d\'error al <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_adminlinks_datastructure' => 'Estructura de dades',
+	'smw_adminlinks_displayingdata' => 'Visualització de les dades',
+	'smw_adminlinks_inlinequerieshelp' => 'Ajuda de les consultes en línia',
 );
 
 /** Chamorro (Chamoru)
@@ -3653,6 +3675,7 @@ Gschätzte Fortschritt vum Update, wu grad lauft:',
 );
 
 /** Hebrew (עברית)
+ * @author Amire80
  * @author Rotemliss
  * @author Udi Oron אודי אורון
  * @author YaronSh
@@ -3801,7 +3824,7 @@ $messages['he'] = array(
 	'smw_sbv_docu' => 'חיפוש כל הדפים שיש להם מאפיין וערך מסוימים.',
 	'smw_sbv_novalue' => 'כתבו ערך תקין למאפיין, או צפו בכל ערכי המאפיינים עבור "$1".',
 	'smw_sbv_displayresult' => 'רשימת כל הדפים שיש להם את המאפיין "$1" עם הערך "$2"',
-	'smw_sbv_displayresultfuzzy' => 'רשימת כל הדפים שיש להם את המאפיין "$1" עם הערך "$2".
+	'smw_sbv_displayresultfuzzy' => 'רשימת כל הדפים בעלי המאפיין "$1" עם הערך "$2".
 מאחר שיש רק מעט תוצאות, יוצגו גם ערכים סמוכים.',
 	'smw_sbv_property' => 'מאפיין:',
 	'smw_sbv_value' => 'ערך:',
@@ -3843,8 +3866,8 @@ $messages['he'] = array(
 הפונקציה שלהלן מוודאת שמסד הנתונים שלכם מוגדר כראוי.
 השינויים שנערכים בשלב זה אינם משפיעים על שאר בסיס הנתונים של מדיה־ויקי, וניתן לבטלם בקלות אם תרצו בכך.
 ניתן להפעיל את פונקציית ההגדרה הזו מספר פעמים מבלי לגרום לנזק כלשהו, אך היא נדרשת רק פעם אחת עם ההתקנה או עם שדרוג.',
-	'smw_smwadmin_permissionswarn' => 'במידה שהפעולה נכשלת עם שגיאות SQL, לבסיס נתוני המשתמשים בו הוויקי שלכם עושה שימוש (בדקו את קובץ ה־LocalSettings.php שלכם) אין את ההרשאות המתאימות.
-אנא הוסיפו למשתמש זה הרשאות נוספות ליצירת ומחיקת טבלאות, כתבו את פרטי גישת העל לבסיס הנתונים לקובץ LocalSetting.php באופן זמני, או השתמשו בסקריפט התחזוקה <tt>SMW_setup.php</tt> שלו יש את היכולת להשתמש בהרשאות של הקובץ AdminSettings.php.',
+	'smw_smwadmin_permissionswarn' => 'אם הפעולה נכשלת עם שגיאות SQL, למשתמש של בסיס הנתונים של אתר הוויקי שלכם (תוכלו למצוא אותו בקובץ ה־LocalSettings.php שלכם) אין הרשאות מתאימות.
+אנא הוסיפו למשתמש זה הרשאות ליצירה ולמחיקה של טבלאות, כתבו את פרטי גישת העל לבסיס הנתונים לקובץ LocalSetting.php באופן זמני, או השתמשו בסקריפט התחזוקה <tt>SMW_setup.php</tt> שיכול להשתמש בהרשאות של הקובץ AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'אתחול או שדרוג טבלאות',
 	'smw_smwadmin_announce' => 'הכריזו על הוויקי שלכם',
 	'smw_smwadmin_announcedocu' => 'למדיה־ויקי הסמנטי ישנו שירות מקוון להכרזה על אתרי ויקי סמנטיים חדשים.
@@ -3853,10 +3876,10 @@ $messages['he'] = array(
 	'smw_smwadmin_announcebutton' => 'לחצו על הכפתור הבא כדי לשלוח את כתובת הויקי שלכם לשירות זה.
 השירות לא ירשום אתרי ויקי שאינם נגישים לכלל, והמידע שיישמר יהיה מידע הזמין לכלל בלבד.',
 	'smw_smwadmin_datarefresh' => 'תיקון ושידרוג נתונים',
-	'smw_smwadmin_datarefreshdocu' => 'ניתן לשחזר את כל נתוני המדיה־ויקי הסמנטי בהתבסס על התוכן הנוכחי של הוויקי.
-פעולה זו עשויה להיות שימושית לתיקון נתונים שגויים או כדי לעדכן את הנתונים במידה שהמבנה הפנימי שונה לאור שידרוג התוכנה.
-העדכון מופעל במתכונת דף לאחר דף והוא לא יושלם מיידית.
-המידע שלהלן מציג האם העדכון מתבצע כעת ומאפשר לכם להתחיל או להפסיק את העדכונים (אלא אם כן תכונה זו בוטלה על ידי מנהל האתר).',
+	'smw_smwadmin_datarefreshdocu' => 'ניתן לשחזר את כל הנתונים של מדיה־ויקי הסמנטי לפי התוכן הנוכחי של אתר הוויקי.
+פעולה זו עשויה להיות שימושית לתיקון נתונים שגויים או לעדכון הנתונים אם המבנה הפנימי שונה לאור שדרוג התוכנה.
+העדכון מופעל דף־דף והוא לא יושלם מיד.
+המידע להלן מראה האם העדכון מתבצע כעת ומאפשר לכם להתחיל או להפסיק את העדכונים (אלא אם כן תכונה זו בוטלה על ידי מנהל האתר).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>כבר מתבצע תהליך עדכון.</strong>
 מצב בו העדכון מתקדם לאט הוא מצב נורמלי, מאחר שהנתונים מתעדכנים בחלקים קטנים בכל פעם שמשתמש ניגש לוויקי.
 כדי לסיים את העדכון מהר יותר, תוכלו להפעיל את סקריפט התחזוקה <tt>runJobs.php</tt> (השתמשו באפשרות <tt>--maxjobs 1000</tt> כדי להגביל את מספר העדכונים שמתבצעים בבת אחת).
@@ -5142,6 +5165,7 @@ Progresso stimato dell'aggiornamento in corso:",
  * @author Aotake
  * @author Fryed-peach
  * @author Hosiryuhosi
+ * @author Naohiro19
  * @author 青子守歌
  */
 $messages['ja'] = array(
@@ -5210,6 +5234,7 @@ $messages['ja'] = array(
 	'smw_nofloat' => '「$1」は数ではありません。',
 	'smw_infinite' => '「$1」以上の数には対応しません。',
 	'smw_infinite_unit' => '単位「$1」への変換結果は数として大きすぎます。',
+	'smw_novalues' => '値が指定されていません。',
 	'smw_unsupportedprefix' => '数値のプレフィクス ($1) には対応しません。',
 	'smw_unsupportedunit' => '単位「$1」への変換には対応しません。',
 	'smw_nodatetime' => '「$1」という日付は理解できませんでした。',
