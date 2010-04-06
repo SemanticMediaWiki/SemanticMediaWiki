@@ -40,8 +40,6 @@ class SMWTestStore extends SMWStore {
 				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Float' ) );
 			} elseif ( mb_substr_count( $name, 'DATE' ) > 0 ) {
 				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Date' ) );
-			} elseif ( mb_substr_count( $name, 'COORD' ) > 0 ) { // TODO: Move this to Semantic Maps?
-				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Geographic coordinate' ) );
 			} elseif ( mb_substr_count( $name, 'ENUM' ) > 0 ) {
 				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Enumeration' ) );
 			} else {
@@ -85,9 +83,6 @@ class SMWTestStore extends SMWStore {
 			break;
 			case 'enum':
 				$valarray = array( 'enum_val1', 'enum_val3', 'enum_val2' );
-			break;
-			case 'geocoords':
-				$valarray = array( '38&#176;1&#8242;12&#8243; N, 122&#176;1&#8242;1.2&#8243; W' );
 			break;
 			case 'string':
 				$valarray = array( 'Test', 'Some longer string', 'Üničode', 'Some [[markup]]', '&lt;b&gt;Bug if bold!&lt;/b&gt;' );
