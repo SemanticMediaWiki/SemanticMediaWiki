@@ -1250,6 +1250,7 @@ $messages['bg'] = array(
  * @author Y-M D
  */
 $messages['br'] = array(
+	'smw_edithelp' => 'Skoazell a ra evit skrivañ darempredoù ha perzhioù',
 	'smw_viewasrdf' => 'Gwelet evel RDF',
 	'smw_finallistconjunct' => ', ha',
 	'smw_factbox_head' => 'Fedoù diwar-benn $1',
@@ -1261,6 +1262,7 @@ $messages['br'] = array(
 	'smw_printername_count' => "Kontañ an disoc'hoù",
 	'smw_printername_csv' => 'ezporzhiadur CSV',
 	'smw_printername_debug' => 'Reked dizreinañ (evit an arbennigourien)',
+	'smw_printername_embedded' => "Danvez ar pajennoù ensoc'het",
 	'smw_printername_json' => 'ezporzhiadur JSON',
 	'smw_printername_list' => 'Roll',
 	'smw_printername_ol' => 'Niverenniñ',
@@ -4932,6 +4934,7 @@ $messages['io'] = array(
 );
 
 /** Italian (Italiano)
+ * @author Civvì
  * @author Cruccone
  * @author Darth Kule
  * @author Davide Eynard, David Laniado
@@ -5006,6 +5009,7 @@ $messages['it'] = array(
 	'smw_nofloat' => '“$1” non &egrave; un numero.',
 	'smw_infinite' => 'I numeri grandi come "$1" non sono supportati.',
 	'smw_infinite_unit' => 'La conversione nell\'unità di misura "$1" ha generato un numero che è troppo grande.',
+	'smw_novalues' => 'Nessun valore specificato',
 	'smw_unsupportedprefix' => 'I prefissi per i numeri (“$1”) non sono supportati.',
 	'smw_unsupportedunit' => "La conversione per l'unit&agrave; di misura “$1” non &egrave; supportata.",
 	'smw_nodatetime' => 'Non &egrave; stato possibile comprendere la data “$1”.',
@@ -6276,7 +6280,7 @@ $messages['ml'] = array(
 	'smw_ask_submit' => 'ഫലങ്ങള്‍ കാണുക',
 	'smw_sbv_value' => 'മൂല്യം',
 	'smw_sbv_submit' => 'ഫലങ്ങള്‍ കാണുക',
-	'browse' => 'വിക്കിയില്‍ പരതുക',
+	'browse' => 'വിക്കിയിൽ പരതുക',
 	'smw_browse_go' => 'പോകൂ',
 	'smw_pp_from' => 'ഈ താളില്‍ നിന്ന്',
 	'smw_pp_submit' => 'ഫലങ്ങള്‍ കാണുക',
@@ -7832,11 +7836,11 @@ $messages['pt'] = array(
 	'smw_paramdesc_limit' => 'O número máximo de resultados a devolver',
 	'smw_paramdesc_headers' => 'Apresentar os nomes dos cabeçalhos e propriedades',
 	'smw_paramdesc_mainlabel' => 'A etiqueta a atribuir ao nome da página principal',
-	'smw_paramdesc_link' => 'Apresentar os valores como ligações',
+	'smw_paramdesc_link' => 'Apresentar os valores na forma de links',
 	'smw_paramdesc_intro' => 'O texto a apresentar antes dos resultados da consulta, caso existam',
 	'smw_paramdesc_outro' => 'O texto a apresentar após os resultados da consulta, caso existam',
 	'smw_paramdesc_default' => 'O texto a apresentar se a consulta não produziu resultados',
-	'smw_paramdesc_searchlabel' => 'O texto na ligação para os resultados',
+	'smw_paramdesc_searchlabel' => 'O texto no link para os resultados',
 	'smw_paramdesc_sep' => 'O separador de valores',
 	'smw_paramdesc_template' => 'O nome da predefinição com a qual são apresentadas as impressões',
 	'smw_paramdesc_columns' => 'O número de colunas em que os resultados serão apresentados (por omissão, $1)',
@@ -7846,7 +7850,7 @@ $messages['pt'] = array(
 	'smw_paramdesc_rssdescription' => "O texto que será usado como descrição do ''feed''",
 	'smw_iq_disabled' => 'Consultas semânticas foram impossibilitadas nesta wiki.',
 	'smw_iq_moreresults' => '… mais resultados',
-	'smw_iq_nojs' => 'Por favor, use um navegador com JavaScript activado para visualizar este elemento.',
+	'smw_iq_nojs' => 'Por favor, use um browser com JavaScript activado para visualizar este elemento.',
 	'smw_iq_altresults' => 'Navegar pela lista de resultados directamente.',
 	'smw_unknown_importns' => 'As funções de importação não estão disponíveis para o espaço nominal “$1”.',
 	'smw_nonright_importtype' => '$1 só pode ser usado com páginas no espaço nominal “$2”.',
@@ -7932,7 +7936,7 @@ Cada tipo de dados tem uma página onde pode ser fornecida informação adiciona
 Algumas das propriedades existentes poderão ser [[Special:UnusedProperties|propriedades não usadas]].
 As propriedades que não possuem uma página poderão ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
 	'uriresolver' => 'Resolvedor de URIs',
-	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>. Trata que humanos não se tornem em sítios web.',
+	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>. Certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'ask' => 'Pesquisa semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
 	'smw_ask_ascorder' => 'Ascendente',
@@ -8002,8 +8006,8 @@ Esta função de preparação pode ser executada múltiplas vezes sem causar qua
 Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu super-utilizador (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais presentes em AdminSettings.php.",
 	'smw_smwadmin_dbbutton' => 'Inicializar ou evoluir tabelas',
 	'smw_smwadmin_announce' => 'Anuncie a sua wiki',
-	'smw_smwadmin_announcedocu' => 'O Semantic MediaWiki tem um serviço web para anunciar novos sítios wiki semânticos.
-Este é usado para manter uma lista de sítios públicos que usam o Semantic MediaWiki, principalmente para auxiliar o <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projeto Semantic MediaWiki</a> a obter um ideia geral das utilizações típicas do Semantic MediaWiki.
+	'smw_smwadmin_announcedocu' => 'O Semantic MediaWiki tem um serviço web para anunciar novos sites wiki semânticos.
+Este é usado para manter uma lista de sites públicos que usam o Semantic MediaWiki, principalmente para auxiliar o <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projeto Semantic MediaWiki</a> a obter um ideia geral das utilizações típicas do Semantic MediaWiki.
 Veja a página inicial do Semantic MediaWiki para <a href="http://semantic-mediawiki.org/wiki/Registry">mais informações sobre este serviço</a>.',
 	'smw_smwadmin_announcebutton' => 'Clique o seguinte botão para submeter a URL da sua wiki ao serviço.
 O serviço não registará wikis que não estejam publicamente acessíveis e apenas armazenará informação publicamente acessível.',
@@ -8011,7 +8015,7 @@ O serviço não registará wikis que não estejam publicamente acessíveis e ape
 	'smw_smwadmin_datarefreshdocu' => 'É possível restaurar todos os dados do Semantic MediaWiki baseado no conteúdo actual da wiki.
 Isto pode ser útil para reparar dados corrompidos ou para refrescar os dados se o formato interno tiver sido alterado devido a alguma evolução do software.
 A actualização é executada página a página e não ficará completa de imediato.
-Abaixo é mostrado se uma actualização está a decorrer e permite-lhe iniciar ou parar actualizações (a menos que esta funcionalidade tenha sido desactivada por um administrador do sítio).',
+Abaixo é mostrado se uma actualização está a decorrer e permite-lhe iniciar ou parar actualizações (a menos que esta funcionalidade tenha sido desactivada por um administrador do site).',
 	'smw_smwadmin_datarefreshprogress' => "<strong>Já se encontra a decorrer uma actualização.</strong>
 É normal que a actualização progrida lentamente já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acede à wiki.
 Para terminar esta actualização mais rapidamente, pode executar o ''script'' de manutenção do MediaWiki <tt>runJobs.php</tt> (use a opção <tt>--maxjobs 1000</tt> para restringir o número de actualizações feitas em cada bloco).
