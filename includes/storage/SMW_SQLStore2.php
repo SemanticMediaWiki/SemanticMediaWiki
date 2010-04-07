@@ -133,7 +133,6 @@ class SMWSQLStore2 extends SMWStore {
 		'_num'  => 'smw_atts2', // Number type
 		'_tem'  => 'smw_atts2', // Temperature type
 		'_dat'  => 'smw_atts2', // Time type
-		'_geo'  => 'smw_atts2', // Geographic coordinates type
 		'_boo'  => 'smw_atts2', // Boolean type
 		'_rec'  => 'smw_rels2', // Value list type (internal object)
 		// Special types are not avaialble directly for users (and have no local language name):
@@ -168,7 +167,6 @@ class SMWSQLStore2 extends SMWStore {
 		'_num'  => array( 'tfu', 1, 0 ),  // Number type
 		'_tem'  => array( 'tfu', 1, 0 ),  // Temperature type
 		'_dat'  => array( 'tf', 1, 0 ),   // Time type
-		'_geo'  => array( 't', 0, 0 ),    // Geographic coordinates type
 		'_boo'  => array( 't', 0, 0 ),    // Boolean type
 		'_rec'  => array( 'tnwt', 0, - 1 ),// Value list type (internal object)
 		// Special types are not avaialble directly for users (and have no local language name):
@@ -2080,6 +2078,8 @@ class SMWSQLStore2 extends SMWStore {
 					                              '_REDI' );
 		SMWSQLStore2::$prop_tables['smw_redi2']->idsubject = false;
 
+		wfRunHooks( 'SMWPropertyTables', array( &SMWSQLStore2::$prop_tables ) );
+		
 		return SMWSQLStore2::$prop_tables;
 	}
 
