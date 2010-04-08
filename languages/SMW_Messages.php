@@ -6957,6 +6957,7 @@ Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om
 	'smw_nofloat' => '«$1» er ikke et tall.',
 	'smw_infinite' => 'Tall så store som «$1» støttes ikke.',
 	'smw_infinite_unit' => 'Konvertering til enheten «$1» resulterte i et tall som er for stort.',
+	'smw_novalues' => 'Ingen verdier angitt.',
 	'smw_unsupportedprefix' => 'Prefiks for tall («$1») støttes ikke.',
 	'smw_unsupportedunit' => 'Enhetskonvertering for enheten «$1» støttes ikke.',
 	'smw_nodatetime' => 'Datoen «$1» ble ikke forstått.',
