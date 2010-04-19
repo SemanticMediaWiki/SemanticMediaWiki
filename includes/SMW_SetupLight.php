@@ -224,7 +224,7 @@ function smwfSetupExtension() {
 	$smwgIQRunningNumber = 0;
 
 	///// register hooks /////
-	require_once( $smwgIP . 'includes/SMW_RefreshTab.php' );
+// 	require_once( $smwgIP . 'includes/SMW_RefreshTab.php' );
 
 	$wgHooks['smwInitDatatypes'][] = 'smwfUnregisterDatatypes'; // remove registration for default datatypes that are not part of SMWLight
 	$wgHooks['InternalParseBeforeLinks'][] = 'SMWParserExtensions::onInternalParseBeforeLinks'; // parse annotations in [[link syntax]]
