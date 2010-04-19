@@ -652,38 +652,6 @@ abstract class SMWDataValue {
 		}
 	}
 
-
-	/**
-	 * Set the xsd value (and compute other representations if possible).
-	 * The given value is a string that was provided by getXSDValue() (all
-	 * implementations should support round-tripping).
-	 * @deprecated Use setDBkeys(). This function will vanish before SMW 1.6.
-	 */
-	public function setXSDValue( $value, $unit = '' ) {
-		$this->setDBkeys( array( $value, $unit ) );
-	}
-
-	/**
-	 * Initialise the datavalue from the given value string and unit.
-	 * The format of both strings strictly corresponds to the output
-	 * of this implementation for getXSDValue() and getUnit().
-	 * @deprecated Use parseDBkeys(). This function will vanish before SMW 1.6.
-	 */
-	protected function parseXSDValue( $value, $unit ) {
-		$this->parseDBkeys( array( $value, $unit ) );
-	}
-
-	/**
-	 * Return the XSD compliant version of the value, or FALSE if parsing the
-	 * value failed and no XSD version is available. If the datatype has units,
-	 * then this value is given in the unit provided by getUnit().
-	 * @deprecated Use getDBkeys(). This function will vanish before SMW 1.6.
-	 */
-	public function getXSDValue() {
-		$keys = $this->getDBkeys();
-		return array_key_exists( 0, $keys ) ? $keys[0]:'';
-	}
-
 	/**
 	 * Return the unit in which the returned value is to be interpreted.
 	 * This string is a plain UTF-8 string without wiki or html markup.
@@ -693,16 +661,6 @@ abstract class SMWDataValue {
 	 */
 	public function getUnit() {
 		return ''; // empty unit
-	}
-
-	/**
-	 * Alias for getValueKey(). If you use this function and test if its result
-	 * is null, then use isNumeric() instead to check this. If this is done,
-	 * getValueKey() can be used instead.
-	 * @deprecated This function will vanish before SMW 1.6.
-	 */
-	public function getNumericValue() {
-		return $this->getValueKey();
 	}
 
 }
