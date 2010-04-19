@@ -144,6 +144,7 @@ class SMWSQLStoreLight extends SMWStore {
 		'_ema'  => 'smw_atts2', // Email type
 		'_uri'  => 'smw_atts2', // URL/URI type
 		'_anu'  => 'smw_atts2', // Annotation URI type
+		'_tel'  => 'smw_atts2', // Telephone number
 		'_wpg'  => 'smw_rels2', // Page type
 		'_wpp'  => 'smw_rels2', // Property page type
 		'_wpc'  => 'smw_rels2', // Category page type
@@ -179,6 +180,7 @@ class SMWSQLStoreLight extends SMWStore {
 		'_ema'  => array( 't', 0, 0 ),    // Email type
 		'_uri'  => array( 't', 0, 0 ),    // URL/URI type
 		'_anu'  => array( 't', 0, 0 ),    // Annotation URI type
+		'_tel'  => array( 't', 0, 0 ),    // Telephone number
 		'_wpg'  => array( 'tnwt', 3, 3 ), // Page type
 		'_wpp'  => array( 'tnwt', 3, 3 ), // Property page type
 		'_wpc'  => array( 'tnwt', 3, 3 ), // Category page type
