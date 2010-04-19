@@ -26,7 +26,7 @@ protected $m_DatatypeLabels = array(
 	'_wpg' => 'Page', // name of page datatype
 	'_str' => 'Chaîne de caractères',  // name of the string type
 	'_txt' => 'Texte',  // name of the text type (very long strings)
-	'_cod' => 'Code',  // name of the (source) code type //TODO: translate
+	'_cod' => 'Code',  // name of the (source) code type
 	'_boo' => 'Booléen',  // name of the boolean type
 	'_num' => 'Nombre', // name for the datatype of numbers
 	'_geo' => 'Coordonnées géographiques', // name of the geocoord type
@@ -35,8 +35,8 @@ protected $m_DatatypeLabels = array(
 	'_ema' => 'Adresse électronique',  // name of the email type
 	'_uri' => 'URL',  // name of the URI type
 	'_anu' => 'Annotation-URI',  // name of the annotation URI type (OWL annotation property)
-	'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
-	'_rec' => 'Record', // name of record data type //TODO: translate
+	'_tel' => 'Numéro de téléphone',  // name of the telephone (URI) type
+	'_rec' => 'Enregistrement', // name of record data type
 );
 
 protected $m_DatatypeAliases = array(
@@ -51,15 +51,15 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'A le type',
 	'_URI'  => 'URI équivalente',
 	'_SUBP' => 'Sous-propriété de',
-	'_SUBC' => 'Subcategory of', // TODO: translate
+	'_SUBC' => 'Sous-catégorie de',
 	'_UNIT' => 'Unités de mesure',
 	'_IMPO' => 'Importé de',
 	'_CONV' => 'Correspond à',
 	'_SERV' => 'Fournit le service',
 	'_PVAL' => 'Valeur possible',
-	'_MDAT' => 'Modification date',  // TODO: translate
-	'_ERRP' => 'Has improper value for', // TODO: translate
-	'_LIST' => 'Has fields', // TODO: translate
+	'_MDAT' => 'Date de modification',
+	'_ERRP' => 'A une valeur incorrecte pour',
+	'_LIST' => 'A le champ',
 );
 
 protected $m_SpecialPropertyAliases = array(
