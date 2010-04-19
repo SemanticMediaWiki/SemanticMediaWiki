@@ -71,8 +71,8 @@ protected $m_Namespaces = array(
 	SMW_NS_PROPERTY_TALK  => "Discussion_attribut",
 	SMW_NS_TYPE           => "Type",
 	SMW_NS_TYPE_TALK      => "Discussion_type",
-	SMW_NS_CONCEPT        => 'Concept', // TODO: translate
-	SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
+	SMW_NS_CONCEPT        => 'Concept',
+	SMW_NS_CONCEPT_TALK   => 'Discussion_concept'
 );
 
 protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
