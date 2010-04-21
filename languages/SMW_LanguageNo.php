@@ -78,21 +78,12 @@ protected $m_SpecialPropertyAliases = array(
 
 
 protected $m_Namespaces = array(
-	SMW_NS_RELATION       => 'Relasjon',
-	SMW_NS_RELATION_TALK  => 'Relasjon-diskusjon',
 	SMW_NS_PROPERTY       => 'Egenskap',
 	SMW_NS_PROPERTY_TALK  => 'Egenskap-diskusjon',
 	SMW_NS_TYPE           => 'Type',
 	SMW_NS_TYPE_TALK      => 'Type-diskusjon',
 	SMW_NS_CONCEPT        => 'Konsept',
 	SMW_NS_CONCEPT_TALK   => 'Konsept-diskusjon'
-);
-
-protected $m_NamespaceAliases = array(
-        'Relasjonsdiskusjon' => SMW_NS_RELATION_TALK,
-        'Egenskapsdiskusjon' => SMW_NS_PROPERTY_TALK,
-        'Typediskusjon' => SMW_NS_TYPE_TALK,
-        'Konseptdiskusjon' => SMW_NS_CONCEPT_TALK
 );
 
 protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_DMY, SMW_MDY, SMW_YMD, SMW_YDM ) );
