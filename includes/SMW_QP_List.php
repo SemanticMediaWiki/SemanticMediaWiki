@@ -61,7 +61,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rowstart = '<li>';
 			$rowend = '</li>';
 			$plainlist = false;
-		} else { // "list" and "tempalte" format
+		} else { // "list" and "template" format
 			$header = '';
 			$footer = '';
 			$rowstart = '';
@@ -150,8 +150,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				}
 				if ( $found_values ) $result .= ')';
 			}
-			// </li> tag is not necessary in MediaWiki
-			// $result .= $rowend;
+			$result .= $rowend . "\n";
 		}
 
 		// Make label for finding further results
@@ -170,8 +169,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					$link->setParameter( $this->m_params['link'], 'link' );
 				}
 			}
-			// </li> tag is not necessary in MediaWiki
-			$result .= $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker );// . $rowend;
+			$result .= $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend . "\n";
 		}
 		if ( $this->mColumns > 1 )
 			$result .= '</div>' . "\n";
