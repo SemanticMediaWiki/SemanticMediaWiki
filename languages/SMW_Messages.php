@@ -338,6 +338,7 @@ $messages['qqq'] = array(
 	'smw_rss_link' => '{{optional}}',
 	'smw_csv_link' => '{{optional}}',
 	'smw_printername_auto' => '{{Identical|Automatic}}',
+	'smw_printername_table' => '{{Identical|Table}}',
 	'smw_printername_template' => '{{Identical|Template}}',
 	'smw_paramdesc_limit' => 'A description of the "limit" parameter for inline queries',
 	'smw_paramdesc_headers' => 'A description of the "headers" parameter for inline queries',
@@ -360,12 +361,11 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 	'smw_kiloseparator' => "This message is as a separator symbol for thousands in numbers, like \",\" in English 1,234.23. It is used for formatting number output '''and''' for reading user input. Therefore it should be carefully considered whether to change an existing value, since existing installations may depend on this value for their content to be read properly.
 
 Note that spaces and space-like HTML entities are always ignored when reading numbers, whether or not a space symbol is used here.",
-	'smw_label_latitude' => '{{Identical|Latitude}}',
-	'smw_label_longitude' => '{{Identical|Longitude}}',
 	'smw_subpropertyarticlecount' => '[[bugzilla:15207|Bug on Bugzilla about this message]] has been fixed at [[mw:Special:Code/MediaWiki/40793|r40793]].',
 	'specialpages-group-smw_group' => '{{optional}}',
 	'smw_exportrdf_submit' => '{{Identical|Export}}',
-	'properties' => 'This is the title of the special page showing all properties.',
+	'properties' => 'This is the title of the special page showing all properties.
+{{Identical|Property}}',
 	'smw_property_template' => 'Used to display information about properties on Special:Properties. The parameters have the following meaning:
 * $1: the property name
 * $2: the name of the type of the property
@@ -2083,26 +2083,27 @@ Geschätzter Fortschritt des laufenden Updates:',
 /** German (formal address) (Deutsch (Sie-Form))
  * @author Dst
  * @author Imre
+ * @author Kghbln
  * @author Revolus
  */
 $messages['de-formal'] = array(
 	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht angewendet werden, da die Wiki-Konfiguration offline berechnet werden muss.
-Falls das Problem nicht nach einiger Zeit verschwindet, bitten Sie Ihren Seitenverwalter, dieses Konzept zu ermöglichen.',
+Falls sich das Problem nicht nach einiger Zeit von selbst erledigt, bitten Sie Ihren Websiteadministrator, dieses Konzept zu ermöglichen.',
 	'smw_exportrdf_docu' => 'Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte geben Sie die Namen der gewünschten Seiten <i>zeilenweise</i> ein.',
 	'smw_ask_embed_instr' => 'Um diese Abfrage in eine Wiki-Seite einzubauen, nutzen Sie den unten stehenden Code.',
 	'smw_browse_article' => 'Bitte geben Sie den Titel einer Seite ein.',
 	'smw_smwadmin_updatestarted' => 'Ein neuer Update-Prozess zur Aktualisierung der semantischen Daten wurde gestartet.
-Alle gespeicherten Daten werden neu erstellt oder repariert, sofern nötig.
+Alle gespeicherten Daten werden, sofern nötig, neu erstellt oder repariert.
 Sie können den Fortschritt des Updates auf dieser Spezialseite verfolgen.',
-	'smw_smwadmin_updatenotstopped' => 'Um laufende Prozesse zu stoppen, müssen Sie das Kontrollkästchen aktivieren, wenn Sie sich wirklich sicher sind.',
-	'smw_smwadmin_docu' => 'Diese Spezialseite hilft während der Installation und dem Upgrade von <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
-Denken Sie daran, wichtige Daten vor der Ausführung administrativer Funktionen zu sichern.',
-	'smw_smwadmin_announce' => 'Ihr Wiki ankündigen',
-	'smw_smwadmin_announcebutton' => 'Drücken Sie den folgenden Knopf, um die URL Ihres Wikis zu diesem Dienst hinzuzufügen.
-Dieser Dienst wird keine Wikis aufnehmen, die nicht öffentlich zugänglich sind und er wird nur öffentlich zugängliche Informationen speichern.',
-	'smw_smwadmin_supportdocu' => 'Verschiedene Mittel/Quellen helfen Ihnen vielleicht bei einem Problemfall:',
-	'smw_smwadmin_smwhomepage' => 'Die komplette Benutzerdokumentation von Semantic MediaWiki finden Sie auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_questions' => 'Wenn Sie weitere Fragen oder Vorschläge haben, beteiligen Sie sich an der Diskussion im <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">„Semantic MediaWiki“-Benutzerforum</a>.',
+	'smw_smwadmin_updatenotstopped' => 'Um laufende Prozesse zu stoppen, müssen Sie das Kontrollkästchen aktivieren, um so anzugeben, dass Sie sich wirklich sicher sind.',
+	'smw_smwadmin_docu' => 'Diese Spezialseite unterstützt Sie während der Installation und dem Upgrade von <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">Semantic MediaWiki</a>.
+Denken Sie daran, wichtige Daten vor der Ausführung systemadministrativer Funktionen zu sichern.',
+	'smw_smwadmin_announce' => 'Ihr Wiki bekanntgeben',
+	'smw_smwadmin_announcebutton' => 'Drücken Sie die folgende Schaltfläche, um die URL Ihres Wikis für diesem Dienst hinzuzufügen.
+Dieser Dienst wird keine Wikis aufnehmen, die nicht öffentlich zugänglich sind. Zudem wird er nur öffentlich zugängliche Informationen speichern.',
+	'smw_smwadmin_supportdocu' => 'Verschiedene Hinweise helfen Ihnen vielleicht im Fall eines Problems:',
+	'smw_smwadmin_smwhomepage' => 'Die vollständige Nutzerdokumention von Semantic MediaWiki finden Sie auf <b><a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_questions' => 'Sofern Sie weitere Fragen oder Vorschläge haben, beteiligen Sie sich bitte an der Diskussion im <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">„Semantic MediaWiki“-Nutzerforum</a>.',
 );
 
 /** Lower Sorbian (Dolnoserbski)
@@ -2436,6 +2437,14 @@ $messages['el'] = array(
 	'smw_adminlinks_datastructure' => 'Δομή δεδομένων',
 	'smw_adminlinks_displayingdata' => 'Προβαλλόμενα δεδομένα',
 	'smw_adminlinks_inlinequerieshelp' => 'Βοήθεια με τα αιτήματα',
+);
+
+/** British English (British English)
+ * @author Reedy
+ */
+$messages['en-gb'] = array(
+	'smw_printername_ul' => 'Itemisation',
+	'smw_noboolean' => '"$1" is not recognised as a Boolean (true/false) value.',
 );
 
 /** Esperanto (Esperanto)
@@ -5727,7 +5736,7 @@ $messages['krj'] = array(
 	'smw_browse_go' => 'Agto',
 );
 
-/** Ripoarisch (Ripoarisch)
+/** Colognian (Ripoarisch)
  * @author Purodha
  */
 $messages['ksh'] = array(
@@ -7421,9 +7430,6 @@ $messages['pdc'] = array(
 	'smw_true_words' => 'ya,yes,true',
 	'smw_false_words' => 'nee,no,false',
 	'smw_nofloat' => '„$1“ iss ken Zehl.',
-	'smw_abb_north' => 'N',
-	'smw_abb_south' => 'S',
-	'smw_abb_west' => 'W',
 	'smw_inverse_label_default' => '$1 vun',
 	'smw_pp_from' => 'Blatt',
 	'smw_result_prev' => 'zerick',
@@ -8386,12 +8392,6 @@ $messages['roa-tara'] = array(
 	'smw_finallistconjunct' => ', e',
 	'smw_true_words' => 'vere,true,t,sine,si,yes,y',
 	'smw_false_words' => 'fause,false,f,none,no,n',
-	'smw_abb_north' => 'N',
-	'smw_abb_east' => 'E',
-	'smw_abb_south' => 'S',
-	'smw_abb_west' => 'O',
-	'smw_label_latitude' => 'Latitudine:',
-	'smw_label_longitude' => 'Longitudine:',
 	'properties' => 'Proprietà',
 	'smw_property_template' => '$1 de tipe $2 ($3)',
 	'smw_unusedproperty_template' => '$1 de tipe $2',
@@ -9576,12 +9576,6 @@ $messages['te'] = array(
 	'smw_true_words' => 'true,t,yes,y,అవును,సత్యం',
 	'smw_false_words' => 'false,f,no,n,కాదు,అసత్యం',
 	'smw_nofloat' => '“$1” అనేది సంఖ్య కాదు.',
-	'smw_abb_north' => 'ఉ',
-	'smw_abb_east' => 'తూ',
-	'smw_abb_south' => 'ద',
-	'smw_abb_west' => 'ప',
-	'smw_label_latitude' => 'అక్షాంశం:',
-	'smw_label_longitude' => 'రేఖాంశం:',
 	'smw_nodatetime' => '"$1" అనే తేదీ ఏమిటో అర్థంకాలేదు.',
 	'smw_badtitle' => '"$1" అన్నది సరైన పేజీ శీర్షిక కాదు.',
 	'smw_type_header' => '"$1" రకపు లక్షణాలు',
@@ -9625,10 +9619,6 @@ $messages['te'] = array(
 $messages['tet'] = array(
 	'smw_true_words' => 'loos,l,sin,s',
 	'smw_false_words' => 'sala,s,lae,la',
-	'smw_abb_north' => 'N',
-	'smw_abb_east' => "Lorosa'e",
-	'smw_abb_south' => 'S',
-	'smw_abb_west' => 'Loromonu',
 	'smw_result_prev' => 'Molok',
 	'smw_result_next' => 'Oinmai',
 );
@@ -10445,6 +10435,11 @@ $messages['zh-tw'] = array(
 	'smw_no_concept_namespace' => '如欲定義概念則須在名字空間為「概念」(Concept)的頁面中，予以定義。',
 	'smw_multiple_concepts' => '每個概念頁面僅能有一項概念定義',
 	'smw_baduri' => '抱歉，在此處不允許“$1”的URI. (譯註原文為：Sorry, URIs of the form “$1” are not allowed.)',
+	'smw_printername_count' => '計數結果',
+	'smw_printername_csv' => 'CSV匯出',
+	'smw_printername_json' => 'JSON匯出',
+	'smw_printername_ol' => '列舉',
+	'smw_printername_rss' => 'RSS匯出',
 	'smw_iq_disabled' => '抱歉，線上查詢在此wiki已被設定為無效',
 	'smw_iq_moreresults' => '&hellip; 進階查詢',
 	'smw_iq_nojs' => '請使用內建JavaScript的瀏覽器以瀏覽此元素.',
@@ -10498,6 +10493,7 @@ $messages['zh-tw'] = array(
 	'smw_exportrdf_recursive' => '逐項輸出所有的相關的頁面，請注意輸出的結果可能頗為龐大。',
 	'smw_exportrdf_backlinks' => '並且輸出與輸出頁面有關的頁面，產生可供人閱讀的RDF。(browsable RDF)',
 	'smw_exportrdf_lastdate' => '無須輸出那些在所設之時間點以後就未再被更動過的頁面',
+	'smw_exportrdf_submit' => '匯出',
 	'properties' => '性質',
 	'smw_properties_docu' => '以下的性質已被用於此wiki內',
 	'smw_property_template' => ' $1 　型態為：$2　使用次數：($3)',
@@ -10528,6 +10524,11 @@ $messages['zh-tw'] = array(
 	'smw_ask_help' => '查詢協助',
 	'smw_ask_queryhead' => '查詢',
 	'smw_ask_printhead' => '其他查詢(選擇性的)',
+	'smw_ask_format_as' => '格式化為：',
+	'smw_ask_defaultformat' => '預設',
+	'smw_ask_otheroptions' => '其他選項',
+	'smw_ask_show_embed' => '顯示內嵌程式碼',
+	'smw_ask_hide_embed' => '隱藏內嵌程式碼',
 	'searchbyproperty' => '依性質搜尋',
 	'smw_sbv_docu' => '依所指定的性質及其值來搜尋頁面',
 	'smw_sbv_novalue' => '請為該性質輸入一項有效值，或請查閱“$1.”的全部的性質的值',
@@ -10569,5 +10570,8 @@ $messages['zh-tw'] = array(
 	'smw_smwadmin_smwhomepage' => '完整的Semantic MediaWiki用戶文件在<b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>。',
 	'smw_smwadmin_mediazilla' => '臭蟲(程式的缺陷)可回報至<a href="https://bugzilla.wikimedia.org/">Bugzilla</a>。',
 	'smw_smwadmin_questions' => '如果您有進一步的問題或建議，請參與在<a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki user forum</a>此處的討論。',
+	'smw_adminlinks_datastructure' => '資料結構',
+	'smw_adminlinks_displayingdata' => '顯示資料',
+	'smw_adminlinks_inlinequerieshelp' => '線上查詢協助',
 );
 
