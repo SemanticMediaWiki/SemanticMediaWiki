@@ -158,6 +158,11 @@ class SMWQueryProcessor {
 		$lastprintout = null;
 		$params = array();
 		foreach ( $rawparams as $name => $param ) {
+			// special handling for arrays - this can happen if the
+			// param came from a checkboxes input in Special:Ask
+			if ( is_array( $param ) ) {
+				$param = implode( ',', array_keys( $param ) );
+			}
 			if ( is_string( $name ) && ( $name != '' ) ) { // accept 'name' => 'value' just as '' => 'name=value'
 				$param = $name . '=' . $param;
 			}
