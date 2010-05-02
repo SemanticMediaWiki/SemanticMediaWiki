@@ -66,7 +66,7 @@ class SMWSQLStore2QueryEngine {
 	/** Local collection of error strings, passed on to callers if possible. */
 	protected $m_errors = array();
 
-	public function __construct( &$parentstore, &$dbslave ) {
+	public function __construct( &$parentstore, DatabaseBase &$dbslave ) {
 		$this->m_store = $parentstore;
 		$this->m_dbs = $dbslave;
 	}
@@ -593,7 +593,7 @@ class SMWSQLStore2QueryEngine {
 	 * SMWValueDescription objects, create and return a plain WHERE condition
 	 * string for it.
 	 */
-	protected function compileAttributeWhere( $query, SMWDescription $description, $proptable, $valueindex, $operator = 'AND' ) {
+	protected function compileAttributeWhere( $query, SMWDescription $description, SMWSQLStore2Table $proptable, $valueindex, $operator = 'AND' ) {
 		$where = '';
 		if ( $description instanceof SMWValueDescription ) {
 			$dv = $description->getDatavalue();
@@ -610,15 +610,9 @@ class SMWSQLStore2QueryEngine {
 						case SMW_CMP_LEQ: $comp = '<='; break;
 						case SMW_CMP_GEQ: $comp = '>='; break;
 						case SMW_CMP_NEQ: $comp = '!='; break;
-						case SMW_CMP_LIKE:
-							// TODO: explicitly excluding _geo here is a temporary workaround. Future versions will use personalised comparators for extensions and not LIKE (requires synchronisation with SemanticMaps to work)
-							if ( ( $dv->getTypeID() != '_geo' ) && ( ( $fieldtype == 't' ) || ( $fieldtype == 'l' ) ) ) { // string data allows pattern matches
-								$comp = ' LIKE ';
-								$value =  str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value ); // translate pattern
-							}
-						break;
 					}
-					if ( $comp == '' ) { // allow extensions to define their own query conditions
+					if ( $comp == '' ) { // Allow extensions to define their own query conditions.
+						// FIXME: only one fieldname is passed, which won't work when multiple fields are needed.
 						wfRunHooks( 'smwGetSQLConditionForValue', array( &$where, $description, $query->alias, $fieldname, $this->m_dbs ) );
 					} else {
 						$where = "{$query->alias}.{$fieldname}{$comp}" . $this->m_dbs->addQuotes( $value );
