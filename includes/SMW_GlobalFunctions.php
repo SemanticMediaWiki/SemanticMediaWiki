@@ -210,16 +210,19 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
 /**
  * Formats an array of message strings so that it appears as a tooltip.
  * $icon should be one of: 'warning' (default), 'info'.
- * @note callers of this funcion must ensure safety, since the $icon string is
- * used in the output directly. This is not hard: $icon acts simply like an
- * enum, and callers have no need to compute it but use constant strings.
+ * 
+ * @param array $messages
+ * @param string $icon Acts like an enum. Callers must ensure safety, since this value is used directly in the output.
+ * @param string $seperator
+ * 
+ * @return string
  */
-function smwfEncodeMessages( $msgarray, $icon = 'warning', $sep = " <!--br-->" ) {
-	if ( count( $msgarray ) > 0 ) {
+function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' <!--br-->' ) {
+	if ( count( $messages ) > 0 ) {
 		SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
-		$msgs = implode( $sep, $msgarray );
-		return '<span class="smwttpersist"><span class="smwtticon">' . $icon . '.png</span><span class="smwttcontent">' . $msgs . '</span> </span>';
-		// Note: the space is essential to make FF (and maybe other) align icons properly in tables
+		foreach( $messages as &$message ) $message = htmlspecialchars( $message );
+		$messageString = implode( $seperator, $messages );
+		return '<span class="smwttpersist"><span class="smwtticon">' . $icon . '.png</span><span class="smwttcontent">' . $messageString . '</span> </span>';
 	} else {
 		return '';
 	}
