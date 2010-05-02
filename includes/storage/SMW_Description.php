@@ -2,8 +2,10 @@
 /**
  * This file contains basic classes for representing (query) descriptions in
  * the SMW API.
+ * 
  * @file
  * @ingroup SMWQuery
+ * 
  * @author Markus Krötzsch
  */
 
@@ -20,6 +22,8 @@ abstract class SMWDescription {
 	/**
 	 * Get the (possibly empty) array of all print requests that
 	 * exist for the entities that fit this description.
+	 * 
+	 * @return array
 	 */
 	public function getPrintRequests() {
 		return $this->m_printreqs;
@@ -27,11 +31,18 @@ abstract class SMWDescription {
 
 	/**
 	 * Set the array of print requests completely.
+	 * 
+	 * @param array $printrequests
 	 */
-	public function setPrintRequests( $printrequests ) {
+	public function setPrintRequests( array $printrequests ) {
 		$this->m_printreqs = $printrequests;
 	}
 
+	/**
+	 * Add a single SMWPrintRequest.
+	 * 
+	 * @param SMWPrintRequest $printrequest
+	 */
 	public function addPrintRequest( SMWPrintRequest $printrequest ) {
 		$this->m_printreqs[$printrequest->getHash()] = $printrequest;
 	}
@@ -39,6 +50,8 @@ abstract class SMWDescription {
 	/**
 	 * Add a new print request, but at the beginning of the list of requests
 	 * (thus it will be printed first).
+	 * 
+	 * @param SMWPrintRequest
 	 */
 	public function prependPrintRequest( SMWPrintRequest $printrequest ) {
 		$this->m_printreqs = array_merge( array( $printrequest->getHash() => $printrequest ), $this->m_printreqs );
@@ -49,20 +62,27 @@ abstract class SMWDescription {
 	 * Some descriptions have different syntax in property value positions. The
 	 * parameter $asvalue specifies whether the serialisation should take that into
 	 * account.
+	 * 
 	 * Example: The SMWValueDescription [[Paris]] returns the single result "Paris"
 	 * but can also be used as value in [[has location::Paris]] which is preferred
 	 * over the canonical [[has location::\<q\>[[Paris]]\</q\>]].
+	 * 
+	 * @param boolean $asvalue
 	 */
 	abstract public function getQueryString( $asvalue = false );
 
 	/**
 	 * Return true if the description is required to encompass at most a single
 	 * result, independently of the knowledge base.
+	 * 
+	 * @return boolean
 	 */
 	abstract public function isSingleton();
 
 	/**
 	 * Compute the size of the decription. Default is 1.
+	 * 
+	 * @return integer
 	 */
 	public function getSize() {
 		return 1;
@@ -70,6 +90,8 @@ abstract class SMWDescription {
 
 	/**
 	 * Compute the depth of the decription. Default is 0.
+	 * 
+	 * @return integer
 	 */
 	public function getDepth() {
 		return 0;
@@ -88,6 +110,8 @@ abstract class SMWDescription {
 	 * Most descriptins can only describe wiki pages, so this is the default,
 	 * but some descriptions may refer to other datatypes, and overwrite this
 	 * function accordingly.
+	 * 
+	 * @return string
 	 */
 	public function getTypeID() {
 		return '_wpg';
@@ -100,6 +124,7 @@ abstract class SMWDescription {
 	 * Default implementation for non-nested descriptions of size 1.
 	 * The parameter $log contains a list of all pruned conditions, updated when some
 	 * description was reduced.
+	 * 
 	 * @note Objects must not do changes on $this during pruning, since $this can be
 	 * reused in multiple places of one or many queries. Make new objects to reflect
 	 * changes!
