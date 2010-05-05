@@ -66,7 +66,7 @@ class SMWSQLStore2QueryEngine {
 	/** Local collection of error strings, passed on to callers if possible. */
 	protected $m_errors = array();
 
-	public function __construct( &$parentstore, DatabaseBase &$dbslave ) {
+	public function __construct( &$parentstore, &$dbslave ) {
 		$this->m_store = $parentstore;
 		$this->m_dbs = $dbslave;
 	}
