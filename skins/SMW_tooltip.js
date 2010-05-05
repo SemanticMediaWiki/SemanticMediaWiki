@@ -1,7 +1,4 @@
-
-
 addOnloadHook(smw_tooltipInit); 
-
 
 //these two objects needed due to the "hack" in timeline-api.js
 //see the comment there
@@ -13,13 +10,13 @@ var all_tt = []; //record all active tooltips
 
 var imagePath=wgScriptPath+"/extensions/SemanticMediaWiki/skins/images/";
 
-//dimensions of persistent tooltips
-var SMWTT_WIDTH_P=200;
-var SMWTT_HEIGHT_P=80;
+// Dimensions of persistent tooltips
+var SMWTT_WIDTH_P = 200;
+var SMWTT_HEIGHT_P = 80;
 
-//dimensions of inline tooltips
-var SMWTT_WIDTH_I=150;
-var SMWTT_HEIGHT_I=50;
+// Dimensions of inline tooltips
+var SMWTT_WIDTH_I = 175;
+var SMWTT_HEIGHT_I = 70;
 
 /*register events for the tooltips*/
 function smw_tooltipInit() {
@@ -83,9 +80,11 @@ function smw_showTooltipPersist(e) {
 	var origin = (BubbleTT.Platform.browser.isIE) ? window.event.srcElement : e.target;
 	//If the anchor of the tooltip contains hmtl, the source of the event is not the anchor.
 	//As we need a reference to it to get the tooltip content we need to go up the dom-tree.
-	while(!(origin.className=="smwttactivepersist")){origin=origin.parentNode};
+	while( !( origin.className=="smwttactivepersist" ) ) { 
+		origin = origin.parentNode;
+	};
 
-	tt = BubbleTT.createBubbleForPoint(true,origin,x,y,SMWTT_WIDTH_P,SMWTT_HEIGHT_P);
+	tt = BubbleTT.createBubbleForPoint( true, origin, x, y, SMWTT_WIDTH_P, SMWTT_HEIGHT_P );
 	all_tt.push(tt);
 	BubbleTT.fillBubble(tt, origin);
 
@@ -118,7 +117,7 @@ function smw_showTooltipInline(e) {
 	//As we need a reference to it to get the tooltip content we need to go up the dom-tree.
 	while(!(origin.className=="smwttactiveinline"))origin=origin.parentNode;
 	var doc = origin.ownerDocument;
-	tt = BubbleTT.createBubbleForPoint(false,origin,x,y,SMWTT_WIDTH_I,SMWTT_HEIGHT_I);
+	tt = BubbleTT.createBubbleForPoint( false, origin, x, y, SMWTT_WIDTH_I, SMWTT_HEIGHT_I );
 	BubbleTT.fillBubble(tt, origin);
 }
 
@@ -232,7 +231,8 @@ BubbleTT.createBubbleForPoint = function(closingButton, origin, pageX, pageY, co
 		} else {
 			elmt.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + url +"', sizingMethod='crop')";
 		}
-	}
+	};
+	
 	var div = doc.createElement("div");
 	div.style.width = bubbleWidth + "px";
 	div.style.height = bubbleHeight + "px";
