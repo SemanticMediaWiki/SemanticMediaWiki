@@ -484,7 +484,7 @@ class SMWSQLStore2QueryEngine {
 			$query->type = SMW_SQL2_NOQUERY;
 			return;
 		}
-		list( $sig, $valueindex, $labelindex ) = SMWSQLStore2::getTypeSignature( $typeid );
+		list( $sig, $valueindexes, $labelindexes ) = SMWSQLStore2::getTypeSignature( $typeid );
 		$sortkey = $property->getDBkey(); // TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
 
 		// *** Basic settings: table, joinfield, and objectfields ***//
@@ -493,7 +493,7 @@ class SMWSQLStore2QueryEngine {
 			if ( ( count( $proptable->objectfields ) == 1 ) && ( reset( $proptable->objectfields ) == 'p' ) ) {
 				$query->joinfield = $query->alias . '.' . reset( array_keys( $proptable->objectfields ) );
 				$objectfields = array( 's_id' => 'p' );
-				$valueindex = $labelindex = 3; // should normally not change, but let's be strict
+				$valueindexes = $labelindexes = array( 3 ); // should normally not change, but let's be strict
 			} else { // no inverses supported for this property, stop here
 				$query->type = SMW_SQL2_NOQUERY;
 				return;
@@ -529,28 +529,28 @@ class SMWSQLStore2QueryEngine {
 				$query->components[$sub] = "{$query->alias}.{$objectfield}";
 			}
 		} else { // non-page value description; expressive features mainly based on value
-			$this->compileAttributeWhere( $query, $valuedesc, $proptable, $valueindex );
+			$this->compileAttributeWhere( $query, $valuedesc, $proptable, $valueindexes );
 			// (no need to pass on $objectfields since they are just as in $proptable in this case)
 		}
 
 		// *** Incorporate ordering if desired ***//
-		if ( ( $valueindex >= 0 ) && array_key_exists( $sortkey, $this->m_sortkeys ) ) {
+		if ( ( $valueindexes[0] >= 0 ) && array_key_exists( $sortkey, $this->m_sortkeys ) ) { // TODO //.//
 			// This code might be overly general: it supports datatypes of arbitrary signatures
 			// and valueindex (sortkeys). It can even order pages by something other than their
 			// sortkey (e.g. by their namespace?!), and it can handle values consisting of a page
 			// and some more data fields before or after. Supporting pages in this way requires us
 			// to iterate over the table fields since one page corresponds to four values in a
 			// type's signature. Thankfully, signatures are short so this iteration is not notable.
-			$fieldname = $smwidjoinfield = false;
-			$this->getDBFieldsForDVIndex( $objectfields, $valueindex, $fieldname, $smwidjoinfield );
-			if ( $fieldname ) {
+			$smwidjoinfield = false;
+			$fieldNames = $this->getDBFieldsForDVIndexes( $objectfields, $valueindexes, $smwidjoinfield );
+			if ( $fieldNames ) { // TODO //.//
 				if ( $smwidjoinfield ) {
 					// TODO: is this smw_ids possibly duplicated in the query? Can we prevent that? (PERFORMANCE)
 					$query->from = ' INNER JOIN ' . $this->m_dbs->tableName( 'smw_ids' ) .
 									" AS ids{$query->alias} ON ids{$query->alias}.smw_id={$query->alias}.{$smwidjoinfield}";
-					$query->sortfields[$sortkey] = "ids{$query->alias}.{$fieldname}";
+					$query->sortfields[$sortkey] = "ids{$query->alias}.{$fieldNames[0]}";
 				} else {
-					$query->sortfields[$sortkey] = "{$query->alias}.{$fieldname}";
+					$query->sortfields[$sortkey] = "{$query->alias}.{$fieldNames[0]}";
 				}
 			}
 		}
@@ -566,57 +566,85 @@ class SMWSQLStore2QueryEngine {
 	 * be needed for page-type values. If the value is not in smw_ids, then
 	 * $fieldname refers to $objectfields and $smwidjoinfield is false. If the
 	 * given index could not be matched, $fieldname is false.
+	 * 
+	 * @param array $objectFields
+	 * @param array $indexes
+	 * @param $smwidjoinfield
+	 * 
+	 * @return array with at least one element or false
+	 * 
+	 * TODO: $smwidjoinfield should probably also be turned into an array
 	 */
-	protected function getDBFieldsForDVIndex( $objectfields, $index, &$fieldname, &$smwidjoinfield ) {
-		$curindex = 0;
-		foreach ( $objectfields as $fname => $ftype ) {
-			if ( $ftype == 'p' ) { // special treatment since "p" consists of 4 fields that are kept in smw_ids
-				if ( $curindex + 4 >= $index ) {
-					$idfieldnames = array( 'smw_title', 'smw_namespace', 'smw_iw', 'smw_sortkey' );
-					$smwidjoinfield = $fname;
-					$fieldname = $idfieldnames[$index - $curindex];
-					return;
+	protected function getDBFieldsForDVIndexes( array $objectFields, array $indexes, &$smwidjoinfield ) {
+		$fieldNames = array();
+		
+		foreach( $indexes as $index ) {
+			$curindex = 0;
+			foreach( $objectFields as $fname => $ftype ) {
+				if ( $ftype == 'p' ) { // special treatment since "p" consists of 4 fields that are kept in smw_ids
+					if ( $curindex + 4 >= $index ) {
+						$idfieldnames = array( 'smw_title', 'smw_namespace', 'smw_iw', 'smw_sortkey' );
+						$smwidjoinfield = $fname;
+						$fieldNames[] = $idfieldnames[$index - $curindex];
+						break;
+					}
+					$curindex += 3;
+				} elseif ( $curindex == $index ) {
+					$smwidjoinfield = false;
+					$fieldNames[] = $fname;
+					break;
 				}
-				$curindex += 3;
-			} elseif ( $curindex == $index ) {
-				$smwidjoinfield = false;
-				$fieldname = $fname;
-				return;
-			}
-			$curindex++;
+				$curindex++;
+			}			
 		}
-		$fieldname = false; // nothing found, maybe index too high or too low
+		
+		return count( $fieldNames ) > 0 ? $fieldNames : false;
 	}
 
 	/**
 	 * Given an SMWDescription that is just a conjunction or disjunction of
 	 * SMWValueDescription objects, create and return a plain WHERE condition
 	 * string for it.
+	 * 
+	 * @param $query
+	 * @param SMWDescription $description
+	 * @param SMWSQLStore2Table $proptable
+	 * @param array $valueIndexes
+	 * @param string $operator
 	 */
-	protected function compileAttributeWhere( $query, SMWDescription $description, SMWSQLStore2Table $proptable, $valueindex, $operator = 'AND' ) {
+	protected function compileAttributeWhere(
+			$query, SMWDescription $description, SMWSQLStore2Table $proptable, array $valueIndexes, $operator = 'AND' ) {
+				
 		$where = '';
+		
 		if ( $description instanceof SMWValueDescription ) {
 			$dv = $description->getDatavalue();
 			$keys = $dv->getDBkeys();
-			if ( ( $valueindex >= 0 ) && ( $description->getComparator() != SMW_CMP_EQ ) ) { // try comparison based on value field and comparator
-				// find field name for comparison
-				$fieldname = $smwidjoinfield = false;
-				$this->getDBFieldsForDVIndex( $proptable->objectfields, $valueindex, $fieldname, $smwidjoinfield );
-				if ( $fieldname && !$smwidjoinfield ) { // do not support smw_id joined data for now
+			
+			// Try comparison based on value field and comparator.
+			if ( ( $valueIndexes[0] >= 0 ) && ( $description->getComparator() != SMW_CMP_EQ ) ) { // TODO //.//
+				// Find field name for comparison.
+				$smwidjoinfield = false;
+				$fieldNames = $this->getDBFieldsForDVIndexes( $proptable->objectfields, $valueIndexes, $smwidjoinfield );
+				
+				// Do not support smw_id joined data for now.
+				if ( $fieldNames && !$smwidjoinfield ) { 
 					$comp = '';
-					$fieldtype = $proptable->objectfields[$fieldname];
-					$value = $keys[$valueindex];
+					
+					// TODO: refactor this hook away by using a method in the description classes
+					
 					switch ( $description->getComparator() ) {
 						case SMW_CMP_LEQ: $comp = '<='; break;
 						case SMW_CMP_GEQ: $comp = '>='; break;
 						case SMW_CMP_NEQ: $comp = '!='; break;
 					}
-					if ( $comp == '' ) { // Allow extensions to define their own query conditions.
-						// FIXME: only one fieldname is passed, which won't work when multiple fields are needed.
-						wfRunHooks( 'smwGetSQLConditionForValue', array( &$where, $description, $query->alias, $fieldname, $this->m_dbs ) );
-					} else {
-						$where = "{$query->alias}.{$fieldname}{$comp}" . $this->m_dbs->addQuotes( $value );
-					}
+					
+					wfRunHooks( 'smwGetSQLConditionForValue', array( &$where, $description, $query->alias, $fieldNames, $this->m_dbs ) );
+					
+					if ( $where == '' ) {
+						$value = $keys[$valueIndexes[0]]; // TODO //.//
+						$where = "{$query->alias}.{$fieldNames[0]}{$comp}" . $this->m_dbs->addQuotes( $value );						
+					} 
 				}
 			}
 
@@ -627,9 +655,9 @@ class SMWSQLStore2QueryEngine {
 					if ( $ftype == 'p' ) { // Special case: page id, resolve this in advance
 						$oid = $this->getSMWPageID( $keys[$i], $keys[$i + 1], $keys[$i + 2] );
 						$i += 3; // skip these additional values (sortkey not needed here)
-						$where .= ( $where ? ' AND ':'' ) . "{$query->alias}.$fname=" . $this->m_dbs->addQuotes( $oid );
+						$where .= ( $where ? ' AND ' : '' ) . "{$query->alias}.$fname=" . $this->m_dbs->addQuotes( $oid );
 					} elseif ( $ftype != 'l' ) { // plain value, but not a text blob
-						$where .= ( $where ? ' AND ':'' ) . "{$query->alias}.$fname=" . $this->m_dbs->addQuotes( $keys[$i] );
+						$where .= ( $where ? ' AND ' : '' ) . "{$query->alias}.$fname=" . $this->m_dbs->addQuotes( $keys[$i] );
 					}
 					$i++;
 				}

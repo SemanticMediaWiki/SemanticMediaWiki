@@ -40,12 +40,12 @@ class SMWSimpleWikiPageValue extends SMWWikiPageValue {
 		return 't';
 	}
 
-	public function getValueIndex() {
-		return 1;
+	public function getValueIndexes() {
+		return array( 1 );
 	}
 
-	public function getLabelIndex() {
-		return 1;
+	public function getLabelIndexes() {
+		return array( 1 );
 	}
 
 }

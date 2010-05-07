@@ -517,12 +517,12 @@ class SMWTimeValue extends SMWDataValue {
 		return 'tf';
 	}
 
-	public function getValueIndex() {
-		return 1;
+	public function getValueIndexes() {
+		return array( 1 );
 	}
 
-	public function getLabelIndex() {
-		return 0;
+	public function getLabelIndexes() {
+		return array( 0 );
 	}
 
 	public function getWikiValue() {

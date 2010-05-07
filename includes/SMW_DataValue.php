@@ -356,7 +356,7 @@ abstract class SMWDataValue {
 	}
 
 	/**
-	 * This function specifies the index of the DB key that should be used for
+	 * This function specifies the indexes of the DB keys that should be used for
 	 * sorting values of this type. It refers to the array that is returned by
 	 * getDBkeys() and specified by getSignature(), where the first index is 0.
 	 * For example, a wiki page type with signature "tnwt" would set this value
@@ -364,23 +364,27 @@ abstract class SMWDataValue {
 	 * The order that is used (e.g. numeric or lexicographic) is determined by
 	 * the type of the resepctive field. If no ordering is supported for this
 	 * data value, then -1 can be returned here.
+	 * 
+	 * @return array
 	 */
-	public function getValueIndex() {
-		return 0;
+	public function getValueIndexes() {
+		return array( 0 );
 	}
 
 	/**
 	 * This function specifies the index of the DB key that should be used for
 	 * string-matching values of this type. SMW supports some query conditions
 	 * that involve string patterns. Since numerical sort fields cannot be used
-	 * for this, this index might differ from getValueIndex(). Otherwise, all
-	 * documentation of getValueIndex() applies.
+	 * for this, this index might differ from getValueIndexes(). Otherwise, all
+	 * documentation of getValueIndexes() applies.
 	 * @note Any given storage implementation might decide to not support
 	 * string matching conditions for the specified value if not available for
 	 * its type.
+	 * 
+	 * @return array
 	 */
-	public function getLabelIndex() {
-		return 0;
+	public function getLabelIndexes() {
+		return array( 0 );
 	}
 
 	/**
@@ -549,18 +553,20 @@ abstract class SMWDataValue {
 	 * normalised first)
 	 */
 	public function getHash() {
-		return $this->isValid() ? implode( "\t", $this->getDBkeys() ):implode( "\t", $this->m_errors );
+		return $this->isValid() ? implode( "\t", $this->getDBkeys() ) : implode( "\t", $this->m_errors );
 	}
 
 	/**
 	 * Convenience method that checks if the value that is used to sort data of
 	 * this type is numeric.
+	 * 
+	 * TODO //.//
 	 */
 	public function isNumeric() {
 		$sig = $this->getSignature();
-		$validx = $this->getValueIndex();
-		if ( ( $validx >= 0 ) && ( $validx < strlen( $sig ) ) ) {
-			return ( ( $sig { $validx } == 'n' ) || ( $sig { $validx } == 'f' ) );
+		$validx = $this->getValueIndexes();
+		if ( ( $validx[0] >= 0 ) && ( $validx[0] < strlen( $sig ) ) ) {
+			return ( ( $sig { $validx[0] } == 'n' ) || ( $sig { $validx[0] } == 'f' ) );
 		} else {
 			return false;
 		}
@@ -570,11 +576,14 @@ abstract class SMWDataValue {
 	 * Convenience method that returns the DB key that holds the value that is
 	 * to be used for sorting data of this kind. If this datatype does not
 	 * support sorting, then null is returned here.
+	 * 
+	 * TODO //.//
 	 */
 	public function getValueKey() {
 		$dbkeys = $this->getDBkeys();
-		if ( array_key_exists( $this->getValueIndex(), $dbkeys ) ) {
-			return $dbkeys[$this->getValueIndex()];
+		$validx = $this->getValueIndexes();
+		if ( array_key_exists( $validx[0], $dbkeys ) ) {
+			return $dbkeys[$validx[0]];
 		} else {
 			return null;
 		}
