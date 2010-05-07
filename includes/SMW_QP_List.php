@@ -59,7 +59,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$header = '<' . $this->mFormat . '>';
 			$footer = '</' . $this->mFormat . '>';
 			$rowstart = '<li>';
-			$rowend = '</li>';
+			$rowend = "</li>\n";
 			$plainlist = false;
 		} else { // "list" and "template" format
 			$header = '';
@@ -150,7 +150,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				}
 				if ( $found_values ) $result .= ')';
 			}
-			$result .= $rowend . "\n";
+			$result .= $rowend;
 		}
 
 		// Make label for finding further results
@@ -169,7 +169,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					$link->setParameter( $this->m_params['link'], 'link' );
 				}
 			}
-			$result .= $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend . "\n";
+			$result .= $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend;
 		}
 		if ( $this->mColumns > 1 )
 			$result .= '</div>' . "\n";
