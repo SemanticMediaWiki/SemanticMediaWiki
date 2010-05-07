@@ -622,7 +622,7 @@ class SMWSQLStore2QueryEngine {
 			$keys = $dv->getDBkeys();
 			
 			// Try comparison based on value field and comparator.
-			if ( ( $valueIndexes[0] >= 0 ) && ( $description->getComparator() != SMW_CMP_EQ ) ) { // TODO //.//
+			if ( ( $valueIndexes[0] >= 0 ) ) { // TODO //.//
 				// Find field name for comparison.
 				$smwidjoinfield = false;
 				$fieldNames = $this->getDBFieldsForDVIndexes( $proptable->objectfields, $valueIndexes, $smwidjoinfield );
@@ -634,13 +634,14 @@ class SMWSQLStore2QueryEngine {
 					// TODO: refactor this hook away by using a method in the description classes
 					
 					switch ( $description->getComparator() ) {
+						case SMW_CMP_EQ: $comp = '='; break;
 						case SMW_CMP_LEQ: $comp = '<='; break;
 						case SMW_CMP_GEQ: $comp = '>='; break;
 						case SMW_CMP_NEQ: $comp = '!='; break;
 					}
 					
 					wfRunHooks( 'smwGetSQLConditionForValue', array( &$where, $description, $query->alias, $fieldNames, $this->m_dbs ) );
-					
+
 					if ( $where == '' ) {
 						$value = $keys[$valueIndexes[0]]; // TODO //.//
 						$where = "{$query->alias}.{$fieldNames[0]}{$comp}" . $this->m_dbs->addQuotes( $value );						
@@ -662,11 +663,12 @@ class SMWSQLStore2QueryEngine {
 					$i++;
 				}
 			}
+			
 		} elseif ( ( $description instanceof SMWConjunction ) || ( $description instanceof SMWDisjunction ) ) {
 			$op = ( $description instanceof SMWConjunction ) ? 'AND' : 'OR';
 			foreach ( $description->getDescriptions() as $subdesc ) {
 				// $where .= ($where!=''?$op:'') .
-				$this->compileAttributeWhere( $query, $subdesc, $proptable, $valueindex, $op );
+				$this->compileAttributeWhere( $query, $subdesc, $proptable, $valueIndexes, $op );
 			}
 		}
 		if ( $where != '' ) $query->where .= ( $query->where ? " $operator ":'' ) . "($where)";
