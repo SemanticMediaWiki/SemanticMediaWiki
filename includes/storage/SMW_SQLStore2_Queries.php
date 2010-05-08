@@ -629,23 +629,32 @@ class SMWSQLStore2QueryEngine {
 				
 				// Do not support smw_id joined data for now.
 				if ( $fieldNames && !$smwidjoinfield ) { 
-					$comp = '';
-					
-					// TODO: refactor this hook away by using a method in the description classes
+					$comparator = false;
+					$customSQL = false;
 					
 					switch ( $description->getComparator() ) {
-						case SMW_CMP_EQ: $comp = '='; break;
-						case SMW_CMP_LEQ: $comp = '<='; break;
-						case SMW_CMP_GEQ: $comp = '>='; break;
-						case SMW_CMP_NEQ: $comp = '!='; break;
+						case SMW_CMP_EQ: $comparator = '='; break;
+						case SMW_CMP_LEQ: $comparator = '<='; break;
+						case SMW_CMP_GEQ: $comparator = '>='; break;
+						case SMW_CMP_NEQ: $comparator = '!='; break;
 					}
 					
-					wfRunHooks( 'smwGetSQLConditionForValue', array( &$where, $description, $query->alias, $fieldNames, $this->m_dbs ) );
-
-					if ( $where == '' ) {
-						$value = $keys[$valueIndexes[0]]; // TODO //.//
-						$where = "{$query->alias}.{$fieldNames[0]}{$comp}" . $this->m_dbs->addQuotes( $value );						
-					} 
+					if ( !$comparator ) {
+						$customSQL = $description->getSQLCondition( $query->alias, $fieldNames, $this->m_dbs );	
+					}
+					
+					if ( $customSQL ) {
+						$where = $customSQL;
+					}
+					else {
+						$contitions = array();	
+						
+						for( $i = 0, $n = count( $fieldNames ); $i < $n; $i++ ) {
+							$contitions[] = "$query->alias.{$fieldNames[$i]}{$comparator}" . $this->m_dbs->addQuotes( $keys[$valueIndexes[$i]] );
+						}
+						
+						$where = implode( ' && ', $contitions );
+					}
 				}
 			}
 
