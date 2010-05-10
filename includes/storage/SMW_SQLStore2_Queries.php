@@ -175,6 +175,8 @@ class SMWSQLStore2QueryEngine {
 	 * step-wise execution of the query might lead to better performance, since
 	 * it exploits the tree-structure of the joins, which is important for fast
 	 * processing -- not all DBMS might be able in seeing this by themselves.
+	 * 
+	 * @param SMWQuery $query
 	 */
 	public function getQueryResult( SMWQuery $query ) {
 		global $smwgIgnoreQueryErrors, $smwgQSortingSupport;
@@ -254,7 +256,7 @@ class SMWSQLStore2QueryEngine {
 	 * the proper debug output for the given query.
 	 * 
 	 * @param SMWQuery $query
-	 * @param $rootid
+	 * @param integer $rootid
 	 */
 	protected function getDebugQueryResult( SMWQuery $query, $rootid ) {
 		$qobj = $this->m_queries[$rootid];
@@ -307,8 +309,11 @@ class SMWSQLStore2QueryEngine {
 	/**
 	 * Using a preprocessed internal query description referenced by $rootid, compute
 	 * the proper counting output for the given query.
+	 * 
+	 * @param SMWQuery $query
+	 * @param integer $rootid
 	 */
-	protected function getCountQueryResult( $query, $rootid ) {
+	protected function getCountQueryResult( SMWQuery $query, $rootid ) {
 		wfProfileIn( 'SMWSQLStore2Queries::getCountQueryResult (SMW)' );
 		$qobj = $this->m_queries[$rootid];
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
@@ -338,7 +343,7 @@ class SMWSQLStore2QueryEngine {
 	 * we want here. It would be nice if we could eliminate the bug in POSTGRES as well.
 	 * 
 	 * @param SMWQuery $query
-	 * @param $rootid
+	 * @param integer $rootid
 	 * 
 	 * @return SMWQueryResult
 	 */
@@ -766,24 +771,31 @@ class SMWSQLStore2QueryEngine {
 	 * Process stored queries and change store accordingly. The query obj is modified
 	 * so that it contains non-recursive description of a select to execute for getting
 	 * the actual result.
+	 * 
+	 * @param SMWSQLStore2Query $query
 	 */
 	protected function executeQueries( SMWSQLStore2Query &$query ) {
 		global $wgDBtype;
+		
 		switch ( $query->type ) {
-			case SMW_SQL2_TABLE: // normal query with conjunctive subcondition
+			case SMW_SQL2_TABLE: // Normal query with conjunctive subcondition.
 				foreach ( $query->components as $qid => $joinfield ) {
 					$subquery = $this->m_queries[$qid];
 					$this->executeQueries( $subquery );
-					if ( $subquery->jointable != '' ) { // join with jointable.joinfield
+					
+					if ( $subquery->jointable != '' ) { // Join with jointable.joinfield
 						$query->from .= ' INNER JOIN ' . $this->m_dbs->tableName( $subquery->jointable ) . " AS $subquery->alias ON $joinfield=" . $subquery->joinfield;
-					} elseif ( $subquery->joinfield !== '' ) { // require joinfield as "value" via WHERE
+					} elseif ( $subquery->joinfield !== '' ) { // Require joinfield as "value" via WHERE.
 						$condition = '';
+						
 						foreach ( $subquery->joinfield as $value ) {
 							$condition .= ( $condition ? ' OR ':'' ) . "$joinfield=" . $this->m_dbs->addQuotes( $value );
 						}
+						
 						if ( count( $subquery->joinfield ) > 1 ) {
 							$condition = "($condition)";
 						}
+						
 						$query->where .= ( ( $query->where == '' ) ? '':' AND ' ) . $condition;
 					} else { // interpret empty joinfields as impossible condition (empty result)
 						$query->joinfield = ''; // make whole query false
@@ -792,36 +804,47 @@ class SMWSQLStore2QueryEngine {
 						$query->from = '';
 						break;
 					}
+					
 					if ( $subquery->where != '' ) {
 						$query->where .= ( ( $query->where == '' ) ? '':' AND ' ) . '(' . $subquery->where . ')';
 					}
+					
 					$query->from .= $subquery->from;
 				}
+				
 				$query->components = array();
 			break;
 			case SMW_SQL2_CONJUNCTION:
 				// pick one subquery with jointable as anchor point ...
 				reset( $query->components );
 				$key = false;
+				
 				foreach ( $query->components as $qkey => $qid ) {
 					if ( $this->m_queries[$qkey]->jointable != '' ) {
 						$key = $qkey;
 						break;
 					}
 				}
+				
 				if ( $key !== false ) {
 					$result = $this->m_queries[$key];
 					unset( $query->components[$key] );
-					$this->executeQueries( $result ); // execute it first (may change jointable and joinfield, e.g. when making temporary tables)
-					// ... and append to this query the remaining queries
+					
+					// Execute it first (may change jointable and joinfield, e.g. when making temporary tables)
+					$this->executeQueries( $result ); 
+					
+					// ... and append to this query the remaining queries.
 					foreach ( $query->components as $qid => $joinfield ) {
 						$result->components[$qid] = $result->joinfield;
 					}
-					$this->executeQueries( $result ); // second execute, now incorporating remaining conditions
-				} else { // only fixed values in conjunction, make a new value without joining
+					
+					// Second execute, now incorporating remaining conditions.
+					$this->executeQueries( $result ); 
+				} else { // Only fixed values in conjunction, make a new value without joining.
 					$key = $qkey;
 					$result = $this->m_queries[$key];
 					unset( $query->components[$key] );
+					
 					foreach ( $query->components as $qid => $joinfield ) {
 						if ( $result->joinfield != $this->m_queries[$qid]->joinfield ) {
 							$result->joinfield = ''; // all other values should already be ''
@@ -835,11 +858,14 @@ class SMWSQLStore2QueryEngine {
 				if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
 					$this->m_dbs->query( $this->getCreateTempIDTableSQL( $this->m_dbs->tableName( $query->alias ) ), 'SMW::executeQueries' );
 				}
+				
 				$this->m_querylog[$query->alias] = array();
+				
 				foreach ( $query->components as $qid => $joinfield ) {
 					$subquery = $this->m_queries[$qid];
 					$this->executeQueries( $subquery );
 					$sql = '';
+					
 					if ( $subquery->jointable != '' ) {
 						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) . 'INTO ' .
 						       $this->m_dbs->tableName( $query->alias ) .
@@ -849,21 +875,25 @@ class SMWSQLStore2QueryEngine {
 						// NOTE: this works only for single "unconditional" values without further
 						// WHERE or FROM. The execution must take care of not creating any others.
 						$values = '';
+						
 						foreach ( $subquery->joinfield as $value ) {
 							$values .= ( $values ? ',':'' ) . '(' . $this->m_dbs->addQuotes( $value ) . ')';
 						}
+						
 						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) .  'INTO ' . $this->m_dbs->tableName( $query->alias ) . " (id) VALUES $values";
 					} // else: // interpret empty joinfields as impossible condition (empty result), ignore
 					if ( $sql ) {
 						$this->m_querylog[$query->alias][] = $sql;
+						
 						if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
 							$this->m_dbs->query( $sql , 'SMW::executeQueries' );
 						}
 					}
 				}
+				
 				$query->jointable = $query->alias;
 				$query->joinfield = "$query->alias.id";
-				$query->sortfields = array(); // make sure we got no sortfields
+				$query->sortfields = array(); // Make sure we got no sortfields.
 				// TODO: currently this eliminates sortkeys, possibly keep them (needs different temp table format though, maybe not such a good thing to do)
 			break;
 			case SMW_SQL2_PROP_HIERARCHY: case SMW_SQL2_CLASS_HIERARCHY: // make a saturated hierarchy
@@ -876,45 +906,58 @@ class SMWSQLStore2QueryEngine {
 	/**
 	 * Find subproperties or subcategories. This may require iterative computation,
 	 * and temporary tables are used in many cases.
+	 * 
+	 * @param SMWSQLStore2Query $query
 	 */
-	protected function executeHierarchyQuery( &$query ) {
+	protected function executeHierarchyQuery( SMWSQLStore2Query &$query ) {
 		global $wgDBtype;
+		global $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
+		
 		$fname = "SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)";
 		wfProfileIn( $fname );
-		global $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
-		$depth = ( $query->type == SMW_SQL2_PROP_HIERARCHY ) ? $smwgQSubpropertyDepth:$smwgQSubcategoryDepth;
+		
+		$depth = ( $query->type == SMW_SQL2_PROP_HIERARCHY ) ? $smwgQSubpropertyDepth : $smwgQSubcategoryDepth;
+		
 		if ( $depth <= 0 ) { // treat as value, no recursion
 			$query->type = SMW_SQL2_VALUE;
 			wfProfileOut( $fname );
 			return;
 		}
+		
 		$values = '';
 		$valuecond = '';
+		
 		foreach ( $query->joinfield as $value ) {
 			$values .= ( $values ? ',':'' ) . '(' . $this->m_dbs->addQuotes( $value ) . ')';
 			$valuecond .= ( $valuecond ? ' OR ':'' ) . 'o_id=' . $this->m_dbs->addQuotes( $value );
 		}
+		
 		$smwtable = $this->m_dbs->tableName( ( $query->type == SMW_SQL2_PROP_HIERARCHY ) ? 'smw_subp2':'smw_subs2' );
-		// try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
+		
+		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
 		$res = $this->m_dbs->select( $smwtable, 's_id', $valuecond, array( 'LIMIT' => 1 ) );
+		
 		if ( !$this->m_dbs->fetchObject( $res ) ) { // no subobjects, we are done!
 			$this->m_dbs->freeResult( $res );
 			$query->type = SMW_SQL2_VALUE;
 			wfProfileOut( $fname );
 			return;
 		}
+		
 		$this->m_dbs->freeResult( $res );
 		$tablename = $this->m_dbs->tableName( $query->alias );
 		$this->m_querylog[$query->alias] = array( "Recursively computed hierarchy for element(s) $values." );
 		$query->jointable = $query->alias;
 		$query->joinfield = "$query->alias.id";
+		
 		if ( $this->m_qmode == SMWQuery::MODE_DEBUG ) {
 			wfProfileOut( $fname );
-			return; // no real queries in debug mode
+			return; // No real queries in debug mode.
 		}
+		
 		$this->m_dbs->query( $this->getCreateTempIDTableSQL( $tablename ), 'SMW::executeHierarchyQuery' );
 
-		if ( array_key_exists( $values, $this->m_hierarchies ) ) { // just copy known result
+		if ( array_key_exists( $values, $this->m_hierarchies ) ) { // Just copy known result.
 			$this->m_dbs->query( "INSERT INTO $tablename (id) SELECT id" .
 								' FROM ' . $this->m_hierarchies[$values],
 								'SMW::executeHierarchyQuery' );
@@ -930,28 +973,33 @@ class SMWSQLStore2QueryEngine {
 		$tmpres = 'smw_res';
 		$this->m_dbs->query( $this->getCreateTempIDTableSQL( $tmpnew ), 'SMW::executeQueries' );
 		$this->m_dbs->query( $this->getCreateTempIDTableSQL( $tmpres ), 'SMW::executeQueries' );
-		$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? "":"IGNORE" ) . " INTO $tablename (id) VALUES $values", 'SMW::executeHierarchyQuery' );
-		$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? "":"IGNORE" ) . " INTO $tmpnew (id) VALUES $values", 'SMW::executeHierarchyQuery' );
+		$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? "" : "IGNORE" ) . " INTO $tablename (id) VALUES $values", 'SMW::executeHierarchyQuery' );
+		$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? "" : "IGNORE" ) . " INTO $tmpnew (id) VALUES $values", 'SMW::executeHierarchyQuery' );
 
 		for ( $i = 0; $i < $depth; $i++ ) {
-			$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) .  "INTO $tmpres (id) SELECT s_id" . ( $wgDBtype == 'postgres' ? '::integer':'' ) . " FROM $smwtable, $tmpnew WHERE o_id=id",
+			$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .  "INTO $tmpres (id) SELECT s_id" . ( $wgDBtype == 'postgres' ? '::integer':'' ) . " FROM $smwtable, $tmpnew WHERE o_id=id",
 						'SMW::executeHierarchyQuery' );
 			if ( $this->m_dbs->affectedRows() == 0 ) { // no change, exit loop
 				break;
 			}
-			$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) . "INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
+			
+			$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) . "INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
 						'SMW::executeHierarchyQuery' );
+			
 			if ( $this->m_dbs->affectedRows() == 0 ) { // no change, exit loop
 				break;
 			}
+			
 			$this->m_dbs->query( 'TRUNCATE TABLE ' . $tmpnew, 'SMW::executeHierarchyQuery' ); // empty "new" table
 			$tmpname = $tmpnew;
 			$tmpnew = $tmpres;
 			$tmpres = $tmpname;
 		}
+		
 		$this->m_hierarchies[$values] = $tablename;
-		$this->m_dbs->query( ( ( $wgDBtype == 'postgres' ) ? 'DROP TABLE IF EXISTS smw_new':'DROP TEMPORARY TABLE smw_new' ), 'SMW::executeHierarchyQuery' );
-		$this->m_dbs->query( ( ( $wgDBtype == 'postgres' ) ? 'DROP TABLE IF EXISTS smw_res':'DROP TEMPORARY TABLE smw_res' ), 'SMW::executeHierarchyQuery' );
+		$this->m_dbs->query( ( ( $wgDBtype == 'postgres' ) ? 'DROP TABLE IF EXISTS smw_new' : 'DROP TEMPORARY TABLE smw_new' ), 'SMW::executeHierarchyQuery' );
+		$this->m_dbs->query( ( ( $wgDBtype == 'postgres' ) ? 'DROP TABLE IF EXISTS smw_res' : 'DROP TEMPORARY TABLE smw_res' ), 'SMW::executeHierarchyQuery' );
+
 		wfProfileOut( $fname );
 	}
 
@@ -960,7 +1008,7 @@ class SMWSQLStore2QueryEngine {
 	 * in the SMWQuery $query. It is always required that $qid is the id of a query that joins with
 	 * smw_ids so that the field alias.smw_title is $available for default sorting.
 	 * 
-	 * @param $qid
+	 * @param integer $qid
 	 */
 	protected function applyOrderConditions( $qid ) {
 		$qobj = $this->m_queries[$qid];
@@ -999,6 +1047,9 @@ class SMWSQLStore2QueryEngine {
 
 	/**
 	 * Get a SQL option array for the given query and preprocessed query object at given id.
+	 * 
+	 * @param SMWQuery $query
+	 * @param integer $rootid
 	 */
 	protected function getSQLOptions( SMWQuery $query, $rootid ) {
 		global $smwgQSortingSupport, $smwgQRandSortingSupport;
@@ -1040,6 +1091,8 @@ class SMWSQLStore2QueryEngine {
 	 * a table exists, so the code is ready to reuse existing tables if the code was modified to
 	 * keep them after query answering. Also, PostgreSQL tables will use a RULE to achieve built-in
 	 * duplicate elimination. The latter is done using INSERT IGNORE in MySQL.
+	 * 
+	 * @param string $tablename
 	 */
 	protected function getCreateTempIDTableSQL( $tablename ) {
 		global $wgDBtype;
