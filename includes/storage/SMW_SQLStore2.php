@@ -312,6 +312,7 @@ class SMWSQLStore2 extends SMWStore {
 		// stop if there is not enough data:
 		// properties always need to be given as object, subjects at least if !$proptable->idsubject
 		if ( ( $id == 0 ) || ( ( $object === null ) && ( !$issubject || !$proptable->idsubject ) ) ) return array();
+		
 		wfProfileIn( "SMWSQLStore2::fetchSemanticData-" . $proptable->name .  " (SMW)" );
 		$result = array();
 		$db = wfGetDB( DB_SLAVE );
@@ -320,6 +321,7 @@ class SMWSQLStore2 extends SMWStore {
 		$from   = $db->tableName( $proptable->name ); // always use actual table
 		$select = '';
 		$where  = '';
+		
 		if ( $issubject != 0 ) { // restrict subject, select property
 			$where .= ( $proptable->idsubject ) ? 's_id=' . $db->addQuotes( $id ) :
 					  's_title=' . $db->addQuotes( $object->getDBkey() ) .
@@ -333,10 +335,12 @@ class SMWSQLStore2 extends SMWStore {
 		} elseif ( !$proptable->fixedproperty ) { // restrict property, but don't select subject
 			$where .= 'p_id=' . $db->addQuotes( $id );
 		}
+		
 		$valuecount = 0;
 		$pagevalues = array(); // collect indices of page-type components of this table (typically at most 1)
 		$usedistinct = true; // use DISTINCT option only if no text blobs are among values
 		$selectvalues = array(); // array for all values to be selected, kept to help finding value and label fields below
+		
 		foreach ( $proptable->objectfields as $fieldname => $typeid ) { // now add select entries for object column(s)
 			if ( $typeid == 'p' ) { // Special case: page id, use smw_id table to insert 4 page-specific values instead of internal id
 				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
@@ -347,19 +351,23 @@ class SMWSQLStore2 extends SMWStore {
 				$selectvalues[$valuecount + 3] = "o$valuecount.smw_sortkey";
 				$pagevalues[] = $valuecount;
 				$valuecount += 3;
-			} else { // just use value as given
+			} else { // Just use value as given.
 				$selectvalues[$valuecount] = $fieldname;
 			}
+			
 			if ( $typeid == 'l' ) $usedistinct = false;
 			$valuecount++;
 		}
+		
 		foreach ( $selectvalues as $index => $field ) {
-			$select .= ( ( $select != '' ) ? ',':'' ) . "$field AS v$index";
+			$select .= ( ( $select != '' ) ? ',' : '' ) . "$field AS v$index";
 		}
-		if ( !$issubject ) { // needed to apply sorting/string matching in query; only with fixed property
-			list( $sig, $valueindex, $labelindex ) = SMWSQLStore2::getTypeSignature( $object->getPropertyTypeID() );
-			$valuecolumn = ( array_key_exists( $valueindex, $selectvalues ) ) ? $selectvalues[$valueindex]:'';
-			$labelcolumn = ( array_key_exists( $labelindex, $selectvalues ) ) ? $selectvalues[$labelindex]:'';
+		
+		if ( !$issubject ) { // Needed to apply sorting/string matching in query; only with fixed property.
+			//.// TODO: support multiple value and label indexes.
+			list( $sig, $valueIndexes, $labelIndexes ) = self::getTypeSignature( $object->getPropertyTypeID() );
+			$valuecolumn = ( array_key_exists( $valueIndexes[0], $selectvalues ) ) ? $selectvalues[$valueIndexes[0]] : '';
+			$labelcolumn = ( array_key_exists( $labelIndexes[0], $selectvalues ) ) ? $selectvalues[$labelIndexes[0]] : '';
 			$where .= $this->getSQLConditions( $requestoptions, $valuecolumn, $labelcolumn, $where != '' );
 		} else {
 			$valuecolumn = $labelcolumn = '';
@@ -369,12 +377,13 @@ class SMWSQLStore2 extends SMWStore {
 		$res = $db->select( $from, $select, $where, 'SMW::getSemanticData',
 		       ( $usedistinct ? $this->getSQLOptions( $requestoptions, $valuecolumn ) + array( 'DISTINCT' ):
 			                 $this->getSQLOptions( $requestoptions, $valuecolumn ) ) );
+			                 
 		while ( $row = $db->fetchObject( $res ) ) {
 			if ( !$issubject ) {
 				$propertyname = 'fixed'; // irrelevant, but use this to check if the data is good
 			} elseif ( !$proptable->fixedproperty ) { // use joined or predefined property name
 				if ( $proptable->specpropsonly ) {
-					$propertyname = array_search( $row->p_id, SMWSQLStore2::$special_ids );
+					$propertyname = array_search( $row->p_id, self::$special_ids );
 					if ( $propertyname === false ) { // unknown property that uses a special type, maybe by some extension; look it up in the DB
 						// NOTE: this is just an emergency fallback but not a fast solution; extensions may prefer to use non-special datatypes for new properties!
 						$propertyname = $db->selectField( 'smw_ids', 'smw_title', array( 'smw_id' => $row->p_id ), 'SMW::getSemanticData-LatePropertyFetch' );
@@ -385,8 +394,10 @@ class SMWSQLStore2 extends SMWStore {
 			} else { // use fixed property name
 				$propertyname = $proptable->fixedproperty;
 			}
+			
 			$valuekeys = array();
 			reset( $pagevalues );
+			
 			for ( $i = 0; $i < $valuecount; $i++ ) { // read the value fields from the current row
 				$fieldname = "v$i";
 				$newvalue = $row->$fieldname;
@@ -399,7 +410,7 @@ class SMWSQLStore2 extends SMWStore {
 						$i += 3; // skip other page fields of this bnode
 						$oidfield = 'id' . current( $pagevalues );
 						$newvalue = array();
-						foreach ( SMWSQLStore2::getPropertyTables() as $tid => $pt ) { // just read all
+						foreach ( self::getPropertyTables() as $tid => $pt ) { // just read all
 							$newvalue = array_merge( $newvalue, $this->fetchSemanticData( $row->$oidfield, null, $pt ) );
 						}
 					} elseif ( ( $iw != '' ) && ( $iw { 0 } == ':' ) ) { // other internal object, maybe a DB inconsistency; ignore row
@@ -411,8 +422,10 @@ class SMWSQLStore2 extends SMWStore {
 			}
 			if ( $propertyname != '' ) $result[] = $issubject ? array( $propertyname, $valuekeys ):$valuekeys;
 		}
+		
 		$db->freeResult( $res );
 		wfProfileOut( "SMWSQLStore2::fetchSemanticData-" . $proptable->name .  " (SMW)" );
+		
 		return $result;
 	}
 
@@ -1370,24 +1383,30 @@ class SMWSQLStore2 extends SMWStore {
 	 * Transform input parameters into a suitable string of additional SQL conditions.
 	 * The parameter $valuecol defines the string name of the column to which
 	 * value restrictions etc. are to be applied.
+	 * 
 	 * @param $requestoptions object with options
 	 * @param $valuecol name of SQL column to which conditions apply
 	 * @param $labelcol name of SQL column to which string conditions apply, if any
 	 * @param $addand Boolean to indicate whether the string should begin with " AND " if non-empty
+	 * 
+	 * @return string
 	 */
 	protected function getSQLConditions( $requestoptions, $valuecol = '', $labelcol = '', $addand = true ) {
 		$sql_conds = '';
+		
 		if ( $requestoptions !== null ) {
 			$db = wfGetDB( DB_SLAVE ); /// TODO avoid doing this here again, all callers should have one
-			if ( ( $valuecol != '' ) && ( $requestoptions->boundary !== null ) ) { // apply value boundary
+			
+			if ( ( $valuecol != '' ) && ( $requestoptions->boundary !== null ) ) { // Apply value boundary.
 				if ( $requestoptions->ascending ) {
-					$op = $requestoptions->include_boundary ? ' >= ':' > ';
+					$op = $requestoptions->include_boundary ? ' >= ' : ' > ';
 				} else {
-					$op = $requestoptions->include_boundary ? ' <= ':' < ';
+					$op = $requestoptions->include_boundary ? ' <= ' : ' < ';
 				}
-				$sql_conds .= ( $addand ? ' AND ':'' ) . $valuecol . $op . $db->addQuotes( $requestoptions->boundary );
+				$sql_conds .= ( $addand ? ' AND ' : '' ) . $valuecol . $op . $db->addQuotes( $requestoptions->boundary );
 			}
-			if ( $labelcol != '' ) { // apply string conditions
+			
+			if ( $labelcol != '' ) { // Apply string conditions.
 				foreach ( $requestoptions->getStringConditions() as $strcond ) {
 					$string = str_replace( '_', '\_', $strcond->string );
 					switch ( $strcond->condition ) {
@@ -1395,10 +1414,12 @@ class SMWSQLStore2 extends SMWStore {
 						case SMWStringCondition::STRCOND_POST: $string = '%' . $string; break;
 						case SMWStringCondition::STRCOND_MID:  $string = '%' . $string . '%'; break;
 					}
+					
 					$sql_conds .= ( ( $addand || ( $sql_conds != '' ) ) ? ' AND ':'' ) . $labelcol . ' LIKE ' . $db->addQuotes( $string );
 				}
 			}
 		}
+		
 		return $sql_conds;
 	}
 
@@ -1411,23 +1432,31 @@ class SMWSQLStore2 extends SMWStore {
 	 */
 	protected function applyRequestOptions( $data, $requestoptions ) {
 		wfProfileIn( "SMWSQLStore2::applyRequestOptions (SMW)" );
+		
 		if ( ( count( $data ) == 0 ) || ( $requestoptions === null ) ) {
 			wfProfileOut( "SMWSQLStore2::applyRequestOptions (SMW)" );
 			return $data;
 		}
+		
 		$result = array();
 		$sortres = array();
-		list( $sig, $valueindex, $labelindex ) = SMWSQLStore2::getTypeSignature( reset( $data )->getTypeID() );
-		$numeric = ( ( $valueindex >= 0 ) && ( strlen( $sig ) > $valueindex ) &&
-		             ( ( $sig { $valueindex } != 'f' ) || ( $sig { $valueindex } != 'n' ) ) );
+		
+		//.// TODO: support multiple value and label indexes.
+		list( $sig, $valueIndexes, $labelIndexes ) = self::getTypeSignature( reset( $data )->getTypeID() );
+		
+		$numeric = ( ( $valueIndexes[0] >= 0 ) && ( strlen( $sig ) > $valueIndexes[0] ) &&
+		             ( ( $sig { $valueIndexes[0] } != 'f' ) || ( $sig { $valueIndexes[0] } != 'n' ) ) );
 		$i = 0;
+		
 		foreach ( $data as $item ) {
 			$ok = true; // keep datavalue only if this remains true
 			$keys = $item->getDBkeys();
-			$value = array_key_exists( $valueindex, $keys ) ? $keys[$valueindex]:'';
-			$label = array_key_exists( $labelindex, $keys ) ? $keys[$labelindex]:'';
+			$value = array_key_exists( $valueIndexes[0], $keys ) ? $keys[$valueIndexes[0]] : '';
+			$label = array_key_exists( $labelIndexes[0], $keys ) ? $keys[$labelIndexes[0]] : '';
+			
 			if ( $requestoptions->boundary !== null ) { // apply value boundary
-				$strc = $numeric ? 0:strcmp( $value, $requestoptions->boundary );
+				$strc = $numeric ? 0 : strcmp( $value, $requestoptions->boundary );
+				
 				if ( $requestoptions->ascending ) {
 					if ( $requestoptions->include_boundary ) {
 						$ok = $numeric ? ( $value >= $requestoptions->boundary ) : ( $strc >= 0 );
@@ -1442,6 +1471,7 @@ class SMWSQLStore2 extends SMWStore {
 					}
 				}
 			}
+			
 			foreach ( $requestoptions->getStringConditions() as $strcond ) { // apply string conditions
 				switch ( $strcond->condition ) {
 					case SMWStringCondition::STRCOND_PRE:
@@ -1455,31 +1485,40 @@ class SMWSQLStore2 extends SMWStore {
 						break;
 				}
 			}
+			
 			if ( $ok ) {
 				$result[$i] = $item;
 				$sortres[$i] = $value; // we cannot use $value as key: it is not unique if there are units!
 				$i++;
 			}
 		}
+		
 		if ( $requestoptions->sort ) {
 			$flag = $numeric ? SORT_NUMERIC:SORT_LOCALE_STRING;
+			
 			if ( $requestoptions->ascending ) {
 				asort( $sortres, $flag );
 			} else {
 				arsort( $sortres, $flag );
 			}
+			
 			$newres = array();
+			
 			foreach ( $sortres as $key => $value ) {
 				$newres[] = $result[$key];
 			}
+			
 			$result = $newres;
 		}
+		
 		if ( $requestoptions->limit > 0 ) {
 			$result = array_slice( $result, $requestoptions->offset, $requestoptions->limit );
 		} else {
 			$result = array_slice( $result, $requestoptions->offset );
 		}
+		
 		wfProfileOut( "SMWSQLStore2::applyRequestOptions (SMW)" );
+		
 		return $result;
 	}
 
@@ -1515,6 +1554,7 @@ class SMWSQLStore2 extends SMWStore {
 			$dv = SMWDataValueFactory::newTypeIDValue( $typeid );
 			self::$type_signatures[$typeid] = array( $dv->getSignature(), $dv->getValueIndexes(), $dv->getLabelIndexes() );
 		}
+		
 		return self::$type_signatures[$typeid];
 	}
 
@@ -1524,9 +1564,11 @@ class SMWSQLStore2 extends SMWStore {
 	 * @todo Maybe rather use SMWSQLStore2Table object as parameter.
 	 */
 	public static function tableFitsSignature( $tableid, $signature ) {
-		$proptables = SMWSQLStore2::getPropertyTables();
+		$proptables = self::getPropertyTables();
+		
 		$tablesig = str_replace( 'p', 'tnwt', $proptables[$tableid]->getFieldSignature() ); // expand internal page type to single fields
 		$valuesig = reset( $signature );
+		
 		return ( $valuesig == substr( $tablesig, 0, strlen( $valuesig ) ) );
 	}
 
@@ -1535,7 +1577,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * type.
 	 */
 	public static function tableFitsType( $tableid, $typeid ) {
-		return SMWSQLStore2::tableFitsSignature( $tableid, SMWSQLStore2::getTypeSignature( $typeid ) );
+		return self::tableFitsSignature( $tableid, self::getTypeSignature( $typeid ) );
 	}
 
 	/**
@@ -1546,14 +1588,17 @@ class SMWSQLStore2 extends SMWStore {
 	public static function findTypeTableID( $typeid ) {
 		if ( !array_key_exists( $typeid, SMWSQLStore2::$property_table_ids ) ) {
 			$signature = SMWSQLStore2::getTypeSignature( $typeid );
+			
 			foreach ( SMWSQLStore2::getPropertyTables() as $tid => $proptable ) {
 				if ( SMWSQLStore2::tableFitsSignature( $tid, $signature ) ) {
 					SMWSQLStore2::$property_table_ids[$typeid] = $tid;
 					return $tid;
 				}
 			}
-			SMWSQLStore2::$property_table_ids[$typeid] = ''; // no matching table found
+			
+			SMWSQLStore2::$property_table_ids[$typeid] = ''; // No matching table found.
 		}
+		
 		return SMWSQLStore2::$property_table_ids[$typeid];
 	}
 
@@ -1562,20 +1607,25 @@ class SMWSQLStore2 extends SMWStore {
 	 * values for the given property object.
 	 */
 	public static function findPropertyTableID( $property ) {
-		if ( SMWSQLStore2::$fixed_prop_tables === null ) { // build lookup array once
+		if ( SMWSQLStore2::$fixed_prop_tables === null ) { // Build lookup array once.
 			SMWSQLStore2::$fixed_prop_tables = array();
+			
 			foreach ( SMWSQLStore2::getPropertyTables() as $tid => $proptable ) {
 				if ( $proptable->fixedproperty != false ) {
 					SMWSQLStore2::$fixed_prop_tables[$proptable->fixedproperty] = $tid;
 				}
 			}
 		}
+		
 		$propertykey = ( $property->isUserDefined() ) ? $property->getDBkey():$property->getPropertyId();
+		
 		if ( array_key_exists( $propertykey, SMWSQLStore2::$fixed_prop_tables ) ) {
 			$signature = SMWSQLStore2::getTypeSignature( $property->getPropertyTypeID() );
-			if ( SMWSQLStore2::tableFitsSignature( SMWSQLStore2::$fixed_prop_tables[$propertykey], $signature ) )
+			
+			if ( SMWSQLStore2::tableFitsSignature( SMWSQLStore2::$fixed_prop_tables[$propertykey], $signature ) ) {
 				return SMWSQLStore2::$fixed_prop_tables[$propertykey];
-		} // else: don't check for non-fitting entries in $fixed_prop_tables: not really important
+			}
+		} // else: Don't check for non-fitting entries in $fixed_prop_tables: not really important.
 
 		return SMWSQLStore2::findTypeTableID( $property->getPropertyTypeID() );
 	}

@@ -350,9 +350,11 @@ class SMWSQLStore2QueryEngine {
 	protected function compileQueries( SMWDescription $description ) {
 		$qid = SMWSQLStore2Query::$qnum;
 		$query = new SMWSQLStore2Query();
+		
 		if ( $description instanceof SMWSomeProperty ) {
 			$this->compilePropertyCondition( $query, $description->getProperty(), $description->getDescription() );
-			if ( $query->type == SMW_SQL2_NOQUERY ) $qid = - 1; // compilation has set type to NOQUERY: drop condition
+			// Compilation has set type to NOQUERY: drop condition.
+			if ( $query->type == SMW_SQL2_NOQUERY ) $qid = - 1; 
 		} elseif ( $description instanceof SMWNamespaceDescription ) {
 			// TODO: One instance of smw_ids on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
 			$query->jointable = 'smw_ids';
@@ -360,41 +362,45 @@ class SMWSQLStore2QueryEngine {
 			$query->where = "$query->alias.smw_namespace=" . $this->m_dbs->addQuotes( $description->getNamespace() );
 		} elseif ( ( $description instanceof SMWConjunction ) || ( $description instanceof SMWDisjunction ) ) {
 			$query->type = ( $description instanceof SMWConjunction ) ? SMW_SQL2_CONJUNCTION:SMW_SQL2_DISJUNCTION;
+			
 			foreach ( $description->getDescriptions() as $subdesc ) {
 				$sub = $this->compileQueries( $subdesc );
 				if ( $sub >= 0 ) {
 					$query->components[$sub] = true;
 				}
 			}
-			if ( count( $query->components ) == 0 ) $qid = - 1; // all subconditions failed, drop this as well
+			
+			// All subconditions failed, drop this as well.
+			if ( count( $query->components ) == 0 ) $qid = - 1; 
 		} elseif ( $description instanceof SMWClassDescription ) {
 			$cqid = SMWSQLStore2Query::$qnum;
 			$cquery = new SMWSQLStore2Query();
 			$cquery->type = SMW_SQL2_CLASS_HIERARCHY;
 			$cquery->joinfield = array();
+			
 			foreach ( $description->getCategories() as $cat ) {
 				$cid = $this->m_store->getSMWPageID( $cat->getDBkey(), NS_CATEGORY, $cat->getInterwiki() );
 				if ( $cid != 0 ) {
 					$cquery->joinfield[] = $cid;
 				}
 			}
-			if ( count( $cquery->joinfield ) == 0 ) { // empty result
+			if ( count( $cquery->joinfield ) == 0 ) { // Empty result.
 				$query->type = SMW_SQL2_VALUE;
 				$query->jointable = '';
 				$query->joinfield = '';
-			} else { // instance query with dicjunction of classes (categories)
+			} else { // Instance query with dicjunction of classes (categories)
 				$query->jointable = 'smw_inst2';
 				$query->joinfield = "$query->alias.s_id";
 				$query->components[$cqid] = "$query->alias.o_id";
 				$this->m_queries[$cqid] = $cquery;
 			}
-		} elseif ( $description instanceof SMWValueDescription ) { // only type '_wpg' objects can appear on query level (essentially as nominal classes)
+		} elseif ( $description instanceof SMWValueDescription ) { // Only type '_wpg' objects can appear on query level (essentially as nominal classes).
 			if ( $description->getDatavalue()->getTypeID() == '_wpg' ) {
 				if ( $description->getComparator() == SMW_CMP_EQ ) {
 					$query->type = SMW_SQL2_VALUE;
 					$oid = $this->m_store->getSMWPageID( $description->getDatavalue()->getDBkey(), $description->getDatavalue()->getNamespace(), $description->getDatavalue()->getInterwiki() );
 					$query->joinfield = array( $oid );
-				} else { // join with smw_ids needed for other comparators (apply to title string)
+				} else { // Join with smw_ids needed for other comparators (apply to title string).
 					$query->jointable = 'smw_ids';
 					$query->joinfield = "$query->alias.smw_id";
 					$value = $description->getDatavalue()->getSortkey();
@@ -415,10 +421,10 @@ class SMWSQLStore2QueryEngine {
 			$row = $this->m_dbs->selectRow( 'smw_conc2',
 			         array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ),
 			         array( 's_id' => $cid ), 'SMWSQLStore2Queries::compileQueries' );
-			if ( $row === false ) { // no description found, concept does not exist
+			if ( $row === false ) { // No description found, concept does not exist.
 				// keep the above query object, it yields an empty result
-				//TODO: announce an error here? (maybe not, since the query processor can check for
-				//non-existing concept pages which is probably the main reason for finding nothing here
+				// TODO: announce an error here? (maybe not, since the query processor can check for
+				// non-existing concept pages which is probably the main reason for finding nothing here
 			} else {
 				global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
 				$may_be_computed = ( $smwgQConceptCaching == CONCEPT_CACHE_NONE ) ||
