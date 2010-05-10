@@ -74,22 +74,22 @@ class SMWSpecialOWLExport extends SpecialPage {
 			} else $postform = false;
 	
 			$rec = $wgRequest->getText( 'recursive' );
-			if ( '' == $rec ) $rec = $wgRequest->getVal( 'recursive' );
+			if ( $rec == '' ) $rec = $wgRequest->getVal( 'recursive' );
 			if ( ( $rec == '1' ) && ( $smwgAllowRecursiveExport || $wgUser->isAllowed( 'delete' ) ) ) {
 				$recursive = 1; // users may be allowed to switch it on
 			}
 			$bl = $wgRequest->getText( 'backlinks' );
-			if ( '' == $bl ) $bl = $wgRequest->getVal( 'backlinks' );
+			if ( $bl == '' ) $bl = $wgRequest->getVal( 'backlinks' );
 			if ( ( $bl == '1' ) && ( $wgUser->isAllowed( 'delete' ) ) ) {
 				$backlinks = true; // admins can always switch on backlinks
 			} elseif ( ( $bl == '0' ) || ( '' == $bl && $postform ) ) {
 				$backlinks = false; // everybody can explicitly switch off backlinks
 			}
 			$date = $wgRequest->getText( 'date' );
-			if ( '' == $date ) $date = $wgRequest->getVal( 'date' );
+			if ( $date == '' ) $date = $wgRequest->getVal( 'date' );
 	
 			$exp = new OWLExport();
-			if ( '' != $date ) $exp->setDate( $date );
+			if ( $date != '' ) $exp->setDate( $date );
 			$exp->printPages( $pages, $recursive, $backlinks );
 			return;
 		} else {
@@ -764,18 +764,21 @@ class OWLExport {
 	 * @param force if true, the flush cannot be delayed any longer
 	 */
 	protected function flushBuffers( $force = false ) {
-		if ( '' == $this->post_ns_buffer ) return; // nothing to flush (every non-empty pre_ns_buffer also requires a non-empty post_ns_buffer)
+		if ( $this->post_ns_buffer == '' ) return; // nothing to flush (every non-empty pre_ns_buffer also requires a non-empty post_ns_buffer)
 		if ( ( 0 != $this->delay_flush ) && !$force ) return; // wait a little longer
 
 		print $this->pre_ns_buffer;
 		$this->pre_ns_buffer = '';
+		
 		foreach ( $this->extra_namespaces as $nsshort => $nsuri ) {
 			if ( $this->first_flush ) {
 				$this->global_namespaces[$nsshort] = true;
 				print "\n\t";
 			} else print ' ';
+			
 			print "xmlns:$nsshort=\"$nsuri\"";
 		}
+		
 		$this->extra_namespaces = array();
 		print $this->post_ns_buffer;
 		$this->post_ns_buffer = '';

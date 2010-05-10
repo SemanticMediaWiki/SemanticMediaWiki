@@ -208,15 +208,19 @@ abstract class SMWResultPrinter {
 	 */
 	protected function readParameters( $params, $outputmode ) {
 		$this->m_params = $params;
+		
 		if ( array_key_exists( 'intro', $params ) ) {
 			$this->mIntro = str_replace( '_', ' ', $params['intro'] );
 		}
+		
 		if ( array_key_exists( 'outro', $params ) ) {
 			$this->mOutro = str_replace( '_', ' ', $params['outro'] );
 		}
+		
 		if ( array_key_exists( 'searchlabel', $params ) ) {
 			$this->mSearchlabel = $params['searchlabel'];
 		}
+		
 		if ( array_key_exists( 'link', $params ) ) {
 			switch ( strtolower( trim( $params['link'] ) ) ) {
 			case 'head': case 'subject':
@@ -233,13 +237,15 @@ abstract class SMWResultPrinter {
 				break;
 			}
 		}
+		
 		if ( array_key_exists( 'default', $params ) ) {
 			$this->mDefault = str_replace( '_', ' ', $params['default'] );
 		}
+		
 		if ( array_key_exists( 'headers', $params ) ) {
-			if ( 'hide' == strtolower( trim( $params['headers'] ) ) ) {
+			if ( strtolower( trim( $params['headers'] ) ) == 'hide' ) {
 				$this->mShowHeaders = SMW_HEADERS_HIDE;
-			} elseif ( 'plain' == strtolower( trim( $params['headers'] ) ) ) {
+			} elseif ( strtolower( trim( $params['headers'] ) ) == 'plain' ) {
 				$this->mShowHeaders = SMW_HEADERS_PLAIN;
 			} else {
 				$this->mShowHeaders = SMW_HEADERS_SHOW;

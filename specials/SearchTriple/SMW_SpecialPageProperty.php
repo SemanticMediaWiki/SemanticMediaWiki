@@ -38,10 +38,10 @@ class SMWPageProperty extends SpecialPage {
 		$pagename = $wgRequest->getVal( 'from' );
 		$propname = $wgRequest->getVal( 'type' );
 		$limit = $wgRequest->getVal( 'limit' );
-		if ( '' == $limit ) $limit =  20;
+		if ( $limit == '' ) $limit =  20;
 		$offset = $wgRequest->getVal( 'offset' );
-		if ( '' == $offset ) $offset = 0;
-		if ( '' == $propname ) { // No GET parameters? Try the URL:
+		if ( $offset == '' ) $offset = 0;
+		if ( $propname == '' ) { // No GET parameters? Try the URL:
 			$queryparts = explode( '::', $query );
 			$propname = $query;
 			if ( count( $queryparts ) > 1 ) {
@@ -58,7 +58,7 @@ class SMWPageProperty extends SpecialPage {
 		// Produce output
 		$html = '';
 		wfLoadExtensionMessages( 'SemanticMediaWiki' );
-		if ( ( '' == $propname ) ) { // no property given, show a message
+		if ( ( $propname == '' ) ) { // no property given, show a message
 			$html .= wfMsg( 'smw_pp_docu' ) . "\n";
 		} else { // property given, find and display results
 			$wgOut->setPagetitle( ( $pagename != '' ? $pagename . ' ':'' ) . $property->getWikiValue() );

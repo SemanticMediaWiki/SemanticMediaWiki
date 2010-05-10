@@ -157,7 +157,7 @@ class SMWAskPage extends SpecialPage {
 		}
 		$this->m_params['limit'] = min( $this->m_params['limit'], $smwgQMaxInlineLimit );
 
-		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) == 'yes' ) || ( '' == $this->m_querystring );
+		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) == 'yes' ) || ( $this->m_querystring == '' );
 	}
 
 	protected function makeHTMLResult() {

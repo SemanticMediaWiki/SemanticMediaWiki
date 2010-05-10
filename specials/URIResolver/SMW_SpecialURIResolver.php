@@ -27,8 +27,10 @@ class SMWURIResolver extends SpecialPage {
 
 	function execute( $query ) {
 		global $wgOut, $smwgIP;
+		
 		wfProfileIn( 'SpecialURIResolver::execute (SMW)' );
-		if ( '' == $query ) {
+		
+		if ( $query == '' ) {
 			if ( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' ) ) {
 				$wgOut->redirect( SpecialPage::getTitleFor( 'ExportRDF' )->getFullURL( 'stats=1' ), '303' );
 			} else {
@@ -45,6 +47,7 @@ class SMWURIResolver extends SpecialPage {
 				? SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getFullURL( 'xmlmime=rdf' )
 				: $title->getFullURL(), '303' );
 		}
+		
 		wfProfileOut( 'SpecialURIResolver::execute (SMW)' );
 	}
 }

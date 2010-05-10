@@ -24,13 +24,16 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 		// print header
 		$result = '<table class="smwtable"' .
-			  ( 'broadtable' == $this->mFormat ? ' width="100%"':'' ) .
+			  ( $this->mFormat == 'broadtable' ? ' width="100%"' : '' ) .
 				  " id=\"querytable$smwgIQRunningNumber\">\n";
+			  
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
 			$result .= "\t<tr>\n";
+			
 			foreach ( $res->getPrintRequests() as $pr ) {
 				$result .= "\t\t<th>" . $pr->getText( $outputmode, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null:$this->mLinker ) ) . "</th>\n";
 			}
+			
 			$result .= "\t</tr>\n";
 		}
 
