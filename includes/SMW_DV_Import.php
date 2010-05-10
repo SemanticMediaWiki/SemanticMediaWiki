@@ -40,7 +40,7 @@ class SMWImportValue extends SMWDataValue {
 		// browse list in smw_import_* for section
 		list( $onto_uri, $onto_name ) = explode( '|', array_shift( $msglines ), 2 );
 
-		if ( ' ' == $onto_uri[0] ) $onto_uri = mb_substr( $onto_uri, 1 ); // tolerate initial space
+		if ( $onto_uri[0] == ' ' ) $onto_uri = mb_substr( $onto_uri, 1 ); // tolerate initial space
 
 		$this->m_uri = $onto_uri;
 		$this->m_namespace = $onto_ns;

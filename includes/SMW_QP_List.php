@@ -49,13 +49,13 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	}
 
 	protected function getResultText( $res, $outputmode ) {
-		if ( ( 'template' == $this->mFormat ) && ( $this->mTemplate == false ) ) {
+		if ( ( $this->mFormat == 'template' ) && ( $this->mTemplate == false ) ) {
 			wfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$res->addErrors( array( wfMsgForContent( 'smw_notemplategiven' ) ) );
 			return '';
 		}
 		// Determine mark-up strings used around list items:
-		if ( ( 'ul' == $this->mFormat ) || ( 'ol' == $this->mFormat ) ) {
+		if ( ( $this->mFormat == 'ul' ) || ( $this->mFormat == 'ol' ) ) {
 			$header = '<' . $this->mFormat . '>';
 			$footer = '</' . $this->mFormat . '>';
 			$rowstart = '<li>';
@@ -70,7 +70,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			if ( $this->mSep != '' ) { // always respect custom separator
 				$listsep = $this->mSep;
 				$finallistsep = $listsep;
-			} elseif ( 'list' == $this->mFormat )  {  // make default list ", , , and "
+			} elseif ( $this->mFormat == 'list' )  {  // make default list ", , , and "
 				wfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$listsep = ', ';
 				$finallistsep = wfMsgForContent( 'smw_finallistconjunct' ) . ' ';

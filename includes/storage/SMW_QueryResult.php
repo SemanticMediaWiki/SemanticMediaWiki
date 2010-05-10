@@ -318,10 +318,10 @@ class SMWResultArray {
 		if ( ( $limit !== false ) || ( $order != false ) ) { // Important: use "!=" for order, since trim() above does never return "false", use "!==" for limit since "0" is meaningful here
 			$options = new SMWRequestOptions();
 			if ( $limit !== false ) $options->limit = trim( $limit );
-			if ( ( 'descending' == $order ) || ( 'reverse' == $order ) || ( 'desc' == $order ) ) {
+			if ( ( $order == 'descending' ) || ( $order == 'reverse' ) || ( $order == 'desc' ) ) {
 				$options->sort = true;
 				$options->ascending = false;
-			} elseif ( ( 'ascending' == $order ) || ( 'asc' == $order ) ) {
+			} elseif ( ( $order == 'ascending' ) || ( $order == 'asc' ) ) {
 				$options->sort = true;
 				$options->ascending = true;
 			}
