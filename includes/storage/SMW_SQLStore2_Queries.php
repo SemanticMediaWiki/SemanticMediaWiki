@@ -45,7 +45,7 @@ class SMWSQLStore2Query {
 	public static $qnum = 0;
 
 	public function __construct() {
-		$this->alias = 't' . SMWSQLStore2Query::$qnum++;
+		$this->alias = 't' . self::$qnum++;
 	}
 }
 
