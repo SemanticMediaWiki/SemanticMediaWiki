@@ -617,7 +617,7 @@ class SMWSQLStore2QueryEngine {
 		}
 
 		// *** Incorporate ordering if desired ***//
-		if ( ( $valueindexes[0] >= 0 ) && array_key_exists( $sortkey, $this->m_sortkeys ) ) { // TODO //.//
+		if ( ( count( $valueindexes ) > 0 ) && array_key_exists( $sortkey, $this->m_sortkeys ) ) {
 			// This code might be overly general: it supports datatypes of arbitrary signatures
 			// and valueindex (sortkeys). It can even order pages by something other than their
 			// sortkey (e.g. by their namespace?!), and it can handle values consisting of a page
@@ -706,7 +706,7 @@ class SMWSQLStore2QueryEngine {
 			$keys = $dv->getDBkeys();
 			
 			// Try comparison based on value field and comparator.
-			if ( ( $valueIndexes[0] >= 0 ) ) { // TODO //.//
+			if ( ( count( $valueIndexes ) > 0 ) ) {
 				// Find field name for comparison.
 				$smwidjoinfield = false;
 				$fieldNames = $this->getDBFieldsForDVIndexes( $proptable->objectfields, $valueIndexes, $smwidjoinfield );
@@ -877,7 +877,7 @@ class SMWSQLStore2QueryEngine {
 						$values = '';
 						
 						foreach ( $subquery->joinfield as $value ) {
-							$values .= ( $values ? ',':'' ) . '(' . $this->m_dbs->addQuotes( $value ) . ')';
+							$values .= ( $values ? ',' : '' ) . '(' . $this->m_dbs->addQuotes( $value ) . ')';
 						}
 						
 						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) .  'INTO ' . $this->m_dbs->tableName( $query->alias ) . " (id) VALUES $values";

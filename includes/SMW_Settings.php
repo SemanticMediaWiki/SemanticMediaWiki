@@ -32,7 +32,6 @@ $smwgScriptPath = $wgScriptPath . '/extensions/SemanticMediaWiki';
 # this file.
 ##
 $smwgIP = dirname( __FILE__ ) . '/../';
-// $smwgIP = $IP . '/extensions/SemanticMediaWiki/';
 ##
 
 ###

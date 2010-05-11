@@ -559,17 +559,12 @@ abstract class SMWDataValue {
 	/**
 	 * Convenience method that checks if the value that is used to sort data of
 	 * this type is numeric.
-	 * 
-	 * TODO //.//
 	 */
 	public function isNumeric() {
 		$sig = $this->getSignature();
-		$validx = $this->getValueIndexes();
-		if ( ( $validx[0] >= 0 ) && ( $validx[0] < strlen( $sig ) ) ) {
-			return ( ( $sig { $validx[0] } == 'n' ) || ( $sig { $validx[0] } == 'f' ) );
-		} else {
-			return false;
-		}
+		$valueIndexes = $this->getValueIndexes();
+		
+		return count( $valueIndexes ) == 1 && ( ( $sig { $valueIndexes[0] } == 'n' ) || ( $sig { $valueIndexes[0] } == 'f' ) );
 	}
 
 	/**
@@ -582,6 +577,7 @@ abstract class SMWDataValue {
 	public function getValueKey() {
 		$dbkeys = $this->getDBkeys();
 		$validx = $this->getValueIndexes();
+		
 		if ( array_key_exists( $validx[0], $dbkeys ) ) {
 			return $dbkeys[$validx[0]];
 		} else {

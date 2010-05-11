@@ -174,8 +174,8 @@ class SMWSQLStoreLight extends SMWStore {
 	/// Array to cache signatures of known built-in types. Having this data
 	/// here safes us from creating datavalue instances in getTypeSignature().
 	private static $type_signatures = array(
-		'_txt'  => array( 'l', array( -1 ), array( -1 ) ),  // Text type
-		'_cod'  => array( 'l', array( -1 ), array( -1 ) ),  // Code type
+		'_txt'  => array( 'l', array(), array() ),  // Text type
+		'_cod'  => array( 'l', array(), array() ),  // Code type
 		'_str'  => array( 't', array( 0 ), array( 0 ) ),    // String type
 		'_ema'  => array( 't', array( 0 ), array( 0 ) ),    // Email type
 		'_uri'  => array( 't', array( 0 ), array( 0 ) ),    // URL/URI type
@@ -189,7 +189,7 @@ class SMWSQLStoreLight extends SMWStore {
 		'_tem'  => array( 'tfu', array( 1 ), array( 0 ) ),  // Temperature type
 		'_dat'  => array( 'tf', array( 1 ), array( 0 ) ),   // Time type
 		'_boo'  => array( 't', array( 0 ), array( 0 ) ),    // Boolean type
-		'_rec'  => array( 'tnwt', array( 0 ), array( -1 ) ),// Value list type (internal object)
+		'_rec'  => array( 'tnwt', array( 0 ), array() ),// Value list type (internal object)
 		// Special types are not avaialble directly for users (and have no local language name):
 		'__typ' => array( 't', array( 0 ), array( 0 ) ),    // Special type page type
 		'__tls' => array( 't', array( 0 ), array( 0 ) ),    // Special type page type
