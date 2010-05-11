@@ -210,6 +210,7 @@ class SMWParserExtensions {
 		}
 		
 		SMWOutputs::commitToParser( $parser );
+		
 		return $result;
 	}
 
