@@ -176,7 +176,6 @@ class SMWParserExtensions {
 	 * than MW hooks in general, which explains the two-level registration.
 	 */
 	public static function registerParserFunctions( &$parser ) {
-		$parser->setHook( 'ask', array( 'SMWParserExtensions', 'doAskHook' ) );
 		$parser->setFunctionHook( 'ask', array( 'SMWParserExtensions', 'doAsk' ) );
 		$parser->setFunctionHook( 'show', array( 'SMWParserExtensions', 'doShow' ) );
 		$parser->setFunctionHook( 'info', array( 'SMWParserExtensions', 'doInfo' ) );
@@ -212,16 +211,6 @@ class SMWParserExtensions {
 		
 		SMWOutputs::commitToParser( $parser );
 		return $result;
-	}
-
-	/**
-	 * The \<ask\> parser hook processing part. This has been replaced by the
-	 * parser function \#ask and is no longer supported.
-	 * @todo Remove this function entirely, one could have an extension for those who
-	 * wish to have some intelligent behaviour here.
-	 */
-	static public function doAskHook( $querytext, $params, $parser ) {
-		return '&lt;ask&gt; no longer supported. See SMW documentation on how to do inline queries now.';
 	}
 
 	/**
