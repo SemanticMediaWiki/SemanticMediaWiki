@@ -192,12 +192,12 @@ class SMWWikiPageValue extends SMWDataValue {
 		return 'tnwt';
 	}
 
-	public function getValueIndexes() {
-		return array( 3 );
+	public function getValueIndex() {
+		return 3;
 	}
 
-	public function getLabelIndexes() {
-		return array( 3 );
+	public function getLabelIndex() {
+		return 3;
 	}
 
 	public function getWikiValue() {

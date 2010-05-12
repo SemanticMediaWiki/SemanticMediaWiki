@@ -143,15 +143,15 @@ abstract class SMWDescription {
 	}
 
 	/**
-	 * TODO
+	 * TODO: replace $fieldName by signature
 	 * 
 	 * @param string $tableName
-	 * @param array $fieldNames
+	 * @param integer $fieldName
 	 * @param DatabaseBase $dbs
 	 * 
 	 * @return false
 	 */	
-	public function getSQLCondition( $tableName, array $fieldNames, DatabaseBase $dbs ) {
+	public function getSQLCondition( $tableName, $fieldName, DatabaseBase $dbs ) {
 		return false;
 	}
 }

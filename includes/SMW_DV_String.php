@@ -75,16 +75,16 @@ class SMWStringValue extends SMWDataValue {
 	 * For perfomance reasons, long text data like _txt and _cod does not
 	 * support sorting. This class can be subclassed to change this.
 	 */
-	public function getValueIndexes() {
-		return array( ( $this->m_typeid == '_txt' || $this->m_typeid == '_cod' )  ? - 1 : 0 );
+	public function getValueIndex() {
+		return ( $this->m_typeid == '_txt' || $this->m_typeid == '_cod' )  ? - 1 : 0;
 	}
 
 	/**
 	 * For perfomance reasons, long text data like _txt and _cod does not
 	 * support string matching. This class can be subclassed to change this.
 	 */
-	public function getLabelIndexes() {
-		return array( ( $this->m_typeid == '_txt' || $this->m_typeid == '_cod' )  ? - 1 : 0 );
+	public function getLabelIndex() {
+		return ( $this->m_typeid == '_txt' || $this->m_typeid == '_cod' )  ? - 1 : 0;
 	}
 
 	public function getWikiValue() {

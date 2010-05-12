@@ -161,12 +161,12 @@ class SMWImportValue extends SMWDataValue {
 		return 't';
 	}
 
-	public function getValueIndexes() {
-		return array( 0 );
+	public function getValueIndex() {
+		return 0;
 	}
 
-	public function getLabelIndexes() {
-		return array( 0 );
+	public function getLabelIndex() {
+		return 0;
 	}
 
 	public function getWikiValue() {

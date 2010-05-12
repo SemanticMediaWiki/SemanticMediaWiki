@@ -365,26 +365,26 @@ abstract class SMWDataValue {
 	 * the type of the resepctive field. If no ordering is supported for this
 	 * data value, then -1 can be returned here.
 	 * 
-	 * @return array
+	 * @return integer
 	 */
-	public function getValueIndexes() {
-		return array( 0 );
+	public function getValueIndex() {
+		return 0;
 	}
 
 	/**
 	 * This function specifies the index of the DB key that should be used for
 	 * string-matching values of this type. SMW supports some query conditions
 	 * that involve string patterns. Since numerical sort fields cannot be used
-	 * for this, this index might differ from getValueIndexes(). Otherwise, all
-	 * documentation of getValueIndexes() applies.
+	 * for this, this index might differ from getValueIndex(). Otherwise, all
+	 * documentation of getValueIndex() applies.
 	 * @note Any given storage implementation might decide to not support
 	 * string matching conditions for the specified value if not available for
 	 * its type.
 	 * 
-	 * @return array
+	 * @return integer
 	 */
-	public function getLabelIndexes() {
-		return array( 0 );
+	public function getLabelIndex() {
+		return 0;
 	}
 
 	/**
@@ -562,24 +562,22 @@ abstract class SMWDataValue {
 	 */
 	public function isNumeric() {
 		$sig = $this->getSignature();
-		$valueIndexes = $this->getValueIndexes();
+		$valueIndex = $this->getValueIndex();
 		
-		return count( $valueIndexes ) == 1 && ( ( $sig { $valueIndexes[0] } == 'n' ) || ( $sig { $valueIndexes[0] } == 'f' ) );
+		return $sig { $valueIndex } == 'n' || $sig { $valueIndex } == 'f';
 	}
 
 	/**
 	 * Convenience method that returns the DB key that holds the value that is
 	 * to be used for sorting data of this kind. If this datatype does not
 	 * support sorting, then null is returned here.
-	 * 
-	 * TODO //.//
 	 */
 	public function getValueKey() {
 		$dbkeys = $this->getDBkeys();
-		$validx = $this->getValueIndexes();
+		$validx = $this->getValueIndex();
 		
-		if ( array_key_exists( $validx[0], $dbkeys ) ) {
-			return $dbkeys[$validx[0]];
+		if ( array_key_exists( $validx, $dbkeys ) ) {
+			return $dbkeys[$validx];
 		} else {
 			return null;
 		}

@@ -69,12 +69,12 @@ abstract class SMWContainerValue extends SMWDataValue {
 		return 'c';
 	}
 
-	public function getValueIndexes() {
-		return array();
+	public function getValueIndex() {
+		return -1;
 	}
 
-	public function getLabelIndexes() {
-		return array();
+	public function getLabelIndex() {
+		return -1;
 	}
 
 	public function getHash() {

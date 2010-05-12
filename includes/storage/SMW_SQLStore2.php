@@ -155,35 +155,35 @@ class SMWSQLStore2 extends SMWStore {
 	/// Array to cache signatures of known built-in types. Having this data
 	/// here safes us from creating datavalue instances in getTypeSignature().
 	private static $type_signatures = array(
-		'_txt'  => array( 'l', array(), array() ),  // Text type
-		'_cod'  => array( 'l', array(), array() ),  // Code type
-		'_str'  => array( 't', array( 0 ), array( 0 ) ),    // String type
-		'_ema'  => array( 't', array( 0 ), array( 0 ) ),    // Email type
-		'_uri'  => array( 't', array( 0 ), array( 0 ) ),    // URL/URI type
-		'_anu'  => array( 't', array( 0 ), array( 0 ) ),    // Annotation URI type
-		'_tel'  => array( 't', array( 0 ), array( 0 ) ),    // Telephone number
-		'_wpg'  => array( 'tnwt', array( 3 ), array( 3 ) ), // Page type
-		'_wpp'  => array( 'tnwt', array( 3 ), array( 3 ) ), // Property page type
-		'_wpc'  => array( 'tnwt', array( 3 ), array( 3 ) ), // Category page type
-		'_wpf'  => array( 'tnwt', array( 3 ), array( 3 ) ), // Form page type (for Semantic Forms)
-		'_num'  => array( 'tfu', array( 1 ), array( 0 ) ),  // Number type
-		'_tem'  => array( 'tfu', array( 1 ), array( 0 ) ),  // Temperature type
-		'_dat'  => array( 'tf', array( 1 ), array( 0 ) ),   // Time type
-		'_boo'  => array( 't', array( 0 ), array( 0 ) ),    // Boolean type
-		'_rec'  => array( 'tnwt', array( 0 ), array() ),// Value list type (internal object)
+		'_txt'  => array( 'l', -1, -1 ),  // Text type
+		'_cod'  => array( 'l', -1, -1 ),  // Code type
+		'_str'  => array( 't', 0, 0 ),    // String type
+		'_ema'  => array( 't', 0, 0 ),    // Email type
+		'_uri'  => array( 't', 0, 0 ),    // URL/URI type
+		'_anu'  => array( 't', 0, 0 ),    // Annotation URI type
+		'_tel'  => array( 't', 0, 0 ),    // Telephone number
+		'_wpg'  => array( 'tnwt', 3, 3 ), // Page type
+		'_wpp'  => array( 'tnwt', 3, 3 ), // Property page type
+		'_wpc'  => array( 'tnwt', 3, 3 ), // Category page type
+		'_wpf'  => array( 'tnwt', 3, 3 ), // Form page type (for Semantic Forms)
+		'_num'  => array( 'tfu', 1, 0 ),  // Number type
+		'_tem'  => array( 'tfu', 1, 0 ),  // Temperature type
+		'_dat'  => array( 'tf', 1, 0 ),   // Time type
+		'_boo'  => array( 't', 0, 0 ),    // Boolean type
+		'_rec'  => array( 'tnwt', 0, -1 ),// Value list type (internal object)
 		// Special types are not avaialble directly for users (and have no local language name):
-		'__typ' => array( 't', array( 0 ), array( 0 ) ),    // Special type page type
-		'__tls' => array( 't', array( 0 ), array( 0 ) ),    // Special type page type
-		'__sps' => array( 't', array( 0 ), array( 0 ) ),    // Special string type
-		'__spu' => array( 't', array( 0 ), array( 0 ) ),    // Special uri type
-		'__sup' => array( 'tnwt', array( 3 ), array( 3 ) ), // Special subproperty type
-		'__suc' => array( 'tnwt', array( 3 ), array( 3 ) ), // Special subcategory type
-		'__spf' => array( 't', array( 0 ), array( 0 ) ),    // Special form type (for Semantic Forms)
-		'__sin' => array( 'tnwt', array( 3 ), array( 3 ) ), // Special instance of type
-		'__red' => array( 'tnwt', array( 3 ), array( 3 ) ), // Special redirect type
-		'__lin' => array( 'tfu', array( 1 ), array( 0 ) ),  // Special linear unit conversion type
-		'__imp' => array( 't', array( 0 ), array( 0 ) ), // Special import vocabulary type
-		'__pro' => array( 't', array( 0 ), array( 0 ) ),  // Property page type; never be stored as a value (_wpp is used there) but needed for sorting
+		'__typ' => array( 't', 0, 0 ),    // Special type page type
+		'__tls' => array( 't', 0, 0 ),    // Special type page type
+		'__sps' => array( 't', 0, 0 ),    // Special string type
+		'__spu' => array( 't', 0, 0 ),    // Special uri type
+		'__sup' => array( 'tnwt', 3, 3 ), // Special subproperty type
+		'__suc' => array( 'tnwt', 3, 3 ), // Special subcategory type
+		'__spf' => array( 't', 0, 0 ),    // Special form type (for Semantic Forms)
+		'__sin' => array( 'tnwt', 3, 3 ), // Special instance of type
+		'__red' => array( 'tnwt', 3, 3 ), // Special redirect type
+		'__lin' => array( 'tfu', 1, 0 ),  // Special linear unit conversion type
+		'__imp' => array( 't', 0, 0 ), // Special import vocabulary type
+		'__pro' => array( 't', 0, 0 ),  // Property page type; never be stored as a value (_wpp is used there) but needed for sorting
 	);
 
 ///// Reading methods /////
@@ -385,9 +385,9 @@ class SMWSQLStore2 extends SMWStore {
 		
 		if ( !$issubject ) { // Needed to apply sorting/string matching in query; only with fixed property.
 			//.// TODO: support multiple value and label indexes.
-			list( $sig, $valueIndexes, $labelIndexes ) = self::getTypeSignature( $object->getPropertyTypeID() );
-			$valuecolumn = ( array_key_exists( $valueIndexes[0], $selectvalues ) ) ? $selectvalues[$valueIndexes[0]] : '';
-			$labelcolumn = ( array_key_exists( $labelIndexes[0], $selectvalues ) ) ? $selectvalues[$labelIndexes[0]] : '';
+			list( $sig, $valueIndex, $labelIndex ) = self::getTypeSignature( $object->getPropertyTypeID() );
+			$valuecolumn = ( array_key_exists( $valueIndex, $selectvalues ) ) ? $selectvalues[$valueIndex] : '';
+			$labelcolumn = ( array_key_exists( $labelIndex, $selectvalues ) ) ? $selectvalues[$labelIndex] : '';
 			$where .= $this->getSQLConditions( $requestoptions, $valuecolumn, $labelcolumn, $where != '' );
 		} else {
 			$valuecolumn = $labelcolumn = '';
@@ -1590,18 +1590,17 @@ class SMWSQLStore2 extends SMWStore {
 		$result = array();
 		$sortres = array();
 		
-		//.// TODO: support multiple value and label indexes.
-		list( $sig, $valueIndexes, $labelIndexes ) = self::getTypeSignature( reset( $data )->getTypeID() );
+		list( $sig, $valueIndex, $labelIndex ) = self::getTypeSignature( reset( $data )->getTypeID() );
 		
-		$numeric = ( ( $valueIndexes[0] >= 0 ) && ( strlen( $sig ) > $valueIndexes[0] ) &&
-		             ( ( $sig { $valueIndexes[0] } != 'f' ) || ( $sig { $valueIndexes[0] } != 'n' ) ) );
+		$numeric = ( ( $valueIndex >= 0 ) && ( strlen( $sig ) > $valueIndex ) &&
+		             ( ( $sig { $valueIndex } != 'f' ) || ( $sig { $valueIndex } != 'n' ) ) );
 		$i = 0;
 		
 		foreach ( $data as $item ) {
 			$ok = true; // keep datavalue only if this remains true
 			$keys = $item->getDBkeys();
-			$value = array_key_exists( $valueIndexes[0], $keys ) ? $keys[$valueIndexes[0]] : '';
-			$label = array_key_exists( $labelIndexes[0], $keys ) ? $keys[$labelIndexes[0]] : '';
+			$value = array_key_exists( $valueIndex, $keys ) ? $keys[$valueIndex] : '';
+			$label = array_key_exists( $labelIndex, $keys ) ? $keys[$labelIndex] : '';
 			
 			if ( $requestoptions->boundary !== null ) { // apply value boundary
 				$strc = $numeric ? 0 : strcmp( $value, $requestoptions->boundary );
@@ -1693,7 +1692,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * entries: a signature string, the index of the value field, and
 	 * the index of the label label field. These entries correspond to
 	 * the results of SMWDataValue::getSignature(),
-	 * SMWDatavalue::getValueIndexes(), and SMWDatavalue::getLabelIndexes().
+	 * SMWDatavalue::getValueIndex(), and SMWDatavalue::getLabelIndex().
 	 * @todo Custom unit types (SMWLinearValue) have page names as their
 	 * type id and are not in the array cache. Can we still determine their
 	 * signature without creating them?
@@ -1701,7 +1700,7 @@ class SMWSQLStore2 extends SMWStore {
 	public static function getTypeSignature( $typeid ) {
 		if ( !array_key_exists( $typeid, self::$type_signatures ) ) {
 			$dv = SMWDataValueFactory::newTypeIDValue( $typeid );
-			self::$type_signatures[$typeid] = array( $dv->getSignature(), $dv->getValueIndexes(), $dv->getLabelIndexes() );
+			self::$type_signatures[$typeid] = array( $dv->getSignature(), $dv->getValueIndex(), $dv->getLabelIndex() );
 		}
 		
 		return self::$type_signatures[$typeid];
