@@ -141,19 +141,6 @@ abstract class SMWDescription {
 			return $this;
 		}
 	}
-
-	/**
-	 * TODO: replace $fieldName by signature
-	 * 
-	 * @param string $tableName
-	 * @param integer $fieldName
-	 * @param DatabaseBase $dbs
-	 * 
-	 * @return false
-	 */	
-	public function getSQLCondition( $tableName, $fieldName, DatabaseBase $dbs ) {
-		return false;
-	}
 }
 
 /**

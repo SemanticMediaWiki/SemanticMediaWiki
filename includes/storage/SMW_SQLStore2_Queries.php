@@ -712,30 +712,35 @@ class SMWSQLStore2QueryEngine {
 					$comparator = false;
 					$customSQL = false;
 					
-					switch ( $description->getComparator() ) {
-						case SMW_CMP_EQ: $comparator = '='; break;
-						case SMW_CMP_LEQ: $comparator = '<='; break;
-						case SMW_CMP_GEQ: $comparator = '>='; break;
-						case SMW_CMP_NEQ: $comparator = '!='; break;
-					}
-					
-					if ( !$comparator ) {
-						$customSQL = $description->getSQLCondition( $query->alias, $fieldName, $this->m_dbs );	
+					// See if the getSQLCondition method exists and call it if this is the case.
+					if ( method_exists( $description, 'getSQLCondition' ) ) {
+						$customSQL = $description->getSQLCondition( $query->alias, $this->m_dbs );	
 					}
 					
 					if ( $customSQL ) {
 						$where = $customSQL;
 					}
 					else {
-						$where = "$query->alias.{$fieldName}{$comparator}" . $this->m_dbs->addQuotes( $keys[$valueIndex] );
+						switch ( $description->getComparator() ) {
+							case SMW_CMP_EQ: $comparator = '='; break;
+							case SMW_CMP_LEQ: $comparator = '<='; break;
+							case SMW_CMP_GEQ: $comparator = '>='; break;
+							case SMW_CMP_NEQ: $comparator = '!='; break;
+						}
+
+						if ( $comparator ) {
+							$where = "$query->alias.{$fieldName}{$comparator}" . $this->m_dbs->addQuotes( $keys[$valueIndex] );
+						}
 					}
 				}
 			}
 
 			if ( $where == '' ) { // comparators did not apply; match all fields
 				$i = 0;
+				
 				foreach ( $proptable->objectfields as $fname => $ftype ) {
 					if ( $i >= count( $keys ) ) break;
+					
 					if ( $ftype == 'p' ) { // Special case: page id, resolve this in advance
 						$oid = $this->getSMWPageID( $keys[$i], $keys[$i + 1], $keys[$i + 2] );
 						$i += 3; // skip these additional values (sortkey not needed here)
@@ -743,6 +748,7 @@ class SMWSQLStore2QueryEngine {
 					} elseif ( $ftype != 'l' ) { // plain value, but not a text blob
 						$where .= ( $where ? ' AND ' : '' ) . "{$query->alias}.$fname=" . $this->m_dbs->addQuotes( $keys[$i] );
 					}
+					
 					$i++;
 				}
 			}
