@@ -14,16 +14,6 @@
  * @ingroup SMW
  */
 
-/**
- * This documentation group collects source code files belonging to Semantic
- * MediaWiki.
- *
- * For documenting extensions of SMW, please do not use groups starting with
- * "SMW" but make your own groups instead. Browsing at
- * http://semantic-mediawiki.org/doc/  is assumed to be easier this way.
- * @defgroup SMW Semantic MediaWiki
- */
-
 define( 'SMW_VERSION', '1.5.0.b-light-SVN' );
 
 require_once( 'SMW_GlobalFunctions.php' );

@@ -75,7 +75,7 @@ remarks in the section "Notes on Upgrading" below!
     We abbreviate "[wikipath]/extensions/SemanticMediaWiki" as "[SMW_path]".
 (2) Insert the following two lines into "[wikipath]/LocalSettings.php":
 
-    include_once("$IP/extensions/SemanticMediaWiki/includes/SMW_Settings.php");
+    include_once("$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php");
     enableSemantics('example.org');
 
     where example.org should be replaced by your server's name (or IP address).
@@ -100,7 +100,7 @@ http://www.mediawiki.org/wiki/Manual:Using_custom_namespaces), in the range from
 100 to 109. 100 and 101 are not used (they were used in early beta versions).
 106 and 107 are reserved for the SemanticForms extension. If you have your own
 custom namespaces, you have to set the parameter $smwgNamespaceIndex before
-including SMW_Settings.php. See the documentation $within SMW_Settings.php for
+including SemanticMediaWiki.php. See the documentation $within SMW_Settings.php for
 details. If you add more namespaces later on, then you have to assign them to
 higher numbers than those used by Semantic MediaWiki.
 
