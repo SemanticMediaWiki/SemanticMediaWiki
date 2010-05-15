@@ -714,7 +714,7 @@ class SMWSQLStore2QueryEngine {
 					
 					// See if the getSQLCondition method exists and call it if this is the case.
 					if ( method_exists( $description, 'getSQLCondition' ) ) {
-						$customSQL = $description->getSQLCondition( $query->alias, $this->m_dbs );	
+						$customSQL = $description->getSQLCondition( $query->alias, array_keys( $proptable->objectfields ), $this->m_dbs );	
 					}
 					
 					if ( $customSQL ) {
