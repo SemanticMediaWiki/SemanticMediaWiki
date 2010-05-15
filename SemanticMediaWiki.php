@@ -15,4 +15,4 @@
  * @defgroup SMW Semantic MediaWiki
  */
 
-require_once dirname( __FILE__ ) . '/SMW_settings.php';
+require_once dirname( __FILE__ ) . '/SMW_Settings.php';

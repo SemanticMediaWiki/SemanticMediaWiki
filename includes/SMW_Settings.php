@@ -10,4 +10,4 @@
  * @author Jeroen De Dauw
  */
 
-require_once dirname( __FILE__ ) . '/../SMW_settings.php';
+require_once dirname( __FILE__ ) . '/../SMW_Settings.php';
