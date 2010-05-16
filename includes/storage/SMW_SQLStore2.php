@@ -1237,11 +1237,11 @@ class SMWSQLStore2 extends SMWStore {
 		$reportTo = $verbose ? $this:null; // use $this to report back from static SMWSQLHelpers
 		// repeatedly used DB field types defined here for convenience
 		$dbtypes = array( 't' => SMWSQLHelpers::getStandardDBType( 'title' ),
-		                 'u' => ( $wgDBtype == 'postgres' ? 'TEXT':'VARCHAR(63) binary' ),
+		                 'u' => ( $wgDBtype == 'postgres' ? 'TEXT' : 'VARCHAR(63) binary' ),
 		                 'l' => SMWSQLHelpers::getStandardDBType( 'blob' ),
-						 'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION':'DOUBLE' ),
-						 'i' => ( $wgDBtype == 'postgres' ? 'INTEGER':'INT(8)' ),
-						 'j' => ( $wgDBtype == 'postgres' ? 'INTEGER':'INT(8) UNSIGNED' ),
+						 'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION' : 'DOUBLE' ),
+						 'i' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8)' ),
+						 'j' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8) UNSIGNED' ),
 						 'p' => SMWSQLHelpers::getStandardDBType( 'id' ),
 						 'n' => SMWSQLHelpers::getStandardDBType( 'namespace' ),
 						 'w' => SMWSQLHelpers::getStandardDBType( 'iw' ) );
