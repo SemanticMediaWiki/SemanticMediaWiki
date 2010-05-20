@@ -387,7 +387,7 @@ class SMWSQLStore2 extends SMWStore {
 		foreach ( $proptable->objectfields as $fieldname => $typeid ) { // now add select entries for object column(s)
 			if ( $typeid == 'p' ) { // Special case: page id, use smw_id table to insert 4 page-specific values instead of internal id
 				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
-				$select .= ( ( $select != '' ) ? ',':'' ) . "$fieldname AS id$valuecount";
+				$select .= ( ( $select != '' ) ? ',' : '' ) . "$fieldname AS id$valuecount";
 				$selectvalues[$valuecount] = "o$valuecount.smw_title";
 				$selectvalues[$valuecount + 1] = "o$valuecount.smw_namespace";
 				$selectvalues[$valuecount + 2] = "o$valuecount.smw_iw";
@@ -457,7 +457,7 @@ class SMWSQLStore2 extends SMWStore {
 						foreach ( self::getPropertyTables() as $tid => $pt ) { // just read all
 							$newvalue = array_merge( $newvalue, $this->fetchSemanticData( $row->$oidfield, null, $pt ) );
 						}
-					} elseif ( ( $iw != '' ) && ( $iw { 0 } == ':' ) ) { // other internal object, maybe a DB inconsistency; ignore row
+					} elseif ( ( $iw != '' ) && ( $iw { 0 } == ' : ' ) ) { // other internal object, maybe a DB inconsistency; ignore row
 						$propertyname = '';
 					}
 					next( $pagevalues );
@@ -520,7 +520,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 		
 		if ( $proptable->fixedproperty == false ) {
-			$where .= ( $where ? ' AND ':'' ) . "t1.p_id=" . $db->addQuotes( $pid );
+			$where .= ( $where ? ' AND ' : '' ) . "t1.p_id=" . $db->addQuotes( $pid );
 		}
 		
 		$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
@@ -587,7 +587,7 @@ class SMWSQLStore2 extends SMWStore {
 					}
 					
 					if ( $subproptable->fixedproperty == false ) { // the ID we get should be !=0, so no point in filtering the converse
-						$where .= ( $where ? ' AND ':'' ) . "t$tableindex.p_id=" . $db->addQuotes( $this->getSMWPropertyID( $subproperty ) );
+						$where .= ( $where ? ' AND ' : '' ) . "t$tableindex.p_id=" . $db->addQuotes( $this->getSMWPropertyID( $subproperty ) );
 					}
 					
 					$this->prepareValueQuery( $from, $where, $subproptable, $subvalue, $tableindex );
@@ -603,9 +603,9 @@ class SMWSQLStore2 extends SMWStore {
 				if ( $typeid == 'p' ) { // Special case: page id, resolve this in advance
 					$oid = $this->getSMWPageID( $dbkeys[$i], $dbkeys[$i + 1], $dbkeys[$i + 2] );
 					$i += 3; // skip these additional values (sortkey not needed here)
-					$where .= ( $where ? ' AND ':'' ) . "t$tableindex.$fieldname=" . $db->addQuotes( $oid );
+					$where .= ( $where ? ' AND ' : '' ) . "t$tableindex.$fieldname=" . $db->addQuotes( $oid );
 				} elseif ( $typeid != 'l' ) { // plain value, but not a text blob
-					$where .= ( $where ? ' AND ':'' ) . "t$tableindex.$fieldname=" . $db->addQuotes( $dbkeys[$i] );
+					$where .= ( $where ? ' AND ' : '' ) . "t$tableindex.$fieldname=" . $db->addQuotes( $dbkeys[$i] );
 				}
 				
 				$i++;
@@ -1261,16 +1261,18 @@ class SMWSQLStore2 extends SMWStore {
 		$reportTo = $verbose ? $this:null; // use $this to report back from static SMWSQLHelpers
 		
 		// repeatedly used DB field types defined here for convenience
-		$dbtypes = array( 't' => SMWSQLHelpers::getStandardDBType( 'title' ),
-		                 'u' => ( $wgDBtype == 'postgres' ? 'TEXT' : 'VARCHAR(63) binary' ),
-		                 'l' => SMWSQLHelpers::getStandardDBType( 'blob' ),
-						 'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION' : 'DOUBLE' ),
-						 'i' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8)' ),
-						 'j' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8) UNSIGNED' ),
-						 'p' => SMWSQLHelpers::getStandardDBType( 'id' ),
-						 'n' => SMWSQLHelpers::getStandardDBType( 'namespace' ),
-						 'w' => SMWSQLHelpers::getStandardDBType( 'iw' ) );
-//.//
+		$dbtypes = array(
+			't' => SMWSQLHelpers::getStandardDBType( 'title' ),
+			'u' => ( $wgDBtype == 'postgres' ? 'TEXT' : 'VARCHAR(63) binary' ),
+			'l' => SMWSQLHelpers::getStandardDBType( 'blob' ),
+			'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION' : 'DOUBLE' ),
+			'i' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8)' ),
+			'j' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8) UNSIGNED' ),
+			'p' => SMWSQLHelpers::getStandardDBType( 'id' ),
+			'n' => SMWSQLHelpers::getStandardDBType( 'namespace' ),
+			'w' => SMWSQLHelpers::getStandardDBType( 'iw' )
+		);
+
 		// DB update: field renaming between SMW 1.3 and SMW 1.4
 		if ( ( $db->tableExists( $smw_spec2 ) ) && ( $db->fieldExists( $smw_spec2, 'sp_id', 'SMWSQLStore2::setup' ) ) ) {
 			if ( $wgDBtype == 'postgres' ) {
@@ -1280,26 +1282,39 @@ class SMWSQLStore2 extends SMWStore {
 			}
 		}
 
-		// set up table for internal IDs used in this store:
-		SMWSQLHelpers::setupTable( $smw_ids,
-		              array( 'smw_id'        => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY':' KEY AUTO_INCREMENT' ),
-		                    'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
-		                    'smw_title'     => $dbtypes['t'] . ' NOT NULL',
-		                    'smw_iw'        => $dbtypes['w'],
-		                    'smw_sortkey'   => $dbtypes['t']  . ' NOT NULL' ), $db, $reportTo );
+		// Set up table for internal IDs used in this store:
+		SMWSQLHelpers::setupTable(
+			$smw_ids,
+			array(
+				'smw_id' => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY AUTO_INCREMENT' ),
+				'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
+				'smw_title'     => $dbtypes['t'] . ' NOT NULL',
+				'smw_iw'        => $dbtypes['w'],
+				'smw_sortkey'   => $dbtypes['t']  . ' NOT NULL'
+			),
+			$db,
+			$reportTo
+		);
+		
 		SMWSQLHelpers::setupIndex( $smw_ids, array( 'smw_id', 'smw_title,smw_namespace,smw_iw', 'smw_sortkey' ), $db );
 
-		// set up concept cache: member elements (s)->concepts (o)
-		SMWSQLHelpers::setupTable( $smw_conccache,
-		              array( 's_id'        => $dbtypes['p'] . ' NOT NULL',
-		                    'o_id'        => $dbtypes['p'] . ' NOT NULL' ), $db, $reportTo );
+		// Set up concept cache: member elements (s)->concepts (o)
+		SMWSQLHelpers::setupTable(
+			$smw_conccache,
+			array(
+				's_id' => $dbtypes['p'] . ' NOT NULL',
+				'o_id' => $dbtypes['p'] . ' NOT NULL'
+			),
+			$db,
+			$reportTo
+		);
 		              
 		SMWSQLHelpers::setupIndex( $smw_conccache, array( 'o_id' ), $db );
 		
 		// set up concept descriptions
 		SMWSQLHelpers::setupTable( $smw_conc2,
 		              array( 's_id'             => $dbtypes['p'] . ' NOT NULL' .
-					                              ( $wgDBtype == 'postgres' ? ' PRIMARY KEY':' KEY' ),
+					                              ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY' ),
 		                    'concept_txt'      => $dbtypes['l'],
 		                    'concept_docu'     => $dbtypes['l'],
 		                    'concept_features' => $dbtypes['i'],
@@ -1413,7 +1428,7 @@ class SMWSQLStore2 extends SMWStore {
 		
 		foreach ( $tables as $table ) {
 			$name = $db->tableName( $table );
-			$db->query( 'DROP TABLE' . ( $wgDBtype == 'postgres' ? '':' IF EXISTS' ) . $name, 'SMWSQLStore2::drop' );
+			$db->query( 'DROP TABLE' . ( $wgDBtype == 'postgres' ? '' : ' IF EXISTS' ) . $name, 'SMWSQLStore2::drop' );
 			$this->reportProgress( " ... dropped table $name.\n", $verbose );
 		}
 		
@@ -1634,13 +1649,14 @@ class SMWSQLStore2 extends SMWStore {
 			if ( $labelcol != '' ) { // Apply string conditions.
 				foreach ( $requestoptions->getStringConditions() as $strcond ) {
 					$string = str_replace( '_', '\_', $strcond->string );
+					
 					switch ( $strcond->condition ) {
 						case SMWStringCondition::STRCOND_PRE:  $string .= '%'; break;
 						case SMWStringCondition::STRCOND_POST: $string = '%' . $string; break;
 						case SMWStringCondition::STRCOND_MID:  $string = '%' . $string . '%'; break;
 					}
 					
-					$sql_conds .= ( ( $addand || ( $sql_conds != '' ) ) ? ' AND ':'' ) . $labelcol . ' LIKE ' . $db->addQuotes( $string );
+					$sql_conds .= ( ( $addand || ( $sql_conds != '' ) ) ? ' AND ' : '' ) . $labelcol . ' LIKE ' . $db->addQuotes( $string );
 				}
 			}
 		}
