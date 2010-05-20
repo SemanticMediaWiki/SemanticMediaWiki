@@ -378,6 +378,7 @@ class SMWValueDescription extends SMWDescription {
 				case SMW_CMP_GEQ:  $comparator = '>'; break;
 				case SMW_CMP_NEQ:  $comparator = '!'; break;
 				case SMW_CMP_LIKE: $comparator = '~'; break;
+				case SMW_CMP_NLKE: $comparator = '!~'; break;
 				default: case SMW_CMP_EQ:
 					$comparator = '';
 				break;
@@ -388,7 +389,7 @@ class SMWValueDescription extends SMWDescription {
 				return '[[' . $comparator . $this->m_datavalue->getWikiValue() . ']]';
 			}
 		} else {
-			return $asvalue ? '+':''; // the else case may result in an error here (query without proper condition)
+			return $asvalue ? '+' : ''; // the else case may result in an error here (query without proper condition)
 		}
 	}
 

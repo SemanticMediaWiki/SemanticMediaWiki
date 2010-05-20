@@ -47,12 +47,13 @@ define( 'SMW_OUTPUT_HTML', 1 );
 define( 'SMW_OUTPUT_WIKI', 2 );
 define( 'SMW_OUTPUT_FILE', 3 );
 
-// comparators for datavalues:
-define( 'SMW_CMP_EQ', 1 ); // matches only datavalues that are equal to the given value
-define( 'SMW_CMP_LEQ', 2 ); // matches only datavalues that are less or equal than the given value
-define( 'SMW_CMP_GEQ', 3 ); // matches only datavalues that are greater or equal to the given value
-define( 'SMW_CMP_NEQ', 4 ); // matches only datavalues that are unequal to the given value
-define( 'SMW_CMP_LIKE', 5 ); // matches only datavalues that are LIKE the given value
+// Comparators for datavalues:
+define( 'SMW_CMP_EQ', 1 ); // Matches only datavalues that are equal to the given value.
+define( 'SMW_CMP_LEQ', 2 ); // Matches only datavalues that are less or equal than the given value.
+define( 'SMW_CMP_GEQ', 3 ); // Matches only datavalues that are greater or equal to the given value.
+define( 'SMW_CMP_NEQ', 4 ); // Matches only datavalues that are unequal to the given value.
+define( 'SMW_CMP_LIKE', 5 ); // Matches only datavalues that are LIKE the given value.
+define( 'SMW_CMP_NLKE', 6 ); // Matches only datavalues that are not LIKE the given value.
 
 // constants for date formats (using binary encoding of nine bits: 3 positions x 3 interpretations)
 define( 'SMW_MDY', 785 );  // Month-Day-Year

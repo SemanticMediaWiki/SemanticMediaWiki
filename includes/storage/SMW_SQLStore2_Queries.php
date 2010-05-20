@@ -469,8 +469,9 @@ class SMWSQLStore2QueryEngine {
 						case SMW_CMP_LEQ: $comp = '<='; break;
 						case SMW_CMP_GEQ: $comp = '>='; break;
 						case SMW_CMP_NEQ: $comp = '!='; break;
-						case SMW_CMP_LIKE:
+						case SMW_CMP_LIKE: case SMW_CMP_NLKE:
 							$comp = ' LIKE ';
+							if ( $description->getComparator() == SMW_CMP_NLKE ) $comp = " NOT{$comp}";
 							$value =  str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
 						break;
 					}

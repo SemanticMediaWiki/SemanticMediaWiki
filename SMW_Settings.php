@@ -190,10 +190,22 @@ $smwgQRandSortingSupport = true; // (De)activate random sorting of results.
 $smwgQDefaultNamespaces = null; // Which namespaces should be searched by default?
                                 // (value NULL switches off default restrictions on searching -- this is faster)
                                 // Example with namespaces: $smwgQDefaultNamespaces = array(NS_MAIN, NS_IMAGE);
-$smwgQComparators = '<|>|!|~';  // List of comparator characters supported by queries, separated by '|'
-                                // Available entries: < (smaller than), < (greater than), ! (unequal to),
-                                //                    ~ (pattern with '*' as wildcard, only for Type:String)
-                                // If unsupported comparators are used, they are treated as part of the queried value
+
+/**
+ * List of comparator characters supported by queries, separated by '|', for use in a regex.
+ * 
+ * Available entries:
+ * 	< (smaller than)
+ * 	< (greater than)
+ * 	! (unequal to)
+ * 	~ (pattern with '*' as wildcard, only for Type:String)
+ * 	!~ (not a pattern with '*' as wildcard, only for Type:String, need to be placed before ! and ~ to work correctly)
+ * 
+ * If unsupported comparators are used, they are treated as part of the queried value
+ * 
+ * @var string
+ */
+$smwgQComparators = '<|>|!~|!|~';
 
 ###
 # Further settings for queries. The following settings affect inline queries

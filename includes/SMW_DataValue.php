@@ -294,15 +294,19 @@ abstract class SMWDataValue {
 	 */
 	static protected function prepareValue( &$value, &$comparator ) {
 		global $smwgQComparators;
+		
 		$list = preg_split( '/^(' . $smwgQComparators . ')/u', $value, 2, PREG_SPLIT_DELIM_CAPTURE );
 		$comparator = SMW_CMP_EQ;
+		
 		if ( count( $list ) == 3 ) { // initial comparator found ($list[0] should be empty)
 			$value = $list[2];
+			
 			switch ( $list[1] ) {
 				case '<': $comparator = SMW_CMP_LEQ; break;
 				case '>': $comparator = SMW_CMP_GEQ; break;
 				case '!': $comparator = SMW_CMP_NEQ; break;
 				case '~': $comparator = SMW_CMP_LIKE; break;
+				case '!~': $comparator = SMW_CMP_NLKE; break;
 				// default: not possible
 			}
 		}
