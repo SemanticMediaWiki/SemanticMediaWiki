@@ -63,181 +63,37 @@ class SMWSQLHelpers {
 	 * Only if the type of some field changes will its order be adjusted explicitly.
 	 * 
 	 * @param string $tableName The table name. Does not need to have been passed to DatabaseBase->tableName yet.
-	 * @param array $columns The field names to put indexes on
+	 * @param array $columns The fields and their types the table should have.
 	 * @param DatabaseBase $db
-	 * @param $reportTo
-	 * 
-	 * TODO: split up megamoth srysly o_O
+	 * @param $reportTo Object to report back to.
 	 */
 	public static function setupTable( $tableName, array $fields, DatabaseBase $db, $reportTo = null ) {
 		global $wgDBname, $wgDBtype, $wgDBTableOptions;
 		
 		$tableName = $db->tableName( $tableName );
 
-		self::reportProgress( "Setting up table $tableName ...\n", $reportTo );
+		self::reportProgress( "Checking table $tableName ...\n", $reportTo );
 		
 		if ( $db->tableExists( $tableName ) === false ) { // create new table
-			$this->createTable( $tableName, $fields, $db, $reportTo );
-		} else { // check table signature
-			self::reportProgress( "   ... table exists already, checking structure ...\n", $reportTo );
-			
-			if ( $wgDBtype == 'postgres' ) { // postgresql
-				// use the data dictionary in postgresql to get an output comparable to DESCRIBE
-				// To find out what kind of magic takes place here (and to remove the bugs included), simply use:
-				// psql
-				// \set ECHO_HIDDEN
-				// \d <tablename>
-				$sql = 'SELECT a.attname as "Field", '
-					. ' upper(pg_catalog.format_type(a.atttypid, a.atttypmod)) as "Type", '
-					. ' (SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128) '
-					. '  FROM pg_catalog.pg_attrdef d '
-						. '  WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as "Extra", '
-					. '  case when a.attnotnull THEN \'NO\'::text else \'YES\'::text END as "Null", a.attnum '
-					. ' FROM pg_catalog.pg_attribute a '
-					. ' WHERE a.attrelid = ('
-					. '    SELECT c.oid '
-					. '    FROM pg_catalog.pg_class c '
-					. '    LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace '
-					. '    WHERE c.relname ~ \'^(' . $tableName . ')$\' '
-					. '    AND pg_catalog.pg_table_is_visible(c.oid) '
-					. '    LIMIT 1 '
-					. ' ) AND a.attnum > 0 AND NOT a.attisdropped '
-					. ' ORDER BY a.attnum';
-			} else { // MySQL
-				$sql = 'DESCRIBE ' . $tableName;
-			}
-			
-			$res = $db->query( $sql, __METHOD__ );
-			$curfields = array();
-			$result = array();
-			
-			while ( $row = $db->fetchObject( $res ) ) {
-				$type = strtoupper( $row->Type );
-				
-				if ( $wgDBtype == 'postgres' ) { // postgresql
-					if ( eregi( '^nextval\\(.+\\)$', $row->Extra ) ) {
-						$type = 'SERIAL NOT NULL';
-					} elseif ( $row->Null != 'YES' ) {
-							$type .= ' NOT NULL';
-					}
-				} else { // mysql
-					if ( substr( $type, 0, 8 ) == 'VARCHAR(' ) {
-						$type .= ' binary'; // just assume this to be the case for VARCHAR, though DESCRIBE will not tell us
-					}
-					
-					if ( $row->Null != 'YES' ) {
-						$type .= ' NOT NULL';
-					}
-					
-					if ( $row->Key == 'PRI' ) { /// FIXME: updating "KEY" is not possible, the below query will fail in this case.
-						$type .= ' KEY';
-					}
-					
-					if ( $row->Extra == 'auto_increment' ) {
-						$type .= ' AUTO_INCREMENT';
-					}
-				}
-				
-				$curfields[$row->Field] = $type;
-			}
-
-			if ( $wgDBtype == 'postgres' ) { // postgresql
-				foreach ( $fields as $name => $type ) {
-					$keypos = strpos( $type, ' PRIMARY KEY' );
-					
-					if ( $keypos > 0 ) {
-						$type = substr( $type, 0, $keypos );
-					}
-					
-					if ( !array_key_exists( $name, $curfields ) ) {
-						SMWSQLHelpers::reportProgress( "   ... creating column $name ... ", $reportTo );
-						
-						$db->query( "ALTER TABLE $tableName ADD \"" . $name . "\" $type", __METHOD__ );
-						$result[$name] = 'new';
-						
-						SMWSQLHelpers::reportProgress( "done \n", $reportTo );
-					} elseif ( $curfields[$name] != $type ) {
-						SMWSQLHelpers::reportProgress( "   ... changing type of column $name from '$curfields[$name]' to '$type' ... ", $reportTo );
-						$notnullposnew = strpos( $type, ' NOT NULL' );
-						
-						if ( $notnullposnew > 0 ) {
-							$type = substr( $type, 0, $notnullposnew );
-						}
-						
-						$notnullposold = strpos( $curfields[$name], ' NOT NULL' );
-						$typeold = ( $notnullposold > 0 ) ? substr( $curfields[$name], 0, $notnullposold ):$curfields[$name];
-						
-						if ( $typeold != $type ) {
-							$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" TYPE " . $type, __METHOD__ );
-						}
-						
-						if ( $notnullposold != $notnullposnew ) {
-							$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" " . ( $notnullposnew > 0 ? 'SET':'DROP' ) . " NOT NULL", __METHOD__ );
-						}
-						
-						$result[$name] = 'up';
-						$curfields[$name] = false;
-						SMWSQLHelpers::reportProgress( "done.\n", $reportTo );
-					} else {
-						SMWSQLHelpers::reportProgress( "   ... column $name is fine\n", $reportTo );
-						$curfields[$name] = false;
-					}
-				}
-				
-				foreach ( $curfields as $name => $value ) {
-					if ( $value !== false ) {
-						SMWSQLHelpers::reportProgress( "   ... deleting obsolete column $name ... ", $reportTo );
-						
-						$db->query( "ALTER TABLE \"" . $tableName . "\" DROP COLUMN \"" . $name . "\"", __METHOD__ );
-						$result[$name] = 'del';
-						
-						SMWSQLHelpers::reportProgress( "done.\n", $reportTo );
-					}
-				}
-			} else { // mysql
-			  $position = 'FIRST';
-			  
-			  foreach ( $fields as $name => $type ) {
-				if ( !array_key_exists( $name, $curfields ) ) {
-					SMWSQLHelpers::reportProgress( "   ... creating column $name ... ", $reportTo );
-					
-					$db->query( "ALTER TABLE $tableName ADD `$name` $type $position", __METHOD__ );
-					$result[$name] = 'new';
-					
-					SMWSQLHelpers::reportProgress( "done \n", $reportTo );
-				} elseif ( $curfields[$name] != $type ) {
-					SMWSQLHelpers::reportProgress( "   ... changing type of column $name from '$curfields[$name]' to '$type' ... ", $reportTo );
-					
-					$db->query( "ALTER TABLE $tableName CHANGE `$name` `$name` $type $position", __METHOD__ );
-					$result[$name] = 'up';
-					$curfields[$name] = false;
-					
-					SMWSQLHelpers::reportProgress( "done.\n", $reportTo );
-				} else {
-					SMWSQLHelpers::reportProgress( "   ... column $name is fine\n", $reportTo );
-					
-					$curfields[$name] = false;
-				}
-				$position = "AFTER $name";
-			  }
-			  
-			  foreach ( $curfields as $name => $value ) {
-				if ( $value !== false ) { // not encountered yet --> delete
-					SMWSQLHelpers::reportProgress( "   ... deleting obsolete column $name ... ", $reportTo );
-					$db->query( "ALTER TABLE $tableName DROP COLUMN `$name`", __METHOD__ );
-					$result[$name] = 'del';
-					SMWSQLHelpers::reportProgress( "done.\n", $reportTo );
-				}
-			  }
-			}
-
-			SMWSQLHelpers::reportProgress( "   ... table $tableName set up successfully.\n", $reportTo );
-			
-			return $result;
+			self::reportProgress( "   Table not found, now creating...\n", $reportTo );
+			self::createTable( $tableName, $fields, $db, $reportTo );
+			self::reportProgress( "   ... done.\n", $reportTo );	
+		} else { 
+			self::reportProgress( "   Table already exists, checking structure ...\n", $reportTo );
+			self::updateTable( $tableName, $fields, $db, $reportTo );
+			self::reportProgress( "   ... done.\n", $reportTo );
 		}
 	}
 	
-	private static function createTable( $tableName, array $fields, DatabaseBase $db, $reportTo ) {
+	/**
+	 * Creates a new database table with the specified fields.
+	 * 
+	 * @param string $tableName The table name.
+	 * @param array $columns The fields and their types the table should have.
+	 * @param DatabaseBase $db
+	 * @param $reportTo Object to report back to.
+	 */
+	protected static function createTable( $tableName, array $fields, DatabaseBase $db, $reportTo ) {
 		global $wgDBtype, $wgDBTableOptions, $wgDBname;
 		
 		$sql = 'CREATE TABLE ' . ( $wgDBtype == 'postgres' ? '' : "`$wgDBname`." ) . $tableName . ' (';
@@ -252,13 +108,207 @@ class SMWSQLHelpers {
 		if ( $wgDBtype != 'postgres' ) $sql .= $wgDBTableOptions;
 		
 		$db->query( $sql, __METHOD__ );
-		
-		self::reportProgress( "   ... new table created\n", $reportTo );	
 	}
 	
-	private static function updateTable() {
+	/**
+	 * Update a table given an array of field names and field types.
+	 * 
+	 * @param string $tableName The table name.
+	 * @param array $columns The fields and their types the table should have.
+	 * @param DatabaseBase $db
+	 * @param $reportTo Object to report back to.
+	 */
+	protected static function updateTable( $tableName, array $fields, DatabaseBase $db, $reportTo ) {
+		global $wgDBtype;
 		
+		$currentFields = self::getFields( $tableName, $db, $reportTo );
+
+		$isPostgres = $wgDBtype == 'postgres';
+		
+		if ( !$isPostgres ) $position = 'FIRST';
+		
+		// Loop through all the field definitions, and handle each definition for either postgres or MySQL.
+		foreach ( $fields as $fieldName => $fieldType ) {
+			if ( $isPostgres ) {
+				self::updatePostgresField( $tableName, $fieldName, $fieldType, $currentFields, $db, $reportTo );
+			}
+			else {
+				self::updateMySqlField( $tableName, $fieldName, $fieldType, $currentFields, $db, $reportTo, $position );
+				$position = "AFTER $fieldName";
+			}
+			
+			$currentFields[$fieldName] = false;
+		}
+		
+		// The updated fields have their value set to false, so if a field has a value
+		// that differs from false, it's an obsolete one that should be removed.
+		foreach ( $currentFields as $fieldName => $value ) {
+			if ( $value !== false ) {
+				SMWSQLHelpers::reportProgress( "   ... deleting obsolete field $fieldName ... ", $reportTo );
+				
+				if ( $isPostgres ) {
+					$db->query( "ALTER TABLE \"" . $tableName . "\" DROP COLUMN \"" . $fieldName . "\"", __METHOD__ );
+				}
+				else {
+					$db->query( "ALTER TABLE $tableName DROP COLUMN `$fieldName`", __METHOD__ );					
+				}
+				
+				SMWSQLHelpers::reportProgress( "done.\n", $reportTo );
+			}
+		}		
 	}
+
+	/**
+	 * Returns an array of fields (as keys) and their types (as values).
+	 * 
+	 * @param string $tableName The table name.
+	 * @param DatabaseBase $db
+	 * @param $reportTo Object to report back to.
+	 * 
+	 * @return array
+	 */
+	protected static function getFields( $tableName, DatabaseBase $db, $reportTo ) {
+		global $wgDBtype;
+		
+		if ( $wgDBtype == 'postgres' ) {
+			// Use the data dictionary in postgresql to get an output comparable to DESCRIBE.
+			$sql = <<<EOT
+SELECT
+	a.attname as "Field", 
+	upper(pg_catalog.format_type(a.atttypid, a.atttypmod)) as "Type", 
+	(SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128) 
+	FROM pg_catalog.pg_attrdef d 
+	WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as "Extra", 
+		case when a.attnotnull THEN \'NO\'::text else \'YES\'::text END as "Null", a.attnum 
+	FROM pg_catalog.pg_attribute a 
+	WHERE a.attrelid = (
+	    SELECT c.oid 
+	    FROM pg_catalog.pg_class c 
+	    LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace 
+	    WHERE c.relname ~ \'^(' . $tableName . ')$\' 
+	    AND pg_catalog.pg_table_is_visible(c.oid) 
+	    LIMIT 1 
+	 ) AND a.attnum > 0 AND NOT a.attisdropped 
+	 ORDER BY a.attnum			
+EOT;
+		} else { // MySQL
+			$sql = 'DESCRIBE ' . $tableName;
+		}
+		
+		$res = $db->query( $sql, __METHOD__ );
+		$curfields = array();
+		$result = array();
+		
+		while ( $row = $db->fetchObject( $res ) ) {
+			$type = strtoupper( $row->Type );
+			
+			if ( $wgDBtype == 'postgres' ) { // postgresql
+				if ( eregi( '^nextval\\(.+\\)$', $row->Extra ) ) {
+					$type = 'SERIAL NOT NULL';
+				} elseif ( $row->Null != 'YES' ) {
+						$type .= ' NOT NULL';
+				}
+			} else { // mysql
+				if ( substr( $type, 0, 8 ) == 'VARCHAR(' ) {
+					$type .= ' binary'; // just assume this to be the case for VARCHAR, though DESCRIBE will not tell us
+				}
+				
+				if ( $row->Null != 'YES' ) {
+					$type .= ' NOT NULL';
+				}
+				
+				if ( $row->Key == 'PRI' ) { /// FIXME: updating "KEY" is not possible, the below query will fail in this case.
+					$type .= ' KEY';
+				}
+				
+				if ( $row->Extra == 'auto_increment' ) {
+					$type .= ' AUTO_INCREMENT';
+				}
+			}
+			
+			$curfields[$row->Field] = $type;
+		}
+		
+		return $curfields;
+	}
+	
+	/**
+	 * Update a single field given it's name and type and an array of current fields. Postgres version.
+	 * 
+	 * @param string $tableName The table name.
+	 * @param string $name The field name.
+	 * @param string $type The field type and attributes.
+	 * @param array $currentFields List of fields as they have been found in the database.
+	 * @param DatabaseBase $db
+	 * @param object $reportTo Object to report back to.
+	 */
+	protected static function updatePostgresField( $tableName, $name, $type, array $currentFields, DatabaseBase $db, $reportTo ) {
+		$keypos = strpos( $type, ' PRIMARY KEY' );
+		
+		if ( $keypos > 0 ) {
+			$type = substr( $type, 0, $keypos );
+		}
+		
+		if ( !array_key_exists( $name, $currentFields ) ) {
+			self::reportProgress( "   ... creating field $name ... ", $reportTo );
+			
+			$db->query( "ALTER TABLE $tableName ADD \"" . $name . "\" $type", __METHOD__ );
+			
+			self::reportProgress( "done.\n", $reportTo );
+		} elseif ( $currentFields[$name] != $type ) {
+			self::reportProgress( "   ... changing type of field $name from '$currentFields[$name]' to '$type' ... ", $reportTo );
+			$notnullposnew = strpos( $type, ' NOT NULL' );
+			
+			if ( $notnullposnew > 0 ) {
+				$type = substr( $type, 0, $notnullposnew );
+			}
+			
+			$notnullposold = strpos( $currentFields[$name], ' NOT NULL' );
+			$typeold = ( $notnullposold > 0 ) ? substr( $currentFields[$name], 0, $notnullposold ) : $currentFields[$name];
+			
+			if ( $typeold != $type ) {
+				$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" TYPE " . $type, __METHOD__ );
+			}
+			
+			if ( $notnullposold != $notnullposnew ) {
+				$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" " . ( $notnullposnew > 0 ? 'SET' : 'DROP' ) . " NOT NULL", __METHOD__ );
+			}
+			
+			self::reportProgress( "done.\n", $reportTo );
+		} else {
+			self::reportProgress( "   ... field $name is fine.\n", $reportTo );
+		}
+	}
+	
+	/**
+	 * Update a single field given it's name and type and an array of current fields. MySQL version.
+	 * 
+	 * @param string $tableName The table name.
+	 * @param string $name The field name.
+	 * @param string $type The field type and attributes.
+	 * @param array $currentFields List of fields as they have been found in the database.
+	 * @param DatabaseBase $db
+	 * @param object $reportTo Object to report back to.
+	 * @param string $position
+	 */
+	protected static function updateMySqlField( $tableName, $name, $type, array $currentFields, DatabaseBase $db, $reportTo, $position ) {
+		if ( !array_key_exists( $name, $currentFields ) ) {
+			self::reportProgress( "   ... creating field $name ... ", $reportTo );
+			
+			$db->query( "ALTER TABLE $tableName ADD `$name` $type $position", __METHOD__ );
+			$result[$name] = 'new';
+			
+			self::reportProgress( "done.\n", $reportTo );
+		} elseif ( $currentFields[$name] != $type ) {
+			self::reportProgress( "   ... changing type of field $name from '$currentFields[$name]' to '$type' ... ", $reportTo );
+			
+			$db->query( "ALTER TABLE $tableName CHANGE `$name` `$name` $type $position", __METHOD__ );
+			$result[$name] = 'up';
+			self::reportProgress( "done.\n", $reportTo );
+		} else {
+			self::reportProgress( "   ... field $name is fine.\n", $reportTo );
+		}
+	}	
 
 	/**
 	 * Make sure that each of the column descriptions in the given array is indexed by *one* index
@@ -342,8 +392,13 @@ class SMWSQLHelpers {
 		return true;
 	}
 
-	/// If a receiver is given, report the given message to its reportProgress method.
-	protected static function reportProgress( $msg, $receiver = null ) {
+	/**
+	 * Reports the given message to the reportProgress method of the $receiver.
+	 * 
+	 * @param string $msg
+	 * @param object $receiver
+	 */
+	protected static function reportProgress( $msg, $receiver ) {
 		if ( $receiver !== null ) $receiver->reportProgress( $msg );
 	}
 
