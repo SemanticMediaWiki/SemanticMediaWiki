@@ -450,6 +450,62 @@ $messages['af'] = array(
 	'smw_result_noresults' => 'Geen resultate.',
 );
 
+/** Gheg Albanian (Gegë)
+ * @author Mdupont
+ */
+$messages['aln'] = array(
+	'smw_isspecprop' => 'Kjo pronë është një veti të veçantë në këtë wiki.',
+	'smw_isknowntype' => 'Ky lloj është midis tipit të të dhënave të këtij standardi wiki.',
+	'smw_isaliastype' => 'Ky lloj është një pseudonim për dhënave "" $1 ".',
+	'smw_isnotype' => 'Ky lloj "$1" nuk është një standard të dhënave në wiki, dhe nuk është dhënë një përkufizim ose përdorues.',
+	'smw_concept_description' => 'Përshkrimi i konceptit "$1"',
+	'smw_no_concept_namespace' => 'Konceptet mund të përcaktohet në faqet në Konceptin: hapësira.',
+	'smw_multiple_concepts' => 'Çdo faqe koncept mund të ketë vetëm një përkufizim koncept.',
+	'smw_concept_cache_miss' => 'Koncepti "$1" nuk mund të përdoret në këtë moment, që nga konfigurimi Wiki kërkon që ajo të jetë llogaritur off-line. Nëse problemi nuk zhduken pas disa kohë, pyesni administratorin e faqes tuaj për të bërë këtë koncept në dispozicion.',
+	'smw_noinvannot' => 'Vlerat nuk mund të vendoset në pronat e anasjelltas.',
+	'smw_baduri' => 'URI e formës "$1" nuk lejohen.',
+	'smw_printername_auto' => 'Automatik',
+	'smw_printername_count' => 'Rezultatet Count',
+	'smw_printername_csv' => 'eksport CSV',
+	'smw_printername_debug' => 'query Debug (për ekspertët)',
+	'smw_printername_embedded' => 'Embed faqe Përmbajtja',
+	'smw_printername_json' => 'eksport JSON',
+	'smw_printername_list' => 'Listë',
+	'smw_printername_ol' => 'Renditje',
+	'smw_printername_ul' => 'Itemization',
+	'smw_printername_rss' => 'eksport RSS',
+	'smw_printername_table' => 'Tryezë',
+	'smw_printername_broadtable' => 'Tabela Broad',
+	'smw_printername_template' => 'Shabllon',
+	'smw_paramdesc_limit' => 'Numri maksimal i rezultateve të kthehen',
+	'smw_paramdesc_headers' => 'Afisho e titullit / emrat e pronës',
+	'smw_paramdesc_mainlabel' => 'Etiketë për të dhënë për emrin kryesore faqe',
+	'smw_paramdesc_link' => 'Show vlerat si link',
+	'smw_paramdesc_intro' => 'Teksti që do shfaqet para se rezultatet e pyetjes, nëse ka ndonjë',
+	'smw_paramdesc_outro' => 'Teksti që do shfaqet pas rezultatet e pyetjes, nëse ka ndonjë',
+	'smw_paramdesc_default' => 'Teksti që do shfaqet në qoftë se nuk ka rezultate query',
+	'smw_paramdesc_searchlabel' => 'Teksti në lidhje me rezultatet e',
+	'smw_paramdesc_sep' => 'Ndarës për vlerat e',
+	'smw_paramdesc_template' => 'Emri i një template me të cilin për të shfaqur shkresat e',
+	'smw_paramdesc_columns' => 'Numri i rreshtave në të cilat për të shfaqur rezultate (default është $1)',
+	'smw_paramdesc_embedformat' => 'HTML tag përdoret për të definuar tituj',
+	'smw_paramdesc_embedonly' => 'Afisho nuk ka tituj',
+	'smw_paramdesc_rsstitle' => "Teksti për t'u përdorur si titulli i feed",
+	'smw_paramdesc_rssdescription' => 'Teksti që do të përdoret si përshkrim i feed',
+	'smw_iq_disabled' => 'pyetje Semantic kanë qenë të paaftë për këtë wiki.',
+	'smw_iq_moreresults' => 'Rezultatet e ... më tej',
+	'smw_iq_nojs' => 'Përdorni një shfletues të aktivizoni Java skriptet për të parë, ky element.',
+	'smw_iq_altresults' => 'Browse rezultat lista direkt.',
+	'smw_unknown_importns' => 'Funksionet e importit nuk janë në dispozicion për namespace "$1".',
+	'smw_nonright_importtype' => '$1 mund të përdoren vetëm për faqet me hapësira "$2".',
+	'smw_wrong_importtype' => '$1 nuk mund të përdoret për faqet në hapësirën "" $2.',
+	'smw_no_importelement' => 'Elementi "$1" nuk dispozicion për import.',
+	'smw_parseerror' => 'Vlera e dhënë nuk është kuptuar.',
+	'smw_notitle' => '"$1" nuk mund të përdoret si një emër faqe në këtë wiki.',
+	'smw_wrong_namespace' => 'Vetëm faqet në hapësirën "$1" lejohen këtu.',
+	'smw_unknowntype' => 'Lloj i pasuportuar "$1" të përcaktuara për pronën.',
+);
+
 /** Amharic (አማርኛ)
  * @author Codex Sinaiticus
  */
@@ -3470,7 +3526,7 @@ Por favor, insira ambas, a páxina e mais a propiedade.',
 	'smwadmin' => 'Funcións do administrador Semantic MediaWiki',
 	'smw_smwadmin_settingup' => 'Configurando o almacenamento para Semantic MediaWiki',
 	'smw_smwadmin_setupsuccess' => 'O motor de almacenamento foi configurado con éxito.',
-	'smw_smwadmin_return' => 'Voltar a "$1"',
+	'smw_smwadmin_return' => 'Volver a "$1"',
 	'smw_smwadmin_updatestarted' => 'Comezou un novo proceso de actualización para refrescar os datos semánticos.
 Todos os datos almacenados serán reconstruídos ou reparados onde sexa necesario.
 Pode seguir o proceso da actualización nesta páxina especial.',
