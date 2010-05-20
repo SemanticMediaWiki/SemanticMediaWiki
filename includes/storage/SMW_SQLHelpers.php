@@ -55,8 +55,6 @@ class SMWSQLHelpers {
 	 * The function returns an array that includes all columns that have been
 	 * changed. For each such column, the array contains an entry
 	 * columnname => action, where action is one of 'up', 'new', or 'del'
-	 * If the table was already fine or was created completely anew, an empty
-	 * array is returned (assuming that both cases require no action).
 	 *
 	 * If progress reports during this operation are desired, then the parameter $reportTo should
 	 * be given an object that has a method reportProgress(string) for doing so.
@@ -75,32 +73,13 @@ class SMWSQLHelpers {
 		global $wgDBname, $wgDBtype, $wgDBTableOptions;
 		
 		$tableName = $db->tableName( $tableName );
-		$fname = 'SMWSQLHelpers::setupTable';
 
-		SMWSQLHelpers::reportProgress( "Setting up table $tableName ...\n", $reportTo );
+		self::reportProgress( "Setting up table $tableName ...\n", $reportTo );
 		
 		if ( $db->tableExists( $tableName ) === false ) { // create new table
-			$sql = 'CREATE TABLE ' . ( $wgDBtype == 'postgres' ? '' : "`$wgDBname`." ) . $tableName . ' (';
-			$first = true;
-			
-			foreach ( $fields as $name => $type ) {
-				if ( $first ) {
-					$first = false;
-				} else {
-					$sql .= ',';
-				}
-				
-				$sql .= $name . '  ' . $type;
-			}
-			
-			$sql .= ') ' . ( $wgDBtype == 'postgres' ? '' : $wgDBTableOptions );
-			$db->query( $sql, $fname );
-			
-			SMWSQLHelpers::reportProgress( "   ... new table created\n", $reportTo );
-			
-			return array();
+			$this->createTable( $tableName, $fields, $db, $reportTo );
 		} else { // check table signature
-			SMWSQLHelpers::reportProgress( "   ... table exists already, checking structure ...\n", $reportTo );
+			self::reportProgress( "   ... table exists already, checking structure ...\n", $reportTo );
 			
 			if ( $wgDBtype == 'postgres' ) { // postgresql
 				// use the data dictionary in postgresql to get an output comparable to DESCRIBE
@@ -128,7 +107,7 @@ class SMWSQLHelpers {
 				$sql = 'DESCRIBE ' . $tableName;
 			}
 			
-			$res = $db->query( $sql, $fname );
+			$res = $db->query( $sql, __METHOD__ );
 			$curfields = array();
 			$result = array();
 			
@@ -173,7 +152,7 @@ class SMWSQLHelpers {
 					if ( !array_key_exists( $name, $curfields ) ) {
 						SMWSQLHelpers::reportProgress( "   ... creating column $name ... ", $reportTo );
 						
-						$db->query( "ALTER TABLE $tableName ADD \"" . $name . "\" $type", $fname );
+						$db->query( "ALTER TABLE $tableName ADD \"" . $name . "\" $type", __METHOD__ );
 						$result[$name] = 'new';
 						
 						SMWSQLHelpers::reportProgress( "done \n", $reportTo );
@@ -189,11 +168,11 @@ class SMWSQLHelpers {
 						$typeold = ( $notnullposold > 0 ) ? substr( $curfields[$name], 0, $notnullposold ):$curfields[$name];
 						
 						if ( $typeold != $type ) {
-							$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" TYPE " . $type, $fname );
+							$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" TYPE " . $type, __METHOD__ );
 						}
 						
 						if ( $notnullposold != $notnullposnew ) {
-							$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" " . ( $notnullposnew > 0 ? 'SET':'DROP' ) . " NOT NULL", $fname );
+							$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" " . ( $notnullposnew > 0 ? 'SET':'DROP' ) . " NOT NULL", __METHOD__ );
 						}
 						
 						$result[$name] = 'up';
@@ -209,7 +188,7 @@ class SMWSQLHelpers {
 					if ( $value !== false ) {
 						SMWSQLHelpers::reportProgress( "   ... deleting obsolete column $name ... ", $reportTo );
 						
-						$db->query( "ALTER TABLE \"" . $tableName . "\" DROP COLUMN \"" . $name . "\"", $fname );
+						$db->query( "ALTER TABLE \"" . $tableName . "\" DROP COLUMN \"" . $name . "\"", __METHOD__ );
 						$result[$name] = 'del';
 						
 						SMWSQLHelpers::reportProgress( "done.\n", $reportTo );
@@ -222,14 +201,14 @@ class SMWSQLHelpers {
 				if ( !array_key_exists( $name, $curfields ) ) {
 					SMWSQLHelpers::reportProgress( "   ... creating column $name ... ", $reportTo );
 					
-					$db->query( "ALTER TABLE $tableName ADD `$name` $type $position", $fname );
+					$db->query( "ALTER TABLE $tableName ADD `$name` $type $position", __METHOD__ );
 					$result[$name] = 'new';
 					
 					SMWSQLHelpers::reportProgress( "done \n", $reportTo );
 				} elseif ( $curfields[$name] != $type ) {
 					SMWSQLHelpers::reportProgress( "   ... changing type of column $name from '$curfields[$name]' to '$type' ... ", $reportTo );
 					
-					$db->query( "ALTER TABLE $tableName CHANGE `$name` `$name` $type $position", $fname );
+					$db->query( "ALTER TABLE $tableName CHANGE `$name` `$name` $type $position", __METHOD__ );
 					$result[$name] = 'up';
 					$curfields[$name] = false;
 					
@@ -245,7 +224,7 @@ class SMWSQLHelpers {
 			  foreach ( $curfields as $name => $value ) {
 				if ( $value !== false ) { // not encountered yet --> delete
 					SMWSQLHelpers::reportProgress( "   ... deleting obsolete column $name ... ", $reportTo );
-					$db->query( "ALTER TABLE $tableName DROP COLUMN `$name`", $fname );
+					$db->query( "ALTER TABLE $tableName DROP COLUMN `$name`", __METHOD__ );
 					$result[$name] = 'del';
 					SMWSQLHelpers::reportProgress( "done.\n", $reportTo );
 				}
@@ -256,6 +235,29 @@ class SMWSQLHelpers {
 			
 			return $result;
 		}
+	}
+	
+	private static function createTable( $tableName, array $fields, DatabaseBase $db, $reportTo ) {
+		global $wgDBtype, $wgDBTableOptions, $wgDBname;
+		
+		$sql = 'CREATE TABLE ' . ( $wgDBtype == 'postgres' ? '' : "`$wgDBname`." ) . $tableName . ' (';
+		
+		$fieldSql = array();
+		
+		foreach ( $fields as $fieldName => $fieldType ) {
+			$fieldSql[] = "$fieldName  $fieldType";
+		}
+		
+		$sql .= implode( ',', $fieldSql ) . ') ';
+		if ( $wgDBtype != 'postgres' ) $sql .= $wgDBTableOptions;
+		
+		$db->query( $sql, __METHOD__ );
+		
+		self::reportProgress( "   ... new table created\n", $reportTo );	
+	}
+	
+	private static function updateTable() {
+		
 	}
 
 	/**
@@ -270,7 +272,6 @@ class SMWSQLHelpers {
 		global $wgDBtype, $verbose;
 		
 		$tableName = $db->tableName( $tableName );
-		$fname = 'SMWSQLHelpers::setupIndex';
 
 		if ( $wgDBtype == 'postgres' ) { // postgresql
 			$sql = "SELECT  i.relname AS indexname,"
@@ -284,7 +285,7 @@ class SMWSQLHelpers {
 				. " WHERE c.relkind = 'r'::\"char\" AND i.relkind = 'i'::\"char\""
 				. " AND c.relname = '" . $tableName . "'"
 				. " AND NOT pg_get_indexdef(i.oid) ~ '^CREATE UNIQUE INDEX'";
-			$res = $db->query( $sql, $fname );
+			$res = $db->query( $sql, __METHOD__ );
 			
 			if ( !$res ) {
 				return false;
@@ -297,17 +298,17 @@ class SMWSQLHelpers {
 				if ( array_key_exists( $row->indexcolumns, $columns ) ) {
 					$columns[$row->indexcolumns] = false;
 				} else {
-					$db->query( 'DROP INDEX IF EXISTS ' . $row->indexname, $fname );
+					$db->query( 'DROP INDEX IF EXISTS ' . $row->indexname, __METHOD__ );
 				}
 			}
 			
 			foreach ( $columns as $key => $column ) { // Ddd the remaining indexes.
 				if ( $column != false ) {
-					$db->query( "CREATE INDEX " . $tableName . "_index" . $key . " ON " . $tableName . " USING btree(" . $column . ")", $fname );
+					$db->query( "CREATE INDEX " . $tableName . "_index" . $key . " ON " . $tableName . " USING btree(" . $column . ")", __METHOD__ );
 				}
 			}
 		} else { // MySQL
-			$res = $db->query( 'SHOW INDEX FROM ' . $tableName , $fname );
+			$res = $db->query( 'SHOW INDEX FROM ' . $tableName , __METHOD__ );
 			
 			if ( !$res ) {
 				return false;
@@ -327,13 +328,13 @@ class SMWSQLHelpers {
 				if ( $id !== false ) {
 					$columns[$id] = false;
 				} else { // Duplicate or unrequired index.
-					$db->query( 'DROP INDEX ' . $key . ' ON ' . $tableName, $fname );
+					$db->query( 'DROP INDEX ' . $key . ' ON ' . $tableName, __METHOD__ );
 				}
 			}
 
 			foreach ( $columns as $key => $column ) { // Ddd the remaining indexes.
 				if ( $column != false ) {
-					$db->query( "ALTER TABLE $tableName ADD INDEX ( $column )", $fname );
+					$db->query( "ALTER TABLE $tableName ADD INDEX ( $column )", __METHOD__ );
 				}
 			}
 		}
