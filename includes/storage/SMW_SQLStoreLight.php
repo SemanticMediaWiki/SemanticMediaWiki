@@ -929,57 +929,98 @@ class SMWSQLStoreLight extends SMWStore {
 	 */
 	protected function setupTables( $verbose, $db ) {
 		global $wgDBtype;
-		extract( $db->tableNames( 'smw_ids', 'smw_spec2', 'smw_conccache', 'smw_conc2' ) );
-		$reportTo = $verbose ? $this:null; // use $this to report back from static SMWSQLHelpers
-		// repeatedly used DB field types defined here for convenience
-		$dbtypes = array( 't' => SMWSQLHelpers::getStandardDBType( 'title' ),
-		                 'u' => ( $wgDBtype == 'postgres' ? 'TEXT':'VARCHAR(63) binary' ),
-		                 'l' => SMWSQLHelpers::getStandardDBType( 'blob' ),
-						 'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION':'DOUBLE' ),
-						 'i' => ( $wgDBtype == 'postgres' ? 'INTEGER':'INT(8)' ),
-						 'j' => ( $wgDBtype == 'postgres' ? 'INTEGER':'INT(8) UNSIGNED' ),
-						 'p' => SMWSQLHelpers::getStandardDBType( 'id' ),
-						 'n' => SMWSQLHelpers::getStandardDBType( 'namespace' ),
-						 'w' => SMWSQLHelpers::getStandardDBType( 'iw' ) );
+		
+		$reportTo = $verbose ? $this : null; // Use $this to report back from static SMWSQLHelpers.
+		
+		// Repeatedly used DB field types defined here for convenience.
+		$dbtypes = array(
+			't' => SMWSQLHelpers::getStandardDBType( 'title' ),
+			'u' => ( $wgDBtype == 'postgres' ? 'TEXT' : 'VARCHAR(63) binary' ),
+			'l' => SMWSQLHelpers::getStandardDBType( 'blob' ),
+			'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION' : 'DOUBLE' ),
+			'i' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8)' ),
+			'j' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8) UNSIGNED' ),
+			'p' => SMWSQLHelpers::getStandardDBType( 'id' ),
+			'n' => SMWSQLHelpers::getStandardDBType( 'namespace' ),
+			'w' => SMWSQLHelpers::getStandardDBType( 'iw' )
+		);
 
-		// DB update: field renaming between SMW 1.3 and SMW 1.4
-		if ( ( $db->tableExists( $smw_spec2 ) ) && ( $db->fieldExists( $smw_spec2, 'sp_id', 'SMWSQLStoreLight::setup' ) ) ) {
+		$smw_spec2 = $db->tableName( 'smw_spec2' );
+		
+		// DB update: field renaming between SMW 1.3 and SMW 1.4.
+		if ( ( $db->tableExists( $smw_spec2 ) ) && ( $db->fieldExists( $smw_spec2, 'sp_id', 'SMWSQLStore2::setup' ) ) ) {
 			if ( $wgDBtype == 'postgres' ) {
-				$db->query( "ALTER TABLE $smw_spec2 ALTER COLUMN sp_id RENAME TO p_id", 'SMWSQLStoreLight::setup' );
+				$db->query( "ALTER TABLE $smw_spec2 ALTER COLUMN sp_id RENAME TO p_id", 'SMWSQLStore2::setup' );
 			} else {
-				$db->query( "ALTER TABLE $smw_spec2 CHANGE `sp_id` `p_id` " . $dbtypes['p'] . " NOT NULL", 'SMWSQLStoreLight::setup' );
+				$db->query( "ALTER TABLE $smw_spec2 CHANGE `sp_id` `p_id` " . $dbtypes['p'] . " NOT NULL", 'SMWSQLStore2::setup' );
 			}
 		}
 
-		// set up table for internal IDs used in this store:
-		SMWSQLHelpers::setupTable( $smw_ids,
-		              array( 'smw_id'        => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY':' KEY AUTO_INCREMENT' ),
-		                    'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
-		                    'smw_title'     => $dbtypes['t'] . ' NOT NULL',
-		                    'smw_iw'        => $dbtypes['w'],
-		                    'smw_sortkey'   => $dbtypes['t']  . ' NOT NULL' ), $db, $reportTo );
-		SMWSQLHelpers::setupIndex( $smw_ids, array( 'smw_id', 'smw_title,smw_namespace,smw_iw', 'smw_sortkey' ), $db );
+		// Set up table for internal IDs used in this store:
+		SMWSQLHelpers::setupTable(
+			'smw_ids',
+			array(
+				'smw_id' => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY AUTO_INCREMENT' ),
+				'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
+				'smw_title' => $dbtypes['t'] . ' NOT NULL',
+				'smw_iw' => $dbtypes['w'],
+				'smw_sortkey' => $dbtypes['t']  . ' NOT NULL'
+			),
+			$db,
+			$reportTo
+		);
+		
+		SMWSQLHelpers::setupIndex( 'smw_ids', array( 'smw_id', 'smw_title,smw_namespace,smw_iw', 'smw_sortkey' ), $db );
 
-		// set up concept cache: member elements (s)->concepts (o)
-		SMWSQLHelpers::setupTable( $smw_conccache,
-		              array( 's_id'        => $dbtypes['p'] . ' NOT NULL',
-		                    'o_id'        => $dbtypes['p'] . ' NOT NULL' ), $db, $reportTo );
-		SMWSQLHelpers::setupIndex( $smw_conccache, array( 'o_id' ), $db );
-		// set up concept descriptions
-		SMWSQLHelpers::setupTable( $smw_conc2,
-		              array( 's_id'             => $dbtypes['p'] . ' NOT NULL' .
-					                              ( $wgDBtype == 'postgres' ? ' PRIMARY KEY':' KEY' ),
-		                    'concept_txt'      => $dbtypes['l'],
-		                    'concept_docu'     => $dbtypes['l'],
-		                    'concept_features' => $dbtypes['i'],
-		                    'concept_size'     => $dbtypes['i'],
-		                    'concept_depth'    => $dbtypes['i'],
-		                    'cache_date'       => $dbtypes['j'],
-		                    'cache_count'      => $dbtypes['j'] ), $db, $reportTo );
-		SMWSQLHelpers::setupIndex( $smw_conc2, array( 's_id' ), $db );
+		// Set up concept cache: member elements (s)->concepts (o)
+		SMWSQLHelpers::setupTable(
+			'smw_conccache',
+			array(
+				's_id' => $dbtypes['p'] . ' NOT NULL',
+				'o_id' => $dbtypes['p'] . ' NOT NULL'
+			),
+			$db,
+			$reportTo
+		);
+		              
+		SMWSQLHelpers::setupIndex( 'smw_conccache', array( 'o_id' ), $db );
+		
+		// Set up concept descriptions.
+		SMWSQLHelpers::setupTable(
+			'smw_conc2',
+			array(
+				's_id' => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY' ),
+				'concept_txt' => $dbtypes['l'],
+				'concept_docu' => $dbtypes['l'],
+				'concept_features' => $dbtypes['i'],
+				'concept_size' => $dbtypes['i'],
+				'concept_depth' => $dbtypes['i'],
+				'cache_date' => $dbtypes['j'],
+				'cache_count' => $dbtypes['j']
+			),
+			$db,
+			$reportTo
+		);
+		
+		SMWSQLHelpers::setupIndex( 'smw_conc2', array( 's_id' ), $db );
 
 		// Set up all property tables as defined:
-		foreach ( SMWSQLStoreLight::getPropertyTables() as $proptable ) {
+		$this->setupPropertyTables( $dbtypes, $db, $reportTo );
+
+		$this->reportProgress( "Database initialised successfully.\n\n", $verbose );
+	}
+
+	/**
+	 * Sets up the property tables.
+	 * 
+	 * @param array $dbtypes
+	 * @param $db
+	 * @param $reportTo SMWSQLStore2 or null
+	 */
+	protected function setupPropertyTables( array $dbtypes, $db, $reportTo ) {
+		$addedCustomTypeSignatures = false;
+		
+		foreach ( self::getPropertyTables() as $proptable ) {
 			if ( $proptable->idsubject ) {
 				$fieldarray = array( 's_id' => $dbtypes['p'] . ' NOT NULL' );
 				$indexes = array( 's_id' );
@@ -987,19 +1028,30 @@ class SMWSQLStoreLight extends SMWStore {
 				$fieldarray = array( 's_title' => $dbtypes['t'] . ' NOT NULL', 's_namespace' => $dbtypes['n'] . ' NOT NULL' );
 				$indexes = array( 's_title,s_namespace' );
 			}
-			if ( $proptable->fixedproperty == false ) {
+			
+			if ( !$proptable->fixedproperty ) {
 				$fieldarray['p_id'] = $dbtypes['p'] . ' NOT NULL';
 				$indexes[] = 'p_id';
 			}
+			
 			foreach ( $proptable->objectfields as $fieldname => $typeid ) {
-				$fieldarray[$fieldname] = $dbtypes[$typeid];
+				// If the type signature is not recognized and the custom signatures have not been added, add them.
+				if ( !$addedCustomTypeSignatures && !array_key_exists( $typeid, $dbtypes ) ) {
+					wfRunHooks( 'SMWCustomSQLStoreFieldType', array( &$dbtypes ) );
+					$addedCustomTypeSignatures = true;
+				}
+				
+				// Only add the type when the signature was recognized, otherwise ignore it silently.
+				if ( array_key_exists( $typeid, $dbtypes ) ) {
+					$fieldarray[$fieldname] = $dbtypes[$typeid];
+				}
 			}
+			
 			$indexes = array_merge( $indexes, $proptable->indexes );
+			
 			SMWSQLHelpers::setupTable( $proptable->name, $fieldarray, $db, $reportTo );
-			SMWSQLHelpers::setupIndex( $proptable->name, $indexes, $db );
-		}
-
-		$this->reportProgress( "Database initialised successfully.\n\n", $verbose );
+			SMWSQLHelpers::setupIndex( $proptable->name, $indexes, $db );	
+		}	
 	}
 
 	/**
