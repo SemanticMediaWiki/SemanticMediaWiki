@@ -4,6 +4,8 @@
  * for avoiding twice the amount of code being required on every use of a simple storage function.
  *
  * @author Markus Krötzsch
+ * @author Jeroen De Dauw
+ * 
  * @file
  * @ingroup SMWStore
  */
@@ -88,15 +90,19 @@ class SMWSQLStore2QueryEngine {
 	 */
 	public function refreshConceptCache( $concept ) {
 		global $smwgQMaxLimit, $smwgQConceptFeatures, $wgDBtype;
+		
 		$cid = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '' );
 		$cid_c = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', false );
+		
 		if ( $cid != $cid_c ) {
 			$this->m_errors[] = "Skipping redirect concept.";
 			return $this->m_errors;
 		}
+		
 		$dv = end( $this->m_store->getPropertyValues( $concept, SMWPropertyValue::makeProperty( '_CONC' ) ) );
 		$desctxt = ( $dv !== false ) ? $dv->getWikiValue():false;
 		$this->m_errors = array();
+		
 		if ( $desctxt ) { // concept found
 			$this->m_qmode = SMWQuery::MODE_INSTANCES;
 			$this->m_queries = array();
@@ -109,13 +115,17 @@ class SMWSQLStore2QueryEngine {
 			$qp = new SMWQueryParser( $smwgQConceptFeatures );
 			$desc = $qp->getQueryDescription( $desctxt );
 			$qid = $this->compileQueries( $desc );
+			
 			$this->executeQueries( $this->m_queries[$qid] ); // execute query tree, resolve all dependencies
 			$qobj = $this->m_queries[$qid];
+			
 			if ( $qobj->joinfield === '' ) {
 				return;
 			}
+			
 			// Update database:
 			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
+			
 			if ( $wgDBtype == 'postgres' ) { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
 				$where = $qobj->where . ( $qobj->where ? ' AND ':'' ) .
 				         'NOT EXISTS (SELECT NULL FROM ' . $this->m_dbs->tableName( 'smw_conccache' ) .
@@ -124,18 +134,22 @@ class SMWSQLStore2QueryEngine {
 			} else { // MySQL just uses INSERT IGNORE, no extra conditions
 				$where = $qobj->where;
 			}
+			
 			$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? "":"IGNORE " ) . "INTO " . $this->m_dbs->tableName( 'smw_conccache' ) .
 			                    " SELECT DISTINCT $qobj->joinfield AS s_id, $cid AS o_id FROM " .
 			                    $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from .
 			                    ( $where ? " WHERE ":'' ) . $where . " LIMIT $smwgQMaxLimit",
 			                    'SMW::refreshConceptCache' );
+			                    
 			$this->m_dbs->update( 'smw_conc2', array( 'cache_date' => strtotime( "now" ), 'cache_count' => $this->m_dbs->affectedRows() ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
 		} else { // just delete old data if there is any
 			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
 			$this->m_dbs->update( 'smw_conc2', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
 			$this->m_errors[] = "No concept description found.";
 		}
+		
 		$this->cleanUp();
+		
 		return $this->m_errors;
 	}
 
@@ -315,17 +329,22 @@ class SMWSQLStore2QueryEngine {
 	 */
 	protected function getCountQueryResult( SMWQuery $query, $rootid ) {
 		wfProfileIn( 'SMWSQLStore2Queries::getCountQueryResult (SMW)' );
+		
 		$qobj = $this->m_queries[$rootid];
+		
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
 			wfProfileOut( 'SMWSQLStore2Queries::getCountQueryResult (SMW)' );
 			return 0;
 		}
+		
 		$sql_options = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
 		$res = $this->m_dbs->select( $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from, "COUNT(DISTINCT $qobj->alias.smw_id) AS count", $qobj->where, 'SMW::getQueryResult', $sql_options );
 		$row = $this->m_dbs->fetchObject( $res );
 		$count = $row->count;
 		$this->m_dbs->freeResult( $res );
+		
 		wfProfileOut( 'SMWSQLStore2Queries::getCountQueryResult (SMW)' );
+		
 		return $count;
 	}
 
@@ -502,12 +521,14 @@ class SMWSQLStore2QueryEngine {
 				if ( $row->cache_date &&
 				     ( ( $row->cache_date > ( strtotime( "now" ) - $smwgQConceptCacheLifetime * 60 ) ) ||
 				       !$may_be_computed ) ) { // Cached concept, use cache unless it is dead and can be revived.
+				       	
 					$query->jointable = 'smw_conccache';
 					$query->joinfield = "$query->alias.s_id";
 					$query->where = "$query->alias.o_id=" . $this->m_dbs->addQuotes( $cid );
 				} elseif ( $row->concept_txt ) { // Parse description and process it recursively.
 					if ( $may_be_computed ) {
 						$qp = new SMWQueryParser();
+						
 						//No defaultnamespaces here; If any, these are already in the concept.
 						$desc = $qp->getQueryDescription( $row->concept_txt );
 						$qid = $this->compileQueries( $desc );
@@ -524,6 +545,7 @@ class SMWSQLStore2QueryEngine {
 
 		if ( $qid >= 0 ) { // Success, keep query object, propagate sortkeys from subqueries.
 			$this->m_queries[$qid] = $query;
+			
 			if ( $query->type != SMW_SQL2_DISJUNCTION ) { // Sortkeys are killed by disjunctions (not all parts may have them),
 				// NOTE: preprocessing might try to push disjunctions downwards to safe sortkey, but this seems to be minor
 				foreach ( $query->components as $cid => $field ) {
@@ -1094,6 +1116,7 @@ class SMWSQLStore2QueryEngine {
 	 */
 	protected function getCreateTempIDTableSQL( $tablename ) {
 		global $wgDBtype;
+		
 		if ( $wgDBtype == 'postgres' ) { // PostgreSQL: no memory tables, use RULE to emulate INSERT IGNORE
 			return "CREATE OR REPLACE FUNCTION create_" . $tablename . "() RETURNS void AS "
 			. "$$ "
