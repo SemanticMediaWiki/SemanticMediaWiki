@@ -995,8 +995,8 @@ class SMWSQLStoreLight extends SMWStore {
 				$fieldarray[$fieldname] = $dbtypes[$typeid];
 			}
 			$indexes = array_merge( $indexes, $proptable->indexes );
-			SMWSQLHelpers::setupTable( $db->tableName( $proptable->name ), $fieldarray, $db, $reportTo );
-			SMWSQLHelpers::setupIndex( $db->tableName( $proptable->name ), $indexes, $db );
+			SMWSQLHelpers::setupTable( $proptable->name, $fieldarray, $db, $reportTo );
+			SMWSQLHelpers::setupIndex( $proptable->name, $indexes, $db );
 		}
 
 		$this->reportProgress( "Database initialised successfully.\n\n", $verbose );

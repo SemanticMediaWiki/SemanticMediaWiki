@@ -1182,9 +1182,11 @@ class SMWSQLStore2 extends SMWStore {
 
 	public function getStatistics() {
 		wfProfileIn( 'SMWSQLStore2::getStatistics (SMW)' );
+		
 		$db = wfGetDB( DB_SLAVE );
 		$result = array();
 		$proptables = self::getPropertyTables();
+		
 		// count number of declared properties by counting "has type" annotations
 		$typeprop = SMWPropertyValue::makeProperty( '_TYPE' );
 		$typetable = $proptables[self::findPropertyTableID( $typeprop )];
@@ -1192,10 +1194,12 @@ class SMWSQLStore2 extends SMWStore {
 		$row = $db->fetchObject( $res );
 		$result['DECLPROPS'] = $row->count;
 		$db->freeResult( $res );
+		
 		// count property uses by counting rows in property tables,
 		// count used properties by counting distinct properties in each table
 		$result['PROPUSES'] = 0;
 		$result['USEDPROPS'] = 0;
+		
 		foreach ( self::getPropertyTables() as $proptable ) {
 			/// Note: subproperties that are part of container values are counted individually;
 			/// It does not seem to be important to filter them by adding more conditions.
@@ -1203,6 +1207,7 @@ class SMWSQLStore2 extends SMWStore {
 			$row = $db->fetchObject( $res );
 			$result['PROPUSES'] += $row->count;
 			$db->freeResult( $res );
+			
 			if ( $proptable->fixedproperty == false ) {
 				$res = $db->select( $proptable->name, 'COUNT(DISTINCT(p_id)) AS count', '', 'SMW::getStatistics' );
 				$row = $db->fetchObject( $res );
@@ -1211,6 +1216,7 @@ class SMWSQLStore2 extends SMWStore {
 				$res = $db->select( $proptable->name, '*', '', 'SMW::getStatistics', array( 'LIMIT' => 1 ) );
 				if ( $db->numRows( $res ) > 0 )  $result['USEDPROPS']++;
 			}
+			
 			$db->freeResult( $res );
 		}
 
@@ -1260,7 +1266,6 @@ class SMWSQLStore2 extends SMWStore {
 	protected function setupTables( $verbose, $db ) {
 		global $wgDBtype;
 		
-		extract( $db->tableNames( 'smw_ids', 'smw_spec2', 'smw_conccache', 'smw_conc2' ) );
 		$reportTo = $verbose ? $this : null; // Use $this to report back from static SMWSQLHelpers.
 		
 		// Repeatedly used DB field types defined here for convenience.
@@ -1276,6 +1281,8 @@ class SMWSQLStore2 extends SMWStore {
 			'w' => SMWSQLHelpers::getStandardDBType( 'iw' )
 		);
 
+		$smw_spec2 = $db->tableName( 'smw_spec2' );
+		
 		// DB update: field renaming between SMW 1.3 and SMW 1.4.
 		if ( ( $db->tableExists( $smw_spec2 ) ) && ( $db->fieldExists( $smw_spec2, 'sp_id', 'SMWSQLStore2::setup' ) ) ) {
 			if ( $wgDBtype == 'postgres' ) {
@@ -1287,7 +1294,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		// Set up table for internal IDs used in this store:
 		SMWSQLHelpers::setupTable(
-			$smw_ids,
+			'smw_ids',
 			array(
 				'smw_id' => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY AUTO_INCREMENT' ),
 				'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
@@ -1299,11 +1306,11 @@ class SMWSQLStore2 extends SMWStore {
 			$reportTo
 		);
 		
-		SMWSQLHelpers::setupIndex( $smw_ids, array( 'smw_id', 'smw_title,smw_namespace,smw_iw', 'smw_sortkey' ), $db );
+		SMWSQLHelpers::setupIndex( 'smw_ids', array( 'smw_id', 'smw_title,smw_namespace,smw_iw', 'smw_sortkey' ), $db );
 
 		// Set up concept cache: member elements (s)->concepts (o)
 		SMWSQLHelpers::setupTable(
-			$smw_conccache,
+			'smw_conccache',
 			array(
 				's_id' => $dbtypes['p'] . ' NOT NULL',
 				'o_id' => $dbtypes['p'] . ' NOT NULL'
@@ -1312,11 +1319,11 @@ class SMWSQLStore2 extends SMWStore {
 			$reportTo
 		);
 		              
-		SMWSQLHelpers::setupIndex( $smw_conccache, array( 'o_id' ), $db );
+		SMWSQLHelpers::setupIndex( 'smw_conccache', array( 'o_id' ), $db );
 		
 		// Set up concept descriptions.
 		SMWSQLHelpers::setupTable(
-			$smw_conc2,
+			'smw_conc2',
 			array(
 				's_id' => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY' ),
 				'concept_txt' => $dbtypes['l'],
@@ -1331,7 +1338,7 @@ class SMWSQLStore2 extends SMWStore {
 			$reportTo
 		);
 		
-		SMWSQLHelpers::setupIndex( $smw_conc2, array( 's_id' ), $db );
+		SMWSQLHelpers::setupIndex( 'smw_conc2', array( 's_id' ), $db );
 
 		// Set up all property tables as defined:
 		$this->setupPropertyTables( $dbtypes, $db, $reportTo );
@@ -1378,8 +1385,8 @@ class SMWSQLStore2 extends SMWStore {
 			
 			$indexes = array_merge( $indexes, $proptable->indexes );
 			
-			SMWSQLHelpers::setupTable( $db->tableName( $proptable->name ), $fieldarray, $db, $reportTo );
-			SMWSQLHelpers::setupIndex( $db->tableName( $proptable->name ), $indexes, $db );	
+			SMWSQLHelpers::setupTable( $proptable->name, $fieldarray, $db, $reportTo );
+			SMWSQLHelpers::setupIndex( $proptable->name, $indexes, $db );	
 		}	
 	}
 	
@@ -2432,6 +2439,7 @@ class SMWSQLStore2 extends SMWStore {
 	 */
 	public static function getPropertyTables() {
 		if ( count( self::$prop_tables ) > 0 ) return self::$prop_tables; // don't initialise twice
+		
 		self::$prop_tables['smw_rels2'] = new SMWSQLStore2Table( 'smw_rels2',
 		                                          array( 'o_id' => 'p' ),
 			                                      array( 'o_id' ) );
