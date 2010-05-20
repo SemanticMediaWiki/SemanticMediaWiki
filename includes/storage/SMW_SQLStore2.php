@@ -151,7 +151,6 @@ class SMWSQLStore2 extends SMWStore {
 		'__lin' => 'smw_spec2', // Special linear unit conversion type
 		'__imp' => 'smw_spec2', // Special import vocabulary type
 		'__err' => '',  // Special error type, used to indicate that the table could not be determined (happens for type-polymorphic _1, _2, ...)
-		// '__pro' => SMW_SQL2_NONE,  // Property page type; actually this should never be stored as a value (_wpp is used there)
 	);
 
 	/// Array to cache signatures of known built-in types. Having this data
@@ -474,6 +473,7 @@ class SMWSQLStore2 extends SMWStore {
 	}
 	
 	/**
+	 * returns an array of SMWWikiPageValue.
 	 * 
 	 * @param SMWPropertyValue $property
 	 * @param $value
@@ -1223,9 +1223,12 @@ class SMWSQLStore2 extends SMWStore {
 	public function setup( $verbose = true ) {
 		$this->reportProgress( "Setting up standard database configuration for SMW ...\n\n", $verbose );
 		$this->reportProgress( "Selected storage engine is \"SMWSQLStore2\" (or an extension thereof)\n\n", $verbose );
+		
 		$db = wfGetDB( DB_MASTER );
+		
 		$this->setupTables( $verbose, $db );
 		$this->setupPredefinedProperties( $verbose, $db );
+		
 		return true;
 	}
 
@@ -1258,9 +1261,9 @@ class SMWSQLStore2 extends SMWStore {
 		global $wgDBtype;
 		
 		extract( $db->tableNames( 'smw_ids', 'smw_spec2', 'smw_conccache', 'smw_conc2' ) );
-		$reportTo = $verbose ? $this:null; // use $this to report back from static SMWSQLHelpers
+		$reportTo = $verbose ? $this : null; // Use $this to report back from static SMWSQLHelpers.
 		
-		// repeatedly used DB field types defined here for convenience
+		// Repeatedly used DB field types defined here for convenience.
 		$dbtypes = array(
 			't' => SMWSQLHelpers::getStandardDBType( 'title' ),
 			'u' => ( $wgDBtype == 'postgres' ? 'TEXT' : 'VARCHAR(63) binary' ),
@@ -1273,7 +1276,7 @@ class SMWSQLStore2 extends SMWStore {
 			'w' => SMWSQLHelpers::getStandardDBType( 'iw' )
 		);
 
-		// DB update: field renaming between SMW 1.3 and SMW 1.4
+		// DB update: field renaming between SMW 1.3 and SMW 1.4.
 		if ( ( $db->tableExists( $smw_spec2 ) ) && ( $db->fieldExists( $smw_spec2, 'sp_id', 'SMWSQLStore2::setup' ) ) ) {
 			if ( $wgDBtype == 'postgres' ) {
 				$db->query( "ALTER TABLE $smw_spec2 ALTER COLUMN sp_id RENAME TO p_id", 'SMWSQLStore2::setup' );
@@ -1288,9 +1291,9 @@ class SMWSQLStore2 extends SMWStore {
 			array(
 				'smw_id' => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY AUTO_INCREMENT' ),
 				'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
-				'smw_title'     => $dbtypes['t'] . ' NOT NULL',
-				'smw_iw'        => $dbtypes['w'],
-				'smw_sortkey'   => $dbtypes['t']  . ' NOT NULL'
+				'smw_title' => $dbtypes['t'] . ' NOT NULL',
+				'smw_iw' => $dbtypes['w'],
+				'smw_sortkey' => $dbtypes['t']  . ' NOT NULL'
 			),
 			$db,
 			$reportTo
@@ -1311,20 +1314,41 @@ class SMWSQLStore2 extends SMWStore {
 		              
 		SMWSQLHelpers::setupIndex( $smw_conccache, array( 'o_id' ), $db );
 		
-		// set up concept descriptions
-		SMWSQLHelpers::setupTable( $smw_conc2,
-		              array( 's_id'             => $dbtypes['p'] . ' NOT NULL' .
-					                              ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY' ),
-		                    'concept_txt'      => $dbtypes['l'],
-		                    'concept_docu'     => $dbtypes['l'],
-		                    'concept_features' => $dbtypes['i'],
-		                    'concept_size'     => $dbtypes['i'],
-		                    'concept_depth'    => $dbtypes['i'],
-		                    'cache_date'       => $dbtypes['j'],
-		                    'cache_count'      => $dbtypes['j'] ), $db, $reportTo );
+		// Set up concept descriptions.
+		SMWSQLHelpers::setupTable(
+			$smw_conc2,
+			array(
+				's_id' => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY' ),
+				'concept_txt' => $dbtypes['l'],
+				'concept_docu' => $dbtypes['l'],
+				'concept_features' => $dbtypes['i'],
+				'concept_size' => $dbtypes['i'],
+				'concept_depth' => $dbtypes['i'],
+				'cache_date' => $dbtypes['j'],
+				'cache_count' => $dbtypes['j']
+			),
+			$db,
+			$reportTo
+		);
+		
 		SMWSQLHelpers::setupIndex( $smw_conc2, array( 's_id' ), $db );
 
 		// Set up all property tables as defined:
+		$this->setupPropertyTables( $dbtypes, $db, $reportTo );
+
+		$this->reportProgress( "Database initialised successfully.\n\n", $verbose );
+	}
+
+	/**
+	 * Sets up the property tables.
+	 * 
+	 * @param array $dbtypes
+	 * @param $db
+	 * @param $reportTo SMWSQLStore2 or null
+	 */
+	protected function setupPropertyTables( array $dbtypes, $db, $reportTo ) {
+		$addedCustomTypeSignatures = false;
+		
 		foreach ( self::getPropertyTables() as $proptable ) {
 			if ( $proptable->idsubject ) {
 				$fieldarray = array( 's_id' => $dbtypes['p'] . ' NOT NULL' );
@@ -1334,24 +1358,31 @@ class SMWSQLStore2 extends SMWStore {
 				$indexes = array( 's_title,s_namespace' );
 			}
 			
-			if ( $proptable->fixedproperty == false ) {
+			if ( !$proptable->fixedproperty ) {
 				$fieldarray['p_id'] = $dbtypes['p'] . ' NOT NULL';
 				$indexes[] = 'p_id';
 			}
 			
 			foreach ( $proptable->objectfields as $fieldname => $typeid ) {
-				$fieldarray[$fieldname] = $dbtypes[$typeid];
+				// If the type signature is not recognized and the custom signatures have not been added, add them.
+				if ( !$addedCustomTypeSignatures && !array_key_exists( $typeid, $dbtypes ) ) {
+					wfRunHooks( 'SMWCustomSQLStoreFieldType', array( &$dbtypes ) );
+					$addedCustomTypeSignatures = true;
+				}
+				
+				// Only add the type when the signature was recognized, otherwise ignore it silently.
+				if ( array_key_exists( $typeid, $dbtypes ) ) {
+					$fieldarray[$fieldname] = $dbtypes[$typeid];
+				}
 			}
 			
 			$indexes = array_merge( $indexes, $proptable->indexes );
 			
 			SMWSQLHelpers::setupTable( $db->tableName( $proptable->name ), $fieldarray, $db, $reportTo );
-			SMWSQLHelpers::setupIndex( $db->tableName( $proptable->name ), $indexes, $db );
-		}
-
-		$this->reportProgress( "Database initialised successfully.\n\n", $verbose );
+			SMWSQLHelpers::setupIndex( $db->tableName( $proptable->name ), $indexes, $db );	
+		}	
 	}
-
+	
 	/**
 	 * Create some initial DB entries for important built-in properties. Having the DB contents predefined
 	 * allows us to safe DB calls when certain data is needed. At the same time, the entries in the DB

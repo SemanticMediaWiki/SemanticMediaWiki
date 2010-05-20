@@ -39,6 +39,8 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @note The resulting wikipage object might be invalid if
 	 * the provided title is not allowed. An object is returned
 	 * in any case.
+	 * 
+	 * @return SMWWikiPageValue
 	 */
 	static public function makePage( $title, $namespace, $sortkey = '', $interwiki = '' ) {
 		$page = new SMWWikiPageValue( '_wpg' );
