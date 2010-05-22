@@ -64,10 +64,10 @@ class SMWSQLHelpers {
 	 * 
 	 * @param string $tableName The table name. Does not need to have been passed to DatabaseBase->tableName yet.
 	 * @param array $columns The fields and their types the table should have.
-	 * @param DatabaseBase $db
+	 * @param DatabaseBase or Database $db
 	 * @param $reportTo Object to report back to.
 	 */
-	public static function setupTable( $tableName, array $fields, DatabaseBase $db, $reportTo = null ) {
+	public static function setupTable( $tableName, array $fields, $db, $reportTo = null ) {
 		global $wgDBname, $wgDBtype, $wgDBTableOptions;
 		
 		$tableName = $db->tableName( $tableName );
@@ -90,10 +90,10 @@ class SMWSQLHelpers {
 	 * 
 	 * @param string $tableName The table name.
 	 * @param array $columns The fields and their types the table should have.
-	 * @param DatabaseBase $db
+	 * @param DatabaseBase or Database $db
 	 * @param $reportTo Object to report back to.
 	 */
-	protected static function createTable( $tableName, array $fields, DatabaseBase $db, $reportTo ) {
+	protected static function createTable( $tableName, array $fields, $db, $reportTo ) {
 		global $wgDBtype, $wgDBTableOptions, $wgDBname;
 		
 		$sql = 'CREATE TABLE ' . ( $wgDBtype == 'postgres' ? '' : "`$wgDBname`." ) . $tableName . ' (';
@@ -115,10 +115,10 @@ class SMWSQLHelpers {
 	 * 
 	 * @param string $tableName The table name.
 	 * @param array $columns The fields and their types the table should have.
-	 * @param DatabaseBase $db
+	 * @param DatabaseBase or Database $db
 	 * @param $reportTo Object to report back to.
 	 */
-	protected static function updateTable( $tableName, array $fields, DatabaseBase $db, $reportTo ) {
+	protected static function updateTable( $tableName, array $fields, $db, $reportTo ) {
 		global $wgDBtype;
 		
 		$currentFields = self::getFields( $tableName, $db, $reportTo );
@@ -162,12 +162,12 @@ class SMWSQLHelpers {
 	 * Returns an array of fields (as keys) and their types (as values).
 	 * 
 	 * @param string $tableName The table name.
-	 * @param DatabaseBase $db
+	 * @param DatabaseBase or Database $db
 	 * @param $reportTo Object to report back to.
 	 * 
 	 * @return array
 	 */
-	protected static function getFields( $tableName, DatabaseBase $db, $reportTo ) {
+	protected static function getFields( $tableName, $db, $reportTo ) {
 		global $wgDBtype;
 		
 		if ( $wgDBtype == 'postgres' ) {
@@ -239,10 +239,10 @@ EOT;
 	 * @param string $name The field name.
 	 * @param string $type The field type and attributes.
 	 * @param array $currentFields List of fields as they have been found in the database.
-	 * @param DatabaseBase $db
+	 * @param DatabaseBase or Database $db
 	 * @param object $reportTo Object to report back to.
 	 */
-	protected static function updatePostgresField( $tableName, $name, $type, array $currentFields, DatabaseBase $db, $reportTo ) {
+	protected static function updatePostgresField( $tableName, $name, $type, array $currentFields, $db, $reportTo ) {
 		$keypos = strpos( $type, ' PRIMARY KEY' );
 		
 		if ( $keypos > 0 ) {
@@ -287,11 +287,11 @@ EOT;
 	 * @param string $name The field name.
 	 * @param string $type The field type and attributes.
 	 * @param array $currentFields List of fields as they have been found in the database.
-	 * @param DatabaseBase $db
+	 * @param DatabaseBase or Database $db
 	 * @param object $reportTo Object to report back to.
 	 * @param string $position
 	 */
-	protected static function updateMySqlField( $tableName, $name, $type, array $currentFields, DatabaseBase $db, $reportTo, $position ) {
+	protected static function updateMySqlField( $tableName, $name, $type, array $currentFields, $db, $reportTo, $position ) {
 		if ( !array_key_exists( $name, $currentFields ) ) {
 			self::reportProgress( "   ... creating field $name ... ", $reportTo );
 			
@@ -316,9 +316,9 @@ EOT;
 	 * 
 	 * @param string $tableName The table name. Does not need to have been passed to DatabaseBase->tableName yet.
 	 * @param array $columns The field names to put indexes on
-	 * @param DatabaseBase $db
+	 * @param DatabaseBase or Database $db
 	 */
-	public static function setupIndex( $tableName, array $columns, DatabaseBase $db ) {
+	public static function setupIndex( $tableName, array $columns, $db ) {
 		global $wgDBtype, $verbose;
 		
 		$tableName = $db->tableName( $tableName );
