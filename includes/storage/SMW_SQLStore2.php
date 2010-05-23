@@ -25,43 +25,83 @@ define( 'SMW_SQL2_SMWINTDEFIW', ':smw-intprop' ); // virtual "interwiki prefix" 
  * @ingroup SMWStore
  */
 class SMWSQLStore2Table {
-	/// Name of the table in the DB.
+	/**
+	 * Name of the table in the DB.
+	 * 
+	 * @var string
+	 */
 	public $name;
-	/// Array with entries "fieldname => typeid" where the types are as given
-	/// for SMWSQLStore::getPropertyTables().
+	
+	/**
+	 * Array with entries "fieldname => typeid" where the types are as given 
+	 * for SMWSQLStore::getPropertyTables().
+	 * 
+	 * @var array
+	 */
 	public $objectfields;
-	/// If the table is only for one property, this field holds its name.
-	/// Empty otherwise. Tables without a fixed property have a column "p_id"
-	/// for storing the SMW page id of the property.
+	
+	/**
+	 * If the table is only for one property, this field holds its name.
+	 * Empty otherwise. Tables without a fixed property have a column "p_id"
+	 * for storing the SMW page id of the property.
+	 * 
+	 * @var mixed String or false
+	 */
 	public $fixedproperty;
-	/// Strings of the form "field1,...,fieldN" for extra indexes that are to
-	/// be built for this table. All tables have indexes on subject column(s)
-	/// and property column (if any).
+	
+	/**
+	 * Strings of the form "field1,...,fieldN" for extra indexes that are to
+	 * be built for this table. All tables have indexes on subject column(s)
+	 * and property column (if any).
+	 * 
+	 * @var array of string
+	 */
 	public $indexes;
-	/// Boolean that states how subjects are stored. If true, a column "s_id"
-	/// with an SMW page id is used. If false, two columns "s_title" and
-	/// "s_namespace" are used. The latter de-normalized form cannot store
-	/// sortkeys and interwiki prefixes, and is used only for the redirect
-	/// table. New tables should really keep the default "true" here.
+	
+	/**
+	 * Boolean that states how subjects are stored. If true, a column "s_id"
+	 * with an SMW page id is used. If false, two columns "s_title" and
+	 * "s_namespace" are used. The latter de-normalized form cannot store
+	 * sortkeys and interwiki prefixes, and is used only for the redirect
+	 * table. New tables should really keep the default "true" here.
+	 * 
+	 * @var boolean
+	 */
 	public $idsubject = true;
-	/// State if a table is reserved for "special properties" (properties that
-	/// are pre-defined in SMW). This is mainly for optimization, since we do
-	/// not want to join with the SMW page id table to find the property for an
-	/// ID when it is likely that the ID is fixed and cached.
+	
+	/**
+	 * State if a table is reserved for "special properties" (properties that
+	 * are pre-defined in SMW). This is mainly for optimization, since we do
+	 * not want to join with the SMW page id table to find the property for an
+	 * ID when it is likely that the ID is fixed and cached.
+	 * 
+	 * @var unknown_type
+	 */
 	public $specpropsonly = false;
 
-	public function __construct( $name, $objectfields, $indexes = array(), $fixedproperty = false ) {
+	/**
+	 * Constructor.
+	 * 
+	 * @param string $name
+	 * @param array $objectFields
+	 * @param array $indexes
+	 * @param mixed $fixedProperty string or false
+	 */
+	public function __construct( $name, array $objectFields, array $indexes = array(), $fixedProperty = false ) {
 		$this->name = $name;
-		$this->objectfields = $objectfields;
-		$this->fixedproperty = $fixedproperty;
+		$this->objectfields = $objectFields;
+		$this->fixedproperty = $fixedProperty;
 		$this->indexes = $indexes;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getFieldSignature() {
-		return implode( $this->objectfields, '' );
+		// TODO: this was implode( $this->objectfields, '' ), which might indicate some error where this method is called.
+		return implode( '', $this->objectfields );
 	}
 }
-
 
 /**
  * Storage access class for using the standard MediaWiki SQL database
@@ -387,10 +427,12 @@ class SMWSQLStore2 extends SMWStore {
 			if ( $typeid == 'p' ) { // Special case: page id, use smw_id table to insert 4 page-specific values instead of internal id
 				$from .= ' INNER JOIN ' . $db->tableName( 'smw_ids' ) . " AS o$valuecount ON $fieldname=o$valuecount.smw_id";
 				$select .= ( ( $select != '' ) ? ',' : '' ) . "$fieldname AS id$valuecount";
+				
 				$selectvalues[$valuecount] = "o$valuecount.smw_title";
 				$selectvalues[$valuecount + 1] = "o$valuecount.smw_namespace";
 				$selectvalues[$valuecount + 2] = "o$valuecount.smw_iw";
 				$selectvalues[$valuecount + 3] = "o$valuecount.smw_sortkey";
+				
 				$pagevalues[] = $valuecount;
 				$valuecount += 3;
 			} else { // Just use value as given.
@@ -416,7 +458,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		// ***  Now execute the query and read the results  ***//
 		$res = $db->select( $from, $select, $where, 'SMW::getSemanticData',
-		       ( $usedistinct ? $this->getSQLOptions( $requestoptions, $valuecolumn ) + array( 'DISTINCT' ):
+		       ( $usedistinct ? $this->getSQLOptions( $requestoptions, $valuecolumn ) + array( 'DISTINCT' ) :
 			                 $this->getSQLOptions( $requestoptions, $valuecolumn ) ) );
 			                 
 		while ( $row = $db->fetchObject( $res ) ) {
@@ -443,9 +485,11 @@ class SMWSQLStore2 extends SMWStore {
 			for ( $i = 0; $i < $valuecount; $i++ ) { // read the value fields from the current row
 				$fieldname = "v$i";
 				$newvalue = $row->$fieldname;
+				
 				if ( $i === current( $pagevalues ) ) { // special check for pages to filter out internal objects
 					$iwfield = 'v' . ( $i + 2 );
 					$iw = $row->$iwfield;
+					
 					if ( ( $iw == SMW_SQL2_SMWIW ) && ( $valuecount == 4 ) && ( $object !== null ) ) {
 						// read container objects recursively; but only if proptable is of form "p"
 						// also avoid (hypothetical) double recursion by requiring $object!==null
@@ -453,16 +497,20 @@ class SMWSQLStore2 extends SMWStore {
 						$oidfield = 'id' . current( $pagevalues );
 						
 						$newvalue = array();
+						
 						foreach ( self::getPropertyTables() as $tid => $pt ) { // just read all
 							$newvalue = array_merge( $newvalue, $this->fetchSemanticData( $row->$oidfield, null, $pt ) );
 						}
 					} elseif ( ( $iw != '' ) && ( $iw { 0 } == ' : ' ) ) { // other internal object, maybe a DB inconsistency; ignore row
 						$propertyname = '';
 					}
+					
 					next( $pagevalues );
 				}
+				
 				$valuekeys[] = $newvalue;
 			}
+			
 			if ( $propertyname != '' ) $result[] = $issubject ? array( $propertyname, $valuekeys ):$valuekeys;
 		}
 		
@@ -488,6 +536,7 @@ class SMWSQLStore2 extends SMWStore {
 		if ( $property->isInverse() ) { // inverses are working differently
 			$noninverse = clone $property;
 			$noninverse->setInverse( false );
+			
 			$result = $this->getPropertyValues( $value, $noninverse, $requestoptions );
 			wfProfileOut( "SMWSQLStore2::getPropertySubjects (SMW)" );
 			
@@ -988,18 +1037,18 @@ class SMWSQLStore2 extends SMWStore {
 			/// a bad behaviour: everything will continue to work until the existing redirects are updated,
 			/// which will hopefully be done to fix the double redirect.
 		} else { // general move method that should be correct in all cases (equality support respected when updating redirects)
-			// delete any existing data from new title:
+			// Delete any existing data from new title:
 			$this->deleteSemanticData( SMWWikiPageValue::makePageFromTitle( $newtitle ) ); // $newtitle should not have data, but let's be sure
 			$this->updateRedirects( $newtitle->getDBkey(), $newtitle->getNamespace() ); // may trigger update jobs!
 			
-			// move all data of old title to new position:
+			// Move all data of old title to new position:
 			if ( $sid != 0 ) {
 				$this->changeSMWPageID( $sid, $tid, $oldtitle->getNamespace(), $newtitle->getNamespace(), true, false );
 			}
 			
-			// now write a redirect from old title to new one; this also updates references in other tables as needed
-			$this->updateRedirects( $oldtitle->getDBkey(), $oldtitle->getNamespace(), $newtitle->getDBkey(), $newtitle->getNamespace() );
+			// Now write a redirect from old title to new one; this also updates references in other tables as needed.
 			/// TODO: may not be optimal for the standard case that newtitle existed and redirected to oldtitle (PERFORMANCE)
+			$this->updateRedirects( $oldtitle->getDBkey(), $oldtitle->getNamespace(), $newtitle->getDBkey(), $newtitle->getNamespace() );
 		}
 		wfProfileOut( "SMWSQLStore2::changeTitle (SMW)" );
 	}
@@ -2439,7 +2488,7 @@ class SMWSQLStore2 extends SMWStore {
 	 *
 	 * @todo Add a hook for registering additional or modifying given tables.
 	 * 
-	 * @return array
+	 * @return array of SMWSQLStore2Table
 	 */
 	public static function getPropertyTables() {
 		if ( count( self::$prop_tables ) > 0 ) return self::$prop_tables; // don't initialise twice
