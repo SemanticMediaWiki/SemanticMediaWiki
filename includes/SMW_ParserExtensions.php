@@ -373,54 +373,63 @@ class SMWParserExtensions {
 	 * of a specific numbered date. Negative values for 'week number'
 	 * indicate the n-th last week of a month instead.
 	 *
-	 * @param[in] &$parser Parser  The current parser
+	 * @param Parser &$parser The current parser
 	 * @return nothing
 	 */
 	static public function doSetRecurringEvent( &$parser ) {
 		$params = func_get_args();
 		array_shift( $params ); // We already know the $parser ...
 		
-		// Initialize variables
+		// Initialize variables.
 		$property_name = $start_date = $end_date = $unit = $period = $week_num = null;
 		$included_dates = array();
 		$excluded_dates_jd = array();
 		
-		// Set values from the parameters
-		foreach ( $params as $p ) {
-			if ( trim( $p ) != '' ) {
-				$parts = explode( '=', trim( $p ) );
-				if ( count( $parts ) == 2 ) {
-					list( $arg, $value ) = $parts;
-					if ( $arg === 'property' ) {
-						$property_name = $value;
-					} elseif ( $arg === 'start' ) {
-						$start_date = SMWDataValueFactory::newTypeIDValue( '_dat', $value );
-					} elseif ( $arg === 'end' ) {
-						$end_date = SMWDataValueFactory::newTypeIDValue( '_dat', $value );
-					} elseif ( $arg === 'unit' ) {
-						$unit = $value;
-					} elseif ( $arg === 'period' ) {
-						$period = (int)$value;
-					} elseif ( $arg === 'week number' ) {
-                                               $week_num = (int)$value;
-					} elseif ( $arg === 'include' ) {
-						$included_dates = explode( ';', $value );
-					} elseif ( $arg === 'exclude' ) {
-						$excluded_dates = explode( ';', $value );
-						foreach ( $excluded_dates as $date_str ) {
-							$date = SMWDataValueFactory::newTypeIDValue( '_dat', $date_str );
-							$excluded_dates_jd[] = $date->getValueKey();
-						}
-					}
-                               }
+		// Set values from the parameters.
+		foreach ( $params as $param ) {
+			$parts = explode( '=', trim( $param ) );
+			
+			if ( count( $parts ) != 2 ) continue;
+				
+			list( $name, $value ) = $parts;
+			
+			switch( $name ) {
+				case 'property' : 
+					$property_name = $value;
+					break;
+				case 'start' :
+					$start_date = SMWDataValueFactory::newTypeIDValue( '_dat', $value );
+					break;
+				case 'end' :
+					$end_date = SMWDataValueFactory::newTypeIDValue( '_dat', $value );
+					break;
+				case 'unit' :
+					$unit = $value;
+					break;
+				case 'period' :
+					$period = (int)$value;
+					break;
+				case 'week number' :
+					$week_num = (int)$value;
+					break;
+				case 'include' :
+					$included_dates = explode( ';', $value );
+					break;		
+				case 'exclude' :
+					$excluded_dates = explode( ';', $value );
+					
+					foreach ( $excluded_dates as $date_str ) {
+						$date = SMWDataValueFactory::newTypeIDValue( '_dat', $date_str );
+						$excluded_dates_jd[] = $date->getValueKey();
+					}	
+					break;	
 			}
 		}
 		
-		// We need at least a property and start date - if either one
-		// is null, exit here
+		// We need at least a property and start date - if either one is null, exit here.
 		if ( is_null( $property_name ) || is_null( $start_date ) ) return;
 			
-		// If the period is null, or outside of normal bounds, set it to 1
+		// If the period is null, or outside of normal bounds, set it to 1.
 		if ( is_null( $period ) || $period < 1 || $period > 500 ) $period = 1;
 
 		// Handle 'week number', but only if it's of unit 'month'.
@@ -438,7 +447,7 @@ class SMWParserExtensions {
 		// Get the Julian day value for both the start and end date.
 		$start_date_jd = $start_date->getValueKey();
 		
-		if ( ! is_null( $end_date ) ) {
+		if ( !is_null( $end_date ) ) {
 			$end_date_jd = $end_date->getValueKey();
 		}
 			
