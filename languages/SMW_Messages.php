@@ -6562,9 +6562,11 @@ $messages['mr'] = array(
 );
 
 /** Maltese (Malti)
+ * @author Chrisportelli
  * @author Roderick Mallia
  */
 $messages['mt'] = array(
+	'smw_browse_go' => 'Mur',
 	'smw_result_prev' => "Ta' qabel",
 );
 
@@ -9783,7 +9785,7 @@ Magtabi/magdagdag ng pamalit na kopya/sipi ng dato mo bago ito gamitin.',
 	'smw_attribute_header' => 'Mga pahinang gumagamit na pag-aaring "$1"',
 	'smw_attributearticlecount' => 'Nagpapakita ng $1 {{PLURAL:$1|pahina|mga pahina}}ng ginagamitan ng ganitong ari-arian.',
 	'smw_subproperty_header' => 'Kabahaging mga pag-aari',
-	'smw_subpropertyarticlecount' => 'Ang pag-aaring ito ay mayroong sumusunod na $1 {{PLURAL:$1|kabahaging ari-arian|kabahaging mga ari-arian}}.',
+	'smw_subpropertyarticlecount' => 'Ang pag-aaring ito ay mayroong sumusunod na $1 {{PLURAL:$1|kabahaging ari-arian|kabahaging mga ari-arian}}:',
 	'smw_concept_header' => 'Mga pahina ng diwang "$1"',
 	'smw_conceptarticlecount' => 'Nagpapakita ng $1 {{PLURAL:$1|pahina|mga pahina}}ng kasali sa ganyang diwa.',
 	'exportrdf' => 'Iluwas/Ipadala ang mga pahina patungo sa RDF',
@@ -9831,7 +9833,7 @@ Pinag-iingatan nitong huwag maging mga sityo ng web (websayt) ang mga tao.',
 	'smw_ask_hidequery' => 'Itago ang katanungan',
 	'smw_ask_help' => 'Tulong sa pagtatanong',
 	'smw_ask_queryhead' => 'Katanungan',
-	'smw_ask_printhead' => 'Karagdagang mga paglilimbag (maaaring wala nito)',
+	'smw_ask_printhead' => 'Karagdagang mga datong ipapakita',
 	'smw_ask_format_as' => 'Iayos bilang:',
 	'smw_ask_defaultformat' => 'likas na katakdaan',
 	'smw_ask_show_embed' => 'Ipakita ang kodigong pambaon',
@@ -9855,7 +9857,7 @@ Dahil mayroong mangilan-ngilang mga kinalabasan lamang, ipinakikita rin ang kala
 	'smw_browse_no_outgoing' => 'Walang mga pag-aari ang pahinang ito.',
 	'smw_browse_no_incoming' => 'Walang mga pag-aaring nakakawing (umuugnay) patungo sa pahinang ito.',
 	'smw_inverse_label_default' => '$1 ng',
-	'smw_inverse_label_property' => 'Ibinaligtad na tatak para sa pag-aari',
+	'smw_inverse_label_property' => 'Ibinaligtad na tatak ng pag-aari',
 	'pageproperty' => 'Paghahanap sa pag-aari ng pahina',
 	'smw_pp_docu' => 'Hanapin ang lahat ng mga pampuno ng isang pag-aari sa isang ibinigay na pahina.
 Kapwa ipasok ang isang pahina at isang pag-aari.',
