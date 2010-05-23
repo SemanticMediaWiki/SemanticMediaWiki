@@ -195,8 +195,12 @@ class SMWQueryResult {
 		}
 		
 		if ( count( $this->mQuery->sortkeys ) > 0 ) {
-			$params['order'] = implode( ',', array_keys( $this->mQuery->sortkeys ) );
-			$params['sort'] = implode( ',', $this->mQuery->sortkeys );
+			$order = implode( ',', array_keys( $this->mQuery->sortkeys ) );
+			
+			if ( $order != 'ASC' ) {
+				$params['order'] = $order;
+				$params['sort'] = implode( ',', $this->mQuery->sortkeys );				
+			}
 		}
 		
 		if ( $caption == false ) {
