@@ -24,31 +24,37 @@ class SMWParserExtensions {
 	 *  This method will be called before an article is displayed or previewed.
 	 *  For display and preview we strip out the semantic properties and append them
 	 *  at the end of the article.
+	 *  
+	 *  @param Parser $parser
+	 *  @param string $text
 	 */
 	static public function onInternalParseBeforeLinks( &$parser, &$text ) {
 		global $smwgStoreAnnotations, $smwgLinksInValues;
+		
 		SMWParseData::stripMagicWords( $text, $parser );
-		// store the results if enabled (we have to parse them in any case, in order to
-		// clean the wiki source for further processing)
+		
+		// Store the results if enabled (we have to parse them in any case, 
+		// in order to clean the wiki source for further processing).
 		$smwgStoreAnnotations = smwfIsSemanticsProcessed( $parser->getTitle()->getNamespace() );
 		SMWParserExtensions::$mTempStoreAnnotations = true; // used for [[SMW::on]] and [[SMW:off]]
 
-		// process redirects, if any
-		// (it seems that there is indeed no more direct way of getting this info from MW)
+		// Process redirects, if any (it seems that there is indeed no more direct way of getting this info from MW)
 		$rt = Title::newFromRedirect( $text );
 		if ( $rt !== null ) {
 			$p = SMWPropertyValue::makeProperty( '_REDI' );
 			$dv = SMWDataValueFactory::newPropertyObjectValue( $p, $rt->getPrefixedText() );
+			
 			if ( $smwgStoreAnnotations ) {
 				SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $p, $dv );
 			}
 		}
 
-		SMWParserExtensions::$mTempParser = $parser; // only used in subsequent callbacks, forgotten afterwards
-		// In the regexp matches below, leading ':' escapes the markup, as
-		// known for Categories.
-		// Parse links to extract semantic properties
-		if ( $smwgLinksInValues ) { // more complex regexp -- lib PCRE may cause segfaults if text is long :-(
+		// only used in subsequent callbacks, forgotten afterwards
+		SMWParserExtensions::$mTempParser = $parser;
+		
+		// In the regexp matches below, leading ':' escapes the markup, as known for Categories.
+		// Parse links to extract semantic properties.
+		if ( $smwgLinksInValues ) { // More complex regexp -- lib PCRE may cause segfaults if text is long :-(
 			$semanticLinkPattern = '/\[\[                 # Beginning of the link
 			                        (?:([^:][^]]*):[=:])+ # Property name (or a list of those)
 			                        (                     # After that:
@@ -60,7 +66,7 @@ class SMWParserExtensions {
 			                        \]\]                  # End of link
 			                        /xu';
 			$text = preg_replace_callback( $semanticLinkPattern, array( 'SMWParserExtensions', 'parsePropertiesCallback' ), $text );
-		} else { // simpler regexps -- no segfaults found for those, but no links in values
+		} else { // Simpler regexps -- no segfaults found for those, but no links in values.
 			$semanticLinkPattern = '/\[\[                 # Beginning of the link
 			                        (?:([^:][^]]*):[=:])+ # Property name (or a list of those)
 			                        ([^\[\]]*)            # content: anything but [, |, ]
@@ -69,11 +75,15 @@ class SMWParserExtensions {
 			$text = preg_replace_callback( $semanticLinkPattern, array( 'SMWParserExtensions', 'simpleParsePropertiesCallback' ), $text );
 		}
 
-		// add link to RDF to HTML header
-		SMWOutputs::requireHeadItem( 'smw_rdf', '<link rel="alternate" type="application/rdf+xml" title="' .
-		                    htmlspecialchars( $parser->getTitle()->getPrefixedText() ) . '" href="' .
-		                    htmlspecialchars(
-		                    	SpecialPage::getTitleFor( 'ExportRDF', $parser->getTitle()->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' ) ) . "\" />" );
+		// Add link to RDF to HTML header.
+		// TODO: do escaping via Html or Xml class.
+		SMWOutputs::requireHeadItem(
+			'smw_rdf', '<link rel="alternate" type="application/rdf+xml" title="' .
+			htmlspecialchars( $parser->getTitle()->getPrefixedText() ) . '" href="' .
+			htmlspecialchars(
+				SpecialPage::getTitleFor( 'ExportRDF', $parser->getTitle()->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' )
+			) . "\" />"
+		);
 
 		SMWOutputs::commitToParser( $parser );
 		return true; // always return true, in order not to stop MW's hook processing!
@@ -284,10 +294,11 @@ class SMWParserExtensions {
 		$rdflink = SMWInfolink::newInternalLink( wfMsgForContent( 'smw_viewasrdf' ), $wgContLang->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink' );
 		SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
 
+		// TODO: escape output, preferably via Html or Xml class.
 		$result = '<div class="smwfact"><span class="smwfactboxhead">' . wfMsgForContent( 'smw_concept_description', $title->getText() ) .
-				( count( $query->getErrors() ) > 0 ? ' ' . smwfEncodeMessages( $query->getErrors() ):'' ) .
+				( count( $query->getErrors() ) > 0 ? ' ' . smwfEncodeMessages( $query->getErrors() ) : '' ) .
 				'</span>' . '<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' . '<br />' .
-				( $concept_docu ? "<p>$concept_docu</p>":'' ) .
+				( $concept_docu ? "<p>$concept_docu</p>" : '' ) .
 				'<pre>' . str_replace( '[', '&#x005B;', $concept_text ) . "</pre>\n</div>";
 				
 		SMWOutputs::commitToParser( $parser );
@@ -330,16 +341,12 @@ class SMWParserExtensions {
 		$params = func_get_args();
 		array_shift( $params ); // We already know the $parser ...
 		
-		foreach ( $params as $p ) {
-			if ( trim( $p ) != '' ) {
-				$parts = explode( '=', trim( $p ), 2 );
-				
-				// Only add the property when there is both a name and a value.
-				if ( count( $parts ) == 2 ) {
-					$property = $parts[0];
-					$object = $parts[1];
-					SMWParseData::addProperty( $property, $object, false, $parser, true );
-				}
+		foreach ( $params as $param ) {
+			$parts = explode( '=', trim( $param ), 2 );
+			
+			// Only add the property when there is both a name and a value.
+			if ( count( $parts ) == 2 ) {
+				SMWParseData::addProperty( $parts[0], $parts[1], false, $parser, true );
 			}
 		}
 		
@@ -528,7 +535,7 @@ class SMWParserExtensions {
 					}
 				} while ( !$right_month || !$right_week);
 			} else { // $unit == 'day' or 'week'
-				// assume 'day' if it's none of the above
+				// Sssume 'day' if it's none of the above.
 				$cur_date_jd += ( $unit === 'week' ) ? 7 * $period : $period;
 				$cur_date = SMWDataValueFactory::newTypeIDValue( '_dat', $cur_date_jd );
 			}
