@@ -3,6 +3,7 @@
  * This file contains the SMWOutputs class.
  *
  * @author Markus Krötzsch
+ * 
  * @file
  * @ingroup SMW
  */
@@ -60,25 +61,25 @@ class SMWOutputs {
 			
 			switch ( $id ) {
 				case SMW_HEADER_TOOLTIP:
-					SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
-					SMWOutputs::$mHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
+					self::requireHeadItem( SMW_HEADER_STYLE );
+					self::$mHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
 				break;
 				case SMW_HEADER_SORTTABLE:
-					SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
-					SMWOutputs::$mHeadItems['smw_st'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
+					self::requireHeadItem( SMW_HEADER_STYLE );
+					self::$mHeadItems['smw_st'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
 				break;
 				case SMW_HEADER_STYLE:
 					global $wgContLang;
 					
-					SMWOutputs::$mHeadItems['smw_css'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom.css" />';
+					self::$mHeadItems['smw_css'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom.css" />';
 					
 					if ( $wgContLang->isRTL() ) { // right-to-left support
-						SMWOutputs::$mHeadItems['smw_cssrtl'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom_rtl.css" />';
+						self::$mHeadItems['smw_cssrtl'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom_rtl.css" />';
 					}
 				break;
 			}
 		} else { // custom head item
-			SMWOutputs::$mHeadItems[$id] = $item;
+			self::$mHeadItems[$id] = $item;
 		}
 	}
 
@@ -98,7 +99,7 @@ class SMWOutputs {
 	 * @param ParserOutput $parserOutput
 	 */
 	static public function requireFromParserOutput( ParserOutput $parserOutput ) {
-		SMWOutputs::$mHeadItems = array_merge( (array)SMWOutputs::$mHeadItems, (array)$parseroutput->mHeadItems );
+		self::$mHeadItems = array_merge( (array)self::$mHeadItems, (array)$parseroutput->mHeadItems );
 	}
 
 	/**
@@ -119,7 +120,7 @@ class SMWOutputs {
 			$po = $parser->mOutput;
 		}
 		
-		if ( isset( $po ) ) SMWOutputs::commitToParserOutput( $po );
+		if ( isset( $po ) ) self::commitToParserOutput( $po );
 	}
 
 	/**
@@ -128,12 +129,12 @@ class SMWOutputs {
 	 * @param ParserOutput $parserOutput
 	 */
 	static public function commitToParserOutput( ParserOutput $parserOutput ) {
-		// debug_zval_dump(SMWOutputs::$mItems);
-		foreach ( SMWOutputs::$mHeadItems as $key => $item ) {
+		// debug_zval_dump(self::$mItems);
+		foreach ( self::$mHeadItems as $key => $item ) {
 			$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
 		}
 		
-		SMWOutputs::$mHeadItems = array();
+		self::$mHeadItems = array();
 	}
 
 	/**
@@ -147,10 +148,10 @@ class SMWOutputs {
 	 * @param OutputPage $output
 	 */
 	static public function commitToOutputPage( OutputPage $output ) {
-		foreach ( SMWOutputs::$mHeadItems as $key => $item ) {
+		foreach ( self::$mHeadItems as $key => $item ) {
 			$output->addHeadItem( $key, "\t\t" . $item . "\n" );
 		}
 		
-		SMWOutputs::$mHeadItems = array();
+		self::$mHeadItems = array();
 	}
 }

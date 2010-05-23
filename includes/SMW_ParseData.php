@@ -157,7 +157,7 @@ class SMWParseData {
 			$pmdat = SMWPropertyValue::makeProperty( '_MDAT' );
 			
 			if ( count( $semdata->getPropertyValues( $pmdat ) ) == 0  ) { // no article data present yet, add it here
-				$timestamp =  $smwgMW_1_14 ? Revision::getTimeStampFromID( $title, $title->getLatestRevID() ):Revision::getTimeStampFromID( $title->getLatestRevID() );
+				$timestamp =  $smwgMW_1_14 ? Revision::getTimeStampFromID( $title, $title->getLatestRevID() ) : Revision::getTimeStampFromID( $title->getLatestRevID() );
 				$dv = SMWDataValueFactory::newPropertyObjectValue( $pmdat,  $wgContLang->sprintfDate( 'd M Y G:i:s', $timestamp ) );
 				$semdata->addPropertyObjectValue( $pmdat, $dv );
 			}
@@ -320,7 +320,7 @@ class SMWParseData {
 			}
 		}
 		
-		$sortkey = ( $parser->mDefaultSort ? $parser->mDefaultSort:self::getSMWData( $parser )->getSubject()->getText() );
+		$sortkey = ( $parser->mDefaultSort ? $parser->mDefaultSort : self::getSMWData( $parser )->getSubject()->getText() );
 		self::getSMWData( $parser )->getSubject()->setSortkey( $sortkey );
 		
 		return true;
