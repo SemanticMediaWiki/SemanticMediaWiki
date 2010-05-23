@@ -384,6 +384,7 @@ class SMWParserExtensions {
 		$property_name = $start_date = $end_date = $unit = $period = $week_num = null;
 		$included_dates = array();
 		$excluded_dates_jd = array();
+		
 		// Set values from the parameters
 		foreach ( $params as $p ) {
 			if ( trim( $p ) != '' ) {
@@ -414,49 +415,56 @@ class SMWParserExtensions {
                                }
 			}
 		}
+		
 		// We need at least a property and start date - if either one
 		// is null, exit here
-		if ( is_null( $property_name ) || is_null( $start_date ) )
-			return;
-
+		if ( is_null( $property_name ) || is_null( $start_date ) ) return;
+			
 		// If the period is null, or outside of normal bounds, set it to 1
-		if ( is_null( $period ) || $period < 1 || $period > 500 )
-			$period = 1;
+		if ( is_null( $period ) || $period < 1 || $period > 500 ) $period = 1;
 
-		// Handle 'week number', but only if it's of unit 'month'
+		// Handle 'week number', but only if it's of unit 'month'.
 		if ( $unit == 'month' && ! is_null( $week_num ) ) {
 			$unit = 'dayofweekinmonth';
+			
 			if ( $week_num < -4 || $week_num > 5 || $week_num == 0 ) {
 				$week_num = null;
 			}
 		}
+		
 		if ( $unit == 'dayofweekinmonth' && is_null( $week_num ) )
 			$week_num = ceil($start_date->getDay() / 7);
 
-		// Get the Julian day value for both the start and end date
+		// Get the Julian day value for both the start and end date.
 		$start_date_jd = $start_date->getValueKey();
-		if ( ! is_null( $end_date ) )
+		
+		if ( ! is_null( $end_date ) ) {
 			$end_date_jd = $end_date->getValueKey();
+		}
+			
 		$cur_date = $start_date;
 		$cur_date_jd = $start_date->getValueKey();
 		$i = 0;
 		$reached_end_date = false;
+		
 		do {
 			$i++;
 			$exclude_date = ( in_array( $cur_date_jd, $excluded_dates_jd ) );
-			if ( ! $exclude_date ) {
+			
+			if ( !$exclude_date ) {
 				$cur_date_str = $cur_date->getLongWikiText();
 				SMWParseData::addProperty( $property_name, $cur_date_str, false, $parser, true );
 			}
-			// now get the next date
-			// handling is different depending on whether it's
-			// month/year or week/day, since the latter is a
-			// set number of days while the former isn't
+			
+			// Now get the next date.
+			// Handling is different depending on whether it's month/year or week/day
+			// since the latter is a set number of days while the former isn't.
 			if ( $unit === 'year' || $unit == 'month' ) {
 				$cur_year = $cur_date->getYear();
 				$cur_month = $cur_date->getMonth();
 				$cur_day = $cur_date->getDay();
 				$cur_time = $cur_date->getTimeString();
+				
 				if ( $unit == 'year' ) {
 					$cur_year += $period;
 					$display_month = $cur_month;
@@ -466,6 +474,7 @@ class SMWParserExtensions {
 					$cur_month %= 12;
 					$display_month = ( $cur_month == 0 ) ? 12 : $cur_month;
 				}
+				
 				$date_str = "$cur_year-$display_month-$cur_day $cur_time";
 				$cur_date = SMWDataValueFactory::newTypeIDValue( '_dat', $date_str );
 				$cur_date_jd = $cur_date->getValueKey();
@@ -473,36 +482,42 @@ class SMWParserExtensions {
 				// e.g., "3rd Monday of every month"
 				$prev_month = $cur_date->getMonth();
 				$prev_year = $cur_date->getYear();
+				
 				$new_month = ( $prev_month + $period ) % 12;
 				if ( $new_month == 0 ) $new_month = 12;
+				
 				$new_year = $prev_year + floor( ( $prev_month + $period - 1 ) / 12 );
 				$cur_date_jd += ( 28 * $period ) - 7;
-				// we're sometime before the actual date now -
-				// keep incrementing by a week, until we get
-				// there
+				
+				// We're sometime before the actual date now -
+				// keep incrementing by a week, until we get there.
 				do {
 					$cur_date_jd += 7;
-					$cur_date = SMWDataValueFactory::newTypeIDValue('_dat', $cur_date_jd);
-					$right_month = ($cur_date->getMonth() == $new_month);
+					$cur_date = SMWDataValueFactory::newTypeIDValue( '_dat', $cur_date_jd );
+					$right_month = ( $cur_date->getMonth() == $new_month );
+					
 					if ( $week_num < 0 ) {
 						$next_week_jd = $cur_date_jd;
+						
 						do {
 							$next_week_jd += 7;
 							$next_week_date = SMWDataValueFactory::newTypeIDValue( '_dat', $next_week_jd );
-							$right_week = ($next_week_date->getMonth() != $new_month) || ($next_week_date->getYear() != $new_year);
-						} while ( ! $right_week );
+							$right_week = ( $next_week_date->getMonth() != $new_month ) || ( $next_week_date->getYear() != $new_year );
+						} while ( !$right_week );
+						
 						$cur_date_jd = $next_week_jd + ( 7 * $week_num );
 						$cur_date = SMWDataValueFactory::newTypeIDValue( '_dat', $cur_date_jd );
 					} else {
 						$cur_week_num = ceil( $cur_date->getDay() / 7 );
 						$right_week = ( $cur_week_num == $week_num );
-						if ($week_num == 5 && ( $cur_date->getMonth() % 12 == ( $new_month + 1 ) % 12 ) ) {
+						
+						if ( $week_num == 5 && ( $cur_date->getMonth() % 12 == ( $new_month + 1 ) % 12 ) ) {
 							$cur_date_jd -= 7;
 							$cur_date = SMWDataValueFactory::newTypeIDValue( '_dat', $cur_date_jd );
 							$right_month = $right_week = true;
 						}
 					}
-				} while (! $right_month || ! $right_week);
+				} while ( !$right_month || !$right_week);
 			} else { // $unit == 'day' or 'week'
 				// assume 'day' if it's none of the above
 				$cur_date_jd += ( $unit === 'week' ) ? 7 * $period : $period;
@@ -517,13 +532,14 @@ class SMWParserExtensions {
 				global $smwgMaxNumRecurringEvents;
 				$reached_end_date = ( $cur_date_jd > $end_date_jd ) || ( $i > $smwgMaxNumRecurringEvents );
 			}
-		} while ( ! $reached_end_date );
+		} while ( !$reached_end_date );
 
-		// handle the 'include' dates as well
-		foreach ( $included_dates as $date_str )
+		// Handle the 'include' dates as well.
+		foreach ( $included_dates as $date_str ) {
 			SMWParseData::addProperty( $property_name, $date_str, false, $parser, true );
+		}
 		
-		SMWOutputs::commitToParser( $parser ); // not obviously required, but let us be sure
+		SMWOutputs::commitToParser( $parser ); // Not obviously required, but let us be sure.
 	}
 
 	/**

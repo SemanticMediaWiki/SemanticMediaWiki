@@ -1404,7 +1404,7 @@ class SMWSQLStore2 extends SMWStore {
 		$borderiw = $db->selectField( 'smw_ids', 'smw_iw', 'smw_id=' . $db->addQuotes( 50 ) );
 		
 		if ( $borderiw != SMW_SQL2_SMWBORDERIW ) {
-			$this->reportProgress( "   ... allocate space for internal properties\n", $verbose );
+			$this->reportProgress( "   ... allocating space for internal properties...\n", $verbose );
 			$this->moveSMWPageID( 50 ); // make sure position 50 is empty
 			
 			$db->insert( 'smw_ids', array(
@@ -1416,20 +1416,20 @@ class SMWSQLStore2 extends SMWStore {
 				), 'SMW::setup'
 			); // put dummy "border element" on index 50
 
-			$this->reportProgress( "   ", $verbose );
+			$this->reportProgress( '   ', $verbose );
 			
 			for ( $i = 0; $i < 50; $i++ ) { // make way for built-in ids
 				$this->moveSMWPageID( $i );
-				$this->reportProgress( ".", $verbose );
+				$this->reportProgress( '.', $verbose );
 			}
 			
-			$this->reportProgress( "done\n", $verbose );
+			$this->reportProgress( "   done.\n", $verbose );
 		} else {
 			$this->reportProgress( "   ... space for internal properties already allocated.\n", $verbose );
 		}
 		
 		// now write actual properties; do that each time, it is cheap enough and we can update sortkeys by current language
-		$this->reportProgress( "   ... writing entries for internal properties.\n", $verbose );
+		$this->reportProgress( "   ... writing entries for internal properties.", $verbose );
 		
 		foreach ( self::$special_ids as $prop => $id ) {
 			$p = SMWPropertyValue::makeProperty( $prop );
@@ -1443,10 +1443,14 @@ class SMWSQLStore2 extends SMWStore {
 			);
 		}
 		
+		$this->reportProgress( "   done.\n", $verbose );
+		
 		if ( $wgDBtype == 'postgres' ) {
-			$this->reportProgress( "   ... updating smw_ids_smw_id_seq sequence accordingly.\n", $verbose );
+			$this->reportProgress( " ... updating smw_ids_smw_id_seq sequence accordingly.\n", $verbose );
+			
 			$max = $db->selectField( 'smw_ids', 'max(smw_id)', array(), __METHOD__ );
 			$max += 1;
+			
 			$db->query( "ALTER SEQUENCE smw_ids_smw_id_seq RESTART WITH {$max}", __METHOD__ );
 		}
 		
