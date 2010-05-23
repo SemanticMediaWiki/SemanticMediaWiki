@@ -195,11 +195,12 @@ class SMWQueryResult {
 		}
 		
 		if ( count( $this->mQuery->sortkeys ) > 0 ) {
-			$order = implode( ',', array_keys( $this->mQuery->sortkeys ) );
+			$order = implode( ',', $this->mQuery->sortkeys );
+			$sort = implode( ',', array_keys( $this->mQuery->sortkeys ) );
 			
-			if ( $order != 'ASC' ) {
+			if ( $sort != '' || $order != 'ASC' ) {
 				$params['order'] = $order;
-				$params['sort'] = implode( ',', $this->mQuery->sortkeys );				
+				$params['sort'] = $sort;			
 			}
 		}
 		
