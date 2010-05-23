@@ -57,22 +57,25 @@ class SMWOutputs {
 	static public function requireHeadItem( $id, $item = '' ) {
 		if ( is_numeric( $id ) ) {
 			global $smwgScriptPath;
+			
 			switch ( $id ) {
 				case SMW_HEADER_TOOLTIP:
 					SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
 					SMWOutputs::$mHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
-				return;
+				break;
 				case SMW_HEADER_SORTTABLE:
 					SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
 					SMWOutputs::$mHeadItems['smw_st'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
-				return;
+				break;
 				case SMW_HEADER_STYLE:
 					global $wgContLang;
+					
 					SMWOutputs::$mHeadItems['smw_css'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom.css" />';
+					
 					if ( $wgContLang->isRTL() ) { // right-to-left support
 						SMWOutputs::$mHeadItems['smw_cssrtl'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom_rtl.css" />';
 					}
-				return;
+				break;
 			}
 		} else { // custom head item
 			SMWOutputs::$mHeadItems[$id] = $item;
@@ -91,8 +94,10 @@ class SMWOutputs {
 	 * Note that this is not required if the $parseroutput is further processed by
 	 * MediaWiki, but there are cases where the output is discarded and only its text
 	 * is used.
+	 * 
+	 * @param ParserOutput $parserOutput
 	 */
-	static public function requireFromParserOutput( $parseroutput ) {
+	static public function requireFromParserOutput( ParserOutput $parserOutput ) {
 		SMWOutputs::$mHeadItems = array_merge( (array)SMWOutputs::$mHeadItems, (array)$parseroutput->mHeadItems );
 	}
 
@@ -104,24 +109,30 @@ class SMWOutputs {
 	 * If the parser creates output for a normal wiki page, then the committed items will
 	 * also become part of the page cache so that they will correctly be added to all page
 	 * outputs built from this cache later on.
+	 * 
+	 * @param Parser $parser
 	 */
-	static public function commitToParser( $parser ) {
+	static public function commitToParser( Parser $parser ) {
 		if ( method_exists( $parser, 'getOutput' ) ) {
 			$po = $parser->getOutput();
 		} else {
 			$po = $parser->mOutput;
 		}
+		
 		if ( isset( $po ) ) SMWOutputs::commitToParserOutput( $po );
 	}
 
 	/**
 	 * Similar to SMWOutputs::commitToParser() but acting on a ParserOutput object.
+	 * 
+	 * @param ParserOutput $parserOutput
 	 */
-	static public function commitToParserOutput( $parseroutput ) {
+	static public function commitToParserOutput( ParserOutput $parserOutput ) {
 		// debug_zval_dump(SMWOutputs::$mItems);
 		foreach ( SMWOutputs::$mHeadItems as $key => $item ) {
-			$parseroutput->addHeadItem( "\t\t" . $item . "\n", $key );
+			$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
 		}
+		
 		SMWOutputs::$mHeadItems = array();
 	}
 
@@ -132,11 +143,14 @@ class SMWOutputs {
 	 * processing. In particular, data should not be committed to $wgOut in methods
 	 * that run during page parsing, since these would not run next time when the page
 	 * is produced from parser cache.
+	 * 
+	 * @param OutputPage $output
 	 */
-	static public function commitToOutputPage( $output ) {
+	static public function commitToOutputPage( OutputPage $output ) {
 		foreach ( SMWOutputs::$mHeadItems as $key => $item ) {
 			$output->addHeadItem( $key, "\t\t" . $item . "\n" );
 		}
+		
 		SMWOutputs::$mHeadItems = array();
 	}
 }
