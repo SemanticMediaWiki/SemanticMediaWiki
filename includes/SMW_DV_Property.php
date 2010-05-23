@@ -1,5 +1,9 @@
 <?php
 /**
+ * File holding class SMWPropertyValue.
+ * 
+ * @author Markus Krötzsch
+ * 
  * @file
  * @ingroup SMWDataValues
  */
@@ -40,9 +44,9 @@ class SMWPropertyValue extends SMWDataValue {
 	 *   (note that this is only relevant if the property can be displayed at all, i.e. has an
 	 *   translated label in the given language; we still set invisible properties to false here)
 	 */
-	static private $m_propertytypes;
-	static private $m_propertylabels;
-	static private $m_propertyaliases;
+	static private $mPropertyTypes;
+	static private $mPropertyLabels;
+	static private $mPropertyAliases;
 
 	/// If the property is predefined, its internal key is stored here. Otherwise FALSE.
 	protected $m_propertyid;
@@ -51,8 +55,17 @@ class SMWPropertyValue extends SMWDataValue {
 	/// Store if this property is an inverse
 	protected $m_inv = false;
 
-	private $prop_typevalue; // once calculated, remember the type of this property
-	private $prop_typeid; // once calculated, remember the type of this property
+	/**
+	 * Remember the type value of this property once it has been calculated.
+	 * @var unknown_type
+	 */
+	private $mPropTypeValue;
+	
+	/**
+	 * Remember the type id of this property once it has been calculated.
+	 * @var unknown_type
+	 */
+	private $mPropTypeId;
 
 	/**
 	 * Static function for creating a new property object from a
@@ -60,10 +73,14 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @note The resulting property object might be invalid if
 	 * the provided name is not allowed. An object is returned
 	 * in any case.
+	 * 
+	 * @param string $propertyName
+	 * 
+	 * @return SMWPropertyValue
 	 */
-	static public function makeUserProperty( $propertyname ) {
+	static public function makeUserProperty( $propertyName ) {
 		$property = new SMWPropertyValue( '__pro' );
-		$property->setUserValue( $propertyname );
+		$property->setUserValue( $propertyName );
 		return $property;
 	}
 
@@ -97,8 +114,8 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @todo Accept/enforce property namespace.
 	 */
 	protected function parseUserValue( $value ) {
-		$this->prop_typevalue = null;
-		$this->prop_typeid = null;
+		$this->mPropTypeValue = null;
+		$this->mPropTypeId = null;
 		$this->m_inv = false;
 		if ( $this->m_caption === false ) { // always use this as caption
 			$this->m_caption = $value;
@@ -127,8 +144,8 @@ class SMWPropertyValue extends SMWDataValue {
 	 * internal property id accordingly.
 	 */
 	protected function parseDBkeys( $args ) {
-		$this->prop_typevalue = null;
-		$this->prop_typeid = null;
+		$this->mPropTypeValue = null;
+		$this->mPropTypeId = null;
 		$this->m_inv = false;
 		if ( $args[0] { 0 } == '-' ) { // check if this property refers to an inverse
 			$args[0] = substr( $args[0], 1 );
@@ -198,8 +215,8 @@ class SMWPropertyValue extends SMWDataValue {
 	public function isShown() {
 		$this->unstub();
 		return ( ( $this->m_propertyid == '' ) ||
-		        ( array_key_exists( $this->m_propertyid, SMWPropertyvalue::$m_propertytypes ) &&
-		         SMWPropertyvalue::$m_propertytypes[$this->m_propertyid][1] ) );
+		        ( array_key_exists( $this->m_propertyid, SMWPropertyvalue::$mPropertyTypes ) &&
+		         SMWPropertyvalue::$mPropertyTypes[$this->m_propertyid][1] ) );
 	}
 
 	/**
@@ -280,7 +297,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function getTypesValue() {
 		global $smwgPDefaultType;
-		if ( $this->prop_typevalue !== null ) return $this->prop_typevalue;
+		if ( $this->mPropTypeValue !== null ) return $this->mPropTypeValue;
 		if ( !$this->isValid() ) { // errors in property, return invalid types value with same errors
 			$result = SMWDataValueFactory::newTypeIDValue( '__typ' );
 			$result->setDBkeys( array( '__err' ) );
@@ -300,13 +317,13 @@ class SMWPropertyValue extends SMWDataValue {
 			}
 		} else { // pre-defined property
 			$result = SMWDataValueFactory::newTypeIDValue( '__typ' );
-			if ( array_key_exists( $this->m_propertyid, SMWPropertyValue::$m_propertytypes ) ) {
-				$result->setDBkeys( array( SMWPropertyValue::$m_propertytypes[$this->m_propertyid][0] ) );
+			if ( array_key_exists( $this->m_propertyid, SMWPropertyValue::$mPropertyTypes ) ) {
+				$result->setDBkeys( array( SMWPropertyValue::$mPropertyTypes[$this->m_propertyid][0] ) );
 			} else { // unknown type; it may still be that the property is "type-polymorphic" (like _1, _2, ... for Records)
 				$result->setDBkeys( array( '__err' ) ); // use "__err" to make sure that it gets noticed if this information is really used to create values
 			}
 		}
-		$this->prop_typevalue = $result;
+		$this->mPropTypeValue = $result;
 		return $result;
 	}
 
@@ -316,15 +333,15 @@ class SMWPropertyValue extends SMWDataValue {
 	 * returns the id of this property datavalue.
 	 */
 	public function getPropertyTypeID() {
-		if ( $this->prop_typeid === null ) {
+		if ( $this->mPropTypeId === null ) {
 			$type = $this->getTypesValue();
 			if ( $type instanceof SMWTypesValue ) {
-				$this->prop_typeid = $type->getDBkey();
+				$this->mPropTypeId = $type->getDBkey();
 			} else {
-				$this->prop_typeid = '__err';
+				$this->mPropTypeId = '__err';
 			}
 		}
-		return $this->prop_typeid;
+		return $this->mPropTypeId;
 	}
 
 	/**
@@ -365,11 +382,11 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	static protected function findPropertyID( $label, $useAlias = true ) {
 		SMWPropertyValue::initProperties();
-		$id = array_search( $label, SMWPropertyValue::$m_propertylabels );
+		$id = array_search( $label, SMWPropertyValue::$mPropertyLabels );
 		if ( $id !== false ) {
 			return $id;
-		} elseif ( ( $useAlias ) && ( array_key_exists( $label, SMWPropertyValue::$m_propertyaliases ) ) ) {
-			return SMWPropertyValue::$m_propertyaliases[$label];
+		} elseif ( ( $useAlias ) && ( array_key_exists( $label, SMWPropertyValue::$mPropertyAliases ) ) ) {
+			return SMWPropertyValue::$mPropertyAliases[$label];
 		} else {
 			return false;
 		}
@@ -382,8 +399,8 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	static protected function findPropertyLabel( $id ) {
 		SMWPropertyValue::initProperties();
-		if ( array_key_exists( $id, SMWPropertyValue::$m_propertylabels ) ) {
-			return SMWPropertyValue::$m_propertylabels[$id];
+		if ( array_key_exists( $id, SMWPropertyValue::$mPropertyLabels ) ) {
+			return SMWPropertyValue::$mPropertyLabels[$id];
 		} else { // incomplete translation (language bug) or deliberately invisible property
 			return false;
 		}
@@ -393,18 +410,18 @@ class SMWPropertyValue extends SMWDataValue {
 	 * Set up predefined properties, including their label, aliases, and typing information.
 	 */
 	static protected function initProperties() {
-		if ( is_array( SMWPropertyValue::$m_propertytypes ) ) {
+		if ( is_array( SMWPropertyValue::$mPropertyTypes ) ) {
 			return; // init happened before
 		}
 
 		global $smwgContLang, $smwgUseCategoryHierarchy;
-		SMWPropertyValue::$m_propertylabels = $smwgContLang->getPropertyLabels();
-		SMWPropertyValue::$m_propertyaliases = $smwgContLang->getPropertyAliases();
+		SMWPropertyValue::$mPropertyLabels = $smwgContLang->getPropertyLabels();
+		SMWPropertyValue::$mPropertyAliases = $smwgContLang->getPropertyAliases();
 		// Setup built-in predefined properties.
 		// NOTE: all ids must start with underscores, where two underscores informally indicate
 		// truly internal (non user-accessible properties). All others should also get a
 		// translation in the language files, or they won't be available for users.
-		SMWPropertyValue::$m_propertytypes = array(
+		SMWPropertyValue::$mPropertyTypes = array(
 				'_TYPE'  =>  array( '__typ', true ),
 				'_URI'   =>  array( '__spu', true ),
 				'_INST'  =>  array( '__sin', false ),
@@ -436,9 +453,9 @@ class SMWPropertyValue extends SMWDataValue {
 	 * current and future confusion with SMW built-ins.
 	 */
 	static public function registerProperty( $id, $typeid, $label = false, $show = false ) {
-		SMWPropertyValue::$m_propertytypes[$id] = array( $typeid, $show );
+		SMWPropertyValue::$mPropertyTypes[$id] = array( $typeid, $show );
 		if ( $label != false ) {
-			SMWPropertyValue::$m_propertylabels[$id] = $label;
+			SMWPropertyValue::$mPropertyLabels[$id] = $label;
 		}
 	}
 
@@ -448,7 +465,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * called from within the hook 'smwInitDatatypes'.
 	 */
 	static public function registerPropertyAlias( $id, $label ) {
-		SMWPropertyValue::$m_propertyaliases[$label] = $id;
+		SMWPropertyValue::$mPropertyAliases[$label] = $id;
 	}
 
 }

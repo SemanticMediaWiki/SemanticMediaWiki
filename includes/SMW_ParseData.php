@@ -101,18 +101,18 @@ class SMWParseData {
 		
 		global $smwgContLang;
 		
-		// See if this property is a special one, such as e.g. "has type"
+		// See if this property is a special one, such as e.g. "has type".
 		$property = SMWPropertyValue::makeUserProperty( $propertyName );
 		$result = SMWDataValueFactory::newPropertyObjectValue( $property, $value, $caption );
 		
 		if ( $property->isInverse() ) {
 			wfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$result->addError( wfMsgForContent( 'smw_noinvannot' ) );
-		} elseif ( $storeAnnotation && ( SMWParseData::getSMWData( $parser ) !== null ) ) {
-			SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $property, $result );
+		} elseif ( $storeAnnotation && ( self::getSMWData( $parser ) !== null ) ) {
+			self::getSMWData( $parser )->addPropertyObjectValue( $property, $result );
 			
 			if ( !$result->isValid() ) { // take note of the error for storage (do this here and not in storage, thus avoiding duplicates)
-				SMWParseData::getSMWData( $parser )->addPropertyObjectValue( SMWPropertyValue::makeProperty( '_ERRP' ), $property->getWikiPageValue() );
+				self::getSMWData( $parser )->addPropertyObjectValue( SMWPropertyValue::makeProperty( '_ERRP' ), $property->getWikiPageValue() );
 			}
 		}
 		
@@ -140,7 +140,7 @@ class SMWParseData {
 	 *  @param $makejobs Bool stating whether jobs should be created to trigger further updates if
 	 *  this appears to be necessary after this update.
 	 *
-	 *  @bug Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
+	 *  FIXME Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
 	static public function storeData( $parseroutput, Title $title, $makejobs = true ) {
 		global $smwgEnableUpdateJobs, $wgContLang, $smwgMW_1_14, $smwgDeclarationProperties;
@@ -178,14 +178,14 @@ class SMWParseData {
 			$oldtype = smwfGetStore()->getPropertyValues( $title, $ptype );
 			$newtype = $semdata->getPropertyValues( $ptype );
 
-			if ( !SMWParseData::equalDatavalues( $oldtype, $newtype ) ) {
+			if ( !self::equalDatavalues( $oldtype, $newtype ) ) {
 				$updatejobflag = true;
 			} else {
 				foreach ( $smwgDeclarationProperties as $prop ) {
 					$pv = SMWPropertyValue::makeProperty( $prop );
 					$oldvalues = smwfGetStore()->getPropertyValues( $semdata->getSubject(), $pv );
 					$newvalues = $semdata->getPropertyValues( $pv );
-					$updatejobflag = !SMWParseData::equalDatavalues( $oldvalues, $newvalues );
+					$updatejobflag = !self::equalDatavalues( $oldvalues, $newvalues );
 				}
 			}
 
@@ -211,7 +211,7 @@ class SMWParseData {
 			
 			$oldfactors = smwfGetStore()->getPropertyValues( $semdata->getSubject(), $pconv );
 			$newfactors = $semdata->getPropertyValues( $pconv );
-			$updatejobflag = !SMWParseData::equalDatavalues( $oldfactors, $newfactors );
+			$updatejobflag = !self::equalDatavalues( $oldfactors, $newfactors );
 			
 			if ( $updatejobflag ) {
 				$store = smwfGetStore();
@@ -309,19 +309,19 @@ class SMWParseData {
 				$pinst = SMWPropertyValue::makeProperty( '_INST' );
 				$dv = SMWDataValueFactory::newPropertyObjectValue( $pinst );
 				$dv->setValues( $name, NS_CATEGORY );
-				SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $pinst, $dv );
+				self::getSMWData( $parser )->addPropertyObjectValue( $pinst, $dv );
 			}
 			
-			if ( $smwgUseCategoryHierarchy && ( SMWParseData::getSMWData( $parser )->getSubject()->getNamespace() == NS_CATEGORY ) ) {
+			if ( $smwgUseCategoryHierarchy && ( self::getSMWData( $parser )->getSubject()->getNamespace() == NS_CATEGORY ) ) {
 				$psubc = SMWPropertyValue::makeProperty( '_SUBC' );
 				$dv = SMWDataValueFactory::newPropertyObjectValue( $psubc );
 				$dv->setValues( $name, NS_CATEGORY );
-				SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $psubc, $dv );
+				self::getSMWData( $parser )->addPropertyObjectValue( $psubc, $dv );
 			}
 		}
 		
-		$sortkey = ( $parser->mDefaultSort ? $parser->mDefaultSort:SMWParseData::getSMWData( $parser )->getSubject()->getText() );
-		SMWParseData::getSMWData( $parser )->getSubject()->setSortkey( $sortkey );
+		$sortkey = ( $parser->mDefaultSort ? $parser->mDefaultSort:self::getSMWData( $parser )->getSubject()->getText() );
+		self::getSMWData( $parser )->getSubject()->setSortkey( $sortkey );
 		
 		return true;
 	}
@@ -376,7 +376,7 @@ class SMWParseData {
 		if ( isset( $links_update->mParserOutput ) ) {
 			$output = $links_update->mParserOutput;
 		} else { // MediaWiki <= 1.13 compatibility
-			$output = SMWParseData::$mPrevOutput;
+			$output = self::$mPrevOutput;
 			
 			if ( !isset( $output ) ) {
 				smwfGetStore()->clearData( $links_update->mTitle, SMWFactbox::isNewArticle() );
@@ -384,7 +384,7 @@ class SMWParseData {
 			}
 		}
 		
-		SMWParseData::storeData( $output, $links_update->mTitle, true );
+		self::storeData( $output, $links_update->mTitle, true );
 		
 		return true;
 	}
