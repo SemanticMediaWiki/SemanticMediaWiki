@@ -995,8 +995,8 @@ class SMWSQLStore2QueryEngine {
 		$this->m_dbs->query( $this->getCreateTempIDTableSQL( $tmpnew ), 'SMW::executeQueries' );
 		$this->m_dbs->query( $this->getCreateTempIDTableSQL( $tmpres ), 'SMW::executeQueries' );
 		
-		$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : "IGNORE" ) . " INTO $tablename (id) VALUES $values", 'SMW::executeHierarchyQuery' );
-		$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : "IGNORE" ) . " INTO $tmpnew (id) VALUES $values", 'SMW::executeHierarchyQuery' );
+		$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE' ) . " INTO $tablename (id) VALUES $values", 'SMW::executeHierarchyQuery' );
+		$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE' ) . " INTO $tmpnew (id) VALUES $values", 'SMW::executeHierarchyQuery' );
 
 		for ( $i = 0; $i < $depth; $i++ ) {
 			$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .  "INTO $tmpres (id) SELECT s_id" . ( $wgDBtype == 'postgres' ? '::integer' : '' ) . " FROM $smwtable, $tmpnew WHERE o_id=id",
