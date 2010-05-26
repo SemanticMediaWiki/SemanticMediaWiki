@@ -46,7 +46,9 @@ class SMWSQLStore2Table {
 	/**
 	 * Strings of the form "field1,...,fieldN" for extra indexes that are to
 	 * be built for this table. All tables have indexes on subject column(s)
-	 * and property column (if any).
+	 * and property column (if any). Items can also be an array with the column
+	 * name as first element, and a index type as second elemet to allow for
+	 * custom index types.
 	 * 
 	 * @var array of string
 	 */

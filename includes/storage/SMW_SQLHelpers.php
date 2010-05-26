@@ -319,7 +319,8 @@ EOT;
 	 * @param DatabaseBase or Database $db
 	 */
 	public static function setupIndex( $tableName, array $columns, $db ) {
-		global $wgDBtype, $verbose;
+		// TODO: $verbose is not a good global name! 
+		global $wgDBtype, $verbose; 
 		
 		$tableName = $db->tableName( $tableName );
 
@@ -352,9 +353,20 @@ EOT;
 				}
 			}
 			
-			foreach ( $columns as $key => $column ) { // Ddd the remaining indexes.
-				if ( $column != false ) {
-					$db->query( "CREATE INDEX " . $tableName . "_index" . $key . " ON " . $tableName . " USING btree(" . $column . ")", __METHOD__ );
+			foreach ( $columns as $key => $index ) { // Ddd the remaining indexes.
+				if ( $index != false ) {
+					$type = 'INDEX';
+					
+					// If the index is an array, it'll contain the column name as first element, and index type as second one.
+					if ( is_array( $index ) ) {
+						$column = $index[0];
+						if ( count( $index ) > 1 ) $type = $index[1];
+					} 
+					else {
+						$column = $index;
+					}
+					
+					$db->query( "CREATE $type {$tableName}_index{$key} ON $tableName USING btree(" . $column . ")", __METHOD__ );
 				}
 			}
 		} else { // MySQL
@@ -382,9 +394,20 @@ EOT;
 				}
 			}
 
-			foreach ( $columns as $key => $column ) { // Ddd the remaining indexes.
-				if ( $column != false ) {
-					$db->query( "ALTER TABLE $tableName ADD INDEX ( $column )", __METHOD__ );
+			foreach ( $columns as $key => $index ) { // Add the remaining indexes.
+				if ( $index != false ) {
+					$type = 'INDEX';
+					
+					// If the index is an array, it'll contain the column name as first element, and index type as second one.
+					if ( is_array( $index ) ) {
+						$column = $index[0];
+						if ( count( $index ) > 1 ) $type = $index[1];
+					} 
+					else {
+						$column = $index;
+					}	
+									
+					$db->query( "ALTER TABLE $tableName ADD $type ( $column )", __METHOD__ );
 				}
 			}
 		}
