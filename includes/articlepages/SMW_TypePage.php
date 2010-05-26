@@ -62,7 +62,6 @@ class SMWTypePage extends SMWOrderedListPage {
 	 */
 	protected function getPages() {
 		wfProfileIn( __METHOD__ . ' (SMW)' );
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$r = '';
 		$typevalue = $this->m_typevalue;
 		if ( $typevalue->isBuiltIn() ) {

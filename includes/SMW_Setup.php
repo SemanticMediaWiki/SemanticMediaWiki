@@ -238,7 +238,6 @@ function smwfSetupExtension() {
  * Adds links to Admin Links page
  **/
 function smwfAddToAdminLinks( &$admin_links_tree ) {
-	wfLoadExtensionMessages( 'SemanticMediaWiki' );
 	$data_structure_section = new ALSection( wfMsg( 'smw_adminlinks_datastructure' ) );
 	$smw_row = new ALRow( 'smw' );
 	$smw_row->addItem( ALItem::newFromSpecialPage( 'Categories' ) );
@@ -313,7 +312,6 @@ function smwfOnParserTestTables( &$tables ) {
  */
 function smwfShowBrowseLink( $skintemplate ) {
 	if ( $skintemplate->data['isarticle'] ) {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$browselink = SMWInfolink::newBrowsingLink( wfMsg( 'smw_browselink' ),
 		               $skintemplate->data['titleprefixeddbkey'], false );
     	echo "<li id=\"t-smwbrowselink\">" . $browselink->getHTML() . "</li>";

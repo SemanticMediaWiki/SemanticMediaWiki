@@ -38,7 +38,6 @@ class SMWSpecialBrowse extends SpecialPage {
 	public function __construct() {
 		global $smwgBrowseShowAll;
 		parent::__construct( 'Browse', '', true, false, 'default', true );
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 		if ( $smwgBrowseShowAll ) {
 			SMWSpecialBrowse::$incomingvaluescount = 21;
 			SMWSpecialBrowse::$incomingpropertiescount = - 1;

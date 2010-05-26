@@ -148,7 +148,6 @@ function smwfHTMLtoUTF8( $text ) {
 */
 function smwfNumberFormat( $value, $decplaces = 3 ) {
 	global $smwgMaxNonExpNumber;
-	wfLoadExtensionMessages( 'SemanticMediaWiki' );
 	$decseparator = wfMsgForContent( 'smw_decseparator' );
 
 	// If number is a trillion or more, then switch to scientific

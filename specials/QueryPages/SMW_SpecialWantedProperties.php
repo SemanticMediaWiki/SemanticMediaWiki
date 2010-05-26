@@ -74,7 +74,6 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	}
 
 	function getPageHeader() {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return '<p>' . wfMsg( 'smw_wantedproperties_docu' ) . "</p><br />\n";
 	}
 
@@ -85,7 +84,6 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 		} else {
 			$proplink = $result[0]->getLongHTMLText( $skin );
 		}
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsgExt( 'smw_wantedproperty_template', array( 'parsemag' ), $proplink, $result[1] );
 	}
 

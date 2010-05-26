@@ -123,7 +123,6 @@ abstract class SMWResultPrinter {
 			} elseif ( $this->mInline ) {
 				$label = $this->mSearchlabel;
 				if ( $label === null ) { // apply defaults
-					wfLoadExtensionMessages( 'SemanticMediaWiki' );
 					$label = wfMsgForContent( 'smw_iq_moreresults' );
 				}
 				if ( $label != '' ) {

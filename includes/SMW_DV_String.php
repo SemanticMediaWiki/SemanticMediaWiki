@@ -18,7 +18,6 @@ class SMWStringValue extends SMWDataValue {
 	protected $m_value = '';
 
 	protected function parseUserValue( $value ) {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 		if ( $value != '' ) {
 			$this->m_value = $value;
 			if ( ( $this->m_typeid != '_txt' ) && ( $this->m_typeid != '_cod' ) && ( strlen( $this->m_value ) > 255 ) ) { // limit size (for DB indexing)

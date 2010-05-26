@@ -39,8 +39,6 @@ class SMWSpecialSemanticStatistics extends SpecialPage {
 			)
 		);
 	
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
-	
 		$out = wfMsgExt( 'smw_semstats_text', array( 'parse' ),
 			$wgLang->formatNum( $semanticStatistics['PROPUSES'] ), $wgLang->formatNum( $semanticStatistics['USEDPROPS'] ),
 			$wgLang->formatNum( $propertyPageAmount ), $wgLang->formatNum( $semanticStatistics['DECLPROPS'] )
