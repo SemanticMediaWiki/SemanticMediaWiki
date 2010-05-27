@@ -1067,8 +1067,8 @@ class SMWSQLStore2 extends SMWStore {
 		// all tables occurring in some property table are used:
 		foreach ( self::getPropertyTables() as $proptable ) {
 			if ( $proptable->fixedproperty == false ) { // MW does not seem to have a suitable wrapper for this
-				$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops, " . $db->tableName( $proptable->name ) .
-				" INNER JOIN $smw_ids ON p_id=smw_id WHERE title=smw_title AND smw_iw=" . $db->addQuotes( '' ), $fname );
+				$db->query( "DELETE FROM $smw_tmp_unusedprops USING $smw_tmp_unusedprops INNER JOIN " . $db->tableName( $proptable->name ) .
+				" INNER JOIN $smw_ids ON p_id=smw_id AND title=smw_title AND smw_iw=" . $db->addQuotes( '' ), $fname );
 			} // else: todo
 		}
 
