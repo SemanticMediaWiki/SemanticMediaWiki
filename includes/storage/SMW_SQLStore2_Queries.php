@@ -5,7 +5,7 @@
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
- * 
+ *
  * @file
  * @ingroup SMWStore
  */
@@ -31,13 +31,13 @@ class SMWSQLStore2Query {
 	public $from = '';
 	public $where = '';
 	public $components = array();
-	
+
 	/**
 	 * The alias to be used for jointable; read-only after construct!
 	 * @var string
 	 */
 	public $alias;
-	
+
 	/**
 	 * property dbkey => db field; passed down during query execution.
 	 * @var array
@@ -90,19 +90,19 @@ class SMWSQLStore2QueryEngine {
 	 */
 	public function refreshConceptCache( $concept ) {
 		global $smwgQMaxLimit, $smwgQConceptFeatures, $wgDBtype;
-		
+
 		$cid = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '' );
 		$cid_c = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', false );
-		
+
 		if ( $cid != $cid_c ) {
 			$this->m_errors[] = "Skipping redirect concept.";
 			return $this->m_errors;
 		}
-		
+
 		$dv = end( $this->m_store->getPropertyValues( $concept, SMWPropertyValue::makeProperty( '_CONC' ) ) );
 		$desctxt = ( $dv !== false ) ? $dv->getWikiValue():false;
 		$this->m_errors = array();
-		
+
 		if ( $desctxt ) { // concept found
 			$this->m_qmode = SMWQuery::MODE_INSTANCES;
 			$this->m_queries = array();
@@ -115,17 +115,17 @@ class SMWSQLStore2QueryEngine {
 			$qp = new SMWQueryParser( $smwgQConceptFeatures );
 			$desc = $qp->getQueryDescription( $desctxt );
 			$qid = $this->compileQueries( $desc );
-			
+
 			$this->executeQueries( $this->m_queries[$qid] ); // execute query tree, resolve all dependencies
 			$qobj = $this->m_queries[$qid];
-			
+
 			if ( $qobj->joinfield === '' ) {
 				return;
 			}
-			
+
 			// Update database:
 			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
-			
+
 			if ( $wgDBtype == 'postgres' ) { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
 				$where = $qobj->where . ( $qobj->where ? ' AND ' : '' ) .
 				         'NOT EXISTS (SELECT NULL FROM ' . $this->m_dbs->tableName( 'smw_conccache' ) .
@@ -134,22 +134,22 @@ class SMWSQLStore2QueryEngine {
 			} else { // MySQL just uses INSERT IGNORE, no extra conditions
 				$where = $qobj->where;
 			}
-			
+
 			$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) . 'INTO ' . $this->m_dbs->tableName( 'smw_conccache' ) .
 			                    " SELECT DISTINCT $qobj->joinfield AS s_id, $cid AS o_id FROM " .
 			                    $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from .
 			                    ( $where ? ' WHERE ' : '' ) . $where . " LIMIT $smwgQMaxLimit",
 			                    'SMW::refreshConceptCache' );
-			                    
+
 			$this->m_dbs->update( 'smw_conc2', array( 'cache_date' => strtotime( "now" ), 'cache_count' => $this->m_dbs->affectedRows() ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
 		} else { // just delete old data if there is any
 			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
 			$this->m_dbs->update( 'smw_conc2', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
 			$this->m_errors[] = "No concept description found.";
 		}
-		
+
 		$this->cleanUp();
-		
+
 		return $this->m_errors;
 	}
 
@@ -189,7 +189,7 @@ class SMWSQLStore2QueryEngine {
 	 * step-wise execution of the query might lead to better performance, since
 	 * it exploits the tree-structure of the joins, which is important for fast
 	 * processing -- not all DBMS might be able in seeing this by themselves.
-	 * 
+	 *
 	 * @param SMWQuery $query
 	 */
 	public function getQueryResult( SMWQuery $query ) {
@@ -197,11 +197,11 @@ class SMWSQLStore2QueryEngine {
 
 		if ( !$smwgIgnoreQueryErrors && ( $query->querymode != SMWQuery::MODE_DEBUG ) && ( count( $query->getErrors() ) > 0 ) ) {
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
-			// NOTE: We currently check this only once since the below steps do not create further errors
+			// NOTE: We currently check this only once; the below steps create further errors only in very rare cases (for Concept-related problems)
 		} elseif ( $query->querymode == SMWQuery::MODE_NONE ) { // don't query, but return something to printer
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, true );
 		}
-		
+
 		$this->m_qmode = $query->querymode;
 		$this->m_queries = array();
 		$this->m_hierarchies = array();
@@ -214,7 +214,7 @@ class SMWSQLStore2QueryEngine {
 		wfProfileIn( 'SMWSQLStore2Queries::compileMainQuery (SMW)' );
 		$qid = $this->compileQueries( $query->getDescription() ); // compile query, build query "plan"
 		wfProfileOut( 'SMWSQLStore2Queries::compileMainQuery (SMW)' );
-		
+
 		if ( $qid < 0 ) { // no valid/supported condition; ensure that at least only proper pages are delivered
 			$qid = SMWSQLStore2Query::$qnum;
 			$q = new SMWSQLStore2Query();
@@ -223,7 +223,7 @@ class SMWSQLStore2QueryEngine {
 			$q->where = "$q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL2_SMWIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL2_SMWREDIIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL2_SMWBORDERIW ) . " AND $q->alias.smw_iw!=" . $this->m_dbs->addQuotes( SMW_SQL2_SMWINTDEFIW );
 			$this->m_queries[$qid] = $q;
 		}
-		
+
 		if ( $this->m_queries[$qid]->jointable != 'smw_ids' ) {
 			// manually make final root query (to retrieve namespace,title):
 			$rootid = SMWSQLStore2Query::$qnum;
@@ -236,7 +236,7 @@ class SMWSQLStore2QueryEngine {
 		} else { // not such a common case, but worth avoiding the additional inner join:
 			$rootid = $qid;
 		}
-		
+
 		// Include order conditions (may extend query if needed for sorting):
 		if ( $smwgQSortingSupport ) {
 			$this->applyOrderConditions( $rootid );
@@ -246,7 +246,7 @@ class SMWSQLStore2QueryEngine {
 		wfProfileIn( 'SMWSQLStore2Queries::executeMainQuery (SMW)' );
 		$this->executeQueries( $this->m_queries[$rootid] ); // execute query tree, resolve all dependencies
 		wfProfileOut( 'SMWSQLStore2Queries::executeMainQuery (SMW)' );
-		
+
 		switch ( $query->querymode ) {
 			case SMWQuery::MODE_DEBUG:
 				$result = $this->getDebugQueryResult( $query, $rootid );
@@ -258,33 +258,33 @@ class SMWSQLStore2QueryEngine {
 				$result = $this->getInstanceQueryResult( $query, $rootid );
 			break;
 		}
-		
+
 		$this->cleanUp();
 		$query->addErrors( $this->m_errors );
-		
+
 		return $result;
 	}
 
 	/**
 	 * Using a preprocessed internal query description referenced by $rootid, compute
 	 * the proper debug output for the given query.
-	 * 
+	 *
 	 * @param SMWQuery $query
 	 * @param integer $rootid
 	 */
 	protected function getDebugQueryResult( SMWQuery $query, $rootid ) {
 		$qobj = $this->m_queries[$rootid];
 		$sql_options = $this->getSQLOptions( $query, $rootid );
-		
+
 		list( $startOpts, $useIndex, $tailOpts ) = $this->m_dbs->makeSelectOptions( $sql_options );
-		
+
 		$result = '<div style="border: 1px dotted black; background: #A1FB00; padding: 20px; ">' .
 		          '<b>Debug output by SMWSQLStore2</b><br />' .
 		          'Generated Wiki-Query<br /><tt>' .
 		          str_replace( '[', '&#x005B;', $query->getDescription()->getQueryString() ) . '</tt><br />' .
 		          'Query-Size: ' . $query->getDescription()->getSize() . '<br />' .
 		          'Query-Depth: ' . $query->getDescription()->getDepth() . '<br />';
-		          
+
 		if ( $qobj->joinfield !== '' ) {
 			$result .= 'SQL query<br />' .
 			           "<tt>SELECT DISTINCT $qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns FROM " .
@@ -294,57 +294,57 @@ class SMWSQLStore2QueryEngine {
 		} else {
 			$result .= '<b>Empty result, no SQL query created.</b>';
 		}
-		
+
 		$errors = '';
-		
+
 		foreach ( $query->getErrors() as $error ) {
 			$errors .= $error . '<br />';
 		}
-		
+
 		$result .= ( $errors ) ? "<br />Errors and warnings:<br />$errors":'<br />No errors or warnings.';
 		$auxtables = '';
-		
+
 		foreach ( $this->m_querylog as $table => $log ) {
 			$auxtables .= "<li>Temporary table $table";
-			
+
 			foreach ( $log as $q ) {
 				$auxtables .= "<br />&nbsp;&nbsp;<tt>$q</tt>";
 			}
-			
+
 			$auxtables .= '</li>';
 		}
-		
+
 		$result .= ( $auxtables ) ? "<br />Auxilliary tables used:<ul>$auxtables</ul>":'<br />No auxilliary tables used.';
 		$result .= '</div>';
-		
+
 		return $result;
 	}
 
 	/**
 	 * Using a preprocessed internal query description referenced by $rootid, compute
 	 * the proper counting output for the given query.
-	 * 
+	 *
 	 * @param SMWQuery $query
 	 * @param integer $rootid
 	 */
 	protected function getCountQueryResult( SMWQuery $query, $rootid ) {
 		wfProfileIn( 'SMWSQLStore2Queries::getCountQueryResult (SMW)' );
-		
+
 		$qobj = $this->m_queries[$rootid];
-		
+
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
 			wfProfileOut( 'SMWSQLStore2Queries::getCountQueryResult (SMW)' );
 			return 0;
 		}
-		
+
 		$sql_options = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
 		$res = $this->m_dbs->select( $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from, "COUNT(DISTINCT $qobj->alias.smw_id) AS count", $qobj->where, 'SMW::getQueryResult', $sql_options );
 		$row = $this->m_dbs->fetchObject( $res );
 		$count = $row->count;
 		$this->m_dbs->freeResult( $res );
-		
+
 		wfProfileOut( 'SMWSQLStore2Queries::getCountQueryResult (SMW)' );
-		
+
 		return $count;
 	}
 
@@ -360,29 +360,29 @@ class SMWSQLStore2QueryEngine {
 	 * "limit" results although there would have been "limit" really distinct results. For
 	 * this reason, we select sortfields only for POSTGRES. MySQL is able to perform what
 	 * we want here. It would be nice if we could eliminate the bug in POSTGRES as well.
-	 * 
+	 *
 	 * @param SMWQuery $query
 	 * @param integer $rootid
-	 * 
+	 *
 	 * @return SMWQueryResult
 	 */
 	protected function getInstanceQueryResult( SMWQuery $query, $rootid ) {
 		global $wgDBtype;
-		
+
 		wfProfileIn( 'SMWSQLStore2Queries::getInstanceQueryResult (SMW)' );
 		$qobj = $this->m_queries[$rootid];
-		
+
 		if ( $qobj->joinfield === '' ) { // empty result, no query needed
 			$result = new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
 			wfProfileOut( 'SMWSQLStore2Queries::getInstanceQueryResult (SMW)' );
 			return $result;
 		}
-		
+
 		$sql_options = $this->getSQLOptions( $query, $rootid );
-		
+
 		// Selecting those is required in standard SQL (but MySQL does not require it).
-		$sortfields = implode( $qobj->sortfields, ',' ); 
-		
+		$sortfields = implode( $qobj->sortfields, ',' );
+
 		$res = $this->m_dbs->select( $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from,
 			"DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw,$qobj->alias.smw_sortkey AS sortkey" .
 			  ( $wgDBtype == 'postgres' ? ( ( $sortfields ? ',' : '' ) . $sortfields ) : '' ),
@@ -391,23 +391,23 @@ class SMWSQLStore2QueryEngine {
 		$qr = array();
 		$count = 0;
 		$prs = $query->getDescription()->getPrintrequests();
-		
+
 		while ( ( $count < $query->getLimit() ) && ( $row = $this->m_dbs->fetchObject( $res ) ) ) {
 			$count++;
 			$v = SMWWikiPageValue::makePage( $row->t, $row->ns, $row->sortkey );
 			$qr[] = $v;
 			$this->m_store->cacheSMWPageID( $row->id, $row->t, $row->ns, $row->iw );
 		}
-		
+
 		if ( $this->m_dbs->fetchObject( $res ) ) {
 			$count++;
 		}
-		
+
 		$this->m_dbs->freeResult( $res );
 		$result = new SMWQueryResult( $prs, $query, $qr, $this->m_store, ( $count > $query->getLimit() ) );
-		
+
 		wfProfileOut( 'SMWSQLStore2Queries::getInstanceQueryResult (SMW)' );
-		
+
 		return $result;
 	}
 
@@ -420,19 +420,19 @@ class SMWSQLStore2QueryEngine {
 	 * makes some assumptions about the table structure, especially about the
 	 * name of the joinfield (o_id). Better extend compileAttributeWhere to
 	 * deal with this case.
-	 * 
+	 *
 	 * @param SMWDescription $description
-	 * 
+	 *
 	 * @return integer
 	 */
 	protected function compileQueries( SMWDescription $description ) {
 		$qid = SMWSQLStore2Query::$qnum;
 		$query = new SMWSQLStore2Query();
-		
+
 		if ( $description instanceof SMWSomeProperty ) {
 			$this->compilePropertyCondition( $query, $description->getProperty(), $description->getDescription() );
 			// Compilation has set type to NOQUERY: drop condition.
-			if ( $query->type == SMW_SQL2_NOQUERY ) $qid = - 1; 
+			if ( $query->type == SMW_SQL2_NOQUERY ) $qid = - 1;
 		} elseif ( $description instanceof SMWNamespaceDescription ) {
 			// TODO: One instance of smw_ids on s_id always suffices (swm_id is KEY)! Doable in execution ... (PERFORMANCE)
 			$query->jointable = 'smw_ids';
@@ -440,29 +440,29 @@ class SMWSQLStore2QueryEngine {
 			$query->where = "$query->alias.smw_namespace=" . $this->m_dbs->addQuotes( $description->getNamespace() );
 		} elseif ( ( $description instanceof SMWConjunction ) || ( $description instanceof SMWDisjunction ) ) {
 			$query->type = ( $description instanceof SMWConjunction ) ? SMW_SQL2_CONJUNCTION:SMW_SQL2_DISJUNCTION;
-			
+
 			foreach ( $description->getDescriptions() as $subdesc ) {
 				$sub = $this->compileQueries( $subdesc );
 				if ( $sub >= 0 ) {
 					$query->components[$sub] = true;
 				}
 			}
-			
+
 			// All subconditions failed, drop this as well.
-			if ( count( $query->components ) == 0 ) $qid = - 1; 
+			if ( count( $query->components ) == 0 ) $qid = - 1;
 		} elseif ( $description instanceof SMWClassDescription ) {
 			$cqid = SMWSQLStore2Query::$qnum;
 			$cquery = new SMWSQLStore2Query();
 			$cquery->type = SMW_SQL2_CLASS_HIERARCHY;
 			$cquery->joinfield = array();
-			
+
 			foreach ( $description->getCategories() as $cat ) {
 				$cid = $this->m_store->getSMWPageID( $cat->getDBkey(), NS_CATEGORY, $cat->getInterwiki() );
 				if ( $cid != 0 ) {
 					$cquery->joinfield[] = $cid;
 				}
 			}
-			
+
 			if ( count( $cquery->joinfield ) == 0 ) { // Empty result.
 				$query->type = SMW_SQL2_VALUE;
 				$query->jointable = '';
@@ -483,7 +483,7 @@ class SMWSQLStore2QueryEngine {
 					$query->jointable = 'smw_ids';
 					$query->joinfield = "$query->alias.smw_id";
 					$value = $description->getDatavalue()->getSortkey();
-					
+
 					switch ( $description->getComparator() ) {
 						case SMW_CMP_LEQ: $comp = '<='; break;
 						case SMW_CMP_GEQ: $comp = '>='; break;
@@ -494,7 +494,7 @@ class SMWSQLStore2QueryEngine {
 							$value =  str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
 						break;
 					}
-					
+
 					$query->where = "$query->alias.smw_sortkey$comp" . $this->m_dbs->addQuotes( $value );
 				}
 			}
@@ -506,33 +506,38 @@ class SMWSQLStore2QueryEngine {
 				array( 's_id' => $cid ),
 				'SMWSQLStore2Queries::compileQueries'
 			);
-			
+
 			if ( $row === false ) { // No description found, concept does not exist.
 				// keep the above query object, it yields an empty result
 				// TODO: announce an error here? (maybe not, since the query processor can check for
-				// non-existing concept pages which is probably the main reason for finding nothing here
+				// non-existing concept pages which is probably the main reason for finding nothing here)
 			} else {
 				global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
-				
+
 				$may_be_computed = ( $smwgQConceptCaching == CONCEPT_CACHE_NONE ) ||
 				    ( ( $smwgQConceptCaching == CONCEPT_CACHE_HARD ) && ( ( ~( ~( $row->concept_features + 0 ) | $smwgQFeatures ) ) == 0 ) &&
 				      ( $smwgQMaxSize >= $row->concept_size ) && ( $smwgQMaxDepth >= $row->concept_depth ) );
-				      
+
 				if ( $row->cache_date &&
 				     ( ( $row->cache_date > ( strtotime( "now" ) - $smwgQConceptCacheLifetime * 60 ) ) ||
 				       !$may_be_computed ) ) { // Cached concept, use cache unless it is dead and can be revived.
-				       	
+
 					$query->jointable = 'smw_conccache';
 					$query->joinfield = "$query->alias.s_id";
 					$query->where = "$query->alias.o_id=" . $this->m_dbs->addQuotes( $cid );
 				} elseif ( $row->concept_txt ) { // Parse description and process it recursively.
 					if ( $may_be_computed ) {
 						$qp = new SMWQueryParser();
-						
+
 						//No defaultnamespaces here; If any, these are already in the concept.
 						$desc = $qp->getQueryDescription( $row->concept_txt );
 						$qid = $this->compileQueries( $desc );
-						$query = $this->m_queries[$qid];
+						if ($qid != -1) {
+							$query = $this->m_queries[$qid];
+						} else { // somehow the concept query is no longer valid; maybe some syntax changed (upgrade) or global settings were modified since storing it
+							wfLoadExtensionMessages( 'SemanticMediaWiki' );
+							$this->m_errors[] = wfMsg( 'smw_emptysubquery' ); // not quite the right message, but this case is very rare; let us not make detailed messages for this
+						}
 					} else {
 						$this->m_errors[] = wfMsg( 'smw_concept_cache_miss', $description->getConcept()->getText() );
 					}
@@ -544,7 +549,7 @@ class SMWSQLStore2QueryEngine {
 
 		if ( $qid >= 0 ) { // Success, keep query object, propagate sortkeys from subqueries.
 			$this->m_queries[$qid] = $query;
-			
+
 			if ( $query->type != SMW_SQL2_DISJUNCTION ) { // Sortkeys are killed by disjunctions (not all parts may have them),
 				// NOTE: preprocessing might try to push disjunctions downwards to safe sortkey, but this seems to be minor
 				foreach ( $query->components as $cid => $field ) {
@@ -552,7 +557,7 @@ class SMWSQLStore2QueryEngine {
 				}
 			}
 		}
-		
+
 		return $qid;
 	}
 
@@ -565,33 +570,33 @@ class SMWSQLStore2QueryEngine {
 	 */
 	protected function compilePropertyCondition( SMWSQLStore2Query $query, $property, SMWDescription $valuedesc ) {
 		$tableid = SMWSQLStore2::findPropertyTableID( $property );
-		
+
 		if ( $tableid == '' ) { // probably a type-polymorphic property
 			$typeid = $valuedesc->getTypeID();
 			$tableid = SMWSQLStore2::findTypeTableID( $typeid );
 		} else { // normal property
 			$typeid = $property->getPropertyTypeID();
 		}
-		
+
 		if ( $tableid == '' ) { // Still no table to query? Give up.
 			$query->type = SMW_SQL2_NOQUERY;
 			return;
 		}
-		
+
 		$proptables = SMWSQLStore2::getPropertyTables();
 		$proptable = $proptables[$tableid];
-		
+
 		if ( !$proptable->idsubject ) { // no queries with such tables (there is really no demand, as only redirects are affected)
 			$query->type = SMW_SQL2_NOQUERY;
 			return;
 		}
-		
+
 		list( $sig, $valueindex, $labelindex ) = SMWSQLStore2::getTypeSignature( $typeid );
 		$sortkey = $property->getDBkey(); // TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
 
 		// *** Basic settings: table, joinfield, and objectfields ***//
 		$query->jointable = $proptable->name;
-		
+
 		if ( $property->isInverse() ) { // see if we can support inverses by inverting the proptable data
 			if ( ( count( $proptable->objectfields ) == 1 ) && ( reset( $proptable->objectfields ) == 'p' ) ) {
 				$query->joinfield = $query->alias . '.' . reset( array_keys( $proptable->objectfields ) );
@@ -609,7 +614,7 @@ class SMWSQLStore2QueryEngine {
 		// *** Add conditions for selecting rows for this property, maybe with a hierarchy ***//
 		if ( $proptable->fixedproperty == false ) {
 			$pid = $this->m_store->getSMWPropertyID( $property );
-			
+
 			if ( !$property->getPropertyID() || ( $property->getPropertyTypeID() != '__err' ) ) {
 				// also make property hierarchy (may or may not be executed later on)
 				// exclude type-polymorphic properties _1, _2, ... (2nd check above suffices, but 1st is faster to check)
@@ -629,7 +634,7 @@ class SMWSQLStore2QueryEngine {
 		if ( ( count( $objectfields ) == 1 ) && ( reset( $objectfields ) == 'p' ) ) { // page description, process like main query
 			$sub = $this->compileQueries( $valuedesc );
 			$objectfield = reset( array_keys( $objectfields ) );
-			
+
 			if ( $sub >= 0 ) {
 				$query->components[$sub] = "{$query->alias}.{$objectfield}";
 			}
@@ -648,7 +653,7 @@ class SMWSQLStore2QueryEngine {
 			// type's signature. Thankfully, signatures are short so this iteration is not notable.
 			$smwidjoinfield = false;
 			$fieldName = $this->getDBFieldsForDVIndex( $objectfields, $valueindex, $smwidjoinfield );
-			
+
 			if ( $fieldName ) {
 				if ( $smwidjoinfield ) {
 					// TODO: is this smw_ids possibly duplicated in the query? Can we prevent that? (PERFORMANCE)
@@ -672,16 +677,16 @@ class SMWSQLStore2QueryEngine {
 	 * be needed for page-type values. If the value is not in smw_ids, then
 	 * $fieldname refers to $objectfields and $smwidjoinfield is false. If the
 	 * given index could not be matched, $fieldname is false.
-	 * 
+	 *
 	 * @param array $objectFields
 	 * @param integer $index
 	 * @param $smwidjoinfield
-	 * 
+	 *
 	 * @return array with at least one element or false
 	 */
 	protected function getDBFieldsForDVIndex( array $objectFields, $index, &$smwidjoinfield ) {
 		$fieldName = false;
-		
+
 		$curindex = 0;
 		foreach( $objectFields as $fname => $ftype ) {
 			if ( $ftype == 'p' ) { // special treatment since "p" consists of 4 fields that are kept in smw_ids
@@ -698,8 +703,8 @@ class SMWSQLStore2QueryEngine {
 				break;
 			}
 			$curindex++;
-		}			
-		
+		}
+
 		return $fieldName;
 	}
 
@@ -707,7 +712,7 @@ class SMWSQLStore2QueryEngine {
 	 * Given an SMWDescription that is just a conjunction or disjunction of
 	 * SMWValueDescription objects, create and return a plain WHERE condition
 	 * string for it.
-	 * 
+	 *
 	 * @param $query
 	 * @param SMWDescription $description
 	 * @param SMWSQLStore2Table $proptable
@@ -716,13 +721,13 @@ class SMWSQLStore2QueryEngine {
 	 */
 	protected function compileAttributeWhere(
 			$query, SMWDescription $description, SMWSQLStore2Table $proptable, $valueIndex, $operator = 'AND' ) {
-				
+
 		$where = '';
-		
+
 		if ( $description instanceof SMWValueDescription ) {
 			$dv = $description->getDatavalue();
 			$keys = $dv->getDBkeys();
-			
+
 			// Try comparison based on value field and comparator.
 			if ( $valueIndex >= 0 ) {
 				// Find field name for comparison.
@@ -730,15 +735,15 @@ class SMWSQLStore2QueryEngine {
 				$fieldName = $this->getDBFieldsForDVIndex( $proptable->objectfields, $valueIndex, $smwidjoinfield );
 
 				// Do not support smw_id joined data for now.
-				if ( $fieldName && !$smwidjoinfield ) { 
+				if ( $fieldName && !$smwidjoinfield ) {
 					$comparator = false;
 					$customSQL = false;
-					
+
 					// See if the getSQLCondition method exists and call it if this is the case.
 					if ( method_exists( $description, 'getSQLCondition' ) ) {
-						$customSQL = $description->getSQLCondition( $query->alias, array_keys( $proptable->objectfields ), $this->m_dbs );	
+						$customSQL = $description->getSQLCondition( $query->alias, array_keys( $proptable->objectfields ), $this->m_dbs );
 					}
-					
+
 					if ( $customSQL ) {
 						$where = $customSQL;
 					}
@@ -759,10 +764,10 @@ class SMWSQLStore2QueryEngine {
 
 			if ( $where == '' ) { // comparators did not apply; match all fields
 				$i = 0;
-				
+
 				foreach ( $proptable->objectfields as $fname => $ftype ) {
 					if ( $i >= count( $keys ) ) break;
-					
+
 					if ( $ftype == 'p' ) { // Special case: page id, resolve this in advance
 						$oid = $this->getSMWPageID( $keys[$i], $keys[$i + 1], $keys[$i + 2] );
 						$i += 3; // skip these additional values (sortkey not needed here)
@@ -770,19 +775,19 @@ class SMWSQLStore2QueryEngine {
 					} elseif ( $ftype != 'l' ) { // plain value, but not a text blob
 						$where .= ( $where ? ' AND ' : '' ) . "{$query->alias}.$fname=" . $this->m_dbs->addQuotes( $keys[$i] );
 					}
-					
+
 					$i++;
 				}
 			}
-			
+
 		} elseif ( ( $description instanceof SMWConjunction ) || ( $description instanceof SMWDisjunction ) ) {
 			$op = ( $description instanceof SMWConjunction ) ? 'AND' : 'OR';
-			
+
 			foreach ( $description->getDescriptions() as $subdesc ) {
 				$this->compileAttributeWhere( $query, $subdesc, $proptable, $valueIndex, $op );
 			}
 		}
-		
+
 		if ( $where != '' ) $query->where .= ( $query->where ? " $operator " : '' ) . "($where)";
 	}
 
@@ -790,31 +795,31 @@ class SMWSQLStore2QueryEngine {
 	 * Process stored queries and change store accordingly. The query obj is modified
 	 * so that it contains non-recursive description of a select to execute for getting
 	 * the actual result.
-	 * 
+	 *
 	 * @param SMWSQLStore2Query $query
 	 */
 	protected function executeQueries( SMWSQLStore2Query &$query ) {
 		global $wgDBtype;
-		
+
 		switch ( $query->type ) {
 			case SMW_SQL2_TABLE: // Normal query with conjunctive subcondition.
 				foreach ( $query->components as $qid => $joinfield ) {
 					$subquery = $this->m_queries[$qid];
 					$this->executeQueries( $subquery );
-					
+
 					if ( $subquery->jointable != '' ) { // Join with jointable.joinfield
 						$query->from .= ' INNER JOIN ' . $this->m_dbs->tableName( $subquery->jointable ) . " AS $subquery->alias ON $joinfield=" . $subquery->joinfield;
 					} elseif ( $subquery->joinfield !== '' ) { // Require joinfield as "value" via WHERE.
 						$condition = '';
-						
+
 						foreach ( $subquery->joinfield as $value ) {
 							$condition .= ( $condition ? ' OR ' : '' ) . "$joinfield=" . $this->m_dbs->addQuotes( $value );
 						}
-						
+
 						if ( count( $subquery->joinfield ) > 1 ) {
 							$condition = "($condition)";
 						}
-						
+
 						$query->where .= ( ( $query->where == '' ) ? '' : ' AND ' ) . $condition;
 					} else { // interpret empty joinfields as impossible condition (empty result)
 						$query->joinfield = ''; // make whole query false
@@ -823,47 +828,47 @@ class SMWSQLStore2QueryEngine {
 						$query->from = '';
 						break;
 					}
-					
+
 					if ( $subquery->where != '' ) {
 						$query->where .= ( ( $query->where == '' ) ? '' : ' AND ' ) . '(' . $subquery->where . ')';
 					}
-					
+
 					$query->from .= $subquery->from;
 				}
-				
+
 				$query->components = array();
 			break;
 			case SMW_SQL2_CONJUNCTION:
 				// pick one subquery with jointable as anchor point ...
 				reset( $query->components );
 				$key = false;
-				
+
 				foreach ( $query->components as $qkey => $qid ) {
 					if ( $this->m_queries[$qkey]->jointable != '' ) {
 						$key = $qkey;
 						break;
 					}
 				}
-				
+
 				if ( $key !== false ) {
 					$result = $this->m_queries[$key];
 					unset( $query->components[$key] );
-					
+
 					// Execute it first (may change jointable and joinfield, e.g. when making temporary tables)
-					$this->executeQueries( $result ); 
-					
+					$this->executeQueries( $result );
+
 					// ... and append to this query the remaining queries.
 					foreach ( $query->components as $qid => $joinfield ) {
 						$result->components[$qid] = $result->joinfield;
 					}
-					
+
 					// Second execute, now incorporating remaining conditions.
-					$this->executeQueries( $result ); 
+					$this->executeQueries( $result );
 				} else { // Only fixed values in conjunction, make a new value without joining.
 					$key = $qkey;
 					$result = $this->m_queries[$key];
 					unset( $query->components[$key] );
-					
+
 					foreach ( $query->components as $qid => $joinfield ) {
 						if ( $result->joinfield != $this->m_queries[$qid]->joinfield ) {
 							$result->joinfield = ''; // all other values should already be ''
@@ -877,14 +882,14 @@ class SMWSQLStore2QueryEngine {
 				if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
 					$this->m_dbs->query( $this->getCreateTempIDTableSQL( $this->m_dbs->tableName( $query->alias ) ), 'SMW::executeQueries' );
 				}
-				
+
 				$this->m_querylog[$query->alias] = array();
-				
+
 				foreach ( $query->components as $qid => $joinfield ) {
 					$subquery = $this->m_queries[$qid];
 					$this->executeQueries( $subquery );
 					$sql = '';
-					
+
 					if ( $subquery->jointable != '' ) {
 						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) . 'INTO ' .
 						       $this->m_dbs->tableName( $query->alias ) .
@@ -894,22 +899,22 @@ class SMWSQLStore2QueryEngine {
 						// NOTE: this works only for single "unconditional" values without further
 						// WHERE or FROM. The execution must take care of not creating any others.
 						$values = '';
-						
+
 						foreach ( $subquery->joinfield as $value ) {
 							$values .= ( $values ? ',' : '' ) . '(' . $this->m_dbs->addQuotes( $value ) . ')';
 						}
-						
+
 						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .  'INTO ' . $this->m_dbs->tableName( $query->alias ) . " (id) VALUES $values";
 					} // else: // interpret empty joinfields as impossible condition (empty result), ignore
 					if ( $sql ) {
 						$this->m_querylog[$query->alias][] = $sql;
-						
+
 						if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
 							$this->m_dbs->query( $sql , 'SMW::executeQueries' );
 						}
 					}
 				}
-				
+
 				$query->jointable = $query->alias;
 				$query->joinfield = "$query->alias.id";
 				$query->sortfields = array(); // Make sure we got no sortfields.
@@ -925,55 +930,55 @@ class SMWSQLStore2QueryEngine {
 	/**
 	 * Find subproperties or subcategories. This may require iterative computation,
 	 * and temporary tables are used in many cases.
-	 * 
+	 *
 	 * @param SMWSQLStore2Query $query
 	 */
 	protected function executeHierarchyQuery( SMWSQLStore2Query &$query ) {
 		global $wgDBtype;
 		global $smwgQSubpropertyDepth, $smwgQSubcategoryDepth;
-		
+
 		$fname = "SMWSQLStore2Queries::executeQueries-hierarchy-$query->type (SMW)";
 		wfProfileIn( $fname );
-		
+
 		$depth = ( $query->type == SMW_SQL2_PROP_HIERARCHY ) ? $smwgQSubpropertyDepth : $smwgQSubcategoryDepth;
-		
+
 		if ( $depth <= 0 ) { // treat as value, no recursion
 			$query->type = SMW_SQL2_VALUE;
 			wfProfileOut( $fname );
 			return;
 		}
-		
+
 		$values = '';
 		$valuecond = '';
-		
+
 		foreach ( $query->joinfield as $value ) {
 			$values .= ( $values ? ',' : '' ) . '(' . $this->m_dbs->addQuotes( $value ) . ')';
 			$valuecond .= ( $valuecond ? ' OR ' : '' ) . 'o_id=' . $this->m_dbs->addQuotes( $value );
 		}
-		
+
 		$smwtable = $this->m_dbs->tableName( ( $query->type == SMW_SQL2_PROP_HIERARCHY ) ? 'smw_subp2' : 'smw_subs2' );
-		
+
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
 		$res = $this->m_dbs->select( $smwtable, 's_id', $valuecond, array( 'LIMIT' => 1 ) );
-		
+
 		if ( !$this->m_dbs->fetchObject( $res ) ) { // no subobjects, we are done!
 			$this->m_dbs->freeResult( $res );
 			$query->type = SMW_SQL2_VALUE;
 			wfProfileOut( $fname );
 			return;
 		}
-		
+
 		$this->m_dbs->freeResult( $res );
 		$tablename = $this->m_dbs->tableName( $query->alias );
 		$this->m_querylog[$query->alias] = array( "Recursively computed hierarchy for element(s) $values." );
 		$query->jointable = $query->alias;
 		$query->joinfield = "$query->alias.id";
-		
+
 		if ( $this->m_qmode == SMWQuery::MODE_DEBUG ) {
 			wfProfileOut( $fname );
 			return; // No real queries in debug mode.
 		}
-		
+
 		$this->m_dbs->query( $this->getCreateTempIDTableSQL( $tablename ), 'SMW::executeHierarchyQuery' );
 
 		if ( array_key_exists( $values, $this->m_hierarchies ) ) { // Just copy known result.
@@ -1003,20 +1008,20 @@ class SMWSQLStore2QueryEngine {
 			if ( $this->m_dbs->affectedRows() == 0 ) { // no change, exit loop
 				break;
 			}
-			
+
 			$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) . "INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
 						'SMW::executeHierarchyQuery' );
-			
+
 			if ( $this->m_dbs->affectedRows() == 0 ) { // no change, exit loop
 				break;
 			}
-			
+
 			$this->m_dbs->query( 'TRUNCATE TABLE ' . $tmpnew, 'SMW::executeHierarchyQuery' ); // empty "new" table
 			$tmpname = $tmpnew;
 			$tmpnew = $tmpres;
 			$tmpres = $tmpname;
 		}
-		
+
 		$this->m_hierarchies[$values] = $tablename;
 		$this->m_dbs->query( ( ( $wgDBtype == 'postgres' ) ? 'DROP TABLE IF EXISTS smw_new' : 'DROP TEMPORARY TABLE smw_new' ), 'SMW::executeHierarchyQuery' );
 		$this->m_dbs->query( ( ( $wgDBtype == 'postgres' ) ? 'DROP TABLE IF EXISTS smw_res' : 'DROP TEMPORARY TABLE smw_res' ), 'SMW::executeHierarchyQuery' );
@@ -1028,7 +1033,7 @@ class SMWSQLStore2QueryEngine {
 	 * This function modifies the given query object at $qid to account for all ordering conditions
 	 * in the SMWQuery $query. It is always required that $qid is the id of a query that joins with
 	 * smw_ids so that the field alias.smw_title is $available for default sorting.
-	 * 
+	 *
 	 * @param integer $qid
 	 */
 	protected function applyOrderConditions( $qid ) {
@@ -1036,7 +1041,7 @@ class SMWSQLStore2QueryEngine {
 		
 		// (1) collect required extra property descriptions:
 		$extraproperties = array();
-		
+
 		foreach ( $this->m_sortkeys as $propkey => $order ) {
 			if ( !array_key_exists( $propkey, $qobj->sortfields ) ) { // Find missing property to sort by.
 				if ( $propkey == '' ) { // Sort by first result column (page titles).
@@ -1044,44 +1049,44 @@ class SMWSQLStore2QueryEngine {
 				} else { // Try to extend query.
 					$extrawhere = '';
 					$sortprop = SMWPropertyValue::makeUserProperty( $propkey );
-					
+
 					if ( $sortprop->isValid() ) {
 						$extraproperties[] = new SMWSomeProperty( $sortprop, new SMWThingDescription() );
 					}
 				}
 			}
 		}
-		
+
 		// (2) compile according conditions and hack them into $qobj:
 		if ( count( $extraproperties ) > 0 ) {
 			$desc = new SMWConjunction( $extraproperties );
 			$newqid = $this->compileQueries( $desc );
 			$newqobj = $this->m_queries[$newqid]; // This is always an SMW_SQL2_CONJUNCTION ...
-			
+
 			foreach ( $newqobj->components as $cid => $field ) { // ... so just re-wire its dependencies
 				$qobj->components[$cid] = $qobj->joinfield;
 				$qobj->sortfields = array_merge( $qobj->sortfields, $this->m_queries[$cid]->sortfields );
 			}
-			
+
 			$this->m_queries[$qid] = $qobj;
 		}
 	}
 
 	/**
 	 * Get a SQL option array for the given query and preprocessed query object at given id.
-	 * 
+	 *
 	 * @param SMWQuery $query
 	 * @param integer $rootid
 	 */
 	protected function getSQLOptions( SMWQuery $query, $rootid ) {
 		global $smwgQSortingSupport, $smwgQRandSortingSupport;
-		
+
 		$result = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
-		
+
 		// Build ORDER BY options using discovered sorting fields.
 		if ( $smwgQSortingSupport ) {
 			$qobj = $this->m_queries[$rootid];
-			
+
 			foreach ( $this->m_sortkeys as $propkey => $order ) {
 				if ( ( 'RANDOM' != $order ) && array_key_exists( $propkey, $qobj->sortfields ) ) { // Field was successfully added.
 					$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . $qobj->sortfields[$propkey] . " $order ";
@@ -1114,12 +1119,12 @@ class SMWSQLStore2QueryEngine {
 	 * a table exists, so the code is ready to reuse existing tables if the code was modified to
 	 * keep them after query answering. Also, PostgreSQL tables will use a RULE to achieve built-in
 	 * duplicate elimination. The latter is done using INSERT IGNORE in MySQL.
-	 * 
+	 *
 	 * @param string $tablename
 	 */
 	protected function getCreateTempIDTableSQL( $tablename ) {
 		global $wgDBtype;
-		
+
 		if ( $wgDBtype == 'postgres' ) { // PostgreSQL: no memory tables, use RULE to emulate INSERT IGNORE
 			return "CREATE OR REPLACE FUNCTION create_" . $tablename . "() RETURNS void AS "
 			. "$$ "
