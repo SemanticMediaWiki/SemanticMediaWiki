@@ -310,6 +310,7 @@ class SMWPropertyValue extends SMWDataValue {
 				$result = SMWDataValueFactory::newTypeIDValue( '__typ' );
 				$result->setDBkeys( array( $smwgPDefaultType ) );
 			} else { // many types given, error
+				wfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$result = SMWDataValueFactory::newTypeIDValue( '__typ' );
 				$result->setDBkeys( array( '__err' ) );
 				$result->addError( wfMsgForContent( 'smw_manytypes' ) );
@@ -364,6 +365,7 @@ class SMWPropertyValue extends SMWDataValue {
 			return $text;
 		} else {
 			SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
+			wfLoadExtensionMessages( 'SemanticMediaWiki' );
 			return '<span class="smwttinline"><span class="smwbuiltin">' . $text .
 			'</span><span class="smwttcontent">' . wfMsgForContent( 'smw_isspecprop' ) . '</span></span>';
 		}

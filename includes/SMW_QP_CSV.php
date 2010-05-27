@@ -36,6 +36,7 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getName() {
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_csv' );
 	}
 
@@ -70,6 +71,7 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 			if ( $this->getSearchLabel( $outputmode ) ) {
 				$label = $this->getSearchLabel( $outputmode );
 			} else {
+				wfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$label = wfMsgForContent( 'smw_csv_link' );
 			}
 

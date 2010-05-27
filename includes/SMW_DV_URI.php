@@ -48,6 +48,7 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	protected function parseUserValue( $value ) {
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$value = trim( $value );
 		$this->m_url = '';
 		$this->m_uri = '';

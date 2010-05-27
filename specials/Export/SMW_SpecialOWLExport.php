@@ -113,6 +113,8 @@ class SMWSpecialOWLExport extends SpecialPage {
 			}
 		}
 	
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+	
 		// nothing exported yet; show user interface:
 		$html = '<form name="tripleSearch" action="" method="POST">' . "\n" .
 		        '<p>' . wfMsg( 'smw_exportrdf_docu' ) . "</p>\n" .

@@ -41,6 +41,8 @@ class SMWNumberValue extends SMWDataValue {
 		$this->m_unitin = false;
 		$this->m_unitvalues = false;
 
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+
 		// Parse to find value and unit
 		$decseparator = wfMsgForContent( 'smw_decseparator' );
 		$kiloseparator = wfMsgForContent( 'smw_kiloseparator' );

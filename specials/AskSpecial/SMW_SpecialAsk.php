@@ -30,6 +30,7 @@ class SMWAskPage extends SpecialPage {
 	 */
 	public function __construct() {
 		parent::__construct( 'Ask' );
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	function execute( $p ) {

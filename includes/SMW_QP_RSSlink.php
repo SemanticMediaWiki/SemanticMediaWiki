@@ -41,6 +41,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getName() {
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_rss' );
 	}
 
@@ -53,6 +54,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 				$this->m_title = $wgSitename;
 			}
 			if ( $this->m_description == '' ) {
+				wfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$this->m_description = wfMsg( 'smw_rss_description', $wgSitename );
 			}
 
@@ -115,6 +117,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			if ( $this->getSearchLabel( $outputmode ) ) {
 				$label = $this->getSearchLabel( $outputmode );
 			} else {
+				wfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$label = wfMsgForContent( 'smw_rss_link' );
 			}
 			$link = $res->getQueryLink( $label );

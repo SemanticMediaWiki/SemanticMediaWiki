@@ -57,6 +57,7 @@ abstract class SMWQueryPage extends QueryPage {
 
 			// if list is empty, show it
 			if ( $num == 0 ) {
+				wfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$wgOut->addHTML( '<p>' . wfMsgHTML( 'specialpage-empty' ) . '</p>' );
 				return;
 			}

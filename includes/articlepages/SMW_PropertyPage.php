@@ -77,6 +77,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 */
 	protected function getPages() {
 		wfProfileIn( __METHOD__ . ' (SMW)' );
+		wfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$r = '';
 		$ti = htmlspecialchars( $this->mTitle->getText() );
 		if ( count( $this->subproperties ) > 0 ) {
