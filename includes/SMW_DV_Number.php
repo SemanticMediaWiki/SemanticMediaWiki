@@ -273,9 +273,9 @@ class SMWNumberValue extends SMWDataValue {
 	 */
 	protected function makeUserValue() {
 		$this->convertToMainUnit();
-		$this->m_caption = ( $this->m_outformat != '-' ? smwfNumberFormat( $this->m_value ):$this->m_value );
+		$this->m_caption = ( $this->m_outformat != '-' ? smwfNumberFormat( $this->m_value ) : $this->m_value );
 		if ( $this->m_unit != '' ) {
-			$this->m_caption .= '&nbsp;' . $this->m_unit;
+			$this->m_caption .= ( $this->m_outformat != '-' ? '&nbsp;' : ' ' ) . $this->m_unit;
 		}
 		$this->m_wikivalue = $this->m_caption;
 		$this->m_unitin = $this->m_unit;
