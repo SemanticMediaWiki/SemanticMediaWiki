@@ -676,6 +676,12 @@ class OWLExport {
 
 		$data = SMWExporter::makeExportData( smwfGetStore()->getSemanticData( $value, $fullexport ? false:array( '__spu', '__typ', '__imp' ) ), $st->modifier );
 		$this->printExpData( $data ); // serialise
+		// let other extensions add additional RDF data for this page
+		$additional_data_array = array();
+		wfRunHooks( 'smwAddToRDFExport', array( $value->getTitle(), &$additional_data_array ) );
+		foreach( $additional_data_array as $additional_data) {
+			$this->printExpData( $additional_data ); // serialise
+		}
 		$this->markAsDone( $st );
 
 		// possibly add backlinks
