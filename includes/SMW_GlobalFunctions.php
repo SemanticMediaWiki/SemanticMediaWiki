@@ -211,11 +211,11 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
 /**
  * Formats an array of message strings so that it appears as a tooltip.
  * $icon should be one of: 'warning' (default), 'info'.
- * 
+ *
  * @param array $messages
  * @param string $icon Acts like an enum. Callers must ensure safety, since this value is used directly in the output.
  * @param string $seperator
- * 
+ *
  * @return string
  */
 function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' <!--br-->' ) {
@@ -226,6 +226,20 @@ function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' 
 		return '<span class="smwttpersist"><span class="smwtticon">' . $icon . '.png</span><span class="smwttcontent">' . $messageString . '</span> </span>';
 	} else {
 		return '';
+	}
+}
+
+/**
+ * MediaWiki 1.16 introduces major changes in message handling, and the old
+ * wfLoadExtensionMessages function will no longer be needed (or supported).
+ * This function is used for maintaining compatibility with MediaWiki 1.15 or
+ * below.
+ * @param string $extensionName The extension name for finding the the message
+ * file; same as in wfLoadExtensionMessages()
+ */
+function smwfLoadExtensionMessages( $extensionName ) {
+	if ( function_exists( "wfLoadExtensionMessages" ) ) {
+		wfLoadExtensionMessages( $extensionName );
 	}
 }
 
