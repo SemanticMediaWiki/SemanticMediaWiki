@@ -63,9 +63,12 @@ excellent translation service they provide.
 * Most icons used by Semantic MediaWiki are derived from the "Crystal Clear"
   icon theme for KDE, which was created by Everaldo (everaldo.com).
 
-* The sorttable java script function was developed by Stuart Langridge,
+* The sorttable JavaScript function was developed by Stuart Langridge,
   and taken from http://www.kryogenix.org/code/browser/sorttable. The current
   code for sorting tables is derived from this original code.
+
+* The code contains a minified version of the jQuery JavaScript library
+  (http://jquery.com/), developed by John Resig and the jQuery team.
 
 * Many people have contributed to the project by providing helpful comments and
   suggestions. Among them are the members of the Semantic Wiki Interest Group
