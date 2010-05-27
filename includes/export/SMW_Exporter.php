@@ -55,9 +55,6 @@ class SMWExporter {
 		$result = $subject->getExportData();
 
 		// first set some general parameters for export
-		global $smwgOWLFullExport; // export like individual (even if Category/Property)
-		$indexp = ( ( ( $subject->getNamespace() != SMW_NS_PROPERTY ) &&
-		            ( $subject->getNamespace() != NS_CATEGORY ) ) || $smwgOWLFullExport );
 		$category_pe = null;
 		$subprop_pe = null;
 		switch ( $subject->getNamespace() ) {
@@ -68,9 +65,7 @@ class SMWExporter {
 				$label = $subject->getText();
 			break;
 			case SMW_NS_PROPERTY:
-				if ( $indexp ) {
-					$category_pe = SMWExporter::getSpecialElement( 'rdfs', 'subClassOf' );
-				}
+				$category_pe = SMWExporter::getSpecialElement( 'rdf', 'type' );
 				$subprop_pe = SMWExporter::getSpecialElement( 'rdfs', 'subPropertyOf' );
 				$equality_pe = SMWExporter::getSpecialElement( 'owl', 'equivalentProperty' );
 				$types = $semdata->getPropertyValues( SMWPropertyValue::makeProperty( '_TYPE' ) );
@@ -97,6 +92,8 @@ class SMWExporter {
 		$ed = new SMWExpData( new SMWExpResource( SMWExporter::$m_exporturl . '/' . $subj_title->getPrefixedURL() ) );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdfs', 'isDefinedBy' ), $ed );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ), new SMWExpData( $maintype_pe ) );
+		$ed = new SMWExpData( new SMWExpLiteral( $subject->getNamespace(), null, 'http://www.w3.org/2001/XMLSchema#integer' ) );
+		$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'wikiNamespace' ), $ed );
 		if ( $modifier != '' ) { // make variant and possibly add meta data on base properties
 			if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
 				$ed = new SMWExpData( new SMWExpLiteral( $modifier, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
@@ -109,7 +106,6 @@ class SMWExporter {
 		// export properties based on stored data
 		foreach ( $semdata->getProperties() as $key => $property ) {
 			if ( $property->isUserDefined() ) {
-				if ( !$indexp ) continue; // no properties for schema elements
 				$pe = SMWExporter::getResourceElement( $property );
 				foreach ( $semdata->getPropertyValues( $property ) as $dv ) {
 					$ed = $dv->getExportData();
@@ -133,6 +129,9 @@ class SMWExporter {
 					break;
 					case '_SUBP':
 						$pe = $subprop_pe;
+					break;
+					case '_MDAT':
+						$pe = SMWExporter::getSpecialElement( 'swivt', 'wikiPageModificationDate' );
 					break;
 					case '_REDI': /// TODO: currently no check for avoiding OWL DL illegal redirects is done
 						if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
