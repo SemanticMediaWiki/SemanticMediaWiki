@@ -127,7 +127,7 @@ class SMWSQLStore2QueryEngine {
 			$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
 
 			if ( $wgDBtype == 'postgres' ) { // PostgresQL: no INSERT IGNORE, check for duplicates explicitly
-				$where = $qobj->where . ( $qobj->where ? ' AND ' : '' ) .
+				$where = $qobj->where . ( $qobj->where ? ' AND ':'' ) .
 				         'NOT EXISTS (SELECT NULL FROM ' . $this->m_dbs->tableName( 'smw_conccache' ) .
 			             ' WHERE ' . $this->m_dbs->tablename( 'smw_conccache' ) . '.s_id = ' . $qobj->alias . '.s_id ' .
 			             ' AND   ' . $this->m_dbs->tablename( 'smw_conccache' ) . '.o_id = ' . $qobj->alias . '.o_id )';
@@ -135,10 +135,10 @@ class SMWSQLStore2QueryEngine {
 				$where = $qobj->where;
 			}
 
-			$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) . 'INTO ' . $this->m_dbs->tableName( 'smw_conccache' ) .
+			$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? "":"IGNORE " ) . "INTO " . $this->m_dbs->tableName( 'smw_conccache' ) .
 			                    " SELECT DISTINCT $qobj->joinfield AS s_id, $cid AS o_id FROM " .
 			                    $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from .
-			                    ( $where ? ' WHERE ' : '' ) . $where . " LIMIT $smwgQMaxLimit",
+			                    ( $where ? " WHERE ":'' ) . $where . " LIMIT $smwgQMaxLimit",
 			                    'SMW::refreshConceptCache' );
 
 			$this->m_dbs->update( 'smw_conc2', array( 'cache_date' => strtotime( "now" ), 'cache_count' => $this->m_dbs->affectedRows() ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
@@ -197,7 +197,7 @@ class SMWSQLStore2QueryEngine {
 
 		if ( !$smwgIgnoreQueryErrors && ( $query->querymode != SMWQuery::MODE_DEBUG ) && ( count( $query->getErrors() ) > 0 ) ) {
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
-			// NOTE: We currently check this only once; the below steps create further errors only in very rare cases (for Concept-related problems)
+			// NOTE: we check this here to prevent unnecessary work, but we check it after query processing below again in case more errors occurred
 		} elseif ( $query->querymode == SMWQuery::MODE_NONE ) { // don't query, but return something to printer
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, true );
 		}
@@ -240,6 +240,11 @@ class SMWSQLStore2QueryEngine {
 		// Include order conditions (may extend query if needed for sorting):
 		if ( $smwgQSortingSupport ) {
 			$this->applyOrderConditions( $rootid );
+		}
+
+		if ( !$smwgIgnoreQueryErrors && ( $query->querymode != SMWQuery::MODE_DEBUG ) && ( count( $this->m_errors ) > 0 ) ) { // stop here if new errors happened
+			$query->addErrors( $this->m_errors );
+			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this->m_store, false );
 		}
 
 		// *** Now execute the computed query ***//
@@ -289,7 +294,7 @@ class SMWSQLStore2QueryEngine {
 			$result .= 'SQL query<br />' .
 			           "<tt>SELECT DISTINCT $qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns FROM " .
 			           $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from .
-			           ( ( $qobj->where == '' ) ? '' : ' WHERE ' ) . $qobj->where . "$tailOpts LIMIT " .
+			           ( ( $qobj->where == '' ) ? '':' WHERE ' ) . $qobj->where . "$tailOpts LIMIT " .
 			           $sql_options['LIMIT'] . ' OFFSET ' . $sql_options['OFFSET'] . ';</tt>';
 		} else {
 			$result .= '<b>Empty result, no SQL query created.</b>';
@@ -539,6 +544,7 @@ class SMWSQLStore2QueryEngine {
 							$this->m_errors[] = wfMsg( 'smw_emptysubquery' ); // not quite the right message, but this case is very rare; let us not make detailed messages for this
 						}
 					} else {
+						wfLoadExtensionMessages( 'SemanticMediaWiki' );
 						$this->m_errors[] = wfMsg( 'smw_concept_cache_miss', $description->getConcept()->getText() );
 					}
 				} // else: no cache, no description (this may happen); treat like empty concept
@@ -813,14 +819,14 @@ class SMWSQLStore2QueryEngine {
 						$condition = '';
 
 						foreach ( $subquery->joinfield as $value ) {
-							$condition .= ( $condition ? ' OR ' : '' ) . "$joinfield=" . $this->m_dbs->addQuotes( $value );
+							$condition .= ( $condition ? ' OR ':'' ) . "$joinfield=" . $this->m_dbs->addQuotes( $value );
 						}
 
 						if ( count( $subquery->joinfield ) > 1 ) {
 							$condition = "($condition)";
 						}
 
-						$query->where .= ( ( $query->where == '' ) ? '' : ' AND ' ) . $condition;
+						$query->where .= ( ( $query->where == '' ) ? '':' AND ' ) . $condition;
 					} else { // interpret empty joinfields as impossible condition (empty result)
 						$query->joinfield = ''; // make whole query false
 						$query->jointable = '';
@@ -830,7 +836,7 @@ class SMWSQLStore2QueryEngine {
 					}
 
 					if ( $subquery->where != '' ) {
-						$query->where .= ( ( $query->where == '' ) ? '' : ' AND ' ) . '(' . $subquery->where . ')';
+						$query->where .= ( ( $query->where == '' ) ? '':' AND ' ) . '(' . $subquery->where . ')';
 					}
 
 					$query->from .= $subquery->from;
@@ -891,10 +897,10 @@ class SMWSQLStore2QueryEngine {
 					$sql = '';
 
 					if ( $subquery->jointable != '' ) {
-						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) . 'INTO ' .
+						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) . 'INTO ' .
 						       $this->m_dbs->tableName( $query->alias ) .
 							   " SELECT $subquery->joinfield FROM " . $this->m_dbs->tableName( $subquery->jointable ) .
-							   " AS $subquery->alias $subquery->from" . ( $subquery->where ? " WHERE $subquery->where" : '' );
+							   " AS $subquery->alias $subquery->from" . ( $subquery->where ? " WHERE $subquery->where":'' );
 					} elseif ( $subquery->joinfield !== '' ) {
 						// NOTE: this works only for single "unconditional" values without further
 						// WHERE or FROM. The execution must take care of not creating any others.
@@ -904,7 +910,7 @@ class SMWSQLStore2QueryEngine {
 							$values .= ( $values ? ',' : '' ) . '(' . $this->m_dbs->addQuotes( $value ) . ')';
 						}
 
-						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .  'INTO ' . $this->m_dbs->tableName( $query->alias ) . " (id) VALUES $values";
+						$sql = 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '':'IGNORE ' ) .  'INTO ' . $this->m_dbs->tableName( $query->alias ) . " (id) VALUES $values";
 					} // else: // interpret empty joinfields as impossible condition (empty result), ignore
 					if ( $sql ) {
 						$this->m_querylog[$query->alias][] = $sql;
@@ -952,11 +958,11 @@ class SMWSQLStore2QueryEngine {
 		$valuecond = '';
 
 		foreach ( $query->joinfield as $value ) {
-			$values .= ( $values ? ',' : '' ) . '(' . $this->m_dbs->addQuotes( $value ) . ')';
-			$valuecond .= ( $valuecond ? ' OR ' : '' ) . 'o_id=' . $this->m_dbs->addQuotes( $value );
+			$values .= ( $values ? ',':'' ) . '(' . $this->m_dbs->addQuotes( $value ) . ')';
+			$valuecond .= ( $valuecond ? ' OR ':'' ) . 'o_id=' . $this->m_dbs->addQuotes( $value );
 		}
 
-		$smwtable = $this->m_dbs->tableName( ( $query->type == SMW_SQL2_PROP_HIERARCHY ) ? 'smw_subp2' : 'smw_subs2' );
+		$smwtable = $this->m_dbs->tableName( ( $query->type == SMW_SQL2_PROP_HIERARCHY ) ? 'smw_subp2':'smw_subs2' );
 
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
 		$res = $this->m_dbs->select( $smwtable, 's_id', $valuecond, array( 'LIMIT' => 1 ) );
@@ -995,21 +1001,19 @@ class SMWSQLStore2QueryEngine {
 		// obtained in the previous step are relevant. So this is a performance measure.
 		$tmpnew = 'smw_new';
 		$tmpres = 'smw_res';
-		
 		$this->m_dbs->query( $this->getCreateTempIDTableSQL( $tmpnew ), 'SMW::executeQueries' );
 		$this->m_dbs->query( $this->getCreateTempIDTableSQL( $tmpres ), 'SMW::executeQueries' );
-		
-		$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE' ) . " INTO $tablename (id) VALUES $values", 'SMW::executeHierarchyQuery' );
-		$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE' ) . " INTO $tmpnew (id) VALUES $values", 'SMW::executeHierarchyQuery' );
+		$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? "" : "IGNORE" ) . " INTO $tablename (id) VALUES $values", 'SMW::executeHierarchyQuery' );
+		$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? "" : "IGNORE" ) . " INTO $tmpnew (id) VALUES $values", 'SMW::executeHierarchyQuery' );
 
 		for ( $i = 0; $i < $depth; $i++ ) {
-			$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .  "INTO $tmpres (id) SELECT s_id" . ( $wgDBtype == 'postgres' ? '::integer' : '' ) . " FROM $smwtable, $tmpnew WHERE o_id=id",
+			$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .  "INTO $tmpres (id) SELECT s_id" . ( $wgDBtype == 'postgres' ? '::integer':'' ) . " FROM $smwtable, $tmpnew WHERE o_id=id",
 						'SMW::executeHierarchyQuery' );
 			if ( $this->m_dbs->affectedRows() == 0 ) { // no change, exit loop
 				break;
 			}
 
-			$this->m_dbs->query( 'INSERT ' . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) . "INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
+			$this->m_dbs->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) . "INTO $tablename (id) SELECT $tmpres.id FROM $tmpres",
 						'SMW::executeHierarchyQuery' );
 
 			if ( $this->m_dbs->affectedRows() == 0 ) { // no change, exit loop
@@ -1038,7 +1042,6 @@ class SMWSQLStore2QueryEngine {
 	 */
 	protected function applyOrderConditions( $qid ) {
 		$qobj = $this->m_queries[$qid];
-		
 		// (1) collect required extra property descriptions:
 		$extraproperties = array();
 
@@ -1105,10 +1108,9 @@ class SMWSQLStore2QueryEngine {
 	 */
 	protected function cleanUp() {
 		global $wgDBtype;
-		
 		if ( $this->m_qmode !== SMWQuery::MODE_DEBUG ) {
 			foreach ( $this->m_querylog as $table => $log ) {
-				$this->m_dbs->query( ( ( $wgDBtype == 'postgres' ) ? 'DROP TABLE IF EXISTS ' : 'DROP TEMPORARY TABLE ' ) . $this->m_dbs->tableName( $table ), 'SMW::getQueryResult' );
+				$this->m_dbs->query( ( ( $wgDBtype == 'postgres' ) ? "DROP TABLE IF EXISTS ":"DROP TEMPORARY TABLE " ) . $this->m_dbs->tableName( $table ), 'SMW::getQueryResult' );
 			}
 		}
 	}
