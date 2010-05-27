@@ -60,20 +60,24 @@ abstract class SMWLanguage {
 		'Temperature'           => '_tem',
 		'Date'                  => '_dat',
 		'Email'                 => '_ema',
-		'Annotation URI'        => '_anu'
+		'Annotation URI'        => '_anu',
+		'Telephone number'      => '_tel',
+	    'Record'                => '_rec'
 	);
 	/// Default English aliases for special property names (typically used in all languages)
 	static protected $enPropertyAliases = array(
 		'Has type'          => '_TYPE',
 		'Equivalent URI'    => '_URI',
 		'Subproperty of'    => '_SUBP',
+		'Subcategory of'    => '_SUBC',
 		'Display units'     => '_UNIT',
 		'Imported from'     => '_IMPO',
 		'Corresponds to'    => '_CONV',
 		'Provides service'  => '_SERV',
 		'Allows value'      => '_PVAL',
 		'Modification date' => '_MDAT',
-		'Has improper value for' => '_ERRP'
+		'Has improper value for' => '_ERRP',
+		'Has fields'        => '_LIST',
 	);
 
 
