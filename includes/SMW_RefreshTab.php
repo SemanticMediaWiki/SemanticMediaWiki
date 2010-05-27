@@ -20,7 +20,7 @@ $wgHooks[ 'SkinTemplateNavigation' ][] = 'smwfAddStructuredRefreshTab'; // struc
 function smwfAddRefreshTab( $skin, &$content_actions ) {
 	global $wgUser;
  	if ( $wgUser->isAllowed( 'delete' ) ) {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$content_actions['purge'] = array(
 			'class' => false,
 			'text' => wfMsg( 'smw_purge' ),

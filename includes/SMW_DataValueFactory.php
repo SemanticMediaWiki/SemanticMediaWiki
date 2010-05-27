@@ -87,7 +87,7 @@ class SMWDataValueFactory {
 		} elseif ( ( $typeid != '' ) && ( $typeid { 0 } != '_' ) ) { // custom type with linear conversion
 			$result = new self::$mTypeClasses['__lin']( $typeid );
 		} else { // type really unknown
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			return new SMWErrorValue( wfMsgForContent( 'smw_unknowntype', $typeid ), $value, $caption );
 		}
 		

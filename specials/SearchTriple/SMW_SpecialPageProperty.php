@@ -26,7 +26,7 @@ class SMWPageProperty extends SpecialPage {
 	 */
 	public function __construct() {
 		parent::__construct( 'PageProperty', '', false );
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	public function execute( $query ) {
@@ -57,7 +57,7 @@ class SMWPageProperty extends SpecialPage {
 
 		// Produce output
 		$html = '';
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		if ( ( $propname == '' ) ) { // no property given, show a message
 			$html .= wfMsg( 'smw_pp_docu' ) . "\n";
 		} else { // property given, find and display results

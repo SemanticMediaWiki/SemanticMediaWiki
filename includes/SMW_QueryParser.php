@@ -115,7 +115,7 @@ class SMWQueryParser {
 	 * The call-by-ref parameter $label is used to append any label strings found.
 	 */
 	protected function getSubqueryDescription( &$setNS, &$label ) {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$conjunction = null;      // used for the current inner conjunction
 		$disjuncts = array();     // (disjunctive) array of subquery conjunctions
 		$hasNamespaces = false;   // does the current $conjnuction have its own namespace restrictions?
@@ -265,7 +265,7 @@ class SMWQueryParser {
 	 * string.
 	 */
 	protected function getPropertyDescription( $propertyname, &$setNS, &$label ) {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$this->readChunk(); // consume separator ":=" or "::"
 		// first process property chain syntax (e.g. "property1.property2::value"), escaped by initial " ":
 		$propertynames = ( $propertyname { 0 } == ' ' ) ? array( $propertyname ):explode( '.', $propertyname );
@@ -372,7 +372,7 @@ class SMWQueryParser {
 	 * passed as a parameter.
 	 */
 	protected function getArticleDescription( $firstchunk, &$setNS, &$label ) {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$chunk = $firstchunk;
 		$result = null;
 		$continue = true;
@@ -412,7 +412,7 @@ class SMWQueryParser {
 	}
 
 	protected function finishLinkDescription( $chunk, $hasNamespaces, $result, &$setNS, &$label ) {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		if ( $result === null ) { // no useful information or concrete error found
 			$this->m_errors[] = wfMsgForContent( 'smw_badqueryatom' );
 		} elseif ( !$hasNamespaces && $setNS && ( $this->m_defaultns !== null ) ) {
@@ -524,7 +524,7 @@ class SMWQueryParser {
 	 * also be changed (if it was non-NULL).
 	 */
 	protected function addDescription( $curdesc, $newdesc, $conjunction = true ) {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$notallowedmessage = 'smw_noqueryfeature';
 		if ( $newdesc instanceof SMWSomeProperty ) {
 			$allowed = $this->m_queryfeatures & SMW_PROPERTY_QUERY;

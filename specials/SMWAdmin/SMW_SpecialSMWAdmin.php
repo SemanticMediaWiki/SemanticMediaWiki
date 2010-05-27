@@ -28,7 +28,7 @@ class SMWAdmin extends SpecialPage {
 	 */
 	public function __construct() {
 		parent::__construct( 'SMWAdmin', 'delete' );
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	public function execute( $par ) {

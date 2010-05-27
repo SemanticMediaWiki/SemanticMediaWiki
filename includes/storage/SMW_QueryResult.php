@@ -205,7 +205,7 @@ class SMWQueryResult {
 		}
 		
 		if ( $caption == false ) {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$caption = ' ' . wfMsgForContent( 'smw_iq_moreresults' ); // The space is right here, not in the QPs!
 		}
 		

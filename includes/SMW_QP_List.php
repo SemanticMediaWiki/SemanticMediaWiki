@@ -44,13 +44,13 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getName() {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_' . $this->mFormat );
 	}
 
 	protected function getResultText( $res, $outputmode ) {
 		if ( ( $this->mFormat == 'template' ) && ( $this->mTemplate == false ) ) {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$res->addErrors( array( wfMsgForContent( 'smw_notemplategiven' ) ) );
 			return '';
 		}
@@ -71,7 +71,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				$listsep = $this->mSep;
 				$finallistsep = $listsep;
 			} elseif ( $this->mFormat == 'list' )  {  // make default list ", , , and "
-				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$listsep = ', ';
 				$finallistsep = wfMsgForContent( 'smw_finallistconjunct' ) . ' ';
 			} else { // no default separators for format "template"

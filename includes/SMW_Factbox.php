@@ -42,7 +42,7 @@ class SMWFactbox {
 		// actually build the Factbox text:
 		$text = '';
 		if ( wfRunHooks( 'smwShowFactbox', array( &$text, $semdata ) ) ) {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
 			$rdflink = SMWInfolink::newInternalLink( wfMsgForContent( 'smw_viewasrdf' ), $wgContLang->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $semdata->getSubject()->getWikiValue(), 'rdflink' );
 

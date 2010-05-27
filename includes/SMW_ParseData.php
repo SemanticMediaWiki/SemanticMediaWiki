@@ -106,7 +106,7 @@ class SMWParseData {
 		$result = SMWDataValueFactory::newPropertyObjectValue( $property, $value, $caption );
 		
 		if ( $property->isInverse() ) {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$result->addError( wfMsgForContent( 'smw_noinvannot' ) );
 		} elseif ( $storeAnnotation && ( self::getSMWData( $parser ) !== null ) ) {
 			self::getSMWData( $parser )->addPropertyObjectValue( $property, $result );

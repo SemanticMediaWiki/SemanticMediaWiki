@@ -42,7 +42,7 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 			$typenamespace = $wgContLang->getNsText( SMW_NS_TYPE );
 			$id = SMWDataValueFactory::findTypeID( $this->m_reallabel );
 			if ( $id { 0 } == '_' ) { // builtin
-				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
 				return '<span class="smwttinline"><span class="smwbuiltin">[[' . $typenamespace . ':' . $this->m_reallabel . '|' . $this->m_reallabel . ']]</span><span class="smwttcontent">' . wfMsgForContent( 'smw_isknowntype' ) . '</span></span>';
 			} else {
@@ -59,7 +59,7 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 			$title = $this->m_isalias ? Title::newFromText( $this->m_reallabel, SMW_NS_TYPE ) : $this->getTitle();
 			$id = SMWDataValueFactory::findTypeID( $this->m_reallabel );
 			if ( $id { 0 } == '_' ) { // builtin
-				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
 				return '<span class="smwttinline"><span class="smwbuiltin">' .
 				$linker->makeLinkObj( $title, $this->m_reallabel ) . '</span><span class="smwttcontent">' .

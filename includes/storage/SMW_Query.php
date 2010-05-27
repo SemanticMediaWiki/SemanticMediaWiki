@@ -170,7 +170,7 @@ class SMWQuery {
 			$log = array();
 			$this->m_description = $this->m_description->prune( $maxsize, $maxdepth, $log );
 			if ( count( $log ) > 0 ) {
-				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$this->m_errors[] = wfMsgForContent( 'smw_querytoolarge', str_replace( '[', '&#x005B;', implode( ', ' , $log ) ) );
 			}
 		}

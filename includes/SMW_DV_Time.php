@@ -209,7 +209,7 @@ class SMWTimeValue extends SMWDataValue {
 		// handle direct entry of Julian or Modified Julian days here; don't bother browsing for times.
 		if ( ( $this->m_pref == 'JD' ) || ( $this->m_pref == 'MJD' ) ) {
 			if ( !( is_numeric( $filteredvalue ) ) ) {// Immediate error check
-				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$this->addError( wfMsgForContent( 'smw_nodatetime', $value ) );
 				return true;
 			}
@@ -287,7 +287,7 @@ class SMWTimeValue extends SMWDataValue {
 				$band = $band | $this->checkDigit( $tmp );
 			}
 		} else {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_nodatetime', $value ) );
 			return true;
 		}
@@ -315,19 +315,19 @@ class SMWTimeValue extends SMWDataValue {
 
 		// error catching
 		if ( !$found ) { // no band matches the entered date
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_nodatetime', $value ) );
 			return true;
 		} elseif ( ( $this->m_day > 0 ) && ( $this->m_day > self::$m_daysofmonths[$this->m_month] ) ) { // date does not exist in Gregorian calendar
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_nodatetime', $value ) );
 			return true;
 		} elseif ( ( $this->m_dayj > 0 ) && ( $this->m_dayj > self::$m_daysofmonths[$this->m_monthj] ) ) { // date does not exist in Julian calendar
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_nodatetime', $value ) );
 			return true;
 		} elseif ( ( $this->m_yearj != false ) && ( $this->m_yearj < - 4713 ) && ( $this->m_timeoffset != 0 ) ) { // no support for time offsets if year < -4713
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_nodatetime', $value ) );
 			return true;
 		}

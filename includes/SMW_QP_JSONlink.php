@@ -31,7 +31,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getName() {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_json' );
 	}
 
@@ -145,7 +145,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 			if ( $this->getSearchLabel( $outputmode ) ) {
 				$label = $this->getSearchLabel( $outputmode );
 			} else {
-				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$label = wfMsgForContent( 'smw_json_link' );
 			}
 			$link = $res->getQueryLink( $label );

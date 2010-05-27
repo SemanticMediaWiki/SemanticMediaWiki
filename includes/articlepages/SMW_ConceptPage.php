@@ -74,7 +74,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 	 */
 	protected function getPages() {
 		wfProfileIn( __METHOD__ . ' (SMW)' );
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$r = '';
 		$ti = htmlspecialchars( $this->mTitle->getText() );
 		$nav = $this->getNavigationLinks();

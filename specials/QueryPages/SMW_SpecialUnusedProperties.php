@@ -76,7 +76,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	}
 
 	function getPageHeader() {
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return '<p>' . wfMsg( 'smw_unusedproperties_docu' ) . "</p><br />\n";
 	}
 
@@ -85,7 +85,7 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 		$proplink = $skin->makeKnownLinkObj( $result->getWikiPageValue()->getTitle(), $result->getWikiValue() );
 		$types = smwfGetStore()->getPropertyValues( $result->getWikiPageValue(), SMWPropertyValue::makeProperty( '_TYPE' ) ); // TODO: do not bypass SMWDataValueFactory!
 		$errors = array();
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		if ( count( $types ) >= 1 ) {
 			$typestring = current( $types )->getLongHTMLText( $skin );
 		} else {

@@ -158,7 +158,7 @@ abstract class SMWDataValue {
 			$this->parseUserValue( $value ); // may set caption if not set yet, depending on datavalue
 			$this->m_isset = true;
 		} else {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_parseerror' ) );
 		}
 		
@@ -259,7 +259,7 @@ abstract class SMWDataValue {
 		$servicelinks = smwfGetStore()->getPropertyValues( $this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty( '_SERV' ) );
 
 		foreach ( $servicelinks as $dv ) {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			
 			$args[0] = 'smw_service_' . str_replace( ' ', '_', $dv->getWikiValue() ); // messages distinguish ' ' from '_'
 			$text = call_user_func_array( 'wfMsgForContent', $args );
@@ -774,7 +774,7 @@ abstract class SMWDataValue {
 		}
 		
 		if ( !$accept ) {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_notinenum', $this->getWikiValue(), $valuestring ) );
 		}
 	}

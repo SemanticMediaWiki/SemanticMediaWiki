@@ -49,7 +49,7 @@ class SMWSearchByProperty extends SpecialPage {
 	 */
 	public function __construct() {
 		parent::__construct( 'SearchByProperty' );
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	/**

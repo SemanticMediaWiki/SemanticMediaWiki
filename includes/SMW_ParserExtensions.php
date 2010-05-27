@@ -215,7 +215,7 @@ class SMWParserExtensions {
 			
 			$result = SMWQueryProcessor::getResultFromFunctionParams( $params, SMW_OUTPUT_WIKI );
 		} else {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$result = smwfEncodeMessages( array( wfMsgForContent( 'smw_iq_disabled' ) ) );
 		}
 		
@@ -239,7 +239,7 @@ class SMWParserExtensions {
 			
 			$result = SMWQueryProcessor::getResultFromFunctionParams( $params, SMW_OUTPUT_WIKI, SMWQueryProcessor::INLINE_QUERY, true );
 		} else {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$result = smwfEncodeMessages( array( wfMsgForContent( 'smw_iq_disabled' ) ) );
 		}
 		
@@ -254,7 +254,7 @@ class SMWParserExtensions {
 	static public function doConcept( &$parser ) {
 		global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $wgContLang;
 		
-		wfLoadExtensionMessages( 'SemanticMediaWiki' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		
 		$title = $parser->getTitle();
 		$pconc = SMWPropertyValue::makeProperty( '_CONC' );

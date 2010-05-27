@@ -49,7 +49,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 			break;
 			default: // unsupported unit
 				// create error here, assuming that our temperature units should not be augmented by unknown units
-				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$this->addError( wfMsgForContent( 'smw_unsupportedunit', $this->m_unit ) );
 				$this->m_unit = $this->m_unitin;
 			break;

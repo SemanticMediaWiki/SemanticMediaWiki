@@ -85,11 +85,11 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
 			///TODO: Escape the text so users can see any punctuation problems (bug 11666).
 			if ( $this->m_title === null ) {
-				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
 			} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
 				 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {
-				wfLoadExtensionMessages( 'SemanticMediaWiki' );
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$this->addError( wfMsgForContent( 'smw_wrong_namespace', $wgContLang->getNsText( $this->m_fixNamespace ) ) );
 			}
 			if ( $this->m_title !== null ) {
@@ -105,7 +105,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				}
 			}
 		} else {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
 		}
 		if ( $this->m_caption === false ) {
@@ -124,7 +124,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		$this->m_prefixedtext = false;
 		$this->m_caption = false;
 		if ( ( $this->m_fixNamespace != NS_MAIN ) && ( $this->m_fixNamespace != $this->m_namespace ) ) {
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_notitle', $this->getPrefixedText() ) );
 		}
 	}
@@ -270,7 +270,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 		if ( $this->m_title === null ) { // should not normally happen, but anyway ...
 			global $wgContLang;
-			wfLoadExtensionMessages( 'SemanticMediaWiki' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_notitle', $wgContLang->getNsText( $this->m_namespace ) . ':' . $this->m_dbkeyform ) );
 			$this->m_dbkeyform = '';
 		}
