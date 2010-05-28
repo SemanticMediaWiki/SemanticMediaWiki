@@ -193,16 +193,16 @@ $smwgQDefaultNamespaces = null; // Which namespaces should be searched by defaul
 
 /**
  * List of comparator characters supported by queries, separated by '|', for use in a regex.
- * 
+ *
  * Available entries:
  * 	< (smaller than)
  * 	< (greater than)
  * 	! (unequal to)
  * 	~ (pattern with '*' as wildcard, only for Type:String)
  * 	!~ (not a pattern with '*' as wildcard, only for Type:String, need to be placed before ! and ~ to work correctly)
- * 
+ *
  * If unsupported comparators are used, they are treated as part of the queried value
- * 
+ *
  * @var string
  */
 $smwgQComparators = '<|>|!~|!|~';
@@ -330,9 +330,6 @@ $smwgRSSWithPages = true; // Should RSS feeds deliver whole pages or just link t
 ##
 $smwgAllowRecursiveExport = false; // can normal users request recursive export?
 $smwgExportBacklinks = true; // should backlinks be included by default?
-$smwgOWLFullExport = false; // decides, if the RDF export will export, by default,
-                            // OWL Full or rather nice OWL DL.
-                            // Can be overriden in the RDF export class.
 // global $smwgNamespace;                     // The Namespace of exported URIs.
 // $smwgNamespace = "http://example.org/id/"; // Will be set automatically if
 // nothing is given, but in order to make pretty URIs you will need to set this
