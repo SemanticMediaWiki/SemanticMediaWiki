@@ -94,7 +94,7 @@ class SMWNumberValue extends SMWDataValue {
 
 	public function getShortWikiText( $linked = null ) {
 		$this->unstub();
-		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) ) {
+		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_outformat == '-u' ) || ( $this->m_outformat == '-n' ) ) {
 			return $this->m_caption;
 		}
 		$this->makeConversionValues();
@@ -273,9 +273,15 @@ class SMWNumberValue extends SMWDataValue {
 	 */
 	protected function makeUserValue() {
 		$this->convertToMainUnit();
-		$this->m_caption = ( $this->m_outformat != '-' ? smwfNumberFormat( $this->m_value ) : $this->m_value );
-		if ( $this->m_unit != '' ) {
-			$this->m_caption .= ( $this->m_outformat != '-' ? '&nbsp;' : ' ' ) . $this->m_unit;
+		$this->m_caption = '';
+		if ( $this->m_outformat != '-u' ) { // -u is the format for displaying the unit only
+			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? smwfNumberFormat( $this->m_value ) : $this->m_value );
+		}
+		if ( ( $this->m_unit != '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
+			if ( $this->m_outformat != '-u' ) {
+				$this->m_caption .=  ( $this->m_outformat != '-' ? '&nbsp;' : ' ' );
+			}
+			$this->m_caption .= $this->m_unit;
 		}
 		$this->m_wikivalue = $this->m_caption;
 		$this->m_unitin = $this->m_unit;

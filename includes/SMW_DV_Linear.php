@@ -131,9 +131,15 @@ class SMWLinearValue extends SMWNumberValue {
 			$printunit = $unit;
 		}
 
-		$this->m_caption = ( $this->m_outformat != '-' ? smwfNumberFormat( $value ) : $value );
-		if ( $printunit != '' ) {
-			$this->m_caption .= ( $this->m_outformat != '-' ? '&nbsp;' : ' ' ) . $printunit;
+		$this->m_caption = '';
+		if ( $this->m_outformat != '-u' ) { // -u is the format for displaying the unit only
+			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? smwfNumberFormat( $value ) : $value );
+		}
+		if ( ( $printunit != '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
+			if ( $this->m_outformat != '-u' ) {
+				$this->m_caption .=  ( $this->m_outformat != '-' ? '&nbsp;' : ' ' );
+			}
+			$this->m_caption .= $printunit;
 		}
 		$this->m_wikivalue = $this->m_caption;
 		$this->m_unitin = $unit;
