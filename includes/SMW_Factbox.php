@@ -107,8 +107,8 @@ class SMWFactbox {
 		if ( $showfactbox == SMW_FACTBOX_HIDDEN ) { // use shortcut
 			return '';
 		}
-		// deal with complete dataset only if needed:
-		if ( !isset( $parseroutput->mSMWData ) || $parseroutput->mSMWData->stubobject ) {
+		// Deal with complete dataset only if needed:
+		if ( !isset( $parseroutput->mSMWData ) || $parseroutput->mSMWData->stubObject ) {
 			$semdata = smwfGetStore()->getSemanticData( $title );
 		} else {
 			$semdata = $parseroutput->mSMWData;
