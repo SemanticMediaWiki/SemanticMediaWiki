@@ -140,21 +140,26 @@ class SMWListResultPrinter extends SMWResultPrinter {
 						}
 						if ( $first_value ) { // first value in any column, print header
 							$first_value = false;
-							if ( ( $this->mShowHeaders != SMW_HEADERS_HIDE ) && ( '' != $field->getPrintRequest()->getLabel() ) ) {
+							
+							if ( ( $this->mShowHeaders != SMW_HEADERS_HIDE ) && ( $field->getPrintRequest()->getLabel() != '' ) ) {
 								$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null:$this->mLinker ) ) . ' ';
 							}
 						}
+						
 						$result .= $text; // actual output value
 					}
+					
 					$first_col = false;
 				}
+				
 				if ( $found_values ) $result .= ')';
 			}
+			
 			$result .= $rowend;
 		}
 
 		// Make label for finding further results
-		if ( $this->linkFurtherResults( $res ) && ( ( 'ol' != $this->mFormat ) || ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) ) {
+		if ( $this->linkFurtherResults( $res ) && ( ( $this->mFormat != 'ol' ) || ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) ) {
 			$link = $res->getQueryLink();
 			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) {
 				$link->setCaption( $this->getSearchLabel( SMW_OUTPUT_WIKI ) );
@@ -184,14 +189,19 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	public function getParameters() {
 		$params = parent::getParameters();
 		$params = array_merge( $params, parent::textDisplayParameters() );
-		$plainlist = ( 'ul' != $this->mFormat && 'ol' != $this->mFormat );
+		
+		$plainlist = ( $this->mFormat != 'ul' && $this->mFormat != 'ol' );
+		
 		if ( $plainlist ) {
 			$params[] = array( 'name' => 'sep', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_sep' ) );
 		}
+		
 		$params[] = array( 'name' => 'template', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_template' ) );
+		
 		if ( ! $plainlist ) {
 			$params[] = array( 'name' => 'columns', 'type' => 'int', 'description' => wfMsg( 'smw_paramdesc_columns', 1 ) );
 		}
+		
 		return $params;
 	}
 

@@ -106,6 +106,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 				$found_values = false; // has anything but the first column been printed?
 				foreach ( $row as $field ) {
 					$first_value = true;
+					
 					while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
 						if ( !$first_col && !$found_values ) { // first values after first column
 							$result .= ' (';
@@ -114,25 +115,32 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 							// any value after '(' or non-first values on first column
 							$result .= ', ';
 						}
+						
 						if ( $first_value ) { // first value in any column, print header
 							$first_value = false;
-							if ( $this->mShowHeaders && ( '' != $field->getPrintRequest()->getLabel() ) ) {
+							
+							if ( $this->mShowHeaders && ( $field->getPrintRequest()->getLabel() != '' ) ) {
 								$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . ' ';
 							}
 						}
+						
 						$result .= $text; // actual output value
 					}
+					
 					$first_col = false;
 				}
+				
 				if ( $found_values ) $result .= ')';
 			}
+			
 			$result .= '</li>';
 			$row = $nextrow;
 
 			// end list if we're at the end of the column
 			// or the page
-			if ( ( $rowindex + 1 ) % $rows_per_column == 0 && ( $rowindex + 1 ) < $num )
+			if ( ( $rowindex + 1 ) % $rows_per_column == 0 && ( $rowindex + 1 ) < $num ) {
 				$result .= "				</ul>\n			</div> <!-- end column -->";
+			}
 
 			$rowindex++;
 		}

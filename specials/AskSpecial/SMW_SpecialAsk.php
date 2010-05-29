@@ -258,7 +258,7 @@ END;
 		foreach ( $this->m_printouts as $printout ) {
 			$printoutstring .= $printout->getSerialisation() . "\n";
 		}
-		if ( '' != $printoutstring )          $urltail .= '&po=' . urlencode( $printoutstring );
+		if ( $printoutstring != '' ) $urltail .= '&po=' . urlencode( $printoutstring );
 		if ( array_key_exists( 'sort', $this->m_params ) )  $urltail .= '&sort=' . $this->m_params['sort'];
 		if ( array_key_exists( 'order', $this->m_params ) ) $urltail .= '&order=' . $this->m_params['order'];
 

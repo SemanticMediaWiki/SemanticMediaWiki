@@ -50,7 +50,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 		if ( $page == '' ) { // try to get POST list; some settings are only available via POST
 			$pageblob = $wgRequest->getText( 'pages' );
-			if ( '' != $pageblob ) {
+			if ( $pageblob != '' ) {
 				$pages = explode( "\n", $pageblob );
 			}
 		} else {
@@ -309,17 +309,20 @@ class OWLExport {
 		// for pages not processed recursively, print at least basic declarations
 		wfProfileIn( "RDF::PrintPages::Auxiliary" );
 		$this->date = ''; // no date restriction for the rest!
+		
 		if ( !empty( $this->element_queue ) ) {
-			if ( '' != $this->pre_ns_buffer ) {
+			if ( $this->pre_ns_buffer != '' ) {
 				$this->post_ns_buffer .= "\t<!-- auxiliary definitions -->\n";
 			} else {
 				print "\t<!-- auxiliary definitions -->\n"; // just print this comment, so that later outputs still find the empty pre_ns_buffer!
 			}
+			
 			while ( !empty( $this->element_queue ) ) {
 				$st = array_pop( $this->element_queue );
 				$this->printObject( $st, false, false );
 			}
 		}
+		
 		wfProfileOut( "RDF::PrintPages::Auxiliary" );
 		$this->printFooter();
 		$this->flushBuffers( true );
