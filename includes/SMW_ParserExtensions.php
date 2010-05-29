@@ -331,11 +331,13 @@ class SMWParserExtensions {
 	 * | area = 396 km²
 	 * | sea = Adria
 	 * }}
+	 * 
 	 * This creates annotations with the properties as stated on the left side, and the
 	 * values on the right side.
 	 *
-	 * @param[in] &$parser Parser  The current parser
-	 * @return nothing
+	 * @param Parser &$parser The current parser
+	 * 
+	 * @return empty string
 	 */
 	static public function doSet( &$parser ) {
 		$params = func_get_args();

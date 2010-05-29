@@ -95,6 +95,8 @@ class SMWParseData {
 	 * @param mixed $caption string or false
 	 * @param Parser $parser 
 	 * @param boolean $storeAnnotation
+	 * 
+	 * @return SMWDataValue
 	 */
 	static public function addProperty( $propertyName, $value, $caption, Parser $parser, $storeAnnotation = true ) {
 		wfProfileIn( "SMWParseData::addProperty (SMW)" );
@@ -111,7 +113,8 @@ class SMWParseData {
 		} elseif ( $storeAnnotation && ( self::getSMWData( $parser ) !== null ) ) {
 			self::getSMWData( $parser )->addPropertyObjectValue( $property, $result );
 			
-			if ( !$result->isValid() ) { // take note of the error for storage (do this here and not in storage, thus avoiding duplicates)
+			// Take note of the error for storage (do this here and not in storage, thus avoiding duplicates).
+			if ( !$result->isValid() ) { 
 				self::getSMWData( $parser )->addPropertyObjectValue( SMWPropertyValue::makeProperty( '_ERRP' ), $property->getWikiPageValue() );
 			}
 		}

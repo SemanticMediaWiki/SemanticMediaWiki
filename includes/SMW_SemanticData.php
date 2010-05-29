@@ -3,8 +3,10 @@
  * The class in this file manages (special) properties that are
  * associated with a certain subject (article). It is used as a
  * container for chunks of subject-centred data.
+ * 
  * @file
  * @ingroup SMW
+ * 
  * @author Markus Krötzsch
  */
 
@@ -12,6 +14,7 @@
  * Class for representing chunks of semantic data for one given
  * article (subject), similar what is typically displayed in the factbox.
  * This is a light-weight data container.
+ * 
  * @ingroup SMW
  */
 class SMWSemanticData {
@@ -79,21 +82,28 @@ class SMWSemanticData {
 
 	/**
 	 * Get the array of all stored values for some property.
+	 * 
+	 * @param SMWPropertyValue $property
 	 */
 	public function getPropertyValues( SMWPropertyValue $property ) {
-		if ( array_key_exists( $property->getDBkey(), $this->stubpropvals ) ) { // unstub those entries completely
+		if ( array_key_exists( $property->getDBkey(), $this->stubpropvals ) ) {
+			// Unstub those entries completely.
 			$this->unstubProperty( $property->getDBkey(), $property );
+			
 			foreach ( $this->stubpropvals[$property->getDBkey()] as $dbkeys ) {
 				$dv = SMWDataValueFactory::newPropertyObjectValue( $property );
 				$dv->setDBkeys( $dbkeys );
+				
 				if ( $this->m_noduplicates ) {
 					$this->propvals[$property->getDBkey()][$dv->getHash()] = $dv;
 				} else {
 					$this->propvals[$property->getDBkey()][] = $dv;
 				}
 			}
+			
 			unset( $this->stubpropvals[$property->getDBkey()] );
 		}
+		
 		if ( array_key_exists( $property->getDBkey(), $this->propvals ) ) {
 			return $this->propvals[$property->getDBkey()];
 		} else {
@@ -108,15 +118,19 @@ class SMWSemanticData {
 	 */
 	public function getHash() {
 		$ctx = hash_init( 'md5' );
+		
 		if ( $this->subject !== null ) { // here and below, use "_#_" to separate values; really not much care needed here
 			hash_update( $ctx, '_#_' . $this->subject->getHash() );
 		}
+		
 		foreach ( $this->getProperties() as $property ) {
 			hash_update( $ctx, '_#_' . $property->getHash() . '##' );
+			
 			foreach ( $this->getPropertyValues( $property ) as $dv ) {
 				hash_update( $ctx, '_#_' . $dv->getHash() );
 			}
 		}
+		
 		return hash_final( $ctx );
 	}
 
@@ -150,15 +164,18 @@ class SMWSemanticData {
 	 */
 	public function addPropertyObjectValue( SMWPropertyValue $property, SMWDataValue $value ) {
 		if ( !$property->isValid() ) return; // nothing we can do
+		
 		if ( !array_key_exists( $property->getDBkey(), $this->propvals ) ) {
 			$this->propvals[$property->getDBkey()] = array();
 			$this->properties[$property->getDBkey()] = $property;
 		}
+		
 		if ( $this->m_noduplicates ) {
 			$this->propvals[$property->getDBkey()][$value->getHash()] = $value;
 		} else {
 			$this->propvals[$property->getDBkey()][] = $value;
 		}
+		
 		if ( !$property->isUserDefined() ) {
 			if ( $property->isShown() ) {
 				 $this->hasvisiblespecs = true;
@@ -175,6 +192,7 @@ class SMWSemanticData {
 	 */
 	public function addPropertyValue( $propertyname, SMWDataValue $value ) {
 		$propertykey = smwfNormalTitleDBKey( $propertyname );
+		
 		if ( array_key_exists( $propertykey, $this->properties ) ) {
 			$property = $this->properties[$propertykey];
 		} else {
@@ -182,11 +200,14 @@ class SMWSemanticData {
 				global $wgContLang;
 				SMWSemanticData::$m_propertyprefix = $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':';
 			} // explicitly use prefix to cope with things like [[Property:User:Stupid::somevalue]]
+			
 			$property = SMWPropertyValue::makeUserProperty( SMWSemanticData::$m_propertyprefix . $propertyname );
+			
 			if ( !$property->isValid() ) { // error, maybe illegal title text
 				return;
 			}
 		}
+		
 		$this->addPropertyObjectValue( $property, $value );
 	}
 
@@ -196,12 +217,13 @@ class SMWSemanticData {
 	 * the added value that will be used to initialize the value if needed at some point.
 	 */
 	public function addPropertyStubValue( $propertykey, $valuekeys ) {
-		// catch built-in properties, since their internal key is not what is used as a key elsewhere in SMWSemanticData
+		// Catch built-in properties, since their internal key is not what is used as a key elsewhere in SMWSemanticData.
 		if ( $propertykey { 0 } == '_' ) {
 			$property = SMWPropertyValue::makeProperty( $propertykey );
 			$propertykey = $property->getDBkey();
 			$this->unstubProperty( $propertykey, $property );
 		}
+		
 		$this->stubpropvals[$propertykey][] = $valuekeys;
 	}
 
@@ -235,7 +257,9 @@ class SMWSemanticData {
 			if ( $propertyobj === null ) {
 				$propertyobj = SMWPropertyValue::makeProperty( $pname );
 			}
+			
 			$this->properties[$pname] = $propertyobj;
+			
 			if ( !$propertyobj->isUserDefined() ) {
 				if ( $propertyobj->isShown() ) {
 					 $this->hasvisiblespecs = true;
@@ -248,4 +272,3 @@ class SMWSemanticData {
 	}
 
 }
-
