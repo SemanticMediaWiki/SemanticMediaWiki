@@ -4,7 +4,7 @@
  *
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
- * 
+ *
  * @file
  * @ingroup SMW
  */
@@ -17,46 +17,46 @@
  * @ingroup SMW
  */
 class SMWInfolink {
-	
+
 	/**
 	 * The actual link target.
-	 * 
+	 *
 	 * @var string
 	 */
-	protected $mTarget; 
-	
+	protected $mTarget;
+
 	/**
 	 * The label for the link.
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $mCaption;
-	
+
 	/**
 	 * CSS class of a span to embedd the link into,
 	 * or false if no extra style is required.
-	 * 
+	 *
 	 * @var mixed
 	 */
 	protected $mStyle;
 
 	/**
 	 * Indicates whether $target is a page name (true) or URL (false).
-	 * 
+	 *
 	 * @var boolean
 	 */
 	protected $mInternal;
-	
+
 	/**
 	 * Array of parameters, format $name => $value, if any.
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $mParams;
 
 	/**
 	 * Create a new link to some internal page or to some external URL.
-	 * 
+	 *
 	 * @param boolean $internal Indicates whether $target is a page name (true) or URL (false).
 	 * @param string $caption The label for the link.
 	 * @param string $target The actual link target.
@@ -74,12 +74,12 @@ class SMWInfolink {
 	/**
 	 * Create a new link to an internal page $target.
 	 * All parameters are mere strings as used by wiki users.
-	 * 
+	 *
 	 * @param string $caption The label for the link.
 	 * @param string $target The actual link target.
 	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
 	 * @param array $params Array of parameters, format $name => $value, if any.
-	 * 
+	 *
 	 * @return SMWInfolink
 	 */
 	public static function newInternalLink( $caption, $target, $style = false, array $params = array() ) {
@@ -88,12 +88,12 @@ class SMWInfolink {
 
 	/**
 	 * Create a new link to an external location $url.
-	 * 
+	 *
 	 * @param string $caption The label for the link.
 	 * @param string $url The actual link target.
 	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
 	 * @param array $params Array of parameters, format $name => $value, if any.
-	 * 
+	 *
 	 * @return SMWInfolink
 	 */
 	public static function newExternalLink( $caption, $url, $style = false, array $params = array() ) {
@@ -102,12 +102,12 @@ class SMWInfolink {
 
 	/**
 	 * Static function to construct links to property searches.
-	 * 
+	 *
 	 * @param string $caption The label for the link.
 	 * @param string $propertyName
 	 * @param string $propertyValue
 	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
-	 * 
+	 *
 	 * @return SMWInfolink
 	 */
 	public static function newPropertySearchLink( $caption, $propertyName, $propertyValue, $style = 'smwsearch' ) {
@@ -117,26 +117,26 @@ class SMWInfolink {
 
 	/**
 	 * Static function to construct links to inverse property searches.
-	 * 
+	 *
 	 * @param string $caption The label for the link.
 	 * @param string $subject
 	 * @param string $propertyName
 	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
-	 * 
+	 *
 	 * @return SMWInfolink
-	 */	
+	 */
 	public static function newInversePropertySearchLink( $caption, $subject, $propertyname, $style = false ) {
 		global $wgContLang;
-		return new SMWInfolink( true, $caption, $wgContLang->getNsText( NS_SPECIAL ) . ':PageProperty/' .  $subject . '::' . $propertyName, $style );
+		return new SMWInfolink( true, $caption, $wgContLang->getNsText( NS_SPECIAL ) . ':PageProperty/' .  $subject . '::' . $propertyname, $style );
 	}
 
 	/**
 	 * Static function to construct links to the browsing special.
-	 * 
+	 *
 	 * @param string $caption The label for the link.
 	 * @param string $titleText
 	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
-	 * 
+	 *
 	 * @return SMWInfolink
 	 */
 	public static function newBrowsingLink( $caption, $titleText, $style = 'smwbrowse' ) {
@@ -146,7 +146,7 @@ class SMWInfolink {
 
 	/**
 	 * Set (or add) parameter values for an existing link.
-	 * 
+	 *
 	 * @param mixed $value
 	 * @param mixed $key
 	 */
@@ -201,16 +201,16 @@ class SMWInfolink {
 			$start = '';
 			$end = '';
 		}
-		
+
 		if ( $this->mInternal ) {
 			if ( count( $this->mParams ) > 0 ) {
 				$titletext = $this->mTarget . '/' . SMWInfolink::encodeParameters( $this->mParams );
 			} else {
 				$titletext = $this->mTarget;
 			}
-			
+
 			$title = Title::newFromText( $titletext );
-			
+
 			if ( $title !== null ) {
 				if ( $outputformat == SMW_OUTPUT_WIKI ) {
 					$link = "[[$titletext|$this->mCaption]]";
@@ -222,7 +222,7 @@ class SMWInfolink {
 			         //  that can be separated from title text,
 			         //  e.g. as in Special:Bla/il<leg>al -> Special:Bla&p=il&lt;leg&gt;al)
 				$title = Title::newFromText( $this->mTarget );
-				
+
 				if ( $title !== null ) {
 					if ( $outputformat == SMW_OUTPUT_WIKI ) {
 						$link = "[" . $title->getFullURL( SMWInfolink::encodeParameters( $this->mParams, false ) ) . " $this->mCaption]";
@@ -235,7 +235,7 @@ class SMWInfolink {
 			}
 		} else {
 			$target = $this->getURL();
-			
+
 			if ( $outputformat == SMW_OUTPUT_WIKI ) {
 				$link = "[$target $this->mCaption]";
 			} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
@@ -248,7 +248,7 @@ class SMWInfolink {
 
 	/**
 	 * Return hyperlink for this infolink in HTML format.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getHTML( $linker = null ) {
@@ -257,7 +257,7 @@ class SMWInfolink {
 
 	/**
 	 * Return hyperlink for this infolink in wiki format.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getWikiText( $linker = null ) {
@@ -268,13 +268,13 @@ class SMWInfolink {
 	 * Return a fully qualified URL that points to the link target (whether internal or not).
 	 * This function might be used when the URL is needed outside normal links, e.g. in the HTML
 	 * header or in some metadata file. For making normal links, getText() should be used.
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getURL() {
 		if ( $this->mInternal ) {
 			$title = Title::newFromText( $this->mTarget );
-			
+
 			if ( $title !== null ) {
 				return $title->getFullURL( SMWInfolink::encodeParameters( $this->mParams, false ) );
 			} else {
@@ -290,7 +290,7 @@ class SMWInfolink {
 			} else {
 				$target = $this->mTarget;
 			}
-			
+
 			return $target;
 		}
 	}
@@ -300,7 +300,7 @@ class SMWInfolink {
 	 * Return a Linker object, using the parameter $linker if not null, and creatng a new one
 	 * otherwise. $linker is usually a user skin object, while the fallback linker object is
 	 * not customised to user settings.
-	 * 
+	 *
 	 * @return Linker
 	 */
 	protected function getLinker( &$linker = null ) {
@@ -321,13 +321,13 @@ class SMWInfolink {
 	 * It is strongly recommended to not create any code that depends on the concrete
 	 * way of how parameters are encoded within this function, and to always use the
 	 * respective encoding/decoding methods instead.
-	 * 
+	 *
 	 * @param array $params
 	 * @param boolean $forTitle
 	 */
 	static public function encodeParameters( array $params, $forTitle = true ) {
 		$result = '';
-		
+
 		if ( $forTitle ) {
 			foreach ( $params as $name => $value ) {
 				if ( is_string( $name ) && ( $name != '' ) ) $value = $name . '=' . $value;
@@ -354,20 +354,20 @@ class SMWInfolink {
 					array( '-2D', '-23', '-0A', '-20', '-2F', '-5B', '-5D', '-3C', '-3E', '-3C', '-3E', '-26', '-27-27', '-7C', '-26', '-25', '-3F' ),
 					$value
 				);
-				
+
 				if ( $result != '' ) $result .= '/';
-				
+
 				$result .= $value;
 			}
 		} else { // Note: this requires to have HTTP compatible parameter names (ASCII)
 			$q = array(); // collect unlabelled query parameters here
-			
+
 			foreach ( $params as $name => $value ) {
 				if ( is_string( $name ) && ( $name != '' ) ) {
 					$value = $name . '=' . rawurlencode( $value );
-					
+
 					if ( $result != '' ) $result .= '&';
-					
+
 					$result .= $value;
 				} else {
 					$q[] = $value;
@@ -378,7 +378,7 @@ class SMWInfolink {
 				$result = 'x=' . rawurlencode( SMWInfolink::encodeParameters( $q, true ) ) . $result;
 			}
 		}
-		
+
 		return $result;
 	}
 
@@ -401,36 +401,36 @@ class SMWInfolink {
 	 * encoding. It is strongly recommended to not create any code that depends on the
 	 * concrete way of how parameters are encoded within this function, and to always use
 	 * the respective encoding/decoding methods instead.
-	 * 
+	 *
 	 * @param string $titleParam
 	 * @param boolean $allParams
 	 */
 	static public function decodeParameters( $titleParam = '', $allParams = false ) {
 		global $wgRequest;
-		
+
 		$result = array();
-		
+
 		if ( $allParams ) {
 			$result = $wgRequest->getValues();
-			
+
 			if ( array_key_exists( 'x', $result ) ) { // Considered to be part of the title param.
 				if ( $titleParam != '' ) $titleParam .= '/';
 				$titleParam .= $result['x'];
 				unset( $result['x'] );
 			}
 		}
-		
+
 		if ( is_array( $titleParam ) ) {
 			return $titleParam;
 		} elseif ( $titleParam != '' ) {
 			// unescape $p; escaping scheme: all parameters rawurlencoded, "-" and "/" urlencoded, all "%" replaced by "-", parameters then joined with /
 			$ps = explode( '/', $titleParam ); // params separated by / here (compatible with wiki link syntax)
-			
+
 			foreach ( $ps as $p ) {
 				if ( $p != '' ) {
 					$p = rawurldecode( str_replace( '-', '%', $p ) );
 					$parts = explode( '=', $p, 2 );
-					
+
 					if ( count( $parts ) > 1 ) {
 						$result[$parts[0]] = $parts[1];
 					} else {
@@ -439,7 +439,7 @@ class SMWInfolink {
 				}
 			}
 		}
-		
+
 		return $result;
 	}
 
