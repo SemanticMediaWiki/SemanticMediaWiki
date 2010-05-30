@@ -467,6 +467,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		if ( ( $pid == 0 ) || ( $tableid == '' ) || ( ( $value !== null ) && ( !$value->isValid() ) ) ) {
+			wfProfileOut( "SMWSQLStoreLight::getPropertySubjects (SMW)" );
 			return array();
 		}
 
