@@ -112,7 +112,7 @@ class SMWSemanticData {
 	 * @return array
 	 */
 	public function __sleep() {
-		return array( 'subject' );
+		return array( 'mSubject' );
 	}
 
 	/**
