@@ -14,8 +14,8 @@
 /**
  * @author Markus Krötzsch
  *
- * This special page for MediaWiki provides an administrative interface 
- * that allows to execute certain functions related to the maintainance 
+ * This special page for MediaWiki provides an administrative interface
+ * that allows to execute certain functions related to the maintainance
  * of the semantic database. It is restricted to users with siteadmin status.
  *
  * @ingroup SMWSpecialPage
@@ -32,13 +32,13 @@ class SMWAdmin extends SpecialPage {
 	}
 
 	public function execute( $par ) {
-		global $wgOut, $wgRequest, $wgServer, $wgScript, $wgUser, $smwgAdminRefreshStore;
-	
+		global $wgOut, $wgRequest, $wgServer, $wgArticlePath, $wgScript, $wgUser, $smwgAdminRefreshStore;
+
 		if ( !$this->userCanExecute( $wgUser ) ) {
 			// If the user is not authorized, show an error.
 			$this->displayRestrictionError();
 			return;
-		}		
+		}
 
 		$this->setHeaders();
 
@@ -136,7 +136,7 @@ class SMWAdmin extends SpecialPage {
 				'<p>' . wfMsg( 'smw_smwadmin_announcedocu' ) . "</p>\n" .
 				'<p>' . wfMsg( 'smw_smwadmin_announcebutton' ) . "</p>\n" .
 				 '<form name="announcewiki" action="http://semantic-mediawiki.org/wiki/Special:SMWRegistry" method="GET">' .
-				 '<input type="hidden" name="url" value="' . SMWExporter::expandURI( '&wikiurl;' ) . '" />' .
+				 '<input type="hidden" name="url" value="' . $wgServer . str_replace( '$1', '', $wgArticlePath ) . '" />' .
 				 '<input type="hidden" name="return" value="Special:SMWAdmin" />' .
 				 '<input type="submit" value="Announce wiki"/></form>' . "\n";
 
