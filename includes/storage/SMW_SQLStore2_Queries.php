@@ -313,7 +313,7 @@ class SMWSQLStore2QueryEngine {
 			$auxtables .= "<li>Temporary table $table";
 
 			foreach ( $log as $q ) {
-				$auxtables .= "<br />&nbsp;&nbsp;<tt>$q</tt>";
+				$auxtables .= "<br />&#160;&#160;<tt>$q</tt>";
 			}
 
 			$auxtables .= '</li>';

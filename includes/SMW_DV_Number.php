@@ -49,7 +49,7 @@ class SMWNumberValue extends SMWDataValue {
 
 		$parts = preg_split( '/([-+]?\s*\d+(?:\\' . $kiloseparator . '\d\d\d)*' .
 		                      '(?:\\' . $decseparator . '\d+)?\s*(?:[eE][-+]?\d+)?)/u',
-		                      trim( str_replace( array( '&nbsp;', '&thinsp;', ' ' ), '', $value ) ),
+		                      trim( str_replace( array( '&nbsp;', '&#160;', '&thinsp;', ' ' ), '', $value ) ),
 		                      2, PREG_SPLIT_DELIM_CAPTURE );
 
 		if ( count( $parts ) >= 2 ) {
@@ -105,7 +105,7 @@ class SMWNumberValue extends SMWDataValue {
 			if ( $unit != $this->m_unitin ) {
 				$tooltip .= $sep . smwfNumberFormat( $value );
 				if ( $unit != '' ) {
-					$tooltip .= '&nbsp;' . $unit;
+					$tooltip .= '&#160;' . $unit;
 				}
 				$sep = ' <br />';
 				$i++;
@@ -142,7 +142,7 @@ class SMWNumberValue extends SMWDataValue {
 				}
 				$result .= ( $this->m_outformat != '-' ? smwfNumberFormat( $value ):$value );
 				if ( $unit != '' ) {
-					$result .= '&nbsp;' . $unit;
+					$result .= '&#160;' . $unit;
 				}
 				$i++;
 				if ( $this->m_outformat == '-' ) { // no further conversions for plain output format
@@ -279,7 +279,7 @@ class SMWNumberValue extends SMWDataValue {
 		}
 		if ( ( $this->m_unit != '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
 			if ( $this->m_outformat != '-u' ) {
-				$this->m_caption .=  ( $this->m_outformat != '-' ? '&nbsp;' : ' ' );
+				$this->m_caption .=  ( $this->m_outformat != '-' ? '&#160;' : ' ' );
 			}
 			$this->m_caption .= $this->m_unit;
 		}

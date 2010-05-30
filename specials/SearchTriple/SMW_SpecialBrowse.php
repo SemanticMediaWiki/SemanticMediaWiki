@@ -106,7 +106,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 			$this->articletext = $this->subject->getWikiValue();
 			// Add a bit space between the factbox and the query form
-			if ( !$this->including() ) $html .= "<p> &nbsp; </p>\n";
+			if ( !$this->including() ) $html .= "<p> &#160; </p>\n";
 		}
 		if ( !$this->including() ) $html .= $this->queryForm();
 		$wgOut->addHTML( $html );
@@ -168,7 +168,7 @@ class SMWSpecialBrowse extends SpecialPage {
 			}
 		} // end foreach properties
 		if ( $noresult ) {
-			$html .= "<tr class=\"smwb-propvalue\"><th> &nbsp; </th><td><em>" .
+			$html .= "<tr class=\"smwb-propvalue\"><th> &#160; </th><td><em>" .
 			         wfMsg( $incoming ? 'smw_browse_no_incoming':'smw_browse_no_outgoing' ) . "</em></td></tr>\n";
 		}
 		$html .= "</table>\n";
@@ -188,9 +188,9 @@ class SMWSpecialBrowse extends SpecialPage {
 		$skin = $wgUser->getSkin();
 		$html = $value->getLongHTMLText( $skin );
 		if ( $value->getTypeID() == '_wpg' ) {
-			$html .= "&nbsp;" . SMWInfolink::newBrowsingLink( '+', $value->getLongWikiText() )->getHTML( $skin );
+			$html .= "&#160;" . SMWInfolink::newBrowsingLink( '+', $value->getLongWikiText() )->getHTML( $skin );
 		} elseif ( $incoming && $property->isVisible() ) {
-			$html .= "&nbsp;" . SMWInfolink::newInversePropertySearchLink( '+', $value->getTitle(), $property->getText(), 'smwsearch' )->getHTML( $skin );
+			$html .= "&#160;" . SMWInfolink::newInversePropertySearchLink( '+', $value->getTitle(), $property->getText(), 'smwsearch' )->getHTML( $skin );
 		} else {
 			$html .= $value->getInfolinkText( SMW_OUTPUT_HTML, $skin );
 		}
@@ -226,7 +226,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		       ( $this->showincoming ?
 			     $this->linkhere( wfMsg( 'smw_browse_hide_incoming' ), true, false, 0 ):
 		         $this->linkhere( wfMsg( 'smw_browse_show_incoming' ), true, true, $this->offset ) ) .
-		       "&nbsp;\n" . "</td></tr>\n" . "</table>\n";
+		       "&#160;\n" . "</td></tr>\n" . "</table>\n";
 	}
 
 	/**
@@ -246,12 +246,12 @@ class SMWSpecialBrowse extends SpecialPage {
 				$html .= ( $this->offset == 0 ) ? wfMsg( 'smw_result_prev' ):
 					     $this->linkhere( wfMsg( 'smw_result_prev' ), $this->showoutgoing, true, $offset );
 				$offset = $this->offset + SMWSpecialBrowse::$incomingpropertiescount - 1;
-				$html .= " &nbsp;&nbsp;&nbsp;  <strong>" . wfMsg( 'smw_result_results' ) . " " . ( $this->offset + 1 ) .
-						 " &ndash; " . ( $offset ) . "</strong>  &nbsp;&nbsp;&nbsp; ";
+				$html .= " &#160;&#160;&#160;  <strong>" . wfMsg( 'smw_result_results' ) . " " . ( $this->offset + 1 ) .
+						 " – " . ( $offset ) . "</strong>  &#160;&#160;&#160; ";
 				$html .= $more ? $this->linkhere( wfMsg( 'smw_result_next' ), $this->showoutgoing, true, $offset ):wfMsg( 'smw_result_next' );
 			}
 		}
-		$html .= "&nbsp;\n" . "</td></tr>\n" . "</table>\n";
+		$html .= "&#160;\n" . "</td></tr>\n" . "</table>\n";
 		return $html;
 	}
 
@@ -344,8 +344,8 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return string  Transformed text
 	 */
 	private function unbreak( $text ) {
- 		$text = preg_replace( '/[\s]/u', '&nbsp;', $text, - 1, $count );
- 		return $count > 2 ? preg_replace( '/(&nbsp;)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
+ 		$text = preg_replace( '/[\s]/u', '&#160;', $text, - 1, $count );
+ 		return $count > 2 ? preg_replace( '/(&#160;)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
 	}
 
 }

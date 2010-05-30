@@ -116,7 +116,7 @@ class SMWTemperatureValue extends SMWNumberValue {
 
 		$this->m_caption = smwfNumberFormat( $value );
 		if ( $printunit != '' ) {
-			$this->m_caption .= '&nbsp;' . $printunit;
+			$this->m_caption .= '&#160;' . $printunit;
 		}
 		$this->m_wikivalue = $this->m_caption;
 		$this->m_unitin = $unit;

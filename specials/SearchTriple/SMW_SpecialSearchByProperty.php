@@ -71,6 +71,7 @@ class SMWSearchByProperty extends SpecialPage {
 		if ( $this->valuestring == '' ) $this->valuestring = next( $params );
 
 		$this->valuestring = str_replace( "&nbsp;", " ", $this->valuestring );
+		$this->valuestring = str_replace( "&#160;", " ", $this->valuestring );
 
 		$this->property = SMWPropertyValue::makeUserProperty( $this->propertystring );
 		if ( !$this->property->isValid() ) {
@@ -143,7 +144,7 @@ class SMWSearchByProperty extends SpecialPage {
 				$html .= wfMsg( 'smw_sbv_displayresultfuzzy', $this->property->getShortHTMLText( $skin ), $this->value->getShortHTMLText( $skin ) ) . "<br />\n";
 				$html .= $this->displayResults( $lesser, $cL, false );
 				if ( $count == 0 ) {
-					$html .= " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em><strong><small>(" . $this->value->getLongHTMLText() . ")</small></strong></em>\n";
+					$html .= " &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<em><strong><small>(" . $this->value->getLongHTMLText() . ")</small></strong></em>\n";
 				} else {
 					$html .= $this->displayResults( $exact, $count, true, true );
 				}
@@ -161,7 +162,7 @@ class SMWSearchByProperty extends SpecialPage {
 			}
 		}
 
-		$html .= '<p>&nbsp;</p>';
+		$html .= '<p>&#160;</p>';
 		return $html;
 	}
 
@@ -185,7 +186,7 @@ class SMWSearchByProperty extends SpecialPage {
 			$result = array_shift( $results );
 			$thing = $result[0]->getLongHTMLText( $skin );
 			$browselink = ( $result[0]->getTypeId() == '_wpg' ) ?
-			              '&nbsp;&nbsp;' . SMWInfolink::newBrowsingLink( '+', $result[0]->getShortHTMLText() )->getHTML( $skin ):'';
+			              '&#160;&#160;' . SMWInfolink::newBrowsingLink( '+', $result[0]->getShortHTMLText() )->getHTML( $skin ):'';
 			$html .= '<li>' . $thing . $browselink;
 			if ( ( $this->value != $result[1] ) || $highlight ) $html .= " <em><small>(" . $result[1]->getLongHTMLText( $skin ) . ")</small></em>";
 			$html .= "</li>";
@@ -214,7 +215,7 @@ class SMWSearchByProperty extends SpecialPage {
 		else
 			$navigation = wfMsg( 'smw_result_prev' );
 
-		$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $this->offset + 1 ) . '&ndash; ' . ( $this->offset + min( $count, $this->limit ) ) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+		$navigation .= '&#160;&#160;&#160;&#160; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $this->offset + 1 ) . '– ' . ( $this->offset + min( $count, $this->limit ) ) . '</b>&#160;&#160;&#160;&#160;';
 
 		if ( $count > $this->limit ) {
 			$navigation .= ' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'SearchByProperty', 'offset=' . ( $this->offset + $this->limit ) . '&limit=' . $this->limit . '&property=' . urlencode( $this->property->getWikiValue() ) . '&value=' . urlencode( $this->value->getWikiValue() ) ) )  . '">' . wfMsg( 'smw_result_next' ) . '</a>';
@@ -226,7 +227,7 @@ class SMWSearchByProperty extends SpecialPage {
 		foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
 			if ( $max ) continue;
 			if ( $first ) {
-				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
+				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
 				$first = false;
 			} else {
 				$navigation .= ' ' . ( $smwgMW_1_14 ? wfMsgExt( 'pipe-separator' , 'escapenoentities' ):'|' ) . ' ';
@@ -319,7 +320,7 @@ class SMWSearchByProperty extends SpecialPage {
 		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByProperty' );
 		$html  = '<form name="searchbyproperty" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
-		$html .= wfMsg( 'smw_sbv_property' ) . ' <input type="text" name="property" value="' . htmlspecialchars( $this->propertystring ) . '" />' . "&nbsp;&nbsp;&nbsp;\n";
+		$html .= wfMsg( 'smw_sbv_property' ) . ' <input type="text" name="property" value="' . htmlspecialchars( $this->propertystring ) . '" />' . "&#160;&#160;&#160;\n";
 		$html .= wfMsg( 'smw_sbv_value' ) . ' <input type="text" name="value" value="' . htmlspecialchars( $this->valuestring ) . '" />' . "\n";
 		$html .= '<input type="submit" value="' . wfMsg( 'smw_sbv_submit' ) . "\"/>\n</form>\n";
 

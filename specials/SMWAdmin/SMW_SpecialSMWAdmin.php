@@ -114,7 +114,7 @@ class SMWAdmin extends SpecialPage {
 			$prog = $refreshjob->getProgress();
 			$html .= '<p>' . wfMsg( 'smw_smwadmin_datarefreshprogress' ) . "</p>\n" .
 			'<p><div style="float: left; background: #DDDDDD; border: 1px solid grey; width: 300px; "><div style="background: #AAF; width: ' .
-				round( $prog * 300 ) . 'px; height: 20px; "> </div></div> &nbsp;' . round( $prog * 100, 4 ) . '%</p><br /><br />';
+				round( $prog * 300 ) . 'px; height: 20px; "> </div></div> &#160;' . round( $prog * 100, 4 ) . '%</p><br /><br />';
 			if ( $smwgAdminRefreshStore ) {
 				$html .=
 				'<form name="refreshwiki" action="" method="POST">' .

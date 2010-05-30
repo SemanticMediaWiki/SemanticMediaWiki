@@ -137,7 +137,7 @@ class SMWLinearValue extends SMWNumberValue {
 		}
 		if ( ( $printunit != '' ) && ( $this->m_outformat != '-n' ) ) { // -n is the format for displaying the number only
 			if ( $this->m_outformat != '-u' ) {
-				$this->m_caption .=  ( $this->m_outformat != '-' ? '&nbsp;' : ' ' );
+				$this->m_caption .=  ( $this->m_outformat != '-' ? '&#160;' : ' ' );
 			}
 			$this->m_caption .= $printunit;
 		}

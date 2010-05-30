@@ -121,14 +121,14 @@ class SMWSpecialOWLExport extends SpecialPage {
 		        '<input type="hidden" name="postform" value="1"/>' . "\n" .
 		        '<textarea name="pages" cols="40" rows="10"></textarea><br />' . "\n";
 		if ( $wgUser->isAllowed( 'delete' ) || $smwgAllowRecursiveExport ) {
-			$html .= '<input type="checkbox" name="recursive" value="1" id="rec">&nbsp;<label for="rec">' . wfMsg( 'smw_exportrdf_recursive' ) . '</label></input><br />' . "\n";
+			$html .= '<input type="checkbox" name="recursive" value="1" id="rec">&#160;<label for="rec">' . wfMsg( 'smw_exportrdf_recursive' ) . '</label></input><br />' . "\n";
 		}
 		if ( $wgUser->isAllowed( 'delete' ) || $smwgExportBacklinks ) {
-			$html .= '<input type="checkbox" name="backlinks" value="1" default="true" id="bl">&nbsp;<label for="bl">' . wfMsg( 'smw_exportrdf_backlinks' ) . '</label></input><br />' . "\n";
+			$html .= '<input type="checkbox" name="backlinks" value="1" default="true" id="bl">&#160;<label for="bl">' . wfMsg( 'smw_exportrdf_backlinks' ) . '</label></input><br />' . "\n";
 		}
 		if ( $wgUser->isAllowed( 'delete' ) || $smwgExportAll ) {
 			$html .= '<br />';
-			$html .= '<input type="text" name="date" value="' . date( DATE_W3C, mktime( 0, 0, 0, 1, 1, 2000 ) ) . '" id="date">&nbsp;<label for="ea">' . wfMsg( 'smw_exportrdf_lastdate' ) . '</label></input><br />' . "\n";
+			$html .= '<input type="text" name="date" value="' . date( DATE_W3C, mktime( 0, 0, 0, 1, 1, 2000 ) ) . '" id="date">&#160;<label for="ea">' . wfMsg( 'smw_exportrdf_lastdate' ) . '</label></input><br />' . "\n";
 		}
 		$html .= "<br /><input type=\"submit\"  value=\"" . wfMsg( 'smw_exportrdf_submit' ) . "\"/>\n</form>";
 		$wgOut->addHTML( $html );

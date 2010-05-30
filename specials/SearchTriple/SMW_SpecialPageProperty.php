@@ -78,7 +78,7 @@ class SMWPageProperty extends SpecialPage {
 					$navigation = wfMsg( 'smw_result_prev' );
 				}
 
-				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) . '&ndash; ' . ( $offset + min( count( $results ), $limit ) ) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+				$navigation .= '&#160;&#160;&#160;&#160; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) . '– ' . ( $offset + min( count( $results ), $limit ) ) . '</b>&#160;&#160;&#160;&#160;';
 				if ( count( $results ) == ( $limit + 1 ) ) {
 					$navigation .= ' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'PageProperty', 'offset=' . ( $offset + $limit ) . '&limit=' . $limit . '&type=' . urlencode( $propname ) . '&from=' . urlencode( $pagename ) ) )  . '">' . wfMsg( 'smw_result_next' ) . '</a>';
 				} else {
@@ -101,7 +101,7 @@ class SMWPageProperty extends SpecialPage {
 					$html .= '<li>' . $result->getLongHTMLText( $skin ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
 					if ( $result->getTypeID() == '_wpg' ) {
 						$browselink = SMWInfolink::newBrowsingLink( '+', $result->getLongWikiText() );
-						$html .= ' &nbsp;' . $browselink->getHTML( $skin );
+						$html .= ' &#160;' . $browselink->getHTML( $skin );
 					}
 					$html .=  "</li> \n";
 				}
@@ -112,10 +112,10 @@ class SMWPageProperty extends SpecialPage {
 
 		// Display query form
 		$spectitle = Title::makeTitle( NS_SPECIAL, 'PageProperty' );
-		$html .= '<p>&nbsp;</p>';
+		$html .= '<p>&#160;</p>';
 		$html .= '<form name="pageproperty" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
-		$html .= wfMsg( 'smw_pp_from' ) . ' <input type="text" name="from" value="' . htmlspecialchars( $pagename ) . '" />' . "&nbsp;&nbsp;&nbsp;\n";
+		$html .= wfMsg( 'smw_pp_from' ) . ' <input type="text" name="from" value="' . htmlspecialchars( $pagename ) . '" />' . "&#160;&#160;&#160;\n";
 		$html .= wfMsg( 'smw_pp_type' ) . ' <input type="text" name="type" value="' . htmlspecialchars( $propname ) . '" />' . "\n";
 		$html .= '<input type="submit" value="' . wfMsg( 'smw_pp_submit' ) . "\"/>\n</form>\n";
 

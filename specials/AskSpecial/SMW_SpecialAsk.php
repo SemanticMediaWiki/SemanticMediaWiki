@@ -477,7 +477,7 @@ END;
 			$navigation = wfMsg( 'smw_result_prev' );
 		}
 
-		$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) . '&ndash; ' . ( $offset + $res->getCount() ) . '</b>&nbsp;&nbsp;&nbsp;&nbsp;';
+		$navigation .= '&#160;&#160;&#160;&#160; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) . '– ' . ( $offset + $res->getCount() ) . '</b>&#160;&#160;&#160;&#160;';
 
 		if ( $res->hasFurtherResults() )
 			$navigation .= ' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', 'offset=' . ( $offset + $limit ) . '&limit=' . $limit . $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_result_next' ) . '</a>';
@@ -487,7 +487,7 @@ END;
 		foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
 			if ( $l > $smwgQMaxInlineLimit ) break;
 			if ( $first ) {
-				$navigation .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(';
+				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
 				$first = false;
 			} else $navigation .= ' ' . SMWAskPage::$pipeseparator . ' ';
 			if ( $limit != $l ) {

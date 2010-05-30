@@ -223,9 +223,9 @@ function smwfSetupExtension() {
 	///// credits (see "Special:Version") /////
 	$wgExtensionCredits['parserhook'][] = array(
 		'path' => __FILE__,
-		'name' => 'Semantic&nbsp;MediaWiki',
+		'name' => 'Semantic&#160;MediaWiki',
 		'version' => SMW_VERSION,
-		'author' => "Klaus&nbsp;Lassleben, [http://korrekt.org Markus&nbsp;Kr&ouml;tzsch], [http://simia.net Denny&nbsp;Vrandecic], S&nbsp;Page, and others. Maintained by [http://www.aifb.kit.edu/web/Wissensmanagement/en AIFB Karlsruhe].",
+		'author' => "Klaus&#160;Lassleben, [http://korrekt.org Markus&#160;Krötzsch], [http://simia.net Denny&#160;Vrandecic], S&#160;Page, and others. Maintained by [http://www.aifb.kit.edu/web/Wissensmanagement/en AIFB Karlsruhe].",
 		'url' => 'http://semantic-mediawiki.org',
 		'descriptionmsg' => 'smw-desc'
 	);

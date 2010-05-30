@@ -22,7 +22,7 @@ class SMWStringValue extends SMWDataValue {
 		if ( $value != '' ) {
 			$this->m_value = $value;
 			if ( ( $this->m_typeid != '_txt' ) && ( $this->m_typeid != '_cod' ) && ( strlen( $this->m_value ) > 255 ) ) { // limit size (for DB indexing)
-				$this->addError( wfMsgForContent( 'smw_maxstring', mb_substr( $value, 0, 42 ) . ' <span class="smwwarning">[&hellip;]</span> ' . mb_substr( $value, mb_strlen( $this->m_value ) - 42 ) ) );
+				$this->addError( wfMsgForContent( 'smw_maxstring', mb_substr( $value, 0, 42 ) . ' <span class="smwwarning">[…]</span> ' . mb_substr( $value, mb_strlen( $this->m_value ) - 42 ) ) );
 			}
 		} else {
 			$this->addError( wfMsgForContent( 'smw_emptystring' ) );
@@ -135,10 +135,10 @@ class SMWStringValue extends SMWDataValue {
 		$len = mb_strlen( $value );
 		if ( ( $len > 255 ) && ( $this->m_typeid != '_cod' ) ) {
 			if ( ( $linked === null ) || ( $linked === false ) ) {
-				return mb_substr( $value, 0, 42 ) . ' <span class="smwwarning">&hellip;</span> ' . mb_substr( $value, $len - 42 );
+				return mb_substr( $value, 0, 42 ) . ' <span class="smwwarning">…</span> ' . mb_substr( $value, $len - 42 );
 			} else {
 				SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
-				return mb_substr( $value, 0, 42 ) . ' <span class="smwttpersist"> &hellip; <span class="smwttcontent">' . $value . '</span></span> ' . mb_substr( $value, $len - 42 );
+				return mb_substr( $value, 0, 42 ) . ' <span class="smwttpersist"> … <span class="smwttcontent">' . $value . '</span></span> ' . mb_substr( $value, $len - 42 );
 			}
 		} elseif ( $this->m_typeid == '_cod' ) {
 			return $this->getCodeDisplay( $value, true );
@@ -152,7 +152,7 @@ class SMWStringValue extends SMWDataValue {
 	 */
 	protected function getCodeDisplay( $value, $scroll = false ) {
 		SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
-		$result = str_replace( array( '<', '>', ' ', '=', "'", ':', "\n" ), array( '&lt;', '&gt;', '&nbsp;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ), $value );
+		$result = str_replace( array( '<', '>', ' ', '=', "'", ':', "\n" ), array( '&lt;', '&gt;', '&#160;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ), $value );
 		if ( $scroll ) {
 			$result = "<div style=\"height:5em; overflow:auto;\">$result</div>";
 		}

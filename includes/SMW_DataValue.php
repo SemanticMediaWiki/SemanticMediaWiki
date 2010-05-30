@@ -583,7 +583,7 @@ abstract class SMWDataValue {
 			case SMW_OUTPUT_WIKI:
 				foreach ( $this->getInfolinks() as $link ) {
 					if ( $first ) {
-						$result .= '<!-- -->&nbsp;&nbsp;' . $link->getWikiText();
+						$result .= '<!-- -->&#160;&#160;' . $link->getWikiText();
 							// the comment is needed to prevent MediaWiki from linking URL-strings together with the nbsps!
 						$first = false;
 					} else {
@@ -595,7 +595,7 @@ abstract class SMWDataValue {
 			case SMW_OUTPUT_HTML: case SMW_OUTPUT_FILE: default:
 				foreach ( $this->getInfolinks() as $link ) {
 					if ( $first ) {
-						$result .= '&nbsp;&nbsp;' . $link->getHTML( $linker );
+						$result .= '&#160;&#160;' . $link->getHTML( $linker );
 						$first = false;
 					} else {
 						$extralinks[] = $link->getHTML( $linker );

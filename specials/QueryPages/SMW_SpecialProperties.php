@@ -98,7 +98,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 		} else { // predefined property
 			$type = $result[0]->getTypesValue();
 			$typestring = $type->getLongHTMLText( $skin );
-			if ( $typestring == '' ) $typestring = '&ndash;'; /// FIXME some types o fbuiltin props have no name, and another message should be used then
+			if ( $typestring == '' ) $typestring = '–'; /// FIXME some types o fbuiltin props have no name, and another message should be used then
 			$proplink = $result[0]->getLongHTMLText( $skin );
 		}
 		if ( $typestring == '' ) {
