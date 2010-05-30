@@ -299,72 +299,17 @@ class SMWSQLStoreLight extends SMWStore {
 		wfProfileOut( "SMWSQLStoreLight::updateData (SMW)" );
 	}
 
-	/**
-	 * Implementation of SMWStore::changeTitle(). In contrast to
-	 * updateRedirects(), this function does not simply write a redirect
-	 * from the old page to the new one, but also deletes all data that may
-	 * already be stored for the new title (normally the new title should
-	 * belong to an empty page that has no data but at least it could have a
-	 * redirect to the old page), and moves all data that exists for the old
-	 * title to the new location. Thus, the function executes three steps:
-	 * delete data at newtitle, move data from oldtitle to newtitle, and set
-	 * redirect from oldtitle to newtitle. In some cases, the goal can be
-	 * achieved more efficiently, e.g. if the new title does not occur in SMW
-	 * yet: then we can just change the ID records for the titles instead of
-	 * changing all data tables
-	 *
-	 * Note that the implementation ignores the MediaWiki IDs since this
-	 * store has its own ID management. Also, the function requires that both
-	 * titles are local, i.e. have empty interwiki prefix.
-	 *
-	 * @todo Currently the sortkey is not moved with the remaining data. It is
-	 * not possible to move it reliably in all cases: we cannot distinguish an
-	 * unset sortkey from one that was set to the name of oldtitle. Maybe use
-	 * update jobs right away?
-	 */
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
-		global $smwgQEqualitySupport;
-		wfProfileIn( "SMWSQLStoreLight::changeTitle (SMW)" );
-		// get IDs but do not resolve redirects:
-		$sid = $this->getSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), '', false );
-		$tid = $this->getSMWPageID( $newtitle->getDBkey(), $newtitle->getNamespace(), '', false );
-		$db = wfGetDB( DB_MASTER );
-
-		if ( ( $tid == 0 ) && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) { // target not used anywhere yet, just hijack its title for our current id
-			// This condition may not hold even if $newtitle is currently unused/non-existing since we keep old IDs.
-			// If equality support is off, then this simple move does too much; fall back to general case below.
-			if ( $sid != 0 ) { // change id entry to refer to the new title
-				$db->update( 'smw_ids', array( 'smw_title' => $newtitle->getDBkey(), 'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' ),
-				            array( 'smw_id' => $sid ), 'SMWSQLStoreLight::changeTitle' );
-			} else { // make new (target) id for use in redirect table
-				$sid = $this->makeSMWPageID( $newtitle->getDBkey(), $newtitle->getNamespace(), '' );
-			} // at this point, $sid is the id of the target page (according to smw_ids)
-			$this->makeSMWPageID( $oldtitle->getDBkey(), $oldtitle->getNamespace(), SMW_SQL2_SMWREDIIW ); // make redirect id for oldtitle
-			$db->insert( 'smw_redi2', array( 's_title' => $oldtitle->getDBkey(), 's_namespace' => $oldtitle->getNamespace(), 'o_id' => $sid ),
-			             'SMWSQLStoreLight::changeTitle' );
-			$this->m_ids[" " . $oldtitle->getNamespace() . " " . $oldtitle->getDBkey() . " C"] = $sid;
-			// $this->m_ids[" " . $oldtitle->getNamespace() . " " . $oldtitle->getDBkey() . " -"] = Already OK after makeSMWPageID above
-			$this->m_ids[" " . $newtitle->getNamespace() . " " . $newtitle->getDBkey() . " C"] = $sid;
-			$this->m_ids[" " . $newtitle->getNamespace() . " " . $newtitle->getDBkey() . " -"] = $sid;
-			/// NOTE: there is the (bad) case that the moved page is a redirect. As chains of
-			/// redirects are not supported by MW or SMW, the above is maximally correct in this case too.
-			/// NOTE: this temporarily leaves existing redirects to oldtitle point to newtitle as well, which
-			/// will be lost after the next update. Since double redirects are an error anyway, this is not
-			/// a bad behaviour: everything will continue to work until the existing redirects are updated,
-			/// which will hopefully be done to fix the double redirect.
-		} else { // general move method that should be correct in all cases (equality support respected when updating redirects)
-			// delete any existing data from new title:
-			$this->deleteSemanticData( SMWWikiPageValue::makePageFromTitle( $newtitle ) ); // $newtitle should not have data, but let's be sure
-			$this->updateRedirects( $newtitle->getDBkey(), $newtitle->getNamespace() ); // may trigger update jobs!
-			// move all data of old title to new position:
-			if ( $sid != 0 ) {
-				$this->changeSMWPageID( $sid, $tid, $oldtitle->getNamespace(), $newtitle->getNamespace(), true, false );
-			}
-			// now write a redirect from old title to new one; this also updates references in other tables as needed
-			$this->updateRedirects( $oldtitle->getDBkey(), $oldtitle->getNamespace(), $newtitle->getDBkey(), $newtitle->getNamespace() );
-			/// TODO: may not be optimal for the standard case that newtitle existed and redirected to oldtitle (PERFORMANCE)
-		}
-		wfProfileOut( "SMWSQLStoreLight::changeTitle (SMW)" );
+		// Nothing needs to be done here: MediaWiki makes sure that the page keeps the same page
+		// id before and after a move, so all SMW data is indirectly moved along with the page
+		// contents.
+		// If SMW would store data for redirect pages, then this data could become orphaned in this
+		// operation, since MW moves over redirects without notice. None of the parameters of this
+		// hook tells us which id the deleted (moved-over) redirect had, so we could not do anything
+		// simple to keep the store consistent in this case.
+		// This also shows why using MW page ids as values of properties that point to pages would
+		// be problematic unless further hooks would be provided by MW to track the change/destruction
+		// of page ids like when moving over an existing page.
 	}
 
 ///// Query answering /////
@@ -471,25 +416,6 @@ class SMWSQLStoreLight extends SMWStore {
 			}
 		}
 
-		// update by internal SMW id --> make sure we get all objects in SMW
-		$db = wfGetDB( DB_SLAVE );
-		$res = $db->select( 'smw_ids', array( 'smw_id', 'smw_title', 'smw_namespace', 'smw_iw' ),
-		                   "smw_id >= $index AND smw_id < " . $db->addQuotes( $index + $count ), __METHOD__ );
-		foreach ( $res as $row ) {
-			$emptyrange = false; // note this even if no jobs were created
-			if ( ( $namespaces != false ) && ( !in_array( $row->smw_namespace, $namespaces ) ) ) continue;
-			if ( ( $row->smw_iw == '' ) || ( $row->smw_iw == SMW_SQL2_SMWREDIIW ) ) { // objects representing pages in the wiki, even special pages
-				// TODO: special treament of redirects needed, since the store will not act on redirects that did not change according to its records
-				$title = Title::makeTitle( $row->smw_namespace, $row->smw_title );
-				if ( !$title->exists() ) {
-					$updatejobs[] = new SMWUpdateJob( $title );
-				}
-			} elseif ( $row->smw_iw { 0 } != ':' ) { // refresh all "normal" interwiki pages by just clearing their content
-				$this->deleteSemanticData( SMWWikiPageValue::makePage( $row->smw_namespace, $row->smw_title, '', $row->smw_iw ) );
-			}
-		}
-		$db->freeResult( $res );
-
 		wfRunHooks('smwRefreshDataJobs', array(&$updatejobs));
 
 		if ( $usejobs ) {
@@ -501,14 +427,11 @@ class SMWSQLStoreLight extends SMWStore {
 		}
 		$nextpos = $index + $count;
 		if ( $emptyrange ) { // nothing found, check if there will be more pages later on
-			$next1 = $db->selectField( 'page', 'page_id', "page_id >= $nextpos", __METHOD__, array( 'ORDER BY' => "page_id ASC" ) );
-			$next2 = $db->selectField( 'smw_ids', 'smw_id', "smw_id >= $nextpos", __METHOD__, array( 'ORDER BY' => "smw_id ASC" ) );
-			$nextpos = ( ( $next2 != 0 ) && ( $next2 < $next1 ) ) ? $next2:$next1;
+			$nextpos = $db->selectField( 'page', 'page_id', "page_id >= $nextpos", __METHOD__, array( 'ORDER BY' => "page_id ASC" ) );
 		}
-		$max1 = $db->selectField( 'page', 'MAX(page_id)', '', __METHOD__ );
-		$max2 = $db->selectField( 'smw_ids', 'MAX(smw_id)', '', __METHOD__ );
-		$index = $nextpos ? $nextpos: - 1;
-		return ( $index > 0 ) ? $index / max( $max1, $max2 ) : 1;
+		$maxpos = $db->selectField( 'page', 'MAX(page_id)', '', __METHOD__ );
+		$index = $nextpos ? $nextpos : -1;
+		return ( $index > 0 ) ? ( $index / $maxpos ) : 1;
 	}
 
 
