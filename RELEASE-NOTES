@@ -5,6 +5,9 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Added query comparator "!~" that works like the negation of "~", i.e. that
   retrieves exactly those values to which the provided pattern (with * and ?)
   does not match.
+* Updated OWL/RDF export to include more data (modification dates, and page
+  namespaces). Changed export ontology to no longer use OWL AnnoationProperties
+  since OWL 2 DL supports property values also for classes/properties.
 * Improvements in code style and structure, following general MediaWiki
   conventions. Most notably, the file to include for loading SMW now is
   SemanticMediaWiki.php in the base directory (including the old Settings.php
