@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.5.0]]
+[[Semantic MediaWiki 1.5.1]]
 
 Install instructions for the latest SMW version are also online in a more
 convenient format for reading:
@@ -36,7 +36,7 @@ If you have any specific questions, please contact the authors.
 
 == Requirements ==
 
-* MediaWiki 1.11.* or greater (tested on 1.16.0 to 1.17alpha (r63248)).
+* MediaWiki 1.11.* or greater (tested on 1.16.0 to 1.17alpha (r63248).
 * PHP 5.* or greater installed and working
 * MySQL >= 4.0.14 (version required by MediaWiki) OR PostgreSQL >= 8.3
   Note that Postgres support is still preliminary and might require special
@@ -143,6 +143,20 @@ instructions to find out whether other changes are recommended therein.
 
 (Please read all of this before upgrading)
 
+Installations of SMW 1.5.0 can be upgraded by just replacing the files, but it
+must be noted that not all SMW extensions may already be available in versions
+compatible to SMW 1.5.1. If problems occur, it is possible to go back to 1.5.0
+by simply using the old files, waiting with the upgrade until the relevant
+extensions provide updates.
+
+It is suggested to change the inclusion of SMW in LocalSettings.php to the
+following as described in the installation instructions above:
+
+ include_once("$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php");
+
+Including SMW_Settings.php as in earlier versions will continue to work, but may
+be disabled in some future version.
+
 Existing SMW 1.4.* installations and all SMW installations that already use the
 default store (SMWSQLStore2) can basically follow the above installation steps.
 The latter covers all sites with SMW 1.2 to 1.3 that do not use a special
@@ -150,7 +164,7 @@ setting to switch back to the old store ("SMWSQLStore" or "SMWRAPStore").
 Older versions of SMW can be upgrade in a similar fashion, but must ensure that
 they do not depend on now peculiarities of the old version. Please read the
 upgrade instructions for SMW version 1.2 and 1.3 for details. Moreover,
-SMW 1.5.0 finally removes all backwards compatibility to SMW beta versions
+SMW 1.5.0 finally removed all backwards compatibility to SMW beta versions
 below SMW 1.0. If your wiki still uses the setting $smwgSMWBetaCompatible=true
 then you should not upgrade until you find that disabling this setting works
 properly and without complications.
@@ -160,7 +174,7 @@ earlier versions. Additional steps are required if the wiki uses n-ary
 (multivalued) properties or properties of type Geographic coordinate and the
 required upgrade steps are described in separate sections below.
 
-Directly after enabling SMW 1.5.0, it could potentially happen that the site
+Directly after enabling SMW 1.5.1, it could potentially happen that the site
 shows SQL errors due to background jobs trying to access the new DB structure
 even before you initialised it. This can even block you from reaching SMWAdmin.
 In this case, either use the script SMW_setup.php from the command-line, or
@@ -168,8 +182,8 @@ access your database and delete all entries in the table "job". After this, no
 errors should show up while accessing the special page for initialisation.
 
 When upgrading from SMW 1.4.* or older, extensions of SMW (e.g. Semantic Forms)
-need to be updated to a version that is compatible with SMW 1.5.0. See your
-extension's homepage for details. If used, it is suggested to update to a
+need to be updated to a version that is compatible with SMW 1.5.1. See your
+extension's homepage for details. If used, it is also necessary to update to a
 more recent version of SemanticResultFormats (SRF).
 
 === Upgrading geographic coordinates ===
@@ -192,7 +206,7 @@ type declarations as in the following example:
 
 In this case, a property with three fields of the specified types was declared.
 You can use the inline query {{#ask: [[has type::~ *;*]] }} to obtain a list of
-all properties in your wiki that are of this form at all. In SMW 1.5.0, two
+all properties in your wiki that are of this form at all. Since SMW 1.5.0, two
 property assignments must be made on the property page instead:
 
  <nowiki>[[has type::Record]]</nowiki>
@@ -207,7 +221,7 @@ To upgrade, ''first'' install the new version of SMW, then use the above inline
 query to efficiently find all properties that need to be changed. After
 updating the pages as required, all values should be accessible as before
 (possibly some repair jobs need to finish before this is really the case; check
-your job queue). If you change the pages before the upgrade to SMW 1.5.0, then
+your job queue). If you change the pages before the upgrade to SMW 1.5.1, then
 it will be necessary to start a repair cycle of SMW to ensure that all affected
 page are indeed updated.
 
