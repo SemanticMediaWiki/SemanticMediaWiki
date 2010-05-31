@@ -112,12 +112,10 @@ class SMWAskPage extends SpecialPage {
 		if ( !array_key_exists( 'order', $this->m_params ) ) {
 			$order_values = $wgRequest->getArray( 'order' );
 			if ( is_array( $order_values ) ) {
+				$this->m_params['order'] = '';
 				foreach ( $order_values as $order_value ) {
-					if ( $this->m_params['order'] != '' ) {
-						$this->m_params['order'] .= ',';
-					}
 					if ( $order_value == '' ) $order_value = 'ASC';
-					$this->m_params['order'] .= $order_value;
+					$this->m_params['order'] .= ( $this->m_params['order'] != '' ? ',' : '' ) . $order_value;
 				}
 			}
 		}
@@ -125,12 +123,7 @@ class SMWAskPage extends SpecialPage {
 		if  ( !array_key_exists( 'sort', $this->m_params ) ) {
 			$sort_values = $wgRequest->getArray( 'sort' );
 			if ( is_array( $sort_values ) ) {
-				foreach ( $sort_values as $sort_value ) {
-					if ( $this->m_params['sort'] != '' ) {
-						$this->m_params['sort'] .= ',';
-					}
-					$this->m_params['sort'] .= $sort_value;
-				}
+				$this->m_params['sort'] = implode( ',', $sort_values );
 				$this->m_num_sort_values = count( $sort_values );
 			}
 		}
@@ -206,7 +199,7 @@ var num_elements = {$this->m_num_sort_values};
 function addInstance(starter_div_id, main_div_id) {
 	var starter_div = document.getElementById(starter_div_id);
 	var main_div = document.getElementById(main_div_id);
-	
+
 	//Create the new instance
 	var new_div = starter_div.cloneNode(true);
 	var div_id = 'sort_div_' + num_elements;
@@ -290,7 +283,7 @@ END;
 			$result_mime = $printer->getMimeType( $res );
 			global $wgRequest;
 			$hidequery = $wgRequest->getVal( 'eq' ) == 'no';
-			// if it's an export format (like CSV, JSON, etc.), 
+			// if it's an export format (like CSV, JSON, etc.),
 			// don't actually export the data if 'eq' is set to
 			// either 'yes' or 'no' in the query string - just
 			// show the link instead
