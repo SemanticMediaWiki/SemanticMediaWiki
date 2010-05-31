@@ -2401,8 +2401,6 @@ class SMWSQLStore2 extends SMWStore {
 	 * This letter is specific to this store's ID referencing and must not be
 	 * used in SMWDataValue::getSignature()!
 	 *
-	 * @todo Add a hook for registering additional or modifying given tables.
-	 *
 	 * @return array of SMWSQLStore2Table
 	 */
 	public static function getPropertyTables() {
