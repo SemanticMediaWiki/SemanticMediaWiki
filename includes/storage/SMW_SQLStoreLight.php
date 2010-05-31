@@ -364,7 +364,7 @@ class SMWSQLStoreLight extends SMWStore {
 			$db,
 			$reportTo
 		);
-		SMWSQLHelpers::setupIndex( 'smwsimple_data', array( 'pageid', 'propname,value(256)' ), $db );
+		SMWSQLHelpers::setupIndex( 'smwsimple_data', array( 'pageid', 'propname', 'propname,value(256)' ), $db );
 		SMWSQLHelpers::setupTable( // table for data that is needed frequently and looked-up often, e.g. property type declarations
 			'smwsimple_special',
 			array(
@@ -375,7 +375,7 @@ class SMWSQLStoreLight extends SMWStore {
 			$db,
 			$reportTo
 		);
-		SMWSQLHelpers::setupIndex( 'smwsimple_special', array( 'pageid', 'pageid,propname', 'propname,value' ), $db );
+		SMWSQLHelpers::setupIndex( 'smwsimple_special', array( 'pageid', 'pageid,propname', 'propname', 'propname,value' ), $db );
 
 		$this->reportProgress( "Database initialised successfully.\n\n", $verbose );
 	}
