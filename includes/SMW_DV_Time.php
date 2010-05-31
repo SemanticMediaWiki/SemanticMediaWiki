@@ -691,7 +691,7 @@ class SMWTimeValue extends SMWDataValue {
 				$this->m_julvalue .= '-'
 				   . ( $this->m_monthj ? str_pad( $this->m_monthj, 2, "0", STR_PAD_LEFT ):'01' ) . '-'
 				   . ( $this->m_dayj ? str_pad( $this->m_dayj, 2, "0", STR_PAD_LEFT ):'01' )
-				   . ( $this->m_timej ? 'T' . $this->m_time:'' );
+				   . ( $this->m_time ? 'T' . $this->m_time:'' );
 			} else {
 				if ( $this->m_yearj > 0 ) {
 					$this->m_julvalue = number_format( $this->m_yearj, 0, '.', '' ) . ( ( ( $this->m_pref == 'AD' ) || ( $this->m_pref == 'CE' ) ) ? ( ' ' . $this->m_pref ) : '' );
