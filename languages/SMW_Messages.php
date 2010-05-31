@@ -2156,7 +2156,7 @@ Sie können den Fortschritt des Updates auf dieser Spezialseite verfolgen.',
 	'smw_smwadmin_updatenotstopped' => 'Um laufende Prozesse zu stoppen, müssen Sie das Kontrollkästchen aktivieren, um so anzugeben, dass Sie sich wirklich sicher sind.',
 	'smw_smwadmin_docu' => 'Diese Spezialseite unterstützt Sie während der Installation und dem Upgrade von <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">Semantic MediaWiki</a>.
 Denken Sie daran, wichtige Daten vor der Ausführung systemadministrativer Funktionen zu sichern.',
-	'smw_smwadmin_announce' => 'Ihr Wiki bekanntgeben',
+	'smw_smwadmin_announce' => 'Ihr Wiki bekannt geben',
 	'smw_smwadmin_announcebutton' => 'Drücken Sie die folgende Schaltfläche, um die URL Ihres Wikis für diesem Dienst hinzuzufügen.
 Dieser Dienst wird keine Wikis aufnehmen, die nicht öffentlich zugänglich sind. Zudem wird er nur öffentlich zugängliche Informationen speichern.',
 	'smw_smwadmin_supportdocu' => 'Verschiedene Hinweise helfen Ihnen vielleicht im Fall eines Problems:',
@@ -8182,6 +8182,7 @@ Progresso estimado da actualização em curso:",
 );
 
 /** Brazilian Portuguese (Português do Brasil)
+ * @author 555
  * @author Eduardo.mps
  * @author GKnedo
  * @author Hamilton Abreu
@@ -8189,7 +8190,6 @@ Progresso estimado da actualização em curso:",
  * @author Luckas Blade
  * @author Rafael Vargas
  * @author Waldir
- * @author 555
  */
 $messages['pt-br'] = array(
 	'smw-desc' => "Fazendo sua wiki mais acessível - para máquinas ''e'' humanos ([http://semantic-mediawiki.org/wiki/Help:User_manual documentação ''online''])",
