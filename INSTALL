@@ -189,7 +189,7 @@ more recent version of SemanticResultFormats (SRF).
 === Upgrading geographic coordinates ===
 
 The datatype Geographic coordinate has been moved from SMW to the Semantic Maps
-extension. Wikis that use this type should install Semantic Maps version 0.5.4
+extension. Wikis that use this type should install Semantic Maps version 0.6
 or above. No other changes are needed, but it is recommended to install
 Semantic Maps before upgrading SMW so as to avoid problems at any time. The
 move has been done to concentrate geo-related features in one extension for
