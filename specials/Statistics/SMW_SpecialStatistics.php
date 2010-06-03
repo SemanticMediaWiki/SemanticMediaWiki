@@ -20,6 +20,7 @@ class SMWSpecialSemanticStatistics extends SpecialPage {
 
 	public function __construct() {
 		parent::__construct( 'SemanticStatistics' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	public function execute( $param ) {
@@ -38,8 +39,6 @@ class SMWSpecialSemanticStatistics extends SpecialPage {
 				'page_namespace' => SMW_NS_PROPERTY
 			)
 		);
-	
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	
 		$out = wfMsgExt( 'smw_semstats_text', array( 'parse' ),
 			$wgLang->formatNum( $semanticStatistics['PROPUSES'] ), $wgLang->formatNum( $semanticStatistics['USEDPROPS'] ),

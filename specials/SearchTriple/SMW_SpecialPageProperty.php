@@ -57,7 +57,6 @@ class SMWPageProperty extends SpecialPage {
 
 		// Produce output
 		$html = '';
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		if ( ( $propname == '' ) ) { // no property given, show a message
 			$html .= wfMsg( 'smw_pp_docu' ) . "\n";
 		} else { // property given, find and display results

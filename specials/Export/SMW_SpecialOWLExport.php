@@ -30,6 +30,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 	public function __construct() {
 		parent::__construct( 'ExportRDF' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	public function execute( $page = '' ) {
@@ -131,8 +132,6 @@ class SMWSpecialOWLExport extends SpecialPage {
 				}
 			}
 		}
-
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 
 		// nothing exported yet; show user interface:
 		$html = '<form name="tripleSearch" action="" method="POST">' . "\n" .

@@ -29,6 +29,7 @@ class SMWSpecialProperties extends SpecialPage {
 	
 	public function __construct() {
 		parent::__construct( 'Properties' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	public function execute( $param ) {	
@@ -74,7 +75,6 @@ class SMWPropertiesPage extends SMWQueryPage {
 	}
 
 	function getPageHeader() {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return '<p>' . wfMsg( 'smw_properties_docu' ) . "</p><br />\n";
 	}
 
@@ -82,7 +82,6 @@ class SMWPropertiesPage extends SMWQueryPage {
 		global $wgLang;
 		$typestring = '';
 		$errors = array();
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		if ( $result[0]->isUserDefined() && ( $result[1] <= 5 ) ) {
 			$errors[] = wfMsg( 'smw_propertyhardlyused' );
 		}

@@ -34,6 +34,7 @@ class SMWSpecialTypes extends SpecialPage {
 	
 	public function __construct() {
 		parent::__construct( 'Types' );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
 	public function execute( $param ) {	
@@ -71,7 +72,6 @@ class TypesPage extends QueryPage {
 	}
 
 	function getPageHeader() {
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return '<p>' . wfMsg( 'smw_types_docu' ) . "</p><br />\n";
 	}
 
@@ -108,7 +108,6 @@ class TypesPage extends QueryPage {
 		$tv = SMWDataValueFactory::newTypeIDValue( '__typ', $titletext );
 		$info = array();
 		$error = array();
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		if ( $tv->isAlias() ) { // print the type title as found, long text would (again) print the alias
 			$ttitle = Title::makeTitle( SMW_NS_TYPE, $titletext );
 			$link = $skin->makeKnownLinkObj( $ttitle, $ttitle->getText() ); // aliases are only found if the page exists
