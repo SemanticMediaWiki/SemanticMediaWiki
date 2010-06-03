@@ -77,5 +77,5 @@ if ( $outfile && empty( $options['q'] ) ) {
 	print "\nWriting OWL/RDF dump to file \"$outfile\" ...\n";
 }
 
-$exRDF = new OWLExport();
+$exRDF = new SMWOWLExport();
 $exRDF->printAll( $outfile, $export_ns, $delay, $delayeach );

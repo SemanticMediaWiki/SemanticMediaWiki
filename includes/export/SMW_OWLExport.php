@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File holding the OWLExport class for OWL export, used by SMWSpecialOWLExport (Special:ExportRDF page).
+ * File holding the SMWOWLExport class for OWL export, used by SMWSpecialOWLExport (Special:ExportRDF page).
  *
  * @file SMW_OWLExport.php
  * @ingroup SMW
@@ -261,7 +261,7 @@ class SMWOWLExport {
 			$title = Title::newFromID( $id );
 			
 			if ( ( $title === null ) || !smwfIsSemanticsProcessed( $title->getNamespace() ) ) continue;
-			if ( !OWLExport::fitsNsRestriction( $ns_restriction, $title->getNamespace() ) ) continue;
+			if ( !SMWOWLExport::fitsNsRestriction( $ns_restriction, $title->getNamespace() ) ) continue;
 			
 			$st = new SMWSmallTitle();
 			$st->dbkey = $title->getDBkey();
@@ -286,7 +286,7 @@ class SMWOWLExport {
 					$taux = Title::makeTitle( $staux->namespace, $staux->dbkey );
 					
 					if ( !smwfIsSemanticsProcessed( $staux->namespace ) || ( $staux->modifier !== '' ) ||
-					     !OWLExport::fitsNsRestriction( $ns_restriction, $staux->namespace ) ||
+					     !SMWOWLExport::fitsNsRestriction( $ns_restriction, $staux->namespace ) ||
 					     ( !$taux->exists() ) ) {
 					// Note: we do not need to check the cache to guess if an element was already
 					// printed. If so, it would not be included in the queue in the first place.
