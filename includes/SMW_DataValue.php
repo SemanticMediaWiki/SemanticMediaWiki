@@ -680,6 +680,7 @@ abstract class SMWDataValue {
 	public function isNumeric() {
 		$sig = $this->getSignature();
 		$valueIndex = $this->getValueIndex();
+		if ( $valueIndex < 0 ) { return false; }
 		
 		return $sig { $valueIndex } == 'n' || $sig { $valueIndex } == 'f';
 	}
