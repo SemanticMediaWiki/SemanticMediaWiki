@@ -189,16 +189,16 @@ class SMWQueryProcessor {
 				$parts = explode( '=', $param, 2 );
 				$propparts = explode( '#', $parts[0], 2 );
 				
+				$data = null;
+				
 				if ( trim( $propparts[0] ) == '' ) { // print "this"
 					$printmode = SMWPrintRequest::PRINT_THIS;
 					$label = ''; // default
 					$title = null;
-					$data = null;
 				} elseif ( $wgContLang->getNsText( NS_CATEGORY ) == ucfirst( trim( $propparts[0] ) ) ) { // print categories
 					$title = null;
-					$data = null;
 					$printmode = SMWPrintRequest::PRINT_CATS;
-					$label = $showmode ? '':$wgContLang->getNSText( NS_CATEGORY ); // default
+					$label = $showmode ? '' : $wgContLang->getNSText( NS_CATEGORY ); // default
 				} else { // print property or check category
 					$title = Title::newFromText( trim( $propparts[0] ), SMW_NS_PROPERTY ); // trim needed for \n
 					if ( $title === null ) { // too bad, this is no legal property/category name, ignore
@@ -209,7 +209,7 @@ class SMWQueryProcessor {
 						$printmode = SMWPrintRequest::PRINT_PROP;
 						$property = SMWPropertyValue::makeUserProperty( trim( $propparts[0] ) );
 						$data = $property;
-						$label = $showmode ? '':$property->getWikiValue();  // default
+						$label = $showmode ? '' : $property->getWikiValue();  // default
 					} elseif ( $title->getNamespace() == NS_CATEGORY ) {
 						$printmode = SMWPrintRequest::PRINT_CCAT;
 						$data = $title;
