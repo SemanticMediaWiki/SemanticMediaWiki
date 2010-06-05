@@ -7931,6 +7931,7 @@ $messages['ps'] = array(
 	'smw_ask_ascorder' => 'ختند',
 	'smw_ask_defaultformat' => 'تلواليز',
 	'smw_sbv_value' => 'ارزښت:',
+	'smw_sbv_submit' => 'پايلې موندل',
 	'browse' => 'ويکي سپړل',
 	'smw_browselink' => 'د سپړلو ځانتياوې',
 	'smw_browse_go' => 'ورځه',
@@ -7939,6 +7940,7 @@ $messages['ps'] = array(
 	'smw_result_next' => 'راتلونکي',
 	'smw_result_results' => 'پايلې',
 	'smw_result_noresults' => 'اوبښۍ، هېڅ کومه پايله نشته.',
+	'smw_smwadmin_return' => '$1 ته ورګرځېدل',
 	'smw_smwadmin_datarefreshstopconfirm' => 'هو، زه ډاډه يم.',
 );
 
@@ -8953,6 +8955,7 @@ $messages['sr-ec'] = array(
 	'smw_baduri' => 'URI-ји облика "$1", нису прихватљиви.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Аутоматски',
+	'smw_printername_count' => 'Изброј резултате',
 	'smw_printername_csv' => 'CSV извоз',
 	'smw_printername_debug' => 'Упит за пречишћавање (само за експерте)',
 	'smw_printername_embedded' => 'Угнезди садржај странице',
