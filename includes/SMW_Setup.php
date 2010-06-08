@@ -207,7 +207,7 @@ function smwfSetupExtension() {
 	$wgHooks['ParserFirstCallInit'][] = 'SMWParserExtensions::registerParserFunctions';
 
 	if ( $smwgToolboxBrowseLink ) {
-		if ( version_compare( $wgVersion, '1.13', '>' ) ) {
+		if ( version_compare( $wgVersion, '1.13', '>=' ) ) {
 			$wgHooks['SkinTemplateToolboxEnd'][] = 'smwfShowBrowseLink'; // introduced only in 1.13
 		} else {
 			$wgHooks['MonoBookTemplateToolboxEnd'][] = 'smwfShowBrowseLink';
