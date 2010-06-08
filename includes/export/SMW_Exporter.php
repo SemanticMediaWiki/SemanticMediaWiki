@@ -12,12 +12,10 @@
  * @ingroup SMW
  */
 class SMWExporter {
-
 	static protected $m_exporturl = false;
 	static protected $m_ent_wiki = false;
 	static protected $m_ent_property = false;
 	static protected $m_ent_wikiurl = false;
-
 
 	/**
 	 * Make sure that necessary base URIs are initialised properly.
@@ -28,11 +26,11 @@ class SMWExporter {
 
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
 		if ( '' == $smwgNamespace ) {
-			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver' );
+			$resolver = SpecialPage::getTitleFor( 'URIResolver' );
 			$smwgNamespace = $resolver->getFullURL() . '/';
 		}
 		if ( $smwgNamespace[0] == '.' ) {
-			$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver' );
+			$resolver = SpecialPage::getTitleFor( 'URIResolver' );
 			$smwgNamespace = "http://" . substr( $smwgNamespace, 1 ) . $resolver->getLocalURL() . '/';
 		}
 
@@ -41,7 +39,7 @@ class SMWExporter {
 		SMWExporter::$m_ent_wiki     = $smwgNamespace;
 		SMWExporter::$m_ent_property = SMWExporter::$m_ent_wiki .
 		          SMWExporter::encodeURI( urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
-		$title = Title::makeTitle( NS_SPECIAL, 'ExportRDF' );
+		$title = SpecialPage::getTitleFor( 'ExportRDF' );
 		SMWExporter::$m_exporturl    = '&wikiurl;' . $title->getPrefixedURL();
 	}
 

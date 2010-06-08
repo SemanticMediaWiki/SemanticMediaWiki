@@ -16,7 +16,6 @@
  * @ingroup SpecialPage
  */
 class SMWSpecialBrowse extends SpecialPage {
-
 	/// int How  many incoming values should be asked for
 	static public $incomingvaluescount = 8;
 	/// int  How many incoming properties should be asked for
@@ -328,7 +327,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return A string containing the HTML for the form
 	 */
 	private function queryForm() {
-		$title = Title::makeTitle( NS_SPECIAL, 'Browse' );
+		$title = SpecialPage::getTitleFor( 'Browse' );
 		return '  <form name="smwbrowse" action="' . $title->escapeLocalURL() . '" method="get">' . "\n" .
 		       '    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' .
 		       wfMsg( 'smw_browse_article' ) . "<br />\n" .
@@ -347,5 +346,4 @@ class SMWSpecialBrowse extends SpecialPage {
  		$text = preg_replace( '/[\s]/u', '&#160;', $text, - 1, $count );
  		return $count > 2 ? preg_replace( '/(&#160;)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
 	}
-
 }

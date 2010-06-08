@@ -30,7 +30,6 @@ $wgAjaxExportList[] = "smwfGetValues";
  * @ingroup SpecialPage
  */
 class SMWSearchByProperty extends SpecialPage {
-
 	/// string  Name of the property searched for
 	private $propertystring = "";
 	/// SMWPropertyValue  The property that is searched for
@@ -317,7 +316,7 @@ class SMWSearchByProperty extends SpecialPage {
 	 * @return string  HTML for the query form
 	 */
 	private function queryForm() {
-		$spectitle = Title::makeTitle( NS_SPECIAL, 'SearchByProperty' );
+		$spectitle = SpecialPage::getTitleFor( 'SearchByProperty' );
 		$html  = '<form name="searchbyproperty" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
 		$html .= wfMsg( 'smw_sbv_property' ) . ' <input type="text" name="property" value="' . htmlspecialchars( $this->propertystring ) . '" />' . "&#160;&#160;&#160;\n";
@@ -326,5 +325,4 @@ class SMWSearchByProperty extends SpecialPage {
 
 		return $html;
 	}
-
 }

@@ -20,7 +20,6 @@
  * @ingroup SpecialPage
  */
 class SMWPageProperty extends SpecialPage {
-
 	/**
 	 * Constructor
 	 */
@@ -110,7 +109,7 @@ class SMWPageProperty extends SpecialPage {
 		}
 
 		// Display query form
-		$spectitle = Title::makeTitle( NS_SPECIAL, 'PageProperty' );
+		$spectitle = SpecialPage::getTitleFor( 'PageProperty' );
 		$html .= '<p>&#160;</p>';
 		$html .= '<form name="pageproperty" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
@@ -121,6 +120,4 @@ class SMWPageProperty extends SpecialPage {
 		$wgOut->addHTML( $html );
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
 	}
-
 }
-

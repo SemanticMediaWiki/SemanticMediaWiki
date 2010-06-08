@@ -22,7 +22,6 @@
  * @ingroup SpecialPage
  */
 class SMWAdmin extends SpecialPage {
-
 	/**
 	 * Constructor
 	 */
@@ -67,7 +66,7 @@ class SMWAdmin extends SpecialPage {
 				if ( $result === true ) {
 					print '<p><b>' . wfMsg( 'smw_smwadmin_setupsuccess' ) . "</b></p>\n";
 				}
-				$returntitle = Title::makeTitle( NS_SPECIAL, 'SMWAdmin' );
+				$returntitle = SpecialPage::getTitleFor( 'SMWAdmin' );
 				print '<p> ' . wfMsg( 'smw_smwadmin_return', '<a href="' . htmlspecialchars( $returntitle->getFullURL() ) . '">Special:SMWAdmin</a>' ) . "</p>\n";
 				print '</body></html>';
 				ob_flush();
@@ -78,7 +77,7 @@ class SMWAdmin extends SpecialPage {
 			$sure = $wgRequest->getText( 'rfsure' );
 			if ( $sure == 'yes' ) {
 				if ( $refreshjob === null ) { // careful, there might be race conditions here
-					$title = Title::makeTitle( NS_SPECIAL, 'SMWAdmin' );
+					$title = SpecialPage::getTitleFor( 'SMWAdmin' );
 					$newjob = new SMWRefreshJob( $title, array( 'spos' => 1, 'prog' => 0, 'rc' => 2 ) );
 					$newjob->insert();
 					$wgOut->addHTML( '<p>' . wfMsg( 'smw_smwadmin_updatestarted' ) . '</p>' );
