@@ -9188,6 +9188,7 @@ Ako problem ne nestane za neko vreme, zatražite od administratora sajta da uči
 	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatski',
+	'smw_printername_count' => 'Izbroj rezultate',
 	'smw_printername_csv' => 'CSV izvoz',
 	'smw_printername_debug' => 'Upit za prečišćavanje (samo za eksperte)',
 	'smw_printername_embedded' => 'Ugnezdi sadržaj stranice',
