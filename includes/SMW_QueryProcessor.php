@@ -275,41 +275,52 @@ class SMWQueryProcessor {
 	 */
 	static public function getResultFromQueryString( $querystring, array $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
+		
 		$format = SMWQueryProcessor::getResultFormat( $params );
 		$query  = SMWQueryProcessor::createQuery( $querystring, $params, $context, $format, $extraprintouts );
 		$result = SMWQueryProcessor::getResultFromQuery( $query, $params, $extraprintouts, $outputmode, $context, $format );
 		wfProfileOut( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
+		
 		return $result;
 	}
 
 	static public function getResultFromQuery( $query, array $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY, $format = '' ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
+		
 		// Query routing allows extensions to provide alternative stores as data sources
 		// The while feature is experimental and is not properly integrated with most of SMW's architecture. For instance, some query printers just fetch their own store.
 		///TODO: case-insensitive
 		global $smwgQuerySources;
+		
 		if ( array_key_exists( "source", $params ) && array_key_exists( $params["source"], $smwgQuerySources ) ) {
 			$store = new $smwgQuerySources[$params["source"]]();
 			$query->params = $params; // this is a hack
 		} else {
 			$store = smwfGetStore(); // default store
 		}
+		
 		$res = $store->getQueryResult( $query );
 
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) || ( $query->querymode == SMWQuery::MODE_NONE ) ) {
 			wfProfileIn( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
+			
 			if ( $format == '' ) {
 				$format = SMWQueryProcessor::getResultFormat( $params );
 			}
+			
 			$printer = SMWQueryProcessor::getResultPrinter( $format, $context, $res );
 			$result = $printer->getResult( $res, $params, $outputmode );
+			
 			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
 			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
+			
 			return $result;
 		} else { // result for counting or debugging is just a string
 			if ( array_key_exists( 'intro', $params ) )  $res = str_replace( '_', ' ', $params['intro'] ) . $res;
 			if ( array_key_exists( 'outro', $params ) )  $res .= str_replace( '_', ' ', $params['outro'] );
+			
 			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
+			
 			return $res . smwfEncodeMessages( $query->getErrors() );
 		}
 	}
@@ -319,22 +330,35 @@ class SMWQueryProcessor {
 	 */
 	static protected function getResultFormat( array $params ) {
 		$format = 'auto';
+		
 		if ( array_key_exists( 'format', $params ) ) {
+			global $smwgResultFormats;
+			
 			$format = strtolower( trim( $params['format'] ) );
-			global $smwgResultAliases, $smwgResultFormats;
+			
 			if ( !array_key_exists( $format, $smwgResultFormats ) ) {
-				$is_alias = false;
-				foreach ( $smwgResultAliases as $main_format => $aliases ) {
-					if ( in_array( $format, $aliases ) ) {
-						$format = $main_format;
-						$is_alias = true;
-						break;
-					}
-				}
-				if ( !$is_alias ) $format = 'auto';  // If it is an unknown format, defaults to list/table again
+				$isAlias = self::resolveFormatAliases( $format );
+				if ( !$isAlias ) $format = 'auto';  // If it is an unknown format, defaults to list/table again
 			}
 		}
+		
 		return $format;
+	}
+	
+	static protected function resolveFormatAliases( &$format ) {
+		global $smwgResultAliases;
+
+		$isAlias = false;
+		
+		foreach ( $smwgResultAliases as $mainFormat => $aliases ) {
+			if ( in_array( $format, $aliases ) ) {
+				$format = $mainFormat;
+				$isAlias = true;
+				break;
+			}
+		}
+
+		return $isAlias;
 	}
 
 	/**
@@ -344,8 +368,13 @@ class SMWQueryProcessor {
 	 */
 	static public function getResultPrinter( $format, $context = SMWQueryProcessor::SPECIAL_PAGE ) {
 		global $smwgResultFormats;
-		$formatclass = ( array_key_exists( $format, $smwgResultFormats ) ) ? $smwgResultFormats[$format]:'SMWAutoResultPrinter';
-		return new $formatclass( $format, ( $context != SMWQueryProcessor::SPECIAL_PAGE ) );
+		
+		self::resolveFormatAliases( $format );
+		
+		// TODO: this seems to contain the same logic as found in getResultFormat - a single function for this might be better.
+		$formatClass = array_key_exists( $format, $smwgResultFormats ) ? $smwgResultFormats[$format] : 'SMWAutoResultPrinter';
+		
+		return new $formatClass( $format, ( $context != SMWQueryProcessor::SPECIAL_PAGE ) );
 	}
 
 }
