@@ -326,7 +326,11 @@ class SMWQueryProcessor {
 	}
 
 	/**
-	 * Determine format label from parameters.
+	 * Determines the format from an array of parameters, and returns it.
+	 * 
+	 * @param array $params
+	 * 
+	 * @return string
 	 */
 	static protected function getResultFormat( array $params ) {
 		$format = 'auto';
@@ -345,6 +349,13 @@ class SMWQueryProcessor {
 		return $format;
 	}
 	
+	/**
+	 * Turns format aliases into main formats.
+	 * 
+	 * @param string $format
+	 * 
+	 * @return boolean Indicates if the passed format was an alias, and thus was changed.
+	 */
 	static protected function resolveFormatAliases( &$format ) {
 		global $smwgResultAliases;
 
@@ -365,6 +376,11 @@ class SMWQueryProcessor {
 	 * Find suitable SMWResultPrinter for the given format. The context in which the query is to be
 	 * used determines some basic settings of the returned printer object. Possible contexts are
 	 * SMWQueryProcessor::SPECIAL_PAGE, SMWQueryProcessor::INLINE_QUERY, SMWQueryProcessor::CONCEPT_DESC.
+	 * 
+	 * @param string $format
+	 * @param $context
+	 * 
+	 * @return SMWResultPrinter
 	 */
 	static public function getResultPrinter( $format, $context = SMWQueryProcessor::SPECIAL_PAGE ) {
 		global $smwgResultFormats;
