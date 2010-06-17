@@ -6299,8 +6299,8 @@ $messages['mk'] = array(
 Некои од постоечките својства може да се [[Special:UnusedProperties|неискористени]].
 Својствата кои сè уште немаат страница се наведени на [[Special:WantedProperties|списокот на потребни својства]].",
 	'uriresolver' => 'URI претворач',
-	'smw_uri_doc' => 'URI претварачот ја имплементира <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C пронаоѓање на ознаки на httpRange-14</a>.
-Тој има за задача да внимава луѓето да не се претворат во веб-страници.',
+	'smw_uri_doc' => 'URI-претварачот применува <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C пронаоѓање на ознаки на httpRange-14</a>.
+Тој има за задача да внимава луѓето да не се претворат во мрежни места.',
 	'ask' => 'Семантичко пребарување',
 	'smw_ask_sortby' => 'Сортирај по колона (незадолжително)',
 	'smw_ask_ascorder' => 'Нагорен',
@@ -6370,9 +6370,9 @@ $messages['mk'] = array(
 Доделете му доволно дозволи на корисникот за да може да создава и брише табели, привремено внесете го најавниот корен (root) на вашата база на податоци во LocalSettings.php, или пак употребете ја скриптата за одржување <tt>SMW_setup.php</tt> која може да ги користи акердитивите за пристап од AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Започни или поднови табели',
 	'smw_smwadmin_announce' => 'Објавете го вашето вики',
-	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki има веб-служба за соопштување на нови семантички вики-страници.
-Ова се користи за одржување на список на јавни веб-места кои го користат Semantic MediaWiki, главно со цел да му се помогне на <a href="http://semantic-mediawiki.org/wiki/SMW_Project">проектот Semantic MediaWiki</a> да добие претстава за типичните употреби на Semantic MediaWiki.
-Погледајте ја веб-страницата на Semantic MediaWiki за <a href="http://semantic-mediawiki.org/wiki/Registry">повеќе информации за оваа служба</a>.',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki има мрежна служба за соопштување на нови семантички вики-страници.
+Ова се користи за одржување на список на јавни мрежни места кои го користат Semantic MediaWiki, главно со цел да му се помогне на <a href="http://semantic-mediawiki.org/wiki/SMW_Project">проектот Semantic MediaWiki</a> да добие претстава за типичните употреби на Semantic MediaWiki.
+Погледајте го мрежното место на Semantic MediaWiki за <a href="http://semantic-mediawiki.org/wiki/Registry">повеќе информации за оваа служба</a>.',
 	'smw_smwadmin_announcebutton' => 'Притиснете го следново копче за да ја испратите URL-адресата на вашето вики во таа служба.
 Службата нема да регистрира викија што не се јавно достапни, и ќе складира само достапни информации.',
 	'smw_smwadmin_datarefresh' => 'Поправка и поднова на податоци',
