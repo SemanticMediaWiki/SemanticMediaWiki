@@ -447,7 +447,10 @@ class SMWTimeValue extends SMWDataValue {
 	protected function parseDBkeys( $args ) {
 		$this->m_caption = false;
 		if ( count( $args ) < 2 ) return;
-		list( $date, $this->m_time ) = explode( 'T', $args[0], 2 );
+		$timeparts = explode( 'T', $args[0], 2 );
+		if ( count( $timeparts ) != 2 ) return;
+		$date = reset( $timeparts );
+		$this->m_time = end( $timeparts );
 		$d = explode( '/', $date, 3 );
 		if ( count( $d ) == 3 ) list( $this->m_year, $this->m_month, $this->m_day ) = $d;
 		elseif ( count( $d ) == 2 ) list( $this->m_year, $this->m_month ) = $d;
