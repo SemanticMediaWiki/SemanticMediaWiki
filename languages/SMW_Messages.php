@@ -2629,6 +2629,7 @@ $messages['eo'] = array(
  * @author Imre
  * @author Javier Calzada Prado
  * @author Locos epraix
+ * @author MaxSem
  * @author Sanbec
  * @author Translationista
  */
@@ -2637,8 +2638,8 @@ $messages['es'] = array(
 	'smw_edithelp' => 'Ayuda a la redacción de relaciones y atributos',
 	'smw_viewasrdf' => 'Ver como RDF',
 	'smw_finallistconjunct' => ' y',
-	'smw_factbox_head' => 'Hechos relativos a à $1 — Búsqueda de páginas similares con <span class="smwsearchicon">+</span>.',
-	'smw_isspecprop' => 'Esta propiedad en una propiedad especial en este wiki.',
+	'smw_factbox_head' => 'Hechos relativos a $1 — Búsqueda de páginas similares con <span class="smwsearchicon">+</span>.',
+	'smw_isspecprop' => 'Esta propiedad es una propiedad especial en este wiki.',
 	'smw_isknowntype' => 'Este tipo está entre los tipos de datos standar de este wiki.',
 	'smw_isaliastype' => 'Este tipo es un alias para el tipo de datos "$1".',
 	'smw_isnotype' => 'El tipo "$1" no es un tipo de datos estándar en el wiki y tampoco se le ha otorgado una definición de usuario.',
@@ -8975,6 +8976,7 @@ $messages['sr-ec'] = array(
 	'smw_paramdesc_searchlabel' => 'Текст у вези ка резултатима',
 	'smw_paramdesc_sep' => 'Раздвајач за вредности',
 	'smw_paramdesc_columns' => 'Број колона у којима ће се приказати резултати (предодређено $1)',
+	'smw_paramdesc_embedonly' => 'Не приказуј заглавља',
 	'smw_paramdesc_rsstitle' => 'Текст који ће се користити као наслов у добављачу',
 	'smw_paramdesc_rssdescription' => 'Текст који ће се користити као опис у добављачу',
 	'smw_iq_disabled' => 'Семантички упити су онемогућени на овом викију.',
@@ -9001,6 +9003,7 @@ $messages['sr-ec'] = array(
 	'smw_nofloat' => '"$1" није број.',
 	'smw_infinite' => 'Бројеви дужине као "$1" нису подржани.',
 	'smw_infinite_unit' => 'Конверзија у јединице "$1" је као резултат дала предугачак број.',
+	'smw_novalues' => 'Ниједна вредност није наведена.',
 	'smw_unsupportedprefix' => 'Префикси за бројеве ("$1") нису подржани.',
 	'smw_unsupportedunit' => 'Конверзија јединица за јединицу "$1" није подржана.',
 	'smw_nodatetime' => 'Формат датума "$1" није разумљив.',
