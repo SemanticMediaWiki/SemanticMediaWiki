@@ -41,47 +41,30 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // create detached JSON file
 			$itemstack = array(); // contains Items for the items section
 			$propertystack = array(); // contains Properties for the property section
-			$firstPropertyIsPageDef = false; // we onlt drop first property if its of type wpg
-			$count = 0;
+
 			// generate property section
 			foreach ( $res->getPrintRequests() as $pr ) {
-				if ( array_key_exists( $pr->getTypeID(), $this->types ) ) {
-					$propertystack[] = '"' . str_replace( " ", "_", strtolower( $pr->getLabel() ) ) . '" : { "valueType": "' . $this->types[$pr->getTypeID()] . '" }';
-				} else {
-					$propertystack[] = '"' . str_replace( " ", "_", strtolower( $pr->getLabel() ) ) . '" : { "valueType": "text" }';
+				if ( $pr->getMode() != SMWPrintRequest::PRINT_THIS ) {
+					if ( array_key_exists( $pr->getTypeID(), $this->types ) ) {
+						$propertystack[] = '"' . str_replace( " ", "_", strtolower( $pr->getLabel() ) ) . '" : { "valueType": "' . $this->types[$pr->getTypeID()] . '" }';
+					} else {
+						$propertystack[] = '"' . str_replace( " ", "_", strtolower( $pr->getLabel() ) ) . '" : { "valueType": "text" }';
+					}
 				}
-				// if we're at the first item and it doesn't have a label its the page
-				if ( $count == 0 && $pr->getLabel() == "" ) {
-					$firstPropertyIsPageDef = true;
-				}
-				$count++;
 			}
-			// drop bogus empty first item that got stuffed in here (I don't know why its here)
-			if ( $firstPropertyIsPageDef ) {
-				array_shift( $propertystack ); // drop first property
-			}
-
 			$properties = "\"properties\": {\n\t\t" . implode( ",\n\t\t", $propertystack ) . "\n\t}";
 
 			// generate items section
-			$row = $res->getNext();
-			while ( $row !== false ) {
+			while ( ( $row = $res->getNext() ) !== false ) {
+				$rowsubject = false; // the wiki page value that this row is about
 				$valuestack = array(); // contains Property-Value pairs to characterize an Item
-				$count = 0; // counter
-				$prefixedtext = ''; // save label for uri specification
 				foreach ( $row as $field ) {
-					$req = $field->getPrintRequest();
-					// when we're processing the first item and its a page we process it a little differently
-					// this is the original code
-					if ( $count == 0 && $firstPropertyIsPageDef ) {
-						$values = '';
-						foreach ( $field->getContent() as $value ) {
-							$values = $value->getShortText( $outputmode, null ); // assign last value to label
-							$prefixedtext = $value->getPrefixedText();
-						}
-						$valuestack[] = '"label": "' . $values . '"';
-						$label = $values;
-					} else {
+					$pr = $field->getPrintRequest();
+					if ( $rowsubject === false ) {
+						$rowsubject = $field->getResultSubject();
+						$valuestack[] = '"label": "' . $rowsubject->getShortText( $outputmode, null ) . '"';
+					}
+					if ( $pr->getMode() != SMWPrintRequest::PRINT_THIS ) {
 						$values = array();
 						$finalvalues = '';
 						while ( ( $value = $field->getNextObject() ) !== false ) {
@@ -106,30 +89,19 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 								$finalvalues = $values[0];
 							}
 						}
-						if ( $finalvalues != '' ) $valuestack[] = '"' . str_replace( " ", "_", strtolower( $req->getLabel() ) ) . '": ' . $finalvalues . '';
+						if ( $finalvalues != '' ) $valuestack[] = '"' . str_replace( " ", "_", strtolower( $pr->getLabel() ) ) . '": ' . $finalvalues . '';
 					}
-					$count++;
 				}
-				// if we had a page definition, stuff in the uri
-				if ( $firstPropertyIsPageDef ) {
-					$valuestack[] = '"uri" : "' . $wgServer . $wgScriptPath . '/index.php?title=' . $prefixedtext . '"';
+				if ( $rowsubject !== false ) { // stuff in the page URI and some category data
+					$valuestack[] = '"uri" : "' . $wgServer . $wgScriptPath . '/index.php?title=' . $rowsubject->getPrefixedText() . '"';
+					$page_cats = smwfGetStore()->getPropertyValues( $rowsubject, SMWPropertyValue::makeProperty( '_INST' ) ); // TODO: set limit to 1 here
+					if ( count( $page_cats ) > 0 ) {
+						$valuestack[] = '"type" : "' . reset($page_cats)->getShortHTMLText() . '"';
+					}
 				}
 
-				// try to determine type/category
-				$catlist = array();
-				$dbr = wfGetDB( DB_SLAVE );
-				$cl  = $dbr->tableName( 'categorylinks' );
-				$arttitle = Title::newFromText( $label );
-				if ( $arttitle instanceof Title ) {
-					$catid = $arttitle->getArticleID();
-					$catres  = $dbr->select( $cl, 'cl_to', "cl_from = $catid", __METHOD__, array( 'ORDER BY' => 'cl_sortkey' ) );
-					while ( $catrow = $dbr->fetchRow( $catres ) ) $catlist[] = $catrow[0];
-					$dbr->freeResult( $catres );
-					if ( sizeof( $catlist ) > 0 ) $valuestack[] = '"type" : "' . $catlist[0] . '"';
-				}
 				// create property list of item
 				$itemstack[] = "\t{\n\t\t\t" . implode( ",\n\t\t\t", $valuestack ) . "\n\t\t}";
-				$row = $res->getNext();
 			}
 
 			$items = "\"items\": [\n\t" . implode( ",\n\t", $itemstack ) . "\n\t]";
