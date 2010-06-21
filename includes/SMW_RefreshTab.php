@@ -9,7 +9,9 @@
  * This line must be present before any global variable is referenced.
  */
 if ( !defined( 'MEDIAWIKI' ) ) die();
+
 global $wgHooks;
+
 $wgHooks[ 'SkinTemplateTabs' ][] = 'smwfAddRefreshTab'; // basic tab addition
 $wgHooks[ 'SkinTemplateNavigation' ][] = 'smwfAddStructuredRefreshTab'; // structured version for "Vector"-type skins
 
@@ -19,7 +21,7 @@ $wgHooks[ 'SkinTemplateNavigation' ][] = 'smwfAddStructuredRefreshTab'; // struc
  */
 function smwfAddRefreshTab( $skin, &$content_actions ) {
 	global $wgUser;
- 	if ( $wgUser->isAllowed( 'delete' ) ) {
+ 	if ( $wgUser->isAllowed( 'purge' ) ) {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$content_actions['purge'] = array(
 			'class' => false,
@@ -40,4 +42,3 @@ function smwfAddStructuredRefreshTab( $skin, &$links ) {
 	$links['actions'] = $actions;
 	return true;
 }
-
