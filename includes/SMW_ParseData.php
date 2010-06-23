@@ -139,7 +139,7 @@ class SMWParseData {
 	 *
 	 *  @param $parseroutput ParserOutput object that contains the results of parsing which will
 	 *  be stored.
-	 *  @param $title Title object specifying the page that should be safed.
+	 *  @param $title Title object specifying the page that should be saved.
 	 *  @param $makejobs Bool stating whether jobs should be created to trigger further updates if
 	 *  this appears to be necessary after this update.
 	 *

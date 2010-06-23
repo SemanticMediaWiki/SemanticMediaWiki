@@ -500,10 +500,10 @@ Semantic MediaWiki 0.4 includes the following new features:
   relations and attributes is now counted
 * Improved ontology import feature, allowing to import ontologies and to
   update existing pages with new ontological information
-* Experimental suport for date/time datatype
-* More datypes with units: mass and time duration
+* Experimental support for date/time datatype
+* More datatypes with units: mass and time duration
 * Support for EXP-notation with numbers, as e.g. 2.345e13. Improved number
-  formating in infobox.
+  formatting in infobox.
 * Configurable infobox: infobox can be hidden if empty, or switched off
   completely. This also works around a bug with MediaWiki galeries.
 * Prototype version of Special:Types, showing all available datatypes with

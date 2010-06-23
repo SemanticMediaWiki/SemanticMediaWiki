@@ -148,7 +148,7 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	/**
-	 * Special features for Type:Code formating.
+	 * Special features for Type:Code formatting.
 	 */
 	protected function getCodeDisplay( $value, $scroll = false ) {
 		SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );

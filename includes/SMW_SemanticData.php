@@ -21,7 +21,7 @@
 class SMWSemanticData {
 	
 	/**
-	 * States whether this is a stub object. Stubbing might happen on serialisation to safe DB space.
+	 * States whether this is a stub object. Stubbing might happen on serialisation to save DB space.
 	 * 
 	 * @var boolean
 	 */
@@ -73,7 +73,7 @@ class SMWSemanticData {
 	
 	/**
 	 *  States whether repeated values should be avoided. Not needing duplicte elimination
-	 *  (e.g. when loading from store) can safe much time, since objects can remain stubs until someone
+	 *  (e.g. when loading from store) can save much time, since objects can remain stubs until someone
 	 *  really acesses their value.
 	 *  
 	 *  @var boolean
