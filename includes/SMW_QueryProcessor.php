@@ -149,9 +149,9 @@ class SMWQueryProcessor {
 		} elseif ( $format == 'rss' ) { // unsorted RSS: use *descending* default order
 			///TODO: the default sort field should be "modification date" (now it is the title, but
 			///likely to be overwritten by printouts with label "date").
-			$query->sortkeys[''] = ( current( $orders ) != false ) ? current( $orders ):'DESC';
+			$query->sortkeys[''] = ( current( $orders ) != false ) ? current( $orders ) : 'DESC';
 		} else { // sort by page title (main column) by default
-			$query->sortkeys[''] = ( current( $orders ) != false ) ? current( $orders ):'ASC';
+			$query->sortkeys[''] = ( current( $orders ) != false ) ? current( $orders ) : 'ASC';
 		} // TODO: check and report if there are further order statements?
 
 		return $query;
@@ -213,7 +213,7 @@ class SMWQueryProcessor {
 					} elseif ( $title->getNamespace() == NS_CATEGORY ) {
 						$printmode = SMWPrintRequest::PRINT_CCAT;
 						$data = $title;
-						$label = $showmode ? '':$title->getText();  // default
+						$label = $showmode ? '' : $title->getText();  // default
 					} // else?
 				}
 				
