@@ -22,6 +22,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	protected $mTemplate = '';
 	protected $mUserParam = '';
 	protected $mColumns = 1;
+	protected $mIntroTemplate = '';
+	protected $mOutroTemplate = '';
 
 	protected function readParameters( $params, $outputmode ) {
 		SMWResultPrinter::readParameters( $params, $outputmode );
@@ -40,6 +42,12 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			if ( $columns > 1 && $columns <= 10 ) { // allow a maximum of 10 columns
 				$this->mColumns = (int)$columns;
 			}
+		}
+		if ( array_key_exists( 'introtemplate', $params ) ) {
+			$this->mIntroTemplate = $params['introtemplate'];
+		}
+		if ( array_key_exists( 'outrotemplate', $params ) ) {
+			$this->mOutroTemplate = $params['outrotemplate'];
 		}
 	}
 
@@ -88,6 +96,9 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$result .= '<div style="float: left; width: ' . $column_width . '%">' . "\n";
 			$rows_per_column = ceil( $res->getCount() / $this->mColumns );
 			$rows_in_cur_column = 0;
+		}
+		if ( $this->mIntroTemplate != '' ) {
+			$result .= "{{" . $this->mIntroTemplate . "}}";
 		}
 
 		// Now print each row
@@ -157,6 +168,9 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			
 			$result .= $rowend;
 		}
+		if ( $this->mOutroTemplate != '' ) {
+			$result .= "{{" . $this->mOutroTemplate . "}}";
+		}
 
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) && ( ( $this->mFormat != 'ol' ) || ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) ) {
@@ -174,7 +188,25 @@ class SMWListResultPrinter extends SMWResultPrinter {
 					$link->setParameter( $this->m_params['link'], 'link' );
 				}
 			}
-			$result .= $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend;
+			if ( $this->mUserParam != '' ) {
+				$link->setParameter( $this->mUserParam, 'userparam' );
+			}
+			if ( $this->mColumns != '' ) {
+				$link->setParameter( $this->mColumns, 'columns' );
+			}
+			if ( $this->mIntro != '' ) {
+				$link->setParameter( $this->mIntro, 'intro' );
+			}
+			if ( $this->mOutro != '' ) {
+				$link->setParameter( $this->mOutro, 'outro' );
+			}
+			if ( $this->mIntroTemplate != '' ) {
+				$link->setParameter( $this->mIntroTemplate, 'introtemplate' );
+			}
+			if ( $this->mOutroTemplate != '' ) {
+				$link->setParameter( $this->mOutroTemplate, 'outrotemplate' );
+			}
+			$result .= $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend . "\n";
 		}
 		if ( $this->mColumns > 1 )
 			$result .= '</div>' . "\n";
@@ -201,7 +233,10 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		if ( ! $plainlist ) {
 			$params[] = array( 'name' => 'columns', 'type' => 'int', 'description' => wfMsg( 'smw_paramdesc_columns', 1 ) );
 		}
-		
+		$params[] = array( 'name' => 'userparam', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_userparam' ) );
+		$params[] = array( 'name' => 'introtemplate', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_introtemplate' ) );
+		$params[] = array( 'name' => 'outrotemplate', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_outrotemplate' ) );
+
 		return $params;
 	}
 
