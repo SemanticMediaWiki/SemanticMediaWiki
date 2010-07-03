@@ -1024,6 +1024,7 @@ $messages['arz'] = array(
  * @author EugeneZelenko
  * @author Jim-by
  * @author Red Winged Duck
+ * @author Wizardist
  */
 $messages['be-tarask'] = array(
 	'smw-desc' => "Робіць {{GRAMMAR:вінавальны|{{SITENAME}}}} больш зручнай для кампутараў ''і'' людзей ([http://semantic-mediawiki.org/wiki/Help:User_manual дакумэнтацыя])",
@@ -1065,6 +1066,9 @@ $messages['be-tarask'] = array(
 	'smw_paramdesc_sep' => 'Разьдзяляльнік значэньняў',
 	'smw_paramdesc_template' => 'Назва шаблёну, які будзе выкарыстоўвацца для вываду вынікаў',
 	'smw_paramdesc_columns' => 'Колькасьць слупкоў у якіх будуць паказвацца вынікі (па змоўчваньні — $1)',
+	'smw_paramdesc_userparam' => 'Значэньне, якое перадаецца ў кожны выклік шаблёну, калі ён выкарыстоўваецца',
+	'smw_paramdesc_introtemplate' => 'Назва шаблёну для паказу перад вынікамі запыту, калі яны ёсьць',
+	'smw_paramdesc_outrotemplate' => 'Назва шаблёну для паказу пасьля вынікаў запыту, калі яны ёсьць',
 	'smw_paramdesc_embedformat' => 'Тэг HTML, які выкарыстоўваецца для вызначэньня загалоўкаў',
 	'smw_paramdesc_embedonly' => 'Не паказваць загалоўкі',
 	'smw_paramdesc_rsstitle' => 'Тэкст, які будзе выкарыстоўвацца як назва стужкі',
@@ -7769,8 +7773,8 @@ Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò
 	'smw_paramdesc_template' => "Ël nòm ëd në stamp con ël qual visualisé j'arzultà",
 	'smw_paramdesc_columns' => "Ël nùmer ëd colòne andoa mostré j'arzultà (lë stàndard a l'é $1)",
 	'smw_paramdesc_userparam' => "Un valor passà an mincadun-a ciamà dë stamp, se në stamp a l'é dovrà",
-	'smw_paramdesc_introtemplate' => "Ël nòm ëd në stamp da mosté prima dj'arzultà dl'arserca, s'a-i në j'é",
-	'smw_paramdesc_outrotemplate' => "Ël nòm ëd në stamp da mosté d'apress ëd j'arzultà dl'arserca, s'a-i në j'é",
+	'smw_paramdesc_introtemplate' => "Ël nòm ëd në stamp da mostré prima dj'arzultà dl'arserca, s'a-i në j'é",
+	'smw_paramdesc_outrotemplate' => "Ël nòm ëd në stamp da mostré apress ëd j'arzultà dl'arserca, s'a-i në j'é",
 	'smw_paramdesc_embedformat' => "L'etichëtta HTML dovrà për definì j'antestassion",
 	'smw_paramdesc_embedonly' => "Smon-e nen j'antestassion",
 	'smw_paramdesc_rsstitle' => 'Ël test da mostré com tìtol dël fluss',
@@ -8417,6 +8421,7 @@ $messages['rif'] = array(
 );
 
 /** Romanian (Română)
+ * @author AdiJapan
  * @author Firilacroco
  * @author KlaudiuMihaila
  */
@@ -8488,7 +8493,7 @@ Rezultatele pot fi neașteptate.',
 	'smw_browselink' => 'Răsfoiți proprietățile',
 	'smw_browse_go' => 'Mergi',
 	'smw_browse_no_outgoing' => 'Această pagină nu are proprietăți.',
-	'smw_browse_no_incoming' => 'Nici o proprietate nu se leagă la această pagină.',
+	'smw_browse_no_incoming' => 'Nici o proprietate nu trimite la această pagină.',
 	'smw_pp_from' => 'De la pagina',
 	'smw_pp_type' => 'Proprietate',
 	'smw_pp_submit' => 'Găsește rezultate',
