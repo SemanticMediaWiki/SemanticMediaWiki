@@ -2423,6 +2423,11 @@ Licony póstup aktualneje aktualizacije:',
 	'smw_adminlinks_inlinequerieshelp' => 'Pomoc k wótpšašanjam',
 );
 
+/** Ewe (Eʋegbe) */
+$messages['ee'] = array(
+	'smw_browse_go' => 'Yi',
+);
+
 /** Greek (Ελληνικά)
  * @author Consta
  * @author Crazymadlover
@@ -7620,7 +7625,7 @@ Wyniki mogą być inne od oczekiwanych.',
 	'smw_noconjunctions' => 'Koniunkcje w zapytaniach nie są obsługiwane na tej wiki, pominięto część zapytania ($1).',
 	'smw_nodisjunctions' => 'Alternatywy w zapytaniach nie są obsługiwane na tej wiki, pominięto część zapytania ($1).',
 	'smw_querytoolarge' => 'Następujące warunki zapytania nie mogły zostać uwzględnione ze względu na ograniczenia wiki w wielkości lub głębokości zapytania: $1.',
-	'smw_devel_warning' => 'Ta opcja jest obecnie w fazie rozwoju, może nie być w pełni funkcjonalna. Przed użyciem zabezpiecz swoje dane.',
+	'smw_devel_warning' => 'Ta opcja jest obecnie w fazie rozwoju, może nie funkcjonować w pełni. Przed użyciem zabezpiecz swoje dane.',
 	'smw_notemplategiven' => 'Należy podać parametr „template”, aby to zapytanie zadziałało.',
 	'smw_type_header' => 'Atrybuty typu “$1”',
 	'smw_typearticlecount' => 'Pokazano $1 {{PLURAL:$1|atrybut używający|atrybuty używające|atrybutów używających}} tego typu.',
