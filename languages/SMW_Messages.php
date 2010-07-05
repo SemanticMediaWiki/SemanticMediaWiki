@@ -2655,6 +2655,7 @@ $messages['eo'] = array(
 
 /** Spanish (Español)
  * @author Antur
+ * @author Bola
  * @author Carmen Jorge García-Reyes
  * @author Crazymadlover
  * @author Dvdgmz
@@ -2828,7 +2829,7 @@ En el caso de existir muy pocos resultados, se muestran también los valores apr
 	'smw_browse_go' => 'Ir',
 	'smw_browse_show_incoming' => 'mostrar propiedades que vinculen aquí',
 	'smw_browse_hide_incoming' => 'ocultar propiedades que vinculen aquí',
-	'smw_browse_no_outgoing' => 'Esta pa´gina no tiene propiedades.',
+	'smw_browse_no_outgoing' => 'Esta página no tiene propiedades.',
 	'smw_browse_no_incoming' => 'Ninguna propiedad vincula aquí.',
 	'smw_inverse_label_default' => '$1 de',
 	'smw_inverse_label_property' => 'Etiqueta de propiedad inversa',
