@@ -319,7 +319,7 @@ Estimated progress of current update:',
 
 	// Messages for Admin Links page
 	'smw_adminlinks_datastructure' => 'Data structure',
-	'smw_adminlinks_displayingdata' => 'Displaying data',
+	'smw_adminlinks_displayingdata' => 'Data display',
 	'smw_adminlinks_inlinequerieshelp' => 'Inline queries help',
 );
 
