@@ -299,6 +299,10 @@ $smwgResultFormats = array(
 $smwgResultAliases = array();
 ##
 
+$smwgResultDefaults = array();
+
+$smwgUseResultDefaults = false;
+
 ### Predefined sources for queries
 # Array of available sources for answering queries. Can be redefined in
 # the settings to register new sources (usually an extension will do so

@@ -107,9 +107,16 @@ abstract class SMWResultPrinter {
 	 * effectively can get down to level 3. The basic maximal depth of 2 can be changed by setting the
 	 * variable SMWResultPrinter::$maxRecursionDepth (in LocalSettings.php, after enableSemantics()).
 	 * Do this at your own risk.
+	 * 
+	 * @param SMWQueryResult $results
+	 * @param array $params
+	 * @param $outputmode
+	 * 
+	 * @return string
 	 */
 	public function getResult( $results, $params, $outputmode ) {
 		global $wgParser;
+		
 		$this->isHTML = false;
 		$this->hasTemplates = false;
 		$this->readParameters( $params, $outputmode );
@@ -122,17 +129,21 @@ abstract class SMWResultPrinter {
 				return $this->escapeText( $this->mDefault, $outputmode ) . $this->getErrorString( $results );
 			} elseif ( $this->mInline ) {
 				$label = $this->mSearchlabel;
+				
 				if ( $label === null ) { // apply defaults
 					smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 					$label = wfMsgForContent( 'smw_iq_moreresults' );
 				}
+				
 				if ( $label != '' ) {
 					$link = $results->getQueryLink( $this->escapeText( $label, $outputmode ) );
 					$result = $link->getText( $outputmode, $this->mLinker );
 				} else {
 					$result = '';
 				}
+				
 				$result .= $this->getErrorString( $results );
+				
 				return $result;
 			}
 		}
@@ -205,6 +216,9 @@ abstract class SMWResultPrinter {
 	 * Read an array of parameter values given as key-value-pairs and
 	 * initialise internal member fields accordingly. Possibly overwritten
 	 * (extended) by subclasses.
+	 * 
+	 * @param array $params
+	 * @param $outputmode
 	 */
 	protected function readParameters( $params, $outputmode ) {
 		$this->m_params = $params;
