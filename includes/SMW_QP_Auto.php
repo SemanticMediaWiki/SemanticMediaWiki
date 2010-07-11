@@ -44,7 +44,7 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 			$printReqs = $results->getPrintRequests();
 			$typeId = array_shift( $printReqs )->getTypeID();
 			
-			if ( '_wpg' ) {
+			if ( $typeId == '_wpg' ) {
 				$typeId = array_shift( $printReqs )->getTypeID();
 			}
 
