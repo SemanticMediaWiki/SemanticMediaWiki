@@ -12,7 +12,7 @@
 /**
  * Small data object holding the bare essentials of one title.
  * Used to store processed and open pages for export.
- * 
+ *
  * @ingroup SMW
  */
 class SMWSmallTitle {
@@ -28,7 +28,7 @@ class SMWSmallTitle {
 
 /**
  * Class for encapsulating the methods for RDF export.
- * 
+ *
  * @ingroup SMW
  */
 class SMWOWLExport {
@@ -149,73 +149,73 @@ class SMWOWLExport {
 		} else { // use empty URI, i.e. "location" as URI otherwise
 			$ontologyuri = '';
 		}
-		
+
 		$this->printHeader( $ontologyuri ); // also inits global namespaces
 
 		wfProfileIn( "RDF::PrintPages::PrepareQueue" );
-		
+
 		// transform pages into queued export titles
 		$cur_queue = array();
-		
+
 		foreach ( $pages as $page ) {
 			$title = Title::newFromText( $page );
-			
+
 			if ( null === $title ) continue; // invalid title name given
-			
+
 			$st = new SMWSmallTitle();
 			$st->dbkey = $title->getDBkey();
 			$st->namespace = $title->getNamespace();
-			
+
 			$cur_queue[] = $st;
 		}
-		
+
 		wfProfileOut( "RDF::PrintPages::PrepareQueue" );
 
 		while ( count( $cur_queue ) > 0 ) {
 			// first, print all selected pages
 			foreach ( $cur_queue as $st ) {
 				wfProfileIn( "RDF::PrintPages::PrintOne" );
-				
+
 				$this->printObject( $st, true, $backlinks );
-				
+
 				wfProfileOut( "RDF::PrintPages::PrintOne" );
-				
+
 				if ( $this->delay_flush > 0 ) $this->delay_flush--;
 			}
-			
+
 			// prepare array for next iteration
 			$cur_queue = array();
-			
+
 			if ( 1 == $recursion ) {
 				$cur_queue = $this->element_queue + $cur_queue; // make sure the array is *dublicated* instead of copying its ref
 				$this->element_queue = array();
 			}
-			
+
 			$linkCache->clear();
 		}
 
 		// for pages not processed recursively, print at least basic declarations
 		wfProfileIn( "RDF::PrintPages::Auxiliary" );
 		$this->date = ''; // no date restriction for the rest!
-		
+
 		if ( !empty( $this->element_queue ) ) {
 			if ( $this->pre_ns_buffer != '' ) {
 				$this->post_ns_buffer .= "\t<!-- auxiliary definitions -->\n";
 			} else {
 				print "\t<!-- auxiliary definitions -->\n"; // just print this comment, so that later outputs still find the empty pre_ns_buffer!
 			}
-			
+
 			while ( !empty( $this->element_queue ) ) {
 				$st = array_pop( $this->element_queue );
 				$this->printObject( $st, false, false );
 			}
 		}
-		
+
 		wfProfileOut( "RDF::PrintPages::Auxiliary" );
-		
+
 		$this->printFooter();
 		$this->flushBuffers( true );
-		
+
 		wfProfileOut( "RDF::PrintPages" );
 	}
 
@@ -225,28 +225,28 @@ class SMWOWLExport {
 	 */
 	public function printAll( $outfile, $ns_restriction = false, $delay, $delayeach ) {
 		global $smwgNamespacesWithSemanticLinks;
-		
+
 		$linkCache =& LinkCache::singleton();
 
 		$db = & wfGetDB( DB_MASTER );
 		$this->pre_ns_buffer = '';
 		$this->post_ns_buffer = '';
 		$this->first_flush = true;
-		
+
 		if ( $outfile === false ) {
 			// $this->delay_flush = 10000; //flush only after (fully) printing 10001 objects,
 			$this->delay_flush = - 1; // do not flush buffer at all
 		} else {
 			$file = fopen( $outfile, 'w' );
-			
+
 			if ( !$file ) {
 				print "\nCannot open \"$outfile\" for writing.\n";
 				return false;
 			}
-			
+
 			$this->delay_flush = - 1; // never flush, we flush in another way
 		}
-		
+
 		$this->extra_namespaces = array();
 		$this->printHeader(); // also inits global namespaces
 
@@ -256,35 +256,35 @@ class SMWOWLExport {
 		$a_count = 0; $d_count = 0; // DEBUG
 
 		$delaycount = $delayeach;
-		
+
 		for ( $id = $start; $id <= $end; $id++ ) {
 			$title = Title::newFromID( $id );
-			
+
 			if ( ( $title === null ) || !smwfIsSemanticsProcessed( $title->getNamespace() ) ) continue;
 			if ( !SMWOWLExport::fitsNsRestriction( $ns_restriction, $title->getNamespace() ) ) continue;
-			
+
 			$st = new SMWSmallTitle();
 			$st->dbkey = $title->getDBkey();
 			$st->namespace = $title->getNamespace();
-			
+
 			$cur_queue = array( $st );
 			$a_count++; // DEBUG
 			$full_export = true;
-			
+
 			while ( count( $cur_queue ) > 0 ) {
 				foreach ( $cur_queue as $st ) {
 					wfProfileIn( "RDF::PrintAll::PrintOne" );
 					$this->printObject( $st, $full_export, false );
 					wfProfileOut( "RDF::PrintAll::PrintOne" );
 				}
-				
+
 				$full_export = false; // make sure added dependencies do not pull more than needed
 				// resolve dependencies that will otherwise not be printed
 				$cur_queue = array();
-				
+
 				foreach ( $this->element_queue as $key => $staux ) {
 					$taux = Title::makeTitle( $staux->namespace, $staux->dbkey );
-					
+
 					if ( !smwfIsSemanticsProcessed( $staux->namespace ) || ( $staux->modifier !== '' ) ||
 					     !SMWOWLExport::fitsNsRestriction( $ns_restriction, $staux->namespace ) ||
 					     ( !$taux->exists() ) ) {
@@ -298,22 +298,22 @@ class SMWOWLExport {
 						                                   // want to export now is a potential memory leak
 					}
 				}
-				
+
 				// sleep each $delaycount for $delay ms to be nice to the server
 				if ( ( $delaycount-- < 0 ) && ( $delayeach != 0 ) ) {
 					usleep( $delay );
 					$delaycount = $delayeach;
 				}
 			}
-			
+
 			if ( $outfile !== false ) { // flush buffer
 				fwrite( $file, $this->post_ns_buffer );
 				$this->post_ns_buffer = '';
 			}
-			
+
 			$linkCache->clear();
 		}
-		
+
 		// DEBUG:
 		$this->post_ns_buffer .= "<!-- Processed $a_count regular articles. -->\n";
 		$this->post_ns_buffer .= "<!-- Processed $d_count added dependencies. -->\n";
@@ -326,14 +326,14 @@ class SMWOWLExport {
 		} else { // prepend headers to file, there is no really efficient solution (`cat(1)`) for this it seems
 			// print head:
 			fclose( $file );
-			
+
 			foreach ( $this->extra_namespaces as $nsshort => $nsuri ) {
 				 $this->pre_ns_buffer .= "\n\txmlns:$nsshort=\"$nsuri\"";
 			}
-			
+
 			$full_export = file_get_contents( $outfile );
 			$full_export = $this->pre_ns_buffer . $full_export . $this->post_ns_buffer;
-			
+
 			$file = fopen( $outfile, 'w' );
 			fwrite( $file, $full_export );
 			fclose( $file );
@@ -359,33 +359,33 @@ class SMWOWLExport {
 
 		global $smwgNamespacesWithSemanticLinks;
 		$query = '';
-		
+
 		foreach ( $smwgNamespacesWithSemanticLinks as $ns => $enabled ) {
 			if ( $enabled ) {
 				if ( $query != '' ) $query .= ' OR ';
 				$query .= 'page_namespace = ' . $db->addQuotes( $ns );
 			}
 		}
-		
+
 		$res = $db->select( $db->tableName( 'page' ),
 		                    'page_id,page_title,page_namespace', $query
 		                    , 'SMW::RDF::PrintPageList', array( 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ) );
 		$foundpages = false;
-		
+
 		while ( $row = $db->fetchObject( $res ) ) {
 			$foundpages = true;
 			// $t = Title::makeTitle($row->page_namespace, $row->page_title);
 			// if ($t === null) continue;
 			// $et = new SMWExportTitle($t, $this);
 			$st = new SMWSmallTitle();
-			
+
 			$st->dbkey = $row->page_title;
 			$st->namespace = $row->page_namespace;
-			
+
 			$this->printObject( $st, false, false );
-			
+
 			if ( $this->delay_flush > 0 ) $this->delay_flush--;
-			
+
 			$linkCache->clear();
 		}
 		if ( $foundpages ) { // add link to next result page
@@ -394,14 +394,14 @@ class SMWOWLExport {
 			} else {
 				$nexturl = SMWExporter::expandURI( '&export;&amp;offset=' ) . ( $offset + $limit );
 			}
-			
+
 			$this->post_ns_buffer .=
 			    "\t<!-- Link to next set of results -->\n" .
 			    "\t<owl:Thing rdf:about=\"$nexturl\">\n" .
 			    "\t\t<rdfs:isDefinedBy rdf:resource=\"$nexturl\"/>\n" .
 			    "\t</owl:Thing>\n";
 		}
-		
+
 		$this->printFooter();
 		$this->flushBuffers( true );
 
@@ -414,7 +414,7 @@ class SMWOWLExport {
 	 */
 	public function printWikiInfo() {
 		wfProfileIn( "RDF::PrintWikiInfo" );
-		
+
 		global $wgSitename, $wgLanguageCode;
 
 		$db = & wfGetDB( DB_MASTER );
@@ -425,46 +425,46 @@ class SMWOWLExport {
 
 		$ed = new SMWExpData( SMWExporter::getSpecialElement( 'swivt', 'Wikisite' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ), $ed );
-		
+
 		$ed = new SMWExpData( new SMWExpLiteral( $wgSitename ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdfs', 'label' ), $ed );
-		
+
 		$ed = new SMWExpData( new SMWExpLiteral( $wgSitename, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'siteName' ), $ed );
-		
+
 		$ed = new SMWExpData( new SMWExpLiteral( SMWExporter::expandURI( '&wikiurl;' ), null, 'http://www.w3.org/2001/XMLSchema#string' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'pagePrefix' ), $ed );
-		
+
 		$ed = new SMWExpData( new SMWExpLiteral( SMW_VERSION, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'smwVersion' ), $ed );
-		
+
 		$ed = new SMWExpData( new SMWExpLiteral( $wgLanguageCode, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'langCode' ), $ed );
 
 		// stats
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::pages(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'pageCount' ), $ed );
-		
+
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::articles(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'contentPageCount' ), $ed );
-		
+
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::images(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'mediaCount' ), $ed );
-		
+
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::edits(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'editCount' ), $ed );
-		
+
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::views(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'viewCount' ), $ed );
-		
+
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::users(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'userCount' ), $ed );
-		
+
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::admins(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'adminCount' ), $ed );
 
 		$mainpage = Title::newMainPage();
-		
+
 		if ( $mainpage !== null ) {
 			$ed = new SMWExpData( new SMWExpResource( $mainpage->getFullURL() ) );
 			$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'mainPage' ), $ed );
@@ -472,19 +472,19 @@ class SMWOWLExport {
 
 		$this->printHeader(); // also inits global namespaces
 		$this->printExpData( $data );
-		
+
 		if ( strpos( SMWExporter::expandURI( '&wikiurl;' ), '?' ) === false ) { // check whether we have title as a first parameter or in URL
 			$nexturl = SMWExporter::expandURI( '&export;?offset=0' );
 		} else {
 			$nexturl = SMWExporter::expandURI( '&export;&amp;offset=0' );
 		}
-		
+
 		$this->post_ns_buffer .=
 			    "\t<!-- Link to semantic page list -->\n" .
 			    "\t<owl:Thing rdf:about=\"$nexturl\">\n" .
 			    "\t\t<rdfs:isDefinedBy rdf:resource=\"$nexturl\"/>\n" .
 			    "\t</owl:Thing>\n";
-		
+
 		$this->printFooter();
 		$this->flushBuffers( true );
 
@@ -539,48 +539,48 @@ class SMWOWLExport {
 	 */
 	protected function printExpData( /*SMWExpData*/ $data, $indent = '' ) {
 		$type = $data->extractMainType()->getQName();
-		
+
 		if ( '' == $this->pre_ns_buffer ) { // start new ns block
 			$this->pre_ns_buffer .= "\t$indent<$type";
 		} else {
 			$this->post_ns_buffer .= "\t$indent<$type";
 		}
-		
+
 		if ( ( $data->getSubject() instanceof SMWExpLiteral ) || ( $data->getSubject() instanceof SMWExpResource ) ) {
 			 $this->post_ns_buffer .= ' rdf:about="' . $data->getSubject()->getName() . '"';
 		} // else: blank node
-		
+
 		if ( count( $data->getProperties() ) == 0 ) {
 			$this->post_ns_buffer .= " />\n";
 		} else {
 			$this->post_ns_buffer .= ">\n";
-			
+
 			foreach ( $data->getProperties() as $property ) {
 				$this->queueElement( $property );
-				
+
 				foreach ( $data->getValues( $property ) as $value ) {
 					$this->post_ns_buffer .= "\t\t$indent<" . $property->getQName();
 					$this->addExtraNamespace( $property->getNamespaceID(), $property->getNamespace() );
 					$object = $value->getSubject();
-					
+
 					if ( $object instanceof SMWExpLiteral ) {
 						if ( $object->getDatatype() != '' ) {
 							$this->post_ns_buffer .= ' rdf:datatype="' . $object->getDatatype() . '"';
 						}
-						
+
 						$this->post_ns_buffer .= '>' .
 							str_replace( array( '&', '>', '<' ), array( '&amp;', '&gt;', '&lt;' ), $object->getName() ) .
 							'</' . $property->getQName() . ">\n";
 					} else { // bnode or resource, may have subdescriptions
 						$collection = $value->getCollection();
-						
+
 						if ( $collection != false ) {
 							$this->post_ns_buffer .= " rdf:parseType=\"Collection\">\n";
-							
+
 							foreach ( $collection as $subvalue ) {
 								$this->printExpData( $subvalue, $indent . "\t\t" );
 							}
-							
+
 							$this->post_ns_buffer .= "\t\t$indent</" . $property->getQName() . ">\n";
 						} elseif ( count( $value->getProperties() ) > 0 ) {
 							$this->post_ns_buffer .= ">\n";
@@ -591,16 +591,16 @@ class SMWOWLExport {
 								$this->post_ns_buffer .= ' rdf:resource="' . $object->getName() . '"';
 								$this->queueElement( $object ); // queue only non-explicated resources
 							}
-							
+
 							$this->post_ns_buffer .= "/>\n";
 						}
 					}
 				}
 			}
-			
+
 			$this->post_ns_buffer .= "\t$indent</" . $type . ">\n";
 		}
-		
+
 		$this->flushBuffers();
 	}
 
@@ -616,43 +616,41 @@ class SMWOWLExport {
 	 */
 	protected function printObject( /*SMWSmallTitle*/ $st, $fullexport = true, $backlinks = false ) {
 		global $smwgMW_1_14;
-		
+
 		if ( array_key_exists( $st->getHash(), $this->element_done ) ) return; // do not export twice
 
 		$value = SMWWikiPageValue::makePage( $st->dbkey, $st->namespace );
-		
+
 		if ( $this->date !== '' ) { // check date restriction if given
 			$rev = $smwgMW_1_14 ? Revision::getTimeStampFromID( $value->getTitle(), $value->getTitle()->getLatestRevID() ):Revision::getTimeStampFromID( $value->getTitle()->getLatestRevID() );
 			if ( $rev < $this->date ) return;
 		}
 
-		$data = SMWExporter::makeExportData( smwfGetStore()->getSemanticData( $value, $fullexport ? false:array( '__spu', '__typ', '__imp' ) ), $st->modifier );
+		$data = SMWExporter::makeExportData( $this->getSemanticData( $value, !$fullexport ), $st->modifier );
 		$this->printExpData( $data ); // serialise
-		
+
 		// let other extensions add additional RDF data for this page
 		$additionalDataArray = array();
-		
 		wfRunHooks( 'smwAddToRDFExport', array( $value->getTitle(), &$additionalDataArray ) );
-		
 		foreach ( $additionalDataArray as $additionalData ) {
 			$this->printExpData( $additionalData ); // serialise
 		}
-		
+
 		$this->markAsDone( $st );
 
 		// possibly add backlinks
 		if ( ( $fullexport ) && ( $backlinks ) ) {
 			wfProfileIn( "RDF::PrintPages::GetBacklinks" );
 			$inRels = smwfGetStore()->getInProperties( $value );
-			
+
 			foreach ( $inRels as $inRel ) {
 				$inSubs = smwfGetStore()->getPropertySubjects( $inRel, $value );
-				
+
 				foreach ( $inSubs as $inSub ) {
 					$stb = new SMWSmallTitle();
 					$stb->dbkey = $inSub->getDBkey();
 					$stb->namespace = $inSub->getNamespace();
-					
+
 					if ( !array_key_exists( $stb->getHash(), $this->element_done ) ) {
 						$semdata = smwfGetStore()->getSemanticData( $inSub, array( '__spu', '__typ', '__imp' ) );
 						$semdata->addPropertyObjectValue( $inRel, $value );
@@ -661,21 +659,18 @@ class SMWOWLExport {
 					}
 				}
 			}
-			
+
 			if ( NS_CATEGORY === $value->getNamespace() ) { // also print elements of categories
 				$options = new SMWRequestOptions();
-				
-				$options->limit = 100; /// Categories can be large, use limit
-				
+				$options->limit = 100; // Categories can be large, always use limit
 				$instances = smwfGetStore()->getPropertySubjects( SMWPropertyValue::makeProperty( '_INST' ), $value, $options );
-				
 				$pinst = SMWPropertyValue::makeProperty( '_INST' );
-				
+
 				foreach ( $instances as $instance ) {
 					$stb = new SMWSmallTitle();
 					$stb->dbkey = $instance->getDBkey();
 					$stb->namespace = $instance->getNamespace();
-					
+
 					if ( !array_key_exists( $stb->getHash(), $this->element_done ) ) {
 						$semdata = smwfGetStore()->getSemanticData( $instance, array( '__spu', '__typ', '__imp' ) );
 						$semdata->addPropertyObjectValue( $pinst, $value );
@@ -692,26 +687,25 @@ class SMWOWLExport {
 				$res = smwfGetStore()->getQueryResult( $query );
 				$resarray = $res->getNext();
 				$pinst = SMWPropertyValue::makeProperty( '_INST' );
-				
+
 				while ( $resarray !== false ) {
 					$instance = end( $resarray )->getNextObject();
-					
+
 					$stb = new SMWSmallTitle();
-					
 					$stb->dbkey = $instance->getDBkey();
 					$stb->namespace = $instance->getNamespace();
-					
+
 					if ( !array_key_exists( $stb->getHash(), $this->element_done ) ) {
 						$semdata = smwfGetStore()->getSemanticData( $instance,  array( '__spu', '__typ', '__imp' ) );
 						$semdata->addPropertyObjectValue( $pinst, $value );
 						$data = SMWExporter::makeExportData( $semdata );
 						$this->printExpData( $data );
 					}
-					
+
 					$resarray = $res->getNext();
 				}
 			}
-			
+
 			wfProfileOut( "RDF::PrintPages::GetBacklinks" );
 		}
 	}
@@ -741,13 +735,13 @@ class SMWOWLExport {
 		$this->extra_namespaces = array();
 		print $this->post_ns_buffer;
 		$this->post_ns_buffer = '';
-		
+
 		// Ship data in small chunks (even though browsers often do not display anything
 		// before the file is complete -- this might be due to syntax highlighting features
 		// for app/xml). You may want to sleep(1) here for debugging this.
 		ob_flush();
 		flush();
-		
+
 		$this->first_flush = false;
 	}
 
@@ -768,14 +762,14 @@ class SMWOWLExport {
 	public function queueElement( $element ) {
 		if ( !( $element instanceof SMWExpResource ) ) return; // only Resources are queued
 		$title = $element->getDataValue();
-		
+
 		if ( $title instanceof SMWWikiPageValue ) {
 			$spt = new SMWSmallTitle();
 			$title = $title->getTitle();
 			$spt->dbkey = $title->getDBkey();
 			$spt->namespace = $title->getNamespace();
 			$spt->modifier = $element->getModifier();
-			
+
 			if ( !array_key_exists( $spt->getHash(), $this->element_done ) ) {
 				$this->element_queue[$spt->getHash()] = $spt;
 			}
@@ -795,6 +789,31 @@ class SMWOWLExport {
 		}
 		$this->element_done[$st->getHash()] = $st; // mark title as done
 		unset( $this->element_queue[$st->getHash()] ); // make sure it is not in the queue
+	}
+
+	/**
+	 * Retrieve a copy of the semantic data for a wiki page, possibly filtering
+	 * it so that only essential properties are included (in some cases, we only
+	 * want to export stub information about a page).
+	 * We make a copy of the object since we may want to add more data later on
+	 * and we do not want to modify the store's result which may be used for
+	 * caching purposes elsewhere.
+	 */
+	protected function getSemanticData( $pagevalue, $core_props_only ) {
+		$semdata = smwfGetStore()->getSemanticData( $pagevalue, $core_props_only ? array( '__spu', '__typ', '__imp' ) : false ); // maybe advise Store to retrieve only core things
+		if ( $core_props_only ) { // be sure to filter all non-relevant things that may still be present in the retrieved
+			$result = new SMWSemanticData( $pagevalue );
+			foreach ( array( '__spu', '__typ', '__imp' ) as $propid ) {
+				$prop = SMWPropertyValue::makeProperty( $propid );
+				$values = $semdata->getPropertyValues( $prop );
+				foreach ( $values as $dv ) {
+					$result->addPropertyObjectValue( $prop, $dv );
+				}
+			}
+		} else {
+			$result = clone $semdata;
+		}
+		return $result;
 	}
 
 	/**
