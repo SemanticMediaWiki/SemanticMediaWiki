@@ -652,7 +652,7 @@ class SMWOWLExport {
 					$stb->namespace = $inSub->getNamespace();
 
 					if ( !array_key_exists( $stb->getHash(), $this->element_done ) ) {
-						$semdata = smwfGetStore()->getSemanticData( $inSub, array( '__spu', '__typ', '__imp' ) );
+						$semdata = $this->getSemanticData( $inSub, true );
 						$semdata->addPropertyObjectValue( $inRel, $value );
 						$data = SMWExporter::makeExportData( $semdata );
 						$this->printExpData( $data );
@@ -672,7 +672,7 @@ class SMWOWLExport {
 					$stb->namespace = $instance->getNamespace();
 
 					if ( !array_key_exists( $stb->getHash(), $this->element_done ) ) {
-						$semdata = smwfGetStore()->getSemanticData( $instance, array( '__spu', '__typ', '__imp' ) );
+						$semdata = $this->getSemanticData( $instance, true );
 						$semdata->addPropertyObjectValue( $pinst, $value );
 						$data = SMWExporter::makeExportData( $semdata );
 						$this->printExpData( $data );
@@ -696,7 +696,7 @@ class SMWOWLExport {
 					$stb->namespace = $instance->getNamespace();
 
 					if ( !array_key_exists( $stb->getHash(), $this->element_done ) ) {
-						$semdata = smwfGetStore()->getSemanticData( $instance,  array( '__spu', '__typ', '__imp' ) );
+						$semdata = $this->getSemanticData( $instance, true );
 						$semdata->addPropertyObjectValue( $pinst, $value );
 						$data = SMWExporter::makeExportData( $semdata );
 						$this->printExpData( $data );
