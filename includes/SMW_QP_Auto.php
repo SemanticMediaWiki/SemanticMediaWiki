@@ -31,14 +31,14 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 	public function getResult( $results, $params, $outputmode ) {
 		global $smwgUseResultDefaults, $smwgResultDefaults, $smwgAddedResultDefaults;
 
-		$format = false;
-		
 		if ( !$smwgAddedResultDefaults ) {
 			$smwgAddedResultDefaults = true;
 			wfRunHooks( 'SMWResultDefaults', array( &$smwgResultDefaults ) );
 		}
 		
-		wfRunHooks( 'SMWResultFormat', array( &$format ) );		
+		$format = false;
+		
+		wfRunHooks( 'SMWResultFormat', array( &$format, $results->getPrintRequests(), $params ) );		
 
 		if ( $smwgUseResultDefaults && !$format && $results->getColumnCount() <= 2 ) {
 			$printReqs = $results->getPrintRequests();
