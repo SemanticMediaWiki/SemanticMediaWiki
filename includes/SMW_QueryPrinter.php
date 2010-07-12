@@ -220,7 +220,7 @@ abstract class SMWResultPrinter {
 	 * @param array $params
 	 * @param $outputmode
 	 */
-	protected function readParameters( $params, $outputmode ) {
+	protected function readParameters( array $params, $outputmode ) {
 		$this->m_params = $params;
 		
 		if ( array_key_exists( 'intro', $params ) ) {
@@ -271,7 +271,7 @@ abstract class SMWResultPrinter {
 	 * Return serialised results in specified format.
 	 * Implemented by subclasses.
 	 */
-	abstract protected function getResultText( $res, $outputmode );
+	abstract protected function getResultText( /* SMWQueryResult */ $res, $outputmode );
 
 	/**
 	 * Depending on current linking settings, returns a linker object

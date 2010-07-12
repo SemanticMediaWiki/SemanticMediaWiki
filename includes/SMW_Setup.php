@@ -18,9 +18,15 @@ define( 'SMW_VERSION', '1.5.2 alpha-1' );
  *
  * This function also sets up all autoloading, such that all SMW classes are
  * available as early on. Moreover, jobs and special pages are registered.
+ * 
+ * @param mixed $namespace
+ * @param boolean $complete
+ * 
+ * @return true
  */
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgIP, $smwgNamespace, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles, $wgJobClasses, $wgExtensionAliasesFiles;
+	
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
@@ -240,28 +246,35 @@ function smwfSetupExtension() {
  **/
 function smwfAddToAdminLinks( &$admin_links_tree ) {
 	smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+	
 	$data_structure_section = new ALSection( wfMsg( 'smw_adminlinks_datastructure' ) );
+	
 	$smw_row = new ALRow( 'smw' );
 	$smw_row->addItem( ALItem::newFromSpecialPage( 'Categories' ) );
 	$smw_row->addItem( ALItem::newFromSpecialPage( 'Properties' ) );
 	$smw_row->addItem( ALItem::newFromSpecialPage( 'UnusedProperties' ) );
 	$smw_row->addItem( ALItem::newFromSpecialPage( 'SemanticStatistics' ) );
+	
 	$data_structure_section->addRow( $smw_row );
 	$smw_admin_row = new ALRow( 'smw_admin' );
 	$smw_admin_row->addItem( ALItem::newFromSpecialPage( 'SMWAdmin' ) );
+	
 	$data_structure_section->addRow( $smw_admin_row );
 	$smw_docu_row = new ALRow( 'smw_docu' );
 	$smw_name = wfMsg( 'specialpages-group-smw_group' );
 	$smw_docu_label = wfMsg( 'adminlinks_documentation', $smw_name );
 	$smw_docu_row->addItem( AlItem::newFromExternalLink( "http://semantic-mediawiki.org/wiki/Help:User_manual", $smw_docu_label ) );
+	
 	$data_structure_section->addRow( $smw_docu_row );
 	$admin_links_tree->addSection( $data_structure_section, wfMsg( 'adminlinks_browsesearch' ) );
 	$smw_row = new ALRow( 'smw' );
 	$displaying_data_section = new ALSection( wfMsg( 'smw_adminlinks_displayingdata' ) );
 	$smw_row->addItem( AlItem::newFromExternalLink( "http://semantic-mediawiki.org/wiki/Help:Inline_queries", wfMsg( 'smw_adminlinks_inlinequerieshelp' ) ) );
+
 	$displaying_data_section->addRow( $smw_row );
 	$admin_links_tree->addSection( $displaying_data_section, wfMsg( 'adminlinks_browsesearch' ) );
 	$browse_search_section = $admin_links_tree->getSection( wfMsg( 'adminlinks_browsesearch' ) );
+	
 	$smw_row = new ALRow( 'smw' );
 	$smw_row->addItem( ALItem::newFromSpecialPage( 'Browse' ) );
 	$smw_row->addItem( ALItem::newFromSpecialPage( 'Ask' ) );
@@ -275,9 +288,15 @@ function smwfAddToAdminLinks( &$admin_links_tree ) {
 /**
  * Register special classes for displaying semantic content on Property/Type
  * pages.
+ * 
+ * @param $title: Title
+ * @param $article: Article or null
+ * 
+ * @return true
  */
-function smwfOnArticleFromTitle( &$title, &$article ) {
+function smwfOnArticleFromTitle( Title &$title, /* Article */ &$article ) {
 	global $smwgIP;
+	
 	if ( $title->getNamespace() == SMW_NS_TYPE ) {
 		$article = new SMWTypePage( $title );
 	} elseif ( $title->getNamespace() == SMW_NS_PROPERTY ) {
@@ -285,6 +304,7 @@ function smwfOnArticleFromTitle( &$title, &$article ) {
 	} elseif ( $title->getNamespace() == SMW_NS_CONCEPT ) {
 		$article = new SMWConceptPage( $title );
 	}
+	
 	return true;
 }
 

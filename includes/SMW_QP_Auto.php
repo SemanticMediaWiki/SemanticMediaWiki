@@ -28,16 +28,18 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 	 * 
 	 * @return string
 	 */
-	public function getResult( $results, $params, $outputmode ) {
+	public function getResult( /* SMWQueryResult */ $results, $params, $outputmode ) {
 		global $smwgUseResultDefaults, $smwgResultDefaults, $smwgAddedResultDefaults;
 
 		if ( !$smwgAddedResultDefaults ) {
 			$smwgAddedResultDefaults = true;
+			// @since 1.5.2
 			wfRunHooks( 'SMWResultDefaults', array( &$smwgResultDefaults ) );
 		}
 		
 		$format = false;
 		
+		// @since 1.5.2
 		wfRunHooks( 'SMWResultFormat', array( &$format, $results->getPrintRequests(), $params ) );		
 
 		if ( $smwgUseResultDefaults && !$format && $results->getColumnCount() <= 2 ) {
@@ -65,7 +67,13 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 		return $printer->getResult( $results, $params, $outputmode );
 	}
 
-	protected function getResultText( $res, $outputmode ) {
+	/**
+	 * @see SMWResultPrinter::getResultText
+	 * 
+	 * @param SMWQueryResult $res
+	 * @param $outputmode
+	 */
+	protected function getResultText( /* SMWQueryResult */ $res, $outputmode ) {
 		return ''; // acutally not needed in this implementation
 	}
 
