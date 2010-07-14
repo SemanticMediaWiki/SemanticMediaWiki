@@ -631,7 +631,7 @@ class SMWOWLExport {
 
 		// let other extensions add additional RDF data for this page
 		$additionalDataArray = array();
-		wfRunHooks( 'smwAddToRDFExport', array( $value->getTitle(), &$additionalDataArray ) );
+		wfRunHooks( 'smwAddToRDFExport', array( $value->getTitle(), &$additionalDataArray, $fullexport, $backlinks ) );
 		foreach ( $additionalDataArray as $additionalData ) {
 			$this->printExpData( $additionalData ); // serialise
 		}
