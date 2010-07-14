@@ -33,16 +33,29 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 
 		if ( !$smwgAddedResultDefaults ) {
 			$smwgAddedResultDefaults = true;
-			// @since 1.5.2
+			
+			/**
+			 * This hook allows extensions to specify default result formats for
+			 * datavalues. For example, Semantic Maps can specify the result format
+			 * for geographical coordinates is the map one. 
+			 * 
+			 * @since 1.5.2
+			 */ 
 			wfRunHooks( 'SMWResultDefaults', array( &$smwgResultDefaults ) );
 		}
 		
 		$format = false;
 		
-		// @since 1.5.2
+		/**
+		 * This hook allows extensions to override SMWs implementation of default result
+		 * format handling. Extensions might choose do so even when $smwgUseResultDefaults is false.
+		 * 
+		 * @since 1.5.2
+		 */
 		wfRunHooks( 'SMWResultFormat', array( &$format, $results->getPrintRequests(), $params ) );		
 
-		if ( $smwgUseResultDefaults && !$format && $results->getColumnCount() <= 2 ) {
+		// If $smwgUseResultDefaults is true, and there are no multiple columns, see if there is a default format.
+		if ( $smwgUseResultDefaults && $format === false && $results->getColumnCount() <= 2 ) {
 			$printReqs = $results->getPrintRequests();
 			$typeId = array_shift( $printReqs )->getTypeID();
 			
@@ -55,6 +68,7 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 			}
 		}
 
+		// If no default was found, use a table or list, depending on the column count.
 		if ( $format === false ) {
 			$format = $results->getColumnCount() > 1 ? 'table' : 'list';
 		}
