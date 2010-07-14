@@ -220,7 +220,7 @@ abstract class SMWResultPrinter {
 	 * @param array $params
 	 * @param $outputmode
 	 */
-	protected function readParameters( array $params, $outputmode ) {
+	protected function readParameters( /* array */ $params, $outputmode ) {
 		$this->m_params = $params;
 		
 		if ( array_key_exists( 'intro', $params ) ) {
