@@ -639,7 +639,9 @@ class SMWSQLStore2QueryEngine {
 		// *** Add conditions on the value of the property ***//
 		if ( ( count( $objectfields ) == 1 ) && ( reset( $objectfields ) == 'p' ) ) { // page description, process like main query
 			$sub = $this->compileQueries( $valuedesc );
-			$objectfield = reset( array_keys( $objectfields ) );
+			
+			$objectfield = array_keys( $objectfields );
+			$objectfield = reset( $objectfield );
 
 			if ( $sub >= 0 ) {
 				$query->components[$sub] = "{$query->alias}.{$objectfield}";
