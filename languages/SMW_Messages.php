@@ -1353,6 +1353,9 @@ $messages['br'] = array(
 	'smw_paramdesc_sep' => 'An disranner evit an talvoudoù',
 	'smw_paramdesc_template' => 'An ar patrom gant pehini eo ret diskouez ar moulladurioù',
 	'smw_paramdesc_columns' => "An niver a golonennoù evit pere ez eus da ziskouez an disoc'hoù ($1 dre ziouer)",
+	'smw_paramdesc_userparam' => "Un talvoudenn tremenet e pep galvadenn a batrom, ma 'z eo implijet ur patrom",
+	'smw_paramdesc_introtemplate' => "Anv ar patrom da ziskouez a-raok disoc'hoù ar reked, ma 'z eus",
+	'smw_paramdesc_outrotemplate' => "Anv ar patrom da ziskouez goude disoc'hoù ar reked, ma 'z eus",
 	'smw_paramdesc_embedformat' => 'Ar balizenn HTML hag a servij da dermeniñ an talbennoù',
 	'smw_paramdesc_embedonly' => 'Na ziskwel talbenn ebet',
 	'smw_paramdesc_rsstitle' => 'Testenn da implijout evel titl ar gwazhioù',
@@ -8766,6 +8769,19 @@ $messages['ru'] = array(
 	'smw_adminlinks_datastructure' => 'Структура данных',
 	'smw_adminlinks_displayingdata' => 'Отображение данных',
 	'smw_adminlinks_inlinequerieshelp' => 'Справка по встроенным запросам',
+);
+
+/** Rusyn (русиньскый язык)
+ * @author Gazeb
+ */
+$messages['rue'] = array(
+	'smw_printername_auto' => 'Автоматічно',
+	'smw_browse_go' => 'Выконати',
+	'smw_result_prev' => 'Попередня',
+	'smw_result_next' => 'Далша',
+	'smw_result_results' => 'Резултаты',
+	'smw_result_noresults' => 'Жадны ресултаты',
+	'smw_smwadmin_return' => 'Навернутя до  «$1».',
 );
 
 /** Serbo-Croatian (Srpskohrvatski / Српскохрватски)
