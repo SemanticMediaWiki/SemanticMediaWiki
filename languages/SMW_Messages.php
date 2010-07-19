@@ -4874,6 +4874,7 @@ Progresso estimate del actualisation currente:',
 
 /** Indonesian (Bahasa Indonesia)
  * @author Bennylin
+ * @author Farras
  * @author Irwangatot
  * @author IvanLanin
  * @author Rex
@@ -4919,6 +4920,9 @@ Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs u
 	'smw_paramdesc_sep' => 'Pemisah untuk nilai',
 	'smw_paramdesc_template' => 'Nama templat yang digunakan untuk menampilkan cetakan',
 	'smw_paramdesc_columns' => 'Jumlah kolom untuk menampilkan hasil (bawaannya adalah $1)',
+	'smw_paramdesc_userparam' => 'Sebuah nilai dimasukkan ke setiap pencarian templat, bila sebuah templat digunakan',
+	'smw_paramdesc_introtemplate' => 'Nama templat yang ditampilkan sebelum hasil pencarian, bila ada',
+	'smw_paramdesc_outrotemplate' => 'Nama templat yang ditampilkan setelah hasil pencarian, bila ada',
 	'smw_paramdesc_embedformat' => 'Tag HTML yang digunakan untuk menentukan judul',
 	'smw_paramdesc_embedonly' => 'Jangan tampilkan judul',
 	'smw_paramdesc_rsstitle' => 'Tulisan yang digunakan sebagai judul umpan',
@@ -4945,6 +4949,7 @@ Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs u
 	'smw_nofloat' => '"$1" bukan angka.',
 	'smw_infinite' => 'Angka sebesar "$1" tidak didukung.',
 	'smw_infinite_unit' => 'Konversi menjadi unit "$1" menghasilkan suatu angka yang terlalu besar.',
+	'smw_novalues' => 'Tidak ada nilai yang disebutkan.',
 	'smw_unsupportedprefix' => 'Awalan untuk angka ("$1") tidak didukung.',
 	'smw_unsupportedunit' => 'Konversi unit untuk unit "$1" tidak didukung.',
 	'smw_nodatetime' => 'Tanggal "$1" tidak dipahami.',
