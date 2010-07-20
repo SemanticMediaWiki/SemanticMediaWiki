@@ -147,13 +147,16 @@ class SMWPrintRequest {
 	public function getHash() {
 		if ( $this->m_hash === false ) {
 			$this->m_hash = $this->m_mode . ':' . $this->m_label . ':';
+			
 			if ( $this->m_data instanceof Title ) {
 				$this->m_hash .= $this->m_data->getPrefixedText() . ':';
 			} elseif ( $this->m_data instanceof SMWDataValue ) {
 				$this->m_hash .= $this->m_data->getHash() . ':';
 			}
-			$this->m_hash .= $this->m_outputformat . ':' . implode( $this->m_params, '|' );
+			
+			$this->m_hash .= $this->m_outputformat . ':' . implode( '|', $this->m_params );
 		}
+		
 		return $this->m_hash;
 	}
 
