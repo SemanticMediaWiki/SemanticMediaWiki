@@ -13,6 +13,7 @@
  * @ingroup SMWQuery
  */
 class SMWPrintRequest {
+	
 	/// Query mode to print all direct categories of the current element.
 	const PRINT_CATS = 0;
 	/// Query mode to print all property values of a certain attribute of the current element.
@@ -94,8 +95,9 @@ class SMWPrintRequest {
 				case SMWPrintRequest::PRINT_PROP:
 					return $this->m_data->getShortWikiText( $linked );
 				case SMWPrintRequest::PRINT_CCAT:
-				return '[[:' . $this->m_data->getPrefixedText() . '|' . $this->m_label . ']]';
-				case SMWPrintRequest::PRINT_THIS: default: return $this->m_label;
+					return '[[:' . $this->m_data->getPrefixedText() . '|' . $this->m_label . ']]';
+				case SMWPrintRequest::PRINT_THIS: default:
+					return $this->m_label;
 			}
 		}
 	}
@@ -126,6 +128,8 @@ class SMWPrintRequest {
 	/**
 	 * If this print request refers to some property, return the type id of this property.
 	 * Otherwise return FALSE.
+	 * 
+	 * @return string
 	 */
 	public function getTypeID() {
 		if ( $this->m_typeid === false ) {
@@ -135,6 +139,7 @@ class SMWPrintRequest {
 				$this->m_typeid = '_wpg'; // return objects might be titles, but anyway
 			}
 		}
+		
 		return $this->m_typeid;
 	}
 
@@ -143,6 +148,8 @@ class SMWPrintRequest {
 	 * print requests. The hash also includes the chosen label,
 	 * so it is possible to print the same date with different
 	 * labels.
+	 * 
+	 * @return string
 	 */
 	public function getHash() {
 		if ( $this->m_hash === false ) {
@@ -167,35 +174,44 @@ class SMWPrintRequest {
 	 */
 	public function getSerialisation( $showparams = false ) {
 		$parameters = '';
+		
 		if ( $showparams ) foreach ( $this->m_params as $key => $value ) {
 			$parameters .= "|+" . $key . "=" . $value;
 		}
+		
 		switch ( $this->m_mode ) {
 			case SMWPrintRequest::PRINT_CATS:
 				global $wgContLang;
+				
 				$catlabel = $wgContLang->getNSText( NS_CATEGORY );
 				$result = '?' . $catlabel;
+				
 				if ( $this->m_label != $catlabel ) {
 					$result .= '=' . $this->m_label;
 				}
+				
 				return $result . $parameters;
 			case SMWPrintRequest::PRINT_PROP: case SMWPrintRequest::PRINT_CCAT:
 				if ( $this->m_mode == SMWPrintRequest::PRINT_CCAT ) {
 					$printname = $this->m_data->getPrefixedText();
 					$result = '?' . $printname;
+					
 					if ( $this->m_outputformat != 'x' ) {
 						$result .= '#' . $this->m_outputformat;
 					}
 				} else {
 					$printname = $this->m_data->getWikiValue();
 					$result = '?' . $printname;
+					
 					if ( $this->m_outputformat != '' ) {
 						$result .= '#' . $this->m_outputformat;
 					}
 				}
+				
 				if ( $printname != $this->m_label ) {
 					$result .= '=' . $this->m_label;
 				}
+				
 				return $result . $parameters;
 			case SMWPrintRequest::PRINT_THIS: default: return ''; // no current serialisation
 		}
@@ -203,15 +219,18 @@ class SMWPrintRequest {
 
 	/**
 	 * Returns the value of a named parameter.
+	 * 
 	 * @param $key string the name of the parameter key
+	 * 
 	 * @return string Value of the paramer, if set (else FALSE)
 	 */
 	public function getParameter( $key ) {
-		return ( array_key_exists( $key, $this->m_params ) ) ? $this->m_params[$key]:false;
+		return array_key_exists( $key, $this->m_params ) ? $this->m_params[$key] : false;
 	}
 
 	/**
 	 * Returns the array of parameters, where a string is mapped to a string.
+	 * 
 	 * @return array Map of parameter names to values.
 	 */
 	public function getParameters() {
@@ -220,10 +239,12 @@ class SMWPrintRequest {
 
 	/**
 	 * Sets a print request parameter.
+	 * 
 	 * @param $key string Name of the parameter
 	 * @param $value string Value for the parameter
 	 */
 	public function setParameter( $key, $value ) {
 		$this->m_params[$key] = $value;
 	}
+	
 }
