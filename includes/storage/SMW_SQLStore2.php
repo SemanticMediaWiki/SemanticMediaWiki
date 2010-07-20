@@ -298,7 +298,7 @@ class SMWSQLStore2 extends SMWStore {
 	 *
 	 * @param $id
 	 * @param $object
-	 * @param $proptable
+	 * @param SMWSQLStore2Table $proptable
 	 * @param boolean $issubject
 	 * @param SMWRequestOptions $requestoptions
 	 *
