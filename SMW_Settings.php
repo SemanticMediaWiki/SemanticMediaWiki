@@ -299,18 +299,6 @@ $smwgResultFormats = array(
 $smwgResultAliases = array();
 ##
 
-### Predefined default result formats
-# Array of default result formats, optionlly defined per datatype. Can be redefined in
-# the settings to remove or add certain defaults.
-##
-$smwgResultDefaults = array();
-##
-
-### Indicates if result format defaulting should be applied by SMW core.
-##
-$smwgUseResultDefaults = false;
-##
-
 ### Predefined sources for queries
 # Array of available sources for answering queries. Can be redefined in
 # the settings to register new sources (usually an extension will do so
