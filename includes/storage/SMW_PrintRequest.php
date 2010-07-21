@@ -2,14 +2,17 @@
 /**
  * This file contains the class for defining "print requests", i.e. requests for output
  * informatoin to be included in query results.
+ * 
  * @file
  * @ingroup SMWQuery
+ * 
  * @author Markus Krötzsch
  */
 
 /**
  * Container class for request for printout, as used in queries to
  * obtain additional information for the retrieved results.
+ * 
  * @ingroup SMWQuery
  */
 class SMWPrintRequest {
@@ -44,13 +47,16 @@ class SMWPrintRequest {
 		$this->m_label = $label;
 		$this->m_data = $data;
 		$this->m_outputformat = $outputformat;
+		
 		if ( ( $mode == SMWPrintRequest::PRINT_CCAT ) && ( $outputformat == false ) ) {
 			$this->m_outputformat = 'x'; // changed default for Boolean case
 		}
+		
 		if ( $this->m_data instanceof SMWDataValue ) {
 			// $this->m_data = clone $data; // we assume that the caller denotes the object ot us; else he needs provide us with a clone
 			$this->m_data->setCaption( $label );
 		}
+		
 		if ( null != $params ) $m_params = $params;
 	}
 
@@ -71,6 +77,7 @@ class SMWPrintRequest {
 		if ( ( $linker === null ) || ( $this->m_label == '' ) ) {
 			return htmlspecialchars( $this->m_label );
 		}
+		
 		switch ( $this->m_mode ) {
 			case SMWPrintRequest::PRINT_CATS:
 				return htmlspecialchars( $this->m_label ); // TODO: link to Special:Categories
