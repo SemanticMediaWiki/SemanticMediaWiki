@@ -7551,6 +7551,7 @@ $messages['os'] = array(
 $messages['pdc'] = array(
 	'smw_finallistconjunct' => ' unn',
 	'smw_printername_list' => 'Lischt',
+	'smw_printername_template' => 'Moddel',
 	'smw_true_words' => 'ya,yes,true',
 	'smw_false_words' => 'nee,no,false',
 	'smw_nofloat' => '„$1“ iss ken Zehl.',
