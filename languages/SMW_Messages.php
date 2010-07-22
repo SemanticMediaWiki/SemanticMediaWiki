@@ -2713,6 +2713,8 @@ Si el problema persiste después de pasado algún tiempo, solicita al administra
 	'smw_paramdesc_sep' => 'El separador para los valores',
 	'smw_paramdesc_template' => 'El nombre de la plantilla con la que se mostrará la vista de impresión',
 	'smw_paramdesc_columns' => 'El número de columnas donde se muestran los resultados (el predeterminado es $1)',
+	'smw_paramdesc_introtemplate' => 'El nombre de una plantilla a mostrar antes de los resultados de la consulta, si hay alguna',
+	'smw_paramdesc_outrotemplate' => 'El nombre de una plantilla a mostrar después de los resultados de la consulta, si hay alguna',
 	'smw_paramdesc_embedformat' => 'La etiqueta HTML usada para definir encabezados',
 	'smw_paramdesc_embedonly' => 'No mostrar encabezados',
 	'smw_paramdesc_rsstitle' => 'Texto a ser usado como título del canal',
@@ -10778,6 +10780,7 @@ $messages['zh-hans'] = array(
 );
 
 /** Traditional Chinese (‪中文(繁體)‬)
+ * @author Frankou
  * @author Gzdavidwong
  * @author Sheepy
  * @author Wrightbus
@@ -10903,6 +10906,7 @@ $messages['zh-hant'] = array(
 	'smw_unusedproperty_template' => '類型為$2的屬性$1',
 	'wantedproperties' => '需要的屬性',
 	'smw_wantedproperties_docu' => '以下屬性已在本維基中使用，但是尚未創建描述頁面。',
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|use|使用}})',
 	'tooltip-purge' => '點擊這裡更新頁面的所有查詢和模板',
 	'smw_purge' => '更新',
 	'types' => '類型',
@@ -10915,6 +10919,8 @@ $messages['zh-hant'] = array(
 	'smw_ask_ascorder' => '升序',
 	'smw_ask_descorder' => '降序',
 	'smw_ask_submit' => '搜索結果',
+	'smw_ask_editquery' => '[編輯查詢]',
+	'smw_add_sortcondition' => '[添加排序條件]',
 	'smw_ask_hidequery' => '隱藏查詢',
 	'smw_ask_help' => '查詢幫助',
 	'smw_ask_queryhead' => '查詢',
