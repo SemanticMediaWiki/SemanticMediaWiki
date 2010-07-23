@@ -8263,6 +8263,7 @@ Progresso estimado da actualização em curso:",
  * @author 555
  * @author Eduardo.mps
  * @author GKnedo
+ * @author Giro720
  * @author Hamilton Abreu
  * @author Heldergeovane
  * @author Luckas Blade
@@ -8283,6 +8284,7 @@ $messages['pt-br'] = array(
 	'smw_no_concept_namespace' => 'Conceitos só podem ser definidos em páginas no domínio Conceito:.',
 	'smw_multiple_concepts' => 'Cada página de conceito pode ter apenas uma definição de conceito.',
 	'smw_concept_cache_miss' => 'O conceito "$1" não poderá ser utilizado neste momento, uma vez que a configuração deste wiki necessita ser refeita off-line. Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça a um administrador deste wiki que este conceito seja disponibilizado.',
+	'smw_noinvannot' => 'Valores não podem ser atribuídos a propriedades inversas.',
 	'smw_baduri' => 'URIs na forma de "$1" não são permitidos.',
 	'smw_printername_auto' => 'Automático',
 	'smw_printername_count' => 'Contar resultados',
@@ -8297,6 +8299,14 @@ $messages['pt-br'] = array(
 	'smw_printername_table' => 'Tabela',
 	'smw_printername_broadtable' => 'Tabela ampla',
 	'smw_printername_template' => 'Predefinição',
+	'smw_paramdesc_limit' => 'O número máximo de resultados a devolver',
+	'smw_paramdesc_headers' => 'Apresentar os nomes dos cabeçalhos e propriedades',
+	'smw_paramdesc_mainlabel' => 'A etiqueta a atribuir ao nome da página principal',
+	'smw_paramdesc_link' => 'Apresentar os valores na forma de links',
+	'smw_paramdesc_intro' => 'O texto a apresentar antes dos resultados da consulta, caso existam',
+	'smw_paramdesc_outro' => 'O texto a apresentar após os resultados da consulta, caso existam',
+	'smw_paramdesc_default' => 'O texto a apresentar se a consulta não produzir resultados',
+	'smw_paramdesc_searchlabel' => 'O texto no link para os resultados',
 	'smw_iq_disabled' => 'Consultas semânticas foram desativadas neste wiki.',
 	'smw_iq_moreresults' => '… mais resultados',
 	'smw_iq_nojs' => 'Por favor, use um navegador com JavaScript ativado para visualizar este elemento.',
