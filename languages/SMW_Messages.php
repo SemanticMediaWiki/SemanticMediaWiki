@@ -5125,7 +5125,7 @@ $messages['ig'] = array(
 	'smw_printername_count' => 'güó ihe futárá',
 	'smw_printername_list' => 'Ndetu',
 	'smw_printername_table' => 'Agada',
-	'smw_printername_template' => 'Nkpurụ ihü',
+	'smw_printername_template' => 'Àtụ',
 );
 
 /** Ido (Ido)
