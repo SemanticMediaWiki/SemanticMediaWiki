@@ -2713,6 +2713,7 @@ Si el problema persiste después de pasado algún tiempo, solicita al administra
 	'smw_paramdesc_sep' => 'El separador para los valores',
 	'smw_paramdesc_template' => 'El nombre de la plantilla con la que se mostrará la vista de impresión',
 	'smw_paramdesc_columns' => 'El número de columnas donde se muestran los resultados (el predeterminado es $1)',
+	'smw_paramdesc_userparam' => 'Un valor pasado en cada llamada de plantilla,si una plantilla es usada',
 	'smw_paramdesc_introtemplate' => 'El nombre de una plantilla a mostrar antes de los resultados de la consulta, si hay alguna',
 	'smw_paramdesc_outrotemplate' => 'El nombre de una plantilla a mostrar después de los resultados de la consulta, si hay alguna',
 	'smw_paramdesc_embedformat' => 'La etiqueta HTML usada para definir encabezados',
