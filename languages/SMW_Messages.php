@@ -4218,7 +4218,139 @@ Prije korištenja napravite kopiju svojih podataka.',
 	'smw_type_header' => 'Svojstva tipa "$1".',
 	'smw_typearticlecount' => '{{PLURAL:$1|Prikazano je $1 svojstvo koje koristi|Prikazana su $1 svojstva koja koriste|Prikazano je $1 svojstava koja koriste}} ovaj tip.',
 	'smw_attribute_header' => 'Stranice koje koriste svojstvo "$1".',
+	'smw_attributearticlecount' => 'Prikazano {{PLURAL:$1|$1 stranica koja koristi|$1 stranice koje koriste|$1 stranica koje koriste}} ovo svojstvo.',
+	'smw_subproperty_header' => 'Podsvojstva',
+	'smw_subpropertyarticlecount' => 'Ovo svojstvo ima {{PLURAL:$1|sljedeće podsvojstvo|sljedeća $1 podsvojstva|sljedećih $1 podsvojstava}}:',
+	'smw_concept_header' => 'Stranice koncepta "$1"',
+	'smw_conceptarticlecount' => 'Prikazano $1 {{PLURAL:$1|stranica koja pripada|stranice koje pripadaju|stranica koje pripadaju}} tom konceptu.',
+	'exportrdf' => 'Izvezi stranice u RDF',
+	'smw_exportrdf_docu' => 'Na ovoj stranici možete dobiti podatke o nekoj stranici u RDF formatu. 
+Da biste izvezli stranice unesite njihove naslove u prozor za uređivanje ispod, jedan naslov po retku.',
+	'smw_exportrdf_recursive' => 'Rekurzivno izvezi sve srodne stranice.
+Imajte na umu da bi rezultat mogao biti velik!',
+	'smw_exportrdf_backlinks' => 'Također izvezi sve stranice koje se referenciraju na izvezene stranice. 
+Generira RDF za pregled i pretraživanje.',
+	'smw_exportrdf_lastdate' => 'Ne izvozi stranice koje nisu izmijenjene od navedenog datuma.',
+	'smw_exportrdf_submit' => 'Izvezi',
+	'properties' => 'Svojstva',
+	'smw_properties_docu' => 'U wikiju se koriste sljedeća svojstva.',
+	'smw_property_template' => '$1 tipa $2 ($3)',
+	'smw_propertylackspage' => 'Svako svojstvo mora biti opisano na svojoj stranici!',
+	'smw_propertylackstype' => 'Za ovo svojstvo nije naveden tip (od sad na dalje pretpostavljam tip $1).',
+	'smw_propertyhardlyused' => 'Ovo se svojstvo gotovo ne koristi u wikiji!',
+	'unusedproperties' => 'Nekorištena svojstva',
+	'smw_unusedproperties_docu' => 'Sljedeća svojstva postoje, no ne koristi ih ni jedna stranica.',
+	'smw_unusedproperty_template' => '$1 tipa $2',
+	'wantedproperties' => 'Tražena svojstva',
+	'smw_wantedproperties_docu' => 'Sljedeća svojstva se koriste u wikiju, no još nemaju svoje stranice koje bi ih opisale.',
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|korištenje|korištenja|korištenja}})',
+	'tooltip-purge' => 'Kliknite ovdje kako biste osvježili sve upite i predloške na ovoj stranici',
+	'smw_purge' => 'Osvježi',
+	'types' => 'Tipovi',
+	'smw_types_docu' => 'Slijedi popis svih tipova podataka koji mogu biti dodijeljeni svojstvima.
+Svaki tip podatka ima stranicu koja može pružiti dodatne informacije.',
+	'smw_typeunits' => 'Mjerne jedinice tipa "$1": $2',
+	'semanticstatistics' => 'Statistika o semantici',
+	'smw_semstats_text' => "Ovaj wiki sadrži '''$1''' {{PLURAL:$1|vrijednost svojstva|vrijednosti svojstava|vrijednosti svojstava}} za ukupno '''$2''' [[Special:Properties|{{PLURAL:$2|svojstvo|različita svojstva|različitih svojstava}}]].
+'''$3''' {{PLURAL:$3|svojstvo ima|svojstva imaju|svojstava imaju}} vlastitu stranicu i '''$4''' {{PLURAL:$3|ima|od njih imaju|od njih imaju}} zadan tip podatka.
+Neka od postojećih svojstava su možda [[Special:UnusedProperties|nekorištena svojstva]].
+Svojstva koja još uvijek nemaju stranicu nalaze se na [[Special:WantedProperties|popisu traženih svojstava]].",
+	'uriresolver' => 'URI razrješitelj',
+	'smw_uri_doc' => 'URI razrješitelj implementira <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C traženje TAGova na httpRange-14</a> koje brine da se ljudi ne pretvore u web stranice.',
+	'ask' => 'Smenatička pretraga',
+	'smw_ask_sortby' => 'Razvrstavanje po stupcu (opcionalno)',
+	'smw_ask_ascorder' => 'Rastuće',
+	'smw_ask_descorder' => 'padajuće',
+	'smw_ask_submit' => 'Nađi rezultate',
+	'smw_ask_editquery' => '[Uredi upit]',
+	'smw_add_sortcondition' => '[Dodaj uvjet na razvrstavanje]',
+	'smw_ask_hidequery' => 'Sakrij upit',
+	'smw_ask_help' => 'Pomoć za upite',
+	'smw_ask_queryhead' => 'Upit',
+	'smw_ask_printhead' => 'Dodatni podaci za prikazati',
+	'smw_ask_printdesc' => '(dodaj jedno svojstvo po retku)',
+	'smw_ask_format_as' => 'Formatiraj kao:',
+	'smw_ask_defaultformat' => 'prvotno',
+	'smw_ask_otheroptions' => 'Ostale opcije',
+	'smw_ask_show_embed' => 'Prikaži kôd za umetanje',
+	'smw_ask_hide_embed' => 'Sakrij kôd za umetanje',
+	'smw_ask_embed_instr' => 'Da biste umetnuli ovaj upit u stranicu koristite kôd dolje.',
+	'searchbyproperty' => 'Traži po svojstvu',
+	'smw_sbv_docu' => 'Traži sve stranice koje imaju zadano svojstvo i vrijednost.',
+	'smw_sbv_novalue' => 'Unesite valjanu vrijednost za svojstvo ili pogledajte sve vrijednosti za "$1".',
+	'smw_sbv_displayresult' => 'Popis svih stranica koje imaju svojstvo "$1" vrijednosti "$2".',
+	'smw_sbv_displayresultfuzzy' => 'Popis svih stranica koje imaju svojstvo "$1" vrijednosti "$2".
+Budući da je rezultata malo, također su prikazane i bliske vrijednosti.',
+	'smw_sbv_property' => 'Svojstvo:',
+	'smw_sbv_value' => 'Vrijednost:',
+	'smw_sbv_submit' => 'Nađi rezultate',
+	'browse' => 'Pregledaj wiki',
+	'smw_browselink' => 'Pregledaj svojstva',
+	'smw_browse_article' => 'Unesite ime stranice od koje ćete početi pregledavanje.',
 	'smw_browse_go' => 'Kreni',
+	'smw_browse_show_incoming' => 'prikaži svojstva koja povezuju ovamo',
+	'smw_browse_hide_incoming' => 'sakrij svojstva koja povezuju ovamo',
+	'smw_browse_no_outgoing' => 'Ova stranica nema svojstva.',
+	'smw_browse_no_incoming' => 'Nijedno svojstvo ne povezuje na ovu stranicu.',
+	'smw_inverse_label_default' => '$1 od',
+	'smw_inverse_label_property' => 'Oznaka inverznog svojstva',
+	'pageproperty' => 'Pretraživanje svojstava stranica',
+	'smw_pp_docu' => 'Pretraži sve vrijednosti nekog svojstva na zadanoj stranici.
+Unesite stranicu i svojstvo.',
+	'smw_pp_from' => 'Sa stranice',
+	'smw_pp_type' => 'Svojstvo',
+	'smw_pp_submit' => 'Nađi rezultate',
+	'smw_result_prev' => 'Prethodni',
+	'smw_result_next' => 'Sljedeći',
+	'smw_result_results' => 'Rezultati',
+	'smw_result_noresults' => 'Nema rezultata.',
+	'smwadmin' => 'Administratorske funkcije za Semantic MediaWiki',
+	'smw_smwadmin_settingup' => 'Postavljam spremište za Semantic MediaWiki',
+	'smw_smwadmin_setupsuccess' => 'Spremište je uspješno postavljeno.',
+	'smw_smwadmin_return' => 'Vrati se na $1',
+	'smw_smwadmin_updatestarted' => 'Pokrenut je novi proces osvježavanja semantičkih podataka.
+Svi spremljeni podaci će biti ponovno izgrađeni ili popravljeni ako je to potrebno.
+Napredak osvježavanja možete pratiti na ovoj posebnoj stranici.',
+	'smw_smwadmin_updatenotstarted' => 'Već se izvršava proces osvježavanja.
+Ne pokrećem novi.',
+	'smw_smwadmin_updatestopped' => 'Svi postojeći procesi osvježavanja su zaustavljeni.',
+	'smw_smwadmin_updatenotstopped' => 'Da biste zaustavili proces osvježavanja, označite u potvrdnom okviru da ste zaista sigurni.',
+	'smw_smwadmin_docu' => 'Ova posebna stranica pomaže prilikom instalacije i nadogradnje <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+Ne zaboravite napraviti sigurnosnu kopiju važnih podataka prije izvršavanja administrativnih funkcija.',
+	'smw_smwadmin_db' => 'Instalacija i nadgradnja baze podataka',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki zahtijeva određena proširenja MediaWiki baze podataka za čuvanje semantičkih podataka.
+Funkcija ispod osigurava da je vaša baza pravilno postavljena.
+Ovaj korak ne utječe na ostatak MediaWiki baze podataka i lako se može poništiti ukoliko to želite.
+Ova se funkcija može izvršiti više puta bez ikakvih štetnih posljedica, no potrebna je samo kod instalacije ili nadgradnje.',
+	'smw_smwadmin_permissionswarn' => 'Ako operacija ne uspije i vrati SQL grešku, baza podataka koju koristi Vaš wiki (provjerite svoj LocalSettings.php) vjerojatno nema dovoljna prava.
+Učinite jedno od sljedećeg: dodijelite ovom korisniku dodatna prava za stvaranje i brisanje tablica, privremeno unesite administratorsko korisničko ime i lozinku Vaše baze podataka u LocalSettings.php, ili pokrenite skriptu za održavanje <tt>SMW_setup.php</tt> koja će koristiti prava iz AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'Inicijaliziraj ili nadogradi tablice',
+	'smw_smwadmin_announce' => 'Najavite svoj wiki',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki pruža web uslugu koja prikazuje i najavljuje nove semantičke wikije.
+Time se vodi popis javnih web stranica i projekata koji koriste Semantic MediaWiki, uglavnom kako bi <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Projekt Semantic MediaWiki</a> dobio pregled tipičnih upotreba Semantic MediaWiki.
+Vidi početnu stranicu Semantic MediaWiki za <a href="http://semantic-mediawiki.org/wiki/Registry">više informacija o ovoj usluzi</a>.',
+	'smw_smwadmin_announcebutton' => 'Pritisnite sljedeći gumb kako biste poslali URL svog wikija na tu uslugu.
+Usluga neće registrirati wikije koji nisu javno dostupni i skupljat će samo javno dostupne podatke.',
+	'smw_smwadmin_datarefresh' => 'Popravljanje i nadgradnja podataka',
+	'smw_smwadmin_datarefreshdocu' => 'Moguće je povratiti sve semantičke podatke Semantic MediaWiki na osnovi trenutnog tekstualnog wikija, što možete koristiti za popravak pokvarenih podataka ili osvježivanje podataka u slučaju internih promjena softvera.
+Osvježavanje se izvršava stranicu po stranicu i neće biti gotovo odmah.
+Prikaz dolje sadrži popis svih osvježavanja u tijeku i omogućuje Vam da zaustavite ili pokrenete osvježavanje (osim ako to nije onemogućio administrator).',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Osvježavanje je već u tijeku.</strong>
+Normalno je da osvježavanje napreduje sporo jer se podaci osvježavaju u malim obrocima svaki put kad korisnik pristupi wikiju.
+Da bi ovo osvježavanje završilo čim prije, možete pokrenuti MediaWiki skriptu za održavanje <tt>runJobs.php</tt> (koristite opciju <tt>--maxjobs 1000</tt> kako biste ograničili broj zasebnih osvježavanja po jednoj seriji).
+Procjena napretka osvježavanja:',
+	'smw_smwadmin_datarefreshbutton' => 'Pokreni osvježavanje podataka',
+	'smw_smwadmin_datarefreshstop' => 'Zaustavi ovo osvježavanje',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Da, siguran sam.',
+	'smw_smwadmin_support' => 'Zatražite pomoć',
+	'smw_smwadmin_supportdocu' => 'U slučaju problema poslužite se sljedećim izvorima:',
+	'smw_smwadmin_installfile' => 'U slučaju problema s Vašom instalacijom pogledajte naputke u datoteci <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'Potpuna korisnička dokumentacija za Semantic MediaWiki nalazi se na <a href="http://semantic-mediawiki.org"><b>semantic-mediawiki.org</b></a>.',
+	'smw_smwadmin_mediazilla' => 'Greške (bugove) možete prijaviti na <a href="https://bugzilla.wikimedia.org/">Bugzilli</a>.',
+	'smw_smwadmin_questions' => 'Ukoliko imate pitanja ili prijedloge, pridružite se raspravi na <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">korisničkom forumu Semantic MediaWiki</a>.',
+	'smw_adminlinks_datastructure' => 'Struktura podataka',
+	'smw_adminlinks_displayingdata' => 'Prikaz podataka',
+	'smw_adminlinks_inlinequerieshelp' => 'Pomoć za umetnute upite',
 );
 
 /** Upper Sorbian (Hornjoserbsce)
