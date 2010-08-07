@@ -1786,6 +1786,11 @@ $messages['ch'] = array(
 	'smw_browse_go' => 'Hånao',
 );
 
+/** Sorani (کوردی) */
+$messages['ckb'] = array(
+	'smw_browse_go' => 'بڕۆ',
+);
+
 /** Czech (Česky)
  * @author Kjbenes
  * @author Matěj Grabovský
