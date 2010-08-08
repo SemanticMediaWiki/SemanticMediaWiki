@@ -5,9 +5,11 @@
  * @ingroup SMW
  */
 
+define( 'SMW_VERSION', '1.5.2 alpha-1' );
+define( 'SEMANTIC_EXTENSION_TYPE', true );
+
 require_once( 'SMW_GlobalFunctions.php' );
 
-define( 'SMW_VERSION', '1.5.2 alpha-1' );
 
 /**
  * Function to switch on Semantic MediaWiki. This function must be called in
@@ -46,6 +48,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 
 	$wgHooks['ParserTestTables'][] = 'smwfOnParserTestTables';
 	$wgHooks['AdminLinks'][] = 'smwfAddToAdminLinks';
+	$wgHooks['SpecialVersionExtensionTypes'][] = 'smwfAddSemanticExtensionType';
 
 	// Register special pages aliases file
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Aliases.php';
@@ -227,8 +230,8 @@ function smwfSetupExtension() {
 		$smwgMW_1_14 = false; // assume <= 1.13 API
 	}
 
-	///// credits (see "Special:Version") /////
-	$wgExtensionCredits['parserhook'][] = array(
+	// Registration of the extension credits, see Special:Version.
+	$wgExtensionCredits['semantic'][] = array(
 		'path' => __FILE__,
 		'name' => 'Semantic&#160;MediaWiki',
 		'version' => SMW_VERSION,
@@ -242,7 +245,23 @@ function smwfSetupExtension() {
 }
 
 /**
- * Adds links to Admin Links page
+ * Adds the 'semantic' extension type to the type list.
+ * 
+ * @since 1.5.2
+ * 
+ * @param $oSpecialVersion SpecialVersion
+ * @param $aExtensionTypes Array
+ * 
+ * @return true
+ */
+function smwfAddSemanticExtensionType( SpecialVersion &$oSpecialVersion, array &$aExtensionTypes ) {
+	smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+	$aExtensionTypes = array_merge( array( 'semantic' => wfMsg( 'version-semantic' ) ), $aExtensionTypes );
+	return true;
+}
+
+/**
+ * Adds links to Admin Links page.
  **/
 function smwfAddToAdminLinks( &$admin_links_tree ) {
 	smwfLoadExtensionMessages( 'SemanticMediaWiki' );
