@@ -1042,6 +1042,7 @@ $messages['be-tarask'] = array(
 	'smw_multiple_concepts' => 'Кожная старонка канцэпцыі можа мець толькі адно вызначэньне канцэпцыі.',
 	'smw_concept_cache_miss' => 'Канцэпцыя «$1» ня можа быць выкарыстаная ў гэты момант, таму што канфігурацыя {{GRAMMAR:родны|{{SITENAME}}}} патрабуе, каб яна вылічалася аф-лайн. Калі гэта праблема ня зьнікне празь некаторы час, запытайце Вашага адміністратара сайта ўключыць гэтую канцэпцыю.',
 	'smw_noinvannot' => 'Значэньні ня можа быць прызначаныя ў адваротныя уласьцівасьці.',
+	'version-semantic' => 'Сэмантычныя пашырэньні',
 	'smw_baduri' => 'Спасылкі на форму «$1» не дазволеныя.',
 	'smw_printername_auto' => 'Аўтаматычна',
 	'smw_printername_count' => 'Падлік вынікаў',
@@ -1963,6 +1964,7 @@ $messages['de'] = array(
 	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht angewendet werden, da die Wiki-Konfiguration offline berechnet werden muss.
 Falls sich das Problem nicht nach einiger Zeit von selbst erledigt, bitte Deinen Websiteadministrator, dieses Konzept zu ermöglichen.',
 	'smw_noinvannot' => 'Inversen Attributen können keine Werte zugewiesen werden.',
+	'version-semantic' => 'Softwareerweiterungen (Semantic MediaWiki)',
 	'smw_baduri' => 'URIs der Form „$1“ sind nicht zulässig.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatisch',
@@ -2220,6 +2222,7 @@ $messages['dsb'] = array(
 	'smw_concept_cache_miss' => 'Koncept "$1" njedajo se we wokugnuśu wužywaś, dokulaž wikijowa konfiguracija trjeba jón za pśeźěłowanje off-line.
 Jolic problem se njezgubujo pó wěstem casu, pšos swójogo sedłowego administratora, aby wón toś ten koncept k dispoziciji stajił.',
 	'smw_noinvannot' => 'Gódnoty njedaju se nawopacnym kakosćam pśipokazaś.',
+	'version-semantic' => 'Semantiske rozšyrjenja',
 	'smw_baduri' => 'URI formy "$1" njejsu dowólone.',
 	'smw_printername_auto' => 'Awtomatiski',
 	'smw_printername_count' => 'Wuslědki licyś',
@@ -4378,6 +4381,7 @@ $messages['hsb'] = array(
 	'smw_concept_cache_miss' => 'Koncept "$1" njeda so tuchwilu wužiwać, dokelž wikijowa konfiguracija jón za předźěłowanje offline trjeba.
 Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administratora, zo by wón tutón koncept k dispoziciji stajił.',
 	'smw_noinvannot' => 'Hódnoty njedadźa so nawopačnym kajkosćam připokazać.',
+	'version-semantic' => 'Semantiske rozšěrjenja',
 	'smw_baduri' => 'URI formy "$1" njejsu dowolene.',
 	'smw_printername_auto' => 'Awtomatiski',
 	'smw_printername_count' => 'Wuslědki ličić',
@@ -4883,6 +4887,7 @@ $messages['ia'] = array(
 	'smw_multiple_concepts' => 'Cata pagina de concepto pote haber un sol definition de concepto.',
 	'smw_concept_cache_miss' => 'Le concepto "$1" non pote esser usate al momento, post que le configuration del wiki require que illo sia computate foras de linea. Si le problema non dispare post alcun tempore, demanda al administrator de tu sito de render disponibile iste concepto.',
 	'smw_noinvannot' => 'Le valores non pote esser assignate al proprietates inverse.',
+	'version-semantic' => 'Extensiones semantic',
 	'smw_baduri' => 'Le adresses URI del forma "$1" non es permittite.',
 	'smw_rss_link' => 'RSS',
 	'smw_csv_link' => 'CSV',
@@ -6477,6 +6482,7 @@ $messages['mk'] = array(
 	'smw_concept_cache_miss' => 'Концептот „$1“ во моментов не може да се користи, бидејќи местењата на викито бараат тој да се пресмета вон интернет.
 Ако проблемот не исчезне по извесно време, побарајте од вашиот администратор да го овозможи тој концепт.',
 	'smw_noinvannot' => 'На обратните својства не можат да им се назначуваат вредности.',
+	'version-semantic' => 'Семантички додатоци',
 	'smw_baduri' => 'URI-ja од обликот „$1“ не се дозволени.',
 	'smw_printername_auto' => 'Автоматски',
 	'smw_printername_count' => 'Резултати од пребројувањето',
@@ -6908,6 +6914,7 @@ $messages['nl'] = array(
 	'smw_concept_cache_miss' => 'Het concept "$1" kan op het moment niet gebruikt worden omdat de dit volgende de instellingen van de wiki offline berekend moet worden.
 Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan om dit concept beschikbaar te maken.',
 	'smw_noinvannot' => 'Waarden kunnen niet toegekend worden aan omgekeerde eigenschappen.',
+	'version-semantic' => 'Semantische uitbreidingen',
 	'smw_baduri' => "URI's uit de reeks “$1” zijn hier niet beschikbaar.",
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatisch',
@@ -8275,6 +8282,7 @@ $messages['pt'] = array(
 	'smw_multiple_concepts' => 'Cada página de conceito pode possuir apenas uma definição de conceito.',
 	'smw_concept_cache_miss' => "O conceito \"\$1\" não pode ser usado neste momento, porque a configuração da wiki requer que ele seja calculado ''off-line''. Caso o problema não seja resolvido dentro de algum tempo, peça a um administrador da wiki que disponibilize este conceito.",
 	'smw_noinvannot' => 'Valores não podem ser atribuídos a propriedades inversas.',
+	'version-semantic' => 'Extensões semânticas',
 	'smw_baduri' => 'Desculpe, URIs da forma “$1” não são permitidos.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automático',
@@ -8802,6 +8810,7 @@ $messages['roa-tara'] = array(
 );
 
 /** Russian (Русский)
+ * @author Eleferen
  * @author Ferrer
  * @author Innv
  * @author Lockal
@@ -8823,6 +8832,7 @@ $messages['ru'] = array(
 	'smw_multiple_concepts' => 'Страница представления может содержать только одно определение представления.',
 	'smw_concept_cache_miss' => 'Представление «$1» в настоящий момент не может быть использовано, так как настройка вики-сайта требует, чтобы его результат определялся в фоновом режиме. Если данное сообщение не исчезнет через некоторое время, обратитесь к администратору вики-сайта для включения данного представления.',
 	'smw_noinvannot' => 'Обратным свойствам не могут быть присвоены значения.',
+	'version-semantic' => 'Семантическое расширение (Semantic MediaWiki)',
 	'smw_baduri' => 'Извините, но ссылки из диапазона "$1" не доступны отсюда.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Автоматически',
