@@ -52,7 +52,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgExtensionMessagesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Messages.php'; // register messages (requires MW=>1.11)
 
 	$wgHooks['ParserTestTables'][] = 'smwfOnParserTestTables';
-	$wgHooks['AdminLinks'][] = 'smwfAddToAdminLinks';
+	//$wgHooks['AdminLinks'][] = 'smwfAddToAdminLinks';
 
 	// Register special pages aliases file
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Aliases.php';
@@ -264,7 +264,7 @@ function smwfUnregisterDatatypes() {
 
 /**
  * Adds links to Admin Links page
- **/
+ **
 function smwfAddToAdminLinks( &$admin_links_tree ) {
 	smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	$data_structure_section = new ALSection( wfMsg( 'smw_adminlinks_datastructure' ) );
@@ -297,7 +297,7 @@ function smwfAddToAdminLinks( &$admin_links_tree ) {
 
 	return true;
 }
-
+*/
 
 /**
  * Register special classes for displaying semantic content on Property
