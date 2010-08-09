@@ -27,7 +27,8 @@ require_once( 'SMW_GlobalFunctions.php' );
  * @return true
  */
 function enableSemantics( $namespace = null, $complete = false ) {
-	global $smwgIP, $smwgNamespace, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles, $wgJobClasses, $wgExtensionAliasesFiles;
+	global $wgVersion, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles;
+	global $smwgIP, $smwgNamespace, $wgJobClasses, $wgExtensionAliasesFiles, $wgServerName;
 	
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
@@ -48,7 +49,16 @@ function enableSemantics( $namespace = null, $complete = false ) {
 
 	$wgHooks['ParserTestTables'][] = 'smwfOnParserTestTables';
 	$wgHooks['AdminLinks'][] = 'smwfAddToAdminLinks';
-	$wgHooks['SpecialVersionExtensionTypes'][] = 'smwfAddSemanticExtensionType';
+	
+	if ( version_compare( $wgVersion, '1.17alpha', '>=' ) ) {
+		// For MediaWiki 1.17 alpha and later.
+		$wgHooks['ExtensionTypes'][] = 'smwfAddSemanticExtensionType';
+	}
+	else {
+		// For pre-MediaWiki 1.17 alpha.
+		$wgHooks['SpecialVersionExtensionTypes'][] = 'smwfOldAddSemanticExtensionType';		
+	}
+	
 
 	// Register special pages aliases file
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Aliases.php';
@@ -249,15 +259,28 @@ function smwfSetupExtension() {
  * 
  * @since 1.5.2
  * 
+ * @param $aExtensionTypes Array
+ * 
+ * @return true
+ */
+function smwfAddSemanticExtensionType( array &$aExtensionTypes ) {
+	smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+	$aExtensionTypes = array_merge( array( 'semantic' => wfMsg( 'version-semantic' ) ), $aExtensionTypes );
+	return true;
+}
+
+/**
+ * @see smwfAddSemanticExtensionType
+ * 
+ * @since 1.5.2
+ * 
  * @param $oSpecialVersion SpecialVersion
  * @param $aExtensionTypes Array
  * 
  * @return true
  */
-function smwfAddSemanticExtensionType( SpecialVersion &$oSpecialVersion, array &$aExtensionTypes ) {
-	smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-	$aExtensionTypes = array_merge( array( 'semantic' => wfMsg( 'version-semantic' ) ), $aExtensionTypes );
-	return true;
+function smwfOldAddSemanticExtensionType( SpecialVersion &$oSpecialVersion, array &$aExtensionTypes ) {
+	smwfAddSemanticExtensionType( $aExtensionTypes );
 }
 
 /**
