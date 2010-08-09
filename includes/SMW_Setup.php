@@ -10,7 +10,6 @@ define( 'SEMANTIC_EXTENSION_TYPE', true );
 
 require_once( 'SMW_GlobalFunctions.php' );
 
-
 /**
  * Function to switch on Semantic MediaWiki. This function must be called in
  * LocalSettings.php after including SMW_Settings.php. It is used to ensure
@@ -59,7 +58,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 		$wgHooks['SpecialVersionExtensionTypes'][] = 'smwfOldAddSemanticExtensionType';		
 	}
 	
-
 	// Register special pages aliases file
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Aliases.php';
 
@@ -280,7 +278,7 @@ function smwfAddSemanticExtensionType( array &$aExtensionTypes ) {
  * @return true
  */
 function smwfOldAddSemanticExtensionType( SpecialVersion &$oSpecialVersion, array &$aExtensionTypes ) {
-	smwfAddSemanticExtensionType( $aExtensionTypes );
+	return smwfAddSemanticExtensionType( $aExtensionTypes );
 }
 
 /**
@@ -457,11 +455,13 @@ function smwfAddMagicWords( &$magicWords, $langCode ) {
  */
 function smwfInitContentLanguage( $langcode ) {
 	global $smwgIP, $smwgContLang;
+	
 	if ( !empty( $smwgContLang ) ) { return; }
 	wfProfileIn( 'smwfInitContentLanguage (SMW)' );
 
 	$smwContLangFile = 'SMW_Language' . str_replace( '-', '_', ucfirst( $langcode ) );
 	$smwContLangClass = 'SMWLanguage' . str_replace( '-', '_', ucfirst( $langcode ) );
+	
 	if ( file_exists( $smwgIP . 'languages/' . $smwContLangFile . '.php' ) ) {
 		include_once( $smwgIP . 'languages/' . $smwContLangFile . '.php' );
 	}
