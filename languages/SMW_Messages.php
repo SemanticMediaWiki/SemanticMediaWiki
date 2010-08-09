@@ -2697,6 +2697,7 @@ $messages['es'] = array(
 	'smw_concept_cache_miss' => 'El concepto "$1" no puede ser utilizado en este momento, ya que la configuración wiki exige que sea computado sin conexión.
 Si el problema persiste después de pasado algún tiempo, solicita al administrador de tu sitio que haga este concepto disponible.',
 	'smw_noinvannot' => 'Los valores no pueden asignarse a propiedades inversas.',
+	'version-semantic' => 'Extensiones semánticas',
 	'smw_baduri' => 'Lo sentimos. Las URIs del dominio $1 no están disponibles en este emplazamiento',
 	'smw_printername_auto' => 'Automático',
 	'smw_printername_count' => 'Contar resultados',
@@ -3138,6 +3139,7 @@ Uutta ei käynnistetä.',
  * @author IAlex
  * @author McDutchie
  * @author Meithal
+ * @author Peter17
  * @author PieRRoMaN
  * @author Pierre Matringe
  * @author Sherbrooke
@@ -3160,6 +3162,7 @@ $messages['fr'] = array(
 	'smw_multiple_concepts' => 'Chaque page de concept ne peut avoir qu’une seule définition.',
 	'smw_concept_cache_miss' => 'Le concept « $1 » ne peut être utilisé en ce moment, puisque la configuration du wiki requiert qu’il soit lancé hors-ligne. Si le problème persiste après quelques instants, demander à votre administrateur du site de rendre disponible ce concept.',
 	'smw_noinvannot' => 'Les valeurs ne peuvent pas être allouées pour inverser des propriétés.',
+	'version-semantic' => 'Extensions sémantiques',
 	'smw_baduri' => 'Désolé. Les URIs du domaine « $1 » ne sont pas disponible à cet emplacement.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatique',
@@ -8009,6 +8012,7 @@ $messages['pms'] = array(
 	'smw_concept_cache_miss' => "Ël concet «$1» a peul pa esse dovrà ant ës moment, përchè la configurassion ëd la wiki a ciama ch'a sia calcolà fòra ëd linia.
 Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò sit ëd rende 's concet disponìbil.",
 	'smw_noinvannot' => 'Ij valor a peulo pa esse assignà a le proprietà anverse.',
+	'version-semantic' => 'Estension semàntiche',
 	'smw_baduri' => 'URI dla forma "$1" a son pa përmëttù.',
 	'smw_printername_auto' => 'Automàtich',
 	'smw_printername_count' => "Conta dj'arzultà",
