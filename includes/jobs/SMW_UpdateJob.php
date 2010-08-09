@@ -63,8 +63,10 @@ class SMWUpdateJob extends Job {
 		wfProfileIn( __METHOD__ . '-update' );
 
 		SMWParseData::storeData( $output, $this->title, false );
+		
 		wfProfileOut( __METHOD__ . '-update' );
 		wfProfileOut( 'SMWUpdateJob::run (SMW)' );
+		
 		return true;
 	}
 
@@ -80,4 +82,5 @@ class SMWUpdateJob extends Job {
 			parent::insert();
 		}
 	}
+	
 }

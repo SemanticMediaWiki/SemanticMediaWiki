@@ -37,10 +37,12 @@ class SMWRefreshJob extends Job {
 	 */
 	function run() {
 		wfProfileIn( 'SMWRefreshJob::run (SMW)' );
+		
 		if ( !array_key_exists( 'spos', $this->params ) ) {
-			return true;
 			wfProfileOut( 'SMWRefreshJob::run (SMW)' );
+			return true;
 		}
+		
 		$run = array_key_exists( 'run', $this->params ) ? $this->params['run']:1;
 		$spos = $this->params['spos'];
 		$store = smwfGetStore();
@@ -54,7 +56,9 @@ class SMWRefreshJob extends Job {
 			$nextjob = new SMWRefreshJob( $this->title, array( 'spos' => 1, 'prog' => 0, 'rc' => $this->params['rc'], 'run' => $run + 1 ) );
 			$nextjob->insert();
 		}
+		
 		wfProfileOut( 'SMWRefreshJob::run (SMW)' );
+		
 		return true;
 	}
 
@@ -63,8 +67,9 @@ class SMWRefreshJob extends Job {
 	 * The progress refers to the state before processing this job.
 	 */
 	public function getProgress() {
-		$prog = array_key_exists( 'prog', $this->params ) ? $this->params['prog']:0;
-		$run = array_key_exists( 'run', $this->params ) ? $this->params['run']:1;
+		$prog = array_key_exists( 'prog', $this->params ) ? $this->params['prog'] : 0;
+		$run = array_key_exists( 'run', $this->params ) ? $this->params['run'] : 1;
 		return ( $run - 1 + $prog ) / $this->params['rc'];
 	}
+	
 }
