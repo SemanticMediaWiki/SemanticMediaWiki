@@ -5140,6 +5140,7 @@ $messages['id'] = array(
 	'smw_concept_cache_miss' => 'Konsep "$1" tidak dapat digunakan saat ini karena konfigurasi wiki membutuhkannya untuk dihitung secara luring.
 Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs untuk membuat konsep ini tersedia.',
 	'smw_noinvannot' => 'Nilai tidak dapat diberikan pada properti inversi.',
+	'version-semantic' => 'Ekstensi semantik',
 	'smw_baduri' => 'URI berbentuk "$1" tidak diperbolehkan.',
 	'smw_printername_auto' => 'Otomatis',
 	'smw_printername_count' => 'Hasil perhitungan',
