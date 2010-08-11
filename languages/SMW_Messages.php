@@ -1316,9 +1316,11 @@ $messages['bg'] = array(
 /** Breton (Brezhoneg)
  * @author Fohanno
  * @author Fulup
+ * @author Gwendal
  * @author Y-M D
  */
 $messages['br'] = array(
+	'smw-desc' => "Aesaat monedusted ho wiki - evit ar mekanikoù ''hag'' an dud ([http://semantic-mediawiki.org/wiki/Help:User_manual diellerezh enlinenn])",
 	'smw_edithelp' => 'Skoazell a ra evit skrivañ darempredoù ha perzhioù',
 	'smw_viewasrdf' => 'Gwelet evel RDF',
 	'smw_finallistconjunct' => ', ha',
@@ -1330,6 +1332,7 @@ $messages['br'] = array(
 	'smw_concept_description' => 'Deskrivadur eus ar meizad « $1 »',
 	'smw_multiple_concepts' => "Pep pajenn meizad na c'hell kaout nemet un dermenadur.",
 	'smw_noinvannot' => "Ne c'hell ket an talvoudennoù bezañ derannet evit eilpennañ perzhioù.",
+	'version-semantic' => 'Astennoù steroniezh',
 	'smw_baduri' => 'An URLoù er stumm « $1 » n"int ket aotreet.',
 	'smw_printername_auto' => 'Emgefre',
 	'smw_printername_count' => "Kontañ an disoc'hoù",
@@ -3416,6 +3419,7 @@ $messages['gl'] = array(
 	'smw_multiple_concepts' => 'Cada páxina de conceptos só pode conter unha definición dun concepto.',
 	'smw_concept_cache_miss' => 'O concepto "$1" non pode ser usado desde que a configuración do wiki o require para calcular a desconexión. Se o problema non se resolve en breve, pregúntelle ao administrador do wiki para que o concepto poida estar dispoñible.',
 	'smw_noinvannot' => 'Non se poden asignar os valores para inverter as propiedades.',
+	'version-semantic' => 'Extensións semánticas',
 	'smw_baduri' => 'Sentímolo, os URIs da forma “$1” non están permitidos.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automático',
@@ -6323,6 +6327,7 @@ Mer donn jetz nit noch ein aanshtüße!',
 $messages['lb'] = array(
 	'smw-desc' => "Är Wiki méi accessibel machen - fir Maschinnen ''a'' Menschen ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
 	'smw_edithelp' => "D'Hellëf vun den Eegeschaften änneren",
+	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ', an',
 	'smw_factbox_head' => 'Fakten iwwer $1',
 	'smw_isspecprop' => 'Dëse Eegeschaft ass eng Spezial-Eegschaft an dëser Wiki.',
@@ -6330,6 +6335,7 @@ $messages['lb'] = array(
 	'smw_isaliastype' => 'Dësen Typ vun donnéeën ass keen Alias fir den Typ vun Donnéeën "$1".',
 	'smw_concept_description' => 'Beschreiwung vum Konzept "$1"',
 	'smw_multiple_concepts' => 'Op jiddwer Konzeptsäit ka just eng Definitioun vun engem Konzept stoen.',
+	'version-semantic' => 'Softwareerweiderungen (Semantic MediaWiki)',
 	'smw_baduri' => 'URIë vun der Form "$1" sinn net erlaabt.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatesch',
@@ -8259,7 +8265,7 @@ $messages['ps'] = array(
 	'smw_result_prev' => 'پخواني',
 	'smw_result_next' => 'راتلونکي',
 	'smw_result_results' => 'پايلې',
-	'smw_result_noresults' => 'اوبښۍ، هېڅ کومه پايله نشته.',
+	'smw_result_noresults' => 'بې پايلو.',
 	'smw_smwadmin_return' => '$1 ته ورګرځېدل',
 	'smw_smwadmin_datarefreshstopconfirm' => 'هو، زه ډاډه يم.',
 );
