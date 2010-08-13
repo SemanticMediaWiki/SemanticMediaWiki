@@ -3681,6 +3681,7 @@ $messages['gsw'] = array(
 	'smw_concept_cache_miss' => 'S Konzäpt „$1“ cha im Momänt nit aagwändet wäre, wel d Wiki-Konfiguration offline grächnet muess wäre.
 Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalter, des Konzäpt megli z mache.',
 	'smw_noinvannot' => 'Wärt chenne nit mit umgchehrte Eigeschafte gchännzeichnet wäre',
+	'version-semantic' => 'Semantischi Erwyterige',
 	'smw_baduri' => 'URI mit dr Form „$1“ sin nit zuelässig.',
 	'smw_printername_auto' => 'Automatisch',
 	'smw_printername_count' => 'Zellerergebnis',
@@ -3706,6 +3707,9 @@ Wänn s Probläm imfall noch eme Rung nit verschwindet, no bitt Dyy Syteverwalte
 	'smw_paramdesc_sep' => 'S Trännzeiche fir Wärt',
 	'smw_paramdesc_template' => 'Dr Name vu dr Vorlag, wu Uusdruck dermit solle aazeigt wäre',
 	'smw_paramdesc_columns' => 'D Aazahl vu dr Spalte go Ergebnis aazeige (Standard isch $1)',
+	'smw_paramdesc_userparam' => 'E Wärt, wu bi jedem Vorlageufruef ibergee wird, wänn e Vorlag brucht wird',
+	'smw_paramdesc_introtemplate' => 'Dr Vorlagename, wu vor dr Abfrogergebnis aazeigt wird, wänn s git',
+	'smw_paramdesc_outrotemplate' => 'Dr Vorlagename, wu no dr Abfrogergebnis soll aazeigt wäre, wänn s het',
 	'smw_paramdesc_embedformat' => 'Dr HTML-Befähl zum Iberschrifte definiere',
 	'smw_paramdesc_embedonly' => 'Kei Iberschrifte aazeige',
 	'smw_paramdesc_rsstitle' => 'Dr Text, wu as Titel fir dr Kanal soll brucht wäre',
@@ -6466,6 +6470,7 @@ Et ka keen neien ugefaang ginn.',
 	'smw_smwadmin_datarefreshstop' => 'Dësn Update stoppen',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jo, ech si sécher.',
 	'smw_smwadmin_support' => 'Ënnerstëtzung kréien',
+	'smw_smwadmin_supportdocu' => 'Verschidde Quellen kéinten Iech bei Problemer hëllefen:',
 	'smw_smwadmin_smwhomepage' => 'Déi komplett Benotzerdokumentatioun vu Semantic MediaWiki fannt Dir op b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feeler kënnen op <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> gemellt ginn.',
 	'smw_smwadmin_questions' => 'Wann dir nach Froen oder Propositiounen hutt, da bedeelegt Iech un der Diskussioun op dem <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki Benotzer-Forum</a>.',
@@ -10420,7 +10425,7 @@ $messages['ug-arab'] = array(
 	'smw_browse_go' => 'كۆچۈش',
 );
 
-/** Uighur (Latin) (Uyghurche‎ / ئۇيغۇرچە (Latin))
+/** Uighur (Latin) (ئۇيغۇرچە / Uyghurche‎ (Latin))
  * @author Jose77
  * @author Minh Nguyen
  * @author Vinhtantran
