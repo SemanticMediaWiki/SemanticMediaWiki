@@ -241,7 +241,7 @@ function smwfSetupExtension() {
 	// Registration of the extension credits, see Special:Version.
 	$wgExtensionCredits['semantic'][] = array(
 		'path' => __FILE__,
-		'name' => 'Semantic&#160;MediaWiki',
+		'name' => 'Semantic MediaWiki',
 		'version' => SMW_VERSION,
 		'author' => "[http://korrekt.org Markus&#160;Krötzsch], [http://simia.net Denny&#160;Vrandecic] and [http://www.ohloh.net/p/smw/contributors others]. Maintained by [http://www.aifb.kit.edu/web/Wissensmanagement/en AIFB Karlsruhe].",
 		'url' => 'http://semantic-mediawiki.org',
