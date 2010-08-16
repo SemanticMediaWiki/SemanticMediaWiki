@@ -1964,8 +1964,8 @@ $messages['de'] = array(
 	'smw_concept_description' => 'Beschreibung des Konzepts „$1“',
 	'smw_no_concept_namespace' => "Konzepte können nur im Konzeptnamensraum (''Konzept:'') erstellt werden.",
 	'smw_multiple_concepts' => 'Jede Konzeptseite kann nur eine Konzeptdefinition beinhalten.',
-	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht angewendet werden, da die Wiki-Konfiguration offline berechnet werden muss.
-Falls sich das Problem nicht nach einiger Zeit von selbst erledigt, bitte Deinen Websiteadministrator, dieses Konzept zu ermöglichen.',
+	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht genutzt werden, da es, gemäß der Konfiguration des Wikis, offline zu berechnen ist.
+Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte deinen Websiteadministrator, die Daten dieses Konzepts zu aktualisieren.',
 	'smw_noinvannot' => 'Inversen Attributen können keine Werte zugewiesen werden.',
 	'version-semantic' => 'Softwareerweiterungen (Semantic MediaWiki)',
 	'smw_baduri' => 'URIs der Form „$1“ sind nicht zulässig.',
