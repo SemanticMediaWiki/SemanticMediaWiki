@@ -155,7 +155,7 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	static protected function addAutocompletionJavascriptAndCSS() {
-		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded;
+		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQUIAutoIncluded;
 
 		// Add CSS and JavaScript for jQuery and jQuery UI
 		$wgOut->addLink(
@@ -163,7 +163,7 @@ class SMWAskPage extends SpecialPage {
 				'rel' => 'stylesheet',
 				'type' => 'text/css',
 				'media' => "screen",
-				'href' => $smwgScriptPath . '/skins/jqueryui/base/jquery.ui.all.css'
+				'href' => $smwgScriptPath . '/skins/jquery-ui/base/jquery.ui.all.css'
 			)
 		);
 
