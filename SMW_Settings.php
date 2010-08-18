@@ -440,3 +440,10 @@ $smwgTranslate = false;
 ##
 $smwgAdminRefreshStore = true;
 ##
+
+###
+# Sets whether or not the 'printouts' textarea should have autocompletion
+# on property names.
+##
+$smwgAutocompleteInSpecialAsk = true;
+##
