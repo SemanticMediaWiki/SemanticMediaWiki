@@ -8,6 +8,7 @@
 /**
  * @author Markus Krötzsch
  * @author Yaron Koren
+ * @author Sanyam Goyal
  *
  * This special page for MediaWiki implements a customisable form for
  * executing queries outside of articles.
@@ -153,44 +154,152 @@ class SMWAskPage extends SpecialPage {
 		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) == 'yes' ) || ( $this->m_querystring == '' );
 	}
 
+	static protected function addAutocompletionJavascriptAndCSS() {
+		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded;
+
+		// Add CSS and JavaScript for jQuery and jQuery UI
+		$wgOut->addLink(
+			array(
+				'rel' => 'stylesheet',
+				'type' => 'text/css',
+				'media' => "screen",
+				'href' => $smwgScriptPath . '/skins/jqueryui/base/jquery.ui.all.css'
+			)
+		);
+
+		$scripts = array();
+
+		if ( !$smwgJQueryIncluded ) {
+			if ( method_exists( 'OutputPage', 'includeJQuery' ) ) {
+				$wgOut->includeJQuery();
+			} else {
+				$scripts[] = "$smwgScriptPath/libs/jquery-1.4.2.min.js";
+			}
+			$smwgJQueryIncluded = true;
+		}
+
+		if ( !$smwgJQUIAutoIncluded ) {
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.core.min.js";
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.widget.min.js";
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.position.min.js";
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.autocomplete.min.js";
+			$smwgJQUIAutoIncluded = true;
+		}
+
+		foreach ( $scripts as $js ) {
+			$wgOut->addScript( "<script type=\"text/javascript\" src=\"$js\"></script>" );
+		}
+
+		/* collect property names for autocomplete */
+		$propertyNames[] = array();
+		$results = smwfGetStore()->getPropertiesSpecial( );
+		foreach ( $results as $result ) {
+			$propertyNames[] = $result[0]->getWikiValue();
+		}
+		$results = smwfGetStore()->getUnusedPropertiesSpecial( );
+		foreach ( $results as $result ) {
+			$propertyNames[] = $result->getWikiValue();
+		}
+		sort( $propertyNames );
+
+		$properties_po = "[";
+		foreach ( $propertyNames as $i => $property ) {
+			if ( $i > 0 ) { $properties_po .= ", "; }
+			$properties_po .= "'?" . $property . "'";
+		}
+		$properties_po .= "]";
+
+		$javascript_autocomplete_text = <<<END
+<script type="text/javascript">
+function split(val) {
+	return val.split('\\n');
+}
+function extractLast(term) {
+	return split(term).pop();
+}
+function escapeQuestion(term){
+	if (term.substring(0, 1) == "?") {
+		return term.substring(1);
+	} else {
+		return term;
+	}
+}
+
+jQuery.noConflict();
+/* extending jQuery functions for custom highligting */
+jQuery.ui.autocomplete.prototype._renderItem = function( ul, item) {
+	var term_without_q = escapeQuestion(extractLast(this.term));
+	var re = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term_without_q.replace("/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi", "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi");
+	var loc = item.label.search(re);
+	if (loc >= 0) {
+		var t = item.label.substr(0, loc) + '<strong>' + item.label.substr(loc, term_without_q.length) + '</strong>' + item.label.substr(loc + term_without_q.length);
+	} else {
+		var t = item.label;
+	}
+	jQuery( "<li></li>" )
+		.data( "item.autocomplete", item )
+		.append( " <a>" + t + "</a>" )
+		.appendTo( ul );
+};
+
+///* extending jquery functions for custom autocomplete matching */
+jQuery.extend( jQuery.ui.autocomplete, {
+	filter: function(array, term) {
+		var matcher = new RegExp("\\\b" + jQuery.ui.autocomplete.escapeRegex(term), "i" );
+		return jQuery.grep( array, function(value) {
+			return matcher.test( value.label || value.value || value );
+		});
+	}
+});
+
+jQuery(document).ready(function(){
+	jQuery("#add_property").autocomplete({
+		minLength: 1,
+		source: function(request, response) {
+			// delegate back to autocomplete, but extract the last term
+			response(jQuery.ui.autocomplete.filter({$properties_po}, escapeQuestion(extractLast(request.term))));
+		},
+		focus: function() {
+			// prevent value inserted on focus
+			return false;
+		},
+		select: function(event, ui) {
+			var terms = split( this.value );
+			// remove the current input
+			terms.pop();
+			// add the selected item
+			terms.push( ui.item.value );
+			// add placeholder to get the comma-and-space at the end
+			terms.push("");
+			this.value = terms.join("\\n");
+			return false;
+		}
+	});
+});
+</script>
+
+END;
+
+		$wgOut->addScript( $javascript_autocomplete_text );
+	}
+
 	protected function makeHTMLResult() {
-		global $wgOut;
+		global $wgOut, $smwgAutocompleteInSpecialAsk;
+
 		$delete_msg = wfMsg( 'delete' );
 
 		// Javascript code for the dynamic parts of the page
 		$javascript_text = <<<END
-<script type="text/javascript">
-// a very small implementation of Ajax - copied from:
-// http://www.degraeve.com/reference/simple-ajax-example.php
-// - this can hopefully get replaced by jQuery at some point
+<script type="text/javascript">       
+jQuery.noConflict();
 function xmlhttpPost(strURL) {
-    var xmlHttpReq = false;
-    var self = this;
-    // Mozilla/Safari
-    if (window.XMLHttpRequest) {
-        self.xmlHttpReq = new XMLHttpRequest();
-    }
-    // IE
-    else if (window.ActiveXObject) {
-        self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    self.xmlHttpReq.open('POST', strURL, true);
-    self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    self.xmlHttpReq.onreadystatechange = function() {
-        if (self.xmlHttpReq.readyState == 4) {
-            updatepage(self.xmlHttpReq.responseText);
-        }
-    }
-    self.xmlHttpReq.send(getquerystring());
+	jQuery.ajax({ url: strURL, data: getquerystring(), context: document.body, success: function(data){
+		document.getElementById("other_options").innerHTML = data;
+	}});   
 }
-
 function getquerystring() {
-    var format_selector = document.getElementById('formatSelector');
-    return format_selector.value;
-}
-
-function updatepage(str){
-    document.getElementById("other_options").innerHTML = str;
+	var format_selector = document.getElementById('formatSelector');
+	return format_selector.value;
 }
 
 // code for handling adding and removing the "sort" inputs
@@ -206,7 +315,6 @@ function addInstance(starter_div_id, main_div_id) {
 	new_div.className = 'multipleTemplate';
 	new_div.id = div_id;
 	new_div.style.display = 'block';
-
 
 	var children = new_div.getElementsByTagName('*');
 	var x;
@@ -233,7 +341,13 @@ function removeInstance(div_id) {
 </script>
 
 END;
+
 		$wgOut->addScript( $javascript_text );
+
+		if ( $smwgAutocompleteInSpecialAsk ) {
+			self::addAutocompletionJavascriptAndCSS();
+		}
+
 		$result = '';
 		$result_mime = false; // output in MW Special page as usual
 
@@ -340,14 +454,14 @@ END;
 		if ( $this->m_editquery ) {
 			$spectitle = $this->getTitleFor( 'Ask' );
 			$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
-			           '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
+				'<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
 
 			// table for main query and printouts
 			$result .= '<table style="width: 100%; "><tr><th>' . wfMsg( 'smw_ask_queryhead' ) . "</th>\n<th>" . wfMsg( 'smw_ask_printhead' ) . "<br />\n" .
 				'<span style="font-weight: normal;">' . wfMsg( 'smw_ask_printdesc' ) . '</span>' . "</th></tr>\n" .
-			         '<tr><td style="padding-right: 7px;"><textarea name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
-			         '<td style="padding-left: 7px;"><textarea name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table>' . "\n";
-
+				'<tr><td style="padding-right: 7px;"><textarea name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
+				'<td style="padding-left: 7px;"><textarea id = "add_property" name="po" cols="20" rows="6">' . htmlspecialchars( $printoutstring ) . '</textarea></td></tr></table>' . "\n";
+// @TODO
 			// sorting inputs
 			if ( $smwgQSortingSupport ) {
 				if ( ! array_key_exists( 'sort', $this->m_params ) || ! array_key_exists( 'order', $this->m_params ) ) {
@@ -359,7 +473,7 @@ END;
 				}
 				foreach ( $orders as $i => $order ) {
 					$result .=  "<div id=\"sort_div_$i\">" . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort[' . $i . ']" value="' .
-					            htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
+						    htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
 					if ( $order == 'ASC' ) $result .= 'selected="selected" ';
 					$result .=  'value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . '</option><option ';
 					if ( $order == 'DESC' ) $result .= 'selected="selected" ';
@@ -470,7 +584,7 @@ END;
 			$navigation = wfMsg( 'smw_result_prev' );
 		}
 
-		$navigation .= '&#160;&#160;&#160;&#160; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) . '– ' . ( $offset + $res->getCount() ) . '</b>&#160;&#160;&#160;&#160;';
+		$navigation .= '&#160;&#160;&#160;&#160; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) . '� ' . ( $offset + $res->getCount() ) . '</b>&#160;&#160;&#160;&#160;';
 
 		if ( $res->hasFurtherResults() )
 			$navigation .= ' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', 'offset=' . ( $offset + $limit ) . '&limit=' . $limit . $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_result_next' ) . '</a>';
