@@ -1,5 +1,9 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
+== SMW 1.5.2 ==
+* 'Printouts' textarea in Special:Ask now has autocompletion on property
+  names.
+
 == SMW 1.5.1 ==
 
 * Added query comparator "!~" that works like the negation of "~", i.e. that
