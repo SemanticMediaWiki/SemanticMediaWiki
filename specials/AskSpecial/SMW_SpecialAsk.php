@@ -155,7 +155,7 @@ class SMWAskPage extends SpecialPage {
 	}
 
 	static protected function addAutocompletionJavascriptAndCSS() {
-		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQUIAutoIncluded;
+		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
 
 		// Add CSS and JavaScript for jQuery and jQuery UI
 		$wgOut->addLink(
@@ -178,12 +178,12 @@ class SMWAskPage extends SpecialPage {
 			$smwgJQueryIncluded = true;
 		}
 
-		if ( !$smwgJQUIAutoIncluded ) {
+		if ( !$smwgJQueryUIIncluded ) {
 			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.core.min.js";
 			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.widget.min.js";
 			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.position.min.js";
 			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.autocomplete.min.js";
-			$smwgJQUIAutoIncluded = true;
+			$smwgJQueryUIIncluded = true;
 		}
 
 		foreach ( $scripts as $js ) {
