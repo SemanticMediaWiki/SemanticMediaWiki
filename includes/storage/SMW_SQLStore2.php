@@ -1005,8 +1005,10 @@ class SMWSQLStore2 extends SMWStore {
 		$query = '(' . implode( ') UNION (', $queries ) . ') ORDER BY smw_sortkey';
 		// The following line is possible in MW 1.6 and above only:
 		// $query = $db->unionQueries($queries, false) . ' ORDER BY smw_sortkey'; // should probably use $db->makeSelectOptions()
-		if ( $requestoptions->limit > 0 ) {
-			$query = $db->limitResult( $query, $requestoptions->limit, ( $requestoptions->offset > 0 ) ? $requestoptions->offset:0 );
+		if ( $requestoptions !== null ) {
+			if ( $requestoptions->limit > 0 ) {
+				$query = $db->limitResult( $query, $requestoptions->limit, ( $requestoptions->offset > 0 ) ? $requestoptions->offset:0 );
+			}
 		}
 
 		$res = $db->query( $query, 'SMW::getPropertySubjects' );
