@@ -158,14 +158,7 @@ class SMWAskPage extends SpecialPage {
 		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
 
 		// Add CSS and JavaScript for jQuery and jQuery UI
-		$wgOut->addLink(
-			array(
-				'rel' => 'stylesheet',
-				'type' => 'text/css',
-				'media' => "screen",
-				'href' => $smwgScriptPath . '/skins/jquery-ui/base/jquery.ui.all.css'
-			)
-		);
+		$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
 
 		$scripts = array();
 
@@ -187,16 +180,16 @@ class SMWAskPage extends SpecialPage {
 		}
 
 		foreach ( $scripts as $js ) {
-			$wgOut->addScript( "<script type=\"text/javascript\" src=\"$js\"></script>" );
+			$wgOut->addScriptFile( $js );
 		}
 
 		/* collect property names for autocomplete */
 		$propertyNames[] = array();
-		$results = smwfGetStore()->getPropertiesSpecial( );
+		$results = smwfGetStore()->getPropertiesSpecial();
 		foreach ( $results as $result ) {
 			$propertyNames[] = $result[0]->getWikiValue();
 		}
-		$results = smwfGetStore()->getUnusedPropertiesSpecial( );
+		$results = smwfGetStore()->getUnusedPropertiesSpecial();
 		foreach ( $results as $result ) {
 			$propertyNames[] = $result->getWikiValue();
 		}
@@ -204,7 +197,9 @@ class SMWAskPage extends SpecialPage {
 
 		$properties_po = "[";
 		foreach ( $propertyNames as $i => $property ) {
-			if ( $i > 0 ) { $properties_po .= ", "; }
+			if ( $i > 0 ) {
+				$properties_po .= ", ";
+			}
 			$properties_po .= "'?" . $property . "'";
 		}
 		$properties_po .= "]";
@@ -584,11 +579,13 @@ END;
 			$navigation = wfMsg( 'smw_result_prev' );
 		}
 
-		$navigation .= '&#160;&#160;&#160;&#160; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) . 'â ' . ( $offset + $res->getCount() ) . '</b>&#160;&#160;&#160;&#160;';
+		$navigation .= '&#160;&#160;&#160;&#160; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) . '&#150; ' . ( $offset + $res->getCount() ) . '</b>&#160;&#160;&#160;&#160;';
 
-		if ( $res->hasFurtherResults() )
+		if ( $res->hasFurtherResults() ) {
 			$navigation .= ' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', 'offset=' . ( $offset + $limit ) . '&limit=' . $limit . $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_result_next' ) . '</a>';
-		else $navigation .= wfMsg( 'smw_result_next' );
+		} else {
+			$navigation .= wfMsg( 'smw_result_next' );
+		}
 
 		$first = true;
 		foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
@@ -596,7 +593,9 @@ END;
 			if ( $first ) {
 				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
 				$first = false;
-			} else $navigation .= ' ' . SMWAskPage::$pipeseparator . ' ';
+			} else {
+				$navigation .= ' ' . SMWAskPage::$pipeseparator . ' ';
+			}
 			if ( $limit != $l ) {
 				$navigation .= '<a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', 'offset=' . $offset . '&limit=' . $l . $urltail ) ) . '" rel="nofollow">' . $l . '</a>';
 			} else {
