@@ -2079,7 +2079,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'types' => 'Datentypen',
 	'smw_types_docu' => 'Die folgenden Datentypen können Attributen zugewiesen werden. Jeder Datentyp hat eine eigene Seite, auf der genauere Informationen eingetragen werden können.',
 	'smw_typeunits' => 'Maßeinheiten des Datentyps „$1“: $2',
-	'semanticstatistics' => 'Statistik über semantische Daten',
+	'semanticstatistics' => 'Statistik zu semantischen Daten',
 	'smw_semstats_text' => "In diesem Wiki {{PLURAL:$1|wurde '''1''' Wert|wurden '''$1''' Werte}} für insgesamt '''$2''' [[Special:Properties|{{PLURAL:$2|Attribut|verschiedene Attribute}}]] eingegeben. '''$3''' {{PLURAL:$3|Attribut hat|Attribute haben}} eine eigene Seite und der gewünschte Datentyp ist für '''$4''' von diesen angegeben worden.
 
 Einige der existierenden Attribute können [[Special:UnusedProperties|verwaiste Attribute]] sein. Attribute, für die noch eine Seite angelegt werden sollte, sind in der [[Special:WantedProperties|Liste der gewünschten Attribute]] aufgeführt.",
@@ -7945,7 +7945,7 @@ Wyniki mogą być inne od oczekiwanych.',
 	'smw_ask_hidequery' => 'Ukryj zapytanie',
 	'smw_ask_help' => 'Pomoc dla tworzenia zapytań',
 	'smw_ask_queryhead' => 'Zapytanie',
-	'smw_ask_printhead' => 'Dodatkowe wydruki (opcjonalnie)',
+	'smw_ask_printhead' => 'Dodatkowe dane do wyświetlenia',
 	'smw_ask_format_as' => 'Formatuj jako',
 	'smw_ask_defaultformat' => 'domyślny',
 	'smw_ask_otheroptions' => 'Inne opcje',
