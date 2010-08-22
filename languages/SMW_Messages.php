@@ -1569,6 +1569,7 @@ $messages['ca'] = array(
 	'smw_concept_cache_miss' => "El concepte «$1» no pot ser utilitzat per ara, atès que la configuració del wiki s'ha de computar fora de línia.
 Si el problema persisteix passat cert temps, demaneu a l'administrador del vostre wiki que posi disponible aquest concepte.",
 	'smw_noinvannot' => 'No es poden assignar valors a propietats inverses.',
+	'version-semantic' => 'Extensions semàntiques',
 	'smw_baduri' => 'Les URI del formulari «$1» no són permeses.',
 	'smw_printername_auto' => 'Automàtic',
 	'smw_printername_count' => 'Resultats del recompte',
@@ -1594,6 +1595,9 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw_paramdesc_sep' => 'El separador entre valors',
 	'smw_paramdesc_template' => "El nom d'una plantilla amb la qual mostrar els llistats",
 	'smw_paramdesc_columns' => 'El nombre de columnes amb les quals mostrar els resultats (per defecte és $1)',
+	'smw_paramdesc_userparam' => "Es passa un valor a cada crida de la plantilla, sempre que s'utilitzi una plantilla",
+	'smw_paramdesc_introtemplate' => "El nom d'una plantilla que es mostrarà abans dels resultats de la consulta, si n'hi ha cap",
+	'smw_paramdesc_outrotemplate' => "El nom d'una plantilla que es mostrarà després dels resultats de la consulta, si n'hi ha cap",
 	'smw_paramdesc_embedformat' => "L'etiqueta HTML que s'utilitza per a definir les capçaleres",
 	'smw_paramdesc_embedonly' => 'No mostris capçaleres',
 	'smw_paramdesc_rsstitle' => "El text que s'utilitzarà com a títol del canal",
