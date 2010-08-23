@@ -264,9 +264,9 @@
 	border: none;
 }
 ul.ui-menu {
-	padding: 0;
+	padding: 0 0 5px 0;
 	max-height: 200px;
-	overflow: scroll;
+	overflow: auto;
 }
 .ui-menu .ui-menu-item a.ui-state-hover {
 	margin: auto;
