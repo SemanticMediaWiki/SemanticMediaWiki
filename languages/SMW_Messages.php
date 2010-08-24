@@ -8550,6 +8550,7 @@ $messages['pt-br'] = array(
 	'smw_multiple_concepts' => 'Cada página de conceito pode ter apenas uma definição de conceito.',
 	'smw_concept_cache_miss' => 'O conceito "$1" não poderá ser utilizado neste momento, uma vez que a configuração deste wiki necessita ser refeita off-line. Caso o problema não seja resolvido automaticamente dentro de algum tempo, peça a um administrador deste wiki que este conceito seja disponibilizado.',
 	'smw_noinvannot' => 'Valores não podem ser atribuídos a propriedades inversas.',
+	'version-semantic' => 'Extensões semânticas',
 	'smw_baduri' => 'URIs na forma de "$1" não são permitidos.',
 	'smw_printername_auto' => 'Automático',
 	'smw_printername_count' => 'Contar resultados',
@@ -8623,6 +8624,10 @@ Os resultados podem não ser os esperados.',
 	'smw_propvalueproblem' => 'O valor da propriedade "$1" não foi compreendido.',
 	'smw_noqueryfeature' => 'Uma característica da consulta não é suportada nesta wiki e parte da consulta foi descartada ($1).',
 	'smw_noconjunctions' => 'Conjunções em consultas não são suportadas nesta wiki e parte da consulta foi descartada ($1).',
+	'smw_nodisjunctions' => 'Disjunções em consultas não são suportadas nesta wiki e parte da consulta foi descartada ($1).',
+	'smw_querytoolarge' => 'Não foi possível considerar as seguintes condições da consulta, devido às restrições no tamanho e profundidade de consulta das wikis: $1.',
+	'smw_devel_warning' => 'Esta funcionalidade está, neste momento, em desenvolvimento, e pode não estar totalmente funcional.
+Faça uma cópia de segurança dos seus dados antes de a usar.',
 	'smw_notemplategiven' => 'Providencie um valor para o parâmetro "template" para o formato desta consulta funcionar.',
 	'smw_type_header' => 'Propriedades do tipo "$1"',
 	'smw_typearticlecount' => 'Exibindo $1 {{PLURAL:$1|propriedade que usa|propriedades que usam}} este tipo.',
@@ -8635,13 +8640,37 @@ Os resultados podem não ser os esperados.',
 	'exportrdf' => 'Exportar páginas para RDF',
 	'smw_exportrdf_docu' => 'Esta página permite que você obtenha dados de uma página no formato RDF.
 Para exportar páginas, introduza os seus títulos na caixa de texto abaixo, um título por linha.',
+	'smw_exportrdf_recursive' => 'Exportar recursivamente todas as páginas relacionadas.
+Note que o resultado pode ser volumoso!',
+	'smw_exportrdf_backlinks' => 'Também exporta todas as páginas que se referem as páginas exportadas.
+Gera RDF navegável.',
+	'smw_exportrdf_lastdate' => 'Não exportar páginas que não foram alteradas desde o tempo dado.',
 	'smw_exportrdf_submit' => 'Exportar',
 	'properties' => 'Propriedades',
 	'smw_properties_docu' => 'As seguintes propriedades são usadas nesta wiki.',
+	'smw_property_template' => '$1 de tipo $2 ($3)',
+	'smw_propertylackspage' => 'Todas as propriedades devem ser descritas por uma página!',
+	'smw_propertylackstype' => 'Nenhum tipo foi especificado para esta propriedade (assumindo tipo $1 por agora).',
+	'smw_propertyhardlyused' => 'Esta propriedade é muito pouco usada nesta wiki!',
+	'unusedproperties' => 'Propriedades não usadas',
+	'smw_unusedproperties_docu' => 'As seguintes propriedade existem apesar de nenhuma página fazer uso delas.',
+	'smw_unusedproperty_template' => '$1 de tipo $2',
+	'wantedproperties' => 'Propriedades em falta',
+	'smw_wantedproperties_docu' => 'As seguintes propriedades são usadas na wiki mas ainda não têm uma página que as descreva.',
+	'smw_wantedproperty_template' => '$1 ($2 {{PLURAL:$2|uso|usos}})',
+	'tooltip-purge' => 'Carregue aqui para atualizar todas as consultar e predefinições nesta página',
 	'smw_purge' => 'Atualizar',
 	'types' => 'Tipos',
 	'smw_types_docu' => 'A seguinte lista contém todos os tipos de dados que podem ser atribuídos a propriedades.
 Cada tipo de dados tem uma página onde informação adicional pode ser providenciada.',
+	'smw_typeunits' => 'Unidades de medida de tipo "$1": $2',
+	'semanticstatistics' => 'Estatísticas de semântica',
+	'smw_semstats_text' => "Esta wiki contém '''$1''' {{PLURAL:$1|valor|valores}} de propriedades num total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriedade diferente|propriedades diferentes}}]].
+'''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} sua própria página, e o tipo de dados pretendido está especificado para '''$4''' delas.
+Algumas das propriedades existentes podem estar [[Special:UnusedProperties|sem uso]].
+As propriedades que não possuem uma página poderão ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
+	'uriresolver' => 'Resolvedor de URIs',
+	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>. Ele certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'ask' => 'Pesquisa semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
 	'smw_ask_ascorder' => 'Ascendente',
@@ -8653,6 +8682,7 @@ Cada tipo de dados tem uma página onde informação adicional pode ser providen
 	'smw_ask_help' => 'Ajuda sobre consultas',
 	'smw_ask_queryhead' => 'Consulta',
 	'smw_ask_printhead' => 'Dados adicionas para exibir',
+	'smw_ask_printdesc' => '(adicionar um nome de propriedade por linha)',
 	'smw_ask_format_as' => 'Formatar como:',
 	'smw_ask_defaultformat' => 'Padrão',
 	'smw_ask_otheroptions' => 'Outras opções',
@@ -8676,6 +8706,8 @@ Uma vez que houve poucos resultados, também são apresentados valores próximos
 	'smw_browse_hide_incoming' => 'ocultar propriedades que apontem para cá',
 	'smw_browse_no_outgoing' => 'Esta página não possui propriedades.',
 	'smw_browse_no_incoming' => 'Nenhuma propriedade aponta para esta página.',
+	'smw_inverse_label_default' => '$1 de',
+	'smw_inverse_label_property' => 'Etiqueta propriedade inversa',
 	'pageproperty' => 'Pesquisa de propriedade de página',
 	'smw_pp_docu' => 'Pesquise todos os conteúdos de uma propriedade em uma página dada.
 Por favor, inclua tanto a página quanto a propriedade.',
@@ -8700,9 +8732,24 @@ Não foi criado outro.',
 	'smw_smwadmin_docu' => 'Esta página especial ajuda-o durante a instalação ou atualização do <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Lembre-se de efetuar cópias de segurança dos dados importantes antes de executar funções administrativas.',
 	'smw_smwadmin_db' => 'Instalação e atualização da base de dados',
+	'smw_smwadmin_dbdocu' => 'O MediaWiki Semântico requer algumas alterações da base de dados MediaWiki de forma a armazenar os dados semânticos.
+A função abaixo assegura que a sua base de dados está devidamente preparada.
+As alterações feitas neste passo não afetam o resto da base de dados MediaWiki, e podem ser facilmente desfeitas se desejado.
+Esta função de preparação pode ser executada várias vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou atualização.',
+	'smw_smwadmin_permissionswarn' => "Se a operação falhar com erros de SQL, provavelmente o usuário de base de dados utilizado pela sua wiki (consulte o seu LocalSettings.php) não possui permissões suficientes.
+Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu superusuário (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais presentes em AdminSettings.php.",
 	'smw_smwadmin_dbbutton' => 'Inicializar ou atualizar tabelas',
 	'smw_smwadmin_announce' => 'Anuncie a sua wiki',
+	'smw_smwadmin_announcedocu' => 'O MediaWiki Semântico tem um serviço na internet para anunciar novas wikis semânticas.
+Este é usado para manter uma lista de sites públicos que usam o MediaWiki Semântico, principalmente para auxiliar o <a href="http://semantic-mediawiki.org/wiki/SMW_Project">projeto MediaWiki Semântico</a> a obter uma ideia geral das utilizações típicas do MediaWiki Semântico.
+Veja a página inicial do MediaWiki Semântico para <a href="http://semantic-mediawiki.org/wiki/Registry">mais informações sobre este serviço</a>.',
+	'smw_smwadmin_announcebutton' => 'Clique o seguinte botão para submeter a URL da sua wiki ao serviço.
+O serviço não registará wikis que não estejam publicamente acessíveis e apenas armazenará informação publicamente acessível.',
 	'smw_smwadmin_datarefresh' => 'Reparação de dados e atualização',
+	'smw_smwadmin_datarefreshdocu' => 'É possível restaurar todos os dados do MediaWiki Semântico baseado no conteúdo atual da wiki.
+Isto pode ser útil para reparar dados corrompidos ou para refrescar os dados se o formato interno tiver sido alterado devido a alguma evolução do software.
+A atualização é executada página a página e não ficará completa de imediato.
+Abaixo é mostrado se uma atualização está a decorrer e permite-lhe iniciar ou parar atualizações (a menos que esta funcionalidade tenha sido desativada por um administrador do site).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Uma atualização já se encontra a decorrer.</strong>
 É normal que a atualização progrida lentamente já que apenas refresca dados em pequenos blocos de cada vez que um utilizador acede ao wiki.
 Para terminar esta atualização mais rapidamente, você pode executar o script de manutenção do MediaWiki <tt>runJobs.php</tt> (use a opção <tt>--maxjobs 1000</tt> para restringir o número de atualizações feitas num bloco).
