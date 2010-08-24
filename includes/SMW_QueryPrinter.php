@@ -71,6 +71,12 @@ abstract class SMWResultPrinter {
 	public static $maxRecursionDepth = 2;
 
 	/**
+	 * Return serialised results in specified format.
+	 * Implemented by subclasses.
+	 */
+	abstract protected function getResultText( /* SMWQueryResult */ $res, $outputmode );	
+	
+	/**
 	 * Constructor. The parameter $format is a format string
 	 * that may influence the processing details.
 	 */
@@ -150,18 +156,23 @@ abstract class SMWResultPrinter {
 
 		// Get output from printer:
 		$result = $this->getResultText( $results, $outputmode );
+		
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // just return result in file mode
 			return $result;
 		}
+		
 		$result .= $this->getErrorString( $results ); // append errors
+		
 		if ( ( !$this->isHTML ) && ( $this->hasTemplates ) ) { // preprocess embedded templates if needed
 			if ( ( $wgParser->getTitle() instanceof Title ) && ( $wgParser->getOptions() instanceof ParserOptions ) ) {
 				SMWResultPrinter::$mRecursionDepth++;
+				
 				if ( SMWResultPrinter::$mRecursionDepth <= SMWResultPrinter::$maxRecursionDepth ) { // restrict recursion
 					$result = '[[SMW::off]]' . $wgParser->replaceVariables( $result ) . '[[SMW::on]]';
 				} else {
 					$result = ''; /// TODO: explain problem (too much recursive parses)
 				}
+				
 				SMWResultPrinter::$mRecursionDepth--;
 			} else { // not during parsing, no preprocessing needed, still protect the result
 				$result = '[[SMW::off]]' . $result . '[[SMW::on]]';
@@ -172,15 +183,18 @@ abstract class SMWResultPrinter {
 			$result = array( $result, 'isHTML' => true );
 		} elseif ( ( !$this->isHTML ) && ( $outputmode == SMW_OUTPUT_HTML ) ) {
 			SMWResultPrinter::$mRecursionDepth++;
+			
 			// check whether we are in an existing parse, or if we should start a new parse for $wgTitle
 			if ( SMWResultPrinter::$mRecursionDepth <= SMWResultPrinter::$maxRecursionDepth ) { // retrict recursion
 				if ( ( $wgParser->getTitle() instanceof Title ) && ( $wgParser->getOptions() instanceof ParserOptions ) ) {
 					$result = $wgParser->recursiveTagParse( $result );
 				} else {
 					global $wgTitle;
+					
 					$popt = new ParserOptions();
 					$popt->setEditSection( false );
 					$pout = $wgParser->parse( $result . '__NOTOC__', $wgTitle, $popt );
+					
 					/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
 					SMWOutputs::requireFromParserOutput( $pout );
 					$result = $pout->getText();
@@ -188,6 +202,7 @@ abstract class SMWResultPrinter {
 			} else {
 				$result = ''; /// TODO: explain problem (too much recursive parses)
 			}
+			
 			SMWResultPrinter::$mRecursionDepth--;
 		}
 
@@ -268,12 +283,6 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
-	 * Return serialised results in specified format.
-	 * Implemented by subclasses.
-	 */
-	abstract protected function getResultText( /* SMWQueryResult */ $res, $outputmode );
-
-	/**
 	 * Depending on current linking settings, returns a linker object
 	 * for making hyperlinks or NULL if no links should be created.
 	 *
@@ -337,6 +346,8 @@ abstract class SMWResultPrinter {
 	 * refer to messages here. The format name is normally not used in
 	 * wiki text but only in forms etc. hence the user language should be
 	 * used when retrieving messages.
+	 * 
+	 * @return string
 	 */
 	public function getName() {
 		return $this->mFormat;
@@ -346,13 +357,17 @@ abstract class SMWResultPrinter {
 	 * Provides a simple formatted string of all the error messages that occurred.
 	 * Can be used if not specific error formatting is desired. Compatible with HTML
 	 * and Wiki.
+	 * 
+	 * @return string
 	 */
 	public function getErrorString( $res ) {
-		return $this->mShowErrors ? smwfEncodeMessages( $res->getErrors() ):'';
+		return $this->mShowErrors ? smwfEncodeMessages( $res->getErrors() ) : '';
 	}
 
 	/**
 	 * Set whether errors should be shown. By default they are.
+	 * 
+	 * @param boolean $show
 	 */
 	public function setShowErrors( $show ) {
 		$this->mShowErrors = $show;
@@ -361,14 +376,18 @@ abstract class SMWResultPrinter {
 	/**
 	 * If $outputmode is SMW_OUTPUT_HTML, escape special characters occuring in the
 	 * given text. Otherwise return text as is.
+	 * 
+	 * @return string
 	 */
 	protected function escapeText( $text, $outputmode ) {
-		return ( $outputmode == SMW_OUTPUT_HTML ) ? htmlspecialchars( $text ):$text;
+		return ( $outputmode == SMW_OUTPUT_HTML ) ? htmlspecialchars( $text ) : $text;
 	}
 
 	/**
 	 * Get the string the user specified as a text for the "further results" link,
 	 * properly escaped for the current output mode.
+	 * 
+	 * @return string
 	 */
 	protected function getSearchLabel( $outputmode ) {
 		return $this->escapeText( $this->mSearchlabel, $outputmode );
@@ -378,6 +397,8 @@ abstract class SMWResultPrinter {
 	 * Check whether a "further results" link would normally be generated for this
 	 * result set with the given parameters. Individual result printers may decide to
 	 * create or hide such a link independent of that, but this is the default.
+	 * 
+	 * @return boolean
 	 */
 	protected function linkFurtherResults( $results ) {
 		return ( $this->mInline && $results->hasFurtherResults() && ( $this->mSearchlabel !== '' ) );
@@ -387,6 +408,10 @@ abstract class SMWResultPrinter {
 	 * Return an array describing the parameters of specifically text-based
 	 * formats, like 'list' and 'table', for use in their getParameters()
 	 * functions
+	 * 
+	 * @since 1.5.0
+	 * 
+	 * @return array
 	 */
 	protected function textDisplayParameters() {
 		return array(
@@ -399,6 +424,10 @@ abstract class SMWResultPrinter {
 	/**
 	 * Return an array describing the parameters of the export formats
 	 * like 'rss' and 'csv', for use in their getParameters() functions
+	 * 
+	 * @since 1.5.0
+	 * 
+	 * @return array
 	 */
 	protected function exportFormatParameters() {
 		return array(
@@ -413,6 +442,10 @@ abstract class SMWResultPrinter {
 	 * A function to describe the allowed parameters of a query using
 	 * any specific format - most query printers should override this
 	 * function
+	 * 
+	 * @since 1.5.0
+	 * 
+	 * @return array
 	 */
 	public function getParameters() {
 		return array(
