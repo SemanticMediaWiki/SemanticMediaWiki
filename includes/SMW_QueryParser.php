@@ -49,27 +49,38 @@ class SMWQueryParser {
 	 * Compute an SMWDescription from a query string. Returns whatever descriptions could be
 	 * wrestled from the given string (the most general result being SMWThingDescription if
 	 * no meaningful condition was extracted).
+	 * 
+	 * @param string $querystring
+	 * 
+	 * @return SMWDescription
 	 */
 	public function getQueryDescription( $querystring ) {
 		wfProfileIn( 'SMWQueryParser::getQueryDescription (SMW)' );
+		
 		$this->m_errors = array();
 		$this->m_label = '';
 		$this->m_curstring = $querystring;
 		$this->m_sepstack = array();
 		$setNS = false;
 		$result = $this->getSubqueryDescription( $setNS, $this->m_label );
+		
 		if ( !$setNS ) { // add default namespaces if applicable
 			$result = $this->addDescription( $this->m_defaultns, $result );
 		}
+		
 		if ( $result === null ) { // parsing went wrong, no default namespaces
 			$result = new SMWThingDescription();
 		}
+		
 		wfProfileOut( 'SMWQueryParser::getQueryDescription (SMW)' );
+		
 		return $result;
 	}
 
 	/**
 	 * Return array of error messages (possibly empty).
+	 * 
+	 * @return array
 	 */
 	public function getErrors() {
 		return $this->m_errors;
@@ -77,6 +88,8 @@ class SMWQueryParser {
 
 	/**
 	 * Return error message or empty string if no error occurred.
+	 * 
+	 * @return string
 	 */
 	public function getErrorString() {
 		return smwfEncodeMessages( $this->m_errors );
@@ -113,17 +126,22 @@ class SMWQueryParser {
 	 * should be set to NULL.
 	 *
 	 * The call-by-ref parameter $label is used to append any label strings found.
+	 * 
+	 * @return SMWDescription or null
 	 */
 	protected function getSubqueryDescription( &$setNS, &$label ) {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+		
 		$conjunction = null;      // used for the current inner conjunction
 		$disjuncts = array();     // (disjunctive) array of subquery conjunctions
 		$hasNamespaces = false;   // does the current $conjnuction have its own namespace restrictions?
 		$mustSetNS = $setNS;      // must ns restrictions be set? (may become true even if $setNS is false)
 
 		$continue = ( $chunk = $this->readChunk() ) != ''; // skip empty subquery completely, thorwing an error
+		
 		while ( $continue ) {
 			$setsubNS = false;
+			
 			switch ( $chunk ) {
 				case '[[': // start new link block
 					$ld = $this->getLinkDescription( $setsubNS, $label );
@@ -141,19 +159,23 @@ class SMWQueryParser {
 							// add ns restrictions to all earlier conjunctions (all of which did not have them yet)
 							$mustSetNS = true; // enforce NS restrictions from now on
 							$newdisjuncts = array();
+							
 							foreach ( $disjuncts as $conj ) {
 								$newdisjuncts[] = $this->addDescription( $conj, $this->m_defaultns );
 							}
+							
 							$disjuncts = $newdisjuncts;
 						} elseif ( !$hasNamespaces && $mustSetNS ) {
 							// add ns restriction to current result
 							$conjunction = $this->addDescription( $conjunction, $this->m_defaultns );
 						}
 					}
+					
 					$disjuncts[] = $conjunction;
 					// start anew
 					$conjunction = null;
 					$hasNamespaces = false;
+					
 					// finish subquery?
 					if ( $chunk == '</q>' ) {
 						if ( $this->popDelimiter( '</q>' ) ) {
@@ -172,9 +194,11 @@ class SMWQueryParser {
 					$this->m_errors[] = wfMsgForContent( 'smw_unexpectedpart', $chunk );
 					// return null; // Try to go on, it can only get better ...
 			}
+			
 			if ( $setsubNS ) { // namespace restrictions encountered in current conjunct
 				$hasNamespaces = true;
 			}
+			
 			if ( $continue ) { // read on only if $continue remained true
 				$chunk = $this->readChunk();
 			}
@@ -182,6 +206,7 @@ class SMWQueryParser {
 
 		if ( count( $disjuncts ) > 0 ) { // make disjunctive result
 			$result = null;
+			
 			foreach ( $disjuncts as $d ) {
 				if ( $d === null ) {
 					$this->m_errors[] = wfMsgForContent( 'smw_emptysubquery' );
@@ -196,6 +221,7 @@ class SMWQueryParser {
 			$setNS = false;
 			return null;
 		}
+		
 		$setNS = $mustSetNS; // NOTE: also false if namespaces were given but no default NS descs are available
 
 		return $result;
