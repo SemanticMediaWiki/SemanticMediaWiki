@@ -149,7 +149,7 @@ class SMWFactbox {
 	 * This hook is used for inserting the Factbox text after the article contents (including
 	 * categories).
 	 */
-	static public function onSkinAfterContent( &$data, $skin ) {
+	static public function onSkinAfterContent( &$data, $skin = null ) {
 		global $wgOut;
 		if ( isset( $wgOut->mSMWFactboxText ) ) {
 			$data .= $wgOut->mSMWFactboxText;
