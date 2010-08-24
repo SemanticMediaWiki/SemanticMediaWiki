@@ -62,9 +62,13 @@ $magicWords['es'] = array(
 	'declare'               => array( '0', 'declarar', 'declara', 'declare' ),
 );
 
+$magicWords['ig'] = array(
+	'ask'                   => array( '0', 'jüo', 'ask' ),
+);
+
 $magicWords['ml'] = array(
 	'ask'                   => array( '0', 'ചോദിക്കുക', 'ask' ),
-	'show'                  => array( '0', 'കാട്ടുക', 'show' ),
+	'show'                  => array( '0', 'പ്രദർശിപ്പിക്കുക', 'show' ),
 	'info'                  => array( '0', 'വിവരം', 'info' ),
 	'concept'               => array( '0', 'ആശയം', 'concept' ),
 	'set'                   => array( '0', 'ഗണം', 'set' ),
@@ -102,6 +106,12 @@ $magicWords['nl'] = array(
 
 $magicWords['ps'] = array(
 	'ask'                   => array( '0', 'پوښتل', 'ask' ),
-	'show'                  => array( '0', 'کتل', 'show' ),
+	'show'                  => array( '0', 'ښکاره_کول', 'show' ),
 	'info'                  => array( '0', 'مالومات', 'info' ),
+);
+
+$magicWords['sv'] = array(
+	'ask'                   => array( '0', 'fråga', 'ask' ),
+	'show'                  => array( '0', 'visa', 'show' ),
+	'concept'               => array( '0', 'koncept', 'concept' ),
 );
