@@ -191,6 +191,8 @@ class SMWSQLStore2QueryEngine {
 	 * processing -- not all DBMS might be able in seeing this by themselves.
 	 *
 	 * @param SMWQuery $query
+	 * 
+	 * @return mixed: depends on $query->querymode
 	 */
 	public function getQueryResult( SMWQuery $query ) {
 		global $smwgIgnoreQueryErrors, $smwgQSortingSupport;
@@ -276,6 +278,8 @@ class SMWSQLStore2QueryEngine {
 	 *
 	 * @param SMWQuery $query
 	 * @param integer $rootid
+	 * 
+	 * @return string
 	 */
 	protected function getDebugQueryResult( SMWQuery $query, $rootid ) {
 		$qobj = $this->m_queries[$rootid];
@@ -331,6 +335,8 @@ class SMWSQLStore2QueryEngine {
 	 *
 	 * @param SMWQuery $query
 	 * @param integer $rootid
+	 * 
+	 * @return integer
 	 */
 	protected function getCountQueryResult( SMWQuery $query, $rootid ) {
 		wfProfileIn( 'SMWSQLStore2Queries::getCountQueryResult (SMW)' );

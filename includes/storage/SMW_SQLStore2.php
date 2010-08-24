@@ -578,10 +578,10 @@ class SMWSQLStore2 extends SMWStore {
 	}
 
 	/**
-	 *
-	 *
 	 * @param SMWPropertyValue $property
 	 * @param SMWRequestOptions $requestoptions
+	 * 
+	 * @return array
 	 */
 	public function getAllPropertySubjects( SMWPropertyValue $property, $requestoptions = null ) {
 		wfProfileIn( "SMWSQLStore2::getAllPropertySubjects (SMW)" );
@@ -970,6 +970,11 @@ class SMWSQLStore2 extends SMWStore {
 
 ///// Query answering /////
 
+	/**
+	 * @param $query SMWQuery
+	 * 
+	 * @return mixed: depends on $query->querymode
+	 */
 	function getQueryResult( SMWQuery $query ) {
 		wfProfileIn( 'SMWSQLStore2::getQueryResult (SMW)' );
 		global $smwgIP;

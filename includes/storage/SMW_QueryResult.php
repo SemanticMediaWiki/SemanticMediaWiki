@@ -26,6 +26,7 @@
  * @ingroup SMWQuery
  */
 class SMWQueryResult {
+	
 	/**
 	 * Array of SMWWikiPageValue objects that are the basis for this result
 	 * @var Array of SMWWikiPageValue

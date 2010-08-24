@@ -32,7 +32,7 @@ class SMWQueryProcessor {
 	 * known. Otherwise it will be determined from the parameters when
 	 * needed. This parameter is just for optimisation in a common case.
 	 */
-	static public function createQuery( $querystring, $params, $context = SMWQueryProcessor::INLINE_QUERY, $format = '', $extraprintouts = array() ) {
+	static public function createQuery( $querystring, array $params, $context = SMWQueryProcessor::INLINE_QUERY, $format = '', $extraprintouts = array() ) {
 		global $smwgQDefaultNamespaces, $smwgQFeatures, $smwgQConceptFeatures;
 
 		// parse query:

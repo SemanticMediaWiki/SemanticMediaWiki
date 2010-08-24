@@ -234,8 +234,11 @@ function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' 
  * wfLoadExtensionMessages function will no longer be needed (or supported).
  * This function is used for maintaining compatibility with MediaWiki 1.15 or
  * below.
+ * 
  * @param string $extensionName The extension name for finding the the message
  * file; same as in wfLoadExtensionMessages()
+ * 
+ * @since 1.5.1
  */
 function smwfLoadExtensionMessages( $extensionName ) {
 	if ( function_exists( 'wfLoadExtensionMessages' ) ) {
@@ -249,14 +252,21 @@ function smwfLoadExtensionMessages( $extensionName ) {
  * infrastructure allows to set up load balancing and task-dependent use of
  * stores (e.g. using other stores for fast querying than for storing new
  * facts), somewhat similar to MediaWiki's DB implementation.
+ * 
+ * @return SMWStore
  */
 function &smwfGetStore() {
 	global $smwgMasterStore, $smwgDefaultStore, $smwgIP;
-	if ( $smwgDefaultStore == 'SMWRAPStore2' ) { // no autoloading for RAP store, since autoloaded classes are in rare cases loaded by MW even if not used in code -- this is not possible for RAPstore, which depends on RAP being installed
+	
+	// No autoloading for RAP store, since autoloaded classes are in rare cases loaded by MW even if not used in code.
+	// This is not possible for RAPstore, which depends on RAP being installed.
+	if ( $smwgDefaultStore == 'SMWRAPStore2' ) { 
 		include_once( $smwgIP . 'includes/storage/SMW_RAPStore2.php' );
 	}
+	
 	if ( $smwgMasterStore === null ) {
 		$smwgMasterStore = new $smwgDefaultStore();
 	}
+	
 	return $smwgMasterStore;
 }
