@@ -2005,7 +2005,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_paramdesc_embedonly' => 'Keine Überschriften anzeigen',
 	'smw_paramdesc_rsstitle' => 'Der Text, der als Titel für den Feed benutzt wird',
 	'smw_paramdesc_rssdescription' => 'Der Text, der als Beschreibung für den Feed benutzt wird',
-	'smw_iq_disabled' => 'Semantische Anfragen sind in diesem Wiki zurzeit nicht möglich.',
+	'smw_iq_disabled' => 'Semantische Abfragen wurden in diesem Wiki deaktiviert.',
 	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_iq_nojs' => 'Der Inhalt dieses Elementes kann mit einem Browser mit JavaScript-Unterstützung betrachtet werden.',
 	'smw_iq_altresults' => 'Suchergebnisse als Liste anzeigen.',
@@ -2033,8 +2033,8 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_unsupportedprefix' => 'Vorangestellte Zeichen bei Dezimalzahlen („$1“) werden nicht unterstützt.',
 	'smw_unsupportedunit' => 'Umrechnung der Einheit „$1“ nicht unterstützt.',
 	'smw_nodatetime' => 'Das Datum „$1“ wurde nicht verstanden.',
-	'smw_toomanyclosing' => 'In der Anfrage kommen zu viele „$1“ vor.',
-	'smw_noclosingbrackets' => 'Ein Vorkommen von „<nowiki>[[</nowiki>“ in der Anfrage wurde nicht durch ein entsprechendes „]]“ abgeschlossen.',
+	'smw_toomanyclosing' => 'In der Abfrage kommen zu viele „$1“ vor.',
+	'smw_noclosingbrackets' => 'Ein Vorkommen von „<nowiki>[[</nowiki>“ in der Abfrage wurde nicht durch ein entsprechendes „]]“ abgeschlossen.',
 	'smw_misplacedsymbol' => 'Das Symbol „$1“ wurde an einer Stelle verwendet, an der es nicht sinnvoll ist.',
 	'smw_unexpectedpart' => 'Der Teil „$1“ der Anfrage wurde nicht verstanden. Die Ergebnisse sind eventuell nicht wie erwartet.',
 	'smw_emptysubquery' => 'Keine Bedingung in Teilanfrage.',
@@ -2139,14 +2139,14 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 	'smw_smwadmin_settingup' => 'Speicherplatz für Semantic MediaWiki einstellen',
 	'smw_smwadmin_setupsuccess' => 'Die Speichereinheit wurde erfolgreich eingerichtet.',
 	'smw_smwadmin_return' => 'Zurück zu $1',
-	'smw_smwadmin_updatestarted' => 'Ein neuer Aktualisierungsprozess zu Erneuerung der semantischen Daten wurde gestartet.
+	'smw_smwadmin_updatestarted' => 'Ein Aktualisierungsprozess zu Erneuerung der semantischen Daten wurde gestartet.
 Alle gespeicherten Daten werden, sofern notwendig, entweder neu erstellt oder repariert.
 Du kannst den Fortschritt der Aktualisierung auf dieser Spezialseite verfolgen.',
 	'smw_smwadmin_updatenotstarted' => 'Es läuft bereits ein Aktualisierungsprozess.
 Es wird kein Neuer begonnen.',
 	'smw_smwadmin_updatestopped' => 'Alle existierenden Aktualisierungsprozesse wurden gestoppt.',
 	'smw_smwadmin_updatenotstopped' => 'Um den laufenden Aktualisierungsprozess zu stoppen, musst du das Kontrollkästchen markieren, um dadurch anzuzeigen, dass du dir wirklich sicher bist.',
-	'smw_smwadmin_docu' => 'Diese Spezialseite unterstützt dich während der Installation und der Aktualisierung von <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
+	'smw_smwadmin_docu' => 'Diese Spezialseite unterstützt dich während der Installation und der Aktualisierung von <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">Semantic MediaWiki</a>.
 Denke daran, wichtige Daten vor der Ausführung administrativer Funktionen zu sichern.',
 	'smw_smwadmin_db' => 'Datenbankinstallation und -aktualisierung',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki benötigt weitere Datentabellen in der MediaWiki-Datenbank, um die semantischen Daten speichern zu können.
@@ -2157,9 +2157,9 @@ Diese Einrichtungsfunktion kann mehrere Male ausgeführt werden, ohne Schaden zu
 Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datentabellen einzuräumen, den Datenbankadministrator zeitweilig in die LocalSettings.php einzutragen, oder aber das Wartungsskript <tt>SMW_setup.php</tt> zu nutzen, das die Benutzerdaten aus der Datei AdminSettings.php einsetzt.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualiseren',
 	'smw_smwadmin_announce' => 'Dein Wiki bekannt geben',
-	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki hat einen Webservice für die Bekanntgabe neuer semantischer Wikiseiten.
-Dieser Service wird benötigt um eine Liste zu erhalten, welche öffentlichen Seiten Semantic MediaWiki nutzen, hauptsächlich aber um dem <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic-MediaWiki-Projekt</a> einen Überbick über typische Anwendungen von Semantic MediaWiki zu geben.
-Siehe die Semantic-MediaWiki-Homepage für <a href="http://semantic-mediawiki.org/wiki/Registry">weiterführende Informationen über diesen Service</a>.',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki bietet einen Webservice zur Bekanntgabe neuer semantischer Wikis.
+Dieser Service wird genutzt, um eine Liste aller öffentlich zugänglichen Wikis zu erhalten, die Semantic MediaWiki verwenden. Er dient aber auch dazu, dem <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic-MediaWiki-Projekt</a> einen Überblick über typische Anwendungen von Semantic MediaWiki zu ermöglichen.
+Siehe hierzu die Homepage von Semantic-MediaWiki für <a href="http://semantic-mediawiki.org/wiki/Registry">weiterführende Informationen zu diesem Service</a>.',
 	'smw_smwadmin_announcebutton' => 'Drücke den folgenden Knopf um die URL deines Wikis zu diesem Dienst hinzuzufügen.
 Dieser Dienst wird keine Wikis aufnehmen, die nicht öffentlich zugänglich sind und er wird nur öffentlich zugängliche Informationen speichern.',
 	'smw_smwadmin_datarefresh' => 'Datenreparatur oder -aktualisierung',
