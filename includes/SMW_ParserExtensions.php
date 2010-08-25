@@ -357,43 +357,21 @@ class SMWParserExtensions {
 	}
 
 	/**
-	 * Function for handling the {{\#set_recurring_event }} parser function.
-	 * This is used for defining a set of date values for a page that
-	 * represents a recurring event.
-	 * Like with the #set function, all annotations happen silently.
-	 *
-	 * Usage:
-	 * {{\#set_recurring_event:
-	 *   property = Has date
-	 * | start = January 4, 2010
-	 * | end = June 7, 2010
-	 * | unit = week
-	 * | period = 1
-	 * | include = March 16, 2010;March 23, 2010
-	 * | exclude = March 15, 2010;March 22, 2010
-	 * }}
-	 * This sets a "Has date" value for every Monday within the specified
-	 * six-month period, except for two Mondays which are excluded and
-	 * two Tuesdays that are saved in their place.
-	 *
-	 * There's also a 'week number' parameter, which is only valid when
-	 * the 'unit' parameter is set to 'month'. This one dictates that the
-	 * event should always happen on the n-th week of each month, instead
-	 * of a specific numbered date. Negative values for 'week number'
-	 * indicate the n-th last week of a month instead.
+	 * Helper function used by doSetRecurringEvent(), as well as the
+	 * Semantic Internal Objects extension
 	 *
 	 * @param Parser &$parser The current parser
-	 * @return nothing
+	 * @return either null, or an array of main property name, set of
+	 * all date strings, and the unused params
 	 */
-	static public function doSetRecurringEvent( &$parser ) {
-		$params = func_get_args();
-		array_shift( $params ); // We already know the $parser ...
-		
+	static public function getDatesForRecurringEvent( $params ) {
 		// Initialize variables.
+		$all_date_strings = array();
+		$unused_params = array();
 		$property_name = $start_date = $end_date = $unit = $period = $week_num = null;
 		$included_dates = array();
 		$excluded_dates_jd = array();
-		
+
 		// Set values from the parameters.
 		foreach ( $params as $param ) {
 			$parts = explode( '=', trim( $param ) );
@@ -432,6 +410,8 @@ class SMWParserExtensions {
 						$excluded_dates_jd[] = $date->getValueKey();
 					}	
 					break;	
+				default:
+					$unused_params[] = $param;
 			}
 		}
 		
@@ -470,13 +450,13 @@ class SMWParserExtensions {
 			$exclude_date = ( in_array( $cur_date_jd, $excluded_dates_jd ) );
 			
 			if ( !$exclude_date ) {
-				$cur_date_str = $cur_date->getLongWikiText();
-				SMWParseData::addProperty( $property_name, $cur_date_str, false, $parser, true );
+				$all_date_strings[] = $cur_date->getLongWikiText();
 			}
 			
 			// Now get the next date.
-			// Handling is different depending on whether it's month/year or week/day
-			// since the latter is a set number of days while the former isn't.
+			// Handling is different depending on whether it's
+			// month/year or week/day since the latter is a set
+			// number of days while the former isn't.
 			if ( $unit === 'year' || $unit == 'month' ) {
 				$cur_year = $cur_date->getYear();
 				$cur_month = $cur_date->getMonth();
@@ -537,7 +517,7 @@ class SMWParserExtensions {
 					}
 				} while ( !$right_month || !$right_week);
 			} else { // $unit == 'day' or 'week'
-				// Sssume 'day' if it's none of the above.
+				// Assume 'day' if it's none of the above.
 				$cur_date_jd += ( $unit === 'week' ) ? 7 * $period : $period;
 				$cur_date = SMWDataValueFactory::newTypeIDValue( '_dat', $cur_date_jd );
 			}
@@ -553,10 +533,57 @@ class SMWParserExtensions {
 		} while ( !$reached_end_date );
 
 		// Handle the 'include' dates as well.
-		foreach ( $included_dates as $date_str ) {
+		$all_date_strings = array_merge( $all_date_strings, $included_dates);
+		return array( $property_name, $all_date_strings, $unused_params );
+	}
+
+	/**
+	 * Function for handling the {{\#set_recurring_event }} parser function.
+	 * This is used for defining a set of date values for a page that
+	 * represents a recurring event.
+	 * Like with the #set function, all annotations happen silently.
+	 *
+	 * Usage:
+	 * {{\#set_recurring_event:
+	 *   property = Has date
+	 * | start = January 4, 2010
+	 * | end = June 7, 2010
+	 * | unit = week
+	 * | period = 1
+	 * | include = March 16, 2010;March 23, 2010
+	 * | exclude = March 15, 2010;March 22, 2010
+	 * }}
+	 * This sets a "Has date" value for every Monday within the specified
+	 * six-month period, except for two Mondays which are excluded and
+	 * two Tuesdays that are saved in their place.
+	 *
+	 * There's also a 'week number' parameter, which is only valid when
+	 * the 'unit' parameter is set to 'month'. This one dictates that the
+	 * event should always happen on the n-th week of each month, instead
+	 * of a specific numbered date. Negative values for 'week number'
+	 * indicate the n-th last week of a month instead.
+	 *
+	 * @param Parser &$parser The current parser
+	 * @return nothing
+	 */
+	static public function doSetRecurringEvent( &$parser ) {
+		$params = func_get_args();
+		array_shift( $params ); // We already know the $parser ...
+
+		// Almost all of the work gets done by
+		// getDatesForRecurringEvent().
+		$results = self::getDatesForRecurringEvent( $params );
+		if ( $results == null ) {
+			return null;
+		}
+
+		list( $property, $all_date_strings, $unused_params ) = $results;
+
+		// Do the actual saving of the data.
+		foreach ( $all_date_strings as $date_str ) {
 			SMWParseData::addProperty( $property_name, $date_str, false, $parser, true );
 		}
-		
+
 		SMWOutputs::commitToParser( $parser ); // Not obviously required, but let us be sure.
 	}
 
