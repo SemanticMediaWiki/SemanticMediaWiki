@@ -4,7 +4,7 @@ For a documentation of all features, see http://semantic-mediawiki.org
 
 * 'Printouts' textarea in Special:Ask now has autocompletion on property
   names.
-* SMW now has it's own copy of the jQuery library.
+* SMW now has it's own copy of the jQuery and jQuery UI libraries.
 * Added a number of hooks to allow further customization by extensions.
 * 'Semantic' extension type that can be used by extensions to SMW to be
   grouped together on Special:Version and other pages listing extensions.
