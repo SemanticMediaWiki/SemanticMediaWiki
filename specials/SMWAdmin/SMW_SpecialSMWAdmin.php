@@ -137,7 +137,7 @@ class SMWAdmin extends SpecialPage {
 				 '<form name="announcewiki" action="http://semantic-mediawiki.org/wiki/Special:SMWRegistry" method="GET">' .
 				 '<input type="hidden" name="url" value="' . $wgServer . str_replace( '$1', '', $wgArticlePath ) . '" />' .
 				 '<input type="hidden" name="return" value="Special:SMWAdmin" />' .
-				 '<input type="submit" value="Announce wiki"/></form>' . "\n";
+				 '<input type="submit" value="' . wfMsg( 'smw_smwadmin_announce' ) . '"/></form>' . "\n";
 
 		$html .= '<br /><h2>' . wfMsg( 'smw_smwadmin_support' ) . "</h2>\n" .
 				'<p>' . wfMsg( 'smw_smwadmin_supportdocu' ) . "</p>\n" .
