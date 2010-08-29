@@ -773,7 +773,7 @@ class SMWSQLStore2 extends SMWStore {
 			$property = SMWPropertyValue::makeProperty( '_CONC' );
 			$concept_desc = end( $data->getPropertyValues( $property ) );
 
-			if ( ( $concept_desc !== null ) && ( $concept_desc->isValid() ) )  {
+			if ( ( $concept_desc !== false ) && ( $concept_desc->isValid() ) )  {
 				$up_conc2 = array(
 				     'concept_txt'   => $concept_desc->getConceptText(),
 				     'concept_docu'  => $concept_desc->getDocu(),
