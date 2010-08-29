@@ -205,16 +205,16 @@ class SMWQueryProcessor {
 						continue;
 					}
 					
-					if ( $title->getNamespace() == SMW_NS_PROPERTY ) {
+					if ( $title->getNamespace() == NS_CATEGORY ) {
+						$printmode = SMWPrintRequest::PRINT_CCAT;
+						$data = $title;
+						$label = $showmode ? '' : $title->getText();  // default
+					} else { // enforce interpretation as property (even if it starts with something that looks like another namespace)
 						$printmode = SMWPrintRequest::PRINT_PROP;
 						$property = SMWPropertyValue::makeUserProperty( trim( $propparts[0] ) );
 						$data = $property;
 						$label = $showmode ? '' : $property->getWikiValue();  // default
-					} elseif ( $title->getNamespace() == NS_CATEGORY ) {
-						$printmode = SMWPrintRequest::PRINT_CCAT;
-						$data = $title;
-						$label = $showmode ? '' : $title->getText();  // default
-					} // else?
+					}
 				}
 				
 				if ( count( $propparts ) == 1 ) { // no outputformat found, leave empty
