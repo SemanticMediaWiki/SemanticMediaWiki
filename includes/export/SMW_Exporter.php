@@ -28,8 +28,7 @@ class SMWExporter {
 		if ( '' == $smwgNamespace ) {
 			$resolver = SpecialPage::getTitleFor( 'URIResolver' );
 			$smwgNamespace = $resolver->getFullURL() . '/';
-		}
-		if ( $smwgNamespace[0] == '.' ) {
+		} elseif ( $smwgNamespace[0] == '.' ) {
 			$resolver = SpecialPage::getTitleFor( 'URIResolver' );
 			$smwgNamespace = "http://" . substr( $smwgNamespace, 1 ) . $resolver->getLocalURL() . '/';
 		}
@@ -37,8 +36,7 @@ class SMWExporter {
 		// The article name must be the last part of wiki URLs for proper OWL/RDF export:
 		SMWExporter::$m_ent_wikiurl  = $wgServer . str_replace( '$1', '', $wgArticlePath );
 		SMWExporter::$m_ent_wiki     = $smwgNamespace;
-		SMWExporter::$m_ent_property = SMWExporter::$m_ent_wiki .
-		          SMWExporter::encodeURI( urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
+		SMWExporter::$m_ent_property = SMWExporter::$m_ent_wiki . SMWExporter::encodeURI( urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
 		$title = SpecialPage::getTitleFor( 'ExportRDF' );
 		SMWExporter::$m_exporturl    = '&wikiurl;' . $title->getPrefixedURL();
 	}
