@@ -34,21 +34,15 @@ class SMWQueryProcessor {
 	 */
 	static public function createQuery( $querystring, array $params, $context = SMWQueryProcessor::INLINE_QUERY, $format = '', $extraprintouts = array() ) {
 		global $smwgQDefaultNamespaces, $smwgQFeatures, $smwgQConceptFeatures;
-
-		// parse query:
-		if ( $context == SMWQueryProcessor::CONCEPT_DESC ) {
-			$queryfeatures = $smwgQConceptFeatures;
-		} else {
-			$queryfeatures = $smwgQFeatures;
-		}
-		
-		$qp = new SMWQueryParser( $queryfeatures );
-		$qp->setDefaultNamespaces( $smwgQDefaultNamespaces );
-		$desc = $qp->getQueryDescription( $querystring );
-
 		if ( $format == '' ) {
 			$format = SMWQueryProcessor::getResultFormat( $params );
 		}
+
+		// parse query:
+		$queryfeatures = ( $context == SMWQueryProcessor::CONCEPT_DESC ) ? $smwgQConceptFeatures : $smwgQFeatures;
+		$qp = new SMWQueryParser( $queryfeatures );
+		$qp->setDefaultNamespaces( $smwgQDefaultNamespaces );
+		$desc = $qp->getQueryDescription( $querystring );
 		
 		if ( $format == 'count' ) {
 			$querymode = SMWQuery::MODE_COUNT;
@@ -60,13 +54,9 @@ class SMWQueryProcessor {
 		}
 
 		$mainlabel = array_key_exists( 'mainlabel', $params ) ? $params['mainlabel'] : '';
-		
 		if ( ( $querymode == SMWQuery::MODE_NONE ) ||
-		     ( ( !$desc->isSingleton() ||
-		         ( count( $desc->getPrintRequests() ) + count( $extraprintouts ) == 0 )
-		       ) && ( $mainlabel != '-' )
-		     )
-		   ) {
+		     ( ( !$desc->isSingleton() || ( count( $desc->getPrintRequests() ) + count( $extraprintouts ) == 0 ) )
+		       && ( $mainlabel != '-' ) ) ) {
 			$desc->prependPrintRequest( new SMWPrintRequest( SMWPrintRequest::PRINT_THIS, $mainlabel ) );
 		}
 
@@ -75,7 +65,7 @@ class SMWQueryProcessor {
 		$query->setExtraPrintouts( $extraprintouts );
 		$query->addErrors( $qp->getErrors() ); // keep parsing errors for later output
 
-		// set query parameters:
+		// set mode, limit, and offset:
 		$query->querymode = $querymode;
 		if ( ( array_key_exists( 'offset', $params ) ) && ( is_int( $params['offset'] + 0 ) ) ) {
 			$query->setOffset( max( 0, trim( $params['offset'] ) + 0 ) );
@@ -83,7 +73,6 @@ class SMWQueryProcessor {
 		
 		if ( $query->querymode == SMWQuery::MODE_COUNT ) { // largest possible limit for "count", even inline
 			global $smwgQMaxLimit;
-			
 			$query->setOffset( 0 );
 			$query->setLimit( $smwgQMaxLimit, false );
 		} else {
@@ -125,7 +114,6 @@ class SMWQueryProcessor {
 			foreach ( explode( ',', trim( $params['sort'] ) ) as $sort ) {
 				$sort = smwfNormalTitleDBKey( trim( $sort ) ); // slight normalisation
 				$order = current( $orders );
-				
 				if ( $order === false ) { // default
 					$order = 'ASC';
 				}
