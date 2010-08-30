@@ -272,6 +272,7 @@ class SMWExporter {
 		$uri = str_replace( array( '-3A', '-22', '-23', '-26', '-27', '-2B', '-21', '-' ),
 		                    array( ':', '"', '#', '&', "'", '+', '!', '%' ),
 		                   $uri );
+		$uri = str_replace( '%2D', '-', $uri );
 		return $uri;
 	}
 
