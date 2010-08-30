@@ -189,14 +189,11 @@ class SMWPrintRequest {
 		switch ( $this->m_mode ) {
 			case SMWPrintRequest::PRINT_CATS:
 				global $wgContLang;
-				
 				$catlabel = $wgContLang->getNSText( NS_CATEGORY );
 				$result = '?' . $catlabel;
-				
 				if ( $this->m_label != $catlabel ) {
 					$result .= '=' . $this->m_label;
 				}
-				
 				return $result . $parameters;
 			case SMWPrintRequest::PRINT_PROP: case SMWPrintRequest::PRINT_CCAT:
 				if ( $this->m_mode == SMWPrintRequest::PRINT_CCAT ) {
@@ -214,13 +211,17 @@ class SMWPrintRequest {
 						$result .= '#' . $this->m_outputformat;
 					}
 				}
-				
 				if ( $printname != $this->m_label ) {
 					$result .= '=' . $this->m_label;
 				}
-				
 				return $result . $parameters;
-			case SMWPrintRequest::PRINT_THIS: default: return ''; // no current serialisation
+			case SMWPrintRequest::PRINT_THIS:
+				$result = '?';
+				if ( $this->m_label != '' ) {
+					$result .= '=' . $this->m_label;
+				}
+				return $result . $parameters; 
+			default: return ''; // no current serialisation
 		}
 	}
 
