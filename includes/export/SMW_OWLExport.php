@@ -492,6 +492,10 @@ class SMWOWLExport {
 	}
 
 	/* Functions for exporting RDF */
+	
+	protected function makeValueEntityString( $string ) {
+		return "'" . str_replace( '%','&#37;',$string ) . "'";
+	}
 
 	protected function printHeader( $ontologyuri = '' ) {
 		global $wgContLang;
@@ -499,14 +503,14 @@ class SMWOWLExport {
 		$this->pre_ns_buffer .=
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" .
 			"<!DOCTYPE rdf:RDF[\n" .
-			"\t<!ENTITY rdf '"   . SMWExporter::expandURI( '&rdf;' )   .  "'>\n" .
-			"\t<!ENTITY rdfs '"  . SMWExporter::expandURI( '&rdfs;' )  .  "'>\n" .
-			"\t<!ENTITY owl '"   . SMWExporter::expandURI( '&owl;' )   .  "'>\n" .
-			"\t<!ENTITY swivt '" . SMWExporter::expandURI( '&swivt;' ) .  "'>\n" .
+			"\t<!ENTITY rdf " . $this->makeValueEntityString( SMWExporter::expandURI( '&rdf;' ) ) . ">\n" .
+			"\t<!ENTITY rdfs " . $this->makeValueEntityString( SMWExporter::expandURI( '&rdfs;' ) ) . ">\n" .
+			"\t<!ENTITY owl " . $this->makeValueEntityString( SMWExporter::expandURI( '&owl;' ) ) . ">\n" .
+			"\t<!ENTITY swivt " . $this->makeValueEntityString( SMWExporter::expandURI( '&swivt;' ) ) . ">\n" .
 			// A note on "wiki": this namespace is crucial as a fallback when it would be illegal to start e.g. with a number. In this case, one can always use wiki:... followed by "_" and possibly some namespace, since _ is legal as a first character.
-			"\t<!ENTITY wiki '"  . SMWExporter::expandURI( '&wiki;' ) .  "'>\n" .
-			"\t<!ENTITY property '" . SMWExporter::expandURI( '&property;' ) .  "'>\n" .
-			"\t<!ENTITY wikiurl '" . SMWExporter::expandURI( '&wikiurl;' ) .  "'>\n" .
+			"\t<!ENTITY wiki "  . $this->makeValueEntityString( SMWExporter::expandURI( '&wiki;' ) ) . ">\n" .
+			"\t<!ENTITY property " . $this->makeValueEntityString( SMWExporter::expandURI( '&property;' ) ) . ">\n" .
+			"\t<!ENTITY wikiurl " . $this->makeValueEntityString( SMWExporter::expandURI( '&wikiurl;' ) ) . ">\n" .
 			"]>\n\n" .
 			"<rdf:RDF\n" .
 			"\txmlns:rdf=\"&rdf;\"\n" .
