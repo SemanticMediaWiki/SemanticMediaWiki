@@ -1,4 +1,4 @@
-[[Semantic MediaWiki 1.5.1]]
+[[Semantic MediaWiki 1.5.2]]
 
 Install instructions for the latest SMW version are also online in a more
 convenient format for reading:
@@ -143,14 +143,14 @@ instructions to find out whether other changes are recommended therein.
 
 (Please read all of this before upgrading)
 
-Installations of SMW 1.5.0 can be upgraded by just replacing the files, but it
-must be noted that not all SMW extensions may already be available in versions
-compatible to SMW 1.5.1. If problems occur, it is possible to go back to 1.5.0
-by simply using the old files, waiting with the upgrade until the relevant
-extensions provide updates.
+Installations of SMW 1.5.* can be upgraded by just replacing the files, and all
+extensions compatible with SMW 1.5.1 should work without modification. If
+problems occur, it is possible to go back to 1.5.1 by simply using the old
+files, waiting with the upgrade until the relevant extensions provide updates.
 
-It is suggested to change the inclusion of SMW in LocalSettings.php to the
-following as described in the installation instructions above:
+If not done already, it is suggested to change the inclusion of SMW in
+LocalSettings.php to the following as described in the installation
+instructions above:
 
  include_once("$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php");
 

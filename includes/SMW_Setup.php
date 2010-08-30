@@ -5,7 +5,7 @@
  * @ingroup SMW
  */
 
-define( 'SMW_VERSION', '1.5.2 rc1' );
+define( 'SMW_VERSION', '1.5.2' );
 define( 'SEMANTIC_EXTENSION_TYPE', true );
 
 require_once( 'SMW_GlobalFunctions.php' );

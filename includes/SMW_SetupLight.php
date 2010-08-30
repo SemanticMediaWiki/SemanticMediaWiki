@@ -14,7 +14,7 @@
  * @ingroup SMW
  */
 
-define( 'SMW_VERSION', '1.5.2-light rc1' );
+define( 'SMW_VERSION', '1.5.2-light' );
 
 require_once( 'SMW_GlobalFunctions.php' );
 
