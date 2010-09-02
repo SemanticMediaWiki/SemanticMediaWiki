@@ -4242,6 +4242,7 @@ $messages['hr'] = array(
 	'smw_multiple_concepts' => 'Stranica koncepta smije imati samo jednu definiciju koncepta.',
 	'smw_concept_cache_miss' => 'Koncept "$1" se trenutačno ne može se koristiti jer je wiki podešen tako da se koncept mora proračunati i izraditi off-line. Ako problem ne nestane nakon nekog vremena, zamolite administratora da ovaj koncept učini dostupnim.',
 	'smw_noinvannot' => 'Vrijednosti se ne mogu dodijeliti inverznim svojstva.',
+	'version-semantic' => 'Semantičke ekstenzije',
 	'smw_baduri' => 'URI oblika "$1" nije dozvoljen.',
 	'smw_printername_auto' => 'Automatski',
 	'smw_printername_count' => 'Broji rezultate',
