@@ -7464,6 +7464,7 @@ $messages['no'] = array(
 	'smw_multiple_concepts' => 'Hver konseptside kan kun ha én konseptdefinisjon.',
 	'smw_concept_cache_miss' => 'Konseptet "$1" kan ikke brukes for øyeblikket da wikiens konfigurasjon krever at den blir satt opp frakoplet.
 Hvis problemet ikke forsvinner etter en periode, spør sidens administratorer om å gjøre konseptet tilgjengelig.',
+	'smw_noinvannot' => 'Verdier kan ikke tildeles inverse egenskaper.',
 	'smw_baduri' => 'Beklager, URI-er på formen «$1» er ikke tillatt.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatisk',
