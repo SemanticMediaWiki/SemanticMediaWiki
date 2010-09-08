@@ -1819,6 +1819,7 @@ $messages['cs'] = array(
 	'smw_multiple_concepts' => 'Každá stránka konceptu může mít jen jednu definici.',
 	'smw_concept_cache_miss' => 'Koncept „$1” není možné momentálně použít, protože konfigurace wiki vyžaduje, aby se vypočítal až dodatečně. Pokud problém přetrvává delší dobu, požádejte správce, aby tento koncept zpřístupnil.',
 	'smw_baduri' => 'Promiňte, URI z rozsahu „$1“ na tomto místě nejsou dostupné.',
+	'smw_printername_auto' => 'Automatické',
 	'smw_iq_disabled' => 'Promiňtě, semantické dotazy byly pro tuto wiki zakázány.',
 	'smw_iq_moreresults' => '…další výsledky',
 	'smw_iq_nojs' => 'Pro zobrazení tohoto prvku prosím použijte prohlížeč se zapnutým JavaScriptem.',
