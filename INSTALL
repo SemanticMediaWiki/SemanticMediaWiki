@@ -36,7 +36,7 @@ If you have any specific questions, please contact the authors.
 
 == Requirements ==
 
-* MediaWiki 1.11.* or greater (tested on 1.16.0 to 1.17alpha (r63248).
+* MediaWiki 1.15.4 or greater (tested on 1.16.0 to 1.17alpha (r63248).
 * PHP 5.* or greater installed and working
 * MySQL >= 4.0.14 (version required by MediaWiki) OR PostgreSQL >= 8.3
   Note that Postgres support is still preliminary and might require special
