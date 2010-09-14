@@ -71,34 +71,35 @@ function enableSemantics( $namespace = null, $complete = false ) {
 // 	$wgAutoloadClasses['SMWConceptPage']            = $smwgIP . 'includes/articlepages/SMW_ConceptPage.php';
 
 	// Datavalues
-	$wgAutoloadClasses['SMWDataValueFactory']    =  $smwgIP . 'includes/SMW_DataValueFactory.php';
-	$wgAutoloadClasses['SMWDataValue']           =  $smwgIP . 'includes/SMW_DataValue.php';
-	$wgAutoloadClasses['SMWContainerValue']      =  $smwgIP . 'includes/SMW_DV_Container.php';
-// 	$wgAutoloadClasses['SMWRecordValue']         =  $smwgIP . 'includes/SMW_DV_Record.php';
-	$wgAutoloadClasses['SMWErrorvalue']          =  $smwgIP . 'includes/SMW_DV_Error.php';
-	$wgAutoloadClasses['SMWStringValue']         =  $smwgIP . 'includes/SMW_DV_String.php';
-	$wgAutoloadClasses['SMWWikiPageValue']       =  $smwgIP . 'includes/SMW_DV_WikiPage.php';
-	$wgAutoloadClasses['SMWSimpleWikiPageValue'] =  $smwgIP . 'includes/SMW_DV_SimpleWikiPage.php';
-	$wgAutoloadClasses['SMWPropertyValue']       =  $smwgIP . 'includes/SMW_DV_Property.php';
-	$wgAutoloadClasses['SMWURIValue']            =  $smwgIP . 'includes/SMW_DV_URI.php';
-	$wgAutoloadClasses['SMWTypesValue']          =  $smwgIP . 'includes/SMW_DV_Types.php';
-// 	$wgAutoloadClasses['SMWTypeListValue']       =  $smwgIP . 'includes/SMW_DV_TypeList.php';
-	$wgAutoloadClasses['SMWErrorValue']          =  $smwgIP . 'includes/SMW_DV_Error.php';
-	$wgAutoloadClasses['SMWNumberValue']         =  $smwgIP . 'includes/SMW_DV_Number.php';
-// 	$wgAutoloadClasses['SMWTemperatureValue']    =  $smwgIP . 'includes/SMW_DV_Temperature.php';
-// 	$wgAutoloadClasses['SMWLinearValue']         =  $smwgIP . 'includes/SMW_DV_Linear.php';
-	$wgAutoloadClasses['SMWTimeValue']           =  $smwgIP . 'includes/SMW_DV_Time.php';
-// 	$wgAutoloadClasses['SMWBoolValue']           =  $smwgIP . 'includes/SMW_DV_Bool.php';
-// 	$wgAutoloadClasses['SMWConceptValue']        =  $smwgIP . 'includes/SMW_DV_Concept.php';
-// 	$wgAutoloadClasses['SMWImportValue']         =  $smwgIP . 'includes/SMW_DV_Import.php';
+	$dvDir = $smwgIP . 'includes/datavalues/';
+	$wgAutoloadClasses['SMWContainerValue']			= $dvDir . 'SMW_DV_Container.php';
+//	$wgAutoloadClasses['SMWRecordValue']         	= $dvDir . 'SMW_DV_Record.php';
+	$wgAutoloadClasses['SMWErrorvalue']          	= $dvDir . 'SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWStringValue']         	= $dvDir . 'SMW_DV_String.php';
+	$wgAutoloadClasses['SMWWikiPageValue']       	= $dvDir . 'SMW_DV_WikiPage.php';
+	$wgAutoloadClasses['SMWSimpleWikiPageValue'] 	= $dvDir . 'SMW_DV_SimpleWikiPage.php';
+	$wgAutoloadClasses['SMWPropertyValue']       	= $dvDir . 'SMW_DV_Property.php';
+	$wgAutoloadClasses['SMWURIValue']            	= $dvDir . 'SMW_DV_URI.php';
+	$wgAutoloadClasses['SMWTypesValue']          	= $dvDir . 'SMW_DV_Types.php';
+//	$wgAutoloadClasses['SMWTypeListValue']      	= $dvDir . 'SMW_DV_TypeList.php';
+	$wgAutoloadClasses['SMWErrorValue']         	= $dvDir . 'SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWNumberValue']         	= $dvDir . 'SMW_DV_Number.php';
+//	$wgAutoloadClasses['SMWTemperatureValue']    	= $dvDir . 'SMW_DV_Temperature.php';
+//	$wgAutoloadClasses['SMWLinearValue']         	= $dvDir . 'SMW_DV_Linear.php';
+	$wgAutoloadClasses['SMWTimeValue']           	= $dvDir . 'SMW_DV_Time.php';
+//	$wgAutoloadClasses['SMWBoolValue']           	= $dvDir . 'SMW_DV_Bool.php';
+//	$wgAutoloadClasses['SMWConceptValue']        	= $dvDir . 'SMW_DV_Concept.php';
+//	$wgAutoloadClasses['SMWImportValue']         	= $dvDir . 'SMW_DV_Import.php';	
 
 	// Some files refer to classes of the full SMW distribution. Give them a fallback to load:
-	$wgAutoloadClasses['SMWRecordValue']         =  $smwgIP . 'includes/SMW_DV_Error.php';
-	$wgAutoloadClasses['SMWBoolValue']           =  $smwgIP . 'includes/SMW_DV_Error.php';
-	$wgAutoloadClasses['SMWConceptValue']        =  $smwgIP . 'includes/SMW_DV_Error.php';
-	$wgAutoloadClasses['SMWImportValue']         =  $smwgIP . 'includes/SMW_DV_Error.php';
-	$wgAutoloadClasses['SMWTypeListValue']       =  $smwgIP . 'includes/SMW_DV_Error.php';
-	$wgAutoloadClasses['SMWTemperatureValue']    =  $smwgIP . 'includes/SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWRecordValue']         =  $dvDir . 'SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWBoolValue']           =  $dvDir . 'SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWConceptValue']        =  $dvDir . 'SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWImportValue']         =  $dvDir . 'SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWTypeListValue']       =  $dvDir . 'SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWTemperatureValue']    =  $dvDir . 'SMW_DV_Error.php';
+	
+	
 	// Export
 // 	$wgAutoloadClasses['SMWExporter']               = $smwgIP . 'includes/export/SMW_Exporter.php';
 // 	$wgAutoloadClasses['SMWExpData']                = $smwgIP . 'includes/export/SMW_Exp_Data.php';
