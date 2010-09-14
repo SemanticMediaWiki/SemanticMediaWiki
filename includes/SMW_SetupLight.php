@@ -14,7 +14,7 @@
  * @ingroup SMW
  */
 
-define( 'SMW_VERSION', '1.5.2-light' );
+define( 'SMW_VERSION', '1.5.3-light alpha' );
 
 require_once( 'SMW_GlobalFunctions.php' );
 
@@ -69,16 +69,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 // 	$wgAutoloadClasses['SMWTypePage']               = $smwgIP . 'includes/articlepages/SMW_TypePage.php';
 	$wgAutoloadClasses['SMWPropertyPage']           = $smwgIP . 'includes/articlepages/SMW_PropertyPage.php';
 // 	$wgAutoloadClasses['SMWConceptPage']            = $smwgIP . 'includes/articlepages/SMW_ConceptPage.php';
-	// Printers
-// 	$wgAutoloadClasses['SMWResultPrinter']          = $smwgIP . 'includes/SMW_QueryPrinter.php';
-// 	$wgAutoloadClasses['SMWAutoResultPrinter']      = $smwgIP . 'includes/SMW_QP_Auto.php';
-// 	$wgAutoloadClasses['SMWTableResultPrinter']     = $smwgIP . 'includes/SMW_QP_Table.php';
-// 	$wgAutoloadClasses['SMWListResultPrinter']      = $smwgIP . 'includes/SMW_QP_List.php';
-// 	$wgAutoloadClasses['SMWCategoryResultPrinter']  = $smwgIP . 'includes/SMW_QP_Category.php';
-// 	$wgAutoloadClasses['SMWEmbeddedResultPrinter']  = $smwgIP . 'includes/SMW_QP_Embedded.php';
-// 	$wgAutoloadClasses['SMWRSSResultPrinter']       = $smwgIP . 'includes/SMW_QP_RSSlink.php';
-// 	$wgAutoloadClasses['SMWCsvResultPrinter']       = $smwgIP . 'includes/SMW_QP_CSV.php';
-// 	$wgAutoloadClasses['SMWJSONResultPrinter']      = $smwgIP . 'includes/SMW_QP_JSONlink.php';
+
 	// Datavalues
 	$wgAutoloadClasses['SMWDataValueFactory']    =  $smwgIP . 'includes/SMW_DataValueFactory.php';
 	$wgAutoloadClasses['SMWDataValue']           =  $smwgIP . 'includes/SMW_DataValue.php';
