@@ -185,7 +185,7 @@ class SMWParserExtensions {
 	 * called during SMW initialisation. Note that parser hooks are something different
 	 * than MW hooks in general, which explains the two-level registration.
 	 */
-	public static function registerParserFunctions( &$parser ) {
+	public static function registerParserFunctions( Parser &$parser ) {
 		$parser->setFunctionHook( 'ask', array( 'SMWParserExtensions', 'doAsk' ) );
 		$parser->setFunctionHook( 'show', array( 'SMWParserExtensions', 'doShow' ) );
 		$parser->setFunctionHook( 'info', array( 'SMWParserExtensions', 'doInfo' ) );

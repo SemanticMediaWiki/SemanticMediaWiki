@@ -31,6 +31,8 @@ class SMWQueryProcessor {
 	 * The format string is used to specify the output format if already
 	 * known. Otherwise it will be determined from the parameters when
 	 * needed. This parameter is just for optimisation in a common case.
+	 * 
+	 * @return SMWQuery
 	 */
 	static public function createQuery( $querystring, array $params, $context = SMWQueryProcessor::INLINE_QUERY, $format = '', $extraprintouts = array() ) {
 		global $smwgQDefaultNamespaces, $smwgQFeatures, $smwgQConceptFeatures;
@@ -263,12 +265,13 @@ class SMWQueryProcessor {
 		$format = SMWQueryProcessor::getResultFormat( $params );
 		$query  = SMWQueryProcessor::createQuery( $querystring, $params, $context, $format, $extraprintouts );
 		$result = SMWQueryProcessor::getResultFromQuery( $query, $params, $extraprintouts, $outputmode, $context, $format );
+		
 		wfProfileOut( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
 		
 		return $result;
 	}
 
-	static public function getResultFromQuery( $query, array $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY, $format = '' ) {
+	static public function getResultFromQuery( SMWQuery $query, array $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY, $format = '' ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
 		
 		// Query routing allows extensions to provide alternative stores as data sources
@@ -276,8 +279,8 @@ class SMWQueryProcessor {
 		///TODO: case-insensitive
 		global $smwgQuerySources;
 		
-		if ( array_key_exists( "source", $params ) && array_key_exists( $params["source"], $smwgQuerySources ) ) {
-			$store = new $smwgQuerySources[$params["source"]]();
+		if ( array_key_exists( 'source', $params ) && array_key_exists( $params['source'], $smwgQuerySources ) ) {
+			$store = new $smwgQuerySources[$params['source']]();
 			$query->params = $params; // this is a hack
 		} else {
 			$store = smwfGetStore(); // default store
