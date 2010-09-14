@@ -72,10 +72,12 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWDataValueFactory']   	= $smwgIP . 'includes/SMW_DataValueFactory.php';
 	$wgAutoloadClasses['SMWDataValue']           	= $smwgIP . 'includes/SMW_DataValue.php';
 	
-	$wgAutoloadClasses['SMWOrderedListPage']        = $smwgIP . 'includes/articlepages/SMW_OrderedListPage.php';
-	$wgAutoloadClasses['SMWTypePage']               = $smwgIP . 'includes/articlepages/SMW_TypePage.php';
-	$wgAutoloadClasses['SMWPropertyPage']           = $smwgIP . 'includes/articlepages/SMW_PropertyPage.php';
-	$wgAutoloadClasses['SMWConceptPage']            = $smwgIP . 'includes/articlepages/SMW_ConceptPage.php';	
+	// Article pages
+	$apDir = $smwgIP . 'includes/articlepages/';
+	$wgAutoloadClasses['SMWOrderedListPage']        = $apDir . 'SMW_OrderedListPage.php';
+	$wgAutoloadClasses['SMWTypePage']               = $apDir . 'SMW_TypePage.php';
+	$wgAutoloadClasses['SMWPropertyPage']           = $apDir . 'SMW_PropertyPage.php';
+	$wgAutoloadClasses['SMWConceptPage']            = $apDir . 'SMW_ConceptPage.php';	
 	
 	// Printers
 	$qpDir = $smwgIP . 'includes/queryprinters/';
@@ -110,33 +112,38 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWImportValue']         	= $dvDir . 'SMW_DV_Import.php';
 	
 	// Export
-	$wgAutoloadClasses['SMWExporter']               = $smwgIP . 'includes/export/SMW_Exporter.php';
-	$wgAutoloadClasses['SMWExpData']                = $smwgIP . 'includes/export/SMW_Exp_Data.php';
-	$wgAutoloadClasses['SMWExpElement']             = $smwgIP . 'includes/export/SMW_Exp_Element.php';
-	$wgAutoloadClasses['SMWExpLiteral']             = $smwgIP . 'includes/export/SMW_Exp_Element.php';
-	$wgAutoloadClasses['SMWExpResource']            = $smwgIP . 'includes/export/SMW_Exp_Element.php';
+	$expDir = $smwgIP . 'includes/export/';
+	$wgAutoloadClasses['SMWExporter']               = $expDir . 'SMW_Exporter.php';
+	$wgAutoloadClasses['SMWExpData']                = $expDir . 'SMW_Exp_Data.php';
+	$wgAutoloadClasses['SMWExpElement']             = $expDir . 'SMW_Exp_Element.php';
+	$wgAutoloadClasses['SMWExpLiteral']             = $expDir . 'SMW_Exp_Element.php';
+	$wgAutoloadClasses['SMWExpResource']            = $expDir . 'SMW_Exp_Element.php';
+	
 	// Stores & queries
 	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php';
 	$wgAutoloadClasses['SMWQueryParser']            = $smwgIP . 'includes/SMW_QueryParser.php';
-	$wgAutoloadClasses['SMWQuery']                  = $smwgIP . 'includes/storage/SMW_Query.php';
-	$wgAutoloadClasses['SMWQueryResult']            = $smwgIP . 'includes/storage/SMW_QueryResult.php';
-	$wgAutoloadClasses['SMWStore']                  = $smwgIP . 'includes/storage/SMW_Store.php';
-	$wgAutoloadClasses['SMWStringCondition']        = $smwgIP . 'includes/storage/SMW_Store.php';
-	$wgAutoloadClasses['SMWRequestOptions']         = $smwgIP . 'includes/storage/SMW_Store.php';
-	$wgAutoloadClasses['SMWPrintRequest']           = $smwgIP . 'includes/storage/SMW_PrintRequest.php';
-	$wgAutoloadClasses['SMWThingDescription']       = $smwgIP . 'includes/storage/SMW_Description.php';
-	$wgAutoloadClasses['SMWClassDescription']       = $smwgIP . 'includes/storage/SMW_Description.php';
-	$wgAutoloadClasses['SMWConceptDescription']     = $smwgIP . 'includes/storage/SMW_Description.php';
-	$wgAutoloadClasses['SMWNamespaceDescription']   = $smwgIP . 'includes/storage/SMW_Description.php';
-	$wgAutoloadClasses['SMWValueDescription']       = $smwgIP . 'includes/storage/SMW_Description.php';
-	$wgAutoloadClasses['SMWConjunction']            = $smwgIP . 'includes/storage/SMW_Description.php';
-	$wgAutoloadClasses['SMWDisjunction']            = $smwgIP . 'includes/storage/SMW_Description.php';
-	$wgAutoloadClasses['SMWSomeProperty']           = $smwgIP . 'includes/storage/SMW_Description.php';
 	$wgAutoloadClasses['SMWRecordDescription']      = $smwgIP . 'includes/SMW_Record_Descriptions.php';
 	$wgAutoloadClasses['SMWRecordFieldDescription'] = $smwgIP . 'includes/SMW_Record_Descriptions.php';
-	$wgAutoloadClasses['SMWSQLStore2']              = $smwgIP . 'includes/storage/SMW_SQLStore2.php';
-	$wgAutoloadClasses['SMWSQLStore2Table']         = $smwgIP . 'includes/storage/SMW_SQLStore2Table.php';
-	$wgAutoloadClasses['SMWSQLHelpers']             = $smwgIP . 'includes/storage/SMW_SQLHelpers.php';
+		
+	$stoDir = $smwgIP . 'includes/storage/';
+	$wgAutoloadClasses['SMWQuery']                  = $stoDir . 'SMW_Query.php';
+	$wgAutoloadClasses['SMWQueryResult']            = $stoDir . 'SMW_QueryResult.php';
+	$wgAutoloadClasses['SMWStore']                  = $stoDir . 'SMW_Store.php';
+	$wgAutoloadClasses['SMWStringCondition']        = $stoDir . 'SMW_Store.php';
+	$wgAutoloadClasses['SMWRequestOptions']         = $stoDir . 'SMW_Store.php';
+	$wgAutoloadClasses['SMWPrintRequest']           = $stoDir . 'SMW_PrintRequest.php';
+	$wgAutoloadClasses['SMWThingDescription']       = $stoDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWClassDescription']       = $stoDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWConceptDescription']     = $stoDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWNamespaceDescription']   = $stoDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWValueDescription']       = $stoDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWConjunction']            = $stoDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWDisjunction']            = $stoDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWSomeProperty']           = $stoDir . 'SMW_Description.php';
+	$wgAutoloadClasses['SMWSQLStore2']              = $stoDir . 'SMW_SQLStore2.php';
+	$wgAutoloadClasses['SMWSQLStore2Table']         = $stoDir . 'SMW_SQLStore2Table.php';
+	$wgAutoloadClasses['SMWSQLHelpers']             = $stoDir . 'SMW_SQLHelpers.php';
+	
 	// Do not autoload RAPStore, since some special pages load all autoloaded classes, which causes
 	// troubles with RAP store if RAP is not installed (require_once fails).
 	// $wgAutoloadClasses['SMWRAPStore']             = $smwgIP . 'includes/storage/SMW_RAPStore.php';
