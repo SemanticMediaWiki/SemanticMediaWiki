@@ -45,7 +45,6 @@ class SMWRefreshJob extends Job {
 		
 		$run = array_key_exists( 'run', $this->params ) ? $this->params['run']:1;
 		$spos = $this->params['spos'];
-		$store = smwfGetStore();
 		$namespaces = ( ( $this->params['rc'] > 1 ) && ( $run == 1 ) ) ? array( SMW_NS_PROPERTY, SMW_NS_TYPE ):false;
 		$progress = smwfGetStore()->refreshData( $spos, 20, $namespaces );
 
