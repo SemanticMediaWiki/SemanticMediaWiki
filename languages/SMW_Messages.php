@@ -10553,9 +10553,14 @@ Bir diğeri oluşturulmuyor.',
 
 /** Tatar (Cyrillic) (Татарча/Tatarça (Cyrillic))
  * @author Ерней
+ * @author Ильнар
  */
 $messages['tt-cyrl'] = array(
 	'smw_ask_defaultformat' => 'килешү буенча',
+	'smw_sbv_property' => 'Халәте:',
+	'smw_sbv_value' => 'Аңлатмасы:',
+	'smw_sbv_submit' => 'Эзләү',
+	'browse' => 'Сәхифәне карау',
 );
 
 /** ئۇيغۇرچە (ئۇيغۇرچە)
