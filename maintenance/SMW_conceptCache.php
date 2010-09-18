@@ -15,11 +15,11 @@
 $optionsWithArgs = array( 'concept', 'old', 's', 'e' );
 
 require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
-    ? getenv( 'MW_INSTALL_PATH' ) . "/maintenance/commandLine.inc"
+    ? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/commandLine.inc'
     : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 
 $output_level  = array_key_exists( 'quiet', $options ) ? 0:
-                 ( array_key_exists( 'verbose', $options ) ? 2:1 );
+                 ( array_key_exists( 'verbose', $options ) ? 2 : 1 );
 
 if ( array_key_exists( 'help', $options ) ) {
 	$action = 'help';
@@ -40,7 +40,7 @@ if ( array_key_exists( 'help', $options ) ) {
 		// wfCountDown as soon as we switch to MediaWiki 1.16. 
 		// Currently, wfCountDown is only supported from
 		// revision 51650 (Jun 9 2009) onward.
-		if ( function_exists( "wfCountDown" ) ) {
+		if ( function_exists( 'wfCountDown' ) ) {
 			wfCountDown( $delay );
 		} else {
     		for ( $i = $delay; $i >= 0; $i-- ) {
@@ -124,7 +124,7 @@ if ( !( $store instanceof SMWSQLStore2 ) ) {
 
 $select_hard   = array_key_exists( 'hard', $options );
 $select_update = array_key_exists( 'update', $options );
-$select_old    = isset( $options['old'] ) ? intval( $options['old'] ):false;
+$select_old    = isset( $options['old'] ) ? intval( $options['old'] ) : false;
 
 if ( isset( $options['concept'] ) ) { // single concept mode
 	// 	$concept = SMWDataValueFactory::newTypeIDValue('_wpg');
@@ -177,34 +177,36 @@ function doAction( $title, $numlines = false ) {
 	}
 	if ( $skip ) {
 		$pref = ( $numlines !== false ) ? "($numlines) ":'';
-		return ( outputMessage( $pref . "Skipping concept \"" . $title->getPrefixedText() . "\": $skip\n", 2 ) ) ? 1:0;
+		return ( outputMessage( $pref . 'Skipping concept "' . $title->getPrefixedText() . "\": $skip\n", 2 ) ) ? 1 : 0;
 	}
 	if ( $numlines !== false ) {
 		outputMessage( "($numlines) " );
 	}
 	switch ( $action ) {
 		case 'delete':
-			outputMessage( "Deleting cache for \"" . $title->getPrefixedText() . "\" ...\n" );
+			outputMessage( 'Deleting cache for "' . $title->getPrefixedText() . "\" ...\n" );
 			$errors = $store->deleteConceptCache( $title );
 		break;
 		case 'create':
-			outputMessage( "Creating cache for \"" . $title->getPrefixedText() . "\" ...\n" );
+			outputMessage( 'Creating cache for "' . $title->getPrefixedText() . "\" ...\n" );
 			$errors = $store->refreshConceptCache( $title );
 		break;
 		default:
-			outputMessage( "Status of cache for \"" . $title->getPrefixedText() . "\": " );
+			outputMessage( 'Status of cache for "' . $title->getPrefixedText() . '": ' );
 			if ( $status['status'] == 'no' ) {
 				outputMessage( "Concept not known or redirect.\n" );
 			} elseif ( $status['status'] == 'full' ) {
-				outputMessage( "Cache created at " . date( "Y-m-d H:i:s", $status['date'] ) . " (" . floor( ( strtotime( "now" ) - $status['date'] ) / 60 ) . " minutes old), " . $status['count'] . " elements in cache\n" );
+				outputMessage( 'Cache created at ' . date( "Y-m-d H:i:s", $status['date'] ) . ' (' . floor( ( strtotime( "now" ) - $status['date'] ) / 60 ) . " minutes old), " . $status['count'] . " elements in cache\n" );
 			} else {
 				outputMessage( "Not cached.\n" );
 			}
 		break;
 	}
+	
 	if ( count( $errors ) > 0 ) {
-		outputMessage( "  " . implode( $errors, "\n  " ) . "\n" );
+		outputMessage( '  ' . implode( $errors, "\n  " ) . "\n" );
 	}
+	
 	return 1;
 }
 
