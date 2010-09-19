@@ -7,8 +7,6 @@
  * @ingroup SMWLanguage
  */
 
-$specialPageAliases = array();
-
 /** English (English) */
 $specialPageAliases['en'] = array(
 	'Ask' => array( 'Ask' ),
