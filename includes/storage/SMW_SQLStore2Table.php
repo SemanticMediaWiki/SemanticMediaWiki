@@ -82,8 +82,8 @@ class SMWSQLStore2Table {
 	public function __construct( $name, $objectFields, $indexes = array(), $fixedProperty = false ) {
 		$this->name = $name;
 		$this->objectfields = (array)$objectFields;
-		$this->fixedproperty = (array)$fixedProperty;
-		$this->indexes = $indexes;
+		$this->fixedproperty = $fixedProperty;
+		$this->indexes = (array) $indexes;
 	}
 
 	/**
