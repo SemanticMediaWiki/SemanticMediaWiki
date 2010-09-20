@@ -1,8 +1,10 @@
 <?php
 /**
  * Basic abstract classes for SMW's storage abstraction layer.
+ * 
  * @file
  * @ingroup SMWStore
+ * 
  * @author Markus Krötzsch
  */
 
@@ -10,6 +12,7 @@
  * This group contains all parts of SMW that relate to storing and retrieving
  * semantic data. SMW components that relate to semantic querying only have their
  * own group.
+ * 
  * @defgroup SMWStore SMWStore
  * @ingroup SMW
  */
@@ -18,16 +21,21 @@
  * Small data container class for describing filtering conditions on the string
  * label of some entity. States that a given string should either be prefix, postfix,
  * or some arbitrary part of labels.
+ * 
  * @ingroup SMWStore
+ * 
+ * @author Markus Krötzsch
  */
 class SMWStringCondition {
 	const STRCOND_PRE = 0;
 	const STRCOND_POST = 1;
 	const STRCOND_MID = 2;
+	
 	/**
 	 * String to match.
 	 */
 	public $string;
+	
 	/**
 	 * Condition. One of STRCOND_PRE (string matches prefix),
 	 * STRCOND_POST (string matches postfix), STRCOND_MID
@@ -35,7 +43,7 @@ class SMWStringCondition {
 	 */
 	public $condition;
 
-	public function SMWStringCondition( $string, $condition ) {
+	public function __construct( $string, $condition ) {
 		$this->string = $string;
 		$this->condition = $condition;
 	}
@@ -48,19 +56,25 @@ class SMWStringCondition {
  * to their more complex structure.
  * Options that should not be used or where default values should be used
  * can be left as initialised.
+ * 
  * @ingroup SMWStore
+ * 
+ * @author Markus Krötzsch
  */
 class SMWRequestOptions {
+	
 	/**
 	 * The maximum number of results that should be returned.
 	 */
-	public $limit = - 1;
+	public $limit = -1;
+	
 	/**
 	 * A numerical offset. The first $offset results are skipped.
 	 * Note that this does not imply a defined order of results
 	 * (see SMWRequestOptions->$sort below).
 	 */
 	public $offset = 0;
+	
 	/**
 	 * Should the result be ordered? The employed order is defined
 	 * by the type of result that are requested: Title objects and
@@ -69,22 +83,26 @@ class SMWRequestOptions {
 	 * Usually, the order should be fairly "natural".
 	 */
 	public $sort = false;
+	
 	/**
 	 * If SMWRequestOptions->$sort is true, this parameter defines whether
 	 * the results are ordered in ascending or descending order.
 	 */
 	public $ascending = true;
+	
 	/**
 	 * Specifies a lower or upper bound for the values returned by the query.
 	 * Whether it is lower or upper is specified by the parameter "ascending"
 	 * (true->lower, false->upper).
 	 */
 	public $boundary = null;
+	
 	/**
 	 * Specifies whether or not the requested boundary should be returned
 	 * as a result.
 	 */
 	public $include_boundary = true;
+	
 	/**
 	 * An array of string conditions that are applied if the result has a string
 	 * label that can be subject to those patterns.
@@ -93,6 +111,7 @@ class SMWRequestOptions {
 
 	/**
 	 * Set a new string condition applied to labels of results (if available).
+	 * 
 	 * @param $string the string to match
 	 * @param $condition type of condition, one of STRCOND_PRE, STRCOND_POST, STRCOND_MID
 	 */
@@ -106,6 +125,7 @@ class SMWRequestOptions {
 	public function getStringConditions() {
 		return $this->stringcond;
 	}
+	
 }
 
 
@@ -114,7 +134,10 @@ class SMWRequestOptions {
  * semantic store. Besides the relevant interface, this class provides default
  * implementations for some optional methods, which inform the caller that
  * these methods are not implemented.
+ * 
  * @ingroup SMWStore
+ * 
+ * @author Markus Krötzsch 
  */
 abstract class SMWStore {
 
@@ -132,7 +155,7 @@ abstract class SMWStore {
 	 * than requested when a filter is used. Filtering just ensures that
 	 * only necessary requests are made, i.e. it improves performance.
 	 */
-	abstract function getSemanticData( $subject, $filter = false );
+	public abstract function getSemanticData( $subject, $filter = false );
 
 	/**
 	 * Get an array of all property values stored for the given subject and property. The result
@@ -142,28 +165,29 @@ abstract class SMWStore {
 	 *
 	 * If called with $subject == NULL, all values for the given property are returned.
 	 */
-	abstract function getPropertyValues( $subject, SMWPropertyValue $property, $requestoptions = null, $outputformat = '' );
+	public abstract function getPropertyValues( $subject, SMWPropertyValue $property, $requestoptions = null, $outputformat = '' );
 
 	/**
 	 * Get an array of all subjects that have the given value for the given property. The
 	 * result is an array of SMWWikiPageValue objects. If NULL is given as a value, all subjects having
 	 * that property are returned.
 	 */
-	abstract function getPropertySubjects( SMWPropertyValue $property, $value, $requestoptions = null );
+	public abstract function getPropertySubjects( SMWPropertyValue $property, $value, $requestoptions = null );
 
 	/**
 	 * Get an array of all subjects that have some value for the given property. The
 	 * result is an array of SMWWikiPageValue objects.
 	 */
-	abstract function getAllPropertySubjects( SMWPropertyValue $property, $requestoptions = null );
+	public abstract function getAllPropertySubjects( SMWPropertyValue $property, $requestoptions = null );
 
 	/**
 	 * Get an array of all properties for which the given subject has some value. The result is an
 	 * array of SMWPropertyValue objects.
+	 * 
 	 * @param $subject Title or SMWWikiPageValue denoting the subject
 	 * @param $requestoptions SMWRequestOptions optionally defining further options
 	 */
-	abstract function getProperties( $subject, $requestoptions = null );
+	public abstract function getProperties( $subject, $requestoptions = null );
 
 	/**
 	 * Get an array of all properties for which there is some subject that relates to the given value.
@@ -171,7 +195,7 @@ abstract class SMWStore {
 	 * @note In some stores, this function might be implemented partially so that only values of type Page
 	 * (_wpg) are supported.
 	 */
-	abstract function getInProperties( SMWDataValue $object, $requestoptions = null );
+	public abstract function getInProperties( SMWDataValue $object, $requestoptions = null );
 
 ///// Writing methods /////
 
@@ -181,19 +205,19 @@ abstract class SMWStore {
 	 * delete the respective text from the wiki, but only clears the stored
 	 * data.
 	 */
-	abstract function deleteSubject( Title $subject );
+	public abstract function deleteSubject( Title $subject );
 
 	/**
 	 * Update the semantic data stored for some individual. The data is given
 	 * as a SMWSemanticData object, which contains all semantic data for one particular
 	 * subject.
 	 */
-	abstract function updateData( SMWSemanticData $data );
+	public abstract function updateData( SMWSemanticData $data );
 
 	/**
 	 * Clear all semantic data specified for some page.
 	 */
-	function clearData( Title $subject ) {
+	public function clearData( Title $subject ) {
 		$emptydata = new SMWSemanticData( SMWWikiPageValue::makePageFromTitle( $subject ) );
 		$this->updateData( $emptydata );
 	}
@@ -206,7 +230,7 @@ abstract class SMWStore {
 	 * $pageid, and the ID of the newly created redirect, if any, is given by $redirid. If no new
 	 * page was created, $redirid will be 0.
 	 */
-	abstract function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 );
+	public abstract function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 );
 
 ///// Query answering /////
 
@@ -218,7 +242,7 @@ abstract class SMWStore {
 	 * 
 	 * @return SMWQueryResult
 	 */
-	abstract function getQueryResult( SMWQuery $query );
+	public abstract function getQueryResult( SMWQuery $query );
 
 ///// Special page functions /////
 
@@ -226,24 +250,36 @@ abstract class SMWStore {
 	 * Return all properties that have been used on pages in the wiki. The result is an array
 	 * of arrays, each containing a property title and a count. The expected order is
 	 * alphabetical w.r.t. to property title texts.
+	 * 
+	 * @param SMWRequestOptions $requestoptions
+	 * 
+	 * @return array
 	 */
-	abstract function getPropertiesSpecial( $requestoptions = null );
+	public abstract function getPropertiesSpecial( $requestoptions = null );
 
 	/**
 	 * Return all properties that have been declared in the wiki but that
 	 * are not used on any page. Stores might restrict here to those properties
 	 * that have been given a type if they have no efficient means of accessing
 	 * the set of all pages in the property namespace.
+	 * 
+	 * @param SMWRequestOptions $requestoptions
+	 * 
+	 * @return array
 	 */
-	abstract function getUnusedPropertiesSpecial( $requestoptions = null );
+	public abstract function getUnusedPropertiesSpecial( $requestoptions = null );
 
 	/**
 	 * Return all properties that are used on some page but that do not have any
 	 * page describing them. Stores that have no efficient way of accessing the
 	 * set of all existing pages can extend this list to all properties that are
 	 * used but do not have a type assigned to them.
+	 * 
+	 * @param SMWRequestOptions $requestoptions
+	 * 
+	 * @return array
 	 */
-	abstract function getWantedPropertiesSpecial( $requestoptions = null );
+	public abstract function getWantedPropertiesSpecial( $requestoptions = null );
 
 	/**
 	 * Return statistical information as an associative array with the following
@@ -251,8 +287,10 @@ abstract class SMWStore {
 	 * - 'PROPUSES': Number of property instances (value assignments) in the datatbase
 	 * - 'USEDPROPS': Number of properties that are used with at least one value
 	 * - 'DECLPROPS': Number of properties that have been declared (i.e. assigned a type)
+	 * 
+	 * @return array
 	 */
-	abstract function getStatistics();
+	public abstract function getStatistics();
 
 ///// Setup store /////
 
@@ -266,14 +304,18 @@ abstract class SMWStore {
 	 * This is doen by just using print and possibly ob_flush/flush. This is also relevant for preventing
 	 * timeouts during long operations. All output must be valid XHTML, but should preferrably be plain
 	 * text, possibly with some linebreaks and weak markup.
+	 * 
+	 * @param boolean $verbose
 	 */
-	abstract function setup( $verbose = true );
+	public abstract function setup( $verbose = true );
 
 	/**
 	 * Drop (delete) all storage structures created by setup(). This will delete all semantic data and
 	 * possibly leave the wiki uninitialised.
+	 * 
+	 * @param boolean $verbose
 	 */
-	abstract function drop( $verbose = true );
+	public abstract function drop( $verbose = true );
 
 	/**
 	 * Refresh some objects in the store, addressed by numerical ids. The meaning of the ids is
@@ -289,7 +331,14 @@ abstract class SMWStore {
 	 *
 	 * The optional parameter $usejobs indicates whether updates should be processed later using
 	 * MediaWiki jobs, instead of doing all updates immediately. The default is TRUE.
+	 * 
+	 * @param integer $index
+	 * @param integer $count
+	 * @param mixed $namespaces Array or false
+	 * @param boolean $usejobs
+	 * 
+	 * @return decimal between 0 and 1 to indicate the overall progress of the refreshing
 	 */
-	abstract function refreshData( &$index, $count, $namespaces = false, $usejobs = true );
+	public abstract function refreshData( &$index, $count, $namespaces = false, $usejobs = true );
 
 }

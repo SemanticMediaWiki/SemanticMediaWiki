@@ -243,6 +243,7 @@ function smwfSetupExtension() {
 			$wgHooks['MonoBookTemplateToolboxEnd'][] = 'smwfShowBrowseLink';
 		}
 	}
+	
 	if ( version_compare( $wgVersion, '1.14alpha', '>=' ) ) {
 		$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
 		$smwgMW_1_14 = true; // assume latest 1.14 API
@@ -479,11 +480,12 @@ function smwfInitContentLanguage( $langcode ) {
 		include_once( $smwgIP . 'languages/' . $smwContLangFile . '.php' );
 	}
 
-	// fallback if language not supported
+	// Fallback if language not supported.
 	if ( !class_exists( $smwContLangClass ) ) {
 		include_once( $smwgIP . 'languages/SMW_LanguageEn.php' );
 		$smwContLangClass = 'SMWLanguageEn';
 	}
+	
 	$smwgContLang = new $smwContLangClass();
 
 	wfProfileOut( 'smwfInitContentLanguage (SMW)' );

@@ -51,6 +51,8 @@ class SMWWikiPageValue extends SMWDataValue {
 	/**
 	 * Static function for creating a new wikipage object from a
 	 * MediaWiki Title object.
+	 * 
+	 * @return SMWWikiPageValue
 	 */
 	static public function makePageFromTitle( $titleobject ) {
 		$page = new SMWWikiPageValue( '_wpg' );

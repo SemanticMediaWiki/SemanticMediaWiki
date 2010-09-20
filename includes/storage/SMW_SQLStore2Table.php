@@ -1,24 +1,20 @@
 <?php
 
 /**
- * File holding the SMWSQLStore2Table class
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- * 
- * @file
- * @ingroup SMWStore
- */
-
-/**
  * Simple data container for storing information about property tables. A
  * property table is a DB table that is used to store subject-property-value
  * records about data in SMW. Tables mostly differ in the composition of the
  * value, but also in whether the property is explicitly named (or fixed),
  * and in the way subject pages are referred to.
+ * 
+ * @file SMW_SQLStore2Table.php
  * @ingroup SMWStore
+ * 
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw
  */
 class SMWSQLStore2Table {
+	
 	/**
 	 * Name of the table in the DB.
 	 * 
@@ -79,14 +75,14 @@ class SMWSQLStore2Table {
 	 * Constructor.
 	 * 
 	 * @param string $name
-	 * @param array $objectFields
-	 * @param array $indexes
+	 * @param mixed $objectFields Array of string or a single string
+	 * @param mixed $indexes Array of string or a single string
 	 * @param mixed $fixedProperty string or false
 	 */
-	public function __construct( $name, array $objectFields, array $indexes = array(), $fixedProperty = false ) {
+	public function __construct( $name, $objectFields, $indexes = array(), $fixedProperty = false ) {
 		$this->name = $name;
-		$this->objectfields = $objectFields;
-		$this->fixedproperty = $fixedProperty;
+		$this->objectfields = (array)$objectFields;
+		$this->fixedproperty = (array)$fixedProperty;
 		$this->indexes = $indexes;
 	}
 
@@ -94,7 +90,7 @@ class SMWSQLStore2Table {
 	 * @return string
 	 */
 	public function getFieldSignature() {
-		// TODO: this was implode( $this->objectfields, '' ), which might indicate some error where this method is called.
 		return implode( '', $this->objectfields );
 	}
+	
 }

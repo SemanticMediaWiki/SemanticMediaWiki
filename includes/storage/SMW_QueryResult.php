@@ -70,7 +70,7 @@ class SMWQueryResult {
 	 * @param SMWStore $store
 	 * @param boolean $furtherRes
 	 */
-	public function SMWQueryResult( array $printRequests, SMWQuery $query, array $results, SMWStore $store, $furtherRes = false ) {
+	public function __construct( array $printRequests, SMWQuery $query, array $results, SMWStore $store, $furtherRes = false ) {
 		$this->mResults = $results;
 		reset( $this->mResults );
 		$this->mPrintRequests = $printRequests;

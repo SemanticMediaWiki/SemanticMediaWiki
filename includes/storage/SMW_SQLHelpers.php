@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Some static helper functions that SMW uses for setting up
  * SQL databases.
@@ -7,14 +8,7 @@
  * @author Marcel Gsteiger
  * @author Jeroen De Dauw
  * 
- * @file
- * @ingroup SMWStore
- */
-
-/**
- * Static class to collect some helper functions that SMW uses
- * for settnig up SQL databases.
- * 
+ * @file SMW_SQLHelpers.php
  * @ingroup SMWStore
  */
 class SMWSQLHelpers {

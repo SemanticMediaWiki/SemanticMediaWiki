@@ -87,8 +87,10 @@ class SMWSQLStore2QueryEngine {
 	 * Refresh the concept cache for the given concept.
 	 *
 	 * @param $concept Title
+	 * 
+	 * @return array
 	 */
-	public function refreshConceptCache( $concept ) {
+	public function refreshConceptCache( Title $concept ) {
 		global $smwgQMaxLimit, $smwgQConceptFeatures, $wgDBtype;
 
 		$cid = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '' );
