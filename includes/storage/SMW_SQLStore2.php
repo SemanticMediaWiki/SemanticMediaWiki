@@ -1911,7 +1911,7 @@ class SMWSQLStore2 extends SMWStore {
 			}
 		}
 
-		$propertykey = ( $property->isUserDefined() ) ? $property->getDBkey():$property->getPropertyId();
+		$propertykey = ( $property->isUserDefined() ) ? $property->getDBkey() : $property->getPropertyId();
 
 		if ( array_key_exists( $propertykey, self::$fixed_prop_tables ) ) {
 			$signature = self::getTypeSignature( $property->getPropertyTypeID() );

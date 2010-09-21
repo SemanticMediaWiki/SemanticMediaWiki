@@ -75,13 +75,13 @@ class SMWSQLStore2Table {
 	 * Constructor.
 	 * 
 	 * @param string $name
-	 * @param mixed $objectFields Array of string or a single string
+	 * @param array $objectFields Associative array
 	 * @param mixed $indexes Array of string or a single string
 	 * @param mixed $fixedProperty string or false
 	 */
-	public function __construct( $name, $objectFields, $indexes = array(), $fixedProperty = false ) {
+	public function __construct( $name, array $objectFields, $indexes = array(), $fixedProperty = false ) {
 		$this->name = $name;
-		$this->objectfields = (array)$objectFields;
+		$this->objectfields = $objectFields;
 		$this->fixedproperty = $fixedProperty;
 		$this->indexes = (array) $indexes;
 	}
