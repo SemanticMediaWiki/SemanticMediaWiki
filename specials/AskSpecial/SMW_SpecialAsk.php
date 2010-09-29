@@ -19,9 +19,6 @@ class SMWAskPage extends SpecialPage {
 	protected $m_printouts = array();
 	protected $m_editquery = false;
 
-	// MW 1.13 compatibilty
-	protected static $pipeseparator = '|';
-
 	/**
 	 * Constructor
 	 */
@@ -40,10 +37,6 @@ class SMWAskPage extends SpecialPage {
 		
 		$this->setHeaders();
 		wfProfileIn( 'doSpecialAsk (SMW)' );
-		
-		if ( $smwgMW_1_14 ) { // since MW 1.14.0 this is governed by a message
-			SMWAskPage::$pipeseparator = wfMsgExt( 'pipe-separator' , 'escapenoentities' );
-		}
 		
 		if ( !$smwgQEnabled ) {
 			$wgOut->addHTML( '<br />' . wfMsg( 'smw_iq_disabled' ) );
@@ -588,19 +581,17 @@ END;
 			$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/>' .
 				'<input type="hidden" name="eq" value="yes"/>' .
 					' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_ask_hidequery' ) . '</a> ' .
-					SMWAskPage::$pipeseparator . ' ' . SMWAskPage::getEmbedToggle() .
-					SMWAskPage::$pipeseparator .
-					' <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>' .
+					'| ' . SMWAskPage::getEmbedToggle() .
+					'| <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>' .
 				"\n</form>";
 		} else { // if $this->m_editquery == false
 			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
 			$result .= '<p><a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_ask_editquery' ) . '</a> ' .
-				SMWAskPage::$pipeseparator . ' ' . SMWAskPage::getEmbedToggle() . '</p>';
+				'| ' . SMWAskPage::getEmbedToggle() . '</p>';
 				'<input type="hidden" name="eq" value="yes"/>' .
 					' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_ask_hidequery' ) . '</a> ' .
-					SMWAskPage::$pipeseparator . ' ' . SMWAskPage::getEmbedToggle() .
-					SMWAskPage::$pipeseparator .
-					' <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>' .
+					'| ' . SMWAskPage::getEmbedToggle() .
+					'| <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>' .
 				"\n</form>";
 		}
 
@@ -678,7 +669,7 @@ END;
 				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
 				$first = false;
 			} else {
-				$navigation .= ' ' . SMWAskPage::$pipeseparator . ' ';
+				$navigation .= ' | ';
 			}
 			
 			if ( $limit != $l ) {
