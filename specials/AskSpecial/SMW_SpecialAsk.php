@@ -11,6 +11,9 @@
  * @author Markus Krötzsch
  * @author Yaron Koren
  * @author Sanyam Goyal
+ * @author Jeroen De Dauw
+ * 
+ * TODO: Split up the megamoths into sane methods.
  */
 class SMWAskPage extends SpecialPage {
 
@@ -20,7 +23,7 @@ class SMWAskPage extends SpecialPage {
 	protected $m_editquery = false;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	public function __construct() {
 		parent::__construct( 'Ask' );
@@ -33,7 +36,7 @@ class SMWAskPage extends SpecialPage {
 	 * @param string $p
 	 */
 	public function execute( $p ) {
-		global $wgOut, $wgRequest, $smwgQEnabled, $smwgRSSEnabled, $smwgMW_1_14;
+		global $wgOut, $wgRequest, $smwgQEnabled;
 		
 		$this->setHeaders();
 		wfProfileIn( 'doSpecialAsk (SMW)' );
@@ -507,7 +510,7 @@ END;
 			$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 				'<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
 
-			// table for main query and printouts
+			// Table for main query and printouts.
 			$result .= '<table style="width: 100%; "><tr><th>' . wfMsg( 'smw_ask_queryhead' ) . "</th>\n<th>" . wfMsg( 'smw_ask_printhead' ) . "<br />\n" .
 				'<span style="font-weight: normal;">' . wfMsg( 'smw_ask_printdesc' ) . '</span>' . "</th></tr>\n" .
 				'<tr><td style="padding-right: 7px;"><textarea name="q" cols="20" rows="6">' . htmlspecialchars( $this->m_querystring ) . "</textarea></td>\n" .
@@ -560,7 +563,8 @@ END;
 			$formats = array();
 			
 			foreach ( array_keys( $smwgResultFormats ) as $format ) {
-				if ( ( $format != 'broadtable' ) && ( $format != 'count' ) && ( $format != 'debug' ) ) { // special formats "count" and "debug" currently not supported
+				// Special formats "count" and "debug" currently not supported.
+				if ( $format != 'broadtable' && $format != 'count' && $format != 'debug' ) {
 					$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
 					$formats[$format] = $printer->getName();
 				}
