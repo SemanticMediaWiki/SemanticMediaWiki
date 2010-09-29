@@ -75,13 +75,13 @@ class SMWAskPage extends SpecialPage {
 		global $wgRequest, $smwgQMaxInlineLimit;
 
 		// First make all inputs into a simple parameter list that can again be parsed into components later.
-
 		if ( $wgRequest->getCheck( 'q' ) ) { // called by own Special, ignore full param string in that case
 			$query_values = $wgRequest->getArray( 'p' );
 			$query_val = $wgRequest->getVal( 'p' );
 			
-			if ( ! empty( $query_val ) )
-				$rawparams = SMWInfolink::decodeParameters( $query_val, false ); // p is used for any additional parameters in certain links
+			if ( !empty( $query_val ) )
+				// p is used for any additional parameters in certain links.
+				$rawparams = SMWInfolink::decodeParameters( $query_val, false );
 			else {
 				$query_values = $wgRequest->getArray( 'p' );
 				
@@ -89,7 +89,8 @@ class SMWAskPage extends SpecialPage {
 					if ( empty( $val ) ) unset( $query_values[$key] );
 				}
 				
-				$rawparams = SMWInfolink::decodeParameters( $query_values, false ); // p is used for any additional parameters in certain links
+				// p is used for any additional parameters in certain links.
+				$rawparams = SMWInfolink::decodeParameters( $query_values, false );
 			}
 		} else { // called from wiki, get all parameters
 			$rawparams = SMWInfolink::decodeParameters( $p, true );
@@ -118,16 +119,12 @@ class SMWAskPage extends SpecialPage {
 			}
 		}
 
-		// Now parse parameters and rebuilt the param strings for URLs
+		// Now parse parameters and rebuilt the param strings for URLs.
 		SMWQueryProcessor::processFunctionParams( $rawparams, $this->m_querystring, $this->m_params, $this->m_printouts );
 		
-		// Try to complete undefined parameter values from dedicated URL params
+		// Try to complete undefined parameter values from dedicated URL params.
 		if ( !array_key_exists( 'format', $this->m_params ) ) {
-			if ( array_key_exists( 'rss', $this->m_params ) ) { // backwards compatibility (SMW<=1.1 used this)
-				$this->m_params['format'] = 'rss';
-			} else { // default
-				$this->m_params['format'] = 'broadtable';
-			}
+			$this->m_params['format'] = 'broadtable';
 		}
 		
 		if ( !array_key_exists( 'order', $this->m_params ) ) {
