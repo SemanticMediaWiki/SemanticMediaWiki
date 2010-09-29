@@ -1,20 +1,16 @@
 <?php
-/**
- * @file
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- */
 
 /**
- * @author Markus Krötzsch
- * @author Yaron Koren
- * @author Sanyam Goyal
- *
  * This special page for MediaWiki implements a customisable form for
  * executing queries outside of articles.
  *
+ * @file SMW_SpecialAsk.php
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
+ * 
+ * @author Markus Krötzsch
+ * @author Yaron Koren
+ * @author Sanyam Goyal
  */
 class SMWAskPage extends SpecialPage {
 
@@ -24,7 +20,7 @@ class SMWAskPage extends SpecialPage {
 	protected $m_editquery = false;
 
 	// MW 1.13 compatibilty
-	private static $pipeseparator = '|';
+	protected static $pipeseparator = '|';
 
 	/**
 	 * Constructor
@@ -34,13 +30,16 @@ class SMWAskPage extends SpecialPage {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
-	function execute( $p ) {
+	public function execute( $p ) {
 		global $wgOut, $wgRequest, $smwgQEnabled, $smwgRSSEnabled, $smwgMW_1_14;
+		
 		$this->setHeaders();
 		wfProfileIn( 'doSpecialAsk (SMW)' );
+		
 		if ( $smwgMW_1_14 ) { // since MW 1.14.0 this is governed by a message
 			SMWAskPage::$pipeseparator = wfMsgExt( 'pipe-separator' , 'escapenoentities' );
 		}
+		
 		if ( !$smwgQEnabled ) {
 			$wgOut->addHTML( '<br />' . wfMsg( 'smw_iq_disabled' ) );
 		} else {
@@ -55,6 +54,7 @@ class SMWAskPage extends SpecialPage {
 				$this->makeHTMLResult();
 			}
 		}
+		
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
 		wfProfileOut( 'doSpecialAsk (SMW)' );
 	}
@@ -70,6 +70,7 @@ class SMWAskPage extends SpecialPage {
 		if ( $wgRequest->getCheck( 'q' ) ) { // called by own Special, ignore full param string in that case
 			$query_values = $wgRequest->getArray( 'p' );
 			$query_val = $wgRequest->getVal( 'p' );
+			
 			if ( ! empty( $query_val ) )
 				$rawparams = SMWInfolink::decodeParameters( $query_val, false ); // p is used for any additional parameters in certain links
 			else {
@@ -82,15 +83,19 @@ class SMWAskPage extends SpecialPage {
 		} else { // called from wiki, get all parameters
 			$rawparams = SMWInfolink::decodeParameters( $p, true );
 		}
+		
 		// Check for q= query string, used whenever this special page calls itself (via submit or plain link):
 		$this->m_querystring = $wgRequest->getText( 'q' );
 		if ( $this->m_querystring != '' ) {
 			$rawparams[] = $this->m_querystring;
 		}
+		
 		// Check for param strings in po (printouts), appears in some links and in submits:
 		$paramstring = $wgRequest->getText( 'po' );
+		
 		if ( $paramstring != '' ) { // parameters from HTML input fields
 			$ps = explode( "\n", $paramstring ); // params separated by newlines here (compatible with text-input for printouts)
+			
 			foreach ( $ps as $param ) { // add initial ? if omitted (all params considered as printouts)
 				$param = trim( $param );
 				if ( ( $param != '' ) && ( $param { 0 } != '?' ) ) {
@@ -110,6 +115,7 @@ class SMWAskPage extends SpecialPage {
 				$this->m_params['format'] = 'broadtable';
 			}
 		}
+		
 		if ( !array_key_exists( 'order', $this->m_params ) ) {
 			$order_values = $wgRequest->getArray( 'order' );
 			if ( is_array( $order_values ) ) {
@@ -120,7 +126,9 @@ class SMWAskPage extends SpecialPage {
 				}
 			}
 		}
+		
 		$this->m_num_sort_values = 0;
+		
 		if  ( !array_key_exists( 'sort', $this->m_params ) ) {
 			$sort_values = $wgRequest->getArray( 'sort' );
 			if ( is_array( $sort_values ) ) {
@@ -128,6 +136,7 @@ class SMWAskPage extends SpecialPage {
 				$this->m_num_sort_values = count( $sort_values );
 			}
 		}
+		
 		// Find implicit ordering for RSS -- needed for downwards compatibility with SMW <=1.1
 		/*
 		if ( ($this->m_params['format'] == 'rss') && ($this->m_params['sort'] == '') && ($sortcount==0)) {
@@ -139,16 +148,20 @@ class SMWAskPage extends SpecialPage {
 			}
 		}
 		*/
+		
 		if ( !array_key_exists( 'offset', $this->m_params ) ) {
 			$this->m_params['offset'] = $wgRequest->getVal( 'offset' );
 			if ( $this->m_params['offset'] == '' )  $this->m_params['offset'] = 0;
 		}
+		
 		if ( !array_key_exists( 'limit', $this->m_params ) ) {
 			$this->m_params['limit'] = $wgRequest->getVal( 'limit' );
+			
 			if ( $this->m_params['limit'] == '' ) {
-				 $this->m_params['limit'] = ( $this->m_params['format'] == 'rss' ) ? 10:20; // standard limit for RSS
+				 $this->m_params['limit'] = ( $this->m_params['format'] == 'rss' ) ? 10 : 20; // Standard limit for RSS.
 			}
 		}
+		
 		$this->m_params['limit'] = min( $this->m_params['limit'], $smwgQMaxInlineLimit );
 
 		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) == 'yes' ) || ( $this->m_querystring == '' );
@@ -157,7 +170,7 @@ class SMWAskPage extends SpecialPage {
 	static protected function addAutocompletionJavascriptAndCSS() {
 		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
 
-		// Add CSS and JavaScript for jQuery and jQuery UI
+		// Add CSS and JavaScript for jQuery and jQuery UI.
 		$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
 
 		$scripts = array();
@@ -186,13 +199,17 @@ class SMWAskPage extends SpecialPage {
 		/* collect property names for autocomplete */
 		$propertyNames[] = array();
 		$results = smwfGetStore()->getPropertiesSpecial();
+		
 		foreach ( $results as $result ) {
 			$propertyNames[] = $result[0]->getWikiValue();
 		}
+		
 		$results = smwfGetStore()->getUnusedPropertiesSpecial();
+		
 		foreach ( $results as $result ) {
 			$propertyNames[] = $result->getWikiValue();
 		}
+		
 		sort( $propertyNames );
 
 		$properties_po = "[";
@@ -355,11 +372,14 @@ END;
 				$tmp_parray[$key] = $value;
 			}
 		}
+		
 		$urltail .= '&p=' . urlencode( SMWInfolink::encodeParameters( $tmp_parray ) );
 		$printoutstring = '';
+		
 		foreach ( $this->m_printouts as $printout ) {
 			$printoutstring .= $printout->getSerialisation() . "\n";
 		}
+		
 		if ( $printoutstring != '' ) $urltail .= '&po=' . urlencode( $printoutstring );
 		if ( array_key_exists( 'sort', $this->m_params ) )  $urltail .= '&sort=' . $this->m_params['sort'];
 		if ( array_key_exists( 'order', $this->m_params ) ) $urltail .= '&order=' . $this->m_params['order'];
@@ -367,7 +387,8 @@ END;
 		if ( $this->m_querystring != '' ) {
 			$queryobj = SMWQueryProcessor::createQuery( $this->m_querystring, $this->m_params, SMWQueryProcessor::SPECIAL_PAGE , $this->m_params['format'], $this->m_printouts );
 			$res = smwfGetStore()->getQueryResult( $queryobj );
-			// try to be smart for rss/ical if no description/title is given and we have a concept query:
+			
+			// Try to be smart for rss/ical if no description/title is given and we have a concept query:
 			if ( $this->m_params['format'] == 'rss' ) {
 				$desckey = 'rssdescription';
 				$titlekey = 'rsstitle';
@@ -375,12 +396,15 @@ END;
 				$desckey = 'icalendardescription';
 				$titlekey = 'icalendartitle';
 			} else { $desckey = false; }
+			
 			if ( ( $desckey ) && ( $queryobj->getDescription() instanceof SMWConceptDescription ) &&
 			     ( !isset( $this->m_params[$desckey] ) || !isset( $this->m_params[$titlekey] ) ) ) {
 				$concept = $queryobj->getDescription()->getConcept();
+				
 				if ( !isset( $this->m_params[$titlekey] ) ) {
 					$this->m_params[$titlekey] = $concept->getText();
 				}
+				
 				if ( !isset( $this->m_params[$desckey] ) ) {
 					$dv = end( smwfGetStore()->getPropertyValues( SMWWikiPageValue::makePageFromTitle( $concept ), SMWPropertyValue::makeProperty( '_CONC' ) ) );
 					if ( $dv instanceof SMWConceptValue ) {
@@ -388,9 +412,12 @@ END;
 					}
 				}
 			}
+			
 			$printer = SMWQueryProcessor::getResultPrinter( $this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE );
 			$result_mime = $printer->getMimeType( $res );
+			
 			global $wgRequest;
+			
 			$hidequery = $wgRequest->getVal( 'eq' ) == 'no';
 			// if it's an export format (like CSV, JSON, etc.),
 			// don't actually export the data if 'eq' is set to
@@ -400,18 +427,19 @@ END;
 				$result_mime = false;
 			if ( $result_mime == false ) {
 				if ( $res->getCount() > 0 ) {
-					if ( $this->m_editquery )
-						$urltail .= '&eq=yes';
-					if ( $hidequery )
-						$urltail .= '&eq=no';
+					if ( $this->m_editquery ) $urltail .= '&eq=yes';
+					if ( $hidequery ) $urltail .= '&eq=no';
+						
 					$navigation = $this->getNavigationBar( $res, $urltail );
 					$result .= '<div style="text-align: center;">' . "\n" . $navigation . "\n</div>\n";
 					$query_result = $printer->getResult( $res, $this->m_params, SMW_OUTPUT_HTML );
+					
 					if ( is_array( $query_result ) ) {
 						$result .= $query_result[0];
 					} else {
 						$result .= $query_result;
 					}
+					
 					$result .= '<div style="text-align: center;">' . "\n" . $navigation . "\n</div>\n";
 				} else {
 					$result = '<div style="text-align: center;">' . wfMsg( 'smw_result_noresults' ) . '</div>';
@@ -428,14 +456,18 @@ END;
 			} else {
 				$wgOut->setHTMLtitle( wfMsg( 'ask' ) );
 			}
+			
 			$result = $this->getInputForm( $printoutstring, 'offset=' . $this->m_params['offset'] . '&limit=' . $this->m_params['limit'] . $urltail ) . $result;
 			$wgOut->addHTML( $result );
 		} else {
 			$wgOut->disable();
+			
 			header( "Content-type: $result_mime; charset=UTF-8" );
+			
 			if ( $result_name !== false ) {
 				header( "content-disposition: attachment; filename=$result_name" );
 			}
+			
 			print $result;
 		}
 	}
@@ -443,6 +475,7 @@ END;
 
 	protected function getInputForm( $printoutstring, $urltail ) {
 		global $wgUser, $smwgQSortingSupport, $wgLang, $smwgResultFormats;
+		
 		$skin = $wgUser->getSkin();
 		$result = '';
 
@@ -466,16 +499,20 @@ END;
 					$orders = explode( ',', $this->m_params['order'] );
 					reset( $sorts );
 				}
+				
 				foreach ( $orders as $i => $order ) {
 					$result .=  "<div id=\"sort_div_$i\">" . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort[' . $i . ']" value="' .
 						    htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
+						    
 					if ( $order == 'ASC' ) $result .= 'selected="selected" ';
 					$result .=  'value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . '</option><option ';
 					if ( $order == 'DESC' ) $result .= 'selected="selected" ';
+					
 					$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
 					$result .= '[<a href="javascript:removeInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
 					$result .= "</div>\n";
 				}
+				
 				$result .=  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort_num" size="35" />' . "\n";
 				$result .= ' <select name="order_num">' . "\n";
 				$result .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
@@ -487,23 +524,27 @@ END;
 
 			$printer = SMWQueryProcessor::getResultPrinter( 'broadtable', SMWQueryProcessor::SPECIAL_PAGE );
 			$url = htmlspecialchars( $skin->makeSpecialUrl( 'Ask', "showformatoptions=\" + this.value + \"" ) );
+			
 			foreach ( $this->m_params as $param => $value ) {
-				if ( $param !== 'format' )
-					$url .= "&params[$param]=$value";
+				if ( $param !== 'format' ) $url .= "&params[$param]=$value";
 			}
+			
 			$result .= "<br /><br />\n<p>" . wfMsg( 'smw_ask_format_as' ) . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
 				'<select id="formatSelector" name="p[format]" onChange=\'JavaScript:xmlhttpPost("' . $url . "\")'>\n" .
 				'	<option value="broadtable"' . ( $this->m_params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .
 				$printer->getName() . ' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
 
 			$formats = array();
+			
 			foreach ( array_keys( $smwgResultFormats ) as $format ) {
 				if ( ( $format != 'broadtable' ) && ( $format != 'count' ) && ( $format != 'debug' ) ) { // special formats "count" and "debug" currently not supported
 					$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
 					$formats[$format] = $printer->getName();
 				}
 			}
+			
 			natcasesort( $formats );
+			
 			foreach ( $formats as $format => $name ) {
 				$result .= '	<option value="' . $format . '"' . ( $this->m_params['format'] == $format ? ' selected' : '' ) . '>' . $name . "</option>\n";
 			}
@@ -549,8 +590,7 @@ END;
 		return $result;
 	}
 
-	private static function getEmbedToggle()
-	{
+	protected static function getEmbedToggle() {
 		return '<span id="embed_show"><a href="#" rel="nofollow" onclick="' .
 			"document.getElementById('inlinequeryembed').style.display='block';" .
 			"document.getElementById('embed_hide').style.display='inline';" .
@@ -565,14 +605,16 @@ END;
 	}
 
 	/**
-	 * Build the navigation for some given query result, reuse url-tail parameters
+	 * Build the navigation for some given query result, reuse url-tail parameters.
 	 */
 	protected function getNavigationBar( $res, $urltail ) {
 		global $wgUser, $smwgQMaxInlineLimit;
+		
 		$skin = $wgUser->getSkin();
 		$offset = $this->m_params['offset'];
 		$limit  = $this->m_params['limit'];
-		// prepare navigation bar
+		
+		// Prepare navigation bar.
 		if ( $offset > 0 ) {
 			$navigation = '<a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', 'offset=' . max( 0, $offset - $limit ) . '&limit=' . $limit . $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_result_prev' ) . '</a>';
 		} else {
@@ -588,21 +630,26 @@ END;
 		}
 
 		$first = true;
+		
 		foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
 			if ( $l > $smwgQMaxInlineLimit ) break;
+			
 			if ( $first ) {
 				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
 				$first = false;
 			} else {
 				$navigation .= ' ' . SMWAskPage::$pipeseparator . ' ';
 			}
+			
 			if ( $limit != $l ) {
 				$navigation .= '<a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', 'offset=' . $offset . '&limit=' . $l . $urltail ) ) . '" rel="nofollow">' . $l . '</a>';
 			} else {
 				$navigation .= '<b>' . $l . '</b>';
 			}
 		}
+		
 		$navigation .= ')';
+		
 		return $navigation;
 	}
 
@@ -611,63 +658,69 @@ END;
 	 * based on the getParameters() value for that format's query printer
 	 */
 	function showFormatOptions( $format, $param_values ) {
-		$text = "";
+		$text = '';
+		
 		$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
-		if ( method_exists( $printer, 'getParameters' ) )
-			$params = $printer->getParameters();
-		else
-			$params = array();
+		
+		
+		$params = method_exists( $printer, 'getParameters' ) ? $printer->getParameters() : array();
+
 		foreach ( $params as $i => $param ) {
 			$param_name = $param['name'];
 			$type = $param['type'];
 			$desc = $param['description'];
-			$cur_value = ( array_key_exists( $param_name, $param_values ) ) ? $param_values[$param_name] : "";
+			$cur_value = ( array_key_exists( $param_name, $param_values ) ) ? $param_values[$param_name] : '';
+			
 			// 3 values per row, with alternating colors for rows
 			if ( $i % 3 == 0 ) {
 				$bgcolor = ( $i % 6 ) == 0 ? '#dddddd' : 'white';
 				$text .= "<div style=\"background: $bgcolor;\">";
 			}
+			
 			$text .= "<div style=\"width: 30%; padding: 5px; float: left;\">$param_name:\n";
+			
 			switch ( $type ) {
-			case 'int':
-				$text .= "<input type=\"text\" name=\"p[$param_name]\" size=\"6\" value=\"$cur_value\" />";
-				break;
-			case 'string':
-				$text .= "<input type=\"text\" name=\"p[$param_name]\" size=\"32\" value=\"$cur_value\" />";
-				break;
-			case 'enumeration':
-				$values = $param['values'];
-				$text .= "<select name=\"p[$param_name]\">\n";
-				$text .= "	<option value=''></option>\n";
-				foreach ( $values as $val ) {
-					if ( $cur_value == $val )
-						$selected_str = 'selected';
-					else
-						$selected_str = '';
-					$text .= "	<option value='$val' $selected_str>$val</option>\n";
-				}
-				$text .= "</select>";
-				break;
-			case 'enum-list':
-				$all_values = $param['values'];
-				$cur_values = explode( ',', $cur_value );
-				foreach ( $all_values as $val ) {
-					$checked_str = ( in_array( $val, $cur_values ) ) ? "checked" : "";
-					$text .= "<span style=\"white-space: nowrap; padding-right: 5px;\"><input type=\"checkbox\" name=\"p[$param_name][$val]\" value=\"true\" $checked_str /> <tt>$val</tt></span>\n";
-				}
-				break;
-			case 'boolean':
-				$checked_str = ( array_key_exists( $param_name, $param_values ) ) ? 'checked' : '';
-				$text .= "<input type=\"checkbox\" name=\"p[$param_name]\" value=\"true\" $checked_str />";
-				break;
+				case 'int':
+					$text .= "<input type=\"text\" name=\"p[$param_name]\" size=\"6\" value=\"$cur_value\" />";
+					break;
+				case 'string':
+					$text .= "<input type=\"text\" name=\"p[$param_name]\" size=\"32\" value=\"$cur_value\" />";
+					break;
+				case 'enumeration':
+					$values = $param['values'];
+					$text .= "<select name=\"p[$param_name]\">\n";
+					$text .= "	<option value=''></option>\n";
+					foreach ( $values as $val ) {
+						if ( $cur_value == $val )
+							$selected_str = 'selected';
+						else
+							$selected_str = '';
+						$text .= "	<option value='$val' $selected_str>$val</option>\n";
+					}
+					$text .= "</select>";
+					break;
+				case 'enum-list':
+					$all_values = $param['values'];
+					$cur_values = explode( ',', $cur_value );
+					foreach ( $all_values as $val ) {
+						$checked_str = ( in_array( $val, $cur_values ) ) ? "checked" : "";
+						$text .= "<span style=\"white-space: nowrap; padding-right: 5px;\"><input type=\"checkbox\" name=\"p[$param_name][$val]\" value=\"true\" $checked_str /> <tt>$val</tt></span>\n";
+					}
+					break;
+				case 'boolean':
+					$checked_str = ( array_key_exists( $param_name, $param_values ) ) ? 'checked' : '';
+					$text .= "<input type=\"checkbox\" name=\"p[$param_name]\" value=\"true\" $checked_str />";
+					break;
 			}
+			
 			$text .= "\n	<br /><em>$desc</em>\n</div>\n";
+			
 			if ( $i % 3 == 2 || $i == count( $params ) - 1 ) {
 				$text .= "<div style=\"clear: both\";></div></div>\n";
 			}
 		}
+		
 		return $text;
 	}
 
 }
-
