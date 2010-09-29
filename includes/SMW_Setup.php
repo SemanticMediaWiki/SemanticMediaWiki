@@ -27,13 +27,14 @@ require_once( 'SMW_GlobalFunctions.php' );
  */
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $wgVersion, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles;
-	global $smwgIP, $smwgNamespace, $wgJobClasses, $wgExtensionAliasesFiles, $wgServerName;
+	global $smwgIP, $smwgNamespace, $wgJobClasses, $wgExtensionAliasesFiles, $wgServer;
 	
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
 	if ( $namespace === null ) {
-		$namespace = $wgServerName;
+		wfWarn( 'You should be providing the domain name to enableSemantics()' );
+		$namespace = parse_url( $wgServer, PHP_URL_HOST );
 	}
 	if ( !$complete && ( $smwgNamespace !== '' ) ) {
 		$smwgNamespace = '.' . $namespace;
