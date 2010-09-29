@@ -3648,7 +3648,7 @@ As propiedades ás que aínda lles falta unha páxina atópanse na [[Special:Wan
 	'smw_ask_otheroptions' => 'Outras opcións',
 	'smw_ask_show_embed' => 'Mostrar o código incrustado',
 	'smw_ask_hide_embed' => 'Agochar o código incrustado',
-	'smw_ask_embed_instr' => 'Para incrustar esta pesquisa en liña nunha páxina wiki use o código de embaixo.',
+	'smw_ask_embed_instr' => 'Para incrustar esta pescuda en liña nunha páxina wiki use o código de embaixo.',
 	'searchbyproperty' => 'Procurar por propiedade',
 	'smw_sbv_docu' => 'Procurar por todas as páxinas que teñen a propiedade e o valor dados.',
 	'smw_sbv_novalue' => 'Por favor, insira un valor válido para a propiedade ou vexa todos os valores das propiedades para “$1”.',
