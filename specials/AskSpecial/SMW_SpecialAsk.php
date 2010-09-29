@@ -30,6 +30,11 @@ class SMWAskPage extends SpecialPage {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
+	/**
+	 * Main entrypoint for the special page.
+	 * 
+	 * @param string $p
+	 */
 	public function execute( $p ) {
 		global $wgOut, $wgRequest, $smwgQEnabled, $smwgRSSEnabled, $smwgMW_1_14;
 		
@@ -48,7 +53,7 @@ class SMWAskPage extends SpecialPage {
 				$format = $wgRequest->getVal( 'showformatoptions' );
 				$params = $wgRequest->getArray( 'params' );
 				$wgOut->disable();
-				print self::showFormatOptions( $format, $params );
+				echo self::showFormatOptions( $format, $params );
 			} else {
 				$this->extractQueryParameters( $p );
 				$this->makeHTMLResult();
@@ -59,10 +64,14 @@ class SMWAskPage extends SpecialPage {
 		wfProfileOut( 'doSpecialAsk (SMW)' );
 	}
 
+	/**
+	 * This code rather hacky since there are many ways to call that special page, the most involved of
+	 * which is the way that this page calls itself when data is submitted via the form (since the shape
+	 * of the parameters then is governed by the UI structure, as opposed to being governed by reason).
+	 * 
+	 * @param string $p
+	 */
 	protected function extractQueryParameters( $p ) {
-		// This code rather hacky since there are many ways to call that special page, the most involved of
-		// which is the way that this page calls itself when data is submitted via the form (since the shape
-		// of the parameters then is governed by the UI structure, as opposed to being governed by reason).
 		global $wgRequest, $smwgQMaxInlineLimit;
 
 		// First make all inputs into a simple parameter list that can again be parsed into components later.
@@ -75,9 +84,11 @@ class SMWAskPage extends SpecialPage {
 				$rawparams = SMWInfolink::decodeParameters( $query_val, false ); // p is used for any additional parameters in certain links
 			else {
 				$query_values = $wgRequest->getArray( 'p' );
+				
 				foreach ( $query_values as $key => $val ) {
 					if ( empty( $val ) ) unset( $query_values[$key] );
 				}
+				
 				$rawparams = SMWInfolink::decodeParameters( $query_values, false ); // p is used for any additional parameters in certain links
 			}
 		} else { // called from wiki, get all parameters
@@ -98,15 +109,18 @@ class SMWAskPage extends SpecialPage {
 			
 			foreach ( $ps as $param ) { // add initial ? if omitted (all params considered as printouts)
 				$param = trim( $param );
+				
 				if ( ( $param != '' ) && ( $param { 0 } != '?' ) ) {
 					$param = '?' . $param;
 				}
+				
 				$rawparams[] = $param;
 			}
 		}
 
 		// Now parse parameters and rebuilt the param strings for URLs
 		SMWQueryProcessor::processFunctionParams( $rawparams, $this->m_querystring, $this->m_params, $this->m_printouts );
+		
 		// Try to complete undefined parameter values from dedicated URL params
 		if ( !array_key_exists( 'format', $this->m_params ) ) {
 			if ( array_key_exists( 'rss', $this->m_params ) ) { // backwards compatibility (SMW<=1.1 used this)
@@ -118,8 +132,10 @@ class SMWAskPage extends SpecialPage {
 		
 		if ( !array_key_exists( 'order', $this->m_params ) ) {
 			$order_values = $wgRequest->getArray( 'order' );
+			
 			if ( is_array( $order_values ) ) {
 				$this->m_params['order'] = '';
+				
 				foreach ( $order_values as $order_value ) {
 					if ( $order_value == '' ) $order_value = 'ASC';
 					$this->m_params['order'] .= ( $this->m_params['order'] != '' ? ',' : '' ) . $order_value;
@@ -167,7 +183,12 @@ class SMWAskPage extends SpecialPage {
 		$this->m_editquery = ( $wgRequest->getVal( 'eq' ) == 'yes' ) || ( $this->m_querystring == '' );
 	}
 
-	static protected function addAutocompletionJavascriptAndCSS() {
+	/**
+	 * Creates and adds the JavaScript and JS needed for autocompletion to $wgOut.
+	 * 
+	 * @since 1.5.2
+	 */
+	protected static function addAutocompletionJavascriptAndCSS() {
 		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
 
 		// Add CSS and JavaScript for jQuery and jQuery UI.
@@ -181,6 +202,7 @@ class SMWAskPage extends SpecialPage {
 			} else {
 				$scripts[] = "$smwgScriptPath/libs/jquery-1.4.2.min.js";
 			}
+			
 			$smwgJQueryIncluded = true;
 		}
 
@@ -295,6 +317,9 @@ END;
 		$wgOut->addScript( $javascript_autocomplete_text );
 	}
 
+	/**
+	 * TODO: document
+	 */
 	protected function makeHTMLResult() {
 		global $wgOut, $smwgAutocompleteInSpecialAsk;
 
@@ -419,12 +444,13 @@ END;
 			global $wgRequest;
 			
 			$hidequery = $wgRequest->getVal( 'eq' ) == 'no';
+			
 			// if it's an export format (like CSV, JSON, etc.),
 			// don't actually export the data if 'eq' is set to
 			// either 'yes' or 'no' in the query string - just
 			// show the link instead
-			if ( $this->m_editquery || $hidequery )
-				$result_mime = false;
+			if ( $this->m_editquery || $hidequery ) $result_mime = false;
+				
 			if ( $result_mime == false ) {
 				if ( $res->getCount() > 0 ) {
 					if ( $this->m_editquery ) $urltail .= '&eq=yes';
@@ -468,11 +494,18 @@ END;
 				header( "content-disposition: attachment; filename=$result_name" );
 			}
 			
-			print $result;
+			echo $result;
 		}
 	}
 
-
+	/**
+	 * TODO: document
+	 * 
+	 * @param string $printoutstring
+	 * @param string $urltail
+	 * 
+	 * @return string
+	 */
 	protected function getInputForm( $printoutstring, $urltail ) {
 		global $wgUser, $smwgQSortingSupport, $wgLang, $smwgResultFormats;
 		
@@ -590,6 +623,11 @@ END;
 		return $result;
 	}
 
+	/**
+	 * TODO: document
+	 * 
+	 * @return string
+	 */
 	protected static function getEmbedToggle() {
 		return '<span id="embed_show"><a href="#" rel="nofollow" onclick="' .
 			"document.getElementById('inlinequeryembed').style.display='block';" .
@@ -606,8 +644,13 @@ END;
 
 	/**
 	 * Build the navigation for some given query result, reuse url-tail parameters.
+	 * 
+	 * @param SMWQueryResult $res
+	 * @param string $urltail
+	 * 
+	 * @return string
 	 */
-	protected function getNavigationBar( $res, $urltail ) {
+	protected function getNavigationBar( SMWQueryResult $res, $urltail ) {
 		global $wgUser, $smwgQMaxInlineLimit;
 		
 		$skin = $wgUser->getSkin();
@@ -655,13 +698,17 @@ END;
 
 	/**
 	 * Display a form section showing the options for a given format,
-	 * based on the getParameters() value for that format's query printer
+	 * based on the getParameters() value for that format's query printer.
+	 * 
+	 * @param string $format
+	 * @param array $paramValues
+	 * 
+	 * @return string
 	 */
-	function showFormatOptions( $format, $param_values ) {
+	protected function showFormatOptions( $format, array $paramValues ) {
 		$text = '';
 		
 		$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
-		
 		
 		$params = method_exists( $printer, 'getParameters' ) ? $printer->getParameters() : array();
 
@@ -669,7 +716,8 @@ END;
 			$param_name = $param['name'];
 			$type = $param['type'];
 			$desc = $param['description'];
-			$cur_value = ( array_key_exists( $param_name, $param_values ) ) ? $param_values[$param_name] : '';
+			
+			$cur_value = ( array_key_exists( $param_name, $paramValues ) ) ? $paramValues[$param_name] : '';
 			
 			// 3 values per row, with alternating colors for rows
 			if ( $i % 3 == 0 ) {
@@ -690,6 +738,7 @@ END;
 					$values = $param['values'];
 					$text .= "<select name=\"p[$param_name]\">\n";
 					$text .= "	<option value=''></option>\n";
+					
 					foreach ( $values as $val ) {
 						if ( $cur_value == $val )
 							$selected_str = 'selected';
@@ -697,18 +746,19 @@ END;
 							$selected_str = '';
 						$text .= "	<option value='$val' $selected_str>$val</option>\n";
 					}
-					$text .= "</select>";
+					
+					$text .= '</select>';
 					break;
 				case 'enum-list':
 					$all_values = $param['values'];
 					$cur_values = explode( ',', $cur_value );
 					foreach ( $all_values as $val ) {
-						$checked_str = ( in_array( $val, $cur_values ) ) ? "checked" : "";
+						$checked_str = ( in_array( $val, $cur_values ) ) ? 'checked' : '';
 						$text .= "<span style=\"white-space: nowrap; padding-right: 5px;\"><input type=\"checkbox\" name=\"p[$param_name][$val]\" value=\"true\" $checked_str /> <tt>$val</tt></span>\n";
 					}
 					break;
 				case 'boolean':
-					$checked_str = ( array_key_exists( $param_name, $param_values ) ) ? 'checked' : '';
+					$checked_str = ( array_key_exists( $param_name, $paramValues ) ) ? 'checked' : '';
 					$text .= "<input type=\"checkbox\" name=\"p[$param_name]\" value=\"true\" $checked_str />";
 					break;
 			}
