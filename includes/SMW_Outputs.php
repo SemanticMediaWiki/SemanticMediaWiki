@@ -1,12 +1,4 @@
 <?php
-/**
- * This file contains the SMWOutputs class.
- *
- * @author Markus Krötzsch
- *
- * @file
- * @ingroup SMW
- */
 
 /**
  * This class attempts to provide safe yet simple means for managing data that is relevant
@@ -28,12 +20,15 @@
  * that creates SMW outputs that may require head items must afterwards clear the temporal store by
  * writing its contents to the according output.
  *
+ * @file SMW_Ouputs.php
  * @ingroup SMW
+ * 
+ * @author Markus Krötzsch
  */
 class SMWOutputs {
 
-	/// Protected member function for temporarily storing header items
-	static protected $mHeadItems = array();
+	/// Protected member function for temporarily storing header items.
+	protected static $mHeadItems = array();
 
 	/**
 	 * Announce that some head item (usually CSS or JavaScript) is required to
@@ -54,6 +49,9 @@ class SMWOutputs {
 	 * @param $id string or predefined constant for identifying a head item
 	 * @param $item string containing a complete HTML-compatibly text snippet that
 	 * should go into the HTML header; only required if $id is no built-in constant.
+	 * 
+	 * FIXME: switch on precence of the resource loader (introduced in MW 1.17).
+	 *        SMW_sorttable.js uses addOnloadHook and breaks as it is now on 1.17.
 	 */
 	static public function requireHeadItem( $id, $item = '' ) {
 		if ( is_numeric( $id ) ) {
@@ -129,7 +127,6 @@ class SMWOutputs {
 	 * @param ParserOutput $parserOutput
 	 */
 	static public function commitToParserOutput( ParserOutput $parserOutput ) {
-		// debug_zval_dump(self::$mItems);
 		foreach ( self::$mHeadItems as $key => $item ) {
 			$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
 		}
@@ -154,4 +151,5 @@ class SMWOutputs {
 
 		self::$mHeadItems = array();
 	}
+	
 }
