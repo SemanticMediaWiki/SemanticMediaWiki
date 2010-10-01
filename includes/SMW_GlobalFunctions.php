@@ -72,31 +72,30 @@ define( 'SMW_DAY_YEAR', 3 ); // an entered digit can be either a month or a year
 /**
  * Return true if semantic data should be processed and displayed for a page
  * in the given namespace.
- * @return bool
+ * @return boolean
  */
 function smwfIsSemanticsProcessed( $namespace ) {
 	global $smwgNamespacesWithSemanticLinks;
 	return !empty( $smwgNamespacesWithSemanticLinks[$namespace] );
 }
 
-
 /**
  * Takes a title text and turns it safely into its DBKey. This function
  * reimplements most of the title normalization as done in Title.php in order
  * to achieve conversion with less overhead. The official code could be called
  * here if more advanced normalization is needed.
- * 
+ *
  * @param string $text
  */
 function smwfNormalTitleDBKey( $text ) {
 	global $wgCapitalLinks;
-	
+
 	$text = trim( $text );
-	
+
 	if ( $wgCapitalLinks ) {
 		$text = ucfirst( $text );
 	}
-	
+
 	return str_replace( ' ', '_', $text );
 }
 
@@ -105,25 +104,25 @@ function smwfNormalTitleDBKey( $text ) {
  * reimplements the title normalization as done in Title.php in order to
  * achieve conversion with less overhead. The official code could be called
  * here if more advanced normalization is needed.
- * 
+ *
  * @param string $text
  */
 function smwfNormalTitleText( $text ) {
 	global $wgCapitalLinks;
-	
+
 	$text = trim( $text );
-	
+
 	if ( $wgCapitalLinks ) {
 		$text = ucfirst( $text );
 	}
-	
+
 	return str_replace( '_', ' ', $text );
 }
 
 /**
  * Escapes text in a way that allows it to be used as XML content (e.g. as a
  * string value for some property).
- * 
+ *
  * @param string $text
  */
 function smwfXMLContentEncode( $text ) {
@@ -133,7 +132,7 @@ function smwfXMLContentEncode( $text ) {
 /**
  * Decodes character references and inserts Unicode characters instead, using
  * the MediaWiki Sanitizer.
- * 
+ *
  * @param string $text
  */
 function smwfHTMLtoUTF8( $text ) {
@@ -144,14 +143,14 @@ function smwfHTMLtoUTF8( $text ) {
 * This method formats a float number value according to the given language and
 * precision settings, with some intelligence to produce readable output. Used
 * to format a number that was not hand-formatted by a user.
-* 
+*
 * @param mixed $value input number
 * @param integer $decplaces optional positive integer, controls how many digits after
 * the decimal point are shown
 */
 function smwfNumberFormat( $value, $decplaces = 3 ) {
 	global $smwgMaxNonExpNumber;
-	
+
 	smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	$decseparator = wfMsgForContent( 'smw_decseparator' );
 
@@ -161,7 +160,7 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
 	// using number_format. This may lead to 1.200, so then use trim to
 	// remove trailing zeroes.
 	$doScientific = false;
-	
+
 	// @todo: Don't do all this magic for integers, since the formatting does not fit there
 	//       correctly. E.g. one would have integers formatted as 1234e6, not as 1.234e9, right?
 	// The "$value!=0" is relevant: we want to scientify numbers that are close to 0, but never 0!
@@ -182,7 +181,7 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
 			}
 		}
 	}
-	
+
 	if ( $doScientific ) {
 		// Should we use decimal places here?
 		$value = sprintf( "%1.6e", $value );
@@ -203,7 +202,7 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
 		//    Assumes substr is faster than a regular expression replacement.
 		$end = $decseparator . str_repeat( '0', $decplaces );
 		$lenEnd = strlen( $end );
-		
+
 		if ( substr( $value, - $lenEnd ) === $end ) {
 			$value = substr( $value, 0, - $lenEnd );
 		} else {
@@ -212,7 +211,7 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
 			$value = preg_replace( "/(\\$decseparator\\d+?)0*$/u", '$1', $value, 1 );
 		}
 	}
-	
+
 	return $value;
 }
 
@@ -229,7 +228,9 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
 function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' <!--br-->' ) {
 	if ( count( $messages ) > 0 ) {
 		SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
-		foreach( $messages as &$message ) $message = htmlspecialchars( $message );
+		foreach( $messages as &$message ) {
+			$message = htmlspecialchars( $message );
+		}
 		$messageString = implode( $seperator, $messages );
 		return '<span class="smwttpersist"><span class="smwtticon">' . $icon . '.png</span><span class="smwttcontent">' . $messageString . '</span> </span>';
 	} else {
@@ -242,10 +243,10 @@ function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' 
  * wfLoadExtensionMessages function will no longer be needed (or supported).
  * This function is used for maintaining compatibility with MediaWiki 1.15 or
  * below.
- * 
+ *
  * @param string $extensionName The extension name for finding the the message
  * file; same as in wfLoadExtensionMessages()
- * 
+ *
  * @since 1.5.1
  */
 function smwfLoadExtensionMessages( $extensionName ) {
@@ -260,21 +261,21 @@ function smwfLoadExtensionMessages( $extensionName ) {
  * infrastructure allows to set up load balancing and task-dependent use of
  * stores (e.g. using other stores for fast querying than for storing new
  * facts), somewhat similar to MediaWiki's DB implementation.
- * 
+ *
  * @return SMWStore
  */
 function &smwfGetStore() {
 	global $smwgMasterStore, $smwgDefaultStore, $smwgIP;
-	
+
 	// No autoloading for RAP store, since autoloaded classes are in rare cases loaded by MW even if not used in code.
 	// This is not possible for RAPstore, which depends on RAP being installed.
-	if ( $smwgDefaultStore == 'SMWRAPStore2' ) { 
+	if ( $smwgDefaultStore == 'SMWRAPStore2' ) {
 		include_once( $smwgIP . 'includes/storage/SMW_RAPStore2.php' );
 	}
-	
+
 	if ( $smwgMasterStore === null ) {
 		$smwgMasterStore = new $smwgDefaultStore();
 	}
-	
+
 	return $smwgMasterStore;
 }

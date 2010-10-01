@@ -19,20 +19,20 @@ class SMWFactbox {
 	 */
 	static public function getFactboxText( SMWSemanticData $semdata, $showfactbox = SMW_FACTBOX_NONEMPTY ) {
 		global $wgContLang;
-		wfProfileIn( "SMWFactbox::printFactbox (SMW)" );
+		wfProfileIn( 'SMWFactbox::printFactbox (SMW)' );
 		switch ( $showfactbox ) {
-			case SMW_FACTBOX_HIDDEN: // show never
-				wfProfileOut( "SMWFactbox::printFactbox (SMW)" );
+			case SMW_FACTBOX_HIDDEN: // never show
+				wfProfileOut( 'SMWFactbox::printFactbox (SMW)' );
 			return '';
 			case SMW_FACTBOX_SPECIAL: // show only if there are special properties
 				if ( !$semdata->hasVisibleSpecialProperties() ) {
-					wfProfileOut( "SMWFactbox::printFactbox (SMW)" );
+					wfProfileOut( 'SMWFactbox::printFactbox (SMW)' );
 					return '';
 				}
 			break;
 			case SMW_FACTBOX_NONEMPTY: // show only if non-empty
 				if ( !$semdata->hasVisibleProperties() ) {
-					wfProfileOut( "SMWFactbox::printFactbox (SMW)" );
+					wfProfileOut( 'SMWFactbox::printFactbox (SMW)' );
 					return '';
 				}
 			break;
@@ -44,9 +44,18 @@ class SMWFactbox {
 		if ( wfRunHooks( 'smwShowFactbox', array( &$text, $semdata ) ) ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
-			$rdflink = SMWInfolink::newInternalLink( wfMsgForContent( 'smw_viewasrdf' ), $wgContLang->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $semdata->getSubject()->getWikiValue(), 'rdflink' );
+			$rdflink = SMWInfolink::newInternalLink(
+				wfMsgForContent( 'smw_viewasrdf' ),
+				$wgContLang->getNsText( NS_SPECIAL ) . ':ExportRDF/' .
+					$semdata->getSubject()->getWikiValue(),
+				'rdflink'
+			);
 
-			$browselink = SMWInfolink::newBrowsingLink( $semdata->getSubject()->getText(), $semdata->getSubject()->getWikiValue(), 'swmfactboxheadbrowse' );
+			$browselink = SMWInfolink::newBrowsingLink(
+				$semdata->getSubject()->getText(),
+				$semdata->getSubject()->getWikiValue(),
+				'swmfactboxheadbrowse'
+			);
 			$text .= '<div class="smwfact">' .
 						'<span class="smwfactboxhead">' . wfMsgForContent( 'smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
 					'<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
@@ -82,7 +91,7 @@ class SMWFactbox {
 			}
 			$text .= '</table></div>';
 		}
-		wfProfileOut( "SMWFactbox::printFactbox (SMW)" );
+		wfProfileOut( 'SMWFactbox::printFactbox (SMW)' );
 		return $text;
 	}
 
@@ -94,7 +103,7 @@ class SMWFactbox {
 	 */
 	static public function getFactboxTextFromOutput( $parseroutput, $title ) {
 		global $wgRequest, $smwgShowFactboxEdit, $smwgShowFactbox;
-		$mws =  ( isset( $parseroutput->mSMWMagicWords ) ) ? $parseroutput->mSMWMagicWords:array();
+		$mws =  ( isset( $parseroutput->mSMWMagicWords ) ) ? $parseroutput->mSMWMagicWords : array();
 		if ( in_array( 'SMW_SHOWFACTBOX', $mws ) ) {
 			$showfactbox = SMW_FACTBOX_NONEMPTY;
 		} elseif ( in_array( 'SMW_NOFACTBOX', $mws ) ) {

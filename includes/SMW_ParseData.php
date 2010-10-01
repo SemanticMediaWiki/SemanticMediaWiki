@@ -1,9 +1,9 @@
 <?php
 /**
  * The class in this file manages semantic data collected during parsing of an article.
- * 
+ *
  * @author Markus Krötzsch
- * 
+ *
  * @file
  * @ingroup SMW
  */
@@ -32,55 +32,59 @@ class SMWParseData {
 	static public function stripMagicWords( &$text, $parser ) {
 		$words = array();
 		$mw = MagicWord::get( 'SMW_NOFACTBOX' );
-		
+
 		if ( $mw->matchAndRemove( $text ) ) {
 			$words[] = 'SMW_NOFACTBOX';
 		}
-		
+
 		$mw = MagicWord::get( 'SMW_SHOWFACTBOX' );
-		
+
 		if ( $mw->matchAndRemove( $text ) ) {
 			$words[] = 'SMW_SHOWFACTBOX';
 		}
-		
+
 		$output = SMWParseData::getOutput( $parser );
 		$output->mSMWMagicWords = $words;
-		
+
 		return $words;
 	}
 
 	/**
 	 * This function retrieves the SMW data from a given parser, and creates
 	 * a new empty container if it is not initiated yet.
-	 * 
+	 *
 	 * @retun SMWSemanticData
 	 */
 	static public function getSMWdata( $parser ) {
 		$output = self::getOutput( $parser );
 		$title = $parser->getTitle();
-		
+
 		// No parsing, create error.
-		if ( !isset( $output ) || !isset( $title ) ) return null; 
-		
+		if ( !isset( $output ) || !isset( $title ) ) {
+			return null;
+		}
+
 		// No data container yet.
-		if ( !isset( $output->mSMWData ) ) { 
+		if ( !isset( $output->mSMWData ) ) {
 			$output->mSMWData = new SMWSemanticData( SMWWikiPageValue::makePageFromTitle( $title ) );
 		}
-		
+
 		return $output->mSMWData;
 	}
 
 	/**
 	 * Clear all stored data for a given parser.
-	 * 
+	 *
 	 * @param Parser $parser
 	 */
 	static public function clearStorage( Parser $parser ) {
 		$output = self::getOutput( $parser );
 		$title = $parser->getTitle();
-		
-		if ( !isset( $output ) || !isset( $title ) ) return;
-		
+
+		if ( !isset( $output ) || !isset( $title ) ) {
+			return;
+		}
+
 		$output->mSMWData = new SMWSemanticData( SMWWikiPageValue::makePageFromTitle( $title ) );
 	}
 
@@ -89,41 +93,40 @@ class SMWParseData {
 	 * intended to be used on user input, and property and value are sepcified by
 	 * strings as they might be found in a wiki. The function returns a datavalue
 	 * object that contains the result of the operation.
-	 * 
+	 *
 	 * @param string $propertyName
 	 * @param string $value
 	 * @param mixed $caption string or false
-	 * @param Parser $parser 
+	 * @param Parser $parser
 	 * @param boolean $storeAnnotation
-	 * 
+	 *
 	 * @return SMWDataValue
 	 */
 	static public function addProperty( $propertyName, $value, $caption, Parser $parser, $storeAnnotation = true ) {
-		wfProfileIn( "SMWParseData::addProperty (SMW)" );
-		
+		wfProfileIn( 'SMWParseData::addProperty (SMW)' );
+
 		global $smwgContLang;
-		
+
 		// See if this property is a special one, such as e.g. "has type".
 		$property = SMWPropertyValue::makeUserProperty( $propertyName );
 		$result = SMWDataValueFactory::newPropertyObjectValue( $property, $value, $caption );
-		
+
 		if ( $property->isInverse() ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$result->addError( wfMsgForContent( 'smw_noinvannot' ) );
 		} elseif ( $storeAnnotation && ( self::getSMWData( $parser ) !== null ) ) {
 			self::getSMWData( $parser )->addPropertyObjectValue( $property, $result );
-			
+
 			// Take note of the error for storage (do this here and not in storage, thus avoiding duplicates).
-			if ( !$result->isValid() ) { 
+			if ( !$result->isValid() ) {
 				self::getSMWData( $parser )->addPropertyObjectValue( SMWPropertyValue::makeProperty( '_ERRP' ), $property->getWikiPageValue() );
 			}
 		}
-		
-		wfProfileOut( "SMWParseData::addProperty (SMW)" );
-		
+
+		wfProfileOut( 'SMWParseData::addProperty (SMW)' );
+
 		return $result;
 	}
-
 
 	/**
 	 * This function takes care of storing the collected semantic data and takes
@@ -137,28 +140,28 @@ class SMWParseData {
 	 * conversion factors have changed. If so, it triggers SMWUpdateJobs for the relevant articles,
 	 * which then asynchronously update the semantic data in the database.
 	 *
-	 *  @param $parseroutput ParserOutput object that contains the results of parsing which will
-	 *  be stored.
-	 *  @param $title Title object specifying the page that should be saved.
-	 *  @param $makejobs Bool stating whether jobs should be created to trigger further updates if
-	 *  this appears to be necessary after this update.
+	 * @param $parseroutput ParserOutput object that contains the results of parsing which will
+	 * be stored.
+	 * @param $title Title object specifying the page that should be saved.
+	 * @param $makejobs Bool stating whether jobs should be created to trigger further updates if
+	 * this appears to be necessary after this update.
 	 *
-	 *  FIXME Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
+	 * @todo FIXME: Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
 	static public function storeData( $parseroutput, Title $title, $makejobs = true ) {
 		global $smwgEnableUpdateJobs, $wgContLang, $smwgMW_1_14, $smwgDeclarationProperties;
-		
+
 		$semdata = $parseroutput->mSMWData;
 		$namespace = $title->getNamespace();
 		$processSemantics = smwfIsSemanticsProcessed( $namespace );
-		
+
 		if ( !isset( $semdata ) ) { // no data at all?
 			$semdata = new SMWSemanticData( SMWWikiPageValue::makePageFromTitle( $title ) );
 		}
-		
+
 		if ( $processSemantics ) {
 			$pmdat = SMWPropertyValue::makeProperty( '_MDAT' );
-			
+
 			if ( count( $semdata->getPropertyValues( $pmdat ) ) == 0  ) { // no article data present yet, add it here
 				$timestamp =  $smwgMW_1_14 ? Revision::getTimeStampFromID( $title, $title->getLatestRevID() ) : Revision::getTimeStampFromID( $title->getLatestRevID() );
 				$dv = SMWDataValueFactory::newPropertyObjectValue( $pmdat,  $wgContLang->sprintfDate( 'd M Y G:i:s', $timestamp ) );
@@ -174,7 +177,7 @@ class SMWParseData {
 		// even finding uses of a property fails after its type was changed.
 		$updatejobflag = false;
 		$jobs = array();
-		
+
 		if ( $makejobs && $smwgEnableUpdateJobs && ( $namespace == SMW_NS_PROPERTY ) ) {
 			// If it is a property, then we need to check if the type or the allowed values have been changed.
 			$ptype = SMWPropertyValue::makeProperty( '_TYPE' );
@@ -195,14 +198,14 @@ class SMWParseData {
 			if ( $updatejobflag ) {
 				$prop = SMWPropertyValue::makeProperty( $title->getDBkey() );
 				$subjects = smwfGetStore()->getAllPropertySubjects( $prop );
-				
+
 				foreach ( $subjects as $subject ) {
 					$jobs[] = new SMWUpdateJob( $subject->getTitle() );
 				}
 				wfRunHooks( 'smwUpdatePropertySubjects', array( &$jobs ) );
-				
+
 				$subjects = smwfGetStore()->getPropertySubjects( SMWPropertyValue::makeProperty( '_ERRP' ), $prop->getWikiPageValue() );
-				
+
 				foreach ( $subjects as $subject ) {
 					$jobs[] = new SMWUpdateJob( $subject->getTitle() );
 				}
@@ -211,36 +214,39 @@ class SMWParseData {
 			// if it is a type we need to check if the conversion factors have been changed
 			$pconv = SMWPropertyValue::makeProperty( '_CONV' );
 			$ptype = SMWPropertyValue::makeProperty( '_TYPE' );
-			
+
 			$oldfactors = smwfGetStore()->getPropertyValues( $semdata->getSubject(), $pconv );
 			$newfactors = $semdata->getPropertyValues( $pconv );
 			$updatejobflag = !self::equalDatavalues( $oldfactors, $newfactors );
-			
+
 			if ( $updatejobflag ) {
 				$store = smwfGetStore();
-				
+
 				/// FIXME: this will kill large wikis! Use incremental updates!
 				$dv = SMWDataValueFactory::newTypeIdValue( '__typ', $title->getDBkey() );
 				$proppages = $store->getPropertySubjects( $ptype, $dv );
-				
+
 				foreach ( $proppages as $proppage ) {
 					$jobs[] = new SMWUpdateJob( $proppage->getTitle() );
 					$prop = SMWPropertyValue::makeProperty( $proppage->getDBkey() );
 					$subjects = $store->getAllPropertySubjects( $prop );
-					
+
 					foreach ( $subjects as $subject ) {
 						$jobs[] = new SMWUpdateJob( $subject->getTitle() );
 					}
-					
-					$subjects = smwfGetStore()->getPropertySubjects( SMWPropertyValue::makeProperty( '_ERRP' ), $prop->getWikiPageValue() );
-					
+
+					$subjects = smwfGetStore()->getPropertySubjects(
+						SMWPropertyValue::makeProperty( '_ERRP' ),
+						$prop->getWikiPageValue()
+					);
+
 					foreach ( $subjects as $subject ) {
 						$jobs[] = new SMWUpdateJob( $subject->getTitle() );
 					}
 				}
 			}
 		}
-		
+
 		// Actually store semantic data, or at least clear it if needed
 		if ( $processSemantics ) {
 			smwfGetStore()->updateData( $semdata );
@@ -252,7 +258,7 @@ class SMWParseData {
 		if ( $updatejobflag ) {
 			Job::batchInsert( $jobs ); ///NOTE: this only happens if $smwgEnableUpdateJobs was true above
 		}
-		
+
 		return true;
 	}
 
@@ -266,16 +272,20 @@ class SMWParseData {
 		// and finally concatenated, thus creating one long hash out of each
 		// of the data value arrays. These are compared.
 		$values = array();
-		foreach ( $dv1 as $v ) $values[] = $v->getHash();
-		
+		foreach ( $dv1 as $v ) {
+			$values[] = $v->getHash();
+		}
+
 		sort( $values );
-		$dv1hash = implode( "___", $values );
-		
+		$dv1hash = implode( '___', $values );
+
 		$values = array();
-		foreach ( $dv2 as $v ) $values[] = $v->getHash();
-		
+		foreach ( $dv2 as $v ) {
+			$values[] = $v->getHash();
+		}
+
 		sort( $values );
-		$dv2hash = implode( "___", $values );
+		$dv2hash = implode( '___', $values );
 
 		return ( $dv1hash == $dv2hash );
 	}
@@ -283,7 +293,7 @@ class SMWParseData {
 	/**
 	 * Get the parser output from a parser object. The result is also stored
 	 * in SMWParseData::$mPrevOutput for further reference.
-	 * 
+	 *
 	 * @param Parser $parser
 	 */
 	static protected function getOutput( Parser $parser ) {
@@ -292,7 +302,7 @@ class SMWParseData {
 		} else {
 			self::$mPrevOutput = $parser->mOutput;
 		}
-		
+
 		return self::$mPrevOutput;
 	}
 
@@ -302,11 +312,13 @@ class SMWParseData {
 	 */
 	static public function onParserAfterTidy( &$parser, &$text ) {
 		global $smwgUseCategoryHierarchy, $smwgCategoriesAsInstances;
-		
-		if ( self::getSMWData( $parser ) === null ) return true;
-		
+
+		if ( self::getSMWData( $parser ) === null ) {
+			return true;
+		}
+
 		$categories = $parser->mOutput->getCategoryLinks();
-		
+
 		foreach ( $categories as $name ) {
 			if ( $smwgCategoriesAsInstances && ( self::getSMWData( $parser )->getSubject()->getNamespace() != NS_CATEGORY ) ) {
 				$pinst = SMWPropertyValue::makeProperty( '_INST' );
@@ -314,7 +326,7 @@ class SMWParseData {
 				$dv->setValues( $name, NS_CATEGORY );
 				self::getSMWData( $parser )->addPropertyObjectValue( $pinst, $dv );
 			}
-			
+
 			if ( $smwgUseCategoryHierarchy && ( self::getSMWData( $parser )->getSubject()->getNamespace() == NS_CATEGORY ) ) {
 				$psubc = SMWPropertyValue::makeProperty( '_SUBC' );
 				$dv = SMWDataValueFactory::newPropertyObjectValue( $psubc );
@@ -322,10 +334,10 @@ class SMWParseData {
 				self::getSMWData( $parser )->addPropertyObjectValue( $psubc, $dv );
 			}
 		}
-		
+
 		$sortkey = ( $parser->mDefaultSort ? $parser->mDefaultSort : self::getSMWData( $parser )->getSubject()->getText() );
 		self::getSMWData( $parser )->getSubject()->setSortkey( $sortkey );
-		
+
 		return true;
 	}
 
@@ -342,33 +354,37 @@ class SMWParseData {
 	 */
 	static public function onNewRevisionFromEditComplete( $article, $rev, $baseID ) {
 		global $wgContLang, $smwgContLang;
-		
+
 		if ( ( $article->mPreparedEdit ) && ( $article->mPreparedEdit->output instanceof ParserOutput ) ) {
 			$output = $article->mPreparedEdit->output;
 			$title = $article->getTitle();
-			
-			if ( !isset( $title ) ) return true; // nothing we can do
+
+			if ( !isset( $title ) ) {
+				return true; // nothing we can do
+			}
 			if ( !isset( $output->mSMWData ) ) { // no data container yet, make one
 				$output->mSMWData = new SMWSemanticData( SMWWikiPageValue::makePageFromTitle( $title ) );
 			}
-			
+
 			$semdata = $output->mSMWData;
 		} else { // give up, just keep the old data
 			return true;
 		}
-		
+
 		$pmdat = SMWPropertyValue::makeProperty( '_MDAT' );
-		
+
 		// create a date string that is certainly parsable in the current language:
 		$timestamp = $article->getTimestamp();
-		
-		$date = $wgContLang->sprintfDate( 'd ', $timestamp ) . $smwgContLang->getMonthLabel( ( $wgContLang->sprintfDate( 'm', $timestamp ) + 0 ) ) . $wgContLang->sprintfDate( ' Y G:i:s', $timestamp );
+
+		$date = $wgContLang->sprintfDate( 'd ', $timestamp ) .
+				$smwgContLang->getMonthLabel( ( $wgContLang->sprintfDate( 'm', $timestamp ) + 0 ) ) .
+				$wgContLang->sprintfDate( ' Y G:i:s', $timestamp );
 		$dv = SMWDataValueFactory::newPropertyObjectValue( $pmdat, $date );
-		
+
 		// The below method is not safe, since "M" as used in MW may not be the month label as used in SMW if SMW falls back to some other language:
-		//   $dv = SMWDataValueFactory::newPropertyObjectValue($pmdat,  $wgContLang->sprintfDate('d M Y G:i:s',$article->getTimestamp()));
+		//   $dv = SMWDataValueFactory::newPropertyObjectValue( $pmdat, $wgContLang->sprintfDate( 'd M Y G:i:s', $article->getTimestamp() ) );
 		$semdata->addPropertyObjectValue( $pmdat, $dv );
-		
+
 		return true;
 	}
 
@@ -380,21 +396,21 @@ class SMWParseData {
 			$output = $links_update->mParserOutput;
 		} else { // MediaWiki <= 1.13 compatibility
 			$output = self::$mPrevOutput;
-			
+
 			if ( !isset( $output ) ) {
 				smwfGetStore()->clearData( $links_update->mTitle, SMWFactbox::isNewArticle() );
 				return true;
 			}
 		}
-		
+
 		self::storeData( $output, $links_update->mTitle, true );
-		
+
 		return true;
 	}
 
 	/**
-	 *  This method will be called whenever an article is deleted so that
-	 *  semantic properties are cleared appropriately.
+	 * This method will be called whenever an article is deleted so that
+	 * semantic properties are cleared appropriately.
 	 */
 	static public function onArticleDelete( &$article, &$user, &$reason ) {
 		smwfGetStore()->deleteSubject( $article->getTitle() );
@@ -402,8 +418,8 @@ class SMWParseData {
 	}
 
 	/**
-	 *  This method will be called whenever an article is moved so that
-	 *  semantic properties are moved accordingly.
+	 * This method will be called whenever an article is moved so that
+	 * semantic properties are moved accordingly.
 	 */
 	static public function onTitleMoveComplete( &$old_title, &$new_title, &$user, $pageid, $redirid ) {
 		smwfGetStore()->changeTitle( $old_title, $new_title, $pageid, $redirid );

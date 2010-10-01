@@ -19,13 +19,17 @@
 class SMWRecordDescription extends SMWConjunction {
 
 	public function getQueryString( $asvalue = false ) {
-		if ( !$asvalue ) return ''; // give up; SMWRecordDescriptions must always be values
+		if ( !$asvalue ) {
+			return ''; // give up; SMWRecordDescriptions must always be values
+		}
 		$fields = array();
 		$maxpos = - 1;
 		foreach ( $this->m_descriptions as $desc ) {
 			if ( $desc instanceof SMWRecordFieldDescription ) { // everything else would be a bug; ignore
 				$fields[$desc->getPosition()] = $desc->getDescription()->getQueryString( true );
-				if ( $maxpos < $desc->getPosition() ) $maxpos = $desc->getPosition();
+				if ( $maxpos < $desc->getPosition() ) {
+					$maxpos = $desc->getPosition();
+				}
 			}
 		}
 		if ( $maxpos < 0 ) {
@@ -82,7 +86,9 @@ class SMWRecordFieldDescription extends SMWSomeProperty {
 	}
 
 	public function getQueryString( $asvalue = false ) {
-		if ( !$asvalue ) return '';  // give up; SMWRecordFieldDescriptions must always be values
+		if ( !$asvalue ) {
+			return '';  // give up; SMWRecordFieldDescriptions must always be values
+		}
 		$prefix = '';
 		for ( $i = 0; $i < $this->m_position; $i++ ) {
 			$prefix .= '?; ';

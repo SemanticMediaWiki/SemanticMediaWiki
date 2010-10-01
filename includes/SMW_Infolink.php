@@ -112,7 +112,13 @@ class SMWInfolink {
 	 */
 	public static function newPropertySearchLink( $caption, $propertyName, $propertyValue, $style = 'smwsearch' ) {
 		global $wgContLang;
-		return new SMWInfolink( true, $caption, $wgContLang->getNsText( NS_SPECIAL ) . ':SearchByProperty', $style, array( $propertyName, $propertyValue ) );
+		return new SMWInfolink(
+			true,
+			$caption,
+			$wgContLang->getNsText( NS_SPECIAL ) . ':SearchByProperty',
+			$style,
+			array( $propertyName, $propertyValue )
+		);
 	}
 
 	/**
@@ -121,13 +127,18 @@ class SMWInfolink {
 	 * @param string $caption The label for the link.
 	 * @param string $subject
 	 * @param string $propertyName
-	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
+	 * @param mixed $style CSS class of a span to embed the link into, or false if no extra style is required.
 	 *
 	 * @return SMWInfolink
 	 */
 	public static function newInversePropertySearchLink( $caption, $subject, $propertyname, $style = false ) {
 		global $wgContLang;
-		return new SMWInfolink( true, $caption, $wgContLang->getNsText( NS_SPECIAL ) . ':PageProperty/' .  $subject . '::' . $propertyname, $style );
+		return new SMWInfolink(
+			true,
+			$caption,
+			$wgContLang->getNsText( NS_SPECIAL ) . ':PageProperty/' .  $subject . '::' . $propertyname,
+			$style
+		);
 	}
 
 	/**
@@ -141,7 +152,13 @@ class SMWInfolink {
 	 */
 	public static function newBrowsingLink( $caption, $titleText, $style = 'smwbrowse' ) {
 		global $wgContLang;
-		return new SMWInfolink( true, $caption, $wgContLang->getNsText( NS_SPECIAL ) . ':Browse', $style, array( $titleText ) );
+		return new SMWInfolink(
+			true,
+			$caption,
+			$wgContLang->getNsText( NS_SPECIAL ) . ':Browse',
+			$style,
+			array( $titleText )
+		);
 	}
 
 	/**
@@ -225,9 +242,13 @@ class SMWInfolink {
 
 				if ( $title !== null ) {
 					if ( $outputformat == SMW_OUTPUT_WIKI ) {
-						$link = "[" . $title->getFullURL( SMWInfolink::encodeParameters( $this->mParams, false ) ) . " $this->mCaption]";
+						$link = '[' . $title->getFullURL( SMWInfolink::encodeParameters( $this->mParams, false ) ) . " $this->mCaption]";
 					} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
-						$link = $this->getLinker( $linker )->makeKnownLinkObj( $title, $this->mCaption, SMWInfolink::encodeParameters( $this->mParams, false ) );
+						$link = $this->getLinker( $linker )->makeKnownLinkObj(
+							$title,
+							$this->mCaption,
+							SMWInfolink::encodeParameters( $this->mParams, false )
+						);
 					}
 				} else {
 					return ''; // the title was bad, normally this would indicate a software bug
@@ -239,7 +260,7 @@ class SMWInfolink {
 			if ( $outputformat == SMW_OUTPUT_WIKI ) {
 				$link = "[$target $this->mCaption]";
 			} else { // SMW_OUTPUT_HTML, SMW_OUTPUT_FILE
-				$link = "<a href=\"" . htmlspecialchars( $target ) . "\">$this->mCaption</a>";
+				$link = '<a href="' . htmlspecialchars( $target ) . "\">$this->mCaption</a>";
 			}
 		}
 
@@ -304,7 +325,9 @@ class SMWInfolink {
 	 * @return Linker
 	 */
 	protected function getLinker( &$linker = null ) {
-		if ( $linker === null ) $linker = new Linker();
+		if ( $linker === null ) {
+			$linker = new Linker();
+		}
 		return $linker;
 	}
 
@@ -330,7 +353,9 @@ class SMWInfolink {
 
 		if ( $forTitle ) {
 			foreach ( $params as $name => $value ) {
-				if ( is_string( $name ) && ( $name != '' ) ) $value = $name . '=' . $value;
+				if ( is_string( $name ) && ( $name != '' ) ) {
+					$value = $name . '=' . $value;
+				}
 				// Escape certain problematic values. Use SMW-escape
 				// (like URLencode but - instead of % to prevent double encoding by later MW actions)
 				//
@@ -355,7 +380,9 @@ class SMWInfolink {
 					$value
 				);
 
-				if ( $result != '' ) $result .= '/';
+				if ( $result != '' ) {
+					$result .= '/';
+				}
 
 				$result .= $value;
 			}
@@ -366,7 +393,9 @@ class SMWInfolink {
 				if ( is_string( $name ) && ( $name != '' ) ) {
 					$value = $name . '=' . rawurlencode( $value );
 
-					if ( $result != '' ) $result .= '&';
+					if ( $result != '' ) {
+						$result .= '&';
+					}
 
 					$result .= $value;
 				} else {
@@ -374,7 +403,9 @@ class SMWInfolink {
 				}
 			}
 			if ( count( $q ) > 0 ) { // prepend encoding for unlabelled parameters
-				if ( $result != '' ) $result = '&' . $result;
+				if ( $result != '' ) {
+					$result = '&' . $result;
+				}
 				$result = 'x=' . rawurlencode( SMWInfolink::encodeParameters( $q, true ) ) . $result;
 			}
 		}
@@ -414,7 +445,9 @@ class SMWInfolink {
 			$result = $wgRequest->getValues();
 
 			if ( array_key_exists( 'x', $result ) ) { // Considered to be part of the title param.
-				if ( $titleParam != '' ) $titleParam .= '/';
+				if ( $titleParam != '' ) {
+					$titleParam .= '/';
+				}
 				$titleParam .= $result['x'];
 				unset( $result['x'] );
 			}

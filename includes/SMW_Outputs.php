@@ -22,7 +22,7 @@
  *
  * @file SMW_Ouputs.php
  * @ingroup SMW
- * 
+ *
  * @author Markus Krötzsch
  */
 class SMWOutputs {
@@ -49,7 +49,7 @@ class SMWOutputs {
 	 * @param $id string or predefined constant for identifying a head item
 	 * @param $item string containing a complete HTML-compatibly text snippet that
 	 * should go into the HTML header; only required if $id is no built-in constant.
-	 * 
+	 *
 	 * FIXME: switch on precence of the resource loader (introduced in MW 1.17).
 	 *        SMW_sorttable.js uses addOnloadHook and breaks as it is now on 1.17.
 	 */
@@ -60,11 +60,11 @@ class SMWOutputs {
 			switch ( $id ) {
 				case SMW_HEADER_TOOLTIP:
 					self::requireHeadItem( SMW_HEADER_STYLE );
-					self::$mHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_tooltip.js"></script>';
+					self::$mHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath . '/skins/SMW_tooltip.js"></script>';
 				break;
 				case SMW_HEADER_SORTTABLE:
 					self::requireHeadItem( SMW_HEADER_STYLE );
-					self::$mHeadItems['smw_st'] = '<script type="text/javascript" src="' . $smwgScriptPath .  '/skins/SMW_sorttable.js"></script>';
+					self::$mHeadItems['smw_st'] = '<script type="text/javascript" src="' . $smwgScriptPath . '/skins/SMW_sorttable.js"></script>';
 				break;
 				case SMW_HEADER_STYLE:
 					global $wgContLang;
@@ -118,7 +118,9 @@ class SMWOutputs {
 			$po = $parser->mOutput;
 		}
 
-		if ( isset( $po ) ) self::commitToParserOutput( $po );
+		if ( isset( $po ) ) {
+			self::commitToParserOutput( $po );
+		}
 	}
 
 	/**
@@ -151,5 +153,5 @@ class SMWOutputs {
 
 		self::$mHeadItems = array();
 	}
-	
+
 }
