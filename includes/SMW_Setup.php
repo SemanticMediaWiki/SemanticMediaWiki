@@ -1,11 +1,16 @@
 <?php
+
 /**
  * Global functions used for setting up the Semantic MediaWiki extension.
- * @file
+ * 
+ * @file SMW_Setup.php
  * @ingroup SMW
  */
 
+// The SMW version number.
 define( 'SMW_VERSION', '1.5.3 alpha' );
+
+// A flag used to indicate SMW defines a semantic extension type for extension crdits.
 define( 'SEMANTIC_EXTENSION_TYPE', true );
 
 require_once( 'SMW_GlobalFunctions.php' );
@@ -49,6 +54,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 
 	$wgHooks['ParserTestTables'][] = 'smwfOnParserTestTables';
 	$wgHooks['AdminLinks'][] = 'smwfAddToAdminLinks';
+	
+	$wgHooks['ResourceLoaderRegisterModules'][] = 'smwfRegisterResourceLoaderModules';
 
 	if ( version_compare( $wgVersion, '1.17alpha', '>=' ) ) {
 		// For MediaWiki 1.17 alpha and later.
@@ -493,4 +500,42 @@ function smwfInitContentLanguage( $langcode ) {
 	$smwgContLang = new $smwContLangClass();
 
 	wfProfileOut( 'smwfInitContentLanguage (SMW)' );
+}
+
+/**
+ * Register the resource modules for the resource loader.
+ * 
+ * @since 1.5.3
+ * 
+ * @param ResourceLoader $resourceLoader
+ * 
+ * @return true
+ */
+function smwfRegisterResourceLoaderModules( ResourceLoader &$resourceLoader ) {
+	global $smwgScriptPath, $wgContLang;
+	
+	$modules = array(
+		'ext.smw.style' => array(
+			'styles' =>  $smwgScriptPath . ( $wgContLang->isRTL() ? '/skins/SMW_custom_rtl.css' : '/skins/SMW_custom.css' )
+		),
+		'ext.smw.tooltips' => array(
+			'scripts' =>  $smwgScriptPath . '/skins/SMW_tooltip.js',
+			'dependencies' => array(
+				'mediawiki.legacy.wikibits',
+				'ext.smw.style'
+			)
+		),
+		'ext.smw.sorttable' => array(
+			'scripts' =>  $smwgScriptPath . '/skins/SMW_sorttable.js',
+			'dependencies' => 'ext.smw.style'
+		)		
+	);
+	
+	foreach ( $modules as $name => $resources ) { 
+		$resourceLoader->register( $name, new ResourceLoaderFileModule(
+			array_merge_recursive( $resources, array( 'group' => 'ext.smw' ) )
+		) ); 
+	}
+	
+	return true;
 }

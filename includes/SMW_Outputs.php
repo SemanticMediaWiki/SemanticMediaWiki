@@ -31,6 +31,43 @@ class SMWOutputs {
 	protected static $mHeadItems = array();
 
 	/**
+	 * Adds rousource loader modules or other head items.
+	 * Falls back on requireHeadItemOld if the Resource Loader (MW >1.17) is not available.
+	 * 
+	 * @param mixed $id
+	 * @param string $item
+	 */
+	public static function requireHeadItem( $id, $item = '' ) {
+		global $wgVersion;
+		
+		// Use the b/c method when the resource loader is not available.
+		if ( !method_exists( 'OutputPage', 'addModules' ) ) {
+			return self::requireHeadItemOld( $id, $item );
+		}
+		
+		if ( is_numeric( $id ) ) {
+			global $wgOut;
+			switch ( $id ) {	
+				case SMW_HEADER_TOOLTIP:
+					$wgOut->addModules( 'ext.smw.tooltips' );
+					break;
+				case SMW_HEADER_SORTTABLE:
+					$wgOut->addModules( 'ext.smw.sorttable' );
+					break;
+				case SMW_HEADER_STYLE:
+					$wgOut->addModules( 'ext.smw.style' );	
+					break;
+			}	
+		}
+		else {
+			// This should not be used anymore; use the RL directly.
+			self::$mHeadItems[$id] = $item;
+		}
+	}
+	
+	/**
+	 * Method for backward compatibility with MW pre-1.17.
+	 * 
 	 * Announce that some head item (usually CSS or JavaScript) is required to
 	 * display the content just created. The function is called with an ID that
 	 * is one of SMW's SMW_HEADER_... constants, or a string ID followed by the
@@ -46,14 +83,13 @@ class SMWOutputs {
 	 * to be called "soon" -- there might always be other hooks first that commit the
 	 * existing data wrongly, depending on installed extensions and background jobs!
 	 *
+	 * @since 1.5.3
+	 * 
 	 * @param $id string or predefined constant for identifying a head item
 	 * @param $item string containing a complete HTML-compatibly text snippet that
 	 * should go into the HTML header; only required if $id is no built-in constant.
-	 *
-	 * FIXME: switch on precence of the resource loader (introduced in MW 1.17).
-	 *        SMW_sorttable.js uses addOnloadHook and breaks as it is now on 1.17.
 	 */
-	static public function requireHeadItem( $id, $item = '' ) {
+	protected static function requireHeadItemOld( $id, $item ) {
 		if ( is_numeric( $id ) ) {
 			global $smwgScriptPath;
 
@@ -78,7 +114,7 @@ class SMWOutputs {
 			}
 		} else { // custom head item
 			self::$mHeadItems[$id] = $item;
-		}
+		}		
 	}
 
 	/**

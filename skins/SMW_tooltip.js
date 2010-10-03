@@ -173,7 +173,7 @@ BubbleTT._bubbleMargins = {
 	bottom:   42,
 	left:     33,
 	right:    40
-}
+};
 
 /*pixels from boundary of the whole bubble div to the tip of the arrow*/
 BubbleTT._arrowOffsets = { 
@@ -181,7 +181,7 @@ BubbleTT._arrowOffsets = {
 	bottom:   9,
 	left:     1,
 	right:    8
-}
+};
 
 BubbleTT._bubblePadding = 15;
 BubbleTT._bubblePointOffset = 15;
@@ -252,7 +252,7 @@ BubbleTT.createBubbleForPoint = function(closingButton, origin, pageX, pageY, co
 		divImg.style.top = top + "px";
 		setImg(divImg, url, width, height);
 		divInner.appendChild(divImg);
-	}
+	};
 
 	createImg(imagePath + "bubble-top-left.png", 0, 0, margins.left, margins.top);
 	createImg(imagePath + "bubble-top.png", margins.left, 0, contentWidth, margins.top);
@@ -378,7 +378,7 @@ BubbleTT.fillBubble = function(bubble,origin){
 		}
 	}
 	bubble.content.appendChild(div);
-}
+};
 
 
 /*==================================================================
@@ -505,7 +505,7 @@ BubbleTT.DOM.registerEvent = function(elmt, eventName, handler) {
 			return handler(elmt, evt, target);
 		}
 		return true;
-	}
+	};
 
 	if (BubbleTT.Platform.browser.isIE) {
 		elmt.attachEvent("on" + eventName, handler2);
