@@ -126,6 +126,16 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWExpLiteral']             = $expDir . 'SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpResource']            = $expDir . 'SMW_Exp_Element.php';
 
+	// Parser hooks
+	$phDir = $smwgIP . 'includes/parserhooks/';
+	$wgAutoloadClasses['SMWAsk']               		= $phDir . 'SMW_Ask.php';
+	$wgAutoloadClasses['SMWShow']               	= $phDir . 'SMW_Show.php';
+	$wgAutoloadClasses['SMWInfo']               	= $phDir . 'SMW_Info.php';
+	$wgAutoloadClasses['SMWConcept']               	= $phDir . 'SMW_Concept.php';
+	$wgAutoloadClasses['SMWSet']               		= $phDir . 'SMW_Set.php';
+	$wgAutoloadClasses['SMWSetRecurringEvent']      = $phDir . 'SMW_SetRecurringEvent.php';
+	$wgAutoloadClasses['SMWDeclare']              	= $phDir . 'SMW_Declare.php';
+	
 	// Stores & queries
 	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php';
 	$wgAutoloadClasses['SMWQueryParser']            = $smwgIP . 'includes/SMW_QueryParser.php';
@@ -241,7 +251,7 @@ function smwfSetupExtension() {
 	$wgHooks['NewRevisionFromEditComplete'][] = 'SMWParseData::onNewRevisionFromEditComplete'; // fetch some MediaWiki data for replication in SMW's store
 	$wgHooks['OutputPageParserOutput'][] = 'SMWFactbox::onOutputPageParserOutput'; // copy some data for later Factbox display
 	$wgHooks['ArticleFromTitle'][] = 'smwfOnArticleFromTitle'; // special implementations for property/type articles
-	$wgHooks['ParserFirstCallInit'][] = 'SMWParserExtensions::registerParserFunctions';
+	$wgHooks['ParserFirstCallInit'][] = 'smwfRegisterParserFunctions';
 
 	if ( $smwgToolboxBrowseLink ) {
 		if ( version_compare( $wgVersion, '1.13', '>=' ) ) {
@@ -538,4 +548,23 @@ function smwfRegisterResourceLoaderModules( ResourceLoader &$resourceLoader ) {
 	}
 	
 	return true;
+}
+
+/**
+ * This hook registers parser functions and hooks to the given parser. It is
+ * called during SMW initialisation. Note that parser hooks are something different
+ * than MW hooks in general, which explains the two-level registration.
+ * 
+ * @since 1.5.3
+ */
+function smwfRegisterParserFunctions( Parser &$parser ) {
+	$parser->setFunctionHook( 'ask', array( 'SMWAsk', 'render' ) );
+	$parser->setFunctionHook( 'show', array( 'SMWShow', 'render' ) );
+	$parser->setFunctionHook( 'info', array( 'SMWInfo', 'render' ) );
+	$parser->setFunctionHook( 'concept', array( 'SMWConcept', 'render' ) );
+	$parser->setFunctionHook( 'set', array( 'SMWSet', 'render' ) );
+	$parser->setFunctionHook( 'set_recurring_event', array( 'SMWSetRecurringEvent', 'render' ) );
+	$parser->setFunctionHook( 'declare', array( 'SMWDeclare', 'render' ), SFH_OBJECT_ARGS );
+
+	return true; // Always return true, in order not to stop MW's hook processing!
 }
