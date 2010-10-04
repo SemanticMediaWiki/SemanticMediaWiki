@@ -2,6 +2,7 @@
 
 /**
  * Class for the 'ask' parser functions.
+ * @see http://semantic-mediawiki.org/wiki/Help:Inline_queries#Introduction_to_.23ask
  * 
  * @since 1.5.3
  * 

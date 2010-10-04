@@ -2,6 +2,7 @@
 
 /**
  * Class for the 'declare' parser functions.
+ * @see http://semantic-mediawiki.org/wiki/Help:Argument_declaration_in_templates
  * 
  * @since 1.5.3
  * 

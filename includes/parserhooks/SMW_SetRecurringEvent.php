@@ -2,6 +2,7 @@
 
 /**
  * Class for the 'set_recurring_event' parser functions.
+ * @see http://semantic-mediawiki.org/wiki/Help:Properties_and_types#Defining_recurring_events
  * 
  * @since 1.5.3
  * 
@@ -9,7 +10,7 @@
  * @ingroup SMW
  * @ingroup ParserHooks
  * 
- * @author Markus Krötzsch
+ * @author Yaron Koren
  * @author Jeroen De Dauw
  */
 class SMWSetRecurringEvent {

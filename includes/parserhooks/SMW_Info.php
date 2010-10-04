@@ -2,6 +2,7 @@
 
 /**
  * Class for the 'info' parser functions.
+ * @see ...TODO...
  * 
  * @since 1.5.3
  * 

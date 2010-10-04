@@ -2,6 +2,7 @@
 
 /**
  * Class for the 'set' parser functions.
+ * @see http://semantic-mediawiki.org/wiki/Help:Properties_and_types#Silent_annotations_using_.23set
  * 
  * @since 1.5.3
  * 

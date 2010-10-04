@@ -2,6 +2,7 @@
 
 /**
  * Class for the 'show' parser functions.
+ * @see http://semantic-mediawiki.org/wiki/Help:Inline_queries#The_.23show_parser_function
  * 
  * @since 1.5.3
  * 

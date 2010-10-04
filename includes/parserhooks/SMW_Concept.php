@@ -2,6 +2,7 @@
 
 /**
  * Class for the 'concept' parser functions.
+ * @see http://semantic-mediawiki.org/wiki/Help:Concepts
  * 
  * @since 1.5.3
  * 
