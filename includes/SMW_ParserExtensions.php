@@ -192,10 +192,7 @@ class SMWParserExtensions {
 		$parser->setFunctionHook( 'concept', array( 'SMWParserExtensions', 'doConcept' ) );
 		$parser->setFunctionHook( 'set', array( 'SMWParserExtensions', 'doSet' ) );
 		$parser->setFunctionHook( 'set_recurring_event', array( 'SMWParserExtensions', 'doSetRecurringEvent' ) );
-
-		if ( defined( 'SFH_OBJECT_ARGS' ) ) { // only available since MediaWiki 1.13
-			$parser->setFunctionHook( 'declare', array( 'SMWParserExtensions', 'doDeclare' ), SFH_OBJECT_ARGS );
-		}
+		$parser->setFunctionHook( 'declare', array( 'SMWParserExtensions', 'doDeclare' ), SFH_OBJECT_ARGS );
 
 		return true; // Always return true, in order not to stop MW's hook processing!
 	}
