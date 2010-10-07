@@ -6575,6 +6575,53 @@ Et ka keen neien ugefaang ginn.',
 	'smw_adminlinks_displayingdata' => 'Donnéeë weisen',
 );
 
+/** Lithuanian (Lietuvių)
+ * @author Vpovilaitis
+ */
+$messages['lt'] = array(
+	'smw-desc' => "Padaryti Jūsų wiki labiau prieinamą - mašinoms ''ir'' žmonėms ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
+	'smw_edithelp' => 'Taisyti savybių pagalbą',
+	'smw_finallistconjunct' => ', ir',
+	'smw_factbox_head' => 'Faktai apie $1',
+	'smw_isspecprop' => 'Ši savybė yra speciali šioje wiki.',
+	'smw_isknowntype' => 'Šis tipas yra standartinis duomenų tipas šioje wiki.',
+	'smw_isaliastype' => 'Šis tipas yra už duomenų tipo "$1" sinonimas.',
+	'smw_isnotype' => 'Šis tipas "$1" nėra standartinis wiki duomenų tipas, ir nebuvo pateiktas jo vartotojo apibrėžimas.',
+	'smw_concept_description' => 'Sąvokos "$1" aprašymas',
+	'smw_no_concept_namespace' => 'Sąvokos gali būti apibrėžtos tik Concept: vardų srities puslapiuose.',
+	'smw_multiple_concepts' => 'Kiekviename sąvokos aprašymo puslapyje gali turėti tik vieną sąvokos apibrėžimą.',
+	'smw_concept_cache_miss' => 'Sąvoka "$1" negali būti naudojamas šiuo metu, nes wiki konfigūracija reikalauja ją apskaičiuoti off-line. 
+Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administratorių, kad šią sąvoką padarytų prieinamą.',
+	'smw_noinvannot' => 'Reikšmės negali būti priskiriamos atvirkštinei savybei.',
+	'version-semantic' => 'Semantiniai praplėtimai',
+	'smw_baduri' => 'URI formoje "$1" yra draudžiami.',
+	'smw_printername_auto' => 'Automatinis',
+	'smw_printername_count' => 'Paskaičiuoti rezultatus',
+	'smw_printername_csv' => 'CSV eksportavimas',
+	'smw_printername_debug' => 'Derinti užklausą (ekspertams)',
+	'smw_printername_embedded' => 'Įstatyti puslapio turinį',
+	'smw_printername_json' => 'JSON eksportas',
+	'smw_printername_list' => 'Sąrašas',
+	'smw_printername_ol' => 'Išvardinimas',
+	'smw_printername_ul' => 'Sudarymas iš elementų',
+	'smw_printername_rss' => 'RSS eksportas',
+	'smw_printername_table' => 'Lentelė',
+	'smw_printername_broadtable' => 'Plati lentelė',
+	'smw_printername_template' => 'Šablonas',
+	'smw_paramdesc_limit' => 'Maksimalus grąžinamas rezultatų skaičius',
+	'smw_paramdesc_headers' => 'Rodyti antraštes/savybių pavadinimus',
+	'smw_paramdesc_mainlabel' => 'Etiketėje pateikti pagrindinio puslapio pavadinimą',
+	'smw_paramdesc_link' => 'Rodyti reikšmes kaip nuorodas',
+	'smw_paramdesc_intro' => 'Tekstas būtų rodomas prieš užklausos rezultatus, jei yra kokių nors rezultatų',
+	'smw_paramdesc_outro' => 'Tekstas būtų rodomas po užklausos rezultatų, jei yra kokių nors rezultatų',
+	'smw_paramdesc_default' => 'Tekstas būtų rodomas, jei nėra užklausos rezultatų',
+	'smw_paramdesc_searchlabel' => 'Nuorodos į rezultatus tekstas',
+	'smw_paramdesc_sep' => 'Reikšmių skirtukas',
+	'smw_paramdesc_template' => 'Šablono, su kuriuo būtų galima parodyti išvedimą, pavadinimas',
+	'smw_paramdesc_columns' => 'Stulpelių skaičius, kuriuose bus rodomas rezultatas (pagal nutylėjimą yra $1)',
+	'smw_paramdesc_userparam' => 'Reikšmė patenka į kiekvieną šabloną iškvietimą, jei šablonas yra naudojamas',
+);
+
 /** Macedonian (Македонски)
  * @author Bjankuloski06
  */
