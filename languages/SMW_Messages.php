@@ -6620,6 +6620,42 @@ Jei problema neišnyksta po tam tikro laiko, kreipkitės į svetainės administr
 	'smw_paramdesc_template' => 'Šablono, su kuriuo būtų galima parodyti išvedimą, pavadinimas',
 	'smw_paramdesc_columns' => 'Stulpelių skaičius, kuriuose bus rodomas rezultatas (pagal nutylėjimą yra $1)',
 	'smw_paramdesc_userparam' => 'Reikšmė patenka į kiekvieną šabloną iškvietimą, jei šablonas yra naudojamas',
+	'smw_paramdesc_introtemplate' => 'Šablono pavadinimas, kuris būtų rodomas prieš užklausos rezultatus, jei yra kokių nors rezultatų',
+	'smw_paramdesc_outrotemplate' => 'Šablono pavadinimas, kuris būtų rodomas po užklausos rezultatų, jei yra kokių nors rezultatų',
+	'smw_paramdesc_embedformat' => 'HTML žymė naudojama apibrėžti antraštes',
+	'smw_paramdesc_embedonly' => 'Nerodyti antraščių',
+	'smw_iq_disabled' => 'Semantinės užklausos yra išjungtos šioje wiki.',
+	'smw_iq_moreresults' => '... tolesni rezultatai',
+	'smw_iq_nojs' => 'Naudokite JavaScript naršyklę peržiūrėdami šį elementą.',
+	'smw_iq_altresults' => 'Naršyti rezultatų sąraše tiesiogiai.',
+	'smw_unknown_importns' => 'Importo funkcijos nėra prieinamos vardų sričiai "$1".',
+	'smw_nonright_importtype' => '$1 gali būti naudojamas tik puslapyje su vardų sritimi "$2".',
+	'smw_wrong_importtype' => '$1 negali būti naudojamas puslapyje su vardų sritimi "$2".',
+	'smw_no_importelement' => 'Elementas "$1" negali būti importuotas.',
+	'smw_parseerror' => 'Nurodyta reikšmė yra nesuprantama.',
+	'smw_notitle' => '"$1" negali būti naudojamas kaip puslapio pavadinimas šiame wiki.',
+	'smw_wrong_namespace' => 'Čia leidžiami tik puslapiai, priklausantys vardų sričiai "$1".',
+	'smw_unknowntype' => 'Savybei nustatytas nepalaikomas tipas "$1".',
+	'smw_manytypes' => 'Savybei apibrėžtas daugiau negu vienas tipas.',
+	'smw_emptystring' => 'Tuščios eilutės yra nepriimtinos.',
+	'smw_maxstring' => 'Simbolių eilutė $1 yra per ilga.',
+	'smw_notinenum' => '"$1" nėra šios savybės galimų reikšmių sąraše ($2).',
+	'smw_noboolean' => '"$1" nėra pripažįstama kaip loginė (true / false) vertė.',
+	'smw_true_words' => 'tiesa,t,taip,yes,y',
+	'smw_false_words' => 'klaida,k,ne,n,false,f,no',
+	'smw_nofloat' => '"$1" nėra skaičius.',
+	'smw_infinite' => 'Tokie dideli skaičiai, kaip "$1" yra nepalaikomi.',
+	'smw_infinite_unit' => 'Perskaičiavimo į vienetus "$1" rezultatas yra per didelis skaičius.',
+	'smw_novalues' => 'Nenurodyta reikšmė.',
+	'smw_unsupportedprefix' => 'Skaičiams priešdėlis ("$1") yra nepalaikomas.',
+	'smw_unsupportedunit' => 'Vienetų konvertavimas elementui "$1" nėra palaikomas.',
+	'smw_nodatetime' => 'Data "$1" buvo neatpažinta.',
+	'smw_toomanyclosing' => 'Atrodo, kad yra per daug elementų "$1" užklausoje.',
+	'smw_noclosingbrackets' => 'Kažkuris panaudojimas "<nowiki>[[</nowiki>" jūsų užklausoje nebuvo uždaryta atitikimo "]]".',
+	'smw_misplacedsymbol' => 'Simbolis "$1" buvo panaudotas toje vietoje, kurioje jis nėra naudojamas.',
+	'smw_unexpectedpart' => 'Užklausos dalis "$1" nebuvo suprasta. 
+Rezultatas gali būti ne tas, kurio tikėtasi.',
+	'smw_emptysubquery' => 'Kai kurios užklausos dalys turi blogas sąlygas.',
 );
 
 /** Macedonian (Македонски)
@@ -10204,6 +10240,16 @@ Uppskattning av hur långt uppdateringen har kommit:',
 	'smw_adminlinks_datastructure' => 'Datastruktur',
 	'smw_adminlinks_displayingdata' => 'Visar data',
 	'smw_adminlinks_inlinequerieshelp' => 'Hjälp för inbäddade frågor',
+);
+
+/** Tamil (தமிழ்)
+ * @author TRYPPN
+ */
+$messages['ta'] = array(
+	'smw_printername_auto' => 'தானாக',
+	'smw_printername_list' => 'பட்டியல்',
+	'smw_printername_table' => 'பட்டியல்',
+	'smw_printername_template' => 'வார்ப்புரு',
 );
 
 /** Telugu (తెలుగు)
