@@ -10339,6 +10339,7 @@ $messages['tk'] = array(
  * @author AnakngAraw
  */
 $messages['tl'] = array(
+	'smw-desc' => "Ginagawang mas napupuntahan ang wiki mo - para sa ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentasyon habang nasa Internet]) ng mga makina ''at'' mga tao",
 	'smw_edithelp' => 'Tulong sa paggawa ng pagbabago sa mga pag-aari',
 	'smw_viewasrdf' => 'Pasubo/pakaing RDF',
 	'smw_finallistconjunct' => ', at',
