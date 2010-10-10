@@ -255,7 +255,7 @@ class SMWResultArray {
 	 * @param SMWPrintRequest $printRequest
 	 * @param SMWStore $store
 	 */
-	public function SMWResultArray( SMWWikiPageValue $resultPage, SMWPrintRequest $printRequest, SMWStore $store ) {
+	public function __construct( SMWWikiPageValue $resultPage, SMWPrintRequest $printRequest, SMWStore $store ) {
 		$this->mResult = $resultPage;
 		$this->mPrintRequest = $printRequest;
 		$this->mStore = $store;

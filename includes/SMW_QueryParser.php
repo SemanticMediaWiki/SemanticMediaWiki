@@ -23,7 +23,7 @@ class SMWQueryParser {
 	protected $m_conceptprefix; // cache label of concept namespace . ':'
 	protected $m_queryfeatures; // query features to be supported, format similar to $smwgQFeatures
 
-	public function SMWQueryParser( $queryfeatures = false ) {
+	public function __construct( $queryfeatures = false ) {
 		global $wgContLang, $smwgQFeatures;
 		$this->m_categoryprefix = $wgContLang->getNsText( NS_CATEGORY ) . ':';
 		$this->m_conceptprefix = $wgContLang->getNsText( SMW_NS_CONCEPT ) . ':';
