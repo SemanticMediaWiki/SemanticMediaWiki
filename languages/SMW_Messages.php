@@ -7538,6 +7538,7 @@ Estimert framdrift på den noverande oppdateringa:',
 
 /** Norwegian (bokmål)‬ (‪Norsk (bokmål)‬)
  * @author Audun
+ * @author Event
  * @author Harald Khan
  * @author Jon Harald Søby
  * @author Laaknor
@@ -7660,19 +7661,19 @@ Lager en RDF som kan gås gjennom.',
 	'smw_properties_docu' => 'Følgende egenskaper brukes på wikien.',
 	'smw_property_template' => '$1 av type $2 ($3)',
 	'smw_propertylackspage' => 'Alle egenskaper burde beskrives av en side.',
-	'smw_propertylackstype' => 'Ingen type ble oppgitt for denne egenskapen (antar at typen er $1 foreløpig).',
+	'smw_propertylackstype' => 'Ingen type spesifisert for denne egenskapen (bruker foreløpig typen $1).',
 	'smw_propertyhardlyused' => 'Denne egenskapen brukes nesten ikke på wikien.',
 	'unusedproperties' => 'Ubrukte egenskaper',
 	'smw_unusedproperties_docu' => 'Følgende egenskaper finnes, selv om ingen andre sider bruker dem.',
 	'smw_unusedproperty_template' => '$1 av type $2',
 	'wantedproperties' => 'Ønskede egenskaper',
-	'smw_wantedproperties_docu' => 'Følgende egenskaper brukes på wikien, men har ikke en side med forklaring.',
+	'smw_wantedproperties_docu' => 'Følgende egenskaper brukes på wikien, men har så langt ingen beskrivelsesside.',
 	'smw_wantedproperty_template' => '$1 (brukt {{PLURAL:$2|én gang|$2 ganger}})',
 	'tooltip-purge' => 'Klikk her for å gjenoppfriske alle spørringer og maler på denne siden',
 	'smw_purge' => 'Gjenoppfrisk',
 	'types' => 'Typer',
 	'smw_types_docu' => 'Følgende er en liste over alle datatyper som egenskaper kan ha.
-Hver datatype har en side der ekstra informasjon kan oppgis.',
+Hver datatype har en side der ekstra informasjon kan legges.',
 	'smw_typeunits' => 'Måleenheter av typen «$1»: $2',
 	'semanticstatistics' => 'Semantisk statistikk',
 	'smw_semstats_text' => "Denne wikien inneholder {{PLURAL:$1|'''én''' egenskapsverdi|'''$1''' egenskapsverdier}} for totalt [[Special:Properties|{{PLURAL:$2|'''én''' egenskap|'''$2''' forskjellige egenskaper}}]].
@@ -7681,7 +7682,7 @@ Enkelte av de eksisterende egenskapene kan være [[Special:UnusedProperties|ubru
 Egenskaper som fortsatt mangler en egen side finnes på [[Special:WantedProperties|listen over ønskede egenskaper]].",
 	'uriresolver' => 'URI-løser',
 	'smw_uri_doc' => 'URI-løseren implementerer <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">finning av W3C TAG-er på «httpRange-14»</a>.
-Den sørger for at mennesker ikke blir til nettsteder.',
+Den sørger for at mennesker ikke gjøres til nettsteder.',
 	'ask' => 'Semantisk søk',
 	'smw_ask_sortby' => 'Sorter etter kolonne (valgfritt)',
 	'smw_ask_ascorder' => 'Stigende',
@@ -7696,7 +7697,7 @@ Den sørger for at mennesker ikke blir til nettsteder.',
 	'smw_ask_printdesc' => '(legg til et egenskapsnavn per linje)',
 	'smw_ask_format_as' => 'Formater som:',
 	'smw_ask_defaultformat' => 'standard',
-	'smw_ask_otheroptions' => 'Andre alternativ',
+	'smw_ask_otheroptions' => 'Andre valgmuligheter',
 	'smw_ask_show_embed' => 'Vis innkapslet kode',
 	'smw_ask_hide_embed' => 'Skjul innkapslet kode',
 	'smw_ask_embed_instr' => 'For å bygge inn denne spørringen i en wikiside, bruk koden nedenfor.',
@@ -7714,13 +7715,13 @@ Siden det bare ble noen få resultater, vises også nære verdier.',
 	'smw_browse_article' => 'Skriv inn navnet på siden du vil starte å bla fra.',
 	'smw_browse_go' => 'Gå',
 	'smw_browse_show_incoming' => 'vis egenskaper som lenker hit',
-	'smw_browse_hide_incoming' => 'gjem egenskaper som lenker hit',
+	'smw_browse_hide_incoming' => 'skjul egenskaper som lenker hit',
 	'smw_browse_no_outgoing' => 'Denne siden har ingen egenskaper.',
 	'smw_browse_no_incoming' => 'Ingen egenskaper lenker til denne siden.',
 	'smw_inverse_label_default' => '$1 av',
-	'smw_inverse_label_property' => 'Invers egenskapmerkelapp',
-	'pageproperty' => 'Sideegenskapsøk',
-	'smw_pp_docu' => 'Søk etter all egenskapstekst på en gitt side.
+	'smw_inverse_label_property' => 'Invers egenskapsmerkelapp',
+	'pageproperty' => 'Sideegenskapssøk',
+	'smw_pp_docu' => 'Søk etter alle egenskapsverdier på en gitt side.
 Skriv inn både sidenavn og egenskap.',
 	'smw_pp_from' => 'Fra side',
 	'smw_pp_type' => 'Egenskap',
@@ -7728,27 +7729,27 @@ Skriv inn både sidenavn og egenskap.',
 	'smw_result_prev' => 'Forrige',
 	'smw_result_next' => 'Neste',
 	'smw_result_results' => 'Resultater',
-	'smw_result_noresults' => 'Beklager, ingen resultater',
+	'smw_result_noresults' => 'Beklager, ingen resultater funnet',
 	'smwadmin' => 'Administratorfunksjoner for Semantic MediaWiki',
 	'smw_smwadmin_settingup' => 'Setter opp lagringsplass for Semantic MediaWiki',
-	'smw_smwadmin_setupsuccess' => 'Lagringsmotoren ble satt upp.',
+	'smw_smwadmin_setupsuccess' => 'Lagringsmotoren ble vellykket initialisert.',
 	'smw_smwadmin_return' => 'Gå tilbake til $1',
 	'smw_smwadmin_updatestarted' => 'En ny oppdateringsprosess for oppfriskning av de semantiske dataene ble startet.
 Alle lagrede data vil bli bygd på nytt eller reparert der det trengs.
 Du kan følge med på fremgangen til oppdateringen på denne spesialsiden.',
 	'smw_smwadmin_updatenotstarted' => 'Det kjører allerede en oppdateringsprosess.
-Starter ikke en ny en.',
+Starter derfor ikke enda en.',
 	'smw_smwadmin_updatestopped' => 'Alle eksisterende oppdateringsprosesser har blitt stoppet.',
-	'smw_smwadmin_updatenotstopped' => 'For å stoppe den kjørende oppdateringsprosessen må du markere boksen for å vise at du er helt sikker.',
+	'smw_smwadmin_updatenotstopped' => 'For å stoppe den kjørende oppdateringsprosessen må du markere avkrysningsboksen for å vise at du er helt sikker.',
 	'smw_smwadmin_docu' => 'Denne spesialsiden hjelper deg under innstallasjon og oppgradering av <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
 Husk å ta sikkerhetskopier av viktige data før du starter administrerende funksjoner.',
-	'smw_smwadmin_db' => 'Databaseinnstallasjon og -oppgradering',
+	'smw_smwadmin_db' => 'Databaseinstallering og -oppgradering',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki krever noen utvidelser i MediaWiki-databasen for å kunne lagre semantiske data.
-Funksjonen uner sikrer at databasen din blir satt opp riktig.
+Funksjonen under sikrer at databasen din blir satt opp riktig.
 Endringene gjort i dette steget har ingen effekt på resten av MediaWiki-databasen og kan enkelt gjøres om om ønskelig.
-Denne oppsettsfunksjonen kan bli kjørt flere ganger uten skadevirkning, men den trenger kun kjøres en gang ved installasjon eller oppgradering.',
-	'smw_smwadmin_permissionswarn' => 'Dersom operasjonen mislykkes med SQL-feil, har sannsynligvis ikke databasebrukeren brukt av din wiki tilstrekkelige rettigheter (sjekk LocalSettings.php).
-Enten gi denne brukeren de riktige rettighetene til å opprette og slette tabeller, midlertidig skriv inn innloggingsinformasjonen til database-roten i LocalSettings.php eller bruk vedlikeholdsskriptet <tt>SMW_setup.php</tt> som kan bruke rettighetene til AdminSettings.php.',
+Denne initialiseringsfunksjonen kan bli kjørt flere ganger uten skadevirkning, men den trenger kun kjøres en gang ved installering eller oppgradering.',
+	'smw_smwadmin_permissionswarn' => 'Dersom operasjonen mislykkes med SQL-feil, har databasebrukeren anvendt av din wiki sannsynligvis manglende rettigheter (sjekk LocalSettings.php).
+Enten må denne brukeren gis tilstrekkelige rettigheter til å opprette og slette tabeller, eller en må midlertidig skrive inn innloggingsinformasjonen til database-roten i LocalSettings.php, eller en må bruke vedlikeholdsskriptet <tt>SMW_setup.php</tt> som har rettighetene til AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Initialiser eller oppgrader tabeller',
 	'smw_smwadmin_announce' => 'Kunngjør din wiki',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki har en nettjeneste for kunngjøring av nye semantiske wikisider.
@@ -7756,26 +7757,26 @@ Dette er brukt for å opprettholde en liste over offentlige nettsteder som bruke
 Se hjemmesiden til Semantic MediaWiki for <a href="http://semantic-mediawiki.org/wiki/Registry">mer informasjon om denne tjenesten</a>.',
 	'smw_smwadmin_announcebutton' => 'Trykk på følgende knapp for å oppgi din wikis URL til den tjenesten.
 Tjenesten vil ikke registrere wikier som ikke er offentlig tilgjengelig, og den vil bare lagre offentlig tilgjengelig informasjon.',
-	'smw_smwadmin_datarefresh' => 'Datareparasjon og -oppgradering',
-	'smw_smwadmin_datarefreshdocu' => 'Det er mulig å gjenopprette all Semantic MediaWiki-data basert på det nåværende innholdet på wikien.
-Dette kan være nyttig for å reparere ødelagt data eller for å oppfriske data hvis det interne formatet har blitt endret på grunn av programvareoppdateringer.
+	'smw_smwadmin_datarefresh' => 'Datareparering og -oppgradering',
+	'smw_smwadmin_datarefreshdocu' => 'Det er mulig å gjenopprette alle Semantic MediaWiki-data basert på det nåværende innholdet på wikien.
+Dette kan være nyttig for å reparere ødelagte data eller for å oppfriske data hvis det interne formatet har blitt endret på grunn av programvareoppdateringer.
 Oppdateringen blir utført side for side og vil ikke bli fullført umiddelbart.
 Det følgende viser om en oppdatering er i gang og lar deg starte eller stoppe oppdateringer (ved mindre denne muligheten er gjort utilgjengelig av sidens administratorer).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>En oppdatering er allerede i gang.</strong>
 Det er normalt at oppdateringen går tregt fremover siden den bare oppdaterer data i små biter hver gang en bruker besøker wikien.
-For å fullføre denne oppdateringen raskere kan du starte MediaWiki vedlikeholdsskriptet <tt>runJobs.php</tt> (bruk valget <tt>--maxjobs 1000</tt> for å avgrense antallet oppdateringer som kan gjøres samtidig).
+For å fullføre denne oppdateringen raskere kan du starte MediaWiki-vedlikeholdsskriptet <tt>runJobs.php</tt> (bruk valget <tt>--maxjobs 1000</tt> for å avgrense antallet oppdateringer som gjøres sammenhengende).
 Anslått fremdrift for gjeldende oppdatering:',
 	'smw_smwadmin_datarefreshbutton' => 'Start oppdatering av data',
 	'smw_smwadmin_datarefreshstop' => 'Stopp denne oppdateringen',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, jeg er sikker.',
 	'smw_smwadmin_support' => 'Få støtte',
-	'smw_smwadmin_supportdocu' => 'Forskjellige ressurser kan kanskje hjelpe deg om du skulle ha problemer:',
-	'smw_smwadmin_installfile' => 'Hvis du opplever problemer med installasjonen, start med å sjekke retningslinjene i <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL-filen</a>.',
+	'smw_smwadmin_supportdocu' => 'Følgende ressurser kan kanskje hjelpe deg om du skulle ha problemer:',
+	'smw_smwadmin_installfile' => 'Hvis du opplever problemer med installeringen, start med å sjekke retningslinjene i <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL-filen</a>.',
 	'smw_smwadmin_smwhomepage' => 'Den komplette brukerdokumentasjonen til Semantic MediaWiki finnes på <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_mediazilla' => 'Feil kan bli rapportert til <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
+	'smw_smwadmin_mediazilla' => 'Feil kan rapporteres til <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_smwadmin_questions' => 'Hvis du har ytterligere spørsmål eller forslag, bli med i diskusjonen på <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki brukerforum</a>.',
 	'smw_adminlinks_datastructure' => 'Datastruktur',
-	'smw_adminlinks_displayingdata' => 'Viser data',
+	'smw_adminlinks_displayingdata' => 'Datavisning',
 	'smw_adminlinks_inlinequerieshelp' => 'Hjelp for innebygde spørringer',
 );
 
@@ -8020,9 +8021,11 @@ $messages['pdc'] = array(
  * @author Łukasz Bolikowski
  */
 $messages['pl'] = array(
+	'smw-desc' => 'Poprawia dostępność wiki zarówno dla automatów jak i ludzi ([http://semantic-mediawiki.org/wiki/Help:User_manual dokumentacja online])',
 	'smw_edithelp' => 'Pomoc edycyjna odnośnie relacji i atrybutów',
+	'smw_viewasrdf' => 'Kanał RDF',
 	'smw_finallistconjunct' => ' i',
-	'smw_factbox_head' => 'Fakty o $1 &mdash; Kliknij <span class="smwsearchicon">+</span> aby znaleźć podobne strony.',
+	'smw_factbox_head' => 'Fakty o $1',
 	'smw_isspecprop' => 'Ta własność jest unikalna dla tej wiki.',
 	'smw_isknowntype' => 'Ten typ danych należy do standardowych typów dla tej wiki.',
 	'smw_isaliastype' => 'Ten typ danych to alias typu „$1”.',
@@ -8030,6 +8033,9 @@ $messages['pl'] = array(
 	'smw_concept_description' => 'Opis koncepcji „$1”',
 	'smw_no_concept_namespace' => 'Koncepcje można definiować tylko w przestrzeni nazw Koncepcja:',
 	'smw_multiple_concepts' => 'Każda strona koncepcji może mieć tylko jedną definicję koncepcji.',
+	'smw_concept_cache_miss' => 'Koncepcja „$1” w chwili obecnej nie może zostać użyta, ponieważ konfiguracja wiki wymaga aby została ona przeliczona offline. Jeśli problem nie ustąpi po jakimś czasie, skontaktuj się z administratorem witryny.',
+	'smw_noinvannot' => 'Nie można przypisać wartości właściwościom odwrotnym.',
+	'version-semantic' => 'Rozszerzenia semantyczne',
 	'smw_baduri' => 'Niestety, URI z przestrzeni „$1” nie są w tym miejscu dostępne.',
 	'smw_printername_auto' => 'Automatycznie',
 	'smw_printername_count' => 'Wyniki obliczeń',
@@ -8044,6 +8050,24 @@ $messages['pl'] = array(
 	'smw_printername_table' => 'Tabela',
 	'smw_printername_broadtable' => 'Szeroka tabela',
 	'smw_printername_template' => 'Szablon',
+	'smw_paramdesc_limit' => 'Maksymalna liczba zwracanych wyników',
+	'smw_paramdesc_headers' => 'Wyświetlanie nazw nagłówków i właściwości',
+	'smw_paramdesc_mainlabel' => 'Etykieta dająca nazwę stronie głównej',
+	'smw_paramdesc_link' => 'Pokaż wartości jako linki',
+	'smw_paramdesc_intro' => 'Tekst wyświetlany przed wynikami zapytania, jeśli są jakieś',
+	'smw_paramdesc_outro' => 'Tekst wyświetlany poniżej wyników zapytania, jeśli są jakieś',
+	'smw_paramdesc_default' => 'Tekst wyświetlany jeśli brak jest wyników zapytania',
+	'smw_paramdesc_searchlabel' => 'Treść linku do wyników',
+	'smw_paramdesc_sep' => 'Separator oddzielający wartości',
+	'smw_paramdesc_template' => 'Nazwa szablonu, który zostanie wyświetlony na wydrukach',
+	'smw_paramdesc_columns' => 'Liczba kolumn, w których zostaną wyświetlone wyniki (domyślnie $1)',
+	'smw_paramdesc_userparam' => 'Wartość przekazywana do szablonu przy każdym jego użyciu',
+	'smw_paramdesc_introtemplate' => 'Nazwa szablonu wyświetlana przed wynikami zapytania, jeśli są jakieś',
+	'smw_paramdesc_outrotemplate' => 'Nazwa szablonu wyświetlana poniżej wyników zapytania, jeśli są jakieś',
+	'smw_paramdesc_embedformat' => 'Znacznik HTML używany do definiowania nagłówków',
+	'smw_paramdesc_embedonly' => 'Nie wyświetlaj nagłówków',
+	'smw_paramdesc_rsstitle' => 'Tekst, który zostanie użyty jako tytuł kanału',
+	'smw_paramdesc_rssdescription' => 'Tekst, który zostanie użyty jako opis kanału',
 	'smw_iq_disabled' => 'Niestety, w tym wiki wyłączono możliwość tworzenia zapytań w artykułach.',
 	'smw_iq_moreresults' => '&hellip; dalsze wyniki',
 	'smw_iq_nojs' => 'Aby obejrzeć ten element, włącz w przeglądarce obsługę JavaScript.',
@@ -8068,6 +8092,7 @@ $messages['pl'] = array(
 	'smw_nofloat' => '„$1” nie jest liczbą.',
 	'smw_infinite' => 'Liczby tak duże jak „$1” nie są obsługiwane.',
 	'smw_infinite_unit' => 'Konwersja do jednostki „$1” zwróciła liczbę, która jest zbyt duża.',
+	'smw_novalues' => 'Nie określono wartości',
 	'smw_unsupportedprefix' => 'Przedrostki dla liczb („$1“) nie są obecnie obsługiwane.',
 	'smw_unsupportedunit' => 'Konwersja dla jednostki „$1” nie jest obsługiwana.',
 	'smw_nodatetime' => 'Data „$1” nie została zrozumiana.',
@@ -8122,7 +8147,11 @@ Wyniki mogą być inne od oczekiwanych.',
 	'smw_types_docu' => 'Poniżej znajduje się lista wszystkich typów które mogą być przypisane atrybutom.  Każdy typ posiada artykuł, w którym mogą znajdować się dodatkowe informacje.',
 	'smw_typeunits' => 'Jednostka danych typu „$1” to $2',
 	'semanticstatistics' => 'Statystyka semantyczna',
-	'uriresolver' => 'Resolver URI',
+	'smw_semstats_text' => "Ta wiki zawiera '''$1''' {{PLURAL:$1|wartość|wartości}} własności z ogólnej liczby '''$2''' [[Special:Properties|{{PLURAL:$2|właściwości|różnych właściwości}}]].
+'''$3''' {{PLURAL:$3|właściwość ma swoją własną stronę|właściwości mają swoje własne strony}}. a typ danych został określony dla '''$4''' z nich.
+Niektóre z istniejących właściwości mogą [[Special:UnusedProperties|być obecnie niewykorzystywane]].
+Właściwości, które nie posiadają swojej strony odnaleźć można na stronie [[Special:WantedProperties|spisu brakujących właściwości]].",
+	'uriresolver' => 'Przekształcanie URI',
 	'smw_uri_doc' => 'Resolver URI implementuje <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">W3C TAG finding on httpRange-14</a>. Dzięki temu ludzie nie zamieniają się w strony WWW.',
 	'ask' => 'Szukanie semantyczne',
 	'smw_ask_sortby' => 'Sortuj według kolumny (opcjonalnie)',
@@ -8135,6 +8164,7 @@ Wyniki mogą być inne od oczekiwanych.',
 	'smw_ask_help' => 'Pomoc dla tworzenia zapytań',
 	'smw_ask_queryhead' => 'Zapytanie',
 	'smw_ask_printhead' => 'Dodatkowe dane do wyświetlenia',
+	'smw_ask_printdesc' => '(dodaj w linii jedną nazwę właściwości)',
 	'smw_ask_format_as' => 'Formatuj jako',
 	'smw_ask_defaultformat' => 'domyślny',
 	'smw_ask_otheroptions' => 'Inne opcje',
@@ -8177,6 +8207,8 @@ Podaj zarówno stronę, jak i właściwość.',
 	'smw_smwadmin_updatestarted' => 'Uruchomiono nowy proces aktualizacji danych semantycznych.
 Wszystkie zapisane dane zostaną przebudowane lub naprawione w razie potrzeby.
 Możesz śledzić stan procesu aktualizacji na tej specjalnej stronie.',
+	'smw_smwadmin_updatenotstarted' => 'Proces aktualizacji jest już uruchomiony.
+Nie można utworzyć jeszcze jednego.',
 	'smw_smwadmin_db' => 'Instalacja i aktualizacja bazy danych',
 	'smw_smwadmin_dbbutton' => 'Inicjalizuj lub aktualizuj tabele',
 	'smw_smwadmin_announce' => 'Opublikuj swoje wiki',
