@@ -8209,6 +8209,10 @@ Wszystkie zapisane dane zostaną przebudowane lub naprawione w razie potrzeby.
 Możesz śledzić stan procesu aktualizacji na tej specjalnej stronie.',
 	'smw_smwadmin_updatenotstarted' => 'Proces aktualizacji jest już uruchomiony.
 Nie można utworzyć jeszcze jednego.',
+	'smw_smwadmin_updatestopped' => 'Wszystkie istniejące procesy aktualizacji zostały zatrzymane.',
+	'smw_smwadmin_updatenotstopped' => 'Aby zatrzymać uruchomiony proces aktualizacji, należy zaznaczyć pole wyboru, aby potwierdzić decyzję.',
+	'smw_smwadmin_docu' => 'Ta strona specjalna pomoże Ci w instalacji i modernizacji <a href="http://semantic-mediawiki.org">Semantycznego MediaWiki</a>.
+Pamiętaj przed wykonaniem funkcji administracyjnych o utworzeniu kopii zapasowej ważnych danych.',
 	'smw_smwadmin_db' => 'Instalacja i aktualizacja bazy danych',
 	'smw_smwadmin_dbbutton' => 'Inicjalizuj lub aktualizuj tabele',
 	'smw_smwadmin_announce' => 'Opublikuj swoje wiki',
