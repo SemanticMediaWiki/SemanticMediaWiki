@@ -86,7 +86,7 @@ abstract class SMWResultPrinter {
 	 * Constructor. The parameter $format is a format string
 	 * that may influence the processing details.
 	 */
-	public function SMWResultPrinter( $format, $inline ) {
+	public function __construct( $format, $inline ) {
 		global $smwgQDefaultLinking;
 		$this->mFormat = $format;
 		$this->mInline = $inline;
