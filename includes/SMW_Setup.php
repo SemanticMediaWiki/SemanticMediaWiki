@@ -366,8 +366,6 @@ function smwfAddToAdminLinks( &$admin_links_tree ) {
  * @return true
  */
 function smwfOnArticleFromTitle( Title &$title, /* Article */ &$article ) {
-	global $smwgIP;
-
 	if ( $title->getNamespace() == SMW_NS_TYPE ) {
 		$article = new SMWTypePage( $title );
 	} elseif ( $title->getNamespace() == SMW_NS_PROPERTY ) {
