@@ -15,11 +15,11 @@
 $optionsWithArgs = array( 'concept', 'old', 's', 'e' );
 
 require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
-    ? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/commandLine.inc'
-    : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
+	? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/commandLine.inc'
+	: dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 
-$output_level  = array_key_exists( 'quiet', $options ) ? 0:
-                 ( array_key_exists( 'verbose', $options ) ? 2 : 1 );
+$output_level = array_key_exists( 'quiet', $options ) ? 0 :
+				( array_key_exists( 'verbose', $options ) ? 2 : 1 );
 
 if ( array_key_exists( 'help', $options ) ) {
 	$action = 'help';
@@ -37,23 +37,23 @@ if ( array_key_exists( 'help', $options ) ) {
 	if ( outputMessage( print "Waiting for $delay seconds ...  " ) ) {
 		// TODO
 		// Remove the following section and replace it with a simple
-		// wfCountDown as soon as we switch to MediaWiki 1.16. 
+		// wfCountDown as soon as we switch to MediaWiki 1.16.
 		// Currently, wfCountDown is only supported from
 		// revision 51650 (Jun 9 2009) onward.
 		if ( function_exists( 'wfCountDown' ) ) {
 			wfCountDown( $delay );
 		} else {
-    		for ( $i = $delay; $i >= 0; $i-- ) {
-	        	if ( $i != $delay ) {
-    	        	echo str_repeat( "\x08", strlen( $i + 1 ) );
-        		}
-        		echo $i;
-	        	flush();
-    	    	if ( $i ) {
-        	    	sleep( 1 );
-        		}
-    		}
-	    	echo "\n";
+			for ( $i = $delay; $i >= 0; $i-- ) {
+				if ( $i != $delay ) {
+					echo str_repeat( "\x08", strlen( $i + 1 ) );
+				}
+				echo $i;
+				flush();
+				if ( $i ) {
+					sleep( 1 );
+				}
+			}
+			echo "\n";
 		}
 		// Remove up to here and just uncomment the following line:
 		// wfCountDown( $delay );
@@ -109,8 +109,9 @@ ENDS
 }
 
 global $smwgIP;
-if ( ! isset( $smwgIP ) )
-     $smwgIP = dirname( __FILE__ ) . '/../';
+if ( !isset( $smwgIP ) ) {
+	$smwgIP = dirname( __FILE__ ) . '/../';
+}
 
 require_once( $smwgIP . 'includes/SMW_GlobalFunctions.php' );
 
@@ -127,8 +128,8 @@ $select_update = array_key_exists( 'update', $options );
 $select_old    = isset( $options['old'] ) ? intval( $options['old'] ) : false;
 
 if ( isset( $options['concept'] ) ) { // single concept mode
-	// 	$concept = SMWDataValueFactory::newTypeIDValue('_wpg');
-	// 	$concept->setValues('African_countries',SMW_NS_CONCEPT);
+	// 	$concept = SMWDataValueFactory::newTypeIDValue( '_wpg' );
+	// 	$concept->setValues( 'African_countries', SMW_NS_CONCEPT );
 	global $wgContLang;
 	$concept = Title::newFromText( $wgContLang->getNsText( SMW_NS_CONCEPT ) . ':' . $options['concept'] );
 	if ( $concept !== null ) {
@@ -140,7 +141,7 @@ if ( isset( $options['concept'] ) ) { // single concept mode
 	} else {
 		$start = 0;
 	}
-	$end = $db->selectField( 'page', 'max(page_id)', false, 'SMW_refreshData' );
+	$end = $db->selectField( 'page', 'MAX(page_id)', false, 'SMW_refreshData' );
 	if ( array_key_exists( 'e', $options ) ) {
 		$end = min( intval( $options['e'] ), $end );
 	}
@@ -148,7 +149,9 @@ if ( isset( $options['concept'] ) ) { // single concept mode
 
 	for ( $id = $start; $id <= $end; $id++ ) {
 		$title = Title::newFromID( $id );
-		if ( ( $title === null ) || ( $title->getNamespace() != SMW_NS_CONCEPT ) ) continue;
+		if ( ( $title === null ) || ( $title->getNamespace() != SMW_NS_CONCEPT ) ) {
+			continue;
+		}
 		$num_lines += doAction( $title, $num_lines );
 	}
 }
@@ -168,15 +171,15 @@ function doAction( $title, $numlines = false ) {
 		$skip = 'page not cachable (no concept description, maybe a redirect)';
 	} elseif ( ( $select_update ) && ( $status['status'] != 'full' ) ) {
 		$skip = 'page not cached yet';
-	} elseif ( ( $select_old ) && ( $status['status'] == 'full' ) && ( $status['date'] > ( strtotime( "now" ) - $select_old * 60 ) ) ) {
+	} elseif ( ( $select_old ) && ( $status['status'] == 'full' ) && ( $status['date'] > ( strtotime( 'now' ) - $select_old * 60 ) ) ) {
 		$skip = 'cache is not old yet';
 	} elseif ( ( $select_hard ) && ( $smwgQMaxSize >= $status['size'] ) &&
-	           ( $smwgQMaxDepth >= $status['depth'] &&
-	           ( ( ~( ~( $status['features'] + 0 ) | $smwgQFeatures ) ) == 0 ) ) ) {
+				( $smwgQMaxDepth >= $status['depth'] &&
+				( ( ~( ~( $status['features'] + 0 ) | $smwgQFeatures ) ) == 0 ) ) ) {
 		$skip = 'concept is not "hard" according to wiki settings';
 	}
 	if ( $skip ) {
-		$pref = ( $numlines !== false ) ? "($numlines) ":'';
+		$pref = ( $numlines !== false ) ? "($numlines) " : '';
 		return ( outputMessage( $pref . 'Skipping concept "' . $title->getPrefixedText() . "\": $skip\n", 2 ) ) ? 1 : 0;
 	}
 	if ( $numlines !== false ) {
@@ -196,17 +199,17 @@ function doAction( $title, $numlines = false ) {
 			if ( $status['status'] == 'no' ) {
 				outputMessage( "Concept not known or redirect.\n" );
 			} elseif ( $status['status'] == 'full' ) {
-				outputMessage( 'Cache created at ' . date( "Y-m-d H:i:s", $status['date'] ) . ' (' . floor( ( strtotime( "now" ) - $status['date'] ) / 60 ) . " minutes old), " . $status['count'] . " elements in cache\n" );
+				outputMessage( 'Cache created at ' . date( 'Y-m-d H:i:s', $status['date'] ) . ' (' . floor( ( strtotime( 'now' ) - $status['date'] ) / 60 ) . ' minutes old), ' . $status['count'] . " elements in cache\n" );
 			} else {
 				outputMessage( "Not cached.\n" );
 			}
 		break;
 	}
-	
+
 	if ( count( $errors ) > 0 ) {
 		outputMessage( '  ' . implode( $errors, "\n  " ) . "\n" );
 	}
-	
+
 	return 1;
 }
 

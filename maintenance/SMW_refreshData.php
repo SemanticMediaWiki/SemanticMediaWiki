@@ -38,8 +38,8 @@
 $optionsWithArgs = array( 'd', 's', 'e', 'b', 'server', 'page' ); // -d <delay>, -s <startid>, -e <endid>, -b <backend>
 
 require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
-    ? getenv( 'MW_INSTALL_PATH' ) . "/maintenance/commandLine.inc"
-    : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
+	? getenv( 'MW_INSTALL_PATH' ) . "/maintenance/commandLine.inc"
+	: dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 
 global $smwgEnableUpdateJobs, $wgServer;
 $smwgEnableUpdateJobs = false; // do not fork additional update jobs while running this script
@@ -89,7 +89,7 @@ if (  array_key_exists( 'p', $options ) ) {
 if (  array_key_exists( 't', $options ) ) {
 	$filterarray[] = SMW_NS_TYPE;
 }
-$filter = count( $filterarray ) > 0 ? $filterarray:false;
+$filter = count( $filterarray ) > 0 ? $filterarray : false;
 
 if (  array_key_exists( 'f', $options ) ) {
 	print "\n  Deleting all stored data completely and rebuilding it again later!\n  Semantic data in the wiki might be incomplete for some time while this operation runs.\n\n  NOTE: It is usually necessary to run this script ONE MORE TIME after this operation,\n  since some properties' types are not stored yet in the first run.\n  The first run can normally use the parameter -p to refresh only properties.\n\n";
@@ -97,28 +97,28 @@ if (  array_key_exists( 'f', $options ) ) {
 		print "  WARNING: -s or -e are used, so some pages will not be refreshed at all!\n    Data for those pages will only be available again when they have been\n    refreshed as well!\n\n";
 	}
 
-	print "Abort with control-c in the next five seconds ...  ";
+	print 'Abort with control-c in the next five seconds ...  ';
 
 	// TODO
 	// Remove the following section and replace it with a simple
-	// wfCountDown as soon as we switch to MediaWiki 1.16. 
+	// wfCountDown as soon as we switch to MediaWiki 1.16.
 	// Currently, wfCountDown is only supported from
 	// revision 51650 (Jun 9 2009) onward.
 	$n = 6;
-	if ( function_exists( "wfCountDown" ) ) {
+	if ( function_exists( 'wfCountDown' ) ) {
 		wfCountDown( $n );
 	} else {
-    	for ( $i = $n; $i >= 0; $i-- ) {
-        	if ( $i != $n ) {
-            	echo str_repeat( "\x08", strlen( $i + 1 ) );
-        	}
-        	echo $i;
-        	flush();
-        	if ( $i ) {
-            	sleep( 1 );
-        	}
-    	}
-    	echo "\n";
+		for ( $i = $n; $i >= 0; $i-- ) {
+			if ( $i != $n ) {
+				echo str_repeat( "\x08", strlen( $i + 1 ) );
+			}
+			echo $i;
+			flush();
+			if ( $i ) {
+				sleep( 1 );
+			}
+		}
+		echo "\n";
 	}
 	// Remove up to here and just uncomment the following line:
 	// wfCountDown( 6 );
@@ -143,7 +143,7 @@ if ( $pages == false ) {
 	" 1000) were refreshed, please abort with CTRL-C and resume this script\n" .
 	" at the last processed page id using the parameter -s (use -v to display\n" .
 	" page ids during refresh). Continue this until all pages were refreshed.\n---\n";
-	print "Processing all IDs from $start to " . ( $end ? "$end":"last ID" ) . " ...\n";
+	print "Processing all IDs from $start to " . ( $end ? "$end" : 'last ID' ) . " ...\n";
 
 	$id = $start;
 	while ( ( ( !$end ) || ( $id <= $end ) ) && ( $id > 0 ) ) {

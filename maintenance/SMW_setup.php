@@ -43,8 +43,8 @@
 $optionsWithArgs = array( 'b', 'user', 'password' );
 
 require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
-    ? getenv( 'MW_INSTALL_PATH' ) . "/maintenance/commandLine.inc"
-    : dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
+	? getenv( 'MW_INSTALL_PATH' ) . "/maintenance/commandLine.inc"
+	: dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 
 global $smwgDefaultStore;
 
@@ -72,12 +72,13 @@ if ( array_key_exists( 'b', $options ) ) {
 
 
 global $smwgIP;
-if ( ! isset( $smwgIP ) )
-     $smwgIP = dirname( __FILE__ ) . '/../';
+if ( !isset( $smwgIP ) ) {
+	$smwgIP = dirname( __FILE__ ) . '/../';
+}
 
 require_once( $smwgIP . 'includes/SMW_GlobalFunctions.php' );
 
-if (  array_key_exists( 'delete', $options ) ) {
+if ( array_key_exists( 'delete', $options ) ) {
 	print "\n  Deleting all stored data for $smwgDefaultStore completely!\n  \n\n";
 	if ( $alternativestore ) {
 		print "  This store is currently not used by SMW. Deleting it\n  should not cause problems in the wiki.\n\n";
@@ -91,23 +92,23 @@ if (  array_key_exists( 'delete', $options ) ) {
 
 	// TODO
 	// Remove the following section and replace it with a simple
-	// wfCountDown as soon as we switch to MediaWiki 1.16. 
+	// wfCountDown as soon as we switch to MediaWiki 1.16.
 	// Currently, wfCountDown is only supported from
 	// revision 51650 (Jun 9 2009) onward.
-	if ( function_exists( "wfCountDown" ) ) {
+	if ( function_exists( 'wfCountDown' ) ) {
 		wfCountDown( $delay );
 	} else {
-    	for ( $i = $delay; $i >= 0; $i-- ) {
-        	if ( $i != $delay ) {
-            	echo str_repeat( "\x08", strlen( $i + 1 ) );
-        	}
-        	echo $i;
-        	flush();
-        	if ( $i ) {
-            	sleep( 1 );
-        	}
-    	}
-    	echo "\n";
+		for ( $i = $delay; $i >= 0; $i-- ) {
+			if ( $i != $delay ) {
+				echo str_repeat( "\x08", strlen( $i + 1 ) );
+			}
+			echo $i;
+			flush();
+			if ( $i ) {
+				sleep( 1 );
+			}
+		}
+		echo "\n";
 	}
 	// Remove up to here and just uncomment the following line:
 	// wfCountDown( $delay );
@@ -125,5 +126,3 @@ if (  array_key_exists( 'delete', $options ) ) {
 }
 
 print "\n\nDone.\n";
-
-
