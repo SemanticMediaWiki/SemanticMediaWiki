@@ -21,17 +21,16 @@ div.smwpre { /* make divs look like <pre> */
 }
 
 /* tables for inline queries */
-
-table.smwtable{
+table.smwtable {
 	background-color: #EEEEFF;/* Note: here and below, we use six digits, since some users had problems with the three digit short forms */
 }
 
-table.smwtable th{
+table.smwtable th {
 	background-color: #EEEEFF;
 	text-align: left;
 }
 
-table.smwtable td{
+table.smwtable td {
 	background-color: #FFFFFF;
 	padding: 1px;
 	padding-left: 5px;
@@ -40,7 +39,7 @@ table.smwtable td{
 	vertical-align: top;
 }
 
-table.smwtable tr.smwfooter td{
+table.smwtable tr.smwfooter td {
 	font-size: 90%;
 	line-height: 1;
 	background-color: #EEEEFF;
@@ -51,40 +50,39 @@ table.smwtable tr.smwfooter td{
 	vertical-align: top;
 }
 
-/*hide keys for sorting table entries*/
-span.smwsortkey{
+/* hide keys for sorting table entries */
+span.smwsortkey {
 	display: none;
 }
 
 /* buttons for sort-arrows */
-a.sortheader:hover{
+a.sortheader:hover {
 	text-decoration: none;
 }
 
 /* "semantic" span classes for Timeline */
 
-div.smwtimeline{
+div.smwtimeline {
 	border: 1px solid #AAAAAA;
 	background-color: #F9F9F9;
 	/*text-align: center;*/
-	/* After hours of debugging and frustration I now can savely say: IE sucks. (mak)
+	/* After hours of debugging and frustration I now can safely say: IE sucks. (mak)
 	   You can support Semantic MediaWiki development by not using Internet Explorer. Thanks.
 	   (IE centers the Timeline *elements*, which messes up the whole layout) */
 }
 
-span.smwtlevent, span.smwtlband, span.smwtlsize, span.smwtlposition{
+span.smwtlevent, span.smwtlband, span.smwtlsize, span.smwtlposition {
 	display: none;
 	speak: none;
 }
 
-span.smwtlcomment{
+span.smwtlcomment {
 	font-style: italic;
 	padding: 5px;
 }
 
 /* Factbox */
-
-div.smwfact{
+div.smwfact {
 	clear: both;
 	background-color: #F9F9F9;
 	padding: 5px;
@@ -93,41 +91,40 @@ div.smwfact{
 	font-size: 95%;
 }
 
-div.smwfact td, div.smwfact tr, div.smwfact table{
+div.smwfact td, div.smwfact tr, div.smwfact table {
 	background-color: #F9F9F9;
 }
 
-span.smwfactboxhead{
+span.smwfactboxhead {
 	font-size: 110%;
 	font-weight: bold;
 	float: left;
 }
 
-table.smwfacttable{
+table.smwfacttable {
 	border-top: 1px dotted #AAAAAA;
 	width: 100%;
 	clear: both;
 }
 
-td.smwpropname, th.smwpropname, td.smwspecname{
+td.smwpropname, th.smwpropname, td.smwspecname {
 	text-align: right;
 	vertical-align: top;
 	padding-right: 1em;
 }
 
-td.smwprops, td.smwspecs{
+td.smwprops, td.smwspecs {
 	vertical-align: top;
 	width: 75%;
 }
 
-div.smwhr hr{
+div.smwhr hr {
 	background-color: #DDDDDD;
 	color: #DDDDDD;
 }
 
 /* warning messages */
-
-span.smwwarning{
+span.smwwarning {
 	color: #888888;
 	font-style: italic;
 	font-size: 90%;
@@ -142,14 +139,14 @@ span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be rem
 	background: url(images/searchgray_iconsmall.png) center right no-repeat;
 }
 
-#bodyContent span.smwsearch a{
+#bodyContent span.smwsearch a {
 	padding-right: 16px;
 	margin-right: 2px;
 	color: #888888;
 	background: url(images/searchgray_iconsmall.png) center right no-repeat;
 }
 
-#bodyContent span.smwsearch a:hover{
+#bodyContent span.smwsearch a:hover {
 	text-decoration: none;
 	color: #0000FF;
 	padding-right: 18px;
@@ -157,14 +154,14 @@ span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be rem
 	background: url(images/search_icon.png) center right no-repeat;
 }
 
-#bodyContent span.swmfactboxheadbrowse a{
+#bodyContent span.swmfactboxheadbrowse a {
 	padding-right: 16px;
 	margin-right: 2px;
 	color: #000000;
 	background: url(images/browse_iconsmall.png) center right no-repeat;
 }
 
-#bodyContent span.swmfactboxheadbrowse a:hover{
+#bodyContent span.swmfactboxheadbrowse a:hover {
 	text-decoration: none;
 	color: #0000FF;
 	padding-right: 18px;
@@ -172,14 +169,14 @@ span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be rem
 	background: url(images/browse_icon.png) center right no-repeat;
 }
 
-#bodyContent span.smwbrowse a{
+#bodyContent span.smwbrowse a {
 	padding-right: 16px;
 	margin-right: 2px;
 	color: #888888;
 	background: url(images/browse_iconsmall.png) center right no-repeat;
 }
 
-#bodyContent span.smwbrowse a:hover{
+#bodyContent span.smwbrowse a:hover {
 	text-decoration: none;
 	color: #0000FF;
 	padding-right: 18px;
@@ -187,29 +184,29 @@ span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be rem
 	background: url(images/browse_icon.png) center right no-repeat;
 }
 
-#bodyContent span.smwmap a{
+#bodyContent span.smwmap a {
 	padding-right: 20px;
 	color: #888888;
 	background: url(images/world.png) center right no-repeat;
 }
 
-#bodyContent span.smwmap a:hover{
+#bodyContent span.smwmap a:hover {
 	padding-right: 20px;
 	color: #0000FF;
 	background: url(images/world.png) center right no-repeat;
 }
 
-#bodyContent span.rdflink{
+#bodyContent span.rdflink {
 	float: right;
 }
 
-#bodyContent span.rdflink a{
+#bodyContent span.rdflink a {
 	padding-right: 20px;
 	color: #888888;
 	background: url(images/rdf_flyer.18.gif) center right no-repeat;
 }
 
-#bodyContent span.rdflink a:hover{
+#bodyContent span.rdflink a:hover {
 	text-decoration: none;
 	color: #0000FF;
 	padding-right: 20px;
@@ -223,18 +220,18 @@ div.smwtt { /* style for content of the bubble */
 	color: #000000;
 }
 
-span.smwttpersist span.smwttcontent{ /* show persistent tooltips for non-JavaScript clients */
+span.smwttpersist span.smwttcontent { /* show persistent tooltips for non-JavaScript clients */
 	color: #888888;
 	font-style: italic;
 	font-size: 90%;
 }
 
-span.smwttinline span.smwttcontent{ /* hide inline tooltips for non-JavaScript clients */
+span.smwttinline span.smwttcontent { /* hide inline tooltips for non-JavaScript clients */
 	display: none;
 	speak: none;
 }
 
-span.smwtticon{ /* style for image anchor for persistent tooltips */
+span.smwtticon { /* style for image anchor for persistent tooltips */
 	display: none;
 }
 
@@ -253,11 +250,10 @@ img.smwttimg { /* images for tooltip icons */
 	padding-left: 4px;
 }
 
-/** CSS style file for Semantic MediaWiki Special Browse. */
-
+/* CSS style file for Semantic MediaWiki Special Browse. */
 table.smwb-factbox {
 	border-left: 8px solid #DDDDDD;
-	width:100%
+	width: 100%
 }
 
 tr.smwb-title {
@@ -267,12 +263,12 @@ tr.smwb-title {
 }
 
 tr.smwb-title td {
-	padding-left:5px;
+	padding-left: 5px;
 	border-bottom: 2px solid white;
 }
 
 tr.smwb-propvalue {
-	width:100%;
+	width: 100%;
 	background-color: #EEEEEE;
 }
 
@@ -282,7 +278,7 @@ tr.smwb-propvalue th {
 	font-weight: bold;
 	font-size: 120%;
 	background-color: #DDDDDD;
-	padding:0.2em 0.6em;
+	padding: 0.2em 0.6em;
 	border-bottom: 2px solid white;
 	border-top: 2px solid white;
 }
@@ -293,7 +289,7 @@ tr.smwb-propvalue td {
 	border: 0px solid white;
 	border-bottom: 2px solid white;
 	border-top: 2px solid white;
-	width:90%;
+	width: 90%;
 }
 
 tr.smwb-center {
@@ -303,11 +299,10 @@ tr.smwb-center {
 span.smwb-value {
 }
 
-/** Inverse factbox */
-
+/* Inverse factbox */
 table.smwb-ifactbox {
 	border-right: 8px solid #DDDDDD;
-	width:100%
+	width: 100%
 }
 
 tr.smwb-ititle {
@@ -317,14 +312,14 @@ tr.smwb-ititle {
 }
 
 tr.smwb-ititle td {
-	padding-left:5px;
+	padding-left: 5px;
 	border-bottom: 2px solid white;
 }
 
 tr.smwb-ipropvalue {
-	width:100%;
+	width: 100%;
 	background-color: #EEEEEE;
-	text-align:right;
+	text-align: right;
 }
 
 tr.smwb-ipropvalue th {
@@ -332,7 +327,7 @@ tr.smwb-ipropvalue th {
 	font-weight: bold;
 	font-size: 120%;
 	background-color: #DDDDDD;
-	padding:0.2em 0.6em;
+	padding: 0.2em 0.6em;
 	border-bottom: 3px solid white;
 	border-top: 3px solid white;
 }
@@ -341,8 +336,8 @@ tr.smwb-ipropvalue td {
 	background-color: #EEEEEE;
 	border-bottom: 3px solid white;
 	border-top: 3px solid white;
-	padding-right:1em;
-	width:90%;
+	padding-right: 1em;
+	width: 90%;
 }
 
 span.smwb-ivalue {
