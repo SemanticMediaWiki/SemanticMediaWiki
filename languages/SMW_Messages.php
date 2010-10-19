@@ -6477,7 +6477,7 @@ $messages['lb'] = array(
 	'smw_nonright_importtype' => '$1 kann nëmme fir Säiten am Nummraum "$2" benotzt ginn.',
 	'smw_wrong_importtype' => '$1 kann net fir Säiten am Nummraum "$2" benotzt ginn.',
 	'smw_no_importelement' => 'D\'Element "$1" kann net importéiert ginn.',
-	'smw_parseerror' => 'De Wert deen dir aginn hutt gouf net verstan.',
+	'smw_parseerror' => 'De Wäert deen Dir aginn hutt gouf net verstan.',
 	'smw_notitle' => '"$1" kann net als Numm vun enger Säit op dëser Wiki benotzt ginn.',
 	'smw_wrong_namespace' => 'Nëmme Säiten aus dem Nummraum "$1" sinn hei erlaabt.',
 	'smw_emptystring' => 'Eidel Zeeche ginn net akzeptéiert.',
@@ -6496,7 +6496,7 @@ $messages['lb'] = array(
 	'smw_overprintoutlimit' => "An der Ufro sinn zevill Instruktioune fir d'Duerstellung vum Resultat.",
 	'smw_badtitle' => 'Pardon, awer "$1" ass kee gëltegen Titel vun enger Säit.',
 	'smw_badqueryatom' => 'Een Deel "<nowiki>[[…]]</nowiki>" vun der Ufro gouf net verstan.',
-	'smw_propvalueproblem' => 'De Wert vun der eegeschaft "$1" gouf net verstan.',
+	'smw_propvalueproblem' => 'De Wäert vun der Eegeschaft "$1" gouf net verstan.',
 	'smw_devel_warning' => 'Dës Fonctioun ass elo eréischt an der Entwécklung a fonctionnéiert eventuell net korrekt.
 Séchert Är Donnéeën (Backup) ier Dir dës Fonctioun benotzt.',
 	'smw_type_header' => 'Eegeschafte vum Typ "$1"',
@@ -6541,10 +6541,10 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'smw_ask_show_embed' => 'Agebonnene Code weisen',
 	'smw_ask_hide_embed' => 'Agebonnene Code verstoppen',
 	'searchbyproperty' => 'No Eegeschafte sichen',
-	'smw_sbv_docu' => 'Sich no alle Säiten déi eng bestëmmten Eegeschaft mat engem bestëmmete Wert hunn.',
-	'smw_sbv_displayresult' => 'Eng Lëscht vun alle Säiten déi d\'Eegeschaft "$1" mam Wert "$2" hunn',
+	'smw_sbv_docu' => 'Sich no alle Säiten déi eng bestëmmten Eegeschaft mat engem bestëmmte Wäert hunn.',
+	'smw_sbv_displayresult' => 'Eng Lëscht vun alle Säiten déi d\'Eegeschaft "$1" mam Wäert "$2" hunn',
 	'smw_sbv_property' => 'Eegeschaft:',
-	'smw_sbv_value' => 'Wert:',
+	'smw_sbv_value' => 'Wäert:',
 	'smw_sbv_submit' => 'Resultater sichen',
 	'browse' => "Duerch d'Wiki goen",
 	'smw_browse_go' => 'Lass',
@@ -6580,6 +6580,7 @@ Et ka keen neien ugefaang ginn.',
 	'smw_smwadmin_questions' => 'Wann dir nach Froen oder Propositiounen hutt, da bedeelegt Iech un der Diskussioun op dem <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki Benotzer-Forum</a>.',
 	'smw_adminlinks_datastructure' => 'Datestruktur',
 	'smw_adminlinks_displayingdata' => 'Donnéeë weisen',
+	'smw_adminlinks_inlinequerieshelp' => 'Hëllef fir intern Ufroen',
 );
 
 /** Lithuanian (Lietuvių)
@@ -10759,8 +10760,10 @@ $messages['ug-latn'] = array(
 
 /** Ukrainian (Українська)
  * @author Prima klasy4na
+ * @author Тест
  */
 $messages['uk'] = array(
+	'smw_finallistconjunct' => ' і',
 	'smw_result_prev' => 'Попередня',
 	'smw_result_next' => 'Наступна',
 	'smw_result_results' => 'Результати',
