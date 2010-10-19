@@ -23,7 +23,7 @@ class SMWAsk {
 	 * @param Parser $parser
 	 */
 	public static function render( Parser &$parser ) {
-		global $smwgQEnabled, $smwgIQRunningNumber;
+		global $smwgQEnabled, $smwgIQRunningNumber, $wgTitle;
 
 		if ( $smwgQEnabled ) {
 			$smwgIQRunningNumber++;
@@ -37,7 +37,13 @@ class SMWAsk {
 			$result = smwfEncodeMessages( array( wfMsgForContent( 'smw_iq_disabled' ) ) );
 		}
 
-		SMWOutputs::commitToParser( $parser );
+		if ( $wgTitle->isSpecialPage() ) {
+			global $wgOut;
+			SMWOutputs::commitToOutputPage( $wgOut );
+		}
+		else {
+			SMWOutputs::commitToParser( $parser );
+		}
 
 		return $result;		
 	}
