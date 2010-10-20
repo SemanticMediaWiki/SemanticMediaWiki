@@ -8222,8 +8222,14 @@ Nie można utworzyć jeszcze jednego.',
 	'smw_smwadmin_docu' => 'Ta strona specjalna pomoże Ci w instalacji i modernizacji <a href="http://semantic-mediawiki.org">Semantycznego MediaWiki</a>.
 Pamiętaj przed wykonaniem funkcji administracyjnych o utworzeniu kopii zapasowej ważnych danych.',
 	'smw_smwadmin_db' => 'Instalacja i aktualizacja bazy danych',
-	'smw_smwadmin_dbbutton' => 'Inicjalizuj lub aktualizuj tabele',
-	'smw_smwadmin_announce' => 'Opublikuj swoje wiki',
+	'smw_smwadmin_dbdocu' => 'Semantyczne MediaWiki wymaga rozszerzeń do bazy danych MediaWiki, które umożliwiają przechowywanie danych semantycznych.
+Poniższa funkcja zapewnia, że baza danych zostanie poprawnie przygotowana.
+Zmiany wykonane w tym kroku nie mają wpływu na pozostałą część bazy danych MediaWiki i mogą łatwo zostać cofnięte w razie potrzeby.
+Ta operacja może zostać wykonana wielokrotnie bez wyrządzenia szkód ale konieczna jest tylko raz w trakcie instalacji lub aktualizacji.',
+	'smw_smwadmin_permissionswarn' => 'Jeśli operacja nie powiedzie się i wystąpią błędy SQL, najprawdopodobniej użytkownik bazy danych wykorzystywany przez Twoją wiki (sprawdź LocalSettings.php) nie ma wystarczających uprawnień.
+Nadaj użytkownikowi dodatkowe uprawnienia do tworzenia i usuwania tabel, tymczasowo użyj konta root w LocalSettings.php lub użyj skryptu konserwacyjnego <tt>SMW_setup.php</tt>, który może poświadczeń z AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'Inicjuj lub aktualizuj tabele',
+	'smw_smwadmin_announce' => 'Opublikuj swoją wiki',
 	'smw_smwadmin_datarefresh' => 'Naprawa i aktualizacja danych',
 	'smw_smwadmin_datarefreshbutton' => 'Rozpocznij aktualizację danych',
 	'smw_smwadmin_datarefreshstop' => 'Zatrzymaj aktualizację danych',
@@ -10764,9 +10770,27 @@ $messages['ug-latn'] = array(
  */
 $messages['uk'] = array(
 	'smw_finallistconjunct' => ' і',
+	'smw_printername_auto' => 'Автоматично',
+	'smw_printername_list' => 'Список',
+	'smw_printername_table' => 'Таблиця',
+	'smw_printername_template' => 'Шаблон',
+	'smw_exportrdf_submit' => 'Експорт',
+	'properties' => 'Властивості',
+	'unusedproperties' => 'Властивості, що не використовуються',
+	'wantedproperties' => 'Потрібні властивості',
+	'smw_purge' => 'Оновити',
+	'smw_sbv_property' => 'Властивість:',
+	'smw_sbv_value' => 'Значення:',
+	'smw_pp_type' => 'Властивість',
 	'smw_result_prev' => 'Попередня',
 	'smw_result_next' => 'Наступна',
 	'smw_result_results' => 'Результати',
+	'smw_result_noresults' => 'Немає результатів.',
+	'smw_smwadmin_return' => 'Повернутись до $1',
+	'smw_smwadmin_datarefreshbutton' => 'Почати оновлення даних',
+	'smw_smwadmin_datarefreshstop' => 'Зупинити це оновлення',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Так, я впевнений.',
+	'smw_adminlinks_datastructure' => 'Структура даних',
 );
 
 /** Veps (Vepsan kel')
