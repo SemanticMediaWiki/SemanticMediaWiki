@@ -333,6 +333,7 @@ Estimated progress of current update:',
  * @author Meno25
  * @author Pietrodn
  * @author Purodha
+ * @author Тест
  */
 $messages['qqq'] = array(
 	'smw-desc' => '{{desc}}',
@@ -374,6 +375,7 @@ Note that spaces and space-like HTML entities are always ignored when reading nu
 * $1: the property name
 * $2: the name of the type of the property
 * $3: the number of occurrences of this property in the wiki',
+	'types' => '{{Identical|Type}}',
 	'smw_typeunits' => 'This message is used in the tooltip on Special:Types when a property supports custom units of measurement. The parameter $1 then is the type name, and $2 is a list of unit names.',
 	'smw_uri_doc' => "This message sketches the (very technical) function of this unlisted special page.
 It probably does not need translation in most cases. The special page as such is used in all URIs used by Semantic MediaWiki.
@@ -1019,6 +1021,14 @@ $messages['arz'] = array(
 	'smw_adminlinks_datastructure' => 'هيكل البيانات',
 	'smw_adminlinks_displayingdata' => 'عرض البيانات',
 	'smw_adminlinks_inlinequerieshelp' => 'مساعده الاستعلامات الداخلية',
+);
+
+/** Belarusian (Беларуская)
+ * @author Тест
+ */
+$messages['be'] = array(
+	'smw_printername_template' => 'Шаблон',
+	'types' => 'Тыпы',
 );
 
 /** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
@@ -4759,6 +4769,7 @@ $messages['hu'] = array(
 	'smw_concept_cache_miss' => 'A(z) „$1” koncepció nem használható pillanatnyilag, mivel a wiki konfigurációja szerint kapcsolat nélküli módban kell kiszámítani.
 Ha a probléma nem szűnik meg bizonyos idő elteltével, kérd az oldal adminisztrátorát hogy tegye elérhetővé a koncepciót.',
 	'smw_noinvannot' => 'Inverz tulajdonságokhoz nem lehet értékeket rendelni.',
+	'version-semantic' => 'Szemantikai kiterjesztések',
 	'smw_baduri' => '„$1” formájú URI-k nem engedélyezettek.',
 	'smw_printername_auto' => 'Automatikus',
 	'smw_printername_count' => 'Eredmények megszámlálása',
@@ -8230,7 +8241,20 @@ Ta operacja może zostać wykonana wielokrotnie bez wyrządzenia szkód ale koni
 Nadaj użytkownikowi dodatkowe uprawnienia do tworzenia i usuwania tabel, tymczasowo użyj konta root w LocalSettings.php lub użyj skryptu konserwacyjnego <tt>SMW_setup.php</tt>, który może poświadczeń z AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Inicjuj lub aktualizuj tabele',
 	'smw_smwadmin_announce' => 'Opublikuj swoją wiki',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki posiada serwis internetowy do zamieszczania informacji o nowych semantycznych witrynach wiki.
+Informacja ta jest wykorzystywana do generowania spisu publicznych witryn, które korzystają z Semantic MediaWiki, oraz przede wszystkim pomaga <a href="http://semantic-mediawiki.org/wiki/SMW_Project">twórcom Semantic MediaWiki</a>, określić typowe zastosowania Semantic MediaWiki.
+Zobacz stronę główną Semantic MediaWiki jeśli szukasz <a href="http://semantic-mediawiki.org/wiki/Registry">dalszych informacji na temat tej usługi</a>.',
+	'smw_smwadmin_announcebutton' => 'Naciśnij przycisk, aby zapisać adres URL swojej wiki w tym serwisie.
+Nie rejestrujemy wiki, które nie są publicznie dostępne. Zapisujemy wyłącznie publicznie dostępne informacje.',
 	'smw_smwadmin_datarefresh' => 'Naprawa i aktualizacja danych',
+	'smw_smwadmin_datarefreshdocu' => 'Istnieje możliwość przywrócenia wszystkich danych Semantic MediaWiki w oparciu o aktualną zawartość wiki.
+Może to być przydatne do naprawy uszkodzonych danych lub odświeżenia danych, jeśli wewnętrzny format zmienił się z powodu jakichś aktualizacji oprogramowania.
+Aktualizacja jest wykonywana strona po stronie i nie zostanie ukończona natychmiast. 
+Poniżej przedstawiono, czy aktualizacja jest w toku. Można również uruchomić lub zatrzymać aktualizację (chyba, że ta funkcja została wyłączona przez administratora).',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Aktualizacja trwa.</strong> 
+To normalne, że aktualizacja postępuje powoli, gdyż odświeżanie danych wykonywane jest w małymi porcjami za każdym razem, gdy użytkownik korzysta z wiki. 
+Aby szybciej zakończyć aktualizację można uruchomić skrypt MediaWiki <tt>runJobs.php</tt> (użyj opcji <tt>--maxjobs 1000</tt>, aby ograniczyć liczbę aktualizacji, które wykonywane są podczas jednego uruchomienia). 
+Przewidywany postęp bieżącej aktualizacji:',
 	'smw_smwadmin_datarefreshbutton' => 'Rozpocznij aktualizację danych',
 	'smw_smwadmin_datarefreshstop' => 'Zatrzymaj aktualizację danych',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Tak, jestem pewien.',
@@ -10772,16 +10796,25 @@ $messages['uk'] = array(
 	'smw_finallistconjunct' => ' і',
 	'smw_printername_auto' => 'Автоматично',
 	'smw_printername_list' => 'Список',
+	'smw_printername_ol' => 'Перерахування',
 	'smw_printername_table' => 'Таблиця',
 	'smw_printername_template' => 'Шаблон',
+	'smw_paramdesc_sep' => 'Розділювач для значень',
 	'smw_exportrdf_submit' => 'Експорт',
 	'properties' => 'Властивості',
 	'unusedproperties' => 'Властивості, що не використовуються',
 	'wantedproperties' => 'Потрібні властивості',
 	'smw_purge' => 'Оновити',
+	'types' => 'Типи',
+	'smw_ask_submit' => 'Знайти',
+	'smw_ask_defaultformat' => 'за умовчанням',
+	'smw_ask_otheroptions' => 'Інші опції',
 	'smw_sbv_property' => 'Властивість:',
 	'smw_sbv_value' => 'Значення:',
+	'smw_sbv_submit' => 'Знайти',
+	'smw_pp_from' => 'З сторінки',
 	'smw_pp_type' => 'Властивість',
+	'smw_pp_submit' => 'Знайти',
 	'smw_result_prev' => 'Попередня',
 	'smw_result_next' => 'Наступна',
 	'smw_result_results' => 'Результати',
@@ -10791,6 +10824,7 @@ $messages['uk'] = array(
 	'smw_smwadmin_datarefreshstop' => 'Зупинити це оновлення',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Так, я впевнений.',
 	'smw_adminlinks_datastructure' => 'Структура даних',
+	'smw_adminlinks_displayingdata' => 'Відображення даних',
 );
 
 /** Veps (Vepsan kel')
