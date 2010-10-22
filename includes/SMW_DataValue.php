@@ -398,7 +398,7 @@ abstract class SMWDataValue {
 	 * @param string $comparator
 	 */
 	static protected function prepareValue( &$value, &$comparator ) {
-		global $smwgQComparators;
+		global $smwgQComparators, $smwStrictComparators;
 
 		$list = preg_split( '/^(' . $smwgQComparators . ')/u', $value, 2, PREG_SPLIT_DELIM_CAPTURE );
 		$comparator = SMW_CMP_EQ;
@@ -408,10 +408,10 @@ abstract class SMWDataValue {
 
 			switch ( $list[1] ) {
 				case '<':
-					$comparator = SMW_CMP_LEQ;
+					$comparator = $smwStrictComparators ? SMW_CMP_LESS : SMW_CMP_LEQ;
 					break;
 				case '>':
-					$comparator = SMW_CMP_GEQ;
+					$comparator = $smwStrictComparators ? SMW_CMP_GRTR : SMW_CMP_GEQ;
 					break;
 				case '!':
 					$comparator = SMW_CMP_NEQ;
@@ -421,6 +421,12 @@ abstract class SMWDataValue {
 					break;
 				case '!~':
 					$comparator = SMW_CMP_NLKE;
+					break;
+				case '>=':
+					$comparator = SMW_CMP_GEQ;
+					break;
+				case '<=':
+					$comparator = SMW_CMP_LEQ;
 					break;
 				// default: not possible
 			}

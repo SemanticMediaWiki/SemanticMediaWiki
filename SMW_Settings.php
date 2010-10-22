@@ -198,17 +198,26 @@ $smwgQDefaultNamespaces = null; // Which namespaces should be searched by defaul
  * List of comparator characters supported by queries, separated by '|', for use in a regex.
  *
  * Available entries:
- * 	< (smaller than)
- * 	< (greater than)
+ * 	< (smaller than) if $smwStrictComparators is false, it's actually smaller than or equal to
+ * 	> (greater than) if $smwStrictComparators is false, it's actually bigger than or equal to
  * 	! (unequal to)
  * 	~ (pattern with '*' as wildcard, only for Type:String)
  * 	!~ (not a pattern with '*' as wildcard, only for Type:String, need to be placed before ! and ~ to work correctly)
+ * 	<= (smaller than or equal to)
+ * 	>= (greater than or equal to)
  *
  * If unsupported comparators are used, they are treated as part of the queried value
  *
  * @var string
  */
-$smwgQComparators = '<|>|!~|!|~';
+$smwgQComparators = '<|>|!~|!|~|<=|>=';
+
+###
+# Sets whether the > and < comparators should be strict or not. If they are strict,
+# values that are equal will not be accepted.
+##
+$smwStrictComparators = false;
+##
 
 ###
 # Further settings for queries. The following settings affect inline queries

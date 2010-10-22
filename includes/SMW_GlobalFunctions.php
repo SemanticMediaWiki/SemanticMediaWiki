@@ -54,6 +54,8 @@ define( 'SMW_CMP_GEQ', 3 ); // Matches only datavalues that are greater or equal
 define( 'SMW_CMP_NEQ', 4 ); // Matches only datavalues that are unequal to the given value.
 define( 'SMW_CMP_LIKE', 5 ); // Matches only datavalues that are LIKE the given value.
 define( 'SMW_CMP_NLKE', 6 ); // Matches only datavalues that are not LIKE the given value.
+define( 'SMW_CMP_LESS', 7 ); // Matches only datavalues that are less than the given value.
+define( 'SMW_CMP_GRTR', 8 ); // Matches only datavalues that are greater than the given value.
 
 // Constants for date formats (using binary encoding of nine bits: 3 positions x 3 interpretations).
 define( 'SMW_MDY', 785 );  // Month-Day-Year
