@@ -6952,6 +6952,13 @@ $messages['ml'] = array(
 	'smw_result_noresults' => 'ക്ഷമിക്കുക, ഫലങ്ങൾ ഒന്നുമില്ല',
 );
 
+/** Mongolian (Монгол)
+ * @author Chinneeb
+ */
+$messages['mn'] = array(
+	'smw_browse_go' => 'Явах',
+);
+
 /** Marathi (मराठी)
  * @author Kaustubh
  */
@@ -10354,6 +10361,7 @@ $messages['te'] = array(
 	'smw_attribute_header' => '"$1" లక్షణాన్ని వాడుతున్న పేజీలు',
 	'smw_attributearticlecount' => 'ఈ లక్షణాన్ని వాడుతున్న $1 {{PLURAL:$1|పేజీని|పేజీలను}} చూపిస్తున్నాం.',
 	'smw_subproperty_header' => 'ఉపలక్షణాలు',
+	'smw_exportrdf_submit' => 'ఎగుమతించు',
 	'properties' => 'లక్షణాలు',
 	'smw_properties_docu' => 'ఈ వికీలో ఈ క్రింది లక్షణాలను ఉపయోగించారు.',
 	'smw_property_template' => '$2 రకం యొక్క $1 ($3)',
@@ -10367,6 +10375,7 @@ $messages['te'] = array(
 	'smw_ask_ascorder' => 'ఆరోహణ',
 	'smw_ask_descorder' => 'అవరోహణ',
 	'smw_ask_printhead' => 'చూపించాల్సిన అదనపు భోగట్టా',
+	'smw_ask_defaultformat' => 'అప్రమేయం',
 	'smw_ask_otheroptions' => 'ఇతర ఎంపికలు',
 	'smw_sbv_property' => 'లక్షణం:',
 	'smw_sbv_value' => 'విలువ:',
