@@ -422,10 +422,10 @@ abstract class SMWDataValue {
 				case '!~':
 					$comparator = SMW_CMP_NLKE;
 					break;
-				case '>=':
+				case '>=': case '≥' :
 					$comparator = SMW_CMP_GEQ;
 					break;
-				case '<=':
+				case '<=': case '≤' :
 					$comparator = SMW_CMP_LEQ;
 					break;
 				// default: not possible
