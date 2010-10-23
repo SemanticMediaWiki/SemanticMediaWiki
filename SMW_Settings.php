@@ -203,14 +203,14 @@ $smwgQDefaultNamespaces = null; // Which namespaces should be searched by defaul
  * 	! (unequal to)
  * 	~ (pattern with '*' as wildcard, only for Type:String)
  * 	!~ (not a pattern with '*' as wildcard, only for Type:String, need to be placed before ! and ~ to work correctly)
- * 	<= or ≤(smaller than or equal to)
- * 	>= or ≥(greater than or equal to)
+ * 	≤ (smaller than or equal to)
+ * 	≥ (greater than or equal to)
  *
  * If unsupported comparators are used, they are treated as part of the queried value
  *
  * @var string
  */
-$smwgQComparators = '<|>|!~|!|~|<=|>=|≤|≥';
+$smwgQComparators = '<|>|!~|!|~|≤|≥';
 
 ###
 # Sets whether the > and < comparators should be strict or not. If they are strict,

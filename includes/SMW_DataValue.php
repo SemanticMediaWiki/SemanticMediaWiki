@@ -396,6 +396,11 @@ abstract class SMWDataValue {
 	 *
 	 * @param string $value
 	 * @param string $comparator
+	 * 
+	 * TODO: It would be better to have an associative array that maps comparator strings
+	 * to their internal meaning, so this switch and the reverse one in SMWValueDescription
+	 * can be thrown away. This would allow to extend the comparators more easily, without
+	 * breaking things.
 	 */
 	static protected function prepareValue( &$value, &$comparator ) {
 		global $smwgQComparators, $smwStrictComparators;
@@ -422,10 +427,10 @@ abstract class SMWDataValue {
 				case '!~':
 					$comparator = SMW_CMP_NLKE;
 					break;
-				case '>=': case '≥' :
+				case '≥' :
 					$comparator = SMW_CMP_GEQ;
 					break;
-				case '<=': case '≤' :
+				case '≤' :
 					$comparator = SMW_CMP_LEQ;
 					break;
 				// default: not possible
