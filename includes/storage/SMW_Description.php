@@ -386,20 +386,7 @@ class SMWValueDescription extends SMWDescription {
 
 	public function getQueryString( $asvalue = false ) {
 		if ( $this->m_datavalue !== null ) {
-			global $smwStrictComparators;
-
-			switch ( $this->m_comparator ) {
-				case SMW_CMP_LEQ:  $comparator = $smwStrictComparators ? '<=' : '<'; break;
-				case SMW_CMP_GEQ:  $comparator = $smwStrictComparators ? '>=' : '>'; break;
-				case SMW_CMP_NEQ:  $comparator = '!'; break;
-				case SMW_CMP_LIKE: $comparator = '~'; break;
-				case SMW_CMP_NLKE: $comparator = '!~'; break;
-				case SMW_CMP_LESS: $comparator = '<'; break;
-				case SMW_CMP_GRTR: $comparator = '>'; break;
-				default: case SMW_CMP_EQ:
-					$comparator = '';
-				break;
-			}
+			$comparator = SMWQueryLanguage::getStringForComparator( $this->m_comparator );
 			
 			if ( $asvalue ) {
 				return $comparator . $this->m_datavalue->getWikiValue();

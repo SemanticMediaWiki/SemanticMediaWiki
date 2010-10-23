@@ -410,31 +410,7 @@ abstract class SMWDataValue {
 
 		if ( count( $list ) == 3 ) { // Initial comparator found ($list[0] should be empty).
 			$value = $list[2];
-
-			switch ( $list[1] ) {
-				case '<':
-					$comparator = $smwStrictComparators ? SMW_CMP_LESS : SMW_CMP_LEQ;
-					break;
-				case '>':
-					$comparator = $smwStrictComparators ? SMW_CMP_GRTR : SMW_CMP_GEQ;
-					break;
-				case '!':
-					$comparator = SMW_CMP_NEQ;
-					break;
-				case '~':
-					$comparator = SMW_CMP_LIKE;
-					break;
-				case '!~':
-					$comparator = SMW_CMP_NLKE;
-					break;
-				case '≥' :
-					$comparator = SMW_CMP_GEQ;
-					break;
-				case '≤' :
-					$comparator = SMW_CMP_LEQ;
-					break;
-				// default: not possible
-			}
+			$comparator = SMWQueryLanguage::getComparatorFromString( $list[1], SMW_CMP_EQ );
 		}
 	}
 
