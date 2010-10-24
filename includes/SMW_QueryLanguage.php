@@ -94,7 +94,7 @@ final class SMWQueryLanguage {
 		$comparators = array(
 			'!~' => SMW_CMP_NLKE,
 			'<<' => SMW_CMP_LESS,
-			'>>' => SMW_CMP_GRTR,		
+			'>>' => SMW_CMP_GRTR,
 			'<' => $smwStrictComparators ? SMW_CMP_LESS : SMW_CMP_LEQ,
 			'>' => $smwStrictComparators ? SMW_CMP_GRTR : SMW_CMP_GEQ,
 			'≤' => SMW_CMP_LEQ,

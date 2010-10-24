@@ -401,13 +401,11 @@ abstract class SMWDataValue {
 		// Loop over the comparators to determine which one is used and what the actual value is. 
 		foreach ( SMWQueryLanguage::getComparatorStrings() as $srting ) {
 			if ( strpos( $value, $srting ) === 0 ) {
-				$comparatorString = substr( $value, 0, strlen( $srting ) );
+				$comparator = SMWQueryLanguage::getComparatorFromString( substr( $value, 0, strlen( $srting ) ) );
 				$value = substr( $value, strlen( $srting ) );
 				break;
 			}
 		}
-
-		$comparator = SMWQueryLanguage::getComparatorFromString( $comparatorString, SMW_CMP_EQ );
 	}
 
 ///// Get methods /////
