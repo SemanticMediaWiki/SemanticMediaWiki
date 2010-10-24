@@ -771,15 +771,24 @@ $messages['ar'] = array(
  * @author Basharh
  */
 $messages['arc'] = array(
+	'smw_finallistconjunct' => ', ܘ',
 	'smw_printername_auto' => 'ܝܬܐܝܬ',
+	'smw_printername_list' => 'ܡܟܬܒܘܬܐ',
 	'smw_printername_table' => 'ܠܘܚܝܬܐ',
 	'smw_printername_template' => 'ܩܠܒܐ',
+	'smw_iq_moreresults' => 'ܝܬܝܪ ܦܠܛ̈ܐ …',
 	'smw_true_words' => 'ܬܪܝܨܐ,ܬ,ܐܝܢ,ܐ',
 	'smw_false_words' => 'ܦܘܕܐ,ܦ,ܠܐ,ܠ',
 	'exportrdf' => 'ܐܦܩ ܦܐܬܬ̈ܐ ܠ RDF',
 	'smw_exportrdf_submit' => 'ܐܦܩ',
+	'smw_property_template' => '$1 ܡܢ ܐܕܫܐ ܕ $2 ($3)',
+	'smw_unusedproperty_template' => '$1 ܡܢ ܐܕܫܐ ܕ $2',
 	'types' => 'ܐܕܫ̈ܐ',
+	'smw_ask_otheroptions' => 'ܓܒܝܬ̈ܐ ܐܚܪ̈ܢܝܬܐ',
 	'smw_sbv_value' => 'ܛܝܡܐ:',
+	'browse' => 'ܦܐܬ ܘܝܩܝ',
+	'smw_browse_go' => 'ܙܠ',
+	'smw_pp_from' => 'ܡܢ ܕܦܐ',
 	'smw_result_results' => 'ܦܠܛ̈ܐ',
 	'smw_result_noresults' => 'ܠܐ ܦܠܛ̈ܐ.',
 );
@@ -6586,6 +6595,7 @@ Et ka keen neien ugefaang ginn.',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Jo, ech si sécher.',
 	'smw_smwadmin_support' => 'Ënnerstëtzung kréien',
 	'smw_smwadmin_supportdocu' => 'Verschidde Quellen kéinten Iech bei Problemer hëllefen:',
+	'smw_smwadmin_installfile' => 'Wann Dir Problemer bäi der Installatioun hutt, da kuckt d\'Directiven am <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL Fichier</a> no.',
 	'smw_smwadmin_smwhomepage' => 'Déi komplett Benotzerdokumentatioun vu Semantic MediaWiki fannt Dir op b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Feeler kënnen op <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> gemellt ginn.',
 	'smw_smwadmin_questions' => 'Wann dir nach Froen oder Propositiounen hutt, da bedeelegt Iech un der Diskussioun op dem <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">Semantic MediaWiki Benotzer-Forum</a>.',
@@ -6916,6 +6926,7 @@ $messages['mk'] = array(
 );
 
 /** Malayalam (മലയാളം)
+ * @author Praveenp
  * @author Shijualex
  */
 $messages['ml'] = array(
@@ -6930,17 +6941,17 @@ $messages['ml'] = array(
 	'smw_true_words' => 'ശരി,ശരി,അതെ,അതെ',
 	'smw_false_words' => 'തെറ്റ്,തെറ്റ്,അല്ല,അല്ല',
 	'smw_nofloat' => '“$1” ഒരു സംഖ്യയല്ല.',
-	'smw_infinite' => '“$1” എന്ന സംഖ്യയുടെയത്ര വലിപ്പമുള്ള സംഖ്യകൾ {{SITENAME}} സം‌രംഭത്തിൽ പിൻ‌താങ്ങുന്നില്ല.',
+	'smw_infinite' => '“$1” എന്ന സംഖ്യയുടെയത്ര വലിപ്പമുള്ള സംഖ്യകൾ പിന്തുണയ്ക്കുന്നില്ല.',
 	'smw_unsupportedunit' => '“$1” എന്ന ഏകകത്തിന്റെ ഏകകമാറ്റം പിൻ‌താങ്ങുന്നില്ല.',
 	'smw_misplacedsymbol' => '“$1” എന്ന ചിഹ്നം അതു ഉപയോഗിക്കാൻ പാടില്ലാത്ത ഒരു സ്ഥലത്ത് ഉപയോഗിച്ചിരിക്കുന്നു.',
 	'smw_badtitle' => 'ക്ഷമിക്കണം, “$1”  എന്നതു സാധുവായൊരു തലക്കെട്ട് അല്ല.',
 	'exportrdf' => 'RDFലേക്ക് താളുകൾ എക്സ്‌പോർട്ട് ചെയ്യുക',
-	'smw_wantedproperty_template' => '$1 ($2 ഉപയോഗങ്ങൾ)',
+	'smw_wantedproperty_template' => '$1 ({{PLURAL:$2|ഒരുപയോഗം|$2 ഉപയോഗങ്ങൾ}})',
 	'types' => 'തരങ്ങൾ',
 	'smw_ask_ascorder' => 'ആരോഹണം',
 	'smw_ask_descorder' => 'അവരോഹണം',
 	'smw_ask_submit' => 'ഫലങ്ങൾ കാണുക',
-	'smw_sbv_value' => 'മൂല്യം',
+	'smw_sbv_value' => 'മൂല്യം:',
 	'smw_sbv_submit' => 'ഫലങ്ങൾ കാണുക',
 	'browse' => 'വിക്കിയിൽ പരതുക',
 	'smw_browse_go' => 'പോകൂ',
@@ -10345,6 +10356,7 @@ $messages['te'] = array(
 	'smw_printername_list' => 'జాబితా',
 	'smw_printername_table' => 'పట్టిక',
 	'smw_printername_template' => 'మూస',
+	'smw_paramdesc_embedonly' => 'శీర్షికలను చూపించకు',
 	'smw_iq_moreresults' => '… మరిన్ని ఫలితాలు',
 	'smw_iq_altresults' => 'ఫలితాల జాబితాని నేరుగా చూడండి.',
 	'smw_parseerror' => 'ఇచ్చిన విలువ అర్థం కాలేదు.',
