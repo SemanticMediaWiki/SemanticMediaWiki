@@ -396,22 +396,18 @@ abstract class SMWDataValue {
 	 *
 	 * @param string $value
 	 * @param string $comparator
-	 * 
-	 * TODO: It would be better to have an associative array that maps comparator strings
-	 * to their internal meaning, so this switch and the reverse one in SMWValueDescription
-	 * can be thrown away. This would allow to extend the comparators more easily, without
-	 * breaking things.
 	 */
 	static protected function prepareValue( &$value, &$comparator ) {
-		global $smwgQComparators, $smwStrictComparators;
-
-		$list = preg_split( '/^(' . $smwgQComparators . ')/u', $value, 2, PREG_SPLIT_DELIM_CAPTURE );
-		$comparator = SMW_CMP_EQ;
-
-		if ( count( $list ) == 3 ) { // Initial comparator found ($list[0] should be empty).
-			$value = $list[2];
-			$comparator = SMWQueryLanguage::getComparatorFromString( $list[1], SMW_CMP_EQ );
+		// Loop over the comparators to determine which one is used and what the actual value is. 
+		foreach ( SMWQueryLanguage::getComparatorStrings() as $srting ) {
+			if ( strpos( $value, $srting ) === 0 ) {
+				$comparatorString = substr( $value, 0, strlen( $srting ) );
+				$value = substr( $value, strlen( $srting ) );
+				break;
+			}
 		}
+
+		$comparator = SMWQueryLanguage::getComparatorFromString( $comparatorString, SMW_CMP_EQ );
 	}
 
 ///// Get methods /////

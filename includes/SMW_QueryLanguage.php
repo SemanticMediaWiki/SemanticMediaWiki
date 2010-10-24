@@ -23,6 +23,18 @@ final class SMWQueryLanguage {
 	protected static $comparators = array();
 	
 	/**
+	 * Gets an array with all suported comparator strings.
+	 * 
+	 * @since 1.5.3
+	 * 
+	 * @return array
+	 */
+	public static function getComparatorStrings() {
+		self::initializeComparators();
+		return array_keys( self::$comparators );
+	}
+	
+	/**
 	 * Gets the SMW_CMP_ for a string comparator, falling back to the
 	 * $defaultComparator when none is found.
 	 * 
@@ -54,7 +66,7 @@ final class SMWQueryLanguage {
 		if ( $reverseCache === false ) {
 			$reverseCache = array_reverse( self::$comparators );
 		}
-		
+
 		if ( array_key_exists( $comparator, $reverseCache ) ) {
 			return $reverseCache[$comparator];
 		}
@@ -78,17 +90,18 @@ final class SMWQueryLanguage {
 		
 		$initialized = true;
 		
+		// Note: Comparators that contain other comparators at the beginning of the string need to be at beginning of the array.
 		$comparators = array(
-			'' => SMW_CMP_EQ,
+			'!~' => SMW_CMP_NLKE,
+			'<<' => SMW_CMP_LESS,
+			'>>' => SMW_CMP_GRTR,		
 			'<' => $smwStrictComparators ? SMW_CMP_LESS : SMW_CMP_LEQ,
 			'>' => $smwStrictComparators ? SMW_CMP_GRTR : SMW_CMP_GEQ,
 			'≤' => SMW_CMP_LEQ,
 			'≥' => SMW_CMP_GEQ,
 			'!' => SMW_CMP_NEQ,
 			'~' => SMW_CMP_LIKE,
-			'!~' => SMW_CMP_NLKE,
-			'<<' => SMW_CMP_LESS,
-			'>>' => SMW_CMP_GRTR,
+			'' => SMW_CMP_EQ,
 		);
 		
 		$allowedComparators = explode( '|', $smwgQComparators );		

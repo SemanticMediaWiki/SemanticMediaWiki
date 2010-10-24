@@ -210,7 +210,7 @@ $smwgQDefaultNamespaces = null; // Which namespaces should be searched by defaul
  *
  * @var string
  */
-$smwgQComparators = '<|>|!~|!|~|≤|≥';
+$smwgQComparators = '<|>|!~|!|~|≤|≥|<<|>>';
 
 ###
 # Sets whether the > and < comparators should be strict or not. If they are strict,
