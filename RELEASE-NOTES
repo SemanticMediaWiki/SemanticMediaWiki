@@ -1,5 +1,13 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
+== SMW 1.5.3 ==
+
+* Compatibility with MediaWiki 1.17
+* Added << and >> comparators for strict comparisons. Also added ≤ and ≥ for
+  non-strict comparisons. And introduced $smwStrictComparators setting that
+  allows changing the behaviour of < and > to doing strict comparisons.
+* Various style and documentation improvements and translation updates.
+
 == SMW 1.5.2 ==
 
 * 'Printouts' textarea in Special:Ask now has autocompletion on property
