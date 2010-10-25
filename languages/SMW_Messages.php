@@ -11110,7 +11110,7 @@ $messages['vo'] = array(
 	'smw_sbv_displayresultfuzzy' => 'Lised padas valik labü völad: „$1“ patöfa: „$1“.
 Bi petuvons pads te aniks, i völads nilöfik palisedons.',
 	'smw_sbv_property' => 'Patöf',
-	'smw_sbv_value' => 'Völad',
+	'smw_sbv_value' => 'Völad:',
 	'smw_sbv_submit' => 'Tuvön sekis',
 	'browse' => 'Padön vüki',
 	'smw_browselink' => 'Logön patöfis',
