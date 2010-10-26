@@ -33,7 +33,7 @@ class SMWSetRecurringEvent {
 			return null;
 		}
 
-		list( $property, $all_date_strings, $unused_params ) = $results;
+		list( $property_name, $all_date_strings, $unused_params ) = $results;
 
 		// Do the actual saving of the data.
 		foreach ( $all_date_strings as $date_str ) {
