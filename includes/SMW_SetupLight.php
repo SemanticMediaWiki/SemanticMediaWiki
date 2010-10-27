@@ -60,6 +60,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Aliases.php';
 
 	// Set up autoloading; essentially all classes should be autoloaded!
+	$wgAutoloadClasses['SMWHooks']       			= $smwgIP . 'SMW.hooks.php';
+	
 	$wgAutoloadClasses['SMWParserExtensions']       = $smwgIP . 'includes/SMW_ParserExtensions.php';
 	$wgAutoloadClasses['SMWInfolink']               = $smwgIP . 'includes/SMW_Infolink.php';
 // 	$wgAutoloadClasses['SMWFactbox']                = $smwgIP . 'includes/SMW_Factbox.php';
@@ -229,7 +231,7 @@ function smwfSetupExtension() {
 	$wgHooks['ArticleFromTitle'][] = 'smwfOnArticleFromTitle'; // special implementations for property/type articles
 	$wgHooks['ParserFirstCallInit'][] = 'smwfRegisterParserFunctions';
 
-	$wgHooks['ResourceLoaderRegisterModules'][] = 'smwfRegisterResourceLoaderModules';
+	$wgHooks['ResourceLoaderRegisterModules'][] = 'SMWHooks::registerResourceLoaderModules';
 	
 	$smwgMW_1_14 = true; // assume latest 1.14 API
 

@@ -47,6 +47,7 @@ class SMWOutputs {
 		
 		if ( is_numeric( $id ) ) {
 			global $wgOut;
+
 			switch ( $id ) {	
 				case SMW_HEADER_TOOLTIP:
 					$wgOut->addModules( 'ext.smw.tooltips' );

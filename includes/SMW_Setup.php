@@ -55,7 +55,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgHooks['ParserTestTables'][] = 'smwfOnParserTestTables';
 	$wgHooks['AdminLinks'][] = 'smwfAddToAdminLinks';
 	
-	$wgHooks['ResourceLoaderRegisterModules'][] = 'smwfRegisterResourceLoaderModules';
+	$wgHooks['ResourceLoaderRegisterModules'][] = 'SMWHooks::registerResourceLoaderModules';
 
 	if ( version_compare( $wgVersion, '1.17alpha', '>=' ) ) {
 		// For MediaWiki 1.17 alpha and later.
@@ -69,6 +69,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Aliases.php';
 
 	// Set up autoloading; essentially all classes should be autoloaded!
+	$wgAutoloadClasses['SMWHooks']       			= $smwgIP . 'SMW.hooks.php';
+	
 	$wgAutoloadClasses['SMWParserExtensions']       = $smwgIP . 'includes/SMW_ParserExtensions.php';
 	$wgAutoloadClasses['SMWInfolink']               = $smwgIP . 'includes/SMW_Infolink.php';
 	$wgAutoloadClasses['SMWFactbox']                = $smwgIP . 'includes/SMW_Factbox.php';
@@ -509,44 +511,6 @@ function smwfInitContentLanguage( $langcode ) {
 	$smwgContLang = new $smwContLangClass();
 
 	wfProfileOut( 'smwfInitContentLanguage (SMW)' );
-}
-
-/**
- * Register the resource modules for the resource loader.
- * 
- * @since 1.5.3
- * 
- * @param ResourceLoader $resourceLoader
- * 
- * @return true
- */
-function smwfRegisterResourceLoaderModules( ResourceLoader &$resourceLoader ) {
-	global $smwgScriptPath, $wgContLang;
-	
-	$modules = array(
-		'ext.smw.style' => array(
-			'styles' =>  $smwgScriptPath . ( $wgContLang->isRTL() ? '/skins/SMW_custom_rtl.css' : '/skins/SMW_custom.css' )
-		),
-		'ext.smw.tooltips' => array(
-			'scripts' =>  $smwgScriptPath . '/skins/SMW_tooltip.js',
-			'dependencies' => array(
-				'mediawiki.legacy.wikibits',
-				'ext.smw.style'
-			)
-		),
-		'ext.smw.sorttable' => array(
-			'scripts' =>  $smwgScriptPath . '/skins/SMW_sorttable.js',
-			'dependencies' => 'ext.smw.style'
-		)		
-	);
-	
-	foreach ( $modules as $name => $resources ) { 
-		$resourceLoader->register( $name, new ResourceLoaderFileModule(
-			array_merge_recursive( $resources, array( 'group' => 'ext.smw' ) )
-		) ); 
-	}
-	
-	return true;
 }
 
 /**
