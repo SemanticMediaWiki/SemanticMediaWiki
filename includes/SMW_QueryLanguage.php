@@ -3,6 +3,12 @@
 /**
  * Static class for functions related to the SMW query language.
  * 
+ * Note: the query language "definition" is located at various places in the SMW codebase.
+ * SMWQueryParser defines most of the actual query syntax.
+ * SMWDescription defines the semantic elements of the query language.
+ * This class is an attempt to gradualy migrate to having all the stuff at one location,
+ * clearly distinguised from non-language code.
+ * 
  * @since 1.5.3
  * 
  * @file SMW_QueryLanguage.php
