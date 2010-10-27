@@ -29,17 +29,18 @@ final class SMWHooks {
 
 		$modules = array(
 			'ext.smw.style' => array(
-				'styles' =>   ( $wgContLang->isRTL() ? 'SMW_custom_rtl.css' : 'SMW_custom.css' )
+				// FIXME: Won't work right, ResourceLoader does RTL flipping itself
+				'styles' => ( $wgContLang->isRTL() ? 'SMW_custom_rtl.css' : 'SMW_custom.css' )
 			),
 			'ext.smw.tooltips' => array(
-				'scripts' =>   'SMW_tooltip.js',
+				'scripts' => 'SMW_tooltip.js',
 				'dependencies' => array(
 					'mediawiki.legacy.wikibits',
 					'ext.smw.style'
 				)
 			),
 			'ext.smw.sorttable' => array(
-				'scripts' =>  dirname( __FILE__ ) . 'SMW_sorttable.js',
+				'scripts' => 'SMW_sorttable.js',
 				'dependencies' => 'ext.smw.style'
 			)		
 		);
@@ -49,7 +50,7 @@ final class SMWHooks {
 				$name,
 				new ResourceLoaderFileModule(
 					array_merge_recursive( $resources, array( 'group' => 'ext.smw' ) ),
-					'extensions/SemanticMediaWiki/skins/'
+					dirname( __FILE__ ) . '/skins', $smwgScriptPath . '/skins'
 				)
 			); 
 		}
