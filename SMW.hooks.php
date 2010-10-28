@@ -25,7 +25,7 @@ final class SMWHooks {
 	 * @return true
 	 */
 	public static function registerResourceLoaderModules( ResourceLoader &$resourceLoader ) {
-		global $wgContLang;
+		global $wgContLang, $smwgScriptPath;
 
 		$modules = array(
 			'ext.smw.style' => array(
