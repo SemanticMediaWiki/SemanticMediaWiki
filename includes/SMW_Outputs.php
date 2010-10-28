@@ -29,6 +29,9 @@ class SMWOutputs {
 
 	/// Protected member function for temporarily storing header items.
 	protected static $mHeadItems = array();
+	
+	/// Protected member function for temporarily storing resource modules.
+	protected static $resourceModules = array();	
 
 	/**
 	 * Adds rousource loader modules or other head items.
@@ -50,13 +53,13 @@ class SMWOutputs {
 
 			switch ( $id ) {	
 				case SMW_HEADER_TOOLTIP:
-					self::$mHeadItems['smw_tt'] = 'ext.smw.tooltips';
+					self::$resourceModules['smw_tt'] = 'ext.smw.tooltips';
 					break;
 				case SMW_HEADER_SORTTABLE:
-					self::$mHeadItems['smw_st'] = 'ext.smw.sorttable';
+					self::$resourceModules['smw_st'] = 'ext.smw.sorttable';
 					break;
 				case SMW_HEADER_STYLE:
-					self::$mHeadItems['smw_css'] = 'ext.smw.style';
+					self::$resourceModules['smw_css'] = 'ext.smw.style';
 					break;
 			}	
 		}
@@ -166,16 +169,16 @@ class SMWOutputs {
 	 * @param ParserOutput $parserOutput
 	 */
 	static public function commitToParserOutput( ParserOutput $parserOutput ) {
+		foreach ( self::$mHeadItems as $key => $item ) {
+			$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
+		}		
+		
 		// Check if the resource loader can be used or not.
 		if ( method_exists( 'OutputPage', 'addModules' ) ) {
-			$parserOutput->addModules( array_values( self::$mHeadItems ) );
+			$parserOutput->addModules( self::$resourceModules );
 		}
-		else {
-			foreach ( self::$mHeadItems as $key => $item ) {
-				$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
-			}			
-		}	
 		
+		self::$resourceModules = array();
 		self::$mHeadItems = array();
 	}
 
