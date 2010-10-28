@@ -29,8 +29,7 @@ final class SMWHooks {
 
 		$modules = array(
 			'ext.smw.style' => array(
-				// FIXME: Won't work right, ResourceLoader does RTL flipping itself
-				'styles' => ( $wgContLang->isRTL() ? 'SMW_custom_rtl.css' : 'SMW_custom.css' )
+				'styles' => 'SMW_custom.css'
 			),
 			'ext.smw.tooltips' => array(
 				'scripts' => 'SMW_tooltip.js',
@@ -50,7 +49,8 @@ final class SMWHooks {
 				$name,
 				new ResourceLoaderFileModule(
 					array_merge_recursive( $resources, array( 'group' => 'ext.smw' ) ),
-					dirname( __FILE__ ) . '/skins', $smwgScriptPath . '/skins'
+					dirname( __FILE__ ) . '/skins',
+					$smwgScriptPath . '/skins'
 				)
 			); 
 		}

@@ -50,13 +50,13 @@ class SMWOutputs {
 
 			switch ( $id ) {	
 				case SMW_HEADER_TOOLTIP:
-					$wgOut->addModules( 'ext.smw.tooltips' );
+					self::$mHeadItems['smw_tt'] = 'ext.smw.tooltips';
 					break;
 				case SMW_HEADER_SORTTABLE:
-					$wgOut->addModules( 'ext.smw.sorttable' );
+					self::$mHeadItems['smw_st'] = 'ext.smw.sorttable';
 					break;
 				case SMW_HEADER_STYLE:
-					$wgOut->addModules( 'ext.smw.style' );	
+					self::$mHeadItems['smw_css'] = 'ext.smw.style';
 					break;
 			}	
 		}
@@ -166,10 +166,16 @@ class SMWOutputs {
 	 * @param ParserOutput $parserOutput
 	 */
 	static public function commitToParserOutput( ParserOutput $parserOutput ) {
-		foreach ( self::$mHeadItems as $key => $item ) {
-			$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
+		// Check if the resource loader can be used or not.
+		if ( method_exists( 'OutputPage', 'addModules' ) ) {
+			$parserOutput->addModules( array_values( self::$mHeadItems ) );
 		}
-
+		else {
+			foreach ( self::$mHeadItems as $key => $item ) {
+				$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
+			}			
+		}	
+		
 		self::$mHeadItems = array();
 	}
 

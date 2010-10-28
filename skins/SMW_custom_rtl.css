@@ -1,3 +1,8 @@
+/*
+ * Note: this file is not needed since the introduction of the MediaWiki resource loader,
+ * so it can be removed as soon as the minimun MW compatibility becomes >= 1.17. 
+ */
+
 /* tables for inline queries */
 table.smwtable th, table.smwtable td {
 	text-align: right;
