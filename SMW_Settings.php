@@ -24,7 +24,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 # of your wiki). No final slash.
 ##
 $smwgScriptPath = ( 
-	( version_compare( $wgVersion, '1.16', '>=' ) && isset( $wgExtensionAssetsPath ) && $wgExtensionAssetsPath )
+	( /*version_compare( $wgVersion, '1.16', '>=' ) && */isset( $wgExtensionAssetsPath ) && $wgExtensionAssetsPath )
 	? $wgExtensionAssetsPath : $wgScriptPath . '/extensions'
 	) . '/SemanticMediaWiki';
 ##

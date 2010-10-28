@@ -2,7 +2,6 @@
 // from http://www.kryogenix.org/code/browser/sorttable/
 // Modified for SMW (in fact, we might rewrite the code since we
 // usually have very special tables to sort)
-
 addOnloadHook( smw_sortables_init );
 
 var SORT_COLUMN_INDEX;
