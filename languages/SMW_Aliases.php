@@ -83,16 +83,16 @@ $specialPageAliases['bs'] = array(
 
 /** German (Deutsch) */
 $specialPageAliases['de'] = array(
-	'Ask' => array( 'Semantische Suche' ),
-	'ExportRDF' => array( 'Exportiere RDF' ),
+	'Ask' => array( 'Semantische_Suche' ),
+	'ExportRDF' => array( 'Exportiere_RDF' ),
 	'PageProperty' => array( 'Seitenattribut' ),
 	'Properties' => array( 'Attribute' ),
 	'SMWAdmin' => array( 'SMW-Einrichtung' ),
-	'SearchByProperty' => array( 'Suche mittels Attribut' ),
-	'SemanticStatistics' => array( 'Semantische Statistik' ),
+	'SearchByProperty' => array( 'Suche_mittels_Attribut' ),
+	'SemanticStatistics' => array( 'Semantische_Statistik' ),
 	'Types' => array( 'Datentypen' ),
-	'UnusedProperties' => array( 'Verwaiste Attribute' ),
-	'WantedProperties' => array( 'Gewünschte Attribute' ),
+	'UnusedProperties' => array( 'Verwaiste_Attribute' ),
+	'WantedProperties' => array( 'Gewünschte_Attribute' ),
 );
 
 /** Lower Sorbian (Dolnoserbski) */
@@ -112,6 +112,11 @@ $specialPageAliases['dsb'] = array(
 /** Divehi (ދިވެހިބަސް) */
 $specialPageAliases['dv'] = array(
 	'Ask' => array( 'އައްސަވާ' ),
+);
+
+/** Spanish (Español) */
+$specialPageAliases['es'] = array(
+	'Types' => array( 'Tipos' ),
 );
 
 /** Finnish (Suomi) */
@@ -178,16 +183,16 @@ $specialPageAliases['hu'] = array(
 $specialPageAliases['ia'] = array(
 	'Ask' => array( 'Consultar' ),
 	'Browse' => array( 'Percurrer' ),
-	'ExportRDF' => array( 'Exportar RDF' ),
-	'PageProperty' => array( 'Proprietate de pagina' ),
+	'ExportRDF' => array( 'Exportar_RDF' ),
+	'PageProperty' => array( 'Proprietate_de_pagina' ),
 	'Properties' => array( 'Proprietates' ),
-	'SMWAdmin' => array( 'Admin SMW' ),
-	'SearchByProperty' => array( 'Cercar per proprietate' ),
-	'SemanticStatistics' => array( 'Statisticas semantic' ),
+	'SMWAdmin' => array( 'Admin_SMW' ),
+	'SearchByProperty' => array( 'Cercar_per_proprietate' ),
+	'SemanticStatistics' => array( 'Statisticas_semantic' ),
 	'Types' => array( 'Typos' ),
-	'URIResolver' => array( 'Resolvitor de URIs' ),
-	'UnusedProperties' => array( 'Proprietates non usate' ),
-	'WantedProperties' => array( 'Proprietates dsesirate' ),
+	'URIResolver' => array( 'Resolvitor_de_URIs' ),
+	'UnusedProperties' => array( 'Proprietates_non_usate' ),
+	'WantedProperties' => array( 'Proprietates_dsesirate' ),
 );
 
 /** Indonesian (Bahasa Indonesia) */
