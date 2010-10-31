@@ -41,7 +41,7 @@ final class SMWHooks {
 			'ext.smw.sorttable' => array(
 				'scripts' => 'SMW_sorttable.js',
 				'dependencies' => 'ext.smw.style'
-			)		
+			)
 		);
 		
 		foreach ( $modules as $name => $resources ) {
