@@ -53,6 +53,7 @@ final class SMWQueryLanguage {
 	 */
 	public static function getComparatorFromString( $string, $defaultComparator = SMW_CMP_EQ ) {
 		self::initializeComparators();
+		if ( $string == '' ) return SMW_CMP_EQ;
 		return array_key_exists( $string, self::$comparators ) ? self::$comparators[$string] : $defaultComparator;
 	}
 	
@@ -70,10 +71,13 @@ final class SMWQueryLanguage {
 		static $reverseCache = false;
 		
 		if ( $reverseCache === false ) {
-			$reverseCache = array_reverse( self::$comparators );
+			$reverseCache = array_flip( self::$comparators );
 		}
 
-		if ( array_key_exists( $comparator, $reverseCache ) ) {
+		if ( $comparator == SMW_CMP_EQ ) {
+			return '';
+		}
+		else if ( array_key_exists( $comparator, $reverseCache ) ) {
 			return $reverseCache[$comparator];
 		}
 		else {
@@ -107,7 +111,6 @@ final class SMWQueryLanguage {
 			'≥' => SMW_CMP_GEQ,
 			'!' => SMW_CMP_NEQ,
 			'~' => SMW_CMP_LIKE,
-			'' => SMW_CMP_EQ,
 		);
 		
 		$allowedComparators = explode( '|', $smwgQComparators );		
