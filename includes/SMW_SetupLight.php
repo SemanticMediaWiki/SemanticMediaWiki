@@ -14,7 +14,7 @@
  * @ingroup SMW
  */
 
-define( 'SMW_VERSION', '1.5.3-light rc2' );
+define( 'SMW_VERSION', '1.5.3-light rc3' );
 
 require_once( 'SMW_GlobalFunctions.php' );
 
@@ -139,6 +139,12 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWSQLStoreLight']          = $smwgIP . 'includes/storage/SMW_SQLStoreLight.php';
 	$wgAutoloadClasses['SMWSQLStore2Table']         = $smwgIP . 'includes/storage/SMW_SQLStore2Table.php';
 	$wgAutoloadClasses['SMWSQLHelpers']             = $smwgIP . 'includes/storage/SMW_SQLHelpers.php';
+	
+	// To ensure Maps remains compatible with pre 1.16.
+	if ( !array_key_exists( 'Html', $wgAutoloadClasses ) ) {
+		$wgAutoloadClasses['Html'] = $smwgIP . 'compat/Html.php';
+	}	
+	
 	// Do not autoload RAPStore, since some special pages load all autoloaded classes, which causes
 	// troubles with RAP store if RAP is not installed (require_once fails).
 	// $wgAutoloadClasses['SMWRAPStore']             = $smwgIP . 'includes/storage/SMW_RAPStore.php';

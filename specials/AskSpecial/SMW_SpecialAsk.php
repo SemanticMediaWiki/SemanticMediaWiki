@@ -556,7 +556,7 @@ END;
 			}
 			
 			$result .= "<br /><br />\n<p>" . wfMsg( 'smw_ask_format_as' ) . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
-				'<select id="formatSelector" name="p[format]" onChange=\'JavaScript:xmlhttpPost("' . $url . "\")'>\n" .
+				'<select id="formatSelector" name="p[format]" onChange="JavaScript:xmlhttpPost(\'' . htmlspecialchars( $url ) . '\')">' . "\n" .
 				'	<option value="broadtable"' . ( $this->m_params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .
 				$printer->getName() . ' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
 
@@ -719,41 +719,7 @@ END;
 			
 			$text .= "<div style=\"width: 30%; padding: 5px; float: left;\">$param_name:\n";
 			
-			switch ( $type ) {
-				case 'int':
-					$text .= "<input type=\"text\" name=\"p[$param_name]\" size=\"6\" value=\"$cur_value\" />";
-					break;
-				case 'string':
-					$text .= "<input type=\"text\" name=\"p[$param_name]\" size=\"32\" value=\"$cur_value\" />";
-					break;
-				case 'enumeration':
-					$values = $param['values'];
-					$text .= "<select name=\"p[$param_name]\">\n";
-					$text .= "	<option value=''></option>\n";
-					
-					foreach ( $values as $val ) {
-						if ( $cur_value == $val )
-							$selected_str = 'selected';
-						else
-							$selected_str = '';
-						$text .= "	<option value='$val' $selected_str>$val</option>\n";
-					}
-					
-					$text .= '</select>';
-					break;
-				case 'enum-list':
-					$all_values = $param['values'];
-					$cur_values = explode( ',', $cur_value );
-					foreach ( $all_values as $val ) {
-						$checked_str = ( in_array( $val, $cur_values ) ) ? 'checked' : '';
-						$text .= "<span style=\"white-space: nowrap; padding-right: 5px;\"><input type=\"checkbox\" name=\"p[$param_name][$val]\" value=\"true\" $checked_str /> <tt>$val</tt></span>\n";
-					}
-					break;
-				case 'boolean':
-					$checked_str = ( array_key_exists( $param_name, $paramValues ) ) ? 'checked' : '';
-					$text .= "<input type=\"checkbox\" name=\"p[$param_name]\" value=\"true\" $checked_str />";
-					break;
-			}
+			$this->addOptionInput( $text, $type, $param_name, $cur_value, $param, $paramValues );
 			
 			$text .= "\n	<br /><em>$desc</em>\n</div>\n";
 			
@@ -765,4 +731,69 @@ END;
 		return $text;
 	}
 
+	/**
+	 * Adds a an input for a result format parameter to $text.
+	 * 
+	 * @since 1.5.3
+	 * 
+	 * @param string $text
+	 * @param string $type
+	 * @param string $param_name
+	 * @param string $cur_value
+	 * @param array $param
+	 * @param array $paramValues
+	 */
+	protected function addOptionInput( &$text, $type, $param_name, $cur_value, array $param, array $paramValues ) {
+		switch ( $type ) {
+			case 'int':
+				$text .= Html::input(
+					"p[$param_name]",
+					$cur_value,
+					'text',
+					array(
+						'size' => 6 
+					)
+				);
+				break;
+			case 'string':
+				$text .= Html::input(
+					"p[$param_name]",
+					$cur_value,
+					'text',
+					array(
+						'size' => 32 
+					)
+				); 
+				break;
+			case 'enumeration':
+				$text .= '<select name="p[' . htmlspecialchars( $param_name ) . ']">';
+				$text .= "\n	<option value=''></option>\n";
+				
+				$parts = array();
+				foreach ( $param['values'] as $value ) {
+					$parts[] = '<option value="' . htmlspecialchars( $value ) . '"' .
+					( $cur_value == $value ? ' selected' : '' ) . '>' .
+					htmlspecialchars( $value ) . '</option>';
+				}
+
+				$text .= implode( "\n", $parts ) . "\n</select>";
+				break;
+			case 'enum-list':
+				$cur_values = explode( ',', $cur_value );
+				
+				foreach ( $param['values'] as $val ) {
+					$text .= '<span style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="p[' .
+					htmlspecialchars( $param_name ) . '][' . htmlspecialchars( $val ). ']" value="true"' .
+					( in_array( $val, $cur_values ) ? ' checked' : '' ) . '/> <tt>' . htmlspecialchars( $val ) . "</tt></span>\n";
+				}
+				break;
+			case 'boolean':
+				$text .= 
+					'<input type="checkbox" name="p[' . htmlspecialchars( $param_name ) . ']" value="true" ' .
+					array_key_exists( $param_name, $paramValues ) ? 'checked' : '' .
+					' />';
+				break;
+		}		
+	}
+	
 }
