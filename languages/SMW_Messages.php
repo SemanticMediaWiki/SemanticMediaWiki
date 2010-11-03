@@ -2158,7 +2158,7 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 	'smw_result_next' => 'Vorwärts',
 	'smw_result_results' => 'Ergebnisse',
 	'smw_result_noresults' => 'Keine Ergebnisse gefunden.',
-	'smwadmin' => 'Admin-Funktionen für Semantic MediaWiki',
+	'smwadmin' => 'Administration von Semantic MediaWiki',
 	'smw_smwadmin_settingup' => 'Speicherplatz für Semantic MediaWiki einstellen',
 	'smw_smwadmin_setupsuccess' => 'Die Speichereinheit wurde erfolgreich eingerichtet.',
 	'smw_smwadmin_return' => 'Zurück zu $1',
