@@ -185,7 +185,7 @@ class SMWOutputs {
 		}		
 		
 		// Check if the resource loader can be used or not.
-		if ( method_exists( 'OutputPage', 'addModules' ) ) {
+		if ( method_exists( $parserOutput, 'addModules' ) ) {
 			$parserOutput->addModules( array_values( self::$resourceModules ) );
 		}
 		
@@ -208,6 +208,12 @@ class SMWOutputs {
 			$output->addHeadItem( $key, "\t\t" . $item . "\n" );
 		}
 
+		// Check if the resource loader can be used or not.
+		if ( method_exists( $output, 'addModules' ) ) {
+			$output->addModules( array_values( self::$resourceModules ) );
+		}		
+		
+		self::$resourceModules = array();
 		self::$mHeadItems = array();
 	}
 
