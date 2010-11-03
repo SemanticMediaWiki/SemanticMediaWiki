@@ -552,11 +552,12 @@ END;
 			$url = htmlspecialchars( $skin->makeSpecialUrl( 'Ask', "showformatoptions=\" + this.value + \"" ) );
 			
 			foreach ( $this->m_params as $param => $value ) {
-				if ( $param !== 'format' ) $url .= "&params[$param]=$value";
+				if ( $param !== 'format' ) $url .= '&params[' . Xml::escapeJsString( $param ) . ']=' . Xml::escapeJsString( $value );
 			}
 			
+			// FIXME: $url == XSS
 			$result .= "<br /><br />\n<p>" . wfMsg( 'smw_ask_format_as' ) . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
-				'<select id="formatSelector" name="p[format]" onChange="JavaScript:xmlhttpPost(\'' . htmlspecialchars( $url ) . '\')">' . "\n" .
+				'<select id="formatSelector" name="p[format]" onChange="JavaScript:xmlhttpPost(\'' . $url . '\')">' . "\n" .
 				'	<option value="broadtable"' . ( $this->m_params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .
 				$printer->getName() . ' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
 
