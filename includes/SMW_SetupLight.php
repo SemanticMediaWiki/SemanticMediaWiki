@@ -14,7 +14,7 @@
  * @ingroup SMW
  */
 
-define( 'SMW_VERSION', '1.5.3-light rc4' );
+define( 'SMW_VERSION', '1.5.3-light' );
 
 require_once( 'SMW_GlobalFunctions.php' );
 
@@ -140,7 +140,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWSQLStore2Table']         = $smwgIP . 'includes/storage/SMW_SQLStore2Table.php';
 	$wgAutoloadClasses['SMWSQLHelpers']             = $smwgIP . 'includes/storage/SMW_SQLHelpers.php';
 	
-	// To ensure Maps remains compatible with pre 1.16.
+	// To ensure SMW remains compatible with pre 1.16.
 	if ( !array_key_exists( 'Html', $wgAutoloadClasses ) ) {
 		$wgAutoloadClasses['Html'] = $smwgIP . 'compat/Html.php';
 	}	

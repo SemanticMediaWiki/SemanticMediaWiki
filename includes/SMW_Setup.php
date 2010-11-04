@@ -8,7 +8,7 @@
  */
 
 // The SMW version number.
-define( 'SMW_VERSION', '1.5.3 rc4' );
+define( 'SMW_VERSION', '1.5.3' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension crdits.
 define( 'SEMANTIC_EXTENSION_TYPE', true );
@@ -164,7 +164,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWSQLStore2Table']         = $stoDir . 'SMW_SQLStore2Table.php';
 	$wgAutoloadClasses['SMWSQLHelpers']             = $stoDir . 'SMW_SQLHelpers.php';
 
-	// To ensure Maps remains compatible with pre 1.16.
+	// To ensure SMW remains compatible with pre 1.16.
 	if ( !array_key_exists( 'Html', $wgAutoloadClasses ) ) {
 		$wgAutoloadClasses['Html'] = $smwgIP . 'compat/Html.php';
 	}
