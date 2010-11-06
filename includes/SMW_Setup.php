@@ -262,20 +262,11 @@ function smwfSetupExtension() {
 	$wgHooks['ParserFirstCallInit'][] = 'smwfRegisterParserFunctions';
 
 	if ( $smwgToolboxBrowseLink ) {
-		if ( version_compare( $wgVersion, '1.13', '>=' ) ) {
-			$wgHooks['SkinTemplateToolboxEnd'][] = 'smwfShowBrowseLink'; // introduced only in 1.13
-		} else {
-			$wgHooks['MonoBookTemplateToolboxEnd'][] = 'smwfShowBrowseLink';
-		}
+		$wgHooks['SkinTemplateToolboxEnd'][] = 'smwfShowBrowseLink';
 	}
 
-	if ( version_compare( $wgVersion, '1.14alpha', '>=' ) ) {
-		$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
-		$smwgMW_1_14 = true; // assume latest 1.14 API
-	} else {
-		$wgHooks['OutputPageBeforeHTML'][] = 'SMWFactbox::onOutputPageBeforeHTML'; // draw Factbox right below page content
-		$smwgMW_1_14 = false; // assume <= 1.13 API
-	}
+	$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
+	$smwgMW_1_14 = true; // assume latest 1.14 API
 
 	// Registration of the extension credits, see Special:Version.
 	$wgExtensionCredits['semantic'][] = array(

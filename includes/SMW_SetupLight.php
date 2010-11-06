@@ -9,7 +9,7 @@
  * If used, this file replaces SMW_Setup.php. The files are never used together
  * since they define some functions of the same name.
  *
- * SMWLight does not support versions of MediaWiki older than 1.14.0.
+ * SMWLight does not support versions of MediaWiki older than 1.15.0.
  * @file
  * @ingroup SMW
  */
