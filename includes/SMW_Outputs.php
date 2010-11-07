@@ -59,9 +59,7 @@ class SMWOutputs {
 			return self::requireHeadItemOld( $id, $item );
 		}
 		
-		if ( is_numeric( $id ) ) {
-			global $wgOut;
-
+		if ( is_numeric( $id ) ) {  // compatibility with older extensions; eventually the numeric constants should vanish
 			switch ( $id ) {	
 				case SMW_HEADER_TOOLTIP:
 					self::requireResource( 'ext.smw.tooltips' );
@@ -74,9 +72,8 @@ class SMWOutputs {
 					break;
 			}	
 		}
-		else {
-			// This should not be used anymore; use the RL directly.
-			self::$mHeadItems[$id] = $item;
+		else { // normal case: treat ID as a ResourceLoader ID
+			self::requireResource( $id );
 		}
 	}
 	
