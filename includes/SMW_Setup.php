@@ -8,7 +8,7 @@
  */
 
 // The SMW version number.
-define( 'SMW_VERSION', '1.5.3' );
+define( 'SMW_VERSION', '1.5.4 alpha' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension crdits.
 define( 'SEMANTIC_EXTENSION_TYPE', true );
