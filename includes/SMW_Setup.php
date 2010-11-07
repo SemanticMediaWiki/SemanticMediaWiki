@@ -165,7 +165,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWSQLHelpers']             = $stoDir . 'SMW_SQLHelpers.php';
 
 	// To ensure SMW remains compatible with pre 1.16.
-	if ( !array_key_exists( 'Html', $wgAutoloadClasses ) ) {
+	if ( !class_exists( 'Html' ) ) {
 		$wgAutoloadClasses['Html'] = $smwgIP . 'compat/Html.php';
 	}
 	
