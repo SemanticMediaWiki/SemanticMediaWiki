@@ -111,42 +111,10 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		if ( $this->mOutroTemplate != '' ) {
 			$result .= "{{" . $this->mOutroTemplate . "}}";
 		}
-
+		
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) && ( ( $this->mFormat != 'ol' ) || ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) ) {
-			$link = $res->getQueryLink();
-			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) {
-				$link->setCaption( $this->getSearchLabel( SMW_OUTPUT_WIKI ) );
-			}
-			if ( $this->mSep != '' ) {
-				$link->setParameter( $this->mSep, 'sep' );
-			}
-			$link->setParameter( $this->mFormat, 'format' );
-			if ( $this->mTemplate != '' ) {
-				$link->setParameter( $this->mTemplate, 'template' );
-				if ( array_key_exists( 'link', $this->m_params ) ) { // linking may interfere with templates
-					$link->setParameter( $this->m_params['link'], 'link' );
-				}
-			}
-			if ( $this->mUserParam != '' ) {
-				$link->setParameter( $this->mUserParam, 'userparam' );
-			}
-			if ( $this->mColumns != '' ) {
-				$link->setParameter( $this->mColumns, 'columns' );
-			}
-			if ( $this->mIntro != '' ) {
-				$link->setParameter( $this->mIntro, 'intro' );
-			}
-			if ( $this->mOutro != '' ) {
-				$link->setParameter( $this->mOutro, 'outro' );
-			}
-			if ( $this->mIntroTemplate != '' ) {
-				$link->setParameter( $this->mIntroTemplate, 'introtemplate' );
-			}
-			if ( $this->mOutroTemplate != '' ) {
-				$link->setParameter( $this->mOutroTemplate, 'outrotemplate' );
-			}
-			$result .= $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend  . "\n";
+			$this->showFurtherResults( $result, $res, $rowstart, $rowend );
 		}
 		
 		if ( $this->mColumns > 1 ) {
@@ -237,6 +205,53 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		}
 		
 		$result .= $rowend;
+	}
+	
+	protected function showFurtherResults( &$result, $res, $rowstart, $rowend ) {
+		$link = $res->getQueryLink();
+		
+		if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) {
+			$link->setCaption( $this->getSearchLabel( SMW_OUTPUT_WIKI ) );
+		}
+		
+		if ( $this->mSep != '' ) {
+			$link->setParameter( $this->mSep, 'sep' );
+		}
+		
+		$link->setParameter( $this->mFormat, 'format' );
+		
+		if ( $this->mTemplate != '' ) {
+			$link->setParameter( $this->mTemplate, 'template' );
+			if ( array_key_exists( 'link', $this->m_params ) ) { // linking may interfere with templates
+				$link->setParameter( $this->m_params['link'], 'link' );
+			}
+		}
+		
+		if ( $this->mUserParam != '' ) {
+			$link->setParameter( $this->mUserParam, 'userparam' );
+		}
+		
+		if ( $this->mColumns != '' ) {
+			$link->setParameter( $this->mColumns, 'columns' );
+		}
+		
+		if ( $this->mIntro != '' ) {
+			$link->setParameter( $this->mIntro, 'intro' );
+		}
+		
+		if ( $this->mOutro != '' ) {
+			$link->setParameter( $this->mOutro, 'outro' );
+		}
+		
+		if ( $this->mIntroTemplate != '' ) {
+			$link->setParameter( $this->mIntroTemplate, 'introtemplate' );
+		}
+		
+		if ( $this->mOutroTemplate != '' ) {
+			$link->setParameter( $this->mOutroTemplate, 'outrotemplate' );
+		}
+		
+		$result .= $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend  . "\n";
 	}
 
 	public function getParameters() {
