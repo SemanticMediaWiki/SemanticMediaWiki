@@ -102,72 +102,12 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		}
 
 		// Now print each row
-		$rownum = - 1;
+		$rownum = -1;
 		while ( $row = $res->getNext() ) {
-			$rownum++;
-			if ( $this->mColumns > 1 ) {
-				if ( $rows_in_cur_column == $rows_per_column ) {
-					$result .= "\n</div>";
-					$result .= '<div style="float: left; width: ' . $column_width . '%">' . "\n";
-					$rows_in_cur_column = 0;
-				}
-				$rows_in_cur_column++;
-			}
-			if ( $rownum > 0 && $plainlist )  {
-				$result .=  ( $rownum <= $res->getCount() ) ? $listsep : $finallistsep; // the comma between "rows" other than the last one
-			} else {
-				$result .= $rowstart;
-			}
-
-			$first_col = true;
-			if ( $this->mTemplate != '' ) { // build template code
-				$this->hasTemplates = true;
-				$wikitext = ( $this->mUserParam ) ? "|userparam=$this->mUserParam":'';
-				$i = 1; // explicitly number parameters for more robust parsing (values may contain "=")
-				foreach ( $row as $field ) {
-					$wikitext .= '|' . $i++ . '=';
-					$first_value = true;
-					while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
-						if ( $first_value ) $first_value = false; else $wikitext .= ', ';
-						$wikitext .= $text;
-					}
-					$first_col = false;
-				}
-				$wikitext .= "|#=$rownum";
-				$result .= '{{' . $this->mTemplate . $wikitext . '}}';
-				// str_replace('|', '&#x007C;', // encode '|' for use in templates (templates fail otherwise) -- this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
-			} else {  // build simple list
-				$first_col = true;
-				$found_values = false; // has anything but the first column been printed?
-				foreach ( $row as $field ) {
-					$first_value = true;
-					while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
-						if ( !$first_col && !$found_values ) { // first values after first column
-							$result .= ' (';
-							$found_values = true;
-						} elseif ( $found_values || !$first_value ) {
-							// any value after '(' or non-first values on first column
-							$result .= ', ';
-						}
-						if ( $first_value ) { // first value in any column, print header
-							$first_value = false;
-							
-							if ( ( $this->mShowHeaders != SMW_HEADERS_HIDE ) && ( $field->getPrintRequest()->getLabel() != '' ) ) {
-								$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null:$this->mLinker ) ) . ' ';
-							}
-						}
-						
-						$result .= $text; // actual output value
-					}
-					
-					$first_col = false;
-				}
-				
-				if ( $found_values ) $result .= ')';
-			}
-			
-			$result .= $rowend;
+			$this->printRow( $row, $rownum, $rows_in_cur_column, $rows_in_cur_column, $plainlist,
+			$header, $footer, $rowstart, $rowend, $result, $column_width );
 		}
+		
 		if ( $this->mOutroTemplate != '' ) {
 			$result .= "{{" . $this->mOutroTemplate . "}}";
 		}
@@ -206,16 +146,97 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			if ( $this->mOutroTemplate != '' ) {
 				$link->setParameter( $this->mOutroTemplate, 'outrotemplate' );
 			}
-			$result .= $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend . "\n";
+			$result .= $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend  . "\n";
 		}
-		if ( $this->mColumns > 1 )
+		
+		if ( $this->mColumns > 1 ) {
 			$result .= '</div>' . "\n";
+		}
 
 		// Print footer
 		$result .= $footer;
-		if ( $this->mColumns > 1 )
+		if ( $this->mColumns > 1 ) {
 			$result .= '<br style="clear: both">' . "\n";
+		}
+
 		return $result;
+	}
+	
+	protected function printRow( $row, &$rownum, &$rows_in_cur_column, $rows_per_column,
+		$plainlist, $header, $footer, $rowstart, $rowend, &$result, $column_width ) {
+		$rownum++;
+		
+		if ( $this->mColumns > 1 ) {
+			if ( $rows_in_cur_column == $rows_per_column ) {
+				$result .= "\n</div>";
+				$result .= '<div style="float: left; width: ' . $column_width . '%">' . "\n";
+				$rows_in_cur_column = 0;
+			}
+			
+			$rows_in_cur_column++;
+		}
+		
+		if ( $rownum > 0 && $plainlist )  {
+			$result .=  ( $rownum <= $res->getCount() ) ? $listsep : $finallistsep; // the comma between "rows" other than the last one
+		} else {
+			$result .= $rowstart;
+		}
+
+		$first_col = true;
+		if ( $this->mTemplate != '' ) { // build template code
+			$this->hasTemplates = true;
+			$wikitext = ( $this->mUserParam ) ? "|userparam=$this->mUserParam" : '';
+			$i = 1; // explicitly number parameters for more robust parsing (values may contain "=")
+			
+			foreach ( $row as $field ) {
+				$wikitext .= '|' . $i++ . '=';
+				$first_value = true;
+				
+				while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
+					if ( $first_value ) $first_value = false; else $wikitext .= ', ';
+					$wikitext .= $text;
+				}
+				
+				$first_col = false;
+			}
+			
+			$wikitext .= "|#=$rownum";
+			$result .= '{{' . $this->mTemplate . $wikitext . '}}';
+			// str_replace('|', '&#x007C;', // encode '|' for use in templates (templates fail otherwise) -- this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
+		} else {  // build simple list
+			$first_col = true;
+			$found_values = false; // has anything but the first column been printed?
+			
+			foreach ( $row as $field ) {
+				$first_value = true;
+				
+				while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
+					if ( !$first_col && !$found_values ) { // first values after first column
+						$result .= ' (';
+						$found_values = true;
+					} elseif ( $found_values || !$first_value ) {
+						// any value after '(' or non-first values on first column
+						$result .= ', ';
+					}
+					
+					if ( $first_value ) { // first value in any column, print header
+						$first_value = false;
+						
+						if ( ( $this->mShowHeaders != SMW_HEADERS_HIDE ) && ( $field->getPrintRequest()->getLabel() != '' ) ) {
+							$result .= $field->getPrintRequest()->getText( SMW_OUTPUT_WIKI, ( $this->mShowHeaders == SMW_HEADERS_PLAIN ? null:$this->mLinker ) ) . ' ';
+						}
+					}
+					
+					$result .= $text; // actual output value
+				}
+				
+				$first_col = false;
+			}
+			
+			if ( $found_values ) $result .= ')';
+		}
+		
+		$result .= $rowend;
 	}
 
 	public function getParameters() {
