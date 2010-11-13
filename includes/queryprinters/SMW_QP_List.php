@@ -31,21 +31,26 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		if ( array_key_exists( 'sep', $params ) ) {
 			$this->mSep = str_replace( '_', ' ', $params['sep'] );
 		}
+		
 		if ( array_key_exists( 'template', $params ) ) {
 			$this->mTemplate = trim( $params['template'] );
 		}
+		
 		if ( array_key_exists( 'userparam', $params ) ) {
 			$this->mUserParam = trim( $params['userparam'] );
 		}
+		
 		if ( array_key_exists( 'columns', $params ) ) {
 			$columns = trim( $params['columns'] );
 			if ( $columns > 1 && $columns <= 10 ) { // allow a maximum of 10 columns
 				$this->mColumns = (int)$columns;
 			}
 		}
+		
 		if ( array_key_exists( 'introtemplate', $params ) ) {
 			$this->mIntroTemplate = $params['introtemplate'];
 		}
+		
 		if ( array_key_exists( 'outrotemplate', $params ) ) {
 			$this->mOutroTemplate = $params['outrotemplate'];
 		}
@@ -62,6 +67,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$res->addErrors( array( wfMsgForContent( 'smw_notemplategiven' ) ) );
 			return '';
 		}
+		
 		// Determine mark-up strings used around list items:
 		if ( ( $this->mFormat == 'ul' ) || ( $this->mFormat == 'ol' ) ) {
 			$header = '<' . $this->mFormat . '>';
@@ -75,6 +81,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rowstart = '';
 			$rowend = '';
 			$plainlist = true;
+			
 			if ( $this->mSep != '' ) { // always respect custom separator
 				$listsep = $this->mSep;
 				$finallistsep = $listsep;
@@ -87,6 +94,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 				$finallistsep = '';
 			}
 		}
+		
 		// Print header
 		$result = $header;
 
@@ -97,6 +105,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rows_per_column = ceil( $res->getCount() / $this->mColumns );
 			$rows_in_cur_column = 0;
 		}
+		
 		if ( $this->mIntroTemplate != '' ) {
 			$result .= "{{" . $this->mIntroTemplate . "}}";
 		}
@@ -123,6 +132,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 
 		// Print footer
 		$result .= $footer;
+		
 		if ( $this->mColumns > 1 ) {
 			$result .= '<br style="clear: both">' . "\n";
 		}
@@ -219,7 +229,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		}
 		
 		$link->setParameter( $this->mFormat, 'format' );
-		
+
 		if ( $this->mTemplate != '' ) {
 			$link->setParameter( $this->mTemplate, 'template' );
 			if ( array_key_exists( 'link', $this->m_params ) ) { // linking may interfere with templates
@@ -269,6 +279,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		if ( ! $plainlist ) {
 			$params[] = array( 'name' => 'columns', 'type' => 'int', 'description' => wfMsg( 'smw_paramdesc_columns', 1 ) );
 		}
+		
 		$params[] = array( 'name' => 'userparam', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_userparam' ) );
 		$params[] = array( 'name' => 'introtemplate', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_introtemplate' ) );
 		$params[] = array( 'name' => 'outrotemplate', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_outrotemplate' ) );
