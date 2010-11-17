@@ -73,7 +73,7 @@ class SMWOutputs {
 			}	
 		}
 		else { // normal case: treat ID as a ResourceLoader ID
-			self::requireResource( $id );
+			self::$mHeadItems[$id] = $item;
 		}
 	}
 	

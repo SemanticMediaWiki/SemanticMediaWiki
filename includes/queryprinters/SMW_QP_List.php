@@ -98,6 +98,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		// Print header
 		$result = $header;
 
+		$column_width = 0;
+		
 		// Set up floating divs, if there's more than one column
 		if ( $this->mColumns > 1 ) {
 			$column_width = floor( 100 / $this->mColumns );
