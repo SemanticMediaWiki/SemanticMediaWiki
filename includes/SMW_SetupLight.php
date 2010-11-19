@@ -33,7 +33,10 @@ $smwgDefaultStore = "SMWSQLStoreLight";
  * available as early on. Moreover, jobs and special pages are registered.
  */
 function enableSemantics( $namespace = null, $complete = false ) {
-	global $smwgIP, $wgServer, $smwgNamespace, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles, $wgJobClasses, $wgExtensionAliasesFiles;
+	global $smwgIP, $wgServer, $smwgNamespace, $wgExtensionFunctions;
+	global $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups;
+	global $wgHooks, $wgExtensionMessagesFiles, $wgJobClasses, $wgExtensionAliasesFiles;
+	global $wgResourceModules;
 	
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
@@ -56,12 +59,31 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgHooks['ParserTestTables'][] = 'smwfOnParserTestTables';
 	//$wgHooks['AdminLinks'][] = 'smwfAddToAdminLinks';
 
+	// Register client-side modules
+	$moduleTemplate = array(
+		'localBasePath' => $smwgIP . '/skins',
+		'remoteBasePath' => $smwgScriptPath . '/skins',
+		'group' => 'ext.smw'
+	);
+	$wgResourceModules['ext.smw.style'] = $moduleTemplate + array(
+		'styles' => 'SMW_custom.css'
+	);
+	$wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
+		'scripts' => 'SMW_tooltip.js',
+		'dependencies' => array(
+			'mediawiki.legacy.wikibits',
+			'ext.smw.style'
+		)
+	);
+	$wgResourceModules['ext.smw.sorttable'] = $moduleTemplate + array(
+		'scripts' => 'SMW_sorttable.js',
+		'dependencies' => 'ext.smw.style'
+	);
+
 	// Register special pages aliases file
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Aliases.php';
 
 	// Set up autoloading; essentially all classes should be autoloaded!
-	$wgAutoloadClasses['SMWHooks']       			= $smwgIP . 'SMW.hooks.php';
-	
 	$wgAutoloadClasses['SMWParserExtensions']       = $smwgIP . 'includes/SMW_ParserExtensions.php';
 	$wgAutoloadClasses['SMWInfolink']               = $smwgIP . 'includes/SMW_Infolink.php';
 // 	$wgAutoloadClasses['SMWFactbox']                = $smwgIP . 'includes/SMW_Factbox.php';
@@ -237,8 +259,6 @@ function smwfSetupExtension() {
 	$wgHooks['ArticleFromTitle'][] = 'smwfOnArticleFromTitle'; // special implementations for property/type articles
 	$wgHooks['ParserFirstCallInit'][] = 'smwfRegisterParserFunctions';
 
-	$wgHooks['ResourceLoaderRegisterModules'][] = 'SMWHooks::registerResourceLoaderModules';
-	
 	$smwgMW_1_14 = true; // assume latest 1.14 API
 
 	///// credits (see "Special:Version") /////

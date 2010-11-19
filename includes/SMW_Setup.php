@@ -31,8 +31,10 @@ require_once( 'SMW_GlobalFunctions.php' );
  * @return true
  */
 function enableSemantics( $namespace = null, $complete = false ) {
-	global $wgVersion, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles;
+	global $wgVersion, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages;
+	global $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles;
 	global $smwgIP, $smwgNamespace, $wgJobClasses, $wgExtensionAliasesFiles, $wgServer;
+	global $wgResourceModules, $smwgScriptPath;
 
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
@@ -55,8 +57,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgHooks['ParserTestTables'][] = 'smwfOnParserTestTables';
 	$wgHooks['AdminLinks'][] = 'smwfAddToAdminLinks';
 	
-	$wgHooks['ResourceLoaderRegisterModules'][] = 'SMWHooks::registerResourceLoaderModules';
-
 	if ( version_compare( $wgVersion, '1.17alpha', '>=' ) ) {
 		// For MediaWiki 1.17 alpha and later.
 		$wgHooks['ExtensionTypes'][] = 'smwfAddSemanticExtensionType';
@@ -65,12 +65,31 @@ function enableSemantics( $namespace = null, $complete = false ) {
 		$wgHooks['SpecialVersionExtensionTypes'][] = 'smwfOldAddSemanticExtensionType';
 	}
 
+	// Register client-side modules
+	$moduleTemplate = array(
+		'localBasePath' => $smwgIP . '/skins',
+		'remoteBasePath' => $smwgScriptPath . '/skins',
+		'group' => 'ext.smw'
+	);
+	$wgResourceModules['ext.smw.style'] = $moduleTemplate + array(
+		'styles' => 'SMW_custom.css'
+	);
+	$wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
+		'scripts' => 'SMW_tooltip.js',
+		'dependencies' => array(
+			'mediawiki.legacy.wikibits',
+			'ext.smw.style'
+		)
+	);
+	$wgResourceModules['ext.smw.sorttable'] = $moduleTemplate + array(
+		'scripts' => 'SMW_sorttable.js',
+		'dependencies' => 'ext.smw.style'
+	);
+
 	// Register special pages aliases file
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Aliases.php';
 
 	// Set up autoloading; essentially all classes should be autoloaded!
-	$wgAutoloadClasses['SMWHooks']       			= $smwgIP . 'SMW.hooks.php';
-	
 	$wgAutoloadClasses['SMWParserExtensions']       = $smwgIP . 'includes/SMW_ParserExtensions.php';
 	$wgAutoloadClasses['SMWInfolink']               = $smwgIP . 'includes/SMW_Infolink.php';
 	$wgAutoloadClasses['SMWFactbox']                = $smwgIP . 'includes/SMW_Factbox.php';
