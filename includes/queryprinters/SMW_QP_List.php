@@ -75,6 +75,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rowstart = '<li>';
 			$rowend = "</li>\n";
 			$plainlist = false;
+			$finallistsep = '';
+			$listsep = '';
 		} else { // "list" and "template" format
 			$header = '';
 			$footer = '';
@@ -116,7 +118,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		$rownum = -1;
 		while ( $row = $res->getNext() ) {
 			$this->printRow( $row, $rownum, $rows_in_cur_column, $rows_in_cur_column, $plainlist,
-			$header, $footer, $rowstart, $rowend, $result, $column_width );
+			$header, $footer, $rowstart, $rowend, $result, $column_width, $res, $listsep, $finallistsep );
 		}
 		
 		if ( $this->mOutroTemplate != '' ) {
@@ -143,7 +145,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	}
 	
 	protected function printRow( $row, &$rownum, &$rows_in_cur_column, $rows_per_column,
-		$plainlist, $header, $footer, $rowstart, $rowend, &$result, $column_width ) {
+		$plainlist, $header, $footer, $rowstart, $rowend, &$result, $column_width, $res, $listsep, $finallistsep ) {
 		$rownum++;
 		
 		if ( $this->mColumns > 1 ) {
