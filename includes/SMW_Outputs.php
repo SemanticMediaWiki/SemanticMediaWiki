@@ -185,8 +185,7 @@ class SMWOutputs {
 		if ( method_exists( $parserOutput, 'addModules' ) ) {
 			$parserOutput->addModules( array_values( self::$resourceModules ) );
 		}
-		
-		self::$resourceModules = array();
+
 		self::$mHeadItems = array();
 	}
 
@@ -209,8 +208,7 @@ class SMWOutputs {
 		if ( method_exists( $output, 'addModules' ) ) {
 			$output->addModules( array_values( self::$resourceModules ) );
 		}		
-		
-		self::$resourceModules = array();
+
 		self::$mHeadItems = array();
 	}
 
