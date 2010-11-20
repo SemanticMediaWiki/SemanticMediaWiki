@@ -405,11 +405,6 @@ class SMWSQLStoreLight extends SMWStore {
 		}
 		$titles = Title::newFromIDs( $tids );
 		foreach ( $titles as $title ) {
-			// set $wgTitle, in case semantic data is set based
-			// on values not originating from the page (such as
-			// via the External Data extension)
-			global $wgTitle;
-			$wgTitle = $title;
 			if ( ( $namespaces == false ) || ( in_array( $title->getNamespace(), $namespaces ) ) ) {
 				$updatejobs[] = new SMWUpdateJob( $title );
 				$emptyrange = false;
