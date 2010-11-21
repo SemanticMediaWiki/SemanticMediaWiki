@@ -41,7 +41,8 @@ require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . "/maintenance/commandLine.inc"
 	: dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 
-global $smwgEnableUpdateJobs, $wgServer;
+global $smwgEnableUpdateJobs, $wgServer, $wgTitle;
+$wgTitle = Title::newFromText( 'SMW_refreshData.php' );
 $smwgEnableUpdateJobs = false; // do not fork additional update jobs while running this script
 
 if ( isset( $options['server'] ) ) {
