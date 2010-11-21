@@ -549,7 +549,7 @@ END;
 			}
 
 			$printer = SMWQueryProcessor::getResultPrinter( 'broadtable', SMWQueryProcessor::SPECIAL_PAGE );
-			$url = htmlspecialchars( $skin->makeSpecialUrl( 'Ask', "showformatoptions=\" + this.value + \"" ) );
+			$url = $skin->makeSpecialUrl( 'Ask', "showformatoptions=' + this.value + '" );
 			
 			foreach ( $this->m_params as $param => $value ) {
 				if ( $param !== 'format' ) {
