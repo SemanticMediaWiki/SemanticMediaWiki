@@ -83,7 +83,7 @@ class SMWQueryResult {
 	 * Return the next result row as an array of SMWResultArray objects, and
 	 * advance the internal pointer.
 	 * 
-	 * @return SMWResultArray or false
+	 * @return array of SMWResultArray or false
 	 */
 	public function getNext() {
 		$page = current( $this->mResults );
