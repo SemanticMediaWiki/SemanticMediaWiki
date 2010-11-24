@@ -1,3 +1,16 @@
+/**
+ * JavaScript for tooltips.
+ * 
+ * TODO: optimize this file for use with the MW resource loader.
+ * * Get rid of addOnloadHook, so wikibits is no longer needed.
+ * * Use jQuery to bind behaviour to DOM events.
+ * 
+ * @file SMW_tooltip.js
+ * @ingroup SMW
+ *
+ * @author unknown
+ */
+
 addOnloadHook( smw_tooltipInit );
 
 // these two objects needed due to the "hack" in timeline-api.js

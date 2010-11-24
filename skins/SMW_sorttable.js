@@ -1,7 +1,18 @@
-// Developed by Stuart Langridge, shared under the MIT license
-// from http://www.kryogenix.org/code/browser/sorttable/
-// Modified for SMW (in fact, we might rewrite the code since we
-// usually have very special tables to sort)
+/**
+ * JavaScript for sortable tables. Based on
+ * http://www.kryogenix.org/code/browser/sorttable/
+ * 
+ * TODO: optimize this file for use with the MW resource loader.
+ * * Get rid of addOnloadHook, so wikibits is no longer needed.
+ * * Use jQuery to bind behaviour to DOM events.
+ * 
+ * @file SMW_sorttable.js
+ * @ingroup SMW
+ *
+ * @author Stuart Langridge
+ * @licence MIT license
+ */
+
 addOnloadHook( smw_sortables_init );
 
 var SORT_COLUMN_INDEX;
@@ -185,6 +196,7 @@ function smw_resortTable( lnk, clid ) {
 
 	span.innerHTML = ARROW;
 }
+window.smw_resortTable = smw_resortTable;
 
 function smw_getParent( el, pTagName ) {
 	if ( el == null ) {
