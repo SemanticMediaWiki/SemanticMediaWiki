@@ -83,7 +83,10 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	);
 	$wgResourceModules['ext.smw.sorttable'] = $moduleTemplate + array(
 		'scripts' => 'SMW_sorttable.js',
-		'dependencies' => 'ext.smw.style'
+		'dependencies' => array(
+			'mediawiki.legacy.wikibits',
+			'ext.smw.style'
+		)
 	);
 
 	// Register special pages aliases file
