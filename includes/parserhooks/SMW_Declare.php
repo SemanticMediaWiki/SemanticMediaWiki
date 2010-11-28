@@ -74,7 +74,15 @@ class SMWDeclare {
 			// @todo Save as metadata
 		}
 
-		SMWOutputs::commitToParser( $parser ); // Not obviously required, but let us be sure.
+		// Starting from MW 1.16, there is a more suited method available: Title::isSpecialPage
+		if ( $wgTitle->getNamespace() == NS_SPECIAL ) {
+			global $wgOut;
+			SMWOutputs::commitToOutputPage( $wgOut );
+		}
+		else {
+			SMWOutputs::commitToParser( $parser );
+		}
+		
 		return '';		
 	}
 	

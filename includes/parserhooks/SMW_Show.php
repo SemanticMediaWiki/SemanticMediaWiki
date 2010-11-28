@@ -37,7 +37,15 @@ class SMWShow {
 			$result = smwfEncodeMessages( array( wfMsgForContent( 'smw_iq_disabled' ) ) );
 		}
 
-		SMWOutputs::commitToParser( $parser );
+		// Starting from MW 1.16, there is a more suited method available: Title::isSpecialPage
+		if ( $wgTitle->getNamespace() == NS_SPECIAL ) {
+			global $wgOut;
+			SMWOutputs::commitToOutputPage( $wgOut );
+		}
+		else {
+			SMWOutputs::commitToParser( $parser );
+		}
+		
 		return $result;		
 	}
 	

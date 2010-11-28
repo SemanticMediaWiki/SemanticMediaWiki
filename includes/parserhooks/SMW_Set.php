@@ -35,7 +35,6 @@ class SMWSet {
 			}
 		}
 
-		SMWOutputs::commitToParser( $parser ); // not obviously required, but let us be sure
 		return '';		
 	}
 	
