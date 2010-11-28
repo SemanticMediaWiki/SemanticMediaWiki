@@ -29,7 +29,16 @@ class SMWInfo {
 		$content = array_shift( $params ); // Use only first parameter, ignore the rest (may get meaning later).
 		$result = smwfEncodeMessages( array( $content ), 'info' );
 
-		SMWOutputs::commitToParser( $parser );
+		// Starting from MW 1.16, there is a more suited method available: Title::isSpecialPage
+		global $wgTitle;
+		if ( $wgTitle->getNamespace() == NS_SPECIAL ) {
+			global $wgOut;
+			SMWOutputs::commitToOutputPage( $wgOut );
+		}
+		else {
+			SMWOutputs::commitToParser( $parser );
+		}
+		
 		return $result;		
 	}
 	
