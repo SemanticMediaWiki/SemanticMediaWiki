@@ -97,9 +97,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			}
 		}
 		
-		// Print header
-		$result = $header;
-
+		// Initialise more values
+		$result = '';
 		$column_width = 0;
 		
 		// Set up floating divs, if there's more than one column
@@ -109,6 +108,9 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rows_per_column = ceil( $res->getCount() / $this->mColumns );
 			$rows_in_cur_column = 0;
 		}
+
+		$result .= "\t\t\t\t$header\n";
+
 		
 		if ( $this->mIntroTemplate != '' ) {
 			$result .= "{{" . $this->mIntroTemplate . "}}";
@@ -117,8 +119,10 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		// Now print each row
 		$rownum = -1;
 		while ( $row = $res->getNext() ) {
-			$this->printRow( $row, $rownum, $rows_in_cur_column, $rows_in_cur_column, $plainlist,
-			$header, $footer, $rowstart, $rowend, $result, $column_width, $res, $listsep, $finallistsep );
+			$this->printRow( $row, $rownum, $rows_in_cur_column,
+				$rows_per_column, $this->mFormat, $plainlist,
+				$header, $footer, $rowstart, $rowend, $result,
+				$column_width, $res, $listsep, $finallistsep );
 		}
 		
 		if ( $this->mOutroTemplate != '' ) {
@@ -129,13 +133,13 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		if ( $this->linkFurtherResults( $res ) && ( ( $this->mFormat != 'ol' ) || ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) ) ) {
 			$this->showFurtherResults( $result, $res, $rowstart, $rowend );
 		}
-		
-		if ( $this->mColumns > 1 ) {
-			$result .= '</div>' . "\n";
-		}
 
 		// Print footer
-		$result .= $footer;
+		$result .= "\t\t\t\t$footer\n";
+		
+		if ( $this->mColumns > 1 ) {
+			$result .= "\t\t\t\t</div>\n";
+		}
 		
 		if ( $this->mColumns > 1 ) {
 			$result .= '<br style="clear: both">' . "\n";
@@ -144,20 +148,39 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		return $result;
 	}
 	
-	protected function printRow( $row, &$rownum, &$rows_in_cur_column, $rows_per_column,
-		$plainlist, $header, $footer, $rowstart, $rowend, &$result, $column_width, $res, $listsep, $finallistsep ) {
+	protected function printRow( $row, &$rownum, &$rows_in_cur_column,
+		$rows_per_column, $format, $plainlist, $header, $footer,
+		$rowstart, $rowend, &$result, $column_width, $res, $listsep,
+		$finallistsep ) {
+
 		$rownum++;
 		
 		if ( $this->mColumns > 1 ) {
 			if ( $rows_in_cur_column == $rows_per_column ) {
-				$result .= "\n</div>";
-				$result .= '<div style="float: left; width: ' . $column_width . '%">' . "\n";
+				// If it's a numbered list, and it's split
+				// into columns, add in the 'start='
+				// attribute so that each additional column
+				// starts at the right place. This attribute
+				// is actually deprecated, but it appears to
+				// still be supported by the major browsers...
+				if ( $format == 'ol' ) {
+					$header = "<ol start=\"" . ( $rownum + 1 ) . "\">";
+				}
+				$result .= <<<END
+
+				$footer
+				</div>
+				<div style="float: left; width: $column_width%">
+				$header
+
+END;
 				$rows_in_cur_column = 0;
 			}
 			
 			$rows_in_cur_column++;
 		}
 		
+		$result .= "\t\t\t\t\t";
 		if ( $rownum > 0 && $plainlist )  {
 			$result .=  ( $rownum <= $res->getCount() ) ? $listsep : $finallistsep; // the comma between "rows" other than the last one
 		} else {
@@ -265,7 +288,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$link->setParameter( $this->mOutroTemplate, 'outrotemplate' );
 		}
 		
-		$result .= $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend  . "\n";
+		$result .= "\t\t\t\t" . $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend  . "\n";
 	}
 
 	public function getParameters() {
