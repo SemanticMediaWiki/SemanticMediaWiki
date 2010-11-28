@@ -1979,7 +1979,7 @@ Prosím, zadejte stránku i vlastnost.',
  * @author Umherirrender
  */
 $messages['de'] = array(
-	'smw-desc' => "Das Wiki zugänglicher machen - für Maschinen ''und'' Menschen ([http://semantic-mediawiki.org/wiki/Help:Bedienungsanleitung Online-Dokumentation])",
+	'smw-desc' => "Das Wiki zugänglicher machen - für Menschen ''und'' Maschinen  ([http://semantic-mediawiki.org/wiki/Help:Bedienungsanleitung Online-Dokumentation])",
 	'smw_edithelp' => 'Bearbeitungshilfe für Attribute',
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und',
@@ -2181,8 +2181,8 @@ Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche 
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualiseren',
 	'smw_smwadmin_announce' => 'Dein Wiki bekannt geben',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki bietet einen Webservice zur Bekanntgabe neuer semantischer Wikis.
-Dieser Service wird genutzt, um eine Liste aller öffentlich zugänglichen Wikis zu erhalten, die Semantic MediaWiki verwenden. Er dient aber auch dazu, dem <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic-MediaWiki-Projekt</a> einen Überblick über typische Anwendungen von Semantic MediaWiki zu ermöglichen.
-Siehe hierzu die Homepage von Semantic-MediaWiki für <a href="http://semantic-mediawiki.org/wiki/Registry">weiterführende Informationen zu diesem Service</a>.',
+Dieser Service wird genutzt, um eine Liste aller öffentlich zugänglichen Wikis zu erhalten, die Semantic MediaWiki verwenden. Er dient aber auch dazu, dem <a href="http://semantic-mediawiki.org/wiki/SMW_Project">„Semantic MediaWiki“-Projekt</a> einen Überblick über typische Anwendungen von Semantic MediaWiki zu ermöglichen.
+Siehe hierzu die Website von Semantic MediaWiki für <a href="http://semantic-mediawiki.org/wiki/Registry">weiterführende Informationen zu diesem Service</a>.',
 	'smw_smwadmin_announcebutton' => 'Drücke den folgenden Knopf um die URL deines Wikis zu diesem Dienst hinzuzufügen.
 Dieser Dienst wird keine Wikis aufnehmen, die nicht öffentlich zugänglich sind und er wird nur öffentlich zugängliche Informationen speichern.',
 	'smw_smwadmin_datarefresh' => 'Datenreparatur oder -aktualisierung',
