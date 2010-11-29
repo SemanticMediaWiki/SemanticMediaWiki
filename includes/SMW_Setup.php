@@ -288,6 +288,7 @@ function smwfSetupExtension() {
 	}
 
 	$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
+	$wgHooks['SkinGetPoweredBy'][] = 'smwfAddPoweredBySMW';
 	$smwgMW_1_14 = true; // assume latest 1.14 API
 
 	// Registration of the extension credits, see Special:Version.
@@ -546,6 +547,25 @@ function smwfRegisterParserFunctions( Parser &$parser ) {
 	$parser->setFunctionHook( 'set', array( 'SMWSet', 'render' ) );
 	$parser->setFunctionHook( 'set_recurring_event', array( 'SMWSetRecurringEvent', 'render' ) );
 	$parser->setFunctionHook( 'declare', array( 'SMWDeclare', 'render' ), SFH_OBJECT_ARGS );
+
+	return true; // Always return true, in order not to stop MW's hook processing!
+}
+
+/**
+ * Adds the 'Powered by Semantic MediaWiki' button right next to the default
+ * 'Powered by MediaWiki' button at the bottom of every page. This works
+ * only with MediaWiki 1.17+.
+ * It might make sense to make this configurable via a variable, if some
+ * admins don't want it.
+ *
+ * @since 1.5.4
+ *
+ * @return true
+ */
+function smwfAddPoweredBySMW( &$text, $skin ) {
+	global $smwgScriptPath;
+	$url = htmlspecialchars( "$smwgScriptPath/skins/images/smw_button.png" );
+	$text .= ' <a href="http://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki"><img src="'. $url . '" alt="Powered by Semantic MediaWiki" /></a>';
 
 	return true; // Always return true, in order not to stop MW's hook processing!
 }
