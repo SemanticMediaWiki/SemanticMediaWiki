@@ -100,6 +100,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		// Initialise more values
 		$result = '';
 		$column_width = 0;
+		$rows_per_column = -1; // usually unnecessary
+		$rows_in_cur_column = -1;
 		
 		// Set up floating divs, if there's more than one column
 		if ( $this->mColumns > 1 ) {
