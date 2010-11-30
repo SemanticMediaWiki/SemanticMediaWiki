@@ -1979,7 +1979,7 @@ Prosím, zadejte stránku i vlastnost.',
  * @author Umherirrender
  */
 $messages['de'] = array(
-	'smw-desc' => "Das Wiki zugänglicher machen - für Menschen ''und'' Maschinen  ([http://semantic-mediawiki.org/wiki/Help:Bedienungsanleitung Online-Dokumentation])",
+	'smw-desc' => "Das Wiki zugänglicher machen - für Menschen ''und'' Maschinen ([http://semantic-mediawiki.org/wiki/Help:Bedienungsanleitung Online-Dokumentation])",
 	'smw_edithelp' => 'Bearbeitungshilfe für Attribute',
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und',
