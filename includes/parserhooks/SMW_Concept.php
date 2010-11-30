@@ -23,7 +23,7 @@ class SMWConcept {
 	 * @param Parser $parser
 	 */
 	public static function render( Parser &$parser ) {
-		global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $wgContLang;
+		global $smwgQDefaultNamespaces, $smwgQMaxSize, $smwgQMaxDepth, $wgContLang, $wgTitle;
 
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 

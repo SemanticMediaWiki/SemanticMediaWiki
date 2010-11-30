@@ -23,7 +23,7 @@ class SMWShow {
 	 * @param Parser $parser
 	 */
 	public static function render( Parser &$parser ) {
-		global $smwgQEnabled, $smwgIQRunningNumber;
+		global $smwgQEnabled, $smwgIQRunningNumber, $wgTitle;
 
 		if ( $smwgQEnabled ) {
 			$smwgIQRunningNumber++;
