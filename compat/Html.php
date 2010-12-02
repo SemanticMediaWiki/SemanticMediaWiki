@@ -530,7 +530,7 @@ class Html {
 
 	/**
 	 * Convenience function to produce an input element with type=hidden, like
-	 * Html::hidden.
+	 * Xml::hidden.
 	 *
 	 * @param $name    string name attribute
 	 * @param $value   string value attribute
