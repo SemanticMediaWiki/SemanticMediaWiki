@@ -31,11 +31,17 @@ require_once( 'SMW_GlobalFunctions.php' );
  * @return true
  */
 function enableSemantics( $namespace = null, $complete = false ) {
-	global $wgVersion, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages;
+	global $wgVersion, $wgFooterIcons, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages;
 	global $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles;
 	global $smwgIP, $smwgNamespace, $wgJobClasses, $wgExtensionAliasesFiles, $wgServer;
 	global $wgResourceModules, $smwgScriptPath;
-
+	
+	$wgFooterIcons["poweredby"]["semanticmediawiki"] = array(
+		"src" => null,
+		"url" => "http://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki",
+		"alt" => "Powered by Semantic MediaWiki",
+	);
+	
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
 	// it is not needed in many cases.
@@ -265,7 +271,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
  */
 function smwfSetupExtension() {
 	wfProfileIn( 'smwfSetupExtension (SMW)' );
-	global $smwgIP, $wgHooks, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink, $smwgMW_1_14;
+	global $smwgIP, $smwgScriptPath, $wgHooks, $wgFooterIcons, $wgParser, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink, $smwgMW_1_14;
 
 	$smwgMasterStore = null;
 	$smwgIQRunningNumber = 0;
@@ -289,6 +295,11 @@ function smwfSetupExtension() {
 
 	$wgHooks['SkinAfterContent'][] = 'SMWFactbox::onSkinAfterContent'; // draw Factbox below categories
 	$wgHooks['SkinGetPoweredBy'][] = 'smwfAddPoweredBySMW';
+	if ( isset($wgFooterIcons["poweredby"])
+	  && isset($wgFooterIcons["poweredby"]["semanticmediawiki"])
+	  && $wgFooterIcons["poweredby"]["semanticmediawiki"]["src"] === null ) {
+		$wgFooterIcons["poweredby"]["semanticmediawiki"]["src"] = "$smwgScriptPath/skins/images/smw_button.png";
+	}
 	$smwgMW_1_14 = true; // assume latest 1.14 API
 
 	// Registration of the extension credits, see Special:Version.
