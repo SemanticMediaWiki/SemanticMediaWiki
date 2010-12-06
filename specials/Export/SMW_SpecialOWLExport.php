@@ -33,7 +33,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
-	public function execute( $page = '' ) {
+	public function execute( $page ) {
 		global $wgOut, $wgRequest, $wgUser, $smwgAllowRecursiveExport, $smwgExportBacklinks, $smwgExportAll;
 
 		$wgOut->setPageTitle( wfMsg( 'exportrdf' ) );
