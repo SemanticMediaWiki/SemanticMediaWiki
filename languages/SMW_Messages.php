@@ -6793,6 +6793,7 @@ $messages['mk'] = array(
 	'smw_subpropertyarticlecount' => 'Ова својство {{PLURAL:$1|го има следново $1 потсвојство|ги има следниве $1 потсвојства}}:',
 	'smw_concept_header' => 'Страници на концептот „$1“',
 	'smw_conceptarticlecount' => '{{PLURAL:$1|Прикажана е $1 страница која му припаѓа|Прикажани се $1 страници кои му припаѓаат}} на тој концепт.',
+	'smw_rss_description' => '$1 RSS-канал',
 	'specialpages-group-smw_group' => 'Семантички МедијаВики',
 	'exportrdf' => 'Извези страници во RDF',
 	'smw_exportrdf_docu' => 'Оваа страница ви овозможува да преземете податоци од страница во RDF формат.
