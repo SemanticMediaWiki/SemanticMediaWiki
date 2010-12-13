@@ -2084,7 +2084,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_conceptarticlecount' => 'Es {{PLURAL:$1|wird 1 Seite|werden $1 Seiten}} angezeigt, die zu diesem Konzept {{PLURAL:$1|gehört|gehören}}:',
 	'smw_rss_description' => 'RSS-Feed von $1',
 	'exportrdf' => 'Seite als RDF exportieren',
-	'smw_exportrdf_docu' => 'Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte gib die Namen der gewünschten Seiten <i>zeilenweise</i> ein.',
+	'smw_exportrdf_docu' => 'Hier können Informationen zu einzelnen Seiten im RDF-Format abgerufen werden. Bitte die Namen der gewünschten Seiten <i>zeilenweise</i> angeben.',
 	'smw_exportrdf_recursive' => 'Exportiere auch alle relevanten Seiten rekursiv. Diese Einstellung kann zu sehr großen Ergebnissen führen!',
 	'smw_exportrdf_backlinks' => 'Exportiere auch alle Seiten, die auf exportierte Seiten verweisen. Erzeugt RDF, das leichter durchsucht werden kann.',
 	'smw_exportrdf_lastdate' => 'Exportiere keine Seiten, die seit dem angegebenen Zeitpunkt unverändert geblieben sind.',
@@ -2129,7 +2129,7 @@ Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste A
 	'smw_ask_otheroptions' => 'Andere Optionen',
 	'smw_ask_show_embed' => 'Eingebetteten Code anzeigen',
 	'smw_ask_hide_embed' => 'Eingebetteten Code ausblenden',
-	'smw_ask_embed_instr' => 'Um diese Abfrage in eine Wiki-Seite einzubauen, nutze den unten stehenden Code.',
+	'smw_ask_embed_instr' => 'Um diese Abfrage in eine Wikiseite einzufügen, kann der unten angegebene Code verwendet werden.',
 	'searchbyproperty' => 'Suche mittels Attribut',
 	'smw_sbv_docu' => 'Diese Spezialseite ermittelt alle Seiten, die einen bestimmten Wert für das angegebene Attribut haben.',
 	'smw_sbv_novalue' => 'Bitte den gewünschten Wert eingeben oder alle Werte für das Attribut $1 ansehen.',
@@ -2141,7 +2141,7 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 	'smw_sbv_submit' => 'Finde Ergebnisse',
 	'browse' => 'Wiki browsen',
 	'smw_browselink' => 'Attribute anzeigen',
-	'smw_browse_article' => 'Bitte gib den Titel einer Seite ein.',
+	'smw_browse_article' => 'Bitte den Titel einer Seite angeben, um mit dem Browsen zu beginnen.',
 	'smw_browse_go' => 'Los',
 	'smw_browse_show_incoming' => 'zeige Attribute die hierhin verlinken',
 	'smw_browse_hide_incoming' => 'verstecke Attribute die hierhin verlinken',
@@ -2164,13 +2164,13 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 	'smw_smwadmin_return' => 'Zurück zu $1',
 	'smw_smwadmin_updatestarted' => 'Ein Aktualisierungsprozess zu Erneuerung der semantischen Daten wurde gestartet.
 Alle gespeicherten Daten werden, sofern notwendig, entweder neu erstellt oder repariert.
-Du kannst den Fortschritt der Aktualisierung auf dieser Spezialseite verfolgen.',
+Der Fortschritt der Aktualisierung kann auf dieser Spezialseite eingesehen werden.',
 	'smw_smwadmin_updatenotstarted' => 'Es läuft bereits ein Aktualisierungsprozess.
 Es wird kein Neuer begonnen.',
 	'smw_smwadmin_updatestopped' => 'Alle laufenden Aktualisierungsprozesse wurden gestoppt.',
-	'smw_smwadmin_updatenotstopped' => 'Um den laufenden Aktualisierungsprozess zu stoppen, musst du das Kontrollkästchen markieren, um dadurch anzuzeigen, dass du dir wirklich sicher bist.',
+	'smw_smwadmin_updatenotstopped' => 'Um den laufenden Aktualisierungsprozess zu stoppen, musst das Kontrollkästchen markiert werden, um dadurch anzuzeigen, dass man dabei sich wirklich sicher ist.',
 	'smw_smwadmin_docu' => 'Diese Spezialseite unterstützt dich während der Installation und der Aktualisierung von <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">Semantic MediaWiki</a>.
-Denke daran, wichtige Daten vor der Ausführung administrativer Funktionen zu sichern.',
+Denke stets daran, wichtige Daten vor der Ausführung administrativer Funktionen zu sichern.',
 	'smw_smwadmin_db' => 'Datenbankinstallation und -aktualisierung',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki benötigt weitere Datentabellen in der MediaWiki-Datenbank, um die semantischen Daten speichern zu können.
 Die folgende Funktion gewährleistet, dass die Datenbank richtig eingerichtet ist.
@@ -2179,17 +2179,17 @@ Diese Einrichtungsfunktion kann mehrere Male ausgeführt werden, ohne Schaden zu
 	'smw_smwadmin_permissionswarn' => 'Sofern diese Aktion mit einem SQL-Fehler abbricht, könnte es sein, dass der Datenbankbenutzer, mit dem das Wiki auf die Datenbank zugreift (siehe die Datei LocalSettings.php), über keine ausreichenden Rechte verfügt.
 Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datentabellen einzuräumen, den Datenbankadministrator zeitweilig in die LocalSettings.php einzutragen, oder aber das Wartungsskript <tt>SMW_setup.php</tt> zu nutzen, das die Benutzerdaten aus der Datei AdminSettings.php einsetzt.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualiseren',
-	'smw_smwadmin_announce' => 'Dein Wiki bekannt geben',
+	'smw_smwadmin_announce' => 'Das Wiki bekannt geben',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki bietet einen Webservice zur Bekanntgabe neuer semantischer Wikis.
 Dieser Service wird genutzt, um eine Liste aller öffentlich zugänglichen Wikis zu erhalten, die Semantic MediaWiki verwenden. Er dient aber auch dazu, dem <a href="http://semantic-mediawiki.org/wiki/SMW_Project">„Semantic MediaWiki“-Projekt</a> einen Überblick über typische Anwendungen von Semantic MediaWiki zu ermöglichen.
 Siehe hierzu die Website von Semantic MediaWiki für <a href="http://semantic-mediawiki.org/wiki/Registry">weiterführende Informationen zu diesem Service</a>.',
-	'smw_smwadmin_announcebutton' => 'Drücke den folgenden Knopf um die URL deines Wikis zu diesem Dienst hinzuzufügen.
-Dieser Dienst wird keine Wikis aufnehmen, die nicht öffentlich zugänglich sind und er wird nur öffentlich zugängliche Informationen speichern.',
+	'smw_smwadmin_announcebutton' => 'Bitte die folgende Schaltfläche anklicken, um dem Verzeichnisdienst die URL dieses Wikis hinzuzufügen.
+Es werden dabei nur öffentlich zugängliche Informationen gespeichert. Es werden keine Wikis aufgenommen, die nicht öffentlich zugänglich sind.',
 	'smw_smwadmin_datarefresh' => 'Datenreparatur oder -aktualisierung',
 	'smw_smwadmin_datarefreshdocu' => 'Es ist möglich alle Datenbanken von Semantic MediaWiki auf Basis des aktuellen Inhalts des Wikis wiederherzustellen.
 Dies kann hilfreich sein, um eine fehlerhafte Datenbank zu erneuern oder um Daten zu aktualisieren, sofern bspw. aufgrund einer Softwareaktualisierung die Datenbankstruktur geändert wurde.
 Die Datenaktualisierung wird für jede Seite ausgeführt und daher einige Zeit in Anspruch nehmen.
-Nachfolgend wird angezeigt, ob eine momentan Aktualisierung läuft bzw. ermöglicht es dir, eine Aktualisierung zu starten oder zu stoppen (außer diese Funktion wurde vom Websiteadministrator deaktiviert).',
+Nachfolgend wird angezeigt, ob eine momentan Aktualisierung läuft bzw. ermöglicht es eine Aktualisierung zu starten oder zu stoppen (sofern diese Funktion nicht vom Websiteadministrator deaktiviert wurde).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Eine Aktualisierung wird bereits durchgeführt.</strong>
 Eine Aktualisierung geht normalerweise nur langsam voran, da die Daten lediglich in kleinen Schritten erneuert werden, und zwar jedes Mal, wenn ein Benutzer auf das Wiki zugreift.
 Um diese Aktualisierung schneller zu Ende zu führen, kann man das MediaWiki-Wartungsskript <tt>runJobs.php</tt> einsetzen. Mit dem Parameter <tt>--maxjobs 1000</tt> beschränkt man dabei die Anzahl der Aktualisierungsschritte, die in einem Durchgang durchgeführt werden, um Probleme bei der Nutzung des hierfür erforderlichen Arbeitsspeichers zu vermeiden.
@@ -2198,11 +2198,11 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw_smwadmin_datarefreshstop' => 'Diese Datenaktualisierung beenden',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Ja, ich bin mir sicher.',
 	'smw_smwadmin_support' => 'Unterstützung erhalten',
-	'smw_smwadmin_supportdocu' => 'Verschiedene Mittel/Quellen helfen dir vielleicht bei einem Problemfall:',
+	'smw_smwadmin_supportdocu' => 'Verschiedene Hinweise helfen vielleicht im Fall eines Problems:',
 	'smw_smwadmin_installfile' => 'Sofern es Probleme mit der Installation gibt, könnte die Datei <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">INSTALL</a> weiterhelfen.',
-	'smw_smwadmin_smwhomepage' => 'Die komplette Benutzerdokumentation von Semantic MediaWiki findest du auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Die komplette Nutzerdokumentation von Semantic MediaWiki ist auf <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b> verfügbar.',
 	'smw_smwadmin_mediazilla' => 'Fehler können bei <a href="https://bugzilla.wikimedia.org/">Bugzilla</a> berichtet werden.',
-	'smw_smwadmin_questions' => 'Wenn du weitere Fragen oder Vorschläge hast, beteilige dich an der Diskussion im <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">„Semantic MediaWiki“-Benutzerforum</a>.',
+	'smw_smwadmin_questions' => 'Im Fall weiterer Fragen oder Anregungen kann man sich an den Diskussionen im <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">„Semantic MediaWiki“-Benutzerforum</a> beteiligen.',
 	'smw_adminlinks_datastructure' => 'Datenstruktur',
 	'smw_adminlinks_displayingdata' => 'Daten anzeigen',
 	'smw_adminlinks_inlinequerieshelp' => 'Hilfe zu eingebetteten Abfragen',
