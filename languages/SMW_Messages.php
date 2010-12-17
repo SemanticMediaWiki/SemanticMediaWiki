@@ -1979,7 +1979,7 @@ Prosím, zadejte stránku i vlastnost.',
  * @author Umherirrender
  */
 $messages['de'] = array(
-	'smw-desc' => "Das Wiki zugänglicher machen - für Menschen ''und'' Maschinen ([http://semantic-mediawiki.org/wiki/Help:Bedienungsanleitung Online-Dokumentation])",
+	'smw-desc' => "Ermöglicht es das Wiki zugänglicher zu machen - für Menschen ''und'' Maschinen ([http://semantic-mediawiki.org/wiki/Help:Bedienungsanleitung Online-Dokumentation])",
 	'smw_edithelp' => 'Bearbeitungshilfe für Attribute',
 	'smw_viewasrdf' => 'RDF-Feed',
 	'smw_finallistconjunct' => ' und',
@@ -1994,7 +1994,7 @@ $messages['de'] = array(
 	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht genutzt werden, da es, gemäß der Konfiguration des Wikis, offline zu berechnen ist.
 Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte deinen Websiteadministrator, die Daten dieses Konzepts zu aktualisieren.',
 	'smw_noinvannot' => 'Inversen Attributen können keine Werte zugewiesen werden.',
-	'version-semantic' => 'Softwareerweiterungen (Semantic MediaWiki)',
+	'version-semantic' => 'Semantic MediaWiki',
 	'smw_baduri' => 'URIs der Form „$1“ sind nicht zulässig.',
 	'smw_csv_link' => 'CSV',
 	'smw_printername_auto' => 'Automatisch',
