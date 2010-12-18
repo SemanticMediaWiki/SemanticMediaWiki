@@ -2318,20 +2318,20 @@ class SMWSQLStore2 extends SMWStore {
 
 		foreach ( self::getPropertyTables() as $proptable ) {
 			if ( $proptable->idsubject ) {
-				$db->delete( $proptable->name, array( 's_id' => $id ), $fname );
+				$db->delete( $proptable->name, array( 's_id' => $id ), "$fname::deleteById" );
 			} elseif ( $proptable->name != 'smw_redi2' ) { /// NOTE: redirects are handled by updateRedirects(), not here!
-				$db->delete( $proptable->name, array( 's_title' => $subject->getDBkey(), 's_namespace' => $subject->getNamespace() ), $fname );
+				$db->delete( $proptable->name, array( 's_title' => $subject->getDBkey(), 's_namespace' => $subject->getNamespace() ), "$fname::deleteByTitle" );
 			}
 		}
 
 		// also find bnodes used by this ID ...
-		$res = $db->select( 'smw_ids', 'smw_id', array( 'smw_title' => '', 'smw_namespace' => $id, 'smw_iw' => SMW_SQL2_SMWIW ), $fname );
+		$res = $db->select( 'smw_ids', 'smw_id', array( 'smw_title' => '', 'smw_namespace' => $id, 'smw_iw' => SMW_SQL2_SMWIW ), "$fname::selectBnodes" );
 
 		// ... and delete them as well
 		while ( $row = $db->fetchObject( $res ) ) {
 			foreach ( self::getPropertyTables() as $proptable ) {
 				if ( $proptable->idsubject ) {
-					$db->delete( $proptable->name, array( 's_id' => $row->smw_id ), $fname );
+					$db->delete( $proptable->name, array( 's_id' => $row->smw_id ), "$fname::deleteBnodes" );
 				}
 			}
 		}
@@ -2339,7 +2339,7 @@ class SMWSQLStore2 extends SMWStore {
 		$db->freeResult( $res );
 
 		// free all affected bnodes in one call:
-		$db->update( 'smw_ids',	array( 'smw_namespace' => 0 ), array( 'smw_title' => '', 'smw_namespace' => $id, 'smw_iw' => SMW_SQL2_SMWIW ), $fname );
+		$db->update( 'smw_ids',	array( 'smw_namespace' => 0 ), array( 'smw_title' => '', 'smw_namespace' => $id, 'smw_iw' => SMW_SQL2_SMWIW ), "$fname::updateBnodes" );
 
 		wfRunHooks( 'smwDeleteSemanticData', array( $subject ) );
 	}
