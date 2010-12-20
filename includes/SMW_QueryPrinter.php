@@ -245,11 +245,11 @@ abstract class SMWResultPrinter {
 		$this->m_params = $params;
 
 		if ( array_key_exists( 'intro', $params ) ) {
-			$this->mIntro = str_replace( '_', ' ', $params['intro'] );
+			$this->mIntro = $params['intro'];
 		}
 
 		if ( array_key_exists( 'outro', $params ) ) {
-			$this->mOutro = str_replace( '_', ' ', $params['outro'] );
+			$this->mOutro = $params['outro'];
 		}
 
 		if ( array_key_exists( 'searchlabel', $params ) ) {
