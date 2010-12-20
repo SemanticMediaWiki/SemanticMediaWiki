@@ -14,6 +14,9 @@
  * -d <delay>   Wait for this many milliseconds after processing an article, useful for limiting server load.
  * -s <startid> Start refreshing at given article ID, useful for partial refreshing
  * -e <endid>   Stop refreshing at given article ID, useful for partial refreshing
+ * -n <numids>  Stop refreshing after processing a given number of IDs, useful for partial refreshing
+ * --startidfile <startidfile> Read <startid> from a file instead of the arguments and write the next id
+ *              to the file when finished. Useful for continual partial refreshing from cron.
  * -b <backend> Execute the operation for the storage backend of the given name
  *              (default is to use the current backend)
  * -v           Be verbose about the progress.
@@ -22,7 +25,7 @@
  * -t           Will refresh only type pages (and other explicitly named namespaces)
  * --page=<pagelist> will refresh only the pages of the given names, with | used as a separator.
  *              Example: --page="Page 1|Page 2" refreshes Page 1 and Page 2
- *              Options -s, -e, -c, -p, -t are ignored if --page is given.
+ *              Options -s, -e, -n, --startidfile, -c, -p, -t are ignored if --page is given.
  * -f           Fully delete all content instead of just refreshing relevant entries. This will also
  *              rebuild the whole storage structure. May leave the wiki temporarily incomplete.
  * --server=<server> The protocol and server name to as base URLs, e.g.
@@ -35,7 +38,7 @@
  * @ingroup SMWMaintenance
  */
 
-$optionsWithArgs = array( 'd', 's', 'e', 'b', 'server', 'page' ); // -d <delay>, -s <startid>, -e <endid>, -b <backend>
+$optionsWithArgs = array( 'd', 's', 'e', 'n', 'b', 'startidfile', 'server', 'page' ); // -d <delay>, -s <startid>, -e <endid>, -n <numids>, --startidfile <startidfile> -b <backend>
 
 require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . "/maintenance/commandLine.inc"
@@ -61,13 +64,27 @@ if ( isset( $options['page'] ) ) {
 	$pages = false;
 }
 
+$writeToStartidfile = false;
 if ( array_key_exists( 's', $options ) ) {
 	$start = max( 1, intval( $options['s'] ) );
+} elseif ( array_key_exists( 'startidfile', $options ) ) {
+	if ( !is_writable( file_exists( $options['startidfile'] ) ? $options['startidfile'] : dirname( $options['startidfile'] ) ) ) {
+		die("Cannot use a startidfile that we can't write to.\n");
+	}
+	$writeToStartidfile = true;
+	if ( is_readable( $options['startidfile'] ) ) {
+		$start = max( 1, intval( file_get_contents( $options['startidfile'] ) ) );
+	} else {
+		$start = 1;
+	}
 } else {
 	$start = 1;
 }
+
 if ( array_key_exists( 'e', $options ) ) { // Note: this might reasonably be larger than the page count
 	$end = intval( $options['e'] );
+} elseif ( array_key_exists( 'n', $options ) ) {
+	$end = $start + intval( $options['n'] );
 } else {
 	$end = false;
 }
@@ -157,6 +174,9 @@ if ( $pages == false ) {
 		}
 		$num_files++;
 		$linkCache->clear(); // avoid memory leaks
+	}
+	if ( $writeToStartidfile ) {
+		file_put_contents( $options['startidfile'], "$id" );
 	}
 	print "$num_files IDs refreshed.\n";
 } else {
