@@ -2215,27 +2215,8 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
  * @author Revolus
  */
 $messages['de-formal'] = array(
-	'smw_concept_cache_miss' => 'Das Konzept „$1“ kann im Moment nicht genutzt werden, da es, gemäß der Konfiguration des Wikis, offline zu berechnen ist.
-Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitten Sie Ihren Websiteadministrator, die Daten dieses Konzepts zu aktualisieren.',
-	'smw_exportrdf_docu' => 'Hier können Informationen über einzelne Seiten im RDF-Format abgerufen werden. Bitte geben Sie die Namen der gewünschten Seiten <i>zeilenweise</i> ein.',
-	'smw_ask_embed_instr' => 'Um diese Abfrage in eine Wiki-Seite einzubauen, nutzen Sie den unten stehenden Code.',
-	'smw_browse_article' => 'Bitte geben Sie den Titel einer Seite ein.',
-	'smw_smwadmin_updatestarted' => 'Ein Aktualisierungsprozess zu Erneuerung der semantischen Daten wurde gestartet.
-Alle gespeicherten Daten werden, sofern notwendig, entweder neu erstellt oder repariert.
-Sie können den Fortschritt der Aktualisierung auf dieser Spezialseite verfolgen.',
-	'smw_smwadmin_updatenotstopped' => 'Um den laufenden Aktualisierungsprozess zu stoppen, müssen Sie das Kontrollkästchen markieren, um dadurch anzuzeigen, dass Sie sich wirklich sicher sind.',
 	'smw_smwadmin_docu' => 'Diese Spezialseite unterstützt Sie während der Installation und der Aktualisierung von <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">Semantic MediaWiki</a>.
 Denken Sie daran, wichtige Daten vor der Ausführung administrativer Funktionen zu sichern.',
-	'smw_smwadmin_announce' => 'Ihr Wiki bekannt geben',
-	'smw_smwadmin_announcebutton' => 'Drücken Sie die folgende Schaltfläche, um die URL Ihres Wikis für diesem Dienst hinzuzufügen.
-Dieser Dienst wird keine Wikis aufnehmen, die nicht öffentlich zugänglich sind. Zudem wird er nur öffentlich zugängliche Informationen speichern.',
-	'smw_smwadmin_datarefreshdocu' => 'Es ist möglich alle Datenbanken von Semantic MediaWiki auf Basis des aktuellen Inhalts des Wikis wiederherzustellen.
-Dies kann hilfreich sein, um eine fehlerhafte Datenbank zu erneuern oder um Daten zu aktualisieren, sofern bspw. aufgrund einer Softwareaktualisierung die Datenbankstruktur geändert wurde.
-Die Datenaktualisierung wird für jede Seite ausgeführt und daher einige Zeit in Anspruch nehmen.
-Nachfolgend wird angezeigt, ob eine momentan Aktualisierung läuft bzw. ermöglicht es Ihnen, eine Aktualisierung zu starten oder zu stoppen (außer diese Funktion wurde vom Websiteadministrator deaktiviert).',
-	'smw_smwadmin_supportdocu' => 'Verschiedene Hinweise helfen Ihnen vielleicht im Fall eines Problems:',
-	'smw_smwadmin_smwhomepage' => 'Die vollständige Nutzerdokumention von Semantic MediaWiki finden Sie auf <b><a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">semantic-mediawiki.org</a></b>.',
-	'smw_smwadmin_questions' => 'Sofern Sie weitere Fragen oder Vorschläge haben, beteiligen Sie sich bitte an der Diskussion im <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">„Semantic MediaWiki“-Nutzerforum</a>.',
 );
 
 /** Lower Sorbian (Dolnoserbski)
