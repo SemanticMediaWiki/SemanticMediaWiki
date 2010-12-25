@@ -111,8 +111,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 			$rows_in_cur_column = 0;
 		}
 
-		$result .= "\t\t\t\t$header\n";
-
+		if ( strlen($header) > 0 )
+			$result .= "\t\t\t\t$header\n";
 		
 		if ( $this->mIntroTemplate != '' ) {
 			$result .= "{{" . $this->mIntroTemplate . "}}";
@@ -137,7 +137,8 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		}
 
 		// Print footer
-		$result .= "\t\t\t\t$footer\n";
+		if ( strlen($footer) > 0 )
+			$result .= "\t\t\t\t$footer\n";
 		
 		if ( $this->mColumns > 1 ) {
 			$result .= "\t\t\t\t</div>\n";
