@@ -187,7 +187,7 @@ class SMWOWLExport {
 			$cur_queue = array();
 
 			if ( 1 == $recursion ) {
-				$cur_queue = $this->element_queue + $cur_queue; // make sure the array is *dublicated* instead of copying its ref
+				$cur_queue = $this->element_queue + $cur_queue; // make sure the array is *duplicated* instead of copying its ref
 				$this->element_queue = array();
 			}
 
@@ -612,7 +612,7 @@ class SMWOWLExport {
 	 * Print the triples associated to a specific page, and references those needed.
 	 * They get printed in the printFooter-function.
 	 *
-	 * @param $st The SMWSmallTitle wrapping the page to be exported
+	 * @param $st SMWSmallTitle wrapping the page to be exported
 	 * @param $fullexport Boolean to define whether all the data for the page should
 	 * be exported, or whether just a definition of the given title.
 	 * @param $backlinks Boolean specifying if properties linking to the exported title
@@ -752,7 +752,7 @@ class SMWOWLExport {
 	/**
 	 * Add an extra namespace that was encountered during output. The method
 	 * checks whether the required namespace is available globally and adds
-	 * it to the list of extra_namesapce otherwise.
+	 * it to the list of extra_namespace otherwise.
 	 */
 	public function addExtraNamespace( $nsshort, $nsuri ) {
 		if ( !array_key_exists( $nsshort, $this->global_namespaces ) ) {
@@ -804,7 +804,7 @@ class SMWOWLExport {
 	 * caching purposes elsewhere.
 	 */
 	protected function getSemanticData( $pagevalue, $core_props_only ) {
-		$semdata = smwfGetStore()->getSemanticData( $pagevalue, $core_props_only ? array( '__spu', '__typ', '__imp' ) : false ); // maybe advise Store to retrieve only core things
+		$semdata = smwfGetStore()->getSemanticData( $pagevalue, $core_props_only ? array( '__spu', '__typ', '__imp' ) : false ); // advise store to retrieve only core things
 		if ( $core_props_only ) { // be sure to filter all non-relevant things that may still be present in the retrieved
 			$result = new SMWSemanticData( $pagevalue );
 			foreach ( array( '__spu', '__typ', '__imp' ) as $propid ) {

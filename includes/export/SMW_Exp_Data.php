@@ -125,7 +125,7 @@ class SMWExpData {
 	}
 
 	/**
-	 * Check if this element can be serialised using parserType="Collection" and
+	 * Check if this element can be serialised using parseType="Collection" and
 	 * if yes return an array of SMWExpElements corresponding to the collection 
 	 * elements in the specified order. Otherwise return false.
 	 */
@@ -135,7 +135,7 @@ class SMWExpData {
 		$rdfrest  = SMWExporter::getSpecialElement( 'rdf', 'rest' );
 		$rdfnil   = SMWExporter::getSpecialElement( 'rdf', 'nil' );
 		$name = $this->getSubject()->getName();
-		// first check if we are basically an rdf List:
+		// first check if we are basically an RDF List:
 		if ( ( ( $name == '' ) || ( $name { 0 } == '_' ) ) && // bnode
 		     ( array_key_exists( $rdftype->getName(), $this->m_children ) ) &&
 		     ( count( $this->m_children[$rdftype->getName()] ) == 1 ) &&
@@ -182,13 +182,14 @@ class SMWExpData {
 		foreach ( $this->m_edges as $key => $edge ) {
 			foreach ( $this->m_children[$key] as $child ) {
 				$name = $child->getSubject()->getName();
-				if ( ( $name == '' ) || ( $name[0] == '_' ) ) { // bnode, distribute ID
+				if ( ( $name == '' ) || ( $name[0] == '_' ) ) { // bnode, rename ID to avoid unifying bnodes of different contexts
+					// TODO: should we really rename bnodes of the form "_id" here?
 					$child = clone $child;
 					$subject = new SMWExpElement( '_' . $smwgBnodeCount++, $child->getSubject()->getDataValue() );
 					$child->setSubject( $subject );
 				}
 				$result[] = array( $this->m_subject, $edge, $child->getSubject() );
-				$result = array_merge( $result, $child->getTripleList() ); // recursively generate all children of childs.
+				$result = array_merge( $result, $child->getTripleList() ); // recursively generate all children's triples
 			}
 		}
 		return $result;

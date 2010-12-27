@@ -16,7 +16,7 @@
  * This class can also be used to represent blank nodes: It is assumed that all objects
  * of class SMWExpElement or any of its subclasses do represent blank node if their name
  * is empty or of the form "_id" where "id" is any identifier string. IDs are local to the
- * current context, which such as a list of triples or an SMWExpData container.
+ * current context, such as a list of triples or an SMWExpData container.
  * @ingroup SMW
  */
 class SMWExpElement {

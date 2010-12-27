@@ -42,8 +42,16 @@ class SMWExporter {
 	}
 
 	/**
-	 * Create exportable data from a given semantic data record. If given, the string $modifier is used
-	 * as a modifier to the URI of the subject (e.g. a unit for properties).
+	 * Create exportable data from a given semantic data record. If given, the
+	 * string $modifier is used as a modifier to the URI of the subject (e.g. a
+	 * unit for properties). The function itself introduces modifiers for the
+	 * SMWResourceElement objects that it creates to represent properties with
+	 * units. When exporting further data for such properties recursively,
+	 * these modifiers should be provided (they are not part of the
+	 * SMWPageValue that is part of the SMWSemanticData object, since units are
+	 * part of data values in SMW, but part of property names in the RDF export
+	 * for better tool compatibility). This is the origin of all modifier
+	 * strings that are used with this method.
 	 */
 	static public function makeExportData( /*SMWSemanticData*/ $semdata, $modifier = '' ) {
 		SMWExporter::initBaseURIs();
@@ -105,8 +113,8 @@ class SMWExporter {
 				$pe = SMWExporter::getResourceElement( $property );
 				foreach ( $semdata->getPropertyValues( $property ) as $dv ) {
 					$ed = $dv->getExportData();
-					$pem = ( $dv->getUnit() != false ) ? $pe->makeVariant( $dv->getUnit() ):$pe;
 					if ( $ed !== null ) {
+						$pem = ( $dv->getUnit() != false ) ? $pe->makeVariant( $dv->getUnit() ):$pe;
 						$result->addPropertyObjectValue( $pem, $ed );
 					}
 				}
