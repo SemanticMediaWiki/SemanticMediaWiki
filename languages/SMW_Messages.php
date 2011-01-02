@@ -9625,6 +9625,7 @@ Odhadovaný priebeh aktualizácie:',
 );
 
 /** Serbian Cyrillic ekavian (Српски (ћирилица))
+ * @author Rancher
  * @author Sasa Stefanovic
  * @author Slaven Kosanovic
  * @author Михајло Анђелковић
@@ -9774,7 +9775,7 @@ $messages['sr-ec'] = array(
 	'smw_ask_printhead' => 'Додатни подаци за приказ',
 	'smw_ask_printdesc' => '(додај једно име особине по линији)',
 	'smw_ask_format_as' => 'Форматирај као:',
-	'smw_ask_defaultformat' => 'предодређено',
+	'smw_ask_defaultformat' => 'подразумевано',
 	'smw_ask_otheroptions' => 'Друге опције',
 	'smw_ask_show_embed' => 'Прикажи угнеждени код',
 	'smw_ask_hide_embed' => 'Сакриј угнеждени код',
