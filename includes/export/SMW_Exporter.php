@@ -149,7 +149,7 @@ class SMWExporter {
 				if ( $pe !== null ) {
 					foreach ( $semdata->getPropertyValues( $property ) as $dv ) {
 						if ( $cat_only ) {
-							if ( !( $dv instanceof SMWWikiPageValue ) || ( $dv->etNamespace != NS_CATEGORY ) ) {
+							if ( !( $dv instanceof SMWWikiPageValue ) || ( $dv->getNamespace() != NS_CATEGORY ) ) {
 								continue;
 							}
 						}

@@ -151,7 +151,7 @@ class SMWRecordValue extends SMWContainerValue {
 	public function getExportData() {
 		if ( !$this->isValid() ) return null;
 
-		$result = new SMWExpData( new SMWExpElement( '', $this ) ); // bnode
+		$result = new SMWExpData( new SMWExpResource( '', $this ) ); // bnode
 		$ed = new SMWExpData( SMWExporter::getSpecialElement( 'swivt', 'Container' ) );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ), $ed );
 		$count = 0;

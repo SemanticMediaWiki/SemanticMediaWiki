@@ -40,7 +40,7 @@ class SMWExpData {
 			$rdftype  = SMWExporter::getSpecialElement( 'rdf', 'type' );
 			$rdffirst = SMWExporter::getSpecialElement( 'rdf', 'first' );
 			$rdfrest  = SMWExporter::getSpecialElement( 'rdf', 'rest' );
-			$result = new SMWExpData( new SMWExpElement( '' ) ); // bnode
+			$result = new SMWExpData( new SMWExpResource( '' ) ); // bnode
 			$result->addPropertyObjectValue( $rdftype, new SMWExpData( SMWExporter::getSpecialElement( 'rdf', 'List' ) ) );
 			$result->addPropertyObjectValue( $rdffirst, array_shift( $elements ) );
 			$result->addPropertyObjectValue( $rdfrest, SMWExpData::makeCollection( $elements ) );
@@ -58,7 +58,7 @@ class SMWExpData {
 	/**
 	 * Set the subject element.
 	 */
-	public function setSubject( SMWExpElement $subject ) {
+	public function setSubject( SMWExpResource $subject ) {
 		$this->m_subject = $subject;
 	}
 
@@ -66,7 +66,7 @@ class SMWExpData {
 	 * Store a value for a property identified by its title object. No duplicate elimination as this
 	 * is usually done in SMWSemanticData already (which is typically used to generate this object)
 	 */
-	public function addPropertyObjectValue( SMWExpElement $property, SMWExpData $child ) {
+	public function addPropertyObjectValue( SMWExpResource $property, SMWExpData $child ) {
 		if ( !array_key_exists( $property->getName(), $this->m_edges ) ) {
 			$this->m_children[$property->getName()] = array();
 			$this->m_edges[$property->getName()] = $property;
@@ -84,7 +84,7 @@ class SMWExpData {
 	/**
 	 * Return the list of SMWExpData values associated to some property (element)
 	 */
-	public function getValues( /*SMWExpElement*/ $property ) {
+	public function getValues( SMWExpResource $property ) {
 		if ( array_key_exists( $property->getName(), $this->m_children ) ) {
 			return $this->m_children[$property->getName()];
 		} else {
@@ -185,7 +185,7 @@ class SMWExpData {
 				if ( ( $name == '' ) || ( $name[0] == '_' ) ) { // bnode, rename ID to avoid unifying bnodes of different contexts
 					// TODO: should we really rename bnodes of the form "_id" here?
 					$child = clone $child;
-					$subject = new SMWExpElement( '_' . $smwgBnodeCount++, $child->getSubject()->getDataValue() );
+					$subject = new SMWExpResource( '_' . $smwgBnodeCount++, $child->getSubject()->getDataValue() );
 					$child->setSubject( $subject );
 				}
 				$result[] = array( $this->m_subject, $edge, $child->getSubject() );

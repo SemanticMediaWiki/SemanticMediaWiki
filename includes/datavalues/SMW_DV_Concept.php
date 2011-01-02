@@ -102,7 +102,7 @@ class SMWConceptValue extends SMWDataValue {
 				$element = new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Thing' ) );
 			}
 			if ( !$exact ) {
-				$result = new SMWExpData( new SMWExpElement( '' ) );
+				$result = new SMWExpData( new SMWExpResource( '' ) );
 				$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ),
 				                                new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Class' ) ) );
 				$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdfs', 'subClassOf' ), $owldesc );
@@ -117,7 +117,7 @@ class SMWConceptValue extends SMWDataValue {
 
 	public function descriptionToExpData( $desc, &$exact ) {
 		if ( ( $desc instanceof SMWConjunction ) || ( $desc instanceof SMWDisjunction ) ) {
-			$result = new SMWExpData( new SMWExpElement( '' ) );
+			$result = new SMWExpData( new SMWExpResource( '' ) );
 			$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ),
 			                                new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Class' ) ) );
 			$elements = array();
@@ -135,7 +135,7 @@ class SMWConceptValue extends SMWDataValue {
 			if ( count( $desc->getCategories() ) == 1 ) { // single category
 				$result = new SMWExpData( SMWExporter::getResourceElement( end( $desc->getCategories() ) ) );
 			} else { // disjunction of categories
-				$result = new SMWExpData( new SMWExpElement( '' ) );
+				$result = new SMWExpData( new SMWExpResource( '' ) );
 				$elements = array();
 				foreach ( $desc->getCategories() as $cat ) {
 					$elements[] = new SMWExpData( SMWExporter::getResourceElement( $cat ) ); ;
@@ -148,7 +148,7 @@ class SMWConceptValue extends SMWDataValue {
 		} elseif ( $desc instanceof SMWConceptDescription ) {
 			$result = new SMWExpData( SMWExporter::getResourceElement( $desc->getConcept() ) );
 		} elseif ( $desc instanceof SMWSomeProperty ) {
-			$result = new SMWExpData( new SMWExpElement( '' ) );
+			$result = new SMWExpData( new SMWExpResource( '' ) );
 			$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ),
 			                                new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Restriction' ) ) );
 			$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'owl', 'onProperty' ),

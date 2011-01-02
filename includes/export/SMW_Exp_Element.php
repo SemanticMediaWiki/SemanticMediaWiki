@@ -1,7 +1,7 @@
 <?php
 /**
- * SMWExpElement is a class for representing single elements that appear in exported
- * data, such as individual resources, data literals, or blank nodes.
+ * SMWExpElement is a class for representing single elements that appear in
+ * exported data, such as individual resources, data literals, or blank nodes.
  *
  * @author Markus Krötzsch
  * @file
@@ -9,18 +9,14 @@
  */
 
 /**
- * A single element for export, e.g. a data literal, instance name, or blank node.
- * Supports various serialisation aids for creating URIs or other strings for export.
- * This abstract base class declares the basic common functionality of export elements.
+ * A single element for export, e.g. a data literal, instance name, or blank
+ * node. This abstract base class declares the basic common functionality of
+ * export elements (which is not much, really).
+ * @note This class should not be instantiated directly.
  *
- * This class can also be used to represent blank nodes: It is assumed that all objects
- * of class SMWExpElement or any of its subclasses do represent blank node if their name
- * is empty or of the form "_id" where "id" is any identifier string. IDs are local to the
- * current context, such as a list of triples or an SMWExpData container.
  * @ingroup SMW
  */
 class SMWExpElement {
-
 	protected $m_dv;
 	protected $m_name;
 
@@ -51,8 +47,17 @@ class SMWExpElement {
 }
 
 /**
- * A single resource (individual) for export. Defined by a URI, and possibly also providing
- * abbreviated forms (QNames).
+ * A single resource (individual) for export. Defined by a URI, and possibly
+ * also providing abbreviated forms (QNames).
+ * This class can also be used to represent blank nodes: It is assumed that all
+ * objects of class SMWExpElement or any of its subclasses do represent blank
+ * node if their name is empty or of the form "_id" where "id" is any
+ * identifier string. IDs are local to the current context, such as a list of
+ * triples or an SMWExpData container. 
+ * 
+ * @todo This class should be split into two: one general resource class, and
+ * one that only supports resources with namespace/qname form, because the
+ * latter is strictly necessary in some places where resources are used.
  * @ingroup SMW
  */
 class SMWExpResource extends SMWExpElement {
@@ -78,6 +83,13 @@ class SMWExpResource extends SMWExpElement {
 		} else {
 			SMWExpElement::__construct( $name, $dv );
 		}
+	}
+	
+	/**
+	 * Return true of this resource represents a blank node.
+	 */
+	public function isBlankNode() {
+		return ( $this->m_name == '' ) || ( $this->m_name{0} == '_' );
 	}
 
 	/**

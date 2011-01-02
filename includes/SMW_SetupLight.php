@@ -130,11 +130,14 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	
 	
 	// Export
-// 	$wgAutoloadClasses['SMWExporter']               = $smwgIP . 'includes/export/SMW_Exporter.php';
-// 	$wgAutoloadClasses['SMWExpData']                = $smwgIP . 'includes/export/SMW_Exp_Data.php';
-// 	$wgAutoloadClasses['SMWExpElement']             = $smwgIP . 'includes/export/SMW_Exp_Element.php';
-// 	$wgAutoloadClasses['SMWExpLiteral']             = $smwgIP . 'includes/export/SMW_Exp_Element.php';
-// 	$wgAutoloadClasses['SMWExpResource']            = $smwgIP . 'includes/export/SMW_Exp_Element.php';
+//	$expDir = $smwgIP . 'includes/export/';
+//	$wgAutoloadClasses['SMWExporter']               = $expDir . 'SMW_Exporter.php';
+//	$wgAutoloadClasses['SMWExpData']                = $expDir . 'SMW_Exp_Data.php';
+//	$wgAutoloadClasses['SMWExpElement']             = $expDir . 'SMW_Exp_Element.php';
+//	$wgAutoloadClasses['SMWExpLiteral']             = $expDir . 'SMW_Exp_Element.php';
+//	$wgAutoloadClasses['SMWExpResource']            = $expDir . 'SMW_Exp_Element.php';
+//	$wgAutoloadClasses['SMWExportController']		= $expDir . 'SMW_ExportController.php';
+//	$wgAutoloadClasses['SMWSerializer']		        = $expDir . 'SMW_Serializer.php';
 
 	// Parser hooks
 	$phDir = $smwgIP . 'includes/parserhooks/';

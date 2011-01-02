@@ -156,6 +156,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWExpElement']             = $expDir . 'SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpLiteral']             = $expDir . 'SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpResource']            = $expDir . 'SMW_Exp_Element.php';
+	$wgAutoloadClasses['SMWExportController']		= $expDir . 'SMW_ExportController.php';
+	$wgAutoloadClasses['SMWSerializer']		        = $expDir . 'SMW_Serializer.php';
 
 	// Parser hooks
 	$phDir = $smwgIP . 'includes/parserhooks/';
@@ -231,7 +233,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgSpecialPages['SemanticStatistics']           = array( 'SMWSpecialSemanticStatistics' );
 	$wgSpecialPageGroups['SemanticStatistics']      = 'wiki'; // Similar to Special:Statistics
 
-	$wgAutoloadClasses['SMWOWLExport']       		= $smwgIP . 'includes/export/SMW_OWLExport.php';
 	$wgAutoloadClasses['SMWSpecialOWLExport']       = $smwgIP . 'specials/Export/SMW_SpecialOWLExport.php';
 	$wgSpecialPages['ExportRDF']                    = array( 'SMWSpecialOWLExport' );
 	$wgSpecialPageGroups['ExportRDF']               = 'smw_group';

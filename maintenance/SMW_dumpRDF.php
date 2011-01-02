@@ -17,7 +17,7 @@
  * --individuals  do only pages that are no categories, properties, or types
  * -d <delay>     slows down the export in order to stress the server less,
  *                sleeping for <delay> milliseconds every now and then
- * -e <each>      after how many exported entities should the server take a nap?
+ * -e <each>      after how many exported entities should the process take a nap?
  * --server=<server> The protocol and server name to as base URLs, e.g.
  *                http://en.wikipedia.org. This is sometimes necessary because
  *                server name detection may fail in command line scripts.
@@ -33,7 +33,7 @@ require_once ( getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . "/maintenance/commandLine.inc"
 	: dirname( __FILE__ ) . '/../../../maintenance/commandLine.inc' );
 global $smwgIP, $wgServer;
-require_once( "$smwgIP/specials/Export/SMW_SpecialOWLExport.php" );
+//require_once( "$smwgIP/specials/Export/SMW_SpecialOWLExport.php" );
 
 if ( !empty( $options['o'] ) ) {
 	$outfile = $options['o'];
@@ -76,5 +76,5 @@ if ( $outfile && empty( $options['q'] ) ) {
 	print "\nWriting OWL/RDF dump to file \"$outfile\" ...\n";
 }
 
-$exRDF = new SMWOWLExport();
+$exRDF = new SMWExportController( new SMWSerializer() );
 $exRDF->printAll( $outfile, $export_ns, $delay, $delayeach );
