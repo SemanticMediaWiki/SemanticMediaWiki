@@ -44,6 +44,8 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_csv_link' => 'CSV',
 	// Link to JSON feeds
 	'smw_json_link' => 'JSON',
+	// Link to RDF feeds
+	'smw_rdf_link' => 'RDF',
 
 	// Names for result formats:
 	'smw_printername_auto' => 'Automatic',
@@ -59,6 +61,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_printername_table' => 'Table',
 	'smw_printername_broadtable' => 'Broad table',
 	'smw_printername_template' => 'Template',
+	'smw_printername_rdf' => 'RDF export',
 
 	// Messages for query parameter descriptions
 	'smw_paramdesc_limit'	=> 'The maximum number of results to return',
@@ -79,6 +82,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_paramdesc_embedonly'	=> 'Display no headings',
 	'smw_paramdesc_rsstitle'	=> 'The text to be used as the title of the feed',
 	'smw_paramdesc_rssdescription'	=> 'The text to be used as the description of the feed',
+	'smw_paramdesc_rdfsyntax'	=> 'The RDF syntax to be used',
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
