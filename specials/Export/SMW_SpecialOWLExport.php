@@ -104,16 +104,24 @@ class SMWSpecialOWLExport extends SpecialPage {
 	 */
 	protected function startRDFExport() {
 		global $wgOut, $wgRequest;
+		$format = $wgRequest->getText( 'format' );
+		if ( $format == '' ) $format = $wgRequest->getVal( 'format' );
 		$wgOut->disable();
 		ob_start();
-		// Only use rdf+xml mimetype if explicitly requested
-		// TODO: should the see also links in the exported RDF then have this parameter as well?
-		if ( $wgRequest->getVal( 'xmlmime' ) == 'rdf' ) {
-			header( "Content-type: application/rdf+xml; charset=UTF-8" );
-		} else {
-			header( "Content-type: application/xml; charset=UTF-8" );
+		if ( $format == 'turtle' ) {
+			$mimetype = 'application/x-turtle'; // may change to 'text/turtle' at some time, watch Turtle development
+			$serializer = new SMWTurtleSerializer();
+		} else { // rdfxml as default
+			// Only use rdf+xml mimetype if explicitly requested (browsers do
+			// not support it by default).
+			// We do not add this parameter to RDF links within the export
+			// though; it is only meant to help some tools to see that HTML
+			// included resources are RDF (from there on they should be fine).
+			$mimetype = ( $wgRequest->getVal( 'xmlmime' ) == 'rdf' ) ? 'application/rdf+xml' : 'application/xml';
+			$serializer = new SMWRDFXMLSerializer();
 		}
-		$this->export_controller = new SMWExportController( new SMWSerializer() );
+		header( "Content-type: $mimetype; charset=UTF-8" );
+		$this->export_controller = new SMWExportController( $serializer );
 	}
 	
 	/**

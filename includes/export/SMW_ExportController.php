@@ -354,24 +354,6 @@ class SMWExportController {
 			flush();
 		}
 	}
-	
-	/**
-	 * Create an SMWExpData container that encodes the ontology header for an
-	 * SMW exported OWL file.
-	 * 
-	 * @param string $ontologyuri specifying the URI of the ontology, possibly
-	 * empty
-	 */
-	protected function getOntologyExpData( $ontologyuri ) {
-		$data = new SMWExpData( new SMWExpResource( $ontologyuri ) );
-		$ed = new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Ontology' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( date( DATE_W3C ), null, 'http://www.w3.org/2001/XMLSchema#dateTime' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'creationDate' ), $ed );
-		$ed = new SMWExpData( new SMWExpResource( 'http://semantic-mediawiki.org/swivt/1.0' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'owl', 'imports' ), $ed );
-		return $data;
-	}
 
 	/**
 	 * This function prints all selected pages, specified as an array of page
@@ -411,21 +393,21 @@ class SMWExportController {
 			$this->element_queue[$st->getHash()] = $st;
 		}
 
-		$this->serializer->serializeHeader();
+		$this->serializer->startSerialization();
 
 		if ( count( $pages ) == 1 ) { // ensure that ontologies that are retrieved as linked data are not confused with their subject!
 			$ontologyuri = SMWExporter::expandURI( '&export;' ) . '/' . urlencode( end( $pages ) );
 		} else { // use empty URI, i.e. "location" as URI otherwise
 			$ontologyuri = '';
 		}
-		$this->serializer->serializeExpData( $this->getOntologyExpData( $ontologyuri ) );
+		$this->serializer->serializeExpData( SMWExporter::getOntologyExpData( $ontologyuri ) );
 
 		while ( count( $this->element_queue ) > 0 ) {
 			$this->serializeSmallTitle( reset( $this->element_queue ) );
 			$this->flush();
 			$linkCache->clear(); // avoid potential memory leak
 		}
-		$this->serializer->serializeFooter();
+		$this->serializer->finishSerialization();
 		$this->flush( true );
 
 		wfProfileOut( "RDF::PrintPages" );
@@ -450,8 +432,8 @@ class SMWExportController {
 		$this->delay_flush = 10;
 		if ( !$this->prepareSerialization( $outfile ) ) return;
 
-		$this->serializer->serializeHeader();
-		$this->serializer->serializeExpData( $this->getOntologyExpData( '' ) );
+		$this->serializer->startSerialization();
+		$this->serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
 
 		$end = $db->selectField( 'page', 'max(page_id)', false, $outfile );
 		$a_count = 0; $d_count = 0; // DEBUG
@@ -493,7 +475,7 @@ class SMWExportController {
 			$linkCache->clear();
 		}
 		
-		$this->serializer->serializeFooter();
+		$this->serializer->finishSerialization();
 		$this->flush( true );
 	}
 
@@ -514,8 +496,8 @@ class SMWExportController {
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 		$linkCache = LinkCache::singleton();
 
-		$this->serializer->serializeHeader();
-		$this->serializer->serializeExpData( $this->getOntologyExpData( '' ) );
+		$this->serializer->startSerialization();
+		$this->serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
 		
 		$query = '';
 		foreach ( $smwgNamespacesWithSemanticLinks as $ns => $enabled ) {
@@ -554,7 +536,7 @@ class SMWExportController {
 			$this->serializer->serializeExpData( $data );
 		}
 
-		$this->serializer->serializeFooter();
+		$this->serializer->finishSerialization();
 		$this->flush( true );
 
 		wfProfileOut( "RDF::PrintPageList" );
@@ -610,8 +592,8 @@ class SMWExportController {
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::admins(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'adminCount' ), $ed );
 
-		$this->serializer->serializeHeader();
-		$this->serializer->serializeExpData( $this->getOntologyExpData( '' ) );
+		$this->serializer->startSerialization();
+		$this->serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
 		$this->serializer->serializeExpData( $data );
 		
 		// link to list of existing pages:
@@ -627,7 +609,7 @@ class SMWExportController {
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdfs', 'isDefinedBy' ), $ed );
 		$this->serializer->serializeExpData( $data );
 
-		$this->serializer->serializeFooter();
+		$this->serializer->finishSerialization();
 		$this->flush( true );
 
 		wfProfileOut( "RDF::PrintWikiInfo" );

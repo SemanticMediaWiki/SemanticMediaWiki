@@ -56,36 +56,52 @@ class SMWExporter {
 	static public function makeExportData( /*SMWSemanticData*/ $semdata, $modifier = '' ) {
 		SMWExporter::initBaseURIs();
 		$subject = $semdata->getSubject();
+		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
+			$types = $semdata->getPropertyValues( SMWPropertyValue::makeProperty( '_TYPE' ) );
+		} else {
+			$types = array();
+		}
+		$result = SMWExporter::makeExportDataForSubject( $subject, $modifier, end( $types ) );
+		foreach ( $semdata->getProperties() as $property ) {
+			SMWExporter::addPropertyValues( $property, $semdata->getPropertyValues( $property ), $result );
+		}
+		return $result;
+	}
+	
+	/**
+	 * Make an SMWExpData object for the given page, and include the basic
+	 * properties about this subject that are not directly represented by
+	 * SMW property values. If given, the string $modifier is used as a
+	 * modifier to the URI of the subject (e.g. a unit for properties).
+	 * See also the documentation of makeExportData(). The optional parameter
+	 * $typevalueforproperty can be used to pass a particular SMWTypesValue
+	 * object that is used for determining the OWL type for property pages.
+	 *
+	 * @param SMWWikiPageValue $subject
+	 * @param string $modifier
+	 * @param mixed $typesvalueforproperty either an SMWTypesValue or null
+	 */
+	static public function makeExportDataForSubject( SMWWikiPageValue $subject, $modifier = '', $typesvalueforproperty = null ) {		
 		$result = $subject->getExportData();
-
-		// first set some general parameters for export
-		$category_pe = null;
-		$subprop_pe = null;
 		switch ( $subject->getNamespace() ) {
 			case NS_CATEGORY: case SMW_NS_CONCEPT:
-				$category_pe = SMWExporter::getSpecialElement( 'rdfs', 'subClassOf' );
-				$equality_pe = SMWExporter::getSpecialElement( 'owl', 'equivalentClass' );
 				$maintype_pe = SMWExporter::getSpecialElement( 'owl', 'Class' );
 				$label = $subject->getText();
 			break;
 			case SMW_NS_PROPERTY:
-				$category_pe = SMWExporter::getSpecialElement( 'rdf', 'type' );
-				$subprop_pe = SMWExporter::getSpecialElement( 'rdfs', 'subPropertyOf' );
-				$equality_pe = SMWExporter::getSpecialElement( 'owl', 'equivalentProperty' );
-				$types = $semdata->getPropertyValues( SMWPropertyValue::makeProperty( '_TYPE' ) );
-				$maintype_pe = SMWExporter::getSpecialElement( 'owl', SMWExporter::getOWLPropertyType( end( $types ) ) );
+				if ( $typesvalueforproperty == null ) {
+					$types = smwfGetStore()->getPropertyValues( $subject, SMWPropertyValue::makeProperty( '_TYPE' ) );
+					$typesvalueforproperty = end( $types );
+				}
+				$maintype_pe = SMWExporter::getSpecialElement( 'owl', SMWExporter::getOWLPropertyType( $typesvalueforproperty ) );
 				$label = $subject->getText();
 			break;
 			default:
-				$category_pe = SMWExporter::getSpecialElement( 'rdf', 'type' );
-				$equality_pe = SMWExporter::getSpecialElement( 'owl', 'sameAs' );
-				$maintype_pe = SMWExporter::getSpecialElement( 'swivt', 'Subject' );
 				$label = $subject->getWikiValue();
+				$maintype_pe = SMWExporter::getSpecialElement( 'swivt', 'Subject' );
 		}
-
-		// export standard properties
 		if ( $modifier != '' ) {
-			$modifier = smwfHTMLtoUTF8( $modifier ); ///TODO: check if this is needed anymore
+			$modifier = smwfHTMLtoUTF8( $modifier ); ///TODO: check if this is still needed
 			$label .= ' (' . $modifier . ')';
 		}
 		$ed = new SMWExpData( new SMWExpLiteral( $label ) );
@@ -106,75 +122,94 @@ class SMWExporter {
 			}
 			$result->setSubject( $result->getSubject()->makeVariant( $modifier ) );
 		}
-
-		// export properties based on stored data
-		foreach ( $semdata->getProperties() as $key => $property ) {
-			if ( $property->isUserDefined() ) {
-				$pe = SMWExporter::getResourceElement( $property );
-				foreach ( $semdata->getPropertyValues( $property ) as $dv ) {
-					$ed = $dv->getExportData();
-					if ( $ed !== null ) {
-						$pem = ( $dv->getUnit() != false ) ? $pe->makeVariant( $dv->getUnit() ):$pe;
-						$result->addPropertyObjectValue( $pem, $ed );
+		return $result;
+	}
+	
+	/**
+	 * Extend a given SMWExpData element by adding export data for the
+	 * specified property values.  
+	 *
+	 * @param SMWPropertyValue $property
+	 * @param array $values of SMWDatavalue object for the given property
+	 * @param SMWExpData $data to add the data to
+	 */
+	static public function addPropertyValues(SMWPropertyValue $property, $values, SMWExpData &$data) {
+		if ( $property->isUserDefined() ) {
+			$pe = SMWExporter::getResourceElement( $property );
+			foreach ( $values as $dv ) {
+				$ed = $dv->getExportData();
+				if ( $ed !== null ) {
+					if ( ( $dv instanceof SMWNumberValue ) && ( $dv->getUnit() != '' ) ) {
+						$pem = $pe->makeVariant( $dv->getUnit() );
+					} else {
+						$pem = $pe;
+					}
+					$data->addPropertyObjectValue( $pem, $ed );
+				}
+			}
+		} else { // pre-defined property, only exported if known
+			$subject = $data->getSubject()->getDatavalue();
+			if ( $subject == null ) return; // subject datavalue (wikipage) required for treating special properties properly
+			switch ( $subject->getNamespace() ) {
+				case NS_CATEGORY: case SMW_NS_CONCEPT:
+					$category_pe = SMWExporter::getSpecialElement( 'rdfs', 'subClassOf' );
+					$subprop_pe  = null;
+					$equality_pe = SMWExporter::getSpecialElement( 'owl', 'equivalentClass' );
+				break;
+				case SMW_NS_PROPERTY:
+					$category_pe = SMWExporter::getSpecialElement( 'rdf', 'type' );
+					$subprop_pe  = SMWExporter::getSpecialElement( 'rdfs', 'subPropertyOf' );
+					$equality_pe = SMWExporter::getSpecialElement( 'owl', 'equivalentProperty' );
+				break;
+				default:
+					$category_pe = SMWExporter::getSpecialElement( 'rdf', 'type' );
+					$subprop_pe  = null;
+					$equality_pe = SMWExporter::getSpecialElement( 'owl', 'sameAs' );
+			}
+			$pe = null;
+			$cat_only = false; // basic namespace checking for equivalent categories
+			switch ( $property->getPropertyID() ) {
+				///TODO: distinguish instanceof and subclassof in the _INST case
+				case '_INST': $pe = $category_pe; break;
+				case '_CONC': $pe = $equality_pe; break;
+				case '_URI':  $pe = $equality_pe; break;
+				case '_SUBP': $pe = $subprop_pe;  break;
+				case '_MDAT':
+					$pe = SMWExporter::getSpecialElement( 'swivt', 'wikiPageModificationDate' );
+				break;
+				case '_REDI': /// TODO: currently no check for avoiding OWL DL illegal redirects is done
+					if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
+						$pe = null; // checking the typing here is too cumbersome, smart stores will smush the properties anyway, and the others will not handle them equivalently
+					} else {
+						$pe = $equality_pe;
+						$cat_only = ( $subject->getNamespace() == NS_CATEGORY );
+					}
+				break;
+			}
+			if ( $pe === null ) return; // unknown special property, not exported 
+			foreach ( $values as $dv ) {
+				if ( $cat_only ) {
+					if ( !( $dv instanceof SMWWikiPageValue ) || ( $dv->getNamespace() != NS_CATEGORY ) ) {
+						continue;
 					}
 				}
-			} else { // pre-defined property
-				$pe = null;
-				$cat_only = false; // basic namespace checking for equivalent categories
-				switch ( $property->getPropertyID() ) {
-					case '_INST': ///TODO: distinguish instanceof and subclassof
-						$pe = $category_pe;
-					break;
-					case '_CONC':
-						$pe = $equality_pe;
-					break;
-					case '_URI':
-						$pe = $equality_pe;
-					break;
-					case '_SUBP':
-						$pe = $subprop_pe;
-					break;
-					case '_MDAT':
-						$pe = SMWExporter::getSpecialElement( 'swivt', 'wikiPageModificationDate' );
-					break;
-					case '_REDI': /// TODO: currently no check for avoiding OWL DL illegal redirects is done
-						if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
-							$pe = null; // checking the typing here is too cumbersome, smart stores will smush the properties anyway, and the others will not handle them equivalently
-						} else {
-							$pe = $equality_pe;
-							$cat_only = ( $subject->getNamespace() == NS_CATEGORY );
-						}
-					break;
-				}
-				if ( $pe !== null ) {
-					foreach ( $semdata->getPropertyValues( $property ) as $dv ) {
-						if ( $cat_only ) {
-							if ( !( $dv instanceof SMWWikiPageValue ) || ( $dv->getNamespace() != NS_CATEGORY ) ) {
-								continue;
-							}
-						}
-						$ed = $dv->getExportData();
-						if ( $ed !== null ) {
-							if ( ( $property->getPropertyID() == '_CONC' ) &&
-							     ( $ed->getSubject()->getName() == '' ) ) {
-								// equivalent to anonymous class -> simplify description
-								foreach ( $ed->getProperties() as $subp ) {
-									if ( $subp->getName() != SMWExporter::getSpecialElement( 'rdf', 'type' )->getName() ) {
-										foreach ( $ed->getValues( $subp ) as $subval ) {
-											$result->addPropertyObjectValue( $subp, $subval );
-										}
-									}
+				$ed = $dv->getExportData();
+				if ( $ed !== null ) {
+					if ( ( $property->getPropertyID() == '_CONC' ) && ( $ed->getSubject()->getName() == '' ) ) {
+						// equivalent to anonymous class -> simplify description
+						foreach ( $ed->getProperties() as $subp ) {
+							if ( $subp->getName() != SMWExporter::getSpecialElement( 'rdf', 'type' )->getName() ) {
+								foreach ( $ed->getValues( $subp ) as $subval ) {
+									$data->addPropertyObjectValue( $subp, $subval );
 								}
-							} else {
-								$result->addPropertyObjectValue( $pe, $ed );
 							}
 						}
+					} else {
+						$data->addPropertyObjectValue( $pe, $ed );
 					}
 				}
 			}
 		}
-
-		return $result;
 	}
 
 	/**
@@ -296,6 +331,24 @@ class SMWExporter {
 		                    SMWExporter::$m_exporturl ),
 		                    $uri );
 		return $uri;
+	}
+
+	/**
+	 * Create an SMWExpData container that encodes the ontology header for an
+	 * SMW exported OWL file.
+	 * 
+	 * @param string $ontologyuri specifying the URI of the ontology, possibly
+	 * empty
+	 */
+	static public function getOntologyExpData( $ontologyuri ) {
+		$data = new SMWExpData( new SMWExpResource( $ontologyuri ) );
+		$ed = new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Ontology' ) );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ), $ed );
+		$ed = new SMWExpData( new SMWExpLiteral( date( DATE_W3C ), null, 'http://www.w3.org/2001/XMLSchema#dateTime' ) );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'creationDate' ), $ed );
+		$ed = new SMWExpData( new SMWExpResource( 'http://semantic-mediawiki.org/swivt/1.0' ) );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'owl', 'imports' ), $ed );
+		return $data;
 	}
 
 }

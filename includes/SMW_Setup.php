@@ -127,6 +127,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWRSSResultPrinter']       = $qpDir . 'SMW_QP_RSSlink.php';
 	$wgAutoloadClasses['SMWCsvResultPrinter']       = $qpDir . 'SMW_QP_CSV.php';
 	$wgAutoloadClasses['SMWJSONResultPrinter']      = $qpDir . 'SMW_QP_JSONlink.php';
+	$wgAutoloadClasses['SMWRDFResultPrinter']       = $qpDir . 'SMW_QP_RDF.php';
 
 	// Datavalues
 	$dvDir = $smwgIP . 'includes/datavalues/';
@@ -158,6 +159,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWExpResource']            = $expDir . 'SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExportController']		= $expDir . 'SMW_ExportController.php';
 	$wgAutoloadClasses['SMWSerializer']		        = $expDir . 'SMW_Serializer.php';
+	$wgAutoloadClasses['SMWRDFXMLSerializer']       = $expDir . 'SMW_Serializer_RDFXML.php';
+	$wgAutoloadClasses['SMWTurtleSerializer']       = $expDir . 'SMW_Serializer_Turtle.php';
 
 	// Parser hooks
 	$phDir = $smwgIP . 'includes/parserhooks/';
