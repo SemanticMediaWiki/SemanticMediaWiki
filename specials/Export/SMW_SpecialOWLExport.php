@@ -104,11 +104,11 @@ class SMWSpecialOWLExport extends SpecialPage {
 	 */
 	protected function startRDFExport() {
 		global $wgOut, $wgRequest;
-		$format = $wgRequest->getText( 'format' );
-		if ( $format == '' ) $format = $wgRequest->getVal( 'format' );
+		$syntax = $wgRequest->getText( 'syntax' );
+		if ( $syntax == '' ) $syntax = $wgRequest->getVal( 'syntax' );
 		$wgOut->disable();
 		ob_start();
-		if ( $format == 'turtle' ) {
+		if ( $syntax == 'turtle' ) {
 			$mimetype = 'application/x-turtle'; // may change to 'text/turtle' at some time, watch Turtle development
 			$serializer = new SMWTurtleSerializer();
 		} else { // rdfxml as default
