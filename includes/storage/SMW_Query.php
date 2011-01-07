@@ -55,11 +55,7 @@ class SMWQuery {
 	 */
 	public function __construct( $description = null, $inline = false, $concept = false ) {
 		global $smwgQMaxLimit, $smwgQMaxInlineLimit;
-		if ( $inline ) {
-			$this->m_limit = $smwgQMaxInlineLimit;
-		} else {
-			$this->m_limit = $smwgQMaxLimit;
-		}
+		$this->m_limit = $inline ? $smwgQMaxInlineLimit : $smwgQMaxLimit;
 		$this->m_inline = $inline;
 		$this->m_concept = $concept;
 		$this->m_description = $description;
@@ -145,12 +141,8 @@ class SMWQuery {
 	 */
 	public function setLimit( $limit, $restrictinline = true ) {
 		global $smwgQMaxLimit, $smwgQMaxInlineLimit;
-		if ( $this->m_inline && $restrictinline ) {
-			$maxlimit = $smwgQMaxInlineLimit;
-		} else {
-			$maxlimit = $smwgQMaxLimit;
-		}
-		$this->m_limit = min( $maxlimit - $this->m_offset, $limit );
+		$maxlimit = ( $this->m_inline && $restrictinline ) ? $smwgQMaxInlineLimit : $smwgQMaxLimit;
+		$this->m_limit = min( $smwgQMaxLimit - $this->m_offset, $limit, $maxlimit );
 		return $this->m_limit;
 	}
 
