@@ -2185,7 +2185,7 @@ Diese Einrichtungsfunktion kann mehrere Male ausgeführt werden, ohne Schaden zu
 	'smw_smwadmin_permissionswarn' => 'Sofern diese Aktion mit einem SQL-Fehler abbricht, könnte es sein, dass der Datenbankbenutzer, mit dem das Wiki auf die Datenbank zugreift (siehe die Datei LocalSettings.php), über keine ausreichenden Rechte verfügt.
 Um das Problem zu beheben, ist es notwendig, entweder dem Benutzer zusätzliche Rechte zur Erstellung und Löschung von Datentabellen einzuräumen, den Datenbankadministrator zeitweilig in die LocalSettings.php einzutragen, oder aber das Wartungsskript <tt>SMW_setup.php</tt> zu nutzen, das die Benutzerdaten aus der Datei AdminSettings.php einsetzt.',
 	'smw_smwadmin_dbbutton' => 'Tabellen initialisieren oder aktualiseren',
-	'smw_smwadmin_announce' => 'Das Wiki bekannt geben',
+	'smw_smwadmin_announce' => 'Wiki bekannt geben',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki bietet einen Webservice zur Bekanntgabe neuer semantischer Wikis.
 Dieser Service wird genutzt, um eine Liste aller öffentlich zugänglichen Wikis zu erhalten, die Semantic MediaWiki verwenden. Er dient aber auch dazu, dem <a href="http://semantic-mediawiki.org/wiki/SMW_Project">„Semantic MediaWiki“-Projekt</a> einen Überblick über typische Anwendungen von Semantic MediaWiki zu ermöglichen.
 Siehe hierzu die Website von Semantic MediaWiki für <a href="http://semantic-mediawiki.org/wiki/Registry">weiterführende Informationen zu diesem Service</a>.',
@@ -3538,6 +3538,7 @@ $messages['gl'] = array(
 	'smw_printername_table' => 'Táboa',
 	'smw_printername_broadtable' => 'Táboa ampla',
 	'smw_printername_template' => 'Modelo',
+	'smw_printername_rdf' => 'Exportación en RDF',
 	'smw_paramdesc_limit' => 'O número máximo de resultados a devolver',
 	'smw_paramdesc_headers' => 'Mostrar as cabeceiras/os nomes de propiedade',
 	'smw_paramdesc_mainlabel' => 'A lapela para dar nome á páxina principal',
@@ -3556,6 +3557,7 @@ $messages['gl'] = array(
 	'smw_paramdesc_embedonly' => 'Non mostrar as cabeceiras',
 	'smw_paramdesc_rsstitle' => 'O texto a usar como título da fonte de novas',
 	'smw_paramdesc_rssdescription' => 'O texto a usar como descrición da fonte de novas',
+	'smw_paramdesc_rdfsyntax' => 'A sintaxe de RDF a usar',
 	'smw_iq_disabled' => 'Sentímolo. As preguntas semánticas foron deshabilitadas para este wiki.',
 	'smw_iq_moreresults' => '… máis resultados',
 	'smw_iq_nojs' => 'Por favor, use un nevegador co JavaScript permitido para ver este elemento.',
@@ -5272,6 +5274,7 @@ Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs u
 	'smw_printername_table' => 'Tabel',
 	'smw_printername_broadtable' => 'Tabel lebar',
 	'smw_printername_template' => 'Templat',
+	'smw_printername_rdf' => 'Ekspor RDF',
 	'smw_paramdesc_limit' => 'Jumlah maksimum hasil yang diberikan',
 	'smw_paramdesc_headers' => 'Tampilkan nama kepala/properti',
 	'smw_paramdesc_mainlabel' => 'Label untuk nama halaman utama',
@@ -5290,6 +5293,7 @@ Jika masalah ini tidak hilang setelah beberapa waktu, mintalah pengelola situs u
 	'smw_paramdesc_embedonly' => 'Jangan tampilkan judul',
 	'smw_paramdesc_rsstitle' => 'Tulisan yang digunakan sebagai judul umpan',
 	'smw_paramdesc_rssdescription' => 'Tulisan yang digunakan sebagai deskripsi umpan',
+	'smw_paramdesc_rdfsyntax' => 'Sintaks RDF untuk digunakan',
 	'smw_iq_disabled' => 'Query semantik telah dinonaktifkan di wiki ini.',
 	'smw_iq_moreresults' => '… hasil lebih lanjut',
 	'smw_iq_nojs' => 'Gunakan penjelajah dengan JavaScript diaktifkan untuk melihat elemen ini.',
