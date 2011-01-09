@@ -185,7 +185,6 @@ END;
 			$rows_in_cur_column++;
 		}
 		
-		$result .= "\t\t\t\t\t";
 		if ( $rownum > 0 && $plainlist )  {
 			$result .=  ( $rownum <= $res->getCount() ) ? $listsep : $finallistsep; // the comma between "rows" other than the last one
 		} else {
