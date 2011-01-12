@@ -1814,6 +1814,13 @@ Progrés estimat de l'actualització actual:",
 	'smw_adminlinks_inlinequerieshelp' => 'Ajuda de les consultes en línia',
 );
 
+/** Chechen (Нохчийн)
+ * @author Sasan700
+ */
+$messages['ce'] = array(
+	'smw_printername_template' => 'Куцкеп',
+);
+
 /** Chamorro (Chamoru)
  * @author Jatrobat
  */
@@ -8334,6 +8341,7 @@ Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò
 	'smw_printername_table' => 'Tàula',
 	'smw_printername_broadtable' => 'Tàula estèisa',
 	'smw_printername_template' => 'Stamp',
+	'smw_printername_rdf' => 'Esportassion RDF',
 	'smw_paramdesc_limit' => "Ël màssim nùmer d'arzultà da smon-e",
 	'smw_paramdesc_headers' => "Mostré j'antestassion/ij nòm dle proprietà",
 	'smw_paramdesc_mainlabel' => "L'etichëtta da dé al nòm ëd la pàgina prinsipal",
@@ -8352,6 +8360,7 @@ Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò
 	'smw_paramdesc_embedonly' => "Smon-e nen j'antestassion",
 	'smw_paramdesc_rsstitle' => 'Ël test da mostré com tìtol dël fluss',
 	'smw_paramdesc_rssdescription' => 'Ël test da dovré com descrission dël fluss',
+	'smw_paramdesc_rdfsyntax' => 'La sintass RDF da dovré',
 	'smw_iq_disabled' => "J'arceste semàntiche a son ëstàite disabilità për sta wiki-sì.",
 	'smw_iq_moreresults' => '... àutri arzultà',
 	'smw_iq_nojs' => "Dòvra un navigador abilità a JavaScript për vëdde st'element-sì.",
@@ -8609,6 +8618,7 @@ $messages['pt'] = array(
 	'smw_printername_table' => 'Tabela',
 	'smw_printername_broadtable' => 'Tabela ampla',
 	'smw_printername_template' => 'Predefinição',
+	'smw_printername_rdf' => 'Exportação para RDF',
 	'smw_paramdesc_limit' => 'O número máximo de resultados a devolver',
 	'smw_paramdesc_headers' => 'Apresentar os nomes dos cabeçalhos e propriedades',
 	'smw_paramdesc_mainlabel' => 'A etiqueta a atribuir ao nome da página principal',
@@ -8627,6 +8637,7 @@ $messages['pt'] = array(
 	'smw_paramdesc_embedonly' => 'Não mostrar cabeçalhos',
 	'smw_paramdesc_rsstitle' => "O texto que será usado como título do ''feed''",
 	'smw_paramdesc_rssdescription' => "O texto que será usado como descrição do ''feed''",
+	'smw_paramdesc_rdfsyntax' => 'A sintaxe RDF a utilizar',
 	'smw_iq_disabled' => 'As consultas semânticas foram impossibilitadas nesta wiki.',
 	'smw_iq_moreresults' => '… mais resultados',
 	'smw_iq_nojs' => 'Por favor, use um browser com JavaScript activado para ver este elemento.',
