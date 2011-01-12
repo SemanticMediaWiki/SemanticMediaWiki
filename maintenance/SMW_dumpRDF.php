@@ -76,5 +76,5 @@ if ( $outfile && empty( $options['q'] ) ) {
 	print "\nWriting OWL/RDF dump to file \"$outfile\" ...\n";
 }
 
-$exRDF = new SMWExportController( new SMWSerializer() );
+$exRDF = new SMWExportController( new SMWRDFXMLSerializer() );
 $exRDF->printAll( $outfile, $export_ns, $delay, $delayeach );
