@@ -1044,7 +1044,7 @@ $messages['be'] = array(
 	'types' => 'Тыпы',
 );
 
-/** Belarusian (Taraškievica orthography) (Беларуская (тарашкевіца))
+/** Belarusian (Taraškievica orthography) (‪Беларуская (тарашкевіца)‬)
  * @author EugeneZelenko
  * @author Jim-by
  * @author Red Winged Duck
@@ -1080,6 +1080,7 @@ $messages['be-tarask'] = array(
 	'smw_printername_table' => 'Табліца',
 	'smw_printername_broadtable' => 'Шырокая табліца',
 	'smw_printername_template' => 'Шаблён',
+	'smw_printername_rdf' => 'Экспарт у фармат RDF',
 	'smw_paramdesc_limit' => 'Максымальная колькасьць вынікаў для вяртаньня',
 	'smw_paramdesc_headers' => 'Паказваць назвы загалоўкаў/уласьцівасьцяў',
 	'smw_paramdesc_mainlabel' => 'Метка для назвы галоўнай старонкі',
