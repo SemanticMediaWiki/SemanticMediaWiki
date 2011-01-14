@@ -1099,6 +1099,7 @@ $messages['be-tarask'] = array(
 	'smw_paramdesc_embedonly' => 'Не паказваць загалоўкі',
 	'smw_paramdesc_rsstitle' => 'Тэкст, які будзе выкарыстоўвацца як назва стужкі',
 	'smw_paramdesc_rssdescription' => 'Тэкст, які будзе выкарыстоўвацца як апісаньне стужкі',
+	'smw_paramdesc_rdfsyntax' => 'Сынтаксіс RDF для выкарыстаньня',
 	'smw_iq_disabled' => 'Сэмантычныя запыты былі выключаны ў {{GRAMMAR:месны|{{SITENAME}}}}.',
 	'smw_iq_moreresults' => '… наступныя вынікі',
 	'smw_iq_nojs' => 'Карыстайцеся браўзэрам з падтрымкай JavaScript, каб паглядзець гэты элемэнт.',
@@ -2220,17 +2221,6 @@ Geschätzter Fortschritt der laufenden Aktualisierung:',
 	'smw_adminlinks_datastructure' => 'Datenstruktur',
 	'smw_adminlinks_displayingdata' => 'Daten anzeigen',
 	'smw_adminlinks_inlinequerieshelp' => 'Hilfe zu eingebetteten Abfragen',
-);
-
-/** German (formal address) (Deutsch (Sie-Form))
- * @author Dst
- * @author Imre
- * @author Kghbln
- * @author Revolus
- */
-$messages['de-formal'] = array(
-	'smw_smwadmin_docu' => 'Diese Spezialseite unterstützt Sie während der Installation und der Aktualisierung von <a href="http://semantic-mediawiki.org/wiki/Semantic_MediaWiki_–_Startseite">Semantic MediaWiki</a>.
-Denken Sie daran, wichtige Daten vor der Ausführung administrativer Funktionen zu sichern.',
 );
 
 /** Lower Sorbian (Dolnoserbski)
