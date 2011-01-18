@@ -9795,8 +9795,8 @@ $messages['sr-ec'] = array(
 	'uriresolver' => 'URI резолвер',
 	'ask' => 'Семантичка претрага',
 	'smw_ask_sortby' => 'Сортирај у колоне (опционо)',
-	'smw_ask_ascorder' => 'Узлазећи',
-	'smw_ask_descorder' => 'Силазећи',
+	'smw_ask_ascorder' => 'Растући',
+	'smw_ask_descorder' => 'Опадајући',
 	'smw_ask_submit' => 'Пронађи резултате',
 	'smw_ask_editquery' => '[Уреди упит]',
 	'smw_add_sortcondition' => '[Додај услове сортирања]',
@@ -11499,7 +11499,7 @@ $messages['zh-hans'] = array(
 $messages['zh-hant'] = array(
 	'smw-desc' => '讓你的維基更可及——對機器與人都是如此（[http://semantic-mediawiki.org/wiki/Help:User_manual 網上文檔]）',
 	'smw_edithelp' => '內容編輯說明',
-	'smw_viewasrdf' => 'RDF源',
+	'smw_viewasrdf' => 'RDF 源',
 	'smw_finallistconjunct' => '和',
 	'smw_factbox_head' => '關於 $1 的事實',
 	'smw_isspecprop' => '此屬性為維基中特殊屬性',
@@ -11567,7 +11567,7 @@ $messages['zh-hant'] = array(
 	'smw_infinite' => '「$1」數值過大，無法支援。',
 	'smw_infinite_unit' => '數字轉換為單位「$1」後過大。',
 	'smw_novalues' => '未設定數值。',
-	'smw_unsupportedprefix' => '不支持數字（「$1」）前綴',
+	'smw_unsupportedprefix' => '不支援數字（「$1」）前綴',
 	'smw_unsupportedunit' => '不支援單位「$1」的轉換',
 	'smw_nodatetime' => '無法理解日期「$1」',
 	'smw_toomanyclosing' => '查詢中「$1」過多。',
@@ -11597,7 +11597,7 @@ $messages['zh-hant'] = array(
 	'smw_subpropertyarticlecount' => '此屬性有以下 $1 {{PLURAL:$1|subproperty|子屬性}}:',
 	'smw_concept_header' => '概念「$1」的頁面',
 	'smw_conceptarticlecount' => '顯示屬於此概念的 $1 {{PLURAL:$1|page|頁面}}。',
-	'exportrdf' => '輸出頁面到RDF',
+	'exportrdf' => '輸出頁面到 RDF',
 	'smw_exportrdf_docu' => '這個頁面用於以 RDF 格式獲得頁面數據。
 在下方文字框中輸入標題以匯出頁面，每行一個標題。',
 	'smw_exportrdf_recursive' => '遞歸匯出所有相關頁面。
@@ -11707,7 +11707,7 @@ $messages['zh-hant'] = array(
 更新進程可能會很慢，因為該進程僅在用戶訪問維基時小塊地更新數據。
 可以使用 MediaWiki 維護腳本<tt>runJobs.php</tt>（使用選項 <tt>--maxjobs 1000</tt> 限制每批更新數目）來加快更新完成速度。
 目前更新的估計進度：',
-	'smw_smwadmin_datarefreshbutton' => '開始更新數據',
+	'smw_smwadmin_datarefreshbutton' => '開始更新資料',
 	'smw_smwadmin_datarefreshstop' => '停止更新',
 	'smw_smwadmin_datarefreshstopconfirm' => '是的，我確認。',
 	'smw_smwadmin_support' => '獲得協助',
