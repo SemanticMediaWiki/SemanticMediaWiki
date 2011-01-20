@@ -21,14 +21,20 @@ class SMWQueryParser {
 
 	protected $m_categoryprefix; // cache label of category namespace . ':'
 	protected $m_conceptprefix; // cache label of concept namespace . ':'
+	protected $m_categoryPrefixCannonical; // cache canonnical label of category namespace . ':'
+	protected $m_conceptPrefixCannonical; // cache canonnical label of concept namespace . ':'	
 	protected $m_queryfeatures; // query features to be supported, format similar to $smwgQFeatures
 
 	public function __construct( $queryfeatures = false ) {
 		global $wgContLang, $smwgQFeatures;
+
 		$this->m_categoryprefix = $wgContLang->getNsText( NS_CATEGORY ) . ':';
 		$this->m_conceptprefix = $wgContLang->getNsText( SMW_NS_CONCEPT ) . ':';
+		$this->m_categoryPrefixCannonical = 'Category:';
+		$this->m_conceptPrefixCannonical = 'Concept:';		
+		
 		$this->m_defaultns = null;
-		$this->m_queryfeatures = $queryfeatures === false ? $smwgQFeatures:$queryfeatures;
+		$this->m_queryfeatures = $queryfeatures === false ? $smwgQFeatures : $queryfeatures;
 	}
 
 	/**
@@ -228,9 +234,11 @@ class SMWQueryParser {
 		// block could be a Category-statement, fixed object, or property statement.
 		$chunk = $this->readChunk( '', true, false ); // NOTE: untrimmed, initial " " escapes prop. chains
 
-		if ( ( smwfNormalTitleText( $chunk ) == $this->m_categoryprefix ) ||  // category statement or
-		     ( smwfNormalTitleText( $chunk ) == $this->m_conceptprefix ) ) {  // concept statement
-			return $this->getClassDescription( $setNS, ( smwfNormalTitleText( $chunk ) == $this->m_categoryprefix ) );
+		if ( in_array( smwfNormalTitleText( $chunk ),
+			array( $this->m_categoryprefix, $this->m_conceptprefix, $this->m_categoryPrefixCannonical, $this->m_conceptPrefixCannonical ) ) ) {
+			return $this->getClassDescription( $setNS, (
+				smwfNormalTitleText( $chunk ) == $this->m_categoryprefix || smwfNormalTitleText( $chunk ) == $this->m_categoryPrefixCannonical
+			) );
 		} else { // fixed subject, namespace restriction, property query, or subquery
 			$sep = $this->readChunk( '', false ); // do not consume hit, "look ahead"
 
@@ -513,8 +521,10 @@ class SMWQueryParser {
 	 */
 	protected function readChunk( $stoppattern = '', $consume = true, $trim = true ) {
 		if ( $stoppattern == '' ) {
-			$stoppattern = '\[\[|\]\]|::|:=|<q>|<\/q>|^' . $this->m_categoryprefix .
-			               '|^' . $this->m_conceptprefix . '|\|\||\|';
+			$stoppattern = '\[\[|\]\]|::|:=|<q>|<\/q>' .
+				'|^' . $this->m_categoryprefix . '|^' . $this->m_categoryPrefixCannonical .
+				'|^' . $this->m_conceptprefix . '|^' . $this->m_conceptPrefixCannonical .
+				'|\|\||\|';
 		}
 		$chunks = preg_split( '/[\s]*(' . $stoppattern . ')/u', $this->m_curstring, 2, PREG_SPLIT_DELIM_CAPTURE );
 		if ( count( $chunks ) == 1 ) { // no matches anymore, strip spaces and finish
