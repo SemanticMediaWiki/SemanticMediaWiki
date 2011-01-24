@@ -556,6 +556,7 @@ $messages['ar'] = array(
 	'smw_rss_link' => 'آر إس إس',
 	'smw_csv_link' => 'سي في إس',
 	'smw_json_link' => 'جسون',
+	'smw_rdf_link' => 'آر دي إف',
 	'smw_printername_auto' => 'تلقائي',
 	'smw_printername_count' => 'عد النتائج',
 	'smw_printername_csv' => 'تصدير CSV',
@@ -1049,6 +1050,7 @@ $messages['be'] = array(
  * @author Jim-by
  * @author Red Winged Duck
  * @author Wizardist
+ * @author Zedlik
  */
 $messages['be-tarask'] = array(
 	'smw-desc' => "Робіць {{GRAMMAR:вінавальны|{{SITENAME}}}} больш зручнай для кампутараў ''і'' людзей ([http://semantic-mediawiki.org/wiki/Help:User_manual дакумэнтацыя])",
@@ -1203,7 +1205,7 @@ $messages['be-tarask'] = array(
 	'smw_ask_printdesc' => '(дадавайце адну назву ўласьцівасьці на радок)',
 	'smw_ask_format_as' => 'Фарматаваць як:',
 	'smw_ask_defaultformat' => 'па змоўчваньні',
-	'smw_ask_otheroptions' => 'Іншыя ўстаноўкі',
+	'smw_ask_otheroptions' => 'Іншыя налады',
 	'smw_ask_show_embed' => 'Паказаць убудаваны код',
 	'smw_ask_hide_embed' => 'Схаваць убудаваны код',
 	'smw_ask_embed_instr' => 'Каб убудаваць гэты запыт у старонку, выкарыстоўвайце код пададзены ніжэй.',
@@ -1270,7 +1272,7 @@ $messages['be-tarask'] = array(
 Ніжэй паказваецца інфармацыя, ці адбываецца абнаўленьне, якая дазваляе Вам пачынаць ці спыняць абнаўленьне (за выключэньнем выпадкаў, калі гэта магчымасьць забароненая адміністратарам сайта).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Ідзе працэс абнаўленьня.</strong>
 Гэта нармальна, што працэс абнаўленьня запавольваецца, і зьвесткі абнаўляюцца невялікімі кавалкамі.
-Каб скончыць абнаўленьне хутчэй, Вы можаце скарыстацца скрыптом падтрымкі МэдыяВікі <tt>runJobs.php</tt> (карыстайцеся ўстаноўкай <tt>--maxjobs 1000</tt>, каб абмежаваць колькасьць выкананых абнаўленьняў у адным пакеце).
+Каб скончыць абнаўленьне хутчэй, Вы можаце скарыстацца скрыптом падтрымкі МэдыяВікі <tt>runJobs.php</tt> (карыстайцеся наладай <tt>--maxjobs 1000</tt>, каб абмежаваць колькасьць выкананых абнаўленьняў у адным пакеце).
 Прыкладны час сканчэньня цяперашняга абнаўленьня:',
 	'smw_smwadmin_datarefreshbutton' => 'Пачаць абнаўленьне зьвестак',
 	'smw_smwadmin_datarefreshstop' => 'Спыніць гэта абнаўленьне',
@@ -1361,14 +1363,14 @@ $messages['br'] = array(
 	'smw_baduri' => 'An URLoù er stumm « $1 » n"int ket aotreet.',
 	'smw_printername_auto' => 'Emgefre',
 	'smw_printername_count' => "Kontañ an disoc'hoù",
-	'smw_printername_csv' => 'ezporzhiadur CSV',
+	'smw_printername_csv' => 'Ezporzh CSV',
 	'smw_printername_debug' => 'Reked dizreinañ (evit an arbennigourien)',
 	'smw_printername_embedded' => "Danvez ar pajennoù ensoc'het",
 	'smw_printername_json' => 'ezporzhiadur JSON',
 	'smw_printername_list' => 'Roll',
 	'smw_printername_ol' => 'Niverenniñ',
 	'smw_printername_ul' => 'Munudoù',
-	'smw_printername_rss' => 'ezporzhiañ RSS',
+	'smw_printername_rss' => 'Ezporzh RSS',
 	'smw_printername_table' => 'Taolenn',
 	'smw_printername_broadtable' => 'Taolenn ledan',
 	'smw_printername_template' => 'Patrom',
@@ -1390,6 +1392,7 @@ $messages['br'] = array(
 	'smw_paramdesc_embedonly' => 'Na ziskwel talbenn ebet',
 	'smw_paramdesc_rsstitle' => 'Testenn da implijout evel titl ar gwazhioù',
 	'smw_paramdesc_rssdescription' => 'Testenn da implijout evel deskrivadur ar gwazhioù',
+	'smw_paramdesc_rdfsyntax' => 'An ereadur RDF da vezañ implijet',
 	'smw_iq_disabled' => 'Diweredekaet eo bet ar goulennoù semantek evit ar wiki-mañ.',
 	'smw_iq_moreresults' => "... disoc'hoù all",
 	'smw_iq_nojs' => 'Implijout ur merdeer a ra gant JavaScript evit gwelet an elfenn-mañ.',
@@ -1612,6 +1615,7 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw_printername_table' => 'Taula',
 	'smw_printername_broadtable' => 'Taula ampla',
 	'smw_printername_template' => 'Plantilla',
+	'smw_printername_rdf' => 'Exportació RDF',
 	'smw_paramdesc_limit' => 'El nombre màxim de resultats a retornar',
 	'smw_paramdesc_headers' => 'Mostra les capçaleres / noms de les propietats',
 	'smw_paramdesc_mainlabel' => "L'etiqueta que es donarà al nom de la pàgina principal",
@@ -1630,6 +1634,7 @@ Si el problema persisteix passat cert temps, demaneu a l'administrador del vostr
 	'smw_paramdesc_embedonly' => 'No mostris capçaleres',
 	'smw_paramdesc_rsstitle' => "El text que s'utilitzarà com a títol del canal",
 	'smw_paramdesc_rssdescription' => "El text que s'utilitzarà com a descripció del canal",
+	'smw_paramdesc_rdfsyntax' => "La sintaxi RDF que s'utilitzarà",
 	'smw_iq_disabled' => 'Les consultes semàntiques estan inhabilitades en aquest wiki.',
 	'smw_iq_moreresults' => '... més resultats',
 	'smw_iq_nojs' => 'Habilita JavaScript al teu navegador per veure aquest element.',
@@ -6443,6 +6448,16 @@ Mer donn jetz nit noch ein aanshtüße!',
 	'smw_adminlinks_inlinequerieshelp' => 'Hölp övver de em Wiki sing Sigge enjeboute Froore',
 );
 
+/** Kurdish (Latin) (Kurdî (Latin))
+ * @author George Animal
+ */
+$messages['ku-latn'] = array(
+	'smw_finallistconjunct' => ', û',
+	'smw_printername_list' => 'Lîste',
+	'smw_true_words' => 'rast, r, erê, e',
+	'smw_false_words' => 'nerast, n, na, n',
+);
+
 /** Luxembourgish (Lëtzebuergesch)
  * @author Les Meloures
  * @author Robby
@@ -10834,7 +10849,7 @@ $messages['ug-latn'] = array(
  * @author Юрій Булка
  */
 $messages['uk'] = array(
-	'smw-desc' => "Робить вашу вікі доступнішою — для машин ''і'' людей ([http://semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
+	'smw-desc' => "Робить вашу вікі доступнішою — для машин ''та'' людей ([http://semantic-mediawiki.org/wiki/Help:User_manual довідка в мережі])",
 	'smw_edithelp' => 'Довідка із редагування властивостей',
 	'smw_viewasrdf' => 'вивід RDF',
 	'smw_finallistconjunct' => ' і',
@@ -10891,7 +10906,7 @@ $messages['uk'] = array(
 	'smw_nonright_importtype' => '$1 можна використовувати лише для сторінок у просторі назв «$2».',
 	'smw_wrong_importtype' => '$1 неможливо використати для сторінок у просторі назв «$2».',
 	'smw_no_importelement' => 'Елемент «$1» недоступний для імпорту.',
-	'smw_parseerror' => 'Дане значення незрозуміле.',
+	'smw_parseerror' => 'Вказане значення — незрозуміле.',
 	'smw_notitle' => '«$1» неможливо використати у якості назви сторінки у цій вікі.',
 	'smw_wrong_namespace' => 'Тут дозволено лише сторінки в просторі назв «$1».',
 	'smw_unknowntype' => 'Для властивості означено тип даних «$1», який не підтримується.',
@@ -10900,7 +10915,7 @@ $messages['uk'] = array(
 	'smw_maxstring' => 'Рядок «$1» — занадто довгий.',
 	'smw_notinenum' => '«$1» не є у списку дозволених значень ($2) для цієї властивості.',
 	'smw_noboolean' => '«$1» не розпізнається як булове значення (значення «так/ні»).',
-	'smw_true_words' => 'true, t, yes, y, так, т',
+	'smw_true_words' => 'true,t,yes,y,так,т',
 	'smw_false_words' => 'false,f,no,n,ні,н',
 	'smw_nofloat' => '«$1» не є числом',
 	'smw_infinite' => 'Такі довгі числа, як «$1» не підтримуються.',
@@ -10946,6 +10961,7 @@ $messages['uk'] = array(
 	'smw_property_template' => '$1 із типом $2 ($3)',
 	'smw_propertylackspage' => 'Кожна властивість повинна мати сторінку, що її описує.',
 	'smw_propertylackstype' => 'Для цієї властивості не було означено типу даних (поки що використовується $1).',
+	'smw_propertyhardlyused' => 'Ця властивість використовується рушієм вікі.',
 	'unusedproperties' => 'Властивості, що не використовуються',
 	'smw_unusedproperties_docu' => 'Наступні властивості означені, проте жодна із сторінок їх не використовує.',
 	'smw_unusedproperty_template' => '$1 із типом даних $2',
@@ -10987,8 +11003,8 @@ $messages['uk'] = array(
 	'smw_sbv_property' => 'Властивість:',
 	'smw_sbv_value' => 'Значення:',
 	'smw_sbv_submit' => 'Знайти',
-	'browse' => 'Переглядати вікі',
-	'smw_browselink' => 'Переглядати властивості',
+	'browse' => 'Перегляд вікі',
+	'smw_browselink' => 'Перегляд властивостей',
 	'smw_browse_article' => 'Введіть назву сторінки, з якої почати перегляд.',
 	'smw_browse_go' => 'Перейти',
 	'smw_browse_show_incoming' => 'показати властивості, що посилаються сюди',
@@ -11016,11 +11032,29 @@ $messages['uk'] = array(
 	'smw_smwadmin_updatenotstopped' => 'Щоб зупинити вже запущений процес освіження, будь ласка активуйте цю відмітку, щоб засвідчити, що ви впевнені у цьому рішенні.',
 	'smw_smwadmin_docu' => 'Ця сторінка допоможе при встановленні або оновленні <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>. Не забудьте зробити резервну копію всіх важливих даних перед запуском адміністративних функцій.',
 	'smw_smwadmin_db' => 'Встановлення та оновлення бази даних',
+	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki потребує розширити базу даних, щоб могти зберігати семантичну інформацію. Подана нижче функція забезпечує правильне налаштування бази даних. Зміни, котрі вона вносить, не зачіпають решти бази даних MediaWiki, та можуть бути легко скасовані. Хоча цю функцію безпечно запускати кілька разів, її використання потрібне лише один раз для встановлення чи оновлення.',
+	'smw_smwadmin_permissionswarn' => 'Якщо ця операція буде зупинена через помилки SQL, вірогідною причиною може бути відсутність необхідних прав користувача, під іменем якого вікі під’єднується до бази даних (він вказується у LocalSettings.php). В такому випадку вам необхідно або дозволити цьому користувачу створювати та вилучати таблиці БД, або тимчасово ввести в LocalSettings.php логін БД «root», або використати сценарій обслуговування <tt>SMW_setup.php</tt>, який може використовувати облікові дані AdminSettings.php.',
+	'smw_smwadmin_dbbutton' => 'Ініціалізація або освіження таблиць',
+	'smw_smwadmin_announce' => 'Заявити про вашу вікі',
+	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki має вебсервіс для заявлення про нові семантичні вікі сайти. Головне призначення цього сервісу — зберігати список відкритих сайтів, що використовують Semantic MediaWiki з метою допомогти проектові <a href="http://semantic-mediawiki.org/wiki/SMW_Project">Semantic MediaWiki</a> мати інформацію про типові варіанти використання цього рушія. Більше інформації можна знайти на <a href="http://semantic-mediawiki.org/wiki/Registry">сайті Semantic MediaWiki</a>.',
+	'smw_smwadmin_announcebutton' => 'Натисніть наступну кнопку, щоб відправити адресу цього вікі до нашого сервісу. Сервіс не буде реєструвати вікі, які не є публічно доступними, і буде зберігати інформацію, що є публічно доступною.',
+	'smw_smwadmin_datarefresh' => 'Відновлення і оновлення даних',
+	'smw_smwadmin_datarefreshdocu' => 'Можна відновити всі дані Semantic MediaWiki, базуючись на поточному стані вмісту вікі. Це можна використати при відновленні пошкоджених даних або при оновленні даних, якщо внутрішній формат змінився через оновлення програмного забезпечення. Оновлення буде виконувати сторінка за сторінкою, тому займе якийсь час. Нижче показано прогрес процесу оновлення, дається можливість запустити або зупинити оновлення (якщо ця функція не була заблокована адміністратором).',
+	'smw_smwadmin_datarefreshprogress' => '<strong>Процес оновлення вже запущено.</strong>
+Процес оновлення відбувається маленькими порціям із кожним відкриттям сторінки користувачами, тому він проходить повільно. Щоб швидше закінчити оновлення, можна скористатись сценарієм обслуговування <tt>runJobs.php</tt> (використовуйте опцію <tt>--maxjobs 1000</tt> щоб обмежити число оновлень в одному пакеті).
+Приблизний стан запущеного оновлення:',
 	'smw_smwadmin_datarefreshbutton' => 'Почати оновлення даних',
 	'smw_smwadmin_datarefreshstop' => 'Зупинити це оновлення',
 	'smw_smwadmin_datarefreshstopconfirm' => 'Так, я впевнений.',
+	'smw_smwadmin_support' => 'Отримання підтримки',
+	'smw_smwadmin_supportdocu' => 'Є різні ресурси, що можуть стати в пригоді у разі виникнення проблем:',
+	'smw_smwadmin_installfile' => 'Якщо у вас виникли проблеми із встановленням, насамперед подивіться поради в <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">файлі INSTALL</a>.',
+	'smw_smwadmin_smwhomepage' => 'Повна довідка із користування Semantic MediaWiki знаходиться на сайті <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_mediazilla' => 'Повідомлення про помилки відсилайте через <a href="https://bugzilla.wikimedia.org/">Баґзиллу</a>.',
+	'smw_smwadmin_questions' => 'Якщо у вас є додаткові запитання чи побажання, приєднуйтесь до обговорень на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форумі з користування Semantic MediaWiki</a>.',
 	'smw_adminlinks_datastructure' => 'Структура даних',
 	'smw_adminlinks_displayingdata' => 'Відображення даних',
+	'smw_adminlinks_inlinequerieshelp' => 'Довідка із вбудованих запитів',
 );
 
 /** Veps (Vepsan kel')
