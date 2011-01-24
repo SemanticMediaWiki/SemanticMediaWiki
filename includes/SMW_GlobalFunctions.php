@@ -224,17 +224,18 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
  * @param array $messages
  * @param string $icon Acts like an enum. Callers must ensure safety, since this value is used directly in the output.
  * @param string $seperator
+ * @param boolean $escape Should the messages be escaped or not (ie when they already are)
  *
  * @return string
  */
-function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' <!--br-->' ) {
+function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' <!--br-->', $escape = true ) {
 	if ( count( $messages ) > 0 ) {
 		SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
-		foreach( $messages as &$message ) {
-			$message = htmlspecialchars( $message );
+		if ( $escape ) {
+			$messages = array_map( 'htmlspecialchars', $messages );
 		}
-		$messageString = implode( $seperator, $messages );
-		return '<span class="smwttpersist"><span class="smwtticon">' . $icon . '.png</span><span class="smwttcontent">' . $messageString . '</span> </span>';
+		return '<span class="smwttpersist"><span class="smwtticon">' . htmlspecialchars( $icon )
+			. '.png</span><span class="smwttcontent">' . implode( $seperator, $messages ) . '</span> </span>';
 	} else {
 		return '';
 	}
