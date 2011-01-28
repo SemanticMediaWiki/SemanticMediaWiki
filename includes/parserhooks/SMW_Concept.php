@@ -73,7 +73,7 @@ class SMWConcept {
 				'<pre>' . str_replace( '[', '&#x005B;', $concept_text ) . "</pre>\n</div>";
 
 		// Starting from MW 1.16, there is a more suited method available: Title::isSpecialPage
-		if ( $wgTitle->getNamespace() == NS_SPECIAL ) {
+		if ( !is_null( $wgTitle ) &&  $wgTitle->getNamespace() == NS_SPECIAL ) {
 			global $wgOut;
 			SMWOutputs::commitToOutputPage( $wgOut );
 		}
