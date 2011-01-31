@@ -589,7 +589,7 @@ class SMWExportController {
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'viewCount' ), $ed );
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::users(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'userCount' ), $ed );
-		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::admins(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
+		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::numberingroup( 'sysop' ), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'adminCount' ), $ed );
 
 		$this->serializer->startSerialization();
