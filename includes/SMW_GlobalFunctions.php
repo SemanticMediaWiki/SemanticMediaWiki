@@ -253,7 +253,8 @@ function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' 
  * @since 1.5.1
  */
 function smwfLoadExtensionMessages( $extensionName ) {
-	if ( function_exists( 'wfLoadExtensionMessages' ) ) {
+	global $wgVersion;
+	if ( version_compare( $wgVersion, '1.16', '<' ) ) {
 		wfLoadExtensionMessages( $extensionName );
 	}
 }
