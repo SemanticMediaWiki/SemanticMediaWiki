@@ -261,7 +261,7 @@ EOT;
 			$typeold = ( $notnullposold > 0 ) ? substr( $currentFields[$name], 0, $notnullposold ) : $currentFields[$name];
 			
 			if ( $typeold != $type ) {
-				$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" TYPE " . $type, __METHOD__ );
+				$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" ENGINE " . $type, __METHOD__ );
 			}
 			
 			if ( $notnullposold != $notnullposnew ) {

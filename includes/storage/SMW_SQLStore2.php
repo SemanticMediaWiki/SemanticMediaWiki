@@ -1086,7 +1086,7 @@ class SMWSQLStore2 extends SMWStore {
 				   . "LANGUAGE 'plpgsql'; "
 				   . "SELECT create_" . $smw_tmp_unusedprops . "(); ";
 		} else { // MySQL: use temporary in-memory table
-			$sql = "CREATE TEMPORARY TABLE " . $smw_tmp_unusedprops . "( title VARCHAR(255) ) TYPE=MEMORY";
+			$sql = "CREATE TEMPORARY TABLE " . $smw_tmp_unusedprops . "( title VARCHAR(255) ) ENGINE=MEMORY";
 		}
 
 		$db->query( $sql, $fname );

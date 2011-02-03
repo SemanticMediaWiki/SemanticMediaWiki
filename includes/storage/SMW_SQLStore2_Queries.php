@@ -1161,7 +1161,7 @@ class SMWSQLStore2QueryEngine {
 			. "LANGUAGE 'plpgsql'; "
 			. "SELECT create_" . $tablename . "(); ";
 		} else { // MySQL_ just a temporary table, use INSERT IGNORE later
-			return "CREATE TEMPORARY TABLE " . $tablename . "( id INT UNSIGNED KEY ) TYPE=MEMORY";
+			return "CREATE TEMPORARY TABLE " . $tablename . "( id INT UNSIGNED KEY ) ENGINE=MEMORY";
 		}
 	}
 
