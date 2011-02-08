@@ -261,6 +261,8 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * make a Title out of the given data.
 	 * However, isValid() will return FALSE *after* this function failed in
 	 * trying to create a title.
+	 * 
+	 * @return Title
 	 */
 	public function getTitle() {
 		if ( ( $this->isValid() ) && ( $this->m_title === null ) ) {
@@ -270,12 +272,14 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->m_title = Title::newFromText( $this->getPrefixedText() );
 			}
 		}
+		
 		if ( $this->m_title === null ) { // should not normally happen, but anyway ...
 			global $wgContLang;
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_notitle', $wgContLang->getNsText( $this->m_namespace ) . ':' . $this->m_dbkeyform ) );
 			$this->m_dbkeyform = '';
 		}
+		
 		return $this->m_title;
 	}
 
