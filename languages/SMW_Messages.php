@@ -9695,6 +9695,7 @@ Odhadovaný priebeh aktualizácie:',
  * @author Rancher
  * @author Sasa Stefanovic
  * @author Slaven Kosanovic
+ * @author Жељко Тодоровић
  * @author Михајло Анђелковић
  */
 $messages['sr-ec'] = array(
@@ -9859,7 +9860,7 @@ $messages['sr-ec'] = array(
 	'browse' => 'Прегледај вики',
 	'smw_browselink' => 'Прегледај особине',
 	'smw_browse_article' => 'Унесите име почетне странице за претрагу.',
-	'smw_browse_go' => 'Пређи',
+	'smw_browse_go' => 'Иди',
 	'smw_browse_show_incoming' => 'прикажи особине које вежу овде',
 	'smw_browse_hide_incoming' => 'сакриј особине које вежу овде',
 	'smw_browse_no_outgoing' => 'Ова страница нема особина.',
