@@ -103,7 +103,7 @@ class SMWSQLStore2QueryEngine {
 
 		$values = $this->m_store->getPropertyValues( $concept, SMWPropertyValue::makeProperty( '_CONC' ) );// two lines due to "strict standards" warning
 		$dv = end( $values );
-		$desctxt = ( $dv !== false ) ? $dv->getWikiValue():false;
+		$desctxt = ( $dv !== false ) ? $dv->getWikiValue() : false;
 		$this->m_errors = array();
 
 		if ( $desctxt ) { // concept found
@@ -515,6 +515,8 @@ class SMWSQLStore2QueryEngine {
 			}
 		} elseif ( $description instanceof SMWConceptDescription ) { // fetch concept definition and insert it here
 			$cid = $this->m_store->getSMWPageID( $description->getConcept()->getDBkey(), SMW_NS_CONCEPT, '' );
+			// We bypass the storage interface here (which is legal as we controll it, and safe if we are careful with changes ...)
+			// This should be faster, but we must implement the unescaping that concepts do on getWikiValue()
 			$row = $this->m_dbs->selectRow(
 				'smw_conc2',
 				array( 'concept_txt', 'concept_features', 'concept_size', 'concept_depth', 'cache_date' ),
@@ -544,8 +546,9 @@ class SMWSQLStore2QueryEngine {
 					if ( $may_be_computed ) {
 						$qp = new SMWQueryParser();
 
-						//No defaultnamespaces here; If any, these are already in the concept.
-						$desc = $qp->getQueryDescription( $row->concept_txt );
+						// No defaultnamespaces here; If any, these are already in the concept.
+						// Unescaping is the same as in SMW_DV_Conept's getWikiValue().
+						$desc = $qp->getQueryDescription( str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $row->concept_txt ) );
 						$qid = $this->compileQueries( $desc );
 						if ($qid != -1) {
 							$query = $this->m_queries[$qid];
