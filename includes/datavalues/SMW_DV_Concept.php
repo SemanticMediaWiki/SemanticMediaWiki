@@ -41,8 +41,8 @@ class SMWConceptValue extends SMWDataValue {
 		$this->m_concept = '';
 		$this->m_docu = '';
 		$this->m_queryfeatures = 0;
-		$this->m_size = - 1;
-		$this->m_depth = - 1;
+		$this->m_size = -1;
+		$this->m_depth = -1;
 	}
 
 	public function getShortWikiText( $linked = null ) {
@@ -76,7 +76,7 @@ class SMWConceptValue extends SMWDataValue {
 	}
 
 	public function getSignature() {
-		return 'tllnnn';
+		return 'llnnn';
 	}
 
 	public function getValueIndex() {

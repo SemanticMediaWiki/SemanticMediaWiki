@@ -101,7 +101,8 @@ class SMWSQLStore2QueryEngine {
 			return $this->m_errors;
 		}
 
-		$dv = end( $this->m_store->getPropertyValues( $concept, SMWPropertyValue::makeProperty( '_CONC' ) ) );
+		$values = $this->m_store->getPropertyValues( $concept, SMWPropertyValue::makeProperty( '_CONC' ) );// two lines due to "strict standards" warning
+		$dv = end( $values );
 		$desctxt = ( $dv !== false ) ? $dv->getWikiValue():false;
 		$this->m_errors = array();
 
