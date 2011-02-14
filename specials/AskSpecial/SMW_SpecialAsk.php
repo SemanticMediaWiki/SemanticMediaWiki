@@ -321,15 +321,10 @@ END;
 		// Javascript code for the dynamic parts of the page
 		$javascript_text = <<<END
 <script type="text/javascript">       
-jQuery.noConflict();
-function xmlhttpPost(strURL) {
-	jQuery.ajax({ url: strURL, data: getquerystring(), context: document.body, success: function(data){
-		document.getElementById("other_options").innerHTML = data;
+function updateOtherOptions(strURL) {
+	jQuery.ajax({ url: strURL, context: document.body, success: function(data){
+		jQuery("#other_options").html(data);
 	}});   
-}
-function getquerystring() {
-	var format_selector = document.getElementById('formatSelector');
-	return format_selector.value;
 }
 
 // code for handling adding and removing the "sort" inputs
@@ -558,7 +553,7 @@ END;
 			}
 			
 			$result .= "<br /><br />\n<p>" . wfMsg( 'smw_ask_format_as' ) . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
-				'<select id="formatSelector" name="p[format]" onChange="JavaScript:xmlhttpPost(\'' . $url . '\')">' . "\n" .
+				'<select id="formatSelector" name="p[format]" onChange="JavaScript:updateOtherOptions(\'' . $url . '\')">' . "\n" .
 				'	<option value="broadtable"' . ( $this->m_params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .
 				$printer->getName() . ' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
 
