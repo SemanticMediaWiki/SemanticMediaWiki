@@ -11362,6 +11362,13 @@ Bi petuvons pads te aniks, i völads nilöfik palisedons.',
 	'smw_smwadmin_return' => 'Geikön lü pad: $1',
 );
 
+/** Yiddish (ייִדיש)
+ * @author פוילישער
+ */
+$messages['yi'] = array(
+	'smw_exportrdf_submit' => 'עקספארטירן',
+);
+
 /** Chinese (China) (‪中文(中国大陆)‬)
  * @author Roc Michael
  */
