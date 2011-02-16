@@ -264,7 +264,7 @@ class SMWSQLStoreLight extends SMWStore {
 		wfProfileOut( 'SMWSQLStoreLight::deleteSubject (SMW)' );
 	}
 
-	public function updateData( SMWSemanticData $data ) {
+	public function doDataUpdate( SMWSemanticData $data ) {
 		wfProfileIn( "SMWSQLStoreLight::updateData (SMW)" );
 		wfRunHooks( 'SMWSQLStoreLight::updateDataBefore', array( $this, $data ) );
 		$subject = $data->getSubject();

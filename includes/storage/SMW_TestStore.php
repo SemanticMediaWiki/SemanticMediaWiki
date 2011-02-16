@@ -125,7 +125,7 @@ class SMWTestStore extends SMWStore {
 	function deleteSubject( Title $subject ) {
 	}
 
-	function updateData( SMWSemanticData $data ) {
+	function doDataUpdate( SMWSemanticData $data ) {
 	}
 
 	function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {

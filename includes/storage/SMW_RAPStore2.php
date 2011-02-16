@@ -58,7 +58,7 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 		return parent::deleteSubject( $subject );
 	}
 
-	function updateData( SMWSemanticData $data ) {
+	function doDataUpdate( SMWSemanticData $data ) {
 		// Create a local memmodel
 		$model = ModelFactory::getDefaultModel();
 

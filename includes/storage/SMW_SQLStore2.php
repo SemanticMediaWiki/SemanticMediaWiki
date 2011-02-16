@@ -756,11 +756,11 @@ class SMWSQLStore2 extends SMWStore {
 	}
 
 	/**
-	 * @see SMWStore::updateData
+	 * @see SMWStore::doDataUpdate
 	 * 
 	 * @param SMWSemanticData $data
 	 */
-	public function updateData( SMWSemanticData $data ) {
+	public function doDataUpdate( SMWSemanticData $data ) {
 		wfProfileIn( "SMWSQLStore2::updateData (SMW)" );
 		wfRunHooks( 'SMWSQLStore2::updateDataBefore', array( $this, $data ) );
 		

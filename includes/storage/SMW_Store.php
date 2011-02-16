@@ -212,8 +212,37 @@ abstract class SMWStore {
 	 * as a SMWSemanticData object, which contains all semantic data for one particular
 	 * subject.
 	 */
-	public abstract function updateData( SMWSemanticData $data );
+	public abstract function doDataUpdate( SMWSemanticData $data );
 
+	/**
+	 * Update the semantic data stored for some individual. The data is given
+	 * as a SMWSemanticData object, which contains all semantic data for one particular
+	 * subject.
+	 */	
+	public function updateData( SMWSemanticData $data ) {
+		wfRunHooks( 'SMWStore::updateDataBefore', array( $this, $data ) );
+		
+		$this->doDataUpdate( $data );
+		
+		// Invalidate the page, so data stored on it gets displayed immeditaely in queries.
+		global $smwgAutoRefreshSubject;
+		if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
+			$title = $data->getSubject()->getTitle();
+			$dbw = wfGetDB( DB_MASTER );
+			
+			$dbw->update(
+				'page',
+				array( 'page_touched' => $dbw->timestamp() + 9001 ),
+				$title->pageCond(),
+				__METHOD__
+			);
+			
+			HTMLFileCache::clearFileCache( $title );			
+		}
+		
+		wfRunHooks( 'SMWStore::updateDataAfter', array( $this, $data ) );
+	}
+	
 	/**
 	 * Clear all semantic data specified for some page.
 	 */
