@@ -1,23 +1,9 @@
 <?php
 
 /**
- * File holding the SMWSpecialProperties class for the Special:Properties page. 
- *
- * @file SMW_SpecialProperties.php
- * 
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- */
-
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'Not an entry point.' );
-}
-
-/**
  * This special page for MediaWiki shows all used properties.
+ * 
+ * @file SMW_SpecialProperties.php
  * 
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
@@ -116,4 +102,3 @@ class SMWPropertiesPage extends SMWQueryPage {
 	}
 
 }
-

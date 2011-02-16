@@ -1,27 +1,12 @@
 <?php
 
 /**
- * File holding the SMWSpecialTypes class for the Special:Types page. 
- *
- * @file SMW_SpecialTypes.php
- * 
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- *
- * @author S Page
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- */
-
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'Not an entry point.' );
-}
-
-/**
  * This special page for MediaWiki provides information about types. Type information is 
  * stored in the smw_attributes database table, gathered both from the annotations in
  * articles, and from metadata already some global variables managed by SMWTypeHandlerFactory,
  * and in Type: Wiki pages. This only reports on the Type: Wiki pages.
+ * 
+ * @file SMW_SpecialTypes.php
  * 
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
@@ -75,6 +60,35 @@ class TypesPage extends QueryPage {
 		return '<p>' . wfMsg( 'smw_types_docu' ) . "</p><br />\n";
 	}
 
+	/* Failed attempt to fix https://bugzilla.wikimedia.org/show_bug.cgi?id=27440
+	function getQueryInfo() {
+		$joinConds = array();
+		
+		foreach ( SMWDataValueFactory::getKnownTypeLabels() as $label ) {
+			$label = str_replace( ' ', '_', $label ); // DBkey form so that SQL can elminate duplicates
+			$joinConds['page'] = array( 'UNION', "(SELECT 'Types' as type,  " . 
+				SMW_NS_TYPE .
+				" as namespace, '$label' as title, " .
+	            "'$label' as value, 1 as count)" );
+		}
+		
+		return array(
+			'tables' => array( 'page' ),
+			'fields' => array(
+				SMW_NS_TYPE . ' AS namespace',
+				'page_title AS value',
+				'page_title AS title',
+				'1 AS count'
+			),
+			'conds' => array(
+				'page_namespace' => SMW_NS_TYPE,
+				'page_is_redirect' => '0'
+			),
+			'join_conds' => $joinConds
+		);
+	}
+	*/
+	
 	function getSQL() {
 		global $smwgContLang;
 		$dbr = wfGetDB( DB_SLAVE );
@@ -102,7 +116,7 @@ class TypesPage extends QueryPage {
 	}
 
 	/**
-	 * Returns the info about a type as HTML
+	 * Returns the info about a type as HTML.
 	 */
 	function getTypeInfo( $skin, $titletext ) {
 		$tv = SMWDataValueFactory::newTypeIDValue( '__typ', $titletext );
@@ -135,5 +149,3 @@ class TypesPage extends QueryPage {
 	}
 
 }
-
-
