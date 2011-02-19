@@ -459,8 +459,7 @@ $smwgAutocompleteInSpecialAsk = true;
 ##
 
 ###
-# Sets whether or not the 'printouts' textarea should have autocompletion
-# on property names.
+# Sets whether or not to refresh the pages of which semantic data is stored.
 ##
 $smwgAutoRefreshSubject = true;
 ##
