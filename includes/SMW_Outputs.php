@@ -55,7 +55,7 @@ class SMWOutputs {
 		global $wgVersion;
 		
 		// Use the b/c method when the resource loader is not available.
-		if ( !method_exists( 'OutputPage', 'addModules' ) ) {
+		if ( !defined( 'MW_SUPPORTS_RESOURCE_MODULES' ) ) {
 			return self::requireHeadItemOld( $id, $item );
 		}
 		
