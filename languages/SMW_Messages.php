@@ -1374,6 +1374,7 @@ $messages['br'] = array(
 	'smw_printername_table' => 'Taolenn',
 	'smw_printername_broadtable' => 'Taolenn ledan',
 	'smw_printername_template' => 'Patrom',
+	'smw_printername_rdf' => 'Ezporzh RDF',
 	'smw_paramdesc_limit' => "An niver uhelañ a zisoc'hoù da adkas",
 	'smw_paramdesc_headers' => 'Diskwel an talbennoù / anvioù ar perzhioù',
 	'smw_paramdesc_mainlabel' => 'Al label hag a ro anv ar bajenn degemer',
