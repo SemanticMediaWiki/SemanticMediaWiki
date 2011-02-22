@@ -33,16 +33,7 @@ class SMWSpecialTypes extends SpecialPage {
 		
 		list( $limit, $offset ) = wfCheckLimits();
 		
-		// When the QueryPage class was changed in r78786, the order of these
-		// parameters was conveniently swapped around. Brilliant for introducing
-		// subtle bugs; we ought to do it more!
-		if ( method_exists( 'QueryPage', 'getQueryInfo' ) ) {
-			$rep->doQuery( $limit, $offset );
-			$rep->execute( array() );
-		}
-		else {
-			$rep->doQuery( $offset, $limit );
-		}
+		$rep->doQuery( $offset, $limit );
 		
 		// Ensure locally collected output data is pushed to the output!
 		SMWOutputs::commitToOutputPage( $wgOut );
