@@ -32,7 +32,17 @@ class SMWSpecialTypes extends SpecialPage {
 		$rep = new TypesPage();
 		
 		list( $limit, $offset ) = wfCheckLimits();
-		$rep->doQuery( $offset, $limit );
+		
+		// When the QueryPage class was changed in r78786, the order of these
+		// parameters was conveniently swapped around. Brilliant for introducing
+		// subtle bugs; we ought to do it more!
+		if ( method_exists( 'QueryPage', 'getQueryInfo' ) ) {
+			$rep->doQuery( $limit, $offset );
+			$rep->execute( array() );
+		}
+		else {
+			$rep->doQuery( $offset, $limit );
+		}
 		
 		// Ensure locally collected output data is pushed to the output!
 		SMWOutputs::commitToOutputPage( $wgOut );
@@ -44,8 +54,12 @@ class SMWSpecialTypes extends SpecialPage {
 
 class TypesPage extends QueryPage {
 
+	public function __construct( $name = 'Types' ) {
+		parent::__construct( $name );
+	}	
+	
 	function getName() {
-		return "Types";
+		return 'Types';
 	}
 
 	function isExpensive() {
@@ -57,7 +71,7 @@ class TypesPage extends QueryPage {
 	}
 
 	function getPageHeader() {
-		return '<p>' . wfMsg( 'smw_types_docu' ) . "</p><br />\n";
+		return '<p>' . htmlspecialchars( wfMsg( 'smw_types_docu' ) ) . "</p><br />\n";
 	}
 
 	/* Failed attempt to fix https://bugzilla.wikimedia.org/show_bug.cgi?id=27440
