@@ -31,9 +31,14 @@ class SMWSpecialTypes extends SpecialPage {
 		
 		$rep = new TypesPage();
 		
-		list( $limit, $offset ) = wfCheckLimits();
-		
-		$rep->doQuery( $offset, $limit );
+		// execute() method added in MW 1.18
+		if ( method_exists( $rep, 'execute' ) ) {
+			$rep->execute( $param );
+		}
+		else {
+			list( $limit, $offset ) = wfCheckLimits();
+			$rep->doQuery( $offset, $limit );
+		}
 		
 		// Ensure locally collected output data is pushed to the output!
 		SMWOutputs::commitToOutputPage( $wgOut );
@@ -46,7 +51,10 @@ class SMWSpecialTypes extends SpecialPage {
 class TypesPage extends QueryPage {
 
 	public function __construct( $name = 'Types' ) {
-		parent::__construct( $name );
+		global $wgVersion;
+		if ( version_compare( $wgVersion, '1.17', '>=' ) ) {
+			parent::__construct( $name );
+		}
 	}	
 	
 	function getName() {
