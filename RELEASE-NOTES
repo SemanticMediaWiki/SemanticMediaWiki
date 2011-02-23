@@ -1,5 +1,12 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
+== SMW 1.5.6 ==
+
+* Automatic refresh of pages after parsing their semantic data.
+* Fixed several bugs including non-functional concept caching,
+  correct internationalization support for categories and concepts
+  in queries and types display on Special:Types for MW >= 1.17.
+
 == SMW 1.5.5 ==
 
 * Support for Turtle syntax (e.g. use "syntax=turtle" as a parameter to 
