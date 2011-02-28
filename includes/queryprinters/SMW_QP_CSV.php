@@ -42,28 +42,35 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 
 	protected function getResultText( $res, $outputmode ) {
 		$result = '';
+		
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // make CSV file
 			$csv = fopen( 'php://temp', 'r+' );
-			if ( $this->mShowHeaders == true ) {
+			
+			if ( $this->mShowHeaders ) {
 				$header_items = array();
+				
 				foreach ( $res->getPrintRequests() as $pr ) {
 					$header_items[] = $pr->getLabel();
 				}
+				
 				fputcsv( $csv, $header_items, $this->m_sep );
 			}
+			
 			while ( $row = $res->getNext() ) {
 				$row_items = array();
+				
 				foreach ( $row as $field ) {
 					$growing = array();
+					
 					while ( ( $object = $field->getNextObject() ) !== false ) {
-						$text = Sanitizer::decodeCharReferences( $object->getWikiValue() );
-						// decode: CSV knows nothing of possible HTML entities
-						$growing[] = $text;
-					} // while...
+						$growing[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
+					} 
+					
 					$row_items[] = implode( ',', $growing );
-				} // foreach...
+				}
+				
 				fputcsv( $csv, $row_items, $this->m_sep );
-			} // while...
+			}
 
 			rewind( $csv );
 			$result .= stream_get_contents( $csv );
