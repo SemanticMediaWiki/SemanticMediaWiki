@@ -15,16 +15,21 @@
 class SMWDSVResultPrinter extends SMWResultPrinter {
 	
 	protected $separator = ':';
+	protected $fileName = 'result.dsv';
 	
 	protected function readParameters( $params, $outputmode ) {
 		SMWResultPrinter::readParameters( $params, $outputmode );
 		
-		if ( array_key_exists( 'separator', $this->m_params ) ) {
+		if ( array_key_exists( 'separator', $this->m_params ) && $this->m_params['separator'] != '\\' ) {
 			$this->separator = trim( $this->m_params['separator'] );
 		// Also support 'sep' as alias, since this is the param name for the CSV format.
-		} elseif ( array_key_exists( 'sep', $this->m_params ) ) {
+		} elseif ( array_key_exists( 'sep', $this->m_params ) && $this->m_params['sep'] != '\\' ) {
 			$this->separator = trim( $this->m_params['sep'] );
 		}
+		
+		if ( isset( $this->m_params['filename'] ) ) {
+			$this->fileName = str_replace( ' ', '_', $this->m_params['filename'] );
+		}	
 	}
 
 	public function getMimeType( $res ) {
@@ -32,11 +37,7 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getFileName( $res ) {
-		if ( isset( $this->m_params['filename'] ) ) {
-			return str_replace( ' ', '_', $this->m_params['filename'] ) . '.dsv';
-		} else {
-			return 'result.dsv';
-		}
+		return $this->fileName;
 	}
 
 	public function getQueryMode( $context ) {
@@ -126,13 +127,15 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	 */
 	protected function encodeDSV( $value ) {
 		// TODO
-		// \n for a newline, \r for a carriage return, \t for a tab, \b for backspace, \f for formfeed
-		// \e for ASCII escape
 		// \nnn or \onnn or \0nnn for the character with octal value nnn
 		// \xnn for the character with hexadecimal value nn
 		// \dnnn for the character with decimal value nnn
 		// \unnnn for a hexadecimal Unicode literal.
-		return str_replace( array( '\\', $this->separator ), array( '\\\\', "\\$this->separator" ), $value );
+		return str_replace(
+			array( '\n', '\r', '\t', '\b', '\f', '\\', $this->separator ),
+			array( "\n", "\r", "\t", "\b", "\f", '\\\\', "\\$this->separator" ),
+			$value
+		);
 	}
 	
 	/**
@@ -177,8 +180,8 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	public function getParameters() {
 		$params = parent::exportFormatParameters();
 		
-		$params[] = array( 'name' => 'separator', 'type' => 'string', 'description' => wfMsg( 'smw-paramdesc-dsv-separator' ) );
-		$params[] = array( 'name' => 'filename', 'type' => 'string', 'description' => wfMsg( 'smw-paramdesc-dsv-filename' ) );
+		$params[] = array( 'name' => 'separator', 'type' => 'string', 'description' => wfMsg( 'smw-paramdesc-dsv-separator' ), 'default' => $this->separator );
+		$params[] = array( 'name' => 'filename', 'type' => 'string', 'description' => wfMsg( 'smw-paramdesc-dsv-filename' ), 'default' => $this->fileName );
 		
 		return $params;
 	}

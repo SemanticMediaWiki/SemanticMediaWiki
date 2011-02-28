@@ -88,7 +88,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_paramdesc_rdfsyntax'	=> 'The RDF syntax to be used',
 	'smw-paramdesc-csv-sep'		=> 'The separator to use',
 	'smw-paramdesc-dsv-separator'	=> 'The separator to use',
-	'smw-paramdesc-dsv-filename'	=> 'The name for the DSV file (without the .dsv part)',
+	'smw-paramdesc-dsv-filename'	=> 'The name for the DSV file',
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
