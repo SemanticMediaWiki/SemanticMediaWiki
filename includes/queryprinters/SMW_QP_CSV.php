@@ -78,17 +78,19 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 			$link = $res->getQueryLink( $label );
 			$link->setParameter( 'csv', 'format' );
 			$link->setParameter( $this->m_sep, 'sep' );
-			if ( array_key_exists( 'mainlabel', $this->m_params ) )
+			
+			if ( array_key_exists( 'mainlabel', $this->m_params ) ) {
 				$link->setParameter( $this->m_params['mainlabel'], 'mainlabel' );
-			if ( $this->mShowHeaders )
-				$link->setParameter( 'show', 'headers' );
-			else
-				$link->setParameter( 'hide', 'headers' );
+			}
+				
+			$link->setParameter( $this->mShowHeaders ? 'show' : 'hide', 'headers' );
+			
 			if ( array_key_exists( 'limit', $this->m_params ) ) {
 				$link->setParameter( $this->m_params['limit'], 'limit' );
 			} else { // use a reasonable default limit
 				$link->setParameter( 100, 'limit' );
 			}
+			
 			$result .= $link->getText( $outputmode, $this->mLinker );
 			$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
 		}
@@ -96,7 +98,11 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getParameters() {
-		return parent::exportFormatParameters();
+		$params = parent::exportFormatParameters();
+		
+		$params[] = array( 'name' => 'sep', 'type' => 'string', 'description' => wfMsg( 'smw-paramdesc-csv-sep' ) );
+		
+		return $params;
 	}
 
 }

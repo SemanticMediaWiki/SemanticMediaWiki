@@ -40,17 +40,20 @@ If the problem does not go away after some time, ask your site administrator to 
 
 	// Link to RSS feeds
 	'smw_rss_link' => 'RSS',
-	// Link to CSV feeds
+	// Link to CSV files
 	'smw_csv_link' => 'CSV',
-	// Link to JSON feeds
+	// Link to DSV files
+	'smw_dsv_link' => 'DSV',
+	// Link to JSON files
 	'smw_json_link' => 'JSON',
-	// Link to RDF feeds
+	// Link to RDF files
 	'smw_rdf_link' => 'RDF',
 
 	// Names for result formats:
 	'smw_printername_auto' => 'Automatic',
 	'smw_printername_count' => 'Count results',
 	'smw_printername_csv' => 'CSV export',
+	'smw_printername_dsv' => 'DSV export',
 	'smw_printername_debug' => 'Debug query (for experts)',
 	'smw_printername_embedded' => 'Embed page contents',
 	'smw_printername_json' => 'JSON export',
@@ -83,6 +86,9 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_paramdesc_rsstitle'	=> 'The text to be used as the title of the feed',
 	'smw_paramdesc_rssdescription'	=> 'The text to be used as the description of the feed',
 	'smw_paramdesc_rdfsyntax'	=> 'The RDF syntax to be used',
+	'smw-paramdesc-csv-sep'		=> 'The separator to use',
+	'smw-paramdesc-dsv-separator'	=> 'The separator to use',
+	'smw-paramdesc-dsv-title'	=> 'The name for the DSV file (without the .dsv part)',
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
