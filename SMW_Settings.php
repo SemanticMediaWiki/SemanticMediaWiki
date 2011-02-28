@@ -295,6 +295,7 @@ $smwgResultFormats = array(
 	'debug'      => 'SMWListResultPrinter',
 	'rss'        => 'SMWRSSResultPrinter',
 	'csv'        => 'SMWCsvResultPrinter',
+	'dsv'        => 'SMWDSVResultPrinter',
 	'json'       => 'SMWJSONResultPrinter',
 	'rdf'        => 'SMWRDFResultPrinter'
 );

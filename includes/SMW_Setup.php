@@ -36,10 +36,10 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgIP, $smwgNamespace, $wgJobClasses, $wgExtensionAliasesFiles, $wgServer;
 	global $wgResourceModules, $smwgScriptPath;
 	
-	$wgFooterIcons["poweredby"]["semanticmediawiki"] = array(
-		"src" => null,
-		"url" => "http://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki",
-		"alt" => "Powered by Semantic MediaWiki",
+	$wgFooterIcons['poweredby']['semanticmediawiki'] = array(
+		'src' => null,
+		'url' => 'http://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
+		'alt' => 'Powered by Semantic MediaWiki',
 	);
 	
 	// The dot tells that the domain is not complete. It will be completed
@@ -126,6 +126,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWEmbeddedResultPrinter']  = $qpDir . 'SMW_QP_Embedded.php';
 	$wgAutoloadClasses['SMWRSSResultPrinter']       = $qpDir . 'SMW_QP_RSSlink.php';
 	$wgAutoloadClasses['SMWCsvResultPrinter']       = $qpDir . 'SMW_QP_CSV.php';
+	$wgAutoloadClasses['SMWDSVResultPrinter']       = $qpDir . 'SMW_QP_DSV.php';
 	$wgAutoloadClasses['SMWJSONResultPrinter']      = $qpDir . 'SMW_QP_JSONlink.php';
 	$wgAutoloadClasses['SMWRDFResultPrinter']       = $qpDir . 'SMW_QP_RDF.php';
 
