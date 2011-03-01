@@ -1,11 +1,15 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
+== SMW 1.5.7 ==
+
+* Added UNIX-style DSV (Delimiter-separated values) result format.
+
 == SMW 1.5.6 ==
 
 * Automatic refresh of pages after parsing their semantic data.
 * Fixed several bugs including non-functional concept caching,
   correct internationalization support for categories and concepts
-  in queries and types display on Special:Types for MW >= 1.17.
+  in queries and types display on Special:Types for MW >= 1.18.
 
 == SMW 1.5.5 ==
 
