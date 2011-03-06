@@ -217,9 +217,15 @@ class SMWPrintRequest {
 				return $result . $parameters;
 			case SMWPrintRequest::PRINT_THIS:
 				$result = '?';
+				
 				if ( $this->m_label != '' ) {
 					$result .= '=' . $this->m_label;
 				}
+				
+				if ( $this->m_outputformat != '' ) {
+					$result .= '#' . $this->m_outputformat;
+				}
+									
 				return $result . $parameters; 
 			default: return ''; // no current serialisation
 		}
