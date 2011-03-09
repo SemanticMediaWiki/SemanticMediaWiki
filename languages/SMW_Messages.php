@@ -1391,15 +1391,15 @@ $messages['br'] = array(
 	'smw_paramdesc_mainlabel' => 'Al label hag a ro anv ar bajenn degemer',
 	'smw_paramdesc_link' => 'Diskouez an talvoudoù evel liammoù',
 	'smw_paramdesc_intro' => "An destenn da ziskouez a-raok disoc'hoù ar reked, ma 'z eus",
-	'smw_paramdesc_outro' => "An destenn da ziskouez goude disoc'hoù ar reked, ma 'z eus",
+	'smw_paramdesc_outro' => "An destenn da ziskouez goude disoc'hoù ar reked, mar bez",
 	'smw_paramdesc_default' => "An destenn da ziskwel ma n'eus disoc'h ebet d'ar reked",
 	'smw_paramdesc_searchlabel' => "An destenn war al liamm davet an disoc'hoù",
 	'smw_paramdesc_sep' => 'An disranner evit an talvoudoù',
 	'smw_paramdesc_template' => 'An ar patrom gant pehini eo ret diskouez ar moulladurioù',
 	'smw_paramdesc_columns' => "An niver a golonennoù evit pere ez eus da ziskouez an disoc'hoù ($1 dre ziouer)",
 	'smw_paramdesc_userparam' => "Un talvoudenn tremenet e pep galvadenn a batrom, ma 'z eo implijet ur patrom",
-	'smw_paramdesc_introtemplate' => "Anv ar patrom da ziskouez a-raok disoc'hoù ar reked, ma 'z eus",
-	'smw_paramdesc_outrotemplate' => "Anv ar patrom da ziskouez goude disoc'hoù ar reked, ma 'z eus",
+	'smw_paramdesc_introtemplate' => "Anv ar patrom da ziskouez a-raok disoc'hoù ar reked, mar bez",
+	'smw_paramdesc_outrotemplate' => "Anv ar patrom da ziskouez goude disoc'hoù ar reked, mar bez",
 	'smw_paramdesc_embedformat' => 'Ar balizenn HTML hag a servij da dermeniñ an talbennoù',
 	'smw_paramdesc_embedonly' => 'Na ziskwel talbenn ebet',
 	'smw_paramdesc_rsstitle' => 'Testenn da implijout evel titl ar gwazhioù',
@@ -6986,8 +6986,8 @@ $messages['mk'] = array(
 	'smw_smwadmin_announcebutton' => 'Притиснете го следново копче за да ја испратите URL-адресата на вашето вики во таа служба.
 Службата нема да регистрира викија што не се јавно достапни, и ќе складира само достапни информации.',
 	'smw_smwadmin_datarefresh' => 'Поправка и поднова на податоци',
-	'smw_smwadmin_datarefreshdocu' => 'Постои можност за враќање на сите Semantic MediaWiki податоци врз основа на тековните содржини на викито.
-Ова е корисно за поправка на расипани податоци или за обнова на податоците ако внатрешниот формат се има променето како резултат на некаква надградба на програмската опрема.
+	'smw_smwadmin_datarefreshdocu' => 'Постои можност за враќање на сите податоци на Семантички МедијаВики врз основа на тековните содржини на викито.
+Ова е корисно за поправка на оштетени податоци или за обнова на податоците ако внатрешниот формат се има променето како резултат на некаква надградба на програмската опрема.
 Подновувањето се врши страница по страница, и ќе треба да помине некое време за да профункционира.
 Подолу е прикажано дали има поднова во тек, и тоа ви овозможува да започнувате или запирате подновувања (освен ако таа можност не е исклучена од администраторот на мрежното место).',
 	'smw_smwadmin_datarefreshprogress' => '<strong>Веќе е во тек една поднова.</strong>
