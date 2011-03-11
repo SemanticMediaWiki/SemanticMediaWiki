@@ -50,6 +50,8 @@ class SMWExpData {
 
 	/**
 	 * Return subject to which the stored semantic annotation refer to.
+	 * 
+	 * @return SMWExpElement
 	 */
 	public function getSubject() {
 		return $this->m_subject;
@@ -57,6 +59,8 @@ class SMWExpData {
 
 	/**
 	 * Set the subject element.
+	 * 
+	 * @param SMWExpResource $subject
 	 */
 	public function setSubject( SMWExpResource $subject ) {
 		$this->m_subject = $subject;
@@ -64,7 +68,10 @@ class SMWExpData {
 
 	/**
 	 * Store a value for a property identified by its title object. No duplicate elimination as this
-	 * is usually done in SMWSemanticData already (which is typically used to generate this object)
+	 * is usually done in SMWSemanticData already (which is typically used to generate this object).
+	 * 
+	 * @param SMWExpResource $property
+	 * @param SMWExpData $child
 	 */
 	public function addPropertyObjectValue( SMWExpResource $property, SMWExpData $child ) {
 		if ( !array_key_exists( $property->getName(), $this->m_edges ) ) {
@@ -76,13 +83,17 @@ class SMWExpData {
 
 	/**
 	 * Return the list of SMWExpElements for all properties for which some values exist.
+	 * 
+	 * @return array of SMWExpElements
 	 */
 	public function getProperties() {
 		return $this->m_edges;
 	}
 
 	/**
-	 * Return the list of SMWExpData values associated to some property (element)
+	 * Return the list of SMWExpData values associated to some property (element).
+	 * 
+	 * @return array of SMWExpData
 	 */
 	public function getValues( SMWExpResource $property ) {
 		if ( array_key_exists( $property->getName(), $this->m_children ) ) {
@@ -95,6 +106,8 @@ class SMWExpData {
 	/**
 	 * Return the list of SMWExpData values associated to some property that is
 	 * specifed by a standard namespace id and local name.
+	 * 
+	 * @return array of SMWExpData
 	 */
 	public function getSpecialValues( $namespace, $localname ) {
 		$pe = SMWExporter::getSpecialElement( $namespace, $localname );
@@ -175,23 +188,29 @@ class SMWExpData {
 	 */
 	public function getTripleList() {
 		global $smwgBnodeCount;
+		
 		if ( !isset( $smwgBnodeCount ) ) {
 			$smwgBnodeCount = 0;
 		}
+		
 		$result = array();
+		
 		foreach ( $this->m_edges as $key => $edge ) {
 			foreach ( $this->m_children[$key] as $child ) {
 				$name = $child->getSubject()->getName();
-				if ( ( $name == '' ) || ( $name[0] == '_' ) ) { // bnode, rename ID to avoid unifying bnodes of different contexts
+				
+				if ( $name === '' || $name[0] === '_' ) { // bnode, rename ID to avoid unifying bnodes of different contexts
 					// TODO: should we really rename bnodes of the form "_id" here?
 					$child = clone $child;
 					$subject = new SMWExpResource( '_' . $smwgBnodeCount++, $child->getSubject()->getDataValue() );
 					$child->setSubject( $subject );
 				}
+				
 				$result[] = array( $this->m_subject, $edge, $child->getSubject() );
 				$result = array_merge( $result, $child->getTripleList() ); // recursively generate all children's triples
 			}
 		}
+		
 		return $result;
 	}
 
