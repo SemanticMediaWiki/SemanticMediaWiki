@@ -8436,7 +8436,7 @@ Se ël problema a van nen via an chèich moment, ciamé a l'aministrator ëd sò
 	'smw_paramdesc_embedonly' => "Smon-e nen j'antestassion",
 	'smw_paramdesc_rsstitle' => 'Ël test da mostré com tìtol dël fluss',
 	'smw_paramdesc_rssdescription' => 'Ël test da dovré com descrission dël fluss',
-	'smw_paramdesc_rdfsyntax' => 'La sintass RDF da dovré',
+	'smw_paramdesc_rdfsyntax' => 'La sintassi RDF da dovré',
 	'smw-paramdesc-csv-sep' => 'Ël separador da dovré',
 	'smw-paramdesc-dsv-separator' => 'Ël separador da dovré',
 	'smw-paramdesc-dsv-filename' => "Ël nòm për l'archivi DSV",
