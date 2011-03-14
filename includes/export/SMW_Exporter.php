@@ -127,10 +127,11 @@ class SMWExporter {
 	
 	/**
 	 * Extend a given SMWExpData element by adding export data for the
-	 * specified property values.  
+	 * specified property values. This method is called when constructing
+	 * export data structures from SMWSemanticData objects.
 	 *
 	 * @param SMWPropertyValue $property
-	 * @param array $values of SMWDatavalue object for the given property
+	 * @param array $values of SMWDataValue objects for the given property
 	 * @param SMWExpData $data to add the data to
 	 */
 	static public function addPropertyValues(SMWPropertyValue $property, $values, SMWExpData &$data) {
@@ -213,18 +214,21 @@ class SMWExporter {
 	}
 
 	/**
-	 * Create an SMWExpElement for some internal resource, given by a Title of
-	 * SMWWikiPageValue object. Returns NULL on error.
-	 * $makeqname determines whether the function should strive to create a legal
-	 * XML QName for the resource.
+	 * Create an SMWExpElement for some internal resource, given by a Title or
+	 * SMWWikiPageValue object. Returns null on error.
+	 * This is the one place in the code where URIs of wiki pages and
+	 * properties are defined.
+	 *
+	 * @param mixed Title or SMWWikiPagevalue or SMWPropertyValues
+	 * @return SMWExpResource
 	 */
 	static public function getResourceElement( $resource ) {
-		if ( $resource instanceof Title ) {
-			$dv = SMWWikiPageValue::makePageFromTitle( $resource );
+		if ( $resource instanceof SMWWikiPageValue ) {
+			$dv = $resource;
 		} elseif ( $resource instanceof SMWPropertyValue ) {
 			$dv = $resource->getWikiPageValue();
-		} elseif ( $resource instanceof SMWWikiPageValue ) {
-			$dv = $resource;
+		} elseif ( $resource instanceof Title ) {
+			$dv = SMWWikiPageValue::makePageFromTitle( $resource );
 		} else {
 			return null;
 		}
@@ -238,16 +242,16 @@ class SMWExporter {
 			if ( $dv->getNamespace() == SMW_NS_PROPERTY ) {
 				$namespace = '&property;';
 				$namespaceid = 'property';
-				$localname = SMWExporter::encodeURI( rawurlencode( $dv->getTitle()->getDBkey() ) );
+				$localname = SMWExporter::encodeURI( rawurlencode( $dv->getDBkey() ) );
 				if ( in_array( $localname[0], array( '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ) ) ) {
 					$namespace = '&wiki;';
 					$namespaceid = 'wiki';
-					$localname = SMWExporter::encodeURI( $dv->getTitle()->getPrefixedURL() );
+					$localname = SMWExporter::encodeURI( wfUrlencode( str_replace( ' ', '_', $dv->getPrefixedText() ) ) );
 				}
 			} else { // no QName needed, do not attempt to make one
 				$namespace = false;
 				$namespaceid = false;
-				$localname = '&wiki;' . SMWExporter::encodeURI( $dv->getTitle()->getPrefixedURL() );
+				$localname = '&wiki;' . SMWExporter::encodeURI( wfUrlencode( str_replace( ' ', '_', $dv->getPrefixedText() ) ) );
 			}
 		}
 
