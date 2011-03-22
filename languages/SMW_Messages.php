@@ -7468,6 +7468,7 @@ Geschatte voortgang van de huidige taak:",
 /** Norwegian Nynorsk (‪Norsk (nynorsk)‬)
  * @author Gunnernett
  * @author Harald Khan
+ * @author Ranveig
  */
 $messages['nn'] = array(
 	'smw_edithelp' => 'Endringshjelp for eigenskapar',
@@ -7643,8 +7644,8 @@ Hugs å ta kopiar av viktige data før du køyrer administrerande funksjonar.',
 	'smw_smwadmin_db' => 'Databaseinnstallering og -oppgradering',
 	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki krev nokre utvidingar i MediaWiki-databasen for å kunna lagra semantiske data.
 Funksjonen under syter for at databasen din er sett opp rett.
-Endringar gjort i dette steget har ikkje nokon effekt på resten av MediaWiki-databasen og kan enkelt bli attenderulla om det skulle vera ynskjeleg.
-Denne oppsettsfunksjonen kan bli køyrt fleire gongen utan at ein gjer noko skade, men han trengst berre éin gong under installering eller oppgradering.',
+Endringar gjort i dette steget har ikkje nokon effekt på resten av MediaWiki-databasen og kan enkelt rullast attende om det skulle vera ynskjeleg.
+Denne oppsettsfunksjonen kan køyrast fleire gongen utan at ein gjer nokon skade, men han trengst berre éin gong under installering eller oppgradering.',
 	'smw_smwadmin_permissionswarn' => 'Om operasjonen mislukkast med SQL-feil, har sannsynlegvis ikkje databasebrukaren nytta av wikien din dei rette løyva (sjekk LocalSettings.php).
 Anten gje denne brukaren dei rette løyva til å oppretta og sletta tabellar og mellombels skriv inn innloggingsinformasjonen til database-rooten din i LocalSettings.php, eller køyr vedlikehaldsskriptet <tt>SMW_setup.php</tt> som kan nytta løyva til AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Set i verk eller oppgrader tabellar',
