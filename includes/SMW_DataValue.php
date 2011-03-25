@@ -345,9 +345,12 @@ abstract class SMWDataValue {
 	abstract protected function parseUserValue( $value );
 
 	/**
-	 * Initialise the datavalue from the given value string and unit.
-	 * The format of both strings strictly corresponds to the output
-	 * of this implementation for getDBkeys().
+	 * Initialise the datavalue from the given value array.
+	 * The format of this array corresponds to the output of
+	 * getDBkeys() but the method might be called with shorter
+	 * arrays (e.g. if typing information changed since a value
+	 * was stored). However, there will always be at least one
+	 * element in the array.
 	 *
 	 * @param array $args
 	 */
@@ -440,7 +443,6 @@ abstract class SMWDataValue {
 	 * - l for arbitrarily long strings; searching/sorting with such data may
 	 *     be limited for performance reasons,
 	 * - w for strings as used in MediaWiki for encoding interwiki prefixes
-	 * - u for short ("unit") strings; used for units of measurement in SMW
 	 * - n for namespace numbers (or other similar integers)
 	 * - f for floating point numbers of double precision
 	 * - c for the special container format used by SMWContainerValue; if used
@@ -621,7 +623,6 @@ abstract class SMWDataValue {
 	 * FALSE if no such version is available. The returned
 	 * string suffices to reobtain the same DataValue
 	 * when passing it as an input string to setUserValue().
-	 * Thus it also includes units, if any.
 	 */
 	abstract public function getWikiValue();
 

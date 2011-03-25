@@ -122,8 +122,8 @@ class SMWSQLStore2 extends SMWStore {
 		'_wpp'  => array( 'tnwt', 3, 3 ), // Property page type
 		'_wpc'  => array( 'tnwt', 3, 3 ), // Category page type
 		'_wpf'  => array( 'tnwt', 3, 3 ), // Form page type (for Semantic Forms)
-		'_num'  => array( 'tfu', 1, 0 ),  // Number type
-		'_tem'  => array( 'tfu', 1, 0 ),  // Temperature type
+		'_num'  => array( 'tf', 1, 0 ),  // Number type
+		'_tem'  => array( 'tf', 1, 0 ),  // Temperature type
 		'_dat'  => array( 'tf', 1, 0 ),   // Time type
 		'_boo'  => array( 't', 0, 0 ),    // Boolean type
 		'_rec'  => array( 'tnwt', 0, -1 ),// Value list type (internal object)
@@ -137,7 +137,7 @@ class SMWSQLStore2 extends SMWStore {
 		'__spf' => array( 't', 0, 0 ),    // Special form type (for Semantic Forms)
 		'__sin' => array( 'tnwt', 3, 3 ), // Special instance of type
 		'__red' => array( 'tnwt', 3, 3 ), // Special redirect type
-		'__lin' => array( 'tfu', 1, 0 ),  // Special linear unit conversion type
+		'__lin' => array( 'tf', 1, 0 ),  // Special linear unit conversion type
 		'__imp' => array( 't', 0, 0 ), // Special import vocabulary type
 		'__pro' => array( 't', 0, 0 ),  // Property page type; never be stored as a value (_wpp is used there) but needed for sorting
 		''      => array( 'tlnnn', 0, 0 )
@@ -1262,7 +1262,6 @@ class SMWSQLStore2 extends SMWStore {
 		// Repeatedly used DB field types defined here for convenience.
 		$dbtypes = array(
 			't' => SMWSQLHelpers::getStandardDBType( 'title' ),
-			'u' => ( $wgDBtype == 'postgres' ? 'TEXT' : 'VARCHAR(63) binary' ),
 			'l' => SMWSQLHelpers::getStandardDBType( 'blob' ),
 			'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION' : 'DOUBLE' ),
 			'i' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8)' ),
@@ -1749,7 +1748,7 @@ class SMWSQLStore2 extends SMWStore {
 
 			if ( $ok ) {
 				$result[$i] = $item;
-				$sortres[$i] = $value; // we cannot use $value as key: it is not unique if there are units!
+				$sortres[$i] = $value;
 				$i++;
 			}
 		}
@@ -2473,7 +2472,7 @@ class SMWSQLStore2 extends SMWStore {
 		
 		self::$prop_tables['smw_atts2'] = new SMWSQLStore2Table(
 			'smw_atts2',
-			array( 'value_xsd' => 't', 'value_num' => 'f', 'value_unit' => 'u' ),
+			array( 'value_xsd' => 't', 'value_num' => 'f' ),
 			array( 'value_num', 'value_xsd' )
 		);
 		
