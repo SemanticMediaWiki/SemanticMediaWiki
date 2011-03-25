@@ -1,11 +1,14 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
-== SMW 1.5.7 ==
+== SMW 1.6.0 ==
 
-* Added UNIX-style DSV (Delimiter-separated values) result format.
 * Changed the way in which units of measurement work. Type:Number now does not
   accept any units, but units can be used with custom types as before. However
   only units with a conversion factor on the custom type page are accepted.
+
+== SMW 1.5.7 ==
+
+* Added UNIX-style DSV (Delimiter-separated values) result format.
 
 == SMW 1.5.6 ==
 
