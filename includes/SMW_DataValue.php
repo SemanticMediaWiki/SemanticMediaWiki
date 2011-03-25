@@ -795,18 +795,6 @@ abstract class SMWDataValue {
 			);
 		}
 	}
-
-	/**
-	 * Return the unit in which the returned value is to be interpreted.
-	 * This string is a plain UTF-8 string without wiki or html markup.
-	 * Returns the empty string if no unit is given for the value.
-	 * Possibly overwritten by subclasses.
-	 *
-	 * @deprecated Use getDBkeys(). This function will vanish before SMW 1.6.
-	 */
-	public function getUnit() {
-		return ''; // empty unit
-	}
 	
 	/**
 	 * Returns if the data value holds info about a main object (page)
