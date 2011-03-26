@@ -4612,6 +4612,7 @@ Jeli so problem po wěstym času njezhubi, woprašej so sydłoweho administrator
 	'smw_false_words' => 'wopak, njewěrny, ně, false',
 	'smw_nofloat' => '"$1" ličba njeje.',
 	'smw_infinite' => 'Ličby, kotrež su tak wulke kaž "$1", so njepodpěruja.',
+	'smw_unitnotallowed' => '"$1" njeje jako płaćiwa měrjenska jednotka za tutón atribut postajił.',
 	'smw_infinite_unit' => 'Konwertowanje do jednotki "$1" wjedźeše k ličbje, kotraž je předołha.',
 	'smw_novalues' => 'Žane hódnoty podate.',
 	'smw_unsupportedprefix' => 'Prefiksy za ličby ("$1") so njepodpěruja.',
@@ -5129,6 +5130,7 @@ $messages['ia'] = array(
 	'smw_false_words' => 'false,f,no,n',
 	'smw_nofloat' => '"$1" non es un numero.',
 	'smw_infinite' => 'Le numeros tanto grande como "$1" non es supportate.',
+	'smw_unitnotallowed' => '"$1" non es declarate como unitate de mesura valide pro iste proprietate.',
 	'smw_infinite_unit' => 'Le conversion in unitate "$1" resultava in un numero troppo grande.',
 	'smw_novalues' => 'Nulle valor specificate.',
 	'smw_unsupportedprefix' => 'Le prefixos pro numeros ("$1") non es supportate.',
@@ -6535,6 +6537,7 @@ $messages['lb'] = array(
 	'version-semantic' => 'Softwareerweiderungen (Semantic MediaWiki)',
 	'smw_baduri' => 'URIë vun der Form "$1" sinn net erlaabt.',
 	'smw_csv_link' => 'CSV',
+	'smw_dsv_link' => 'DSV',
 	'smw_printername_auto' => 'Automatesch',
 	'smw_printername_count' => 'Resultater zielen',
 	'smw_printername_csv' => 'Export als CSV',
@@ -6841,6 +6844,7 @@ $messages['mk'] = array(
 	'smw_false_words' => 'лага,л,невистина,н,не,false,f,no,n',
 	'smw_nofloat' => '„$1“ не претставува број.',
 	'smw_infinite' => 'Броевите со толкава должина како „$1“ не се поддржани.',
+	'smw_unitnotallowed' => '„$1“ не се смета за важечка мерна единица за ова својство.',
 	'smw_infinite_unit' => 'Претворањето во единицата „$1“ доведе до преголем број.',
 	'smw_novalues' => 'Нема назначено вредности.',
 	'smw_unsupportedprefix' => 'Не се поддржани префикси за броеви („$1“).',
@@ -6957,8 +6961,8 @@ $messages['mk'] = array(
 	'smw_result_next' => 'Следно',
 	'smw_result_results' => 'Резултати',
 	'smw_result_noresults' => 'Нема резултати.',
-	'smwadmin' => 'Администраторски функции за Semantic MediaWiki',
-	'smw_smwadmin_settingup' => 'Поставување на складиште за Semantic MediaWiki',
+	'smwadmin' => 'Администраторски функции за Семантички МедијаВики',
+	'smw_smwadmin_settingup' => 'Воспоставка на складиште за Семантички МедијаВики',
 	'smw_smwadmin_setupsuccess' => 'Складишниот систем е успешно поставен.',
 	'smw_smwadmin_return' => 'Назад кон $1',
 	'smw_smwadmin_updatestarted' => 'Започнат е нов процес за обнова на семантичките податоци.
@@ -6968,10 +6972,10 @@ $messages['mk'] = array(
 Нема да се создаде друго.',
 	'smw_smwadmin_updatestopped' => 'Сите постоечки процеси на поднова се сопрени.',
 	'smw_smwadmin_updatenotstopped' => 'За да го запрете текот на подновата, мора да го активирате кутивчето за избор кое укажува на тоа дека сте навистина сигурни дека сакате да направите така.',
-	'smw_smwadmin_docu' => 'Оваа специјална страница ви помага во текот на инсталацијата и подновата на <a href="http://semantic-mediawiki.org">Semantic MediaWiki</a>.
-Не заборавајте да направите резервни копии од значајни податоци пред да вршите административни постапки.',
+	'smw_smwadmin_docu' => 'Оваа специјална страница ви помага во текот на инсталацијата и подновата на <a href="http://semantic-mediawiki.org">Семантички МедијаВики</a>.
+Не заборавајте да направите резервни примероци од значајни податоци пред да вршите административни постапки.',
 	'smw_smwadmin_db' => 'Инсталација и поднова на базата на податоци',
-	'smw_smwadmin_dbdocu' => 'Semantic MediaWiki бара додавање на извесни додатоци кон базата на податоци на МедијаВики за да складира семантички податоци.
+	'smw_smwadmin_dbdocu' => 'Семантички МедијаВики бара додавање на извесни додатоци кон базата на податоци на МедијаВики за да складира семантички податоци.
 Функцијата подолу ви гарантира дека вашата база на податоци е правилно поставена.
 Промените извршени во овој чекор немаат влијание врз остатокот од базата на МедијаВики, и лесно можат да се вратат по старо ако се јави потреба.
 Оваа функција на поставката може да се врши повеќе пати без тоа да причини било каква штета, но потребна е само еднаш при инсталирање или подновување.',
@@ -6979,9 +6983,9 @@ $messages['mk'] = array(
 Доделете му доволно дозволи на корисникот за да може да создава и брише табели, привремено внесете го најавниот корен (root) на вашата база на податоци во LocalSettings.php, или пак употребете ја скриптата за одржување <tt>SMW_setup.php</tt> која може да ги користи акердитивите за пристап од AdminSettings.php.',
 	'smw_smwadmin_dbbutton' => 'Започни или поднови табели',
 	'smw_smwadmin_announce' => 'Објавете го вашето вики',
-	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki има мрежна служба за соопштување на нови семантички вики-страници.
-Ова се користи за одржување на список на јавни мрежни места кои го користат Semantic MediaWiki, главно со цел да му се помогне на <a href="http://semantic-mediawiki.org/wiki/SMW_Project">проектот Semantic MediaWiki</a> да добие претстава за типичните употреби на Semantic MediaWiki.
-Погледајте го мрежното место на Semantic MediaWiki за <a href="http://semantic-mediawiki.org/wiki/Registry">повеќе информации за оваа служба</a>.',
+	'smw_smwadmin_announcedocu' => 'Семантички МедијаВики има мрежна служба за соопштување на нови семантички вики-страници.
+Ова се користи за одржување на список на јавни мрежни места кои го користат Семантички МедијаВики, главно со цел да му се помогне на <a href="http://semantic-mediawiki.org/wiki/SMW_Project">проектот Semantic MediaWiki</a> да добие претстава за типичните употреби на Семантички МедијаВики.
+Погледајте го мрежното место на Семантички МедијаВики за <a href="http://semantic-mediawiki.org/wiki/Registry">повеќе информации за оваа служба</a>.',
 	'smw_smwadmin_announcebutton' => 'Притиснете го следново копче за да ја испратите URL-адресата на вашето вики во таа служба.
 Службата нема да регистрира викија што не се јавно достапни, и ќе складира само достапни информации.',
 	'smw_smwadmin_datarefresh' => 'Поправка и поднова на податоци',
@@ -6999,9 +7003,9 @@ $messages['mk'] = array(
 	'smw_smwadmin_support' => 'Како да добиете поддршка',
 	'smw_smwadmin_supportdocu' => 'Различни ресурси кои можат да ви помогнат во случај на проблеми:',
 	'smw_smwadmin_installfile' => 'Ако наидете на проблеми при инсталацијата, најпрвин прочитајте ги напатствијата во <a href="http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/SemanticMediaWiki/INSTALL">податотеката INSTALL</a>.',
-	'smw_smwadmin_smwhomepage' => 'Целосната корисничка документација за Semantic MediaWiki ќе ја најдете на <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
+	'smw_smwadmin_smwhomepage' => 'Целосната корисничка документација за Семантички МедијаВики ќе ја најдете на <b><a href="http://semantic-mediawiki.org">semantic-mediawiki.org</a></b>.',
 	'smw_smwadmin_mediazilla' => 'Бубачките (грешките) можат да се пријават на <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
-	'smw_smwadmin_questions' => 'Ако имате некои други прашања или предлози, приклучете ѝ се на дискусијата на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форумот за корисници на Semantic MediaWiki</a>.',
+	'smw_smwadmin_questions' => 'Ако имате некои други прашања или предлози, приклучете ѝ се на дискусијата на <a href="http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user">форумот за корисници на Семантички МедијаВики</a>.',
 	'smw_adminlinks_datastructure' => 'Структура на податоците',
 	'smw_adminlinks_displayingdata' => 'Приказ на податоци',
 	'smw_adminlinks_inlinequerieshelp' => 'Помош со вметнати барања',
@@ -9341,6 +9345,7 @@ $messages['ru'] = array(
 	'smw_false_words' => 'нет,f,no,n,н,ложь,л,false',
 	'smw_nofloat' => '"$1" не является числом.',
 	'smw_infinite' => 'Столь длинные числа как $1 не поддерживаются.',
+	'smw_unitnotallowed' => '«$1» не объявлена ​​как допустимая единица измерения этого свойства.',
 	'smw_infinite_unit' => 'Преобразование значения в единицы измерения «$1» привело к слишком длинному числу.',
 	'smw_novalues' => 'Не указаны значения.',
 	'smw_unsupportedprefix' => 'Префиксы для чисел ("$1") не поддерживаются в настоящее время.',
