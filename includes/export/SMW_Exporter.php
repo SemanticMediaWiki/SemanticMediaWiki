@@ -42,18 +42,9 @@ class SMWExporter {
 	}
 
 	/**
-	 * Create exportable data from a given semantic data record. If given, the
-	 * string $modifier is used as a modifier to the URI of the subject (e.g. a
-	 * unit for properties). The function itself introduces modifiers for the
-	 * SMWResourceElement objects that it creates to represent properties with
-	 * units. When exporting further data for such properties recursively,
-	 * these modifiers should be provided (they are not part of the
-	 * SMWPageValue that is part of the SMWSemanticData object, since units are
-	 * part of data values in SMW, but part of property names in the RDF export
-	 * for better tool compatibility). This is the origin of all modifier
-	 * strings that are used with this method.
+	 * Create exportable data from a given semantic data record.
 	 */
-	static public function makeExportData( /*SMWSemanticData*/ $semdata, $modifier = '' ) {
+	static public function makeExportData( /*SMWSemanticData*/ $semdata ) {
 		SMWExporter::initBaseURIs();
 		$subject = $semdata->getSubject();
 		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
@@ -61,7 +52,7 @@ class SMWExporter {
 		} else {
 			$types = array();
 		}
-		$result = SMWExporter::makeExportDataForSubject( $subject, $modifier, end( $types ) );
+		$result = SMWExporter::makeExportDataForSubject( $subject, end( $types ) );
 		foreach ( $semdata->getProperties() as $property ) {
 			SMWExporter::addPropertyValues( $property, $semdata->getPropertyValues( $property ), $result );
 		}
@@ -71,17 +62,14 @@ class SMWExporter {
 	/**
 	 * Make an SMWExpData object for the given page, and include the basic
 	 * properties about this subject that are not directly represented by
-	 * SMW property values. If given, the string $modifier is used as a
-	 * modifier to the URI of the subject (e.g. a unit for properties).
-	 * See also the documentation of makeExportData(). The optional parameter
-	 * $typevalueforproperty can be used to pass a particular SMWTypesValue
-	 * object that is used for determining the OWL type for property pages.
+	 * SMW property values. The optional parameter $typevalueforproperty
+	 * can be used to pass a particular SMWTypesValue object that is used
+	 * for determining the OWL type for property pages.
 	 *
 	 * @param SMWWikiPageValue $subject
-	 * @param string $modifier
 	 * @param mixed $typesvalueforproperty either an SMWTypesValue or null
 	 */
-	static public function makeExportDataForSubject( SMWWikiPageValue $subject, $modifier = '', $typesvalueforproperty = null ) {		
+	static public function makeExportDataForSubject( SMWWikiPageValue $subject, $typesvalueforproperty = null ) {		
 		$result = $subject->getExportData();
 		switch ( $subject->getNamespace() ) {
 			case NS_CATEGORY: case SMW_NS_CONCEPT:
@@ -100,10 +88,6 @@ class SMWExporter {
 				$label = $subject->getWikiValue();
 				$maintype_pe = SMWExporter::getSpecialElement( 'swivt', 'Subject' );
 		}
-		if ( $modifier != '' ) {
-			$modifier = smwfHTMLtoUTF8( $modifier ); ///TODO: check if this is still needed
-			$label .= ' (' . $modifier . ')';
-		}
 		$ed = new SMWExpData( new SMWExpLiteral( $label ) );
 		$subj_title = $subject->getTitle();
 		$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdfs', 'label' ), $ed );
@@ -114,14 +98,6 @@ class SMWExporter {
 		$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ), new SMWExpData( $maintype_pe ) );
 		$ed = new SMWExpData( new SMWExpLiteral( $subject->getNamespace(), null, 'http://www.w3.org/2001/XMLSchema#integer' ) );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'wikiNamespace' ), $ed );
-		if ( $modifier != '' ) { // make variant and possibly add meta data on base properties
-			if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
-				$ed = new SMWExpData( new SMWExpLiteral( $modifier, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
-				$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'modifier' ), $ed );
- 				$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'baseProperty' ), new SMWExpData( $result->getSubject() ) );
-			}
-			$result->setSubject( $result->getSubject()->makeVariant( $modifier ) );
-		}
 		return $result;
 	}
 	
@@ -140,12 +116,7 @@ class SMWExporter {
 			foreach ( $values as $dv ) {
 				$ed = $dv->getExportData();
 				if ( $ed !== null ) {
-					if ( ( $dv instanceof SMWNumberValue ) && ( $dv->getUnit() != '' ) ) {
-						$pem = $pe->makeVariant( $dv->getUnit() );
-					} else {
-						$pem = $pe;
-					}
-					$data->addPropertyObjectValue( $pem, $ed );
+					$data->addPropertyObjectValue( $pe, $ed );
 				}
 			}
 		} else { // pre-defined property, only exported if known
@@ -354,5 +325,6 @@ class SMWExporter {
 		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'owl', 'imports' ), $ed );
 		return $data;
 	}
+
 
 }

@@ -162,7 +162,6 @@ class SMWExportController {
 
 			foreach ( $data->getProperties() as $property ) {
 				if ( $property->getDataValue() instanceof SMWWikiPageValue ) {
-					// TODO This currently drops modifiers (units of measurement)
 					$this->queuePage( $property->getDataValue(), 0 ); // no real recursion along properties
 				}
 				$wikipagevalues = false;
@@ -455,7 +454,7 @@ class SMWExportController {
 				$this->serializeSmallTitle( reset( $this->element_queue ) );
 				// resolve dependencies that will otherwise not be printed
 				foreach ( $this->element_queue as $key => $staux ) {
-					if ( !smwfIsSemanticsProcessed( $staux->namespace ) || //( $staux->modifier !== '' ) ||
+					if ( !smwfIsSemanticsProcessed( $staux->namespace ) ||
 					     !SMWExportController::fitsNsRestriction( $ns_restriction, $staux->namespace ) ) {
 						// Note: we do not need to check the cache to guess if an element was already
 						// printed. If so, it would not be included in the queue in the first place.
