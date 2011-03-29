@@ -29,23 +29,24 @@ protected $m_DatatypeLabels = array(
 	'_str' => 'String',  // name of the string type
 	'_txt' => 'Tekst',  // name of the text type
 	'_cod' => 'Code',  // name of the (source) code type
-	'_boo' => 'Booleans',  // name of the boolean type
+	'_boo' => 'Booleaans',  // name of the boolean type
 	'_num' => 'Getal', // name for the datatype of numbers
-	'_geo' => 'Geographische coördinaat', // name of the geocoord type
+	'_geo' => 'Geografische coördinaat', // name of the geocoord type
 	'_tem' => 'Temperatuur',  // name of the temperature type
 	'_dat' => 'Datum',  // name of the datetime (calendar) type
 	'_ema' => 'E-mail',  // name of the email type
 	'_uri' => 'URL',  // name of the URL type
-	'_anu' => 'Annotatie URI',  // name of the annotation URI type (OWL annotation property)
-	'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
+	'_anu' => 'Annotatie-URI',  // name of the annotation URI type (OWL annotation property)
+	'_tel' => 'Telefoonnummer',  // name of the telephone (URI) type //TODO: translate
 	'_rec' => 'Record', // name of record data type //TODO: translate
 );
 
 protected $m_DatatypeAliases = array(
-	'URI'                   => '_uri',
-	'Integer'               => '_num',
-	'Float'                 => '_num',
-	'Opsomming'             => '_str',
+	'URI'         => '_uri',
+	'Drijvende komma'       => '_num',
+	'Integer'     => '_num',
+	'Opsomming' => '_str',
+	'Telefoonnummer' => '_tel',
 );
 
 protected $m_SpecialProperties = array(
@@ -53,15 +54,19 @@ protected $m_SpecialProperties = array(
 	'_TYPE' => 'Heeft type',
 	'_URI'  => 'Equivalent URI',
 	'_SUBP' => 'Subeigenschap van',
-	'_SUBC' => 'Subcategory of', // TODO: translate
+	'_SUBC' => 'Subcategorie van',
 	'_UNIT' => 'Weergaveeenheden',
 	'_IMPO' => 'Geïmporteerd uit',
 	'_CONV' => 'Komt overeen met',
 	'_SERV' => 'Verleent dienst',
 	'_PVAL' => 'Geldige waarde',
 	'_MDAT' => 'Wijzigingsdatum',
-	'_ERRP' => 'Has improper value for', // TODO: translate
-	'_LIST' => 'Has fields', // TODO: translate
+	'_ERRP' => 'Heeft ongeldige waarde voor',
+	'_LIST' => 'Heeft velden',
+);
+
+protected $m_SpecialPropertyAliases = array(
+	'Weergave-eenheid' => '_UNIT'
 );
 
 protected $m_Namespaces = array(
