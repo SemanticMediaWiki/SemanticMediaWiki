@@ -702,7 +702,9 @@ END;
 		$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
 
 		$params = method_exists( $printer, 'getParameters' ) ? $printer->getParameters() : array();
-
+		
+		$optionsHtml = array();
+		
 		foreach ( $params as $i => $param ) {
 			$param_name = $param['name'];
 			$type = $param['type'];
@@ -710,6 +712,9 @@ END;
 
 			$cur_value = ( array_key_exists( $param_name, $paramValues ) ) ? $paramValues[$param_name] : '';
 
+			//$optionsHtml[] = $optionsHtml[$i] = "<div style=\"width: 30%; padding: 5px; float: left;\">$param_name:\n"
+			//	. $this->showFormatOption( $this->toValidatorParam( $param ) );
+			
 			// 3 values per row, with alternating colors for rows
 			if ( $i % 3 == 0 ) {
 				$bgcolor = ( $i % 6 ) == 0 ? '#dddddd' : 'white';
@@ -726,8 +731,39 @@ END;
 				$text .= "<div style=\"clear: both\";></div></div>\n";
 			}
 		}
-
+		/*
+		for ( $i = 0, $n = count( $optionsHtml ); $i < $n; $i++ ) {
+			if ( $i % 3 == 2 || $i == $n - 1 ) {
+				$optionsHtml[$i] .= "<div style=\"clear: both\";></div></div>\n";
+			}	
+		}
+		*/
 		return $text;
+	}
+	
+	/**
+	 * Returns a Validator style Parameter definition.
+	 * SMW 1.5.x style definitions are converted.
+	 * 
+	 * @since 1.6
+	 * 
+	 * @return Parameter
+	 */
+	protected function toValidatorParam() {
+		// TODO
+	}
+	
+	/**
+	 * Get the HTML for a single parameter input.
+	 * 
+	 * @since 1.6
+	 * 
+	 * @param Parameter $parameter
+	 * 
+	 * @return string
+	 */
+	protected function showFormatOption( Parameter $parameter ) {
+		// TODO
 	}
 
 	/**
