@@ -692,7 +692,7 @@ END;
 	 * based on the getParameters() value for that format's query printer.
 	 *
 	 * @param string $format
-	 * @param array $paramValues
+	 * @param array $paramValues The current values for the parameters (name => value)
 	 *
 	 * @return string
 	 */
@@ -705,40 +705,50 @@ END;
 		
 		$optionsHtml = array();
 		
-		foreach ( $params as $i => $param ) {
-			$param_name = $param['name'];
-			$type = $param['type'];
-			$desc = $param['description'];
+		foreach ( $params as $param ) {
+			$param = $this->toValidatorParam( $param );
+			$currentValue = array_key_exists( $param->getName(), $paramValues ) ? $paramValues[$param->getName()] : false;
 
-			$cur_value = ( array_key_exists( $param_name, $paramValues ) ) ? $paramValues[$param_name] : '';
-
-			//$optionsHtml[] = $optionsHtml[$i] = "<div style=\"width: 30%; padding: 5px; float: left;\">$param_name:\n"
-			//	. $this->showFormatOption( $this->toValidatorParam( $param ) );
-			
-			// 3 values per row, with alternating colors for rows
-			if ( $i % 3 == 0 ) {
-				$bgcolor = ( $i % 6 ) == 0 ? '#dddddd' : 'white';
-				$text .= "<div style=\"background: $bgcolor;\">";
-			}
-
-			$text .= "<div style=\"width: 30%; padding: 5px; float: left;\">$param_name:\n";
-
-			$this->addOptionInput( $text, $type, $param_name, $cur_value, $param, $paramValues );
-
-			$text .= "\n	<br /><em>$desc</em>\n</div>\n";
-
-			if ( $i % 3 == 2 || $i == count( $params ) - 1 ) {
-				$text .= "<div style=\"clear: both\";></div></div>\n";
-			}
+			$optionsHtml[] =
+				Html::rawElement(
+					'div',
+					array(
+						'style' => 'width: 30%; padding: 5px; float: left;'
+					),
+					htmlspecialchars( $param->getName() ) . ': ' .
+					$this->showFormatOption( $param, $currentValue ) .
+					'<br />' .
+					Html::element( 'em', array(), $param->getDescription() )
+				);
 		}
-		/*
+		
 		for ( $i = 0, $n = count( $optionsHtml ); $i < $n; $i++ ) {
 			if ( $i % 3 == 2 || $i == $n - 1 ) {
-				$optionsHtml[$i] .= "<div style=\"clear: both\";></div></div>\n";
-			}	
+				$optionsHtml[$i] .= "<div style=\"clear: both\";></div>\n";
+			}
 		}
-		*/
-		return $text;
+		
+		$i = 0;
+		$rowHtml = '';
+		$resultHtml = '';
+		
+		while ( $option = array_shift( $optionsHtml ) ) {
+			$rowHtml .= $option;
+			$i++;
+						
+			if ( $i % 3 == 0 ) {
+				$resultHtml .= Html::rawElement(
+					'div',
+					array(
+						'style' => 'background: ' . ( $i % 6 == 0 ? 'white' : '#dddddd' ) . ';'
+					),
+					$rowHtml
+				);
+				$rowHtml = '';
+			}
+		}
+
+		return $resultHtml;
 	}
 	
 	/**
@@ -747,10 +757,38 @@ END;
 	 * 
 	 * @since 1.6
 	 * 
+	 * @param mixed $param
+	 * 
 	 * @return Parameter
 	 */
-	protected function toValidatorParam() {
-		// TODO
+	protected function toValidatorParam( $param ) {
+		static $typeMap = array(
+			'int' => Parameter::TYPE_INTEGER
+		);
+		
+		if ( !( $param instanceof Parameter ) ) {
+			if ( !array_key_exists( 'type', $param ) ) {
+				$param['type'] = 'string';
+			}
+			
+			$paramClass = $param['type'] == 'enum-list' ? 'ListParameter' : 'Parameter';
+			$paramType = array_key_exists( $param['type'], $typeMap ) ? $typeMap[$param['type']] : Parameter::TYPE_STRING;
+			
+			$parameter = new $paramClass( $param['name'], $paramType );
+			
+			if ( array_key_exists( 'description', $param ) ) {
+				$parameter->setDescription( $param['description'] );
+			}
+			
+			if ( array_key_exists( 'values', $param ) && is_array( $param['values'] ) ) {
+				$parameter->addCriteria( new CriterionInArray( $param['values'] ) );
+			}
+			
+			return $parameter;
+		}
+		else {
+			return $param;
+		}
 	}
 	
 	/**
@@ -759,76 +797,19 @@ END;
 	 * @since 1.6
 	 * 
 	 * @param Parameter $parameter
+	 * @param mixed $currentValue
 	 * 
 	 * @return string
 	 */
-	protected function showFormatOption( Parameter $parameter ) {
-		// TODO
-	}
-
-	/**
-	 * Adds a an input for a result format parameter to $text.
-	 *
-	 * @since 1.5.3
-	 *
-	 * @param string $text
-	 * @param string $type
-	 * @param string $param_name
-	 * @param string $cur_value
-	 * @param array $param
-	 * @param array $paramValues
-	 */
-	protected function addOptionInput( &$text, $type, $param_name, $cur_value, array $param, array $paramValues ) {
-		switch ( $type ) {
-			case 'int':
-				$text .= Html::input(
-					"p[$param_name]",
-					$cur_value,
-					'text',
-					array(
-						'size' => 6
-					)
-				);
-				break;
-			case 'string':
-				$text .= Html::input(
-					"p[$param_name]",
-					$cur_value,
-					'text',
-					array(
-						'size' => 32
-					)
-				);
-				break;
-			case 'enumeration':
-				$text .= '<select name="p[' . htmlspecialchars( $param_name ) . ']">';
-				$text .= "\n	<option value=''></option>\n";
-
-				$parts = array();
-				foreach ( $param['values'] as $value ) {
-					$parts[] = '<option value="' . htmlspecialchars( $value ) . '"' .
-					( $cur_value == $value ? ' selected' : '' ) . '>' .
-					htmlspecialchars( $value ) . '</option>';
-				}
-
-				$text .= implode( "\n", $parts ) . "\n</select>";
-				break;
-			case 'enum-list':
-				$cur_values = explode( ',', $cur_value );
-
-				foreach ( $param['values'] as $val ) {
-					$text .= '<span style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="p[' .
-					htmlspecialchars( $param_name ) . '][' . htmlspecialchars( $val ). ']" value="true"' .
-					( in_array( $val, $cur_values ) ? ' checked' : '' ) . '/> <tt>' . htmlspecialchars( $val ) . "</tt></span>\n";
-				}
-				break;
-			case 'boolean':
-				$text .=
-					'<input type="checkbox" name="p[' . htmlspecialchars( $param_name ) . ']" value="true" ' .
-					array_key_exists( $param_name, $paramValues ) ? 'checked' : '' .
-					' />';
-				break;
+	protected function showFormatOption( Parameter $parameter, $currentValue ) {
+		$input = new ParameterInput( $parameter );
+		$input->setInputName( 'p[' . $parameter->getName() . ']' );
+		
+		if ( $currentValue !== false ) {
+			$input->setCurrentValue( $currentValue );
 		}
+		
+		return $input->getHtml();
 	}
 
 }

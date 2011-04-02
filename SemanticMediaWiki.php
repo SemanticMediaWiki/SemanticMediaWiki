@@ -15,4 +15,14 @@
  * @defgroup SMW Semantic MediaWiki
  */
 
+// Include the Validator extension if that hasn't been done yet, since it's required for SMW to work.
+if ( !defined( 'Validator_VERSION' ) ) {
+	@include_once( dirname( __FILE__ ) . '/../Validator/Validator.php' );
+}
+
+// Only initialize the extension when all dependencies are present.
+if ( !defined( 'Validator_VERSION' ) ) {
+	die( '<b>Error:</b> You need to have <a href="http://www.mediawiki.org/wiki/Extension:Validator">Validator</a> installed in order to use <a href="http://www.semantic-mediawiki.org">Semantic MediaWiki</a>.<br />' );
+}
+
 require_once dirname( __FILE__ ) . '/SMW_Settings.php';
