@@ -420,6 +420,18 @@ abstract class SMWResultPrinter {
 	 * @return array
 	 */
 	protected function textDisplayParameters() {
+		/*$params = array();
+		
+		$params['intro'] = new Parameter( 'intro' );
+		$params['intro']->setDescription( wfMsg( 'smw_paramdesc_intro' ) );
+
+		$params['outro'] = new Parameter( 'outro' );
+		$params['outro']->setDescription( wfMsg( 'smw_paramdesc_outro' ) );
+		
+		$params['default'] = new Parameter( 'default' );
+		$params['default']->setDescription( wfMsg( 'smw_paramdesc_default' ) );
+		
+		return $params;*/
 		return array(
 			array( 'name' => 'intro', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_intro' ) ),
 			array( 'name' => 'outro', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_outro' ) ),
@@ -436,6 +448,14 @@ abstract class SMWResultPrinter {
 	 * @return array
 	 */
 	protected function exportFormatParameters() {
+		/*$params = $this->getParameters();
+		
+		unset( $params['link'] );
+		
+		$params['searchlabel'] = new Parameter( 'searchlabel' );
+		$params['searchlabel']->setDescription( wfMsg( 'smw_paramdesc_searchlabel' ) );
+		
+		return $params; */
 		return array(
 			array( 'name' => 'limit', 'type' => 'int', 'description' => wfMsg( 'smw_paramdesc_limit' ) ),
 			array( 'name' => 'headers', 'type' => 'enumeration', 'description' => wfMsg( 'smw_paramdesc_headers' ), 'values' => array( 'show', 'hide', 'plain' ) ),
@@ -454,6 +474,23 @@ abstract class SMWResultPrinter {
 	 * @return array
 	 */
 	public function getParameters() {
+		/*$params = array();
+		
+		$params['limit'] = new Parameter( 'limit', Parameter::TYPE_INTEGER );
+		$params['limit']->setDescription( wfMsg( 'smw_paramdesc_limit' ) );
+		
+		$params['headers'] = new Parameter( 'headers' );
+		$params['headers']->setDescription( wfMsg( 'smw_paramdesc_headers' ) );
+		$params['headers']->addCriteria( new CriterionInArray( 'show', 'hide', 'plain' ) );
+		
+		$params['mainlabel'] = new Parameter( 'mainlabel' );
+		$params['mainlabel']->setDescription( wfMsg( 'smw_paramdesc_mainlabel' ) );
+		
+		$params['link'] = new Parameter( 'link' );
+		$params['link']->setDescription( wfMsg( 'smw_paramdesc_link' ) );		
+		$params['link']->addCriteria( new CriterionInArray( 'all', 'subject', 'none' ) );
+		
+		return $params;*/
 		return array(
 			array( 'name' => 'limit', 'type' => 'int', 'description' => wfMsg( 'smw_paramdesc_limit' ) ),
 			array( 'name' => 'headers', 'type' => 'enumeration', 'description' => wfMsg( 'smw_paramdesc_headers' ), 'values' => array( 'show', 'hide', 'plain' ) ),
