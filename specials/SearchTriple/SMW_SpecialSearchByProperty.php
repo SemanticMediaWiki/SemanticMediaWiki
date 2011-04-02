@@ -256,7 +256,7 @@ class SMWSearchByProperty extends SpecialPage {
 		$options->offset = $this->offset;
 		$options->sort = true;
 
-		$res = &smwfGetStore()->getPropertySubjects( $this->property, $this->value, $options );
+		$res = smwfGetStore()->getPropertySubjects( $this->property, $this->value, $options );
 		$results = array();
 		foreach ( $res as $result )
 			array_push( $results, array( $result, $this->value ) );
