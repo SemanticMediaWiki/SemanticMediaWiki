@@ -14,7 +14,7 @@
  * @ingroup SMW
  */
 
-define( 'SMW_VERSION', '1.5.7-light alpha' );
+define( 'SMW_VERSION', '1.6-light alpha' );
 
 require_once( 'SMW_GlobalFunctions.php' );
 
@@ -266,16 +266,6 @@ function smwfSetupExtension() {
 	$wgHooks['ParserFirstCallInit'][] = 'smwfRegisterParserFunctions';
 
 	$smwgMW_1_14 = true; // assume latest 1.14 API
-
-	///// credits (see "Special:Version") /////
-	$wgExtensionCredits['parserhook'][] = array(
-		'path' => __FILE__,
-		'name' => 'Semantic&#160;MediaWiki light',
-		'version' => SMW_VERSION,
-		'author' => "[http://korrekt.org Markus&#160;Krötzsch], [http://simia.net Denny&#160;Vrandecic] and [http://www.ohloh.net/p/smw/contributors others]. Maintained by [http://www.aifb.kit.edu/web/Wissensmanagement/en AIFB Karlsruhe].",
-		'url' => 'http://semantic-mediawiki.org',
-		'descriptionmsg' => 'smw-desc'
-	);
 
 	wfProfileOut( 'smwfSetupExtension (SMW)' );
 	return true;

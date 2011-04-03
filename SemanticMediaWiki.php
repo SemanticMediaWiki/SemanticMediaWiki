@@ -26,3 +26,13 @@ if ( !defined( 'Validator_VERSION' ) ) {
 }
 
 require_once dirname( __FILE__ ) . '/SMW_Settings.php';
+
+// Registration of the extension credits, see Special:Version.
+$wgExtensionCredits['semantic'][] = array(
+	'path' => __FILE__,
+	'name' => 'Semantic MediaWiki',
+	'version' => SMW_VERSION,
+	'author' => '[http://korrekt.org Markus&#160;Krötzsch], [http://simia.net Denny&#160;Vrandecic] and [http://www.mediawiki.org/wiki/User:Jeroen_De_Dauw Jeroen De Dauw]. Maintained by [http://www.aifb.kit.edu/web/Wissensmanagement/en AIFB Karlsruhe].',
+	'url' => 'http://semantic-mediawiki.org',
+	'descriptionmsg' => 'smw-desc'
+);

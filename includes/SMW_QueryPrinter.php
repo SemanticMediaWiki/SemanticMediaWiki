@@ -182,6 +182,15 @@ abstract class SMWResultPrinter {
 		return $result;
 	}
 	
+	/**
+	 * Continuation of getResult that only gets executed for non file outputs.
+	 * 
+	 * @since 1.6
+	 * 
+	 * @param string $result
+	 * 
+	 * @return string
+	 */
 	protected function handleNonFileResult( $result ) {
 		$result .= $this->getErrorString( $results ); // append errors
 

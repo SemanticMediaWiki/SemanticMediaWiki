@@ -8,7 +8,7 @@
  */
 
 // The SMW version number.
-define( 'SMW_VERSION', '1.5.7 alpha' );
+define( 'SMW_VERSION', '1.6 alpha' );
 
 // A flag used to indicate SMW defines a semantic extension type for extension crdits.
 define( 'SEMANTIC_EXTENSION_TYPE', true );
@@ -309,16 +309,6 @@ function smwfSetupExtension() {
 		$wgFooterIcons["poweredby"]["semanticmediawiki"]["src"] = "$smwgScriptPath/skins/images/smw_button.png";
 	}
 	$smwgMW_1_14 = true; // assume latest 1.14 API
-
-	// Registration of the extension credits, see Special:Version.
-	$wgExtensionCredits['semantic'][] = array(
-		'path' => __FILE__,
-		'name' => 'Semantic MediaWiki',
-		'version' => SMW_VERSION,
-		'author' => "[http://korrekt.org Markus&#160;Krötzsch], [http://simia.net Denny&#160;Vrandecic] and [http://www.ohloh.net/p/smw/contributors others]. Maintained by [http://www.aifb.kit.edu/web/Wissensmanagement/en AIFB Karlsruhe].",
-		'url' => 'http://semantic-mediawiki.org',
-		'descriptionmsg' => 'smw-desc'
-	);
 
 	wfProfileOut( 'smwfSetupExtension (SMW)' );
 	return true;
