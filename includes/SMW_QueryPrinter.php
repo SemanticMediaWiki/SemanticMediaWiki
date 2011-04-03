@@ -76,6 +76,8 @@ abstract class SMWResultPrinter {
 	/// This can be set in LocalSettings.php, but only after enableSemantics().
 	public static $maxRecursionDepth = 2;
 
+	protected $useValidator;
+	
 	/**
 	 * Return serialised results in specified format.
 	 * Implemented by subclasses.
@@ -85,14 +87,19 @@ abstract class SMWResultPrinter {
 	/**
 	 * Constructor. The parameter $format is a format string
 	 * that may influence the processing details.
+	 * 
+	 * @param string $format
+	 * @param $inline
+	 * @param boolean $useValidator Since 1.6
 	 */
-	public function __construct( $format, $inline ) {
+	public function __construct( $format, $inline, $useValidator = false ) {
 		global $smwgQDefaultLinking;
 		$this->mFormat = $format;
 		$this->mInline = $inline;
 		$this->mLinkFirst = ( $smwgQDefaultLinking != 'none' );
 		$this->mLinkOthers = ( $smwgQDefaultLinking == 'all' );
 		$this->mLinker = new Linker(); ///TODO: how can we get the default or user skin here (depending on context)?
+		$this->useValidator = $useValidator;
 	}
 
 	/**
@@ -131,6 +138,11 @@ abstract class SMWResultPrinter {
 
 		$this->isHTML = false;
 		$this->hasTemplates = false;
+		
+		if ( $this->useValidator ) {
+			$params = $this->handleParameters( $params );
+		}
+		
 		$this->readParameters( $params, $outputmode );
 
 		// Default output for normal printers:
@@ -163,10 +175,14 @@ abstract class SMWResultPrinter {
 		// Get output from printer:
 		$result = $this->getResultText( $results, $outputmode );
 
-		if ( $outputmode == SMW_OUTPUT_FILE ) { // just return result in file mode
-			return $result;
+		if ( $outputmode != SMW_OUTPUT_FILE ) {
+			$result = $this->handleNonFileResult( $result );
 		}
-
+		
+		return $result;
+	}
+	
+	protected function handleNonFileResult( $result ) {
 		$result .= $this->getErrorString( $results ); // append errors
 
 		if ( ( !$this->isHTML ) && ( $this->hasTemplates ) ) { // preprocess embedded templates if needed
@@ -230,9 +246,32 @@ abstract class SMWResultPrinter {
 			}
 		}
 
-		return $result;
+		return $result;		
 	}
 
+	/**
+	 * Handles the user-provided parameters and returns the processes key-value pairs.
+	 * 
+	 * @since 1.6
+	 * 
+	 * @param array $keyValuePairs
+	 * 
+	 * @return array
+	 */
+	protected function handleParameters( array $keyValuePairs ) {
+		$validator = new Validator();
+		$validator->setParameters( $keyValuePairs, $this->getParameters() );
+		$validator->validateParameters();
+		
+		if ( $validator->hasFatalError() ) {
+			// TODO
+			throw new Exception( 'Validator: fatal param validation error' );
+		}
+		else {
+		    return $validator->getParameterValues();
+		}
+	}
+	
 	/**
 	 * Read an array of parameter values given as key-value-pairs and
 	 * initialise internal member fields accordingly. Possibly overwritten
