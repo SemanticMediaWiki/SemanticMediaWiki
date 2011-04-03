@@ -28,7 +28,7 @@ function smwfAddRefreshTab( $skin, &$content_actions ) {
 		$content_actions['purge'] = array(
 			'class' => false,
 			'text' => wfMsg( 'smw_purge' ),
-			'href' => $skin->mTitle->getLocalUrl( 'action=purge' )
+			'href' => $skin->getTitle()->getLocalUrl( 'action=purge' )
 		);
  	}
 	return true; // always return true, in order not to stop MW's hook processing!
