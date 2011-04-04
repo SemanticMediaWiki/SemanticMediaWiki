@@ -7,7 +7,7 @@
 /**
  * This datavalue implements special processing suitable for defining types of
  * properties. Types behave largely like values of type SMWSimpleWikiPageValue
- * with three main differnces. First, they actively check if a value is an
+ * with three main differences. First, they actively check if a value is an
  * alias for another type, modifying the internal representation accordingly.
  * Second, they have a modified display for emphasizing if some type is defined
  * in SMW (built-in). Third, they use type ids for storing data (DB keys)
@@ -24,7 +24,7 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 	protected function parseUserValue( $value ) {
 		parent::parseUserValue( $value );
 		$this->m_reallabel = SMWDataValueFactory::findTypeLabel( SMWDataValueFactory::findTypeID( $this->m_textform ) );
-		$this->m_isalias = ( $this->m_reallabel === $this->m_textform ) ? false:true;
+		$this->m_isalias = ( $this->m_reallabel === $this->m_textform ) ? false : true;
 	}
 
 	protected function parseDBkeys( $args ) {

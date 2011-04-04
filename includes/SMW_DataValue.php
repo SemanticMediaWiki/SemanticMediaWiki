@@ -48,6 +48,42 @@
  */
 abstract class SMWDataValue {
 
+	/// Primitive type for numbers as implemented by SMWNumberValue
+	const TYPE_NUMBER  = 1;
+	/// Primitive type for plain strings as implemented by SMWImportValue, SMWStringValue, SMWTypeListValue, SMW_ErrorValue
+	const TYPE_STRING  = 2;
+	/// Primitive type Blob (long string) implemented by SMWStringValue
+	const TYPE_BLOB    = 3;
+	/// Primitive type Boolean as implemented by SMWBoolValue
+	const TYPE_BOOL    = 4;
+	/// Primitive type URI as implemented by SMWURIValue
+	const TYPE_URI     = 5;
+	/// Primitive type Time as implemented by SMWTimeValue
+	const TYPE_TIME    = 6;
+	/// Primitive type Geographic coordinate as implemented 
+	const TYPE_GEO     = 7;
+	/// Primitive type Container as implemented by SMWContainerValue
+	const TYPE_CONT    = 8;
+	/// Primitive type for pages as implemented by SMWPageValue
+	const TYPE_PAGE    = 9;
+	/// Primitive type Concept as implemented by SMWConceptValue
+	const TYPE_CONCEPT = 10;
+	/// Primitive type representing a property implemented by SMWPropertyValue
+	const TYPE_PROP    = 11;
+
+	/**
+	 * Associated data item. This is the reference to the immutable object
+	 * that represents the current data content. All other data stored here
+	 * is only about presentation and parsing, but is not relevant to the
+	 * actual data that is represented (and stored later on).
+	 * 
+	 * This variable must always be set to some data item, even if there
+	 * have been errors in initialising the data.
+	 * @var SMWDataItem
+	 */
+	protected $m_dataitem;
+
+
 	/**
 	 * The text label of the respective property or false if none given.
 	 * @var unknown_type
@@ -92,10 +128,10 @@ abstract class SMWDataValue {
 	 */
 	protected $m_stubvalues = false;
 
-    /**
-     * Used to control the addition of the standard search link.
-     * @var boolean
-     */
+	/**
+	 * Used to control the addition of the standard search link.
+	 * @var boolean
+	 */
 	private $mHasSearchLink;
 
 	/**
@@ -140,6 +176,7 @@ abstract class SMWDataValue {
 	public function setUserValue( $value, $caption = false ) {
 		wfProfileIn( 'SMWDataValue::setUserValue (SMW)' );
 
+		$this->m_dataitem = null;
 		$this->mErrors = array(); // clear errors
 		$this->mHasErrors = false;
 		$this->m_infolinks = array(); // clear links
@@ -413,6 +450,14 @@ abstract class SMWDataValue {
 
 ///// Get methods /////
 
+	/**
+	 * Get the actual data contained in this object or null if the data is
+	 * not defined (due to errors or due to not being set at all).
+	 * @return SMWDataItem
+	 */
+	public function getDataItem() {
+		return $this->m_dataitem;
+	}
 
 	/**
 	 * Return an array of values that characterize the given datavalue

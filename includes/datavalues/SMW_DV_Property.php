@@ -34,7 +34,8 @@
  */
 class SMWPropertyValue extends SMWDataValue {
 
-	/** Array for assigning types to predefined properties. Each
+	/**
+	 * Array for assigning types to predefined properties. Each
 	 * property is associated with an array with the following
 	 * elements:
 	 *
@@ -66,6 +67,10 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @var unknown_type
 	 */
 	private $mPropTypeId;
+
+	public function getBaseType() {
+		return SMWDataValue::TYPE_PROP;
+	}
 
 	/**
 	 * Static function for creating a new property object from a

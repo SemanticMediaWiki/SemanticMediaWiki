@@ -14,7 +14,11 @@
  */
 class SMWTypeListValue extends SMWDataValue {
 
-	private $m_typevalues = false;
+	/**
+	 * List of type data value objects corresponding to the stored data.
+	 * @var array
+	 */
+	protected $m_typevalues;
 
 	protected function parseUserValue( $value ) {
 		$this->m_typevalues = array();
@@ -23,6 +27,7 @@ class SMWTypeListValue extends SMWDataValue {
 			$tval = SMWDataValueFactory::newTypeIDValue( '__typ', $type );
 			$this->m_typevalues[] = $tval;
 		}
+		$this->setDataItemFromTypeValues();
 	}
 
 	protected function parseDBkeys( $args ) {
@@ -31,6 +36,8 @@ class SMWTypeListValue extends SMWDataValue {
 		foreach ( $ids as $id ) {
 			$this->m_typevalues[] = SMWDataValueFactory::newTypeIDValue( '__typ', SMWDataValueFactory::findTypeLabel( $id ) );
 		}
+		$this->m_caption = false;
+		$this->setDataItemFromTypeValues();
 	}
 
 	/**
@@ -39,19 +46,25 @@ class SMWTypeListValue extends SMWDataValue {
 	 * that this also given language independence but that this is of little
 	 * use: if the value is given in another language in the wiki, then either
 	 * the value is still understood, or the language-independent database
-	 * entry is only of temporary use until someine edits the respective page.
+	 * entry is only of temporary use until someone edits the respective page.
 	 */
-	public function getDBkeys() {
-		if ( $this->isvalid() ) {
-			$result = '';
-			foreach ( $this->m_typevalues as $tv ) {
-				if ( $result != '' ) $result .= ';';
-				$result .= $tv->getDBkey();
-			}
-			return array( $result );
-		} else {
-			return array( false );
+	protected function setDataItemFromTypeValues() {
+		$stringvalue = '';
+		foreach ( $this->m_typevalues as $tv ) {
+			if ( $stringvalue != '' ) $stringvalue .= ';';
+			$stringvalue .= $tv->getDBkey();
 		}
+		try {
+			$this->m_dataitem = new SMWDIString( $stringvalue );
+		} catch ( SMWStringLengthException $e ) {
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+			$this->addError( wfMsgForContent( 'smw_maxstring', '"' . $stringvalue . '"' ) );
+			$this->m_dataitem = new SMWDIString( '' );
+		}
+	}
+
+	public function getDBkeys() {
+		return array( $this->m_dataitem->getString() );
 	}
 
 	public function getSignature() {
@@ -93,7 +106,7 @@ class SMWTypeListValue extends SMWDataValue {
 
 ////// Internal helper functions
 
-	private function makeOutputText( $type = 0, $linker = null ) {
+	protected function makeOutputText( $type = 0, $linker = null ) {
 		if ( !$this->isValid() ) {
 			return ( ( $type == 0 ) || ( $type == 1 ) ) ? '' : $this->getErrorText();
 		}
@@ -106,7 +119,7 @@ class SMWTypeListValue extends SMWDataValue {
 		return $result;
 	}
 
-	private function makeValueOutputText( $type, $datavalue, $linker ) {
+	protected function makeValueOutputText( $type, $datavalue, $linker ) {
 		switch ( $type ) {
 			case 0: return $datavalue->getShortWikiText( $linker );
 			case 1: return $datavalue->getShortHTMLText( $linker );

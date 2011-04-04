@@ -18,6 +18,10 @@ class SMWConceptValue extends SMWDataValue {
 	protected $m_concept = ''; // XML-safe, HTML-safe, Wiki-compatible concept expression (query string)
 	protected $m_docu = '';    // text description of concept, can only be set by special function "setvalues"
 
+	public function getBaseType() {
+		return SMWDataValue::TYPE_CONCEPT;
+	}
+
 	protected function parseUserValue( $value ) {
 		$this->clear();
 		// this function is normally not used for this class, not created from user input directly

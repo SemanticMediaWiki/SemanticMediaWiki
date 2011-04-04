@@ -36,10 +36,13 @@
  */
 class SMWNumberValue extends SMWDataValue {
 
-	/// The number that this datavalue represents. Must be set if valid.
-	protected $m_value = '';
-	/// Array with entries unit=>value, mapping a normalized unit to the converted value. Used for conversion tooltips.
+	/**
+	 * Array with entries unit=>value, mapping a normalized unit to the
+	 * converted value. Used for conversion tooltips.
+	 * @var array
+	 */
 	protected $m_unitvalues;
+
 	/**
 	 * Canonical identifier for the unit that the user gave as input. Used
 	 * to avoid printing this in conversion tooltips again. If the
@@ -47,6 +50,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * $m_caption and $m_unitin will be updated as if the formatted string
 	 * had been the original user input, i.e. the two values reflect what
 	 * is currently printed.
+	 * @var string
 	 */
 	protected $m_unitin;
 
@@ -54,6 +58,9 @@ class SMWNumberValue extends SMWDataValue {
 	 * Parse a string of the form "number unit" where unit is optional. The
 	 * results are stored in the $number and $unit parameters. Returns an
 	 * error code.
+	 * @param $value string to parse
+	 * @param $number call-by-ref parameter that will be set to the numerical value
+	 * @param $unit call-by-ref parameter that will be set to the "unit" string (after the number)
 	 * @return integer 0 (no errors), 1 (no number found at all), 2 (number
 	 * too large for this platform)
 	 */
@@ -89,6 +96,10 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	protected function parseUserValue( $value ) {
+		// Set caption
+		if ( $this->m_caption === false ) {
+			$this->m_caption = $value;
+		}
 		$this->m_unitin = false;
 		$this->m_unitvalues = false;
 		$number = $unit = '';
@@ -99,17 +110,12 @@ class SMWNumberValue extends SMWDataValue {
 			$this->addError( wfMsgForContent( 'smw_infinite', $value ) );
 		} elseif ( $this->convertToMainUnit( $number, $unit ) === false ) { // so far so good: now convert unit and check if it is allowed
 			$this->addError( wfMsgForContent( 'smw_unitnotallowed', $unit ) );
-		}
-
-		// Set caption
-		if ( $this->m_caption === false ) {
-			$this->m_caption = $value;
-		}
+		} // note that convertToMainUnit() also sets m_dataitem if valid
 		return true;
 	}
 
 	protected function parseDBkeys( $args ) {
-		$this->m_value = $args[0];
+		$this->m_dataitem = SMWDINumber::doUnserialize( $args[0] );
 		$this->m_caption = false;
 		$this->m_unitin = false;
 		$this->makeUserValue();
@@ -129,7 +135,8 @@ class SMWNumberValue extends SMWDataValue {
 
 	public function getShortWikiText( $linked = null ) {
 		$this->unstub();
-		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_outformat == '-u' ) || ( $this->m_outformat == '-n' ) ) {
+		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' )
+			|| ( $this->m_outformat == '-u' ) || ( $this->m_outformat == '-n' ) || ( !$this->isValid() ) ) {
 			return $this->m_caption;
 		} else {
 			$this->makeConversionValues();
@@ -198,7 +205,12 @@ class SMWNumberValue extends SMWDataValue {
 
 	public function getDBkeys() {
 		$this->unstub();
-		return array( $this->m_value, floatval( $this->m_value ) );
+		return array( $this->m_dataitem->getSerialization(), floatval( $this->m_dataitem->getNumber() ) );
+	}
+
+	public function getNumber() {
+		$this->unstub();
+		return $this->m_dataitem->getNumber();
 	}
 
 	public function getSignature() {
@@ -216,7 +228,7 @@ class SMWNumberValue extends SMWDataValue {
 	public function getWikiValue() {
 		$this->unstub();
 		$unit = $this->getUnit();
-		return strval( $this->m_value ) . ( $unit != '' ? ' ' . $unit : '' );
+		return strval( $this->m_dataitem->getSerialization() ) . ( $unit != '' ? ' ' . $unit : '' );
 	}
 
 	/**
@@ -230,25 +242,19 @@ class SMWNumberValue extends SMWDataValue {
 		return '';
 	}
 
-	public function getHash() {
-		$this->unstub();
-		return  $this->isValid() ? $this->m_value : implode( "\t", $this->getErrors() );
-	}
-
 	protected function getServiceLinkParams() {
 		$this->unstub();
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: string of numerical value in English punctuation
 		// $2: string of integer version of value, in English punctuation
-		// $3: string of unit (if any)
-		return array( (string)$this->m_value, (string)round( $this->m_value ) );
+		return array( strval( $this->m_dataitem->getNumber() ), strval( round( $this->m_dataitem->getNumber() ) ) );
 	}
 
 	public function getExportData() {
 		$this->unstub();
 		if ( $this->isValid() ) {
-			$lit = new SMWExpLiteral( $this->m_value, $this, 'http://www.w3.org/2001/XMLSchema#double' );
+			$lit = new SMWExpLiteral( $this->m_dataitem->getNumber(), $this, 'http://www.w3.org/2001/XMLSchema#double' );
 			return new SMWExpData( $lit );
 		} else {
 			return null;
@@ -271,19 +277,19 @@ class SMWNumberValue extends SMWDataValue {
 	 * Compute the value based on the given input number and unit string.
 	 * If the unit is not supported, return false, otherwise return true.
 	 * This is called when parsing user input, where the given unit value
-	 * has already been normalized.
+	 * has already been normalized. Note that the internal data item must
+	 * always be set, even if this method returns false.
 	 *
 	 * This class does not support any (non-empty) units, but subclasses
 	 * may overwrite this behavior.
+	 * @param $number float value obtained by parsing user input
+	 * @param $unit string after the numericla user input
+	 * @return boolean specifying if the unit string is allowed
 	 */
 	protected function convertToMainUnit( $number, $unit ) {
-		if ( $unit == '' ) {
-			$this->m_unitin = '';
-			$this->m_value = $number;
-			return true;
-		} else {
-			return false;
-		}
+		$this->m_dataitem = new SMWDINumber( $number, $this->m_typeid );
+		$this->m_unitin = '';
+		return ( $unit == '' );
 	}
 
 	/**
@@ -300,7 +306,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * Overwritten by subclasses that support units.
 	 */
 	protected function makeConversionValues() {
-		$this->m_unitvalues = array( '' => $this->m_value );
+		$this->m_unitvalues = array( '' => $this->m_dataitem->getNumber() );
 	}
 
 	/**
@@ -315,7 +321,7 @@ class SMWNumberValue extends SMWDataValue {
 	protected function makeUserValue() {
 		$this->m_caption = '';
 		if ( $this->m_outformat != '-u' ) { // -u is the format for displaying the unit only
-			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? smwfNumberFormat( $this->m_value ) : $this->m_value );
+			$this->m_caption .= ( ( $this->m_outformat != '-' ) && ( $this->m_outformat != '-n' ) ? smwfNumberFormat( $this->m_dataitem->getNumber() ) : $this->m_dataitem->getNumber() );
 		}
 		// no unit ever, so nothing to do about this
 		$this->m_unitin = '';

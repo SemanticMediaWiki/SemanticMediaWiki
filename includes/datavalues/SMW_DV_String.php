@@ -14,33 +14,35 @@
  */
 class SMWStringValue extends SMWDataValue {
 
-	/// Wiki-compatible value representation, possibly unsafe for plain HTML.
-	protected $m_value = '';
-
 	protected function parseUserValue( $value ) {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-		if ( $value != '' ) {
-			$this->m_value = $value;
-			if ( ( $this->m_typeid != '_txt' ) && ( $this->m_typeid != '_cod' ) && ( strlen( $this->m_value ) > 255 ) ) { // limit size (for DB indexing)
-				$this->addError( wfMsgForContent( 'smw_maxstring', mb_substr( $value, 0, 42 ) . ' <span class="smwwarning">[…]</span> ' . mb_substr( $value, mb_strlen( $this->m_value ) - 42 ) ) );
-			}
-		} else {
+		if ( $this->m_caption === false ) {
+			$this->m_caption = ( $this->m_typeid == '_cod' ) ? $this->getCodeDisplay( $value ) : $value;
+		}
+		if ( $value == '' ) {
 			$this->addError( wfMsgForContent( 'smw_emptystring' ) );
 		}
-		if ( $this->m_caption === false ) {
-			$this->m_caption = ( $this->m_typeid == '_cod' ) ? $this->getCodeDisplay( $value ):$value;
+
+		if ( ( $this->m_typeid == '_txt' ) || ( $this->m_typeid == '_cod' ) ) {
+			$this->m_dataitem = new SMWDIBlob( $value, $this->m_typeid );
+		} else {
+			try {
+				$this->m_dataitem = new SMWDIString( $value, $this->m_typeid );
+			} catch ( SMWStringLengthException $e ) {
+				$this->addError( wfMsgForContent( 'smw_maxstring', '"' . mb_substr( $value, 0, 15 ) . ' … ' . mb_substr( $value, mb_strlen( $value ) - 15 ) . '"' ) );
+				$this->m_dataitem = new SMWDIBlob( $value, $this->m_typeid ); // just to make sure that something is defined here
+			}
 		}
 		return true;
 	}
 
 	protected function parseDBkeys( $args ) {
 		$this->parseUserValue( $args[0] );
-		$this->m_caption = $this->m_value; // this is our output text
+		$this->m_caption = $this->m_dataitem->getString(); // this is our output text
 	}
 
 	public function getShortWikiText( $linked = null ) {
 		$this->unstub();
-		// TODO: Support linking?
 		return $this->m_caption;
 	}
 
@@ -52,19 +54,19 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getLongWikiText( $linked = null ) {
-		return $this->isValid() ? $this->getAbbValue( $linked, $this->m_value ):$this->getErrorText();
+		return $this->isValid() ? $this->getAbbValue( $linked, $this->m_dataitem->getString() ) : $this->getErrorText();
 	}
 
 	/**
 	 * @todo Rather parse input to obtain properly formatted HTML.
 	 */
 	public function getLongHTMLText( $linker = null ) {
-		return $this->isValid() ? $this->getAbbValue( $linker, smwfXMLContentEncode( $this->m_value ) ):$this->getErrorText();
+		return $this->isValid() ? $this->getAbbValue( $linker, smwfXMLContentEncode( $this->m_dataitem->getString() ) ) : $this->getErrorText();
 	}
 
 	public function getDBkeys() {
 		$this->unstub();
-		return array( $this->m_value );
+		return array( $this->m_dataitem->getString() );
 	}
 
 	public function getSignature() {
@@ -89,7 +91,7 @@ class SMWStringValue extends SMWDataValue {
 
 	public function getWikiValue() {
 		$this->unstub();
-		return $this->m_value;
+		return $this->m_dataitem->getString();
 	}
 
 	public function getInfolinks() {
@@ -107,7 +109,7 @@ class SMWStringValue extends SMWDataValue {
 		// available to the message are:
 		// $1: urlencoded string
 		if ( ( $this->m_typeid != '_txt' ) && ( $this->m_typeid != '_cod' ) ) {
-			return array( rawurlencode( $this->m_value ) );
+			return array( rawurlencode( $this->m_dataitem->getString() ) );
 		} else {
 			return false; // no services for Type:Text and Type:Code
 		}
@@ -115,7 +117,7 @@ class SMWStringValue extends SMWDataValue {
 
 	public function getExportData() {
 		if ( $this->isValid() ) {
-			$lit = new SMWExpLiteral( smwfHTMLtoUTF8( $this->m_value ), $this, 'http://www.w3.org/2001/XMLSchema#string' );
+			$lit = new SMWExpLiteral( smwfHTMLtoUTF8( $this->m_dataitem->getString() ), $this, 'http://www.w3.org/2001/XMLSchema#string' );
 			return new SMWExpData( $lit );
 		} else {
 			return null;

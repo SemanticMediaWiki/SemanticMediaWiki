@@ -22,19 +22,20 @@ class SMWTemperatureValue extends SMWNumberValue {
 		$this->m_unitin = $this->getUnitID( $unit );
 		switch ( $this->m_unitin ) {
 			case 'K':
-				$this->m_value = $number;
+				$value = $number;
 			break;
 			case '°C':
-				$this->m_value = $number + 273.15;
+				$value = $number + 273.15;
 			break;
 			case '°F':
-				$this->m_value = ( $number - 32 ) / 1.8 + 273.15;
+				$value = ( $number - 32 ) / 1.8 + 273.15;
 			break;
 			case '°R':
-				$this->m_value = ( $number ) / 1.8;
+				$value = ( $number ) / 1.8;
 			break;
 			default: return false; // unsupported unit
 		}
+		$this->m_dataitem = new SMWDINumber( $value, $this->m_typeid );
 		return true;
 	}
 
@@ -44,9 +45,10 @@ class SMWTemperatureValue extends SMWNumberValue {
 		if ( !$this->isValid() ) { 
 			$this->m_unitvalues = array();
 		} else {
-			$this->m_unitvalues = array( 'K' => $this->m_value, '°C' => $this->m_value - 273.15, 
-						'°F' => ( $this->m_value - 273.15 ) * 1.8 + 32,
-						'°R' => ( $this->m_value ) * 1.8 );
+			$this->m_unitvalues = array( 'K' => $this->m_dataitem->getNumber(),
+						'°C' => $this->m_dataitem->getNumber() - 273.15, 
+						'°F' => ( $this->m_dataitem->getNumber() - 273.15 ) * 1.8 + 32,
+						'°R' => ( $this->m_dataitem->getNumber() ) * 1.8 );
 		}
 	}
 
@@ -58,22 +60,22 @@ class SMWTemperatureValue extends SMWNumberValue {
 			$this->m_unitin = $this->getUnitID( $printunit );
 			switch ( $this->m_unitin ) {
 				case 'K':
-					$value = $this->m_value;
+					$value = $this->m_dataitem->getNumber();
 				break;
 				case '°C':
-					$value = $this->m_value - 273.15;
+					$value = $this->m_dataitem->getNumber() - 273.15;
 				break;
 				case '°F':
-					$value = ( $this->m_value - 273.15 ) * 1.8 + 32;
+					$value = ( $this->m_dataitem->getNumber() - 273.15 ) * 1.8 + 32;
 				break;
 				case '°R':
-					$value = ( $this->m_value ) * 1.8;
+					$value = ( $this->m_dataitem->getNumber() ) * 1.8;
 				break;
 				// default: unit not supported
 			}
 		}
 		if ( $value === false ) { // no valid output unit requested
-			$value = $this->m_value;
+			$value = $this->m_dataitem->getNumber();
 			$this->m_unitin = 'K';
 			$printunit = 'K';
 		}

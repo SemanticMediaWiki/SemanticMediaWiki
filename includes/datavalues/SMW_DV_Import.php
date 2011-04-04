@@ -5,10 +5,10 @@
  */
 
 /**
- * This datavalue implements datavalues used by special property '_IMPO' used for assigning
- * imported vocabulary to some page of the wiki.
- * It looks up a MediaWiki message to find out whether a user-supplied vocabulary name
- * can be imported in the wiki, and whether its declaration is correct (to the extend
+ * This datavalue implements datavalues used by special property '_IMPO' used
+ * for assigning imported vocabulary to some page of the wiki. It looks up a
+ * MediaWiki message to find out whether a user-supplied vocabulary name can be
+ * imported in the wiki, and whether its declaration is correct (to the extent
  * that this can be checked).
  *
  * @author Fabian Howahl
@@ -17,29 +17,28 @@
  */
 class SMWImportValue extends SMWDataValue {
 
-	protected $m_value = ''; // stores string provided by user which is used to look up data on Mediawiki:*-Page
+	protected $m_qname = ''; // string provided by user which is used to look up data on Mediawiki:*-Page
 	protected $m_uri = ''; // URI of namespace (without local name)
 	protected $m_namespace = ''; // namespace id (e.g. "foaf")
-	protected $m_section = ''; // stores local name (e.g. "knows")
-	protected $m_name = ''; // stores wiki name of the vocab (e.g. "Friend of a Friend")
-	protected $m_wikilink = ''; // store string to be displayed in factbox
+	protected $m_section = ''; // local name (e.g. "knows")
+	protected $m_name = ''; // wiki name of the vocab (e.g. "Friend of a Friend")l might contain wiki markup
 
 	protected function parseUserValue( $value ) {
 		global $wgContLang;
 
-		$this->m_value = $value;
-		list( $onto_ns, $onto_section ) = explode( ':', $value, 2 );
+		$this->m_qname = $value;
 
+		list( $onto_ns, $onto_section ) = explode( ':', $this->m_qname, 2 );
 		$msglines = preg_split( "([\n][\s]?)", wfMsgForContent( "smw_import_$onto_ns" ) ); // get the definition for "$namespace:$section"
 
 		if ( count( $msglines ) < 2 ) { // error: no elements for this namespace
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_unknown_importns', $onto_ns ) );
 			return true;
 		}
 
 		// browse list in smw_import_* for section
 		list( $onto_uri, $onto_name ) = explode( '|', array_shift( $msglines ), 2 );
-
 		if ( $onto_uri[0] == ' ' ) $onto_uri = mb_substr( $onto_uri, 1 ); // tolerate initial space
 
 		$this->m_uri = $onto_uri;
@@ -47,7 +46,7 @@ class SMWImportValue extends SMWDataValue {
 		$this->m_section = $onto_section;
 		$this->m_name = $onto_name;
 
-		$elemtype = - 1;
+		$elemtype = -1;
 		foreach ( $msglines as $msgline ) {
 			list( $secname, $typestring ) = explode( '|', $msgline, 2 );
 			if ( $secname === $onto_section ) {
@@ -99,31 +98,42 @@ class SMWImportValue extends SMWDataValue {
 // 			}
 // 		}
 
-		// create String to be returned by getShort/LongWikiText
-		$this->m_wikilink = "[" . $this->m_uri . " " . $this->m_value . "] (" . $this->m_name . ")";
+		try {
+			$this->m_dataitem = new SMWDIString( $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri );
+		} catch ( SMWStringLengthException $e ) {
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+			$this->addError( wfMsgForContent( 'smw_maxstring', '"' . $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri . '"' ) );
+			$this->m_dataitem = new SMWDIString( '' );
+		}
 
 		// check whether caption is set, otherwise assign link statement to caption
 		if ( $this->m_caption === false ) {
-			$this->m_caption = $this->m_wikilink;
+			$this->m_caption = "[" . $this->m_uri . " " . $this->m_qname . "] (" . $this->m_name . ")";
 		}
+
 
 		return true;
 	}
 
 	protected function parseDBkeys( $args ) {
 		$parts = explode( ' ', $args[0], 3 );
-		if ( array_key_exists( 0, $parts ) ) {
+		if ( count( $parts ) != 3 ) {
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+			$this->addError( wfMsgForContent( 'smw_parseerror' ) );
+		} else {
 			$this->m_namespace = $parts[0];
-		}
-		if ( array_key_exists( 1, $parts ) ) {
 			$this->m_section = $parts[1];
-		}
-		if ( array_key_exists( 2, $parts ) ) {
 			$this->m_uri = $parts[2];
+			try {
+				$this->m_dataitem = new SMWDIString( $args[0] );
+			} catch ( SMWStringLengthException $e ) {
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+				$this->addError( wfMsgForContent( 'smw_maxstring', '"' . $args[0] . '"' ) );
+				$this->m_dataitem = new SMWDIString( '' );
+			}
+			$this->m_qname = $this->m_namespace . ':' . $this->m_section;
+			$this->m_caption = "[" . $this->m_uri . " " . $this->m_qname . "] (" . $this->m_name . ")";
 		}
-		$this->m_value = $this->m_namespace . ':' . $this->m_section;
-		$this->m_caption = $this->m_value; // not as pretty as on input, don't care
-		$this->m_wikilink = $this->m_value; // not as pretty as on input, don't care
 	}
 
 	public function getShortWikiText( $linked = null ) {
@@ -133,14 +143,14 @@ class SMWImportValue extends SMWDataValue {
 
 	public function getShortHTMLText( $linker = null ) {
 		$this->unstub();
-		return htmlspecialchars( $this->m_value );
+		return htmlspecialchars( $this->m_qname );
 	}
 
 	public function getLongWikiText( $linked = null ) {
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		} else {
-			return $this->m_wikilink;
+			return "[" . $this->m_uri . " " . $this->m_qname . "] (" . $this->m_name . ")";
 		}
 	}
 
@@ -148,13 +158,13 @@ class SMWImportValue extends SMWDataValue {
 		if ( !$this->isValid() ) {
 			return $this->getErrorText();
 		} else {
-			return htmlspecialchars( $this->m_value );
+			return htmlspecialchars( $this->m_qname );
 		}
 	}
 
 	public function getDBkeys() {
 		$this->unstub();
-		return array( $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri );
+		return array( $this->m_dataitem->getString() );
 	}
 
 	public function getSignature() {
@@ -171,7 +181,7 @@ class SMWImportValue extends SMWDataValue {
 
 	public function getWikiValue() {
 		$this->unstub();
-		return $this->m_value;
+		return $this->m_qname;
 	}
 
 	public function getNS() {

@@ -28,10 +28,12 @@ class SMWLinearValue extends SMWNumberValue {
 		$this->initConversionData();
 		if ( array_key_exists( $unit, $this->m_unitids ) ) {
 			$this->m_unitin = $this->m_unitids[$unit];
-			$this->m_value = $number / $this->m_unitfactors[$this->m_unitin];
+			$this->m_dataitem = new SMWDINumber( $number / $this->m_unitfactors[$this->m_unitin], $this->m_typeid );
 			return true;
-		} //else:  unsupported unit
-		return false;
+		} else { // unsupported unit, initialize at least the dataitem (just a fallback, not relevant)
+			$this->m_dataitem = new SMWDINumber( 0 );
+			return false;
+		} 
 	}
 
 	protected function makeConversionValues() {
@@ -42,7 +44,7 @@ class SMWLinearValue extends SMWNumberValue {
 		if ( count( $this->m_displayunits ) == 0 ) { // no display units, just show all
 			foreach ( $this->m_unitfactors as $unit => $factor ) {
 				if ( $unit != '' ) { // filter out the empty fallback unit that is always there
-					$this->m_unitvalues[$unit] = $this->m_value * $factor;
+					$this->m_unitvalues[$unit] = $this->m_dataitem->getNumber() * $factor;
 				}
 			}
 		} else {
@@ -51,7 +53,7 @@ class SMWLinearValue extends SMWNumberValue {
 				/// the preferred form of a unit. Doing this requires us to recompute the conversion values whenever
 				/// the m_unitin changes.
 				$unitkey = ( $this->m_unitids[$unit] == $this->m_unitin ) ? $this->m_unitids[$unit] : $unit;
-				$this->m_unitvalues[$unitkey] = $this->m_value * $this->m_unitfactors[$this->m_unitids[$unit]];
+				$this->m_unitvalues[$unitkey] = $this->m_dataitem->getNumber() * $this->m_unitfactors[$this->m_unitids[$unit]];
 			}
 		}
 	}
@@ -80,7 +82,7 @@ class SMWLinearValue extends SMWNumberValue {
 
 		$this->m_unitin = $this->m_unitids[$printunit];
 		$this->m_unitvalues = false; // this array depends on m_unitin if displayunits were used, better invalidate it here
-		$value = $this->m_value * $this->m_unitfactors[$this->m_unitin];
+		$value = $this->m_dataitem->getNumber() * $this->m_unitfactors[$this->m_unitin];
 
 		$this->m_caption = '';
 		if ( $this->m_outformat != '-u' ) { // -u is the format for displaying the unit only

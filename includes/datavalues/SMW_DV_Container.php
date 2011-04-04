@@ -16,6 +16,10 @@ abstract class SMWContainerValue extends SMWDataValue {
 
 	protected $m_data;
 
+	public function getBaseType() {
+		return SMWDataValue::TYPE_CONT;
+	}
+
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
 		$this->m_data = new SMWSemanticData( null );
