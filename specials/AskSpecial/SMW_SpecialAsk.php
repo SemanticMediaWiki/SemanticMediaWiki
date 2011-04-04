@@ -192,7 +192,8 @@ class SMWAskPage extends SpecialPage {
 		$scripts = array();
 
 		if ( !$smwgJQueryIncluded ) {
-			if ( method_exists( 'OutputPage', 'includeJQuery' ) ) {
+			$realFunction = array( 'OutputPage', 'includeJQuery' );
+			if ( is_callable( $realFunction ) ) {
 				$wgOut->includeJQuery();
 			} else {
 				$scripts[] = "$smwgScriptPath/libs/jquery-1.4.2.min.js";
