@@ -99,11 +99,24 @@ function enableSemantics( $namespace = null, $complete = false ) {
 // 	$wgAutoloadClasses['SMWConceptPage']            = $smwgIP . 'includes/articlepages/SMW_ConceptPage.php';
 	$wgAutoloadClasses['SMWQueryLanguage']          = $smwgIP . 'includes/SMW_QueryLanguage.php';
 
+	// Data items
+	$diDir = $smwgIP . 'includes/dataitems/';
+	$wgAutoloadClasses['SMWDataItem']		= $diDir . 'SMW_DataItem.php';
+	$wgAutoloadClasses['SMWDataItemException']	= $diDir . 'SMW_DataItem.php';
+// 	$wgAutoloadClasses['SMWDIBool']			= $diDir . 'SMW_DI_Bool.php';
+	$wgAutoloadClasses['SMWDINumber']		= $diDir . 'SMW_DI_Number.php';
+	$wgAutoloadClasses['SMWDIBlob']			= $diDir . 'SMW_DI_Blob.php';
+	$wgAutoloadClasses['SMWDIString']		= $diDir . 'SMW_DI_String.php';
+	$wgAutoloadClasses['SMWStringLengthException']	= $diDir . 'SMW_DI_String.php';
+	$wgAutoloadClasses['SMWDIURI']			= $diDir . 'SMW_DI_URI.php';
+	$wgAutoloadClasses['SMWDIWikiPage']		= $diDir . 'SMW_DI_WikiPage.php';
+	$wgAutoloadClasses['SMWDITime']			= $diDir . 'SMW_DI_Time.php';
+
 	// Datavalues
 	$dvDir = $smwgIP . 'includes/datavalues/';
-	$wgAutoloadClasses['SMWContainerValue']			= $dvDir . 'SMW_DV_Container.php';
+	$wgAutoloadClasses['SMWContainerValue']		= $dvDir . 'SMW_DV_Container.php';
 //	$wgAutoloadClasses['SMWRecordValue']         	= $dvDir . 'SMW_DV_Record.php';
-	$wgAutoloadClasses['SMWErrorvalue']          	= $dvDir . 'SMW_DV_Error.php';
+	$wgAutoloadClasses['SMWErrorValue']          	= $dvDir . 'SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWStringValue']         	= $dvDir . 'SMW_DV_String.php';
 	$wgAutoloadClasses['SMWWikiPageValue']       	= $dvDir . 'SMW_DV_WikiPage.php';
 	$wgAutoloadClasses['SMWSimpleWikiPageValue'] 	= $dvDir . 'SMW_DV_SimpleWikiPage.php';
@@ -111,7 +124,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWURIValue']            	= $dvDir . 'SMW_DV_URI.php';
 	$wgAutoloadClasses['SMWTypesValue']          	= $dvDir . 'SMW_DV_Types.php';
 //	$wgAutoloadClasses['SMWTypeListValue']      	= $dvDir . 'SMW_DV_TypeList.php';
-	$wgAutoloadClasses['SMWErrorValue']         	= $dvDir . 'SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWNumberValue']         	= $dvDir . 'SMW_DV_Number.php';
 //	$wgAutoloadClasses['SMWTemperatureValue']    	= $dvDir . 'SMW_DV_Temperature.php';
 //	$wgAutoloadClasses['SMWLinearValue']         	= $dvDir . 'SMW_DV_Linear.php';
