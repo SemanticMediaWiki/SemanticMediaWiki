@@ -1,21 +1,26 @@
 <?php
 /**
  * File with abstract base class for printing query results.
- * @author Markus Krötzsch
- * @file
+ * 
+ * @file SMW_QueryPrinter.php
  * @ingroup SMWQuery
+ * 
+ * @licence GNU GPL v2+
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 
-// constants that define how/if headers should be displayed
+// Constants that define how/if headers should be displayed.
 define( 'SMW_HEADERS_SHOW', 2 );
 define( 'SMW_HEADERS_PLAIN', 1 );
-define( 'SMW_HEADERS_HIDE', 0 ); // used to be "false" hence use "0" to support extensions that still assume this
+define( 'SMW_HEADERS_HIDE', 0 ); // Used to be "false" hence use "0" to support extensions that still assume this.
 
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements
  * part of the former functionality of SMWInlineQuery (everything related to
  * output formatting and the correspoding parameters) and is subclassed by concrete
  * printers that provide the main formatting functionality.
+ * 
  * @ingroup SMWQuery
  */
 abstract class SMWResultPrinter {
@@ -140,11 +145,13 @@ abstract class SMWResultPrinter {
 		$this->hasTemplates = false;
 		
 		if ( $this->useValidator ) {
-			$params = $this->handleParameters( $params );
+			// TODO: retain behaviour of base readParameters
+			$this->handleParameters( $this->handleRawParameters( $params ), $outputmode );
+		}
+		else {
+			$this->readParameters( $params, $outputmode );
 		}
 		
-		$this->readParameters( $params, $outputmode );
-
 		// Default output for normal printers:
 		if ( ( $outputmode != SMW_OUTPUT_FILE ) && // not in FILE context,
 				( $results->getCount() == 0 ) && // no results,
@@ -176,7 +183,7 @@ abstract class SMWResultPrinter {
 		$result = $this->getResultText( $results, $outputmode );
 
 		if ( $outputmode != SMW_OUTPUT_FILE ) {
-			$result = $this->handleNonFileResult( $result );
+			$result = $this->handleNonFileResult( $result, $results, $outputmode );
 		}
 		
 		return $result;
@@ -188,10 +195,12 @@ abstract class SMWResultPrinter {
 	 * @since 1.6
 	 * 
 	 * @param string $result
+	 * @param SMWQueryResult $results
+	 * @param $outputmode
 	 * 
 	 * @return string
 	 */
-	protected function handleNonFileResult( $result ) {
+	protected function handleNonFileResult( $result, SMWQueryResult $results, $outputmode ) {
 		$result .= $this->getErrorString( $results ); // append errors
 
 		if ( ( !$this->isHTML ) && ( $this->hasTemplates ) ) { // preprocess embedded templates if needed
@@ -267,7 +276,7 @@ abstract class SMWResultPrinter {
 	 * 
 	 * @return array
 	 */
-	protected function handleParameters( array $keyValuePairs ) {
+	protected function handleRawParameters( array $keyValuePairs ) {
 		$validator = new Validator();
 		$validator->setParameters( $keyValuePairs, $this->getParameters() );
 		$validator->validateParameters();
@@ -277,8 +286,55 @@ abstract class SMWResultPrinter {
 			throw new Exception( 'Validator: fatal param validation error' );
 		}
 		else {
+			// TODO: keep track of non-fatal errors to display
 		    return $validator->getParameterValues();
 		}
+	}
+	
+	/**
+	 * Read an array of parameter values given as key-value-pairs and
+	 * initialise internal member fields accordingly. Possibly overwritten
+	 * (extended) by subclasses.
+	 * 
+	 * @since 1.6
+	 * 
+	 * @param array $params
+	 * @param $outputmode
+	 */
+	protected function handleParameters( array $params, $outputmode ) {
+		$this->m_params = $params;
+		
+		if ( array_key_exists( 'intro', $params ) ) { $this->mIntro = $params['intro']; }
+		if ( array_key_exists( 'outro', $params ) ) { $this->mOutro = $params['outro']; }
+		
+		if ( array_key_exists( 'searchlabel', $params ) ) {
+			$this->mSearchlabel = $params['searchlabel'] === false ? null : $params['searchlabel'];
+		}
+		
+		switch ( $params['link'] ) {
+			case 'head': case 'subject':
+				$this->mLinkFirst = true;
+				$this->mLinkOthers = false;
+				break;
+			case 'all':
+				$this->mLinkFirst = true;
+				$this->mLinkOthers = true;
+				break;
+			case 'none':
+				$this->mLinkFirst = false;
+				$this->mLinkOthers = false;
+				break;			
+		}
+		
+		if ( array_key_exists( 'default', $params ) ) { $this->mDefault = str_replace( '_', ' ', $params['default'] ); }
+		
+		if ( $params['headers'] == 'hide' ) {
+			$this->mShowHeaders = SMW_HEADERS_HIDE;
+		} elseif ( $params['headers'] == 'plain' ) {
+			$this->mShowHeaders = SMW_HEADERS_PLAIN;
+		} else {
+			$this->mShowHeaders = SMW_HEADERS_SHOW;
+		}		
 	}
 	
 	/**
@@ -288,6 +344,8 @@ abstract class SMWResultPrinter {
 	 *
 	 * @param array $params
 	 * @param $outputmode
+	 * 
+	 * @deprecated Use handleParameters instead
 	 */
 	protected function readParameters( /* array */ $params, $outputmode ) {
 		$this->m_params = $params;
@@ -465,19 +523,22 @@ abstract class SMWResultPrinter {
 	 *
 	 * @since 1.5.0
 	 *
-	 * @return array
+	 * @return array of Parameter
 	 */
 	protected function textDisplayParameters() {
 		$params = array();
 		
 		$params['intro'] = new Parameter( 'intro' );
 		$params['intro']->setDescription( wfMsg( 'smw_paramdesc_intro' ) );
-
+		$params['intro']->setDefault( '' );
+		
 		$params['outro'] = new Parameter( 'outro' );
 		$params['outro']->setDescription( wfMsg( 'smw_paramdesc_outro' ) );
+		$params['outro']->setDefault( '' );
 		
 		$params['default'] = new Parameter( 'default' );
 		$params['default']->setDescription( wfMsg( 'smw_paramdesc_default' ) );
+		$params['default']->setDefault( '' );
 		
 		return $params;
 	}
@@ -497,6 +558,7 @@ abstract class SMWResultPrinter {
 		
 		$params['searchlabel'] = new Parameter( 'searchlabel' );
 		$params['searchlabel']->setDescription( wfMsg( 'smw_paramdesc_searchlabel' ) );
+		$params['searchlabel']->setDefault( false, false );
 		
 		return $params;
 	}
@@ -515,17 +577,21 @@ abstract class SMWResultPrinter {
 		
 		$params['limit'] = new Parameter( 'limit', Parameter::TYPE_INTEGER );
 		$params['limit']->setDescription( wfMsg( 'smw_paramdesc_limit' ) );
+		$params['limit']->setDefault( 20 );
 		
 		$params['headers'] = new Parameter( 'headers' );
 		$params['headers']->setDescription( wfMsg( 'smw_paramdesc_headers' ) );
 		$params['headers']->addCriteria( new CriterionInArray( 'show', 'hide', 'plain' ) );
+		$params['headers']->setDefault( 'show' );
 		
 		$params['mainlabel'] = new Parameter( 'mainlabel' );
 		$params['mainlabel']->setDescription( wfMsg( 'smw_paramdesc_mainlabel' ) );
+		$params['mainlabel']->setDefault( false, false );
 		
 		$params['link'] = new Parameter( 'link' );
 		$params['link']->setDescription( wfMsg( 'smw_paramdesc_link' ) );		
 		$params['link']->addCriteria( new CriterionInArray( 'all', 'subject', 'none' ) );
+		$params['link']->setDefault( 'all' );
 		
 		return $params;
 	}

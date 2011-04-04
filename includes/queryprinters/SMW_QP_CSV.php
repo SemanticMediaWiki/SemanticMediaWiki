@@ -86,7 +86,7 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 			$link->setParameter( 'csv', 'format' );
 			$link->setParameter( $this->m_sep, 'sep' );
 			
-			if ( array_key_exists( 'mainlabel', $this->m_params ) ) {
+			if ( $this->m_params['mainlabel'] !== false ) {
 				$link->setParameter( $this->m_params['mainlabel'], 'mainlabel' );
 			}
 				

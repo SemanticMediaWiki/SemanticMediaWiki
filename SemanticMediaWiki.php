@@ -36,3 +36,6 @@ $wgExtensionCredits['semantic'][] = array(
 	'url' => 'http://semantic-mediawiki.org',
 	'descriptionmsg' => 'smw-desc'
 );
+
+// A flag used to indicate SMW supports Validator style parameter definitions and validation in the SMWResultPrinter class.
+define( 'SMW_SUPPORTS_VALIDATOR', true );

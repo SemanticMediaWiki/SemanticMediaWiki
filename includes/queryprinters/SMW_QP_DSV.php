@@ -160,7 +160,7 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 		$link->setParameter( 'dsv', 'format' );
 		$link->setParameter( $this->separator, 'sep' );
 		
-		if ( array_key_exists( 'mainlabel', $this->m_params ) ) {
+		if ( $this->m_params['mainlabel'] !== false ) {
 			$link->setParameter( $this->m_params['mainlabel'], 'mainlabel' );
 		}
 		

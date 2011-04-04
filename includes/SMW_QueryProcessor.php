@@ -55,7 +55,7 @@ class SMWQueryProcessor {
 			$querymode = $printer->getQueryMode( $context );
 		}
 
-		$mainlabel = array_key_exists( 'mainlabel', $params ) ? $params['mainlabel'] : '';
+		$mainlabel = array_key_exists( 'mainlabel', $params ) ? $params['mainlabel'] : ''; 
 		if ( ( $querymode == SMWQuery::MODE_NONE ) ||
 		     ( ( !$desc->isSingleton() || ( count( $desc->getPrintRequests() ) + count( $extraprintouts ) == 0 ) )
 		       && ( trim( $mainlabel ) != '-' ) ) ) {
