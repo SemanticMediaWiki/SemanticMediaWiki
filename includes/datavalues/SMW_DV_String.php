@@ -30,10 +30,9 @@ class SMWStringValue extends SMWDataValue {
 				$this->m_dataitem = new SMWDIString( $value, $this->m_typeid );
 			} catch ( SMWStringLengthException $e ) {
 				$this->addError( wfMsgForContent( 'smw_maxstring', '"' . mb_substr( $value, 0, 15 ) . ' … ' . mb_substr( $value, mb_strlen( $value ) - 15 ) . '"' ) );
-				$this->m_dataitem = new SMWDIBlob( $value, $this->m_typeid ); // just to make sure that something is defined here
+				$this->m_dataitem = new SMWDIBlob( 'ERROR', $this->m_typeid ); // just to make sure that something is defined here
 			}
 		}
-		return true;
 	}
 
 	protected function parseDBkeys( $args ) {

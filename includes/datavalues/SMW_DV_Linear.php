@@ -30,8 +30,7 @@ class SMWLinearValue extends SMWNumberValue {
 			$this->m_unitin = $this->m_unitids[$unit];
 			$this->m_dataitem = new SMWDINumber( $number / $this->m_unitfactors[$this->m_unitin], $this->m_typeid );
 			return true;
-		} else { // unsupported unit, initialize at least the dataitem (just a fallback, not relevant)
-			$this->m_dataitem = new SMWDINumber( 0 );
+		} else { // unsupported unit
 			return false;
 		} 
 	}

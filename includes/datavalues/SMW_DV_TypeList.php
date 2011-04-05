@@ -59,7 +59,7 @@ class SMWTypeListValue extends SMWDataValue {
 		} catch ( SMWStringLengthException $e ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_maxstring', '"' . $stringvalue . '"' ) );
-			$this->m_dataitem = new SMWDIString( '' );
+			$this->m_dataitem = new SMWDIString( 'ERROR' );
 		}
 	}
 

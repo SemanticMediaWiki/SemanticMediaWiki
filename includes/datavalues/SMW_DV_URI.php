@@ -66,7 +66,7 @@ class SMWURIValue extends SMWDataValue {
 		if ( $value == '' ) { // do not accept empty strings
 			$this->addError( wfMsgForContent( 'smw_emptystring' ) );
 			$this->m_dataitem = new SMWDIURI( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
-			return true;
+			return;
 		}
 
 		switch ( $this->m_mode ) {
@@ -84,7 +84,7 @@ class SMWURIValue extends SMWDataValue {
 					if ( $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) { // disallowed URI!
 						$this->addError( wfMsgForContent( 'smw_baduri', $value ) );
 						$this->m_dataitem = new SMWDIURI( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
-						return true;
+						return;
 					}
 				}
 				// decompose general URI components
@@ -149,10 +149,7 @@ class SMWURIValue extends SMWDataValue {
 		} catch ( SMWDataItemException $e ) {
 			$this->addError( wfMsgForContent( 'smw_baduri', $this->m_wikitext ) );
 			$this->m_dataitem = new SMWDIURI( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
-			return true;
 		}
-
-		return true;
 	}
 
 	/**

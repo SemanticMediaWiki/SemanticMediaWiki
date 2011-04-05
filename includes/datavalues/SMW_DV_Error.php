@@ -25,7 +25,6 @@ class SMWErrorValue extends SMWDataValue {
 			$this->m_caption = $value;
 		}
 		$this->m_dataitem = new SMWDIBlob( $value );
-		return true;
 	}
 
 	protected function parseDBkeys( $args ) {

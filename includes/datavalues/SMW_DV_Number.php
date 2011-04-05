@@ -100,6 +100,7 @@ class SMWNumberValue extends SMWDataValue {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
+		$this->m_dataitem = null;
 		$this->m_unitin = false;
 		$this->m_unitvalues = false;
 		$number = $unit = '';
@@ -111,7 +112,9 @@ class SMWNumberValue extends SMWDataValue {
 		} elseif ( $this->convertToMainUnit( $number, $unit ) === false ) { // so far so good: now convert unit and check if it is allowed
 			$this->addError( wfMsgForContent( 'smw_unitnotallowed', $unit ) );
 		} // note that convertToMainUnit() also sets m_dataitem if valid
-		return true;
+		if ( $this->m_dataitem === null ) { // make sure this is always set
+			$this->m_dataitem = new SMWDINumber( 32202, $this->m_typeid );
+		}
 	}
 
 	protected function parseDBkeys( $args ) {
@@ -277,8 +280,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * Compute the value based on the given input number and unit string.
 	 * If the unit is not supported, return false, otherwise return true.
 	 * This is called when parsing user input, where the given unit value
-	 * has already been normalized. Note that the internal data item must
-	 * always be set, even if this method returns false.
+	 * has already been normalized.
 	 *
 	 * This class does not support any (non-empty) units, but subclasses
 	 * may overwrite this behavior.

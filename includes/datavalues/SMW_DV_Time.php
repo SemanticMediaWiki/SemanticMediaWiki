@@ -82,9 +82,12 @@
  * 
  * I18N includes the preferred order of dates, e.g. to interpret "5 6 2010".
  *
- * @todo Try to reuse more of MediaWiki's records, e.g. to obtain month names or to
- * format dates. The problem is that MW is based on SIO timestamps that don't extend to
- * very ancient or future dates, and that MW uses PHP functions that are bound to UNIX time.
+ * @todo Theparsing process can encounter many kinds of well-defined problems
+ * but uses only one error message. More detailed reporting should be done.
+ * @todo Try to reuse more of MediaWiki's records, e.g. to obtain month names
+ * or to format dates. The problem is that MW is based on SIO timestamps that
+ * don't extend to very ancient or future dates, and that MW uses PHP functions
+ * that are bound to UNIX time.
  *
  * @author Markus Krötzsch
  * @author Fabian Howahl
@@ -143,6 +146,7 @@ class SMWTimeValue extends SMWDataValue {
 		if ( $this->m_caption === false ) { // Store the caption now.
 			$this->m_caption = $value;
 		}
+		$this->m_dataitem = null;
 
 		/// TODO Direct JD input currently cannot cope with decimal numbers
 		$datecomponents = array();
@@ -157,19 +161,21 @@ class SMWTimeValue extends SMWDataValue {
 						$jd = floatval( reset( $datecomponents ) );
 						if ( $calendarmodel == 'MJD' ) $jd += SMWTimeValue::MJD_EPOCH;
 						$this->m_dataitem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT, $this->m_typeid );
-						return true;
 					} catch ( SMWDataItemException $e ) {
-						// fall through
+						smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+						$this->addError( wfMsgForContent( 'smw_nodatetime', $this->m_wikivalue ) );
 					}
+				} else {
+					smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+					$this->addError( wfMsgForContent( 'smw_nodatetime', $this->m_wikivalue ) );
 				}
-				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-				$this->addError( wfMsgForContent( 'smw_nodatetime', $this->m_wikivalue ) );
-			} elseif ( $this->setDateFromParsedValues( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset ) ) {
-				return true;
+			} else {
+				$this->setDateFromParsedValues( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset );
 			}
 		}
-		$this->m_dataitem = new SMWDITime( SMWDITime::CM_GREGORIAN, 32202 ); // always default to something
-		return true;
+		if ( $this->m_dataitem === null ) { // make sure that m_dataitem is set in any case
+			$this->m_dataitem = new SMWDITime( SMWDITime::CM_GREGORIAN, 32202 );
+		}
 	}
 
 	/**

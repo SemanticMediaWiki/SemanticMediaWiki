@@ -45,7 +45,6 @@ class SMWBoolValue extends SMWDataValue {
 			$this->addError( wfMsgForContent( 'smw_noboolean', $value ) );
 		}
 		$this->m_dataitem = new SMWDIBool( $boolvalue, $this->m_typeid );
-		return true;
 	}
 
 	protected function parseDBkeys( $args ) {

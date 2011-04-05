@@ -126,6 +126,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
+		$this->m_dataitem = null;
 		$this->m_sortkey = '';
 		if ( $value != '' ) {
 			$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
@@ -148,12 +149,16 @@ class SMWWikiPageValue extends SMWDataValue {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
 		}
+		if ( $this->m_dataitem === null ) { // make sure that m_dataitem is set in any case
+			$this->m_dataitem = new SMWDIWikiPage( 'ERROR', NS_MAIN, '', $this->m_typeid );
+		}
 	}
 
 	protected function parseDBkeys( $args ) {
 		if ( count( $args ) != 4 ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_notitle', $this->getPrefixedText() ) );
+			$this->m_dataitem = new SMWDIWikiPage( 'ERROR', NS_MAIN, '', $this->m_typeid );
 		} else {
 			$this->m_dataitem = new SMWDIWikiPage( $args[0], floatval( $args[1] ), $args[2], $args[3], $this->m_typeid  );
 			$this->m_textform = str_replace( '_', ' ', $this->m_dataitem->getDBkey() );

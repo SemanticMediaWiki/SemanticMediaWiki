@@ -34,7 +34,8 @@ class SMWImportValue extends SMWDataValue {
 		if ( count( $msglines ) < 2 ) { // error: no elements for this namespace
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_unknown_importns', $onto_ns ) );
-			return true;
+			$this->m_dataitem = new SMWDIString( 'ERROR' );
+			return;
 		}
 
 		// browse list in smw_import_* for section
@@ -94,7 +95,7 @@ class SMWImportValue extends SMWDataValue {
 //
 // 			if (null != $error) {
 // 				$this->addError($error);
-// 				return true;
+// 				return;
 // 			}
 // 		}
 
@@ -103,16 +104,13 @@ class SMWImportValue extends SMWDataValue {
 		} catch ( SMWStringLengthException $e ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_maxstring', '"' . $this->m_namespace . ' ' . $this->m_section . ' ' . $this->m_uri . '"' ) );
-			$this->m_dataitem = new SMWDIString( '' );
+			$this->m_dataitem = new SMWDIString( 'ERROR' );
 		}
 
 		// check whether caption is set, otherwise assign link statement to caption
 		if ( $this->m_caption === false ) {
 			$this->m_caption = "[" . $this->m_uri . " " . $this->m_qname . "] (" . $this->m_name . ")";
 		}
-
-
-		return true;
 	}
 
 	protected function parseDBkeys( $args ) {
