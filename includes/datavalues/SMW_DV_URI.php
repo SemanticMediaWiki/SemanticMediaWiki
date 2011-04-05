@@ -164,7 +164,7 @@ class SMWURIValue extends SMWDataValue {
 
 	protected function parseDBkeys( $args ) {
 		try {
-			$this->m_dataitem = SMWDIURI::doUnserialization( $args[0], $this->m_typeid);
+			$this->m_dataitem = SMWDIURI::doUnserialize( $args[0], $this->m_typeid);
 		} catch ( SMWDataItemException $e ) {
 			$this->addError( wfMsgForContent( 'smw_baduri', $this->m_wikitext ) );
 			$this->m_dataitem = new SMWDIURI( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
