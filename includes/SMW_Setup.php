@@ -142,6 +142,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWDIURI']			= $diDir . 'SMW_DI_URI.php';
 	$wgAutoloadClasses['SMWDIWikiPage']		= $diDir . 'SMW_DI_WikiPage.php';
 	$wgAutoloadClasses['SMWDITime']			= $diDir . 'SMW_DI_Time.php';
+	$wgAutoloadClasses['SMWDIConcept']		= $diDir . 'SMW_DI_Concept.php';
 
 	// Datavalues
 	$dvDir = $smwgIP . 'includes/datavalues/';

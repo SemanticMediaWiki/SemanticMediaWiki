@@ -15,38 +15,21 @@
  */
 class SMWConceptValue extends SMWDataValue {
 
-	protected $m_concept = ''; // XML-safe, HTML-safe, Wiki-compatible concept expression (query string)
-	protected $m_docu = '';    // text description of concept, can only be set by special function "setvalues"
-
 	public function getBaseType() {
 		return SMWDataValue::TYPE_CONCEPT;
 	}
 
 	protected function parseUserValue( $value ) {
-		$this->clear();
-		// this function is normally not used for this class, not created from user input directly
-		$this->m_concept = smwfXMLContentEncode( $value );
-		if ( $this->m_caption === false ) {
-			$this->m_caption = $value;
-		}
-		return true;
+		throw new Exception( 'Concepts cannot be initialised from user-provided strings. This should not happen.' );
 	}
 
 	protected function parseDBkeys( $args ) {
-		$this->m_concept = $args[0];
 		$this->m_caption = $args[0]; // is this useful?
-		$this->m_docu = $args[1] ? smwfXMLContentEncode( $args[1] ):'';
-		$this->m_queryfeatures = $args[2];
-		$this->m_size = $args[3];
-		$this->m_depth = $args[4];
+		$this->m_dataitem = new SMWDIConcept( $args[0], smwfXMLContentEncode( $args[1] ), $args[2], $args[3], $args[4], $this->m_typeid );
 	}
 
 	protected function clear() {
-		$this->m_concept = '';
-		$this->m_docu = '';
-		$this->m_queryfeatures = 0;
-		$this->m_size = -1;
-		$this->m_depth = -1;
+		$this->m_dataitem = new SMWDIConcept( '', '', 0, -1, -1, $this->m_typeid );
 	}
 
 	public function getShortWikiText( $linked = null ) {
@@ -76,7 +59,7 @@ class SMWConceptValue extends SMWDataValue {
 
 	public function getDBkeys() {
 		$this->unstub();
-		return array( $this->m_concept, $this->m_docu, $this->m_queryfeatures, $this->m_size, $this->m_depth );
+		return array( $this->m_dataitem->getConceptQuery(), $this->m_dataitem->getDocumentation(), $this->m_dataitem->getQueryFeatures(), $this->m_dataitem->getSize(), $this->m_dataitem->getDepth() );
 	}
 
 	public function getSignature() {
@@ -93,13 +76,14 @@ class SMWConceptValue extends SMWDataValue {
 
 	public function getWikiValue() {
 		$this->unstub();
-		return str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $this->m_concept );
+		/// This should not be used for anything. This class does not support wiki values.
+		return str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $this->m_dataitem->getConceptQuery() );
 	}
 
 	public function getExportData() {
 		if ( $this->isValid() ) {
 			$qp = new SMWQueryParser();
-			$desc = $qp->getQueryDescription( $this->getWikiValue() );
+			$desc = $qp->getQueryDescription( str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $this->m_dataitem->getConceptQuery() ) );
 			$exact = true;
 			$owldesc = $this->descriptionToExpData( $desc, $exact );
 			if ( $owldesc === false ) {
@@ -193,31 +177,31 @@ class SMWConceptValue extends SMWDataValue {
 	/// Return the concept's defining text (in SMW query syntax)
 	public function getConceptText() {
 		$this->unstub();
-		return $this->m_concept;
+		return $this->m_dataitem->getConceptQuery();
 	}
 
 	/// Return the optional concept documentation.
 	public function getDocu() {
 		$this->unstub();
-		return $this->m_docu;
+		return $this->m_dataitem->getDocumentation();
 	}
 
 	/// Return the concept's size (a metric used to estimate computation complexity).
 	public function getSize() {
 		$this->unstub();
-		return $this->m_size;
+		return $this->m_dataitem->getSize();
 	}
 
 	/// Return the concept's depth (a metric used to estimate computation complexity).
 	public function getDepth() {
 		$this->unstub();
-		return $this->m_depth;
+		return $this->m_dataitem->getDepth();
 	}
 
 	/// Return the concept's query feature bit field (a metric used to estimate computation complexity).
 	public function getQueryFeatures() {
 		$this->unstub();
-		return $this->m_queryfeatures;
+		return $this->m_dataitem->getQueryFeatures();
 	}
 
 	/// @deprecated Use setDBkeys(). This method will vanish before SMW 1.6
