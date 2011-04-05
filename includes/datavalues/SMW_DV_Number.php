@@ -118,7 +118,7 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	protected function parseDBkeys( $args ) {
-		$this->m_dataitem = SMWDINumber::doUnserialize( $args[0] );
+		$this->m_dataitem = SMWDINumber::doUnserialize( $args[0], $this->m_typeid );
 		$this->m_caption = false;
 		$this->m_unitin = false;
 		$this->makeUserValue();
