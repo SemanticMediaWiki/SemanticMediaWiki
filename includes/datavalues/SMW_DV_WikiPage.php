@@ -6,7 +6,13 @@
 
 /**
  * This datavalue implements special processing suitable for defining
- * wikipages as values of properties. In contrast to most other types
+ * wikipages as values of properties.
+ * 
+ * The class can support general wiki pages, or pages of a fixed 
+ * namespace, Whether a namespace is fixed is decided based on the
+ * type ID when the object is constructed.
+ * 
+ * In contrast to most other types
  * of values, wiki pages are determined by multiple components, as
  * retruned by their getDBkeys() method: DBkey, namespace, interwiki
  * prefix and sortkey. The last of those has a somewhat nonstandard
@@ -155,12 +161,12 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	protected function parseDBkeys( $args ) {
-		if ( count( $args ) != 4 ) {
+		if ( count( $args ) < 3 ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_notitle', $this->getPrefixedText() ) );
 			$this->m_dataitem = new SMWDIWikiPage( 'ERROR', NS_MAIN, '', $this->m_typeid );
 		} else {
-			$this->m_dataitem = new SMWDIWikiPage( $args[0], floatval( $args[1] ), $args[2], $args[3], $this->m_typeid  );
+			$this->m_dataitem = new SMWDIWikiPage( $args[0], floatval( $args[1] ), $args[2], $this->m_typeid  );
 			$this->m_textform = str_replace( '_', ' ', $this->m_dataitem->getDBkey() );
 			$this->m_id = -1;
 			$this->m_title = null;

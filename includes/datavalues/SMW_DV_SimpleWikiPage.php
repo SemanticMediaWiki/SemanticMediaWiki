@@ -13,6 +13,8 @@
  * advantage of the reduction of data is that these important values can be
  * stored in smaller tables that allow for faster direct access than general
  * page type values.
+ * 
+ * @deprecated This auxiliary class will vanish in SMW 1.6
  *
  * @author Markus Krötzsch
  * @ingroup SMWDataValues

@@ -6,7 +6,7 @@
 
 /**
  * This datavalue implements special processing suitable for defining types of
- * properties. Types behave largely like values of type SMWSimpleWikiPageValue
+ * properties. Types behave largely like values of type SMWWikiPageValue
  * with three main differences. First, they actively check if a value is an
  * alias for another type, modifying the internal representation accordingly.
  * Second, they have a modified display for emphasizing if some type is defined
@@ -16,7 +16,7 @@
  * @author Markus Krötzsch
  * @ingroup SMWDataValues
  */
-class SMWTypesValue extends SMWSimpleWikiPageValue {
+class SMWTypesValue extends SMWWikiPageValue {
 
 	private $m_isalias; // record whether this is an alias to another type, used to avoid duplicates when listing page types
 	protected $m_reallabel;
@@ -28,7 +28,8 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 	}
 
 	protected function parseDBkeys( $args ) {
-		parent::parseDBkeys( array( str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $args[0] ) ) ) );
+		$pagedbkey = str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $args[0] ) );
+		parent::parseDBkeys( array( $pagedbkey, $this->m_fixNamespace, '', $this->m_typeid ) );
 		$this->m_reallabel = $this->m_textform;
 		$this->m_isalias = false;
 	}
@@ -87,18 +88,20 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 	}
 
 	public function getWikiValue() {
-		return implode( '; ', $this->getTypeLabels() );
+		$this->unstub();
+		return $this->m_reallabel;
 	}
 
 	public function getHash() {
-		return implode( "\t", $this->getTypeLabels() );
+		$this->unstub();
+		return $this->m_reallabel;
 	}
 
 	/**
 	 * This class uses type ids as DB keys.
 	 */
 	public function getDBkey() {
-		return ( $this->isValid() ) ? SMWDataValueFactory::findTypeID( $this->m_reallabel ):'';
+		return ( $this->isValid() ) ? SMWDataValueFactory::findTypeID( $this->m_reallabel ) : '';
 	}
 
 	/**
@@ -107,7 +110,7 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 	 */
 	public function isBuiltIn() {
 		$v = $this->getDBkey();
-		return ( ( $this->isUnary() ) && ( $v { 0 } == '_' ) );
+		return ( $v { 0 } == '_' );
 	}
 
 	/**
@@ -117,39 +120,6 @@ class SMWTypesValue extends SMWSimpleWikiPageValue {
 	public function isAlias() {
 		$this->unstub();
 		return $this->m_isalias;
-	}
-
-	/**
-	 * Retrieve type labels if needed. Can be done lazily.
-	 */
-	public function getTypeLabels() {
-		$this->unstub();
-		return array( $this->m_reallabel );
-	}
-
-	/**
-	 * Retrieve type captions if needed. Can be done lazily. The captions
-	 * are different from the labels if type aliases are used.
-	 */
-	public function getTypeCaptions() {
-		$this->unstub();
-		return array( $this->m_textform );
-	}
-
-	/**
-	 * Retrieve type values.
-	 * @deprecated This method is no longer meaningful and will vanish before SMW 1.6
-	 */
-	public function getTypeValues() {
-		return array( $this );
-	}
-
-	/**
-	 * Is this a simple unary type or some composed n-ary type?
-	 * @deprecated This method is no longer meaningful and will vanish before SMW 1.6
-	 */
-	public function isUnary() {
-		return true;
 	}
 
 }
