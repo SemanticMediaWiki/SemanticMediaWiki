@@ -110,7 +110,7 @@ class SMWDIURI extends SMWDataItem {
 			$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 		} else {
 			$query = '';
-			$parts = explode( '?', $rest, 2 ); // try to split "hier-part#frag"
+			$parts = explode( '?', $parts[0], 2 ); // try to split "hier-part#frag"
 			$hierpart = $parts[0];
 			$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 		}
