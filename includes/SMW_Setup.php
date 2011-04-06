@@ -134,6 +134,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$diDir = $smwgIP . 'includes/dataitems/';
 	$wgAutoloadClasses['SMWDataItem']		= $diDir . 'SMW_DataItem.php';
 	$wgAutoloadClasses['SMWDataItemException']	= $diDir . 'SMW_DataItem.php';
+	$wgAutoloadClasses['SMWDIProperty']		= $diDir . 'SMW_DI_Property.php';
 	$wgAutoloadClasses['SMWDIBool']			= $diDir . 'SMW_DI_Bool.php';
 	$wgAutoloadClasses['SMWDINumber']		= $diDir . 'SMW_DI_Number.php';
 	$wgAutoloadClasses['SMWDIBlob']			= $diDir . 'SMW_DI_Blob.php';
