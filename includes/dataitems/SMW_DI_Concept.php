@@ -50,7 +50,7 @@ class SMWDIConcept extends SMWDataItem {
 	 * @param $depth integer concept query depth
 	 * @param $typeid string SMW type id
 	 */
-	public function __construct( $concept, $docu, $queryfeatures, $size, $depth, $typeid = '_con' ) {
+	public function __construct( $concept, $docu, $queryfeatures, $size, $depth, $typeid = '__con' ) {
 		$this->m_concept  = $concept;
 		$this->m_docu     = $docu;
 		$this->m_features = $queryfeatures;
