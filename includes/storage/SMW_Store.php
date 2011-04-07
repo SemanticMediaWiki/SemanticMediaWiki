@@ -225,14 +225,19 @@ abstract class SMWStore {
 		$this->doDataUpdate( $data );
 		
 		// Invalidate the page, so data stored on it gets displayed immeditaely in queries.
-		global $smwgAutoRefreshSubject;
+		global $smwgAutoRefreshSubject, $wgDBtype;
 		if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
 			$title = $data->getSubject()->getTitle();
 			$dbw = wfGetDB( DB_MASTER );
+			$ts = $dbw->timestamp();
+			
+			if ( $wgDBtype == 'mysql' ) {
+				$ts += 9001; // This is a hack to invalidate the page cache after the save completes, so it re-renders.
+			}
 			
 			$dbw->update(
 				'page',
-				array( 'page_touched' => $dbw->timestamp() + 9001 ),
+				array( 'page_touched' => $ts ),
 				$title->pageCond(),
 				__METHOD__
 			);
