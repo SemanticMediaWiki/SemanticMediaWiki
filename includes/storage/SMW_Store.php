@@ -229,15 +229,10 @@ abstract class SMWStore {
 		if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
 			$title = $data->getSubject()->getTitle();
 			$dbw = wfGetDB( DB_MASTER );
-			$ts = $dbw->timestamp();
-			
-			if ( $wgDBtype == 'mysql' ) {
-				$ts += 9001; // This is a hack to invalidate the page cache after the save completes, so it re-renders.
-			}
 			
 			$dbw->update(
 				'page',
-				array( 'page_touched' => $ts ),
+				array( 'page_touched' => $dbw->timestamp( time() + 9001 ) ),
 				$title->pageCond(),
 				__METHOD__
 			);
