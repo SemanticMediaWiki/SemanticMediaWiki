@@ -296,25 +296,32 @@ END;
 	}
 
 	public function getParameters() {
-		$params = parent::getParameters();
-		$params = array_merge( $params, parent::textDisplayParameters() );
+		$params = array_merge( parent::getParameters(), parent::textDisplayParameters() );
 		
 		$plainlist = ( $this->mFormat != 'ul' && $this->mFormat != 'ol' );
 		
 		if ( $plainlist ) {
-			$params[] = array( 'name' => 'sep', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_sep' ) );
+			$params['sep'] = new Parameter( 'sep' );
+			$params['sep']->setDescription( wfMsg( 'smw_paramdesc_sep' ) );
 		}
 		
-		$params[] = array( 'name' => 'template', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_template' ) );
+		$params['template'] = new Parameter( 'template' );
+		$params['template']->setDescription( wfMsg( 'smw_paramdesc_template' ) );		
 		
-		if ( ! $plainlist ) {
-			$params[] = array( 'name' => 'columns', 'type' => 'int', 'description' => wfMsg( 'smw_paramdesc_columns', 1 ) );
+		if ( !$plainlist ) {
+			$params['template'] = new Parameter( 'template', Parameter::TYPE_INTEGER );
+			$params['template']->setDescription( wfMsg( 'smw_paramdesc_columns', 1 ) );			
 		}
 		
-		$params[] = array( 'name' => 'userparam', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_userparam' ) );
-		$params[] = array( 'name' => 'introtemplate', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_introtemplate' ) );
-		$params[] = array( 'name' => 'outrotemplate', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_outrotemplate' ) );
+		$params['userparam'] = new Parameter( 'userparam' );
+		$params['userparam']->setDescription( wfMsg( 'smw_paramdesc_userparam' ) );		
 
+		$params['introtemplate'] = new Parameter( 'introtemplate' );
+		$params['introtemplate']->setDescription( wfMsg( 'smw_paramdesc_introtemplate' ) );		
+
+		$params['outrotemplate'] = new Parameter( 'outrotemplate' );
+		$params['outrotemplate']->setDescription( wfMsg( 'smw_paramdesc_outrotemplate' ) );		
+				
 		return $params;
 	}
 

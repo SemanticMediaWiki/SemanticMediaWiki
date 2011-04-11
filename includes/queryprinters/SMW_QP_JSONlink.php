@@ -12,7 +12,7 @@
  * @ingroup SMWQuery
  */
 class SMWJSONResultPrinter extends SMWResultPrinter {
-	protected $types = array( "_wpg" => "text", "_num" => "number", "_dat" => "date", "_geo" => "text", "_str" => "text" );
+	protected $types = array( '_wpg' => 'text', '_num' => 'number', '_dat' => 'date', '_geo' => 'text', '_str' => 'text' );
 
 	public function getMimeType( $res ) {
 		return 'application/JSON';
@@ -27,7 +27,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getQueryMode( $context ) {
-		return ( $context == SMWQueryProcessor::SPECIAL_PAGE ) ? SMWQuery::MODE_INSTANCES:SMWQuery::MODE_NONE;
+		return ( $context == SMWQueryProcessor::SPECIAL_PAGE ) ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
 	}
 
 	public function getName() {
@@ -143,6 +143,3 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 	}
 
 }
-
-
-
