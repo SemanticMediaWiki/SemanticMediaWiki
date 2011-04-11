@@ -180,8 +180,13 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	public function getParameters() {
 		$params = array_merge( parent::getParameters(), $this->exportFormatParameters() );
 		
-		$params[] = array( 'name' => 'separator', 'type' => 'string', 'description' => wfMsg( 'smw-paramdesc-dsv-separator' ), 'default' => $this->separator );
-		$params[] = array( 'name' => 'filename', 'type' => 'string', 'description' => wfMsg( 'smw-paramdesc-dsv-filename' ), 'default' => $this->fileName );
+		$params['separator'] = new Parameter( 'separator' );
+		$params['separator']->setDescription( wfMsg( 'smw-paramdesc-dsv-separator' ) );
+		$params['separator']->setDefault( $this->separator );
+		
+		$params['filename'] = new Parameter( 'filename' );
+		$params['filename']->setDescription( wfMsg( 'smw-paramdesc-dsv-filename' ) );
+		$params['filename']->setDefault( $this->fileName );
 		
 		return $params;
 	}

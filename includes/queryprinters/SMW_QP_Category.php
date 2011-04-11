@@ -171,13 +171,8 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 	public function getParameters() {
 		$params = array_merge( parent::getParameters(), $this->textDisplayParameters() );
 		
-		if ( defined( 'SMW_SUPPORTS_VALIDATOR' ) ) {
-			$params['columns'] = new Parameter( 'columns', Parameter::TYPE_INTEGER );
-			$params['columns']->setDescription( wfMsg( 'smw_paramdesc_columns', 3 ) );
-		}
-		else {
-			$params[] = array( 'name' => 'columns', 'type' => 'int', 'description' => wfMsg( 'smw_paramdesc_columns', 3 ) );
-		}
+		$params['columns'] = new Parameter( 'columns', Parameter::TYPE_INTEGER );
+		$params['columns']->setDescription( wfMsg( 'smw_paramdesc_columns', 3 ) );
 		
 		return $params;
 	}
