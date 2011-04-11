@@ -173,6 +173,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 		
 		$params['columns'] = new Parameter( 'columns', Parameter::TYPE_INTEGER );
 		$params['columns']->setDescription( wfMsg( 'smw_paramdesc_columns', 3 ) );
+		$params['columns']->setDefault( '', false );
 		
 		return $params;
 	}

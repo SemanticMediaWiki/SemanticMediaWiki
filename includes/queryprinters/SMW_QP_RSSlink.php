@@ -151,8 +151,11 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 	public function getParameters() {
 		$params = array_merge( parent::getParameters(), $this->exportFormatParameters() );
 		
-		$params[] = array( 'name' => 'title', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_rsstitle' ) );
-		$params[] = array( 'name' => 'description', 'type' => 'string', 'description' => wfMsg( 'smw_paramdesc_rssdescription' ) );
+		$params['title'] = new Parameter( 'title' );
+		$params['title']->setDescription( wfMsg( 'smw_paramdesc_rsstitle' ) );
+		
+		$params['description'] = new Parameter( 'title' );
+		$params['description']->setDescription( wfMsg( 'smw_paramdesc_rssdescription' ) );
 		
 		return $params;
 	}
