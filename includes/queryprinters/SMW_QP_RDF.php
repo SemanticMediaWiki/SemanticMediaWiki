@@ -97,8 +97,11 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getParameters() {
-		$syntaxparam = array( 'name' => 'syntax', 'type' => 'enumeration', 'description' => wfMsg( 'smw_paramdesc_rdfsyntax' ), 'values' =>array( 'rdfxml', 'turtle' ) ); 
-		return array_merge( parent::exportFormatParameters(), array( $syntaxparam ) );
+		$params = array();
+		
+		$params[] = array( 'name' => 'syntax', 'type' => 'enumeration', 'description' => wfMsg( 'smw_paramdesc_rdfsyntax' ), 'values' =>array( 'rdfxml', 'turtle' ) );
+		
+		return array_merge( parent::getParameters(), $this->exportFormatParameters(), $params );
 	}
 
 }

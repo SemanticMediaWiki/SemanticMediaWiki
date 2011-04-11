@@ -552,9 +552,7 @@ abstract class SMWResultPrinter {
 	 * @return array
 	 */
 	protected function exportFormatParameters() {
-		$params = $this->getParameters();
-		
-		unset( $params['link'] );
+		$params = array();
 		
 		$params['searchlabel'] = new Parameter( 'searchlabel' );
 		$params['searchlabel']->setDescription( wfMsg( 'smw_paramdesc_searchlabel' ) );

@@ -105,9 +105,15 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getParameters() {
-		$params = parent::exportFormatParameters();
+		$params = array_merge( parent::getParameters(), $this->exportFormatParameters() );
 		
-		$params[] = array( 'name' => 'sep', 'type' => 'string', 'description' => wfMsg( 'smw-paramdesc-csv-sep' ) );
+		if ( defined( 'SMW_SUPPORTS_VALIDATOR' ) ) {
+			$params['sep'] = new Parameter( 'sep' );
+			$params['sep']->setDescription( wfMsg( 'smw-paramdesc-csv-sep' ) );
+		}
+		else {
+			$params[] = array( 'name' => 'sep', 'type' => 'string', 'description' => wfMsg( 'smw-paramdesc-csv-sep' ) );
+		}
 		
 		return $params;
 	}

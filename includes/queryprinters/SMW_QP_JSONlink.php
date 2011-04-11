@@ -139,7 +139,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getParameters() {
-		return parent::exportFormatParameters();
+		return array_merge( parent::getParameters(), $this->exportFormatParameters() );
 	}
 
 }
