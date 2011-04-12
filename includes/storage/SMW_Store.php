@@ -224,7 +224,7 @@ abstract class SMWStore {
 		$this->doDataUpdate( $data );
 
 		// Invalidate the page, so data stored on it gets displayed immeditaely in queries.
-		global $smwgAutoRefreshSubject, $wgDBtype;
+		global $smwgAutoRefreshSubject;
 		if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
 			$title = Title::makeTitle( $data->getSubject()->getNamespace(), $data->getSubject()->getDBkey() );
 			$dbw = wfGetDB( DB_MASTER );
