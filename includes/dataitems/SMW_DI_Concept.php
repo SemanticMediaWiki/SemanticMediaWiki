@@ -82,6 +82,10 @@ class SMWDIConcept extends SMWDataItem {
 		return $this->m_depth;
 	}
 
+	public function getSortKey() {
+		return $this->m_docu;
+	}
+
 	public function getSerialization() {
 		return serialize( $this );
 	}

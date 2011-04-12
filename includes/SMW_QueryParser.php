@@ -315,7 +315,7 @@ class SMWQueryParser {
 				return null; ///TODO: read some more chunks and try to finish [[ ]]
 			}
 
-			$typeid = $property->getPropertyTypeID();
+			$typeid = $property->getDataItem()->findPropertyTypeID();
 			$inverse = $property->isInverse();
 			$prevname = $name;
 			$properties[] = $property;
@@ -377,7 +377,7 @@ class SMWQueryParser {
 						}
 					} ///NOTE: at this point, we normally already read one more chunk behind the value
 
-					$dv = SMWDataValueFactory::newPropertyObjectValue( $property );
+					$dv = SMWDataValueFactory::newPropertyObjectValue( $property->getDataItem() );
 					$vd = $dv->getQueryDescription( $value );
 					$innerdesc = $this->addDescription( $innerdesc, $vd, false );
 					$this->m_errors = $this->m_errors + $dv->getErrors();
@@ -395,7 +395,7 @@ class SMWQueryParser {
 		$properties = array_reverse( $properties );
 
 		foreach ( $properties as $property ) {
-			$innerdesc = new SMWSomeProperty( $property, $innerdesc );
+			$innerdesc = new SMWSomeProperty( $property->getDataItem(), $innerdesc );
 		}
 
 		$result = $innerdesc;

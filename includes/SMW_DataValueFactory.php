@@ -43,9 +43,24 @@ class SMWDataValueFactory {
 	/**
 	 * Array of class names for creating new SMWDataValue, indexed by type id.
 	 *
-	 * @var array of SMWDataValue
+	 * @var array of string
 	 */
 	static private $mTypeClasses;
+
+	/**
+	 * Array of data item classes, indexed by type id.
+	 *
+	 * @note This is only used for transition. Data items will not be created directly by SMWDataValueFactory in the future.
+	 * @var array of string
+	 */
+	static private $mTypeDiClasses;
+
+	/**
+	 * Array of data item classes, indexed by type id.
+	 *
+	 * @var array of integer
+	 */
+	static private $mTypeDataItemIds;
 
 	/**
 	 * Create an SMWDataValue object that can hold values for the type that the
@@ -55,7 +70,7 @@ class SMWDataValueFactory {
 	 * @param SMWTypesValue $typevalue Represents the type of the object
 	 * @param mixed $value user value string, or false if unknown
 	 * @param mixed $caption user-defined caption or false if none given
-	 * @param $property SMWPropertyValue property object for which this value was made, or NULL
+	 * @param SMWDIProperty $property property object for which this value was made, or null
 	 */
 	static public function newTypeObjectValue( SMWTypesValue $typeValue, $value = false, $caption = false, $property = null ) {
 		if ( !$typeValue->isValid() ) { // just return the error, pass it through
@@ -73,13 +88,13 @@ class SMWDataValueFactory {
 	 * is created, the value of which can be set later on.
 	 *
 	 * @param $typeid id string for the given type
-	 * @param mixed $value user value string, or false if unknown
-	 * @param mixed $caption user-defined caption or false if none given
-	 * @param SMWPropertyValue $property Property object for which this value was made, or NULL
+	 * @param $value mixed user value string, or false if unknown
+	 * @param $caption mixed user-defined caption, or false if none given
+	 * @param $property SMWDIProperty property object for which this value is made, or NULL
 	 *
 	 * @return SMWDataValue
 	 */
-	static public function newTypeIDValue( $typeid, $value = false, $caption = false, $property = null ) {
+	static public function newTypeIdValue( $typeid, $value = false, $caption = false, $property = null ) {
 		self::initDatatypes();
 
 		if ( array_key_exists( $typeid, self::$mTypeClasses ) ) { // direct response for basic types
@@ -88,7 +103,7 @@ class SMWDataValueFactory {
 			$result = new self::$mTypeClasses['__lin']( $typeid );
 		} else { // type really unknown
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-			return new SMWErrorValue( wfMsgForContent( 'smw_unknowntype', $typeid ), $value, $caption );
+			return new SMWErrorValue( $typeid, wfMsgForContent( 'smw_unknowntype', $typeid ), $value, $caption );
 		}
 
 		if ( $property !== null ) {
@@ -102,21 +117,57 @@ class SMWDataValueFactory {
 	}
 
 	/**
-	 * Create a value for the given property, provided as an SMWPropertyValue
-	 * object. If no value is given, an empty container is created, the value
-	 * of which can be set later on.
+	 * Create a value for a data item.
 	 *
-	 * @param SMWPropertyValue $property
-	 * @param mixed $value
-	 * @param mixed $caption
+	 * @param SMWDataItem $typeid id string for the given type
+	 * @param mixed $caption user-defined caption, or false if none given
+	 * @param SMWDIProperty $property property object for which this value is made, or NULL
 	 *
 	 * @return SMWDataValue
 	 */
-	static public function newPropertyObjectValue( SMWPropertyValue $property, $value = false, $caption = false ) {
+	static public function newDataItemValue( SMWDataItem $dataItem, $caption = false, $property = null ) {
+		$result = self::newTypeIdValue( $dataItem->getTypeID(), false, $caption, $property );
+		$result->setDataItem( $dataItem );
+		if ( $caption !== false ) {
+			$result->setCaption( $caption );
+		}
+		return $result;
+	}
+
+
+	/**
+	 * Get the preferred data item ID for a given type. The ID defines the
+	 * appropriate data item class for processing data of this type. See
+	 * SMWDataItem for possible values.
+	 *
+	 * @param $typeid id string for the given type
+	 * @return integer data item ID
+	 */
+	static public function getDataItemId( $typeid ) {
+		self::initDatatypes();
+		if ( array_key_exists( $typeid, self::$mTypeDataItemIds ) ) {
+			return self::$mTypeDataItemIds[$typeid];
+		} else {
+			return SMWDataItem::TYPE_NOTYPE;
+		}
+	}
+
+	/**
+	 * Create a value for the given property, provided as an SMWDIProperty
+	 * object. If no value is given, an empty container is created, the value
+	 * of which can be set later on.
+	 *
+	 * @param $property SMWDIProperty
+	 * @param $value mixed
+	 * @param $caption mixed
+	 *
+	 * @return SMWDataValue
+	 */
+	static public function newPropertyObjectValue( SMWDIProperty $property, $value = false, $caption = false ) {
 		if ( $property->isInverse() ) {
 			return self::newTypeIdValue( '_wpg', $value, $caption, $property );
 		} else {
-			return self::newTypeIDValue( $property->getPropertyTypeID(), $value, $caption, $property );
+			return self::newTypeIdValue( $property->findPropertyTypeID(), $value, $caption, $property );
 		}
 	}
 
@@ -170,6 +221,74 @@ class SMWDataValueFactory {
 			'__err' => 'SMWErrorValue', // Special error type
 			'__imp' => 'SMWImportValue', // Special import vocabulary type
 			'__pro' => 'SMWPropertyValue', // Property type (possibly predefined, no always based on a page)
+		);
+
+		self::$mTypeDiClasses = array(
+			'_txt'  => 'SMWDIBlob', // Text type
+			'_cod'  => 'SMWDIBlob', // Code type
+			'_str'  => 'SMWDIString', // String type
+			'_ema'  => 'SMWDIUri', // Email type
+			'_uri'  => 'SMWDIUri', // URL/URI type
+			'_anu'  => 'SMWDIUri', // Annotation URI type
+			'_tel'  => 'SMWDIUri', // Phone number (URI) type
+			'_wpg'  => 'SMWDIWikiPage', // Page type
+			'_wpp'  => 'SMWDIWikiPage', // Property page type TODO: make available to user space
+			'_wpc'  => 'SMWDIWikiPage', // Category page type TODO: make available to user space
+			'_wpf'  => 'SMWDIWikiPage', // Form page type for Semantic Forms
+			'_num'  => 'SMWDINumber', // Number type
+			'_tem'  => 'SMWDINumber', // Temperature type
+			'_dat'  => 'SMWDITime', // Time type
+			'_boo'  => 'SMWDIBoolean', // Boolean type
+			'_rec'  => 'SMWDIContainer', // Value list type (replacing former nary properties)
+			// Special types are not avaialble directly for users (and have no local language name):
+			'__typ' => 'SMWDIWikiPage', // Special type page type
+			'__tls' => 'SMWDIString', // Special type list for decalring _rec properties
+			'__con' => 'SMWDIConcept', // Special concept page type
+			'__sps' => 'SMWDIString', // Special string type
+			'__spu' => 'SMWDIUri', // Special uri type
+			'__sup' => 'SMWDIWikiPage', // Special subproperty type
+			'__suc' => 'SMWDIWikiPage', // Special subcategory type
+			'__spf' => 'SMWDIWikiPage', // Special Form page type for Semantic Forms
+			'__sin' => 'SMWDIWikiPage', // Special instance of type
+			'__red' => 'SMWDIWikiPage', // Special redirect type
+			'__lin' => 'SMWDINumber', // Special linear unit conversion type
+			'__err' => 'SMWDIString', // Special error type
+			'__imp' => 'SMWDIString', // Special import vocabulary type
+			'__pro' => 'SMWDIProperty', // Property type (possibly predefined, no always based on a page)
+		);
+
+		self::$mTypeDataItemIds = array(
+			'_txt'  => SMWDataItem::TYPE_BLOB, // Text type
+			'_cod'  => SMWDataItem::TYPE_BLOB, // Code type
+			'_str'  => SMWDataItem::TYPE_STRING, // String type
+			'_ema'  => SMWDataItem::TYPE_URI, // Email type
+			'_uri'  => SMWDataItem::TYPE_URI, // URL/URI type
+			'_anu'  => SMWDataItem::TYPE_URI, // Annotation URI type
+			'_tel'  => SMWDataItem::TYPE_URI, // Phone number (URI) type
+			'_wpg'  => SMWDataItem::TYPE_WIKIPAGE, // Page type
+			'_wpp'  => SMWDataItem::TYPE_WIKIPAGE, // Property page type TODO: make available to user space
+			'_wpc'  => SMWDataItem::TYPE_WIKIPAGE, // Category page type TODO: make available to user space
+			'_wpf'  => SMWDataItem::TYPE_WIKIPAGE, // Form page type for Semantic Forms
+			'_num'  => SMWDataItem::TYPE_NUMBER, // Number type
+			'_tem'  => SMWDataItem::TYPE_NUMBER, // Temperature type
+			'_dat'  => SMWDataItem::TYPE_TIME, // Time type
+			'_boo'  => SMWDataItem::TYPE_BOOLEAN, // Boolean type
+			'_rec'  => SMWDataItem::TYPE_CONTAINER, // Value list type (replacing former nary properties)
+			// Special types are not avaialble directly for users (and have no local language name):
+			'__typ' => SMWDataItem::TYPE_WIKIPAGE, // Special type page type
+			'__tls' => SMWDataItem::TYPE_STRING, // Special type list for decalring _rec properties
+			'__con' => SMWDataItem::TYPE_CONCEPT, // Special concept page type
+			'__sps' => SMWDataItem::TYPE_STRING, // Special string type
+			'__spu' => SMWDataItem::TYPE_URI, // Special uri type
+			'__sup' => SMWDataItem::TYPE_WIKIPAGE, // Special subproperty type
+			'__suc' => SMWDataItem::TYPE_WIKIPAGE, // Special subcategory type
+			'__spf' => SMWDataItem::TYPE_WIKIPAGE, // Special Form page type for Semantic Forms
+			'__sin' => SMWDataItem::TYPE_WIKIPAGE, // Special instance of type
+			'__red' => SMWDataItem::TYPE_WIKIPAGE, // Special redirect type
+			'__lin' => SMWDataItem::TYPE_NUMBER, // Special linear unit conversion type
+			'__err' => SMWDataItem::TYPE_STRING, // Special error type
+			'__imp' => SMWDataItem::TYPE_STRING, // Special import vocabulary type
+			'__pro' => SMWDataItem::TYPE_PROPERTY, // Property type (possibly predefined, no always based on a page)
 		);
 
 		wfRunHooks( 'smwInitDatatypes' );

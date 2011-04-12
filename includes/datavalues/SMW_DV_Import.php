@@ -114,23 +114,38 @@ class SMWImportValue extends SMWDataValue {
 	}
 
 	protected function parseDBkeys( $args ) {
-		$parts = explode( ' ', $args[0], 3 );
-		if ( count( $parts ) != 3 ) {
+		try {
+			$dataItem = new SMWDIString( $args[0] );
+			$this->setDataItem( $dataItem );
+		} catch ( SMWStringLengthException $e ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-			$this->addError( wfMsgForContent( 'smw_parseerror' ) );
-		} else {
-			$this->m_namespace = $parts[0];
-			$this->m_section = $parts[1];
-			$this->m_uri = $parts[2];
-			try {
-				$this->m_dataitem = new SMWDIString( $args[0] );
-			} catch ( SMWStringLengthException $e ) {
+			$this->addError( wfMsgForContent( 'smw_maxstring', '"' . $args[0] . '"' ) );
+			$this->m_dataitem = new SMWDIString( '' );
+		}
+	}
+
+	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_STRING ) {
+			$this->m_dataitem = $dataItem;
+			$parts = explode( ' ', $dataItem->getString(), 3 );
+			if ( count( $parts ) != 3 ) {
 				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-				$this->addError( wfMsgForContent( 'smw_maxstring', '"' . $args[0] . '"' ) );
-				$this->m_dataitem = new SMWDIString( '' );
+				$this->addError( wfMsgForContent( 'smw_parseerror' ) );
+			} else {
+				$this->m_namespace = $parts[0];
+				$this->m_section = $parts[1];
+				$this->m_uri = $parts[2];
+				$this->m_qname = $this->m_namespace . ':' . $this->m_section;
+				$this->m_caption = "[" . $this->m_uri . " " . $this->m_qname . "] (" . $this->m_name . ")";
 			}
-			$this->m_qname = $this->m_namespace . ':' . $this->m_section;
-			$this->m_caption = "[" . $this->m_uri . " " . $this->m_qname . "] (" . $this->m_name . ")";
+			return true;
+		} else {
+			return false;
 		}
 	}
 

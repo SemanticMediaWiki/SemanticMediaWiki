@@ -101,9 +101,9 @@ class SMWSQLStore2QueryEngine {
 			return $this->m_errors;
 		}
 
-		$values = $this->m_store->getPropertyValues( $concept, SMWPropertyValue::makeProperty( '_CONC' ) );// two lines due to "strict standards" warning
-		$dv = end( $values );
-		$desctxt = ( $dv !== false ) ? $dv->getWikiValue() : false;
+		$values = $this->m_store->getPropertyValues( $concept, new SMWDIProperty( '_CONC' ) );// two lines due to "strict standards" warning
+		$di = end( $values );
+		$desctxt = ( $di !== false ) ? $di->getConceptQuery() : false;
 		$this->m_errors = array();
 
 		if ( $desctxt ) { // concept found
@@ -408,7 +408,7 @@ class SMWSQLStore2QueryEngine {
 
 		while ( ( $count < $query->getLimit() ) && ( $row = $this->m_dbs->fetchObject( $res ) ) ) {
 			$count++;
-			$v = SMWWikiPageValue::makePage( $row->t, $row->ns, $row->sortkey );
+			$v = new SMWDIWikiPage( $row->t, $row->ns, $row->iw );
 			$qr[] = $v;
 			$this->m_store->cacheSMWPageID( $row->id, $row->t, $row->ns, $row->iw );
 		}
@@ -587,14 +587,14 @@ class SMWSQLStore2QueryEngine {
 	 * to check for this and discard the query in this case.
 	 * @todo Check if hierarchy queries work as expected.
 	 */
-	protected function compilePropertyCondition( SMWSQLStore2Query $query, $property, SMWDescription $valuedesc ) {
+	protected function compilePropertyCondition( SMWSQLStore2Query $query, SMWDIProperty $property, SMWDescription $valuedesc ) {
 		$tableid = SMWSQLStore2::findPropertyTableID( $property );
 
 		if ( $tableid == '' ) { // probably a type-polymorphic property
 			$typeid = $valuedesc->getTypeID();
 			$tableid = SMWSQLStore2::findTypeTableID( $typeid );
 		} else { // normal property
-			$typeid = $property->getPropertyTypeID();
+			$typeid = $property->findPropertyTypeID();
 		}
 
 		if ( $tableid == '' ) { // Still no table to query? Give up.
@@ -611,7 +611,7 @@ class SMWSQLStore2QueryEngine {
 		}
 
 		list( $sig, $valueindex, $labelindex ) = SMWSQLStore2::getTypeSignature( $typeid );
-		$sortkey = $property->getDBkey(); // TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
+		$sortkey = $property->getKey(); // TODO: strictly speaking, the DB key is not what we want here, since sortkey is based on a "wiki value"
 
 		// *** Basic settings: table, joinfield, and objectfields ***//
 		$query->jointable = $proptable->name;
@@ -634,7 +634,7 @@ class SMWSQLStore2QueryEngine {
 		if ( $proptable->fixedproperty == false ) {
 			$pid = $this->m_store->getSMWPropertyID( $property );
 
-			if ( !$property->getPropertyID() || ( $property->getPropertyTypeID() != '__err' ) ) {
+			if ( $property->isUserDefined() || ( $property->findPropertyTypeID() != '__err' ) ) {
 				// also make property hierarchy (may or may not be executed later on)
 				// exclude type-polymorphic properties _1, _2, ... (2nd check above suffices, but 1st is faster to check)
 				// we could also exclude other cases here, if desired
@@ -1076,7 +1076,7 @@ class SMWSQLStore2QueryEngine {
 					$sortprop = SMWPropertyValue::makeUserProperty( $propkey );
 
 					if ( $sortprop->isValid() ) {
-						$extraproperties[] = new SMWSomeProperty( $sortprop, new SMWThingDescription() );
+						$extraproperties[] = new SMWSomeProperty( $sortprop->getDataItem(), new SMWThingDescription() );
 					}
 				}
 			}

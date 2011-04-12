@@ -77,10 +77,9 @@ class SMWRequestOptions {
 	
 	/**
 	 * Should the result be ordered? The employed order is defined
-	 * by the type of result that are requested: Title objects and
-	 * strings are ordered alphabetically, whereas SMWDataValue
-	 * objects can provide different custom orders if they are scalar.
-	 * Usually, the order should be fairly "natural".
+	 * by the type of result that are requested: wiki pages and strings
+	 * are ordered alphabetically, whereas other data is ordered
+	 * numerically. Usually, the order should be fairly "natural".
 	 */
 	public $sort = false;
 	
@@ -155,47 +154,45 @@ abstract class SMWStore {
 	 * than requested when a filter is used. Filtering just ensures that
 	 * only necessary requests are made, i.e. it improves performance.
 	 */
-	public abstract function getSemanticData( $subject, $filter = false );
+	public abstract function getSemanticData( SMWDIWikiPage $subject, $filter = false );
 
 	/**
 	 * Get an array of all property values stored for the given subject and property. The result
-	 * is an array of SMWDataValue objects. The provided outputformat is a string identifier that
-	 * may be used by the datavalues to modify their output behaviour, e.g. when interpreted as a
-	 * desired unit to convert the output to.
+	 * is an array of SMWDataItem objects.
 	 *
 	 * If called with $subject == NULL, all values for the given property are returned.
 	 */
-	public abstract function getPropertyValues( $subject, SMWPropertyValue $property, $requestoptions = null, $outputformat = '' );
+	public abstract function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null );
 
 	/**
 	 * Get an array of all subjects that have the given value for the given property. The
-	 * result is an array of SMWWikiPageValue objects. If NULL is given as a value, all subjects having
+	 * result is an array of SMWDIWikiPage objects. If NULL is given as a value, all subjects having
 	 * that property are returned.
 	 */
-	public abstract function getPropertySubjects( SMWPropertyValue $property, $value, $requestoptions = null );
+	public abstract function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null );
 
 	/**
 	 * Get an array of all subjects that have some value for the given property. The
-	 * result is an array of SMWWikiPageValue objects.
+	 * result is an array of SMWDIWikiPage objects.
 	 */
-	public abstract function getAllPropertySubjects( SMWPropertyValue $property, $requestoptions = null );
+	public abstract function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null );
 
 	/**
 	 * Get an array of all properties for which the given subject has some value. The result is an
-	 * array of SMWPropertyValue objects.
+	 * array of SMWDIProperty objects.
 	 * 
-	 * @param $subject Title or SMWWikiPageValue denoting the subject
+	 * @param $subject SMWDIWikiPage denoting the subject
 	 * @param $requestoptions SMWRequestOptions optionally defining further options
 	 */
-	public abstract function getProperties( $subject, $requestoptions = null );
+	public abstract function getProperties( SMWDIWikiPage $subject, $requestoptions = null );
 
 	/**
 	 * Get an array of all properties for which there is some subject that relates to the given value.
-	 * The result is an array of SMWWikiPageValue objects.
+	 * The result is an array of SMWDIWikiPage objects.
 	 * @note In some stores, this function might be implemented partially so that only values of type Page
 	 * (_wpg) are supported.
 	 */
-	public abstract function getInProperties( SMWDataValue $object, $requestoptions = null );
+	public abstract function getInProperties( SMWDataItem $object, $requestoptions = null );
 
 ///// Writing methods /////
 
@@ -215,31 +212,33 @@ abstract class SMWStore {
 	public abstract function doDataUpdate( SMWSemanticData $data );
 
 	/**
-	 * Update the semantic data stored for some individual. The data is given
-	 * as a SMWSemanticData object, which contains all semantic data for one particular
-	 * subject.
+	 * Update the semantic data stored for some individual. The data is
+	 * given as a SMWSemanticData object, which contains all semantic data
+	 * for one particular subject.
+	 *
+	 * @param $data SMWSemanticData
 	 */	
 	public function updateData( SMWSemanticData $data ) {
 		wfRunHooks( 'SMWStore::updateDataBefore', array( $this, $data ) );
-		
+
 		$this->doDataUpdate( $data );
-		
+
 		// Invalidate the page, so data stored on it gets displayed immeditaely in queries.
 		global $smwgAutoRefreshSubject, $wgDBtype;
 		if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
-			$title = $data->getSubject()->getTitle();
+			$title = Title::makeTitle( $data->getSubject()->getNamespace(), $data->getSubject()->getDBkey() );
 			$dbw = wfGetDB( DB_MASTER );
-			
+
 			$dbw->update(
 				'page',
 				array( 'page_touched' => $dbw->timestamp( time() + 9001 ) ),
 				$title->pageCond(),
 				__METHOD__
 			);
-			
+
 			HTMLFileCache::clearFileCache( $title );			
 		}
-		
+
 		wfRunHooks( 'SMWStore::updateDataAfter', array( $this, $data ) );
 	}
 	
@@ -247,7 +246,7 @@ abstract class SMWStore {
 	 * Clear all semantic data specified for some page.
 	 */
 	public function clearData( Title $subject ) {
-		$emptydata = new SMWSemanticData( SMWWikiPageValue::makePageFromTitle( $subject ) );
+		$emptydata = new SMWSemanticData( new SMWDIWikiPage( $subject->getDbKey(), $subject->getNamespace(), $subject->getInterwiki() ) );
 		$this->updateData( $emptydata );
 	}
 

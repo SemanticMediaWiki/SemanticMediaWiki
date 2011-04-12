@@ -34,6 +34,21 @@ class SMWTypesValue extends SMWWikiPageValue {
 		$this->m_isalias = false;
 	}
 
+	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		if ( parent::setDataItem( $dataItem ) ) {
+			$this->m_reallabel = $this->m_textform;
+			$this->m_isalias = false;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public function getLongWikiText( $linked = null ) {
 		$this->unstub();
 		if ( ( $linked === null ) || ( $linked === false ) ) {

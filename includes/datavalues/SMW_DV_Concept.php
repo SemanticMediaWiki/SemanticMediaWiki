@@ -28,6 +28,21 @@ class SMWConceptValue extends SMWDataValue {
 		$this->m_dataitem = new SMWDIConcept( $args[0], smwfXMLContentEncode( $args[1] ), $args[2], $args[3], $args[4], $this->m_typeid );
 	}
 
+	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_CONCEPT ) {
+			$this->m_dataitem = $dataItem;
+			$this->m_caption = $dataItem->getConceptQuery(); // probably useless
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	protected function clear() {
 		$this->m_dataitem = new SMWDIConcept( '', '', 0, -1, -1, $this->m_typeid );
 	}

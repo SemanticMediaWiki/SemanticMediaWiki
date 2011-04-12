@@ -91,7 +91,7 @@ class SMWSpecialBrowse extends SpecialPage {
 
 			$html .= $this->displayHead();
 			if ( $this->showoutgoing ) {
-				$data = smwfGetStore()->getSemanticData( $this->subject );
+				$data = smwfGetStore()->getSemanticData( $this->subject->getDataItem() );
 				$html .= $this->displayData( $data, $leftside );
 				$html .= $this->displayCenter();
 			}
@@ -126,16 +126,17 @@ class SMWSpecialBrowse extends SpecialPage {
 		// In this case, there is an "i" after the "smwb-". This is set here.
 		$inv = $left ? '':'i';
 		$html = "<table class=\"smwb-" . $inv . "factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
-		$properties = $data->getProperties();
+		$diProperties = $data->getProperties();
 		$noresult = true;
-		foreach ( $properties as $property ) {
+		foreach ( $diProperties as $diProperty ) {
+			$dvProperty = SMWDataValueFactory::newDataItemValue( $diProperty );
 			$displayline = true;
-			if ( $property->isVisible() ) {
-				$property->setCaption( $this->getPropertyLabel( $property, $incoming ) );
-				$proptext = $property->getShortHTMLText( $skin ) . "\n";
-			} elseif ( $property->getPropertyID() == '_INST' ) {
+			if ( $dvProperty->isVisible() ) {
+				$dvProperty->setCaption( $this->getPropertyLabel( $dvProperty, $incoming ) );
+				$proptext = $dvProperty->getShortHTMLText( $skin ) . "\n";
+			} elseif ( $diProperty->getKey() == '_INST' ) {
 				$proptext = $skin->specialLink( 'Categories' );
-			} elseif ( $property->getPropertyID() == '_REDI' ) {
+			} elseif ( $diProperty->getKey() == '_REDI' ) {
 				$proptext = $skin->specialLink( 'Listredirects', 'isredirect' );
 			} else {
 				$displayline = false;
@@ -144,16 +145,17 @@ class SMWSpecialBrowse extends SpecialPage {
 				$head  = "<th>" . $proptext . "</th>\n";
 				// display values
 				$body  = "<td>\n";
-				$values = $data->getPropertyValues( $property );
+				$values = $data->getPropertyValues( $diProperty );
 				$count = count( $values );
 				$more = ( $count >= SMWSpecialBrowse::$incomingvaluescount );
-				foreach ( $values as $value ) {
+				foreach ( $values as $di ) {
 					if ( ( $count == 1 ) && $more && $incoming ) {
 						// if there are more incoming values than a certain treshold, display a link to the rest instead
-						$body .= '<a href="' . $skin->makeSpecialUrl( 'SearchByProperty', 'property=' . urlencode( $property->getWikiValue() ) . '&value=' . urlencode( $data->getSubject()->getWikiValue() ) ) . '">' . wfMsg( "smw_browse_more" ) . "</a>\n";
+						$body .= '<a href="' . $skin->makeSpecialUrl( 'SearchByProperty', 'property=' . urlencode( $dvProperty->getWikiValue() ) . '&value=' . urlencode( $this->subject->getWikiValue() ) ) . '">' . wfMsg( "smw_browse_more" ) . "</a>\n";
 					} else {
+						$dv = SMWDataValueFactory::newDataItemValue( $di );
 						$body .= "<span class=\"smwb-" . $inv . "value\">" .
-						         $this->displayValue( $property, $value, $incoming ) . "</span>";
+						         $this->displayValue( $dvProperty, $dv, $incoming ) . "</span>";
 					}
 					$count--;
 					$body .= ( $count > 0 ) ? ", \n":"\n";
@@ -279,19 +281,19 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return array(SMWSemanticData, bool)  The semantic data including all inproperties, and if there are more inproperties left
 	 */
 	private function getInData() {
-		$indata = new SMWSemanticData( $this->subject );
+		$indata = new SMWSemanticData( $this->subject->getDataItem() );
 		$options = new SMWRequestOptions();
 		$options->sort = true;
 		$options->limit = SMWSpecialBrowse::$incomingpropertiescount;
 		if ( $this->offset > 0 ) $options->offset = $this->offset;
-		$inproperties = smwfGetStore()->getInProperties( $this->subject, $options );
+		$inproperties = smwfGetStore()->getInProperties( $this->subject->getDataItem(), $options );
 		$more = ( count( $inproperties ) == SMWSpecialBrowse::$incomingpropertiescount );
 		if ( $more ) array_pop( $inproperties ); // drop the last one
 		$valoptions = new SMWRequestOptions();
 		$valoptions->sort = true;
 		$valoptions->limit = SMWSpecialBrowse::$incomingvaluescount;
 		foreach ( $inproperties as $property ) {
-			$values = smwfGetStore()->getPropertySubjects( $property, $this->subject, $valoptions );
+			$values = smwfGetStore()->getPropertySubjects( $property, $this->subject->getDataItem(), $valoptions );
 			foreach ( $values as $value ) {
 				$indata->addPropertyObjectValue( $property, $value );
 			}
@@ -311,7 +313,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	private function getPropertyLabel( SMWPropertyValue $property, $incoming = false ) {
 		global $smwgBrowseShowInverse;
 		if ( $incoming && $smwgBrowseShowInverse ) {
-			$oppositeprop = SMWPropertyValue::makeProperty( wfMsg( 'smw_inverse_label_property' ) );
+			$oppositeprop = SMWPropertyValue::makeUserProperty( wfMsg( 'smw_inverse_label_property' ) );
 			$labelarray = &smwfGetStore()->getPropertyValues( $property->getWikiPageValue(), $oppositeprop );
 			$rv = ( count( $labelarray ) > 0 ) ? $labelarray[0]->getLongWikiText():
 			       wfMsg( 'smw_inverse_label_default', $property->getWikiValue() );

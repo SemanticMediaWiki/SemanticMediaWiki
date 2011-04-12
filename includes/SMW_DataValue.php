@@ -48,29 +48,6 @@
  */
 abstract class SMWDataValue {
 
-	/// Primitive type for numbers as implemented by SMWNumberValue
-	const TYPE_NUMBER  = 1;
-	/// Primitive type for plain strings as implemented by SMWImportValue, SMWStringValue, SMWTypeListValue, SMW_ErrorValue
-	const TYPE_STRING  = 2;
-	/// Primitive type Blob (long string) implemented by SMWStringValue
-	const TYPE_BLOB    = 3;
-	/// Primitive type Boolean as implemented by SMWBoolValue
-	const TYPE_BOOL    = 4;
-	/// Primitive type URI as implemented by SMWURIValue
-	const TYPE_URI     = 5;
-	/// Primitive type Time as implemented by SMWTimeValue
-	const TYPE_TIME    = 6;
-	/// Primitive type Geographic coordinate as implemented 
-	const TYPE_GEO     = 7;
-	/// Primitive type Container as implemented by SMWContainerValue
-	const TYPE_CONT    = 8;
-	/// Primitive type for pages as implemented by SMWPageValue
-	const TYPE_PAGE    = 9;
-	/// Primitive type Concept as implemented by SMWConceptValue
-	const TYPE_CONCEPT = 10;
-	/// Primitive type representing a property implemented by SMWPropertyValue
-	const TYPE_PROP    = 11;
-
 	/**
 	 * Associated data item. This is the reference to the immutable object
 	 * that represents the current data content. All other data stored here
@@ -100,7 +77,7 @@ abstract class SMWDataValue {
 	 * True if a value was set.
 	 * @var boolean
 	 */
-	protected $m_isset = false;
+	private $m_isset;
 
 	/**
 	 * The type id for this value object.
@@ -176,11 +153,10 @@ abstract class SMWDataValue {
 	public function setUserValue( $value, $caption = false ) {
 		wfProfileIn( 'SMWDataValue::setUserValue (SMW)' );
 
-		$this->m_dataitem = null;
+		unset( $this->m_dataitem );
 		$this->mErrors = array(); // clear errors
 		$this->mHasErrors = false;
 		$this->m_infolinks = array(); // clear links
-		$this->m_isset = false;
 		$this->mHasSearchLink = false;
 		$this->mHasServiceLinks = false;
 		$this->m_stubvalues = false;
@@ -193,7 +169,6 @@ abstract class SMWDataValue {
 		// Note: \x07 was used in MediaWiki 1.11.0, \x7f is used now
 		if ( ( strpos( $value, "\x7f" ) === false ) && ( strpos( $value, "\x07" ) === false ) ) {
 			$this->parseUserValue( $value ); // may set caption if not set yet, depending on datavalue
-			$this->m_isset = true;
 		} else {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_parseerror' ) );
@@ -219,6 +194,7 @@ abstract class SMWDataValue {
 	 * @param array $args
 	 */
 	public function setDBkeys( array $args ) {
+		throw new Exception( "setDBkeys() must no longer be called." );
 		$this->mErrors = array(); // clear errors
 		$this->mHasErrors = false;
 		$this->m_infolinks = array(); // clear links
@@ -226,7 +202,6 @@ abstract class SMWDataValue {
 		$this->mHasServiceLinks = false;
 		$this->m_caption = false;
 		$this->m_stubvalues = $args;
-		$this->m_isset = true;
 	}
 
 	/**
@@ -237,24 +212,24 @@ abstract class SMWDataValue {
 	 * It takes only very little effort if unstubbing is not needed.
 	 */
 	protected function unstub() {
-		if ( $this->m_stubvalues !== false ) {
-			wfProfileIn( 'SMWDataValue::unstub-' . $this->m_typeid . ' (SMW)' );
-
-			$args = $this->m_stubvalues;
-			$this->m_stubvalues = false; // Careful to avoid recursive unstubbing.
-			$this->parseDBkeys( $args );
-
-			wfProfileOut( 'SMWDataValue::unstub-' . $this->m_typeid . ' (SMW)' );
-		}
+// 		if ( $this->m_stubvalues !== false ) {
+// 			wfProfileIn( 'SMWDataValue::unstub-' . $this->m_typeid . ' (SMW)' );
+// 
+// 			$args = $this->m_stubvalues;
+// 			$this->m_stubvalues = false; // Careful to avoid recursive unstubbing.
+// 			$this->parseDBkeys( $args );
+// 
+// 			wfProfileOut( 'SMWDataValue::unstub-' . $this->m_typeid . ' (SMW)' );
+// 		}
 	}
 
 	/**
 	 * Specify the property to which this value refers. Used to generate search links and
 	 * to find custom settings that relate to the property.
 	 *
-	 * @param SMWPropertyValue $property
+	 * @param SMWDIProperty $property
 	 */
-	public function setProperty( SMWPropertyValue $property ) {
+	public function setProperty( SMWDIProperty $property ) {
 		$this->m_property = $property;
 	}
 
@@ -299,7 +274,7 @@ abstract class SMWDataValue {
 		}
 
 		array_unshift( $args, '' ); // add a 0 element as placeholder
-		$servicelinks = smwfGetStore()->getPropertyValues( $this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty( '_SERV' ) );
+		$servicelinks = smwfGetStore()->getPropertyValues( $this->m_property->getWikiPageValue(), new SMWDIProperty( '_SERV' ) );
 
 		foreach ( $servicelinks as $dv ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
@@ -453,11 +428,37 @@ abstract class SMWDataValue {
 	/**
 	 * Get the actual data contained in this object or null if the data is
 	 * not defined (due to errors or due to not being set at all).
+	 * @note Most implementations ensure that a data item is always set,
+	 * even if errors occurred, to avoid additional checks for not
+	 * accessing null. Hence, one must not assume that a non-null return
+	 * value here implies that isValid() returns true.
+	 * 
 	 * @return SMWDataItem
 	 */
 	public function getDataItem() {
-		return $this->m_dataitem;
+		if ( $this->isValid() ) {
+			return $this->m_dataitem;
+		} else {
+			return new SMWDIError( $this->mErrors );
+		}
 	}
+
+	/**
+	 * Set the actual data contained in this object. The method returns
+	 * true if this was successful (requiring the type of the dataitem
+	 * to match the data value). If false is returned, the data value is
+	 * left unchanged (the data item was rejected).
+	 * 
+	 * @note Even if this function returns true, the data value object
+	 * might become invalid if the content of the data item caused errors
+	 * in spite of it being of the right basic type. False is only returned
+	 * if the data item is fundamentally incompatible with the data value.
+	 *
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 * @bug This method must get some wrapper to reset basic values of this class. Currently, things like error messages are kept.
+	 */
+	abstract public function setDataItem( SMWDataItem $dataItem );
 
 	/**
 	 * Return an array of values that characterize the given datavalue
@@ -760,7 +761,7 @@ abstract class SMWDataValue {
 	 */
 	public function isValid() {
 		$this->unstub();
-		return ( ( !$this->mHasErrors ) && $this->m_isset );
+		return ( ( !$this->mHasErrors ) && isset( $this->m_dataitem ) );
 	}
 
 	/**
@@ -801,36 +802,36 @@ abstract class SMWDataValue {
 	 * Creates an error if the value is illegal.
 	 */
 	protected function checkAllowedValues() {
-		if ( ( $this->m_property === null ) || ( $this->m_property->getWikiPageValue() === null ) ) {
-			return; // no property known
+		if ( ( $this->m_property === null ) || ( $this->m_property->getDiWikiPage() === null ) || ( !isset( $this->m_dataitem ) ) ) {
+			return; // no property known, or no data to check
 		}
 
 		$allowedvalues = smwfGetStore()->getPropertyValues(
-			$this->m_property->getWikiPageValue(),
-			SMWPropertyValue::makeProperty( '_PVAL' )
+			$this->m_property->getDiWikiPage(),
+			new SMWDIProperty( '_PVAL' )
 		);
 
 		if ( count( $allowedvalues ) == 0 ) {
 			return;
 		}
 
-		$hash = $this->getHash();
-		$value = SMWDataValueFactory::newTypeIDValue( $this->getTypeID() );
+		$hash = $this->m_dataitem->getHash();
+		$testdv = SMWDataValueFactory::newTypeIDValue( $this->getTypeID() );
 		$accept = false;
 		$valuestring = '';
+		foreach ( $allowedvalues as $di ) {
+			if ( $di->getDIType() === SMWDataItem::TYPE_STRING ) {
+				$testdv->setUserValue( $di->getString() );
 
-		foreach ( $allowedvalues as $stringvalue ) {
-			$value->setUserValue( $stringvalue->getWikiValue() );
-
-			if ( $hash === $value->getHash() ) {
-				$accept = true;
-				break;
-			} else {
-				if ( $valuestring != '' ) {
-					$valuestring .= ', ';
+				if ( $hash === $testdv->getDataItem()->getHash() ) {
+					$accept = true;
+					break;
+				} else {
+					if ( $valuestring != '' ) {
+						$valuestring .= ', ';
+					}
+					$valuestring .= $di->getString();
 				}
-
-				$valuestring .= $value->getShortWikiText();
 			}
 		}
 

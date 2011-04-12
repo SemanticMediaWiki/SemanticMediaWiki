@@ -53,19 +53,20 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 				$result .= ">";
 
 				$first = true;
-				while ( ( $object = $field->getNextObject() ) !== false ) {
+				while ( ( $dv = $field->getNextDataValue() ) !== false ) {
 					if ( $first ) {
-						if ( $object->isNumeric() ) { // additional hidden sortkey for numeric entries
-							$result .= '<span class="smwsortkey">' . $object->getValueKey() . '</span>';
+						$sortkey = $dv->getDataItem()->getSortKey();
+						if ( is_numeric( $sortkey ) ) { // additional hidden sortkey for numeric entries
+							$result .= '<span class="smwsortkey">' . $sortkey . '</span>';
 						}
 						$first = false;
 					} else {
 						$result .= '<br />';
 					}
 					// use shorter "LongText" for wikipage
-					$result .= ( ( $object->getTypeID() == '_wpg' ) || ( $object->getTypeID() == '__sin' ) ) ?
-						   $object->getLongText( $outputmode, $this->getLinker( $firstcol ) ):
-						   $object->getShortText( $outputmode, $this->getLinker( $firstcol ) );
+					$result .= ( ( $dv->getTypeID() == '_wpg' ) || ( $dv->getTypeID() == '__sin' ) ) ?
+						   $dv->getLongText( $outputmode, $this->getLinker( $firstcol ) ) :
+						   $dv->getShortText( $outputmode, $this->getLinker( $firstcol ) );
 				}
 				$result .= "</td>\n";
 				$firstcol = false;

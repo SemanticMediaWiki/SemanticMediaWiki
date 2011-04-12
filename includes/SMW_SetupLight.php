@@ -104,15 +104,16 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWDataItem']		= $diDir . 'SMW_DataItem.php';
 	$wgAutoloadClasses['SMWDataItemException']	= $diDir . 'SMW_DataItem.php';
 	$wgAutoloadClasses['SMWDIProperty']		= $diDir . 'SMW_DI_Property.php';
-// 	$wgAutoloadClasses['SMWDIBool']			= $diDir . 'SMW_DI_Bool.php';
+// 	$wgAutoloadClasses['SMWDIBoolean']		= $diDir . 'SMW_DI_Bool.php';
 	$wgAutoloadClasses['SMWDINumber']		= $diDir . 'SMW_DI_Number.php';
 	$wgAutoloadClasses['SMWDIBlob']			= $diDir . 'SMW_DI_Blob.php';
 	$wgAutoloadClasses['SMWDIString']		= $diDir . 'SMW_DI_String.php';
 	$wgAutoloadClasses['SMWStringLengthException']	= $diDir . 'SMW_DI_String.php';
-	$wgAutoloadClasses['SMWDIURI']			= $diDir . 'SMW_DI_URI.php';
+	$wgAutoloadClasses['SMWDIUri']			= $diDir . 'SMW_DI_URI.php';
 	$wgAutoloadClasses['SMWDIWikiPage']		= $diDir . 'SMW_DI_WikiPage.php';
 	$wgAutoloadClasses['SMWDITime']			= $diDir . 'SMW_DI_Time.php';
 // 	$wgAutoloadClasses['SMWDIConcept']		= $diDir . 'SMW_DI_Concept.php';
+	$wgAutoloadClasses['SMWDIError']		= $diDir . 'SMW_DI_Error.php';
 
 	// Datavalues
 	$dvDir = $smwgIP . 'includes/datavalues/';

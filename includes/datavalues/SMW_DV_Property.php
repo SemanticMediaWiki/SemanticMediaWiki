@@ -87,9 +87,10 @@ class SMWPropertyValue extends SMWDataValue {
 	 * in any case.
 	 */
 	static public function makeProperty( $propertyid ) {
-		$property = new SMWPropertyValue( '__pro' );
-		$property->setDBkeys( array( $propertyid ) );
-		return $property;
+		$diProperty = new SMWDIProperty( $propertyid );
+		$dvProperty = new SMWPropertyValue( '__pro' );
+		$dvProperty->setDataItem( $diProperty );
+		return $dvProperty;
 	}
 
 	/**
@@ -136,24 +137,37 @@ class SMWPropertyValue extends SMWDataValue {
 	 * internal property id accordingly.
 	 */
 	protected function parseDBkeys( $args ) {
-		$this->mPropTypeValue = null;
-		$this->mPropTypeId = '';
-		unset( $this->m_wikipage );
-
 		try {
-			$this->m_dataitem = new SMWDIProperty( $args[0], false, $this->m_typeid );
+			$dataItem = new SMWDIProperty( $args[0], false, $this->m_typeid );
 		} catch ( SMWDataItemException $e ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_parseerror' ) ); // very rare to get an error here, don't bother with detailed reporting
-			$this->m_dataitem = new SMWDIProperty( 'ERROR', false, $this->m_typeid ); // just to have something
+			$dataItem = new SMWDIProperty( 'ERROR', false, $this->m_typeid ); // just to have something
 		}
+		$this->setDataItem( $dataItem );
+	}
 
-		$this->m_caption = false;
+	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
+			$this->m_dataitem = $dataItem;
+			$this->mPropTypeValue = null;
+			$this->mPropTypeId = '';
+			unset( $this->m_wikipage );
+			$this->m_caption = false;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public function setCaption( $caption ) {
 		parent::setCaption( $caption );
-		if ( $this->m_wikipage instanceof SMWDataValue ) { // pass caption to embedded datavalue (used for printout)
+		if ( $this->getWikiPageValue() instanceof SMWDataValue ) { // pass caption to embedded datavalue (used for printout)
 			$this->m_wikipage->setCaption( $caption );
 		}
 	}
@@ -179,11 +193,9 @@ class SMWPropertyValue extends SMWDataValue {
 	public function getWikiPageValue() {
 		$this->unstub();
 		if ( !isset( $this->m_wikipage ) ) {
-			$label = $this->m_dataitem->getLabel();
-			if ( $label != '' ) {
-				$this->m_wikipage = SMWDataValueFactory::newTypeIDValue( '_wpp' );
-				$this->m_wikipage->setDBkeys( array( str_replace( ' ', '_', $label ), SMW_NS_PROPERTY, '', '' ) );
-				$this->m_wikipage->setCaption( $this->m_caption );
+			$diWikiPage = $this->m_dataitem->getDiWikiPage();
+			if ( $diWikiPage !== null ) {
+				$this->m_wikipage = SMWDataValueFactory::newDataItemValue( $diWikiPage, $this->m_caption );
 				$this->m_wikipage->setOutputFormat( $this->m_outformat );
 				$this->addError( $this->m_wikipage->getErrors() );
 			} else { // should rarely happen ($value is only changed if the input $value really was a label for a predefined prop)
@@ -200,7 +212,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	public function isVisible() {
 		$this->unstub();
-		return ( $this->getWikiPageValue() !== null );
+		return ( $this->m_dataitem->isUserDefined() ) || ( $this->m_dataitem->getLabel() != '' );
 	}
 
 	public function getShortWikiText( $linked = null ) {
@@ -263,7 +275,7 @@ class SMWPropertyValue extends SMWDataValue {
 				$result->setDBkeys( array( '__err' ) );
 				$result->addError( $this->getErrors() );
 			} elseif ( $this->m_dataitem->isUserDefined() ) { // normal property
-				$typearray = smwfGetStore()->getPropertyValues( $this->getWikiPageValue(), SMWPropertyValue::makeProperty( '_TYPE' ) );
+				$typearray = smwfGetStore()->getPropertyValues( $this->getWikiPageValue(), new SMWDIProperty( '_TYPE' ) );
 				if ( count( $typearray ) == 1 ) { // unique type given
 					$result = current( $typearray );
 				} elseif ( count( $typearray ) == 0 ) { // no type given

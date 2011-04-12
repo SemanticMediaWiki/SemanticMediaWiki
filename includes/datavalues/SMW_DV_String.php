@@ -40,6 +40,26 @@ class SMWStringValue extends SMWDataValue {
 		$this->m_caption = $this->m_dataitem->getString(); // this is our output text
 	}
 
+	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		$diType = ( ( $this->m_typeid == '_txt' ) || ( $this->m_typeid == '_cod' ) ) ? SMWDataItem::TYPE_BLOB : SMWDataItem::TYPE_STRING;
+		if ( $dataItem->getDIType() == $diType ) {
+			$this->m_dataitem = $dataItem;
+			if ( $this->m_typeid == '_cod' ) {
+				$this->m_caption = $this->getCodeDisplay( $this->m_dataitem->getString() );
+			} else {
+				$this->m_caption = $this->m_dataitem->getString();
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public function getShortWikiText( $linked = null ) {
 		$this->unstub();
 		return $this->m_caption;

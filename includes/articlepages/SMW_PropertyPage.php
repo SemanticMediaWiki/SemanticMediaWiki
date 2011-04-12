@@ -18,15 +18,13 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	private $mProperty; // property object
 
 	/**
-	 * Use small $limit (property pages might become large)
+	 * @see SMWOrderedListPage::initParameters()
+	 * @note We use a smaller limit here; property pages might become large.
 	 */
 	protected function initParameters() {
-		global $smwgContLang, $smwgPropertyPagingLimit;
-		
+		global $smwgPropertyPagingLimit;
 		$this->limit = $smwgPropertyPagingLimit;
-		$this->mProperty = SMWPropertyValue::makeProperty( $this->mTitle->getDBkey() );
-		$this->mProperty->setInverse( false );
-		
+		$this->mProperty = new SMWDIProperty( $this->mTitle->getDBkey(), false );
 		return true;
 	}
 
@@ -72,7 +70,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$s_options = new SMWRequestOptions();
 		$s_options->sort = true;
 		$s_options->ascending = true;
-		$this->subproperties = $store->getPropertySubjects( SMWPropertyValue::makeProperty( '_SUBP' ), $this->getDataValue(), $s_options );
+		$this->subproperties = $store->getPropertySubjects( new SMWDIProperty( '_SUBP' ), $this->getDataItem(), $s_options );
 	}
 
 	/**
@@ -144,7 +142,9 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$prev_start_char = 'None';
 		
 		for ( $index = $start; $index < $ac; $index++ ) {
-			$start_char = $wgContLang->convert( $wgContLang->firstChar( $this->articles[$index]->getSortkey() ) );
+			$diWikiPage = $this->articles[$index];
+			$dvWikiPage = SMWDataValueFactory::newDataItemValue( $diWikiPage );
+			$start_char = $wgContLang->convert( $wgContLang->firstChar( SMWCompatibilityHelpers::getSortKey( $diWikiPage ) ) );
 			
 			// Header for index letters
 			if ( $start_char != $prev_start_char ) {
@@ -153,31 +153,31 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			}
 			
 			// Property name
-			$searchlink = SMWInfolink::newBrowsingLink( '+', $this->articles[$index]->getShortHTMLText() );
-			$r .= '<tr><td class="smwpropname">' . $this->articles[$index]->getLongHTMLText( $this->getSkin() ) .
+			$searchlink = SMWInfolink::newBrowsingLink( '+', $dvWikiPage->getShortHTMLText() );
+			$r .= '<tr><td class="smwpropname">' . $dvWikiPage->getLongHTMLText( $this->getSkin() ) .
 			      '&#160;' . $searchlink->getHTML( $this->getSkin() ) . '</td><td class="smwprops">';
 			
 			// Property values
 			$ropts = new SMWRequestOptions();
 			$ropts->limit = $smwgMaxPropertyValues + 1;
-			$values = $store->getPropertyValues( $this->articles[$index], $this->mProperty, $ropts );
+			$values = $store->getPropertyValues( $diWikiPage, $this->mProperty, $ropts );
 			$i = 0;
 			
-			foreach ( $values as $value ) {
+			foreach ( $values as $di ) {
 				if ( $i != 0 ) {
 					$r .= ', ';
 				}
-				
 				$i++;
-				
+
 				if ( $i < $smwgMaxPropertyValues + 1 ) {
-					$r .= $value->getLongHTMLText( $this->getSkin() ) . $value->getInfolinkText( SMW_OUTPUT_HTML, $this->getSkin() );
+					$dv = SMWDataValueFactory::newDataItemValue( $di );
+					$r .= $dv->getLongHTMLText( $this->getSkin() ) . $dv->getInfolinkText( SMW_OUTPUT_HTML, $this->getSkin() );
 				} else {
-					$searchlink = SMWInfolink::newInversePropertySearchLink( '…', $this->articles[$index]->getWikiValue(), $this->mTitle->getText() );
+					$searchlink = SMWInfolink::newInversePropertySearchLink( '…', $dvWikiPage->getWikiValue(), $this->mTitle->getText() );
 					$r .= $searchlink->getHTML( $this->getSkin() );
 				}
 			}
-			
+
 			$r .= "</td></tr>\n";
 		}
 		

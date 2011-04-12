@@ -1,8 +1,7 @@
 <?php
 /**
- * The class in this file manages (special) mProperties that are
- * associated with a certain subject (article). It is used as a
- * container for chunks of subject-centred data.
+ * The class in this file provides a container for chunks of subject-centred
+ * data.
  *
  * @file
  * @ingroup SMW
@@ -13,45 +12,54 @@
 
 /**
  * Class for representing chunks of semantic data for one given
- * article (subject), similar what is typically displayed in the factbox.
+ * article (subject), similar what is typically displayed in the Factbox.
  * This is a light-weight data container.
+ * 
+ * By its very design, the container is unable to hold inverse properties.
+ * For one thing, it would not be possible to identify them with mere keys.
+ * Since SMW cannot annotate pages with inverses, this is not a limitation.
  *
  * @ingroup SMW
  */
 class SMWSemanticData {
 
 	/**
-	 * States whether this is a stub object. Stubbing might happen on serialisation to save DB space.
+	 * Cache for the localized version of the namespace prefix "Property:".
+	 *
+	 * @var string
+	 */
+	static protected $mPropertyPrefix = '';
+
+	/**
+	 * States whether this is a stub object. Stubbing might happen on
+	 * serialisation to save DB space.
+	 *
+	 * @todo Check why this is public and document this here. Or fix it.
 	 *
 	 * @var boolean
 	 */
-	public $stubObject = true;
+	public $stubObject;
 
 	/**
-	 * Cache for the local version of "Property:"
-	 *
-	 * @var mixed
-	 */
-	static protected $mPropertyPrefix = false;
-
-	/**
-	 * Text keys and arrays of datavalue objects.
+	 * Array mapping property keys (string) to arrays of SMWDataItem
+	 * objects.
 	 *
 	 * @var array
 	 */
-	protected $mPropVals = array();
+	protected $mPropVals;
 
 	/**
-	 * Text keys and title objects.
+	 * Array mapping property keys (string) to SMWDIProperty objects.
 	 *
 	 * @var array
 	 */
-	protected $mProperties = array();
+	protected $mProperties;
 
 	/**
-	 * Stub property data that is not part of $propvals and $mProperties yet. Entries use
-	 * property DB keys as keys. The value is an array of DBkey-arrays that define individual
-	 * datavalues. The stubs will be set up when first accessed.
+	 * Stub property data that is not part of $mPropVals and $mProperties
+	 * yet. Entries use property keys as keys. The value is an array of
+	 * DBkey-arrays that define individual datavalues. The stubs will be
+	 * set up when first accessed.
 	 *
 	 * @var array
 	 */
@@ -65,39 +73,47 @@ class SMWSemanticData {
 	protected $mHasVisibleProps = false;
 
 	/**
-	 * States whether the container holds any displayable special mProperties (some are internal only without a display name).
+	 * States whether the container holds any displayable predefined
+	 * $mProperties (as opposed to predefined properties without a display
+	 * label). For some settings we need this to decide if a Factbox is
+	 * displayed.
 	 *
 	 * @var boolean
 	 */
 	protected $mHasVisibleSpecs = false;
 
 	/**
-	 * States whether repeated values should be avoided. Not needing duplicte elimination
-	 * (e.g. when loading from store) can save much time, since objects can remain stubs until someone
-	 * really acesses their value.
+	 * States whether repeated values should be avoided. Not needing
+	 * duplicate elimination (e.g. when loading from store) can save much
+	 * time, since objects can remain stubs until someone really acesses
+	 * their value.
+	 * 
+	 * @note This setting is merely for optimization. The SMW data model 
+	 * never cares about the multiplicity of identical data assignments.
 	 *
 	 * @var boolean
 	 */
 	protected $mNoDuplicates;
 
 	/**
-	 * SMWWikiPageValue object that is the subject of this container.
-	 * Subjects that are NULL are used to represent "internal objects" only.
+	 * SMWDIWikiPage object that is the subject of this container.
+	 * Subjects that are null are used to represent "internal objects"
+	 * only.
 	 *
-	 * @var SMWWikiPageValue
+	 * @var SMWDIWikiPage
 	 */
 	protected $mSubject;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param SMWWikiPageValue $subject
-	 * @param boolean $noDuplicates
+	 * @param $subject SMWDIWikiPage to which this data refers
+	 * @param $noDuplicates boolean stating if duplicate data should be avoided
 	 */
-	public function __construct( $subject, $noDuplicates = true ) {
+	public function __construct( SMWDIWikiPage $subject, $noDuplicates = true ) {
+		$this->clear();
 		$this->mSubject = $subject;
 		$this->mNoDuplicates = $noDuplicates;
-		$this->stubObject = false;
 	}
 
 	/**
@@ -118,7 +134,7 @@ class SMWSemanticData {
 	/**
 	 * Return subject to which the stored semantic annotation refer to.
 	 *
-	 * @return SMWWikiPageValue subject
+	 * @return SMWDIWikiPage subject
 	 */
 	public function getSubject() {
 		return $this->mSubject;
@@ -126,6 +142,8 @@ class SMWSemanticData {
 
 	/**
 	 * Get the array of all properties that have stored values.
+	 *
+	 * @return array of SMWDIProperty objects
 	 */
 	public function getProperties() {
 		$this->unstubProperties();
@@ -137,40 +155,45 @@ class SMWSemanticData {
 	/**
 	 * Get the array of all stored values for some property.
 	 *
-	 * @param SMWPropertyValue $property
-	 *
-	 * @return array
+	 * @param $property SMWDIProperty
+	 * @return array of SMWDataItem
 	 */
-	public function getPropertyValues( SMWPropertyValue $property ) {
-		if ( array_key_exists( $property->getDBkey(), $this->mStubPropVals ) ) {
-			// Unstub those entries completely.
-			$this->unstubProperty( $property->getDBkey(), $property );
+	public function getPropertyValues( SMWDIProperty $property ) {
+		if ( $property->isInverse() ) { // we never have any data for inverses
+			return array();
+		}
 
-			foreach ( $this->mStubPropVals[$property->getDBkey()] as $dbkeys ) {
-				$dv = SMWDataValueFactory::newPropertyObjectValue( $property );
-				$dv->setDBkeys( $dbkeys );
+		if ( array_key_exists( $property->getKey(), $this->mStubPropVals ) ) {
+			$this->unstubProperty( $property->getKey(), $property );
 
-				if ( $this->mNoDuplicates ) {
-					$this->mPropVals[$property->getDBkey()][$dv->getHash()] = $dv;
-				} else {
-					$this->mPropVals[$property->getDBkey()][] = $dv;
+			foreach ( $this->mStubPropVals[$property->getKey()] as $dbkeys ) {
+				try {
+					$di = SMWCompatibilityHelpers::dataItemFromDBKeys( $property->findPropertyTypeID(), $dbkeys );
+					if ( $this->mNoDuplicates ) {
+						$this->mPropVals[$property->getKey()][$di->getHash()] = $di;
+					} else {
+						$this->mPropVals[$property->getKey()][] = $di;
+					}
+				} catch ( SMWDataItemException $e ) {
+					// ignore data
 				}
 			}
 
-			unset( $this->mStubPropVals[$property->getDBkey()] );
+			unset( $this->mStubPropVals[$property->getKey()] );
 		}
 
-		if ( array_key_exists( $property->getDBkey(), $this->mPropVals ) ) {
-			return $this->mPropVals[$property->getDBkey()];
+		if ( array_key_exists( $property->getKey(), $this->mPropVals ) ) {
+			return $this->mPropVals[$property->getKey()];
 		} else {
 			return array();
 		}
 	}
 
 	/**
-	 * Generate a hash value to simplify the comparison of this data container with other
-	 * containers. The hash uses PHP's md5 implementation, which is among the fastest hash
-	 * algorithms that PHP offers.
+	 * Generate a hash value to simplify the comparison of this data
+	 * container with other containers. The hash uses PHP's md5
+	 * implementation, which is among the fastest hash algorithms that
+	 * PHP offers.
 	 *
 	 * @return string
 	 */
@@ -178,14 +201,14 @@ class SMWSemanticData {
 		$ctx = hash_init( 'md5' );
 
 		if ( $this->mSubject !== null ) { // here and below, use "_#_" to separate values; really not much care needed here
-			hash_update( $ctx, '_#_' . $this->mSubject->getHash() );
+			hash_update( $ctx, '_#_' . $this->mSubject->getSerialisation() );
 		}
 
 		foreach ( $this->getProperties() as $property ) {
-			hash_update( $ctx, '_#_' . $property->getHash() . '##' );
+			hash_update( $ctx, '_#_' . $property->getKey() . '##' );
 
 			foreach ( $this->getPropertyValues( $property ) as $dv ) {
-				hash_update( $ctx, '_#_' . $dv->getHash() );
+				hash_update( $ctx, '_#_' . $dv->getSerialisation() );
 			}
 		}
 
@@ -195,8 +218,9 @@ class SMWSemanticData {
 	/**
 	 * Return true if there are any visible properties.
 	 *
-	 * @note While called "visible" this check actually refers to the function
-	 * SMWPropertyValue::isShown(). The name is kept for compatibility.
+	 * @note While called "visible" this check actually refers to the
+	 * function SMWDIProperty::isShown(). The name is kept for
+	 * compatibility.
 	 *
 	 * @return boolean
 	 */
@@ -209,8 +233,9 @@ class SMWSemanticData {
 	 * Return true if there are any special properties that can
 	 * be displayed.
 	 *
-	 * @note While called "visible" this check actually refers to the function
-	 * SMWPropertyValue::isShown(). The name is kept for compatibility.
+	 * @note While called "visible" this check actually refers to the
+	 * function SMWDIProperty::isShown(). The name is kept for
+	 * compatibility.
 	 *
 	 * @return boolean
 	 */
@@ -220,30 +245,30 @@ class SMWSemanticData {
 	}
 
 	/**
-	 * Store a value for a property identified by its title object. Duplicate
-	 * value entries are usually ignored.
+	 * Store a value for a property identified by its SMWDataItem object.
 	 *
-	 * @note Attention: there is no check whether the type of the given datavalue agrees
-	 * with what SMWDataValueFactory is producing (based on predefined property records and
-	 * the current DB content). Always use SMWDataValueFactory to produce fitting values!
+	 * @note There is no check whether the type of the given data item
+	 * agrees with the type of the property. Since property types can
+	 * change, all parts of SMW are prepared to handle mismatched data item
+	 * types anyway.
 	 *
-	 * @param SMWPropertyValue $property
-	 * @param SMWDataValue $value
+	 * @param $property SMWDIProperty
+	 * @param $dataItem SMWDataItem
 	 */
-	public function addPropertyObjectValue( SMWPropertyValue $property, SMWDataValue $value ) {
-		if ( !$property->isValid() ) {
-			return; // nothing we can do
+	public function addPropertyObjectValue( SMWDIProperty $property, SMWDataItem $dataItem ) {
+		if ( $property->isInverse() ) { // inverse properties cannot be used for annotation
+			return;
 		}
 
-		if ( !array_key_exists( $property->getDBkey(), $this->mPropVals ) ) {
-			$this->mPropVals[$property->getDBkey()] = array();
-			$this->mProperties[$property->getDBkey()] = $property;
+		if ( !array_key_exists( $property->getKey(), $this->mPropVals ) ) {
+			$this->mPropVals[$property->getKey()] = array();
+			$this->mProperties[$property->getKey()] = $property;
 		}
 
 		if ( $this->mNoDuplicates ) {
-			$this->mPropVals[$property->getDBkey()][$value->getHash()] = $value;
+			$this->mPropVals[$property->getKey()][$dataItem->getHash()] = $dataItem;
 		} else {
-			$this->mPropVals[$property->getDBkey()][] = $value;
+			$this->mPropVals[$property->getKey()][] = $dataItem;
 		}
 
 		if ( !$property->isUserDefined() ) {
@@ -257,31 +282,33 @@ class SMWSemanticData {
 	}
 
 	/**
-	 * Store a value for a given property identified by its text label (without
-	 * namespace prefix). Duplicate value entries are usually ignored.
+	 * Store a value for a given property identified by its text label
+	 * (without namespace prefix).
 	 *
-	 * @param string $propertyName
-	 * @param SMWDataValue $value
+	 * @param $propertyName string
+	 * @param $dataItem SMWDataItem
 	 */
-	public function addPropertyValue( $propertyName, SMWDataValue $value ) {
-		$propertykey = smwfNormalTitleDBKey( $propertyName );
+	public function addPropertyValue( $propertyName, SMWDataItem $dataItem ) {
+		$propertyKey = smwfNormalTitleDBKey( $propertyName );
 
-		if ( array_key_exists( $propertykey, $this->mProperties ) ) {
-			$property = $this->mProperties[$propertykey];
+		if ( array_key_exists( $propertyKey, $this->mProperties ) ) {
+			$property = $this->mProperties[$propertyKey];
 		} else {
-			if ( self::$mPropertyPrefix == false ) {
+			if ( SMWSemanticData::$mPropertyPrefix == '' ) {
 				global $wgContLang;
-				self::$mPropertyPrefix = $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':';
+				SMWSemanticData::$mPropertyPrefix = $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':';
 			} // explicitly use prefix to cope with things like [[Property:User:Stupid::somevalue]]
 
-			$property = SMWPropertyValue::makeUserProperty( self::$mPropertyPrefix . $propertyName );
+			$propertyDV = SMWPropertyValue::makeUserProperty( SMWSemanticData::$mPropertyPrefix . $propertyName );
 
-			if ( !$property->isValid() ) { // error, maybe illegal title text
+			if ( !$propertyDV->isValid() ) { // error, maybe illegal title text
 				return;
 			}
+			
+			$property = $propertyDV->getDataItem();
 		}
 
-		$this->addPropertyObjectValue( $property, $value );
+		$this->addPropertyObjectValue( $property, $dataItem );
 	}
 
 	/**
@@ -290,12 +317,12 @@ class SMWSemanticData {
 	 * the added value that will be used to initialize the value if needed at some point.
 	 */
 	public function addPropertyStubValue( $propertyKey, $valueKeys ) {
-		// Catch built-in mProperties, since their internal key is not what is used as a key elsewhere in SMWSemanticData.
-		if ( $propertyKey { 0 } == '_' ) {
-			$property = SMWPropertyValue::makeProperty( $propertyKey );
-			$propertyKey = $property->getDBkey();
-			$this->unstubProperty( $propertyKey, $property );
-		}
+		// Catch built-in properties, since their internal key is not what is used as a key elsewhere in SMWSemanticData.
+// 		if ( $propertyKey { 0 } == '_' ) {
+// 			$property = new SMWDIProperty( $propertyKey );
+// 			$propertyKey = $property->getKey();
+// 			$this->unstubProperty( $propertyKey, $property );
+// 		}
 
 		$this->mStubPropVals[$propertyKey][] = $valueKeys;
 	}
@@ -309,14 +336,16 @@ class SMWSemanticData {
 		$this->mStubPropVals = array();
 		$this->mHasVisibleProps = false;
 		$this->mHasVisibleSpecs = false;
+		$this->stubObject = false;
 	}
 
 	/**
-	 * Process all mProperties that have been added as stubs. Associated data may remain in stub form.
+	 * Process all mProperties that have been added as stubs.
+	 * Associated data may remain in stub form.
 	 */
 	protected function unstubProperties() {
-		foreach ( $this->mStubPropVals as $pname => $values ) { // unstub property values only, the value lists are still kept as stubs
-			$this->unstubProperty( $pname );
+		foreach ( $this->mStubPropVals as $pkey => $values ) { // unstub property values only, the value lists are still kept as stubs
+			$this->unstubProperty( $pkey );
 		}
 	}
 
@@ -325,19 +354,21 @@ class SMWSemanticData {
 	 * for that property might be provided, so we do not need to make a new one. It is not
 	 * checked if the object matches the property name.
 	 *
-	 * @param string $propertyName
-	 * @param $propertyObject
+	 * @param $propertyKey string
+	 * @param SMWDIProperty $diProperty
 	 */
-	protected function unstubProperty( $propertyName, $propertyObject = null ) {
-		if ( !array_key_exists( $propertyName, $this->mProperties ) ) {
-			if ( $propertyObject === null ) {
-				$propertyObject = SMWPropertyValue::makeProperty( $propertyName );
+	protected function unstubProperty( $propertyKey, $diProperty = null ) {
+		if ( !array_key_exists( $propertyKey, $this->mProperties ) ) {
+			if ( $diProperty === null ) {
+				//$propertyDV = SMWPropertyValue::makeProperty( $propertyKey );
+				//$diProperty = $propertyDV->getDataItem();
+				$diProperty = new SMWDIProperty( $propertyKey, false );
 			}
 
-			$this->mProperties[$propertyName] = $propertyObject;
+			$this->mProperties[$propertyKey] = $diProperty;
 
-			if ( !$propertyObject->isUserDefined() ) {
-				if ( $propertyObject->isShown() ) {
+			if ( !$diProperty->isUserDefined() ) {
+				if ( $diProperty->isShown() ) {
 					$this->mHasVisibleSpecs = true;
 					$this->mHasVisibleProps = true;
 				}

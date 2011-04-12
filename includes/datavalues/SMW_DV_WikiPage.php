@@ -88,22 +88,26 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * 
 	 * @return SMWWikiPageValue
 	 */
-	static public function makePage( $title, $namespace, $sortkey = '', $interwiki = '' ) {
-		$page = new SMWWikiPageValue( '_wpg' );
-		$page->setDBkeys( array( $title, $namespace, $interwiki, $sortkey ) );
-		return $page;
+	static public function makePage( $dbkey, $namespace, $sortkey = '', $interwiki = '' ) {
+		$diWikiPage = new SMWDIWikiPage( $dbkey, $namespace, $interwiki );
+		$dvWikiPage = new SMWWikiPageValue( '_wpg' );
+		$dvWikiPage->setDataItem( $diWikiPage );
+		return $dvWikiPage;
 	}
 
 	/**
 	 * Static function for creating a new wikipage object from a
 	 * MediaWiki Title object.
+	 * @todo Evaluate whether we really want this function. It might be obsolete due to recent changes.
 	 * 
 	 * @return SMWWikiPageValue
 	 */
-	static public function makePageFromTitle( $titleobject ) {
-		$page = new SMWWikiPageValue( '_wpg' );
-		$page->setTitle( $titleobject );
-		return $page;
+	static public function makePageFromTitle( Title $title ) {
+		$dvWikiPage = new SMWWikiPageValue( '_wpg' );
+		$diWikiPage = new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() );
+		$dvWikiPage->setDataItem( $diWikiPage );
+		$dvWikiPage->m_title = $title;
+		return $dvWikiPage;
 	}
 
 	public function __construct( $typeid ) {
@@ -166,16 +170,31 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->addError( wfMsgForContent( 'smw_notitle', $this->getPrefixedText() ) );
 			$this->m_dataitem = new SMWDIWikiPage( 'ERROR', NS_MAIN, '', $this->m_typeid );
 		} else {
-			$this->m_dataitem = new SMWDIWikiPage( $args[0], floatval( $args[1] ), $args[2], $this->m_typeid  );
-			$this->m_textform = str_replace( '_', ' ', $this->m_dataitem->getDBkey() );
+			$dataItem = new SMWDIWikiPage( $args[0], floatval( $args[1] ), $args[2], $this->m_typeid  );
+			$this->setDataItem( $dataItem );
+		}
+	}
+
+	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
+			$this->m_dataitem = $dataItem;
+			$this->m_textform = str_replace( '_', ' ', $dataItem->getDBkey() );
 			$this->m_id = -1;
 			$this->m_title = null;
 			$this->m_sortkey = $this->m_fragment = $this->m_prefixedtext = '';
 			$this->m_caption = false;
-			if ( ( $this->m_fixNamespace != NS_MAIN ) && ( $this->m_fixNamespace != $this->m_dataitem->getNamespace() ) ) {
+			if ( ( $this->m_fixNamespace != NS_MAIN ) && ( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
 				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$this->addError( wfMsgForContent( 'smw_notitle', $this->getPrefixedText() ) );
 			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -398,9 +417,11 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	/**
 	 * Init this data value object based on a given Title object.
+	 * @deprecated Use setDataItem(); it's easy to create an SMWDIWikiPage from a Title, will vanish before SMW 1.7
 	 */
 	public function setTitle( $title ) {
-		$this->setDBkeys( array( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki(), '' ) );
+		$diWikiPage = new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() );
+		$this->setDataItem( $diWikiPage );
 		$this->m_title = $title;
 	}
 

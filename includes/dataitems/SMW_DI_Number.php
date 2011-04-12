@@ -34,6 +34,10 @@ class SMWDINumber extends SMWDataItem {
 		return $this->m_number;
 	}
 
+	public function getSortKey() {
+		return $this->m_number;
+	}
+
 	public function getSerialization() {
 		return strval( $this->m_number );
 	}

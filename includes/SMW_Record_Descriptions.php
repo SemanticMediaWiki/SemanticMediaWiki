@@ -77,7 +77,7 @@ class SMWRecordFieldDescription extends SMWSomeProperty {
 	protected $m_position;
 
 	public function __construct( $position, SMWDescription $description ) {
-		parent::__construct( SMWPropertyValue::makeProperty( '_' . ( $position + 1 ) ), $description );
+		parent::__construct( new SMWDIProperty( '_' . ( $position + 1 ) ), $description );
 		$this->m_position = $position;
 	}
 

@@ -94,7 +94,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 				}
 				if ( $rowsubject !== false ) { // stuff in the page URI and some category data
 					$valuestack[] = '"uri" : "' . $wgServer . $wgScriptPath . '/index.php?title=' . $rowsubject->getPrefixedText() . '"';
-					$page_cats = smwfGetStore()->getPropertyValues( $rowsubject, SMWPropertyValue::makeProperty( '_INST' ) ); // TODO: set limit to 1 here
+					$page_cats = smwfGetStore()->getPropertyValues( $rowsubject, new SMWDIProperty( '_INST' ) ); // TODO: set limit to 1 here
 					if ( count( $page_cats ) > 0 ) {
 						$valuestack[] = '"type" : "' . reset($page_cats)->getShortHTMLText() . '"';
 					}

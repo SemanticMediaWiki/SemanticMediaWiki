@@ -31,6 +31,10 @@ class SMWDIBlob extends SMWDataItem {
 		return $this->m_string;
 	}
 
+	public function getSortKey() {
+		return $this->m_string;
+	}
+
 	public function getSerialization() {
 		return $this->m_string;
 	}

@@ -41,6 +41,26 @@ class SMWTypeListValue extends SMWDataValue {
 	}
 
 	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_STRING ) {
+			$this->m_dataitem = $dataItem;
+			$this->m_typevalues = array();
+			$ids = explode( ';', $dataItem->getString() );
+			foreach ( $ids as $id ) {
+				$this->m_typevalues[] = SMWDataValueFactory::newTypeIDValue( '__typ', SMWDataValueFactory::findTypeLabel( $id ) );
+			}
+			$this->m_caption = false;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * The special feature of this implementation of getDBkeys is that it uses
 	 * internal type ids to obtain a short internal value for the type. Note
 	 * that this also given language independence but that this is of little

@@ -37,7 +37,7 @@ class SMWParserExtensions {
 		// Process redirects, if any (it seems that there is indeed no more direct way of getting this info from MW)
 		$rt = Title::newFromRedirect( $text );
 		if ( $rt !== null ) {
-			$p = SMWPropertyValue::makeProperty( '_REDI' );
+			$p = new SMWDIProperty( '_REDI' );
 			$dv = SMWDataValueFactory::newPropertyObjectValue( $p, $rt->getPrefixedText() );
 
 			if ( $smwgStoreAnnotations ) {

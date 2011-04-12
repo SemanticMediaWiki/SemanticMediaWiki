@@ -51,14 +51,14 @@ class SMWRecordValue extends SMWContainerValue {
 					if ( $querymode ) {
 						$subdescriptions[] = new SMWRecordFieldDescription( $i, new SMWValueDescription( $dv, $comparator ) );
 					} else {
-						$property = SMWPropertyValue::makeProperty( '_' . ( $i + 1 ) );
+						$property = new SMWDIProperty( '_' . ( $i + 1 ) );
 						$this->m_data->addPropertyObjectValue( $property, $dv );
 					}
 					$vi++;
 					$empty = false;
 				} elseif ( ( count( $values ) - $vi ) == ( count( $types ) - $i ) ) {
 					// too many errors: keep this one to have enough slots left
-					$this->m_data->addPropertyObjectValue( SMWPropertyValue::makeProperty( '_' . ( $i + 1 ) ), $dv );
+					$this->m_data->addPropertyObjectValue( new SMWDIProperty( '_' . ( $i + 1 ) ), $dv );
 					$this->addError( $dv->getErrors() );
 					$vi++;
 				}
@@ -84,7 +84,7 @@ class SMWRecordValue extends SMWContainerValue {
 		if ( count( $args ) > 0 ) {
 			foreach ( reset( $args ) as $value ) {
 				if ( is_array( $value ) && ( count( $value ) == 2 ) ) {
-					$property = SMWPropertyValue::makeProperty( reset( $value ) );
+					$property = new SMWDIProperty( reset( $value ) );
 					$pnum = intval( substr( reset( $value ), 1 ) ); // try to find the number of this property
 					if ( array_key_exists( $pnum - 1, $types ) ) {
 						$dv = SMWDataValueFactory::newTypeObjectValue( $types[$pnum - 1] );
@@ -138,7 +138,7 @@ class SMWRecordValue extends SMWContainerValue {
 	 * @todo This is not a full reset yet (the case that property is changed after a value
 	 * was set does not occur in the normal flow of things, hence this has low priority).
 	 */
-	public function setProperty( SMWPropertyValue $property ) {
+	public function setProperty( SMWDIProperty $property ) {
 		parent::setProperty( $property );
 		$this->m_typevalues = null;
 	}
@@ -204,7 +204,7 @@ class SMWRecordValue extends SMWContainerValue {
 		if ( ( $this->m_property === null ) || ( $this->m_property->getWikiPageValue() === null ) ) {
 			$this->m_typevalues = array(); // no property known -> no types
 		} else { // query for type values
-			$typelist = smwfGetStore()->getPropertyValues( $this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty( '_LIST' ) );
+			$typelist = smwfGetStore()->getPropertyValues( $this->m_property->getWikiPageValue(), new SMWDIProperty( '_LIST' ) );
 			if ( count( $typelist ) == 1 ) {
 				$this->m_typevalues = reset( $typelist )->getTypeValues();
 			} else { ///TODO internalionalize
@@ -228,7 +228,7 @@ class SMWRecordValue extends SMWContainerValue {
 			} elseif ( $i > 1 ) {
 				$result .= ( $type == 4 ) ? '; ':", ";
 			}
-			$property = SMWPropertyValue::makeProperty( '_' . ( $i + 1 ) );
+			$property = new SMWDIProperty( '_' . ( $i + 1 ) );
 			$propertyvalues = $this->m_data->getPropertyValues( $property ); // combining this with next line violates PHP strict standards 
 			$dv = reset( $propertyvalues );
 			$result .= ( $dv !== false ) ? $this->makeValueOutputText( $type, $dv, $linker ): '?';

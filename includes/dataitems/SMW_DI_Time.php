@@ -110,16 +110,16 @@ class SMWDITime extends SMWDataItem {
 		}
 		parent::__construct( $typeid );
 		$this->m_model   = $calendarmodel;
-		$this->m_year    = $year;
-		$this->m_month   = $month !== false ? $month : 1;
-		$this->m_day     = $day !== false ? $day : 1;
-		$this->m_hours   = $hour !== false ? $hour : 0;
-		$this->m_minutes = $minute !== false ? $minute : 0;
-		$this->m_seconds = $second !== false ? $second : 0;
+		$this->m_year    = intval( $year );
+		$this->m_month   = $month != false ? intval( $month ) : 1;
+		$this->m_day     = $day != false ? intval( $day ) : 1;
+		$this->m_hours   = $hour !== false ? intval( $hour ) : 0;
+		$this->m_minutes = $minute !== false ? intval( $minute ) : 0;
+		$this->m_seconds = $second !== false ? intval( $second ) : 0;
 		if ( ( $this->m_hours < 0 ) || ( $this->m_hours > 23 ) ||
 		     ( $this->m_minutes < 0 ) || ( $this->m_minutes > 59 ) ||
 		     ( $this->m_seconds < 0 ) || ( $this->m_seconds > 59 ) ||
-		     ( $this->m_month < 0 ) || ( $this->m_month > 12 ) ) {
+		     ( $this->m_month < 1 ) || ( $this->m_month > 12 ) ) {
 			throw new SMWDataItemException( "Part of the date is out of bounds." );
 		}
 		if ( $this->m_day > SMWDITime::getDayNumberForMonth( $this->m_month, $this->m_year, $this->m_model ) ) {

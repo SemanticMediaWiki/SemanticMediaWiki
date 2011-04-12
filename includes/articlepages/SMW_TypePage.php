@@ -42,14 +42,14 @@ class SMWTypePage extends SMWOrderedListPage {
 				$options->boundary = $this->from;
 				$options->ascending = true;
 				$options->include_boundary = true;
-				$this->articles = $store->getPropertySubjects( SMWPropertyValue::makeProperty( '_TYPE' ), $typevalue, $options );
+				$this->articles = $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typevalue->getDataItem(), $options );
 			} elseif ( $this->until != '' ) {
 				$options->boundary = $this->until;
 				$options->ascending = false;
 				$options->include_boundary = false;
-				$this->articles = array_reverse( $store->getPropertySubjects( SMWPropertyValue::makeProperty( '_TYPE' ), $typevalue, $options ) );
+				$this->articles = array_reverse( $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typevalue->getDataItem(), $options ) );
 			} else {
-				$this->articles = $store->getPropertySubjects( SMWPropertyValue::makeProperty( '_TYPE' ), $typevalue, $options );
+				$this->articles = $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typevalue->getDataItem(), $options );
 			}
 		} else {
 			$this->articles = array();

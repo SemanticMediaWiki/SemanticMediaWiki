@@ -10,7 +10,7 @@
  * @author Markus Krötzsch
  * @ingroup SMWDataItems
  */
-class SMWDIURI extends SMWDataItem {
+class SMWDIUri extends SMWDataItem {
 
 	/**
 	 * URI scheme such as "html" or "mailto".
@@ -87,6 +87,10 @@ class SMWDIURI extends SMWDataItem {
 		return $this->m_fragment;
 	}
 
+	public function getSortKey() {
+		return $this->getURI();
+	}
+
 	public function getSerialization() {
 		return $this->getURI();
 	}
@@ -94,7 +98,7 @@ class SMWDIURI extends SMWDataItem {
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 * @return SMWDIURI
+	 * @return SMWDIUri
 	 */
 	public static function doUnserialize( $serialization, $typeid ) {
 		$parts = explode( ':', $serialization, 2 ); // try to split "schema:rest"
@@ -114,7 +118,7 @@ class SMWDIURI extends SMWDataItem {
 			$hierpart = $parts[0];
 			$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 		}
-		return new SMWDIURI( $scheme, $hierpart, $query, $fragment, $typeid );
+		return new SMWDIUri( $scheme, $hierpart, $query, $fragment, $typeid );
 	}
 
 }

@@ -159,7 +159,7 @@ class SMWTimeValue extends SMWDataValue {
 				if ( ( $era === false ) && ( $hours === false ) && ( $timeoffset == 0 ) ) {
 					try {
 						$jd = floatval( reset( $datecomponents ) );
-						if ( $calendarmodel == 'MJD' ) $jd += SMWTimeValue::MJD_EPOCH;
+						if ( $calendarmodel == 'MJD' ) $jd += self::MJD_EPOCH;
 						$this->m_dataitem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT, $this->m_typeid );
 					} catch ( SMWDataItemException $e ) {
 						smwfLoadExtensionMessages( 'SemanticMediaWiki' );
@@ -231,18 +231,18 @@ class SMWTimeValue extends SMWDataValue {
 				$calendarmodel = $match;
 			} elseif (  ( $ampm === false ) && ( ( strtolower( $match ) == 'am' ) || ( strtolower( $match ) == 'pm' ) ) ) {
 				$ampm = strtolower( $match );
-			} elseif (  ( $hours === false ) && ( $this->parseTimeString( $match, $hours, $minutes, $seconds, $timeoffset ) ) ) {
+			} elseif (  ( $hours === false ) && ( self::parseTimeString( $match, $hours, $minutes, $seconds, $timeoffset ) ) ) {
 				// nothing to do
 			} elseif ( ( $hours === true ) && ( $timezoneoffset === false ) &&
-			           ( array_key_exists( $match, SMWTimeValue::$m_tz ) ) ) {
+			           ( array_key_exists( $match, self::$m_tz ) ) ) {
 				// only accept timezone if time has already been set
-				$timezoneoffset = SMWTimeValue::$m_tz[ $match ];
+				$timezoneoffset = self::$m_tz[ $match ];
 			} elseif ( ( $prevmatchwasnumber ) && ( $hours === false ) && ( $timezoneoffset === false ) &&
-			           ( array_key_exists( $match, SMWTimeValue::$m_miltz ) ) &&
-				   ( $this->parseMilTimeString( end( $datecomponents ), $hours, $minutes, $seconds ) ) ) {
+			           ( array_key_exists( $match, self::$m_miltz ) ) &&
+				   ( self::parseMilTimeString( end( $datecomponents ), $hours, $minutes, $seconds ) ) ) {
 					// military timezone notation is found after a number -> re-interpret the number as military time
 					array_pop( $datecomponents );
-					$timezoneoffset = SMWTimeValue::$m_miltz[ $match ];
+					$timezoneoffset = self::$m_miltz[ $match ];
 			} elseif ( ( $prevmatchwasdate || ( count( $datecomponents ) == 0 ) ) &&
 				   $this->parseMonthString( $match, $monthname ) ) {
 				$datecomponents[] = $monthname;
@@ -284,6 +284,8 @@ class SMWTimeValue extends SMWDataValue {
 	 * If successful, the function sets the provided call-by-ref values to
 	 * the respective numbers and returns true. Otherwise, it returns
 	 * false and does not set any values.
+	 * @note This method is only temporarily public for enabling SMWCompatibilityHelpers. Do not use it directly in your code.
+	 *
 	 * @param $string string input time representation, e.g. "13:45:23-3:30"
 	 * @param $hours integer between 0 and 24
 	 * @param $minutes integer between 0 and 59
@@ -291,7 +293,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @param $timeoffset double for time offset (e.g. 3.5), or false if not given
 	 * @return boolean stating if the parsing succeeded
 	 */
-	protected static function parseTimeString( $string, &$hours, &$minutes, &$seconds, &$timeoffset ) {
+	public static function parseTimeString( $string, &$hours, &$minutes, &$seconds, &$timeoffset ) {
 		if ( !preg_match( "/^[T]?([0-2]?[0-9]):([0-5][0-9])(:[0-5][0-9])?(([+\-][0-2]?[0-9])(:(30|00))?)?$/u", $string, $match ) ) {
 			return false;
 		} else {
@@ -365,12 +367,12 @@ class SMWTimeValue extends SMWDataValue {
 		if ( $monthnum !== false ) {
 			$monthnum -= 1;
 		} else {
-			$monthnum = array_search( $string, SMWTimeValue::$m_months ); // check English names
+			$monthnum = array_search( $string, self::$m_months ); // check English names
 		}
 		if ( $monthnum !== false ) {
-			$monthname = SMWTimeValue::$m_monthsshort[ $monthnum ];
+			$monthname = self::$m_monthsshort[ $monthnum ];
 			return true;
-		} elseif ( array_search( $string, SMWTimeValue::$m_monthsshort ) !== false ) {
+		} elseif ( array_search( $string, self::$m_monthsshort ) !== false ) {
 			$monthname = $string;
 			return true;
 		} else {
@@ -432,7 +434,7 @@ class SMWTimeValue extends SMWDataValue {
 		foreach ( $dateformats[count( $propercomponents ) - 1] as $formatvector ) {
 			if ( !( ~$datevector & $formatvector ) ) { // check if $formatvector => $datevector ("the input supports the format")
 				$i = 0;
-				foreach ( SMWTimeValue::$m_formats[$formatvector] as $fieldname ) {
+				foreach ( self::$m_formats[$formatvector] as $fieldname ) {
 					$date[$fieldname] = $propercomponents[$i];
 					$i += 1;
 				}
@@ -487,7 +489,7 @@ class SMWTimeValue extends SMWDataValue {
 		// Having more than years or specifying a calendar model does
 		// not make sense for prehistoric dates, and our calendar
 		// conversion would not be reliable if JD numbers get too huge:
-		if ( ( $date['y'] <= SMWTimeValue::PREHISTORY ) && 
+		if ( ( $date['y'] <= self::PREHISTORY ) && 
 		     ( ( $this->m_dataitem->getPrecision() > SMWDITime::PREC_Y ) || ( $calendarmodel !== false ) ) ) {
 			$this->addError( wfMsgForContent( 'smw_nodatetime', $this->m_wikivalue ) );
 			return false;
@@ -536,7 +538,7 @@ class SMWTimeValue extends SMWDataValue {
 				return 0;
 			}
 		} else {
-			$monthnum = array_search( $component, SMWTimeValue::$m_monthsshort );
+			$monthnum = array_search( $component, self::$m_monthsshort );
 			if ( $monthnum !== false ) {
 				$numvalue = $monthnum + 1;
 				return SMW_MONTH;
@@ -568,7 +570,7 @@ class SMWTimeValue extends SMWDataValue {
 		     ( ( $year == 1582 ) && ( $month > 10 ) ) ||
 		     ( ( $year == 1582 ) && ( $month == 10 ) && ( $day > 4 ) ) ) {
 			return SMWDITime::CM_GREGORIAN;
-		} elseif ( $year > SMWTimeValue::PREHISTORY ) {
+		} elseif ( $year > self::PREHISTORY ) {
 			return SMWDITime::CM_JULIAN;
 		} else {
 			// proleptic Julian years at some point deviate from the count of complete revolutions of the earth around the sun
@@ -583,9 +585,9 @@ class SMWTimeValue extends SMWDataValue {
 		$timedate = explode( 'T', $args[0], 2 );
 		if ( ( count( $args ) == 2 ) && ( count( $timedate ) == 2 ) ) {
 			$date = reset( $timedate );
-			$hours = $minutes = $seconds = $timeoffset = false;
+			$year = $month = $day = $hours = $minutes = $seconds = $timeoffset = false;
 			if ( ( end( $timedate ) == '' ) ||
-			     ( $this->parseTimeString( end( $timedate ), $hours, $minutes, $seconds, $timeoffset ) == true ) ) {
+			     ( self::parseTimeString( end( $timedate ), $hours, $minutes, $seconds, $timeoffset ) == true ) ) {
 				$d = explode( '/', $date, 3 );
 				if ( count( $d ) == 3 ) {
 					list( $year, $month, $day ) = $d;
@@ -607,6 +609,21 @@ class SMWTimeValue extends SMWDataValue {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		$this->addError( wfMsgForContent( 'smw_nodatetime', $args[0] ) );
 		$this->m_dataitem = new SMWDITime( SMWDITime::CM_GREGORIAN, 32202 ); // always default to something
+	}
+
+	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_TIME ) {
+			$this->m_dataitem = $dataItem;
+			$this->m_caption = $this->m_wikivalue = false;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public function getShortWikiText( $linked = NULL ) {
@@ -770,7 +787,7 @@ class SMWTimeValue extends SMWDataValue {
 		$result .= str_pad( $this->getYear() + 1, 4, "0", STR_PAD_LEFT ) .
 			  '-' . str_pad( $monthnum, 2, "0", STR_PAD_LEFT );
 		if ( !$mindefault && ( $this->m_dataitem->getPrecision() < SMWDITime::PREC_YMD ) ) {
-			$maxday = SMWTimeValue::getDayNumberForMonth( $monthnum, $this->getYear(), SMWDITime::CM_GREGORIAN );
+			$maxday = self::getDayNumberForMonth( $monthnum, $this->getYear(), SMWDITime::CM_GREGORIAN );
 			$result .= '-' . str_pad( $this->getDay( SMWDITime::CM_GREGORIAN, $maxday ), 2, "0", STR_PAD_LEFT );
 		} else {
 			$result .= '-' . str_pad( $this->getDay(), 2, "0", STR_PAD_LEFT );
@@ -791,7 +808,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @return SMWDITime
 	 */
 	protected function getDataForCalendarModel( $calendarmodel ) {
-		if ( $this->m_dataitem->getYear() <= SMWTimeValue::PREHISTORY ) {
+		if ( $this->m_dataitem->getYear() <= self::PREHISTORY ) {
 			return ( $this->m_dataitem->getCalendarModel() == $calendarmodel ) ? $this->m_dataitem : null;
 		} elseif ( $calendarmodel == SMWDITime::CM_GREGORIAN ) {
 			if ( $this->m_dataitem_greg === null ) {
@@ -843,9 +860,9 @@ class SMWTimeValue extends SMWDataValue {
 		if ( ( strtoupper( $this->m_outformat ) == 'ISO' ) || ( $this->m_outformat == '-' ) ) {
 			return $this->getISO8601Date();
 		} else {
-			if ( $this->m_dataitem->getYear() <= SMWTimeValue::PREHISTORY ) {
+			if ( $this->m_dataitem->getYear() <= self::PREHISTORY ) {
 				return $this->getCaptionFromDataitem( $this->m_dataitem ); // should be Gregorian, but don't bother here
-			} elseif ( $this->m_dataitem->getJD() < SMWTimeValue::J1582 ) {
+			} elseif ( $this->m_dataitem->getJD() < self::J1582 ) {
 				return $this->getCaptionFromDataitem( $this->getDataForCalendarModel( SMWDITime::CM_JULIAN ) );
 			} else {
 				return $this->getCaptionFromDataitem( $this->getDataForCalendarModel( SMWDITime::CM_GREGORIAN ) );

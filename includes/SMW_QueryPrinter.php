@@ -196,11 +196,12 @@ abstract class SMWResultPrinter {
 	 * 
 	 * @param string $result
 	 * @param SMWQueryResult $results
-	 * @param $outputmode
+	 * @param integer $outputmode
 	 * 
 	 * @return string
 	 */
 	protected function handleNonFileResult( $result, SMWQueryResult $results, $outputmode ) {
+		global $wgParser;
 		$result .= $this->getErrorString( $results ); // append errors
 
 		if ( ( !$this->isHTML ) && ( $this->hasTemplates ) ) { // preprocess embedded templates if needed

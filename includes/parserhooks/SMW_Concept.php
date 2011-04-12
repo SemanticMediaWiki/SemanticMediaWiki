@@ -28,7 +28,7 @@ class SMWConcept {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 
 		$title = $parser->getTitle();
-		$pconc = SMWPropertyValue::makeProperty( '_CONC' );
+		$pconc = new SMWDIProperty( '_CONC' );
 
 		if ( $title->getNamespace() != SMW_NS_CONCEPT ) {
 			$result = smwfEncodeMessages( array( wfMsgForContent( 'smw_no_concept_namespace' ) ) );

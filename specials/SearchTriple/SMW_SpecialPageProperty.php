@@ -50,9 +50,9 @@ class SMWPageProperty extends SpecialPage {
 		}
 
 		$subject = SMWDataValueFactory::newTypeIDValue( '_wpg', $pagename );
-		$pagename = $subject->isValid() ? $subject->getText():'';
+		$pagename = $subject->isValid() ? $subject->getText() : '';
 		$property = SMWPropertyValue::makeUserProperty( $propname );
-		$propname = $property->isvalid() ? $property->getWikiValue():'';
+		$propname = $property->isvalid() ? $property->getWikiValue() : '';
 
 		// Produce output
 		$html = '';
@@ -66,7 +66,7 @@ class SMWPageProperty extends SpecialPage {
 			$options->limit = $limit + 1;
 			$options->offset = $offset;
 			$options->sort = true;
-			$results = smwfGetStore()->getPropertyValues( $pagename != '' ? $subject:NULL, $property, $options );
+			$results = smwfGetStore()->getPropertyValues( $pagename != '' ? $subject->getDataItem() : null, $property->getDataItem(), $options );
 
 			// prepare navigation bar if needed
 			if ( ( $offset > 0 ) || ( count( $results ) > $limit ) ) {
@@ -93,12 +93,13 @@ class SMWPageProperty extends SpecialPage {
 			} else {
 				$html .= "<ul>\n";
 				$count = $limit + 1;
-				foreach ( $results as $result ) {
+				foreach ( $results as $di ) {
 					$count--;
 					if ( $count < 1 ) continue;
-					$html .= '<li>' . $result->getLongHTMLText( $skin ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
-					if ( $result->getTypeID() == '_wpg' ) {
-						$browselink = SMWInfolink::newBrowsingLink( '+', $result->getLongWikiText() );
+					$dv = SMWDataValueFactory::newDataItemValue( $di );
+					$html .= '<li>' . $dv->getLongHTMLText( $skin ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
+					if ( $di->getTypeID() == '_wpg' ) {
+						$browselink = SMWInfolink::newBrowsingLink( '+', $dv->getLongWikiText() );
 						$html .= ' &#160;' . $browselink->getHTML( $skin );
 					}
 					$html .=  "</li> \n";

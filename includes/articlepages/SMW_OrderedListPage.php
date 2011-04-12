@@ -159,7 +159,7 @@ abstract class SMWOrderedListPage extends Article {
 			$first = $this->from;
 
 			if ( $ac > $this->limit ) {
-				$last = $this->articles[$ac - 1]->getSortkey();
+				$last = SMWCompatibilityHelpers::getSortKey( $this->articles[$ac - 1] );
 			} else {
 				$last = '';
 			}
@@ -199,21 +199,22 @@ abstract class SMWOrderedListPage extends Article {
 	}
 
 	/**
-	 * Like Article's getTitle(), but returning a suitable SMWWikiPageValue
+	 * Like Article's getTitle(), but returning a suitable SMWDIWikiPage.
 	 * 
-	 * @return SMWWikiPageValue
+	 * @return SMWDIWikiPage
 	 */
-	protected function getDataValue() {
-		return SMWWikiPageValue::makePageFromTitle( $this->getTitle() );
+	protected function getDataItem() {
+		$title = $this->getTitle();
+		return new SMWDIWikiPage( $title->getDBKey(), $title->getNamespace(), $title->getInterwiki() );
 	}
 
 	/**
-	 * Format a list of SMWWikipageValues chunked by letter in a three-column
+	 * Format a list of SMWDIWikiPage objects chunked by letter in a three-column
 	 * list, ordered vertically.
 	 * 
-	 * @param integer $start
-	 * @param integer $end
-	 * @param array $elements
+	 * @param $start integer
+	 * @param $end integer
+	 * @param $elements of SMWDIWikiPage
 	 * 
 	 * @return string
 	 */
@@ -237,6 +238,7 @@ abstract class SMWOrderedListPage extends Article {
 
 			// output all articles
 			for ( $index = $startChunk ; $index < $endChunk && $index < $end; $index++ ) {
+				$elementDv = SMWDataValueFactory::newDataItemValue( $elements[$index] );
 				// check for change of starting letter or begining of chunk
 				$start_char = $wgContLang->convert( $wgContLang->firstChar( $elements[$index]->getSortkey() ) );
 				
@@ -258,7 +260,7 @@ abstract class SMWOrderedListPage extends Article {
 					$prev_start_char = $start_char;
 				}
 				
-				$r .= "<li>" . $elements[$index]->getLongHTMLText( $this->getSkin() ) . "</li>\n";
+				$r .= "<li>" . $elementDv->getLongHTMLText( $this->getSkin() ) . "</li>\n";
 			}
 			
 			if ( !$atColumnTop ) {
@@ -288,9 +290,11 @@ abstract class SMWOrderedListPage extends Article {
 		$start_char = $wgContLang->convert( $wgContLang->firstChar( $elements[$start]->getSortkey() ) );
 		$prev_start_char = $start_char;
 		$r = '<h3>' . htmlspecialchars( $start_char ) . "</h3>\n";
-		$r .= '<ul><li>' . $elements[$start]->getLongHTMLText( $this->getSkin() ) . '</li>';
+		$elementStartDv = SMWDataValueFactory::newDataItemValue( $elements[$start] );
+		$r .= '<ul><li>' . $elementStartDv->getLongHTMLText( $this->getSkin() ) . '</li>';
 		
 		for ( $index = $start + 1; $index < $end; $index++ ) {
+			$elementDv = SMWDataValueFactory::newDataItemValue( $elements[$index] );
 			$start_char = $wgContLang->convert( $wgContLang->firstChar( $elements[$index]->getSortkey() ) );
 			
 			if ( $start_char != $prev_start_char ) {
@@ -298,7 +302,7 @@ abstract class SMWOrderedListPage extends Article {
 				$prev_start_char = $start_char;
 			}
 			
-			$r .= '<li>' . $elements[$index]->getLongHTMLText( $this->getSkin() ) . '</li>';
+			$r .= '<li>' . $elementDv->getLongHTMLText( $this->getSkin() ) . '</li>';
 		}
 		
 		$r .= '</ul>';

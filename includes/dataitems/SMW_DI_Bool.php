@@ -10,7 +10,7 @@
  * @author Markus Krötzsch
  * @ingroup SMWDataItems
  */
-class SMWDIBool extends SMWDataItem {
+class SMWDIBoolean extends SMWDataItem {
 
 	/**
 	 * Internal value.
@@ -24,7 +24,7 @@ class SMWDIBool extends SMWDataItem {
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_BOOL;
+		return SMWDataItem::TYPE_BOOLEAN;
 	}
 
 	public function getBoolean() {
@@ -35,16 +35,20 @@ class SMWDIBool extends SMWDataItem {
 		return $this->m_boolean ? 't' : 'f';
 	}
 
+	public function getSortKey() {
+		return $this->m_boolean ? 1 : 0;
+	}
+
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 * @return SMWDIBool
+	 * @return SMWDIBoolean
 	 */
 	public static function doUnserialize( $serialization, $typeid ) {
 		if ( $serialization == 't' ) {
-			return new SMWDIBool( true, $typeid );
+			return new SMWDIBoolean( true, $typeid );
 		} elseif  ( $serialization == 'f' ) {
-			return new SMWDIBool( true, $typeid );
+			return new SMWDIBoolean( true, $typeid );
 		} else {
 			throw new SMWDataItemException( "Boolean data item unserialised from illegal value '$serialization'" );
 		}

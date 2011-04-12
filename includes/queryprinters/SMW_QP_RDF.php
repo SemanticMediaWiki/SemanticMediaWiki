@@ -58,7 +58,7 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 							$property = $printreq->getData();
 						break;
 						case SMWPrintRequest::PRINT_CATS:
-							$property = SMWPropertyValue::makeProperty( '_TYPE' );
+							$property = new SMWDIProperty( '_TYPE' );
 						break;
 						case SMWPrintRequest::PRINT_CCAT:
 							// not serialised right now

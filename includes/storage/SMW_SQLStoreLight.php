@@ -100,7 +100,7 @@ class SMWSQLStoreLight extends SMWStore {
 		return $this->m_semdata[$sid];
 	}
 
-	public function getPropertyValues( $subject, SMWPropertyValue $property, $requestoptions = null, $outputformat = '' ) {
+	public function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null, $outputformat = '' ) {
 		wfProfileIn( "SMWSQLStoreLight::getPropertyValues (SMW)" );
 		if ( $property->isInverse() ) { // inverses are working differently
 			$noninverse = clone $property;
@@ -136,7 +136,7 @@ class SMWSQLStoreLight extends SMWStore {
 		return $result;
 	}
 
-	public function getPropertySubjects( SMWPropertyValue $property, $value, $requestoptions = null ) {
+	public function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null ) {
 		wfProfileIn( "SMWSQLStoreLight::getPropertySubjects (SMW)" );
 		if ( $property->isInverse() ) { // inverses are working differently
 			$noninverse = clone $property;
@@ -170,7 +170,7 @@ class SMWSQLStoreLight extends SMWStore {
 		return $result;
 	}
 
-	public function getAllPropertySubjects( SMWPropertyValue $property, $requestoptions = null ) {
+	public function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null ) {
 		wfProfileIn( "SMWSQLStoreLight::getAllPropertySubjects (SMW)" );
 		$result = $this->getPropertySubjects( $property, null, $requestoptions );
 		wfProfileOut( "SMWSQLStoreLight::getAllPropertySubjects (SMW)" );
@@ -202,7 +202,7 @@ class SMWSQLStoreLight extends SMWStore {
 				'pageid=' . $db->addQuotes($sid) . $this->getSQLConditions( $suboptions, 'propname', 'propname' ),
 				'SMW::getProperties', $this->getSQLOptions( $suboptions, 'propname' ) );
 			while ( $row = $db->fetchObject( $res ) ) {
-				$result[] = SMWPropertyValue::makeProperty( $row->propname );
+				$result[] = new SMWDIProperty( $row->propname );
 			}
 			$db->freeResult( $res );
 		}
@@ -242,7 +242,7 @@ class SMWSQLStoreLight extends SMWStore {
 								$where . $this->getSQLConditions( $suboptions, 'propname', 'propname' ),
 								'SMW::getInProperties', $this->getSQLOptions( $suboptions, 'propname' ) );
 			while ( $row = $db->fetchObject( $res ) ) {
-				$result[] = SMWPropertyValue::makeProperty( $row->propname );
+				$result[] = new SMWDIProperty( $row->propname );
 			}
 			$db->freeResult( $res );
 		}

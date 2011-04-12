@@ -285,7 +285,7 @@ class SMWConceptDescription extends SMWDescription {
 	
 	protected $m_concept;
 
-	public function __construct( Title $concept ) {
+	public function __construct( SMWDIWikiPage $concept ) {
 		$this->m_concept = $concept;
 	}
 
@@ -738,7 +738,7 @@ class SMWSomeProperty extends SMWDescription {
 	protected $m_description;
 	protected $m_property;
 
-	public function __construct( SMWPropertyValue $property, SMWDescription $description ) {
+	public function __construct( SMWDIProperty $property, SMWDescription $description ) {
 		$this->m_property = $property;
 		$this->m_description = $description;
 	}

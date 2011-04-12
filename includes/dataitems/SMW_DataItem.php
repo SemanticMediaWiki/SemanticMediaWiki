@@ -42,28 +42,32 @@ class SMWDataItemException extends Exception {
  */
 abstract class SMWDataItem {
 
+	/// Data item ID that can be used to indicate that no data item class is appropriate
+	const TYPE_NOTYPE    = 0;
 	/// Data item ID for SMWDINumber
-	const TYPE_NUMBER  = 1;
+	const TYPE_NUMBER    = 1;
 	/// Data item ID for SMWDIString
-	const TYPE_STRING  = 2;
+	const TYPE_STRING    = 2;
 	///  Data item ID for SMWDIBlob
-	const TYPE_BLOB    = 3;
-	///  Data item ID for SMWDIBool
-	const TYPE_BOOL    = 4;
-	///  Data item ID for SMWDIURI
-	const TYPE_URI     = 5;
+	const TYPE_BLOB      = 3;
+	///  Data item ID for SMWDIBoolean
+	const TYPE_BOOLEAN   = 4;
+	///  Data item ID for SMWDIUri
+	const TYPE_URI       = 5;
 	///  Data item ID for SMWDITimePoint
-	const TYPE_TIME    = 6;
+	const TYPE_TIME      = 6;
 	///  Data item ID for SMWDIGeoCoords
-	const TYPE_GEO     = 7;
+	const TYPE_GEO       = 7;
 	///  Data item ID for SMWDIContainer
-	const TYPE_CONT    = 8;
+	const TYPE_CONTAINER = 8;
 	///  Data item ID for SMWDIWikiPage
-	const TYPE_WIKIPAGE = 9;
+	const TYPE_WIKIPAGE  = 9;
 	///  Data item ID for SMWDIConcept
-	const TYPE_CONCEPT = 10;
+	const TYPE_CONCEPT   = 10;
 	///  Data item ID for SMWDIProperty
-	const TYPE_PROP    = 11;
+	const TYPE_PROPERTY  = 11;
+	///  Data item ID for SMWDIError
+	const TYPE_ERROR     = 12;
 
 	/**
 	 * The SMW type ID that governs the handling of this data item.
@@ -99,12 +103,33 @@ abstract class SMWDataItem {
 	}
 
 	/**
+	 * Return a value that can be used for sorting data of this type.
+	 * If the data is of a numerical type, the sorting must be done in
+	 * numerical order. If the data is a string, the data must be sorted
+	 * alphabetically.
+	 *
+	 * @return float or string 
+	 */
+	abstract public function getSortKey();
+
+	/**
 	 * Get a UTF-8 encoded string serialization of this data item.
 	 * The serialisation should be concise and need not be pretty, but it
-	 * must allow unserialization. For this purpose
+	 * must allow unserialization. Each subclass of SMWDataItem implements
+	 * a static method doUnserialize() for this purpose.
 	 * @return string
 	 */
 	abstract public function getSerialization();
+
+	/**
+	 * Get a hash string for this data item. Might be overwritten in
+	 * subclasses to obtain shorter or more efficient hashes. 
+	 * 
+	 * @return string
+	 */
+	public function getHash() {
+		return $this->getSerialization();
+	}
 
 	/**
 	 * Create a data item from the provided serialization string and type

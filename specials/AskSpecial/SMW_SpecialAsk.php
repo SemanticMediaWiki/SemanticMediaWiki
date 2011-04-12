@@ -422,7 +422,7 @@ END;
 				}
 
 				if ( !isset( $this->m_params[$desckey] ) ) {
-					$dv = end( smwfGetStore()->getPropertyValues( SMWWikiPageValue::makePageFromTitle( $concept ), SMWPropertyValue::makeProperty( '_CONC' ) ) );
+					$dv = end( smwfGetStore()->getPropertyValues( SMWWikiPageValue::makePageFromTitle( $concept ), new SMWDIProperty( '_CONC' ) ) );
 					if ( $dv instanceof SMWConceptValue ) {
 						$this->m_params[$desckey] = $dv->getDocu();
 					}

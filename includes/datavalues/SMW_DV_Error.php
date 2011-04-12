@@ -15,16 +15,20 @@
  */
 class SMWErrorValue extends SMWDataValue {
 
-	public function __construct( $errormsg = '', $uservalue = '', $caption = false ) {
-		$this->setUserValue( $uservalue, $caption );
-		if ( $errormsg != '' ) $this->addError( $errormsg );
+	public function __construct( $typeid, $errormsg = '', $uservalue = '', $caption = false ) {
+		parent::__construct( $typeid );
+		$this->m_caption = ( $caption !== false ) ? $caption : $uservalue;
+		if ( $errormsg != '' ) {
+			$this->addError( $errormsg );
+		}
 	}
 
 	protected function parseUserValue( $value ) {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
-		$this->m_dataitem = new SMWDIBlob( $value );
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+		$this->addError( wfMsgForContent( 'smw_parseerror' ) );
 	}
 
 	protected function parseDBkeys( $args ) {
@@ -34,6 +38,21 @@ class SMWErrorValue extends SMWDataValue {
 		// datatype. Normally, it will not be displayed either since this value
 		// is not valid by default. So keeping the DB key here is rather
 		// irrelevant.
+	}
+
+	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_ERROR ) {
+			$this->addError( $dataItem->getErrors() );
+			$this->m_caption = $this->getErrorText();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public function getShortWikiText( $linked = null ) {

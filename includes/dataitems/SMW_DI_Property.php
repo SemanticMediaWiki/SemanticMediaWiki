@@ -53,6 +53,11 @@ class SMWDIProperty extends SMWDataItem {
 	 * @var boolean
 	 */
 	protected $m_inverse;
+	/**
+	 * Cache for property type ID.
+	 * @var string
+	 */
+	protected $m_proptypeid;
 
 	/**
 	 * Initialise a property. This constructor checks that keys of
@@ -81,7 +86,7 @@ class SMWDIProperty extends SMWDataItem {
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_PROP;
+		return SMWDataItem::TYPE_PROPERTY;
 	}
 
 	public function getKey() {
@@ -90,6 +95,10 @@ class SMWDIProperty extends SMWDataItem {
 
 	public function isInverse() {
 		return $this->m_inverse;
+	}
+
+	public function getSortKey() {
+		return $this->m_key;
 	}
 
 	/**
@@ -141,6 +150,26 @@ class SMWDIProperty extends SMWDataItem {
 	}
 
 	/**
+	 * Get an object of type SMWDIWikiPage that represents the page which
+	 * relates to this property, or null if no such page exists. The latter
+	 * can happen for special properties without user-readable label, and
+	 * for inverse properties.
+	 */
+	public function getDiWikiPage() {
+		if ( $this->m_inverse ) return null;
+		if ( $this->isUserDefined() ) {
+			$dbkey = $this->m_key;
+		} else {
+			$dbkey = str_replace( ' ', '_', $this->getLabel() );
+		}
+		try {
+			return new SMWDIWikiPage( $dbkey, SMW_NS_PROPERTY, '', '_wpp' );
+		} catch ( SMWDataItemException $e ) {
+			return null;
+		}
+	}
+
+	/**
 	 * Get the type ID of a predefined property, or '' if the property
 	 * is not predefined.
 	 * The function is guaranteed to return a type ID if isUserDefined()
@@ -154,6 +183,35 @@ class SMWDIProperty extends SMWDataItem {
 			return '';
 		}
 	}
+
+	/**
+	 * Find the property's type ID, either by looking up its predefined ID
+	 * (if any) or by retrieving the relevant information from the store.
+	 * If no type is stored for a user defined property, the global default
+	 * type will be used.
+	 *
+	 * @return string type ID
+	 */
+	public function findPropertyTypeID() {
+		global $smwgPDefaultType;
+		if ( !isset( $this->m_proptypeid ) ) {
+			if ( $this->isUserDefined() ) { // normal property
+				$diWikiPage = new SMWDIWikiPage( $this->getKey(), SMW_NS_PROPERTY, '' );
+				$typearray = smwfGetStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_TYPE' ) );
+				if ( count( $typearray ) >= 1 ) { // some types given, pick one (hopefully unique)
+					$typeString = reset( $typearray );
+					$this->m_proptypeid = ( $typeString instanceOf SMWDIWikiPage ) ? 
+					                        SMWDataValueFactory::findTypeID( $typeString->getDBKey() ) : '__err';
+				} elseif ( count( $typearray ) == 0 ) { // no type given
+					$this->m_proptypeid = $smwgPDefaultType;
+				}
+			} else { // pre-defined property
+				$this->m_proptypeid = $this->getPredefinedPropertyTypeID();
+			}
+		}
+		return $this->m_proptypeid;
+	}
+
 
 	public function getSerialization() {
 		return ( $this->m_inverse ? '-' : '' ) . $this->m_key ;

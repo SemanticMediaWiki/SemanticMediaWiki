@@ -118,22 +118,24 @@ class SMWLinearValue extends SMWNumberValue {
 		$this->m_unitfactors = array();
 		$this->m_mainunit = false;
 
-		$typepage = SMWWikiPageValue::makePage( $this->m_typeid, SMW_NS_TYPE );
-		if ( !$typepage->isValid() ) {
+		try {
+			$typeDiWikiPage = new SMWDIWikiPage( $this->m_typeid, SMW_NS_TYPE, '' );
+		} catch ( SMWDataItemException $e ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_unknowntype', SMWDataValueFactory::findTypeLabel( $this->getTypeID() ) ) );
 			return;
 		}
-		$factors = smwfGetStore()->getPropertyValues( $typepage, SMWPropertyValue::makeProperty( '_CONV' ) );
+		$factors = smwfGetStore()->getPropertyValues( $typeDiWikiPage, new SMWDIProperty( '_CONV' ) );
 		if ( count( $factors ) == 0 ) { // no custom type
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_unknowntype', SMWDataValueFactory::findTypeLabel( $this->getTypeID() ) ) );
 			return;
 		}
 		$number = $unit = '';
-		foreach ( $factors as $dv ) {
-			if ( SMWNumberValue::parseNumberValue( $dv->getWikiValue(), $number, $unit ) != 0 ) {
-				continue; // ignore problematic conversions
+		foreach ( $factors as $di ) {
+			if ( ( $di->getDIType() !== SMWDataItem::TYPE_STRING ) || 
+			     ( SMWNumberValue::parseNumberValue( $di->getString(), $number, $unit ) != 0 ) ) {
+				continue; // ignore corrupted data and bogus inputs
 			}
 			$unit_aliases = preg_split( '/\s*,\s*/u', $unit );
 			$first = true;
@@ -170,11 +172,15 @@ class SMWLinearValue extends SMWNumberValue {
 		if ( $this->m_displayunits !== false ) return; // do the below only once
 		$this->initConversionData(); // needed to normalise unit strings
 		$this->m_displayunits = array();
-		if ( ( $this->m_property === null ) || ( $this->m_property->getWikiPageValue() === null ) ) return;
-		$values = smwfGetStore()->getPropertyValues( $this->m_property->getWikiPageValue(), SMWPropertyValue::makeProperty( '_UNIT' ) );
+		if ( ( $this->m_property === null ) || ( $this->m_property->getDIWikiPage() === null ) ) {
+			return;
+		}
+		$dataItems = smwfGetStore()->getPropertyValues( $this->m_property->getDIWikiPage(), new SMWDIProperty( '_UNIT' ) );
 		$units = array();
-		foreach ( $values as $value ) { // Join all if many annotations exist. Discouraged (random order) but possible.
-			$units = $units + preg_split( '/\s*,\s*/u', $value->getWikiValue() );
+		foreach ( $dataItems as $di ) { // Join all if many annotations exist. Discouraged (random order) but possible.
+			if ( $di->getDIType() === SMWDataItem::TYPE_STRING ) {
+				$units = $units + preg_split( '/\s*,\s*/u', $di->getString() );
+			}
 		}
 		foreach ( $units as $unit ) {
 			$unit = SMWNumberValue::normalizeUnit( $unit );

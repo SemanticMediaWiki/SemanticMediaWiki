@@ -67,7 +67,7 @@ class SMWTestStore extends SMWStore {
 		}
 	}
 
-	function getPropertyValues( $subject, SMWPropertyValue $property, $requestoptions = null, $outputformat = '' ) {
+	function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null, $outputformat = '' ) {
 		$type = $this->getSpecialValues( $property, SMW_SP_HAS_TYPE );
 		$type = $type[0];
 		$valarray = array();
@@ -98,14 +98,14 @@ class SMWTestStore extends SMWStore {
 		return $result;
 	}
 
-	function getPropertySubjects( SMWPropertyValue $property, $value, $requestoptions = null ) {
+	function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null ) {
 		if ( !$value->isValid() ) {
 			return array();
 		}
 		return $this->getTestTitles( $requestoptions );
 	}
 
-	function getAllPropertySubjects( SMWPropertyValue $property, $requestoptions = null ) {
+	function getAllPropertySubjects( SMWDIProperty $property, $requestoptions = null ) {
 		return $this->getTestTitles( $requestoptions );
 	}
 

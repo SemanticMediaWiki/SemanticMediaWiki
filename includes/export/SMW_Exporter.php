@@ -48,7 +48,7 @@ class SMWExporter {
 		SMWExporter::initBaseURIs();
 		$subject = $semdata->getSubject();
 		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
-			$types = $semdata->getPropertyValues( SMWPropertyValue::makeProperty( '_TYPE' ) );
+			$types = $semdata->getPropertyValues( new SMWDIProperty( '_TYPE' ) );
 		} else {
 			$types = array();
 		}
@@ -66,10 +66,10 @@ class SMWExporter {
 	 * can be used to pass a particular SMWTypesValue object that is used
 	 * for determining the OWL type for property pages.
 	 *
-	 * @param SMWWikiPageValue $subject
+	 * @param SMWDIWikiPage $subject
 	 * @param mixed $typesvalueforproperty either an SMWTypesValue or null
 	 */
-	static public function makeExportDataForSubject( SMWWikiPageValue $subject, $typesvalueforproperty = null ) {		
+	static public function makeExportDataForSubject( SMWDIWikiPage $subject, $typesvalueforproperty = null ) {		
 		$result = $subject->getExportData();
 		switch ( $subject->getNamespace() ) {
 			case NS_CATEGORY: case SMW_NS_CONCEPT:
@@ -78,7 +78,7 @@ class SMWExporter {
 			break;
 			case SMW_NS_PROPERTY:
 				if ( $typesvalueforproperty == null ) {
-					$types = smwfGetStore()->getPropertyValues( $subject, SMWPropertyValue::makeProperty( '_TYPE' ) );
+					$types = smwfGetStore()->getPropertyValues( $subject, new SMWDIProperty( '_TYPE' ) );
 					$typesvalueforproperty = end( $types );
 				}
 				$maintype_pe = SMWExporter::getSpecialElement( 'owl', SMWExporter::getOWLPropertyType( $typesvalueforproperty ) );
@@ -103,14 +103,14 @@ class SMWExporter {
 	
 	/**
 	 * Extend a given SMWExpData element by adding export data for the
-	 * specified property values. This method is called when constructing
-	 * export data structures from SMWSemanticData objects.
+	 * specified property data itme. This method is called when
+	 * constructing export data structures from SMWSemanticData objects.
 	 *
-	 * @param SMWPropertyValue $property
+	 * @param SMWDIProperty $property
 	 * @param array $values of SMWDataValue objects for the given property
 	 * @param SMWExpData $data to add the data to
 	 */
-	static public function addPropertyValues(SMWPropertyValue $property, $values, SMWExpData &$data) {
+	static public function addPropertyValues(SMWDIProperty $property, $values, SMWExpData &$data) {
 		if ( $property->isUserDefined() ) {
 			$pe = SMWExporter::getResourceElement( $property );
 			foreach ( $values as $dv ) {
@@ -161,7 +161,7 @@ class SMWExporter {
 			if ( $pe === null ) return; // unknown special property, not exported 
 			foreach ( $values as $dv ) {
 				if ( $cat_only ) {
-					if ( !( $dv instanceof SMWWikiPageValue ) || ( $dv->getNamespace() != NS_CATEGORY ) ) {
+					if ( !( $dv instanceof SMWDIWikiPage ) || ( $dv->getNamespace() != NS_CATEGORY ) ) {
 						continue;
 					}
 				}
@@ -185,25 +185,23 @@ class SMWExporter {
 	}
 
 	/**
-	 * Create an SMWExpElement for some internal resource, given by a Title or
-	 * SMWWikiPageValue object. Returns null on error.
+	 * Create an SMWExpElement for some internal resource, given by an
+	 * SMWDIWikiPage or SMWDIProperty object. Returns null on error.
 	 * This is the one place in the code where URIs of wiki pages and
 	 * properties are defined.
 	 *
-	 * @param mixed Title or SMWWikiPagevalue or SMWPropertyValues
-	 * @return SMWExpResource
+	 * @param mixed SMWDIWikiPage or SMWDIProperty
+	 * @return SMWExpResource or null
 	 */
-	static public function getResourceElement( $resource ) {
-		if ( $resource instanceof SMWWikiPageValue ) {
+	static public function getResourceElement( SMWDataItem $resource ) {
+		if ( $resource instanceof SMWDIWikiPage ) {
 			$dv = $resource;
-		} elseif ( $resource instanceof SMWPropertyValue ) {
+		} elseif ( $resource instanceof SMWDIProperty ) {
 			$dv = $resource->getWikiPageValue();
-		} elseif ( $resource instanceof Title ) {
-			$dv = SMWWikiPageValue::makePageFromTitle( $resource );
 		} else {
 			return null;
 		}
-		$idvs = smwfGetStore()->getPropertyValues( $dv, SMWPropertyValue::makeProperty( '_IMPO' ) );
+		$idvs = smwfGetStore()->getPropertyValues( $dv, new SMWDIProperty( '_IMPO' ) );
 		if ( count( $idvs ) > 0 ) {
 			$namespace = current( $idvs )->getNS();
 			$namespaceid = current( $idvs )->getNSID();
@@ -326,5 +324,63 @@ class SMWExporter {
 		return $data;
 	}
 
+	/**
+	 * Create an SWMExpData container that encodes the data of the given
+	 * datavalue object.
+	 * 
+	 * @param SMWDataValue $dv the datavalue to encode
+	 */
+	static public function getDVExpData( SMWDataValue $dv ) {
+		if ( !$dv->isValid() ) return null;
+
+		switch ( $dv->getBaseType() ) {
+			case SMWDataValue::TYPE_NUMBER:	
+				$lit = new SMWExpLiteral( $dv->getNumber(), $dv, 'http://www.w3.org/2001/XMLSchema#double' );
+				return new SMWExpData( $lit );
+			break;
+			case SMWDataValue::TYPE_STRING: case SMWDataValue::TYPE_BLOB:
+				$lit = new SMWExpLiteral( smwfHTMLtoUTF8( $dv->getWikiText() ), $dv, 'http://www.w3.org/2001/XMLSchema#string' );
+				return new SMWExpData( $lit );
+			break;
+			case SMWDataValue::TYPE_BOOL:
+				$xsdvalue =  $dv->getBoolean() ? 'true' : 'false';
+				$lit = new SMWExpLiteral( $xsdvalue, $dv, 'http://www.w3.org/2001/XMLSchema#boolean' );
+				return new SMWExpData( $lit );
+			break;
+			case SMWDataValue::TYPE_URI:
+				/// TODO This escaping seems very odd. The serialisation should handle such things.
+				$res = new SMWExpResource( str_replace( '&', '&amp;', $dv->getURI() ), $dv );
+				return new SMWExpData( $res );
+			break;
+			case SMWDataValue::TYPE_TIME:
+				$lit = new SMWExpLiteral( $dv->getXMLSchemaDate(), $dv, 'http://www.w3.org/2001/XMLSchema#dateTime' );
+				return new SMWExpData( $lit );
+			break;
+			case SMWDataValue::TYPE_GEO:
+				/// TODO
+			break;
+			case SMWDataValue::TYPE_CONT:
+				/// TODO
+			break;
+			case SMWDataValue::TYPE_PAGE:
+				if ( $dv->getNamespace() == NS_MEDIA ) { // special handling for linking media files directly (object only)
+					$file = wfFindFile( $dv->getTitle() );
+					if ( $file !== false ) {
+						return new SMWExpData( new SMWExpResource( $file->getFullURL(), $this ) );
+					} else { // Medialink to non-existing file :-/
+						return null;
+					}
+				} else {
+					return new SMWExpData( SMWExporter::getResourceElement( $dv ) );
+				}
+			break;
+			case SMWDataValue::TYPE_CONCEPT:
+				/// TODO
+			break;
+			case SMWDataValue::TYPE_PROP:
+				return new SMWExpData( SMWExporter::getResourceElement( $dv->getWikiPageValue() ) );
+			break;
+		}
+	}
 
 }

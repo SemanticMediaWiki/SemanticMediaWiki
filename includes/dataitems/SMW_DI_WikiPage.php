@@ -62,6 +62,15 @@ class SMWDIWikiPage extends SMWDataItem {
 		return $this->m_interwiki;
 	}
 
+	/**
+	 * Get the sortkey of the wiki page data item. Note that this is not
+	 * the sortkey that might have been set for the corresponding wiki
+	 * page.
+	 */
+	public function getSortKey() {
+		return $this->m_dbkey;
+	}
+
 	public function getSerialization() {
 		return strval( $this->m_dbkey . '#' . strval( $this->m_namespace ) . '#' . $this->m_interwiki );
 	}

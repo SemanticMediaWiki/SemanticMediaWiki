@@ -118,11 +118,26 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	protected function parseDBkeys( $args ) {
-		$this->m_dataitem = SMWDINumber::doUnserialize( $args[0], $this->m_typeid );
-		$this->m_caption = false;
-		$this->m_unitin = false;
-		$this->makeUserValue();
-		$this->m_unitvalues = false;
+		$dataItem = SMWDINumber::doUnserialize( $args[0], $this->m_typeid );
+		$this->setDataItem( $dataItem );
+	}
+
+	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_NUMBER ) {
+			$this->m_dataitem = $dataItem;
+			$this->m_caption = false;
+			$this->m_unitin = false;
+			$this->makeUserValue();
+			$this->m_unitvalues = false;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public function setOutputFormat( $formatstring ) {

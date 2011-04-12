@@ -28,8 +28,8 @@
 class SMWQueryResult {
 	
 	/**
-	 * Array of SMWWikiPageValue objects that are the basis for this result
-	 * @var Array of SMWWikiPageValue
+	 * Array of SMWDIWikiPage objects that are the basis for this result
+	 * @var Array of SMWDIWikiPage
 	 */
 	protected $mResults;
 	
@@ -66,7 +66,7 @@ class SMWQueryResult {
 	 * 
 	 * @param array of SMWPrintRequest $printRequests
 	 * @param SMWQuery $query
-	 * @param array of SMWWikiPageValue $results
+	 * @param array of SMWDIWikiPage $results
 	 * @param SMWStore $store
 	 * @param boolean $furtherRes
 	 */
@@ -110,10 +110,10 @@ class SMWQueryResult {
 	}
 
 	/**
-	 * Return an array of SMWWikiPageValue objects that make up the
+	 * Return an array of SMWDIWikiPage objects that make up the
 	 * results stored in this object.
 	 * 
-	 * @return array of SMWWikiPageValue
+	 * @return array of SMWDIWikiPage
 	 */
 	public function getResults() {
 		return $this->mResults;
@@ -220,7 +220,7 @@ class SMWQueryResult {
 
 /**
  * Container for the contents of a single result field of a query result,
- * i.e. basically an array of SMWDataValues with some additional parameters.
+ * i.e. basically an array of SMWDataItems with some additional parameters.
  * The content of the array is fetched on demand only.
  * @ingroup SMWQuery
  */
@@ -231,7 +231,7 @@ class SMWResultArray {
 	protected $mPrintRequest;
 	
 	/**
-	 * @var SMWWikiPageValue
+	 * @var SMWDIWikiPage
 	 */
 	protected $mResult;
 	
@@ -241,7 +241,7 @@ class SMWResultArray {
 	protected $mStore;
 	
 	/**
-	 * @var array of SMWDataValue or false 
+	 * @var array of SMWDataItem or false 
 	 */
 	protected $mContent;
 
@@ -251,11 +251,11 @@ class SMWResultArray {
 	/**
 	 * Constructor.
 	 * 
-	 * @param SMWWikiPageValue $resultPage
+	 * @param SMWDIWikiPage $resultPage
 	 * @param SMWPrintRequest $printRequest
 	 * @param SMWStore $store
 	 */
-	public function __construct( SMWWikiPageValue $resultPage, SMWPrintRequest $printRequest, SMWStore $store ) {
+	public function __construct( SMWDIWikiPage $resultPage, SMWPrintRequest $printRequest, SMWStore $store ) {
 		$this->mResult = $resultPage;
 		$this->mPrintRequest = $printRequest;
 		$this->mStore = $store;
@@ -263,21 +263,21 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Returns the SMWWikiPageValue object to which this SMWResultArray refers.
+	 * Returns the SMWDIWikiPage object to which this SMWResultArray refers.
 	 * If you only care for those objects, consider using SMWQueryResult::getResults()
 	 * directly.
 	 * 
-	 * @return SMWWikiPageValue
+	 * @return SMWDIWikiPage
 	 */
 	public function getResultSubject() {
 		return $this->mResult;
 	}
 
 	/**
-	 * Returns an array of SMWDataValue objects that contain the results of
+	 * Returns an array of SMWDataItem objects that contain the results of
 	 * the given print request for the given result object.
 	 * 
-	 * @return array of SMWDataValue or false
+	 * @return array of SMWDataItem or false
 	 */
 	public function getContent() {
 		$this->loadContent();
@@ -295,37 +295,62 @@ class SMWResultArray {
 	}
 
 	/**
-	 * Return the next SMWDataValue object or false if no further object exists.
-	 * 
-	 * @return SMWDataValue
+	 * Compatibility alias for getNextDatItem().
+	 * @deprecated Call getNextDataValue() or getNextDataItem() directly as needed. Method will vanish before SMW 1.7.
 	 */
 	public function getNextObject() {
-		$this->loadContent();
-		
-		$result = current( $this->mContent );
-		next( $this->mContent );
-		
-		return $result;
+		return $this->getNextDataValue();
 	}
 
 	/**
-	 * Return the main text representation of the next SMWDataValue object
+	 * Return the next SMWDataItem object or false if no further object exists.
+	 * 
+	 * @return SMWDataItem or false
+	 */
+	public function getNextDataItem() {
+		$this->loadContent();
+		$result = current( $this->mContent );
+		next( $this->mContent );
+		return $result;
+	}
+
+
+	/**
+	 * Return an SMWDataValue object for the next SMWDataItem object or
+	 * false if no further object exists.
+	 * 
+	 * @return SMWDataValue or false
+	 */
+	public function getNextDataValue() {
+		$di = $this->getNextDataItem();
+		if ( $di === false ) {
+			return false;
+		}
+		$dv = SMWDataValueFactory::newDataItemValue( $di );
+		if ( $this->mPrintRequest->getOutputFormat() ) {
+			$dv->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
+		}
+		return $dv;
+	}
+
+	/**
+	 * Return the main text representation of the next SMWDataItem object
 	 * in the specified format, or false if no further object exists.
 	 *
 	 * The parameter $linker controls linking of title values and should
-	 * be some Linker object (or NULL for no linking). At some stage its
-	 * interpretation should be part of the generalised SMWDataValue.
+	 * be some Linker object (or NULL for no linking).
 	 * 
-	 * @param $outputMode
-	 * @param $linker
+	 * @param integer $outputMode
+	 * @param mixed $linker
 	 */
 	public function getNextText( $outputMode, $linker = null ) {
-		$object = $this->getNextObject();
-		
-		if ( $object instanceof SMWDataValue ) { // Print data values.
-			return ( ( $object->getTypeID() == '_wpg' ) || ( $object->getTypeID() == '__sin' ) ) ?  // Prefer "long" text for page-values.
-		       $object->getLongText( $outputMode, $linker ) :
-			   $object->getShortText( $outputMode, $linker );
+		$dv = $this->getNextDataValue();
+		if ( $dv !== false ) { // Print data values.
+			if ( ( $dv->getTypeID() == '_wpg' ) || ( $dv->getTypeID() == '__sin' ) ) { // Prefer "long" text for page-values.
+				return $dv->getLongText( $outputMode, $linker );
+			} else {
+				return $dv->getShortText( $outputMode, $linker );
+			}
 		} else {
 			return false;
 		}
@@ -342,30 +367,24 @@ class SMWResultArray {
 		
 		switch ( $this->mPrintRequest->getMode() ) {
 			case SMWPrintRequest::PRINT_THIS: // NOTE: The limit is ignored here.
-				if ( $this->mPrintRequest->getOutputFormat() ) {
-					$res = clone $this->mResult;
-					$res->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
-				} else {
-					$res = $this->mResult;
-				}
-				
-				$this->mContent = array( $res );
+				$this->mContent = array( $this->mResult );
 			break;
 			case SMWPrintRequest::PRINT_CATS:
 				// Always recompute cache here to ensure output format is respected.
-				self::$catCache = $this->mStore->getPropertyValues( $this->mResult, SMWPropertyValue::makeProperty( '_INST' ), $this->getRequestOptions( false ), $this->mPrintRequest->getOutputFormat() );
+				self::$catCache = $this->mStore->getPropertyValues( $this->mResult, new SMWDIProperty( '_INST' ), $this->getRequestOptions( false ) );
 				self::$catCacheObj = $this->mResult->getHash();
 				
 				$limit = $this->mPrintRequest->getParameter( 'limit' );
 				$this->mContent = ( $limit === false ) ? ( self::$catCache ) : array_slice( self::$catCache, 0, $limit );
 			break;
 			case SMWPrintRequest::PRINT_PROP:
-				$this->mContent = $this->mStore->getPropertyValues( $this->mResult, $this->mPrintRequest->getData(), $this->getRequestOptions(), $this->mPrintRequest->getOutputFormat() );
-				
+				$this->mContent = $this->mStore->getPropertyValues( $this->mResult, $this->mPrintRequest->getData()->getDataItem(), $this->getRequestOptions() );
+
 				// Print one component of a multi-valued string.
 				// Known limitation: the printrequest still is of type _rec, so if printers check
 				// for this then they will not recognize that it returns some more concrete type.
-				if ( ( $this->mPrintRequest->getTypeID() == '_rec' ) && ( $this->mPrintRequest->getParameter( 'index' ) !== false ) ) {
+				if ( ( $this->mPrintRequest->getTypeID() == '_rec' ) && 
+				     ( $this->mPrintRequest->getParameter( 'index' ) !== false ) ) {
 					$pos = $this->mPrintRequest->getParameter( 'index' ) - 1;
 					$newcontent = array();
 					
@@ -381,24 +400,20 @@ class SMWResultArray {
 			break;
 			case SMWPrintRequest::PRINT_CCAT: ///NOTE: The limit is ignored here.
 				if ( self::$catCacheObj != $this->mResult->getHash() ) {
-					self::$catCache = $this->mStore->getPropertyValues( $this->mResult, SMWPropertyValue::makeProperty( '_INST' ) );
+					self::$catCache = $this->mStore->getPropertyValues( $this->mResult, new SMWDIProperty( '_INST' ) );
 					self::$catCacheObj = $this->mResult->getHash();
 				}
-				
+
 				$found = '0';
 				$prkey = $this->mPrintRequest->getData()->getDBkey();
-				
+
 				foreach ( self::$catCache as $cat ) {
 					if ( $cat->getDBkey() == $prkey ) {
 						$found = '1';
 						break;
 					}
 				}
-				
-				$dv = SMWDataValueFactory::newTypeIDValue( '_boo' );
-				$dv->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
-				$dv->setDBkeys( array( $found ) );
-				$this->mContent = array( $dv );
+				$this->mContent = array( new SMWDIBoolean( $found ) );
 			break;
 			default: $this->mContent = array(); // Unknown print request.
 		}

@@ -65,7 +65,7 @@ class SMWURIValue extends SMWDataValue {
 		$scheme = $hierpart = $query = $fragment = '';
 		if ( $value == '' ) { // do not accept empty strings
 			$this->addError( wfMsgForContent( 'smw_emptystring' ) );
-			$this->m_dataitem = new SMWDIURI( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
+			$this->m_dataitem = new SMWDIUri( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
 			return;
 		}
 
@@ -83,7 +83,7 @@ class SMWURIValue extends SMWDataValue {
 					$uri = trim( $uri );
 					if ( $uri == mb_substr( $value, 0, mb_strlen( $uri ) ) ) { // disallowed URI!
 						$this->addError( wfMsgForContent( 'smw_baduri', $value ) );
-						$this->m_dataitem = new SMWDIURI( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
+						$this->m_dataitem = new SMWDIUri( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
 						return;
 					}
 				}
@@ -145,10 +145,10 @@ class SMWURIValue extends SMWDataValue {
 
 		// Now create the URI data item:
 		try {
-			$this->m_dataitem = new SMWDIURI( $scheme, $hierpart, $query, $fragment, $this->m_typeid);
+			$this->m_dataitem = new SMWDIUri( $scheme, $hierpart, $query, $fragment, $this->m_typeid);
 		} catch ( SMWDataItemException $e ) {
 			$this->addError( wfMsgForContent( 'smw_baduri', $this->m_wikitext ) );
-			$this->m_dataitem = new SMWDIURI( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
+			$this->m_dataitem = new SMWDIUri( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
 		}
 	}
 
@@ -164,22 +164,35 @@ class SMWURIValue extends SMWDataValue {
 
 	protected function parseDBkeys( $args ) {
 		try {
-			$this->m_dataitem = SMWDIURI::doUnserialize( $args[0], $this->m_typeid);
+			$dataItem = SMWDIUri::doUnserialize( $args[0], $this->m_typeid);
+			$this->setDataItem( $dataItem );
 		} catch ( SMWDataItemException $e ) {
 			$this->addError( wfMsgForContent( 'smw_baduri', $this->m_wikitext ) );
-			$this->m_dataitem = new SMWDIURI( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
+			$this->m_dataitem = new SMWDIUri( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
 			return;
 		}
+	}
 
-		if ( $this->m_mode == SMW_URI_MODE_EMAIL ) {
-			$this->m_wikitext = substr( $this->m_wikitext, 7 );
-		} elseif ( $this->m_mode == SMW_URI_MODE_TEL ) {
-			$this->m_wikitext = substr( $this->m_wikitext, 4 );
-			$this->m_wikitext = $this->m_caption;
+	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_URI ) {
+			$this->m_dataitem = $dataItem;
+			if ( $this->m_mode == SMW_URI_MODE_EMAIL ) {
+				$this->m_wikitext = substr( $dataItem->getURI(), 7 );
+			} elseif ( $this->m_mode == SMW_URI_MODE_TEL ) {
+				$this->m_wikitext = substr( $dataItem->getURI(), 4 );
+			} else {
+				$this->m_wikitext = $dataItem->getURI();
+			}
+			$this->m_caption = $this->m_wikitext;
+			return true;
 		} else {
-			$this->m_wikitext = $this->m_dataitem->getURI();
+			return false;
 		}
-		$this->m_caption = $this->m_wikitext;
 	}
 
 	public function getShortWikiText( $linked = null ) {

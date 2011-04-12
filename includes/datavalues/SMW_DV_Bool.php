@@ -44,12 +44,27 @@ class SMWBoolValue extends SMWDataValue {
 		} else {
 			$this->addError( wfMsgForContent( 'smw_noboolean', $value ) );
 		}
-		$this->m_dataitem = new SMWDIBool( $boolvalue, $this->m_typeid );
+		$this->m_dataitem = new SMWDIBoolean( $boolvalue, $this->m_typeid );
 	}
 
 	protected function parseDBkeys( $args ) {
 		$this->parseUserValue( $args[0] );
 		$this->m_caption = $this->getStandardCaption( true ); // use default for this language
+	}
+
+	/**
+	 * @see SMWDataValue::setDataItem()
+	 * @param $dataitem SMWDataItem
+	 * @return boolean
+	 */
+	public function setDataItem( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_BOOLEAN ) {
+			$this->m_dataitem = $dataItem;
+			$this->m_caption = $this->getStandardCaption( true ); // use default for this language
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public function setOutputFormat( $formatstring ) {

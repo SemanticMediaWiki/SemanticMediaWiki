@@ -72,7 +72,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 			$errors[] = wfMsg( 'smw_propertyhardlyused' );
 		}
 		if ( $result[0]->isUserDefined() && $result[0]->getWikiPageValue()->getTitle()->exists() ) { // FIXME: this bypasses SMWDataValueFactory; ungood
-			$types = smwfGetStore()->getPropertyValues( $result[0]->getWikiPageValue(), SMWPropertyValue::makeProperty( '_TYPE' ) );
+			$types = smwfGetStore()->getPropertyValues( $result[0]->getDiWikiPage(), new SMWDIProperty( '_TYPE' ) );
 			if ( count( $types ) >= 1 ) {
 				$typestring = current( $types )->getLongHTMLText( $skin );
 			}
@@ -87,7 +87,7 @@ class SMWPropertiesPage extends SMWQueryPage {
 			$proplink = $result[0]->getLongHTMLText( $skin );
 		}
 		if ( $typestring == '' ) {
-			$type = SMWDataValueFactory::newPropertyObjectValue( SMWPropertyValue::makeProperty( '_TYPE' ) );
+			$type = SMWDataValueFactory::newPropertyObjectValue( new SMWDIProperty( '_TYPE' ) );
 			$type->setDBkeys( array( '_wpg' ) );
 			$typestring = $type->getLongHTMLText( $skin );
 			if ( $result[0]->getWikiPageValue()->getTitle()->exists() ) { // print only when we did not print a "nopage" warning yet

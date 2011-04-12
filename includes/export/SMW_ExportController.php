@@ -136,23 +136,23 @@ class SMWExportController {
 	 * features like recursive export or backlinks that are available for this
 	 * type of data.
 	 *
-	 * @param SMWWikiPageValue $value specifying the page to be exported
+	 * @param SMWDIWikiPage $diWikiPage specifying the page to be exported
 	 * @param integer $recursiondepth specifying the depth of recursion, see
 	 * SMWSmallTitle::$recdepth
 	 */
-	protected function serializePage( SMWWikiPageValue $value, $recursiondepth = 1 ) {
+	protected function serializePage( SMWDIWikiPage $diWikiPage, $recursiondepth = 1 ) {
 		$st = new SMWSmallTitle();
-		$st->dbkey = $value->getDBKey();
-		$st->namespace = $value->getNamespace();
+		$st->dbkey = $diWikiPage->getDBKey();
+		$st->namespace = $diWikiPage->getNamespace();
 		$st->recdepth = $recursiondepth;
 		if ( $this->isDone( $st ) ) return; // do not export twice
 		$this->markAsDone( $st );
-		$data = SMWExporter::makeExportData( $this->getSemanticData( $value, ( $recursiondepth == 0 ) ) );
+		$data = SMWExporter::makeExportData( $this->getSemanticData( $diWikiPage, ( $recursiondepth == 0 ) ) );
 		$this->serializer->serializeExpData( $data, $recursiondepth );
 
 		// let other extensions add additional RDF data for this page
 		$additionalDataArray = array();
-		wfRunHooks( 'smwAddToRDFExport', array( $value->getTitle(), &$additionalDataArray, ( $recursiondepth != 0 ), $this->add_backlinks ) );
+		wfRunHooks( 'smwAddToRDFExport', array( $diWikiPage, &$additionalDataArray, ( $recursiondepth != 0 ), $this->add_backlinks ) );
 		foreach ( $additionalDataArray as $additionalData ) {
 			$this->serializer->serializeExpData( $additionalData ); // serialise
 		}
@@ -186,12 +186,13 @@ class SMWExportController {
 			// if they were serialised at recdepth 0 only).  
 			if ( $this->add_backlinks ) {
 				wfProfileIn( "RDF::PrintPages::GetBacklinks" );
-				$inprops = smwfGetStore()->getInProperties( $value );
+				$inprops = smwfGetStore()->getInProperties( $diWikiPage );
 				foreach ( $inprops as $inprop ) {
-					if ( $inprop->getWikiPageValue() instanceof SMWWikiPageValue ) {
-						$this->queuePage( $inprop->getWikiPageValue(), 0 ); // no real recursion along properties
+					$propWikiPage = $inprop->getDiWikiPage();
+					if ( $propWikiPage !== null ) {
+						$this->queuePage( $propWikiPage, 0 ); // no real recursion along properties
 					}
-					$inSubs = smwfGetStore()->getPropertySubjects( $inprop, $value );
+					$inSubs = smwfGetStore()->getPropertySubjects( $inprop, $diWikiPage );
 					foreach ( $inSubs as $inSub ) {
 						$stb = new SMWSmallTitle();
 						$stb->dbkey = $inSub->getDBkey();
@@ -199,18 +200,18 @@ class SMWExportController {
 						$stb->recdepth = $subrecdepth;
 						if ( !$this->isDone($stb) ) {
 							$semdata = $this->getSemanticData( $inSub, true );
-							$semdata->addPropertyObjectValue( $inprop, $value );
+							$semdata->addPropertyObjectValue( $inprop, $diWikiPage );
 							$data = SMWExporter::makeExportData( $semdata );
 							$this->serializer->serializeExpData( $data, $subrecdepth );
 						}
 					}
 				}
 	
-				if ( NS_CATEGORY === $value->getNamespace() ) { // also print elements of categories
+				if ( NS_CATEGORY === $diWikiPage->getNamespace() ) { // also print elements of categories
 					$options = new SMWRequestOptions();
 					$options->limit = 100; // Categories can be large, always use limit
-					$instances = smwfGetStore()->getPropertySubjects( SMWPropertyValue::makeProperty( '_INST' ), $value, $options );
-					$pinst = SMWPropertyValue::makeProperty( '_INST' );
+					$instances = smwfGetStore()->getPropertySubjects( new SMWDIProperty( '_INST' ), $diWikiPage, $options );
+					$pinst = new SMWDIProperty( '_INST' );
 	
 					foreach ( $instances as $instance ) {
 						$stb = new SMWSmallTitle();
@@ -219,20 +220,20 @@ class SMWExportController {
 	
 						if ( !array_key_exists( $stb->getHash(), $this->element_done ) ) {
 							$semdata = $this->getSemanticData( $instance, true );
-							$semdata->addPropertyObjectValue( $pinst, $value );
+							$semdata->addPropertyObjectValue( $pinst, $diWikiPage );
 							$data = SMWExporter::makeExportData( $semdata );
 							$this->serializer->serializeExpData( $data, $subrecdepth );
 						}
 					}
-				} elseif ( SMW_NS_CONCEPT === $value->getNamespace() ) { // print concept members (slightly different code)
-					$desc = new SMWConceptDescription( $value->getTitle() );
+				} elseif ( SMW_NS_CONCEPT === $diWikiPage->getNamespace() ) { // print concept members (slightly different code)
+					$desc = new SMWConceptDescription( $diWikiPage );
 					$desc->addPrintRequest( new SMWPrintRequest( SMWPrintRequest::PRINT_THIS, '' ) );
 					$query = new SMWQuery( $desc );
 					$query->setLimit( 100 );
 	
 					$res = smwfGetStore()->getQueryResult( $query );
 					$resarray = $res->getNext();
-					$pinst = SMWPropertyValue::makeProperty( '_INST' );
+					$pinst = new SMWDIProperty( '_INST' );
 	
 					while ( $resarray !== false ) {
 						$instance = end( $resarray )->getNextObject();
@@ -243,7 +244,7 @@ class SMWExportController {
 	
 						if ( !array_key_exists( $stb->getHash(), $this->element_done ) ) {
 							$semdata = $this->getSemanticData( $instance, true );
-							$semdata->addPropertyObjectValue( $pinst, $value );
+							$semdata->addPropertyObjectValue( $pinst, $diWikiPage );
 							$data = SMWExporter::makeExportData( $semdata );
 							$this->serializer->serializeExpData( $data );
 						}
@@ -263,17 +264,17 @@ class SMWExportController {
 	 */
 	protected function serializeSmallTitle( SMWSmallTitle $st ) {
 		if ( $this->isDone( $st ) ) return; // do not export twice
-		$value = SMWWikiPageValue::makePage( $st->dbkey, $st->namespace );
-		$this->serializePage( $value, $st->recdepth );
+		$diWikiPage = new SMWDIWikiPage( $st->dbkey, $st->namespace, '' );
+		$this->serializePage( $diWikiPage, $st->recdepth );
 	}
 
 	/**
-	 * Add a given SMWWikiPageValue to the export queue if needed.
+	 * Add a given SMWDIWikiPage to the export queue if needed.
 	 */
-	protected function queuePage( SMWWikiPageValue $pagevalue, $recursiondepth ) {
+	protected function queuePage( SMWDIWikiPage $diWikiPage, $recursiondepth ) {
 		$spt = new SMWSmallTitle();
-		$spt->dbkey = $pagevalue->getDBkey();
-		$spt->namespace = $pagevalue->getNamespace();
+		$spt->dbkey = $diWikiPage->getDBkey();
+		$spt->namespace = $diWikiPage->getNamespace();
 		$spt->recdepth = $recursiondepth;
 		if ( !$this->isDone( $spt ) ) {
 			$this->element_queue[$spt->getHash()] = $spt;
@@ -318,12 +319,12 @@ class SMWExportController {
 	 * and we do not want to modify the store's result which may be used for
 	 * caching purposes elsewhere.
 	 */
-	protected function getSemanticData( $pagevalue, $core_props_only ) {
-		$semdata = smwfGetStore()->getSemanticData( $pagevalue, $core_props_only ? array( '__spu', '__typ', '__imp' ) : false ); // advise store to retrieve only core things
+	protected function getSemanticData( SMWDIWikiPage $diWikiPage, $core_props_only ) {
+		$semdata = smwfGetStore()->getSemanticData( $diWikiPage, $core_props_only ? array( '__spu', '__typ', '__imp' ) : false ); // advise store to retrieve only core things
 		if ( $core_props_only ) { // be sure to filter all non-relevant things that may still be present in the retrieved
-			$result = new SMWSemanticData( $pagevalue );
+			$result = new SMWSemanticData( $diWikiPage );
 			foreach ( array( '_URI', '_TYPE', '_IMPO' ) as $propid ) {
-				$prop = SMWPropertyValue::makeProperty( $propid );
+				$prop = new SMWDIProperty( $propid );
 				$values = $semdata->getPropertyValues( $prop );
 				foreach ( $values as $dv ) {
 					$result->addPropertyObjectValue( $prop, $dv );
