@@ -371,7 +371,6 @@ class SMWExportController {
 	 * functionality. Is anybody using this?
 	 */
 	public function printPages( $pages, $recursion = 1, $revisiondate = false  ) {
-		global $smwgMW_1_14;
 		wfProfileIn( "RDF::PrintPages" );
 
 		$linkCache =& LinkCache::singleton();
@@ -383,7 +382,7 @@ class SMWExportController {
 			$title = Title::newFromText( $page );
 			if ( null === $title ) continue; // invalid title name given
 			if ( $revisiondate !== '' ) { // filter page list by revision date
-				$rev = $smwgMW_1_14 ? Revision::getTimeStampFromID( $title, $title->getLatestRevID() ) : Revision::getTimeStampFromID( $title->getLatestRevID() );
+				$rev = Revision::getTimeStampFromID( $title, $title->getLatestRevID() );
 				if ( $rev < $revisiondate ) continue;
 			}
 			$st = new SMWSmallTitle();

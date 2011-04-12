@@ -206,7 +206,7 @@ class SMWSearchByProperty extends SpecialPage {
 	 * @return string  HTML with the navigation bar
 	 */
 	private function getNavigationBar( $count ) {
-		global $wgUser, $smwgQMaxInlineLimit, $smwgMW_1_14;
+		global $wgUser, $smwgQMaxInlineLimit;
 		$skin = $wgUser->getSkin();
 
 		if ( $this->offset > 0 )
@@ -229,7 +229,7 @@ class SMWSearchByProperty extends SpecialPage {
 				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
 				$first = false;
 			} else {
-				$navigation .= ' ' . ( $smwgMW_1_14 ? wfMsgExt( 'pipe-separator' , 'escapenoentities' ):'|' ) . ' ';
+				$navigation .= ' ' . wfMsgExt( 'pipe-separator' , 'escapenoentities' ) . ' ';
 			}
 			if ( $l > $smwgQMaxInlineLimit ) {
 				$l = $smwgQMaxInlineLimit;

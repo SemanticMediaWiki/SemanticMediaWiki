@@ -295,7 +295,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
  */
 function smwfSetupExtension() {
 	wfProfileIn( 'smwfSetupExtension (SMW)' );
-	global $smwgIP, $smwgScriptPath, $wgHooks, $wgFooterIcons, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink, $smwgMW_1_14;
+	global $smwgIP, $smwgScriptPath, $wgHooks, $wgFooterIcons, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink;
 
 	$smwgMasterStore = null;
 	$smwgIQRunningNumber = 0;
@@ -324,7 +324,6 @@ function smwfSetupExtension() {
 	  && $wgFooterIcons["poweredby"]["semanticmediawiki"]["src"] === null ) {
 		$wgFooterIcons["poweredby"]["semanticmediawiki"]["src"] = "$smwgScriptPath/skins/images/smw_button.png";
 	}
-	$smwgMW_1_14 = true; // assume latest 1.14 API
 
 	wfProfileOut( 'smwfSetupExtension (SMW)' );
 	return true;
