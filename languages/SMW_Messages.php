@@ -3268,6 +3268,7 @@ $messages['fr'] = array(
 	'smw_false_words' => 'faux,f,non,false',
 	'smw_nofloat' => '« $1 » n’est pas un nombre.',
 	'smw_infinite' => 'Les nombres aussi grand que « $1 » ne sont pas supportés.',
+	'smw_unitnotallowed' => '"$1" n\'est pas déclaré comme une unité valide de mesure pour cette propriété.',
 	'smw_infinite_unit' => 'La conversion en l’unité « $1 » a donné un nombre trop grand.',
 	'smw_novalues' => 'Aucune valeur spécifiée.',
 	'smw_unsupportedprefix' => 'Des préfixes (« $1 ») ne sont pas supportés actuellement.',
@@ -10519,7 +10520,7 @@ $messages['te'] = array(
 	'smw_result_prev' => 'గత',
 	'smw_result_next' => 'తదుపరి',
 	'smw_result_results' => 'ఫలితాలు',
-	'smw_result_noresults' => 'క్షమించండి, ఫలితాలేమీ లేవు.',
+	'smw_result_noresults' => 'ఫలితాలేమీ లేవు.',
 	'smw_smwadmin_db' => 'డాటాబేసు స్థాపన మరియు నవీకరణ',
 	'smw_smwadmin_announce' => 'మీ వికీని ప్రకటించండి',
 	'smw_smwadmin_datarefreshbutton' => 'భోగట్టాని తాజాకరించడం ఆపివేయి',
@@ -11548,7 +11549,7 @@ $messages['zh-cn'] = array(
  * @author PhiLiP
  */
 $messages['zh-hans'] = array(
-	'smw-desc' => '让你的维基更可及——对机器与人都是如此（[http://semantic-mediawiki.org/wiki/Help:User_manual 网上文档]）',
+	'smw-desc' => "让你的wiki更可及——对机器''与''人都是如此（[http://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
 	'smw_edithelp' => '属性编辑帮助',
 	'smw_viewasrdf' => 'RDF源',
 	'smw_finallistconjunct' => '和',
@@ -11558,8 +11559,8 @@ $messages['zh-hans'] = array(
 	'smw_isaliastype' => '此类型是数据类型"$1"的别名',
 	'smw_isnotype' => '此类型"$1"并非本维基中的标准类型，且未被赋予用户定义。',
 	'smw_concept_description' => '概念"$1"的描述',
-	'smw_no_concept_namespace' => '概念只能在命名空间Concept（概念）:下的页面中定义。',
-	'smw_multiple_concepts' => '一个概念页面只允许有一个概念定义',
+	'smw_no_concept_namespace' => '概念只能在命名空间 概念: 里的页面中定义。',
+	'smw_multiple_concepts' => '一个概念页面只能有一个概念定义。',
 	'smw_concept_cache_miss' => '因为维基设置需要概念"$1"在离线时计算，此概念现在无法使用。
 如果这个问题在一段时间后仍未解决，请向网站管理员请求令该概念可用。',
 	'smw_noinvannot' => '逆属性',
