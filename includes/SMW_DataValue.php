@@ -195,13 +195,6 @@ abstract class SMWDataValue {
 	 */
 	public function setDBkeys( array $args ) {
 		throw new Exception( "setDBkeys() must no longer be called." );
-		$this->mErrors = array(); // clear errors
-		$this->mHasErrors = false;
-		$this->m_infolinks = array(); // clear links
-		$this->mHasSearchLink = false;
-		$this->mHasServiceLinks = false;
-		$this->m_caption = false;
-		$this->m_stubvalues = $args;
 	}
 
 	/**

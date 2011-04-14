@@ -247,5 +247,8 @@ class SMWRecordValue extends SMWContainerValue {
 		}
 	}
 
+	public function setDataItem( SMWDataItem $dataItem ) {
+		// TODO: Make me do something
+	}
 }
 
