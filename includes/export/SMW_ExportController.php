@@ -123,7 +123,7 @@ class SMWExportController {
 		if ( $outfilename != '' ) {
 			$this->outputfile = fopen( $outfilename, 'w' );
 			if ( !$this->outputfile ) { // TODO Rather throw an exception here.
-				print "\nCannot open \"$outfile\" for writing.\n";
+				print "\nCannot open \"$outfilename\" for writing.\n";
 				return false;
 			}
 		}

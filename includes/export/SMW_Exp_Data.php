@@ -172,7 +172,7 @@ class SMWExpData {
 					return $restlist;
 				}
 			} else {
-				return $false;
+				return false;
 			}
 		} elseif ( ( !array_key_exists( $rdftype->getName(), $this->m_children ) ) &&
 		           ( $name == $rdfnil->getName() ) ) {

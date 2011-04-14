@@ -366,7 +366,7 @@ class SMWExporter {
 				if ( $dv->getNamespace() == NS_MEDIA ) { // special handling for linking media files directly (object only)
 					$file = wfFindFile( $dv->getTitle() );
 					if ( $file !== false ) {
-						return new SMWExpData( new SMWExpResource( $file->getFullURL(), $this ) );
+						return new SMWExpData( new SMWExpResource( $file->getFullURL() ) );
 					} else { // Medialink to non-existing file :-/
 						return null;
 					}

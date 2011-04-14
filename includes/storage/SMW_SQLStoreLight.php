@@ -420,6 +420,8 @@ class SMWSQLStoreLight extends SMWStore {
 				$job->run();
 			}
 		}
+
+		$db = wfGetDB( DB_SLAVE );
 		$nextpos = $index + $count;
 		if ( $emptyrange ) { // nothing found, check if there will be more pages later on
 			$nextpos = $db->selectField( 'page', 'page_id', "page_id >= $nextpos", __METHOD__, array( 'ORDER BY' => "page_id ASC" ) );

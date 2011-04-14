@@ -36,7 +36,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgIP, $wgServer, $smwgNamespace, $wgExtensionFunctions;
 	global $wgAutoloadClasses, $wgSpecialPages, $wgSpecialPageGroups;
 	global $wgHooks, $wgExtensionMessagesFiles, $wgJobClasses, $wgExtensionAliasesFiles;
-	global $wgResourceModules;
+	global $wgResourceModules, $smwgScriptPath;
 	
 	// The dot tells that the domain is not complete. It will be completed
 	// in the Export since we do not want to create a title object here when
