@@ -764,7 +764,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @deprecated This method is now called getISO8601Date().
 	 */
 	public function getXMLSchemaDate( $mindefault = true ) {
-		return getISO8601Date( $mindefault );
+		return $this->getISO8601Date( $mindefault );
 	}
 
 	/**

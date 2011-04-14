@@ -65,7 +65,6 @@ class SMWPropertiesPage extends SMWQueryPage {
 	}
 
 	function formatResult( $skin, $result ) {
-		global $wgLang;
 		$typestring = '';
 		$errors = array();
 		if ( $result[0]->isUserDefined() && ( $result[1] <= 5 ) ) {

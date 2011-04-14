@@ -497,7 +497,7 @@ END;
 	 * @return string
 	 */
 	protected function getInputForm( $printoutstring, $urltail ) {
-		global $wgUser, $smwgQSortingSupport, $wgLang, $smwgResultFormats;
+		global $wgUser, $smwgQSortingSupport, $smwgResultFormats;
 
 		$skin = $wgUser->getSkin();
 		$result = '';
