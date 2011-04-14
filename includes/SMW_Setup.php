@@ -227,50 +227,50 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	///// Register specials, do that early on in case some other extension calls "addPage" /////
 	$wgAutoloadClasses['SMWQueryPage']              = $smwgIP . 'specials/QueryPages/SMW_QueryPage.php';
 	$wgAutoloadClasses['SMWAskPage']                = $smwgIP . 'specials/AskSpecial/SMW_SpecialAsk.php';
-	$wgSpecialPages['Ask']                          = array( 'SMWAskPage' );
+	$wgSpecialPages['Ask']                          = 'SMWAskPage';
 	$wgSpecialPageGroups['Ask']                     = 'smw_group';
 
 	$wgAutoloadClasses['SMWSpecialBrowse']          = $smwgIP . 'specials/SearchTriple/SMW_SpecialBrowse.php';
-	$wgSpecialPages['Browse']                       = array( 'SMWSpecialBrowse' );
+	$wgSpecialPages['Browse']                       = 'SMWSpecialBrowse';
 	$wgSpecialPageGroups['Browse']                  = 'smw_group';
 
 	$wgAutoloadClasses['SMWPageProperty']           = $smwgIP . 'specials/SearchTriple/SMW_SpecialPageProperty.php';
-	$wgSpecialPages['PageProperty']                 = array( 'SMWPageProperty' );
+	$wgSpecialPages['PageProperty']                 = 'SMWPageProperty';
 	$wgSpecialPageGroups['PageProperty']            = 'smw_group';
 
 	$wgAutoloadClasses['SMWSearchByProperty']       = $smwgIP . 'specials/SearchTriple/SMW_SpecialSearchByProperty.php';
-	$wgSpecialPages['SearchByProperty']             = array( 'SMWSearchByProperty' );
+	$wgSpecialPages['SearchByProperty']             = 'SMWSearchByProperty';
 	$wgSpecialPageGroups['SearchByProperty']        = 'smw_group';
 
 	$wgAutoloadClasses['SMWURIResolver']            = $smwgIP . 'specials/URIResolver/SMW_SpecialURIResolver.php';
-	$wgSpecialPages['URIResolver']                  = array( 'SMWURIResolver' );
+	$wgSpecialPages['URIResolver']                  = 'SMWURIResolver';
 
 	$wgAutoloadClasses['SMWAdmin']                  = $smwgIP . 'specials/SMWAdmin/SMW_SpecialSMWAdmin.php';
-	$wgSpecialPages['SMWAdmin']                     = array( 'SMWAdmin' );
+	$wgSpecialPages['SMWAdmin']                     = 'SMWAdmin';
 	$wgSpecialPageGroups['SMWAdmin']                = 'smw_group';
 
 	$wgAutoloadClasses['SMWSpecialSemanticStatistics'] = $smwgIP . 'specials/Statistics/SMW_SpecialStatistics.php';
-	$wgSpecialPages['SemanticStatistics']           = array( 'SMWSpecialSemanticStatistics' );
+	$wgSpecialPages['SemanticStatistics']           = 'SMWSpecialSemanticStatistics';
 	$wgSpecialPageGroups['SemanticStatistics']      = 'wiki'; // Similar to Special:Statistics
 
 	$wgAutoloadClasses['SMWSpecialOWLExport']       = $smwgIP . 'specials/Export/SMW_SpecialOWLExport.php';
-	$wgSpecialPages['ExportRDF']                    = array( 'SMWSpecialOWLExport' );
+	$wgSpecialPages['ExportRDF']                    = 'SMWSpecialOWLExport';
 	$wgSpecialPageGroups['ExportRDF']               = 'smw_group';
 
 	$wgAutoloadClasses['SMWSpecialProperties']      = $smwgIP . 'specials/QueryPages/SMW_SpecialProperties.php';
-	$wgSpecialPages['Properties']                   = array( 'SMWSpecialProperties' );
+	$wgSpecialPages['Properties']                   = 'SMWSpecialProperties';
 	$wgSpecialPageGroups['Properties']              = 'pages';
 
 	$wgAutoloadClasses['SMWSpecialTypes']           = $smwgIP . 'specials/QueryPages/SMW_SpecialTypes.php';
-	$wgSpecialPages['Types']                        = array( 'SMWSpecialTypes' );
+	$wgSpecialPages['Types']                        = 'SMWSpecialTypes';
 	$wgSpecialPageGroups['Types']                   = 'pages';
 
 	$wgAutoloadClasses['SMWSpecialUnusedProperties'] = $smwgIP . 'specials/QueryPages/SMW_SpecialUnusedProperties.php';
-	$wgSpecialPages['UnusedProperties']             = array( 'SMWSpecialUnusedProperties' );
+	$wgSpecialPages['UnusedProperties']             = 'SMWSpecialUnusedProperties';
 	$wgSpecialPageGroups['UnusedProperties']        = 'maintenance';
 
 	$wgAutoloadClasses['SMWSpecialWantedProperties'] = $smwgIP . 'specials/QueryPages/SMW_SpecialWantedProperties.php';
-	$wgSpecialPages['WantedProperties']             = array( 'SMWSpecialWantedProperties' );
+	$wgSpecialPages['WantedProperties']             = 'SMWSpecialWantedProperties';
 	$wgSpecialPageGroups['WantedProperties']        = 'maintenance';
 
 	// Register Jobs
