@@ -72,7 +72,6 @@ class SMWAskPage extends SpecialPage {
 
 		// First make all inputs into a simple parameter list that can again be parsed into components later.
 		if ( $wgRequest->getCheck( 'q' ) ) { // called by own Special, ignore full param string in that case
-			$query_values = $wgRequest->getArray( 'p' );
 			$query_val = $wgRequest->getVal( 'p' );
 
 			if ( !empty( $query_val ) )

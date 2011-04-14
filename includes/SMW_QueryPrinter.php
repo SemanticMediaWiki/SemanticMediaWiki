@@ -139,8 +139,6 @@ abstract class SMWResultPrinter {
 	 * @return string
 	 */
 	public function getResult( $results, $params, $outputmode ) {
-		global $wgParser;
-
 		$this->isHTML = false;
 		$this->hasTemplates = false;
 		

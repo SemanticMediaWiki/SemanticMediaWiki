@@ -424,7 +424,6 @@ class SMWExportController {
 	 * @param integer $delayeach number of pages to process between two sleeps 
 	 */
 	public function printAll( $outfile, $ns_restriction = false, $delay, $delayeach ) {
-		global $smwgNamespacesWithSemanticLinks;
 		$linkCache =& LinkCache::singleton();
 		$db = wfGetDB( DB_SLAVE );
 

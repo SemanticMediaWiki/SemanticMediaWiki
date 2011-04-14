@@ -39,7 +39,7 @@ class SMWRAPStore2 extends SMWSQLStore2 {
 	 * @todo Maybe find a better nomenclature for the model.
 	 */
 	public function __construct() {
-		global $smwgRAPPath, $wgServer;
+		global $wgServer;
 
 		$this->modeluri = SMWExporter::expandURI( $wgServer . '/model' );
 		$this->baseuri  = SMWExporter::expandURI( $wgServer . '/id' );

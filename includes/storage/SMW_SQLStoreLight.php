@@ -351,7 +351,6 @@ class SMWSQLStoreLight extends SMWStore {
 	 * when required.
 	 */
 	protected function setupTables( $verbose, $db ) {
-		global $wgDBtype;
 		$reportTo = $verbose ? $this : null; // Use $this to report back from static SMWSQLHelpers.
 
 		SMWSQLHelpers::setupTable( // table for most data

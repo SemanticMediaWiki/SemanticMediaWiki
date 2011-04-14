@@ -295,7 +295,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
  */
 function smwfSetupExtension() {
 	wfProfileIn( 'smwfSetupExtension (SMW)' );
-	global $smwgIP, $smwgScriptPath, $wgHooks, $wgFooterIcons, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink;
+	global $smwgIP, $smwgScriptPath, $wgHooks, $wgFooterIcons, $smwgMasterStore, $smwgIQRunningNumber, $smwgToolboxBrowseLink;
 
 	$smwgMasterStore = null;
 	$smwgIQRunningNumber = 0;

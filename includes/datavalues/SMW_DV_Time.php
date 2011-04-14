@@ -139,8 +139,6 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	protected function parseUserValue( $value ) {
-		global $smwgContLang;
-
 		$value = trim( $value ); // ignore whitespace
 		$this->m_wikivalue = $value;
 		if ( $this->m_caption === false ) { // Store the caption now.

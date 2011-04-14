@@ -57,7 +57,7 @@ class SMWPrintRequest {
 			$this->m_data->setCaption( $label );
 		}
 		
-		if ( null != $params ) $m_params = $params;
+		if ( null != $params ) $this->m_params = $params;
 	}
 
 	public function getMode() {

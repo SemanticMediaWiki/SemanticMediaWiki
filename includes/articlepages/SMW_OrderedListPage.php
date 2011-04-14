@@ -108,8 +108,6 @@ abstract class SMWOrderedListPage extends Article {
 	 * @return string
 	 */
 	protected function getHTML() {
-		global $wgOut;
-		
 		$this->clearPageState();
 		$this->doQuery();
 		$r = "<br id=\"smwfootbr\"/>\n" . $this->getPages();
@@ -140,7 +138,7 @@ abstract class SMWOrderedListPage extends Article {
 	 * Generates the prev/next link part to the HTML code of the top and bottom section of the page.
 	 */
 	protected function getNavigationLinks( $query = array() ) {
-		global $wgUser, $wgLang;
+		global $wgLang;
 		
 		$sk = $this->getSkin();
 		$limitText = $wgLang->formatNum( $this->limit );

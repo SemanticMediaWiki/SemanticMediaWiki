@@ -41,7 +41,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 		$wgOut->setPageTitle( wfMsg( 'exportrdf' ) );
 		
 		// see if we can find something to export:
-		$page = ( $page == '' ) ? $wgRequest->getVal( 'page' ) : $page = rawurldecode( $page );
+		$page = ( $page == '' ) ? $wgRequest->getVal( 'page' ) : rawurldecode( $page );
 		if ( $page == '' ) { // Try to get POST list; some settings are only available via POST.
 			$pageblob = $wgRequest->getText( 'pages' );
 			if ( $pageblob != '' ) {

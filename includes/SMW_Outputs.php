@@ -52,8 +52,6 @@ class SMWOutputs {
 	 * @param string $item
 	 */
 	public static function requireHeadItem( $id, $item = '' ) {
-		global $wgVersion;
-		
 		// Use the b/c method when the resource loader is not available.
 		if ( !defined( 'MW_SUPPORTS_RESOURCE_MODULES' ) ) {
 			return self::requireHeadItemOld( $id, $item );

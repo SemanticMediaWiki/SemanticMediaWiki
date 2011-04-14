@@ -32,7 +32,6 @@ class SMWTestStore extends SMWStore {
 		} elseif ( $specialprop === SMW_SP_REDIRECTS_TO ) {
 			return array(); // TODO: any better idea?
 		} elseif ( $specialprop === SMW_SP_HAS_TYPE ) {
-			global $smwgContLang;
 			$name = mb_strtoupper( $subject->getText() );
 			if ( mb_substr_count( $name, 'INT' ) > 0 ) {
 				return array( SMWDataValueFactory::newTypeIDValue( '__typ', 'Integer' ) );

@@ -47,7 +47,6 @@ class SMWImportValue extends SMWDataValue {
 		$this->m_section = $onto_section;
 		$this->m_name = $onto_name;
 
-		$elemtype = -1;
 		foreach ( $msglines as $msgline ) {
 			list( $secname, $typestring ) = explode( '|', $msgline, 2 );
 			if ( $secname === $onto_section ) {

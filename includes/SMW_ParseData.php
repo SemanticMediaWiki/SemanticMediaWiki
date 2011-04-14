@@ -105,8 +105,6 @@ class SMWParseData {
 	static public function addProperty( $propertyName, $value, $caption, Parser $parser, $storeAnnotation = true ) {
 		wfProfileIn( 'SMWParseData::addProperty (SMW)' );
 
-		global $smwgContLang;
-
 		// See if this property is a special one, such as e.g. "has type".
 		$propertyDv = SMWPropertyValue::makeUserProperty( $propertyName );
 		$propertyDi = $propertyDv->getDataItem();
@@ -149,7 +147,7 @@ class SMWParseData {
 	 * @todo FIXME: Some job generations here might create too many jobs at once on a large wiki. Use incremental jobs instead.
 	 */
 	static public function storeData( $parseroutput, Title $title, $makejobs = true ) {
-		global $smwgEnableUpdateJobs, $wgContLang, $smwgDeclarationProperties;
+		global $smwgEnableUpdateJobs, $smwgDeclarationProperties;
 
 		$semdata = $parseroutput->mSMWData;
 		$namespace = $title->getNamespace();
@@ -354,8 +352,6 @@ class SMWParseData {
 	 * LinksUpdate.
 	 */
 	static public function onNewRevisionFromEditComplete( $article, $rev, $baseID ) {
-		global $wgContLang, $smwgContLang;
-
 		if ( ( $article->mPreparedEdit ) && ( $article->mPreparedEdit->output instanceof ParserOutput ) ) {
 			$output = $article->mPreparedEdit->output;
 			$title = $article->getTitle();

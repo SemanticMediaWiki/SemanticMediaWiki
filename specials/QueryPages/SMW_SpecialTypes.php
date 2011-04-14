@@ -103,7 +103,6 @@ class TypesPage extends QueryPage {
 	*/
 	
 	function getSQL() {
-		global $smwgContLang;
 		$dbr = wfGetDB( DB_SLAVE );
 		$page = $dbr->tableName( 'page' );
 		$NStype = SMW_NS_TYPE;

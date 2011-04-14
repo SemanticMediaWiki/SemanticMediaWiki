@@ -239,7 +239,6 @@ class SMWSpecialBrowse extends SpecialPage {
 	private function displayBottom( $more ) {
 		$html  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n" .
 		         "<tr class=\"smwb-center\"><td colspan=\"2\">\n";
-		$sometext = false;
 		global $smwgBrowseShowAll;
 		if ( !$smwgBrowseShowAll ) {
 			if ( ( $this->offset > 0 ) || $more ) {

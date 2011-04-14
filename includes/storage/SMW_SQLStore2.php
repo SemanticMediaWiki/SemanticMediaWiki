@@ -1913,8 +1913,8 @@ class SMWSQLStore2 extends SMWStore {
 				array( 'smw_title' => $title, 'smw_namespace' => $namespace, 'smw_iw' => $iw ),
 				'SMW::getSMWPageID', array( 'LIMIT' => 1 )
 			);
-
-			if ( $row = $db->fetchObject( $res ) ) {
+			$row = $db->fetchObject( $res );
+			if ( $row ) {
 				$id = $row->smw_id;
 				$sort = $row->smw_sortkey;
 			}
@@ -1925,8 +1925,8 @@ class SMWSQLStore2 extends SMWStore {
 			         'smw_title=' . $db->addQuotes( $title ) . ' AND smw_namespace=' . $db->addQuotes( $namespace ) .
 			         ' AND (smw_iw=' . $db->addQuotes( '' ) . ' OR smw_iw=' . $db->addQuotes( SMW_SQL2_SMWREDIIW ) . ')',
 			         'SMW::getSMWPageID', array( 'LIMIT' => 1 ) );
-
-			if ( $row = $db->fetchObject( $res ) ) {
+			$row = $db->fetchObject( $res );
+			if ( $row ) {
 				$id = $row->smw_id; // set id in any case, the below check for properties will use even the redirect id in emergency
 				$sort = $row->smw_sortkey;
 
@@ -1943,8 +1943,8 @@ class SMWSQLStore2 extends SMWStore {
 							's_title=' . $db->addQuotes( $title ) . ' AND s_namespace=' . $db->addQuotes( $namespace ),
 							'SMW::getSMWPageID', array( 'LIMIT' => 1 ) );
 					}
-
-					if ( $row = $db->fetchObject( $res2 ) ) {
+					$row = $db->fetchObject( $res2 );
+					if ( $row ) {
 						$id = $row->o_id;
 					}
 

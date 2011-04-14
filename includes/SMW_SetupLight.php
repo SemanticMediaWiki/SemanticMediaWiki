@@ -261,7 +261,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
  */
 function smwfSetupExtension() {
 	wfProfileIn( 'smwfSetupExtension (SMW)' );
-	global $smwgIP, $wgHooks, $wgExtensionCredits, $smwgEnableTemplateSupport, $smwgMasterStore, $smwgIQRunningNumber, $wgLanguageCode, $wgVersion, $smwgToolboxBrowseLink;
+	global $wgHooks, $smwgMasterStore, $smwgIQRunningNumber;
 
 	$smwgMasterStore = null;
 	$smwgIQRunningNumber = 0;
@@ -344,7 +344,6 @@ function smwfAddToAdminLinks( &$admin_links_tree ) {
  * pages.
  */
 function smwfOnArticleFromTitle( &$title, &$article ) {
-	global $smwgIP;
 	if ( $title->getNamespace() == SMW_NS_PROPERTY ) {
 		$article = new SMWPropertyPage( $title );
 	}

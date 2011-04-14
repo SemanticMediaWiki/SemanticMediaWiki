@@ -40,7 +40,7 @@ abstract class SMWQueryPage extends QueryPage {
 	 * @param $shownavigation show navigation like "next 200"?
 	 */
 	function doQuery( $offset, $limit, $shownavigation = true ) {
-		global $wgUser, $wgOut, $wgLang, $wgContLang;
+		global $wgUser, $wgOut, $wgContLang;
 
 		$options = new SMWRequestOptions();
 		$options->limit = $limit;

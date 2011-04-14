@@ -36,8 +36,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 	}
 
 	protected function getResultText( $res, $outputmode ) {
-		global $smwgIQRunningNumber, $wgSitename, $wgServer, $wgScriptPath;
-		$result = '';
+		global $wgServer, $wgScriptPath;
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // create detached JSON file
 			$itemstack = array(); // contains Items for the items section
 			$propertystack = array(); // contains Properties for the property section

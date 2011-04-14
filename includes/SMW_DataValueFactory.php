@@ -87,7 +87,7 @@ class SMWDataValueFactory {
 	 * Create a value from a type id. If no $value is given, an empty container
 	 * is created, the value of which can be set later on.
 	 *
-	 * @param $typeid id string for the given type
+	 * @param $typeid string id string for the given type
 	 * @param $value mixed user value string, or false if unknown
 	 * @param $caption mixed user-defined caption, or false if none given
 	 * @param $property SMWDIProperty property object for which this value is made, or NULL
@@ -140,7 +140,7 @@ class SMWDataValueFactory {
 	 * appropriate data item class for processing data of this type. See
 	 * SMWDataItem for possible values.
 	 *
-	 * @param $typeid id string for the given type
+	 * @param $typeid string id string for the given type
 	 * @return integer data item ID
 	 */
 	static public function getDataItemId( $typeid ) {

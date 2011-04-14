@@ -26,7 +26,7 @@ class SMWURIResolver extends SpecialPage {
 	}
 
 	function execute( $query ) {
-		global $wgOut, $smwgIP;
+		global $wgOut;
 		
 		wfProfileIn( 'SpecialURIResolver::execute (SMW)' );
 		

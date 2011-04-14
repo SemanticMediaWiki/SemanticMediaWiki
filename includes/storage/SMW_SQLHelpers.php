@@ -62,8 +62,6 @@ class SMWSQLHelpers {
 	 * @param $reportTo Object to report back to.
 	 */
 	public static function setupTable( $tableName, array $fields, $db, $reportTo = null ) {
-		global $wgDBname, $wgDBtype, $wgDBTableOptions;
-		
 		$tableName = $db->tableName( $tableName );
 
 		self::reportProgress( "Checking table $tableName ...\n", $reportTo );
