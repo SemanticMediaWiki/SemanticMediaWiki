@@ -353,7 +353,7 @@ class SMWSQLStore2 extends SMWStore {
 		       ( $usedistinct ? $this->getSQLOptions( $requestoptions, $valuecolumn ) + array( 'DISTINCT' ) :
 			                 $this->getSQLOptions( $requestoptions, $valuecolumn ) ) );
 
-		while ( $row = $db->fetchObject( $res ) ) {
+		foreach ( $res as $row ) {
 			if ( !$issubject ) {
 				$propertyname = 'fixed'; // irrelevant, but use this to check if the data is good
 			} elseif ( !$proptable->fixedproperty ) { // use joined or predefined property name
@@ -474,7 +474,7 @@ class SMWSQLStore2 extends SMWStore {
 							'SMW::getPropertySubjects',
 		                    $this->getSQLOptions( $requestoptions, 'smw_sortkey' ) );
 
-		while ( $row = $db->fetchObject( $res ) ) {
+		foreach ( $res as $row ) {
 			try {
 				$result[] = new SMWDIWikiPage( $row->title, $row->namespace, '' );
 			} catch ( SMWDataItemException $e ) {
@@ -618,7 +618,7 @@ class SMWSQLStore2 extends SMWStore {
 				       $where . $this->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey' ),
 					   'SMW::getProperties', $this->getSQLOptions( $suboptions, 'smw_sortkey' ) );
 
-				while ( $row = $db->fetchObject( $res ) ) {
+				foreach ( $res as $row ) {
 					$result[] = new SMWDIProperty( $row->smw_title );
 				}
 			} else { // just check if subject occurs in table
@@ -684,7 +684,7 @@ class SMWSQLStore2 extends SMWStore {
 									$where . $this->getSQLConditions( $suboptions, 'smw_sortkey', 'smw_sortkey', $where != '' ),
 									'SMW::getInProperties', $this->getSQLOptions( $suboptions, 'smw_sortkey' ) );
 
-				while ( $row = $db->fetchObject( $res ) ) {
+				foreach ( $res as $row ) {
 					$result[] = new SMWDIProperty( $row->smw_title );
 				}
 			} else {
@@ -1018,7 +1018,7 @@ class SMWSQLStore2 extends SMWStore {
 		$res = $db->query( $query, 'SMW::getPropertySubjects' );
 		$result = array();
 
-		while ( $row = $db->fetchObject( $res ) ) {
+		foreach ( $res as $row ) {
 			$result[] = array( new SMWDIProperty( $row->smw_title ), $row->count );
 		}
 
@@ -1098,7 +1098,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		$result = array();
 
-		while ( $row = $db->fetchObject( $res ) ) {
+		foreach ( $res as $row ) {
 			$result[] = new SMWDIProperty( $row->title );
 		}
 
@@ -1140,7 +1140,7 @@ class SMWSQLStore2 extends SMWStore {
 							    'smw_title, COUNT(*) as count', 'smw_id > 50 AND page_id IS NULL GROUP BY smw_title',
 							   'SMW::getWantedPropertiesSpecial', $options );
 
-			while ( $row = $db->fetchObject( $res ) ) {
+			foreach ( $res as $row ) {
 				$result[] = array( new SMWDIProperty( $row->smw_title ), $row->count );
 			}
 		}
@@ -2278,7 +2278,7 @@ class SMWSQLStore2 extends SMWStore {
 		$res = $db->select( 'smw_ids', 'smw_id', array( 'smw_title' => '', 'smw_namespace' => $id, 'smw_iw' => SMW_SQL2_SMWIW ), "$fname::selectBnodes" );
 
 		// ... and delete them as well
-		while ( $row = $db->fetchObject( $res ) ) {
+		foreach ( $res as $row ) {
 			foreach ( self::getPropertyTables() as $proptable ) {
 				if ( $proptable->idsubject ) {
 					$db->delete( $proptable->name, array( 's_id' => $row->smw_id ), "$fname::deleteBnodes" );
@@ -2357,7 +2357,7 @@ class SMWSQLStore2 extends SMWStore {
 					if ( ( $subject_ns == SMW_NS_PROPERTY ) && ( $proptable->fixedproperty == false ) ) {
 						$res = $db->select( $from, $select, array( 'p_id' => $old_tid ), $fname );
 
-						while ( $row = $db->fetchObject( $res ) ) {
+						foreach ( $res as $row ) {
 							$jobs[] = new SMWUpdateJob( Title::makeTitle( $row->namespace, $row->title ) );
 						}
 
@@ -2368,7 +2368,7 @@ class SMWSQLStore2 extends SMWStore {
 						if ( $type == 'p' ) {
 							$res = $db->select( $from, $select, array( $fieldname => $old_tid ), $fname );
 
-							while ( $row = $db->fetchObject( $res ) ) {
+							foreach ( $res as $row ) {
 								$jobs[] = new SMWUpdateJob( Title::makeTitle( $row->namespace, $row->title ) );
 							}
 

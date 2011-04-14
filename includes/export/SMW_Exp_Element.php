@@ -77,9 +77,9 @@ class SMWExpResource extends SMWExpElement {
 			$this->m_namespace = $namespace;
 			$this->m_namespaceid = $namespaceid;
 			$this->m_localname = $name;
-			SMWExpElement::__construct( $namespace . $name, $dv );
+			parent::__construct( $namespace . $name, $dv );
 		} else {
-			SMWExpElement::__construct( $name, $dv );
+			parent::__construct( $name, $dv );
 		}
 	}
 	
@@ -142,7 +142,7 @@ class SMWExpLiteral extends SMWExpElement {
 	 */
 	public function __construct( $name, $dv = null, $datatype = false ) {
 		$this->m_datatype = $datatype;
-		SMWExpElement::__construct( $name, $dv );
+		parent::__construct( $name, $dv );
 	}
 
 	/**

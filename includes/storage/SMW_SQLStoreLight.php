@@ -87,7 +87,7 @@ class SMWSQLStoreLight extends SMWStore {
 			}
 			$res = $db->select( $tablename, array( 'propname', 'value' ), array( 'pageid' => $sid ),
 			                    'SMW::getSemanticData', array( 'DISTINCT' ) );
-			while ( $row = $db->fetchObject( $res ) ) {
+			foreach ( $res as $row ) {
 				$value = ( $tablename == 'smwsimple_special' ) ? array( $row->value ) : unserialize( $row->value );
 				$this->m_semdata[$sid]->addPropertyStubValue( $row->propname, $value );
 			}
@@ -124,7 +124,7 @@ class SMWSQLStoreLight extends SMWStore {
 			$res = $db->select( $tablename, array( 'value' ), array( 'propname' => $property->getDBkey() ),
 			                    'SMW::getPropertyValues', $this->getSQLOptions( $requestoptions, 'value' ) + array( 'DISTINCT' ) );
 			$result = array();
-			while ( $row = $db->fetchObject( $res ) ) {
+			foreach ( $res as $row ) {
 				$dv = SMWDataValueFactory::newPropertyObjectValue( $property );
 				if ( $outputformat != '' ) $dv->setOutputFormat( $outputformat );
 				$dv->setDBkeys( ( $tablename == 'smwsimple_special' ) ? array( $row->value ) : unserialize( $row->value ) );
@@ -162,7 +162,7 @@ class SMWSQLStoreLight extends SMWStore {
 		                    $where . $this->getSQLConditions( $requestoptions, 'p.page_title', 'p.page_title' ),
 							'SMW::getPropertySubjects',
 		                    $this->getSQLOptions( $requestoptions, 'p.page_title' ) + array( 'DISTINCT' ) );
-		while ( $row = $db->fetchObject( $res ) ) {
+		foreach ( $res as $row ) {
 			$result[] = SMWWikiPageValue::makePage( $row->title, $row->namespace, $row->title );
 		}
 		$db->freeResult( $res );
@@ -201,7 +201,7 @@ class SMWSQLStoreLight extends SMWStore {
 			$res = $db->select( $tablename, 'DISTINCT propname',
 				'pageid=' . $db->addQuotes($sid) . $this->getSQLConditions( $suboptions, 'propname', 'propname' ),
 				'SMW::getProperties', $this->getSQLOptions( $suboptions, 'propname' ) );
-			while ( $row = $db->fetchObject( $res ) ) {
+			foreach ( $res as $row ) {
 				$result[] = new SMWDIProperty( $row->propname );
 			}
 			$db->freeResult( $res );
@@ -241,7 +241,7 @@ class SMWSQLStoreLight extends SMWStore {
 			$res = $db->select( $tablename, 'DISTINCT propname', // select sortkey since it might be used in ordering (needed by Postgres)
 								$where . $this->getSQLConditions( $suboptions, 'propname', 'propname' ),
 								'SMW::getInProperties', $this->getSQLOptions( $suboptions, 'propname' ) );
-			while ( $row = $db->fetchObject( $res ) ) {
+			foreach ( $res as $row ) {
 				$result[] = new SMWDIProperty( $row->propname );
 			}
 			$db->freeResult( $res );

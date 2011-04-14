@@ -510,7 +510,7 @@ class SMWExportController {
 		                    , 'SMW::RDF::PrintPageList', array( 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ) );
 		$foundpages = false;
 
-		while ( $row = $db->fetchObject( $res ) ) {
+		foreach ( $res as $row ) {
 			$foundpages = true;
 			$st = new SMWSmallTitle();
 			$st->dbkey = $row->page_title;

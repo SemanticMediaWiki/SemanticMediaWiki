@@ -49,7 +49,7 @@ class SMWAskPage extends SpecialPage {
 				$format = $wgRequest->getVal( 'showformatoptions' );
 				$params = $wgRequest->getArray( 'params' );
 				$wgOut->disable();
-				echo self::showFormatOptions( $format, $params );
+				echo $this->showFormatOptions( $format, $params );
 			} else {
 				$this->extractQueryParameters( $p );
 				$this->makeHTMLResult();
@@ -578,7 +578,7 @@ END;
 
 			$result .= "</select></p>\n";
 			$result .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n";
-			$result .= "<div id=\"other_options\">" . self::showFormatOptions( $this->m_params['format'], $this->m_params ) . "</div>";
+			$result .= "<div id=\"other_options\">" . $this->showFormatOptions( $this->m_params['format'], $this->m_params ) . "</div>";
 			$result .= "</fieldset>\n";
 			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no';
 

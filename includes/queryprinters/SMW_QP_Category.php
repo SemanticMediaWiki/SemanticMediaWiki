@@ -22,7 +22,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 	protected $mNumColumns = 3;
 
 	protected function readParameters( $params, $outputmode ) {
-		SMWResultPrinter::readParameters( $params, $outputmode );
+		parent::readParameters( $params, $outputmode );
 
 		if ( array_key_exists( 'delim', $params ) ) {
 			$this->mDelim = str_replace( '_', ' ', $params['delim'] );

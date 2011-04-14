@@ -116,7 +116,7 @@ class SMWStringValue extends SMWDataValue {
 	public function getInfolinks() {
 		$this->unstub();
 		if ( ( $this->m_typeid != '_txt' ) && ( $this->m_typeid != '_cod' ) ) {
-			return SMWDataValue::getInfolinks();
+			return parent::getInfolinks();
 		} else {
 			return $this->m_infolinks;
 		}

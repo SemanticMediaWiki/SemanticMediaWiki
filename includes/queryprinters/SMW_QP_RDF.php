@@ -18,7 +18,7 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 	protected $syntax;
 
 	protected function readParameters( $params, $outputmode ) {
-		SMWResultPrinter::readParameters( $params, $outputmode );
+		parent::readParameters( $params, $outputmode );
 		if ( array_key_exists( 'syntax', $params ) ) {
 			$this->syntax = $params['syntax'];
 		} else {

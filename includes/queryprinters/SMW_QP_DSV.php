@@ -18,7 +18,7 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	protected $fileName = 'result.dsv';
 	
 	protected function readParameters( $params, $outputmode ) {
-		SMWResultPrinter::readParameters( $params, $outputmode );
+		parent::readParameters( $params, $outputmode );
 		
 		if ( array_key_exists( 'separator', $this->m_params ) && $this->m_params['separator'] != '\\' ) {
 			$this->separator = trim( $this->m_params['separator'] );

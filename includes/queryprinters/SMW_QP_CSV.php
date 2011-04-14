@@ -15,7 +15,7 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 	protected $m_sep;
 
 	protected function readParameters( $params, $outputmode ) {
-		SMWResultPrinter::readParameters( $params, $outputmode );
+		parent::readParameters( $params, $outputmode );
 		if ( array_key_exists( 'sep', $params ) ) {
 			$this->m_sep = str_replace( '_', ' ', $params['sep'] );
 		} else {

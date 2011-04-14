@@ -193,7 +193,7 @@ EOT;
 		$curfields = array();
 		$result = array();
 		
-		while ( $row = $db->fetchObject( $res ) ) {
+		foreach ( $res as $row ) {
 			$type = strtoupper( $row->Type );
 			
 			if ( $wgDBtype == 'postgres' ) { // postgresql
@@ -335,10 +335,8 @@ EOT;
 			if ( !$res ) {
 				return false;
 			}
-			
-			$indexes = array();
-			
-			while ( $row = $db->fetchObject( $res ) ) {
+
+			foreach ( $res as $row ) {
 				// Remove the unneeded indexes, let indexes alone that already exist in the correct fashion.
 				if ( array_key_exists( $row->indexcolumns, $columns ) ) {
 					$columns[$row->indexcolumns] = false;
@@ -372,7 +370,7 @@ EOT;
 			
 			$indexes = array();
 			
-			while ( $row = $db->fetchObject( $res ) ) {
+			foreach ( $res as $row ) {
 				if ( !array_key_exists( $row->Key_name, $indexes ) ) {
 					$indexes[$row->Key_name] = array();
 				}

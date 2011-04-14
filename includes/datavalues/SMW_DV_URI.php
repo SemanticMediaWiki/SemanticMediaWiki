@@ -36,8 +36,8 @@ class SMWURIValue extends SMWDataValue {
 		return SMWDataValue::TYPE_URI;
 	}
 
-	public function SMWURIValue( $typeid ) {
-		SMWDataValue::__construct( $typeid );
+	public function __construct( $typeid ) {
+		parent::__construct( $typeid );
 		switch ( $typeid ) {
 			case '_ema':
 				$this->m_mode = SMW_URI_MODE_EMAIL;

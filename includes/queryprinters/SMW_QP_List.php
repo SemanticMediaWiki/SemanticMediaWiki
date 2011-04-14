@@ -26,7 +26,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 	protected $mOutroTemplate = '';
 
 	protected function readParameters( $params, $outputmode ) {
-		SMWResultPrinter::readParameters( $params, $outputmode );
+		parent::readParameters( $params, $outputmode );
 
 		if ( array_key_exists( 'sep', $params ) ) {
 			$this->mSep = str_replace( '_', ' ', $params['sep'] );

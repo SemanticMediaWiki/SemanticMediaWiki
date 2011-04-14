@@ -23,7 +23,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 	protected $m_embedformat;
 
 	protected function readParameters( $params, $outputmode ) {
-		SMWResultPrinter::readParameters( $params, $outputmode );
+		parent::readParameters( $params, $outputmode );
 
 		$this->m_showhead = !array_key_exists( 'embedonly', $params );
 		$this->m_embedformat = array_key_exists( 'embedformat', $params ) ? trim( $params['embedformat'] ) : 'h1';
