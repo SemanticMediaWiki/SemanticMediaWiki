@@ -52,7 +52,7 @@ class SMWSparqlResultParser {
 	 * @param $xmlQueryResult string
 	 */
 	public function makeResultFromXml( $xmlQueryResult ) {
-		$parser = xml_parser_create ();
+		$parser = xml_parser_create();
 		xml_parser_set_option( $parser, XML_OPTION_SKIP_WHITE, 0 );
 		xml_parser_set_option( $parser, XML_OPTION_TARGET_ENCODING, 'UTF-8' );
 		xml_parser_set_option( $parser, XML_OPTION_CASE_FOLDING, 0 );
@@ -77,7 +77,6 @@ class SMWSparqlResultParser {
 	 * @see xml_set_element_handler
 	 */
 	protected function xmlHandleOpen( $parser, $tagName, $attributes ) {
-		print " ($tagName( ";
 		$prevTag = end( $this->m_xml_opentags );
 		$this->m_xml_opentags[] = $tagName;
 		if ( ( $tagName == 'binding' ) && ( $prevTag == 'result' ) ) {
@@ -110,7 +109,6 @@ class SMWSparqlResultParser {
 	 * @see xml_set_element_handler
 	 */
 	protected function xmlHandleClose( $parser, $tagName ) {
-		print "  )$tagName)";
 		array_pop( $this->m_xml_opentags );
 	}
 
