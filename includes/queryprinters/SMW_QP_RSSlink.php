@@ -96,9 +96,9 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			$result .= "\txmlns=\"http://purl.org/rss/1.0/\">\n";
 			$result .= "\t<channel rdf:about=\"" . str_replace( '&', '&amp;', $wgRequest->getFullRequestURL() ) . "\">\n";
 			$result .= "\t\t<admin:generatorAgent rdf:resource=\"http://semantic-mediawiki.org/wiki/Special:URIResolver/Semantic_MediaWiki\"/>\n";
-			$result .= "\t\t<title>" . $this->m_title . "</title>\n";
+			$result .= "\t\t<title>" . smwfXMLContentEncode( $this->m_title ) . "</title>\n";
 			$result .= "\t\t<link>$wgServer</link>\n";
-			$result .= "\t\t<description>" . $this->m_description . "</description>\n";
+			$result .= "\t\t<description>" . smwfXMLContentEncode( $this->m_description ) . "</description>\n";
 			if ( count( $items ) > 0 ) {
 				$result .= "\t\t<items>\n";
 				$result .= "\t\t\t<rdf:Seq>\n";
@@ -229,8 +229,8 @@ class SMWRSSItem {
 		$smwgShowFactbox = SMW_FACTBOX_HIDDEN; // just hide factbox; no need to restore this setting, I hope that nothing comes after FILE outputs
 
 		$text  = "\t<item rdf:about=\"$this->uri\">\n";
-		$text .= "\t\t<title>$this->label</title>\n";
-		$text .= "\t\t<link>$this->uri</link>\n";
+		$text .= "\t\t<title>" . smwfXMLContentEncode( $this->label ) . "</title>\n";
+		$text .= "\t\t<link>" . smwfXMLContentEncode( $this->uri ) . "</link>\n";
 		foreach ( $this->date as $date )
 			$text .= "\t\t<dc:date>$date</dc:date>\n";
 		foreach ( $this->creator as $creator )
@@ -243,20 +243,11 @@ class SMWRSSItem {
 			// Make absolute URLs out of the local ones:
 			///TODO is there maybe a way in the parser options to make the URLs absolute?
 			$content = str_replace( '<a href="/', '<a href="' . $wgServer . '/', $content );
-			$text .= "\t\t<description>" . $this->clean( $content ) . "</description>\n";
+			$text .= "\t\t<description>" . smwfXMLContentEncode( $content ) . "</description>\n";
 			$text .= "\t\t<content:encoded  rdf:datatype=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral\"><![CDATA[$content]]></content:encoded>\n";
 		}
 		$text .= "\t</item>\n";
 		return $text;
-	}
-
-	/**
-	 * Descriptions are unescaped simple text. The content is given in HTML. This should
-	 * clean the description.
-	 */
-	private function clean( $t ) {
-		return trim( smwfXMLContentEncode( $t ) );
-		// return trim(str_replace(array('&','<','>'), array('&amp;','&lt;','&gt;'), strip_tags(html_entity_decode($t, null, 'UTF-8'))));
 	}
 
 }
