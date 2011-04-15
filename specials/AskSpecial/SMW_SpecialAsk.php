@@ -180,6 +180,7 @@ class SMWAskPage extends SpecialPage {
 	/**
 	 * Creates and adds the JavaScript and JS needed for autocompletion to $wgOut.
 	 *
+	 * @bug This method asks the store for all used and unused property names, which can be very expensive. It does not even use a limit to restrict the number of results. Cheaper ways to get the labels need to be sought. What sense does it make to add unused properties to the options on autocomplete for a query interface?
 	 * @since 1.5.2
 	 */
 	protected static function addAutocompletionJavascriptAndCSS() {
@@ -218,13 +219,13 @@ class SMWAskPage extends SpecialPage {
 		$results = smwfGetStore()->getPropertiesSpecial();
 
 		foreach ( $results as $result ) {
-			$propertyNames[] = $result[0]->getWikiValue();
+			$propertyNames[] = $result[0]->getLabel();
 		}
 
 		$results = smwfGetStore()->getUnusedPropertiesSpecial();
 
 		foreach ( $results as $result ) {
-			$propertyNames[] = $result->getWikiValue();
+			$propertyNames[] = $result->getLabel();
 		}
 
 		sort( $propertyNames );
