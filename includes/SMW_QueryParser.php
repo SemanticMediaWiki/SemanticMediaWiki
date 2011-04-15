@@ -271,10 +271,11 @@ class SMWQueryParser {
 			if ( $chunk == '+' ) {
 				// wildcard, ignore for categories (semantically meaningless, everything is in some class)
 			} else { // assume category/concept title
-				/// NOTE: use m_c...prefix to prevent problems with, e.g., [[Category:Template:Test]]
-				$class = Title::newFromText( ( $category ? $this->m_categoryprefix : $this->m_conceptprefix ) . $chunk );
-				if ( $class !== null ) {
-					$desc = $category ? new SMWClassDescription( $class ) : new SMWConceptDescription( $class );
+				/// NOTE: we add m_c...prefix to prevent problems with, e.g., [[Category:Template:Test]]
+				$title = Title::newFromText( ( $category ? $this->m_categoryprefix : $this->m_conceptprefix ) . $chunk );
+				if ( $title !== null ) {
+					$diWikiPage = new SMWDIWikiPage( $title->getDBkey(), $title->getNameSpace(), '' );
+					$desc = $category ? new SMWClassDescription( $diWikiPage ) : new SMWConceptDescription( $diWikiPage );
 					$result = $this->addDescription( $result, $desc, false );
 				}
 			}
@@ -438,9 +439,8 @@ class SMWQueryParser {
 				}
 			} else {
 				$value = SMWDataValueFactory::newTypeIDValue( '_wpg', $chunk );
-
 				if ( $value->isValid() ) {
-					$result = $this->addDescription( $result, new SMWValueDescription( $value ), false );
+					$result = $this->addDescription( $result, new SMWValueDescription( $value->getDataItem() ), false );
 				}
 			}
 

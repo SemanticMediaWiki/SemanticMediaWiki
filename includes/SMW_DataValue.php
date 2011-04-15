@@ -393,7 +393,7 @@ abstract class SMWDataValue {
 		if ( !$this->isValid() ) {
 			return new SMWThingDescription();
 		} else {
-			return new SMWValueDescription( $this, $comparator );
+			return new SMWValueDescription( $this->getDataItem(), $comparator );
 		}
 	}
 

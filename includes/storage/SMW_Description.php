@@ -158,7 +158,7 @@ abstract class SMWDescription {
 class SMWThingDescription extends SMWDescription {
 
 	public function getQueryString( $asvalue = false ) {
-		return $asvalue?'+' : '';
+		return $asvalue ? '+' : '';
 	}
 
 	public function isSingleton() {
@@ -193,33 +193,35 @@ class SMWThingDescription extends SMWDescription {
  */
 class SMWClassDescription extends SMWDescription {
 	
-	protected $m_titles;
+	protected $m_diWikiPages;
 
 	public function __construct( $content ) {
-		if ( $content instanceof Title ) {
-			$this->m_titles = array( $content );
+		if ( $content instanceof SMWDIWikiPage ) {
+			$this->m_diWikiPages = array( $content );
 		} elseif ( is_array( $content ) ) {
-			$this->m_titles = $content;
+			$this->m_diWikiPages = $content;
+		} else {
+			throw new Exception( "SMWClassDescription::__construct(): parameter must be an SMWDIWikiPage object or an array of such objects." );
 		}
 	}
 
 	public function addDescription( SMWClassDescription $description ) {
-		$this->m_titles = array_merge( $this->m_titles, $description->getCategories() );
+		$this->m_diWikiPages = array_merge( $this->m_diWikiPages, $description->getCategories() );
 	}
 
 	public function getCategories() {
-		return $this->m_titles;
+		return $this->m_diWikiPages;
 	}
 
 	public function getQueryString( $asvalue = false ) {
 		$first = true;
-		
-		foreach ( $this->m_titles as $cat ) {
+		foreach ( $this->m_diWikiPages as $wikiPage ) {
+			$wikiValue = SMWDataValueFactory::newFromDataItem( $wikiPage );
 			if ( $first ) {
-				$result = '[[' . $cat->getPrefixedText();
+				$result .= '[[' . $wikiValue->getPrefixedText();
 				$first = false;
 			} else {
-				$result .= '||' . $cat->getText();
+				$result .= '||' . $wikiValue->getText();
 			}
 		}
 		
@@ -241,12 +243,12 @@ class SMWClassDescription extends SMWDescription {
 		if ( $smwgQSubcategoryDepth > 0 ) {
 			return 1; // disj. of cats should not cause much effort if we compute cat-hierarchies anyway!
 		} else {
-			return count( $this->m_titles );
+			return count( $this->m_diWikiPages );
 		}
 	}
 
 	public function getQueryFeatures() {
-		if ( count( $this->m_titles ) > 1 ) {
+		if ( count( $this->m_diWikiPages ) > 1 ) {
 			return SMW_CATEGORY_QUERY | SMW_DISJUNCTION_QUERY;
 		} else {
 			return SMW_CATEGORY_QUERY;
@@ -261,8 +263,8 @@ class SMWClassDescription extends SMWDescription {
 			$log[] = $this->getQueryString();
 			$result = new SMWThingDescription();
 		} else {
-			$result = new SMWClassDescription( array_slice( $this->m_titles, 0, $maxsize ) );
-			$rest = new SMWClassDescription( array_slice( $this->m_titles, $maxsize ) );
+			$result = new SMWClassDescription( array_slice( $this->m_diWikiPages, 0, $maxsize ) );
+			$rest = new SMWClassDescription( array_slice( $this->m_diWikiPages, $maxsize ) );
 			
 			$log[] = $rest->getQueryString();
 			$maxsize = 0;
@@ -294,7 +296,7 @@ class SMWConceptDescription extends SMWDescription {
 	}
 
 	public function getQueryString( $asvalue = false ) {
-		$result = '[[' . $this->m_concept->getPrefixedText() . ']]';
+		$result = '[[' . $this->m_concept->getConceptQuery() . ']]';
 		if ( $asvalue ) {
 			return ' &lt;q&gt;' . $result . '&lt;/q&gt; ';
 		} else {
@@ -368,16 +370,21 @@ class SMWNamespaceDescription extends SMWDescription {
  */
 class SMWValueDescription extends SMWDescription {
 	
-	protected $m_datavalue;
+	protected $m_dataItem;
 	protected $m_comparator;
 
-	public function __construct( SMWDataValue $datavalue, $comparator = SMW_CMP_EQ ) {
-		$this->m_datavalue = $datavalue;
+	public function __construct( SMWDataItem $dataItem, $comparator = SMW_CMP_EQ ) {
+		$this->m_dataItem = $dataItem;
 		$this->m_comparator = $comparator;
 	}
 
+	/// @deprecated Use getDataItem() and SMWDataValueFactory::newFromDataItem() if needed. Vanishes before SMW 1.7
 	public function getDataValue() {
-		return $this->m_datavalue;
+		return $this->m_dataItem;
+	}
+
+	public function getDataItem() {
+		return $this->m_dataItem;
 	}
 
 	public function getComparator() {
@@ -385,16 +392,12 @@ class SMWValueDescription extends SMWDescription {
 	}
 
 	public function getQueryString( $asvalue = false ) {
-		if ( $this->m_datavalue !== null ) {
-			$comparator = SMWQueryLanguage::getStringForComparator( $this->m_comparator );
-			
-			if ( $asvalue ) {
-				return $comparator . $this->m_datavalue->getWikiValue();
-			} else { // this only is possible for values of Type:Page
-				return '[[' . $comparator . $this->m_datavalue->getWikiValue() . ']]';
-			}
-		} else {
-			return $asvalue ? '+' : ''; // the else case may result in an error here (query without proper condition)
+		$comparator = SMWQueryLanguage::getStringForComparator( $this->m_comparator );
+		$dataValue = SMWDataValueFactory::newFromDataItem( $this->m_dataItem );
+		if ( $asvalue ) {
+			return $comparator . $dataValue->getWikiValue();
+		} else { // this only is possible for values of Type:Page
+			return '[[' . $comparator . $dataValue->getWikiValue() . ']]';
 		}
 	}
 
@@ -411,7 +414,7 @@ class SMWValueDescription extends SMWDescription {
 	}
 
 	public function getTypeID() {
-		return $this->m_datavalue->getTypeID();
+		return $this->m_dataItem->getTypeID();
 	}
 
 }
@@ -457,11 +460,11 @@ class SMWConjunction extends SMWDescription {
 		$result = '';
 		
 		foreach ( $this->m_descriptions as $desc ) {
-			$result .= ( $result ? ' ':'' ) . $desc->getQueryString( false );
+			$result .= ( $result ? ' ' : '' ) . $desc->getQueryString( false );
 		}
 		
 		if ( $result == '' ) {
-			return $asvalue ? '+':'';
+			return $asvalue ? '+' : '';
 		} else { // <q> not needed for stand-alone conjunctions (AND binds stronger than OR)
 			return $asvalue ? " &lt;q&gt;{$result}&lt;/q&gt; " : $result;
 		}
@@ -473,27 +476,26 @@ class SMWConjunction extends SMWDescription {
 				return true;
 			}
 		}
-		
 		return false;
 	}
 
 	public function getSize() {
 		$size = 0;
-		
+
 		foreach ( $this->m_descriptions as $desc ) {
 			$size += $desc->getSize();
 		}
-		
+
 		return $size;
 	}
 
 	public function getDepth() {
 		$depth = 0;
-		
+
 		foreach ( $this->m_descriptions as $desc ) {
 			$depth = max( $depth, $desc->getDepth() );
 		}
-		
+
 		return $depth;
 	}
 
@@ -507,11 +509,11 @@ class SMWConjunction extends SMWDescription {
 
 	public function getQueryFeatures() {
 		$result = SMW_CONJUNCTION_QUERY;
-		
+
 		foreach ( $this->m_descriptions as $desc ) {
 			$result = $result | $desc->getQueryFeatures();
 		}
-		
+
 		return $result;
 	}
 
@@ -649,21 +651,21 @@ class SMWDisjunction extends SMWDescription {
 
 	public function getSize() {
 		$size = 0;
-		
+
 		foreach ( $this->m_descriptions as $desc ) {
 			$size += $desc->getSize();
 		}
-		
+
 		return $size;
 	}
 
 	public function getDepth() {
 		$depth = 0;
-		
+
 		foreach ( $this->m_descriptions as $desc ) {
 			$depth = max( $depth, $desc->getDepth() );
 		}
-		
+
 		return $depth;
 	}
 
@@ -677,11 +679,11 @@ class SMWDisjunction extends SMWDescription {
 
 	public function getQueryFeatures() {
 		$result = SMW_DISJUNCTION_QUERY;
-		
+
 		foreach ( $this->m_descriptions as $desc ) {
 			$result = $result | $desc->getQueryFeatures();
 		}
-		
+
 		return $result;
 	}
 
@@ -690,17 +692,17 @@ class SMWDisjunction extends SMWDescription {
 			$log[] = $this->getQueryString();
 			return new SMWThingDescription();
 		}
-		
+
 		$prunelog = array();
 		$newdepth = $maxdepth;
 		$result = new SMWDisjunction();
-		
+
 		foreach ( $this->m_descriptions as $desc ) {
 			$restdepth = $maxdepth;
 			$result->addDescription( $desc->prune( $maxsize, $restdepth, $prunelog ) );
 			$newdepth = min( $newdepth, $restdepth );
 		}
-		
+
 		if ( count( $result->getDescriptions() ) > 0 ) {
 			$log = array_merge( $log, $prunelog );
 			$maxdepth = $newdepth;
@@ -709,16 +711,16 @@ class SMWDisjunction extends SMWDescription {
 				$descriptions = $result->getDescriptions();
 				$result = array_shift( $descriptions );
 			}
-			
+
 			$result->setPrintRequests( $this->getPrintRequests() );
-			
+
 			return $result;
 		} else {
 			$log[] = $this->getQueryString();
-			
+
 			$result = new SMWThingDescription();
 			$result->setPrintRequests( $this->getPrintRequests() );
-			
+
 			return $result;
 		}
 	}
@@ -734,7 +736,7 @@ class SMWDisjunction extends SMWDescription {
  * @ingroup SMWQuery
  */
 class SMWSomeProperty extends SMWDescription {
-	
+
 	protected $m_description;
 	protected $m_property;
 
@@ -792,13 +794,13 @@ class SMWSomeProperty extends SMWDescription {
 			$log[] = $this->getQueryString();
 			return new SMWThingDescription();
 		}
-		
+
 		$maxsize--;
 		$maxdepth--;
-		
+
 		$result = new SMWSomeProperty( $this->m_property, $this->m_description->prune( $maxsize, $maxdepth, $log ) );
 		$result->setPrintRequests( $this->getPrintRequests() );
-		
+
 		return $result;
 	}
 	
