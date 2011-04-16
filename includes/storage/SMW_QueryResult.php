@@ -80,6 +80,15 @@ class SMWQueryResult {
 	}
 
 	/**
+	 * Get the SMWStore object that this result is based on.
+	 *
+	 * @return SMWStore
+	 */
+	public function getStore() {
+		return $this->mStore;
+	}
+
+	/**
 	 * Return the next result row as an array of SMWResultArray objects, and
 	 * advance the internal pointer.
 	 * 
@@ -260,6 +269,15 @@ class SMWResultArray {
 		$this->mPrintRequest = $printRequest;
 		$this->mStore = $store;
 		$this->mContent = false;
+	}
+
+	/**
+	 * Get the SMWStore object that this result is based on.
+	 *
+	 * @return SMWStore
+	 */
+	public function getStore() {
+		return $this->mStore;
 	}
 
 	/**
