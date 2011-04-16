@@ -776,13 +776,17 @@ class SMWTimeValue extends SMWDataValue {
 	 * 
 	 * Conforming to the 2000 version of ISO8601, year 1 BC(E) is
 	 * represented as "0000", year 2 BC(E) as "-0001" and so on.
-	 * @param $mindefault boolean determining whether values below the precision of our input should be completed with minimal or maximal conceivable values
+	 *
+	 * @param $mindefault boolean determining whether values below the
+	 * precision of our input should be completed with minimal or maximal
+	 * conceivable values
 	 * @return string
 	 */
 	public function getISO8601Date( $mindefault = true ) {
-		$result = ( $this->getYear() < -1 ) ? '-' : '';
+		$yearnum = ( $this->getYear() > 0 ) ? $this->getYear() : 1 - $this->getYear();
+		$result = ( $this->getYear() > 0 ) ? '' : '-';
 		$monthnum = $this->getMonth( SMWDITime::CM_GREGORIAN, ( $mindefault ? 1 : 12 ) );
-		$result .= str_pad( $this->getYear() + 1, 4, "0", STR_PAD_LEFT ) .
+		$result .= str_pad( $this->getYear(), 4, "0", STR_PAD_LEFT ) .
 			  '-' . str_pad( $monthnum, 2, "0", STR_PAD_LEFT );
 		if ( !$mindefault && ( $this->m_dataitem->getPrecision() < SMWDITime::PREC_YMD ) ) {
 			$maxday = self::getDayNumberForMonth( $monthnum, $this->getYear(), SMWDITime::CM_GREGORIAN );
