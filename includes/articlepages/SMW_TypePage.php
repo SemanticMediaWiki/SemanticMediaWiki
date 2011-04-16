@@ -27,8 +27,8 @@ class SMWTypePage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Fill the internal arrays with the set of articles to be displayed (possibly plus one additional
-	 * article that indicates further results).
+	 * Fill the internal arrays with the set of data items to be displayed
+	 * (possibly plus one additional item to indicate further results).
 	 */
 	protected function doQuery() {
 		if ( $this->limit > 0 ) {
@@ -42,17 +42,17 @@ class SMWTypePage extends SMWOrderedListPage {
 				$options->boundary = $this->from;
 				$options->ascending = true;
 				$options->include_boundary = true;
-				$this->articles = $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typevalue->getDataItem(), $options );
+				$this->diWikiPages = $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typevalue->getDataItem(), $options );
 			} elseif ( $this->until != '' ) {
 				$options->boundary = $this->until;
 				$options->ascending = false;
 				$options->include_boundary = false;
-				$this->articles = array_reverse( $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typevalue->getDataItem(), $options ) );
+				$this->diWikiPages = array_reverse( $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typevalue->getDataItem(), $options ) );
 			} else {
-				$this->articles = $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typevalue->getDataItem(), $options );
+				$this->diWikiPages = $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typevalue->getDataItem(), $options );
 			}
 		} else {
-			$this->articles = array();
+			$this->diWikiPages = array();
 		}
 	}
 
@@ -78,7 +78,7 @@ class SMWTypePage extends SMWOrderedListPage {
 		$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
 
 		$r .= '<h2>' . wfMsg( 'smw_type_header', $ti ) . "</h2>\n";
-		$r .= wfMsgExt( 'smw_typearticlecount', array( 'parsemag' ), min( $this->limit, count( $this->articles ) ) ) . "\n";
+		$r .= wfMsgExt( 'smw_typearticlecount', array( 'parsemag' ), min( $this->limit, count( $this->diWikiPages ) ) ) . "\n";
 
 		$r .= $this->formatList();
 		$r .= "\n</div>" . $nav;
@@ -87,14 +87,14 @@ class SMWTypePage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Format a list of articles chunked by letter, either as a
+	 * Format a list of data items chunked by letter, either as a
 	 * bullet list or a columnar format, depending on the length.
 	 *
-	 * @param int   $cutoff
+	 * @param $cutoff integer, use columns for more results than that
 	 * @return string
 	 */
 	private function formatList( $cutoff = 6 ) {
-		$end = count( $this->articles );
+		$end = count( $this->diWikiPages );
 		if ( $end > $this->limit ) {
 			if ( $this->until != '' ) {
 				$start = 1;
@@ -106,11 +106,11 @@ class SMWTypePage extends SMWOrderedListPage {
 			$start = 0;
 		}
 
-		if ( count ( $this->articles ) > $cutoff ) {
-			return $this->columnList( $start, $end, $this->articles );
-		} elseif ( count( $this->articles ) > 0 ) {
-			// for short lists of articles
-			return $this->shortList( $start, $end, $this->articles );
+		if ( count ( $this->diWikiPages ) > $cutoff ) {
+			return $this->columnList( $start, $end, $this->diWikiPages );
+		} elseif ( count( $this->diWikiPages ) > 0 ) {
+			// for short lists of diWikiPages
+			return $this->shortList( $start, $end, $this->diWikiPages );
 		}
 		return '';
 	}

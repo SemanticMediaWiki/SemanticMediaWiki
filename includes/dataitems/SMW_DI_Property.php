@@ -305,25 +305,27 @@ class SMWDIProperty extends SMWDataItem {
 		SMWDIProperty::$m_prop_labels  = $smwgContLang->getPropertyLabels();
 		SMWDIProperty::$m_prop_aliases = $smwgContLang->getPropertyAliases();
 		// Setup built-in predefined properties.
-		// NOTE: all ids must start with underscores, where two underscores informally indicate
-		// truly internal (non user-accessible properties). All others should also get a
-		// translation in the language files, or they won't be available for users.
+		// NOTE: all ids must start with underscores. The translation
+		// for each ID, if any, is defined in the language files.
+		// Properties without translation cannot be entered by or
+		// displayed to users, whatever their "show" value below.
 		SMWDIProperty::$m_prop_types = array(
-				'_TYPE'  =>  array( '__typ', true ),
-				'_URI'   =>  array( '__spu', true ),
-				'_INST'  =>  array( '__sin', false ),
-				'_UNIT'  =>  array( '__sps', true ),
-				'_IMPO'  =>  array( '__imp', true ),
-				'_CONV'  =>  array( '__sps', true ),
-				'_SERV'  =>  array( '__sps', true ),
-				'_PVAL'  =>  array( '__sps', true ),
-				'_REDI'  =>  array( '__red', true ),
-				'_SUBP'  =>  array( '__sup', true ),
-				'_SUBC'  =>  array( '__suc', !$smwgUseCategoryHierarchy ),
-				'_CONC'  =>  array( '__con', false ),
-				'_MDAT'  =>  array( '_dat', false ),
-				'_ERRP'  =>  array( '_wpp', false ),
-				'_LIST'  =>  array( '__tls', true ),
+				'_TYPE'  =>  array( '__typ', true ), // "has type"
+				'_URI'   =>  array( '__spu', true ), // "equivalent URI"
+				'_INST'  =>  array( '__sin', false ), // instance of a category
+				'_UNIT'  =>  array( '__sps', true ), // "displays unit"
+				'_IMPO'  =>  array( '__imp', true ), // "imported from"
+				'_CONV'  =>  array( '__sps', true ), // "corresponds to"
+				'_SERV'  =>  array( '__sps', true ), // "provides service"
+				'_PVAL'  =>  array( '__sps', true ), // "allows value"
+				'_REDI'  =>  array( '__red', true ), // redirects to some page
+				'_SUBP'  =>  array( '__sup', true ), // "subproperty of"
+				'_SUBC'  =>  array( '__suc', !$smwgUseCategoryHierarchy ), // "subcategory of"
+				'_CONC'  =>  array( '__con', false ), // associated concept
+				'_MDAT'  =>  array( '_dat', false ), // "modification date"
+				'_ERRP'  =>  array( '_wpp', false ), // "has improper value for"
+				'_LIST'  =>  array( '__tls', true ), // "has fields"
+				'_SKEY'  =>  array( '__key', true ), // sort key of a page
 			);
 		wfRunHooks( 'smwInitProperties' );
 	}
@@ -333,7 +335,12 @@ class SMWDIProperty extends SMWDataItem {
 	 * It should be called from within the hook 'smwInitProperties' only.
 	 * IDs should start with three underscores "___" to avoid current and
 	 * future confusion with SMW built-ins.
-	 * 
+	 *
+	 * @param $id string id
+	 * @param $typeid SMW type id
+	 * @param $label mixed string user label or false (internal property)
+	 * @param $show boolean only used if label is given, see isShown()
+	 *
 	 * @note See SMWDIProperty::isShown() for information about $show.
 	 */
 	static public function registerProperty( $id, $typeid, $label = false, $show = false ) {
@@ -348,6 +355,12 @@ class SMWDIProperty extends SMWDataItem {
 	 * should have a primary label, either provided by SMW or registered
 	 * with SMWDIProperty::registerProperty(). This function should be
 	 * called from within the hook 'smwInitDatatypes' only.
+	 *
+	 * @param $id string id of a property
+	 * @param $label string alias label for the property
+	 * @note Always use registerProperty() for the first label. No property
+	 * that has used "false" for a label on registration should have an
+	 * alias.
 	 */
 	static public function registerPropertyAlias( $id, $label ) {
 		SMWDIProperty::$m_prop_aliases[$label] = $id;

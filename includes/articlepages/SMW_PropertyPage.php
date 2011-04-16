@@ -34,8 +34,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Fill the internal arrays with the set of articles to be displayed (possibly plus one additional
-	 * article that indicates further results).
+	 * Fill the internal arrays with the set of data items to be displayed
+	 * (possibly plus one additional item that indicates further results).
 	 */
 	protected function doQuery() {
 		$store = smwfGetStore();
@@ -57,13 +57,13 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$reverse = true;
 			}
 			
-			$this->articles = $store->getAllPropertySubjects( $this->mProperty, $options );
+			$this->diWikiPages = $store->getAllPropertySubjects( $this->mProperty, $options );
 			
 			if ( $reverse ) {
-				$this->articles = array_reverse( $this->articles );
+				$this->diWikiPages = array_reverse( $this->diWikiPages );
 			}
 		} else {
-			$this->articles = array();
+			$this->diWikiPages = array();
 		}
 
 		// retrieve all subproperties of this property
@@ -98,7 +98,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$r .= "\n</div>";
 		}
 		
-		if ( count( $this->articles ) > 0 ) {
+		if ( count( $this->diWikiPages ) > 0 ) {
 			$nav = $this->getNavigationLinks();
 			
 			$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n" .
@@ -108,7 +108,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$r .= wfMsg( 'smw_isspecprop' ) . ' ';
 			}
 			
-			$r .= wfMsgExt( 'smw_attributearticlecount', array( 'parsemag' ), min( $this->limit, count( $this->articles ) ) ) . "</p>\n" .
+			$r .= wfMsgExt( 'smw_attributearticlecount', array( 'parsemag' ), min( $this->limit, count( $this->diWikiPages ) ) ) . "</p>\n" .
 			      $this->subjectObjectList() . "\n</div>" . $nav;
 		}
 		
@@ -118,14 +118,14 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Format a list of articles chunked by letter in a table that shows subject articles in
-	 * one column and object articles/values in the other one.
+	 * Format $diWikiPages chunked by letter in a table that shows subject
+	 * articles in one column and object articles/values in the other one.
 	 */
 	private function subjectObjectList() {
 		global $wgContLang, $smwgMaxPropertyValues;
 		$store = smwfGetStore();
 
-		$ac = count( $this->articles );
+		$ac = count( $this->diWikiPages );
 		
 		if ( $ac > $this->limit ) {
 			if ( $this->until != '' ) {
@@ -142,9 +142,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$prev_start_char = 'None';
 		
 		for ( $index = $start; $index < $ac; $index++ ) {
-			$diWikiPage = $this->articles[$index];
+			$diWikiPage = $this->diWikiPages[$index];
 			$dvWikiPage = SMWDataValueFactory::newDataItemValue( $diWikiPage );
-			$start_char = $wgContLang->convert( $wgContLang->firstChar( SMWCompatibilityHelpers::getSortKey( $diWikiPage ) ) );
+			$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPage );
+			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 			
 			// Header for index letters
 			if ( $start_char != $prev_start_char ) {

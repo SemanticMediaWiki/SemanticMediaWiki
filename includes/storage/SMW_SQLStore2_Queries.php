@@ -488,15 +488,15 @@ class SMWSQLStore2QueryEngine {
 				$this->m_queries[$cqid] = $cquery;
 			}
 		} elseif ( $description instanceof SMWValueDescription ) { // Only type '_wpg' objects can appear on query level (essentially as nominal classes).
-			if ( $description->getDatavalue()->getTypeID() == '_wpg' ) {
+			if ( $description->getDataItem()->getTypeID() == '_wpg' ) {
 				if ( $description->getComparator() == SMW_CMP_EQ ) {
 					$query->type = SMW_SQL2_VALUE;
-					$oid = $this->m_store->getSMWPageID( $description->getDatavalue()->getDBkey(), $description->getDatavalue()->getNamespace(), $description->getDatavalue()->getInterwiki() );
+					$oid = $this->m_store->getSMWPageID( $description->getDataItem()->getDBkey(), $description->getDataItem()->getNamespace(), $description->getDataItem()->getInterwiki() );
 					$query->joinfield = array( $oid );
 				} else { // Join with smw_ids needed for other comparators (apply to title string).
 					$query->jointable = 'smw_ids';
 					$query->joinfield = "$query->alias.smw_id";
-					$value = $description->getDatavalue()->getSortkey();
+					$value = $description->getDataItem()->getSortKey();
 
 					switch ( $description->getComparator() ) {
 						case SMW_CMP_LEQ: $comp = '<='; break;
@@ -746,7 +746,7 @@ class SMWSQLStore2QueryEngine {
 		$where = '';
 
 		if ( $description instanceof SMWValueDescription ) {
-			$dv = $description->getDatavalue();
+			$dv = $description->getDataItem();
 			$keys = $dv->getDBkeys();
 
 			// Try comparison based on value field and comparator.

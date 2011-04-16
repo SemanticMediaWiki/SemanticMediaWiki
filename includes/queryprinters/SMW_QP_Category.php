@@ -67,7 +67,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 			$nextrow = $res->getNext(); // look ahead
 
 			$content = $row[0]->getContent();
-			$sortkey = $content[0]->getSortkey();
+			$sortkey = $res->getStore()->getWikiPageSortKey( $content[0] );
 			$cur_first_char = $wgContLang->firstChar( $sortkey );
 			if ( $rowindex % $rows_per_column == 0 ) {
 				$result .= "\n			<div style=\"float: left; width: $column_width%;\">\n";

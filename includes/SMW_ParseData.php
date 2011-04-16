@@ -307,9 +307,9 @@ class SMWParseData {
 	}
 
 	/**
-	 * Hook function fetches category information and other final settings from parser output,
-	 * so that they are also replicated in SMW for more efficient querying.
-	 * @bug Sortkey currently not stored. Needs to be done differently now.
+	 * Hook function fetches category information and other final settings
+	 * from parser output, so that they are also replicated in SMW for more
+	 * efficient querying.
 	 */
 	static public function onParserAfterTidy( &$parser, &$text ) {
 		global $smwgUseCategoryHierarchy, $smwgCategoriesAsInstances;
@@ -333,9 +333,11 @@ class SMWParseData {
 			}
 		}
 
-// 		$sortkey = ( $parser->mDefaultSort ? $parser->mDefaultSort : 
-// 		             str_replace( '_', ' ', self::getSMWData( $parser )->getSubject()->getDBkey() ) );
-// 		self::getSMWData( $parser )->getSubject()->setSortkey( $sortkey );
+		$sortkey = $parser->mDefaultSort ? $parser->mDefaultSort : 
+		            str_replace( '_', ' ', self::getSMWData( $parser )->getSubject()->getDBkey() );
+		$pskey = new SMWDIProperty( '_SKEY' );
+		$sortkeyDi = new SMWDIString( $sortkey );
+		self::getSMWData( $parser )->addPropertyObjectValue( $pskey, $sortkeyDi );
 
 		return true;
 	}

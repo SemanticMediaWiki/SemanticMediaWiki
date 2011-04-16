@@ -152,7 +152,8 @@ class SMWSQLStore2 extends SMWStore {
 		self::$in_getSemanticData++;
 
 		// *** Find out if this subject exists ***//
-		$sid = $this->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki() );
+		$sortkey = '';
+		$sid = $this->getSMWPageIDandSort( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $sortkey, true );
 		if ( $sid == 0 ) { // no data, safe our time
 			/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
 			self::$in_getSemanticData--;
@@ -163,7 +164,8 @@ class SMWSQLStore2 extends SMWStore {
 		// *** Prepare the cache ***//
 		if ( !array_key_exists( $sid, $this->m_semdata ) ) { // new cache entry
 			$this->m_semdata[$sid] = new SMWSemanticData( $subject, false );
-			$this->m_sdstate[$sid] = array();
+			$this->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
+			$this->m_sdstate[$sid] = array( '__key' );
 		}
 
 		if ( ( count( $this->m_semdata ) > 20 ) && ( self::$in_getSemanticData == 1 ) ) {
@@ -745,8 +747,8 @@ class SMWSQLStore2 extends SMWStore {
 		
 		$subject = $data->getSubject();
 		$this->deleteSemanticData( $subject );
-		$redirects = $data->getPropertyValues( new SMWDIProperty( '_REDI' ) );
 
+		$redirects = $data->getPropertyValues( new SMWDIProperty( '_REDI' ) );
 		if ( count( $redirects ) > 0 ) {
 			$redirect = end( $redirects ); // at most one redirect per page
 			$this->updateRedirects( $subject->getDBkey(), $subject->getNamespace(), $redirect->getDBkey(), $redirect->getNameSpace() );
@@ -756,8 +758,16 @@ class SMWSQLStore2 extends SMWStore {
 			$this->updateRedirects( $subject->getDBkey(), $subject->getNamespace() );
 		}
 
+		$sortkeyDataItems = $data->getPropertyValues( new SMWDIProperty( '_SKEY' ) );
+		$sortkeyDataItem = end( $sortkeyDataItems );
+		if ( $sortkeyDataItem instanceof SMWDIString ) {
+			$sortkey = $sortkeyDataItem->getString();
+		} else { // default sortkey
+			$sortkey = str_replace( '_', ' ', $subject->getDBkey() );
+		}
+
 		// Always make an ID (pages without ID cannot be in query results, not even in fixed value queries!):
-		$sid = $this->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), '', true, $subject->getSortkey() );
+		$sid = $this->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), '', true, $sortkey );
 		$updates = array(); // collect data for bulk updates; format: tableid => updatearray
 		$this->prepareDBUpdates( $updates, $data, $sid );
 
@@ -828,11 +838,15 @@ class SMWSQLStore2 extends SMWStore {
 		$proptables = self::getPropertyTables();
 
 		foreach ( $data->getProperties() as $property ) {
+			if ( ( $property->getKey() == '_SKEY' ) || ( $property->getKey() == '_REDI' ) ) {
+				continue; // skip these here, we store them differently
+			}
+
 			$tableid = self::findPropertyTableID( $property );
 
 			if ( !$tableid ) { // happens when table is not determined by property; use values to find type
-				$dv = reset( $data->getPropertyValues( $property ) );
-				$tableid = self::findTypeTableID( $dv->getTypeID() );
+				$di = reset( $data->getPropertyValues( $property ) );
+				$tableid = self::findTypeTableID( $di->getTypeID() );
 			}
 
 			if ( !$tableid ) { // can't store this data, sorry
@@ -842,8 +856,6 @@ class SMWSQLStore2 extends SMWStore {
 			$proptable = $proptables[$tableid];
 
 			foreach ( $data->getPropertyValues( $property ) as $di ) {
-				if ( $tableid == 'smw_redi2' ) continue;
-
 				// errors are already recorded separately, no need to store them here;
 				// redirects were treated above
 				///TODO check needed if subject is null (would happen if a user defined proptable with !idsubject was used on an internal object -- currently this is not possible

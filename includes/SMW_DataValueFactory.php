@@ -221,6 +221,7 @@ class SMWDataValueFactory {
 			'__err' => 'SMWErrorValue', // Special error type
 			'__imp' => 'SMWImportValue', // Special import vocabulary type
 			'__pro' => 'SMWPropertyValue', // Property type (possibly predefined, no always based on a page)
+			'__key' => 'SMWStringValue', // Sort key of a page
 		);
 
 		self::$mTypeDiClasses = array(
@@ -255,6 +256,7 @@ class SMWDataValueFactory {
 			'__err' => 'SMWDIString', // Special error type
 			'__imp' => 'SMWDIString', // Special import vocabulary type
 			'__pro' => 'SMWDIProperty', // Property type (possibly predefined, no always based on a page)
+			'__key' => 'SMWDIString', // Sort key of a page
 		);
 
 		self::$mTypeDataItemIds = array(
@@ -289,6 +291,7 @@ class SMWDataValueFactory {
 			'__err' => SMWDataItem::TYPE_STRING, // Special error type
 			'__imp' => SMWDataItem::TYPE_STRING, // Special import vocabulary type
 			'__pro' => SMWDataItem::TYPE_PROPERTY, // Property type (possibly predefined, no always based on a page)
+			'__key' => SMWDataItem::TYPE_STRING, // Sort key of a page
 		);
 
 		wfRunHooks( 'smwInitDatatypes' );

@@ -196,6 +196,24 @@ abstract class SMWStore {
 	 */
 	public abstract function getInProperties( SMWDataItem $object, $requestoptions = null );
 
+	/**
+	 * Convenience method to find the sortkey of an SMWDIWikiPage. The
+	 * result is based on the contents of this store, and may differ from
+	 * the MediaWiki database entry about a Title objects sortkey. If no
+	 * sortkey is stored, the default sortkey (title string) is returned.
+	 *
+	 * @param $wikiPage SMWDIWikiPage to find the sortkey for
+	 * @return string sortkey
+	 */
+	public function getWikiPageSortKey( SMWDIWikiPage $wikiPage ) {
+		$sortkeyDataItems = $this->getPropertyValues( $wikiPage, new SMWDIProperty( '_SKEY' ) );
+		if ( count( $sortkeyDataItems ) > 0 ) {
+			return end( $sortkeyDataItems )->getString();
+		} else {
+			return str_replace( '_', ' ', $wikiPage->getDBkey() );
+		}
+	}
+
 ///// Writing methods /////
 
 	/**

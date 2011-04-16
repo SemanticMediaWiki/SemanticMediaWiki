@@ -148,12 +148,4 @@ class SMWCompatibilityHelpers {
 		return array( false );
 	}
 
-	/**
-	 * Find the sortkey for a SMWDIWikiPage.
-	 * @bug Not correct. Only an intermediate solution.
-	 */
-	public static function getSortKey( SMWDIWikiPage $wikiPage ) {
-		return str_replace( '_', ' ', $wikiPage->getDBkey() );
-	}
-
 }

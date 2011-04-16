@@ -11,15 +11,6 @@
  * The class can support general wiki pages, or pages of a fixed 
  * namespace, Whether a namespace is fixed is decided based on the
  * type ID when the object is constructed.
- * 
- * In contrast to most other types
- * of values, wiki pages are determined by multiple components, as
- * retruned by their getDBkeys() method: DBkey, namespace, interwiki
- * prefix and sortkey. The last of those has a somewhat nonstandard
- * behaviour, since it is not attached to every wiki page value, but
- * only to those that represent page subjects, which define the sortkey
- * globally for all places where this page value occurs.
- * @todo The treatment of sortkeys will be changed (30-03-2010)
  *
  * @author Nikolas Iwan
  * @author Markus Krötzsch
@@ -28,21 +19,13 @@
 class SMWWikiPageValue extends SMWDataValue {
 
 	/**
-	 * Cache for the sortkey that is used with this page, or
-	 * empty string if unset.
-	 * @note The management of sortkeys of SMW is likely to change.
-	 * @var string
-	 */
-	protected $m_sortkey;
-
-	/**
 	 * The isolated title as text. Always set when this object is valid.
 	 * @var string
 	 */
 	protected $m_textform;
 
 	/**
-	 * Fragement text for user-specified title. Not stored, but kept for
+	 * Fragment text for user-specified title. Not stored, but kept for
 	 * printout on page.
 	 * @var string
 	 */
@@ -78,38 +61,6 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	protected $m_fixNamespace = NS_MAIN;
 
-	/**
-	 * Static function for creating a new wikipage object from
-	 * data as it is typically stored internally. In particular,
-	 * the title string is supposed to be in DB key form.
-	 * @note The resulting wikipage object might be invalid if
-	 * the provided title is not allowed. An object is returned
-	 * in any case.
-	 * 
-	 * @return SMWWikiPageValue
-	 */
-	static public function makePage( $dbkey, $namespace, $sortkey = '', $interwiki = '' ) {
-		$diWikiPage = new SMWDIWikiPage( $dbkey, $namespace, $interwiki );
-		$dvWikiPage = new SMWWikiPageValue( '_wpg' );
-		$dvWikiPage->setDataItem( $diWikiPage );
-		return $dvWikiPage;
-	}
-
-	/**
-	 * Static function for creating a new wikipage object from a
-	 * MediaWiki Title object.
-	 * @todo Evaluate whether we really want this function. It might be obsolete due to recent changes.
-	 * 
-	 * @return SMWWikiPageValue
-	 */
-	static public function makePageFromTitle( Title $title ) {
-		$dvWikiPage = new SMWWikiPageValue( '_wpg' );
-		$diWikiPage = new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() );
-		$dvWikiPage->setDataItem( $diWikiPage );
-		$dvWikiPage->m_title = $title;
-		return $dvWikiPage;
-	}
-
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
 		switch ( $typeid ) {
@@ -137,7 +88,6 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_caption = $value;
 		}
 		$this->m_dataitem = null;
-		$this->m_sortkey = '';
 		if ( $value != '' ) {
 			$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
 			///TODO: Escape the text so users can see any punctuation problems (bug 11666).
@@ -186,7 +136,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_textform = str_replace( '_', ' ', $dataItem->getDBkey() );
 			$this->m_id = -1;
 			$this->m_title = null;
-			$this->m_sortkey = $this->m_fragment = $this->m_prefixedtext = '';
+			$this->m_fragment = $this->m_prefixedtext = '';
 			$this->m_caption = false;
 			if ( ( $this->m_fixNamespace != NS_MAIN ) && ( $this->m_fixNamespace != $dataItem->getNamespace() ) ) {
 				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
@@ -256,7 +206,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	public function getDBkeys() {
 		$this->unstub();
-		return array( $this->m_dataitem->getDBkey(), $this->m_dataitem->getNamespace(), $this->m_dataitem->getInterwiki(), $this->getSortkey() );
+		return array( $this->m_dataitem->getDBkey(), $this->m_dataitem->getNamespace(), $this->m_dataitem->getInterwiki(), $this->m_dataitem->getDBkey() );
 	}
 
 	public function getSignature() {
@@ -399,20 +349,23 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
-	 * Get sortkey or make one as default.
-	 * @bug Sortkeys will need to be treated differently, namely as properties of a page, not as part of their identity. This method then needs to find the real sortkey instead of making a default.
+	 * Get the (default) caption for this value.
+	 * If a fixed namespace is set, we do not return the namespace prefix explicitly.
 	 */
-	public function getSortkey() {
-		$this->unstub();
-		return $this->m_sortkey ? $this->m_sortkey : ( str_replace( '_', ' ', $this->m_dataitem->getDBkey() ) );
+	protected function getCaption() {
+		return $this->m_caption !== false ? $this->m_caption:
+		       ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText():$this->getText() );
 	}
 
 	/**
-	 * Set sortkey
+	 * Find the sortkey for this object.
+	 * 
+	 * @deprecated Use SMWStore::getWikiPageSortKey().
+	 *
+	 * @return string sortkey
 	 */
-	public function setSortkey( $sortkey ) {
-		$this->unstub(); // unstub first, since the stubarray also may hold a sortkey
-		$this->m_sortkey = $sortkey;
+	public function getSortKey() {
+		return smwfGetStore()->getWikiPageSortKey( $this->m_dataitem );
 	}
 
 	/**
@@ -426,19 +379,46 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
-	 * Get the (default) caption for this value.
-	 * If a fixed namespace is set, we do not return the namespace prefix explicitly.
+	 * @deprecated Use setDBkeys()
 	 */
-	protected function getCaption() {
-		return $this->m_caption !== false ? $this->m_caption:
-		       ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText():$this->getText() );
+	public function setValues( $dbkey, $namespace, $id = false, $interwiki = '' ) {
+		$this->setDBkeys( array( $dbkey, $namespace, $interwiki, $dbkey ) );
 	}
 
 	/**
-	 * @deprecated Use setDBkeys()
+	 * Static function for creating a new wikipage object from
+	 * data as it is typically stored internally. In particular,
+	 * the title string is supposed to be in DB key form.
+	 *
+	 * @note The resulting wikipage object might be invalid if
+	 * the provided title is not allowed. An object is returned
+	 * in any case.
+	 *
+	 * @deprecated This method will vanish before SMW 1.7. If you really need this, simply copy its code.
+	 *
+	 * @return SMWWikiPageValue
 	 */
-	public function setValues( $dbkey, $namespace, $id = false, $interwiki = '', $sortkey = '' ) {
-		$this->setDBkeys( array( $dbkey, $namespace, $interwiki, $sortkey ) );
+	static public function makePage( $dbkey, $namespace, $ignoredParameter = '', $interwiki = '' ) {
+		$diWikiPage = new SMWDIWikiPage( $dbkey, $namespace, $interwiki );
+		$dvWikiPage = new SMWWikiPageValue( '_wpg' );
+		$dvWikiPage->setDataItem( $diWikiPage );
+		return $dvWikiPage;
+	}
+
+	/**
+	 * Static function for creating a new wikipage object from a
+	 * MediaWiki Title object.
+	 *
+	 * @deprecated This method will vanish before SMW 1.7. If you really need this, simply copy its code.
+	 * 
+	 * @return SMWWikiPageValue
+	 */
+	static public function makePageFromTitle( Title $title ) {
+		$dvWikiPage = new SMWWikiPageValue( '_wpg' );
+		$diWikiPage = new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() );
+		$dvWikiPage->setDataItem( $diWikiPage );
+		$dvWikiPage->m_title = $title;
+		return $dvWikiPage;
 	}
 
 }
