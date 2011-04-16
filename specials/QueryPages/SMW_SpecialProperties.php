@@ -67,30 +67,39 @@ class SMWPropertiesPage extends SMWQueryPage {
 	function formatResult( $skin, $result ) {
 		$typestring = '';
 		$errors = array();
+		$diWikiPage = $result[0]->getDiWikiPage();
+		if ( $diWikiPage !== null ) {
+			$title = Title::makeTitle( $diWikiPage->getNamespace(), $diWikiPage->getDBkey() );
+		} else {
+			$title = null;
+		}
 		if ( $result[0]->isUserDefined() && ( $result[1] <= 5 ) ) {
 			$errors[] = wfMsg( 'smw_propertyhardlyused' );
 		}
-		if ( $result[0]->isUserDefined() && $result[0]->getWikiPageValue()->getTitle()->exists() ) { // FIXME: this bypasses SMWDataValueFactory; ungood
-			$types = smwfGetStore()->getPropertyValues( $result[0]->getDiWikiPage(), new SMWDIProperty( '_TYPE' ) );
+		if ( $result[0]->isUserDefined() && ( $title !== null ) && $title->exists() ) { // FIXME: this bypasses SMWDataValueFactory; ungood
+			$types = smwfGetStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_TYPE' ) );
 			if ( count( $types ) >= 1 ) {
-				$typestring = current( $types )->getLongHTMLText( $skin );
+				$typeDataValue = SMWDataValueFactory::newDataItemValue( current( $types ) );
+				$typestring = $typeDataValue->getLongHTMLText( $skin );
 			}
-			$proplink = $skin->makeKnownLinkObj( $result[0]->getWikiPageValue()->getTitle(), $result[0]->getWikiValue() );
-		} elseif ( $result[0]->isUserDefined() ) {
+			$proplink = $skin->makeKnownLinkObj( $title, $result[0]->getLabel() );
+		} elseif ( $result[0]->isUserDefined() && ( $title !== null ) ) {
 			$errors[] = wfMsg( 'smw_propertylackspage' );
-			$proplink = $skin->makeBrokenLinkObj( $result[0]->getWikiPageValue()->getTitle(), $result[0]->getWikiValue(), 'action=view' );
+			$proplink = $skin->makeBrokenLinkObj( $title, $result[0]->getLabel(), 'action=view' );
 		} else { // predefined property
 			$type = $result[0]->getTypesValue();
 			$typestring = $type->getLongHTMLText( $skin );
-			if ( $typestring == '' ) $typestring = '–'; /// FIXME some types o fbuiltin props have no name, and another message should be used then
+			if ( $typestring == '' ) $typestring = '–'; /// FIXME some types of builtin props have no name, and another message should be used then
 			$proplink = $result[0]->getLongHTMLText( $skin );
 		}
 		if ( $typestring == '' ) {
-			$type = SMWDataValueFactory::newPropertyObjectValue( new SMWDIProperty( '_TYPE' ) );
-			$type->setDBkeys( array( '_wpg' ) );
-			$typestring = $type->getLongHTMLText( $skin );
-			if ( $result[0]->getWikiPageValue()->getTitle()->exists() ) { // print only when we did not print a "nopage" warning yet
-				$errors[] = wfMsg( 'smw_propertylackstype', $type->getLongHTMLText() );
+			global $smwgPDefaultType;
+			$typepagedbkey = str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $smwgPDefaultType ) );
+			$diTypePage = new SMWDIWikiPage( $typepagedbkey, SMW_NS_TYPE, '', '__typ' );
+			$dvTypePage = SMWDataValueFactory::newDataItemValue( $diTypePage );
+			$typestring = $dvTypePage->getLongHTMLText( $skin );
+			if ( ( $title !== null ) && ( $title->exists() ) ) { // print only when we did not print a "nopage" warning yet
+				$errors[] = wfMsg( 'smw_propertylackstype', $typestring );
 			}
 		}
 		return wfMsg( 'smw_property_template', $proplink, $typestring, $result[1] ) . ' ' . smwfEncodeMessages( $errors );

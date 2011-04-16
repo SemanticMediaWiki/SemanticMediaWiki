@@ -154,6 +154,8 @@ class SMWDIProperty extends SMWDataItem {
 	 * relates to this property, or null if no such page exists. The latter
 	 * can happen for special properties without user-readable label, and
 	 * for inverse properties.
+	 *
+	 * @return SMWDIWikiPage or null
 	 */
 	public function getDiWikiPage() {
 		if ( $this->m_inverse ) return null;
