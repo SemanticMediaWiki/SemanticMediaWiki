@@ -122,11 +122,11 @@ class SMWSparqlResultParser {
 		if ( $prevTag == 'uri' ) {
 			$this->m_data[$rowcount][$this->m_xml_bindidx] = new SMWExpResource( $dataString );
 		} elseif ( $prevTag == 'literal' ) {
-			$this->m_data[$rowcount][$this->m_xml_bindidx] = new SMWExpLiteral( $dataString, null, $this->m_xml_datatype );
+			$this->m_data[$rowcount][$this->m_xml_bindidx] = new SMWExpLiteral( $dataString, $this->m_xml_datatype );
 		} elseif ( $prevTag == 'bnode' ) {
 			$this->m_data[$rowcount][$this->m_xml_bindidx] = new SMWExpResource( '_' . $dataString );
 		} elseif ( $prevTag == 'boolean' ) { // no "results" in this case
-			$literal = new SMWExpLiteral( $dataString, null, 'http://www.w3.org/2001/XMLSchema#boolean' );
+			$literal = new SMWExpLiteral( $dataString, 'http://www.w3.org/2001/XMLSchema#boolean' );
 			$this->m_data = array( array( $literal ) );
 		}
 	}
