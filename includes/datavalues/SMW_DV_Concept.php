@@ -102,13 +102,13 @@ class SMWConceptValue extends SMWDataValue {
 			$exact = true;
 			$owldesc = $this->descriptionToExpData( $desc, $exact );
 			if ( $owldesc === false ) {
-				$element = new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Thing' ) );
+				$element = new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Thing' ) );
 			}
 			if ( !$exact ) {
 				$result = new SMWExpData( new SMWExpResource( '' ) );
-				$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ),
-				                                new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Class' ) ) );
-				$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdfs', 'subClassOf' ), $owldesc );
+				$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ),
+				                                new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Class' ) ) );
+				$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdfs', 'subClassOf' ), $owldesc );
 				return $result;
 			} else {
 				return $owldesc;
@@ -121,18 +121,18 @@ class SMWConceptValue extends SMWDataValue {
 	public function descriptionToExpData( $desc, &$exact ) {
 		if ( ( $desc instanceof SMWConjunction ) || ( $desc instanceof SMWDisjunction ) ) {
 			$result = new SMWExpData( new SMWExpResource( '' ) );
-			$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ),
-			                                new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Class' ) ) );
+			$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ),
+			                                new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Class' ) ) );
 			$elements = array();
 			foreach ( $desc->getDescriptions() as $subdesc ) {
 				$element = $this->descriptionToExpData( $subdesc, $exact );
 				if ( $element === false ) {
-					$element = new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Thing' ) );
+					$element = new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Thing' ) );
 				}
 				$elements[] = $element;
 			}
 			$prop = ( $desc instanceof SMWConjunction ) ? 'intersectionOf':'unionOf';
-			$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'owl', $prop ),
+			$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'owl', $prop ),
 			                                SMWExpData::makeCollection( $elements ) );
 		} elseif ( $desc instanceof SMWClassDescription ) {
 			if ( count( $desc->getCategories() ) == 1 ) { // single category
@@ -143,35 +143,35 @@ class SMWConceptValue extends SMWDataValue {
 				foreach ( $desc->getCategories() as $cat ) {
 					$elements[] = new SMWExpData( SMWExporter::getResourceElement( $cat ) ); ;
 				}
-				$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'owl', 'unionOf' ),
+				$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'owl', 'unionOf' ),
 				                                SMWExpData::makeCollection( $elements ) );
 			}
-			$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ),
-			                                new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Class' ) ) );
+			$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ),
+			                                new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Class' ) ) );
 		} elseif ( $desc instanceof SMWConceptDescription ) {
 			$result = new SMWExpData( SMWExporter::getResourceElement( $desc->getConcept() ) );
 		} elseif ( $desc instanceof SMWSomeProperty ) {
 			$result = new SMWExpData( new SMWExpResource( '' ) );
-			$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ),
-			                                new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Restriction' ) ) );
-			$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'owl', 'onProperty' ),
+			$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ),
+			                                new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Restriction' ) ) );
+			$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'owl', 'onProperty' ),
 			                                new SMWExpData( SMWExporter::getResourceElement( $desc->getProperty() ) ) );
 			$subdata = $this->descriptionToExpData( $desc->getDescription(), $exact );
 			if ( ( $desc->getDescription() instanceof SMWValueDescription ) &&
 			     ( $desc->getDescription()->getComparator() == SMW_CMP_EQ ) ) {
-				$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'owl', 'hasValue' ), $subdata );
+				$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'owl', 'hasValue' ), $subdata );
 			} else {
 				if ( $subdata === false ) {
 					$owltype = SMWExporter::getOWLPropertyType( $desc->getProperty()->getPropertyTypeID() );
 					if ( $owltype == 'ObjectProperty' ) {
-						$subdata = new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Thing' ) );
+						$subdata = new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Thing' ) );
 					} elseif ( $owltype == 'DatatypeProperty' ) {
-						$subdata = new SMWExpData( SMWExporter::getSpecialElement( 'rdfs', 'Literal' ) );
+						$subdata = new SMWExpData( SMWExporter::getSpecialNsResource( 'rdfs', 'Literal' ) );
 					} else { // no restrictions at all with annotation properties ...
-						return new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Thing' ) );
+						return new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Thing' ) );
 					}
 				}
-				$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'owl', 'someValuesFrom' ), $subdata );
+				$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'owl', 'someValuesFrom' ), $subdata );
 			}
 		} elseif ( $desc instanceof SMWValueDescription ) {
 			if ( $desc->getComparator() == SMW_CMP_EQ ) {

@@ -12,36 +12,55 @@
  * SMWExpData is a data container for export-ready semantic content. It is
  * organised as a tree-shaped data structure with one root subject and zero
  * or more children connected with labelled edges to the root. Children are
- * again SMWExpData objects, and edges are annotated with SMWExpElements
+ * again SMWExpData objects, and edges are annotated with SMWExpNsElements
  * specifying properties.
+ * @note We do not allow property element without namespace abbreviation
+ * here. Property aabbreviations are mandatory for some serialisations.
  *
  * @ingroup SMW
  */
-class SMWExpData {
+class SMWExpData extends SMWExpElement {
+	/**
+	 * The subject of the data that we store.
+	 * @var SMWExpResource
+	 */
 	protected $m_subject;
-	protected $m_children = array(); // property text keys => array of children SMWExpData objects
-	protected $m_edges = array(); // property text keys => property SMWExpElements
+	/**
+	 * Array mapping property URIs to arrays their values, given as
+	 * SMWExpElement objects.
+	 * @var array of array of SMWElement
+	 */
+	protected $m_children = array();
+	/**
+	 * Array mapping property URIs to arrays their SMWExpResource
+	 * @var array of SMWExpResource
+	 */
+	protected $m_edges = array();
 
 	/**
-	 * Constructor. $subject is the SMWExpElement for the 
+	 * Constructor. $subject is the SMWExpResource for the 
 	 * subject about which this SMWExpData is.
 	 */
-	public function __construct( SMWExpElement $subject ) {
+	public function __construct( SMWExpResource $subject ) {
+		parent::__construct( $subject->getDataItem() );
 		$this->m_subject = $subject;
 	}
 
 	/**
-	 * Turn an array of SMWElements into an RDF collection.
+	 * Turn an array of SMWExpElements into an RDF collection.
+	 *
+	 * @param $elements array of SMWExpElement
+	 * @return SMWExpData
 	 */
-	public static function makeCollection( $elements ) {
+	public static function makeCollection( array $elements ) {
 		if ( count( $elements ) == 0 ) {
-			return new SMWExpData( SMWExporter::getSpecialElement( 'rdf', 'nil' ) );
+			return new SMWExpData( SMWExporter::getSpecialNsResource( 'rdf', 'nil' ) );
 		} else {
-			$rdftype  = SMWExporter::getSpecialElement( 'rdf', 'type' );
-			$rdffirst = SMWExporter::getSpecialElement( 'rdf', 'first' );
-			$rdfrest  = SMWExporter::getSpecialElement( 'rdf', 'rest' );
+			$rdftype  = SMWExporter::getSpecialNsResource( 'rdf', 'type' );
+			$rdffirst = SMWExporter::getSpecialNsResource( 'rdf', 'first' );
+			$rdfrest  = SMWExporter::getSpecialNsResource( 'rdf', 'rest' );
 			$result = new SMWExpData( new SMWExpResource( '' ) ); // bnode
-			$result->addPropertyObjectValue( $rdftype, new SMWExpData( SMWExporter::getSpecialElement( 'rdf', 'List' ) ) );
+			$result->addPropertyObjectValue( $rdftype, new SMWExpData( SMWExporter::getSpecialNsResource( 'rdf', 'List' ) ) );
 			$result->addPropertyObjectValue( $rdffirst, array_shift( $elements ) );
 			$result->addPropertyObjectValue( $rdfrest, SMWExpData::makeCollection( $elements ) );
 			return $result;
@@ -51,53 +70,47 @@ class SMWExpData {
 	/**
 	 * Return subject to which the stored semantic annotation refer to.
 	 * 
-	 * @return SMWExpElement
+	 * @return SMWExpResource
 	 */
 	public function getSubject() {
 		return $this->m_subject;
 	}
 
 	/**
-	 * Set the subject element.
-	 * 
-	 * @param SMWExpResource $subject
-	 */
-	public function setSubject( SMWExpResource $subject ) {
-		$this->m_subject = $subject;
-	}
-
-	/**
-	 * Store a value for a property identified by its title object. No duplicate elimination as this
-	 * is usually done in SMWSemanticData already (which is typically used to generate this object).
-	 * 
-	 * @param SMWExpResource $property
+	 * Store a value for a property identified by its title object. No
+	 * duplicate elimination as this is usually done in SMWSemanticData
+	 * already (which is typically used to generate this object).
+	 *
+	 * @param SMWExpNsResource $property
 	 * @param SMWExpData $child
 	 */
-	public function addPropertyObjectValue( SMWExpResource $property, SMWExpData $child ) {
-		if ( !array_key_exists( $property->getName(), $this->m_edges ) ) {
-			$this->m_children[$property->getName()] = array();
-			$this->m_edges[$property->getName()] = $property;
+	public function addPropertyObjectValue( SMWExpNsResource $property, SMWExpElement $child ) {
+		if ( !array_key_exists( $property->getUri(), $this->m_edges ) ) {
+			$this->m_children[$property->getUri()] = array();
+			$this->m_edges[$property->getUri()] = $property;
 		}
-		$this->m_children[$property->getName()][] = $child;
+		$this->m_children[$property->getUri()][] = $child;
 	}
 
 	/**
-	 * Return the list of SMWExpElements for all properties for which some values exist.
+	 * Return the list of SMWExpResource objects for all properties for
+	 * which some values have been given.
 	 * 
-	 * @return array of SMWExpElements
+	 * @return array of SMWExpResource
 	 */
 	public function getProperties() {
 		return $this->m_edges;
 	}
 
 	/**
-	 * Return the list of SMWExpData values associated to some property (element).
+	 * Return the list of SMWExpElement values associated to some property
+	 * (element).
 	 * 
-	 * @return array of SMWExpData
+	 * @return array of SMWExpElement
 	 */
 	public function getValues( SMWExpResource $property ) {
-		if ( array_key_exists( $property->getName(), $this->m_children ) ) {
-			return $this->m_children[$property->getName()];
+		if ( array_key_exists( $property->getUri(), $this->m_children ) ) {
+			return $this->m_children[$property->getUri()];
 		} else {
 			return array();
 		}
@@ -106,76 +119,91 @@ class SMWExpData {
 	/**
 	 * Return the list of SMWExpData values associated to some property that is
 	 * specifed by a standard namespace id and local name.
-	 * 
+	 *
+	 * @param $namespaceId string idetifying a known special namespace (e.g. "rdf")
+	 * @param $localName string of local name (e.g. "type")
 	 * @return array of SMWExpData
 	 */
-	public function getSpecialValues( $namespace, $localname ) {
-		$pe = SMWExporter::getSpecialElement( $namespace, $localname );
-		if ( $pe !== null ) {
-			return $this->getValues( $pe );
-		} else {
-			return array();
-		}
+	public function getSpecialValues( $namespaceId, $localName ) {
+		$pe = SMWExporter::getSpecialNsResource( $namespaceId, $localName );
+		return $this->getValues( $pe );
 	}
 
 	/**
-	 * This function finds the main type (class) element of the subject based on the 
-	 * current property assignments. It returns this type element (SMWExpElement) and 
-	 * removes the according type assignement from the data.
+	 * This function finds the main type (class) element of the subject
+	 * based on the current property assignments. It returns this type
+	 * element (SMWExpElement) and removes the according type assignement
+	 * from the data. If no type is assigned, the element for rdf:Resource
+	 * is returned.
+	 *
+	 * @note Under all normal conditions, the result will be an
+	 * SMWExpResource.
+	 *
+	 * @return SMWExpElement
 	 */
 	public function extractMainType() {
-		$pe = SMWExporter::getSpecialElement( 'rdf', 'type' );
-		if ( array_key_exists( $pe->getName(), $this->m_children ) ) {
-			$result = array_shift( $this->m_children[$pe->getName()] );
-			if ( count( $this->m_children[$pe->getName()] ) == 0 ) {
-				unset( $this->m_edges[$pe->getName()] );
-				unset( $this->m_children[$pe->getName()] );
+		$pe = SMWExporter::getSpecialNsResource( 'rdf', 'type' );
+		if ( array_key_exists( $pe->getUri(), $this->m_children ) ) {
+			$result = array_shift( $this->m_children[$pe->getUri()] );
+			if ( count( $this->m_children[$pe->getUri()] ) == 0 ) {
+				unset( $this->m_edges[$pe->getUri()] );
+				unset( $this->m_children[$pe->getUri()] );
 			}
-			return $result->getSubject();
+			return ( $result instanceof SMWExpData ) ? $result->getSubject() : $result;
 		} else {
-			return SMWExporter::getSpecialElement( 'rdf', 'Resource' );
+			return SMWExporter::getSpecialNsResource( 'rdf', 'Resource' );
 		}
 	}
 
 	/**
-	 * Check if this element can be serialised using parseType="Collection" and
-	 * if yes return an array of SMWExpElements corresponding to the collection 
-	 * elements in the specified order. Otherwise return false.
+	 * Check if this element encodes an RDF list, and if yes return an
+	 * array of SMWExpElements corresponding to the collection elements in
+	 * the specified order. Otherwise return false.
+	 * The method only returns lists that can be encoded using 
+	 * parseType="Collection" in RDF/XML, i.e. only lists of non-literal
+	 * resources.
+	 *
+	 * @return mixed array of SMWExpElement (but not SMWExpLiteral) or false
 	 */
 	public function getCollection() {
-		$rdftype  = SMWExporter::getSpecialElement( 'rdf', 'type' );
-		$rdffirst = SMWExporter::getSpecialElement( 'rdf', 'first' );
-		$rdfrest  = SMWExporter::getSpecialElement( 'rdf', 'rest' );
-		$rdfnil   = SMWExporter::getSpecialElement( 'rdf', 'nil' );
-		$name = $this->getSubject()->getName();
+		$rdftypeUri  = SMWExporter::getSpecialNsResource( 'rdf', 'type' )->getUri();
+		$rdffirstUri = SMWExporter::getSpecialNsResource( 'rdf', 'first' )->getUri();
+		$rdfrestUri  = SMWExporter::getSpecialNsResource( 'rdf', 'rest' )->getUri();
+		$rdfnilUri   = SMWExporter::getSpecialNsResource( 'rdf', 'nil' )->getUri();
 		// first check if we are basically an RDF List:
-		if ( ( ( $name == '' ) || ( $name { 0 } == '_' ) ) && // bnode
-		     ( array_key_exists( $rdftype->getName(), $this->m_children ) ) &&
-		     ( count( $this->m_children[$rdftype->getName()] ) == 1 ) &&
-		     ( array_key_exists( $rdffirst->getName(), $this->m_children ) ) &&
-		     ( count( $this->m_children[$rdffirst->getName()] ) == 1 ) &&
-		     ( array_key_exists( $rdfrest->getName(), $this->m_children ) ) &&
-		     !( end( $this->m_children[$rdffirst->getName()] ) instanceof SMWExpLiteral ) &&
+		if ( ( $this->m_subject->isBlankNode() ) &&
+		     ( count( $this->m_children ) == 3 ) &&
+		     ( array_key_exists( $rdftypeUri, $this->m_children ) ) &&
+		     ( count( $this->m_children[$rdftypeUri] ) == 1 ) &&
+		     ( array_key_exists( $rdffirstUri, $this->m_children ) ) &&
+		     ( count( $this->m_children[$rdffirstUri] ) == 1 ) &&
+		     !( end( $this->m_children[$rdffirstUri] ) instanceof SMWExpLiteral ) &&
 		     // (parseType collection in RDF not possible with literals :-/)
-		     ( count( $this->m_children[$rdfrest->getName()] ) == 1 ) &&
-		     ( count( $this->m_children ) == 3 ) ) {
-			$typedata = end( $this->m_children[$rdftype->getName()] );
-			$rdflist = SMWExporter::getSpecialElement( 'rdf', 'List' );
-			if ( $typedata->getSubject()->getName() == $rdflist->getName() ) {
-				$first = end( $this->m_children[$rdffirst->getName()] );
-				$rest  = end( $this->m_children[$rdfrest->getName()] );
-				$restlist = $rest->getCollection();
-				if ( $restlist === false ) {
-					return false;
+		     ( array_key_exists( $rdfrestUri, $this->m_children ) ) &&
+		     ( count( $this->m_children[$rdfrestUri] ) == 1 ) ) {
+			$typedata = end( $this->m_children[$rdftypeUri] );
+			$rdflistUri = SMWExporter::getSpecialNsResource( 'rdf', 'List' )->getUri();
+			if ( $typedata->getSubject()->getUri() == $rdflistUri ) {
+				$first = end( $this->m_children[$rdffirstUri] );
+				$rest  = end( $this->m_children[$rdfrestUri] );
+				if ( $rest instanceof SMWExpData ) {
+					$restlist = $rest->getCollection();
+					if ( $restlist === false ) {
+						return false;
+					} else {
+						array_unshift( $restlist, $first );
+						return $restlist;
+					}
+				} elseif ( ( $rest instanceof SMWExpResource ) && 
+				           ( $rest->getUri() == $rdfnilUri ) )  {
+					return array( $first );
 				} else {
-					array_unshift( $restlist, $first );
-					return $restlist;
+					return false;
 				}
 			} else {
 				return false;
 			}
-		} elseif ( ( !array_key_exists( $rdftype->getName(), $this->m_children ) ) &&
-		           ( $name == $rdfnil->getName() ) ) {
+		} elseif ( ( count( $this->m_children ) == 0 ) && ( $this->m_subject->getUri() == $rdfnilUri ) ) {
 			return array();
 		} else {
 			return false;
@@ -183,34 +211,44 @@ class SMWExpData {
 	}
 
 	/**
-	 * Return an array of ternary arrays (subject predicate object) of SMWExpElements
-	 * that represents the flattened version of the given data.
+	 * Return an array of ternary arrays (subject predicate object) of
+	 * SMWExpElements that represents the flattened version of this data.
+	 *
+	 * @return array of array of SMWExpElement
 	 */
-	public function getTripleList() {
+	public function getTripleList( SMWExpElement $subject = null ) {
 		global $smwgBnodeCount;
-		
 		if ( !isset( $smwgBnodeCount ) ) {
 			$smwgBnodeCount = 0;
 		}
-		
+
+		if ( $subject == null ) {
+			$subject = $this->m_subject;
+		}
+
 		$result = array();
-		
+
 		foreach ( $this->m_edges as $key => $edge ) {
-			foreach ( $this->m_children[$key] as $child ) {
-				$name = $child->getSubject()->getName();
-				
-				if ( $name === '' || $name[0] === '_' ) { // bnode, rename ID to avoid unifying bnodes of different contexts
-					// TODO: should we really rename bnodes of the form "_id" here?
-					$child = clone $child;
-					$subject = new SMWExpResource( '_' . $smwgBnodeCount++, $child->getSubject()->getDataValue() );
-					$child->setSubject( $subject );
+			foreach ( $this->m_children[$key] as $childElement ) {
+				if ( $childElement instanceof SMWExpData ) {
+					$childSubject = $childElement->getSubject();
+				} else {
+					$childSubject = $childElement;
 				}
-				
-				$result[] = array( $this->m_subject, $edge, $child->getSubject() );
-				$result = array_merge( $result, $child->getTripleList() ); // recursively generate all children's triples
+
+				if ( ( $childSubject instanceof SMWExpResource ) &&
+				     ( $childSubject->isBlankNode() ) ) { // bnode, rename ID to avoid unifying bnodes of different contexts
+					// TODO: should we really rename bnodes of the form "_id" here?
+					$childSubject = new SMWExpResource( '_' . $smwgBnodeCount++, $childSubject()->getDataItem() );
+				}
+
+				$result[] = array( $subject, $edge, $childSubject );
+				if ( $childElement instanceof SMWExpData ) { // recursively add child's triples
+					$result = array_merge( $result, $child->getTripleList( $childSubject ) );
+				}
 			}
 		}
-		
+
 		return $result;
 	}
 

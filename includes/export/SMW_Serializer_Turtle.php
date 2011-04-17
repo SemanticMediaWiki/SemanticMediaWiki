@@ -107,12 +107,14 @@ class SMWTurtleSerializer extends SMWSerializer{
 				$firstvalue = false;
 				
 				$this->requireNamespace( $property->getNamespaceID(), $property->getNamespace() );
-				$object = $value->getSubject();
 
-				if ( $object instanceof SMWExpLiteral ) {
+				if ( $value instanceof SMWExpLiteral ) {
 					$prop_decl_type = SMW_SERIALIZER_DECL_APROP;
-					$this->serializeExpLiteral( $object );
-				} else { // resource (maybe blank node), could have subdescriptions
+					$this->serializeExpLiteral( $value );
+				} elseif ( $value instanceof SMWExpResource ) {	
+					$prop_decl_type = SMW_SERIALIZER_DECL_OPROP;
+					$this->serializeExpResource( $value );
+				} elseif ( $value instanceof SMWExpData ) { // resource (maybe blank node), could have subdescriptions
 					$prop_decl_type = SMW_SERIALIZER_DECL_OPROP;
 					$collection = $value->getCollection();
 					if ( $collection !== false ) { // RDF-style collection (list)
@@ -132,7 +134,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 							$this->post_ns_buffer .= "\n";
 							$this->serializeNestedExpData( $value, $indent . "\t\t" );
 						} else { // resource without data: may need to be queued
-							$this->serializeExpResource( $object );
+							$this->serializeExpResource( $value->getSubject() );
 						}
 					}
 				}
@@ -147,7 +149,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 	}
 	
 	protected function serializeExpLiteral( SMWExpLiteral $element ) {
-		$this->post_ns_buffer .= '"' . str_replace( array( '\\', "\n", '"' ), array( '\\\\', "\\n", '\"' ), $element->getName() ) . '"';
+		$this->post_ns_buffer .= '"' . str_replace( array( '\\', "\n", '"' ), array( '\\\\', "\\n", '\"' ), $element->getLexicalForm() ) . '"';
 		$dt = $element->getDatatype();
 		if ( ( $dt != '' ) && ( $dt != 'http://www.w3.org/2001/XMLSchema#string' ) ) {
 			$count = 0;
@@ -164,10 +166,10 @@ class SMWTurtleSerializer extends SMWSerializer{
 		if ( $element->isBlankNode() ) {
 			$this->post_ns_buffer .= '[]';
 		} else {
-			if ( $element->getQName() !== false ) {
+			if ( $element instanceof SMWExpNsResource ) {
 				$this->post_ns_buffer .= $element->getQName();
 			} else {
-				$this->post_ns_buffer .= '<' . str_replace( '>', '\>', SMWExporter::expandURI( $element->getName() ) ) . '>';
+				$this->post_ns_buffer .= '<' . str_replace( '>', '\>', SMWExporter::expandURI( $element->getUri() ) ) . '>';
 			}
 		}
 	}

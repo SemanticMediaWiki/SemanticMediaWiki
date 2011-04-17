@@ -158,21 +158,22 @@ class SMWExportController {
 		}
 
 		if ( $recursiondepth != 0 ) {
-			$subrecdepth = ($recursiondepth>0) ? ($recursiondepth-1) : ($recursiondepth==0 ? 0 : -1);
+			$subrecdepth = $recursiondepth > 0 ? ( $recursiondepth - 1 ) :
+			               ( $recursiondepth == 0 ? 0 : -1 );
 
 			foreach ( $data->getProperties() as $property ) {
-				if ( $property->getDataValue() instanceof SMWWikiPageValue ) {
-					$this->queuePage( $property->getDataValue(), 0 ); // no real recursion along properties
+				if ( $property->getDataItem() instanceof SMWWikiPageValue ) {
+					$this->queuePage( $property->getDataItem(), 0 ); // no real recursion along properties
 				}
 				$wikipagevalues = false;
-				foreach ( $data->getValues( $property ) as $expdata ) {
-					$subject = $expdata->getSubject();
-					if ( !$wikipagevalues && ( $subject->getDataValue() instanceof SMWWikiPageValue ) ) {
+				foreach ( $data->getValues( $property ) as $valueExpElement ) {
+					$valueResource = $valueExpElement instanceof SMWExpData ? $valueExpElement->getSubject() : $valueExpElement;
+					if ( !$wikipagevalues && ( $valueResource->getDataItem() instanceof SMWWikiPageValue ) ) {
 						$wikipagevalues = true;
 					} elseif ( !$wikipagevalues ) {
 						break;
 					}
-					$this->queuePage( $subject->getDatavalue(), $subrecdepth );
+					$this->queuePage( $valueResource->getDataItem(), $subrecdepth );
 				}
 			}
 			
@@ -527,10 +528,10 @@ class SMWExportController {
 			}
 
 			$data = new SMWExpData( new SMWExpResource( $nexturl ) );
-			$ed = new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Thing' ) );
-			$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ), $ed );
+			$ed = new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Thing' ) );
+			$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ), $ed );
 			$ed = new SMWExpData( new SMWExpResource( $nexturl ) );
-			$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdfs', 'isDefinedBy' ), $ed );
+			$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
 			$this->serializer->serializeExpData( $data );
 		}
 
@@ -556,39 +557,39 @@ class SMWExportController {
 		
 		// assemble export data: 
 		$data = new SMWExpData( new SMWExpResource( '&wiki;#wiki' ) );
-		$ed = new SMWExpData( SMWExporter::getSpecialElement( 'swivt', 'Wikisite' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ), $ed );
+		$ed = new SMWExpData( SMWExporter::getSpecialNsResource( 'swivt', 'Wikisite' ) );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ), $ed );
 		// basic wiki information
 		$ed = new SMWExpData( new SMWExpLiteral( $wgSitename ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdfs', 'label' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdfs', 'label' ), $ed );
 		$ed = new SMWExpData( new SMWExpLiteral( $wgSitename, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'siteName' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'siteName' ), $ed );
 		$ed = new SMWExpData( new SMWExpLiteral( SMWExporter::expandURI( '&wikiurl;' ), null, 'http://www.w3.org/2001/XMLSchema#string' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'pagePrefix' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'pagePrefix' ), $ed );
 		$ed = new SMWExpData( new SMWExpLiteral( SMW_VERSION, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'smwVersion' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'smwVersion' ), $ed );
 		$ed = new SMWExpData( new SMWExpLiteral( $wgLanguageCode, null, 'http://www.w3.org/2001/XMLSchema#string' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'langCode' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'langCode' ), $ed );
 		$mainpage = Title::newMainPage();
 		if ( $mainpage !== null ) {
 			$ed = new SMWExpData( new SMWExpResource( $mainpage->getFullURL() ) );
-			$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'mainPage' ), $ed );
+			$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'mainPage' ), $ed );
 		}
 		// statistical information
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::pages(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'pageCount' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'pageCount' ), $ed );
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::articles(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'contentPageCount' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'contentPageCount' ), $ed );
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::images(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'mediaCount' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'mediaCount' ), $ed );
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::edits(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'editCount' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'editCount' ), $ed );
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::views(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'viewCount' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'viewCount' ), $ed );
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::users(), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'userCount' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'userCount' ), $ed );
 		$ed = new SMWExpData( new SMWExpLiteral( SiteStats::numberingroup( 'sysop' ), null, 'http://www.w3.org/2001/XMLSchema#int' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'swivt', 'adminCount' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'adminCount' ), $ed );
 
 		$this->serializer->startSerialization();
 		$this->serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
@@ -601,10 +602,10 @@ class SMWExportController {
 			$nexturl = SMWExporter::expandURI( '&export;&amp;offset=0' );
 		}
 		$data = new SMWExpData( new SMWExpResource( $nexturl ) );
-		$ed = new SMWExpData( SMWExporter::getSpecialElement( 'owl', 'Thing' ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ), $ed );
+		$ed = new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Thing' ) );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ), $ed );
 		$ed = new SMWExpData( new SMWExpResource( $nexturl ) );
-		$data->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdfs', 'isDefinedBy' ), $ed );
+		$data->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
 		$this->serializer->serializeExpData( $data );
 
 		$this->serializer->finishSerialization();

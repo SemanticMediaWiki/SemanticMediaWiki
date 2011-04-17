@@ -75,8 +75,8 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 		$this->post_ns_buffer .= "\t<$typename rdf:about=\"$uri\" />\n";
 	}
 
-	public function serializeExpData( SMWExpData $data ) {
-		$this->serializeNestedExpData( $data, '' );
+	public function serializeExpData( SMWExpData $expData ) {
+		$this->serializeNestedExpData( $expData, '' );
 		$this->serializeNamespaces();
 		if ( !$this->namespaces_are_global ) {
 			$this->pre_ns_buffer .= $this->post_ns_buffer;
@@ -106,13 +106,13 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	 * Serialize the given SMWExpData object, possibly recursively with
 	 * increased indentation.
 	 *
-	 * @param $data SMWExpData containing the data to be serialised.
+	 * @param $expData SMWExpData containing the data to be serialised.
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
-	protected function serializeNestedExpData( SMWExpData $data, $indent ) {
-		$this->recordDeclarationTypes( $data );
+	protected function serializeNestedExpData( SMWExpData $expData, $indent ) {
+		$this->recordDeclarationTypes( $expData );
 
-		$type = $data->extractMainType()->getQName();
+		$type = $expData->extractMainType()->getQName();
 		if ( !$this->namespace_block_started ) { // start new ns block
 			$this->pre_ns_buffer .= "\t$indent<$type";
 			$this->namespace_block_started = true;
@@ -120,61 +120,42 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 			$this->post_ns_buffer .= "\t$indent<$type";
 		}
 
-		if ( ( $data->getSubject() instanceof SMWExpLiteral ) ||
-		     ( $data->getSubject() instanceof SMWExpResource ) ) {
-			 $this->post_ns_buffer .= ' rdf:about="' . $data->getSubject()->getName() . '"';
+		if ( $expData->getSubject() instanceof SMWExpResource ) {
+			 $this->post_ns_buffer .= ' rdf:about="' . $expData->getSubject()->getUri() . '"';
 		} // else: blank node, no "rdf:about"
 
-		if ( count( $data->getProperties() ) == 0 ) { // nothing else to export
+		if ( count( $expData->getProperties() ) == 0 ) { // nothing else to export
 			$this->post_ns_buffer .= " />\n";
 		} else { // process data
 			$this->post_ns_buffer .= ">\n";
 
-			foreach ( $data->getProperties() as $property ) {
+			foreach ( $expData->getProperties() as $property ) {
 				$prop_decl_queued = false;
-				$class_type_prop = $this->isOWLClassTypeProperty( $property );
+				$isClassTypeProp = $this->isOWLClassTypeProperty( $property );
 
-				foreach ( $data->getValues( $property ) as $value ) {
-					$this->post_ns_buffer .= "\t\t$indent<" . $property->getQName();
+				foreach ( $expData->getValues( $property ) as $valueElement ) {
 					$this->requireNamespace( $property->getNamespaceID(), $property->getNamespace() );
-					$object = $value->getSubject();
 
-					if ( $object instanceof SMWExpLiteral ) {
+					if ( $valueElement instanceof SMWExpLiteral ) {
 						$prop_decl_type = SMW_SERIALIZER_DECL_APROP;
-						if ( $object->getDatatype() != '' ) {
-							$this->post_ns_buffer .= ' rdf:datatype="' . $object->getDatatype() . '"';
-						}
-						$this->post_ns_buffer .= '>' .
-							str_replace( array( '&', '>', '<' ), array( '&amp;', '&gt;', '&lt;' ), $object->getName() ) .
-							'</' . $property->getQName() . ">\n";
-					} else { // resource (maybe blank node), could have subdescriptions
+						$this->serializeExpLiteral( $property, $valueElement, "\t\t$indent" );
+					} elseif ( $valueElement instanceof SMWExpResource ) {
 						$prop_decl_type = SMW_SERIALIZER_DECL_OPROP;
-						$collection = $value->getCollection();
+						$this->serializeExpResource( $property, $valueElement, "\t\t$indent", $isClassTypeProp );
+					} elseif ( $valueElement instanceof SMWExpData ) {
+						$prop_decl_type = SMW_SERIALIZER_DECL_OPROP;
+
+						$collection = $valueElement->getCollection();
 						if ( $collection !== false ) { // RDF-style collection (list)
-							$this->post_ns_buffer .= " rdf:parseType=\"Collection\">\n";
-							foreach ( $collection as $subvalue ) {
-								$this->serializeNestedExpData( $subvalue, $indent . "\t\t" );
-								if ( $class_type_prop ) {
-									$this->requireDeclaration( $subvalue, SMW_SERIALIZER_DECL_CLASS );
-								}
-							}
+							$this->serializeExpCollection( $property, $collection, "\t\t$indent", $isClassTypeProp );
+						} elseif ( count( $valueElement->getProperties() ) > 0 ) { // resource with data
+							$this->post_ns_buffer .= "\t\t$indent<" . $expResourceProperty->getQName() . ">\n";
+							$this->serializeNestedExpData( $valueElement, "\t\t$indent" );
 							$this->post_ns_buffer .= "\t\t$indent</" . $property->getQName() . ">\n";
-						} else {
-							if ( $class_type_prop ) {
-								$this->requireDeclaration( $object, SMW_SERIALIZER_DECL_CLASS );
-							}
-							if ( count( $value->getProperties() ) > 0 ) { // resource with data: serialise
-								$this->post_ns_buffer .= ">\n";
-								$this->serializeNestedExpData( $value, $indent . "\t\t" );
-								$this->post_ns_buffer .= "\t\t$indent</" . $property->getQName() . ">\n";
-							} else { // resource without data
-								if ( !$object->isBlankNode() ) {
-									$this->post_ns_buffer .= ' rdf:resource="' . $object->getName() . '"';
-								}
-								$this->post_ns_buffer .= "/>\n";
-							}
+						} else { // resource without data
+							$this->serializeExpResource( $property,  $valueElement->getSubject(), "\t\t$indent", $isClassTypeProp );
 						}
-					}
+					} // else: no other types of export elements
 
 					if ( !$prop_decl_queued ) {
 						$this->requireDeclaration( $property, $prop_decl_type );
@@ -184,6 +165,68 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 			}
 			$this->post_ns_buffer .= "\t$indent</" . $type . ">\n";
 		}
+	}
+
+	/**
+	 * Add a serialization of the given SMWExpLiteral to the output,
+	 * assuming that an opening property tag is alerady there.
+	 *
+	 * @param $expResourceProperty SMWExpNsResource the property to use
+	 * @param $expLiteral SMWExpLiteral the data value to use
+	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
+	 */
+	protected function serializeExpLiteral( SMWExpNsResource $expResourceProperty, SMWExpLiteral $expLiteral, $indent ) {
+		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
+		if ( $expLiteral->getDatatype() != '' ) {
+			$this->post_ns_buffer .= ' rdf:datatype="' . $expLiteral->getDatatype() . '"';
+		}
+		$this->post_ns_buffer .= '>' .
+			str_replace( array( '&', '>', '<' ), array( '&amp;', '&gt;', '&lt;' ), $expLiteral->getLexicalForm() ) .
+			'</' . $expResourceProperty->getQName() . ">\n";
+	}
+
+	/**
+	 * Add a serialization of the given SMWExpResource to the output,
+	 * assuming that an opening property tag is alerady there.
+	 *
+	 * @param $expResourceProperty SMWExpNsResource the property to use
+	 * @param $expResource SMWExpResource the data value to use
+	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
+	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
+	 */
+	protected function serializeExpResource( SMWExpNsResource $expResourceProperty, SMWExpResource $expResource, $indent, $isClassTypeProp ) {
+		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
+		if ( !$expResource->isBlankNode() ) {
+			$this->post_ns_buffer .= ' rdf:resource="' . $expResource->getUri() . '"';
+		}
+		$this->post_ns_buffer .= "/>\n";
+		if ( $isClassTypeProp ) {
+			$this->requireDeclaration( $expResource, SMW_SERIALIZER_DECL_CLASS );
+		}
+	}
+
+	/**
+	 * Add a serialization of the given SMWExpResource to the output,
+	 * assuming that an opening property tag is alerady there.
+	 *
+	 * @param $expResourceProperty SMWExpNsResource the property to use
+	 * @param $expResource array of (SMWExpResource or SMWExpData)
+	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
+	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
+	 */
+	protected function serializeExpCollection( SMWExpNsResource $expResourceProperty, array $collection, $indent, $isClassTypeProp ) {
+		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName() . " rdf:parseType=\"Collection\">\n";
+		foreach ( $collection as $expElement ) {
+			if ( $expElement instanceof SMWExpData ) {
+				$this->serializeNestedExpData( $expElement, $indent );
+			} else {
+				$this->serializeExpResource( $expResourceProperty, $expElement, $indent );
+			}
+			if ( $isClassTypeProp ) {
+				$this->requireDeclaration( $expResource, SMW_SERIALIZER_DECL_CLASS );
+			}
+		}
+		$this->post_ns_buffer .= "$indent</" . $expResourceProperty->getQName() . ">\n";
 	}
 	
 	/**

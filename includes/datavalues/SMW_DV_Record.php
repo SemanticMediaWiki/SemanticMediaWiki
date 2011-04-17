@@ -152,8 +152,8 @@ class SMWRecordValue extends SMWContainerValue {
 		if ( !$this->isValid() ) return null;
 
 		$result = new SMWExpData( new SMWExpResource( '', $this ) ); // bnode
-		$ed = new SMWExpData( SMWExporter::getSpecialElement( 'swivt', 'Container' ) );
-		$result->addPropertyObjectValue( SMWExporter::getSpecialElement( 'rdf', 'type' ), $ed );
+		$ed = new SMWExpData( SMWExporter::getSpecialNsResource( 'swivt', 'Container' ) );
+		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ), $ed );
 		$count = 0;
 		foreach ( $this->getDVs() as $value ) {
 			$count++;
@@ -162,11 +162,11 @@ class SMWRecordValue extends SMWContainerValue {
 			}
 			if ( ( $value->getTypeID() == '_wpg' ) || ( $value->getTypeID() == '_uri' ) || ( $value->getTypeID() == '_ema' ) ) {
 				$result->addPropertyObjectValue(
-				      SMWExporter::getSpecialElement( 'swivt', 'object' . $count ),
+				      SMWExporter::getSpecialNsResource( 'swivt', 'object' . $count ),
 				      $value->getExportData() );
 			} else {
 				$result->addPropertyObjectValue(
-				      SMWExporter::getSpecialElement( 'swivt', 'value' . $count ),
+				      SMWExporter::getSpecialNsResource( 'swivt', 'value' . $count ),
 				      $value->getExportData() );
 			}
 		}
