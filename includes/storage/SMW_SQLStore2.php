@@ -856,11 +856,14 @@ class SMWSQLStore2 extends SMWStore {
 			$proptable = $proptables[$tableid];
 
 			foreach ( $data->getPropertyValues( $property ) as $di ) {
-				// errors are already recorded separately, no need to store them here;
+				if ( $di instanceof SMWDIError ) { // error values, ignore
+					continue;
+				} 
 				// redirects were treated above
+
 				///TODO check needed if subject is null (would happen if a user defined proptable with !idsubject was used on an internal object -- currently this is not possible
-				$uvals = ( $proptable->idsubject ) ? array( 's_id' => $sid ):
-							array( 's_title' => $subject->getDBkey(), 's_namespace' => $subject->getNamespace() );
+				$uvals = $proptable->idsubject ? array( 's_id' => $sid ) :
+				         array( 's_title' => $subject->getDBkey(), 's_namespace' => $subject->getNamespace() );
 				if ( $proptable->fixedproperty == false ) {
 					$uvals['p_id'] = $this->makeSMWPropertyID( $property );
 				}
