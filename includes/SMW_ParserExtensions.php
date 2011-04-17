@@ -35,15 +35,15 @@ class SMWParserExtensions {
 		SMWParserExtensions::$mTempStoreAnnotations = true; // used for [[SMW::on]] and [[SMW:off]]
 
 		// Process redirects, if any (it seems that there is indeed no more direct way of getting this info from MW)
-		$rt = Title::newFromRedirect( $text );
-		if ( $rt !== null ) {
-			$p = new SMWDIProperty( '_REDI' );
-			$dv = SMWDataValueFactory::newPropertyObjectValue( $p, $rt->getPrefixedText() );
-
-			if ( $smwgStoreAnnotations ) {
-				SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $p, $dv );
+		if ( $smwgStoreAnnotations ) {
+			$rt = Title::newFromRedirect( $text );
+			if ( $rt !== null ) {
+				$p = new SMWDIProperty( '_REDI' );
+				$di = new SMWDIWikiPage( $rt->getDBkey(), $rt->getNamespace(), $rt->getInterwiki(), '__red' );
+				SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $p, $di );
 			}
 		}
+		
 
 		// only used in subsequent callbacks, forgotten afterwards
 		SMWParserExtensions::$mTempParser = $parser;
