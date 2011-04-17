@@ -250,8 +250,12 @@ class SMWExporter {
 			     ( in_array( $localname[0], array( '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ) ) ) ) {
 				$namespace = '&wiki;';
 				$namespaceid = 'wiki';
-				$nsText = str_replace( ' ', '_', $wgContLang->getNSText( $diWikiPage->getNamespace() ) );
-				$localname = SMWExporter::encodeURI( wfUrlencode( $nsText . ':' . $diWikiPage->getDBkey() ) );
+				if ( $diWikiPage->getNamespace() !== 0 ) {
+					$localname = str_replace( ' ', '_', $wgContLang->getNSText( $diWikiPage->getNamespace() ) ) . ":" . $diWikiPage->getDBkey();
+				} else {
+					$localname = $diWikiPage->getDBkey();
+				}
+				$localname = SMWExporter::encodeURI( wfUrlencode( $localname ) );
 			}
 		}
 
