@@ -43,8 +43,11 @@ class SMWExporter {
 
 	/**
 	 * Create exportable data from a given semantic data record.
+	 *
+	 * @param $semdata SMWSemanticData
+	 * @return SMWExpData
 	 */
-	static public function makeExportData( /*SMWSemanticData*/ $semdata ) {
+	static public function makeExportData( SMWSemanticData $semdata ) {
 		SMWExporter::initBaseURIs();
 		$subject = $semdata->getSubject();
 		if ( $subject->getNamespace() == SMW_NS_PROPERTY ) {
@@ -71,7 +74,7 @@ class SMWExporter {
 	 */
 	static public function makeExportDataForSubject( SMWDIWikiPage $subject, $typesvalueforproperty = null ) {		
 		global $wgContLang;
-		$result = new SMWExpData( self::getDataItemExpData( $subject ) );
+		$result = new SMWExpData( self::getDataItemExpElement( $subject ) );
 		$subjectTitle = str_replace( '_', ' ', $subject->getDBkey() );
 		if ( $subject->getNamespace() !== 0 ) {
 			$prefixedSubjectTitle = $wgContLang->getNsText( $subject->getNamespace()) . ":" . $subjectTitle;
@@ -121,7 +124,7 @@ class SMWExporter {
 		if ( $property->isUserDefined() ) {
 			$pe = SMWExporter::getResourceElement( $property );
 			foreach ( $dataItems as $dataItem ) {
-				$ed = self::getDataItemExpData( $dataItem );
+				$ed = self::getDataItemExpElement( $dataItem );
 				if ( $ed !== null ) {
 					$expData->addPropertyObjectValue( $pe, $ed );
 				}
@@ -131,50 +134,60 @@ class SMWExporter {
 			if ( ( $diSubject == null ) || ( $diSubject->getDIType() != SMWDataItem::TYPE_WIKIPAGE ) ) {
 				return; // subject datavalue (wikipage) required for treating special properties properly
 			}
-			switch ( $diSubject->getNamespace() ) {
-				case NS_CATEGORY: case SMW_NS_CONCEPT:
-					$category_pe = SMWExporter::getSpecialNsResource( 'rdfs', 'subClassOf' );
-					$subprop_pe  = null;
-					$equality_pe = SMWExporter::getSpecialNsResource( 'owl', 'equivalentClass' );
-				break;
-				case SMW_NS_PROPERTY:
-					$category_pe = SMWExporter::getSpecialNsResource( 'rdf', 'type' );
-					$subprop_pe  = SMWExporter::getSpecialNsResource( 'rdfs', 'subPropertyOf' );
-					$equality_pe = SMWExporter::getSpecialNsResource( 'owl', 'equivalentProperty' );
-				break;
-				default:
-					$category_pe = SMWExporter::getSpecialNsResource( 'rdf', 'type' );
-					$subprop_pe  = null;
-					$equality_pe = SMWExporter::getSpecialNsResource( 'owl', 'sameAs' );
-			}
-			$pe = null;
-			$cat_only = false; // basic namespace checking for equivalent categories
+
+			$filterNamespace = 0; // if not 0 then limit exported values to pages in this namespace
 			switch ( $property->getKey() ) {
-				///TODO: distinguish instanceof and subclassof in the _INST case
-				case '_INST': $pe = $category_pe; break;
-				case '_CONC': $pe = $equality_pe; break;
-				case '_URI':  $pe = $equality_pe; break;
-				case '_SUBP': $pe = $subprop_pe;  break;
+				case '_INST': 
+					$pe = SMWExporter::getSpecialNsResource( 'rdf', 'type' );
+				break;
+				case '_SUBC':
+					$pe = SMWExporter::getSpecialNsResource( 'rdfs', 'subClassOf' );
+				break;
+				case '_CONC': // we actually simplify this below, but need a non-null value now
+					$pe = SMWExporter::getSpecialNsResource( 'owl', 'equivalentClass' );
+				break;
+				case '_URI': case '_REDI':
+					/// TODO: currently no full check for avoiding OWL DL illegal redirects is done
+					$cat_only = ( $diSubject->getNamespace() == NS_CATEGORY );
+					if ( ( $diSubject->getNamespace() == NS_CATEGORY ) ||
+					     ( $diSubject->getNamespace() == SMW_NS_CONCEPT ) ) {
+						$pe = SMWExporter::getSpecialNsResource( 'owl', 'equivalentClass' );
+						$filterNamespace = $diSubject->getNamespace();
+					} elseif ( $diSubject->getNamespace() == SMW_NS_PROPERTY ) {
+						$pe = SMWExporter::getSpecialNsResource( 'owl', 'equivalentProperty' );
+						$filterNamespace = SMW_NS_PROPERTY;
+					} else {
+						$pe = SMWExporter::getSpecialNsResource( 'owl', 'sameAs' );
+					}
+				break;
+				case '_SUBP':
+					if ( $diSubject->getNamespace() == SMW_NS_PROPERTY ) {
+						$pe = SMWExporter::getSpecialNsResource( 'rdfs', 'subPropertyOf' );
+					} else {
+						$pe = null;
+					}
+				break;
 				case '_MDAT':
 					$pe = SMWExporter::getSpecialNsResource( 'swivt', 'wikiPageModificationDate' );
 				break;
-				case '_REDI': /// TODO: currently no check for avoiding OWL DL illegal redirects is done
-					if ( $diSubject->getNamespace() == SMW_NS_PROPERTY ) {
-						$pe = null; // checking the typing here is too cumbersome, smart stores will smush the properties anyway, and the others will not handle them equivalently
-					} else {
-						$pe = $equality_pe;
-						$cat_only = ( $diSubject->getNamespace() == NS_CATEGORY );
-					}
+				case '_SKEY':
+					$pe = SMWExporter::getSpecialNsResource( 'swivt', 'wikiPageSortKey' );
 				break;
+				case '_TYPE': /// TODO: property type currently not exported
+					$pe = null;
+				break;
+				default: $pe = null;
 			}
+
 			if ( $pe === null ) return; // unknown special property, not exported 
+
 			foreach ( $dataItems as $dataItem ) {
-				if ( $cat_only ) {
-					if ( !( $dataItem instanceof SMWDIWikiPage ) || ( $dataItem->getNamespace() != NS_CATEGORY ) ) {
-						continue;
-					}
+				if ( ( $filterNamespace !== 0 ) && !( $dataItem instanceof SMWDIUri ) &&
+				     ( !( $dataItem instanceof SMWDIWikiPage ) ||
+				        ( $dataItem->getNamespace() != $filterNamespace ) ) ) {
+					continue;
 				}
-				$ed = self::getDataItemExpData( $dataItem );
+				$ed = self::getDataItemExpElement( $dataItem );
 				if ( $ed !== null ) {
 					if ( ( $property->getKey() == '_CONC' ) && ( $ed->getSubject()->getUri() == '' ) ) {
 						// equivalent to anonymous class -> simplify description
@@ -340,13 +353,13 @@ class SMWExporter {
 	}
 
 	/**
-	 * Create an SWMExpData container that encodes the data of the given
+	 * Create an SWMExpElement that encodes the data of the given
 	 * dataitem object.
 	 * 
 	 * @param $dataItem SMWDataItem
-	 * @return SMWExpData
+	 * @return SMWExpElement
 	 */
-	static public function getDataItemExpData( SMWDataItem $dataItem ) {
+	static public function getDataItemExpElement( SMWDataItem $dataItem ) {
 		switch ( $dataItem->getDIType() ) {
 			case SMWDataItem::TYPE_NUMBER:	
 				$lit = new SMWExpLiteral( $dataItem->getNumber(), 'http://www.w3.org/2001/XMLSchema#double', $dataItem );
@@ -416,6 +429,7 @@ class SMWExporter {
 			break;
 			case SMWDataItem::TYPE_CONCEPT:
 				/// TODO
+				return null;
 			break;
 			case SMWDataItem::TYPE_PROPERTY:
 				return SMWExporter::getResourceElement( $dataItem->getDiWikiPage() );
