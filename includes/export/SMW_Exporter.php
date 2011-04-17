@@ -70,12 +70,19 @@ class SMWExporter {
 	 * @param mixed $typesvalueforproperty either an SMWTypesValue or null
 	 */
 	static public function makeExportDataForSubject( SMWDIWikiPage $subject, $typesvalueforproperty = null ) {		
+		global $wgContLang;
 		$result = new SMWExpData( self::getDataItemExpData( $subject ) );
-		$subj_title = Title::makeTitle( $subject->getNamespace(), $subject->getDBkey() );
+		$subjectTitle = str_replace( '_', ' ', $subject->getDBkey() );
+		if ( $subject->getNamespace() !== 0 ) {
+			$prefixedSubjectTitle = $wgContLang->getNsText( $subject->getNamespace()) . ":" . $subjectTitle;
+		} else {
+			$prefixedSubjectTitle = $subjectTitle;
+		}
+		$prefixedSubjectUrl = wfUrlencode( str_replace( ' ', '_', $prefixedSubjectTitle ) );
 		switch ( $subject->getNamespace() ) {
 			case NS_CATEGORY: case SMW_NS_CONCEPT:
 				$maintype_pe = SMWExporter::getSpecialNsResource( 'owl', 'Class' );
-				$label = $subj_title->getText();
+				$label = $subjectTitle;
 			break;
 			case SMW_NS_PROPERTY:
 				if ( $typesvalueforproperty == null ) {
@@ -83,17 +90,17 @@ class SMWExporter {
 					$typesvalueforproperty = end( $types );
 				}
 				$maintype_pe = SMWExporter::getSpecialNsResource( 'owl', SMWExporter::getOWLPropertyType( $typesvalueforproperty ) );
-				$label = $subj_title->getText();
+				$label = $subjectTitle;
 			break;
 			default:
-				$label = $subj_title->getPrefixedText();
+				$label = $prefixedSubjectTitle;
 				$maintype_pe = SMWExporter::getSpecialNsResource( 'swivt', 'Subject' );
 		}
 		$ed = new SMWExpLiteral( $label );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdfs', 'label' ), $ed );
-		$ed = new SMWExpResource( '&wikiurl;' . $subj_title->getPrefixedURL() );
+		$ed = new SMWExpResource( '&wikiurl;' . $prefixedSubjectUrl );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'page' ), $ed );
-		$ed = new SMWExpResource( SMWExporter::$m_exporturl . '/' . $subj_title->getPrefixedURL() );
+		$ed = new SMWExpResource( SMWExporter::$m_exporturl . '/' . $prefixedSubjectUrl );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ), $maintype_pe );
 		$ed = new SMWExpLiteral( $subject->getNamespace(), 'http://www.w3.org/2001/XMLSchema#integer' );
