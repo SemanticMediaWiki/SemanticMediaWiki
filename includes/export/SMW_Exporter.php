@@ -159,6 +159,9 @@ class SMWExporter {
 					} else {
 						$pe = SMWExporter::getSpecialNsResource( 'owl', 'sameAs' );
 					}
+					if ( $property->getKey() == '_REDI' ) {
+						$pe = array( $pe, SMWExporter::getSpecialNsResource( 'swivt', 'redirectsTo' ) );
+					}
 				break;
 				case '_SUBP':
 					if ( $diSubject->getNamespace() == SMW_NS_PROPERTY ) {
@@ -197,6 +200,10 @@ class SMWExporter {
 									$expData->addPropertyObjectValue( $subp, $subval );
 								}
 							}
+						}
+					} elseif ( is_array( $pe ) ) {
+						foreach ( $pe as $extraPropertyElement ) {
+							$expData->addPropertyObjectValue( $extraPropertyElement, $ed );
 						}
 					} else {
 						$expData->addPropertyObjectValue( $pe, $ed );
