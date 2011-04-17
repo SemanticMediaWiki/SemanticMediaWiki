@@ -40,10 +40,12 @@ abstract class SMWSerializer {
 	 * that one can append additional namespace declarations to $pre_ns_buffer
 	 * so that they affect all current elements. The buffers are flushed during
 	 * output in order to achieve "streaming" RDF export for larger files.
+	 * @var string
 	 */
 	protected $pre_ns_buffer;
 	/**
 	 * See documentation for $pre_ns_buffer.
+	 * @var string
 	 */
 	protected $post_ns_buffer;
 	/**
@@ -51,6 +53,7 @@ abstract class SMWSerializer {
 	 * resourcename => decl-flag, where decl-flag is a sum of flags
 	 * SMW_SERIALIZER_DECL_CLASS, SMW_SERIALIZER_DECL_OPROP, 
 	 * SMW_SERIALIZER_DECL_APROP.
+	 * @var array of integer
 	 */
 	protected $decl_todo;
 	/**
@@ -58,6 +61,7 @@ abstract class SMWSerializer {
 	 * resourcename => decl-flag, where decl-flag is a sum of flags
 	 * SMW_SERIALIZER_DECL_CLASS, SMW_SERIALIZER_DECL_OPROP, 
 	 * SMW_SERIALIZER_DECL_APROP.
+	 * @var array of integer
 	 */
 	protected $decl_done;
 	/**
@@ -68,12 +72,14 @@ abstract class SMWSerializer {
 	 * the client already. But we wait with printing the current block so that
 	 * extra namespaces from this array can still be printed (note that one
 	 * never know which extra namespaces you encounter during export).
+	 * @var array of string
 	 */
 	protected $extra_namespaces;
 	/**
 	 * Array of namespaces that have been declared globally already. Contains
 	 * entries of format 'namespace abbreviation' => true, assuming that the
 	 * same abbreviation always refers to the same URI.
+	 * @var array of string
 	 */
 	protected $global_namespaces;
 	
@@ -150,8 +156,8 @@ abstract class SMWSerializer {
 	/**
 	 * Serialize a single declaration for the given $uri (expanded) and type
 	 * (given as a QName).
-	 * @param string $uri of the thing to declare
-	 * @param string $typename one of owl:Class, owl:ObjectProperty, and
+	 * @param $uri string URI of the thing to declare
+	 * @param $typename string one of owl:Class, owl:ObjectProperty, and
 	 * owl:datatypeProperty
 	 */
 	abstract public function serializeDeclaration( $uri, $typename );
@@ -195,8 +201,8 @@ abstract class SMWSerializer {
 	 * Namespaces that were serialized in such a way that they remain
 	 * available for all following output should be added to
 	 * $global_namespaces. 
-	 * @param string $shortname the abbreviation/prefix to declare 
-	 * @param string $uri the URI prefix that the namespace encodes
+	 * @param $shortname string abbreviation/prefix to declare 
+	 * @param $uri string URI prefix that the namespace encodes
 	 */ 
 	abstract protected function serializeNamespace( $shortname, $uri );
 

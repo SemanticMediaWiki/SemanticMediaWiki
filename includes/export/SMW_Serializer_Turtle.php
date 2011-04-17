@@ -22,12 +22,66 @@ class SMWTurtleSerializer extends SMWSerializer{
 	 * serializing some SMWExpData. The elements of the array are serialized
 	 * later during the same serialization step (so this is not like another
 	 * queue for declarations or the like; it just unfolds an SMWExpData
-	 * object). 
+	 * object).
+	 *
+	 * @var array of SMWExpData
 	 */
 	protected $subexpdata;
 
+	/**
+	 * If true, do not serialize namespace declarations and record them in
+	 * $sparql_namespaces instead for later retrieval.
+	 * @var boolean
+	 */
+	protected $sparqlmode;
+
+	/**
+	 * Array of retrieved namespaces (abbreviation => URI) for later use.
+	 * @var array of string
+	 */
+	protected $sparql_namespaces;
+
+	public function __construct( $sparqlMode = false ) {
+		parent::__construct();
+		$this->sparqlmode = $sparqlMode;
+	}
+
+	public function clear() {
+		parent::clear();
+		$this->sparql_namespaces = array();
+	}
+
+	/**
+	 * Namespaces are not serialized among triples in SPARQL mode but are
+	 * collected separately. This method serializes them as SPARQL prefix
+	 * declarations and empties the collected list afterwards.
+	 *
+	 * @return string
+	 */
+	public function flushSparqlPrefixes() {
+		$result = '';
+		foreach ( $this->sparql_namespaces as $shortname => $uri ) {
+			$result .= "PREFIX $shortname: <$uri>\n";
+		}
+		$this->sparql_namespaces = array();
+		return $result;
+	}
+
 	protected function serializeHeader() {
-		$this->pre_ns_buffer =
+		if ( $this->sparqlmode ) {
+			$this->pre_ns_buffer = '';
+			$this->sparql_namespaces = array(
+				"rdf" => SMWExporter::expandURI( '&rdf;' ),
+				"rdfs" => SMWExporter::expandURI( '&rdfs;' ),
+				"owl" => SMWExporter::expandURI( '&owl;' ),
+				"swivt" => SMWExporter::expandURI( '&swivt;' ),
+				"wiki" => SMWExporter::expandURI( '&wiki;' ),
+				"property" => SMWExporter::expandURI( '&property;' ),
+				"xsd" => "http://www.w3.org/2001/XMLSchema#" ,
+				"wikiurl" => SMWExporter::expandURI( '&wikiurl;' )
+			);
+		} else {
+			$this->pre_ns_buffer =
 			"@prefix rdf: <" . SMWExporter::expandURI( '&rdf;' ) . "> .\n" .
 			"@prefix rdfs: <" . SMWExporter::expandURI( '&rdfs;' ) . "> .\n" .
 			"@prefix owl: <" . SMWExporter::expandURI( '&owl;' ) . "> .\n" .
@@ -38,12 +92,15 @@ class SMWTurtleSerializer extends SMWSerializer{
 			"@prefix property: <" . SMWExporter::expandURI( '&property;' ) . "> .\n" .
 			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" . // note that this XSD URI is hardcoded below (its unlikely to change, of course) 
 			"@prefix wikiurl: <" . SMWExporter::expandURI( '&wikiurl;' ) . "> .\n";
+		}
 		$this->global_namespaces = array( 'rdf' => true, 'rdfs' => true, 'owl' => true, 'swivt' => true, 'wiki' => true, 'property' => true );
 		$this->post_ns_buffer = "\n";
 	}
 
 	protected function serializeFooter() {
-		$this->post_ns_buffer .= "\n# Created by Semantic MediaWiki, http://semantic-mediawiki.org/\n";
+		if ( !$this->sparqlmode ) {
+			$this->post_ns_buffer .= "\n# Created by Semantic MediaWiki, http://semantic-mediawiki.org/\n";
+		}
 	}
 	
 	public function serializeDeclaration( $uri, $typename ) {
@@ -56,12 +113,15 @@ class SMWTurtleSerializer extends SMWSerializer{
 			$this->serializeNestedExpData( array_pop( $this->subexpdata ), '' );
 		}
 		$this->serializeNamespaces();
-
 	}
 	
 	protected function serializeNamespace( $shortname, $uri ) {
 		$this->global_namespaces[$shortname] = true;
-		$this->pre_ns_buffer .= "@prefix $shortname: <$uri> .\n";
+		if ( $this->sparqlmode ) {
+			$this->sparql_namespaces[$shortname] = $uri;
+		} else {
+			$this->pre_ns_buffer .= "@prefix $shortname: <$uri> .\n";
+		}
 	}
 
 	/**
