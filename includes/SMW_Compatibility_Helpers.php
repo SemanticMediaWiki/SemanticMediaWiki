@@ -60,6 +60,8 @@ class SMWCompatibilityHelpers {
 						} elseif ( count( $d ) == 1 ) {
 							list( $year ) = $d;
 						}
+						if ( $month == '' ) $month = false;
+						if ( $day == '' ) $day = false;
 						$calendarmodel = SMWDITime::CM_GREGORIAN;
 						return new SMWDITime( $calendarmodel, $year, $month, $day, $hours, $minutes, $seconds, $typeid );
 					}
