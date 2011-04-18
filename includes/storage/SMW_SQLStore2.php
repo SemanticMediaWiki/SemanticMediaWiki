@@ -718,7 +718,11 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn( 'SMWSQLStore2::deleteSubject (SMW)' );
 		wfRunHooks( 'SMWSQLStore2::deleteSubjectBefore', array( $this, $subject ) );
 
-		$this->deleteSemanticData( SMWWikiPageValue::makePageFromTitle( $subject ) );
+		$this->deleteSemanticData( new SMWDIWikiPage(
+			$subject->getDBkey(),
+			$subject->getNamespace(),
+			$subject->getInterwiki()
+		) );
 		$this->updateRedirects( $subject->getDBkey(), $subject->getNamespace() ); // also delete redirects, may trigger update jobs!
 
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) { // make sure to clear caches
@@ -965,7 +969,12 @@ class SMWSQLStore2 extends SMWStore {
 			/// which will hopefully be done to fix the double redirect.
 		} else { // general move method that should be correct in all cases (equality support respected when updating redirects)
 			// Delete any existing data from new title:
-			$this->deleteSemanticData( SMWWikiPageValue::makePageFromTitle( $newtitle ) ); // $newtitle should not have data, but let's be sure
+			// $newtitle should not have data, but let's be sure
+			$this->deleteSemanticData( new SMWDIWikiPage(
+				$newtitle->getDBkey(),
+				$newtitle->getNamespace(),
+				$subject->getInterwiki()
+			) );			
 			$this->updateRedirects( $newtitle->getDBkey(), $newtitle->getNamespace() ); // may trigger update jobs!
 
 			// Move all data of old title to new position:
@@ -1483,9 +1492,9 @@ class SMWSQLStore2 extends SMWStore {
 		foreach ( $res as $row ) {
 			$emptyrange = false; // note this even if no jobs were created
 
-			if ( ( $namespaces != false ) && ( !in_array( $row->smw_namespace, $namespaces ) ) ) continue;
+			if ( $namespaces && !in_array( $row->smw_namespace, $namespaces ) ) continue;
 
-			if ( ( $row->smw_iw == '' ) || ( $row->smw_iw == SMW_SQL2_SMWREDIIW ) ) { // objects representing pages in the wiki, even special pages
+			if ( $row->smw_iw == '' || $row->smw_iw == SMW_SQL2_SMWREDIIW ) { // objects representing pages in the wiki, even special pages
 				// TODO: special treament of redirects needed, since the store will not act on redirects that did not change according to its records
 				$title = Title::makeTitle( $row->smw_namespace, $row->smw_title );
 
@@ -1493,7 +1502,9 @@ class SMWSQLStore2 extends SMWStore {
 					$updatejobs[] = new SMWUpdateJob( $title );
 				}
 			} elseif ( $row->smw_iw { 0 } != ':' ) { // refresh all "normal" interwiki pages by just clearing their content
-				$this->deleteSemanticData( SMWWikiPageValue::makePage( $row->smw_namespace, $row->smw_title, '', $row->smw_iw ) );
+				$this->deleteSemanticData(
+					new SMWDIWikiPage( $row->smw_namespace, $row->smw_title, $row->smw_iw )
+				);
 			}
 		}
 		$db->freeResult( $res );
