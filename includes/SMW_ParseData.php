@@ -251,7 +251,7 @@ class SMWParseData {
 		if ( $processSemantics ) {
 			smwfGetStore()->updateData( $semdata );
  		} else {
-			smwfGetStore()->clearData( $semdata->getSubject()->getTitle() );
+			smwfGetStore()->clearData( $semdata->getSubject() );
 		}
 
 		// Finally trigger relevant Updatejobs if necessary
@@ -390,7 +390,11 @@ class SMWParseData {
 			$output = self::$mPrevOutput;
 
 			if ( !isset( $output ) ) {
-				smwfGetStore()->clearData( $links_update->mTitle, SMWFactbox::isNewArticle() );
+				smwfGetStore()->clearData( new SMWDIWikiPage(
+					$links_update->mTitle->getDbKey(),
+					$links_update->mTitle->getNamespace(),
+					$links_update->mTitle->getInterwiki()
+				) );
 				return true;
 			}
 		}

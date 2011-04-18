@@ -264,10 +264,11 @@ abstract class SMWStore {
 	
 	/**
 	 * Clear all semantic data specified for some page.
+	 * 
+	 * @param SMWDIWikiPage $di
 	 */
-	public function clearData( Title $subject ) {
-		$emptydata = new SMWSemanticData( new SMWDIWikiPage( $subject->getDbKey(), $subject->getNamespace(), $subject->getInterwiki() ) );
-		$this->updateData( $emptydata );
+	public function clearData( SMWDIWikiPage $di ) {
+		$this->updateData( new SMWSemanticData( $di ) );
 	}
 
 	/**
