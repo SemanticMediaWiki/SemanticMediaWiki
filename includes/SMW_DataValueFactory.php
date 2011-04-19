@@ -298,6 +298,19 @@ class SMWDataValueFactory {
 	}
 
 	/**
+	 * A function for registering/overwriting dataitems for SMW. Should be
+	 * called from within the hook 'smwInitDatatypes'.
+	 *
+     * @since 0.8
+     *
+	 * @param string $id
+	 * @param string $className
+	 */
+	static public function registerDataItem( $id, $className ) {
+		self::$mTypeDiClasses[$id] = $className;
+	}
+
+	/**
 	 * A function for registering/overwriting datatypes for SMW. Should be
 	 * called from within the hook 'smwInitDatatypes'.
 	 *

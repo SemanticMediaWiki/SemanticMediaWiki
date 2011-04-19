@@ -82,7 +82,7 @@ class SMWNumberValue extends SMWDataValue {
 			}
 			list( $number ) = sscanf( $numstring, "%f" );
 			if ( count( $parts ) >= 3 ) {
-				$unit = SMWNumberValue::normalizeUnit( $parts[2] );
+				$unit = self::normalizeUnit( $parts[2] );
 			}
 		}
 
@@ -104,7 +104,7 @@ class SMWNumberValue extends SMWDataValue {
 		$this->m_unitin = false;
 		$this->m_unitvalues = false;
 		$number = $unit = '';
-		$error = SMWNumberValue::parseNumberValue( $value, $number, $unit );
+		$error = self::parseNumberValue( $value, $number, $unit );
 		if ( $error == 1 ) { // no number found
 			$this->addError( wfMsgForContent( 'smw_nofloat', $value ) );
 		} elseif ( $error == 2 ) { // number is too large for this platform

@@ -56,7 +56,7 @@ class SMWUpdateJob extends Job {
 		}
 
 		wfProfileIn( __METHOD__ . '-parse' );
-		$options = new ParserOptions;
+		$options = new ParserOptions();
 		$output = $wgParser->parse( $revision->getText(), $this->title, $options, true, true, $revision->getID() );
 
 		wfProfileOut( __METHOD__ . '-parse' );
