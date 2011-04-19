@@ -423,7 +423,7 @@ class SMWSQLStore2 extends SMWStore {
 	 *
 	 * @return array of SMWDIWikiPage
 	 */
-	public function getPropertySubjects( SMWDiProperty $property, $value, $requestoptions = null ) {
+	public function getPropertySubjects( SMWDIProperty $property, $value, $requestoptions = null ) {
 		/// TODO: should we share code with #ask query computation here? Just use queries?
 		wfProfileIn( "SMWSQLStore2::getPropertySubjects (SMW)" );
 
