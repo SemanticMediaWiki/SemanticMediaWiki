@@ -244,7 +244,7 @@ class SMWExpData extends SMWExpElement {
 
 				$result[] = array( $subject, $edge, $childSubject );
 				if ( $childElement instanceof SMWExpData ) { // recursively add child's triples
-					$result = array_merge( $result, $child->getTripleList( $childSubject ) );
+					$result = array_merge( $result, $childElement->getTripleList( $childSubject ) );
 				}
 			}
 		}

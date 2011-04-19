@@ -101,9 +101,6 @@ class SMWConceptValue extends SMWDataValue {
 			$desc = $qp->getQueryDescription( str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $this->m_dataitem->getConceptQuery() ) );
 			$exact = true;
 			$owldesc = $this->descriptionToExpData( $desc, $exact );
-			if ( $owldesc === false ) {
-				$element = new SMWExpData( SMWExporter::getSpecialNsResource( 'owl', 'Thing' ) );
-			}
 			if ( !$exact ) {
 				$result = new SMWExpData( new SMWExpResource( '' ) );
 				$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ),
