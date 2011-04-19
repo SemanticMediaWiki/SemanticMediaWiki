@@ -87,7 +87,7 @@ class SMWSparqlResultParser {
 		} elseif ( ( $tagName == 'result' ) && ( $prevTag == 'results' ) ) {
 			$row = array();
 			for ( $i = 0; $i < count( $this->m_header ); ++$i ) {
-				$row[] = null;
+				$row[$i] = null;
 			}
 			$this->m_data[] = $row;
 		} elseif ( ( $tagName == 'literal' ) && ( $prevTag == 'binding' ) ) {
@@ -120,11 +120,11 @@ class SMWSparqlResultParser {
 		$prevTag = end( $this->m_xml_opentags );
 		$rowcount = count( $this->m_data );
 		if ( $prevTag == 'uri' ) {
-			$this->m_data[$rowcount][$this->m_xml_bindidx] = new SMWExpResource( $dataString );
+			$this->m_data[$rowcount-1][$this->m_xml_bindidx] = new SMWExpResource( $dataString );
 		} elseif ( $prevTag == 'literal' ) {
-			$this->m_data[$rowcount][$this->m_xml_bindidx] = new SMWExpLiteral( $dataString, $this->m_xml_datatype );
+			$this->m_data[$rowcount-1][$this->m_xml_bindidx] = new SMWExpLiteral( $dataString, $this->m_xml_datatype );
 		} elseif ( $prevTag == 'bnode' ) {
-			$this->m_data[$rowcount][$this->m_xml_bindidx] = new SMWExpResource( '_' . $dataString );
+			$this->m_data[$rowcount-1][$this->m_xml_bindidx] = new SMWExpResource( '_' . $dataString );
 		} elseif ( $prevTag == 'boolean' ) { // no "results" in this case
 			$literal = new SMWExpLiteral( $dataString, 'http://www.w3.org/2001/XMLSchema#boolean' );
 			$this->m_data = array( array( $literal ) );
