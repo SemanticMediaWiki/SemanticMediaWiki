@@ -417,7 +417,7 @@ class SMWSQLStore2 extends SMWStore {
 	/**
 	 * @see SMWStore::getPropertySubjects
 	 *
-	 * @param SMWDiProperty $property
+	 * @param SMWDIProperty $property
 	 * @param mixed $value SMWDataItem or null
 	 * @param SMWRequestOptions $requestoptions
 	 *
