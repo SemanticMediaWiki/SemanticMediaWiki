@@ -746,8 +746,8 @@ class SMWSQLStore2QueryEngine {
 		$where = '';
 
 		if ( $description instanceof SMWValueDescription ) {
-			$dv = $description->getDataItem();
-			$keys = $dv->getDBkeys();
+			$dataItem = $description->getDataItem();
+			$keys = SMWCompatibilityHelpers::getDBkeysFromDataItem( $dataItem );
 
 			// Try comparison based on value field and comparator.
 			if ( $valueIndex >= 0 ) {
