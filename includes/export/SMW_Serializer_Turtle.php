@@ -226,7 +226,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 		if ( $element->isBlankNode() ) {
 			$this->post_ns_buffer .= '[]';
 		} else {
-			if ( $element instanceof SMWExpNsResource ) {
+			if ( ( $element instanceof SMWExpNsResource ) && ( $element->hasAllowedLocalName() ) ) {
 				$this->post_ns_buffer .= $element->getQName();
 			} else {
 				$this->post_ns_buffer .= '<' . str_replace( '>', '\>', SMWExporter::expandURI( $element->getUri() ) ) . '>';

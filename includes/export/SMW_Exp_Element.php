@@ -169,6 +169,18 @@ class SMWExpNsResource extends SMWExpResource {
 		return $this->m_localname;
 	}
 
+	/**
+	 * Check if the local name is qualifies as a local name in XML and
+	 * Turtle. The function returns true if this is surely the case, and
+	 * false if it may not be the case. However, we do not check the whole
+	 * range of allowed Unicode entities for performance reasons.
+	 *
+	 * @return boolean
+	 */
+	public function hasAllowedLocalName() {
+		return preg_match( '/^[A-Za-z_][-A-Za-z_0-9]*$/u', $this->m_localname );
+	}
+
 }
 
 /**
