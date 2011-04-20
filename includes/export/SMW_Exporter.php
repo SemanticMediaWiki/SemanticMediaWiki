@@ -135,59 +135,23 @@ class SMWExporter {
 				return; // subject datavalue (wikipage) required for treating special properties properly
 			}
 
-			$filterNamespace = 0; // if not 0 then limit exported values to pages in this namespace
-			switch ( $property->getKey() ) {
-				case '_INST': 
-					$pe = SMWExporter::getSpecialNsResource( 'rdf', 'type' );
-				break;
-				case '_SUBC':
-					$pe = SMWExporter::getSpecialNsResource( 'rdfs', 'subClassOf' );
-				break;
-				case '_CONC': // we actually simplify this below, but need a non-null value now
-					$pe = SMWExporter::getSpecialNsResource( 'owl', 'equivalentClass' );
-				break;
-				case '_URI': case '_REDI':
-					/// TODO: currently no full check for avoiding OWL DL illegal redirects is done
-					$cat_only = ( $diSubject->getNamespace() == NS_CATEGORY );
-					if ( ( $diSubject->getNamespace() == NS_CATEGORY ) ||
-					     ( $diSubject->getNamespace() == SMW_NS_CONCEPT ) ) {
-						$pe = SMWExporter::getSpecialNsResource( 'owl', 'equivalentClass' );
-						$filterNamespace = $diSubject->getNamespace();
-					} elseif ( $diSubject->getNamespace() == SMW_NS_PROPERTY ) {
-						$pe = SMWExporter::getSpecialNsResource( 'owl', 'equivalentProperty' );
-						$filterNamespace = SMW_NS_PROPERTY;
-					} else {
-						$pe = SMWExporter::getSpecialNsResource( 'owl', 'sameAs' );
-					}
-					if ( $property->getKey() == '_REDI' ) {
-						$pe = array( $pe, SMWExporter::getSpecialNsResource( 'swivt', 'redirectsTo' ) );
-					}
-				break;
-				case '_SUBP':
-					if ( $diSubject->getNamespace() == SMW_NS_PROPERTY ) {
-						$pe = SMWExporter::getSpecialNsResource( 'rdfs', 'subPropertyOf' );
-					} else {
-						$pe = null;
-					}
-				break;
-				case '_MDAT':
-					$pe = SMWExporter::getSpecialNsResource( 'swivt', 'wikiPageModificationDate' );
-				break;
-				case '_SKEY':
-					$pe = SMWExporter::getSpecialNsResource( 'swivt', 'wikiPageSortKey' );
-				break;
-				case '_TYPE': /// TODO: property type currently not exported
-					$pe = null;
-				break;
-				default: $pe = null;
+			$pe = self::getSpecialPropertyResource( $property->getKey(), $diSubject->getNamespace() );
+			if ( $pe === null ) return; // unknown special property, not exported 
+			if ( $property->getKey() == '_REDI' || $property->getKey() == '_URI' ) {
+				$filterNamespace = true;
+				if ( $property->getKey() == '_REDI' ) {
+					$pe = array( $pe, self::getSpecialPropertyResource( '_URI' ) );
+				}
+			} else {
+				$filterNamespace = false;
 			}
 
-			if ( $pe === null ) return; // unknown special property, not exported 
-
 			foreach ( $dataItems as $dataItem ) {
-				if ( ( $filterNamespace !== 0 ) && !( $dataItem instanceof SMWDIUri ) &&
+				// Basic namespace filtering to ensure that types match for redirects etc.
+				/// TODO: currently no full check for avoiding OWL DL illegal redirects is done (OWL property type ignored)
+				if ( $filterNamespace && !( $dataItem instanceof SMWDIUri ) &&
 				     ( !( $dataItem instanceof SMWDIWikiPage ) ||
-				        ( $dataItem->getNamespace() != $filterNamespace ) ) ) {
+				        ( $dataItem->getNamespace() != $diSubject->getNamespace() ) ) ) {
 					continue;
 				}
 				$ed = self::getDataItemExpElement( $dataItem );
@@ -268,8 +232,8 @@ class SMWExporter {
 	 * @todo An improved mechanism for selecting property types here is needed.
 	 */
 	static public function getOWLPropertyType( $type = '' ) {
-		if ( $type instanceof SMWTypesValue ) {
-			$type = $type->getDBkey();
+		if ( $type instanceof SMWDIWikiPage ) {
+			$type = SMWDataValueFactory::findTypeID( str_replace( '_', ' ', $type->getDBkey() ) );
 		} elseif ( $type == false ) {
 			$type = '';
 		} // else keep $type
@@ -282,6 +246,52 @@ class SMWExporter {
 			default: return 'DatatypeProperty';
 		}
 	}
+
+	/**
+	 * Get an SMWExpNsResource for a special property of SMW, or null if
+	 * no resource is assigned to the given property key. The optional
+	 * namespace is used to select the proper resource for properties that
+	 * must take the type of the annotated object into account for some
+	 * reason.
+	 *
+	 * @param $propertyKey string the Id of the special property
+	 * @param $forNamespace integer the namespace of the page which has a value for this property
+	 * @return SMWExpNsResource or null
+	 */
+	static public function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ) {
+		switch ( $propertyKey ) {
+			case '_INST': 
+				return SMWExporter::getSpecialNsResource( 'rdf', 'type' );
+			case '_SUBC':
+				return SMWExporter::getSpecialNsResource( 'rdfs', 'subClassOf' );
+			case '_CONC': // we actually simplify this below, but need a non-null value now
+				return SMWExporter::getSpecialNsResource( 'owl', 'equivalentClass' );
+			case '_URI':
+				if ( $forNamespace == NS_CATEGORY || $forNamespace == SMW_NS_CONCEPT ) {
+					return SMWExporter::getSpecialNsResource( 'owl', 'equivalentClass' );
+				} elseif ( $forNamespace == SMW_NS_PROPERTY ) {
+					return SMWExporter::getSpecialNsResource( 'owl', 'equivalentProperty' );
+				} else {
+					return SMWExporter::getSpecialNsResource( 'owl', 'sameAs' );
+				}
+			case '_REDI':
+				return SMWExporter::getSpecialNsResource( 'swivt', 'redirectsTo' );
+			case '_SUBP':
+				if ( $forNamespace == SMW_NS_PROPERTY ) {
+					return SMWExporter::getSpecialNsResource( 'rdfs', 'subPropertyOf' );
+				} else {
+					return null;
+				}
+			case '_MDAT':
+				return SMWExporter::getSpecialNsResource( 'swivt', 'wikiPageModificationDate' );
+			case '_SKEY':
+				return SMWExporter::getSpecialNsResource( 'swivt', 'wikiPageSortKey' );
+			case '_TYPE': /// TODO: property type currently not exported
+				return null;
+			default: return null;
+		}
+	}
+
 
 	/**
 	 * Create an SMWExpNsResource for some special element that belongs to
@@ -335,14 +345,43 @@ class SMWExporter {
 	 * This function expands standard XML entities used in some generated
 	 * URIs. Given a string with such entities, it returns a string with
 	 * all entities properly replaced.
+	 *
+	 * @note The function SMWExporter::getNamespaceUri() is often more
+	 * suitable.
+	 *
+	 * @param $uri string of the URI to be expanded
+	 * @return string of the expanded URI
 	 */
 	static public function expandURI( $uri ) {
-		SMWExporter::initBaseURIs();
+		self::initBaseURIs();
 		$uri = str_replace( array( '&wiki;', '&wikiurl;', '&property;', '&owl;', '&rdf;', '&rdfs;', '&swivt;', '&export;' ),
-		                    array( SMWExporter::$m_ent_wiki, SMWExporter::$m_ent_wikiurl, SMWExporter::$m_ent_property, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
-		                    SMWExporter::$m_exporturl ),
+		                    array( self::$m_ent_wiki, self::$m_ent_wikiurl, self::$m_ent_property, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
+		                    self::$m_exporturl ),
 		                    $uri );
 		return $uri;
+	}
+
+	/**
+	 * Get the URI of a standard namespace prefix used in SMW, or the empty
+	 * string if the prefix is not known.
+	 *
+	 * @param $shortName string id (prefix) of the namespace
+	 * @return string of the expanded URI
+	 */
+	static public function getNamespaceUri( $shortName ) {
+		self::initBaseURIs();
+		switch ( $shortName ) {
+			case 'wiki':     return self::$m_ent_wiki;
+			case 'wikiurl':  return self::$m_ent_wikiurl;
+			case 'property': return self::$m_ent_property;
+			case 'export':   return self::$m_exporturl;
+			case 'owl':      return 'http://www.w3.org/2002/07/owl#';
+			case 'rdf':      return 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+			case 'rdfs':     return 'http://www.w3.org/2000/01/rdf-schema#';
+			case 'swivt':    return 'http://semantic-mediawiki.org/swivt/1.0#';
+			case 'xsd':      return 'http://www.w3.org/2001/XMLSchema#';
+			default: return '';
+		}
 	}
 
 	/**
