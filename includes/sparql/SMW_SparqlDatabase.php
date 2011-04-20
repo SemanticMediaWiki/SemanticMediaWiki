@@ -166,6 +166,49 @@ class SMWSparqlDatabase {
 	}
 
 	/**
+	 * SELECT wrapper.
+	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
+	 * rdfs, property, xsd, so these do not have to be included in
+	 * $extraNamespaces.
+	 *
+	 * @param $vars mixed array or string, field name(s) to be retrieved, can be '*'
+	 * @param $where where part of the query, without surrounding { }
+	 * @param $options array (associative) of options, e.g. array('LIMIT' => '10')
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @return SMWSparqlResultWrapper
+	 */
+	public function select( $vars, $where, $options = array(), $extraNamespaces = array() ) {
+		$sparql = '';
+		foreach ( array( 'wiki', 'rdf', 'rdfs', 'owl', 'swivt', 'property', 'xsd' ) as $shortname ) {
+			$sparql .= "PREFIX $shortname: <" . SMWExporter::getNamespaceUri( $shortname ) . ">\n";
+		}
+		foreach ( $extraNamespaces as $shortname => $uri ) {
+			$sparql .= "PREFIX $shortname: <$uri>\n";
+		}
+		$sparql .= 'SELECT ';
+		if ( array_key_exists( 'DISTINCT', $options ) ) {
+			$sparql .= 'DISTINCT ';
+		}
+		if ( is_array( $vars ) ) {
+			$sparql .= implode( ',', $vars );
+		} else {
+			$sparql .= $vars;
+		}
+		$sparql .= " WHERE {\n" . $where . "\n}";
+		if ( array_key_exists( 'ORDER BY', $options ) ) {
+			$sparql .= "\nORDER BY " . $options['ORDER BY'];
+		}
+		if ( array_key_exists( 'OFFSET', $options ) ) {
+			$sparql .= "\nOFFSET " . $options['OFFSET'];
+		}
+		if ( array_key_exists( 'LIMIT', $options ) ) {
+			$sparql .= "\nLIMIT " . $options['LIMIT'];
+		}
+//print "Query was: $sparql"; die();
+		return $this->doQuery( $sparql );
+	}
+
+	/**
 	 * Execute a SPARQL query and return an SMWSparqlResultWrapper object
 	 * that contains the results. The method throws exceptions based on
 	 * SMWSparqlDatabase::throwSparqlErrors(). If errors occur and this
