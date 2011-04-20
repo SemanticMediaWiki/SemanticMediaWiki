@@ -172,20 +172,13 @@ class SMWSparqlDatabase {
 	 * $extraNamespaces.
 	 *
 	 * @param $vars mixed array or string, field name(s) to be retrieved, can be '*'
-	 * @param $where where part of the query, without surrounding { }
+	 * @param $where string WHERE part of the query, without surrounding { }
 	 * @param $options array (associative) of options, e.g. array('LIMIT' => '10')
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function select( $vars, $where, $options = array(), $extraNamespaces = array() ) {
-		$sparql = '';
-		foreach ( array( 'wiki', 'rdf', 'rdfs', 'owl', 'swivt', 'property', 'xsd' ) as $shortname ) {
-			$sparql .= "PREFIX $shortname: <" . SMWExporter::getNamespaceUri( $shortname ) . ">\n";
-		}
-		foreach ( $extraNamespaces as $shortname => $uri ) {
-			$sparql .= "PREFIX $shortname: <$uri>\n";
-		}
-		$sparql .= 'SELECT ';
+		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT ';
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
 			$sparql .= 'DISTINCT ';
 		}
@@ -204,9 +197,75 @@ class SMWSparqlDatabase {
 		if ( array_key_exists( 'LIMIT', $options ) ) {
 			$sparql .= "\nLIMIT " . $options['LIMIT'];
 		}
-//print "Query was: $sparql"; die();
+
 		return $this->doQuery( $sparql );
 	}
+
+	/**
+	 * DELETE wrapper.
+	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
+	 * rdfs, property, xsd, so these do not have to be included in
+	 * $extraNamespaces.
+	 *
+	 * @param $deletePattern string CONSTRUCT pattern of tripples to delete
+	 * @param $where string condition for data to delete
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @return boolean stating whether the operations succeeded
+	 */
+	public function delete( $deletePattern, $where, $extraNamespaces = array() ) {
+		$sparql = self::getPrefixString( $extraNamespaces ) .
+		          "DELETE { $deletePattern } WHERE { $where }";
+		return $this->doUpdate( $sparql );
+	}
+
+	/**
+	 * INSERT DELETE wrapper.
+	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
+	 * rdfs, property, xsd, so these do not have to be included in
+	 * $extraNamespaces.
+	 *
+	 * @param $insertPattern string CONSTRUCT pattern of tripples to insert
+	 * @param $deletePattern string CONSTRUCT pattern of tripples to delete
+	 * @param $where string condition for data to delete
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @return boolean stating whether the operations succeeded
+	 */
+	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = array() ) {
+		$sparql = self::getPrefixString( $extraNamespaces ) .
+		          "INSERT { $insertPattern } DELETE { $deletePattern } WHERE { $where }";
+		return $this->doUpdate( $sparql );
+	}
+
+	/**
+	 * INSERT DATA wrapper.
+	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
+	 * rdfs, property, xsd, so these do not have to be included in
+	 * $extraNamespaces.
+	 *
+	 * @param $triples string of triples to insert
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @return boolean stating whether the operations succeeded
+	 */
+	public function insertData( $triples, $extraNamespaces = array() ) {
+		$sparql = self::getPrefixString( $extraNamespaces ) . "INSERT DATA { $triples }";
+		return $this->doUpdate( $sparql );
+	}
+
+	/**
+	 * DELETE DATA wrapper.
+	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
+	 * rdfs, property, xsd, so these do not have to be included in
+	 * $extraNamespaces.
+	 *
+	 * @param $triples string of triples to delete
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @return boolean stating whether the operations succeeded
+	 */
+	public function deleteData( $triples, $extraNamespaces = array() ) {
+		$sparql = self::getPrefixString( $extraNamespaces ) . "DELETE DATA { $triples }";
+		return $this->doUpdate( $sparql );
+	}
+
 
 	/**
 	 * Execute a SPARQL query and return an SMWSparqlResultWrapper object
@@ -265,6 +324,24 @@ class SMWSparqlDatabase {
 	}
 
 	/**
+	 * Create the standard PREFIX declarations for SPARQL, possibly with
+	 * additional namespaces involved.
+	 *
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 */
+	public static function getPrefixString( $extraNamespaces = array() ) {
+		$prefixString = '';
+		foreach ( array( 'wiki', 'rdf', 'rdfs', 'owl', 'swivt', 'property', 'xsd' ) as $shortname ) {
+			$prefixString .= "PREFIX $shortname: <" . SMWExporter::getNamespaceUri( $shortname ) . ">\n";
+			unset( $extraNamespaces[$shortname] ); // avoid double declaration
+		}
+		foreach ( $extraNamespaces as $shortname => $uri ) {
+			$prefixString .= "PREFIX $shortname: <$uri>\n";
+		}
+		return $prefixString;
+	}
+
+	/**
 	 * Decide what to make of the errors reported by the Curl handler.
 	 * Either throw a suitable exception or fall through if the error
 	 * should be handled gracefully. It is attempted to throw exceptions
@@ -292,7 +369,7 @@ class SMWSparqlDatabase {
 				throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_OTHER, $sparql, $endpoint, $error );
 			}
 		} elseif ( $error == CURLE_COULDNT_CONNECT ) {
-			retur; // fail gracefully if backend is down
+			return; // fail gracefully if backend is down
 		} else {
 			throw new Exception( "Failed to communicate with SPARQL store.\n Endpoint: " . $endpoint . "\n Curl error: '" . curl_error( $this->m_curlhandle ) . "' ($error)" );
 		}
