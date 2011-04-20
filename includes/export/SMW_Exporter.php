@@ -38,7 +38,7 @@ class SMWExporter {
 		SMWExporter::$m_ent_wiki     = $smwgNamespace;
 		SMWExporter::$m_ent_property = SMWExporter::$m_ent_wiki . SMWExporter::encodeURI( urlencode( str_replace( ' ', '_', $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':' ) ) );
 		$title = SpecialPage::getTitleFor( 'ExportRDF' );
-		SMWExporter::$m_exporturl    = '&wikiurl;' . $title->getPrefixedURL();
+		SMWExporter::$m_exporturl    = SMWExporter::$m_ent_wikiurl . $title->getPrefixedURL();
 	}
 
 	/**
@@ -69,31 +69,33 @@ class SMWExporter {
 	 * can be used to pass a particular SMWTypesValue object that is used
 	 * for determining the OWL type for property pages.
 	 *
-	 * @param SMWDIWikiPage $subject
-	 * @param mixed $typesvalueforproperty either an SMWTypesValue or null
+	 * @param $diWikiPage SMWDIWikiPage
+	 * @param $typesvalueforproperty mixed either an SMWTypesValue or null
+	 * @param $addStubData boolean to indicate if additional data should be added to make a stub entry for this page
+	 * @return SMWExpData
 	 */
-	static public function makeExportDataForSubject( SMWDIWikiPage $subject, $typesvalueforproperty = null ) {		
+	static public function makeExportDataForSubject( SMWDIWikiPage $diWikiPage, $typesvalueforproperty = null, $addStubData = false ) {		
 		global $wgContLang;
-		$result = new SMWExpData( self::getDataItemExpElement( $subject ) );
-		$subjectTitle = str_replace( '_', ' ', $subject->getDBkey() );
-		if ( $subject->getNamespace() !== 0 ) {
-			$prefixedSubjectTitle = $wgContLang->getNsText( $subject->getNamespace()) . ":" . $subjectTitle;
+		$result = new SMWExpData( self::getDataItemExpElement( $diWikiPage ) );
+		$pageTitle = str_replace( '_', ' ', $diWikiPage->getDBkey() );
+		if ( $diWikiPage->getNamespace() !== 0 ) {
+			$prefixedSubjectTitle = $wgContLang->getNsText( $diWikiPage->getNamespace()) . ":" . $pageTitle;
 		} else {
-			$prefixedSubjectTitle = $subjectTitle;
+			$prefixedSubjectTitle = $pageTitle;
 		}
 		$prefixedSubjectUrl = wfUrlencode( str_replace( ' ', '_', $prefixedSubjectTitle ) );
-		switch ( $subject->getNamespace() ) {
+		switch ( $diWikiPage->getNamespace() ) {
 			case NS_CATEGORY: case SMW_NS_CONCEPT:
 				$maintype_pe = SMWExporter::getSpecialNsResource( 'owl', 'Class' );
-				$label = $subjectTitle;
+				$label = $pageTitle;
 			break;
 			case SMW_NS_PROPERTY:
 				if ( $typesvalueforproperty == null ) {
-					$types = smwfGetStore()->getPropertyValues( $subject, new SMWDIProperty( '_TYPE' ) );
+					$types = smwfGetStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_TYPE' ) );
 					$typesvalueforproperty = end( $types );
 				}
 				$maintype_pe = SMWExporter::getSpecialNsResource( 'owl', SMWExporter::getOWLPropertyType( $typesvalueforproperty ) );
-				$label = $subjectTitle;
+				$label = $pageTitle;
 			break;
 			default:
 				$label = $prefixedSubjectTitle;
@@ -101,13 +103,17 @@ class SMWExporter {
 		}
 		$ed = new SMWExpLiteral( $label );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdfs', 'label' ), $ed );
-		$ed = new SMWExpResource( '&wikiurl;' . $prefixedSubjectUrl );
+		$ed = new SMWExpResource( self::getNamespaceUri( 'wikiurl' ) . $prefixedSubjectUrl );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'page' ), $ed );
 		$ed = new SMWExpResource( SMWExporter::$m_exporturl . '/' . $prefixedSubjectUrl );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ), $maintype_pe );
-		$ed = new SMWExpLiteral( $subject->getNamespace(), 'http://www.w3.org/2001/XMLSchema#integer' );
+		$ed = new SMWExpLiteral( $diWikiPage->getNamespace(), 'http://www.w3.org/2001/XMLSchema#integer' );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'swivt', 'wikiNamespace' ), $ed );
+		if ( $addStubData ) {
+			$defaultSortkey = new SMWExpLiteral( str_replace( '_', ' ', $diWikiPage->getDBkey() ) );
+			$result->addPropertyObjectValue( self::getSpecialPropertyResource( '_SKEY' ), $defaultSortkey );
+		}
 		return $result;
 	}
 	
@@ -206,13 +212,13 @@ class SMWExporter {
 		} else {
 			$localname = '';
 			if ( $diWikiPage->getNamespace() == SMW_NS_PROPERTY ) {
-				$namespace = '&property;';
+				$namespace = self::getNamespaceUri( 'property' );
 				$namespaceid = 'property';
 				$localname = SMWExporter::encodeURI( rawurlencode( $diWikiPage->getDBkey() ) );
 			}
 			if ( ( $localname == '' ) ||
 			     ( in_array( $localname[0], array( '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ) ) ) ) {
-				$namespace = '&wiki;';
+				$namespace = self::getNamespaceUri( 'wiki' );
 				$namespaceid = 'wiki';
 				if ( $diWikiPage->getNamespace() !== 0 ) {
 					$localname = str_replace( ' ', '_', $wgContLang->getNSText( $diWikiPage->getNamespace() ) ) . ":" . $diWikiPage->getDBkey();
@@ -303,14 +309,9 @@ class SMWExporter {
 	 * @return SMWExpNsResource
 	 */
 	static public function getSpecialNsResource( $namespaceId, $localName ) {
-		$namespaces = array(
-			'swivt' => '&swivt;',
-			'rdfs'  => '&rdfs;',
-			'rdf'   => '&rdf;',
-			'owl'   => '&owl;',
-		);
-		if ( array_key_exists( $namespaceId, $namespaces ) ) {
-			return new SMWExpNsResource( $localName, $namespaces[$namespaceId], $namespaceId );
+		$namespace = self::getNamespaceUri( $namespaceId );
+		if ( $namespace != '' ) {
+			return new SMWExpNsResource( $localName, $namespace, $namespaceId );
 		} else {
 			throw new InvalidArgumentException( "The vocabulary '$namespaceId' is not a known special vocabulary." );
 		}
@@ -347,7 +348,7 @@ class SMWExporter {
 	 * all entities properly replaced.
 	 *
 	 * @note The function SMWExporter::getNamespaceUri() is often more
-	 * suitable.
+	 * suitable. This XML-specific method might become obsolete.
 	 *
 	 * @param $uri string of the URI to be expanded
 	 * @return string of the expanded URI
