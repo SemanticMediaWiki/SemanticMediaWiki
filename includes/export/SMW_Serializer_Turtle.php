@@ -52,17 +52,15 @@ class SMWTurtleSerializer extends SMWSerializer{
 	}
 
 	/**
+	 * Get an array of namespace prefixes used in SPARQL mode.
 	 * Namespaces are not serialized among triples in SPARQL mode but are
-	 * collected separately. This method serializes them as SPARQL prefix
-	 * declarations and empties the collected list afterwards.
+	 * collected separately. This method returns the prefixes and empties
+	 * the collected list afterwards.
 	 *
-	 * @return string
+	 * @return array shortName => namespace URI
 	 */
 	public function flushSparqlPrefixes() {
-		$result = '';
-		foreach ( $this->sparql_namespaces as $shortname => $uri ) {
-			$result .= "PREFIX $shortname: <$uri>\n";
-		}
+		$result = $this->sparql_namespaces;
 		$this->sparql_namespaces = array();
 		return $result;
 	}
