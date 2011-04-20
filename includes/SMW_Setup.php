@@ -174,8 +174,9 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWExpElement']             = $expDir . 'SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpLiteral']             = $expDir . 'SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpResource']            = $expDir . 'SMW_Exp_Element.php';
-	$wgAutoloadClasses['SMWExportController']		= $expDir . 'SMW_ExportController.php';
-	$wgAutoloadClasses['SMWSerializer']		        = $expDir . 'SMW_Serializer.php';
+	$wgAutoloadClasses['SMWExpNsResource']          = $expDir . 'SMW_Exp_Element.php';
+	$wgAutoloadClasses['SMWExportController']	= $expDir . 'SMW_ExportController.php';
+	$wgAutoloadClasses['SMWSerializer']	        = $expDir . 'SMW_Serializer.php';
 	$wgAutoloadClasses['SMWRDFXMLSerializer']       = $expDir . 'SMW_Serializer_RDFXML.php';
 	$wgAutoloadClasses['SMWTurtleSerializer']       = $expDir . 'SMW_Serializer_Turtle.php';
 
@@ -218,6 +219,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWSQLStore2']              = $stoDir . 'SMW_SQLStore2.php';
 	$wgAutoloadClasses['SMWSQLStore2Table']         = $stoDir . 'SMW_SQLStore2Table.php';
 	$wgAutoloadClasses['SMWSQLHelpers']             = $stoDir . 'SMW_SQLHelpers.php';
+	$wgAutoloadClasses['SMWSparqlStore']            = $stoDir . 'SMW_SparqlStore.php';
 
 	// To ensure SMW remains compatible with pre 1.16.
 	if ( !class_exists( 'Html' ) ) {
