@@ -283,3 +283,22 @@ function &smwfGetStore() {
 
 	return $smwgMasterStore;
 }
+
+/**
+ * Get the SMWSparqlDatabase object to use for connecting to a SPARQL store,
+ * or null if no SPARQL backend has been set up.
+ *
+ * Currently, it just returns one globally defined object, but the
+ * infrastructure allows to set up load balancing and task-dependent use of
+ * stores (e.g. using other stores for fast querying than for storing new
+ * facts), somewhat similar to MediaWiki's DB implementation.
+ *
+ * @return SMWSparqlDatabase or null
+ */
+function &smwfGetSparqlDatabase() {
+	global $smwgSparqlDatabaseMaster;
+	if ( !isset( $smwgSparqlDatabaseMaster ) ) {
+		$smwgSparqlDatabaseMaster = new SMWSparqlDatabase( 'http://localhost:8080/sparql/', 'http://localhost:8080/update/' );
+	}
+	return $smwgSparqlDatabaseMaster;
+}
