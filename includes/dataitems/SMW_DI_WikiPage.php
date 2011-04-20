@@ -89,4 +89,15 @@ class SMWDIWikiPage extends SMWDataItem {
 		return new SMWDIWikiPage( $parts[0], floatval( $parts[1] ), $parts[2], $typeid );
 	}
 
+	/**
+	 * Create a data item from a MediaWiki Title.
+	 *
+	 * @param $title Title
+	 * @param $typeid string optional type ID to use
+	 * @return SMWDIWikiPage
+	 */
+	public static function newFromTitle( Title $title, $typeid = '_wpg' ) {
+		return new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki(), $typeid );
+	}
+
 }
