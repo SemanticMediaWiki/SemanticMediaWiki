@@ -214,6 +214,38 @@ abstract class SMWStore {
 		}
 	}
 
+	/**
+	 * Convenience method to find the redirect target of an SMWDIWikiPage
+	 * or SMWDIProperty object. Returns a dataitem of the same type that
+	 * the input redirects to, or the input itself if there is no redirect.
+	 *
+	 * @param $dataItem SMWDataItem to find the redirect for.
+	 * @return SMWDataItem
+	 */
+	public function getRedirectTarget( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
+			if ( !$dataItem->isUserDefined() ) {
+				return $dataItem;
+			}
+			$wikipage = $dataItem->getDiWikiPage();
+		} elseif ( $dataItem->getDIType() == SMWDataItem::TYPE_WIKIPAGE ) {
+			$wikipage = $dataItem;
+		} else {
+			throw new InvalidArgumentException( 'SMWStore::getRedirectTarget() expects an object of type SMWDIProperty or SMWDIWikiPage.' );
+		}
+
+		$redirectDataItems = $this->getPropertyValues( $wikiPage, new SMWDIProperty( '_REDI' ) );
+		if ( count( $redirectDataItems ) > 0 ) {
+			if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
+				return new SMWDIProperty( end( $redirectDataItems )->getDBkey() );
+			} else {
+				return end( $redirectDataItems );
+			}
+		} else {
+			return $dataItem;
+		}
+	}
+
 ///// Writing methods /////
 
 	/**
