@@ -202,8 +202,11 @@ class SMWDIProperty extends SMWDataItem {
 				$typearray = smwfGetStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_TYPE' ) );
 				if ( count( $typearray ) >= 1 ) { // some types given, pick one (hopefully unique)
 					$typeString = reset( $typearray );
-					$this->m_proptypeid = ( $typeString instanceOf SMWDIWikiPage ) ? 
-					                        SMWDataValueFactory::findTypeID( $typeString->getDBKey() ) : '__err';
+					if ( $typeString instanceOf SMWDIWikiPage ) {
+						$this->m_proptypeid = SMWDataValueFactory::findTypeID( str_replace( '_', ' ', $typeString->getDBKey() ) );
+					} else {
+						$this->m_proptypeid = '__err';
+					}
 				} elseif ( count( $typearray ) == 0 ) { // no type given
 					$this->m_proptypeid = $smwgPDefaultType;
 				}
