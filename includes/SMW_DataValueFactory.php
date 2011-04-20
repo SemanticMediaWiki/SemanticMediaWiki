@@ -50,14 +50,6 @@ class SMWDataValueFactory {
 	/**
 	 * Array of data item classes, indexed by type id.
 	 *
-	 * @note This is only used for transition. Data items will not be created directly by SMWDataValueFactory in the future.
-	 * @var array of string
-	 */
-	static private $mTypeDiClasses;
-
-	/**
-	 * Array of data item classes, indexed by type id.
-	 *
 	 * @var array of integer
 	 */
 	static private $mTypeDataItemIds;
@@ -224,41 +216,6 @@ class SMWDataValueFactory {
 			'__key' => 'SMWStringValue', // Sort key of a page
 		);
 
-		self::$mTypeDiClasses = array(
-			'_txt'  => 'SMWDIBlob', // Text type
-			'_cod'  => 'SMWDIBlob', // Code type
-			'_str'  => 'SMWDIString', // String type
-			'_ema'  => 'SMWDIUri', // Email type
-			'_uri'  => 'SMWDIUri', // URL/URI type
-			'_anu'  => 'SMWDIUri', // Annotation URI type
-			'_tel'  => 'SMWDIUri', // Phone number (URI) type
-			'_wpg'  => 'SMWDIWikiPage', // Page type
-			'_wpp'  => 'SMWDIWikiPage', // Property page type TODO: make available to user space
-			'_wpc'  => 'SMWDIWikiPage', // Category page type TODO: make available to user space
-			'_wpf'  => 'SMWDIWikiPage', // Form page type for Semantic Forms
-			'_num'  => 'SMWDINumber', // Number type
-			'_tem'  => 'SMWDINumber', // Temperature type
-			'_dat'  => 'SMWDITime', // Time type
-			'_boo'  => 'SMWDIBoolean', // Boolean type
-			'_rec'  => 'SMWDIContainer', // Value list type (replacing former nary properties)
-			// Special types are not avaialble directly for users (and have no local language name):
-			'__typ' => 'SMWDIWikiPage', // Special type page type
-			'__tls' => 'SMWDIString', // Special type list for decalring _rec properties
-			'__con' => 'SMWDIConcept', // Special concept page type
-			'__sps' => 'SMWDIString', // Special string type
-			'__spu' => 'SMWDIUri', // Special uri type
-			'__sup' => 'SMWDIWikiPage', // Special subproperty type
-			'__suc' => 'SMWDIWikiPage', // Special subcategory type
-			'__spf' => 'SMWDIWikiPage', // Special Form page type for Semantic Forms
-			'__sin' => 'SMWDIWikiPage', // Special instance of type
-			'__red' => 'SMWDIWikiPage', // Special redirect type
-			'__lin' => 'SMWDINumber', // Special linear unit conversion type
-			'__err' => 'SMWDIString', // Special error type
-			'__imp' => 'SMWDIString', // Special import vocabulary type
-			'__pro' => 'SMWDIProperty', // Property type (possibly predefined, no always based on a page)
-			'__key' => 'SMWDIString', // Sort key of a page
-		);
-
 		self::$mTypeDataItemIds = array(
 			'_txt'  => SMWDataItem::TYPE_BLOB, // Text type
 			'_cod'  => SMWDataItem::TYPE_BLOB, // Code type
@@ -298,34 +255,17 @@ class SMWDataValueFactory {
 	}
 
 	/**
-	 * A function for associating SMW dataitems with type IDs. This should
-	 * be called from within the hook 'smwInitDatatypes' only.
-	 *
-	 * The dataitem must be one of SMW's data item classes. There is no
-	 * support for adding new datat item classes to SMW. Moreover, note
-	 * that the dataitem is indirectly determined by the datavalue class of
-	 * the type ID. So both must be set/changed to be compatible.
-	 *
-	 * @todo This function should take a dataitem ID instead of a class
-	 * name to prevent new classes from being registered here.
-	 *
-	 * @param $id string
-	 * @param $className string
-	 */
-	static public function registerDataItem( $id, $className ) {
-		self::$mTypeDiClasses[$id] = $className;
-	}
-
-	/**
 	 * A function for registering/overwriting datatypes for SMW. Should be
 	 * called from within the hook 'smwInitDatatypes'.
 	 *
-	 * @param string $id
-	 * @param string $className
-	 * @param mixed $label
+	 * @param $id string type ID for which this datatype is registered
+	 * @param $className string name of the according subclass of SMWDataValue
+	 * @param $dataItemId integer ID of the data item class that this data value uses, see SMWDataItem
+	 * @param $label mixed string label or false for types that cannot be accessed by users
 	 */
-	static public function registerDatatype( $id, $className, $label = false ) {
+	static public function registerDatatype( $id, $className, $dataItemId, $label = false ) {
 		self::$mTypeClasses[$id] = $className;
+		self::$mTypeDataItemIds[$id] = $dataItemId;
 
 		if ( $label != false ) {
 			self::$mTypeLabels[$id] = $label;
