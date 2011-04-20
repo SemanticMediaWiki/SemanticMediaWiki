@@ -209,28 +209,42 @@ class SMWTurtleSerializer extends SMWSerializer{
 	}
 	
 	protected function serializeExpLiteral( SMWExpLiteral $element ) {
-		$this->post_ns_buffer .= '"' . str_replace( array( '\\', "\n", '"' ), array( '\\\\', "\\n", '\"' ), $element->getLexicalForm() ) . '"';
-		$dt = $element->getDatatype();
-		if ( ( $dt != '' ) && ( $dt != 'http://www.w3.org/2001/XMLSchema#string' ) ) {
-			$count = 0;
-			$newdt = str_replace( 'http://www.w3.org/2001/XMLSchema#', 'xsd:',  $dt, $count );
-			if ( $count == 1 ) {
-				$this->post_ns_buffer .= '^^' . $newdt;
-			} else {
-				$this->post_ns_buffer .= '^^<' . $dt . '>';
-			}
-		}
+		$this->post_ns_buffer .= self::getTurtleNameForExpElement( $element );
 	}
 	
 	protected function serializeExpResource( SMWExpResource $element ) {
-		if ( $element->isBlankNode() ) {
-			$this->post_ns_buffer .= '[]';
-		} else {
-			if ( ( $element instanceof SMWExpNsResource ) && ( $element->hasAllowedLocalName() ) ) {
-				$this->post_ns_buffer .= $element->getQName();
+		$this->post_ns_buffer .= self::getTurtleNameForExpElement( $element );
+	}
+
+	/**
+	 * Get the Turtle serialization string for the given SMWExpElement. The
+	 * method just computes a name, and does not serialize triples, so the
+	 * parameter must be an SMWExpResource or SMWExpLiteral, no SMWExpData.
+	 *
+	 * @param $expElement SMWExpElement being SMWExpLiteral or SMWExpResource
+	 * @return string
+	 */
+	public static function getTurtleNameForExpElement( SMWExpElement $expElement ) {
+		if ( $expElement instanceof SMWExpResource ) {
+			if ( $expElement->isBlankNode() ) {
+				return '[]';
+			} elseif ( ( $expElement instanceof SMWExpNsResource ) && ( $expElement->hasAllowedLocalName() ) ) {
+				return $expElement->getQName();
 			} else {
-				$this->post_ns_buffer .= '<' . str_replace( '>', '\>', SMWExporter::expandURI( $element->getUri() ) ) . '>';
+				return '<' . str_replace( '>', '\>', SMWExporter::expandURI( $expElement->getUri() ) ) . '>';
 			}
+		} elseif ( $expElement instanceof SMWExpLiteral ) {
+			$lexicalForm = '"' . str_replace( array( '\\', "\n", '"' ), array( '\\\\', "\\n", '\"' ), $expElement->getLexicalForm() ) . '"';
+			$dt = $expElement->getDatatype();
+			if ( ( $dt != '' ) && ( $dt != 'http://www.w3.org/2001/XMLSchema#string' ) ) {
+				$count = 0;
+				$newdt = str_replace( 'http://www.w3.org/2001/XMLSchema#', 'xsd:',  $dt, $count );
+				return ( $count == 1 ) ? "$lexicalForm^^$newdt" : "$lexicalForm^^<$dt>";
+			} else {
+				return $lexicalForm;
+			}
+		} else {
+			throw new InvalidArgumentException( 'The method can only serialize atomic elements of type SMWExpResource or SMWExpLiteral.' );
 		}
 	}
 
