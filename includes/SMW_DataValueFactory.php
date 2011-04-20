@@ -298,13 +298,19 @@ class SMWDataValueFactory {
 	}
 
 	/**
-	 * A function for registering/overwriting dataitems for SMW. Should be
-	 * called from within the hook 'smwInitDatatypes'.
+	 * A function for associating SMW dataitems with type IDs. This should
+	 * be called from within the hook 'smwInitDatatypes' only.
 	 *
-     * @since 0.8
-     *
-	 * @param string $id
-	 * @param string $className
+	 * The dataitem must be one of SMW's data item classes. There is no
+	 * support for adding new datat item classes to SMW. Moreover, note
+	 * that the dataitem is indirectly determined by the datavalue class of
+	 * the type ID. So both must be set/changed to be compatible.
+	 *
+	 * @todo This function should take a dataitem ID instead of a class
+	 * name to prevent new classes from being registered here.
+	 *
+	 * @param $id string
+	 * @param $className string
 	 */
 	static public function registerDataItem( $id, $className ) {
 		self::$mTypeDiClasses[$id] = $className;
