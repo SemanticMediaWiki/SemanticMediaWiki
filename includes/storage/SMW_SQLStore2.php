@@ -718,7 +718,7 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn( 'SMWSQLStore2::deleteSubject (SMW)' );
 		wfRunHooks( 'SMWSQLStore2::deleteSubjectBefore', array( $this, $subject ) );
 
-		$this->deleteSemanticData( SMWDIWikiPage::newFromTitle( $subject );
+		$this->deleteSemanticData( SMWDIWikiPage::newFromTitle( $subject ) );
 		$this->updateRedirects( $subject->getDBkey(), $subject->getNamespace() ); // also delete redirects, may trigger update jobs!
 
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) { // make sure to clear caches
@@ -966,7 +966,7 @@ class SMWSQLStore2 extends SMWStore {
 		} else { // general move method that should be correct in all cases (equality support respected when updating redirects)
 			// Delete any existing data from new title:
 			// $newtitle should not have data, but let's be sure
-			$this->deleteSemanticData( SMWDIWikiPage::newFromTitle( $newtitle );
+			$this->deleteSemanticData( SMWDIWikiPage::newFromTitle( $newtitle ) );
 			$this->updateRedirects( $newtitle->getDBkey(), $newtitle->getNamespace() ); // may trigger update jobs!
 
 			// Move all data of old title to new position:
