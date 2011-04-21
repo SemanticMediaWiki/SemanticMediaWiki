@@ -135,9 +135,7 @@ class SMWTurtleSerializer extends SMWSerializer{
 
 		$bnode = false;
 		$this->post_ns_buffer .= $indent;
-		if ( $data->getSubject() instanceof SMWExpLiteral ) {
-			$this->serializeExpLiteral( $data->getSubject() );
-		} elseif ( ( $data->getSubject() instanceof SMWExpResource ) && ( !$data->getSubject()->isBlankNode() ) ) {
+		if ( !$data->getSubject()->isBlankNode() ) {
 			$this->serializeExpResource( $data->getSubject() );
 		} else { // blank node
 			$bnode = true;
@@ -163,8 +161,6 @@ class SMWTurtleSerializer extends SMWSerializer{
 			foreach ( $data->getValues( $property ) as $value ) {
 				$this->post_ns_buffer .= $firstvalue ? '  ' : ' ,  ';
 				$firstvalue = false;
-				
-				$this->requireNamespace( $property->getNamespaceID(), $property->getNamespace() );
 
 				if ( $value instanceof SMWExpLiteral ) {
 					$prop_decl_type = SMW_SERIALIZER_DECL_APROP;
@@ -211,6 +207,9 @@ class SMWTurtleSerializer extends SMWSerializer{
 	}
 	
 	protected function serializeExpResource( SMWExpResource $element ) {
+		if ( $element instanceof SMWExpNsResource ) {
+			$this->requireNamespace( $element->getNamespaceID(), $element->getNamespace() );
+		}
 		$this->post_ns_buffer .= self::getTurtleNameForExpElement( $element );
 	}
 
