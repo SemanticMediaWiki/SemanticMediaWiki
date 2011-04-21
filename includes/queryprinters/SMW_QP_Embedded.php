@@ -67,22 +67,25 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		}
 
 		// Print all result rows:
-		foreach ( $res->getResults() as $page ) {
-			if ( $page->getTypeID() == '_wpg' ) { // ensure that we deal with title-likes
+		foreach ( $res->getResults() as $diWikiPage ) {
+			if ( $diWikiPage->getTypeID() == '_wpg' ) { // ensure that we deal with title-likes
+				$dvWikiPage = SMWDataValueFactory::newDataItemValue( $diWikiPage );
 				$result .= $embstart;
-				
+
 				if ( $this->m_showhead ) {
-					$result .= $headstart . $page->getLongWikiText( $this->mLinker ) . $headend;
+					$result .= $headstart . $dvWikiPage->getLongWikiText( $this->mLinker ) . $headend;
 				}
-				
-				if ( $page->getLongWikiText() != $title ) {
-					$result .= '{{' . ( ( $page->getNamespace() == NS_MAIN ) ?
-					            ':' . $page->getDBkey():$page->getLongWikiText() ) .
-								'}}';
-				} else {
-					$result .= '<b>' . $page->getLongWikiText() . '</b>';
+
+				if ( $dvWikiPage->getLongWikiText() != $title ) {
+					if ( $diWikiPage->getNamespace() == NS_MAIN ) {
+						$result .= '{{:' . $diWikiPage->getDBkey() . '}}';
+					} else {
+						$result .= '{{' . $dvWikiPage->getLongWikiText() . '}}';
+					}
+				} else { // block recursion
+					$result .= '<b>' . $dvWikiPage->getLongWikiText() . '</b>';
 				}
-				
+
 				$result .= $embend;
 			}
 		}
