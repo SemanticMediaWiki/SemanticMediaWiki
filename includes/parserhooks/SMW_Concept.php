@@ -18,6 +18,9 @@ class SMWConcept {
 	/**
 	 * Method for handling the ask concept function.
 	 * 
+	 * @todo The possible use of this in an HTML or Specal page context needs to be revisited. The code mentions it, but can this actually happen?
+	 * @todo The escaping of symbols in concept queries needs to be revisited.
+	 * 
 	 * @since 1.5.3
 	 * 
 	 * @param Parser $parser
@@ -54,11 +57,9 @@ class SMWConcept {
 		$query = SMWQueryProcessor::createQuery( $concept_input, array( 'limit' => 20, 'format' => 'list' ), SMWQueryProcessor::CONCEPT_DESC );
 		$concept_text = $query->getDescription()->getQueryString();
 
-		$dv = SMWDataValueFactory::newPropertyObjectValue( $pconc );
-		$dv->setValues( $concept_text, $concept_docu, $query->getDescription()->getQueryFeatures(), $query->getDescription()->getSize(), $query->getDescription()->getDepth() );
-
 		if ( SMWParseData::getSMWData( $parser ) !== null ) {
-			SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $pconc, $dv );
+			$diConcept = new SMWDIConcept( $concept_text, $concept_docu, $query->getDescription()->getQueryFeatures(), $query->getDescription()->getSize(), $query->getDescription()->getDepth() );
+			SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $pconc, $diConcept );
 		}
 
 		// display concept box:
