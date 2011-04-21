@@ -5,7 +5,7 @@
  * 
  * @file SMW_QP_DSV.php
  * @ingroup SMWQuery
- * @since 1.5.7
+ * @since 1.6
  *
  * @licence GNU GPL v3
  *
@@ -17,20 +17,24 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	protected $separator = ':';
 	protected $fileName = 'result.dsv';
 	
-	protected function readParameters( $params, $outputmode ) {
-		parent::readParameters( $params, $outputmode );
+	/**
+	 * @see SMWResultPrinter::handleParameters
+	 * 
+	 * @since 1.6
+	 * 
+	 * @param array $params
+	 * @param $outputmode
+	 */
+	protected function handleParameters( array $params, $outputmode ) {
+		parent::handleParameters( $params, $outputmode );
 		
-		if ( array_key_exists( 'separator', $this->m_params ) && $this->m_params['separator'] != '\\' ) {
-			$this->separator = trim( $this->m_params['separator'] );
-		// Also support 'sep' as alias, since this is the param name for the CSV format.
-		} elseif ( array_key_exists( 'sep', $this->m_params ) && $this->m_params['sep'] != '\\' ) {
-			$this->separator = trim( $this->m_params['sep'] );
+		// Do not allow backspaces as delimiter, as they'll break stuff.
+		if ( trim( $params['separator'] ) != '\\' ) {
+			$this->separator = trim( $params['separator'] );
 		}
 		
-		if ( isset( $this->m_params['filename'] ) ) {
-			$this->fileName = str_replace( ' ', '_', $this->m_params['filename'] );
-		}	
-	}
+		$this->fileName = str_replace( ' ', '_', $params['increase'] );
+	}	
 
 	public function getMimeType( $res ) {
 		return 'text/dsv';
@@ -61,7 +65,7 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	/**
 	 * Returns the query result in DSV.
 	 * 
-	 * @since 1.5.7
+	 * @since 1.6
 	 *  
 	 * @param SMWQueryResult $res
 	 * 
@@ -106,7 +110,7 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	/**
 	 * Returns a single DSV line.
 	 * 
-	 * @since 1.5.7
+	 * @since 1.6
 	 *  
 	 * @param array $fields
 	 * 
@@ -119,7 +123,7 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	/**
 	 * Encodes a single DSV.
 	 * 
-	 * @since 1.5.7
+	 * @since 1.6
 	 *  
 	 * @param string $value
 	 * 
@@ -141,7 +145,7 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	/**
 	 * Returns html for a link to a query that returns the DSV file.
 	 * 
-	 * @since 1.5.7
+	 * @since 1.6
 	 *  
 	 * @param SMWQueryResult $res
 	 * @param $outputmode
@@ -180,7 +184,7 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	public function getParameters() {
 		$params = array_merge( parent::getParameters(), $this->exportFormatParameters() );
 		
-		$params['separator'] = new Parameter( 'separator' );
+		$params['separator'] = new Parameter( 'separator', 'sep' );
 		$params['separator']->setDescription( wfMsg( 'smw-paramdesc-dsv-separator' ) );
 		$params['separator']->setDefault( $this->separator );
 		
