@@ -12,4 +12,4 @@
 
 wfWarn( 'Use of outdated SMW entry point. Use SemanticMediaWiki/SemanticMediaWiki.php instead of SemanticMediaWiki/includes/SMW_Setup.php' );
 
-require_once dirname( __FILE__ ) . '/../SMW_Settings.php';
+require_once dirname( __FILE__ ) . '/../SemanticMediaWiki.php';
