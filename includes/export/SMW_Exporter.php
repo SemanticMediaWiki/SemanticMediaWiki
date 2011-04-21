@@ -206,9 +206,10 @@ class SMWExporter {
 		}
 		$importDis = smwfGetStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_IMPO' ) );
 		if ( count( $importDis ) > 0 ) {
-			$namespace = current( $importDis )->getNS();
-			$namespaceid = current( $importDis )->getNSID();
-			$localname = current( $importDis )->getLocalName();
+			$importValue = SMWDataValueFactory::newDataItemValue( current( $importDis ) );
+			$namespace = $importValue->getNS();
+			$namespaceid = $importValue->getNSID();
+			$localname = $importValue->getLocalName();
 		} else {
 			$localname = '';
 			if ( $diWikiPage->getNamespace() == SMW_NS_PROPERTY ) {
