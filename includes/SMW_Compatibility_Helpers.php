@@ -141,6 +141,14 @@ class SMWCompatibilityHelpers {
 			case '__pro':
 				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_PROPERTY ) break;
 				return array( $dataItem->getKey() );
+			case '_geo':
+				$coordinateSet = $dataItem->getCoordinateSet();
+		
+				return array(
+					$coordinateSet['lat'],
+					$coordinateSet['lon']
+				);				
+				break;
 			default:
 				$typeid = $dataItem->getTypeId();
 				if ( ( $typeid != '' ) && ( $typeid{0} != '_' ) && 
