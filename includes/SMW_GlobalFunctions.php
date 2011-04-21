@@ -298,7 +298,7 @@ function &smwfGetStore() {
 function &smwfGetSparqlDatabase() {
 	global $smwgSparqlDatabaseMaster;
 	if ( !isset( $smwgSparqlDatabaseMaster ) ) {
-		$smwgSparqlDatabaseMaster = new SMWSparqlDatabase( 'http://localhost:8080/sparql/', 'http://localhost:8080/update/' );
+		$smwgSparqlDatabaseMaster = new SMWSparqlDatabase( 'http://localhost:8080/sparql/', 'http://localhost:8080/update/', 'http://localhost:8080/data/' );
 	}
 	return $smwgSparqlDatabaseMaster;
 }

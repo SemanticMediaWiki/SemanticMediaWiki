@@ -35,6 +35,8 @@ class SMWSparqlDatabaseError extends Exception {
 	const ERROR_GRAPH_EXISTS   = 4;
 	/// Error code: unknown error
 	const ERROR_OTHER          = 5;
+	/// Error code: required service not known
+	const ERROR_NOSERVICE      = 6;
 
 	/**
 	 * SPARQL query that caused the problem.
@@ -72,6 +74,9 @@ class SMWSparqlDatabaseError extends Exception {
 			case self::ERROR_OTHER: default:
 				$errorName = 'Unkown error';
 			break;
+			case self::ERROR_NOSERVICE: default:
+				$errorName = 'Required service has not been defined';
+			break;
 		}
 		$message = "A SPARQL query error has occurred\n" .
 		  "Query: $queryText\n" .
@@ -95,6 +100,13 @@ class SMWSparqlDatabaseError extends Exception {
  */
 class SMWSparqlDatabase {
 
+	/// Flag denoting endpoints being capable of querying
+	const EP_TYPE_QUERY = 1;
+	/// Flag denoting endpoints being capable of updating
+	const EP_TYPE_UPDATE = 2;
+	/// Flag denoting endpoints being capable of SPARQL HTTP graph management
+	const EP_TYPE_DATA   = 4;
+
 	/**
 	 * The URL of the endpoint for executing read queries.
 	 * @var string
@@ -109,6 +121,13 @@ class SMWSparqlDatabase {
 	protected $m_updateEndpoint;
 
 	/**
+	 * The URL of the endpoint for using the SPARQL Graph Store HTTP
+	 * Protocol with, or empty if this method is not allowed/supported.
+	 * @var string
+	 */
+	protected $m_dataEndpoint;
+
+	/**
 	 * The curl handle we use for communicating. We reuse the same handle
 	 * throughout as this safes some initialization effort.
 	 * @var resource
@@ -121,9 +140,10 @@ class SMWSparqlDatabase {
 	 * @param $queryEndpoint string of URL of query service (reading)
 	 * @param $updateEndpoint string of URL of update service (writing)
 	 */
-	public function __construct( $queryEndpoint, $updateEndpoint = '' ) {
+	public function __construct( $queryEndpoint, $updateEndpoint = '', $dataEndpoint = '' ) {
 		$this->m_queryEndpoint = $queryEndpoint;
 		$this->m_updateEndpoint = $updateEndpoint;
+		$this->m_dataEndpoint = $dataEndpoint;
 		$this->m_curlhandle = curl_init();
 		curl_setopt( $this->m_curlhandle, CURLOPT_FORBID_REUSE, false );
 		curl_setopt( $this->m_curlhandle, CURLOPT_FRESH_CONNECT, false );
@@ -247,8 +267,13 @@ class SMWSparqlDatabase {
 	 * @return boolean stating whether the operations succeeded
 	 */
 	public function insertData( $triples, $extraNamespaces = array() ) {
-		$sparql = self::getPrefixString( $extraNamespaces ) . "INSERT DATA { $triples }";
-		return $this->doUpdate( $sparql );
+		if ( $this->m_dataEndpoint != '' ) {
+			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
+			return $this->doHttpPost( $turtle );
+		} else {
+			$sparql = self::getPrefixString( $extraNamespaces, true ) . "INSERT DATA { $triples }";
+			return $this->doUpdate( $sparql );
+		}
 	}
 
 	/**
@@ -305,17 +330,16 @@ class SMWSparqlDatabase {
 	 */
 	public function doUpdate( $sparql ) {
 		if ( $this->m_updateEndpoint == '' ) {
-			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_READONLY, $sparql, $this->m_queryEndpoint, $error );
+			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, $sparql, 'not specified', $error );
 		}
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_updateEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
 		$parameterString = "update=" . urlencode( $sparql );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
 
-		$xmlResult = curl_exec( $this->m_curlhandle );
+		curl_exec( $this->m_curlhandle );
 
 		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
-			$xmlParser = new SMWSparqlResultParser();
 			return true;
 		} else {
 			$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
@@ -324,19 +348,62 @@ class SMWSparqlDatabase {
 	}
 
 	/**
-	 * Create the standard PREFIX declarations for SPARQL, possibly with
-	 * additional namespaces involved.
+	 * Execute a HTTP-based SPARQL POST request according to
+	 * http://www.w3.org/2009/sparql/docs/http-rdf-update/.
+	 * The method throws exceptions based on
+	 * SMWSparqlDatabase::throwSparqlErrors(). If errors occur and this
+	 * method does not throw anything, then an empty result with an error
+	 * code is returned.
+	 * 
+	 * @note This method currently is specific to 4Store. It uses POST parameters that are not given in the specification.
+	 *
+	 * @param $payload string Turtle serialization of data to send
+	 * @return SMWSparqlResultWrapper
+	 */
+	public function doHttpPost( $payload ) {
+		if ( $this->m_dataEndpoint == '' ) {
+			throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified', $error );
+		}
+		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint );
+		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
+		$parameterString = "data=" . urlencode( $payload ) . '&graph=default&mime-type=application/x-turtle';
+		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
+
+//// POST as file, fails in 4Store
+// 		$payloadFile = tmpfile();
+// 		fwrite( $payloadFile, $payload );
+// 		fseek( $payloadFile, 0 ); 
+// 		curl_setopt( $this->m_curlhandle, CURLOPT_INFILE, $payloadFile );
+// 		curl_setopt( $this->m_curlhandle, CURLOPT_INFILESIZE, strlen( $payload ) ); 
+// 		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array( 'Content-Type: application/x-turtle' ) );
+
+		curl_exec( $this->m_curlhandle );
+
+		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
+			return true;
+		} else {
+			$this->throwSparqlErrors( $this->m_dataEndpoint, $payload );
+			return false;
+		}
+	}
+
+	/**
+	 * Create the standard PREFIX declarations for SPARQL or Turtle,
+	 * possibly with additional namespaces involved.
 	 *
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @param $forSparql boolean true to use SPARQL prefix syntax, false to use Turtle prefix syntax
 	 */
-	public static function getPrefixString( $extraNamespaces = array() ) {
+	public static function getPrefixString( $extraNamespaces = array(), $forSparql = true ) {
 		$prefixString = '';
+		$prefixIntro = $forSparql ? 'PREFIX ' : '@prefix ';
+		$prefixOutro = $forSparql ? "\n" : " .\n";
 		foreach ( array( 'wiki', 'rdf', 'rdfs', 'owl', 'swivt', 'property', 'xsd' ) as $shortname ) {
-			$prefixString .= "PREFIX $shortname: <" . SMWExporter::getNamespaceUri( $shortname ) . ">\n";
+			$prefixString .= "{$prefixIntro}{$shortname}: <" . SMWExporter::getNamespaceUri( $shortname ) . ">$prefixOutro";
 			unset( $extraNamespaces[$shortname] ); // avoid double declaration
 		}
 		foreach ( $extraNamespaces as $shortname => $uri ) {
-			$prefixString .= "PREFIX $shortname: <$uri>\n";
+			$prefixString .= "{$prefixIntro}{$shortname}: <$uri>$prefixOutro";
 		}
 		return $prefixString;
 	}
@@ -360,13 +427,13 @@ class SMWSparqlDatabase {
 			$httpCode = curl_getinfo( $this->m_curlhandle, CURLINFO_HTTP_CODE );
 			/// TODO We are guessing the meaning of HTTP codes here -- the SPARQL 1.1 spec does not yet provide this information for updates (April 15 2011)
 			if ( $httpCode == 400 ) { // malformed query
-				throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_MALFORMED, $sparql, $endpoint, $error );
+				throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_MALFORMED, $sparql, $endpoint, $httpCode );
 			} elseif ( $httpCode == 500 ) { // query refused; maybe fail gracefully here (depending on how stores use this)
-				throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_REFUSED, $sparql, $endpoint, $error );
+				throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_REFUSED, $sparql, $endpoint, $httpCode );
 			} elseif ( $httpCode == 404 ) {
 				return; // endpoint not found, maybe down; fail gracefully
 			} else {
-				throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_OTHER, $sparql, $endpoint, $error );
+				throw new SMWSparqlDatabaseError( SMWSparqlDatabaseError::ERROR_OTHER, $sparql, $endpoint, $httpCode );
 			}
 		} elseif ( $error == CURLE_COULDNT_CONNECT ) {
 			return; // fail gracefully if backend is down
