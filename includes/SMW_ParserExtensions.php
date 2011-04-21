@@ -39,11 +39,10 @@ class SMWParserExtensions {
 			$rt = Title::newFromRedirect( $text );
 			if ( $rt !== null ) {
 				$p = new SMWDIProperty( '_REDI' );
-				$di = new SMWDIWikiPage( $rt->getDBkey(), $rt->getNamespace(), $rt->getInterwiki(), '__red' );
+				$di = SMWDIWikiPage::newFromTitle( $rt, '__red' );
 				SMWParseData::getSMWData( $parser )->addPropertyObjectValue( $p, $di );
 			}
 		}
-		
 
 		// only used in subsequent callbacks, forgotten afterwards
 		SMWParserExtensions::$mTempParser = $parser;
