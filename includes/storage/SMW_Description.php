@@ -216,9 +216,9 @@ class SMWClassDescription extends SMWDescription {
 	public function getQueryString( $asvalue = false ) {
 		$first = true;
 		foreach ( $this->m_diWikiPages as $wikiPage ) {
-			$wikiValue = SMWDataValueFactory::newFromDataItem( $wikiPage );
+			$wikiValue = SMWDataValueFactory::newDataItemValue( $wikiPage );
 			if ( $first ) {
-				$result .= '[[' . $wikiValue->getPrefixedText();
+				$result = '[[' . $wikiValue->getPrefixedText();
 				$first = false;
 			} else {
 				$result .= '||' . $wikiValue->getText();
@@ -378,7 +378,7 @@ class SMWValueDescription extends SMWDescription {
 		$this->m_comparator = $comparator;
 	}
 
-	/// @deprecated Use getDataItem() and SMWDataValueFactory::newFromDataItem() if needed. Vanishes before SMW 1.7
+	/// @deprecated Use getDataItem() and SMWDataValueFactory::newDataItemValue() if needed. Vanishes before SMW 1.7
 	public function getDataValue() {
 		return $this->m_dataItem;
 	}
@@ -393,7 +393,7 @@ class SMWValueDescription extends SMWDescription {
 
 	public function getQueryString( $asvalue = false ) {
 		$comparator = SMWQueryLanguage::getStringForComparator( $this->m_comparator );
-		$dataValue = SMWDataValueFactory::newFromDataItem( $this->m_dataItem );
+		$dataValue = SMWDataValueFactory::newDataItemValue( $this->m_dataItem );
 		if ( $asvalue ) {
 			return $comparator . $dataValue->getWikiValue();
 		} else { // this only is possible for values of Type:Page
