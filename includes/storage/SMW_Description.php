@@ -296,7 +296,8 @@ class SMWConceptDescription extends SMWDescription {
 	}
 
 	public function getQueryString( $asvalue = false ) {
-		$result = '[[' . $this->m_concept->getConceptQuery() . ']]';
+		$pageValue = SMWDataValueFactory::newDataItemValue( $this->m_concept );
+		$result = '[[' . $pageValue->getPrefixedText() . ']]';
 		if ( $asvalue ) {
 			return ' &lt;q&gt;' . $result . '&lt;/q&gt; ';
 		} else {
@@ -755,21 +756,21 @@ class SMWSomeProperty extends SMWDescription {
 
 	public function getQueryString( $asvalue = false ) {
 		$subdesc = $this->m_description;
-		$propertychain = $this->m_property->getWikiValue();
-		$propertyname = 'loop ...';
-		
+		$propertyChainString = $this->m_property->getLabel();
+		$propertyname = $propertyChainString;
+
 		while ( ( $propertyname != '' ) && ( $subdesc instanceof SMWSomeProperty ) ) { // try to use property chain syntax
-			$propertyname = $subdesc->getProperty()->getWikiValue();
+			$propertyname = $subdesc->getProperty()->getLabel();
 			if ( $propertyname != '' ) {
-				$propertychain .= '.' . $propertyname;
+				$propertyChainString .= '.' . $propertyname;
 				$subdesc = $subdesc->getDescription();
 			}
 		}
-		
+
 		if ( $asvalue ) {
-			return '&lt;q&gt;[[' . $propertychain . '::' . $subdesc->getQueryString( true ) . ']]&lt;/q&gt;';
+			return '&lt;q&gt;[[' . $propertyChainString . '::' . $subdesc->getQueryString( true ) . ']]&lt;/q&gt;';
 		} else {
-			return '[[' . $propertychain . '::' . $subdesc->getQueryString( true ) . ']]';
+			return '[[' . $propertyChainString . '::' . $subdesc->getQueryString( true ) . ']]';
 		}
 	}
 
