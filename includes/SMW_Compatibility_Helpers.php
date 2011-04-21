@@ -135,7 +135,7 @@ class SMWCompatibilityHelpers {
 				return array( SMWDataValueFactory::findTypeID( str_replace( '_', ' ', $dataItem->getDBkey() ) ) );
 			case '__con':
 				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_CONCEPT ) break;
-				array( $dataItem->getConceptQuery(), $dataItem->getDocumentation(), $dataItem->getQueryFeatures(), $dataItem->getSize(), $dataItem->getDepth() );
+				return array( $dataItem->getConceptQuery(), $dataItem->getDocumentation(), $dataItem->getQueryFeatures(), $dataItem->getSize(), $dataItem->getDepth() );
 			case '__err':
 				return array( false );
 			case '__pro':
