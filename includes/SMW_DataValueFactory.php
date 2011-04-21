@@ -92,6 +92,7 @@ class SMWDataValueFactory {
 		if ( array_key_exists( $typeid, self::$mTypeClasses ) ) { // direct response for basic types
 			$result = new self::$mTypeClasses[$typeid]( $typeid );
 		} elseif ( ( $typeid != '' ) && ( $typeid{0} != '_' ) ) { // custom type with linear conversion
+			//var_dump($typeid);var_dump(self::$mTypeClasses);exit;
 			$result = new self::$mTypeClasses['__lin']( $typeid );
 		} else { // type really unknown
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
