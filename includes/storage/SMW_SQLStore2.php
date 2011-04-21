@@ -718,11 +718,7 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn( 'SMWSQLStore2::deleteSubject (SMW)' );
 		wfRunHooks( 'SMWSQLStore2::deleteSubjectBefore', array( $this, $subject ) );
 
-		$this->deleteSemanticData( new SMWDIWikiPage(
-			$subject->getDBkey(),
-			$subject->getNamespace(),
-			$subject->getInterwiki()
-		) );
+		$this->deleteSemanticData( SMWDIWikiPage::newFromTitle( $subject );
 		$this->updateRedirects( $subject->getDBkey(), $subject->getNamespace() ); // also delete redirects, may trigger update jobs!
 
 		if ( $subject->getNamespace() == SMW_NS_CONCEPT ) { // make sure to clear caches
@@ -970,11 +966,7 @@ class SMWSQLStore2 extends SMWStore {
 		} else { // general move method that should be correct in all cases (equality support respected when updating redirects)
 			// Delete any existing data from new title:
 			// $newtitle should not have data, but let's be sure
-			$this->deleteSemanticData( new SMWDIWikiPage(
-				$newtitle->getDBkey(),
-				$newtitle->getNamespace(),
-				$subject->getInterwiki()
-			) );			
+			$this->deleteSemanticData( SMWDIWikiPage::newFromTitle( $newtitle );
 			$this->updateRedirects( $newtitle->getDBkey(), $newtitle->getNamespace() ); // may trigger update jobs!
 
 			// Move all data of old title to new position:
@@ -1503,7 +1495,7 @@ class SMWSQLStore2 extends SMWStore {
 				}
 			} elseif ( $row->smw_iw { 0 } != ':' ) { // refresh all "normal" interwiki pages by just clearing their content
 				$this->deleteSemanticData(
-					new SMWDIWikiPage( $row->smw_namespace, $row->smw_title, $row->smw_iw )
+					new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw )
 				);
 			}
 		}
