@@ -126,7 +126,7 @@ class SMWExporter {
 	 * @param $dataItems array of SMWDataItem objects for the given property
 	 * @param $data SMWExpData to add the data to
 	 */
-	static public function addPropertyValues( SMWDIProperty $property, $dataItems, SMWExpData &$expData ) {
+	static public function addPropertyValues( SMWDIProperty $property, array $dataItems, SMWExpData &$expData ) {
 		if ( $property->isUserDefined() ) {
 			$pe = SMWExporter::getResourceElement( $property );
 			foreach ( $dataItems as $dataItem ) {
