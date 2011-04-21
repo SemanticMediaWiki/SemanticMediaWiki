@@ -68,7 +68,7 @@ class SMWCompatibilityHelpers {
 				}
 				break;
 			case SMWDataItem::TYPE_GEO:
-				return new SMWDIGeoCoord( array( 'lat' => $dbkeys[0], 'lon' => $dbkeys[1] ), $typeid );
+				return new SMWDIGeoCoord( array( 'lat' => (float)$dbkeys[0], 'lon' => (float)$dbkeys[1] ), $typeid );
 				break;
 			case SMWDataItem::TYPE_CONTAINER:
 				break;
