@@ -163,18 +163,24 @@ class SMWSparqlDatabase {
 	 * might not be entirely correct. Especially, the SPARQL 1.1 HTTP error
 	 * codes for Update are not defined yet (April 15 2011).
 	 */
-	public function ping( $pingQueryEndpoint = true ){
-		if ( $pingQueryEndpoint ) {
+	public function ping( $endpointType = self::EP_TYPE_QUERY ){
+		if ( $endpointType == self::EP_TYPE_QUERY ) {
 			curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
 			curl_setopt( $this->m_curlhandle, CURLOPT_NOBODY, true );
-		} else {
+		} elseif ( $endpointType == self::EP_TYPE_UPDATE ) {
 			if ( $this->m_updateEndpoint == '' ) {
 				return false;
 			}
 			curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_updateEndpoint );
 			curl_setopt( $this->m_curlhandle, CURLOPT_NOBODY, false ); // 4Store gives 404 instead of 500 with CURLOPT_NOBODY
+		} else { // ( $endpointType == self::EP_TYPE_DATA )
+			if ( $this->m_dataEndpoint == '' ) {
+				return false;
+			} else { // try an empty POST
+				return $this->doHttpPost( '' );
+			}
 		}
-		
+
 		curl_exec( $this->m_curlhandle );
 
 		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
@@ -381,7 +387,7 @@ class SMWSparqlDatabase {
 
 		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
 			return true;
-		} else {
+		} else { ///TODO The error reporting based on SPARQL (Update) is not adequate for the HTTP POST protocol
 			$this->throwSparqlErrors( $this->m_dataEndpoint, $payload );
 			return false;
 		}
