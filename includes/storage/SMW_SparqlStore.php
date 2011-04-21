@@ -28,21 +28,24 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	}
 
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
-		parent::changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
-
 		$oldWikiPage = SMWDIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = SMWDIWikiPage::newFromTitle( $newtitle );
 		$oldExpResource = SMWExporter::getDataItemExpElement( $oldWikiPage );
 		$newExpResource = SMWExporter::getDataItemExpElement( $newWikiPage );
+		$namespaces = array( $oldExpResource->getNamespaceId() => $oldExpResource->getNamespace() );
+		$namespaces[$newExpResource->getNamespaceId()] = $newExpResource->getNamespace();
 		$oldUri = SMWTurtleSerializer::getTurtleNameForExpElement( $oldExpResource );
 		$newUri = SMWTurtleSerializer::getTurtleNameForExpElement( $newExpResource );
 
+		parent::changeTitle( $oldtitle, $newtitle, $pageid, $redirid ); // do this only here, so Imported from is not moved too early
+
 		$sparqlDatabase = smwfGetSparqlDatabase();
-		//$sparqlDatabase->insertDelete( "$newUri ?p ?o", "$oldUri ?p ?o" ); // this moves properties that are not correct, reparse this page
-		$sparqlDatabase->insertDelete( "?s ?p $newUri", "?s ?p $oldUri" );
+		$sparqlDatabase->insertDelete( "?s ?p $newUri", "?s ?p $oldUri", "?s ?p $oldUri", $namespaces );
 		if ( $oldtitle->getNamespace() == SMW_NS_PROPERTY ) {
-			$sparqlDatabase->insertDelete( "?s $newUri ?o", "?s $oldUri ?o" );
+			$sparqlDatabase->insertDelete( "?s $newUri ?o", "?s $oldUri ?o", "?s $oldUri ?o", $namespaces );
 		}
+		// Note that we cannot change oldUri to newUri in triple subjects,
+		// since some triples change due to the move. Use SMWUpdateJob.
 		$newUpdate = new SMWUpdateJob( $newtitle );
 		$newUpdate->run();
 		if ( $redirid != 0 ) { // update/create redirect page data
