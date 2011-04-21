@@ -11,7 +11,7 @@
  * @licence GNU GPL v3
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMDIGeoCoord extends SMWDataItem {
+class SMWDIGeoCoord extends SMWDataItem {
 
 	protected $coordinateSet;
 
