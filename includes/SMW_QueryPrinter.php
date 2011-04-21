@@ -132,13 +132,13 @@ abstract class SMWResultPrinter {
 	 * variable SMWResultPrinter::$maxRecursionDepth (in LocalSettings.php, after enableSemantics()).
 	 * Do this at your own risk.
 	 *
-	 * @param SMWQueryResult $results
-	 * @param array $params
-	 * @param $outputmode
+	 * @param $results SMWQueryResult
+	 * @param $params array
+	 * @param $outputmode integer
 	 *
 	 * @return string
 	 */
-	public function getResult( $results, $params, $outputmode ) {
+	public function getResult( SMWQueryResult $results, array $params, $outputmode ) {
 		$this->isHTML = false;
 		$this->hasTemplates = false;
 		
@@ -346,7 +346,7 @@ abstract class SMWResultPrinter {
 	 * 
 	 * @deprecated Use handleParameters instead
 	 */
-	protected function readParameters( /* array */ $params, $outputmode ) {
+	protected function readParameters( $params, $outputmode ) {
 		$this->m_params = $params;
 
 		if ( array_key_exists( 'intro', $params ) ) {

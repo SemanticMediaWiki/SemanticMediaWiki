@@ -22,13 +22,13 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 	/**
 	 * @see SMWResultPrinter::getResult
 	 * 
-	 * @param SMWQueryResult $results
-	 * @param array $params
-	 * @param $outputmode
+	 * @param $results SMWQueryResult
+	 * @param $params array
+	 * @param $outputmode integer
 	 * 
 	 * @return string
 	 */
-	public function getResult( /* SMWQueryResult */ $results, $params, $outputmode ) {
+	public function getResult( SMWQueryResult $results, array $params, $outputmode ) {
 		$format = false;
 		
 		/**
