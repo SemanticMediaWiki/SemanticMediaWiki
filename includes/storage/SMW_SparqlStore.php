@@ -28,6 +28,8 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	}
 
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
+		parent::changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
+
 		$oldWikiPage = SMWDIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = SMWDIWikiPage::newFromTitle( $newtitle );
 		$oldExpResource = SMWExporter::getDataItemExpElement( $oldWikiPage );
@@ -36,16 +38,17 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		$newUri = SMWTurtleSerializer::getTurtleNameForExpElement( $newExpResource );
 
 		$sparqlDatabase = smwfGetSparqlDatabase();
-		$sparqlDatabase->insertDelete( "$newUri ?p ?o", "$oldUri ?p ?o" ); /// FIXME this moves properties that are not correct, reparse this page
+		//$sparqlDatabase->insertDelete( "$newUri ?p ?o", "$oldUri ?p ?o" ); // this moves properties that are not correct, reparse this page
 		$sparqlDatabase->insertDelete( "?s ?p $newUri", "?s ?p $oldUri" );
 		if ( $oldtitle->getNamespace() == SMW_NS_PROPERTY ) {
 			$sparqlDatabase->insertDelete( "?s $newUri ?o", "?s $oldUri ?o" );
 		}
-
+		$newUpdate = new SMWUpdateJob( $newtitle );
+		$newUpdate->run();
 		if ( $redirid != 0 ) { // update/create redirect page data
-			/// FIXME reparse this page
+			$oldUpdate = new SMWUpdateJob( $oldtitle );
+			$oldUpdate->run();
 		}
-		parent::changeTitle( $oldtitle, $newtitle, $pageid, $redirid );
 	}
 
 	public function doDataUpdate( SMWSemanticData $data ) {
@@ -120,7 +123,11 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		$resourceUri = SMWTurtleSerializer::getTurtleNameForExpElement( $expNsResource );
 		$rediUri = SMWTurtleSerializer::getTurtleNameForExpElement( SMWExporter::getSpecialPropertyResource( '_REDI' ) );
 		$skeyUri = SMWTurtleSerializer::getTurtleNameForExpElement( SMWExporter::getSpecialPropertyResource( '_SKEY' ) );
-		$sparqlResult = smwfGetSparqlDatabase()->select( '*', "$resourceUri $skeyUri ?s  OPTIONAL { $resourceUri $skeyUri ?s }", array( 'LIMIT' => 1 ) );
+
+		$sparqlResult = smwfGetSparqlDatabase()->select( '*',
+		                    "$resourceUri $skeyUri ?s  OPTIONAL { $resourceUri $skeyUri ?s }",
+		                    array( 'LIMIT' => 1 ),
+		                    array( $expNsResource->getNamespaceId() => $expNsResource->getNamespace() ) );
 
 		$firstRow = $sparqlResult->current();
 		if ( $firstRow === false ) {
