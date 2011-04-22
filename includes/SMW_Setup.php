@@ -109,7 +109,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWDataValueFactory']   	= $smwgIP . 'includes/SMW_DataValueFactory.php';
 	$wgAutoloadClasses['SMWDataValue']           	= $smwgIP . 'includes/SMW_DataValue.php';
 	$wgAutoloadClasses['SMWQueryLanguage']          = $smwgIP . 'includes/SMW_QueryLanguage.php';
-	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $smwgIP . 'includes/SMW_Compatibility_Helpers.php';
+	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $smwgIP . 'includes/SMW_CompatibilityHelpers.php';
 
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';
