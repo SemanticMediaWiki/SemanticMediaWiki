@@ -45,6 +45,26 @@ $smwgIP = dirname( __FILE__ ) . '/';
 $smwgDefaultStore = "SMWSQLStore2";
 ##
 
+###
+# Configure SPARQL database connection for Semantic MediaWiki. This is used
+# when SPARQL-based features are enabled, e.g. when using SMWSparqlStore as
+# the $smwgDefaultStore.
+#
+# The default class SMWSparqlDatabase works with many databases that support
+# SPARQL and SPARQL Update. Three different endpoints (service URLs) are given
+# for query (reading queries like SELECT), update (SPARQL Update queries), and
+# data (SPARQL HTTP Protocol for Graph Management). The query endpoint is
+# necessary, but the update and data endpoints can be omitted if not supported.
+# This will lead to reduced functionality (e.g. the SMWSparqlStore will not
+# work if Update is not available). The data endpoint is always optional, but
+# in some SPARQL databases this method is more efficient than update.
+##
+$smwgSparqlDatabase = 'SMWSparqlDatabase';
+$smwgSparqlQueryEndpoint = 'http://localhost:8080/sparql/';
+$smwgSparqlUpdateEndpoint = 'http://localhost:8080/update/';
+$smwgSparqlDataEndpoint = 'http://localhost:8080/data/';
+##
+
 // load global constants and setup functions
 require_once( 'includes/SMW_Setup.php' );
 

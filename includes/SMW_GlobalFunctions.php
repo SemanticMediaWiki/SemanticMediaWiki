@@ -296,9 +296,10 @@ function &smwfGetStore() {
  * @return SMWSparqlDatabase or null
  */
 function &smwfGetSparqlDatabase() {
-	global $smwgSparqlDatabaseMaster;
+	global $smwgSparqlDatabase, $smwgSparqlQueryEndpoint, $smwgSparqlUpdateEndpoint,
+	       $smwgSparqlDataEndpoint, $smwgSparqlDatabaseMaster;
 	if ( !isset( $smwgSparqlDatabaseMaster ) ) {
-		$smwgSparqlDatabaseMaster = new SMWSparqlDatabase( 'http://localhost:8080/sparql/', 'http://localhost:8080/update/', 'http://localhost:8080/data/' );
+		$smwgSparqlDatabaseMaster = new $smwgSparqlDatabase( $smwgSparqlQueryEndpoint, $smwgSparqlUpdateEndpoint, $smwgSparqlDataEndpoint );
 	}
 	return $smwgSparqlDatabaseMaster;
 }
