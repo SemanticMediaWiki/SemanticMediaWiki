@@ -7192,6 +7192,14 @@ $messages['mr'] = array(
 	'smw_result_noresults' => 'माफ करा, निकाल नाहीत.',
 );
 
+/** Malay (Bahasa Melayu)
+ * @author Anakmalaysia
+ */
+$messages['ms'] = array(
+	'smw_result_prev' => 'Sebelumnya',
+	'smw_result_next' => 'Berikutnya',
+);
+
 /** Maltese (Malti)
  * @author Chrisportelli
  * @author Roderick Mallia
@@ -9834,7 +9842,7 @@ $messages['sr-ec'] = array(
 	'smw_nofloat' => '"$1" није број.',
 	'smw_infinite' => 'Бројеви дужине као "$1" нису подржани.',
 	'smw_infinite_unit' => 'Конверзија у јединице "$1" је као резултат дала предугачак број.',
-	'smw_novalues' => 'Ниједна вредност није наведена.',
+	'smw_novalues' => 'Нисте навели вредности.',
 	'smw_unsupportedprefix' => 'Префикси за бројеве ("$1") нису подржани.',
 	'smw_nodatetime' => 'Формат датума "$1" није разумљив.',
 	'smw_toomanyclosing' => 'Изгледа да је превише случајева типа "$1" у упиту.',
