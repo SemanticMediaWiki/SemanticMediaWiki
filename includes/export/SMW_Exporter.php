@@ -234,6 +234,52 @@ class SMWExporter {
 	}
 
 	/**
+	 * Try to find an SMWDataItem that the given SMWExpElement might
+	 * represent. Returns null if this attempt failed.
+	 *
+	 * @param SMWExpElement $expElement
+	 * @return SMWDataItem or null
+	 */
+	static public function findDataItemForExpElement( SMWExpElement $expElement ) {
+		global $wgContLang;
+
+		$dataItem = null;
+		if ( $expElement instanceof SMWExpResource ) {
+			$uri = $expElement->getUri();
+			$wikiNamespace = self::getNamespaceUri( 'wiki' );
+			if ( strpos( $uri, $wikiNamespace ) === 0 ) {
+				$localName = substr( $uri, strlen( $wikiNamespace ) );
+				$dbKey = urldecode( self::decodeURI( $localName ) );
+				$parts = explode( ':', $dbKey, 2 );
+				if ( count( $parts ) == 1 ) {
+					$dataItem = new SMWDIWikiPage( $dbKey, NS_MAIN, '' );
+				} else {
+					// try the by far most common cases directly before using Title
+					$namespaceName = str_replace( '_', ' ', $parts[0] );
+					$namespaceId = -1;
+					foreach ( array( SMW_NS_PROPERTY, NS_CATEGORY, NS_USER, NS_HELP ) as $nsId ) {
+						if ( $namespaceName == $wgContLang->getNsText( $nsId ) ) {
+							$namespaceId = $nsId;
+							break;
+						}
+					}
+					if ( $namespaceId != -1 ) {
+						$dataItem = new SMWDIWikiPage( $parts[1], $namespaceId, '' );
+					} else {
+						$title = Title::newFromDBkey( $dbKey );
+						if ( $title !== null ) {
+							$dataItem = SMWDIWikiPage::newFromTitle( $title );
+						}
+					}
+				}
+			}
+		} else {
+			// TODO
+		}
+		return $dataItem;
+	}
+
+	/**
 	 * Determine what kind of OWL property some SMW property should be exported as.
 	 * The input is an SMWTypesValue object, a typeid string, or empty (use default)
 	 * @todo An improved mechanism for selecting property types here is needed.
