@@ -128,6 +128,7 @@ class SMWSparqlResultParser {
 		} elseif ( $prevTag == 'boolean' ) { // no "results" in this case
 			$literal = new SMWExpLiteral( $dataString, 'http://www.w3.org/2001/XMLSchema#boolean' );
 			$this->m_data = array( array( $literal ) );
+			$this->m_header = array( '' => 0 );
 		}
 	}
 
