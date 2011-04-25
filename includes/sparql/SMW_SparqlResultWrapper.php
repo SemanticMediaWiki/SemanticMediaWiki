@@ -76,6 +76,27 @@ class SMWSparqlResultWrapper implements Iterator {
 	}
 
 	/**
+	 * Check if the result is what one would get for a SPARQL ASK query
+	 * that returned true. Returns false in all other cases (including
+	 * the case that the results do not look at all like the result of
+	 * an ASK query).
+	 *
+	 * @return boolean
+	 */
+	public function isBooleanTrue() {
+		if ( count( $this->m_data ) == 1 ) {
+			$row = reset( $this->m_data );
+			$expElement = reset( $row );
+			if ( ( count( $row ) == 1 ) && ( $expElement instanceof SMWExpLiteral ) &&
+			     ( $expElement->getLexicalForm() == 'true' ) &&
+			     ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#boolean' ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Reset iterator to position 0. Standard method of Iterator.
 	 */
 	public function rewind() {
