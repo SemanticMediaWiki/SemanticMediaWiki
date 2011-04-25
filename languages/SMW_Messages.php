@@ -8507,6 +8507,7 @@ J\'arzultà a peulo esse pa coma spetà.',
 	'smw_devel_warning' => "Sta funsion-sì a l'é al moment sota dësvlup, e a podrìa marcé pa completament.
 Ch'a salva ij sò dat prima ëd dovrela.",
 	'smw_notemplategiven' => 'Dà un valor për ël paràmetr "stamp" an manera che sto formà-sì d\'arcesta a travaja.',
+	'smw_db_sparqlqueryproblem' => "L'arzultà dl'anterogassion a peul pa esse otnùa dal database SPARQL. Sto eror a peul esse temporani o andiché n'eror ant 1.nntp.aioe.orgl software d1.nntp.aioe.orgl database.",
 	'smw_type_header' => 'Proprietà dël tipo "$1".',
 	'smw_typearticlecount' => "Mostré $1 {{PLURAL:$1|la proprietà|le proprietà}} ch'a deuvro sto tipo-sì.",
 	'smw_attribute_header' => 'Pàgine ch\'a deuvro la proprietà "$1".',
