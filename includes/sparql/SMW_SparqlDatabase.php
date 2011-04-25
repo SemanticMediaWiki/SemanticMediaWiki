@@ -228,6 +228,21 @@ class SMWSparqlDatabase {
 	}
 
 	/**
+	 * ASK wrapper.
+	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
+	 * rdfs, property, xsd, so these do not have to be included in
+	 * $extraNamespaces.
+	 *
+	 * @param $where string WHERE part of the query, without surrounding { }
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @return SMWSparqlResultWrapper
+	 */
+	public function ask( $where, $extraNamespaces = array() ) {
+		$sparql = self::getPrefixString( $extraNamespaces ) . "ASK {\n" . $where . "\n}";
+		return $this->doQuery( $sparql );
+	}
+
+	/**
 	 * DELETE wrapper.
 	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
 	 * rdfs, property, xsd, so these do not have to be included in
@@ -309,6 +324,7 @@ class SMWSparqlDatabase {
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function doQuery( $sparql ) {
+		debug_zval_dump( $sparql );
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
 		$parameterString = "query=" . urlencode( $sparql );
