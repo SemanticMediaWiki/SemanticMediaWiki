@@ -69,6 +69,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		$turtleSerializer->finishSerialization();
 		$triples = $turtleSerializer->flushContent();
 		$prefixes = $turtleSerializer->flushSparqlPrefixes();
+
 		smwfGetSparqlDatabase()->insertData( $triples, $prefixes );
 	}
 
@@ -161,6 +162,29 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	protected function deleteSparqlData( SMWExpResource $expResource ) {
 		$resourceUri = SMWTurtleSerializer::getTurtleNameForExpElement( $expResource );
 		smwfGetSparqlDatabase()->delete( "$resourceUri ?p ?o", "$resourceUri ?p ?o"  );
+	}
+
+
+	public function getQueryResult( SMWQuery $query ) {
+		global $smwgIgnoreQueryErrors, $smwgQSortingSupport;
+
+		if ( !$smwgIgnoreQueryErrors &&
+		     ( $query->querymode != SMWQuery::MODE_DEBUG ) &&
+		     ( count( $query->getErrors() ) > 0 ) ) {
+			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this, false );
+			// NOTE: we check this here to prevent unnecessary work, but we may need to check it after query processing below again in case more errors occurred
+		}
+
+		if ( $query->querymode == SMWQuery::MODE_NONE ) { // don't query, but return something to printer
+			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this, true );
+		} elseif ( $query->querymode == SMWQuery::MODE_DEBUG || $query->querymode == SMWQuery::MODE_COUNT ) {
+			return "Not implemented.\n";
+		} else {
+			$queryEngine = new SMWSparqlStoreQueryEngine( $this );
+			$queryResult = $queryEngine->getInstanceQueryResult( $query ); 
+// 			debug_zval_dump( $queryResult );
+			return $queryResult;
+		}
 	}
 
 }
