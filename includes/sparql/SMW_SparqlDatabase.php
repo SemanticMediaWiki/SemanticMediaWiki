@@ -324,7 +324,7 @@ class SMWSparqlDatabase {
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function doQuery( $sparql ) {
-		debug_zval_dump( $sparql );
+		//debug_zval_dump( $sparql );
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
 		$parameterString = "query=" . urlencode( $sparql );
@@ -459,6 +459,8 @@ class SMWSparqlDatabase {
 			}
 		} elseif ( $error == CURLE_COULDNT_CONNECT ) {
 			return; // fail gracefully if backend is down
+		} elseif ( $error == 52 ) { // 52 == CURLE_GOT_NOTHING, but this constant is not defined in PHP, it seems
+			return; // happens when 4Store crashes, do not bother the wiki
 		} else {
 			throw new Exception( "Failed to communicate with SPARQL store.\n Endpoint: " . $endpoint . "\n Curl error: '" . curl_error( $this->m_curlhandle ) . "' ($error)" );
 		}
