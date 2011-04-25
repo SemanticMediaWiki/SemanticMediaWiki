@@ -65,6 +65,7 @@ class SMWDIUri extends SMWDataItem {
 		return SMWDataItem::TYPE_URI;
 	}
 
+	/// @todo This should be changed to the spelling getUri().
 	public function getURI() {
 		return $this->m_scheme . ':' . $this->m_hierpart .
 			( $this->m_query ? '?' . $this->m_query : '' ) . 
