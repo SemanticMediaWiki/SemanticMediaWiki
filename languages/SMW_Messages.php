@@ -153,6 +153,9 @@ Results might not be as expected.',
 Backup your data before using it.',
 	'smw_notemplategiven'   => 'Provide a value for the parameter "template" for this query format to work.',
 
+	// Messages from the database backend
+	'smw_db_sparqlqueryproblem'   => 'The query result could not be obtained from the SPARQL database. This error might be temporary or indicate a bug in the database software.',
+
 	// Messages for pages of types and properties
 	'smw_type_header'             => 'Properties of type "$1"',
 	'smw_typearticlecount'        => 'Showing $1 {{PLURAL:$1|property|properties}} using this type.',

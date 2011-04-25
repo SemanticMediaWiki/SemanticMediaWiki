@@ -302,7 +302,8 @@ class SMWSparqlStoreQueryEngine {
 
 		$result = new SMWQueryResult(  $query->getDescription()->getPrintrequests(), $query, $resultDataItems, $this->m_store, $hasFurtherResults );
 		if ( $sparqlResult->getErrorCode() != SMWSparqlResultWrapper::ERROR_NOERROR ) {
-			$result->addErrors( array( 'The query result could not be obtained from the SPARQL database. This error might be temporary or indicate a bug in the database software.' ) );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+			$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryproblem' ) ) );
 		}
 		return $result;
 	}
