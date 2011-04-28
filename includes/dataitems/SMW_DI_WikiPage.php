@@ -7,6 +7,8 @@
 /**
  * This class implements wiki page data items.
  *
+ * @since 1.6
+ *
  * @author Markus Krötzsch
  * @ingroup SMWDataItems
  */

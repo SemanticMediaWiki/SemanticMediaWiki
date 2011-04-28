@@ -7,6 +7,8 @@
 /**
  * This class implements number data items.
  *
+ * @since 1.6
+ *
  * @author Markus Krötzsch
  * @ingroup SMWDataItems
  */

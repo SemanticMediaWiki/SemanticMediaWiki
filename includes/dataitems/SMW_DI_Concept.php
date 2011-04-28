@@ -10,6 +10,8 @@
  * well vanish at some point since Container values could encode this data
  * just as well.
  *
+ * @since 1.6
+ *
  * @author Markus Krötzsch
  * @ingroup SMWDataItems
  */

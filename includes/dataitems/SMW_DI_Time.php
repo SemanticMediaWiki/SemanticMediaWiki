@@ -22,6 +22,8 @@
  * (exactly) passed since a given date, but also for the location of leap
  * years.
  *
+ * @since 1.6
+ *
  * @author Markus Krötzsch
  * @ingroup SMWDataItems
  */

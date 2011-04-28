@@ -6,6 +6,8 @@
 
 /**
  * Exception to be thrown when input string is too long.
+ * 
+ * @since 1.6
  */
 class SMWStringLengthException extends SMWDataItemException {
 	public function __construct( $string ) {
@@ -15,6 +17,8 @@ class SMWStringLengthException extends SMWDataItemException {
 
 /**
  * This class implements (length restricted) string data items.
+ *
+ * @since 1.6
  *
  * @author Markus Krötzsch
  * @ingroup SMWDataItems

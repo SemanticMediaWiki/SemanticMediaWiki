@@ -11,6 +11,8 @@
  * predefined (built-in) properties, and maintains an association of
  * property IDs, localized labels, and aliases.
  *
+ * @since 1.6
+ *
  * @author Markus Krötzsch
  * @ingroup SMWDataItems
  */

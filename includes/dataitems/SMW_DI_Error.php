@@ -9,6 +9,8 @@
  * pass around lists of error messages within the application. They are not
  * meant to be stored or exported, but they can be useful to a user.
  *
+ * @since 1.6
+ *
  * @author Markus Krötzsch
  * @ingroup SMWDataItems
  */

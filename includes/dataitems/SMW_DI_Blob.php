@@ -7,6 +7,8 @@
 /**
  * This class implements blob (long string) data items.
  *
+ * @since 1.6
+ *
  * @author Markus Krötzsch
  * @ingroup SMWDataItems
  */

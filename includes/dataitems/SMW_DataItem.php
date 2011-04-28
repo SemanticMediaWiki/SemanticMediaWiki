@@ -18,6 +18,8 @@
 
 /**
  * Exception to be thrown when data items are created from unsuitable inputs.
+ * 
+ * @since 1.6
  */
 class SMWDataItemException extends Exception {
 }
@@ -37,6 +39,7 @@ class SMWDataItemException extends Exception {
  * such selection procedures -- they are nothing but data and provide only
  * minimal interfaces for accessing the stored data (or aspects of it).
  *
+ * @since 1.6
  *
  * @ingroup SMWDataItems
  */

@@ -314,7 +314,7 @@ class SMWResultArray {
 
 	/**
 	 * Compatibility alias for getNextDatItem().
-	 * @deprecated Call getNextDataValue() or getNextDataItem() directly as needed. Method will vanish before SMW 1.7.
+	 * @deprecated since 1.6. Call getNextDataValue() or getNextDataItem() directly as needed. Method will vanish before SMW 1.7.
 	 */
 	public function getNextObject() {
 		return $this->getNextDataValue();
@@ -322,6 +322,8 @@ class SMWResultArray {
 
 	/**
 	 * Return the next SMWDataItem object or false if no further object exists.
+	 * 
+	 * @since 1.6
 	 * 
 	 * @return SMWDataItem or false
 	 */
@@ -336,6 +338,8 @@ class SMWResultArray {
 	/**
 	 * Return an SMWDataValue object for the next SMWDataItem object or
 	 * false if no further object exists.
+	 * 
+	 * @since 1.6
 	 * 
 	 * @return SMWDataValue or false
 	 */
@@ -360,6 +364,8 @@ class SMWResultArray {
 	 * 
 	 * @param integer $outputMode
 	 * @param mixed $linker
+	 * 
+	 * @return string or false
 	 */
 	public function getNextText( $outputMode, $linker = null ) {
 		$dv = $this->getNextDataValue();
