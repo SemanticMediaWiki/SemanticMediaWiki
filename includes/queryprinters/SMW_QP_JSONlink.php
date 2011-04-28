@@ -66,7 +66,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 					if ( $pr->getMode() != SMWPrintRequest::PRINT_THIS ) {
 						$values = array();
 						$finalvalues = '';
-						while ( ( $value = $field->getNextObject() ) !== false ) {
+						while ( ( $value = $field->getNextDataValue() ) !== false ) {
 							$finalvalues = '';
 							switch ( $value->getTypeID() ) {
 								case '_geo':

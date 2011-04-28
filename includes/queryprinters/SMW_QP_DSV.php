@@ -89,11 +89,11 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 			$rowItems = array();
 			
 			// Loop over their fields (properties).
-			foreach ( $row as $field ) {
+			foreach ( $row as /* SMWResultArray */ $field ) {
 				$itemSegments = array();
 				
 				// Loop over all values for the property.
-				while ( ( $object = $field->getNextObject() ) !== false ) {
+				while ( ( $object = $field->getNextDataValue() ) !== false ) {
 					$itemSegments[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
 				} 
 				

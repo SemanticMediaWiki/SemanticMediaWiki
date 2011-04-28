@@ -59,10 +59,10 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 			while ( $row = $res->getNext() ) {
 				$row_items = array();
 				
-				foreach ( $row as $field ) {
+				foreach ( $row as /* SMWResultArray */ $field ) {
 					$growing = array();
 					
-					while ( ( $object = $field->getNextObject() ) !== false ) {
+					while ( ( $object = $field->getNextDataValue() ) !== false ) {
 						$growing[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
 					} 
 					

@@ -64,17 +64,17 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			while ( $row !== false ) {
 				$creators = array();
 				$dates = array();
-				$wikipage = $row[0]->getNextObject(); // get the object
+				$wikipage = $row[0]->getNextDataValue(); // get the object
 				foreach ( $row as $field ) {
 					// for now we ignore everything but creator and date, later we may
 					// add more things like geolocs, categories, and even a generic
 					// mechanism to add whatever you want :)
 					$req = $field->getPrintRequest();
-					if ( strtolower( $req->getLabel() ) == "creator" ) {
+					if ( strtolower( $req->getLabel() ) == 'creator' ) {
 						foreach ( $field->getContent() as $entry ) {
 							$creators[] = $entry->getShortWikiText();
 						}
-					} elseif ( ( strtolower( $req->getLabel() ) == "date" ) && ( $req->getTypeID() == "_dat" ) ) {
+					} elseif ( ( strtolower( $req->getLabel() ) == 'date' ) && ( $req->getTypeID() == '_dat' ) ) {
 						foreach ( $field->getContent() as $entry ) {
 							$dates[] = $entry->getXMLSchemaDate();
 						}
@@ -112,7 +112,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 			foreach ( $items as $item ) {
 				$result .= $item->text();
 			}
-			$result .= "</rdf:RDF>";
+			$result .= '</rdf:RDF>';
 		} else { // just make link to feed
 			if ( $this->getSearchLabel( $outputmode ) ) {
 				$label = $this->getSearchLabel( $outputmode );
