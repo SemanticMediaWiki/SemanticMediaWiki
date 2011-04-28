@@ -33,6 +33,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 		if ( $this->limit > 0 ) {
 			$store = smwfGetStore();
 			$desc = new SMWConceptDescription( $this->mTitle );
+			
 			if ( $this->from != '' ) {
 				$dv = SMWWikiPageValue::makePage( $this->from, NS_MAIN ); // make a dummy wiki page as boundary
 				$fromdesc = new SMWValueDescription( $dv, SMW_CMP_GEQ );
@@ -47,6 +48,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 			} else {
 				$order = 'ASC';
 			}
+			
 			$desc->addPrintRequest( new SMWPrintRequest( SMWPrintRequest::PRINT_THIS, '' ) );
 			$query = new SMWQuery( $desc );
 			$query->sortkeys[''] = $order;
@@ -54,13 +56,16 @@ class SMWConceptPage extends SMWOrderedListPage {
 
 			$result = $store->getQueryResult( $query );
 			$row = $result->getNext();
+			
 			while ( $row !== false ) {
-				$this->articles[] = end( $row )->getNextObject();
+				$this->articles[] = end( $row )->getNextDataValue();
 				$row = $result->getNext();
 			}
+			
 			if ( $order == 'DESC' ) {
 				$this->articles = array_reverse( $this->articles );
 			}
+			
 			$this->m_errors = $query->getErrors();
 		} else {
 			$this->articles = array();
@@ -98,6 +103,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 	 */
 	private function formatList( $cutoff = 6 ) {
 		$end = count( $this->articles );
+		
 		if ( $end > $this->limit ) {
 			if ( $this->until != '' ) {
 				$start = 1;
@@ -115,6 +121,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 			// for short lists of articles
 			return $this->shortList( $start, $end, $this->articles );
 		}
+		
 		return '';
 	}
 

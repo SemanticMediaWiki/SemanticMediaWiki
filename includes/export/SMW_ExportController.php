@@ -237,7 +237,7 @@ class SMWExportController {
 					$pinst = new SMWDIProperty( '_INST' );
 	
 					while ( $resarray !== false ) {
-						$instance = end( $resarray )->getNextObject();
+						$instance = end( $resarray )->getNextDataValue();
 	
 						$stb = new SMWSmallTitle();
 						$stb->dbkey = $instance->getDBkey();

@@ -270,6 +270,7 @@ class SMWSearchByProperty extends SpecialPage {
 	 *
 	 * @param[in] $count int  How many entities have the exact same value on the property?
 	 * @param[in] $greater bool  Should the values be bigger? Set false for smaller values
+	 * 
 	 * @return array of array of SMWWikiPageValue, SMWDataValue with the first being the entity, and the second the value
 	 */
 	private function getNearbyResults( $count, $greater = true ) {
@@ -298,15 +299,18 @@ class SMWSearchByProperty extends SpecialPage {
 
 		$result = $results->getNext();
 		$ret = array();
+		
 		while ( $result ) {
-			array_push( $ret, array( $result[0]->getNextObject(), $result[1]->getNextObject() ) );
+			array_push( $ret, array( $result[0]->getNextDataValue(), $result[1]->getNextDataValue() ) );
 			$result = $results->getNext();
 		}
+		
 		if ( !$greater ) {
 			$temp = array();
 			while ( $ret ) array_push( $temp, array_pop( $ret ) );
 			$ret = $temp;
 		}
+		
 		return $ret;
 	}
 
@@ -325,4 +329,5 @@ class SMWSearchByProperty extends SpecialPage {
 
 		return $html;
 	}
+	
 }
