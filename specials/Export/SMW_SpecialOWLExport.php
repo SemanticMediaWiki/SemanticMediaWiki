@@ -1,23 +1,7 @@
 <?php
 
 /**
- * File holding the SMWSpecialOWLExport class for the Special:ExportRDF page.
- *
- * @file SMW_SpecialOWLExport.php
- *
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- */
-
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'Not an entry point.' );
-}
-
-/**
- * This special page for MediaWiki implements an OWL-export of semantic data,
+ * This special page (Special:ExportRDF) for MediaWiki implements an OWL-export of semantic data,
  * gathered both from the annotations in articles, and from metadata already
  * present in the database.
  *
@@ -25,6 +9,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
  * @ingroup SpecialPage
  *
  * @author Markus Krötzsch
+ * @author Jeroen De Dauw
  */
 class SMWSpecialOWLExport extends SpecialPage {
 	
