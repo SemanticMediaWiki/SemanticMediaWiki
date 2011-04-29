@@ -40,7 +40,7 @@ abstract class SMWQueryPage extends QueryPage {
 	 * @param $shownavigation show navigation like "next 200"?
 	 */
 	function doQuery( $offset, $limit, $shownavigation = true ) {
-		global $wgUser, $wgOut, $wgContLang;
+		global $wgOut, $wgContLang;
 
 		$options = new SMWRequestOptions();
 		$options->limit = $limit;
@@ -49,7 +49,7 @@ abstract class SMWQueryPage extends QueryPage {
 		$res = $this->getResults( $options );
 		$num = count( $res );
 
-		$sk = $wgUser->getSkin();
+		$sk = $this->getSkin();
 		$sname = $this->getName();
 
 		if ( $shownavigation ) {
@@ -95,6 +95,23 @@ abstract class SMWQueryPage extends QueryPage {
 		}
 		return $num;
 	}
+
+    /**
+     * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
+     *
+     * @since 1.6
+     *
+     * @return Skin
+     */
+    public function getSkin() {
+        if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
+            return parent::getSkin();
+        }
+        else {
+            global $wgUser;
+            return $wgUser->getSkin();
+        }
+    }    
 
 }
 

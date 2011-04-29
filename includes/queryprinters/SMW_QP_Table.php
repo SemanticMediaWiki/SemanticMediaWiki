@@ -90,4 +90,5 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	public function getParameters() {
 		return array_merge( parent::getParameters(), parent::textDisplayParameters() );
 	}
+	
 }

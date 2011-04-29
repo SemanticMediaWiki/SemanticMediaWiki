@@ -112,7 +112,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 	public function getParameters() {
 		$params = parent::getParameters();
-		
+
 		$params['embedformat'] = new Parameter( 'embedformat' );
 		$params['embedformat']->setDescription( wfMsg( 'smw_paramdesc_embedformat' ) );
 		$params['embedformat']->setDefault( '' );
