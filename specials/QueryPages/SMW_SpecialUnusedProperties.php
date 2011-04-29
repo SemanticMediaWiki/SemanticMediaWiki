@@ -1,27 +1,13 @@
 <?php
 
 /**
- * File holding the SMWSpecialUnusedProperties class for the Special:UnusedProperties page. 
+ * This special page (Special:UnusedProperties) for MediaWiki shows all unused properties.
  *
  * @file SMW_SpecialUnusedProperties.php
- * 
+ *
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- */
-
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'Not an entry point.' );
-}
-
-/**
- * This special page for MediaWiki shows all unused properties.
- * 
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
- * 
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */

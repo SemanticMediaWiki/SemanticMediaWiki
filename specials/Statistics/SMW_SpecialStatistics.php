@@ -11,11 +11,6 @@
  * @author Daniel M. Herzig
  * @author Jeroen De Dauw
  */
-
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'Not an entry point.' );
-}
-
 class SMWSpecialSemanticStatistics extends SpecialPage {
 
 	public function __construct() {

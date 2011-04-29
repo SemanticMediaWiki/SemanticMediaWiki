@@ -1,24 +1,10 @@
 <?php
 
 /**
- * File holding the SMWSpecialWantedProperties class for the Special:WantedProperties page. 
+ * This special page (Special:WantedProperties) for MediaWiki shows all wanted properties (used but not having a page).
  *
  * @file SMW_SpecialWantedProperties.php
- * 
- * @ingroup SMWSpecialPage
- * @ingroup SpecialPage
  *
- * @author Markus Krötzsch
- * @author Jeroen De Dauw
- */
-
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'Not an entry point.' );
-}
-
-/**
- * This special page for MediaWiki shows all wanted properties (used but not having a page).
- * 
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  * 
@@ -49,6 +35,7 @@ class SMWSpecialWantedProperties extends SpecialPage {
 		
 		wfProfileOut( 'smwfDoSpecialWantedProperties (SMW)' );	
 	}
+
 }
 
 /**
@@ -90,4 +77,5 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	function getResults( $requestoptions ) {
 		return smwfGetStore()->getWantedPropertiesSpecial( $requestoptions );
 	}
+    
 }
