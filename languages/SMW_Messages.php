@@ -1352,6 +1352,40 @@ $messages['bg'] = array(
 	'smwadmin' => 'Администраторски функции за Semantic MediaWiki',
 );
 
+/** Bengali (বাংলা)
+ * @author Wikitanvir
+ */
+$messages['bn'] = array(
+	'smw_viewasrdf' => 'আরডিএফ ফিড',
+	'smw_finallistconjunct' => ', এবং',
+	'smw_dsv_link' => 'ডিএসভি',
+	'smw_printername_auto' => 'স্বয়ংক্রিয়',
+	'smw_printername_csv' => 'সিএসভি রপ্তাপি',
+	'smw_printername_dsv' => 'ডিএসভি রপ্তাপি',
+	'smw_printername_debug' => 'ডিবাগ কোয়েরি (বিশেষজ্ঞদের জন্য)',
+	'smw_printername_json' => 'জেএসঅন রপ্তানি',
+	'smw_printername_list' => 'তালিকা',
+	'smw_printername_rss' => 'আরএসএস রপ্তানি',
+	'smw_printername_table' => 'ছক',
+	'smw_printername_broadtable' => 'প্রশস্ত ছক',
+	'smw_printername_template' => 'টেম্পলেট',
+	'smw_printername_rdf' => 'আরডিএফ রপ্তানি',
+	'smw_ask_queryhead' => 'কোয়েরি',
+	'smw_sbv_value' => 'মান:',
+	'smw_sbv_submit' => 'ফলাফল খুঁজুন',
+	'browse' => 'উইকি ব্রাউজ',
+	'smw_browse_go' => 'চলো',
+	'smw_pp_from' => 'পাতা থেকে',
+	'smw_pp_submit' => 'ফলাফল খুঁজুন',
+	'smw_result_prev' => 'পূর্ববর্তী',
+	'smw_result_next' => 'পরবর্তী',
+	'smw_result_results' => 'ফলাফল',
+	'smw_result_noresults' => 'ফলাফল নেই।',
+	'smw_smwadmin_datarefreshbutton' => 'উপাত্ত হালনাগাদ শুরু',
+	'smw_smwadmin_datarefreshstop' => 'এই হালানাগাদ বন্ধ করুন',
+	'smw_smwadmin_datarefreshstopconfirm' => 'হ্যাঁ, আমি নিশ্চিত।',
+);
+
 /** Breton (Brezhoneg)
  * @author Fohanno
  * @author Fulup
@@ -11287,7 +11321,7 @@ Hãy sao lưu dữ liệu của bạn trước khi dùng nó.',
 	'smw_attributearticlecount' => 'Hiển thị $1 trang dùng thuộc tính này.{{PLURAL:$1||}}',
 	'smw_subproperty_header' => 'Thuộc tính con',
 	'smw_concept_header' => 'Trang về khái niệm “$1”',
-	'smw_rss_description' => '$1 feed RSS',
+	'smw_rss_description' => 'Nguồn tin RSS của $1',
 	'exportrdf' => 'Xuất trang ra RDF',
 	'smw_exportrdf_docu' => 'Trang này cho phép bạn lấy dữ liệu từ trang theo dạng RDF.
 Để xuất trang, gõ vào tựa đề trong khung dưới đây, một dòng một tựa đề.',
