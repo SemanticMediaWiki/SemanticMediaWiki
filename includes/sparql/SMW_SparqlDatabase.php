@@ -377,7 +377,9 @@ class SMWSparqlDatabase {
 	 * method does not throw anything, then an empty result with an error
 	 * code is returned.
 	 * 
-	 * @note This method currently is specific to 4Store. It uses POST parameters that are not given in the specification.
+	 * @note This method has not been tesetd sufficiently since 4Store uses
+	 * another post encoding. To avoid using it, simply do not provide a
+	 * data endpoint URL when configuring the SPARQL database.
 	 *
 	 * @param $payload string Turtle serialization of data to send
 	 * @return SMWSparqlResultWrapper
@@ -388,16 +390,14 @@ class SMWSparqlDatabase {
 		}
 		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_dataEndpoint );
 		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
-		$parameterString = "data=" . urlencode( $payload ) . '&graph=default&mime-type=application/x-turtle';
-		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
 
-//// POST as file, fails in 4Store
-// 		$payloadFile = tmpfile();
-// 		fwrite( $payloadFile, $payload );
-// 		fseek( $payloadFile, 0 ); 
-// 		curl_setopt( $this->m_curlhandle, CURLOPT_INFILE, $payloadFile );
-// 		curl_setopt( $this->m_curlhandle, CURLOPT_INFILESIZE, strlen( $payload ) ); 
-// 		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array( 'Content-Type: application/x-turtle' ) );
+		// POST as file (fails in 4Store)
+		$payloadFile = tmpfile();
+		fwrite( $payloadFile, $payload );
+		fseek( $payloadFile, 0 ); 
+		curl_setopt( $this->m_curlhandle, CURLOPT_INFILE, $payloadFile );
+		curl_setopt( $this->m_curlhandle, CURLOPT_INFILESIZE, strlen( $payload ) ); 
+		curl_setopt( $this->m_curlhandle, CURLOPT_HTTPHEADER, array( 'Content-Type: application/x-turtle' ) );
 
 		curl_exec( $this->m_curlhandle );
 
