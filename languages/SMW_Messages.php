@@ -5571,7 +5571,7 @@ Perubahan yang dilakukan pada langkah ini tidak memengaruhi bagian lain dari bas
 Fungsi persiapan ini dapat dilakukan berulang kali tanpa menyebabkan kerusaan, tapi hanya dibutuhkan sekali sewaktu instalasi atau peningkatan.',
 	'smw_smwadmin_permissionswarn' => 'Jika operasi gagal karena kesalahan SQL, pengguna basis data yang digunakan oleh wiki Anda (cek LocalSettings.php Anda) mungkin tidak mempunyai hak akses yang cukup.
 Anda dapat memberikan hak akses tambahan untuk membuat dan menghapus tabel, memasukkan sementara pengguna root basis data Anda di LocalSettings.php, atau menggunakan skrip pemeliharaan <tt>SMW_setup.php</tt> yang dapat menggunakan hak akses dari AdminSettings.php.',
-	'smw_smwadmin_dbbutton' => 'Menginisiasi atau meningkatkan tabel',
+	'smw_smwadmin_dbbutton' => 'Inisiasi atau tingkatkan tabel',
 	'smw_smwadmin_announce' => 'Umumkan wiki Anda',
 	'smw_smwadmin_announcedocu' => 'Semantic MediaWiki memiliki layanan web untuk mengumumkan situs wiki semantik baru.
 Ini digunakan untuk memelihara suatu daftar situs publik yang menggunakan Semantic MediaWiki, terutama untuk membantu <a href="http://semantic-mediawiki.org/wiki/SMW_Project">proyek Semantic MediaWiki</a> untuk mendapat gambaran penggunaan umum dari Semantic MediaWiki.
@@ -11253,6 +11253,7 @@ $messages['vep'] = array(
  * @author Vinhtantran
  */
 $messages['vi'] = array(
+	'smw-desc' => "Làm cho wiki của bạn khả dụng hơn – đối với máy ''cũng như'' con người ([http://semantic-mediawiki.org/wiki/Help:User_manual tài liệu trực tuyến])",
 	'smw_edithelp' => 'Trợ giúp sửa đổi tại thuộc tính',
 	'smw_viewasrdf' => 'Tin RDF',
 	'smw_finallistconjunct' => ', và',
@@ -11261,10 +11262,14 @@ $messages['vi'] = array(
 	'smw_isknowntype' => 'Kiểu này là một trong những kiểu dữ liệu chuẩn của wiki này.',
 	'smw_isaliastype' => 'Kiểu này là tên hiệu của kiểu dữ liệu “$1”.',
 	'smw_isnotype' => 'Kiểu “$1” này không phải là kiểu dữ liệu chuẩn trên wiki, và cũng chưa được cung cấp định nghĩa người dùng.',
+	'smw_concept_description' => 'Miêu tả khái niệm “$1”',
+	'version-semantic' => 'Phần mở rộng ngữ nghĩa',
 	'smw_baduri' => 'Rất tiếc, không cho phép URI có dạng “$1”.',
+	'smw_dsv_link' => 'DSV',
 	'smw_printername_auto' => 'Tự động',
 	'smw_printername_count' => 'Đếm kết quả',
 	'smw_printername_csv' => 'Xuất CSV',
+	'smw_printername_dsv' => 'Xuất DSV',
 	'smw_printername_embedded' => 'Nhúng nội dung trang',
 	'smw_printername_json' => 'Xuất JSON',
 	'smw_printername_list' => 'Danh sách',
@@ -11272,6 +11277,11 @@ $messages['vi'] = array(
 	'smw_printername_table' => 'Bảng',
 	'smw_printername_broadtable' => 'Bảng rộng',
 	'smw_printername_template' => 'Bản mẫu',
+	'smw_printername_rdf' => 'Xuất RDF',
+	'smw_paramdesc_limit' => 'Đa số kết quả để cho ra',
+	'smw_paramdesc_link' => 'Hiển thị các giá trị là liên kết',
+	'smw_paramdesc_embedonly' => 'Không hiển thị các tiêu đề',
+	'smw_paramdesc_rdfsyntax' => 'Cú pháp RDF được sử dụng',
 	'smw_iq_disabled' => 'Rất tiếc. Chức năng truy vấn ngữ nghĩa đã bị tắt tại wiki này.',
 	'smw_iq_moreresults' => '… kết quả khác',
 	'smw_iq_nojs' => 'Xin hãy dùng trình duyệt có kích hoạt JavaScript để xem thành phần này.',
@@ -11295,6 +11305,7 @@ $messages['vi'] = array(
 	'smw_nofloat' => '“$1” không phải là số.',
 	'smw_infinite' => 'Không hỗ trợ các số lớn như “$1”.',
 	'smw_infinite_unit' => 'Chuyển đổi thành đơn vị “$1” đẫn tới một con số quá lớn.',
+	'smw_novalues' => 'Không định rõ giá trị.',
 	'smw_unsupportedprefix' => 'Không hỗ trợ tiền tố cho các số (“$1”).',
 	'smw_nodatetime' => 'Không hiểu ngày “$1”.',
 	'smw_toomanyclosing' => 'Dường có quá nhiều lần xuất hiện “$1” trong câu truy vấn.',
@@ -11367,6 +11378,7 @@ Có thể tìm thấy thuộc tính còn thiếu trang tại [[Special:WantedPro
 	'smw_ask_help' => 'Trợ giúp truy vấn',
 	'smw_ask_queryhead' => 'Truy vấn',
 	'smw_ask_printhead' => 'Dữ liệu bổ sung được hiển thị',
+	'smw_ask_format_as' => 'Định dạng:',
 	'smw_ask_defaultformat' => 'mặc định',
 	'smw_ask_otheroptions' => 'Tùy chọn khác',
 	'smw_ask_show_embed' => 'Hiện mã để nhúng',
@@ -11396,6 +11408,7 @@ Xin nhập vào cả một trang và một thuộc tính.',
 	'smw_result_next' => 'Sau',
 	'smw_result_results' => 'Kết quả',
 	'smw_result_noresults' => 'Không có kết quả nào.',
+	'smwadmin' => 'Chức năng quản lý MediaWiki Ngữ nghĩa',
 	'smw_smwadmin_return' => 'Trở lại $1',
 	'smw_smwadmin_announce' => 'Tuyên bố wiki của bạn',
 	'smw_smwadmin_datarefreshbutton' => 'Bắt đầu nâng cấp dữ liệu',
@@ -11405,6 +11418,7 @@ Xin nhập vào cả một trang và một thuộc tính.',
 	'smw_smwadmin_mediazilla' => 'Hãy báo cáo lỗi tại <a href="https://bugzilla.wikimedia.org/">Bugzilla</a>.',
 	'smw_adminlinks_datastructure' => 'Cấu trúc dữ liệu',
 	'smw_adminlinks_displayingdata' => 'Hiển thị dữ liệu',
+	'smw_adminlinks_inlinequerieshelp' => 'Trợ giúp truy vấn nội dòng',
 );
 
 /** Volapük (Volapük)
