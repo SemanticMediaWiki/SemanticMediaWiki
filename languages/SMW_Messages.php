@@ -1044,6 +1044,19 @@ $messages['arz'] = array(
 	'smw_adminlinks_inlinequerieshelp' => 'مساعده الاستعلامات الداخلية',
 );
 
+/** Azerbaijani (Azərbaycanca)
+ * @author Cekli829
+ */
+$messages['az'] = array(
+	'smw_finallistconjunct' => ', və',
+	'smw_dsv_link' => 'DSV',
+	'smw_printername_auto' => 'Avtomatik',
+	'smw_printername_list' => 'Siyahı',
+	'smw_printername_table' => 'Cədvəl',
+	'smw_printername_template' => 'Şablon',
+	'smw_result_results' => 'Nəticələr',
+);
+
 /** Belarusian (Беларуская)
  * @author Тест
  */
