@@ -24,66 +24,66 @@ include_once( $smwgIP . 'languages/SMW_Language.php' );
  */
 class SMWLanguageZh_cn extends SMWLanguage {
 
-protected $m_DatatypeLabels = array(
-	'_wpg' => '页面',	// 'Page', // name of page datatype
-	'_str' => '字串',	// 'String',  // name of the string type
-	'_txt' => '文字',	// 'Text',  // name of the text type
-	'_cod' => 'Code',  // name of the (source) code type //TODO: translate
-	'_boo' => '布林',	// 'Boolean',  // name of the boolean type
-	'_num' => '数字',	// 'Number',  // name for the datatype of numbers
-	'_geo' => '地理学的座标',	// 'Geographic coordinate', // name of the geocoord type
-	'_tem' => '温度',	// 'Temperature',  // name of the temperature type
-	'_dat' => '日期',	// 'Date',  // name of the datetime (calendar) type
-	'_ema' => 'Email',	// 'Email',  // name of the email type
-	'_uri' => 'URL',	// 'URL',  // name of the URL type
-	'_anu' => 'URI的注解',	// 'Annotation URI'  // name of the annotation URI type (OWL annotation property)
-	'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
-	'_rec' => 'Record', // name of record data type //TODO: translate
-);
-
-protected $m_DatatypeAliases = array(
-	'浮点数'       => '_num',	// '_num',
-	'整数'         => '_num' ,	// '_num',
-	 '列举'        => '_str',	// '_str'
-	// SMW0.7 compatibility:
-	'Float'       => '_num',
-	'Integer'     => '_num',
-	'Enumeration' => '_str',
-	'URI'         => '_uri',
-);
-
-protected $m_SpecialProperties = array(
-	// always start upper-case
-	'_TYPE' => '设有型态',	// 'Has type',
-	'_URI'  => '对应的URI',	// 'Equivalent URI',
-	'_SUBP' => '所属的子性质',	// 'Subproperty of',
-	'_SUBC' => 'Subcategory of', // TODO: translate
-	'_UNIT' => '显示单位',      // Display unit
-	'_IMPO' => '输入来源',     // Imported from
-	'_CONV' => '符合于',  // Corresponds to
-	'_SERV' => '提供服务',      // Provides service
-	'_PVAL' => '允许值',      // Allows value
-	'_MDAT' => 'Modification date',  // TODO: translate
-	'_ERRP' => 'Has improper value for', // TODO: translate
-	'_LIST' => 'Has fields', // TODO: translate
-);
-
-
-protected $m_SpecialPropertyAliases = array(
-	'Display unit' => '_UNIT'
-);
-
-protected $m_Namespaces = array(
-	SMW_NS_PROPERTY       => '性质',	// 'Property',
-	SMW_NS_PROPERTY_TALK  => '性质讨论',	// 'Property_talk',
-	SMW_NS_TYPE           => '型态',	// 'Type',
-	SMW_NS_TYPE_TALK      => '型态讨论',	// 'Type_talk'
-	SMW_NS_CONCEPT        => 'Concept', // TODO: translate
-	SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
-);
-
-protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
-
-protected $m_months = array( "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" );
+	protected $m_DatatypeLabels = array(
+		'_wpg' => '页面',	// 'Page', // name of page datatype
+		'_str' => '字串',	// 'String',  // name of the string type
+		'_txt' => '文字',	// 'Text',  // name of the text type
+		'_cod' => 'Code',  // name of the (source) code type //TODO: translate
+		'_boo' => '布林',	// 'Boolean',  // name of the boolean type
+		'_num' => '数字',	// 'Number',  // name for the datatype of numbers
+		'_geo' => '地理学的座标',	// 'Geographic coordinate', // name of the geocoord type
+		'_tem' => '温度',	// 'Temperature',  // name of the temperature type
+		'_dat' => '日期',	// 'Date',  // name of the datetime (calendar) type
+		'_ema' => 'Email',	// 'Email',  // name of the email type
+		'_uri' => 'URL',	// 'URL',  // name of the URL type
+		'_anu' => 'URI的注解',	// 'Annotation URI'  // name of the annotation URI type (OWL annotation property)
+		'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
+		'_rec' => 'Record', // name of record data type //TODO: translate
+	);
+	
+	protected $m_DatatypeAliases = array(
+		'浮点数'       => '_num',	// '_num',
+		'整数'         => '_num' ,	// '_num',
+		 '列举'        => '_str',	// '_str'
+		// SMW0.7 compatibility:
+		'Float'       => '_num',
+		'Integer'     => '_num',
+		'Enumeration' => '_str',
+		'URI'         => '_uri',
+	);
+	
+	protected $m_SpecialProperties = array(
+		// always start upper-case
+		'_TYPE' => '设有型态',	// 'Has type',
+		'_URI'  => '对应的URI',	// 'Equivalent URI',
+		'_SUBP' => '所属的子性质',	// 'Subproperty of',
+		'_SUBC' => 'Subcategory of', // TODO: translate
+		'_UNIT' => '显示单位',      // Display unit
+		'_IMPO' => '输入来源',     // Imported from
+		'_CONV' => '符合于',  // Corresponds to
+		'_SERV' => '提供服务',      // Provides service
+		'_PVAL' => '允许值',      // Allows value
+		'_MDAT' => 'Modification date',  // TODO: translate
+		'_ERRP' => 'Has improper value for', // TODO: translate
+		'_LIST' => 'Has fields', // TODO: translate
+	);
+	
+	
+	protected $m_SpecialPropertyAliases = array(
+		'Display unit' => '_UNIT'
+	);
+	
+	protected $m_Namespaces = array(
+		SMW_NS_PROPERTY       => '性质',	// 'Property',
+		SMW_NS_PROPERTY_TALK  => '性质讨论',	// 'Property_talk',
+		SMW_NS_TYPE           => '型态',	// 'Type',
+		SMW_NS_TYPE_TALK      => '型态讨论',	// 'Type_talk'
+		SMW_NS_CONCEPT        => 'Concept', // TODO: translate
+		SMW_NS_CONCEPT_TALK   => 'Concept_talk' // TODO: translate
+	);
+	
+	protected $m_dateformats = array( array( SMW_Y ), array( SMW_MY, SMW_YM ), array( SMW_MDY, SMW_DMY, SMW_YMD, SMW_YDM ) );
+	
+	protected $m_months = array( "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" );
 
 }

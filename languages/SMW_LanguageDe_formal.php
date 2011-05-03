@@ -21,5 +21,4 @@ include_once( $smwgIP . 'languages/SMW_LanguageDe.php' );
  * @ingroup SMWLanguage
  * @ingroup Language
  */
-class SMWLanguageDe_formal extends SMWLanguageDe {
-}
+class SMWLanguageDe_formal extends SMWLanguageDe {}
