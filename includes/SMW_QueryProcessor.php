@@ -34,14 +34,14 @@ class SMWQueryProcessor {
 	 *
 	 * @return SMWQuery
 	 */
-	static public function createQuery( $querystring, array $params, $context = SMWQueryProcessor::INLINE_QUERY, $format = '', $extraprintouts = array() ) {
+	static public function createQuery( $querystring, array $params, $context = self::INLINE_QUERY, $format = '', $extraprintouts = array() ) {
 		global $smwgQDefaultNamespaces, $smwgQFeatures, $smwgQConceptFeatures;
 		if ( $format == '' ) {
-			$format = SMWQueryProcessor::getResultFormat( $params );
+			$format = self::getResultFormat( $params );
 		}
 
 		// parse query:
-		$queryfeatures = ( $context == SMWQueryProcessor::CONCEPT_DESC ) ? $smwgQConceptFeatures : $smwgQFeatures;
+		$queryfeatures = ( $context == self::CONCEPT_DESC ) ? $smwgQConceptFeatures : $smwgQFeatures;
 		$qp = new SMWQueryParser( $queryfeatures );
 		$qp->setDefaultNamespaces( $smwgQDefaultNamespaces );
 		$desc = $qp->getQueryDescription( $querystring );
@@ -51,7 +51,7 @@ class SMWQueryProcessor {
 		} elseif ( $format == 'debug' ) {
 			$querymode = SMWQuery::MODE_DEBUG;
 		} else {
-			$printer = SMWQueryProcessor::getResultPrinter( $format, $context );
+			$printer = self::getResultPrinter( $format, $context );
 			$querymode = $printer->getQueryMode( $context );
 		}
 
@@ -62,7 +62,7 @@ class SMWQueryProcessor {
 			$desc->prependPrintRequest( new SMWPrintRequest( SMWPrintRequest::PRINT_THIS, $mainlabel ) );
 		}
 
-		$query = new SMWQuery( $desc, ( $context != SMWQueryProcessor::SPECIAL_PAGE ), ( $context == SMWQueryProcessor::CONCEPT_DESC ) );
+		$query = new SMWQuery( $desc, ( $context != self::SPECIAL_PAGE ), ( $context == self::CONCEPT_DESC ) );
 		$query->setQueryString( $querystring );
 		$query->setExtraPrintouts( $extraprintouts );
 		$query->addErrors( $qp->getErrors() ); // keep parsing errors for later output
@@ -250,9 +250,9 @@ class SMWQueryProcessor {
 	 * obtain actual parameters, printout requests, and the query string for
 	 * further processing.
 	 */
-	static public function getResultFromFunctionParams( array $rawparams, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY, $showmode = false ) {
-		SMWQueryProcessor::processFunctionParams( $rawparams, $querystring, $params, $printouts, $showmode );
-		return SMWQueryProcessor::getResultFromQueryString( $querystring, $params, $printouts, SMW_OUTPUT_WIKI, $context );
+	static public function getResultFromFunctionParams( array $rawparams, $outputmode, $context = self::INLINE_QUERY, $showmode = false ) {
+		self::processFunctionParams( $rawparams, $querystring, $params, $printouts, $showmode );
+		return self::getResultFromQueryString( $querystring, $params, $printouts, SMW_OUTPUT_WIKI, $context );
 	}
 
 	/**
@@ -263,19 +263,19 @@ class SMWQueryProcessor {
 	 * certain general settings. Finally, $extraprintouts supplies additional
 	 * printout requests for the query results.
 	 */
-	static public function getResultFromQueryString( $querystring, array $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY ) {
+	static public function getResultFromQueryString( $querystring, array $params, $extraprintouts, $outputmode, $context = self::INLINE_QUERY ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
 
-		$format = SMWQueryProcessor::getResultFormat( $params );
-		$query  = SMWQueryProcessor::createQuery( $querystring, $params, $context, $format, $extraprintouts );
-		$result = SMWQueryProcessor::getResultFromQuery( $query, $params, $extraprintouts, $outputmode, $context, $format );
+		$format = self::getResultFormat( $params );
+		$query  = self::createQuery( $querystring, $params, $context, $format, $extraprintouts );
+		$result = self::getResultFromQuery( $query, $params, $extraprintouts, $outputmode, $context, $format );
 
 		wfProfileOut( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
 
 		return $result;
 	}
 
-	static public function getResultFromQuery( SMWQuery $query, array $params, $extraprintouts, $outputmode, $context = SMWQueryProcessor::INLINE_QUERY, $format = '' ) {
+	static public function getResultFromQuery( SMWQuery $query, array $params, $extraprintouts, $outputmode, $context = self::INLINE_QUERY, $format = '' ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
 
 		// Query routing allows extensions to provide alternative stores as data sources
@@ -296,10 +296,10 @@ class SMWQueryProcessor {
 			wfProfileIn( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
 
 			if ( $format == '' ) {
-				$format = SMWQueryProcessor::getResultFormat( $params );
+				$format = self::getResultFormat( $params );
 			}
 
-			$printer = SMWQueryProcessor::getResultPrinter( $format, $context, $res );
+			$printer = self::getResultPrinter( $format, $context, $res );
 			$result = $printer->getResult( $res, $params, $outputmode );
 
 			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery-printout (SMW)' );
@@ -379,7 +379,7 @@ class SMWQueryProcessor {
 	 *
 	 * @return SMWResultPrinter
 	 */
-	static public function getResultPrinter( $format, $context = SMWQueryProcessor::SPECIAL_PAGE ) {
+	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
 		global $smwgResultFormats;
 
 		self::resolveFormatAliases( $format );
@@ -387,7 +387,7 @@ class SMWQueryProcessor {
 		// TODO: this seems to contain the same logic as found in getResultFormat - a single function for this might be better.
 		$formatClass = array_key_exists( $format, $smwgResultFormats ) ? $smwgResultFormats[$format] : 'SMWAutoResultPrinter';
 
-		return new $formatClass( $format, ( $context != SMWQueryProcessor::SPECIAL_PAGE ) );
+		return new $formatClass( $format, ( $context != self::SPECIAL_PAGE ) );
 	}
 
 }
