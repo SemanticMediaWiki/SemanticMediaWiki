@@ -59,6 +59,15 @@ abstract class SMWResultPrinter {
 	protected $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
 
 	/**
+	 * List of errors that occured while processing the parameters.
+	 * 
+	 * @since 1.6
+	 * 
+	 * @var array
+	 */
+	protected $mErrors = array();
+	
+	/**
 	 * If set, treat result as plain HTML. Can be used by printer classes if wiki mark-up is not enough.
 	 * This setting is used only after the result text was generated.
 	 * @note HTML query results cannot be used as parameters for other templates or in any other way
@@ -285,7 +294,7 @@ abstract class SMWResultPrinter {
 			throw new Exception( 'Validator: fatal param validation error' );
 		}
 		else {
-			// TODO: keep track of non-fatal errors to display
+			$this->mErrors = $validator->getErrorMessages();
 		    return $validator->getParameterValues();
 		}
 	}
@@ -469,10 +478,12 @@ abstract class SMWResultPrinter {
 	 * Can be used if not specific error formatting is desired. Compatible with HTML
 	 * and Wiki.
 	 *
+	 * @param SMWQueryResult $res
+	 *
 	 * @return string
 	 */
-	public function getErrorString( $res ) {
-		return $this->mShowErrors ? smwfEncodeMessages( $res->getErrors() ) : '';
+	public function getErrorString( SMWQueryResult $res ) {
+		return $this->mShowErrors ? smwfEncodeMessages( array_merge( $this->mErrors, $res->getErrors() ) ) : '';
 	}
 
 	/**
@@ -513,6 +524,18 @@ abstract class SMWResultPrinter {
 	 */
 	protected function linkFurtherResults( $results ) {
 		return ( $this->mInline && $results->hasFurtherResults() && ( $this->mSearchlabel !== '' ) );
+	}
+	
+	/**
+	 * Adds an error message for a parameter handling error so a list
+	 * of errors can be created later on.
+	 * 
+	 * @since 1.6
+	 * 
+	 * @param string $errorMessage
+	 */
+	protected function addError( $errorMessage ) {
+		$this->mErrors[] = $errorMessage;
 	}
 
 	/**
@@ -571,6 +594,8 @@ abstract class SMWResultPrinter {
 	 */
 	public function getParameters() {
 		$params = array();
+		
+		$params['format'] = new Parameter( 'format' );
 		
 		$params['limit'] = new Parameter( 'limit', Parameter::TYPE_INTEGER );
 		$params['limit']->setDescription( wfMsg( 'smw_paramdesc_limit' ) );

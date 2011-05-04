@@ -704,6 +704,9 @@ END;
 
 		$params = method_exists( $printer, 'getParameters' ) ? $printer->getParameters() : array();
 		
+		// Ignore the format parameter, as we got a special control in the GUI for it already.
+		unset( $params['format'] );
+		
 		$optionsHtml = array();
 		
 		foreach ( $params as $param ) {
