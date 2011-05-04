@@ -24,7 +24,7 @@ var all_tt = []; // record all active tooltips
 var imagePath = wgScriptPath + '/extensions/SemanticMediaWiki/skins/images/';
 
 // Dimensions of persistent tooltips
-var SMWTT_WIDTH_P = 200;
+var SMWTT_WIDTH_P = 400;
 var SMWTT_HEIGHT_P = 80;
 
 // Dimensions of inline tooltips

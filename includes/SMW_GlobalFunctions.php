@@ -231,11 +231,26 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
 function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' <!--br-->', $escape = true ) {
 	if ( count( $messages ) > 0 ) {
 		SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
+		
 		if ( $escape ) {
 			$messages = array_map( 'htmlspecialchars', $messages );
 		}
-		return '<span class="smwttpersist"><span class="smwtticon">' . htmlspecialchars( $icon )
-			. '.png</span><span class="smwttcontent">' . implode( $seperator, $messages ) . '</span> </span>';
+		
+		if ( count( $messages ) == 1 )  {
+			$errorList = $messages[0];
+		}
+		else {
+			foreach ( $messages as &$message ) {
+				$message = '<li>' . $message . '</li>';
+			}
+			
+			$errorList = '<ul>' . implode( $seperator, $messages ) . '</ul>';
+		}
+		
+		return '<span class="smwttpersist">' .
+					'<span class="smwtticon">' . htmlspecialchars( $icon ) . '.png</span>' .
+					'<span class="smwttcontent">' . $errorList . '</span>' . 
+				'</span>';
 	} else {
 		return '';
 	}
