@@ -152,8 +152,15 @@ abstract class SMWResultPrinter {
 		$this->hasTemplates = false;
 		
 		if ( $this->useValidator ) {
-			// TODO: retain behaviour of base readParameters
-			$this->handleParameters( $this->handleRawParameters( $params ), $outputmode );
+			$paramValidationResult = $this->handleRawParameters( $params );
+			
+			if ( is_array( $paramValidationResult ) ) {
+				$this->handleParameters( $paramValidationResult, $outputmode );
+			}
+			else {
+				$this->addError( $paramValidationResult );
+				return $this->getErrorString( $results );
+			}
 		}
 		else {
 			$this->readParameters( $params, $outputmode );
@@ -277,25 +284,26 @@ abstract class SMWResultPrinter {
 
 	/**
 	 * Handles the user-provided parameters and returns the processes key-value pairs.
+	 * If there is a fatal error, a string with the error message will be returned intsead.
 	 * 
 	 * @since 1.6
 	 * 
 	 * @param array $keyValuePairs
 	 * 
-	 * @return array
+	 * @return array or string
 	 */
 	protected function handleRawParameters( array $keyValuePairs ) {
 		$validator = new Validator();
 		$validator->setParameters( $keyValuePairs, $this->getParameters() );
 		$validator->validateParameters();
+		$fatalError = $validator->hasFatalError();
 		
-		if ( $validator->hasFatalError() ) {
-			// TODO
-			throw new Exception( 'Validator: fatal param validation error' );
+		if ( $fatalError === false ) {
+			$this->mErrors = $validator->getErrorMessages();
+		    return $validator->getParameterValues();			
 		}
 		else {
-			$this->mErrors = $validator->getErrorMessages();
-		    return $validator->getParameterValues();
+			return $fatalError->getMessage();
 		}
 	}
 	
