@@ -30,12 +30,12 @@ class SMWStringCondition {
 	const STRCOND_PRE = 0;
 	const STRCOND_POST = 1;
 	const STRCOND_MID = 2;
-	
+
 	/**
 	 * String to match.
 	 */
 	public $string;
-	
+
 	/**
 	 * Condition. One of STRCOND_PRE (string matches prefix),
 	 * STRCOND_POST (string matches postfix), STRCOND_MID
@@ -62,19 +62,19 @@ class SMWStringCondition {
  * @author Markus Krötzsch
  */
 class SMWRequestOptions {
-	
+
 	/**
 	 * The maximum number of results that should be returned.
 	 */
 	public $limit = -1;
-	
+
 	/**
 	 * A numerical offset. The first $offset results are skipped.
 	 * Note that this does not imply a defined order of results
 	 * (see SMWRequestOptions->$sort below).
 	 */
 	public $offset = 0;
-	
+
 	/**
 	 * Should the result be ordered? The employed order is defined
 	 * by the type of result that are requested: wiki pages and strings
@@ -82,26 +82,26 @@ class SMWRequestOptions {
 	 * numerically. Usually, the order should be fairly "natural".
 	 */
 	public $sort = false;
-	
+
 	/**
 	 * If SMWRequestOptions->$sort is true, this parameter defines whether
 	 * the results are ordered in ascending or descending order.
 	 */
 	public $ascending = true;
-	
+
 	/**
 	 * Specifies a lower or upper bound for the values returned by the query.
 	 * Whether it is lower or upper is specified by the parameter "ascending"
 	 * (true->lower, false->upper).
 	 */
 	public $boundary = null;
-	
+
 	/**
 	 * Specifies whether or not the requested boundary should be returned
 	 * as a result.
 	 */
 	public $include_boundary = true;
-	
+
 	/**
 	 * An array of string conditions that are applied if the result has a
 	 * string label that can be subject to those patterns.
@@ -124,7 +124,7 @@ class SMWRequestOptions {
 	public function getStringConditions() {
 		return $this->stringcond;
 	}
-	
+
 }
 
 
@@ -253,8 +253,8 @@ abstract class SMWStore {
 	 * includes relations, attributes, and special properties. This does
 	 * not delete the respective text from the wiki, but only clears the
 	 * stored data.
-     *
-     * @param Title $subject
+	 *
+	 * @param Title $subject
 	 */
 	public abstract function deleteSubject( Title $subject );
 
@@ -262,8 +262,8 @@ abstract class SMWStore {
 	 * Update the semantic data stored for some individual. The data is
 	 * given as a SMWSemanticData object, which contains all semantic data
 	 * for one particular subject.
-     *
-     * @param SMWSemanticData $data
+	 *
+	 * @param SMWSemanticData $data
 	 */
 	public abstract function doDataUpdate( SMWSemanticData $data );
 
@@ -277,27 +277,46 @@ abstract class SMWStore {
 	public function updateData( SMWSemanticData $data ) {
 		wfRunHooks( 'SMWStore::updateDataBefore', array( $this, $data ) );
 
+        global $smwgCheckChangesBeforeUpdate;
+        if ( $smwgCheckChangesBeforeUpdate && $data->hasVisibleProperties() ) {
+            $this->removeNotChangedProperties( $data );
+        }
+
+        if ( true /* TODO: something changed */ ) {
+            // Invalidate the page, so data stored on it gets displayed immediately in queries.
+            global $smwgAutoRefreshSubject;
+            if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
+                $title = Title::makeTitle( $data->getSubject()->getNamespace(), $data->getSubject()->getDBkey() );
+                $dbw = wfGetDB( DB_MASTER );
+
+                $dbw->update(
+                    'page',
+                    array( 'page_touched' => $dbw->timestamp( time() + 9001 ) ),
+                    $title->pageCond(),
+                    __METHOD__
+                );
+
+                HTMLFileCache::clearFileCache( $title );
+            }
+        }
+
 		$this->doDataUpdate( $data );
-
-		// Invalidate the page, so data stored on it gets displayed immediately in queries.
-		global $smwgAutoRefreshSubject;
-		if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
-			$title = Title::makeTitle( $data->getSubject()->getNamespace(), $data->getSubject()->getDBkey() );
-			$dbw = wfGetDB( DB_MASTER );
-
-			$dbw->update(
-				'page',
-				array( 'page_touched' => $dbw->timestamp( time() + 9001 ) ),
-				$title->pageCond(),
-				__METHOD__
-			);
-
-			HTMLFileCache::clearFileCache( $title );			
-		}
 
 		wfRunHooks( 'SMWStore::updateDataAfter', array( $this, $data ) );
 	}
-	
+
+    protected function removeNotChangedProperties( SMWSemanticData &$data ) {
+        $storedValues = $this->getStoredValues( $data );
+
+        // TODO: remove data that has not changed
+
+        if ( false /* TODO: something changed */ ) {
+            wfRunHooks( 'SMWStore::dataChanged', array( $this, $data ) );
+        }
+    }
+
+    protected abstract function getStoredValues( SMWSemanticData $data );
+
 	/**
 	 * Clear all semantic data specified for some page.
 	 * 
@@ -328,8 +347,8 @@ abstract class SMWStore {
 	 * MODE_COUNT or MODE_DEBUG) a plain wiki and HTML-compatible string is
 	 * returned.
 	 *
-     * @param SMWQuery $query
-     *
+	 * @param SMWQuery $query
+	 *
 	 * @return SMWQueryResult
 	 */
 	public abstract function getQueryResult( SMWQuery $query );
