@@ -481,6 +481,15 @@ $smwgAutocompleteInSpecialAsk = true;
 
 ###
 # Sets whether or not to refresh the pages of which semantic data is stored.
+# Introduced in SMW 1.5.6
 ##
 $smwgAutoRefreshSubject = true;
+##
+
+###
+# Sets whether or not SMW should check if properties where changed and update only those
+# instead of not checking what changed and simply updating everything.
+# Introduced in SMW 1.6
+##
+$smwgCheckChangesBeforeUpdate = false;
 ##
