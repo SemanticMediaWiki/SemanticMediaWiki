@@ -253,6 +253,8 @@ abstract class SMWStore {
 	 * includes relations, attributes, and special properties. This does
 	 * not delete the respective text from the wiki, but only clears the
 	 * stored data.
+     *
+     * @param Title $subject
 	 */
 	public abstract function deleteSubject( Title $subject );
 
@@ -260,6 +262,8 @@ abstract class SMWStore {
 	 * Update the semantic data stored for some individual. The data is
 	 * given as a SMWSemanticData object, which contains all semantic data
 	 * for one particular subject.
+     *
+     * @param SMWSemanticData $data
 	 */
 	public abstract function doDataUpdate( SMWSemanticData $data );
 
@@ -275,7 +279,7 @@ abstract class SMWStore {
 
 		$this->doDataUpdate( $data );
 
-		// Invalidate the page, so data stored on it gets displayed immeditaely in queries.
+		// Invalidate the page, so data stored on it gets displayed immediately in queries.
 		global $smwgAutoRefreshSubject;
 		if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
 			$title = Title::makeTitle( $data->getSubject()->getNamespace(), $data->getSubject()->getDBkey() );
@@ -323,7 +327,9 @@ abstract class SMWStore {
 	 * the case that the query asked for a plain string (querymode
 	 * MODE_COUNT or MODE_DEBUG) a plain wiki and HTML-compatible string is
 	 * returned.
-	 * 
+	 *
+     * @param SMWQuery $query
+     *
 	 * @return SMWQueryResult
 	 */
 	public abstract function getQueryResult( SMWQuery $query );
