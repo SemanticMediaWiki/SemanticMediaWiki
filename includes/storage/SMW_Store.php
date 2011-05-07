@@ -306,7 +306,7 @@ abstract class SMWStore {
 	}
 
     protected function removeNotChangedProperties( SMWSemanticData &$data ) {
-        $storedValues = $this->getStoredValues( $data );
+        //$storedValues = $this->getStoredValues( $data );
 
         // TODO: remove data that has not changed
 
@@ -315,7 +315,7 @@ abstract class SMWStore {
         }
     }
 
-    protected abstract function getStoredValues( SMWSemanticData $data );
+    //protected abstract function getStoredValues( SMWSemanticData $data );
 
 	/**
 	 * Clear all semantic data specified for some page.
