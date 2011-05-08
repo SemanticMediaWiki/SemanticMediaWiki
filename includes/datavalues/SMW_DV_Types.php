@@ -78,10 +78,10 @@ class SMWTypesValue extends SMWWikiPageValue {
 				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
 				return '<span class="smwttinline"><span class="smwbuiltin">' .
-				$linker->makeLinkObj( $title, $this->m_reallabel ) . '</span><span class="smwttcontent">' .
+				$linker->makeLinkObj( $title, htmlspecialchars( $this->m_reallabel ) ) . '</span><span class="smwttcontent">' .
 				wfMsgForContent( 'smw_isknowntype' ) . '</span></span>';
 			} else {
-				return $linker->makeLinkObj( $title, $this->m_reallabel );
+				return $linker->makeLinkObj( $title, htmlspecialchars( $this->m_reallabel ) );
 			}
 		}
 	}

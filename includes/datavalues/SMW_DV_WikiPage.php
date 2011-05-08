@@ -166,7 +166,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		} elseif ( $this->getNamespace() == NS_MEDIA ) { // this extra case *is* needed
 			return $linker->makeMediaLinkObj( $this->getTitle(), $this->getCaption() );
 		} else {
-			return $linker->makeLinkObj( $this->getTitle(), $this->getCaption() );
+			return $linker->makeLinkObj( $this->getTitle(), htmlspecialchars( $this->getCaption() ) );
 		}
 	}
 
@@ -200,7 +200,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		} elseif ( $this->getNamespace() == NS_MEDIA ) { // this extra case is really needed
 			return $linker->makeMediaLinkObj( $this->getTitle(), $this->m_textform );
 		} else { // all others use default linking, no embedding of images here
-			return $linker->makeLinkObj( $this->getTitle(), $this->m_textform );
+			return $linker->makeLinkObj( $this->getTitle(), htmlspecialchars( $this->m_textform ) );
 		}
 	}
 
