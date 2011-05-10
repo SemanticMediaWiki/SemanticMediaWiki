@@ -204,6 +204,21 @@ class SMWSparqlDatabase {
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function select( $vars, $where, $options = array(), $extraNamespaces = array() ) {
+		$sparql = $this->getSparqlForSelect( $vars, $where, $options, $extraNamespaces );
+		return $this->doQuery( $sparql );
+	}
+
+	/**
+	 * Build the SPARQL query that is used by SMWSparqlDatabase::select().
+	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
+	 * rdfs, property, xsd, so these do not have to be included in
+	 * $extraNamespaces.
+	 *
+	 * @param $where string WHERE part of the query, without surrounding { }
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @return string SPARQL query
+	 */
+	public function getSparqlForSelect( $vars, $where, $options = array(), $extraNamespaces = array() ) {
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT ';
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
 			$sparql .= 'DISTINCT ';
@@ -223,8 +238,7 @@ class SMWSparqlDatabase {
 		if ( array_key_exists( 'LIMIT', $options ) ) {
 			$sparql .= "\nLIMIT " . $options['LIMIT'];
 		}
-
-		return $this->doQuery( $sparql );
+		return $sparql;
 	}
 
 	/**
@@ -238,8 +252,22 @@ class SMWSparqlDatabase {
 	 * @return SMWSparqlResultWrapper
 	 */
 	public function ask( $where, $extraNamespaces = array() ) {
-		$sparql = self::getPrefixString( $extraNamespaces ) . "ASK {\n" . $where . "\n}";
+		$sparql = $this->getSparqlForAsk( $where, $extraNamespaces );
 		return $this->doQuery( $sparql );
+	}
+
+	/**
+	 * Build the SPARQL query that is used by SMWSparqlDatabase::ask().
+	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
+	 * rdfs, property, xsd, so these do not have to be included in
+	 * $extraNamespaces.
+	 *
+	 * @param $where string WHERE part of the query, without surrounding { }
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @return string SPARQL query
+	 */
+	public function getSparqlForAsk( $where, $extraNamespaces = array() ) {
+		return self::getPrefixString( $extraNamespaces ) . "ASK {\n" . $where . "\n}";
 	}
 
 	/**
