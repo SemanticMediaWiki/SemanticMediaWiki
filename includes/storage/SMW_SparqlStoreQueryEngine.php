@@ -32,7 +32,7 @@ abstract class SMWSparqlCondition {
 	 * typically for ordering. For instance, selecting the sortkey of a
 	 * page needs only be done once per query. The array is indexed by the
 	 * name of the (main) selected variable, e.g. "v42sortkey" to allow
-	 * elimination of duplicate weak conditions that aimm to introduce this
+	 * elimination of duplicate weak conditions that aim to introduce this
 	 * variable.
 	 * @var array of format "condition identifier" => "condition"
 	 */
@@ -226,11 +226,29 @@ class SMWSparqlFilterCondition extends SMWSparqlCondition {
  */
 class SMWSparqlStoreQueryEngine {
 
+	/// The name of the SPARQL variable that represents the query result.
+	const RESULT_VARIABLE = 'result';
+
 	/**
 	 * Counter used to generate globally fresh variables.
 	 * @var integer
 	 */
 	protected $m_variableCounter = 0;
+
+	/**
+	 * Array that relates sortkeys (given by the users, i.e. property
+	 * names) to variable names in the generated SPARQL query.
+	 * Format sortkey => variable name
+	 * @var array
+	 */
+	protected $m_orderVariables;
+
+	/**
+	 * Copy of the SMWQuery sortkeys array to be used while building the
+	 * SPARQL query conditions.
+	 * @var array
+	 */
+	protected $m_sortKeys;
 
 	/**
 	 * The store that we work for.
@@ -243,6 +261,7 @@ class SMWSparqlStoreQueryEngine {
 	}
 
 	public function getInstanceQueryResult( SMWQuery $query ) {
+		$this->m_sortkeys = $query->sortkeys;
 		$sparqlCondition = $this->getSparqlCondition( $query->getDescription() );
 
 		//debug_zval_dump($sparqlCondition);
@@ -250,12 +269,11 @@ class SMWSparqlStoreQueryEngine {
 		$condition = $sparqlCondition->getWeakConditionString();
 		if ( ( $condition == '' ) && !$sparqlCondition->isSafe() ) {
 			$swivtPageResource = SMWExporter::getSpecialNsResource( 'swivt', 'page' );
-			$condition = '?result ' . $swivtPageResource->getQName() . " ?url .\n";
+			$condition = '?' . self::RESULT_VARIABLE . $swivtPageResource->getQName() . " ?url .\n";
 		}
 		$condition .= $sparqlCondition->getCondition();
 
 		if ( $sparqlCondition instanceof SMWSparqlSingletonCondition ) {
-			// TODO use ASK to handle this
 			$matchElement = $sparqlCondition->matchElement;
 			if ( $sparqlCondition->condition == '' ) {
 				$results = array( array ( $matchElement ) );
@@ -264,7 +282,7 @@ class SMWSparqlStoreQueryEngine {
 				if ( $matchElement instanceof SMWExpNsResource ) {
 					$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
 				}
-				$condition = str_replace( '?result ', "$matchElementName ", $condition );
+				$condition = str_replace( '?' . self::RESULT_VARIABLE, "$matchElementName ", $condition );
 				$askQueryResult = smwfGetSparqlDatabase()->ask( $condition, $namespaces );
 				if ( $askQueryResult->isBooleanTrue() ) {
 					$results = array( array ( $matchElement ) );
@@ -272,14 +290,14 @@ class SMWSparqlStoreQueryEngine {
 					$results = array();
 				}
 			}
-			$sparqlResult = new SMWSparqlResultWrapper( array( 'result' => 0 ), $results ); //TODO
+			$sparqlResult = new SMWSparqlResultWrapper( array( self::RESULT_VARIABLE => 0 ), $results );
 		} elseif ( $sparqlCondition instanceof SMWSparqlFalseCondition ) {
-			$sparqlResult = new SMWSparqlResultWrapper( array( 'result' => 0 ), array() );
+			$sparqlResult = new SMWSparqlResultWrapper( array( self::RESULT_VARIABLE => 0 ), array() );
 		} else {
 			//debug_zval_dump( $condition );
 			$options = $this->getSparqlOptions( $query );
 			$options['DISTINCT'] = true;
-			$sparqlResult = smwfGetSparqlDatabase()->select( '?result',
+			$sparqlResult = smwfGetSparqlDatabase()->select( '?' . self::RESULT_VARIABLE,
 			                $condition, $options, $namespaces );
 		}
 
@@ -308,9 +326,11 @@ class SMWSparqlStoreQueryEngine {
 		return $result;
 	}
 
-	public function getSparqlCondition( SMWDescription $description ) {
+	protected function getSparqlCondition( SMWDescription $description ) {
 		$this->m_variableCounter = 0;
-		$sparqlCondition = $this->buildSparqlCondition( $description, 'result', null );
+		$this->m_orderVariables = array();
+		$sparqlCondition = $this->buildSparqlCondition( $description, self::RESULT_VARIABLE, null );
+		$this->addMissingOrderByConditions( $sparqlCondition );
 		return $sparqlCondition;
 	}
 
@@ -333,15 +353,14 @@ class SMWSparqlStoreQueryEngine {
 		} elseif ( $description instanceof SMWConceptDescription ) {
 			return new SMWSparqlTrueCondition(); ///TODO Implement concept queries
 		} else { // (e.g. SMWThingDescription)
-			return new SMWSparqlTrueCondition();
+			return $this->buildTrueCondition( $joinVariable, $orderByProperty );
 		}
 	}
 
 	protected function buildConjunctionCondition( SMWConjunction $description, $joinVariable, $orderByProperty ) {
 		$subDescriptions = $description->getDescriptions();
 		if ( count( $subDescriptions ) == 0 ) { // empty conjunction: true
-			/// FIXME Ordering is missing
-			return new SMWSparqlTrueCondition();
+			return $this->buildTrueCondition( $joinVariable, $orderByProperty );
 		} elseif ( count( $subDescriptions ) == 1 ) { // conjunction with one element
 			return $this->buildSparqlCondition( reset( $subDescriptions ), $joinVariable, $orderByProperty );
 		}
@@ -399,13 +418,7 @@ class SMWSparqlStoreQueryEngine {
 
 		$result->weakConditions = $weakConditions;
 
-		//*** Possibly add conditions for ordering ***//
-		if ( $orderByProperty !== null ) {
-			/// TODO Depends on datatype
-// 			$result->orderByVariable = $joinVariable . 'sk';
-// 			$skeyExpElement = SMWExporter::getSpecialPropertyResource( '_SKEY' );
-// 			$result->weakConditions = array( $result->orderByVariable => "?$joinVariable " . $skeyExpElement->getQName() . " ?{$result->orderByVariable} .\n" );
-		}
+		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
 
 		return $result;
 	}
@@ -427,8 +440,7 @@ class SMWSparqlStoreQueryEngine {
 			if ( $subCondition instanceof SMWSparqlFalseCondition ) {
 				// empty parts in a disjunction can be ignored
 			} elseif ( $subCondition instanceof SMWSparqlTrueCondition ) {
-				/// FIXME Take ordering into account.
-				return new SMWSparqlTrueCondition();
+				return  $this->buildTrueCondition( $joinVariable, $orderByProperty );
 			} elseif ( $subCondition instanceof SMWSparqlWhereCondition ) {
 				$hasSafeSubconditions = $hasSafeSubconditions || $subCondition->isSafe();
 				$unionCondition .= ( $unionCondition ? ' UNION ' : '' ) .
@@ -468,13 +480,7 @@ class SMWSparqlStoreQueryEngine {
 
 		$result->weakConditions = $weakConditions;
 
-		//*** Possibly add conditions for ordering ***//
-		if ( $orderByProperty !== null ) {
-			/// TODO Depends on datatype
-// 			$result->orderByVariable = $joinVariable . 'sk';
-// 			$skeyExpElement = SMWExporter::getSpecialPropertyResource( '_SKEY' );
-// 			$result->weakConditions = array( $result->orderByVariable => "?$joinVariable " . $skeyExpElement->getQName() . " ?{$result->orderByVariable} .\n" );
-		}
+		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
 
 		return $result;
 
@@ -484,7 +490,11 @@ class SMWSparqlStoreQueryEngine {
 		$diProperty = $description->getProperty();
 
 		//*** Find out if we should order by the values of this property ***//
-		$innerOrderByProperty = null; //TODO, also add to some global register if found below ...
+		if ( array_key_exists( $diProperty->getKey(), $this->m_sortkeys ) ) {
+			$innerOrderByProperty = $diProperty;
+		} else {
+			$innerOrderByProperty = null; 
+		}
 
 		//*** Prepare inner condition ***//
 		$innerJoinVariable = $this->getNextVariable();
@@ -501,6 +511,11 @@ class SMWSparqlStoreQueryEngine {
 			}
 		} else {
 			$objectName = '?' . $innerJoinVariable;
+		}
+
+		//*** Record inner ordering variable if found ***//
+		if ( ( $innerOrderByProperty !== null ) && ( $innerCondition->orderByVariable != '' ) ) {
+			$this->m_orderVariables[$diProperty->getKey()] = $innerCondition->orderByVariable;
 		}
 
 		//*** Exchange arguments when property is inverse ***//
@@ -524,12 +539,7 @@ class SMWSparqlStoreQueryEngine {
 		}
 		$result = new SMWSparqlWhereCondition( $condition, true, $namespaces );
 
-		//*** Possibly add conditions for ordering ***//
-		if ( $orderByProperty !== null ) {
-			$result->orderByVariable = $joinVariable . 'sk';
-			$skeyExpElement = SMWExporter::getSpecialPropertyResource( '_SKEY' );
-			$result->weakConditions = array( $result->orderByVariable => "?$joinVariable " . $skeyExpElement->getQName() . " ?{$result->orderByVariable} .\n" );
-		}
+		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, SMWDataItem::TYPE_WIKIPAGE );
 
 		return $result;
 	}
@@ -556,11 +566,7 @@ class SMWSparqlStoreQueryEngine {
 
 		$result = new SMWSparqlWhereCondition( $condition, true, $namespaces );
 
-		if ( $orderByProperty !== null ) {
-			$result->orderByVariable = $joinVariable . 'sk';
-			$skeyExpElement = SMWExporter::getSpecialPropertyResource( '_SKEY' );
-			$result->weakConditions = array( $result->orderByVariable => "?$joinVariable " . $skeyExpElement->getQName() . " ?{$result->orderByVariable} .\n" );
-		}
+		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, SMWDataItem::TYPE_WIKIPAGE );
 
 		return $result;
 	}
@@ -595,19 +601,85 @@ class SMWSparqlStoreQueryEngine {
 			$result = new SMWSparqlFilterCondition( $filter, $namespaces );
 		}
 
-		//*** Possibly add conditions for ordering ***//
-		if ( $orderByProperty !== null ) {
-			/// TODO Depends on datatype
-// 			$result->orderByVariable = $joinVariable . 'sk';
-// 			$skeyExpElement = SMWExporter::getSpecialPropertyResource( '_SKEY' );
-// 			$result->weakConditions = array( $result->orderByVariable => "?$joinVariable " . $skeyExpElement->getQName() . " ?{$result->orderByVariable} .\n" );
-		}
+		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
 
+		return $result;
+	}
+
+	protected function buildTrueCondition( $joinVariable, $orderByProperty ) {
+		$result = new SMWSparqlTrueCondition();
+		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
 		return $result;
 	}
 
 	protected function getNextVariable() {
 		return 'v' . ( ++$this->m_variableCounter );
+	}
+
+	/**
+	 * Extend the given SPARQL condition by a suitable order by variable,
+	 * if an order by property is set.
+	 *
+	 * @param SMWSparqlCondition $sparqlCondition condition to modify
+	 * @param string $mainVariable the variable that represents the value to be ordered
+	 * @param mixed $orderByProperty SMWDIProperty or null
+	 * @param integer $diType DataItem type id if known, or SMWDataItem::TYPE_NOTYPE to determine it from the property
+	 */
+	protected function addOrderByDataForProperty( SMWSparqlCondition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = SMWDataItem::TYPE_NOTYPE ) {
+		if ( $orderByProperty === null ) {
+			return;
+		}
+
+		if ( $diType == SMWDataItem::TYPE_NOTYPE ) {
+			$typeId = $orderByProperty->findPropertyTypeID();
+			$diType = SMWDataValueFactory::getDataItemId( $typeId );
+		}
+
+		$this->addOrderByData( $sparqlCondition, $mainVariable, $diType );
+	}
+
+	/**
+	 * Extend the given SPARQL condition by a suitable order by variable,
+	 * possibly adding conditions if required for the type of data.
+	 *
+	 * @param SMWSparqlCondition $sparqlCondition condition to modify
+	 * @param string $mainVariable the variable that represents the value to be ordered
+	 * @param integer $diType DataItem type id
+	 */
+	protected function addOrderByData( SMWSparqlCondition &$sparqlCondition, $mainVariable, $diType ) {
+		if ( $diType == SMWDataItem::TYPE_WIKIPAGE ) {
+			$sparqlCondition->orderByVariable = $mainVariable . 'sk';
+			$skeyExpElement = SMWExporter::getSpecialPropertyResource( '_SKEY' );
+			$sparqlCondition->weakConditions = array( $sparqlCondition->orderByVariable =>
+			      "?$mainVariable " . $skeyExpElement->getQName() . " ?{$sparqlCondition->orderByVariable} .\n" );
+		} else {
+			$sparqlCondition->orderByVariable = $mainVariable;
+		}
+	}
+
+	/**
+	 * Extend the given SMWSparqlCondition with additional conditions to
+	 * ensure that it can be ordered by all requested properties. After
+	 * this operation, every key in m_sortkeys is assigned to a query
+	 * variable by m_orderVariables.
+	 *
+	 * @param SMWSparqlCondition $sparqlCondition condition to modify
+	 */
+	protected function addMissingOrderByConditions( SMWSparqlCondition &$sparqlCondition ) {
+		foreach ( $this->m_sortkeys as $propkey => $order ) {
+			if ( !array_key_exists( $propkey, $this->m_orderVariables ) ) { // Find missing property to sort by.
+				if ( $propkey == '' ) { // order by result page sortkey
+					$this->addOrderByData( $sparqlCondition, self::RESULT_VARIABLE, SMWDataItem::TYPE_WIKIPAGE );
+					$this->m_orderVariables[$propkey] = $sparqlCondition->orderByVariable;
+				} else { // extend query to order by other property values
+					$diProperty = new SMWDIProperty( $propkey );
+					$auxDescription = new SMWSomeProperty( $diProperty, new SMWThingDescription() );
+					$auxSparqlCondition = $this->buildSparqlCondition( $auxDescription, self::RESULT_VARIABLE, null );
+					// m_orderVariables MUST be set for $propkey -- or there is a bug; let it show!
+					$sparqlCondition->weakConditions[$this->m_orderVariables[$propkey]] = $auxSparqlCondition->getWeakConditionString() . $auxSparqlCondition->getCondition();
+				}
+			}
+		}
 	}
 
 	/**
@@ -622,17 +694,19 @@ class SMWSparqlStoreQueryEngine {
 		$result = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
 
 		// Build ORDER BY options using discovered sorting fields.
-// 		if ( $smwgQSortingSupport ) {
-// 			$qobj = $this->m_queries[$rootid];
-// 
-// 			foreach ( $this->m_sortkeys as $propkey => $order ) {
-// 				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $qobj->sortfields ) ) { // Field was successfully added.
-// 					$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . $qobj->sortfields[$propkey] . " $order ";
-// 				} elseif ( ( $order == 'RANDOM' ) && $smwgQRandSortingSupport ) {
-// 					$result['ORDER BY'] = ( array_key_exists( 'ORDER BY', $result ) ? $result['ORDER BY'] . ', ' : '' ) . ' RAND() ';
-// 				}
-// 			}
-// 		}
+		if ( $smwgQSortingSupport ) {
+			$orderByString = '';
+			foreach ( $this->m_sortkeys as $propkey => $order ) {
+				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $this->m_orderVariables ) ) {
+					$orderByString .= "$order(?" . $this->m_orderVariables[$propkey] . ") ";
+				} elseif ( ( $order == 'RANDOM' ) && $smwgQRandSortingSupport ) {
+					// not supported in SPARQL; might be possible via function calls in some stores
+				}
+			}
+			if ( $orderByString != '' ) {
+				$result['ORDER BY'] = $orderByString;
+			}
+		}
 		return $result;
 	}
 
