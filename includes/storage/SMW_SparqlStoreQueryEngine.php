@@ -326,13 +326,44 @@ class SMWSparqlStoreQueryEngine {
 		return $this->getQueryResultFromSparqlResult( $sparqlResultWrapper, $query );
 	}
 
+	public function getDebugQueryResult( SMWQuery $query ) {
+		$this->m_sortkeys = $query->sortkeys;
+		$sparqlCondition = $this->getSparqlCondition( $query->getDescription() );
+
+		$entries = array();
+
+		if ( $sparqlCondition instanceof SMWSparqlSingletonCondition ) {
+			$matchElement = $sparqlCondition->matchElement;
+			if ( $sparqlCondition->condition == '' ) { // all URIs exist, no querying
+				$sparql = 'None (no conditions).';
+			} else {
+				$condition = $this->getSparqlConditionString( $sparqlCondition );
+				$namespaces = $sparqlCondition->namespaces;
+				$sparql = smwfGetSparqlDatabase()->getSparqlForAsk( $condition, $namespaces );
+			}
+		} elseif ( $sparqlCondition instanceof SMWSparqlFalseCondition ) {
+			$sparql = 'None (conditions can not be satisfied by anything).';
+		} else {
+			$condition = $this->getSparqlConditionString( $sparqlCondition );
+			$namespaces = $sparqlCondition->namespaces;
+			$options = $this->getSparqlOptions( $query );
+			$options['DISTINCT'] = true;
+			$sparql = smwfGetSparqlDatabase()->getSparqlForSelect( '?' . self::RESULT_VARIABLE,
+			                         $condition, $options, $namespaces );
+		}
+		$sparql = str_replace( array( '[',':' ), array( '&#x005B;', '&#x003A;' ), $sparql );
+		$entries['SPARQL Query'] = "<pre>$sparql</pre>";
+
+		return SMWStore::formatDebugOutput( 'SMWSparqlStore', $entries, $query );
+	}
+
 	/**
 	 * Build the condition (WHERE) string for a given SMWSparqlCondition.
 	 * The function also expresses the single value of
 	 * SMWSparqlSingletonCondition objects in the condition, which may
 	 * lead to additional namespaces for serializing its URI.
 	 *
-	 * @param SMWSparqlCondition $sparqlCondition
+	 * @param $sparqlCondition SMWSparqlCondition
 	 * @return string
 	 */
 	protected function getSparqlConditionString( SMWSparqlCondition &$sparqlCondition ) {
@@ -361,8 +392,8 @@ class SMWSparqlStoreQueryEngine {
 	 * result wrapper must have an according format (one result column that
 	 * contains URIs of wiki pages).
 	 *
-	 * @param SMWSparqlResultWrapper $sparqlResultWrapper
-	 * @param SMWQuery $query SMWQueryResults hold a reference to original query
+	 * @param $sparqlResultWrapper SMWSparqlResultWrapper
+	 * @param $query SMWQuery, SMWQueryResults hold a reference to original query
 	 * @return SMWQueryResult
 	 */
 	protected function getQueryResultFromSparqlResult( SMWSparqlResultWrapper $sparqlResultWrapper, SMWQuery $query ) {

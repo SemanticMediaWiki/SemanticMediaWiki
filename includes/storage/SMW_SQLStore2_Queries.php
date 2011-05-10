@@ -286,50 +286,36 @@ class SMWSQLStore2QueryEngine {
 	 */
 	protected function getDebugQueryResult( SMWQuery $query, $rootid ) {
 		$qobj = $this->m_queries[$rootid];
+
+		$entries = array();
+
 		$sql_options = $this->getSQLOptions( $query, $rootid );
-
 		list( $startOpts, $useIndex, $tailOpts ) = $this->m_dbs->makeSelectOptions( $sql_options );
-
-		$result = '<div style="border: 1px dotted black; background: #A1FB00; padding: 20px; ">' .
-		          '<b>Debug output by SMWSQLStore2</b><br />' .
-		          'Generated Wiki-Query<br /><tt>' .
-		          str_replace( '[', '&#x005B;', $query->getDescription()->getQueryString() ) . '</tt><br />' .
-		          'Query-Size: ' . $query->getDescription()->getSize() . '<br />' .
-		          'Query-Depth: ' . $query->getDescription()->getDepth() . '<br />';
-
 		if ( $qobj->joinfield !== '' ) {
-			$result .= 'SQL query<br />' .
+			$entries['SQL Query'] =
 			           "<tt>SELECT DISTINCT $qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns FROM " .
 			           $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from .
 			           ( ( $qobj->where == '' ) ? '':' WHERE ' ) . $qobj->where . "$tailOpts LIMIT " .
 			           $sql_options['LIMIT'] . ' OFFSET ' . $sql_options['OFFSET'] . ';</tt>';
 		} else {
-			$result .= '<b>Empty result, no SQL query created.</b>';
+			$entries['SQL Query'] = 'Empty result, no SQL query created.';
 		}
 
-		$errors = '';
-
-		foreach ( $query->getErrors() as $error ) {
-			$errors .= $error . '<br />';
-		}
-
-		$result .= ( $errors ) ? "<br />Errors and warnings:<br />$errors":'<br />No errors or warnings.';
 		$auxtables = '';
-
 		foreach ( $this->m_querylog as $table => $log ) {
 			$auxtables .= "<li>Temporary table $table";
-
 			foreach ( $log as $q ) {
 				$auxtables .= "<br />&#160;&#160;<tt>$q</tt>";
 			}
-
 			$auxtables .= '</li>';
 		}
+		if ( $auxtables ) {
+			$entries['Auxilliary Tables Used'] = "<ul>$auxtables</ul>";
+		} else {
+			$entries['Auxilliary Tables Used'] = 'No auxilliary tables used.';
+		}
 
-		$result .= ( $auxtables ) ? "<br />Auxilliary tables used:<ul>$auxtables</ul>":'<br />No auxilliary tables used.';
-		$result .= '</div>';
-
-		return $result;
+		return SMWStore::formatDebugOutput( 'SMWSQLStore2', $entries, $query );;
 	}
 
 	/**
