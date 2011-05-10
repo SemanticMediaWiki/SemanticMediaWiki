@@ -277,45 +277,32 @@ abstract class SMWStore {
 	public function updateData( SMWSemanticData $data ) {
 		wfRunHooks( 'SMWStore::updateDataBefore', array( $this, $data ) );
 
-        global $smwgCheckChangesBeforeUpdate;
-        if ( $smwgCheckChangesBeforeUpdate && $data->hasVisibleProperties() ) {
-            $this->removeNotChangedProperties( $data );
-        }
+		global $smwgCheckChangesBeforeUpdate;
+		if ( $smwgCheckChangesBeforeUpdate && $data->hasVisibleProperties() ) {
+			// TODO
+			// wfRunHooks( 'SWLGroupNotify', array(  ) );
+		}
 
-        if ( true /* TODO: something changed */ ) {
-            // Invalidate the page, so data stored on it gets displayed immediately in queries.
-            global $smwgAutoRefreshSubject;
-            if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
-                $title = Title::makeTitle( $data->getSubject()->getNamespace(), $data->getSubject()->getDBkey() );
-                $dbw = wfGetDB( DB_MASTER );
+		// Invalidate the page, so data stored on it gets displayed immediately in queries.
+		global $smwgAutoRefreshSubject;
+		if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
+			$title = Title::makeTitle( $data->getSubject()->getNamespace(), $data->getSubject()->getDBkey() );
+			$dbw = wfGetDB( DB_MASTER );
 
-                $dbw->update(
-                    'page',
-                    array( 'page_touched' => $dbw->timestamp( time() + 9001 ) ),
-                    $title->pageCond(),
-                    __METHOD__
-                );
+			$dbw->update(
+				'page',
+				array( 'page_touched' => $dbw->timestamp( time() + 9001 ) ),
+				$title->pageCond(),
+				__METHOD__
+			);
 
-                HTMLFileCache::clearFileCache( $title );
-            }
-        }
+			HTMLFileCache::clearFileCache( $title );
+	    }
 
 		$this->doDataUpdate( $data );
 
 		wfRunHooks( 'SMWStore::updateDataAfter', array( $this, $data ) );
 	}
-
-    protected function removeNotChangedProperties( SMWSemanticData &$data ) {
-        //$storedValues = $this->getStoredValues( $data );
-
-        // TODO: remove data that has not changed
-
-        if ( false /* TODO: something changed */ ) {
-            wfRunHooks( 'SMWStore::dataChanged', array( $this, $data ) );
-        }
-    }
-
-    //protected abstract function getStoredValues( SMWSemanticData $data );
 
 	/**
 	 * Clear all semantic data specified for some page.
