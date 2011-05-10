@@ -70,9 +70,9 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		
 		// Determine mark-up strings used around list items:
 		if ( ( $this->mFormat == 'ul' ) || ( $this->mFormat == 'ol' ) ) {
-			$header = '<' . $this->mFormat . '>';
-			$footer = '</' . $this->mFormat . '>';
-			$rowstart = '<li>';
+			$header = "<" . $this->mFormat . ">\n";
+			$footer = "</" . $this->mFormat . ">\n";
+			$rowstart = "\t<li>";
 			$rowend = "</li>\n";
 			$plainlist = false;
 			$finallistsep = '';
@@ -112,7 +112,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		}
 
 		if ( $header != '' ) {
-			$result .= "\t\t\t\t$header\n";
+			$result .= $header;
 		} 
 		
 		if ( $this->mIntroTemplate != '' ) {
@@ -139,15 +139,15 @@ class SMWListResultPrinter extends SMWResultPrinter {
 
 		// Print footer
 		if ( $footer != '' ) {
-			$result .= "\t\t\t\t$footer\n";
+			$result .= $footer;
 		}
 		
 		if ( $this->mColumns > 1 ) {
-			$result .= "\t\t\t\t</div>\n";
+			$result .= "</div>\n";
 		}
 		
 		if ( $this->mColumns > 1 ) {
-			$result .= '<br style="clear: both">' . "\n";
+			$result .= '<br style="clear: both" />' . "\n";
 		}
 
 		return $result;
@@ -292,7 +292,7 @@ END;
 			$link->setParameter( $this->mOutroTemplate, 'outrotemplate' );
 		}
 		
-		$result .= "\t\t\t\t" . $rowstart . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend  . "\n";
+		$result .= $rowstart . ' '. $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . $rowend;
 	}
 
 	public function getParameters() {
