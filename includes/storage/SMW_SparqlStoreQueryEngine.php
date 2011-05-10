@@ -479,7 +479,7 @@ class SMWSparqlStoreQueryEngine {
 		if ( $description instanceof SMWSomeProperty ) {
 			return $this->buildPropertyCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof SMWNamespaceDescription ) {
-			return new SMWSparqlTrueCondition(); ///TODO Implement namespace filtering
+			return $this->buildNamespaceCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof SMWConjunction ) {
 			return $this->buildConjunctionCondition( $description, $joinVariable, $orderByProperty );
 		} elseif ( $description instanceof SMWDisjunction ) {
@@ -735,6 +735,27 @@ class SMWSparqlStoreQueryEngine {
 		}
 
 		$result = new SMWSparqlWhereCondition( $condition, true, $namespaces );
+
+		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, SMWDataItem::TYPE_WIKIPAGE );
+
+		return $result;
+	}
+
+	/**
+	 * Create an SMWSparqlCondition from an SMWNamespaceDescription.
+	 *
+	 * @param $description SMWNamespaceDescription
+	 * @param $joinVariable string name, see buildSparqlCondition()
+	 * @param $orderByProperty mixed SMWDIProperty or null, see buildSparqlCondition()
+	 * @return SMWSparqlCondition
+	 */
+	protected function buildNamespaceCondition( SMWNamespaceDescription $description, $joinVariable, $orderByProperty ) {
+		$nspropExpElement = SMWExporter::getSpecialNsResource( 'swivt', 'wikiNamespace' );
+		$nsExpElement = new SMWExpLiteral( $description->getNamespace(), 'http://www.w3.org/2001/XMLSchema#integer' );
+		$nsName = SMWTurtleSerializer::getTurtleNameForExpElement( $nsExpElement );
+		$condition = "{ ?$joinVariable " . $nspropExpElement->getQName() . " $nsName . }\n";
+
+		$result = new SMWSparqlWhereCondition( $condition, true, array() );
 
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, SMWDataItem::TYPE_WIKIPAGE );
 
