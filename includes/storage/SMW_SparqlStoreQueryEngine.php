@@ -430,7 +430,7 @@ class SMWSparqlStoreQueryEngine {
 			}
 		}
 
-		if ( count( $resultDataItems ) > $query->getLimit() ) {
+		if ( $sparqlResultWrapper->numRows() > $query->getLimit() ) {
 			array_pop( $resultDataItems );
 			$hasFurtherResults = true;
 		} else {
