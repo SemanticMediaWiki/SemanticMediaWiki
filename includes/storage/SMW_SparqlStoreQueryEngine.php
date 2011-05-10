@@ -256,10 +256,21 @@ class SMWSparqlStoreQueryEngine {
 	 */
 	protected $m_store;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param $store SMWStore that this object will use
+	 */
 	public function __construct( SMWStore $store ) {
 		$this->m_store = $store;
 	}
 
+	/**
+	 * Get the output number for a query in counting mode.
+	 *
+	 * @param $query SMWQuery
+	 * @return integer
+	 */
 	public function getCountQueryResult( SMWQuery $query ) {
 		$this->m_sortkeys = array(); // ignore sorting, just count
 		$sparqlCondition = $this->getSparqlCondition( $query->getDescription() );
@@ -294,6 +305,12 @@ class SMWSparqlStoreQueryEngine {
 		}
 	}
 
+	/**
+	 * Get the results for a query in instance retrieval mode.
+	 *
+	 * @param $query SMWQuery
+	 * @return SMWQueryResult
+	 */
 	public function getInstanceQueryResult( SMWQuery $query ) {
 		$this->m_sortkeys = $query->sortkeys;
 		$sparqlCondition = $this->getSparqlCondition( $query->getDescription() );
@@ -326,6 +343,12 @@ class SMWSparqlStoreQueryEngine {
 		return $this->getQueryResultFromSparqlResult( $sparqlResultWrapper, $query );
 	}
 
+	/**
+	 * Get the output string for a query in debugging mode.
+	 *
+	 * @param $query SMWQuery
+	 * @return string
+	 */
 	public function getDebugQueryResult( SMWQuery $query ) {
 		$this->m_sortkeys = $query->sortkeys;
 		$sparqlCondition = $this->getSparqlCondition( $query->getDescription() );
@@ -424,6 +447,15 @@ class SMWSparqlStoreQueryEngine {
 		return $result;
 	}
 
+	/**
+	 * Get a SMWSparqlCondition object for an SMWDescription.
+	 * This conversion is implemented by a number of recursive functions,
+	 * and this is the main entry point for this recursion. In particular,
+	 * it resets global variables that are used for the construction.
+	 *
+	 * @param $description SMWDescription
+	 * @return SMWSparqlCondition
+	 */
 	protected function getSparqlCondition( SMWDescription $description ) {
 		$this->m_variableCounter = 0;
 		$this->m_orderVariables = array();
@@ -433,7 +465,15 @@ class SMWSparqlStoreQueryEngine {
 	}
 
 	/**
-	 * Create an SMWSparqlCondition from the given SMWDescription.
+	 * Recursively create an SMWSparqlCondition from an SMWDescription.
+	 *
+	 * @param $description SMWDescription
+	 * @param $joinVariable string name of the variable that conditions
+	 * will refer to
+	 * @param $orderByProperty mixed SMWDIProperty or null, if given then
+	 * this is the property the values of which this condition will refer
+	 * to, and the condition should also enable ordering by this value
+	 * @return SMWSparqlCondition
 	 */
 	protected function buildSparqlCondition( SMWDescription $description, $joinVariable, $orderByProperty ) {
 		if ( $description instanceof SMWSomeProperty ) {
@@ -455,6 +495,14 @@ class SMWSparqlStoreQueryEngine {
 		}
 	}
 
+	/**
+	 * Recursively create an SMWSparqlCondition from an SMWConjunction.
+	 *
+	 * @param $description SMWConjunction
+	 * @param $joinVariable string name, see buildSparqlCondition()
+	 * @param $orderByProperty mixed SMWDIProperty or null, see buildSparqlCondition()
+	 * @return SMWSparqlCondition
+	 */
 	protected function buildConjunctionCondition( SMWConjunction $description, $joinVariable, $orderByProperty ) {
 		$subDescriptions = $description->getDescriptions();
 		if ( count( $subDescriptions ) == 0 ) { // empty conjunction: true
@@ -521,6 +569,14 @@ class SMWSparqlStoreQueryEngine {
 		return $result;
 	}
 
+	/**
+	 * Recursively create an SMWSparqlCondition from an SMWDisjunction.
+	 *
+	 * @param $description SMWDisjunction
+	 * @param $joinVariable string name, see buildSparqlCondition()
+	 * @param $orderByProperty mixed SMWDIProperty or null, see buildSparqlCondition()
+	 * @return SMWSparqlCondition
+	 */
 	protected function buildDisjunctionCondition( SMWDisjunction $description, $joinVariable, $orderByProperty ) {
 		$subDescriptions = $description->getDescriptions();
 		if ( count( $subDescriptions ) == 0 ) { // empty disjunction: false
@@ -584,6 +640,14 @@ class SMWSparqlStoreQueryEngine {
 
 	}
 
+	/**
+	 * Recursively create an SMWSparqlCondition from an SMWSomeProperty.
+	 *
+	 * @param $description SMWSomeProperty
+	 * @param $joinVariable string name, see buildSparqlCondition()
+	 * @param $orderByProperty mixed SMWDIProperty or null, see buildSparqlCondition()
+	 * @return SMWSparqlCondition
+	 */
 	protected function buildPropertyCondition( SMWSomeProperty $description, $joinVariable, $orderByProperty ) {
 		$diProperty = $description->getProperty();
 
@@ -642,6 +706,14 @@ class SMWSparqlStoreQueryEngine {
 		return $result;
 	}
 
+	/**
+	 * Create an SMWSparqlCondition from an SMWClassDescription.
+	 *
+	 * @param $description SMWClassDescription
+	 * @param $joinVariable string name, see buildSparqlCondition()
+	 * @param $orderByProperty mixed SMWDIProperty or null, see buildSparqlCondition()
+	 * @return SMWSparqlCondition
+	 */
 	protected function buildClassCondition( SMWClassDescription $description, $joinVariable, $orderByProperty ) {
 		$condition = '';
 		$namespaces = array();
@@ -669,6 +741,14 @@ class SMWSparqlStoreQueryEngine {
 		return $result;
 	}
 
+	/**
+	 * Create an SMWSparqlCondition from an SMWValueDescription.
+	 *
+	 * @param $description SMWValueDescription
+	 * @param $joinVariable string name, see buildSparqlCondition()
+	 * @param $orderByProperty mixed SMWDIProperty or null, see buildSparqlCondition()
+	 * @return SMWSparqlCondition
+	 */
 	protected function buildValueCondition( SMWValueDescription $description, $joinVariable, $orderByProperty ) {
 		$dataItem = $description->getDataItem();
 		$expElement = SMWExporter::getDataItemExpElement( $dataItem );
@@ -704,12 +784,25 @@ class SMWSparqlStoreQueryEngine {
 		return $result;
 	}
 
+	/**
+	 * Create an SMWSparqlCondition from an empty (true) description.
+	 * May still require helper conditions for ordering.
+	 *
+	 * @param $joinVariable string name, see buildSparqlCondition()
+	 * @param $orderByProperty mixed SMWDIProperty or null, see buildSparqlCondition()
+	 * @return SMWSparqlCondition
+	 */
 	protected function buildTrueCondition( $joinVariable, $orderByProperty ) {
 		$result = new SMWSparqlTrueCondition();
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
 		return $result;
 	}
 
+	/**
+	 * Get a fresh unused variable name for building SPARQL conditions.
+	 *
+	 * @return string
+	 */
 	protected function getNextVariable() {
 		return 'v' . ( ++$this->m_variableCounter );
 	}
