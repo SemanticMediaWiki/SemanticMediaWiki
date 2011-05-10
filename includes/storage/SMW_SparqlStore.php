@@ -177,13 +177,14 @@ class SMWSparqlStore extends SMWSQLStore2 {
 
 		if ( $query->querymode == SMWQuery::MODE_NONE ) { // don't query, but return something to printer
 			return new SMWQueryResult( $query->getDescription()->getPrintrequests(), $query, array(), $this, true );
-		} elseif ( $query->querymode == SMWQuery::MODE_DEBUG || $query->querymode == SMWQuery::MODE_COUNT ) {
+		} elseif ( $query->querymode == SMWQuery::MODE_DEBUG ) {
 			return "Not implemented.\n";
+		} elseif ( $query->querymode == SMWQuery::MODE_COUNT ) {
+			$queryEngine = new SMWSparqlStoreQueryEngine( $this );
+			return $queryEngine->getCountQueryResult( $query ); 
 		} else {
 			$queryEngine = new SMWSparqlStoreQueryEngine( $this );
-			$queryResult = $queryEngine->getInstanceQueryResult( $query ); 
-// 			debug_zval_dump( $queryResult );
-			return $queryResult;
+			return $queryEngine->getInstanceQueryResult( $query ); 
 		}
 	}
 

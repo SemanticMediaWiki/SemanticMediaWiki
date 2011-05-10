@@ -260,50 +260,114 @@ class SMWSparqlStoreQueryEngine {
 		$this->m_store = $store;
 	}
 
-	public function getInstanceQueryResult( SMWQuery $query ) {
-		$this->m_sortkeys = $query->sortkeys;
+	public function getCountQueryResult( SMWQuery $query ) {
+		$this->m_sortkeys = array(); // ignore sorting, just count
 		$sparqlCondition = $this->getSparqlCondition( $query->getDescription() );
-
-		//debug_zval_dump($sparqlCondition);
-		$namespaces = $sparqlCondition->namespaces;
-		$condition = $sparqlCondition->getWeakConditionString();
-		if ( ( $condition == '' ) && !$sparqlCondition->isSafe() ) {
-			$swivtPageResource = SMWExporter::getSpecialNsResource( 'swivt', 'page' );
-			$condition = '?' . self::RESULT_VARIABLE . $swivtPageResource->getQName() . " ?url .\n";
-		}
-		$condition .= $sparqlCondition->getCondition();
 
 		if ( $sparqlCondition instanceof SMWSparqlSingletonCondition ) {
 			$matchElement = $sparqlCondition->matchElement;
-			if ( $sparqlCondition->condition == '' ) {
-				$results = array( array ( $matchElement ) );
+			if ( $sparqlCondition->condition == '' ) { // all URIs exist, no querying
+				return 1;
 			} else {
-				$matchElementName = SMWTurtleSerializer::getTurtleNameForExpElement( $matchElement );
-				if ( $matchElement instanceof SMWExpNsResource ) {
-					$namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
-				}
-				$condition = str_replace( '?' . self::RESULT_VARIABLE, "$matchElementName ", $condition );
+				$condition = $this->getSparqlConditionString( $sparqlCondition );
+				$namespaces = $sparqlCondition->namespaces;
 				$askQueryResult = smwfGetSparqlDatabase()->ask( $condition, $namespaces );
-				if ( $askQueryResult->isBooleanTrue() ) {
-					$results = array( array ( $matchElement ) );
-				} else {
-					$results = array();
-				}
+				return $askQueryResult->isBooleanTrue() ? 1 : 0;
 			}
-			$sparqlResult = new SMWSparqlResultWrapper( array( self::RESULT_VARIABLE => 0 ), $results );
 		} elseif ( $sparqlCondition instanceof SMWSparqlFalseCondition ) {
-			$sparqlResult = new SMWSparqlResultWrapper( array( self::RESULT_VARIABLE => 0 ), array() );
+			return 0;
 		} else {
 			//debug_zval_dump( $condition );
+			$condition = $this->getSparqlConditionString( $sparqlCondition );
+			$namespaces = $sparqlCondition->namespaces;
 			$options = $this->getSparqlOptions( $query );
 			$options['DISTINCT'] = true;
-			$sparqlResult = smwfGetSparqlDatabase()->select( '?' . self::RESULT_VARIABLE,
-			                $condition, $options, $namespaces );
+			$sparqlResultWrapper = smwfGetSparqlDatabase()->selectCount( '?' . self::RESULT_VARIABLE,
+			                                      $condition, $options, $namespaces );
+			if ( $sparqlResultWrapper->getErrorCode() == SMWSparqlResultWrapper::ERROR_NOERROR ) {
+				return (int)$sparqlResultWrapper->getNumericValue();
+			} else {
+				///@todo Implement error reporting for counting queries.
+// 				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+// 				$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryproblem' ) ) );
+			}
+		}
+	}
+
+	public function getInstanceQueryResult( SMWQuery $query ) {
+		$this->m_sortkeys = $query->sortkeys;
+		$sparqlCondition = $this->getSparqlCondition( $query->getDescription() );
+		//debug_zval_dump($sparqlCondition);
+
+		if ( $sparqlCondition instanceof SMWSparqlSingletonCondition ) {
+			$matchElement = $sparqlCondition->matchElement;
+			if ( $sparqlCondition->condition == '' ) { // all URIs exist, no querying
+				$results = array( array ( $matchElement ) );
+			} else {
+				$condition = $this->getSparqlConditionString( $sparqlCondition );
+				$namespaces = $sparqlCondition->namespaces;
+				$askQueryResult = smwfGetSparqlDatabase()->ask( $condition, $namespaces );
+				$results = $askQueryResult->isBooleanTrue() ? array( array ( $matchElement ) ) : array();
+			}
+			$sparqlResultWrapper = new SMWSparqlResultWrapper( array( self::RESULT_VARIABLE => 0 ), $results );
+		} elseif ( $sparqlCondition instanceof SMWSparqlFalseCondition ) {
+			$sparqlResultWrapper = new SMWSparqlResultWrapper( array( self::RESULT_VARIABLE => 0 ), array() );
+		} else {
+			//debug_zval_dump( $condition );
+			$condition = $this->getSparqlConditionString( $sparqlCondition );
+			$namespaces = $sparqlCondition->namespaces;
+			$options = $this->getSparqlOptions( $query );
+			$options['DISTINCT'] = true;
+			$sparqlResultWrapper = smwfGetSparqlDatabase()->select( '?' . self::RESULT_VARIABLE,
+			                         $condition, $options, $namespaces );
 		}
 
-		//debug_zval_dump( $sparqlResult );
+		//debug_zval_dump( $sparqlResultWrapper );
+		return $this->getQueryResultFromSparqlResult( $sparqlResultWrapper, $query );
+	}
+
+	/**
+	 * Build the condition (WHERE) string for a given SMWSparqlCondition.
+	 * The function also expresses the single value of
+	 * SMWSparqlSingletonCondition objects in the condition, which may
+	 * lead to additional namespaces for serializing its URI.
+	 *
+	 * @param SMWSparqlCondition $sparqlCondition
+	 * @return string
+	 */
+	protected function getSparqlConditionString( SMWSparqlCondition &$sparqlCondition ) {
+		$condition = $sparqlCondition->getWeakConditionString();
+		if ( ( $condition == '' ) && !$sparqlCondition->isSafe() ) {
+			$swivtPageResource = SMWExporter::getSpecialNsResource( 'swivt', 'page' );
+			$condition = '?' . self::RESULT_VARIABLE . ' ' . $swivtPageResource->getQName() . " ?url .\n";
+		}
+		$condition .= $sparqlCondition->getCondition();
+
+		if ( $sparqlCondition instanceof SMWSparqlSingletonCondition ) { // prepare for ASK, maybe rather use BIND?
+			$matchElement = $sparqlCondition->matchElement;
+			$matchElementName = SMWTurtleSerializer::getTurtleNameForExpElement( $matchElement );
+			if ( $matchElement instanceof SMWExpNsResource ) {
+				$sparqlCondition->namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
+			}
+			$condition = str_replace( '?' . self::RESULT_VARIABLE, "$matchElementName ", $condition );
+		}
+
+		return $condition;
+	}
+
+	/**
+	 * Build an SMWQueryResult object from a SMWSparqlResultWrapper. This
+	 * function is used to generate instance query results, and the given
+	 * result wrapper must have an according format (one result column that
+	 * contains URIs of wiki pages).
+	 *
+	 * @param SMWSparqlResultWrapper $sparqlResultWrapper
+	 * @param SMWQuery $query SMWQueryResults hold a reference to original query
+	 * @return SMWQueryResult
+	 */
+	protected function getQueryResultFromSparqlResult( SMWSparqlResultWrapper $sparqlResultWrapper, SMWQuery $query ) {
 		$resultDataItems = array();
-		foreach ( $sparqlResult as $resultRow ) {
+		foreach ( $sparqlResultWrapper as $resultRow ) {
 			if ( count( $resultRow ) > 0 ) {
 				$dataItem = SMWExporter::findDataItemForExpElement( $resultRow[0] );
 				if ( $dataItem !== null ) {
@@ -311,6 +375,7 @@ class SMWSparqlStoreQueryEngine {
 				}
 			}
 		}
+
 		if ( count( $resultDataItems ) > $query->getLimit() ) {
 			array_pop( $resultDataItems );
 			$hasFurtherResults = true;
@@ -319,10 +384,12 @@ class SMWSparqlStoreQueryEngine {
 		}
 
 		$result = new SMWQueryResult(  $query->getDescription()->getPrintrequests(), $query, $resultDataItems, $this->m_store, $hasFurtherResults );
-		if ( $sparqlResult->getErrorCode() != SMWSparqlResultWrapper::ERROR_NOERROR ) {
+
+		if ( $sparqlResultWrapper->getErrorCode() != SMWSparqlResultWrapper::ERROR_NOERROR ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryproblem' ) ) );
 		}
+
 		return $result;
 	}
 

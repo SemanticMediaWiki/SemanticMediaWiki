@@ -243,6 +243,34 @@ class SMWSparqlDatabase {
 	}
 
 	/**
+	 * SELECT wrapper for counting results.
+	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
+	 * rdfs, property, xsd, so these do not have to be included in
+	 * $extraNamespaces.
+	 *
+	 * @param $variable string variable name or '*'
+	 * @param $where string WHERE part of the query, without surrounding { }
+	 * @param $options array (associative) of options, e.g. array('LIMIT' => '10')
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @return SMWSparqlResultWrapper
+	 */
+	public function selectCount( $variable, $where, $options = array(), $extraNamespaces = array() ) {
+		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT (COUNT(';
+		if ( array_key_exists( 'DISTINCT', $options ) ) {
+			$sparql .= 'DISTINCT ';
+		}
+		$sparql .= $variable . ") AS ?count) WHERE {\n" . $where . "\n}";
+		if ( array_key_exists( 'OFFSET', $options ) ) {
+			$sparql .= "\nOFFSET " . $options['OFFSET'];
+		}
+		if ( array_key_exists( 'LIMIT', $options ) ) {
+			$sparql .= "\nLIMIT " . $options['LIMIT'];
+		}
+
+		return $this->doQuery( $sparql );
+	}
+
+	/**
 	 * DELETE wrapper.
 	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
 	 * rdfs, property, xsd, so these do not have to be included in

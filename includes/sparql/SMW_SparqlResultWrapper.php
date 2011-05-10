@@ -97,6 +97,26 @@ class SMWSparqlResultWrapper implements Iterator {
 	}
 
 	/**
+	 * Check if the result is what one would get for a SPARQL SELECT COUNT
+	 * query, and return the corresponding integer value. Returns 0 in all
+	 * other cases (including the case that the results do not look at all
+	 * like the result of a SELECT COUNT query).
+	 *
+	 * @return integer
+	 */
+	public function getNumericValue() {
+		if ( count( $this->m_data ) == 1 ) {
+			$row = reset( $this->m_data );
+			$expElement = reset( $row );
+			if ( ( count( $row ) == 1 ) && ( $expElement instanceof SMWExpLiteral ) &&
+			     ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#integer' ) ) {
+				return (int)$expElement->getLexicalForm();
+			}
+		}
+		return 0;
+	}
+
+	/**
 	 * Reset iterator to position 0. Standard method of Iterator.
 	 */
 	public function rewind() {
