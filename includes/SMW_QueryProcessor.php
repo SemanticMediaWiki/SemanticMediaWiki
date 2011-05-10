@@ -113,20 +113,19 @@ class SMWQueryProcessor {
 			$query->sort = true;
 			$query->sortkeys = array();
 
-			foreach ( explode( ',', trim( $params['sort'] ) ) as $sort ) {
-				$sort = smwfNormalTitleDBKey( trim( $sort ) ); // slight normalisation
-				$order = current( $orders );
-				if ( $order === false ) { // default
-					$order = 'ASC';
-				}
-
-				if ( array_key_exists( $sort, $query->sortkeys ) ) {
-					// maybe throw an error here?
+			foreach ( explode( ',', $params['sort'] ) as $sort ) {
+				$propertyValue = SMWPropertyValue::makeUserProperty( trim( $sort ) );
+				if ( $propertyValue->isValid() ) {
+					$sortkey = $propertyValue->getDataItem()->getKey();
+					$order = current( $orders );
+					if ( $order === false ) { // default
+						$order = 'ASC';
+					}
+					$query->sortkeys[$sortkey] = $order; // should we check for duplicate sort keys?
+					next( $orders );
 				} else {
-					$query->sortkeys[$sort] = $order;
+					$query->addErrors( $propertyValue->getErrors() );
 				}
-
-				next( $orders );
 			}
 
 			if ( current( $orders ) !== false ) { // sort key remaining, apply to page name

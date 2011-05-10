@@ -115,18 +115,19 @@ class SMWPropertyValue extends SMWDataValue {
 		if ( $this->m_caption === false ) { // always use this as caption
 			$this->m_caption = $value;
 		}
-		$value = smwfNormalTitleText( ltrim( rtrim( $value, ' ]' ), ' [' ) ); // slightly normalise label
+		$propertyName = smwfNormalTitleText( ltrim( rtrim( $value, ' ]' ), ' [' ) ); // slightly normalise label
 		$inverse = false;
-		if ( ( $value !== '' ) && ( $value { 0 } == '-' ) ) { // check if this property refers to an inverse
-			$value = substr( $value, 1 );
+		if ( ( $propertyName !== '' ) && ( $propertyName{ 0 } == '-' ) ) { // property refers to an inverse
+			$propertyName = (string)substr( $value, 1 );
+			/// NOTE The cast is necessary at least in PHP 5.3.3 to get string '' instead of boolean false.
 			$inverse = true;
 		}
 
 		try {
-			$this->m_dataitem = SMWDIProperty::newFromUserLabel( $value, $inverse, $this->m_typeid );
-		} catch ( SMWDataItemException $e ) {
+			$this->m_dataitem = SMWDIProperty::newFromUserLabel( $propertyName, $inverse, $this->m_typeid );
+		} catch ( SMWDataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-			$this->addError( wfMsgForContent( 'smw_parseerror' ) ); // very rare to get an error here, don't bother with detailed reporting
+			$this->addError( wfMsgForContent( 'smw_noproperty', $value ) );
 			$this->m_dataitem = new SMWDIProperty( 'ERROR', false, $this->m_typeid ); // just to have something
 		}
 	}
