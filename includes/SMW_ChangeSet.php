@@ -14,21 +14,21 @@
 class SMWChangeSet {
 	
 	/**
-	 * 
+	 * The subject the changes apply to.
 	 * 
 	 * @var SMWDIWikiPage
 	 */
 	protected $subject;
 	
 	/**
-	 * 
+	 * Object holding semantic data that got inserted.
 	 * 
 	 * @var SMWSemanticData
 	 */
 	protected $insertions;
 	
 	/**
-	 * 
+	 * Object holding semantic data that got deleted.
 	 * 
 	 * @var SMWSemanticData
 	 */	
@@ -42,6 +42,7 @@ class SMWChangeSet {
 	protected $changes;
 	
 	/**
+	 * Creates and returns a new SMWChangeSet from 2 SMWSemanticData objects.
 	 * 
 	 * @param SMWSemanticData $old
 	 * @param SMWSemanticData $new
