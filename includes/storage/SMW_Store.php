@@ -279,8 +279,8 @@ abstract class SMWStore {
 
 		global $smwgCheckChangesBeforeUpdate;
 		if ( $smwgCheckChangesBeforeUpdate && $data->hasVisibleProperties() ) {
-			// TODO
-			// wfRunHooks( 'SWLGroupNotify', array(  ) );
+			// TODO: create a $newData object by doing a read query
+			wfRunHooks( 'SMWStore::dataChanged', array( $this, SMWChangeSet::newFromSemanticData( $data, $data ) ) );
 		}
 
 		// Invalidate the page, so data stored on it gets displayed immediately in queries.

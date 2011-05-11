@@ -99,17 +99,21 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Aliases.php';
 
 	// Set up autoloading; essentially all classes should be autoloaded!
-	$wgAutoloadClasses['SMWParserExtensions']       = $smwgIP . 'includes/SMW_ParserExtensions.php';
-	$wgAutoloadClasses['SMWInfolink']               = $smwgIP . 'includes/SMW_Infolink.php';
-	$wgAutoloadClasses['SMWFactbox']                = $smwgIP . 'includes/SMW_Factbox.php';
-	$wgAutoloadClasses['SMWParseData']              = $smwgIP . 'includes/SMW_ParseData.php';
-	$wgAutoloadClasses['SMWOutputs']                = $smwgIP . 'includes/SMW_Outputs.php';
-	$wgAutoloadClasses['SMWSemanticData']           = $smwgIP . 'includes/SMW_SemanticData.php';
-	$wgAutoloadClasses['SMWResultPrinter']          = $smwgIP . 'includes/SMW_QueryPrinter.php';
-	$wgAutoloadClasses['SMWDataValueFactory']   	= $smwgIP . 'includes/SMW_DataValueFactory.php';
-	$wgAutoloadClasses['SMWDataValue']           	= $smwgIP . 'includes/SMW_DataValue.php';
-	$wgAutoloadClasses['SMWQueryLanguage']          = $smwgIP . 'includes/SMW_QueryLanguage.php';
-	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $smwgIP . 'includes/SMW_CompatibilityHelpers.php';
+	$incDir = $smwgIP . 'includes/';
+	$wgAutoloadClasses['SMWChangeSet']   			= $incDir . 'SMW_ChangeSet.php';
+	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $incDir . 'SMW_CompatibilityHelpers.php';
+	$wgAutoloadClasses['SMWDataValue']           	= $incDir . 'SMW_DataValue.php';
+	$wgAutoloadClasses['SMWDataValueFactory']   	= $incDir . 'SMW_DataValueFactory.php';
+	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';	
+	$wgAutoloadClasses['SMWInfolink']               = $incDir . 'SMW_Infolink.php';
+	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';	
+	$wgAutoloadClasses['SMWParseData']              = $incDir . 'SMW_ParseData.php';	
+	$wgAutoloadClasses['SMWParserExtensions']       = $incDir . 'SMW_ParserExtensions.php';
+	$wgAutoloadClasses['SMWPropertyChange']       	= $incDir . 'SMW_PropertyChange.php';
+	$wgAutoloadClasses['SMWPropertyChanges']		= $incDir . 'SMW_PropertyChanges.php';
+	$wgAutoloadClasses['SMWQueryLanguage']          = $incDir . 'SMW_QueryLanguage.php';	
+	$wgAutoloadClasses['SMWResultPrinter']          = $incDir . 'SMW_QueryPrinter.php';
+	$wgAutoloadClasses['SMWSemanticData']           = $incDir . 'SMW_SemanticData.php';
 
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';
