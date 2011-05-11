@@ -69,7 +69,54 @@ class SMWChangeSet {
 		// Find the insertions.
 		self::findSingleDirectionChanges( $insertions, $newProperties, $new, $oldProperties );
 		
-		// TODO: find one-to-one changes 
+		foreach ( $oldProperties as $propertyKey => /* SMWDIProperty */ $diProperty ) {
+			$oldDataItems = array();
+			$newDataItems = array();
+			
+			// Populate the data item arrays using keys that are their hash, so matches can be found.
+			foreach ( $old->getPropertyValues( $diProperty ) as $dataItem ) {
+				$oldDataItems[$dataItem->getHash()] = $dataItem;
+			}
+			foreach ( $new->getPropertyValues( $diProperty ) as $dataItem ) {
+				$newDataItems[$dataItem->getHash()] = $dataItem;
+			}			
+			
+			$foundMatches = array();
+			
+			// Find values that are both in the old and new version.
+			// Note: this code assumes there are no duplicates.
+			foreach ( array_keys( $oldDataItems ) as $hash ) {
+				if ( array_key_exists( $hash, $newDataItems ) ) {
+					$foundMatches[] = $hash;
+				}
+			}
+			
+			// Remove the values occuring in both sets, so only changes remain.
+			foreach ( $foundMatches as $foundMatch ) {
+				unset( $oldDataItems[$foundMatch] );
+				unset( $newDataItems[$foundMatch] );
+			}
+			
+			// Find which group is biggest, so it's easy to loop over all values of the smallest.
+			$oldIsBigger = count( $oldDataItems ) > count ( $newDataItems );
+			$bigGroup = $oldIsBigger ? $oldDataItems : $newDataItems;
+			$smallGroup = $oldIsBigger ? $newDataItems : $oldDataItems;
+			
+			// Add all one-to-one changes.
+			while ( $dataItem = array_shift( $smallGroup ) ) {
+				$changes->addPropertyObjectChange( $diProperty, new SMWPropertyChange( $dataItem, array_shift( $bigGroup ) ) );
+			}
+			
+			// If the bigger group is not-equal to the smaller one, items will be left,
+			// that are either insertions or deletions, depending on the group.
+			if ( count( $bigGroup > 0 ) ) {
+				$semanticData = $oldIsBigger ? $deletions : $insertions;
+				
+				foreach ( $bigGroup as /* SMWDataItem */ $dataItem ) {
+					$semanticData->addPropertyObjectValue( $diProperty, $dataItem );
+				}				
+			}
+		}
 		
 		return new self( $subject, $changes, $insertions, $deletions );
 	}
@@ -101,8 +148,6 @@ class SMWChangeSet {
 		foreach ( $deletionKeys as $key ) {
 			unset( $oldProperties[$propertyKey] );
 		}
-		
-		// TODO: handle props with multiple values (of which only some got inserted/removed) correctly
 	}
 	
 	/**
