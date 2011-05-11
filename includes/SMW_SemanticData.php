@@ -294,12 +294,12 @@ class SMWSemanticData {
 		if ( array_key_exists( $propertyKey, $this->mProperties ) ) {
 			$property = $this->mProperties[$propertyKey];
 		} else {
-			if ( SMWSemanticData::$mPropertyPrefix == '' ) {
+			if ( self::$mPropertyPrefix == '' ) {
 				global $wgContLang;
-				SMWSemanticData::$mPropertyPrefix = $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':';
+				self::$mPropertyPrefix = $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':';
 			} // explicitly use prefix to cope with things like [[Property:User:Stupid::somevalue]]
 
-			$propertyDV = SMWPropertyValue::makeUserProperty( SMWSemanticData::$mPropertyPrefix . $propertyName );
+			$propertyDV = SMWPropertyValue::makeUserProperty( self::$mPropertyPrefix . $propertyName );
 
 			if ( !$propertyDV->isValid() ) { // error, maybe illegal title text
 				return;
