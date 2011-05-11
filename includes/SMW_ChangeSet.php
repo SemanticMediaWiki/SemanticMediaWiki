@@ -64,10 +64,10 @@ class SMWChangeSet {
 		$newProperties = $new->getProperties();
 		
 		// Find the deletions.
-		self::findSingleDirectionChanges( $deletions, $oldProperties, $newProperties );
+		self::findSingleDirectionChanges( $deletions, $oldProperties, $old, $newProperties );
 		
 		// Find the insertions.
-		self::findSingleDirectionChanges( $insertions, $newProperties, $oldProperties );
+		self::findSingleDirectionChanges( $insertions, $newProperties, $new, $oldProperties );
 		
 		// TODO: find one-to-one changes 
 		
@@ -81,14 +81,17 @@ class SMWChangeSet {
 	 * 
 	 * @param SMWSemanticData $changeSet
 	 * @param array $oldProperties
+	 * @param SMWSemanticData $oldData
 	 * @param array $newProperties
 	 */
-	protected static function findSingleDirectionChanges( SMWSemanticData &$changeSet, array &$oldProperties, array $newProperties ) {
+	protected static function findSingleDirectionChanges( SMWSemanticData &$changeSet,
+		array &$oldProperties, SMWSemanticData $oldData, array $newProperties ) {
+			
 		$deletionKeys = array();
 		
 		foreach ( $oldProperties as $propertyKey => /* SMWDIProperty */ $diProperty ) {
 			if ( !array_key_exists( $propertyKey, $newProperties ) ) {
-				foreach ( $old->getPropertyValues( $diProperty ) as /* SMWDataItem */ $dataItem ) {
+				foreach ( $oldData->getPropertyValues( $diProperty ) as /* SMWDataItem */ $dataItem ) {
 					$changeSet->addPropertyObjectValue( $diProperty, $dataItem );
 				}
 				$deletionKeys[] = $propertyKey;
