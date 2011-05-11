@@ -46,14 +46,14 @@ class SMWSemanticData {
 	 *
 	 * @var array
 	 */
-	protected $mPropVals;
+	protected $mPropVals = array();
 
 	/**
 	 * Array mapping property keys (string) to SMWDIProperty objects.
 	 *
 	 * @var array
 	 */
-	protected $mProperties;
+	protected $mProperties = array();
 
 	/**
 	 * Stub property data that is not part of $mPropVals and $mProperties

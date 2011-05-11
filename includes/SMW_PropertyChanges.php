@@ -31,14 +31,14 @@ class SMWPropertyChanges implements Iterator {
 	 * 
 	 * @var array of SMWPropertyChange
 	 */
-	protected $changes;
+	protected $changes = array();
 	
 	/**
 	 * Array mapping property keys (string) to SMWDIProperty objects.
 	 *
 	 * @var array of SMWDIProperty
 	 */
-	protected $properties;
+	protected $properties = array();
 	
 	/**
 	 * Get the array of all properties that have changes.
