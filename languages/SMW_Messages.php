@@ -3083,6 +3083,7 @@ Uutta ei käynnistetä.',
 
 /** French (Français)
  * @author Crochet.david
+ * @author Faure.thomas
  * @author Grondin
  * @author IAlex
  * @author McDutchie
@@ -3152,7 +3153,6 @@ $messages['fr'] = array(
 	'smw-paramdesc-dsv-filename' => 'Le nom du fichier DSV',
 	'smw_iq_disabled' => 'Désolé. Les recherches dans les pages de ce wiki ne sont pas autorisées.',
 	'smw_iq_moreresults' => '&hellip; autres résultats',
-	'smw_unknown_importns' => 'Aucune fonction d’importation n’est disponible pour l’espace de noms « $1 ».',
 	'smw_nonright_importtype' => 'L’élément « $1 » ne peut être employé que pour des pages de l’espace de noms « $2 ».',
 	'smw_wrong_importtype' => '$1 ne peut pas être employé pour des pages dans l’espace de noms « $2 ».',
 	'smw_no_importelement' => 'L’élément « $1 » n’est pas disponible pour l’importation.',
@@ -3160,6 +3160,7 @@ $messages['fr'] = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '&nbsp;',
 	'smw_notitle' => '« $1 » ne peut être utilisé comme nom de page sur ce wiki.',
+	'smw_noproperty' => '"$1" ne peut être utilisé comme un nom de propriété dans ce wiki.',
 	'smw_wrong_namespace' => 'Seules les pages dans l’espace « $1 » sont autorisées ici.',
 	'smw_unknowntype' => 'Le type de données « $1 » non supporté a été retourné à l’attribut.',
 	'smw_manytypes' => 'Plusieurs types de données ont été assignés à l’attribut.',
@@ -6558,7 +6559,6 @@ $messages['mk'] = array(
 	'smw-paramdesc-dsv-filename' => 'Име на DSV-податотеката',
 	'smw_iq_disabled' => 'На ова вики се оневозможени семантички барања.',
 	'smw_iq_moreresults' => '… понатамошни резултати',
-	'smw_unknown_importns' => 'Функциите за увоз се недостапни за именскиот простор „$1“.',
 	'smw_nonright_importtype' => '$1 може да се користи само за страници со именски простор „$2“.',
 	'smw_wrong_importtype' => '$1 не може да се користи за страници во именскиот простор „$2“.',
 	'smw_no_importelement' => 'Елементот „$1“ е недостапен за увоз.',
@@ -6566,6 +6566,7 @@ $messages['mk'] = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_notitle' => '„$1“ не може да се користи како име на страница во ова вики.',
+	'smw_noproperty' => '„$1“ не може да се користи како име на својство во ова вики.',
 	'smw_wrong_namespace' => 'Тука се дозвоени само страници во именскиот простор „$1“.',
 	'smw_unknowntype' => 'За својството е определен неподдржан тип „$1“.',
 	'smw_manytypes' => 'За својството е определен повеќе од еден тип.',
@@ -6991,7 +6992,6 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw-paramdesc-dsv-filename' => 'De naam voor het DSV-bestand',
 	'smw_iq_disabled' => 'Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.',
 	'smw_iq_moreresults' => '… overige resultaten',
-	'smw_unknown_importns' => 'Importfuncties zijn niet beschikbaar voor de naamruimte “$1”.',
 	'smw_nonright_importtype' => "$1 kan alleen gebruikt worden voor pagina's in de naamruimte “$2”.",
 	'smw_wrong_importtype' => "$1 kan niet gebruikt worden in pagina's in de naamruimte “$2”.",
 	'smw_no_importelement' => 'Element “$1” is niet beschikbaar voor import.',
@@ -6999,6 +6999,7 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '.',
 	'smw_notitle' => '"$1" kan niet gebruikt worden als paginanaam.',
+	'smw_noproperty' => '"$1" kan niet gebruikt worden als eigenschapsnaam in deze wiki.',
 	'smw_wrong_namespace' => 'Hier zijn alleen pagina\'s uit de naamruimte "$1" toegestaan.',
 	'smw_unknowntype' => 'Type “$1” is niet beschikbaar voor de gedefinieerde eigenschap.',
 	'smw_manytypes' => 'Meer dan één type gedefinieerd voor eigenschap.',
@@ -8949,6 +8950,7 @@ $messages['ru'] = array(
 	'smw_decseparator' => ',',
 	'smw_kiloseparator' => '',
 	'smw_notitle' => '“$1” не может быть использован как заголовок статьи на данном сайте.',
+	'smw_noproperty' => '«$1» не может использоваться как имя свойства в вики.',
 	'smw_wrong_namespace' => 'Здесь допустимы только страницы из пространства имён «$1».',
 	'smw_unknowntype' => 'Тип "$1" не поддерживается для данного свойства.',
 	'smw_manytypes' => 'Более одного типа определено для свойства.',
