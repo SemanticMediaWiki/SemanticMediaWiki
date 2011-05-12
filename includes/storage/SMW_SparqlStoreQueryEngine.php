@@ -374,7 +374,7 @@ class SMWSparqlStoreQueryEngine {
 			$sparql = smwfGetSparqlDatabase()->getSparqlForSelect( '?' . self::RESULT_VARIABLE,
 			                         $condition, $options, $namespaces );
 		}
-		$sparql = str_replace( array( '[',':' ), array( '&#x005B;', '&#x003A;' ), $sparql );
+		$sparql = str_replace( array( '[',':',' ' ), array( '&#x005B;', '&#x003A;', '&#x0020;' ), $sparql );
 		$entries['SPARQL Query'] = "<pre>$sparql</pre>";
 
 		return SMWStore::formatDebugOutput( 'SMWSparqlStore', $entries, $query );
@@ -772,7 +772,6 @@ class SMWSparqlStoreQueryEngine {
 	 */
 	protected function buildValueCondition( SMWValueDescription $description, $joinVariable, $orderByProperty ) {
 		$dataItem = $description->getDataItem();
-		$expElement = SMWExporter::getDataItemExpElement( $dataItem );
 
 		$comparator = '';
 		switch ( $description->getComparator() ) {
@@ -790,17 +789,20 @@ class SMWSparqlStoreQueryEngine {
 
 		$namespaces = array();
 		if ( $comparator == '=' ) {
+			$expElement = SMWExporter::getDataItemExpElement( $dataItem );
 			$result = new SMWSparqlSingletonCondition( $expElement );
+			$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
 		} else {
+			$expElement = SMWExporter::getDataItemExpElement( $dataItem );
+			$result = new SMWSparqlFilterCondition( '', array() );
+			$this->addOrderByData( $result, $joinVariable, $dataItem->getDIType() );
+			$orderVariable = $result->orderByVariable;
 			$valueName = SMWTurtleSerializer::getTurtleNameForExpElement( $expElement );
 			if ( $expElement instanceof SMWExpNsResource ) {
-				$namespaces[$expElement->getNamespaceId()] = $expElement->getNamespace();
+				$result->namespaces[$expElement->getNamespaceId()] = $expElement->getNamespace();
 			}
-			$filter = "?$joinVariable $comparator $valueName";
-			$result = new SMWSparqlFilterCondition( $filter, $namespaces );
+			$result->filter = "?$orderVariable $comparator $valueName";
 		}
-
-		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
 
 		return $result;
 	}
