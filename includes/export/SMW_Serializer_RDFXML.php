@@ -197,7 +197,11 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	protected function serializeExpResource( SMWExpNsResource $expResourceProperty, SMWExpResource $expResource, $indent, $isClassTypeProp ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 		if ( !$expResource->isBlankNode() ) {
-			$this->post_ns_buffer .= ' rdf:resource="' . $expResource->getUri() . '"';
+			if ( ( $expResource instanceof SMWExpNsResource ) && ( $expResource->getNamespaceID() == 'wiki' ) ) { // very common case, reduce bandwidth
+				$this->post_ns_buffer .= ' rdf:resource="&wiki;' . $expResource->getLocalName() . '"';
+			} else {
+				$this->post_ns_buffer .= ' rdf:resource="' . $expResource->getUri() . '"';
+			}
 		}
 		$this->post_ns_buffer .= "/>\n";
 		if ( $isClassTypeProp ) {
