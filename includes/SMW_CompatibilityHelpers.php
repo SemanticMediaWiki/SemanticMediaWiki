@@ -76,6 +76,9 @@ class SMWCompatibilityHelpers {
 				if ( $typeid == '__typ' ) { // DBkeys for types values are special (used to be a SMWSimpleWikiPageValue)
 					$pagedbkey = str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $dbkeys[0] ) );
 					return new SMWDIWikiPage( $pagedbkey, SMW_NS_TYPE, '', $typeid );
+				} elseif ( $typeid == '__spf' ) {
+					$pagedbkey = str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $dbkeys[0] ) );
+					return new SMWDIWikiPage( $pagedbkey, SF_NS_FORM, '', $typeid );
 				} elseif ( count( $dbkeys ) >= 3 ) {
 					return new SMWDIWikiPage( $dbkeys[0], floatval( $dbkeys[1] ), $dbkeys[2], $typeid );
 				}
