@@ -129,10 +129,15 @@ class SMWExporter {
 	static public function addPropertyValues( SMWDIProperty $property, array $dataItems, SMWExpData &$expData ) {
 		if ( $property->isUserDefined() ) {
 			$pe = self::getResourceElementForProperty( $property );
+			$peHelper = self::getResourceElementForProperty( $property, true );
 			foreach ( $dataItems as $dataItem ) {
 				$ed = self::getDataItemExpElement( $dataItem );
 				if ( $ed !== null ) {
 					$expData->addPropertyObjectValue( $pe, $ed );
+				}
+				$edHelper = self::getDataItemHelperExpElement( $dataItem );
+				if ( $edHelper !== null ) {
+					$expData->addPropertyObjectValue( $peHelper, $edHelper );
 				}
 			}
 		} else { // pre-defined property, only exported if known
@@ -192,12 +197,15 @@ class SMWExporter {
 	 * about the namespace in which some special property is used.
 	 *
 	 * @param $diProperty SMWDIProperty
+	 * @param $helperProperty boolean determines if an auxiliary property resource to store a helper value (see SMWExporter::getDataItemHelperExpElement()) should be generated
 	 * @return SMWExpResource
 	 */
-	static public function getResourceElementForProperty( SMWDIProperty $diProperty ) {
+	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false ) {
 		$diWikiPage = $diProperty->getDiWikiPage();
 		if ( $diWikiPage === null ) {
 			throw new Exception( 'SMWExporter::getResourceElementForProperty() can only be used for user-defined properties.' );
+		} elseif ( $helperProperty ) {
+			return self::getResourceElementForWikiPage( $diWikiPage, 'aux' );
 		} else {
 			return self::getResourceElementForWikiPage( $diWikiPage );
 		}
@@ -206,12 +214,17 @@ class SMWExporter {
 	/**
 	 * Create an SMWExpElement for some internal resource, given by an
 	 * SMWDIWikiPage object. This is the one place in the code where URIs
-	 * of wiki pages and user-defined properties are determined.
+	 * of wiki pages and user-defined properties are determined. A modifier
+	 * can be given to make variants of a URI, typically done for
+	 * auxiliary properties. In this case, the URI is modiied by appending
+	 * "-23$modifier" where "-23" is the URI encoding of "#" (a symbol not
+	 * occuring in MW titles).
 	 *
 	 * @param $diWikiPage SMWDIWikiPage or SMWDIProperty
+	 * @param $modifier string, using only Latin letters
 	 * @return SMWExpResource
 	 */
-	static public function getResourceElementForWikiPage( SMWDIWikiPage $diWikiPage ) {
+	static public function getResourceElementForWikiPage( SMWDIWikiPage $diWikiPage, $modifier = '' ) {
 		global $wgContLang;
 
 		if ( $diWikiPage->getNamespace() == NS_MEDIA ) { // special handling for linking media files directly (object only)
@@ -222,33 +235,42 @@ class SMWExporter {
 			} // else: Medialink to non-existing file :-/ fall through
 		}
 
-		$importDis = smwfGetStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_IMPO' ) );
-		if ( count( $importDis ) > 0 ) {
+		if ( $modifier == '' ) {
+			$importDis = smwfGetStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_IMPO' ) );
+			$importURI = ( count( $importDis ) > 0 );
+		} else {
+			$importURI = false;
+		}
+
+		if ( $importURI ) {
 			$importValue = SMWDataValueFactory::newDataItemValue( current( $importDis ) );
 			$namespace = $importValue->getNS();
-			$namespaceid = $importValue->getNSID();
-			$localname = $importValue->getLocalName();
+			$namespaceId = $importValue->getNSID();
+			$localName = $importValue->getLocalName();
 		} else {
-			$localname = '';
+			$localName = '';
 			if ( $diWikiPage->getNamespace() == SMW_NS_PROPERTY ) {
 				$namespace = self::getNamespaceUri( 'property' );
-				$namespaceid = 'property';
-				$localname = self::encodeURI( rawurlencode( $diWikiPage->getDBkey() ) );
+				$namespaceId = 'property';
+				$localName = self::encodeURI( rawurlencode( $diWikiPage->getDBkey() ) );
 			}
-			if ( ( $localname == '' ) ||
-			     ( in_array( $localname[0], array( '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ) ) ) ) {
+			if ( ( $localName == '' ) ||
+			     ( in_array( $localName[0], array( '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ) ) ) ) {
 				$namespace = self::getNamespaceUri( 'wiki' );
-				$namespaceid = 'wiki';
+				$namespaceId = 'wiki';
 				if ( $diWikiPage->getNamespace() !== 0 ) {
-					$localname = str_replace( ' ', '_', $wgContLang->getNSText( $diWikiPage->getNamespace() ) ) . ":" . $diWikiPage->getDBkey();
+					$localName = str_replace( ' ', '_', $wgContLang->getNSText( $diWikiPage->getNamespace() ) ) . ":" . $diWikiPage->getDBkey();
 				} else {
-					$localname = $diWikiPage->getDBkey();
+					$localName = $diWikiPage->getDBkey();
 				}
-				$localname = self::encodeURI( wfUrlencode( $localname ) );
+				$localName = self::encodeURI( wfUrlencode( $localName ) );
+			}
+			if ( $modifier != '' ) {
+				$localName .=  '-23' . $modifier;
 			}
 		}
 
-		return new SMWExpNsResource( $localname, $namespace, $namespaceid, $diWikiPage );
+		return new SMWExpNsResource( $localName, $namespace, $namespaceId, $diWikiPage );
 	}
 
 	/**
@@ -292,7 +314,7 @@ class SMWExporter {
 				}
 			}
 		} else {
-			// TODO
+			// TODO (currently not needed, but will be useful for displaying external SPARQL results)
 		}
 		return $dataItem;
 	}
@@ -534,6 +556,48 @@ class SMWExporter {
 			case SMWDataItem::TYPE_PROPERTY:
 				return self::getResourceElementForProperty( $dataItem );
 		}
+	}
+
+	/**
+	 * Create an SWMExpElement that encodes auxiliary data for representing
+	 * values of the specified dataitem object in a simplified fashion.
+	 * This is done for types of dataitems that are not supported very well
+	 * in current systems, or that do not match a standard datatype in RDF.
+	 * For example, time points (DITime) are encoded as numbers. The number
+	 * can replace the actual time for all query and ordering purposes (the
+	 * order in either case is linear and maps to the real number line).
+	 * Only data retrieval should better use the real values to avoid that
+	 * rounding errors lead to unfaithful recovery of data. Note that the
+	 * helper values do not maintain any association with their original
+	 * values -- they are a fully redundant alternative representation, not
+	 * an additional piece of information for the main values. Even if
+	 * decoding is difficult, they must be in one-to-one correspondence to
+	 * the original value.
+	 *
+	 * For dataitems that do not have such a simplification, the method
+	 * returns null.
+	 *
+	 * @param $dataItem SMWDataItem
+	 * @return SMWExpElement or null
+	 */
+	static public function getDataItemHelperExpElement( SMWDataItem $dataItem ) {
+		if ( $dataItem->getDIType() == SMWDataItem::TYPE_TIME ) {
+			$lit = new SMWExpLiteral( $dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', $dataItem );
+			return $lit;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Check whether the values of a given type of dataitem have helper
+	 * values in the sense of SMWExporter::getDataItemHelperExpElement().
+	 *
+	 * @param $dataItemType integer type ID of dataitem (see SMWDataItem)
+	 * @return boolean
+	 */
+	static public function getDataItemValueExpElement( $dataItemType ) {
+		return ( $dataItemType == SMWDataItem::TYPE_TIME );
 	}
 
 }
