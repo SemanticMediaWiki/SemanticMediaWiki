@@ -27,6 +27,14 @@ abstract class SMWSparqlCondition {
 	public $orderByVariable = '';
 
 	/**
+	 * Array that relates sortkeys (given by the users, i.e. property
+	 * names) to variable names in the generated SPARQL query.
+	 * Format sortkey => variable name
+	 * @var array
+	 */
+	public $orderVariables = array();
+
+	/**
 	 * Associative array of additional conditions that should not narrow
 	 * down the set of results, but that introduce some relevant variable,
 	 * typically for ordering. For instance, selecting the sortkey of a
@@ -236,19 +244,11 @@ class SMWSparqlStoreQueryEngine {
 	protected $m_variableCounter = 0;
 
 	/**
-	 * Array that relates sortkeys (given by the users, i.e. property
-	 * names) to variable names in the generated SPARQL query.
-	 * Format sortkey => variable name
-	 * @var array
-	 */
-	protected $m_orderVariables;
-
-	/**
 	 * Copy of the SMWQuery sortkeys array to be used while building the
 	 * SPARQL query conditions.
 	 * @var array
 	 */
-	protected $m_sortKeys;
+	protected $m_sortkeys;
 
 	/**
 	 * The store that we work for.
@@ -291,7 +291,7 @@ class SMWSparqlStoreQueryEngine {
 			//debug_zval_dump( $condition );
 			$condition = $this->getSparqlConditionString( $sparqlCondition );
 			$namespaces = $sparqlCondition->namespaces;
-			$options = $this->getSparqlOptions( $query );
+			$options = $this->getSparqlOptions( $query, $sparqlCondition );
 			$options['DISTINCT'] = true;
 			$sparqlResultWrapper = smwfGetSparqlDatabase()->selectCount( '?' . self::RESULT_VARIABLE,
 			                                      $condition, $options, $namespaces );
@@ -333,7 +333,7 @@ class SMWSparqlStoreQueryEngine {
 			//debug_zval_dump( $condition );
 			$condition = $this->getSparqlConditionString( $sparqlCondition );
 			$namespaces = $sparqlCondition->namespaces;
-			$options = $this->getSparqlOptions( $query );
+			$options = $this->getSparqlOptions( $query, $sparqlCondition );
 			$options['DISTINCT'] = true;
 			$sparqlResultWrapper = smwfGetSparqlDatabase()->select( '?' . self::RESULT_VARIABLE,
 			                         $condition, $options, $namespaces );
@@ -369,7 +369,7 @@ class SMWSparqlStoreQueryEngine {
 		} else {
 			$condition = $this->getSparqlConditionString( $sparqlCondition );
 			$namespaces = $sparqlCondition->namespaces;
-			$options = $this->getSparqlOptions( $query );
+			$options = $this->getSparqlOptions( $query, $sparqlCondition );
 			$options['DISTINCT'] = true;
 			$sparql = smwfGetSparqlDatabase()->getSparqlForSelect( '?' . self::RESULT_VARIABLE,
 			                         $condition, $options, $namespaces );
@@ -403,7 +403,7 @@ class SMWSparqlStoreQueryEngine {
 			if ( $matchElement instanceof SMWExpNsResource ) {
 				$sparqlCondition->namespaces[$matchElement->getNamespaceId()] = $matchElement->getNamespace();
 			}
-			$condition = str_replace( '?' . self::RESULT_VARIABLE, "$matchElementName ", $condition );
+			$condition = str_replace( '?' . self::RESULT_VARIABLE . ' ', "$matchElementName ", $condition );
 		}
 
 		return $condition;
@@ -453,12 +453,15 @@ class SMWSparqlStoreQueryEngine {
 	 * and this is the main entry point for this recursion. In particular,
 	 * it resets global variables that are used for the construction.
 	 *
+	 * If property value variables should be recorded for ordering results
+	 * later on, the keys of the respective properties need to be given in
+	 * m_sortkeys earlier.
+	 *
 	 * @param $description SMWDescription
 	 * @return SMWSparqlCondition
 	 */
 	protected function getSparqlCondition( SMWDescription $description ) {
 		$this->m_variableCounter = 0;
-		$this->m_orderVariables = array();
 		$sparqlCondition = $this->buildSparqlCondition( $description, self::RESULT_VARIABLE, null );
 		$this->addMissingOrderByConditions( $sparqlCondition );
 		return $sparqlCondition;
@@ -513,7 +516,7 @@ class SMWSparqlStoreQueryEngine {
 
 		$condition = '';
 		$filter = '';
-		$namespaces = $weakConditions = array();
+		$namespaces = $weakConditions = $orderVariables = array();
 		$singletonMatchElement = null;
 		$hasSafeSubconditions = false;
 		foreach ( $subDescriptions as $subDescription ) {
@@ -545,6 +548,7 @@ class SMWSparqlStoreQueryEngine {
 			$hasSafeSubconditions = $hasSafeSubconditions || $subCondition->isSafe();
 			$namespaces = array_merge( $namespaces, $subCondition->namespaces );
 			$weakConditions = array_merge( $weakConditions, $subCondition->weakConditions );
+			$orderVariables = array_merge( $orderVariables, $subCondition->orderVariables );
 		}
 
 		if ( $singletonMatchElement !== null ) {
@@ -563,6 +567,7 @@ class SMWSparqlStoreQueryEngine {
 		}
 
 		$result->weakConditions = $weakConditions;
+		$result->orderVariables = $orderVariables;
 
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty );
 
@@ -583,7 +588,7 @@ class SMWSparqlStoreQueryEngine {
 			return new SMWSparqlFalseCondition();
 		} elseif ( count( $subDescriptions ) == 1 ) { // disjunction with one element
 			return $this->buildSparqlCondition( reset( $subDescriptions ), $joinVariable, $orderByProperty );
-		}
+		} // else: proper disjunction; note that orderVariables found in subconditions cannot be used for the whole disjunction
 
 		$unionCondition = '';
 		$filter = '';
@@ -675,11 +680,6 @@ class SMWSparqlStoreQueryEngine {
 			$objectName = '?' . $innerJoinVariable;
 		}
 
-		//*** Record inner ordering variable if found ***//
-		if ( ( $innerOrderByProperty !== null ) && ( $innerCondition->orderByVariable != '' ) ) {
-			$this->m_orderVariables[$diProperty->getKey()] = $innerCondition->orderByVariable;
-		}
-
 		//*** Exchange arguments when property is inverse ***//
 		if ( $diProperty->isInverse() ) { // don't check if this really makes sense
 			$subjectName = $objectName;
@@ -700,6 +700,12 @@ class SMWSparqlStoreQueryEngine {
 			$condition .= "{ $innerConditionString}\n" ;
 		}
 		$result = new SMWSparqlWhereCondition( $condition, true, $namespaces );
+
+		//*** Record inner ordering variable if found ***//
+		$result->orderVariables = $innerCondition->orderVariables;
+		if ( ( $innerOrderByProperty !== null ) && ( $innerCondition->orderByVariable != '' ) ) {
+			$result->orderVariables[$diProperty->getKey()] = $innerCondition->orderByVariable;
+		}
 
 		$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, SMWDataItem::TYPE_WIKIPAGE );
 
@@ -875,22 +881,23 @@ class SMWSparqlStoreQueryEngine {
 	 * Extend the given SMWSparqlCondition with additional conditions to
 	 * ensure that it can be ordered by all requested properties. After
 	 * this operation, every key in m_sortkeys is assigned to a query
-	 * variable by m_orderVariables.
+	 * variable by $sparqlCondition->orderVariables.
 	 *
 	 * @param SMWSparqlCondition $sparqlCondition condition to modify
 	 */
 	protected function addMissingOrderByConditions( SMWSparqlCondition &$sparqlCondition ) {
 		foreach ( $this->m_sortkeys as $propkey => $order ) {
-			if ( !array_key_exists( $propkey, $this->m_orderVariables ) ) { // Find missing property to sort by.
+			if ( !array_key_exists( $propkey, $sparqlCondition->orderVariables ) ) { // Find missing property to sort by.
 				if ( $propkey == '' ) { // order by result page sortkey
 					$this->addOrderByData( $sparqlCondition, self::RESULT_VARIABLE, SMWDataItem::TYPE_WIKIPAGE );
-					$this->m_orderVariables[$propkey] = $sparqlCondition->orderByVariable;
+					$sparqlCondition->orderVariables[$propkey] = $sparqlCondition->orderByVariable;
 				} else { // extend query to order by other property values
 					$diProperty = new SMWDIProperty( $propkey );
 					$auxDescription = new SMWSomeProperty( $diProperty, new SMWThingDescription() );
 					$auxSparqlCondition = $this->buildSparqlCondition( $auxDescription, self::RESULT_VARIABLE, null );
-					// m_orderVariables MUST be set for $propkey -- or there is a bug; let it show!
-					$sparqlCondition->weakConditions[$this->m_orderVariables[$propkey]] = $auxSparqlCondition->getWeakConditionString() . $auxSparqlCondition->getCondition();
+					// orderVariables MUST be set for $propkey -- or there is a bug; let it show!
+					$sparqlCondition->orderVariables[$propkey] = $auxSparqlCondition->orderVariables[$propkey];
+					$sparqlCondition->weakConditions[$sparqlCondition->orderVariables[$propkey]] = $auxSparqlCondition->getWeakConditionString() . $auxSparqlCondition->getCondition();
 				}
 			}
 		}
@@ -900,9 +907,10 @@ class SMWSparqlStoreQueryEngine {
 	 * Get a SPARQL option array for the given query.
 	 *
 	 * @param SMWQuery $query
+	 * @param SMWSparqlCondition $sparqlCondition (storing order by variable names)
 	 * @return array
 	 */
-	protected function getSparqlOptions( SMWQuery $query ) {
+	protected function getSparqlOptions( SMWQuery $query, SMWSparqlCondition $sparqlCondition ) {
 		global $smwgQSortingSupport, $smwgQRandSortingSupport;
 
 		$result = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
@@ -911,8 +919,8 @@ class SMWSparqlStoreQueryEngine {
 		if ( $smwgQSortingSupport ) {
 			$orderByString = '';
 			foreach ( $this->m_sortkeys as $propkey => $order ) {
-				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $this->m_orderVariables ) ) {
-					$orderByString .= "$order(?" . $this->m_orderVariables[$propkey] . ") ";
+				if ( ( $order != 'RANDOM' ) && array_key_exists( $propkey, $sparqlCondition->orderVariables ) ) {
+					$orderByString .= "$order(?" . $sparqlCondition->orderVariables[$propkey] . ") ";
 				} elseif ( ( $order == 'RANDOM' ) && $smwgQRandSortingSupport ) {
 					// not supported in SPARQL; might be possible via function calls in some stores
 				}
