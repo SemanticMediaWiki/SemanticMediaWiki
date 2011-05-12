@@ -1,7 +1,8 @@
 <?php
 
 /**
- * 
+ * This class represents a semantic property diff between 2 versions
+ * of a single page.
  * 
  * @since 1.6
  * 
@@ -74,17 +75,17 @@ class SMWChangeSet {
 			$newDataItems = array();
 			
 			// Populate the data item arrays using keys that are their hash, so matches can be found.
-			foreach ( $old->getPropertyValues( $diProperty ) as $dataItem ) {
+			// Note: this code assumes there are no duplicates.
+			foreach ( $old->getPropertyValues( $diProperty ) as /* SMWDataItem */ $dataItem ) {
 				$oldDataItems[$dataItem->getHash()] = $dataItem;
 			}
-			foreach ( $new->getPropertyValues( $diProperty ) as $dataItem ) {
+			foreach ( $new->getPropertyValues( $diProperty ) as /* SMWDataItem */ $dataItem ) {
 				$newDataItems[$dataItem->getHash()] = $dataItem;
 			}			
 			
 			$foundMatches = array();
 			
 			// Find values that are both in the old and new version.
-			// Note: this code assumes there are no duplicates.
 			foreach ( array_keys( $oldDataItems ) as $hash ) {
 				if ( array_key_exists( $hash, $newDataItems ) ) {
 					$foundMatches[] = $hash;
@@ -168,9 +169,20 @@ class SMWChangeSet {
 	}
 	
 	/**
+	 * Returns whether the set contains any changes.
+	 * 
+	 * @return boolean
+	 */
+	public function hasChanges() {
+		return $this->changes->hasChanges()
+			|| $this->insertions->hasVisibleProperties()
+			|| $this->deletions->hasVisibleProperties();
+	}
+	
+	/**
 	 * Returns a list of ALL changes, including isertions and deletions.
 	 * 
-	 * @return array of 
+	 * @return array of SMWPropertyChange
 	 */
 	public function getAllChanges() {
 		return array(); // TODO: implement

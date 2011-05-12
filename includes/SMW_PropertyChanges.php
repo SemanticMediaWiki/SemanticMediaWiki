@@ -41,12 +41,29 @@ class SMWPropertyChanges implements Iterator {
 	protected $properties = array();
 	
 	/**
+	 * Indicates if there are changes in the list.
+	 * 
+	 * @var boolean
+	 */
+	protected $hasChanges = false;
+	
+	/**
 	 * Get the array of all properties that have changes.
 	 *
 	 * @return array of SMWDIProperty
 	 */
 	public function getProperties() {
 		return $this->properties;
+	}
+	
+	/**
+	 * Returns if the list contains any changes.
+	 * This info is cached, so the call is cheaper then doing a count.
+	 * 
+	 * @return boolean
+	 */
+	public function hasChanges() {
+		return $this->hasChanges;
 	}
 	
 	/**
@@ -86,6 +103,8 @@ class SMWPropertyChanges implements Iterator {
 		}
 
 		$this->changes[$property->getKey()][] = $change;
+		
+		$this->hasChanges = true;
 	}
 
 	/**
