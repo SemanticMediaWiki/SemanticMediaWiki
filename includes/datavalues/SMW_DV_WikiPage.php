@@ -277,7 +277,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	public function getTitle() {
 		if ( ( $this->isValid() ) && ( $this->m_title === null ) ) {
 			if ( $this->m_dataitem->getInterwiki() == '' ) {
-				$this->m_title = Title::makeTitle( $this->m_dataitem->getNamespace(), $this->m_dataitem->getDBkey() );
+				$this->m_title = Title::makeTitleSafe( $this->m_dataitem->getNamespace(), $this->m_dataitem->getDBkey() );
 			} else { // interwiki title objects must be built from full input texts
 				$this->m_title = Title::newFromText( $this->getPrefixedText() );
 			}

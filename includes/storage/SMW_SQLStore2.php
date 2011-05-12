@@ -1488,9 +1488,9 @@ class SMWSQLStore2 extends SMWStore {
 
 			if ( $row->smw_iw == '' || $row->smw_iw == SMW_SQL2_SMWREDIIW ) { // objects representing pages in the wiki, even special pages
 				// TODO: special treament of redirects needed, since the store will not act on redirects that did not change according to its records
-				$title = Title::makeTitle( $row->smw_namespace, $row->smw_title );
+				$title = Title::makeTitleSafe( $row->smw_namespace, $row->smw_title );
 
-				if ( !$title->exists() ) {
+				if ( $title !== null && !$title->exists() ) {
 					$updatejobs[] = new SMWUpdateJob( $title );
 				}
 			} elseif ( $row->smw_iw { 0 } != ':' ) { // refresh all "normal" interwiki pages by just clearing their content
@@ -2376,7 +2376,10 @@ class SMWSQLStore2 extends SMWStore {
 						$res = $db->select( $from, $select, array( 'p_id' => $old_tid ), $fname );
 
 						foreach ( $res as $row ) {
-							$jobs[] = new SMWUpdateJob( Title::makeTitle( $row->namespace, $row->title ) );
+							$title = Title::makeTitleSafe( $row->namespace, $row->title );
+							if ( $title !== null ) {
+								$jobs[] = new SMWUpdateJob( $title );
+							}
 						}
 
 						$db->freeResult( $res );
@@ -2387,7 +2390,10 @@ class SMWSQLStore2 extends SMWStore {
 							$res = $db->select( $from, $select, array( $fieldname => $old_tid ), $fname );
 
 							foreach ( $res as $row ) {
-								$jobs[] = new SMWUpdateJob( Title::makeTitle( $row->namespace, $row->title ) );
+								$title = Title::makeTitleSafe( $row->namespace, $row->title );
+								if ( $title !== null ) {
+									$jobs[] = new SMWUpdateJob( $title );
+								}
 							}
 
 							$db->freeResult( $res );
