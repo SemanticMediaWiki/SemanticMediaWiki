@@ -689,7 +689,13 @@ class SMWSparqlStoreQueryEngine {
 		}
 
 		//*** Build the condition ***//
-		$propertyExpElement = SMWExporter::getResourceElement( $diProperty );
+		$typeId = $diProperty->findPropertyTypeID();
+		$diType = SMWDataValueFactory::getDataItemId( $typeId );
+		if ( SMWExporter::hasHelperExpElement( $diType ) ) {
+			$propertyExpElement = SMWExporter::getResourceElementForProperty( $diProperty, true );
+		} else {
+			$propertyExpElement = SMWExporter::getResourceElementForProperty( $diProperty );
+		}
 		$propertyName = SMWTurtleSerializer::getTurtleNameForExpElement( $propertyExpElement );
 		if ( $propertyExpElement instanceof SMWExpNsResource ) {
 			$namespaces[$propertyExpElement->getNamespaceId()] = $propertyExpElement->getNamespace();
@@ -725,7 +731,7 @@ class SMWSparqlStoreQueryEngine {
 		$namespaces = array();
 		$instExpElement = SMWExporter::getSpecialPropertyResource( '_INST' );
 		foreach( $description->getCategories() as $diWikiPage ) {
-			$categoryExpElement = SMWExporter::getResourceElement( $diWikiPage );
+			$categoryExpElement = SMWExporter::getResourceElementForWikiPage( $diWikiPage );
 			$categoryName = SMWTurtleSerializer::getTurtleNameForExpElement( $categoryExpElement );
 			$namespaces[$categoryExpElement->getNamespaceId()] = $categoryExpElement->getNamespace();
 			$newcondition = "{ ?$joinVariable " . $instExpElement->getQName() . " $categoryName . }\n";
@@ -787,10 +793,8 @@ class SMWSparqlStoreQueryEngine {
 			case SMW_CMP_LEQ: $comparator = '<='; break;
 			case SMW_CMP_GEQ: $comparator = '>='; break;							
 			case SMW_CMP_NEQ: $comparator = '!='; break;
-// 			case SMW_CMP_LIKE: case SMW_CMP_NLKE:
-// 				$comparator = ' LIKE ';
-// 				if ( $description->getComparator() == SMW_CMP_NLKE ) $comparator = " NOT{$comparator}";
-// 				$value =  str_replace( array( '%', '_', '*', '?' ), array( '\%', '\_', '%', '_' ), $value );
+			case SMW_CMP_LIKE: $comparator = 'regex'; break;
+			case SMW_CMP_NLKE:  $comparator = '!regex'; break;
 		}
 
 		$namespaces = array();
@@ -798,16 +802,27 @@ class SMWSparqlStoreQueryEngine {
 			$expElement = SMWExporter::getDataItemExpElement( $dataItem );
 			$result = new SMWSparqlSingletonCondition( $expElement );
 			$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
-		} else {
-			$expElement = SMWExporter::getDataItemExpElement( $dataItem );
+		} elseif ( ( $comparator == 'regex' || $comparator == '!regex' ) && ( $dataItem instanceof SMWDIBlob ) ) {
+			$pattern = '^' . str_replace( array( '^', '.', '\\', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?' ),
+			                              array( '\^', '\.', '\\\\', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' ),
+			                              $dataItem->getString() ) . '$';
+			$result = new SMWSparqlFilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"s\")", array() );
+			$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
+		} elseif ( $comparator != '' ) {
+			$expElement = SMWExporter::getDataItemHelperExpElement( $dataItem );
+			if ( $expElement === null ) {
+				$expElement = SMWExporter::getDataItemExpElement( $dataItem );
+			}
 			$result = new SMWSparqlFilterCondition( '', array() );
 			$this->addOrderByData( $result, $joinVariable, $dataItem->getDIType() );
-			$orderVariable = $result->orderByVariable;
+			$orderByVariable = $result->orderByVariable;
 			$valueName = SMWTurtleSerializer::getTurtleNameForExpElement( $expElement );
 			if ( $expElement instanceof SMWExpNsResource ) {
 				$result->namespaces[$expElement->getNamespaceId()] = $expElement->getNamespace();
 			}
-			$result->filter = "?$orderVariable $comparator $valueName";
+			$result->filter = "?$orderByVariable $comparator $valueName";
+		} else {
+			$result = $this->buildTrueCondition( $joinVariable, $orderByProperty );
 		}
 
 		return $result;
