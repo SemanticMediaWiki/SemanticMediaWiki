@@ -596,7 +596,7 @@ class SMWExporter {
 	 * @param $dataItemType integer type ID of dataitem (see SMWDataItem)
 	 * @return boolean
 	 */
-	static public function getDataItemValueExpElement( $dataItemType ) {
+	static public function hasHelperExpElement( $dataItemType ) {
 		return ( $dataItemType == SMWDataItem::TYPE_TIME );
 	}
 
