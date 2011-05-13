@@ -134,10 +134,6 @@ class SMWTimeValue extends SMWDataValue {
 	/// The year before which we do not accept anything but year numbers and largely discourage calendar models.
 	const PREHISTORY = -10000;
 
-	public function getBaseType() {
-		return SMWDataValue::TYPE_TIME;
-	}
-
 	protected function parseUserValue( $value ) {
 		$value = trim( $value ); // ignore whitespace
 		$this->m_wikivalue = $value;

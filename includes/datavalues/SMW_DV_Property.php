@@ -53,10 +53,6 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	private $mPropTypeId;
 
-	public function getBaseType() {
-		return SMWDataValue::TYPE_PROP;
-	}
-
 	/**
 	 * Static function for creating a new property object from a
 	 * propertyname (string) as a user might enter it.

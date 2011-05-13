@@ -27,7 +27,7 @@ class SMWRecordValue extends SMWContainerValue {
 	protected function parseUserValueOrQuery( $value, $querymode ) {
 		if ( $value == '' ) {
 			$this->addError( wfMsg( 'smw_novalues' ) );
-			return $querymode ? new SMWThingDescription():$this->m_data;
+			return $querymode ? new SMWThingDescription() : $this->m_data;
 		}
 
 		$subdescriptions = array(); // only used for query mode
@@ -68,7 +68,7 @@ class SMWRecordValue extends SMWContainerValue {
 			$this->addError( wfMsg( 'smw_novalues' ) );
 		}
 		if ( $querymode ) {
-			return $empty ? new SMWThingDescription():new SMWRecordDescription( $subdescriptions );
+			return $empty ? new SMWThingDescription() : new SMWRecordDescription( $subdescriptions );
 		}
 	}
 

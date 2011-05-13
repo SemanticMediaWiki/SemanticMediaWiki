@@ -15,10 +15,6 @@
  */
 class SMWConceptValue extends SMWDataValue {
 
-	public function getBaseType() {
-		return SMWDataValue::TYPE_CONCEPT;
-	}
-
 	protected function parseUserValue( $value ) {
 		throw new Exception( 'Concepts cannot be initialised from user-provided strings. This should not happen.' );
 	}

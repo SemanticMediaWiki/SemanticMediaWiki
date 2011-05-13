@@ -32,10 +32,6 @@ class SMWURIValue extends SMWDataValue {
 	 */
 	private $m_mode;
 
-	public function getBaseType() {
-		return SMWDataValue::TYPE_URI;
-	}
-
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
 		switch ( $typeid ) {
