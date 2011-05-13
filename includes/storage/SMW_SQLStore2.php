@@ -163,7 +163,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		// *** Prepare the cache ***//
 		if ( !array_key_exists( $sid, $this->m_semdata ) ) { // new cache entry
-			$this->m_semdata[$sid] = new SMWSemanticData( $subject, false );
+			$this->m_semdata[$sid] = new SMWSqlStubSemanticData( $subject, false );
 			$this->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
 			$this->m_sdstate[$sid] = array( '__key' );
 		}

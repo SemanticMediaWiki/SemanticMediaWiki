@@ -56,16 +56,6 @@ class SMWSemanticData {
 	protected $mProperties = array();
 
 	/**
-	 * Stub property data that is not part of $mPropVals and $mProperties
-	 * yet. Entries use property keys as keys. The value is an array of
-	 * DBkey-arrays that define individual datavalues. The stubs will be
-	 * set up when first accessed.
-	 *
-	 * @var array
-	 */
-	protected $mStubPropVals = array();
-
-	/**
 	 * States whether the container holds any normal properties.
 	 *
 	 * @var boolean
@@ -84,9 +74,9 @@ class SMWSemanticData {
 
 	/**
 	 * States whether repeated values should be avoided. Not needing
-	 * duplicate elimination (e.g. when loading from store) can save much
-	 * time, since objects can remain stubs until someone really acesses
-	 * their value.
+	 * duplicate elimination (e.g. when loading from store) can save some
+	 * time, especially in subclasses like SMWSqlStubSemanticData, where
+	 * the first access to a data item is more costy.
 	 * 
 	 * @note This setting is merely for optimization. The SMW data model 
 	 * never cares about the multiplicity of identical data assignments.
@@ -107,8 +97,8 @@ class SMWSemanticData {
 	/**
 	 * Constructor.
 	 *
-	 * @param $subject SMWDIWikiPage to which this data refers
-	 * @param $noDuplicates boolean stating if duplicate data should be avoided
+	 * @param SMWDIWikiPage $subject to which this data refers
+	 * @param boolean $noDuplicates stating if duplicate data should be avoided
 	 */
 	public function __construct( SMWDIWikiPage $subject, $noDuplicates = true ) {
 		$this->clear();
@@ -117,13 +107,18 @@ class SMWSemanticData {
 	}
 
 	/**
-	 * This object is added to the parser output of MediaWiki, but it is not useful to have all its data as part of the parser cache
-	 * since the data is already stored in more accessible format in SMW. Hence this implementation of __sleep() makes sure only the
-	 * subject is serialised, yielding a minimal stub data container after unserialisation. This is a little safer than serialising
-	 * nothing: if, for any reason, SMW should ever access an unserialised parser output, then the Semdata container will at least
-	 * look as if properly initialised (though empty).
+	 * This object is added to the parser output of MediaWiki, but it is
+	 * not useful to have all its data as part of the parser cache since
+	 * the data is already stored in more accessible format in SMW. Hence
+	 * this implementation of __sleep() makes sure only the subject is
+	 * serialised, yielding a minimal stub data container after
+	 * unserialisation. This is a little safer than serialising nothing:
+	 * if, for any reason, SMW should ever access an unserialised parser
+	 * output, then the Semdata container will at least look as if properly
+	 * initialised (though empty).
 	 *
-	 * @note It might be even better to have other members with stub object data that is used for serializing, thus using much less data.
+	 * @note It might be even better to have other members with stub object
+	 * data that is used for serializing, thus using much less data.
 	 *
 	 * @return array
 	 */
@@ -146,9 +141,7 @@ class SMWSemanticData {
 	 * @return array of SMWDIProperty objects
 	 */
 	public function getProperties() {
-		$this->unstubProperties();
 		ksort( $this->mProperties, SORT_STRING );
-
 		return $this->mProperties;
 	}
 
@@ -161,25 +154,6 @@ class SMWSemanticData {
 	public function getPropertyValues( SMWDIProperty $property ) {
 		if ( $property->isInverse() ) { // we never have any data for inverses
 			return array();
-		}
-
-		if ( array_key_exists( $property->getKey(), $this->mStubPropVals ) ) {
-			$this->unstubProperty( $property->getKey(), $property );
-
-			foreach ( $this->mStubPropVals[$property->getKey()] as $dbkeys ) {
-				try {
-					$di = SMWCompatibilityHelpers::dataItemFromDBKeys( $property->findPropertyTypeID(), $dbkeys );
-					if ( $this->mNoDuplicates ) {
-						$this->mPropVals[$property->getKey()][$di->getHash()] = $di;
-					} else {
-						$this->mPropVals[$property->getKey()][] = $di;
-					}
-				} catch ( SMWDataItemException $e ) {
-					// ignore data
-				}
-			}
-
-			unset( $this->mStubPropVals[$property->getKey()] );
 		}
 
 		if ( array_key_exists( $property->getKey(), $this->mPropVals ) ) {
@@ -225,7 +199,6 @@ class SMWSemanticData {
 	 * @return boolean
 	 */
 	public function hasVisibleProperties() {
-		$this->unstubProperties();
 		return $this->mHasVisibleProps;
 	}
 
@@ -240,7 +213,6 @@ class SMWSemanticData {
 	 * @return boolean
 	 */
 	public function hasVisibleSpecialProperties() {
-		$this->unstubProperties();
 		return $this->mHasVisibleSpecs;
 	}
 
@@ -312,70 +284,14 @@ class SMWSemanticData {
 	}
 
 	/**
-	 * Add data in abbreviated form so that it is only expanded if needed. The property key
-	 * is the DB key (string) of a property value, whereas valuekeys is an array of DBkeys for
-	 * the added value that will be used to initialize the value if needed at some point.
-	 */
-	public function addPropertyStubValue( $propertyKey, $valueKeys ) {
-		// Catch built-in properties, since their internal key is not what is used as a key elsewhere in SMWSemanticData.
-// 		if ( $propertyKey { 0 } == '_' ) {
-// 			$property = new SMWDIProperty( $propertyKey );
-// 			$propertyKey = $property->getKey();
-// 			$this->unstubProperty( $propertyKey, $property );
-// 		}
-
-		$this->mStubPropVals[$propertyKey][] = $valueKeys;
-	}
-
-	/**
 	 * Delete all data other than the subject.
 	 */
 	public function clear() {
 		$this->mPropVals = array();
 		$this->mProperties = array();
-		$this->mStubPropVals = array();
 		$this->mHasVisibleProps = false;
 		$this->mHasVisibleSpecs = false;
 		$this->stubObject = false;
-	}
-
-	/**
-	 * Process all mProperties that have been added as stubs.
-	 * Associated data may remain in stub form.
-	 */
-	protected function unstubProperties() {
-		foreach ( $this->mStubPropVals as $pkey => $values ) { // unstub property values only, the value lists are still kept as stubs
-			$this->unstubProperty( $pkey );
-		}
-	}
-
-	/**
-	 * Unstub a single property from the stub data array. If available, an existing object
-	 * for that property might be provided, so we do not need to make a new one. It is not
-	 * checked if the object matches the property name.
-	 *
-	 * @param $propertyKey string
-	 * @param SMWDIProperty $diProperty
-	 */
-	protected function unstubProperty( $propertyKey, $diProperty = null ) {
-		if ( !array_key_exists( $propertyKey, $this->mProperties ) ) {
-			if ( $diProperty === null ) {
-				//$propertyDV = SMWPropertyValue::makeProperty( $propertyKey );
-				//$diProperty = $propertyDV->getDataItem();
-				$diProperty = new SMWDIProperty( $propertyKey, false );
-			}
-
-			$this->mProperties[$propertyKey] = $diProperty;
-
-			if ( !$diProperty->isUserDefined() ) {
-				if ( $diProperty->isShown() ) {
-					$this->mHasVisibleSpecs = true;
-					$this->mHasVisibleProps = true;
-				}
-			} else {
-				$this->mHasVisibleProps = true;
-			}
-		}
 	}
 
 }
