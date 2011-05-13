@@ -73,9 +73,9 @@ class SMWPropertyChanges implements Iterator {
 	 * 
 	 * @return array of SMWPropertyChange
 	 */
-	public function getPropertyValues( SMWDIProperty $property ) {
+	public function getPropertyChanges( SMWDIProperty $property ) {
 		if ( array_key_exists( $property->getKey(), $this->changes ) ) {
-			return $this->mPropVals[$property->getKey()];
+			return $this->changes[$property->getKey()];
 		} else {
 			return array();
 		}  

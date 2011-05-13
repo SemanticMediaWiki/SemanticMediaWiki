@@ -155,12 +155,12 @@ class SMWChangeSet {
 	 * Create a new instance of a change set.
 	 * 
 	 * @param SMWDIWikiPage $subject
-	 * @param array $changes Can be null
+	 * @param SMWPropertyChanges $changes Can be null
 	 * @param SMWSemanticData $insertions Can be null
 	 * @param SMWSemanticData $deletions Can be null
 	 */
-	public function __construct( SMWDIWikiPage $subject,
-		/* SMWSemanticData */ SMWPropertyChanges $changes = null, $insertions = null, /* SMWSemanticData */ $deletions = null ) {
+	public function __construct( SMWDIWikiPage $subject, /* SMWPropertyChanges */ $changes = null,
+		/* SMWSemanticData */ $insertions = null, /* SMWSemanticData */ $deletions = null ) {
 	
 		$this->subject = $subject;
 		$this->changes = is_null( $changes ) ? new SMWPropertyChanges() : $changes;
@@ -180,6 +180,33 @@ class SMWChangeSet {
 	}
 	
 	/**
+	 * Returns a SMWSemanticData object holding all inserted SMWDataItem objects.
+	 * 
+	 * @return SMWSemanticData
+	 */
+	public function getInsertions() {
+		return $this->insertions;
+	}
+	
+	/**
+	 * Returns a SMWSemanticData object holding all deleted SMWDataItem objects.
+	 * 
+	 * @return SMWSemanticData
+	 */
+	public function getDeletions() {
+		return $this->deletions;
+	}
+	
+	/**
+	 * Returns a SMWPropertyChanges object holding all SMWPropertyChange objects.
+	 * 
+	 * @return SMWPropertyChanges
+	 */	
+	public function getChanges() {
+		return $this->changes;
+	}
+	
+	/**
 	 * Returns a list of ALL changes, including isertions and deletions.
 	 * 
 	 * @return array of SMWPropertyChange
@@ -195,6 +222,26 @@ class SMWChangeSet {
 	 */
 	public function getSubject() {
 		return $this->subject;		
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param string $property
+	 * @param SMWPropertyChange $change
+	 */
+	public function addChange( $property, SMWPropertyChange $change ) {
+		switch ( $change->getType() ) {
+			case SMWPropertyChange::TYPE_UPDATE:
+				$this->changes->addPropertyChange( $property, $change );
+				break;
+			case SMWPropertyChange::TYPE_INSERT:
+				$this->insertions->addPropertyValue( $property, $change->getNewValue() );
+				break;
+			case SMWPropertyChange::TYPE_DELETE:
+				$this->deletions->addPropertyValue( $property, $change->getOldValue() );
+				break;
+		}
 	}
 	
 }
