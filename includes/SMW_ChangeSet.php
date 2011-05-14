@@ -207,15 +207,6 @@ class SMWChangeSet {
 	}
 	
 	/**
-	 * Returns a list of ALL changes, including isertions and deletions.
-	 * 
-	 * @return array of SMWPropertyChange
-	 */
-	public function getAllChanges() {
-		return array();
-	}
-	
-	/**
 	 * Returns the subject these changes apply to.
 	 * 
 	 * @return SMWDIWikiPage
@@ -225,23 +216,63 @@ class SMWChangeSet {
 	}
 	
 	/**
+	 * Adds a SMWPropertyChange to the set for the specified SMWDIProperty.
 	 * 
-	 * 
-	 * @param string $property
+	 * @param SMWDIProperty $property
 	 * @param SMWPropertyChange $change
 	 */
-	public function addChange( $property, SMWPropertyChange $change ) {
+	public function addChange( SMWDIProperty $property, SMWPropertyChange $change ) {
 		switch ( $change->getType() ) {
 			case SMWPropertyChange::TYPE_UPDATE:
-				$this->changes->addPropertyChange( $property, $change );
+				$this->changes->addPropertyObjectChange( $property, $change );
 				break;
 			case SMWPropertyChange::TYPE_INSERT:
-				$this->insertions->addPropertyValue( $property, $change->getNewValue() );
+				$this->insertions->addPropertyObjectValue( $property, $change->getNewValue() );
 				break;
 			case SMWPropertyChange::TYPE_DELETE:
-				$this->deletions->addPropertyValue( $property, $change->getOldValue() );
+				$this->deletions->addPropertyObjectValue( $property, $change->getOldValue() );
 				break;
 		}
 	}
+	
+	/**
+	 * 
+	 * 
+	 * @return array of SMWDIProperty
+	 */
+	public function getAllProperties() {
+		return array_merge(
+			$this->getChanges()->getProperties(),
+			$this->getInsertions()->getProperties(),
+			$this->getDeletions()->getProperties()
+		);
+	}
+	
+	/**
+	 * Returns a list of ALL changes, including isertions and deletions.
+	 * 
+	 * @param SMWDIProperty $proprety
+	 * 
+	 * @return array of SMWPropertyChange
+	 */
+	public function getAllPropertyChanges( SMWDIProperty $proprety ) {
+		$changes = array();
+		
+		foreach ( $this->getAllProperties() as /* SMWDIProperty */ $property ) {
+			foreach ( $this->changes->getPropertyChanges( $property ) as /* SMWPropertyChange */ $change ) {
+				$changes[] = $change;
+			}
+			
+			foreach ( $this->insertions->getPropertyValues( $property ) as /* SMWDataItem */ $dataItem ) {
+				$changes[] = new SMWPropertyChange( null, $dataItem );
+			}
+
+			foreach ( $this->deletions->getPropertyValues( $property ) as /* SMWDataItem */ $dataItem ) {
+				$changes[] = new SMWPropertyChange( $dataItem, null );
+			}			
+		}
+		
+		return $changes;
+	}	
 	
 }
