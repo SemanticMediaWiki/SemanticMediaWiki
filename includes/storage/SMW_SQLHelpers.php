@@ -171,13 +171,13 @@ SELECT
 	(SELECT substring(pg_catalog.pg_get_expr(d.adbin, d.adrelid) for 128) 
 	FROM pg_catalog.pg_attrdef d 
 	WHERE d.adrelid = a.attrelid AND d.adnum = a.attnum AND a.atthasdef) as "Extra", 
-		case when a.attnotnull THEN \'NO\'::text else \'YES\'::text END as "Null", a.attnum 
+		case when a.attnotnull THEN 'NO'::text else 'YES'::text END as "Null", a.attnum 
 	FROM pg_catalog.pg_attribute a 
 	WHERE a.attrelid = (
 	    SELECT c.oid 
 	    FROM pg_catalog.pg_class c 
 	    LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace 
-	    WHERE c.relname ~ \'^(' . $tableName . ')$\' 
+	    WHERE c.relname ~ '^($tableName)$'
 	    AND pg_catalog.pg_table_is_visible(c.oid) 
 	    LIMIT 1 
 	 ) AND a.attnum > 0 AND NOT a.attisdropped 
