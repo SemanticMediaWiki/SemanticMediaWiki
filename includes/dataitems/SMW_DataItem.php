@@ -59,7 +59,7 @@ abstract class SMWDataItem {
 	const TYPE_URI       = 5;
 	///  Data item ID for SMWDITimePoint
 	const TYPE_TIME      = 6;
-	///  Data item ID for SMWDIGeoCoords
+	///  Data item ID for SMWDIGeoCoord
 	const TYPE_GEO       = 7;
 	///  Data item ID for SMWDIContainer
 	const TYPE_CONTAINER = 8;
@@ -160,7 +160,7 @@ abstract class SMWDataItem {
 			case self::TYPE_BOOLEAN:   return "SMWDIBoolean";
 			case self::TYPE_URI:       return "SMWDIUri";
 			case self::TYPE_TIME:      return "SMWDITimePoint";
-			case self::TYPE_GEO:       return "SMWDIGeoCoords";
+			case self::TYPE_GEO:       return "SMWDIGeoCoord";
 			case self::TYPE_CONTAINER: return "SMWDIContainer";
 			case self::TYPE_WIKIPAGE:  return "SMWDIWikiPage";
 			case self::TYPE_CONCEPT:   return "SMWDIConcept";

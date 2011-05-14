@@ -234,6 +234,7 @@ class SMWDataValueFactory {
 			'_dat'  => SMWDataItem::TYPE_TIME, // Time type
 			'_boo'  => SMWDataItem::TYPE_BOOLEAN, // Boolean type
 			'_rec'  => SMWDataItem::TYPE_CONTAINER, // Value list type (replacing former nary properties)
+			'_geo'  => SMWDataItem::TYPE_GEO, // Geographical coordinates
 			// Special types are not avaialble directly for users (and have no local language name):
 			'__typ' => SMWDataItem::TYPE_WIKIPAGE, // Special type page type
 			'__tls' => SMWDataItem::TYPE_STRING, // Special type list for decalring _rec properties
