@@ -310,11 +310,11 @@ EOT;
 	 * @param array $columns The field names to put indexes on
 	 * @param DatabaseBase or Database $db
 	 */
-	public static function setupIndex( $tableName, array $columns, $db ) {
+	public static function setupIndex( $rawTableName, array $columns, $db ) {
 		// TODO: $verbose is not a good global name! 
 		global $wgDBtype, $verbose; 
 		
-		$tableName = $db->tableName( $tableName );
+		$tableName = $db->tableName( $rawTableName );
 
 		if ( $wgDBtype == 'postgres' ) { // postgresql
 			$sql = "SELECT  i.relname AS indexname,"
@@ -356,7 +356,7 @@ EOT;
 						$column = $index;
 					}
 					
-					$db->query( "CREATE $type {$tableName}_index{$key} ON $tableName USING btree(" . $column . ")", __METHOD__ );
+					$db->query( "CREATE $type {$rawTableName}_index{$key} ON $tableName USING btree(" . $column . ")", __METHOD__ );
 				}
 			}
 		} else { // MySQL
