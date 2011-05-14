@@ -143,7 +143,7 @@ abstract class SMWDataItem {
 	 * @param $typeid string SMW type ID (optional)
 	 * @return SMWDataItem
 	 */
-	public static function doUnserialize( $diType, $serialization, $typeid = '' ) {
+	public static function unserializeDataItem( $diType, $serialization, $typeid = '' ) {
 		$diClass = self::getDataItemClassNameForId( $diType );
 		if ( $typeid !== '' ) {
 			return $diClass::doUnserialize( $serialization, $typeid );
