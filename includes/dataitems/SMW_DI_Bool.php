@@ -46,7 +46,7 @@ class SMWDIBoolean extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIBoolean
 	 */
-	public static function doUnserialize( $serialization, $typeid ) {
+	public static function doUnserialize( $serialization, $typeid = '_boo' ) {
 		if ( $serialization == 't' ) {
 			return new SMWDIBoolean( true, $typeid );
 		} elseif  ( $serialization == 'f' ) {

@@ -229,7 +229,7 @@ class SMWDIProperty extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIProperty
 	 */
-	public static function doUnserialize( $serialization, $typeid ) {
+	public static function doUnserialize( $serialization, $typeid = '__pro' ) {
 		$inverse = false;
 		if ( $serialization{0} == '-' ) {
 			$serialization = substr( $serialization, 1 );

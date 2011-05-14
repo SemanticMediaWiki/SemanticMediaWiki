@@ -135,14 +135,40 @@ abstract class SMWDataItem {
 	}
 
 	/**
-	 * Create a data item from the provided serialization string and type
-	 * ID. This static method really needs to be re-implemented by each
-	 * data item class. It is given here only for reference. Note that PHP
-	 * does not support "abstract static".
+	 * Create a data item of the given dataitem ID based on the the
+	 * provided serialization string and (optional) typeid.
+	 *
+	 * @param $diType integer dataitem ID
+	 * @param $serialization string
+	 * @param $typeid string SMW type ID (optional)
 	 * @return SMWDataItem
 	 */
-	public static function doUnserialize( $serialisation, $typeid ) {
-		throw new ErrorException( "Called doUnserialize() on abstract base class SMWDataItem. This means that some data item implementation forgot to implement this method statically." );
+	public static function doUnserialize( $diType, $serialization, $typeid = '' ) {
+		$diClass = self::getDataItemClassNameForId( $diType );
+		if ( $typeid !== '' ) {
+			return $diClass::doUnserialize( $serialization, $typeid );
+		} else {
+			return $diClass::doUnserialize( $serialization );
+		}
+	}
+
+	public static function getDataItemClassNameForId( $diType ) {
+		switch ( $diType ) {
+			case TYPE_NUMBER:    return "SMWDINumber";
+			case TYPE_STRING:    return "SMWDIString";
+			case TYPE_BLOB:      return "SMWDIBlob";
+			case TYPE_BOOLEAN:   return "SMWDIBoolean";
+			case TYPE_URI:       return "SMWDIUri";
+			case TYPE_TIME:      return "SMWDITimePoint";
+			case TYPE_GEO:       return "SMWDIGeoCoords";
+			case TYPE_CONTAINER: return "SMWDIContainer";
+			case TYPE_WIKIPAGE:  return "SMWDIWikiPage";
+			case TYPE_CONCEPT:   return "SMWDIConcept";
+			case TYPE_PROPERTY:  return "SMWDIProperty";
+			case TYPE_ERROR:     return "SMWDIError";
+			case TYPE_NOTYPE: default:
+				throw new InvalidArgumentException( "The value \"$diType\" is not a valid dataitem ID." );
+		}
 	}
 
 }

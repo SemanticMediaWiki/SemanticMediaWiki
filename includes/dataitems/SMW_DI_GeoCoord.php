@@ -69,7 +69,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * validation here (because this would require less efficient parsing).
 	 * @return SMWDINumber
 	 */
-	public static function doUnserialize( $serialization, $typeid ) {
+	public static function doUnserialize( $serialization, $typeid = '_geo' ) {
 		$parts = explode( ',', $serialization );
 		
 		if ( count( $parts ) != 2 ) {

@@ -83,7 +83,7 @@ class SMWDIWikiPage extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIWikiPage
 	 */
-	public static function doUnserialize( $serialization, $typeid ) {
+	public static function doUnserialize( $serialization, $typeid = '_wpg' ) {
 		$parts = explode( '#', $serialization, 3 );
 		if ( count( $parts ) != 3 ) {
 			throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" was not understood." );

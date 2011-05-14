@@ -43,7 +43,7 @@ class SMWDIString extends SMWDIBlob {
 	 * ID.
 	 * @return SMWDIString
 	 */
-	public static function doUnserialize( $serialization, $typeid ) {
+	public static function doUnserialize( $serialization, $typeid = '_str' ) {
 		return new SMWDIString( $serialization, $typeid );
 	}
 

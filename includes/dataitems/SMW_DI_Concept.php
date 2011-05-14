@@ -97,7 +97,7 @@ class SMWDIConcept extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIConcept
 	 */
-	public static function doUnserialize( $serialization, $typeid ) {
+	public static function doUnserialize( $serialization, $typeid = '__con' ) {
 		$result = unserialize( $serialization );
 		if ( $result === false ) {
 			throw new SMWDataItemException( "Unserialization failed." );

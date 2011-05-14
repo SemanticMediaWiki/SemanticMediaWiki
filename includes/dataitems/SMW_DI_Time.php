@@ -234,7 +234,7 @@ class SMWDITime extends SMWDataItem {
 	 * ID.
 	 * @return SMWDITime
 	 */
-	public static function doUnserialize( $serialization, $typeid ) {
+	public static function doUnserialize( $serialization, $typeid = '_dat' ) {
 		$parts = explode( '/', $serialization, 7 );
 		$values = array();
 		for ( $i = 0; $i < 7; $i += 1 ) {

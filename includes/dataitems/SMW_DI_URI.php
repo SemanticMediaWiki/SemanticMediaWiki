@@ -103,7 +103,7 @@ class SMWDIUri extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIUri
 	 */
-	public static function doUnserialize( $serialization, $typeid ) {
+	public static function doUnserialize( $serialization, $typeid = '_uri' ) {
 		$parts = explode( ':', $serialization, 2 ); // try to split "schema:rest"
 		if ( count( $parts ) <= 1 ) {
 			throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );

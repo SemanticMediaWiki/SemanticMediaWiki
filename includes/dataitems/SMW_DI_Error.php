@@ -48,7 +48,7 @@ class SMWDIError extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIError
 	 */
-	public static function doUnserialize( $serialization, $typeid ) {
+	public static function doUnserialize( $serialization, $typeid = '__err' ) {
 		return new SMWDIError( unserialize( $serialization ), $typeid );
 	}
 

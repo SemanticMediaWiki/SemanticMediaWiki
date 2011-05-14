@@ -46,7 +46,7 @@ class SMWDIBlob extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIBlob
 	 */
-	public static function doUnserialize( $serialization, $typeid ) {
+	public static function doUnserialize( $serialization, $typeid = '_txt' ) {
 		return new SMWDIBlob( $serialization, $typeid );
 	}
 
