@@ -24,7 +24,7 @@ class SMWPropertyChanges implements Iterator {
 	 *
 	 * @var string
 	 */
-	static protected $mPropertyPrefix = '';	
+	static protected $propertyPrefix = '';	
 	
 	/**
 	 * Array mapping property keys (string) to arrays of SMWPropertyChange.
@@ -117,15 +117,15 @@ class SMWPropertyChanges implements Iterator {
 	public function addPropertyChange( $propertyName, SMWPropertyChange $change ) {
 		$propertyKey = smwfNormalTitleDBKey( $propertyName );
 
-		if ( array_key_exists( $propertyKey, $this->mProperties ) ) {
-			$property = $this->mProperties[$propertyKey];
+		if ( array_key_exists( $propertyKey, $this->properties ) ) {
+			$property = $this->properties[$propertyKey];
 		} else {
-			if ( self::$mPropertyPrefix == '' ) {
+			if ( self::$propertyPrefix == '' ) {
 				global $wgContLang;
-				self::$mPropertyPrefix = $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':';
+				self::$propertyPrefix = $wgContLang->getNsText( SMW_NS_PROPERTY ) . ':';
 			} // explicitly use prefix to cope with things like [[Property:User:Stupid::somevalue]]
 
-			$propertyDV = SMWPropertyValue::makeUserProperty( self::$mPropertyPrefix . $propertyName );
+			$propertyDV = SMWPropertyValue::makeUserProperty( self::$propertyPrefix . $propertyName );
 
 			if ( !$propertyDV->isValid() ) { // error, maybe illegal title text
 				return;

@@ -212,7 +212,7 @@ class SMWChangeSet {
 	 * @return array of SMWPropertyChange
 	 */
 	public function getAllChanges() {
-		return array(); // TODO: implement
+		return array();
 	}
 	
 	/**
