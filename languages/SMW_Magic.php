@@ -3,6 +3,10 @@
 $magicWords = array();
 
 /** English (English) */
+
+$magicWords = array();
+
+/** English (English) */
 $magicWords['en'] = array(
 	'ask' => array( 0, 'ask' ),
 	'show' => array( 0, 'show' ),
@@ -26,15 +30,15 @@ $magicWords['af'] = array(
 
 /** Arabic (العربية) */
 $magicWords['ar'] = array(
-	'ask' => array( 0, 'سؤال', 'ask' ),
-	'show' => array( 0, 'عرض', 'show' ),
-	'info' => array( 0, 'معلومات', 'info' ),
-	'concept' => array( 0, 'مبدأ', 'concept' ),
-	'set' => array( 0, 'مجموعة', 'set' ),
-	'set_recurring_event' => array( 0, 'ضبط_حدث_جاري', 'set_recurring_event' ),
-	'declare' => array( 0, 'إعلان', 'declare' ),
-	'SMW_NOFACTBOX' => array( 0, '__لا_صندوق_حقيقة__', '__NOFACTBOX__' ),
-	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقيقة__', '__SHOWFACTBOX__' ),
+	'ask' => array( 0, 'سؤال' ),
+	'show' => array( 0, 'عرض' ),
+	'info' => array( 0, 'معلومات' ),
+	'concept' => array( 0, 'مبدأ' ),
+	'set' => array( 0, 'مجموعة' ),
+	'set_recurring_event' => array( 0, 'ضبط_حدث_جاري' ),
+	'declare' => array( 0, 'إعلان' ),
+	'SMW_NOFACTBOX' => array( 0, '__لا_صندوق_حقيقة__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__عرض_صندوق_الحقيقة__' ),
 );
 
 /** Egyptian Spoken Arabic (مصرى) */
@@ -52,9 +56,11 @@ $magicWords['arz'] = array(
 
 /** Breton (Brezhoneg) */
 $magicWords['br'] = array(
-	'ask' => array( 0, 'goulenn', 'ask' ),
-	'show' => array( 0, 'diskouez', 'show' ),
-	'info' => array( 0, 'keloù', 'info' ),
+	'ask' => array( 0, 'goulenn' ),
+	'show' => array( 0, 'diskouez' ),
+	'info' => array( 0, 'keloù' ),
+	'concept' => array( 0, 'meizad' ),
+	'declare' => array( 0, 'disklêriañ' ),
 );
 
 /** Spanish (Español) */
@@ -71,6 +77,19 @@ $magicWords['es'] = array(
 /** Igbo (Igbo) */
 $magicWords['ig'] = array(
 	'ask' => array( 0, 'jüo', 'ask' ),
+);
+
+/** Macedonian (Македонски) */
+$magicWords['mk'] = array(
+	'ask' => array( 0, 'прашај' ),
+	'show' => array( 0, 'прикажи' ),
+	'info' => array( 0, 'инфо' ),
+	'concept' => array( 0, 'поим' ),
+	'set' => array( 0, 'постави' ),
+	'set_recurring_event' => array( 0, 'постави_повторлив_настан' ),
+	'declare' => array( 0, 'изјави' ),
+	'SMW_NOFACTBOX' => array( 0, '__БЕЗФАКТКУТИЈА__' ),
+	'SMW_SHOWFACTBOX' => array( 0, '__ПРИКАЖИФАКТКУТИЈА__' ),
 );
 
 /** Malayalam (മലയാളം) */
@@ -120,6 +139,17 @@ $magicWords['ps'] = array(
 	'ask' => array( 0, 'پوښتل', 'ask' ),
 	'show' => array( 0, 'ښکاره_کول', 'show' ),
 	'info' => array( 0, 'مالومات', 'info' ),
+);
+
+/** Serbian Cyrillic ekavian (‪Српски (ћирилица)‬) */
+$magicWords['sr-ec'] = array(
+	'ask' => array( 0, 'питај' ),
+	'show' => array( 0, 'прикажи' ),
+	'info' => array( 0, 'подаци' ),
+	'concept' => array( 0, 'концепт' ),
+	'set' => array( 0, 'постави' ),
+	'set_recurring_event' => array( 0, 'постави_периодични_догађај' ),
+	'declare' => array( 0, 'одреди' ),
 );
 
 /** Swedish (Svenska) */
