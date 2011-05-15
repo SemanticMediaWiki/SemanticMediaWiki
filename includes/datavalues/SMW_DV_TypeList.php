@@ -75,11 +75,11 @@ class SMWTypeListValue extends SMWDataValue {
 			$stringvalue .= $tv->getDBkey();
 		}
 		try {
-			$this->m_dataitem = new SMWDIString( $stringvalue );
+			$this->m_dataitem = new SMWDIString( $stringvalue, $this->m_typeid );
 		} catch ( SMWStringLengthException $e ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_maxstring', '"' . $stringvalue . '"' ) );
-			$this->m_dataitem = new SMWDIString( 'ERROR' );
+			$this->m_dataitem = new SMWDIString( 'ERROR', $this->m_typeid );
 		}
 	}
 
@@ -100,7 +100,7 @@ class SMWTypeListValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		return ( $this->m_caption !== false ) ?  $this->m_caption : $this->makeOutputText( 0, $linked );
+		return  ( $this->m_caption !== false ) ?  $this->m_caption : $this->makeOutputText( 0, $linked );
 	}
 
 	public function getShortHTMLText( $linker = null ) {
