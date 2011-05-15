@@ -14,22 +14,6 @@
  */
 abstract class SMWContainerValue extends SMWDataValue {
 
-	protected $m_data;
-
-	public function __construct( $typeid ) {
-		parent::__construct( $typeid );
-		$this->m_data = new SMWSemanticData( null );
-	}
-
-	/**
-	 * We use the internal SMWSemanticData object to store some of this objects
-	 * data. Clone it to make sure that data can be modified independelty from
-	 * the original object's content.
-	 */
-	public function __clone() {
-		$this->m_data = clone $this->m_data; // note that this is always set
-	}
-
 	/**
 	 * Containers have one DB key, so the value of this function should be an array with one
 	 * element. This one DB key should consist of an array of arbitrary length where each

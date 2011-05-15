@@ -175,14 +175,14 @@ class SMWSemanticData {
 		$ctx = hash_init( 'md5' );
 
 		if ( $this->mSubject !== null ) { // here and below, use "_#_" to separate values; really not much care needed here
-			hash_update( $ctx, '_#_' . $this->mSubject->getSerialisation() );
+			hash_update( $ctx, '_#_' . $this->mSubject->getSerialization() );
 		}
 
 		foreach ( $this->getProperties() as $property ) {
 			hash_update( $ctx, '_#_' . $property->getKey() . '##' );
 
 			foreach ( $this->getPropertyValues( $property ) as $dv ) {
-				hash_update( $ctx, '_#_' . $dv->getSerialisation() );
+				hash_update( $ctx, '_#_' . $dv->getSerialization() );
 			}
 		}
 

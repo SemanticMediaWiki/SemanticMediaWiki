@@ -153,7 +153,7 @@ class SMWSpecialBrowse extends SpecialPage {
 						// if there are more incoming values than a certain treshold, display a link to the rest instead
 						$body .= '<a href="' . $skin->makeSpecialUrl( 'SearchByProperty', 'property=' . urlencode( $dvProperty->getWikiValue() ) . '&value=' . urlencode( $this->subject->getWikiValue() ) ) . '">' . wfMsg( "smw_browse_more" ) . "</a>\n";
 					} else {
-						$dv = SMWDataValueFactory::newDataItemValue( $di );
+						$dv = SMWDataValueFactory::newDataItemValue( $di, false, $diProperty );
 						$body .= "<span class=\"smwb-" . $inv . "value\">" .
 						         $this->displayValue( $dvProperty, $dv, $incoming ) . "</span>";
 					}

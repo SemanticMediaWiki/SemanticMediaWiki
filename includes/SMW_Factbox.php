@@ -87,7 +87,7 @@ class SMWFactbox {
 						}
 					}
 					$i += 1;
-					$dv = SMWDataValueFactory::newDataItemValue( $di );
+					$dv = SMWDataValueFactory::newDataItemValue( $di, false, $propertyDi );
 					$text .= $dv->getLongWikiText( true ) . $dv->getInfolinkText( SMW_OUTPUT_WIKI );
 				}
 				$text .= '</td></tr>';

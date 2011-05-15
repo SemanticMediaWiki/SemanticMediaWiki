@@ -86,7 +86,7 @@ class SMWSqlStubSemanticData extends SMWSemanticData {
 
 			foreach ( $this->mStubPropVals[$property->getKey()] as $dbkeys ) {
 				try {
-					$di = SMWCompatibilityHelpers::dataItemFromDBKeys( $property->findPropertyTypeID(), $dbkeys );
+					$di = SMWCompatibilityHelpers::dataItemFromDBKeys( $property->findPropertyTypeID(), $dbkeys, $property );
 					if ( $this->mNoDuplicates ) {
 						$this->mPropVals[$property->getKey()][$di->getHash()] = $di;
 					} else {

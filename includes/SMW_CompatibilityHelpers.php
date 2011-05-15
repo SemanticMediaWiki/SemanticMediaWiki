@@ -27,12 +27,13 @@ class SMWCompatibilityHelpers {
 	 * Throws SMWDataItemException if problems occur, to get our callers
 	 * used to it.
 	 *
-	 * @param $typeid id string for the given type
-	 * @param $dbkeys array of mixed 
+	 * @param $typeid string id for the given type
+	 * @param $dbkeys array of mixed
+	 * @param $diProperty mixed SMWDIProperty or null, the property for which this value is built, currently needed for records
 	 *
 	 * @return SMWDataItem
 	 */
-	static public function dataItemFromDBKeys( $typeid, $dbkeys ) {
+	static public function dataItemFromDBKeys( $typeid, $dbkeys, $diProperty = null ) {
 		switch ( SMWDataValueFactory::getDataItemId( $typeid )  ) {
 			case SMWDataItem::TYPE_ERROR:
 				break;
@@ -70,9 +71,30 @@ class SMWCompatibilityHelpers {
 				break;
 			case SMWDataItem::TYPE_GEO:
 				return new SMWDIGeoCoord( array( 'lat' => (float)$dbkeys[0], 'lon' => (float)$dbkeys[1] ), $typeid );
-				break;
 			case SMWDataItem::TYPE_CONTAINER:
-				break;
+				$semanticData = new SMWContainerSemanticData();
+				if ( $typeid == '_rec' ) {
+					$types = SMWRecordValue::findTypeIds( $diProperty );
+					foreach ( reset( $dbkeys ) as $value ) {
+						if ( is_array( $value ) && ( count( $value ) == 2 ) ) {
+							$diP = new SMWDIProperty( reset( $value ), false );
+							$pnum = intval( substr( reset( $value ), 1 ) ); // try to find the number of this property
+							if ( array_key_exists( $pnum - 1, $types ) ) {
+								$diV = self::dataItemFromDBKeys( $types[$pnum - 1], end( $value ) );
+								$semanticData->addPropertyObjectValue( $diP, $diV );
+							}
+						}
+					}
+				} else {
+					foreach ( reset( $dbkeys ) as $value ) {
+						if ( is_array( $value ) && ( count( $value ) == 2 ) ) {
+							$diP = new SMWDIProperty( reset( $value ), false );
+							$diV = self::dataItemFromDBKeys( $diP->findPropertyTypeID(), end( $value ) );
+							$semanticData->addPropertyObjectValue( $diP, $diV );
+						}
+					}
+				}
+				return new SMWDIContainer( $semanticData, $typeid );
 			case SMWDataItem::TYPE_WIKIPAGE:
 				if ( $typeid == '__typ' ) { // DBkeys for types values are special (used to be a SMWSimpleWikiPageValue)
 					$pagedbkey = str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $dbkeys[0] ) );
@@ -147,11 +169,11 @@ class SMWCompatibilityHelpers {
 				return array( $dataItem->getKey() );
 			case '_geo':
 				$coordinateSet = $dataItem->getCoordinateSet();
-		
+
 				return array(
 					$coordinateSet['lat'],
 					$coordinateSet['lon']
-				);				
+				);
 				break;
 			default:
 				$typeid = $dataItem->getTypeId();

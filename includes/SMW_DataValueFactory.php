@@ -59,10 +59,10 @@ class SMWDataValueFactory {
 	 * given SMWTypesValue object specifies. If no $value is given, an empty
 	 * container is created, the value of which can be set later on.
 	 *
-	 * @param SMWTypesValue $typevalue Represents the type of the object
-	 * @param mixed $value user value string, or false if unknown
-	 * @param mixed $caption user-defined caption or false if none given
-	 * @param SMWDIProperty $property property object for which this value was made, or null
+	 * @param $typevalue SMWTypesValue Represents the type of the object
+	 * @param $value mixed user value string, or false if unknown
+	 * @param $caption mixed user-defined caption or false if none given
+	 * @param $property SMWDIProperty property object for which this value was made, or null
 	 */
 	static public function newTypeObjectValue( SMWTypesValue $typeValue, $value = false, $caption = false, $property = null ) {
 		if ( !$typeValue->isValid() ) { // just return the error, pass it through
@@ -112,9 +112,9 @@ class SMWDataValueFactory {
 	/**
 	 * Create a value for a data item.
 	 *
-	 * @param SMWDataItem $typeid id string for the given type
-	 * @param mixed $caption user-defined caption, or false if none given
-	 * @param SMWDIProperty $property property object for which this value is made, or NULL
+	 * @param $typeid SMWDataItem id string for the given type
+	 * @param $caption mixed user-defined caption, or false if none given
+	 * @param $property SMWDIProperty property object for which this value is made, or NULL
 	 *
 	 * @return SMWDataValue
 	 */

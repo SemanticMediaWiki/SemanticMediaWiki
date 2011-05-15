@@ -63,7 +63,7 @@ abstract class SMWDataValue {
 
 	/**
 	 * The text label of the respective property or false if none given.
-	 * @var unknown_type
+	 * @var SMWDIProperty
 	 */
 	protected $m_property = null;
 
@@ -72,12 +72,6 @@ abstract class SMWDataValue {
 	 * @var string
 	 */
 	protected $m_caption;
-
-	/**
-	 * True if a value was set.
-	 * @var boolean
-	 */
-	private $m_isset;
 
 	/**
 	 * The type id for this value object.
@@ -256,7 +250,10 @@ abstract class SMWDataValue {
 		if ( $this->mHasServiceLinks ) {
 			return;
 		}
-		if ( ( $this->m_property === null ) || ( $this->m_property->getWikiPageValue() === null ) ) {
+		if ( $this->m_property !== null ) {
+			$propertyDiWikiPage = $this->m_property->getDiWikiPage();
+		}
+		if ( ( $this->m_property === null ) || ( $propertyDiWikiPage === null ) ) {
 			return; // no property known
 		}
 
@@ -267,11 +264,12 @@ abstract class SMWDataValue {
 		}
 
 		array_unshift( $args, '' ); // add a 0 element as placeholder
-		$servicelinks = smwfGetStore()->getPropertyValues( $this->m_property->getWikiPageValue(), new SMWDIProperty( '_SERV' ) );
+		$servicelinks = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, new SMWDIProperty( '_SERV' ) );
 
-		foreach ( $servicelinks as $dv ) {
+		foreach ( $servicelinks as $dataItem ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-
+			$dv = SMWDataValueFactory::newDataItemValue( $dataItem );
+			
 			$args[0] = 'smw_service_' . str_replace( ' ', '_', $dv->getWikiValue() ); // messages distinguish ' ' from '_'
 			$text = call_user_func_array( 'wfMsgForContent', $args );
 			$links = preg_split( "/[\n][\s]?/u", $text );
@@ -681,10 +679,11 @@ abstract class SMWDataValue {
 	 * text, but no more. Result might have no entries but is always an array.
 	 */
 	public function getInfolinks() {
-		if ( $this->isValid() && ( $this->m_property !== null ) && ( $this->m_property->getWikiPageValue() !== null ) ) {
+		if ( $this->isValid() && ( $this->m_property !== null ) ) {
 			if ( !$this->mHasSearchLink ) { // add default search link
+				$propertyDataValue = SMWDataValueFactory::newDataItemValue( $this->m_property );
 				$this->mHasSearchLink = true;
-				$this->m_infolinks[] = SMWInfolink::newPropertySearchLink( '+', $this->m_property->getWikiValue(), $this->getWikiValue() );
+				$this->m_infolinks[] = SMWInfolink::newPropertySearchLink( '+', $propertyDataValue->getWikiValue(), $this->getWikiValue() );
 			}
 
 			if ( !$this->mHasServiceLinks ) { // add further service links
@@ -795,12 +794,16 @@ abstract class SMWDataValue {
 	 * Creates an error if the value is illegal.
 	 */
 	protected function checkAllowedValues() {
-		if ( ( $this->m_property === null ) || ( $this->m_property->getDiWikiPage() === null ) || ( !isset( $this->m_dataitem ) ) ) {
+		if ( $this->m_property !== null ) {
+			$propertyDiWikiPage = $this->m_property->getDiWikiPage();
+		}
+
+		if ( ( $this->m_property === null ) || ( $propertyDiWikiPage === null ) || ( !isset( $this->m_dataitem ) ) ) {
 			return; // no property known, or no data to check
 		}
 
 		$allowedvalues = smwfGetStore()->getPropertyValues(
-			$this->m_property->getDiWikiPage(),
+			$propertyDiWikiPage,
 			new SMWDIProperty( '_PVAL' )
 		);
 
@@ -834,20 +837,6 @@ abstract class SMWDataValue {
 				wfMsgForContent( 'smw_notinenum', $this->getWikiValue(), $valuestring )
 			);
 		}
-	}
-	
-	/**
-	 * Returns if the data value holds info about a main object (page)
-	 * or not (property). This allows query printers to distinguise
-	 * the main object from properties of type page (count does not
-	 * suffice as the main object can be omitted using mainlabel=-)
-	 * 
-	 * @since 1.5.6
-	 * 
-	 * @return boolean
-	 */
-	public function isMainObject() {
-		return $this->m_property == null;
 	}
 
 }

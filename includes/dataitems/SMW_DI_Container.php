@@ -32,7 +32,14 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	 */
 	public function __construct( $noDuplicates = true ) {
 		$subject = new SMWDIWikiPage( 'SMWInternalObject', NS_SPECIAL, '' ); // dummy subject
-		parent::__construct( $noDuplicates );
+		parent::__construct( $subject, $noDuplicates );
+	}
+
+	/**
+	 * Restore complete serialization which is disabled in SMWSemanticData.
+	 */
+	public function __sleep() {
+		return array( 'mSubject', 'mProperties', 'mPropVals', 'mHasVisibleProps', 'mHasVisibleSpecs', 'mNoDuplicates' );
 	}
 
 	/**
@@ -127,7 +134,16 @@ class SMWDIContainer extends SMWDataItem {
 	}
 
 	public function getSerialization() {
-		return $this->m_string;
+		return serialize( $this->m_semanticData );
+	}
+
+	/**
+	 * Get a hash string for this data item.
+	 * 
+	 * @return string
+	 */
+	public function getHash() {
+		return $this->m_semanticData->getHash();
 	}
 
 	/**
@@ -136,7 +152,12 @@ class SMWDIContainer extends SMWDataItem {
 	 * @return SMWDIContainer
 	 */
 	public static function doUnserialize( $serialization, $typeid = '_rec' ) {
-		return new SMWDIBlob( $serialization, $typeid );
+		/// TODO May issue an E_NOTICE when problems occur; catch this
+		$data = unserialize( $serialization );
+		if ( !( $data instanceof SMWContainerSemanticData ) ) {
+			throw SMWDataItemException( "Could not unserialize SMWDIContainer from the given string." );
+		}
+		return new SMWDIContainer( $data, $typeid );
 	}
 
 }

@@ -162,6 +162,12 @@ abstract class SMWStore {
 	 *
 	 * If called with $subject == null, all values for the given property
 	 * are returned.
+	 *
+	 * @param $subject mixed SMWDataItem or null
+	 * @param $property SMWDIProperty
+	 * @param $requestoptions SMWRequestOptions
+	 *
+	 * @return array of SMWDataItem
 	 */
 	public abstract function getPropertyValues( $subject, SMWDIProperty $property, $requestoptions = null );
 

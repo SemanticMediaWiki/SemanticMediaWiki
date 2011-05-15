@@ -209,9 +209,9 @@ class SMWSQLStore2 extends SMWStore {
 	/**
 	 * @see SMWStore::getPropertyValues
 	 *
-	 * @param SMWDataItem $subject
-	 * @param SMWDIProperty $property
-	 * @param SMWRequestOptions $requestoptions
+	 * @param $subject mixed SMWDataItem or null
+	 * @param $property SMWDIProperty
+	 * @param $requestoptions SMWRequestOptions
 	 *
 	 * @return array of SMWDataItem
 	 */
@@ -515,17 +515,18 @@ class SMWSQLStore2 extends SMWStore {
 		if ( $value instanceof SMWDIContainer ) { // recursive handling of containers
 			$joinfield = "t$tableindex." . reset( array_keys( $proptable->objectfields ) ); // this must be a type 'p' object
 			$proptables = self::getPropertyTables();
+			$semanticData = $value->getSemanticData();
 
-			foreach ( $value->getData()->getProperties() as $subproperty ) {
+			foreach ( $semanticData->getProperties() as $subproperty ) {
 				$tableid = self::findPropertyTableID( $subproperty );
 
 				if ( ( $tableid == '' ) && ( $value !== null ) ) { // maybe a type-polymorphic property like _1; use value to find type
-					$tableid = self::findTypeTableID( reset( $value->getData()->getPropertyValues( $subproperty ) )->getTypeID() );
+					$tableid = self::findTypeTableID( reset( $semanticData->getPropertyValues( $subproperty ) )->getTypeID() );
 				}
 
 				$subproptable = $proptables[$tableid];
 
-				foreach ( $value->getData()->getPropertyValues( $subproperty ) as $subvalue ) {
+				foreach ( $semanticData->getPropertyValues( $subproperty ) as $subvalue ) {
 					$tableindex++;
 
 					if ( $subproptable->idsubject ) { // simply add property table to check values
@@ -838,8 +839,13 @@ class SMWSQLStore2 extends SMWStore {
 	 * @param $pageid
 	 */
 	protected function prepareDBUpdates( &$updates, SMWSemanticData $data, $pageid ) {
-		$subject = $data->getSubject();
-		$sid = ( $subject !== null ) ? $pageid:$this->makeSMWBnodeID( $pageid );
+		if ( $data instanceof SMWContainerSemanticData ) {
+			$sid = $this->makeSMWBnodeID( $pageid );
+		} else {
+			$subject = $data->getSubject();
+			$sid = $pageid;
+		}
+
 		$proptables = self::getPropertyTables();
 
 		foreach ( $data->getProperties() as $property ) {
@@ -874,7 +880,7 @@ class SMWSQLStore2 extends SMWStore {
 				}
 
 				if ( $di instanceof SMWDIContainer ) { // process subobjects recursively
-					$bnode = $this->prepareDBUpdates( $updates, $di->getData(), $pageid );
+					$bnode = $this->prepareDBUpdates( $updates, $di->getSemanticData(), $pageid );
 					// Note: tables for container objects MUST have objectfields == array(<somename> => 'p')
 					reset( $proptable->objectfields );
 					$uvals[key( $proptable->objectfields )] = $bnode;

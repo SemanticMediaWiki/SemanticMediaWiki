@@ -16,7 +16,7 @@ class SMWTypeListValue extends SMWDataValue {
 
 	/**
 	 * List of type data value objects corresponding to the stored data.
-	 * @var array
+	 * @var array of SMWTypesValue
 	 */
 	protected $m_typevalues;
 
