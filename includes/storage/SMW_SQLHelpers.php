@@ -61,12 +61,12 @@ class SMWSQLHelpers {
 	 * @param DatabaseBase or Database $db
 	 * @param $reportTo Object to report back to.
 	 */
-	public static function setupTable( $tableName, array $fields, $db, $reportTo = null ) {
-		$tableName = $db->tableName( $tableName );
+	public static function setupTable( $rawTableName, array $fields, $db, $reportTo = null ) {
+		$tableName = $db->tableName( $rawTableName );
 
 		self::reportProgress( "Checking table $tableName ...\n", $reportTo );
 		
-		if ( $db->tableExists( $tableName ) === false ) { // create new table
+		if ( $db->tableExists( $rawTableName ) === false ) { // create new table
 			self::reportProgress( "   Table not found, now creating...\n", $reportTo );
 			self::createTable( $tableName, $fields, $db, $reportTo );
 			self::reportProgress( "   ... done.\n", $reportTo );	
@@ -163,6 +163,7 @@ class SMWSQLHelpers {
 		global $wgDBtype;
 		
 		if ( $wgDBtype == 'postgres' ) {
+			$tableName = str_replace( '"', '', $tableName );
 			// Use the data dictionary in postgresql to get an output comparable to DESCRIBE.
 			$sql = <<<EOT
 SELECT
@@ -193,9 +194,9 @@ EOT;
 		
 		foreach ( $res as $row ) {
 			$type = strtoupper( $row->Type );
-			
+
 			if ( $wgDBtype == 'postgres' ) { // postgresql
-				if ( eregi( '^nextval\\(.+\\)$', $row->Extra ) ) {
+				if ( preg_match( '/^nextval\\(.+\\)/i', $row->Extra ) ) {
 					$type = 'SERIAL NOT NULL';
 				} elseif ( $row->Null != 'YES' ) {
 						$type .= ' NOT NULL';
@@ -220,7 +221,7 @@ EOT;
 			
 			$curfields[$row->Field] = $type;
 		}
-		
+
 		return $curfields;
 	}
 	
