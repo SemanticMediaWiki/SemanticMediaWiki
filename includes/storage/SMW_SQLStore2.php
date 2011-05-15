@@ -165,7 +165,9 @@ class SMWSQLStore2 extends SMWStore {
 		if ( !array_key_exists( $sid, $this->m_semdata ) ) { // new cache entry
 			$this->m_semdata[$sid] = new SMWSqlStubSemanticData( $subject, false );
 			$this->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
-			$this->m_sdstate[$sid] = array( '__key' );
+			$this->m_sdstate[$sid] = array();
+			// Note: the sortkey is always set but belongs to no property table,
+			// hence no entry in $this->m_sdstate[$sid] is made.
 		}
 
 		if ( ( count( $this->m_semdata ) > 20 ) && ( self::$in_getSemanticData == 1 ) ) {
@@ -809,9 +811,12 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		// Finally update caches (may be important if jobs are directly following this call)
-		$this->m_semdata[$sid] = clone $data;
+		$this->m_semdata[$sid] = SMWSqlStubSemanticData::newFromSemanticData( $data );
 		// Everything that one can know.
-		$this->m_sdstate[$sid] = array_keys( self::getPropertyTables() );
+		$this->m_sdstate[$sid] = array();
+		foreach ( self::getPropertyTables() as $tableId => $tableDeclaration ) {
+			$this->m_sdstate[$sid][$tableId] = true;
+		}
 		
 		wfRunHooks( 'SMWSQLStore2::updateDataAfter', array( $this, $data ) );
 		

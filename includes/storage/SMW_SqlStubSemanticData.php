@@ -39,6 +39,26 @@ class SMWSqlStubSemanticData extends SMWSemanticData {
 	protected $mSubject;
 
 	/**
+	 * Create a new SMWSqlStubSemanticData object that holds the data of a
+	 * given SMWSemanticData object. Array assignments create copies in PHP
+	 * so the arrays are distinct in input and output object. The object
+	 * references are copied as references in a shallow way. This is
+	 * sufficient as the data items used there are immutable.
+	 *
+	 * @param $semanticData SMWSemanticData
+	 * @return SMWSqlStubSemanticData
+	 */
+	public static function newFromSemanticData( SMWSemanticData $semanticData ) {
+		$result = new SMWSqlStubSemanticData( $semanticData->getSubject() );
+		$result->mPropVals = $semanticData->mPropVals;
+		$result->mProperties = $semanticData->mProperties;
+		$result->mHasVisibleProps = $semanticData->mHasVisibleProps;
+		$result->mHasVisibleSpecs = $semanticData->mHasVisibleSpecs;
+		$result->stubObject = $semanticData->stubObject;
+		return $result;
+	}
+
+	/**
 	 * Get the array of all properties that have stored values.
 	 *
 	 * @return array of SMWDIProperty objects
