@@ -260,11 +260,11 @@ EOT;
 			$typeold = ( $notnullposold > 0 ) ? substr( $currentFields[$name], 0, $notnullposold ) : $currentFields[$name];
 			
 			if ( $typeold != $type ) {
-				$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" ENGINE " . $type, __METHOD__ );
+				$db->query( "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $name . "\" ENGINE " . $type, __METHOD__ );
 			}
 			
 			if ( $notnullposold != $notnullposnew ) {
-				$db->query( "ALTER TABLE \"" . $tableName . "\" ALTER COLUMN \"" . $name . "\" " . ( $notnullposnew > 0 ? 'SET' : 'DROP' ) . " NOT NULL", __METHOD__ );
+				$db->query( "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $name . "\" " . ( $notnullposnew > 0 ? 'SET' : 'DROP' ) . " NOT NULL", __METHOD__ );
 			}
 			
 			self::reportProgress( "done.\n", $reportTo );
@@ -357,7 +357,9 @@ EOT;
 						$column = $index;
 					}
 					
-					$db->query( "CREATE $type {$rawTableName}_index{$key} ON $tableName USING btree(" . $column . ")", __METHOD__ );
+					if ( $db->indexInfo( $rawTableName, "{$rawTableName}_index{$key}" ) === false ) {
+						$db->query( "CREATE $type {$rawTableName}_index{$key} ON $tableName USING btree(" . $column . ")", __METHOD__ );
+					}
 				}
 			}
 		} else { // MySQL
