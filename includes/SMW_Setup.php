@@ -137,20 +137,22 @@ function enableSemantics( $namespace = null, $complete = false ) {
 
 	// Data items
 	$diDir = $smwgIP . 'includes/dataitems/';
-	$wgAutoloadClasses['SMWDataItem']				= $diDir . 'SMW_DataItem.php';
-	$wgAutoloadClasses['SMWDataItemException']		= $diDir . 'SMW_DataItem.php';
-	$wgAutoloadClasses['SMWDIProperty']				= $diDir . 'SMW_DI_Property.php';
-	$wgAutoloadClasses['SMWDIBoolean']				= $diDir . 'SMW_DI_Bool.php';
-	$wgAutoloadClasses['SMWDINumber']				= $diDir . 'SMW_DI_Number.php';
-	$wgAutoloadClasses['SMWDIBlob']					= $diDir . 'SMW_DI_Blob.php';
-	$wgAutoloadClasses['SMWDIString']				= $diDir . 'SMW_DI_String.php';
+	$wgAutoloadClasses['SMWDataItem']		= $diDir . 'SMW_DataItem.php';
+	$wgAutoloadClasses['SMWDataItemException']	= $diDir . 'SMW_DataItem.php';
+	$wgAutoloadClasses['SMWDIProperty']		= $diDir . 'SMW_DI_Property.php';
+	$wgAutoloadClasses['SMWDIBoolean']		= $diDir . 'SMW_DI_Bool.php';
+	$wgAutoloadClasses['SMWDINumber']		= $diDir . 'SMW_DI_Number.php';
+	$wgAutoloadClasses['SMWDIBlob']			= $diDir . 'SMW_DI_Blob.php';
+	$wgAutoloadClasses['SMWDIString']		= $diDir . 'SMW_DI_String.php';
 	$wgAutoloadClasses['SMWStringLengthException']	= $diDir . 'SMW_DI_String.php';
-	$wgAutoloadClasses['SMWDIUri']					= $diDir . 'SMW_DI_URI.php';
-	$wgAutoloadClasses['SMWDIWikiPage']				= $diDir . 'SMW_DI_WikiPage.php';
-	$wgAutoloadClasses['SMWDITime']					= $diDir . 'SMW_DI_Time.php';
-	$wgAutoloadClasses['SMWDIConcept']				= $diDir . 'SMW_DI_Concept.php';
-	$wgAutoloadClasses['SMWDIError']				= $diDir . 'SMW_DI_Error.php';
-	$wgAutoloadClasses['SMWDIGeoCoord']				= $diDir . 'SMW_DI_GeoCoord.php';
+	$wgAutoloadClasses['SMWDIUri']			= $diDir . 'SMW_DI_URI.php';
+	$wgAutoloadClasses['SMWDIWikiPage']		= $diDir . 'SMW_DI_WikiPage.php';
+	$wgAutoloadClasses['SMWDITime']			= $diDir . 'SMW_DI_Time.php';
+	$wgAutoloadClasses['SMWDIConcept']		= $diDir . 'SMW_DI_Concept.php';
+	$wgAutoloadClasses['SMWDIError']		= $diDir . 'SMW_DI_Error.php';
+	$wgAutoloadClasses['SMWDIGeoCoord']		= $diDir . 'SMW_DI_GeoCoord.php';
+	$wgAutoloadClasses['SMWContainerSemanticData']	= $diDir . 'SMW_DI_Container.php';
+	$wgAutoloadClasses['SMWDIContainer']		= $diDir . 'SMW_DI_Container.php';
 
 	// Datavalues
 	$dvDir = $smwgIP . 'includes/datavalues/';
