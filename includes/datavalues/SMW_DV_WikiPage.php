@@ -103,7 +103,7 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->m_fragment = $this->m_title->getFragment();
 				$this->m_prefixedtext = '';
 				$this->m_id = -1; // unset id
-				$this->m_dataitem = new SMWDIWikiPage( $this->m_title->getDBkey(), $this->m_title->getNamespace(), $this->m_title->getInterwiki(), $this->m_typeid );
+				$this->m_dataitem = SMWDIWikiPage::newFromTitle( $this->m_title, $this->m_typeid );
 			}
 		} else {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
@@ -369,16 +369,17 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * @deprecated Use setDataItem(); it's easy to create an SMWDIWikiPage from a Title, will vanish before SMW 1.7
 	 */
 	public function setTitle( $title ) {
-		$diWikiPage = new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() );
+		$diWikiPage = SMWDIWikiPage::newFromTitle( $title );
 		$this->setDataItem( $diWikiPage );
-		$this->m_title = $title;
+		$this->m_title = $title; // optional, just for efficiency
 	}
 
 	/**
-	 * @deprecated Use setDBkeys()
+	 * @deprecated Use setDataItem()
 	 */
 	public function setValues( $dbkey, $namespace, $id = false, $interwiki = '' ) {
-		$this->setDBkeys( array( $dbkey, $namespace, $interwiki, $dbkey ) );
+		$dataItem = new SMWDIWikiPage( $dbkey, $namespace, $interwiki ); 
+		$this->setDataItem( $dataItem);
 	}
 
 	/**
@@ -411,9 +412,9 @@ class SMWWikiPageValue extends SMWDataValue {
 	 */
 	static public function makePageFromTitle( Title $title ) {
 		$dvWikiPage = new SMWWikiPageValue( '_wpg' );
-		$diWikiPage = new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() );
+		$diWikiPage = SMWDIWikiPage::newFromTitle( $title );
 		$dvWikiPage->setDataItem( $diWikiPage );
-		$dvWikiPage->m_title = $title;
+		$dvWikiPage->m_title = $title; // optional, just for efficiency
 		return $dvWikiPage;
 	}
 
