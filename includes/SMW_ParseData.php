@@ -154,7 +154,7 @@ class SMWParseData {
 		$processSemantics = smwfIsSemanticsProcessed( $namespace );
 
 		if ( !isset( $semdata ) ) { // no data at all?
-			$semdata = new SMWSemanticData( new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() ) );
+			$semdata = new SMWSemanticData( SMWDIWikiPage::newFromTitle( $title ) );
 		}
 
 		if ( $processSemantics ) {
@@ -181,7 +181,7 @@ class SMWParseData {
 		if ( $makejobs && $smwgEnableUpdateJobs && ( $namespace == SMW_NS_PROPERTY ) ) {
 			// If it is a property, then we need to check if the type or the allowed values have been changed.
 			$ptype = new SMWDIProperty( '_TYPE' );
-			$oldtype = smwfGetStore()->getPropertyValues( $title, $ptype );
+			$oldtype = smwfGetStore()->getPropertyValues( $semdata->getSubject(), $ptype );
 			$newtype = $semdata->getPropertyValues( $ptype );
 
 			if ( !self::equalDatavalues( $oldtype, $newtype ) ) {
@@ -200,14 +200,20 @@ class SMWParseData {
 				$subjects = smwfGetStore()->getAllPropertySubjects( $prop );
 
 				foreach ( $subjects as $subject ) {
-					$jobs[] = new SMWUpdateJob( $subject->getTitle() );
+					$subjectTitle = $subject->getTitle();
+					if ( $subjectTitle !== null ) {
+						$jobs[] = new SMWUpdateJob( $subjectTitle );
+					}
 				}
 				wfRunHooks( 'smwUpdatePropertySubjects', array( &$jobs ) );
 
-				$subjects = smwfGetStore()->getPropertySubjects( new SMWDIProperty( '_ERRP' ), $prop->getWikiPageValue() );
+				$subjects = smwfGetStore()->getPropertySubjects( new SMWDIProperty( '_ERRP' ), $semdata->getSubject() );
 
 				foreach ( $subjects as $subject ) {
-					$jobs[] = new SMWUpdateJob( $subject->getTitle() );
+					$subjectTitle = $subject->getTitle();
+					if ( $subjectTitle !== null ) {
+						$jobs[] = new SMWUpdateJob( $subjectTitle );
+					}
 				}
 			}
 		} elseif ( $makejobs && $smwgEnableUpdateJobs && ( $namespace == SMW_NS_TYPE ) ) {
@@ -227,12 +233,18 @@ class SMWParseData {
 				$proppages = $store->getPropertySubjects( $ptype, $dv );
 
 				foreach ( $proppages as $proppage ) {
-					$jobs[] = new SMWUpdateJob( $proppage->getTitle() );
+					$propertyTitle = $proppage->getTitle();
+					if ( $propertyTitle !== null ) {
+						$jobs[] = new SMWUpdateJob( $propertyTitle );
+					}
 					$prop = new SMWDIProperty( $proppage->getDBkey() );
 					$subjects = $store->getAllPropertySubjects( $prop );
 
 					foreach ( $subjects as $subject ) {
-						$jobs[] = new SMWUpdateJob( $subject->getTitle() );
+						$subjectTitle = $subject->getTitle();
+						if ( $subjectTitle !== null ) {
+							$jobs[] = new SMWUpdateJob( $subjectTitle );
+						}
 					}
 
 					$subjects = smwfGetStore()->getPropertySubjects(
@@ -241,7 +253,10 @@ class SMWParseData {
 					);
 
 					foreach ( $subjects as $subject ) {
-						$jobs[] = new SMWUpdateJob( $subject->getTitle() );
+						$subjectTitle = $subject->getTitle();
+						if ( $subjectTitle !== null ) {
+							$jobs[] = new SMWUpdateJob( $subject->getTitle() );
+						}
 					}
 				}
 			}
