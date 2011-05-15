@@ -14,6 +14,8 @@
  * This class provides a subclass of SMWSemanticData that can store
  * prefetched values from SMW's SQL stores, and unstub this data on demand when
  * it is accessed.
+ * 
+ * @since 1.6
  *
  * @ingroup SMWStore
  */

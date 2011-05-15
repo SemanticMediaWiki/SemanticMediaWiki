@@ -13,6 +13,8 @@
  * Storage access class for using SMW's SPARQL database for keeping semantic
  * data.
  *
+ * @since 1.6
+ *
  * @note For now, the store keeps an underlying SMWSQLStore2 running for
  * completeness. This might change in the future.
  *

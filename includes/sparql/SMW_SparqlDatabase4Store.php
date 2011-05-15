@@ -11,6 +11,7 @@
 /**
  * Specific modifications of the SPARQL database implementation for 4Store.
  * 
+ * @since 1.6
  * @ingroup SMWSparql
  * 
  * @author Markus Krötzsch

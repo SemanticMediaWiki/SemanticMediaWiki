@@ -15,6 +15,7 @@
  * In particular, this relates to the new data model based on data items
  * instead of data value classes with DB key arrays and singatures.
  * 
+ * @since 1.6
  * @note This class will vanish before SMW 1.7. Please change your code to not require the old interfaces at all.
  *
  * @ingroup SMW

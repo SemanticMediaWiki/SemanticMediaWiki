@@ -11,6 +11,8 @@
 /**
  * Class for parsing SPARQL results in XML format.
  *
+ * @since 1.6
+ *
  * @ingroup SMWSparql
  */
 class SMWSparqlResultParser {

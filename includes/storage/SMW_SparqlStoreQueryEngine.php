@@ -13,6 +13,8 @@
  * Abstract class that represents a SPARQL (sub-)pattern and relevant pieces
  * of associated information for using it in query building.
  *
+ * @since 1.6
+ *
  * @ingroup SMWStore
  */
 abstract class SMWSparqlCondition {

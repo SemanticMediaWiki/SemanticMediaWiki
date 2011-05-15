@@ -21,6 +21,8 @@
  * malformed queries, permission issues, etc. Connection problems are usually
  * ignored so as to keep the wiki running even if the SPARQL backend is down.
  *
+ * @since 1.6
+ *
  * @ingroup SMWSparql
  */
 class SMWSparqlDatabaseError extends Exception {

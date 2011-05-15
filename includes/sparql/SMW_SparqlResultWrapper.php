@@ -14,6 +14,8 @@
  * Rows should always have the same number of columns, but the datatype of the
  * cells in each column may not be uniform throughout the result.
  *
+ * @since 1.6
+ *
  * @ingroup SMWSparql
  */
 class SMWSparqlResultWrapper implements Iterator {
