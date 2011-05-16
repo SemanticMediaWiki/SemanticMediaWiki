@@ -146,9 +146,9 @@ abstract class SMWDataItem {
 	public static function newFromSerialization( $diType, $serialization, $typeid = '' ) {
 		$diClass = self::getDataItemClassNameForId( $diType );
 		if ( $typeid !== '' ) {
-			return $diClass::doUnserialize( $serialization, $typeid );
+			return call_user_func( array( $diClass, 'doUnserialize' ), $serialization, $typeid );
 		} else {
-			return $diClass::doUnserialize( $serialization );
+			return call_user_func( array( $diClass, 'doUnserialize' ), $serialization );
 		}
 	}
 
