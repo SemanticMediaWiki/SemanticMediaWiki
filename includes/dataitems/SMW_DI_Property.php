@@ -334,11 +334,6 @@ class SMWDIProperty extends SMWDataItem {
 				'_SKEY'  =>  array( '__key', true ), // sort key of a page
 				'_SF_DF' => array( '__spf', true ), // Semantic Form's default form property
 				'_SF_AF' => array( '__spf', true ),  // Semantic Form's alternate form property
-				'_1'     => array( '__err', true ), // properties for encoding (short) lists, these do not really have a type (may be used internally for diverse types)
-				'_2'     => array( '__err', true ),
-				'_3'     => array( '__err', true ),
-				'_4'     => array( '__err', true ),
-				'_5'     => array( '__err', true ),
 			);
 		wfRunHooks( 'smwInitProperties' );
 	}
