@@ -124,13 +124,15 @@ class SMWSpecialBrowse extends SpecialPage {
 		$skin = $wgUser->getSkin();
 		// Some of the CSS classes are different for the left or the right side.
 		// In this case, there is an "i" after the "smwb-". This is set here.
-		$inv = $left ? '':'i';
-		$html = "<table class=\"smwb-" . $inv . "factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$ccsPrefix = $left ? 'smwb-' : 'smwb-i';
+
+		$html = "<table class=\"{$ccsPrefix}factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
+
 		$diProperties = $data->getProperties();
 		$noresult = true;
 		foreach ( $diProperties as $diProperty ) {
 			$dvProperty = SMWDataValueFactory::newDataItemValue( $diProperty, null );
-			$displayline = true;
+
 			if ( $dvProperty->isVisible() ) {
 				$dvProperty->setCaption( $this->getPropertyLabel( $dvProperty, $incoming ) );
 				$proptext = $dvProperty->getShortHTMLText( $skin ) . "\n";
@@ -139,35 +141,50 @@ class SMWSpecialBrowse extends SpecialPage {
 			} elseif ( $diProperty->getKey() == '_REDI' ) {
 				$proptext = $skin->specialLink( 'Listredirects', 'isredirect' );
 			} else {
-				$displayline = false;
+				continue; // skip this line
 			}
-			if ( $displayline ) {
-				$head  = "<th>" . $proptext . "</th>\n";
-				// display values
-				$body  = "<td>\n";
-				$values = $data->getPropertyValues( $diProperty );
-				$count = count( $values );
-				$more = ( $count >= SMWSpecialBrowse::$incomingvaluescount );
-				foreach ( $values as $di ) {
-					if ( ( $count == 1 ) && $more && $incoming ) {
-						// if there are more incoming values than a certain treshold, display a link to the rest instead
-						$body .= '<a href="' . $skin->makeSpecialUrl( 'SearchByProperty', 'property=' . urlencode( $dvProperty->getWikiValue() ) . '&value=' . urlencode( $this->subject->getWikiValue() ) ) . '">' . wfMsg( "smw_browse_more" ) . "</a>\n";
-					} else {
-						$dv = SMWDataValueFactory::newDataItemValue( $di, $diProperty );
-						$body .= "<span class=\"smwb-" . $inv . "value\">" .
-						         $this->displayValue( $dvProperty, $dv, $incoming ) . "</span>";
-					}
-					$count--;
-					$body .= ( $count > 0 ) ? ", \n":"\n";
-				} // end foreach values
-				$body .= "</td>\n";
 
-				// display row
-				$html .= "<tr class=\"smwb-" . $inv . "propvalue\">\n" .
-				         ( $left ? ( $head . $body ):( $body . $head ) ) . "</tr>\n";
-				$noresult = false;
+			$head  = "<th>" . $proptext . "</th>\n";
+
+			$body  = "<td>\n";
+
+			$values = $data->getPropertyValues( $diProperty );
+			if ( $incoming && ( count( $values ) >= SMWSpecialBrowse::$incomingvaluescount ) ) {
+				$moreIncoming = true;
+				array_pop( $values );
+			} else {
+				$moreIncoming = false;
 			}
+
+			$first = true;
+			foreach ( $values as $di ) {
+				if ( $first ) {
+					$first = false;
+				} else {
+					$body .= ', ';
+				}
+
+				if ( $incoming ) {
+					$dv = SMWDataValueFactory::newDataItemValue( $di, null );
+				} else {
+					$dv = SMWDataValueFactory::newDataItemValue( $di, $diProperty );
+				}
+				$body .= "<span class=\"{$ccsPrefix}value\">" .
+				         $this->displayValue( $dvProperty, $dv, $incoming ) . "</span>\n";
+			}
+
+			if ( $moreIncoming ) { // link to the remaining incoming pages:
+				$body .= '<a href="' . $skin->makeSpecialUrl( 'SearchByProperty', 'property=' . urlencode( $dvProperty->getWikiValue() ) . '&value=' . urlencode( $this->subject->getWikiValue() ) ) . '">' . wfMsg( "smw_browse_more" ) . "</a>\n";
+			}
+
+			$body .= "</td>\n";
+
+			// display row
+			$html .= "<tr class=\"{$ccsPrefix}propvalue\">\n" .
+					( $left ? ( $head . $body ):( $body . $head ) ) . "</tr>\n";
+			$noresult = false;
 		} // end foreach properties
+
 		if ( $noresult ) {
 			$html .= "<tr class=\"smwb-propvalue\"><th> &#160; </th><td><em>" .
 			         wfMsg( $incoming ? 'smw_browse_no_incoming':'smw_browse_no_outgoing' ) . "</em></td></tr>\n";
@@ -285,9 +302,16 @@ class SMWSpecialBrowse extends SpecialPage {
 		$options->sort = true;
 		$options->limit = SMWSpecialBrowse::$incomingpropertiescount;
 		if ( $this->offset > 0 ) $options->offset = $this->offset;
+
 		$inproperties = smwfGetStore()->getInProperties( $this->subject->getDataItem(), $options );
-		$more = ( count( $inproperties ) == SMWSpecialBrowse::$incomingpropertiescount );
-		if ( $more ) array_pop( $inproperties ); // drop the last one
+
+		if ( count( $inproperties ) == SMWSpecialBrowse::$incomingpropertiescount ) {
+			$more = true;
+			array_pop( $inproperties ); // drop the last one
+		} else {
+			$more = false;
+		}
+
 		$valoptions = new SMWRequestOptions();
 		$valoptions->sort = true;
 		$valoptions->limit = SMWSpecialBrowse::$incomingvaluescount;
@@ -297,6 +321,7 @@ class SMWSpecialBrowse extends SpecialPage {
 				$indata->addPropertyObjectValue( $property, $value );
 			}
 		}
+
 		return array( $indata, $more );
 	}
 
