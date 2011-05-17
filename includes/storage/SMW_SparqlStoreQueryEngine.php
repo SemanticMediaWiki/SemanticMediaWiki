@@ -787,44 +787,56 @@ class SMWSparqlStoreQueryEngine {
 	protected function buildValueCondition( SMWValueDescription $description, $joinVariable, $orderByProperty ) {
 		$dataItem = $description->getDataItem();
 
-		$comparator = '';
 		switch ( $description->getComparator() ) {
-			case SMW_CMP_EQ: $comparator = '='; break;
+			case SMW_CMP_EQ:   $comparator = '='; break;
 			case SMW_CMP_LESS: $comparator = '<'; break;
 			case SMW_CMP_GRTR: $comparator = '>'; break;
-			case SMW_CMP_LEQ: $comparator = '<='; break;
-			case SMW_CMP_GEQ: $comparator = '>='; break;							
-			case SMW_CMP_NEQ: $comparator = '!='; break;
+			case SMW_CMP_LEQ:  $comparator = '<='; break;
+			case SMW_CMP_GEQ:  $comparator = '>='; break;							
+			case SMW_CMP_NEQ:  $comparator = '!='; break;
 			case SMW_CMP_LIKE: $comparator = 'regex'; break;
-			case SMW_CMP_NLKE:  $comparator = '!regex'; break;
+			case SMW_CMP_NLKE: $comparator = '!regex'; break;
+			default:           $comparator = ''; // unkown, unsupported
 		}
 
-		$namespaces = array();
-		if ( $comparator == '=' ) {
-			$expElement = SMWExporter::getDataItemExpElement( $dataItem );
-			$result = new SMWSparqlSingletonCondition( $expElement );
-			$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
-		} elseif ( ( $comparator == 'regex' || $comparator == '!regex' ) && ( $dataItem instanceof SMWDIBlob ) ) {
-			$pattern = '^' . str_replace( array( '^', '.', '\\', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?' ),
-			                              array( '\^', '\.', '\\\\', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' ),
-			                              $dataItem->getString() ) . '$';
-			$result = new SMWSparqlFilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"s\")", array() );
-			$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
-		} elseif ( $comparator != '' ) {
+		if ( $comparator == '' ) {
+			$result = $this->buildTrueCondition( $joinVariable, $orderByProperty );
+		} elseif ( $comparator == '=' ) {
 			$expElement = SMWExporter::getDataItemHelperExpElement( $dataItem );
 			if ( $expElement === null ) {
 				$expElement = SMWExporter::getDataItemExpElement( $dataItem );
 			}
+			$result = new SMWSparqlSingletonCondition( $expElement );
+			$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
+		} elseif ( $comparator == 'regex' || $comparator == '!regex' ) {
+			if ( $dataItem instanceof SMWDIBlob ) {
+				$pattern = '^' . str_replace( array( '^', '.', '\\', '+', '{', '}', '(', ')', '|', '^', '$', '[', ']', '*', '?' ),
+				                              array( '\^', '\.', '\\\\', '\+', '\{', '\}', '\(', '\)', '\|', '\^', '\$', '\[', '\]', '.*', '.' ),
+				                              $dataItem->getString() ) . '$';
+				$result = new SMWSparqlFilterCondition( "$comparator( ?$joinVariable, \"$pattern\", \"s\")", array() );
+				$this->addOrderByDataForProperty( $result, $joinVariable, $orderByProperty, $dataItem->getDIType() );
+			} else { 
+				$result = $this->buildTrueCondition( $joinVariable, $orderByProperty );
+			}
+		} else {
 			$result = new SMWSparqlFilterCondition( '', array() );
 			$this->addOrderByData( $result, $joinVariable, $dataItem->getDIType() );
 			$orderByVariable = $result->orderByVariable;
+
+			if ( $dataItem instanceof SMWDIWikiPage ) {
+				$expElement = SMWExporter::getDataItemExpElement( $dataItem->getSortKeyDataItem() );
+			} else {
+				$expElement = SMWExporter::getDataItemHelperExpElement( $dataItem );
+				if ( $expElement === null ) {
+					$expElement = SMWExporter::getDataItemExpElement( $dataItem );
+				}
+			}
+
 			$valueName = SMWTurtleSerializer::getTurtleNameForExpElement( $expElement );
 			if ( $expElement instanceof SMWExpNsResource ) {
 				$result->namespaces[$expElement->getNamespaceId()] = $expElement->getNamespace();
 			}
 			$result->filter = "?$orderByVariable $comparator $valueName";
-		} else {
-			$result = $this->buildTrueCondition( $joinVariable, $orderByProperty );
 		}
 
 		return $result;

@@ -115,8 +115,7 @@ class SMWDIContainer extends SMWDataItem {
 	 *
 	 * @param $semanticData SMWContainerSemanticData
 	 */
-	public function __construct( SMWContainerSemanticData $semanticData, $typeid = '_rec' ) {
-		parent::__construct( $typeid );
+	public function __construct( SMWContainerSemanticData $semanticData ) {
 		$this->m_semanticData = $semanticData;
 		$this->m_semanticData->makeImmutable();
 	}
@@ -151,13 +150,13 @@ class SMWDIContainer extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIContainer
 	 */
-	public static function doUnserialize( $serialization, $typeid = '_rec' ) {
+	public static function doUnserialize( $serialization ) {
 		/// TODO May issue an E_NOTICE when problems occur; catch this
 		$data = unserialize( $serialization );
 		if ( !( $data instanceof SMWContainerSemanticData ) ) {
 			throw SMWDataItemException( "Could not unserialize SMWDIContainer from the given string." );
 		}
-		return new SMWDIContainer( $data, $typeid );
+		return new SMWDIContainer( $data );
 	}
 
 }

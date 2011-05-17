@@ -89,40 +89,16 @@ class SMWRecordValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::setDataItem()
+	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_CONTAINER ) {
 			$this->m_dataitem = $dataItem;
 			return true;
 		} else {
 			return false;
-		}
-	}
-
-	/**
-	 * This function resembles SMWContainerValue::parseDBkeys() but it already unstubs
-	 * the values instead of passing on initialisation strings. This is required since
-	 * the datatype of each entry is not determined by the property here (since we are
-	 * using generic _1, _2, ... properties that can have any type).
-	 */
-	protected function parseDBkeys( $args ) {
-		$this->m_data->clear();
-		$types = $this->getTypeValues();
-		if ( count( $args ) > 0 ) {
-			foreach ( reset( $args ) as $value ) {
-				if ( is_array( $value ) && ( count( $value ) == 2 ) ) {
-					$property = new SMWDIProperty( reset( $value ) );
-					$pnum = intval( substr( reset( $value ), 1 ) ); // try to find the number of this property
-					if ( array_key_exists( $pnum - 1, $types ) ) {
-						$dv = SMWDataValueFactory::newTypeObjectValue( $types[$pnum - 1] );
-						$dv->setDBkeys( end( $value ) );
-						$this->m_data->addPropertyObjectValue( $property, $dv );
-					}
-				}
-			}
 		}
 	}
 
@@ -185,19 +161,19 @@ class SMWRecordValue extends SMWDataValue {
 		$ed = new SMWExpData( SMWExporter::getSpecialNsResource( 'swivt', 'Container' ) );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ), $ed );
 		$count = 0;
-		foreach ( $this->getDVs() as $value ) {
+		foreach ( $this->getDVs() as $dataValue ) {
 			$count++;
-			if ( ( $value === null ) || ( !$value->isValid() ) ) {
+			if ( ( $dataValue === null ) || ( !$dataValue->isValid() ) ) {
 				continue;
 			}
-			if ( ( $value->getTypeID() == '_wpg' ) || ( $value->getTypeID() == '_uri' ) || ( $value->getTypeID() == '_ema' ) ) {
+			if ( ( $dataValue->getTypeID() == '_wpg' ) || ( $dataValue->getTypeID() == '_uri' ) || ( $dataValue->getTypeID() == '_ema' ) ) {
 				$result->addPropertyObjectValue(
 				      SMWExporter::getSpecialNsResource( 'swivt', 'object' . $count ),
-				      $value->getExportData() );
+				      $dataValue->getExportData() );
 			} else {
 				$result->addPropertyObjectValue(
 				      SMWExporter::getSpecialNsResource( 'swivt', 'value' . $count ),
-				      $value->getExportData() );
+				      $dataValue->getExportData() );
 			}
 		}
 		return $result;
@@ -322,7 +298,7 @@ class SMWRecordValue extends SMWDataValue {
 			$propertyvalues = $this->m_dataitem->getSemanticData()->getPropertyValues( $property ); // combining this with next line violates PHP strict standards 
 			$dataItem = reset( $propertyvalues );
 			if ( $dataItem !== false ) {
-				$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem );
+				$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $property );
 				$result .= $this->makeValueOutputText( $type, $dataValue, $linker );
 			} else {
 				$result .= '?';
@@ -343,8 +319,5 @@ class SMWRecordValue extends SMWDataValue {
 		}
 	}
 
-	public function getDBkeys() {
-		return array();// no longer used
-	}
 }
 

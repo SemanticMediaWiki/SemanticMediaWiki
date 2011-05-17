@@ -124,32 +124,16 @@ class SMWPropertyValue extends SMWDataValue {
 		} catch ( SMWDataItemException $e ) { // happens, e.g., when trying to sort queries by property "-"
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_noproperty', $value ) );
-			$this->m_dataitem = new SMWDIProperty( 'ERROR', false, $this->m_typeid ); // just to have something
+			$this->m_dataitem = new SMWDIProperty( 'ERROR', false ); // just to have something
 		}
 	}
 
 	/**
-	 * Extended parsing function to first check whether value is the id of a
-	 * pre-defined property, to resolve property names and aliases, and to set
-	 * internal property id accordingly.
-	 */
-	protected function parseDBkeys( $args ) {
-		try {
-			$dataItem = new SMWDIProperty( $args[0], false, $this->m_typeid );
-		} catch ( SMWDataItemException $e ) {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-			$this->addError( wfMsgForContent( 'smw_parseerror' ) ); // very rare to get an error here, don't bother with detailed reporting
-			$dataItem = new SMWDIProperty( 'ERROR', false, $this->m_typeid ); // just to have something
-		}
-		$this->setDataItem( $dataItem );
-	}
-
-	/**
-	 * @see SMWDataValue::setDataItem()
+	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
 			$this->m_dataitem = $dataItem;
 			$this->mPropTypeValue = null;
@@ -171,14 +155,13 @@ class SMWPropertyValue extends SMWDataValue {
 
 	public function setOutputFormat( $formatstring ) {
 		$this->m_outformat = $formatstring;
-		if ( $this->m_wikipage instanceof SMWDataValue ) { // do not unstub if not needed
+		if ( $this->m_wikipage instanceof SMWDataValue ) {
 			$this->m_wikipage->setOutputFormat( $formatstring );
 		}
 	}
 
 	public function setInverse( $isinverse ) {
-		$this->unstub(); // make sure later unstubbing does not overwrite this
-		return $this->m_dataitem = new SMWDIProperty( $this->m_dataitem->getKey(), ( $isinverse == true ), $this->m_dataitem->getTypeID() );
+		return $this->m_dataitem = new SMWDIProperty( $this->m_dataitem->getKey(), ( $isinverse == true ) );
 	}
 
 	/**
@@ -188,11 +171,10 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return SMWWikiPageValue or null
 	 */
 	public function getWikiPageValue() {
-		$this->unstub();
 		if ( !isset( $this->m_wikipage ) ) {
 			$diWikiPage = $this->m_dataitem->getDiWikiPage();
 			if ( $diWikiPage !== null ) {
-				$this->m_wikipage = SMWDataValueFactory::newDataItemValue( $diWikiPage, $this->m_caption );
+				$this->m_wikipage = SMWDataValueFactory::newDataItemValue( $diWikiPage, null, $this->m_caption );
 				$this->m_wikipage->setOutputFormat( $this->m_outformat );
 				$this->addError( $this->m_wikipage->getErrors() );
 			} else { // should rarely happen ($value is only changed if the input $value really was a label for a predefined prop)
@@ -208,7 +190,6 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @note Every user defined property is necessarily visible.
 	 */
 	public function isVisible() {
-		$this->unstub();
 		return ( $this->m_dataitem->isUserDefined() ) || ( $this->m_dataitem->getLabel() != '' );
 	}
 
@@ -228,26 +209,6 @@ class SMWPropertyValue extends SMWDataValue {
 		return $this->isVisible() ? $this->highlightText( $this->getWikiPageValue()->getLongHTMLText( $linker ) ) : '';
 	}
 
-	/**
-	 * Return internal property id or page DBkey, either of which is sufficient for storing property references.
-	 */
-	public function getDBkeys() {
- 		$this->unstub();
- 		return array( $this->m_dataitem->getKey() );
-	}
-
-	public function getSignature() {
-		return 't';
-	}
-
-	public function getValueIndex() {
-		return 0;
-	}
-
-	public function getLabelIndex() {
-		return 0;
-	}
-
 	public function getWikiValue() {
 		return $this->isVisible() ? ( ( $this->isInverse() ? '-' : '' ) . $this->getWikiPageValue()->getWikiValue() ) : '';
 	}
@@ -257,7 +218,6 @@ class SMWPropertyValue extends SMWDataValue {
 	 * that property. Otherwise return FALSE;
 	 */
 	public function getPropertyID() {
-		$this->unstub();
 		return $this->m_dataitem->isUserDefined() ? false : $this->m_dataitem->getKey();
 	}
 
@@ -285,8 +245,8 @@ class SMWPropertyValue extends SMWDataValue {
 					$result->addError( wfMsgForContent( 'smw_manytypes' ) );
 				}
 			} else { // pre-defined property
-				$result = SMWDataValueFactory::newTypeIDValue( '__typ' );
-				$result->setDBkeys( array( $this->m_dataitem->getPredefinedPropertyTypeID() ) );
+				$propertyTypeId = SMWDIProperty::getPredefinedPropertyTypeId( $this->m_dataitem->getKey() );
+				$result = SMWTypesValue::newFromTypeId( $propertyTypeId );
 			}
 			$this->mPropTypeValue = $result;
 		}
@@ -349,7 +309,6 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @deprecated
 	 */
 	public function isUserDefined() {
-		$this->unstub();
 		return $this->m_dataitem->isUserDefined();
 	}
 
@@ -358,7 +317,6 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @deprecated
 	 */
 	public function isShown() {
-		$this->unstub();
 		return $this->m_dataitem->isShown();
 	}
 
@@ -367,7 +325,6 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @deprecated
 	 */
 	public function isInverse() {
-		$this->unstub();
 		return $this->m_dataitem->isInverse();
 	}
 
@@ -379,7 +336,6 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @deprecated
 	 */
 	public function getDBkey() {
-		$this->unstub();
 		return $this->m_dataitem->getKey();
 	}
 
@@ -388,7 +344,6 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @deprecated
 	 */
 	public function getText() {
-		$this->unstub();
 		return $this->m_dataitem->getLabel();
 	}
 

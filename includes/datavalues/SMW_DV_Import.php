@@ -112,23 +112,12 @@ class SMWImportValue extends SMWDataValue {
 		}
 	}
 
-	protected function parseDBkeys( $args ) {
-		try {
-			$dataItem = new SMWDIString( $args[0] );
-			$this->setDataItem( $dataItem );
-		} catch ( SMWStringLengthException $e ) {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-			$this->addError( wfMsgForContent( 'smw_maxstring', '"' . $args[0] . '"' ) );
-			$this->m_dataitem = new SMWDIString( '' );
-		}
-	}
-
 	/**
-	 * @see SMWDataValue::setDataItem()
+	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_STRING ) {
 			$this->m_dataitem = $dataItem;
 			$parts = explode( ' ', $dataItem->getString(), 3 );
@@ -149,12 +138,10 @@ class SMWImportValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		$this->unstub();
 		return $this->m_caption;
 	}
 
 	public function getShortHTMLText( $linker = null ) {
-		$this->unstub();
 		return htmlspecialchars( $this->m_qname );
 	}
 
@@ -174,40 +161,19 @@ class SMWImportValue extends SMWDataValue {
 		}
 	}
 
-	public function getDBkeys() {
-		$this->unstub();
-		return array( $this->m_dataitem->getString() );
-	}
-
-	public function getSignature() {
-		return 't';
-	}
-
-	public function getValueIndex() {
-		return 0;
-	}
-
-	public function getLabelIndex() {
-		return 0;
-	}
-
 	public function getWikiValue() {
-		$this->unstub();
 		return $this->m_qname;
 	}
 
 	public function getNS() {
-		$this->unstub();
 		return $this->m_uri;
 	}
 
 	public function getNSID() {
-		$this->unstub();
 		return $this->m_namespace;
 	}
 
 	public function getLocalName() {
-		$this->unstub();
 		return $this->m_section;
 	}
 }

@@ -15,7 +15,6 @@
 class SMWPropertyPage extends SMWOrderedListPage {
 
 	private $subproperties;  // list of sub-properties of this property
-	private $mProperty; // property object
 
 	/**
 	 * @see SMWOrderedListPage::initParameters()
@@ -143,7 +142,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		
 		for ( $index = $start; $index < $ac; $index++ ) {
 			$diWikiPage = $this->diWikiPages[$index];
-			$dvWikiPage = SMWDataValueFactory::newDataItemValue( $diWikiPage );
+			$dvWikiPage = SMWDataValueFactory::newDataItemValue( $diWikiPage, $this->mProperty );
 			$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPage );
 			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 			
@@ -171,7 +170,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 				$i++;
 
 				if ( $i < $smwgMaxPropertyValues + 1 ) {
-					$dv = SMWDataValueFactory::newDataItemValue( $di );
+					$dv = SMWDataValueFactory::newDataItemValue( $di, $this->mProperty );
 					$r .= $dv->getLongHTMLText( $this->getSkin() ) . $dv->getInfolinkText( SMW_OUTPUT_HTML, $this->getSkin() );
 				} else {
 					$searchlink = SMWInfolink::newInversePropertySearchLink( '…', $dvWikiPage->getWikiValue(), $this->mTitle->getText() );

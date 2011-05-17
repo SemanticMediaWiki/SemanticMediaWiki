@@ -20,8 +20,7 @@ class SMWDIBoolean extends SMWDataItem {
 	 */
 	protected $m_boolean;
 
-	public function __construct( $boolean, $typeid = '_boo' ) {
-		parent::__construct( $typeid );
+	public function __construct( $boolean ) {
 		$this->m_boolean = ( $boolean == true );
 	}
 
@@ -46,11 +45,11 @@ class SMWDIBoolean extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIBoolean
 	 */
-	public static function doUnserialize( $serialization, $typeid = '_boo' ) {
+	public static function doUnserialize( $serialization ) {
 		if ( $serialization == 't' ) {
-			return new SMWDIBoolean( true, $typeid );
+			return new SMWDIBoolean( true );
 		} elseif  ( $serialization == 'f' ) {
-			return new SMWDIBoolean( true, $typeid );
+			return new SMWDIBoolean( true );
 		} else {
 			throw new SMWDataItemException( "Boolean data item unserialised from illegal value '$serialization'" );
 		}

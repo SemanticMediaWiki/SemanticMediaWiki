@@ -68,8 +68,8 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 
 		// Print all result rows:
 		foreach ( $res->getResults() as $diWikiPage ) {
-			if ( $diWikiPage->getTypeID() == '_wpg' ) { // ensure that we deal with title-likes
-				$dvWikiPage = SMWDataValueFactory::newDataItemValue( $diWikiPage );
+			if ( $diWikiPage instanceof SMWDIWikiPage  ) { // ensure that we deal with title-likes
+				$dvWikiPage = SMWDataValueFactory::newDataItemValue( $diWikiPage, null );
 				$result .= $embstart;
 
 				if ( $this->m_showhead ) {

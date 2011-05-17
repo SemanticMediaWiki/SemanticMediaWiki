@@ -38,8 +38,7 @@ class SMWDIWikiPage extends SMWDataItem {
 	 * would be more work than it is worth, since callers will usually be
 	 * careful and since errors here do not have major consequences.
 	 */
-	public function __construct( $dbkey, $namespace, $interwiki, $typeid = '_wpg' ) {
-		parent::__construct( $typeid );
+	public function __construct( $dbkey, $namespace, $interwiki ) {
 		if ( !is_numeric( $namespace ) ) {
 			throw new SMWDataItemException( "Given namespace '$namespace' is not an integer." );
 		}
@@ -102,23 +101,22 @@ class SMWDIWikiPage extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIWikiPage
 	 */
-	public static function doUnserialize( $serialization, $typeid = '_wpg' ) {
+	public static function doUnserialize( $serialization ) {
 		$parts = explode( '#', $serialization, 3 );
 		if ( count( $parts ) != 3 ) {
 			throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" was not understood." );
 		}
-		return new SMWDIWikiPage( $parts[0], floatval( $parts[1] ), $parts[2], $typeid );
+		return new SMWDIWikiPage( $parts[0], floatval( $parts[1] ), $parts[2] );
 	}
 
 	/**
 	 * Create a data item from a MediaWiki Title.
 	 *
 	 * @param $title Title
-	 * @param $typeid string optional type ID to use
 	 * @return SMWDIWikiPage
 	 */
-	public static function newFromTitle( Title $title, $typeid = '_wpg' ) {
-		return new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki(), $typeid );
+	public static function newFromTitle( Title $title ) {
+		return new SMWDIWikiPage( $title->getDBkey(), $title->getNamespace(), $title->getInterwiki() );
 	}
 
 }

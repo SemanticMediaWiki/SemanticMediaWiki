@@ -35,18 +35,22 @@ class SMWCompatibilityHelpers {
 	 */
 	static public function dataItemFromDBKeys( $typeid, $dbkeys, $diProperty = null ) {
 		switch ( SMWDataValueFactory::getDataItemId( $typeid )  ) {
-			case SMWDataItem::TYPE_ERROR:
+			case SMWDataItem::TYPE_ERROR: case SMWDataItem::TYPE_NOTYPE:
 				break;
 			case SMWDataItem::TYPE_NUMBER:
-				return SMWDINumber::doUnserialize( $dbkeys[0], $typeid );
+				return SMWDINumber::doUnserialize( $dbkeys[0] );
 			case SMWDataItem::TYPE_STRING:
-				return new SMWDIString( $dbkeys[0], $typeid );
+				return new SMWDIString( $dbkeys[0] );
 			case SMWDataItem::TYPE_BLOB:
-				return new SMWDIBlob( $dbkeys[0], $typeid );
+				return new SMWDIBlob( $dbkeys[0] );
 			case SMWDataItem::TYPE_BOOLEAN:
-				return new SMWDIBoolean( ( $dbkeys[0] == '1' ), $typeid );
+				return new SMWDIBoolean( ( $dbkeys[0] == '1' ) );
 			case SMWDataItem::TYPE_URI:
-				return SMWDIUri::doUnserialize( $dbkeys[0], $typeid);
+				if ( $typeid == '__typ' && $dbkeys[0]{0} == '_' ) { // b/c: old data stored as type ids
+					return SMWTypesValue::getTypeUriFromTypeId( $dbkeys[0] );
+				} else {
+					return SMWDIUri::doUnserialize( $dbkeys[0]);
+				}
 			case SMWDataItem::TYPE_TIME:
 				$timedate = explode( 'T', $dbkeys[0], 2 );
 				if ( ( count( $dbkeys ) == 2 ) && ( count( $timedate ) == 2 ) ) {
@@ -65,12 +69,12 @@ class SMWCompatibilityHelpers {
 						if ( $month == '' ) $month = false;
 						if ( $day == '' ) $day = false;
 						$calendarmodel = SMWDITime::CM_GREGORIAN;
-						return new SMWDITime( $calendarmodel, $year, $month, $day, $hours, $minutes, $seconds, $typeid );
+						return new SMWDITime( $calendarmodel, $year, $month, $day, $hours, $minutes, $seconds );
 					}
 				}
 				break;
 			case SMWDataItem::TYPE_GEO:
-				return new SMWDIGeoCoord( array( 'lat' => (float)$dbkeys[0], 'lon' => (float)$dbkeys[1] ), $typeid );
+				return new SMWDIGeoCoord( array( 'lat' => (float)$dbkeys[0], 'lon' => (float)$dbkeys[1] ) );
 			case SMWDataItem::TYPE_CONTAINER:
 				$semanticData = new SMWContainerSemanticData();
 				if ( $typeid == '_rec' ) {
@@ -94,53 +98,44 @@ class SMWCompatibilityHelpers {
 						}
 					}
 				}
-				return new SMWDIContainer( $semanticData, $typeid );
+				return new SMWDIContainer( $semanticData );
 			case SMWDataItem::TYPE_WIKIPAGE:
-				if ( $typeid == '__typ' ) { // DBkeys for types values are special (used to be a SMWSimpleWikiPageValue)
+				if ( $typeid == '__spf' ) {
 					$pagedbkey = str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $dbkeys[0] ) );
-					return new SMWDIWikiPage( $pagedbkey, SMW_NS_TYPE, '', $typeid );
-				} elseif ( $typeid == '__spf' ) {
-					$pagedbkey = str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $dbkeys[0] ) );
-					return new SMWDIWikiPage( $pagedbkey, SF_NS_FORM, '', $typeid );
+					return new SMWDIWikiPage( $pagedbkey, SF_NS_FORM, '' );
 				} elseif ( count( $dbkeys ) >= 3 ) {
-					return new SMWDIWikiPage( $dbkeys[0], floatval( $dbkeys[1] ), $dbkeys[2], $typeid );
+					return new SMWDIWikiPage( $dbkeys[0], floatval( $dbkeys[1] ), $dbkeys[2] );
 				}
 				break;
 			case SMWDataItem::TYPE_CONCEPT:
 				if ( count( $dbkeys ) >= 5 ) {
-					new SMWDIConcept( $dbkeys[0], smwfXMLContentEncode( $dbkeys[1] ), $dbkeys[2], $dbkeys[3], $dbkeys[4], $typeid );
+					new SMWDIConcept( $dbkeys[0], smwfXMLContentEncode( $dbkeys[1] ), $dbkeys[2], $dbkeys[3], $dbkeys[4] );
 				}
 				break;
 			case SMWDataItem::TYPE_PROPERTY:
-				return new SMWDIProperty( $dbkeys[0], false, $typeid );
-			case SMWDataItem::TYPE_NOTYPE: 
-				if ( ( $typeid != '' ) && ( $typeid{0} != '_' ) ) { // linear conversion type
-					return SMWDINumber::doUnserialize( $dbkeys[0], $typeid );
-				}
+				return new SMWDIProperty( $dbkeys[0], false );
 		}
 		throw new SMWDataItemException( 'Failed to create data item from DB keys.' );
 	}
 
 	/**
-	 * Compatibility function for computing the old getDBkeys() array for the new SMW data items.
+	 * Compatibility function for computing the old getDBkeys() array for
+	 * the new SMW data items.
+	 *
+	 * @param $dataItem SMWDataItem
+	 * @return array of mixed
 	 */
 	public static function getDBkeysFromDataItem( SMWDataItem $dataItem ) {
-		switch ( $dataItem->getTypeId() ) {
-			case '_txt': case '_cod': case '_str': case '__sps': case '__tls': case '__imp':
-				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_STRING ) break;
+		switch ( $dataItem->getDIType() ) {
+			case SMWDataItem::TYPE_STRING:
 				return array( $dataItem->getString() );
-			case '_ema': case '_uri': case '_anu': case '_tel': case '__spu':
-				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_URI ) break;
+			case SMWDataItem::TYPE_URI:
 				return array( $dataItem->getSerialization() );
-			case '_wpg': case '_wpp': case '_wpc': case '_wpf': case '__sup':
-			case '__suc': case '__spf': case '__sin': case '__red':
-				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_WIKIPAGE ) break;
-				return array( $dataItem->getDBkey(), $dataItem->getNamespace(), $dataItem->getInterwiki(), $dataItem->getDBkey() );
-			case '_num': case '_tem': case '__lin':
-				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_NUMBER ) break;
+			case SMWDataItem::TYPE_WIKIPAGE:
+				return array( $dataItem->getDBkey(), $dataItem->getNamespace(), $dataItem->getInterwiki(), $dataItem->getSortKey() );
+			case SMWDataItem::TYPE_NUMBER:
 				return array( $dataItem->getSerialization(), floatval( $dataItem->getNumber() ) );
-			case '_dat':
-				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_TIME ) break;
+			case SMWDataItem::TYPE_TIME:
 				$xsdvalue = $dataItem->getYear() . "/" .
 						( ( $dataItem->getPrecision() >= SMWDITime::PREC_YM ) ? $dataItem->getMonth() : '' ) . "/" .
 						( ( $dataItem->getPrecision() >= SMWDITime::PREC_YMD ) ? $dataItem->getDay() : '' ) . "T";
@@ -150,39 +145,87 @@ class SMWCompatibilityHelpers {
 							sprintf( "%02d", $dataItem->getSecond() );
 				}
 				return array( $xsdvalue, $dataItem->getSortKey() );
-			case '_boo':
-				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_BOOLEAN ) break;
+			case SMWDataItem::TYPE_BOOLEAN:
 				return $dataItem->getBoolean() ? array( '1', 1 ) : array( '0', 0 );
-			case '_rec':
-				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_CONTAINER ) break;
+			case SMWDataItem::TYPE_CONTAINER:
 				return array( false );
-			case '__typ':
-				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_WIKIPAGE ) break;
-				return array( SMWDataValueFactory::findTypeID( str_replace( '_', ' ', $dataItem->getDBkey() ) ) );
-			case '__con':
-				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_CONCEPT ) break;
+			case SMWDataItem::TYPE_CONCEPT:
 				return array( $dataItem->getConceptQuery(), $dataItem->getDocumentation(), $dataItem->getQueryFeatures(), $dataItem->getSize(), $dataItem->getDepth() );
-			case '__err':
-				return array( false );
-			case '__pro':
-				if ( $dataItem->getDIType() !== SMWDataItem::TYPE_PROPERTY ) break;
+			case SMWDataItem::TYPE_PROPERTY:
 				return array( $dataItem->getKey() );
-			case '_geo':
+			case SMWDataItem::TYPE_GEO:
 				$coordinateSet = $dataItem->getCoordinateSet();
-
 				return array(
 					$coordinateSet['lat'],
 					$coordinateSet['lon']
 				);
-				break;
 			default:
-				$typeid = $dataItem->getTypeId();
-				if ( ( $typeid != '' ) && ( $typeid{0} != '_' ) && 
-				     ( $dataItem->getDIType() == SMWDataItem::TYPE_NUMBER ) ) { // linear conversion type
-					return array( $dataItem->getSerialization(), floatval( $dataItem->getNumber() ) );
-				}
+				return array( false );
 		}
-		return array( false );
+	}
+
+	/**
+	 * Compatibility function for computing the old getSignature() string
+	 * based on dataitem IDs. To maintain full compatibility, the typeid
+	 * is relevant here, too.
+	 *
+	 * @note Use SMWDataValueFactory::getDataItemId() if only the $typeid
+	 * is known.
+	 *
+	 * @param $dataItemId integer
+	 * @param $typeid string
+	 * @return string
+	 */
+	public static function getSignatureFromDataItemId( $dataItemId, $typeid ) {
+		switch ( $dataItemId ) {
+			case SMWDataItem::TYPE_STRING:
+				return ( ( $typeid == '_txt' ) || ( $typeid == '_cod' ) ) ? 'l' : 't';
+			case SMWDataItem::TYPE_URI: case SMWDataItem::TYPE_PROPERTY:
+				return 't';
+			case SMWDataItem::TYPE_WIKIPAGE:
+				return 'tnwt';
+			case SMWDataItem::TYPE_NUMBER: case SMWDataItem::TYPE_TIME:
+				return 'tf';
+			case SMWDataItem::TYPE_BOOLEAN:
+				return 'tn';
+			case SMWDataItem::TYPE_CONTAINER:
+				return 'c';
+			case SMWDataItem::TYPE_CONCEPT:
+				return 'llnnn';
+			case SMWDataItem::TYPE_GEO:
+				return 'ff';
+			default:
+				return '';
+		}
+	}
+
+	/**
+	 * Compatibility function for computing the old getValueIndex() and
+	 * getLabelIndex() numbers based on dataitem IDs. To maintain full
+	 * compatibility, the typeid is relevant here, too.
+	 *
+	 * @note Use SMWDataValueFactory::getDataItemId() if only the $typeid
+	 * is known.
+	 *
+	 * @param $dataItemId integer
+	 * @param $typeid string
+	 * @param $labelIndex boolean, if true get the label index, else the value index
+	 * @return string
+	 */
+	public static function getIndexFromDataItemId( $dataItemId, $typeid, $labelIndex = false ) {
+		switch ( $dataItemId ) {
+			case SMWDataItem::TYPE_STRING:
+				return ( ( $typeid == '_txt' ) || ( $typeid == '_cod' ) ) ? -1 : 0;
+			case SMWDataItem::TYPE_WIKIPAGE:
+				return 3;
+			case SMWDataItem::TYPE_NUMBER: case SMWDataItem::TYPE_TIME: case SMWDataItem::TYPE_BOOLEAN:
+				return $labelIndex ? 0 : 1;
+			case SMWDataItem::TYPE_URI: case SMWDataItem::TYPE_PROPERTY:
+			case SMWDataItem::TYPE_CONCEPT: case SMWDataItem::TYPE_GEO:
+				return 0;
+			case SMWDataItem::TYPE_CONTAINER: default:
+				return -1;
+		}
 	}
 
 }

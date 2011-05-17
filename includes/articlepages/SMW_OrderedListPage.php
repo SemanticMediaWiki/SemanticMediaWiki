@@ -54,6 +54,13 @@ abstract class SMWOrderedListPage extends Article {
 	protected $skin;
 
 	/**
+	 * Property that the displayed values are for, if any.
+	 *
+	 * @var SMWDIProperty
+	 */
+	protected $mProperty = null;
+
+	/**
 	 * Overwrite view() from Article.php to add additional html to the output.
 	 */
 	public function view() {
@@ -237,7 +244,7 @@ abstract class SMWOrderedListPage extends Article {
 
 			// output all diWikiPages
 			for ( $index = $startChunk ; $index < $endChunk && $index < $end; $index++ ) {
-				$dataValue = SMWDataValueFactory::newDataItemValue( $diWikiPages[$index] );
+				$dataValue = SMWDataValueFactory::newDataItemValue( $diWikiPages[$index], $this->mProperty );
 				// check for change of starting letter or begining of chunk
 				$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPages[$index] );
 				$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
@@ -287,7 +294,7 @@ abstract class SMWOrderedListPage extends Article {
 	protected function shortList( $start, $end, array $diWikiPages ) {
 		global $wgContLang;
 
-		$startDv = SMWDataValueFactory::newDataItemValue( $diWikiPages[$start] );
+		$startDv = SMWDataValueFactory::newDataItemValue( $diWikiPages[$start], $this->mProperty );
 		$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPages[$start] );
 		$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 		$r = '<h3>' . htmlspecialchars( $start_char ) . "</h3>\n" .
@@ -295,7 +302,7 @@ abstract class SMWOrderedListPage extends Article {
 
 		$prev_start_char = $start_char;
 		for ( $index = $start + 1; $index < $end; $index++ ) {
-			$dataValue = SMWDataValueFactory::newDataItemValue( $diWikiPages[$index] );
+			$dataValue = SMWDataValueFactory::newDataItemValue( $diWikiPages[$index], $this->mProperty );
 			$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPages[$index] );
 			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 

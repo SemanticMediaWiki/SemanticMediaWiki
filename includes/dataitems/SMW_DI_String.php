@@ -27,11 +27,11 @@ class SMWDIString extends SMWDIBlob {
 
 	const MAXLENGTH = 255;
 
-	public function __construct( $string, $typeid = '_str' ) {
+	public function __construct( $string ) {
 		if ( strlen( $string ) > SMWDIString::MAXLENGTH ) {
 			throw new SMWStringLengthException( $string );
 		}
-		parent::__construct( $string, $typeid );
+		parent::__construct( $string );
 	}
 
 	public function getDIType() {
@@ -43,8 +43,8 @@ class SMWDIString extends SMWDIBlob {
 	 * ID.
 	 * @return SMWDIString
 	 */
-	public static function doUnserialize( $serialization, $typeid = '_str' ) {
-		return new SMWDIString( $serialization, $typeid );
+	public static function doUnserialize( $serialization ) {
+		return new SMWDIString( $serialization );
 	}
 
 }

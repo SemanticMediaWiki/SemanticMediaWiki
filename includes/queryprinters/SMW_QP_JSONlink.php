@@ -66,20 +66,20 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 					if ( $pr->getMode() != SMWPrintRequest::PRINT_THIS ) {
 						$values = array();
 						$finalvalues = '';
-						while ( ( $value = $field->getNextDataValue() ) !== false ) {
+						while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
 							$finalvalues = '';
-							switch ( $value->getTypeID() ) {
+							switch ( $dataValue->getTypeID() ) {
 								case '_geo':
-									$values[] = "\"" . $value->getWikiValue() . "\"";
+									$values[] = "\"" . $dataValue->getWikiValue() . "\"";
 									break;
 								case '_num':
-									$values[] = "\"" . $value->getValueKey() . "\"";
+									$values[] = "\"" . $dataValue->getValueKey() . "\"";
 									break;
 								case '_dat':
-									$values[] = "\"" . $value->getYear() . "-" . str_pad( $value->getMonth(), 2, '0', STR_PAD_LEFT ) . "-" . str_pad( $value->getDay(), 2, '0', STR_PAD_LEFT ) . " " . $value->getTimeString() . "\"";
+									$values[] = "\"" . $dataValue->getYear() . "-" . str_pad( $dataValue->getMonth(), 2, '0', STR_PAD_LEFT ) . "-" . str_pad( $dataValue->getDay(), 2, '0', STR_PAD_LEFT ) . " " . $dataValue->getTimeString() . "\"";
 									break;
 								default:
-									$values[] = "\"" . $value->getShortText( $outputmode, null ) . "\"";
+									$values[] = "\"" . $dataValue->getShortText( $outputmode, null ) . "\"";
 							}
 
 							if ( sizeof( $values ) > 1 ) {

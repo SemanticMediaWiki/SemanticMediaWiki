@@ -45,18 +45,16 @@ class SMWDIUri extends SMWDataItem {
 	 * @param $hierpart string for the "hierpart"
 	 * @param $query string for the query
 	 * @param $fragment string for the fragment
-	 * @param $typeid string SMW type id
 	 *
 	 * @todo Implement more validation here.
 	 */
-	public function __construct( $scheme, $hierpart, $query, $fragment, $typeid = '_uri' ) {
+	public function __construct( $scheme, $hierpart, $query, $fragment ) {
 		if ( ( $scheme == '' ) || ( preg_match( '/[^a-zA-Z]/u', $scheme ) ) ) {
 			throw new SMWDataItemException( "Illegal URI scheme \"$scheme\"." );
 		}
 		if ( $hierpart == '' ) {
 			throw new SMWDataItemException( "Illegal URI hierpart \"$hierpart\"." );
 		}
-		parent::__construct( $typeid );
 		$this->m_scheme   = $scheme;
 		$this->m_hierpart = $hierpart;
 		$this->m_query    = $query;
@@ -103,7 +101,7 @@ class SMWDIUri extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIUri
 	 */
-	public static function doUnserialize( $serialization, $typeid = '_uri' ) {
+	public static function doUnserialize( $serialization ) {
 		$parts = explode( ':', $serialization, 2 ); // try to split "schema:rest"
 		if ( count( $parts ) <= 1 ) {
 			throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
@@ -117,11 +115,11 @@ class SMWDIUri extends SMWDataItem {
 			$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 		} else {
 			$query = '';
-			$parts = explode( '?', $parts[0], 2 ); // try to split "hier-part#frag"
+			$parts = explode( '#', $parts[0], 2 ); // try to split "hier-part#frag"
 			$hierpart = $parts[0];
 			$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 		}
-		return new SMWDIUri( $scheme, $hierpart, $query, $fragment, $typeid );
+		return new SMWDIUri( $scheme, $hierpart, $query, $fragment );
 	}
 
 }

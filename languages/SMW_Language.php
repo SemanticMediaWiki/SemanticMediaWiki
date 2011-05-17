@@ -62,7 +62,7 @@ abstract class SMWLanguage {
 		'Email'                 => '_ema',
 		'Annotation URI'        => '_anu',
 		'Telephone number'      => '_tel',
-	    'Record'                => '_rec'
+		'Record'                => '_rec'
 	);
 	/// Default English aliases for special property names (typically used in all languages)
 	static protected $enPropertyAliases = array(
@@ -113,8 +113,8 @@ abstract class SMWLanguage {
 	 */
 	function getDatatypeAliases() {
 		return $this->m_useEnDefaultAliases ?
-		       $this->m_DatatypeAliases + SMWLanguage::$enDatatypeAliases:
-			   $this->m_DatatypeAliases;
+		       $this->m_DatatypeAliases + SMWLanguage::$enDatatypeAliases :
+		       $this->m_DatatypeAliases;
 	}
 
 	/**
@@ -129,8 +129,8 @@ abstract class SMWLanguage {
 	 */
 	function getPropertyAliases() {
 		return $this->m_useEnDefaultAliases ?
-		       $this->m_SpecialPropertyAliases + SMWLanguage::$enPropertyAliases:
-			   $this->m_SpecialPropertyAliases;
+		       $this->m_SpecialPropertyAliases + SMWLanguage::$enPropertyAliases :
+		       $this->m_SpecialPropertyAliases;
 	}
 
 	/**
@@ -161,7 +161,7 @@ abstract class SMWLanguage {
 	 * Return the name of the month with the given number.
 	 */
 	function getMonthLabel( $number ) {
-	  return ( ( $number >= 1 ) && ( $number <= 12 ) ) ? $this->m_months[(int)( $number - 1 )]:'';
+		return ( ( $number >= 1 ) && ( $number <= 12 ) ) ? $this->m_months[(int)( $number - 1 )] : '';
 	}
 
 }

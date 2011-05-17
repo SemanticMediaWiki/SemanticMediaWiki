@@ -70,9 +70,8 @@ class SMWDIProperty extends SMWDataItem {
 	 *
 	 * @param $key string key for the property (internal SMW key or wikipage DB key)
 	 * @param $inverse boolean states if the inverse of the property is constructed
-	 * @param $typeid string SMW type id
 	 */
-	public function __construct( $key, $inverse = false, $typeid = '__pro' ) {
+	public function __construct( $key, $inverse = false ) {
 		if ( ( $key == '' ) || ( $key{0} == '-' ) ) {
 			throw new SMWDataItemException( "Illegal property key \"$key\"." );
 		}
@@ -82,7 +81,6 @@ class SMWDIProperty extends SMWDataItem {
 				throw new SMWDataItemException( "There is no predefined property with \"$key\"." );
 			}
 		}
-		parent::__construct( $typeid );
 		$this->m_key     = $key;
 		$this->m_inverse = ( $inverse == true );
 	}
@@ -174,21 +172,6 @@ class SMWDIProperty extends SMWDataItem {
 	}
 
 	/**
-	 * Get the type ID of a predefined property, or '' if the property
-	 * is not predefined.
-	 * The function is guaranteed to return a type ID if isUserDefined()
-	 * returns false.
-	 * @return string type ID
-	 */
-	public function getPredefinedPropertyTypeID() {
-		if ( array_key_exists( $this->m_key, SMWDIProperty::$m_prop_types ) ) {
-			return SMWDIProperty::$m_prop_types[$this->m_key][0];
-		} else {
-			return '';
-		}
-	}
-
-	/**
 	 * Find the property's type ID, either by looking up its predefined ID
 	 * (if any) or by retrieving the relevant information from the store.
 	 * If no type is stored for a user defined property, the global default
@@ -203,9 +186,9 @@ class SMWDIProperty extends SMWDataItem {
 				$diWikiPage = new SMWDIWikiPage( $this->getKey(), SMW_NS_PROPERTY, '' );
 				$typearray = smwfGetStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_TYPE' ) );
 				if ( count( $typearray ) >= 1 ) { // some types given, pick one (hopefully unique)
-					$typeString = reset( $typearray );
-					if ( $typeString instanceOf SMWDIWikiPage ) {
-						$this->m_proptypeid = SMWDataValueFactory::findTypeID( str_replace( '_', ' ', $typeString->getDBKey() ) );
+					$typeDataItem = reset( $typearray );
+					if ( $typeDataItem instanceof SMWDIUri ) {
+						$this->m_proptypeid = $typeDataItem->getFragment();
 					} else {
 						$this->m_proptypeid = '__err';
 					}
@@ -213,7 +196,7 @@ class SMWDIProperty extends SMWDataItem {
 					$this->m_proptypeid = $smwgPDefaultType;
 				}
 			} else { // pre-defined property
-				$this->m_proptypeid = $this->getPredefinedPropertyTypeID();
+				$this->m_proptypeid = self::getPredefinedPropertyTypeId( $this->m_key );
 			}
 		}
 		return $this->m_proptypeid;
@@ -229,13 +212,13 @@ class SMWDIProperty extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIProperty
 	 */
-	public static function doUnserialize( $serialization, $typeid = '__pro' ) {
+	public static function doUnserialize( $serialization ) {
 		$inverse = false;
 		if ( $serialization{0} == '-' ) {
 			$serialization = substr( $serialization, 1 );
 			$inverse = true;
 		}
-		return new SMWDIProperty( $serialization, $inverse, $typeid );
+		return new SMWDIProperty( $serialization, $inverse );
 	}
 
 	/**
@@ -250,15 +233,14 @@ class SMWDIProperty extends SMWDataItem {
 	 *
 	 * @param $label string label for the property
 	 * @param $inverse boolean states if the inverse of the property is constructed
-	 * @param $typeid string SMW type id
 	 * @return SMWDIProperty object
 	 */
-	public static function newFromUserLabel( $label, $inverse = false, $typeid = '__pro' ) {
+	public static function newFromUserLabel( $label, $inverse = false ) {
 		$id = SMWDIProperty::findPropertyID( $label );
 		if ( $id === false ) {
-			return new SMWDIProperty( str_replace( ' ', '_', $label ), $inverse, $typeid );
+			return new SMWDIProperty( str_replace( ' ', '_', $label ), $inverse );
 		} else {
-			return new SMWDIProperty( $id, $inverse, $typeid );
+			return new SMWDIProperty( $id, $inverse );
 		}
 	}
 
@@ -282,6 +264,23 @@ class SMWDIProperty extends SMWDataItem {
 			return SMWDIProperty::$m_prop_aliases[$label];
 		} else {
 			return false;
+		}
+	}
+
+	/**
+	 * Get the type ID of a predefined property, or '' if the property
+	 * is not predefined.
+	 * The function is guaranteed to return a type ID for keys of
+	 * properties where isUserDefined() returns false.
+	 *
+	 * @param $key string key of the property
+	 * @return string type ID
+	 */
+	public static function getPredefinedPropertyTypeId( $key ) {
+		if ( array_key_exists( $key, SMWDIProperty::$m_prop_types ) ) {
+			return SMWDIProperty::$m_prop_types[$key][0];
+		} else {
+			return '';
 		}
 	}
 

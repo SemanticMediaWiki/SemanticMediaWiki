@@ -47,17 +47,12 @@ class SMWBoolValue extends SMWDataValue {
 		$this->m_dataitem = new SMWDIBoolean( $boolvalue, $this->m_typeid );
 	}
 
-	protected function parseDBkeys( $args ) {
-		$this->parseUserValue( $args[0] );
-		$this->m_caption = $this->getStandardCaption( true ); // use default for this language
-	}
-
 	/**
-	 * @see SMWDataValue::setDataItem()
+	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_BOOLEAN ) {
 			$this->m_dataitem = $dataItem;
 			$this->m_caption = $this->getStandardCaption( true ); // use default for this language
@@ -91,12 +86,10 @@ class SMWBoolValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		$this->unstub();
 		return $this->m_caption;
 	}
 
 	public function getShortHTMLText( $linker = null ) {
-		$this->unstub();
 		return $this->m_caption;
 	}
 
@@ -108,30 +101,11 @@ class SMWBoolValue extends SMWDataValue {
 		return $this->isValid() ? $this->getStandardCaption( true ) : $this->getErrorText();
 	}
 
-	public function getDBkeys() {
-		$this->unstub();
-		return $this->m_dataitem->getBoolean() ? array( '1', 1 ) : array( '0', 0 );
-	}
-
-	public function getSignature() {
-		return 'tn';
-	}
-
-	public function getValueIndex() {
-		return 1;
-	}
-
-	public function getLabelIndex() {
-		return 0;
-	}
-
 	public function getWikiValue() {
-		$this->unstub();
 		return $this->getStandardCaption( false );
 	}
 
 	public function getBoolean() {
-		$this->unstub();
 		return $this->m_dataitem->getBoolean();
 	}
 

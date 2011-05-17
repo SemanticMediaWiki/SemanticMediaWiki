@@ -16,107 +16,130 @@
  * @author Markus Krötzsch
  * @ingroup SMWDataValues
  */
-class SMWTypesValue extends SMWWikiPageValue {
+class SMWTypesValue extends SMWDataValue {
+	protected $m_isAlias; // record whether this is an alias to another type, used to avoid duplicates when listing page types
+	protected $m_realLabel;
+	protected $m_givenLabel;
+	protected $m_typeId;
 
-	private $m_isalias; // record whether this is an alias to another type, used to avoid duplicates when listing page types
-	protected $m_reallabel;
-
-	protected function parseUserValue( $value ) {
-		parent::parseUserValue( $value );
-		$this->m_reallabel = SMWDataValueFactory::findTypeLabel( SMWDataValueFactory::findTypeID( $this->m_textform ) );
-		$this->m_isalias = ( $this->m_reallabel === $this->m_textform ) ? false : true;
+	public static function newFromTypeId( $typeId ) {
+		$result = new SMWTypesValue( '__typ' );
+		try {
+			$dataItem = self::getTypeUriFromTypeId( $typeId );
+		} catch ( SMWDataItemException $e ) {
+			$dataItem = self::getTypeUriFromTypeId( 'notype' );
+		}
+		$result->setDataItem( $dataItem );
+		return $result;
 	}
 
-	protected function parseDBkeys( $args ) {
-		$pagedbkey = str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $args[0] ) );
-		parent::parseDBkeys( array( $pagedbkey, $this->m_fixNamespace, '', $this->m_typeid ) );
-		$this->m_reallabel = $this->m_textform;
-		$this->m_isalias = false;
+	public static function getTypeUriFromTypeId( $typeId ) {
+		return new SMWDIUri( 'http', '//semantic-mediawiki.org/swivt/1.0', '', $typeId );
+	}
+
+	protected function parseUserValue( $value ) {
+		global $wgContLang;
+
+		if ( $this->m_caption === false ) {
+			$this->m_caption = $value;
+		}
+
+		$valueParts = explode( ':', $value, 2 );
+		if ( count( $valueParts ) > 1 ) {
+			$namespace = smwfNormalTitleText( $valueParts[0] );
+			$value = $valueParts[1];
+			$typeNamespace = $wgContLang->getNsText( SMW_NS_TYPE );
+			if ( $namespace != $typeNamespace ) {
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+				$this->addError( wfMsgForContent( 'smw_wrong_namespace', $typeNamespace ) );
+			}
+		}
+
+		$this->m_givenLabel = smwfNormalTitleText( $value );
+		$this->m_typeId = SMWDataValueFactory::findTypeID( $this->m_givenLabel );
+		if ( $this->m_typeId == '' ) {
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+			$this->addError( wfMsgForContent( 'smw_unknowntype', $this->m_givenLabel ) );
+			$this->m_realLabel = $this->m_givenLabel;
+		} else {
+			$this->m_realLabel = SMWDataValueFactory::findTypeLabel( $this->m_typeId );
+		}
+		$this->m_isAlias = ( $this->m_realLabel === $this->m_givenLabel ) ? false : true;
+
+		try {
+			$this->m_dataitem = self::getTypeUriFromTypeId( $this->m_typeId );
+		} catch ( SMWDataItemException $e ) {
+			$this->m_dataitem = self::getTypeUriFromTypeId( 'notype' );
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+			$this->addError( wfMsgForContent( 'smw_parseerror' ) );
+		}
 	}
 
 	/**
-	 * @see SMWDataValue::setDataItem()
+	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
-		if ( parent::setDataItem( $dataItem ) ) {
-			$this->m_reallabel = $this->m_textform;
-			$this->m_isalias = false;
+	protected function loadDataItem( SMWDataItem $dataItem ) {
+		if ( ( $dataItem instanceof SMWDIUri ) && ( $dataItem->getScheme() == 'http' ) && 
+		     ( $dataItem->getHierpart() == '//semantic-mediawiki.org/swivt/1.0' ) && 
+		     ( $dataItem->getQuery() == '' ) ) {
+			$this->m_isAlias = false;
+			$this->m_typeId = $dataItem->getFragment();
+			$this->m_realLabel = SMWDataValueFactory::findTypeLabel( $this->m_typeId );
+			$this->m_caption = $this->m_givenLabel = $this->m_realLabel;
+			$this->m_dataitem = $dataItem;
 			return true;
 		} else {
 			return false;
 		}
 	}
 
+	public function getShortWikiText( $linked = null ) {
+		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
+			return $this->m_caption;
+		} else { // TODO provide a Special page with the functionality of former Type pages, and link to it here
+			return $this->m_caption;
+		}
+	}
+
+	public function getShortHTMLText( $linker = null ) {
+		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
+			return htmlspecialchars( $this->m_caption );
+		} else { // TODO provide a Special page with the functionality of former Type pages, and link to it here
+			return htmlspecialchars( $this->m_caption );
+		}
+	}
+
 	public function getLongWikiText( $linked = null ) {
-		$this->unstub();
 		if ( ( $linked === null ) || ( $linked === false ) ) {
-			return $this->m_reallabel;
-		} else {
-			global $wgContLang;
-			$typenamespace = $wgContLang->getNsText( SMW_NS_TYPE );
-			$id = SMWDataValueFactory::findTypeID( $this->m_reallabel );
-			if ( $id { 0 } == '_' ) { // builtin
-				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-				SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
-				return '<span class="smwttinline"><span class="smwbuiltin">[[' . $typenamespace . ':' . $this->m_reallabel . '|' . $this->m_reallabel . ']]</span><span class="smwttcontent">' . wfMsgForContent( 'smw_isknowntype' ) . '</span></span>';
-			} else {
-				return '[[' . $typenamespace . ':' . $this->m_reallabel . '|' . $this->m_reallabel . ']]';
-			}
+			return $this->m_realLabel;
+		} else { // TODO provide a Special page with the functionality of former Type pages, and link to it here
+			return $this->m_realLabel;
 		}
 	}
 
 	public function getLongHTMLText( $linker = null ) {
-		$this->unstub();
 		if ( ( $linker === null ) || ( $linker === false ) ) {
-			return $this->m_reallabel;
-		} else {
-			$title = $this->m_isalias ? Title::newFromText( $this->m_reallabel, SMW_NS_TYPE ) : $this->getTitle();
-			$id = SMWDataValueFactory::findTypeID( $this->m_reallabel );
-			if ( $id { 0 } == '_' ) { // builtin
-				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-				SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
-				return '<span class="smwttinline"><span class="smwbuiltin">' .
-				$linker->makeLinkObj( $title, htmlspecialchars( $this->m_reallabel ) ) . '</span><span class="smwttcontent">' .
-				wfMsgForContent( 'smw_isknowntype' ) . '</span></span>';
-			} else {
-				return $linker->makeLinkObj( $title, htmlspecialchars( $this->m_reallabel ) );
-			}
+			return htmlspecialchars( $this->m_realLabel );
+		} else { // TODO provide a Special page with the functionality of former Type pages, and link to it here
+			return htmlspecialchars( $this->m_realLabel );
 		}
 	}
 
-	public function getDBkeys() {
-		return ( $this->isValid() ) ? array( $this->getDBkey() ):array( false );
-	}
-
-	public function getSignature() {
-		return 't';
-	}
-
-	public function getValueIndex() {
-		return 0;
-	}
-
-	public function getLabelIndex() {
-		return 0;
-	}
-
 	public function getWikiValue() {
-		$this->unstub();
-		return $this->m_reallabel;
+		return $this->m_realLabel;
 	}
 
 	public function getHash() {
-		$this->unstub();
-		return $this->m_reallabel;
+		return $this->m_realLabel;
 	}
 
 	/**
 	 * This class uses type ids as DB keys.
 	 */
 	public function getDBkey() {
-		return ( $this->isValid() ) ? SMWDataValueFactory::findTypeID( $this->m_reallabel ) : '';
+		return ( $this->isValid() ) ? SMWDataValueFactory::findTypeID( $this->m_realLabel ) : '';
 	}
 
 	/**
@@ -133,8 +156,7 @@ class SMWTypesValue extends SMWWikiPageValue {
 	 * explain entries in Special:Types that are found since they have pages.
 	 */
 	public function isAlias() {
-		$this->unstub();
-		return $this->m_isalias;
+		return $this->m_isAlias;
 	}
 
 }

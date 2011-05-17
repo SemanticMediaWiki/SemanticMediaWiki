@@ -31,21 +31,12 @@ class SMWErrorValue extends SMWDataValue {
 		$this->addError( wfMsgForContent( 'smw_parseerror' ) );
 	}
 
-	protected function parseDBkeys( $args ) {
-		$this->setUserValue( strval( $args[0] ) ); // compatible syntax
-		// Note that errors are never a proper result of reading data from the
-		// store, so it is quite unlikely that the data we get here fits this
-		// datatype. Normally, it will not be displayed either since this value
-		// is not valid by default. So keeping the DB key here is rather
-		// irrelevant.
-	}
-
 	/**
-	 * @see SMWDataValue::setDataItem()
+	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_ERROR ) {
 			$this->addError( $dataItem->getErrors() );
 			$this->m_caption = $this->getErrorText();
@@ -56,7 +47,6 @@ class SMWErrorValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		$this->unstub();
 		return $this->m_caption;
 	}
 
@@ -65,17 +55,11 @@ class SMWErrorValue extends SMWDataValue {
 	}
 
 	public function getLongWikiText( $linked = null ) {
-		$this->unstub();
 		return $this->getErrorText();
 	}
 
 	public function getLongHTMLText( $linker = null ) {
-		$this->unstub();
 		return $this->getErrorText();
-	}
-
-	public function getDBkeys() {
-		return array( $this->m_dataitem->getString() );
 	}
 
 	public function getWikiValue() {

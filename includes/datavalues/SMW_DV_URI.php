@@ -93,7 +93,7 @@ class SMWURIValue extends SMWDataValue {
 					$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 				} else {
 					$query = '';
-					$parts = explode( '?', $parts[0], 2 ); // try to split "hier-part#frag"
+					$parts = explode( '#', $parts[0], 2 ); // try to split "hier-part#frag"
 					$hierpart = $parts[0];
 					$fragment = ( count( $parts ) == 2 ) ? $parts[1] : '';
 				}
@@ -158,23 +158,12 @@ class SMWURIValue extends SMWDataValue {
 		return (bool) preg_match( $tel_uri_regex, $s );
 	}
 
-	protected function parseDBkeys( $args ) {
-		try {
-			$dataItem = SMWDIUri::doUnserialize( $args[0], $this->m_typeid);
-			$this->setDataItem( $dataItem );
-		} catch ( SMWDataItemException $e ) {
-			$this->addError( wfMsgForContent( 'smw_baduri', $this->m_wikitext ) );
-			$this->m_dataitem = new SMWDIUri( 'http', '//example.com', '', '', $this->m_typeid ); // define data item to have some value
-			return;
-		}
-	}
-
 	/**
-	 * @see SMWDataValue::setDataItem()
+	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_URI ) {
 			$this->m_dataitem = $dataItem;
 			if ( $this->m_mode == SMW_URI_MODE_EMAIL ) {
@@ -192,7 +181,6 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		$this->unstub();
 		$url = $this->getURL();
 		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $url == '' ) || ( $this->m_caption == '' ) ) {
 			return $this->m_caption;
@@ -202,7 +190,6 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	public function getShortHTMLText( $linker = null ) {
-		$this->unstub();
 		$url = $this->getURL();
 		if ( ( $linker === null ) || ( !$this->isValid() ) || ( $this->m_outformat == '-' ) || ( $url == '' ) || ( $this->m_caption == '' ) ) {
 			return $this->m_caption;
@@ -235,35 +222,15 @@ class SMWURIValue extends SMWDataValue {
 		}
 	}
 
-	public function getDBkeys() {
-		$this->unstub();
-		return array( $this->m_dataitem->getSerialization() );
-	}
-
-	public function getSignature() {
-		return 't';
-	}
-
-	public function getValueIndex() {
-		return 0;
-	}
-
-	public function getLabelIndex() {
-		return 0;
-	}
-
 	public function getWikiValue() {
-		$this->unstub();
 		return $this->m_wikitext;
 	}
 
 	public function getURI() {
-		$this->unstub();
 		return $this->m_dataitem->getURI();
 	}
 
 	protected function getServiceLinkParams() {
-		$this->unstub();
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded version of URI/URL value (includes mailto: for emails)

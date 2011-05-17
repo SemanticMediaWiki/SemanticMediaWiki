@@ -21,8 +21,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * @param $coords array Array with lat and long keys pointing to float values.
 	 * @param $typeid string
 	 */
-	public function __construct( array $coords, $typeid = '_geo' ) {
-		parent::__construct( $typeid );
+	public function __construct( array $coords ) {
 		$this->coordinateSet = $coords;
 	}
 
@@ -69,14 +68,14 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * validation here (because this would require less efficient parsing).
 	 * @return SMWDIGeoCoord
 	 */
-	public static function doUnserialize( $serialization, $typeid = '_geo' ) {
+	public static function doUnserialize( $serialization ) {
 		$parts = explode( ',', $serialization );
 
 		if ( count( $parts ) != 2 ) {
 			throw new SMWDataItemException( 'Unserialization of coordinates failed' );
 		}
 
-		return new self( array( 'lat' => (float)$parts[0], 'lon' => (float)$parts[1], ), $typeid );
+		return new self( array( 'lat' => (float)$parts[0], 'lon' => (float)$parts[1], ) );
 	}
 
 }

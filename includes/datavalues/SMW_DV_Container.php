@@ -1,5 +1,6 @@
 <?php
 /**
+ * @deprecated This file is obsolete and will soon vanish.
  * @file
  * @ingroup SMWDataValues
  */
@@ -47,18 +48,6 @@ abstract class SMWContainerValue extends SMWDataValue {
 			}
 		}
 		return array( $data );
-	}
-
-	public function getSignature() {
-		return 'c';
-	}
-
-	public function getValueIndex() {
-		return -1;
-	}
-
-	public function getLabelIndex() {
-		return -1;
 	}
 
 	public function getHash() {

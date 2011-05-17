@@ -1,5 +1,6 @@
 <?php
 /**
+ * @deprecated This obsolete file will soon vanish.
  * @file
  * @ingroup SMWDataValues
  */
@@ -20,34 +21,5 @@
  * @ingroup SMWDataValues
  */
 class SMWSimpleWikiPageValue extends SMWWikiPageValue {
-
-	protected function parseDBkeys( $args ) {
-		$this->m_dbkeyform = $args[0];
-		$this->m_namespace = $this->m_fixNamespace;
-		$this->m_interwiki = '';
-		$this->m_sortkey   = $this->m_dbkeyform;
-		$this->m_textform = str_replace( '_', ' ', $this->m_dbkeyform );
-		$this->m_id = false;
-		$this->m_title = null;
-		$this->m_prefixedtext = false;
-		$this->m_caption = false;
-	}
-
-	public function getDBkeys() {
-		$this->unstub();
-		return array( $this->m_dbkeyform );
-	}
-
-	public function getSignature() {
-		return 't';
-	}
-
-	public function getValueIndex() {
-		return 1;
-	}
-
-	public function getLabelIndex() {
-		return 1;
-	}
 
 }

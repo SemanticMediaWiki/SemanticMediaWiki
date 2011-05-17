@@ -30,16 +30,6 @@ class SMWTypeListValue extends SMWDataValue {
 		$this->setDataItemFromTypeValues();
 	}
 
-	protected function parseDBkeys( $args ) {
-		$this->m_typevalues = array();
-		$ids = explode( ';', $args[0] );
-		foreach ( $ids as $id ) {
-			$this->m_typevalues[] = SMWDataValueFactory::newTypeIDValue( '__typ', SMWDataValueFactory::findTypeLabel( $id ) );
-		}
-		$this->m_caption = false;
-		$this->setDataItemFromTypeValues();
-	}
-
 	/**
 	 * @see SMWDataValue::setDataItem()
 	 * @param $dataitem SMWDataItem
@@ -83,22 +73,6 @@ class SMWTypeListValue extends SMWDataValue {
 		}
 	}
 
-	public function getDBkeys() {
-		return array( $this->m_dataitem->getString() );
-	}
-
-	public function getSignature() {
-		return 't';
-	}
-
-	public function getValueIndex() {
-		return 0;
-	}
-
-	public function getLabelIndex() {
-		return 0;
-	}
-
 	public function getShortWikiText( $linked = null ) {
 		return  ( $this->m_caption !== false ) ?  $this->m_caption : $this->makeOutputText( 0, $linked );
 	}
@@ -120,7 +94,6 @@ class SMWTypeListValue extends SMWDataValue {
 	}
 
 	public function getTypeValues() {
-		$this->unstub();
 		return $this->m_typevalues;
 	}
 

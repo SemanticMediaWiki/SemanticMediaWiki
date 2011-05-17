@@ -96,9 +96,9 @@ class SMWPageProperty extends SpecialPage {
 				foreach ( $results as $di ) {
 					$count--;
 					if ( $count < 1 ) continue;
-					$dv = SMWDataValueFactory::newDataItemValue( $di );
+					$dv = SMWDataValueFactory::newDataItemValue( $di, $property->getDataItem() );
 					$html .= '<li>' . $dv->getLongHTMLText( $skin ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
-					if ( $di->getTypeID() == '_wpg' ) {
+					if ( $property->getDataItem()->findPropertyTypeID() == '_wpg' ) {
 						$browselink = SMWInfolink::newBrowsingLink( '+', $dv->getLongWikiText() );
 						$html .= ' &#160;' . $browselink->getHTML( $skin );
 					}

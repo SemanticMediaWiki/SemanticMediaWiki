@@ -236,14 +236,15 @@ class SMWExporter {
 		}
 
 		if ( $modifier == '' ) {
-			$importDis = smwfGetStore()->getPropertyValues( $diWikiPage, new SMWDIProperty( '_IMPO' ) );
+			$importProperty = new SMWDIProperty( '_IMPO' );
+			$importDis = smwfGetStore()->getPropertyValues( $diWikiPage, $importProperty );
 			$importURI = ( count( $importDis ) > 0 );
 		} else {
 			$importURI = false;
 		}
 
 		if ( $importURI ) {
-			$importValue = SMWDataValueFactory::newDataItemValue( current( $importDis ) );
+			$importValue = SMWDataValueFactory::newDataItemValue( current( $importDis ), $importProperty );
 			$namespace = $importValue->getNS();
 			$namespaceId = $importValue->getNSID();
 			$localName = $importValue->getLocalName();
@@ -576,6 +577,11 @@ class SMWExporter {
 	 *
 	 * For dataitems that do not have such a simplification, the method
 	 * returns null.
+	 * 
+	 * @note If a helper element is used, then it must be the same as
+	 * getDataItemHelperExpElement( $dataItem->getSortKeyDataItem() ).
+	 * Query conditions like ">" use sortkeys for values, and helper
+	 * elements are always preferred in query answering.
 	 *
 	 * @param $dataItem SMWDataItem
 	 * @return SMWExpElement or null

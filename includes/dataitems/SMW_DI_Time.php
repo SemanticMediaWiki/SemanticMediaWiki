@@ -98,19 +98,17 @@ class SMWDITime extends SMWDataItem {
 	 * @param $hour mixed integer number or false
 	 * @param $minute mixed integer number or false
 	 * @param $second mixed integer number or false
-	 * @param $typeid string SMW type id
 	 *
 	 * @todo Implement more validation here.
 	 */
 	public function __construct( $calendarmodel, $year, $month = false, $day = false,
-	                             $hour = false, $minute = false, $second = false, $typeid = '_dat' ) {
+	                             $hour = false, $minute = false, $second = false ) {
 		if ( ( $calendarmodel != SMWDITime::CM_GREGORIAN ) && ( $calendarmodel != SMWDITime::CM_JULIAN ) ) {
 			throw new SMWDataItemException( "Unsupported calendar model constant \"$calendarmodel\"." );
 		}
 		if ( $year == 0 ) {
 			throw new SMWDataItemException( "There is no year 0 in Gregorian and Julian calendars." );
 		}
-		parent::__construct( $typeid );
 		$this->m_model   = $calendarmodel;
 		$this->m_year    = intval( $year );
 		$this->m_month   = $month != false ? intval( $month ) : 1;
@@ -188,7 +186,7 @@ class SMWDITime extends SMWDataItem {
 		if ( $calendarmodel == $this->m_model ) {
 			return $this;
 		} else {
-			return SMWDITime::newFromJD( $this->getJD(), $calendarmodel, $this->m_precision, $this->m_typeid );
+			return SMWDITime::newFromJD( $this->getJD(), $calendarmodel, $this->m_precision );
 		}
 	}
 
@@ -234,7 +232,7 @@ class SMWDITime extends SMWDataItem {
 	 * ID.
 	 * @return SMWDITime
 	 */
-	public static function doUnserialize( $serialization, $typeid = '_dat' ) {
+	public static function doUnserialize( $serialization ) {
 		$parts = explode( '/', $serialization, 7 );
 		$values = array();
 		for ( $i = 0; $i < 7; $i += 1 ) {
@@ -251,7 +249,7 @@ class SMWDITime extends SMWDataItem {
 		if ( count( $parts ) <= 1 ) {
 			throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
 		}
-		return new SMWDITime( $values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6], $typeid );
+		return new SMWDITime( $values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6] );
 	}
 
 	/**
@@ -260,10 +258,9 @@ class SMWDITime extends SMWDataItem {
 	 * @param $jdvalue double Julian Day number
 	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
 	 * @param $precision integer one of SMWDITime::PREC_Y, SMWDITime::PREC_YM, SMWDITime::PREC_YMD, SMWDITime::PREC_YMDT
-	 * @param $typeid string
 	 * @return SMWDITime object
 	 */
-	public static function newFromJD( $jdvalue, $calendarmodel, $precision, $typeid ) {
+	public static function newFromJD( $jdvalue, $calendarmodel, $precision ) {
 		list( $year, $month, $day ) = SMWDITime::JD2Date( $jdvalue, $calendarmodel );
 		if ( $precision <= SMWDITime::PREC_YM ) {
 			$day = false;
@@ -276,7 +273,7 @@ class SMWDITime extends SMWDataItem {
 		} else {
 			$hour = $minute = $second = false;
 		}
-		return new SMWDITime( $calendarmodel, $year, $month, $day, $hour, $minute, $second, $typeid );
+		return new SMWDITime( $calendarmodel, $year, $month, $day, $hour, $minute, $second );
 	}
 
 	/**

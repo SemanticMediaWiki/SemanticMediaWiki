@@ -19,17 +19,12 @@ class SMWConceptValue extends SMWDataValue {
 		throw new Exception( 'Concepts cannot be initialised from user-provided strings. This should not happen.' );
 	}
 
-	protected function parseDBkeys( $args ) {
-		$this->m_caption = $args[0]; // is this useful?
-		$this->m_dataitem = new SMWDIConcept( $args[0], smwfXMLContentEncode( $args[1] ), $args[2], $args[3], $args[4], $this->m_typeid );
-	}
-
 	/**
-	 * @see SMWDataValue::setDataItem()
+	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_CONCEPT ) {
 			$this->m_dataitem = $dataItem;
 			$this->m_caption = $dataItem->getConceptQuery(); // probably useless
@@ -44,7 +39,6 @@ class SMWConceptValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		$this->unstub();
 		return $this->m_caption;
 	}
 
@@ -68,25 +62,7 @@ class SMWConceptValue extends SMWDataValue {
 		}
 	}
 
-	public function getDBkeys() {
-		$this->unstub();
-		return array( $this->m_dataitem->getConceptQuery(), $this->m_dataitem->getDocumentation(), $this->m_dataitem->getQueryFeatures(), $this->m_dataitem->getSize(), $this->m_dataitem->getDepth() );
-	}
-
-	public function getSignature() {
-		return 'llnnn';
-	}
-
-	public function getValueIndex() {
-		return 0;
-	}
-
-	public function getLabelIndex() {
-		return 0;
-	}
-
 	public function getWikiValue() {
-		$this->unstub();
 		/// This should not be used for anything. This class does not support wiki values.
 		return str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $this->m_dataitem->getConceptQuery() );
 	}
@@ -184,37 +160,27 @@ class SMWConceptValue extends SMWDataValue {
 
 	/// Return the concept's defining text (in SMW query syntax)
 	public function getConceptText() {
-		$this->unstub();
 		return $this->m_dataitem->getConceptQuery();
 	}
 
 	/// Return the optional concept documentation.
 	public function getDocu() {
-		$this->unstub();
 		return $this->m_dataitem->getDocumentation();
 	}
 
 	/// Return the concept's size (a metric used to estimate computation complexity).
 	public function getSize() {
-		$this->unstub();
 		return $this->m_dataitem->getSize();
 	}
 
 	/// Return the concept's depth (a metric used to estimate computation complexity).
 	public function getDepth() {
-		$this->unstub();
 		return $this->m_dataitem->getDepth();
 	}
 
 	/// Return the concept's query feature bit field (a metric used to estimate computation complexity).
 	public function getQueryFeatures() {
-		$this->unstub();
 		return $this->m_dataitem->getQueryFeatures();
-	}
-
-	/// @deprecated Use setDBkeys(). This method will vanish before SMW 1.6
-	public function setValues( $concept, $docu, $queryfeatures, $size, $depth ) {
-		$this->setDBkeys( array( $concept, $docu, $queryfeatures, $size, $depth ) );
 	}
 
 }

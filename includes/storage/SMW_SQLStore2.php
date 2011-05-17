@@ -45,7 +45,7 @@ class SMWSQLStore2 extends SMWStore {
 	/// Array for keeping property table table data, indexed by table id.
 	/// Access this only by calling getPropertyTables().
 	protected static $prop_tables = array();
-	/// Array to cache "propkey => propid" associations. Built only when needed.
+	/// Array to cache "propkey => table id" associations for fixed property tables. Built only when needed.
 	protected static $fixed_prop_tables = null;
 
 	/// Use pre-defined ids for Very Important Properties, avoiding frequent ID lookups for those
@@ -71,76 +71,42 @@ class SMWSQLStore2 extends SMWStore {
 		'_4' => 26,
 		'_5' => 27,
 		'_LIST' => 28,
+		'_MDAT' => 29,
 	);
 
-	/// Array to cache ids of tables for storing known built-in types. Having
-	/// this data here shortcuts the search in findTypeTableID() below.
-	protected static $property_table_ids = array(
-		'_txt'  => 'smw_text2', // Text type
-		'_cod'  => 'smw_text2', // Code type
-		'_str'  => 'smw_atts2', // String type
-		'_ema'  => 'smw_atts2', // Email type
-		'_uri'  => 'smw_atts2', // URL/URI type
-		'_anu'  => 'smw_atts2', // Annotation URI type
-		'_tel'  => 'smw_atts2', // Telephone number
-		'_wpg'  => 'smw_rels2', // Page type
-		'_wpp'  => 'smw_rels2', // Property page type
-		'_wpc'  => 'smw_rels2', // Category page type
-		'_wpf'  => 'smw_rels2', // Form page type (for Semantic Forms)
-		'_num'  => 'smw_atts2', // Number type
-		'_tem'  => 'smw_atts2', // Temperature type
-		'_dat'  => 'smw_atts2', // Time type
-		'_boo'  => 'smw_atts2', // Boolean type
-		'_rec'  => 'smw_rels2', // Value list type (internal object)
-		// Special types are not avaialble directly for users (and have no local language name):
-		'__typ' => 'smw_spec2', // Special type page type
-		'__tls' => 'smw_spec2', // Special type list for _rec properties
-		'__sps' => 'smw_spec2', // Special string type
-		'__spu' => 'smw_spec2', // Special uri type
-		'__sup' => 'smw_subp2', // Special subproperty type
-		'__suc' => 'smw_subs2', // Special subcategory type
-		'__spf' => 'smw_spec2', // Special form type (for Semantic Forms)
-		'__sin' => 'smw_inst2', // Special instance of type
-		'__red' => 'smw_redi2', // Special redirect type
-		'__lin' => 'smw_spec2', // Special linear unit conversion type
-		'__imp' => 'smw_spec2', // Special import vocabulary type
-		'__con' => 'smw_conc2', // Sepcial concept management and caching
-		'__err' => '',  // Special error type, used to indicate that the table could not be determined (happens for type-polymorphic _1, _2, ...)
+	/// Use special tables for Very Important Properties
+	protected static $special_tables = array(
+		'_TYPE' => 'smw_spec2',
+		'_URI'  => 'smw_spec2',
+		'_INST' => 'smw_inst2',
+		'_UNIT' => 'smw_spec2',
+		'_IMPO' => 'smw_spec2',
+		'_CONV' => 'smw_spec2',
+		'_SERV' => 'smw_spec2',
+		'_PVAL' => 'smw_spec2',
+		'_REDI' => 'smw_redi2',
+		'_SUBP' => 'smw_subp2',
+		'_SUBC' => 'smw_subs2',
+		'_CONC' => 'smw_conc2',
+		'_SF_DF' => 'smw_spec2', // Semantic Form's default form property
+		'_SF_AF' => 'smw_spec2',  // Semantic Form's alternate form property
+		//'_ERRP','_MDAT', '_SKEY' // no special table
+		'_LIST' => 'smw_spec2',
 	);
 
-	/// Array to cache signatures of known built-in types. Having this data
-	/// here safes us from creating datavalue instances in getTypeSignature().
-	protected static $type_signatures = array(
-		'_txt'  => array( 'l', -1, -1 ),  // Text type
-		'_cod'  => array( 'l', -1, -1 ),  // Code type
-		'_str'  => array( 't', 0, 0 ),    // String type
-		'_ema'  => array( 't', 0, 0 ),    // Email type
-		'_uri'  => array( 't', 0, 0 ),    // URL/URI type
-		'_anu'  => array( 't', 0, 0 ),    // Annotation URI type
-		'_tel'  => array( 't', 0, 0 ),    // Telephone number
-		'_wpg'  => array( 'tnwt', 3, 3 ), // Page type
-		'_wpp'  => array( 'tnwt', 3, 3 ), // Property page type
-		'_wpc'  => array( 'tnwt', 3, 3 ), // Category page type
-		'_wpf'  => array( 'tnwt', 3, 3 ), // Form page type (for Semantic Forms)
-		'_num'  => array( 'tf', 1, 0 ),  // Number type
-		'_tem'  => array( 'tf', 1, 0 ),  // Temperature type
-		'_dat'  => array( 'tf', 1, 0 ),   // Time type
-		'_boo'  => array( 't', 0, 0 ),    // Boolean type
-		'_rec'  => array( 'tnwt', 0, -1 ),// Value list type (internal object)
-		// Special types are not avaialble directly for users (and have no local language name):
-		'__typ' => array( 't', 0, 0 ),    // Special type page type
-		'__tls' => array( 't', 0, 0 ),    // Special type page type
-		'__sps' => array( 't', 0, 0 ),    // Special string type
-		'__spu' => array( 't', 0, 0 ),    // Special uri type
-		'__sup' => array( 'tnwt', 3, 3 ), // Special subproperty type
-		'__suc' => array( 'tnwt', 3, 3 ), // Special subcategory type
-		'__spf' => array( 't', 0, 0 ),    // Special form type (for Semantic Forms)
-		'__sin' => array( 'tnwt', 3, 3 ), // Special instance of type
-		'__red' => array( 'tnwt', 3, 3 ), // Special redirect type
-		'__lin' => array( 'tf', 1, 0 ),  // Special linear unit conversion type
-		'__imp' => array( 't', 0, 0 ), // Special import vocabulary type
-		'__pro' => array( 't', 0, 0 ),  // Property page type; never be stored as a value (_wpp is used there) but needed for sorting
-		''      => array( 'tlnnn', 0, 0 )
+	/// Default tables to use for storing data of certain types.
+	protected static $di_type_tables = array(
+		SMWDataItem::TYPE_NUMBER     => 'smw_atts2',
+		SMWDataItem::TYPE_STRING     => 'smw_atts2',
+		SMWDataItem::TYPE_BLOB       => 'smw_text2',
+		SMWDataItem::TYPE_BOOLEAN    => 'smw_atts2',
+		SMWDataItem::TYPE_URI        => 'smw_atts2',
+		SMWDataItem::TYPE_TIME       => 'smw_atts2',
+		SMWDataItem::TYPE_GEO        => 'smw_coords', // currently created only if Semantic Maps are installed
+		SMWDataItem::TYPE_CONTAINER  => 'smw_rels2', // this is where the bnode is stored
+		SMWDataItem::TYPE_WIKIPAGE   => 'smw_rels2',
+		SMWDataItem::TYPE_CONCEPT    => 'smw_conc2', // unlikely to occur as value of a normal property
+		SMWDataItem::TYPE_PROPERTY   => 'smw_atts2'  // unlikely to occur as value of any property
 	);
 
 ///// Reading methods /////
@@ -444,10 +410,6 @@ class SMWSQLStore2 extends SMWStore {
 		$pid = $this->getSMWPropertyID( $property );
 		$tableid = self::findPropertyTableID( $property );
 
-		if ( ( $tableid == '' ) && ( $value !== null ) ) { // maybe a type-polymorphic property like _1; use value to find type
-			$tableid = self::findTypeTableID( $value->getTypeID() );
-		}
-
 		if ( ( $pid == 0 ) || ( $tableid == '' ) ) {
 			wfProfileOut( "SMWSQLStoreLight::getPropertySubjects (SMW)" );
 			return array();
@@ -519,11 +481,6 @@ class SMWSQLStore2 extends SMWStore {
 
 			foreach ( $semanticData->getProperties() as $subproperty ) {
 				$tableid = self::findPropertyTableID( $subproperty );
-
-				if ( ( $tableid == '' ) && ( $value !== null ) ) { // maybe a type-polymorphic property like _1; use value to find type
-					$tableid = self::findTypeTableID( reset( $semanticData->getPropertyValues( $subproperty ) )->getTypeID() );
-				}
-
 				$subproptable = $proptables[$tableid];
 
 				foreach ( $semanticData->getPropertyValues( $subproperty ) as $subvalue ) {
@@ -666,7 +623,6 @@ class SMWSQLStore2 extends SMWStore {
 
 		$db = wfGetDB( DB_SLAVE );
 		$result = array();
-		$typeid = $value->getTypeID();
 
 		// Potentially need to get more results, since options apply to union.
 		if ( $requestoptions !== null ) {
@@ -677,10 +633,11 @@ class SMWSQLStore2 extends SMWStore {
 			$suboptions = null;
 		}
 
-		foreach ( self::getPropertyTables() as $tid => $proptable ) {
-			if ( !$this->tableFitsType( $tid, $typeid ) ) continue;
+		$tableIds = self::findAllDiTypeTableIds( $value->getDIType() );
+		$proptables = self::getPropertyTables();
+		foreach ( $tableIds as $tid ) {
+			$proptable = $proptables[$tid];
 			$select = $where = $from = '';
-
 			if ( $proptable->fixedproperty == false ) { // join smw_ids to get property titles
 				$from = $db->tableName( 'smw_ids' ) . " INNER JOIN " . $db->tableName( $proptable->name ) . " AS t1 ON t1.p_id=smw_id";
 				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
@@ -854,16 +811,6 @@ class SMWSQLStore2 extends SMWStore {
 			}
 
 			$tableid = self::findPropertyTableID( $property );
-
-			if ( !$tableid ) { // happens when table is not determined by property; use values to find type
-				$di = reset( $data->getPropertyValues( $property ) );
-				$tableid = self::findTypeTableID( $di->getTypeID() );
-			}
-
-			if ( !$tableid ) { // can't store this data, sorry
-				return $sid;
-			}
-
 			$proptable = $proptables[$tableid];
 
 			foreach ( $data->getPropertyValues( $property ) as $di ) {
@@ -1107,11 +1054,12 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		// properties that have subproperties are considered to be used
-		$proptables = self::getPropertyTables();
-		$subtable = $proptables[self::findTypeTableID( '__sup' )]; // find the subproperty table, but consider its signature to be known
+		$propertyTables = self::getPropertyTables();
+		$subPropertyTableId = self::$special_tables['_SUBP'];
+		$subPropertyTable = $propertyTables[$subPropertyTableId];
 
 		// (again we have no fitting MW wrapper here:)
-		$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops," . $db->tableName( $subtable->name ) .
+		$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops," . $db->tableName( $subPropertyTable->name ) .
 		           " INNER JOIN $smw_ids ON o_id=smw_id WHERE title=smw_title", $fname );
 		// properties that are redirects are considered to be used:
 		//   (a stricter and more costy approach would be to delete only redirects to used properties;
@@ -1153,7 +1101,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		// Note that Wanted Properties must have the default type.
 		$proptables = self::getPropertyTables();
-		$proptable = $proptables[self::findTypeTableID( $smwgPDefaultType )];
+		$proptable = $proptables[self::findTypeTableId( $smwgPDefaultType )];
 
 		$result = array();
 
@@ -1648,14 +1596,14 @@ class SMWSQLStore2 extends SMWStore {
 	}
 
 	/**
-	 * Transform input parameters into a suitable string of additional SQL conditions.
-	 * The parameter $valuecol defines the string name of the column to which
-	 * value restrictions etc. are to be applied.
+	 * Transform input parameters into a suitable string of additional SQL
+	 * conditions. The parameter $valuecol defines the string name of the
+	 * column to which value restrictions etc. are to be applied.
 	 *
 	 * @param $requestoptions object with options
-	 * @param $valuecol name of SQL column to which conditions apply
-	 * @param $labelcol name of SQL column to which string conditions apply, if any
-	 * @param $addand Boolean to indicate whether the string should begin with " AND " if non-empty
+	 * @param $valuecol string name of SQL column to which conditions apply
+	 * @param $labelcol string name of SQL column to which string conditions apply, if any
+	 * @param $addand boolean to indicate whether the string should begin with " AND " if non-empty
 	 *
 	 * @return string
 	 */
@@ -1694,10 +1642,10 @@ class SMWSQLStore2 extends SMWStore {
 
 	/**
 	 * Not in all cases can requestoptions be forwarded to the DB using
-	 * getSQLConditions() and getSQLOptions(): some data comes from caches that
-	 * do not respect the options yet. This method takes an array of results
-	 * (SMWDataValue objects) *of the same type* and applies the given
-	 * requestoptions as appropriate.
+	 * getSQLConditions() and getSQLOptions(): some data comes from caches
+	 * that do not respect the options yet. This method takes an array of
+	 * results (SMWDataItem objects) *of the same type* and applies the
+	 * given requestoptions as appropriate.
 	 */
 	protected function applyRequestOptions( $data, $requestoptions ) {
 		wfProfileIn( "SMWSQLStore2::applyRequestOptions (SMW)" );
@@ -1710,17 +1658,21 @@ class SMWSQLStore2 extends SMWStore {
 		$result = array();
 		$sortres = array();
 
-		list( $sig, $valueIndex, $labelIndex ) = self::getTypeSignature( reset( $data )->getTypeID() );
+		$sampleDataItem = reset( $data );
+		$numeric = is_numeric( $sampleDataItem->getSortKey() );
 
-		$numeric = ( ( $valueIndex >= 0 ) && ( strlen( $sig ) > $valueIndex ) &&
-		             ( ( $sig { $valueIndex } != 'f' ) || ( $sig { $valueIndex } != 'n' ) ) );
 		$i = 0;
 
 		foreach ( $data as $item ) {
 			$ok = true; // keep datavalue only if this remains true
-			$keys = SMWCompatibilityHelpers::getDBkeysFromDataItem( $item );
-			$value = array_key_exists( $valueIndex, $keys ) ? $keys[$valueIndex] : '';
-			$label = array_key_exists( $labelIndex, $keys ) ? $keys[$labelIndex] : '';
+
+			if ( $item instanceof SMWDIWikiPage ) {
+				$label = $this->getWikiPageSortKey( $item );
+				$value = $label;
+			} else {
+				$label = ( $item instanceof SMWDIBlob ) ? $item->getString() : '';
+				$value = $item->getSortKey();
+			}
 
 			if ( $requestoptions->boundary !== null ) { // apply value boundary
 				$strc = $numeric ? 0 : strcmp( $value, $requestoptions->boundary );
@@ -1762,7 +1714,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		if ( $requestoptions->sort ) {
-			$flag = $numeric ? SORT_NUMERIC:SORT_LOCALE_STRING;
+			$flag = $numeric ? SORT_NUMERIC : SORT_LOCALE_STRING;
 
 			if ( $requestoptions->ascending ) {
 				asort( $sortres, $flag );
@@ -1811,20 +1763,13 @@ class SMWSQLStore2 extends SMWStore {
 	 * appropriate property table and information about sorting/filtering
 	 * data of this type can be obtained. The result is an array of three
 	 * entries: a signature string, the index of the value field, and
-	 * the index of the label label field. These entries correspond to
-	 * the results of SMWDataValue::getSignature(),
-	 * SMWDatavalue::getValueIndex(), and SMWDatavalue::getLabelIndex().
-	 * @todo Custom unit types (SMWLinearValue) have page names as their
-	 * type id and are not in the array cache. Can we still determine their
-	 * signature without creating them?
+	 * the index of the label label field.
 	 */
 	public static function getTypeSignature( $typeid ) {
-		if ( !array_key_exists( $typeid, self::$type_signatures ) ) {
-			$dv = SMWDataValueFactory::newTypeIDValue( $typeid );
-			self::$type_signatures[$typeid] = array( $dv->getSignature(), $dv->getValueIndex(), $dv->getLabelIndex() );
-		}
-
-		return self::$type_signatures[$typeid];
+		$dataItemId = SMWDataValueFactory::getDataItemId( $typeid );
+		return array( SMWCompatibilityHelpers::getSignatureFromDataItemId( $dataItemId, $typeid ),
+		              SMWCompatibilityHelpers::getIndexFromDataItemId( $dataItemId, $typeid, false ),
+		              SMWCompatibilityHelpers::getIndexFromDataItemId( $dataItemId, $typeid, true ) );
 	}
 
 	/**
@@ -1832,68 +1777,98 @@ class SMWSQLStore2 extends SMWStore {
 	 * signature, where $signature is as returned by getTypeSignature().
 	 * @todo Maybe rather use SMWSQLStore2Table object as parameter.
 	 */
-	public static function tableFitsSignature( $tableid, $signature ) {
-		$proptables = self::getPropertyTables();
-		$tablesig = str_replace( 'p', 'tnwt', $proptables[$tableid]->getFieldSignature() ); // expand internal page type to single fields
-		$valuesig = reset( $signature );
-		return ( $valuesig == substr( $tablesig, 0, strlen( $valuesig ) ) );
-	}
+// 	private static function tableFitsSignature( $tableid, $signature ) {
+// 		$proptables = self::getPropertyTables();
+// 		$tablesig = str_replace( 'p', 'tnwt', $proptables[$tableid]->getFieldSignature() ); // expand internal page type to single fields
+// 		$valuesig = reset( $signature );
+// 		return ( $valuesig == substr( $tablesig, 0, strlen( $valuesig ) ) );
+// 	}
 
 	/**
 	 * Check if the given table can be used to store values of the given
-	 * type.
+	 * type. This is needed to apply the type-based filtering in
+	 * getSemanticData().
+	 *
+	 * @param $tableId string
+	 * @param $typeId string
+	 * @return boolean
 	 */
-	public static function tableFitsType( $tableid, $typeid ) {
-		return self::tableFitsSignature( $tableid, self::getTypeSignature( $typeid ) );
+	public static function tableFitsType( $tableId, $typeId ) {
+		$dataItemId = SMWDataValueFactory::getDataItemId( $typeId );
+		if ( $tableId == self::findDiTypeTableId( $dataItemId ) ) {
+			return true;
+		}
+		foreach ( self::$special_tables as $propertyKey => $specialTableId ) {
+			if ( $specialTableId == $tableId ) {
+				$diProperty = new SMWDIProperty( $propertyKey, false );
+				$propertyTypeId = $diProperty->findPropertyTypeId();
+				if ( $typeId == $propertyTypeId ) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
 	 * Find the id of a property table that is suitable for storing values of
 	 * the given type. The type is specified by an SMW type id such as '_wpg'.
 	 * An empty string is returned if no matching table could be found.
+	 *
+	 * @param $typeid string
+	 * @return string
 	 */
-	public static function findTypeTableID( $typeid ) {
-		if ( !array_key_exists( $typeid, self::$property_table_ids ) ) {
-			$signature = self::getTypeSignature( $typeid );
+	public static function findTypeTableId( $typeid ) {
+		$dataItemId = SMWDataValueFactory::getDataItemId( $typeid );
+		return self::findDiTypeTableId( $dataItemId );
+	}
 
-			foreach ( self::getPropertyTables() as $tid => $proptable ) {
-				if ( self::tableFitsSignature( $tid, $signature ) ) {
-					self::$property_table_ids[$typeid] = $tid;
-					return $tid;
-				}
+	/**
+	 * Find the id of a property table that is normally used to store
+	 * data items of the given type.
+	 *
+	 * @param $dataItemId integer
+	 * @return string
+	 */
+	public static function findDiTypeTableId( $dataItemId ) {
+		return self::$di_type_tables[$dataItemId];
+	}
+
+	/**
+	 * Find the id of all property tables where data items of the given
+	 * type could possibly be stored.
+	 *
+	 * @param $dataItemId integer
+	 * @return array of string
+	 */
+	public static function findAllDiTypeTableIds( $dataItemId ) {
+		$result = array( self::findDiTypeTableId( $dataItemId ) );
+
+		foreach ( self::$special_tables as $propertyKey => $specialTableId ) {
+			$diProperty = new SMWDIProperty( $propertyKey, false );
+			$propertyTypeId = $diProperty->findPropertyTypeId();
+			if ( $dataItemId == SMWDataValueFactory::getDataItemId( $dataItemId ) ) {
+				$result[] = $specialTableId;
 			}
-
-			self::$property_table_ids[$typeid] = ''; // No matching table found.
 		}
 
-		return self::$property_table_ids[$typeid];
+		return $result;
 	}
 
 	/**
 	 * Retrieve the id of the property table that is to be used for storing
 	 * values for the given property object.
+	 *
+	 * @param $diProperty SMWDIProperty
+	 * @return string
 	 */
-	public static function findPropertyTableID( SMWDIProperty $property ) {
-		if ( self::$fixed_prop_tables === null ) { // Build lookup array once.
-			self::$fixed_prop_tables = array();
-
-			foreach ( self::getPropertyTables() as $tid => $proptable ) {
-				if ( $proptable->fixedproperty != false ) {
-					self::$fixed_prop_tables[$proptable->fixedproperty] = $tid;
-				}
-			}
+	public static function findPropertyTableID( SMWDIProperty $diProperty ) {
+		$propertyKey = $diProperty->getKey();
+		if ( array_key_exists( $propertyKey, self::$special_tables ) ) {
+			return self::$special_tables[$propertyKey];
+		} else {
+			return self::findTypeTableId( $diProperty->findPropertyTypeID() );
 		}
-
-		$propertykey = $property->getKey();
-		if ( array_key_exists( $propertykey, self::$fixed_prop_tables ) ) {
-			$signature = self::getTypeSignature( $property->findPropertyTypeID() );
-
-			if ( self::tableFitsSignature( SMWSQLStore2::$fixed_prop_tables[$propertykey], $signature ) ) {
-				return self::$fixed_prop_tables[$propertykey];
-			}
-		} // else: Don't check for non-fitting entries in $fixed_prop_tables: not really important.
-
-		return self::findTypeTableID( $property->findPropertyTypeID() );
 	}
 
 	/**
@@ -2455,21 +2430,18 @@ class SMWSQLStore2 extends SMWStore {
 	 * indexed by table ids. Note that the ids are only for accessing the data
 	 * and should not be assumed to agree with the table name.
 	 *
-	 * Most function in this class are independent of the available property
-	 * tables, although the store might not be able to handle proeprty data for
-	 * which no suitable table is given. Note that the cached tables of
-	 * SMWSQLStore2::$property_table_ids refer to IDs that should be available.
-	 * The only other table that must always be available is smw_redi2 for
-	 * managing redirects.
-	 *
 	 * Tables declare value columns ("object fields") by specifying their name
-	 * and type. Types are given using letters as documented for
-	 * SMWDataValue::getSignature(), or the additional letter:
+	 * and type. Types are given using letters:
+	 * - t for strings of the same maximal length as MediaWiki title names,
+	 * - l for arbitrarily long strings; searching/sorting with such data may
+	 * be limited for performance reasons,
+	 * - w for strings as used in MediaWiki for encoding interwiki prefixes
+	 * - n for namespace numbers (or other similar integers)
+	 * - f for floating point numbers of double precision
+	 * - c for the special container format used by SMWContainerValue; if used
+	 * then the signature must be 'c' without any other fields. 
 	 * - p for a reference to an SMW ID as stored in the smw_ids table; this
 	 *   corresponds to a data entry of ID "tnwt".
-	 *
-	 * This letter is specific to this store's ID referencing and must not be
-	 * used in SMWDataValue::getSignature()!
 	 *
 	 * @return array of SMWSQLStore2Table
 	 * @todo The concept table should make s_id a primary key; make this possible.
@@ -2538,6 +2510,12 @@ class SMWSQLStore2 extends SMWStore {
 		);
 
 		wfRunHooks( 'SMWPropertyTables', array( &self::$prop_tables ) );
+
+		foreach ( self::$prop_tables as $tid => $proptable ) { // fixed property tables are added to known "special" tables
+			if ( $proptable->fixedproperty != false ) {
+				self::$special_tables[$proptable->fixedproperty] = $tid;
+			}
+		}
 
 		return self::$prop_tables;
 	}

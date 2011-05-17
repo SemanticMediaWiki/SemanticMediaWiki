@@ -20,8 +20,7 @@ class SMWDINumber extends SMWDataItem {
 	 */
 	protected $m_number;
 
-	public function __construct( $number, $typeid = '_num' ) {
-		parent::__construct( $typeid );
+	public function __construct( $number ) {
 		if ( !is_numeric( $number ) ) {
 			throw new SMWDataItemException( "Initialisation value '$number' is not a number." );
 		}
@@ -40,6 +39,14 @@ class SMWDINumber extends SMWDataItem {
 		return $this->m_number;
 	}
 
+	/**
+	 * @see SMWDataItem::getSortKeyDataItem()
+	 * @return SMWDataItem
+	 */
+	public function getSortKeyDataItem() {
+		return $this;
+	}
+
 	public function getSerialization() {
 		return strval( $this->m_number );
 	}
@@ -51,8 +58,8 @@ class SMWDINumber extends SMWDataItem {
 	 * validation here (because this would require less efficient parsing).
 	 * @return SMWDINumber
 	 */
-	public static function doUnserialize( $serialization, $typeid = '_num' ) {
-		return new SMWDINumber( floatval( $serialization ), $typeid );
+	public static function doUnserialize( $serialization ) {
+		return new SMWDINumber( floatval( $serialization ) );
 	}
 
 }

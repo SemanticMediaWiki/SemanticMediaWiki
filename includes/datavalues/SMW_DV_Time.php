@@ -574,43 +574,12 @@ class SMWTimeValue extends SMWDataValue {
 		}
 	}
 
-	protected function parseDBkeys( $args ) {
-		$this->m_caption = $this->m_wikivalue = false;
-		$timedate = explode( 'T', $args[0], 2 );
-		if ( ( count( $args ) == 2 ) && ( count( $timedate ) == 2 ) ) {
-			$date = reset( $timedate );
-			$year = $month = $day = $hours = $minutes = $seconds = $timeoffset = false;
-			if ( ( end( $timedate ) == '' ) ||
-			     ( self::parseTimeString( end( $timedate ), $hours, $minutes, $seconds, $timeoffset ) == true ) ) {
-				$d = explode( '/', $date, 3 );
-				if ( count( $d ) == 3 ) {
-					list( $year, $month, $day ) = $d;
-				} elseif ( count( $d ) == 2 ) {
-					list( $year, $month ) = $d;
-				} elseif ( count( $d ) == 1 ) {
-					list( $year ) = $d;
-				}
-				//$calendarmodel = ( $year < -4713 ) ? SMWDITime::CM_JULIAN : SMWDITime::CM_GREGORIAN;
-				$calendarmodel = SMWDITime::CM_GREGORIAN; // now all dates are stored as Gregorian (used to be only the historic ones)
-				try {
-					$this->m_dataitem = new SMWDITime( $calendarmodel, $year, $month, $day, $hours, $minutes, $seconds, $this->m_typeid );
-					return;
-				} catch ( SMWDataItemException $e ) {
-					// fall through
-				}
-			}
-		}
-		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-		$this->addError( wfMsgForContent( 'smw_nodatetime', $args[0] ) );
-		$this->m_dataitem = new SMWDITime( SMWDITime::CM_GREGORIAN, 32202 ); // always default to something
-	}
-
 	/**
-	 * @see SMWDataValue::setDataItem()
+	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_TIME ) {
 			$this->m_dataitem = $dataItem;
 			$this->m_caption = $this->m_wikivalue = false;
@@ -636,30 +605,8 @@ class SMWTimeValue extends SMWDataValue {
 		return $this->getLongWikiText( $linker ); // safe in HTML
 	}
 
-	public function getDBkeys() {
-		$this->unstub();
-		$xsdvalue = $this->getYear() . "/" .
-		            $this->getMonth( SMWDITime::CM_GREGORIAN, '' ) . "/" .
-		            $this->getDay( SMWDITime::CM_GREGORIAN, '' ) . "T" .
-		            $this->getTimeString( '' );
-		return array( $xsdvalue, $this->m_dataitem->getSortKey() );
-	}
-
-	public function getSignature() {
-		return 'tf';
-	}
-
-	public function getValueIndex() {
-		return 1;
-	}
-
-	public function getLabelIndex() {
-		return 0;
-	}
-
 	/// @todo The preferred caption may not be suitable as a wiki value (i.e. not parsable).
 	public function getWikiValue() {
-		$this->unstub();
 		return $this->m_wikivalue ? $this->m_wikivalue : $this->getPreferredCaption();
 	}
 
@@ -672,7 +619,7 @@ class SMWTimeValue extends SMWDataValue {
 			$lit = new SMWExpLiteral( $this->getISO8601Date(), $this, 'http://www.w3.org/2001/XMLSchema#dateTime' );
 			return new SMWExpData( $lit );
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 
@@ -736,7 +683,6 @@ class SMWTimeValue extends SMWDataValue {
 	 * also be set to false to detect this situation.
 	 */
 	public function getTimeString( $default = '00:00:00' ) {
-		$this->unstub();
 		if ( $this->m_dataitem->getPrecision() < SMWDITime::PREC_YMDT ) {
 			return $default;
 		} else {
@@ -747,17 +693,7 @@ class SMWTimeValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return a representation of this date in canonical dateTime format without timezone, as
-	 * specified in XML Schema Part 2: Datatypes Second Edition (W3C Recommendation, 28 October 2004,
-	 * http://www.w3.org/TR/xmlschema-2). An example would be "2008-01-02T14:30:10". BC(E) years
-	 * are represented by a leading "-" as in "-123-01-02T14:30:10", the 2nd January of the year
-	 * 123 BC(E) at 2:30pm and 10 seconds.
-	 *
-	 * If the date was not fully specified, then the function will use defaults for the omitted values.
-	 * The boolean parameter $mindefault controls if those defaults are chosen minimally. If false, then
-	 * the latest possible value will be chosen instead.
-	 *
-	 * @deprecated This method is now called getISO8601Date().
+	 * @deprecated This method is now called getISO8601Date(). It will vanish before SMW 1.7.
 	 */
 	public function getXMLSchemaDate( $mindefault = true ) {
 		return $this->getISO8601Date( $mindefault );

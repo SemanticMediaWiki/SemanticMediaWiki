@@ -32,12 +32,10 @@ class SMWDataItemException extends Exception {
  * is mostly enforced by the API with some minor exceptions).
  * 
  * The set of available data items is fixed and cannot be extended. These are
- * the kinds of information that SMW can process. However, a type ID can be held
- * by a data item, and this type might determine details of processing in some
- * contexts (for example, since it can be used to chose an implementation for
- * formatting this value for display in the wiki). Data items do not implement
- * such selection procedures -- they are nothing but data and provide only
- * minimal interfaces for accessing the stored data (or aspects of it).
+ * the kinds of information that SMW can process. Their concrete use and
+ * handling might depend on the context in which they are used. In particular,
+ * property values may be influences by settings made for their property. This
+ * aspect, however, is not part of the data item API.
  *
  * @since 1.6
  *
@@ -73,23 +71,6 @@ abstract class SMWDataItem {
 	const TYPE_ERROR     = 12;
 
 	/**
-	 * The SMW type ID that governs the handling of this data item.
-	 * This data should not be considered part of the value. It is
-	 * provided merely to assist suitable handling and will not be
-	 * stored with the data.
-	 * @var string
-	 */
-	protected $m_typeid;
-
-	/**
-	 * Constructor.
-	 * @param $typeid string the SMW type ID that governs the handling of this data item.
-	 */
-	public function __construct( $typeid ) {
-		$this->m_typeid = $typeid;
-	}
-
-	/**
 	 * Convenience method that returns a constant that defines the concrete
 	 * class that implements this data item. Used to switch when processing
 	 * data items.
@@ -98,22 +79,41 @@ abstract class SMWDataItem {
 	abstract public function getDIType();
 
 	/**
-	 * Get the SMW type ID that governs the handling of this data item.
-	 * @return string $typeid the SMW type ID
-	 */
-	public function getTypeID() {
-		return $this->m_typeid;
-	}
-
-	/**
 	 * Return a value that can be used for sorting data of this type.
 	 * If the data is of a numerical type, the sorting must be done in
 	 * numerical order. If the data is a string, the data must be sorted
 	 * alphabetically.
+	 * 
+	 * @note Every data item returns a sort key, even if there is no
+	 * natural linear order for the type. SMW must order listed data 
+	 * in some way in any case. If there is a natural order (e.g. for
+	 * Booleans where false < true), then the sortkey must agree with
+	 * this order (e.g. for Booleans where false maps to 0, and true
+	 * maps to 1).
+	 *
+	 * @note Wiki pages are a special case in SMW. They are ordered by a
+	 * sortkey that is assigned to them as a property value. When pages are
+	 * sorted, this data should be used if possible.
 	 *
 	 * @return float or string 
 	 */
 	abstract public function getSortKey();
+
+	/**
+	 * Create a data item that represents the sortkey, i.e. either an
+	 * SMWDIBlob or an SMWDINumber. For efficiency, these subclasses
+	 * overwrite this method to return themselves.
+	 *
+	 * @return SMWDataItem
+	 */
+	public function getSortKeyDataItem() {
+		$sortkey = $this->getSortKey();
+		if ( is_numeric( $sortkey ) ) {
+			return new SMWDINumber( $sortkey );
+		} else {
+			return new SMWDIBlob( $sortkey );
+		}
+	}
 
 	/**
 	 * Get a UTF-8 encoded string serialization of this data item.
@@ -143,13 +143,9 @@ abstract class SMWDataItem {
 	 * @param $typeid string SMW type ID (optional)
 	 * @return SMWDataItem
 	 */
-	public static function newFromSerialization( $diType, $serialization, $typeid = '' ) {
+	public static function newFromSerialization( $diType, $serialization ) {
 		$diClass = self::getDataItemClassNameForId( $diType );
-		if ( $typeid !== '' ) {
-			return call_user_func( array( $diClass, 'doUnserialize' ), $serialization, $typeid );
-		} else {
-			return call_user_func( array( $diClass, 'doUnserialize' ), $serialization );
-		}
+		return call_user_func( array( $diClass, 'doUnserialize' ), $serialization );
 	}
 
 	public static function getDataItemClassNameForId( $diType ) {

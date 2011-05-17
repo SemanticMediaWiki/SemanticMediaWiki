@@ -474,7 +474,7 @@ class SMWSQLStore2QueryEngine {
 				$this->m_queries[$cqid] = $cquery;
 			}
 		} elseif ( $description instanceof SMWValueDescription ) { // Only type '_wpg' objects can appear on query level (essentially as nominal classes).
-			if ( $description->getDataItem()->getTypeID() == '_wpg' ) {
+			if ( $description->getDataItem() instanceof SMWDIWikiPage ) {
 				if ( $description->getComparator() == SMW_CMP_EQ ) {
 					$query->type = SMW_SQL2_VALUE;
 					$oid = $this->m_store->getSMWPageID( $description->getDataItem()->getDBkey(), $description->getDataItem()->getNamespace(), $description->getDataItem()->getInterwiki() );
@@ -575,13 +575,7 @@ class SMWSQLStore2QueryEngine {
 	 */
 	protected function compilePropertyCondition( SMWSQLStore2Query $query, SMWDIProperty $property, SMWDescription $valuedesc ) {
 		$tableid = SMWSQLStore2::findPropertyTableID( $property );
-
-		if ( $tableid == '' ) { // probably a type-polymorphic property
-			$typeid = $valuedesc->getTypeID();
-			$tableid = SMWSQLStore2::findTypeTableID( $typeid );
-		} else { // normal property
-			$typeid = $property->findPropertyTypeID();
-		}
+		$typeid = $property->findPropertyTypeID();
 
 		if ( $tableid == '' ) { // Still no table to query? Give up.
 			$query->type = SMW_SQL2_NOQUERY;

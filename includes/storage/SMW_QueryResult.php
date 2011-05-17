@@ -348,7 +348,12 @@ class SMWResultArray {
 		if ( $di === false ) {
 			return false;
 		}
-		$dv = SMWDataValueFactory::newDataItemValue( $di );
+		if ( $this->mPrintRequest->getMode() == SMWPrintRequest::PRINT_PROP ) {
+			$diProperty = $this->mPrintRequest->getData()->getDataItem();
+		} else {
+			$diProperty = null;
+		}
+		$dv = SMWDataValueFactory::newDataItemValue( $di, $diProperty );
 		if ( $this->mPrintRequest->getOutputFormat() ) {
 			$dv->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
 		}
@@ -368,12 +373,12 @@ class SMWResultArray {
 	 * @return string or false
 	 */
 	public function getNextText( $outputMode, $linker = null ) {
-		$dv = $this->getNextDataValue();
-		if ( $dv !== false ) { // Print data values.
-			if ( ( $dv->getTypeID() == '_wpg' ) || ( $dv->getTypeID() == '__sin' ) ) { // Prefer "long" text for page-values.
-				return $dv->getLongText( $outputMode, $linker );
+		$dataValue = $this->getNextDataValue();
+		if ( $dataValue !== false ) { // Print data values.
+			if ( ( $dataValue->getTypeID() == '_wpg' ) || ( $dataValue->getTypeID() == '__sin' ) ) { // Prefer "long" text for page-values.
+				return $dataValue->getLongText( $outputMode, $linker );
 			} else {
-				return $dv->getShortText( $outputMode, $linker );
+				return $dataValue->getShortText( $outputMode, $linker );
 			}
 		} else {
 			return false;

@@ -50,9 +50,8 @@ class SMWDIConcept extends SMWDataItem {
 	 * @param $queryefeatures integer flags about query features
 	 * @param $size integer concept query size
 	 * @param $depth integer concept query depth
-	 * @param $typeid string SMW type id
 	 */
-	public function __construct( $concept, $docu, $queryfeatures, $size, $depth, $typeid = '__con' ) {
+	public function __construct( $concept, $docu, $queryfeatures, $size, $depth ) {
 		$this->m_concept  = $concept;
 		$this->m_docu     = $docu;
 		$this->m_features = $queryfeatures;
@@ -97,7 +96,7 @@ class SMWDIConcept extends SMWDataItem {
 	 * ID.
 	 * @return SMWDIConcept
 	 */
-	public static function doUnserialize( $serialization, $typeid = '__con' ) {
+	public static function doUnserialize( $serialization ) {
 		$result = unserialize( $serialization );
 		if ( $result === false ) {
 			throw new SMWDataItemException( "Unserialization failed." );

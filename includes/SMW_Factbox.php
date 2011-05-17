@@ -43,7 +43,7 @@ class SMWFactbox {
 		$text = '';
 		if ( wfRunHooks( 'smwShowFactbox', array( &$text, $semdata ) ) ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-			$subjectDv = SMWDataValueFactory::newDataItemValue( $semdata->getSubject() );
+			$subjectDv = SMWDataValueFactory::newDataItemValue( $semdata->getSubject(), null );
 			SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
 			$rdflink = SMWInfolink::newInternalLink(
 				wfMsgForContent( 'smw_viewasrdf' ),
@@ -62,7 +62,7 @@ class SMWFactbox {
 					'<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
 					'<table class="smwfacttable">' . "\n";
 			foreach ( $semdata->getProperties() as $propertyDi ) {
-				$propertyDv = SMWDataValueFactory::newDataItemValue( $propertyDi );
+				$propertyDv = SMWDataValueFactory::newDataItemValue( $propertyDi, null );
 				if ( !$propertyDi->isShown() ) { // showing this is not desired, hide
 					continue;
 				} elseif ( $propertyDi->isUserDefined() ) { // user defined property
@@ -87,7 +87,7 @@ class SMWFactbox {
 						}
 					}
 					$i += 1;
-					$dv = SMWDataValueFactory::newDataItemValue( $di, false, $propertyDi );
+					$dv = SMWDataValueFactory::newDataItemValue( $di, $propertyDi );
 					$text .= $dv->getLongWikiText( true ) . $dv->getInfolinkText( SMW_OUTPUT_WIKI );
 				}
 				$text .= '</td></tr>';

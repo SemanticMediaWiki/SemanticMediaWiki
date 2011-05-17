@@ -35,17 +35,12 @@ class SMWStringValue extends SMWDataValue {
 		}
 	}
 
-	protected function parseDBkeys( $args ) {
-		$this->parseUserValue( $args[0] );
-		$this->m_caption = $this->m_dataitem->getString(); // this is our output text
-	}
-
 	/**
-	 * @see SMWDataValue::setDataItem()
+	 * @see SMWDataValue::loadDataItem()
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ) {
 		$diType = ( ( $this->m_typeid == '_txt' ) || ( $this->m_typeid == '_cod' ) ) ? SMWDataItem::TYPE_BLOB : SMWDataItem::TYPE_STRING;
 		if ( $dataItem->getDIType() == $diType ) {
 			$this->m_dataitem = $dataItem;
@@ -61,7 +56,6 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		$this->unstub();
 		return $this->m_caption;
 	}
 
@@ -83,38 +77,11 @@ class SMWStringValue extends SMWDataValue {
 		return $this->isValid() ? $this->getAbbValue( $linker, smwfXMLContentEncode( $this->m_dataitem->getString() ) ) : $this->getErrorText();
 	}
 
-	public function getDBkeys() {
-		$this->unstub();
-		return array( $this->m_dataitem->getString() );
-	}
-
-	public function getSignature() {
-		return  ( ( $this->m_typeid == '_txt' ) || ( $this->m_typeid == '_cod' ) ) ? 'l':'t';
-	}
-
-	/**
-	 * For perfomance reasons, long text data like _txt and _cod does not
-	 * support sorting. This class can be subclassed to change this.
-	 */
-	public function getValueIndex() {
-		return ( $this->m_typeid == '_txt' || $this->m_typeid == '_cod' )  ? - 1 : 0;
-	}
-
-	/**
-	 * For perfomance reasons, long text data like _txt and _cod does not
-	 * support string matching. This class can be subclassed to change this.
-	 */
-	public function getLabelIndex() {
-		return ( $this->m_typeid == '_txt' || $this->m_typeid == '_cod' )  ? - 1 : 0;
-	}
-
 	public function getWikiValue() {
-		$this->unstub();
 		return $this->m_dataitem->getString();
 	}
 
 	public function getInfolinks() {
-		$this->unstub();
 		if ( ( $this->m_typeid != '_txt' ) && ( $this->m_typeid != '_cod' ) ) {
 			return parent::getInfolinks();
 		} else {
@@ -123,7 +90,6 @@ class SMWStringValue extends SMWDataValue {
 	}
 
 	protected function getServiceLinkParams() {
-		$this->unstub();
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded string

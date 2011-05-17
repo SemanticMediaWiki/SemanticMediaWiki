@@ -134,9 +134,7 @@ class SMWPrintRequest {
 
 	/**
 	 * If this print request refers to some property, return the type id of this property.
-	 * Otherwise return FALSE.
-	 *
-	 * @todo It is unclear why the actual code returns '_wpg' as a default given this documentation.
+	 * Otherwise return '_wpg' since all other types of print request return wiki pages.
 	 * 
 	 * @return string
 	 */
@@ -145,10 +143,10 @@ class SMWPrintRequest {
 			if ( $this->m_mode == SMWPrintRequest::PRINT_PROP ) {
 				$this->m_typeid = $this->m_data->getDataItem()->findPropertyTypeID();
 			} else {
-				$this->m_typeid = '_wpg'; // return objects might be titles, but anyway
+				$this->m_typeid = '_wpg';
 			}
 		}
-		
+
 		return $this->m_typeid;
 	}
 

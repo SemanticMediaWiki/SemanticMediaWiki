@@ -129,7 +129,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		$diProperties = $data->getProperties();
 		$noresult = true;
 		foreach ( $diProperties as $diProperty ) {
-			$dvProperty = SMWDataValueFactory::newDataItemValue( $diProperty );
+			$dvProperty = SMWDataValueFactory::newDataItemValue( $diProperty, null );
 			$displayline = true;
 			if ( $dvProperty->isVisible() ) {
 				$dvProperty->setCaption( $this->getPropertyLabel( $dvProperty, $incoming ) );
@@ -153,7 +153,7 @@ class SMWSpecialBrowse extends SpecialPage {
 						// if there are more incoming values than a certain treshold, display a link to the rest instead
 						$body .= '<a href="' . $skin->makeSpecialUrl( 'SearchByProperty', 'property=' . urlencode( $dvProperty->getWikiValue() ) . '&value=' . urlencode( $this->subject->getWikiValue() ) ) . '">' . wfMsg( "smw_browse_more" ) . "</a>\n";
 					} else {
-						$dv = SMWDataValueFactory::newDataItemValue( $di, false, $diProperty );
+						$dv = SMWDataValueFactory::newDataItemValue( $di, $diProperty );
 						$body .= "<span class=\"smwb-" . $inv . "value\">" .
 						         $this->displayValue( $dvProperty, $dv, $incoming ) . "</span>";
 					}
@@ -184,16 +184,16 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @param[in] $incoming bool  If this is an incoming or outgoing link
 	 * @return string  HTML with the link to the article, browse, and search pages
 	 */
-	private function displayValue( SMWPropertyValue $property, SMWDataValue $value, $incoming ) {
+	private function displayValue( SMWPropertyValue $property, SMWDataValue $dataValue, $incoming ) {
 		global $wgUser;
 		$skin = $wgUser->getSkin();
-		$html = $value->getLongHTMLText( $skin );
-		if ( $value->getTypeID() == '_wpg' ) {
-			$html .= "&#160;" . SMWInfolink::newBrowsingLink( '+', $value->getLongWikiText() )->getHTML( $skin );
+		$html = $dataValue->getLongHTMLText( $skin );
+		if ( $dataValue->getTypeID() == '_wpg' ) {
+			$html .= "&#160;" . SMWInfolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $skin );
 		} elseif ( $incoming && $property->isVisible() ) {
-			$html .= "&#160;" . SMWInfolink::newInversePropertySearchLink( '+', $value->getTitle(), $property->getText(), 'smwsearch' )->getHTML( $skin );
+			$html .= "&#160;" . SMWInfolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $property->getText(), 'smwsearch' )->getHTML( $skin );
 		} else {
-			$html .= $value->getInfolinkText( SMW_OUTPUT_HTML, $skin );
+			$html .= $dataValue->getInfolinkText( SMW_OUTPUT_HTML, $skin );
 		}
 		return $html;
 	}
