@@ -7,13 +7,12 @@
 /**
  * This datavalue implements unit support custom units, for which users have
  * provided linear conversion factors within the wiki. Those user settings
- * are retrieved from a type page, the DB key of which is the type id of this
- * object.
+ * are retrieved from a property page associated with this object.
  *
  * @author Markus Krötzsch
  * @ingroup SMWDataValues
  */
-class SMWLinearValue extends SMWNumberValue {
+class SMWQuantityValue extends SMWNumberValue {
 
 	/// Array with format (canonical unit ID string) => (conversion factor)
 	protected $m_unitfactors = false;
@@ -118,17 +117,17 @@ class SMWLinearValue extends SMWNumberValue {
 		$this->m_unitfactors = array();
 		$this->m_mainunit = false;
 
-		try {
-			$typeDiWikiPage = new SMWDIWikiPage( $this->m_typeid, SMW_NS_TYPE, '' );
-		} catch ( SMWDataItemException $e ) {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-			$this->addError( wfMsgForContent( 'smw_unknowntype', SMWDataValueFactory::findTypeLabel( $this->getTypeID() ) ) );
-			return;
+		if ( $this->m_property !== null ) {
+			$propertyDiWikiPage = $this->m_property->getDiWikiPage();
 		}
-		$factors = smwfGetStore()->getPropertyValues( $typeDiWikiPage, new SMWDIProperty( '_CONV' ) );
+		if ( ( $this->m_property === null ) || ( $propertyDiWikiPage === null ) ) {
+			return; // we cannot find conversion factors without the property
+		}
+
+		$factors = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, new SMWDIProperty( '_CONV' ) );
 		if ( count( $factors ) == 0 ) { // no custom type
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-			$this->addError( wfMsgForContent( 'smw_unknowntype', SMWDataValueFactory::findTypeLabel( $this->getTypeID() ) ) );
+			$this->addError( wfMsgForContent( 'smw_nounitsdeclared' ) );
 			return;
 		}
 		$number = $unit = '';

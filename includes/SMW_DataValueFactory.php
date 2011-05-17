@@ -111,12 +111,9 @@ class SMWDataValueFactory {
 	static public function newTypeIdValue( $typeid, $value = false, $caption = false, $property = null ) {
 		self::initDatatypes();
 
-		if ( array_key_exists( $typeid, self::$mTypeClasses ) ) { // direct response for basic types
+		if ( array_key_exists( $typeid, self::$mTypeClasses ) ) {
 			$result = new self::$mTypeClasses[$typeid]( $typeid );
-		} elseif ( ( $typeid != '' ) && ( $typeid{0} != '_' ) ) { // custom type with linear conversion
-			//var_dump($typeid);var_dump(self::$mTypeClasses);exit;
-			$result = new self::$mTypeClasses['__lin']( $typeid );
-		} else { // type really unknown
+		} else {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			return new SMWErrorValue( $typeid, wfMsgForContent( 'smw_unknowntype', $typeid ), $value, $caption );
 		}
@@ -227,6 +224,7 @@ class SMWDataValueFactory {
 			'_dat'  => 'SMWTimeValue', // Time type
 			'_boo'  => 'SMWBoolValue', // Boolean type
 			'_rec'  => 'SMWRecordValue', // Value list type (replacing former nary properties)
+			'_qty'  => 'SMWQuantityValue', // Type for numbers with units of measurement
 			// Special types are not avaialble directly for users (and have no local language name):
 			'__typ' => 'SMWTypesValue', // Special type page type
 			'__tls' => 'SMWTypeListValue', // Special type list for decalring _rec properties
@@ -238,7 +236,6 @@ class SMWDataValueFactory {
 			'__spf' => 'SMWWikiPageValue', // Special Form page type for Semantic Forms
 			'__sin' => 'SMWWikiPageValue', // Special instance of type
 			'__red' => 'SMWWikiPageValue', // Special redirect type
-			'__lin' => 'SMWLinearValue', // Special linear unit conversion type
 			'__err' => 'SMWErrorValue', // Special error type
 			'__imp' => 'SMWImportValue', // Special import vocabulary type
 			'__pro' => 'SMWPropertyValue', // Property type (possibly predefined, no always based on a page)
@@ -263,6 +260,7 @@ class SMWDataValueFactory {
 			'_boo'  => SMWDataItem::TYPE_BOOLEAN, // Boolean type
 			'_rec'  => SMWDataItem::TYPE_CONTAINER, // Value list type (replacing former nary properties)
 			'_geo'  => SMWDataItem::TYPE_GEO, // Geographical coordinates
+			'_qty'  => SMWDataItem::TYPE_NUMBER, // Type for numbers with units of measurement
 			// Special types are not avaialble directly for users (and have no local language name):
 			'__typ' => SMWDataItem::TYPE_URI, // Special type page type
 			'__tls' => SMWDataItem::TYPE_STRING, // Special type list for declaring _rec properties
@@ -274,7 +272,6 @@ class SMWDataValueFactory {
 			'__spf' => SMWDataItem::TYPE_WIKIPAGE, // Special Form page type for Semantic Forms
 			'__sin' => SMWDataItem::TYPE_WIKIPAGE, // Special instance of type
 			'__red' => SMWDataItem::TYPE_WIKIPAGE, // Special redirect type
-			'__lin' => SMWDataItem::TYPE_NUMBER, // Special linear unit conversion type
 			'__err' => SMWDataItem::TYPE_STRING, // Special error type
 			'__imp' => SMWDataItem::TYPE_STRING, // Special import vocabulary type
 			'__pro' => SMWDataItem::TYPE_PROPERTY, // Property type (possibly predefined, no always based on a page)

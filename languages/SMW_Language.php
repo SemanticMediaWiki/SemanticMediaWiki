@@ -58,6 +58,7 @@ abstract class SMWLanguage {
 		'Number'                => '_num',
 		'Geographic coordinate' => '_geo',
 		'Temperature'           => '_tem',
+		'Quantity'              => '_qty',
 		'Date'                  => '_dat',
 		'Email'                 => '_ema',
 		'Annotation URI'        => '_anu',

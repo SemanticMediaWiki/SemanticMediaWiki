@@ -40,6 +40,7 @@ class SMWLanguageEn extends SMWLanguage {
 		'_anu' => 'Annotation URI',  // name of the annotation URI type (OWL annotation property)
 		'_tel' => 'Telephone number',  // name of the telephone (URI) type
 		'_rec' => 'Record', // name of record data type
+		'_qty' => 'Quantity', // name of the number type with units of measurement
 	);
 	
 	protected $m_DatatypeAliases = array(

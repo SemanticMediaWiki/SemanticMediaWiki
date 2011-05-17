@@ -131,7 +131,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 //	$wgAutoloadClasses['SMWTypeListValue']      	= $dvDir . 'SMW_DV_TypeList.php';
 	$wgAutoloadClasses['SMWNumberValue']         	= $dvDir . 'SMW_DV_Number.php';
 //	$wgAutoloadClasses['SMWTemperatureValue']    	= $dvDir . 'SMW_DV_Temperature.php';
-//	$wgAutoloadClasses['SMWLinearValue']         	= $dvDir . 'SMW_DV_Linear.php';
+//	$wgAutoloadClasses['SMWQuantityValue']         	= $dvDir . 'SMW_DV_Quantity.php';
 	$wgAutoloadClasses['SMWTimeValue']           	= $dvDir . 'SMW_DV_Time.php';
 //	$wgAutoloadClasses['SMWBoolValue']           	= $dvDir . 'SMW_DV_Bool.php';
 //	$wgAutoloadClasses['SMWConceptValue']        	= $dvDir . 'SMW_DV_Concept.php';
@@ -299,7 +299,6 @@ function smwfUnregisterDatatypes() {
 	SMWDataValueFactory::registerDatatype('_rec', 'SMWErrorValue');
 	SMWDataValueFactory::registerDatatype('__tls', 'SMWErrorValue');
 	SMWDataValueFactory::registerDatatype('__con', 'SMWErrorValue');
-	SMWDataValueFactory::registerDatatype('__lin', 'SMWErrorValue');
 	SMWDataValueFactory::registerDatatype('__imp', 'SMWErrorValue');
 	return true;
 }

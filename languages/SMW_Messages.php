@@ -114,7 +114,8 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_nofloat'       => '"$1" is not a number.',
 	'smw_infinite'      => 'Numbers as large as "$1" are not supported.',
 	'smw_unitnotallowed'=> '"$1" is not declared as a valid unit of measurement for this property.',
-	'smw_novalues'		=> 'No values specified.',
+	'smw_nounitsdeclared' => 'No units of measurement were declared for this property.',
+	'smw_novalues'      => 'No values specified.',
 
 	// Currently unused, floats silently store units.  'smw_unexpectedunit' => 'this property supports no unit conversion',
 

@@ -38,7 +38,6 @@ class SMWSQLStoreLight extends SMWStore {
 		'__sps' => true, // Special string type
 		'__spu' => true, // Special uri type
 		'__spf' => true, // Special form type (for Semantic Forms)
-		'__lin' => true, // Special linear unit conversion type
 		'__imp' => true, // Special import vocabulary type
 	);
 

@@ -145,10 +145,11 @@ class SMWTypesValue extends SMWDataValue {
 	/**
 	 * Is this a built-in datatype shipped with SMW (or an extension of SMW)?
 	 * (Alternatively it would be a user-defined derived datatype.)
+	 *
+	 * @deprecated As of SMW 1.6, there are no more user-defined datatypes, making this method useless. Will vanish in SMW 1.6.
 	 */
 	public function isBuiltIn() {
-		$v = $this->getDBkey();
-		return ( $v { 0 } == '_' );
+		return true;
 	}
 
 	/**
