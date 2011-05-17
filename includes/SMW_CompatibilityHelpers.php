@@ -127,7 +127,7 @@ class SMWCompatibilityHelpers {
 	 */
 	public static function getDBkeysFromDataItem( SMWDataItem $dataItem ) {
 		switch ( $dataItem->getDIType() ) {
-			case SMWDataItem::TYPE_STRING:
+			case SMWDataItem::TYPE_STRING: case SMWDataItem::TYPE_BLOB:
 				return array( $dataItem->getString() );
 			case SMWDataItem::TYPE_URI:
 				return array( $dataItem->getSerialization() );
