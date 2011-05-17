@@ -440,7 +440,7 @@ class SMWQueryParser {
 			} else {
 				$value = SMWDataValueFactory::newTypeIDValue( '_wpg', $chunk );
 				if ( $value->isValid() ) {
-					$result = $this->addDescription( $result, new SMWValueDescription( $value->getDataItem() ), false );
+					$result = $this->addDescription( $result, new SMWValueDescription( $value->getDataItem(), null ), false );
 				}
 			}
 

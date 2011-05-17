@@ -373,10 +373,12 @@ class SMWValueDescription extends SMWDescription {
 	
 	protected $m_dataItem;
 	protected $m_comparator;
+	protected $m_property;
 
-	public function __construct( SMWDataItem $dataItem, $comparator = SMW_CMP_EQ ) {
+	public function __construct( SMWDataItem $dataItem, $property, $comparator = SMW_CMP_EQ ) {
 		$this->m_dataItem = $dataItem;
 		$this->m_comparator = $comparator;
+		$this->m_property = $property;
 	}
 
 	/// @deprecated Use getDataItem() and SMWDataValueFactory::newDataItemValue() if needed. Vanishes before SMW 1.7
@@ -394,7 +396,7 @@ class SMWValueDescription extends SMWDescription {
 
 	public function getQueryString( $asvalue = false ) {
 		$comparator = SMWQueryLanguage::getStringForComparator( $this->m_comparator );
-		$dataValue = SMWDataValueFactory::newDataItemValue( $this->m_dataItem );
+		$dataValue = SMWDataValueFactory::newDataItemValue( $this->m_dataItem, $this->m_property );
 		if ( $asvalue ) {
 			return $comparator . $dataValue->getWikiValue();
 		} else { // this only is possible for values of Type:Page

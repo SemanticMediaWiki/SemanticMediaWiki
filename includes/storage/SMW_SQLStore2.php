@@ -813,7 +813,7 @@ class SMWSQLStore2 extends SMWStore {
 			foreach ( $data->getPropertyValues( $property ) as $di ) {
 				if ( $di instanceof SMWDIError ) { // error values, ignore
 					continue;
-				} 
+				}
 				// redirects were treated above
 
 				///TODO check needed if subject is null (would happen if a user defined proptable with !idsubject was used on an internal object -- currently this is not possible

@@ -35,14 +35,14 @@ class SMWConceptPage extends SMWOrderedListPage {
 			$desc = new SMWConceptDescription( $this->mTitle );
 			
 			if ( $this->from != '' ) {
-				$dv = SMWWikiPageValue::makePage( $this->from, NS_MAIN ); // make a dummy wiki page as boundary
-				$fromdesc = new SMWValueDescription( $dv, SMW_CMP_GEQ );
+				$diWikiPage = new SMWDIWikiPage( $this->from, NS_MAIN, '' ); // make a dummy wiki page as boundary
+				$fromdesc = new SMWValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
 				$desc = new SMWConjunction( array( $desc, $fromdesc ) );
 				$order = 'ASC';
 			} elseif ( $this->until != '' ) {
-				$dv = SMWWikiPageValue::makePage( $this->until, NS_MAIN ); // make a dummy wiki page as boundary
-				$fromdesc = new SMWValueDescription( $dv, SMW_CMP_LEQ );
-				$neqdesc = new SMWValueDescription( $dv, SMW_CMP_NEQ ); // do not include boundary in this case
+				$diWikiPage = new SMWDIWikiPage( $this->until, NS_MAIN, '' ); // make a dummy wiki page as boundary
+				$fromdesc = new SMWValueDescription( $diWikiPage, null, SMW_CMP_LEQ );
+				$neqdesc = new SMWValueDescription( $diWikiPage, null, SMW_CMP_NEQ ); // do not include boundary in this case
 				$desc = new SMWConjunction( array( $desc, $fromdesc, $neqdesc ) );
 				$order = 'DESC';
 			} else {

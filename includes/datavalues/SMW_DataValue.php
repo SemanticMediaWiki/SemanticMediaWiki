@@ -362,6 +362,10 @@ abstract class SMWDataValue {
 	 * value is not used elsewhere when calling this method. The function can
 	 * return SMWThingDescription to not impose any condition, e.g. if parsing
 	 * failed. Error messages of this SMWDataValue object are propagated.
+	 * 
+	 * @note Descriptions of values need to know their property to be able to
+	 * create a parsable wikitext version of a query condition again. Thus it
+	 * might be necessary to call setProperty() before using this method.
 	 *
 	 * @param string $value
 	 */
@@ -375,7 +379,7 @@ abstract class SMWDataValue {
 		if ( !$this->isValid() ) {
 			return new SMWThingDescription();
 		} else {
-			return new SMWValueDescription( $this->getDataItem(), $comparator );
+			return new SMWValueDescription( $this->getDataItem(), $this->m_property, $comparator );
 		}
 	}
 
