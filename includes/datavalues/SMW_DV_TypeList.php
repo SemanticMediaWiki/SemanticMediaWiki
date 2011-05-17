@@ -35,7 +35,7 @@ class SMWTypeListValue extends SMWDataValue {
 	 * @param $dataitem SMWDataItem
 	 * @return boolean
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
+	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_STRING ) {
 			$this->m_dataitem = $dataItem;
 			$this->m_typevalues = array();
