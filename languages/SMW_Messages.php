@@ -2046,6 +2046,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_nofloat' => '„$1“ ist keine Zahl.',
 	'smw_infinite' => 'Die Zahl „$1“ ist zu lang.',
 	'smw_unitnotallowed' => '„$1“ wurde nicht als gültige Maßeinheit für dieses Attribut festgelegt.',
+	'smw_nounitsdeclared' => 'Es wurden keine Maßeinheiten für dieses Attribut angegeben.',
 	'smw_novalues' => 'Es wurden keine Werte angegeben.',
 	'smw_nodatetime' => 'Das Datum „$1“ wurde nicht verstanden.',
 	'smw_toomanyclosing' => 'In der Abfrage kommen zu viele „$1“ vor.',
