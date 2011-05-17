@@ -87,10 +87,10 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( $this->m_caption === false ) {
 			$this->m_caption = $value;
 		}
-		$this->m_dataitem = null;
+
 		if ( $value != '' ) {
 			$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
-			///TODO: Escape the text so users can see any punctuation problems (bug 11666).
+			///TODO: Escape the text so users can see punctuation problems (bug 11666).
 			if ( $this->m_title === null ) {
 				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
@@ -107,10 +107,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			}
 		} else {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-			$this->addError( wfMsgForContent( 'smw_notitle', $value ) );
-		}
-		if ( $this->m_dataitem === null ) { // make sure that m_dataitem is set in any case
-			$this->m_dataitem = new SMWDIWikiPage( 'ERROR', NS_MAIN, '', $this->m_typeid );
+			$this->addError(  wfMsgForContent( 'smw_notitle', $value ) );
 		}
 	}
 
@@ -204,11 +201,19 @@ class SMWWikiPageValue extends SMWDataValue {
 		return $this->isValid() ? $this->getPrefixedText() : implode( "\t", $this->getErrors() );
 	}
 
+	/**
+	 * Create links to mapping services based on a wiki-editable message.
+	 * The parameters available to the message are:
+	 * $1: urlencoded article name (no namespace)
+	 *
+	 * @return array
+	 */
 	protected function getServiceLinkParams() {
-		// Create links to mapping services based on a wiki-editable message. The parameters
-		// available to the message are:
-		// $1: urlencoded article name (no namespace)
-		return array( rawurlencode( str_replace( '_', ' ', $this->m_dataitem->getDBkey() ) ) );
+		if ( $this->isValid() ) {
+			return array( rawurlencode( str_replace( '_', ' ', $this->m_dataitem->getDBkey() ) ) );
+		} else {
+			return array();
+		}
 	}
 
 	public function getExportData() {
@@ -243,12 +248,11 @@ class SMWWikiPageValue extends SMWDataValue {
 	public function getTitle() {
 		if ( ( $this->isValid() ) && ( $this->m_title === null ) ) {
 			$this->m_title = $this->m_dataitem->getTitle();
-		}
-
-		if ( $this->m_title === null ) { // should not normally happen, but anyway ...
-			global $wgContLang;
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-			$this->addError( wfMsgForContent( 'smw_notitle', $wgContLang->getNsText( $this->m_dataitem->getNamespace() ) . ':' . $this->m_dataitem->getDBkey() ) );
+			if ( $this->m_title === null ) { // should not normally happen, but anyway ...
+				global $wgContLang;
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+				$this->addError( wfMsgForContent( 'smw_notitle', $wgContLang->getNsText( $this->m_dataitem->getNamespace() ) . ':' . $this->m_dataitem->getDBkey() ) );
+			}
 		}
 
 		return $this->m_title;
