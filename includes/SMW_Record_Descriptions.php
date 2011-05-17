@@ -60,7 +60,7 @@ class SMWRecordDescription extends SMWConjunction {
 			$log = array_merge( $log, $prunelog );
 			$maxdepth = $newdepth;
 			if ( count( $result->getDescriptions() ) == 1 ) { // simplify unary conjunctions!
-				$descriptions = $result->getDescriptions()
+				$descriptions = $result->getDescriptions();
 				$result = array_shift( $descriptions );
 			}
 			$result->setPrintRequests( $this->getPrintRequests() );
