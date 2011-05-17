@@ -225,7 +225,7 @@ END;
 						$found_values = true;
 					} elseif ( $found_values || !$first_value ) {
 						// any value after '(' or non-first values on first column
-						$result .= ', ';
+						$result .= "$listsep ";
 					}
 					
 					if ( $first_value ) { // first value in any column, print header
