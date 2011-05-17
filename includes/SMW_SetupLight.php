@@ -89,6 +89,8 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	// Set up autoloading; essentially all classes should be autoloaded!
 	$wgAutoloadClasses['SMWParserExtensions']       = $smwgIP . 'includes/SMW_ParserExtensions.php';
 	$wgAutoloadClasses['SMWInfolink']               = $smwgIP . 'includes/SMW_Infolink.php';
+	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $incDir . 'SMW_CompatibilityHelpers.php';
+	$wgAutoloadClasses['SMWDataValueFactory']   	= $incDir . 'SMW_DataValueFactory.php';
 // 	$wgAutoloadClasses['SMWFactbox']                = $smwgIP . 'includes/SMW_Factbox.php';
 	$wgAutoloadClasses['SMWParseData']              = $smwgIP . 'includes/SMW_ParseData.php';
 	$wgAutoloadClasses['SMWOutputs']                = $smwgIP . 'includes/SMW_Outputs.php';
@@ -117,12 +119,12 @@ function enableSemantics( $namespace = null, $complete = false ) {
 
 	// Datavalues
 	$dvDir = $smwgIP . 'includes/datavalues/';
+	$wgAutoloadClasses['SMWDataValue']           	= $dvDir . 'SMW_DataValue.php';
 	$wgAutoloadClasses['SMWContainerValue']		= $dvDir . 'SMW_DV_Container.php';
 //	$wgAutoloadClasses['SMWRecordValue']         	= $dvDir . 'SMW_DV_Record.php';
 	$wgAutoloadClasses['SMWErrorValue']          	= $dvDir . 'SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWStringValue']         	= $dvDir . 'SMW_DV_String.php';
 	$wgAutoloadClasses['SMWWikiPageValue']       	= $dvDir . 'SMW_DV_WikiPage.php';
-	$wgAutoloadClasses['SMWSimpleWikiPageValue'] 	= $dvDir . 'SMW_DV_SimpleWikiPage.php';
 	$wgAutoloadClasses['SMWPropertyValue']       	= $dvDir . 'SMW_DV_Property.php';
 	$wgAutoloadClasses['SMWURIValue']            	= $dvDir . 'SMW_DV_URI.php';
 	$wgAutoloadClasses['SMWTypesValue']          	= $dvDir . 'SMW_DV_Types.php';
