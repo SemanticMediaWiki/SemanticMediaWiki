@@ -185,7 +185,7 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn( "SMWSQLStore2::getPropertyValues (SMW)" );
 
 		if ( $property->isInverse() ) { // inverses are working differently
-			$noninverse = new SMWDIProperty( $property->getKey(), false, $property->findPropertyTypeID() );
+			$noninverse = new SMWDIProperty( $property->getKey(), false );
 			$result = $this->getPropertySubjects( $noninverse, $subject, $requestoptions );
 		} elseif ( $subject !== null ) { // subject given, use semantic data cache
 			$sd = $this->getSemanticData( $subject, array( $property->findPropertyTypeID() ) );
@@ -396,12 +396,9 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn( "SMWSQLStore2::getPropertySubjects (SMW)" );
 
 		if ( $property->isInverse() ) { // inverses are working differently
-			$noninverse = clone $property;
-			$noninverse->setInverse( false );
-
+			$noninverse = new SMWDIProperty( $property->getKey(), false );
 			$result = $this->getPropertyValues( $value, $noninverse, $requestoptions );
 			wfProfileOut( "SMWSQLStore2::getPropertySubjects (SMW)" );
-
 			return $result;
 		}
 
