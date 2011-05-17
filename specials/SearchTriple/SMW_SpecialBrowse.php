@@ -369,7 +369,8 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return string  Transformed text
 	 */
 	private function unbreak( $text ) {
- 		$text = preg_replace( '/[\s]/u', '&#160;', $text, - 1, $count );
- 		return $count > 2 ? preg_replace( '/(&#160;)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
+		$nonBreakingSpace = html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' );
+ 		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, - 1, $count );
+ 		return $count > 2 ? preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
 	}
 }
