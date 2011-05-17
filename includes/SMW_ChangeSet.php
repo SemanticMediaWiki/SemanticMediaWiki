@@ -255,22 +255,20 @@ class SMWChangeSet {
 	 * 
 	 * @return array of SMWPropertyChange
 	 */
-	public function getAllPropertyChanges( SMWDIProperty $proprety ) {
+	public function getAllPropertyChanges( SMWDIProperty $property ) {
 		$changes = array();
 		
-		foreach ( $this->getAllProperties() as /* SMWDIProperty */ $property ) {
-			foreach ( $this->changes->getPropertyChanges( $property ) as /* SMWPropertyChange */ $change ) {
-				$changes[] = $change;
-			}
-			
-			foreach ( $this->insertions->getPropertyValues( $property ) as /* SMWDataItem */ $dataItem ) {
-				$changes[] = new SMWPropertyChange( null, $dataItem );
-			}
-
-			foreach ( $this->deletions->getPropertyValues( $property ) as /* SMWDataItem */ $dataItem ) {
-				$changes[] = new SMWPropertyChange( $dataItem, null );
-			}			
+		foreach ( $this->changes->getPropertyChanges( $property ) as /* SMWPropertyChange */ $change ) {
+			$changes[] = $change;
 		}
+		
+		foreach ( $this->insertions->getPropertyValues( $property ) as /* SMWDataItem */ $dataItem ) {
+			$changes[] = new SMWPropertyChange( null, $dataItem );
+		}
+
+		foreach ( $this->deletions->getPropertyValues( $property ) as /* SMWDataItem */ $dataItem ) {
+			$changes[] = new SMWPropertyChange( $dataItem, null );
+		}			
 		
 		return $changes;
 	}	
