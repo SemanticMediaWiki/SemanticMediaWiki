@@ -599,7 +599,7 @@ abstract class SMWDataValue {
 	 * @return string
 	 */
 	public function getHash() {
-		return implode( "\t", $this->isValid() ? $this->getDBkeys() : $this->mErrors );
+		return $this->isValid() ? $this->m_dataitem->getHash() : implode( "\t", $this->mErrors );
 	}
 
 	/**
