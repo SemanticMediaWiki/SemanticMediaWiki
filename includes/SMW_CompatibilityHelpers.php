@@ -77,25 +77,11 @@ class SMWCompatibilityHelpers {
 				return new SMWDIGeoCoord( array( 'lat' => (float)$dbkeys[0], 'lon' => (float)$dbkeys[1] ) );
 			case SMWDataItem::TYPE_CONTAINER:
 				$semanticData = new SMWContainerSemanticData();
-				if ( $typeid == '_rec' ) {
-					$types = SMWRecordValue::findTypeIds( $diProperty );
-					foreach ( reset( $dbkeys ) as $value ) {
-						if ( is_array( $value ) && ( count( $value ) == 2 ) ) {
-							$diP = new SMWDIProperty( reset( $value ), false );
-							$pnum = intval( substr( reset( $value ), 1 ) ); // try to find the number of this property
-							if ( array_key_exists( $pnum - 1, $types ) ) {
-								$diV = self::dataItemFromDBKeys( $types[$pnum - 1], end( $value ) );
-								$semanticData->addPropertyObjectValue( $diP, $diV );
-							}
-						}
-					}
-				} else {
-					foreach ( reset( $dbkeys ) as $value ) {
-						if ( is_array( $value ) && ( count( $value ) == 2 ) ) {
-							$diP = new SMWDIProperty( reset( $value ), false );
-							$diV = self::dataItemFromDBKeys( $diP->findPropertyTypeID(), end( $value ) );
-							$semanticData->addPropertyObjectValue( $diP, $diV );
-						}
+				foreach ( reset( $dbkeys ) as $value ) {
+					if ( is_array( $value ) && ( count( $value ) == 2 ) ) {
+						$diP = new SMWDIProperty( reset( $value ), false );
+						$diV = self::dataItemFromDBKeys( $diP->findPropertyTypeID(), end( $value ) );
+						$semanticData->addPropertyObjectValue( $diP, $diV );
 					}
 				}
 				return new SMWDIContainer( $semanticData );

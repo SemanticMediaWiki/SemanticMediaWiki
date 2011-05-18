@@ -227,7 +227,7 @@ class SMWDataValueFactory {
 			'_qty'  => 'SMWQuantityValue', // Type for numbers with units of measurement
 			// Special types are not avaialble directly for users (and have no local language name):
 			'__typ' => 'SMWTypesValue', // Special type page type
-			'__tls' => 'SMWTypeListValue', // Special type list for decalring _rec properties
+			'__pls' => 'SMWPropertyListValue', // Special type list for decalring _rec properties
 			'__con' => 'SMWConceptValue', // Special concept page type
 			'__sps' => 'SMWStringValue', // Special string type
 			'__spu' => 'SMWURIValue', // Special uri type
@@ -263,7 +263,7 @@ class SMWDataValueFactory {
 			'_qty'  => SMWDataItem::TYPE_NUMBER, // Type for numbers with units of measurement
 			// Special types are not avaialble directly for users (and have no local language name):
 			'__typ' => SMWDataItem::TYPE_URI, // Special type page type
-			'__tls' => SMWDataItem::TYPE_STRING, // Special type list for declaring _rec properties
+			'__pls' => SMWDataItem::TYPE_STRING, // Special type list for decalring _rec properties
 			'__con' => SMWDataItem::TYPE_CONCEPT, // Special concept page type
 			'__sps' => SMWDataItem::TYPE_STRING, // Special string type
 			'__spu' => SMWDataItem::TYPE_URI, // Special uri type
