@@ -10,7 +10,7 @@
  * @file SMW_PropertyPage.php
  * @ingroup SMW
  * 
- * @author: Markus Krötzsch
+ * @author Markus Krötzsch
  */
 class SMWPropertyPage extends SMWOrderedListPage {
 
@@ -142,7 +142,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		
 		for ( $index = $start; $index < $ac; $index++ ) {
 			$diWikiPage = $this->diWikiPages[$index];
-			$dvWikiPage = SMWDataValueFactory::newDataItemValue( $diWikiPage, $this->mProperty );
+			$dvWikiPage = SMWDataValueFactory::newDataItemValue( $diWikiPage, null );
 			$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPage );
 			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 			
