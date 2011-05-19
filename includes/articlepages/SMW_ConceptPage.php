@@ -26,13 +26,15 @@ class SMWConceptPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Fill the internal arrays with the set of articles to be displayed (possibly plus one additional
-	 * article that indicates further results).
+	 * Fill the internal arrays with the list of wiki page data items to be
+	 * displayed (possibly plus one additional article that indicates
+	 * further results).
 	 */
 	protected function doQuery() {
 		if ( $this->limit > 0 ) {
 			$store = smwfGetStore();
-			$desc = new SMWConceptDescription( $this->mTitle );
+			$thisDiWikiPage = SMWDIWikiPage::newFromTitle( $this->mTitle );
+			$desc = new SMWConceptDescription( $thisDiWikiPage );
 			
 			if ( $this->from != '' ) {
 				$diWikiPage = new SMWDIWikiPage( $this->from, NS_MAIN, '' ); // make a dummy wiki page as boundary
@@ -58,17 +60,17 @@ class SMWConceptPage extends SMWOrderedListPage {
 			$row = $result->getNext();
 			
 			while ( $row !== false ) {
-				$this->articles[] = end( $row )->getNextDataValue();
+				$this->diWikiPages[] = end( $row )->getNextDataItem();
 				$row = $result->getNext();
 			}
 			
 			if ( $order == 'DESC' ) {
-				$this->articles = array_reverse( $this->articles );
+				$this->diWikiPages = array_reverse( $this->diWikiPages );
 			}
 			
 			$this->m_errors = $query->getErrors();
 		} else {
-			$this->articles = array();
+			$this->diWikiPages = array();
 			$this->errors = array();
 		}
 	}
@@ -86,7 +88,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 		$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n";
 
 		$r .= '<h2>' . wfMsg( 'smw_concept_header', $ti ) . "</h2>\n";
-		$r .= wfMsgExt( 'smw_conceptarticlecount', array( 'parsemag' ), min( $this->limit, count( $this->articles ) ) ) . smwfEncodeMessages( $this->m_errors ) .  "\n";
+		$r .= wfMsgExt( 'smw_conceptarticlecount', array( 'parsemag' ), min( $this->limit, count( $this->diWikiPages ) ) ) . smwfEncodeMessages( $this->m_errors ) .  "\n";
 
 		$r .= $this->formatList();
 		$r .= "\n</div>" . $nav;
@@ -95,14 +97,14 @@ class SMWConceptPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Format a list of articles chunked by letter, either as a
-	 * bullet list or a columnar format, depending on the length.
+	 * Format a list of wiki pages chunked by letter, either as a bullet
+	 * list or a columnar format, depending on the length.
 	 *
-	 * @param int   $cutoff
+	 * @param int $cutoff
 	 * @return string
 	 */
 	private function formatList( $cutoff = 6 ) {
-		$end = count( $this->articles );
+		$end = count( $this->diWikiPages );
 		
 		if ( $end > $this->limit ) {
 			if ( $this->until != '' ) {
@@ -115,14 +117,13 @@ class SMWConceptPage extends SMWOrderedListPage {
 			$start = 0;
 		}
 
-		if ( count ( $this->articles ) > $cutoff ) {
-			return $this->columnList( $start, $end, $this->articles );
-		} elseif ( count( $this->articles ) > 0 ) {
-			// for short lists of articles
-			return $this->shortList( $start, $end, $this->articles );
+		if ( count ( $this->diWikiPages ) > $cutoff ) {
+			return $this->columnList( $start, $end, $this->diWikiPages );
+		} elseif ( count( $this->diWikiPages ) > 0 ) {
+			return $this->shortList( $start, $end, $this->diWikiPages );
+		} else {
+			return '';
 		}
-		
-		return '';
 	}
 
 }

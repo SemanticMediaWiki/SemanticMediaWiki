@@ -69,7 +69,7 @@ abstract class SMWOrderedListPage extends Article {
 		// Copied from CategoryPage
 		$diff = $wgRequest->getVal( 'diff' );
 		$diffOnly = $wgRequest->getBool( 'diffonly', $wgUser->getOption( 'diffonly' ) );
-		
+
 		if ( isset( $diff ) && $diffOnly ) {
 			return Article::view();
 		}
@@ -83,17 +83,17 @@ abstract class SMWOrderedListPage extends Article {
 	 */
 	protected function showList() {
 		wfProfileIn( __METHOD__ . ' (SMW)' );
-		
+
 		global $wgOut, $wgRequest;
-		
+
 		$this->from = $wgRequest->getVal( 'from' );
 		$this->until = $wgRequest->getVal( 'until' );
-		
+
 		if ( $this->initParameters() ) {
 			$wgOut->addHTML( $this->getHTML() );
 			SMWOutputs::commitToOutputPage( $wgOut ); // Flush required CSS to output
 		}
-		
+
 		wfProfileOut( __METHOD__ . ' (SMW)' );
 	}
 
@@ -119,7 +119,7 @@ abstract class SMWOrderedListPage extends Article {
 		$this->clearPageState();
 		$this->doQuery();
 		$r = "<br id=\"smwfootbr\"/>\n" . $this->getPages();
-		
+
 		return $r;
 	}
 
@@ -196,11 +196,10 @@ abstract class SMWOrderedListPage extends Article {
 	 * @return Skin
 	 */
 	protected function getSkin() {
+		global $wgUser;
 		if ( !$this->skin ) {
-			global $wgUser;
 			$this->skin = $wgUser->getSkin();
 		}
-		
 		return $this->skin;
 	}
 
@@ -233,50 +232,51 @@ abstract class SMWOrderedListPage extends Article {
 		// Get and display header.
 		$r = '<table width="100%"><tr valign="top">';
 
-		$prev_start_char = 'none';
+		$prevStartChar = 'none';
 
 		// Loop through the chunks.
 		for ( $startChunk = $start, $endChunk = $chunk, $chunkIndex = 0;
 			$chunkIndex < 3;
-			$chunkIndex++, $startChunk = $endChunk, $endChunk += $chunk + 1 ) {
+			++$chunkIndex, $startChunk = $endChunk, $endChunk += $chunk + 1 ) {
 			$r .= "<td>\n";
 			$atColumnTop = true;
 
 			// output all diWikiPages
-			for ( $index = $startChunk ; $index < $endChunk && $index < $end; $index++ ) {
+			for ( $index = $startChunk ; $index < $endChunk && $index < $end; ++$index ) {
 				$dataValue = SMWDataValueFactory::newDataItemValue( $diWikiPages[$index], $this->mProperty );
 				// check for change of starting letter or begining of chunk
 				$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPages[$index] );
-				$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
-				
+				$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
+
 				if ( ( $index == $startChunk ) ||
-					 ( $start_char != $prev_start_char ) ) {
+					 ( $startChar != $prevStartChar ) ) {
 					if ( $atColumnTop ) {
 						$atColumnTop = false;
 					} else {
 						$r .= "</ul>\n";
 					}
-					
-					$cont_msg = "";
-					
-					if ( $start_char == $prev_start_char ) {
-						$cont_msg = wfMsgHtml( 'listingcontinuesabbrev' );
+
+					if ( $startChar == $prevStartChar ) {
+						$cont_msg = ' ' . wfMsgHtml( 'listingcontinuesabbrev' );
+					} else {
+						$cont_msg = '';
 					}
-					
-					$r .= "<h3>" . htmlspecialchars( $start_char ) . " $cont_msg</h3>\n<ul>";
-					$prev_start_char = $start_char;
+
+					$r .= "<h3>" . htmlspecialchars( $startChar ) . $cont_msg . "</h3>\n<ul>";
+
+					$prevStartChar = $startChar;
 				}
-				
+
 				$r .= "<li>" . $dataValue->getLongHTMLText( $this->getSkin() ) . "</li>\n";
 			}
-			
+
 			if ( !$atColumnTop ) {
 				$r .= "</ul>\n";
 			}
-			
+
 			$r .= "</td>\n";
 		}
-		
+
 		$r .= '</tr></table>';
 		
 		return $r;
@@ -296,19 +296,19 @@ abstract class SMWOrderedListPage extends Article {
 
 		$startDv = SMWDataValueFactory::newDataItemValue( $diWikiPages[$start], $this->mProperty );
 		$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPages[$start] );
-		$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
-		$r = '<h3>' . htmlspecialchars( $start_char ) . "</h3>\n" .
+		$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
+		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
 		     '<ul><li>' . $startDv->getLongHTMLText( $this->getSkin() ) . '</li>';
 
-		$prev_start_char = $start_char;
+		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {
 			$dataValue = SMWDataValueFactory::newDataItemValue( $diWikiPages[$index], $this->mProperty );
 			$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPages[$index] );
-			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
+			$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 
-			if ( $start_char != $prev_start_char ) {
-				$r .= "</ul><h3>" . htmlspecialchars( $start_char ) . "</h3>\n<ul>";
-				$prev_start_char = $start_char;
+			if ( $startChar != $prevStartChar ) {
+				$r .= "</ul><h3>" . htmlspecialchars( $startChar ) . "</h3>\n<ul>";
+				$prevStartChar = $startChar;
 			}
 
 			$r .= '<li>' . $dataValue->getLongHTMLText( $this->getSkin() ) . '</li>';

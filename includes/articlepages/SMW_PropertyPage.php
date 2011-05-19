@@ -73,8 +73,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	}
 
 	/**
-	 * Generates the headline for the page list and the HTML encoded list of pages which
-	 * shall be shown.
+	 * Generates the headline for the page list and the HTML encoded list
+	 * of pages which shall be shown.
 	 */
 	protected function getPages() {
 		wfProfileIn( __METHOD__ . ' (SMW)' );
