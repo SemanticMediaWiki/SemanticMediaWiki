@@ -7,8 +7,9 @@ For a documentation of all features, see http://semantic-mediawiki.org
   only units with a conversion factor on the custom type page are accepted.
 * Changed the way parameters in query printers are specified and handled
   using the Validator extension. This includes improvements to the parameter
-  options in the Special:Ask GUI. 
+  options in the Special:Ask GUI and better error reporting for ask queries. 
 * Added UNIX-style DSV (Delimiter-separated values) result format.
+* Fixed PostGres SQL issues with the installation and upgrade code.
 
 == SMW 1.5.6 ==
 
