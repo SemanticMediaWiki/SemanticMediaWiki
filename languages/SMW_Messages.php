@@ -3176,6 +3176,7 @@ $messages['fr'] = array(
 	'smw_nofloat' => '« $1 » n’est pas un nombre.',
 	'smw_infinite' => 'Les nombres aussi grand que « $1 » ne sont pas supportés.',
 	'smw_unitnotallowed' => '"$1" n\'est pas déclaré comme une unité valide de mesure pour cette propriété.',
+	'smw_nounitsdeclared' => "Aucune unité de mesure n'a été déclarée pour cette propriété.",
 	'smw_novalues' => 'Aucune valeur spécifiée.',
 	'smw_nodatetime' => 'La date « $1 » n’a pas été comprise.',
 	'smw_toomanyclosing' => 'Il semble y avoir trop d’occurences de « $1 » dans la requête.',
