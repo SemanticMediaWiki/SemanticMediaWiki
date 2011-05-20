@@ -6940,6 +6940,7 @@ $messages['nah'] = array(
 
 /** Dutch (Nederlands)
  * @author Kghbln
+ * @author SPQRobin
  * @author Siebrand
  */
 $messages['nl'] = array(
@@ -7020,6 +7021,7 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw_nofloat' => '“$1” is geen getal.',
 	'smw_infinite' => 'Getallen zo groot als “$1” worden niet ondersteund.',
 	'smw_unitnotallowed' => '"$1" is niet ingesteld als een geldige meeteenheid voor deze eigenschap.',
+	'smw_nounitsdeclared' => 'Er zijn geen meeteenheden verklaard voor deze eigenschap.',
 	'smw_novalues' => 'Geen waarden opgegeven.',
 	'smw_nodatetime' => 'De datum “$1” kon niet verwerkt worden.',
 	'smw_toomanyclosing' => '“$1” lijkt te vaak voor te komen in de zoekopdracht.',
