@@ -135,7 +135,19 @@ class SMWPropertyChanges implements Iterator {
 		}
 
 		$this->addPropertyObjectChange( $property, $change );
-	}	
+	}
+	
+	/**
+	 * Removes all changes for a certian property.
+	 * 
+	 * @param SMWDIProperty $property
+	 */
+	public function removeChangesForProperty( SMWDIProperty $property ) {
+		if ( array_key_exists( $property->getKey(), $this->changes ) ) {
+			unset( $this->changes[$property->getKey()] );
+			unset( $this->properties[$property->getKey()] );
+		}
+	}
 	
 	function rewind() {
 		$this->pos = 0;
@@ -161,6 +173,6 @@ class SMWPropertyChanges implements Iterator {
 
 	function valid() {
 		return $this->current() !== false;
-	}	
+	}
 	
 }

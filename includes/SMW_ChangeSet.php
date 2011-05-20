@@ -171,12 +171,14 @@ class SMWChangeSet {
 	/**
 	 * Returns whether the set contains any changes.
 	 * 
+	 * @param boolean $refresh
+	 * 
 	 * @return boolean
 	 */
-	public function hasChanges() {
+	public function hasChanges( $refresh = false ) {
 		return $this->changes->hasChanges()
-			|| $this->insertions->hasVisibleProperties()
-			|| $this->deletions->hasVisibleProperties();
+			|| $this->insertions->hasVisibleProperties( $refresh )
+			|| $this->deletions->hasVisibleProperties( $refresh );
 	}
 	
 	/**
@@ -236,7 +238,7 @@ class SMWChangeSet {
 	}
 	
 	/**
-	 * 
+	 * Returns a list of all properties.
 	 * 
 	 * @return array of SMWDIProperty
 	 */
@@ -246,6 +248,17 @@ class SMWChangeSet {
 			$this->getInsertions()->getProperties(),
 			$this->getDeletions()->getProperties()
 		);
+	}
+	
+	/**
+	 * Removes all changes for a certian property.
+	 * 
+	 * @param SMWDIProperty $property
+	 */
+	public function removeChangesForProperty( SMWDIProperty $property ) {
+		$this->getChanges()->removeChangesForProperty( $property );
+		$this->getInsertions()->removeDataForProperty( $property );
+		$this->getDeletions()->removeDataForProperty( $property );
 	}
 	
 	/**
