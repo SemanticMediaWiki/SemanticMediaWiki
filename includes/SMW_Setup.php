@@ -34,7 +34,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	global $wgVersion, $wgFooterIcons, $wgExtensionFunctions, $wgAutoloadClasses, $wgSpecialPages;
 	global $wgSpecialPageGroups, $wgHooks, $wgExtensionMessagesFiles;
 	global $smwgIP, $smwgNamespace, $wgJobClasses, $wgExtensionAliasesFiles, $wgServer;
-	global $wgResourceModules, $smwgScriptPath;
+	global $wgResourceModules, $smwgScriptPath, $wgAPIModules;
 	
 	$wgFooterIcons['poweredby']['semanticmediawiki'] = array(
 		'src' => null,
@@ -298,6 +298,9 @@ function enableSemantics( $namespace = null, $complete = false ) {
 
 	//$wgAutoloadClasses['ApiSMWQuery']             	= $smwgIP . 'includes/api/ApiSMWQuery.php';
 	//$wgAPIModules['smwquery'] = 'ApiSMWQuery';
+	
+	$wgAutoloadClasses['ApiSMWInfo']             = $smwgIP . 'includes/api/ApiSMWInfo.php';
+	$wgAPIModules['smwinfo'] = 'ApiSMWInfo';
 	
 	return true;
 }
