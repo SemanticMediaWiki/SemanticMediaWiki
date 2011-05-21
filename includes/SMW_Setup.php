@@ -100,7 +100,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 
 	// Set up autoloading; essentially all classes should be autoloaded!
 	$incDir = $smwgIP . 'includes/';
-	$wgAutoloadClasses['SMWChangeSet']   		= $incDir . 'SMW_ChangeSet.php';
 	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $incDir . 'SMW_CompatibilityHelpers.php';
 	$wgAutoloadClasses['SMWDataValueFactory']   	= $incDir . 'SMW_DataValueFactory.php';
 	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';	
@@ -108,8 +107,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';	
 	$wgAutoloadClasses['SMWParseData']              = $incDir . 'SMW_ParseData.php';	
 	$wgAutoloadClasses['SMWParserExtensions']       = $incDir . 'SMW_ParserExtensions.php';
-	$wgAutoloadClasses['SMWPropertyChange']       	= $incDir . 'SMW_PropertyChange.php';
-	$wgAutoloadClasses['SMWPropertyChanges']	= $incDir . 'SMW_PropertyChanges.php';
 	$wgAutoloadClasses['SMWQueryLanguage']          = $incDir . 'SMW_QueryLanguage.php';	
 	$wgAutoloadClasses['SMWSemanticData']           = $incDir . 'SMW_SemanticData.php';
 	$wgAutoloadClasses['SMWPageLister']             = $incDir . 'SMW_PageLister.php';

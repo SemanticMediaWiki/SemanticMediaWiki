@@ -283,16 +283,6 @@ abstract class SMWStore {
 	public function updateData( SMWSemanticData $data ) {
 		wfRunHooks( 'SMWStore::updateDataBefore', array( $this, $data ) );
 
-		global $smwgCheckChangesBeforeUpdate;
-		if ( $smwgCheckChangesBeforeUpdate && $data->hasVisibleProperties() ) {
-			$oldData = $this->getSemanticData( $data->getSubject() );
-			$changeSet = SMWChangeSet::newFromSemanticData( $oldData, $data );
-			
-			if ( $changeSet->hasChanges() ) {
-				wfRunHooks( 'SMWStore::dataChanged', array( $this, $changeSet ) );
-			}
-		}
-
 		// Invalidate the page, so data stored on it gets displayed immediately in queries.
 		global $smwgAutoRefreshSubject;
 		if ( $smwgAutoRefreshSubject && !wfReadOnly() ) {
