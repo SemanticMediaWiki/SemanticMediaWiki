@@ -10,7 +10,7 @@
  *
  * Some code adapted from CategoryPage.php
  * 
- * @file SMW_OrderedListPage.php 
+ * @file SMW_PageLister.php 
  * @ingroup SMW
  * 
  * @author Nikolas Iwan
@@ -192,7 +192,7 @@ class SMWPageLister {
 
 		if ( count ( $this->mDiWikiPages ) > $cutoff ) {
 			return self::getColumnList( $start, $end, $this->mDiWikiPages, $this->mDiProperty, $this->mSkin );
-		} elseif ( count( $diWikiPages ) > 0 ) {
+		} elseif ( count( $this->mDiWikiPages ) > 0 ) {
 			return self::getShortList( $start, $end, $this->mDiWikiPages, $this->mDiProperty, $this->mSkin );
 		} else {
 			return '';
