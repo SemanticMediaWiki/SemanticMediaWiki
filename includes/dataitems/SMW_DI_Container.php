@@ -5,7 +5,7 @@
  */
 
 /**
- * Subclass of SMWSemanticData that can be make read only to enforce the
+ * Subclass of SMWSemanticData that can be made read only to enforce the
  * immutability of all SMW data items. This ensures that the container dataitem
  * can safely give out an object reference without concern that this is
  * exploited to indirectly change its content.
