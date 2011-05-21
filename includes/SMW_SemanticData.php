@@ -198,8 +198,7 @@ class SMWSemanticData {
 	 *
 	 * @return boolean
 	 */
-	public function hasVisibleProperties( $refresh = false ) {
-		if ( $refresh ) $this->findVisibleProperties();
+	public function hasVisibleProperties() {
 		return $this->mHasVisibleProps;
 	}
 
@@ -213,8 +212,7 @@ class SMWSemanticData {
 	 *
 	 * @return boolean
 	 */
-	public function hasVisibleSpecialProperties( $refresh = false ) {
-		if ( $refresh ) $this->findVisibleProperties();
+	public function hasVisibleSpecialProperties() {
 		return $this->mHasVisibleSpecs;
 	}
 
@@ -285,47 +283,6 @@ class SMWSemanticData {
 		$this->addPropertyObjectValue( $property, $dataItem );
 	}
 
-	/**
-	 * Removes all DIs for the specified property.
-	 * NOTE: calling this method can lead to false positive mHasVisibleProps and mHasVisibleSpecs.
-	 * Call findVisibleProperties to fix this if needed.
-	 * 
-	 * @since 1.6
-	 * 
-	 * @param SMWDIProperty $property
-	 */
-	public function removeDataForProperty( SMWDIProperty $property ) {
-		var_dump($property);exit;
-		if ( array_key_exists( $property->getKey(), $this->mPropVals ) ) {
-			unset( $this->mPropVals[$property->getKey()] );
-		}
-		if ( array_key_exists( $property->getKey(), $this->mProperties ) ) {
-			unset( $this->mProperties[$property->getKey()] );
-		}
-	}
-	
-	/**
-	 * Determine if there are visible properties and special properties.
-	 * 
-	 * @since 1.6
-	 */
-	public function findVisibleProperties() {
-		$this->mHasVisibleSpecs = false;
-		$this->mHasVisibleProps = false;
-		
-		foreach ( $this->mProperties as /* SMWDIProperty */ $property ) {
-			if ( !$property->isUserDefined() ) {
-				if ( $property->isShown() ) {
-					$this->mHasVisibleSpecs = true;
-					$this->mHasVisibleProps = true;
-					break;
-				}
-			} else {
-				$this->mHasVisibleProps = true;
-			}
-		}
-	}
-	
 	/**
 	 * Delete all data other than the subject.
 	 */
