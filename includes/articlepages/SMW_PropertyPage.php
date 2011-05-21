@@ -4,8 +4,6 @@
  * Implementation of MediaWiki's Article that shows additional information on
  * property pages. Very similar to CategoryPage, but with different printout
  * that also displays values for each subject with the given property.
- * 
- * Some code based on CategoryPage.php
  *
  * @file SMW_PropertyPage.php
  * @ingroup SMW
@@ -13,8 +11,6 @@
  * @author Markus Krötzsch
  */
 class SMWPropertyPage extends SMWOrderedListPage {
-
-	private $subproperties;  // list of sub-properties of this property
 
 	/**
 	 * @see SMWOrderedListPage::initParameters()
@@ -27,105 +23,113 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		return true;
 	}
 
-	protected function clearPageState() {
-		parent::clearPageState();
-		$this->subproperties = array();
-	}
-
 	/**
-	 * Fill the internal arrays with the set of data items to be displayed
-	 * (possibly plus one additional item that indicates further results).
+	 * Returns the HTML which is added to $wgOut after the article text.
+	 * 
+	 * @return string
 	 */
-	protected function doQuery() {
-		$store = smwfGetStore();
-		
-		if ( $this->limit > 0 ) { // for limit==0 there is no paging, and no query
-			$options = new SMWRequestOptions();
-			$options->limit = $this->limit + 1;
-			$options->sort = true;
-			$reverse = false;
-			
-			if ( $this->from != '' ) {
-				$options->boundary = $this->from;
-				$options->ascending = true;
-				$options->include_boundary = true;
-			} elseif ( $this->until != '' ) {
-				$options->boundary = $this->until;
-				$options->ascending = false;
-				$options->include_boundary = false;
-				$reverse = true;
-			}
-			
-			$this->diWikiPages = $store->getAllPropertySubjects( $this->mProperty, $options );
-			
-			if ( $reverse ) {
-				$this->diWikiPages = array_reverse( $this->diWikiPages );
-			}
-		} else {
-			$this->diWikiPages = array();
-		}
-
-		// retrieve all subproperties of this property
-		$s_options = new SMWRequestOptions();
-		$s_options->sort = true;
-		$s_options->ascending = true;
-		$this->subproperties = $store->getPropertySubjects( new SMWDIProperty( '_SUBP' ), $this->getDataItem(), $s_options );
-	}
-
-	/**
-	 * Generates the headline for the page list and the HTML encoded list
-	 * of pages which shall be shown.
-	 */
-	protected function getPages() {
+	protected function getHtml() {
 		wfProfileIn( __METHOD__ . ' (SMW)' );
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-		$r = '';
-		$ti = htmlspecialchars( $this->mTitle->getText() );
-		
-		if ( count( $this->subproperties ) > 0 ) {
-			$r .= "<div id=\"mw-subcategories\">\n<h2>" . wfMsg( 'smw_subproperty_header', $ti ) . "</h2>\n<p>";
-			
-			if ( !$this->mProperty->isUserDefined() ) {
-				$r .= wfMsg( 'smw_isspecprop' ) . ' ';
-			}
-			
-			$r .= wfMsgExt( 'smw_subpropertyarticlecount', array( 'parsemag' ), count( $this->subproperties ) ) . "</p>\n";
-			$r .= ( count( $this->subproperties ) < 6 ) ?
-			      $this->shortList( 0, count( $this->subproperties ), $this->subproperties ):
-				  $this->columnList( 0, count( $this->subproperties ), $this->subproperties );
-				  
-			$r .= "\n</div>";
-		}
-		
-		if ( count( $this->diWikiPages ) > 0 ) {
-			$nav = $this->getNavigationLinks();
-			
-			$r .= '<a name="SMWResults"></a>' . $nav . "<div id=\"mw-pages\">\n" .
-			      '<h2>' . wfMsg( 'smw_attribute_header', $ti ) . "</h2>\n<p>";
-			
-			if ( !$this->mProperty->isUserDefined() ) {
-				$r .= wfMsg( 'smw_isspecprop' ) . ' ';
-			}
-			
-			$r .= wfMsgExt( 'smw_attributearticlecount', array( 'parsemag' ), min( $this->limit, count( $this->diWikiPages ) ) ) . "</p>\n" .
-			      $this->subjectObjectList() . "\n</div>" . $nav;
-		}
-		
+
+		$result = $this->getSubpropertyList() . $this->getPropertyValueList();
+
 		wfProfileOut( __METHOD__ . ' (SMW)' );
-		
-		return $r;
+		return $result;
+	}
+
+	/**
+	 * Get the HTML for displaying subproperties of this property. This list
+	 * is usually short and we implement no additional navigation.
+	 *
+	 * @return string
+	 */
+	protected function getSubpropertyList() {
+		$store = smwfGetStore();
+		$options = new SMWRequestOptions();
+		$options->sort = true;
+		$options->ascending = true;
+		$subproperties = $store->getPropertySubjects( new SMWDIProperty( '_SUBP' ), $this->getDataItem(), $options );
+
+		$result = '';
+
+		$resultCount = count( $subproperties );
+		if ( $resultCount > 0 ) {
+			$titleText = htmlspecialchars( $this->mTitle->getText() );
+			$result .= "<div id=\"mw-subcategories\">\n<h2>" . wfMsg( 'smw_subproperty_header', $titleText ) . "</h2>\n<p>";
+
+			if ( !$this->mProperty->isUserDefined() ) {
+				$result .= wfMsg( 'smw_isspecprop' ) . ' ';
+			}
+
+			$result .= wfMsgExt( 'smw_subpropertyarticlecount', array( 'parsemag' ), $resultCount ) . "</p>\n";
+			
+			if ( $resultCount < 6 ) {
+				$result .= SMWPageLister::getShortList( 0, $resultCount, $subproperties, null, $this->getSkin() );
+			} else {
+				$result .= SMWPageLister::getColumnList( 0, $resultCount, $subproperties, null, $this->getSkin() );
+			}
+
+			$result .= "\n</div>";
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Get the HTML for displaying values of this property, based on the
+	 * current from/until and limit settings.
+	 *
+	 * @return string
+	 */
+	protected function getPropertyValueList() {
+		if ( $this->limit > 0 ) { // for limit==0 there is no paging, and no query
+			$store = smwfGetStore();
+			$options = SMWPageLister::getRequestOptions( $this->limit, $this->from, $this->until );
+			$diWikiPages = $store->getAllPropertySubjects( $this->mProperty, $options );
+
+			if ( !$options->ascending ) {
+				$diWikiPages = array_reverse( $diWikiPages );
+			}
+		} else {
+			return '';
+		}
+
+		$result = '';
+
+		if ( count( $diWikiPages ) > 0 ) {
+			$pageLister = new SMWPageLister( $diWikiPages, null, $this->getSkin(), $this->limit, $this->from, $this->until );
+			$this->mTitle->setFragment( '#SMWResults' ); // Make navigation point to the result list.
+			$navigation = $pageLister->getNavigationLinks( $this->mTitle );
+
+			$titleText = htmlspecialchars( $this->mTitle->getText() );
+			$resultNumber = min( $this->limit, count( $diWikiPages ) );
+
+			$result .= "<a name=\"SMWResults\"></a><div id=\"mw-pages\">\n" .
+			           '<h2>' . wfMsg( 'smw_attribute_header', $titleText ) . "</h2>\n<p>";
+			if ( !$this->mProperty->isUserDefined() ) {
+				$result .= wfMsg( 'smw_isspecprop' ) . ' ';
+			}
+			$result .= wfMsgExt( 'smw_attributearticlecount', array( 'parsemag' ), $resultNumber ) . "</p>\n" .
+			           $navigation . $this->subjectObjectList( $diWikiPages ) . $navigation . "\n</div>";
+		}
+
+		return $result;
 	}
 
 	/**
 	 * Format $diWikiPages chunked by letter in a table that shows subject
 	 * articles in one column and object articles/values in the other one.
+	 *
+	 * @param $diWikiPages array
+	 * @return string
 	 */
-	private function subjectObjectList() {
+	protected function subjectObjectList( array $diWikiPages ) {
 		global $wgContLang, $smwgMaxPropertyValues;
 		$store = smwfGetStore();
 
-		$ac = count( $this->diWikiPages );
-		
+		$ac = count( $diWikiPages );
+
 		if ( $ac > $this->limit ) {
 			if ( $this->until != '' ) {
 				$start = 1;
@@ -139,19 +143,19 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 		$r = '<table style="width: 100%; ">';
 		$prev_start_char = 'None';
-		
+
 		for ( $index = $start; $index < $ac; $index++ ) {
-			$diWikiPage = $this->diWikiPages[$index];
+			$diWikiPage = $diWikiPages[$index];
 			$dvWikiPage = SMWDataValueFactory::newDataItemValue( $diWikiPage, null );
 			$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPage );
 			$start_char = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
-			
+
 			// Header for index letters
 			if ( $start_char != $prev_start_char ) {
 				$r .= '<tr><th class="smwpropname"><h3>' . htmlspecialchars( $start_char ) . "</h3></th><th></th></tr>\n";
 				$prev_start_char = $start_char;
 			}
-			
+
 			// Property name
 			$searchlink = SMWInfolink::newBrowsingLink( '+', $dvWikiPage->getShortHTMLText() );
 			$r .= '<tr><td class="smwpropname">' . $dvWikiPage->getLongHTMLText( $this->getSkin() ) .
@@ -180,9 +184,9 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 			$r .= "</td></tr>\n";
 		}
-		
+
 		$r .= '</table>';
-		
+
 		return $r;
 	}
 

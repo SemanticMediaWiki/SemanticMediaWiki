@@ -109,9 +109,10 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWParseData']              = $incDir . 'SMW_ParseData.php';	
 	$wgAutoloadClasses['SMWParserExtensions']       = $incDir . 'SMW_ParserExtensions.php';
 	$wgAutoloadClasses['SMWPropertyChange']       	= $incDir . 'SMW_PropertyChange.php';
-	$wgAutoloadClasses['SMWPropertyChanges']		= $incDir . 'SMW_PropertyChanges.php';
+	$wgAutoloadClasses['SMWPropertyChanges']	= $incDir . 'SMW_PropertyChanges.php';
 	$wgAutoloadClasses['SMWQueryLanguage']          = $incDir . 'SMW_QueryLanguage.php';	
 	$wgAutoloadClasses['SMWSemanticData']           = $incDir . 'SMW_SemanticData.php';
+	$wgAutoloadClasses['SMWPageLister']             = $incDir . 'SMW_PageLister.php';
 
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';
