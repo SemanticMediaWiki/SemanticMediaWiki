@@ -37,9 +37,8 @@ abstract class SMWQueryPage extends QueryPage {
 	 *
 	 * @param $offset database query offset
 	 * @param $limit database query limit
-	 * @param $shownavigation show navigation like "next 200"?
 	 */
-	function doQuery( $offset, $limit, $shownavigation = true ) {
+	function doQuery( $offset = false, $limit = false ) {
 		global $wgOut, $wgContLang;
 
 		$options = new SMWRequestOptions();
@@ -52,27 +51,26 @@ abstract class SMWQueryPage extends QueryPage {
 		$sk = $this->getSkin();
 		$sname = $this->getName();
 
-		if ( $shownavigation ) {
-			$wgOut->addHTML( $this->getPageHeader() );
+		$wgOut->addHTML( $this->getPageHeader() );
 
-			// if list is empty, show it
-			if ( $num == 0 ) {
-				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-				$wgOut->addHTML( '<p>' . wfMsgHTML( 'specialpage-empty' ) . '</p>' );
-				return;
-			}
-
-			$top = wfShowingResults( $offset, $num );
-			$wgOut->addHTML( "<p>{$top}\n" );
-
-			// often disable 'next' link when we reach the end
-			$atend = $num < $limit;
-
-			$sl = wfViewPrevNext( $offset, $limit ,
-				$wgContLang->specialPage( $sname ),
-				wfArrayToCGI( $this->linkParameters() ), $atend );
-			$wgOut->addHTML( "<br />{$sl}</p>\n" );
+		// if list is empty, show it
+		if ( $num == 0 ) {
+			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+			$wgOut->addHTML( '<p>' . wfMsgHTML( 'specialpage-empty' ) . '</p>' );
+			return;
 		}
+
+		$top = wfShowingResults( $offset, $num );
+		$wgOut->addHTML( "<p>{$top}\n" );
+
+		// often disable 'next' link when we reach the end
+		$atend = $num < $limit;
+
+		$sl = wfViewPrevNext( $offset, $limit ,
+			$wgContLang->specialPage( $sname ),
+			wfArrayToCGI( $this->linkParameters() ), $atend );
+		$wgOut->addHTML( "<br />{$sl}</p>\n" );
+			
 		if ( $num > 0 ) {
 			$s = array();
 			if ( ! $this->listoutput )
@@ -90,9 +88,9 @@ abstract class SMWQueryPage extends QueryPage {
 			$str = $this->listoutput ? $wgContLang->listToText( $s ) : implode( '', $s );
 			$wgOut->addHTML( $str );
 		}
-		if ( $shownavigation ) {
-			$wgOut->addHTML( "<p>{$sl}</p>\n" );
-		}
+		
+		$wgOut->addHTML( "<p>{$sl}</p>\n" );
+		
 		return $num;
 	}
 
@@ -114,4 +112,3 @@ abstract class SMWQueryPage extends QueryPage {
     }    
 
 }
-
