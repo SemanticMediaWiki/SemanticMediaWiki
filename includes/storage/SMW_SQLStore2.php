@@ -65,11 +65,11 @@ class SMWSQLStore2 extends SMWStore {
 		'_SF_DF' => 20, // Semantic Form's default form property
 		'_SF_AF' => 21,  // Semantic Form's alternate form property
 		'_ERRP' => 22,
-		'_1' => 23, // properties for encoding (short) lists
-		'_2' => 24,
-		'_3' => 25,
-		'_4' => 26,
-		'_5' => 27,
+// 		'_1' => 23, // properties for encoding (short) lists
+// 		'_2' => 24,
+// 		'_3' => 25,
+// 		'_4' => 26,
+// 		'_5' => 27,
 		'_LIST' => 28,
 		'_MDAT' => 29,
 	);
