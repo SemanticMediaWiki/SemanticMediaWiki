@@ -83,7 +83,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	 * @return string
 	 */
 	protected function getPropertyValueList() {
-		if ( $this->limit > 0 ) { // for limit==0 there is no paging, and no query
+		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
 			$store = smwfGetStore();
 			$options = SMWPageLister::getRequestOptions( $this->limit, $this->from, $this->until );
 			$diWikiPages = $store->getAllPropertySubjects( $this->mProperty, $options );

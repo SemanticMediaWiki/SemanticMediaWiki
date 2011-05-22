@@ -11,9 +11,9 @@
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  * 
- * @author S Page
+ * @todo The messages 'smw_isnotype' and 'smw_typeunits', maybe 'smw_isaliastype', could be obsolete now.
+ *
  * @author Markus Krötzsch
- * @author Jeroen De Dauw
  */
 class SMWSpecialTypes extends SpecialPage {
 	
@@ -22,142 +22,79 @@ class SMWSpecialTypes extends SpecialPage {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 	}
 
-	public function execute( $param ) {	
-		wfProfileIn( 'smwfDoSpecialTypes (SMW)' );
-		
+	public function execute( $param ) {
 		global $wgOut;
-		
-		$wgOut->setPageTitle( wfMsg( 'types' ) );
-		
-		$rep = new TypesPage();
-		
-		// execute() method added in MW 1.18
-		if ( method_exists( $rep, 'execute' ) ) {
-			$rep->execute( $param );
+		wfProfileIn( 'smwfDoSpecialTypes (SMW)' );
+
+		$params = SMWInfolink::decodeParameters( $param, false );
+		$typeLabel = reset( $params );
+
+		if ( $typeLabel == false ) {
+			$wgOut->setPageTitle( wfMsg( 'types' ) );
+			$html = $this->getTypesList();
+		} else {
+			$typeName = str_replace( '_', ' ', $typeLabel );
+			$wgOut->setPageTitle( $typeName ); // Maybe add a better message for this
+			$html = $this->getTypeProperties( $typeLabel );
 		}
-		else {
-			list( $limit, $offset ) = wfCheckLimits();
-			$rep->doQuery( $offset, $limit );
-		}
-		
-		// Ensure locally collected output data is pushed to the output!
+
+		$wgOut->addHTML( $html );
 		SMWOutputs::commitToOutputPage( $wgOut );
-		
+
 		wfProfileOut( 'smwfDoSpecialTypes (SMW)' );	
 	}
-	
-}
 
-class TypesPage extends QueryPage {
+	protected function getTypesList() {
+		$html = '<p>' . htmlspecialchars( wfMsg( 'smw_types_docu' ) ) . "</p><br />\n";
 
-	public function __construct( $name = 'Types' ) {
-		global $wgVersion;
-		if ( version_compare( $wgVersion, '1.17', '>=' ) ) {
-			parent::__construct( $name );
+		$typeLabels = SMWDataValueFactory::getKnownTypeLabels();
+		asort( $typeLabels, SORT_STRING );
+
+		$html .= "<ul>\n";
+		foreach ( $typeLabels as $typeId => $label ) {
+			$typeValue = SMWTypesValue::newFromTypeId( $typeId );
+			$html .= '<li>' . $typeValue->getLongHTMLText( $this->getSkin() ) . "</li>\n";
 		}
-	}	
-	
-	function getName() {
-		return 'Types';
+		$html .= "</ul>\n";
+
+		return $html;
 	}
 
-	function isExpensive() {
-		return false;
-	}
+	protected function getTypeProperties( $typeLabel ) {
+		global $wgRequest, $smwgTypePagingLimit;
 
-	function isSyndicated() {
-		return false;
-	}
+		if ( $smwgTypePagingLimit <= 0 ) return ''; // not too useful, but we comply to this request
 
-	function getPageHeader() {
-		return '<p>' . htmlspecialchars( wfMsg( 'smw_types_docu' ) ) . "</p><br />\n";
-	}
+		$from = $wgRequest->getVal( 'from' );
+		$until = $wgRequest->getVal( 'until' );
+		$typeValue = SMWDataValueFactory::newTypeIDValue( '__typ', $typeLabel );
 
-	/* Failed attempt to fix https://bugzilla.wikimedia.org/show_bug.cgi?id=27440
-	function getQueryInfo() {
-		$joinConds = array();
-		
-		foreach ( SMWDataValueFactory::getKnownTypeLabels() as $label ) {
-			$label = str_replace( ' ', '_', $label ); // DBkey form so that SQL can elminate duplicates
-			$joinConds['page'] = array( 'UNION', "(SELECT 'Types' as type,  " . 
-				SMW_NS_TYPE .
-				" as namespace, '$label' as title, " .
-	            "'$label' as value, 1 as count)" );
+		$store = smwfGetStore();
+		$options = SMWPageLister::getRequestOptions( $smwgTypePagingLimit, $from, $until );
+		$diWikiPages = $store->getPropertySubjects( new SMWDIProperty( '_TYPE' ), $typeValue->getDataItem(), $options );
+		if ( !$options->ascending ) {
+			$diWikiPages = array_reverse( $diWikiPages );
 		}
-		
-		return array(
-			'tables' => array( 'page' ),
-			'fields' => array(
-				SMW_NS_TYPE . ' AS namespace',
-				'page_title AS value',
-				'page_title AS title',
-				'1 AS count'
-			),
-			'conds' => array(
-				'page_namespace' => SMW_NS_TYPE,
-				'page_is_redirect' => '0'
-			),
-			'join_conds' => $joinConds
-		);
-	}
-	*/
-	
-	function getSQL() {
-		$dbr = wfGetDB( DB_SLAVE );
-		$page = $dbr->tableName( 'page' );
-		$NStype = SMW_NS_TYPE;
-		// TODO: Perhaps use the dbr syntax from SpecialAllpages.
-		// NOTE: type, namespace, title and value must all be defined for QueryPage to work (incl. caching)
-		$sql = "(SELECT 'Types' as type, {$NStype} as namespace, page_title as title, " .
-		        "page_title as value, 1 as count FROM $page WHERE page_namespace = $NStype AND page_is_redirect = '0')";
-		// make SQL for built-in datatypes
-		foreach ( SMWDataValueFactory::getKnownTypeLabels() as $label ) {
-			$label = str_replace( ' ', '_', $label ); // DBkey form so that SQL can elminate duplicates
-			$sql .= " UNION (SELECT 'Types' as type,  {$NStype} as namespace, '$label' as title, " .
-		            "'$label' as value, 1 as count)";
-		}
-		return $sql;
-	}
 
-	function sortDescending() {
-		return false;
-	}
+		$result = '';
 
-	function formatResult( $skin, $result ) {
-		return $this->getTypeInfo( $skin, $result->value );
-	}
+		if ( count( $diWikiPages ) > 0 ) {
+			$pageLister = new SMWPageLister( $diWikiPages, null, $this->getSkin(), $smwgTypePagingLimit, $from, $until );
 
-	/**
-	 * Returns the info about a type as HTML.
-	 */
-	function getTypeInfo( $skin, $titletext ) {
-		$tv = SMWDataValueFactory::newTypeIDValue( '__typ', $titletext );
-		$info = array();
-		$error = array();
-		if ( $tv->isAlias() ) { // print the type title as found, long text would (again) print the alias
-			$ttitle = Title::makeTitle( SMW_NS_TYPE, $titletext );
-			$link = $skin->makeKnownLinkObj( $ttitle, $ttitle->getText() ); // aliases are only found if the page exists
-			$info[] = wfMsg( 'smw_isaliastype', $tv->getLongHTMLText() );
-		} else {
-			$link = $tv->getLongHTMLText( $skin );
-			if ( !$tv->isBuiltIn() ) { // find out whether and how this was user-defined
-				$dv = SMWDataValueFactory::newTypeObjectValue( $tv );
-				$units = $dv->getUnitList();
-				if ( count( $units ) == 0 ) {
-					$error[] = wfMsg( 'smw_isnotype', $tv->getLongHTMLText() );
-				} else {
-					$info[] = wfMsg( 'smw_typeunits', $tv->getLongHTMLText(), implode( ', ', $units ) );
-				}
-			}
+			$title = $this->getTitleFor( 'Types', $typeLabel );
+			$title->setFragment( '#SMWResults' ); // Make navigation point to the result list.
+			$navigation = $pageLister->getNavigationLinks( $title );
+
+			$resultNumber = min( $smwgTypePagingLimit, count( $diWikiPages ) );
+			$typeName = $typeValue->getLongWikiText();
+
+			$result .= "<a name=\"SMWResults\"></a><div id=\"mw-pages\">\n" .
+			           '<h2>' . wfMsg( 'smw_type_header', $typeName ) . "</h2>\n<p>" .
+			           wfMsgExt( 'smw_typearticlecount', array( 'parsemag' ), $resultNumber ) . "</p>\n" .
+			           $navigation . $pageLister->formatList() . $navigation . "\n</div>";
 		}
-	
-		if ( count( $error ) > 0 ) {
-			$link .= smwfEncodeMessages( $error );
-		}
-		if ( count( $info ) > 0 ) {
-			$link .= smwfEncodeMessages( $info, 'info' );
-		}
-		return $link;
+
+		return $result;
 	}
 
 }

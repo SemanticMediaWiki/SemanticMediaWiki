@@ -114,7 +114,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	// Article pages
 	$apDir = $smwgIP . 'includes/articlepages/';
 	$wgAutoloadClasses['SMWOrderedListPage']        = $apDir . 'SMW_OrderedListPage.php';
-	$wgAutoloadClasses['SMWTypePage']               = $apDir . 'SMW_TypePage.php';
 	$wgAutoloadClasses['SMWPropertyPage']           = $apDir . 'SMW_PropertyPage.php';
 	$wgAutoloadClasses['SMWConceptPage']            = $apDir . 'SMW_ConceptPage.php';
 
@@ -429,9 +428,7 @@ function smwfAddToAdminLinks( &$admin_links_tree ) {
  * @return true
  */
 function smwfOnArticleFromTitle( Title &$title, /* Article */ &$article ) {
-	if ( $title->getNamespace() == SMW_NS_TYPE ) {
-		$article = new SMWTypePage( $title );
-	} elseif ( $title->getNamespace() == SMW_NS_PROPERTY ) {
+	if ( $title->getNamespace() == SMW_NS_PROPERTY ) {
 		$article = new SMWPropertyPage( $title );
 	} elseif ( $title->getNamespace() == SMW_NS_CONCEPT ) {
 		$article = new SMWConceptPage( $title );

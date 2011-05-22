@@ -96,7 +96,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWOutputs']                = $smwgIP . 'includes/SMW_Outputs.php';
 	$wgAutoloadClasses['SMWSemanticData']           = $smwgIP . 'includes/SMW_SemanticData.php';
 	$wgAutoloadClasses['SMWOrderedListPage']        = $smwgIP . 'includes/articlepages/SMW_OrderedListPage.php';
-// 	$wgAutoloadClasses['SMWTypePage']               = $smwgIP . 'includes/articlepages/SMW_TypePage.php';
 	$wgAutoloadClasses['SMWPropertyPage']           = $smwgIP . 'includes/articlepages/SMW_PropertyPage.php';
 // 	$wgAutoloadClasses['SMWConceptPage']            = $smwgIP . 'includes/articlepages/SMW_ConceptPage.php';
 	$wgAutoloadClasses['SMWQueryLanguage']          = $smwgIP . 'includes/SMW_QueryLanguage.php';

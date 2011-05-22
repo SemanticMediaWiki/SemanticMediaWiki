@@ -96,34 +96,43 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
+		global $wgContLang;
 		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
 			return $this->m_caption;
-		} else { // TODO provide a Special page with the functionality of former Type pages, and link to it here
-			return $this->m_caption;
+		} else {
+			$titleText = SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel );
+			$namespace = $wgContLang->getNsText( NS_SPECIAL );
+			return "[[$namespace:$titleText|{$this->m_caption}]]";
 		}
 	}
 
 	public function getShortHTMLText( $linker = null ) {
 		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
 			return htmlspecialchars( $this->m_caption );
-		} else { // TODO provide a Special page with the functionality of former Type pages, and link to it here
-			return htmlspecialchars( $this->m_caption );
+		} else {
+			$titleText = SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel );
+			$title = Title::makeTitle( NS_SPECIAL, $titleText );
+			return $linker->makeLinkObj( $title, htmlspecialchars( $this->m_caption ) );
 		}
 	}
 
 	public function getLongWikiText( $linked = null ) {
 		if ( ( $linked === null ) || ( $linked === false ) ) {
 			return $this->m_realLabel;
-		} else { // TODO provide a Special page with the functionality of former Type pages, and link to it here
-			return $this->m_realLabel;
+		} else {
+			$titleText = SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel );
+			$namespace = $wgContLang->getNsText( NS_SPECIAL );
+			return "[[$namespace:$titleText|{$this->m_realLabel}]]";
 		}
 	}
 
 	public function getLongHTMLText( $linker = null ) {
 		if ( ( $linker === null ) || ( $linker === false ) ) {
 			return htmlspecialchars( $this->m_realLabel );
-		} else { // TODO provide a Special page with the functionality of former Type pages, and link to it here
-			return htmlspecialchars( $this->m_realLabel );
+		} else {
+			$titleText = SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel );
+			$title = Title::makeTitle( NS_SPECIAL, $titleText );
+			return $linker->makeLinkObj( $title, htmlspecialchars( $this->m_realLabel ) );
 		}
 	}
 

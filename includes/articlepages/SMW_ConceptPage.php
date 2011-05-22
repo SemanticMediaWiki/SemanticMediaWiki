@@ -33,7 +33,7 @@ class SMWConceptPage extends SMWOrderedListPage {
 	protected function getHtml() {
 		wfProfileIn( __METHOD__ . ' (SMW)' );
 
-		if ( $this->limit > 0 ) {
+		if ( $this->limit > 0 ) { // limit==0: configuration setting to disable this completely
 			$store = smwfGetStore();
 			$description = new SMWConceptDescription( $this->getDataItem() );
 			$query = SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
