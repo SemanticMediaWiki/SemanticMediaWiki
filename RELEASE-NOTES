@@ -36,6 +36,8 @@ For a documentation of all features, see http://semantic-mediawiki.org
   The class SMWCompatibilityHelpers provides temporal help for extensions that
   still depend on the old format and APIs.
 * Fixed PostGres SQL issues with the installation and upgrade code.
+* Added API module (smwinfo) via which statistics about the semantic data can
+  be obtained.
 
 == SMW 1.5.6 ==
 
