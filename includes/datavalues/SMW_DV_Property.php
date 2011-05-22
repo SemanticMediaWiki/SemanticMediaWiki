@@ -210,7 +210,7 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	public function getWikiValue() {
-		return $this->isVisible() ? ( ( $this->isInverse() ? '-' : '' ) . $this->getWikiPageValue()->getWikiValue() ) : '';
+		return $this->isVisible() ? ( ( $this->isInverse() ? '-' : '' ) . $this->m_dataitem->getLabel() ) : '';
 	}
 
 	/**

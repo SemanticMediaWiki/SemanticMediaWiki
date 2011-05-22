@@ -313,8 +313,8 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * If a fixed namespace is set, we do not return the namespace prefix explicitly.
 	 */
 	protected function getCaption() {
-		return $this->m_caption !== false ? $this->m_caption:
-		       ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText():$this->getText() );
+		return $this->m_caption !== false ? $this->m_caption :
+		       ( $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText() : $this->getText() );
 	}
 
 	/**
