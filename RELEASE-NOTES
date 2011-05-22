@@ -12,6 +12,8 @@ For a documentation of all features, see http://semantic-mediawiki.org
     $smwgSparqlQueryEndpoint = 'http://localhost:8080/sparql/';
     $smwgSparqlUpdateEndpoint = 'http://localhost:8080/update/';
     $smwgSparqlDataEndpoint = 'http://localhost:8080/data/'; // can be empty
+  The specific support that SMW used to have for the RAP RDF store has been
+  discontinued.
 * The Type namespace has been abolished. Builtin types now are displayed by the
   special page Special:Types, and there are no "custom types" any longer.
   By default, the Type namespace is gone and existing pages in this namespace

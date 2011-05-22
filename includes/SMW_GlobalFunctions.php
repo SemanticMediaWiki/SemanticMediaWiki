@@ -286,12 +286,6 @@ function smwfLoadExtensionMessages( $extensionName ) {
 function &smwfGetStore() {
 	global $smwgMasterStore, $smwgDefaultStore, $smwgIP;
 
-	// No autoloading for RAP store, since autoloaded classes are in rare cases loaded by MW even if not used in code.
-	// This is not possible for RAPstore, which depends on RAP being installed.
-	if ( $smwgDefaultStore == 'SMWRAPStore2' ) {
-		include_once( $smwgIP . 'includes/storage/SMW_RAPStore2.php' );
-	}
-
 	if ( $smwgMasterStore === null ) {
 		$smwgMasterStore = new $smwgDefaultStore();
 	}
