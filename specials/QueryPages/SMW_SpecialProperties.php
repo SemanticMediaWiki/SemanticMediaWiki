@@ -47,19 +47,6 @@ class SMWSpecialProperties extends SpecialPage {
  */
 class SMWPropertiesPage extends SMWQueryPage {
 
-	function getName() {
-		// TODO: should probably use SMW prefix
-		return "Properties";
-	}
-
-	function isExpensive() {
-		return false; // Disables caching for now
-	}
-
-	function isSyndicated() {
-		return false; // TODO: why not?
-	}
-
 	function getPageHeader() {
 		return '<p>' . wfMsg( 'smw_properties_docu' ) . "</p><br />\n";
 	}

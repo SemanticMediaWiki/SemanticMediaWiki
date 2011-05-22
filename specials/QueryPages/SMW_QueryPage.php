@@ -29,6 +29,18 @@ abstract class SMWQueryPage extends QueryPage {
 		/// TODO
 	}
 
+	function getName() {
+		return "SMWQueryPage";
+	}
+
+	function isExpensive() {
+		return false; // Disables caching for now
+	}
+
+	function isSyndicated() {
+		return false; // TODO: why not?
+	}
+
 	/**
 	 * This is the actual workhorse. It does everything needed to make a
 	 * real, honest-to-gosh query page.
@@ -104,8 +116,7 @@ abstract class SMWQueryPage extends QueryPage {
     public function getSkin() {
         if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
             return parent::getSkin();
-        }
-        else {
+        } else {
             global $wgUser;
             return $wgUser->getSkin();
         }
