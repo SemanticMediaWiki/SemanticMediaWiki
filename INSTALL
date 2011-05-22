@@ -37,6 +37,8 @@ If you have any specific questions, please contact the authors.
 == Requirements ==
 
 * MediaWiki 1.15.4 or greater (tested on 1.16.0 to 1.17alpha (r63248).
+* Validator MediaWiki extension version 0.4.5 or greater
+  (http://www.mediawiki.org/wiki/Extension:Validator)
 * PHP 5.* or greater installed and working
 * MySQL >= 4.0.14 (version required by MediaWiki) OR PostgreSQL >= 8.3
   Note that Postgres support is still preliminary and might require special
@@ -147,6 +149,10 @@ instructions to find out whether other changes are recommended therein.
 == Upgrading existing installations ==
 
 (Please read all of this before upgrading)
+
+Note that SMW 1.6.0 has a new software dependency: the Validator extension that
+helps Semantic MediaWiki to validate user-provided parameters. It must be
+installed for SMW to work (http://www.mediawiki.org/wiki/Extension:Validator).
 
 Installations of SMW 1.5.* and can be upgraded by replacing the files, and by
 running the database update (Special:SMWAdmin or SMW_setup.php script) as usual.
