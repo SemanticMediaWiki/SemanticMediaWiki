@@ -117,6 +117,7 @@ class SMWTypesValue extends SMWDataValue {
 	}
 
 	public function getLongWikiText( $linked = null ) {
+		global $wgContLang;
 		if ( ( $linked === null ) || ( $linked === false ) ) {
 			return $this->m_realLabel;
 		} else {
