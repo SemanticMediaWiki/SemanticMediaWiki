@@ -24,6 +24,8 @@ class SMWSparqlResultWrapper implements Iterator {
 	const ERROR_NOERROR     = 0;
 	/// Error code: service unreachable; result will be empty
 	const ERROR_UNREACHABLE = 1;
+	/// Error code: results might be incomplete (e.g. due to some resource limit being reached)
+	const ERROR_INCOMPLETE = 2;
 
 	/**
 	 * Associative array mapping SPARQL variable names to column indices.
@@ -40,6 +42,13 @@ class SMWSparqlResultWrapper implements Iterator {
 	protected $m_data;
 
 	/**
+	 * List of comment strings found in the XML file (without surrounding
+	 * markup, i.e. the actual string only).
+	 * @var array of string
+	 */
+	protected $m_comments;
+
+	/**
 	 * Error code.
 	 * @var integer
 	 */
@@ -50,10 +59,13 @@ class SMWSparqlResultWrapper implements Iterator {
 	 *
 	 * @param $header array mapping SPARQL variable names to column indices
 	 * @param $data array of array of (SMWExpElement or null)
+	 * @param $comments array of string comments if the result contained any
+	 * @param $errorCode integer an error code
 	 */
-	public function __construct( array $header, array $data, $errorCode = self::ERROR_NOERROR ) {
+	public function __construct( array $header, array $data, array $comments = array(), $errorCode = self::ERROR_NOERROR ) {
 		$this->m_header    = $header;
 		$this->m_data      = $data;
+		$this->m_comments  = $comments;
 		$this->m_errorCode = $errorCode;
 		reset( $this->m_data );
 	}
@@ -71,10 +83,35 @@ class SMWSparqlResultWrapper implements Iterator {
 	 * Return error code. SMWSparqlResultWrapper::ERROR_NOERROR (0)
 	 * indicates that no error occurred.
 	 *
-	 * @return interger error code
+	 * @return integer error code
 	 */
 	public function getErrorCode() {
 		return $this->m_errorCode;
+	}
+
+	/**
+	 * Set the error code of this result set. This is used for allowing
+	 * callers to add additional errors discovered only later on. It does
+	 * not allow removing existing errors, since it will not accept 
+	 * SMWSparqlResultWrapper::ERROR_NOERROR as a parameter.
+	 *
+	 * @param $errorCode integer error code
+	 */
+	public function setErrorCode( $errorCode ) {
+		if ( $errorCode != self::ERROR_NOERROR ) {
+			$this->m_errorCode = $errorCode;
+		}
+	}
+
+	/**
+	 * Return a list of comment strings found in the SPARQL result. Comments
+	 * are used by some RDF stores to provide additional information or
+	 * warnings that can thus be accessed. 
+	 *
+	 * @return array of string
+	 */
+	public function getComments() {
+		return $this->m_comments;
 	}
 
 	/**

@@ -32,6 +32,13 @@ class SMWSparqlResultParser {
 	protected $m_data;
 
 	/**
+	 * List of comment strings found in the XML file (without surrounding
+	 * markup, i.e. the actual string only).
+	 * @var array of string
+	 */
+	protected $m_comments;
+
+	/**
 	 * Stack of open XML tags during parsing.
 	 * @var array of string
 	 */
@@ -61,17 +68,26 @@ class SMWSparqlResultParser {
 		xml_set_object( $parser, $this );
 		xml_set_element_handler( $parser, 'xmlHandleOpen', 'xmlHandleClose' );
 		xml_set_character_data_handler($parser, 'xmlHandleCData' );
+		xml_set_default_handler( $parser, 'xmlHandleDefault' );
 		//xml_set_start_namespace_decl_handler($parser, 'xmlHandleNsDeclaration' );
 
 		$this->m_xml_opentags = array();
 		$this->m_header = array();
 		$this->m_data = array();
+		$this->m_comments = array();
 
 		xml_parse( $parser, $xmlQueryResult, true );
 
 		xml_parser_free( $parser );
 
-		return new SMWSparqlResultWrapper( $this->m_header, $this->m_data );
+		return new SMWSparqlResultWrapper( $this->m_header, $this->m_data, $this->m_comments );
+	}
+
+	protected function xmlHandleDefault( $parser, $data ) {
+		if ( substr( $data, 0, 4 ) == '<!--' ) {
+			$comment = substr( $data, 4, strlen( $data ) - 7 );
+			$this->m_comments[] = trim( $comment );
+		}
 	}
 
 	/**

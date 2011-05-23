@@ -143,6 +143,7 @@ Results might not be as expected.',
 
 	// Messages from the database backend
 	'smw_db_sparqlqueryproblem'   => 'The query result could not be obtained from the SPARQL database. This error might be temporary or indicate a bug in the database software.',
+	'smw_db_sparqlqueryincomplete'=> 'Answering the query turned out to be too difficult and was aborted. Some results could be missing. If possible, try using a simpler query instead.',
 
 	// Messages for pages of types and properties
 	'smw_type_header'             => 'Properties of type "$1"',

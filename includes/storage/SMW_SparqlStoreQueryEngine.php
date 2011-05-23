@@ -441,9 +441,16 @@ class SMWSparqlStoreQueryEngine {
 
 		$result = new SMWQueryResult(  $query->getDescription()->getPrintrequests(), $query, $resultDataItems, $this->m_store, $hasFurtherResults );
 
-		if ( $sparqlResultWrapper->getErrorCode() != SMWSparqlResultWrapper::ERROR_NOERROR ) {
-			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-			$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryproblem' ) ) );
+		switch ( $sparqlResultWrapper->getErrorCode() ) {
+			case SMWSparqlResultWrapper::ERROR_NOERROR: break;
+			case SMWSparqlResultWrapper::ERROR_INCOMPLETE:
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+				$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryincomplete' ) ) );
+			break;
+			default:
+				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+				$result->addErrors( array( wfMsgForContent( 'smw_db_sparqlqueryproblem' ) ) );
+			break;
 		}
 
 		return $result;

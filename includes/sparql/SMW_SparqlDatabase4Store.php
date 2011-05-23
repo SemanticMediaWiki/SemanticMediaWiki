@@ -19,6 +19,47 @@
 class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 
 	/**
+	 * Execute a SPARQL query and return an SMWSparqlResultWrapper object
+	 * that contains the results. Compared to SMWSparqlDatabase::doQuery(),
+	 * this also supports the parameter "restricted=1" which 4Store provides
+	 * to enforce strict resource bounds on query answering. The method also
+	 * checks if these bounds have been met, and records this in the query
+	 * result.
+	 *
+	 * @note The restricted option in 4Store mainly enforces the given soft
+	 * limit more strictly. To disable/configure it, simply change the soft
+	 * limit settings of your 4Store server.
+	 *
+	 * @param $sparql string with the complete SPARQL query (SELECT or ASK)
+	 * @return SMWSparqlResultWrapper
+	 */
+	public function doQuery( $sparql ) {
+		//$result = parent::doQuery( $sparql );
+		curl_setopt( $this->m_curlhandle, CURLOPT_URL, $this->m_queryEndpoint );
+		curl_setopt( $this->m_curlhandle, CURLOPT_POST, true );
+		$parameterString = "query=" . urlencode( $sparql ) . "&restricted=1";
+		curl_setopt( $this->m_curlhandle, CURLOPT_POSTFIELDS, $parameterString );
+
+		$xmlResult = curl_exec( $this->m_curlhandle );
+
+		if ( curl_errno( $this->m_curlhandle ) == 0 ) {
+			$xmlParser = new SMWSparqlResultParser();
+			$result = $xmlParser->makeResultFromXml( $xmlResult );
+		} else {
+			$this->throwSparqlErrors( $this->m_updateEndpoint, $sparql );
+			$result = new SMWSparqlResultWrapper( array(), array(), array(), SMWSparqlResultWrapper::ERROR_UNREACHABLE );
+		}
+
+		foreach ( $result->getComments() as $comment ) {
+			if ( strpos( $comment, 'warning: hit complexity limit' ) === 0 ||
+			     strpos( $comment, 'some results have been dropped' ) === 0 ) {
+				$result->setErrorCode( SMWSparqlResultWrapper::ERROR_INCOMPLETE );
+			} //else debug_zval_dump($comment);
+		}
+		return $result;
+	}
+
+	/**
 	 * Execute a HTTP-based SPARQL POST request according to
 	 * http://www.w3.org/2009/sparql/docs/http-rdf-update/.
 	 * The method throws exceptions based on
