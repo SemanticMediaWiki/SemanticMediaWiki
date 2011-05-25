@@ -407,7 +407,12 @@ class SMWResultArray {
 				$this->mContent = ( $limit === false ) ? ( self::$catCache ) : array_slice( self::$catCache, 0, $limit );
 			break;
 			case SMWPrintRequest::PRINT_PROP:
-				$this->mContent = $this->mStore->getPropertyValues( $this->mResult, $this->mPrintRequest->getData()->getDataItem(), $this->getRequestOptions() );
+				$propertyValue = $this->mPrintRequest->getData();
+				if ( $propertyValue->isValid() ) {
+					$this->mContent = $this->mStore->getPropertyValues( $this->mResult, $propertyValue->getDataItem(), $this->getRequestOptions() );
+				} else {
+					$this->mContent = array();
+				}
 
 				// Print one component of a multi-valued string.
 				// Known limitation: the printrequest still is of type _rec, so if printers check
@@ -416,14 +421,14 @@ class SMWResultArray {
 				     ( $this->mPrintRequest->getParameter( 'index' ) !== false ) ) {
 					$pos = $this->mPrintRequest->getParameter( 'index' ) - 1;
 					$newcontent = array();
-					
+
 					foreach ( $this->mContent as $listdv ) {
 						$dvs = $listdv->getDVs();
 						if ( ( array_key_exists( $pos, $dvs ) ) && ( $dvs[$pos] !== null ) ) {
 							$newcontent[] = $dvs[$pos];
 						}
 					}
-					
+
 					$this->mContent = $newcontent;
 				}
 			break;
