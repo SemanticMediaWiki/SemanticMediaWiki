@@ -70,18 +70,16 @@ final class SMWQueryLanguage {
 	public static function getStringForComparator( $comparator ) {
 		self::initializeComparators();
 		static $reverseCache = false;
-		
+
 		if ( $reverseCache === false ) {
 			$reverseCache = array_flip( self::$comparators );
 		}
 
 		if ( $comparator == SMW_CMP_EQ ) {
 			return '';
-		}
-		else if ( array_key_exists( $comparator, $reverseCache ) ) {
+		} elseif ( array_key_exists( $comparator, $reverseCache ) ) {
 			return $reverseCache[$comparator];
-		}
-		else {
+		} else {
 			throw new Exception( "Comparator $comparator does not have a string representatation" );
 		}
 	}
@@ -94,7 +92,7 @@ final class SMWQueryLanguage {
 	protected static function initializeComparators() {
 		global $smwgQComparators, $smwStrictComparators;
 		static $initialized = false;
-		
+
 		if ( $initialized ) {
 			return;
 		}
@@ -113,7 +111,7 @@ final class SMWQueryLanguage {
 			'!' => SMW_CMP_NEQ,
 			'~' => SMW_CMP_LIKE,
 		);
-		
+
 		$allowedComparators = explode( '|', $smwgQComparators );		
 		
 		// Remove the comparators that are not allowed.
