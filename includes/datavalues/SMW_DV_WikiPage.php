@@ -165,9 +165,12 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) ) {
 			return $this->m_fixNamespace == NS_MAIN ? $this->getPrefixedText():$this->getText();
-		} elseif ( $this->m_dataitem->getNamespace() == NS_IMAGE ) { // embed images instead of linking to their page
-			 return '[[' . str_replace( "'", '&#x0027;', $this->getPrefixedText() ) . '|' . $this->m_textform . '|frameless|border|text-top]]';
-		} else { // this takes care of all other cases, esp. it is right for Media:
+		} elseif ( $this->m_dataitem->getNamespace() == NS_FILE ) {
+			// For images and other files, embed them and display
+			// their name, instead of just displaying their name
+			$fileName = str_replace( "'", '&#x0027;', $this->getPrefixedText() );
+			 return '[[' . $fileName . '|' . $this->m_textform . '|frameless|border|text-top]]' . "<br />\n" . '[[:' . $fileName . '|' . $this->m_textform . ']]';
+		} else {
 			return '[[:' . str_replace( "'", '&#x0027;', $this->getPrefixedText() ) . '|' . $this->m_textform . ']]';
 		}
 	}
