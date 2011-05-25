@@ -100,7 +100,7 @@ class SMWTypesValue extends SMWDataValue {
 		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
 			return $this->m_caption;
 		} else {
-			$titleText = SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel );
+			$titleText = $this->getTitleText();
 			$namespace = $wgContLang->getNsText( NS_SPECIAL );
 			return "[[$namespace:$titleText|{$this->m_caption}]]";
 		}
@@ -110,8 +110,7 @@ class SMWTypesValue extends SMWDataValue {
 		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
 			return htmlspecialchars( $this->m_caption );
 		} else {
-			$titleText = SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel );
-			$title = Title::makeTitle( NS_SPECIAL, $titleText );
+			$title = Title::makeTitle( NS_SPECIAL, $this->getTitleText() );
 			return $linker->makeLinkObj( $title, htmlspecialchars( $this->m_caption ) );
 		}
 	}
@@ -121,7 +120,7 @@ class SMWTypesValue extends SMWDataValue {
 		if ( ( $linked === null ) || ( $linked === false ) ) {
 			return $this->m_realLabel;
 		} else {
-			$titleText = SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel );
+			$titleText = $this->getTitleText();
 			$namespace = $wgContLang->getNsText( NS_SPECIAL );
 			return "[[$namespace:$titleText|{$this->m_realLabel}]]";
 		}
@@ -131,10 +130,25 @@ class SMWTypesValue extends SMWDataValue {
 		if ( ( $linker === null ) || ( $linker === false ) ) {
 			return htmlspecialchars( $this->m_realLabel );
 		} else {
-			$titleText = SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel );
-			$title = Title::makeTitle( NS_SPECIAL, $titleText );
+			$title = Title::makeTitle( NS_SPECIAL, $this->getTitleText() );
 			return $linker->makeLinkObj( $title, htmlspecialchars( $this->m_realLabel ) );
 		}
+	}
+	
+	/**
+	 * Gets the title text for the types special page.
+	 * Takes care of compatibility changes in MW 1.17 and 1.18.
+	 * 1.17 introduces SpecialPageFactory
+	 * 1.18 deprecates SpecialPage::getLocalNameFor
+	 * 
+	 * @since 1.6
+	 * 
+	 * @return string
+	 */
+	protected function getTitleText() {
+		return is_callable( array( 'SpecialPageFactory', 'getLocalNameFor' ) ) ?
+			SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel )
+			: SpecialPage::getLocalNameFor( 'Types', $this->m_realLabel );
 	}
 
 	public function getWikiValue() {
@@ -147,6 +161,8 @@ class SMWTypesValue extends SMWDataValue {
 
 	/**
 	 * This class uses type ids as DB keys.
+	 * 
+	 * @return string
 	 */
 	public function getDBkey() {
 		return ( $this->isValid() ) ? SMWDataValueFactory::findTypeID( $this->m_realLabel ) : '';
@@ -165,6 +181,8 @@ class SMWTypesValue extends SMWDataValue {
 	/**
 	 * Is this an alias for another datatype in SMW? This information is used to
 	 * explain entries in Special:Types that are found since they have pages.
+	 * 
+	 * @return boolean
 	 */
 	public function isAlias() {
 		return $this->m_isAlias;
