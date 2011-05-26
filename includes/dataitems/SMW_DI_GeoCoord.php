@@ -66,6 +66,11 @@ class SMWDIGeoCoord extends SMWDataItem {
 	 * ID.
 	 * @note PHP can convert any string to some number, so we do not do
 	 * validation here (because this would require less efficient parsing).
+	 * 
+	 * @since 1.6
+	 * 
+	 * @param string $serialization
+	 * 
 	 * @return SMWDIGeoCoord
 	 */
 	public static function doUnserialize( $serialization ) {
@@ -76,6 +81,28 @@ class SMWDIGeoCoord extends SMWDataItem {
 		}
 
 		return new self( array( 'lat' => (float)$parts[0], 'lon' => (float)$parts[1], ) );
+	}
+	
+	/**
+	 * Returns the latitude.
+	 * 
+	 * @since 1.6
+	 * 
+	 * @return float
+	 */
+	public function getLatitude() {
+		return $this->coordinateSet['lat'];
+	}
+	
+	/**
+	 * Returns the longitude.
+	 * 
+	 * @since 1.6
+	 * 
+	 * @return float
+	 */
+	public function getLongitude() {
+		return $this->coordinateSet['lon'];
 	}
 
 }
