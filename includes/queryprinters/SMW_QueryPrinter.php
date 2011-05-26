@@ -609,6 +609,10 @@ abstract class SMWResultPrinter {
 		$params['limit']->setDescription( wfMsg( 'smw_paramdesc_limit' ) );
 		$params['limit']->setDefault( 20 );
 		
+		$params['offset'] = new Parameter( 'offset', Parameter::TYPE_INTEGER );
+		$params['offset']->setDescription( wfMsg( 'smw_paramdesc_offset' ) );
+		$params['offset']->setDefault( 0 );
+		
 		$params['headers'] = new Parameter( 'headers' );
 		$params['headers']->setDescription( wfMsg( 'smw_paramdesc_headers' ) );
 		$params['headers']->addCriteria( new CriterionInArray( 'show', 'hide', 'plain' ) );

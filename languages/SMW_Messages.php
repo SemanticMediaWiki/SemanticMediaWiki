@@ -67,6 +67,7 @@ If the problem does not go away after some time, ask your site administrator to 
 
 	// Messages for query parameter descriptions
 	'smw_paramdesc_limit'	=> 'The maximum number of results to return',
+	'smw_paramdesc_offset' => 'The offset of the first result',
 	'smw_paramdesc_headers'	=> 'Display the headers/property names',
 	'smw_paramdesc_mainlabel'	=> 'The label to give to the main page name',
 	'smw_paramdesc_link'	=> 'Show values as links',
