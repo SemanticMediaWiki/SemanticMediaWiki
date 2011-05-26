@@ -65,22 +65,30 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	function getPageHeader() {
 		return '<p>' . wfMsg( 'smw_unusedproperties_docu' ) . "</p><br />\n";
 	}
-
-	function formatResult( $skin, $result ) {
-		$proplink = $skin->makeKnownLinkObj( $result->getWikiPageValue()->getTitle(), $result->getWikiValue() );
-		$types = smwfGetStore()->getPropertyValues( $result->getWikiPageValue(), new SMWDIProperty( '_TYPE' ) ); // TODO: do not bypass SMWDataValueFactory!
+	function formatResult( $skin, /* SMWDIProperty */ $result ) {
+		$proplink = $skin->makeKnownLinkObj(
+			$result->getDiWikiPage()->getTitle(), 
+			SMWDataValueFactory::newDataItemValue( $result->getDiWikiPage(), new SMWDIProperty( '_TYPE' ) )->getWikiValue()
+		);
+		
+		$types = smwfGetStore()->getPropertyValues( $result->getDiWikiPage(), new SMWDIProperty( '_TYPE' ) ); // TODO: do not bypass SMWDataValueFactory!
 		$errors = array();
+		
 		if ( count( $types ) >= 1 ) {
-			$typestring = current( $types )->getLongHTMLText( $skin );
+			$typestring = SMWDataValueFactory::newDataItemValue( current( $types ), new SMWDIProperty( '_TYPE' ) )->getLongHTMLText( $skin );
 		} else {
 			$type = SMWDataValueFactory::newPropertyObjectValue( SMWPropertyValue::makeProperty( '_TYPE' ) );
 			$type->setDBkeys( array( '_wpg' ) );
 			$typestring = $type->getLongHTMLText( $skin );
 			$errors[] = wfMsg( 'smw_propertylackstype', $type->getLongHTMLText() );
 		}
+		
 		return wfMsg( 'smw_unusedproperty_template', $proplink, $typestring ) . ' ' . smwfEncodeMessages( $errors );
 	}
 
+	/**
+	 * @return array of SMWDIProperty
+	 */
 	function getResults( $requestoptions ) {
 		return smwfGetStore()->getUnusedPropertiesSpecial( $requestoptions );
 	}
