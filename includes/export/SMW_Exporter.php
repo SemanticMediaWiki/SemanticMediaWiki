@@ -69,6 +69,8 @@ class SMWExporter {
 	 * can be used to pass a particular SMWTypesValue object that is used
 	 * for determining the OWL type for property pages.
 	 *
+	 * @todo Take into account whether the wiki page belongs to a builtin property, and ensure URI alignment/type declaration in this case.
+	 *
 	 * @param $diWikiPage SMWDIWikiPage
 	 * @param $typesvalueforproperty mixed either an SMWTypesValue or null
 	 * @param $addStubData boolean to indicate if additional data should be added to make a stub entry for this page
