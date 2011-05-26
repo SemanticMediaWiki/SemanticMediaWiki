@@ -313,7 +313,7 @@ class SMWExporter {
 						}
 					}
 				}
-			}
+			} // else: not in wiki namespace -- TODO: this could be an imported URI
 		} else {
 			// TODO (currently not needed, but will be useful for displaying external SPARQL results)
 		}
@@ -358,7 +358,7 @@ class SMWExporter {
 				return self::getSpecialNsResource( 'rdf', 'type' );
 			case '_SUBC':
 				return self::getSpecialNsResource( 'rdfs', 'subClassOf' );
-			case '_CONC': // we actually simplify this below, but need a non-null value now
+			case '_CONC':
 				return self::getSpecialNsResource( 'owl', 'equivalentClass' );
 			case '_URI':
 				if ( $forNamespace == NS_CATEGORY || $forNamespace == SMW_NS_CONCEPT ) {
@@ -380,9 +380,10 @@ class SMWExporter {
 				return self::getSpecialNsResource( 'swivt', 'wikiPageModificationDate' );
 			case '_SKEY':
 				return self::getSpecialNsResource( 'swivt', 'wikiPageSortKey' );
-			case '_TYPE': /// TODO: property type currently not exported
-				return null;
-			default: return null;
+			case '_TYPE':
+				return self::getSpecialNsResource( 'swivt', 'type' );
+			default:
+				return self::getSpecialNsResource( 'swivt', 'specialProperty' . $propertyKey );
 		}
 	}
 
@@ -514,8 +515,7 @@ class SMWExporter {
 				$lit = new SMWExpLiteral( $xsdvalue, 'http://www.w3.org/2001/XMLSchema#boolean', $dataItem );
 				return $lit;
 			case SMWDataItem::TYPE_URI:
-				/// TODO This escaping seems very odd. The serialisation should handle such things.
-				$res = new SMWExpResource( str_replace( '&', '&amp;', $dataItem->getURI() ), $dataItem );
+				$res = new SMWExpResource( $dataItem->getURI(), $dataItem );
 				return $res;
 			case SMWDataItem::TYPE_TIME:
 				$gregorianTime = $dataItem->getForCalendarModel( SMWDITime::CM_GREGORIAN );

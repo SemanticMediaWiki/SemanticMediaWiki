@@ -180,8 +180,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 		if ( $expLiteral->getDatatype() != '' ) {
 			$this->post_ns_buffer .= ' rdf:datatype="' . $expLiteral->getDatatype() . '"';
 		}
-		$this->post_ns_buffer .= '>' .
-			str_replace( array( '&', '>', '<' ), array( '&amp;', '&gt;', '&lt;' ), $expLiteral->getLexicalForm() ) .
+		$this->post_ns_buffer .= '>' . $this->makeAttributeValueString( $expLiteral->getLexicalForm() ) .
 			'</' . $expResourceProperty->getQName() . ">\n";
 	}
 
@@ -197,10 +196,12 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	protected function serializeExpResource( SMWExpNsResource $expResourceProperty, SMWExpResource $expResource, $indent, $isClassTypeProp ) {
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 		if ( !$expResource->isBlankNode() ) {
-			if ( ( $expResource instanceof SMWExpNsResource ) && ( $expResource->getNamespaceID() == 'wiki' ) ) { // very common case, reduce bandwidth
+			if ( ( $expResource instanceof SMWExpNsResource ) && ( $expResource->getNamespaceID() == 'wiki' ) ) { 
+				// very common case, reduce bandwidth
 				$this->post_ns_buffer .= ' rdf:resource="&wiki;' . $expResource->getLocalName() . '"';
 			} else {
-				$this->post_ns_buffer .= ' rdf:resource="' . $expResource->getUri() . '"';
+				$uriValue = $this->makeAttributeValueString( $expResource->getUri() );
+				$this->post_ns_buffer .= ' rdf:resource="' . $uriValue . '"';
 			}
 		}
 		$this->post_ns_buffer .= "/>\n";
@@ -237,10 +238,22 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 	 * Escape a string in the special form that is required for values in 
 	 * DTD entity declarations in XML. Namely, this require the percent sign
 	 * to be replaced.
-	 * @param string $string to be escaped 
+	 *
+	 * @param $string string to be escaped
+	 * @return string
 	 */
 	protected function makeValueEntityString( $string ) {
 		return "'" . str_replace( '%','&#37;',$string ) . "'";
+	}
+
+	/**
+	 * Escape a string as required for using it in XML attribute values.
+	 *
+	 * @param $string string to be escaped 
+	 * @return string
+	 */
+	protected function makeAttributeValueString( $string ) {
+		return str_replace( array( '&', '>', '<' ), array( '&amp;', '&gt;', '&lt;' ), $string );
 	}
 
 }
