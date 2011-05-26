@@ -195,8 +195,7 @@ Generates browsable RDF.',
 
 	// Messages for (data)Types Special
 	'types'          => 'Types',
-	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to properties.
-Each datatype has a page where additional information can be provided.',
+	'smw_types_docu' => 'The following is a list of all datatypes that can be assigned to properties.',
 	'smw_typeunits'  => 'Units of measurement of type "$1": $2',
 
 	/*Messages for SemanticStatistics Special*/
