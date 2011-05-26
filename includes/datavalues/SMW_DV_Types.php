@@ -100,7 +100,7 @@ class SMWTypesValue extends SMWDataValue {
 		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
 			return $this->m_caption;
 		} else {
-			$titleText = $this->getTitleText();
+			$titleText = $this->getSpecialPageTitleText();
 			$namespace = $wgContLang->getNsText( NS_SPECIAL );
 			return "[[$namespace:$titleText|{$this->m_caption}]]";
 		}
@@ -110,7 +110,7 @@ class SMWTypesValue extends SMWDataValue {
 		if ( ( $linked === null ) || ( $linked === false ) || ( $this->m_outformat == '-' ) || ( $this->m_caption == '' ) ) {
 			return htmlspecialchars( $this->m_caption );
 		} else {
-			$title = Title::makeTitle( NS_SPECIAL, $this->getTitleText() );
+			$title = Title::makeTitle( NS_SPECIAL, $this->getSpecialPageTitleText() );
 			return $linker->makeLinkObj( $title, htmlspecialchars( $this->m_caption ) );
 		}
 	}
@@ -120,7 +120,7 @@ class SMWTypesValue extends SMWDataValue {
 		if ( ( $linked === null ) || ( $linked === false ) ) {
 			return $this->m_realLabel;
 		} else {
-			$titleText = $this->getTitleText();
+			$titleText = $this->getSpecialPageTitleText();
 			$namespace = $wgContLang->getNsText( NS_SPECIAL );
 			return "[[$namespace:$titleText|{$this->m_realLabel}]]";
 		}
@@ -130,7 +130,7 @@ class SMWTypesValue extends SMWDataValue {
 		if ( ( $linker === null ) || ( $linker === false ) ) {
 			return htmlspecialchars( $this->m_realLabel );
 		} else {
-			$title = Title::makeTitle( NS_SPECIAL, $this->getTitleText() );
+			$title = Title::makeTitle( NS_SPECIAL, $this->getSpecialPageTitleText() );
 			return $linker->makeLinkObj( $title, htmlspecialchars( $this->m_realLabel ) );
 		}
 	}
@@ -145,7 +145,7 @@ class SMWTypesValue extends SMWDataValue {
 	 * 
 	 * @return string
 	 */
-	protected function getTitleText() {
+	protected function getSpecialPageTitleText() {
 		return is_callable( array( 'SpecialPageFactory', 'getLocalNameFor' ) ) ?
 			SpecialPageFactory::getLocalNameFor( 'Types', $this->m_realLabel )
 			: SpecialPage::getLocalNameFor( 'Types', $this->m_realLabel );
