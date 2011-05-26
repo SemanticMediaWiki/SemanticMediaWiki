@@ -58,61 +58,148 @@ class SMWSparqlStore extends SMWSQLStore2 {
 
 	public function doDataUpdate( SMWSemanticData $data ) {
 		parent::doDataUpdate( $data );
-		$subjectResource = SMWExporter::getDataItemExpElement( $data->getSubject() );
-		$this->deleteSparqlData( $subjectResource );
 
 		$expDataArray = $this->prepareUpdateExpData( $data );
 
-		$turtleSerializer = new SMWTurtleSerializer( true );
-		$turtleSerializer->startSerialization();
-		foreach ( $expDataArray as $expData ) {
-			$turtleSerializer->serializeExpData( $expData );
-		}
-		$turtleSerializer->finishSerialization();
-		$triples = $turtleSerializer->flushContent();
-		$prefixes = $turtleSerializer->flushSparqlPrefixes();
+		if ( count( $expDataArray ) > 0 ) {
+			$subjectResource = SMWExporter::getDataItemExpElement( $data->getSubject() );
+			$this->deleteSparqlData( $subjectResource );
 
-		smwfGetSparqlDatabase()->insertData( $triples, $prefixes );
+			$turtleSerializer = new SMWTurtleSerializer( true );
+			$turtleSerializer->startSerialization();
+			foreach ( $expDataArray as $expData ) {
+				$turtleSerializer->serializeExpData( $expData );
+			}
+			$turtleSerializer->finishSerialization();
+			$triples = $turtleSerializer->flushContent();
+			$prefixes = $turtleSerializer->flushSparqlPrefixes();
+
+			smwfGetSparqlDatabase()->insertData( $triples, $prefixes );
+		}
 	}
 
 	/**
 	 * Prepare an array of SMWExpData elements that should be written to
-	 * the SPARQL store, or return null if no update should be performed.
+	 * the SPARQL store. The result is empty if no updates should be done.
+	 * Note that this is different from writing an SMWExpData element that
+	 * has no content.
 	 * Otherwise, the first SMWExpData object in the array is a translation
-	 * of the given input data, but with redirects resolved. 
+	 * of the given input data, but with redirects resolved. Further
+	 * SMWExpData objects might be included in the resulting list to
+	 * capture necessary stub declarations for objects that do not have
+	 * any data in the RDF store yet.
 	 *
 	 * @param $data SMWSemanticData object containing the update data
+	 * @return array of SMWExpData
 	 */
 	protected function prepareUpdateExpData( SMWSemanticData $data ) {
 		$expData = SMWExporter::makeExportData( $data );
 		$result = array();
-		$newExpData = new SMWExpData( $expData->getSubject() );
-		$exists = false;
-		foreach ( $expData->getProperties() as $propertyResource ) {
-			$propertyTarget = $this->getSparqlRedirectTarget( $propertyResource, $exists );
-			if ( !$exists && ( $propertyResource->getDataItem() instanceof SMWDIWikiPage ) ) {
-				$diWikiPage = $propertyResource->getDataItem();
-				if ( ( $diWikiPage !== null ) && !array_key_exists( $diWikiPage->gethash(), $result ) ) {
-					$result[$diWikiPage->gethash()] = SMWExporter::makeExportDataForSubject( $diWikiPage, null, true );
-				}
+		$newExpData = $this->expandUpdateExpData( $expData, $expData->getSubject(), $result, false );
+		array_unshift( $result, $newExpData );
+		return $result;
+	}
+
+	/**
+	 * Find a normalized representation of the given SMWExpElement that can
+	 * be used in an update of the stored data. Normalization uses
+	 * redirects. The type of the ExpElement might change, especially into
+	 * SMWExpData in order to store auxiliary properties.
+	 * Moreover, the method records any auxiliary data that should be
+	 * written to the store when including this SMWExpElement into updates.
+	 * This auxiliary data is collected in a call-by-ref array.
+	 *
+	 * @param $expElement SMWExpElement object containing the update data
+	 * @param $masterExpElement SMWExpResource to which encountered blank nodes will be associated
+	 * @param $auxiliaryExpData array of SMWExpData
+	 * @return SMWExpElement
+	 */
+	protected function expandUpdateExpElement( SMWExpElement $expElement, SMWExpResource $masterExpElement, array &$auxiliaryExpData ) {
+		if ( $expElement instanceof SMWExpResource ) {
+			$elementTarget = $this->expandUpdateExpResource( $expElement, $masterExpElement, $auxiliaryExpData );
+		} elseif ( $expElement instanceof SMWExpData ) {
+			$elementTarget = $this->expandUpdateExpData( $expElement, $masterExpElement, $auxiliaryExpData, true );
+		} else {
+			$elementTarget = $expElement;
+		}
+
+		return $elementTarget;
+	}
+
+	/**
+	 * Find a normalized representation of the given SMWExpResource that can
+	 * be used in an update of the stored data. Normalization uses
+	 * redirects. The type of the ExpElement might change, especially into
+	 * SMWExpData in order to store auxiliary properties.
+	 * Moreover, the method records any auxiliary data that should be
+	 * written to the store when including this SMWExpElement into updates.
+	 * This auxiliary data is collected in a call-by-ref array.
+	 *
+	 * @param $expResource SMWExpResource object containing the update data
+	 * @param $masterExpElement SMWExpResource to which encountered blank nodes will be associated
+	 * @param $auxiliaryExpData array of SMWExpData
+	 * @return SMWExpElement
+	 */
+	protected function expandUpdateExpResource( SMWExpResource $expResource, SMWExpResource $masterExpElement, array &$auxiliaryExpData ) {
+		$exists = true;
+		if ( $expResource instanceof SMWExpNsResource ) {
+			$elementTarget = $this->getSparqlRedirectTarget( $expResource, $exists );
+		} else {
+			$elementTarget = $expResource;
+		}
+
+		if ( $elementTarget->isBlankNode() ) {
+			$auxExpData = new SMWExpData( $elementTarget );
+			$masterResourceProperty = SMWExporter::getSpecialNsResource( 'swivt', 'masterResource' );
+			$auxExpData->addPropertyObjectValue( $masterResourceProperty, $masterExpElement );
+			$elementTarget = $auxExpData;
+		} elseif ( !$exists && ( $elementTarget->getDataItem() instanceof SMWDIWikiPage ) ) {
+			$diWikiPage = $elementTarget->getDataItem();
+			$hash = $diWikiPage->getHash();
+			if ( !array_key_exists( $hash, $auxiliaryExpData ) ) {
+				$auxiliaryExpData[$hash] = SMWExporter::makeExportDataForSubject( $diWikiPage, null, true );
 			}
+		}
+
+		return $elementTarget;
+	}
+
+	/**
+	 * Find a normalized representation of the given SMWExpData that can
+	 * be used in an update of the stored data. Normalization uses
+	 * redirects.
+	 * Moreover, the method records any auxiliary data that should be
+	 * written to the store when including this SMWExpElement into updates.
+	 * This auxiliary data is collected in a call-by-ref array.
+	 *
+	 * @param $expData SMWExpData object containing the update data
+	 * @param $masterExpElement SMWExpResource to which encountered blank nodes will be associated
+	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
+	 * @return SMWExpData
+	 */
+	protected function expandUpdateExpData( SMWExpData $expData, SMWExpResource $masterExpElement, array &$auxiliaryExpData, $expandSubject ) {
+		$subjectExpResource = $expData->getSubject();
+		if ( $expandSubject ) {
+			$expandedExpElement = $this->expandUpdateExpElement( $subjectExpResource, $masterExpElement, $auxiliaryExpData );
+			if ( $expandedExpElement instanceof SMWExpData ) {
+				$newExpData = $expandedExpElement;
+			} else { // instanceof SMWExpResource
+				$newExpData = new SMWExpData( $subjectExpResource );
+			}
+		} else {
+			$newExpData = new SMWExpData( $subjectExpResource );
+		}
+
+		foreach ( $expData->getProperties() as $propertyResource ) {
+			$propertyTarget = $this->expandUpdateExpElement( $propertyResource, $masterExpElement, $auxiliaryExpData );
 			foreach ( $expData->getValues( $propertyResource ) as $expElement ) {
-				if ( $expElement instanceof SMWExpNsResource ) {
-					$elementTarget = $this->getSparqlRedirectTarget( $expElement, $exists );
-					if ( !$exists && ( $expElement->getDataItem() instanceof SMWDIWikiPage ) ) {
-						$diWikiPage = $expElement->getDataItem();
-						if ( ( $diWikiPage !== null ) && !array_key_exists( $diWikiPage->gethash(), $result ) ) {
-							$result[$diWikiPage->gethash()] = SMWExporter::makeExportDataForSubject( $diWikiPage, null, true );
-						}
-					}
-				} else {
-					$elementTarget = $expElement;
-				}
+				$elementTarget = $this->expandUpdateExpElement( $expElement, $masterExpElement, $auxiliaryExpData );
 				$newExpData->addPropertyObjectValue( $propertyTarget, $elementTarget );
 			}
 		}
-		$result[] = $newExpData;
-		return $result;
+
+		return $newExpData;
 	}
 
 	/**
@@ -122,10 +209,16 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 * used for making a resource with a prefix).
 	 *
 	 * @param $expNsResource string URI to check
-	 * @param $exists boolean that is set to true if $expNsResource is in the store
+	 * @param $exists boolean that is set to true if $expNsResource is in the
+	 * store; always false for blank nodes
 	 * @return SMWExpNsResource
 	 */
 	protected function getSparqlRedirectTarget( SMWExpNsResource $expNsResource, &$exists ) {
+		if ( $expNsResource->isBlankNode() ) {
+			$exists = false;
+			return $expNsResource;
+		}
+
 		$resourceUri = SMWTurtleSerializer::getTurtleNameForExpElement( $expNsResource );
 		$rediUri = SMWTurtleSerializer::getTurtleNameForExpElement( SMWExporter::getSpecialPropertyResource( '_REDI' ) );
 		$skeyUri = SMWTurtleSerializer::getTurtleNameForExpElement( SMWExporter::getSpecialPropertyResource( '_SKEY' ) );
@@ -143,7 +236,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 			$exists = true;
 			$rediTargetElement = $firstRow[1];
 			$rediTargetUri = $rediTargetElement->getUri();
-			$wikiNamespace = Exporter::expandUri( '$wiki;' );
+			$wikiNamespace = Exporter::getNamespaceUri( 'wiki' );
 			if ( strpos( $rediTargetUri, $wikiNamespace ) === 0 ) {
 				return new SMWExpNsResource( substr( $rediTargetUri, 0, strlen( $wikiNamespace ) ) , $wikiNamespace, 'wiki' );
 			} else {

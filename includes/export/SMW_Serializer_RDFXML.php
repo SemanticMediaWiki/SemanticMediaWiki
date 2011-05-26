@@ -120,7 +120,8 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 			$this->post_ns_buffer .= "\t$indent<$type";
 		}
 
-		if ( $expData->getSubject() instanceof SMWExpResource ) {
+		if ( ( $expData->getSubject() instanceof SMWExpResource ) &&
+		      !$expData->getSubject()->isBlankNode() ) {
 			 $this->post_ns_buffer .= ' rdf:about="' . $expData->getSubject()->getUri() . '"';
 		} // else: blank node, no "rdf:about"
 
@@ -149,7 +150,7 @@ class SMWRDFXMLSerializer extends SMWSerializer{
 						if ( $collection !== false ) { // RDF-style collection (list)
 							$this->serializeExpCollection( $property, $collection, "\t\t$indent", $isClassTypeProp );
 						} elseif ( count( $valueElement->getProperties() ) > 0 ) { // resource with data
-							$this->post_ns_buffer .= "\t\t$indent<" . $expResourceProperty->getQName() . ">\n";
+							$this->post_ns_buffer .= "\t\t$indent<" . $property->getQName() . ">\n";
 							$this->serializeNestedExpData( $valueElement, "\t\t$indent" );
 							$this->post_ns_buffer .= "\t\t$indent</" . $property->getQName() . ">\n";
 						} else { // resource without data

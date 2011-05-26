@@ -31,7 +31,7 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	 * @param boolean $noDuplicates stating if duplicate data should be avoided
 	 */
 	public function __construct( $noDuplicates = true ) {
-		$subject = new SMWDIWikiPage( 'SMWInternalObject', NS_SPECIAL, '' ); // dummy subject
+		$subject = SMWExporter::getInternalObjectDiPage();
 		parent::__construct( $subject, $noDuplicates );
 	}
 
