@@ -18,7 +18,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		return wfMsg( 'smw_printername_' . $this->mFormat );
 	}
 
-	protected function getResultText( $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		global $smwgIQRunningNumber;
 		SMWOutputs::requireHeadItem( SMW_HEADER_SORTTABLE );
 

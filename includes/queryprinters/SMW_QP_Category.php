@@ -46,7 +46,7 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 		return $namespace_labels[NS_CATEGORY];
 	}
 
-	protected function getResultText( $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		global $wgContLang;
 
 		// <H3> will generate TOC entries otherwise.  Probably need another way

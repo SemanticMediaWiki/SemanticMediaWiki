@@ -34,7 +34,7 @@ class SMWEmbeddedResultPrinter extends SMWResultPrinter {
 		return wfMsg( 'smw_printername_embedded' );
 	}
 
-	protected function getResultText( $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		global $wgParser;
 		// No page should embed itself, find out who we are:
 		if ( $wgParser->getTitle() instanceof Title ) {

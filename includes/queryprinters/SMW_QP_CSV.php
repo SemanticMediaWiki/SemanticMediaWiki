@@ -40,7 +40,7 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 		return wfMsg( 'smw_printername_csv' );
 	}
 
-	protected function getResultText( $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		$result = '';
 		
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // make CSV file

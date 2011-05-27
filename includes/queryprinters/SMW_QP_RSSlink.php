@@ -45,7 +45,7 @@ class SMWRSSResultPrinter extends SMWResultPrinter {
 		return wfMsg( 'smw_printername_rss' );
 	}
 
-	protected function getResultText( $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		global $smwgIQRunningNumber, $wgSitename, $wgServer, $smwgRSSEnabled, $wgRequest;
 		$result = '';
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // make RSS feed

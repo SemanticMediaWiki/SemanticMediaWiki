@@ -53,7 +53,7 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 		return wfMsg( 'smw_printername_dsv' );
 	}
 
-	protected function getResultText( /* SMWQueryResult */ $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // Make the DSV file.
 			return $this->getResultFileContents( $res );
 		}

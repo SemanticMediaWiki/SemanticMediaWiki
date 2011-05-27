@@ -35,7 +35,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 		return wfMsg( 'smw_printername_json' );
 	}
 
-	protected function getResultText( $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		global $wgServer, $wgScriptPath;
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // create detached JSON file
 			$itemstack = array(); // contains Items for the items section

@@ -61,7 +61,7 @@ class SMWListResultPrinter extends SMWResultPrinter {
 		return wfMsg( 'smw_printername_' . $this->mFormat );
 	}
 
-	protected function getResultText( $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		if ( ( $this->mFormat == 'template' ) && ( $this->mTemplate == false ) ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$res->addErrors( array( wfMsgForContent( 'smw_notemplategiven' ) ) );

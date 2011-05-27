@@ -43,7 +43,7 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 		return wfMsg( 'smw_printername_rdf' );
 	}
 
-	protected function getResultText( $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		if ( $outputmode == SMW_OUTPUT_FILE ) { // make RDF file
 			$serializer = $this->syntax == 'turtle' ? new SMWTurtleSerializer() : new SMWRDFXMLSerializer();
 			$serializer->startSerialization();

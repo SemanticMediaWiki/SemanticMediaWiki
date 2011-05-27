@@ -58,7 +58,7 @@ class SMWAutoResultPrinter extends SMWResultPrinter {
 	 * @param SMWQueryResult $res
 	 * @param $outputmode
 	 */
-	protected function getResultText( /* SMWQueryResult */ $res, $outputmode ) {
+	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		return ''; // acutally not needed in this implementation
 	}
 
