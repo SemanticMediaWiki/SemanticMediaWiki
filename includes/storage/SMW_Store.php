@@ -213,6 +213,7 @@ abstract class SMWStore {
 	 */
 	public function getWikiPageSortKey( SMWDIWikiPage $wikiPage ) {
 		$sortkeyDataItems = $this->getPropertyValues( $wikiPage, new SMWDIProperty( '_SKEY' ) );
+		
 		if ( count( $sortkeyDataItems ) > 0 ) {
 			return end( $sortkeyDataItems )->getString();
 		} else {

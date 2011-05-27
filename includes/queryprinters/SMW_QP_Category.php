@@ -63,17 +63,20 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 		// Print all result rows:
 		$rowindex = 0;
 		$row = $res->getNext();
+		
 		while ( $row !== false ) {
 			$nextrow = $res->getNext(); // look ahead
 
 			$content = $row[0]->getContent();
 			$sortkey = $res->getStore()->getWikiPageSortKey( $content[0] );
-			$cur_first_char = $wgContLang->firstChar( $sortkey );
+			$cur_first_char = $wgContLang->firstChar( $sortkey == '' ? $content[0]->getDBkey() : $sortkey );
+			
 			if ( $rowindex % $rows_per_column == 0 ) {
 				$result .= "\n			<div style=\"float: left; width: $column_width%;\">\n";
 				if ( $cur_first_char == $prev_first_char )
 					$result .= "				<h3>$cur_first_char " . wfMsg( 'listingcontinuesabbrev' ) . "</h3>\n				<ul>\n";
 			}
+			
 			// if we're at a new first letter, end
 			// the last list and start a new one
 			if ( $cur_first_char != $prev_first_char ) {
@@ -85,25 +88,31 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 
 			$result .= '<li>';
 			$first_col = true;
+			
 			if ( $this->mTemplate != '' ) { // build template code
 				$this->hasTemplates = true;
 				$wikitext = ( $this->mUserParam ) ? "|userparam=$this->mUserParam":'';
 				$i = 1; // explicitly number parameters for more robust parsing (values may contain "=")
+				
 				foreach ( $row as $field ) {
 					$wikitext .= '|' . $i++ . '=';
 					$first_value = true;
+					
 					while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
 						if ( $first_value ) $first_value = false; else $wikitext .= $this->mDelim . ' ';
 						$wikitext .= $text;
 					}
+					
 					$first_col = false;
 				}
+				
 				$wikitext .= "|#=$rowindex";
 				$result .= '{{' . $this->mTemplate . $wikitext . '}}';
 				// str_replace('|', '&#x007C;', // encode '|' for use in templates (templates fail otherwise) -- this is not the place for doing this, since even DV-Wikitexts contain proper "|"!
 			} else {  // build simple list
 				$first_col = true;
 				$found_values = false; // has anything but the first column been printed?
+				
 				foreach ( $row as $field ) {
 					$first_value = true;
 					
@@ -148,23 +157,30 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 		// Make label for finding further results
 		if ( $this->linkFurtherResults( $res ) ) {
 			$link = $res->getQueryLink();
+			
 			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) ) {
 				$link->setCaption( $this->getSearchLabel( SMW_OUTPUT_WIKI ) );
 			}
+			
 			$link->setParameter( 'category', 'format' );
+			
 			if ( $this->mNumColumns != 3 ) $link->setParameter( $this->mNumColumns, 'columns' );
+			
 			if ( $this->mTemplate != '' ) {
 				$link->setParameter( $this->mTemplate, 'template' );
+				
 				if ( array_key_exists( 'link', $this->m_params ) ) { // linking may interfere with templates
 					$link->setParameter( $this->m_params['link'], 'link' );
 				}
 			}
+			
 			$result .= '<br /><li>' . $link->getText( SMW_OUTPUT_WIKI, $this->mLinker ) . '</li>';
 		}
 
 		$result .= "				</ul>\n			</div> <!-- end column -->";
 		// clear all the CSS floats
 		$result .= "\n" . '<br style="clear: both;"/>';
+		
 		return $result;
 	}
 
