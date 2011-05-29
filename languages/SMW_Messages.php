@@ -2135,7 +2135,7 @@ Weil nur wenige Ergebnisse gefunden wurden, werden auch ähnliche Werte aufgelis
 	'smw_browse_no_outgoing' => 'Diese Seite hat keine Attribute.',
 	'smw_browse_no_incoming' => 'Keine Attribute verlinken auf diese Seite.',
 	'smw_inverse_label_default' => '$1 von',
-	'smw_inverse_label_property' => 'Umgekehrte Attributsbezeichnung',
+	'smw_inverse_label_property' => 'Bezeichnung des inversen Attributs',
 	'pageproperty' => 'Attributswerte einer Seite',
 	'smw_pp_docu' => 'Suche nach allen Werten, die ein bestimmtes Attribut für die angegebene Seite hat.',
 	'smw_pp_from' => 'Seite',
@@ -6920,6 +6920,8 @@ $messages['mr'] = array(
  * @author Anakmalaysia
  */
 $messages['ms'] = array(
+	'smw_ask_defaultformat' => 'tersedia',
+	'smw_browse_go' => 'Pergi',
 	'smw_result_prev' => 'Sebelumnya',
 	'smw_result_next' => 'Berikutnya',
 );
