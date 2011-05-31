@@ -97,6 +97,10 @@ class SMWDIProperty extends SMWDataItem {
 		return $this->m_inverse;
 	}
 
+	public function getPropertyTypeID() {
+		return $this->m_proptypeid;
+	}
+
 	public function getSortKey() {
 		return $this->m_key;
 	}
