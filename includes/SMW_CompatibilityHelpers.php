@@ -29,11 +29,10 @@ class SMWCompatibilityHelpers {
 	 *
 	 * @param $typeid string id for the given type
 	 * @param $dbkeys array of mixed
-	 * @param $diProperty mixed SMWDIProperty or null, the property for which this value is built, currently needed for records
 	 *
 	 * @return SMWDataItem
 	 */
-	static public function dataItemFromDBKeys( $typeid, $dbkeys, $diProperty = null ) {
+	static public function dataItemFromDBKeys( $typeid, $dbkeys ) {
 		switch ( SMWDataValueFactory::getDataItemId( $typeid )  ) {
 			case SMWDataItem::TYPE_ERROR: case SMWDataItem::TYPE_NOTYPE:
 				break;
