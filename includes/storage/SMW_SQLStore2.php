@@ -205,7 +205,7 @@ class SMWSQLStore2 extends SMWStore {
 
 			foreach ( $data as $dbkeys ) {
 				try {
-					$result[] = SMWDataValueFactory::newTypeIdItem( $property->findPropertyTypeID(), $dbkeys );
+					$result[] = SMWCompatibilityHelpers::dataItemFromDBKeys( $property->findPropertyTypeID(), $dbkeys );
 				} catch ( SMWDataItemException $e ) {
 					// maybe some type assignment changed since the data was stored;
 					// don't worry, but we can ony drop the data here
