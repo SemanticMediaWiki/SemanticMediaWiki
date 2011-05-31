@@ -54,16 +54,15 @@ class SMWPropertiesPage extends SMWQueryPage {
 	function formatResult( $skin, $result ) {
 		$typestring = '';
 		$errors = array();
+
 		$diWikiPage = $result[0]->getDiWikiPage();
-		if ( $diWikiPage !== null ) {
-			$title = Title::makeTitle( $diWikiPage->getNamespace(), $diWikiPage->getDBkey() );
-		} else {
-			$title = null;
-		}
+		$title = $diWikiPage !== null ? $diWikiPage->getTitle() : null;
+
 		if ( $result[0]->isUserDefined() && ( $result[1] <= 5 ) ) {
 			$errors[] = wfMsg( 'smw_propertyhardlyused' );
 		}
-		if ( $result[0]->isUserDefined() && ( $title !== null ) && $title->exists() ) { // FIXME: this bypasses SMWDataValueFactory; ungood
+
+		if ( $result[0]->isUserDefined() && $title !== null && $title->exists() ) {
 			$typeProperty = new SMWDIProperty( '_TYPE' );
 			$types = smwfGetStore()->getPropertyValues( $diWikiPage, $typeProperty );
 			if ( count( $types ) >= 1 ) {
@@ -71,27 +70,28 @@ class SMWPropertiesPage extends SMWQueryPage {
 				$typestring = $typeDataValue->getLongHTMLText( $skin );
 			}
 			$proplink = $skin->makeKnownLinkObj( $title, $result[0]->getLabel() );
-		} elseif ( $result[0]->isUserDefined() && ( $title !== null ) ) {
+		} elseif ( $result[0]->isUserDefined() && $title !== null ) {
 			$errors[] = wfMsg( 'smw_propertylackspage' );
 			$proplink = $skin->makeBrokenLinkObj( $title, $result[0]->getLabel(), 'action=view' );
 		} else { // predefined property
-			$type = $result[0]->getTypesValue();
-			$typestring = $type->getLongHTMLText( $skin );
+			$typeid = $result[0]->findPropertyTypeID();
+			$typeDataValue = SMWTypesValue::newFromTypeId( $typeid );
+			$propertyDataValue = SMWDataValueFactory::newDataItemValue( $result[0], null );
+			$typestring = $typeDataValue->getLongHTMLText( $skin );
 			if ( $typestring == '' ) $typestring = '–'; /// FIXME some types of builtin props have no name, and another message should be used then
-			$proplink = $result[0]->getLongHTMLText( $skin );
+			$proplink = $propertyDataValue->getLongHTMLText( $skin );
 		}
+
 		if ( $typestring == '' ) {
 			global $smwgPDefaultType;
-			$typepagedbkey = str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $smwgPDefaultType ) );
-			$diTypePage = new SMWDIWikiPage( $typepagedbkey, SMW_NS_TYPE, '', '__typ' );
-			$dvTypePage = SMWDataValueFactory::newTypeIdValue( '__typ' );
-			$dvTypePage->setDataItem( $diTypePage );
-			$typestring = $dvTypePage->getLongHTMLText( $skin );
-			if ( ( $title !== null ) && ( $title->exists() ) ) { // print only when we did not print a "nopage" warning yet
+			$typeDataValue = SMWTypesValue::newFromTypeId( $smwgPDefaultType );
+			$typestring = $typeDataValue->getLongHTMLText( $skin );
+			if ( $title !== null && $title->exists() ) { // print only when we did not print a "nopage" warning yet
 				$errors[] = wfMsg( 'smw_propertylackstype', $typestring );
 			}
 		}
-		return wfMsg( 'smw_property_template', $proplink, $typestring, $result[1] ) . ' ' . smwfEncodeMessages( $errors );
+
+		return wfMsg( 'smw_property_template', $proplink, $typestring, $result[1] ) . ' ' . smwfEncodeMessages( $errors, 'warning', ' <!--br-->', false );
 	}
 
 	function getResults( $requestoptions ) {

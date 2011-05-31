@@ -46,12 +46,6 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @var SMWTypesValue
 	 */
 	private $mPropTypeValue;
-	
-	/**
-	 * Cache for type ID of this property, or '' if not calculated yet.
-	 * @var string
-	 */
-	private $mPropTypeId;
 
 	/**
 	 * Static function for creating a new property object from a
@@ -105,7 +99,6 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	protected function parseUserValue( $value ) {
 		$this->mPropTypeValue = null;
-		$this->mPropTypeId = '';
 		unset( $this->m_wikipage );
 
 		if ( $this->m_caption === false ) { // always use this as caption
@@ -137,7 +130,6 @@ class SMWPropertyValue extends SMWDataValue {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_PROPERTY ) {
 			$this->m_dataitem = $dataItem;
 			$this->mPropTypeValue = null;
-			$this->mPropTypeId = '';
 			unset( $this->m_wikipage );
 			$this->m_caption = false;
 			return true;
@@ -222,52 +214,32 @@ class SMWPropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * Return an SMWTypesValue object representing the datatype of this property.
+	 * Return an SMWTypesValue object representing the datatype of this
+	 * property.
+	 * @deprecated Types values are not a good way to exchange SMW type information. They are for input only. Use getPropertyTypeID() if you want the type id. This method will vanish in SMW 1.7.
 	 */
 	public function getTypesValue() {
-		global $smwgPDefaultType;
-		if ( $this->mPropTypeValue === null ) {
-			if ( !$this->isValid() ) { // errors in property, return invalid types value with same errors
-				$result = SMWDataValueFactory::newTypeIDValue( '__typ' );
-				$result->setDBkeys( array( '__err' ) );
-				$result->addError( $this->getErrors() );
-			} elseif ( $this->m_dataitem->isUserDefined() ) { // normal property
-				$typearray = smwfGetStore()->getPropertyValues( $this->getWikiPageValue(), new SMWDIProperty( '_TYPE' ) );
-				if ( count( $typearray ) == 1 ) { // unique type given
-					$result = current( $typearray );
-				} elseif ( count( $typearray ) == 0 ) { // no type given
-					$result = SMWDataValueFactory::newTypeIDValue( '__typ' );
-					$result->setDBkeys( array( $smwgPDefaultType ) );
-				} else { // many types given, error
-					smwfLoadExtensionMessages( 'SemanticMediaWiki' );
-					$result = SMWDataValueFactory::newTypeIDValue( '__typ' );
-					$result->setDBkeys( array( '__err' ) );
-					$result->addError( wfMsgForContent( 'smw_manytypes' ) );
-				}
-			} else { // pre-defined property
-				$propertyTypeId = SMWDIProperty::getPredefinedPropertyTypeId( $this->m_dataitem->getKey() );
-				$result = SMWTypesValue::newFromTypeId( $propertyTypeId );
-			}
-			$this->mPropTypeValue = $result;
+		$result = SMWTypesValue::newFromTypeId( $this->getPropertyTypeID() );
+		if ( !$this->isValid() ) {
+			$result->addError( $this->getErrors() );
 		}
-		return $this->mPropTypeValue;
+		return $result;
 	}
 
 	/**
-	 * Quickly get the type id of some property without necessarily making
-	 * another datavalue. Note that this is not the same as getTypeID(), which
-	 * returns the id of this property datavalue.
+	 * Convenience method to find the type id of this property. Most callers
+	 * should rather use SMWDIProperty::findPropertyTypeId() directly. Note
+	 * that this is not the same as getTypeID(), which returns the id of
+	 * this property datavalue.
+	 *
+	 * @return string
 	 */
 	public function getPropertyTypeID() {
-		if ( $this->mPropTypeId === '' ) {
-			$type = $this->getTypesValue();
-			if ( $type instanceof SMWTypesValue ) {
-				$this->mPropTypeId = $type->getDBkey();
-			} else {
-				$this->mPropTypeId = '__err';
-			}
+		if ( !$this->isValid() ) {
+			return $this->m_dataitem->findPropertyTypeId();
+		} else {
+			return '__err';
 		}
-		return $this->mPropTypeId;
 	}
 
 	/**
