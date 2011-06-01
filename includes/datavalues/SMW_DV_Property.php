@@ -235,7 +235,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getPropertyTypeID() {
-		if ( !$this->isValid() ) {
+		if ( $this->isValid() ) {
 			return $this->m_dataitem->findPropertyTypeId();
 		} else {
 			return '__err';
