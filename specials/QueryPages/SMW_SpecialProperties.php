@@ -52,6 +52,8 @@ class SMWPropertiesPage extends SMWQueryPage {
 	}
 
 	function formatResult( $skin, $result ) {
+		$linker = smwfGetLinker();
+		
 		$typestring = '';
 		$errors = array();
 
@@ -67,25 +69,25 @@ class SMWPropertiesPage extends SMWQueryPage {
 			$types = smwfGetStore()->getPropertyValues( $diWikiPage, $typeProperty );
 			if ( count( $types ) >= 1 ) {
 				$typeDataValue = SMWDataValueFactory::newDataItemValue( current( $types ), $typeProperty );
-				$typestring = $typeDataValue->getLongHTMLText( $skin );
+				$typestring = $typeDataValue->getLongHTMLText( $linker );
 			}
-			$proplink = $skin->makeKnownLinkObj( $title, $result[0]->getLabel() );
+			$proplink = $linker->makeKnownLinkObj( $title, $result[0]->getLabel() );
 		} elseif ( $result[0]->isUserDefined() && $title !== null ) {
 			$errors[] = wfMsg( 'smw_propertylackspage' );
-			$proplink = $skin->makeBrokenLinkObj( $title, $result[0]->getLabel(), 'action=view' );
+			$proplink = $linker->makeBrokenLinkObj( $title, $result[0]->getLabel(), 'action=view' );
 		} else { // predefined property
 			$typeid = $result[0]->findPropertyTypeID();
 			$typeDataValue = SMWTypesValue::newFromTypeId( $typeid );
 			$propertyDataValue = SMWDataValueFactory::newDataItemValue( $result[0], null );
-			$typestring = $typeDataValue->getLongHTMLText( $skin );
+			$typestring = $typeDataValue->getLongHTMLText( $linker );
 			if ( $typestring == '' ) $typestring = '–'; /// FIXME some types of builtin props have no name, and another message should be used then
-			$proplink = $propertyDataValue->getLongHTMLText( $skin );
+			$proplink = $propertyDataValue->getLongHTMLText( $linker );
 		}
 
 		if ( $typestring == '' ) {
 			global $smwgPDefaultType;
 			$typeDataValue = SMWTypesValue::newFromTypeId( $smwgPDefaultType );
-			$typestring = $typeDataValue->getLongHTMLText( $skin );
+			$typestring = $typeDataValue->getLongHTMLText( $linker );
 			if ( $title !== null && $title->exists() ) { // print only when we did not print a "nopage" warning yet
 				$errors[] = wfMsg( 'smw_propertylackstype', $typestring );
 			}

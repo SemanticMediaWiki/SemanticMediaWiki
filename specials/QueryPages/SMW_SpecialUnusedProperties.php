@@ -67,7 +67,9 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 	}
 
 	function formatResult( $skin, /* SMWDIProperty */ $result ) {
-		$proplink = $skin->makeKnownLinkObj(
+		$linker = smwfGetLinker();
+		
+		$proplink = $linker->makeKnownLinkObj(
 			$result->getDiWikiPage()->getTitle(),
 			$result->getLabel()
 		);
@@ -76,10 +78,10 @@ class SMWUnusedPropertiesPage extends SMWQueryPage {
 		$errors = array();
 
 		if ( count( $types ) >= 1 ) {
-			$typestring = SMWDataValueFactory::newDataItemValue( current( $types ), new SMWDIProperty( '_TYPE' ) )->getLongHTMLText( $skin );
+			$typestring = SMWDataValueFactory::newDataItemValue( current( $types ), new SMWDIProperty( '_TYPE' ) )->getLongHTMLText( $linker );
 		} else {
 			$type = SMWTypesValue::newFromTypeId( '_wpg' );
-			$typestring = $type->getLongHTMLText( $skin );
+			$typestring = $type->getLongHTMLText( $linker );
 			$errors[] = wfMsg( 'smw_propertylackstype', $type->getLongHTMLText() );
 		}
 

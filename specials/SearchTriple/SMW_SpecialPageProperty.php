@@ -31,7 +31,7 @@ class SMWPageProperty extends SpecialPage {
 
 	public function execute( $query ) {
 		global $wgRequest, $wgOut;
-		$skin = $this->getSkin();
+		$linker = smwfGetLinker();
 		$this->setHeaders();
 		
 		// Get parameters
@@ -72,14 +72,41 @@ class SMWPageProperty extends SpecialPage {
 			// prepare navigation bar if needed
 			if ( ( $offset > 0 ) || ( count( $results ) > $limit ) ) {
 				if ( $offset > 0 ) {
-					$navigation = '<a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'PageProperty', 'offset=' . max( 0, $offset - $limit ) . '&limit=' . $limit . '&type=' . urlencode( $propname ) . '&from=' . urlencode( $pagename ) ) ) . '">' . wfMsg( 'smw_result_prev' ) . '</a>';
+					$navigation = Html::element(
+						'a',
+						array(
+							'href' => SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL(
+								'offset=' . max( 0, $offset - $limit ) . 
+								'&limit=' . $limit . 
+								'&type=' . urlencode( $propname ) . 
+								'&from=' . urlencode( $pagename )
+							)
+						),
+						wfMsg( 'smw_result_prev' )
+					);
 				} else {
 					$navigation = wfMsg( 'smw_result_prev' );
 				}
 
-				$navigation .= '&#160;&#160;&#160;&#160; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) . '– ' . ( $offset + min( count( $results ), $limit ) ) . '</b>&#160;&#160;&#160;&#160;';
+				$navigation .=
+					'&#160;&#160;&#160;&#160; <b>' .
+						wfMsg( 'smw_result_results' ) . ' ' .
+						( $offset + 1 ) . '– ' . ( $offset + min( count( $results ), $limit ) ) .
+					'</b>&#160;&#160;&#160;&#160;';
+				
 				if ( count( $results ) == ( $limit + 1 ) ) {
-					$navigation .= ' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'PageProperty', 'offset=' . ( $offset + $limit ) . '&limit=' . $limit . '&type=' . urlencode( $propname ) . '&from=' . urlencode( $pagename ) ) )  . '">' . wfMsg( 'smw_result_next' ) . '</a>';
+					$navigation = Html::element(
+						'a',
+						array(
+							'href' => SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL(
+								'offset=' . ( $offset + $limit ) .
+								'&limit=' . $limit .
+								'&type=' . urlencode( $propname ) .
+								'&from=' . urlencode( $pagename )
+							)
+						),
+						wfMsg( 'smw_result_next' )
+					);
 				} else {
 					$navigation .= wfMsg( 'smw_result_next' );
 				}
@@ -98,10 +125,10 @@ class SMWPageProperty extends SpecialPage {
 					$count--;
 					if ( $count < 1 ) continue;
 					$dv = SMWDataValueFactory::newDataItemValue( $di, $property->getDataItem() );
-					$html .= '<li>' . $dv->getLongHTMLText( $skin ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
+					$html .= '<li>' . $dv->getLongHTMLText( $linker ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
 					if ( $property->getDataItem()->findPropertyTypeID() == '_wpg' ) {
 						$browselink = SMWInfolink::newBrowsingLink( '+', $dv->getLongWikiText() );
-						$html .= ' &#160;' . $browselink->getHTML( $skin );
+						$html .= ' &#160;' . $browselink->getHTML( $linker );
 					}
 					$html .=  "</li> \n";
 				}
@@ -123,21 +150,4 @@ class SMWPageProperty extends SpecialPage {
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
 	}
 	
-    /**
-     * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
-     *
-     * @since 1.6
-     *
-     * @return Skin
-     */
-    public function getSkin() {
-        if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
-            return parent::getSkin();
-        }
-        else {
-            global $wgUser;
-            return $wgUser->getSkin();
-        }
-    }
-    
 }

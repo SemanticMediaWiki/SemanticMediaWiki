@@ -66,11 +66,14 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 	}
 
 	function formatResult( $skin, $result ) {
+		$linker = smwfGetLinker();
+		
 		if ( $result[0]->isUserDefined() ) {
-			$proplink = $skin->makeLinkObj( $result[0]->getWikiPageValue()->getTitle(), htmlspecialchars( $result[0]->getWikiValue() ), 'action=view' );
+			$proplink = $linker->makeLinkObj( $result[0]->getWikiPageValue()->getTitle(), htmlspecialchars( $result[0]->getWikiValue() ), 'action=view' );
 		} else {
-			$proplink = $result[0]->getLongHTMLText( $skin );
+			$proplink = $result[0]->getLongHTMLText( $linker );
 		}
+		
 		return wfMsgExt( 'smw_wantedproperty_template', array( 'parsemag' ), $proplink, $result[1] );
 	}
 

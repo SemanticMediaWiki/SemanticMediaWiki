@@ -201,16 +201,16 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return string  HTML with the link to the article, browse, and search pages
 	 */
 	private function displayValue( SMWPropertyValue $property, SMWDataValue $dataValue, $incoming ) {
-		$skin = $this->getSkin();
+		$linker = smwfGetLinker();
 		
-		$html = $dataValue->getLongHTMLText( $skin );
+		$html = $dataValue->getLongHTMLText( $linker );
 		
 		if ( $dataValue->getTypeID() == '_wpg' ) {
-			$html .= "&#160;" . SMWInfolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $skin );
+			$html .= "&#160;" . SMWInfolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $linker );
 		} elseif ( $incoming && $property->isVisible() ) {
-			$html .= "&#160;" . SMWInfolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $property->getText(), 'smwsearch' )->getHTML( $skin );
+			$html .= "&#160;" . SMWInfolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $property->getText(), 'smwsearch' )->getHTML( $linker );
 		} else {
-			$html .= $dataValue->getInfolinkText( SMW_OUTPUT_HTML, $skin );
+			$html .= $dataValue->getInfolinkText( SMW_OUTPUT_HTML, $linker );
 		}
 		
 		return $html;
@@ -376,21 +376,4 @@ class SMWSpecialBrowse extends SpecialPage {
  		return $count > 2 ? preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
 	}
 	
-    /**
-     * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
-     *
-     * @since 1.6
-     *
-     * @return Skin
-     */
-    public function getSkin() {
-        if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
-            return parent::getSkin();
-        }
-        else {
-            global $wgUser;
-            return $wgUser->getSkin();
-        }
-    }
-    
 }

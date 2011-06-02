@@ -100,14 +100,14 @@ class SMWSearchByProperty extends SpecialPage {
 	 */
 	private function displaySearchByProperty() {
 		global $wgOut, $smwgSearchByPropertyFuzzy;
-		$skin = $this->getSkin();
+		$linker = smwfGetLinker();
 
 		if ( $this->propertystring == '' ) {
 			return '<p>' . wfMsg( 'smw_sbv_docu' ) . "</p>\n";
 		}
 		
 		if ( ( $this->value == null ) || !$this->value->isValid() ) {
-			return '<p>' . wfMsg( 'smw_sbv_novalue', $this->property->getShortHTMLText( $skin ) ) . "</p>\n";
+			return '<p>' . wfMsg( 'smw_sbv_novalue', $this->property->getShortHTMLText( $linker ) ) . "</p>\n";
 		}
 
 		$wgOut->setPagetitle( $this->property->getWikiValue() . ' ' . $this->value->getShortHTMLText( null ) );
@@ -119,12 +119,15 @@ class SMWSearchByProperty extends SpecialPage {
 		if ( ( $count < ( $this->limit / 3 ) ) && ( $this->value->isNumeric() ) && $smwgSearchByPropertyFuzzy ) {
 			$greater = $this->getNearbyResults( $count, true );
 			$lesser = $this->getNearbyResults( $count, false );
+			
 			// Calculate how many greater and lesser results should be displayed
 			$cG = count( $greater );
 			$cL = count( $lesser );
+			
 			if ( ( $cG + $cL + $count ) > $this->limit ) {
 				$l = $this->limit - $count;
 				$lhalf = round( $l / 2 );
+				
 				if ( $lhalf < $cG ) {
 					if ( $lhalf < $cL ) {
 						$cL = $lhalf; $cG = $lhalf;
@@ -135,20 +138,24 @@ class SMWSearchByProperty extends SpecialPage {
 					$cL = $this->limit - ( $count + $cG );
 				}
 			}
+			
 			if ( ( $cG + $cL + $count ) == 0 )
 				$html .= wfMsg( 'smw_result_noresults' );
 			else {
-				$html .= wfMsg( 'smw_sbv_displayresultfuzzy', $this->property->getShortHTMLText( $skin ), $this->value->getShortHTMLText( $skin ) ) . "<br />\n";
+				$html .= wfMsg( 'smw_sbv_displayresultfuzzy', $this->property->getShortHTMLText( $linker ), $this->value->getShortHTMLText( $linker ) ) . "<br />\n";
 				$html .= $this->displayResults( $lesser, $cL, false );
+				
 				if ( $count == 0 ) {
 					$html .= " &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<em><strong><small>(" . $this->value->getLongHTMLText() . ")</small></strong></em>\n";
 				} else {
 					$html .= $this->displayResults( $exact, $count, true, true );
 				}
+				
 				$html .= $this->displayResults( $greater, $cG );
 			}
 		} else {
-			$html .= wfMsg( 'smw_sbv_displayresult', $this->property->getShortHTMLText( $skin ), $this->value->getShortHTMLText( $skin ) ) . "<br />\n";
+			$html .= wfMsg( 'smw_sbv_displayresult', $this->property->getShortHTMLText( $linker ), $this->value->getShortHTMLText( $linker ) ) . "<br />\n";
+			
 			if ( 0 == $count ) {
 				$html .= wfMsg( 'smw_result_noresults' );
 			} else {
@@ -160,6 +167,7 @@ class SMWSearchByProperty extends SpecialPage {
 		}
 
 		$html .= '<p>&#160;</p>';
+		
 		return $html;
 	}
 
@@ -173,18 +181,16 @@ class SMWSearchByProperty extends SpecialPage {
 	 * @return string  HTML with the bullet list and a header
 	 */
 	private function displayResults( $results, $number = - 1, $first = true, $highlight = false ) {
-		$skin = $this->getSkin();
-
 		$html  = "<ul>\n";
 
 		if ( !$first && ( $number > 0 ) ) while ( count( $results ) > $number ) array_shift( $results );
 		while ( $results && $number != 0 ) {
 			$result = array_shift( $results );
-			$thing = $result[0]->getLongHTMLText( $skin );
+			$thing = $result[0]->getLongHTMLText( smwfGetLinker() );
 			$browselink = ( $result[0]->getTypeId() == '_wpg' ) ?
-			              '&#160;&#160;' . SMWInfolink::newBrowsingLink( '+', $result[0]->getShortHTMLText() )->getHTML( $skin ):'';
+			              '&#160;&#160;' . SMWInfolink::newBrowsingLink( '+', $result[0]->getShortHTMLText() )->getHTML( smwfGetLinker() ):'';
 			$html .= '<li>' . $thing . $browselink;
-			if ( ( $this->value != $result[1] ) || $highlight ) $html .= " <em><small>(" . $result[1]->getLongHTMLText( $skin ) . ")</small></em>";
+			if ( ( $this->value != $result[1] ) || $highlight ) $html .= " <em><small>(" . $result[1]->getLongHTMLText( smwfGetLinker() ) . ")</small></em>";
 			$html .= "</li>";
 			if ( $highlight ) $html = "<strong>" . $html . "</strong>";
 			$html .= "\n";
@@ -204,13 +210,14 @@ class SMWSearchByProperty extends SpecialPage {
 	 */
 	private function getNavigationBar( $count ) {
 		global $smwgQMaxInlineLimit;
-		$skin = $this->getSkin();
 
-		if ( $this->offset > 0 )
+		if ( $this->offset > 0 ) {
 			$navigation = '<a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'SearchByProperty', 'offset=' . max( 0, $this->offset - $this->limit ) . '&limit=' . $this->limit . '&property=' . urlencode( $this->property->getWikiValue() ) . '&value=' . urlencode( $this->value->getWikiValue() ) ) ) . '">' . wfMsg( 'smw_result_prev' ) . '</a>';
-		else
+		}
+		else {
 			$navigation = wfMsg( 'smw_result_prev' );
-
+		}
+		
 		$navigation .= '&#160;&#160;&#160;&#160; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $this->offset + 1 ) . '– ' . ( $this->offset + min( $count, $this->limit ) ) . '</b>&#160;&#160;&#160;&#160;';
 
 		if ( $count > $this->limit ) {
@@ -219,25 +226,31 @@ class SMWSearchByProperty extends SpecialPage {
 			$navigation .= wfMsg( 'smw_result_next' );
 		}
 
-		$max = false; $first = true;
+		$max = false;
+		$first = true;
+		
 		foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
 			if ( $max ) continue;
+			
 			if ( $first ) {
 				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
 				$first = false;
 			} else {
 				$navigation .= ' ' . wfMsgExt( 'pipe-separator' , 'escapenoentities' ) . ' ';
 			}
+			
 			if ( $l > $smwgQMaxInlineLimit ) {
 				$l = $smwgQMaxInlineLimit;
 				$max = true;
 			}
+			
 			if ( $this->limit != $l ) {
 				$navigation .= '<a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'SearchByProperty', 'offset=' . $this->offset . '&limit=' . $l . '&property=' . urlencode( $this->property->getWikiValue() ) . '&value=' . urlencode( $this->value->getWikiValue() ) ) ) . '">' . $l . '</a>';
 			} else {
 				$navigation .= '<b>' . $l . '</b>';
 			}
 		}
+		
 		$navigation .= ')';
 		return $navigation;
 	}
@@ -327,21 +340,4 @@ class SMWSearchByProperty extends SpecialPage {
 		return $html;
 	}
 
-    /**
-     * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
-     *
-     * @since 1.6
-     *
-     * @return Skin
-     */
-    public function getSkin() {
-        if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
-            return parent::getSkin();
-        }
-        else {
-            global $wgUser;
-            return $wgUser->getSkin();
-        }
-    }
-	
 }
