@@ -48,7 +48,7 @@ class SMWDeclare {
 
 						if ( $type == '_wpg' ) {
 							$matches = array();
-							preg_match_all( '/\[\[([^\[\]]*)\]\]/', $valuestring, $matches );
+							preg_match_all( '/\[\[([^\[\]]*)\]\]/u', $valuestring, $matches );
 							$objects = $matches[1];
 
 							if ( count( $objects ) == 0 ) {
@@ -60,13 +60,11 @@ class SMWDeclare {
 									SMWParseData::addProperty( $propertystring, $object, false, $parser, true );
 								}
 							}
-						} else {
-							if ( trim( $valuestring ) != '' ) {
+						} elseif ( trim( $valuestring ) != '' ) {
 								SMWParseData::addProperty( $propertystring, $valuestring, false, $parser, true );
-							}
 						}
 
-						$value = SMWDataValueFactory::newPropertyObjectValue( $property, $valuestring );
+						// $value = SMWDataValueFactory::newPropertyObjectValue( $property->getDataItem(), $valuestring );
 						// if (!$value->isValid()) continue;
 					}
 				}
