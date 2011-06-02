@@ -65,9 +65,9 @@ class SMWPropertyPage extends SMWOrderedListPage {
 			$result .= wfMsgExt( 'smw_subpropertyarticlecount', array( 'parsemag' ), $resultCount ) . "</p>\n";
 			
 			if ( $resultCount < 6 ) {
-				$result .= SMWPageLister::getShortList( 0, $resultCount, $subproperties, null, $this->getSkin() );
+				$result .= SMWPageLister::getShortList( 0, $resultCount, $subproperties, null );
 			} else {
-				$result .= SMWPageLister::getColumnList( 0, $resultCount, $subproperties, null, $this->getSkin() );
+				$result .= SMWPageLister::getColumnList( 0, $resultCount, $subproperties, null );
 			}
 
 			$result .= "\n</div>";
@@ -98,7 +98,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 		$result = '';
 
 		if ( count( $diWikiPages ) > 0 ) {
-			$pageLister = new SMWPageLister( $diWikiPages, null, $this->getSkin(), $this->limit, $this->from, $this->until );
+			$pageLister = new SMWPageLister( $diWikiPages, null, $this->limit, $this->from, $this->until );
 			$this->mTitle->setFragment( '#SMWResults' ); // Make navigation point to the result list.
 			$navigation = $pageLister->getNavigationLinks( $this->mTitle );
 

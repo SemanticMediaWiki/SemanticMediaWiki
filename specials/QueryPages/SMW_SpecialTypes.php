@@ -53,7 +53,7 @@ class SMWSpecialTypes extends SpecialPage {
 		$html .= "<ul>\n";
 		foreach ( $typeLabels as $typeId => $label ) {
 			$typeValue = SMWTypesValue::newFromTypeId( $typeId );
-			$html .= '<li>' . $typeValue->getLongHTMLText( $this->getSkin() ) . "</li>\n";
+			$html .= '<li>' . $typeValue->getLongHTMLText( smwfGetLinker() ) . "</li>\n";
 		}
 		$html .= "</ul>\n";
 
@@ -79,7 +79,7 @@ class SMWSpecialTypes extends SpecialPage {
 		$result = '';
 
 		if ( count( $diWikiPages ) > 0 ) {
-			$pageLister = new SMWPageLister( $diWikiPages, null, $this->getSkin(), $smwgTypePagingLimit, $from, $until );
+			$pageLister = new SMWPageLister( $diWikiPages, null, $smwgTypePagingLimit, $from, $until );
 
 			$title = $this->getTitleFor( 'Types', $typeLabel );
 			$title->setFragment( '#SMWResults' ); // Make navigation point to the result list.
@@ -97,20 +97,4 @@ class SMWSpecialTypes extends SpecialPage {
 		return $result;
 	}
 	
-    /**
-     * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
-     *
-     * @since 1.6
-     *
-     * @return Skin
-     */
-    public function getSkin() {
-        if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
-            return parent::getSkin();
-        } else {
-            global $wgUser;
-            return $wgUser->getSkin();
-        }
-    }	
-
 }

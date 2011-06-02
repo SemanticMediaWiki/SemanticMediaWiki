@@ -21,7 +21,6 @@ class SMWPageLister {
 
 	protected $mDiWikiPages;
 	protected $mDiProperty;
-	protected $mSkin;
 	protected $mLimit;
 	protected $mFrom;
 	protected $mUntil;
@@ -31,15 +30,13 @@ class SMWPageLister {
 	 *
 	 * @param $diWikiPages array of SMWDIWikiPage
 	 * @param $diProperty mixed SMWDIProperty that the wikipages are values of, or null
-	 * @param $skin Skin object to use for making links
 	 * @param $limit integer maximal amount of items to display
 	 * @param $from string if the results were selected starting from this string
 	 * @param $until string if the results were selected reaching until this string
 	 */
-	public function __construct( array $diWikiPages, $diProperty, $skin, $limit, $from = '', $until = '' ) {
+	public function __construct( array $diWikiPages, $diProperty, $limit, $from = '', $until = '' ) {
 		$this->mDiWikiPages = $diWikiPages;
 		$this->mDiProperty = $diProperty;
-		$this->mSkin = $skin;
 		$this->mLimit = $limit;
 		$this->mFrom = $from;
 		$this->mUntil = $until;
@@ -103,7 +100,7 @@ class SMWPageLister {
 	 * @return string
 	 */
 	protected function makeSelfLink( Title $title, $linkText, array $parameters ) {
-		return $this->mSkin->makeLinkObj( $title, $linkText, wfArrayToCGI( $parameters ) );
+		return smwfGetLinker()->makeLinkObj( $title, $linkText, wfArrayToCGI( $parameters ) );
 	}
 
 	/**
@@ -191,9 +188,9 @@ class SMWPageLister {
 		}
 
 		if ( count ( $this->mDiWikiPages ) > $cutoff ) {
-			return self::getColumnList( $start, $end, $this->mDiWikiPages, $this->mDiProperty, $this->mSkin );
+			return self::getColumnList( $start, $end, $this->mDiWikiPages, $this->mDiProperty );
 		} elseif ( count( $this->mDiWikiPages ) > 0 ) {
-			return self::getShortList( $start, $end, $this->mDiWikiPages, $this->mDiProperty, $this->mSkin );
+			return self::getShortList( $start, $end, $this->mDiWikiPages, $this->mDiProperty );
 		} else {
 			return '';
 		}
@@ -207,11 +204,10 @@ class SMWPageLister {
 	 * @param $end integer
 	 * @param $diWikiPages array of SMWDIWikiPage
 	 * @param $diProperty SMWDIProperty that the wikipages are values of, or null
-	 * @param $skin Skin object to use for making links
 	 * 
 	 * @return string
 	 */
-	public static function getColumnList( $start, $end, array $diWikiPages, $diProperty, $skin ) {
+	public static function getColumnList( $start, $end, array $diWikiPages, $diProperty ) {
 		global $wgContLang;
 		
 		// Divide list into three equal chunks.
@@ -255,7 +251,7 @@ class SMWPageLister {
 					$prevStartChar = $startChar;
 				}
 
-				$r .= "<li>" . $dataValue->getLongHTMLText( $skin ) . "</li>\n";
+				$r .= "<li>" . $dataValue->getLongHTMLText( smwfGetLinker() ) . "</li>\n";
 			}
 
 			if ( !$atColumnTop ) {
@@ -277,18 +273,17 @@ class SMWPageLister {
 	 * @param $end integer
 	 * @param $diWikiPages array of SMWDataItem
 	 * @param $diProperty SMWDIProperty that the wikipages are values of, or null
-	 * @param $skin Skin object to use for making links
 	 * 
 	 * @return string
 	 */
-	public static function getShortList( $start, $end, array $diWikiPages, $diProperty, $skin ) {
+	public static function getShortList( $start, $end, array $diWikiPages, $diProperty ) {
 		global $wgContLang;
 
 		$startDv = SMWDataValueFactory::newDataItemValue( $diWikiPages[$start], $diProperty );
 		$sortkey = smwfGetStore()->getWikiPageSortKey( $diWikiPages[$start] );
 		$startChar = $wgContLang->convert( $wgContLang->firstChar( $sortkey ) );
 		$r = '<h3>' . htmlspecialchars( $startChar ) . "</h3>\n" .
-		     '<ul><li>' . $startDv->getLongHTMLText( $skin ) . '</li>';
+		     '<ul><li>' . $startDv->getLongHTMLText( smwfGetLinker() ) . '</li>';
 
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {
@@ -301,7 +296,7 @@ class SMWPageLister {
 				$prevStartChar = $startChar;
 			}
 
-			$r .= '<li>' . $dataValue->getLongHTMLText( $skin ) . '</li>';
+			$r .= '<li>' . $dataValue->getLongHTMLText( smwfGetLinker() ) . '</li>';
 		}
 
 		$r .= '</ul>';
