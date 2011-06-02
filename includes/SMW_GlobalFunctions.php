@@ -302,6 +302,8 @@ function &smwfGetStore() {
  * stores (e.g. using other stores for fast querying than for storing new
  * facts), somewhat similar to MediaWiki's DB implementation.
  *
+ * @since 1.6
+ *
  * @return SMWSparqlDatabase or null
  */
 function &smwfGetSparqlDatabase() {
@@ -312,3 +314,5 @@ function &smwfGetSparqlDatabase() {
 	}
 	return $smwgSparqlDatabaseMaster;
 }
+
+function 
