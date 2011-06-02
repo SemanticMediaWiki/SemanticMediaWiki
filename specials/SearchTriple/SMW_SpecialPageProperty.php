@@ -20,6 +20,7 @@
  * @ingroup SpecialPage
  */
 class SMWPageProperty extends SpecialPage {
+	
 	/**
 	 * Constructor
 	 */
@@ -29,10 +30,10 @@ class SMWPageProperty extends SpecialPage {
 	}
 
 	public function execute( $query ) {
-		global $wgRequest, $wgOut, $wgUser;
-		$skin = $wgUser->getSkin();
+		global $wgRequest, $wgOut;
+		$skin = $this->getSkin();
 		$this->setHeaders();
-
+		
 		// Get parameters
 		$pagename = $wgRequest->getVal( 'from' );
 		$propname = $wgRequest->getVal( 'type' );
@@ -121,4 +122,22 @@ class SMWPageProperty extends SpecialPage {
 		$wgOut->addHTML( $html );
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
 	}
+	
+    /**
+     * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
+     *
+     * @since 1.6
+     *
+     * @return Skin
+     */
+    public function getSkin() {
+        if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
+            return parent::getSkin();
+        }
+        else {
+            global $wgUser;
+            return $wgUser->getSkin();
+        }
+    }
+    
 }

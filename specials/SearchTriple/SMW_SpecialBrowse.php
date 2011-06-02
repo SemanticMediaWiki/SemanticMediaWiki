@@ -120,8 +120,7 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return A string containing the HTML with the factbox
 	 */
 	private function displayData( SMWSemanticData $data, $left = true, $incoming = false ) {
-		global $wgUser;
-		$skin = $wgUser->getSkin();
+		$skin = $this->getSkin();
 		// Some of the CSS classes are different for the left or the right side.
 		// In this case, there is an "i" after the "smwb-". This is set here.
 		$ccsPrefix = $left ? 'smwb-' : 'smwb-i';
@@ -202,9 +201,10 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return string  HTML with the link to the article, browse, and search pages
 	 */
 	private function displayValue( SMWPropertyValue $property, SMWDataValue $dataValue, $incoming ) {
-		global $wgUser;
-		$skin = $wgUser->getSkin();
+		$skin = $this->getSkin();
+		
 		$html = $dataValue->getLongHTMLText( $skin );
+		
 		if ( $dataValue->getTypeID() == '_wpg' ) {
 			$html .= "&#160;" . SMWInfolink::newBrowsingLink( '+', $dataValue->getLongWikiText() )->getHTML( $skin );
 		} elseif ( $incoming && $property->isVisible() ) {
@@ -212,6 +212,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		} else {
 			$html .= $dataValue->getInfolinkText( SMW_OUTPUT_HTML, $skin );
 		}
+		
 		return $html;
 	}
 
@@ -221,14 +222,17 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return A string containing the HTML with the subject line
 	 */
 	 private function displayHead() {
-	 	global $wgUser, $wgOut;
-	 	$skin = $wgUser->getSkin();
+	 	global $wgOut;
+	 	
+	 	$skin = $this->getSkin();
+	 	
 		$wgOut->setHTMLTitle( $this->subject->getTitle() );
 		$html  = "<table class=\"smwb-factbox\" cellpadding=\"0\" cellspacing=\"0\">\n";
 		$html .= "<tr class=\"smwb-title\"><td colspan=\"2\">\n";
 		$html .= $skin->makeLinkObj( $this->subject->getTitle() ) . "\n"; // @todo Replace makeLinkObj with link as soon as we drop MW1.12 compatibility
 		$html .= "</td></tr>\n";
 		$html .= "</table>\n";
+		
 		return $html;
 	 }
 
@@ -282,11 +286,9 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return string  HTML with the link to this page
 	 */
 	private function linkhere( $text, $out, $in, $offset ) {
-	 	global $wgUser;
-	 	$skin = $wgUser->getSkin();
 		$dir = $out ? ( $in ? 'both':'out' ):'in';
 		$frag = ( $text == wfMsg( 'smw_browse_show_incoming' ) ) ? '#smw_browse_incoming':'';
-		return '<a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Browse',
+		return '<a href="' . htmlspecialchars( $this->getSkin()->makeSpecialUrl( 'Browse',
 		         "offset={$offset}&dir={$dir}&article=" . urlencode( $this->subject->getLongWikiText() ) ) ) . "$frag\">$text</a>";
 	}
 
@@ -373,4 +375,22 @@ class SMWSpecialBrowse extends SpecialPage {
  		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, - 1, $count );
  		return $count > 2 ? preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) ):$text;
 	}
+	
+    /**
+     * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
+     *
+     * @since 1.6
+     *
+     * @return Skin
+     */
+    public function getSkin() {
+        if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
+            return parent::getSkin();
+        }
+        else {
+            global $wgUser;
+            return $wgUser->getSkin();
+        }
+    }
+    
 }
