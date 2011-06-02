@@ -96,5 +96,21 @@ class SMWSpecialTypes extends SpecialPage {
 
 		return $result;
 	}
+	
+    /**
+     * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
+     *
+     * @since 1.6
+     *
+     * @return Skin
+     */
+    public function getSkin() {
+        if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
+            return parent::getSkin();
+        } else {
+            global $wgUser;
+            return $wgUser->getSkin();
+        }
+    }	
 
 }
