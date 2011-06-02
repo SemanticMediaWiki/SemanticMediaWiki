@@ -260,6 +260,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * A function for registering/overwriting predefined properties for SMW. Should be called from
 	 * within the hook 'smwInitProperties'. Ids should start with three underscores "___" to avoid
 	 * current and future confusion with SMW built-ins.
+	 * 
 	 * @deprecated Use SMWDIProperty::registerProperty(). Will vanish before SMW 1.7.
 	 */
 	static public function registerProperty( $id, $typeid, $label = false, $show = false ) {
@@ -270,6 +271,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * Add a new alias label to an existing datatype id. Note that every ID should have a primary
 	 * label, either provided by SMW or registered with registerDatatype. This function should be
 	 * called from within the hook 'smwInitDatatypes'.
+	 * 
 	 * @deprecated Use SMWDIProperty::registerPropertyAlias(). Will vanish before SMW 1.7.
 	 */
 	static public function registerPropertyAlias( $id, $label ) {
@@ -278,7 +280,8 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDIProperty::isUserDefined()
-	 * @deprecated
+	 * 
+	 * @deprecated since 1.6
 	 */
 	public function isUserDefined() {
 		return $this->m_dataitem->isUserDefined();
@@ -286,7 +289,8 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDIProperty::isShown()
-	 * @deprecated
+	 * 
+	 * @deprecated since 1.6
 	 */
 	public function isShown() {
 		return $this->m_dataitem->isShown();
@@ -294,7 +298,8 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDIProperty::isInverse()
-	 * @deprecated
+	 * 
+	 * @deprecated since 1.6
 	 */
 	public function isInverse() {
 		return $this->m_dataitem->isInverse();
@@ -305,7 +310,8 @@ class SMWPropertyValue extends SMWDataValue {
 	 * for internal (invisible) properties, it is the property ID. The value agrees
 	 * with the first component of getDBkeys() and it can be used in its place.
 	 * @see SMWDIProperty::getKey()
-	 * @deprecated
+	 * 
+	 * @deprecated since 1.6
 	 */
 	public function getDBkey() {
 		return $this->m_dataitem->getKey();
@@ -313,7 +319,8 @@ class SMWPropertyValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDIProperty::getLabel()
-	 * @deprecated
+	 * 
+	 * @deprecated since 1.6
 	 */
 	public function getText() {
 		return $this->m_dataitem->getLabel();

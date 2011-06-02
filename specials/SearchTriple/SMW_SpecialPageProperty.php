@@ -121,19 +121,25 @@ class SMWPageProperty extends SpecialPage {
 			} else {
 				$html .= "<ul>\n";
 				$count = $limit + 1;
+				
 				foreach ( $results as $di ) {
 					$count--;
 					if ( $count < 1 ) continue;
+					
 					$dv = SMWDataValueFactory::newDataItemValue( $di, $property->getDataItem() );
 					$html .= '<li>' . $dv->getLongHTMLText( $linker ); // do not show infolinks, the magnifier "+" is ambiguous with the browsing '+' for '_wpg' (see below)
+					
 					if ( $property->getDataItem()->findPropertyTypeID() == '_wpg' ) {
 						$browselink = SMWInfolink::newBrowsingLink( '+', $dv->getLongWikiText() );
 						$html .= ' &#160;' . $browselink->getHTML( $linker );
 					}
+					
 					$html .=  "</li> \n";
 				}
+				
 				$html .= "</ul>\n";
 			}
+			
 			$html .= $navigation;
 		}
 
