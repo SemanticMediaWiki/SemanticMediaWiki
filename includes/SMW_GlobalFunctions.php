@@ -315,4 +315,23 @@ function &smwfGetSparqlDatabase() {
 	return $smwgSparqlDatabaseMaster;
 }
 
-function 
+/**
+ * Compatibility helper for using Linker methods.
+ * MW 1.16 has a Linker with non-static methods,
+ * where in MW 1.19 they are static, and a DummyLinker
+ * class is introduced, which can be instantaited for
+ * compat reasons. 
+ * 
+ * @since 1.6
+ * 
+ * @return Linker or DummyLinker
+ */
+function smwfGetLinker() {
+	static $linker = false;
+	
+	if ( $linker === false ) {
+		$linker = class_exists( 'DummyLinker' ) ? new DummyLinker() : new Linker();
+	}
+	
+	return $linker;
+}
