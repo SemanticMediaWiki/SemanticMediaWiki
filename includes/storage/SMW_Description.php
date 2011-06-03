@@ -16,14 +16,16 @@
  */
 abstract class SMWDescription {
 
+	/**
+	 * @var array of SMWPrintRequest
+	 */
 	protected $m_printreqs = array();
-	// add code for managing printouts, including iteration
 
 	/**
 	 * Get the (possibly empty) array of all print requests that
 	 * exist for the entities that fit this description.
 	 *
-	 * @return array
+	 * @return array of SMWPrintRequest
 	 */
 	public function getPrintRequests() {
 		return $this->m_printreqs;
@@ -32,7 +34,7 @@ abstract class SMWDescription {
 	/**
 	 * Set the array of print requests completely.
 	 *
-	 * @param array $printrequests
+	 * @param array of SMWPrintRequest $printrequests
 	 */
 	public function setPrintRequests( array $printrequests ) {
 		$this->m_printreqs = $printrequests;
@@ -68,6 +70,8 @@ abstract class SMWDescription {
 	 * over the canonical [[has location::\<q\>[[Paris]]\</q\>]].
 	 *
 	 * @param boolean $asvalue
+	 * 
+	 * @return string
 	 */
 	abstract public function getQueryString( $asvalue = false );
 
@@ -193,8 +197,18 @@ class SMWThingDescription extends SMWDescription {
  */
 class SMWClassDescription extends SMWDescription {
 	
+	/**
+	 * @var array of SMWDIWikiPage
+	 */
 	protected $m_diWikiPages;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param mixed $content SMWDIWikiPage or array of SMWDIWikiPage
+	 * 
+	 * @throws Exception
+	 */
 	public function __construct( $content ) {
 		if ( $content instanceof SMWDIWikiPage ) {
 			$this->m_diWikiPages = array( $content );
@@ -205,10 +219,16 @@ class SMWClassDescription extends SMWDescription {
 		}
 	}
 
+	/**
+	 * @param SMWClassDescription $description
+	 */
 	public function addDescription( SMWClassDescription $description ) {
 		$this->m_diWikiPages = array_merge( $this->m_diWikiPages, $description->getCategories() );
 	}
 
+	/**
+	 * @return array of SMWDIWikiPage
+	 */
 	public function getCategories() {
 		return $this->m_diWikiPages;
 	}
@@ -285,12 +305,23 @@ class SMWClassDescription extends SMWDescription {
  */
 class SMWConceptDescription extends SMWDescription {
 	
+	/**
+	 * @var SMWDIWikiPage
+	 */
 	protected $m_concept;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param SMWDIWikiPage $concept
+	 */
 	public function __construct( SMWDIWikiPage $concept ) {
 		$this->m_concept = $concept;
 	}
 
+	/**
+	 * @return SMWDIWikiPage
+	 */
 	public function getConcept() {
 		return $this->m_concept;
 	}
@@ -330,12 +361,23 @@ class SMWConceptDescription extends SMWDescription {
  */
 class SMWNamespaceDescription extends SMWDescription {
 	
+	/**
+	 * @var integer
+	 */
 	protected $m_namespace;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param integer $namespace The namespace index
+	 */
 	public function __construct( $namespace ) {
 		$this->m_namespace = $namespace;
 	}
 
+	/**
+	 * @return integer
+	 */
 	public function getNamespace() {
 		return $this->m_namespace;
 	}
