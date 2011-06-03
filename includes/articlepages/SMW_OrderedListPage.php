@@ -45,6 +45,8 @@ abstract class SMWOrderedListPage extends Article {
 	/**
 	 * Property that the displayed values are for, if any.
 	 *
+	 * @since 1.6
+	 *
 	 * @var SMWDIProperty
 	 */
 	protected $mProperty = null;
@@ -107,6 +109,8 @@ abstract class SMWOrderedListPage extends Article {
 
 	/**
 	 * Like Article's getTitle(), but returning a suitable SMWDIWikiPage.
+	 * 
+	 * @since 1.6
 	 * 
 	 * @return SMWDIWikiPage
 	 */
