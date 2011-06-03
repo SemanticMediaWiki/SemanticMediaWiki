@@ -607,13 +607,6 @@ END;
 				) .
 				'| ' . SMWAskPage::getEmbedToggle() .
 				'</p>';
-				
-				// FIXME: this is not used, wtf?
-				'<input type="hidden" name="eq" value="yes"/>' .
-					' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_ask_hidequery' ) . '</a> ' .
-					'| ' . SMWAskPage::getEmbedToggle() .
-					'| <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>' .
-				"\n</form>";
 		}
 
 		$result .= '<div id="inlinequeryembed" style="display: none"><div id="inlinequeryembedinstruct">' . wfMsg( 'smw_ask_embed_instr' ) . '</div><textarea id="inlinequeryembedarea" readonly="yes" cols="20" rows="6" onclick="this.select()">' .
