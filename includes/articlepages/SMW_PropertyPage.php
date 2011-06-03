@@ -158,8 +158,8 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 			// Property name
 			$searchlink = SMWInfolink::newBrowsingLink( '+', $dvWikiPage->getShortHTMLText() );
-			$r .= '<tr><td class="smwpropname">' . $dvWikiPage->getLongHTMLText( $this->getSkin() ) .
-			      '&#160;' . $searchlink->getHTML( $this->getSkin() ) . '</td><td class="smwprops">';
+			$r .= '<tr><td class="smwpropname">' . $dvWikiPage->getLongHTMLText( smwfGetLinker() ) .
+			      '&#160;' . $searchlink->getHTML( smwfGetLinker() ) . '</td><td class="smwprops">';
 			
 			// Property values
 			$ropts = new SMWRequestOptions();
@@ -175,10 +175,10 @@ class SMWPropertyPage extends SMWOrderedListPage {
 
 				if ( $i < $smwgMaxPropertyValues + 1 ) {
 					$dv = SMWDataValueFactory::newDataItemValue( $di, $this->mProperty );
-					$r .= $dv->getLongHTMLText( $this->getSkin() ) . $dv->getInfolinkText( SMW_OUTPUT_HTML, $this->getSkin() );
+					$r .= $dv->getLongHTMLText( smwfGetLinker() ) . $dv->getInfolinkText( SMW_OUTPUT_HTML, smwfGetLinker() );
 				} else {
 					$searchlink = SMWInfolink::newInversePropertySearchLink( '…', $dvWikiPage->getWikiValue(), $this->mTitle->getText() );
-					$r .= $searchlink->getHTML( $this->getSkin() );
+					$r .= $searchlink->getHTML( smwfGetLinker() );
 				}
 			}
 

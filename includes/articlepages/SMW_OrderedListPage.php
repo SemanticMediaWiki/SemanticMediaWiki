@@ -106,19 +106,6 @@ abstract class SMWOrderedListPage extends Article {
 	protected abstract function getHtml();
 
 	/**
-	 * Fetch and return the relevant skin object.
-	 * 
-	 * @return Skin
-	 */
-	protected function getSkin() {
-		global $wgUser;
-		if ( !$this->skin ) {
-			$this->skin = $wgUser->getSkin();
-		}
-		return $this->skin;
-	}
-
-	/**
 	 * Like Article's getTitle(), but returning a suitable SMWDIWikiPage.
 	 * 
 	 * @return SMWDIWikiPage
