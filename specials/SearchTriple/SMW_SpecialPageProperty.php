@@ -38,9 +38,11 @@ class SMWPageProperty extends SpecialPage {
 		$pagename = $wgRequest->getVal( 'from' );
 		$propname = $wgRequest->getVal( 'type' );
 		$limit = $wgRequest->getVal( 'limit' );
-		if ( $limit == '' ) $limit =  20;
 		$offset = $wgRequest->getVal( 'offset' );
+		
+		if ( $limit == '' ) $limit =  20;
 		if ( $offset == '' ) $offset = 0;
+		
 		if ( $propname == '' ) { // No GET parameters? Try the URL:
 			$queryparts = explode( '::', $query );
 			$propname = $query;
