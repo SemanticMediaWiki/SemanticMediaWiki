@@ -60,7 +60,6 @@ abstract class SMWDataValue {
 	 */
 	protected $m_dataitem;
 
-
 	/**
 	 * The text label of the respective property or false if none given.
 	 * @var SMWDIProperty
@@ -642,7 +641,7 @@ abstract class SMWDataValue {
 	 */
 	public function isValid() {
 		$this->unstub();
-		return ( ( !$this->mHasErrors ) && isset( $this->m_dataitem ) );
+		return !$this->mHasErrors && isset( $this->m_dataitem );
 	}
 
 	/**

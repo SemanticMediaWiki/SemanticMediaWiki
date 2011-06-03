@@ -89,7 +89,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 * original object's content.
 	 */
 	public function __clone() {
-		if ( $this->m_wikipage !== null ) $this->m_wikipage = clone $this->m_wikipage;
+		if ( !is_null( $this->m_wikipage ) ) $this->m_wikipage = clone $this->m_wikipage;
 	}
 
 	/**

@@ -77,7 +77,7 @@ class SMWSearchByProperty extends SpecialPage {
 			$this->propertystring = '';
 		} else {
 			$this->propertystring = $this->property->getWikiValue();
-			$this->value = SMWDataValueFactory::newPropertyObjectValue( $this->property, $this->valuestring );
+			$this->value = SMWDataValueFactory::newPropertyObjectValue( $this->property->getDataItem(), $this->valuestring );
 			
 			if ( $this->value->isValid() ) {
 				$this->valuestring = $this->value->getWikiValue();
@@ -201,11 +201,10 @@ class SMWSearchByProperty extends SpecialPage {
 		
 		while ( $results && $number != 0 ) {
 			$result = array_shift( $results );
-			$thing = $result[0]->getLongHTMLText( smwfGetLinker() );
 			
-			$html .= '<li>' . $thing;
+			$html .= '<li>' . $result[0]->getLongHTMLText( smwfGetLinker() );
 			
-			if ( $result[0]->getTypeId() == '_wpg' ) {
+			if ( $result[0]->getTypeID() == '_wpg' ) {
 				$html .= '&#160;&#160;' . SMWInfolink::newBrowsingLink( '+', $result[0]->getShortHTMLText() )->getHTML( smwfGetLinker() );
 			}
 			
@@ -294,11 +293,14 @@ class SMWSearchByProperty extends SpecialPage {
 		$options->offset = $this->offset;
 		$options->sort = true;
 
-		$res = smwfGetStore()->getPropertySubjects( $this->property, $this->value, $options );
+		$res = smwfGetStore()->getPropertySubjects( $this->property->getDataItem(), $this->value->getDataItem(), $options );
 		$results = array();
 		
 		foreach ( $res as $result ) {
-			array_push( $results, array( $result, $this->value ) );
+			array_push( $results, array(
+				SMWDataValueFactory::newDataItemValue( $result ),
+				$this->value
+			) );
 		}
 
 		return $results;
@@ -327,10 +329,10 @@ class SMWSearchByProperty extends SpecialPage {
 		$params['sort'] = $this->propertystring;
 		$params['order'] = 'DESC';
 		if ( $greater ) $params['order'] = 'ASC';
-		$cmp = "<";
-		if ( $greater ) $cmp = ">";
+		$cmp = '<';
+		if ( $greater ) $cmp = '>';
 		
-		$querystring = "[[" . $this->propertystring . "::" . $cmp . $this->valuestring . "]]";
+		$querystring = '[[' . $this->propertystring . '::' . $cmp . $this->valuestring . ']]';
 		$queryobj = SMWQueryProcessor::createQuery( $querystring, $params, SMWQueryProcessor::SPECIAL_PAGE, 'ul', array( $printrequest ) );
 		$queryobj->querymode = SMWQuery::MODE_INSTANCES;
 		$queryobj->setLimit( $this->limit );
