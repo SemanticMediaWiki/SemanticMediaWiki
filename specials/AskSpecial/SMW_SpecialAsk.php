@@ -500,7 +500,6 @@ END;
 	protected function getInputForm( $printoutstring, $urltail ) {
 		global $smwgQSortingSupport, $smwgResultFormats;
 
-		$skin = $this->getSkin();
 		$result = '';
 
 		if ( $this->m_editquery ) {
@@ -547,8 +546,8 @@ END;
 			}
 
 			$printer = SMWQueryProcessor::getResultPrinter( 'broadtable', SMWQueryProcessor::SPECIAL_PAGE );
-			$url = $skin->makeSpecialUrl( 'Ask', "showformatoptions=' + this.value + '" );
-
+			$url = SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( "showformatoptions=' + this.value + '" );
+			
 			foreach ( $this->m_params as $param => $value ) {
 				if ( $param !== 'format' ) {
 					$url .= '&params[' . Xml::escapeJsString( $param ) . ']=' . Xml::escapeJsString( $value );
@@ -584,14 +583,32 @@ END;
 
 			$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/>' .
 				'<input type="hidden" name="eq" value="yes"/>' .
-					' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_ask_hidequery' ) . '</a> ' .
+					Html::element(
+						'a',
+						array(
+							'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( $urltail ),
+							'rel' => 'nofollow'
+						),
+						wfMsg( 'smw_ask_hidequery' )
+					) .
 					'| ' . SMWAskPage::getEmbedToggle() .
 					'| <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>' .
 				"\n</form>";
 		} else { // if $this->m_editquery == false
 			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
-			$result .= '<p><a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_ask_editquery' ) . '</a> ' .
-				'| ' . SMWAskPage::getEmbedToggle() . '</p>';
+			$result .= '<p>' .  
+				Html::element(
+					'a',
+					array(
+						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( $urltail ),
+						'rel' => 'nofollow'
+					),
+					wfMsg( 'smw_ask_editquery' )
+				) .
+				'| ' . SMWAskPage::getEmbedToggle() .
+				'</p>';
+				
+				// FIXME: this is not used, wtf?
 				'<input type="hidden" name="eq" value="yes"/>' .
 					' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_ask_hidequery' ) . '</a> ' .
 					'| ' . SMWAskPage::getEmbedToggle() .
@@ -645,21 +662,46 @@ END;
 	protected function getNavigationBar( SMWQueryResult $res, $urltail ) {
 		global $smwgQMaxInlineLimit;
 
-		$skin = $this->getSkin();
 		$offset = $this->m_params['offset'];
 		$limit  = $this->m_params['limit'];
 
 		// Prepare navigation bar.
 		if ( $offset > 0 ) {
-			$navigation = '<a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', 'offset=' . max( 0, $offset - $limit ) . '&limit=' . $limit . $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_result_prev' ) . '</a>';
+			$navigation = Html::element(
+				'a',
+				array(
+					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL(
+						'offset=' . max( 0, $offset - $limit ) . 
+						'&limit=' . $limit . $urltail
+					),
+					'rel' => 'nofollow'
+				),
+				wfMsg( 'smw_result_prev' )
+			); 
+			
 		} else {
 			$navigation = wfMsg( 'smw_result_prev' );
 		}
 
-		$navigation .= '&#160;&#160;&#160;&#160; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) . '&#150; ' . ( $offset + $res->getCount() ) . '</b>&#160;&#160;&#160;&#160;';
+		$navigation .= 
+			'&#160;&#160;&#160;&#160; <b>' . 
+				wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) .
+			'&#150; ' .
+				( $offset + $res->getCount() ) .
+			'</b>&#160;&#160;&#160;&#160;';
 
 		if ( $res->hasFurtherResults() ) {
-			$navigation .= ' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', 'offset=' . ( $offset + $limit ) . '&limit=' . $limit . $urltail ) ) . '" rel="nofollow">' . wfMsg( 'smw_result_next' ) . '</a>';
+			$navigation .= Html::element(
+				'a',
+				array(
+					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL(
+						'offset=' . ( $offset + $limit ) . 
+						'&limit=' . $limit . $urltail 
+					),
+					'rel' => 'nofollow'
+				),
+				wfMsg( 'smw_result_next' )
+			); 
 		} else {
 			$navigation .= wfMsg( 'smw_result_next' );
 		}
@@ -677,7 +719,17 @@ END;
 			}
 
 			if ( $limit != $l ) {
-				$navigation .= '<a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'Ask', 'offset=' . $offset . '&limit=' . $l . $urltail ) ) . '" rel="nofollow">' . $l . '</a>';
+				$navigation .= Html::element(
+					'a',
+					array(
+						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL(
+							'offset=' . $offset .
+							'&limit=' . $l . $urltail
+						),
+						'rel' => 'nofollow'
+					),
+					$l
+				); 
 			} else {
 				$navigation .= '<b>' . $l . '</b>';
 			}
