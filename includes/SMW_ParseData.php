@@ -351,7 +351,12 @@ class SMWParseData {
 		$sortkey = $parser->mDefaultSort ? $parser->mDefaultSort : 
 		            str_replace( '_', ' ', self::getSMWData( $parser )->getSubject()->getDBkey() );
 		$pskey = new SMWDIProperty( '_SKEY' );
-		$sortkeyDi = new SMWDIString( $sortkey );
+		try {
+			$sortkeyDi = new SMWDIString( $sortkey );
+		} catch (SMWStringLengthException $e) { // cut it down to a reasonable length; no further bytes should be needed for sorting
+			$sortkey = substr( $sortkey, 0, $e->getMaxLength() );
+			$sortkeyDi = new SMWDIString( $sortkey );
+		} 
 		self::getSMWData( $parser )->addPropertyObjectValue( $pskey, $sortkeyDi );
 
 		return true;
