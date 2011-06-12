@@ -212,6 +212,7 @@ It takes care that humans do not turn into websites.',
 
 	// Messages for ask Special
 	'ask'                   => 'Semantic search',
+	'querycreator'          => 'Query creator',
 	'smw_ask_doculink'      => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search',
 	'smw_ask_sortby'        => 'Sort by column (optional)',
 	'smw_ask_ascorder'      => 'Ascending',
