@@ -19,7 +19,7 @@ class SMWPropertyPage extends SMWOrderedListPage {
 	protected function initParameters() {
 		global $smwgPropertyPagingLimit;
 		$this->limit = $smwgPropertyPagingLimit;
-		$this->mProperty = new SMWDIProperty( $this->mTitle->getDBkey(), false );
+		$this->mProperty = SMWDIProperty::newFromUserLabel( $this->mTitle->getText() );
 		return true;
 	}
 
