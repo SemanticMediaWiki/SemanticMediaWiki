@@ -457,10 +457,11 @@ class SMWParseData {
 		$min   = intval( substr( $timestamp, 10, 2 ) );
 		$sec   = intval( substr( $timestamp, 12, 2 ) );
 		try {
-			return new SMWDITime( $year, $month, $day, $hour, $min, $sec );
+			return new SMWDITime( SMWDITime::CM_GREGORIAN, $year, $month, $day, $hour, $min, $sec );
 		} catch ( SMWDataItemException $e ) {
 			// we rely on MW timestamp format above -- if it ever changes,
 			// exceptions might possibly occur but this should not prevent editing
+			trigger_error( $e.getMessage(), E_USER_NOTICE );
 			return null;
 		}
 	}
