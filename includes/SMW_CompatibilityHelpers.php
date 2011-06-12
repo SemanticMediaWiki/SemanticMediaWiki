@@ -86,7 +86,7 @@ class SMWCompatibilityHelpers {
 				return new SMWDIContainer( $semanticData );
 			case SMWDataItem::TYPE_WIKIPAGE:
 				if ( $typeid == '__spf' ) {
-					$pagedbkey = str_replace( ' ', '_', SMWDataValueFactory::findTypeLabel( $dbkeys[0] ) );
+					$pagedbkey = str_replace( ' ', '_', $dbkeys[0] );
 					return new SMWDIWikiPage( $pagedbkey, SF_NS_FORM, '' );
 				} elseif ( count( $dbkeys ) >= 3 ) {
 					return new SMWDIWikiPage( $dbkeys[0], floatval( $dbkeys[1] ), $dbkeys[2] );
