@@ -490,7 +490,7 @@ END;
 	}
 
 	/**
-	 * TODO: document
+	 * Generates the Search Box UI
 	 *
 	 * @param string $printoutstring
 	 * @param string $urltail
@@ -608,7 +608,7 @@ END;
 				'| ' . SMWAskPage::getEmbedToggle() .
 				'</p>';
 		}
-
+	\\show|hide inline embed code
 		$result .= '<div id="inlinequeryembed" style="display: none"><div id="inlinequeryembedinstruct">' . wfMsg( 'smw_ask_embed_instr' ) . '</div><textarea id="inlinequeryembedarea" readonly="yes" cols="20" rows="6" onclick="this.select()">' .
 			'{{#ask:' . htmlspecialchars( $this->m_querystring ) . "\n";
 
