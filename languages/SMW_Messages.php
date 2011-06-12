@@ -212,7 +212,6 @@ It takes care that humans do not turn into websites.',
 
 	// Messages for ask Special
 	'ask'                   => 'Semantic search',
-	'querycreator'          => 'Query creator',
 	'smw_ask_doculink'      => 'http://semantic-mediawiki.org/wiki/Help:Semantic_search',
 	'smw_ask_sortby'        => 'Sort by column (optional)',
 	'smw_ask_ascorder'      => 'Ascending',
@@ -231,6 +230,11 @@ It takes care that humans do not turn into websites.',
 	'smw_ask_show_embed'	=> 'Show embed code',
 	'smw_ask_hide_embed'	=> 'Hide embed code',
 	'smw_ask_embed_instr'	=> 'To embed this query inline into a wiki page use the code below.',
+
+	// Messages for Query Creator Special
+	'querycreator'          => 'Query Creator',
+	'smw_show_addnal_opts'  => 'Show additional options',
+	'smw_hide_addnal_opts'  => 'Hide additional options',
 
 	// Messages for the search by property special
 	'searchbyproperty'      => 'Search by property',
