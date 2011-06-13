@@ -235,6 +235,10 @@ It takes care that humans do not turn into websites.',
 	'querycreator'          => 'Query Creator',
 	'smw_show_addnal_opts'  => 'Show additional options',
 	'smw_hide_addnal_opts'  => 'Hide additional options',
+	'smw_qc_query_help'     => 'Enter a query using the form below to select wiki pages based on 
+Categories (<strong>[[Category:Actor]]</strong>), 
+Properties (<strong>[[Located in::Germany]]</strong>), 
+Names(<strong>[[Germany]]</strong>) and Namespaces (<strong>[[Help:+]]</strong>)',
 
 	// Messages for the search by property special
 	'searchbyproperty'      => 'Search by property',
