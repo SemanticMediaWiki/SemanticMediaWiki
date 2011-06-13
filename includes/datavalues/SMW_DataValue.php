@@ -623,6 +623,8 @@ abstract class SMWDataValue {
 	 * Convenience method that returns the DB key that holds the value that is
 	 * to be used for sorting data of this kind. If this datatype does not
 	 * support sorting, then null is returned here.
+	 * 
+	 * @deprecated since SMW 1.6, use getDataItem()->get...() instead. Will vanish before SMW 1.7.
 	 */
 	public function getValueKey() {
 		$dbkeys = $this->getDBkeys();
