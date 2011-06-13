@@ -97,13 +97,16 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 							}
 						}
 						
-						if ( $finalvalues != '' ) $valuestack[] = '"' . str_replace( ' ', '_', strtolower( $pr->getLabel() ) ) . '": ' . $finalvalues . '';
+						if ( $finalvalues != '' ) {
+							$valuestack[] = '"' . str_replace( ' ', '_', strtolower( $pr->getLabel() ) ) . '": ' . $finalvalues . '';
+						}
 					}
 				}
 				
 				if ( $rowsubject !== false ) { // stuff in the page URI and some category data
 					$valuestack[] = '"uri" : "' . $wgServer . $wgScriptPath . '/index.php?title=' . $rowsubject->getPrefixedText() . '"';
 					$page_cats = smwfGetStore()->getPropertyValues( $rowsubject, new SMWDIProperty( '_INST' ) ); // TODO: set limit to 1 here
+					
 					if ( count( $page_cats ) > 0 ) {
 						$valuestack[] = '"type" : "' . reset($page_cats)->getShortHTMLText() . '"';
 					}
@@ -145,7 +148,9 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 			
 			$link->setParameter( 'json', 'format' );
 			$result = $link->getText( $outputmode, $this->mLinker );
-			$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
+			
+			// yes, our code can be viewed as HTML if requested, no more parsing needed
+			$this->isHTML = $outputmode == SMW_OUTPUT_HTML;
 		}
 
 		return $result;
