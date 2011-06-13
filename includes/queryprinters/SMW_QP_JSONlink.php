@@ -12,6 +12,7 @@
  * @ingroup SMWQuery
  */
 class SMWJSONResultPrinter extends SMWResultPrinter {
+	
 	protected $types = array( '_wpg' => 'text', '_num' => 'number', '_dat' => 'date', '_geo' => 'text', '_str' => 'text' );
 
 	public function getMimeType( $res ) {
@@ -54,43 +55,52 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 			$properties = "\"properties\": {\n\t\t" . implode( ",\n\t\t", $propertystack ) . "\n\t}";
 
 			// generate items section
-			while ( ( $row = $res->getNext() ) !== false ) {
+			while ( ( /* array of SMWResultArray */ $row = $res->getNext() ) !== false ) {
 				$rowsubject = false; // the wiki page value that this row is about
 				$valuestack = array(); // contains Property-Value pairs to characterize an Item
-				foreach ( $row as $field ) {
+				
+				foreach ( $row as /* SMWResultArray */ $field ) {
 					$pr = $field->getPrintRequest();
+					
 					if ( $rowsubject === false ) {
-						$rowsubject = $field->getResultSubject();
-						$valuestack[] = '"label": "' . $rowsubject->getShortText( $outputmode, null ) . '"';
+						$valuestack[] = '"label": "' . $field->getResultSubject()->getTitle()->getFullText() . '"';
 					}
+					
 					if ( $pr->getMode() != SMWPrintRequest::PRINT_THIS ) {
 						$values = array();
 						$finalvalues = '';
+						
 						while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
 							$finalvalues = '';
 							switch ( $dataValue->getTypeID() ) {
 								case '_geo':
-									$values[] = "\"" . $dataValue->getWikiValue() . "\"";
+									$values[] = '"' . $dataValue->getWikiValue() . '"';
 									break;
 								case '_num':
-									$values[] = "\"" . $dataValue->getValueKey() . "\"";
+									$values[] = $dataValue->getDataItem()->getNumber();
 									break;
 								case '_dat':
-									$values[] = "\"" . $dataValue->getYear() . "-" . str_pad( $dataValue->getMonth(), 2, '0', STR_PAD_LEFT ) . "-" . str_pad( $dataValue->getDay(), 2, '0', STR_PAD_LEFT ) . " " . $dataValue->getTimeString() . "\"";
+									$values[] = 
+										'"' . $dataValue->getYear() . '-' .
+										str_pad( $dataValue->getMonth(), 2, '0', STR_PAD_LEFT ) . '-' .
+										str_pad( $dataValue->getDay(), 2, '0', STR_PAD_LEFT ) . ' ' .
+										$dataValue->getTimeString() . '"';
 									break;
 								default:
-									$values[] = "\"" . $dataValue->getShortText( $outputmode, null ) . "\"";
+									$values[] = '"' . $dataValue->getShortText( $outputmode, null ) . '"';
 							}
 
 							if ( sizeof( $values ) > 1 ) {
-								$finalvalues = "[" . implode( ",", $values ) . "]";
+								$finalvalues = '[' . implode( ',', $values ) . ']';
 							} else {
 								$finalvalues = $values[0];
 							}
 						}
-						if ( $finalvalues != '' ) $valuestack[] = '"' . str_replace( " ", "_", strtolower( $pr->getLabel() ) ) . '": ' . $finalvalues . '';
+						
+						if ( $finalvalues != '' ) $valuestack[] = '"' . str_replace( ' ', '_', strtolower( $pr->getLabel() ) ) . '": ' . $finalvalues . '';
 					}
 				}
+				
 				if ( $rowsubject !== false ) { // stuff in the page URI and some category data
 					$valuestack[] = '"uri" : "' . $wgServer . $wgScriptPath . '/index.php?title=' . $rowsubject->getPrefixedText() . '"';
 					$page_cats = smwfGetStore()->getPropertyValues( $rowsubject, new SMWDIProperty( '_INST' ) ); // TODO: set limit to 1 here
@@ -119,16 +129,20 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 				smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 				$label = wfMsgForContent( 'smw_json_link' );
 			}
+			
 			$link = $res->getQueryLink( $label );
 			if ( array_key_exists( 'callback', $this->m_params ) ) {
 				$link->setParameter( htmlspecialchars( $this->m_params['callback'] ), 'callback' );
 			}
+			
 			if ( $this->getSearchLabel( SMW_OUTPUT_WIKI ) != '' ) { // used as a file name
 				$link->setParameter( $this->getSearchLabel( SMW_OUTPUT_WIKI ), 'searchlabel' );
 			}
+			
 			if ( array_key_exists( 'limit', $this->m_params ) ) {
 				$link->setParameter( htmlspecialchars( $this->m_params['limit'] ), 'limit' );
 			}
+			
 			$link->setParameter( 'json', 'format' );
 			$result = $link->getText( $outputmode, $this->mLinker );
 			$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
