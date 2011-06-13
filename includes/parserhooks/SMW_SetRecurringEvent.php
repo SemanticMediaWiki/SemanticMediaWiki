@@ -104,7 +104,7 @@ class SMWSetRecurringEvent {
 
 					foreach ( $excluded_dates as $date_str ) {
 						$date = SMWDataValueFactory::newTypeIDValue( '_dat', $date_str );
-						$excluded_dates_jd[] = $date->getDataItem()->getJD();
+						$excluded_dates_jd[] = $date->getDataItem()->getSerialization();
 					}
 					break;
 				default:
@@ -137,11 +137,11 @@ class SMWSetRecurringEvent {
 
 		// Get the Julian day value for both the start and end date.
 		if ( !is_null( $end_date ) ) {
-			$end_date_jd = $end_date->getDataItem()->getJD();
+			$end_date_jd = $end_date->getDataItem()->getSerialization();
 		}
 
 		$cur_date = $start_date;
-		$cur_date_jd = $start_date->getDataItem()->getJD();
+		$cur_date_jd = $start_date->getDataItem()->getSerialization();
 		$i = 0;
 		$reached_end_date = false;
 
@@ -175,7 +175,6 @@ class SMWSetRecurringEvent {
 
 				$date_str = "$cur_year-$display_month-$cur_day $cur_time";
 				$cur_date = SMWDataValueFactory::newTypeIDValue( '_dat', $date_str );
-				$cur_date_jd = $cur_date->getDataItem()->getJD();
 			} elseif ( $unit == 'dayofweekinmonth' ) {
 				// e.g., "3rd Monday of every month"
 				$prev_month = $cur_date->getMonth();
