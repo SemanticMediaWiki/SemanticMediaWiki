@@ -597,8 +597,9 @@ class SMWSQLStore2QueryEngine {
 		$query->jointable = $proptable->name;
 
 		if ( $property->isInverse() ) { // see if we can support inverses by inverting the proptable data
-			if ( ( count( $proptable->objectfields ) == 1 ) && ( reset( $proptable->objectfields ) == 'p' ) ) {
-				$query->joinfield = $query->alias . '.' . reset( array_keys( $proptable->objectfields ) );
+			if ( ( count( $proptable->objectfields ) == 1 ) && ( $proptable->objectfields[0] == 'p' ) ) {
+				$keys = array_keys( $proptable->objectfields );
+				$query->joinfield = $query->alias . '.' . $keys[0];
 				$objectfields = array( 's_id' => 'p' );
 				$valueindex = $labelindex = 3; // should normally not change, but let's be strict
 			} else { // no inverses supported for this property, stop here
