@@ -298,7 +298,7 @@ class SMWSearchByProperty extends SpecialPage {
 		
 		foreach ( $res as $result ) {
 			array_push( $results, array(
-				SMWDataValueFactory::newDataItemValue( $result ),
+				SMWDataValueFactory::newDataItemValue( $result, null ),
 				$this->value
 			) );
 		}
