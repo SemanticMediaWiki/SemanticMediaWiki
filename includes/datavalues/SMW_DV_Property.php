@@ -194,7 +194,7 @@ class SMWPropertyValue extends SMWDataValue {
 		}
 	}
 
-	public function getShortHTMLText( $linker = null ) {
+	public function getShortHTMLText( $linked = null ) {
 		if ( $this->isVisible() ) {
 			$wikiPageValue = $this->getWikiPageValue();
 			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getShortHTMLText( $linked ) );
@@ -212,7 +212,7 @@ class SMWPropertyValue extends SMWDataValue {
 		}
 	}
 
-	public function getLongHTMLText( $linker = null ) {
+	public function getLongHTMLText( $linked = null ) {
 		if ( $this->isVisible() ) {
 			$wikiPageValue = $this->getWikiPageValue();
 			return is_null( $wikiPageValue ) ? '' : $this->highlightText( $wikiPageValue->getLongHTMLText( $linked ) );
