@@ -99,7 +99,7 @@ class SMWPropertyValue extends SMWDataValue {
 	 */
 	protected function parseUserValue( $value ) {
 		$this->mPropTypeValue = null;
-		unset( $this->m_wikipage );
+		$this->m_wikipage = null;
 
 		if ( $this->m_caption === false ) { // always use this as caption
 			$this->m_caption = $value;
