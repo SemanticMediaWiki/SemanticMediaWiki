@@ -121,7 +121,7 @@ class SMWFactbox {
 		}
 		// Deal with complete dataset only if needed:
 		if ( !isset( $parseroutput->mSMWData ) || $parseroutput->mSMWData->stubObject ) {
-			$semdata = smwfGetStore()->getSemanticData( $title );
+			$semdata = smwfGetStore()->getSemanticData( SMWDIWikiPage::newFromTitle( $title ) );
 		} else {
 			$semdata = $parseroutput->mSMWData;
 		}
