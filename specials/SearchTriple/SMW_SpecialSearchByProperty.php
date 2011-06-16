@@ -382,18 +382,12 @@ class SMWSearchByProperty extends SpecialPage {
 		$ret = array();
 		
 		while ( $result ) {
-			array_push( $ret, array( $result[0]->getNextDataValue(), $result[1]->getNextDataValue() ) );
+			$ret[] = array( $result[0]->getNextDataValue(), $result[1]->getNextDataValue() );
 			$result = $results->getNext();
 		}
 		
 		if ( !$greater ) {
-			$temp = array();
-			
-			while ( $ret ) {
-				array_push( $temp, array_pop( $ret ) );
-			}
-			
-			$ret = $temp;
+			$ret = array_reverse( $ret );
 		}
 		
 		return $ret;
