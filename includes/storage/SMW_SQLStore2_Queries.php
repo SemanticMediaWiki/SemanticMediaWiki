@@ -968,7 +968,7 @@ class SMWSQLStore2QueryEngine {
 		$smwtable = $this->m_dbs->tableName( ( $query->type == SMW_SQL2_PROP_HIERARCHY ) ? 'smw_subp2':'smw_subs2' );
 
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
-		$res = $this->m_dbs->select( $smwtable, 's_id', $valuecond, array( 'LIMIT' => 1 ) );
+		$res = $this->m_dbs->select( $smwtable, 's_id', $valuecond, __METHOD__, array( 'LIMIT' => 1 ) );
 
 		if ( !$this->m_dbs->fetchObject( $res ) ) { // no subobjects, we are done!
 			$this->m_dbs->freeResult( $res );
