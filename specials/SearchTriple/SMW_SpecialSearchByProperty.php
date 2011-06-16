@@ -238,16 +238,43 @@ class SMWSearchByProperty extends SpecialPage {
 		global $smwgQMaxInlineLimit;
 
 		if ( $this->offset > 0 ) {
-			$navigation = '<a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'SearchByProperty', 'offset=' . max( 0, $this->offset - $this->limit ) . '&limit=' . $this->limit . '&property=' . urlencode( $this->property->getWikiValue() ) . '&value=' . urlencode( $this->value->getWikiValue() ) ) ) . '">' . wfMsg( 'smw_result_prev' ) . '</a>';
+			$navigation = Html::element(
+				'a',
+				array(
+					'href' => SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
+						'offset' => max( 0, $this->offset - $this->limit ), 
+						'limit' => $this->limit,
+						'property' => $this->property->getWikiValue(), 
+						'value' => $this->value->getWikiValue()
+					) )
+				),
+				wfMsg( 'smw_result_prev' )
+			);			
 		}
 		else {
 			$navigation = wfMsg( 'smw_result_prev' );
 		}
 		
-		$navigation .= '&#160;&#160;&#160;&#160; <b>' . wfMsg( 'smw_result_results' ) . ' ' . ( $this->offset + 1 ) . '– ' . ( $this->offset + min( $count, $this->limit ) ) . '</b>&#160;&#160;&#160;&#160;';
+		$navigation .=
+			'&#160;&#160;&#160;&#160; <b>' .
+				wfMsg( 'smw_result_results' ) . ' ' .
+				( $this->offset + 1 ) . '– ' .
+				( $this->offset + min( $count, $this->limit ) ) .
+			'</b>&#160;&#160;&#160;&#160;';
 
 		if ( $count > $this->limit ) {
-			$navigation .= ' <a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'SearchByProperty', 'offset=' . ( $this->offset + $this->limit ) . '&limit=' . $this->limit . '&property=' . urlencode( $this->property->getWikiValue() ) . '&value=' . urlencode( $this->value->getWikiValue() ) ) )  . '">' . wfMsg( 'smw_result_next' ) . '</a>';
+			$navigation .= Html::element(
+				'a',
+				array(
+					'href' => SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
+						'offset' => $this->offset + $this->limit, 
+						'limit' => $this->limit,
+						'property' => $this->property->getWikiValue(), 
+						'value' => $this->value->getWikiValue()
+					) )
+				),
+				wfMsg( 'smw_result_next' )
+			);	
 		} else {
 			$navigation .= wfMsg( 'smw_result_next' );
 		}
@@ -271,7 +298,18 @@ class SMWSearchByProperty extends SpecialPage {
 			}
 			
 			if ( $this->limit != $l ) {
-				$navigation .= '<a href="' . htmlspecialchars( $skin->makeSpecialUrl( 'SearchByProperty', 'offset=' . $this->offset . '&limit=' . $l . '&property=' . urlencode( $this->property->getWikiValue() ) . '&value=' . urlencode( $this->value->getWikiValue() ) ) ) . '">' . $l . '</a>';
+				$navigation .= Html::element(
+					'a',
+					array(
+						'href' => SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
+							'offset' => $this->offset, 
+							'limit' => $l,
+							'property' => $this->property->getWikiValue(), 
+							'value' => $this->value->getWikiValue()
+						) )
+					),
+					$l
+				);
 			} else {
 				$navigation .= '<b>' . $l . '</b>';
 			}

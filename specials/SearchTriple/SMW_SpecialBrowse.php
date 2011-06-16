@@ -176,10 +176,10 @@ class SMWSpecialBrowse extends SpecialPage {
 				$body .= Html::element(
 					'a',
 					array(
-						'href' => SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL(
-							 'property=' . urlencode( $dvProperty->getWikiValue() ) . 
-							 '&value=' . urlencode( $this->subject->getWikiValue() )
-						)
+						'href' => SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( array(
+							 'property' => $dvProperty->getWikiValue(), 
+							 'value' => $this->subject->getWikiValue()
+						) )
 					),
 					wfMsg( "smw_browse_more" )
 				);
@@ -302,10 +302,10 @@ class SMWSpecialBrowse extends SpecialPage {
 		return Html::element(
 			'a',
 			array(
-				'href' => SpecialPage::getSafeTitleFor( 'Browse' )->getLocalURL(
-					"offset={$offset}&dir={$dir}" .
-					'&article=' . urlencode( $this->subject->getLongWikiText() ) . $frag
-				)
+				'href' => SpecialPage::getSafeTitleFor( 'Browse' )->getLocalURL( array(
+					'offset' => "{$offset}&dir={$dir}",
+					'article' => $this->subject->getLongWikiText() . $frag
+				) )
 			),
 			$text
 		);

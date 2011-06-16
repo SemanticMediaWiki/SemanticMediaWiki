@@ -77,12 +77,12 @@ class SMWPageProperty extends SpecialPage {
 					$navigation = Html::element(
 						'a',
 						array(
-							'href' => SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL(
-								'offset=' . max( 0, $offset - $limit ) . 
-								'&limit=' . $limit . 
-								'&type=' . urlencode( $propname ) . 
-								'&from=' . urlencode( $pagename )
-							)
+							'href' => SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL( array(
+								'offset' => max( 0, $offset - $limit ), 
+								'limit' => $limit,
+								'type' => $propname, 
+								'from' => $pagename
+							) )
 						),
 						wfMsg( 'smw_result_prev' )
 					);
@@ -100,12 +100,12 @@ class SMWPageProperty extends SpecialPage {
 					$navigation = Html::element(
 						'a',
 						array(
-							'href' => SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL(
-								'offset=' . ( $offset + $limit ) .
-								'&limit=' . $limit .
-								'&type=' . urlencode( $propname ) .
-								'&from=' . urlencode( $pagename )
-							)
+							'href' => SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL( array(
+								'offset' => ( $offset + $limit ),
+								'limit' => $limit,
+								'type' => $propname,
+								'from' => $pagename
+							) )
 						),
 						wfMsg( 'smw_result_next' )
 					);
