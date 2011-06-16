@@ -663,10 +663,10 @@ END;
 			$navigation = Html::element(
 				'a',
 				array(
-					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL(
-						'offset=' . max( 0, $offset - $limit ) . 
-						'&limit=' . $limit . $urltail
-					),
+					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
+						'offset' => max( 0, $offset - $limit ), 
+						'limit' => $limit . $urltail
+					) ),
 					'rel' => 'nofollow'
 				),
 				wfMsg( 'smw_result_prev' )
@@ -687,10 +687,10 @@ END;
 			$navigation .= Html::element(
 				'a',
 				array(
-					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL(
-						'offset=' . ( $offset + $limit ) . 
-						'&limit=' . $limit . $urltail 
-					),
+					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
+						'offset' => ( $offset + $limit ), 
+						'limit' => $limit . $urltail 
+					) ),
 					'rel' => 'nofollow'
 				),
 				wfMsg( 'smw_result_next' )
@@ -715,10 +715,10 @@ END;
 				$navigation .= Html::element(
 					'a',
 					array(
-						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL(
-							'offset=' . $offset .
-							'&limit=' . $l . $urltail
-						),
+						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
+							'offset' => $offset,
+							'limit' => $l . $urltail
+						) ),
 						'rel' => 'nofollow'
 					),
 					$l
