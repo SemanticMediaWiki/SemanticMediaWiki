@@ -21,7 +21,7 @@
  * 
  * @since 1.6
  */
-class SMWDataItemException extends Exception {
+class SMWDataItemException extends MWException {
 }
 
 /**
