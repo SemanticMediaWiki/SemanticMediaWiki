@@ -649,7 +649,7 @@ class SMWSQLStore2 extends SMWStore {
 			} else {
 				$from = $db->tableName( $proptable->name ) . " AS t1";
 				$this->prepareValueQuery( $from, $where, $proptable, $value, 1 );
-				$res = $db->select( $from, '*', $where, 'SMW::getProperties', array( 'LIMIT' => 1 ) );
+				$res = $db->select( $from, '*', $where, 'SMW::getInProperties', array( 'LIMIT' => 1 ) );
 
 				if ( $db->numRows( $res ) > 0 ) {
 					$result[] = new SMWDIProperty( $proptable->fixedproperty );
