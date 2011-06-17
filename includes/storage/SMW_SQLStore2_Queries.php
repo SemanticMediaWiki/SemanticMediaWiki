@@ -315,7 +315,7 @@ class SMWSQLStore2QueryEngine {
 			$entries['Auxilliary Tables Used'] = 'No auxilliary tables used.';
 		}
 
-		return SMWStore::formatDebugOutput( 'SMWSQLStore2', $entries, $query );;
+		return SMWStore::formatDebugOutput( 'SMWSQLStore2', $entries, $query );
 	}
 
 	/**
