@@ -139,7 +139,7 @@ abstract class SMWDataValue {
 	public function setUserValue( $value, $caption = false ) {
 		wfProfileIn( 'SMWDataValue::setUserValue (SMW)' );
 
-		unset( $this->m_dataitem );
+		$this->m_dataitem = null;
 		$this->mErrors = array(); // clear errors
 		$this->mHasErrors = false;
 		$this->m_infolinks = array(); // clear links
@@ -181,7 +181,7 @@ abstract class SMWDataValue {
 	 * @return boolean
 	 */
 	public function setDataItem( SMWDataItem $dataItem ) {
-		unset( $this->m_dataitem );
+		$this->m_dataitem = null;
 		$this->mErrors = $this->m_infolinks = array();
 		$this->mHasErrors = $this->mHasSearchLink = $this->mHasServiceLinks = $this->m_caption = false;
 		return $this->loadDataItem( $dataItem );
