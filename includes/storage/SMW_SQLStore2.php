@@ -977,7 +977,7 @@ class SMWSQLStore2 extends SMWStore {
 			} // else: properties with special tables are ignored for now; maybe fix in the future
 		}
 
-		$query = '(' . implode( ') UNION (', $queries ) . ') ORDER BY smw_sortkey';
+		$query = 'SELECT * FROM (' . implode( ') UNION (', $queries ) . ') ORDER BY smw_sortkey';
 		// The following line is possible in MW 1.6 and above only:
 		// $query = $db->unionQueries($queries, false) . ' ORDER BY smw_sortkey'; // should probably use $db->makeSelectOptions()
 		if ( $requestoptions !== null ) {
@@ -1028,14 +1028,21 @@ class SMWSQLStore2 extends SMWStore {
 				   . "$$ "
 				   . "LANGUAGE 'plpgsql'; "
 				   . "SELECT create_" . $smw_tmp_unusedprops . "(); ";
+		} elseif ( $wgDBtype == 'sqlite' ) { // SQLite: no in-memory tables available
+			$sql = "CREATE TEMPORARY TABLE " . $smw_tmp_unusedprops . "( title VARCHAR(255) )";
 		} else { // MySQL: use temporary in-memory table
 			$sql = "CREATE TEMPORARY TABLE " . $smw_tmp_unusedprops . "( title VARCHAR(255) ) ENGINE=MEMORY";
 		}
 
 		$db->query( $sql, $fname );
 
-		$db->insertSelect( $smw_tmp_unusedprops, 'page', array( 'title' => 'page_title' ),
-		                  array( "page_namespace" => SMW_NS_PROPERTY ),  $fname );
+		$db->insertSelect(
+			$smw_tmp_unusedprops,
+			'page', 
+			array( 'title' => 'page_title' ),
+			array( 'page_namespace' => SMW_NS_PROPERTY ),
+			$fname
+		);
 
 		$smw_ids = $db->tableName( 'smw_ids' );
 
@@ -1045,8 +1052,19 @@ class SMWSQLStore2 extends SMWStore {
 		// all tables occurring in some property table are used:
 		foreach ( self::getPropertyTables() as $proptable ) {
 			if ( $proptable->fixedproperty == false ) { // MW does not seem to have a suitable wrapper for this
-				$db->query( "DELETE FROM $smw_tmp_unusedprops USING $smw_tmp_unusedprops INNER JOIN " . $db->tableName( $proptable->name ) .
-				" INNER JOIN $smw_ids ON p_id=smw_id AND title=smw_title AND smw_iw=" . $db->addQuotes( '' ), $fname );
+				if ( $wgDBtype == 'sqlite' ) { // SQLite
+					$db->query(
+						"DELETE FROM $smw_tmp_unusedprops WHERE title IN (SELECT title FROM $smw_tmp_unusedprops INNER JOIN " . 
+						$db->tableName( $proptable->name ) .
+						" INNER JOIN $smw_ids ON p_id=smw_id AND title=smw_title AND smw_iw=" . 
+						$db->addQuotes( '' ) . ")",
+						$fname 
+					);
+				}
+				else {
+					$db->query( "DELETE FROM $smw_tmp_unusedprops USING $smw_tmp_unusedprops INNER JOIN " . $db->tableName( $proptable->name ) .
+					" INNER JOIN $smw_ids ON p_id=smw_id AND title=smw_title AND smw_iw=" . $db->addQuotes( '' ), $fname );					
+				}
 			} // else: todo
 		}
 
@@ -1056,8 +1074,17 @@ class SMWSQLStore2 extends SMWStore {
 		$subPropertyTable = $propertyTables[$subPropertyTableId];
 
 		// (again we have no fitting MW wrapper here:)
-		$db->query( "DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops," . $db->tableName( $subPropertyTable->name ) .
-		           " INNER JOIN $smw_ids ON o_id=smw_id WHERE title=smw_title", $fname );
+		if ( $wgDBtype == 'sqlite' ) { // SQLite
+			// TODO
+		}
+		else {
+			$db->query(
+				"DELETE $smw_tmp_unusedprops.* FROM $smw_tmp_unusedprops," . $db->tableName( $subPropertyTable->name ) .
+				" INNER JOIN $smw_ids ON o_id=smw_id WHERE title=smw_title",
+				$fname
+			);			
+		}
+		
 		// properties that are redirects are considered to be used:
 		//   (a stricter and more costy approach would be to delete only redirects to used properties;
 		//    this would need to be done with an addtional query in the above loop)
@@ -1076,7 +1103,10 @@ class SMWSQLStore2 extends SMWStore {
 
 		$db->freeResult( $res );
 
-		$db->query( "DROP TEMPORARY table $smw_tmp_unusedprops", $fname );
+		if ( $wgDBtype != 'sqlite' ) {
+			$db->query( "DROP TEMPORARY table $smw_tmp_unusedprops", $fname );
+		}
+		
 		wfProfileOut( "SMWSQLStore2::getUnusedPropertiesSpecial (SMW)" );
 
 		return $result;
@@ -1215,8 +1245,8 @@ class SMWSQLStore2 extends SMWStore {
 			't' => SMWSQLHelpers::getStandardDBType( 'title' ),
 			'l' => SMWSQLHelpers::getStandardDBType( 'blob' ),
 			'f' => ( $wgDBtype == 'postgres' ? 'DOUBLE PRECISION' : 'DOUBLE' ),
-			'i' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8)' ),
-			'j' => ( $wgDBtype == 'postgres' ? 'INTEGER' : 'INT(8) UNSIGNED' ),
+			'i' => ( ( $wgDBtype == 'postgres' || $wgDBtype == 'sqlite' ) ? 'INTEGER' : 'INT(8)' ),
+			'j' => ( ( $wgDBtype == 'postgres' || $wgDBtype == 'sqlite' ) ? 'INTEGER' : 'INT(8) UNSIGNED' ),
 			'p' => SMWSQLHelpers::getStandardDBType( 'id' ),
 			'n' => SMWSQLHelpers::getStandardDBType( 'namespace' ),
 			'w' => SMWSQLHelpers::getStandardDBType( 'iw' )
@@ -1237,7 +1267,7 @@ class SMWSQLStore2 extends SMWStore {
 		SMWSQLHelpers::setupTable(
 			'smw_ids',
 			array(
-				'smw_id' => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ' KEY AUTO_INCREMENT' ),
+				'smw_id' => $dbtypes['p'] . ' NOT NULL' . ( $wgDBtype == 'postgres' ? ' PRIMARY KEY' : ( $wgDBtype == 'sqlite' ? ' PRIMARY KEY AUTOINCREMENT' : ' KEY AUTO_INCREMENT' ) ),
 				'smw_namespace' => $dbtypes['n'] . ' NOT NULL',
 				'smw_title' => $dbtypes['t'] . ' NOT NULL',
 				'smw_iw' => $dbtypes['w'],

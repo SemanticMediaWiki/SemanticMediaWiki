@@ -25,10 +25,10 @@ class SMWSQLHelpers {
 		global $wgDBtype;
 		
 		switch ( $input ) {
-			case 'id': return $wgDBtype == 'postgres' ? 'SERIAL' : 'INT(8) UNSIGNED'; // like page_id in MW page table
+			case 'id': return $wgDBtype == 'postgres' ? 'SERIAL' : ($wgDBtype == 'sqlite' ? 'INTEGER' :'INT(8) UNSIGNED'); // like page_id in MW page table
 			case 'namespace': return $wgDBtype == 'postgres' ? 'BIGINT' : 'INT(11)'; // like page_namespace in MW page table
 			case 'title': return $wgDBtype == 'postgres' ? 'TEXT' : 'VARBINARY(255)'; // like page_title in MW page table
-			case 'iw': return $wgDBtype == 'postgres' ? 'TEXT' : 'VARCHAR(32) binary'; // like iw_prefix in MW interwiki table
+			case 'iw': return ($wgDBtype == 'postgres' || $wgDBtype == 'sqlite') ? 'TEXT' : 'VARCHAR(32) binary'; // like iw_prefix in MW interwiki table
 			case 'blob': return $wgDBtype == 'postgres' ? 'BYTEA' : 'MEDIUMBLOB'; // larger blobs of character data, usually not subject to SELECT conditions
 		}
 		
@@ -88,7 +88,7 @@ class SMWSQLHelpers {
 	protected static function createTable( $tableName, array $fields, $db, $reportTo ) {
 		global $wgDBtype, $wgDBTableOptions, $wgDBname;
 		
-		$sql = 'CREATE TABLE ' . ( $wgDBtype == 'postgres' ? '' : "`$wgDBname`." ) . $tableName . ' (';
+		$sql = 'CREATE TABLE ' . ( ( $wgDBtype == 'postgres' || $wgDBtype == 'sqlite' ) ? '' : "`$wgDBname`." ) . $tableName . ' (';
 		
 		$fieldSql = array();
 		
@@ -97,7 +97,10 @@ class SMWSQLHelpers {
 		}
 		
 		$sql .= implode( ',', $fieldSql ) . ') ';
-		if ( $wgDBtype != 'postgres' ) $sql .= $wgDBTableOptions;
+		
+		if ( $wgDBtype != 'postgres' && $wgDBtype != 'sqlite' ) {
+			$sql .= $wgDBTableOptions;
+		}
 		
 		$db->query( $sql, __METHOD__ );
 	}
@@ -139,7 +142,10 @@ class SMWSQLHelpers {
 				SMWSQLHelpers::reportProgress( "   ... deleting obsolete field $fieldName ... ", $reportTo );
 				
 				if ( $isPostgres ) {
-					$db->query( "ALTER TABLE \"" . $tableName . "\" DROP COLUMN \"" . $fieldName . "\"", __METHOD__ );
+					$db->query( 'ALTER TABLE "' . $tableName . '" DROP COLUMN "' . $fieldName . '"', __METHOD__ );
+				}
+				else if ( $wgDBtype == 'sqlite' ) {
+					// DROP COLUMN not supported in Sqlite3
 				}
 				else {
 					$db->query( "ALTER TABLE $tableName DROP COLUMN `$fieldName`", __METHOD__ );					
@@ -184,6 +190,8 @@ SELECT
 	 ) AND a.attnum > 0 AND NOT a.attisdropped 
 	 ORDER BY a.attnum			
 EOT;
+		} elseif ( $wgDBtype == 'sqlite' ) { // SQLite
+			$sql = 'PRAGMA table_info(' . $tableName . ')';
 		} else { // MySQL
 			$sql = 'DESCRIBE ' . $tableName;
 		}
@@ -193,15 +201,27 @@ EOT;
 		$result = array();
 		
 		foreach ( $res as $row ) {
-			$type = strtoupper( $row->Type );
-
 			if ( $wgDBtype == 'postgres' ) { // postgresql
+				$type = strtoupper( $row->Type );
+				
 				if ( preg_match( '/^nextval\\(.+\\)/i', $row->Extra ) ) {
 					$type = 'SERIAL NOT NULL';
 				} elseif ( $row->Null != 'YES' ) {
 						$type .= ' NOT NULL';
 				}
+			} elseif ( $wgDBtype == 'sqlite' ) { // SQLite
+				$row->Field = $row->name;
+				$row->Type = $row->type;
+				$type = $row->type;
+				if ( $row->notnull == '1' ) {
+					$type .= ' NOT NULL';
+				}
+				if ( $row->pk == '1' ) {
+					$type .= ' PRIMARY KEY AUTOINCREMENT';
+				}
 			} else { // mysql
+				$type = strtoupper( $row->Type );
+				
 				if ( substr( $type, 0, 8 ) == 'VARCHAR(' ) {
 					$type .= ' binary'; // just assume this to be the case for VARCHAR, though DESCRIBE will not tell us
 				}
@@ -360,6 +380,46 @@ EOT;
 					if ( $db->indexInfo( $rawTableName, "{$rawTableName}_index{$key}" ) === false ) {
 						$db->query( "CREATE $type {$rawTableName}_index{$key} ON $tableName USING btree(" . $column . ")", __METHOD__ );
 					}
+				}
+			}
+		} elseif ( $wgDBtype == 'sqlite' ) { // SQLite
+			$res = $db->query( 'PRAGMA index_list(' . $tableName . ')' , __METHOD__ );
+			
+			if ( !$res ) {
+				return false;
+			}
+			
+			$indexes = array();
+			
+			foreach ( $db->fetchObject( $res ) as $row ) {
+				if ( !array_key_exists( $row->name, $indexes ) ) {
+					$indexes[$row->name] = array();
+				}
+				
+				$indexes[$row->name][$row->seq] = $row->name;
+			}
+			
+			foreach ( $indexes as $key => $index ) { // Clean up the existing indexes.
+				$db->query( 'DROP INDEX ' . $key, __METHOD__ );
+			}
+			
+			foreach ( $columns as $key => $index ) { // Add the remaining indexes.
+				if ( $index != false ) {
+					$type = 'INDEX';
+					
+					// If the index is an array, it'll contain the column name as first element, and index type as second one.
+					if ( is_array( $index ) ) {
+						$column = $index[0];
+						
+						if ( count( $index ) > 1 ) {
+							$type = $index[1];
+						}
+					}
+					else {
+						$column = $index;
+					}
+					
+					$db->query( "CREATE $type {$tableName}_index{$key} ON $tableName (" . $column . ")", __METHOD__ );
 				}
 			}
 		} else { // MySQL
