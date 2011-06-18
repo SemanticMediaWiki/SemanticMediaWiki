@@ -61,6 +61,7 @@ class SMWFactbox {
 						'<span class="smwfactboxhead">' . wfMsgForContent( 'smw_factbox_head', $browselink->getWikiText() ) . '</span>' .
 					'<span class="smwrdflink">' . $rdflink->getWikiText() . '</span>' .
 					'<table class="smwfacttable">' . "\n";
+			
 			foreach ( $semdata->getProperties() as $propertyDi ) {
 				$propertyDv = SMWDataValueFactory::newDataItemValue( $propertyDi, null );
 				if ( !$propertyDi->isShown() ) { // showing this is not desired, hide
@@ -76,22 +77,22 @@ class SMWFactbox {
 				}
 
 				$propvalues = $semdata->getPropertyValues( $propertyDi );
-				$l = count( $propvalues );
-				$i = 0;
-				foreach ( $propvalues as $di ) {
-					if ( $i != 0 ) {
-						if ( $i > $l - 2 ) {
-							$text .= wfMsgForContent( 'smw_finallistconjunct' ) . ' ';
-						} else {
-							$text .= ', ';
-						}
+				
+				$valuesHtml = array();
+				
+				foreach ( $propvalues as $dataItem ) {
+					$dataValue = SMWDataValueFactory::newDataItemValue( $dataItem, $propertyDi );
+					
+					if ( $dataValue->isValid() ) {
+						$valuesHtml[] = $dataValue->getLongWikiText( true ) . $dataValue->getInfolinkText( SMW_OUTPUT_WIKI );
 					}
-					$i += 1;
-					$dv = SMWDataValueFactory::newDataItemValue( $di, $propertyDi );
-					$text .= $dv->getLongWikiText( true ) . $dv->getInfolinkText( SMW_OUTPUT_WIKI );
 				}
+				
+				$text .= $GLOBALS['wgLang']->listToText( $valuesHtml );
+				
 				$text .= '</td></tr>';
 			}
+			
 			$text .= '</table></div>';
 		}
 		wfProfileOut( 'SMWFactbox::printFactbox (SMW)' );
@@ -125,6 +126,7 @@ class SMWFactbox {
 		} else {
 			$semdata = $parseroutput->mSMWData;
 		}
+		
 		return SMWFactbox::getFactboxText( $semdata, $showfactbox );
 	}
 
@@ -136,6 +138,7 @@ class SMWFactbox {
 	static public function onOutputPageParserOutput( $outputpage, $parseroutput ) {
 		global $wgTitle, $wgParser;
 		$factbox = SMWFactbox::getFactboxTextFromOutput( $parseroutput, $wgTitle );
+		
 		if ( $factbox != '' ) {
 			$popts = new ParserOptions();
 			$po = $wgParser->parse( $factbox, $wgTitle, $popts );
@@ -144,6 +147,7 @@ class SMWFactbox {
 			SMWOutputs::requireFromParserOutput( $po );
 			SMWOutputs::commitToOutputPage( $outputpage );
 		} // else: nothing shown, don't even set any text
+		
 		return true;
 	}
 
