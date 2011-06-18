@@ -26,17 +26,17 @@ class SMWLanguageRu extends SMWLanguage {
 		'_wpg' => 'Страница', // name of page datatype
 		'_str' => 'Строка',  // name of the string type
 		'_txt' => 'Текст',  // name of the text type (very long strings)
-		'_cod' => 'Код',  // name of the (source) code type
+		'_cod' => 'Исходный код',  // name of the (source) code type
 		'_boo' => 'Булево',  // name of the boolean type
 		'_num' => 'Число', // name for the datatype of numbers
-		'_geo' => 'Географическая координата', // name of the geocoord type
+		'_geo' => 'Географические координаты', // name of the geocoord type
 		'_tem' => 'Температура',  // name of the temperature type
 		'_dat' => 'Дата',  // name of the datetime (calendar) type
 		'_ema' => 'Почта',  // name of the email type
 		'_uri' => 'URL',  // name of the URL type
 		'_anu' => 'URI аннотации',  // name of the annotation URI type (OWL annotation property)
-		'_tel' => 'Telephone number',  // name of the telephone (URI) type //TODO: translate
-		'_rec' => 'Record', // name of record data type //TODO: translate
+		'_tel' => 'Номер телефона',  // name of the telephone (URI) type 
+		'_rec' => 'Запись', // name of record data type 
 	);
 	
 	protected $m_DatatypeAliases = array(
@@ -58,9 +58,9 @@ class SMWLanguageRu extends SMWLanguage {
 		'_CONV' => 'Относится к',
 		'_SERV' => 'Предоставляет сервис',
 		'_PVAL' => 'Допустимое значение',
-		'_MDAT' => 'Modification date',  // TODO: translate
+		'_MDAT' => 'Дата последней правки', 
 		'_ERRP' => 'Has improper value for', // TODO: translate
-		'_LIST' => 'Has fields', // TODO: translate
+		'_LIST' => 'Имеет поля', 
 	);
 	
 	protected $m_SpecialPropertyAliases = array(
