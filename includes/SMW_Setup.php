@@ -238,10 +238,11 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgSpecialPages['Ask']                          = 'SMWAskPage';
 	$wgSpecialPageGroups['Ask']                     = 'smw_group';
 
+	/* Query Creator disabled for release SMW 1.6 
         $wgAutoloadClasses['SMWQueryCreatorPage']       = $smwgIP . 'specials/AskSpecial/SMW_SpecialQueryCreator.php';
         $wgSpecialPages['QueryCreator']                 = 'SMWQueryCreatorPage';
         $wgSpecialPageGroups['QueryCreator']            = 'smw_group';
-
+	*/
 	$wgAutoloadClasses['SMWSpecialBrowse']          = $smwgIP . 'specials/SearchTriple/SMW_SpecialBrowse.php';
 	$wgSpecialPages['Browse']                       = 'SMWSpecialBrowse';
 	$wgSpecialPageGroups['Browse']                  = 'smw_group';
