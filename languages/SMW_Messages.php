@@ -337,6 +337,7 @@ Estimated progress of current update:',
  * @author Fryed-peach
  * @author Helix84
  * @author Jon Harald Søby
+ * @author Kghbln
  * @author Markus Krötzsch
  * @author Meno25
  * @author Pietrodn
@@ -392,6 +393,7 @@ This is controlled by the HTTP request header. Semantic Web crawlers and browser
 This method is called ''content negotiation''.",
 	'smw_ask_submit' => '{{Identical|Find results}}',
 	'smw_ask_defaultformat' => '{{Identical|Default}}',
+	'smw_qc_query_help' => 'You may translate "Actor", "Located in" and "Germany".',
 	'smw_sbv_property' => '{{Identical|Property}}',
 	'smw_sbv_value' => '{{Identical|Value}}',
 	'smw_sbv_submit' => '{{Identical|Find results}}',
@@ -2130,10 +2132,10 @@ Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste A
 	'smw_show_addnal_opts' => 'Zusätzliche Optionen anzeigen',
 	'smw_hide_addnal_opts' => 'Zusätzliche Optionen ausblenden',
 	'smw_qc_query_help' => 'Bitte eine Abfrage unter Verwendung des untenstehenden Formulars angeben, um Wikiseiten auf Basis von 
-Kategorien (<strong>z. B. [[Category:Actor]]</strong>),
-Attributen (<strong>[[Located in::Germany]]</strong>),
-Seitenanmen (<strong>[[Germany]]</strong>) und
-Namensräumen (<strong>[[Help:+]]</strong>) auszuwählen.',
+Kategorien (<strong>z. B. [[{{ns:category}}:Schauspieler]]</strong>),
+Attributen (<strong>[[Liegt in::Deutschland]]</strong>),
+Seitenanmen (<strong>[[Deutschland]]</strong>) und
+Namensräumen (<strong>[[{{ns:help}}:+]]</strong>) auszuwählen.',
 	'searchbyproperty' => 'Suche mittels Attribut',
 	'smw_sbv_docu' => 'Diese Spezialseite ermittelt alle Seiten, die einen bestimmten Wert für das angegebene Attribut haben.',
 	'smw_sbv_novalue' => 'Bitte den gewünschten Wert eingeben oder alle Werte für das Attribut $1 ansehen.',
@@ -3627,9 +3629,9 @@ As propiedades ás que aínda lles falta unha páxina atópanse na [[Special:Wan
 	'smw_show_addnal_opts' => 'Mostrar as opcións adicionais',
 	'smw_hide_addnal_opts' => 'Agochar as opcións adicionais',
 	'smw_qc_query_help' => 'Introduza unha consulta utilizando o seguinte formulario para seleccionar páxinas wiki baseadas en
-Categorías (<strong>[[Category:Actor]]</strong>), 
-Propiedades (<strong>[[Located in::Germany]]</strong>), 
-Nomes (<strong>[[Germany]]</strong>) e espazos de nomes (<strong>[[Help:+]]</strong>)',
+Categorías (<strong>[[{{ns:category}}:Actor]]</strong>), 
+Propiedades (<strong>[[Localizado en::Alemaña]]</strong>), 
+Nomes (<strong>[[Alemaña]]</strong>) e espazos de nomes (<strong>[[{{ns:help}}:+]]</strong>)',
 	'searchbyproperty' => 'Procurar por propiedade',
 	'smw_sbv_docu' => 'Procurar por todas as páxinas que teñen a propiedade e o valor dados.',
 	'smw_sbv_novalue' => 'Por favor, insira un valor válido para a propiedade ou vexa todos os valores das propiedades para “$1”.',
@@ -4117,9 +4119,9 @@ $messages['he'] = array(
 	'smw_show_addnal_opts' => 'הצגת אפשרויות נוספות',
 	'smw_hide_addnal_opts' => 'הסתרת אפשרויות נוספות',
 	'smw_qc_query_help' => 'נא להזין שאילתה באמצעות הטופס להלן כדי לבחור דפי ויקי מבוססים על
-קטגוריה (<strong>[[קטגוריה:שחקן]]</strong>),
+קטגוריה (<strong>[[{{ns:category}}:שחקן]]</strong>),
 מאפיינים (<strong>[[נמצא ב::גרמניה]]</strong>),
-שמות (<strong>[[גרמניה]]</strong>) ומרחבי שם (<strong>[[עזרה:+]]</strong>)',
+שמות (<strong>[[גרמניה]]</strong>) ומרחבי שם (<strong>[[{{ns:help}}:+]]</strong>)',
 	'searchbyproperty' => 'חיפוש לפי מאפיין',
 	'smw_sbv_docu' => 'חיפוש כל הדפים שיש להם מאפיין וערך מסוימים.',
 	'smw_sbv_novalue' => 'כתבו ערך תקין למאפיין, או צפו בכל ערכי המאפיינים עבור "$1".',
@@ -4798,6 +4800,7 @@ Az eredmények eltérhetnek a várttól.',
 	'smw_subpropertyarticlecount' => 'Ez a tulajdonság a következő {{PLURAL:$1|egy|$1}} altulajdonsággal rendelkezik:',
 	'smw_concept_header' => 'A(z) „$1” koncepcióhoz tartozó lapok',
 	'smw_conceptarticlecount' => 'A koncepcióhoz tartozó $1 lap megjelenítése.',
+	'specialpages-group-smw_group' => 'Szemantikus MediaWiki',
 	'exportrdf' => 'Lapok exportálása RDF-be',
 	'smw_exportrdf_docu' => 'Ez a lap lehetőséget teremt adatok beszerzésére egy lapról RDF formátumban.
 A lapok exportálásához írd be a címeiket az alábbi szövegdobozba, soronként egyet.',
@@ -5090,6 +5093,10 @@ Illo assecura que le humanos non se transforma in sitos web.',
 	'smw_ask_show_embed' => 'Revelar codice de incastrar',
 	'smw_ask_hide_embed' => 'Celar codice de incastrar',
 	'smw_ask_embed_instr' => 'Pro incastrar iste consulta in linea in un pagina wiki usa le codice sequente.',
+	'smw_qc_query_help' => 'Specifica un consulta in le formulario sequente pro seliger paginas wiki a base de 
+Categorias (<strong>[[{{ns:category}}:Actor]]</strong>), 
+Proprietates (<strong>[[Localisate in::Germania]]</strong>), 
+Nomines (<strong>[[Germania]]</strong>) e Spatios de nomines (<strong>[[{{ns:help}}:+]]</strong>)',
 	'searchbyproperty' => 'Cercar per proprietate',
 	'smw_sbv_docu' => 'Cercar tote le paginas que ha un proprietate e valor date.',
 	'smw_sbv_novalue' => 'Entra un valor valide pro le proprietate, o vide tote le valores possibile del proprietate "$1".',
@@ -6726,9 +6733,9 @@ $messages['mk'] = array(
 	'smw_show_addnal_opts' => 'Прикажи дополнителни можности',
 	'smw_hide_addnal_opts' => 'Скриј дополнителни можности',
 	'smw_qc_query_help' => 'Внесете барање користејќи го образецот подолу за да одберете викистраници по 
-Категории (<strong>[[Category:Actor]]</strong>), 
-Својства (<strong>[[Located in::Germany]]</strong>), 
-Имиња (<strong>[[Germany]]</strong>) или Именски простори (<strong>[[Help:+]]</strong>)',
+Категории (<strong>[[{{ns:category}}:Actor]]</strong>), 
+Својства (<strong>[[Located in::Germany]]</strong>),  
+Имиња (<strong>[[Germany]]</strong>) и Именски простори (<strong>[[{{ns:help}}:+]]</strong>)',
 	'searchbyproperty' => 'Пребарај по својство',
 	'smw_sbv_docu' => 'Пребарување на сите страници кои имаат дадено својство и вредност.',
 	'smw_sbv_novalue' => 'Внесете важечка вредност за својството, или пак погледнете ги сите вредности на својството „$1“.',
@@ -8543,9 +8550,9 @@ As propriedades que não possuem uma página poderão ser encontradas na [[Speci
 	'smw_show_addnal_opts' => 'Mostrar opções adicionais',
 	'smw_hide_addnal_opts' => 'Esconder opções adicionais',
 	'smw_qc_query_help' => 'Introduza uma consulta usando o formulário abaixo para seleccionar páginas da wiki com base em
-Categorias (<strong>[[Category:Actor]]</strong>),
-Propriedades (<strong>[[Located in::Germany]]</strong>), 
-Nomes (<strong>[[Germany]]</strong>) e Espaços nominais (<strong>[[Help:+]]</strong>)',
+Categorias (<strong>[[Categoria:Actor]]</strong>),
+Propriedades (<strong>[[Localizada em::Angola]]</strong>), 
+Nomes (<strong>[[Cabo Verde]]</strong>) e Espaços nominais (<strong>[[Ajuda:+]]</strong>)',
 	'searchbyproperty' => 'Pesquisa por propriedade',
 	'smw_sbv_docu' => 'Procurar todas as páginas que possuem uma determinada propriedade e valor.',
 	'smw_sbv_novalue' => 'Introduza um valor válido para a propriedade, ou veja todos os valores válidos da propriedade “$1.”',
