@@ -3,7 +3,7 @@
 /**
  * New SQL implementation of SMW's storage abstraction layer.
  *
- * @author Markus KrÃ¶tzsch
+ * @author Markus Krötzsch
  * @author Jeroen De Dauw
  *
  * @file
