@@ -547,7 +547,7 @@ END;
 
 			$printer = SMWQueryProcessor::getResultPrinter( 'broadtable', SMWQueryProcessor::SPECIAL_PAGE );
 			$url = SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( "showformatoptions=' + this.value + '" );
-			
+
 			foreach ( $this->m_params as $param => $value ) {
 				if ( $param !== 'format' ) {
 					$url .= '&params[' . Xml::escapeJsString( $param ) . ']=' . Xml::escapeJsString( $value );
@@ -596,7 +596,7 @@ END;
 				"\n</form>";
 		} else { // if $this->m_editquery == false
 			$urltail = str_replace( '&eq=no', '', $urltail ) . '&eq=yes';
-			$result .= '<p>' .  
+			$result .= '<p>' .
 				Html::element(
 					'a',
 					array(
@@ -670,14 +670,14 @@ END;
 					'rel' => 'nofollow'
 				),
 				wfMsg( 'smw_result_prev' )
-			); 
-			
+			);
+
 		} else {
 			$navigation = wfMsg( 'smw_result_prev' );
 		}
 
-		$navigation .= 
-			'&#160;&#160;&#160;&#160; <b>' . 
+		$navigation .=
+			'&#160;&#160;&#160;&#160; <b>' .
 				wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) .
 			'&#150; ' .
 				( $offset + $res->getCount() ) .
@@ -694,7 +694,7 @@ END;
 					'rel' => 'nofollow'
 				),
 				wfMsg( 'smw_result_next' )
-			); 
+			);
 		} else {
 			$navigation .= wfMsg( 'smw_result_next' );
 		}
@@ -722,7 +722,7 @@ END;
 						'rel' => 'nofollow'
 					),
 					$l
-				); 
+				);
 			} else {
 				$navigation .= '<b>' . $l . '</b>';
 			}
@@ -748,12 +748,12 @@ END;
 		$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
 
 		$params = method_exists( $printer, 'getParameters' ) ? $printer->getParameters() : array();
-		
+
 		// Ignore the format parameter, as we got a special control in the GUI for it already.
 		unset( $params['format'] );
-		
+
 		$optionsHtml = array();
-		
+
 		foreach ( $params as $param ) {
 			$param = $this->toValidatorParam( $param );
 			$currentValue = array_key_exists( $param->getName(), $paramValues ) ? $paramValues[$param->getName()] : false;
@@ -770,21 +770,21 @@ END;
 					Html::element( 'em', array(), $param->getDescription() )
 				);
 		}
-		
+
 		for ( $i = 0, $n = count( $optionsHtml ); $i < $n; $i++ ) {
 			if ( $i % 3 == 2 || $i == $n - 1 ) {
 				$optionsHtml[$i] .= "<div style=\"clear: both\";></div>\n";
 			}
 		}
-		
+
 		$i = 0;
 		$rowHtml = '';
 		$resultHtml = '';
-		
+
 		while ( $option = array_shift( $optionsHtml ) ) {
 			$rowHtml .= $option;
 			$i++;
-						
+
 			if ( $i % 3 == 0 ) {
 				$resultHtml .= Html::rawElement(
 					'div',
@@ -799,65 +799,65 @@ END;
 
 		return $resultHtml;
 	}
-	
+
 	/**
 	 * Returns a Validator style Parameter definition.
 	 * SMW 1.5.x style definitions are converted.
-	 * 
+	 *
 	 * @since 1.6
-	 * 
+	 *
 	 * @param mixed $param
-	 * 
+	 *
 	 * @return Parameter
 	 */
 	protected function toValidatorParam( $param ) {
 		static $typeMap = array(
 			'int' => Parameter::TYPE_INTEGER
 		);
-		
+
 		if ( !( $param instanceof Parameter ) ) {
 			if ( !array_key_exists( 'type', $param ) ) {
 				$param['type'] = 'string';
 			}
-			
+
 			$paramClass = $param['type'] == 'enum-list' ? 'ListParameter' : 'Parameter';
 			$paramType = array_key_exists( $param['type'], $typeMap ) ? $typeMap[$param['type']] : Parameter::TYPE_STRING;
-			
+
 			$parameter = new $paramClass( $param['name'], $paramType );
-			
+
 			if ( array_key_exists( 'description', $param ) ) {
 				$parameter->setDescription( $param['description'] );
 			}
-			
+
 			if ( array_key_exists( 'values', $param ) && is_array( $param['values'] ) ) {
 				$parameter->addCriteria( new CriterionInArray( $param['values'] ) );
 			}
-			
+
 			return $parameter;
 		}
 		else {
 			return $param;
 		}
 	}
-	
+
 	/**
 	 * Get the HTML for a single parameter input.
-	 * 
+	 *
 	 * @since 1.6
-	 * 
+	 *
 	 * @param Parameter $parameter
 	 * @param mixed $currentValue
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function showFormatOption( Parameter $parameter, $currentValue ) {
 		$input = new ParameterInput( $parameter );
 		$input->setInputName( 'p[' . $parameter->getName() . ']' );
-		
+
 		if ( $currentValue !== false ) {
 			$input->setCurrentValue( $currentValue );
 		}
-		
+
 		return $input->getHtml();
 	}
 

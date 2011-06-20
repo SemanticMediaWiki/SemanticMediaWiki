@@ -96,7 +96,7 @@ class SMWQueryCreatorPage extends SpecialPage {
 
 		$result .= "<br /><br />\n<p>" . wfMsg( 'smw_ask_format_as' ) . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
 				'<select id="formatSelector" name="p[format]" onChange="JavaScript:updateOtherOptions(\'' . $url . '\')">' . "\n" .
-				'	<option value="broadtable"' . ( $this->m_params['format'] == 'broadtable' ? ' selected' : '' ) . '>' .
+				'	<option value="broadtable">' .
 				$printer->getName() . ' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
 
 		$formats = array();
@@ -112,7 +112,7 @@ class SMWQueryCreatorPage extends SpecialPage {
 		natcasesort( $formats );
 
 		foreach ( $formats as $format => $name ) {
-			$result .= '	<option value="' . $format . '"' . ( $this->m_params['format'] == $format ? ' selected' : '' ) . '>' . $name . "</option>\n";
+			$result .= '	<option value="' . $format . '>' . $name . "</option>\n";
 		}
 		//add javascript for updating formating options by ajax
 		$default_format_url = SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( "showformatoptions=broadtable" );
@@ -134,7 +134,6 @@ END;
 		$result .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n";
 		$result .= "<div id=\"other_options\"></div>";
 		$result .= "</fieldset>\n";
-		$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no';
 		$result .= '</div>';
 		$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/>' .
 			'<input type="hidden" name="eq" value="no"/>' .
