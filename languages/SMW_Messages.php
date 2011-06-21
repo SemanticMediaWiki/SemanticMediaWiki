@@ -1132,6 +1132,7 @@ $messages['be-tarask'] = array(
 	'smw_querytoolarge' => 'Наступныя ўмовы запыту ня могуць улічвацца з-за абмежаваньняў {{GRAMMAR:родны|{{SITENAME}}}} на глыбіню і памер запыту: $1.',
 	'smw_notemplategiven' => 'Для выкананьня гэтага запыту, неабходна ўвесьці значэньне парамэтру «template».',
 	'smw_db_sparqlqueryproblem' => 'Немагчыма атрымаць вынік запыту да базы зьвестак SPARQL. Магчыма гэтая часовая памылка ці праблема праграмнага забесьпячэньня базы зьвестак.',
+	'smw_db_sparqlqueryincomplete' => 'Выкананьне запыту было перарванае, з-за таго, што ён зьяўляецца занадта складаным. Некаторыя вынікі могуць адсутнічаць. Калі магчыма, паспрабуйце спрасьціць запыт.',
 	'smw_type_header' => 'Уласьцівасьці тыпу «$1»',
 	'smw_typearticlecount' => '{{PLURAL:$1|Паказаная $1 уласьцівасьць, якая выкарыстоўвае|Паказаныя $1 уласьцівасьці, якія выкарыстоўваюць|Паказаныя $1 уласьцівасьцяў, якія выкарыстоўваюць}} гэты тып.',
 	'smw_attribute_header' => 'Старонкі, якія выкарыстоўваюць уласьцівасьць «$1»',
@@ -3272,10 +3273,10 @@ Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:Wa
 	'querycreator' => 'Créateur de requêtes',
 	'smw_show_addnal_opts' => 'Afficher des options supplémentaires',
 	'smw_hide_addnal_opts' => 'Masquer des options supplémentaires',
-	'smw_qc_query_help' => 'Entrez une requête en utilisant le formulaire ci-dessous pour sélectionner les pages wiki basés sur
-Catégories (<strong>[[Catégorie:Acteur]]</strong>),
+	'smw_qc_query_help' => 'Entrez une requête en utilisant le formulaire ci-dessous pour sélectionner les pages wiki basés sur les
+catégories (<strong>[[{{ns:category}}:Acteur]]</strong>),
 Propriétés (<strong>[[Situé en::Allemagne]]</strong>),
-Noms (<strong>[[Allemagne]]</strong>) et espaces de noms (<strong>[[Aide:+]]</strong>)',
+Noms (<strong>[[Allemagne]]</strong>) et espaces de noms (<strong>[[{{ns:help}}:+]]</strong>)',
 	'searchbyproperty' => 'Rechercher par attribut',
 	'smw_sbv_docu' => 'Rechercher toutes les pages qui ont un attribut donné avec un certaine valeur.',
 	'smw_sbv_novalue' => 'Veuillez entrer une valeur ou consulter toutes les valeurs des attributs pour « $1 ».',
@@ -5095,6 +5096,9 @@ Illo assecura que le humanos non se transforma in sitos web.',
 	'smw_ask_show_embed' => 'Revelar codice de incastrar',
 	'smw_ask_hide_embed' => 'Celar codice de incastrar',
 	'smw_ask_embed_instr' => 'Pro incastrar iste consulta in linea in un pagina wiki usa le codice sequente.',
+	'querycreator' => 'Creator de consultas',
+	'smw_show_addnal_opts' => 'Monstrar additional optiones',
+	'smw_hide_addnal_opts' => 'Celar additional optiones',
 	'smw_qc_query_help' => 'Specifica un consulta in le formulario sequente pro seliger paginas wiki a base de 
 Categorias (<strong>[[{{ns:category}}:Actor]]</strong>), 
 Proprietates (<strong>[[Localisate in::Germania]]</strong>), 
@@ -9439,9 +9443,13 @@ Odhadovaný priebeh aktualizácie:',
 );
 
 /** Slovenian (Slovenščina)
+ * @author Dbc334
  * @author Lesko987
  */
 $messages['sl'] = array(
+	'smw_viewasrdf' => 'Vir RDF',
+	'smw_finallistconjunct' => 'in',
+	'smw_factbox_head' => 'Dejstva o $1',
 	'smw_isspecprop' => 'Ta lastnost je posebna lastnost za ta wiki.',
 	'version-semantic' => 'Semantična razširitev',
 	'smw_printername_auto' => 'Samodejno',
@@ -9491,6 +9499,7 @@ Ustvari RDF za brskanje.',
 	'wantedproperties' => 'Želene lastnosti',
 	'smw_wantedproperties_docu' => 'Naslednje lastnosti se uporabljajo v wikiju, vendar še nimajo strani, ki jih opisujejo.',
 	'smw_wantedproperty_template' => '$1 ( $2 {{PLURAL:$2|uporaba|uporabi|uporabe|uporab}})',
+	'smw_purge' => 'Osveži',
 	'types' => 'Tipi',
 	'smw_types_docu' => 'V nadaljevanju je seznam vseh podatkovnih tipov, ki so lahko določeni za lastnosti.',
 	'semanticstatistics' => 'Semantična statistika',
@@ -9519,10 +9528,10 @@ Lastnosti, ki še vedno nimajo strani se nahajajo na [[Special:WantedProperties|
 	'querycreator' => 'Ustvarjalec poizvedbe',
 	'smw_show_addnal_opts' => 'Pokaži dodatne nastavitve',
 	'smw_hide_addnal_opts' => 'Skrij dodatne nastavitve',
-	'smw_qc_query_help' => 'Vnesite poizvedbo v spodnje okno da izberite wiki strani, ki ustrezajo
-Kategoriji (<strong>[[Category:Actor]]</strong>)
-Lastnosti (<strong>[[Located in::Germany]]</strong>)
-Imenu (<strong>[[Germany]]</strong>) in imenskemu prostoru (<strong>[[Help:+]]</strong>)',
+	'smw_qc_query_help' => 'Vnesite poizvedbo v spodnje okno, da izberite wikistrani, ki ustrezajo
+kategorijam (<strong>[[{{ns:category}}:Igralec]]</strong>),
+lastnostim (<strong>[[Located in::Nemčija]]</strong>),
+imenom (<strong>[[Nemčija]]</strong>) in Imenskim prostorom (<strong>[[{{ns:help}}:+]]</strong>)i',
 	'searchbyproperty' => 'Iskanje po lastnosti',
 	'smw_sbv_docu' => 'Išči vse strani, ki imajo določeno lastnost in vrednost.',
 	'smw_sbv_novalue' => 'Vnesite pravilno vrednost za lastnost ali pa si oglejte vse vrednosti lastnosti "$1".',
@@ -9547,6 +9556,11 @@ Ker je bilo le malo rezultatov, so prikazane strani s približnim ujemanjem.',
 	'smw_result_next' => 'Naprej',
 	'smw_result_results' => 'Rezultati',
 	'smw_result_noresults' => 'Ni zadetkov.',
+	'smw_smwadmin_datarefreshbutton' => 'Začni posodabljati podatke',
+	'smw_smwadmin_datarefreshstop' => 'Ustavi to posodobitev',
+	'smw_smwadmin_datarefreshstopconfirm' => 'Da, prepričan sem.',
+	'smw_adminlinks_datastructure' => 'Zgradba podatkov',
+	'smw_adminlinks_displayingdata' => 'Prikaz podatkov',
 );
 
 /** Serbian Cyrillic ekavian (‪Српски (ћирилица)‬)
