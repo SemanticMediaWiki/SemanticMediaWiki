@@ -206,24 +206,7 @@ class SMWRecordValue extends SMWDataValue {
 	 * @return array of SMWDataItem
 	 */
 	public function getDataItems() {
-		$dataItems = array();
-		
-		if ( $this->isValid() ) {
-			$semanticData = $this->m_dataitem->getSemanticData();
-			
-			foreach ( $semanticData->getProperties() as $prop ) {
-				$propname = $prop->getPropertyID();
-				$propnum = substr( $propname, 1 );
-				
-				if ( ( $propname != false ) && ( is_numeric( $propnum ) ) ) {
-					// Combining this with next line violates PHP strict standards.
-					$propertyvalues = $semanticData->getPropertyValues( $prop ); 
-					$result[( $propnum - 1 )] = reset( $propertyvalues );
-				}
-			}			
-		}
-		
-		return $dataItems;		
+		return $this->isValid() ? $this->m_dataitem->getDataItems() : array();
 	}
 
 	/**

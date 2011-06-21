@@ -158,5 +158,25 @@ class SMWDIContainer extends SMWDataItem {
 		}
 		return new SMWDIContainer( $data );
 	}
+	
+	/**
+	 * Create a list (array with numeric keys) containing the dataitem
+	 * objects that this dataitem container object holds. Values that are not
+	 * present are set to null. Note that the first index in the array is
+	 * 0, not 1.
+	 *
+	 * @since 1.6
+	 * 
+	 * @return array of SMWDataItem
+	 */
+	public function getDataItems() {
+		$dataItems = array();
+		
+		foreach ( $this->m_semanticData->getProperties() as /* SMWDIProperty */ $prop ) {
+			$dataItems = array_merge( $dataItems, $this->m_semanticData->getPropertyValues( $prop ) );
+		}			
+		
+		return $dataItems;		
+	}
 
 }
