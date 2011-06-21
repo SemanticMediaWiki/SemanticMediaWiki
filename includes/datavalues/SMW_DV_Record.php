@@ -187,27 +187,43 @@ class SMWRecordValue extends SMWDataValue {
 ////// Additional API for value lists
 
 	/**
+	 * @deprecated as of 1.0, use getDataItems instead
+	 * 
+	 * @return array of SMWDataItem
+	 */
+	public function getDVs() {
+		return $this->getDataItems();
+	}
+	
+	/**
 	 * Create a list (array with numeric keys) containing the datavalue
 	 * objects that this SMWRecordValue object holds. Values that are not
 	 * present are set to null. Note that the first index in the array is
 	 * 0, not 1.
 	 *
-	 * @todo This method should be renamed to getDataItems().
+	 * @since 1.6
+	 * 
 	 * @return array of SMWDataItem
 	 */
-	public function getDVs() {
-		if ( !$this->isValid() ) return array();
-		$result = array();
-		$semanticData = $this->m_dataitem->getSemanticData();
-		foreach ( $semanticData->getProperties() as $prop ) {
-			$propname = $prop->getPropertyID();
-			$propnum = substr( $propname, 1 );
-			if ( ( $propname != false ) && ( is_numeric( $propnum ) ) ) {
-				$propertyvalues = $semanticData->getPropertyValues( $prop ); // combining this with next line violates PHP strict standards 
-				$result[( $propnum - 1 )] = reset( $propertyvalues );
-			}
+	public function getDataItems() {
+		$dataItems = array();
+		
+		if ( $this->isValid() ) {
+			$semanticData = $this->m_dataitem->getSemanticData();
+			
+			foreach ( $semanticData->getProperties() as $prop ) {
+				$propname = $prop->getPropertyID();
+				$propnum = substr( $propname, 1 );
+				
+				if ( ( $propname != false ) && ( is_numeric( $propnum ) ) ) {
+					// Combining this with next line violates PHP strict standards.
+					$propertyvalues = $semanticData->getPropertyValues( $prop ); 
+					$result[( $propnum - 1 )] = reset( $propertyvalues );
+				}
+			}			
 		}
-		return $result;
+		
+		return $dataItems;		
 	}
 
 	/**
