@@ -336,7 +336,10 @@ abstract class SMWDataValue {
 	 * in spite of it being of the right basic type. False is only returned
 	 * if the data item is fundamentally incompatible with the data value.
 	 *
+	 * @since 1.6
+	 *
 	 * @param $dataitem SMWDataItem
+	 * 
 	 * @return boolean
 	 */
 	abstract protected function loadDataItem( SMWDataItem $dataItem );
@@ -410,6 +413,8 @@ abstract class SMWDataValue {
 	 * even if errors occurred, to avoid additional checks for not
 	 * accessing null. Hence, one must not assume that a non-null return
 	 * value here implies that isValid() returns true.
+	 * 
+	 * @since 1.6
 	 * 
 	 * @return SMWDataItem
 	 */
@@ -508,6 +513,11 @@ abstract class SMWDataValue {
 	/**
 	 * Return text serialisation of info links. Ensures more uniform layout
 	 * throughout wiki (Factbox, Property pages, ...).
+	 * 
+	 * @param integer $outputformat Element of the SMW_OUTPUT_ enum
+	 * @param $linker
+	 * 
+	 * @return string
 	 */
 	public function getInfolinkText( $outputformat, $linker = null ) {
 		$result = '';
@@ -640,6 +650,8 @@ abstract class SMWDataValue {
 	/**
 	 * Return TRUE if a value was defined and understood by the given type,
 	 * and false if parsing errors occured or no value was given.
+	 * 
+	 * @return boolean
 	 */
 	public function isValid() {
 		$this->unstub();
@@ -649,6 +661,8 @@ abstract class SMWDataValue {
 	/**
 	 * Return a string that displays all error messages as a tooltip, or
 	 * an empty string if no errors happened.
+	 * 
+	 * @return string
 	 */
 	public function getErrorText() {
 		return smwfEncodeMessages( $this->mErrors );
@@ -657,6 +671,8 @@ abstract class SMWDataValue {
 	/**
 	 * Return an array of error messages, or an empty array
 	 * if no errors occurred.
+	 * 
+	 * @return array
 	 */
 	public function getErrors() {
 		return $this->mErrors;
@@ -667,6 +683,8 @@ abstract class SMWDataValue {
 	 * way. This representation is used by exporters, e.g. to be further decomposed into
 	 * RDF triples or to generate OWL/XML serialisations.
 	 * If the value is empty or invalid, NULL is returned.
+	 * 
+	 * @return SMWExpData or null
 	 */
 	public function getExportData() { // default implementation: encode values as untyped string
 		if ( $this->isValid() ) {

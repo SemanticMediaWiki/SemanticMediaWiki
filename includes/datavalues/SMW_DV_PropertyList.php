@@ -64,15 +64,17 @@ class SMWPropertyListValue extends SMWDataValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
+	 * 
 	 * @param $dataitem SMWDataItem
+	 * 
 	 * @return boolean
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_STRING ) {
 			$this->m_dataitem = $dataItem;
 			$this->m_diProperties = array();
-			$propertyKeys = explode( ';', $dataItem->getString() );
-			foreach ( $propertyKeys as $propertyKey ) {
+			
+			foreach ( explode( ';', $dataItem->getString() ) as $propertyKey ) {
 				try {
 					$this->m_diProperties[] = new SMWDIProperty( $propertyKey );
 				} catch ( SMWDataItemException $e ) {
@@ -81,7 +83,9 @@ class SMWPropertyListValue extends SMWDataValue {
 					$this->addError( wfMsgForContent( 'smw_parseerror' ) );
 				}
 			}
+			
 			$this->m_caption = false;
+			
 			return true;
 		} else {
 			return false;

@@ -257,24 +257,25 @@ class SMWRecordValue extends SMWDataValue {
 	 * @return array of SMWDIProperty
 	 */
 	public static function findPropertyDataItems( $diProperty ) {
-		if ( $diProperty !== null ) {
+		if ( !is_null( $diProperty ) ) {
 			$propertyDiWikiPage = $diProperty->getDiWikiPage();
-		}
-
-		if ( ( $diProperty === null ) || ( $propertyDiWikiPage === null ) ) {
-			return array(); // no property known -> no types
-		} else {
-			$listDiProperty = new SMWDIProperty( '_LIST' );
-			$dataitems = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, $listDiProperty );
 			
-			if ( count( $dataitems ) == 1 ) {
-				$propertyListValue = new SMWPropertyListValue( '__pls' );
-				$propertyListValue->setDataItem( reset( $dataitems ) );
-				return $propertyListValue->isvalid() ? $propertyListValue->getPropertyDataItems() : array();
-			} else {
-				return array();
+			if ( !is_null( $propertyDiWikiPage ) ) {
+				$listDiProperty = new SMWDIProperty( '_LIST' );
+				$dataItems = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, $listDiProperty );
+
+				if ( count( $dataItems ) == 1 ) {
+					$propertyListValue = new SMWPropertyListValue( '__pls' );
+					$propertyListValue->setDataItem( $dataItems[0] );
+					
+					if ( $propertyListValue->isvalid() ) {
+						return $propertyListValue->getPropertyDataItems();
+					}
+				}
 			}
 		}
+		
+		return array();
 	}
 
 ////// Internal helper functions
