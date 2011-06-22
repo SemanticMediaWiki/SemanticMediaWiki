@@ -27,6 +27,7 @@ class SMWRecordValue extends SMWDataValue {
 		if ( $value == '' ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsg( 'smw_novalues' ) );
+			
 			if ( $queryMode ) {
 				return new SMWThingDescription();
 			} else {
@@ -44,8 +45,11 @@ class SMWRecordValue extends SMWDataValue {
 		$valueIndex = 0; // index in value array
 		$propertyIndex = 0; // index in property list
 		$empty = true;
+		
 		foreach ( $this->getPropertyDataItems() as $diProperty ) {
-			if ( !array_key_exists( $valueIndex, $values ) ) break; // stop if there are no values left
+			if ( !array_key_exists( $valueIndex, $values ) ) {
+				break; // stop if there are no values left
+			}
 
 			if ( $queryMode ) { // special handling for supporting query parsing
 				$comparator = SMW_CMP_EQ;
@@ -57,12 +61,14 @@ class SMWRecordValue extends SMWDataValue {
 				$valueIndex++;
 			} else {
 				$dataValue = SMWDataValueFactory::newPropertyObjectValue( $diProperty, $values[$valueIndex] );
+				
 				if ( $dataValue->isValid() ) { // valid DV: keep
 					if ( $queryMode ) {
 						$subdescriptions[] = new SMWSomeProperty( $diProperty, new SMWValueDescription( $dataValue->getDataItem(), $comparator ) );
 					} else {
 						$semanticData->addPropertyObjectValue( $diProperty, $dataValue->getDataItem() );
 					}
+					
 					$valueIndex++;
 					$empty = false;
 				} elseif ( ( count( $values ) - $valueIndex ) == ( count( $this->m_diProperties ) - $propertyIndex ) ) {
@@ -70,6 +76,7 @@ class SMWRecordValue extends SMWDataValue {
 					if ( !$queryMode ) {
 						$semanticData->addPropertyObjectValue( $diProperty, $dataValue->getDataItem() );
 					}
+					
 					$this->addError( $dataValue->getErrors() );
 					$valueIndex++;
 				}
@@ -160,34 +167,43 @@ class SMWRecordValue extends SMWDataValue {
 	 * and minimize the below special code.
 	 */
 	public function getExportData() {
-		if ( !$this->isValid() ) return null;
+		if ( !$this->isValid() ) {
+			return null;
+		}
 
 		$result = new SMWExpData( new SMWExpResource( '', $this ) ); // bnode
 		$ed = new SMWExpData( SMWExporter::getSpecialNsResource( 'swivt', 'Container' ) );
 		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ), $ed );
 		$count = 0;
+		
+		// FIXME: obtain DVs or build them from DIs
 		foreach ( $this->getDVs() as $dataValue ) {
 			$count++;
+			
 			if ( ( $dataValue === null ) || ( !$dataValue->isValid() ) ) {
 				continue;
 			}
-			if ( ( $dataValue->getTypeID() == '_wpg' ) || ( $dataValue->getTypeID() == '_uri' ) || ( $dataValue->getTypeID() == '_ema' ) ) {
+			
+			if ( in_array( $dataValue->getTypeID(), array( '_wpg', '_uri', '_ema' ) ) ) {
 				$result->addPropertyObjectValue(
-				      SMWExporter::getSpecialNsResource( 'swivt', 'object' . $count ),
-				      $dataValue->getExportData() );
+					SMWExporter::getSpecialNsResource( 'swivt', 'object' . $count ),
+					$dataValue->getExportData()
+				);
 			} else {
 				$result->addPropertyObjectValue(
-				      SMWExporter::getSpecialNsResource( 'swivt', 'value' . $count ),
-				      $dataValue->getExportData() );
+					SMWExporter::getSpecialNsResource( 'swivt', 'value' . $count ),
+					$dataValue->getExportData()
+				);
 			}
 		}
+		
 		return $result;
 	}
 
 ////// Additional API for value lists
 
 	/**
-	 * @deprecated as of 1.0, use getDataItems instead
+	 * @deprecated as of 1.6, use getDataItems instead
 	 * 
 	 * @return array of SMWDataItem
 	 */
@@ -213,7 +229,10 @@ class SMWRecordValue extends SMWDataValue {
 	 * Return the array (list) of properties that the individual entries of
 	 * this datatype consist of.
 	 * 
+	 * @since 1.6
+	 * 
 	 * @todo I18N for error message.
+	 * 
 	 * @return array of SMWDIProperty
 	 */
 	public function getPropertyDataItems() {
@@ -231,7 +250,10 @@ class SMWRecordValue extends SMWDataValue {
 	 * Return the array (list) of properties that the individual entries of
 	 * this datatype consist of.
 	 *
+	 * @since 1.6
+	 *
 	 * @param $diProperty mixed null or SMWDIProperty object for which to retrieve the types
+	 * 
 	 * @return array of SMWDIProperty
 	 */
 	public static function findPropertyDataItems( $diProperty ) {
@@ -244,6 +266,7 @@ class SMWRecordValue extends SMWDataValue {
 		} else {
 			$listDiProperty = new SMWDIProperty( '_LIST' );
 			$dataitems = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, $listDiProperty );
+			
 			if ( count( $dataitems ) == 1 ) {
 				$propertyListValue = new SMWPropertyListValue( '__pls' );
 				$propertyListValue->setDataItem( reset( $dataitems ) );
