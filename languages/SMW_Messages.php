@@ -6399,7 +6399,6 @@ $messages['lb'] = array(
 	'smw_paramdesc_rsstitle' => 'Den Text deen als Iwwerschrëft vun der Rubrik benotzt gëtt',
 	'smw_paramdesc_rssdescription' => 'Den Text deen als Beschreiwung vum Feed benotzt gëtt',
 	'smw_iq_moreresults' => '… weider Resultater',
-	'smw_unknown_importns' => 'Importfonctioune si fir den Nummraum "$1" net disponibel.',
 	'smw_nonright_importtype' => '$1 kann nëmme fir Säiten am Nummraum "$2" benotzt ginn.',
 	'smw_wrong_importtype' => '$1 kann net fir Säiten am Nummraum "$2" benotzt ginn.',
 	'smw_no_importelement' => 'D\'Element "$1" kann net importéiert ginn.',
@@ -6442,7 +6441,7 @@ Et gët en RDF ugeluecht dee liicht duerchsicht ka ginn.',
 	'types' => 'Typen',
 	'smw_typeunits' => 'Moosseenheete vum Typ "$1": $2',
 	'semanticstatistics' => 'Semantesch Statistiken',
-	'ask' => 'Semantesch Sich',
+	'ask' => 'Semantesch sichen',
 	'smw_ask_sortby' => 'No der Colonne sortéieren (optional)',
 	'smw_ask_ascorder' => 'Vu kleng op grouss (croissant)',
 	'smw_ask_descorder' => 'vu grouss op kleng (décroissant)',
@@ -7026,6 +7025,7 @@ $messages['nah'] = array(
  * @author Kghbln
  * @author SPQRobin
  * @author Siebrand
+ * @author Tjcool007
  */
 $messages['nl'] = array(
 	'smw-desc' => "Maakt uw wiki toegankelijker - voor machines ''en'' mensen ([http://semantic-mediawiki.org/wiki/Help:User_manual online documentatie])",
@@ -7182,8 +7182,13 @@ Eigenschappen waar nog geen pagina voor is zijn te vinden op de [[Special:Wanted
 	'smw_ask_show_embed' => 'Ingesloten code weergeven',
 	'smw_ask_hide_embed' => 'Ingesloten code verbergen',
 	'smw_ask_embed_instr' => 'Gebruik de onderstaande code om deze zoekopdracht op te nemen in een wikipagina.',
+	'querycreator' => 'Query Maker',
 	'smw_show_addnal_opts' => 'Extra opties weergeven',
 	'smw_hide_addnal_opts' => 'Extra opties verbergen',
+	'smw_qc_query_help' => 'Maak een Query met het onderstaande formulier, gebaseerd op:
+Categorieën (<strong>[[{{ns:category}}:Acteur]]</strong>),
+Eigenschappen (<strong>[[Gelegen in::Duitsland]]</strong>),
+Namen (<strong>[[Duitsland]]</strong>) en Naamruimtes (<strong>[[{{ns:help}}:+]]</strong>)',
 	'searchbyproperty' => 'Zoek op eigenschap',
 	'smw_sbv_docu' => "Zoek naar alle pagina's die een bepaalde eigenschap en waarde hebben.",
 	'smw_sbv_novalue' => 'Voer een geldige waarde in voor de eigenschap, of bekijk alle waarden voor eigenschap “$1.”',
