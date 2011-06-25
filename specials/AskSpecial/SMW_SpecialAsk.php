@@ -179,8 +179,8 @@ class SMWAskPage extends SpecialPage {
 
 	/**
 	 * Creates and adds the JavaScript and JS needed for autocompletion to $wgOut.
-	 *
-	 * @bug This method asks the store for all used and unused property names, which can be very expensive. It does not even use a limit to restrict the number of results. Cheaper ways to get the labels need to be sought. What sense does it make to add unused properties to the options on autocomplete for a query interface?
+	 * Uses the MW API to get suggestions for properties.
+	 * @TODO Test for non-english wikis, add caching on client to improve performance
 	 * @since 1.5.2
 	 */
 	protected static function addAutocompletionJavascriptAndCSS() {
@@ -213,32 +213,7 @@ class SMWAskPage extends SpecialPage {
 		foreach ( $scripts as $js ) {
 			$wgOut->addScriptFile( $js );
 		}
-
-		/* collect property names for autocomplete */
-		$propertyNames[] = array();
-		$results = smwfGetStore()->getPropertiesSpecial();
-
-		foreach ( $results as $result ) {
-			$propertyNames[] = $result[0]->getLabel();
-		}
-
-		$results = smwfGetStore()->getUnusedPropertiesSpecial();
-
-		foreach ( $results as $result ) {
-			$propertyNames[] = $result->getLabel();
-		}
-
-		sort( $propertyNames );
-
-		$properties_po = "[";
-		foreach ( $propertyNames as $i => $property ) {
-			if ( $i > 0 ) {
-				$properties_po .= ", ";
-			}
-			$properties_po .= "'?" . $property . "'";
-		}
-		$properties_po .= "]";
-
+		
 		$javascript_autocomplete_text = <<<END
 <script type="text/javascript">
 function split(val) {
@@ -284,10 +259,15 @@ jQuery.extend( jQuery.ui.autocomplete, {
 
 jQuery(document).ready(function(){
 	jQuery("#add_property").autocomplete({
-		minLength: 1,
+		minLength: 2,
 		source: function(request, response) {
-			// delegate back to autocomplete, but extract the last term
-			response(jQuery.ui.autocomplete.filter({$properties_po}, escapeQuestion(extractLast(request.term))));
+			request.term=request.term.substr(request.term.lastIndexOf("\\n")+1);
+			
+			jQuery.getJSON(wgScriptPath+'/api.php?action=opensearch&limit=10&namespace=102&form&search='+request.term, function(data){
+				//remove the word 'Property:' from returned data and add prefix '?'
+				for(i=0;i<data[1].length;i++) data[1][i]="?"+data[1][i].substr(9); // 9 because "Property:".length==9
+				response(jQuery.ui.autocomplete.filter(data[1], escapeQuestion(extractLast(request.term))));
+			});
 		},
 		focus: function() {
 			// prevent value inserted on focus
