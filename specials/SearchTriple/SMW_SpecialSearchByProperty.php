@@ -399,14 +399,72 @@ class SMWSearchByProperty extends SpecialPage {
 	 * @return string  HTML for the query form
 	 */
 	private function queryForm() {
+		self::addAutoComplete();
 		$spectitle = SpecialPage::getTitleFor( 'SearchByProperty' );
 		$html  = '<form name="searchbyproperty" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
-		$html .= wfMsg( 'smw_sbv_property' ) . ' <input type="text" name="property" value="' . htmlspecialchars( $this->propertystring ) . '" />' . "&#160;&#160;&#160;\n";
+		$html .= wfMsg( 'smw_sbv_property' ) . ' <input type="text" id="property_box" name="property" value="' . htmlspecialchars( $this->propertystring ) . '" />' . "&#160;&#160;&#160;\n";
 		$html .= wfMsg( 'smw_sbv_value' ) . ' <input type="text" name="value" value="' . htmlspecialchars( $this->valuestring ) . '" />' . "\n";
 		$html .= '<input type="submit" value="' . wfMsg( 'smw_sbv_submit' ) . "\"/>\n</form>\n";
 
 		return $html;
+	}
+
+	/**
+	 * Creates the JS needed for adding auto-completion to queryForm(). Uses the
+	 * MW API to fetch suggestions.
+	 * 
+	 */
+	protected static function addAutoComplete() {
+		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
+
+		// Add CSS and JavaScript for jQuery and jQuery UI.
+		$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
+
+		$scripts = array();
+
+		if ( !$smwgJQueryIncluded ) {
+			$realFunction = array( 'OutputPage', 'includeJQuery' );
+			if ( is_callable( $realFunction ) ) {
+				$wgOut->includeJQuery();
+			} else {
+				$scripts[] = "$smwgScriptPath/libs/jquery-1.4.2.min.js";
+			}
+
+			$smwgJQueryIncluded = true;
+		}
+
+		if ( !$smwgJQueryUIIncluded ) {
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.core.min.js";
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.widget.min.js";
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.position.min.js";
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.autocomplete.min.js";
+			$smwgJQueryUIIncluded = true;
+		}
+
+		foreach ( $scripts as $js ) {
+			$wgOut->addScriptFile( $js );
+		}
+		
+		$javascript_autocomplete_text = <<<END
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("#property_box").autocomplete({
+		minLength: 2,
+		source: function(request, response) {			
+			jQuery.getJSON(wgScriptPath+'/api.php?action=opensearch&limit=10&namespace=102&form&search='+request.term, function(data){
+				//remove the word 'Property:' from returned data
+				for(i=0;i<data[1].length;i++) data[1][i]= data[1][i].substr(9); // 9 because "Property:".length==9
+				response(data[1]);
+			});
+		}
+	});
+});
+</script>
+
+END;
+
+		$wgOut->addScript( $javascript_autocomplete_text );
 	}
 
 }
