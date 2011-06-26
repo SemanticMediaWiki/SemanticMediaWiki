@@ -375,13 +375,68 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * @return A string containing the HTML for the form
 	 */
 	private function queryForm() {
+		self::addAutoComplete();
 		$title = SpecialPage::getTitleFor( 'Browse' );
 		return '  <form name="smwbrowse" action="' . $title->escapeLocalURL() . '" method="get">' . "\n" .
 		       '    <input type="hidden" name="title" value="' . $title->getPrefixedText() . '"/>' .
 		       wfMsg( 'smw_browse_article' ) . "<br />\n" .
-		       '    <input type="text" name="article" value="' . htmlspecialchars( $this->articletext ) . '" />' . "\n" .
+		       '    <input type="text" name="article" id="page_input_box" value="' . htmlspecialchars( $this->articletext ) . '" />' . "\n" .
 		       '    <input type="submit" value="' . wfMsg( 'smw_browse_go' ) . "\"/>\n" .
 		       "  </form>\n";
+	}
+
+	/**
+	 * Creates the JS needed for adding auto-completion to queryForm(). Uses the
+	 * MW API to fetch suggestions.
+	 */
+	private static function addAutoComplete(){
+		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
+
+		// Add CSS and JavaScript for jQuery and jQuery UI.
+		$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
+
+		$scripts = array();
+
+		if ( !$smwgJQueryIncluded ) {
+			$realFunction = array( 'OutputPage', 'includeJQuery' );
+			if ( is_callable( $realFunction ) ) {
+				$wgOut->includeJQuery();
+			} else {
+				$scripts[] = "$smwgScriptPath/libs/jquery-1.4.2.min.js";
+			}
+
+			$smwgJQueryIncluded = true;
+		}
+
+		if ( !$smwgJQueryUIIncluded ) {
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.core.min.js";
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.widget.min.js";
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.position.min.js";
+			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.autocomplete.min.js";
+			$smwgJQueryUIIncluded = true;
+		}
+
+		foreach ( $scripts as $js ) {
+			$wgOut->addScriptFile( $js );
+		}
+
+		$javascript_autocomplete_text = <<<END
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("#page_input_box").autocomplete({
+		minLength: 3,
+		source: function(request, response) {
+			jQuery.getJSON(wgScriptPath+'/api.php?action=opensearch&limit=10&namespace=0&form&search='+request.term, function(data){
+				response(data[1]);
+			});
+		}
+	});
+});
+</script>
+
+END;
+
+		$wgOut->addScript( $javascript_autocomplete_text );
 	}
 
 	/**
