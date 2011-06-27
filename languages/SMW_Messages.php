@@ -6984,7 +6984,9 @@ $messages['mr'] = array(
  * @author Anakmalaysia
  */
 $messages['ms'] = array(
+	'types' => 'Jenis',
 	'smw_ask_defaultformat' => 'tersedia',
+	'smw_sbv_value' => 'Nilai:',
 	'smw_browse_go' => 'Pergi',
 	'smw_result_prev' => 'Sebelumnya',
 	'smw_result_next' => 'Berikutnya',
