@@ -644,7 +644,11 @@ class SMWSQLStore2 extends SMWStore {
 									'SMW::getInProperties', $this->getSQLOptions( $suboptions, 'smw_sortkey' ) );
 
 				foreach ( $res as $row ) {
-					$result[] = new SMWDIProperty( $row->smw_title );
+					try {
+						$result[] = new SMWDIProperty( $row->smw_title );
+					} catch (SMWDataItemException $e) {
+						// has been observed to happen (empty property title); cause unclear; ignore this data
+					}
 				}
 			} else {
 				$from = $db->tableName( $proptable->name ) . " AS t1";
