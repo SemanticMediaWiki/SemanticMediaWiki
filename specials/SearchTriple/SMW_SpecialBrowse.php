@@ -426,7 +426,7 @@ jQuery(document).ready(function(){
 	jQuery("#page_input_box").autocomplete({
 		minLength: 3,
 		source: function(request, response) {
-			jQuery.getJSON(wgScriptPath+'/api.php?action=opensearch&limit=10&namespace=0&form&search='+request.term, function(data){
+			jQuery.getJSON(wgScriptPath+'/api.php?action=opensearch&limit=10&namespace=0&format=jsonfm&search='+request.term, function(data){
 				response(data[1]);
 			});
 		}

@@ -452,9 +452,9 @@ jQuery(document).ready(function(){
 	jQuery("#property_box").autocomplete({
 		minLength: 2,
 		source: function(request, response) {			
-			jQuery.getJSON(wgScriptPath+'/api.php?action=opensearch&limit=10&namespace=102&form&search='+request.term, function(data){
+			jQuery.getJSON(wgScriptPath+'/api.php?action=opensearch&limit=10&namespace='+wgNamespaceIds['property']+'&format=jsonfm&search='+request.term, function(data){
 				//remove the word 'Property:' from returned data
-				for(i=0;i<data[1].length;i++) data[1][i]= data[1][i].substr(9); // 9 because "Property:".length==9
+				for(i=0;i<data[1].length;i++) data[1][i]=data[1][i].substr(data[1][i].indexOf(':')+1);
 				response(data[1]);
 			});
 		}
