@@ -29,10 +29,6 @@ abstract class SMWQueryPage extends QueryPage {
 		/// TODO
 	}
 
-	function getName() {
-		return "SMWQueryPage";
-	}
-
 	function isExpensive() {
 		return false; // Disables caching for now
 	}
@@ -120,6 +116,6 @@ abstract class SMWQueryPage extends QueryPage {
             global $wgUser;
             return $wgUser->getSkin();
         }
-    }    
+    }
 
 }

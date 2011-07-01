@@ -51,6 +51,10 @@ class SMWPropertiesPage extends SMWQueryPage {
 		return '<p>' . wfMsg( 'smw_properties_docu' ) . "</p><br />\n";
 	}
 
+	function getName() {
+		return 'Properties';
+	}
+
 	function formatResult( $skin, $result ) {
 		$linker = smwfGetLinker();
 		

@@ -1,7 +1,8 @@
 <?php
 
 /**
- * This special page (Special:UnusedProperties) for MediaWiki shows all unused properties.
+ * This special page (Special:UnusedProperties) for MediaWiki shows all unused
+ * properties.
  *
  * @file SMW_SpecialUnusedProperties.php
  *
@@ -44,13 +45,10 @@ class SMWSpecialUnusedProperties extends SpecialPage {
  * @ingroup SpecialPage
  * 
  * @author Markus Krötzsch
- * 
- * TODO: A delete button that removes all non-used property pages would be quite usefull.
  */
 class SMWUnusedPropertiesPage extends SMWQueryPage {
 
 	function getName() {
-		// TODO: should probably use SMW prefix
 		return "UnusedProperties";
 	}
 

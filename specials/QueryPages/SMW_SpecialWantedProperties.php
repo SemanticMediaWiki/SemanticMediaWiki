@@ -49,7 +49,6 @@ class SMWSpecialWantedProperties extends SpecialPage {
 class SMWWantedPropertiesPage extends SMWQueryPage {
 
 	function getName() {
-		/// TODO: should probably use SMW prefix
 		return "WantedProperties";
 	}
 
