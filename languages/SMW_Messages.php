@@ -7184,13 +7184,13 @@ Eigenschappen waar nog geen pagina voor is zijn te vinden op de [[Special:Wanted
 	'smw_ask_show_embed' => 'Ingesloten code weergeven',
 	'smw_ask_hide_embed' => 'Ingesloten code verbergen',
 	'smw_ask_embed_instr' => 'Gebruik de onderstaande code om deze zoekopdracht op te nemen in een wikipagina.',
-	'querycreator' => 'Query Maker',
+	'querycreator' => 'Zoekopdrachtenmaker',
 	'smw_show_addnal_opts' => 'Extra opties weergeven',
 	'smw_hide_addnal_opts' => 'Extra opties verbergen',
-	'smw_qc_query_help' => 'Maak een Query met het onderstaande formulier, gebaseerd op:
+	'smw_qc_query_help' => 'Maak een zoekopdracht met het onderstaande formulier, gebaseerd op:
 Categorieën (<strong>[[{{ns:category}}:Acteur]]</strong>),
 Eigenschappen (<strong>[[Gelegen in::Duitsland]]</strong>),
-Namen (<strong>[[Duitsland]]</strong>) en Naamruimtes (<strong>[[{{ns:help}}:+]]</strong>)',
+Namen (<strong>[[Duitsland]]</strong>) en Naamruimten (<strong>[[{{ns:help}}:+]]</strong>)',
 	'searchbyproperty' => 'Zoek op eigenschap',
 	'smw_sbv_docu' => "Zoek naar alle pagina's die een bepaalde eigenschap en waarde hebben.",
 	'smw_sbv_novalue' => 'Voer een geldige waarde in voor de eigenschap, of bekijk alle waarden voor eigenschap “$1.”',
