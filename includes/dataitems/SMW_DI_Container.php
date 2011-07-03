@@ -164,6 +164,9 @@ class SMWDIContainer extends SMWDataItem {
 	 * objects that this dataitem container object holds. Values that are not
 	 * present are set to null. Note that the first index in the array is
 	 * 0, not 1.
+	 * 
+	 * @todo Should this not rather be a method of SMWSemanticData? Or even
+	 * of SMWRecordValue as the currently only class that takes such a view?
 	 *
 	 * @since 1.6
 	 * 
