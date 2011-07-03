@@ -13,14 +13,13 @@
  * Factory class for creating SMWDataValue objects for supplied types or
  * properties and data values.
  *
- * The class has two main entry points:
- * - newTypeObjectValue()
- * - newTypeIDValue()
+ * The class has the main entry point newTypeIDValue(), which creates a new
+ * datavalue object, possibly with preset user values, captions and
+ * property names. To create suitable datavalues for a given property, the
+ * method newPropertyObjectValue() can be used.
  *
- * These create new DV objects, possibly with preset user values, captions and
- * property names. Further methods are used to conveniently create DVs for
- * properties and special properties:
- * - newPropertyObjectValue()
+ * Other than this, the class manages registration data for datatypes, and
+ * provides various methods to access this information.
  *
  * @ingroup SMWDataValues
  */
@@ -75,27 +74,6 @@ class SMWDataValueFactory {
 		//SMWDataItem::TYPE_NOTYPE => '',
 		//SMWDataItem::TYPE_ERROR => '',
 	);
-
-	/**
-	 * Create an SMWDataValue object that can hold values for the type that the
-	 * given SMWTypesValue object specifies. If no $value is given, an empty
-	 * container is created, the value of which can be set later on.
-	 *
-	 * @param $typevalue SMWTypesValue Represents the type of the object
-	 * @param $value mixed user value string, or false if unknown
-	 * @param $caption mixed user-defined caption or false if none given
-	 * @param $property SMWDIProperty property object for which this value was made, or null
-	 */
-	static public function newTypeObjectValue( SMWTypesValue $typeValue, $value = false, $caption = false, $property = null ) {
-		if ( !$typeValue->isValid() ) { // just return the error, pass it through
-			$result = self::newTypeIDValue( '__err' );
-			$result->addError( $typeValue->getErrors() );
-
-			return $result;
-		}
-
-		return self::newTypeIDValue( $typeValue->getDBkey(), $value, $caption, $property );
-	}
 
 	/**
 	 * Create a value from a type id. If no $value is given, an empty container
@@ -369,6 +347,30 @@ class SMWDataValueFactory {
 	static public function getKnownTypeLabels() {
 		self::initDatatypes();
 		return self::$mTypeLabels;
+	}
+
+	/**
+	 * Create an SMWDataValue object that can hold values for the type that the
+	 * given SMWTypesValue object specifies. If no $value is given, an empty
+	 * container is created, the value of which can be set later on.
+	 *
+	 * @param $typevalue SMWTypesValue Represents the type of the object
+	 * @param $value mixed user value string, or false if unknown
+	 * @param $caption mixed user-defined caption or false if none given
+	 * @param $property SMWDIProperty property object for which this value was made, or null
+	 *
+	 * @deprecated Like all datavalues, SMWTypesValue objects should only be
+	 * used for parsing type inputs, or for producing formatted outputs.
+	 * Internal functions like datavalue creation should avoid them.
+	 * Use newTypeIdValue() instead. This function will vanish before SMW 1.7.
+	 */
+	static public function newTypeObjectValue( SMWTypesValue $typeValue, $value = false, $caption = false, $property = null ) {
+		if ( !$typeValue->isValid() ) { // just return the error, pass it through
+			$result = self::newTypeIDValue( '__err' );
+			$result->addError( $typeValue->getErrors() );
+			return $result;
+		}
+		return self::newTypeIDValue( $typeValue->getDBkey(), $value, $caption, $property );
 	}
 
 }
