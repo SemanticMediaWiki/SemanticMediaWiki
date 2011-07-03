@@ -165,7 +165,7 @@ class SMWDIProperty extends SMWDataItem {
 			$dbkey = str_replace( ' ', '_', $this->getLabel() );
 		}
 		try {
-			return new SMWDIWikiPage( $dbkey, SMW_NS_PROPERTY, '', '_wpp' );
+			return new SMWDIWikiPage( $dbkey, SMW_NS_PROPERTY, '' );
 		} catch ( SMWDataItemException $e ) {
 			return null;
 		}
