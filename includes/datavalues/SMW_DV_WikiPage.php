@@ -293,13 +293,22 @@ class SMWWikiPageValue extends SMWDataValue {
 		return str_replace( '_', ' ', $this->m_dataitem->getDBkey() );
 	}
 
-	/// Get the prefixed text for this value, including a localised namespace prefix.
+	/**
+	 * Get the prefixed text for this value, including a localised namespace
+	 * prefix.
+	 *
+	 * @return string
+	 */
 	public function getPrefixedText() {
 		global $wgContLang;
 		if ( $this->m_prefixedtext == '' ) {
-			$nstext = $wgContLang->getNSText( $this->m_dataitem->getNamespace() );
-			$this->m_prefixedtext = ( $this->m_dataitem->getInterwiki() != '' ? $this->m_dataitem->getInterwiki() . ':' : '' ) .
-						( $nstext != '' ? "$nstext:" : '' ) . $this->m_textform;
+			if ( $this->isValid() ) {
+				$nstext = $wgContLang->getNSText( $this->m_dataitem->getNamespace() );
+				$this->m_prefixedtext = ( $this->m_dataitem->getInterwiki() != '' ? $this->m_dataitem->getInterwiki() . ':' : '' ) .
+							( $nstext != '' ? "$nstext:" : '' ) . $this->m_textform;
+			} else {
+				$this->m_prefixedtext = 'NO_VALID_VALUE';
+			}
 		}
 		return $this->m_prefixedtext;
 	}

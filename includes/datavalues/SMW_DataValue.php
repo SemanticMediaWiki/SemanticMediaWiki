@@ -157,6 +157,9 @@ abstract class SMWDataValue {
 		} else {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$this->addError( wfMsgForContent( 'smw_parseerror' ) );
+			if ( $this->m_caption === false ) {
+				$this->m_caption = $value; // ensure that at least input can be shown
+			}
 		}
 
 		if ( $this->isValid() ) {
