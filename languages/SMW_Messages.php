@@ -2141,9 +2141,9 @@ Einige der vorhandenen Attribute könnten [[Special:UnusedProperties|verwaiste A
 	'smw_show_addnal_opts' => 'Zusätzliche Optionen anzeigen',
 	'smw_hide_addnal_opts' => 'Zusätzliche Optionen ausblenden',
 	'smw_qc_query_help' => 'Bitte eine Abfrage unter Verwendung des untenstehenden Formulars angeben, um Wikiseiten auf Basis von 
-Kategorien (<strong>z. B. [[{{ns:category}}:Schauspieler]]</strong>),
-Attributen (<strong>[[Liegt in::Deutschland]]</strong>),
-Seitenanmen (<strong>[[Deutschland]]</strong>) und
+Kategorien (<strong>z. B. [[:{{ns:category}}:Schauspieler]]</strong>),
+Attributen (<strong>[[:Liegt in::Deutschland]]</strong>),
+Seitenanmen (<strong>[[:Deutschland]]</strong>) und
 Namensräumen (<strong>[[{{ns:help}}:+]]</strong>) auszuwählen.',
 	'searchbyproperty' => 'Suche mittels Attribut',
 	'smw_sbv_docu' => 'Diese Spezialseite ermittelt alle Seiten, die einen bestimmten Wert für das angegebene Attribut haben.',
