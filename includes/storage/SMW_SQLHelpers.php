@@ -87,21 +87,21 @@ class SMWSQLHelpers {
 	 */
 	protected static function createTable( $tableName, array $fields, $db, $reportTo ) {
 		global $wgDBtype, $wgDBTableOptions, $wgDBname;
-		
+
 		$sql = 'CREATE TABLE ' . ( ( $wgDBtype == 'postgres' || $wgDBtype == 'sqlite' ) ? '' : "`$wgDBname`." ) . $tableName . ' (';
-		
+
 		$fieldSql = array();
-		
+
 		foreach ( $fields as $fieldName => $fieldType ) {
 			$fieldSql[] = "$fieldName  $fieldType";
 		}
-		
+
 		$sql .= implode( ',', $fieldSql ) . ') ';
-		
+
 		if ( $wgDBtype != 'postgres' && $wgDBtype != 'sqlite' ) {
 			$sql .= $wgDBTableOptions;
 		}
-		
+
 		$db->query( $sql, __METHOD__ );
 	}
 	
@@ -115,23 +115,22 @@ class SMWSQLHelpers {
 	 */
 	protected static function updateTable( $tableName, array $fields, $db, $reportTo ) {
 		global $wgDBtype;
-		
+
 		$currentFields = self::getFields( $tableName, $db, $reportTo );
 
 		$isPostgres = $wgDBtype == 'postgres';
 		
 		if ( !$isPostgres ) $position = 'FIRST';
-		
+
 		// Loop through all the field definitions, and handle each definition for either postgres or MySQL.
 		foreach ( $fields as $fieldName => $fieldType ) {
 			if ( $isPostgres ) {
 				self::updatePostgresField( $tableName, $fieldName, $fieldType, $currentFields, $db, $reportTo );
-			}
-			else {
+			} else {
 				self::updateMySqlField( $tableName, $fieldName, $fieldType, $currentFields, $db, $reportTo, $position );
 				$position = "AFTER $fieldName";
 			}
-			
+
 			$currentFields[$fieldName] = false;
 		}
 		
@@ -140,17 +139,16 @@ class SMWSQLHelpers {
 		foreach ( $currentFields as $fieldName => $value ) {
 			if ( $value !== false ) {
 				SMWSQLHelpers::reportProgress( "   ... deleting obsolete field $fieldName ... ", $reportTo );
-				
+
 				if ( $isPostgres ) {
 					$db->query( 'ALTER TABLE "' . $tableName . '" DROP COLUMN "' . $fieldName . '"', __METHOD__ );
-				}
-				else if ( $wgDBtype == 'sqlite' ) {
+				} else if ( $wgDBtype == 'sqlite' ) {
 					// DROP COLUMN not supported in Sqlite3
+					SMWSQLHelpers::reportProgress( "   ... deleting obsolete field $fieldName not possible in SQLLite ... you could delete and reinitialize the tables to remove obsolete data, or just keep it ... ", $reportTo );
+				} else {
+					$db->query( "ALTER TABLE $tableName DROP COLUMN `$fieldName`", __METHOD__ );
 				}
-				else {
-					$db->query( "ALTER TABLE $tableName DROP COLUMN `$fieldName`", __METHOD__ );					
-				}
-				
+
 				SMWSQLHelpers::reportProgress( "done.\n", $reportTo );
 			}
 		}		
@@ -225,26 +223,26 @@ EOT;
 				if ( substr( $type, 0, 8 ) == 'VARCHAR(' ) {
 					$type .= ' binary'; // just assume this to be the case for VARCHAR, though DESCRIBE will not tell us
 				}
-				
+
 				if ( $row->Null != 'YES' ) {
 					$type .= ' NOT NULL';
 				}
-				
+
 				if ( $row->Key == 'PRI' ) { /// FIXME: updating "KEY" is not possible, the below query will fail in this case.
 					$type .= ' KEY';
 				}
-				
+
 				if ( $row->Extra == 'auto_increment' ) {
 					$type .= ' AUTO_INCREMENT';
 				}
 			}
-			
+
 			$curfields[$row->Field] = $type;
 		}
 
 		return $curfields;
 	}
-	
+
 	/**
 	 * Update a single field given it's name and type and an array of current fields. Postgres version.
 	 * 
@@ -257,36 +255,36 @@ EOT;
 	 */
 	protected static function updatePostgresField( $tableName, $name, $type, array $currentFields, $db, $reportTo ) {
 		$keypos = strpos( $type, ' PRIMARY KEY' );
-		
+
 		if ( $keypos > 0 ) {
 			$type = substr( $type, 0, $keypos );
 		}
-		
+
 		if ( !array_key_exists( $name, $currentFields ) ) {
 			self::reportProgress( "   ... creating field $name ... ", $reportTo );
-			
+
 			$db->query( "ALTER TABLE $tableName ADD \"" . $name . "\" $type", __METHOD__ );
-			
+
 			self::reportProgress( "done.\n", $reportTo );
 		} elseif ( $currentFields[$name] != $type ) {
 			self::reportProgress( "   ... changing type of field $name from '$currentFields[$name]' to '$type' ... ", $reportTo );
+
 			$notnullposnew = strpos( $type, ' NOT NULL' );
-			
 			if ( $notnullposnew > 0 ) {
 				$type = substr( $type, 0, $notnullposnew );
 			}
-			
+
 			$notnullposold = strpos( $currentFields[$name], ' NOT NULL' );
 			$typeold = ( $notnullposold > 0 ) ? substr( $currentFields[$name], 0, $notnullposold ) : $currentFields[$name];
-			
+
 			if ( $typeold != $type ) {
 				$db->query( "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $name . "\" ENGINE " . $type, __METHOD__ );
 			}
-			
+
 			if ( $notnullposold != $notnullposnew ) {
 				$db->query( "ALTER TABLE " . $tableName . " ALTER COLUMN \"" . $name . "\" " . ( $notnullposnew > 0 ? 'SET' : 'DROP' ) . " NOT NULL", __METHOD__ );
 			}
-			
+
 			self::reportProgress( "done.\n", $reportTo );
 		} else {
 			self::reportProgress( "   ... field $name is fine.\n", $reportTo );
@@ -307,14 +305,14 @@ EOT;
 	protected static function updateMySqlField( $tableName, $name, $type, array $currentFields, $db, $reportTo, $position ) {
 		if ( !array_key_exists( $name, $currentFields ) ) {
 			self::reportProgress( "   ... creating field $name ... ", $reportTo );
-			
+
 			$db->query( "ALTER TABLE $tableName ADD `$name` $type $position", __METHOD__ );
 			$result[$name] = 'new';
-			
+
 			self::reportProgress( "done.\n", $reportTo );
 		} elseif ( $currentFields[$name] != $type ) {
 			self::reportProgress( "   ... changing type of field $name from '$currentFields[$name]' to '$type' ... ", $reportTo );
-			
+
 			$db->query( "ALTER TABLE $tableName CHANGE `$name` `$name` $type $position", __METHOD__ );
 			$result[$name] = 'up';
 			self::reportProgress( "done.\n", $reportTo );
@@ -334,7 +332,7 @@ EOT;
 	public static function setupIndex( $rawTableName, array $columns, $db ) {
 		// TODO: $verbose is not a good global name! 
 		global $wgDBtype, $verbose; 
-		
+
 		$tableName = $db->tableName( $rawTableName );
 
 		if ( $wgDBtype == 'postgres' ) { // postgresql
@@ -350,7 +348,7 @@ EOT;
 				. " AND c.relname = '" . $tableName . "'"
 				. " AND NOT pg_get_indexdef(i.oid) ~ '^CREATE UNIQUE INDEX'";
 			$res = $db->query( $sql, __METHOD__ );
-			
+
 			if ( !$res ) {
 				return false;
 			}
@@ -363,20 +361,19 @@ EOT;
 					$db->query( 'DROP INDEX IF EXISTS ' . $row->indexname, __METHOD__ );
 				}
 			}
-			
+
 			foreach ( $columns as $key => $index ) { // Ddd the remaining indexes.
 				if ( $index != false ) {
 					$type = 'INDEX';
-					
+
 					// If the index is an array, it'll contain the column name as first element, and index type as second one.
 					if ( is_array( $index ) ) {
 						$column = $index[0];
 						if ( count( $index ) > 1 ) $type = $index[1];
-					} 
-					else {
+					} else {
 						$column = $index;
 					}
-					
+
 					if ( $db->indexInfo( $rawTableName, "{$rawTableName}_index{$key}" ) === false ) {
 						$db->query( "CREATE $type {$rawTableName}_index{$key} ON $tableName USING btree(" . $column . ")", __METHOD__ );
 					}
@@ -384,60 +381,59 @@ EOT;
 			}
 		} elseif ( $wgDBtype == 'sqlite' ) { // SQLite
 			$res = $db->query( 'PRAGMA index_list(' . $tableName . ')' , __METHOD__ );
-			
+
 			if ( !$res ) {
 				return false;
 			}
-			
+
 			$indexes = array();
-			
+
 			foreach ( $db->fetchObject( $res ) as $row ) {
 				if ( !array_key_exists( $row->name, $indexes ) ) {
 					$indexes[$row->name] = array();
 				}
-				
+
 				$indexes[$row->name][$row->seq] = $row->name;
 			}
-			
+
 			foreach ( $indexes as $key => $index ) { // Clean up the existing indexes.
 				$db->query( 'DROP INDEX ' . $key, __METHOD__ );
 			}
-			
+
 			foreach ( $columns as $key => $index ) { // Add the remaining indexes.
 				if ( $index != false ) {
 					$type = 'INDEX';
-					
+
 					// If the index is an array, it'll contain the column name as first element, and index type as second one.
 					if ( is_array( $index ) ) {
 						$column = $index[0];
-						
+
 						if ( count( $index ) > 1 ) {
 							$type = $index[1];
 						}
-					}
-					else {
+					} else {
 						$column = $index;
 					}
-					
+
 					$db->query( "CREATE $type {$tableName}_index{$key} ON $tableName (" . $column . ")", __METHOD__ );
 				}
 			}
 		} else { // MySQL
 			$res = $db->query( 'SHOW INDEX FROM ' . $tableName , __METHOD__ );
-			
+
 			if ( !$res ) {
 				return false;
 			}
-			
+
 			$indexes = array();
-			
+
 			foreach ( $res as $row ) {
 				if ( !array_key_exists( $row->Key_name, $indexes ) ) {
 					$indexes[$row->Key_name] = array();
 				}
 				$indexes[$row->Key_name][$row->Seq_in_index] = $row->Column_name;
 			}
-			
+
 			foreach ( $indexes as $key => $index ) { // Clean up the existing indexes.
 				$id = array_search( implode( ',', $index ), $columns );
 				if ( $id !== false ) {
@@ -450,21 +446,20 @@ EOT;
 			foreach ( $columns as $key => $index ) { // Add the remaining indexes.
 				if ( $index != false ) {
 					$type = 'INDEX';
-					
+
 					// If the index is an array, it'll contain the column name as first element, and index type as second one.
 					if ( is_array( $index ) ) {
 						$column = $index[0];
 						if ( count( $index ) > 1 ) $type = $index[1];
-					} 
-					else {
+					} else {
 						$column = $index;
-					}	
-									
+					}
+
 					$db->query( "ALTER TABLE $tableName ADD $type ( $column )", __METHOD__ );
 				}
 			}
 		}
-		
+
 		return true;
 	}
 
