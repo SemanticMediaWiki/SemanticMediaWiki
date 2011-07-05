@@ -46,7 +46,7 @@ class SMWPrintRequest {
 		if ( ( ( $mode == self::PRINT_CATS || $mode == self::PRINT_THIS ) &&
 		         $data !== null ) ||
 		     ( $mode == self::PRINT_PROP &&
-		         !( $data instanceof SMWPropertyValue ) ) ||
+		         ( !( $data instanceof SMWPropertyValue ) || !$data->isvalid() ) ) ||
 		     ( $mode == self::PRINT_CCAT &&
 		         !( $data instanceof Title ) ) ) {
 			throw new InvalidArgumentException( 'Data provided for print request does not fit the type of printout.' );
