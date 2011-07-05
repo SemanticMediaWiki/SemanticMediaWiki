@@ -952,10 +952,19 @@ class SMWSQLStore2 extends SMWStore {
 			$this->updateRedirects( $oldtitle->getDBkey(), $oldtitle->getNamespace(), $newtitle->getDBkey(), $newtitle->getNamespace() );
 
 			// Associate internal objects (subobjects) with the new title:
-			$db->update( 'smw_ids', 
-				array( 'smw_title' => $newtitle->getDBkey(), 'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' ),
-				array( 'smw_title' => $oldtitle->getDBkey(), 'smw_namespace' => $oldtitle->getNamespace(), 'smw_iw' => '', 'smw_subobject!' => array( '' ) ), // array() needed for ! to work
-				__METHOD__ );
+			$table = $db->tableName( 'smw_ids' );
+			$values = array( 'smw_title' => $newtitle->getDBkey(), 'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' );
+			$sql = "UPDATE $table SET " . $db->makeList( $values, LIST_SET ) .
+				' WHERE smw_title = ' . $db->addQuotes( $oldtitle->getDBkey() ) . ' AND ' .
+				'smw_namespace = ' . $db->addQuotes( $oldtitle->getNamespace() ) . ' AND ' .
+				'smw_iw = ' . $db->addQuotes( '' ) . ' AND ' .
+				'smw_subobject != ' . $db->addQuotes( '' );
+			$db->query( $sql, __METHOD__ );
+// The below code can be used instead when moving to MW 1.17 (support for '!' in Database::makeList()):
+// 			$db->update( 'smw_ids', 
+// 				array( 'smw_title' => $newtitle->getDBkey(), 'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' ),
+// 				array( 'smw_title' => $oldtitle->getDBkey(), 'smw_namespace' => $oldtitle->getNamespace(), 'smw_iw' => '', 'smw_subobject!' => array( '' ) ), // array() needed for ! to work
+// 				__METHOD__ );
 		}
 		
 		wfProfileOut( "SMWSQLStore2::changeTitle (SMW)" );
@@ -2249,10 +2258,15 @@ class SMWSQLStore2 extends SMWStore {
 
 		// also find subobjects used by this ID ...
 		$res = $db->select( 'smw_ids', 'smw_id',
-			array( 'smw_title' => $subject->getDBkey(),
-				'smw_namespace' => $subject->getNamespace(),
-				'smw_iw' => $subject->getInterwiki(),
-				'smw_subobject!' => array( '' ) ), // ! (NOT) in MW only supported for array values!
+			'smw_title = ' . $db->addQuotes( $subject->getDBkey() ) . ' AND ' .
+			'smw_namespace = ' . $db->addQuotes( $subject->getNamespace() ) . ' AND ' .
+			'smw_iw = ' . $db->addQuotes( $subject->getInterwiki() ) . ' AND ' .
+			'smw_subobject != ' . $db->addQuotes( '' ),
+// The below code can be used instead when moving to MW 1.17 (support for '!' in Database::makeList()):
+// 			array( 'smw_title' => $subject->getDBkey(),
+// 				'smw_namespace' => $subject->getNamespace(),
+// 				'smw_iw' => $subject->getInterwiki(),
+// 				'smw_subobject!' => array( '' ) ), // ! (NOT) in MW only supported for array values!
 			__METHOD__ );
 		$subobjects = array();
 
