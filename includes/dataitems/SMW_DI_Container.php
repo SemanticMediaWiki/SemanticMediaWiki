@@ -59,6 +59,26 @@ class SMWContainerSemanticData extends SMWSemanticData {
 	}
 
 	/**
+	 * Change the object to become an exact copy of the given
+	 * SMWSemanticData object. Useful to convert arbitrary such
+	 * objects into SMWContainerSemanticData objects.
+	 *
+	 * @param $semanticData SMWSemanticData
+	 */
+	public function copyDataFrom( SMWSemanticData $semanticData ) {
+		$this->throwImmutableException();
+		$this->mSubject = $semanticData->getSubject();
+		$this->mProperties = $semanticData->getProperties();
+		$this->mPropVals = array();
+		foreach ( $this->mProperties as $property ) {
+			$this->mPropVals[$property->getKey()] = $semanticData->getPropertyValues( $property );
+		}
+		$this->mHasVisibleProps = $semanticData->hasVisibleProperties();
+		$this->mHasVisibleSpecs = $semanticData->hasVisibleSpecialProperties();
+		$this->mNoDuplicates = $semanticData->mNoDuplicates;
+	}
+
+	/**
 	 * Store a value for a property identified by its SMWDataItem object,
 	 * if the object was not set to immutable.
 	 *
@@ -143,6 +163,20 @@ class SMWDIContainer extends SMWDataItem {
 	 */
 	public function getHash() {
 		return $this->m_semanticData->getHash();
+	}
+
+	/**
+	 * Get an internal object that can be used as a subject for this data.
+	 * This subject is not part of the data itself but makes the connection
+	 * to the wiki page for which this data will be stored. This allows to
+	 * encode a kind of provenance information when storing container data,
+	 * useful to find the source of the data, and to retrieve more data when
+	 * a structural (helper) node is found in a query etc.
+	 *
+	 * @return SMWDIWikiPage
+	 */
+	public function getSubjectPage( SMWDIWikiPage $masterPage ) {
+		return new SMWDIWikiPage( $masterPage->getDBkey(), $masterPage->getNamespace(), $masterPage->getInterwiki(), $this->getHash() );
 	}
 
 	/**
