@@ -1494,7 +1494,7 @@ class SMWSQLStore2 extends SMWStore {
 						$db->delete( $proptable->name, array( 's_id' => $row->smw_id ), __METHOD__ );
 					}
 				}
-				$db->delete( 'smw_ids',	array( 'smw_id' => $sow->smw_id ), __METHOD__ );
+				$db->delete( 'smw_ids',	array( 'smw_id' => $row->smw_id ), __METHOD__ );
 			} else { // "normal" interwiki pages or outdated internal objects
 				$diWikiPage = new SMWDIWikiPage( $row->smw_title, $row->smw_namespace, $row->smw_iw );
 				$this->deleteSemanticData( $diWikiPage );
