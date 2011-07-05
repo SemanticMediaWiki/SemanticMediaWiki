@@ -176,7 +176,7 @@ class SMWDIContainer extends SMWDataItem {
 	 * @return SMWDIWikiPage
 	 */
 	public function getSubjectPage( SMWDIWikiPage $masterPage ) {
-		return new SMWDIWikiPage( $masterPage->getDBkey(), $masterPage->getNamespace(), $masterPage->getInterwiki(), $this->getHash() );
+		return new SMWDIWikiPage( $masterPage->getDBkey(), $masterPage->getNamespace(), $masterPage->getInterwiki(), '_' . $this->getHash() );
 	}
 
 	/**

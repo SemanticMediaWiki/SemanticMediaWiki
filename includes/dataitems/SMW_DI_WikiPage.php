@@ -29,6 +29,12 @@ class SMWDIWikiPage extends SMWDataItem {
 	 * @var string
 	 */
 	protected $m_interwiki;
+	/**
+	 * Id for subobjects of pages, or empty string if the given object is
+	 * the page itself (not a subobject).
+	 * @var string
+	 */
+	protected $m_subobjectid;
 
 	/**
 	 * Contructor. We do not bother with too much detailed validation here,
@@ -38,13 +44,14 @@ class SMWDIWikiPage extends SMWDataItem {
 	 * would be more work than it is worth, since callers will usually be
 	 * careful and since errors here do not have major consequences.
 	 */
-	public function __construct( $dbkey, $namespace, $interwiki ) {
+	public function __construct( $dbkey, $namespace, $interwiki, $subobjectid = '' ) {
 		if ( !is_numeric( $namespace ) ) {
 			throw new SMWDataItemException( "Given namespace '$namespace' is not an integer." );
 		}
 		$this->m_dbkey = $dbkey;
 		$this->m_namespace = (int)$namespace; // really make this an integer
 		$this->m_interwiki = $interwiki;
+		$this->m_subobjectid = $subobjectid;
 	}
 
 	public function getDIType() {
@@ -61,6 +68,10 @@ class SMWDIWikiPage extends SMWDataItem {
 
 	public function getInterwiki() {
 		return $this->m_interwiki;
+	}
+
+	public function getSubobjectId() {
+		return $this->m_subobjectid;
 	}
 
 	/**
@@ -93,7 +104,11 @@ class SMWDIWikiPage extends SMWDataItem {
 	}
 
 	public function getSerialization() {
-		return strval( $this->m_dbkey . '#' . strval( $this->m_namespace ) . '#' . $this->m_interwiki );
+		if ( $this->m_subobjectid == '' ) {
+			return strval( $this->m_dbkey . '#' . strval( $this->m_namespace ) . '#' . $this->m_interwiki );
+		} else {
+			return strval( $this->m_dbkey . '#' . strval( $this->m_namespace ) . '#' . $this->m_interwiki . '#' . $this->m_subobjectid );
+		}
 	}
 
 	/**
@@ -102,11 +117,14 @@ class SMWDIWikiPage extends SMWDataItem {
 	 * @return SMWDIWikiPage
 	 */
 	public static function doUnserialize( $serialization ) {
-		$parts = explode( '#', $serialization, 3 );
-		if ( count( $parts ) != 3 ) {
+		$parts = explode( '#', $serialization, 4 );
+		if ( count( $parts ) == 3 ) {
+			return new SMWDIWikiPage( $parts[0], floatval( $parts[1] ), $parts[2] );
+		} elseif ( count( $parts ) == 4 ) {
+			return new SMWDIWikiPage( $parts[0], floatval( $parts[1] ), $parts[2], $parts[3] );
+		} else {
 			throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" was not understood." );
-		}
-		return new SMWDIWikiPage( $parts[0], floatval( $parts[1] ), $parts[2] );
+		} 
 	}
 
 	/**
