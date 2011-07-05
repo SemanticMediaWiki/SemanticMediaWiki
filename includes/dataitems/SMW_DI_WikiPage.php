@@ -30,11 +30,11 @@ class SMWDIWikiPage extends SMWDataItem {
 	 */
 	protected $m_interwiki;
 	/**
-	 * Id for subobjects of pages, or empty string if the given object is
+	 * Name for subobjects of pages, or empty string if the given object is
 	 * the page itself (not a subobject).
 	 * @var string
 	 */
-	protected $m_subobjectid;
+	protected $m_subobjectname;
 
 	/**
 	 * Contructor. We do not bother with too much detailed validation here,
@@ -44,14 +44,14 @@ class SMWDIWikiPage extends SMWDataItem {
 	 * would be more work than it is worth, since callers will usually be
 	 * careful and since errors here do not have major consequences.
 	 */
-	public function __construct( $dbkey, $namespace, $interwiki, $subobjectid = '' ) {
+	public function __construct( $dbkey, $namespace, $interwiki, $subobjectname = '' ) {
 		if ( !is_numeric( $namespace ) ) {
 			throw new SMWDataItemException( "Given namespace '$namespace' is not an integer." );
 		}
 		$this->m_dbkey = $dbkey;
 		$this->m_namespace = (int)$namespace; // really make this an integer
 		$this->m_interwiki = $interwiki;
-		$this->m_subobjectid = $subobjectid;
+		$this->m_subobjectname = $subobjectname;
 	}
 
 	public function getDIType() {
@@ -70,8 +70,8 @@ class SMWDIWikiPage extends SMWDataItem {
 		return $this->m_interwiki;
 	}
 
-	public function getSubobjectId() {
-		return $this->m_subobjectid;
+	public function getSubobjectName() {
+		return $this->m_subobjectname;
 	}
 
 	/**
@@ -104,10 +104,10 @@ class SMWDIWikiPage extends SMWDataItem {
 	}
 
 	public function getSerialization() {
-		if ( $this->m_subobjectid == '' ) {
+		if ( $this->m_subobjectname == '' ) {
 			return strval( $this->m_dbkey . '#' . strval( $this->m_namespace ) . '#' . $this->m_interwiki );
 		} else {
-			return strval( $this->m_dbkey . '#' . strval( $this->m_namespace ) . '#' . $this->m_interwiki . '#' . $this->m_subobjectid );
+			return strval( $this->m_dbkey . '#' . strval( $this->m_namespace ) . '#' . $this->m_interwiki . '#' . $this->m_subobjectname );
 		}
 	}
 

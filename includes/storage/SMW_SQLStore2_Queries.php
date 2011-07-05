@@ -477,7 +477,7 @@ class SMWSQLStore2QueryEngine {
 			if ( $description->getDataItem() instanceof SMWDIWikiPage ) {
 				if ( $description->getComparator() == SMW_CMP_EQ ) {
 					$query->type = SMW_SQL2_VALUE;
-					$oid = $this->m_store->getSMWPageID( $description->getDataItem()->getDBkey(), $description->getDataItem()->getNamespace(), $description->getDataItem()->getInterwiki(), $description->getDataItem()->getSubobjectId() );
+					$oid = $this->m_store->getSMWPageID( $description->getDataItem()->getDBkey(), $description->getDataItem()->getNamespace(), $description->getDataItem()->getInterwiki(), $description->getDataItem()->getSubobjectName() );
 					$query->joinfield = array( $oid );
 				} else { // Join with smw_ids needed for other comparators (apply to title string).
 					$query->jointable = 'smw_ids';
@@ -778,7 +778,7 @@ class SMWSQLStore2QueryEngine {
 					if ( $i >= count( $keys ) ) break;
 
 					if ( $ftype == 'p' ) { // Special case: page id, resolve this in advance
-						$oid = $this->getSMWPageID( $dataItem->getDBkey(), $dataItem->getNamespace(), $dataItem->getInterwiki(), $dataItem->getSubobjectId() );
+						$oid = $this->getSMWPageID( $dataItem->getDBkey(), $dataItem->getNamespace(), $dataItem->getInterwiki(), $dataItem->getSubobjectName() );
 						$where .= ( $where ? ' AND ' : '' ) . "{$query->alias}.$fname=" . $this->m_dbs->addQuotes( $oid );
 						break;
 					} elseif ( $ftype != 'l' ) { // plain value, but not a text blob

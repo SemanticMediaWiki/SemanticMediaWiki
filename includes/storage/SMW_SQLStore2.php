@@ -119,7 +119,7 @@ class SMWSQLStore2 extends SMWStore {
 
 		// *** Find out if this subject exists ***//
 		$sortkey = '';
-		$sid = $this->getSMWPageIDandSort( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectId(), $sortkey, true );
+		$sid = $this->getSMWPageIDandSort( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), $sortkey, true );
 		if ( $sid == 0 ) { // no data, safe our time
 			/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
 			self::$in_getSemanticData--;
@@ -130,7 +130,7 @@ class SMWSQLStore2 extends SMWStore {
 		// *** Prepare the cache ***//
 		if ( !array_key_exists( $sid, $this->m_semdata ) ) { // new cache entry
 			$this->m_semdata[$sid] = new SMWSqlStubSemanticData( $subject, false );
-			if ( $subject->getSubobjectId() == '' ) { // no sortkey for subobjects
+			if ( $subject->getSubobjectName() == '' ) { // no sortkey for subobjects
 				$this->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
 			}
 			$this->m_sdstate[$sid] = array();
@@ -502,7 +502,7 @@ class SMWSQLStore2 extends SMWStore {
 				if ( $i >= count( $dbkeys ) ) break;
 
 				if ( $typeid == 'p' ) { // Special case: page id, resolve this in advance
-					$oid = $this->getSMWPageID( $value->getDBkey(), $value->getNamespace(), $value->getInterwiki(), $value->getSubobjectId() );
+					$oid = $this->getSMWPageID( $value->getDBkey(), $value->getNamespace(), $value->getInterwiki(), $value->getSubobjectName() );
 					$where .= ( $where ? ' AND ' : '' ) . "t$tableindex.$fieldname=" . $db->addQuotes( $oid );
 					break;
 				} elseif ( $typeid != 'l' ) { // plain value, but not a text blob
@@ -538,7 +538,7 @@ class SMWSQLStore2 extends SMWStore {
 	 */
 	public function getProperties( SMWDIWikiPage $subject, $requestoptions = null ) {
 		wfProfileIn( "SMWSQLStore2::getProperties (SMW)" );
-		$sid = $this->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectId() );
+		$sid = $this->getSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName() );
 
 		if ( $sid == 0 ) { // no id, no page, no properties
 			wfProfileOut( "SMWSQLStore2::getProperties (SMW)" );
@@ -726,7 +726,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		// Always make an ID (pages without ID cannot be in query results, not even in fixed value queries!):
-		$sid = $this->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectId(), true, $sortkey );
+		$sid = $this->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), true, $sortkey );
 		$updates = array(); // collect data for bulk updates; format: tableid => updatearray
 		$this->prepareDBUpdates( $updates, $data, $sid, $subject );
 
@@ -799,8 +799,8 @@ class SMWSQLStore2 extends SMWStore {
 	protected function prepareDBUpdates( &$updates, SMWSemanticData $data, $sid, SMWDIWikiPage $subject ) {
 		if ( $sid == 0 ) {
 			$sid = $this->makeSMWPageID( $subject->getDBkey(), $subject->getNamespace(),
-				$subject->getInterwiki(), $subject->getSubobjectId(), true,
-				str_replace( '_', ' ', $subject->getDBkey() ) . $subject->getSubobjectId() );
+				$subject->getInterwiki(), $subject->getSubobjectName(), true,
+				str_replace( '_', ' ', $subject->getDBkey() ) . $subject->getSubobjectName() );
 		}
 
 		$proptables = self::getPropertyTables();
@@ -845,7 +845,7 @@ class SMWSQLStore2 extends SMWStore {
 							$namespace = next( $dbkeys );
 							$iw = next( $dbkeys );
 							$sortkey = next( $dbkeys ); // not used; sortkeys are not set on writing objects
-							$uvals[$fieldname] = $this->makeSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectId() );
+							$uvals[$fieldname] = $this->makeSMWPageID( $di->getDBkey(), $di->getNamespace(), $di->getInterwiki(), $di->getSubobjectName() );
 						}
 
 						next( $dbkeys );
@@ -1898,9 +1898,9 @@ class SMWSQLStore2 extends SMWStore {
 	 * the canonical alias ID for the given page. If no such ID exists, 0 is
 	 * returned.
 	 */
-	public function getSMWPageID( $title, $namespace, $iw, $subobjectId, $canonical = true ) {
+	public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true ) {
 		$sort = '';
-		return $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectId, $sort, $canonical );
+		return $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $sort, $canonical );
 	}
 
 	/**
@@ -1910,13 +1910,13 @@ class SMWSQLStore2 extends SMWStore {
 	 * @todo Centralise creation of id cache keys, and make sure non-local pages have only one key
 	 * (no need to distinguish canonical/non-canonical in this case).
 	 */
-	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectId, &$sort, $canonical ) {
+	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sort, $canonical ) {
 		global $smwgQEqualitySupport;
 
 		wfProfileIn( 'SMWSQLStore2::getSMWPageID (SMW)' );
 
-		$ckey = "$iw $namespace $title $subobjectId C";
-		$nkey = "$iw $namespace $title $subobjectId -";
+		$ckey = "$iw $namespace $title $subobjectName C";
+		$nkey = "$iw $namespace $title $subobjectName -";
 		$key = ( $canonical ? $ckey : $nkey );
 
 		if ( array_key_exists( $key, $this->m_ids ) ) {
@@ -1935,7 +1935,7 @@ class SMWSQLStore2 extends SMWStore {
 			$res = $db->select(
 				'smw_ids',
 				array( 'smw_id', 'smw_sortkey' ),
-				array( 'smw_title' => $title, 'smw_namespace' => $namespace, 'smw_iw' => $iw, 'smw_subobject' => $subobjectId ),
+				array( 'smw_title' => $title, 'smw_namespace' => $namespace, 'smw_iw' => $iw, 'smw_subobject' => $subobjectName ),
 				'SMW::getSMWPageID', array( 'LIMIT' => 1 )
 			);
 			$row = $db->fetchObject( $res );
@@ -1951,7 +1951,7 @@ class SMWSQLStore2 extends SMWStore {
 			         ' AND smw_namespace=' . $db->addQuotes( $namespace ) .
 			         ' AND (smw_iw=' . $db->addQuotes( '' ) .
 			         ' OR smw_iw=' . $db->addQuotes( SMW_SQL2_SMWREDIIW ) . ')' .
-			         ' AND smw_subobject=' . $db->addQuotes( $subobjectId ),
+			         ' AND smw_subobject=' . $db->addQuotes( $subobjectName ),
 			         'SMW::getSMWPageID', array( 'LIMIT' => 1 ) );
 			$row = $db->fetchObject( $res );
 
@@ -1961,7 +1961,7 @@ class SMWSQLStore2 extends SMWStore {
 
 				if ( ( $row->smw_iw == '' ) ) { // the id found is unique (canonical and non-canonical); fill cache also for the case *not* asked for
 					$this->m_ids[ $canonical ? $nkey : $ckey ] = $id; // (the other cache is filled below)
-				} elseif ( $canonical && ( $subobjectId == '' ) && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) { // check for redirect alias
+				} elseif ( $canonical && ( $subobjectName == '' ) && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) { // check for redirect alias
 					if ( $namespace == SMW_NS_PROPERTY ) { // redirect properties only to properties
 						///TODO: Shouldn't this condition be ensured during writing?
 						$res2 = $db->select( array( 'smw_redi2', 'smw_ids' ), 'o_id',
@@ -2001,11 +2001,11 @@ class SMWSQLStore2 extends SMWStore {
 	 * the title is a redirect target (we do not want chains of redirects).
 	 * But it is of no relevance if the title does not have an id yet.
 	 */
-	protected function makeSMWPageID( $title, $namespace, $iw, $subobjectId, $canonical = true, $sortkey = '' ) {
+	protected function makeSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $sortkey = '' ) {
 		wfProfileIn( 'SMWSQLStore2::makeSMWPageID (SMW)' );
 
 		$oldsort = '';
-		$id = $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectId, $oldsort, $canonical );
+		$id = $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical );
 
 		if ( $id == 0 ) {
 			$db = wfGetDB( DB_MASTER );
@@ -2018,19 +2018,19 @@ class SMWSQLStore2 extends SMWStore {
 					'smw_title' => $title,
 					'smw_namespace' => $namespace,
 					'smw_iw' => $iw,
-					'smw_subobject' => $subobjectId,
+					'smw_subobject' => $subobjectName,
 					'smw_sortkey' => $sortkey
 				),
 				'SMW::makeSMWPageID'
 			);
 
 			$id = $db->insertId();
-			$this->m_ids["$iw $namespace $title $subobjectId -"] = $id; // fill that cache, even if canonical was given
+			$this->m_ids["$iw $namespace $title $subobjectName -"] = $id; // fill that cache, even if canonical was given
 			
 			// This ID is also authorative for the canonical version.
 			// This is always the case: if $canonical===false and $id===0, then there is no redi-entry in
 			// smw_ids either, hence the object just did not exist at all.
-			$this->m_ids["$iw $namespace $title $subobjectId C"] = $id;
+			$this->m_ids["$iw $namespace $title $subobjectName C"] = $id;
 		} elseif ( ( $sortkey != '' ) && ( $sortkey != $oldsort ) ) {
 			$db = wfGetDB( DB_MASTER );
 			$db->update( 'smw_ids', array( 'smw_sortkey' => $sortkey ), array( 'smw_id' => $id ), 'SMW::makeSMWPageID' );
@@ -2086,9 +2086,9 @@ class SMWSQLStore2 extends SMWStore {
 	 * with iw being SMW_SQL2_SMWREDIIW. This information is used to determine
 	 * whether the given ID is canonical or not.
 	 */
-	public function cacheSMWPageID( $id, $title, $namespace, $iw, $subobjectId ) {
-		$ckey = "$iw $namespace $title $subobjectId C";
-		$nkey = "$iw $namespace $title $subobjectId -";
+	public function cacheSMWPageID( $id, $title, $namespace, $iw, $subobjectName ) {
+		$ckey = "$iw $namespace $title $subobjectName C";
+		$nkey = "$iw $namespace $title $subobjectName -";
 
 		if ( count( $this->m_ids ) > 1500 ) { // prevent memory leak in very long PHP runs
 			$this->m_ids = array();
@@ -2226,7 +2226,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * @param $subject SMWDIWikiPage the data of which is deleted
 	 */
 	protected function deleteSemanticData( SMWDIWikiPage $subject ) {
-		if ( $subject->getSubobjectId() != '' ) return; // not needed, and would mess up data
+		if ( $subject->getSubobjectName() != '' ) return; // not needed, and would mess up data
 
 		$db = wfGetDB( DB_MASTER );
 
