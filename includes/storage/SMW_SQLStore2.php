@@ -130,7 +130,9 @@ class SMWSQLStore2 extends SMWStore {
 		// *** Prepare the cache ***//
 		if ( !array_key_exists( $sid, $this->m_semdata ) ) { // new cache entry
 			$this->m_semdata[$sid] = new SMWSqlStubSemanticData( $subject, false );
-			$this->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
+			if ( $subject->getSubobjectId() == '' ) { // no sortkey for subobjects
+				$this->m_semdata[$sid]->addPropertyStubValue( '_SKEY', array( $sortkey ) );
+			}
 			$this->m_sdstate[$sid] = array();
 			// Note: the sortkey is always set but belongs to no property table,
 			// hence no entry in $this->m_sdstate[$sid] is made.
