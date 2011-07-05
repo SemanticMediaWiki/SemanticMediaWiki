@@ -49,7 +49,8 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 			$serializer->startSerialization();
 			$serializer->serializeExpData( SMWExporter::getOntologyExpData( '' ) );
 			while ( $row = $res->getNext() ) {
-				$data = SMWExporter::makeExportDataForSubject( reset( $row )->getResultSubject() );
+				$subjectDi = reset( $row )->getResultSubject();
+				$data = SMWExporter::makeExportDataForSubject( $subjectDi );
 				foreach ( $row as $resultarray ) {
 					$printreq = $resultarray->getPrintRequest();
 					$property = null;
@@ -68,7 +69,7 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 						break;
 					}
 					if ( $property !== null ) {
-						SMWExporter::addPropertyValues( $property, $resultarray->getContent() , $data );
+						SMWExporter::addPropertyValues( $property, $resultarray->getContent() , $data, $subjectDi );
 					}					
 				}
 				$serializer->serializeExpData( $data );

@@ -60,6 +60,28 @@ class SMWSparqlDatabase4Store extends SMWSparqlDatabase {
 	}
 
 	/**
+	 * Complex SPARQL Update delete operations are not supported in 4Store
+	 * as of v1.1.3, hence this implementation uses a less efficient method
+	 * for accomplishing this.
+	 *
+	 * @param $propertyName string Turtle name of marking property
+	 * @param $objectName string Turtle name of marking object/value
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @return boolean stating whether the operations succeeded
+	 */
+	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
+		$affectedObjects = $this->select( '*', "?s $propertyName $objectName", array(), $extraNamespaces );
+		$success = ( $affectedObjects->getErrorCode() == SMWSparqlResultWrapper::ERROR_NOERROR );
+		foreach ( $affectedObjects as $expElements ) {
+			if ( count( $expElements ) > 0 ) {
+				$turtleName = SMWTurtleSerializer::getTurtleNameForExpElement( reset( $expElements ) );
+				$success = $this->delete( "$turtleName ?p ?o", "$turtleName ?p ?o", $extraNamespaces ) && $success;
+			}
+		}
+		return $success;
+	}
+
+	/**
 	 * Execute a HTTP-based SPARQL POST request according to
 	 * http://www.w3.org/2009/sparql/docs/http-rdf-update/.
 	 * The method throws exceptions based on

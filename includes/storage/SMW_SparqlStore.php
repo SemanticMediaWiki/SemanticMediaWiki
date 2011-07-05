@@ -24,16 +24,17 @@ class SMWSparqlStore extends SMWSQLStore2 {
 
 	public function deleteSubject( Title $subject ) {
 		$dataItem = SMWDIWikiPage::newFromTitle( $subject );
-		$expResource = SMWExporter::getDataItemExpElement( $dataItem );
+		$expResource = SMWExporter::getDataItemExpElement( $dataItem, $dataItem );
 		$this->deleteSparqlData( $expResource );
 		parent::deleteSubject( $subject );
 	}
 
+	/// @todo Change master page entries as well
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 		$oldWikiPage = SMWDIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = SMWDIWikiPage::newFromTitle( $newtitle );
-		$oldExpResource = SMWExporter::getDataItemExpElement( $oldWikiPage );
-		$newExpResource = SMWExporter::getDataItemExpElement( $newWikiPage );
+		$oldExpResource = SMWExporter::getDataItemExpElement( $oldWikiPage, $oldWikiPage );
+		$newExpResource = SMWExporter::getDataItemExpElement( $newWikiPage, $newWikiPage );
 		$namespaces = array( $oldExpResource->getNamespaceId() => $oldExpResource->getNamespace() );
 		$namespaces[$newExpResource->getNamespaceId()] = $newExpResource->getNamespace();
 		$oldUri = SMWTurtleSerializer::getTurtleNameForExpElement( $oldExpResource );
@@ -62,7 +63,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		$expDataArray = $this->prepareUpdateExpData( $data );
 
 		if ( count( $expDataArray ) > 0 ) {
-			$subjectResource = SMWExporter::getDataItemExpElement( $data->getSubject() );
+			$subjectResource = SMWExporter::getDataItemExpElement( $data->getSubject(), $data->getSubject() );
 			$this->deleteSparqlData( $subjectResource );
 
 			$turtleSerializer = new SMWTurtleSerializer( true );
@@ -95,7 +96,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	protected function prepareUpdateExpData( SMWSemanticData $data ) {
 		$expData = SMWExporter::makeExportData( $data );
 		$result = array();
-		$newExpData = $this->expandUpdateExpData( $expData, $expData->getSubject(), $result, false );
+		$newExpData = $this->expandUpdateExpData( $expData, $result, false );
 		array_unshift( $result, $newExpData );
 		return $result;
 	}
@@ -110,15 +111,14 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
 	 * @param $expElement SMWExpElement object containing the update data
-	 * @param $masterExpElement SMWExpResource to which encountered blank nodes will be associated
 	 * @param $auxiliaryExpData array of SMWExpData
 	 * @return SMWExpElement
 	 */
-	protected function expandUpdateExpElement( SMWExpElement $expElement, SMWExpResource $masterExpElement, array &$auxiliaryExpData ) {
+	protected function expandUpdateExpElement( SMWExpElement $expElement, array &$auxiliaryExpData ) {
 		if ( $expElement instanceof SMWExpResource ) {
-			$elementTarget = $this->expandUpdateExpResource( $expElement, $masterExpElement, $auxiliaryExpData );
+			$elementTarget = $this->expandUpdateExpResource( $expElement, $auxiliaryExpData );
 		} elseif ( $expElement instanceof SMWExpData ) {
-			$elementTarget = $this->expandUpdateExpData( $expElement, $masterExpElement, $auxiliaryExpData, true );
+			$elementTarget = $this->expandUpdateExpData( $expElement, $auxiliaryExpData, true );
 		} else {
 			$elementTarget = $expElement;
 		}
@@ -136,11 +136,10 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
 	 * @param $expResource SMWExpResource object containing the update data
-	 * @param $masterExpElement SMWExpResource to which encountered blank nodes will be associated
 	 * @param $auxiliaryExpData array of SMWExpData
 	 * @return SMWExpElement
 	 */
-	protected function expandUpdateExpResource( SMWExpResource $expResource, SMWExpResource $masterExpElement, array &$auxiliaryExpData ) {
+	protected function expandUpdateExpResource( SMWExpResource $expResource, array &$auxiliaryExpData ) {
 		$exists = true;
 		if ( $expResource instanceof SMWExpNsResource ) {
 			$elementTarget = $this->getSparqlRedirectTarget( $expResource, $exists );
@@ -148,12 +147,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 			$elementTarget = $expResource;
 		}
 
-		if ( $elementTarget->isBlankNode() ) {
-			$auxExpData = new SMWExpData( $elementTarget );
-			$masterResourceProperty = SMWExporter::getSpecialNsResource( 'swivt', 'masterResource' );
-			$auxExpData->addPropertyObjectValue( $masterResourceProperty, $masterExpElement );
-			$elementTarget = $auxExpData;
-		} elseif ( !$exists && ( $elementTarget->getDataItem() instanceof SMWDIWikiPage ) ) {
+		if ( !$exists && ( $elementTarget->getDataItem() instanceof SMWDIWikiPage ) ) {
 			$diWikiPage = $elementTarget->getDataItem();
 			$hash = $diWikiPage->getHash();
 			if ( !array_key_exists( $hash, $auxiliaryExpData ) ) {
@@ -173,15 +167,14 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
 	 * @param $expData SMWExpData object containing the update data
-	 * @param $masterExpElement SMWExpResource to which encountered blank nodes will be associated
 	 * @param $auxiliaryExpData array of SMWExpData
 	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
 	 * @return SMWExpData
 	 */
-	protected function expandUpdateExpData( SMWExpData $expData, SMWExpResource $masterExpElement, array &$auxiliaryExpData, $expandSubject ) {
+	protected function expandUpdateExpData( SMWExpData $expData, array &$auxiliaryExpData, $expandSubject ) {
 		$subjectExpResource = $expData->getSubject();
 		if ( $expandSubject ) {
-			$expandedExpElement = $this->expandUpdateExpElement( $subjectExpResource, $masterExpElement, $auxiliaryExpData );
+			$expandedExpElement = $this->expandUpdateExpElement( $subjectExpResource, $auxiliaryExpData );
 			if ( $expandedExpElement instanceof SMWExpData ) {
 				$newExpData = $expandedExpElement;
 			} else { // instanceof SMWExpResource
@@ -192,9 +185,9 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		}
 
 		foreach ( $expData->getProperties() as $propertyResource ) {
-			$propertyTarget = $this->expandUpdateExpElement( $propertyResource, $masterExpElement, $auxiliaryExpData );
+			$propertyTarget = $this->expandUpdateExpElement( $propertyResource, $auxiliaryExpData );
 			foreach ( $expData->getValues( $propertyResource ) as $expElement ) {
-				$elementTarget = $this->expandUpdateExpElement( $expElement, $masterExpElement, $auxiliaryExpData );
+				$elementTarget = $this->expandUpdateExpElement( $expElement, $auxiliaryExpData );
 				$newExpData->addPropertyObjectValue( $propertyTarget, $elementTarget );
 			}
 		}
@@ -210,12 +203,16 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 *
 	 * @param $expNsResource string URI to check
 	 * @param $exists boolean that is set to true if $expNsResource is in the
-	 * store; always false for blank nodes
+	 * store; always false for blank nodes; always true for subobjects
 	 * @return SMWExpNsResource
 	 */
 	protected function getSparqlRedirectTarget( SMWExpNsResource $expNsResource, &$exists ) {
 		if ( $expNsResource->isBlankNode() ) {
 			$exists = false;
+			return $expNsResource;
+		} elseif ( ( $expNsResource->getDataItem() instanceof SMWDIWikiPage ) &&
+			   $expNsResource->getDataItem()->getSubobjectName() != '' ) {
+			$exists = true;
 			return $expNsResource;
 		}
 
@@ -224,7 +221,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		$skeyUri = SMWTurtleSerializer::getTurtleNameForExpElement( SMWExporter::getSpecialPropertyResource( '_SKEY' ) );
 
 		$sparqlResult = smwfGetSparqlDatabase()->select( '*',
-		                    "$resourceUri $skeyUri ?s  OPTIONAL { $resourceUri $skeyUri ?s }",
+		                    "$resourceUri $skeyUri ?s  OPTIONAL { $resourceUri $rediUri ?r }",
 		                    array( 'LIMIT' => 1 ),
 		                    array( $expNsResource->getNamespaceId() => $expNsResource->getNamespace() ) );
 
@@ -253,10 +250,19 @@ class SMWSparqlStore extends SMWSQLStore2 {
 	 * given resource.
 	 *
 	 * @param $expResource SMWExpResource
+	 * @return boolean success
 	 */
 	protected function deleteSparqlData( SMWExpResource $expResource ) {
 		$resourceUri = SMWTurtleSerializer::getTurtleNameForExpElement( $expResource );
-		smwfGetSparqlDatabase()->delete( "$resourceUri ?p ?o", "$resourceUri ?p ?o"  );
+		$masterPageProperty = SMWExporter::getSpecialNsResource( 'swivt', 'masterPage' );
+		$masterPagePropertyUri = SMWTurtleSerializer::getTurtleNameForExpElement( $masterPageProperty );
+
+		$success = smwfGetSparqlDatabase()->deleteContentByValue( $masterPagePropertyUri, $resourceUri );
+		if ( $success ) {
+			return smwfGetSparqlDatabase()->delete( "$resourceUri ?p ?o", "$resourceUri ?p ?o"  );
+		} else {
+			return false;
+		}
 	}
 
 
@@ -282,6 +288,11 @@ class SMWSparqlStore extends SMWSQLStore2 {
 			$queryEngine = new SMWSparqlStoreQueryEngine( $this );
 			return $queryEngine->getInstanceQueryResult( $query ); 
 		}
+	}
+
+	public function drop( $verbose = true ) {
+		parent::drop( $verbose );
+		smwfGetSparqlDatabase()->delete( "?s ?p ?o", "?s ?p ?o" );
 	}
 
 }

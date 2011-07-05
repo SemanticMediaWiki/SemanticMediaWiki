@@ -201,7 +201,7 @@ class SMWSparqlDatabase {
 	 *
 	 * @param $vars mixed array or string, field name(s) to be retrieved, can be '*'
 	 * @param $where string WHERE part of the query, without surrounding { }
-	 * @param $options array (associative) of options, e.g. array('LIMIT' => '10')
+	 * @param $options array (associative) of options, e.g. array( 'LIMIT' => '10' )
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 * @return SMWSparqlResultWrapper
 	 */
@@ -315,6 +315,26 @@ class SMWSparqlDatabase {
 		$sparql = self::getPrefixString( $extraNamespaces ) .
 		          "DELETE { $deletePattern } WHERE { $where }";
 		return $this->doUpdate( $sparql );
+	}
+
+	/**
+	 * Convenience method for deleting all triples that have a subject that
+	 * occurs in a triple with the given property and object. This is used
+	 * in SMW to delete subobjects with all their data. Some RDF stores fail
+	 * on complex delete queries, hence a wrapper function is provided to
+	 * allow more pedestrian implementations.
+	 * 
+	 * The function declares the standard namespaces wiki, swivt, rdf, owl,
+	 * rdfs, property, xsd, so these do not have to be included in
+	 * $extraNamespaces.
+	 *
+	 * @param $propertyName string Turtle name of marking property
+	 * @param $objectName string Turtle name of marking object/value
+	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
+	 * @return boolean stating whether the operations succeeded
+	 */
+	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = array() ) {
+		return smwfGetSparqlDatabase()->delete( "?s ?p ?o", "?s $propertyName $objectName . ?s ?p ?o" );
 	}
 
 	/**
