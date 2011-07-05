@@ -83,10 +83,21 @@ class SMWSqlStubSemanticData extends SMWSemanticData {
 
 		if ( array_key_exists( $property->getKey(), $this->mStubPropVals ) ) {
 			$this->unstubProperty( $property->getKey(), $property );
+			$propertyTypeId = $property->findPropertyTypeID();
+			$propertyDiId = SMWDataValueFactory::getDataItemId( $propertyTypeId );
 
 			foreach ( $this->mStubPropVals[$property->getKey()] as $dbkeys ) {
 				try {
-					$di = SMWCompatibilityHelpers::dataItemFromDBKeys( $property->findPropertyTypeID(), $dbkeys );
+					if ( $propertyDiId == SMWDataItem::TYPE_CONTAINER ) {
+						$diSubWikiPage = SMWCompatibilityHelpers::dataItemFromDBKeys( '_wpg', $dbkeys );
+						$semanticData = new SMWContainerSemanticData();
+						$semanticData->copyDataFrom( smwfGetStore()->getSemanticData( $diSubWikiPage ) );
+
+						$di = new SMWDIContainer( $semanticData );
+					} else {
+						$di = SMWCompatibilityHelpers::dataItemFromDBKeys( $propertyTypeId, $dbkeys );
+					}
+
 					if ( $this->mNoDuplicates ) {
 						$this->mPropVals[$property->getKey()][$di->getHash()] = $di;
 					} else {

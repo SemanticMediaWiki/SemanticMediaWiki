@@ -93,8 +93,8 @@ class SMWSQLStore2QueryEngine {
 	public function refreshConceptCache( Title $concept ) {
 		global $smwgQMaxLimit, $smwgQConceptFeatures, $wgDBtype;
 
-		$cid = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '' );
-		$cid_c = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', false );
+		$cid = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
+		$cid_c = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
 
 		if ( $cid != $cid_c ) {
 			$this->m_errors[] = "Skipping redirect concept.";
@@ -162,7 +162,7 @@ class SMWSQLStore2QueryEngine {
 	 * @param $concept Title
 	 */
 	public function deleteConceptCache( $concept ) {
-		$cid = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', false );
+		$cid = $this->m_store->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '', false );
 		$this->m_dbs->delete( 'smw_conccache', array( 'o_id' => $cid ), 'SMW::refreshConceptCache' );
 		$this->m_dbs->update( 'smw_conc2', array( 'cache_date' => null, 'cache_count' => null ), array( 's_id' => $cid ), 'SMW::refreshConceptCache' );
 	}
@@ -384,7 +384,7 @@ class SMWSQLStore2QueryEngine {
 		$sortfields = implode( $qobj->sortfields, ',' );
 
 		$res = $this->m_dbs->select( $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from,
-			"DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw,$qobj->alias.smw_sortkey AS sortkey" .
+			"DISTINCT $qobj->alias.smw_id AS id,$qobj->alias.smw_title AS t,$qobj->alias.smw_namespace AS ns,$qobj->alias.smw_iw AS iw,$qobj->alias.smw_subobject AS so,$qobj->alias.smw_sortkey AS sortkey" .
 			  ( $wgDBtype == 'postgres' ? ( ( $sortfields ? ',' : '' ) . $sortfields ) : '' ),
 			$qobj->where, 'SMW::getQueryResult', $sql_options );
 
@@ -394,9 +394,9 @@ class SMWSQLStore2QueryEngine {
 
 		while ( ( $count < $query->getLimit() ) && ( $row = $this->m_dbs->fetchObject( $res ) ) ) {
 			$count++;
-			$v = new SMWDIWikiPage( $row->t, $row->ns, $row->iw );
+			$v = new SMWDIWikiPage( $row->t, $row->ns, $row->iw, $row->so );
 			$qr[] = $v;
-			$this->m_store->cacheSMWPageID( $row->id, $row->t, $row->ns, $row->iw );
+			$this->m_store->cacheSMWPageID( $row->id, $row->t, $row->ns, $row->iw, $row->so );
 		}
 
 		if ( $this->m_dbs->fetchObject( $res ) ) {
@@ -457,7 +457,7 @@ class SMWSQLStore2QueryEngine {
 			$cquery->joinfield = array();
 
 			foreach ( $description->getCategories() as $cat ) {
-				$cid = $this->m_store->getSMWPageID( $cat->getDBkey(), NS_CATEGORY, $cat->getInterwiki() );
+				$cid = $this->m_store->getSMWPageID( $cat->getDBkey(), NS_CATEGORY, $cat->getInterwiki(), '' );
 				if ( $cid != 0 ) {
 					$cquery->joinfield[] = $cid;
 				}
@@ -477,7 +477,7 @@ class SMWSQLStore2QueryEngine {
 			if ( $description->getDataItem() instanceof SMWDIWikiPage ) {
 				if ( $description->getComparator() == SMW_CMP_EQ ) {
 					$query->type = SMW_SQL2_VALUE;
-					$oid = $this->m_store->getSMWPageID( $description->getDataItem()->getDBkey(), $description->getDataItem()->getNamespace(), $description->getDataItem()->getInterwiki() );
+					$oid = $this->m_store->getSMWPageID( $description->getDataItem()->getDBkey(), $description->getDataItem()->getNamespace(), $description->getDataItem()->getInterwiki(), $description->getDataItem()->getSubobjectId() );
 					$query->joinfield = array( $oid );
 				} else { // Join with smw_ids needed for other comparators (apply to title string).
 					$query->jointable = 'smw_ids';
@@ -500,7 +500,7 @@ class SMWSQLStore2QueryEngine {
 				}
 			}
 		} elseif ( $description instanceof SMWConceptDescription ) { // fetch concept definition and insert it here
-			$cid = $this->m_store->getSMWPageID( $description->getConcept()->getDBkey(), SMW_NS_CONCEPT, '' );
+			$cid = $this->m_store->getSMWPageID( $description->getConcept()->getDBkey(), SMW_NS_CONCEPT, '', '' );
 			// We bypass the storage interface here (which is legal as we controll it, and safe if we are careful with changes ...)
 			// This should be faster, but we must implement the unescaping that concepts do on getWikiValue()
 			$row = $this->m_dbs->selectRow(
@@ -778,9 +778,9 @@ class SMWSQLStore2QueryEngine {
 					if ( $i >= count( $keys ) ) break;
 
 					if ( $ftype == 'p' ) { // Special case: page id, resolve this in advance
-						$oid = $this->getSMWPageID( $keys[$i], $keys[$i + 1], $keys[$i + 2] );
-						$i += 3; // skip these additional values (sortkey not needed here)
+						$oid = $this->getSMWPageID( $dataItem->getDBkey(), $dataItem->getNamespace(), $dataItem->getInterwiki(), $dataItem->getSubobjectId() );
 						$where .= ( $where ? ' AND ' : '' ) . "{$query->alias}.$fname=" . $this->m_dbs->addQuotes( $oid );
+						break;
 					} elseif ( $ftype != 'l' ) { // plain value, but not a text blob
 						$where .= ( $where ? ' AND ' : '' ) . "{$query->alias}.$fname=" . $this->m_dbs->addQuotes( $keys[$i] );
 					}
