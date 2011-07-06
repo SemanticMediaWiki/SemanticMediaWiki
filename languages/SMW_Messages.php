@@ -8542,10 +8542,10 @@ Gera um RDF navegável.',
 	'smw_types_docu' => 'A seguinte lista contém todos os tipos de dados que podem ser atribuídos às propriedades.',
 	'smw_typeunits' => 'Unidades de medida do tipo “$1”: $2',
 	'semanticstatistics' => 'Estatísticas de semântica',
-	'smw_semstats_text' => "Esta wiki contém '''$1''' {{PLURAL:$1|valor|valores}} de propriedades num total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriedade diferente|propriedades diferentes}}]].
-'''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} uma página própria, e o tipo de dados pretendido está especificado para '''$4''' delas.
-Algumas das propriedades existentes poderão ser [[Special:UnusedProperties|propriedades não usadas]].
-As propriedades que não possuem uma página poderão ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
+	'smw_semstats_text' => "Esta wiki contém '''$1''' {{PLURAL:$1|valor de propriedade|valores de propriedades}}, num total de '''$2''' [[Special:Properties|{{PLURAL:$2|propriedade|propriedades diferentes}}]].
+'''$3''' {{PLURAL:$3|propriedade tem|propriedades têm}} uma página própria e o tipo de dados pretendido está especificado para '''$4''' delas.
+Algumas das propriedades existentes podem ser [[Special:UnusedProperties|propriedades não usadas]].
+As propriedades que não têm uma página própria podem ser encontradas na [[Special:WantedProperties|lista de propriedades em falta]].",
 	'smw_uri_doc' => 'O resolvedor de URIs implementa a <a href="http://www.w3.org/2001/tag/issues.html#httpRange-14">descoberta TAG da W3C sobre o httpRange-14</a>. Certifica-se de que os seres humanos não se tornem em sites da internet.',
 	'ask' => 'Pesquisa semântica',
 	'smw_ask_sortby' => 'Ordenar por coluna (opcional)',
@@ -8573,7 +8573,7 @@ Categorias (<strong>[[Categoria:Actor]]</strong>),
 Propriedades (<strong>[[Localizada em::Angola]]</strong>), 
 Nomes (<strong>[[Cabo Verde]]</strong>) e Espaços nominais (<strong>[[Ajuda:+]]</strong>)',
 	'searchbyproperty' => 'Pesquisa por propriedade',
-	'smw_sbv_docu' => 'Procurar todas as páginas que possuem uma determinada propriedade e valor.',
+	'smw_sbv_docu' => 'Procurar todas as páginas que têm uma determinada propriedade e valor.',
 	'smw_sbv_novalue' => 'Introduza um valor válido para a propriedade, ou veja todos os valores válidos da propriedade “$1.”',
 	'smw_sbv_displayresult' => 'Segue-se uma lista de todas as páginas que têm a propriedade “$1” com o valor “$2”',
 	'smw_sbv_displayresultfuzzy' => 'Uma lista de todas as páginas que têm a propriedade "$1" com o valor "$2".
@@ -8618,7 +8618,7 @@ Lembre-se de efectuar cópias de segurança dos dados importantes antes de execu
 A função abaixo assegura que a sua base de dados está devidamente preparada.
 As alterações feitas neste passo não afectam o resto da base de dados do MediaWiki, e podem ser facilmente desfeitas se desejado.
 Esta função de preparação pode ser executada várias vezes sem causar quaisquer danos, mas é necessária apenas uma vez na instalação ou actualização.',
-	'smw_smwadmin_permissionswarn' => "Se a operação falhar com erros de SQL, provavelmente o utilizador de base de dados usado pela sua wiki (consulte o seu LocalSettings.php) não possui permissões suficientes.
+	'smw_smwadmin_permissionswarn' => "Se a operação falhar com erros de SQL, é provável que o utilizador da base de dados usado pela sua wiki (consulte o seu LocalSettings.php) não tenha as permissões necessárias.
 Conceda a este utilizador permissões adicionais para criar e eliminar tabelas, introduza temporariamente as credenciais do seu super-utilizador (<i>root</i>) da base de dados em LocalSettings.php, ou use o ''script'' de manutenção <tt>SMW_setup.php</tt>, o qual pode usar as credenciais presentes em AdminSettings.php.",
 	'smw_smwadmin_dbbutton' => 'Inicializar ou actualizar tabelas',
 	'smw_smwadmin_announce' => 'Anuncie a sua wiki',
@@ -11277,6 +11277,7 @@ $messages['zh-cn'] = array(
  * @author Onecountry
  * @author PhiLiP
  * @author Richarddong
+ * @author Xiaomingyan
  */
 $messages['zh-hans'] = array(
 	'smw-desc' => "让你的wiki更可及——对机器''与''人都是如此（[http://semantic-mediawiki.org/wiki/Help:User_manual 在线文档]）",
@@ -11438,7 +11439,7 @@ $messages['zh-hans'] = array(
 	'browse' => '浏览维基',
 	'smw_browselink' => '浏览属性',
 	'smw_browse_article' => '输入浏览起始页面名称。',
-	'smw_browse_go' => '进入',
+	'smw_browse_go' => '提交',
 	'smw_browse_show_incoming' => '显示链接到此页的属性',
 	'smw_browse_hide_incoming' => '隐藏链接到此页的属性',
 	'smw_browse_no_outgoing' => '这个页面没有设置属性。',
