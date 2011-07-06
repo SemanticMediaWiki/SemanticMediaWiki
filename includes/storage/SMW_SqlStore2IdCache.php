@@ -28,7 +28,7 @@ class SMWSqlStore2IdCache {
 	 *
 	 * @param $db Database handler
 	 */
-	public function __construct( DatabaseType $db ) {
+	public function __construct( /*MW 1.17: DatabaseType*/ $db ) {
 		$this->m_db = $db;
 	}
 
