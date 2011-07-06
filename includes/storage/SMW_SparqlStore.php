@@ -29,7 +29,6 @@ class SMWSparqlStore extends SMWSQLStore2 {
 		parent::deleteSubject( $subject );
 	}
 
-	/// @todo Change master page entries as well
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
 		$oldWikiPage = SMWDIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = SMWDIWikiPage::newFromTitle( $newtitle );
@@ -233,7 +232,7 @@ class SMWSparqlStore extends SMWSQLStore2 {
 			$exists = true;
 			$rediTargetElement = $firstRow[1];
 			$rediTargetUri = $rediTargetElement->getUri();
-			$wikiNamespace = Exporter::getNamespaceUri( 'wiki' );
+			$wikiNamespace = SMWExporter::getNamespaceUri( 'wiki' );
 			if ( strpos( $rediTargetUri, $wikiNamespace ) === 0 ) {
 				return new SMWExpNsResource( substr( $rediTargetUri, 0, strlen( $wikiNamespace ) ) , $wikiNamespace, 'wiki' );
 			} else {
