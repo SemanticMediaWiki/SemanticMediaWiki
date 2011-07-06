@@ -43,6 +43,7 @@ class SMWSqlStore2IdCache {
 					'smw_subobject' => $subobject );
 			$row = $this->m_db->selectRow( 'smw_ids', 'smw_id', $condition, __METHOD__);
 
+			$this->checkForSizeLimit();
 			if ( $row !== false ) {
 				$this->m_data[$hashKey] = $row->smw_id;
 				return $row->smw_id;
@@ -64,6 +65,7 @@ class SMWSqlStore2IdCache {
 
 	public function setId( $title, $namespace, $interwiki, $subobject, $id ) {
 		$hashKey = self::getHashKey( $title, $namespace, $interwiki, $subobject );
+		$this->checkForSizeLimit();
 		$this->m_data[$hashKey] = $id;
 		if ( $interwiki == SMW_SQL2_SMWREDIIW ) {
 			$hashKey = self::getHashKey( $title, $namespace, '', $subobject );
@@ -84,6 +86,12 @@ class SMWSqlStore2IdCache {
 
 	public function clear() {
 		$this->m_data = array();
+	}
+
+	protected function checkForSizeLimit() {
+		if ( count( $this->m_data ) > 1000 ) {
+			$this->clear();
+		}
 	}
 
 	protected static function getHashKey( $title, $namespace, $interwiki, $subobject ) {
