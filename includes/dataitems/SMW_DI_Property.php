@@ -255,7 +255,7 @@ class SMWDIProperty extends SMWDataItem {
 	 * @param $useAlias boolean determining whether to check if the label is an alias
 	 * @return mixed string property ID or false
 	 */
-	static protected function findPropertyID( $label, $useAlias = true ) {
+	protected static function findPropertyID( $label, $useAlias = true ) {
 		SMWDIProperty::initPropertyRegistration();
 		$id = array_search( $label, SMWDIProperty::$m_prop_labels );
 		if ( $id !== false ) {
@@ -308,8 +308,9 @@ class SMWDIProperty extends SMWDataItem {
 		}
 
 		global $smwgContLang, $smwgUseCategoryHierarchy;
-		SMWDIProperty::$m_prop_labels  = $smwgContLang->getPropertyLabels();
-		SMWDIProperty::$m_prop_aliases = $smwgContLang->getPropertyAliases();
+		$datatypeLabels = $smwgContLang->getDatatypeLabels();
+		SMWDIProperty::$m_prop_labels  = $smwgContLang->getPropertyLabels() + $datatypeLabels;
+		SMWDIProperty::$m_prop_aliases = $smwgContLang->getPropertyAliases() + $smwgContLang->getDatatypeAliases();
 		// Setup built-in predefined properties.
 		// NOTE: all ids must start with underscores. The translation
 		// for each ID, if any, is defined in the language files.
@@ -335,6 +336,11 @@ class SMWDIProperty extends SMWDataItem {
 				'_SF_DF' => array( '__spf', true ), // Semantic Form's default form property
 				'_SF_AF' => array( '__spf', true ),  // Semantic Form's alternate form property
 			);
+
+		foreach ( $datatypeLabels as $typeid => $label ) {
+			SMWDIProperty::$m_prop_types[$typeid] = array( $typeid, true );
+		}
+
 		wfRunHooks( 'smwInitProperties' );
 	}
 
