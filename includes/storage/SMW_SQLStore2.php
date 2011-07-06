@@ -2000,7 +2000,11 @@ class SMWSQLStore2 extends SMWStore {
 		wfProfileIn( 'SMWSQLStore2::makeSMWPageID (SMW)' );
 
 		$oldsort = '';
-		$id = $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical );
+		if ( $sortkey != '' ) { // get the old sortkey (requires DB access):
+			$id = $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $oldsort, $canonical );
+		} else { // only get the id, can use caches:
+			$id = $this->getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical );
+		}
 
 		if ( $id == 0 ) {
 			$db = wfGetDB( DB_MASTER );
@@ -2035,7 +2039,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * Properties have a mechanisms for being predefined (i.e. in PHP instead
 	 * of in wiki). Special "interwiki" prefixes separate the ids of such
 	 * predefined properties from the ids for the current pages (which may,
-	 * e.g. be moved, while the predefined object is not movable).
+	 * e.g., be moved, while the predefined object is not movable).
 	 */
 	protected function getPropertyInterwiki( SMWDIProperty $property ) {
 		if ( $property->isUserDefined() ) {
@@ -2065,7 +2069,8 @@ class SMWSQLStore2 extends SMWStore {
 		if ( ( !$property->isUserDefined() ) && ( array_key_exists( $property->getKey(), self::$special_ids ) ) ) {
 			return self::$special_ids[$property->getKey()]; // very important property with fixed id
 		} else {
-			return $this->makeSMWPageID( $property->getKey(), SMW_NS_PROPERTY, $this->getPropertyInterwiki( $property ), '', true );
+			return $this->makeSMWPageID( $property->getKey(), SMW_NS_PROPERTY,
+				$this->getPropertyInterwiki( $property ), '', true );
 		}
 	}
 
