@@ -32,8 +32,8 @@ define( 'SMW_SQL2_SMWINTDEFIW', ':smw-intprop' ); // virtual "interwiki prefix" 
  */
 class SMWSQLStore2 extends SMWStore {
 
-	/// Cache for SMW IDs, indexed by string keys
-	protected $m_ids = array();
+	/// Cache for SMW IDs
+	protected $m_idCache;
 
 	/// Cache for SMWSemanticData objects, indexed by SMW ID
 	protected $m_semdata = array();
@@ -109,6 +109,10 @@ class SMWSQLStore2 extends SMWStore {
 		SMWDataItem::TYPE_PROPERTY   => 'smw_atts2'  // unlikely to occur as value of any property
 	);
 
+	public function __construct() {
+		$this->m_idCache = new SMWSqlStore2IdCache( wfGetDB( DB_SLAVE ) );
+	}
+
 ///// Reading methods /////
 
 	public function getSemanticData( SMWDIWikiPage $subject, $filter = false ) {
@@ -119,7 +123,8 @@ class SMWSQLStore2 extends SMWStore {
 
 		// *** Find out if this subject exists ***//
 		$sortkey = '';
-		$sid = $this->getSMWPageIDandSort( $subject->getDBkey(), $subject->getNamespace(), $subject->getInterwiki(), $subject->getSubobjectName(), $sortkey, true );
+		$sid = $this->getSMWPageIDandSort( $subject->getDBkey(), $subject->getNamespace(),
+			$subject->getInterwiki(), $subject->getSubobjectName(), $sortkey, true );
 		if ( $sid == 0 ) { // no data, safe our time
 			/// NOTE: we consider redirects for getting $sid, so $sid == 0 also means "no redirects"
 			self::$in_getSemanticData--;
@@ -907,10 +912,16 @@ class SMWSQLStore2 extends SMWStore {
 			// If equality support is off, then this simple move
 			// does too much; fall back to general case below.
 			if ( $sid != 0 ) { // change id entry to refer to the new title
-				// Note that is also changes the reference for internal objects (subobjects)
-				$db->update( 'smw_ids', 
-					array( 'smw_title' => $newtitle->getDBkey(), 'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' ),
-					array( 'smw_title' => $oldtitle->getDBkey(), 'smw_namespace' => $oldtitle->getNamespace(), 'smw_iw' => '' ), __METHOD__ );
+				// Note that this also changes the reference for internal objects (subobjects)
+				$db->update( 'smw_ids', array( 'smw_title' => $newtitle->getDBkey(),
+					'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' ),
+					array( 'smw_title' => $oldtitle->getDBkey(),
+					'smw_namespace' => $oldtitle->getNamespace(), 'smw_iw' => '' ),
+					__METHOD__ );
+				$this->m_idCache->moveSubobjects( $oldtitle->getDBkey(), $oldtitle->getNamespace(),
+					$newtitle->getDBkey(), $newtitle->getNamespace() );
+				$this->m_idCache->setId( $oldtitle->getDBkey(), $oldtitle->getNamespace(), '', '', 0 );
+				$this->m_idCache->setId( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '', $sid );
 			} else { // make new (target) id for use in redirect table
 				$sid = $this->makeSMWPageID( $newtitle->getDBkey(), $newtitle->getNamespace(), '', '' );
 			} // at this point, $sid is the id of the target page (according to smw_ids)
@@ -921,11 +932,7 @@ class SMWSQLStore2 extends SMWStore {
 						's_namespace' => $oldtitle->getNamespace(),
 						'o_id' => $sid ),
 			             __METHOD__ );
-			// update caches:
-			$this->m_ids[' ' . $oldtitle->getNamespace() . ' ' . $oldtitle->getDBkey() . '   C'] = $sid;
-			// $this->m_ids[" " . $oldtitle->getNamespace() . " " . $oldtitle->getDBkey() . " -"] = Already OK after makeSMWPageID above
-			$this->m_ids[' ' . $newtitle->getNamespace() . ' ' . $newtitle->getDBkey() . '   C'] = $sid;
-			$this->m_ids[' ' . $newtitle->getNamespace() . ' ' . $newtitle->getDBkey() . '   -'] = $sid;
+
 			/// NOTE: there is the (bad) case that the moved page is a redirect. As chains of
 			/// redirects are not supported by MW or SMW, the above is maximally correct in this case too.
 			/// NOTE: this temporarily leaves existing redirects to oldtitle point to newtitle as well, which
@@ -943,13 +950,9 @@ class SMWSQLStore2 extends SMWStore {
 
 			// Move all data of old title to new position:
 			if ( $sid != 0 ) {
-				$this->changeSMWPageID( $sid, $tid, $oldtitle->getNamespace(), $newtitle->getNamespace(), true, false );
+				$this->changeSMWPageID( $sid, $tid, $oldtitle->getNamespace(),
+					$newtitle->getNamespace(), true, false );
 			}
-
-			// Write a redirect from old title to new one:
-			// (this also updates references in other tables as needed.)
-			/// TODO: may not be optimal for the standard case that newtitle existed and redirected to oldtitle (PERFORMANCE)
-			$this->updateRedirects( $oldtitle->getDBkey(), $oldtitle->getNamespace(), $newtitle->getDBkey(), $newtitle->getNamespace() );
 
 			// Associate internal objects (subobjects) with the new title:
 			$table = $db->tableName( 'smw_ids' );
@@ -965,6 +968,13 @@ class SMWSQLStore2 extends SMWStore {
 // 				array( 'smw_title' => $newtitle->getDBkey(), 'smw_namespace' => $newtitle->getNamespace(), 'smw_iw' => '' ),
 // 				array( 'smw_title' => $oldtitle->getDBkey(), 'smw_namespace' => $oldtitle->getNamespace(), 'smw_iw' => '', 'smw_subobject!' => array( '' ) ), // array() needed for ! to work
 // 				__METHOD__ );
+			$this->m_idCache->moveSubobjects( $oldtitle->getDBkey(), $oldtitle->getNamespace(),
+				$newtitle->getDBkey(), $newtitle->getNamespace() );
+
+			// Write a redirect from old title to new one:
+			// (this also updates references in other tables as needed.)
+			/// TODO: may not be optimal for the standard case that newtitle existed and redirected to oldtitle (PERFORMANCE)
+			$this->updateRedirects( $oldtitle->getDBkey(), $oldtitle->getNamespace(), $newtitle->getDBkey(), $newtitle->getNamespace() );
 		}
 		
 		wfProfileOut( "SMWSQLStore2::changeTitle (SMW)" );
@@ -1281,7 +1291,7 @@ class SMWSQLStore2 extends SMWStore {
 			$reportTo
 		);
 
-		SMWSQLHelpers::setupIndex( 'smw_ids', array( 'smw_id', 'smw_title,smw_namespace,smw_iw,smw_subobject', 'smw_sortkey' ), $db );
+		SMWSQLHelpers::setupIndex( 'smw_ids', array( 'smw_id', 'smw_title,smw_namespace,smw_iw', 'smw_title,smw_namespace,smw_iw,smw_subobject', 'smw_sortkey' ), $db );
 
 		// Set up concept cache: member elements (s)->concepts (o)
 		SMWSQLHelpers::setupTable(
@@ -1908,96 +1918,72 @@ class SMWSQLStore2 extends SMWStore {
 	 * returned.
 	 */
 	public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true ) {
-		$sort = '';
-		return $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $sort, $canonical );
+		global $smwgQEqualitySupport;
+
+		$id = $this->m_idCache->getId( $title, $namespace, $iw, $subobjectName );
+		if ( $id == 0 && $smwgQEqualitySupport != SMW_EQ_NONE
+			&& $subobjectName == '' && $iw == '' ) {
+			$iw = SMW_SQL2_SMWREDIIW;
+			$id = $this->m_idCache->getId( $title, $namespace, SMW_SQL2_SMWREDIIW, $subobjectName );
+		}
+
+		if ( $id == 0 || !$canonical || $iw != SMW_SQL2_SMWREDIIW ) {
+			return $id;
+		} else {
+			$rediId = $this->getRedirectId( $title, $namespace );
+			return $rediId != 0 ? $rediId : $id; // fallback for inconsistent redirect info
+		}
 	}
 
 	/**
 	 * Like getSMWPageID(), but also sets the Call-By-Ref parameter $sort to
 	 * the current sortkey.
-	 * @todo Ensuring that properties redirect to properties only should not be done here.
-	 * @todo Centralise creation of id cache keys, and make sure non-local pages have only one key
-	 * (no need to distinguish canonical/non-canonical in this case).
 	 */
 	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sort, $canonical ) {
-		global $smwgQEqualitySupport;
-
 		wfProfileIn( 'SMWSQLStore2::getSMWPageID (SMW)' );
 
-		$ckey = "$iw $namespace $title $subobjectName C";
-		$nkey = "$iw $namespace $title $subobjectName -";
-		$key = ( $canonical ? $ckey : $nkey );
-
-		if ( array_key_exists( $key, $this->m_ids ) ) {
-			wfProfileOut( 'SMWSQLStore2::getSMWPageID (SMW)' );
-			return $this->m_ids[$key];
-		}
-
-		if ( count( $this->m_ids ) > 1500 ) { // prevent memory leak in very long PHP runs
-			$this->m_ids = array();
-		}
+		global $smwgQEqualitySupport;
 
 		$db = wfGetDB( DB_SLAVE );
-		$id = 0;
 
 		if ( $iw != '' ) { // external page; no need to think about redirects
-			$res = $db->select(
-				'smw_ids',
-				array( 'smw_id', 'smw_sortkey' ),
-				array( 'smw_title' => $title, 'smw_namespace' => $namespace, 'smw_iw' => $iw, 'smw_subobject' => $subobjectName ),
-				'SMW::getSMWPageID', array( 'LIMIT' => 1 )
-			);
-			$row = $db->fetchObject( $res );
-			if ( $row ) {
-				$id = $row->smw_id;
-				$sort = $row->smw_sortkey;
-			}
-
-			$this->m_ids[ $canonical ? $nkey : $ckey ] = $id; // unique id, make sure cache for canonical+non-cacnonical gets filled: this line fills the cache that is not $key!
-		} else { // check for potential redirects also
-			$res = $db->select( 'smw_ids', array( 'smw_id', 'smw_iw', 'smw_sortkey' ),
-			         'smw_title=' . $db->addQuotes( $title ) .
-			         ' AND smw_namespace=' . $db->addQuotes( $namespace ) .
-			         ' AND (smw_iw=' . $db->addQuotes( '' ) .
-			         ' OR smw_iw=' . $db->addQuotes( SMW_SQL2_SMWREDIIW ) . ')' .
-			         ' AND smw_subobject=' . $db->addQuotes( $subobjectName ),
-			         'SMW::getSMWPageID', array( 'LIMIT' => 1 ) );
-			$row = $db->fetchObject( $res );
-
-			if ( $row ) {
-				$id = $row->smw_id; // set id in any case, the below check for properties will use even the redirect id in emergency
-				$sort = $row->smw_sortkey;
-
-				if ( ( $row->smw_iw == '' ) ) { // the id found is unique (canonical and non-canonical); fill cache also for the case *not* asked for
-					$this->m_ids[ $canonical ? $nkey : $ckey ] = $id; // (the other cache is filled below)
-				} elseif ( $canonical && ( $subobjectName == '' ) && ( $smwgQEqualitySupport != SMW_EQ_NONE ) ) { // check for redirect alias
-					if ( $namespace == SMW_NS_PROPERTY ) { // redirect properties only to properties
-						///TODO: Shouldn't this condition be ensured during writing?
-						$res2 = $db->select( array( 'smw_redi2', 'smw_ids' ), 'o_id',
-							'o_id=smw_id AND smw_namespace=s_namespace AND s_title=' . $db->addQuotes( $title ) .
-							' AND s_namespace=' . $db->addQuotes( $namespace ), 'SMW::getSMWPageID', array( 'LIMIT' => 1 ) );
-					} else {
-						$res2 = $db->select( 'smw_redi2', 'o_id',
-							's_title=' . $db->addQuotes( $title ) . ' AND s_namespace=' . $db->addQuotes( $namespace ),
-							'SMW::getSMWPageID', array( 'LIMIT' => 1 ) );
-					}
-					$row = $db->fetchObject( $res2 );
-					if ( $row ) {
-						$id = $row->o_id;
-					}
-
-					$db->freeResult( $res2 );
-				}
-			}
-
+			$iwCond = 'smw_iw=' . $db->addQuotes( $iw );
+		} else {
+			$iwCond = '(smw_iw=' . $db->addQuotes( '' ) .
+				' OR smw_iw=' . $db->addQuotes( SMW_SQL2_SMWREDIIW ) . ')';
 		}
 
-		$db->freeResult( $res );
+		$row = $db->selectRow( 'smw_ids', array( 'smw_id', 'smw_iw', 'smw_sortkey' ),
+			'smw_title=' . $db->addQuotes( $title ) .
+			' AND smw_namespace=' . $db->addQuotes( $namespace ) .
+			" AND $iwCond AND smw_subobject=" . $db->addQuotes( $subobjectName ),
+			__METHOD__ );
 
-		$this->m_ids[$key] = $id;
+		if ( $row !== false ) {
+			$sort = $row->smw_sortkey;
+			$this->m_idCache->setId( $title, $namespace, $row->smw_iw, $subobjectName, $row->smw_id );
+
+			if ( $row->smw_iw == SMW_SQL2_SMWREDIIW && $canonical &&
+				$subobjectName == '' && $smwgQEqualitySupport != SMW_EQ_NONE ) {
+				$id = $this->getRedirectId( $title, $namespace );
+				$this->m_idCache->setId( $title, $namespace, $iw, $subobjectName, 0 );
+			} else {
+				$id = $row->smw_id;
+			}
+		} else {
+			$id = 0;
+			$this->m_idCache->setId( $title, $namespace, $iw, $subobjectName, 0 );
+		}
+
 		wfProfileOut( 'SMWSQLStore2::getSMWPageID (SMW)' );
-
 		return $id;
+	}
+
+	public function getRedirectId( $title, $namespace ) {
+		$db = wfGetDB( DB_SLAVE );
+		$row = $db->selectRow( 'smw_redi2', 'o_id',
+			array( 's_title' => $title, 's_namespace' => $namespace ), __METHOD__ );
+		return ( $row === false ) ? 0 : $row->o_id;
 	}
 
 	/**
@@ -2030,23 +2016,18 @@ class SMWSQLStore2 extends SMWStore {
 					'smw_subobject' => $subobjectName,
 					'smw_sortkey' => $sortkey
 				),
-				'SMW::makeSMWPageID'
+				__METHOD__
 			);
 
 			$id = $db->insertId();
-			$this->m_ids["$iw $namespace $title $subobjectName -"] = $id; // fill that cache, even if canonical was given
-			
-			// This ID is also authorative for the canonical version.
-			// This is always the case: if $canonical===false and $id===0, then there is no redi-entry in
-			// smw_ids either, hence the object just did not exist at all.
-			$this->m_ids["$iw $namespace $title $subobjectName C"] = $id;
+
+			$this->m_idCache->setId( $title, $namespace, $iw, $subobjectName, $id );
 		} elseif ( ( $sortkey != '' ) && ( $sortkey != $oldsort ) ) {
 			$db = wfGetDB( DB_MASTER );
-			$db->update( 'smw_ids', array( 'smw_sortkey' => $sortkey ), array( 'smw_id' => $id ), 'SMW::makeSMWPageID' );
+			$db->update( 'smw_ids', array( 'smw_sortkey' => $sortkey ), array( 'smw_id' => $id ), __METHOD__ );
 		}
 
 		wfProfileOut( 'SMWSQLStore2::makeSMWPageID (SMW)' );
-
 		return $id;
 	}
 
@@ -2096,18 +2077,7 @@ class SMWSQLStore2 extends SMWStore {
 	 * whether the given ID is canonical or not.
 	 */
 	public function cacheSMWPageID( $id, $title, $namespace, $iw, $subobjectName ) {
-		$ckey = "$iw $namespace $title $subobjectName C";
-		$nkey = "$iw $namespace $title $subobjectName -";
-
-		if ( count( $this->m_ids ) > 1500 ) { // prevent memory leak in very long PHP runs
-			$this->m_ids = array();
-		}
-
-		$this->m_ids[$nkey] = $id;
-
-		if ( $iw != SMW_SQL2_SMWREDIIW ) {
-			$this->m_ids[$ckey] = $id;
-		}
+		$this->m_idCache->setId( $title, $namespace, $iw, $subobjectName, $id );
 	}
 
 	/**
@@ -2117,17 +2087,11 @@ class SMWSQLStore2 extends SMWStore {
 	 * moved consistently in all relevant tables. Whatever currently occupies
 	 * the target id will be ignored (it should be ensured that nothing is
 	 * moved to an id that is still in use somewhere).
-	 * @note This page does not update any caches. If relevant, this needs to
-	 * be effected by the caller.
 	 */
 	protected function moveSMWPageID( $curid, $targetid = 0 ) {
 		$db = wfGetDB( DB_MASTER );
 
-		$row = $db->selectRow(
-			'smw_ids',
-			array( 'smw_id', 'smw_namespace', 'smw_title', 'smw_iw', 'smw_subobject', 'smw_sortkey' ),
-			array( 'smw_id' => $curid ),	'SMWSQLStore2::moveSMWPageID'
-		);
+		$row = $db->selectRow( 'smw_ids', '*', array( 'smw_id' => $curid ), __METHOD__ );
 
 		if ( $row === false ) return; // no id at current position, ignore
 
@@ -2142,9 +2106,8 @@ class SMWSQLStore2 extends SMWStore {
 					'smw_subobject' => $row->smw_subobject,
 					'smw_sortkey' => $row->smw_sortkey
 				),
-				'SMW::moveSMWPageID'
+				__METHOD__
 			);
-
 			$targetid = $db->insertId();
 		} else { // change to given id
 			$db->insert( 'smw_ids',
@@ -2155,11 +2118,15 @@ class SMWSQLStore2 extends SMWStore {
 					'smw_subobject' => $row->smw_subobject,
 					'smw_sortkey' => $row->smw_sortkey
 				),
-				'SMW::moveSMWPageID'
+				__METHOD__
 			);
 		}
 
 		$db->delete( 'smw_ids', array( 'smw_id' => $curid ), 'SMWSQLStore2::moveSMWPageID' );
+
+		$this->m_idCache->setId( $row->smw_title, $row->smw_namespace, $row->smw_iw,
+			$row->smw_subobject, $targetid );
+
 		$this->changeSMWPageID( $curid, $targetid, $row->smw_namespace, $row->smw_namespace );
 	}
 
@@ -2257,7 +2224,7 @@ class SMWSQLStore2 extends SMWStore {
 		}
 
 		// also find subobjects used by this ID ...
-		$res = $db->select( 'smw_ids', 'smw_id',
+		$res = $db->select( 'smw_ids', '*',
 			'smw_title = ' . $db->addQuotes( $subject->getDBkey() ) . ' AND ' .
 			'smw_namespace = ' . $db->addQuotes( $subject->getNamespace() ) . ' AND ' .
 			'smw_iw = ' . $db->addQuotes( $subject->getInterwiki() ) . ' AND ' .
@@ -2273,6 +2240,8 @@ class SMWSQLStore2 extends SMWStore {
 		// ... and delete them as well
 		foreach ( $res as $row ) {
 			$subobjects[] = $row->smw_id;
+			$this->m_idCache->setId( $row->smw_title, $row->smw_namespace,
+				$row->smw_iw, $row->smw_subobject, 0 ); // deleted below
 			foreach ( self::getPropertyTables() as $proptable ) {
 				if ( $proptable->idsubject ) {
 					$db->delete( $proptable->name, array( 's_id' => $row->smw_id ), __METHOD__ );
@@ -2409,25 +2378,24 @@ class SMWSQLStore2 extends SMWStore {
 				// mark subject as redirect (if it was no redirect before)
 				if ( $sid == 0 ) { // every redirect page must have an ID
 					$sid = $this->makeSMWPageID( $subject_t, $subject_ns,
-								SMW_SQL2_SMWREDIIW, '', false );
+						SMW_SQL2_SMWREDIIW, '', false );
 				} else {
 					$db->update( 'smw_ids', array( 'smw_iw' => SMW_SQL2_SMWREDIIW ),
-								array( 'smw_id' => $sid ), __METHOD__ );
+						array( 'smw_id' => $sid ), __METHOD__ );
+					$this->m_idCache->setId( $subject_t, $subject_ns, '', '', 0 );
+					$this->m_idCache->setId( $subject_t, $subject_ns, SMW_SQL2_SMWREDIIW, '', $sid );
 				}
 			}
 
 			$db->insert( 'smw_redi2', array( 's_title' => $subject_t,
-							's_namespace' => $subject_ns,
-							'o_id' => $new_tid ), __METHOD__ );
-			$this->m_ids[" $subject_ns $subject_t   C"] = $new_tid;
+				's_namespace' => $subject_ns, 'o_id' => $new_tid ), __METHOD__ );
 		} else { // delete old redirect
 			// This case implies $old_tid != 0 (or we would have new_tid == old_tid above).
 			// Therefore $subject had a redirect, and it must also have an ID.
 			// This shows that $sid != 0 here.
-			$this->m_ids[" $subject_ns $subject_t   C"] = $sid;
-
 			if ( $smwgQEqualitySupport != SMW_EQ_NONE ) { // mark subject as non-redirect
 				$db->update( 'smw_ids', array( 'smw_iw' => '' ), array( 'smw_id' => $sid ), __METHOD__ );
+				$this->m_idCache->setId( $subject_t, $subject_ns, '', '', $sid );
 			}
 		}
 
