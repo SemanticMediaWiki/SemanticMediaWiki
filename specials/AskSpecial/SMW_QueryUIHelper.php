@@ -9,18 +9,18 @@
  * @author Sanyam Goyal
  * @author Jeroen De Dauw
  */
-abstract class SMWQueryUI extends SpecialPage{
+abstract class SMWQueryUI extends SpecialPage {
 	protected $m_ui_helper;
-	protected abstract function execute($p){
+	protected abstract function execute( $p ) {
 		/*
 		 * Extract the parameters from the UI. Use either the constructor or
 		 * $this->m_ui_helper=new SMWUIHelper()
 		 */
 	}
-	protected function getUrlTail(){
-		$urltail='&q=' . urlencode( $this->m_ui_helper->getQuerystring() );
+	protected function getUrlTail() {
+		$urltail = '&q=' . urlencode( $this->m_ui_helper->getQuerystring() );
 		$tmp_parray = array();
-		$params=$this->m_ui_helper->getParams();
+		$params = $this->m_ui_helper->getParams();
 		foreach ( $params as $key => $value ) {
 			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
 				$tmp_parray[$key] = $value;
@@ -37,10 +37,10 @@ abstract class SMWQueryUI extends SpecialPage{
 		if ( array_key_exists( 'sort', $params ) )  $urltail .= '&sort=' . $params['sort'];
 		if ( array_key_exists( 'order', $params ) ) $urltail .= '&order=' . $params['order'];
 	}
-	protected function makeHtmlResult(){
+	protected function makeHtmlResult() {
 		global $wgOut;
-		if(is_a($this->m_ui_helper,  'SMWQueryUIHelper')){
-			
+		if ( is_a( $this->m_ui_helper,  'SMWQueryUIHelper' ) ) {
+
 		}
 	}
 	/**
@@ -171,7 +171,7 @@ abstract class SMWQueryUI extends SpecialPage{
 		return $input->getHtml();
 	}
 
-	protected function usesNavigationBar(){
+	protected function usesNavigationBar() {
 		return true;
 	}
 
@@ -273,55 +273,55 @@ abstract class SMWQueryUI extends SpecialPage{
  * @property boolean $enable_validation If set to TRUE causes each of the parametes to be checked for errors.
  */
 class SMWQueryUIHelper {
-	
-//members
-	protected $m_querystring = ''; //The query
-	protected $m_params = array(); //Parameters controlling how the results should be displayed
-	protected $m_printouts = array(); //Properties to be printed along with results
-	protected static $m_UIPages = array(); //A list of Query UIs
+
+// members
+	protected $m_querystring = ''; // The query
+	protected $m_params = array(); // Parameters controlling how the results should be displayed
+	protected $m_printouts = array(); // Properties to be printed along with results
+	protected static $m_UIPages = array(); // A list of Query UIs
 	public $enable_validation;
-	private $fatal_errors= false;
+	private $fatal_errors = false;
 	private $context;
-	private $errors=array();
-	const SPECIAL_PAGE=0;//parameters passed from special page
-	const WIKI_LINK=1;//parameters passed from 'further links' in the wiki.
+	private $errors = array();
+	const SPECIAL_PAGE = 0;// parameters passed from special page
+	const WIKI_LINK = 1;// parameters passed from 'further links' in the wiki.
 
 
-//constructor
-	public function __construct($enable_validation = true, $context=self::SPECIAL_PAGE) {
+// constructor
+	public function __construct( $enable_validation = true, $context = self::SPECIAL_PAGE ) {
 		$this -> enable_validation = $enable_validation;
-		$this->context=$context;
+		$this->context = $context;
 	}
 
-	public function hasError(){
+	public function hasError() {
 		return $this->fatal_errors;
-	}	
-	
+	}
+
 	/**
 	 *
 	 * Returns an array of errors, if any have occured.
 	 * @return array of strings
 	 */
-	public function getErrors(){
+	public function getErrors() {
 		return $this->errors;
 	}
 	/**
 	 * Register a Semantic Search Special Page
 	 * @param SpecialPage $page
 	 */
-	public static function addUI( SpecialPage &$page ){
+	public static function addUI( SpecialPage &$page ) {
 	/*
 	 * This way of registering, instead of using a global variable will cause
 	 * SMWQueryUIHelper to AutoLoad, but the alternate would break encapsulation.
 	 */
-		self::$m_UIPages[]=$page;
+		self::$m_UIPages[] = $page;
 	}
 
 	/**
 	 * Returns an array of Semantic Search Special Pages
 	 * @return array of SpecialPage
 	 */
-	public static function getUiList(){
+	public static function getUiList() {
 		return self::$m_UIPages;
 	}
 
@@ -332,22 +332,22 @@ class SMWQueryUIHelper {
 	 * @param string $querystring The query
 	 * @return array array of errors, if any.
 	 */
-	public function setQueryString( $querystring =""){
+	public function setQueryString( $querystring = "" ) {
 		$this -> m_querystring = $querystring;
-		$errors=array();
-		if($this->enable_validation){
-			if($querystring==''){
-				$errors[]="No query has been specified"; //TODO i18n
+		$errors = array();
+		if ( $this->enable_validation ) {
+			if ( $querystring == '' ) {
+				$errors[] = "No query has been specified"; // TODO i18n
 			}
 			else
 			{
-				$query = SMWQueryProcessor::createQuery($querystring, array());
-				$errors=$query ->getErrors();
+				$query = SMWQueryProcessor::createQuery( $querystring, array() );
+				$errors = $query ->getErrors();
 			}
-			if (!empty ($errors)){
-				$this->fatal_errors=true;
+			if ( !empty ( $errors ) ) {
+				$this->fatal_errors = true;
 			}
-			$this->errors = array_merge($errors,$this->errors);
+			$this->errors = array_merge( $errors, $this->errors );
 			return $errors;
 		}
 	}
@@ -361,87 +361,85 @@ class SMWQueryUIHelper {
 	 * @param array $printouts Array of additional properties to be shown in results
 	 * @return array array of errors, if any.
 	 */
-	public function setPrintOuts( array $printouts=array() ){
+	public function setPrintOuts( array $printouts = array() ) {
 		$errors = array();
-		if($this -> enable_validation){
-			foreach($printouts as $key => $prop){
-				if($prop[0]!='?'){
-					$printouts[$key]="?".$printouts[$key];
+		if ( $this -> enable_validation ) {
+			foreach ( $printouts as $key => $prop ) {
+				if ( $prop[0] != '?' ) {
+					$printouts[$key] = "?" . $printouts[$key];
 				}
-				if(!$this->validateProperty($prop)){
-					$errors[]="$prop may not be a valid property"; //TODO: add i18n
-					$this->fatal_errors=true;
+				if ( !$this->validateProperty( $prop ) ) {
+					$errors[] = "$prop may not be a valid property"; // TODO: add i18n
+					$this->fatal_errors = true;
 				}
 			}
 		}
 		$this -> m_printouts = $printouts;
-		$this->errors = array_merge($errors,$this->errors);
+		$this->errors = array_merge( $errors, $this->errors );
 		return $errors;
 	}
 
-	public function setParams( array $params =array()){
+	public function setParams( array $params = array() ) {
 		/*
-		 *Validate, and add missing params.		 * 
+		 *Validate, and add missing params.		 *
 		 */
 		global $smwgQMaxInlineLimit, $smwgResultFormats;
 		$errors = array();
 
-		 //checking for missing parameters and adding them
-		if( !array_key_exists( 'format', $params ) )
+		 // checking for missing parameters and adding them
+		if ( !array_key_exists( 'format', $params ) )
 				$params[ 'format' ] = $this->getDefaultResultPrinter ();
-		if( !array_key_exists('order', $params ) )
+		if ( !array_key_exists( 'order', $params ) )
 				$params[ 'order' ] = '';
-		if( !array_key_exists( 'limit', $params) )
+		if ( !array_key_exists( 'limit', $params ) )
 				$params[ 'limit' ] = 20;
 		$params[ 'limit' ] = min( $params[ 'limit' ], $smwgQMaxInlineLimit );
-		if(!array_key_exists('offset', $params))
-				$params['offset']=0;
-	
-		if ($this->enable_validation){
-			//validating the format
-			if(!array_key_exists($params['format'], $smwgResultFormats)){
-				$errors[]="The chosen format "+$params['format']+" does not exist for this wiki"; //TODO i18n
-				$this->fatal_errors=true;
+		if ( !array_key_exists( 'offset', $params ) )
+				$params['offset'] = 0;
+
+		if ( $this->enable_validation ) {
+			// validating the format
+			if ( !array_key_exists( $params['format'], $smwgResultFormats ) ) {
+				$errors[] = "The chosen format " + $params['format'] + " does not exist for this wiki"; // TODO i18n
+				$this->fatal_errors = true;
 			}
 			else
-			{	//validating parameters for result printer
+			{	// validating parameters for result printer
 				$printer = SMWQueryProcessor::getResultPrinter( $params[ 'format' ] );
-				$parameters=$printer->getParameters();
-				if(is_array($parameters)){
-					//if(is_a($parameters[0], 'Parameter')){
+				$parameters = $printer->getParameters();
+				if ( is_array( $parameters ) ) {
 						$validator = new Validator();
-						$validator -> setParameters($params,$parameters);
+						$validator -> setParameters( $params, $parameters );
 						$validator->validateParameters();
 						$validator_has_error = $validator->hasFatalError();
-						if($validator_has_error){
-							array_merge ($errors, $validator->getErrorMessages ());
-							$this->fatal_errors=true;
+						if ( $validator_has_error ) {
+							array_merge ( $errors, $validator->getErrorMessages () );
+							$this->fatal_errors = true;
 						}
-					//}
 				}
 			}
 		}
 
 		$this -> m_params = $params;
-		$this->errors = array_merge($errors,$this->errors);
+		$this->errors = array_merge( $errors, $this->errors );
 		return $errors;
 	}
 
-	public function makeHTMLResult(){
+	public function makeHTMLResult() {
 		/*
 		 * Once $m_querystring, $m_params, $m_printouts are set, generates the
 		 * results / or link. The pagination links (or navigation bar) are expected
 		 * to be created by the UI designer. (or maybe we can put a method here to
 		 * make the nav-bar which also calls makeHTMLResult().
 		 */
-		$result='';
-		$errors=array();
-		$query=SMWQueryProcessor::createQuery($this->m_querystring, $this->m_params,SMWQueryProcessor::SPECIAL_PAGE , $this->m_params['format'], $this->m_printouts);
-		$res=smwfGetStore()->getQueryResult($query);
-		$errors= array_merge($errors, $res->getErrors());
-		if(!empty($errors)){
-			$this->fatal_errors=true;
-			$this->errors = array_merge($errors,$this->errors);
+		$result = '';
+		$errors = array();
+		$query = SMWQueryProcessor::createQuery( $this->m_querystring, $this->m_params, SMWQueryProcessor::SPECIAL_PAGE , $this->m_params['format'], $this->m_printouts );
+		$res = smwfGetStore()->getQueryResult( $query );
+		$errors = array_merge( $errors, $res->getErrors() );
+		if ( !empty( $errors ) ) {
+			$this->fatal_errors = true;
+			$this->errors = array_merge( $errors, $this->errors );
 		}
 
 		// BEGIN: Try to be smart for rss/ical if no description/title is given and we have a concept query
@@ -471,27 +469,12 @@ class SMWQueryUIHelper {
 			}
 		}
 		// END: Try to be smart for rss/ical if no description/title is given and we have a concept query
-		
+
 		$printer = SMWQueryProcessor::getResultPrinter( $this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE );
 		$result_mime = $printer->getMimeType( $res );
 
-//		global $wgRequest;
-//
-//		$hidequery = $wgRequest->getVal( 'eq' ) == 'no';
-//
-//		// if it's an export format (like CSV, JSON, etc.),
-//		// don't actually export the data if 'eq' is set to
-//		// either 'yes' or 'no' in the query string - just
-//		// show the link instead
-//		if ( $this->m_editquery || $hidequery ) $result_mime = false;
-
-		//??/if ( $result_mime == false ) {
 			if ( $res->getCount() > 0 ) {
-//				if ( $this->m_editquery ) $urltail .= '&eq=yes';
-//				if ( $hidequery ) $urltail .= '&eq=no';
 
-				//$navigation = $this->getNavigationBar( $res, $urltail );//?
-				//$result .= '<div style="text-align: center;">' . "\n" . $navigation . "\n</div>\n";//?
 				$query_result = $printer->getResult( $res, $this->m_params, SMW_OUTPUT_HTML );
 
 				if ( is_array( $query_result ) ) {
@@ -500,57 +483,34 @@ class SMWQueryUIHelper {
 					$result .= $query_result;
 				}
 
-				//$result .= '<div style="text-align: center;">' . "\n" . $navigation . "\n</div>\n";//?
 			} else {
 				$result = wfMsg( 'smw_result_noresults' );
 			}
 			return $result;
-//		} else { // make a stand-alone file
-//			$result = $printer->getResult( $res, $this->m_params, SMW_OUTPUT_FILE );
-//			$result_name = $printer->getFileName( $res ); // only fetch that after initialising the parameters
-//	///////////////////////////////////////
-//
-//		//$result = $this->getInputForm( $printoutstring, 'offset=' . $this->m_params['offset'] . '&limit=' . $this->m_params['limit'] . $urltail ) . $result;
-//		//$wgOut->addHTML( $result );
-//		global $wgOut;
-//			$wgOut->disable();
-//
-//			header( "Content-type: $result_mime; charset=UTF-8" );
-//
-//			if ( $result_name !== false ) {
-//				header( "content-disposition: attachment; filename=$result_name" );
-//			}
-//
-//			echo $result;
-//	}
-
-
 	}
 
-	//next come form-helper methods which may or may not be used by the UI designer
+	// next come form-helper methods which may or may not be used by the UI designer
 
-	public function extractParameters( $p ){
-		if($this->context==self::SPECIAL_PAGE){
-			//assume setParams(), setPintouts and setQueryString have been called
-			$rawparams = array_merge($this->m_params, array($this->m_querystring), $this->m_printouts);
+	public function extractParameters( $p ) {
+		if ( $this->context == self::SPECIAL_PAGE ) {
+			// assume setParams(), setPintouts and setQueryString have been called
+			$rawparams = array_merge( $this->m_params, array( $this->m_querystring ), $this->m_printouts );
 		}
-		else //context is WIKI_LINK
+		else // context is WIKI_LINK
 		{
 			$rawparams = SMWInfolink::decodeParameters( $p, true );
-			//calling setParams to fill in missing parameters
-			$this->setParams($rawparams);
-			$rawparams= array_merge($this->m_params, $rawparams);
+			// calling setParams to fill in missing parameters
+			$this->setParams( $rawparams );
+			$rawparams = array_merge( $this->m_params, $rawparams );
 		}
-		
-		//var_dump($this->m_params);var_dump($this->m_printouts);var_dump($this->m_querystring);
-		//var_dump("after<br>");
+
+
 		SMWQueryProcessor::processFunctionParams( $rawparams, $this->m_querystring, $this->m_params, $this->m_printouts );
-		//var_dump($this->m_params);var_dump($this->m_printouts);var_dump($this->m_querystring);
 	}
 	/**
 	 * $m_querystring, $m_params, $m_printouts are set, returns the relevant #ask query
 	 */
-	public function makeAsk(){
+	public function makeAsk() {
 		$result = '{{#ask:' . htmlspecialchars( $this->m_querystring ) . "\n";
 		foreach ( $this->m_printouts as $printout ) {
 			$result .= '|' . $printout->getSerialisation() . "\n";
@@ -562,20 +522,20 @@ class SMWQueryUIHelper {
 		return $result;
 	}
 
-	public function getQueryString(){
+	public function getQueryString() {
 		return $this->m_querystring;
 	}
 
-	public function getParams(){
+	public function getParams() {
 		return $this->m_params;
 	}
 	/**
 	 *
 	 * @return array of SMWPrintRequest
 	 */
-	public function getPrintOuts(){
-		if(!empty($this->printouts)){
-			if(is_a($this->printouts[0],'SMWPrintRequest')){
+	public function getPrintOuts() {
+		if ( !empty( $this->printouts ) ) {
+			if ( is_a( $this->printouts[0], 'SMWPrintRequest' ) ) {
 				return $this->m_printouts;
 			}
 		}
@@ -583,16 +543,16 @@ class SMWQueryUIHelper {
 	}
 	/**
 	 * Constructs a new SMWQueryUIHelper when parameters are passed in the InfoLink style
-	 * 
+	 *
 	 * Errors, if any can be accessed from hasError() and getErrors()
 	 *
 	 * @param string $p parametrs
 	 * @param boolean $enable_validation
-	 * @return SMWQueryUIHelper 
+	 * @return SMWQueryUIHelper
 	 */
-	public static function makeFromInfoLink($p, $enable_validation = true){
-		$result = new SMWQueryUIHelper($enable_validation, self::WIKI_LINK);
-		$result->extractParameters($p);
+	public static function makeFromInfoLink( $p, $enable_validation = true ) {
+		$result = new SMWQueryUIHelper( $enable_validation, self::WIKI_LINK );
+		$result->extractParameters( $p );
 		return $result;
 	}
 	/**
@@ -606,27 +566,27 @@ class SMWQueryUIHelper {
 	 * @param boolean $enable_validation
 	 * @return SMWQueryUIHelper
 	 */
-	public static function makeFromUI($query, array $params, array $printouts, $enable_validation = true){
-		$result = new SMWQueryUIHelper($enable_validation, self::SPECIAL_PAGE);
-		$result->setParams($params);
-		$result->setPrintOuts($printouts);
-		$result->setQueryString($query);
-		$result->extractParameters("");
+	public static function makeFromUI( $query, array $params, array $printouts, $enable_validation = true ) {
+		$result = new SMWQueryUIHelper( $enable_validation, self::SPECIAL_PAGE );
+		$result->setParams( $params );
+		$result->setPrintOuts( $printouts );
+		$result->setQueryString( $query );
+		$result->extractParameters( "" );
 		return $result;
 	}
 	/**
 	 * Checks if $property exists in the wiki or not
 	 * @return bool
 	 */
-	protected static function validateProperty($property){
+	protected static function validateProperty( $property ) {
 		/*
 		 * Curently there isn't a simple, back-end agnost way of searching for properties from
 		 * SMWStore. We hence we check if $property has a corresponding page describing it.
 		 */
-		$prop= substr ($property, 1);//removing the leading '?' while checking.
+		$prop = substr ( $property, 1 );// removing the leading '?' while checking.
 		$propertypage = Title::newFromText( $prop, SMW_NS_PROPERTY );
-		if(is_a($propertypage, 'Title')){
-			return($propertypage->exists());
+		if ( is_a( $propertypage, 'Title' ) ) {
+			return( $propertypage->exists() );
 		} else {
 			return false;
 		}
@@ -638,7 +598,7 @@ class SMWQueryUIHelper {
 	 *
 	 * @return string
 	 */
-	protected static function getDefaultResultPrinter(){
+	protected static function getDefaultResultPrinter() {
 		return 'broadtable';
 	}
 
