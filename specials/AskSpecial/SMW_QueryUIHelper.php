@@ -8,15 +8,170 @@
  * @author Yaron Koren
  * @author Sanyam Goyal
  * @author Jeroen De Dauw
+ * @author Devayon Das
  */
 abstract class SMWQueryUI extends SpecialPage {
 	protected $m_ui_helper;
-	protected abstract function execute( $p ) {
+
+	protected function makeResults($p){
 		/*
-		 * Extract the parameters from the UI. Use either the constructor or
-		 * $this->m_ui_helper=new SMWUIHelper()
+		 * TODO: extract parameters from $p and decide:
+		 * (1) if form elements need to be displayed
+		 * (2) if any results need to be displayed
+		 * (3) which factory method of UIhelper should be called
+		 * Most of the code here in this method will anyway be removed later
 		 */
+		global $wgOut, $wgRequest;
+		$htmloutput="";
+		$htmloutput.= $this->getForm();
+		$param=array();
+		
+		$this->m_ui_helper = $helper = new SMWQueryUIHelper; //or some factory method
+		//here come some driver lines for testing; this is very temporary
+
+		//     form parameters                               default values
+		$helper->setQueryString(
+			$wgRequest->getVal('q',                    '[[Located in:: Germany]]'));
+		$helper->setParams(array(
+			'format'  =>  $wgRequest->getVal('format',	'ol' ),
+			'offset'  =>  $wgRequest->getVal('offset',  '0'  ),
+			'limit'   =>  $wgRequest->getVal('limit',   '20' )
+			));
+		$helper->setPrintOuts(array('?Population'));
+		$helper->extractParameters($p);
+
+		$helper->execute();
+
+		if($this->usesNavigationBar()){
+			$htmloutput.= $this->getNavigationBar ($helper->getLimit(),$helper->getOffset(),$helper->hasFurtherResults()); //? can we preload offset and limit?
+		}
+		
+		$htmloutput.= $helper->getHTMLResult();
+
+		if($this->usesNavigationBar()){
+			$htmloutput.= $this->getNavigationBar ($helper->getLimit(),$helper->getOffset(),$helper->hasFurtherResults()); //? can we preload offset and limit?
+		}
+		$wgOut->addHTML($htmloutput);
 	}
+
+	/**
+	 * Build the navigation bar for some given query result.
+	 *
+	 * UI may overload this for a different layout. The navigation bar
+	 * can be hidden by overloading usesNavigationBar(). To change the url format,
+	 * one may overload getUrlTail();
+	 *
+	 * @global int $smwgQMaxInlineLimit
+	 * @param int $limit
+	 * @param int $offset
+	 * @param boolean $has_further_results
+	 *
+	 * @return string
+	 */
+	public function getNavigationBar($limit, $offset, $has_further_results) {
+		global $smwgQMaxInlineLimit;
+		$urltail = $this->getUrlTail();
+		// Prepare navigation bar.
+		if ( $offset > 0 ) {
+			$navigation = Html::element(
+				'a',
+				array(
+					'href' => $this->getTitle()->getLocalURL(
+						'offset=' . max( 0, $offset - $limit ) .
+						'&limit=' . $limit . $urltail
+					),
+					'rel' => 'nofollow'
+				),
+				wfMsg( 'smw_result_prev' )
+			);
+
+		} else {
+			$navigation = wfMsg( 'smw_result_prev' );
+		}
+
+		$navigation .=
+			'&#160;&#160;&#160;&#160; <b>' .
+				wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) .
+			'&#150; ' .
+				( $offset + $this->m_ui_helper->getResultCount() ) .
+			'</b>&#160;&#160;&#160;&#160;';
+
+		if ( $has_further_results ) {
+			$navigation .= Html::element(
+				'a',
+				array(
+					'href' => $this->getTitle()->getLocalURL(
+						'offset=' . ( $offset + $limit ) .
+						'&limit=' . $limit . $urltail
+					),
+					'rel' => 'nofollow'
+				),
+				wfMsg( 'smw_result_next' )
+			);
+		} else {
+			$navigation .= wfMsg( 'smw_result_next' );
+		}
+
+		$first = true;
+
+		foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
+			if ( $l > $smwgQMaxInlineLimit ) break;
+
+			if ( $first ) {
+				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
+				$first = false;
+			} else {
+				$navigation .= ' | ';
+			}
+
+			if ( $limit != $l ) {
+				$navigation .= Html::element(
+					'a',
+					array(
+						'href' => $this->getTitle()->getLocalURL(
+							'offset=' . $offset .
+							'&limit=' . $l . $urltail
+						),
+						'rel' => 'nofollow'
+					),
+					$l
+				);
+			} else {
+				$navigation .= '<b>' . $l . '</b>';
+			}
+		}
+
+		$navigation .= ')';
+
+		return $navigation;
+	}
+	
+	/**
+	 * Creates the form elements and populates them with parameters. 
+	 * UI implementations need to overload this if a different layout and form
+	 * elements are desired
+	 * 
+	 * @return string Form elements in HTML
+	 */
+	protected function getForm(){
+		/*
+		 * Although the following methods will retuen form elements, which can
+		 * then be placed in wOut as pleased, they will
+		 * also write javascript (if relevant) directly to wgOut.
+		 */
+		
+		//$result="";
+		//$result.= getQueryFormBox($content);
+		//$result.= getPOFormBox($content, $enableAutoComplete);
+		//$result.= getParamBox($content); //avoid ajax, load form elements in the UI by default
+				$result="<br>Stub: The Form elements come here<br><br>";
+		return $result;
+	}
+
+	/**
+	 * A method which generates the url parameters based on passed parameters.
+	 * UI implementations need to overload this if they use different form parameters
+	 */
 	protected function getUrlTail() {
 		$urltail = '&q=' . urlencode( $this->m_ui_helper->getQuerystring() );
 		$tmp_parray = array();
@@ -36,12 +191,10 @@ abstract class SMWQueryUI extends SpecialPage {
 		if ( $printoutstring != '' ) $urltail .= '&po=' . urlencode( $printoutstring );
 		if ( array_key_exists( 'sort', $params ) )  $urltail .= '&sort=' . $params['sort'];
 		if ( array_key_exists( 'order', $params ) ) $urltail .= '&order=' . $params['order'];
+		return $urltail;
 	}
 	protected function makeHtmlResult() {
-		global $wgOut;
-		if ( is_a( $this->m_ui_helper,  'SMWQueryUIHelper' ) ) {
-
-		}
+		//STUB
 	}
 	/**
 	 * Display a form section showing the options for a given format,
@@ -175,91 +328,6 @@ abstract class SMWQueryUI extends SpecialPage {
 		return true;
 	}
 
-	/**
-	 * Build the navigation for some given query result, reuse url-tail parameters.
-	 *
-	 * @param SMWQueryResult $res
-	 * @param string $urltail
-	 *
-	 * @return string
-	 */
-	protected function getNavigationBar( SMWQueryResult $res, $urltail, $offset, $limit ) {
-		global $smwgQMaxInlineLimit;
-
-		// Prepare navigation bar.
-			if ( $offset > 0 ) {
-				$navigation = Html::element(
-					'a',
-					array(
-						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
-							'offset' => max( 0, $offset - $limit ),
-							'limit' => $limit . $urltail
-						) ),
-						'rel' => 'nofollow'
-					),
-					wfMsg( 'smw_result_prev' )
-				);
-
-			} else {
-				$navigation = wfMsg( 'smw_result_prev' );
-			}
-
-			$navigation .=
-				'&#160;&#160;&#160;&#160; <b>' .
-					wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) .
-				'&#150; ' .
-					( $offset + $res->getCount() ) .
-				'</b>&#160;&#160;&#160;&#160;';
-
-			if ( $res->hasFurtherResults() ) {
-				$navigation .= Html::element(
-					'a',
-					array(
-						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
-							'offset' => ( $offset + $limit ),
-							'limit' => $limit . $urltail
-						) ),
-						'rel' => 'nofollow'
-					),
-					wfMsg( 'smw_result_next' )
-				);
-			} else {
-				$navigation .= wfMsg( 'smw_result_next' );
-			}
-
-			$first = true;
-
-			foreach ( array( 20, 50, 100, 250, 500 ) as $l ) {
-				if ( $l > $smwgQMaxInlineLimit ) break;
-
-				if ( $first ) {
-					$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
-					$first = false;
-				} else {
-					$navigation .= ' | ';
-				}
-
-				if ( $limit != $l ) {
-					$navigation .= Html::element(
-						'a',
-						array(
-							'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
-								'offset' => $offset,
-								'limit' => $l . $urltail
-							) ),
-							'rel' => 'nofollow'
-						),
-						$l
-					);
-				} else {
-					$navigation .= '<b>' . $l . '</b>';
-				}
-			}
-
-			$navigation .= ')';
-
-			return $navigation;
-	}
 }
 
 /**
@@ -270,7 +338,6 @@ abstract class SMWQueryUI extends SpecialPage {
  *
  * @author Devayon Das
  *
- * @property boolean $enable_validation If set to TRUE causes each of the parametes to be checked for errors.
  */
 class SMWQueryUIHelper {
 
@@ -279,22 +346,52 @@ class SMWQueryUIHelper {
 	protected $m_params = array(); // Parameters controlling how the results should be displayed
 	protected $m_printouts = array(); // Properties to be printed along with results
 	protected static $m_UIPages = array(); // A list of Query UIs
-	public $enable_validation;
 	private $fatal_errors = false;
 	private $context;
 	private $errors = array();
+	private $queryresult = null;
+
 	const SPECIAL_PAGE = 0;// parameters passed from special page
 	const WIKI_LINK = 1;// parameters passed from 'further links' in the wiki.
 
 
 // constructor
-	public function __construct( $enable_validation = true, $context = self::SPECIAL_PAGE ) {
-		$this -> enable_validation = $enable_validation;
+	public function __construct($context = self::SPECIAL_PAGE ) {
 		$this->context = $context;
 	}
 
 	public function hasError() {
 		return $this->fatal_errors;
+	}
+
+	public function getLimit(){
+		if(key_exists('limit', $this->m_params)){
+			return $this->m_params['limit'];
+		}
+		else {
+			return 0;
+		}
+	}
+
+	public function getOffset(){
+		if(key_exists('offset', $this->m_params)){
+			return $this->m_params['offset'];
+		}
+		else{
+			return 20;
+		}
+	}
+	public function hasFurtherResults(){
+		if(is_a($this->queryresult,'SMWQueryResult')){
+			return $this->queryresult->hasFurtherResults();
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public function getResultObject(){
+		return $this->getResultObject();
 	}
 
 	/**
@@ -332,10 +429,10 @@ class SMWQueryUIHelper {
 	 * @param string $querystring The query
 	 * @return array array of errors, if any.
 	 */
-	public function setQueryString( $querystring = "" ) {
+	public function setQueryString( $querystring = "", $enable_validation=true ) {
 		$this -> m_querystring = $querystring;
 		$errors = array();
-		if ( $this->enable_validation ) {
+		if ( $enable_validation ) {
 			if ( $querystring == '' ) {
 				$errors[] = "No query has been specified"; // TODO i18n
 			}
@@ -361,9 +458,9 @@ class SMWQueryUIHelper {
 	 * @param array $printouts Array of additional properties to be shown in results
 	 * @return array array of errors, if any.
 	 */
-	public function setPrintOuts( array $printouts = array() ) {
+	public function setPrintOuts( array $printouts = array(), $enable_validation=true ) {
 		$errors = array();
-		if ( $this -> enable_validation ) {
+		if ( $enable_validation ) {
 			foreach ( $printouts as $key => $prop ) {
 				if ( $prop[0] != '?' ) {
 					$printouts[$key] = "?" . $printouts[$key];
@@ -379,7 +476,7 @@ class SMWQueryUIHelper {
 		return $errors;
 	}
 
-	public function setParams( array $params = array() ) {
+	public function setParams( array $params = array(), $enable_validation=true ) {
 		/*
 		 *Validate, and add missing params.		 *
 		 */
@@ -397,7 +494,7 @@ class SMWQueryUIHelper {
 		if ( !array_key_exists( 'offset', $params ) )
 				$params['offset'] = 0;
 
-		if ( $this->enable_validation ) {
+		if ( $enable_validation ) {
 			// validating the format
 			if ( !array_key_exists( $params['format'], $smwgResultFormats ) ) {
 				$errors[] = "The chosen format " + $params['format'] + " does not exist for this wiki"; // TODO i18n
@@ -421,21 +518,21 @@ class SMWQueryUIHelper {
 		}
 
 		$this -> m_params = $params;
-		$this->errors = array_merge( $errors, $this->errors );
+		$this -> errors = array_merge( $errors, $this->errors );
 		return $errors;
 	}
 
-	public function makeHTMLResult() {
+	public function execute() {
 		/*
 		 * Once $m_querystring, $m_params, $m_printouts are set, generates the
 		 * results / or link. The pagination links (or navigation bar) are expected
 		 * to be created by the UI designer. (or maybe we can put a method here to
 		 * make the nav-bar which also calls makeHTMLResult().
 		 */
-		$result = '';
 		$errors = array();
 		$query = SMWQueryProcessor::createQuery( $this->m_querystring, $this->m_params, SMWQueryProcessor::SPECIAL_PAGE , $this->m_params['format'], $this->m_printouts );
 		$res = smwfGetStore()->getQueryResult( $query );
+		$this->queryresult=$res;
 		$errors = array_merge( $errors, $res->getErrors() );
 		if ( !empty( $errors ) ) {
 			$this->fatal_errors = true;
@@ -469,7 +566,11 @@ class SMWQueryUIHelper {
 			}
 		}
 		// END: Try to be smart for rss/ical if no description/title is given and we have a concept query
-
+	}
+	
+	public function getHTMLResult(){
+		$result = '';
+		$res= $this->queryresult;
 		$printer = SMWQueryProcessor::getResultPrinter( $this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE );
 		$result_mime = $printer->getMimeType( $res );
 
@@ -526,6 +627,13 @@ class SMWQueryUIHelper {
 		return $this->m_querystring;
 	}
 
+	public function getResultCount(){
+		if(is_a($this->queryresult, 'SMWQueryResult')){
+			return $this->queryresult->getCount();
+		}
+		else return 0;
+
+	}
 	public function getParams() {
 		return $this->m_params;
 	}
@@ -551,8 +659,10 @@ class SMWQueryUIHelper {
 	 * @return SMWQueryUIHelper
 	 */
 	public static function makeFromInfoLink( $p, $enable_validation = true ) {
-		$result = new SMWQueryUIHelper( $enable_validation, self::WIKI_LINK );
+		//TODO handle validation for infolink parameters
+		$result = new SMWQueryUIHelper(self::WIKI_LINK );
 		$result->extractParameters( $p );
+		$result->execute();
 		return $result;
 	}
 	/**
@@ -567,11 +677,12 @@ class SMWQueryUIHelper {
 	 * @return SMWQueryUIHelper
 	 */
 	public static function makeFromUI( $query, array $params, array $printouts, $enable_validation = true ) {
-		$result = new SMWQueryUIHelper( $enable_validation, self::SPECIAL_PAGE );
-		$result->setParams( $params );
-		$result->setPrintOuts( $printouts );
-		$result->setQueryString( $query );
+		$result = new SMWQueryUIHelper(self::SPECIAL_PAGE );
+		$result->setParams( $params, $enable_validation);
+		$result->setPrintOuts( $printouts, $enable_validation );
+		$result->setQueryString( $query, $enable_validation );
 		$result->extractParameters( "" );
+		$result->execute();
 		return $result;
 	}
 	/**
