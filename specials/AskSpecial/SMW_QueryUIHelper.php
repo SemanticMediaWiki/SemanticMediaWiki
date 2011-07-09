@@ -12,7 +12,85 @@
  */
 abstract class SMWQueryUI extends SpecialPage {
 	protected $m_ui_helper;
+	private $autocompleteenabled=false;
 
+	protected function addAutocompletionJavascriptAndCSS(){
+		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
+		if($this->autocompleteenabled==false){
+						$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
+
+			$scripts = array();
+
+			if ( !$smwgJQueryIncluded ) {
+				$realFunction = array( 'OutputPage', 'includeJQuery' );
+				if ( is_callable( $realFunction ) ) {
+					$wgOut->includeJQuery();
+				} else {
+					$scripts[] = "$smwgScriptPath/libs/jquery-1.4.2.min.js";
+				}
+
+				$smwgJQueryIncluded = true;
+			}
+
+			if ( !$smwgJQueryUIIncluded ) {
+				$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.core.min.js";
+				$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.widget.min.js";
+				$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.position.min.js";
+				$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.autocomplete.min.js";
+				$smwgJQueryUIIncluded = true;
+			}
+
+			foreach ( $scripts as $js ) {
+				$wgOut->addScriptFile( $js );
+			}
+			$javascript_autocomplete_text = <<<END
+<script type="text/javascript">
+function split(val) {
+	return val.split('\\n');
+}
+function extractLast(term) {
+	return split(term).pop();
+}
+function escapeQuestion(term){
+	if (term.substring(0, 1) == "?") {
+		return term.substring(1);
+	} else {
+		return term;
+	}
+}
+
+jQuery.noConflict();
+/* extending jQuery functions for custom highligting */
+jQuery.ui.autocomplete.prototype._renderItem = function( ul, item) {
+	var term_without_q = escapeQuestion(extractLast(this.term));
+	var re = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term_without_q.replace("/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi", "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi");
+	var loc = item.label.search(re);
+	if (loc >= 0) {
+		var t = item.label.substr(0, loc) + '<strong>' + item.label.substr(loc, term_without_q.length) + '</strong>' + item.label.substr(loc + term_without_q.length);
+	} else {
+		var t = item.label;
+	}
+	jQuery( "<li></li>" )
+		.data( "item.autocomplete", item )
+		.append( " <a>" + t + "</a>" )
+		.appendTo( ul );
+};
+
+///* extending jquery functions for custom autocomplete matching */
+jQuery.extend( jQuery.ui.autocomplete, {
+	filter: function(array, term) {
+		var matcher = new RegExp("\\\b" + jQuery.ui.autocomplete.escapeRegex(term), "i" );
+		return jQuery.grep( array, function(value) {
+			return matcher.test( value.label || value.value || value );
+		});
+	}
+});
+END;
+
+			$wgOut->addScript( $javascript_autocomplete_text );
+			$this->autocompleteenabled=true;
+		}
+	}
 	protected function makeResults($p){
 		/*
 		 * TODO: extract parameters from $p and decide:
@@ -161,16 +239,82 @@ abstract class SMWQueryUI extends SpecialPage {
 		 */
 		
 		//$result="";
-		//$result.= getQueryFormBox($content);
+		//$result.= getQueryFormBox($contents, $errors);
 		//$result.= getPOFormBox($content, $enableAutoComplete);
 		//$result.= getParamBox($content); //avoid ajax, load form elements in the UI by default
 				$result="<br>Stub: The Form elements come here<br><br>";
 		return $result;
 	}
+	protected function getQueryFormBox($contents, $errors=""){
+		$result="";
+		$result= Html::element('textarea', array('name'=>'q', 'id'=>'querybox', 'rows' => '6'), $contents);
+		//TODO:enable/disable on checking for errors; perhaps show error messages right below the box
+		return $result;
+	}
+
+	/**
+	 * A method which generates the form box for PrintOuts.
+	 * UIs may overload this to change the form parameter or the html elements.
+	 *
+	 *
+	 * @global OutputPage $wgOut
+	 * @param string $content The content expected to appear in the box
+	 * @param boolean $enableAutocomplete If set to true, adds the relevant JS and CSS to the page
+	 * @return string The HTML code
+	 */
+	protected function getPOFormBox($content, $enableAutocomplete=true){
+		if($enableAutocomplete){
+			global $wgOut;
+			
+			if(!$this->autocompleteenabled) addAutocompletionJavascriptAndCSS();
+			$javascript_autocomplete_text = <<<END
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery("#add_property").autocomplete({
+		minLength: 2,
+		source: function(request, response) {
+			request.term=request.term.substr(request.term.lastIndexOf("\\n")+1);
+			url=wgScriptPath+'/api.php?action=opensearch&limit=10&namespace='+wgNamespaceIds['property']+'&format=jsonfm&search=';
+
+			jQuery.getJSON(url+request.term, function(data){
+				//remove the namespace prefix 'Property:' from returned data and add prefix '?'
+				for(i=0;i<data[1].length;i++) data[1][i]="?"+data[1][i].substr(data[1][i].indexOf(':')+1);
+				response(jQuery.ui.autocomplete.filter(data[1], escapeQuestion(extractLast(request.term))));
+			});
+		},
+		focus: function() {
+			// prevent value inserted on focus
+			return false;
+		},
+		select: function(event, ui) {
+			var terms = split( this.value );
+			// remove the current input
+			terms.pop();
+			// add the selected item
+			terms.push( ui.item.value );
+			// add placeholder to get the comma-and-space at the end
+			terms.push("");
+			this.value = terms.join("\\n");
+			return false;
+		}
+	});
+});
+</script>
+END;
+
+			$wgOut->addScript( $javascript_autocomplete_text );
+			
+		}
+		$result="";
+		$result=Html::element('textarea',array('id'=> 'add_property', 'name'=> 'po', 'cols'=>'20', 'rows'=> '6'),$content);
+		return $result;
+	}
 
 	/**
 	 * A method which generates the url parameters based on passed parameters.
-	 * UI implementations need to overload this if they use different form parameters
+	 * UI implementations need to overload this if they use different form parameters.
+	 *
+	 * @return string An url-encoded string.
 	 */
 	protected function getUrlTail() {
 		$urltail = '&q=' . urlencode( $this->m_ui_helper->getQuerystring() );
