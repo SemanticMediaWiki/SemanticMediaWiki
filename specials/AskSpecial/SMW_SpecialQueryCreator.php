@@ -17,10 +17,11 @@
  * @author Yaron Koren
  * @author Sanyam Goyal
  * @author Jeroen De Dauw
+ * @author Devayon Das
  * 
  *
  */
-class SMWQueryCreatorPage extends SpecialPage {
+class SMWQueryCreatorPage extends SMWQueryUI {
 
 	//protected $m_querystring = '';
 	protected $m_params = array();
@@ -44,28 +45,58 @@ class SMWQueryCreatorPage extends SpecialPage {
 		global $wgOut, $wgRequest, $smwgQEnabled;
 
 		$this->setHeaders();
+//		var_dump(SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( "showformatoptions" ));die;
 
 		if ( !$smwgQEnabled ) {
 			$wgOut->addHTML( '<br />' . wfMsg( 'smw_iq_disabled' ) );
 		} else {
-			$this->makeHTMLForm();
+			if(!($this->processFormatOptions($wgRequest))){
+					$params=array_merge(
+							array(
+			'format'  =>  $wgRequest->getVal( 'format',	'ol' ),
+			'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
+			'limit'   =>  $wgRequest->getVal( 'limit',   '20' )
+			),$this->processFormatSelectBox($wgRequest));
+					$this->m_ui_helper =  SMWQueryUIHelper::makeFromUI(
+							$this->processQueryFormBox($wgRequest),
+							$params,
+							$this->processPOFormBox($wgRequest),
+							false);
+					if($this->m_ui_helper->getQueryString()!=""){
+						$this->m_ui_helper->execute($p);
+
+					}
+					$htmloutput=$this->makeResults($p);
+					if($this->m_ui_helper->getQueryString()!=""){
+						if ( $this->usesNavigationBar() ) {
+							$htmloutput .= $this->getNavigationBar ( $this->m_ui_helper->getLimit(), $this->m_ui_helper->getOffset(), $this->m_ui_helper->hasFurtherResults() ); // ? can we preload offset and limit?
+						}
+
+						$htmloutput .= "<br/>".$this->m_ui_helper->getHTMLResult()."<br>";
+
+						if ( $this->usesNavigationBar() ) {
+							$htmloutput .= $this->getNavigationBar ( $this->m_ui_helper->getLimit(), $this->m_ui_helper->getOffset(), $this->m_ui_helper->hasFurtherResults() ); // ? can we preload offset and limit?
+						}
+					}
+					$wgOut->addHTML( $htmloutput );
+			}
 		}
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
 	}
 	/**
-	 * Adds the input query form
+	 * Adds the input query form. Overloaded from SMWQueryUI
 	 */
-	protected function makeHTMLForm(){
+	protected function makeResults($p){
 		global $wgOut, $smwgQSortingSupport, $smwgResultFormats, $smwgAutocompleteInSpecialAsk;
 		$result= "";
-		$spectitle = $this->getTitleFor( 'Ask' );
+		$spectitle = $this->getTitle();
 		$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 			'<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
 		
 		$result .= wfMsg('smw_qc_query_help');
 		// Main query and printouts.
 		$result .= '<p><strong>' . wfMsg( 'smw_ask_queryhead' ) . "</strong></p>\n";
-		$result .= '<p><textarea name="q" rows="6"></textarea></p>';
+		$result .= '<p>'.$this->getQueryFormBox($this->m_ui_helper->getQueryString()).'</p>';
 		//show|hide additional options and querying help
 		$result .= '<span id="show_additional_options" style="display:inline"><a href="#addtional" rel="nofollow" onclick="' . 
 			 "document.getElementById('additional_options').style.display='block';" . 
@@ -88,58 +119,13 @@ class SMWQueryCreatorPage extends SpecialPage {
 		if ( $smwgQSortingSupport ) {
 			$result .= $this->addSortingOptions($result); 
 		}
-
-		$printer = SMWQueryProcessor::getResultPrinter( 'broadtable', SMWQueryProcessor::SPECIAL_PAGE );
-		$url = SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( "showformatoptions=' + this.value + '" );
-		//@TODO //$url .= '&showformatoptions=broadtable&params[title]=Special:Ask&params[offset]=0&params[limit]=20';
-		$url .= '&params[title]=Special:Ask&params[offset]=0&params[limit]=20';
-
-		$result .= "<br /><br />\n<p>" . wfMsg( 'smw_ask_format_as' ) . ' <input type="hidden" name="eq" value="yes"/>' . "\n" .
-				'<select id="formatSelector" name="p[format]" onChange="JavaScript:updateOtherOptions(\'' . $url . '\')">' . "\n" .
-				'	<option value="broadtable">' .
-				$printer->getName() . ' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
-
-		$formats = array();
-
-		foreach ( array_keys( $smwgResultFormats ) as $format ) {
-			// Special formats "count" and "debug" currently not supported.
-			if ( $format != 'broadtable' && $format != 'count' && $format != 'debug' ) {
-				$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
-				$formats[$format] = $printer->getName();
-			}
-		}
-
-		natcasesort( $formats );
-
-		foreach ( $formats as $format => $name ) {
-			$result .= '	<option value="' . $format . '>' . $name . "</option>\n";
-		}
-		//add javascript for updating formating options by ajax
-		$default_format_url = SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( "showformatoptions=broadtable" );
-		$default_format_url .= '&params[title]=Special:Ask&params[offset]=0&params[limit]=20';
-		$javascript = <<<END
-<script type="text/javascript">
-function updateOtherOptions(strURL) {
-	jQuery.ajax({ url: strURL, context: document.body, success: function(data){
-		jQuery("#other_options").html(data);
-	}});
-}
-jQuery(document).ready(updateOtherOptions("{$default_format_url}"));
-</script>
-END;
-
-		$wgOut->addScript( $javascript );
-
-		$result .= "</select></p>\n";
-		$result .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n";
-		$result .= "<div id=\"other_options\"></div>";
-		$result .= "</fieldset>\n";
+		$result .= "<br><br>" . $this->getFormatSelectBox('broadtable');
 		$result .= '</div>';
 		$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/>' .
 			'<input type="hidden" name="eq" value="no"/>' .
 			"\n</form>";
 
-	$wgOut->addHTML($result);
+	return $result;
 
 	}
 
@@ -255,48 +241,6 @@ END;
 
 	return $result;
 	}
-
-
-	/**
-	 * Returns a Validator style Parameter definition.
-	 * SMW 1.5.x style definitions are converted.
-	 *
-	 * @since 1.6
-	 *
-	 * @param mixed $param
-	 *
-	 * @return Parameter
-	 */
-	protected function toValidatorParam( $param ) {
-		static $typeMap = array(
-			'int' => Parameter::TYPE_INTEGER
-		);
-
-		if ( !( $param instanceof Parameter ) ) {
-			if ( !array_key_exists( 'type', $param ) ) {
-				$param['type'] = 'string';
-			}
-
-			$paramClass = $param['type'] == 'enum-list' ? 'ListParameter' : 'Parameter';
-			$paramType = array_key_exists( $param['type'], $typeMap ) ? $typeMap[$param['type']] : Parameter::TYPE_STRING;
-
-			$parameter = new $paramClass( $param['name'], $paramType );
-
-			if ( array_key_exists( 'description', $param ) ) {
-				$parameter->setDescription( $param['description'] );
-			}
-
-			if ( array_key_exists( 'values', $param ) && is_array( $param['values'] ) ) {
-				$parameter->addCriteria( new CriterionInArray( $param['values'] ) );
-			}
-
-			return $parameter;
-		}
-		else {
-			return $param;
-		}
-	}
-
 
 
     /**

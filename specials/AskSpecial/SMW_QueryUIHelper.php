@@ -92,7 +92,7 @@ END;
 		}
 	}
 
-	protected function makeResults( $p ) {
+	protected function makeRes( $p ) {
 		/*
 		 * TODO: extract parameters from $p and decide:
 		 * (1) if form elements need to be displayed
@@ -246,6 +246,9 @@ END;
 				$result = "<br>Stub: The Form elements come here<br><br>";
 		return $result;
 	}
+	protected function makeHtmlResult() {
+		// STUB
+	}
 
 	/**
 	 * A method which generates the form element(s) for the Query-string.  Use its
@@ -271,7 +274,8 @@ END;
 	 * @return string
 	 */
 	protected function processQueryFormBox(WebRequest $wgRequest){
-		$query = $wgRequest->getVal('q');
+		$query="";
+		if($wgRequest->getCheck('q')) $query = $wgRequest->getVal('q');
 		return $query;
 	}
 
@@ -350,7 +354,7 @@ END;
 			foreach ( $ps as $param ) { // add initial ? if omitted (all params considered as printouts)
 				$param = trim( $param );
 
-				if ( ( $param != '' ) && ( $param { 0 } != '?' ) ) {
+				if ( ( $param != '' ) && ( $param[0] != '?' ) ) {
 					$param = '?' . $param;
 				}
 
@@ -386,10 +390,6 @@ END;
 		if ( array_key_exists( 'sort', $params ) )  $urltail .= '&sort=' . $params['sort'];
 		if ( array_key_exists( 'order', $params ) ) $urltail .= '&order=' . $params['order'];
 		return $urltail;
-	}
-
-	protected function makeHtmlResult() {
-		// STUB
 	}
 
 	/**
@@ -622,7 +622,7 @@ END;
 				// p is used for any additional parameters in certain links.
 				$params = SMWInfolink::decodeParameters( $query_values, false );
 		}
-		return $query_values;
+		return $params;
 	}
 
 	/**
@@ -1021,7 +1021,7 @@ class SMWQueryUIHelper {
 		$result->setPrintOuts( $printouts, $enable_validation );
 		$result->setQueryString( $query, $enable_validation );
 		$result->extractParameters( "" );
-		$result->execute();
+		//$result->execute();
 		return $result;
 	}
 	/**
@@ -1051,6 +1051,5 @@ class SMWQueryUIHelper {
 	protected static function getDefaultResultPrinter() {
 		return 'broadtable';
 	}
-
 
 }
