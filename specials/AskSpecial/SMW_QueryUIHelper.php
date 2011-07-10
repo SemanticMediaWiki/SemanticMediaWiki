@@ -704,7 +704,7 @@ class SMWQueryUIHelper {
 	}
 
 	public function getLimit() {
-		if ( key_exists( 'limit', $this->m_params ) ) {
+		if ( array_key_exists( 'limit', $this->m_params ) ) {
 			return $this->m_params['limit'];
 		}
 		else {
@@ -713,7 +713,7 @@ class SMWQueryUIHelper {
 	}
 
 	public function getOffset() {
-		if ( key_exists( 'offset', $this->m_params ) ) {
+		if ( array_key_exists( 'offset', $this->m_params ) ) {
 			return $this->m_params['offset'];
 		}
 		else {
@@ -943,7 +943,6 @@ class SMWQueryUIHelper {
 			$this->setParams( $rawparams );
 			$rawparams = array_merge( $this->m_params, $rawparams );
 		}
-
 
 		SMWQueryProcessor::processFunctionParams( $rawparams, $this->m_querystring, $this->m_params, $this->m_printouts );
 	}
