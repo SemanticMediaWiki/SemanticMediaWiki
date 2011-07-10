@@ -584,7 +584,13 @@ END;
  *
  */
 class SMWQueryUIHelper {
-
+/*
+ * Design note:
+ * This class does not define any format for how parameters should be
+ * passed from the user to this class, expect those already defined by (Infolink)
+ * 
+ */
+	
 // members
 	protected $m_querystring = ''; // The query
 	protected $m_params = array(); // Parameters controlling how the results should be displayed
