@@ -12,11 +12,11 @@
  */
 abstract class SMWQueryUI extends SpecialPage {
 	protected $m_ui_helper;
-	private $autocompleteenabled=false;
+	private $autocompleteenabled = false;
 
-	protected function addAutocompletionJavascriptAndCSS(){
+	protected function addAutocompletionJavascriptAndCSS() {
 		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
-		if($this->autocompleteenabled==false){
+		if ( $this->autocompleteenabled == false ) {
 			$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
 
 			$scripts = array();
@@ -88,10 +88,10 @@ jQuery.extend( jQuery.ui.autocomplete, {
 END;
 
 			$wgOut->addScript( $javascript_autocomplete_text );
-			$this->autocompleteenabled=true;
+			$this->autocompleteenabled = true;
 		}
 	}
-	protected function makeResults($p){
+	protected function makeResults( $p ) {
 		/*
 		 * TODO: extract parameters from $p and decide:
 		 * (1) if form elements need to be displayed
@@ -100,36 +100,36 @@ END;
 		 * Most of the code here in this method will anyway be removed later
 		 */
 		global $wgOut, $wgRequest;
-		$htmloutput="";
-		$htmloutput.= $this->getForm();
-		$param=array();
+		$htmloutput = "";
+		$htmloutput .= $this->getForm();
+		$param = array();
 
-		$this->m_ui_helper = $helper = new SMWQueryUIHelper; //or some factory method
-		//here come some driver lines for testing; this is very temporary
+		$this->m_ui_helper = $helper = new SMWQueryUIHelper; // or some factory method
+		// here come some driver lines for testing; this is very temporary
 
 		//     form parameters                               default values
 		$helper->setQueryString(
-			$wgRequest->getVal('q',                    '[[Located in:: Germany]]'));
-		$helper->setParams(array(
-			'format'  =>  $wgRequest->getVal('format',	'ol' ),
-			'offset'  =>  $wgRequest->getVal('offset',  '0'  ),
-			'limit'   =>  $wgRequest->getVal('limit',   '20' )
-			));
-		$helper->setPrintOuts(array('?Population'));
-		$helper->extractParameters($p);
+			$wgRequest->getVal( 'q',                    '[[Located in:: Germany]]' ) );
+		$helper->setParams( array(
+			'format'  =>  $wgRequest->getVal( 'format',	'ol' ),
+			'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
+			'limit'   =>  $wgRequest->getVal( 'limit',   '20' )
+			) );
+		$helper->setPrintOuts( array( '?Population' ) );
+		$helper->extractParameters( $p );
 
 		$helper->execute();
 
-		if($this->usesNavigationBar()){
-			$htmloutput.= $this->getNavigationBar ($helper->getLimit(),$helper->getOffset(),$helper->hasFurtherResults()); //? can we preload offset and limit?
+		if ( $this->usesNavigationBar() ) {
+			$htmloutput .= $this->getNavigationBar ( $helper->getLimit(), $helper->getOffset(), $helper->hasFurtherResults() ); // ? can we preload offset and limit?
 		}
 
-		$htmloutput.= $helper->getHTMLResult();
+		$htmloutput .= $helper->getHTMLResult();
 
-		if($this->usesNavigationBar()){
-			$htmloutput.= $this->getNavigationBar ($helper->getLimit(),$helper->getOffset(),$helper->hasFurtherResults()); //? can we preload offset and limit?
+		if ( $this->usesNavigationBar() ) {
+			$htmloutput .= $this->getNavigationBar ( $helper->getLimit(), $helper->getOffset(), $helper->hasFurtherResults() ); // ? can we preload offset and limit?
 		}
-		$wgOut->addHTML($htmloutput);
+		$wgOut->addHTML( $htmloutput );
 	}
 
 	/**
@@ -146,7 +146,7 @@ END;
 	 *
 	 * @return string
 	 */
-	public function getNavigationBar($limit, $offset, $has_further_results) {
+	public function getNavigationBar( $limit, $offset, $has_further_results ) {
 		global $smwgQMaxInlineLimit;
 		$urltail = $this->getUrlTail();
 		// Prepare navigation bar.
@@ -231,24 +231,24 @@ END;
 	 *
 	 * @return string Form elements in HTML
 	 */
-	protected function getForm(){
+	protected function getForm() {
 		/*
 		 * Although the following methods will retuen form elements, which can
 		 * then be placed in wOut as pleased, they will
 		 * also write javascript (if relevant) directly to wgOut.
 		 */
 
-		//$result="";
-		//$result.= getQueryFormBox($contents, $errors);
-		//$result.= getPOFormBox($content, $enableAutoComplete);
-		//$result.= getParamBox($content); //avoid ajax, load form elements in the UI by default
-				$result="<br>Stub: The Form elements come here<br><br>";
+		// $result="";
+		// $result.= getQueryFormBox($contents, $errors);
+		// $result.= getPOFormBox($content, $enableAutoComplete);
+		// $result.= getParamBox($content); //avoid ajax, load form elements in the UI by default
+				$result = "<br>Stub: The Form elements come here<br><br>";
 		return $result;
 	}
-	protected function getQueryFormBox($contents, $errors=""){
-		$result="";
-		$result= Html::element('textarea', array('name'=>'q', 'id'=>'querybox', 'rows' => '6'), $contents);
-		//TODO:enable/disable on checking for errors; perhaps show error messages right below the box
+	protected function getQueryFormBox( $contents, $errors = "" ) {
+		$result = "";
+		$result = Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox', 'rows' => '6' ), $contents );
+		// TODO:enable/disable on checking for errors; perhaps show error messages right below the box
 		return $result;
 	}
 
@@ -262,11 +262,11 @@ END;
 	 * @param boolean $enableAutocomplete If set to true, adds the relevant JS and CSS to the page
 	 * @return string The HTML code
 	 */
-	protected function getPOFormBox($content, $enableAutocomplete=true){
-		if($enableAutocomplete){
+	protected function getPOFormBox( $content, $enableAutocomplete = true ) {
+		if ( $enableAutocomplete ) {
 			global $wgOut;
 
-			if(!$this->autocompleteenabled) addAutocompletionJavascriptAndCSS();
+			if ( !$this->autocompleteenabled ) addAutocompletionJavascriptAndCSS();
 			$javascript_autocomplete_text = <<<END
 <script type="text/javascript">
 jQuery(document).ready(function(){
@@ -305,8 +305,8 @@ END;
 			$wgOut->addScript( $javascript_autocomplete_text );
 
 		}
-		$result="";
-		$result=Html::element('textarea',array('id'=> 'add_property', 'name'=> 'po', 'cols'=>'20', 'rows'=> '6'),$content);
+		$result = "";
+		$result = Html::element( 'textarea', array( 'id' => 'add_property', 'name' => 'po', 'cols' => '20', 'rows' => '6' ), $content );
 		return $result;
 	}
 
@@ -338,7 +338,7 @@ END;
 		return $urltail;
 	}
 	protected function makeHtmlResult() {
-		//STUB
+		// STUB
 	}
 	/**
 	 * Display a form section showing the options for a given format,
@@ -600,7 +600,7 @@ class SMWQueryUIHelper {
 
 
 // constructor
-	public function __construct($context = self::SPECIAL_PAGE ) {
+	public function __construct( $context = self::SPECIAL_PAGE ) {
 		$this->context = $context;
 	}
 
@@ -608,8 +608,8 @@ class SMWQueryUIHelper {
 		return $this->fatal_errors;
 	}
 
-	public function getLimit(){
-		if(key_exists('limit', $this->m_params)){
+	public function getLimit() {
+		if ( key_exists( 'limit', $this->m_params ) ) {
 			return $this->m_params['limit'];
 		}
 		else {
@@ -617,24 +617,24 @@ class SMWQueryUIHelper {
 		}
 	}
 
-	public function getOffset(){
-		if(key_exists('offset', $this->m_params)){
+	public function getOffset() {
+		if ( key_exists( 'offset', $this->m_params ) ) {
 			return $this->m_params['offset'];
 		}
-		else{
+		else {
 			return 20;
 		}
 	}
-	public function hasFurtherResults(){
-		if(is_a($this->queryresult,'SMWQueryResult')){
+	public function hasFurtherResults() {
+		if ( is_a( $this->queryresult, 'SMWQueryResult' ) ) {
 			return $this->queryresult->hasFurtherResults();
 		}
-		else{
+		else {
 			return false;
 		}
 	}
 
-	public function getResultObject(){
+	public function getResultObject() {
 		return $this->getResultObject();
 	}
 
@@ -673,7 +673,7 @@ class SMWQueryUIHelper {
 	 * @param string $querystring The query
 	 * @return array array of errors, if any.
 	 */
-	public function setQueryString( $querystring = "", $enable_validation=true ) {
+	public function setQueryString( $querystring = "", $enable_validation = true ) {
 		$this -> m_querystring = $querystring;
 		$errors = array();
 		if ( $enable_validation ) {
@@ -702,7 +702,7 @@ class SMWQueryUIHelper {
 	 * @param array $printouts Array of additional properties to be shown in results
 	 * @return array array of errors, if any.
 	 */
-	public function setPrintOuts( array $printouts = array(), $enable_validation=true ) {
+	public function setPrintOuts( array $printouts = array(), $enable_validation = true ) {
 		$errors = array();
 		if ( $enable_validation ) {
 			foreach ( $printouts as $key => $prop ) {
@@ -720,7 +720,7 @@ class SMWQueryUIHelper {
 		return $errors;
 	}
 
-	public function setParams( array $params = array(), $enable_validation=true ) {
+	public function setParams( array $params = array(), $enable_validation = true ) {
 		/*
 		 *Validate, and add missing params.		 *
 		 */
@@ -776,7 +776,7 @@ class SMWQueryUIHelper {
 		$errors = array();
 		$query = SMWQueryProcessor::createQuery( $this->m_querystring, $this->m_params, SMWQueryProcessor::SPECIAL_PAGE , $this->m_params['format'], $this->m_printouts );
 		$res = smwfGetStore()->getQueryResult( $query );
-		$this->queryresult=$res;
+		$this->queryresult = $res;
 		$errors = array_merge( $errors, $res->getErrors() );
 		if ( !empty( $errors ) ) {
 			$this->fatal_errors = true;
@@ -812,9 +812,9 @@ class SMWQueryUIHelper {
 		// END: Try to be smart for rss/ical if no description/title is given and we have a concept query
 	}
 
-	public function getHTMLResult(){
+	public function getHTMLResult() {
 		$result = '';
-		$res= $this->queryresult;
+		$res = $this->queryresult;
 		$printer = SMWQueryProcessor::getResultPrinter( $this->m_params['format'], SMWQueryProcessor::SPECIAL_PAGE );
 		$result_mime = $printer->getMimeType( $res );
 
@@ -871,8 +871,8 @@ class SMWQueryUIHelper {
 		return $this->m_querystring;
 	}
 
-	public function getResultCount(){
-		if(is_a($this->queryresult, 'SMWQueryResult')){
+	public function getResultCount() {
+		if ( is_a( $this->queryresult, 'SMWQueryResult' ) ) {
 			return $this->queryresult->getCount();
 		}
 		else return 0;
@@ -903,8 +903,8 @@ class SMWQueryUIHelper {
 	 * @return SMWQueryUIHelper
 	 */
 	public static function makeFromInfoLink( $p, $enable_validation = true ) {
-		//TODO handle validation for infolink parameters
-		$result = new SMWQueryUIHelper(self::WIKI_LINK );
+		// TODO handle validation for infolink parameters
+		$result = new SMWQueryUIHelper( self::WIKI_LINK );
 		$result->extractParameters( $p );
 		$result->execute();
 		return $result;
@@ -921,8 +921,8 @@ class SMWQueryUIHelper {
 	 * @return SMWQueryUIHelper
 	 */
 	public static function makeFromUI( $query, array $params, array $printouts, $enable_validation = true ) {
-		$result = new SMWQueryUIHelper(self::SPECIAL_PAGE );
-		$result->setParams( $params, $enable_validation);
+		$result = new SMWQueryUIHelper( self::SPECIAL_PAGE );
+		$result->setParams( $params, $enable_validation );
 		$result->setPrintOuts( $printouts, $enable_validation );
 		$result->setQueryString( $query, $enable_validation );
 		$result->extractParameters( "" );
