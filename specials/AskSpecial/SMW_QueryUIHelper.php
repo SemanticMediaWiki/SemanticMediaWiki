@@ -17,7 +17,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	protected function addAutocompletionJavascriptAndCSS(){
 		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
 		if($this->autocompleteenabled==false){
-						$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
+			$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
 
 			$scripts = array();
 
@@ -103,7 +103,7 @@ END;
 		$htmloutput="";
 		$htmloutput.= $this->getForm();
 		$param=array();
-		
+
 		$this->m_ui_helper = $helper = new SMWQueryUIHelper; //or some factory method
 		//here come some driver lines for testing; this is very temporary
 
@@ -123,7 +123,7 @@ END;
 		if($this->usesNavigationBar()){
 			$htmloutput.= $this->getNavigationBar ($helper->getLimit(),$helper->getOffset(),$helper->hasFurtherResults()); //? can we preload offset and limit?
 		}
-		
+
 		$htmloutput.= $helper->getHTMLResult();
 
 		if($this->usesNavigationBar()){
@@ -223,12 +223,12 @@ END;
 
 		return $navigation;
 	}
-	
+
 	/**
-	 * Creates the form elements and populates them with parameters. 
+	 * Creates the form elements and populates them with parameters.
 	 * UI implementations need to overload this if a different layout and form
 	 * elements are desired
-	 * 
+	 *
 	 * @return string Form elements in HTML
 	 */
 	protected function getForm(){
@@ -237,7 +237,7 @@ END;
 		 * then be placed in wOut as pleased, they will
 		 * also write javascript (if relevant) directly to wgOut.
 		 */
-		
+
 		//$result="";
 		//$result.= getQueryFormBox($contents, $errors);
 		//$result.= getPOFormBox($content, $enableAutoComplete);
@@ -265,7 +265,7 @@ END;
 	protected function getPOFormBox($content, $enableAutocomplete=true){
 		if($enableAutocomplete){
 			global $wgOut;
-			
+
 			if(!$this->autocompleteenabled) addAutocompletionJavascriptAndCSS();
 			$javascript_autocomplete_text = <<<END
 <script type="text/javascript">
@@ -303,7 +303,7 @@ jQuery(document).ready(function(){
 END;
 
 			$wgOut->addScript( $javascript_autocomplete_text );
-			
+
 		}
 		$result="";
 		$result=Html::element('textarea',array('id'=> 'add_property', 'name'=> 'po', 'cols'=>'20', 'rows'=> '6'),$content);
@@ -417,7 +417,7 @@ END;
 	 *
 	 * @return Parameter
 	 */
-	protected function toValidatorParam( $param ) {
+	private function toValidatorParam( $param ) {
 		static $typeMap = array(
 			'int' => Parameter::TYPE_INTEGER
 		);
@@ -447,7 +447,7 @@ END;
 		}
 	}
 
-		/**
+	/**
 	 * Get the HTML for a single parameter input.
 	 *
 	 * @since 1.6
@@ -457,7 +457,7 @@ END;
 	 *
 	 * @return string
 	 */
-	protected function showFormatOption( Parameter $parameter, $currentValue ) {
+	private function showFormatOption( Parameter $parameter, $currentValue ) {
 		$input = new ParameterInput( $parameter );
 		$input->setInputName( 'p[' . $parameter->getName() . ']' );
 
@@ -468,6 +468,106 @@ END;
 		return $input->getHtml();
 	}
 
+	/**
+	 * Creates form elements for choosing the result-format and their associated
+	 * format. Use in conjunction with handleFormatOptions() to supply format
+	 * options using ajax.
+	 * @return string
+	 */
+	protected function makeFormatSelectBox( $defaultformat = 'broadtable' ) {
+
+		global $smwgResultFormats, $smwgJQueryIncluded, $wgOut;
+
+		if ( !$smwgJQueryIncluded ) {
+				$realFunction = array( 'OutputPage', 'includeJQuery' );
+				if ( is_callable( $realFunction ) ) {
+					$wgOut->includeJQuery();
+				} else {
+					$scripts[] = "$smwgScriptPath/libs/jquery-1.4.2.min.js";
+				}
+				$smwgJQueryIncluded = true;
+		}
+
+		// checking argument
+		$default_format = 'broadtable';
+		if ( array_key_exists( $defaultformat, $smwgResultFormats ) ) {
+			$default_format = $defaultformat;
+		}
+
+		$result = "";
+		$printer = SMWQueryProcessor::getResultPrinter( $default_format, SMWQueryProcessor::SPECIAL_PAGE );
+		$url = $this->getTitle()->getLocalURL( "showformatoptions=' + this.value + '" );
+
+		foreach ( $this->m_ui_helper->getParams() as $param => $value ) {
+			if ( $param !== 'format' ) {
+				$url .= '&params[' . Xml::escapeJsString( $param ) . ']=' . Xml::escapeJsString( $value );
+			}
+		}
+
+		$result .= "\n<p>" . wfMsg( 'smw_ask_format_as' ) . "\n" .
+				'<select id="formatSelector" name="p[format]" onChange="JavaScript:updateOtherOptions(\'' . $url . '\')">' . "\n" .
+				'	<option value="' . $default_format . '">' . $printer->getName() . ' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
+
+		$formats = array();
+
+		foreach ( array_keys( $smwgResultFormats ) as $format ) {
+			// Special formats "count" and "debug" currently not supported.
+			if ( $format != $default_format && $format != 'count' && $format != 'debug' ) {
+				$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
+				$formats[$format] = $printer->getName();
+			}
+		}
+
+		natcasesort( $formats );
+		$params = $this->m_ui_helper->getParams();
+		foreach ( $formats as $format => $name ) {
+			$result .= '	<option value="' . $format . '"' . ( $params['format'] == $format ? ' selected' : '' ) . '>' . $name . "</option>\n";
+		}
+		$result .= "</select>";
+		$result .= "</p>\n";
+		$result .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n";
+		$result .= "<div id=\"other_options\">" . $this->showFormatOptions( $params['format'], $params ) . " </div>";
+		$result .= "</fieldset>\n";
+
+		// BEGIN: add javascript for updating formating options by ajax
+		global $wgOut;
+		// $default_format_url = SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( "showformatoptions=broadtable" );
+		// $default_format_url .= '&params[title]=Special:Ask&params[offset]=0&params[limit]=20';
+		$javascript = <<<END
+<script type="text/javascript">
+function updateOtherOptions(strURL) {
+	jQuery.ajax({ url: strURL, context: document.body, success: function(data){
+		jQuery("#other_options").html(data);
+	}});
+}
+</script>
+END;
+
+		$wgOut->addScript( $javascript );
+		// END: add javascript for updating formating options by ajax
+
+		return $result;
+	}
+
+	/**
+	 * Returns form elements for a requested format. Use in conjunction with makeFormatSelectBox()
+	 *
+	 * @param WebRequest $wgRequest
+	 * @return boolean Returns true if formatoptions were requested and returned, else false
+	 */
+	protected function handleFormatOptions( $wgRequest ) {
+		global $wgOut;
+		if ( $wgRequest->getCheck( 'showformatoptions' ) ) {
+				// handle Ajax action
+				$format = $wgRequest->getVal( 'showformatoptions' );
+				$params = $wgRequest->getArray( 'params' );
+				$wgOut->disable();
+				echo $this->showFormatOptions( $format, $params );
+				return true;
+			} else {
+				return false;
+			}
+	}
 	protected function usesNavigationBar() {
 		return true;
 	}
@@ -533,7 +633,7 @@ class SMWQueryUIHelper {
 			return false;
 		}
 	}
-	
+
 	public function getResultObject(){
 		return $this->getResultObject();
 	}
@@ -711,7 +811,7 @@ class SMWQueryUIHelper {
 		}
 		// END: Try to be smart for rss/ical if no description/title is given and we have a concept query
 	}
-	
+
 	public function getHTMLResult(){
 		$result = '';
 		$res= $this->queryresult;
