@@ -39,8 +39,8 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 * @param string $p
 	 */
 	public function execute( $p ) {
-		global $wgOut, $wgRequest, $smwgQEnabled;
-
+		global $wgOut, $wgRequest, $smwgQEnabled, $smwgIgnoreQueryErrors;
+		$smwgIgnoreQueryErrors= false;
 		$this->setHeaders();
 
 		if ( !$smwgQEnabled ) {
@@ -83,7 +83,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 * Adds the input query form. Overloaded from SMWQueryUI
 	 */
 	protected function makeResults( $p ) {
-		global $wgOut, $smwgQSortingSupport, $smwgResultFormats, $smwgAutocompleteInSpecialAsk;
+		global $wgOut, $smwgQSortingSupport;
 		$result = "";
 		$spectitle = $this->getTitle();
 		$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
@@ -109,7 +109,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$result .= '<div id="additional_options" style="display:none">';
 		$result .= '<p><strong>' . wfMsg( 'smw_ask_printhead' ) . "</strong></p>\n" .
 			'<span style="font-weight: normal;">' . wfMsg( 'smw_ask_printdesc' ) . '</span>' . "\n" .
-			'<p>' . $this->getPOFormBox( $this->getPOStrings(), true ) . '</p>' . "\n";
+			'<p>' . $this->getPOFormBox( $this->getPOStrings(), SMWQueryUI::ENABLE_AUTO_SUGGEST ) . '</p>' . "\n";
 
 		// sorting inputs
 		if ( $smwgQSortingSupport ) {

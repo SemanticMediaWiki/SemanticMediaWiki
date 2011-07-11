@@ -13,6 +13,8 @@
 abstract class SMWQueryUI extends SpecialPage {
 	protected $m_ui_helper;
 	private $autocompleteenabled = false;
+	const ENABLE_AUTO_SUGGEST = true;
+	const DISABLE_AUTO_SUGGEST = false;
 
 	protected function addAutocompletionJavascriptAndCSS() {
 		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
@@ -244,7 +246,7 @@ END;
 		// $result.= getQueryFormBox($contents, $errors);
 		// $result.= getPOFormBox($content, $enableAutoComplete);
 		// $result.= getParamBox($content); //avoid ajax, load form elements in the UI by default
-				$result = "<br>Stub: The Form elements come here<br><br>";
+		$result = "<br>Stub: The Form elements come here<br><br>";
 		return $result;
 	}
 	protected function makeHtmlResult() {
@@ -289,7 +291,7 @@ END;
 	 * @param boolean $enableAutocomplete If set to true, adds the relevant JS and CSS to the page
 	 * @return string The HTML code
 	 */
-	protected function getPOFormBox( $content, $enableAutocomplete = true ) {
+	protected function getPOFormBox( $content, $enableAutocomplete = SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
 		if ( $enableAutocomplete ) {
 			global $wgOut;
 
@@ -673,7 +675,9 @@ END;
 	 * @return boolean
 	 */
 	protected function usesNavigationBar() {
-		return true;
+		//hide if no results are found
+		if($this->m_ui_helper->getResultCount()==0) return false;
+		else return true;
 	}
 
 }
