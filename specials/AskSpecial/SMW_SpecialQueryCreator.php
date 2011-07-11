@@ -23,10 +23,7 @@
  */
 class SMWQueryCreatorPage extends SMWQueryUI {
 
-	//protected $m_querystring = '';
 	protected $m_params = array();
-	//protected $m_printouts = array();
-	//protected $m_editquery = false;
 
 	/**
 	 * Constructor.
@@ -45,7 +42,6 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		global $wgOut, $wgRequest, $smwgQEnabled;
 
 		$this->setHeaders();
-//		var_dump(SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( "showformatoptions" ));die;
 
 		if ( !$smwgQEnabled ) {
 			$wgOut->addHTML( '<br />' . wfMsg( 'smw_iq_disabled' ) );
@@ -53,10 +49,10 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			if(!($this->processFormatOptions($wgRequest))){
 					$params=array_merge(
 							array(
-			'format'  =>  $wgRequest->getVal( 'format',	'ol' ),
-			'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
-			'limit'   =>  $wgRequest->getVal( 'limit',   '20' )
-			),$this->processFormatSelectBox($wgRequest));
+							'format'  =>  $wgRequest->getVal( 'format' ),
+							'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
+							'limit'   =>  $wgRequest->getVal( 'limit',   '20' )
+							),$this->processFormatSelectBox($wgRequest));
 					$this->m_ui_helper =  SMWQueryUIHelper::makeFromUI(
 							$this->processQueryFormBox($wgRequest),
 							$params,
@@ -113,7 +109,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$result .= '<div id="additional_options" style="display:none">';
 		$result .= '<p><strong>' . wfMsg( 'smw_ask_printhead' ) . "</strong></p>\n" .
 			'<span style="font-weight: normal;">' . wfMsg( 'smw_ask_printdesc' ) . '</span>' . "\n" .
-			'<p><textarea id = "add_property" name="po" cols="20" rows="6"></textarea></p>' . "\n";
+			'<p>'. $this->getPOFormBox($this->getPOStrings(),true).'</p>' . "\n";
  
 		// sorting inputs
 		if ( $smwgQSortingSupport ) {
