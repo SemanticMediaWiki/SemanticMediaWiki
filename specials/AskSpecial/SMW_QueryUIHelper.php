@@ -17,16 +17,18 @@ abstract class SMWQueryUI extends SpecialPage {
 	const DISABLE_AUTO_SUGGEST = false;
 
 	/**
-	 * Builds a read-only #ask of the given query
+	 * Builds a read-only #ask embed code of the given query.
 	 *
 	 * @return string
 	 */
 	protected function getAskEmbedBox() {
-		$result = '<div id="inlinequeryembed">
-			<div id="inlinequeryembedinstruct">' . wfMsg( 'smw_ask_embed_instr' ) . '</div>
-				<textarea id="inlinequeryembedarea" readonly="yes" cols="20" rows="6" onclick="this.select()">' .
-			$this->m_ui_helper->getAsk() . '</textarea></div>';
-
+		$result = '';
+		if ( $this->m_ui_helper->getQueryString() != "" ) {
+			$result = Html::rawElement( 'div', array( 'id' => 'inlinequeryembed' ),
+				Html::rawElement( 'div', array( 'id' => 'inlinequeryembedinstruct' ), wfMsg( 'smw_ask_embed_instr' ) ) .
+				Html::element( 'textarea', array( 'id' => 'inlinequeryembedarea', 'readonly' => 'yes', 'cols' => '20', 'rows' => '6', 'onclick' => 'this.select()' ),
+			$this->m_ui_helper->getAsk() ) );
+		}
 		return $result;
 	}
 
@@ -1361,5 +1363,5 @@ class SMWQueryUIHelper {
 			return false;
 		}
 	}
-	
+
 }
