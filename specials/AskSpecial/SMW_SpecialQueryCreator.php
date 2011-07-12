@@ -40,7 +40,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 */
 	public function execute( $p ) {
 		global $wgOut, $wgRequest, $smwgQEnabled, $smwgIgnoreQueryErrors;
-		$smwgIgnoreQueryErrors= false;
+		$smwgIgnoreQueryErrors = false;
 		$this->setHeaders();
 
 		if ( !$smwgQEnabled ) {
@@ -116,7 +116,11 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			$result .= $this->addSortingOptions( $result );
 		}
 		$result .= "<br><br>" . $this->getFormatSelectBox( 'broadtable' );
-		$result .= '</div>';
+
+		if ( $this->m_ui_helper->getQueryString() != '' ) // hide #ask if there isnt any query defined
+			$result .= $this->getAskEmbedBox();
+
+		$result .= '</div>'; // end of hidden additional options
 		$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/>' .
 			'<input type="hidden" name="eq" value="no"/>' .
 			"\n</form>";
