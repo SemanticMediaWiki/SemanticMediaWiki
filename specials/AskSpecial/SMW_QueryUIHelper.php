@@ -828,7 +828,7 @@ class SMWQueryUIHelper {
 	}
 
 	/**
-	 * Returns a handle to the underlying  Result object
+	 * Returns a handle to the underlying Result object.
 	 *
 	 * @return SMWQueryResult
 	 */
@@ -881,7 +881,7 @@ class SMWQueryUIHelper {
 	 * @param string $query_string The query
 	 * @return array array of errors, if any.
 	 */
-	public function setQueryString( $query_string = "", $enable_validation = true ) {
+	public function setQueryString( $query_string = "", $enable_validation = false ) {
 		$this -> queryString = $query_string;
 
 		$errors = array();
@@ -905,14 +905,22 @@ class SMWQueryUIHelper {
 
 	/**
 	 *
-	 * If $enable_validation is true, checks if all the values in $printouts are
-	 * properties which exist in the wiki and returns a warning string (for each
-	 * property). Returns null otherwise.
+	 * Sets up any extra properties which need to be displayed with results. Each
+	 * string in printouts should be of the form "?property" or "property"
 	 *
-	 * @param array $print_outs Array of additional properties to be shown in results
-	 * @return array array of errors, if any.
+	 * When validation is enabled, the values in $print_outs are checked against
+	 * properties which exist in the wiki, and a warning string (for each
+	 * property) is returned. Returns an empty array otherwise.
+	 *
+	 * @param array $print_outs Array of strings
+	 * @param boolean $enable_validation
+	 * @return array Array of errors messages (strings), if any.
 	 */
-	public function setPrintOuts( array $print_outs = array(), $enable_validation = true ) {
+	public function setPrintOuts( array $print_outs = array(), $enable_validation = false ) {
+		/*
+		 * Note: property validation is not very clearly defined yet, so validation is disabled by default
+		 */
+		
 		$errors = array();
 		if ( $enable_validation ) {
 			foreach ( $print_outs as $key => $prop ) {
@@ -930,10 +938,23 @@ class SMWQueryUIHelper {
 		return $errors;
 	}
 
-	public function setParams( array $params = array(), $enable_validation = true ) {
-		/*
-		 *Validate, and add missing params.		 *
-		 */
+	/**
+	 * Sets the parameters for the query.
+	 *
+	 * The structure of $params is defined partly by #ask
+	 * and also by the Result Printer used. When validation is enabled, $params are checked
+	 * for conformance, and error messages, if any, are returned.
+	 *
+	 * Although it is not mandatory for any params to be set while calling this method,
+	 * this method must be called so that default parameters are used.
+	 *
+	 * @global int $smwgQMaxInlineLimit
+	 * @global array $smwgResultFormats
+	 * @param array $params
+	 * @param boolean $enable_validation
+	 * @return array of strings
+	 */
+	public function setParams( array $params = array(), $enable_validation = false ) {
 		global $smwgQMaxInlineLimit, $smwgResultFormats;
 		$errors = array();
 
@@ -976,13 +997,38 @@ class SMWQueryUIHelper {
 		return $errors;
 	}
 
+	/**
+	 * Processes the QueryString, Params, and PrintOuts.
+	 *
+	 * @todo Combine this method with execute() or remove it altogether.
+	 *
+	 */
+	public function extractParameters( $p ) {
+		if ( $this->context == self::SPECIAL_PAGE ) {
+			// assume setParams(), setPintouts and setQueryString have been called
+			$rawparams = array_merge( $this->parameters, array( $this->queryString ), $this->printOutStrings );
+		}
+		else // context is WIKI_LINK
+		{
+			$rawparams = SMWInfolink::decodeParameters( $p, true );
+			// calling setParams to fill in missing parameters
+			$this->setParams( $rawparams );
+			$rawparams = array_merge( $this->parameters, $rawparams );
+		}
+
+		SMWQueryProcessor::processFunctionParams( $rawparams, $this->queryString, $this->parameters, $this->printOuts );
+	}
+
+	/**
+	 * Executes the query.
+	 *
+	 * This method can be called once $queryString, $parameters, $printOuts are set
+	 * either by using the setQueryString(), setParams() and setPrintOuts() followed by extractParameters(),
+	 * or one of the static factory methods such as makeForInfoLink() or makeForUI().
+	 *
+	 * Errors, if any can be accessed from hasError() and getErrors().
+	 */
 	public function execute() {
-		/*
-		 * Once $queryString, $parameters, $printOuts are set, generates the
-		 * results / or link. The pagination links (or navigation bar) are expected
-		 * to be created by the UI designer. (or maybe we can put a method here to
-		 * make the nav-bar which also calls makeHTMLResult().
-		 */
 		$errors = array();
 		$query = SMWQueryProcessor::createQuery( $this->queryString, $this->parameters, SMWQueryProcessor::SPECIAL_PAGE , $this->parameters['format'], $this->printOuts );
 		$res = smwfGetStore()->getQueryResult( $query );
@@ -1022,6 +1068,13 @@ class SMWQueryUIHelper {
 		// END: Try to be smart for rss/ical if no description/title is given and we have a concept query
 	}
 
+	/**
+	 * Returns the results in HTML, or in case of exports, a link to the result.
+	 *
+	 * This method can only be called after execute() has been called.
+	 *
+	 * @return string of all the html generated
+	 */
 	public function getHTMLResult() {
 		$result = '';
 		$res = $this->queryResult;
@@ -1043,28 +1096,17 @@ class SMWQueryUIHelper {
 			}
 			return $result;
 	}
-
-	// next come form-helper methods which may or may not be used by the UI designer
-
-	public function extractParameters( $p ) {
-		if ( $this->context == self::SPECIAL_PAGE ) {
-			// assume setParams(), setPintouts and setQueryString have been called
-			$rawparams = array_merge( $this->parameters, array( $this->queryString ), $this->printOutStrings );
-		}
-		else // context is WIKI_LINK
-		{
-			$rawparams = SMWInfolink::decodeParameters( $p, true );
-			// calling setParams to fill in missing parameters
-			$this->setParams( $rawparams );
-			$rawparams = array_merge( $this->parameters, $rawparams );
-		}
-
-		SMWQueryProcessor::processFunctionParams( $rawparams, $this->queryString, $this->parameters, $this->printOuts );
-	}
+	
 	/**
-	 * $queryString, $parameters, $printOuts are set, returns the relevant #ask query
+	 *  $queryString, $parameters, $printOuts are set, returns the relevant #ask query
 	 */
-	public function makeAsk() {
+
+	/**
+	 * Returns the query in the #ask format
+	 * 
+	 * @return string
+	 */
+	public function getAsk() {
 		$result = '{{#ask:' . htmlspecialchars( $this->queryString ) . "\n";
 		foreach ( $this->printOuts as $printout ) {
 			$result .= '|' . $printout->getSerialisation() . "\n";
@@ -1076,10 +1118,20 @@ class SMWQueryUIHelper {
 		return $result;
 	}
 
+	/**
+	 * Returns the query.
+	 *
+	 * @return string
+	 */
 	public function getQueryString() {
 		return $this->queryString;
 	}
 
+	/**
+	 * Returns number of available results.
+	 * 
+	 * @return int
+	 */
 	public function getResultCount() {
 		if ( is_a( $this->queryResult, 'SMWQueryResult' ) ) {
 			return $this->queryResult->getCount();
@@ -1088,6 +1140,11 @@ class SMWQueryUIHelper {
 
 	}
 
+	/**
+	 * Retuens the param array
+	 * 
+	 * @return array
+	 */
 	public function getParams() {
 		return $this->parameters;
 	}
@@ -1144,6 +1201,7 @@ class SMWQueryUIHelper {
 	}
 	/**
 	 * Checks if $property exists in the wiki or not
+	 * 
 	 * @return bool
 	 */
 	protected static function validateProperty( $property ) {
@@ -1162,6 +1220,7 @@ class SMWQueryUIHelper {
 
 	/**
 	 * Returns the result printer which should be used if not specified by the user.
+	 * 
 	 * Overload if necessary.
 	 *
 	 * @return string
