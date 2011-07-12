@@ -53,7 +53,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 							'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
 							'limit'   =>  $wgRequest->getVal( 'limit',   '20' )
 							), $this->processFormatSelectBox( $wgRequest ) );
-					$this->m_ui_helper =  SMWQueryUIHelper::makeFromUI(
+					$this->m_ui_helper =  SMWQueryUIHelper::makeForUI(
 							$this->processQueryFormBox( $wgRequest ),
 							$params,
 							$this->processPOFormBox( $wgRequest ),
