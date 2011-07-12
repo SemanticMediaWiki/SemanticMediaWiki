@@ -868,30 +868,32 @@ class SMWQueryUIHelper {
 	}
 
 	/**
-	 * Initialises the object with a Query. If the Query string is of incorrect syntax,
-	 * returns an array of errors.
+	 * Sets up a query. If validation is enabled, then the query string is checked
+	 * for errors.
 	 *
-	 * @param string $querystring The query
+	 * @param string $query_string The query
 	 * @return array array of errors, if any.
 	 */
-	public function setQueryString( $querystring = "", $enable_validation = true ) {
-		$this -> queryString = $querystring;
+	public function setQueryString( $query_string = "", $enable_validation = true ) {
+		$this -> queryString = $query_string;
+
 		$errors = array();
 		if ( $enable_validation ) {
-			if ( $querystring == '' ) {
+			if ( $query_string == '' ) {
 				$errors[] = "No query has been specified"; // TODO i18n
 			}
 			else
 			{
-				$query = SMWQueryProcessor::createQuery( $querystring, array() );
+				$query = SMWQueryProcessor::createQuery( $query_string, array() );
 				$errors = $query ->getErrors();
 			}
 			if ( !empty ( $errors ) ) {
 				$this->errorsOccured = true;
 			}
 			$this->errors = array_merge( $errors, $this->errors );
-			return $errors;
 		}
+
+		return $errors;
 	}
 
 	/**
@@ -900,15 +902,15 @@ class SMWQueryUIHelper {
 	 * properties which exist in the wiki and returns a warning string (for each
 	 * property). Returns null otherwise.
 	 *
-	 * @param array $printouts Array of additional properties to be shown in results
+	 * @param array $print_outs Array of additional properties to be shown in results
 	 * @return array array of errors, if any.
 	 */
-	public function setPrintOuts( array $printouts = array(), $enable_validation = true ) {
+	public function setPrintOuts( array $print_outs = array(), $enable_validation = true ) {
 		$errors = array();
 		if ( $enable_validation ) {
-			foreach ( $printouts as $key => $prop ) {
+			foreach ( $print_outs as $key => $prop ) {
 				if ( $prop[0] != '?' ) {
-					$printouts[$key] = "?" . $printouts[$key];
+					$print_outs[$key] = "?" . $print_outs[$key];
 				}
 				if ( !$this->validateProperty( $prop ) ) {
 					$errors[] = "$prop may not be a valid property"; // TODO: add i18n
@@ -916,7 +918,7 @@ class SMWQueryUIHelper {
 				}
 			}
 		}
-		$this -> printOuts = $printouts;
+		$this -> printOuts = $print_outs;
 		$this->errors = array_merge( $errors, $this->errors );
 		return $errors;
 	}
