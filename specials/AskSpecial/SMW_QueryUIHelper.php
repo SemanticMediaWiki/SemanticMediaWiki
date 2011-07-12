@@ -718,6 +718,13 @@ class SMWQueryUIHelper {
 	protected $printOuts = array(); // Properties to be printed along with results
 
 	/**
+	 * The The additional columns to be displayed with results in '?property' form
+	 * 
+	 * @var array of strings
+	 */
+	protected $printOutStrings = array();
+
+	/**
 	 * Have errors occured so far?
 	 * @var boolean
 	 */
@@ -918,7 +925,7 @@ class SMWQueryUIHelper {
 				}
 			}
 		}
-		$this -> printOuts = $print_outs;
+		$this -> printOutStrings = $print_outs;
 		$this->errors = array_merge( $errors, $this->errors );
 		return $errors;
 	}
@@ -1042,7 +1049,7 @@ class SMWQueryUIHelper {
 	public function extractParameters( $p ) {
 		if ( $this->context == self::SPECIAL_PAGE ) {
 			// assume setParams(), setPintouts and setQueryString have been called
-			$rawparams = array_merge( $this->parameters, array( $this->queryString ), $this->printOuts );
+			$rawparams = array_merge( $this->parameters, array( $this->queryString ), $this->printOutStrings );
 		}
 		else // context is WIKI_LINK
 		{
