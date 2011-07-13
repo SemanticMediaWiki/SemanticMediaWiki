@@ -321,9 +321,9 @@ END;
 	 * @return string
 	 */
 	protected function addSortingFormBox() {
+		global $smwgQSortingSupport, $wgRequest, $wgOut, $smwgJQueryIncluded;
 		$result = '';
 		if ( $smwgQSortingSupport ) {
-		global $wgRequest, $wgOut, $smwgJQueryIncluded;
 
 			if ( ! array_key_exists( 'sort', $this->m_params ) || ! array_key_exists( 'order', $this->m_params ) ) {
 				$orders = array(); // do not even show one sort input here
