@@ -4,6 +4,10 @@
  * A base class for Semantic Search UIs. All Semantic Search UI's may subclass
  * from this.
  *
+ * The commonly used and overloaded methods are the ones which create some default
+ * UI elements (the getxxxFormBox() methods) and corresponding methods that
+ * extract data from them (the processxxxFormBox() methods).
+ *
  * @author Markus Krötzsch
  * @author Yaron Koren
  * @author Sanyam Goyal
@@ -11,10 +15,83 @@
  * @author Devayon Das
  */
 abstract class SMWQueryUI extends SpecialPage {
-	protected $m_ui_helper;
+	/**
+	 * The handle for the underlying SMWQueryUIHelper class.
+	 * @var SMWQueryUIHelper
+	 * @see SMWQueryUIHelper
+	 */
+	protected $uiCore;
+
+	/**
+	 * Is auto-complete enabled for these UI elements?
+	 *
+	 * @var mixed SMWQUeryUI::ENABLE_AUTO_SUGGEST | SMWQUeryUI::DISABLE_AUTO_SUGGEST
+	 */
 	private $autocompleteenabled = false;
+
+	/*
+	 *
+	 */
 	const ENABLE_AUTO_SUGGEST = true;
 	const DISABLE_AUTO_SUGGEST = false;
+
+	/**
+	 * Initialises the page. Sets the property $uiCore to the appropriate helper object.
+	 *
+	 * To create a custom UI, adding changes to makePage() is usually enough, but one might want to
+	 * overload this method to get better handling of form parameters.
+	 *
+	 * @global OutputPage $wgOut
+	 * @global WebRequest $wgRequest
+	 * @global boolean $smwgQEnabled
+	 * @param string $p the sub-page string
+	 */
+	public function execute( $p ) {
+		global $wgOut, $wgRequest, $smwgQEnabled;
+
+		$this->setHeaders();
+
+		if ( !$smwgQEnabled ) {
+			$wgOut->addHTML( '<br />' . wfMsg( 'smw_iq_disabled' ) );
+		} else {
+			$format_options_requested = $this->processFormatOptions( $wgRequest ); // handling ajax for format options
+			if ( !$format_options_requested ) {
+				// Checking if a query string has been sent by using the form
+				// the 'q' is dependent from the form parameter set by getQueryFormBox()
+				// and processQueryFormBox()
+				if ( $wgRequest->getCheck( 'q' ) ) {
+					$params = array_merge(
+							array(
+							'format'  =>  $wgRequest->getVal( 'format' ),
+							'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
+							'limit'   =>  $wgRequest->getVal( 'limit',   '20' )
+							), $this->processFormatSelectBox( $wgRequest ) );
+					$this->uiCore =  SMWQueryUIHelper::makeForUI(
+							$this->processQueryFormBox( $wgRequest ),
+							$params,
+							$this->processPOFormBox( $wgRequest ),
+							false );
+					if ( $this->uiCore->getQueryString() != "" ) {
+						$this->uiCore->execute( $p );
+					}
+				}
+				else {
+				// the user has entered this page from a wiki-page using an infolink,
+				// or no query has been set
+					$this->uiCore =  SMWQueryUIHelper::makeForInfoLink( $p );
+				}
+				$this->makepage( $p );
+			}
+		}
+
+		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
+	}
+
+	/**
+	 * The main entrypoint for your UI. Call the various methods of SMWQueryUI and
+	 * SMWQueryUIHelper to build ui elements and to process them.
+	 */
+	protected abstract function makePage( $p );
 
 	/**
 	 * Builds a read-only #ask embed code of the given query.
@@ -23,16 +100,23 @@ abstract class SMWQueryUI extends SpecialPage {
 	 */
 	protected function getAskEmbedBox() {
 		$result = '';
-		if ( $this->m_ui_helper->getQueryString() != "" ) {
+		if ( $this->uiCore->getQueryString() != "" ) {
 			$result = Html::rawElement( 'div', array( 'id' => 'inlinequeryembed' ),
 				Html::rawElement( 'div', array( 'id' => 'inlinequeryembedinstruct' ), wfMsg( 'smw_ask_embed_instr' ) ) .
 				Html::element( 'textarea', array( 'id' => 'inlinequeryembedarea', 'readonly' => 'yes', 'cols' => '20', 'rows' => '6', 'onclick' => 'this.select()' ),
-			$this->m_ui_helper->getAsk() ) );
+			$this->uiCore->getAsk() ) );
 		}
 		return $result;
 	}
 
-	protected function addAutocompletionJavascriptAndCSS() {
+	/**
+	 * Adds common JS and CSS required for Autocompletion.
+	 * @global OutputPage $wgOut
+	 * @global string $smwgScriptPath
+	 * @global boolean $smwgJQueryIncluded
+	 * @global boolean $smwgJQueryUIIncluded
+	 */
+	private function addAutocompletionJavascriptAndCSS() {
 		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
 		if ( $this->autocompleteenabled == false ) {
 			$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
@@ -111,6 +195,13 @@ END;
 		}
 	}
 
+	/**
+	 *
+	 * @global OutputPage $wgOut
+	 * @global <type> $wgRequest
+	 * @param <type> $p
+	 * @todo remove this method
+	 */
 	protected function makeRes( $p ) {
 		/*
 		 * TODO: extract parameters from $p and decide:
@@ -124,7 +215,7 @@ END;
 		$htmloutput .= $this->getForm();
 		$param = array();
 
-		$this->m_ui_helper = $helper = new SMWQueryUIHelper; // or some factory method
+		$this->uiCore = $helper = new SMWQueryUIHelper; // or some factory method
 		// here come some driver lines for testing; this is very temporary
 
 		//     form parameters                               default values
@@ -191,7 +282,7 @@ END;
 			'&#160;&#160;&#160;&#160; <b>' .
 				wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) .
 			'&#150; ' .
-				( $offset + $this->m_ui_helper->getResultCount() ) .
+				( $offset + $this->uiCore->getResultCount() ) .
 			'</b>&#160;&#160;&#160;&#160;';
 
 		if ( $has_further_results ) {
@@ -264,9 +355,6 @@ END;
 		// $result.= getParamBox($content); //avoid ajax, load form elements in the UI by default
 		$result = "<br>Stub: The Form elements come here<br><br>";
 		return $result;
-	}
-	protected function makeHtmlResult() {
-		// STUB
 	}
 
 	/**
@@ -518,9 +606,9 @@ EOT;
 	 * @return string An url-encoded string.
 	 */
 	protected function getUrlTail() {
-		$urltail = '&q=' . urlencode( $this->m_ui_helper->getQuerystring() );
+		$urltail = '&q=' . urlencode( $this->uiCore->getQuerystring() );
 		$tmp_parray = array();
-		$params = $this->m_ui_helper->getParams();
+		$params = $this->uiCore->getParams();
 		foreach ( $params as $key => $value ) {
 			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
 				$tmp_parray[$key] = $value;
@@ -529,7 +617,7 @@ EOT;
 
 		$urltail .= '&p=' . urlencode( SMWInfolink::encodeParameters( $tmp_parray ) );
 		$printoutstring = '';
-		foreach ( $this->m_ui_helper->getPrintOuts() as $printout ) {
+		foreach ( $this->uiCore->getPrintOuts() as $printout ) {
 			$printoutstring .= $printout->getSerialisation() . "\n";
 		}
 
@@ -579,7 +667,7 @@ EOT;
 
 		for ( $i = 0, $n = count( $optionsHtml ); $i < $n; $i++ ) {
 			if ( $i % 3 == 2 || $i == $n - 1 ) {
-				$optionsHtml[$i] .= "<div style=\"clear: both\";></div>\n";
+				$optionsHtml[$i] .= Html::element( 'div', array( 'style' => 'clear: both;' ) ) . "\n";
 			}
 		}
 
@@ -697,7 +785,7 @@ EOT;
 		$printer = SMWQueryProcessor::getResultPrinter( $default_format, SMWQueryProcessor::SPECIAL_PAGE );
 		$url = $this->getTitle()->getLocalURL( "showformatoptions=' + this.value + '" );
 
-		foreach ( $this->m_ui_helper->getParams() as $param => $value ) {
+		foreach ( $this->uiCore->getParams() as $param => $value ) {
 			if ( $param !== 'format' ) {
 				$url .= '&params[' . Xml::escapeJsString( $param ) . ']=' . Xml::escapeJsString( $value );
 			}
@@ -718,7 +806,7 @@ EOT;
 		}
 
 		natcasesort( $formats );
-		$params = $this->m_ui_helper->getParams();
+		$params = $this->uiCore->getParams();
 		foreach ( $formats as $format => $name ) {
 			$result .= '	<option value="' . $format . '"' . ( $params['format'] == $format ? ' selected' : '' ) . '>' . $name . "</option>\n";
 		}
@@ -805,7 +893,7 @@ END;
 	 */
 	public function getPOStrings() {
 		$string = "";
-		$printouts = $this->m_ui_helper->getPrintOuts();
+		$printouts = $this->uiCore->getPrintOuts();
 		if (  !empty( $printouts ) ) {
 			foreach ( $printouts as $value ) {
 				$string .= $value->getSerialisation() . "\n";
@@ -821,7 +909,7 @@ END;
 	 */
 	protected function usesNavigationBar() {
 		// hide if no results are found
-		if ( $this->m_ui_helper->getResultCount() == 0 ) return false;
+		if ( $this->uiCore->getResultCount() == 0 ) return false;
 		else return true;
 	}
 
