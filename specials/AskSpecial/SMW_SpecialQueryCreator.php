@@ -17,8 +17,6 @@
  * @author Sanyam Goyal
  * @author Jeroen De Dauw
  * @author Devayon Das
- *
- *
  */
 class SMWQueryCreatorPage extends SMWQueryUI {
 
@@ -63,7 +61,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 * @global booolean $smwgQSortingSupport
 	 * @return string
 	 *
-	 * TODO: clean up the lines handling sorting
+	 * @todo Clean up the lines handling sorting.
 	 */
 	protected function makeResults() {
 		global $wgOut;
@@ -111,22 +109,21 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 
 	}
 
-    /**
-     * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
-     *
-     * @since 1.6
-     *
-     * @return Skin
-     */
-    public function getSkin() {
-	if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
-	    return parent::getSkin();
+	/**
+	 * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
+	 *
+	 * @since 1.6
+	 *
+	 * @return Skin
+	 */
+	public function getSkin() {
+		if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
+			return parent::getSkin();
+		} else {
+			global $wgUser;
+			return $wgUser->getSkin();
+		}
 	}
-	else {
-	    global $wgUser;
-	    return $wgUser->getSkin();
-	}
-    }
 
 }
 
