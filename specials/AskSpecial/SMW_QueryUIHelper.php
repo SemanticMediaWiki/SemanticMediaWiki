@@ -29,9 +29,6 @@ abstract class SMWQueryUI extends SpecialPage {
 	 */
 	private $autocompleteenabled = false;
 
-	/*
-	 *
-	 */
 	const ENABLE_AUTO_SUGGEST = true;
 	const DISABLE_AUTO_SUGGEST = false;
 
@@ -196,54 +193,6 @@ END;
 	}
 
 	/**
-	 *
-	 * @global OutputPage $wgOut
-	 * @global <type> $wgRequest
-	 * @param <type> $p
-	 * @todo remove this method
-	 */
-	protected function makeRes( $p ) {
-		/*
-		 * TODO: extract parameters from $p and decide:
-		 * (1) if form elements need to be displayed
-		 * (2) if any results need to be displayed
-		 * (3) which factory method of UIhelper should be called
-		 * Most of the code here in this method will anyway be removed later
-		 */
-		global $wgOut, $wgRequest;
-		$htmloutput = "";
-		$htmloutput .= $this->getForm();
-		$param = array();
-
-		$this->uiCore = $helper = new SMWQueryUIHelper; // or some factory method
-		// here come some driver lines for testing; this is very temporary
-
-		//     form parameters                               default values
-		$helper->setQueryString(
-			$wgRequest->getVal( 'q',                    '[[Located in:: Germany]]' ) );
-		$helper->setParams( array(
-			'format'  =>  $wgRequest->getVal( 'format',	'ol' ),
-			'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
-			'limit'   =>  $wgRequest->getVal( 'limit',   '20' )
-			) );
-		$helper->setPrintOuts( array( '?Population' ) );
-		$helper->extractParameters( $p );
-
-		$helper->execute();
-
-		if ( $this->usesNavigationBar() ) {
-			$htmloutput .= $this->getNavigationBar ( $helper->getLimit(), $helper->getOffset(), $helper->hasFurtherResults() ); // ? can we preload offset and limit?
-		}
-
-		$htmloutput .= $helper->getHTMLResult();
-
-		if ( $this->usesNavigationBar() ) {
-			$htmloutput .= $this->getNavigationBar ( $helper->getLimit(), $helper->getOffset(), $helper->hasFurtherResults() ); // ? can we preload offset and limit?
-		}
-		$wgOut->addHTML( $htmloutput );
-	}
-
-	/**
 	 * Build the navigation bar for some given query result.
 	 *
 	 * UI may overload this for a different layout. The navigation bar
@@ -333,28 +282,6 @@ END;
 		$navigation .= ')';
 
 		return $navigation;
-	}
-
-	/**
-	 * Creates the form elements and populates them with parameters.
-	 * UI implementations need to overload this if a different layout and form
-	 * elements are desired
-	 *
-	 * @return string Form elements in HTML
-	 */
-	protected function getForm() {
-		/*
-		 * Although the following methods will retuen form elements, which can
-		 * then be placed in wOut as pleased, they will
-		 * also write javascript (if relevant) directly to wgOut.
-		 */
-
-		// $result="";
-		// $result.= getQueryFormBox($contents, $errors);
-		// $result.= getPOFormBox($content, $enableAutoComplete);
-		// $result.= getParamBox($content); //avoid ajax, load form elements in the UI by default
-		$result = "<br>Stub: The Form elements come here<br><br>";
-		return $result;
 	}
 
 	/**
