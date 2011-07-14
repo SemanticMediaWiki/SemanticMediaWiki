@@ -107,6 +107,26 @@ abstract class SMWQueryUI extends SpecialPage {
 	}
 
 	/**
+	 * A helper function to enable JQuery
+	 *
+	 * @global OutputPage $wgOut
+	 * @global boolean $smwgJQueryIncluded
+	 */
+	private function enableJQuery(){
+		global $wgOut, $smwgJQueryIncluded;
+			if ( !$smwgJQueryIncluded ) {
+				$realFunction = array( 'OutputPage', 'includeJQuery' );
+				if ( is_callable( $realFunction ) ) {
+					$wgOut->includeJQuery();
+				} else {
+					$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-1.4.2.min.js" );
+				}
+
+				$smwgJQueryIncluded = true;
+			}
+	}
+
+	/**
 	 * Adds common JS and CSS required for Autocompletion.
 	 * @global OutputPage $wgOut
 	 * @global string $smwgScriptPath
@@ -118,18 +138,9 @@ abstract class SMWQueryUI extends SpecialPage {
 		if ( $this->autocompleteenabled == false ) {
 			$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
 
+			$this-> enableJQuery();
+
 			$scripts = array();
-
-			if ( !$smwgJQueryIncluded ) {
-				$realFunction = array( 'OutputPage', 'includeJQuery' );
-				if ( is_callable( $realFunction ) ) {
-					$wgOut->includeJQuery();
-				} else {
-					$scripts[] = "$smwgScriptPath/libs/jquery-1.4.2.min.js";
-				}
-
-				$smwgJQueryIncluded = true;
-			}
 
 			if ( !$smwgJQueryUIIncluded ) {
 				$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.core.min.js";
@@ -538,7 +549,7 @@ EOT;
 		$urltail = '&q=' . urlencode( $this->uiCore->getQuerystring() );
 
 		$tmp_parray = array();
-		$params = $this->uiCore->getParams();
+		$params = $this->uiCore->getParameters();
 		foreach ( $params as $key => $value ) {
 			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
 				$tmp_parray[$key] = $value;
@@ -594,7 +605,7 @@ EOT;
 						'style' => 'width: 30%; padding: 5px; float: left;'
 					),
 					htmlspecialchars( $param->getName() ) . ': ' .
-					$this->showFormatOption( $param, $currentValue ) .
+					$this->getFormatOption( $param, $currentValue ) .
 					'<br />' .
 					Html::element( 'em', array(), $param->getDescription() )
 				);
@@ -610,21 +621,17 @@ EOT;
 		$rowHtml = '';
 		$resultHtml = '';
 
-		/// @todo Check if this code works if the number of options is not a multiple of 3!
 		while ( $option = array_shift( $optionsHtml ) ) {
 			$rowHtml .= $option;
 			$i += 1;
-
-			if ( $i % 3 == 0 ) {
-				$resultHtml .= Html::rawElement(
-					'div',
-					array(
-						'style' => 'background: ' . ( $i % 6 == 0 ? 'white' : '#dddddd' ) . ';'
-					),
-					$rowHtml
-				);
-				$rowHtml = '';
-			}
+			$resultHtml .= Html::rawElement(
+				'div',
+				array(
+					'style' => 'background: ' . ( $i % 6 == 0 ? 'white' : '#dddddd' ) . ';'
+				),
+				$rowHtml
+			);
+			$rowHtml = '';
 		}
 
 		return $resultHtml;
@@ -671,15 +678,14 @@ EOT;
 
 	/**
 	 * Get the HTML for a single parameter input.
+	 * A helper method for showFormatOptions()
 	 *
 	 * @param Parameter $parameter
-	 * @param mixed $currentValue
+	 * @param mixed $currentValue curretly set value of the parameter, or false if unknown.
 	 *
-	 * @return string
-	 * @todo Change method name to reflect behaviour (it does not "show" anything).
-	 * @todo Document what kind of types are expected for $currentValue, or at least say what its meaning is.
+	 * @return string generated HTML
 	 */
-	private function showFormatOption( Parameter $parameter, $currentValue ) {
+	private function getFormatOption( Parameter $parameter, $currentValue ) {
 		$input = new ParameterInput( $parameter );
 		$input->setInputName( 'p[' . $parameter->getName() . ']' );
 
@@ -702,18 +708,9 @@ EOT;
 	 * @return string
 	 */
 	protected function getFormatSelectBox( $defaultformat = 'broadtable' ) {
-		global $smwgResultFormats, $smwgJQueryIncluded, $wgOut;
+		global $smwgResultFormats, $wgOut;
 
-		/// @todo The very same code for JQuery inclusion occurs multiple times. Should be a helper function.
-		if ( !$smwgJQueryIncluded ) {
-				$realFunction = array( 'OutputPage', 'includeJQuery' );
-				if ( is_callable( $realFunction ) ) {
-					$wgOut->includeJQuery();
-				} else { ///@bug $scripts is undefined and not used later on
-					$scripts[] = "$smwgScriptPath/libs/jquery-1.4.2.min.js";
-				}
-				$smwgJQueryIncluded = true;
-		}
+		$this->enableJQuery();
 
 		// checking argument
 		$default_format = 'broadtable';
@@ -725,7 +722,7 @@ EOT;
 		$printer = SMWQueryProcessor::getResultPrinter( $default_format, SMWQueryProcessor::SPECIAL_PAGE );
 		$url = $this->getTitle()->getLocalURL( "showformatoptions=' + this.value + '" );
 
-		foreach ( $this->uiCore->getParams() as $param => $value ) {
+		foreach ( $this->uiCore->getParameters() as $param => $value ) {
 			if ( $param !== 'format' ) {
 				$url .= '&params[' . Xml::escapeJsString( $param ) . ']=' . Xml::escapeJsString( $value );
 			}
@@ -746,7 +743,7 @@ EOT;
 		}
 		natcasesort( $formats );
 
-		$params = $this->uiCore->getParams();
+		$params = $this->uiCore->getParameters();
 		foreach ( $formats as $format => $name ) {
 			$result .= '<option value="' . $format . '"' . ( $params['format'] == $format ? ' selected' : '' ) . '>' . $name . "</option>\n";
 		}
@@ -872,7 +869,6 @@ END;
  *
  * @author Devayon Das
  *
- * @todo The is_a function is deprecated in PHP and instanceof should be used instead. In many cases as simple check for "is_null" would be even better.
  */
 class SMWQueryUIHelper {
 
@@ -1002,7 +998,7 @@ class SMWQueryUIHelper {
 	 * @return boolean
 	 */
 	public function hasFurtherResults() {
-		if ( is_a( $this->queryResult, 'SMWQueryResult' ) ) { // The queryResult may not be set
+		if ( !is_null( $this->queryResult ) ) { // The queryResult may not be set
 			return $this->queryResult->hasFurtherResults();
 		} else {
 			return false;
@@ -1180,6 +1176,8 @@ class SMWQueryUIHelper {
 	 * Processes the QueryString, Params, and PrintOuts.
 	 *
 	 * @todo Combine this method with execute() or remove it altogether.
+	 * @todo for wikilink context, try to avoid computation if no query is set,
+	 * also check for pagination problems, if any.
 	 */
 	public function extractParameters( $p ) {
 		if ( $this->context == self::SPECIAL_PAGE ) {
@@ -1312,7 +1310,7 @@ class SMWQueryUIHelper {
 	 * @return int
 	 */
 	public function getResultCount() {
-		if ( is_a( $this->queryResult, 'SMWQueryResult' ) ) {
+		if ( !is_null( $this->queryResult ) ) {
 			return $this->queryResult->getCount();
 		} else {
 			return 0;
@@ -1323,9 +1321,8 @@ class SMWQueryUIHelper {
 	 * Returns the parameter array.
 	 *
 	 * @return array
-	 * @todo Always avoid abbreviations (unless they are a special technical term used everywhere). Call this getParameters().
 	 */
-	public function getParams() {
+	public function getParameters() {
 		return $this->parameters;
 	}
 
@@ -1336,26 +1333,29 @@ class SMWQueryUIHelper {
 	 */
 	public function getPrintOuts() {
 		if ( !empty( $this->printOuts ) &&
-			is_a( $this->printOuts[0], 'SMWPrintRequest' ) ) {
+		( $this->printOuts[0] instanceof SMWPrintRequest ) ) {
 			return $this->printOuts;
 		}
 		return array();
 	}
 
 	/**
-	 * Constructs a new SMWQueryUIHelper when parameters are passed in the
-	 * InfoLink style.
+	 * Constructs a new SMWQueryUIHelper object when the query is passed to
+	 * the UI in the Info-link format. This constructor should be used for
+	 * handling the "further results" links in wiki-pages that use #ask. If
+	 * your search UI handles form parameters only, then consider using
+	 * makeForUI().
+	 * 
+	 * If any errors do occur while parsing parameters, they may be accessed
+	 * from hasError() and getErrors().
 	 *
-	 * Errors, if any can be accessed from hasError() and getErrors()
-	 *
-	 * @param string $p parameters
+	 * @param string $p parameters of the query.
 	 * @param boolean $enable_validation
 	 * @return SMWQueryUIHelper
 	 *
-	 * @todo The above documentation contains an unclear sequence of words that do not form a sentence.
 	 * @todo Handle validation for infolink parameters
 	 */
-	public static function makeForInfoLink( $p, $enable_validation = true ) {
+	public static function makeForInfoLink( $p, $enable_validation = false ) {
 		$result = new SMWQueryUIHelper( self::WIKI_LINK );
 		$result->extractParameters( $p );
 		$result->execute();
@@ -1363,10 +1363,14 @@ class SMWQueryUIHelper {
 	}
 
 	/**
-	 * Constructs a new SMWQueryUIHelper when arguments are extracted from
-	 * the UI.
+	 * Constructs a new SMWQueryUIHelper when the query is passed to the UI
+	 * from a web form. This constructor should be used to handle form
+	 * parameters sent from the UI itself. If your search UI must also handle
+	 * "further results" links from a wiki page, consider using
+	 * makeForInfoLink().
 	 *
-	 * Errors, if any can be accessed from hasError() and getErrors()
+	 * If any errors do occur while parsing parameters, they may be accessed
+	 * from hasError() and getErrors().
 	 *
 	 * @param string $query
 	 * @param array $params of key=>value pairs
@@ -1374,9 +1378,8 @@ class SMWQueryUIHelper {
 	 * @param boolean $enable_validation
 	 * @return SMWQueryUIHelper
 	 *
-	 * @todo The above documentation contains an unclear sequence of words that do not form a sentence.
 	 */
-	public static function makeForUI( $query, array $params, array $printouts, $enable_validation = true ) {
+	public static function makeForUI( $query, array $params, array $printouts, $enable_validation = false ) {
 		$result = new SMWQueryUIHelper( self::SPECIAL_PAGE );
 		$result->setParams( $params, $enable_validation );
 		$result->setPrintOuts( $printouts, $enable_validation );
@@ -1389,8 +1392,8 @@ class SMWQueryUIHelper {
 	/**
 	 * Checks if $property exists in the wiki or not.
 	 *
-	 * @return bool
-	 * @todo Document parameter type and format.
+	 * @param string $property a property name in "?property" format
+	 * @return boolean
 	 */
 	protected static function validateProperty( $property ) {
 		/*
@@ -1399,7 +1402,7 @@ class SMWQueryUIHelper {
 		 */
 		$prop = substr( $property, 1 ); // removing the leading '?' while checking.
 		$propertypage = Title::newFromText( $prop, SMW_NS_PROPERTY );
-		if ( is_a( $propertypage, 'Title' ) ) {
+		if ( $propertypage instanceof Title ) {
 			return( $propertypage->exists() );
 		} else {
 			return false;
