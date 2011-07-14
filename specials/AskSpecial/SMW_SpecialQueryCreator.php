@@ -4,18 +4,13 @@
  * This special page for Semantic MediaWiki implements a customisable form for
  * executing queries outside of articles.
  *
- * Currently adapted from current contents of SMW_SpecialAsk.php
- * This page is currently under development as part of the Google Summer of
- * Code 2011 Program.
- *
  * @file SMW_SpecialQueryCreator.php
  * @ingroup SMWSpecialPage
  * @ingroup SpecialPage
  *
  * @author Markus Krötzsch
- * @author Yaron Koren
- * @author Sanyam Goyal
  * @author Jeroen De Dauw
+ * @author Sergey Chernyshev
  * @author Devayon Das
  */
 class SMWQueryCreatorPage extends SMWQueryUI {
@@ -93,7 +88,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			'<p>' . $this->getPOFormBox( $this->getPOStrings(), SMWQueryUI::ENABLE_AUTO_SUGGEST ) . '</p>' . "\n";
 
 		// sorting inputs
-		$result .= $this -> addSortingFormBox();
+		$result .= $this->getSortingFormBox();
 
 		$result .= "<br><br>" . $this->getFormatSelectBox( 'broadtable' );
 
@@ -110,7 +105,8 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	}
 
 	/**
-	 * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
+	 * Compatibility method to get the skin; MW 1.18 introduces a getSkin method 
+	 * in SpecialPage.
 	 *
 	 * @since 1.6
 	 *
