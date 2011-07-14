@@ -766,17 +766,15 @@ END;
 			$rowHtml .= $option;
 			$i++;
 
-			if ( $i % 3 == 0 ) {
-				$resultHtml .= Html::rawElement(
-					'div',
-					array(
-						'style' => 'background: ' . ( $i % 6 == 0 ? 'white' : '#dddddd' ) . ';'
-					),
-					$rowHtml
-				);
-				$rowHtml = '';
+			$resultHtml .= Html::rawElement(
+				'div',
+				array(
+					'style' => 'background: ' . ( $i % 6 == 0 ? 'white' : '#dddddd' ) . ';'
+				),
+				$rowHtml
+			);
+			$rowHtml = '';
 			}
-		}
 
 		return $resultHtml;
 	}
