@@ -65,6 +65,7 @@ class SMWQueryProcessor {
 		$query = new SMWQuery( $desc, ( $context != self::SPECIAL_PAGE ), ( $context == self::CONCEPT_DESC ) );
 		$query->setQueryString( $querystring );
 		$query->setExtraPrintouts( $extraprintouts );
+		$query->setMainLabel( $mainlabel );
 		$query->addErrors( $qp->getErrors() ); // keep parsing errors for later output
 
 		// set mode, limit, and offset:

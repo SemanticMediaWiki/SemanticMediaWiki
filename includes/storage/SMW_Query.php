@@ -44,7 +44,8 @@ class SMWQuery {
 	protected $m_inline; // query used inline? (required for finding right default parameters)
 	protected $m_concept; // query used in concept? (required for finding right default parameters)
 	protected $m_extraprintouts = array(); // SMWPrintoutRequest objects supplied outside querystring
-
+	protected $m_mainlabel = ''; // Since 1.6
+	
 	/**
 	 * Constructor.
 	 * @param $description Optional SMWDescription object describing the query conditions
@@ -60,6 +61,28 @@ class SMWQuery {
 		$this->m_concept = $concept;
 		$this->m_description = $description;
 		$this->applyRestrictions();
+	}
+	
+	/**
+	 * Sets the mainlabel.
+	 * 
+	 * @since 1.6.
+	 * 
+	 * @param string $mainlabel
+	 */
+	public function setMainLabel( $mainlabel ) {
+		$this->m_mainlabel = $mainlabel; 
+	}
+
+	/**
+	 * Gets the mainlabel.
+	 * 
+	 * @since 1.6.
+	 * 
+	 * @return string
+	 */
+	public function getMainLabel() {
+		return $this->m_mainlabel; 
 	}
 
 	public function setDescription( SMWDescription $description ) {

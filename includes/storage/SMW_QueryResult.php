@@ -204,6 +204,8 @@ class SMWQueryResult {
 			$params[] = $printout->getSerialisation();
 		}
 		
+		$params['mainlabel'] = $this->mQuery->getMainLabel();
+		
 		if ( count( $this->mQuery->sortkeys ) > 0 ) {
 			$order = implode( ',', $this->mQuery->sortkeys );
 			$sort = implode( ',', array_keys( $this->mQuery->sortkeys ) );
