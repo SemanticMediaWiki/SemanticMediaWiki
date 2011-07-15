@@ -37,6 +37,7 @@ class SMWLanguageRu extends SMWLanguage {
 		'_anu' => 'URI аннотации',  // name of the annotation URI type (OWL annotation property)
 		'_tel' => 'Номер телефона',  // name of the telephone (URI) type 
 		'_rec' => 'Запись', // name of record data type 
+		'_qty' => 'Количество', // name of the number type with units of measurement
 	);
 	
 	protected $m_DatatypeAliases = array(
@@ -44,7 +45,8 @@ class SMWLanguageRu extends SMWLanguage {
 		'Целое'                 => '_num',
 		'Десятичное'            => '_num',
 		'Плавающее'             => '_num',
-		'Перечисление'          => '_str'
+		'Перечисление'          => '_str',
+		'Телефон'               => '_tel',
 	);
 	
 	protected $m_SpecialProperties = array(
