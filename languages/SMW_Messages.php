@@ -1025,6 +1025,14 @@ $messages['az'] = array(
 	'smw_result_results' => 'Nəticələr',
 );
 
+/** Bavarian (Boarisch)
+ * @author Mucalexx
+ */
+$messages['bar'] = array(
+	'smw_purge' => 'Neich loon',
+	'smw_browselink' => "D' Attributt åzoang",
+);
+
 /** Belarusian (Беларуская)
  * @author Тест
  */
@@ -2044,6 +2052,8 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw-paramdesc-csv-sep' => 'Zu verwendendes Trennzeichen',
 	'smw-paramdesc-dsv-separator' => 'Zu verwendendes Trennzeichen',
 	'smw-paramdesc-dsv-filename' => 'Der Name für die DSV-Datei',
+	'smw-smwdoc-description' => 'Zeigt eine Übersicht aller Parameter mitsamt deren Standardwerten einschließlich ihrer Beschreibung, die im Zusammenhang mit dem angegebenen Ergebnisformat genutzt werden können.',
+	'smw-smwdoc-par-format' => 'Das Ergebnisformat zu dessen Parametern die Dokumentation angezeigt werden soll.',
 	'smw_iq_disabled' => 'Semantische Abfragen wurden in diesem Wiki deaktiviert.',
 	'smw_iq_moreresults' => '… weitere Ergebnisse',
 	'smw_nonright_importtype' => 'Das Element „$1“ kann nur für Seiten im Namensraum „$2“ verwendet werden.',
