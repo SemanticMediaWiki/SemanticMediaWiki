@@ -26,8 +26,14 @@ class SMWInfo {
 		$params = func_get_args();
 		array_shift( $params ); // We already know the $parser ...
 
-		$content = array_shift( $params ); // Use only first parameter, ignore the rest (may get meaning later).
-		$result = smwfEncodeMessages( array( $content ), 'info' );
+		$content = array_shift( $params ); // First parameter is the info message.
+		$icon = array_shift( $params ); // Second parameter is icon to use or null when not provided.
+		
+		if ( is_null( $icon ) || $icon === '' || !in_array( $icon, array( 'info', 'warning' ) ) ) {
+			$icon = 'info';
+		}
+		
+		$result = smwfEncodeMessages( array( $content ), $icon );
 
 		// Starting from MW 1.16, there is a more suited method available: Title::isSpecialPage
 		global $wgTitle;
