@@ -724,8 +724,6 @@ END;
 	 * @return string
 	 */
 	protected function showFormatOptions( $format, array $paramValues ) {
-		$text = '';
-
 		$printer = SMWQueryProcessor::getResultPrinter( $format, SMWQueryProcessor::SPECIAL_PAGE );
 
 		$params = method_exists( $printer, 'getValidatorParameters' ) ? $printer->getValidatorParameters() : array();
@@ -772,8 +770,9 @@ END;
 				),
 				$rowHtml
 			);
+			
 			$rowHtml = '';
-			}
+		}
 
 		return $resultHtml;
 	}
