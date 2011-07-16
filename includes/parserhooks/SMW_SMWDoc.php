@@ -119,7 +119,7 @@ class SMWSMWDoc extends ParserHook {
 
 			$table = implode( "\n|-\n", $tableRows );
 
-			$table = "$h3\n\n" .
+			$table = 
 					'{| class="wikitable sortable"' . "\n" .
 					$table .
 					"\n|}";
