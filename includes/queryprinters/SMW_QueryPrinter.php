@@ -598,6 +598,24 @@ abstract class SMWResultPrinter {
 	}
 
 	/**
+	 * Returns the parameters from getParameters, but with all non-Validator
+	 * parameters converted to Validator parameters.
+	 * 
+	 * @since 1.6
+	 * 
+	 * @return array of Parameter
+	 */
+	public function getValidatorParameters() {
+		$params = array();
+		
+		foreach ( $this->getParameters() as $param ) {
+			$params[] = $this->toValidatorParam( $param );
+		}
+		
+		return $params;
+	}
+	
+	/**
 	 * A function to describe the allowed parameters of a query using
 	 * any specific format - most query printers should override this
 	 * function
@@ -634,6 +652,46 @@ abstract class SMWResultPrinter {
 		$params['link']->setDefault( 'all' );
 		
 		return $params;
+	}
+	
+	/**
+	 * Returns a Validator style Parameter definition.
+	 * SMW 1.5.x style definitions are converted.
+	 *
+	 * @since 1.6
+	 *
+	 * @param mixed $param
+	 *
+	 * @return Parameter
+	 */
+	protected function toValidatorParam( $param ) {
+		static $typeMap = array(
+			'int' => Parameter::TYPE_INTEGER
+		);
+
+		if ( !( $param instanceof Parameter ) ) {
+			if ( !array_key_exists( 'type', $param ) ) {
+				$param['type'] = 'string';
+			}
+
+			$paramClass = $param['type'] == 'enum-list' ? 'ListParameter' : 'Parameter';
+			$paramType = array_key_exists( $param['type'], $typeMap ) ? $typeMap[$param['type']] : Parameter::TYPE_STRING;
+
+			$parameter = new $paramClass( $param['name'], $paramType );
+
+			if ( array_key_exists( 'description', $param ) ) {
+				$parameter->setDescription( $param['description'] );
+			}
+
+			if ( array_key_exists( 'values', $param ) && is_array( $param['values'] ) ) {
+				$parameter->addCriteria( new CriterionInArray( $param['values'] ) );
+			}
+
+			return $parameter;
+		}
+		else {
+			return $param;
+		}
 	}
 
 }

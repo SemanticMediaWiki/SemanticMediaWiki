@@ -192,6 +192,7 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$wgAutoloadClasses['SMWSet']               		= $phDir . 'SMW_Set.php';
 	$wgAutoloadClasses['SMWSetRecurringEvent']      = $phDir . 'SMW_SetRecurringEvent.php';
 	$wgAutoloadClasses['SMWDeclare']              	= $phDir . 'SMW_Declare.php';
+	$wgAutoloadClasses['SMWSMWDoc']              	= $phDir . 'SMW_SMWDoc.php';
 	
 	// Stores & queries
 	$wgAutoloadClasses['SMWQueryProcessor']         = $smwgIP . 'includes/SMW_QueryProcessor.php';
@@ -231,6 +232,9 @@ function enableSemantics( $namespace = null, $complete = false ) {
 		$wgAutoloadClasses['Html'] = $smwgIP . 'compat/Html.php';
 	}
 
+	$wgHooks['ParserFirstCallInit'][] = 'SMWSMWDoc::staticInit';
+	$wgHooks['LanguageGetMagic'][] = 'SMWSMWDoc::staticMagic';
+	
 	$wgAutoloadClasses['SMWTestStore']              = $smwgIP . 'includes/storage/SMW_TestStore.php';
 
 	///// Register specials, do that early on in case some other extension calls "addPage" /////
