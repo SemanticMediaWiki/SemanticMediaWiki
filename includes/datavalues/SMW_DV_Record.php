@@ -187,7 +187,7 @@ class SMWRecordValue extends SMWDataValue {
 			$result = array();
 			$index = 0;
 			foreach ( $this->getPropertyDataItems() as $diProperty ) {
-				$values = $this->getDataItem->getSemanticData()->getPropertyValues( $diProperty );
+				$values = $this->getDataItem()->getSemanticData()->getPropertyValues( $diProperty );
 				if ( count( $values ) > 0 ) {
 					$result[$index] = reset( $values );
 				} else {
@@ -195,6 +195,7 @@ class SMWRecordValue extends SMWDataValue {
 				}
 				$index += 1;
 			}
+			return $result;
 		} else {
 			return array();
 		}
