@@ -42,6 +42,10 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * Fixed PostGres SQL issues with the installation and upgrade code.
 * Added API module (smwinfo) via which statistics about the semantic data can
   be obtained.
+* Added second parameter to #info that allows chosing either the info or warning
+  icon.
+* Added #smwdoc parser hook that displays a table with parameter documentation for
+  a single specified result format.
 
 == SMW 1.5.6 ==
 
