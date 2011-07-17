@@ -161,45 +161,6 @@ class SMWRecordValue extends SMWDataValue {
 		$this->m_diProperties = null;
 	}
 
-	/**
-	 * @todo Since containers are always exported in a similar fashion, it
-	 * would be preferrable to have their export controlled where it happens,
-	 * and minimize the below special code.
-	 */
-	public function getExportData() {
-		if ( !$this->isValid() ) {
-			return null;
-		}
-
-		$result = new SMWExpData( new SMWExpResource( '', $this ) ); // bnode
-		$ed = new SMWExpData( SMWExporter::getSpecialNsResource( 'swivt', 'Container' ) );
-		$result->addPropertyObjectValue( SMWExporter::getSpecialNsResource( 'rdf', 'type' ), $ed );
-		$count = 0;
-		
-		// FIXME: obtain DVs or build them from DIs
-		foreach ( $this->getDVs() as $dataValue ) {
-			$count++;
-			
-			if ( ( $dataValue === null ) || ( !$dataValue->isValid() ) ) {
-				continue;
-			}
-			
-			if ( in_array( $dataValue->getTypeID(), array( '_wpg', '_uri', '_ema' ) ) ) {
-				$result->addPropertyObjectValue(
-					SMWExporter::getSpecialNsResource( 'swivt', 'object' . $count ),
-					$dataValue->getExportData()
-				);
-			} else {
-				$result->addPropertyObjectValue(
-					SMWExporter::getSpecialNsResource( 'swivt', 'value' . $count ),
-					$dataValue->getExportData()
-				);
-			}
-		}
-		
-		return $result;
-	}
-
 ////// Additional API for value lists
 
 	/**

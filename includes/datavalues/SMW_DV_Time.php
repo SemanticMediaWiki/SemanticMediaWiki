@@ -614,15 +614,6 @@ class SMWTimeValue extends SMWDataValue {
 		return true;
 	}
 
-	public function getExportData() {
-		if ( $this->isValid() ) {
-			$lit = new SMWExpLiteral( $this->getISO8601Date(), $this, 'http://www.w3.org/2001/XMLSchema#dateTime' );
-			return new SMWExpData( $lit );
-		} else {
-			return null;
-		}
-	}
-
 	/**
 	 * Return the year number in the given calendar model, or false if
 	 * this number is not available (typically when attempting to get

@@ -250,15 +250,6 @@ class SMWNumberValue extends SMWDataValue {
 		}
 	}
 
-	public function getExportData() {
-		if ( $this->isValid() ) {
-			$lit = new SMWExpLiteral( $this->m_dataitem->getNumber(), $this, 'http://www.w3.org/2001/XMLSchema#double' );
-			return new SMWExpData( $lit );
-		} else {
-			return null;
-		}
-	}
-
 	/**
 	 * Transform a (typically unit-) string into a normalised form,
 	 * so that, e.g., "km²" and "km<sup>2</sup>" do not need to be

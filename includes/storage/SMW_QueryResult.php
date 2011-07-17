@@ -425,7 +425,7 @@ class SMWResultArray {
 					$newcontent = array();
 
 					foreach ( $this->mContent as $listdv ) {
-						$dvs = $listdv->getDVs();
+						$dvs = $listdv->getDataItems();
 						if ( ( array_key_exists( $pos, $dvs ) ) && ( $dvs[$pos] !== null ) ) {
 							$newcontent[] = $dvs[$pos];
 						}

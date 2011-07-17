@@ -219,23 +219,6 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 	}
 
-	public function getExportData() {
-		if ( !$this->isValid() ) return null;
-		switch ( $this->getNamespace() ) {
-			case NS_MEDIA: // special handling for linking media files directly
-				$file = wfFindFile( $this->getTitle() );
-				if ( $file ) {
-					return new SMWExpData( new SMWExpResource( $file->getFullURL(), $this ) );
-				} else { // Medialink to non-existing file :-/
-					return null;
-				}
-			break;
-			default: // some true wiki page
-				return new SMWExpData( SMWExporter::getResourceElement( $this ) );
-			break;
-		}
-	}
-
 ///// special interface for wiki page values
 
 	/**

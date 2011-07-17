@@ -237,16 +237,6 @@ class SMWURIValue extends SMWDataValue {
 		return array( rawurlencode( $this->m_dataitem->getURI() ) );
 	}
 
-	public function getExportData() {
-		if ( $this->isValid() ) {
-			/// TODO This escaping seems very odd. The serialisation should handle such things.
-			$res = new SMWExpResource( str_replace( '&', '&amp;', $this->m_dataitem->getURI() ), $this );
-			return new SMWExpData( $res );
-		} else {
-			return null;
-		}
-	}
-
 	/**
 	 * Get a URL for hyperlinking this URI, or the empty string if this URI
 	 * is not hyperlinked in MediaWiki.

@@ -67,7 +67,11 @@ class SMWConceptValue extends SMWDataValue {
 		return str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $this->m_dataitem->getConceptQuery() );
 	}
 
-	public function getExportData() {
+	/**
+	 * Function not called anywhere but code kept for reference before
+	 * migrating it to SMWExporter.
+	 */
+	private function getExportData() {
 		if ( $this->isValid() ) {
 			$qp = new SMWQueryParser();
 			$desc = $qp->getQueryDescription( str_replace( array( '&lt;', '&gt;', '&amp;' ), array( '<', '>', '&' ), $this->m_dataitem->getConceptQuery() ) );
@@ -144,7 +148,7 @@ class SMWConceptValue extends SMWDataValue {
 			}
 		} elseif ( $desc instanceof SMWValueDescription ) {
 			if ( $desc->getComparator() == SMW_CMP_EQ ) {
-				$result = $desc->getDataValue()->getExportData();
+				$result = SMWExporter::getDataItemExpElement( $desc->getDataValue()->getDataItem() );
 			} else { // alas, OWL cannot represent <= and >= ...
 				$exact = false;
 				$result = false;

@@ -100,15 +100,6 @@ class SMWStringValue extends SMWDataValue {
 		}
 	}
 
-	public function getExportData() {
-		if ( $this->isValid() ) {
-			$lit = new SMWExpLiteral( smwfHTMLtoUTF8( $this->m_dataitem->getString() ), $this, 'http://www.w3.org/2001/XMLSchema#string' );
-			return new SMWExpData( $lit );
-		} else {
-			return null;
-		}
-	}
-
 	/**
 	 * Make a possibly shortened printout string for displaying the value.
 	 * The value must be specified as an input since necessary HTML escaping

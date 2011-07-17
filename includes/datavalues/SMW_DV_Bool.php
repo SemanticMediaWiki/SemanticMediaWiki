@@ -109,16 +109,6 @@ class SMWBoolValue extends SMWDataValue {
 		return $this->m_dataitem->getBoolean();
 	}
 
-	public function getExportData() {
-		if ( $this->isValid() ) {
-			$xsdvalue =  $this->m_dataitem->getBoolean() ? 'true' : 'false';
-			$lit = new SMWExpLiteral( $xsdvalue, $this, 'http://www.w3.org/2001/XMLSchema#boolean' );
-			return new SMWExpData( $lit );
-		} else {
-			return null;
-		}
-	}
-
 	/**
 	 * Get text for displaying the value of this property, or false if not
 	 * valid.
