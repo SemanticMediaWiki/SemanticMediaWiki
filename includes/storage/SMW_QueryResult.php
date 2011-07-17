@@ -402,16 +402,19 @@ class SMWResultArray {
 			break;
 			case SMWPrintRequest::PRINT_CATS:
 				// Always recompute cache here to ensure output format is respected.
-				self::$catCache = $this->mStore->getPropertyValues( $this->mResult, new SMWDIProperty( '_INST' ), $this->getRequestOptions( false ) );
+				self::$catCache = $this->mStore->getPropertyValues( $this->mResult,
+					new SMWDIProperty( '_INST' ), $this->getRequestOptions( false ) );
 				self::$catCacheObj = $this->mResult->getHash();
 				
 				$limit = $this->mPrintRequest->getParameter( 'limit' );
-				$this->mContent = ( $limit === false ) ? ( self::$catCache ) : array_slice( self::$catCache, 0, $limit );
+				$this->mContent = ( $limit === false ) ? ( self::$catCache ) :
+					array_slice( self::$catCache, 0, $limit );
 			break;
 			case SMWPrintRequest::PRINT_PROP:
 				$propertyValue = $this->mPrintRequest->getData();
 				if ( $propertyValue->isValid() ) {
-					$this->mContent = $this->mStore->getPropertyValues( $this->mResult, $propertyValue->getDataItem(), $this->getRequestOptions() );
+					$this->mContent = $this->mStore->getPropertyValues( $this->mResult,
+						$propertyValue->getDataItem(), $this->getRequestOptions() );
 				} else {
 					$this->mContent = array();
 				}
@@ -425,9 +428,10 @@ class SMWResultArray {
 					$newcontent = array();
 
 					foreach ( $this->mContent as $listdv ) {
-						$dvs = $listdv->getDataItems();
-						if ( ( array_key_exists( $pos, $dvs ) ) && ( $dvs[$pos] !== null ) ) {
-							$newcontent[] = $dvs[$pos];
+						$dataItems = $listdv->getDataItems();
+						if ( array_key_exists( $pos, $dataItems ) &&
+							( $dataItems[$pos] !== null ) ) {
+							$newcontent[] = $dataItems[$pos];
 						}
 					}
 

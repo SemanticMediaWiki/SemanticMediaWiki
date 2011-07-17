@@ -73,7 +73,7 @@ class SMWPropertyListValue extends SMWDataValue {
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_STRING ) {
 			$this->m_dataitem = $dataItem;
 			$this->m_diProperties = array();
-			
+
 			foreach ( explode( ';', $dataItem->getString() ) as $propertyKey ) {
 				try {
 					$this->m_diProperties[] = new SMWDIProperty( $propertyKey );
@@ -83,9 +83,9 @@ class SMWPropertyListValue extends SMWDataValue {
 					$this->addError( wfMsgForContent( 'smw_parseerror' ) );
 				}
 			}
-			
+
 			$this->m_caption = false;
-			
+
 			return true;
 		} else {
 			return false;

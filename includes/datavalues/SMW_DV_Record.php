@@ -183,7 +183,21 @@ class SMWRecordValue extends SMWDataValue {
 	 * @return array of SMWDataItem
 	 */
 	public function getDataItems() {
-		return $this->isValid() ? $this->m_dataitem->getDataItems() : array();
+		if ( $this->isValid() ) {
+			$result = array();
+			$index = 0;
+			foreach ( $this->getPropertyDataItems() as $diProperty ) {
+				$values = $this->getDataItem->getSemanticData()->getPropertyValues( $diProperty );
+				if ( count( $values ) > 0 ) {
+					$result[$index] = reset( $values );
+				} else {
+					$result[$index] = null;
+				}
+				$index += 1;
+			}
+		} else {
+			return array();
+		}
 	}
 
 	/**
@@ -220,7 +234,7 @@ class SMWRecordValue extends SMWDataValue {
 	public static function findPropertyDataItems( $diProperty ) {
 		if ( !is_null( $diProperty ) ) {
 			$propertyDiWikiPage = $diProperty->getDiWikiPage();
-			
+
 			if ( !is_null( $propertyDiWikiPage ) ) {
 				$listDiProperty = new SMWDIProperty( '_LIST' );
 				$dataItems = smwfGetStore()->getPropertyValues( $propertyDiWikiPage, $listDiProperty );
@@ -228,14 +242,14 @@ class SMWRecordValue extends SMWDataValue {
 				if ( count( $dataItems ) == 1 ) {
 					$propertyListValue = new SMWPropertyListValue( '__pls' );
 					$propertyListValue->setDataItem( $dataItems[0] );
-					
+
 					if ( $propertyListValue->isvalid() ) {
 						return $propertyListValue->getPropertyDataItems();
 					}
 				}
 			}
 		}
-		
+
 		return array();
 	}
 
