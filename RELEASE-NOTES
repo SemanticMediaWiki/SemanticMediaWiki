@@ -26,7 +26,11 @@ For a documentation of all features, see http://semantic-mediawiki.org
 * The declaration of Type:Record properties has changed. Instead of a list of
   datatypes, the declaration now requires a list of properties that are to be
   used for the fields of the record. The declaration is still done with the
-  property "has fields" as before.
+  property "has fields" as before. Properties must not be used more than once
+  in has_fields, or the order of values will be random.
+* Introduced pre-defined builtin properties for every datatype. For example,
+  the property String is always of type String and available on all (English)
+  wikis. This helps to keep some of the old Tpe:Record declarations valid.
 * Changed the way parameters in query printers are specified and handled
   using the Validator extension. This includes improvements to the parameter
   options in the Special:Ask GUI and better error reporting for ask queries. 
