@@ -58,12 +58,14 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 			while ( ( /* array of SMWResultArray */ $row = $res->getNext() ) !== false ) {
 				$rowsubject = false; // the wiki page value that this row is about
 				$valuestack = array(); // contains Property-Value pairs to characterize an Item
+				$addedLabel = false;
 				
 				foreach ( $row as /* SMWResultArray */ $field ) {
 					$pr = $field->getPrintRequest();
 					
-					if ( $rowsubject === false ) {
+					if ( $rowsubject === false && !$addedLabel ) {
 						$valuestack[] = '"label": "' . $field->getResultSubject()->getTitle()->getFullText() . '"';
+						$addedLabel = true;
 					}
 					
 					if ( $pr->getMode() != SMWPrintRequest::PRINT_THIS ) {
@@ -74,7 +76,7 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 							$finalvalues = '';
 							switch ( $dataValue->getTypeID() ) {
 								case '_geo':
-									$values[] = '"' . $dataValue->getWikiValue() . '"';
+									$values[] = FormatJson::encode( $dataValue->getDataItem()->getCoordinateSet() );
 									break;
 								case '_num':
 									$values[] = $dataValue->getDataItem()->getNumber();
