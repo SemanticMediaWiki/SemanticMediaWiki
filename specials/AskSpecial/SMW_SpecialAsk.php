@@ -728,12 +728,14 @@ END;
 
 		$params = method_exists( $printer, 'getValidatorParameters' ) ? $printer->getValidatorParameters() : array();
 
-		// Ignore the format parameter, as we got a special control in the GUI for it already.
-		unset( $params['format'] );
-
 		$optionsHtml = array();
 
 		foreach ( $params as $param ) {
+			// Ignore the format parameter, as we got a special control in the GUI for it already.
+			if ( $param->getName() == 'format' ) {
+				continue;
+			}
+			
 			$currentValue = array_key_exists( $param->getName(), $paramValues ) ? $paramValues[$param->getName()] : false;
 
 			$optionsHtml[] =
