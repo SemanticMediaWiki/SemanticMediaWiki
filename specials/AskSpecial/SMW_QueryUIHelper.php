@@ -50,7 +50,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	 * @todo: using processXXXBox() methods here goes against the general architecture.
 	 */
 	public function execute( $p ) {
-		global $wgOut, $wgRequest, $smwgQEnabled;
+		global $wgOut, $wgRequest, $smwgQEnabled, $wgFeedClasses;
 
 		$this->setHeaders();
 
@@ -83,11 +83,30 @@ abstract class SMWQueryUI extends SpecialPage {
 				// or no query has been set
 					$this->uiCore =  SMWQueryUIHelper::makeForInfoLink( $p );
 				}
+				// adding rss feed of results to the page head
+				if(($this->uiCore->getQueryString()!=='')
+						and ($this->isSyndicated())
+						and (method_exists($wgOut, 'addFeedlink')) //remove this line after MW 1.5 is no longer supported by SMW
+						and (array_key_exists('rss', $wgFeedClasses))){
+					$res=$this->uiCore->getResultObject();
+					$href=$res->getQueryLink()->getURl().'/format%3Drss/limit%3D'. $this->uiCore->getLimit();
+					$wgOut->addFeedLink('rss', $href);
+				}
+
 				$this->makepage( $p );
 			}
 		}
 
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
+	}
+
+	/**
+	 * To enable/disable syndicated feeds of results to appear in the UI header
+	 * 
+	 * @return boolean
+	 */
+	public function isSyndicated(){
+		return true;
 	}
 
 	/**
@@ -736,7 +755,6 @@ EOT;
 			$default_format = $defaultformat;
 		}
 
-		$result = '';
 		$printer = SMWQueryProcessor::getResultPrinter( $default_format, SMWQueryProcessor::SPECIAL_PAGE );
 		$url = $this->getTitle()->getLocalURL( "showformatoptions=' + this.value + '" );
 
@@ -746,7 +764,7 @@ EOT;
 			}
 		}
 
-		$result .= "\n<p>" . wfMsg( 'smw_ask_format_as' ) . "\n" .
+		$result = "\n<p>" . wfMsg( 'smw_ask_format_as' ) . "\n" .
 			'<select id="formatSelector" name="p[format]" onChange="JavaScript:updateOtherOptions(\'' . $url . '\')">' . "\n" .
 			'<option value="' . $default_format . '">' . $printer->getName() .
 			' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
