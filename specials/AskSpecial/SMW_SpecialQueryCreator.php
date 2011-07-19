@@ -55,8 +55,6 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 * @global OutputPage $wgOut
 	 * @global booolean $smwgQSortingSupport
 	 * @return string
-	 *
-	 * @todo Clean up the lines handling sorting.
 	 */
 	protected function makeResults() {
 		global $wgOut;
