@@ -102,12 +102,12 @@ function enableSemantics( $namespace = null, $complete = false ) {
 	$incDir = $smwgIP . 'includes/';
 	$wgAutoloadClasses['SMWCompatibilityHelpers']   = $incDir . 'SMW_CompatibilityHelpers.php';
 	$wgAutoloadClasses['SMWDataValueFactory']   	= $incDir . 'SMW_DataValueFactory.php';
-	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';	
+	$wgAutoloadClasses['SMWFactbox']                = $incDir . 'SMW_Factbox.php';
 	$wgAutoloadClasses['SMWInfolink']               = $incDir . 'SMW_Infolink.php';
-	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';	
-	$wgAutoloadClasses['SMWParseData']              = $incDir . 'SMW_ParseData.php';	
+	$wgAutoloadClasses['SMWOutputs']                = $incDir . 'SMW_Outputs.php';
+	$wgAutoloadClasses['SMWParseData']              = $incDir . 'SMW_ParseData.php';
 	$wgAutoloadClasses['SMWParserExtensions']       = $incDir . 'SMW_ParserExtensions.php';
-	$wgAutoloadClasses['SMWQueryLanguage']          = $incDir . 'SMW_QueryLanguage.php';	
+	$wgAutoloadClasses['SMWQueryLanguage']          = $incDir . 'SMW_QueryLanguage.php';
 	$wgAutoloadClasses['SMWSemanticData']           = $incDir . 'SMW_SemanticData.php';
 	$wgAutoloadClasses['SMWPageLister']             = $incDir . 'SMW_PageLister.php';
 
@@ -481,7 +481,7 @@ function smwfShowBrowseLink( $skintemplate ) {
 /**********************************************/
 
 /**
- * Init the additional namepsaces used by Semantic MediaWiki.
+ * Init the additional namespaces used by Semantic MediaWiki.
  */
 function smwfInitNamespaces() {
 	global $smwgNamespaceIndex, $wgExtraNamespaces, $wgNamespaceAliases, $wgNamespacesWithSubpages, $wgLanguageCode, $smwgContLang;
