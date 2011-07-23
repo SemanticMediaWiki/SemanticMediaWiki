@@ -46,6 +46,9 @@ For a documentation of all features, see http://semantic-mediawiki.org
   icon.
 * Added #smwdoc parser hook that displays a table with parameter documentation for
   a single specified result format.
+* Fixed escaping issues in the JSON result format. A compatibility breaking change
+  is that per property an array of values will be returned, even if there is only
+  one. 
 
 == SMW 1.5.6 ==
 
