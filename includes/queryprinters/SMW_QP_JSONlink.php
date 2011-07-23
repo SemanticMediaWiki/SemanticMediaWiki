@@ -70,37 +70,33 @@ class SMWJSONResultPrinter extends SMWResultPrinter {
 					
 					if ( $pr->getMode() != SMWPrintRequest::PRINT_THIS ) {
 						$values = array();
-						$finalvalues = '';
+						$jsonObject = array();
 						
 						while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
-							$finalvalues = '';
 							switch ( $dataValue->getTypeID() ) {
 								case '_geo':
+									$jsonObject[] = $dataValue->getDataItem()->getCoordinateSet();
 									$values[] = FormatJson::encode( $dataValue->getDataItem()->getCoordinateSet() );
 									break;
 								case '_num':
-									$values[] = $dataValue->getDataItem()->getNumber();
+									$jsonObject[] = $dataValue->getDataItem()->getNumber();
 									break;
 								case '_dat':
-									$values[] = 
-										'"' . $dataValue->getYear() . '-' .
+									$jsonObject[] = 
+										$dataValue->getYear() . '-' .
 										str_pad( $dataValue->getMonth(), 2, '0', STR_PAD_LEFT ) . '-' .
 										str_pad( $dataValue->getDay(), 2, '0', STR_PAD_LEFT ) . ' ' .
-										$dataValue->getTimeString() . '"';
+										$dataValue->getTimeString();
 									break;
 								default:
-									$values[] = '"' . $dataValue->getShortText( $outputmode, null ) . '"';
-							}
-
-							if ( sizeof( $values ) > 1 ) {
-								$finalvalues = '[' . implode( ',', $values ) . ']';
-							} else {
-								$finalvalues = $values[0];
+									$jsonObject[] = $dataValue->getShortText( $outputmode, null );
 							}
 						}
 						
-						if ( $finalvalues != '' ) {
-							$valuestack[] = '"' . str_replace( ' ', '_', strtolower( $pr->getLabel() ) ) . '": ' . $finalvalues . '';
+						if ( !is_array( $jsonObject ) || count( $jsonObject ) > 0 ) {
+							$valuestack[] =
+								'"' . str_replace( ' ', '_', strtolower( $pr->getLabel() ) ) 
+								. '": ' . FormatJson::encode( $jsonObject ) . '';
 						}
 					}
 				}
