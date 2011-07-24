@@ -3130,6 +3130,7 @@ Uutta ei käynnistetä.',
  * @author Peter17
  * @author PieRRoMaN
  * @author Pierre Matringe
+ * @author Seb35
  * @author Sherbrooke
  * @author Urhixidur
  * @author Verdy p
@@ -3191,6 +3192,7 @@ $messages['fr'] = array(
 	'smw-paramdesc-csv-sep' => 'Le séparateur à utiliser',
 	'smw-paramdesc-dsv-separator' => 'Le séparateur à utiliser',
 	'smw-paramdesc-dsv-filename' => 'Le nom du fichier DSV',
+	'smw-smwdoc-description' => 'Montre un tableau de tous les paramètres qui peuvent être utilisés pour un format de résultat spécifié ensemble avec des valeurs et des descriptions par défaut.',
 	'smw_iq_disabled' => 'Désolé. Les recherches dans les pages de ce wiki ne sont pas autorisées.',
 	'smw_iq_moreresults' => '&hellip; autres résultats',
 	'smw_nonright_importtype' => 'L’élément « $1 » ne peut être employé que pour des pages de l’espace de noms « $2 ».',
