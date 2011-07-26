@@ -47,7 +47,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	 * @global WebRequest $wgRequest
 	 * @global boolean $smwgQEnabled
 	 * @param string $p the sub-page string
-	 * @todo: using processXXXBox() methods here goes against the general architecture.
+	 * @todo: using processXXXBox() methods here goes against the general architecture. Move this to the UI implementation
 	 */
 	public function execute( $p ) {
 		global $wgOut, $wgRequest, $smwgQEnabled, $wgFeedClasses;
@@ -68,7 +68,7 @@ abstract class SMWQueryUI extends SpecialPage {
 							'format'  =>  $wgRequest->getVal( 'format' ),
 							'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
 							'limit'   =>  $wgRequest->getVal( 'limit',   '20' ) ),
-							$this->processSortingFormBox( $wgRequest ),
+							$this->processSortedPOFormBox( $wgRequest ),
 							$this->processFormatSelectBox( $wgRequest ) );
 					$this->uiCore =  SMWQueryUIHelper::makeForUI(
 							$this->processQueryFormBox( $wgRequest ),
@@ -93,7 +93,7 @@ abstract class SMWQueryUI extends SpecialPage {
 					$wgOut->addFeedLink('rss', $href);
 				}
 
-				$this->makepage( $p );
+				$this->makePage( $p );
 			}
 		}
 
@@ -349,6 +349,174 @@ END;
 		$query = '';
 		if ( $wgRequest->getCheck( 'q' ) ) $query = $wgRequest->getVal( 'q' );
 		return $query;
+	}
+
+	/**
+	 * Generates the forms elements(s) for choosing printouts and sorting
+	 * options. Use its complement processSortedPOFormBox() to decode data
+	 * sent by these elements.
+	 *
+	 * @return string
+	 */
+	protected function getSortedPOFormBox( $enableAutocomplete = SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
+		global $smwgQSortingSupport, $wgRequest, $wgOut;
+
+		if ( !$smwgQSortingSupport ) return '';
+
+		$result = '';
+
+		//START: fetch sorting order, if defined earlier
+		$params = $this->uiCore->getParameters();
+		if ( array_key_exists( 'sort', $params ) && array_key_exists( 'order', $params ) ) {
+			$sorts = explode( ',', $params['sort'] );
+			$orders = explode( ',', $params['order'] );
+			reset( $sorts );
+		} else {
+			$orders = array(); // do not even show one sort input here
+		}
+		$num_sort_values = 0;
+
+		if  ( !array_key_exists( 'sort', $params ) ) {
+			$sort_values = $wgRequest->getArray( 'sort' );
+			if ( is_array( $sort_values ) ) {
+				$params['sort'] = implode( ',', $sort_values );
+				$num_sort_values = count( $sort_values );
+			}
+		}
+
+		foreach ( $orders as $i => $order ) {
+			$result .=  "<div id=\"sort_div_$i\">" . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort[' . $i . ']" value="' .
+					htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
+				if ( $order == 'ASC' ) $result .= 'selected="selected" ';
+			$result .=  'value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . '</option><option ';
+				if ( $order == 'DESC' ) $result .= 'selected="selected" ';
+
+			$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
+			$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
+			$result .= "</div>\n";
+		}
+		//END: fetch sorting order, if defined earlier
+
+		$result .=  '<div id="sorting_starter" style="display: none">' . 'Property' . //TODO: add i18n
+					' <input type="text" size="35" name="property_num" />' . "\n";
+		$result .= ' <select name="order_num">' . "\n";
+		$result .= '	<option value="NONE"> No Sorting </option>'."\n"; //TODO add i18n
+		$result .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
+		$result .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
+		$result .= 'show in results: <input type="checkbox" checked name="display_num" value="yes">'."\n"; //TODO: add i18n
+		$result .= "</div>\n";
+		$result .= '<div id="sorting_main"></div>' . "\n";
+		$result .= '<a href="javascript:addPOInstance(\'sorting_starter\', \'sorting_main\')">' . '[Add additional properties]' . '</a>' . "\n";
+
+		// Javascript code for handling adding and removing the "sort" inputs
+		$delete_msg = wfMsg( 'delete' );
+
+		$this->enableJQuery();
+		$this->addAutocompletionJavascriptAndCSS();
+		$javascript_text = <<<EOT
+<script type="text/javascript">
+// code for handling adding and removing the "sort" inputs
+var num_elements = {$num_sort_values};
+
+function addPOInstance(starter_div_id, main_div_id) {
+	var starter_div = document.getElementById(starter_div_id);
+	var main_div = document.getElementById(main_div_id);
+
+	//Create the new instance
+	var new_div = starter_div.cloneNode(true);
+	var div_id = 'sort_div_' + num_elements;
+	new_div.className = 'multipleTemplate';
+	new_div.id = div_id;
+	new_div.style.display = 'block';
+
+	var children = new_div.getElementsByTagName('*');
+	var x;
+	for (x = 0; x < children.length; x++) {
+		if (children[x].name)
+			children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
+	}
+
+	//Create 'delete' link
+	var remove_button = document.createElement('span');
+	remove_button.innerHTML = '[<a href="javascript:removePOInstance(\'sort_div_' + num_elements + '\')">{$delete_msg}</a>]';
+	new_div.appendChild(remove_button);
+
+	//Add the new instance
+	main_div.appendChild(new_div);
+	
+	//add autocomplete
+	jQuery('[name*="property"]').autocomplete({
+		minLength: 2,
+		source: function(request, response) {
+			url=wgScriptPath+'/api.php?action=opensearch&limit=10&namespace='+wgNamespaceIds['property']+'&format=jsonfm';
+
+			jQuery.getJSON(url, 'search='+request.term, function(data){
+				//remove the namespace prefix 'Property:' from returned data
+				for(i=0;i<data[1].length;i++) data[1][i]=data[1][i].substr(data[1][i].indexOf(':')+1);
+				response(data[1]);
+			});
+		}
+	});
+
+	num_elements++;
+
+}
+
+function removePOInstance(div_id) {
+	var olddiv = document.getElementById(div_id);
+	var parent = olddiv.parentNode;
+	parent.removeChild(olddiv);
+}
+</script>
+
+EOT;
+
+		$wgOut->addScript( $javascript_text );
+		return $result;
+	}
+
+	/**
+	 * Decodes printouts and sorting - related form options generated by its
+	 * complement, getSortedPOFormBox(). UIs may overload both to change form
+	 * parameters.
+	 *
+	 * @global boolean $smwgQSortingSupport
+	 * @param WebRequest $wgRequest
+	 * @return string
+	 */
+	protected function processSortedPOFormBox( WebRequest $wgRequest ) {
+		global $smwgQSortingSupport;
+		if ( !$smwgQSortingSupport ) return array();
+
+		$params = array();
+		$order_values = $wgRequest->getArray( 'order' );
+		$property_values = $wgRequest->getArray( 'property' );
+		if ( is_array( $property_values ) ) {
+			$params['sort'] = '';
+			$params['order'] = '';
+			foreach ( $order_values as $key => $order_value ) {
+				if($order_value!='NONE'){
+					$params['sort'] .= ($params['sort']!=''?',':'') . $property_values[$key];
+					$params['order'] .= ($params['order']!=''?',':''). $order_values[$key];
+				}
+			}
+		}
+
+		$display_values = $wgRequest->getArray( 'display' );
+		$po = array();
+		if( is_array($display_values) ) {
+			foreach ($display_values as $key => $value) {
+				if($value == 'yes'){
+					$po[] = '?'.$property_values[$key];
+				}
+
+			}
+		}
+
+		$params=array_merge($params,$po);
+
+		return $params;
+
 	}
 
 	/**
