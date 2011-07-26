@@ -165,7 +165,7 @@ abstract class SMWDataItem {
 			case self::TYPE_BLOB:      return 'SMWDIBlob';
 			case self::TYPE_BOOLEAN:   return 'SMWDIBoolean';
 			case self::TYPE_URI:       return 'SMWDIUri';
-			case self::TYPE_TIME:      return 'SMWDITimePoint';
+			case self::TYPE_TIME:      return 'SMWDITime';
 			case self::TYPE_GEO:       return 'SMWDIGeoCoord';
 			case self::TYPE_CONTAINER: return 'SMWDIContainer';
 			case self::TYPE_WIKIPAGE:  return 'SMWDIWikiPage';
