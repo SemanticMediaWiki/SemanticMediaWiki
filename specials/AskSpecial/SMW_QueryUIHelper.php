@@ -84,13 +84,13 @@ abstract class SMWQueryUI extends SpecialPage {
 					$this->uiCore =  SMWQueryUIHelper::makeForInfoLink( $p );
 				}
 				// adding rss feed of results to the page head
-				if(($this->uiCore->getQueryString()!=='')
-						and ($this->isSyndicated())
-						and (method_exists($wgOut, 'addFeedlink')) //remove this line after MW 1.5 is no longer supported by SMW
-						and (array_key_exists('rss', $wgFeedClasses))){
-					$res=$this->uiCore->getResultObject();
-					$href=$res->getQueryLink()->getURl().'/format%3Drss/limit%3D'. $this->uiCore->getLimit();
-					$wgOut->addFeedLink('rss', $href);
+				if ( ( $this->uiCore->getQueryString() !== '' )
+						and ( $this->isSyndicated() )
+						and ( method_exists( $wgOut, 'addFeedlink' ) ) // remove this line after MW 1.5 is no longer supported by SMW
+						and ( array_key_exists( 'rss', $wgFeedClasses ) ) ) {
+					$res = $this->uiCore->getResultObject();
+					$href = $res->getQueryLink()->getURl() . '/format%3Drss/limit%3D' . $this->uiCore->getLimit();
+					$wgOut->addFeedLink( 'rss', $href );
 				}
 
 				$this->makePage( $p );
@@ -102,10 +102,10 @@ abstract class SMWQueryUI extends SpecialPage {
 
 	/**
 	 * To enable/disable syndicated feeds of results to appear in the UI header
-	 * 
+	 *
 	 * @return boolean
 	 */
-	public function isSyndicated(){
+	public function isSyndicated() {
 		return true;
 	}
 
@@ -365,7 +365,7 @@ END;
 
 		$result = '';
 
-		//START: fetch sorting order, if defined earlier
+		// START: fetch sorting order, if defined earlier
 		$params = $this->uiCore->getParameters();
 		if ( array_key_exists( 'sort', $params ) && array_key_exists( 'order', $params ) ) {
 			$sorts = explode( ',', $params['sort'] );
@@ -385,25 +385,26 @@ END;
 		}
 
 		foreach ( $orders as $i => $order ) {
-			$result .=  "<div id=\"sort_div_$i\">" . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort[' . $i . ']" value="' .
+			$result .=  "<div id=\"sort_div_$i\">" . 'Property' . // TODO: add i18n
+					' <input type="text" name="property[' . $i . ']" value="' .
 					htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
 				if ( $order == 'ASC' ) $result .= 'selected="selected" ';
 			$result .=  'value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . '</option><option ';
 				if ( $order == 'DESC' ) $result .= 'selected="selected" ';
-
 			$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
+			$result .= 'show in results: <input type="checkbox" checked name="display_num" value="yes">' . "\n"; // TODO: add i18n'
 			$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
 			$result .= "</div>\n";
 		}
-		//END: fetch sorting order, if defined earlier
+		// END: fetch sorting order, if defined earlier
 
-		$result .=  '<div id="sorting_starter" style="display: none">' . 'Property' . //TODO: add i18n
+		$result .=  '<div id="sorting_starter" style="display: none">' . 'Property' . // TODO: add i18n
 					' <input type="text" size="35" name="property_num" />' . "\n";
 		$result .= ' <select name="order_num">' . "\n";
-		$result .= '	<option value="NONE"> No Sorting </option>'."\n"; //TODO add i18n
+		$result .= '	<option value="NONE"> No Sorting </option>' . "\n"; // TODO add i18n
 		$result .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
 		$result .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
-		$result .= 'show in results: <input type="checkbox" checked name="display_num" value="yes">'."\n"; //TODO: add i18n
+		$result .= 'show in results: <input type="checkbox" checked name="display_num" value="yes">' . "\n"; // TODO: add i18n
 		$result .= "</div>\n";
 		$result .= '<div id="sorting_main"></div>' . "\n";
 		$result .= '<a href="javascript:addPOInstance(\'sorting_starter\', \'sorting_main\')">' . '[Add additional properties]' . '</a>' . "\n";
@@ -412,7 +413,9 @@ END;
 		$delete_msg = wfMsg( 'delete' );
 
 		$this->enableJQuery();
-		$this->addAutocompletionJavascriptAndCSS();
+		if ( $enableAutocomplete == SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
+			$this->addAutocompletionJavascriptAndCSS();
+		}
 		$javascript_text = <<<EOT
 <script type="text/javascript">
 // code for handling adding and removing the "sort" inputs
@@ -443,7 +446,9 @@ function addPOInstance(starter_div_id, main_div_id) {
 
 	//Add the new instance
 	main_div.appendChild(new_div);
-	
+EOT;
+	if ( $enableAutocomplete == SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
+		$javascript_text .= <<<EOT
 	//add autocomplete
 	jQuery('[name*="property"]').autocomplete({
 		minLength: 2,
@@ -457,7 +462,9 @@ function addPOInstance(starter_div_id, main_div_id) {
 			});
 		}
 	});
-
+EOT;
+		}
+	$javascript_text .= <<<EOT
 	num_elements++;
 
 }
@@ -495,25 +502,25 @@ EOT;
 			$params['sort'] = '';
 			$params['order'] = '';
 			foreach ( $order_values as $key => $order_value ) {
-				if($order_value!='NONE'){
-					$params['sort'] .= ($params['sort']!=''?',':'') . $property_values[$key];
-					$params['order'] .= ($params['order']!=''?',':''). $order_values[$key];
+				if ( $order_value != 'NONE' ) {
+					$params['sort'] .= ( $params['sort'] != '' ? ',':'' ) . $property_values[$key];
+					$params['order'] .= ( $params['order'] != '' ? ',':'' ) . $order_values[$key];
 				}
 			}
 		}
 
 		$display_values = $wgRequest->getArray( 'display' );
 		$po = array();
-		if( is_array($display_values) ) {
-			foreach ($display_values as $key => $value) {
-				if($value == 'yes'){
-					$po[] = '?'.$property_values[$key];
+		if ( is_array( $display_values ) ) {
+			foreach ( $display_values as $key => $value ) {
+				if ( $value == 'yes' ) {
+					$po[] = '?' . $property_values[$key];
 				}
 
 			}
 		}
 
-		$params=array_merge($params,$po);
+		$params = array_merge( $params, $po );
 
 		return $params;
 
@@ -798,7 +805,7 @@ EOT;
 
 		foreach ( $params as $param ) {
 			// Ignore the format parameter, as we got a special control in the GUI for it already.
-			if( $param->getName() == 'format') {
+			if ( $param->getName() == 'format' ) {
 				continue;
 			}
 			$currentValue = array_key_exists( $param->getName(), $paramValues ) ? $paramValues[$param->getName()] : false;
