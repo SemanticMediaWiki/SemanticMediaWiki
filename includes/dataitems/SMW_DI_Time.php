@@ -235,9 +235,10 @@ class SMWDITime extends SMWDataItem {
 	public static function doUnserialize( $serialization ) {
 		$parts = explode( '/', $serialization, 7 );
 		$values = array();
+		
 		for ( $i = 0; $i < 7; $i += 1 ) {
 			if ( $i < count( $parts ) ) {
-				if ( is_numeric( ) ) {
+				if ( is_numeric( $parts[$i] ) ) {
 					$values[$i] = intval( $parts[$i] );
 				} else {
 					throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" is no valid datetime specification." );
@@ -246,10 +247,12 @@ class SMWDITime extends SMWDataItem {
 				$values[$i] = false;
 			}
 		}
+		
 		if ( count( $parts ) <= 1 ) {
 			throw new SMWDataItemException( "Unserialization failed: the string \"$serialization\" is no valid URI." );
 		}
-		return new SMWDITime( $values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6] );
+		
+		return new self( $values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6] );
 	}
 
 	/**
