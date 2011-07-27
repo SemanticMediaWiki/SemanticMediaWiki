@@ -358,14 +358,16 @@ class SMWSpecialBrowse extends SpecialPage {
 	 */
 	private function getPropertyLabel( SMWPropertyValue $property, $incoming = false ) {
 		global $smwgBrowseShowInverse;
+		
 		if ( $incoming && $smwgBrowseShowInverse ) {
 			$oppositeprop = SMWPropertyValue::makeUserProperty( wfMsg( 'smw_inverse_label_property' ) );
-			$labelarray = &smwfGetStore()->getPropertyValues( $property->getWikiPageValue(), $oppositeprop );
+			$labelarray = &smwfGetStore()->getPropertyValues( $property->getDataItem(), $oppositeprop );
 			$rv = ( count( $labelarray ) > 0 ) ? $labelarray[0]->getLongWikiText():
 			       wfMsg( 'smw_inverse_label_default', $property->getWikiValue() );
 		} else {
 			$rv = $property->getWikiValue();
 		}
+		
 		return $this->unbreak( $rv );
 	}
 
