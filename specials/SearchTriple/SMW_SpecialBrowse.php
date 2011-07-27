@@ -362,7 +362,7 @@ class SMWSpecialBrowse extends SpecialPage {
 		
 		if ( $incoming && $smwgBrowseShowInverse ) {
 			$oppositeprop = SMWPropertyValue::makeUserProperty( wfMsg( 'smw_inverse_label_property' ) );
-			$labelarray = &smwfGetStore()->getPropertyValues( $property->getDataItem(), $oppositeprop->getDataItem() );
+			$labelarray = &smwfGetStore()->getPropertyValues( $property->getDataItem()->getDiWikiPage(), $oppositeprop->getDataItem() );
 			$rv = ( count( $labelarray ) > 0 ) ? $labelarray[0]->getLongWikiText():
 			       wfMsg( 'smw_inverse_label_default', $property->getWikiValue() );
 		} else {

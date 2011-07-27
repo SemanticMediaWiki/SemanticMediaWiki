@@ -163,7 +163,7 @@ abstract class SMWStore {
 	 * If called with $subject == null, all values for the given property
 	 * are returned.
 	 *
-	 * @param $subject mixed SMWDataItem or null
+	 * @param $subject mixed SMWDIWikiPage or null
 	 * @param $property SMWDIProperty
 	 * @param $requestoptions SMWRequestOptions
 	 *
