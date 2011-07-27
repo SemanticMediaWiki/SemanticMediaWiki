@@ -206,6 +206,10 @@ abstract class SMWResultPrinter {
 			$result = $this->handleNonFileResult( $result, $results, $outputmode );
 		}
 		
+		if ( $GLOBALS['wgDBtype'] == 'postgres' ) {
+			$result = pg_unescape_bytea( $result );
+		}
+		
 		return $result;
 	}
 	
