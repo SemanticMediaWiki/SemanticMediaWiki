@@ -1134,7 +1134,7 @@ class SMWSQLStore2 extends SMWStore {
 	 *
 	 * @param SMWRequestOptions $requestoptions
 	 *
-	 * @return array
+	 * @return array of array( SMWDIProperty, int )
 	 */
 	public function getWantedPropertiesSpecial( $requestoptions = null ) {
 		global $smwgPDefaultType;

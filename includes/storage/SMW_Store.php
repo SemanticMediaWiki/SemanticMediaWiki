@@ -375,7 +375,7 @@ abstract class SMWStore {
 	 * 
 	 * @param SMWRequestOptions $requestoptions
 	 * 
-	 * @return array
+	 * @return array of array( SMWDIProperty, int )
 	 */
 	public abstract function getWantedPropertiesSpecial( $requestoptions = null );
 

@@ -64,13 +64,19 @@ class SMWWantedPropertiesPage extends SMWQueryPage {
 		return '<p>' . wfMsg( 'smw_wantedproperties_docu' ) . "</p><br />\n";
 	}
 
+	/**
+	 * @param $skin
+	 * @param array $result First item is SMWDIProperty, second item is int
+	 * 
+	 * @return string
+	 */
 	function formatResult( $skin, $result ) {
 		$linker = smwfGetLinker();
 		
 		if ( $result[0]->isUserDefined() ) {
-			$proplink = $linker->makeLinkObj( $result[0]->getWikiPageValue()->getTitle(), htmlspecialchars( $result[0]->getWikiValue() ), 'action=view' );
+			$proplink = $linker->makeLinkObj( $result[0]->getDiWikiPage()->getTitle(), htmlspecialchars( $result[0]->getLabel() ), 'action=view' );
 		} else {
-			$proplink = $result[0]->getLongHTMLText( $linker );
+			$proplink = SMWDataValueFactory::newDataItemValue( $result[0], new SMWDIProperty( '_TYPE' ) )->getLongHTMLText( $linker );
 		}
 		
 		return wfMsgExt( 'smw_wantedproperty_template', array( 'parsemag' ), $proplink, $result[1] );
