@@ -364,39 +364,75 @@ END;
 		if ( !$smwgQSortingSupport ) return '';
 
 		$result = '';
-
-		// START: fetch sorting order, if defined earlier
-		$params = $this->uiCore->getParameters();
-		if ( array_key_exists( 'sort', $params ) && array_key_exists( 'order', $params ) ) {
-			$sorts = explode( ',', $params['sort'] );
-			$orders = explode( ',', $params['order'] );
-			reset( $sorts );
-		} else {
-			$orders = array(); // do not even show one sort input here
-		}
 		$num_sort_values = 0;
+		// START: create form elements already submitted earlier via form
 
-		if  ( !array_key_exists( 'sort', $params ) ) {
-			$sort_values = $wgRequest->getArray( 'sort' );
-			if ( is_array( $sort_values ) ) {
-				$params['sort'] = implode( ',', $sort_values );
-				$num_sort_values = count( $sort_values );
+		// attempting to load parameters from $wgRequest
+		$property_values = $wgRequest->getArray( 'property' );
+		$order_values = $wgRequest->getArray( 'order' );
+		$display_values = $wgRequest->getArray( 'display' );
+		if ( is_array( $property_values ) and is_array( $order_values ) and is_array( $display_values ) ) {
+			$num_sort_values = count( $property_values );
+			foreach ( $property_values as $i => $property_value ) {
+				$result .= Html::rawElement( 'div', array( 'id' => "sort_div_$i" ) ) . 'Property';  // TODO: add i18n
+				$result .= Html::input( 'property[' . $i . ']', $property_value, 'text', array( 'size' => '35' ) );
+				$result .= html::rawElement( 'select', array( 'order' => "order[' . $i . ']" ) );
+				if ( $order_values[$i] == 'NONE' ) {
+					$result .= '<option selected="selected" value="NONE">' . 'No sorting' . "</option>\n"; // TODO: add i18n
+				} else {
+					$result .= '<option                     value="NONE">' . 'No sorting' . "</option>\n"; // TODO: add i18n
+				}
+				if ( $order_values[$i] == 'ASC' ) {
+					$result .= '<option selected="selected" value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
+				} else {
+					$result .= '<option                     value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
+				}
+				if ( $order_values[$i] == 'DESC' ) {
+					$result .= '<option selected="selected" value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n";
+				} else {
+					$result .= '<option                     value="DESC">' . wfMsg( 'smw_ask_deccorder' ) . "</option>\n";
+				}
+				$result .= Html::closeElement( 'select' ) . "\n";
+				if ( array_key_exists( $i, $display_values ) ) {
+					$result .= 'show in results: <input type="checkbox" checked name="display_[' . $i . ']" value="yes">' . "\n"; // TODO: add i18n
+				} else {
+					$result .= 'show in results: <input type="checkbox"         name="display_[' . $i . ']" value="yes">' . "\n"; // TODO: add i18n
+				}
+				$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
+				$result .= Html::closeElement( 'div' ) . "\n";
+			}
+		} else { // printouts and sorting were set via another widget, so create elements by fetching data from $uiCore
+			$params = $this->uiCore->getParameters();
+			if ( array_key_exists( 'sort', $params ) && array_key_exists( 'order', $params ) ) {
+				$sorts = explode( ',', $params['sort'] );
+				$orders = explode( ',', $params['order'] );
+				reset( $sorts );
+			} else {
+				$orders = array(); // do not even show one sort input here
+			}
+
+			if  ( !array_key_exists( 'sort', $params ) ) {
+				$sort_values = $wgRequest->getArray( 'sort' );
+				if ( is_array( $sort_values ) ) {
+					$params['sort'] = implode( ',', $sort_values );
+					$num_sort_values = count( $sort_values );
+				}
+			}
+
+			foreach ( $orders as $i => $order ) {
+				$result .=  "<div id=\"sort_div_$i\">" . 'Property' . // TODO: add i18n
+						' <input type="text" name="property[' . $i . ']" value="' .
+						htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
+					if ( $order == 'ASC' ) $result .= 'selected="selected" ';
+				$result .=  'value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . '</option><option ';
+					if ( $order == 'DESC' ) $result .= 'selected="selected" ';
+				$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
+				$result .= 'show in results: <input type="checkbox" checked name="display_num" value="yes">' . "\n"; // TODO: add i18n'
+				$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
+				$result .= "</div>\n";
 			}
 		}
-
-		foreach ( $orders as $i => $order ) {
-			$result .=  "<div id=\"sort_div_$i\">" . 'Property' . // TODO: add i18n
-					' <input type="text" name="property[' . $i . ']" value="' .
-					htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
-				if ( $order == 'ASC' ) $result .= 'selected="selected" ';
-			$result .=  'value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . '</option><option ';
-				if ( $order == 'DESC' ) $result .= 'selected="selected" ';
-			$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
-			$result .= 'show in results: <input type="checkbox" checked name="display_num" value="yes">' . "\n"; // TODO: add i18n'
-			$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
-			$result .= "</div>\n";
-		}
-		// END: fetch sorting order, if defined earlier
+		// END: create form elements already submitted earlier via form
 
 		$result .=  '<div id="sorting_starter" style="display: none">' . 'Property' . // TODO: add i18n
 					' <input type="text" size="35" name="property_num" />' . "\n";
