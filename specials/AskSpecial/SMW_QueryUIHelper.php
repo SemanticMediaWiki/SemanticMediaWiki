@@ -73,7 +73,7 @@ abstract class SMWQueryUI extends SpecialPage {
 					$this->uiCore =  SMWQueryUIHelper::makeForUI(
 							$this->processQueryFormBox( $wgRequest ),
 							$params,
-							$this->processPOFormBox( $wgRequest ),
+							array(),
 							false );
 					if ( $this->uiCore->getQueryString() != "" ) {
 						$this->uiCore->execute( $p );
@@ -366,71 +366,88 @@ END;
 		$result = '';
 		$num_sort_values = 0;
 		// START: create form elements already submitted earlier via form
-
 		// attempting to load parameters from $wgRequest
 		$property_values = $wgRequest->getArray( 'property' );
 		$order_values = $wgRequest->getArray( 'order' );
 		$display_values = $wgRequest->getArray( 'display' );
-		if ( is_array( $property_values ) and is_array( $order_values ) and is_array( $display_values ) ) {
-			$num_sort_values = count( $property_values );
-			foreach ( $property_values as $i => $property_value ) {
-				$result .= Html::rawElement( 'div', array( 'id' => "sort_div_$i" ) ) . 'Property';  // TODO: add i18n
-				$result .= Html::input( 'property[' . $i . ']', $property_value, 'text', array( 'size' => '35' ) );
-				$result .= html::rawElement( 'select', array( 'order' => "order[' . $i . ']" ) );
-				if ( $order_values[$i] == 'NONE' ) {
-					$result .= '<option selected="selected" value="NONE">' . 'No sorting' . "</option>\n"; // TODO: add i18n
-				} else {
-					$result .= '<option                     value="NONE">' . 'No sorting' . "</option>\n"; // TODO: add i18n
+		if ( is_array( $property_values ) ) {
+			// removing empty values
+			foreach ( $property_values as $key => $property_value ) {
+				$property_values[$key] = trim( $property_value );
+				if ( $property_value == '' ) {
+					unset( $property_values[$key] );
 				}
-				if ( $order_values[$i] == 'ASC' ) {
-					$result .= '<option selected="selected" value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
-				} else {
-					$result .= '<option                     value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
-				}
-				if ( $order_values[$i] == 'DESC' ) {
-					$result .= '<option selected="selected" value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n";
-				} else {
-					$result .= '<option                     value="DESC">' . wfMsg( 'smw_ask_deccorder' ) . "</option>\n";
-				}
-				$result .= Html::closeElement( 'select' ) . "\n";
-				if ( array_key_exists( $i, $display_values ) ) {
-					$result .= 'show in results: <input type="checkbox" checked name="display_[' . $i . ']" value="yes">' . "\n"; // TODO: add i18n
-				} else {
-					$result .= 'show in results: <input type="checkbox"         name="display_[' . $i . ']" value="yes">' . "\n"; // TODO: add i18n
-				}
-				$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
-				$result .= Html::closeElement( 'div' ) . "\n";
 			}
-		} else { // printouts and sorting were set via another widget, so create elements by fetching data from $uiCore
+		} else {
+			/*
+			 * Printouts and sorting were set via another widget/form/source, so
+			 * create elements by fetching data from $uiCore. The exact ordering
+			 * of Ui elements might not be preserved, if the above block were to
+			 * be removed. This  is a bit of a hack, converting all strings to
+			 * lowercase to simplify searching procedure and using in_array.
+			 */
+			
+			$po = explode( '?', $this->getPOStrings() );
+			reset( $po );
+			foreach ( $po as $key => $value ) {
+			 $po[$key] = strtolower( trim( $value ) );
+			  if ( $po[$key] == '' ) {
+				  unset ( $po[$key] );
+			  }
+			}
+
 			$params = $this->uiCore->getParameters();
 			if ( array_key_exists( 'sort', $params ) && array_key_exists( 'order', $params ) ) {
-				$sorts = explode( ',', $params['sort'] );
-				$orders = explode( ',', $params['order'] );
-				reset( $sorts );
+				$property_values = explode( ',', strtolower( $params['sort'] ) );
+				$order_values = explode( ',', $params['order'] );
+				reset( $property_values );
+				reset( $order_values );
 			} else {
-				$orders = array(); // do not even show one sort input here
+				$order_values = array(); // do not even show one sort input here
+				$property_values = array();
 			}
 
-			if  ( !array_key_exists( 'sort', $params ) ) {
-				$sort_values = $wgRequest->getArray( 'sort' );
-				if ( is_array( $sort_values ) ) {
-					$params['sort'] = implode( ',', $sort_values );
-					$num_sort_values = count( $sort_values );
-				}
+			 foreach ( $po as $po_key => $po_value ) {
+				 if ( !in_array( $po_value, $property_values ) ) {
+					 $property_values[] = $po_value;
+				 }
+			 }
+			 $display_values = array();
+			 reset( $property_values );
+			 foreach ( $property_values as $property_key => $property_value ) {
+				 if ( in_array( $property_value, $po ) ) {
+					 $display_values[$property_key] = "yes";
+				 }
+			 }
+		}
+		$num_sort_values = count( $property_values );
+		foreach ( $property_values as $i => $property_value ) {
+			$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i" ) ) . 'Property ';  // TODO: add i18n
+			$result .= Html::input( 'property[' . $i . ']', $property_value, 'text', array( 'size' => '35' ) ) . "\n";
+			$result .= html::openElement( 'select', array( 'name' => "order[$i]" ) );
+			if ( !is_array( $order_values ) or !array_key_exists( $i, $order_values ) or $order_values[$i] == 'NONE'){
+				$result .= '<option selected value="NONE">' . 'No sorting' . "</option>\n"; // TODO: add i18n
+			} else {
+				$result .= '<option          value="NONE">' . 'No sorting' . "</option>\n"; // TODO: add i18n
 			}
-
-			foreach ( $orders as $i => $order ) {
-				$result .=  "<div id=\"sort_div_$i\">" . 'Property' . // TODO: add i18n
-						' <input type="text" name="property[' . $i . ']" value="' .
-						htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
-					if ( $order == 'ASC' ) $result .= 'selected="selected" ';
-				$result .=  'value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . '</option><option ';
-					if ( $order == 'DESC' ) $result .= 'selected="selected" ';
-				$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
-				$result .= 'show in results: <input type="checkbox" checked name="display_num" value="yes">' . "\n"; // TODO: add i18n'
-				$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
-				$result .= "</div>\n";
+			if(is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'ASC' ) {
+				$result .= '<option selected value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
+			} else {
+				$result .= '<option          value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
 			}
+			if ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'DESC' ) {
+				$result .= '<option selected value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n";
+			} else {
+				$result .= '<option          value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n";
+			}
+			$result .= "</select> \n";
+			if ( is_array( $display_values ) and array_key_exists( $i, $display_values ) ) {
+				$result .= 'show in results: <input type="checkbox" checked name="display[' . $i . ']" value="yes">' . "\n"; // TODO: add i18n
+			} else {
+				$result .= 'show in results: <input type="checkbox"         name="display[' . $i . ']" value="yes">' . "\n"; // TODO: add i18n
+			}
+			$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
+			$result .= "</div> \n";
 		}
 		// END: create form elements already submitted earlier via form
 
@@ -534,25 +551,28 @@ EOT;
 		$params = array();
 		$order_values = $wgRequest->getArray( 'order' );
 		$property_values = $wgRequest->getArray( 'property' );
+		$po = array();
 		if ( is_array( $property_values ) ) {
 			$params['sort'] = '';
 			$params['order'] = '';
-			foreach ( $order_values as $key => $order_value ) {
-				if ( $order_value != 'NONE' ) {
+			foreach ( $property_values as $key => $property_value ) {
+				$property_values[$key] = trim( $property_value );
+				if ( $property_value == '' ) {
+					unset( $property_values[$key] );
+				}
+				if ( is_array( $order_values ) and array_key_exists( $key, $order_values ) and $order_values[$key] != 'NONE' ) {
 					$params['sort'] .= ( $params['sort'] != '' ? ',':'' ) . $property_values[$key];
 					$params['order'] .= ( $params['order'] != '' ? ',':'' ) . $order_values[$key];
 				}
 			}
-		}
+			$display_values = $wgRequest->getArray( 'display' );
+			if ( is_array( $display_values ) ) {
+				foreach ( $display_values as $key => $value ) {
+					if ( $value == 'yes' and array_key_exists($key, $property_values )) {
+						$po[] = '?' . trim( $property_values[$key] );
+					}
 
-		$display_values = $wgRequest->getArray( 'display' );
-		$po = array();
-		if ( is_array( $display_values ) ) {
-			foreach ( $display_values as $key => $value ) {
-				if ( $value == 'yes' ) {
-					$po[] = '?' . $property_values[$key];
 				}
-
 			}
 		}
 
@@ -1395,7 +1415,7 @@ class SMWQueryUIHelper {
 			$rawparams = SMWInfolink::decodeParameters( $p, true );
 			// calling setParams to fill in missing parameters
 			$this->setParams( $rawparams );
-			$rawparams = array_merge( $this->parameters, $rawparams );
+			$rawparams = $this->parameters;
 		}
 
 		SMWQueryProcessor::processFunctionParams( $rawparams, $this->queryString, $this->parameters, $this->printOuts );
