@@ -234,10 +234,10 @@ It takes care that humans do not turn into websites.',
 	'smw_ask_embed_instr'	=> 'To embed this query inline into a wiki page use the code below.',
 
 	// Messages for Query Creator Special
-	'querycreator'          => 'Query Creator',
-	'smw_show_addnal_opts'  => 'Show additional options',
-	'smw_hide_addnal_opts'  => 'Hide additional options',
-	'smw_qc_query_help'     => 'Enter a query using the form below. Select wiki pages based on
+	'querycreator'             => 'Query Creator',
+	'smw_qc_show_addnal_opts'  => 'Show more options',
+	'smw_qc_hide_addnal_opts'  => 'Show less options',
+	'smw_qc_query_help'        => 'Enter a query using the form below. Select wiki pages based on
 Categories (<strong>[[{{ns:category}}:Actor]]</strong>), 
 Properties (<strong>[[Located in::Germany]]</strong>), 
 Names(<strong>[[Germany]]</strong>) and Namespaces (<strong>[[{{ns:help}}:+]]</strong>)',
