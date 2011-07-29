@@ -53,7 +53,6 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 * Creates the input form
 	 *
 	 * @global OutputPage $wgOut
-	 * @global booolean $smwgQSortingSupport
 	 * @return string
 	 */
 	protected function makeResults() {
@@ -62,31 +61,27 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$spectitle = $this->getTitle();
 		$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 			'<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
-
+		$result .= '<br>';
 		$result .= wfMsg( 'smw_qc_query_help' );
 		// Main query and printouts.
 		$result .= '<p><strong>' . wfMsg( 'smw_ask_queryhead' ) . "</strong></p>\n";
-		$result .= '<p>' . $this->getQueryFormBox( $this->uiCore->getQueryString() ) . '</p>';
+		$result .= '<p>' . $this->getQueryFormBox() . '</p>';
+		//sorting and prinouts
+		$result .= $this->getPoSortFormBox();
 		// show|hide additional options and querying help
-		$result .= '<span id="show_additional_options" style="display:inline"><a href="#addtional" rel="nofollow" onclick="' .
+		$result .= '<br><span id="show_additional_options" style="display:inline;"><a href="#addtional" rel="nofollow" onclick="' .
 			 "document.getElementById('additional_options').style.display='block';" .
 			 "document.getElementById('show_additional_options').style.display='none';" .
 			 "document.getElementById('hide_additional_options').style.display='inline';" . '">' .
-			 wfMsg( 'smw_show_addnal_opts' ) . '</a></span>';
+			 wfMsg( 'smw_qc_show_addnal_opts' ) . '</a></span>';
 		$result .= '<span id="hide_additional_options" style="display:none"><a href="#" rel="nofollow" onclick="' .
 			 "document.getElementById('additional_options').style.display='none';" .
 			 "document.getElementById('hide_additional_options').style.display='none';" .
 			 "document.getElementById('show_additional_options').style.display='inline';" . '">' .
-			 wfMsg( 'smw_hide_addnal_opts' ) . '</a></span>';
+			 wfMsg( 'smw_qc_hide_addnal_opts' ) . '</a></span>';
 		$result .= ' | <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>';
 		// additional options
 		$result .= '<div id="additional_options" style="display:none">';
-		$result .= '<p><strong>' . wfMsg( 'smw_ask_printhead' ) . "</strong></p>\n" .
-			'<span style="font-weight: normal;">' . wfMsg( 'smw_ask_printdesc' ) . '</span>' . "\n" .
-			'<p>' . $this->getPOFormBox( $this->getPOStrings(), SMWQueryUI::ENABLE_AUTO_SUGGEST ) . '</p>' . "\n";
-
-		// sorting inputs
-		$result .= $this->getSortingFormBox();
 
 		$result .= "<br><br>" . $this->getFormatSelectBox( 'broadtable' );
 
