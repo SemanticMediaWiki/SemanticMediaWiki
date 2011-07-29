@@ -68,7 +68,7 @@ abstract class SMWQueryUI extends SpecialPage {
 							'format'  =>  $wgRequest->getVal( 'format' ),
 							'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
 							'limit'   =>  $wgRequest->getVal( 'limit',   '20' ) ),
-							$this->processSortedPOFormBox( $wgRequest ),
+							$this->processPoSortFormBox( $wgRequest ),
 							$this->processFormatSelectBox( $wgRequest ) );
 					$this->uiCore =  SMWQueryUIHelper::makeForUI(
 							$this->processQueryFormBox( $wgRequest ),
@@ -326,13 +326,12 @@ END;
 	 * complement processQueryFormBox() to decode data sent through these elements.
 	 * UI's may overload both to change form parameters.
 	 *
-	 * @param string $contents
 	 * @param string $errors
 	 * @return string
 	 */
-	protected function getQueryFormBox( $content, $errors = '' ) {
+	protected function getQueryFormBox( $errors = '' ) {
 		$result = '';
-		$result = Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox', 'rows' => '6' ), $content );
+		$result = Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox', 'rows' => '6' ), $this->uiCore->getQueryString() );
 		// TODO:enable/disable on checking for errors; perhaps show error messages right below the box
 		return $result;
 	}
@@ -353,12 +352,12 @@ END;
 
 	/**
 	 * Generates the forms elements(s) for choosing printouts and sorting
-	 * options. Use its complement processSortedPOFormBox() to decode data
+	 * options. Use its complement processPoSortFormBox() to decode data
 	 * sent by these elements.
 	 *
 	 * @return string
 	 */
-	protected function getSortedPOFormBox( $enableAutocomplete = SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
+	protected function getPoSortFormBox( $enableAutocomplete = SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
 		global $smwgQSortingSupport, $wgRequest, $wgOut;
 
 		if ( !$smwgQSortingSupport ) return '';
@@ -386,7 +385,7 @@ END;
 			 * be removed. This  is a bit of a hack, converting all strings to
 			 * lowercase to simplify searching procedure and using in_array.
 			 */
-			
+
 			$po = explode( '?', $this->getPOStrings() );
 			reset( $po );
 			foreach ( $po as $key => $value ) {
@@ -425,12 +424,12 @@ END;
 			$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i" ) ) . 'Property ';  // TODO: add i18n
 			$result .= Html::input( 'property[' . $i . ']', $property_value, 'text', array( 'size' => '35' ) ) . "\n";
 			$result .= html::openElement( 'select', array( 'name' => "order[$i]" ) );
-			if ( !is_array( $order_values ) or !array_key_exists( $i, $order_values ) or $order_values[$i] == 'NONE'){
+			if ( !is_array( $order_values ) or !array_key_exists( $i, $order_values ) or $order_values[$i] == 'NONE' ) {
 				$result .= '<option selected value="NONE">' . 'No sorting' . "</option>\n"; // TODO: add i18n
 			} else {
 				$result .= '<option          value="NONE">' . 'No sorting' . "</option>\n"; // TODO: add i18n
 			}
-			if(is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'ASC' ) {
+			if ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'ASC' ) {
 				$result .= '<option selected value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
 			} else {
 				$result .= '<option          value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
@@ -442,9 +441,9 @@ END;
 			}
 			$result .= "</select> \n";
 			if ( is_array( $display_values ) and array_key_exists( $i, $display_values ) ) {
-				$result .= 'show in results: <input type="checkbox" checked name="display[' . $i . ']" value="yes">' . "\n"; // TODO: add i18n
+				$result .= '<input type="checkbox" checked name="display[' . $i . ']" value="yes">show in results' . "\n"; // TODO: add i18n
 			} else {
-				$result .= 'show in results: <input type="checkbox"         name="display[' . $i . ']" value="yes">' . "\n"; // TODO: add i18n
+				$result .= '<input type="checkbox"         name="display[' . $i . ']" value="yes">show in results' . "\n"; // TODO: add i18n
 			}
 			$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
 			$result .= "</div> \n";
@@ -457,7 +456,7 @@ END;
 		$result .= '	<option value="NONE"> No Sorting </option>' . "\n"; // TODO add i18n
 		$result .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
 		$result .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
-		$result .= 'show in results: <input type="checkbox" checked name="display_num" value="yes">' . "\n"; // TODO: add i18n
+		$result .= '<input type="checkbox" checked name="display_num" value="yes">show in results' . "\n"; // TODO: add i18n
 		$result .= "</div>\n";
 		$result .= '<div id="sorting_main"></div>' . "\n";
 		$result .= '<a href="javascript:addPOInstance(\'sorting_starter\', \'sorting_main\')">' . '[Add additional properties]' . '</a>' . "\n";
@@ -537,14 +536,14 @@ EOT;
 
 	/**
 	 * Decodes printouts and sorting - related form options generated by its
-	 * complement, getSortedPOFormBox(). UIs may overload both to change form
+	 * complement, getPoSortFormBox(). UIs may overload both to change form
 	 * parameters.
 	 *
 	 * @global boolean $smwgQSortingSupport
 	 * @param WebRequest $wgRequest
 	 * @return string
 	 */
-	protected function processSortedPOFormBox( WebRequest $wgRequest ) {
+	protected function processPoSortFormBox( WebRequest $wgRequest ) {
 		global $smwgQSortingSupport;
 		if ( !$smwgQSortingSupport ) return array();
 
@@ -568,7 +567,7 @@ EOT;
 			$display_values = $wgRequest->getArray( 'display' );
 			if ( is_array( $display_values ) ) {
 				foreach ( $display_values as $key => $value ) {
-					if ( $value == 'yes' and array_key_exists($key, $property_values )) {
+					if ( $value == 'yes' and array_key_exists( $key, $property_values ) ) {
 						$po[] = '?' . trim( $property_values[$key] );
 					}
 
@@ -726,11 +725,10 @@ EOT;
 	 * form elements. UIs may overload both to change the form parameter or the
 	 * html elements.
 	 *
-	 * @param string $content The content expected to appear in the box
 	 * @param boolean $enableAutocomplete If set to true, adds the relevant JS and CSS to the page
 	 * @return string The HTML code
 	 */
-	protected function getPOFormBox( $content, $enableAutocomplete = SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
+	protected function getPOFormBox( $enableAutocomplete = SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
 		global $wgOut;
 
 		if ( $enableAutocomplete ) {
@@ -774,7 +772,7 @@ EOT;
 
 		}
 
-		return Html::element( 'textarea', array( 'id' => 'add_property', 'name' => 'po', 'cols' => '20', 'rows' => '6' ), $content );
+		return Html::element( 'textarea', array( 'id' => 'add_property', 'name' => 'po', 'cols' => '20', 'rows' => '6' ), $this->getPOStrings() );
 	}
 
 	/**
@@ -861,7 +859,7 @@ EOT;
 
 		foreach ( $params as $param ) {
 			// Ignore the format parameter, as we got a special control in the GUI for it already.
-			if ( $param->getName() == 'format' ) {
+			if ( $param->getName() == 'format' or  $param->getName() == 'limit' or  $param->getName() == 'offset' ) {
 				continue;
 			}
 			$currentValue = array_key_exists( $param->getName(), $paramValues ) ? $paramValues[$param->getName()] : false;
