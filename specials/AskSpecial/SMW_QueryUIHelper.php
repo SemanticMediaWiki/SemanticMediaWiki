@@ -181,13 +181,13 @@ abstract class SMWQueryUI extends SpecialPage {
 			}
 			$javascript_autocomplete_text = <<<END
 <script type="text/javascript">
-function split(val) {
+function smw_split(val) {
 	return val.split('\\n');
 }
-function extractLast(term) {
-	return split(term).pop();
+function smw_extractLast(term) {
+	return smw_split(term).pop();
 }
-function escapeQuestion(term){
+function smw_escapeQuestion(term){
 	if (term.substring(0, 1) == "?") {
 		return term.substring(1);
 	} else {
@@ -198,7 +198,7 @@ function escapeQuestion(term){
 jQuery.noConflict();
 /* extending jQuery functions for custom highligting */
 jQuery.ui.autocomplete.prototype._renderItem = function( ul, item) {
-	var term_without_q = escapeQuestion(extractLast(this.term));
+	var term_without_q = smw_escapeQuestion(smw_extractLast(this.term));
 	var re = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term_without_q.replace("/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi", "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi");
 	var loc = item.label.search(re);
 	if (loc >= 0) {
@@ -331,7 +331,9 @@ END;
 	 */
 	protected function getQueryFormBox( $errors = '' ) {
 		$result = '';
-		$result = Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox', 'rows' => '6' ), $this->uiCore->getQueryString() );
+		$result = Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox',
+					'rows' => '1'),
+					$this->uiCore->getQueryString() );
 		// TODO:enable/disable on checking for errors; perhaps show error messages right below the box
 		return $result;
 	}
@@ -745,7 +747,7 @@ jQuery(document).ready(function(){
 			jQuery.getJSON(url, 'search='+request.term, function(data){
 				//remove the namespace prefix 'Property:' from returned data and add prefix '?'
 				for(i=0;i<data[1].length;i++) data[1][i]="?"+data[1][i].substr(data[1][i].indexOf(':')+1);
-				response(jQuery.ui.autocomplete.filter(data[1], escapeQuestion(extractLast(request.term))));
+				response(jQuery.ui.autocomplete.filter(data[1], smw_escapeQuestion(smw_extractLast(request.term))));
 			});
 		},
 		focus: function() {
@@ -753,7 +755,7 @@ jQuery(document).ready(function(){
 			return false;
 		},
 		select: function(event, ui) {
-			var terms = split( this.value );
+			var terms = smw_split( this.value );
 			// remove the current input
 			terms.pop();
 			// add the selected item
