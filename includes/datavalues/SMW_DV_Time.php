@@ -102,30 +102,30 @@ class SMWTimeValue extends SMWDataValue {
 	protected $m_wikivalue; // a suitable wiki input value
 
 	// The following are constant (array-valued constants are not supported, hence the declaration as private static variable):
-	protected static $m_months = array( "January", "February", "March", "April" , "May" , "June" , "July" , "August" , "September" , "October" , "November" , "December" );
-	protected static $m_monthsshort = array( "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" );
+	protected static $m_months = array( 'January', 'February', 'March', 'April' , 'May' , 'June' , 'July' , 'August' , 'September' , 'October' , 'November' , 'December' );
+	protected static $m_monthsshort = array( 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' );
 	protected static $m_formats = array( SMW_Y => array( 'y' ), SMW_YM => array( 'y', 'm' ), SMW_MY => array( 'm', 'y' ), SMW_YDM => array( 'y', 'd', 'm' ), SMW_YMD => array( 'y', 'm', 'd' ), SMW_DMY => array( 'd', 'm', 'y' ), SMW_MDY => array( 'm', 'd', 'y' ) );
 
 	/// General purpose time zone monikers and their associated offsets in hours and fractions of hours
-	protected static $m_tz = array( "A" => 1, "ACDT" => 10.5, "ACST" => 9.5, "ADT" => -3, "AEDT" => 11,
-		"AEST" => 10, "AKDT" => -8, "AKST" => -9, "AST" => -4, "AWDT" => 9, "AWST" => 8,
-		"B" => 2, "BST" => 1, "C" => 3, "CDT" => - 5, "CEDT" => 2, "CEST" => 2,
-		"CET" => 1, "CST" => -6, "CXT" => 7, "D" => 4, "E" => 5, "EDT" => - 4,
-		"EEDT" => 3, "EEST" => 3, "EET" => 2, "EST" => - 5, "F" => 6, "G" => 7,
-		"GMT" => 0, "H" => 8, "HAA" => - 3, "HAC" => - 5, "HADT" => - 9, "HAE" => -4,
-		"HAP" => -7, "HAR" => -6, "HAST" => -10, "HAT" => -2.5, "HAY" => -8,
-		"HNA" => -4, "HNC" => -6, "HNE" => -5, "HNP" => -8, "HNR" => -7, "HNT" => -3.5,
-		"HNY" => -9, "I" => 9, "IST" => 1, "K" => 10, "L" => 11, "M" => 12,
-		"MDT" => -6, "MESZ" => 2, "MEZ" => 1, "MSD" => 4, "MSK" => 3, "MST" => -7,
-		"N" => -1, "NDT" => -2.5, "NFT" => 11.5, "NST" => -3.5, "O" => -2, "P" => -3 ,
-		"PDT" => -7, "PST" => -8, "Q" => - 4, "R" => - 5, "S" => -6, "T" => -7,
-		"U" => -8, "UTC" => 0, "V" => - 9, "W" => -10, "WDT" => 9, "WEDT" => 1,
-		"WEST" => 1, "WET" => 0, "WST" => 8, "X" => -11, "Y" => -12, "Z" => 0 );
+	protected static $m_tz = array( 'A' => 1, 'ACDT' => 10.5, 'ACST' => 9.5, 'ADT' => -3, 'AEDT' => 11,
+		'AEST' => 10, 'AKDT' => -8, 'AKST' => -9, 'AST' => -4, 'AWDT' => 9, 'AWST' => 8,
+		'B' => 2, 'BST' => 1, 'C' => 3, 'CDT' => - 5, 'CEDT' => 2, 'CEST' => 2,
+		'CET' => 1, 'CST' => -6, 'CXT' => 7, 'D' => 4, 'E' => 5, 'EDT' => - 4,
+		'EEDT' => 3, 'EEST' => 3, 'EET' => 2, 'EST' => - 5, 'F' => 6, 'G' => 7,
+		'GMT' => 0, 'H' => 8, 'HAA' => - 3, 'HAC' => - 5, 'HADT' => - 9, 'HAE' => -4,
+		'HAP' => -7, 'HAR' => -6, 'HAST' => -10, 'HAT' => -2.5, 'HAY' => -8,
+		'HNA' => -4, 'HNC' => -6, 'HNE' => -5, 'HNP' => -8, 'HNR' => -7, 'HNT' => -3.5,
+		'HNY' => -9, 'I' => 9, 'IST' => 1, 'K' => 10, 'L' => 11, 'M' => 12,
+		'MDT' => -6, 'MESZ' => 2, 'MEZ' => 1, 'MSD' => 4, 'MSK' => 3, 'MST' => -7,
+		'N' => -1, 'NDT' => -2.5, 'NFT' => 11.5, 'NST' => -3.5, 'O' => -2, 'P' => -3 ,
+		'PDT' => -7, 'PST' => -8, 'Q' => - 4, 'R' => - 5, 'S' => -6, 'T' => -7,
+		'U' => -8, 'UTC' => 0, 'V' => - 9, 'W' => -10, 'WDT' => 9, 'WEDT' => 1,
+		'WEST' => 1, 'WET' => 0, 'WST' => 8, 'X' => -11, 'Y' => -12, 'Z' => 0 );
 	/// Military time zone monikers and their associated offsets in hours
-	protected static $m_miltz = array( "A" => 1, "B" => 2, "C" => 3, "D" => 4, "E" => 5, "F" => 6,
-		"G" => 7, "H" => 8, "I" => 9, "K" => 10, "L" => 11, "M" => 12, "N" => -1, "O" => -2,
-		"P" => -3, "Q" => -4, "R" => -5, "S" => -6, "T" => -7, "U" => -8, "V" => -9,
-		"W" => -10, "X" => -11, "Y" => -12, "Z" => 0 );
+	protected static $m_miltz = array( 'A' => 1, 'B' => 2, 'C' => 3, 'D' => 4, 'E' => 5, 'F' => 6,
+		'G' => 7, 'H' => 8, 'I' => 9, 'K' => 10, 'L' => 11, 'M' => 12, 'N' => -1, 'O' => -2,
+		'P' => -3, 'Q' => -4, 'R' => -5, 'S' => -6, 'T' => -7, 'U' => -8, 'V' => -9,
+		'W' => -10, 'X' => -11, 'Y' => -12, 'Z' => 0 );
 
 	/// Moment of switchover to Gregorian calendar.
 	const J1582 = 2299160.5;
@@ -145,10 +145,24 @@ class SMWTimeValue extends SMWDataValue {
 		/// TODO Direct JD input currently cannot cope with decimal numbers
 		$datecomponents = array();
 		$calendarmodel = $era = $hours = $minutes = $seconds = $timeoffset = false;
-		if ( $this->parseDateString( $value, $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset ) ) {
+		
+		$timeStamp = wfTimestamp( TS_MW, $value );
+		if ( $timeStamp !== false ) {
+			$this->m_dataitem = new SMWDITime(
+				SMWDITime::CM_GREGORIAN,
+				substr( $timeStamp, 0, 4 ),
+				substr( $timeStamp, 4, 2 ),
+				substr( $timeStamp, 6, 2 ),
+				substr( $timeStamp, 8, 2 ),
+				substr( $timeStamp, 10, 2 ),
+				substr( $timeStamp, 12, 2 )
+			);
+		}
+		else if ( $this->parseDateString( $value, $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset ) ) {
 			if ( ( $calendarmodel === false ) && ( $era === false ) && ( count( $datecomponents ) == 1 ) && ( intval( end( $datecomponents ) ) >= 100000 ) ) {
 				$calendarmodel = 'JD'; // default to JD input if a single number was given as the date
 			}
+			
 			if ( ( $calendarmodel == 'JD' ) || ( $calendarmodel == 'MJD' ) ) {
 				if ( ( $era === false ) && ( $hours === false ) && ( $timeoffset == 0 ) ) {
 					try {
@@ -167,6 +181,7 @@ class SMWTimeValue extends SMWDataValue {
 				$this->setDateFromParsedValues( $datecomponents, $calendarmodel, $era, $hours, $minutes, $seconds, $timeoffset );
 			}
 		}
+		
 		if ( $this->m_dataitem === null ) { // make sure that m_dataitem is set in any case
 			$this->m_dataitem = new SMWDITime( SMWDITime::CM_GREGORIAN, 32202 );
 		}
