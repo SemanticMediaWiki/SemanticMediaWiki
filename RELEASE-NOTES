@@ -1,6 +1,8 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
-== SMW 1.6.0 ==
+== SMW 1.6 ==
+
+Released on July 30, 2011.
 
 * Full support for synchronizing RDF stores with SMW, and for answering #ask
   queries based on this data. The communication happens via SPARQL (1.1), and
