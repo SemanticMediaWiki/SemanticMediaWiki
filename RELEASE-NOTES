@@ -39,7 +39,7 @@ Released on July 30, 2011.
 * Added UNIX-style DSV (Delimiter-separated values) result format.
 * Reworked internal data model, cleaning up and re-implementing SMWDataValue and
   all of its subclasses, and introducing new data item classes to handle data.
-  The class SMWCompatibilityHelpers provides temporal help for extensions that
+  The class SMWCompatibilityHelpers provides temporary help for extensions that
   still depend on the old format and APIs.
 * Fixed PostgreSQL issues with the installation and upgrade code.
 * Added API module (smwinfo) via which statistics about the semantic data can
