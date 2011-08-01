@@ -332,7 +332,7 @@ END;
 	protected function getQueryFormBox( $errors = '' ) {
 		$result = '';
 		$result = Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox',
-					'rows' => '1'),
+					'rows' => '1' ),
 					$this->uiCore->getQueryString() );
 		// TODO:enable/disable on checking for errors; perhaps show error messages right below the box
 		return $result;
@@ -452,14 +452,17 @@ END;
 		}
 		// END: create form elements already submitted earlier via form
 
-		$result .=  '<div id="sorting_starter" style="display: none">' . 'Property' . // TODO: add i18n
+		// create hidden form elements to be cloned later
+		$hidden =  '<div id="sorting_starter" style="display: none">' . 'Property' . // TODO: add i18n
 					' <input type="text" size="35" name="property_num" />' . "\n";
-		$result .= ' <select name="order_num">' . "\n";
-		$result .= '	<option value="NONE"> No Sorting </option>' . "\n"; // TODO add i18n
-		$result .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
-		$result .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
-		$result .= '<input type="checkbox" checked name="display_num" value="yes">show in results' . "\n"; // TODO: add i18n
-		$result .= "</div>\n";
+		$hidden .= ' <select name="order_num">' . "\n";
+		$hidden .= '	<option value="NONE"> No Sorting </option>' . "\n"; // TODO add i18n
+		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
+		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
+		$hidden .= '<input type="checkbox" checked name="display_num" value="yes">show in results' . "\n"; // TODO: add i18n
+		$hidden .= "</div>\n";
+		$hidden = json_encode( $hidden );
+
 		$result .= '<div id="sorting_main"></div>' . "\n";
 		$result .= '<a href="javascript:addPOInstance(\'sorting_starter\', \'sorting_main\')">' . '[Add additional properties]' . '</a>' . "\n";
 
@@ -473,6 +476,10 @@ END;
 		$javascript_text = <<<EOT
 <script type="text/javascript">
 // code for handling adding and removing the "sort" inputs
+
+	jQuery(document).ready(function(){
+			jQuery('$hidden').appendTo(document.body);
+		});
 var num_elements = {$num_sort_values};
 
 function addPOInstance(starter_div_id, main_div_id) {
@@ -617,11 +624,13 @@ EOT;
 			$result .= "</div>\n";
 		}
 
-		$result .=  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" size="35" />' . "\n";
-		$result .= ' <select name="order_num">' . "\n";
-		$result .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
-		$result .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
-		$result .= "</div>\n";
+		$hidden .=  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" size="35" />' . "\n";
+		$hidden .= ' <select name="order_num">' . "\n";
+		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
+		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
+		$hidden .= "</div>\n";
+		$hidden = json_encode( $hidden );
+
 		$result .= '<div id="sorting_main"></div>' . "\n";
 		$result .= '<a href="javascript:addInstance(\'sorting_starter\', \'sorting_main\')">' . wfMsg( 'smw_add_sortcondition' ) . '</a>' . "\n";
 
@@ -641,6 +650,9 @@ EOT;
 		$javascript_text = <<<EOT
 <script type="text/javascript">
 // code for handling adding and removing the "sort" inputs
+jQuery(document).ready(function(){
+		jQuery('$hidden').appendTo(document.body);
+	});
 var num_elements = {$num_sort_values};
 
 function addInstance(starter_div_id, main_div_id) {
