@@ -153,16 +153,15 @@ abstract class SMWQueryUI extends SpecialPage {
 	}
 
 	/**
-	 * Adds common JS and CSS required for Autocompletion.
+	 * A helper function to enable JQueryUI
 	 * @global OutputPage $wgOut
 	 * @global string $smwgScriptPath
-	 * @global boolean $smwgJQueryIncluded
 	 * @global boolean $smwgJQueryUIIncluded
 	 */
-	private function addAutocompletionJavascriptAndCSS() {
-		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
-		if ( $this->autocompleteenabled == false ) {
-			$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
+	private function enableJQueryUI(){
+		global $wgOut, $smwgScriptPath, $smwgJQueryUIIncluded;
+
+		$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
 
 			$this-> enableJQuery();
 
@@ -179,6 +178,16 @@ abstract class SMWQueryUI extends SpecialPage {
 			foreach ( $scripts as $js ) {
 				$wgOut->addScriptFile( $js );
 			}
+	}
+
+	/**
+	 * Adds common JS and CSS required for Autocompletion.
+	 * @global OutputPage $wgOut
+	 */
+	private function addAutocompletionJavascriptAndCSS() {
+		global $wgOut;
+		if ( $this->autocompleteenabled == false ) {
+			$this->enableJQueryUI();
 			$javascript_autocomplete_text = <<<END
 <script type="text/javascript">
 function smw_split(val) {
@@ -326,14 +335,27 @@ END;
 	 * complement processQueryFormBox() to decode data sent through these elements.
 	 * UI's may overload both to change form parameters.
 	 *
+	 * @global OutputPage $wgOut
+	 * @global string $smwgScriptPath
 	 * @param string $errors
 	 * @return string
 	 */
-	protected function getQueryFormBox( $errors = '' ) {
-		$result = '';
-		$result = Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox',
-					'rows' => '1' ),
+	protected function getQueryFormBox() {
+		global $wgOut,$smwgScriptPath;
+		$result = '<div>';
+		$result .= Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox'),
 					$this->uiCore->getQueryString() );
+		$result .= '</div>';
+		$this->enableJQuery();
+		$wgOut->addScriptFile("$smwgScriptPath/skins/elastic/jquery.elastic.source.js");
+		$javascript = <<<EOT
+	jQuery(document).ready(function(){
+		jQuery('#querybox').elastic();
+		jQuery('#querybox').trigger('update');
+	});
+EOT;
+		$wgOut->addInlineScript($javascript);
+
 		// TODO:enable/disable on checking for errors; perhaps show error messages right below the box
 		return $result;
 	}
@@ -363,6 +385,7 @@ END;
 		global $smwgQSortingSupport, $wgRequest, $wgOut;
 
 		if ( !$smwgQSortingSupport ) return '';
+		$this->enableJQueryUI();
 
 		$result = '';
 		$num_sort_values = 0;
@@ -460,16 +483,17 @@ END;
 		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
 		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
 		$hidden .= '<input type="checkbox" checked name="display_num" value="yes">show in results' . "\n"; // TODO: add i18n
+		$hidden .= '<a name="more_num">more</a>';//TODO: add i18n
+		$hidden .= '<div name="dialog_num"><form>yeah!!<input></form></div>';
 		$hidden .= "</div>\n";
 		$hidden = json_encode( $hidden );
 
 		$result .= '<div id="sorting_main"></div>' . "\n";
-		$result .= '<a href="javascript:addPOInstance(\'sorting_starter\', \'sorting_main\')">' . '[Add additional properties]' . '</a>' . "\n";
+		$result .= '<a href="javascript:addPOInstance(\'sorting_starter\', \'sorting_main\')">' . '[Add additional properties]' . '</a>' . "\n"; // TODO: add i18n
 
 		// Javascript code for handling adding and removing the "sort" inputs
 		$delete_msg = wfMsg( 'delete' );
 
-		$this->enableJQuery();
 		if ( $enableAutocomplete == SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
 			$this->addAutocompletionJavascriptAndCSS();
 		}
@@ -477,9 +501,13 @@ END;
 <script type="text/javascript">
 // code for handling adding and removing the "sort" inputs
 
-	jQuery(document).ready(function(){
-			jQuery('$hidden').appendTo(document.body);
+	jQuery(function(){
+		jQuery('$hidden').appendTo(document.body);
+		jQuery('[name*="dialog_"]').dialogue
+		jQuery('[name*="more_"]').click(function() {
+					//jQuery('[name*="dialog_"]).dialog( "open" );
 		});
+	});
 var num_elements = {$num_sort_values};
 
 function addPOInstance(starter_div_id, main_div_id) {
