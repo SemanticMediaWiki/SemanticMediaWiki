@@ -89,11 +89,10 @@ abstract class SMWQueryUI extends SpecialPage {
 						and ( method_exists( $wgOut, 'addFeedlink' ) ) // remove this line after MW 1.5 is no longer supported by SMW
 						and ( array_key_exists( 'rss', $wgFeedClasses ) ) ) {
 					$res = $this->uiCore->getResultObject();
-					$href = $res->getQueryLink();
-					$href->setParameter( 'rss', 'format' );
-					$href->setParameter( $this->uiCore->getLimit(), 'limit' );
-					$href = $href->getURl();
-					$wgOut->addFeedLink( 'rss', $href );
+					$link = $res->getQueryLink();
+					$link->setParameter( 'rss', 'format' );
+					$link->setParameter( $this->uiCore->getLimit(), 'limit' );
+					$wgOut->addFeedLink( 'rss', $link->getURl());
 				}
 
 				$this->makePage( $p );
