@@ -483,8 +483,6 @@ EOT;
 		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
 		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
 		$hidden .= '<input type="checkbox" checked name="display_num" value="yes">show in results' . "\n"; // TODO: add i18n
-		$hidden .= '<a name="more_num">more</a>';//TODO: add i18n
-		$hidden .= '<div name="dialog_num"><form>yeah!!<input></form></div>';
 		$hidden .= "</div>\n";
 		$hidden = json_encode( $hidden );
 
@@ -503,9 +501,6 @@ EOT;
 
 	jQuery(function(){
 		jQuery('$hidden').appendTo(document.body);
-		jQuery('[name*="dialog_"]').dialogue
-		jQuery('[name*="more_"]').click(function() {
-					//jQuery('[name*="dialog_"]).dialog( "open" );
 		});
 	});
 var num_elements = {$num_sort_values};
