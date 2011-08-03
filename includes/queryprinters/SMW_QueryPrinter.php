@@ -569,15 +569,15 @@ abstract class SMWResultPrinter {
 		$params = array();
 		
 		$params['intro'] = new Parameter( 'intro' );
-		$params['intro']->setDescription( wfMsg( 'smw_paramdesc_intro' ) );
+		$params['intro']->setMessage( 'smw_paramdesc_intro' );
 		$params['intro']->setDefault( '' );
 		
 		$params['outro'] = new Parameter( 'outro' );
-		$params['outro']->setDescription( wfMsg( 'smw_paramdesc_outro' ) );
+		$params['outro']->setMessage( 'smw_paramdesc_outro' );
 		$params['outro']->setDefault( '' );
 		
 		$params['default'] = new Parameter( 'default' );
-		$params['default']->setDescription( wfMsg( 'smw_paramdesc_default' ) );
+		$params['default']->setMessage( 'smw_paramdesc_default' );
 		$params['default']->setDefault( '' );
 		
 		return $params;
@@ -595,7 +595,7 @@ abstract class SMWResultPrinter {
 		$params = array();
 		
 		$params['searchlabel'] = new Parameter( 'searchlabel' );
-		$params['searchlabel']->setDescription( wfMsg( 'smw_paramdesc_searchlabel' ) );
+		$params['searchlabel']->setMessage( 'smw_paramdesc_searchlabel' );
 		$params['searchlabel']->setDefault( false, false );
 		
 		return $params;
@@ -634,24 +634,24 @@ abstract class SMWResultPrinter {
 		$params['format'] = new Parameter( 'format' );
 		
 		$params['limit'] = new Parameter( 'limit', Parameter::TYPE_INTEGER );
-		$params['limit']->setDescription( wfMsg( 'smw_paramdesc_limit' ) );
+		$params['limit']->setMessage( 'smw_paramdesc_limit' );
 		$params['limit']->setDefault( 20 );
 		
 		$params['offset'] = new Parameter( 'offset', Parameter::TYPE_INTEGER );
-		$params['offset']->setDescription( wfMsg( 'smw_paramdesc_offset' ) );
+		$params['offset']->setMessage( 'smw_paramdesc_offset' );
 		$params['offset']->setDefault( 0 );
 		
 		$params['headers'] = new Parameter( 'headers' );
-		$params['headers']->setDescription( wfMsg( 'smw_paramdesc_headers' ) );
+		$params['headers']->setMessage( 'smw_paramdesc_headers' );
 		$params['headers']->addCriteria( new CriterionInArray( 'show', 'hide', 'plain' ) );
 		$params['headers']->setDefault( 'show' );
 		
 		$params['mainlabel'] = new Parameter( 'mainlabel' );
-		$params['mainlabel']->setDescription( wfMsg( 'smw_paramdesc_mainlabel' ) );
+		$params['mainlabel']->setMessage( 'smw_paramdesc_mainlabel' );
 		$params['mainlabel']->setDefault( false, false );
 		
 		$params['link'] = new Parameter( 'link' );
-		$params['link']->setDescription( wfMsg( 'smw_paramdesc_link' ) );		
+		$params['link']->setMessage( 'smw_paramdesc_link' );		
 		$params['link']->addCriteria( new CriterionInArray( 'all', 'subject', 'none' ) );
 		$params['link']->setDefault( 'all' );
 		

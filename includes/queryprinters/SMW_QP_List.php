@@ -302,30 +302,30 @@ END;
 		
 		if ( $plainlist ) {
 			$params['sep'] = new Parameter( 'sep' );
-			$params['sep']->setDescription( wfMsg( 'smw_paramdesc_sep' ) );
+			$params['sep']->setMessage( 'smw_paramdesc_sep' );
 			$params['sep']->setDefault( '' );
 		}
 		
 		$params['template'] = new Parameter( 'template' );
-		$params['template']->setDescription( wfMsg( 'smw_paramdesc_template' ) );
+		$params['template']->setMessage( 'smw_paramdesc_template' );
 		$params['template']->setDefault( '' );	
 		
 		if ( !$plainlist ) {
 			$params['columns'] = new Parameter( 'columns', Parameter::TYPE_INTEGER );
-			$params['columns']->setDescription( wfMsg( 'smw_paramdesc_columns', 1 ) );
+			$params['columns']->setMessage( 'smw_paramdesc_columns', 1 );
 			$params['columns']->setDefault( '', false );		
 		}
 		
 		$params['userparam'] = new Parameter( 'userparam' );
-		$params['userparam']->setDescription( wfMsg( 'smw_paramdesc_userparam' ) );		
+		$params['userparam']->setMessage( 'smw_paramdesc_userparam' );		
 		$params['userparam']->setDefault( '' );
 		
 		$params['introtemplate'] = new Parameter( 'introtemplate' );
-		$params['introtemplate']->setDescription( wfMsg( 'smw_paramdesc_introtemplate' ) );		
+		$params['introtemplate']->setMessage( 'smw_paramdesc_introtemplate' );		
 		$params['introtemplate']->setDefault( '' );
 		
 		$params['outrotemplate'] = new Parameter( 'outrotemplate' );
-		$params['outrotemplate']->setDescription( wfMsg( 'smw_paramdesc_outrotemplate' ) );		
+		$params['outrotemplate']->setMessage( 'smw_paramdesc_outrotemplate' );		
 		$params['outrotemplate']->setDefault( '' );
 		
 		return $params;

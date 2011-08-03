@@ -101,7 +101,7 @@ class SMWRDFResultPrinter extends SMWResultPrinter {
 		$params = array();
 		
 		$params['syntax'] = new Parameter( 'syntax' );
-		$params['syntax']->setDescription( wfMsg( 'smw_paramdesc_rdfsyntax' ) );
+		$params['syntax']->setMessage( 'smw_paramdesc_rdfsyntax' );
 		$params['syntax']->addCriteria( new CriterionInArray( 'rdfxml', 'turtle' ) );
 		$params['syntax']->setDefault( 'rdfxml' );
 		
