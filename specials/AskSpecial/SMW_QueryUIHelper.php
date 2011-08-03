@@ -158,7 +158,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	 * @global string $smwgScriptPath
 	 * @global boolean $smwgJQueryUIIncluded
 	 */
-	private function enableJQueryUI(){
+	private function enableJQueryUI() {
 		global $wgOut, $smwgScriptPath, $smwgJQueryUIIncluded;
 
 		$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
@@ -341,20 +341,20 @@ END;
 	 * @return string
 	 */
 	protected function getQueryFormBox() {
-		global $wgOut,$smwgScriptPath;
+		global $wgOut, $smwgScriptPath;
 		$result = '<div>';
-		$result .= Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox'),
+		$result .= Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox' ),
 					$this->uiCore->getQueryString() );
 		$result .= '</div>';
 		$this->enableJQuery();
-		$wgOut->addScriptFile("$smwgScriptPath/skins/elastic/jquery.elastic.source.js");
+		$wgOut->addScriptFile( "$smwgScriptPath/skins/elastic/jquery.elastic.source.js" );
 		$javascript = <<<EOT
 	jQuery(document).ready(function(){
 		jQuery('#querybox').elastic();
 		jQuery('#querybox').trigger('update');
 	});
 EOT;
-		$wgOut->addInlineScript($javascript);
+		$wgOut->addInlineScript( $javascript );
 
 		// TODO:enable/disable on checking for errors; perhaps show error messages right below the box
 		return $result;
@@ -501,7 +501,6 @@ EOT;
 
 	jQuery(function(){
 		jQuery('$hidden').appendTo(document.body);
-		});
 	});
 var num_elements = {$num_sort_values};
 
@@ -525,7 +524,7 @@ function addPOInstance(starter_div_id, main_div_id) {
 
 	//Create 'delete' link
 	var remove_button = document.createElement('span');
-	remove_button.innerHTML = '[<a href="javascript:removePOInstance(\'sort_div_' + num_elements + '\')">{$delete_msg}</a>]';
+	remove_button.innerHTML = '[<a class="smwq-remove" href="javascript:removePOInstance(\'sort_div_' + num_elements + '\')">{$delete_msg}</a>]';
 	new_div.appendChild(remove_button);
 
 	//Add the new instance
@@ -643,7 +642,7 @@ EOT;
 				if ( $order == 'DESC' ) $result .= 'selected="selected" ';
 
 			$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
-			$result .= '[<a href="javascript:removeInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
+			$result .= '[<a class="smwq-remove" href="javascript:removeInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
 			$result .= "</div>\n";
 		}
 
