@@ -116,9 +116,17 @@ class SMWSMWDoc extends ParserHook {
 	 */
 	protected function getParameterTable( array $parameters ) {
 		$tableRows = array();
-
+		$hasAliases = false;
+		
 		foreach ( $parameters as $parameter ) {
-			$tableRows[] = $this->getDescriptionRow( $parameter );
+			$hasAliases = count( $parameter->getAliases() ) != 0;
+			if ( $hasAliases ) break; 
+		}
+		
+		foreach ( $parameters as $parameter ) {
+			if ( $parameter->getName() != 'format' ) {
+				$tableRows[] = $this->getDescriptionRow( $parameter, $hasAliases );
+			}
 		}
 
 		$table = '';
@@ -126,7 +134,7 @@ class SMWSMWDoc extends ParserHook {
 		if ( count( $tableRows ) > 0 ) {
 			$tableRows = array_merge( array(
 			'!' . $this->msg( 'validator-describe-header-parameter' ) ."\n" .
-			'!' . $this->msg( 'validator-describe-header-aliases' ) ."\n" .
+			( $hasAliases ? '!' . $this->msg( 'validator-describe-header-aliases' ) ."\n" : '' ) .
 			'!' . $this->msg( 'validator-describe-header-type' ) ."\n" .
 			'!' . $this->msg( 'validator-describe-header-default' ) ."\n" .
 			'!' . $this->msg( 'validator-describe-header-description' )
@@ -149,12 +157,16 @@ class SMWSMWDoc extends ParserHook {
 	 * @since 1.6
 	 *
 	 * @param Parameter $parameter
+	 * @param boolean $hasAliases
 	 *
 	 * @return string
 	 */
-	protected function getDescriptionRow( Parameter $parameter ) {
-		$aliases = $parameter->getAliases();
-		$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : '-';
+	protected function getDescriptionRow( Parameter $parameter, $hasAliases ) {
+		if ( $hasAliases ) {
+			$aliases = $parameter->getAliases();
+			$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : '-';
+		}
+
 
 		$description = $parameter->getMessage();
 		if ( $description === false ) {
@@ -177,9 +189,9 @@ class SMWSMWDoc extends ParserHook {
 		
 		if ( $default === '' ) $default = "''" . $this->msg( 'validator-describe-empty' ) . "''";
 
-		return <<<EOT
-| {$parameter->getName()}
-| {$aliases}
+		return "| {$parameter->getName()}\n"
+. ( $hasAliases ? '| ' . $aliases . "\n" : '' ) .
+<<<EOT
 | {$type}
 | {$default}
 | {$description}
