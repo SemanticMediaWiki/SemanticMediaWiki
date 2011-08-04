@@ -242,6 +242,18 @@ Categories (<strong>[[{{ns:category}}:Actor]]</strong>),
 Properties (<strong>[[Located in::Germany]]</strong>), 
 Names(<strong>[[Germany]]</strong>) and Namespaces (<strong>[[{{ns:help}}:+]]</strong>)',
 
+	//Generic messages for Query UI
+	'smw_qui_property'      => 'Property',
+	'smw_qui_shownresults'  => 'show in results',
+	'smw_qui_noquery'       => 'No query has been specified',
+	'smw_qui_invalidprop'   => '"$1" may not be a valid property',
+	'smw_qui_invalidformat' => 'The chosen format "$1" does not exist for this wiki',
+	'smw_qui_nosort'        => 'No sorting',
+	'smw_qui_ascorder'      => 'Ascending',
+	'smw_qui_descorder'     => 'Descending',
+	'smw_qui_addnprop'      => 'Add additional properties',
+	'smw_qui_delete'        => 'Remove',
+
 	// Messages for the search by property special
 	'searchbyproperty'      => 'Search by property',
 	'smw_sbv_docu'          => 'Search for all pages that have a given property and value.',
@@ -408,6 +420,11 @@ This method is called ''content negotiation''.",
 	'smw_result_next' => '{{Identical|Next}}',
 	'smw_result_results' => '{{Identical|Result}}',
 	'smw_result_noresults' => '{{Identical|Sorry, no results}}',
+	'smw_qui_property' => 'Describes a textbox where a property is expected to be typed in',
+	'smw_qui_nosort' => 'Option in a drop-down menu indicating that user does not want any sorting to be done',
+	'smw_qui_shownresults' => 'Message next to a checkbox indicating if an item should be shown in the results or not',
+	'smw_qui_addnprop' => 'Clicking on this message creates a new form to add more properties',
+	'smw_qui_delete' => 'Removes/deletes a form option',
 	'smw_smwadmin_announcedocu' => 'Do not alter or translate link targets',
 );
 

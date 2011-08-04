@@ -92,7 +92,7 @@ abstract class SMWQueryUI extends SpecialPage {
 					$link = $res->getQueryLink();
 					$link->setParameter( 'rss', 'format' );
 					$link->setParameter( $this->uiCore->getLimit(), 'limit' );
-					$wgOut->addFeedLink( 'rss', $link->getURl());
+					$wgOut->addFeedLink( 'rss', $link->getURl() );
 				}
 
 				$this->makePage( $p );
@@ -447,51 +447,51 @@ EOT;
 		}
 		$num_sort_values = count( $property_values );
 		foreach ( $property_values as $i => $property_value ) {
-			$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i" ) ) . 'Property ';  // TODO: add i18n
+			$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i" ) ) . wfMsg( 'smw_qui_property' );
 			$result .= Html::input( 'property[' . $i . ']', $property_value, 'text', array( 'size' => '35' ) ) . "\n";
 			$result .= html::openElement( 'select', array( 'name' => "order[$i]" ) );
 			if ( !is_array( $order_values ) or !array_key_exists( $i, $order_values ) or $order_values[$i] == 'NONE' ) {
-				$result .= '<option selected value="NONE">' . 'No sorting' . "</option>\n"; // TODO: add i18n
+				$result .= '<option selected value="NONE">' . wfMsg( 'smw_qui_nosort' ) . "</option>\n";
 			} else {
-				$result .= '<option          value="NONE">' . 'No sorting' . "</option>\n"; // TODO: add i18n
+				$result .= '<option          value="NONE">' . wfMsg( 'smw_qui_nosort' ) . "</option>\n";
 			}
 			if ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'ASC' ) {
-				$result .= '<option selected value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
+				$result .= '<option selected value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . "</option>\n";
 			} else {
-				$result .= '<option          value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
+				$result .= '<option          value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . "</option>\n";
 			}
 			if ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'DESC' ) {
-				$result .= '<option selected value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n";
+				$result .= '<option selected value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option>\n";
 			} else {
-				$result .= '<option          value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n";
+				$result .= '<option          value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option>\n";
 			}
 			$result .= "</select> \n";
 			if ( is_array( $display_values ) and array_key_exists( $i, $display_values ) ) {
-				$result .= '<input type="checkbox" checked name="display[' . $i . ']" value="yes">show in results' . "\n"; // TODO: add i18n
+				$result .= '<input type="checkbox" checked name="display[' . $i . ']" value="yes">' . wfMsg( 'smw_qui_shownresults' ) . "\n";
 			} else {
-				$result .= '<input type="checkbox"         name="display[' . $i . ']" value="yes">show in results' . "\n"; // TODO: add i18n
+				$result .= '<input type="checkbox"         name="display[' . $i . ']" value="yes">' . wfMsg( 'smw_qui_shownresults' ) . "\n";
 			}
-			$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
+			$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'smw_qui_delete' ) . '</a>]' . "\n";
 			$result .= "</div> \n";
 		}
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
-		$hidden =  '<div id="sorting_starter" style="display: none">' . 'Property' . // TODO: add i18n
+		$hidden =  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_qui_property' ) .
 					' <input type="text" size="35" name="property_num" />' . "\n";
 		$hidden .= ' <select name="order_num">' . "\n";
-		$hidden .= '	<option value="NONE"> No Sorting </option>' . "\n"; // TODO add i18n
-		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
-		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
-		$hidden .= '<input type="checkbox" checked name="display_num" value="yes">show in results' . "\n"; // TODO: add i18n
+		$hidden .= '	<option value="NONE"> ' . wfMsg( 'smw_qui_nosort' ) . ' </option>' . "\n";
+		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . "</option>\n";
+		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option>\n</select>\n";
+		$hidden .= '<input type="checkbox" checked name="display_num" value="yes">.' . wfMsg( 'smw_qui_shownresults' ) . "\n";
 		$hidden .= "</div>\n";
 		$hidden = json_encode( $hidden );
 
 		$result .= '<div id="sorting_main"></div>' . "\n";
-		$result .= '<a href="javascript:addPOInstance(\'sorting_starter\', \'sorting_main\')">' . '[Add additional properties]' . '</a>' . "\n"; // TODO: add i18n
+		$result .= '[<a href="javascript:addPOInstance(\'sorting_starter\', \'sorting_main\')">' . wfMsg( 'smw_qui_addnprop' ) . '</a>]' . "\n";
 
 		// Javascript code for handling adding and removing the "sort" inputs
-		$delete_msg = wfMsg( 'delete' );
+		$delete_msg = wfMsg( 'smw_qui_delete' );
 
 		if ( $enableAutocomplete == SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
 			$this->addAutocompletionJavascriptAndCSS();
@@ -639,18 +639,18 @@ EOT;
 			$result .=  "<div id=\"sort_div_$i\">" . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort[' . $i . ']" value="' .
 					htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
 				if ( $order == 'ASC' ) $result .= 'selected="selected" ';
-			$result .=  'value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . '</option><option ';
+			$result .=  'value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . '</option><option ';
 				if ( $order == 'DESC' ) $result .= 'selected="selected" ';
 
-			$result .=  'value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option></select>\n";
-			$result .= '[<a class="smwq-remove" href="javascript:removeInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'delete' ) . '</a>]' . "\n";
+			$result .=  'value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option></select>\n";
+			$result .= '[<a class="smwq-remove" href="javascript:removeInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'smw_qui_delete' ) . '</a>]' . "\n";
 			$result .= "</div>\n";
 		}
 
 		$hidden .=  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" size="35" />' . "\n";
 		$hidden .= ' <select name="order_num">' . "\n";
-		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_ask_ascorder' ) . "</option>\n";
-		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_ask_descorder' ) . "</option>\n</select>\n";
+		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . "</option>\n";
+		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option>\n</select>\n";
 		$hidden .= "</div>\n";
 		$hidden = json_encode( $hidden );
 
@@ -667,7 +667,7 @@ EOT;
 			}
 		}
 		// Javascript code for handling adding and removing the "sort" inputs
-		$delete_msg = wfMsg( 'delete' );
+		$delete_msg = wfMsg( 'smw_qui_delete' );
 
 		$this->enableJQuery();
 		$javascript_text = <<<EOT
@@ -1328,7 +1328,7 @@ class SMWQueryUIHelper {
 		$errors = array();
 		if ( $enable_validation ) {
 			if ( $query_string == '' ) {
-				$errors[] = "No query has been specified"; // TODO i18n
+				$errors[] = wfMsg( 'smw_qui_noquery' );
 			} else {
 				$query = SMWQueryProcessor::createQuery( $query_string, array() );
 				$errors = $query ->getErrors();
@@ -1368,7 +1368,7 @@ class SMWQueryUIHelper {
 					$print_outs[$key] = "?" . $print_outs[$key];
 				}
 				if ( !$this->validateProperty( $prop ) ) {
-					$errors[] = "$prop may not be a valid property"; // TODO: add i18n
+					$errors[] = wfMsg( 'smw_qui_invalidprop', $prop );
 					$this->errorsOccured = true;
 				}
 			}
@@ -1413,7 +1413,7 @@ class SMWQueryUIHelper {
 
 		if ( $enable_validation ) { // validating the format
 			if ( !array_key_exists( $params['format'], $smwgResultFormats ) ) {
-				$errors[] = "The chosen format " + $params['format'] + " does not exist for this wiki"; // TODO i18n
+				$errors[] = wfMsg( 'smw_qui_invalidformat', $params['format'] );
 				$this->errorsOccured = true;
 			} else { // validating parameters for result printer
 				$printer = SMWQueryProcessor::getResultPrinter( $params[ 'format' ] );
