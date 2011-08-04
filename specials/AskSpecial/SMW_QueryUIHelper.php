@@ -387,8 +387,7 @@ EOT;
 		global $smwgQSortingSupport, $wgRequest, $wgOut;
 
 		if ( !$smwgQSortingSupport ) return '';
-		$this->enableJQueryUI();
-
+		$this->enableJQuery();
 		$result = '';
 		$num_sort_values = 0;
 		// START: create form elements already submitted earlier via form
@@ -501,8 +500,8 @@ EOT;
 <script type="text/javascript">
 // code for handling adding and removing the "sort" inputs
 
-	jQuery(function(){
-		jQuery('$hidden').appendTo(document.body);
+jQuery(function(){
+	jQuery('$hidden').appendTo(document.body);
 	});
 var num_elements = {$num_sort_values};
 
@@ -522,7 +521,7 @@ function addPOInstance(starter_div_id, main_div_id) {
 	for (x = 0; x < children.length; x++) {
 		if (children[x].name)
 			children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
-	}
+		}
 
 	//Create 'delete' link
 	var remove_button = document.createElement('span');
