@@ -140,7 +140,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	 * @global OutputPage $wgOut
 	 * @global boolean $smwgJQueryIncluded
 	 */
-	private function enableJQuery() {
+	protected function enableJQuery() {
 		global $wgOut, $smwgJQueryIncluded;
 			if ( !$smwgJQueryIncluded ) {
 				$realFunction = array( 'OutputPage', 'includeJQuery' );
@@ -160,7 +160,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	 * @global string $smwgScriptPath
 	 * @global boolean $smwgJQueryUIIncluded
 	 */
-	private function enableJQueryUI() {
+	protected function enableJQueryUI() {
 		global $wgOut, $smwgScriptPath, $smwgJQueryUIIncluded;
 
 		$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
@@ -186,7 +186,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	 * Adds common JS and CSS required for Autocompletion.
 	 * @global OutputPage $wgOut
 	 */
-	private function addAutocompletionJavascriptAndCSS() {
+	protected function addAutocompletionJavascriptAndCSS() {
 		global $wgOut;
 		if ( $this->autocompleteenabled == false ) {
 			$this->enableJQueryUI();
