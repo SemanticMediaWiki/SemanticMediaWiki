@@ -18,7 +18,7 @@ class SMWTestStore extends SMWStore {
 
 ///// Reading methods /////
 
-	function getSemanticData( $subject, $filter = false ) {
+	function getSemanticData( SMWDIWikiPage $subject, $filter = false ) {
 		return null;
 	}
 
