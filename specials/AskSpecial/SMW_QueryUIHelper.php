@@ -996,8 +996,7 @@ EOT;
 			}
 		}
 
-		$result[0] = "\n<p>" . wfMsg( 'smw_ask_format_as' ) . "\n" .
-			'<select id="formatSelector" name="p[format]" onChange="JavaScript:updateOtherOptions(\'' . $url . '\')">' . "\n" .
+		$result[0] = "\n" .	'<select id="formatSelector" name="p[format]" onChange="JavaScript:updateOtherOptions(\'' . $url . '\')">' . "\n" .
 			'<option value="' . $default_format . '">' . $printer->getName() .
 			' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
 

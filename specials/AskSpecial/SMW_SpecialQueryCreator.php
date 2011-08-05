@@ -64,11 +64,14 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			'<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
 		$result .= '<br>';
 		$result .= wfMsg( 'smw_qc_query_help' );
-		// Main query and printouts.
-		$result .= '<p><strong>' . wfMsg( 'smw_ask_queryhead' ) . "</strong></p>\n";
-		$result .= '<p>' . $this->getQueryFormBox() . '</p>';
-		//format select
-		$result .= $formatBox[0];
+		// Main query and format options
+		$result .= '<table style="width: 100%; ">'.
+					'<tr><th>' . wfMsg( 'smw_ask_queryhead' ) . "</th>\n<th>" . wfMsg( 'smw_ask_format_as' ) . "</th></tr>".
+					'<tr>'.
+						'<td style="padding-right: 7px;">'.$this->getQueryFormBox()."</td>\n" .
+						'<td style="padding-right: 7px; text-align:center;">'. $formatBox[0] .'</td>'.
+					'</tr>'.
+					"</table>\n";
 		// sorting and prinouts
 		$result .= $this->getPoSortFormBox();
 		// show|hide additional options and querying help
@@ -284,7 +287,7 @@ jQuery(document).ready(function(){
 	});
 });
 function smw_makeDialog(prop_id){
-		\$j('#sort-label')[0].value=\$j('#property'+prop_id)[0].value;
+		\$j('#tab-property')[0].value=\$j('#property'+prop_id)[0].value;
 		\$j('#dialog').dialog('open');
 }
 
