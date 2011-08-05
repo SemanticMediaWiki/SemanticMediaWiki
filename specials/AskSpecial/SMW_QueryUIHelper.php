@@ -895,9 +895,10 @@ EOT;
 
 		foreach ( $params as $param ) {
 			// Ignore the format parameter, as we got a special control in the GUI for it already.
-			if ( $param->getName() == 'format' or  $param->getName() == 'limit' or  $param->getName() == 'offset' ) {
+			if ( $param->getName() == 'format' ) {
 				continue;
 			}
+
 			$currentValue = array_key_exists( $param->getName(), $paramValues ) ? $paramValues[$param->getName()] : false;
 
 			$optionsHtml[] =
@@ -907,15 +908,15 @@ EOT;
 						'style' => 'width: 30%; padding: 5px; float: left;'
 					),
 					htmlspecialchars( $param->getName() ) . ': ' .
-					$this->getFormatOption( $param, $currentValue ) .
+					$this->showFormatOption( $param, $currentValue ) .
 					'<br />' .
 					Html::element( 'em', array(), $param->getDescription() )
 				);
 		}
 
-		for ( $i = 0, $n = count( $optionsHtml ); $i < $n; $i += 1 ) {
+		for ( $i = 0, $n = count( $optionsHtml ); $i < $n; $i++ ) {
 			if ( $i % 3 == 2 || $i == $n - 1 ) {
-				$optionsHtml[$i] .= Html::element( 'div', array( 'style' => 'clear: both;' ) ) . "\n";
+				$optionsHtml[$i] .= "<div style=\"clear: both\";></div>\n";
 			}
 		}
 
@@ -925,7 +926,8 @@ EOT;
 
 		while ( $option = array_shift( $optionsHtml ) ) {
 			$rowHtml .= $option;
-			$i += 1;
+			$i++;
+
 			$resultHtml .= Html::rawElement(
 				'div',
 				array(
@@ -933,22 +935,23 @@ EOT;
 				),
 				$rowHtml
 			);
+
 			$rowHtml = '';
 		}
 
 		return $resultHtml;
 	}
 
+
 	/**
 	 * Get the HTML for a single parameter input.
-	 * A helper method for showFormatOptions()
 	 *
 	 * @param Parameter $parameter
-	 * @param mixed $currentValue curretly set value of the parameter, or false if unknown.
+	 * @param mixed $currentValue
 	 *
-	 * @return string generated HTML
+	 * @return string
 	 */
-	private function getFormatOption( Parameter $parameter, $currentValue ) {
+	protected function showFormatOption( Parameter $parameter, $currentValue ) {
 		$input = new ParameterInput( $parameter );
 		$input->setInputName( 'p[' . $parameter->getName() . ']' );
 
@@ -961,16 +964,19 @@ EOT;
 
 	/**
 	 * Creates form elements for choosing the result-format and their
-	 * associated format. Use in conjunction with processFormatOptions() to
+	 * associated format.
+	 *
+	 * The drop-down list and the format options are returned seperately as
+	 * elements of an array.Use in conjunction with processFormatOptions() to
 	 * supply formats options using ajax. Also, use its complement
 	 * processFormatSelectBox() to decode form data sent by these elements.
 	 * UI's may overload these methods to change behaviour or form
 	 * parameters.
 	 *
 	 * @param string $defaultformat The default format which remains selected in the form
-	 * @return string
+	 * @return array The first element contains the format selector, while the second contains the Format options
 	 */
-	protected function getFormatSelectBox( $defaultformat = 'broadtable' ) {
+	protected function getFormatSelectBoxSep( $defaultformat = 'broadtable' ) {
 		global $smwgResultFormats, $wgOut;
 
 		$this->enableJQuery();
@@ -990,7 +996,7 @@ EOT;
 			}
 		}
 
-		$result = "\n<p>" . wfMsg( 'smw_ask_format_as' ) . "\n" .
+		$result[0] = "\n<p>" . wfMsg( 'smw_ask_format_as' ) . "\n" .
 			'<select id="formatSelector" name="p[format]" onChange="JavaScript:updateOtherOptions(\'' . $url . '\')">' . "\n" .
 			'<option value="' . $default_format . '">' . $printer->getName() .
 			' (' . wfMsg( 'smw_ask_defaultformat' ) . ')</option>' . "\n";
@@ -1007,14 +1013,14 @@ EOT;
 
 		$params = $this->uiCore->getParameters();
 		foreach ( $formats as $format => $name ) {
-			$result .= '<option value="' . $format . '"' . ( $params['format'] == $format ? ' selected' : '' ) . '>' . $name . "</option>\n";
+			$result[0] .= '<option value="' . $format . '"' . ( $params['format'] == $format ? ' selected' : '' ) . '>' . $name . "</option>\n";
 		}
 
-		$result .= "</select>";
-		$result .= "</p>\n";
-		$result .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n";
-		$result .= "<div id=\"other_options\">" . $this->showFormatOptions( $params['format'], $params ) . " </div>";
-		$result .= "</fieldset>\n";
+		$result[0] .= "</select>";
+		$result[0] .= "</p>\n";
+		$result[] .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n";
+		$result[1] .= "<div id=\"other_options\">" . $this->showFormatOptions( $params['format'], $params ) . " </div>";
+		$result[1] .= "</fieldset>\n";
 
 		// BEGIN: add javascript for updating formating options by ajax
 		$javascript = <<<END
