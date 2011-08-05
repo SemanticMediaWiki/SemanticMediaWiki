@@ -65,12 +65,12 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$result .= '<br>';
 		$result .= wfMsg( 'smw_qc_query_help' );
 		// Main query and format options
-		$result .= '<table style="width: 100%; ">'.
-					'<tr><th>' . wfMsg( 'smw_ask_queryhead' ) . "</th>\n<th>" . wfMsg( 'smw_ask_format_as' ) . "</th></tr>".
-					'<tr>'.
-						'<td style="padding-right: 7px;">'.$this->getQueryFormBox()."</td>\n" .
-						'<td style="padding-right: 7px; text-align:center;">'. $formatBox[0] .'</td>'.
-					'</tr>'.
+		$result .= '<table style="width: 100%; ">' .
+					'<tr><th>' . wfMsg( 'smw_ask_queryhead' ) . "</th>\n<th>" . wfMsg( 'smw_ask_format_as' ) . "</th></tr>" .
+					'<tr>' .
+						'<td style="width: 70%; padding-right: 7px;">' . $this->getQueryFormBox() . "</td>\n" .
+						'<td style="padding-right: 7px; text-align:center;">' . $formatBox[0] . '</td>' .
+					'</tr>' .
 					"</table>\n";
 		// sorting and prinouts
 		$result .= $this->getPoSortFormBox();
@@ -89,7 +89,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		// additional options
 		$result .= '<div id="additional_options" style="display:none">';
 
-		$result .= $formatBox[1]; //display the format options
+		$result .= $formatBox[1]; // display the format options
 
 		if ( $this->uiCore->getQueryString() != '' ) // hide #ask if there isnt any query defined
 			$result .= $this->getAskEmbedBox();
@@ -188,26 +188,26 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
 
 			$if1 = ( !is_array( $order_values ) or !array_key_exists( $i, $order_values ) or $order_values[$i] == 'NONE' );
-			$result .= Xml::option(wfMsg( 'smw_qui_nosort' ), "NONE", $if1);
+			$result .= Xml::option( wfMsg( 'smw_qui_nosort' ), "NONE", $if1 );
 
 			$if2 = ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'ASC' );
-			$result .= Xml::option(wfMsg( 'smw_qui_ascorder' ), "ASC", $if2);
+			$result .= Xml::option( wfMsg( 'smw_qui_ascorder' ), "ASC", $if2 );
 
 			$if3 = ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'DESC' );
-			$result .= Xml::option(wfMsg( 'smw_qui_descorder' ), "DESC", $if3);
+			$result .= Xml::option( wfMsg( 'smw_qui_descorder' ), "DESC", $if3 );
 
-			$result .= Xml::closeElement('select');
+			$result .= Xml::closeElement( 'select' );
 
 			$if4 = ( is_array( $display_values ) and array_key_exists( $i, $display_values ) );
-			$result .=Xml::checkLabel(wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
+			$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
 
-			$result .= Xml::closeElement('div');
+			$result .= Xml::closeElement( 'div' );
 		}
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
 		$hidden = Html::openElement( 'div', array( 'id' => 'sorting_starter', 'style' => 'display:none' ) ) .
-					'<span class="smw-remove"><a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></span>'.
+					'<span class="smw-remove"><a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></span>' .
 					wfMsg( 'smw_qui_property' ) .
 					Xml::input( "property_num", '35' ) . " ";
 
@@ -222,30 +222,34 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 
 		$hidden = json_encode( $hidden );
 
-		$dialogbox = Xml::openElement('div', array('id'=>'dialog')) .
-			Xml::checkLabel(wfMsg( 'smw_qui_shownresults' ), '', 'dialog-show-results', true).
-			'<div id="tab-box">'.
-				'<ul>'.
-					'<li><a href="#property-tab">Property</a></li>'. //todo i18n
-					'<li><a href="#category-tab">Category</a></li>'. //todo i18n
-				'</ul>'.
-				'<div id="property-tab">'.
-					Xml::inputLabel('Property', '','tab-property', 'tab-property'). '<br/>'. //todo i18n
-					Xml::inputLabel('Label (optional):', '','tab-property-label', 'tab-property-label'). '<br/>'. //todo i18n
-					'Format: '. Html::openElement('select', array('name'=>'tab-format')) . //todo i18n
-						Xml::option('None (default)', 'NONE'). //todo i18n
-						Xml::option('Simple', '-'). //todo i18n
-						Xml::option('Numeric', 'n'). //todo i18n
-						Xml::option('Unit', 'u'). //todo i18n
-						Xml::option('Custom', 'CUSTOM'). //todo i18n
-					Xml::closeElement('select').
-					Xml::input('format-custom').
-				'</div>'.
-				'<div id="category-tab">'.
-					'category options go here'.
-				'</div>'.
-			'</div>'.
-			'<br>Sort by: <select id ="dialog-order">' . //todo i18n
+		$dialogbox = Xml::openElement( 'div', array( 'id' => 'dialog', 'title' => 'Advanced Print-Out Options' ) ) . // todo i18n
+			Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), '', 'dialog-show-results', true ) .
+			'<div id="tab-box">' .
+				'<ul>' .
+					'<li><a href="#property-tab">Property</a></li>' . // todo i18n
+					'<li><a href="#category-tab">Category</a></li>' . // todo i18n
+				'</ul>' .
+				'<div id="property-tab">' .
+					Xml::inputLabel( 'Property', '', 'tab-property', 'tab-property' ) . '<br/>' . // todo i18n
+					Xml::inputLabel( 'Label (optional):', '', 'tab-property-label', 'tab-property-label' ) . '<br/>' . // todo i18n
+					'Format: ' . Html::openElement( 'select', array( 'name' => 'tab-format' ) ) . // todo i18n
+						Xml::option( 'None (default)', 'NONE' ) . // todo i18n
+						Xml::option( 'Simple', '-' ) . // todo i18n
+						Xml::option( 'Numeric', 'n' ) . // todo i18n
+						Xml::option( 'Unit', 'u' ) . // todo i18n
+						Xml::option( 'Custom', 'CUSTOM' ) . // todo i18n
+					Xml::closeElement( 'select' ) .
+					Xml::input( 'format-custom' ) . '<br/>' .
+					Xml::inputLabel( 'limit (optional):', '', 'tab-property-limit', 'tab-property-limit' ) . '<br/>' . // todo i18n
+				'</div>' .
+				'<div id="category-tab">' .
+					Xml::inputLabel( 'Label (optional):', '', 'tab-category-label', 'tab-category-label' ) . '<br/>' . // todo i18n
+					Xml::inputLabel( 'Specify a category (optional)', '', 'tab-category', 'tab-category' ) . '<br/>' . // todo i18n
+					'If result belongs to category, display' . Html::input( 'tab-yes', 'X' ) . '<br/>' .
+					'else display' . Html::input( 'tab-yes', ' ' ) .
+				'</div>' .
+			'</div>' .
+			'<br>Sort by: <select id ="dialog-order">' . // todo i18n
 				'<option value="NONE">' . wfMsg( 'smw_qui_nosort' ) . '</option>' .
 				'<option value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . '</option>' .
 				'<option value="DESC">' . wfMsg( 'smw_qui_descorder' ) . '</option>' .
@@ -269,7 +273,7 @@ jQuery(function(){
 		autoOpen: false,
 		modal: true,
 		resizable: true,
-		minHeight: 500,
+		minHeight: 300,
 		minWidth: 500
 	});
 	jQuery('#tab-box').tabs({
