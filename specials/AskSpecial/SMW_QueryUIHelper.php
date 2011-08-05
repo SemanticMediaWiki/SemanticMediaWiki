@@ -450,39 +450,39 @@ EOT;
 			$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i" ) ) . wfMsg( 'smw_qui_property' );
 			$result .= Html::input( 'property[' . $i . ']', $property_value, 'text', array( 'size' => '35' ) ) . "\n";
 			$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
-			
+
 			$if1 = ( !is_array( $order_values ) or !array_key_exists( $i, $order_values ) or $order_values[$i] == 'NONE' );
-			$result .= Xml::option(wfMsg( 'smw_qui_nosort' ), "NONE", $if1);
-			
+			$result .= Xml::option( wfMsg( 'smw_qui_nosort' ), "NONE", $if1 );
+
 			$if2 = ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'ASC' );
-			$result .= Xml::option(wfMsg( 'smw_qui_ascorder' ), "ASC", $if2);
+			$result .= Xml::option( wfMsg( 'smw_qui_ascorder' ), "ASC", $if2 );
 
 			$if3 = ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'DESC' );
-			$result .= Xml::option(wfMsg( 'smw_qui_descorder' ), "DESC", $if3);
+			$result .= Xml::option( wfMsg( 'smw_qui_descorder' ), "DESC", $if3 );
 
-			$result .= Xml::closeElement('select');
+			$result .= Xml::closeElement( 'select' );
 
 			$if4 = ( is_array( $display_values ) and array_key_exists( $i, $display_values ) );
-			$result .=Xml::checkLabel(wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
+			$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
 
 			$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'smw_qui_delete' ) . '</a>]' . "\n";
-			$result .= Xml::closeElement('div');
+			$result .= Xml::closeElement( 'div' );
 		}
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
-		$hidden = Html::openElement('div', array('id'=>'sorting_starter', 'style'=> 'display:none')).
+		$hidden = Html::openElement( 'div', array( 'id' => 'sorting_starter', 'style' => 'display:none' ) ) .
 					wfMsg( 'smw_qui_property' ) .
-					Xml::input("property_num", '35'). " ";
+					Xml::input( "property_num", '35' ) . " ";
 
-		$hidden .= Html::openElement('select', array('name'=>'order_num'));
-		$hidden .= Xml::option(wfMsg( 'smw_qui_nosort' ), 'NONE');
-		$hidden .= Xml::option(wfMsg( 'smw_qui_ascorder' ), 'ASC');
-		$hidden .= Xml::option(wfMsg( 'smw_qui_descorder' ), 'DESC');
-		$hidden .= Xml::closeElement('select');
+		$hidden .= Html::openElement( 'select', array( 'name' => 'order_num' ) );
+		$hidden .= Xml::option( wfMsg( 'smw_qui_nosort' ), 'NONE' );
+		$hidden .= Xml::option( wfMsg( 'smw_qui_ascorder' ), 'ASC' );
+		$hidden .= Xml::option( wfMsg( 'smw_qui_descorder' ), 'DESC' );
+		$hidden .= Xml::closeElement( 'select' );
 
-		$hidden .= Xml::checkLabel(wfMsg( 'smw_qui_shownresults' ), "display_num",'',true );
-		$hidden .= Xml::closeElement('div');
+		$hidden .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display_num", '', true );
+		$hidden .= Xml::closeElement( 'div' );
 
 		$hidden = json_encode( $hidden );
 
