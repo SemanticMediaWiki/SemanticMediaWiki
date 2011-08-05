@@ -449,42 +449,41 @@ EOT;
 		foreach ( $property_values as $i => $property_value ) {
 			$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i" ) ) . wfMsg( 'smw_qui_property' );
 			$result .= Html::input( 'property[' . $i . ']', $property_value, 'text', array( 'size' => '35' ) ) . "\n";
-			$result .= html::openElement( 'select', array( 'name' => "order[$i]" ) );
-			if ( !is_array( $order_values ) or !array_key_exists( $i, $order_values ) or $order_values[$i] == 'NONE' ) {
-				$result .= '<option selected value="NONE">' . wfMsg( 'smw_qui_nosort' ) . "</option>\n";
-			} else {
-				$result .= '<option          value="NONE">' . wfMsg( 'smw_qui_nosort' ) . "</option>\n";
-			}
-			if ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'ASC' ) {
-				$result .= '<option selected value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . "</option>\n";
-			} else {
-				$result .= '<option          value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . "</option>\n";
-			}
-			if ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'DESC' ) {
-				$result .= '<option selected value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option>\n";
-			} else {
-				$result .= '<option          value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option>\n";
-			}
-			$result .= "</select> \n";
-			if ( is_array( $display_values ) and array_key_exists( $i, $display_values ) ) {
-				$result .= '<input type="checkbox" checked name="display[' . $i . ']" value="yes">' . wfMsg( 'smw_qui_shownresults' ) . "\n";
-			} else {
-				$result .= '<input type="checkbox"         name="display[' . $i . ']" value="yes">' . wfMsg( 'smw_qui_shownresults' ) . "\n";
-			}
+			$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
+			
+			$if1 = ( !is_array( $order_values ) or !array_key_exists( $i, $order_values ) or $order_values[$i] == 'NONE' );
+			$result .= Xml::option(wfMsg( 'smw_qui_nosort' ), "NONE", $if1);
+			
+			$if2 = ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'ASC' );
+			$result .= Xml::option(wfMsg( 'smw_qui_ascorder' ), "ASC", $if2);
+
+			$if3 = ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'DESC' );
+			$result .= Xml::option(wfMsg( 'smw_qui_descorder' ), "DESC", $if3);
+
+			$result .= Xml::closeElement('select');
+
+			$if4 = ( is_array( $display_values ) and array_key_exists( $i, $display_values ) );
+			$result .=Xml::checkLabel(wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
+
 			$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'smw_qui_delete' ) . '</a>]' . "\n";
-			$result .= "</div> \n";
+			$result .= Xml::closeElement('div');
 		}
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
-		$hidden =  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_qui_property' ) .
-					' <input type="text" size="35" name="property_num" />' . "\n";
-		$hidden .= ' <select name="order_num">' . "\n";
-		$hidden .= '	<option value="NONE"> ' . wfMsg( 'smw_qui_nosort' ) . ' </option>' . "\n";
-		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . "</option>\n";
-		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option>\n</select>\n";
-		$hidden .= '<input type="checkbox" checked name="display_num" value="yes">.' . wfMsg( 'smw_qui_shownresults' ) . "\n";
-		$hidden .= "</div>\n";
+		$hidden = Html::openElement('div', array('id'=>'sorting_starter', 'style'=> 'display:none')).
+					wfMsg( 'smw_qui_property' ) .
+					Xml::input("property_num", '35'). " ";
+
+		$hidden .= Html::openElement('select', array('name'=>'order_num'));
+		$hidden .= Xml::option(wfMsg( 'smw_qui_nosort' ), 'NONE');
+		$hidden .= Xml::option(wfMsg( 'smw_qui_ascorder' ), 'ASC');
+		$hidden .= Xml::option(wfMsg( 'smw_qui_descorder' ), 'DESC');
+		$hidden .= Xml::closeElement('select');
+
+		$hidden .= Xml::checkLabel(wfMsg( 'smw_qui_shownresults' ), "display_num",'',true );
+		$hidden .= Xml::closeElement('div');
+
 		$hidden = json_encode( $hidden );
 
 		$result .= '<div id="sorting_main"></div>' . "\n";
@@ -599,7 +598,7 @@ EOT;
 			$display_values = $wgRequest->getArray( 'display' );
 			if ( is_array( $display_values ) ) {
 				foreach ( $display_values as $key => $value ) {
-					if ( $value == 'yes' and array_key_exists( $key, $property_values ) ) {
+					if ( $value == '1' and array_key_exists( $key, $property_values ) ) {
 						$po[] = '?' . trim( $property_values[$key] );
 					}
 
