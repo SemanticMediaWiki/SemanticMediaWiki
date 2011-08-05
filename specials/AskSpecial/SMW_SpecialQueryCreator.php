@@ -59,6 +59,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		global $wgOut;
 		$result = "";
 		$spectitle = $this->getTitle();
+		$formatBox = $this->getFormatSelectBoxSep( 'broadtable' );
 		$result .= '<form name="ask" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 			'<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>';
 		$result .= '<br>';
@@ -66,6 +67,8 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		// Main query and printouts.
 		$result .= '<p><strong>' . wfMsg( 'smw_ask_queryhead' ) . "</strong></p>\n";
 		$result .= '<p>' . $this->getQueryFormBox() . '</p>';
+		//format select
+		$result .= $formatBox[0];
 		// sorting and prinouts
 		$result .= $this->getPoSortFormBox();
 		// show|hide additional options and querying help
@@ -83,7 +86,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		// additional options
 		$result .= '<div id="additional_options" style="display:none">';
 
-		$result .= $this->getFormatSelectBox( 'broadtable' );
+		$result .= $formatBox[1]; //display the format options
 
 		if ( $this->uiCore->getQueryString() != '' ) // hide #ask if there isnt any query defined
 			$result .= $this->getAskEmbedBox();
@@ -111,7 +114,9 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 
 		if ( !$smwgQSortingSupport ) return '';
 		$this->enableJQueryUI();
-		$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.min.dialog.js" );
+		$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
+		$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.tabs.min.js" );
+		$wgOut->addStyle( "$smwgScriptPath/skins/SMW_custom.css" );
 
 		$result = '';
 		$num_sort_values = 0;
@@ -172,49 +177,72 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		}
 		$num_sort_values = count( $property_values );
 		foreach ( $property_values as $i => $property_value ) {
-			$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i" ) ) . wfMsg( 'smw_qui_property' );
+
+			$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i" ) );
+			$result .= '<span class="smw-remove"> <a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></span>';
+			$result .= wfMsg( 'smw_qui_property' );
 			$result .= Html::input( 'property[' . $i . ']', $property_value, 'text', array( 'size' => '35' ) ) . "\n";
-			$result .= html::openElement( 'select', array( 'name' => "order[$i]" ) );
-			if ( !is_array( $order_values ) or !array_key_exists( $i, $order_values ) or $order_values[$i] == 'NONE' ) {
-				$result .= '<option selected value="NONE">' . wfMsg( 'smw_qui_nosort' ) . "</option>\n";
-			} else {
-				$result .= '<option          value="NONE">' . wfMsg( 'smw_qui_nosort' ) . "</option>\n";
-			}
-			if ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'ASC' ) {
-				$result .= '<option selected value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . "</option>\n";
-			} else {
-				$result .= '<option          value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . "</option>\n";
-			}
-			if ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'DESC' ) {
-				$result .= '<option selected value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option>\n";
-			} else {
-				$result .= '<option          value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option>\n";
-			}
-			$result .= "</select> \n";
-			if ( is_array( $display_values ) and array_key_exists( $i, $display_values ) ) {
-				$result .= '<input type="checkbox" checked name="display[' . $i . ']" value="yes">' . wfMsg( 'smw_qui_shownresults' ) . "\n";
-			} else {
-				$result .= '<input type="checkbox"         name="display[' . $i . ']" value="yes">' . wfMsg( 'smw_qui_shownresults' ) . "\n";
-			}
-			$result .= '[<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'smw_qui_delete' ) . '</a>]' . "\n";
-			$result .= "</div> \n";
+			$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
+
+			$if1 = ( !is_array( $order_values ) or !array_key_exists( $i, $order_values ) or $order_values[$i] == 'NONE' );
+			$result .= Xml::option(wfMsg( 'smw_qui_nosort' ), "NONE", $if1);
+
+			$if2 = ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'ASC' );
+			$result .= Xml::option(wfMsg( 'smw_qui_ascorder' ), "ASC", $if2);
+
+			$if3 = ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'DESC' );
+			$result .= Xml::option(wfMsg( 'smw_qui_descorder' ), "DESC", $if3);
+
+			$result .= Xml::closeElement('select');
+
+			$if4 = ( is_array( $display_values ) and array_key_exists( $i, $display_values ) );
+			$result .=Xml::checkLabel(wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
+
+			$result .= Xml::closeElement('div');
 		}
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
-		$hidden =  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_qui_property' ) .
-					' <input type="text" size="35" name="property_num" />';
-		$hidden .= ' <select name="order_num">';
-		$hidden .= '	<option value="NONE">' . wfMsg( 'smw_qui_nosort' ) . '</option>';
-		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . '</option>';
-		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_qui_descorder' ) . '</option></select>';
-		$hidden .= '<input type="checkbox" checked name="display_num" value="yes">' . wfMsg( 'smw_qui_shownresults' );
-		$hidden .= '</div>';
+		$hidden = Html::openElement( 'div', array( 'id' => 'sorting_starter', 'style' => 'display:none' ) ) .
+					'<span class="smw-remove"><a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></span>'.
+					wfMsg( 'smw_qui_property' ) .
+					Xml::input( "property_num", '35' ) . " ";
 
-		$dialogbox = '<div id="dialog"><form>' .
-			'<input type="checkbox" checked id="dialog-show-results" >' . wfMsg( 'smw_qui_shownresults' ) . '<fieldset id="show-result-box">' .
-			'<br>Label:<input id="sort-label"><br> still under construction </fieldset>' . //TODO; remove
-			'<br><select id ="dialog-order">' .
+		$hidden .= Html::openElement( 'select', array( 'name' => 'order_num' ) );
+		$hidden .= Xml::option( wfMsg( 'smw_qui_nosort' ), 'NONE' );
+		$hidden .= Xml::option( wfMsg( 'smw_qui_ascorder' ), 'ASC' );
+		$hidden .= Xml::option( wfMsg( 'smw_qui_descorder' ), 'DESC' );
+		$hidden .= Xml::closeElement( 'select' );
+
+		$hidden .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display_num", '', true );
+		$hidden .= Xml::closeElement( 'div' );
+
+		$hidden = json_encode( $hidden );
+
+		$dialogbox = Xml::openElement('div', array('id'=>'dialog')) .
+			Xml::checkLabel(wfMsg( 'smw_qui_shownresults' ), '', 'dialog-show-results', true).
+			'<div id="tab-box">'.
+				'<ul>'.
+					'<li><a href="#property-tab">Property</a></li>'. //todo i18n
+					'<li><a href="#category-tab">Category</a></li>'. //todo i18n
+				'</ul>'.
+				'<div id="property-tab">'.
+					Xml::inputLabel('Property', '','tab-property', 'tab-property'). '<br/>'. //todo i18n
+					Xml::inputLabel('Label (optional):', '','tab-property-label', 'tab-property-label'). '<br/>'. //todo i18n
+					'Format: '. Html::openElement('select', array('name'=>'tab-format')) . //todo i18n
+						Xml::option('None (default)', 'NONE'). //todo i18n
+						Xml::option('Simple', '-'). //todo i18n
+						Xml::option('Numeric', 'n'). //todo i18n
+						Xml::option('Unit', 'u'). //todo i18n
+						Xml::option('Custom', 'CUSTOM'). //todo i18n
+					Xml::closeElement('select').
+					Xml::input('format-custom').
+				'</div>'.
+				'<div id="category-tab">'.
+					'category options go here'.
+				'</div>'.
+			'</div>'.
+			'<br>Sort by: <select id ="dialog-order">' . //todo i18n
 				'<option value="NONE">' . wfMsg( 'smw_qui_nosort' ) . '</option>' .
 				'<option value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . '</option>' .
 				'<option value="DESC">' . wfMsg( 'smw_qui_descorder' ) . '</option>' .
@@ -224,8 +252,6 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$result .= '[<a href="javascript:addPOInstance(\'sorting_starter\', \'sorting_main\')">' . wfMsg( 'smw_qui_addnprop' ) . '</a>]' . "\n";
 
 		// Javascript code for handling adding and removing the "sort" inputs
-		$delete_msg = wfMsg( 'smw_qui_delete' );
-
 		if ( $enableAutocomplete == SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
 			$this->addAutocompletionJavascriptAndCSS();
 		}
@@ -238,17 +264,22 @@ jQuery(function(){
 	jQuery('$dialogbox').appendTo(document.body);
 	jQuery('#dialog').dialog({
 		autoOpen: false,
-		modal: true
+		modal: true,
+		resizable: true,
+		minHeight: 500,
+		minWidth: 500
+	});
+	jQuery('#tab-box').tabs({
+		selected:1
 	});
 });
 jQuery(document).ready(function(){
 	jQuery('#sort-more').click(function(){jQuery('#dialog').dialog("open");});
 	jQuery('#dialog-show-results').click(function(){
 		if(jQuery('#dialog-show-results')[0].checked){
-			//alert("hello");
-			jQuery('#show-result-box').show('blind');
+			jQuery('#tab-box').show('blind');
 		} else {
-			jQuery('#show-result-box').hide('blind');
+			jQuery('#tab-box').hide('blind');
 		}
 	});
 });
@@ -283,13 +314,13 @@ function addPOInstance(starter_div_id, main_div_id) {
 	var more_button =document.createElement('span');
 	more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makeDialog(\'' + num_elements + '\')">more</a> '; //TODO: i18n
 	new_div.appendChild(more_button);
-	//Create 'delete' link
-	var remove_button = document.createElement('span');
-	remove_button.innerHTML = '[<a class="smwq-remove" href="javascript:removePOInstance(\'sort_div_' + num_elements + '\')">{$delete_msg}</a>]';
-	new_div.appendChild(remove_button);
 
 	//Add the new instance
 	main_div.appendChild(new_div);
+
+	// initialize delete button
+	st='sort_div_'+num_elements;
+	jQuery('#'+new_div.id).find(".smw-remove a")[0].href="javascript:removePOInstance('"+st+"')";
 EOT;
 	if ( $enableAutocomplete == SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
 		$javascript_text .= <<<EOT

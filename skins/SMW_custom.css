@@ -130,6 +130,14 @@ span.smwwarning {
 	font-size: 90%;
 }
 
+/* ui buttons for QueryUI */
+span.smw-remove a{
+	background: url(images/close-button.png) center no-repeat;
+	height: 16px;
+	width: 16px;
+	text-decoration: none;
+}
+
 /* search, browse, RDF icons */
 
 span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be removed from code*/
