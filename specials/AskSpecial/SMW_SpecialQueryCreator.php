@@ -73,7 +73,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 					'</tr>' .
 					"</table>\n";
 		// sorting and prinouts
-		$result .= $this->getPoSortFormBox();
+		$result .= '<div class="smw-qc-sortbox" style="padding-left:10px;">'.$this->getPoSortFormBox().'</div>';
 		// show|hide additional options and querying help
 		$result .= '<br><span id="show_additional_options" style="display:inline;"><a href="#addtional" rel="nofollow" onclick="' .
 			 "document.getElementById('additional_options').style.display='block';" .
@@ -320,6 +320,7 @@ function addPOInstance(starter_div_id, main_div_id) {
 	//Create 'more' link
 	var more_button =document.createElement('span');
 	more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makeDialog(\'' + num_elements + '\')">more</a> '; //TODO: i18n
+	more_button.id = 'more'+num_elements;
 	new_div.appendChild(more_button);
 
 	//Add the new instance
