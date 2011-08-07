@@ -340,6 +340,7 @@ class SMWSQLStore2QueryEngine {
 		$sql_options = array( 'LIMIT' => $query->getLimit() + 1, 'OFFSET' => $query->getOffset() );
 		$res = $this->m_dbs->select( $this->m_dbs->tableName( $qobj->jointable ) . " AS $qobj->alias" . $qobj->from, "COUNT(DISTINCT $qobj->alias.smw_id) AS count", $qobj->where, 'SMW::getQueryResult', $sql_options );
 		$row = $this->m_dbs->fetchObject( $res );
+
 		$count = $row->count;
 		$this->m_dbs->freeResult( $res );
 

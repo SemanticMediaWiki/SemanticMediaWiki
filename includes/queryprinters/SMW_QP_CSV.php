@@ -109,7 +109,7 @@ class SMWCsvResultPrinter extends SMWResultPrinter {
 		
 		$params['sep'] = new Parameter( 'sep' );
 		$params['sep']->setMessage( 'smw-paramdesc-csv-sep' );
-		$params['sep']->setDefault( $this->m_sep );
+		$params['sep']->setDefault( ',' );
 		
 		return $params;
 	}
