@@ -182,7 +182,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		foreach ( $property_values as $i => $property_value ) {
 
 			$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i" ) );
-			$result .= '<span class="smw-remove"> <a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></span>';
+			$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="'.$smwgScriptPath.'/skins/images/close-button.png" alt="'. wfMsg('smw_qui_delete').'"></a></span>';
 			$result .= wfMsg( 'smw_qui_property' );
 			$result .= Html::input( 'property[' . $i . ']', $property_value, 'text', array( 'size' => '35' ) ) . "\n";
 			$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
@@ -206,8 +206,8 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
-		$hidden = Html::openElement( 'div', array( 'id' => 'sorting_starter', 'style' => 'display:none' ) ) .
-					'<span class="smw-remove"><a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></span>' .
+		$hidden = Html::openElement( 'div', array( 'id' => 'sorting_starter', 'class'=>'smw-sort', 'style' => 'display:none' ) ) .
+					'<span class="smw-remove"><a><img src="'.$smwgScriptPath.'/skins/images/close-button.png" alt="'. wfMsg('smw_qui_delete').'"></a></span>' .
 					wfMsg( 'smw_qui_property' ) .
 					Xml::input( "property_num", '35' ) . " ";
 
@@ -304,7 +304,6 @@ function addPOInstance(starter_div_id, main_div_id) {
 	//Create the new instance
 	var new_div = starter_div.cloneNode(true);
 	var div_id = 'sort_div_' + num_elements;
-	new_div.className = 'multipleTemplate';
 	new_div.id = div_id;
 	new_div.style.display = 'block';
 
