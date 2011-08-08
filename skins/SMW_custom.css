@@ -133,11 +133,17 @@ span.smwwarning {
 /* ui buttons for QueryUI */
 .smw-sort input, .smw-sort a, .smw-sort select, .smw-sort checkbox{
 	margin-left: 5px;
+	margin-bottom: 5px;
 }
 span.smw-remove a img{
 	text-decoration: none;
 	margin-right: 5px;
 	vertical-align: -3px;
+}
+
+.smw-prop-dialog input, .smw-prop-dialog select{
+	margin-top: 10px;
+	margin-right: 5px;
 }
 
 
