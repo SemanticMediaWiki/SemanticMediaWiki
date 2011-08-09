@@ -136,7 +136,25 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$params = array();
 		$order_values = $wgRequest->getArray( 'order' );
 		$property_values = $wgRequest->getArray( 'property' );
+		$category_values = $wgRequest->getArray( 'category' );
+		$category_label_values = $wgRequest->getArray( 'cat_label' );
 		$po = array();
+		if ( is_array( $category_values ) ) {
+			foreach ( $category_values as $key => $value ) {
+				if ( trim( $value ) == '' ) {
+					$po[$key] = '?Category'; // Todo: i18n
+				} else {
+					$po[$key] = '?Category:' . $value; // Todo: i18n
+				}
+			}
+		}
+		if ( is_array( $category_label_values ) ) {
+			foreach ( $category_label_values as $key => $value ) {
+				if ( trim( $value ) != '' ) {
+				 $po[$key] .= ' = ' . $value;
+				}
+			}
+		}
 		if ( is_array( $property_values ) ) {
 			$params['sort'] = '';
 			$params['order'] = '';
@@ -154,21 +172,25 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 					$params['order'] .= ( $params['order'] != '' ? ',':'' ) . $order_values[$key];
 				}
 			}
+			if ( $params['sort'] == '' ) {
+				unset ( $params['sort'] );
+			}
+			if ( $params['order'] == '' ) {
+				unset ( $params['order'] );
+			}
 			$display_values = $wgRequest->getArray( 'display' );
 			if ( is_array( $display_values ) ) {
 				foreach ( $display_values as $key => $value ) {
 					if ( $value == '1' and array_key_exists( $key, $property_values ) ) {
 					$property_values[$key] = trim( $property_values[$key] );
 					$property_values[$key] = ( $property_values[$key][0] == '?' ) ? $property_values[$key]:'?' . $property_values[$key];
-						$po[] = $property_values[$key];
+						$po[$key] = $property_values[$key];
 					}
-
 				}
 			}
 		}
-
+		ksort( $po );
 		$params = array_merge( $params, $po );
-
 		return $params;
 
 	}
@@ -197,6 +219,9 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$property_values = $wgRequest->getArray( 'property' );
 		$order_values = $wgRequest->getArray( 'order' );
 		$display_values = $wgRequest->getArray( 'display' );
+		$category_values = $wgRequest->getArray( 'category' );
+		$category_label_values = $wgRequest->getArray( 'cat_label' );
+
 		if ( is_array( $property_values ) ) {
 			// removing empty values
 			foreach ( $property_values as $key => $property_value ) {
@@ -247,52 +272,81 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 				 }
 			 }
 		}
-		$num_sort_values = count( $property_values );
-		foreach ( $property_values as $i => $property_value ) {
-
-			$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smw-sort' ) );
-			$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>';
-			$result .= wfMsg( 'smw_qui_property' );
-			$result .= Html::input( 'property[' . $i . ']', $property_value, 'text', array( 'size' => '35', 'id' => "property$i" ) ) . "\n";
-			$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
-
-			$if1 = ( !is_array( $order_values ) or !array_key_exists( $i, $order_values ) or $order_values[$i] == 'NONE' );
-			$result .= Xml::option( wfMsg( 'smw_qui_nosort' ), "NONE", $if1 );
-
-			$if2 = ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'ASC' );
-			$result .= Xml::option( wfMsg( 'smw_qui_ascorder' ), "ASC", $if2 );
-
-			$if3 = ( is_array( $order_values ) and array_key_exists( $i, $order_values ) and $order_values[$i] == 'DESC' );
-			$result .= Xml::option( wfMsg( 'smw_qui_descorder' ), "DESC", $if3 );
-
-			$result .= Xml::closeElement( 'select' );
-
-			$if4 = ( is_array( $display_values ) and array_key_exists( $i, $display_values ) );
-			$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
-			$result .= ' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makeDialog(\'' . $i . '\')"> options </a> '; // TODO: i18n
-
-			$result .= Xml::closeElement( 'div' );
+		$i = 0;
+		$additional_POs = array();
+		if ( is_array( $property_values ) ) {
+			$additional_POs = array_merge( $additional_POs, $property_values );
 		}
+		if ( is_array( $category_values ) ) {// same as testing $category_label_values
+			$additional_POs = array_merge( $additional_POs, $category_values );
+		}
+		ksort( $additional_POs );
+		foreach ( $additional_POs as $key => $value ) {
+			if ( array_key_exists( $key, $property_values ) ) {
+				// make a element for additional properties
+				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smw-sort' ) );
+				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>';
+				$result .= wfMsg( 'smw_qui_property' );
+				$result .= Html::input( 'property[' . $i . ']', $property_values[$key], 'text', array( 'size' => '35', 'id' => "property$i" ) ) . "\n";
+				$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
+
+				$if1 = ( !is_array( $order_values ) or !array_key_exists( $key, $order_values ) or $order_values[$key] == 'NONE' );
+				$result .= Xml::option( wfMsg( 'smw_qui_nosort' ), "NONE", $if1 );
+
+				$if2 = ( is_array( $order_values ) and array_key_exists( $key, $order_values ) and $order_values[$key] == 'ASC' );
+				$result .= Xml::option( wfMsg( 'smw_qui_ascorder' ), "ASC", $if2 );
+
+				$if3 = ( is_array( $order_values ) and array_key_exists( $key, $order_values ) and $order_values[$key] == 'DESC' );
+				$result .= Xml::option( wfMsg( 'smw_qui_descorder' ), "DESC", $if3 );
+
+				$result .= Xml::closeElement( 'select' );
+
+				$if4 = ( is_array( $display_values ) and array_key_exists( $key, $display_values ) );
+				$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
+				$result .= ' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makePropDialog(\'' . $i . '\')"> options </a> '; // TODO: i18n
+
+				$result .= Xml::closeElement( 'div' );
+				$i++;
+			}
+			if ( is_array( $category_values ) and array_key_exists( $key, $category_values ) ) {
+				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smw-sort' ) );
+				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+							'Category (optional)' . // todo: i18n
+							Xml::input( "category[$i]", '20', $category_values[$key] ) . " " .
+							'Label' . // todo: i18n
+							Xml::input( "cat_label[$i]", '20', array_key_exists( $key, $category_label_values ) ? $category_label_values[$key]:false ) . " " .
+							' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makeCatDialog(\'' . $i . '\')"> options </a> ' . // TODO: i18n
+							Xml::closeElement( 'div' );
+				$i++;
+			}
+		}
+		$num_sort_values = $i;
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
-		$hidden = Html::openElement( 'div', array( 'id' => 'sorting_starter', 'class' => 'smw-sort', 'style' => 'display:none' ) ) .
+		$hiddenproperty = Html::openElement( 'div', array( 'id' => 'property_starter', 'class' => 'smw-sort', 'style' => 'display:none' ) ) .
 					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 					wfMsg( 'smw_qui_property' ) .
-					Xml::input( "property_num", '35' ) . " ";
+					Xml::input( "property_num", '35' ) . " " .
+					Html::openElement( 'select', array( 'name' => 'order_num' ) ) .
+						Xml::option( wfMsg( 'smw_qui_nosort' ), 'NONE' ) .
+						Xml::option( wfMsg( 'smw_qui_ascorder' ), 'ASC' ) .
+						Xml::option( wfMsg( 'smw_qui_descorder' ), 'DESC' ) .
+					Xml::closeElement( 'select' ) .
+					Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display_num", '', true ) .
+					Xml::closeElement( 'div' );
+		$hiddenproperty = json_encode( $hiddenproperty );
 
-		$hidden .= Html::openElement( 'select', array( 'name' => 'order_num' ) );
-		$hidden .= Xml::option( wfMsg( 'smw_qui_nosort' ), 'NONE' );
-		$hidden .= Xml::option( wfMsg( 'smw_qui_ascorder' ), 'ASC' );
-		$hidden .= Xml::option( wfMsg( 'smw_qui_descorder' ), 'DESC' );
-		$hidden .= Xml::closeElement( 'select' );
+		$hiddencategory = Html::openElement( 'div', array( 'id' => 'category_starter', 'class' => 'smw-sort', 'style' => 'display:none' ) ) .
+					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+					'Category (optional)' . // todo: i18n
+					Xml::input( "category_num", '20' ) . " " .
+					'Label' . // todo: i18n
+					Xml::input( "cat_label_num", '20' ) . " " .
+					Xml::closeElement( 'div' );
+		$hiddencategory = json_encode( $hiddencategory );
 
-		$hidden .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display_num", '', true );
-		$hidden .= Xml::closeElement( 'div' );
-
-		$hidden = json_encode( $hidden );
-
-		$dialogbox = Xml::openElement( 'div', array( 'id' => 'dialog', 'title' => 'Property Options', 'class' => 'smw-prop-dialog' ) ) . // todo i18n
+		$propertydialogbox = Xml::openElement( 'div', array( 'id' => 'prop-dialog', 'title' => 'Property Options', 'class' => 'smw-prop-dialog' ) ) . // todo i18n
 					Xml::inputLabel( 'Property:', '', 'd-property', 'd-property' ) . '<br/>' . // todo i18n
 					Xml::inputLabel( 'Label:', '', 'd-property-label', 'd-property-label' ) . '<br/>' . // todo i18n
 					'Format: ' . Html::openElement( 'select', array( 'name' => 'd-format', 'id' => 'd-format' ) ) . // todo i18n
@@ -303,9 +357,18 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 					// Xml::inputLabel( 'Limit:', 'd-property-limit', 'd-property-limit' ) . '<br/>' . // todo i18n
 					'<input type="hidden" name="d-property-code" id="d-property-code">' .
 					Xml::closeElement( 'div' );
+		$categorydialogbox = Xml::openElement( 'div', array( 'id' => 'cat-dialog', 'title' => 'Category Options', 'class' => 'smw-cat-dialog' ) ) . // todo i18n
+					Xml::inputLabel( 'Category:', '', 'd-category', 'd-category' ) . '<br/>' . // todo i18n
+					Xml::inputLabel( 'Label:', '', 'd-category-label', 'd-category-label' ) . '<br/>' . // todo i18n
+					Xml::inputLabel( 'Yes:', '', 'd-category-yes', 'd-category-yes' ) . '<br/>' . // todo i18n
+					Xml::inputLabel( 'No:', '', 'd-category-no', 'd-category-no' ) . '<br/>' . // todo i18n
+					'Code :<input type="text" name="d-category-code" id="d-category-code">' . // todo hide
+					Xml::closeElement( 'div' );
 
 		$result .= '<div id="sorting_main"></div>' . "\n";
-		$result .= '[<a href="javascript:addPOInstance(\'sorting_starter\', \'sorting_main\')">' . wfMsg( 'smw_qui_addnprop' ) . '</a>]' . "\n";
+		$result .= '[<a href="javascript:smw_addPropertyInstance(\'property_starter\', \'sorting_main\')">' . wfMsg( 'smw_qui_addnprop' ) . '</a>]' .
+					'[<a href="javascript:smw_addCategoryInstance(\'category_starter\', \'sorting_main\')">' . 'Add additional category' . '</a>]' . // todo i18n
+					"\n";
 
 		// Javascript code for handling adding and removing the "sort" inputs
 		if ( $enableAutocomplete == SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
@@ -334,10 +397,27 @@ function smw_property_autocomplete(){
 		}
 	});
 }
+function smw_category_autocomplete(){
+		jQuery('[name*="category"]').autocomplete({
+		minLength: 2,
+		source: function(request, response) {
+			url=wgScriptPath+'/api.php?action=opensearch&limit=10&namespace='+wgNamespaceIds['category']+'&format=jsonfm';
+
+			jQuery.getJSON(url, 'search='+request.term, function(data){
+				//remove the namespace prefix 'Property:' from returned data
+				for(i=0;i<data[1].length;i++) data[1][i]=data[1][i].substr(data[1][i].indexOf(':')+1);
+				response(data[1]);
+			});
+
+		}
+	});
+}
 EOT;
 		} else {
 			$javascript_text .= <<<EOT
 function smw_property_autocomplete(){
+}
+function smw_category_autocomplete(){
 }
 EOT;
 		}
@@ -355,8 +435,8 @@ function smw_prop_code_update(){
 			\$j('#d-property-code')[0].value= code;
 		}
 }
-function smw_makeDialog(prop_id){
-		jQuery('#dialog input').attr('value','');
+function smw_makePropDialog(prop_id){
+		jQuery('#prop-dialog input').attr('value','');
 		prop=val=\$j('#property'+prop_id)[0].value;
 		if(val[0]='?') val=prop=prop.substr(1);
 		if((i=val.indexOf('='))!=-1) prop=prop.substring(0, i);
@@ -376,11 +456,12 @@ function smw_makeDialog(prop_id){
 		\$j('#d-property').attr('value', prop.trim());
 		\$j('#d-property-label').attr('value', label);
 		\$j('#d-property-format-custom').attr('value', format.trim());
-		\$j('#dialog').dialog.id=prop_id;
-		\$j('#dialog').dialog('open');
+		\$j('#prop-dialog').dialog.id=prop_id;
+		\$j('#prop-dialog').dialog('open');
 }
 // code for handling adding and removing the "sort" inputs
-function addPOInstance(starter_div_id, main_div_id) {
+
+function smw_addPropertyInstance(starter_div_id, main_div_id) {
 	var starter_div = document.getElementById(starter_div_id);
 	var main_div = document.getElementById(main_div_id);
 
@@ -402,7 +483,7 @@ function addPOInstance(starter_div_id, main_div_id) {
 
 	//Create 'more' link
 	var more_button =document.createElement('span');
-	more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makeDialog(\'' + num_elements + '\')">options</a> '; //TODO: i18n
+	more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makePropDialog(\'' + num_elements + '\')">options</a> '; //TODO: i18n
 	more_button.id = 'more'+num_elements;
 	new_div.appendChild(more_button);
 
@@ -416,6 +497,42 @@ function addPOInstance(starter_div_id, main_div_id) {
 	smw_property_autocomplete();
 }
 
+function smw_addCategoryInstance(starter_div_id, main_div_id) {
+	var starter_div = document.getElementById(starter_div_id);
+	var main_div = document.getElementById(main_div_id);
+
+	//Create the new instance
+	var new_div = starter_div.cloneNode(true);
+	var div_id = 'sort_div_' + num_elements;
+	new_div.id = div_id;
+	new_div.style.display = 'block';
+	jQuery(new_div.getElementsByTagName('label')).attr('for', 'display'+num_elements);
+	var children = new_div.getElementsByTagName('*');
+	var x;
+	for (x = 0; x < children.length; x++) {
+		if (children[x].for) children[x].for="display"+num_elements;
+		if (children[x].name){
+			children[x].id = children[x].name.replace(/_num/, ''+num_elements);
+			children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
+		}
+	}
+
+	//Create 'more' link
+	var more_button =document.createElement('span');
+	more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makeCatDialog(\'' + num_elements + '\')">options</a> '; //TODO: i18n
+	more_button.id = 'more'+num_elements;
+	new_div.appendChild(more_button);
+
+	//Add the new instance
+	main_div.appendChild(new_div);
+
+	// initialize delete button
+	st='sort_div_'+num_elements;
+	jQuery('#'+new_div.id).find(".smw-remove a")[0].href="javascript:removePOInstance('"+st+"')";
+	num_elements++;
+	smw_category_autocomplete();
+}
+
 function removePOInstance(div_id) {
 	var olddiv = document.getElementById(div_id);
 	var parent = olddiv.parentNode;
@@ -423,9 +540,18 @@ function removePOInstance(div_id) {
 }
 
 jQuery(function(){
-	jQuery('$hidden').appendTo(document.body);
-	jQuery('$dialogbox').appendTo(document.body);
-	jQuery('#dialog').dialog({
+	jQuery('$hiddenproperty').appendTo(document.body);
+	jQuery('$hiddencategory').appendTo(document.body);
+	jQuery('$propertydialogbox').appendTo(document.body);
+	jQuery('$categorydialogbox').appendTo(document.body);
+	jQuery('#cat-dialog').dialog({
+		autoOpen: false,
+		modal: true,
+		resizable: true,
+		minHeight: 200,
+		minWidth: 400,
+	});
+	jQuery('#prop-dialog').dialog({
 		autoOpen: false,
 		modal: true,
 		resizable: true,
@@ -434,24 +560,26 @@ jQuery(function(){
 		buttons: {
 			"Ok": function(){  //todo: i18n
 				smw_prop_code_update();
-				\$j('#property'+\$j('#dialog').dialog.id)[0].value=\$j('#d-property-code')[0].value;
+				\$j('#property'+\$j('#prop-dialog').dialog.id)[0].value=\$j('#d-property-code')[0].value;
 				jQuery(this).dialog("close");
 			},
 			"Cancel": function(){ //todo: i18n
-				jQuery('#dialog input').attr('value','');
+				jQuery('#prop-dialog input').attr('value','');
 				jQuery(this).dialog("close");
 			}
 		}
 	});
-	jQuery('#sort-more').click(function(){jQuery('#dialog').dialog("open");});
-	jQuery('#dialog input').bind('keyup click', smw_prop_code_update );
+	jQuery('#sort-more').click(function(){jQuery('#prop-dialog').dialog("open");});
+	jQuery('#prop-dialog input').bind('keyup click', smw_prop_code_update );
 
 	jQuery('#d-format').bind('change', function(event){
 		jQuery('#d-property-format-custom').attr('value', jQuery('#d-format').attr('value'));
 		smw_prop_code_update();
 	});
 });
-
+function smw_makeCatDialog(cat_id){
+		\\\$j('#cat-dialog').dialog('open');
+}
 jQuery(document).ready(smw_property_autocomplete);
 </script>
 
