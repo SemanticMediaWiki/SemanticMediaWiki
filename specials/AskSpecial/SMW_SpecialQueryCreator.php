@@ -578,7 +578,7 @@ jQuery(function(){
 	});
 });
 function smw_makeCatDialog(cat_id){
-		\\\$j('#cat-dialog').dialog('open');
+		//\$j('#cat-dialog').dialog('open');
 }
 jQuery(document).ready(smw_property_autocomplete);
 </script>
