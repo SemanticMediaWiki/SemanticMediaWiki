@@ -64,6 +64,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_printername_broadtable' => 'Broad table',
 	'smw_printername_template' => 'Template',
 	'smw_printername_rdf' => 'RDF export',
+	'smw_printername_category' => 'Category',
 
 	// Messages for query parameter descriptions
 	'smw_paramdesc_limit'	=> 'The maximum number of results to return',

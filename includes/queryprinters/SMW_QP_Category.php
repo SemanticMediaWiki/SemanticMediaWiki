@@ -39,11 +39,8 @@ class SMWCategoryResultPrinter extends SMWResultPrinter {
 	}
 
 	public function getName() {
-		// just use the name of the 'Category' namespace, instead
-		// of creating a new language value
-		global $wgContLang;
-		$namespace_labels = $wgContLang->getNamespaces();
-		return $namespace_labels[NS_CATEGORY];
+		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
+		return wfMsg( 'smw_printername_' . $this->mFormat );
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
