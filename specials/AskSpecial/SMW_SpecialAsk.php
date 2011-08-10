@@ -361,7 +361,7 @@ END;
 		$result_mime = false; // output in MW Special page as usual
 
 		// build parameter strings for URLs, based on current settings
-		$urltail = '&q=' . urlencode( $this->m_querystring );
+		$urlArgs['q'] = $this->m_querystring;
 
 		$tmp_parray = array();
 		foreach ( $this->m_params as $key => $value ) {
@@ -370,16 +370,16 @@ END;
 			}
 		}
 
-		$urltail .= '&p=' . urlencode( SMWInfolink::encodeParameters( $tmp_parray ) );
+		$urlArgs['p'] = SMWInfolink::encodeParameters( $tmp_parray );
 		$printoutstring = '';
 
 		foreach ( $this->m_printouts as $printout ) {
 			$printoutstring .= $printout->getSerialisation() . "\n";
 		}
 
-		if ( $printoutstring != '' ) $urltail .= '&po=' . urlencode( $printoutstring );
-		if ( array_key_exists( 'sort', $this->m_params ) )  $urltail .= '&sort=' . $this->m_params['sort'];
-		if ( array_key_exists( 'order', $this->m_params ) ) $urltail .= '&order=' . $this->m_params['order'];
+		if ( $printoutstring != '' ) $urlArgs['po'] = $printoutstring;
+		if ( array_key_exists( 'sort', $this->m_params ) )  $urlArgs['sort'] = $this->m_params['sort'];
+		if ( array_key_exists( 'order', $this->m_params ) ) $urlArgs['order'] = $this->m_params['order'];
 
 		if ( $this->m_querystring != '' ) {
 			$queryobj = SMWQueryProcessor::createQuery( $this->m_querystring, $this->m_params, SMWQueryProcessor::SPECIAL_PAGE , $this->m_params['format'], $this->m_printouts );
@@ -425,10 +425,14 @@ END;
 
 			if ( $result_mime == false ) {
 				if ( $res->getCount() > 0 ) {
-					if ( $this->m_editquery ) $urltail .= '&eq=yes';
-					if ( $hidequery ) $urltail .= '&eq=no';
+					if ( $this->m_editquery ) {
+						$urlArgs['eq'] = 'yes';
+					}
+					else if ( $hidequery ) {
+						$urlArgs['eq'] = 'no';
+					}
 
-					$navigation = $this->getNavigationBar( $res, $urltail );
+					$navigation = $this->getNavigationBar( $res, $urlArgs );
 					$result .= '<div style="text-align: center;">' . "\n" . $navigation . "\n</div>\n";
 					$query_result = $printer->getResult( $res, $this->m_params, SMW_OUTPUT_HTML );
 
@@ -440,7 +444,7 @@ END;
 
 					$result .= '<div style="text-align: center;">' . "\n" . $navigation . "\n</div>\n";
 				} else {
-					$result = '<div style="text-align: center;">' . wfMsg( 'smw_result_noresults' ) . '</div>';
+					$result = '<div style="text-align: center;">' . wfMsgHtml( 'smw_result_noresults' ) . '</div>';
 				}
 			} else { // make a stand-alone file
 				$result = $printer->getResult( $res, $this->m_params, SMW_OUTPUT_FILE );
@@ -455,7 +459,13 @@ END;
 				$wgOut->setHTMLtitle( wfMsg( 'ask' ) );
 			}
 
-			$result = $this->getInputForm( $printoutstring, 'offset=' . $this->m_params['offset'] . '&limit=' . $this->m_params['limit'] . $urltail ) . $result;
+			$result = $this->getInputForm(
+				$printoutstring,
+				'offset=' . $this->m_params['offset']
+					. '&limit=' . $this->m_params['limit']
+					. wfArrayToCGI( $urlArgs )
+			) . $result;
+			
 			$wgOut->addHTML( $result );
 		} else {
 			$wgOut->disable();
@@ -560,7 +570,7 @@ END;
 			$result .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n";
 			$result .= "<div id=\"other_options\">" . $this->showFormatOptions( $this->m_params['format'], $this->m_params ) . "</div>";
 			$result .= "</fieldset>\n";
-			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no';
+			$urltail = str_replace( '&eq=yes', '', $urltail ) . '&eq=no'; // FIXME: doing it wrong, srysly
 
 			$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/>' .
 				'<input type="hidden" name="eq" value="yes"/>' .
@@ -629,11 +639,11 @@ END;
 	 * Build the navigation for some given query result, reuse url-tail parameters.
 	 *
 	 * @param SMWQueryResult $res
-	 * @param string $urltail
+	 * @param array $urlArgs
 	 *
 	 * @return string
 	 */
-	protected function getNavigationBar( SMWQueryResult $res, $urltail ) {
+	protected function getNavigationBar( SMWQueryResult $res, array $urlArgs ) {
 		global $smwgQMaxInlineLimit;
 
 		$offset = $this->m_params['offset'];
@@ -646,8 +656,8 @@ END;
 				array(
 					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
 						'offset' => max( 0, $offset - $limit ), 
-						'limit' => $limit . $urltail
-					) ),
+						'limit' => $limit
+					) + $urlArgs ),
 					'rel' => 'nofollow'
 				),
 				wfMsg( 'smw_result_prev' )
@@ -670,8 +680,8 @@ END;
 				array(
 					'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
 						'offset' => ( $offset + $limit ), 
-						'limit' => $limit . $urltail 
-					) ),
+						'limit' => $limit 
+					)  + $urlArgs ),
 					'rel' => 'nofollow'
 				),
 				wfMsg( 'smw_result_next' )
@@ -698,8 +708,8 @@ END;
 					array(
 						'href' => SpecialPage::getSafeTitleFor( 'Ask' )->getLocalURL( array(
 							'offset' => $offset,
-							'limit' => $l . $urltail
-						) ),
+							'limit' => $l
+						) + $urlArgs ),
 						'rel' => 'nofollow'
 					),
 					$l
