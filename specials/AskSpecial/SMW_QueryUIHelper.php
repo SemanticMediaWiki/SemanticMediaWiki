@@ -248,7 +248,7 @@ END;
 	 * one may overload getUrlTail();
 	 *
 	 * @global int $smwgQMaxInlineLimit
-	 * @global Language $wgContLang
+	 * @global Language $wgLang
 	 * @param int $limit
 	 * @param int $offset
 	 * @param boolean $hasFurtherResults
@@ -256,7 +256,7 @@ END;
 	 * @return string
 	 */
 	public function getNavigationBar( $limit, $offset, $hasFurtherResults ) {
-		global $smwgQMaxInlineLimit, $wgContLang;
+		global $smwgQMaxInlineLimit, $wgLang;
 		$url_tail = $this->getUrlTail();
 		// Prepare navigation bar.
 		if ( $offset > 0 ) {
@@ -276,8 +276,8 @@ END;
 			$previous = wfMsg( 'smw_result_prev' );
 		}
 		$space = '&#160;&#160;&#160;&#160;';
-		$first_digit = $wgContLang->formatNum( $offset + 1 );
-		$last_digit = $wgContLang->formatNum( $offset + $this->uiCore->getResultCount() );
+		$first_digit = $wgLang->formatNum( $offset + 1 );
+		$last_digit = $wgLang->formatNum( $offset + $this->uiCore->getResultCount() );
 
 		if ( $hasFurtherResults ) {
 			$next = Html::element(
@@ -317,18 +317,30 @@ END;
 						),
 						'rel' => 'nofollow'
 					),
-					$wgContLang->formatNum( $l, false )
+					$wgLang->formatNum( $l, false )
 				);
 			} else {
-				$limit_choices .= '<b>' . $wgContLang->formatNum( $l ) . '</b>';
+				$limit_choices .= '<b>' . $wgLang->formatNum( $l ) . '</b>';
 			}
 		}
-
 		$limit_choices .= ')';
-		if ( $wgContLang->isRTL() ) { // right to left
-			$navigation = "$limit_choices $next $space <b>$last_digit - $first_digit " . wfMsg( 'smw_result_results' ) . "</b> $space $previous";
+
+		if ( $wgLang->isRTL() ) { // right to left
+			$navigation =   $limit_choices .
+							"$space $next $space" .
+							Html::rawElement( 'strong', array(),
+								" $last_digit - $first_digit " .
+								wfMsg( 'smw_result_results' )
+							) .
+							"$space $previous $space";
 		} else { // left to right
-			$navigation = "$space $previous $space <b>" . wfMsg( 'smw_result_results' ) . " $first_digit - $last_digit</b> $space $next $space $limit_choices";
+			$navigation =   "$space $previous $space" .
+							Html::rawElement( 'strong', array(),
+								wfMsg( 'smw_result_results' ) .
+								" $first_digit - $last_digit "
+							) .
+							"$space $next $space" .
+							$limit_choices;
 		}
 		return $navigation;
 	}
@@ -1685,4 +1697,4 @@ class SMWQueryUIHelper {
 		}
 	}
 
-}
+			}
