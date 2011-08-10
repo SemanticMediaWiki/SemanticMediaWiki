@@ -147,18 +147,6 @@ class SMWAskPage extends SpecialPage {
 			}
 		}
 
-		// Find implicit ordering for RSS -- needed for downwards compatibility with SMW <=1.1
-		/*
-		if ( ($this->m_params['format'] == 'rss') && ($this->m_params['sort'] == '') && ($sortcount==0)) {
-			foreach ($this->m_printouts as $printout) {
-				if ((strtolower($printout->getLabel()) == "date") && ($printout->getTypeID() == "_dat")) {
-					$this->m_params['sort'] = $printout->getTitle()->getText();
-					$this->m_params['order'] = 'DESC';
-				}
-			}
-		}
-		*/
-
 		if ( !array_key_exists( 'offset', $this->m_params ) ) {
 			$this->m_params['offset'] = $wgRequest->getVal( 'offset' );
 			if ( $this->m_params['offset'] == '' )  $this->m_params['offset'] = 0;
@@ -811,22 +799,5 @@ END;
 
 		return $input->getHtml();
 	}
-
-    /**
-     * Compatibility method to get the skin; MW 1.18 introduces a getSkin method in SpecialPage.
-     *
-     * @since 1.6
-     *
-     * @return Skin
-     */
-    public function getSkin() {
-        if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
-            return parent::getSkin();
-        }
-        else {
-            global $wgUser;
-            return $wgUser->getSkin();
-        }
-    }
 
 }
