@@ -248,6 +248,7 @@ END;
 	 * one may overload getUrlTail();
 	 *
 	 * @global int $smwgQMaxInlineLimit
+	 * @global mixed $wgContLang
 	 * @param int $limit
 	 * @param int $offset
 	 * @param boolean $hasFurtherResults
@@ -255,7 +256,7 @@ END;
 	 * @return string
 	 */
 	public function getNavigationBar( $limit, $offset, $hasFurtherResults ) {
-		global $smwgQMaxInlineLimit;
+		global $smwgQMaxInlineLimit, $wgContLang;
 		$url_tail = $this->getUrlTail();
 		// Prepare navigation bar.
 		if ( $offset > 0 ) {
@@ -277,9 +278,9 @@ END;
 
 		$navigation .=
 			'&#160;&#160;&#160;&#160; <b>' .
-				wfMsg( 'smw_result_results' ) . ' ' . ( $offset + 1 ) .
-			'&#150; ' .
-				( $offset + $this->uiCore->getResultCount() ) .
+				wfMsg( 'smw_result_results' ) . ' ' . $wgContLang->formatNum( $offset + 1 ) .
+			' - ' .
+				$wgContLang->formatNum( $offset + $this->uiCore->getResultCount() ) .
 			'</b>&#160;&#160;&#160;&#160;';
 
 		if ( $hasFurtherResults ) {
@@ -320,10 +321,10 @@ END;
 						),
 						'rel' => 'nofollow'
 					),
-					$l
+					$wgContLang->formatNum( $l, false )
 				);
 			} else {
-				$navigation .= '<b>' . $l . '</b>';
+				$navigation .= '<b>' . $wgContLang->formatNum( $l ) . '</b>';
 			}
 		}
 
