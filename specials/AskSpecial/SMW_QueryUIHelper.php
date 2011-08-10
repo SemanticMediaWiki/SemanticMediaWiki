@@ -248,7 +248,7 @@ END;
 	 * one may overload getUrlTail();
 	 *
 	 * @global int $smwgQMaxInlineLimit
-	 * @global mixed $wgContLang
+	 * @global Language $wgContLang
 	 * @param int $limit
 	 * @param int $offset
 	 * @param boolean $hasFurtherResults
@@ -260,7 +260,7 @@ END;
 		$url_tail = $this->getUrlTail();
 		// Prepare navigation bar.
 		if ( $offset > 0 ) {
-			$navigation = Html::element(
+			$previous = Html::element(
 				'a',
 				array(
 					'href' => $this->getTitle()->getLocalURL(
@@ -273,18 +273,14 @@ END;
 			);
 
 		} else {
-			$navigation = wfMsg( 'smw_result_prev' );
+			$previous = wfMsg( 'smw_result_prev' );
 		}
-
-		$navigation .=
-			'&#160;&#160;&#160;&#160; <b>' .
-				wfMsg( 'smw_result_results' ) . ' ' . $wgContLang->formatNum( $offset + 1 ) .
-			' - ' .
-				$wgContLang->formatNum( $offset + $this->uiCore->getResultCount() ) .
-			'</b>&#160;&#160;&#160;&#160;';
+		$space = '&#160;&#160;&#160;&#160;';
+		$first_digit = $wgContLang->formatNum( $offset + 1 );
+		$last_digit = $wgContLang->formatNum( $offset + $this->uiCore->getResultCount() );
 
 		if ( $hasFurtherResults ) {
-			$navigation .= Html::element(
+			$next = Html::element(
 				'a',
 				array(
 					'href' => $this->getTitle()->getLocalURL(
@@ -296,7 +292,7 @@ END;
 				wfMsg( 'smw_result_next' )
 			);
 		} else {
-			$navigation .= wfMsg( 'smw_result_next' );
+			$next = wfMsg( 'smw_result_next' );
 		}
 
 		$first = true;
@@ -305,14 +301,14 @@ END;
 			if ( $l > $smwgQMaxInlineLimit ) break;
 
 			if ( $first ) {
-				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
+				$limit_choices = '(';
 				$first = false;
 			} else {
-				$navigation .= ' | ';
+				$limit_choices .= ' | ';
 			}
 
 			if ( $limit != $l ) {
-				$navigation .= Html::element(
+				$limit_choices .= Html::element(
 					'a',
 					array(
 						'href' => $this->getTitle()->getLocalURL(
@@ -324,12 +320,16 @@ END;
 					$wgContLang->formatNum( $l, false )
 				);
 			} else {
-				$navigation .= '<b>' . $wgContLang->formatNum( $l ) . '</b>';
+				$limit_choices .= '<b>' . $wgContLang->formatNum( $l ) . '</b>';
 			}
 		}
 
-		$navigation .= ')';
-
+		$limit_choices .= ')';
+		if ( $wgContLang->isRTL() ) { // right to left
+			$navigation = "$limit_choices $next $space <b>$last_digit - $first_digit " . wfMsg( 'smw_result_results' ) . "</b> $space $previous";
+		} else { // left to right
+			$navigation = "$space $previous $space <b>" . wfMsg( 'smw_result_results' ) . " $first_digit - $last_digit</b> $space $next $space $limit_choices";
+		}
 		return $navigation;
 	}
 
