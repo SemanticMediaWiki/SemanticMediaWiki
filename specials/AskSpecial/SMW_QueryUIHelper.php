@@ -260,7 +260,7 @@ END;
 		$url_tail = $this->getUrlTail();
 		// Prepare navigation bar.
 		if ( $offset > 0 ) {
-			$previous = Html::element(
+			$navigation = Html::element(
 				'a',
 				array(
 					'href' => $this->getTitle()->getLocalURL(
@@ -273,14 +273,18 @@ END;
 			);
 
 		} else {
-			$previous = wfMsg( 'smw_result_prev' );
+			$navigation = wfMsg( 'smw_result_prev' );
 		}
-		$space = '&#160;&#160;&#160;&#160;';
-		$first_digit = $wgLang->formatNum( $offset + 1 );
-		$last_digit = $wgLang->formatNum( $offset + $this->uiCore->getResultCount() );
+
+		$navigation .=
+			'&#160;&#160;&#160;&#160; <b>' .
+				wfMsg( 'smw_result_results' ) . ' ' . $wgLang->formatNum( $offset + 1 ) .
+			' - ' .
+				$wgLang->formatNum( $offset + $this->uiCore->getResultCount() ) .
+			'</b>&#160;&#160;&#160;&#160;';
 
 		if ( $hasFurtherResults ) {
-			$next = Html::element(
+			$navigation .= Html::element(
 				'a',
 				array(
 					'href' => $this->getTitle()->getLocalURL(
@@ -292,7 +296,7 @@ END;
 				wfMsg( 'smw_result_next' )
 			);
 		} else {
-			$next = wfMsg( 'smw_result_next' );
+			$navigation .= wfMsg( 'smw_result_next' );
 		}
 
 		$first = true;
@@ -301,14 +305,14 @@ END;
 			if ( $l > $smwgQMaxInlineLimit ) break;
 
 			if ( $first ) {
-				$limit_choices = '(';
+				$navigation .= '&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(';
 				$first = false;
 			} else {
-				$limit_choices .= ' | ';
+				$navigation .= ' | ';
 			}
 
 			if ( $limit != $l ) {
-				$limit_choices .= Html::element(
+				$navigation .= Html::element(
 					'a',
 					array(
 						'href' => $this->getTitle()->getLocalURL(
@@ -320,28 +324,12 @@ END;
 					$wgLang->formatNum( $l, false )
 				);
 			} else {
-				$limit_choices .= '<b>' . $wgLang->formatNum( $l ) . '</b>';
+				$navigation .= '<b>' . $wgLang->formatNum( $l ) . '</b>';
 			}
 		}
-		$limit_choices .= ')';
 
-		if ( $wgLang->isRTL() ) { // right to left
-			$navigation =   $limit_choices .
-							"$space $next $space" .
-							Html::rawElement( 'strong', array(),
-								" $last_digit - $first_digit " .
-								wfMsg( 'smw_result_results' )
-							) .
-							"$space $previous $space";
-		} else { // left to right
-			$navigation =   "$space $previous $space" .
-							Html::rawElement( 'strong', array(),
-								wfMsg( 'smw_result_results' ) .
-								" $first_digit - $last_digit "
-							) .
-							"$space $next $space" .
-							$limit_choices;
-		}
+		$navigation .= ')';
+
 		return $navigation;
 	}
 
@@ -1697,4 +1685,4 @@ class SMWQueryUIHelper {
 		}
 	}
 
-			}
+}
