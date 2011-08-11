@@ -254,6 +254,7 @@ Names(<strong>[[Germany]]</strong>) and Namespaces (<strong>[[{{ns:help}}:+]]</s
 	'smw_qui_descorder'     => 'Descending',
 	'smw_qui_addnprop'      => 'Add additional properties',
 	'smw_qui_delete'        => 'Remove',
+	'smw_qui_rescol'		=> 'Result column label',
 
 	// Messages for the search by property special
 	'searchbyproperty'      => 'Search by property',

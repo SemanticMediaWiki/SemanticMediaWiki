@@ -66,7 +66,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 * Overridden from parent to ignore GUI parameters 'format' 'limit' and 'offset'
 	 */
 	protected function showFormatOptions( $format, array $paramValues, array $ignoredAttribs = array() ) {
-		return parent::showFormatOptions( $format, $paramValues, array( 'format', 'limit', 'offset' ) );
+		return parent::showFormatOptions( $format, $paramValues, array( 'format', 'limit', 'offset', 'mainlabel' ) );
 	}
 	/**
 	 * Creates the input form
@@ -143,8 +143,20 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$property_values = $wgRequest->getArray( 'property' );
 		$category_values = $wgRequest->getArray( 'category' );
 		$category_label_values = $wgRequest->getArray( 'cat_label' );
+		$main_column_labels = $wgRequest->getArray( 'maincol_label' );
 		$po = array();
 		$category_namespace = $wgContLang->getNsText( NS_CATEGORY );
+		if ( is_array( $main_column_labels ) ) {
+			$po['mainlabel'] = '-';  // disables mainlabel parameter so that the UI can control it from here
+			foreach ( $main_column_labels as $key => $label ) {
+				if ( $label == '' ) {
+					$po[$key] = "?";
+				} else {
+					$po[$key] = "? = $label";
+				}
+
+			}
+		}
 		if ( is_array( $category_values ) ) {
 			foreach ( $category_values as $key => $value ) {
 				if ( trim( $value ) == '' ) {
@@ -227,8 +239,9 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$display_values = $wgRequest->getArray( 'display' );
 		$category_values = $wgRequest->getArray( 'category' );
 		$category_label_values = $wgRequest->getArray( 'cat_label' );
+		$main_column_labels = $wgRequest->getArray( 'maincol_label' );
 
-		if ( is_array( $property_values ) or is_array( $category_values ) ) {
+		if ( is_array( $property_values ) or is_array( $category_values ) or is_array( $main_column_labels ) ) {
 			/*
 			 * Printouts were set via this Ui
 			 */
@@ -293,10 +306,18 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 				$additional_POs[$value] = $category_values[$value]; // array_merge won't work because numeric keys need to be preserved
 			}
 		}
+		if ( is_array( $main_column_labels ) ) {
+			$keys = array_keys( $main_column_labels );
+			foreach ( $keys as $value ) {
+				$additional_POs[$value] = $main_column_labels[$value]; // array_merge won't work because numeric keys need to be preserved
+			}
+		}
 		ksort( $additional_POs );
 		foreach ( $additional_POs as $key => $value ) {
 			if ( is_array( $property_values ) and array_key_exists( $key, $property_values ) ) {
-				// make a element for additional properties
+				/*
+				 * Make an element for additional properties
+				 */
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
 				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>';
 				$result .= wfMsg( 'smw_qui_property' );
@@ -322,6 +343,9 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 				$i++;
 			}
 			if ( is_array( $category_values ) and array_key_exists( $key, $category_values ) ) {
+				/*
+				 * Make an element for additional categories
+				 */
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
 				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 							'Category (optional)' . // todo: i18n
@@ -330,6 +354,17 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 							Xml::input( "cat_label[$i]", '20', array_key_exists( $key, $category_label_values ) ? $category_label_values[$key]:false, array( 'id' => "cat_label$i" ) ) . " " .
 							' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makeCatDialog(\'' . $i . '\')"> options </a> ' . // TODO: i18n
 							Xml::closeElement( 'div' );
+				$i++;
+			}
+			if ( is_array( $main_column_labels ) and array_key_exists( $key, $main_column_labels ) ) {
+				/*
+				 * Make an element for main column
+				 */
+				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) ) .
+					'<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+					wfMsg( 'smw_qui_rescol' ) .
+					Xml::input( "maincol_label[$i]", '20', $main_column_labels[$key], array ( 'id' => "maincol_label$i" ) ) . " " .
+					Xml::closeElement( 'div' );
 				$i++;
 			}
 		}
@@ -359,6 +394,13 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 					Xml::closeElement( 'div' );
 		$hidden_category = json_encode( $hidden_category );
 
+		$hidden_main_column = Html::openElement( 'div', array( 'id' => 'maincol_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
+					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+					wfMsg( 'smw_qui_rescol' ) .
+					Xml::input( "maincol_label_num", '20' ) . " " .
+					Xml::closeElement( 'div' );
+		$hidden_main_column = json_encode( $hidden_main_column );
+
 		$property_dialog_box = Xml::openElement( 'div', array( 'id' => 'prop-dialog', 'title' => 'Property Options', 'class' => 'smwpropdialog' ) ) . // todo i18n
 					Xml::inputLabel( 'Property:', '', 'd-property', 'd-property' ) . '<br/>' . // todo i18n
 					Xml::inputLabel( 'Label:', '', 'd-property-label', 'd-property-label' ) . '<br/>' . // todo i18n
@@ -381,6 +423,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$result .= '<div id="sorting_main"></div>' . "\n";
 		$result .= '[<a href="javascript:smw_addPropertyInstance(\'property_starter\', \'sorting_main\')">' . wfMsg( 'smw_qui_addnprop' ) . '</a>]' .
 					'[<a href="javascript:smw_addCategoryInstance(\'category_starter\', \'sorting_main\')">' . 'Add additional category' . '</a>]' . // todo i18n
+					'[<a href="javascript:smw_addMainColInstance(\'maincol_starter\', \'sorting_main\')">' . 'Add main column' . '</a>]' . // todo i18n
 					"\n";
 
 		// Javascript code for handling adding and removing the "sort" inputs
@@ -563,6 +606,36 @@ function smw_addCategoryInstance(starter_div_id, main_div_id) {
 	smw_category_autocomplete();
 }
 
+function smw_addMainColInstance(starter_div_id, main_div_id) {
+	var starter_div = document.getElementById(starter_div_id);
+	var main_div = document.getElementById(main_div_id);
+
+	//Create the new instance
+	var new_div = starter_div.cloneNode(true);
+	var div_id = 'sort_div_' + num_elements;
+	new_div.id = div_id;
+	new_div.style.display = 'block';
+	jQuery(new_div.getElementsByTagName('label')).attr('for', 'display'+num_elements);
+	var children = new_div.getElementsByTagName('*');
+	var x;
+	for (x = 0; x < children.length; x++) {
+		if (children[x].for) children[x].for="display"+num_elements;
+		if (children[x].name){
+			children[x].id = children[x].name.replace(/_num/, ''+num_elements);
+			children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
+		}
+	}
+
+	//Add the new instance
+	main_div.appendChild(new_div);
+
+	// initialize delete button
+	st='sort_div_'+num_elements;
+	jQuery('#'+new_div.id).find(".smw-remove a")[0].href="javascript:removePOInstance('"+st+"')";
+	num_elements++;
+	smw_category_autocomplete();
+}
+
 function removePOInstance(div_id) {
 	var olddiv = document.getElementById(div_id);
 	var parent = olddiv.parentNode;
@@ -572,6 +645,7 @@ function removePOInstance(div_id) {
 jQuery(function(){
 	jQuery('$hidden_property').appendTo(document.body);
 	jQuery('$hidden_category').appendTo(document.body);
+	jQuery('$hidden_main_column').appendTo(document.body);
 	jQuery('$property_dialog_box').appendTo(document.body);
 	jQuery('$category_dialog_box').appendTo(document.body);
 	jQuery('#cat-dialog').dialog({
