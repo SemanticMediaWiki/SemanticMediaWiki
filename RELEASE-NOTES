@@ -1,5 +1,11 @@
 For a documentation of all features, see http://semantic-mediawiki.org
 
+
+== SMW 1.6.1 ==
+
+* Fixed continue and limit escaping issues on Special:Ask. 
+* Internationalization improvements and layout tweaks to #smwdoc.
+
 == SMW 1.6 ==
 
 Released on July 30, 2011.
