@@ -37,7 +37,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$html_output = $this->makeResults( $p );
 		if ( $this->uiCore->getQueryString() != "" ) {
 			if ( $this->usesNavigationBar() ) {
-				$html_output .= Html::rawElement( 'div', array( 'class' => 'smw-qc-navbar' ),
+				$html_output .= Html::rawElement( 'div', array( 'class' => 'smwqcnavbar' ),
 									$this->getNavigationBar ( $this->uiCore->getLimit(), $this->uiCore->getOffset(), $this->uiCore->hasFurtherResults() )
 								); // ? can we preload offset and limit?
 			}
@@ -45,7 +45,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			$html_output .= Html::rawElement( 'div', array( 'class' => 'smw-qc-result' ), $this->uiCore->getHTMLResult() );
 
 			if ( $this->usesNavigationBar() ) {
-				$html_output .= Html::rawElement( 'div', array( 'class' => 'smw-qc-navbar' ),
+				$html_output .= Html::rawElement( 'div', array( 'class' => 'smwqcnavbar' ),
 									$this->getNavigationBar ( $this->uiCore->getLimit(), $this->uiCore->getOffset(), $this->uiCore->hasFurtherResults() )
 								); // ? can we preload offset and limit?
 			}
@@ -297,7 +297,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		foreach ( $additional_POs as $key => $value ) {
 			if ( is_array( $property_values ) and array_key_exists( $key, $property_values ) ) {
 				// make a element for additional properties
-				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smw-sort' ) );
+				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
 				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>';
 				$result .= wfMsg( 'smw_qui_property' );
 				$result .= Html::input( 'property[' . $i . ']', $property_values[$key], 'text', array( 'size' => '35', 'id' => "property$i" ) ) . "\n";
@@ -322,7 +322,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 				$i++;
 			}
 			if ( is_array( $category_values ) and array_key_exists( $key, $category_values ) ) {
-				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smw-sort' ) );
+				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
 				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 							'Category (optional)' . // todo: i18n
 							Xml::input( "category[$i]", '20', $category_values[$key], array( 'id' => "category$i" ) ) . " " .
@@ -337,7 +337,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
-		$hidden_property = Html::openElement( 'div', array( 'id' => 'property_starter', 'class' => 'smw-sort', 'style' => 'display:none' ) ) .
+		$hidden_property = Html::openElement( 'div', array( 'id' => 'property_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
 					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 					wfMsg( 'smw_qui_property' ) .
 					Xml::input( "property_num", '35' ) . " " .
@@ -350,7 +350,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 					Xml::closeElement( 'div' );
 		$hidden_property = json_encode( $hidden_property );
 
-		$hidden_category = Html::openElement( 'div', array( 'id' => 'category_starter', 'class' => 'smw-sort', 'style' => 'display:none' ) ) .
+		$hidden_category = Html::openElement( 'div', array( 'id' => 'category_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
 					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 					'Category (optional)' . // todo: i18n
 					Xml::input( "category_num", '20' ) . " " .
@@ -359,7 +359,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 					Xml::closeElement( 'div' );
 		$hidden_category = json_encode( $hidden_category );
 
-		$property_dialog_box = Xml::openElement( 'div', array( 'id' => 'prop-dialog', 'title' => 'Property Options', 'class' => 'smw-prop-dialog' ) ) . // todo i18n
+		$property_dialog_box = Xml::openElement( 'div', array( 'id' => 'prop-dialog', 'title' => 'Property Options', 'class' => 'smwpropdialog' ) ) . // todo i18n
 					Xml::inputLabel( 'Property:', '', 'd-property', 'd-property' ) . '<br/>' . // todo i18n
 					Xml::inputLabel( 'Label:', '', 'd-property-label', 'd-property-label' ) . '<br/>' . // todo i18n
 					'<label for="d-format">Format:</label> ' . Html::openElement( 'select', array( 'name' => 'd-format', 'id' => 'd-format' ) ) . // todo i18n
@@ -370,7 +370,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 					// Xml::inputLabel( 'Limit:', 'd-property-limit', 'd-property-limit' ) . '<br/>' . // todo i18n
 					'<input type="hidden" name="d-property-code" id="d-property-code">' .
 					Xml::closeElement( 'div' );
-		$category_dialog_box = Xml::openElement( 'div', array( 'id' => 'cat-dialog', 'title' => 'Category Options', 'class' => 'smw-cat-dialog' ) ) . // todo i18n
+		$category_dialog_box = Xml::openElement( 'div', array( 'id' => 'cat-dialog', 'title' => 'Category Options', 'class' => 'smwcatdialog' ) ) . // todo i18n
 					Xml::inputLabel( 'Category:', '', 'd-category', 'd-category' ) . '<br/>' . // todo i18n
 					Xml::inputLabel( 'Label:', '', 'd-category-label', 'd-category-label' ) . '<br/>' . // todo i18n
 					Xml::inputLabel( 'Yes:', '', 'd-category-yes', 'd-category-yes' ) . '<br/>' . // todo i18n

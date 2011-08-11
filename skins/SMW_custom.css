@@ -131,21 +131,34 @@ span.smwwarning {
 }
 
 /* ui buttons for QueryUI */
-.smw-sort input, .smw-sort a, .smw-sort select, .smw-sort checkbox{
+.smwsort input, .smwsort a, .smwsort select, .smwsort checkbox{
 	margin-left: 5px;
 	margin-bottom: 5px;
 }
+
 span.smw-remove a img{
 	text-decoration: none;
 	margin-right: 5px;
 	vertical-align: -3px;
 }
 
-.smw-prop-dialog input, .smw-prop-dialog select{
+.smwpropdialog input, .smwpropdialog select{
 	margin-top: 10px;
 	margin-right: 5px;
+	margin-left: 5px;
 }
 
+.smwcatdialog input, .smwcatdialog select{
+	margin-top: 10px;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+/* Query Creator */
+div.smwqcnavbar{
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
 
 /* search, browse, RDF icons */
 
