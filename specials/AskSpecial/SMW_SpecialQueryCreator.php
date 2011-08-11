@@ -156,6 +156,8 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 				}
 
 			}
+		} else {
+			$po['mainlabel'] = '';  // enables mainlabel parameter
 		}
 		if ( is_array( $category_values ) ) {
 			foreach ( $category_values as $key => $value ) {
