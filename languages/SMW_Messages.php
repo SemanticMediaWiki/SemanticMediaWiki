@@ -257,7 +257,7 @@ Names(<strong>[[Germany]]</strong>) and Namespaces (<strong>[[{{ns:help}}:+]]</s
 	'smw_qui_rescol'		=> 'Column label',
 	'smw_qui_options'		=> 'options',
 	'smw_qui_addcategory'	=> 'Add additional category',
-	'smw_qui_addrescol'		=> 'Add result column',
+	'smw_qui_addrescol'		=> 'Add main result column',
 	'smw_qui_ok'			=> 'Ok',
 	'smw_qui_cancel'		=> 'Cancel',
 	'smw_qui_category'		=> 'Category (optional)',
