@@ -77,6 +77,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 */
 	protected function makeResults() {
 		global $wgOut, $smwgScriptPath;
+		$this->enableJQuery();
 		$result = "";
 		$spec_title = $this->getTitle();
 		$format_box = $this->getFormatSelectBoxSep( 'broadtable' );
@@ -89,24 +90,36 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 					'<tr><th>' . wfMsg( 'smw_ask_queryhead' ) . "</th>\n<th>" . wfMsg( 'smw_ask_format_as' ) . "</th></tr>" .
 					'<tr>' .
 						'<td style="width: 70%; padding-right: 7px;">' . $this->getQueryFormBox() . "</td>\n" .
-						'<td style="padding-right: 7px; text-align:center;">' . $format_box[0] . '</td>' .
-					'</tr>' .
-					"</table>\n";
-		// sorting and prinouts
-		$result .= '<div class="smw-qc-sortbox" style="padding-left:10px;">' . $this->getPoSortFormBox() . '</div>';
-		// show|hide additional options and querying help
-		$result .= '<br><span id="show_additional_options" style="display:inline;"><a href="#addtional" rel="nofollow" onclick="' .
-			 "document.getElementById('additional_options').style.display='block';" .
+						'<td style="padding-right: 7px; text-align:center;">' . $format_box[0];
+
+		//START: show|hide additional options
+		$result .= '<span id="show_additional_options" style="display:inline;"><a href="#addtional" rel="nofollow" onclick="' .
+			 "jQuery('#additional_options').show('blind');" .
 			 "document.getElementById('show_additional_options').style.display='none';" .
 			 "document.getElementById('hide_additional_options').style.display='inline';" . '">' .
 			 wfMsg( 'smw_qc_show_addnal_opts' ) . '</a></span>';
 		$result .= '<span id="hide_additional_options" style="display:none"><a href="#" rel="nofollow" onclick="' .
-			 "document.getElementById('additional_options').style.display='none';" .
+			 "jQuery('#additional_options').hide('blind');;" .
 			 "document.getElementById('hide_additional_options').style.display='none';" .
 			 "document.getElementById('show_additional_options').style.display='inline';" . '">' .
 			 wfMsg( 'smw_qc_hide_addnal_opts' ) . '</a></span>';
-		$result .= ' | <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>';
-				if ( $this->uiCore->getQueryString() != '' ) { // hide #ask if there isnt any query defined
+		//END: show|hide additional options
+		
+		$result .=	'</td>' .
+					'</tr>' .
+					"</table>\n";
+		// sorting and prinouts
+		$result .= '<div class="smw-qc-sortbox" style="padding-left:10px;">' . $this->getPoSortFormBox() . '</div>';
+		// additional options
+		$result .= '<div id="additional_options" style="display:none">';
+
+		$result .= $format_box[1]; // display the format options
+
+		$result .= '</div>'; // end of hidden additional options
+		$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/><br/>';
+
+		$result .= '<a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>';
+		if ( $this->uiCore->getQueryString() != '' ) { // hide #ask if there isnt any query defined
 			$result .= ' | <a name="show-embed-code" id="show-embed-code" href="#show-embed-code">' . wfMsg( 'smw_ask_show_embed' ) . '</a>';
 			$result .= '<div id="embed-code-dialog">' .
 						$this->getAskEmbedBox() .
@@ -128,13 +141,6 @@ jQuery(document).ready(function(){
 EOT;
 			$wgOut->addScript( $javascript_text );
 		}
-		// additional options
-		$result .= '<div id="additional_options" style="display:none">';
-
-		$result .= $format_box[1]; // display the format options
-
-		$result .= '</div>'; // end of hidden additional options
-		$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/>';
 		$result .= '<input type="hidden" name="eq" value="no"/>' .
 			"\n</form><br/>";
 
@@ -371,7 +377,7 @@ EOT;
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
 				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 							wfMsg( 'smw_qui_category' ) .
-							Xml::input( "category[$i]", '20', $category_values[$key], array( 'id' => "category$i" ) ) . " " .
+							Xml::input( "category[$i]", '25', $category_values[$key], array( 'id' => "category$i" ) ) . " " .
 							wfMsg( 'smw_qui_label' ) .
 							Xml::input( "cat_label[$i]", '20', array_key_exists( $key, $category_label_values ) ? $category_label_values[$key]:false, array( 'id' => "cat_label$i" ) ) . " " .
 							' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makeCatDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ' .
@@ -410,7 +416,7 @@ EOT;
 		$hidden_category = Html::openElement( 'div', array( 'id' => 'category_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
 					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 					wfMsg( 'smw_qui_category' ) .
-					Xml::input( "category_num", '20' ) . " " .
+					Xml::input( "category_num", '25' ) . " " .
 					wfMsg( 'smw_qui_label' ) .
 					Xml::input( "cat_label_num", '20' ) . " " .
 					Xml::closeElement( 'div' );
