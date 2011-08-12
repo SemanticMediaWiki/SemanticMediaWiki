@@ -72,10 +72,11 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 * Creates the input form
 	 *
 	 * @global OutputPage $wgOut
+	 * @global string $smwgScriptPath
 	 * @return string
 	 */
 	protected function makeResults() {
-		global $wgOut;
+		global $wgOut, $smwgScriptPath;
 		$result = "";
 		$spec_title = $this->getTitle();
 		$format_box = $this->getFormatSelectBoxSep( 'broadtable' );
@@ -105,17 +106,36 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			 "document.getElementById('show_additional_options').style.display='inline';" . '">' .
 			 wfMsg( 'smw_qc_hide_addnal_opts' ) . '</a></span>';
 		$result .= ' | <a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>';
+				if ( $this->uiCore->getQueryString() != '' ) { // hide #ask if there isnt any query defined
+			$result .= ' | <a name="show-embed-code" id="show-embed-code" href="#show-embed-code">' . wfMsg( 'smw_ask_show_embed' ) . '</a>';
+			$result .= '<div id="embed-code-dialog">' .
+						$this->getAskEmbedBox() .
+						'</div>';
+					$this->enableJQueryUI();
+		$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
+		$wgOut->addStyle( "$smwgScriptPath/skins/SMW_custom.css" );
+				$javascript_text = <<<EOT
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery('#embed-code-dialog').dialog({
+		autoOpen:false
+	});
+	jQuery('#show-embed-code').bind('click', function(){
+		jQuery('#embed-code-dialog').dialog("open");
+	});
+});
+</script>
+EOT;
+			$wgOut->addScript( $javascript_text );
+		}
 		// additional options
 		$result .= '<div id="additional_options" style="display:none">';
 
 		$result .= $format_box[1]; // display the format options
 
-		if ( $this->uiCore->getQueryString() != '' ) // hide #ask if there isnt any query defined
-			$result .= $this->getAskEmbedBox();
-
 		$result .= '</div>'; // end of hidden additional options
-		$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/>' .
-			'<input type="hidden" name="eq" value="no"/>' .
+		$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/>';
+		$result .= '<input type="hidden" name="eq" value="no"/>' .
 			"\n</form><br/>";
 
 	return $result;
