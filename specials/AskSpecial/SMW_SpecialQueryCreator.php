@@ -66,7 +66,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 * Overridden from parent to ignore GUI parameters 'format' 'limit' and 'offset'
 	 */
 	protected function showFormatOptions( $format, array $paramValues, array $ignoredAttribs = array() ) {
-		return parent::showFormatOptions( $format, $paramValues, array( 'format', 'limit', 'offset', 'mainlabel' ) );
+		return parent::showFormatOptions( $format, $paramValues, array( 'format', 'limit', 'offset' ) );
 	}
 	/**
 	 * Creates the input form
@@ -131,7 +131,12 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	jQuery('#embed-code-dialog').dialog({
-		autoOpen:false
+		autoOpen:false,
+		buttons:{
+			Ok: function(){
+				jQuery(this).dialog("close");
+			}
+		}
 	});
 	jQuery('#show-embed-code').bind('click', function(){
 		jQuery('#embed-code-dialog').dialog("open");
