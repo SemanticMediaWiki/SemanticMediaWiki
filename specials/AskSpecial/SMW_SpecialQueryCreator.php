@@ -147,7 +147,6 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$po = array();
 		$category_namespace = $wgContLang->getNsText( NS_CATEGORY );
 		if ( is_array( $main_column_labels ) ) {
-			$po['mainlabel'] = '-';  // disables mainlabel parameter so that the UI can control it from here
 			foreach ( $main_column_labels as $key => $label ) {
 				if ( $label == '' ) {
 					$po[$key] = "?";
@@ -156,8 +155,6 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 				}
 
 			}
-		} else {
-			$po['mainlabel'] = '';  // enables mainlabel parameter
 		}
 		if ( is_array( $category_values ) ) {
 			foreach ( $category_values as $key => $value ) {
@@ -300,7 +297,10 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$i = 0;
 		$additional_POs = array();
 		if ( is_array( $property_values ) ) {
-			$additional_POs = array_merge( $additional_POs, $property_values );
+			$keys = array_keys( $property_values );
+			foreach ( $keys as $value ) {
+				$additional_POs[$value] = $property_values[$value]; // array_merge won't work because numeric keys need to be preserved
+			}
 		}
 		if ( is_array( $category_values ) ) {// same as testing $category_label_values
 			$keys = array_keys( $category_values );
@@ -339,7 +339,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 
 				$if4 = ( is_array( $display_values ) and array_key_exists( $key, $display_values ) );
 				$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
-				$result .= ' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makePropDialog(\'' . $i . '\')"> options </a> '; // TODO: i18n
+				$result .= ' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makePropDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ';
 
 				$result .= Xml::closeElement( 'div' );
 				$i++;
@@ -350,11 +350,11 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 				 */
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
 				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-							'Category (optional)' . // todo: i18n
+							wfMsg( 'smw_qui_category' ) .
 							Xml::input( "category[$i]", '20', $category_values[$key], array( 'id' => "category$i" ) ) . " " .
-							'Label' . // todo: i18n
+							wfMsg( 'smw_qui_label' ) .
 							Xml::input( "cat_label[$i]", '20', array_key_exists( $key, $category_label_values ) ? $category_label_values[$key]:false, array( 'id' => "cat_label$i" ) ) . " " .
-							' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makeCatDialog(\'' . $i . '\')"> options </a> ' . // TODO: i18n
+							' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makeCatDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ' .
 							Xml::closeElement( 'div' );
 				$i++;
 			}
@@ -389,9 +389,9 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 
 		$hidden_category = Html::openElement( 'div', array( 'id' => 'category_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
 					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					'Category (optional)' . // todo: i18n
+					wfMsg( 'smw_qui_category' ) .
 					Xml::input( "category_num", '20' ) . " " .
-					'Label' . // todo: i18n
+					wfMsg( 'smw_qui_label' ) .
 					Xml::input( "cat_label_num", '20' ) . " " .
 					Xml::closeElement( 'div' );
 		$hidden_category = json_encode( $hidden_category );
@@ -403,7 +403,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 					Xml::closeElement( 'div' );
 		$hidden_main_column = json_encode( $hidden_main_column );
 
-		$property_dialog_box = Xml::openElement( 'div', array( 'id' => 'prop-dialog', 'title' => 'Property Options', 'class' => 'smwpropdialog' ) ) . // todo i18n
+		$property_dialog_box = Xml::openElement( 'div', array( 'id' => 'prop-dialog', 'title' => wfMsg( 'smw_prp_options' ), 'class' => 'smwpropdialog' ) ) .
 					Xml::inputLabel( 'Property:', '', 'd-property', 'd-property' ) . '<br/>' . // todo i18n
 					Xml::inputLabel( 'Label:', '', 'd-property-label', 'd-property-label' ) . '<br/>' . // todo i18n
 					'<label for="d-format">Format:</label> ' . Html::openElement( 'select', array( 'name' => 'd-format', 'id' => 'd-format' ) ) . // todo i18n
@@ -415,23 +415,27 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 					'<input type="hidden" name="d-property-code" id="d-property-code">' .
 					Xml::closeElement( 'div' );
 		$category_dialog_box = Xml::openElement( 'div', array( 'id' => 'cat-dialog', 'title' => 'Category Options', 'class' => 'smwcatdialog' ) ) . // todo i18n
-					Xml::inputLabel( 'Category:', '', 'd-category', 'd-category' ) . '<br/>' . // todo i18n
 					Xml::inputLabel( 'Label:', '', 'd-category-label', 'd-category-label' ) . '<br/>' . // todo i18n
-					Xml::inputLabel( 'Yes:', '', 'd-category-yes', 'd-category-yes' ) . '<br/>' . // todo i18n
-					Xml::inputLabel( 'No:', '', 'd-category-no', 'd-category-no' ) . '<br/>' . // todo i18n
-					'Code :<input type="text" name="d-category-code" id="d-category-code">' . // todo hide
+					Xml::inputLabel( 'Category:', '', 'd-category', 'd-category' ) . '<br/><br/>' . // todo i18n
+					Xml::inputLabel( 'Show text when category is present:', '', 'd-category-yes', 'd-category-yes' ) . '<br/><br/>' . // todo i18n
+					Xml::inputLabel( 'Show text when category is absent:', '', 'd-category-no', 'd-category-no' ) . '<br/><br/>' . // todo i18n
+					'<input type="hidden" name="d-category-code" id="d-category-code">' .
 					Xml::closeElement( 'div' );
 
 		$result .= '<div id="sorting_main"></div>' . "\n";
 		$result .= '[<a href="javascript:smw_addPropertyInstance(\'property_starter\', \'sorting_main\')">' . wfMsg( 'smw_qui_addnprop' ) . '</a>]' .
-					'[<a href="javascript:smw_addCategoryInstance(\'category_starter\', \'sorting_main\')">' . 'Add additional category' . '</a>]' . // todo i18n
-					'[<a href="javascript:smw_addMainColInstance(\'maincol_starter\', \'sorting_main\')">' . 'Add main column' . '</a>]' . // todo i18n
+					'[<a href="javascript:smw_addCategoryInstance(\'category_starter\', \'sorting_main\')">' . wfMsg( 'smw_qui_addcategory' ) . '</a>]' .
+					'[<a href="javascript:smw_addMainColInstance(\'maincol_starter\', \'sorting_main\')">' . wfMsg( 'smw_qui_addrescol' ) . '</a>]' .
 					"\n";
 
 		// Javascript code for handling adding and removing the "sort" inputs
 		if ( $enableAutocomplete == SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
 			$this->addAutocompletionJavascriptAndCSS();
 		}
+		// localisation messages for javascript
+		$optionsMsg = wfMsg( 'smw_qui_options' );
+		$okMsg = wfMsg( 'smw_qui_ok' );
+		$cancelMsg = wfMsg( 'smw_qui_cancel' );
 		$javascript_text = <<<EOT
 <script type="text/javascript">
 var num_elements = {$num_sort_values};
@@ -498,16 +502,41 @@ function smw_prop_code_update(){
 }
 
 function smw_cat_code_update(){
+		cat = jQuery('#d-category').attr('value');
+		label =code= jQuery('#d-category-label').attr('value');
+		yes = jQuery('#d-category-yes').attr('value');
+		no = jQuery('#d-category-no').attr('value');
+		if (cat.trim()!='' && yes.trim()!=''){
+			code=cat+'#'+yes;
+			if(no.trim()!=''){
+				code=code+','+no;
+			}
+		}
+		jQuery('#d-category-code').attr('value', code);
 
 }
 
 function smw_makeCatDialog(cat_id){
 	jQuery('#prop-cat input').attr('value','');
 	cat=jQuery('#category'+cat_id)[0].value;
-	jQuery('#d-category').attr('value',cat);
 	label=jQuery('#cat_label'+cat_id)[0].value;
+	cats=cat.split('#');
+	cat= cats[0];
+	if(cats[1]){
+		yes_no = cats[1].split(',');
+		if(yes_no[1]){
+			no=yes_no[1];
+		} else {
+			no = '';
+		}
+		yes=yes_no[0];
+		jQuery('#d-category-yes').attr('value',yes);
+		jQuery('#d-category-no').attr('value',no);
+	}
 	jQuery('#d-category-label').attr('value',label);
-	//jQuery('#cat-dialog').dialog('open');
+	jQuery('#d-category').attr('value',cat);
+	jQuery('#cat-dialog').dialog.id=cat_id;
+	jQuery('#cat-dialog').dialog('open');
 }
 
 function smw_makePropDialog(prop_id){
@@ -558,7 +587,7 @@ function smw_addPropertyInstance(starter_div_id, main_div_id) {
 
 	//Create 'more' link
 	var more_button =document.createElement('span');
-	more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makePropDialog(\'' + num_elements + '\')">options</a> '; //TODO: i18n
+	more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makePropDialog(\'' + num_elements + '\')">{$optionsMsg}</a> ';
 	more_button.id = 'more'+num_elements;
 	new_div.appendChild(more_button);
 
@@ -594,7 +623,7 @@ function smw_addCategoryInstance(starter_div_id, main_div_id) {
 
 	//Create 'more' link
 	var more_button =document.createElement('span');
-	more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makeCatDialog(\'' + num_elements + '\')">options</a> '; //TODO: i18n
+	more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makeCatDialog(\'' + num_elements + '\')">{$optionsMsg}</a> ';
 	more_button.id = 'more'+num_elements;
 	new_div.appendChild(more_button);
 
@@ -657,18 +686,20 @@ jQuery(function(){
 		minHeight: 200,
 		minWidth: 400,
 		buttons: {
-			"Ok": function(){ //todo i18
+			"{$okMsg}": function(){
 				smw_cat_code_update();
-				// todo: move modal window data to main window form controls;
+				label = jQuery('#d-category-label').attr('value');
+				code = jQuery('#d-category-code').attr('value');
+				jQuery('#category'+jQuery(this).dialog.id).attr('value',code);
+				jQuery('#cat_label'+jQuery(this).dialog.id).attr('value',label);
 				jQuery(this).dialog("close");
 			},
-			"Cancel": function(){ //todo:i18n
+			"{$cancelMsg}": function(){
 				jQuery('#cat-dialog input').attr('value','');
 				jQuery(this).dialog("close");
 			}
 		}
 	});
-	//todo: run smw_cat_code_update() when input values in category modal windows changes
 
 	jQuery('#prop-dialog').dialog({
 		autoOpen: false,
@@ -677,19 +708,18 @@ jQuery(function(){
 		minHeight: 200,
 		minWidth: 400,
 		buttons: {
-			"Ok": function(){  //todo: i18n
+			"{$okMsg}": function(){
 				smw_prop_code_update();
-				jQuery('#property'+jQuery('#prop-dialog').dialog.id)[0].value=jQuery('#d-property-code')[0].value;
+				jQuery('#property'+jQuery(this).dialog.id)[0].value=jQuery('#d-property-code')[0].value;
 				jQuery(this).dialog("close");
 			},
-			"Cancel": function(){ //todo: i18n
+			"{$cancelMsg}": function(){
 				jQuery('#prop-dialog input').attr('value','');
 				jQuery(this).dialog("close");
 			}
 		}
 	});
 	jQuery('#sort-more').click(function(){jQuery('#prop-dialog').dialog("open");});
-	jQuery('#prop-dialog input').bind('keyup click', smw_prop_code_update );
 
 	jQuery('#d-format').bind('change', function(event){
 		jQuery('#d-property-format-custom').attr('value', jQuery('#d-format').attr('value'));
@@ -706,24 +736,5 @@ EOT;
 		$wgOut->addScript( $javascript_text );
 		return $result;
 	}
-
-
-	/**
-	 * Compatibility method to get the skin; MW 1.18 introduces a getSkin method
-	 * in SpecialPage.
-	 *
-	 * @since 1.6
-	 *
-	 * @return Skin
-	 */
-	public function getSkin() {
-		if ( method_exists( 'SpecialPage', 'getSkin' ) ) {
-			return parent::getSkin();
-		} else {
-			global $wgUser;
-			return $wgUser->getSkin();
-		}
-	}
-
 }
 
