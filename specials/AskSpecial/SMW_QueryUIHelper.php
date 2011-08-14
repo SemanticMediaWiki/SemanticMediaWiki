@@ -394,6 +394,9 @@ EOT;
 		$params = array();
 		$orderValues = $wgRequest->getArray( 'order' );
 		$propertyValues = $wgRequest->getArray( 'property' );
+		$propertyLabelValues = $wgRequest->getArray( 'prop_label' );
+		$propertyLimitValues = $wgRequest->getArray( 'prop_limit' );
+		$propertyFormatValues = $wgRequest->getArray( 'prop_format' );
 		$categoryValues = $wgRequest->getArray( 'category' );
 		$categoryLabelValues = $wgRequest->getArray( 'cat_label' );
 		$categoryYesValues = $wgRequest->getArray( 'cat_yes' );
@@ -419,19 +422,15 @@ EOT;
 					$po[$key] = "?$categoryNamespace" ;
 				} else {
 					$po[$key] = "?$categoryNamespace:$value";
-					if (is_array($categoryYesValues) &&
-							is_array($categoryNoValues) &&
-							array_key_exists($key, $categoryYesValues) &&
-							array_key_exists($key, $categoryNoValues)){
+					if ( is_array( $categoryYesValues ) &&
+							is_array( $categoryNoValues ) &&
+							array_key_exists( $key, $categoryYesValues ) &&
+							array_key_exists( $key, $categoryNoValues ) ) {
 
-						if($categoryYesValues[$key]!==''){
-							$po[$key] .="#$categoryYesValues[$key]";
-							if($categoryNoValues[$key]!==''){
-								$po[$key] .=",$categoryNoValues[$key]";
-							}
+						if ( $categoryYesValues[$key] !== '' && $categoryNoValues[$key] !== '' ) {
+							$po[$key] .= "#$categoryYesValues[$key],$categoryNoValues[$key]";
 						}
 					}
-
 				}
 			}
 		}
@@ -451,11 +450,7 @@ EOT;
 					unset( $propertyValues[$key] );
 				}
 				if ( is_array( $orderValues ) && array_key_exists( $key, $orderValues ) && $orderValues[$key] != 'NONE' ) {
-					$prop = substr( $propertyValues[$key], 1 ); // removing the leading '?'
-					if ( !strpos( $prop, '#' ) === false ) $prop = strstr( $prop, '#', true ); // removing format options
-					if ( !strpos( $prop, '=' ) === false ) $prop = strstr( $prop, '=', true ); // removing format options
-
-					$params['sort'] .= ( $params['sort'] != '' ? ',':'' ) . $prop;
+					$params['sort'] .= ( $params['sort'] != '' ? ',':'' ) . $propertyValues[$key];
 					$params['order'] .= ( $params['order'] != '' ? ',':'' ) . $orderValues[$key];
 				}
 			}
@@ -469,9 +464,25 @@ EOT;
 			if ( is_array( $displayValues ) ) {
 				foreach ( $displayValues as $key => $value ) {
 					if ( $value == '1' && array_key_exists( $key, $propertyValues ) ) {
-					$propertyValues[$key] = trim( $propertyValues[$key] );
-					$propertyValues[$key] = ( $propertyValues[$key][0] == '?' ) ? $propertyValues[$key]:'?' . $propertyValues[$key];
-						$po[$key] = $propertyValues[$key];
+					$propertyValues[$key] = '?' . trim( $propertyValues[$key] ); // adding leading ?
+						if ( is_array( $propertyFormatValues ) && // adding PO format
+								array_key_exists( $key, $propertyFormatValues ) &&
+								$propertyFormatValues[$key] != '' ) {
+							$propertyValues[$key] .= '#' . $propertyFormatValues[$key];
+						}
+						if ( is_array( $propertyLabelValues ) &&
+								array_key_exists( $key, $propertyLabelValues ) &&
+								$propertyLabelValues[$key] != '' ) { // adding label
+							$propertyValues[$key] .= ' = ' . $propertyLabelValues[$key];
+						}
+						if ( is_array( $propertyLimitValues ) && // adding limit
+								array_key_exists( $key, $propertyLimitValues ) &&
+								$propertyLimitValues[$key] != '' ) {
+							$po[] = $propertyValues[$key];
+							$po[] = '+limit=' . $propertyLimitValues[$key];
+						} else {
+							$po[] = $propertyValues[$key];
+						}
 					}
 				}
 			}
@@ -502,6 +513,9 @@ EOT;
 		// START: create form elements already submitted earlier via form
 		// attempting to load parameters from $wgRequest
 		$propertyValues = $wgRequest->getArray( 'property' );
+		$propertyLabelValues = $wgRequest->getArray( 'prop_label' );
+		$propertyFormatValues = $wgRequest->getArray( 'prop_format' );
+		$propertyLimitValues = $wgRequest->getArray( 'prop_limit' );
 		$orderValues = $wgRequest->getArray( 'order' );
 		$displayValues = $wgRequest->getArray( 'display' );
 		$categoryValues = $wgRequest->getArray( 'category' );
@@ -528,40 +542,97 @@ EOT;
 			 * Printouts and sorting were set via another widget/form/source, so
 			 * create elements by fetching data from $uiCore. The exact ordering
 			 * of Ui elements might not be preserved, if the above block were to
-			 * be removed. This  is a bit of a hack, converting all strings to
-			 * lowercase to simplify searching procedure and using in_array.
+			 * be removed.
 			 */
-
-			$po = explode( '?', $this->getPOStrings() );
-			reset( $po );
-			foreach ( $po as $key => $value ) {
-			 $po[$key] = strtolower( trim( $value ) );
-			  if ( $po[$key] == '' ) {
-				  unset ( $po[$key] );
-			  }
-			}
+			$propertyValues = array();
+			$propertyLabelValues = array();
+			$propertyFormatValues = array();
+			$propertyLimitValues = array();
+			$orderValues = array();
+			$displayValues = array();
+			$categoryValues = array();
+			$categoryLabelValues = array();
+			$categoryYesValues = array();
+			$categoryNoValues = array();
+			$mainColumnLabels = array();
 
 			$params = $this->uiCore->getParameters();
 			if ( array_key_exists( 'sort', $params ) && array_key_exists( 'order', $params ) ) {
-				$propertyValues = explode( ',', strtolower( $params['sort'] ) );
-				$orderValues = explode( ',', $params['order'] );
-				reset( $propertyValues );
-				reset( $orderValues );
-			} else {
-				$orderValues = array(); // do not even show one sort input here
-				$propertyValues = array();
-			}
-			foreach ( $po as $poValue ) {
-				 if ( !in_array( $poValue, $propertyValues ) ) {
-					 $propertyValues[] = $poValue;
-				 }
-			}
-			$displayValues = array();
-			reset( $propertyValues );
-			foreach ( $propertyValues as $propertyKey => $propertyValue ) {
-				if ( in_array( $propertyValue, $po ) ) {
-					$displayValues[$propertyKey] = "yes";
+				$sortVal = explode( ',', trim( strtolower( $params['sort'] ) ) );
+				$orderVal = explode( ',', $params['order'] );
+				reset( $sortVal );
+				reset( $orderVal );
+				// give up if sort and order dont have equal number of elements
+				if ( count( $sortVal ) !== count( $orderVal ) ) {
+					$orderVal = array();
+					$sortVal = array();
 				}
+			} else {
+				$orderVal = array();
+				$sortVal = array();
+			}
+			$printOuts = ( $this->uiCore->getPrintOuts() );
+			$counter = 0;
+			foreach ( $printOuts as $poKey => $poValue ) {
+				if ( $poValue->getMode() == SMWPrintRequest::PRINT_CATS ) {
+					$categoryValues[$counter] = '';
+					$categoryLabelValues[$counter] = $poValue->getLabel();
+					$categoryYesValues[$counter] = '';
+					$categoryNoValues[$counter] = '';
+					$counter++;
+				} elseif ( $poValue->getMode() == SMWPrintRequest::PRINT_PROP ) {
+					$tempProperty = trim( strtolower( $poValue->getData()->getText() ) );
+					$searchKey = array_search( $tempProperty, $sortVal );
+					if ( !( $searchKey === false ) ) {
+						while ( $searchKey != 0 ) {
+							$propertyValues[$counter] = array_shift( $sortVal );
+							$orderValues[$counter] = array_shift( $orderVal );
+							$propertyLabelValues[$counter] = '';
+							$propertyFormatValues[$counter] = '';
+							$propertyLimitValues[$counter] = '';
+							$counter++;
+							$searchKey--;
+						}
+						$propertyValues[$counter] = $poValue->getData()->getText();
+						$propertyLabelValues[$counter] = ( $poValue->getLabel() == $propertyValues[$counter] ) ? '':$poValue->getLabel();
+						$propertyFormatValues[$counter] = $poValue->getOutputFormat();
+						$propertyLimitValues[$counter] = $poValue->getParameter( 'limit' ) ? $poValue->getParameter( 'limit' ):'';
+						$orderValues[$counter] = $orderVal[0];
+						$displayValues[$counter] = '1';
+						$counter++;
+						array_shift( $orderVal );
+						array_shift( $sortVal );
+					} else {
+						$propertyValues[$counter] = $poValue->getData()->getText();
+						$propertyLabelValues[$counter] = ( $poValue->getLabel() == $propertyValues[$counter] ) ? '':$poValue->getLabel();
+						$propertyFormatValues[$counter] = $poValue->getOutputFormat();
+						$propertyLimitValues[$counter] = $poValue->getParameter( 'limit' ) ? $poValue->getParameter( 'limit' ):'';
+						$displayValues[$counter] = '1';
+						$counter++;
+					}
+				} elseif ( $poValue->getMode() == SMWPrintRequest::PRINT_THIS ) {
+					$mainColumnLabels[$counter] = $poValue->getLabel();
+					$counter++;
+				} elseif ( $poValue->getMode() == SMWPrintRequest::PRINT_CCAT ) {
+					$outputFormat = explode( ',', $poValue->getOutputFormat() );
+					if ( !array_key_exists( 1, $outputFormat ) ) {
+						$outputFormat[1] = '';
+					}
+					$categoryValues[$counter] = $poValue->getData()->getText();
+					$categoryLabelValues[$counter] = $poValue->getLabel();
+					$categoryYesValues[$counter] = $outputFormat[0];
+					$categoryNoValues[$counter] = $outputFormat[1];
+					$counter++;
+				}
+
+			}
+			while ( !empty( $sortVal ) ) {
+				$propertyValues[$counter] = array_shift( $sortVal );
+				$orderValues[$counter] = array_shift( $orderVal );
+				$propertyLabelValues[$counter] = '';
+				$propertyFormatValues[$counter] = '';
+				$propertyLimitValues[$counter] = '';
+				$counter++;
 			}
 		}
 		$i = 0;
@@ -609,15 +680,31 @@ EOT;
 
 				$if4 = ( is_array( $displayValues ) && array_key_exists( $key, $displayValues ) );
 				$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
+
+				if ( is_array( $propertyLabelValues ) && array_key_exists( $key, $propertyLabelValues ) ) {
+					$result .= Xml::hidden( "prop_label[$i]", $propertyLabelValues[$key], array( 'id' => "prop_label$i" ) );
+				} else {
+					$result .= Xml::hidden( "prop_label[$i]", '', array( 'id' => "prop_label$i" ) );
+				}
+				if ( is_array( $propertyFormatValues ) && array_key_exists( $key, $propertyFormatValues ) ) {
+					$result .= Xml::hidden( "prop_format[$i]", $propertyFormatValues[$key], array( 'id' => "prop_format$i" ) );
+				} else {
+					$result .= Xml::hidden( "prop_format[$i]", '', array( 'id' => "prop_format$i" ) );
+				}
+				if ( is_array( $propertyLimitValues ) && array_key_exists( $key, $propertyLimitValues ) ) {
+					$result .= Xml::hidden( "prop_limit[$i]", $propertyLimitValues[$key], array( 'id' => "prop_limit$i" ) );
+				} else {
+					$result .= Xml::hidden( "prop_limit[$i]", '', array( 'id' => "prop_limit$i" ) );
+				}
 				$result .= ' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makePropDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ';
 
 				$result .= Xml::closeElement( 'div' );
 				$i++;
 			}
 			if ( is_array( $categoryValues ) && array_key_exists( $key, $categoryValues ) &&
-					is_array($categoryLabelValues) && array_key_exists( $key, $categoryLabelValues ) &&
-					is_array($categoryYesValues) && array_key_exists( $key, $categoryYesValues ) &&
-					is_array($categoryNoValues) && array_key_exists( $key, $categoryNoValues )) {
+					is_array( $categoryLabelValues ) && array_key_exists( $key, $categoryLabelValues ) &&
+					is_array( $categoryYesValues ) && array_key_exists( $key, $categoryYesValues ) &&
+					is_array( $categoryNoValues ) && array_key_exists( $key, $categoryNoValues ) ) {
 				/*
 				 * Make an element for additional categories
 				 */
@@ -625,9 +712,9 @@ EOT;
 				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 							wfMsg( 'smw_qui_category' ) .
 							Xml::input( "category[$i]", '25', $categoryValues[$key], array( 'id' => "category$i" ) ) . " " .
-							Html::hidden("cat_label[$i]", $categoryLabelValues[$key], array('id'=>"cat_label$i")).
-							Html::hidden("cat_yes[$i]", $categoryYesValues[$key], array('id'=>"cat_yes$i")).
-							Html::hidden("cat_no[$i]", $categoryNoValues[$key], array('id'=>"cat_no$i")).
+							Html::hidden( "cat_label[$i]", $categoryLabelValues[$key], array( 'id' => "cat_label$i" ) ) .
+							Html::hidden( "cat_yes[$i]", $categoryYesValues[$key], array( 'id' => "cat_yes$i" ) ) .
+							Html::hidden( "cat_no[$i]", $categoryNoValues[$key], array( 'id' => "cat_no$i" ) ) .
 							' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makeCatDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ' .
 							Xml::closeElement( 'div' );
 				$i++;
@@ -651,12 +738,15 @@ EOT;
 		$hiddenProperty = Html::openElement( 'div', array( 'id' => 'property_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
 					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 					wfMsg( 'smw_qui_property' ) .
-					Xml::input( "property_num", '35' ) . " " .
+					Xml::input( 'property_num', '35' ) . " " .
 					Html::openElement( 'select', array( 'name' => 'order_num' ) ) .
 						Xml::option( wfMsg( 'smw_qui_nosort' ), 'NONE' ) .
 						Xml::option( wfMsg( 'smw_qui_ascorder' ), 'ASC' ) .
 						Xml::option( wfMsg( 'smw_qui_descorder' ), 'DESC' ) .
 					Xml::closeElement( 'select' ) .
+					Xml::hidden( 'prop_label_num', '' ) .
+					Xml::hidden( 'prop_format_num', '' ) .
+					Xml::hidden( 'prop_limit_num', '' ) .
 					Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display_num", '', true ) .
 					Xml::closeElement( 'div' );
 		$hiddenProperty = json_encode( $hiddenProperty );
@@ -665,9 +755,9 @@ EOT;
 					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 					wfMsg( 'smw_qui_category' ) .
 					Xml::input( "category_num", '25' ) . " " .
-					'<input type="hidden" name="cat_label_num" />'.
-					'<input type="hidden" name="cat_yes_num" />'.
-					'<input type="hidden" name="cat_no_num" />'.
+					'<input type="hidden" name="cat_label_num" />' .
+					'<input type="hidden" name="cat_yes_num" />' .
+					'<input type="hidden" name="cat_no_num" />' .
 					Xml::closeElement( 'div' );
 		$hiddenCategory = json_encode( $hiddenCategory );
 
@@ -678,26 +768,32 @@ EOT;
 					Xml::closeElement( 'div' );
 		$hiddenMainColumn = json_encode( $hiddenMainColumn );
 
+		// create dialogbox for Property options
+		$propertyHtml = Xml::inputLabelSep( 'Property:', '', 'd-property', 'd-property' ); // todo i18n
+		$propertyLabelHtml = Xml::inputLabelSep( 'Label:', '', 'd-prop-label', 'd-prop-label' );// todo i18n
+		$propertyFormatHtml = Xml::inputLabelSep( 'Format:', '', 'd-prop-format', 'd-prop-format' );// todo i18n
+		$propertyLimitHtml = Xml::inputLabelSep( 'Limit:', 'd-prop-limit', 'd-prop-limit' ); // todo i18n
 		$propertyDialogBox = Xml::openElement( 'div', array( 'id' => 'prop-dialog', 'title' => wfMsg( 'smw_prp_options' ), 'class' => 'smwpropdialog' ) ) .
-					Xml::inputLabel( 'Property:', '', 'd-property', 'd-property' ) . '<br/>' . // todo i18n
-					Xml::inputLabel( 'Label:', '', 'd-property-label', 'd-property-label' ) . '<br/>' . // todo i18n
-					'<label for="format-custom">Format:</label> ' .
-					Xml::input( 'format-custom', false, false, array( 'id' => 'd-property-format-custom' ) ) . '<br/>' .
-					// Xml::inputLabel( 'Limit:', 'd-property-limit', 'd-property-limit' ) . '<br/>' . // todo i18n
-					'<input type="hidden" name="d-property-code" id="d-property-code">' .
+					'<table>' .
+						'<tr><td>' . $propertyHtml[0] . '</td><td>' . $propertyHtml[1] . '</td></tr>' .
+						'<tr><td>' . $propertyLabelHtml[0] . '</td><td>' . $propertyLabelHtml[1] . '</td></tr>' .
+						'<tr><td>' . $propertyLimitHtml[0] . '</td><td>' . $propertyLimitHtml[1] . '</td></tr>' .
+						'<tr><td>' . $propertyFormatHtml[0] . '</td><td>' . $propertyFormatHtml[1] . '</td></tr>' .
+					'</table>' .
 					Xml::closeElement( 'div' );
-		//create dialogbox for Category options
-		$categoryHtml=Xml::inputLabelSep( wfMsg('smw_qui_dcategory'), '', 'd-category', 'd-category' );
-		$categoryLabelHtml=Xml::inputLabelSep( wfMsg('smw_qui_dlabel'), '', 'd-category-label', 'd-category-label' );
-		$categoryYesHtml=Xml::inputLabelSep( wfMsg('smw_qui_dcatyes'), '', 'd-category-yes', 'd-category-yes' );
-		$categoryNoHtml=Xml::inputLabelSep( wfMsg('smw_qui_dcatno'), '', 'd-category-no', 'd-category-no' );
-		$categoryDialogBox = Xml::openElement( 'div', array( 'id' => 'cat-dialog', 'title' => wfMsg('smw_qui_catopts'), 'class' => 'smwcatdialog' ) ) .
-					'<table>'.
-						'<tr><td>'.$categoryHtml[0].'</td><td>'.$categoryHtml[1].'</td></tr>'.
-						'<tr><td>'.$categoryYesHtml[0].'</td><td>'.$categoryYesHtml[1].'</td></tr>'.
-						'<tr><td>'.$categoryNoHtml[0].'</td><td>'.$categoryNoHtml[1].'</td></tr>'.
-						'<tr><td>'.$categoryLabelHtml[0].'</td><td>'.$categoryLabelHtml[1].'</td></tr>'.
-					'</table>'.
+
+		// create dialogbox for Category options
+		$categoryHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dcategory' ), '', 'd-category', 'd-category' );
+		$categoryLabelHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dlabel' ), '', 'd-category-label', 'd-category-label' );
+		$categoryYesHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dcatyes' ), '', 'd-category-yes', 'd-category-yes' );
+		$categoryNoHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dcatno' ), '', 'd-category-no', 'd-category-no' );
+		$categoryDialogBox = Xml::openElement( 'div', array( 'id' => 'cat-dialog', 'title' => wfMsg( 'smw_qui_catopts' ), 'class' => 'smwcatdialog' ) ) .
+					'<table>' .
+						'<tr><td>' . $categoryHtml[0] . '</td><td>' . $categoryHtml[1] . '</td></tr>' .
+						'<tr><td>' . $categoryYesHtml[0] . '</td><td>' . $categoryYesHtml[1] . '</td></tr>' .
+						'<tr><td>' . $categoryNoHtml[0] . '</td><td>' . $categoryNoHtml[1] . '</td></tr>' .
+						'<tr><td>' . $categoryLabelHtml[0] . '</td><td>' . $categoryLabelHtml[1] . '</td></tr>' .
+					'</table>' .
 					Xml::closeElement( 'div' );
 
 		$result .= '<div id="sorting_main"></div>' . "\n";
@@ -730,7 +826,7 @@ function smw_property_autocomplete(){
 
 			jQuery.getJSON(url, 'search='+request.term, function(data){
 				//remove the namespace prefix 'Property:' from returned data
-				for(i=0;i<data[1].length;i++) data[1][i]='?'+data[1][i].substr(data[1][i].indexOf(':')+1);
+				for(i=0;i<data[1].length;i++) data[1][i]=data[1][i].substr(data[1][i].indexOf(':')+1);
 				response(data[1]);
 			});
 
@@ -745,7 +841,7 @@ function smw_category_autocomplete(){
 			url=wgScriptPath+'/api.php?action=opensearch&limit=10&namespace='+wgNamespaceIds['category']+'&format=jsonfm';
 
 			jQuery.getJSON(url, 'search='+request.term, function(data){
-				//remove the namespace prefix 'Property:' from returned data
+				//remove the namespace prefix 'Category:' from returned data
 				for(i=0;i<data[1].length;i++) data[1][i]=data[1][i].substr(data[1][i].indexOf(':')+1);
 				response(data[1]);
 			});
@@ -766,18 +862,6 @@ EOT;
 		}
 
 		$javascriptText .= <<<EOT
-function smw_prop_code_update(){
-	code = '?'+jQuery('#d-property')[0].value;
-	if(code!=''){
-		if(jQuery('#d-property-format-custom')[0].value !=''){
-			code = code + jQuery('#d-property-format-custom')[0].value;
-		}
-		if(jQuery('#d-property-label')[0].value !=''){
-			code = code + ' = '+ jQuery('#d-property-label')[0].value;
-		}
-		jQuery('#d-property-code')[0].value= code;
-	}
-}
 
 function smw_makeCatDialog(cat_id){
 	jQuery('#prop-cat input').attr('value','');
@@ -791,32 +875,21 @@ function smw_makeCatDialog(cat_id){
 	jQuery('#d-category-no').attr('value',no);
 	jQuery('#d-category-label').attr('value',label);
 	jQuery('#d-category').attr('value',cat);
-	
+
 	jQuery('#cat-dialog').dialog.id=cat_id;
 	jQuery('#cat-dialog').dialog('open');
 }
 
 function smw_makePropDialog(prop_id){
 	jQuery('#prop-dialog input').attr('value','');
-	prop=val=jQuery('#property'+prop_id)[0].value;
-	if(val[0]='?') val=prop=prop.substr(1);
-	if((i=val.indexOf('='))!=-1) prop=prop.substring(0, i);
-	if((i=val.indexOf('#'))!=-1) prop=prop.substring(0, i);
-	if(val.split('=')[1]){
-		label=val.split('=')[1].trim();
-	}else{
-		label="";
-	}
-	format = val.split('=')[0];
-	if(format.indexOf('#')!=-1){
-		format=format.substr(format.indexOf('#'));
-	}else{
-		format="";
-	}
-
-	jQuery('#d-property').attr('value', prop.trim());
-	jQuery('#d-property-label').attr('value', label);
-	jQuery('#d-property-format-custom').attr('value', format.trim());
+	prop=jQuery('#property'+prop_id).attr('value');
+	label=jQuery('#prop_label'+prop_id).attr('value');
+	format=jQuery('#prop_format'+prop_id).attr('value');
+	limit=jQuery('#prop_limit'+prop_id).attr('value');
+	jQuery('#d-property').attr('value', prop);
+	jQuery('#d-prop-label').attr('value', label);
+	jQuery('#d-prop-limit').attr('value', limit);
+	jQuery('#d-prop-format').attr('value', format);
 	jQuery('#prop-dialog').dialog.id=prop_id;
 	jQuery('#prop-dialog').dialog('open');
 }
@@ -967,12 +1040,19 @@ jQuery(function(){
 		autoOpen: false,
 		modal: true,
 		resizable: true,
-		minHeight: 200,
-		minWidth: 400,
 		buttons: {
 			"{$okMsg}": function(){
-				smw_prop_code_update();
-				jQuery('#property'+jQuery(this).dialog.id)[0].value=jQuery('#d-property-code')[0].value;
+				id=jQuery(this).dialog.id;
+				property=jQuery('#d-property').attr('value');
+				label=jQuery('#d-prop-label').attr('value');
+				limit=jQuery('#d-prop-limit').attr('value');
+				format=jQuery('#d-prop-format').attr('value');
+
+
+				jQuery('#property'+id).attr('value',property);
+				jQuery('#prop_label'+id).attr('value',label);
+				jQuery('#prop_limit'+id).attr('value',limit);
+				jQuery('#prop_format'+id).attr('value',format);
 				jQuery(this).dialog("close");
 			},
 			"{$cancelMsg}": function(){
