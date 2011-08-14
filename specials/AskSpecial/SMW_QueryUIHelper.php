@@ -396,9 +396,11 @@ EOT;
 		$propertyValues = $wgRequest->getArray( 'property' );
 		$categoryValues = $wgRequest->getArray( 'category' );
 		$categoryLabelValues = $wgRequest->getArray( 'cat_label' );
+		$categoryYesValues = $wgRequest->getArray( 'cat_yes' );
+		$categoryNoValues = $wgRequest->getArray( 'cat_no' );
 		$mainColumnLabels = $wgRequest->getArray( 'maincol_label' );
 		$po = array();
-		$categoryNamespace = $wgContLang->getNsText( NS_CATEGORY );
+
 		if ( is_array( $mainColumnLabels ) ) {
 			foreach ( $mainColumnLabels as $key => $label ) {
 				if ( $label == '' ) {
@@ -409,12 +411,27 @@ EOT;
 
 			}
 		}
+
+		$categoryNamespace = $wgContLang->getNsText( NS_CATEGORY );
 		if ( is_array( $categoryValues ) ) {
 			foreach ( $categoryValues as $key => $value ) {
 				if ( trim( $value ) == '' ) {
 					$po[$key] = "?$categoryNamespace" ;
 				} else {
 					$po[$key] = "?$categoryNamespace:$value";
+					if (is_array($categoryYesValues) &&
+							is_array($categoryNoValues) &&
+							array_key_exists($key, $categoryYesValues) &&
+							array_key_exists($key, $categoryNoValues)){
+
+						if($categoryYesValues[$key]!==''){
+							$po[$key] .="#$categoryYesValues[$key]";
+							if($categoryNoValues[$key]!==''){
+								$po[$key] .=",$categoryNoValues[$key]";
+							}
+						}
+					}
+
 				}
 			}
 		}
@@ -489,6 +506,8 @@ EOT;
 		$displayValues = $wgRequest->getArray( 'display' );
 		$categoryValues = $wgRequest->getArray( 'category' );
 		$categoryLabelValues = $wgRequest->getArray( 'cat_label' );
+		$categoryYesValues = $wgRequest->getArray( 'cat_yes' );
+		$categoryNoValues = $wgRequest->getArray( 'cat_no' );
 		$mainColumnLabels = $wgRequest->getArray( 'maincol_label' );
 
 		if ( is_array( $propertyValues ) || is_array( $categoryValues ) || is_array( $mainColumnLabels ) ) {
@@ -595,7 +614,10 @@ EOT;
 				$result .= Xml::closeElement( 'div' );
 				$i++;
 			}
-			if ( is_array( $categoryValues ) && array_key_exists( $key, $categoryValues ) ) {
+			if ( is_array( $categoryValues ) && array_key_exists( $key, $categoryValues ) &&
+					is_array($categoryLabelValues) && array_key_exists( $key, $categoryLabelValues ) &&
+					is_array($categoryYesValues) && array_key_exists( $key, $categoryYesValues ) &&
+					is_array($categoryNoValues) && array_key_exists( $key, $categoryNoValues )) {
 				/*
 				 * Make an element for additional categories
 				 */
@@ -603,8 +625,9 @@ EOT;
 				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 							wfMsg( 'smw_qui_category' ) .
 							Xml::input( "category[$i]", '25', $categoryValues[$key], array( 'id' => "category$i" ) ) . " " .
-							wfMsg( 'smw_qui_label' ) .
-							Xml::input( "cat_label[$i]", '20', array_key_exists( $key, $categoryLabelValues ) ? $categoryLabelValues[$key]:false, array( 'id' => "cat_label$i" ) ) . " " .
+							Html::hidden("cat_label[$i]", $categoryLabelValues[$key], array('id'=>"cat_label$i")).
+							Html::hidden("cat_yes[$i]", $categoryYesValues[$key], array('id'=>"cat_yes$i")).
+							Html::hidden("cat_no[$i]", $categoryNoValues[$key], array('id'=>"cat_no$i")).
 							' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makeCatDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ' .
 							Xml::closeElement( 'div' );
 				$i++;
@@ -642,8 +665,9 @@ EOT;
 					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 					wfMsg( 'smw_qui_category' ) .
 					Xml::input( "category_num", '25' ) . " " .
-					wfMsg( 'smw_qui_label' ) .
-					Xml::input( "cat_label_num", '20' ) . " " .
+					'<input type="hidden" name="cat_label_num" />'.
+					'<input type="hidden" name="cat_yes_num" />'.
+					'<input type="hidden" name="cat_no_num" />'.
 					Xml::closeElement( 'div' );
 		$hiddenCategory = json_encode( $hiddenCategory );
 
@@ -662,12 +686,18 @@ EOT;
 					// Xml::inputLabel( 'Limit:', 'd-property-limit', 'd-property-limit' ) . '<br/>' . // todo i18n
 					'<input type="hidden" name="d-property-code" id="d-property-code">' .
 					Xml::closeElement( 'div' );
-		$categoryDialogBox = Xml::openElement( 'div', array( 'id' => 'cat-dialog', 'title' => 'Category Options', 'class' => 'smwcatdialog' ) ) . // todo i18n
-					Xml::inputLabel( 'Label:', '', 'd-category-label', 'd-category-label' ) . '<br/>' . // todo i18n
-					Xml::inputLabel( 'Category:', '', 'd-category', 'd-category' ) . '<br/><br/>' . // todo i18n
-					Xml::inputLabel( 'Show text when category is present:', '', 'd-category-yes', 'd-category-yes' ) . '<br/><br/>' . // todo i18n
-					Xml::inputLabel( 'Show text when category is absent:', '', 'd-category-no', 'd-category-no' ) . '<br/><br/>' . // todo i18n
-					'<input type="hidden" name="d-category-code" id="d-category-code">' .
+		//create dialogbox for Category options
+		$categoryHtml=Xml::inputLabelSep( wfMsg('smw_qui_dcategory'), '', 'd-category', 'd-category' );
+		$categoryLabelHtml=Xml::inputLabelSep( wfMsg('smw_qui_dlabel'), '', 'd-category-label', 'd-category-label' );
+		$categoryYesHtml=Xml::inputLabelSep( wfMsg('smw_qui_dcatyes'), '', 'd-category-yes', 'd-category-yes' );
+		$categoryNoHtml=Xml::inputLabelSep( wfMsg('smw_qui_dcatno'), '', 'd-category-no', 'd-category-no' );
+		$categoryDialogBox = Xml::openElement( 'div', array( 'id' => 'cat-dialog', 'title' => wfMsg('smw_qui_catopts'), 'class' => 'smwcatdialog' ) ) .
+					'<table>'.
+						'<tr><td>'.$categoryHtml[0].'</td><td>'.$categoryHtml[1].'</td></tr>'.
+						'<tr><td>'.$categoryYesHtml[0].'</td><td>'.$categoryYesHtml[1].'</td></tr>'.
+						'<tr><td>'.$categoryNoHtml[0].'</td><td>'.$categoryNoHtml[1].'</td></tr>'.
+						'<tr><td>'.$categoryLabelHtml[0].'</td><td>'.$categoryLabelHtml[1].'</td></tr>'.
+					'</table>'.
 					Xml::closeElement( 'div' );
 
 		$result .= '<div id="sorting_main"></div>' . "\n";
@@ -749,40 +779,19 @@ function smw_prop_code_update(){
 	}
 }
 
-function smw_cat_code_update(){
-		cat = code = jQuery('#d-category').attr('value');
-		label = jQuery('#d-category-label').attr('value');
-		yes = jQuery('#d-category-yes').attr('value');
-		no = jQuery('#d-category-no').attr('value');
-		if (cat.trim()!='' && yes.trim()!=''){
-			code=cat+'#'+yes;
-			if(no.trim()!=''){
-				code=code+','+no;
-			}
-		}
-		jQuery('#d-category-code').attr('value', code);
-
-}
-
 function smw_makeCatDialog(cat_id){
 	jQuery('#prop-cat input').attr('value','');
+
 	cat=jQuery('#category'+cat_id)[0].value;
 	label=jQuery('#cat_label'+cat_id)[0].value;
-	cats=cat.split('#');
-	cat= cats[0];
-	if(cats[1]){
-		yes_no = cats[1].split(',');
-		if(yes_no[1]){
-			no=yes_no[1];
-		} else {
-			no = '';
-		}
-		yes=yes_no[0];
-		jQuery('#d-category-yes').attr('value',yes);
-		jQuery('#d-category-no').attr('value',no);
-	}
+	yes = jQuery('#cat_yes'+cat_id)[0].value;
+	no = jQuery('#cat_no'+cat_id)[0].value;
+
+	jQuery('#d-category-yes').attr('value',yes);
+	jQuery('#d-category-no').attr('value',no);
 	jQuery('#d-category-label').attr('value',label);
 	jQuery('#d-category').attr('value',cat);
+	
 	jQuery('#cat-dialog').dialog.id=cat_id;
 	jQuery('#cat-dialog').dialog('open');
 }
@@ -935,11 +944,16 @@ jQuery(function(){
 		minWidth: 400,
 		buttons: {
 			"{$okMsg}": function(){
-				smw_cat_code_update();
+				cat = jQuery('#d-category').attr('value');
 				label = jQuery('#d-category-label').attr('value');
-				code = jQuery('#d-category-code').attr('value');
-				jQuery('#category'+jQuery(this).dialog.id).attr('value',code);
-				jQuery('#cat_label'+jQuery(this).dialog.id).attr('value',label);
+				yes = jQuery('#d-category-yes').attr('value');
+				no = jQuery('#d-category-no').attr('value');
+				id=jQuery(this).dialog.id;
+
+				jQuery('#category'+id).attr('value',cat);
+				jQuery('#cat_label'+id).attr('value',label);
+				jQuery('#cat_yes'+id).attr('value',yes);
+				jQuery('#cat_no'+id).attr('value',no);
 				jQuery(this).dialog("close");
 			},
 			"{$cancelMsg}": function(){
