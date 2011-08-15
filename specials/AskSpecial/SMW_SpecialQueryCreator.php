@@ -41,7 +41,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 								);
 			}
 
-			$htmlOutput .= Html::rawElement( 'div', array( 'class' => 'smw-qc-result' ), $this->uiCore->getHTMLResult() );
+			$htmlOutput .= Html::rawElement( 'div', array( 'class' => 'smwqcresult' ), $this->uiCore->getHTMLResult() );
 
 			if ( $this->usesNavigationBar() ) {
 				$htmlOutput .= Html::rawElement( 'div', array( 'class' => 'smwqcnavbar' ),
@@ -82,17 +82,16 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$formatBox = $this->getFormatSelectBoxSep( 'broadtable' );
 		$result .= '<form name="ask" action="' . $specTitle->escapeLocalURL() . '" method="get">' . "\n" .
 			'<input type="hidden" name="title" value="' . $specTitle->getPrefixedText() . '"/>';
-		$result .= '<br>';
+		$result .= '<br/>';
 		$result .= wfMsg( 'smw_qc_query_help' );
 		// Main query and format options
-		$result .= '<table style="width: 100%; ">' .
-					'<tr><th>' . wfMsg( 'smw_ask_queryhead' ) . "</th>\n<th>" . wfMsg( 'smw_ask_format_as' ) . "</th></tr>" .
-					'<tr>' .
-						'<td style="width: 70%; padding-right: 7px;">' . $this->getQueryFormBox() . "</td>\n" .
-						'<td style="padding-right: 7px; text-align:center;">' . $formatBox[0];
-
+		$result .= $this->getQueryFormBox();
+		// sorting and prinouts
+		$result .= '<div class="smw-qc-sortbox" style="padding-left:10px;">' . $this->getPoSortFormBox() . '</div>';
+		// additional options
 		//START: show|hide additional options
-		$result .= '<span id="show_additional_options" style="display:inline;"><a href="#addtional" rel="nofollow" onclick="' .
+		$result .= '<div class="smwqcformatas"><strong>'.wfMsg('smw_ask_format_as').'</strong>';
+		$result .= $formatBox[0].'<span id="show_additional_options" style="display:inline;"><a href="#addtional" rel="nofollow" onclick="' .
 			 "jQuery('#additional_options').show('blind');" .
 			 "document.getElementById('show_additional_options').style.display='none';" .
 			 "document.getElementById('hide_additional_options').style.display='inline';" . '">' .
@@ -102,14 +101,8 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			 "document.getElementById('hide_additional_options').style.display='none';" .
 			 "document.getElementById('show_additional_options').style.display='inline';" . '">' .
 			 wfMsg( 'smw_qc_hide_addnal_opts' ) . '</a></span>';
+		$result .= '</div>';
 		//END: show|hide additional options
-		
-		$result .=	'</td>' .
-					'</tr>' .
-					"</table>\n";
-		// sorting and prinouts
-		$result .= '<div class="smw-qc-sortbox" style="padding-left:10px;">' . $this->getPoSortFormBox() . '</div>';
-		// additional options
 		$result .= '<div id="additional_options" style="display:none">';
 
 		$result .= $formatBox[1]; // display the format options
@@ -119,7 +112,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 
 		$result .= '<a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>';
 		if ( $this->uiCore->getQueryString() != '' ) { // hide #ask if there isnt any query defined
-			$result .= ' | <a name="show-embed-code" id="show-embed-code" href="##">' . wfMsg( 'smw_ask_show_embed' ) . '</a>';
+			$result .= ' | <a name="show-embed-code" id="show-embed-code" href="##" rel="nofollow">' . wfMsg( 'smw_ask_show_embed' ) . '</a>';
 			$result .= '<div id="embed-code-dialog">' .
 						$this->getAskEmbedBox() .
 						'</div>';

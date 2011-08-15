@@ -1487,7 +1487,7 @@ EOT;
 		}
 
 		$result[0] .= "</select>";
-		$result[0] .= "</p>\n";
+		$result[0] .= "\n";
 		$result[] .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n";
 		$result[1] .= "<div id=\"other_options\">" . $this->showFormatOptions( $params['format'], $params ) . " </div>";
 		$result[1] .= "</fieldset>\n";

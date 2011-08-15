@@ -160,6 +160,11 @@ div.smwqcnavbar{
 	padding-top: 5px;
 }
 
+div.smwqcformatas{
+	margin:10px;
+	margin-top: 15px;
+	margin-bottom: 0px;
+}
 /* search, browse, RDF icons */
 
 span.smwsearchicon { /*FIXME: this was only used for Factbox docu, should be removed from code*/
