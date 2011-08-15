@@ -119,7 +119,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 
 		$result .= '<a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>';
 		if ( $this->uiCore->getQueryString() != '' ) { // hide #ask if there isnt any query defined
-			$result .= ' | <a name="show-embed-code" id="show-embed-code" href="#show-embed-code">' . wfMsg( 'smw_ask_show_embed' ) . '</a>';
+			$result .= ' | <a name="show-embed-code" id="show-embed-code" href="##">' . wfMsg( 'smw_ask_show_embed' ) . '</a>';
 			$result .= '<div id="embed-code-dialog">' .
 						$this->getAskEmbedBox() .
 						'</div>';
