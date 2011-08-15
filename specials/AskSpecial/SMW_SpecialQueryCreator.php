@@ -87,7 +87,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		// Main query and format options
 		$result .= $this->getQueryFormBox();
 		// sorting and prinouts
-		$result .= '<div class="smw-qc-sortbox" style="padding-left:10px;">' . $this->getPoSortFormBox() . '</div>';
+		$result .= '<div class="smwqcsortbox">' . $this->getPoSortFormBox() . '</div>';
 		// additional options
 		//START: show|hide additional options
 		$result .= '<div class="smwqcformatas"><strong>'.wfMsg('smw_ask_format_as').'</strong>';

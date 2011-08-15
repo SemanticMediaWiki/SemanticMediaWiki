@@ -139,7 +139,13 @@ span.smwwarning {
 span.smw-remove a img{
 	text-decoration: none;
 	margin-right: 5px;
-	vertical-align: -3px;
+	vertical-align: -0.25em;
+	margin-left: -30px;
+
+}
+
+div.smwqcsortbox{
+	padding-left: 35px;
 }
 
 .smwpropdialog input, .smwpropdialog select{
@@ -164,6 +170,11 @@ div.smwqcformatas{
 	margin:10px;
 	margin-top: 15px;
 	margin-bottom: 0px;
+}
+
+.smwquisortlabel{
+	width: 12em;
+	float: left;
 }
 /* search, browse, RDF icons */
 

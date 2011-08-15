@@ -662,8 +662,8 @@ EOT;
 				 * Make an element for additional properties
 				 */
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
-				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>';
-				$result .= wfMsg( 'smw_qui_property' );
+				$result .= '<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>';
+				$result .= wfMsg( 'smw_qui_property' ).'</span>';
 				$result .= Html::input( 'property[' . $i . ']', $propertyValues[$key], 'text', array( 'size' => '35', 'id' => "property$i" ) ) . "\n";
 				$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
 
@@ -709,8 +709,8 @@ EOT;
 				 * Make an element for additional categories
 				 */
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
-				$result .= '<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-							wfMsg( 'smw_qui_category' ) .
+				$result .= '<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+							wfMsg( 'smw_qui_category' ) .'</span>'.
 							Xml::input( "category[$i]", '25', $categoryValues[$key], array( 'id' => "category$i" ) ) . " " .
 							Html::hidden( "cat_label[$i]", $categoryLabelValues[$key], array( 'id' => "cat_label$i" ) ) .
 							Html::hidden( "cat_yes[$i]", $categoryYesValues[$key], array( 'id' => "cat_yes$i" ) ) .
@@ -724,8 +724,8 @@ EOT;
 				 * Make an element for main column
 				 */
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) ) .
-					'<span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_rescol' ) .
+					'<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+					wfMsg( 'smw_qui_rescol' ) .'</span>'.
 					Xml::input( "maincol_label[$i]", '20', $mainColumnLabels[$key], array ( 'id' => "maincol_label$i" ) ) . " " .
 					Xml::closeElement( 'div' );
 				$i++;
@@ -736,9 +736,9 @@ EOT;
 
 		// create hidden form elements to be cloned later
 		$hiddenProperty = Html::openElement( 'div', array( 'id' => 'property_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
-					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_property' ) .
-					Xml::input( 'property_num', '35' ) . " " .
+					'<span class="smwquisortlabel">'.'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+					wfMsg( 'smw_qui_property' ).'</span>'.
+					Xml::input( 'property_num', '25' ) . " " .
 					Html::openElement( 'select', array( 'name' => 'order_num' ) ) .
 						Xml::option( wfMsg( 'smw_qui_nosort' ), 'NONE' ) .
 						Xml::option( wfMsg( 'smw_qui_ascorder' ), 'ASC' ) .
@@ -752,8 +752,8 @@ EOT;
 		$hiddenProperty = json_encode( $hiddenProperty );
 
 		$hiddenCategory = Html::openElement( 'div', array( 'id' => 'category_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
-					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_category' ) .
+					'<span class="smwquisortlabel">'.'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+					wfMsg( 'smw_qui_category' ) .'</span>'.
 					Xml::input( "category_num", '25' ) . " " .
 					'<input type="hidden" name="cat_label_num" />' .
 					'<input type="hidden" name="cat_yes_num" />' .
@@ -762,9 +762,9 @@ EOT;
 		$hiddenCategory = json_encode( $hiddenCategory );
 
 		$hiddenMainColumn = Html::openElement( 'div', array( 'id' => 'maincol_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
-					'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_rescol' ) .
-					Xml::input( "maincol_label_num", '20' ) . " " .
+					'<span class="smwquisortlabel">'.'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+					wfMsg( 'smw_qui_rescol' ) .'</span>'.
+					Xml::input( "maincol_label_num", '25' ) . " " .
 					Xml::closeElement( 'div' );
 		$hiddenMainColumn = json_encode( $hiddenMainColumn );
 
@@ -790,9 +790,9 @@ EOT;
 		$categoryDialogBox = Xml::openElement( 'div', array( 'id' => 'cat-dialog', 'title' => wfMsg( 'smw_qui_catopts' ), 'class' => 'smwcatdialog' ) ) .
 					'<table>' .
 						'<tr><td>' . $categoryHtml[0] . '</td><td>' . $categoryHtml[1] . '</td></tr>' .
+						'<tr><td>' . $categoryLabelHtml[0] . '</td><td>' . $categoryLabelHtml[1] . '</td></tr>' .
 						'<tr><td>' . $categoryYesHtml[0] . '</td><td>' . $categoryYesHtml[1] . '</td></tr>' .
 						'<tr><td>' . $categoryNoHtml[0] . '</td><td>' . $categoryNoHtml[1] . '</td></tr>' .
-						'<tr><td>' . $categoryLabelHtml[0] . '</td><td>' . $categoryLabelHtml[1] . '</td></tr>' .
 					'</table>' .
 					Xml::closeElement( 'div' );
 
@@ -1062,7 +1062,19 @@ jQuery(function(){
 		}
 	});
 	jQuery('#sort-more').click(function(){jQuery('#prop-dialog').dialog("open");});
-
+	jQuery('#d-category').bind('change keyup focus click',function(){
+		if(jQuery(this).attr('value')==''){
+			jQuery('#d-category-yes').css('visibility','hidden');
+			jQuery('#d-category-no').css('visibility','hidden');
+			jQuery('#cat-dialog [for="d-category-no"]').css('visibility','hidden');
+			jQuery('#cat-dialog [for="d-category-yes"]').css('visibility','hidden');
+		} else {
+			jQuery('#d-category-yes').css('visibility','visible');
+			jQuery('#d-category-no').css('visibility','visible');
+			jQuery('#cat-dialog [for="d-category-no"]').css('visibility','visible');
+			jQuery('#cat-dialog [for="d-category-yes"]').css('visibility','visible');
+		}
+	});
 });
 
 jQuery(document).ready(smw_property_autocomplete);
