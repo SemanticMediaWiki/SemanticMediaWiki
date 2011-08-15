@@ -141,7 +141,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	 * @global boolean $smwgJQueryIncluded
 	 */
 	protected function enableJQuery() {
-		global $wgOut, $smwgJQueryIncluded;
+		global $wgOut, $smwgJQueryIncluded, $smwgScriptPath;
 			if ( !$smwgJQueryIncluded ) {
 				$realFunction = array( 'OutputPage', 'includeJQuery' );
 				if ( is_callable( $realFunction ) ) {
@@ -351,11 +351,20 @@ END;
 		$result .= '</div>';
 		$this->enableJQuery();
 		$wgOut->addScriptFile( "$smwgScriptPath/skins/elastic/jquery.elastic.source.js" );
+		
+		/*
+		 * Compatibity function for disabling elastic textboxes for IE. This may
+		 * be removed when jQuery 1.4 or above is supported.
+		 */
 		$javascript = <<<EOT
-	jQuery(document).ready(function(){
-//		jQuery('#querybox').elastic();
-		jQuery('#querybox').trigger('update');
-	});
+jQuery(document).ready(function(){
+		if(jQuery.browser.msie){
+			jQuery('#querybox').attr('rows',5);
+		} else {
+			jQuery('#querybox').elastic();
+			jQuery('#querybox').trigger('update');
+		}
+});
 EOT;
 		$wgOut->addInlineScript( $javascript );
 
