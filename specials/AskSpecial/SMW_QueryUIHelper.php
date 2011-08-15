@@ -353,7 +353,7 @@ END;
 		$wgOut->addScriptFile( "$smwgScriptPath/skins/elastic/jquery.elastic.source.js" );
 		$javascript = <<<EOT
 	jQuery(document).ready(function(){
-		jQuery('#querybox').elastic();
+//		jQuery('#querybox').elastic();
 		jQuery('#querybox').trigger('update');
 	});
 EOT;
@@ -908,7 +908,7 @@ function smw_addPropertyInstance(starter_div_id, main_div_id) {
 	var children = new_div.getElementsByTagName('*');
 	var x;
 	for (x = 0; x < children.length; x++) {
-		if (children[x].for) children[x].for="display"+num_elements;
+		if (jQuery(children[x]).attr('for')) jQuery(children[x]).attr('for',"display"+num_elements);
 		if (children[x].name){
 			children[x].id = children[x].name.replace(/_num/, ''+num_elements);
 			children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
@@ -944,7 +944,7 @@ function smw_addCategoryInstance(starter_div_id, main_div_id) {
 	var children = new_div.getElementsByTagName('*');
 	var x;
 	for (x = 0; x < children.length; x++) {
-		if (children[x].for) children[x].for="display"+num_elements;
+		if (jQuery(children[x]).attr('for')) jQuery(children[x]).attr('for',"display"+num_elements);
 		if (children[x].name){
 			children[x].id = children[x].name.replace(/_num/, ''+num_elements);
 			children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
@@ -980,7 +980,7 @@ function smw_addMainColInstance(starter_div_id, main_div_id) {
 	var children = new_div.getElementsByTagName('*');
 	var x;
 	for (x = 0; x < children.length; x++) {
-		if (children[x].for) children[x].for="display"+num_elements;
+		if (jQuery(children[x]).attr('for')) jQuery(children[x]).attr('for',"display"+num_elements);
 		if (children[x].name){
 			children[x].id = children[x].name.replace(/_num/, ''+num_elements);
 			children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
