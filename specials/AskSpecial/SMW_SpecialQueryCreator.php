@@ -53,6 +53,26 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	}
 
 	/**
+	 * This method should call the various processXXXBox() methods for each of
+	 * the corresponding getXXXBox() methods which the UI uses.
+	 * Merge the results of these methods and return them.
+	 *
+	 * @global WebRequest $wgRequest
+	 * @return array
+	 */
+	protected function processParams(){
+		global $wgRequest;
+		$params = array_merge(
+							array(
+							'format'  =>  $wgRequest->getVal( 'format' ),
+							'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
+							'limit'   =>  $wgRequest->getVal( 'limit',   '20' ) ),
+							$this->processPoSortFormBox( $wgRequest ),
+							$this->processFormatSelectBox( $wgRequest ) );
+		return $params;
+	}
+
+	/**
 	 * Displays a form section showing the options for a given format,
 	 * based on the getParameters() value for that format's query printer.
 	 *

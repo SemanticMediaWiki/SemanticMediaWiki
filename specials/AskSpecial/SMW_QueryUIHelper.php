@@ -47,7 +47,6 @@ abstract class SMWQueryUI extends SpecialPage {
 	 * @global WebRequest $wgRequest
 	 * @global boolean $smwgQEnabled
 	 * @param string $p the sub-page string
-	 * @todo: using processXXXBox() methods here goes against the general architecture. Move this to the UI implementation
 	 */
 	public function execute( $p ) {
 		global $wgOut, $wgRequest, $smwgQEnabled, $wgFeedClasses;
@@ -63,13 +62,7 @@ abstract class SMWQueryUI extends SpecialPage {
 				// the 'q' is dependent from the form parameter set by getQueryFormBox()
 				// and processQueryFormBox()
 				if ( $wgRequest->getCheck( 'q' ) ) {
-					$params = array_merge(
-							array(
-							'format'  =>  $wgRequest->getVal( 'format' ),
-							'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
-							'limit'   =>  $wgRequest->getVal( 'limit',   '20' ) ),
-							$this->processPoSortFormBox( $wgRequest ),
-							$this->processFormatSelectBox( $wgRequest ) );
+					$params = $this->processParams();
 					$this->uiCore =  SMWQueryUIHelper::makeForUI(
 							$this->processQueryFormBox( $wgRequest ),
 							$params,
@@ -84,10 +77,10 @@ abstract class SMWQueryUI extends SpecialPage {
 					$this->uiCore =  SMWQueryUIHelper::makeForInfoLink( $p );
 				}
 				// adding rss feed of results to the page head
-				if ( ( $this->uiCore->getQueryString() !== '' )
-						and ( $this->isSyndicated() )
-						and ( method_exists( $wgOut, 'addFeedlink' ) ) // remove this line after MW 1.5 is no longer supported by SMW
-						and ( array_key_exists( 'rss', $wgFeedClasses ) ) ) {
+				if ( ( $this->isSyndicated() )
+						&& ( $this->uiCore->getQueryString() !== '' )
+						&& ( method_exists( $wgOut, 'addFeedlink' ) ) // remove this line after MW 1.5 is no longer supported by SMW
+						&& ( array_key_exists( 'rss', $wgFeedClasses ) ) ) {
 					$res = $this->uiCore->getResultObject();
 					$link = $res->getQueryLink();
 					$link->setParameter( 'rss', 'format' );
@@ -101,6 +94,16 @@ abstract class SMWQueryUI extends SpecialPage {
 
 		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
 	}
+
+	/**
+	 * This method should call the various processXXXBox() methods for each of
+	 * the corresponding getXXXBox() methods which the UI uses.
+	 * Merge the results of these methods and return them.
+	 *
+	 * @global WebRequest $wgRequest
+	 * @return array
+	 */
+	protected abstract function processParams();
 
 	/**
 	 * To enable/disable syndicated feeds of results to appear in the UI header
@@ -691,19 +694,19 @@ EOT;
 				$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
 
 				if ( is_array( $propertyLabelValues ) && array_key_exists( $key, $propertyLabelValues ) ) {
-					$result .= Xml::hidden( "prop_label[$i]", $propertyLabelValues[$key], array( 'id' => "prop_label$i" ) );
+					$result .= Html::hidden( "prop_label[$i]", $propertyLabelValues[$key], array( 'id' => "prop_label$i" ) );
 				} else {
-					$result .= Xml::hidden( "prop_label[$i]", '', array( 'id' => "prop_label$i" ) );
+					$result .= Html::hidden( "prop_label[$i]", '', array( 'id' => "prop_label$i" ) );
 				}
 				if ( is_array( $propertyFormatValues ) && array_key_exists( $key, $propertyFormatValues ) ) {
-					$result .= Xml::hidden( "prop_format[$i]", $propertyFormatValues[$key], array( 'id' => "prop_format$i" ) );
+					$result .= Html::hidden( "prop_format[$i]", $propertyFormatValues[$key], array( 'id' => "prop_format$i" ) );
 				} else {
-					$result .= Xml::hidden( "prop_format[$i]", '', array( 'id' => "prop_format$i" ) );
+					$result .= Html::hidden( "prop_format[$i]", '', array( 'id' => "prop_format$i" ) );
 				}
 				if ( is_array( $propertyLimitValues ) && array_key_exists( $key, $propertyLimitValues ) ) {
-					$result .= Xml::hidden( "prop_limit[$i]", $propertyLimitValues[$key], array( 'id' => "prop_limit$i" ) );
+					$result .= Html::hidden( "prop_limit[$i]", $propertyLimitValues[$key], array( 'id' => "prop_limit$i" ) );
 				} else {
-					$result .= Xml::hidden( "prop_limit[$i]", '', array( 'id' => "prop_limit$i" ) );
+					$result .= Html::hidden( "prop_limit[$i]", '', array( 'id' => "prop_limit$i" ) );
 				}
 				$result .= ' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makePropDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ';
 
@@ -753,9 +756,9 @@ EOT;
 						Xml::option( wfMsg( 'smw_qui_ascorder' ), 'ASC' ) .
 						Xml::option( wfMsg( 'smw_qui_descorder' ), 'DESC' ) .
 					Xml::closeElement( 'select' ) .
-					Xml::hidden( 'prop_label_num', '' ) .
-					Xml::hidden( 'prop_format_num', '' ) .
-					Xml::hidden( 'prop_limit_num', '' ) .
+					Html::hidden( 'prop_label_num', '' ) .
+					Html::hidden( 'prop_format_num', '' ) .
+					Html::hidden( 'prop_limit_num', '' ) .
 					Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display_num", '', true ) .
 					Xml::closeElement( 'div' );
 		$hiddenProperty = json_encode( $hiddenProperty );
