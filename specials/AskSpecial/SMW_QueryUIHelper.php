@@ -59,9 +59,7 @@ abstract class SMWQueryUI extends SpecialPage {
 			$format_options_requested = $this->processFormatOptions( $wgRequest ); // handling ajax for format options
 			if ( !$format_options_requested ) {
 				// Checking if a query string has been sent by using the form
-				// the 'q' is dependent from the form parameter set by getQueryFormBox()
-				// and processQueryFormBox()
-				if ( $wgRequest->getCheck( 'q' ) ) {
+				if ( !( $this->processQueryFormBox( $wgRequest ) === false ) ) {
 					$params = $this->processParams();
 					$this->uiCore =  SMWQueryUIHelper::makeForUI(
 							$this->processQueryFormBox( $wgRequest ),
@@ -354,7 +352,7 @@ END;
 		$result .= '</div>';
 		$this->enableJQuery();
 		$wgOut->addScriptFile( "$smwgScriptPath/skins/elastic/jquery.elastic.source.js" );
-		
+
 		/*
 		 * Compatibity function for disabling elastic textboxes for IE. This may
 		 * be removed when jQuery 1.4 or above is supported.
@@ -381,12 +379,15 @@ EOT;
 	 * parameters.
 	 *
 	 * @param WebRequest $wgRequest
-	 * @return string
+	 * @return mixed returns the querystring if possible, false if no querystring is set
 	 */
 	protected function processQueryFormBox( WebRequest $wgRequest ) {
-		$query = '';
-		if ( $wgRequest->getCheck( 'q' ) ) $query = $wgRequest->getVal( 'q' );
-		return $query;
+		if ( $wgRequest->getCheck( 'q' ) ) {
+			$query = $wgRequest->getVal( 'q' );
+			return $query;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -675,7 +676,7 @@ EOT;
 				 */
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
 				$result .= '<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>';
-				$result .= wfMsg( 'smw_qui_property' ).'</span>';
+				$result .= wfMsg( 'smw_qui_property' ) . '</span>';
 				$result .= Html::input( 'property[' . $i . ']', $propertyValues[$key], 'text', array( 'size' => '35', 'id' => "property$i" ) ) . "\n";
 				$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
 
@@ -722,7 +723,7 @@ EOT;
 				 */
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
 				$result .= '<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-							wfMsg( 'smw_qui_category' ) .'</span>'.
+							wfMsg( 'smw_qui_category' ) . '</span>' .
 							Xml::input( "category[$i]", '25', $categoryValues[$key], array( 'id' => "category$i" ) ) . " " .
 							Html::hidden( "cat_label[$i]", $categoryLabelValues[$key], array( 'id' => "cat_label$i" ) ) .
 							Html::hidden( "cat_yes[$i]", $categoryYesValues[$key], array( 'id' => "cat_yes$i" ) ) .
@@ -737,7 +738,7 @@ EOT;
 				 */
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) ) .
 					'<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_rescol' ) .'</span>'.
+					wfMsg( 'smw_qui_rescol' ) . '</span>' .
 					Xml::input( "maincol_label[$i]", '20', $mainColumnLabels[$key], array ( 'id' => "maincol_label$i" ) ) . " " .
 					Xml::closeElement( 'div' );
 				$i++;
@@ -748,8 +749,8 @@ EOT;
 
 		// create hidden form elements to be cloned later
 		$hiddenProperty = Html::openElement( 'div', array( 'id' => 'property_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
-					'<span class="smwquisortlabel">'.'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_property' ).'</span>'.
+					'<span class="smwquisortlabel">' . '<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+					wfMsg( 'smw_qui_property' ) . '</span>' .
 					Xml::input( 'property_num', '25' ) . " " .
 					Html::openElement( 'select', array( 'name' => 'order_num' ) ) .
 						Xml::option( wfMsg( 'smw_qui_nosort' ), 'NONE' ) .
@@ -764,8 +765,8 @@ EOT;
 		$hiddenProperty = json_encode( $hiddenProperty );
 
 		$hiddenCategory = Html::openElement( 'div', array( 'id' => 'category_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
-					'<span class="smwquisortlabel">'.'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_category' ) .'</span>'.
+					'<span class="smwquisortlabel">' . '<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+					wfMsg( 'smw_qui_category' ) . '</span>' .
 					Xml::input( "category_num", '25' ) . " " .
 					'<input type="hidden" name="cat_label_num" />' .
 					'<input type="hidden" name="cat_yes_num" />' .
@@ -774,8 +775,8 @@ EOT;
 		$hiddenCategory = json_encode( $hiddenCategory );
 
 		$hiddenMainColumn = Html::openElement( 'div', array( 'id' => 'maincol_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
-					'<span class="smwquisortlabel">'.'<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_rescol' ) .'</span>'.
+					'<span class="smwquisortlabel">' . '<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
+					wfMsg( 'smw_qui_rescol' ) . '</span>' .
 					Xml::input( "maincol_label_num", '25' ) . " " .
 					Xml::closeElement( 'div' );
 		$hiddenMainColumn = json_encode( $hiddenMainColumn );
