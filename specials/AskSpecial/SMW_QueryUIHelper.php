@@ -405,6 +405,7 @@ EOT;
 		if ( !$smwgQSortingSupport ) return array();
 
 		$params = array();
+		//loading all values from form
 		$orderValues = $wgRequest->getArray( 'order' );
 		$propertyValues = $wgRequest->getArray( 'property' );
 		$propertyLabelValues = $wgRequest->getArray( 'prop_label' );
@@ -417,6 +418,7 @@ EOT;
 		$mainColumnLabels = $wgRequest->getArray( 'maincol_label' );
 		$po = array();
 
+		// processing params for main result column
 		if ( is_array( $mainColumnLabels ) ) {
 			foreach ( $mainColumnLabels as $key => $label ) {
 				if ( $label == '' ) {
@@ -424,10 +426,9 @@ EOT;
 				} else {
 					$po[$key] = "? = $label";
 				}
-
 			}
 		}
-
+		// processing params for category printouts
 		$categoryNamespace = $wgContLang->getNsText( NS_CATEGORY );
 		if ( is_array( $categoryValues ) ) {
 			foreach ( $categoryValues as $key => $value ) {
@@ -454,6 +455,7 @@ EOT;
 				}
 			}
 		}
+		// processing params for property printouts
 		if ( is_array( $propertyValues ) ) {
 			$params['sort'] = '';
 			$params['order'] = '';
@@ -491,10 +493,11 @@ EOT;
 						if ( is_array( $propertyLimitValues ) && // adding limit
 								array_key_exists( $key, $propertyLimitValues ) &&
 								$propertyLimitValues[$key] != '' ) {
+							// / @bug limit, when specified causes incorrect ordering of printouts
 							$po[] = $propertyValues[$key];
 							$po[] = '+limit=' . $propertyLimitValues[$key];
 						} else {
-							$po[] = $propertyValues[$key];
+							$po[$key] = $propertyValues[$key];
 						}
 					}
 				}
