@@ -341,7 +341,6 @@ END;
 	 *
 	 * @global OutputPage $wgOut
 	 * @global string $smwgScriptPath
-	 * @param string $errors
 	 * @return string
 	 */
 	protected function getQueryFormBox() {
@@ -405,7 +404,7 @@ EOT;
 		if ( !$smwgQSortingSupport ) return array();
 
 		$params = array();
-		//loading all values from form
+		// loading all values from form
 		$orderValues = $wgRequest->getArray( 'order' );
 		$propertyValues = $wgRequest->getArray( 'property' );
 		$propertyLabelValues = $wgRequest->getArray( 'prop_label' );
@@ -680,7 +679,7 @@ EOT;
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
 				$result .= '<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>';
 				$result .= wfMsg( 'smw_qui_property' ) . '</span>';
-				$result .= Html::input( 'property[' . $i . ']', $propertyValues[$key], 'text', array( 'size' => '35', 'id' => "property$i" ) ) . "\n";
+				$result .= Html::input( 'property[' . $i . ']', $propertyValues[$key], 'text', array( 'size' => '25', 'id' => "property$i" ) ) . "\n";
 				$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
 
 				$if1 = ( !is_array( $orderValues ) || !array_key_exists( $key, $orderValues ) || $orderValues[$key] == 'NONE' );
@@ -1127,7 +1126,7 @@ EOT;
 
 		foreach ( $orders as $i => $order ) {
 			$result .=  "<div id=\"sort_div_$i\">" . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort[' . $i . ']" value="' .
-					htmlspecialchars( $sorts[$i] ) . "\" size=\"35\"/>\n" . '<select name="order[' . $i . ']"><option ';
+					htmlspecialchars( $sorts[$i] ) . "\" size=\"25\"/>\n" . '<select name="order[' . $i . ']"><option ';
 				if ( $order == 'ASC' ) $result .= 'selected="selected" ';
 			$result .=  'value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . '</option><option ';
 				if ( $order == 'DESC' ) $result .= 'selected="selected" ';
@@ -1137,7 +1136,7 @@ EOT;
 			$result .= "</div>\n";
 		}
 
-		$hidden .=  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" size="35" />' . "\n";
+		$hidden .=  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" size="25" />' . "\n";
 		$hidden .= ' <select name="order_num">' . "\n";
 		$hidden .= '	<option value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . "</option>\n";
 		$hidden .= '	<option value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option>\n</select>\n";
@@ -1571,7 +1570,7 @@ END;
 	 *
 	 * Required by getFormatSelectBox() to recieve form elements from the Web.
 	 * UIs may need to overload processFormatOptions(),
-	 * getgetFormatSelectBox() and getFormatSelectBox() to change behavior.
+	 * processFormatSelectBox() and getFormatSelectBox() to change behavior.
 	 *
 	 * @param WebRequest $wgRequest
 	 * @return boolean true if format options were requested and returned, else false
