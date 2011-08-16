@@ -177,7 +177,9 @@ EOT;
 	 * Overridden from parent to ignore GUI parameters 'format' 'limit' and 'offset'
 	 */
 	protected function showFormatOptions( $format, array $paramValues, array $ignoredAttribs = array() ) {
-		return parent::showFormatOptions( $format, $paramValues, array( 'format', 'limit', 'offset', 'mainlabel' ) );
+		return parent::showFormatOptions( $format, $paramValues, array(
+			'format', 'limit', 'offset', 'mainlabel', 'intro', 'outro', 'default'
+			) );
 	}
 	/**
 	 * Creates the input form
@@ -218,7 +220,20 @@ EOT;
 		// END: show|hide additional options
 		$result .= '<div id="additional_options" style="display:none">';
 
-		$result .= $formatBox[1]; // display the format options
+		$result .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n" .
+					Html::rawElement( 'div', array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
+							'Intro: <input name="p[intro]" size="32"/> <br/>' . wfMsg( 'smw_paramdesc_intro' )
+					) .
+					Html::rawElement( 'div', array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
+							'Outro: <input name="p[outro]" size="32"/> <br/>' . wfMsg( 'smw_paramdesc_outro' )
+					) .
+					Html::rawElement( 'div', array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
+							'Default: <input name="p[default]" size="32"/> <br/>' .  wfMsg( 'smw_paramdesc_default' )
+					) .
+					'</fieldset>';
+		$result .= '<fieldset><legend>' . wfMsg( 'smw_qc_formatopt' ) . "</legend>\n" .
+					$formatBox[1] . // display the format options
+					"</fieldset>\n";
 
 		$result .= '</div>'; // end of hidden additional options
 		$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/><br/>';
