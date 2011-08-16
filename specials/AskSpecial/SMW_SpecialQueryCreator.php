@@ -68,100 +68,9 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 							'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
 							'limit'   =>  $wgRequest->getVal( 'limit',   '20' ) ),
 							$this->processPoSortFormBox( $wgRequest ),
-							$this->processFormatSelectBox( $wgRequest ),
-							$this->processMainLabelFormBox( $wgRequest )
+							$this->processFormatSelectBox( $wgRequest )
 				);
 		return $params;
-	}
-
-	/**
-	 * A method which decodes form data sent through form-elements generated
-	 * by its complement, getMainLabelFormBoxSep().
-	 *
-	 * @param WebRequest $wgRequest
-	 * @return array
-	 */
-	protected function processMainLabelFormBox( WebRequest $wgRequest ) {
-		$mainLabel = $wgRequest->getVal( 'pmainlabel', '' );
-		$result = array( 'mainlabel' => $mainLabel );
-		return $result;
-	}
-
-	/**
-	 * Generates the form elements for the main-label parameter.  Use its
-	 * complement processMainLabelFormBox() to decode data sent through these
-	 * elements.
-	 *
-	 * @global string $smwgScriptPath
-	 * @global OutputPage $wgOut
-	 * @return array the first element has the link to enable mainlabel, and the second gives the mainlabel control
-	 */
-	protected function getMainLabelFormBoxSep() {
-		global $smwgScriptPath, $wgOut;
-		$result = array();
-		$param = $this->uiCore->getParameters();
-		if ( is_array( $param ) && array_key_exists( 'mainlabel', $param ) ) {
-			$mainLabel = $param['mainlabel'];
-		} else {
-			$mainLabel = '';
-		}
-		if ( $mainLabel == '-' ) {
-			$mainLabelText = '';
-			$linkDisplay = 'inline';
-			$formDisplay = 'none';
-		} else {
-			$mainLabelText = $mainLabel;
-			$linkDisplay = 'none';
-			$formDisplay = 'block';
-		}
-		if ( $this->uiCore->getQueryString() == '' ) {
-			$linkDisplay = 'inline';
-			$formDisplay = 'none';
-		}
-
-		$this->enableJQuery();
-		$javascriptText = <<<EOT
-<script type="text/javascript">
-
-	function smwRemoveMainLabel(){
-		jQuery('#mainlabelhid').attr('value','-');
-		jQuery('#mainlabelvis').attr('value','');
-		jQuery('#add_mainlabel').show();
-		jQuery('#smwmainlabel').hide();
-	}
-	function smwAddMainLabel(){
-		jQuery('#mainlabelhid').attr('value','');
-		jQuery('#mainlabelvis').attr('value','');
-		jQuery('#smwmainlabel').show();
-		jQuery('#add_mainlabel').hide();
-	}
-	jQuery(document).ready(function(){
-		jQuery('#mainlabelvis').bind('change', function(){
-			jQuery('#mainlabelhid').attr('value',jQuery('#mainlabelvis').attr('value'));
-		});
-	});
-</script>
-EOT;
-		$wgOut->addScript( $javascriptText );
-		$result[0] = Html::openElement( 'span', array( 'id' => 'add_mainlabel', 'style' => "display:$linkDisplay;" ) ) .
-						'[' . Html::element( 'a', array( 'href' => 'javascript:smwAddMainLabel()',
-							'rel' => 'nofollow', 'id' => 'add_mainlabel' ),
-							wfMsg( 'smw_qc_addmainlabel' ) ) .
-						']</span>';
-
-		$result[1] = Html::openElement( 'div', array( 'id' => 'smwmainlabel', 'class' => 'smwsort', 'style' => "display:$formDisplay;" ) ) .
-						Html::openElement( 'span', array( 'class' => 'smwquisortlabel' ) ) .
-						Html::openElement( 'span', array( 'class' => 'smw-remove' ) ) .
-						Html::openElement( 'a', array( 'href' => 'javascript:smwRemoveMainLabel()' ) ) .
-						'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
-						'</a>' .
-						'</span>' .
-						'<strong>' . wfMsg( 'smw_qc_mainlabel' ) . '</strong>' .
-						'</span>' .
-						'<input size="25" value="' . $mainLabelText . '" id="mainlabelvis" />' .
-						Html::hidden( 'pmainlabel', $mainLabel, array( 'id' => 'mainlabelhid' ) ) .
-						'</div>';
-		return $result;
 	}
 
 	/**
@@ -201,8 +110,7 @@ EOT;
 		// Main query and format options
 		$result .= $this->getQueryFormBox();
 		// sorting and prinouts
-		$mainLabelHtml = $this->getMainLabelFormBoxSep();
-		$result .= '<div class="smwqcsortbox">' . $mainLabelHtml[1] . $this->getPoSortFormBox() . $mainLabelHtml[0] . '</div>';
+		$result .= '<div class="smwqcsortbox">' . $this->getPoSortFormBox() . '</div>';
 		// additional options
 		// START: show|hide additional options
 		$result .= '<div class="smwqcformatas"><strong>' . wfMsg( 'smw_ask_format_as' ) . '</strong>';

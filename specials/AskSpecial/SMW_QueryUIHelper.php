@@ -416,6 +416,8 @@ EOT;
 		$categoryNoValues = $wgRequest->getArray( 'cat_no' );
 		$mainColumnLabels = $wgRequest->getArray( 'maincol_label' );
 		$po = array();
+		$mainLabel = $wgRequest->getVal( 'pmainlabel', '' );
+		$params['mainlabel'] = $mainLabel;
 
 		// processing params for main result column
 		if ( is_array( $mainColumnLabels ) ) {
@@ -523,8 +525,36 @@ EOT;
 		$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
 		$wgOut->addStyle( "$smwgScriptPath/skins/SMW_custom.css" );
 
-		$result = '';
+		$result = '<span id="smwposortbox">';
 		$numSortValues = 0;
+		$params = $this->uiCore->getParameters();
+
+		// mainlabel
+		if ( is_array( $params ) && array_key_exists( 'mainlabel', $params ) ) {
+			$mainLabel = $params['mainlabel'];
+		} else {
+			$mainLabel = '';
+		}
+		if ( $mainLabel == '-' || $this->uiCore->getQueryString() == '' ) {
+			$mainLabelText = '';
+			$formDisplay = 'none';
+		} else {
+			$mainLabelText = $mainLabel;
+			$formDisplay = 'block';
+		}
+		$result .= Html::openElement( 'div', array( 'id' => 'smwmainlabel', 'class' => 'smwsort', 'style' => "display:$formDisplay;" ) ) .
+						Html::openElement( 'span', array( 'class' => 'smwquisortlabel' ) ) .
+						Html::openElement( 'span', array( 'class' => 'smw-remove' ) ) .
+						Html::openElement( 'a', array( 'href' => 'javascript:smwRemoveMainLabel()' ) ) .
+						'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
+						'</a>' .
+						'</span>' .
+						wfMsg( 'smw_qui_rescol' ) .
+						'</span>' .
+						'<input size="25" value="' . $mainLabelText . '" id="mainlabelvis" />' .
+						'<input type="hidden" name="pmainlabel" value="' . $mainLabel . '" id="mainlabelhid" />' .
+						'</div>';
+
 		// START: create form elements already submitted earlier via form
 		// attempting to load parameters from $wgRequest
 		$propertyValues = $wgRequest->getArray( 'property' );
@@ -571,7 +601,6 @@ EOT;
 			$categoryNoValues = array();
 			$mainColumnLabels = array();
 
-			$params = $this->uiCore->getParameters();
 			if ( array_key_exists( 'sort', $params ) && array_key_exists( 'order', $params ) ) {
 				$sortVal = explode( ',', trim( strtolower( $params['sort'] ) ) );
 				$orderVal = explode( ',', $params['order'] );
@@ -741,7 +770,7 @@ EOT;
 				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) ) .
 					'<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 					wfMsg( 'smw_qui_rescol' ) . '</span>' .
-					Xml::input( "maincol_label[$i]", '20', $mainColumnLabels[$key], array ( 'id' => "maincol_label$i" ) ) . " " .
+					Xml::input( "maincol_label[$i]", '25', $mainColumnLabels[$key], array ( 'id' => "maincol_label$i" ) ) . " " .
 					Xml::closeElement( 'div' );
 				$i++;
 			}
@@ -847,6 +876,13 @@ function smw_property_autocomplete(){
 
 		}
 	});
+}
+
+function smwRemoveMainLabel(){
+		jQuery('#mainlabelhid').attr('value','-');
+		jQuery('#mainlabelvis').attr('value','');
+		jQuery('#smwmainlabel').hide();
+		smw_mainLabelHidden=true;
 }
 
 function smw_category_autocomplete(){
@@ -981,35 +1017,41 @@ function smw_addCategoryInstance(starter_div_id, main_div_id) {
 	num_elements++;
 	smw_category_autocomplete();
 }
-
+var smw_mainLabelHidden=true;
 function smw_addMainColInstance(starter_div_id, main_div_id) {
-	var starter_div = document.getElementById(starter_div_id);
-	var main_div = document.getElementById(main_div_id);
+	if(smw_mainLabelHidden && jQuery('#smwposortbox').find('.smw-remove').length==1){
+		jQuery('#mainlabelhid').attr('value','');
+		jQuery('#mainlabelvis').attr('value','');
+		jQuery('#smwmainlabel').show();
+		smw_mainLabelHidden=false;
+	} else {
+		var starter_div = document.getElementById(starter_div_id);
+		var main_div = document.getElementById(main_div_id);
 
-	//Create the new instance
-	var new_div = starter_div.cloneNode(true);
-	var div_id = 'sort_div_' + num_elements;
-	new_div.id = div_id;
-	new_div.style.display = 'block';
-	jQuery(new_div.getElementsByTagName('label')).attr('for', 'display'+num_elements);
-	var children = new_div.getElementsByTagName('*');
-	var x;
-	for (x = 0; x < children.length; x++) {
-		if (jQuery(children[x]).attr('for')) jQuery(children[x]).attr('for',"display"+num_elements);
-		if (children[x].name){
-			children[x].id = children[x].name.replace(/_num/, ''+num_elements);
-			children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
+		//Create the new instance
+		var new_div = starter_div.cloneNode(true);
+		var div_id = 'sort_div_' + num_elements;
+		new_div.id = div_id;
+		new_div.style.display = 'block';
+		jQuery(new_div.getElementsByTagName('label')).attr('for', 'display'+num_elements);
+		var children = new_div.getElementsByTagName('*');
+		var x;
+		for (x = 0; x < children.length; x++) {
+			if (jQuery(children[x]).attr('for')) jQuery(children[x]).attr('for',"display"+num_elements);
+			if (children[x].name){
+				children[x].id = children[x].name.replace(/_num/, ''+num_elements);
+				children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
+			}
 		}
+
+		//Add the new instance
+		main_div.appendChild(new_div);
+
+		// initialize delete button
+		st='sort_div_'+num_elements;
+		jQuery('#'+new_div.id).find(".smw-remove a")[0].href="javascript:removePOInstance('"+st+"')";
+		num_elements++;
 	}
-
-	//Add the new instance
-	main_div.appendChild(new_div);
-
-	// initialize delete button
-	st='sort_div_'+num_elements;
-	jQuery('#'+new_div.id).find(".smw-remove a")[0].href="javascript:removePOInstance('"+st+"')";
-	num_elements++;
-	smw_category_autocomplete();
 }
 
 function removePOInstance(div_id) {
@@ -1094,11 +1136,18 @@ jQuery(function(){
 
 jQuery(document).ready(smw_property_autocomplete);
 jQuery(document).ready(smw_category_autocomplete);
+jQuery(document).ready(function(){
+		jQuery('#mainlabelvis').bind('change', function(){
+			jQuery('#mainlabelhid').attr('value',jQuery('#mainlabelvis').attr('value'));
+		});
+		if(jQuery('#mainlabelvis')!='') smw_mainLabelHidden=false;
+});
 </script>
 
 EOT;
 
 		$wgOut->addScript( $javascriptText );
+		$result .= '</span>';
 		return $result;
 	}
 
