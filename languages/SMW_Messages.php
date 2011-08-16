@@ -236,6 +236,8 @@ It takes care that humans do not turn into websites.',
 
 	// Messages for Query Creator Special
 	'querycreator'             => 'Query Creator',
+	'smw_qc_mainlabel'         => 'Main label',
+	'smw_qc_addmainlabel'      => 'Add main label',
 	'smw_qc_show_addnal_opts'  => 'Show more options',
 	'smw_qc_hide_addnal_opts'  => 'Show less options',
 	'smw_qc_query_help'        => 'Enter a query using the form below. Select wiki pages based on

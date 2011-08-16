@@ -60,7 +60,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 * @global WebRequest $wgRequest
 	 * @return array
 	 */
-	protected function processParams(){
+	protected function processParams() {
 		global $wgRequest;
 		$params = array_merge(
 							array(
@@ -68,8 +68,100 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 							'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
 							'limit'   =>  $wgRequest->getVal( 'limit',   '20' ) ),
 							$this->processPoSortFormBox( $wgRequest ),
-							$this->processFormatSelectBox( $wgRequest ) );
+							$this->processFormatSelectBox( $wgRequest ),
+							$this->processMainLabelFormBox( $wgRequest )
+				);
 		return $params;
+	}
+
+	/**
+	 * A method which decodes form data sent through form-elements generated
+	 * by its complement, getMainLabelFormBoxSep().
+	 *
+	 * @param WebRequest $wgRequest
+	 * @return array
+	 */
+	protected function processMainLabelFormBox( WebRequest $wgRequest ) {
+		$mainLabel = $wgRequest->getVal( 'pmainlabel', '' );
+		$result = array( 'mainlabel' => $mainLabel );
+		return $result;
+	}
+
+	/**
+	 * Generates the form elements for the main-label parameter.  Use its
+	 * complement processMainLabelFormBox() to decode data sent through these
+	 * elements.
+	 *
+	 * @global string $smwgScriptPath
+	 * @global OutputPage $wgOut
+	 * @return array the first element has the link to enable mainlabel, and the second gives the mainlabel control
+	 */
+	protected function getMainLabelFormBoxSep() {
+		global $smwgScriptPath, $wgOut;
+		$result = array();
+		$param = $this->uiCore->getParameters();
+		if ( is_array( $param ) && array_key_exists( 'mainlabel', $param ) ) {
+			$mainLabel = $param['mainlabel'];
+		} else {
+			$mainLabel = '';
+		}
+		if ( $mainLabel == '-' ) {
+			$mainLabelText = '';
+			$linkDisplay = 'inline';
+			$formDisplay = 'none';
+		} else {
+			$mainLabelText = $mainLabel;
+			$linkDisplay = 'none';
+			$formDisplay = 'block';
+		}
+		if ( $this->uiCore->getQueryString() == '' ) {
+			$linkDisplay = 'inline';
+			$formDisplay = 'none';
+		}
+
+		$this->enableJQuery();
+		$javascriptText = <<<EOT
+<script type="text/javascript">
+
+	function smwRemoveMainLabel(){
+		jQuery('#mainlabelhid').attr('value','-');
+		jQuery('#mainlabelvis').attr('value','');
+		jQuery('#add_mainlabel').show();
+		jQuery('#smwmainlabel').hide();
+	}
+	function smwAddMainLabel(){
+		jQuery('#mainlabelhid').attr('value','');
+		jQuery('#mainlabelvis').attr('value','');
+		jQuery('#smwmainlabel').show();
+		jQuery('#add_mainlabel').hide();
+	}
+	jQuery(document).ready(function(){
+		jQuery('#mainlabelvis').bind('change', function(){
+			jQuery('#mainlabelhid').attr('value',jQuery('#mainlabelvis').attr('value'));
+		});
+	});
+</script>
+EOT;
+		$wgOut->addScript( $javascriptText );
+		$result[0] = Html::openElement( 'span', array( 'id' => 'add_mainlabel', 'style' => "display:$linkDisplay;" ) ) .
+						'[' . Html::element( 'a', array( 'href' => 'javascript:smwAddMainLabel()',
+							'rel' => 'nofollow', 'id' => 'add_mainlabel' ),
+							wfMsg( 'smw_qc_addmainlabel' ) ) .
+						']</span>';
+
+		$result[1] = Html::openElement( 'div', array( 'id' => 'smwmainlabel', 'class' => 'smwsort', 'style' => "display:$formDisplay;" ) ) .
+						Html::openElement( 'span', array( 'class' => 'smwquisortlabel' ) ) .
+						Html::openElement( 'span', array( 'class' => 'smw-remove' ) ) .
+						Html::openElement( 'a', array( 'href' => 'javascript:smwRemoveMainLabel()' ) ) .
+						'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
+						'</a>' .
+						'</span>' .
+						'<strong>' . wfMsg( 'smw_qc_mainlabel' ) . '</strong>' .
+						'</span>' .
+						'<input size="25" value="' . $mainLabelText . '" id="mainlabelvis" />' .
+						Html::hidden( 'pmainlabel', $mainLabel, array( 'id' => 'mainlabelhid' ) ) .
+						'</div>';
+		return $result;
 	}
 
 	/**
@@ -85,7 +177,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 * Overridden from parent to ignore GUI parameters 'format' 'limit' and 'offset'
 	 */
 	protected function showFormatOptions( $format, array $paramValues, array $ignoredAttribs = array() ) {
-		return parent::showFormatOptions( $format, $paramValues, array( 'format', 'limit', 'offset' ) );
+		return parent::showFormatOptions( $format, $paramValues, array( 'format', 'limit', 'offset', 'mainlabel' ) );
 	}
 	/**
 	 * Creates the input form
@@ -107,11 +199,12 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		// Main query and format options
 		$result .= $this->getQueryFormBox();
 		// sorting and prinouts
-		$result .= '<div class="smwqcsortbox">' . $this->getPoSortFormBox() . '</div>';
+		$mainLabelHtml = $this->getMainLabelFormBoxSep();
+		$result .= '<div class="smwqcsortbox">' . $mainLabelHtml[1] . $this->getPoSortFormBox() . $mainLabelHtml[0] . '</div>';
 		// additional options
-		//START: show|hide additional options
-		$result .= '<div class="smwqcformatas"><strong>'.wfMsg('smw_ask_format_as').'</strong>';
-		$result .= $formatBox[0].'<span id="show_additional_options" style="display:inline;"><a href="#addtional" rel="nofollow" onclick="' .
+		// START: show|hide additional options
+		$result .= '<div class="smwqcformatas"><strong>' . wfMsg( 'smw_ask_format_as' ) . '</strong>';
+		$result .= $formatBox[0] . '<span id="show_additional_options" style="display:inline;"><a href="#addtional" rel="nofollow" onclick="' .
 			 "jQuery('#additional_options').show('blind');" .
 			 "document.getElementById('show_additional_options').style.display='none';" .
 			 "document.getElementById('hide_additional_options').style.display='inline';" . '">' .
@@ -122,7 +215,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			 "document.getElementById('show_additional_options').style.display='inline';" . '">' .
 			 wfMsg( 'smw_qc_hide_addnal_opts' ) . '</a></span>';
 		$result .= '</div>';
-		//END: show|hide additional options
+		// END: show|hide additional options
 		$result .= '<div id="additional_options" style="display:none">';
 
 		$result .= $formatBox[1]; // display the format options
