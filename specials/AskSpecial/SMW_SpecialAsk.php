@@ -180,7 +180,7 @@ class SMWAskPage extends SpecialPage {
 		$scripts = array();
 
 		if ( !$smwgJQueryIncluded ) {
-			$realFunction = array( 'OutputPage', 'includeJQuery' );
+			$realFunction = array( $wgOut, 'includeJQuery' );
 			if ( is_callable( $realFunction ) ) {
 				$wgOut->includeJQuery();
 			} else {

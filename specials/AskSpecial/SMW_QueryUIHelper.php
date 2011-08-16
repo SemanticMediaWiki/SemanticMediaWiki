@@ -144,7 +144,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	protected function enableJQuery() {
 		global $wgOut, $smwgJQueryIncluded, $smwgScriptPath;
 			if ( !$smwgJQueryIncluded ) {
-				$realFunction = array( 'OutputPage', 'includeJQuery' );
+				$realFunction = array( $wgOut, 'includeJQuery' );
 				if ( is_callable( $realFunction ) ) {
 					$wgOut->includeJQuery();
 				} else {
