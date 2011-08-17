@@ -391,6 +391,7 @@ END;
 				}
 
 				if ( !isset( $this->m_params[$desckey] ) ) {
+					// / @bug The current SMWStore will never return SMWConceptValue (an SMWDataValue) here; it might return SMWDIConcept (an SMWDataItem)
 					$dv = end( smwfGetStore()->getPropertyValues( SMWWikiPageValue::makePageFromTitle( $concept ), new SMWDIProperty( '_CONC' ) ) );
 					if ( $dv instanceof SMWConceptValue ) {
 						$this->m_params[$desckey] = $dv->getDocu();
