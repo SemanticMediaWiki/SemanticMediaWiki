@@ -2027,45 +2027,47 @@ class SMWQueryUIHelper {
 	 */
 	public function execute() {
 		$errors = array();
-		$query = SMWQueryProcessor::createQuery( $this->queryString, $this->parameters,
-			SMWQueryProcessor::SPECIAL_PAGE , $this->parameters['format'], $this->printOuts );
-		$res = smwfGetStore()->getQueryResult( $query );
-		$this->queryResult = $res;
+		if ( $this->queryString != '' ) {
+			$query = SMWQueryProcessor::createQuery( $this->queryString, $this->parameters,
+				SMWQueryProcessor::SPECIAL_PAGE , $this->parameters['format'], $this->printOuts );
+			$res = smwfGetStore()->getQueryResult( $query );
+			$this->queryResult = $res;
 
-		$errors = array_merge( $errors, $res->getErrors() );
-		if ( !empty( $errors ) ) {
-			$this->errorsOccured = true;
-			$this->errors = array_merge( $errors, $this->errors );
-		}
-
-		// BEGIN: Try to be smart for rss/ical if no description/title is given and we have a concept query
-		if ( $this->parameters['format'] == 'rss' ) {
-			$descKey = 'rssdescription';
-			$titleKey = 'rsstitle';
-		} elseif ( $this->parameters['format'] == 'icalendar' ) {
-			$descKey = 'icalendardescription';
-			$titleKey = 'icalendartitle';
-		} else {
-			$descKey = false;
-		}
-
-		if ( $descKey && ( $query->getDescription() instanceof SMWConceptDescription ) &&
-			 ( !isset( $this->parameters[$descKey] ) || !isset( $this->parameters[$titleKey] ) ) ) {
-			$concept = $query->getDescription()->getConcept();
-
-			if ( !isset( $this->parameters[$titleKey] ) ) {
-				$this->parameters[$titleKey] = $concept->getText();
+			$errors = array_merge( $errors, $res->getErrors() );
+			if ( !empty( $errors ) ) {
+				$this->errorsOccured = true;
+				$this->errors = array_merge( $errors, $this->errors );
 			}
 
-			if ( !isset( $this->parameters[$descKey] ) ) {
-				// / @bug The current SMWStore will never return SMWConceptValue (an SMWDataValue) here; it might return SMWDIConcept (an SMWDataItem)
-				$dv = end( smwfGetStore()->getPropertyValues( SMWWikiPageValue::makePageFromTitle( $concept ), new SMWDIProperty( '_CONC' ) ) );
-				if ( $dv instanceof SMWConceptValue ) {
-					$this->parameters[$descKey] = $dv->getDocu();
+			// BEGIN: Try to be smart for rss/ical if no description/title is given and we have a concept query
+			if ( $this->parameters['format'] == 'rss' ) {
+				$descKey = 'rssdescription';
+				$titleKey = 'rsstitle';
+			} elseif ( $this->parameters['format'] == 'icalendar' ) {
+				$descKey = 'icalendardescription';
+				$titleKey = 'icalendartitle';
+			} else {
+				$descKey = false;
+			}
+
+			if ( $descKey && ( $query->getDescription() instanceof SMWConceptDescription ) &&
+				 ( !isset( $this->parameters[$descKey] ) || !isset( $this->parameters[$titleKey] ) ) ) {
+				$concept = $query->getDescription()->getConcept();
+
+				if ( !isset( $this->parameters[$titleKey] ) ) {
+					$this->parameters[$titleKey] = $concept->getText();
+				}
+
+				if ( !isset( $this->parameters[$descKey] ) ) {
+					// / @bug The current SMWStore will never return SMWConceptValue (an SMWDataValue) here; it might return SMWDIConcept (an SMWDataItem)
+					$dv = end( smwfGetStore()->getPropertyValues( SMWWikiPageValue::makePageFromTitle( $concept ), new SMWDIProperty( '_CONC' ) ) );
+					if ( $dv instanceof SMWConceptValue ) {
+						$this->parameters[$descKey] = $dv->getDocu();
+					}
 				}
 			}
+			// END: Try to be smart for rss/ical if no description/title is given and we have a concept query
 		}
-		// END: Try to be smart for rss/ical if no description/title is given and we have a concept query
 	}
 
 	/**
