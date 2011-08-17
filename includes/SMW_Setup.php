@@ -612,7 +612,7 @@ function smwfgetFilledHtmlTextForPS( $pageSchemaObj, &$text_extensions ){
 			$smw_array = $field->getObject('Property');   //this returns an array with property values filled
 			$prop_array = $smw_array['smw'];			
 			if($prop_array != null){
-				$html_text .= '<fieldset style="background: #00FFFF;"><legend>Property</legend>';				
+				$html_text .= '<fieldset style="background: #DEF;"><legend>Property</legend>';				
 				$html_text .= '<p> Property Name: <input size="15" name="smw_property_name_starter" value="'.$prop_array['name'].'" >Type:	';
 			$select_body = "";			
 			foreach ( $datatype_labels as $label ) {
