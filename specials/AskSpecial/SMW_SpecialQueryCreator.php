@@ -37,16 +37,20 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		if ( $this->uiCore->getQueryString() != "" ) {
 			if ( $this->usesNavigationBar() ) {
 				$htmlOutput .= Html::rawElement( 'div', array( 'class' => 'smwqcnavbar' ),
-									$this->getNavigationBar ( $this->uiCore->getLimit(), $this->uiCore->getOffset(), $this->uiCore->hasFurtherResults() )
-								);
+					$this->getNavigationBar ( $this->uiCore->getLimit(),
+						$this->uiCore->getOffset(),
+						$this->uiCore->hasFurtherResults() )
+				);
 			}
 
 			$htmlOutput .= Html::rawElement( 'div', array( 'class' => 'smwqcresult' ), $this->uiCore->getHTMLResult() );
 
 			if ( $this->usesNavigationBar() ) {
 				$htmlOutput .= Html::rawElement( 'div', array( 'class' => 'smwqcnavbar' ),
-									$this->getNavigationBar ( $this->uiCore->getLimit(), $this->uiCore->getOffset(), $this->uiCore->hasFurtherResults() )
-								);
+					$this->getNavigationBar ( $this->uiCore->getLimit(),
+						$this->uiCore->getOffset(),
+						$this->uiCore->hasFurtherResults() )
+				);
 			}
 		}
 		$wgOut->addHTML( $htmlOutput );
@@ -63,13 +67,13 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	protected function processParams() {
 		global $wgRequest;
 		$params = array_merge(
-							array(
-							'format'  =>  $wgRequest->getVal( 'format' ),
-							'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
-							'limit'   =>  $wgRequest->getVal( 'limit',   '20' ) ),
-							$this->processPoSortFormBox( $wgRequest ),
-							$this->processFormatSelectBox( $wgRequest )
-				);
+			array(
+				'format'  =>  $wgRequest->getVal( 'format' ),
+				'offset'  =>  $wgRequest->getVal( 'offset',  '0'  ),
+				'limit'   =>  $wgRequest->getVal( 'limit',   '20' ) ),
+			$this->processPoSortFormBox( $wgRequest ),
+			$this->processFormatSelectBox( $wgRequest )
+		);
 		return $params;
 	}
 
@@ -88,7 +92,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	protected function showFormatOptions( $format, array $paramValues, array $ignoredAttribs = array() ) {
 		return parent::showFormatOptions( $format, $paramValues, array(
 			'format', 'limit', 'offset', 'mainlabel', 'intro', 'outro', 'default'
-			) );
+		) );
 	}
 
 	/**
@@ -112,8 +116,9 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		// sorting and prinouts
 		$result .= '<div class="smwqcsortbox">' . $this->getPoSortFormBox() . '</div>';
 		// additional options
+
 		// START: show|hide additional options
-		$result .= '<div class="smwqcformatas"><strong>' . wfMsg( 'smw_ask_format_as' ) . '</strong>';
+		$result .= '<div class="smwqcformatas">' . Html::element( 'strong', array(), wfMsg( 'smw_ask_format_as' ) );
 		$result .= $formatBox[0] . '<span id="show_additional_options" style="display:inline;">' .
 			'<a href="#addtional" rel="nofollow" onclick="' .
 			 "jQuery('#additional_options').show('blind');" .
@@ -127,7 +132,75 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			 wfMsg( 'smw_qc_hide_addnal_opts' ) . '</a></span>';
 		$result .= '</div>';
 		// END: show|hide additional options
+
 		$result .= '<div id="additional_options" style="display:none">';
+		$result .= $this->getOtherParametersBox();
+		$result .= '<fieldset><legend>' . wfMsg( 'smw_qc_formatopt' ) . "</legend>\n" .
+					$formatBox[1] . // display the format options
+					"</fieldset>\n";
+
+		$result .= '</div>'; // end of hidden additional options
+		$result .= '<br/><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/><br/>';
+		$result .= '<a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>';
+
+		if ( $this->uiCore->getQueryString() != '' ) { // hide #ask if there isnt any query defined
+			$result .= ' | <a name="show-embed-code" id="show-embed-code" href="##" rel="nofollow">' .
+				wfMsg( 'smw_ask_show_embed' ) .
+			'</a>';
+			$result .= '<div id="embed-code-dialog">' . $this->getAskEmbedBox() . '</div>';
+			$this->enableJQueryUI();
+			$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
+			$wgOut->addStyle( "$smwgScriptPath/skins/SMW_custom.css" );
+
+			$javascriptText = <<<EOT
+<script type="text/javascript">
+	jQuery( document ).ready( function(){
+		jQuery( '#embed-code-dialog' ).dialog( {
+			autoOpen:false,
+			modal: true,
+			buttons: {
+				Ok: function(){
+					jQuery( this ).dialog( "close" );
+				}
+			}
+		} );
+		jQuery( '#show-embed-code' ).bind( 'click', function(){
+			jQuery( '#embed-code-dialog' ).dialog( "open" );
+		} );
+	} );
+</script>
+EOT;
+			$wgOut->addScript( $javascriptText );
+		}
+
+		$result .= '<input type="hidden" name="eq" value="no"/>' .
+			"\n</form><br/>";
+	return $result;
+	}
+
+	/**
+	 * Overridden to include form parameters.
+	 *
+	 * @return array of strings in the urlparamater=>value format
+	 */
+	protected function getUrlArgs() {
+		$tmpArray = array();
+		$params = $this->uiCore->getParameters();
+		foreach ( $params as $key => $value ) {
+			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
+				$tmpArray[$key] = $value;
+			}
+		}
+		$this->setUrlArgs( $tmpArray );
+		return $this->urlArgs;
+	}
+
+	/**
+	 * Creates controls for limit, intro, outro, default and offset
+	 *
+	 * @return string
+	 */
+	protected function getOtherParametersBox() {
 		$params = $this->uiCore->getParameters();
 		if ( array_key_exists( 'limit', $params ) ) {
 			$limit = $params['limit'];
@@ -154,76 +227,30 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		} else {
 			$default = '';
 		}
-		$result .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n" .
-					Html::rawElement( 'div', array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
-							'Intro: <input name="p[intro]" value="' . $intro . '"size="32"/> <br/>' . wfMsg( 'smw_paramdesc_intro' )
-					) .
-					Html::rawElement( 'div', array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
-							'Outro: <input name="p[outro]" value="' . $outro . '" size="32"/> <br/>' . wfMsg( 'smw_paramdesc_outro' )
-					) .
-					Html::rawElement( 'div', array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
-							'Default: <input name="p[default]" value="' . $default . '" size="32"/> <br/>' .  wfMsg( 'smw_paramdesc_default' )
-					) .
-					Html::hidden( 'p[limit]', $limit ) .
-					Html::hidden( 'p[offset]', $offset ) .
-					'</fieldset>';
-		$result .= '<fieldset><legend>' . wfMsg( 'smw_qc_formatopt' ) . "</legend>\n" .
-					$formatBox[1] . // display the format options
-					"</fieldset>\n";
+		$result = '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n" .
+			Html::rawElement( 'div',
+				array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
+				wfMsg( 'smw_qc_intro' ) .
+					'<input name="p[intro]" value="' . $intro . '"size="32"/> <br/>' .
+					wfMsg( 'smw_paramdesc_intro' )
+			) .
+			Html::rawElement( 'div',
+				array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
+				wfMsg( 'smw_qc_outro' ) .
+					'<input name="p[outro]" value="' . $outro . '" size="32"/> <br/>' .
+					wfMsg( 'smw_paramdesc_outro' )
+			) .
+			Html::rawElement( 'div',
+				array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
+				wfMsg( 'smw_qc_default' ) .
+					'<input name="p[default]" value="' . $default . '" size="32"/> <br/>' .
+					wfMsg( 'smw_paramdesc_default' )
+			) .
+			Html::hidden( 'p[limit]', $limit ) .
+			Html::hidden( 'p[offset]', $offset ) .
+			'</fieldset>';
 
-		$result .= '</div>'; // end of hidden additional options
-		$result .= '<br /><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/><br/>';
-
-		$result .= '<a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>';
-		if ( $this->uiCore->getQueryString() != '' ) { // hide #ask if there isnt any query defined
-			$result .= ' | <a name="show-embed-code" id="show-embed-code" href="##" rel="nofollow">' . wfMsg( 'smw_ask_show_embed' ) . '</a>';
-			$result .= '<div id="embed-code-dialog">' .
-						$this->getAskEmbedBox() .
-						'</div>';
-					$this->enableJQueryUI();
-		$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
-		$wgOut->addStyle( "$smwgScriptPath/skins/SMW_custom.css" );
-				$javascriptText = <<<EOT
-<script type="text/javascript">
-jQuery(document).ready(function(){
-	jQuery('#embed-code-dialog').dialog({
-		autoOpen:false,
-		modal: true,
-		buttons:{
-			Ok: function(){
-				jQuery(this).dialog("close");
-			}
-		}
-	});
-	jQuery('#show-embed-code').bind('click', function(){
-		jQuery('#embed-code-dialog').dialog("open");
-	});
-});
-</script>
-EOT;
-			$wgOut->addScript( $javascriptText );
-		}
-		$result .= '<input type="hidden" name="eq" value="no"/>' .
-			"\n</form><br/>";
-	return $result;
-
-	}
-
-	/**
-	 * Overridden to include form parameters.
-	 *
-	 * @return array of strings in the urlparamater=>value format
-	 */
-	protected function getUrlArgs() {
-		$tmpArray = array();
-		$params = $this->uiCore->getParameters();
-		foreach ( $params as $key => $value ) {
-			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
-				$tmpArray[$key] = $value;
-			}
-		}
-		$this->setUrlArgs( $tmpArray );
-		return $this->urlArgs;
+		return $result;
 	}
 }
 
