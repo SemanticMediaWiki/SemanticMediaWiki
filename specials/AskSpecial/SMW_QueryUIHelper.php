@@ -410,7 +410,6 @@ EOT;
 	 */
 	protected function processPoSortFormBox( WebRequest $wgRequest ) {
 		global $smwgQSortingSupport, $wgContLang;
-		if ( !$smwgQSortingSupport ) return array();
 
 		$params = array();
 		// loading all values from form
@@ -470,11 +469,7 @@ EOT;
 			$params['sort'] = '';
 			$params['order'] = '';
 			foreach ( $propertyValues as $key => $propertyValue ) {
-				$propertyValues[$key] = trim( $propertyValue );
-				if ( $propertyValue == '' ) {
-					unset( $propertyValues[$key] );
-				}
-				if ( is_array( $orderValues ) && array_key_exists( $key, $orderValues ) && $orderValues[$key] != 'NONE' ) {
+				if ( $smwgQSortingSupport && is_array( $orderValues ) && array_key_exists( $key, $orderValues ) && $orderValues[$key] != 'NONE' ) {
 					$params['sort'] .= ( $params['sort'] != '' ? ',':'' ) . $propertyValues[$key];
 					$params['order'] .= ( $params['order'] != '' ? ',':'' ) . $orderValues[$key];
 				}
@@ -514,8 +509,10 @@ EOT;
 			}
 		}
 		ksort( $po );
-		$params = array_merge( $params, $po );
-		return $params;
+		if ( $smwgQSortingSupport ) {
+			$po = array_merge( $params, $po );
+		}
+		return $po;
 
 	}
 
@@ -524,12 +521,16 @@ EOT;
 	 * options. Use its complement processPoSortFormBox() to decode data
 	 * sent by these elements.
 	 *
+	 * @global boolean $smwgQSortingSupport
+	 * @global WebRequest $wgRequest
+	 * @global OutputPage $wgOut
+	 * @global string $smwgScriptPath
+	 * @param mixed $enableAutocomplete
 	 * @return string
 	 */
 	protected function getPoSortFormBox( $enableAutocomplete = SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
 		global $smwgQSortingSupport, $wgRequest, $wgOut, $smwgScriptPath;
 
-		if ( !$smwgQSortingSupport ) return '';
 		$this->enableJQueryUI();
 		$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
 		$wgOut->addStyle( "$smwgScriptPath/skins/SMW_custom.css" );
@@ -667,13 +668,6 @@ EOT;
 				$counter++;
 			}
 		}
-		// remove empty property values
-		foreach ( $propertyValues as $key => $propertyValue ) {
-			$propertyValues[$key] = trim( $propertyValue );
-			if ( $propertyValue == '' ) {
-				unset( $propertyValues[$key] );
-			}
-		}
 
 		$i = 0;
 		$additionalPOs = array();
@@ -705,25 +699,26 @@ EOT;
 				$result .= wfMsg( 'smw_qui_property' ) . '</span>';
 				$result .= Html::input( 'property[' . $i . ']', $propertyValues[$key], 'text', array( 'size' => '25', 'id' => "property$i" ) ) . "\n";
 				$urlArgs["property[$i]"] = $propertyValues[$key];
-				$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
-				if ( array_key_exists( $key, $orderValues ) ) {
-					$urlArgs["order[$i]"] = $orderValues[$key];
+				if ( $smwgQSortingSupport ) {
+					$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
+					if ( array_key_exists( $key, $orderValues ) ) {
+						$urlArgs["order[$i]"] = $orderValues[$key];
+					}
+					$if1 = ( !array_key_exists( $key, $orderValues ) || $orderValues[$key] == 'NONE' );
+					$result .= Xml::option( wfMsg( 'smw_qui_nosort' ), "NONE", $if1 );
+
+					$if2 = ( array_key_exists( $key, $orderValues ) && $orderValues[$key] == 'ASC' );
+					$result .= Xml::option( wfMsg( 'smw_qui_ascorder' ), "ASC", $if2 );
+
+					$if3 = ( array_key_exists( $key, $orderValues ) && $orderValues[$key] == 'DESC' );
+					$result .= Xml::option( wfMsg( 'smw_qui_descorder' ), "DESC", $if3 );
+
+					$result .= Xml::closeElement( 'select' );
+
+					$if4 = ( array_key_exists( $key, $displayValues ) );
+					$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
+					if ( $if4 ) $urlArgs["display[$i]"] = '1';
 				}
-				$if1 = ( !array_key_exists( $key, $orderValues ) || $orderValues[$key] == 'NONE' );
-				$result .= Xml::option( wfMsg( 'smw_qui_nosort' ), "NONE", $if1 );
-
-				$if2 = ( array_key_exists( $key, $orderValues ) && $orderValues[$key] == 'ASC' );
-				$result .= Xml::option( wfMsg( 'smw_qui_ascorder' ), "ASC", $if2 );
-
-				$if3 = ( array_key_exists( $key, $orderValues ) && $orderValues[$key] == 'DESC' );
-				$result .= Xml::option( wfMsg( 'smw_qui_descorder' ), "DESC", $if3 );
-
-				$result .= Xml::closeElement( 'select' );
-
-				$if4 = ( array_key_exists( $key, $displayValues ) );
-				$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
-				if ( $if4 ) $urlArgs["display[$i]"] = '1';
-
 				if ( array_key_exists( $key, $propertyLabelValues ) ) {
 					$result .= Html::hidden( "prop_label[$i]", $propertyLabelValues[$key], array( 'id' => "prop_label$i" ) );
 					$urlArgs["prop_label[$i]"] = $propertyLabelValues[$key];
@@ -790,16 +785,19 @@ EOT;
 		$hiddenProperty = Html::openElement( 'div', array( 'id' => 'property_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
 					'<span class="smwquisortlabel">' . '<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
 					wfMsg( 'smw_qui_property' ) . '</span>' .
-					Xml::input( 'property_num', '25' ) . " " .
-					Html::openElement( 'select', array( 'name' => 'order_num' ) ) .
+					Xml::input( 'property_num', '25' ) . " " ;
+		if ( $smwgQSortingSupport ) {
+			$hiddenProperty .= Html::openElement( 'select', array( 'name' => 'order_num' ) ) .
 						Xml::option( wfMsg( 'smw_qui_nosort' ), 'NONE' ) .
 						Xml::option( wfMsg( 'smw_qui_ascorder' ), 'ASC' ) .
 						Xml::option( wfMsg( 'smw_qui_descorder' ), 'DESC' ) .
 					Xml::closeElement( 'select' ) .
-					Html::hidden( 'prop_label_num', '' ) .
+					Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display_num", '', true );
+		}
+		$hiddenProperty .= Html::hidden( 'prop_label_num', '' ) .
 					Html::hidden( 'prop_format_num', '' ) .
 					Html::hidden( 'prop_limit_num', '' ) .
-					Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display_num", '', true ) .
+
 					Xml::closeElement( 'div' );
 		$hiddenProperty = json_encode( $hiddenProperty );
 
@@ -1166,6 +1164,9 @@ EOT;
 	 * complement processSortingFormBox() to decode sorting data sent
 	 * by these elements.
 	 *
+	 * @global boolean $smwgQSortingSupport
+	 * @global WebRequest $wgRequest
+	 * @global OutputPage $wgOut
 	 * @return string
 	 */
 	protected function getSortingFormBox() {
