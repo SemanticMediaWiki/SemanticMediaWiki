@@ -101,12 +101,11 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	protected function makeResults() {
 		global $wgOut, $smwgScriptPath;
 		$this->enableJQuery();
-		$result = "";
+		$result = '<div class="smwqcerrors">' . $this->getErrorsHtml() . '</div>';
 		$specTitle = $this->getTitle();
 		$formatBox = $this->getFormatSelectBoxSep( 'broadtable' );
-		$result .= '<form name="ask" action="' . $specTitle->escapeLocalURL() . '" method="get">' . "\n" .
-			'<input type="hidden" name="title" value="' . $specTitle->getPrefixedText() . '"/>';
-		$result .= '<br/>';
+		$result .= Html::openElement( 'form', array( 'name' => 'qc', 'action' => $specTitle->escapeLocalURL(), 'method' => 'get' ) ) . "\n" .
+			Html::hidden( 'title', $specTitle->getPrefixedText() );
 		$result .= wfMsg( 'smw_qc_query_help' );
 		// Main query and format options
 		$result .= $this->getQueryFormBox();
@@ -115,7 +114,8 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		// additional options
 		// START: show|hide additional options
 		$result .= '<div class="smwqcformatas"><strong>' . wfMsg( 'smw_ask_format_as' ) . '</strong>';
-		$result .= $formatBox[0] . '<span id="show_additional_options" style="display:inline;"><a href="#addtional" rel="nofollow" onclick="' .
+		$result .= $formatBox[0] . '<span id="show_additional_options" style="display:inline;">' .
+			'<a href="#addtional" rel="nofollow" onclick="' .
 			 "jQuery('#additional_options').show('blind');" .
 			 "document.getElementById('show_additional_options').style.display='none';" .
 			 "document.getElementById('hide_additional_options').style.display='inline';" . '">' .
@@ -139,15 +139,30 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		} else {
 			$offset = '';
 		}
+		if ( array_key_exists( 'intro', $params ) ) {
+			$intro = $params['intro'];
+		} else {
+			$intro = '';
+		}
+		if ( array_key_exists( 'outro', $params ) ) {
+			$outro = $params['outro'];
+		} else {
+			$outro = '';
+		}
+		if ( array_key_exists( 'default', $params ) ) {
+			$default = $params['default'];
+		} else {
+			$default = '';
+		}
 		$result .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n" .
 					Html::rawElement( 'div', array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
-							'Intro: <input name="p[intro]" size="32"/> <br/>' . wfMsg( 'smw_paramdesc_intro' )
+							'Intro: <input name="p[intro]" value="' . $intro . '"size="32"/> <br/>' . wfMsg( 'smw_paramdesc_intro' )
 					) .
 					Html::rawElement( 'div', array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
-							'Outro: <input name="p[outro]" size="32"/> <br/>' . wfMsg( 'smw_paramdesc_outro' )
+							'Outro: <input name="p[outro]" value="' . $outro . '" size="32"/> <br/>' . wfMsg( 'smw_paramdesc_outro' )
 					) .
 					Html::rawElement( 'div', array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
-							'Default: <input name="p[default]" size="32"/> <br/>' .  wfMsg( 'smw_paramdesc_default' )
+							'Default: <input name="p[default]" value="' . $default . '" size="32"/> <br/>' .  wfMsg( 'smw_paramdesc_default' )
 					) .
 					Html::hidden( 'p[limit]', $limit ) .
 					Html::hidden( 'p[offset]', $offset ) .
@@ -173,6 +188,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 jQuery(document).ready(function(){
 	jQuery('#embed-code-dialog').dialog({
 		autoOpen:false,
+		modal: true,
 		buttons:{
 			Ok: function(){
 				jQuery(this).dialog("close");

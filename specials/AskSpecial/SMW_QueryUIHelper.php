@@ -136,6 +136,19 @@ abstract class SMWQueryUI extends SpecialPage {
 	}
 
 	/**
+	 * A function which shows errors as formatted Html
+	 */
+	protected function getErrorsHtml() {
+		$result = Html::openElement( 'ul' );
+		$errors = $this->uiCore->getErrors();
+		foreach ( $errors as $error ) {
+			$result .= '<span class="smwwarning"><li>' . $error . '</li></span>';
+		}
+		$result .= '</ul>';
+		return $result;
+	}
+
+	/**
 	 * A helper function to enable JQuery
 	 *
 	 * @global OutputPage $wgOut
@@ -813,7 +826,7 @@ EOT;
 		$propertyFormatHtml = Xml::inputLabelSep( 'Format:', '', 'd-prop-format', 'd-prop-format' );// todo i18n
 		$propertyLimitHtml = Xml::inputLabelSep( 'Limit:', 'd-prop-limit', 'd-prop-limit' ); // todo i18n
 		$propertyDialogBox = Xml::openElement( 'div', array( 'id' => 'prop-dialog', 'title' => wfMsg( 'smw_prp_options' ), 'class' => 'smwpropdialog' ) ) .
-					'<table>' .
+					'<table align="center">' .
 						'<tr><td>' . $propertyHtml[0] . '</td><td>' . $propertyHtml[1] . '</td></tr>' .
 						'<tr><td>' . $propertyLabelHtml[0] . '</td><td>' . $propertyLabelHtml[1] . '</td></tr>' .
 						'<tr><td>' . $propertyLimitHtml[0] . '</td><td>' . $propertyLimitHtml[1] . '</td></tr>' .
@@ -827,7 +840,7 @@ EOT;
 		$categoryYesHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dcatyes' ), '', 'd-category-yes', 'd-category-yes' );
 		$categoryNoHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dcatno' ), '', 'd-category-no', 'd-category-no' );
 		$categoryDialogBox = Xml::openElement( 'div', array( 'id' => 'cat-dialog', 'title' => wfMsg( 'smw_qui_catopts' ), 'class' => 'smwcatdialog' ) ) .
-					'<table>' .
+					'<table align="center">' .
 						'<tr><td>' . $categoryHtml[0] . '</td><td>' . $categoryHtml[1] . '</td></tr>' .
 						'<tr><td>' . $categoryLabelHtml[0] . '</td><td>' . $categoryLabelHtml[1] . '</td></tr>' .
 						'<tr><td>' . $categoryYesHtml[0] . '</td><td>' . $categoryYesHtml[1] . '</td></tr>' .
@@ -1092,6 +1105,8 @@ jQuery(function(){
 		autoOpen: false,
 		modal: true,
 		resizable: true,
+		minHeight: 200,
+		minWidth: 400,
 		buttons: {
 			"{$okMsg}": function(){
 				id=jQuery(this).dialog.id;
