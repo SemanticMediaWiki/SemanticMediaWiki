@@ -251,6 +251,10 @@ Names(<strong>[[Germany]]</strong>) and Namespaces (<strong>[[{{ns:help}}:+]]</s
 
 	//Generic messages for Query UI
 	'smw_qui_property'      => '<strong>Property</strong>',
+	'smw_qui_prop'          => 'Property:',
+	'smw_qui_labl'          => 'Label:',
+	'smw_qui_formt'         => 'Format:',
+	'smw_qui_limt'          => 'Limit:',
 	'smw_qui_shownresults'  => 'show in results',
 	'smw_qui_noquery'       => 'No query has been specified',
 	'smw_qui_invalidprop'   => '"$1" may not be a valid property',

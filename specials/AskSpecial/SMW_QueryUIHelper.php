@@ -127,10 +127,23 @@ abstract class SMWQueryUI extends SpecialPage {
 	protected function getAskEmbedBox() {
 		$result = '';
 		if ( $this->uiCore->getQueryString() != "" ) {
-			$result = Html::rawElement( 'div', array( 'id' => 'inlinequeryembed' ),
-				Html::rawElement( 'div', array( 'id' => 'inlinequeryembedinstruct' ), wfMsg( 'smw_ask_embed_instr' ) ) .
-				Html::element( 'textarea', array( 'id' => 'inlinequeryembedarea', 'readonly' => 'yes', 'cols' => '20', 'rows' => '6', 'onclick' => 'this.select()' ),
-			$this->uiCore->getAsk() ) );
+			$result = Html::rawElement(
+				'div',
+				array( 'id' => 'inlinequeryembed' ),
+				Html::rawElement(
+					'div',
+					array( 'id' => 'inlinequeryembedinstruct' ),
+					wfMsg( 'smw_ask_embed_instr' )
+				) .
+				Html::element( 'textarea',
+					array( 'id' => 'inlinequeryembedarea',
+						'readonly' => 'yes',
+						'cols' => '20',
+						'rows' => '6',
+						'onclick' => 'this.select()'
+					),
+				$this->uiCore->getAsk() )
+			);
 		}
 		return $result;
 	}
@@ -206,46 +219,47 @@ abstract class SMWQueryUI extends SpecialPage {
 			$this->enableJQueryUI();
 			$javascriptAutocompleteText = <<<END
 <script type="text/javascript">
-function smw_split(val) {
-	return val.split('\\n');
-}
-function smw_extractLast(term) {
-	return smw_split(term).pop();
-}
-function smw_escapeQuestion(term){
-	if (term.substring(0, 1) == "?") {
-		return term.substring(1);
-	} else {
-		return term;
+	function smw_split( val ) {
+		return val.split( '\\n' );
 	}
-}
 
-jQuery.noConflict();
-/* extending jQuery functions for custom highligting */
-jQuery.ui.autocomplete.prototype._renderItem = function( ul, item) {
-	var term_without_q = smw_escapeQuestion(smw_extractLast(this.term));
-	var re = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term_without_q.replace("/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi", "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi");
-	var loc = item.label.search(re);
-	if (loc >= 0) {
-		var t = item.label.substr(0, loc) + '<strong>' + item.label.substr(loc, term_without_q.length) + '</strong>' + item.label.substr(loc + term_without_q.length);
-	} else {
-		var t = item.label;
+	function smw_extractLast( term ) {
+		return smw_split( term ).pop();
 	}
-	jQuery( "<li></li>" )
-		.data( "item.autocomplete", item )
-		.append( " <a>" + t + "</a>" )
-		.appendTo( ul );
-};
+
+	function smw_escapeQuestion( term ){
+		if ( term.substring( 0, 1 ) == "?" ) {
+			return term.substring( 1 );
+		} else {
+			return term;
+		}
+	}
+
+/* extending jQuery functions for custom highligting */
+	jQuery.ui.autocomplete.prototype._renderItem = function( ul, item ) {
+		var term_without_q = smw_escapeQuestion( smw_extractLast( this.term ) );
+		var re = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term_without_q.replace("/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi", "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi");
+		var loc = item.label.search( re );
+		if ( loc >= 0 ) {
+			var t = item.label.substr( 0, loc ) + '<strong>' + item.label.substr( loc, term_without_q.length ) + '</strong>' + item.label.substr( loc + term_without_q.length );
+		} else {
+			var t = item.label;
+		}
+		jQuery( "<li></li>" )
+			.data( "item.autocomplete", item )
+			.append( " <a>" + t + "</a>" )
+			.appendTo( ul );
+	};
 
 ///* extending jquery functions for custom autocomplete matching */
-jQuery.extend( jQuery.ui.autocomplete, {
-	filter: function(array, term) {
-		var matcher = new RegExp("\\\b" + jQuery.ui.autocomplete.escapeRegex(term), "i" );
-		return jQuery.grep( array, function(value) {
-			return matcher.test( value.label || value.value || value );
-		});
-	}
-});
+	jQuery.extend( jQuery.ui.autocomplete, {
+		filter: function( array, term ) {
+			var matcher = new RegExp( "\\\b" + jQuery.ui.autocomplete.escapeRegex( term ), "i" );
+			return jQuery.grep( array, function( value ) {
+				return matcher.test( value.label || value.value || value );
+			} );
+		}
+	} );
 </script>
 END;
 
@@ -273,8 +287,9 @@ END;
 		global $smwgQMaxInlineLimit, $wgLang;
 		// Prepare navigation bar.
 		if ( $offset > 0 ) {
-			$this->setUrlArgs( array( 'offset' => max( 0, $offset - $limit ),
-									'limit' => $limit ) );
+			$this->setUrlArgs(
+				array( 'offset' => max( 0, $offset - $limit ), 'limit' => $limit )
+			);
 			$navigation = Html::element(
 				'a',
 				array(
@@ -296,8 +311,9 @@ END;
 			'</b>&#160;&#160;&#160;&#160;';
 
 		if ( $hasFurtherResults ) {
-			$this->setUrlArgs( array( 'offset' => max( 0, $offset + $limit ),
-									'limit' => $limit ) );
+			$this->setUrlArgs(
+				array( 'offset' => max( 0, $offset + $limit ), 'limit' => $limit )
+			);
 			$navigation .= Html::element(
 				'a',
 				array(
@@ -354,10 +370,10 @@ END;
 	protected function getQueryFormBox() {
 		global $wgOut, $smwgScriptPath;
 		$this->setUrlArgs( array( 'q' => $this->uiCore->getQueryString() ) );
-		$result = '<div>';
-		$result .= Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox' ),
-					$this->uiCore->getQueryString() );
-		$result .= '</div>';
+		$result = '<div>' .
+			Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox' ),
+				$this->uiCore->getQueryString() ) .
+			'</div>';
 		$this->enableJQuery();
 		$wgOut->addScriptFile( "$smwgScriptPath/skins/elastic/jquery.elastic.source.js" );
 
@@ -366,18 +382,16 @@ END;
 		 * be removed when jQuery 1.4 or above is supported.
 		 */
 		$javascript = <<<EOT
-jQuery(document).ready(function(){
-		if(jQuery.browser.msie){
-			jQuery('#querybox').attr('rows',5);
-		} else {
-			jQuery('#querybox').elastic();
-			jQuery('#querybox').trigger('update');
-		}
-});
+	jQuery( document ).ready( function(){
+			if( jQuery.browser.msie ){
+				jQuery( '#querybox' ).attr( 'rows',5 );
+			} else {
+				jQuery( '#querybox' ).elastic();
+				jQuery( '#querybox' ).trigger( 'update' );
+			}
+	} );
 EOT;
 		$wgOut->addInlineScript( $javascript );
-
-		// TODO:enable/disable on checking for errors; perhaps show error messages right below the box
 		return $result;
 	}
 
@@ -423,7 +437,9 @@ EOT;
 		$categoryYesValues = $wgRequest->getArray( 'cat_yes' );
 		$categoryNoValues = $wgRequest->getArray( 'cat_no' );
 		$mainColumnLabels = $wgRequest->getArray( 'maincol_label' );
+
 		$po = array();
+
 		$mainLabel = $wgRequest->getVal( 'pmainlabel', '' );
 		$params['mainlabel'] = $mainLabel;
 
@@ -445,12 +461,14 @@ EOT;
 					$po[$key] = "?$categoryNamespace" ;
 				} else {
 					$po[$key] = "?$categoryNamespace:$value";
-					if ( is_array( $categoryYesValues ) &&
-							is_array( $categoryNoValues ) &&
-							array_key_exists( $key, $categoryYesValues ) &&
-							array_key_exists( $key, $categoryNoValues ) ) {
-
-						if ( $categoryYesValues[$key] !== '' && $categoryNoValues[$key] !== '' ) {
+					if ( is_array( $categoryYesValues )
+						&& is_array( $categoryNoValues )
+						&& array_key_exists( $key, $categoryYesValues )
+						&& array_key_exists( $key, $categoryNoValues ) )
+					{
+						if ( $categoryYesValues[$key] !== ''
+							&& $categoryNoValues[$key] !== '' )
+						{
 							$po[$key] .= "#$categoryYesValues[$key],$categoryNoValues[$key]";
 						}
 					}
@@ -469,7 +487,11 @@ EOT;
 			$params['sort'] = '';
 			$params['order'] = '';
 			foreach ( $propertyValues as $key => $propertyValue ) {
-				if ( $smwgQSortingSupport && is_array( $orderValues ) && array_key_exists( $key, $orderValues ) && $orderValues[$key] != 'NONE' ) {
+				if ( $smwgQSortingSupport
+					&& is_array( $orderValues )
+					&& array_key_exists( $key, $orderValues )
+					&& $orderValues[$key] != 'NONE' )
+				{
 					$params['sort'] .= ( $params['sort'] != '' ? ',':'' ) . $propertyValues[$key];
 					$params['order'] .= ( $params['order'] != '' ? ',':'' ) . $orderValues[$key];
 				}
@@ -484,20 +506,23 @@ EOT;
 			if ( is_array( $displayValues ) ) {
 				foreach ( $displayValues as $key => $value ) {
 					if ( $value == '1' && array_key_exists( $key, $propertyValues ) ) {
-					$propertyValues[$key] = '?' . trim( $propertyValues[$key] ); // adding leading ?
-						if ( is_array( $propertyFormatValues ) && // adding PO format
-								array_key_exists( $key, $propertyFormatValues ) &&
-								$propertyFormatValues[$key] != '' ) {
+						$propertyValues[$key] = '?' . trim( $propertyValues[$key] ); // adding leading '?'
+						if ( is_array( $propertyFormatValues ) // adding PO format
+							&& array_key_exists( $key, $propertyFormatValues )
+							&& $propertyFormatValues[$key] != '' )
+						{
 							$propertyValues[$key] .= '#' . $propertyFormatValues[$key];
 						}
-						if ( is_array( $propertyLabelValues ) &&
-								array_key_exists( $key, $propertyLabelValues ) &&
-								$propertyLabelValues[$key] != '' ) { // adding label
+						if ( is_array( $propertyLabelValues ) // adding label
+							&& array_key_exists( $key, $propertyLabelValues )
+							&& $propertyLabelValues[$key] != '' )
+						{
 							$propertyValues[$key] .= ' = ' . $propertyLabelValues[$key];
 						}
-						if ( is_array( $propertyLimitValues ) && // adding limit
-								array_key_exists( $key, $propertyLimitValues ) &&
-								$propertyLimitValues[$key] != '' ) {
+						if ( is_array( $propertyLimitValues ) // adding limit
+							&& array_key_exists( $key, $propertyLimitValues )
+							&& $propertyLimitValues[$key] != '' )
+						{
 							// / @bug limit, when specified causes incorrect ordering of printouts
 							$po[] = $propertyValues[$key];
 							$po[] = '+limit=' . $propertyLimitValues[$key];
@@ -513,7 +538,6 @@ EOT;
 			$po = array_merge( $params, $po );
 		}
 		return $po;
-
 	}
 
 	/**
@@ -552,18 +576,26 @@ EOT;
 			$mainLabelText = $mainLabel;
 			$formDisplay = 'block';
 		}
-		$result .= Html::openElement( 'div', array( 'id' => 'smwmainlabel', 'class' => 'smwsort', 'style' => "display:$formDisplay;" ) ) .
-						Html::openElement( 'span', array( 'class' => 'smwquisortlabel' ) ) .
-						Html::openElement( 'span', array( 'class' => 'smw-remove' ) ) .
-						Html::openElement( 'a', array( 'href' => 'javascript:smwRemoveMainLabel()' ) ) .
-						'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
-						'</a>' .
-						'</span>' .
-						wfMsg( 'smw_qui_rescol' ) .
-						'</span>' .
-						'<input size="25" value="' . $mainLabelText . '" id="mainlabelvis" />' .
-						'<input type="hidden" name="pmainlabel" value="' . $mainLabel . '" id="mainlabelhid" />' .
-						'</div>';
+		$result .= Html::openElement(
+				'div',
+				array( 'id' => 'smwmainlabel',
+					'class' => 'smwsort',
+					'style' => "display:$formDisplay;" )
+			) .
+			Html::openElement( 'span',
+				array( 'class' => 'smwquisortlabel' ) ) .
+			Html::openElement( 'span',
+				array( 'class' => 'smw-remove' ) ) .
+			Html::openElement( 'a',
+				array( 'href' => 'javascript:smwRemoveMainLabel()' ) ) .
+			'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
+			'</a>' .
+			'</span>' .
+			wfMsg( 'smw_qui_rescol' ) .
+			'</span>' .
+			'<input size="25" value="' . $mainLabelText . '" id="mainlabelvis" />' .
+			'<input type="hidden" name="pmainlabel" value="' . $mainLabel . '" id="mainlabelhid" />' .
+			'</div>';
 		$urlArgs = array();
 		$urlArgs['pmainlabel'] = $mainLabel;
 
@@ -627,9 +659,15 @@ EOT;
 							$searchKey--;
 						}
 						$propertyValues[$counter] = $poValue->getData()->getText();
-						$propertyLabelValues[$counter] = ( $poValue->getLabel() == $propertyValues[$counter] ) ? '':$poValue->getLabel();
+
+						$propertyLabelValues[$counter] =
+							( $poValue->getLabel() == $propertyValues[$counter] ) ? '':$poValue->getLabel();
+
 						$propertyFormatValues[$counter] = $poValue->getOutputFormat();
-						$propertyLimitValues[$counter] = $poValue->getParameter( 'limit' ) ? $poValue->getParameter( 'limit' ):'';
+
+						$propertyLimitValues[$counter] =
+							( $poValue->getParameter( 'limit' ) ) ? $poValue->getParameter( 'limit' ):'';
+
 						$orderValues[$counter] = $orderVal[0];
 						$displayValues[$counter] = '1';
 						$counter++;
@@ -637,9 +675,15 @@ EOT;
 						array_shift( $sortVal );
 					} else {
 						$propertyValues[$counter] = $poValue->getData()->getText();
-						$propertyLabelValues[$counter] = ( $poValue->getLabel() == $propertyValues[$counter] ) ? '':$poValue->getLabel();
+
+						$propertyLabelValues[$counter] =
+							( $poValue->getLabel() == $propertyValues[$counter] ) ? '':$poValue->getLabel();
+
 						$propertyFormatValues[$counter] = $poValue->getOutputFormat();
-						$propertyLimitValues[$counter] = $poValue->getParameter( 'limit' ) ? $poValue->getParameter( 'limit' ):'';
+
+						$propertyLimitValues[$counter] =
+							( $poValue->getParameter( 'limit' ) ) ? $poValue->getParameter( 'limit' ):'';
+
 						$displayValues[$counter] = '1';
 						$counter++;
 					}
@@ -674,18 +718,21 @@ EOT;
 
 		$keys = array_keys( $propertyValues );
 		foreach ( $keys as $value ) {
-			$additionalPOs[$value] = $propertyValues[$value]; // array_merge won't work because numeric keys need to be preserved
+			$additionalPOs[$value] = $propertyValues[$value];
+			// array_merge won't work because numeric keys need to be preserved
 		}
 
 
 		$keys = array_keys( $categoryValues );
 		foreach ( $keys as $value ) {
-			$additionalPOs[$value] = $categoryValues[$value]; // array_merge won't work because numeric keys need to be preserved
+			$additionalPOs[$value] = $categoryValues[$value];
+			// array_merge won't work because numeric keys need to be preserved
 		}
 
 		$keys = array_keys( $mainColumnLabels );
 		foreach ( $keys as $value ) {
-			$additionalPOs[$value] = $mainColumnLabels[$value]; // array_merge won't work because numeric keys need to be preserved
+			$additionalPOs[$value] = $mainColumnLabels[$value];
+			// array_merge won't work because numeric keys need to be preserved
 		}
 
 		ksort( $additionalPOs );
@@ -694,13 +741,32 @@ EOT;
 				/*
 				 * Make an element for additional properties
 				 */
-				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
-				$result .= '<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>';
+				$result .= Html::openElement(
+					'div',
+					array( 'id' => "sort_div_$i", 'class' => 'smwsort' )
+				);
+
+				$result .= '<span class="smwquisortlabel">' .
+					'<span class="smw-remove">' .
+					'<a href="javascript:removePOInstance(\'sort_div_' . $i . '\')">' .
+					'<img src="' . $smwgScriptPath . '/skins/images/close-button.png"' .
+						'alt="' . wfMsg( 'smw_qui_delete' ) .
+					'">' .
+					'</a></span>';
 				$result .= wfMsg( 'smw_qui_property' ) . '</span>';
-				$result .= Html::input( 'property[' . $i . ']', $propertyValues[$key], 'text', array( 'size' => '25', 'id' => "property$i" ) ) . "\n";
+
+				$result .= Html::input( 'property[' . $i . ']',
+					$propertyValues[$key],
+					'text',
+					array( 'size' => '25', 'id' => "property$i" ) ) .
+				"\n";
+
 				$urlArgs["property[$i]"] = $propertyValues[$key];
 				if ( $smwgQSortingSupport ) {
-					$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
+					$result .= Html::openElement(
+						'select',
+						array( 'name' => "order[$i]" )
+					);
 					if ( array_key_exists( $key, $orderValues ) ) {
 						$urlArgs["order[$i]"] = $orderValues[$key];
 					}
@@ -717,48 +783,111 @@ EOT;
 
 					$if4 = ( array_key_exists( $key, $displayValues ) );
 					$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
-					if ( $if4 ) $urlArgs["display[$i]"] = '1';
+					if ( $if4 ) {
+						$urlArgs["display[$i]"] = '1';
+					}
 				}
 				if ( array_key_exists( $key, $propertyLabelValues ) ) {
-					$result .= Html::hidden( "prop_label[$i]", $propertyLabelValues[$key], array( 'id' => "prop_label$i" ) );
+					$result .= Html::hidden(
+						"prop_label[$i]",
+						$propertyLabelValues[$key],
+						array( 'id' => "prop_label$i" )
+					);
 					$urlArgs["prop_label[$i]"] = $propertyLabelValues[$key];
 				} else {
-					$result .= Html::hidden( "prop_label[$i]", '', array( 'id' => "prop_label$i" ) );
+					$result .= Html::hidden( "prop_label[$i]",
+						'',
+						array( 'id' => "prop_label$i" )
+					);
 				}
 				if ( array_key_exists( $key, $propertyFormatValues ) ) {
-					$result .= Html::hidden( "prop_format[$i]", $propertyFormatValues[$key], array( 'id' => "prop_format$i" ) );
+					$result .= Html::hidden( "prop_format[$i]",
+						$propertyFormatValues[$key],
+						array( 'id' => "prop_format$i" )
+					);
 					$urlArgs["prop_format[$i]"] = $propertyFormatValues[$key];
 				} else {
-					$result .= Html::hidden( "prop_format[$i]", '', array( 'id' => "prop_format$i" ) );
+					$result .= Html::hidden( "prop_format[$i]",
+						'',
+						array( 'id' => "prop_format$i" )
+					);
 				}
 				if ( array_key_exists( $key, $propertyLimitValues ) ) {
-					$result .= Html::hidden( "prop_limit[$i]", $propertyLimitValues[$key], array( 'id' => "prop_limit$i" ) );
+					$result .= Html::hidden( "prop_limit[$i]",
+						$propertyLimitValues[$key],
+						array( 'id' => "prop_limit$i" )
+					);
 					$urlArgs["prop_limit[$i]"] = $propertyLimitValues[$key];
 				} else {
-					$result .= Html::hidden( "prop_limit[$i]", '', array( 'id' => "prop_limit$i" ) );
+					$result .= Html::hidden( "prop_limit[$i]",
+						'',
+						array( 'id' => "prop_limit$i" )
+					);
 				}
-				$result .= ' <a id="more' . $i . '" "class="smwq-more" href="javascript:smw_makePropDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ';
+				$result .= Html::element( 'a',
+					array( 'id' => "more$i",
+						'class' => 'smwq-more',
+						'href' => "javascript:smw_makePropDialog('$i')"
+					),
+					WfMsg( 'smw_qui_options' )
+				);
 
 				$result .= Xml::closeElement( 'div' );
 				$i++;
 			}
 			if ( array_key_exists( $key, $categoryValues ) ) {
-				if ( !array_key_exists( $key, $categoryLabelValues ) ) $categoryLabelValues[$key] = '';
-				if ( !array_key_exists( $key, $categoryYesValues ) ) $categoryYesValues[$key] = '';
-				if ( !array_key_exists( $key, $categoryNoValues ) ) $categoryNoValues[$key] = '';
+				if ( !array_key_exists( $key, $categoryLabelValues ) ) {
+					$categoryLabelValues[$key] = '';
+				}
+				if ( !array_key_exists( $key, $categoryYesValues ) ) {
+					$categoryYesValues[$key] = '';
+				}
+				if ( !array_key_exists( $key, $categoryNoValues ) ) {
+					$categoryNoValues[$key] = '';
+				}
 				/*
 				 * Make an element for additional categories
 				 */
-				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) );
-				$result .= '<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-							wfMsg( 'smw_qui_category' ) . '</span>' .
-							Xml::input( "category[$i]", '25', $categoryValues[$key], array( 'id' => "category$i" ) ) . " " .
-							Html::hidden( "cat_label[$i]", $categoryLabelValues[$key], array( 'id' => "cat_label$i" ) ) .
-							Html::hidden( "cat_yes[$i]", $categoryYesValues[$key], array( 'id' => "cat_yes$i" ) ) .
-							Html::hidden( "cat_no[$i]", $categoryNoValues[$key], array( 'id' => "cat_no$i" ) ) .
-							' <a id="more' . $i . '" "class="smwq-more" href="javascript:smw_makeCatDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ' .
-							Xml::closeElement( 'div' );
-				$urlArgs["category[$i]"] = ( $categoryValues[$key] == '' ) ? ' ':$categoryValues[$key];
+				$result .= Html::openElement( 'div',
+					array( 'id' => "sort_div_$i", 'class' => 'smwsort' )
+				);
+				$result .= '<span class="smwquisortlabel">' .
+					'<span class="smw-remove">' .
+					Html::openElement( 'a',
+						array( 'href' => "javascript:removePOInstance('sort_div_$i')" )
+					) .
+					'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
+					'</a>' .
+					'</span>' .
+					wfMsg( 'smw_qui_category' ) .
+					'</span>' .
+					Xml::input( "category[$i]",
+						'25',
+						$categoryValues[$key],
+						array( 'id' => "category$i" )
+					) . " " .
+					Html::hidden( "cat_label[$i]",
+						$categoryLabelValues[$key],
+						array( 'id' => "cat_label$i" )
+					) .
+					Html::hidden( "cat_yes[$i]",
+						$categoryYesValues[$key],
+						array( 'id' => "cat_yes$i" )
+					) .
+					Html::hidden( "cat_no[$i]",
+						$categoryNoValues[$key],
+						array( 'id' => "cat_no$i" )
+					) .
+					Html::element( 'a',
+						array( 'id' => "more$i",
+							'class' => 'smwq-more',
+							'href' => "javascript:smw_makeCatDialog('$i')" ),
+							WfMsg( 'smw_qui_options' )
+					) .
+					Xml::closeElement( 'div' );
+				$urlArgs["category[$i]"] =
+					( $categoryValues[$key] == '' ) ? ' ':$categoryValues[$key];
+
 				$urlArgs["cat_label[$i]"] = $categoryLabelValues[$key];
 				$urlArgs["cat_yes[$i]"] = $categoryYesValues[$key];
 				$urlArgs["cat_no[$i]"] = $categoryNoValues[$key];
@@ -768,12 +897,27 @@ EOT;
 				/*
 				 * Make an element for main column
 				 */
-				$result .= Html::openElement( 'div', array( 'id' => "sort_div_$i", 'class' => 'smwsort' ) ) .
-					'<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_rescol' ) . '</span>' .
-					Xml::input( "maincol_label[$i]", '25', $mainColumnLabels[$key], array ( 'id' => "maincol_label$i" ) ) . " " .
-					Xml::closeElement( 'div' );
-				$urlArgs["maincol_label[$i]"] = ( $mainColumnLabels[$key] == '' ) ? ' ':$mainColumnLabels[$key];
+				$result .= Html::openElement( 'div',
+						array( 'id' => "sort_div_$i", 'class' => 'smwsort' )
+					) .
+					'<span class="smwquisortlabel">' .
+					'<span class="smw-remove">' .
+					Html::openelement( 'a',
+						array( 'href' => "javascript:removePOInstance('sort_div_$i')" )
+					) .
+					'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
+					'</a>' .
+					'</span>' .
+					wfMsg( 'smw_qui_rescol' ) .
+					'</span>' .
+					Xml::input( "maincol_label[$i]",
+						'25',
+						$mainColumnLabels[$key],
+						array ( 'id' => "maincol_label$i" )
+					) . " " .
+					'</div>';
+				$urlArgs["maincol_label[$i]"] =
+					( $mainColumnLabels[$key] == '' ) ? ' ':$mainColumnLabels[$key];
 				$i++;
 			}
 		}
@@ -782,69 +926,135 @@ EOT;
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
-		$hiddenProperty = Html::openElement( 'div', array( 'id' => 'property_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
-					'<span class="smwquisortlabel">' . '<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_property' ) . '</span>' .
-					Xml::input( 'property_num', '25' ) . " " ;
+		$hiddenProperty = Html::openElement( 'div',
+				array( 'id' => 'property_starter',
+					'class' => 'smwsort',
+					'style' => 'display:none' )
+				) .
+			'<span class="smwquisortlabel">' .
+			'<span class="smw-remove">' .
+			'<a>' .
+			'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
+			'</a>' .
+			'</span>' .
+			wfMsg( 'smw_qui_property' ) .
+			'</span>' .
+			Xml::input( 'property_num', '25' ) . " " ;
 		if ( $smwgQSortingSupport ) {
 			$hiddenProperty .= Html::openElement( 'select', array( 'name' => 'order_num' ) ) .
-						Xml::option( wfMsg( 'smw_qui_nosort' ), 'NONE' ) .
-						Xml::option( wfMsg( 'smw_qui_ascorder' ), 'ASC' ) .
-						Xml::option( wfMsg( 'smw_qui_descorder' ), 'DESC' ) .
-					Xml::closeElement( 'select' ) .
-					Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display_num", '', true );
+					Xml::option( wfMsg( 'smw_qui_nosort' ), 'NONE' ) .
+					Xml::option( wfMsg( 'smw_qui_ascorder' ), 'ASC' ) .
+					Xml::option( wfMsg( 'smw_qui_descorder' ), 'DESC' ) .
+				Xml::closeElement( 'select' ) .
+				Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display_num", '', true );
 		}
 		$hiddenProperty .= Html::hidden( 'prop_label_num', '' ) .
-					Html::hidden( 'prop_format_num', '' ) .
-					Html::hidden( 'prop_limit_num', '' ) .
-
-					Xml::closeElement( 'div' );
+			Html::hidden( 'prop_format_num', '' ) .
+			Html::hidden( 'prop_limit_num', '' ) .
+			Xml::closeElement( 'div' );
 		$hiddenProperty = json_encode( $hiddenProperty );
 
-		$hiddenCategory = Html::openElement( 'div', array( 'id' => 'category_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
-					'<span class="smwquisortlabel">' . '<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_category' ) . '</span>' .
-					Xml::input( "category_num", '25' ) . " " .
-					'<input type="hidden" name="cat_label_num" />' .
-					'<input type="hidden" name="cat_yes_num" />' .
-					'<input type="hidden" name="cat_no_num" />' .
-					Xml::closeElement( 'div' );
+		$hiddenCategory = Html::openElement( 'div',
+			array( 'id' => 'category_starter',
+				'class' => 'smwsort',
+				'style' => 'display:none' )
+			) .
+			'<span class="smwquisortlabel">' .
+			'<span class="smw-remove">' .
+			'<a>' .
+			'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
+			'</a>' .
+			'</span>' .
+			wfMsg( 'smw_qui_category' ) . '</span>' .
+			Xml::input( "category_num", '25' ) . " " .
+			'<input type="hidden" name="cat_label_num" />' .
+			'<input type="hidden" name="cat_yes_num" />' .
+			'<input type="hidden" name="cat_no_num" />' .
+			Xml::closeElement( 'div' );
 		$hiddenCategory = json_encode( $hiddenCategory );
 
-		$hiddenMainColumn = Html::openElement( 'div', array( 'id' => 'maincol_starter', 'class' => 'smwsort', 'style' => 'display:none' ) ) .
-					'<span class="smwquisortlabel">' . '<span class="smw-remove"><a><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>' .
-					wfMsg( 'smw_qui_rescol' ) . '</span>' .
-					Xml::input( "maincol_label_num", '25' ) . " " .
-					Xml::closeElement( 'div' );
+		$hiddenMainColumn = Html::openElement( 'div',
+			array( 'id' => 'maincol_starter',
+				'class' => 'smwsort',
+				'style' => 'display:none' )
+			) .
+			'<span class="smwquisortlabel">' .
+			'<span class="smw-remove">' .
+			'<a>' .
+			'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
+			'</a>' .
+			'</span>' .
+			wfMsg( 'smw_qui_rescol' ) . '</span>' .
+			Xml::input( "maincol_label_num", '25' ) . " " .
+			Xml::closeElement( 'div' );
 		$hiddenMainColumn = json_encode( $hiddenMainColumn );
 
 		// create dialogbox for Property options
-		$propertyHtml = Xml::inputLabelSep( 'Property:', '', 'd-property', 'd-property' ); // todo i18n
-		$propertyLabelHtml = Xml::inputLabelSep( 'Label:', '', 'd-prop-label', 'd-prop-label' );// todo i18n
-		$propertyFormatHtml = Xml::inputLabelSep( 'Format:', '', 'd-prop-format', 'd-prop-format' );// todo i18n
-		$propertyLimitHtml = Xml::inputLabelSep( 'Limit:', 'd-prop-limit', 'd-prop-limit' ); // todo i18n
-		$propertyDialogBox = Xml::openElement( 'div', array( 'id' => 'prop-dialog', 'title' => wfMsg( 'smw_prp_options' ), 'class' => 'smwpropdialog' ) ) .
-					'<table align="center">' .
-						'<tr><td>' . $propertyHtml[0] . '</td><td>' . $propertyHtml[1] . '</td></tr>' .
-						'<tr><td>' . $propertyLabelHtml[0] . '</td><td>' . $propertyLabelHtml[1] . '</td></tr>' .
-						'<tr><td>' . $propertyLimitHtml[0] . '</td><td>' . $propertyLimitHtml[1] . '</td></tr>' .
-						'<tr><td>' . $propertyFormatHtml[0] . '</td><td>' . $propertyFormatHtml[1] . '</td></tr>' .
-					'</table>' .
-					Xml::closeElement( 'div' );
+		$propertyHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_prop' ),
+			'',
+			'd-property',
+			'd-property'
+		);
+		$propertyLabelHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_labl' ),
+			'',
+			'd-prop-label',
+			'd-prop-label'
+		);
+		$propertyFormatHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_formt' ),
+			'',
+			'd-prop-format',
+			'd-prop-format'
+		);
+		$propertyLimitHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_limt' ),
+			'd-prop-limit',
+			'd-prop-limit'
+		);
+		$propertyDialogBox = Xml::openElement(
+				'div',
+				array( 'id' => 'prop-dialog',
+					'title' => wfMsg( 'smw_prp_options' ),
+					'class' => 'smwpropdialog' )
+			) .
+			'<table align="center">' .
+			'<tr><td>' . $propertyHtml[0] .       '</td><td>' . $propertyHtml[1] . '</td></tr>' .
+			'<tr><td>' . $propertyLabelHtml[0] .  '</td><td>' . $propertyLabelHtml[1] . '</td></tr>' .
+			'<tr><td>' . $propertyLimitHtml[0] .  '</td><td>' . $propertyLimitHtml[1] . '</td></tr>' .
+			'<tr><td>' . $propertyFormatHtml[0] . '</td><td>' . $propertyFormatHtml[1] . '</td></tr>' .
+			'</table>' .
+			Xml::closeElement( 'div' );
 
 		// create dialogbox for Category options
-		$categoryHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dcategory' ), '', 'd-category', 'd-category' );
-		$categoryLabelHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dlabel' ), '', 'd-category-label', 'd-category-label' );
-		$categoryYesHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dcatyes' ), '', 'd-category-yes', 'd-category-yes' );
-		$categoryNoHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dcatno' ), '', 'd-category-no', 'd-category-no' );
-		$categoryDialogBox = Xml::openElement( 'div', array( 'id' => 'cat-dialog', 'title' => wfMsg( 'smw_qui_catopts' ), 'class' => 'smwcatdialog' ) ) .
-					'<table align="center">' .
-						'<tr><td>' . $categoryHtml[0] . '</td><td>' . $categoryHtml[1] . '</td></tr>' .
-						'<tr><td>' . $categoryLabelHtml[0] . '</td><td>' . $categoryLabelHtml[1] . '</td></tr>' .
-						'<tr><td>' . $categoryYesHtml[0] . '</td><td>' . $categoryYesHtml[1] . '</td></tr>' .
-						'<tr><td>' . $categoryNoHtml[0] . '</td><td>' . $categoryNoHtml[1] . '</td></tr>' .
-					'</table>' .
-					Xml::closeElement( 'div' );
+		$categoryHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dcategory' ),
+			'',
+			'd-category',
+			'd-category'
+		);
+		$categoryLabelHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dlabel' ),
+			'',
+			'd-category-label',
+			'd-category-label'
+		);
+		$categoryYesHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dcatyes' ),
+			'',
+			'd-category-yes',
+			'd-category-yes'
+		);
+		$categoryNoHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dcatno' ),
+			'',
+			'd-category-no',
+			'd-category-no' );
+		$categoryDialogBox = Xml::openElement( 'div',
+			array( 'id' => 'cat-dialog',
+				'title' => wfMsg( 'smw_qui_catopts' ),
+				'class' => 'smwcatdialog' )
+			) .
+			'<table align="center">' .
+			'<tr><td>' . $categoryHtml[0] . '</td><td>' . $categoryHtml[1] . '</td></tr>' .
+			'<tr><td>' . $categoryLabelHtml[0] . '</td><td>' . $categoryLabelHtml[1] . '</td></tr>' .
+			'<tr><td>' . $categoryYesHtml[0] . '</td><td>' . $categoryYesHtml[1] . '</td></tr>' .
+			'<tr><td>' . $categoryNoHtml[0] . '</td><td>' . $categoryNoHtml[1] . '</td></tr>' .
+			'</table>' .
+			Xml::closeElement( 'div' );
 
 		$result .= '<div id="sorting_main"></div>' . "\n";
 		$result .= '[<a href="javascript:smw_addPropertyInstance(\'property_starter\', \'sorting_main\')">' . wfMsg( 'smw_qui_addnprop' ) . '</a>]' .
@@ -862,175 +1072,99 @@ EOT;
 		$cancelMsg = wfMsg( 'smw_qui_cancel' );
 		$javascriptText = <<<EOT
 <script type="text/javascript">
-var num_elements = {$numSortValues};
+	var num_elements = {$numSortValues};
 EOT;
 // add autocomplete
 		if ( $enableAutocomplete == SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
 			$javascriptText .= <<<EOT
 
-function smw_property_autocomplete(){
-	jQuery('[name*="property"]').autocomplete({
-		minLength: 2,
-		source: function(request, response) {
-			url=wgScriptPath+'/api.php?action=opensearch&limit=10&namespace='+wgNamespaceIds['property']+'&format=jsonfm';
+	function smw_property_autocomplete(){
+		jQuery( '[name*="property"]' ).autocomplete( {
+			minLength: 2,
+			source: function( request, response ) {
+				url = wgScriptPath+'/api.php?action=opensearch&limit=10&namespace='+wgNamespaceIds['property']+'&format=jsonfm';
 
-			jQuery.getJSON(url, 'search='+request.term, function(data){
-				//remove the namespace prefix 'Property:' from returned data
-				for(i=0;i<data[1].length;i++) data[1][i]=data[1][i].substr(data[1][i].indexOf(':')+1);
-				response(data[1]);
-			});
+				jQuery.getJSON( url, 'search='+request.term, function( data ) {
+					//remove the namespace prefix 'Property:' from returned data
+					for( i=0; i < data[1].length; i++ ){
+						data[1][i]=data[1][i].substr(data[1][i].indexOf(':')+1);
+					}
+					response(data[1]);
+				});
+			}
+		} );
+	}
 
-		}
-	});
-}
+	function smwRemoveMainLabel(){
+			jQuery( '#mainlabelhid' ).attr( 'value', '-' );
+			jQuery( '#mainlabelvis' ).attr( 'value', '' );
+			jQuery( '#smwmainlabel' ).hide();
+			smw_mainLabelHidden = true;
+	}
 
-function smwRemoveMainLabel(){
-		jQuery('#mainlabelhid').attr('value','-');
-		jQuery('#mainlabelvis').attr('value','');
-		jQuery('#smwmainlabel').hide();
-		smw_mainLabelHidden=true;
-}
+	function smw_category_autocomplete(){
+			jQuery( '[name*="category"]' ).autocomplete( {
+			minLength: 2,
+			source: function(request, response) {
+				url = wgScriptPath+'/api.php?action=opensearch&limit=10&namespace='+wgNamespaceIds['category']+'&format=jsonfm';
 
-function smw_category_autocomplete(){
-		jQuery('[name*="category"]').autocomplete({
-		minLength: 2,
-		source: function(request, response) {
-			url=wgScriptPath+'/api.php?action=opensearch&limit=10&namespace='+wgNamespaceIds['category']+'&format=jsonfm';
-
-			jQuery.getJSON(url, 'search='+request.term, function(data){
-				//remove the namespace prefix 'Category:' from returned data
-				for(i=0;i<data[1].length;i++) data[1][i]=data[1][i].substr(data[1][i].indexOf(':')+1);
-				response(data[1]);
-			});
-
-		}
-	});
-}
+				jQuery.getJSON( url, 'search='+request.term, function( data ){
+					//remove the namespace prefix 'Category:' from returned data
+					for( i=0; i<data[1].length; i++ ){
+						data[1][i]=data[1][i].substr(data[1][i].indexOf(':')+1);
+					}
+					response(data[1]);
+				});
+			}
+		});
+	}
 EOT;
 		} else {
 			$javascriptText .= <<<EOT
-function smw_property_autocomplete(){
-}
+	function smw_property_autocomplete(){
+	}
 
-function smw_category_autocomplete(){
-}
+	function smw_category_autocomplete(){
+	}
 
 EOT;
 		}
 
 		$javascriptText .= <<<EOT
 
-function smw_makeCatDialog(cat_id){
-	jQuery('#prop-cat input').attr('value','');
+	function smw_makeCatDialog( cat_id ){
+		jQuery( '#prop-cat input' ).attr('value','');
 
-	cat=jQuery('#category'+cat_id)[0].value;
-	label=jQuery('#cat_label'+cat_id)[0].value;
-	yes = jQuery('#cat_yes'+cat_id)[0].value;
-	no = jQuery('#cat_no'+cat_id)[0].value;
+		cat=jQuery('#category'+cat_id)[0].value;
+		label=jQuery('#cat_label'+cat_id)[0].value;
+		yes = jQuery('#cat_yes'+cat_id)[0].value;
+		no = jQuery('#cat_no'+cat_id)[0].value;
 
-	jQuery('#d-category-yes').attr('value',yes);
-	jQuery('#d-category-no').attr('value',no);
-	jQuery('#d-category-label').attr('value',label);
-	jQuery('#d-category').attr('value',cat);
+		jQuery('#d-category-yes').attr('value',yes);
+		jQuery('#d-category-no').attr('value',no);
+		jQuery('#d-category-label').attr('value',label);
+		jQuery('#d-category').attr('value',cat);
 
-	jQuery('#cat-dialog').dialog.id=cat_id;
-	jQuery('#cat-dialog').dialog('open');
-}
-
-function smw_makePropDialog(prop_id){
-	jQuery('#prop-dialog input').attr('value','');
-	prop=jQuery('#property'+prop_id).attr('value');
-	label=jQuery('#prop_label'+prop_id).attr('value');
-	format=jQuery('#prop_format'+prop_id).attr('value');
-	limit=jQuery('#prop_limit'+prop_id).attr('value');
-	jQuery('#d-property').attr('value', prop);
-	jQuery('#d-prop-label').attr('value', label);
-	jQuery('#d-prop-limit').attr('value', limit);
-	jQuery('#d-prop-format').attr('value', format);
-	jQuery('#prop-dialog').dialog.id=prop_id;
-	jQuery('#prop-dialog').dialog('open');
-}
-// code for handling adding and removing the "sort" inputs
-
-function smw_addPropertyInstance(starter_div_id, main_div_id) {
-	var starter_div = document.getElementById(starter_div_id);
-	var main_div = document.getElementById(main_div_id);
-
-	//Create the new instance
-	var new_div = starter_div.cloneNode(true);
-	var div_id = 'sort_div_' + num_elements;
-	new_div.id = div_id;
-	new_div.style.display = 'block';
-	jQuery(new_div.getElementsByTagName('label')).attr('for', 'display'+num_elements);
-	var children = new_div.getElementsByTagName('*');
-	var x;
-	for (x = 0; x < children.length; x++) {
-		if (jQuery(children[x]).attr('for')) jQuery(children[x]).attr('for',"display"+num_elements);
-		if (children[x].name){
-			children[x].id = children[x].name.replace(/_num/, ''+num_elements);
-			children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
-		}
+		jQuery('#cat-dialog').dialog.id=cat_id;
+		jQuery('#cat-dialog').dialog('open');
 	}
 
-	//Create 'more' link
-	var more_button =document.createElement('span');
-	more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makePropDialog(\'' + num_elements + '\')">{$optionsMsg}</a> ';
-	more_button.id = 'more'+num_elements;
-	new_div.appendChild(more_button);
-
-	//Add the new instance
-	main_div.appendChild(new_div);
-
-	// initialize delete button
-	st='sort_div_'+num_elements;
-	jQuery('#'+new_div.id).find(".smw-remove a")[0].href="javascript:removePOInstance('"+st+"')";
-	num_elements++;
-	smw_property_autocomplete();
-}
-
-function smw_addCategoryInstance(starter_div_id, main_div_id) {
-	var starter_div = document.getElementById(starter_div_id);
-	var main_div = document.getElementById(main_div_id);
-
-	//Create the new instance
-	var new_div = starter_div.cloneNode(true);
-	var div_id = 'sort_div_' + num_elements;
-	new_div.id = div_id;
-	new_div.style.display = 'block';
-	jQuery(new_div.getElementsByTagName('label')).attr('for', 'display'+num_elements);
-	var children = new_div.getElementsByTagName('*');
-	var x;
-	for (x = 0; x < children.length; x++) {
-		if (jQuery(children[x]).attr('for')) jQuery(children[x]).attr('for',"display"+num_elements);
-		if (children[x].name){
-			children[x].id = children[x].name.replace(/_num/, ''+num_elements);
-			children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
-		}
+	function smw_makePropDialog(prop_id){
+		jQuery('#prop-dialog input').attr('value','');
+		prop=jQuery('#property'+prop_id).attr('value');
+		label=jQuery('#prop_label'+prop_id).attr('value');
+		format=jQuery('#prop_format'+prop_id).attr('value');
+		limit=jQuery('#prop_limit'+prop_id).attr('value');
+		jQuery('#d-property').attr('value', prop);
+		jQuery('#d-prop-label').attr('value', label);
+		jQuery('#d-prop-limit').attr('value', limit);
+		jQuery('#d-prop-format').attr('value', format);
+		jQuery('#prop-dialog').dialog.id=prop_id;
+		jQuery('#prop-dialog').dialog('open');
 	}
+	// code for handling adding and removing the "sort" inputs
 
-	//Create 'more' link
-	var more_button =document.createElement('span');
-	more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makeCatDialog(\'' + num_elements + '\')">{$optionsMsg}</a> ';
-	more_button.id = 'more'+num_elements;
-	new_div.appendChild(more_button);
-
-	//Add the new instance
-	main_div.appendChild(new_div);
-
-	// initialize delete button
-	st='sort_div_'+num_elements;
-	jQuery('#'+new_div.id).find(".smw-remove a")[0].href="javascript:removePOInstance('"+st+"')";
-	num_elements++;
-	smw_category_autocomplete();
-}
-var smw_mainLabelHidden=true;
-function smw_addMainColInstance(starter_div_id, main_div_id) {
-	if(smw_mainLabelHidden && jQuery('#smwposortbox').find('.smw-remove').length==1){
-		jQuery('#mainlabelhid').attr('value','');
-		jQuery('#mainlabelvis').attr('value','');
-		jQuery('#smwmainlabel').show();
-		smw_mainLabelHidden=false;
-	} else {
+	function smw_addPropertyInstance(starter_div_id, main_div_id) {
 		var starter_div = document.getElementById(starter_div_id);
 		var main_div = document.getElementById(main_div_id);
 
@@ -1050,6 +1184,12 @@ function smw_addMainColInstance(starter_div_id, main_div_id) {
 			}
 		}
 
+		//Create 'more' link
+		var more_button =document.createElement('span');
+		more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makePropDialog(\'' + num_elements + '\')">{$optionsMsg}</a> ';
+		more_button.id = 'more'+num_elements;
+		new_div.appendChild(more_button);
+
 		//Add the new instance
 		main_div.appendChild(new_div);
 
@@ -1057,99 +1197,171 @@ function smw_addMainColInstance(starter_div_id, main_div_id) {
 		st='sort_div_'+num_elements;
 		jQuery('#'+new_div.id).find(".smw-remove a")[0].href="javascript:removePOInstance('"+st+"')";
 		num_elements++;
+		smw_property_autocomplete();
 	}
-}
 
-function removePOInstance(div_id) {
-	var olddiv = document.getElementById(div_id);
-	var parent = olddiv.parentNode;
-	parent.removeChild(olddiv);
-}
+	function smw_addCategoryInstance(starter_div_id, main_div_id) {
+		var starter_div = document.getElementById(starter_div_id);
+		var main_div = document.getElementById(main_div_id);
 
-jQuery(function(){
-	jQuery('$hiddenProperty').appendTo(document.body);
-	jQuery('$hiddenCategory').appendTo(document.body);
-	jQuery('$hiddenMainColumn').appendTo(document.body);
-	jQuery('$propertyDialogBox').appendTo(document.body);
-	jQuery('$categoryDialogBox').appendTo(document.body);
-	jQuery('#cat-dialog').dialog({
-		autoOpen: false,
-		modal: true,
-		resizable: true,
-		minHeight: 200,
-		minWidth: 400,
-		buttons: {
-			"{$okMsg}": function(){
-				cat = jQuery('#d-category').attr('value');
-				label = jQuery('#d-category-label').attr('value');
-				yes = jQuery('#d-category-yes').attr('value');
-				no = jQuery('#d-category-no').attr('value');
-				id=jQuery(this).dialog.id;
-
-				jQuery('#category'+id).attr('value',cat);
-				jQuery('#cat_label'+id).attr('value',label);
-				jQuery('#cat_yes'+id).attr('value',yes);
-				jQuery('#cat_no'+id).attr('value',no);
-				jQuery(this).dialog("close");
-			},
-			"{$cancelMsg}": function(){
-				jQuery('#cat-dialog input').attr('value','');
-				jQuery(this).dialog("close");
+		//Create the new instance
+		var new_div = starter_div.cloneNode(true);
+		var div_id = 'sort_div_' + num_elements;
+		new_div.id = div_id;
+		new_div.style.display = 'block';
+		jQuery(new_div.getElementsByTagName('label')).attr('for', 'display'+num_elements);
+		var children = new_div.getElementsByTagName('*');
+		var x;
+		for (x = 0; x < children.length; x++) {
+			if (jQuery(children[x]).attr('for')) jQuery(children[x]).attr('for',"display"+num_elements);
+			if (children[x].name){
+				children[x].id = children[x].name.replace(/_num/, ''+num_elements);
+				children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
 			}
 		}
-	});
 
-	jQuery('#prop-dialog').dialog({
-		autoOpen: false,
-		modal: true,
-		resizable: true,
-		minHeight: 200,
-		minWidth: 400,
-		buttons: {
-			"{$okMsg}": function(){
-				id=jQuery(this).dialog.id;
-				property=jQuery('#d-property').attr('value');
-				label=jQuery('#d-prop-label').attr('value');
-				limit=jQuery('#d-prop-limit').attr('value');
-				format=jQuery('#d-prop-format').attr('value');
+		//Create 'more' link
+		var more_button =document.createElement('span');
+		more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makeCatDialog(\'' + num_elements + '\')">{$optionsMsg}</a> ';
+		more_button.id = 'more'+num_elements;
+		new_div.appendChild(more_button);
 
+		//Add the new instance
+		main_div.appendChild(new_div);
 
-				jQuery('#property'+id).attr('value',property);
-				jQuery('#prop_label'+id).attr('value',label);
-				jQuery('#prop_limit'+id).attr('value',limit);
-				jQuery('#prop_format'+id).attr('value',format);
-				jQuery(this).dialog("close");
-			},
-			"{$cancelMsg}": function(){
-				jQuery('#prop-dialog input').attr('value','');
-				jQuery(this).dialog("close");
-			}
-		}
-	});
-	jQuery('#sort-more').click(function(){jQuery('#prop-dialog').dialog("open");});
-	jQuery('#d-category').bind('change keyup focus click',function(){
-		if(jQuery(this).attr('value')==''){
-			jQuery('#d-category-yes').css('visibility','hidden');
-			jQuery('#d-category-no').css('visibility','hidden');
-			jQuery('#cat-dialog [for="d-category-no"]').css('visibility','hidden');
-			jQuery('#cat-dialog [for="d-category-yes"]').css('visibility','hidden');
+		// initialize delete button
+		st='sort_div_'+num_elements;
+		jQuery('#'+new_div.id).find(".smw-remove a")[0].href="javascript:removePOInstance('"+st+"')";
+		num_elements++;
+		smw_category_autocomplete();
+	}
+	var smw_mainLabelHidden=true;
+	function smw_addMainColInstance(starter_div_id, main_div_id) {
+		if(smw_mainLabelHidden && jQuery('#smwposortbox').find('.smw-remove').length==1){
+			jQuery('#mainlabelhid').attr('value','');
+			jQuery('#mainlabelvis').attr('value','');
+			jQuery('#smwmainlabel').show();
+			smw_mainLabelHidden=false;
 		} else {
-			jQuery('#d-category-yes').css('visibility','visible');
-			jQuery('#d-category-no').css('visibility','visible');
-			jQuery('#cat-dialog [for="d-category-no"]').css('visibility','visible');
-			jQuery('#cat-dialog [for="d-category-yes"]').css('visibility','visible');
-		}
-	});
-});
+			var starter_div = document.getElementById(starter_div_id);
+			var main_div = document.getElementById(main_div_id);
 
-jQuery(document).ready(smw_property_autocomplete);
-jQuery(document).ready(smw_category_autocomplete);
-jQuery(document).ready(function(){
-		jQuery('#mainlabelvis').bind('change', function(){
-			jQuery('#mainlabelhid').attr('value',jQuery('#mainlabelvis').attr('value'));
+			//Create the new instance
+			var new_div = starter_div.cloneNode(true);
+			var div_id = 'sort_div_' + num_elements;
+			new_div.id = div_id;
+			new_div.style.display = 'block';
+			jQuery(new_div.getElementsByTagName('label')).attr('for', 'display'+num_elements);
+			var children = new_div.getElementsByTagName('*');
+			var x;
+			for (x = 0; x < children.length; x++) {
+				if (jQuery(children[x]).attr('for')) jQuery(children[x]).attr('for',"display"+num_elements);
+				if (children[x].name){
+					children[x].id = children[x].name.replace(/_num/, ''+num_elements);
+					children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
+				}
+			}
+
+			//Add the new instance
+			main_div.appendChild(new_div);
+
+			// initialize delete button
+			st='sort_div_'+num_elements;
+			jQuery('#'+new_div.id).find(".smw-remove a")[0].href="javascript:removePOInstance('"+st+"')";
+			num_elements++;
+		}
+	}
+
+	function removePOInstance(div_id) {
+		var olddiv = document.getElementById(div_id);
+		var parent = olddiv.parentNode;
+		parent.removeChild(olddiv);
+	}
+
+	jQuery(function(){
+		jQuery('$hiddenProperty').appendTo(document.body);
+		jQuery('$hiddenCategory').appendTo(document.body);
+		jQuery('$hiddenMainColumn').appendTo(document.body);
+		jQuery('$propertyDialogBox').appendTo(document.body);
+		jQuery('$categoryDialogBox').appendTo(document.body);
+		jQuery('#cat-dialog').dialog({
+			autoOpen: false,
+			modal: true,
+			resizable: true,
+			minHeight: 200,
+			minWidth: 400,
+			buttons: {
+				"{$okMsg}": function(){
+					cat = jQuery('#d-category').attr('value');
+					label = jQuery('#d-category-label').attr('value');
+					yes = jQuery('#d-category-yes').attr('value');
+					no = jQuery('#d-category-no').attr('value');
+					id=jQuery(this).dialog.id;
+
+					jQuery('#category'+id).attr('value',cat);
+					jQuery('#cat_label'+id).attr('value',label);
+					jQuery('#cat_yes'+id).attr('value',yes);
+					jQuery('#cat_no'+id).attr('value',no);
+					jQuery(this).dialog("close");
+				},
+				"{$cancelMsg}": function(){
+					jQuery('#cat-dialog input').attr('value','');
+					jQuery(this).dialog("close");
+				}
+			}
 		});
-		if(jQuery('#mainlabelvis')!='') smw_mainLabelHidden=false;
-});
+
+		jQuery('#prop-dialog').dialog({
+			autoOpen: false,
+			modal: true,
+			resizable: true,
+			minHeight: 200,
+			minWidth: 400,
+			buttons: {
+				"{$okMsg}": function(){
+					id=jQuery(this).dialog.id;
+					property=jQuery('#d-property').attr('value');
+					label=jQuery('#d-prop-label').attr('value');
+					limit=jQuery('#d-prop-limit').attr('value');
+					format=jQuery('#d-prop-format').attr('value');
+
+
+					jQuery('#property'+id).attr('value',property);
+					jQuery('#prop_label'+id).attr('value',label);
+					jQuery('#prop_limit'+id).attr('value',limit);
+					jQuery('#prop_format'+id).attr('value',format);
+					jQuery(this).dialog("close");
+				},
+				"{$cancelMsg}": function(){
+					jQuery('#prop-dialog input').attr('value','');
+					jQuery(this).dialog("close");
+				}
+			}
+		});
+		jQuery('#sort-more').click(function(){jQuery('#prop-dialog').dialog("open");});
+		jQuery('#d-category').bind('change keyup focus click',function(){
+			if(jQuery(this).attr('value')==''){
+				jQuery('#d-category-yes').css('visibility','hidden');
+				jQuery('#d-category-no').css('visibility','hidden');
+				jQuery('#cat-dialog [for="d-category-no"]').css('visibility','hidden');
+				jQuery('#cat-dialog [for="d-category-yes"]').css('visibility','hidden');
+			} else {
+				jQuery('#d-category-yes').css('visibility','visible');
+				jQuery('#d-category-no').css('visibility','visible');
+				jQuery('#cat-dialog [for="d-category-no"]').css('visibility','visible');
+				jQuery('#cat-dialog [for="d-category-yes"]').css('visibility','visible');
+			}
+		});
+	});
+
+	jQuery(document).ready(smw_property_autocomplete);
+	jQuery(document).ready(smw_category_autocomplete);
+	jQuery(document).ready(function(){
+			jQuery('#mainlabelvis').bind('change', function(){
+				jQuery('#mainlabelhid').attr('value',jQuery('#mainlabelvis').attr('value'));
+			});
+			if(jQuery('#mainlabelvis')!='') smw_mainLabelHidden=false;
+	});
 </script>
 
 EOT;
