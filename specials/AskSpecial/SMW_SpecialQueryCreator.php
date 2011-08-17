@@ -101,7 +101,8 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	protected function makeResults() {
 		global $wgOut, $smwgScriptPath;
 		$this->enableJQuery();
-		$result = '<div class="smwqcerrors">' . $this->getErrorsHtml() . '</div>';
+		$result='';
+		//$result .= '<div class="smwqcerrors">' . $this->getErrorsHtml() . '</div>';
 		$specTitle = $this->getTitle();
 		$formatBox = $this->getFormatSelectBoxSep( 'broadtable' );
 		$result .= Html::openElement( 'form', array( 'name' => 'qc', 'action' => $specTitle->escapeLocalURL(), 'method' => 'get' ) ) . "\n" .
