@@ -258,16 +258,14 @@ END;
 	 */
 	public function getNavigationBar( $limit, $offset, $hasFurtherResults ) {
 		global $smwgQMaxInlineLimit, $wgLang;
-		$urlTail = $this->getUrlTail();
 		// Prepare navigation bar.
 		if ( $offset > 0 ) {
+			$this->setUrlArgs( array( 'offset' => max( 0, $offset - $limit ),
+									'limit' => $limit ) );
 			$navigation = Html::element(
 				'a',
 				array(
-					'href' => $this->getTitle()->getLocalURL(
-						'offset=' . max( 0, $offset - $limit ) .
-						'&limit=' . $limit . $urlTail
-					),
+					'href' => $this->getTitle()->getLocalURL( wfArrayToCGI( $this->getUrlArgs() ) ),
 					'rel' => 'nofollow'
 				),
 				wfMsg( 'smw_result_prev' )
@@ -285,13 +283,12 @@ END;
 			'</b>&#160;&#160;&#160;&#160;';
 
 		if ( $hasFurtherResults ) {
+			$this->setUrlArgs( array( 'offset' => max( 0, $offset + $limit ),
+									'limit' => $limit ) );
 			$navigation .= Html::element(
 				'a',
 				array(
-					'href' => $this->getTitle()->getLocalURL(
-						'offset=' . ( $offset + $limit ) .
-						'&limit=' . $limit . $urlTail
-					),
+					'href' => $this->getTitle()->getLocalURL( wfArrayToCGI( $this->getUrlArgs() ) ),
 					'rel' => 'nofollow'
 				),
 				wfMsg( 'smw_result_next' )
@@ -313,13 +310,11 @@ END;
 			}
 
 			if ( $limit != $l ) {
+				$this->setUrlArgs( array( 'offset' => $offset, 'limit' => $l ) );
 				$navigation .= Html::element(
 					'a',
 					array(
-						'href' => $this->getTitle()->getLocalURL(
-							'offset=' . $offset .
-							'&limit=' . $l . $urlTail
-						),
+						'href' => $this->getTitle()->getLocalURL( wfArrayToCGI( $this->getUrlArgs() ) ),
 						'rel' => 'nofollow'
 					),
 					$wgLang->formatNum( $l, false )
@@ -345,6 +340,7 @@ END;
 	 */
 	protected function getQueryFormBox() {
 		global $wgOut, $smwgScriptPath;
+		$this->setUrlArgs( array( 'q' => $this->uiCore->getQueryString() ) );
 		$result = '<div>';
 		$result .= Html::element( 'textarea', array( 'name' => 'q', 'id' => 'querybox' ),
 					$this->uiCore->getQueryString() );
@@ -554,53 +550,32 @@ EOT;
 						'<input size="25" value="' . $mainLabelText . '" id="mainlabelvis" />' .
 						'<input type="hidden" name="pmainlabel" value="' . $mainLabel . '" id="mainlabelhid" />' .
 						'</div>';
+		$urlArgs = array();
+		$urlArgs['pmainlabel'] = $mainLabel;
 
 		// START: create form elements already submitted earlier via form
 		// attempting to load parameters from $wgRequest
-		$propertyValues = $wgRequest->getArray( 'property' );
-		$propertyLabelValues = $wgRequest->getArray( 'prop_label' );
-		$propertyFormatValues = $wgRequest->getArray( 'prop_format' );
-		$propertyLimitValues = $wgRequest->getArray( 'prop_limit' );
-		$orderValues = $wgRequest->getArray( 'order' );
-		$displayValues = $wgRequest->getArray( 'display' );
-		$categoryValues = $wgRequest->getArray( 'category' );
-		$categoryLabelValues = $wgRequest->getArray( 'cat_label' );
-		$categoryYesValues = $wgRequest->getArray( 'cat_yes' );
-		$categoryNoValues = $wgRequest->getArray( 'cat_no' );
-		$mainColumnLabels = $wgRequest->getArray( 'maincol_label' );
+		$propertyValues = $wgRequest->getArray( 'property', array() );
+		$propertyLabelValues = $wgRequest->getArray( 'prop_label', array() );
+		$propertyFormatValues = $wgRequest->getArray( 'prop_format', array() );
+		$propertyLimitValues = $wgRequest->getArray( 'prop_limit', array() );
+		$orderValues = $wgRequest->getArray( 'order', array() );
+		$displayValues = $wgRequest->getArray( 'display', array() );
+		$categoryValues = $wgRequest->getArray( 'category', array() );
+		$categoryLabelValues = $wgRequest->getArray( 'cat_label', array() );
+		$categoryYesValues = $wgRequest->getArray( 'cat_yes', array() );
+		$categoryNoValues = $wgRequest->getArray( 'cat_no', array() );
+		$mainColumnLabels = $wgRequest->getArray( 'maincol_label', array() );
 
-		if ( is_array( $propertyValues ) || is_array( $categoryValues ) || is_array( $mainColumnLabels ) ) {
+		$mainLabelCheck = $wgRequest->getCheck( 'pmainlabel' );
+
+		if ( !$mainLabelCheck ) {
 			/*
-			 * Printouts were set via this Ui
-			 */
-			if ( is_array( $propertyValues ) ) {
-				// remove empty property values
-				foreach ( $propertyValues as $key => $propertyValue ) {
-					$propertyValues[$key] = trim( $propertyValue );
-					if ( $propertyValue == '' ) {
-						unset( $propertyValues[$key] );
-					}
-				}
-			}
-		} else {
-			/*
-			 * Printouts and sorting were set via another widget/form/source, so
+			 * Printouts and sorting might be set via another widget/form/source, so
 			 * create elements by fetching data from $uiCore. The exact ordering
-			 * of Ui elements might not be preserved, if the above block were to
+			 * of Ui elements might not be preserved, if the above check were to
 			 * be removed.
 			 */
-			$propertyValues = array();
-			$propertyLabelValues = array();
-			$propertyFormatValues = array();
-			$propertyLimitValues = array();
-			$orderValues = array();
-			$displayValues = array();
-			$categoryValues = array();
-			$categoryLabelValues = array();
-			$categoryYesValues = array();
-			$categoryNoValues = array();
-			$mainColumnLabels = array();
-
 			if ( array_key_exists( 'sort', $params ) && array_key_exists( 'order', $params ) ) {
 				$sortVal = explode( ',', trim( strtolower( $params['sort'] ) ) );
 				$orderVal = explode( ',', $params['order'] );
@@ -619,7 +594,7 @@ EOT;
 			$counter = 0;
 			foreach ( $printOuts as $poKey => $poValue ) {
 				if ( $poValue->getMode() == SMWPrintRequest::PRINT_CATS ) {
-					$categoryValues[$counter] = '';
+					$categoryValues[$counter] = ' ';
 					$categoryLabelValues[$counter] = $poValue->getLabel();
 					$categoryYesValues[$counter] = '';
 					$categoryNoValues[$counter] = '';
@@ -679,29 +654,36 @@ EOT;
 				$counter++;
 			}
 		}
+		// remove empty property values
+		foreach ( $propertyValues as $key => $propertyValue ) {
+			$propertyValues[$key] = trim( $propertyValue );
+			if ( $propertyValue == '' ) {
+				unset( $propertyValues[$key] );
+			}
+		}
+
 		$i = 0;
 		$additionalPOs = array();
-		if ( is_array( $propertyValues ) ) {
-			$keys = array_keys( $propertyValues );
-			foreach ( $keys as $value ) {
-				$additionalPOs[$value] = $propertyValues[$value]; // array_merge won't work because numeric keys need to be preserved
-			}
+
+		$keys = array_keys( $propertyValues );
+		foreach ( $keys as $value ) {
+			$additionalPOs[$value] = $propertyValues[$value]; // array_merge won't work because numeric keys need to be preserved
 		}
-		if ( is_array( $categoryValues ) ) {// same as testing $categoryLabelValues
-			$keys = array_keys( $categoryValues );
-			foreach ( $keys as $value ) {
-				$additionalPOs[$value] = $categoryValues[$value]; // array_merge won't work because numeric keys need to be preserved
-			}
+
+
+		$keys = array_keys( $categoryValues );
+		foreach ( $keys as $value ) {
+			$additionalPOs[$value] = $categoryValues[$value]; // array_merge won't work because numeric keys need to be preserved
 		}
-		if ( is_array( $mainColumnLabels ) ) {
-			$keys = array_keys( $mainColumnLabels );
-			foreach ( $keys as $value ) {
-				$additionalPOs[$value] = $mainColumnLabels[$value]; // array_merge won't work because numeric keys need to be preserved
-			}
+
+		$keys = array_keys( $mainColumnLabels );
+		foreach ( $keys as $value ) {
+			$additionalPOs[$value] = $mainColumnLabels[$value]; // array_merge won't work because numeric keys need to be preserved
 		}
+
 		ksort( $additionalPOs );
 		foreach ( $additionalPOs as $key => $value ) {
-			if ( is_array( $propertyValues ) && array_key_exists( $key, $propertyValues ) ) {
+			if ( array_key_exists( $key, $propertyValues ) ) {
 				/*
 				 * Make an element for additional properties
 				 */
@@ -709,46 +691,53 @@ EOT;
 				$result .= '<span class="smwquisortlabel"><span class="smw-remove"><a href="javascript:removePOInstance(\'sort_div_' . $i . '\')"><img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '"></a></span>';
 				$result .= wfMsg( 'smw_qui_property' ) . '</span>';
 				$result .= Html::input( 'property[' . $i . ']', $propertyValues[$key], 'text', array( 'size' => '25', 'id' => "property$i" ) ) . "\n";
+				$urlArgs["property[$i]"] = $propertyValues[$key];
 				$result .= Html::openElement( 'select', array( 'name' => "order[$i]" ) );
-
-				$if1 = ( !is_array( $orderValues ) || !array_key_exists( $key, $orderValues ) || $orderValues[$key] == 'NONE' );
+				if ( array_key_exists( $key, $orderValues ) ) {
+					$urlArgs["order[$i]"] = $orderValues[$key];
+				}
+				$if1 = ( !array_key_exists( $key, $orderValues ) || $orderValues[$key] == 'NONE' );
 				$result .= Xml::option( wfMsg( 'smw_qui_nosort' ), "NONE", $if1 );
 
-				$if2 = ( is_array( $orderValues ) && array_key_exists( $key, $orderValues ) && $orderValues[$key] == 'ASC' );
+				$if2 = ( array_key_exists( $key, $orderValues ) && $orderValues[$key] == 'ASC' );
 				$result .= Xml::option( wfMsg( 'smw_qui_ascorder' ), "ASC", $if2 );
 
-				$if3 = ( is_array( $orderValues ) && array_key_exists( $key, $orderValues ) && $orderValues[$key] == 'DESC' );
+				$if3 = ( array_key_exists( $key, $orderValues ) && $orderValues[$key] == 'DESC' );
 				$result .= Xml::option( wfMsg( 'smw_qui_descorder' ), "DESC", $if3 );
 
 				$result .= Xml::closeElement( 'select' );
 
-				$if4 = ( is_array( $displayValues ) && array_key_exists( $key, $displayValues ) );
+				$if4 = ( array_key_exists( $key, $displayValues ) );
 				$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
+				if ( $if4 ) $urlArgs["display[$i]"] = '1';
 
-				if ( is_array( $propertyLabelValues ) && array_key_exists( $key, $propertyLabelValues ) ) {
+				if ( array_key_exists( $key, $propertyLabelValues ) ) {
 					$result .= Html::hidden( "prop_label[$i]", $propertyLabelValues[$key], array( 'id' => "prop_label$i" ) );
+					$urlArgs["prop_label[$i]"] = $propertyLabelValues[$key];
 				} else {
 					$result .= Html::hidden( "prop_label[$i]", '', array( 'id' => "prop_label$i" ) );
 				}
-				if ( is_array( $propertyFormatValues ) && array_key_exists( $key, $propertyFormatValues ) ) {
+				if ( array_key_exists( $key, $propertyFormatValues ) ) {
 					$result .= Html::hidden( "prop_format[$i]", $propertyFormatValues[$key], array( 'id' => "prop_format$i" ) );
+					$urlArgs["prop_format[$i]"] = $propertyFormatValues[$key];
 				} else {
 					$result .= Html::hidden( "prop_format[$i]", '', array( 'id' => "prop_format$i" ) );
 				}
-				if ( is_array( $propertyLimitValues ) && array_key_exists( $key, $propertyLimitValues ) ) {
+				if ( array_key_exists( $key, $propertyLimitValues ) ) {
 					$result .= Html::hidden( "prop_limit[$i]", $propertyLimitValues[$key], array( 'id' => "prop_limit$i" ) );
+					$urlArgs["prop_limit[$i]"] = $propertyLimitValues[$key];
 				} else {
 					$result .= Html::hidden( "prop_limit[$i]", '', array( 'id' => "prop_limit$i" ) );
 				}
-				$result .= ' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makePropDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ';
+				$result .= ' <a id="more' . $i . '" "class="smwq-more" href="javascript:smw_makePropDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ';
 
 				$result .= Xml::closeElement( 'div' );
 				$i++;
 			}
-			if ( is_array( $categoryValues ) && array_key_exists( $key, $categoryValues ) &&
-					is_array( $categoryLabelValues ) && array_key_exists( $key, $categoryLabelValues ) &&
-					is_array( $categoryYesValues ) && array_key_exists( $key, $categoryYesValues ) &&
-					is_array( $categoryNoValues ) && array_key_exists( $key, $categoryNoValues ) ) {
+			if ( array_key_exists( $key, $categoryValues ) ) {
+				if ( !array_key_exists( $key, $categoryLabelValues ) ) $categoryLabelValues[$key] = '';
+				if ( !array_key_exists( $key, $categoryYesValues ) ) $categoryYesValues[$key] = '';
+				if ( !array_key_exists( $key, $categoryNoValues ) ) $categoryNoValues[$key] = '';
 				/*
 				 * Make an element for additional categories
 				 */
@@ -759,11 +748,15 @@ EOT;
 							Html::hidden( "cat_label[$i]", $categoryLabelValues[$key], array( 'id' => "cat_label$i" ) ) .
 							Html::hidden( "cat_yes[$i]", $categoryYesValues[$key], array( 'id' => "cat_yes$i" ) ) .
 							Html::hidden( "cat_no[$i]", $categoryNoValues[$key], array( 'id' => "cat_no$i" ) ) .
-							' <a  id="more' . $i . '" "class="smwq-more" href="javascript:smw_makeCatDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ' .
+							' <a id="more' . $i . '" "class="smwq-more" href="javascript:smw_makeCatDialog(\'' . $i . '\')"> ' . WfMsg( 'smw_qui_options' ) . ' </a> ' .
 							Xml::closeElement( 'div' );
+				$urlArgs["category[$i]"] = ( $categoryValues[$key] == '' ) ? ' ':$categoryValues[$key];
+				$urlArgs["cat_label[$i]"] = $categoryLabelValues[$key];
+				$urlArgs["cat_yes[$i]"] = $categoryYesValues[$key];
+				$urlArgs["cat_no[$i]"] = $categoryNoValues[$key];
 				$i++;
 			}
-			if ( is_array( $mainColumnLabels ) && array_key_exists( $key, $mainColumnLabels ) ) {
+			if ( array_key_exists( $key, $mainColumnLabels ) ) {
 				/*
 				 * Make an element for main column
 				 */
@@ -772,10 +765,12 @@ EOT;
 					wfMsg( 'smw_qui_rescol' ) . '</span>' .
 					Xml::input( "maincol_label[$i]", '25', $mainColumnLabels[$key], array ( 'id' => "maincol_label$i" ) ) . " " .
 					Xml::closeElement( 'div' );
+				$urlArgs["maincol_label[$i]"] = ( $mainColumnLabels[$key] == '' ) ? ' ':$mainColumnLabels[$key];
 				$i++;
 			}
 		}
 		$numSortValues = $i;
+		$this->setUrlArgs( $urlArgs );
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
@@ -1174,8 +1169,11 @@ EOT;
 		}
 
 		foreach ( $orders as $i => $order ) {
+			$urlArgs = array();
 			$result .=  "<div id=\"sort_div_$i\">" . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" name="sort[' . $i . ']" value="' .
 					htmlspecialchars( $sorts[$i] ) . "\" size=\"25\"/>\n" . '<select name="order[' . $i . ']"><option ';
+			$urlArgs["sort[$i]"] = htmlspecialchars( $sorts[$i] );
+			$urlArgs["order[$i]"] = $order;
 				if ( $order == 'ASC' ) $result .= 'selected="selected" ';
 			$result .=  'value="ASC">' . wfMsg( 'smw_qui_ascorder' ) . '</option><option ';
 				if ( $order == 'DESC' ) $result .= 'selected="selected" ';
@@ -1183,6 +1181,7 @@ EOT;
 			$result .=  'value="DESC">' . wfMsg( 'smw_qui_descorder' ) . "</option></select>\n";
 			$result .= '[<a class="smwq-remove" href="javascript:removeInstance(\'sort_div_' . $i . '\')">' . wfMsg( 'smw_qui_delete' ) . '</a>]' . "\n";
 			$result .= "</div>\n";
+			$this->setUrlArgs( $urlArgs );
 		}
 
 		$hidden .=  '<div id="sorting_starter" style="display: none">' . wfMsg( 'smw_ask_sortby' ) . ' <input type="text" size="25" />' . "\n";
@@ -1346,7 +1345,7 @@ EOT;
 			$wgOut->addScript( $javascriptAutocompleteText );
 
 		}
-
+		$this->setUrlArgs( array( 'po' => $this->getPOStrings() ) );
 		return Html::element( 'textarea', array( 'id' => 'add_property', 'name' => 'po', 'cols' => '20', 'rows' => '6' ), $this->getPOStrings() );
 	}
 
@@ -1380,41 +1379,34 @@ EOT;
 	}
 
 	/**
-	 * Generates the url parameters based on passed parameters.
-	 * UI implementations need to overload this if they use different form
-	 * parameters.
+	 * Keeps track of the various Url Arguments used
 	 *
-	 * @return string An url-encoded string.
+	 * @var array of strings in the urlparamater=>value format
 	 */
-	protected function getUrlTail() {
-		$urlTail = '&q=' . urlencode( $this->uiCore->getQuerystring() );
+	protected $urlArgs = array();
 
-		$tmpArray = array();
-		$params = $this->uiCore->getParameters();
-		foreach ( $params as $key => $value ) {
-			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
-				$tmpArray[$key] = $value;
-			}
-		}
-		$urlTail .= '&p=' . urlencode( SMWInfolink::encodeParameters( $tmpArray ) );
-
-		$printOutString = '';
-		foreach ( $this->uiCore->getPrintOuts() as $printout ) {
-			$printOutString .= $printout->getSerialisation() . "\n";
-		}
-
-		if ( $printOutString != '' ) {
-			$urlTail .= '&po=' . urlencode( $printOutString );
-		}
-		if ( array_key_exists( 'sort', $params ) ) {
-			$urlTail .= '&sort=' . $params['sort'];
-		}
-		if ( array_key_exists( 'order', $params ) ) {
-			$urlTail .= '&order=' . $params['order'];
-		}
-
-		return $urlTail;
+	/**
+	 * Given an array of urlparameter=>value pairs, this method adds them to its
+	 * set of Url-arguments. If the urlparameter already exists, it is replaced by the supplied value
+	 *
+	 * @param array $args
+	 */
+	protected function setUrlArgs( array $args ) {
+		$this->urlArgs = array_merge( $this->urlArgs, $args );
 	}
+
+	/**
+	 *
+	 * @return array of strings in the urlparamater=>value format
+	 */
+	protected function getUrlArgs() {
+		return $this->urlArgs;
+	}
+
+	protected function resetUrlArgs() {
+		$this->urlArgs = array();
+	}
+
 
 	/**
 	 * Displays a form section showing the options for a given format,
@@ -1432,6 +1424,7 @@ EOT;
 		$params = method_exists( $printer, 'getValidatorParameters' ) ? $printer->getValidatorParameters() : array();
 
 		$optionsHtml = array();
+		$urlArgs = array();
 
 		foreach ( $params as $param ) {
 			// Ignore the parameters for which we have a special control in the GUI already.
@@ -1452,7 +1445,9 @@ EOT;
 					'<br />' .
 					Html::element( 'em', array(), $param->getDescription() )
 				);
+			$urlArgs['p[' . htmlspecialchars( $param->getName() ) . ']'] = $currentValue;
 		}
+		$this->setUrlArgs( $urlArgs );
 
 		for ( $i = 0, $n = count( $optionsHtml ); $i < $n; $i++ ) {
 			if ( $i % 3 == 2 || $i == $n - 1 ) {

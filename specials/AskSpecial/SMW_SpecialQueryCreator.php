@@ -83,13 +83,14 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 *
 	 * @return string
 	 *
-	 * Overridden from parent to ignore GUI parameters 'format' 'limit' and 'offset'
+	 * Overridden from parent to ignore some parameters.
 	 */
 	protected function showFormatOptions( $format, array $paramValues, array $ignoredAttribs = array() ) {
 		return parent::showFormatOptions( $format, $paramValues, array(
 			'format', 'limit', 'offset', 'mainlabel', 'intro', 'outro', 'default'
 			) );
 	}
+
 	/**
 	 * Creates the input form
 	 *
@@ -127,7 +128,17 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 		$result .= '</div>';
 		// END: show|hide additional options
 		$result .= '<div id="additional_options" style="display:none">';
-
+		$params = $this->uiCore->getParameters();
+		if ( array_key_exists( 'limit', $params ) ) {
+			$limit = $params['limit'];
+		} else {
+			$limit = '';
+		}
+		if ( array_key_exists( 'offset', $params ) ) {
+			$offset = $params['offset'];
+		} else {
+			$offset = '';
+		}
 		$result .= '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n" .
 					Html::rawElement( 'div', array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
 							'Intro: <input name="p[intro]" size="32"/> <br/>' . wfMsg( 'smw_paramdesc_intro' )
@@ -138,6 +149,8 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 					Html::rawElement( 'div', array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
 							'Default: <input name="p[default]" size="32"/> <br/>' .  wfMsg( 'smw_paramdesc_default' )
 					) .
+					Html::hidden( 'p[limit]', $limit ) .
+					Html::hidden( 'p[offset]', $offset ) .
 					'</fieldset>';
 		$result .= '<fieldset><legend>' . wfMsg( 'smw_qc_formatopt' ) . "</legend>\n" .
 					$formatBox[1] . // display the format options
@@ -176,9 +189,25 @@ EOT;
 		}
 		$result .= '<input type="hidden" name="eq" value="no"/>' .
 			"\n</form><br/>";
-
 	return $result;
 
+	}
+
+	/**
+	 * Overridden to include form parameters.
+	 *
+	 * @return array of strings in the urlparamater=>value format
+	 */
+	protected function getUrlArgs() {
+		$tmpArray = array();
+		$params = $this->uiCore->getParameters();
+		foreach ( $params as $key => $value ) {
+			if ( !in_array( $key, array( 'sort', 'order', 'limit', 'offset', 'title' ) ) ) {
+				$tmpArray[$key] = $value;
+			}
+		}
+		$this->setUrlArgs( $tmpArray );
+		return $this->urlArgs;
 	}
 }
 
