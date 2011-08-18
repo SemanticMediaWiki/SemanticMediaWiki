@@ -146,8 +146,10 @@ class SMWTimeValue extends SMWDataValue {
 		$datecomponents = array();
 		$calendarmodel = $era = $hours = $minutes = $seconds = $timeoffset = false;
 		
-		$timeStamp = wfTimestamp( TS_MW, $value );
-		if ( $timeStamp !== false ) {
+		// Check if it's parseable by wfTimestamp when it's not a year (which is wrongly interpreted).
+		if ( strlen( $value ) != 4 && wfTimestamp( TS_MW, $value ) !== false ) {
+			$timeStamp = wfTimestamp( TS_MW, $value );
+			
 			$this->m_dataitem = new SMWDITime(
 				SMWDITime::CM_GREGORIAN,
 				substr( $timeStamp, 0, 4 ),
