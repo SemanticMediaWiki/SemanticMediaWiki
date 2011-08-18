@@ -1675,7 +1675,7 @@ EOT;
 				Html::rawElement(
 					'div',
 					array(
-						'style' => 'width: 30%; padding: 5px; float: left;'
+						'style' => 'width: 30%; min-width:220px; margin:5px; padding: 1px; float: left;'
 					),
 					'<label for="p[' . htmlspecialchars( $param->getName() ) . ']">' . htmlspecialchars( $param->getName() ) . ': </label>' .
 					$this->showFormatOption( $param, $currentValue ) .

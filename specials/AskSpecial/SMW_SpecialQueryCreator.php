@@ -229,21 +229,21 @@ EOT;
 		}
 		$result = '<fieldset><legend>' . wfMsg( 'smw_ask_otheroptions' ) . "</legend>\n" .
 			Html::rawElement( 'div',
-				array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
+				array( 'style' => 'width: 30%; min-width:220px; margin:5px; padding: 1px; float: left;' ),
 				wfMsg( 'smw_qc_intro' ) .
-					'<input name="p[intro]" value="' . $intro . '"size="32"/> <br/>' .
+					'<input name="p[intro]" value="' . $intro . '" style="width:220px;"/> <br/>' .
 					wfMsg( 'smw_paramdesc_intro' )
 			) .
 			Html::rawElement( 'div',
-				array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
+				array( 'style' => 'width: 30%; min-width:220px; margin:5px; padding: 1px; float: left;' ),
 				wfMsg( 'smw_qc_outro' ) .
-					'<input name="p[outro]" value="' . $outro . '" size="32"/> <br/>' .
+					'<input name="p[outro]" value="' . $outro . '" style="width:220px;"/> <br/>' .
 					wfMsg( 'smw_paramdesc_outro' )
 			) .
 			Html::rawElement( 'div',
-				array( 'style' => 'width: 30%; padding: 5px; float: left;' ),
+				array( 'style' => 'width: 30%; min-width:220px; margin:5px; padding: 1px; float: left;' ),
 				wfMsg( 'smw_qc_default' ) .
-					'<input name="p[default]" value="' . $default . '" size="32"/> <br/>' .
+					'<input name="p[default]" value="' . $default . '" style="width:220px;" /> <br/>' .
 					wfMsg( 'smw_paramdesc_default' )
 			) .
 			Html::hidden( 'p[limit]', $limit ) .
