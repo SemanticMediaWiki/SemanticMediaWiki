@@ -46,7 +46,7 @@ abstract class SMWDescription {
 	 * @param SMWPrintRequest $printrequest
 	 */
 	public function addPrintRequest( SMWPrintRequest $printrequest ) {
-		$this->m_printreqs[$printrequest->getHash()] = $printrequest;
+		$this->m_printreqs[] = $printrequest;
 	}
 
 	/**
@@ -56,7 +56,7 @@ abstract class SMWDescription {
 	 * @param SMWPrintRequest
 	 */
 	public function prependPrintRequest( SMWPrintRequest $printrequest ) {
-		$this->m_printreqs = array_merge( array( $printrequest->getHash() => $printrequest ), $this->m_printreqs );
+		array_unshift( $this->m_printreqs, $printrequest );
 	}
 
 	/**
