@@ -574,7 +574,7 @@ function smwfgetXMLTextForPS( $wgRequest, &$text_extensions ){
 	foreach ( $wgRequest->getValues() as $var => $val ) {
 		if(substr($var,0,18) == 'smw_property_name_'){
 			$templateNum = substr($var,18,1);						
-			$Xmltext .= '<semanticmediawiki:Property name="'.$val.'">';
+			$Xmltext .= '<semanticmediawiki:Property name="'.$val.'" >';
 		}else if(substr($var,0,18) == 'smw_property_type_'){						
 			$Xmltext .= '<Type>'.$val.'</Type>';
 		}else if(substr($var,0,11) == 'smw_values_'){
