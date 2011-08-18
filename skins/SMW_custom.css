@@ -131,6 +131,9 @@ span.smwwarning {
 }
 
 /* ui buttons for QueryUI */
+div.smwsort{
+	margin-bottom: 5px;
+}
 .smwsort input, .smwsort a, .smwsort select, .smwsort checkbox{
 	margin-left: 5px;
 	margin-bottom: 5px;
@@ -148,13 +151,8 @@ div.smwqcsortbox{
 	padding-left: 35px;
 }
 
-.smwpropdialog input, .smwpropdialog select{
-	margin-top: 10px;
-	margin-right: 5px;
-	margin-left: 5px;
-}
-
-.smwcatdialog input, .smwcatdialog select{
+.smwpropdialog input, .smwpropdialog select, .smwcatdialog input,
+.smwcatdialog select, .smwmainlabdialog input{
 	margin-top: 10px;
 	margin-right: 5px;
 	margin-left: 5px;
@@ -173,7 +171,7 @@ div.smwqcformatas{
 }
 
 .smwquisortlabel{
-	width: 15em;
+	width: 10em;
 	float: left;
 }
 /* search, browse, RDF icons */

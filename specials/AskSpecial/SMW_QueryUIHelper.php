@@ -591,11 +591,21 @@ EOT;
 				array( 'href' => 'javascript:smwRemoveMainLabel()' ) ) .
 			'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
 			'</a>' .
-			'</span>' .
+			'</span><strong>' .
 			wfMsg( 'smw_qui_rescol' ) .
-			'</span>' .
-			'<input size="25" value="' . $mainLabelText . '" id="mainlabelvis" />' .
-			'<input type="hidden" name="pmainlabel" value="' . $mainLabel . '" id="mainlabelhid" />' .
+			'</strong></span>' .
+			Xml::openElement( 'div',
+				array( 'id' => 'mainlabel-dialog',
+					'title' => wfMsg( 'smw_qui_mainlabopts'),
+					'class' => 'smwmainlabdialog' )
+				).
+			'<table align="center" ><tr>'.
+				'<td>'. wfMsg('smw_qui_dlabel'). '</td>'.
+				'<td><input size="25" value="' . $mainLabelText . '" id="mainlabelvis" /></td>'.
+			'</tr></table>' .
+			'</div>'.
+			'<input type="hidden" name="pmainlabel" value="' . $mainLabel . '" id="mainlabelhid" /> ' .
+			'<a class="smwq-more" href="javascript:smw_makeMainlabelDialog()">'.wfMsg( 'smw_qui_options' ).'</a> '.
 			'</div>';
 		$urlArgs = array();
 		$urlArgs['pmainlabel'] = $mainLabel;
@@ -908,9 +918,9 @@ EOT;
 					) .
 					'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
 					'</a>' .
-					'</span>' .
+					'</span><strong>' .
 					wfMsg( 'smw_qui_rescol' ) .
-					'</span>' .
+					'</strong></span>' .
 					Xml::input( "maincol_label[$i]",
 						'25',
 						$mainColumnLabels[$key],
@@ -981,8 +991,8 @@ EOT;
 			'<a>' .
 			'<img src="' . $smwgScriptPath . '/skins/images/close-button.png" alt="' . wfMsg( 'smw_qui_delete' ) . '">' .
 			'</a>' .
-			'</span>' .
-			wfMsg( 'smw_qui_rescol' ) . '</span>' .
+			'</span><strong>' .
+			wfMsg( 'smw_qui_rescol' ) . '</strong></span>' .
 			Xml::input( "maincol_label_num", '25' ) . " " .
 			Xml::closeElement( 'div' );
 		$hiddenMainColumn = json_encode( $hiddenMainColumn );
@@ -1049,10 +1059,18 @@ EOT;
 			'<table align="center">' .
 			'<tr><td>' . $categoryHtml[0] . '</td><td>' . $categoryHtml[1] . '</td></tr>' .
 			'<tr><td>' . $categoryLabelHtml[0] . '</td><td>' . $categoryLabelHtml[1] . '</td></tr>' .
+			'</table><br/><table align="center">'.
 			'<tr><td>' . $categoryYesHtml[0] . '</td><td>' . $categoryYesHtml[1] . '</td></tr>' .
 			'<tr><td>' . $categoryNoHtml[0] . '</td><td>' . $categoryNoHtml[1] . '</td></tr>' .
 			'</table>' .
 			Xml::closeElement( 'div' );
+		$mainLabelDialogBox = Xml::openElement( 'div',
+			array( 'id' => 'mainlabel-dialog',
+				'title' => wfMsg( 'smw_qui_mainlabopts'),
+				'class' => 'smwmainlabdialog' )
+			).
+			Xml::inputLabel(wfMsg('smw_qui_dlabel'), '', 'd-mainlabel-label').
+			Xml::closeElement('div');
 
 		$result .= '<div id="sorting_main"></div>' . "\n";
 		$result .= '[<a href="javascript:smw_addPropertyInstance(\'property_starter\', \'sorting_main\')">' . wfMsg( 'smw_qui_addnprop' ) . '</a>]' .
@@ -1130,6 +1148,10 @@ EOT;
 		}
 
 		$javascriptText .= <<<EOT
+
+	function smw_makeMainlabelDialog(){
+		jQuery('#mainlabel-dialog').dialog("open");
+	}
 
 	function smw_makeCatDialog( cat_id ){
 		jQuery( '#prop-cat input' ).attr('value','');
@@ -1242,7 +1264,7 @@ EOT;
 	}
 	var smw_mainLabelHidden=true;
 	function smw_addMainColInstance(starter_div_id, main_div_id) {
-		if(smw_mainLabelHidden && jQuery('.smwsort').length==1){
+		if(smw_mainLabelHidden && (jQuery('.smwsort').length==1)){
 			jQuery('#mainlabelhid').attr('value','');
 			jQuery('#mainlabelvis').attr('value','');
 			jQuery('#smwmainlabel').show();
@@ -1293,7 +1315,24 @@ EOT;
 		jQuery('$hiddenMainColumn').appendTo(document.body);
 		jQuery('$propertyDialogBox').appendTo(document.body);
 		jQuery('$categoryDialogBox').appendTo(document.body);
-		jQuery('#cat-dialog').dialog({
+
+		jQuery( '#mainlabel-dialog' ).dialog( {
+			autoOpen: false,
+			modal: true,
+			resizable: true,
+			minWidth: 400,
+			buttons: {
+				"{$okMsg}": function(){
+					jQuery('#mainlabelhid').attr('value',jQuery('#mainlabelvis').attr('value'));
+					jQuery(this).dialog("close");
+				},
+				"{$cancelMsg}": function(){
+					jQuery(this).dialog("close");
+				}
+			}
+		} );
+
+		jQuery( '#cat-dialog' ).dialog( {
 			autoOpen: false,
 			modal: true,
 			resizable: true,
@@ -1324,7 +1363,6 @@ EOT;
 			autoOpen: false,
 			modal: true,
 			resizable: true,
-			minHeight: 200,
 			minWidth: 400,
 			buttons: {
 				"{$okMsg}": function(){
@@ -1366,10 +1404,7 @@ EOT;
 	jQuery(document).ready(smw_property_autocomplete);
 	jQuery(document).ready(smw_category_autocomplete);
 	jQuery(document).ready(function(){
-			jQuery('#mainlabelvis').bind('change', function(){
-				jQuery('#mainlabelhid').attr('value',jQuery('#mainlabelvis').attr('value'));
-			});
-			if(jQuery('#mainlabelvis')!='') smw_mainLabelHidden=false;
+			if(jQuery('#mainlabelhid')=='') smw_mainLabelHidden=true;
 	});
 </script>
 
