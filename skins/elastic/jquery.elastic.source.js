@@ -128,9 +128,9 @@
 				$textarea.css({'overflow':'hidden'});
 				
 				// Update textarea size on keyup, change, cut and paste
-				$textarea.bind('keyup change cut paste', function(){
-					update(); 
-				});
+				//$textarea.bind('keyup change cut paste', function(){
+				//	setTimeout( update, 10000 );
+				//});
 				
 				// Update width of twin if browser or textarea is resized (solution for textareas with widths in percent)
 				jQuery(window).bind('resize', setTwinWidth);
