@@ -925,11 +925,11 @@ EOT;
 					'</span><strong>' .
 					wfMsg( 'smw_qui_rescol' ) .
 					'</strong></span>' .
-					Xml::input( "maincol_label[$i]",
-						'25',
+					Html::hidden( "maincol_label[$i]",
 						$mainColumnLabels[$key],
 						array ( 'id' => "maincol_label$i" )
 					) . " " .
+					'<a class="smwq-more" href="javascript:smw_makeQueryMatchesDialog(\'' . $i . '\')">' . wfMsg( 'smw_qui_options' ) . '</a> ' .
 					'</div>';
 				$urlArgs["maincol_label[$i]"] =
 					( $mainColumnLabels[$key] == '' ) ? ' ':$mainColumnLabels[$key];
@@ -997,7 +997,7 @@ EOT;
 			'</a>' .
 			'</span><strong>' .
 			wfMsg( 'smw_qui_rescol' ) . '</strong></span>' .
-			Xml::input( "maincol_label_num", '25' ) . " " .
+			Html::hidden( "maincol_label_num", '' ) . " " .
 			Xml::closeElement( 'div' );
 		$hiddenMainColumn = json_encode( $hiddenMainColumn );
 
@@ -1068,12 +1068,17 @@ EOT;
 			'<tr><td>' . $categoryNoHtml[0] . '</td><td>' . $categoryNoHtml[1] . '</td></tr>' .
 			'</table>' .
 			Xml::closeElement( 'div' );
-		$mainLabelDialogBox = Xml::openElement( 'div',
-			array( 'id' => 'mainlabel-dialog',
+
+		// Create dialog box for QueryMatches
+		$mainResLabelHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_dlabel' ), '', 'd-mainres-label' );
+		$mainResDialogBox = Xml::openElement( 'div',
+			array( 'id' => 'mainres-dialog',
 				'title' => wfMsg( 'smw_qui_mainlabopts' ),
 				'class' => 'smwmainlabdialog' )
 			) .
-			Xml::inputLabel( wfMsg( 'smw_qui_dlabel' ), '', 'd-mainlabel-label' ) .
+			'<table align="center">' .
+			'<tr><td>' . $mainResLabelHtml[0] . '</td><td>' . $mainResLabelHtml[1] . '</td></tr>' .
+			'</table>' .
 			Xml::closeElement( 'div' );
 
 		$result .= '<div id="sorting_main"></div>' . "\n";
@@ -1155,6 +1160,13 @@ EOT;
 
 	function smw_makeMainlabelDialog(){
 		jQuery('#mainlabel-dialog').dialog("open");
+	}
+
+	function smw_makeQueryMatchesDialog( qm_id ){
+		qmLabel=jQuery('#maincol_label'+qm_id).attr('value');
+		jQuery('#d-mainres-label').attr('value', qmLabel);
+		jQuery( '#mainres-dialog' ).dialog.sortid = qm_id;
+		jQuery( '#mainres-dialog' ).dialog( 'open' );
 	}
 
 	function smw_makeCatDialog( cat_id ){
@@ -1319,6 +1331,7 @@ EOT;
 		jQuery('$hiddenMainColumn').appendTo(document.body);
 		jQuery('$propertyDialogBox').appendTo(document.body);
 		jQuery('$categoryDialogBox').appendTo(document.body);
+		jQuery('$mainResDialogBox').appendTo(document.body);
 
 		jQuery( '#mainlabel-dialog' ).dialog( {
 			autoOpen: false,
@@ -1328,6 +1341,24 @@ EOT;
 			buttons: {
 				"{$okMsg}": function(){
 					jQuery('#mainlabelhid').attr('value',jQuery('#mainlabelvis').attr('value'));
+					jQuery(this).dialog("close");
+				},
+				"{$cancelMsg}": function(){
+					jQuery(this).dialog("close");
+				}
+			}
+		} );
+
+		jQuery( '#mainres-dialog' ).dialog( {
+			autoOpen: false,
+			modal: true,
+			resizable: true,
+			minWidth: 400,
+			buttons: {
+				"{$okMsg}": function(){
+					id = jQuery( this ).dialog.sortid;
+					label = jQuery('#d-mainres-label');
+					jQuery('#maincol_label'+id).attr('value', label);
 					jQuery(this).dialog("close");
 				},
 				"{$cancelMsg}": function(){
