@@ -3,6 +3,9 @@ For a documentation of all features, see http://semantic-mediawiki.org
 
 == SMW 1.6.1 ==
 
+* #ask queries now allow printouts (table columns) that are exactly the same.
+  In previous versions, multiple printouts with the same label would be
+  collapsed (e.g. {{#ask: [[Catgegory:City]] |?|?|?}} now shows four columns).
 * Fixed continue and limit escaping issues on Special:Ask. 
 * Internationalization improvements and layout tweaks to #smwdoc.
 
