@@ -487,6 +487,10 @@ EOT;
 			$params['sort'] = '';
 			$params['order'] = '';
 			foreach ( $propertyValues as $key => $propertyValue ) {
+				$propertyValues[$key] = trim( $propertyValue );
+				if ( $propertyValues[$key] == '' ) {
+					unset( $propertyValues[$key] );
+				}
 				if ( $smwgQSortingSupport
 					&& is_array( $orderValues )
 					&& array_key_exists( $key, $orderValues )
@@ -596,16 +600,16 @@ EOT;
 			'</strong></span>' .
 			Xml::openElement( 'div',
 				array( 'id' => 'mainlabel-dialog',
-					'title' => wfMsg( 'smw_qui_mainlabopts'),
+					'title' => wfMsg( 'smw_qui_mainlabopts' ),
 					'class' => 'smwmainlabdialog' )
-				).
-			'<table align="center" ><tr>'.
-				'<td>'. wfMsg('smw_qui_dlabel'). '</td>'.
-				'<td><input size="25" value="' . $mainLabelText . '" id="mainlabelvis" /></td>'.
+				) .
+			'<table align="center" ><tr>' .
+				'<td>' . wfMsg( 'smw_qui_dlabel' ) . '</td>' .
+				'<td><input size="25" value="' . $mainLabelText . '" id="mainlabelvis" /></td>' .
 			'</tr></table>' .
-			'</div>'.
+			'</div>' .
 			'<input type="hidden" name="pmainlabel" value="' . $mainLabel . '" id="mainlabelhid" /> ' .
-			'<a class="smwq-more" href="javascript:smw_makeMainlabelDialog()">'.wfMsg( 'smw_qui_options' ).'</a> '.
+			'<a class="smwq-more" href="javascript:smw_makeMainlabelDialog()">' . wfMsg( 'smw_qui_options' ) . '</a> ' .
 			'</div>';
 		$urlArgs = array();
 		$urlArgs['pmainlabel'] = $mainLabel;
@@ -1059,18 +1063,18 @@ EOT;
 			'<table align="center">' .
 			'<tr><td>' . $categoryHtml[0] . '</td><td>' . $categoryHtml[1] . '</td></tr>' .
 			'<tr><td>' . $categoryLabelHtml[0] . '</td><td>' . $categoryLabelHtml[1] . '</td></tr>' .
-			'</table><br/><table align="center">'.
+			'</table><br/><table align="center">' .
 			'<tr><td>' . $categoryYesHtml[0] . '</td><td>' . $categoryYesHtml[1] . '</td></tr>' .
 			'<tr><td>' . $categoryNoHtml[0] . '</td><td>' . $categoryNoHtml[1] . '</td></tr>' .
 			'</table>' .
 			Xml::closeElement( 'div' );
 		$mainLabelDialogBox = Xml::openElement( 'div',
 			array( 'id' => 'mainlabel-dialog',
-				'title' => wfMsg( 'smw_qui_mainlabopts'),
+				'title' => wfMsg( 'smw_qui_mainlabopts' ),
 				'class' => 'smwmainlabdialog' )
-			).
-			Xml::inputLabel(wfMsg('smw_qui_dlabel'), '', 'd-mainlabel-label').
-			Xml::closeElement('div');
+			) .
+			Xml::inputLabel( wfMsg( 'smw_qui_dlabel' ), '', 'd-mainlabel-label' ) .
+			Xml::closeElement( 'div' );
 
 		$result .= '<div id="sorting_main"></div>' . "\n";
 		$result .= '[<a href="javascript:smw_addPropertyInstance(\'property_starter\', \'sorting_main\')">' . wfMsg( 'smw_qui_addnprop' ) . '</a>]' .
