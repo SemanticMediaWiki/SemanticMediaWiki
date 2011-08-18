@@ -67,7 +67,7 @@ abstract class SMWQueryUI extends SpecialPage {
 							array(),
 							false );
 					if ( $this->uiCore->getQueryString() != "" ) {
-						$this->uiCore->execute( $p );
+						$this->uiCore->execute();
 					}
 				} else {
 				// the user has entered this page from a wiki-page using an infolink,
@@ -549,11 +549,12 @@ EOT;
 	 * @global WebRequest $wgRequest
 	 * @global OutputPage $wgOut
 	 * @global string $smwgScriptPath
+	 * @global integer $smwgQPrintoutLimit
 	 * @param mixed $enableAutocomplete
 	 * @return string
 	 */
 	protected function getPoSortFormBox( $enableAutocomplete = SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
-		global $smwgQSortingSupport, $wgRequest, $wgOut, $smwgScriptPath;
+		global $smwgQSortingSupport, $wgRequest, $wgOut, $smwgScriptPath, $smwgQPrintoutLimit;
 
 		$this->enableJQueryUI();
 		$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
@@ -928,7 +929,6 @@ EOT;
 		// create hidden form elements to be cloned later
 		$hiddenProperty = Html::openElement( 'div',
 				array( 'id' => 'property_starter',
-					'class' => 'smwsort',
 					'style' => 'display:none' )
 				) .
 			'<span class="smwquisortlabel">' .
@@ -956,7 +956,6 @@ EOT;
 
 		$hiddenCategory = Html::openElement( 'div',
 			array( 'id' => 'category_starter',
-				'class' => 'smwsort',
 				'style' => 'display:none' )
 			) .
 			'<span class="smwquisortlabel">' .
@@ -975,7 +974,6 @@ EOT;
 
 		$hiddenMainColumn = Html::openElement( 'div',
 			array( 'id' => 'maincol_starter',
-				'class' => 'smwsort',
 				'style' => 'display:none' )
 			) .
 			'<span class="smwquisortlabel">' .
@@ -1073,6 +1071,7 @@ EOT;
 		$javascriptText = <<<EOT
 <script type="text/javascript">
 	var num_elements = {$numSortValues};
+	var smwgQPrintoutLimit={$smwgQPrintoutLimit};
 EOT;
 // add autocomplete
 		if ( $enableAutocomplete == SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
@@ -1165,6 +1164,8 @@ EOT;
 	// code for handling adding and removing the "sort" inputs
 
 	function smw_addPropertyInstance(starter_div_id, main_div_id) {
+		if( jQuery( '.smwsort' ).length > smwgQPrintoutLimit ) return;
+
 		var starter_div = document.getElementById(starter_div_id);
 		var main_div = document.getElementById(main_div_id);
 
@@ -1174,6 +1175,7 @@ EOT;
 		new_div.id = div_id;
 		new_div.style.display = 'block';
 		jQuery(new_div.getElementsByTagName('label')).attr('for', 'display'+num_elements);
+		jQuery(new_div).addClass( 'smwsort' );
 		var children = new_div.getElementsByTagName('*');
 		var x;
 		for (x = 0; x < children.length; x++) {
@@ -1184,7 +1186,7 @@ EOT;
 			}
 		}
 
-		//Create 'more' link
+		//Create 'options' link
 		var more_button =document.createElement('span');
 		more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makePropDialog(\'' + num_elements + '\')">{$optionsMsg}</a> ';
 		more_button.id = 'more'+num_elements;
@@ -1201,6 +1203,8 @@ EOT;
 	}
 
 	function smw_addCategoryInstance(starter_div_id, main_div_id) {
+		if( jQuery( '.smwsort' ).length > smwgQPrintoutLimit ) return;
+
 		var starter_div = document.getElementById(starter_div_id);
 		var main_div = document.getElementById(main_div_id);
 
@@ -1210,6 +1214,7 @@ EOT;
 		new_div.id = div_id;
 		new_div.style.display = 'block';
 		jQuery(new_div.getElementsByTagName('label')).attr('for', 'display'+num_elements);
+		jQuery(new_div).addClass( 'smwsort' );
 		var children = new_div.getElementsByTagName('*');
 		var x;
 		for (x = 0; x < children.length; x++) {
@@ -1220,7 +1225,7 @@ EOT;
 			}
 		}
 
-		//Create 'more' link
+		//Create 'options' link
 		var more_button =document.createElement('span');
 		more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makeCatDialog(\'' + num_elements + '\')">{$optionsMsg}</a> ';
 		more_button.id = 'more'+num_elements;
@@ -1237,12 +1242,15 @@ EOT;
 	}
 	var smw_mainLabelHidden=true;
 	function smw_addMainColInstance(starter_div_id, main_div_id) {
-		if(smw_mainLabelHidden && jQuery('#smwposortbox').find('.smw-remove').length==1){
+		if(smw_mainLabelHidden && jQuery('.smwsort').length==1){
 			jQuery('#mainlabelhid').attr('value','');
 			jQuery('#mainlabelvis').attr('value','');
 			jQuery('#smwmainlabel').show();
 			smw_mainLabelHidden=false;
 		} else {
+			if( jQuery( '.smwsort' ).length > smwgQPrintoutLimit ){
+				return;
+			}
 			var starter_div = document.getElementById(starter_div_id);
 			var main_div = document.getElementById(main_div_id);
 
@@ -1252,6 +1260,7 @@ EOT;
 			new_div.id = div_id;
 			new_div.style.display = 'block';
 			jQuery(new_div.getElementsByTagName('label')).attr('for', 'display'+num_elements);
+			jQuery(new_div).addClass( 'smwsort' );
 			var children = new_div.getElementsByTagName('*');
 			var x;
 			for (x = 0; x < children.length; x++) {
@@ -2279,6 +2288,28 @@ class SMWQueryUIHelper {
 				}
 			}
 			// END: Try to be smart for rss/ical if no description/title is given and we have a concept query
+
+			/*
+			 * If parameters have been passed in the infolink-style and the
+			 * mimie-type of format is defined, generate the export, instead of
+			 * showing more html.
+			 */
+			$printer = SMWQueryProcessor::getResultPrinter(
+				$this->parameters['format'],
+				SMWQueryProcessor::SPECIAL_PAGE
+			);
+			$resultMime = $printer->getMimeType( $res );
+			if ( $this->context == self::WIKI_LINK && $resultMime != false ) {
+				global $wgOut;
+				$result = $printer->getResult( $res, $this->parameters, SMW_OUTPUT_FILE );
+				$resultName = $printer->getFileName( $res );
+				$wgOut->disable();
+				header( "Content-type: $resultMime; charset=UTF-8" );
+				if ( $resultName !== false ) {
+					header( "content-disposition: attachment; filename=$resultName" );
+				}
+				echo $result;
+			}
 		}
 	}
 
