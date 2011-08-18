@@ -941,6 +941,7 @@ EOT;
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
+		//property
 		$hiddenProperty = Html::openElement( 'div',
 				array( 'id' => 'property_starter',
 					'style' => 'display:none' )
@@ -967,7 +968,7 @@ EOT;
 			Html::hidden( 'prop_limit_num', '' ) .
 			Xml::closeElement( 'div' );
 		$hiddenProperty = json_encode( $hiddenProperty );
-
+		//category
 		$hiddenCategory = Html::openElement( 'div',
 			array( 'id' => 'category_starter',
 				'style' => 'display:none' )
@@ -985,7 +986,7 @@ EOT;
 			'<input type="hidden" name="cat_no_num" />' .
 			Xml::closeElement( 'div' );
 		$hiddenCategory = json_encode( $hiddenCategory );
-
+		// For '?' printouts
 		$hiddenMainColumn = Html::openElement( 'div',
 			array( 'id' => 'maincol_starter',
 				'style' => 'display:none' )
@@ -1001,6 +1002,7 @@ EOT;
 			Xml::closeElement( 'div' );
 		$hiddenMainColumn = json_encode( $hiddenMainColumn );
 
+		//Create dialog-boxes
 		// create dialogbox for Property options
 		$propertyHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_prop' ),
 			'',
@@ -1121,13 +1123,6 @@ EOT;
 		} );
 	}
 
-	function smwRemoveMainLabel(){
-			jQuery( '#mainlabelhid' ).attr( 'value', '-' );
-			jQuery( '#mainlabelvis' ).attr( 'value', '' );
-			jQuery( '#smwmainlabel' ).hide();
-			smw_mainLabelHidden = true;
-	}
-
 	function smw_category_autocomplete(){
 			jQuery( '[name*="category"]' ).autocomplete( {
 			minLength: 2,
@@ -1161,6 +1156,13 @@ EOT;
 	function smw_makeMainlabelDialog(){
 		jQuery('#mainlabel-dialog').dialog("open");
 	}
+
+	function smwRemoveMainLabel(){
+			jQuery( '#mainlabelhid' ).attr( 'value', '-' );
+			jQuery( '#mainlabelvis' ).attr( 'value', '' );
+			jQuery( '#smwmainlabel' ).hide();
+	}
+
 
 	function smw_makeQueryMatchesDialog( qm_id ){
 		qmLabel=jQuery('#maincol_label'+qm_id).attr('value');
@@ -1278,13 +1280,14 @@ EOT;
 		num_elements++;
 		smw_category_autocomplete();
 	}
-	var smw_mainLabelHidden=true;
+
 	function smw_addMainColInstance(starter_div_id, main_div_id) {
-		if(smw_mainLabelHidden && (jQuery('.smwsort').length==1)){
+		if( (jQuery('#smwmainlabel').css('display')=='none')
+			&& (jQuery('.smwsort').length==1)
+		){
 			jQuery('#mainlabelhid').attr('value','');
 			jQuery('#mainlabelvis').attr('value','');
 			jQuery('#smwmainlabel').show();
-			smw_mainLabelHidden=false;
 		} else {
 			if( jQuery( '.smwsort' ).length > smwgQPrintoutLimit ){
 				return;
@@ -1308,6 +1311,11 @@ EOT;
 					children[x].name = children[x].name.replace(/_num/, '[' + num_elements + ']');
 				}
 			}
+			//Create 'options' link
+			var more_button =document.createElement('span');
+			more_button.innerHTML = ' <a class="smwq-more" href="javascript:smw_makeQueryMatchesDialog(\'' + num_elements + '\')">{$optionsMsg}</a> ';
+			more_button.id = 'more'+num_elements;
+			new_div.appendChild(more_button);
 
 			//Add the new instance
 			main_div.appendChild(new_div);
@@ -1438,9 +1446,6 @@ EOT;
 
 	jQuery(document).ready(smw_property_autocomplete);
 	jQuery(document).ready(smw_category_autocomplete);
-	jQuery(document).ready(function(){
-			if(jQuery('#mainlabelhid')=='') smw_mainLabelHidden=true;
-	});
 </script>
 
 EOT;
