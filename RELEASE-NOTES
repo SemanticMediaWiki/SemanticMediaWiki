@@ -7,6 +7,7 @@ For a documentation of all features, see http://semantic-mediawiki.org
   In previous versions, multiple printouts with the same label would be
   collapsed (e.g. {{#ask: [[Catgegory:City]] |?|?|?}} now shows four columns).
 * Fixed continue and limit escaping issues on Special:Ask. 
+* Fixed error occurring for invalid queries with count or debug formats.
 * Internationalization improvements and layout tweaks to #smwdoc.
 
 == SMW 1.6 ==
