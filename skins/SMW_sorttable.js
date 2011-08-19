@@ -126,16 +126,11 @@ function smw_resortTable( lnk, clid ) {
 		return;
 	}
 
-	sortfn = smw_sort_caseinsensitive; // sorting w/o keys
-	// check for sorting keys and change sorting function
-	var itm = table.rows[1].cells[column];
-	var spans = itm.getElementsByTagName( 'span' );
-	if( spans.length > 0 ) {
-		for ( var i = 0; i < spans.length; i++ ) {
-			if( spans[i].className == 'smwsortkey' ) {
-				sortfn = smw_sort_numeric; // sorting with keys
-			}
-		}
+	if ( table.rows[0].cells[column].className == 'numericsort' ) {
+		sortfn = smw_sort_numeric; // sorting with keys
+	}
+	else {
+		sortfn = smw_sort_caseinsensitive;
 	}
 
 	SORT_COLUMN_INDEX = column;
