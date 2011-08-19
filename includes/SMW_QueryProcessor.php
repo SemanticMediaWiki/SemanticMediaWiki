@@ -307,16 +307,24 @@ class SMWQueryProcessor {
 
 			return $result;
 		} else { // result for counting or debugging is just a string
-			if ( array_key_exists( 'intro', $params ) ) {
-				$res = str_replace( '_', ' ', $params['intro'] ) . $res;
+			if ( is_string( $res ) ) {
+				if ( array_key_exists( 'intro', $params ) ) {
+					$res = str_replace( '_', ' ', $params['intro'] ) . $res;
+				}
+				if ( array_key_exists( 'outro', $params ) ) {
+					$res .= str_replace( '_', ' ', $params['outro'] );
+				}
+				
+				$result = $res . smwfEncodeMessages( $query->getErrors() );
 			}
-			if ( array_key_exists( 'outro', $params ) ) {
-				$res .= str_replace( '_', ' ', $params['outro'] );
+			else {
+				// When no valid result was obtained, $res will be a SMWQueryResult.
+				$result = smwfEncodeMessages( $query->getErrors() );
 			}
-
+			
 			wfProfileOut( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
-
-			return $res . smwfEncodeMessages( $query->getErrors() );
+			
+			return $result;
 		}
 	}
 
