@@ -75,7 +75,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_paramdesc_intro'	=> 'The text to display before the query results, if there are any',
 	'smw_paramdesc_outro'	=> 'The text to display after the query results, if there are any',
 	'smw_paramdesc_default'	=> 'The text to display if there are no query results',
-	'smw_paramdesc_searchlabel'	=> 'The text in the link to results',
+	'smw_paramdesc_searchlabel'	=> 'The text for the link to results',
 	'smw_paramdesc_sep'	=> 'The separator for values',
 	'smw_paramdesc_template'	=> 'The name of a template with which to display the printouts',
 	'smw_paramdesc_columns'	=> 'The number of columns in which to display results (default is $1)',
