@@ -1,18 +1,24 @@
 <?php
-/**
- * Print query results in tables.
- * @author Markus Krötzsch
- * @file
- * @ingroup SMWQuery
- */
 
 /**
- * New implementation of SMW's printer for result tables.
- *
+ * Print query results in tables.
+ * 
+ * @author Markus Krötzsch
+ * @author Jeroen De Dauw  < jeroendedauw@gmail.com >
+ * 
+ * @file
  * @ingroup SMWQuery
  */
 class SMWTableResultPrinter extends SMWResultPrinter {
 
+	/**
+	 * List of printrequests for which numeric sort keys are used.
+	 * print request hash => true
+	 * 
+	 * @since 1.6.1
+	 * 
+	 * @var array
+	 */
 	protected $columnsWithSortKey = array();
 	
 	public function getName() {
@@ -26,8 +32,8 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 		$tableRows = array();
 		
-		while ( $record = $res->getNext() ) {
-			$tableRows[] = $this->getRowForRecord( $record, $outputmode );
+		while ( $subject = $res->getNext() ) {
+			$tableRows[] = $this->getRowForSubject( $subject, $outputmode );
 		}
 		
 		// print header
@@ -72,16 +78,36 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		return $result;
 	}
 
-	protected function getRowForRecord( array /* of SMWResultArray */ $record, $outputmode ) {
+	/**
+	 * Gets a single table row for a subject, ie page.
+	 * 
+	 * @since 1.6.1
+	 * 
+	 * @param array $subject
+	 * @param $outputmode
+	 * 
+	 * @return string
+	 */
+	protected function getRowForSubject( array /* of SMWResultArray */ $subject, $outputmode ) {
 		$cells = array();
 		
-		foreach ( $record as $field ) {
+		foreach ( $subject as $field ) {
 			$cells[] = $this->getCellForPropVals( $field, $outputmode );
 		}
 		
 		return "<tr>\n\t" . implode( "\n\t", $cells ) . "\n</tr>";
 	}
 	
+	/**
+	 * Gets a table cell for all values of a property of a subject.
+	 * 
+	 * @since 1.6.1
+	 * 
+	 * @param SMWResultArray $resultArray
+	 * @param $outputmode
+	 * 
+	 * @return string
+	 */
 	protected function getCellForPropVals( SMWResultArray $resultArray, $outputmode ) {
 		$attribs = array();
 		
@@ -98,6 +124,16 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		);
 	}
 	
+	/**
+	 * Gets the contents for a table cell for all values of a property of a subject.
+	 * 
+	 * @since 1.6.1
+	 * 
+	 * @param SMWResultArray $resultArray
+	 * @param $outputmode
+	 * 
+	 * @return string
+	 */
 	protected function getCellContent( SMWResultArray $resultArray, $outputmode ) {
 		$values = array();
 		$isFirst = true;
