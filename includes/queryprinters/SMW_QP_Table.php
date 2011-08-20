@@ -11,16 +11,6 @@
  */
 class SMWTableResultPrinter extends SMWResultPrinter {
 
-	/**
-	 * List of printrequests for which numeric sort keys are used.
-	 * print request hash => true
-	 * 
-	 * @since 1.6.1
-	 * 
-	 * @var array
-	 */
-	protected $columnsWithSortKey = array();
-	
 	public function getName() {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_' . $this->mFormat );
@@ -28,7 +18,6 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		global $smwgIQRunningNumber;
-		SMWOutputs::requireHeadItem( SMW_HEADER_SORTTABLE );
 
 		$tableRows = array();
 		
@@ -37,19 +26,15 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		}
 		
 		// print header
-		$result = '<table class="smwtable"' .
+		$result = '<table class="sortable wikitable"' .
 			  ( $this->mFormat == 'broadtable' ? ' width="100%"' : '' ) .
-				  " id=\"querytable$smwgIQRunningNumber\">\n";
+				  ">\n";
 			  
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
 			$headers = array();
 			
 			foreach ( $res->getPrintRequests() as $pr ) {
 				$attribs = array();
-				
-				if ( array_key_exists( $pr->getHash(), $this->columnsWithSortKey ) ) {
-					$attribs['class'] = 'numericsort';
-				}
 				
 				$headers[] = Html::rawElement(
 					'th',
@@ -58,10 +43,10 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 				);
 			}
 			
-			array_unshift( $tableRows, '<tr>' . implode( "\n", $headers ) . '</tr>' );
+			array_unshift( $tableRows, '<thead><tr>' . implode( "\n", $headers ) . '</tr></thead><tbody>' );
 		}
 
-		$result .= implode( "\n", $tableRows );
+		$result .= implode( "\n", $tableRows ) . '</tbody>';
 		
 		// print further results footer
 		if ( $this->linkFurtherResults( $res ) ) {
@@ -109,18 +94,39 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	 * @return string
 	 */
 	protected function getCellForPropVals( SMWResultArray $resultArray, $outputmode ) {
+		$dataValues = array();
+		
+		while ( ( $dv = $resultArray->getNextDataValue() ) !== false ) {
+			$dataValues[] = $dv;
+		}
+		
 		$attribs = array();
+		$content = null;
 		
-		$alignment = trim( $resultArray->getPrintRequest()->getParameter( 'align' ) );
+		if ( count( $dataValues ) > 0 ) {
+			$sortkey = $dataValues[0]->getDataItem()->getSortKey();
+			
+			if ( is_numeric( $sortkey ) ) {
+				$attribs['data-sort-value'] = $sortkey;
+			}
+			
+			$alignment = trim( $resultArray->getPrintRequest()->getParameter( 'align' ) );
 		
-		if ( in_array( $alignment, array( 'right', 'left', 'center' ) ) ) {
-			$attribs['style'] = "text-align:' . $alignment . ';";
+			if ( in_array( $alignment, array( 'right', 'left', 'center' ) ) ) {
+				$attribs['style'] = "text-align:' . $alignment . ';";
+			}
+			
+			$content = $this->getCellContent(
+				$dataValues,
+				$outputmode,
+				$resultArray->getPrintRequest()->getMode() == SMWPrintRequest::PRINT_THIS
+			);
 		}
 		
 		return Html::rawElement(
 			'td',
 			$attribs,
-			$this->getCellContent( $resultArray, $outputmode )
+			$content
 		);
 	}
 	
@@ -129,34 +135,21 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	 * 
 	 * @since 1.6.1
 	 * 
-	 * @param SMWResultArray $resultArray
+	 * @param array $dataValues
 	 * @param $outputmode
+	 * @param boolean $isSubject
 	 * 
 	 * @return string
 	 */
-	protected function getCellContent( SMWResultArray $resultArray, $outputmode ) {
+	protected function getCellContent( array /* of SMWDataValue */ $dataValues, $outputmode, $isSubject ) {
 		$values = array();
-		$isFirst = true;
 		
-		while ( ( $dv = $resultArray->getNextDataValue() ) !== false ) {
-			$sortKey = '';
-			
-			if ( $isFirst ) {
-				$isFirst = false;
-				$sortkey = $dv->getDataItem()->getSortKey();
-				
-				if ( is_numeric( $sortkey ) ) { // additional hidden sortkey for numeric entries
-					$this->columnsWithSortKey[$resultArray->getPrintRequest()->getHash()] = true;
-					$sortKey .= '<span class="smwsortkey">' . $sortkey . '</span>';
-				}
-			}
-			
-			$isSubject = $resultArray->getPrintRequest()->getMode() == SMWPrintRequest::PRINT_THIS;
+		foreach ( $dataValues as $dv ) {
 			$value = ( ( $dv->getTypeID() == '_wpg' ) || ( $dv->getTypeID() == '__sin' ) ) ?
 				   $dv->getLongText( $outputmode, $this->getLinker( $isSubject ) ) :
 				   $dv->getShortText( $outputmode, $this->getLinker( $isSubject ) );
 			
-			$values[] = $sortKey . $value;
+			$values[] = $value;
 		}
 		
 		return implode( '<br />', $values );
