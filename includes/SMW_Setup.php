@@ -631,7 +631,7 @@ function smwfgetFilledHtmlTextForPS( $pageSchemaObj, &$text_extensions ){
 				}
 			
 			$html_text .= '<p><input name="smw_values_starter" size="80" value="'.$allowed_val_string.'" ></p></fieldset>';	
-			$html_text_array[] = $html_text; //<fieldset style="background: #00FFFF;">
+			$html_text_array[] = $html_text; 
 			}
 		}
 	}
@@ -643,7 +643,7 @@ function smwfgetHtmlTextForPS( &$js_extensions ,&$text_extensions ) {
 	global $smwgContLang;
 	$datatype_labels = $smwgContLang->getDatatypeLabels();		
 	$html_text = "";
-	$html_text .= '<fieldset style="background: #00FFFF;"><legend>Property</legend>
+	$html_text .= '<fieldset style="background: #DEF;"><legend>Property</legend>
 	<p> Property Name: <input size="15" name="smw_property_name_starter">Type:	';
 	$select_body = "";
 	foreach ( $datatype_labels as $label ) {
