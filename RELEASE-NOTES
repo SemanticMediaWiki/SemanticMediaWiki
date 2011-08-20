@@ -11,6 +11,7 @@ Released on August 20, 2011.
 * Fixed continue and limit escaping issues on Special:Ask. 
 * Fixed error occurring for invalid queries with count or debug formats.
 * Fixed several small issues with the table format and cleaned it up somewhat.
+* Fixed parsing of years for data properties.
 * Internationalization improvements and layout tweaks to #smwdoc.
 
 == SMW 1.6 ==
