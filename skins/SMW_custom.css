@@ -20,36 +20,6 @@ div.smwpre { /* make divs look like <pre> */
 	clear: both;
 }
 
-/* tables for inline queries */
-table.smwtable {
-	background-color: #EEEEFF;/* Note: here and below, we use six digits, since some users had problems with the three digit short forms */
-}
-
-table.smwtable th {
-	background-color: #EEEEFF;
-	text-align: left;
-}
-
-table.smwtable td {
-	background-color: #FFFFFF;
-	padding: 1px;
-	padding-left: 5px;
-	padding-right: 5px;
-	text-align: left;
-	vertical-align: top;
-}
-
-table.smwtable tr.smwfooter td {
-	font-size: 90%;
-	line-height: 1;
-	background-color: #EEEEFF;
-	padding: 0px;
-	padding-left: 5px;
-	padding-right: 5px;
-	text-align: right;
-	vertical-align: top;
-}
-
 /* hide keys for sorting table entries */
 span.smwsortkey {
 	display: none;
