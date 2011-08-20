@@ -62,9 +62,6 @@ class SMWOutputs {
 				case SMW_HEADER_TOOLTIP:
 					self::requireResource( 'ext.smw.tooltips' );
 					break;
-				case SMW_HEADER_SORTTABLE:
-					self::requireResource( 'ext.smw.sorttable' );
-					break;
 				case SMW_HEADER_STYLE:
 					self::requireResource( 'ext.smw.style' );
 					break;
@@ -107,10 +104,6 @@ class SMWOutputs {
 				case SMW_HEADER_TOOLTIP:
 					self::requireHeadItem( SMW_HEADER_STYLE );
 					self::$mHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath . '/skins/SMW_tooltip.js"></script>';
-				break;
-				case SMW_HEADER_SORTTABLE:
-					self::requireHeadItem( SMW_HEADER_STYLE );
-					self::$mHeadItems['smw_st'] = '<script type="text/javascript" src="' . $smwgScriptPath . '/skins/SMW_sorttable.js"></script>';
 				break;
 				case SMW_HEADER_STYLE:
 					global $wgContLang;

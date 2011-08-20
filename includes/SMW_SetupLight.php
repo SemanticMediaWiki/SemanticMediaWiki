@@ -75,13 +75,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 			'ext.smw.style'
 		)
 	);
-	$wgResourceModules['ext.smw.sorttable'] = $moduleTemplate + array(
-		'scripts' => 'SMW_sorttable.js',
-		'dependencies' => array(
-			'mediawiki.legacy.wikibits',
-			'ext.smw.style'
-		)
-	);
 
 	// Register special pages aliases file
 	$wgExtensionAliasesFiles['SemanticMediaWiki'] = $smwgIP . 'languages/SMW_Aliases.php';

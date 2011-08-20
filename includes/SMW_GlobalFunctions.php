@@ -36,7 +36,6 @@ define( 'CONCEPT_CACHE_NONE', 0 ); // show all concepts even without any cache
 
 // Constants for identifying javascripts as used in SMWOutputs.
 define( 'SMW_HEADER_TOOLTIP', 2 );
-define( 'SMW_HEADER_SORTTABLE', 3 );
 define( 'SMW_HEADER_STYLE', 4 );
 
 // Constants for denoting output modes in many functions: HTML or Wiki?
