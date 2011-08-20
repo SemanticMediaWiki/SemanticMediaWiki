@@ -17,7 +17,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
-		global $smwgIQRunningNumber;
+		global $wgVersion;
 
 		$tableRows = array();
 		
@@ -29,7 +29,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		$result = '<table class="sortable wikitable"' .
 			  ( $this->mFormat == 'broadtable' ? ' width="100%"' : '' ) .
 				  ">\n";
-			  
+		
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
 			$headers = array();
 			
@@ -43,10 +43,24 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 				);
 			}
 			
-			array_unshift( $tableRows, '<thead><tr>' . implode( "\n", $headers ) . '</tr></thead><tbody>' );
+			$headers = '<tr>' . implode( "\n", $headers ) . '</tr>';
+			
+			// MW 1.17 and earlier do not accept thead while later versions require it.
+			if ( version_compare( $wgVersion, '1.18', '>=' ) ) {
+				$headers = '<thead>' . $headers . '</thead>'; 
+			}
+			
+			$result .= $headers;
 		}
 
-		$result .= implode( "\n", $tableRows ) . '</tbody>';
+		$tableRows = implode( "\n", $tableRows );
+		
+		// MW 1.17 and earlier do not accept thead while later versions require it.
+		if ( version_compare( $wgVersion, '1.18', '>=' ) ) {
+			$tableRows = '<tbody>' . $tableRows . '</tbody>'; 
+		}
+		
+		$result .= $tableRows;
 		
 		// print further results footer
 		if ( $this->linkFurtherResults( $res ) ) {
