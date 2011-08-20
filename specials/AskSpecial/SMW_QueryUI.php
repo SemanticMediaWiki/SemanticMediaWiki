@@ -4,9 +4,9 @@
  * A base class for Semantic Search UIs. All Semantic Search UI's may subclass
  * from this.
  *
- * The commonly used and overloaded methods are the ones which create some default
- * UI elements (the getxxxFormBox() methods) and corresponding methods that
- * extract data from them (the processxxxFormBox() methods).
+ * The commonly used and overloaded methods are the ones which create some
+ * default UI elements (the getxxxFormBox() methods) and corresponding methods
+ * that extract data from them (the processxxxFormBox() methods).
  *
  * @author Markus Krötzsch
  * @author Yaron Koren
@@ -36,12 +36,12 @@ abstract class SMWQueryUI extends SpecialPage {
 	const DISABLE_AUTO_SUGGEST = false;
 
 	/**
-	 * Initialises the page. Sets the property $uiCore to the appropriate helper
-	 * object.
+	 * Initialises the page. Sets the property $uiCore to the appropriate
+	 * helper object.
 	 *
-	 * To create a custom UI, adding changes to makePage() is usually enough,
-	 * but one might want to overload this method to get better handling of form
-	 * parameters.
+	 * To create a custom UI, adding changes to makePage() is usually
+	 * enough, but one might want to overload this method to get better
+	 * handling of form parameters.
 	 *
 	 * @global OutputPage $wgOut
 	 * @global WebRequest $wgRequest
@@ -94,9 +94,9 @@ abstract class SMWQueryUI extends SpecialPage {
 	}
 
 	/**
-	 * This method should call the various processXXXBox() methods for each of
-	 * the corresponding getXXXBox() methods which the UI uses.
-	 * Merge the results of these methods and return them.
+	 * This method should call the various processXXXBox() methods for each
+	 * of the corresponding getXXXBox() methods which the UI uses. Merge the
+	 * results of these methods and return them.
 	 *
 	 * @global WebRequest $wgRequest
 	 * @return array
@@ -104,7 +104,8 @@ abstract class SMWQueryUI extends SpecialPage {
 	protected abstract function processParams();
 
 	/**
-	 * To enable/disable syndicated feeds of results to appear in the UI header
+	 * To enable/disable syndicated feeds of results to appear in the UI
+	 * header.
 	 *
 	 * @return boolean
 	 */
@@ -113,8 +114,11 @@ abstract class SMWQueryUI extends SpecialPage {
 	}
 
 	/**
-	 * The main entrypoint for your UI. Call the various methods of SMWQueryUI
-	 * and SMWQueryUIHelper to build ui elements and to process them.
+	 * The main entry point for your UI. Call the various methods of
+	 * SMWQueryUI and SMWQueryUIHelper to build UI elements and to process
+	 * them.
+	 *
+	 * @param string $p the sub-page string
 	 */
 	protected abstract function makePage( $p );
 
@@ -149,7 +153,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	}
 
 	/**
-	 * A function which shows errors as formatted Html
+	 * A function which formats the current errors in HTML.
 	 */
 	protected function getErrorsHtml() {
 		$result = Html::openElement( 'ul' );
@@ -162,27 +166,29 @@ abstract class SMWQueryUI extends SpecialPage {
 	}
 
 	/**
-	 * A helper function to enable JQuery
+	 * Enable JQuery for the current output page $wgOut. Ensures that the
+	 * relevant Javascript is loaded.
 	 *
 	 * @global OutputPage $wgOut
 	 * @global boolean $smwgJQueryIncluded
 	 */
 	protected function enableJQuery() {
 		global $wgOut, $smwgJQueryIncluded, $smwgScriptPath;
-			if ( !$smwgJQueryIncluded ) {
-				$realFunction = array( $wgOut, 'includeJQuery' );
-				if ( is_callable( $realFunction ) ) {
-					$wgOut->includeJQuery();
-				} else {
-					$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-1.4.2.min.js" );
-				}
-
-				$smwgJQueryIncluded = true;
+		if ( !$smwgJQueryIncluded ) {
+			$realFunction = array( $wgOut, 'includeJQuery' );
+			if ( is_callable( $realFunction ) ) {
+				$wgOut->includeJQuery();
+			} else {
+				$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-1.4.2.min.js" );
 			}
+			$smwgJQueryIncluded = true;
+		}
 	}
 
 	/**
-	 * A helper function to enable JQueryUI
+	 * Enable JQueryUI for the current output page $wgOut. Ensures that the
+	 * relevant Javascript is loaded.
+	 *
 	 * @global OutputPage $wgOut
 	 * @global string $smwgScriptPath
 	 * @global boolean $smwgJQueryUIIncluded
@@ -191,29 +197,27 @@ abstract class SMWQueryUI extends SpecialPage {
 		global $wgOut, $smwgScriptPath, $smwgJQueryUIIncluded;
 
 		$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
+		$this->enableJQuery();
 
-			$this-> enableJQuery();
-
-			$scripts = array();
-
-			if ( !$smwgJQueryUIIncluded ) {
-				$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.core.min.js";
-				$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.widget.min.js";
-				$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.position.min.js";
-				$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.autocomplete.min.js";
-				$smwgJQueryUIIncluded = true;
-			}
-
+		if ( !$smwgJQueryUIIncluded ) {
+			$scripts = array( "$smwgScriptPath/libs/jquery-ui/jquery.ui.core.min.js",
+				"$smwgScriptPath/libs/jquery-ui/jquery.ui.widget.min.js",
+				"$smwgScriptPath/libs/jquery-ui/jquery.ui.position.min.js",
+				"$smwgScriptPath/libs/jquery-ui/jquery.ui.autocomplete.min.js" );
 			foreach ( $scripts as $js ) {
 				$wgOut->addScriptFile( $js );
 			}
+			$smwgJQueryUIIncluded = true;
+		}
 	}
 
 	/**
-	 * Adds common JS and CSS required for Autocompletion.
+	 * Enable autom completion scripts and styles for the current output
+	 * page $wgOut.
+	 *
 	 * @global OutputPage $wgOut
 	 */
-	protected function addAutocompletionJavascriptAndCSS() {
+	protected function enableAutocompletion() {
 		global $wgOut;
 		if ( $this->autoCompleteEnabled == false ) {
 			$this->enableJQueryUI();
@@ -1075,7 +1079,7 @@ END;
 
 		// Javascript code for handling adding and removing the "sort" inputs
 		if ( $enableAutocomplete == SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
-			$this->addAutocompletionJavascriptAndCSS();
+			$this->enableAutocompletion();
 		}
 		// localisation messages for javascript
 		$optionsMsg = wfMsg( 'smw_qui_options' );
@@ -1602,7 +1606,7 @@ EOT;
 		global $wgOut;
 
 		if ( $enableAutocomplete ) {
-			$this->addAutocompletionJavascriptAndCSS();
+			$this->enableAutocompletion();
 			$javascriptAutocompleteText = <<<EOT
 <script type="text/javascript">
 jQuery(document).ready(function(){

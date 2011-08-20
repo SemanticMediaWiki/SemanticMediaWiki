@@ -6,7 +6,7 @@
  *
  * Query UIs may use this class to create a customised UI interface. In most
  * cases, one is likely to extend the SMWQueryUI class to build a Search Special
- * page. However in order to acces some core featues, one may directly access
+ * page. However in order to access some core featues, one may directly access
  * the methods of this class.
  *
  * This class does not define the format in which data should be passed through
