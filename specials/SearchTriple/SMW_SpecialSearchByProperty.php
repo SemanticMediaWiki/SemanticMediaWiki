@@ -416,35 +416,9 @@ class SMWSearchByProperty extends SpecialPage {
 	 * 
 	 */
 	protected static function addAutoComplete() {
-		global $wgOut, $smwgScriptPath, $smwgJQueryIncluded, $smwgJQueryUIIncluded;
+		global $wgOut;
 
-		// Add CSS and JavaScript for jQuery and jQuery UI.
-		$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
-
-		$scripts = array();
-
-		if ( !$smwgJQueryIncluded ) {
-			$realFunction = array( $wgOut, 'includeJQuery' );
-			if ( is_callable( $realFunction ) ) {
-				$wgOut->includeJQuery();
-			} else {
-				$scripts[] = "$smwgScriptPath/libs/jquery-1.4.2.min.js";
-			}
-
-			$smwgJQueryIncluded = true;
-		}
-
-		if ( !$smwgJQueryUIIncluded ) {
-			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.core.min.js";
-			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.widget.min.js";
-			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.position.min.js";
-			$scripts[] = "$smwgScriptPath/libs/jquery-ui/jquery.ui.autocomplete.min.js";
-			$smwgJQueryUIIncluded = true;
-		}
-
-		foreach ( $scripts as $js ) {
-			$wgOut->addScriptFile( $js );
-		}
+		SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
 		
 		$javascript_autocomplete_text = <<<END
 <script type="text/javascript">
