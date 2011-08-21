@@ -600,7 +600,7 @@ function smwfInitNamespaces() {
 
 function smwfParseFieldElements( $field_xml, &$text_object ) {
 	foreach ( $field_xml->children() as $tag => $child ) {
-		if ( $tag == "Property" ) {
+		if ( $tag == "semanticmediawiki_Property" ) {
 			$text = "";
 			$text = PageSchemas::tableMessageRowHTML( "paramAttr", "SemanticMediaWiki", (string)$tag );										
 			$propName = $child->attributes()->name;			    
@@ -622,7 +622,7 @@ function smwfGetPageList( $psSchemaObj , &$genPageList ) {
 		$field_count = 0; //counts the number of fields
 		foreach( $field_all as $field ) { //for each Field, retrieve smw properties and fill $prop_name , $prop_type 
 			$field_count++;
-			$smw_array = $field->getObject('Property');   //this returns an array with property values filled
+			$smw_array = $field->getObject('semanticmediawiki_Property');   //this returns an array with property values filled
 			$prop_array = $smw_array['smw'];
 			if($prop_array != null){
 				$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
@@ -641,7 +641,7 @@ function smwfgetXMLTextForPS( $wgRequest, &$text_extensions ){
 	foreach ( $wgRequest->getValues() as $var => $val ) {
 		if(substr($var,0,18) == 'smw_property_name_'){
 			$templateNum = substr($var,18,1);						
-			$Xmltext .= '<semanticmediawiki:Property name="'.$val.'" >';
+			$Xmltext .= '<semanticmediawiki_Property name="'.$val.'" >';
 		}else if(substr($var,0,18) == 'smw_property_type_'){						
 			$Xmltext .= '<Type>'.$val.'</Type>';
 		}else if(substr($var,0,11) == 'smw_values_'){
@@ -657,7 +657,7 @@ function smwfgetXMLTextForPS( $wgRequest, &$text_extensions ){
 					$Xmltext .= '<AllowedValue>'.$value.'</AllowedValue>';
 				}
 			}
-			$Xmltext .= '</semanticmediawiki:Property>';
+			$Xmltext .= '</semanticmediawiki_Property>';
 			$xml_text_array[] = $Xmltext;
 			$Xmltext = '';
 		}
@@ -676,7 +676,7 @@ function smwfgetFilledHtmlTextForPS( $pageSchemaObj, &$text_extensions ){
 		$field_count = 0; //counts the number of fields		
 		foreach( $field_all as $field ) { //for each Field, retrieve smw properties and fill $prop_name , $prop_type 
 			$field_count++;	
-			$smw_array = $field->getObject('Property');   //this returns an array with property values filled
+			$smw_array = $field->getObject('semanticmediawiki_Property');   //this returns an array with property values filled
 			$prop_array = $smw_array['smw'];			
 			if($prop_array != null){
 				$html_text .= '<fieldset style="background: #DEF;"><legend>Property</legend>';				
@@ -731,7 +731,7 @@ function smwfGeneratePages( $psSchemaObj, $toGenPageList ) {
 		$field_count = 0; //counts the number of fields
 		foreach( $field_all as $field ) { //for each Field, retrieve smw properties and fill $prop_name , $prop_type 
 			$field_count++;	
-			$smw_array = $field->getObject('Property');   //this returns an array with property values filled
+			$smw_array = $field->getObject('semanticmediawiki_Property');   //this returns an array with property values filled
 			$prop_array = $smw_array['smw'];
 			if($prop_array != null){
 				$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $prop_array['name'] );
@@ -786,7 +786,7 @@ function smwfCreateProperty( $prop_name, $prop_type, $allowed_value_array ) {
 */
 function smwfCreatePageSchemasObject( $objectName, $xmlForField, &$object ) {
 	$smw_array = array();
-	if ( $objectName == "Property" ) {		
+	if ( $objectName == "semanticmediawiki_Property" ) {		
 		foreach ( $xmlForField->children() as $tag => $child ) {
 			if ( $tag == $objectName ) {
 				$propName = $child->attributes()->name;    
