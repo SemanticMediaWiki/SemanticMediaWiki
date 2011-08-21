@@ -376,7 +376,7 @@ END;
 		$this->setUrlArgs( array( 'q' => $this->uiCore->getQueryString() ) );
 		$result = '<div>' .
 			Html::element( 'textarea',
-				array( 'name' => 'q', 'id' => 'querybox', 'rows'=>'6' ),
+				array( 'name' => 'q', 'id' => 'querybox', 'rows'=>'3' ),
 				$this->uiCore->getQueryString()
 			) .
 			'</div>';
