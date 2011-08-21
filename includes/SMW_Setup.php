@@ -130,11 +130,11 @@ function smwfRegisterResourceLoaderModules() {
 		// TODO: should we better load our own "$smwgScriptPath/libs/jquery-1.4.2.min.js"?
 		// MW 1.16 only has jQuery 1.3.2 with some patches.
 		$wgResourceModules['jquery'] = array(
-			'scripts' => "common/jquery.min.js?$wgStyleVersion";
+			'scripts' => "common/jquery.min.js?$wgStyleVersion",
 			'localBasePath' => null, // irrelevant for pre 1.17 b/c code
 			'remoteBasePath' => $wgStylePath,
 			'group' => 'ext.smw'
-		)
+		);
 		$wgResourceModules['jquery.ui.core'] = $moduleTemplate + array(
 			'scripts' => 'libs/jquery-ui/jquery.ui.core.min.js',
 			'styles' => 'skins/jquery-ui/base/jquery.ui.all.css',
