@@ -33,7 +33,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 */
 	protected function makePage( $p ) {
 		global $wgOut;
-		$htmlOutput = $this->makeResults( $p );
+		$htmlOutput = $this->makeForm( $p );
 		if ( $this->uiCore->getQueryString() != "" ) {
 			if ( $this->usesNavigationBar() ) {
 				$htmlOutput .= Html::rawElement( 'div', array( 'class' => 'smwqcnavbar' ),
@@ -96,19 +96,19 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	}
 
 	/**
-	 * Creates the input form
+	 * Creates the search form
 	 *
 	 * @global OutputPage $wgOut
 	 * @global string $smwgScriptPath
 	 * @return string
 	 */
-	protected function makeResults() {
+	protected function makeForm() {
 		global $wgOut, $smwgScriptPath;
 		$this->enableJQuery();
 		$result = '<div class="smwqcerrors">' . $this->getErrorsHtml() . '</div>';
 		$specTitle = $this->getTitle();
 		$formatBox = $this->getFormatSelectBoxSep( 'broadtable' );
-		$result .= Html::openElement( 'form', array( 'name' => 'qc', 'action' => $specTitle->escapeLocalURL(), 'method' => 'get' ) ) . "\n" .
+		$result .= Html::openElement( 'form', array( 'name' => 'qc', 'id'=>'smwqcform', 'action' => $specTitle->escapeLocalURL(), 'method' => 'get' ) ) . "\n" .
 			Html::hidden( 'title', $specTitle->getPrefixedText() );
 		$result .= wfMsg( 'smw_qc_query_help' );
 		// Main query and format options
