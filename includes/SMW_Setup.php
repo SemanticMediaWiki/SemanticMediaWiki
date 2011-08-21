@@ -105,23 +105,52 @@ function smwfRegisterHooks() {
  * Register all SMW modules with the MediaWiki Resource Loader.
  */
 function smwfRegisterResourceLoaderModules() {
-	global $wgResourceModules, $smwgIP, $smwgScriptPath;
+	global $wgResourceModules, $smwgIP, $smwgScriptPath, $wgVersion, $wgStylePath, $wgStyleVersion;
 
 	$moduleTemplate = array(
-		'localBasePath' => $smwgIP . '/skins',
-		'remoteBasePath' => $smwgScriptPath . '/skins',
+		'localBasePath' => $smwgIP,
+		'remoteBasePath' => $smwgScriptPath,
 		'group' => 'ext.smw'
 	);
 	$wgResourceModules['ext.smw.style'] = $moduleTemplate + array(
-		'styles' => 'SMW_custom.css'
+		'styles' => 'skins/SMW_custom.css'
 	);
 	$wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
-		'scripts' => 'SMW_tooltip.js',
+		'scripts' => 'skins/SMW_tooltip.js',
 		'dependencies' => array(
 			'mediawiki.legacy.wikibits',
 			'ext.smw.style'
 		)
 	);
+
+	// Modules for jQuery UI before MW 1.17.0 (b/c code).
+	// This can vanish when dropping MW 1.16 support.
+	// Should we better do "defined( 'MW_SUPPORTS_RESOURCE_MODULES' )" here?
+	if ( version_compare( $wgVersion, '1.17alpha', '<' ) ) {
+		// TODO: should we better load our own "$smwgScriptPath/libs/jquery-1.4.2.min.js"?
+		// MW 1.16 only has jQuery 1.3.2 with some patches.
+		$wgResourceModules['jquery'] = array(
+			'scripts' => "common/jquery.min.js?$wgStyleVersion";
+			'localBasePath' => null, // irrelevant for pre 1.17 b/c code
+			'remoteBasePath' => $wgStylePath,
+			'group' => 'ext.smw'
+		)
+		$wgResourceModules['jquery.ui.core'] = $moduleTemplate + array(
+			'scripts' => 'libs/jquery-ui/jquery.ui.core.min.js',
+			'styles' => 'skins/jquery-ui/base/jquery.ui.all.css',
+			'dependencies' => 'jquery'
+		);
+		$wgResourceModules['jquery.ui.widget'] = $moduleTemplate + array(
+			'scripts' => 'libs/jquery-ui/jquery.ui.widget.min.js'
+		);
+		$wgResourceModules['jquery.ui.position'] = $moduleTemplate + array(
+			'scripts' => 'libs/jquery-ui/jquery.ui.position.min.js'
+		);
+		$wgResourceModules['jquery.ui.autocomplete'] = $moduleTemplate + array(
+			'scripts' => 'libs/jquery-ui/jquery.ui.autocomplete.min.js',
+			'dependencies' => array( 'jquery.ui.core', 'jquery.ui.widget', 'jquery.ui.position' )
+		);
+	}
 }
 
 /**

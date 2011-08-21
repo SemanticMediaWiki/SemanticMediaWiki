@@ -27,11 +27,11 @@
  */
 class SMWOutputs {
 
-	/// Protected member function for temporarily storing header items.
+	/// Protected member for temporarily storing header items.
 	protected static $mHeadItems = array();
 	
-	/// Protected member function for temporarily storing resource modules.
-	protected static $resourceModules = array();	
+	/// Protected member for temporarily storing resource modules.
+	protected static $resourceModules = array();
 
 	/**
 	 * Adds a resource module to the parser output.
@@ -45,79 +45,28 @@ class SMWOutputs {
 	}
 	
 	/**
-	 * Adds rousource loader modules or other head items.
-	 * Falls back on requireHeadItemOld if the Resource Loader (MW >1.17) is not available.
+	 * Adds head items that are not Resource Loader modules. Should only
+	 * be used for custom head items such as RSS fedd links.
+	 * 
+	 * Support for calling this with the old constants SMW_HEADER_STYLE
+	 * and SMW_HEADER_TOOLTIP will vanish in SMW 1.7 at the latest.
 	 * 
 	 * @param mixed $id
 	 * @param string $item
 	 */
 	public static function requireHeadItem( $id, $item = '' ) {
-		// Use the b/c method when the resource loader is not available.
-		if ( !defined( 'MW_SUPPORTS_RESOURCE_MODULES' ) ) {
-			return self::requireHeadItemOld( $id, $item );
-		}
-		
-		if ( is_numeric( $id ) ) {  // compatibility with older extensions; eventually the numeric constants should vanish
-			switch ( $id ) {	
-				case SMW_HEADER_TOOLTIP:
-					self::requireResource( 'ext.smw.tooltips' );
-					break;
-				case SMW_HEADER_STYLE:
-					self::requireResource( 'ext.smw.style' );
-					break;
-			}	
-		}
-		else { // normal case: treat ID as a ResourceLoader ID
-			self::$mHeadItems[$id] = $item;
-		}
-	}
-	
-	/**
-	 * Method for backward compatibility with MW pre-1.17.
-	 * 
-	 * Announce that some head item (usually CSS or JavaScript) is required to
-	 * display the content just created. The function is called with an ID that
-	 * is one of SMW's SMW_HEADER_... constants, or a string ID followed by the
-	 * actual item that should be added to the output HTML header. In the first
-	 * case, the $item parameter should be left unspecified.
-	 *
-	 * @note This function does not actually add anything to the output yet.
-	 * This happens only by calling SMWOutputs::commitToParserOutput(),
-	 * SMWOutputs::commitToOutputPage(), or SMWOutputs::commitToParser(). Virtually
-	 * every function that eventually produces HTML text output using SMW functions
-	 * must take care of calling one of those committing functions before passing
-	 * on control. It is not safe to commit later, e.g. in a hook that is expected
-	 * to be called "soon" -- there might always be other hooks first that commit the
-	 * existing data wrongly, depending on installed extensions and background jobs!
-	 *
-	 * @since 1.5.3
-	 * 
-	 * @param $id string or predefined constant for identifying a head item
-	 * @param $item string containing a complete HTML-compatibly text snippet that
-	 * should go into the HTML header; only required if $id is no built-in constant.
-	 */
-	protected static function requireHeadItemOld( $id, $item ) {
 		if ( is_numeric( $id ) ) {
-			global $smwgScriptPath;
-
 			switch ( $id ) {
 				case SMW_HEADER_TOOLTIP:
-					self::requireHeadItem( SMW_HEADER_STYLE );
-					self::$mHeadItems['smw_tt'] = '<script type="text/javascript" src="' . $smwgScriptPath . '/skins/SMW_tooltip.js"></script>';
+					self::requireResource( 'ext.smw.tooltips' );
 				break;
 				case SMW_HEADER_STYLE:
-					global $wgContLang;
-
-					self::$mHeadItems['smw_css'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom.css" />';
-
-					if ( $wgContLang->isRTL() ) { // right-to-left support
-						self::$mHeadItems['smw_cssrtl'] = '<link rel="stylesheet" type="text/css" href="' . $smwgScriptPath . '/skins/SMW_custom_rtl.css" />';
-					}
+					self::requireResource( 'ext.smw.style' );
 				break;
 			}
-		} else { // custom head item
+		} else {
 			self::$mHeadItems[$id] = $item;
-		}		
+		}
 	}
 
 	/**
@@ -170,13 +119,16 @@ class SMWOutputs {
 	static public function commitToParserOutput( ParserOutput $parserOutput ) {
 		foreach ( self::$mHeadItems as $key => $item ) {
 			$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
-		}		
-		
+		}
+
 		// Check if the resource loader can be used or not.
 		if ( method_exists( $parserOutput, 'addModules' ) ) {
 			$parserOutput->addModules( array_values( self::$resourceModules ) );
+		} else {
+			self::addModulesBC( $parserOutput );
 		}
 
+		self::$resourceModules = array();
 		self::$mHeadItems = array();
 	}
 
@@ -198,9 +150,73 @@ class SMWOutputs {
 		// Check if the resource loader can be used or not.
 		if ( method_exists( $output, 'addModules' ) ) {
 			$output->addModules( array_values( self::$resourceModules ) );
-		}		
+		} else {
+			self::addModulesBC( $output );
+		}
 
+		self::$resourceModules = array();
 		self::$mHeadItems = array();
+	}
+
+	/**
+	 * Backwards compatibility method to add the stored modules to an
+	 * OutputPage or ParserOuput (calls are the same so we don't care).
+	 * Only extension modules and a few MW modules that are included
+	 * in SMW for compatibility are supported.
+	 *
+	 * @note This method can vanish when dropping compatibility to MW 1.16.
+	 */
+	static public function addModulesBC( $output ) {
+		$items = array();
+		foreach ( self::$resourceModules as $moduleName ) {
+			self::processModuleBC( $moduleName, $items );
+		}
+		foreach ( $items as $key => $item ) {
+			$output->addHeadItem( $key, $item );
+		}
+	}
+
+	/**
+	 * Backwards compatibility method to generate the header items for
+	 * loading the specified module.
+	 *
+	 * @note This method can vanish when dropping compatibility to MW 1.16.
+	 */
+	static public function processModuleBC( $moduleName, &$items  ) {
+		global $wgResourceModules, $wgContLang, $smwgScriptPath;
+
+		if ( array_key_exists( $moduleName, $wgResourceModules ) ) {
+			$module = $wgResourceModules[$moduleName];
+			$basePath = $module['remoteBasePath'];
+			foreach( self::getValueArrayForKey( 'dependencies', $module ) as $dependency ) {
+				self::processModuleBC( $dependency, $items );
+			}
+			if ( $moduleName == 'ext.smw.style' && $wgContLang->isRTL() ) { // manual RTL support
+				// This is obsolete with Resource Loader, since it flips styles automatically
+				$items["CSSRTL"] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"$smwgScriptPath/skins/SMW_custom_rtl.css\" />\n";
+			}
+			foreach( self::getValueArrayForKey( 'scripts', $module ) as $script ) {
+				$items["JS$script"] = "<script type=\"text/javascript\" src=\"$basePath/$script\"></script>\n";
+			}
+			foreach( self::getValueArrayForKey( 'styles', $module ) as $style ) {
+				$items["CSS$style"] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"$basePath/$style\" />\n";
+			}
+		}
+	}
+
+	/**
+	 * Helper method for processModuleBC().
+	 *
+	 * @note This method can vanish when dropping compatibility to MW 1.16.
+	 */
+	static public function getValueArrayForKey( $key, $array ) {
+		if ( !array_key_exists( $key, $array ) ) {
+			return array();
+		} elseif ( is_array( $array[$key] ) ) {
+			return $array[$key];
+		} else {
+			return array( $array[$key] );
+		}
 	}
 
 }

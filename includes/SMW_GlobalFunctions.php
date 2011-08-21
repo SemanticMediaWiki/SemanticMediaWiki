@@ -35,7 +35,9 @@ define( 'CONCEPT_CACHE_HARD', 1 ); // show without cache if concept is not harde
 define( 'CONCEPT_CACHE_NONE', 0 ); // show all concepts even without any cache
 
 // Constants for identifying javascripts as used in SMWOutputs.
+/// @deprecated Use module 'ext.smw.tooltips', see SMW_Ouptuts.php. Vanishes in SMW 1.7 at the latest.
 define( 'SMW_HEADER_TOOLTIP', 2 );
+/// @deprecated Use module 'ext.smw.style', see SMW_Ouptuts.php. Vanishes in SMW 1.7 at the latest.
 define( 'SMW_HEADER_STYLE', 4 );
 
 // Constants for denoting output modes in many functions: HTML or Wiki?
@@ -320,17 +322,17 @@ function &smwfGetSparqlDatabase() {
  * where in MW 1.19 they are static, and a DummyLinker
  * class is introduced, which can be instantaited for
  * compat reasons. 
- * 
+ *
  * @since 1.6
- * 
+ *
  * @return Linker or DummyLinker
  */
 function smwfGetLinker() {
 	static $linker = false;
-	
+
 	if ( $linker === false ) {
 		$linker = class_exists( 'DummyLinker' ) ? new DummyLinker() : new Linker();
 	}
-	
+
 	return $linker;
 }
