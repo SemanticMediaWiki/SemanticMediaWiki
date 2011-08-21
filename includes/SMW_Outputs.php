@@ -27,8 +27,20 @@
  */
 class SMWOutputs {
 
-	/// Protected member for temporarily storing header items.
-	protected static $mHeadItems = array();
+	/**
+	 * Protected member for temporarily storing header items.
+	 * Format $id => $headItem where $id is used only to avoid duplicate
+	 * items in the time before they are forwarded to the output.
+	 */
+	protected static $headItems = array();
+
+	/**
+	 * Protected member for temporarily storing additional Javascript
+	 * snippets. Format $id => $scriptText where $id is used only to
+	 * avoid duplicate scripts in the time before they are forwarded
+	 * to the output.
+	 */
+	protected static $scripts = array();
 	
 	/// Protected member for temporarily storing resource modules.
 	protected static $resourceModules = array();
@@ -43,11 +55,30 @@ class SMWOutputs {
 	public static function requireResource( $moduleName ) {
 		self::$resourceModules[$moduleName] = $moduleName;
 	}
+
+	/**
+	 * Require the presence of header scripts, provided as strings with
+	 * enclosing script tags. Note that the same could be achieved with
+	 * requireHeadItems, but scripts use a special method "addScript" in
+	 * MediaWiki OutputPage, hence we distinguish them.
+	 * 
+	 * The id is used to avoid that the requirement for one script is
+	 * recorded multiple times in SMWOutputs.
+	 * 
+	 * @param string $id
+	 * @param string $item
+	 */
+	public static function requireScript( $id, $script ) {
+		self::$scripts[$id] = $script;
+	}
 	
 	/**
 	 * Adds head items that are not Resource Loader modules. Should only
 	 * be used for custom head items such as RSS fedd links.
-	 * 
+	 *
+	 * The id is used to avoid that the requirement for one script is
+	 * recorded multiple times in SMWOutputs.
+	 *
 	 * Support for calling this with the old constants SMW_HEADER_STYLE
 	 * and SMW_HEADER_TOOLTIP will vanish in SMW 1.7 at the latest.
 	 * 
@@ -65,7 +96,7 @@ class SMWOutputs {
 				break;
 			}
 		} else {
-			self::$mHeadItems[$id] = $item;
+			self::$headItems[$id] = $item;
 		}
 	}
 
@@ -85,9 +116,10 @@ class SMWOutputs {
 	 * @param ParserOutput $parserOutput
 	 */
 	static public function requireFromParserOutput( ParserOutput $parserOutput ) {
-		self::$mHeadItems = array_merge( (array)self::$mHeadItems, (array)$parserOutput->mHeadItems );
+		// Note: we do not attempt to recover which head items where scripts here.
+		self::$headItems = array_merge( (array)self::$headItems, (array)$parserOutput->headItems );
 		if ( isset( $parserOutput->mModules ) ) {
-			self::$mHeadItems = array_merge( (array)self::$resourceModules, (array)$parserOutput->mModules );
+			self::$headItems = array_merge( (array)self::$resourceModules, (array)$parserOutput->mModules );
 		}
 	}
 
@@ -103,6 +135,7 @@ class SMWOutputs {
 	 * @param Parser $parser
 	 */
 	static public function commitToParser( Parser $parser ) {
+		/// TODO find out and document when this b/c code can go away
 		if ( method_exists( $parser, 'getOutput' ) ) {
 			$po = $parser->getOutput();
 		} else {
@@ -120,7 +153,10 @@ class SMWOutputs {
 	 * @param ParserOutput $parserOutput
 	 */
 	static public function commitToParserOutput( ParserOutput $parserOutput ) {
-		foreach ( self::$mHeadItems as $key => $item ) {
+		foreach ( self::$scripts as $key => $script ) {
+			$parserOutput->addHeadItem( $script . "\n", $key );
+		}
+		foreach ( self::$headItems as $key => $item ) {
 			$parserOutput->addHeadItem( "\t\t" . $item . "\n", $key );
 		}
 
@@ -132,7 +168,7 @@ class SMWOutputs {
 		}
 
 		self::$resourceModules = array();
-		self::$mHeadItems = array();
+		self::$headItems = array();
 	}
 
 	/**
@@ -146,7 +182,10 @@ class SMWOutputs {
 	 * @param OutputPage $output
 	 */
 	static public function commitToOutputPage( OutputPage $output ) {
-		foreach ( self::$mHeadItems as $key => $item ) {
+		foreach ( self::$scripts as $key => $script ) {
+			$parserOutput->addScript( $script );
+		}
+		foreach ( self::$headItems as $key => $item ) {
 			$output->addHeadItem( $key, "\t\t" . $item . "\n" );
 		}
 
@@ -158,7 +197,7 @@ class SMWOutputs {
 		}
 
 		self::$resourceModules = array();
-		self::$mHeadItems = array();
+		self::$headItems = array();
 	}
 
 	/**
