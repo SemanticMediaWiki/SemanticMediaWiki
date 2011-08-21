@@ -86,6 +86,9 @@ class SMWOutputs {
 	 */
 	static public function requireFromParserOutput( ParserOutput $parserOutput ) {
 		self::$mHeadItems = array_merge( (array)self::$mHeadItems, (array)$parserOutput->mHeadItems );
+		if ( isset( $parserOutput->mModules ) ) {
+			self::$mHeadItems = array_merge( (array)self::$resourceModules, (array)$parserOutput->mModules );
+		}
 	}
 
 	/**

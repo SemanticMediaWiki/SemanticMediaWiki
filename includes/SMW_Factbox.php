@@ -44,7 +44,7 @@ class SMWFactbox {
 		if ( wfRunHooks( 'smwShowFactbox', array( &$text, $semdata ) ) ) {
 			smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 			$subjectDv = SMWDataValueFactory::newDataItemValue( $semdata->getSubject(), null );
-			SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
+			SMWOutputs::requireResource( 'ext.smw.style' );
 			$rdflink = SMWInfolink::newInternalLink(
 				wfMsgForContent( 'smw_viewasrdf' ),
 				$wgContLang->getNsText( NS_SPECIAL ) . ':ExportRDF/' .

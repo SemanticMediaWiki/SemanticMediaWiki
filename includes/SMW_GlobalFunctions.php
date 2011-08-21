@@ -231,12 +231,12 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
  */
 function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' <!--br-->', $escape = true ) {
 	if ( count( $messages ) > 0 ) {
-		SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
-		
+		SMWOutputs::requireResource( 'ext.smw.tooltips' );
+
 		if ( $escape ) {
 			$messages = array_map( 'htmlspecialchars', $messages );
 		}
-		
+
 		if ( count( $messages ) == 1 )  {
 			$errorList = $messages[0];
 		}
@@ -247,11 +247,11 @@ function smwfEncodeMessages( array $messages, $icon = 'warning', $seperator = ' 
 			
 			$errorList = '<ul>' . implode( $seperator, $messages ) . '</ul>';
 		}
-		
+
 		return '<span class="smwttpersist">' .
-					'<span class="smwtticon">' . htmlspecialchars( $icon ) . '.png</span>' .
-					'<span class="smwttcontent">' . $errorList . '</span>' . 
-				'</span>';
+				'<span class="smwtticon">' . htmlspecialchars( $icon ) . '.png</span>' .
+				'<span class="smwttcontent">' . $errorList . '</span>' . 
+			'</span>';
 	} else {
 		return '';
 	}

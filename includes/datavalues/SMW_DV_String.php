@@ -115,7 +115,7 @@ class SMWStringValue extends SMWDataValue {
 			if ( ( $linked === null ) || ( $linked === false ) ) {
 				return mb_substr( $value, 0, 42 ) . ' <span class="smwwarning">…</span> ' . mb_substr( $value, $len - 42 );
 			} else {
-				SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
+				SMWOutputs::requireResource( 'ext.smw.tooltips' );
 				return mb_substr( $value, 0, 42 ) . ' <span class="smwttpersist"> … <span class="smwttcontent">' . $value . '</span></span> ' . mb_substr( $value, $len - 42 );
 			}
 		} elseif ( $this->m_typeid == '_cod' ) {
@@ -129,7 +129,7 @@ class SMWStringValue extends SMWDataValue {
 	 * Special features for Type:Code formatting.
 	 */
 	protected function getCodeDisplay( $value, $scroll = false ) {
-		SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
+		SMWOutputs::requireResource( 'ext.smw.style' );
 		$result = str_replace( array( '<', '>', ' ', '=', "'", ':', "\n" ), array( '&lt;', '&gt;', '&#160;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ), $value );
 		if ( $scroll ) {
 			$result = "<div style=\"height:5em; overflow:auto;\">$result</div>";

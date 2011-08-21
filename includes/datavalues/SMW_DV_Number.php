@@ -165,7 +165,7 @@ class SMWNumberValue extends SMWDataValue {
 				}
 			}
 			if ( $tooltip != '' ) {
-				SMWOutputs::requireHeadItem( SMW_HEADER_TOOLTIP );
+				SMWOutputs::requireResource( 'ext.smw.tooltips' );
 				return '<span class="smwttinline">' . $this->m_caption . '<span class="smwttcontent">' . $tooltip . '</span></span>';
 			} else {
 				return $this->m_caption;

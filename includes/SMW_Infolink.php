@@ -211,7 +211,7 @@ class SMWInfolink {
 	 */
 	public function getText( $outputformat, $linker = null ) {
 		if ( $this->mStyle !== false ) {
-			SMWOutputs::requireHeadItem( SMW_HEADER_STYLE ); // make SMW styles available
+			SMWOutputs::requireResource( 'ext.smw.style' );
 			$start = "<span class=\"$this->mStyle\">";
 			$end = '</span>';
 		} else {

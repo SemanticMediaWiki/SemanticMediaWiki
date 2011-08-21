@@ -64,7 +64,7 @@ class SMWConcept {
 
 		// display concept box:
 		$rdflink = SMWInfolink::newInternalLink( wfMsgForContent( 'smw_viewasrdf' ), $wgContLang->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink' );
-		SMWOutputs::requireHeadItem( SMW_HEADER_STYLE );
+		SMWOutputs::requireResource( 'ext.smw.style' );
 
 		// TODO: escape output, preferably via Html or Xml class.
 		$result = '<div class="smwfact"><span class="smwfactboxhead">' . wfMsgForContent( 'smw_concept_description', $title->getText() ) .
