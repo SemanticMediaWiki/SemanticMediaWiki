@@ -183,7 +183,7 @@ class SMWOutputs {
 	 */
 	static public function commitToOutputPage( OutputPage $output ) {
 		foreach ( self::$scripts as $key => $script ) {
-			$parserOutput->addScript( $script );
+			$output->addScript( $script );
 		}
 		foreach ( self::$headItems as $key => $item ) {
 			$output->addHeadItem( $key, "\t\t" . $item . "\n" );
