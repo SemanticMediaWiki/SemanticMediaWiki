@@ -320,8 +320,6 @@ class SMWQueryUIHelper {
 	 * Processes the QueryString, Params, and PrintOuts.
 	 *
 	 * @todo Combine this method with execute() or remove it altogether.
-	 * @todo for wikilink context, try to avoid computation if no query is set,
-	 * also check for pagination problems, if any.
 	 */
 	public function extractParameters( $p ) {
 		if ( $this->context == self::SPECIAL_PAGE ) {
@@ -553,7 +551,6 @@ class SMWQueryUIHelper {
 		$result->setPrintOuts( $printouts, $enableValidation );
 		$result->setQueryString( $query, $enableValidation );
 		$result->extractParameters( '' );
-		// $result->execute();
 		return $result;
 	}
 
