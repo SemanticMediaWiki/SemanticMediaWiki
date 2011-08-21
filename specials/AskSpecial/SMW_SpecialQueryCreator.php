@@ -102,13 +102,9 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	/**
 	 * Create the search form.
 	 *
-	 * @global OutputPage $wgOut
-	 * @global string $smwgScriptPath
 	 * @return string HTML code for search form
 	 */
 	protected function makeForm() {
-		global $wgOut, $smwgScriptPath;
-
 		SMWOutputs::requireResource( 'jquery' );
 
 		$specTitle = $this->getTitle();
@@ -185,7 +181,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	} );
 </script>
 EOT;
-			$wgOut->addScript( $javascriptText );
+			SMWOutputs::requireScript( 'smwToggleAskSyntaxQC', $javascriptText );
 		}
 
 		$result .= '<input type="hidden" name="eq" value="no"/>' .

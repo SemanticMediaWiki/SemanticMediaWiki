@@ -171,16 +171,12 @@ abstract class SMWQueryUI extends SpecialPage {
 	}
 
 	/**
-	 * Enable auto completion scripts and styles for the current output
-	 * page $wgOut.
-	 *
-	 * @global OutputPage $wgOut
+	 * Enable auto completion scripts and styles.
 	 */
 	protected function enableAutocompletion() {
-		global $wgOut;
-		if ( $this->autoCompleteEnabled == false ) {
-			SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
-			$javascriptAutocompleteText = <<<END
+		SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
+
+		$javascriptAutocompleteText = <<<END
 <script type="text/javascript">
 	function smw_split( val ) {
 		return val.split( '\\n' );
@@ -226,9 +222,8 @@ abstract class SMWQueryUI extends SpecialPage {
 </script>
 END;
 
-			$wgOut->addScript( $javascriptAutocompleteText );
-			$this->autoCompleteEnabled = true;
-		}
+		SMWOutputs::requireScript( 'smwAutocompleteQueryUICore', $javascriptAutocompleteText );
+
 	}
 
 	/**
@@ -326,12 +321,11 @@ END;
 	 * complement processQueryFormBox() to decode data sent through these elements.
 	 * UI's may overload both to change form parameters.
 	 *
-	 * @global OutputPage $wgOut
 	 * @global string $smwgScriptPath
 	 * @return string
 	 */
 	protected function getQueryFormBox() {
-		global $wgOut, $smwgScriptPath;
+		global $smwgScriptPath;
 		$this->setUrlArgs( array( 'q' => $this->uiCore->getQueryString() ) );
 		$result = '<div>' .
 			Html::element( 'textarea',
@@ -499,14 +493,13 @@ END;
 	 * @global boolean $smwgQSortingSupport
 	 * @global boolean $smwgQRandSortingSupport
 	 * @global WebRequest $wgRequest
-	 * @global OutputPage $wgOut
 	 * @global string $smwgScriptPath
 	 * @global integer $smwgQPrintoutLimit
 	 * @param mixed $enableAutocomplete
 	 * @return string
 	 */
 	protected function getPoSortFormBox( $enableAutocomplete = SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
-		global $smwgQSortingSupport, $wgRequest, $wgOut, $smwgScriptPath;
+		global $smwgQSortingSupport, $wgRequest, $smwgScriptPath;
 		global $smwgQRandSortingSupport, $smwgQPrintoutLimit;
 
 		SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
@@ -1407,7 +1400,7 @@ EOT;
 
 EOT;
 
-		$wgOut->addScript( $javascriptText );
+		SMWOutputs::requireScript( 'smwAutocompleteQueryUI', $javascriptText );
 		$result .= '</span>';
 		return $result;
 	}
@@ -1419,13 +1412,12 @@ EOT;
 	 *
 	 * @global boolean $smwgQSortingSupport
 	 * @global WebRequest $wgRequest
-	 * @global OutputPage $wgOut
 	 * @return string
 	 * 
 	 * @todo This code is not used anywhere in SMW.
 	 */
 	protected function getSortingFormBox() {
-		global $smwgQSortingSupport, $wgRequest, $wgOut;
+		global $smwgQSortingSupport, $wgRequest;
 
 		if ( !$smwgQSortingSupport ) return '';
 		$params = $this->uiCore->getParameters();
@@ -1523,7 +1515,7 @@ function removeInstance(div_id) {
 
 EOT;
 
-		$wgOut->addScript( $javascriptText );
+		SMWOutputs::requireScript( 'smwPrintoutControlsQueryUI', $javascriptText );
 		return $result;
 	}
 
@@ -1574,8 +1566,6 @@ EOT;
 	 * @return string The HTML code
 	 */
 	protected function getPOFormBox( $enableAutocomplete = SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
-		global $wgOut;
-
 		if ( $enableAutocomplete ) {
 			$this->enableAutocompletion();
 			$javascriptAutocompleteText = <<<EOT
@@ -1613,7 +1603,7 @@ jQuery(document).ready(function(){
 </script>
 EOT;
 
-			$wgOut->addScript( $javascriptAutocompleteText );
+			SMWOutputs::requireScript( 'smwPrintoutAutocompleteQueryUI', $javascriptAutocompleteText );
 
 		}
 		$this->setUrlArgs( array( 'po' => $this->getPOStrings() ) );
@@ -1790,7 +1780,7 @@ EOT;
 	 * @return array The first element contains the format selector, while the second contains the Format options
 	 */
 	protected function getFormatSelectBoxSep( $defaultFormat = 'broadtable' ) {
-		global $smwgResultFormats, $wgOut;
+		global $smwgResultFormats;
 
 		SMWOutputs::requireResource( 'jquery' );
 
@@ -1843,7 +1833,7 @@ function updateOtherOptions(strURL) {
 </script>
 END;
 
-		$wgOut->addScript( $javascript );
+		SMWOutputs::requireScript( 'smwUpdateOptionsQueryUI', $javascript );
 		// END: add javascript for updating formating options by ajax
 
 		return $result;

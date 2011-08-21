@@ -393,8 +393,6 @@ class SMWSpecialBrowse extends SpecialPage {
 	 * MW API to fetch suggestions.
 	 */
 	private static function addAutoComplete(){
-		global $wgOut;
-
 		SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
 
 		$javascript_autocomplete_text = <<<END
@@ -413,7 +411,7 @@ jQuery(document).ready(function(){
 
 END;
 
-		$wgOut->addScript( $javascript_autocomplete_text );
+		SMWOutputs::requireScript( 'smwAutocompleteSpecialBrowse', $javascript_autocomplete_text );
 	}
 
 	/**
