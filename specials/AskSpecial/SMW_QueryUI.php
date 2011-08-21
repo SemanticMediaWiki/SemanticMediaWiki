@@ -212,7 +212,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	}
 
 	/**
-	 * Enable autom completion scripts and styles for the current output
+	 * Enable auto completion scripts and styles for the current output
 	 * page $wgOut.
 	 *
 	 * @global OutputPage $wgOut
