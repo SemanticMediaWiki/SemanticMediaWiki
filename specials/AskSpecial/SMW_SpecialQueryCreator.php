@@ -15,7 +15,6 @@
  */
 class SMWQueryCreatorPage extends SMWQueryUI {
 
-
 	/**
 	 * Constructor.
 	 */
@@ -104,7 +103,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	 */
 	protected function makeForm() {
 		global $wgOut, $smwgScriptPath;
-		$this->enableJQuery();
+		SMWOutputs::requireResource( 'jquery' );
 		$result = '<div class="smwqcerrors">' . $this->getErrorsHtml() . '</div>';
 		$specTitle = $this->getTitle();
 		$formatBox = $this->getFormatSelectBoxSep( 'broadtable' );
@@ -148,7 +147,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 				wfMsg( 'smw_ask_show_embed' ) .
 			'</a>';
 			$result .= '<div id="embed-code-dialog">' . $this->getAskEmbedBox() . '</div>';
-			$this->enableJQueryUI();
+			SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
 			$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
 			$wgOut->addStyle( "$smwgScriptPath/skins/SMW_custom.css" );
 

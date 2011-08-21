@@ -166,52 +166,6 @@ abstract class SMWQueryUI extends SpecialPage {
 	}
 
 	/**
-	 * Enable JQuery for the current output page $wgOut. Ensures that the
-	 * relevant Javascript is loaded.
-	 *
-	 * @global OutputPage $wgOut
-	 * @global boolean $smwgJQueryIncluded
-	 */
-	protected function enableJQuery() {
-		global $wgOut, $smwgJQueryIncluded, $smwgScriptPath;
-		if ( !$smwgJQueryIncluded ) {
-			$realFunction = array( $wgOut, 'includeJQuery' );
-			if ( is_callable( $realFunction ) ) {
-				$wgOut->includeJQuery();
-			} else {
-				$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-1.4.2.min.js" );
-			}
-			$smwgJQueryIncluded = true;
-		}
-	}
-
-	/**
-	 * Enable JQueryUI for the current output page $wgOut. Ensures that the
-	 * relevant Javascript is loaded.
-	 *
-	 * @global OutputPage $wgOut
-	 * @global string $smwgScriptPath
-	 * @global boolean $smwgJQueryUIIncluded
-	 */
-	protected function enableJQueryUI() {
-		global $wgOut, $smwgScriptPath, $smwgJQueryUIIncluded;
-
-		$wgOut->addExtensionStyle( "$smwgScriptPath/skins/jquery-ui/base/jquery.ui.all.css" );
-		$this->enableJQuery();
-
-		if ( !$smwgJQueryUIIncluded ) {
-			$scripts = array( "$smwgScriptPath/libs/jquery-ui/jquery.ui.core.min.js",
-				"$smwgScriptPath/libs/jquery-ui/jquery.ui.widget.min.js",
-				"$smwgScriptPath/libs/jquery-ui/jquery.ui.position.min.js",
-				"$smwgScriptPath/libs/jquery-ui/jquery.ui.autocomplete.min.js" );
-			foreach ( $scripts as $js ) {
-				$wgOut->addScriptFile( $js );
-			}
-			$smwgJQueryUIIncluded = true;
-		}
-	}
-
-	/**
 	 * Enable auto completion scripts and styles for the current output
 	 * page $wgOut.
 	 *
@@ -220,7 +174,7 @@ abstract class SMWQueryUI extends SpecialPage {
 	protected function enableAutocompletion() {
 		global $wgOut;
 		if ( $this->autoCompleteEnabled == false ) {
-			$this->enableJQueryUI();
+			SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
 			$javascriptAutocompleteText = <<<END
 <script type="text/javascript">
 	function smw_split( val ) {
@@ -550,7 +504,7 @@ END;
 		global $smwgQSortingSupport, $wgRequest, $wgOut, $smwgScriptPath;
 		global $smwgQRandSortingSupport, $smwgQPrintoutLimit;
 
-		$this->enableJQueryUI();
+		SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
 		$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
 		$wgOut->addStyle( "$smwgScriptPath/skins/SMW_custom.css" );
 
@@ -1462,6 +1416,8 @@ EOT;
 	 * @global WebRequest $wgRequest
 	 * @global OutputPage $wgOut
 	 * @return string
+	 * 
+	 * @todo This code is not used anywhere in SMW.
 	 */
 	protected function getSortingFormBox() {
 		global $smwgQSortingSupport, $wgRequest, $wgOut;
@@ -1516,7 +1472,7 @@ EOT;
 		// Javascript code for handling adding and removing the "sort" inputs
 		$delete_msg = wfMsg( 'smw_qui_delete' );
 
-		$this->enableJQuery();
+		SMWOutputs::requireResource( 'jquery' );
 		$javascriptText = <<<EOT
 <script type="text/javascript">
 // code for handling adding and removing the "sort" inputs
@@ -1831,7 +1787,7 @@ EOT;
 	protected function getFormatSelectBoxSep( $defaultFormat = 'broadtable' ) {
 		global $smwgResultFormats, $wgOut;
 
-		$this->enableJQuery();
+		SMWOutputs::requireResource( 'jquery' );
 
 		// checking argument
 		$defFormat = 'broadtable';
