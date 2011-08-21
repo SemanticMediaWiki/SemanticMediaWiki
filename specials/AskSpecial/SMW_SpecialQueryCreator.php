@@ -56,7 +56,7 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 
 		}
 
-		$wgOut->addHTML( $htmlOutput );
+		return $htmlOutput;
 	}
 
 	/**

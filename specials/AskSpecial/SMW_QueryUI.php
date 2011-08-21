@@ -55,53 +55,67 @@ abstract class SMWQueryUI extends SpecialPage {
 
 		if ( !$smwgQEnabled ) {
 			$wgOut->addHTML( '<br />' . wfMsg( 'smw_iq_disabled' ) );
-		} else {
-			$format_options_requested = $this->processFormatOptions( $wgRequest ); // handling ajax for format options
-			if ( !$format_options_requested ) {
-				// Checking if a query string has been sent by using the form
-				if ( !( $this->processQueryFormBox( $wgRequest ) === false ) ) {
-					$params = $this->processParams();
-					$this->uiCore =  SMWQueryUIHelper::makeForUI(
-							$this->processQueryFormBox( $wgRequest ),
-							$params,
-							array(),
-							false );
-					if ( $this->uiCore->getQueryString() != "" ) {
-						$this->uiCore->execute();
-					}
-				} else {
-				// the user has entered this page from a wiki-page using an infolink,
-				// or no query has been set
-					$this->uiCore =  SMWQueryUIHelper::makeForInfoLink( $p );
-				}
-				// adding rss feed of results to the page head
-				if ( ( $this->isSyndicated() )
-						&& ( $this->uiCore->getQueryString() !== '' )
-						&& ( method_exists( $wgOut, 'addFeedlink' ) ) // remove this line after MW 1.5 is no longer supported by SMW
-						&& ( array_key_exists( 'rss', $wgFeedClasses ) ) ) {
-					$res = $this->uiCore->getResultObject();
-					$link = $res->getQueryLink();
-					$link->setParameter( 'rss', 'format' );
-					$link->setParameter( $this->uiCore->getLimit(), 'limit' );
-					$wgOut->addFeedLink( 'rss', $link->getURl() );
-				}
-
-				$this->makePage( $p );
-			}
+			return;
 		}
 
-		SMWOutputs::commitToOutputPage( $wgOut ); // make sure locally collected output data is pushed to the output!
+		// Check if this request is actually an AJAX request, and handle it accodingly:
+		$ajaxMode = $this->processFormatOptions( $wgRequest );
+
+		// If not replying to AJAX, build the UI HTML as usual:
+		if ( !$ajaxMode ) {
+			// Checking if a query string has been sent by using the form:
+			if ( $this->processQueryFormBox( $wgRequest ) !== false ) {
+				$params = $this->processParams();
+				$this->uiCore =  SMWQueryUIHelper::makeForUI(
+					$this->processQueryFormBox( $wgRequest ),
+					$params, array(), false );
+				if ( $this->uiCore->getQueryString() != '' ) {
+					$this->uiCore->execute();
+				}
+			} else { // Query not sent via form (though maybe from "further results" link:
+				$this->uiCore =  SMWQueryUIHelper::makeForInfoLink( $p );
+			}
+
+			// Add RSS feed of results to the page head:
+			if ( $this->isSyndicated() &&
+					$this->uiCore->getQueryString() !== '' &&
+					// Remove next line when MW 1.15 is no longer supported by SMW:
+					method_exists( $wgOut, 'addFeedlink' ) &&
+					array_key_exists( 'rss', $wgFeedClasses ) ) {
+				$res = $this->uiCore->getResultObject();
+				$link = $res->getQueryLink();
+				$link->setParameter( 'rss', 'format' );
+				$link->setParameter( $this->uiCore->getLimit(), 'limit' );
+				$wgOut->addFeedLink( 'rss', $link->getURl() );
+			}
+
+			$wgOut->addHTML( $this->makePage( $p ) );
+		}
+
+		// Make sure locally collected output data is pushed to the output:
+		SMWOutputs::commitToOutputPage( $wgOut ); 
 	}
 
 	/**
-	 * This method should call the various processXXXBox() methods for each
-	 * of the corresponding getXXXBox() methods which the UI uses. Merge the
-	 * results of these methods and return them.
+	 * This method should return an associative array of parameters
+	 * extracted from the current (global) web request.
 	 *
-	 * @global WebRequest $wgRequest
-	 * @return array
+	 * Implementations can call the various processXXXBox() methods for
+	 * reading parameters that belong to standard UI elements provided by
+	 * this base class (by according getXXXBox() methods).
+	 *
+	 * @return array of parameters
 	 */
 	protected abstract function processParams();
+
+	/**
+	 * Create an HTML form that is to be displayed on the page and return
+	 * the according HTML code.
+	 *
+	 * @param string $p the sub-page string
+	 * @return string HTML code for the page
+	 */
+	protected abstract function makePage( $p );
 
 	/**
 	 * To enable/disable syndicated feeds of results to appear in the UI
@@ -112,15 +126,6 @@ abstract class SMWQueryUI extends SpecialPage {
 	public function isSyndicated() {
 		return true;
 	}
-
-	/**
-	 * The main entry point for your UI. Call the various methods of
-	 * SMWQueryUI and SMWQueryUIHelper to build UI elements and to process
-	 * them.
-	 *
-	 * @param string $p the sub-page string
-	 */
-	protected abstract function makePage( $p );
 
 	/**
 	 * Builds a read-only #ask embed code of the given query. The code is
@@ -1876,8 +1881,8 @@ END;
 	/**
 	 * Generates form elements for a (web)requested format.
 	 *
-	 * Required by getFormatSelectBox() to recieve form elements from the Web.
-	 * UIs may need to overload processFormatOptions(),
+	 * Required by getFormatSelectBox() to recieve form elements from the
+	 * Web. UIs may need to overload processFormatOptions(),
 	 * processFormatSelectBox() and getFormatSelectBox() to change behavior.
 	 *
 	 * @param WebRequest $wgRequest
