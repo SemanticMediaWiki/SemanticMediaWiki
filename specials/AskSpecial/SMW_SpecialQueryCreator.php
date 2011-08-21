@@ -24,47 +24,52 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	}
 
 	/**
-	 * The main entrypoint. Call the various methods of SMWQueryUI and
-	 * SMWQueryUIHelper to build ui elements and to process them.
+	 * The main method for creating the output page.
+	 * Calls the various methods of SMWQueryUI and SMWQueryUIHelper to build
+	 * UI elements and to process them.
 	 *
 	 * @global OutputPage $wgOut
 	 * @param string $p
 	 */
 	protected function makePage( $p ) {
 		global $wgOut;
+
 		$htmlOutput = $this->makeForm( $p );
+
 		if ( $this->uiCore->getQueryString() != "" ) {
 			if ( $this->usesNavigationBar() ) {
-				$htmlOutput .= Html::rawElement( 'div', array( 'class' => 'smwqcnavbar' ),
-					$this->getNavigationBar ( $this->uiCore->getLimit(),
-						$this->uiCore->getOffset(),
-						$this->uiCore->hasFurtherResults() )
-				);
+				$navigationBar = $this->getNavigationBar (
+					$this->uiCore->getLimit(),
+					$this->uiCore->getOffset(),
+					$this->uiCore->hasFurtherResults() );
+				$navigation = Html::rawElement( 'div',
+					array( 'class' => 'smwqcnavbar' ),
+					$navigationBar );
+			} else {
+				$navigation = '';
 			}
 
-			$htmlOutput .= Html::rawElement( 'div', array( 'class' => 'smwqcresult' ), $this->uiCore->getHTMLResult() );
+			$htmlOutput .= $navigation .
+				Html::rawElement( 'div', array( 'class' => 'smwqcresult' ),
+					$this->uiCore->getHTMLResult() ) .
+				$navigation;
 
-			if ( $this->usesNavigationBar() ) {
-				$htmlOutput .= Html::rawElement( 'div', array( 'class' => 'smwqcnavbar' ),
-					$this->getNavigationBar ( $this->uiCore->getLimit(),
-						$this->uiCore->getOffset(),
-						$this->uiCore->hasFurtherResults() )
-				);
-			}
 		}
+
 		$wgOut->addHTML( $htmlOutput );
 	}
 
 	/**
-	 * This method should call the various processXXXBox() methods for each of
-	 * the corresponding getXXXBox() methods which the UI uses.
-	 * Merge the results of these methods and return them.
+	 * This method calls the various processXXXBox() methods for each
+	 * of the corresponding getXXXBox() methods which the UI uses. Then it
+	 * merges the results of these methods and return them.
 	 *
 	 * @global WebRequest $wgRequest
 	 * @return array
 	 */
 	protected function processParams() {
 		global $wgRequest;
+
 		$params = array_merge(
 			array(
 				'format'  =>  $wgRequest->getVal( 'format' ),
@@ -95,58 +100,69 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 	}
 
 	/**
-	 * Creates the search form
+	 * Create the search form.
 	 *
 	 * @global OutputPage $wgOut
 	 * @global string $smwgScriptPath
-	 * @return string
+	 * @return string HTML code for search form
 	 */
 	protected function makeForm() {
 		global $wgOut, $smwgScriptPath;
+
 		SMWOutputs::requireResource( 'jquery' );
-		$result = '<div class="smwqcerrors">' . $this->getErrorsHtml() . '</div>';
+
 		$specTitle = $this->getTitle();
 		$formatBox = $this->getFormatSelectBoxSep( 'broadtable' );
-		$result .= Html::openElement( 'form', array( 'name' => 'qc', 'id'=>'smwqcform', 'action' => $specTitle->escapeLocalURL(), 'method' => 'get' ) ) . "\n" .
-			Html::hidden( 'title', $specTitle->getPrefixedText() );
-		$result .= wfMsg( 'smw_qc_query_help' );
-		// Main query and format options
-		$result .= $this->getQueryFormBox();
-		// sorting and prinouts
-		$result .= '<div class="smwqcsortbox">' . $this->getPoSortFormBox() . '</div>';
-		// additional options
 
-		// START: show|hide additional options
-		$result .= '<div class="smwqcformatas">' . Html::element( 'strong', array(), wfMsg( 'smw_ask_format_as' ) );
-		$result .= $formatBox[0] . '<span id="show_additional_options" style="display:inline;">' .
+		$result = '<div class="smwqcerrors">' . $this->getErrorsHtml() . '</div>';
+
+		$formParameters = array( 'name' => 'qc', 'id'=>'smwqcform',
+			'action' => $specTitle->escapeLocalURL(), 'method' => 'get' );
+		$result .= Html::openElement( 'form', $formParameters ) . "\n" .
+			Html::hidden( 'title', $specTitle->getPrefixedText() ) .
+			// Header:
+			wfMsg( 'smw_qc_query_help' ) .
+			 // Main query and format options:
+			$this->getQueryFormBox() .
+			// Sorting and prinouts:
+			'<div class="smwqcsortbox">' . $this->getPoSortFormBox() . '</div>';
+
+		// Control to show/hide additional options:
+		$result .= '<div class="smwqcformatas">' .
+			Html::element( 'strong', array(), wfMsg( 'smw_ask_format_as' ) ) .
+			$formatBox[0] .
+			'<span id="show_additional_options" style="display:inline;">' .
 			'<a href="#addtional" rel="nofollow" onclick="' .
 			 "jQuery('#additional_options').show('blind');" .
 			 "document.getElementById('show_additional_options').style.display='none';" .
 			 "document.getElementById('hide_additional_options').style.display='inline';" . '">' .
-			 wfMsg( 'smw_qc_show_addnal_opts' ) . '</a></span>';
-		$result .= '<span id="hide_additional_options" style="display:none"><a href="#" rel="nofollow" onclick="' .
+			 wfMsg( 'smw_qc_show_addnal_opts' ) . '</a></span>' .
+			'<span id="hide_additional_options" style="display:none"><a href="#" rel="nofollow" onclick="' .
 			 "jQuery('#additional_options').hide('blind');;" .
 			 "document.getElementById('hide_additional_options').style.display='none';" .
 			 "document.getElementById('show_additional_options').style.display='inline';" . '">' .
-			 wfMsg( 'smw_qc_hide_addnal_opts' ) . '</a></span>';
-		$result .= '</div>';
-		// END: show|hide additional options
+			 wfMsg( 'smw_qc_hide_addnal_opts' ) . '</a></span>' .
+			'</div>';
 
-		$result .= '<div id="additional_options" style="display:none">';
-		$result .= $this->getOtherParametersBox();
-		$result .= '<fieldset><legend>' . wfMsg( 'smw_qc_formatopt' ) . "</legend>\n" .
-					$formatBox[1] . // display the format options
-					"</fieldset>\n";
+		// Controls for additional options:
+		$result .= '<div id="additional_options" style="display:none">' .
+			$this->getOtherParametersBox() .
+			'<fieldset><legend>' . wfMsg( 'smw_qc_formatopt' ) . "</legend>\n" .
+			$formatBox[1] . // display the format options
+			"</fieldset>\n" .
+			'</div>'; // end of hidden additional options
 
-		$result .= '</div>'; // end of hidden additional options
-		$result .= '<br/><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/><br/>';
-		$result .= '<a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' . wfMsg( 'smw_ask_help' ) . '</a>';
+		// Submit button and documentation link:
+		$result .= '<br/><input type="submit" value="' . wfMsg( 'smw_ask_submit' ) . '"/><br/>' .
+			'<a href="' . htmlspecialchars( wfMsg( 'smw_ask_doculink' ) ) . '">' .
+			wfMsg( 'smw_ask_help' ) . '</a>';
 
-		if ( $this->uiCore->getQueryString() != '' ) { // hide #ask if there isnt any query defined
+		// Control for showing #ask syntax of query:
+		if ( $this->uiCore->getQueryString() != '' ) { // only show if query given
 			$result .= ' | <a name="show-embed-code" id="show-embed-code" href="##" rel="nofollow">' .
-				wfMsg( 'smw_ask_show_embed' ) .
-			'</a>';
-			$result .= '<div id="embed-code-dialog">' . $this->getAskEmbedBox() . '</div>';
+				wfMsg( 'smw_ask_show_embed' ) . '</a>' .
+				'<div id="embed-code-dialog">' . $this->getAskEmbedBox() . '</div>';
+
 			SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
 			SMWOutputs::requireResource( 'jquery.ui.dialog' );
 			SMWOutputs::requireResource( 'ext.smw.style' );
@@ -174,7 +190,8 @@ EOT;
 
 		$result .= '<input type="hidden" name="eq" value="no"/>' .
 			"\n</form><br/>";
-	return $result;
+
+		return $result;
 	}
 
 	/**
