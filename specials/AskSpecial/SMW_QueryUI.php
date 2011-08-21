@@ -562,7 +562,7 @@ END;
 		} else {
 			$mainLabel = '';
 		}
-		if ( $mainLabel == '-' || $this->uiCore->getQueryString() == '' ) {
+		if ( $mainLabel == '-' ) {
 			$mainLabelText = '';
 			$formDisplay = 'none';
 		} else {
