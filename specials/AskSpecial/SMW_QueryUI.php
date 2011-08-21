@@ -538,6 +538,7 @@ END;
 	 * sent by these elements.
 	 *
 	 * @global boolean $smwgQSortingSupport
+	 * @global boolean $smwgQRandSortingSupport
 	 * @global WebRequest $wgRequest
 	 * @global OutputPage $wgOut
 	 * @global string $smwgScriptPath
@@ -546,7 +547,8 @@ END;
 	 * @return string
 	 */
 	protected function getPoSortFormBox( $enableAutocomplete = SMWQueryUI::ENABLE_AUTO_SUGGEST ) {
-		global $smwgQSortingSupport, $wgRequest, $wgOut, $smwgScriptPath, $smwgQPrintoutLimit;
+		global $smwgQSortingSupport, $wgRequest, $wgOut, $smwgScriptPath;
+		global $smwgQRandSortingSupport, $smwgQPrintoutLimit;
 
 		$this->enableJQueryUI();
 		$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
@@ -782,11 +784,16 @@ END;
 					$if3 = ( array_key_exists( $key, $orderValues ) && $orderValues[$key] == 'DESC' );
 					$result .= Xml::option( wfMsg( 'smw_qui_descorder' ), "DESC", $if3 );
 
+					if ( $smwgQRandSortingSupport ) {
+						$if4 = ( array_key_exists( $key, $orderValues ) && $orderValues[$key] == 'RANDOM' );
+						$result .= Xml::option( wfMsg( 'smw_qui_randorder' ), "RANDOM", $if4 );
+					}
+
 					$result .= Xml::closeElement( 'select' );
 
-					$if4 = ( array_key_exists( $key, $displayValues ) );
-					$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if4 );
-					if ( $if4 ) {
+					$if5 = ( array_key_exists( $key, $displayValues ) );
+					$result .= Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display[$i]", "display$i", $if5 );
+					if ( $if5 ) {
 						$urlArgs["display[$i]"] = '1';
 					}
 				}
@@ -898,7 +905,7 @@ END;
 			}
 			if ( array_key_exists( $key, $mainColumnLabels ) ) {
 				/*
-				 * Make an element for main column
+				 * Make an element for main column aka query-matches
 				 */
 				$result .= Html::openElement( 'div',
 						array( 'id' => "sort_div_$i", 'class' => 'smwsort' )
@@ -929,7 +936,7 @@ END;
 		// END: create form elements already submitted earlier via form
 
 		// create hidden form elements to be cloned later
-		//property
+		// property
 		$hiddenProperty = Html::openElement( 'div',
 				array( 'id' => 'property_starter',
 					'style' => 'display:none' )
@@ -947,8 +954,11 @@ END;
 			$hiddenProperty .= Html::openElement( 'select', array( 'name' => 'order_num' ) ) .
 					Xml::option( wfMsg( 'smw_qui_nosort' ), 'NONE' ) .
 					Xml::option( wfMsg( 'smw_qui_ascorder' ), 'ASC' ) .
-					Xml::option( wfMsg( 'smw_qui_descorder' ), 'DESC' ) .
-				Xml::closeElement( 'select' ) .
+					Xml::option( wfMsg( 'smw_qui_descorder' ), 'DESC' );
+			if ( $smwgQRandSortingSupport ) {
+				$hiddenProperty .= Xml::option( wfMsg( 'smw_qui_randorder' ), 'RANDOM' );
+			}
+			$hiddenProperty .= Xml::closeElement( 'select' ) .
 				Xml::checkLabel( wfMsg( 'smw_qui_shownresults' ), "display_num", '', true );
 		}
 		$hiddenProperty .= Html::hidden( 'prop_label_num', '' ) .
@@ -956,7 +966,7 @@ END;
 			Html::hidden( 'prop_limit_num', '' ) .
 			Xml::closeElement( 'div' );
 		$hiddenProperty = json_encode( $hiddenProperty );
-		//category
+		// category
 		$hiddenCategory = Html::openElement( 'div',
 			array( 'id' => 'category_starter',
 				'style' => 'display:none' )
@@ -990,7 +1000,7 @@ END;
 			Xml::closeElement( 'div' );
 		$hiddenMainColumn = json_encode( $hiddenMainColumn );
 
-		//Create dialog-boxes
+		// Create dialog-boxes
 		// create dialogbox for Property options
 		$propertyHtml = Xml::inputLabelSep( wfMsg( 'smw_qui_prop' ),
 			'',

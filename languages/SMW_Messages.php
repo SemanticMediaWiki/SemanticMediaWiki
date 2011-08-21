@@ -262,6 +262,7 @@ Names(<strong>[[Germany]]</strong>) and Namespaces (<strong>[[{{ns:help}}:+]]</s
 	'smw_qui_nosort'        => 'No sorting',
 	'smw_qui_ascorder'      => 'Ascending',
 	'smw_qui_descorder'     => 'Descending',
+	'smw_qui_randorder'     => 'Random',
 	'smw_qui_addnprop'      => 'add property',
 	'smw_qui_delete'        => 'Remove',
 	'smw_qui_rescol'		=> 'Query-matches',
