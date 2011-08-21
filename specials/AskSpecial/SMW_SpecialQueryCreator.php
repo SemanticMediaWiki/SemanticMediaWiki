@@ -148,8 +148,8 @@ class SMWQueryCreatorPage extends SMWQueryUI {
 			'</a>';
 			$result .= '<div id="embed-code-dialog">' . $this->getAskEmbedBox() . '</div>';
 			SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
-			$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
-			$wgOut->addStyle( "$smwgScriptPath/skins/SMW_custom.css" );
+			SMWOutputs::requireResource( 'jquery.ui.dialog' );
+			SMWOutputs::requireResource( 'ext.smw.style' );
 
 			$javascriptText = <<<EOT
 <script type="text/javascript">

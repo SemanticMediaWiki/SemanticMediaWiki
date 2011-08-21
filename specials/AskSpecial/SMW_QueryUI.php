@@ -505,8 +505,8 @@ END;
 		global $smwgQRandSortingSupport, $smwgQPrintoutLimit;
 
 		SMWOutputs::requireResource( 'jquery.ui.autocomplete' );
-		$wgOut->addScriptFile( "$smwgScriptPath/libs/jquery-ui/jquery-ui.dialog.min.js" );
-		$wgOut->addStyle( "$smwgScriptPath/skins/SMW_custom.css" );
+		SMWOutputs::requireResource( 'jquery.ui.dialog' );
+		SMWOutputs::requireResource( 'ext.smw.style' );
 
 		$result = '<span id="smwposortbox">';
 		$numSortValues = 0;

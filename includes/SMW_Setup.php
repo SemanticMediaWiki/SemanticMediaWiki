@@ -146,9 +146,18 @@ function smwfRegisterResourceLoaderModules() {
 		$wgResourceModules['jquery.ui.position'] = $moduleTemplate + array(
 			'scripts' => 'libs/jquery-ui/jquery.ui.position.min.js'
 		);
+		$wgResourceModules['jquery.ui.button'] = $moduleTemplate + array(
+			'scripts' => 'libs/jquery-ui/jquery.ui.button.min.js',
+			'dependencies' => array( 'jquery.ui.core', 'jquery.ui.widget' )
+		);
 		$wgResourceModules['jquery.ui.autocomplete'] = $moduleTemplate + array(
 			'scripts' => 'libs/jquery-ui/jquery.ui.autocomplete.min.js',
 			'dependencies' => array( 'jquery.ui.core', 'jquery.ui.widget', 'jquery.ui.position' )
+		);
+		$wgResourceModules['jquery.ui.dialog'] = $moduleTemplate + array(
+			'scripts' => 'libs/jquery-ui/jquery.ui.dialog.min.js',
+			'dependencies' => array( 'jquery.ui.core', 'jquery.ui.widget', 'jquery.ui.position', 
+				'jquery.ui.button' /*, 'jquery.ui.draggable', 'jquery.ui.mouse', 'jquery.ui.resizable'*/ )
 		);
 	}
 }
