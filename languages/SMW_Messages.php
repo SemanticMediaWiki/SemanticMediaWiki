@@ -2121,7 +2121,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_paramdesc_introtemplate' => 'Der Name der vor etwaigen Abfrageergebnissen anzuzeigenden Vorlage',
 	'smw_paramdesc_outrotemplate' => 'Der Name der nach etwaigen Abfrageergebnissen anzuzeigenden Vorlage',
 	'smw_paramdesc_embedformat' => 'Das für die Festlegung der Überschriften genutzte HTML-Tag',
-	'smw_paramdesc_embedonly' => 'Keine Überschriften anzeigen',
+	'smw_paramdesc_embedonly' => 'Die Ergebniswerte ohne Überschriften anzeigen',
 	'smw_paramdesc_rsstitle' => 'Der Text, der als Titel für den Feed benutzt wird',
 	'smw_paramdesc_rssdescription' => 'Der Text, der als Beschreibung für den Feed benutzt wird',
 	'smw_paramdesc_rdfsyntax' => 'Zu verwendende RDF-Syntax',
@@ -2251,6 +2251,7 @@ Namensräumen (<strong>[[{{ns:help}}:+]]</strong>) auszuwählen.',
 	'smw_qui_nosort' => 'Keine Sortierung',
 	'smw_qui_ascorder' => 'Aufsteigend',
 	'smw_qui_descorder' => 'Absteigend',
+	'smw_qui_randorder' => 'Zufällig',
 	'smw_qui_addnprop' => 'Attribut hinzufügen',
 	'smw_qui_delete' => 'Entfernen',
 	'smw_qui_rescol' => 'Abfrageergebnisse',
@@ -3239,6 +3240,7 @@ Uutta ei käynnistetä.',
  * @author IAlex
  * @author McDutchie
  * @author Meithal
+ * @author Od1n
  * @author Peter17
  * @author PieRRoMaN
  * @author Pierre Matringe
@@ -3407,6 +3409,16 @@ Les propriétés qui n’ont pas encore de page se trouvent dans la [[Special:Wa
 catégories (<strong>[[{{ns:category}}:Acteur]]</strong>),
 Propriétés (<strong>[[Situé en::Allemagne]]</strong>),
 Noms (<strong>[[Allemagne]]</strong>) et espaces de noms (<strong>[[{{ns:help}}:+]]</strong>)',
+	'smw_qui_property' => '<strong>Propriété</strong>',
+	'smw_qui_prop' => 'Propriété :',
+	'smw_qui_limt' => 'Limite :',
+	'smw_qui_nosort' => 'Pas de tri',
+	'smw_qui_ascorder' => 'Croissant',
+	'smw_qui_descorder' => 'Décroissant',
+	'smw_qui_randorder' => 'Aléatoire',
+	'smw_qui_options' => 'options',
+	'smw_qui_category' => '<strong>Catégorie</strong>',
+	'smw_qui_dcategory' => 'Catégorie :',
 	'searchbyproperty' => 'Rechercher par attribut',
 	'smw_sbv_docu' => 'Rechercher toutes les pages qui ont un attribut donné avec un certaine valeur.',
 	'smw_sbv_novalue' => 'Veuillez entrer une valeur ou consulter toutes les valeurs des attributs pour « $1 ».',
