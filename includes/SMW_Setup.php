@@ -112,9 +112,18 @@ function smwfRegisterResourceLoaderModules() {
 		'remoteBasePath' => $smwgScriptPath,
 		'group' => 'ext.smw'
 	);
+	
+	$wgResourceModules['ext.smw'] = $moduleTemplate + array(
+		'scripts' => array(
+			'resources/ext.smw.js',
+			'resources/ext.smw.compat.js',
+		),
+	);
+	
 	$wgResourceModules['ext.smw.style'] = $moduleTemplate + array(
 		'styles' => 'skins/SMW_custom.css'
 	);
+	
 	$wgResourceModules['ext.smw.tooltips'] = $moduleTemplate + array(
 		'scripts' => 'skins/SMW_tooltip.js',
 		'dependencies' => array(
