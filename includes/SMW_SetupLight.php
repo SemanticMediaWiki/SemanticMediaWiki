@@ -180,8 +180,6 @@ function enableSemantics( $namespace = null, $complete = false ) {
 		$wgAutoloadClasses['Html'] = $smwgIP . 'compat/Html.php';
 	}	
 
-	$wgAutoloadClasses['SMWTestStore']              = $smwgIP . 'includes/storage/SMW_TestStore.php';
-
 	///// Register specials, do that early on in case some other extension calls "addPage" /////
 	$wgAutoloadClasses['SMWQueryPage']              = $smwgIP . 'specials/QueryPages/SMW_QueryPage.php';
 // 	$wgAutoloadClasses['SMWAskPage']                = $smwgIP . 'specials/AskSpecial/SMW_SpecialAsk.php';
