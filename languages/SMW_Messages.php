@@ -2117,7 +2117,7 @@ Falls sich das Problem nicht in angemessener Zeit von selbst erledigt, bitte dei
 	'smw_paramdesc_sep' => 'Das Trennzeichen für die Ergebniswerte',
 	'smw_paramdesc_template' => 'Der Name einer Vorlage zum Anzeigen der Abfrageergebnisse',
 	'smw_paramdesc_columns' => 'Die Anzahl der Spalten die für die Anzeige Suchergebnisse verwendet werden sollen (standardmäßig $1)',
-	'smw_paramdesc_userparam' => 'Ein Wert, der bei jedem Vorlagenaufruf übergeben wird, sofern eine Vorlage genutzt wird',
+	'smw_paramdesc_userparam' => 'Der Wert, der bei jedem Vorlagenaufruf übergeben wird, sofern eine Vorlage genutzt wird',
 	'smw_paramdesc_introtemplate' => 'Der Name der vor etwaigen Abfrageergebnissen anzuzeigenden Vorlage',
 	'smw_paramdesc_outrotemplate' => 'Der Name der nach etwaigen Abfrageergebnissen anzuzeigenden Vorlage',
 	'smw_paramdesc_embedformat' => 'Das für die Festlegung der Überschriften genutzte HTML-Tag',
