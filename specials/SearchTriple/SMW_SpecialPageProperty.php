@@ -55,7 +55,7 @@ class SMWPageProperty extends SpecialPage {
 		$subject = SMWDataValueFactory::newTypeIDValue( '_wpg', $pagename );
 		$pagename = $subject->isValid() ? $subject->getText() : '';
 		$property = SMWPropertyValue::makeUserProperty( $propname );
-		$propname = $property->isvalid() ? $property->getWikiValue() : '';
+		$propname = $property->isValid() ? $property->getWikiValue() : '';
 
 		// Produce output
 		$html = '';

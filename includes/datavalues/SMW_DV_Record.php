@@ -242,9 +242,9 @@ class SMWRecordValue extends SMWDataValue {
 
 				if ( count( $dataItems ) == 1 ) {
 					$propertyListValue = new SMWPropertyListValue( '__pls' );
-					$propertyListValue->setDataItem( $dataItems[0] );
+					$propertyListValue->setDataItem( reset( $dataItems ) );
 
-					if ( $propertyListValue->isvalid() ) {
+					if ( $propertyListValue->isValid() ) {
 						return $propertyListValue->getPropertyDataItems();
 					}
 				}
