@@ -729,7 +729,7 @@ class SMWTimeValue extends SMWDataValue {
 		$result .= str_pad( $this->getYear(), 4, "0", STR_PAD_LEFT ) .
 			  '-' . str_pad( $monthnum, 2, "0", STR_PAD_LEFT );
 		if ( !$mindefault && ( $this->m_dataitem->getPrecision() < SMWDITime::PREC_YMD ) ) {
-			$maxday = self::getDayNumberForMonth( $monthnum, $this->getYear(), SMWDITime::CM_GREGORIAN );
+			$maxday = SMWDITime::getDayNumberForMonth( $monthnum, $this->getYear(), SMWDITime::CM_GREGORIAN );
 			$result .= '-' . str_pad( $this->getDay( SMWDITime::CM_GREGORIAN, $maxday ), 2, "0", STR_PAD_LEFT );
 		} else {
 			$result .= '-' . str_pad( $this->getDay(), 2, "0", STR_PAD_LEFT );
@@ -768,10 +768,15 @@ class SMWTimeValue extends SMWDataValue {
 	/**
 	 * Compute a suitable string to display the given date item.
 	 * @note MediaWiki's date functions are not applicable for the range of historic dates we support.
+	 * 
+	 * @since 1.6
+	 * 
+	 * @param SMWDITime $dataitem
+	 * 
 	 * @return string
 	 * @todo Internationalize the CE and BCE strings.
 	 */
-	public function getCaptionFromDataitem( $dataitem ) {
+	public function getCaptionFromDataitem( SMWDITime $dataitem ) {
 		global $smwgContLang;
 		if ( $dataitem->getYear() > 0 ) {
 			$cestring = '';

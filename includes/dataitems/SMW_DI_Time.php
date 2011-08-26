@@ -103,7 +103,7 @@ class SMWDITime extends SMWDataItem {
 	 */
 	public function __construct( $calendarmodel, $year, $month = false, $day = false,
 	                             $hour = false, $minute = false, $second = false ) {
-		if ( ( $calendarmodel != SMWDITime::CM_GREGORIAN ) && ( $calendarmodel != SMWDITime::CM_JULIAN ) ) {
+		if ( ( $calendarmodel != self::CM_GREGORIAN ) && ( $calendarmodel != self::CM_JULIAN ) ) {
 			throw new SMWDataItemException( "Unsupported calendar model constant \"$calendarmodel\"." );
 		}
 		if ( $year == 0 ) {
@@ -122,17 +122,17 @@ class SMWDITime extends SMWDataItem {
 		     ( $this->m_month < 1 ) || ( $this->m_month > 12 ) ) {
 			throw new SMWDataItemException( "Part of the date is out of bounds." );
 		}
-		if ( $this->m_day > SMWDITime::getDayNumberForMonth( $this->m_month, $this->m_year, $this->m_model ) ) {
+		if ( $this->m_day > self::getDayNumberForMonth( $this->m_month, $this->m_year, $this->m_model ) ) {
 			throw new SMWDataItemException( "Month {$this->m_month} in year {$this->m_year} did not have {$this->m_day} days in this calendar model." );
 		}
 		if ( $month === false ) {
-			$this->m_precision = SMWDITime::PREC_Y;
+			$this->m_precision = self::PREC_Y;
 		} elseif ( $day === false ) {
-			$this->m_precision = SMWDITime::PREC_YM;
+			$this->m_precision = self::PREC_YM;
 		} elseif ( $hour === false ) {
-			$this->m_precision = SMWDITime::PREC_YMD;
+			$this->m_precision = self::PREC_YMD;
 		} else {
-			$this->m_precision = SMWDITime::PREC_YMDT;
+			$this->m_precision = self::PREC_YMDT;
 		}
 	}
 
@@ -186,7 +186,7 @@ class SMWDITime extends SMWDataItem {
 		if ( $calendarmodel == $this->m_model ) {
 			return $this;
 		} else {
-			return SMWDITime::newFromJD( $this->getJD(), $calendarmodel, $this->m_precision );
+			return self::newFromJD( $this->getJD(), $calendarmodel, $this->m_precision );
 		}
 	}
 
@@ -209,19 +209,19 @@ class SMWDITime extends SMWDataItem {
 	}
 
 	public function getJD() {
-		return SMWDITime::date2JD( $this->m_year, $this->m_month, $this->m_day, $this->m_model ) +
-		       SMWDITime::time2JDoffset( $this->m_hours, $this->m_minutes, $this->m_seconds );
+		return self::date2JD( $this->m_year, $this->m_month, $this->m_day, $this->m_model ) +
+		       self::time2JDoffset( $this->m_hours, $this->m_minutes, $this->m_seconds );
 	}
 
 	public function getSerialization() {
 		$result = strval( $this->m_model ) . '/' . strval( $this->m_year );
-		if ( $this->m_precision >= SMWDITime::PREC_YM ) {
+		if ( $this->m_precision >= self::PREC_YM ) {
 			$result .= '/' . strval( $this->m_month );
 		}
-		if ( $this->m_precision >= SMWDITime::PREC_YMD ) {
+		if ( $this->m_precision >= self::PREC_YMD ) {
 			$result .= '/' . strval( $this->m_day );
 		}
-		if ( $this->m_precision >= SMWDITime::PREC_YMDT ) {
+		if ( $this->m_precision >= self::PREC_YMDT ) {
 			$result .= '/' . strval( $this->m_hours ) . '/' . strval( $this->m_minutes ) . '/' . strval( $this->m_seconds );
 		}
 		return $result;
@@ -264,15 +264,15 @@ class SMWDITime extends SMWDataItem {
 	 * @return SMWDITime object
 	 */
 	public static function newFromJD( $jdvalue, $calendarmodel, $precision ) {
-		list( $year, $month, $day ) = SMWDITime::JD2Date( $jdvalue, $calendarmodel );
-		if ( $precision <= SMWDITime::PREC_YM ) {
+		list( $year, $month, $day ) = self::JD2Date( $jdvalue, $calendarmodel );
+		if ( $precision <= self::PREC_YM ) {
 			$day = false;
-			if ( $precision == SMWDITime::PREC_Y ) {
+			if ( $precision == self::PREC_Y ) {
 				$month = false;
 			}
 		}
-		if ( $precision == SMWDITime::PREC_YMDT ) {
-			list( $hour, $minute, $second ) = SMWDITime::JD2Time( $jdvalue );
+		if ( $precision == self::PREC_YMDT ) {
+			list( $hour, $minute, $second ) = self::JD2Time( $jdvalue );
 		} else {
 			$hour = $minute = $second = false;
 		}
@@ -291,7 +291,7 @@ class SMWDITime extends SMWDataItem {
 	 */
 	static public function date2JD( $year, $month, $day, $calendarmodel ) {
 		$astroyear = ( $year < 1 ) ? ( $year + 1 ) : $year;
-		if ( $calendarmodel == SMWDITime::CM_GREGORIAN ) {
+		if ( $calendarmodel == self::CM_GREGORIAN ) {
 			$a = intval( ( 14 - $month ) / 12 );
 			$y = $astroyear + 4800 - $a;
 			$m = $month + 12 * $a - 3;
@@ -326,7 +326,7 @@ class SMWDITime extends SMWDataItem {
 	 * @return array( yearnumber, monthnumber, daynumber )
 	 */
 	static public function JD2Date( $jdvalue, $calendarmodel ) {
-		if ( $calendarmodel == SMWDITime::CM_GREGORIAN ) {
+		if ( $calendarmodel == self::CM_GREGORIAN ) {
 			$jdvalue += 2921940; // add the days of 8000 years (this algorithm only works for positive JD)
 			$j = floor( $jdvalue + 0.5 ) + 32044;
 			$g = floor( $j / 146097 );
@@ -384,7 +384,7 @@ class SMWDITime extends SMWDataItem {
 	 */
 	static public function isLeapYear( $year, $calendarmodel ) {
 		$astroyear = ( $year < 1 ) ? ( $year + 1 ) : $year;
-		if ( $calendarmodel == SMWDITime::CM_JULIAN ) {
+		if ( $calendarmodel == self::CM_JULIAN ) {
 			return ( $astroyear % 4 ) == 0;
 		} else {
 			return ( ( $astroyear % 400 ) == 0 ) ||
@@ -403,8 +403,8 @@ class SMWDITime extends SMWDataItem {
 	 */
 	static public function getDayNumberForMonth( $month, $year, $calendarmodel ) {
 		if ( $month !== 2 ) {
-			return SMWDITime::$m_daysofmonths[$month];
-		} elseif ( SMWDITime::isLeapYear( $year, $calendarmodel ) ) {
+			return self::$m_daysofmonths[$month];
+		} elseif ( self::isLeapYear( $year, $calendarmodel ) ) {
 			return 29;
 		} else {
 			return 28;
