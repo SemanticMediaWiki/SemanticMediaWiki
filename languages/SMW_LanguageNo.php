@@ -72,8 +72,8 @@ class SMWLanguageNo extends SMWLanguage {
 	protected $m_SpecialPropertyAliases = array(
 		'Type' => '_TYPE',
 		'Enhet' => '_UNIT',
-	    'Synonym URI' => '_URI',
-	    'Synonym adresse' => '_URI'
+		'Synonym URI' => '_URI',
+		'Synonym adresse' => '_URI'
 	);
 	
 	
