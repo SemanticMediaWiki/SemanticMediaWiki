@@ -40,22 +40,21 @@ class SMWLanguageFi extends SMWLanguage {
 		'_rec' => 'Tietue', // name of record data type
 		'_qty' => 'Määrä', // name of the number type with units of measurement
 	);
-	
-	/// @todo: translate
+
 	protected $m_SpecialProperties = array(
 		// always start upper-case
-		'_TYPE' => 'Has type',
-		'_URI'  => 'Equivalent URI',
-		'_SUBP' => 'Subproperty of',
+		'_TYPE' => 'On tyypiltään',
+		'_URI'  => 'Yhtäpitävä URI',
+		'_SUBP' => 'Alakäsite ominaisuudelle',
 		'_SUBC' => 'Subcategory of',
-		'_UNIT' => 'Display units',
-		'_IMPO' => 'Imported from',
-		'_CONV' => 'Corresponds to',
-		'_SERV' => 'Provides service',
-		'_PVAL' => 'Allows value',
-		'_MDAT' => 'Modification date',
-		'_ERRP' => 'Has improper value for',
-		'_LIST' => 'Has fields',
+		'_UNIT' => 'Tulostusyksikkö',
+		'_IMPO' => 'Tuotu sanastosta',
+		'_CONV' => 'Vastaa määrää',
+		'_SERV' => 'Tarjoaa palvelun',
+		'_PVAL' => 'Mahdollinen arvo',
+		'_MDAT' => 'Muokkausaika',
+		'_ERRP' => 'Sopimaton arvo kentälle',
+		'_LIST' => 'Koostuu kentistä',
 	);
 
 	protected $m_Namespaces = array(
