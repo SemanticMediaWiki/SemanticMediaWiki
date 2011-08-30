@@ -53,7 +53,7 @@ class SMWPageProperty extends SpecialPage {
 		}
 
 		$subject = SMWDataValueFactory::newTypeIDValue( '_wpg', $pagename );
-		$pagename = $subject->isValid() ? $subject->getText() : '';
+		$pagename = $subject->isValid() ? $subject->getPrefixedText() : '';
 		$property = SMWPropertyValue::makeUserProperty( $propname );
 		$propname = $property->isValid() ? $property->getWikiValue() : '';
 
@@ -62,6 +62,7 @@ class SMWPageProperty extends SpecialPage {
 		if ( ( $propname == '' ) ) { // no property given, show a message
 			$html .= wfMsg( 'smw_pp_docu' ) . "\n";
 		} else { // property given, find and display results
+			// FIXME: very ugly, needs i18n
 			$wgOut->setPagetitle( ( $pagename != '' ? $pagename . ' ':'' ) . $property->getWikiValue() );
 
 			// get results (get one more, to see if we have to add a link to more)
@@ -77,7 +78,7 @@ class SMWPageProperty extends SpecialPage {
 					$navigation = Html::element(
 						'a',
 						array(
-							'href' => SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL( array(
+							'href' => $this->getTitle()->getLocalURL( array(
 								'offset' => max( 0, $offset - $limit ), 
 								'limit' => $limit,
 								'type' => $propname, 
@@ -100,7 +101,7 @@ class SMWPageProperty extends SpecialPage {
 					$navigation = Html::element(
 						'a',
 						array(
-							'href' => SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL( array(
+							'href' => $this->getTitle()->getLocalURL( array(
 								'offset' => ( $offset + $limit ),
 								'limit' => $limit,
 								'type' => $propname,
@@ -146,7 +147,7 @@ class SMWPageProperty extends SpecialPage {
 		}
 
 		// Display query form
-		$spectitle = SpecialPage::getTitleFor( 'PageProperty' );
+		$spectitle = $this->getTitle();
 		$html .= '<p>&#160;</p>';
 		$html .= '<form name="pageproperty" action="' . $spectitle->escapeLocalURL() . '" method="get">' . "\n" .
 		         '<input type="hidden" name="title" value="' . $spectitle->getPrefixedText() . '"/>' ;
