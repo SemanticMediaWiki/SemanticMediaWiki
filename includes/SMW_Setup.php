@@ -95,7 +95,7 @@ function smwfRegisterHooks() {
 	$wgHooks['PageSchemasGeneratePages'][]        = 'smwfGeneratePages' ; // Hook for creating Pages
 	$wgHooks['getHtmlTextForFieldInputs'][]       = 'smwfgetHtmlTextForPS' ; // Hook for retuning html text to PS schema
 	$wgHooks['getFilledHtmlTextForFieldInputs'][] = 'smwfgetFilledHtmlTextForPS' ; //Hook for retuning html text to PS schema
-	$wgHooks['getXmlTextForFieldInputs'][]        = 'smwfgetXMLTextForPS' ; // Hook for retuning html text to PS schema
+	$wgHooks['PageSchemasGetFieldXML'][]          = 'smwfGetFieldXMLForPS';
 	$wgHooks['PSParseFieldElements'][]            = 'smwfParseFieldElements' ; // Hook for creating Pages
 	$wgHooks['PageSchemasGetPageList'][]          = 'smwfGetPageList' ; //Hook for  creating Pages
 	/* End: Hooks related to Pageschemas extension */
@@ -641,18 +641,16 @@ function smwfGetPageList( $psSchemaObj , &$genPageList ) {
 	return true;
 }
 
-function smwfgetXMLTextForPS( $wgRequest, &$text_extensions ){
-	
-	$Xmltext = "";
+function smwfGetFieldXMLForPS( $request, &$xmlArray ) {
 	$templateNum = -1;
-	$xml_text_array = array();
-	foreach ( $wgRequest->getValues() as $var => $val ) {
-		if(substr($var,0,18) == 'smw_property_name_'){
+	$xmlPerField = array();
+	foreach ( $request->getValues() as $var => $val ) {
+		if ( substr( $var, 0, 18 ) == 'smw_property_name_' ) {
 			$templateNum = substr($var,18,1);						
-			$Xmltext .= '<semanticmediawiki_Property name="'.$val.'" >';
-		}else if(substr($var,0,18) == 'smw_property_type_'){						
-			$Xmltext .= '<Type>'.$val.'</Type>';
-		}else if(substr($var,0,11) == 'smw_values_'){
+			$xml = '<semanticmediawiki_Property name="'.$val.'" >';
+		} elseif ( substr( $var, 0, 18 ) == 'smw_property_type_'){						
+			$xml .= '<Type>'.$val.'</Type>';
+		} elseif ( substr( $var, 0, 11 ) == 'smw_values_') {
 			if ( $val != '' ) {
 				// replace the comma substitution character that has no chance of
 				// being included in the values list - namely, the ASCII beep
@@ -662,17 +660,17 @@ function smwfgetXMLTextForPS( $wgRequest, &$text_extensions ){
 				foreach ( $allowed_values_array as $i => $value ) {
 					// replace beep back with comma, trim
 					$value = str_replace( "\a", $listSeparator, trim( $value ) );
-					$Xmltext .= '<AllowedValue>'.$value.'</AllowedValue>';
+					$xml .= '<AllowedValue>'.$value.'</AllowedValue>';
 				}
 			}
-			$Xmltext .= '</semanticmediawiki_Property>';
-			$xml_text_array[] = $Xmltext;
-			$Xmltext = '';
+			$xml .= '</semanticmediawiki_Property>';
+			$xmlPerField[] = $xml;
 		}
 	}
-	$text_extensions['smw'] = $xml_text_array;
+	$xmlArray['smw'] = $xmlPerField;
 	return true;
 }
+
 function smwfgetFilledHtmlTextForPS( $pageSchemaObj, &$text_extensions ){
 	global $smwgContLang;
 	$datatype_labels = $smwgContLang->getDatatypeLabels();		
