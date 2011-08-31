@@ -637,6 +637,15 @@ abstract class SMWResultPrinter {
 		$params['limit']->setMessage( 'smw_paramdesc_limit' );
 		$params['limit']->setDefault( 20 );
 		
+		$params['sort'] = new ListParameter( 'sort' );
+		$params['sort']->setMessage( 'smw-paramdesc-sort' );
+		$params['sort']->setDefault( '' );
+		
+		$params['order'] = new ListParameter( 'order' );
+		$params['order']->setMessage( 'smw-paramdesc-order' );
+		$params['order']->setDefault( '' );
+		$params['order']->addCriteria( new CriterionInArray( 'descending', 'desc', 'asc', 'ascending', 'rand', 'random' ) );
+		
 		$params['offset'] = new Parameter( 'offset', Parameter::TYPE_INTEGER );
 		$params['offset']->setMessage( 'smw_paramdesc_offset' );
 		$params['offset']->setDefault( 0 );

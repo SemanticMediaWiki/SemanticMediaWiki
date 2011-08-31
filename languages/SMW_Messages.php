@@ -93,6 +93,8 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw-paramdesc-dsv-filename'	=> 'The name for the DSV file',
 	'smw-smwdoc-description' => 'Shows a table of all parameters that can be used for the specified result format together with default values and descriptions.',
 	'smw-smwdoc-par-format'	=> 'The result format to display parameter documentation for.',
+	'smw-paramdesc-sort' => 'Property to sort the query by',
+	'smw-paramdesc-order' => 'Order of the query sort',
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",
