@@ -84,6 +84,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw_paramdesc_outrotemplate'	=> 'The name of a template to display after the query results, if there are any',
 	'smw_paramdesc_embedformat'	=> 'The HTML tag used to define headings',
 	'smw_paramdesc_embedonly'	=> 'Display no headings',
+	'smw-paramdesc-table-class'	=> 'An additional CSS class to set for the table',
 	'smw_paramdesc_rsstitle'	=> 'The text to be used as the title of the feed',
 	'smw_paramdesc_rssdescription'	=> 'The text to be used as the description of the feed',
 	'smw_paramdesc_rdfsyntax'	=> 'The RDF syntax to be used',
