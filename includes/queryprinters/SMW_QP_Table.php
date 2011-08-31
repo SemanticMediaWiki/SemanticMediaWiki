@@ -11,30 +11,50 @@
  */
 class SMWTableResultPrinter extends SMWResultPrinter {
 
+	protected $mHTMLClass = '';
+
+	public function __construct( $format, $inline, $useValidator = true ) {
+		parent::__construct( $format, $inline );
+		$this->useValidator = $useValidator;
+	}
+
 	public function getName() {
 		smwfLoadExtensionMessages( 'SemanticMediaWiki' );
 		return wfMsg( 'smw_printername_' . $this->mFormat );
 	}
+
+        /**
+	 * @see SMWResultPrinter::handleParameters
+	 *
+	 * @since 1.6
+	 *
+	 * @param array $params
+	 * @param $outputmode
+	 */
+	protected function handleParameters( array $params, $outputmode ) {
+		parent::handleParameters( $params, $outputmode );
+		if ( array_key_exists( 'class', $params ) ) {
+			$this->mHTMLClass = $params['class'];
+		}
+	  }
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		global $wgVersion;
 
 		$tableRows = array();
 		
+		$rowNum = 1;
 		while ( $subject = $res->getNext() ) {
-			$tableRows[] = $this->getRowForSubject( $subject, $outputmode );
+			$tableRows[] = $this->getRowForSubject( $subject, $outputmode, $rowNum++ );
 		}
-		
-		// print header
-		$result = '<table class="sortable wikitable"' .
-			  ( $this->mFormat == 'broadtable' ? ' width="100%"' : '' ) .
-				  ">\n";
 		
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) { // building headers
 			$headers = array();
 			
 			foreach ( $res->getPrintRequests() as $pr ) {
 				$attribs = array();
+				$columnClass = str_replace( array( ' ', '_' ), '-', $pr->getText( SMW_OUTPUT_WIKI ) );
+				$attribs['class'] = $columnClass;
 				
 				$headers[] = Html::rawElement(
 					'th',
@@ -71,7 +91,18 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 			$result .= "\t<tr class=\"smwfooter\"><td class=\"sortbottom\" colspan=\"" . $res->getColumnCount() . '"> ' . $link->getText( $outputmode, $this->mLinker ) . "</td></tr>\n";
 		}
 		
-		$result .= "</table>\n"; // print footer
+		// Put the <table> tag around the whole thing
+		// print header
+		$tableClass = "sortable wikitable";
+		if ( !empty( $this->mHTMLClass ) ) {
+			$tableClass .= ' ' . $this->mHTMLClass;
+		}
+		$tableAttrs = array( 'class' => $tableClass );
+		if ( $this->mFormat == 'broadtable' ) {
+			$tableAttrs['width'] = '100%';
+		}
+		$result = Xml::tags( 'table', $tableAttrs, $result );
+
 		$this->isHTML = ( $outputmode == SMW_OUTPUT_HTML ); // yes, our code can be viewed as HTML if requested, no more parsing needed
 		
 		return $result;
@@ -87,14 +118,15 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	 * 
 	 * @return string
 	 */
-	protected function getRowForSubject( array /* of SMWResultArray */ $subject, $outputmode ) {
+	protected function getRowForSubject( array /* of SMWResultArray */ $subject, $outputmode, $rowNum ) {
 		$cells = array();
 		
 		foreach ( $subject as $field ) {
 			$cells[] = $this->getCellForPropVals( $field, $outputmode );
 		}
 		
-		return "<tr>\n\t" . implode( "\n\t", $cells ) . "\n</tr>";
+		$rowClass = ( $rowNum % 2 == 1 ) ? 'row-odd' : 'row-even';
+		return "<tr class=\"$rowClass\">\n\t" . implode( "\n\t", $cells ) . "\n</tr>";
 	}
 	
 	/**
@@ -170,7 +202,10 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	}
 	
 	public function getParameters() {
-		return array_merge( parent::getParameters(), parent::textDisplayParameters() );
+		$params = array_merge( parent::getParameters(), parent::textDisplayParameters() );
+		$params['class'] = new Parameter( 'class', Parameter::TYPE_STRING );
+		$params['class']->setMessage( 'smw-paramdesc-table-class' );
+		return $params;
 	}
 	
 }
