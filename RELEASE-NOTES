@@ -4,6 +4,7 @@ For a documentation of all features, see http://semantic-mediawiki.org
 == SMW 1.6.2 ==
 
 * Use of native MediaWiki sortable tables for the table formats.
+* Fixed separator and filename parameters for the DSV format.
 
 == SMW 1.6.1 ==
 

@@ -17,6 +17,11 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 	protected $separator = ':';
 	protected $fileName = 'result.dsv';
 	
+	public function __construct( $format, $inline, $useValidator = true ) {
+		parent::__construct( $format, $inline );
+		$this->useValidator = $useValidator;
+	}
+	
 	/**
 	 * @see SMWResultPrinter::handleParameters
 	 * 
@@ -33,7 +38,7 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 			$this->separator = trim( $params['separator'] );
 		}
 		
-		$this->fileName = str_replace( ' ', '_', $params['increase'] );
+		$this->fileName = str_replace( ' ', '_', $params['filename'] );
 	}	
 
 	public function getMimeType( $res ) {
@@ -162,7 +167,8 @@ class SMWDSVResultPrinter extends SMWResultPrinter {
 
 		$link = $res->getQueryLink( $label );
 		$link->setParameter( 'dsv', 'format' );
-		$link->setParameter( $this->separator, 'sep' );
+		$link->setParameter( $this->separator, 'separator' );
+		$link->setParameter( $this->fileName, 'filename' );
 		
 		if ( array_key_exists( 'mainlabel', $this->m_params ) && $this->m_params['mainlabel'] !== false ) {
 			$link->setParameter( $this->m_params['mainlabel'], 'mainlabel' );
