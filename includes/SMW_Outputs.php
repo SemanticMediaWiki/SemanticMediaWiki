@@ -118,9 +118,12 @@ class SMWOutputs {
 	static public function requireFromParserOutput( ParserOutput $parserOutput ) {
 		// Note: we do not attempt to recover which head items where scripts here.
 		self::$headItems = array_merge( (array)self::$headItems, $parserOutput->getHeadItems() );
-//		if ( isset( $parserOutput->mModules ) ) {
-//			self::$headItems = array_merge( (array)self::$resourceModules, (array)$parserOutput->mModules );
-//		}
+		/// TODO Is the following needed?
+		if ( isset( $parserOutput->mModules ) ) {
+			foreach ( $parserOutput->mModules as $module ) {
+				self::$resourceModules[$module] = $module;
+			}
+		}
 	}
 
 	/**
