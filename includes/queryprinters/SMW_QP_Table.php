@@ -33,7 +33,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	 */
 	protected function handleParameters( array $params, $outputmode ) {
 		parent::handleParameters( $params, $outputmode );
-		if ( array_key_exists( 'class', $params ) ) {
+		if ( $params['class'] !== '' ) {
 			$this->mHTMLClass = $params['class'];
 		}
 	  }
@@ -41,6 +41,8 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		global $wgVersion;
 
+		$result = '';
+		
 		$tableRows = array();
 		
 		$rowNum = 1;
@@ -203,8 +205,11 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 	
 	public function getParameters() {
 		$params = array_merge( parent::getParameters(), parent::textDisplayParameters() );
+		
 		$params['class'] = new Parameter( 'class', Parameter::TYPE_STRING );
 		$params['class']->setMessage( 'smw-paramdesc-table-class' );
+		$params['class']->setDefault( '' );
+		
 		return $params;
 	}
 	
