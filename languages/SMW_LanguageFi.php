@@ -45,8 +45,8 @@ class SMWLanguageFi extends SMWLanguage {
 		// always start upper-case
 		'_TYPE' => 'On tyypiltään',
 		'_URI'  => 'Yhtäpitävä URI',
-		'_SUBP' => 'Alakäsite ominaisuudelle',
-		'_SUBC' => 'Subcategory of',
+		'_SUBP' => 'Yläominaisuus',
+		'_SUBC' => 'Yläluokka',
 		'_UNIT' => 'Tulostusyksikkö',
 		'_IMPO' => 'Tuotu sanastosta',
 		'_CONV' => 'Vastaa määrää',
