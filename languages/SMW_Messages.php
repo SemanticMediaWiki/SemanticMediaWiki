@@ -3318,6 +3318,7 @@ $messages['fr'] = array(
 	'smw_paramdesc_outrotemplate' => "Le nom d'un modèle à afficher après les résultats de la requête, s'il y en a",
 	'smw_paramdesc_embedformat' => 'La balise HTML qui sert à définir les en-têtes',
 	'smw_paramdesc_embedonly' => 'Ne pas afficher d’en-tête',
+	'smw-paramdesc-table-class' => 'Une classe CSS supplémentaire à mettre pour la table',
 	'smw_paramdesc_rsstitle' => 'Texte à utiliser comme titre des flux',
 	'smw_paramdesc_rssdescription' => 'Texte a utiliser comme description des flux',
 	'smw_paramdesc_rdfsyntax' => 'La syntaxe de RDF à utiliser',
@@ -3326,6 +3327,8 @@ $messages['fr'] = array(
 	'smw-paramdesc-dsv-filename' => 'Le nom du fichier DSV',
 	'smw-smwdoc-description' => 'Montre un tableau de tous les paramètres qui peuvent être utilisés pour un format de résultat spécifié ensemble avec des valeurs et des descriptions par défaut.',
 	'smw-smwdoc-par-format' => "Le format de résultat dans lequel afficher la documentation d'un paramètre",
+	'smw-paramdesc-sort' => 'Propriété sur laquelle trier la requête',
+	'smw-paramdesc-order' => 'Ordre du tri de la requête',
 	'smw_iq_disabled' => 'Désolé. Les recherches dans les pages de ce wiki ne sont pas autorisées.',
 	'smw_iq_moreresults' => '&hellip; autres résultats',
 	'smw_nonright_importtype' => 'L’élément « $1 » ne peut être employé que pour des pages de l’espace de noms « $2 ».',
@@ -6917,6 +6920,7 @@ $messages['mk'] = array(
 	'smw_paramdesc_outrotemplate' => 'Име на шаблонот за приказ по резултатите од пребарувањето, ако ги има',
 	'smw_paramdesc_embedformat' => 'HTML-ознаката која се користи за определување на наслови',
 	'smw_paramdesc_embedonly' => 'Не прикажувај наслови',
+	'smw-paramdesc-table-class' => 'Дополнителна CSS-класа за табелата',
 	'smw_paramdesc_rsstitle' => 'Текстот што ќе се користи како наслов на каналот',
 	'smw_paramdesc_rssdescription' => 'Текстот што ќе се користи како опис на каналот',
 	'smw_paramdesc_rdfsyntax' => 'RDF-синтаксата што ќе се користи',
@@ -6925,6 +6929,8 @@ $messages['mk'] = array(
 	'smw-paramdesc-dsv-filename' => 'Име на DSV-податотеката',
 	'smw-smwdoc-description' => 'Прикажува табела на сите параметри што можат да се искористат за назначениот формат на резултати заедно со основните вредности и описи.',
 	'smw-smwdoc-par-format' => 'Форматот на резултатите за кој се прикажува параметарска документација.',
+	'smw-paramdesc-sort' => 'По кое својство да се подреди барањето',
+	'smw-paramdesc-order' => 'Редослед на подредување на барањето',
 	'smw_iq_disabled' => 'На ова вики се оневозможени семантички барања.',
 	'smw_iq_moreresults' => '… понатамошни резултати',
 	'smw_nonright_importtype' => '$1 може да се користи само за страници со именски простор „$2“.',
@@ -7404,6 +7410,7 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw_paramdesc_outrotemplate' => 'De naam van een weer te geven sjabloon na de zoekresultaten als die er zijn',
 	'smw_paramdesc_embedformat' => 'Het HTML-label voor de koptekstdefinities',
 	'smw_paramdesc_embedonly' => 'Geen koppen weergeven',
+	'smw-paramdesc-table-class' => 'Een extra CSS-klasse om in te stellen voor de tabel',
 	'smw_paramdesc_rsstitle' => 'De tekst die wordt gebruikt als de naam van de feed',
 	'smw_paramdesc_rssdescription' => 'De tekst die wordt gebruikt als de beschrijving van de feed',
 	'smw_paramdesc_rdfsyntax' => 'De te gebruiken RDF-syntaxis',
@@ -7412,6 +7419,8 @@ Als het probleem over enige tijd nog niet verholpen is, vraag de beheerder dan o
 	'smw-paramdesc-dsv-filename' => 'De naam voor het DSV-bestand',
 	'smw-smwdoc-description' => 'Geeft een tabel weer met alle parameters die kunnen worden gebruikt met de opgegeven resultaatopmaak samen met standaardwaarden en beschrijvingen.',
 	'smw-smwdoc-par-format' => 'De resultaatopmaak waarvoor parameterdocumentatie weergegeven moet worden.',
+	'smw-paramdesc-sort' => 'Eigenschap om de zoekopdracht op te sorteren',
+	'smw-paramdesc-order' => 'Sorteervolgorde',
 	'smw_iq_disabled' => 'Zoekopdrachten binnen tekst zijn uitgeschakeld in deze wiki.',
 	'smw_iq_moreresults' => '… overige resultaten',
 	'smw_nonright_importtype' => "$1 kan alleen gebruikt worden voor pagina's in de naamruimte “$2”.",
@@ -9483,6 +9492,7 @@ $messages['roa-tara'] = array(
  * @author Eleferen
  * @author Ferrer
  * @author Innv
+ * @author Kaganer
  * @author Lockal
  * @author QuestPC
  * @author Александр Сигачёв
@@ -9654,7 +9664,7 @@ $messages['ru'] = array(
 	'smw_browse_show_incoming' => 'показать свойства, ссылающиеся сюда',
 	'smw_browse_hide_incoming' => 'скрыть свойства, ссылающиеся сюда',
 	'smw_browse_no_outgoing' => 'Эта страница не содержит свойств.',
-	'smw_browse_no_incoming' => 'Нет свойства, ссылающихся на эту страницу.',
+	'smw_browse_no_incoming' => 'Нет свойств, ссылающихся на эту страницу.',
 	'smw_inverse_label_default' => '$1 из',
 	'smw_inverse_label_property' => 'Метка обратного свойства',
 	'pageproperty' => 'Страница поиска свойств',
