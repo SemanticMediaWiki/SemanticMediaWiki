@@ -94,6 +94,8 @@ $specialPageAliases['de'] = array(
 	'Types' => array( 'Datentypen' ),
 	'UnusedProperties' => array( 'Verwaiste_Attribute' ),
 	'WantedProperties' => array( 'Gewünschte_Attribute' ),
+	'URIResolver' => array( 'URI-Auflöser' ),
+	'QueryCreator' => array( 'Abfragenersteller' ),
 );
 
 /** Lower Sorbian (Dolnoserbski) */
