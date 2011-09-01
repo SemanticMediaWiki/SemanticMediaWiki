@@ -85,10 +85,10 @@ $specialPageAliases['bs'] = array(
 /** German (Deutsch) */
 $specialPageAliases['de'] = array(
 	'Ask' => array( 'Semantische_Suche' ),
-	'ExportRDF' => array( 'Exportiere_RDF' ),
+	'ExportRDF' =>  array( 'RDF_exportieren', 'Exportiere_RDF' ),
 	'PageProperty' => array( 'Seitenattribut' ),
 	'Properties' => array( 'Attribute' ),
-	'SMWAdmin' => array( 'SMW-Einrichtung' ),
+	'SMWAdmin' =>  array( 'SMW-Administration', 'SMW-Einrichtung' ),
 	'SearchByProperty' => array( 'Suche_mittels_Attribut' ),
 	'SemanticStatistics' => array( 'Semantische_Statistik' ),
 	'Types' => array( 'Datentypen' ),
@@ -96,6 +96,7 @@ $specialPageAliases['de'] = array(
 	'WantedProperties' => array( 'Gewünschte_Attribute' ),
 	'URIResolver' => array( 'URI-Auflöser' ),
 	'QueryCreator' => array( 'Abfragenersteller' ),
+	'Browse' =>  array( 'Browsen'),
 );
 
 /** Lower Sorbian (Dolnoserbski) */
