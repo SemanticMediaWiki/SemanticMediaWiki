@@ -23,7 +23,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		return wfMsg( 'smw_printername_' . $this->mFormat );
 	}
 
-        /**
+	/**
 	 * @see SMWResultPrinter::handleParameters
 	 *
 	 * @since 1.6
@@ -36,7 +36,7 @@ class SMWTableResultPrinter extends SMWResultPrinter {
 		if ( $params['class'] !== '' ) {
 			$this->mHTMLClass = $params['class'];
 		}
-	  }
+	}
 
 	protected function getResultText( SMWQueryResult $res, $outputmode ) {
 		global $wgVersion;
