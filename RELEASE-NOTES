@@ -5,6 +5,8 @@ For a documentation of all features, see http://semantic-mediawiki.org
 
 * Use of native MediaWiki sortable tables for the table formats.
 * Fixed separator and filename parameters for the DSV format.
+* Added definitions for missing params (sort, order, searchlabel) to the base query printer.
+* Added validation and manipulation of the format paremeter using Validator.
 
 == SMW 1.6.1 ==
 

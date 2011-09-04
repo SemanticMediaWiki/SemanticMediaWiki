@@ -36,9 +36,13 @@ class SMWQueryProcessor {
 	 */
 	static public function createQuery( $querystring, array $params, $context = self::INLINE_QUERY, $format = '', $extraprintouts = array() ) {
 		global $smwgQDefaultNamespaces, $smwgQFeatures, $smwgQConceptFeatures;
-		if ( $format == '' ) {
-			$format = self::getResultFormat( $params );
-		}
+		
+		// TODO: this is a hack
+		// Idially one round of Validation would be done through Validator on this level
+		// instead of on query printer level and then have weirdness here.
+		$formatParam = new SMWParamFormat();
+		$p = array();
+		$formatParam->doManipulation( $format, new Parameter( 'format' ), $p );
 
 		// parse query:
 		$queryfeatures = ( $context == self::CONCEPT_DESC ) ? $smwgQConceptFeatures : $smwgQFeatures;
@@ -266,7 +270,7 @@ class SMWQueryProcessor {
 	static public function getResultFromQueryString( $querystring, array $params, $extraprintouts, $outputmode, $context = self::INLINE_QUERY ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQueryString (SMW)' );
 
-		$format = self::getResultFormat( $params );
+		$format = array_key_exists( 'format', $params ) ? $params['format'] : '';
 		$query  = self::createQuery( $querystring, $params, $context, $format, $extraprintouts );
 		$result = self::getResultFromQuery( $query, $params, $extraprintouts, $outputmode, $context, $format );
 
@@ -277,6 +281,13 @@ class SMWQueryProcessor {
 
 	static public function getResultFromQuery( SMWQuery $query, array $params, $extraprintouts, $outputmode, $context = self::INLINE_QUERY, $format = '' ) {
 		wfProfileIn( 'SMWQueryProcessor::getResultFromQuery (SMW)' );
+
+		// TODO: this is a hack
+		// Idially one round of Validation would be done through Validator on this level
+		// instead of on query printer level and then have weirdness here.
+		$formatParam = new SMWParamFormat();
+		$p = array();
+		$formatParam->doManipulation( $format, new Parameter( 'format' ), $p );		
 
 		// Query routing allows extensions to provide alternative stores as data sources
 		// The while feature is experimental and is not properly integrated with most of SMW's architecture. For instance, some query printers just fetch their own store.
@@ -329,55 +340,6 @@ class SMWQueryProcessor {
 	}
 
 	/**
-	 * Determines the format from an array of parameters, and returns it.
-	 *
-	 * @param array $params
-	 *
-	 * @return string
-	 */
-	static protected function getResultFormat( array $params ) {
-		$format = 'auto';
-
-		if ( array_key_exists( 'format', $params ) ) {
-			global $smwgResultFormats;
-
-			$format = strtolower( trim( $params['format'] ) );
-
-			if ( !array_key_exists( $format, $smwgResultFormats ) ) {
-				$isAlias = self::resolveFormatAliases( $format );
-				if ( !$isAlias ) {
-					$format = 'auto';  // If it is an unknown format, defaults to list/table again
-				}
-			}
-		}
-
-		return $format;
-	}
-
-	/**
-	 * Turns format aliases into main formats.
-	 *
-	 * @param string $format
-	 *
-	 * @return boolean Indicates if the passed format was an alias, and thus was changed.
-	 */
-	static protected function resolveFormatAliases( &$format ) {
-		global $smwgResultAliases;
-
-		$isAlias = false;
-
-		foreach ( $smwgResultAliases as $mainFormat => $aliases ) {
-			if ( in_array( $format, $aliases ) ) {
-				$format = $mainFormat;
-				$isAlias = true;
-				break;
-			}
-		}
-
-		return $isAlias;
-	}
-
-	/**
 	 * Find suitable SMWResultPrinter for the given format. The context in which the query is to be
 	 * used determines some basic settings of the returned printer object. Possible contexts are
 	 * SMWQueryProcessor::SPECIAL_PAGE, SMWQueryProcessor::INLINE_QUERY, SMWQueryProcessor::CONCEPT_DESC.
@@ -390,9 +352,6 @@ class SMWQueryProcessor {
 	static public function getResultPrinter( $format, $context = self::SPECIAL_PAGE ) {
 		global $smwgResultFormats;
 
-		self::resolveFormatAliases( $format );
-
-		// TODO: this seems to contain the same logic as found in getResultFormat - a single function for this might be better.
 		$formatClass = array_key_exists( $format, $smwgResultFormats ) ? $smwgResultFormats[$format] : 'SMWAutoResultPrinter';
 
 		return new $formatClass( $format, ( $context != self::SPECIAL_PAGE ) );

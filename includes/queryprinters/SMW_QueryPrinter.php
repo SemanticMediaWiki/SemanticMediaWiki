@@ -622,7 +622,10 @@ abstract class SMWResultPrinter {
 	/**
 	 * A function to describe the allowed parameters of a query using
 	 * any specific format - most query printers should override this
-	 * function
+	 * function.
+	 * 
+	 * TODO: refactor non-printer params up to the query processor
+	 * and do all param handling there. 
 	 *
 	 * @since 1.5.0
 	 *
@@ -631,7 +634,16 @@ abstract class SMWResultPrinter {
 	public function getParameters() {
 		$params = array();
 		
+		$allowedFormats = $GLOBALS['smwgResultFormats'];
+		
+		foreach ( $GLOBALS['smwgResultAliases'] as $aliases ) {
+			$allowedFormats += $aliases;
+		}
+		
 		$params['format'] = new Parameter( 'format' );
+		$params['format']->setDefault( 'auto' );
+		//$params['format']->addCriteria( new CriterionInArray( $allowedFormats ) );
+		$params['format']->addManipulations( new SMWParamFormat() );
 		
 		$params['limit'] = new Parameter( 'limit', Parameter::TYPE_INTEGER );
 		$params['limit']->setMessage( 'smw_paramdesc_limit' );
@@ -660,9 +672,13 @@ abstract class SMWResultPrinter {
 		$params['mainlabel']->setDefault( false, false );
 		
 		$params['link'] = new Parameter( 'link' );
-		$params['link']->setMessage( 'smw_paramdesc_link' );		
+		$params['link']->setMessage( 'smw_paramdesc_link' );
 		$params['link']->addCriteria( new CriterionInArray( 'all', 'subject', 'none' ) );
 		$params['link']->setDefault( 'all' );
+		
+		$params['searchlabel'] = new Parameter( 'searchlabel' );
+		$params['searchlabel']->setDefault( '' );
+		$params['searchlabel']->setMessage( 'smw-paramdesc-searchlabel' );
 		
 		return $params;
 	}

@@ -95,6 +95,7 @@ If the problem does not go away after some time, ask your site administrator to 
 	'smw-smwdoc-par-format'	=> 'The result format to display parameter documentation for.',
 	'smw-paramdesc-sort' => 'Property to sort the query by',
 	'smw-paramdesc-order' => 'Order of the query sort',
+	'smw-paramdesc-searchlabel' => 'Text for continuing the search (default is «… further results»)',
 
 	// Messages and strings for inline queries
 	'smw_iq_disabled'    => "Semantic queries have been disabled for this wiki.",

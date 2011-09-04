@@ -231,7 +231,7 @@ function smwfRegisterClasses() {
 	// Datavalues
 	$dvDir = $smwgIP . 'includes/datavalues/';
 	$wgAutoloadClasses['SMWDataValue']           	= $dvDir . 'SMW_DataValue.php';
-	$wgAutoloadClasses['SMWContainerValue']		= $dvDir . 'SMW_DV_Container.php';
+	$wgAutoloadClasses['SMWContainerValue']			= $dvDir . 'SMW_DV_Container.php';
 	$wgAutoloadClasses['SMWRecordValue']         	= $dvDir . 'SMW_DV_Record.php';
 	$wgAutoloadClasses['SMWErrorValue']          	= $dvDir . 'SMW_DV_Error.php';
 	$wgAutoloadClasses['SMWStringValue']         	= $dvDir . 'SMW_DV_String.php';
@@ -239,7 +239,7 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWPropertyValue']       	= $dvDir . 'SMW_DV_Property.php';
 	$wgAutoloadClasses['SMWURIValue']            	= $dvDir . 'SMW_DV_URI.php';
 	$wgAutoloadClasses['SMWTypesValue']          	= $dvDir . 'SMW_DV_Types.php';
-	$wgAutoloadClasses['SMWPropertyListValue']	= $dvDir . 'SMW_DV_PropertyList.php';
+	$wgAutoloadClasses['SMWPropertyListValue']		= $dvDir . 'SMW_DV_PropertyList.php';
 	$wgAutoloadClasses['SMWNumberValue']         	= $dvDir . 'SMW_DV_Number.php';
 	$wgAutoloadClasses['SMWTemperatureValue']    	= $dvDir . 'SMW_DV_Temperature.php';
 	$wgAutoloadClasses['SMWQuantityValue']         	= $dvDir . 'SMW_DV_Quantity.php';
@@ -256,11 +256,15 @@ function smwfRegisterClasses() {
 	$wgAutoloadClasses['SMWExpLiteral']             = $expDir . 'SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpResource']            = $expDir . 'SMW_Exp_Element.php';
 	$wgAutoloadClasses['SMWExpNsResource']          = $expDir . 'SMW_Exp_Element.php';
-	$wgAutoloadClasses['SMWExportController']	= $expDir . 'SMW_ExportController.php';
-	$wgAutoloadClasses['SMWSerializer']	        = $expDir . 'SMW_Serializer.php';
+	$wgAutoloadClasses['SMWExportController']		= $expDir . 'SMW_ExportController.php';
+	$wgAutoloadClasses['SMWSerializer']	        	= $expDir . 'SMW_Serializer.php';
 	$wgAutoloadClasses['SMWRDFXMLSerializer']       = $expDir . 'SMW_Serializer_RDFXML.php';
 	$wgAutoloadClasses['SMWTurtleSerializer']       = $expDir . 'SMW_Serializer_Turtle.php';
 
+	// Parameter classes
+	$parDir = $smwgIP . 'includes/params/';
+	$wgAutoloadClasses['SMWParamFormat']			= $parDir . 'SMW_ParamFormat.php';
+	
 	// Parser hooks
 	$phDir = $smwgIP . 'includes/parserhooks/';
 	$wgAutoloadClasses['SMWAsk']                    = $phDir . 'SMW_Ask.php';

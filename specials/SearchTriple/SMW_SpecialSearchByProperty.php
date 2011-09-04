@@ -208,7 +208,7 @@ class SMWSearchByProperty extends SpecialPage {
 				$html .= '&#160;&#160;' . SMWInfolink::newBrowsingLink( '+', $result[0]->getShortHTMLText() )->getHTML( smwfGetLinker() );
 			}
 			
-			if ( ( $this->value != $result[1] ) || $highlight ) {
+			if ( is_object( $result[1] ) && ( ( $this->value != $result[1] ) || $highlight ) ) {
 				$html .= " <em><small>(" . $result[1]->getLongHTMLText( smwfGetLinker() ) . ")</small></em>";
 			}
 			
