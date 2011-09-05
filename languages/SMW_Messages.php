@@ -3376,6 +3376,7 @@ $messages['fr'] = array(
 	'smw-smwdoc-par-format' => "Le format de résultat dans lequel afficher la documentation d'un paramètre",
 	'smw-paramdesc-sort' => 'Propriété sur laquelle trier la requête',
 	'smw-paramdesc-order' => 'Ordre du tri de la requête',
+	'smw-paramdesc-searchlabel' => 'Texte pour continuer la recherche (par défaut, «… autres résultats»)',
 	'smw_iq_disabled' => 'Désolé. Les recherches dans les pages de ce wiki ne sont pas autorisées.',
 	'smw_iq_moreresults' => '&hellip; autres résultats',
 	'smw_nonright_importtype' => 'L’élément « $1 » ne peut être employé que pour des pages de l’espace de noms « $2 ».',
@@ -5993,6 +5994,7 @@ Progresso stimato dell'aggiornamento in corso:",
  * @author Fryed-peach
  * @author Hosiryuhosi
  * @author Naohiro19
+ * @author Schu
  * @author 青子守歌
  */
 $messages['ja'] = array(
@@ -6011,9 +6013,11 @@ $messages['ja'] = array(
 	'smw_noinvannot' => '逆プロパティに値を割り当てることはできません。',
 	'version-semantic' => 'セマンティック拡張機能',
 	'smw_baduri' => '「$1」という形式のURIは認められていません。',
+	'smw_dsv_link' => 'DSV',
 	'smw_printername_auto' => '自動',
 	'smw_printername_count' => '集計結果',
-	'smw_printername_csv' => 'CSV形式で書き出し',
+	'smw_printername_csv' => 'CSV エクスポート',
+	'smw_printername_dsv' => 'DSV エクスポート',
 	'smw_printername_debug' => 'デバッグ・クエリー(上級者向け)',
 	'smw_printername_embedded' => 'ページの内容を埋め込む',
 	'smw_printername_json' => 'JSON形式で書き出し',
@@ -6484,7 +6488,7 @@ Aanforderung dorschjeiht, dann froch Dinge Wiki-Köbes donoh, noh dämm Kunzäp.
 	'smw_printername_template' => 'Schabloon',
 	'smw_printername_rdf' => 'Äxpoot als en <i lang="en">RDF</i>-Dattei',
 	'smw_paramdesc_limit' => 'De hühßte Aanzahl vun Äjeebnesse för zeröck ze jävve',
-	'smw_paramdesc_headers' => 'Donn de Name vun de Köpp oder Eijeschaffte aanzeije',
+	'smw_paramdesc_headers' => 'Donn der Name vun de Övveschrefte un Eijeschaffte aanzeije',
 	'smw_paramdesc_mainlabel' => 'Wi dä <code>mainlabel</code> Parrameeter för inlain Affroore beschrevve weed',
 	'smw_paramdesc_link' => 'Donn de Wääte als Lengks aanzeije',
 	'smw_paramdesc_intro' => 'Wat för ene Täx aanjezeijsch wääde sull, für dämm, wat jefonge woodt',
@@ -6987,6 +6991,7 @@ $messages['mk'] = array(
 	'smw-smwdoc-par-format' => 'Форматот на резултатите за кој се прикажува параметарска документација.',
 	'smw-paramdesc-sort' => 'По кое својство да се подреди барањето',
 	'smw-paramdesc-order' => 'Редослед на подредување на барањето',
+	'smw-paramdesc-searchlabel' => 'Текст за продолжување на пребарувањето (по основно: «… повеќе резултати»)',
 	'smw_iq_disabled' => 'На ова вики се оневозможени семантички барања.',
 	'smw_iq_moreresults' => '… понатамошни резултати',
 	'smw_nonright_importtype' => '$1 може да се користи само за страници со именски простор „$2“.',
