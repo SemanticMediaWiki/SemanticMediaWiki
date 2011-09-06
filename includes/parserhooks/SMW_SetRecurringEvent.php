@@ -61,6 +61,22 @@ class SMWSetRecurringEvent {
 		$timeValue->setDataItem( $timeDataItem );
 		return $timeValue;
 	}
+
+	/**
+	 * Returns the "Julian day" value from an object of type
+	 * SMWTimeValue.
+	 */
+	static public function getJD( $dateDataValue ) {
+		if ( is_null( $dateDataValue ) ) {
+			return null;
+		}
+		$dateDataItem = $dateDataValue->getDataItem();
+		// This might have returned an 'SMWDIError' object.
+		if ( $dateDataItem instanceof SMWDITime ) {
+			return $dateDataItem->getJD();
+		}
+		return null;
+	}
 	
 	/**
 	 * Helper function used in this class, as well as by the
@@ -115,7 +131,7 @@ class SMWSetRecurringEvent {
 
 					foreach ( $excluded_dates as $date_str ) {
 						$date = SMWDataValueFactory::newTypeIDValue( '_dat', $date_str );
-						$excluded_dates_jd[] = $date->getDataItem()->getJD();
+						$excluded_dates_jd[] = self::getJD( $date );
 					}
 					break;
 				default:
@@ -147,12 +163,10 @@ class SMWSetRecurringEvent {
 		}
 
 		// Get the Julian day value for both the start and end date.
-		if ( !is_null( $end_date ) ) {
-			$end_date_jd = $end_date->getDataItem()->getJD();
-		}
+		$end_date_jd = self::getJD( $end_date );
 
 		$cur_date = $start_date;
-		$cur_date_jd = $start_date->getDataItem()->getJD();
+		$cur_date_jd = self::getJD( $cur_date );
 		$i = 0;
 		$reached_end_date = false;
 
