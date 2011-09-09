@@ -1079,6 +1079,10 @@ $messages['az'] = array(
 	'smw_printername_list' => 'Siyahı',
 	'smw_printername_table' => 'Cədvəl',
 	'smw_printername_template' => 'Şablon',
+	'smw_qui_ok' => 'Ok',
+	'smw_qui_cancel' => 'İmtina',
+	'smw_qui_category' => '<strong>Kateqoriya</strong>',
+	'smw_qui_dcategory' => 'Kateqoriya:',
 	'smw_result_results' => 'Nəticələr',
 );
 
