@@ -38,7 +38,7 @@ class SMWExpData extends SMWExpElement {
 	protected $m_edges = array();
 
 	/**
-	 * Constructor. $subject is the SMWExpResource for the 
+	 * Constructor. $subject is the SMWExpResource for the
 	 * subject about which this SMWExpData is.
 	 */
 	public function __construct( SMWExpResource $subject ) {
@@ -69,7 +69,7 @@ class SMWExpData extends SMWExpElement {
 
 	/**
 	 * Return subject to which the stored semantic annotation refer to.
-	 * 
+	 *
 	 * @return SMWExpResource
 	 */
 	public function getSubject() {
@@ -95,7 +95,7 @@ class SMWExpData extends SMWExpElement {
 	/**
 	 * Return the list of SMWExpResource objects for all properties for
 	 * which some values have been given.
-	 * 
+	 *
 	 * @return array of SMWExpResource
 	 */
 	public function getProperties() {
@@ -105,7 +105,7 @@ class SMWExpData extends SMWExpElement {
 	/**
 	 * Return the list of SMWExpElement values associated to some property
 	 * (element).
-	 * 
+	 *
 	 * @return array of SMWExpElement
 	 */
 	public function getValues( SMWExpResource $property ) {
@@ -159,7 +159,7 @@ class SMWExpData extends SMWExpElement {
 	 * Check if this element encodes an RDF list, and if yes return an
 	 * array of SMWExpElements corresponding to the collection elements in
 	 * the specified order. Otherwise return false.
-	 * The method only returns lists that can be encoded using 
+	 * The method only returns lists that can be encoded using
 	 * parseType="Collection" in RDF/XML, i.e. only lists of non-literal
 	 * resources.
 	 *
@@ -194,7 +194,7 @@ class SMWExpData extends SMWExpElement {
 						array_unshift( $restlist, $first );
 						return $restlist;
 					}
-				} elseif ( ( $rest instanceof SMWExpResource ) && 
+				} elseif ( ( $rest instanceof SMWExpResource ) &&
 				           ( $rest->getUri() == $rdfnilUri ) )  {
 					return array( $first );
 				} else {
@@ -239,7 +239,7 @@ class SMWExpData extends SMWExpElement {
 				if ( ( $childSubject instanceof SMWExpResource ) &&
 				     ( $childSubject->isBlankNode() ) ) { // bnode, rename ID to avoid unifying bnodes of different contexts
 					// TODO: should we really rename bnodes of the form "_id" here?
-					$childSubject = new SMWExpResource( '_' . $smwgBnodeCount++, $childSubject()->getDataItem() );
+					$childSubject = new SMWExpResource( '_' . $smwgBnodeCount++, $childSubject->getDataItem() );
 				}
 
 				$result[] = array( $subject, $edge, $childSubject );
