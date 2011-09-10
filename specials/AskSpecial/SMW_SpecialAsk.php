@@ -736,7 +736,7 @@ END;
 			}
 			
 			$currentValue = array_key_exists( $param->getName(), $paramValues ) ? $paramValues[$param->getName()] : false;
-
+			
 			$optionsHtml[] =
 				Html::rawElement(
 					'div',

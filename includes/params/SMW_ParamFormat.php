@@ -31,6 +31,8 @@ class SMWParamFormat extends ItemParameterManipulation {
 	public function doManipulation( &$value, Parameter $parameter, array &$parameters ) {
 		global $smwgResultFormats;
 		
+		$value = trim( $value );
+		
 		if ( !array_key_exists( $value, $smwgResultFormats ) ) {
 			$isAlias = self::resolveFormatAliases( $value );
 			
